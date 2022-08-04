@@ -26,10 +26,10 @@ gb_install_repo_deps(){
     # Check the root directory for node_modules 
     cd $GB_ROOT_DIR
     if [[ ! -d "$GB_ROOT_DIR/node_modules" ]]; then
-      gb_message "Running \"yarn setup\" for strategy-application repo ..."
+      gb_message "Running \"yarn setup\" for goblet-application repo ..."
       yarn setup
     else
-      gb_message "Repo \"strategy-application/node_modules\" already installed, skipping"
+      gb_message "Repo \"goblet-application/node_modules\" already installed, skipping"
     fi
 
   else
