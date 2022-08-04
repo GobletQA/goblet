@@ -14,8 +14,10 @@ const getLabelSelector = (params) => {
   const selector = resolveContext(context, {
     be: `app.kubernetes.io/component=${envs.GB_BE_DEPLOYMENT}`,
     fe: `app.kubernetes.io/component=${envs.GB_FE_DEPLOYMENT}`,
+    sc: `app.kubernetes.io/component=${envs.GB_SC_DEPLOYMENT}`,
+    cd: `app.kubernetes.io/component=${envs.GB_CD_DEPLOYMENT}`,
     db: `app.kubernetes.io/component=${envs.GB_DB_DEPLOYMENT}`,
-    px: `app.kubernetes.io/component=${envs.GB_PROXY_DEPLOYMENT}`,
+    px: `app.kubernetes.io/component=${envs.GB_PX_DEPLOYMENT}`,
   })
 
   return {

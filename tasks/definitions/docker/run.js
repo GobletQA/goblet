@@ -83,10 +83,12 @@ const runImg = async (args) => {
   const docFileCtx = resolveContext(
     context,
     {
-      px: 'proxy',
+      px: `proxy`,
+      db: 'database',
+      sc: `screencast`,
+      cd: `conductor`,
       be: 'backend',
       fe: 'frontend',
-      db: 'database',
     },
     'app'
   )

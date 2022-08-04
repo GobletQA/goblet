@@ -41,6 +41,9 @@ const setStartEnvs = (params) => {
     {
       all: `all`,
       px: `proxy`,
+      db: 'database',
+      sc: `screencast`,
+      cd: `conductor`,
       be: `backend`,
       fe: `frontend`,
     },

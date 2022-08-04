@@ -17,10 +17,12 @@ const getKubePod = async (params = noOpObj) => {
 
   const envs = loadEnvs(env)
   const match = resolveContext(context, {
-    be: envs.GB_BE_DEPLOYMENT,
     fe: envs.GB_FE_DEPLOYMENT,
+    be: envs.GB_BE_DEPLOYMENT,
+    cd: envs.GB_CD_DEPLOYMENT,
+    sc: envs.GB_SC_DEPLOYMENT,
     db: envs.GB_DB_DEPLOYMENT,
-    px: envs.GB_PROXY_DEPLOYMENT,
+    px: envs.GB_PX_DEPLOYMENT,
   })
 
   !match &&

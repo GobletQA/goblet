@@ -62,7 +62,9 @@ const buildImg = async (args) => {
 
   // Get the context for the docker image being built
   const docFileCtx = resolveContext(context, {
-    px: 'proxy',
+    px: `proxy`,
+    sc: `screencast`,
+    cd: `conductor`,
     be: 'backend',
     fe: 'frontend',
     db: 'database',

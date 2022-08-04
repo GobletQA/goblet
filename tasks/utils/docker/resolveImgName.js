@@ -21,9 +21,11 @@ const resolveImgName = (params, docFileCtx, envs) => {
     resolveContext(
       docFileCtx,
       {
-        be: envs.GB_BE_IMAGE,
         fe: envs.GB_FE_IMAGE,
-        px: envs.GB_PROXY_IMAGE,
+        be: envs.GB_BE_IMAGE,
+        cd: envs.GB_CD_IMAGE,
+        sc: envs.GB_SC_IMAGE,
+        px: envs.GB_PX_IMAGE,
         db: envs.GB_DB_IMAGE,
       },
       envs.IMAGE
