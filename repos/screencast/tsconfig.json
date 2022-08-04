@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "paths": {
+      "@GSC/Configs": ["configs"],
+      "@GSC/Constants": ["src/constants"],
+      "@GSC/Endpoints": ["src/endpoints"],
+      "@GSC/Screencast": ["src/screencast"],
+      "@GSC/Libs": ["src/libs"],
+      "@GSC/Playwright": ["src/libs/playwright"],
+      "@GSC/Vnc": ["src/libs/vnc"],
+      "@GSC": ["src"],
+      "@GSCRoot": ["./"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
