@@ -1,0 +1,162 @@
+
+# See here https://devspace.cloud/docs/cli/deployment/components/configuration/overview-specification
+# For information on how to configure this file,
+
+# A list of containers that should run the pods of this component
+containers: []
+initContainers: []
+
+service:
+  type: ClusterIP
+  labels: {}
+  annotations: {}
+  ports: []
+  externalIPs: []
+
+labels: {}
+annotations: {}
+
+ingress:
+  labels: {}
+  annotations: {}
+  rules: []
+
+# Defines image pull secrets
+# DevSpace CLI will append all pull secrets which are automatically created
+# More infos on: https://devspace.cloud/docs/cli/image-building/workflow-basics#8-create-image-pull-secret
+pullSecrets: []
+
+
+env:
+
+# ---- General Shared ENVs ---- #
+  IMAGE_TAG: latest
+  IMAGE_BUILD_TAGS: package
+  DOCKER_REGISTRY: ghcr.io
+  IMAGE: 'ghcr.io/goblet/goblet-app'
+  DISPLAY: ":0.0"
+
+# ---- Goblet Shared ENVs ---- #
+  GB_TOKEN: 12345
+  GB_KUBE_NAMESPACE: gb-local
+  GB_KUBE_CONTEXT: docker-desktop
+  GB_GITFS_VER: 0.0.0
+  GB_SH_MOUNT_ROOT: /keg/repos
+  GB_SH_LOCAL_MOUNT: goblet-local/current
+  GB_SERVER_ORIGINS: 'localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io'
+  # TODO: @lance-tipton - Make this more dynamic - value comes from firebase?
+  GB_GITHUB_AUTH_USERS: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lance.tipton@workboard.com
+
+
+  # ---- Logger ENVs ---- #
+  # Enable to set custom log-level for conductor
+  GB_LOG_LEVEL: debug
+  GB_LOG_LABEL: Goblet
+  GB_LOG_DISABLED: false
+  GB_LOG_EXIT_ON_ERR: false
+  GB_LOG_PRETTY_PRINT: true
+  GB_LOG_HANDLE_EXCEPTION: true
+
+
+# ---- Docker Images ---- #
+  # KEG_BASE_IMAGE: mcr.microsoft.com/playwright:v1.23.4-focal
+  GB_BASE_IMAGE_FROM: mcr.microsoft.com/playwright:v1.23.4-focal
+
+  # Name of the image built from the KEG_BASE_IMAGE
+  # All sub goblet images are built from this image
+  GB_BASE_IMAGE: ghcr.io/gobletqa/goblet-base:develop
+
+  # Default image to be used
+  GB_IMAGE_FROM: ghcr.io/gobletqa/goblet-app:develop
+  
+# ---- Dev Only ENVs ---- #
+
+
+# ---- Backend ENVs ---- #
+  # GB_BE_PORT: 7005
+  GB_BE_PORT: 7005
+  GB_BE_SECURE_PORT: 443
+  # Host the FE uses to connect to the BE
+  GB_BE_HOST: 0.0.0.0
+  # Port to forward connections from backend API to screencast
+  GB_NO_VNC_PORT: 26369
+
+  # Default to the backend api and host
+  # But should be set when running as own server
+  GB_BE_IMAGE_TAG: latest
+  GB_BE_DEPLOYMENT: goblet-backend
+  GB_BE_IMAGE: 'ghcr.io/gobletqa/goblet-backend'
+  
+  # ---- Backend Websocket ENVs ---- #
+  GB_BE_SOCKET_PORT: 7005
+  GB_BE_SOCKET_HOST: 0.0.0.0
+  GB_BE_SOCKR_PATH: '/sockr-socket'
+
+  # --- Backend JWT AUTH --- #
+  GB_BE_JWT_EXP: 7200000
+  GB_BE_JWT_CREDENTIALS: true
+  GB_BE_JWT_REFRESH_EXP: 7200000
+  GB_BE_JWT_SECRET: k3G-H3rkiN-1234
+  GB_BE_JWT_KEY: goblet-be-auth-token
+  GB_BE_JWT_REFRESH_SECRET: 4926-G0b13T-g3K
+
+  # --- Backend COOKIE AUTH --- #
+  # GB_BE_COOKIE_SECRET: ""
+  GB_BE_COOKIE_SECURE: true
+  GB_BE_COOKIE_NAME: goblet
+  GB_BE_COOKIE_HTTP_ONLY: true
+  GB_BE_COOKIE_OVERWRITE: true
+  GB_BE_COOKIE_SAME_SITE: None
+  GB_BE_COOKIE_KEY: goblet-cookie-7979
+
+
+  # ---- TODO: Investigate this ----
+  # ---- Backend ENVs ---- #
+  BACKEND_IMAGE_FROM: mcr.microsoft.com/playwright:v1.23.4-focal
+  # **IMPORTANT** - Must exactly match the version use in $BACKEND_IMAGE_FROM
+  PLAYWRIGHT_BROWSERS_VERSION: 1.23.4
+
+# ---- Frontend ENVs ---- #
+  GB_FE_PORT: 19006
+  GB_FE_IMAGE_TAG: latest
+  GB_FE_DEPLOYMENT: goblet-frontend
+  GB_FE_IMAGE: 'ghcr.io/gobletqa/goblet-frontend'
+  # --- TODO: Update this as needed for deployments
+  GB_FE_ROOT_DIR: /keg/tap/repos/frontend
+
+
+# --- CONDUCTOR ENVs --- #
+  # Host the FE uses to connect to the BE
+  GB_CD_PORT: 9901
+  GB_CD_HOST: 0.0.0.0
+  GB_CD_IMAGE_TAG: latest
+  GB_CD_DEPLOYMENT: goblet-conductor
+  GB_CD_IMAGE: 'ghcr.io/gobletqa/goblet-conductor'
+  # GB_CD_HOST: local.keghub.io
+  # GB_CD_DOMAIN: local.keghub.io
+
+  GB_CD_TIMEOUT: 5000
+  GB_CD_SERVER_SECRET: ""
+  # Enable to set custom log-level for conductor
+  # GB_CD_LOG_LEVEL: info
+  GB_CD_PIDS_LIMIT: 500
+  GB_CD_RATE_LIMIT: 5000
+  # Salting the user hash string. Not intended to be secure just anonymous
+  GB_CD_HASH_KEY: C0nDuc10R
+
+
+# --- SCREENCAST ENVs --- #
+  GB_SC_IMAGE_TAG: latest
+  GB_SC_DEPLOYMENT: goblet-screencast
+  GB_SC_IMAGE: 'ghcr.io/gobletqa/goblet-screencast'
+  GB_SC_PORT: 7006
+  # URL where the screencast is being displayed
+  # This is the URL of the server the proxy connects to
+  # Update this to call an externally available VNC websocket host
+  GB_SC_HOST: 0.0.0.0
+  # Host of the novnc proxy to tigerVNC
+  # This is internal, and generally should not change
+  GB_VNC_SERVER_HOST: 0.0.0.0
+  GB_VNC_SERVER_PORT: 26370
+  GB_VNC_VIEW_HEIGHT: 900
+  GB_VNC_VIEW_WIDTH: 1440
