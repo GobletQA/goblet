@@ -59,27 +59,27 @@ vars:
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_BE_PORT"
 
-# # ----- Conductor Values ----- #
-# - name: GB_CD_DEPLOYMENT
-#   source: command
-#   command: "node ../scripts/js/getYamlValue.js GB_CD_DEPLOYMENT"
-# - name: GB_CD_IMG_URI
-#   source: command
-#   command: "node ../scripts/js/resolveImgUri.js CD"
-# - name: GB_CD_PORT
-#   source: command
-#   command: "node ../scripts/js/getYamlValue.js GB_CD_PORT"
+# ----- Conductor Values ----- #
+- name: GB_CD_DEPLOYMENT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_CD_DEPLOYMENT"
+- name: GB_CD_IMG_URI
+  source: command
+  command: "node ../scripts/js/resolveImgUri.js CD"
+- name: GB_CD_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_CD_PORT"
 
-# # ----- Screencast Values ----- #
-# - name: GB_SC_DEPLOYMENT
+# ----- Proxy Values ----- #
+# - name: GB_PX_DEPLOYMENT
 #   source: command
-#   command: "node ../scripts/js/getYamlValue.js GB_SC_DEPLOYMENT"
-# - name: GB_SC_IMG_URI
+#   command: "node ../scripts/js/getYamlValue.js GB_PX_DEPLOYMENT"
+# - name: GB_PX_IMG_URI
 #   source: command
-#   command: "node ../scripts/js/resolveImgUri.js SC"
-# - name: GB_SC_PORT
+#   command: "node ../scripts/js/resolveImgUri.js PX"
+# - name: GB_PX_PORT
 #   source: command
-#   command: "node ../scripts/js/getYamlValue.js GB_SC_PORT"
+#   command: "node ../scripts/js/getYamlValue.js GB_PX_PORT"
 
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
@@ -112,6 +112,40 @@ deployments:
 # - name: $(node ../scripts/js/resolveDeployment.js CD IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 # - name: $(node ../scripts/js/resolveDeployment.js SC IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 
+# ----- Frontend Deployment ----- #
+- name: ${GB_FE_DEPLOYMENT}
+  helm:
+    chart:
+      name: ./
+    cleanupOnFail: true
+    valuesFiles:
+    - ./values.yml
+    - ./values.${NODE_ENV}.yml
+    values:
+      containers:
+      - image: ${GB_FE_IMG_URI}
+        imagePullPolicy: ${IMAGE_PULL_POLICY}
+        env:
+        - name: NPM_TOKEN
+          value: ${NPM_TOKEN}
+        - name: NODE_ENV
+          value: ${NODE_ENV}
+        - name: GB_SUB_REPO
+          value: frontend
+        - name: GB_NM_INSTALL
+          value: ${GB_NM_INSTALL}
+      service:
+        name: ${GB_FE_DEPLOYMENT}
+        ports:
+        - port: ${GB_FE_PORT}
+      ingress:
+        name: ${GB_FE_DEPLOYMENT}-ingress
+        annotations:
+          kubernetes.io/ingress.class: ambassador
+        rules:
+        - host: $(node ../scripts/js/resolveIngress.js FE)
+          serviceName: ${GB_FE_DEPLOYMENT}
+          servicePort: ${GB_FE_PORT}
 
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
@@ -152,8 +186,8 @@ deployments:
           serviceName: ${GB_BE_DEPLOYMENT}
           servicePort: ${GB_BE_PORT}
 
-# ----- Frontend Deployment ----- #
-- name: ${GB_FE_DEPLOYMENT}
+# ----- Conductor Deployment ----- #
+- name: ${GB_CD_DEPLOYMENT}
   helm:
     chart:
       name: ./
@@ -163,38 +197,82 @@ deployments:
     - ./values.${NODE_ENV}.yml
     values:
       containers:
-      - image: ${GB_FE_IMG_URI}
+      - image: ${GB_CD_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env:
+        # Secret value not stored in the repos values.yml file
+        # Must be added by an external values file 
+        - name: GB_TOKEN
+          value: ${GB_TOKEN}
         - name: NPM_TOKEN
           value: ${NPM_TOKEN}
         - name: NODE_ENV
           value: ${NODE_ENV}
         - name: GB_SUB_REPO
-          value: frontend
+          value: conductor
         - name: GB_NM_INSTALL
           value: ${GB_NM_INSTALL}
       service:
-        name: ${GB_FE_DEPLOYMENT}
+        name: ${GB_CD_DEPLOYMENT}
         ports:
-        - port: ${GB_FE_PORT}
+        - port: ${GB_CD_PORT}
       ingress:
-        name: ${GB_FE_DEPLOYMENT}-ingress
+        name: ${GB_CD_DEPLOYMENT}-ingress
         annotations:
           kubernetes.io/ingress.class: ambassador
         rules:
-        - host: $(node ../scripts/js/resolveIngress.js FE)
-          serviceName: ${GB_FE_DEPLOYMENT}
-          servicePort: ${GB_FE_PORT}
+        - host: $(node ../scripts/js/resolveIngress.js CD)
+          serviceName: ${GB_CD_DEPLOYMENT}
+          servicePort: ${GB_CD_PORT}
+
+# ----- Proxy Deployment ----- #
+# - name: ${GB_PX_DEPLOYMENT}
+#   helm:
+#     chart:
+#       name: ./
+#     cleanupOnFail: true
+#     valuesFiles:
+#     - ./values.yml
+#     - ./values.${NODE_ENV}.yml
+#     values:
+#       containers:
+#       - image: ${GB_PX_IMG_URI}
+#         imagePullPolicy: ${IMAGE_PULL_POLICY}
+#         env:
+#         # Secret value not stored in the repos values.yml file
+#         # Must be added by an external values file 
+#         - name: GB_TOKEN
+#           value: ${GB_TOKEN}
+#         - name: NPM_TOKEN
+#           value: ${NPM_TOKEN}
+#         - name: NODE_ENV
+#           value: ${NODE_ENV}
+#         - name: GB_SUB_REPO
+#           value: proxy
+#         - name: GB_NM_INSTALL
+#           value: ${GB_NM_INSTALL}
+#       service:
+#         name: ${GB_PX_DEPLOYMENT}
+#         ports:
+#         - port: ${GB_PX_PORT}
+#       ingress:
+#         name: ${GB_PX_DEPLOYMENT}-ingress
+#         annotations:
+#           kubernetes.io/ingress.class: ambassador
+#         rules:
+#         - host: $(node ../scripts/js/resolveIngress.js PX)
+#           serviceName: ${GB_PX_DEPLOYMENT}
+#           servicePort: ${GB_PX_PORT}
+
 
 # The `dev` section only applies to `yarn dev start` || `devspace dev` commands
 # Is not run for `yarn dev deploy` || `devspace deploy` commands
 dev:
   # Gets the apps that should sync with the host machine
-  sync: $(node ../scripts/js/resolveSync.js GB_BE_ACTIVE GB_FE_ACTIVE)
+  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_CD_ACTIVE)
 
   # Gets the ports that should be exposed to the host machine from the running pod
-  ports: $(node ../scripts/js/resolvePortForward.js GB_BE_ACTIVE ${GB_BE_PORT} GB_FE_ACTIVE ${GB_FE_PORT})
+  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_CD_ACTIVE ${GB_CD_PORT})
 
   # The `open` field tells DevSpace to open a URL as soon as it returns HTTP status 200
   # Since we configured port-forwarding, we can use a localhost address here to access our application

@@ -64,13 +64,15 @@ const generateSync = (isActiveEnv, backend) => {
 const args = process.argv.slice(2)
 const feDeployment = generateSync(args.shift())
 const beDeployment = generateSync(args.shift(), true)
-// const cdDeployment = generateSync(args.shift(), true)
+const cdDeployment = generateSync(args.shift(), true)
+// const pxDeployment = generateSync(args.shift(), true)
 // const scDeployment = generateSync(args.shift(), true)
 
 let syncs = ``
 feDeployment && (syncs += feDeployment)
 beDeployment && (syncs += beDeployment)
-// cdDeployment && (syncs += cdDeployment)
+cdDeployment && (syncs += cdDeployment)
+// pxDeployment && (syncs += pxDeployment)
 // scDeployment && (syncs += scDeployment)
 
 process.stdout.write(syncs)

@@ -27,18 +27,22 @@ const generateImgSelector = (isActiveEnv, selector, port) => {
 }
 
 const [
-  beActive,
-  bePort,
   feActive,
   fePort,
+  beActive,
+  bePort,
+  cdActive,
+  cfPort,
 ] = process.argv.slice(2)
 
-const bePortForward = generateLabelSelector(beActive, bePort)
 const fePortForward = generateLabelSelector(feActive, fePort)
+const bePortForward = generateLabelSelector(beActive, bePort)
+const cdPortForward = generateLabelSelector(cdActive, cdPort)
 
 let portForward = ``
-bePortForward && (portForward += bePortForward)
 fePortForward && (portForward += fePortForward)
+bePortForward && (portForward += bePortForward)
+cdPortForward && (portForward += cdPortForward)
 
 /**
   * Check if the app is being deploy
