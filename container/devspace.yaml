@@ -177,6 +177,7 @@ deployments:
         name: ${GB_BE_DEPLOYMENT}
         ports:
         - port: ${GB_BE_PORT}
+        - port: ${GB_NO_VNC_PORT}
       ingress:
         name: ${GB_BE_DEPLOYMENT}-ingress
         annotations:
@@ -185,6 +186,8 @@ deployments:
         - host: $(node ../scripts/js/resolveIngress.js BE)
           serviceName: ${GB_BE_DEPLOYMENT}
           servicePort: ${GB_BE_PORT}
+
+
 
 # ----- Conductor Deployment ----- #
 - name: ${GB_CD_DEPLOYMENT}
@@ -216,6 +219,7 @@ deployments:
         name: ${GB_CD_DEPLOYMENT}
         ports:
         - port: ${GB_CD_PORT}
+        # - port: ${GB_SC_PORT}
       ingress:
         name: ${GB_CD_DEPLOYMENT}-ingress
         annotations:
@@ -224,6 +228,7 @@ deployments:
         - host: $(node ../scripts/js/resolveIngress.js CD)
           serviceName: ${GB_CD_DEPLOYMENT}
           servicePort: ${GB_CD_PORT}
+
 
 # ----- Proxy Deployment ----- #
 # - name: ${GB_PX_DEPLOYMENT}
@@ -272,30 +277,30 @@ dev:
   sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_CD_ACTIVE)
 
   # Gets the ports that should be exposed to the host machine from the running pod
-  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_CD_ACTIVE ${GB_CD_PORT})
+  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} ${GB_NO_VNC_PORT} GB_CD_ACTIVE ${GB_CD_PORT})
 
   # The `open` field tells DevSpace to open a URL as soon as it returns HTTP status 200
   # Since we configured port-forwarding, we can use a localhost address here to access our application
   open: $(node ../scripts/js/resolveOpenBrowser.js GB_FE_ACTIVE ${GB_FE_PORT})
 
 # Use profile to dynamically switch out the app specific docker image for the development image
-profiles:
-- name: local
-  patches:
-  - op: replace
-    path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
-  - op: replace
-    path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
-- name: develop
-  patches:
-  - op: replace
-    path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
-  - op: replace
-    path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
-- name: staging
-- name: qa
-- name: production
+# profiles:
+# - name: local
+#   patches:
+#   - op: replace
+#     path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
+#     value: ${IMAGE}:${IMAGE_TAG}
+#   - op: replace
+#     path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
+#     value: ${IMAGE}:${IMAGE_TAG}
+# - name: develop
+#   patches:
+#   - op: replace
+#     path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
+#     value: ${IMAGE}:${IMAGE_TAG}
+#   - op: replace
+#     path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
+#     value: ${IMAGE}:${IMAGE_TAG}
+# - name: staging
+# - name: qa
+# - name: production

@@ -31,17 +31,20 @@ const [
   fePort,
   beActive,
   bePort,
+  noVncPort,
   cdActive,
   cfPort,
 ] = process.argv.slice(2)
 
 const fePortForward = generateLabelSelector(feActive, fePort)
 const bePortForward = generateLabelSelector(beActive, bePort)
+const vncPortForward = generateLabelSelector(beActive, noVncPort)
 const cdPortForward = generateLabelSelector(cdActive, cdPort)
 
 let portForward = ``
 fePortForward && (portForward += fePortForward)
 bePortForward && (portForward += bePortForward)
+vncPortForward && (portForward += vncPortForward)
 cdPortForward && (portForward += cdPortForward)
 
 /**
