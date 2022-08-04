@@ -46,6 +46,7 @@ env:
   GB_SERVER_ORIGINS: 'localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io'
   # TODO: @lance-tipton - Make this more dynamic - value comes from firebase?
   GB_GITHUB_AUTH_USERS: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lance.tipton@workboard.com
+  GB_BUILD_PLATFORMS: linux/amd64,linux/arm64
 
 
   # ---- Logger ENVs ---- #

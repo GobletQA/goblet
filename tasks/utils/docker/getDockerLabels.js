@@ -1,6 +1,7 @@
 const path = require('path')
 const { appRoot } = require('../../paths')
 const packConf = require(path.join(appRoot, 'package.json'))
+const { resolveContext } = require('../kubectl/resolveContext')
 
 /**
  * Builds the labels to add to the docker image
@@ -14,13 +15,18 @@ const getDockerLabels = (docFileCtx, envs) => {
     `--label`,
     packConf.name,
     `--label`,
-    docFileCtx === 'proxy'
-      ? envs.GB_PROXY_DEPLOYMENT
-      : docFileCtx === 'backend'
-        ? envs.GB_BE_DEPLOYMENT
-        : docFileCtx === 'frontend'
-          ? envs.GB_FE_DEPLOYMENT
-          : `goblet-app`,
+    resolveContext(
+      docFileCtx,
+      {
+        fe: envs.GB_FE_DEPLOYMENT,
+        be: envs.GB_BE_DEPLOYMENT,
+        cd: envs.GB_CD_DEPLOYMENT,
+        sc: envs.GB_SC_DEPLOYMENT,
+        px: envs.GB_PX_DEPLOYMENT,
+        db: envs.GB_DB_DEPLOYMENT,
+      },
+      `goblet-app`
+    )
   ]
 }
 

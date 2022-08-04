@@ -44,9 +44,9 @@ const startSockify = async ({
   }
 
   const creds = {
-    key: process.env.KEG_PROXY_PRIVATE_KEY,
-    cert: process.env.KEG_PROXY_CERT,
-    ca: process.env.KEG_PROXY_CA,
+    key: process.env.GB_SSL_PRIVATE_KEY,
+    cert: process.env.GB_SSL_PROXY_CERT,
+    ca: process.env.GB_SSL_PROXY_CA,
   }
 
   const credentials = Object.entries(creds).reduce((conf, [key, loc]) => {

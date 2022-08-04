@@ -23,7 +23,7 @@ const getDeploymentOpts = (env, envs) => {
     [envs.GB_CD_DEPLOYMENT]: `GB_CD_ACTIVE`,
     [envs.GB_SC_DEPLOYMENT]: `GB_SC_ACTIVE`,
     [envs.GB_DB_DEPLOYMENT]: `GB_DB_ACTIVE`,
-    [envs.GB_PX_DEPLOYMENT]: `GB_PROXY_ACTIVE`,
+    [envs.GB_PX_DEPLOYMENT]: `GB_PX_ACTIVE`,
   }
 
   return [deployObj, Object.values(deployObj), activeMap]

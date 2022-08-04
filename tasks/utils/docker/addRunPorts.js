@@ -24,7 +24,14 @@ const resolveAllPorts = (params, envs, docFileCtx) => {
         px: envs.GB_PX_PORT,
         db: envs.GB_DB_PORT,
       },
-      [envs.GB_BE_PORT, envs.GB_FE_PORT, envs.GB_DB_PORT, envs.GB_PROXY_PORT]
+      [
+        envs.GB_BE_PORT,
+        envs.GB_FE_PORT,
+        envs.GB_CD_PORT,
+        envs.GB_SC_PORT,
+        envs.GB_DB_PORT,
+        envs.GB_PX_PORT
+      ]
     )
   )
 

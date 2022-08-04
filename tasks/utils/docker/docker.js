@@ -1,6 +1,6 @@
 const { appRoot } = require('../../paths')
 const { loadEnvs } = require('../envs/loadEnvs')
-const { getPlatforms } = require('./getPlatforms')
+const { addPlatforms } = require('./addPlatforms')
 const { docker: dockerCmd, Logger } = require('@keg-hub/cli-utils')
 const {
   isStr,
@@ -16,10 +16,12 @@ const {
  * Also check and add platforms, if the build is being pushed
  */
 const buildX = (cmd, callback, cmdArgs=noPropArr, options=noOpObj, params=noOpObj) => {
+  const { push } = params
+  
   // Add the build platform for the image
-  const platformOpts = !params.push
+  const platformOpts = !push
     ? [ cmd, `--load`]
-    : [ cmd, `--push`, ...getPlatforms(options, {envs: {...process.env, ...options.envs}})]
+    : [ cmd, `--push`, ...addPlatforms(options.platforms, push)]
 
   // Call the callback, adding the platform args array with the first arg, which should be an array
   // Then spread the other args to match calling the docker command

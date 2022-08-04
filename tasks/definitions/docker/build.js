@@ -4,7 +4,7 @@ const { docker, Logger } = require('@keg-hub/cli-utils')
 const { loadEnvs } = require('../../utils/envs/loadEnvs')
 const { getNpmToken } = require('../../utils/envs/getNpmToken')
 const { setupBuildX } = require('../../utils/docker/setupBuildX')
-const { addBuildArgs } = require('../../utils/docker/addBuildArgs')
+const { toBuildArgsArr } = require('../../utils/docker/buildArgs')
 const { addPlatforms } = require('../../utils/docker/addPlatforms')
 const { getDockerFile } = require('../../utils/docker/getDockerFile')
 const { resolveImgTags } = require('../../utils/docker/resolveImgTags')
@@ -99,7 +99,7 @@ const buildImg = async (args) => {
     ...getDockerLabels(docFileCtx, envs),
     ...getDockerFile(docFileCtx),
     ...addPlatforms(platforms, push),
-    ...addBuildArgs(allEnvs, docFileCtx),
+    ...toBuildArgsArr(allEnvs),
     `.`,
   ].filter((arg) => arg)
 

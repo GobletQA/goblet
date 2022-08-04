@@ -1,5 +1,7 @@
 const { noPropArr } = require('@keg-hub/jsutils')
 
+
+
 /**
  * Generates a string of platforms the image should be built for
  * @param {Array} platforms - List of platforms to build the image form
@@ -12,5 +14,5 @@ const addPlatforms = (platforms = noPropArr, push) => {
 }
 
 module.exports = {
-  addPlatforms,
+  addPlatforms
 }
