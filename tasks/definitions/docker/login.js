@@ -21,7 +21,7 @@ const docLogin = async (args) => {
   const { params } = args
   const { log, registry, env } = params
 
-  const envs = loadEnvs(env)
+  const envs = loadEnvs({ env })
   const token = params.token || getNpmToken()
   const registryUrl = registry || envs.DOCKER_REGISTRY || envs.IMAGE.split('/').shift()
 

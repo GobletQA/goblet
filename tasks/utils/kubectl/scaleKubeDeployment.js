@@ -18,7 +18,7 @@ const scaleKubeDeployment = async (params = noOpObj) => {
     error.throwError(`The deployment context param is required to scale a deployment`)
   !isNum(amount) && error.throwError(`The amount param is required to scale a deployment`)
 
-  const envs = loadEnvs(env)
+  const envs = loadEnvs({ env })
   const deployment = resolveContext(context, {
     be: envs.GB_BE_DEPLOYMENT,
     fe: envs.GB_FE_DEPLOYMENT,

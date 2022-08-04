@@ -15,7 +15,7 @@ const devspaceLogs = async (params = noOpObj) => {
   const cmdArgs = [`logs`]
   follow && cmdArgs.push(`--follow`)
 
-  const envs = loadEnvs(env)
+  const envs = loadEnvs({ env })
   const selector = resolveContext(context, {
     be: `app.kubernetes.io/component=${envs.GB_BE_DEPLOYMENT}`,
     fe: `app.kubernetes.io/component=${envs.GB_FE_DEPLOYMENT}`,

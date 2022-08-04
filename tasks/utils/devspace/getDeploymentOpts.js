@@ -6,7 +6,7 @@ const { loadEnvs } = require('../envs/loadEnvs')
  * @return {Array} - All allow apps that can be deployed as object and array
  */
 const getDeploymentOpts = (env, envs) => {
-  envs = envs || loadEnvs(env)
+  envs = envs || loadEnvs({ env })
 
   const deployObj = {
     be: envs.GB_BE_DEPLOYMENT,

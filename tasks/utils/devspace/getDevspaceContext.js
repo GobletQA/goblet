@@ -10,7 +10,7 @@ const { loadEnvs } = require('../envs/loadEnvs')
  */
 const getDevspaceContext = (params = noOpObj) => {
   const { namespace, kubeContext, env } = params
-  const { GB_KUBE_NAMESPACE = `gb-local`, GB_KUBE_CONTEXT } = loadEnvs(env)
+  const { GB_KUBE_NAMESPACE = `gb-local`, GB_KUBE_CONTEXT } = loadEnvs({ env })
 
   !GB_KUBE_CONTEXT &&
     error.throwError(`The "GB_KUBE_CONTEXT" is required to run devspace commands`)

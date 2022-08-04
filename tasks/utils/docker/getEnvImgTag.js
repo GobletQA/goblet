@@ -11,7 +11,7 @@ const { resolveContext } = require('../kubectl/resolveContext')
  * @return {Object} - Resolved tagging option values
  */
 const getEnvImgTag = async (params = noOpObj, docFileCtx = ``, envs) => {
-  envs = envs || loadEnvs(params.env)
+  envs = envs || loadEnvs({ env: params.env })
 
   return resolveContext(
     docFileCtx,

@@ -10,7 +10,7 @@ const { resolveContext } = require('../kubectl/resolveContext')
 const getLabelSelector = (params) => {
   const { context, env } = params
 
-  const envs = loadEnvs(env)
+  const envs = loadEnvs({ env })
   const selector = resolveContext(context, {
     be: `app.kubernetes.io/component=${envs.GB_BE_DEPLOYMENT}`,
     fe: `app.kubernetes.io/component=${envs.GB_FE_DEPLOYMENT}`,

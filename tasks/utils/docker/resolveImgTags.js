@@ -38,7 +38,7 @@ const generateTagMatches = (params, docFileCtx = ``, envs, tagOptions) => {
 const resolveImgTags = async (params = noOpObj, docFileCtx = ``, envs) => {
   const { env } = params
 
-  envs = envs || loadEnvs(env)
+  envs = envs || loadEnvs({ env })
   const tagOptions = await getTagOptions(params, docFileCtx, envs)
   const tagArr = generateTagMatches(params, docFileCtx, envs, tagOptions)
 

@@ -83,7 +83,7 @@ const command = (executable) => {
       cwd,
       log,
       exec,
-      envs: { ...loadEnvs(env), ...envs },
+      envs: { ...loadEnvs({ env }), ...envs },
     }
 
     /**

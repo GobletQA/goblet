@@ -3,7 +3,6 @@ const { GOBLET_RUN_FROM_CI } = process.env
 
 
 const definitions = !GOBLET_RUN_FROM_CI && {
-  ...initialize(require('./repos')),
   ...initialize(require('./deploy')),
   ...initialize(require('./docker')),
   ...initialize(require('./devspace')),

@@ -15,7 +15,7 @@ const getKubePod = async (params = noOpObj) => {
   const { context, env } = params
   !context && error.throwError(`The context param is required to find a pod`)
 
-  const envs = loadEnvs(env)
+  const envs = loadEnvs({ env })
   const match = resolveContext(context, {
     fe: envs.GB_FE_DEPLOYMENT,
     be: envs.GB_BE_DEPLOYMENT,

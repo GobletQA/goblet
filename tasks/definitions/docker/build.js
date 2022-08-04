@@ -53,7 +53,7 @@ const buildImg = async (args) => {
   const { params } = args
   const { builder, context, env, from, image, log, platforms, push } = params
 
-  const envs = loadEnvs(env)
+  const envs = loadEnvs({ env })
   const token = getNpmToken()
   const allEnvs = { ...envs, NPM_TOKEN: token }
 

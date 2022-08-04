@@ -14,7 +14,7 @@ const getKubeContext = (params) => {
   if (kubeContext) return kubeContext
   else if (process.env.GB_KUBE_CONTEXT) return process.env.GB_KUBE_CONTEXT
 
-  const { GB_KUBE_CONTEXT } = loadEnvs(env)
+  const { GB_KUBE_CONTEXT } = loadEnvs({ env })
 
   return (
     GB_KUBE_CONTEXT ||

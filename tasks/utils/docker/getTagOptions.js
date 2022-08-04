@@ -16,7 +16,7 @@ const { version } = require(path.join(appRoot, `package.json`))
  * @return {Object} - Resolved tagging option values
  */
 const getTagOptions = async (params = noOpObj, docFileCtx = ``, envs) => {
-  envs = envs || loadEnvs(params.env)
+  envs = envs || loadEnvs({ env: params.env })
   const commit = await getCommitHash()
   const branch = await getCurrentBranch()
 

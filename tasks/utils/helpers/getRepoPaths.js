@@ -1,8 +1,8 @@
 const path = require('path')
 const { existsSync } = require('fs')
+const { reposDir } = require('../../paths')
 const { execSync } = require('child_process')
 const { camelCase } = require('@keg-hub/jsutils')
-const reposPath = path.join(__dirname, '../../../', 'repos')
 
 /**
  * Finds all sub-repo paths from the <root>/repos directory
@@ -12,12 +12,12 @@ const reposPath = path.join(__dirname, '../../../', 'repos')
  */
 const getRepoPaths = () => {
   // list of the repo names located at `<root>/repos`
-  return execSync('ls', { cwd: reposPath })
+  return execSync('ls', { cwd: reposDir })
     .toString()
     .split('\n')
     .filter(Boolean)
     .reduce((values, name) => {
-      const repo = path.join(reposPath, name)
+      const repo = path.join(reposDir, name)
       existsSync(path.join(repo, `./package.json`)) && (values[camelCase(name)] = repo)
 
       return values

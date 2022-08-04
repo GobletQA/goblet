@@ -75,7 +75,7 @@ const runImg = async (args) => {
   const { params, options } = args
   const { context, env, log } = params
 
-  const envs = loadEnvs(env)
+  const envs = loadEnvs({ env })
   const token = getNpmToken()
   const allEnvs = { ...envs, NPM_TOKEN: token }
 
