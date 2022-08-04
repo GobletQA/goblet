@@ -9,7 +9,7 @@ module.exports = {
   trailingComma: 'es5',
   bracketSpacing: true,
   jsxSingleQuote: true,
-  arrowParens: 'always',
+  arrowParens: 'avoid',
   bracketSameLine: false,
   quoteProps: 'as-needed',
 }
