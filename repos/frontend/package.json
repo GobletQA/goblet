@@ -1,7 +1,7 @@
 {
-  "name": "@gobletqa/tap",
+  "name": "@gobletqa/frontend",
   "version": "0.0.0",
-  "description": "Frontend Appliction for GobletQA Platform",
+  "description": "Frontend Application for GobletQA Platform",
   "main": "index.js",
   "publishConfig": {
     "access": "public"
