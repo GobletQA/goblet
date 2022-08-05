@@ -25,10 +25,10 @@ const setupVNCProxy = app => {
   const config = app.locals.config || {}
 
   const {
-    port = 26369,
-    protocol = 'ws',
-    path = '/novnc',
+    port,
+    path,
     host,
+    protocol,
     ...options
   } = get(config, `screencast.proxy`, {})
 

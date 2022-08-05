@@ -10,6 +10,7 @@
       "@GBE/Sockr": ["src/sockr"],
       "@GBE/Endpoints": ["src/endpoints"],
       "@GBE/Middleware": ["src/middleware"],
+      "@GBE/Template": ["templates"],
       "@GBE": ["src"],
       "@GBE/Root": ["./"],
       "@gobletqa/shared": ["../shared/src"],
