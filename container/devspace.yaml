@@ -187,8 +187,6 @@ deployments:
           serviceName: ${GB_BE_DEPLOYMENT}
           servicePort: ${GB_BE_PORT}
 
-
-
 # ----- Conductor Deployment ----- #
 - name: ${GB_CD_DEPLOYMENT}
   helm:

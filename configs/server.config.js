@@ -1,14 +1,12 @@
 const path = require('path')
 const { toBool } = require('@keg-hub/jsutils')
 const { GobletRoot } = require('../gobletRoot')
-// TODO: figure out how to make these an alias instead of relative path
-const { loadEnvs } = require('../repos/shared/src/utils/loadEnvs')
-const { generateOrigins } = require('../repos/shared/src/utils/generateOrigins')
+const { loadEnvs } = require('@gobletqa/shared/utils/loadEnvs')
+const { generateOrigins } = require('@gobletqa/shared/utils/generateOrigins')
 
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({ override: nodeEnv === 'local'})
 
-// TODO: @lance-tipton - Remove these defaults. Should come from values files
 const {
 
   GB_LOG_LEVEL,
@@ -32,6 +30,7 @@ const {
   GB_BE_JWT_REFRESH_SECRET,
 
   GB_BE_COOKIE_SECRET,
+  // TODO: @lance-tipton - Remove these defaults. Should come from values files
   GB_BE_COOKIE_SECURE = true,
   GB_BE_COOKIE_NAME = `goblet`,
   GB_BE_COOKIE_HTTP_ONLY = true,

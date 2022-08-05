@@ -5,10 +5,12 @@
  * --- **IMPORTANT** ---
  */
 
+require('./aliases.config').registerAliases()
+
 const { firebase } = require('./firebase.config')
-const { serverConfig } = require('./server.config.js')
-const { sockrCmds } = require('./sockrCmds.config.js')
-const { screencastConfig } = require('./screencast.config.js')
+const { serverConfig } = require('./server.config')
+const { sockrCmds } = require('./sockrCmds.config')
+const { screencastConfig } = require('./screencast.config')
 
 const {
   GOBLET_ROOT,
