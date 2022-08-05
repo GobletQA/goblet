@@ -1,11 +1,11 @@
 // TODO: @lance-tipton - Move all socket.io setup and files to screencast folder
-const { Repo } = require('@GSH/Repo/repo')
-const { joinBrowserConf } = require('@GSH/Utils/joinBrowserConf')
+const { Repo } = require('@gobletqa/shared/repo/repo')
+const { joinBrowserConf } = require('@gobletqa/shared/utils/joinBrowserConf')
 const {
   setPage,
   stopBrowser,
   startPlaying,
-} = require('@GSC/Playwright')
+} = require('@gobletqa/screencast/libs/playwright')
 
 const handleStartPlaying = async (data, repo, socket, Manager, app) => {
   const { token, ref, action, ...browser } = data
