@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 require('../resolveRoot')
 const { Logger } = require('@keg-hub/cli-utils')
-const { noOpObj, exists, wait, get } = require('@keg-hub/jsutils')
 const { checkArgs } = require('@GSC/Libs/utils/checkArgs')
 const { daemonize } = require('@GSC/Libs/utils/daemonize')
+const { noOpObj, exists, wait, get } = require('@keg-hub/jsutils')
 const {
   stopServer,
   statusServer,
   statusBrowser,
 } = require('@GSC/Playwright')
 const {
-  statusSockify,
-  startSockify,
-  stopSockify,
-  statusVNC,
-  startVNC,
   stopVNC,
+  startVNC,
+  statusVNC,
+  stopSockify,
+  startSockify,
+  statusSockify,
 } = require('@GSC/Libs/vnc')
 
 /**
@@ -76,27 +76,6 @@ const killAndExit = exitStatus => {
     )
 }
 
-/**
- * Listen for "(cmd|ctrl) + c" keyboard events, and exit the running process
- * Calling exit should automatically kill all child processes
- * Used when servers are not started in detached mode, must be explicity set
- * @function
- * @private
- * @param {string|number} - Exit status of the process
- *
- * @returns {Void}
- */
-const handleOnExit = exitStatus => {
-  // Array.from([
-  //   'SIGBREAK',
-  //   'SIGINT',
-  //   'SIGUSR1',
-  //   'SIGUSR2',
-  //   'uncaughtException',
-  //   'SIGTERM',
-  // ])
-  // .map(type => process.on(type, exitCode => stopScreencast(exitCode || exitStatus || 0)))
-}
 
 /**
  * Checks if the status argument is passed
@@ -159,7 +138,6 @@ const restartScreencast = async params => {
  * @param {Object} params.vnc - Config used when starting the vnc server
  * @param {Object} params.sockify - Config used when starting the websockify novnc server
  * @param {Object} params.playwright - Config used when starting the browser via playwright
- * @param {boolean} exitListener - Should the process be killed on SIGINT
  *
  * @returns {Object} - Contains the browser, context, page, and child process of the servers
  */
@@ -167,15 +145,9 @@ const startScreencast = async params => {
   const {
     args,
     __internal,
-    exitListener,
     vnc = noOpObj,
     sockify = noOpObj,
   } = params
-
-  // Ensure this call comes before the potential daemon call
-  // That way all process will exit when the daemon exists
-  // Setup listener to kill process on exit
-  exitListener && handleOnExit()
 
   // Parses the passed in args
   // Checks if a a method should be called based on the arg
@@ -201,15 +173,9 @@ const startScreencast = async params => {
   }
 }
 
-/**
- * If the module is called directly, just call screencast
- * Otherwise export the screenCase and process methods
- */
-require.main === module
-  ? startScreencast({ exitListener: true })
-  : (module.exports = {
-      stopScreencast,
-      statusScreencast,
-      startScreencast,
-      restartScreencast,
-    })
+module.exports = {
+  stopScreencast,
+  statusScreencast,
+  startScreencast,
+  restartScreencast,
+}
