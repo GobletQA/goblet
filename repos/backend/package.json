@@ -17,7 +17,6 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "api": "yarn start",
     "build:start": "yarn build && yarn start",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:install": "yarn clean:full; yarn install",
@@ -27,7 +26,7 @@
     "format": "yarn lint && yarn pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
-    "pm2": "pm2 start configs/pm2.be.config.js",
+    "pm2": "node dist/index.js",
     "start": "DEV_BUILD=1 node configs/build.config.js",
     "serve": "node dist/index.js",
     "task": "node tasks/runTask.js",

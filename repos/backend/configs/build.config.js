@@ -1,6 +1,5 @@
 require('../resolveRoot')
 const path = require('path')
-const hq = require('alias-hq')
 const { spawn } = require('child_process')
 const { loadConfigs } = require('@keg-hub/parse-config')
 const { aliases } = require('@GConfigs/aliases.config')
@@ -24,7 +23,7 @@ const envs = loadConfigs({
   noYml: true,
   env: nodeEnv,
   name: 'goblet',
-  locations: [hq.get(`webpack`)[`@root`]],
+  locations: [aliases.GobletRoot],
 })
 
 /**
