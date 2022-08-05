@@ -4,8 +4,8 @@ const expect = require('expect')
 const { Parkin } = require('@ltipton/parkin')
 const { ParkinTest } = require('@ltipton/parkin/test')
 const { getWorld } = require('@gobletqa/shared/repo/world')
+const { setParkinInstance } = require('@gobletqa/shared/libs/parkin')
 const { getDefinitions } = require('@gobletqa/shared/repo/getDefinitions')
-const { setParkinInstance } = require('@gobletqa/test-utils/parkin/instance')
 
 /**
  * Tiny-Jest allows calling the test methods directly
