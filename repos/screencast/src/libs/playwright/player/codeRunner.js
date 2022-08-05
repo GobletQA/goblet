@@ -5,7 +5,7 @@ const { getWorld } = require('@GTU/Support/world')
 const { Parkin } = require('@ltipton/parkin')
 const { ParkinTest } = require('@ltipton/parkin/test')
 const { setParkinInstance } = require('@GTU/Parkin/instance')
-const { getDefinitions } = require('@GSH/Repo/getDefinitions')
+const { getDefinitions } = require('@gobletqa/shared/repo/getDefinitions')
 
 /**
  * Tiny-Jest allows calling the test methods directly

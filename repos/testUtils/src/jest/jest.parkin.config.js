@@ -7,8 +7,8 @@ const { getGobletConfig } = require('@GSH/Config')
 const { uniqArr, noOpObj } = require('@keg-hub/jsutils')
 const { getRepoGobletDir } = require('@GSH/Utils/getRepoGobletDir')
 const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')
-const { getContextOpts } = require('@GSC/Playwright/helpers/getContextOpts')
 const { taskEnvToBrowserOpts } = require('@GSH/Utils/taskEnvToBrowserOpts')
+const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
 
 /**
  * Finds all step definition files in client's step directory and

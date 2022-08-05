@@ -1,8 +1,8 @@
 const os = require('os')
 const path = require('path')
 const { fileSys, Logger } = require('@keg-hub/cli-utils')
-const { getGobletConfig } = require('@GSH/Config')
 const { checkVncEnv } = require('../../utils/vncActiveEnv')
+const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 const { isStr, isObj, exists, noOpObj, validate } = require('@keg-hub/jsutils')
 
 const { mkDir, readFile, writeFile, pathExists, removeFile, pathExistsSync } =

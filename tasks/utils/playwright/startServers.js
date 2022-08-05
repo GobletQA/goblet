@@ -1,6 +1,6 @@
 const { limbo } = require('@keg-hub/jsutils')
-const { startServer } = require('@GSC/Playwright/server/startServer')
-const { statusServer } = require('@GSC/Playwright/server/statusServer')
+const { startServer } = require('@gobletqa/screencast/libs/playwright/server/startServer')
+const { statusServer } = require('@gobletqa/screencast/libs/playwright/server/statusServer')
 const {
   ensureBrowserType,
 } = require('@GTasks/utils/helpers/ensureBrowserType')

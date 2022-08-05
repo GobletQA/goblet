@@ -6,12 +6,12 @@ const { parseParkinLogs } = require('@GTU/parkin/parseParkinLogs')
 const { buildReportPath } = require('@GTU/reports/buildReportPath')
 const { runCommands } = require('@GTasks/utils/helpers/runCommands')
 const { clearTestMetaDirs } = require('@GTU/Utils/clearTestMetaDirs')
-const { getBrowsers } = require('@GSC/Playwright/helpers/getBrowsers')
 const { PARKIN_SPEC_RESULT_LOG } = require('@GTU/constants/constants')
 const { shouldSaveArtifact } = require('@GTU/Utils/artifactSaveOption')
 const { handleTestExit } = require('@GTasks/utils/helpers/handleTestExit')
 const { appendToLatest, commitTestMeta } = require('@GTU/testMeta/testMeta')
 const { copyArtifactToRepo } = require('@GTU/Playwright/generatedArtifacts')
+const { getBrowsers } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowsers')
 
 const filterLogs = (data, params, parkinLogs) => {
   let filtered = data

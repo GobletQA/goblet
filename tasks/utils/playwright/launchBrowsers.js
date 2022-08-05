@@ -1,6 +1,6 @@
 const { launchBrowser } = require('./launchBrowser')
 const { runSeq, noOpObj } = require('@keg-hub/jsutils')
-const { getBrowsers } = require('@GSC/Playwright/helpers/getBrowsers')
+const { getBrowsers } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowsers')
 
 /**
  *

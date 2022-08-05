@@ -1,7 +1,7 @@
-const { getApp } = require('@GSH/App')
-const apiEndpoints = require('@GSC/Endpoints')
+const apiEndpoints = require('@Endpoints')
 const { validateUser } = require('./middleware')
-const { isDeployedEnv } = require('@GSH/Utils/isDeployedEnv')
+const { getApp } = require('@gobletqa/shared/express/app')
+const { isDeployedEnv } = require('@gobletqa/shared/utils/isDeployedEnv')
 const {
   setupCors,
   setupServer,
@@ -9,7 +9,7 @@ const {
   setupLoggerErr,
   setupBlacklist,
   setupServerListen,
-} = require('@GSH/Middleware')
+} = require('@gobletqa/shared/middleware')
 
 
 /**

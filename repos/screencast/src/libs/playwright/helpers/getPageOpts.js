@@ -1,6 +1,6 @@
 const { noOpObj, deepMerge } = require('@keg-hub/jsutils')
 const { checkVncEnv } = require('../../utils/vncActiveEnv')
-const { getGobletConfig } = require('@GSH/Config')
+const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 
 /**
  * Default options for a browser context

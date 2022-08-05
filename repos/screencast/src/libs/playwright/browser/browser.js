@@ -1,6 +1,6 @@
 const { Logger } = require('@keg-hub/cli-utils')
 const { isFunc, get, set } = require('@keg-hub/jsutils')
-const { defaultBrowser } = require('@GSC/Constants')
+const { defaultBrowser } = require('@Constants')
 
 /**
  * Cache holder for all launched playwright browsers by type

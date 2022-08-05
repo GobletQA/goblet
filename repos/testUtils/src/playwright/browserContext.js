@@ -2,8 +2,8 @@ const os = require('os')
 const path = require('path')
 const { startTracing } = require('./tracing')
 const { get, noOpObj } = require('@keg-hub/jsutils')
-const { getMetadata } = require('@GSC/Playwright/server/server')
-const { newBrowser } = require('@GSC/Playwright/browser/newBrowser')
+const { getMetadata } = require('@gobletqa/screencast/libs/playwright/server/server')
+const { newBrowser } = require('@gobletqa/screencast/libs/playwright/browser/newBrowser')
 const {
   browserCookieLoc,
   setContextCookie,

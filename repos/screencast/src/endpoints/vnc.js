@@ -1,5 +1,5 @@
-const { AppRouter } = require('@GSH/Router')
-const { asyncWrap, apiRes } = require('@GSH/Exp')
+const { asyncWrap, apiRes } = require('@gobletqa/shared/express')
+const { AppRouter } = require('@gobletqa/shared/express/appRouter')
 const {
   statusSockify,
   startSockify,
@@ -7,7 +7,7 @@ const {
   statusVNC,
   startVNC,
   stopVNC,
-} = require('@GSC/Libs/vnc')
+} = require('@Libs/vnc')
 
 const vncStatus = asyncWrap(async (req, res) => {
   const status = await statusVNC()
