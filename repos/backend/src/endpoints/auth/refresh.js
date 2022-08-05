@@ -1,5 +1,5 @@
+const { validateRefreshToken } = require('@Utils/validateRefreshToken')
 const { asyncWrap, apiRes, resError } = require('@gobletqa/shared/express')
-const { validateRefreshToken } = require('@GBK/Utils/validateRefreshToken')
 
 /**
  * Validates the required authentication information exists

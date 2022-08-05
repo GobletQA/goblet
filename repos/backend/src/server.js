@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 require('../resolveRoot')
+const apiEndpoints = require('@Endpoints')
+const { initSockr } = require('@Sockr/sockr')
 const { getApp } = require('@gobletqa/shared/express/app')
-const apiEndpoints = require('@GBK/Endpoints')
-const { initSockr } = require('@GBK/Sockr/sockr')
 const { isDeployedEnv } = require('@gobletqa/shared/utils/isDeployedEnv')
 const {
   setReqRepo,
   setupVNCProxy,
   validateUser,
-} = require('@GBK/Middleware')
+} = require('@Middleware')
 const {
   setupJWT,
   setupCors,
