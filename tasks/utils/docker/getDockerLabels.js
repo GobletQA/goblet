@@ -13,8 +13,6 @@ const { resolveContext } = require('../kubectl/resolveContext')
 const getDockerLabels = (docFileCtx, envs) => {
   return [
     `--label`,
-    packConf.name,
-    `--label`,
     resolveContext(
       docFileCtx,
       {

@@ -2,7 +2,11 @@ const { loadEnvs } = require('../envs/loadEnvs')
 const { getTagOptions } = require('./getTagOptions')
 const { getContext } = require('../helpers/contexts')
 const { resolveImgName } = require('./resolveImgName')
-const { ensureArr, noOpObj, flatUnion } = require('@keg-hub/jsutils')
+const { ensureArr, noOpObj, flatUnion, noPropArr } = require('@keg-hub/jsutils')
+
+const convertTags = (check, envs) => {
+  return check ? (envs[`GB_${check.toUpperCase()}_BUILD_TAGS`] || ``).split(`,`) : noPropArr
+}
 
 /**
  * Parses the tagMatch argument and checks if there is a branch match
@@ -12,14 +16,12 @@ const { ensureArr, noOpObj, flatUnion } = require('@keg-hub/jsutils')
  * @return {Array} All tags types to be added to the docker image
  */
 const generateTagMatches = (params, docFileCtx = ``, envs, tagOptions) => {
-  const shortContext = getContext(docFileCtx)?.short
+  const sContext = getContext(docFileCtx)?.short
+  
+  const contextTags = flatUnion(convertTags(docFileCtx, envs), convertTags(sContext, envs))
+  const buildTags = contextTags.length ? contextTags : convertTags(`IMAGE`, envs)
 
-  const tags = flatUnion(
-    ensureArr(params.tag),
-    ensureArr(envs.IMAGE_BUILD_TAGS),
-    ensureArr(envs[`GB_${docFileCtx.toUpperCase()}_BUILD_TAGS`] || []),
-    shortContext && ensureArr(envs[`GB_${shortContext.toUpperCase()}_BUILD_TAGS`] || [])
-  )
+  const tags = flatUnion(ensureArr(params.tag), buildTags).filter(Boolean)
 
   if (!params.tagMatch) return tags
 

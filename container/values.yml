@@ -31,9 +31,8 @@ env:
 
 # ---- General Shared ENVs ---- #
   IMAGE_TAG: latest
-  IMAGE_BUILD_TAGS: package
   DOCKER_REGISTRY: ghcr.io
-  IMAGE: 'ghcr.io/goblet/goblet-app'
+  IMAGE: 'ghcr.io/gobletqa/goblet-app'
   DISPLAY: ":0.0"
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
   PLAYWRIGHT_BROWSERS_VERSION: 1.23.4
@@ -51,9 +50,12 @@ env:
   GB_BUILD_PLATFORMS: linux/amd64,linux/arm64
 
   # ---- Docker Images ---- #
+  # Image tags added to all built images
+  GB_IMAGE_BUILD_TAGS: values,package
   # This image is built using the GB_BASE_IMAGE_FROM value
   # Which outputs the goblet-base:develop image
   GB_BASE_IMAGE_FROM: mcr.microsoft.com/playwright:v1.23.4-focal
+  GB_BASE_IMAGE: ghcr.io/gobletqa/goblet-base
 
   # Then, all sub goblet images are built from this image
   GB_IMAGE_FROM: ghcr.io/gobletqa/goblet-base:develop

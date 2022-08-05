@@ -137,13 +137,13 @@ module.exports = {
       tag: {
         type: `array`,
         alias: ['tags'],
-        default: [`package`],
+        default: [`package`, `values`],
         example: `--tag package,branch`,
         allowed: [`package`, `branch`, `commit`, `values`, `env`, `node`],
         description: 'Name of the tag to add to the built Docker image',
       },
       image: {
-        env: `IMAGE`,
+        env: `GB_BUILD_IMAGE`,
         description: 'Name of the docker image to be built. Used when tagging',
       },
       force: {
