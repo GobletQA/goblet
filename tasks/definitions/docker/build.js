@@ -1,8 +1,8 @@
 const path = require('path')
-const { allContexts } = require('../../constants')
 const { appRoot, scriptsDir } = require('../../paths')
 const { docker, Logger } = require('@keg-hub/cli-utils')
 const { loadEnvs } = require('../../utils/envs/loadEnvs')
+const { getContext } = require('../../utils/helpers/contexts')
 const { getNpmToken } = require('../../utils/envs/getNpmToken')
 const { setupBuildX } = require('../../utils/docker/setupBuildX')
 const { toBuildArgsArr } = require('../../utils/docker/buildArgs')
@@ -71,7 +71,7 @@ const buildImg = async (args) => {
     db: 'database',
   })
 
-  const shortContext = allContexts[docFileCtx]?.short
+  const shortContext = getContext(docFileCtx)?.short
 
   // Get the name of the image that will be built
   const imageName =

@@ -1,5 +1,5 @@
 const { error } = require('@keg-hub/cli-utils')
-const { allContexts } = require('../../constants')
+const { getContext } = require('../helpers/contexts')
 const { resolveContext } = require('../kubectl/resolveContext')
 
 /**
@@ -11,7 +11,7 @@ const { resolveContext } = require('../kubectl/resolveContext')
  * @return {string} - Resolved name of the docker image
  */
 const resolveImgName = (params, docFileCtx, envs) => {
-  const shortContext = allContexts[docFileCtx]?.short
+  const shortContext = getContext(docFileCtx)?.short
 
   // Get the name of the image that will be built
   const imgName =

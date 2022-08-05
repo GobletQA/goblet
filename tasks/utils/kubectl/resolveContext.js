@@ -1,4 +1,4 @@
-const { allContexts } = require('../../constants')
+const { getContexts } = require('../helpers/contexts')
 const { noOpObj, exists } = require('@keg-hub/jsutils')
 
 /**
@@ -12,6 +12,7 @@ const { noOpObj, exists } = require('@keg-hub/jsutils')
  */
 const resolveContext = (context = ``, selectors = noOpObj, fallback) => {
   const lowercaseContext = context.toLowerCase()
+  const allContexts = getContexts()
 
   const found = Object.entries(allContexts)
     .reduce((found, [ref, value]) => {

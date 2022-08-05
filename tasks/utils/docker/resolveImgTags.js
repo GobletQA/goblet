@@ -1,6 +1,6 @@
 const { loadEnvs } = require('../envs/loadEnvs')
-const { allContexts } = require('../../constants')
 const { getTagOptions } = require('./getTagOptions')
+const { getContext } = require('../helpers/contexts')
 const { resolveImgName } = require('./resolveImgName')
 const { ensureArr, noOpObj, flatUnion } = require('@keg-hub/jsutils')
 
@@ -12,7 +12,7 @@ const { ensureArr, noOpObj, flatUnion } = require('@keg-hub/jsutils')
  * @return {Array} All tags types to be added to the docker image
  */
 const generateTagMatches = (params, docFileCtx = ``, envs, tagOptions) => {
-  const shortContext = allContexts[docFileCtx]?.short
+  const shortContext = getContext(docFileCtx)?.short
 
   const tags = flatUnion(
     ensureArr(params.tag),

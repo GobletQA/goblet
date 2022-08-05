@@ -30,6 +30,8 @@
     "clean:nm": "rm -rf node_modules && lerna run clean:nm",
     "compile": "node scripts/compile.js",
     "cz": "cz",
+    "dev": "node ./tasks/runTask.js devspace",
+    "doc": "node ./tasks/runTask.js docker",
     "format": "yarn format:pretty && yarn format:lint",
     "format:all": "yarn format && lerna run format",
     "format:lint": "yarn lint .",
