@@ -25,7 +25,7 @@ module.exports = {
     [`app`],
     [`base`, `bse`, `bs`],
     [`proxy`, `prx`, `px`],
-    [`frontend`, `fre` `fe`],
+    [`frontend`, `fre`, `fe`],
     [`backend`, `bae`, `be`],
     [`conductor`, `cod`, `cd`],
     [`screencast`, `scr`, `sc`],

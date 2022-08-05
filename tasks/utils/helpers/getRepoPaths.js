@@ -1,6 +1,5 @@
 const path = require('path')
 const { existsSync } = require('fs')
-const { reposDir } = require('../../paths')
 const { execSync } = require('child_process')
 const { camelCase } = require('@keg-hub/jsutils')
 
@@ -10,7 +9,7 @@ const { camelCase } = require('@keg-hub/jsutils')
  *
  * @return {Object} - Found repo paths by camel-case name
  */
-const getRepoPaths = () => {
+const getRepoPaths = (reposDir) => {
   // list of the repo names located at `<root>/repos`
   return execSync('ls', { cwd: reposDir })
     .toString()
