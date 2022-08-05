@@ -8,7 +8,7 @@ const {
   statusGoblet,
   initializeGoblet,
   disconnectGoblet,
-} = require('@GWF')
+} = require('@gobletqa/workflows')
 
 
 /**

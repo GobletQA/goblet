@@ -22,7 +22,10 @@
       "@GSH": ["src"],
       "@GSHRoot": ["."],
       "@gobletqa/test-utils": ["../testUtils/src"],
-      "@gobletqa/test-utils/*": ["../testUtils/src/*"]
+      "@gobletqa/test-utils/*": ["../testUtils/src/*"],
+      "@gobletqa/workflows": ["../workflows/src"],
+      "@gobletqa/workflows/*": ["../workflows/src/*"],
+      
     }
   },
   "include": ["src/**/*"],
