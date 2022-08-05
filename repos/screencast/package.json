@@ -56,7 +56,6 @@
     "@ltipton/parkin": "1.4.0",
     "@gobletqa/shared": "*",
     "@gobletqa/test-utils": "*",
-    "alias-hq": "5.3.2",
     "expect": "28.1.0",
     "express": "4.17.3",
     "module-alias": "2.2.2",
