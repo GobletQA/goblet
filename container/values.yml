@@ -77,6 +77,10 @@ env:
   GB_BE_HOST: 0.0.0.0
   # Port to forward connections from backend API to screencast
   GB_NO_VNC_PORT: 26369
+  GB_NO_VNC_PATH: /novnc
+  GB_NO_VNC_PROTOCOL: 'ws'
+  # Host of the proxy used to forward requests to the vnc server
+  GB_NO_VNC_SERVER_HOST: 0.0.0.0
 
   # Default to the backend api and host
   # But should be set when running as own server
@@ -145,7 +149,7 @@ env:
   # This is the URL of the server the proxy connects to
   # Update this to call an externally available VNC websocket host
   GB_SC_HOST: 0.0.0.0
-  # Host of the novnc proxy to tigerVNC
+  # Host of VNC server for tigerVNC, that receives requests from the proxy
   # This is internal, and generally should not change
   GB_VNC_SERVER_HOST: 0.0.0.0
   GB_VNC_SERVER_PORT: 26370
