@@ -1,5 +1,5 @@
 import { Logger } from '@keg-hub/cli-utils'
-import { getApp } from '@gobletqa/shared/app'
+import { getApp } from '@gobletqa/shared/express/app'
 
 /**
  * Logs error message

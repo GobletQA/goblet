@@ -1,6 +1,5 @@
 require('../resolveRoot')
 const path = require('path')
-const hq = require('alias-hq')
 const { spawn } = require('child_process')
 const { loadConfigs } = require('@keg-hub/parse-config')
 const { aliases } = require('@GConfigs/aliases.config')
@@ -67,7 +66,7 @@ build({
     },
   },
   plugins: [
-    aliasPlugin({ ...aliases, ...hq.get('webpack') }),
+    aliasPlugin(aliases),
     /**
      * Custom plugin to filter out node_modules
      * See more info [here](https://github.com/evanw/esbuild/issues/619#issuecomment-751995294)

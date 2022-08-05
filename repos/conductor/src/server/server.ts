@@ -1,9 +1,9 @@
 import http from 'http'
 import https from 'https'
 import { TServerConfig } from '../types'
-import { getApp } from '@gobletqa/shared/app'
 import { Express } from 'express'
 import { DEF_HOST_IP } from '../constants/constants'
+import { getApp } from '@gobletqa/shared/express/app'
 
 import { setupRouters } from '@gobletqa/conductor/middleware/setupRouters'
 import { setupAuthUser } from '@gobletqa/conductor/middleware/setupAuthUser'

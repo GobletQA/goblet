@@ -1,7 +1,7 @@
 
 import { Express } from 'express'
 import subdomain from 'express-subdomain'
-import { getApp } from '@gobletqa/shared/app'
+import { getApp } from '@gobletqa/shared/express/app'
 import type { Conductor } from '../conductor'
 import { API_VERSION } from '../constants/constants'
 import { AppRouter, ProxyRouter } from '@gobletqa/conductor/server/routers'

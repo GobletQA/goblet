@@ -1,5 +1,5 @@
 import { Express, Request, Response, NextFunction } from 'express'
-import { getApp } from '@gobletqa/shared/app'
+import { getApp } from '@gobletqa/shared/express/app'
 import type { Conductor } from '../conductor'
 import { hashString } from '@keg-hub/jsutils'
 
