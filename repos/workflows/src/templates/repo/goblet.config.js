@@ -9,7 +9,7 @@ module.exports = {
     reportsDir: 'artifacts/reports',
     featuresDir: 'bdd/features',
     supportDir: 'bdd/support',
-    world: 'bdd/support/world.js',
+    world: 'world',
     stepsDir: 'bdd/steps',
     unitDir: 'unit',
     waypointDir: 'waypoint',

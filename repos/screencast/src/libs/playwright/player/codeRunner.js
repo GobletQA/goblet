@@ -3,7 +3,7 @@
 const expect = require('expect')
 const { Parkin } = require('@ltipton/parkin')
 const { ParkinTest } = require('@ltipton/parkin/test')
-const { getWorld } = require('@gobletqa/test-utils/support/world')
+const { getWorld } = require('@gobletqa/shared/repo/world')
 const { getDefinitions } = require('@gobletqa/shared/repo/getDefinitions')
 const { setParkinInstance } = require('@gobletqa/test-utils/parkin/instance')
 

@@ -1,10 +1,7 @@
 const path = require('path')
 const glob = require('glob')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
-const {
-  tryRequireSync,
-  deepMerge,
-} = require('@keg-hub/jsutils/src/node')
+const { getGobletConfig } = require('@GSH/Utils/getGobletConfig')
+const { tryRequireSync, deepMerge } = require('@keg-hub/jsutils/src/node')
 
 /**
  * Searches the client's support directory for a world export
@@ -15,7 +12,9 @@ const getClientWorld = (config) => {
   config = config || getGobletConfig()
   const { repoRoot, supportDir, workDir } = config.paths
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
-  const worldPattern = path.join(baseDir, supportDir, '**/world.js')
+  // TODO: update this to allow world.json | world.ts | world.js | world/index.*
+  // Should use the world path from the config
+  const worldPattern = path.join(baseDir, '**/world.js')
 
   const clientExport = glob
     .sync(worldPattern)
