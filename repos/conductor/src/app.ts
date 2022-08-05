@@ -1,4 +1,4 @@
-require('source-map-support').install({environment: 'node'})
+require('source-map-support').install({ environment: 'node' })
 import { Conductor } from './index'
 import { appConfig } from '@gobletqa/conductor/configs/app.config'
 
