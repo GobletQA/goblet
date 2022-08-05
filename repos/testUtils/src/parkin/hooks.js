@@ -15,7 +15,7 @@ const getHook = (hookName) => {
 /**
  * Cucumber-like hooks
  * @example
- * import { BeforeAll, AfterAll } from '@Parkin'
+ * import { BeforeAll, AfterAll } from '@GTU/Parkin'
  * BeforeAll(() => setupMyTestEnv())
  * AfterAll(() => cleanupMyEnv())
  */

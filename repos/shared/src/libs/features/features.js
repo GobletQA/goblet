@@ -2,8 +2,8 @@ const path = require('path')
 const glob = require('glob')
 const { featuresParser } = require('./featuresParser')
 const { fileSys, Logger } = require('@keg-hub/cli-utils')
-const { buildFileModel } = require('@Utils/buildFileModel')
-const { getPathFromBase } = require('@Utils/getPathFromBase')
+const { buildFileModel } = require('@GSH/Utils/buildFileModel')
+const { getPathFromBase } = require('@GSH/Utils/getPathFromBase')
 const { limbo, noPropArr, noOpObj } = require('@keg-hub/jsutils')
 
 /**

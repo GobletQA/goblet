@@ -1,6 +1,6 @@
-const { When } = require('@Parkin')
-const { getLocator } = require('@Playwright')
-const { checkForAncestor } = require('@Support/validate')
+const { When } = require('@GTU/Parkin')
+const { getLocator } = require('@GTU/Playwright')
+const { checkForAncestor } = require('@GTU/Support/validate')
 
 /**
  * Clicks the element `selector` that is a descendant of the registered ancestor.

@@ -1,4 +1,4 @@
-const { getApp } = require('@App')
+const { getApp } = require('@GSH/App')
 const { Logger } = require(`@keg-hub/cli-utils`)
 const { get, isNum } = require(`@keg-hub/jsutils`)
 

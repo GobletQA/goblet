@@ -1,6 +1,6 @@
 const expect = require('expect')
-const { Then } = require('@Parkin')
-const { getPage } = require('@Playwright')
+const { Then } = require('@GTU/Parkin')
+const { getPage } = require('@GTU/Playwright')
 
 /**
  * Checks that the page title is not `title`

@@ -1,5 +1,5 @@
-const { Then } = require('@Parkin')
-const { getLocator } = require('@Playwright')
+const { Then } = require('@GTU/Parkin')
+const { getLocator } = require('@GTU/Playwright')
 
 const checkedStates = ['checked', 'unchecked']
 

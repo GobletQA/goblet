@@ -1,6 +1,6 @@
 const { asyncWrap } = require('@gobletqa/shared/express')
-const { htmlRes, htmlErr } = require('@Endpoints/handlers')
-const { getTestReportHtml } = require('@Utils/getTestReportHtml')
+const { htmlRes, htmlErr } = require('@GBE/Endpoints/handlers')
+const { getTestReportHtml } = require('@GBE/Utils/getTestReportHtml')
 const { loadTemplate } = require(`@gobletqa/shared/templates/loadTemplate`)
 
 /**

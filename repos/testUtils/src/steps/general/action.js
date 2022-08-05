@@ -1,5 +1,5 @@
-const { Then } = require('@Parkin')
-const { getLocator, getPage } = require('@Playwright')
+const { Then } = require('@GTU/Parkin')
+const { getLocator, getPage } = require('@GTU/Playwright')
 
 /**
  * Click the element matching `selector`

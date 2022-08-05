@@ -1,5 +1,5 @@
-const { Then } = require('@Parkin')
-const { defaultStateFile, saveContextState, getContext } = require('@Playwright')
+const { Then } = require('@GTU/Parkin')
+const { defaultStateFile, saveContextState, getContext } = require('@GTU/Playwright')
 
 /**
  * Checks that the page title is `title`

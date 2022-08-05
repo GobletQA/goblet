@@ -1,5 +1,5 @@
-const { Given } = require('@Parkin')
-const { getPage } = require('@Playwright')
+const { Given } = require('@GTU/Parkin')
+const { getPage } = require('@GTU/Playwright')
 const { get, isStr } = require('@keg-hub/jsutils')
 
 /**

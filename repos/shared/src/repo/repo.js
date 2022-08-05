@@ -1,6 +1,6 @@
 const { Parkin } = require('@ltipton/parkin')
 const { isObj, noOpObj, noPropArr, } = require('@keg-hub/jsutils')
-const { getFileTypes } = require('@Utils/getFileTypes')
+const { getFileTypes } = require('@GSH/Utils/getFileTypes')
 // TODO: Move this to shared utils - used by all other repos
 const { getWorld } = require('@gobletqa/test-utils/support/world')
 const {

@@ -1,5 +1,5 @@
-const { Then } = require('@Parkin')
-const { getPage } = require('@Playwright')
+const { Then } = require('@GTU/Parkin')
+const { getPage } = require('@GTU/Playwright')
 
 /**
  * Checks that element, matching `selector`, has an attribute matching `attribute`, and that the value of the attribute matches `value`

@@ -1,4 +1,4 @@
-const { getApp } = require('@App')
+const { getApp } = require('@GSH/App')
 const { get, noOpObj } = require('@keg-hub/jsutils')
 
 /**

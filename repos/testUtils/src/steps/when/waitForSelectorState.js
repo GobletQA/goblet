@@ -1,5 +1,5 @@
-const { When } = require('@Parkin')
-const { getLocator } = require('@Playwright')
+const { When } = require('@GTU/Parkin')
+const { getLocator } = require('@GTU/Playwright')
 
 const states = ['attached', 'detached', 'visible', 'hidden']
 

@@ -1,9 +1,9 @@
 const { Logger } = require('@keg-hub/cli-utils')
-const { loadFeatures } = require('@Features/features')
-const { buildFileTree } = require('@FileSys/fileTree')
-const { loadDefinitions } = require('@Definitions/definitions')
-const { definitionsByType } = require('@Utils/definitionsByType')
-const { fileModelArrayToObj } = require('@Utils/fileModelArrayToObj')
+const { loadFeatures } = require('@GSH/Features/features')
+const { buildFileTree } = require('@GSH/FileSys/fileTree')
+const { loadDefinitions } = require('@GSH/Definitions/definitions')
+const { definitionsByType } = require('@GSH/Utils/definitionsByType')
+const { fileModelArrayToObj } = require('@GSH/Utils/fileModelArrayToObj')
 
 /**
  * Loads all the needed content for a repo

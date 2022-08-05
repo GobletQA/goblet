@@ -1,6 +1,6 @@
 const babelJest = require('babel-jest')
 const { createHash } = require('crypto')
-const { getWorld } = require('@Support')
+const { getWorld } = require('@GTU/Support')
 
 /**
  * Custom jest transformer for wrapping waypoint scripts in a test method

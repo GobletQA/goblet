@@ -2,7 +2,7 @@
 require('../../../resolveRoot')
 const fs = require('fs')
 const { Logger } = require('@keg-hub/cli-utils')
-const { findProc, killProc } = require('@Libs/proc')
+const { findProc, killProc } = require('@GSC/Libs/proc')
 const { create: childProc } = require('@keg-hub/spawn-cmd/src/childProcess')
 const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 const {

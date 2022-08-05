@@ -1,6 +1,6 @@
-const { Given } = require('@Parkin')
-const { getLocators } = require('@Playwright')
-const { greaterLessEqual } = require('@Support/helpers')
+const { Given } = require('@GTU/Parkin')
+const { getLocators } = require('@GTU/Playwright')
+const { greaterLessEqual } = require('@GTU/Support/helpers')
 
 /**
  * Expects the number of dom elements matching `selector` to match `count` based on the comparison screen

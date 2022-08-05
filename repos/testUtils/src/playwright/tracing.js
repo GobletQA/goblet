@@ -1,13 +1,13 @@
 const path = require('path')
 const { noOpObj, get } = require('@keg-hub/jsutils')
-const { ARTIFACT_SAVE_OPTS } = require('@Constants')
-const { appendToLatest } = require('@TestMeta/testMeta')
-const { getTestResult } = require('@Reports/jasmineReporter')
+const { ARTIFACT_SAVE_OPTS } = require('@GTU/Constants')
+const { appendToLatest } = require('@GTU/TestMeta/testMeta')
+const { getTestResult } = require('@GTU/Reports/jasmineReporter')
 const {
   getGeneratedName,
   copyArtifactToRepo,
   ensureRepoArtifactDir,
-} = require('@Playwright/generatedArtifacts')
+} = require('@GTU/Playwright/generatedArtifacts')
 
 /**
  * Helper to check is tracing is disabled

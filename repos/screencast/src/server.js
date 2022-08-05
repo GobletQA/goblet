@@ -1,4 +1,4 @@
-const apiEndpoints = require('@Endpoints')
+const apiEndpoints = require('@GSC/Endpoints')
 const { validateUser } = require('./middleware')
 const { getApp } = require('@gobletqa/shared/express/app')
 const { isDeployedEnv } = require('@gobletqa/shared/utils/isDeployedEnv')

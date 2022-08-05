@@ -1,7 +1,7 @@
 const fs = require('fs')
 const http = require('http')
 const https = require('https')
-const { getApp } = require('@App')
+const { getApp } = require('@GSH/App')
 const { Logger } = require('@keg-hub/cli-utils')
 
 /**

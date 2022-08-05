@@ -1,6 +1,6 @@
 const { Logger } = require('@keg-hub/cli-utils')
 const { capitalize } = require('@keg-hub/jsutils')
-const { PARKIN_SPEC_RESULT_LOG } = require('@Constants/constants')
+const { PARKIN_SPEC_RESULT_LOG } = require('@GTU/Constants/constants')
 
 const logParkinStatus = (parkinObj) => {
   switch(parkinObj.action){

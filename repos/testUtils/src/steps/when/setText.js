@@ -1,6 +1,6 @@
-const { When } = require('@Parkin')
+const { When } = require('@GTU/Parkin')
 const { get } = require('@keg-hub/jsutils')
-const { getPage } = require('@Playwright')
+const { getPage } = require('@GTU/Playwright')
 
 /**
  * Sets the input text of selector to data

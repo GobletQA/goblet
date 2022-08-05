@@ -1,5 +1,5 @@
-const { Given } = require('@Parkin')
-const { defaultStateFile, contextStateLoc } = require('@Playwright/browserContext')
+const { Given } = require('@GTU/Parkin')
+const { defaultStateFile, contextStateLoc } = require('@GTU/Playwright/browserContext')
 
 /**
  * Checks that the page title is `title`

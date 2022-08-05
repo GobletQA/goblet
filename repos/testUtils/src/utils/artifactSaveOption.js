@@ -1,4 +1,4 @@
-const { ARTIFACT_SAVE_OPTS } = require('@Constants')
+const { ARTIFACT_SAVE_OPTS } = require('@GTU/Constants')
 
 /**
  * Checks the value of the passed in option to define when an artifact should be saved

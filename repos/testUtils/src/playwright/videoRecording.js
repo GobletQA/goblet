@@ -1,17 +1,17 @@
 const fs = require('fs')
-const { ARTIFACT_SAVE_OPTS } = require('@Constants')
-const { appendToLatest } = require('@TestMeta/testMeta')
+const { ARTIFACT_SAVE_OPTS } = require('@GTU/Constants')
+const { appendToLatest } = require('@GTU/TestMeta/testMeta')
 const { fileSys, Logger } = require('@keg-hub/cli-utils')
 const { noOpObj, get, wait } = require('@keg-hub/jsutils')
-const { getTestResult } = require('@Reports/jasmineReporter')
+const { getTestResult } = require('@GTU/Reports/jasmineReporter')
 const {
   getGeneratedName,
   copyArtifactToRepo,
   ensureRepoArtifactDir,
-} = require('@Playwright/generatedArtifacts')
+} = require('@GTU/Playwright/generatedArtifacts')
 
 // TODO: Update to use this method, and remove shouldSaveVideo method
-// const { shouldSaveArtifact } = require('@Utils/artifactSaveOption')
+// const { shouldSaveArtifact } = require('@GTU/Utils/artifactSaveOption')
 
 const { getFolderContent, pathExists } = fileSys
 

@@ -6,7 +6,7 @@
 
 const { getParkinInstance } = require('./instance')
 const { toInt, exists } = require('@keg-hub/jsutils')
-const { jasmineReporter } = require('@Reports/jasmineReporter')
+const { jasmineReporter } = require('@GTU/Reports/jasmineReporter')
 
 /**
  * Global helper to allow re-using the same parking instance for each test

@@ -1,9 +1,9 @@
-const { Then } = require('@Parkin')
+const { Then } = require('@GTU/Parkin')
 const {
   getContext,
   defaultCookieFile,
   saveContextCookie
-} = require('@Playwright')
+} = require('@GTU/Playwright')
 
 /**
  * Checks that the page title is `title`
