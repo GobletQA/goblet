@@ -1,4 +1,3 @@
-const { appContextAlias } = require('../../constants')
 const { devspaceSync } = require('../../utils/devspace/devspaceSync')
 
 /**
@@ -25,9 +24,8 @@ module.exports = {
     description: 'Calls the yarn devspace sync command',
     options: {
       context: {
-        default: `backend`,
+        required: true,
         alias: ['name', 'selector'],
-        allowed: appContextAlias,
         description: 'Context for the task being run relative to the devspace pods',
       },
       log: {

@@ -1,6 +1,5 @@
-const { exists, isBool, isStr } = require('@keg-hub/jsutils')
 const { getNpmToken } = require('../../utils/envs')
-const { appContextAlias } = require('../../constants')
+const { exists, isBool, isStr } = require('@keg-hub/jsutils')
 const { devspaceStart } = require('../../utils/devspace/devspaceStart')
 const { resolveContext } = require('../../utils/kubectl/resolveContext')
 const { getDeployments } = require('../../utils/devspace/getDeployments')
@@ -90,7 +89,6 @@ module.exports = {
       context: {
         type: 'array',
         example: `--context proxy`,
-        allowed: appContextAlias,
         alias: ['ctx', `name`, `type`, 'deployment', 'deploy'],
         description: `Contexts or names of apps to be started`,
       },
@@ -98,7 +96,6 @@ module.exports = {
         type: 'array',
         alias: ['bypass'],
         example: `--skip proxy`,
-        allowed: appContextAlias,
         description: `Contexts or names of apps NOT to be started`,
       },
       config: {
@@ -147,7 +144,6 @@ module.exports = {
         type: 'string',
         example: `--install proxy`,
         alias: [`in`, 'yarn', 'nm'],
-        allowed: [...appContextAlias, `all`],
         description: `Name of the app that should run yarn install prior to starting.`,
       },
       pull: {

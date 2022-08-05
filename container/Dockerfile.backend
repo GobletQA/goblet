@@ -1,8 +1,8 @@
-
-ARG GB_BASE_IMAGE=ghcr.io/gobletqa/goblet-base:develop
+ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:develop
+ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 # ---- Prune App Stage ---- #
-FROM $GB_BASE_IMAGE as goblet-pruner
+FROM $IMAGE_FROM as goblet-pruner
 WORKDIR /app
 RUN yarn global add turbo
 COPY . .
@@ -10,7 +10,7 @@ RUN turbo prune --docker --scope=@@gobletqa/backend
 # ---- End Stage ---- #
 
 # ---- Install Stage ---- #
-FROM $GB_BASE_IMAGE as goblet-installer
+FROM $IMAGE_FROM as goblet-installer
 WORKDIR /keg/tap
 COPY --from=goblet-pruner /app/out/json/ .
 COPY --from=goblet-pruner /app/out/yarn.lock ./yarn.lock
@@ -18,7 +18,7 @@ RUN yarn install --frozen-lockfile
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
-FROM $GB_BASE_IMAGE as goblet-builder
+FROM $IMAGE_FROM as goblet-builder
 WORKDIR /keg/tap
 COPY --from=goblet-pruner /app/out/full/ .
 COPY --from=goblet-installer /app/ .
@@ -27,7 +27,7 @@ RUN yarn turbo run build --filter=@gobletqa/backend && \
 # ---- End Stage ---- #
 
 # ---- Run Stage ---- #
-FROM $GB_BASE_IMAGE as goblet-runner
+FROM $IMAGE_FROM as goblet-runner
 WORKDIR /keg/tap/repos/backend
 ARG DOC_APP_PATH=/keg/tap
 ARG GB_BE_PORT=7005

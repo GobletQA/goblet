@@ -1,10 +1,5 @@
+const { allContexts } = require('../../constants')
 const { noOpObj, exists } = require('@keg-hub/jsutils')
-const {
-  beContextAlias,
-  feContextAlias,
-  dbContextAlias,
-  proxyContextAlias,
-} = require('../../constants')
 
 /**
  * Resolves the context used to reference a kubernetes resource
@@ -18,17 +13,17 @@ const {
 const resolveContext = (context = ``, selectors = noOpObj, fallback) => {
   const lowercaseContext = context.toLowerCase()
 
-  return selectors.db && dbContextAlias.includes(lowercaseContext)
-    ? selectors.db
-    : selectors.be && beContextAlias.includes(lowercaseContext)
-      ? selectors.be
-      : selectors.fe && feContextAlias.includes(lowercaseContext)
-        ? selectors.fe
-        : selectors.px && proxyContextAlias.includes(lowercaseContext)
-          ? selectors.px
-          : exists(fallback)
-            ? fallback
-            : context
+  const found = Object.entries(allContexts)
+    .reduce((found, [ref, value]) => {
+      const { keys, long, short } = allContexts[ref]
+      
+      return !found && keys.includes(lowercaseContext)
+        ? selectors[short] || selectors[long]
+        : found
+
+    }, false)
+
+  return found || (exists(fallback) ? fallback : context)
 }
 
 module.exports = {

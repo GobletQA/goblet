@@ -1,5 +1,4 @@
 const { Logger } = require('@keg-hub/cli-utils')
-const { appContextAlias } = require('../../constants')
 const { cleanPm2Daemon } = require('../../utils/process/command')
 const { devspacePurge } = require('../../utils/devspace/devspacePurge')
 const { removeCacheDir } = require('../../utils/devspace/removeCacheDir')
@@ -40,7 +39,6 @@ module.exports = {
       context: {
         type: 'array',
         example: `--context proxy`,
-        allowed: appContextAlias,
         alias: ['ctx', `name`, `type`, 'deployment', 'deploy'],
         description: `Contexts or names of apps to be started`,
       },
@@ -48,7 +46,6 @@ module.exports = {
         type: 'array',
         alias: ['bypass'],
         example: `--skip proxy`,
-        allowed: appContextAlias,
         description: `Contexts or names of apps NOT to be started`,
       },
       config: {

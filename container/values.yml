@@ -35,6 +35,8 @@ env:
   DOCKER_REGISTRY: ghcr.io
   IMAGE: 'ghcr.io/goblet/goblet-app'
   DISPLAY: ":0.0"
+  # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
+  PLAYWRIGHT_BROWSERS_VERSION: 1.23.4
 
 # ---- Goblet Shared ENVs ---- #
   GB_TOKEN: 12345
@@ -48,6 +50,13 @@ env:
   GB_GITHUB_AUTH_USERS: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lance.tipton@workboard.com
   GB_BUILD_PLATFORMS: linux/amd64,linux/arm64
 
+  # ---- Docker Images ---- #
+  # This image is built using the GB_BASE_IMAGE_FROM value
+  # Which outputs the goblet-base:develop image
+  GB_BASE_IMAGE_FROM: mcr.microsoft.com/playwright:v1.23.4-focal
+
+  # Then, all sub goblet images are built from this image
+  GB_IMAGE_FROM: ghcr.io/gobletqa/goblet-base:develop
 
   # ---- Logger ENVs ---- #
   # Enable to set custom log-level for conductor
@@ -57,21 +66,6 @@ env:
   GB_LOG_EXIT_ON_ERR: false
   GB_LOG_PRETTY_PRINT: true
   GB_LOG_HANDLE_EXCEPTION: true
-
-
-# ---- Docker Images ---- #
-  # KEG_BASE_IMAGE: mcr.microsoft.com/playwright:v1.23.4-focal
-  GB_BASE_IMAGE_FROM: mcr.microsoft.com/playwright:v1.23.4-focal
-
-  # Name of the image built from the KEG_BASE_IMAGE
-  # All sub goblet images are built from this image
-  GB_BASE_IMAGE: ghcr.io/gobletqa/goblet-base:develop
-
-  # Default image to be used
-  GB_IMAGE_FROM: ghcr.io/gobletqa/goblet-app:develop
-  
-# ---- Dev Only ENVs ---- #
-
 
 # ---- Backend ENVs ---- #
   # GB_BE_PORT: 7005
@@ -87,7 +81,7 @@ env:
   GB_BE_IMAGE_TAG: latest
   GB_BE_DEPLOYMENT: goblet-backend
   GB_BE_IMAGE: 'ghcr.io/gobletqa/goblet-backend'
-  
+
   # ---- Backend Websocket ENVs ---- #
   GB_BE_SOCKET_PORT: 7005
   GB_BE_SOCKET_HOST: 0.0.0.0
@@ -110,12 +104,6 @@ env:
   GB_BE_COOKIE_SAME_SITE: None
   GB_BE_COOKIE_KEY: goblet-cookie-7979
 
-
-  # ---- TODO: Investigate this ----
-  # ---- Backend ENVs ---- #
-  BACKEND_IMAGE_FROM: mcr.microsoft.com/playwright:v1.23.4-focal
-  # **IMPORTANT** - Must exactly match the version use in $BACKEND_IMAGE_FROM
-  PLAYWRIGHT_BROWSERS_VERSION: 1.23.4
 
 # ---- Frontend ENVs ---- #
   GB_FE_PORT: 19006

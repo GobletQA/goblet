@@ -1,4 +1,3 @@
-const { allContextAlias } = require('../../constants')
 const { devspaceLogs } = require('../../utils/devspace/devspaceLogs')
 
 /**
@@ -28,7 +27,6 @@ module.exports = {
       context: {
         default: `backend`,
         alias: ['name', 'selector'],
-        allowed: allContextAlias,
         description: 'Context for the task being run relative to the devspace pods',
       },
       follow: {

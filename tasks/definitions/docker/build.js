@@ -1,4 +1,5 @@
 const path = require('path')
+const { allContexts } = require('../../constants')
 const { appRoot, scriptsDir } = require('../../paths')
 const { docker, Logger } = require('@keg-hub/cli-utils')
 const { loadEnvs } = require('../../utils/envs/loadEnvs')
@@ -11,7 +12,6 @@ const { resolveImgTags } = require('../../utils/docker/resolveImgTags')
 const { resolveContext } = require('../../utils/kubectl/resolveContext')
 const { getDockerLabels } = require('../../utils/docker/getDockerLabels')
 const { getDockerBuildParams } = require('../../utils/docker/getDockerBuildParams')
-const { appContextAlias, dbContextAlias, shortContextMap } = require('../../constants')
 
 const { dockerLogin } = require(path.join(scriptsDir, 'js/dockerLogin'))
 
@@ -62,6 +62,7 @@ const buildImg = async (args) => {
 
   // Get the context for the docker image being built
   const docFileCtx = resolveContext(context, {
+    bs: 'base',
     px: `proxy`,
     sc: `screencast`,
     cd: `conductor`,
@@ -70,7 +71,7 @@ const buildImg = async (args) => {
     db: 'database',
   })
 
-  const shortContext = shortContextMap[docFileCtx]
+  const shortContext = allContexts[docFileCtx]?.short
 
   // Get the name of the image that will be built
   const imageName =
@@ -126,7 +127,6 @@ module.exports = {
       context: {
         example: `--context proxy`,
         alias: ['ctx', `name`, `type`],
-        allowed: [...appContextAlias, ...dbContextAlias],
         description: `Context or name to use when resolving the Dockerfile to built`,
       },
       push: {

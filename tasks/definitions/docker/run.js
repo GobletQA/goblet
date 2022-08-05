@@ -6,7 +6,6 @@ const { getNpmToken } = require('../../utils/envs/getNpmToken')
 const { addRunEnvs } = require('../../utils/docker/addRunEnvs')
 const { addRunPorts } = require('../../utils/docker/addRunPorts')
 const { getTagOptions } = require('../../utils/docker/getTagOptions')
-const { appContextAlias, dbContextAlias } = require('../../constants')
 const { resolveImgName } = require('../../utils/docker/resolveImgName')
 const { resolveContext } = require('../../utils/kubectl/resolveContext')
 
@@ -121,7 +120,6 @@ module.exports = {
       context: {
         example: `--context proxy`,
         alias: ['ctx', `name`, `type`],
-        allowed: [...appContextAlias, ...dbContextAlias],
         description: `Context or name to use when resolving the Dockerfile to built`,
       },
       cmd: {
