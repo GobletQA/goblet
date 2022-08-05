@@ -11,7 +11,6 @@ const {
   setupServerListen,
 } = require('@gobletqa/shared/middleware')
 
-
 /**
  * Starts a express API server for screencast
  * Loads the Goblet Config, which is used for configuring the server
@@ -48,6 +47,10 @@ const initApi = async () => {
 !isDeployedEnv &&
   process.once('SIGUSR2', () => process.kill(process.pid, 'SIGUSR2'))
 
-module.exports = {
-  initApi,
-}
+
+process.on('SIGINT', () => {
+  console.log(`[Screencast] Force Killing screencast server...`)
+  process.exit()
+})
+
+initApi()

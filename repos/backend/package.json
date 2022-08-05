@@ -17,16 +17,14 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build:start": "yarn build && yarn start",
+    "build": "node configs/build.config.js",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:install": "yarn clean:full; yarn install",
     "clean:full": "yarn clean; yarn clean:nm; yarn install",
     "clean:nm": "rm -rf node_modules",
-    "docker:build": "node configs/build.config.js",
     "format": "yarn lint && yarn pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
-    "pm2": "node dist/index.js",
     "start": "DEV_BUILD=1 node configs/build.config.js",
     "serve": "node dist/index.js",
     "task": "node tasks/runTask.js",
