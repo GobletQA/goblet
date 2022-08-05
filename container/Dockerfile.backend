@@ -9,7 +9,6 @@ COPY . .
 RUN turbo prune --docker --scope=@gobletqa/backend
 COPY ./configs ./out/full/configs
 COPY ./gobletRoot.js ./out/full/gobletRoot.js
-
 # ---- End Stage ---- #
 
 # ---- Install Stage ---- #
@@ -33,7 +32,6 @@ RUN turbo run build --filter=@gobletqa/backend && \
 # ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
 WORKDIR /usr/src/app
-
 COPY --from=goblet-builder /app/node_modules node_modules
 COPY --from=goblet-builder /app/repos/backend/dist repos/backend/dist
 COPY --from=goblet-builder /app/repos/backend/package.json repos/backend/package.json
@@ -45,7 +43,6 @@ WORKDIR /usr/src/app/repos/backend
 ARG GB_BE_PORT=7005
 ENV GB_BE_PORT=$GB_BE_PORT
 EXPOSE $GB_BE_PORT
-
 ARG GB_NO_VNC_PORT=26369
 ENV GB_NO_VNC_PORT=$GB_NO_VNC_PORT
 EXPOSE $GB_NO_VNC_PORT

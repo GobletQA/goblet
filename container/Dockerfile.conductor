@@ -1,4 +1,3 @@
-
 ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:develop
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
@@ -8,6 +7,8 @@ WORKDIR /app
 RUN yarn global add turbo
 COPY . .
 RUN turbo prune --docker --scope=@gobletqa/conductor
+COPY ./configs ./out/full/configs
+COPY ./gobletRoot.js ./out/full/gobletRoot.js
 # ---- End Stage ---- #
 
 # ---- Install Stage ---- #
@@ -23,29 +24,24 @@ FROM $IMAGE_FROM as goblet-builder
 WORKDIR /app
 COPY --from=goblet-pruner /app/out/full/ .
 COPY --from=goblet-installer /app/ .
-RUN yarn turbo run build --filter=@gobletqa/conductor && \
+RUN yarn global add turbo
+RUN turbo run build --filter=@gobletqa/conductor && \
     yarn install --frozen-lockfile --production
 # ---- End Stage ---- #
 
 # ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
-WORKDIR /app/repos/conductor
-ARG GB_CD_PORT=9901
+WORKDIR /usr/src/app
 
-# TODO: investigate what else needs copied over form build stage
-COPY --from=goblet-builder /app/repos/conductor/dist repos
-COPY --from=goblet-builder /app/node_modules/. node_modules/.
-COPY --from=goblet-builder /app/repos/conductor/package.json repos/conductor/.
+COPY --from=goblet-builder /app/node_modules node_modules
+COPY --from=goblet-builder /app/repos/conductor/dist repos/conductor/dist
+COPY --from=goblet-builder /app/repos/conductor/package.json repos/conductor/package.json
+COPY --from=goblet-builder /app/repos/conductor/node_modules repos/conductor/node_modules
 COPY --from=goblet-builder /app/repos/conductor/tsconfig.json repos/conductor/tsconfig.json
-COPY --from=goblet-builder /app/repos/conductor/node_modules/. repos/conductor/node_modules/.
 
-RUN pm2 install pm2-logrotate && \
-    pm2 set pm2-logrotate:retain '7' && \
-    pm2 set pm2-logrotate:rotateInterval '0 0 * * 1' && \
-    mkdir -p logs
-
-RUN ln -s /app/node_modules $HOME/.node_modules && \
-    ln -s /app/node_modules /keg/node_modules
+WORKDIR /usr/src/app/repos/conductor
+ARG GB_CD_PORT=9901
+ENV GB_CD_PORT=$GB_CD_PORT
 EXPOSE $GB_CD_PORT
-CMD [ "yarn", "serve" ]
 
+CMD [ "yarn", "serve" ]
