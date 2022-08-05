@@ -14,15 +14,14 @@ const { screencastConfig } = require('./screencast.config')
 
 const {
   GOBLET_ROOT,
-  GOBLET_ARTIFACTS_DIR,
-  GOBLET_REPORTS_DIR,
-  GOBLET_REPO_ROOT,
-  GOBLET_FEATURES_DIR,
-  GOBLET_STEPS_DIR,
-  GOBLET_SUPPORT_DIR,
   GOBLET_UNIT_DIR,
-  GOBLET_WAYPOINT_DIR,
   GOBLET_WORK_DIR,
+  GOBLET_STEPS_DIR,
+  GOBLET_REPORTS_DIR,
+  GOBLET_SUPPORT_DIR,
+  GOBLET_FEATURES_DIR,
+  GOBLET_WAYPOINT_DIR,
+  GOBLET_ARTIFACTS_DIR,
   GOBLET_PW_METADATA_DIR,
   SUB_REPOS,
 } = require('./paths.config')
@@ -45,6 +44,9 @@ module.exports = {
     locator: `-- 🍷 GOBLET`,
   },
 
+  // TODO: IMPORTANT - this should **NOT** be part of the default config
+  // It needs to be removed
+
   /**
    * Paths to a repos goblet specific files
    * @type {Object}
@@ -55,7 +57,9 @@ module.exports = {
      * i.e. /keg/repos/<git-user-name>/current
      * @type {string} - Absolute Path
      */
-    repoRoot: GOBLET_REPO_ROOT,
+    // TODO IMPORTANT - This is pointing to the goblet root directory, needs fixed
+    repoRoot: GOBLET_ROOT,
+
     /**
      * Path to the goblet folder, **Relative to the repoRoot**
      * @type {string} - Relative Path

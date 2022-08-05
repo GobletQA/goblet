@@ -30,7 +30,6 @@ RUN yarn turbo run build --filter=@gobletqa/conductor && \
 # ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
 WORKDIR /app/repos/conductor
-ARG DOC_APP_PATH=/app
 ARG GB_CD_PORT=9901
 
 # TODO: investigate what else needs copied over form build stage

@@ -26,7 +26,6 @@ const {
   noOpObj,
   deepMerge,
 } = require('@keg-hub/jsutils')
-const { aliases } = require('@GConfigs/aliases.config')
 
 /**
  * **IMPORTANT**
@@ -34,10 +33,7 @@ const { aliases } = require('@GConfigs/aliases.config')
  * No other file should import the default goblet config
  * **IMPORTANT**
  */
-const defaultConfig = require(path.join(
-  aliases.GobletRoot,
-  'configs/goblet.default.config.js'
-))
+const defaultConfig = require('@GConfigs/goblet.default.config.js')
 
 let __GOBLET_CONFIG
 

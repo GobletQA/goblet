@@ -30,7 +30,6 @@ RUN yarn turbo run build --filter=@gobletqa/backend && \
 # ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
 WORKDIR /keg/tap/repos/screencast
-ARG DOC_APP_PATH=/keg/tap
 ARG GB_SC_PORT=7005
 
 # TODO: investigate what else needs copied over form build stage
