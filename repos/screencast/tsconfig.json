@@ -14,9 +14,7 @@
       "@GSC": ["src"],
       "@GSCRoot": ["./"],
       "@gobletqa/shared": ["../shared/src"],
-      "@gobletqa/shared/*": ["../shared/src/*"],
-      "@gobletqa/test-utils": ["../testUtils/src"],
-      "@gobletqa/test-utils/*": ["../testUtils/src/*"]
+      "@gobletqa/shared/*": ["../shared/src/*"]
     }
   },
   "include": ["src/**/*"],

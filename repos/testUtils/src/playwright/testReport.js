@@ -1,6 +1,6 @@
 const { get } = require('@keg-hub/jsutils')
 const { getTestResult } = require('@GTU/Reports/jasmineReporter')
-const { shouldSaveArtifact } = require('@GTU/Utils/artifactSaveOption')
+const { shouldSaveArtifact } = require('@gobletqa/shared/utils/artifactSaveOption')
 const { getGeneratedName, ensureRepoArtifactDir } = require('@GTU/Playwright/generatedArtifacts')
 
 

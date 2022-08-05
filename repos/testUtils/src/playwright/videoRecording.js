@@ -10,9 +10,6 @@ const {
   ensureRepoArtifactDir,
 } = require('@GTU/Playwright/generatedArtifacts')
 
-// TODO: Update to use this method, and remove shouldSaveVideo method
-// const { shouldSaveArtifact } = require('@GTU/Utils/artifactSaveOption')
-
 const { getFolderContent, pathExists } = fileSys
 
 /**
@@ -75,6 +72,9 @@ const getRecordingPath = async (page, recordDir) => {
     .file
 }
 
+
+// TODO: Update to use this method, and remove shouldSaveVideo method
+// const { shouldSaveArtifact } = require('@gobletqa/shared/utils/artifactSaveOption')
 /**
  * Checks if the context was recording a video
  * Then updates the testMeta with the path to the video
