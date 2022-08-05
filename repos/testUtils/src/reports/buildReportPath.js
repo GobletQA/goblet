@@ -1,6 +1,6 @@
 const path = require('path')
 const { getPathFromBase } = require('@GSH/Utils/getPathFromBase')
-const { getGeneratedName } = require('@GTU/Playwright/generatedArtifacts')
+const { getGeneratedName } = require('@Playwright/generatedArtifacts')
 
 /**
  * Gets the name for the report based on the name of the test being run

@@ -1,6 +1,6 @@
-const { When } = require('@GTU/Parkin')
+const { When } = require('@Parkin')
 const keyboardMap = require('./keyboardMap')
-const { getPage } = require('@GTU/Playwright')
+const { getPage } = require('@Playwright')
 
 /**
  * Simulates a key press

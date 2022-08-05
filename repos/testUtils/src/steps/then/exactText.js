@@ -1,5 +1,5 @@
-const { Then } = require('@GTU/Parkin')
-const { getLocatorContent } = require('@GTU/Support/helpers')
+const { Then } = require('@Parkin')
+const { getLocatorContent } = require('@Support/helpers')
 
 
 /**

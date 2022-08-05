@@ -1,4 +1,4 @@
-const { getPage } = require('@GTU/Playwright/browserContext')
+const { getPage } = require('@Playwright/browserContext')
 
 /**
  * Helper methods for a locator list

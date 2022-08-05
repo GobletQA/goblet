@@ -1,7 +1,7 @@
-const { Given } = require('@GTU/Parkin')
+const { Given } = require('@Parkin')
 const { set } = require('@keg-hub/jsutils')
-const { getLocator } = require('@GTU/Playwright')
-const { cleanWorldPath } = require('@GTU/Support/helpers')
+const { getLocator } = require('@Playwright')
+const { cleanWorldPath } = require('@Support/helpers')
 
 /**
  * Finds the element matching selector returned from selectorAlias, and registers it as the current ancestor

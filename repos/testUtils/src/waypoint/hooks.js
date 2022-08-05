@@ -1,8 +1,8 @@
 /**
  * 
  */
-const { getPage } = require('@GTU/Playwright')
-const { initialize, cleanup } = require('@GTU/PlaywrightEnv')
+const { getPage } = require('@Playwright')
+const { initialize, cleanup } = require('@PlaywrightEnv')
 
 /**
  * Add wrap method to ensure no arguments are passed to initialize and cleanup

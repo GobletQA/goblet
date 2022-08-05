@@ -1,5 +1,5 @@
-const { Given } = require('@GTU/Parkin')
-const { defaultCookieFile, getContext, setContextCookie } = require('@GTU/Playwright/browserContext')
+const { Given } = require('@Parkin')
+const { defaultCookieFile, getContext, setContextCookie } = require('@Playwright/browserContext')
 
 /**
  * Checks that the page title is `title`

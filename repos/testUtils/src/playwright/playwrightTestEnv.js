@@ -1,14 +1,14 @@
 const { Logger } = require('@keg-hub/cli-utils')
-const { copyTestReports } = require('@GTU/Playwright/testReport')
-const { saveRecordingPath } = require('@GTU/Playwright/videoRecording')
-const { initTestMeta, commitTestMeta } = require('@GTU/testMeta/testMeta')
-const { stopTracingChunk, startTracingChunk } = require('@GTU/Playwright/tracing')
+const { copyTestReports } = require('@Playwright/testReport')
+const { saveRecordingPath } = require('@Playwright/videoRecording')
+const { initTestMeta, commitTestMeta } = require('@TestMeta/testMeta')
+const { stopTracingChunk, startTracingChunk } = require('@Playwright/tracing')
 const {
   setupContext,
   setupBrowser,
   setLastActivePage,
   getLastActivePage,
-} = require('@GTU/Playwright/browserContext')
+} = require('@Playwright/browserContext')
 
 /**
  * Helper to force exit the process after 1/2 second

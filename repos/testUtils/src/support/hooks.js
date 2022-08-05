@@ -7,8 +7,8 @@
  * we can resolve circular dependency
  */
 
-const { AfterAll, BeforeAll } = require('@GTU/Parkin')
-const { initialize, cleanup } = require('@GTU/PlaywrightEnv')
+const { AfterAll, BeforeAll } = require('@Parkin')
+const { initialize, cleanup } = require('@PlaywrightEnv')
 
 /**
  * Add wrap method to ensure no arguments are passed to initialize and cleanup

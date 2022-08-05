@@ -1,5 +1,5 @@
-const { Given } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+const { Given } = require('@Parkin')
+const { getPage } = require('@Playwright')
 
 /**
  * Calls page.pause to stop test execution until playwright.resume() is called

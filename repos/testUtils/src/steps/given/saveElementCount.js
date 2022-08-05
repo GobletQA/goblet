@@ -1,7 +1,7 @@
-const { Given } = require('@GTU/Parkin')
+const { Given } = require('@Parkin')
 const { set } = require('@keg-hub/jsutils')
-const { getLocators } = require('@GTU/Playwright')
-const { cleanWorldPath } = require('@GTU/Support/helpers')
+const { getLocators } = require('@Playwright')
+const { cleanWorldPath } = require('@Support/helpers')
 
 
 /**

@@ -1,5 +1,5 @@
-const { When } = require('@GTU/Parkin')
-const { getLocator } = require('@GTU/Playwright')
+const { When } = require('@Parkin')
+const { getLocator } = require('@Playwright')
 
 /**
  * Sets the input text of selector to data

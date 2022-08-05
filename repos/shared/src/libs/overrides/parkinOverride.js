@@ -3,8 +3,10 @@
  * Helper method to validate the require request is for Parkin
  */
 const parkinCheck = (request) => (
-  request === `@GTU/Parkin` ||
-  request === `GobletParkin`
+  request === `GobletParkin` ||
+  request === "@gobletqa/test-utils/parkin" ||
+  request === "@gobletqa/test-utils/Parkin" ||
+  request === "@Parkin"
 )
 
 

@@ -1,5 +1,5 @@
-const { Given } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+const { Given } = require('@Parkin')
+const { getPage } = require('@Playwright')
 
 /**
  * @param {string} ancestorSelector - ancestor of descendent

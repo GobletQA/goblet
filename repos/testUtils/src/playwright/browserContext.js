@@ -9,7 +9,7 @@ const {
   setContextCookie,
   defaultCookieFile,
   saveContextCookie
-} = require('@GTU/Playwright/browserCookie')
+} = require('@Playwright/browserCookie')
 
 let LAST_ACTIVE_PAGE
 const defaultStateFile = 'browser-context-state'

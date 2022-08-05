@@ -1,7 +1,7 @@
-const { Then } = require('@GTU/Parkin')
+const { Then } = require('@Parkin')
 const { get } = require('@keg-hub/jsutils')
-const { getLocators } = require('@GTU/Playwright')
-const { cleanWorldPath, greaterLessEqual } = require('@GTU/Support/helpers')
+const { getLocators } = require('@Playwright')
+const { cleanWorldPath, greaterLessEqual } = require('@Support/helpers')
 
 /**
  * Expects the number of dom elements matching `selector` to equal `count`

@@ -1,6 +1,6 @@
-const { Then } = require('@GTU/Parkin')
+const { Then } = require('@Parkin')
 const { containsText } = require('./containsText')
-const { checkForAncestor } = require('@GTU/Support/validate')
+const { checkForAncestor } = require('@Support/validate')
 
 /**
  * For the element matching `selector`, descendent of the registered ancestor, expects its text content to equal `data`

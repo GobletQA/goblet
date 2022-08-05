@@ -1,5 +1,5 @@
-const { Then } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+const { Then } = require('@Parkin')
+const { getPage } = require('@Playwright')
 
 /**
  * Expects the number of dom elements matching `selector` to equal `count`

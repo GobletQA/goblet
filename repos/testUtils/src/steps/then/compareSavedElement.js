@@ -1,6 +1,6 @@
-const { Then } = require('@GTU/Parkin')
+const { Then } = require('@Parkin')
 const { deepMerge } = require('@keg-hub/jsutils')
-const { compareValues, getLocatorAttribute, getWorldData } = require('@GTU/Support/helpers')
+const { compareValues, getLocatorAttribute, getWorldData } = require('@Support/helpers')
 
 /**
  * Compares an elements property with a saved elements property

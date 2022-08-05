@@ -1,5 +1,5 @@
-const { When } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+const { When } = require('@Parkin')
+const { getPage } = require('@Playwright')
 
 /**
  * Returns when the required load state has been reached.

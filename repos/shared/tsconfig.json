@@ -20,7 +20,9 @@
       "@GSH/AsyncWrap": ["src/express/asyncWrap.js"],
       "@GSH/Repo": ["src/repo"],
       "@GSH": ["src"],
-      "@GSHRoot": ["."]
+      "@GSHRoot": ["."],
+      "@gobletqa/test-utils": ["../testUtils/src"],
+      "@gobletqa/test-utils/*": ["../testUtils/src/*"]
     }
   },
   "include": ["src/**/*"],

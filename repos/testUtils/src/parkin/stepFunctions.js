@@ -10,7 +10,7 @@ const getStepHandler = (name) => {
 /**
  * Cucumber-like step functions
  * @example
- * import { Given } from '@GTU/Parkin'
+ * import { Given } from '@Parkin'
  * Given('<some matcher>', () => doSomething(p))
  */
 module.exports = {

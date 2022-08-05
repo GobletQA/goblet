@@ -1,9 +1,9 @@
 const path = require('path')
 const { toBool } = require('@keg-hub/jsutils')
+const { ARTIFACT_TYPES } = require('@Constants')
 const { canRecordVideo } = require('@gobletqa/screencast/constants')
-const { ARTIFACT_TYPES } = require('@GTU/constants')
 const { getPathFromBase } = require('@GSH/Utils/getPathFromBase')
-const { artifactSaveOption, artifactSaveActive } = require('@GTU/Utils/artifactSaveOption')
+const { artifactSaveOption, artifactSaveActive } = require('@Utils/artifactSaveOption')
 
 /**
  * Builds the repo paths to artifacts generated at test run

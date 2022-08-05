@@ -1,5 +1,5 @@
-const { When } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+const { When } = require('@Parkin')
+const { getPage } = require('@Playwright')
 
 /**
  * Uploads file to file input selector

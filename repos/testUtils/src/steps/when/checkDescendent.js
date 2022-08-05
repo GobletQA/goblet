@@ -1,6 +1,6 @@
-const { When } = require('@GTU/Parkin')
+const { When } = require('@Parkin')
 const { checkElement } = require('./checkElement')
-const { checkForAncestor } = require('@GTU/Support/validate')
+const { checkForAncestor } = require('@Support/validate')
 
 /**
  * Checks/unchecks the element matching the selector, that is also a descendent of the registered ancestor.

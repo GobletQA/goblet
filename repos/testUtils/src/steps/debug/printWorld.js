@@ -1,4 +1,4 @@
-const { Given } = require('@GTU/Parkin')
+const { Given } = require('@Parkin')
 
 
 /**

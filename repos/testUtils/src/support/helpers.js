@@ -1,6 +1,6 @@
 const { get } = require('@keg-hub/jsutils')
 const { Logger } = require('@keg-hub/cli-utils')
-const { getPage, getLocator } = require('@GTU/Playwright')
+const { getPage, getLocator } = require('@Playwright')
 
 const checkTypes = {
   less: {
