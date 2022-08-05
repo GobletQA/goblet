@@ -17,10 +17,9 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "app:build": "node configs/build.config.js",
-    "app:start": "DEV_BUILD=1 node configs/build.config.js",
-    "app:map": "tsc -sourcemap src/app.ts --outDir dist",
-    "build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
+    "build": "node configs/build.config.js",
+    "cd:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
+    "cd:map": "tsc -sourcemap src/app.ts --outDir dist",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:install": "yarn clean:full; yarn install",
     "clean:full": "yarn clean; yarn clean:nm; yarn install",
@@ -28,7 +27,7 @@
     "format": "yarn lint && yarn pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
-    "start": "node dist/index.js",
+    "start": "DEV_BUILD=1 node configs/build.config.js",
     "serve": "node dist/index.js",
     "task": "node tasks/runTask.js",
     "types": "tsc --emitDeclarationOnly --outDir dist",
