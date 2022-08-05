@@ -3,11 +3,11 @@ const { jestConfig } = require('./jest.default.config')
 
 const path = require('path')
 const glob = require('glob')
-const { getGobletConfig } = require('@GSH/Config')
+const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 const { uniqArr, noOpObj } = require('@keg-hub/jsutils')
-const { getRepoGobletDir } = require('@GSH/Utils/getRepoGobletDir')
+const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
 const { buildJestGobletOpts } = require('@Utils/buildJestGobletOpts')
-const { taskEnvToBrowserOpts } = require('@GSH/Utils/taskEnvToBrowserOpts')
+const { taskEnvToBrowserOpts } = require('@gobletqa/shared/utils/taskEnvToBrowserOpts')
 const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
 
 /**

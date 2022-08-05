@@ -1,5 +1,5 @@
-const { getConfigAtPath } = require('@GSH/Config')
 const { getCurrentRepoPath } = require('./getCurrentRepoPath')
+const { getConfigAtPath } = require('@gobletqa/shared/utils/getGobletConfig')
 
 /**
  * Loads the goblet.config from the repos local/current path

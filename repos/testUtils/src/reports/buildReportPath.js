@@ -1,5 +1,5 @@
 const path = require('path')
-const { getPathFromBase } = require('@GSH/Utils/getPathFromBase')
+const { getPathFromBase } = require('@gobletqa/shared/utils/getPathFromBase')
 const { getGeneratedName } = require('@Playwright/generatedArtifacts')
 
 /**

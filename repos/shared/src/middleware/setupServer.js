@@ -1,6 +1,6 @@
 const express = require('express')
-const { getApp } = require('@GSH/App')
-const { AppRouter } = require('@GSH/Router')
+const { getApp } = require('@App')
+const { AppRouter } = require('@Router')
 
 
 /**

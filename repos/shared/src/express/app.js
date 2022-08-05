@@ -1,5 +1,5 @@
 const express = require('express')
-const { getGobletConfig, resetGobletConfig } = require('@GSH/Config')
+const { getGobletConfig, resetGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 
 let _APP
 

@@ -1,5 +1,5 @@
-const { getGobletConfig } = require('@GSH/Config')
 const { isObj, isFunc, mapObj } = require('@keg-hub/jsutils')
+const { getGobletConfig } = require('@gobletqa/shared/utils/config')
 
 /**
  * Injects the goblet.config into a tasks arguments

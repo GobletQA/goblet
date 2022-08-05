@@ -1,6 +1,6 @@
 const path = require('path')
-const { loadConfigFromFolder } = require('@GSH/Config')
 const { getCurrentRepoPath } = require('./getCurrentRepoPath')
+const { loadConfigFromFolder } = require('@gobletqa/shared/utils/getGobletConfig')
 
 /**
  * Checks if a goblet.config exists in the mounted repo

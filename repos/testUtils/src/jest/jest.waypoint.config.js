@@ -3,17 +3,17 @@ const { jestConfig } = require('./jest.default.config')
 const path = require('path')
 const { noOpObj } = require('@keg-hub/jsutils')
 const { inDocker } = require('@keg-hub/cli-utils')
-const { getGobletConfig } = require('@GSH/Config')
-const { getRepoGobletDir } = require('@GSH/Utils/getRepoGobletDir')
+const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
+const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
 const { buildJestGobletOpts } = require('@Utils/buildJestGobletOpts')
-const { taskEnvToBrowserOpts } = require('@GSH/Utils/taskEnvToBrowserOpts')
+const { taskEnvToBrowserOpts } = require('@gobletqa/shared/utils/taskEnvToBrowserOpts')
 const { checkVncEnv } = require('@gobletqa/screencast/libs/utils/vncActiveEnv')
 const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
 const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
 const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowserOpts')
 
 // TODO: investigate this to allow reusing it
-// const { buildTestMatchFiles } = require('@GSH/Utils/buildTestMatchFiles')
+// const { buildTestMatchFiles } = require('@gobletqa/shared/utils/buildTestMatchFiles')
 
 /**
  * Builds the launch / browser options for the jest-playwright-config

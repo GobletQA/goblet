@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const { noOp } = require('@keg-hub/jsutils')
 const { Logger } = require('@keg-hub/cli-utils')
-const { getGobletConfig } = require('@GSH/Config')
+const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 
 /**
  * Clears out the temp folder that contains test artifacts

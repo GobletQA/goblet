@@ -1,5 +1,5 @@
 const Module = require('module')
-const sharedPaths = require('@GSH/Paths')
+const sharedPaths = require('@Paths')
 const { GobletRoot } = sharedPaths
 
 const overrideNoOp = () => true

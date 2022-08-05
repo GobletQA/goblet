@@ -1,6 +1,6 @@
-const { getGobletConfig } = require('@GSH/Config')
+const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 const { fileSys, Logger } = require('@keg-hub/cli-utils')
-const { getPathFromBase } = require('@GSH/Utils/getPathFromBase')
+const { getPathFromBase } = require('@gobletqa/shared/utils/getPathFromBase')
 const { deepMerge, deepClone, set, isArr, noOpObj, toBool, isObj } = require('@keg-hub/jsutils')
 
 const isCIEnv = toBool(process.env.GOBLET_RUN_FROM_CI)

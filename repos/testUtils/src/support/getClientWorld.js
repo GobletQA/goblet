@@ -1,6 +1,6 @@
 const path = require('path')
 const glob = require('glob')
-const { getGobletConfig } = require('@GSH/Config')
+const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 const {
   tryRequireSync,
   deepMerge,

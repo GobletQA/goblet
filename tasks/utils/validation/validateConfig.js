@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const { isObj, noOp } = require('@keg-hub/jsutils')
-const { getRepoGobletDir } = require('@GSH/Utils/getRepoGobletDir')
+const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
 
 /**
  * **IMPORTANT**
