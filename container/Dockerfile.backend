@@ -6,12 +6,23 @@ FROM $IMAGE_FROM as goblet-pruner
 WORKDIR /app
 RUN yarn global add turbo
 COPY . .
-RUN turbo prune --docker --scope=@@gobletqa/backend
+RUN turbo prune --docker --scope=@gobletqa/backend
+COPY ./configs ./out/full/configs
+COPY ./repos/shared/package.json ./out/json/repos/shared/package.json
+COPY ./repos/shared ./out/full/repos/shared
+COPY ./repos/workflows/package.json ./out/json/repos/workflows/package.json
+COPY ./repos/workflows ./out/full/repos/workflows
+COPY ./repos/screencast/package.json ./out/json/repos/screencast/package.json
+COPY ./repos/screencast ./out/full/repos/screencast
+COPY ./repos/testUtils/package.json ./out/json/repos/testUtils/package.json
+COPY ./repos/testUtils ./out/full/repos/testUtils
+COPY ./gobletRoot.js ./out/full/gobletRoot.js
+
 # ---- End Stage ---- #
 
 # ---- Install Stage ---- #
 FROM $IMAGE_FROM as goblet-installer
-WORKDIR /keg/tap
+WORKDIR /app
 COPY --from=goblet-pruner /app/out/json/ .
 COPY --from=goblet-pruner /app/out/yarn.lock ./yarn.lock
 RUN yarn install --frozen-lockfile
@@ -19,27 +30,28 @@ RUN yarn install --frozen-lockfile
 
 # ---- Build Stage ---- #
 FROM $IMAGE_FROM as goblet-builder
-WORKDIR /keg/tap
+WORKDIR /app
 COPY --from=goblet-pruner /app/out/full/ .
 COPY --from=goblet-installer /app/ .
-RUN yarn turbo run build --filter=@gobletqa/backend && \
+RUN yarn global add turbo
+RUN turbo run build --filter=@gobletqa/backend && \
     yarn install --frozen-lockfile --production
 # ---- End Stage ---- #
 
-# ---- Run Stage ---- #
-FROM $IMAGE_FROM as goblet-runner
-WORKDIR /keg/tap/repos/backend
-ARG DOC_APP_PATH=/keg/tap
-ARG GB_BE_PORT=7005
+# # ---- Run Stage ---- #
+# FROM $IMAGE_FROM as goblet-runner
+# WORKDIR /app/repos/backend
+# ARG DOC_APP_PATH=/app
+# ARG GB_BE_PORT=7005
 
-# TODO: investigate what else needs copied over form build stage
-# COPY --from=goblet-builder /keg/tap/repos/backend/dist repos
-# COPY --from=goblet-builder /keg/tap/node_modules/. node_modules/.
-# COPY --from=goblet-builder /keg/tap/repos/backend/package.json repos/backend/.
-# COPY --from=goblet-builder /keg/tap/repos/backend/tsconfig.build.json repos/backend/tsconfig.json
-# COPY --from=goblet-builder /keg/tap/repos/backend/node_modules/. repos/backend/node_modules/.
+# # TODO: investigate what else needs copied over form build stage
+# # COPY --from=goblet-builder /app/repos/backend/dist repos
+# # COPY --from=goblet-builder /app/node_modules/. node_modules/.
+# # COPY --from=goblet-builder /app/repos/backend/package.json repos/backend/.
+# # COPY --from=goblet-builder /app/repos/backend/tsconfig.build.json repos/backend/tsconfig.json
+# # COPY --from=goblet-builder /app/repos/backend/node_modules/. repos/backend/node_modules/.
 
-RUN ln -s /keg/tap/node_modules $HOME/.node_modules && \
-    ln -s /keg/tap/node_modules /keg/node_modules
-EXPOSE $GB_BE_PORT
-CMD [ "yarn", "serve" ]
+# RUN ln -s /app/node_modules $HOME/.node_modules && \
+#     ln -s /app/node_modules /keg/node_modules
+# EXPOSE $GB_BE_PORT
+# CMD [ "yarn", "serve" ]
