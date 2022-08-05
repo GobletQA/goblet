@@ -39,6 +39,8 @@
     "@keg-hub/jsutils": "9.2.0",
     "@keg-hub/parse-config": "2.0.2",
     "@ltipton/parkin": "1.4.0",
+    "@gobletqa/test-utils": "*",
+    "@gobletqa/workflows": "*",
     "cookie-session": "2.0.0",
     "cors": "2.8.5",
     "express-jwt": "6.1.1",

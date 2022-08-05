@@ -1,65 +1,15 @@
 const path = require('path')
-const { dockerCmd, Logger } = require('@keg-hub/cli-utils')
-const { noOpObj, noPropArr, toBool } = require('@keg-hub/jsutils')
+const { dockerCmd } = require('@keg-hub/cli-utils')
+const { noPropArr, toBool } = require('@keg-hub/jsutils')
 const { runCommands } = require('@GTasks/utils/helpers/runCommands')
 const { ARTIFACT_SAVE_OPTS } = require('@gobletqa/test-utils/constants')
 const { handleTestExit } = require('@GTasks/utils/helpers/handleTestExit')
-const { parseParkinLogs } = require('@gobletqa/test-utils/parkin/parseParkinLogs')
 const { buildReportPath } = require('@gobletqa/test-utils/reports/buildReportPath')
 const { clearTestMetaDirs } = require('@gobletqa/test-utils/utils/clearTestMetaDirs')
-const { PARKIN_SPEC_RESULT_LOG } = require('@gobletqa/test-utils/constants/constants')
 const { shouldSaveArtifact } = require('@gobletqa/test-utils/utils/artifactSaveOption')
 const { getBrowsers } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowsers')
 const { appendToLatest, commitTestMeta } = require('@gobletqa/test-utils/testMeta/testMeta')
 const { copyArtifactToRepo } = require('@gobletqa/test-utils/playwright/generatedArtifacts')
-
-const filterLogs = (data, params, parkinLogs) => {
-  let filtered = data
-
-  if(data.includes(PARKIN_SPEC_RESULT_LOG)){
-    const { other, parkin } = parseParkinLogs(data, params)
-    filtered = other
-    parkinLogs.push(...parkin)
-  }
-
-  return filtered
-}
-
-const cmdCallbacks = (res, opts=noOpObj) => {
-  const parkin = []
-  const output = { data: [], error: [] }
-
-  return {
-    onStdOut: data => {
-      const filtered = filterLogs(data, opts, parkin)
-      if(!filtered) return
-
-      Logger.stdout(filtered)
-      output.data.push(filtered)
-    },
-    onStdErr: data => {
-      const filtered = filterLogs(data, opts, parkin)
-      if(!filtered) return
-
-      Logger.stderr(filtered)
-      output.error.push(filtered)
-    },
-    onError: data => {
-      const filtered = filterLogs(data, opts, parkin)
-      if(!filtered) return
-
-      Logger.stderr(filtered)
-      output.error.push(filtered)
-    },
-    onExit: (exitCode) => {
-      return res({
-        exitCode,
-        data: output.data.join(''),
-        error: output.error.join(''),
-      })
-    }
-  }
-}
 
 /**
  * Builds a browser exec method inside docker via Jest
@@ -86,14 +36,6 @@ const buildBrowserCmd = (args) => {
   
   return async () => {
     const resp = await new Promise(async (res, rej) => {
-      // TODO: Disabled until parkin log parsing is properly configured
-      // await dockerCmd(params.container, [...cmdArgs], {
-      //   ...cmdOpts,
-      //   stdio: 'pipe',
-      //   ...cmdCallbacks(res, params),
-      // })
-
-      // TODO: remove this once parkin log parsing is setup
       const exitCode = await dockerCmd(params.container, [...cmdArgs], cmdOpts)
       res({ exitCode })
     })
