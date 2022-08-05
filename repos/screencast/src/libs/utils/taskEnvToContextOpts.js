@@ -1,5 +1,5 @@
-const { getScreenDims } = require('./getScreenDims')
-const { parseJsonEnvArr } = require('./parseJsonEnvArr')
+const { getScreenDims } = require('@gobletqa/shared/utils/getScreenDims')
+const { parseJsonEnvArr } = require('@gobletqa/shared/utils/parseJsonEnvArr')
 const { artifactSaveActive } = require('@gobletqa/test-utils/utils/artifactSaveOption')
 const {
   toBool,

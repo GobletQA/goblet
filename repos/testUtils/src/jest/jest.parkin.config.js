@@ -7,7 +7,7 @@ const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 const { uniqArr, noOpObj } = require('@keg-hub/jsutils')
 const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
 const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')
-const { taskEnvToBrowserOpts } = require('@gobletqa/shared/utils/taskEnvToBrowserOpts')
+const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
 const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
 
 /**

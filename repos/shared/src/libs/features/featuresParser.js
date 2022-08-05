@@ -1,8 +1,6 @@
 const fs = require('fs')
 const { noOpObj } = require('@keg-hub/jsutils')
-
-// TODO: move this to shared utils - it used by all other repos
-const { getParkinInstance } = require('@gobletqa/test-utils/parkin/instance')
+const { getParkinInstance } = require('@GSH/Parkin')
 
 /**
  * Parses the a feature file located at the passed in featureMeta.location

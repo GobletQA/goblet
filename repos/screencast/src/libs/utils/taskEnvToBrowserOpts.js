@@ -1,5 +1,5 @@
-const { parseJsonEnvArr } = require('./parseJsonEnvArr')
 const { toBool, isStr, noOpObj } = require('@keg-hub/jsutils')
+const { parseJsonEnvArr } = require('@gobletqa/shared/utils/parseJsonEnvArr')
 
 /**
  * Builds a list of devices to used based on the GOBLET_BROWSER_DEVICES env

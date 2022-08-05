@@ -19,10 +19,9 @@
       "@GSH/Config": ["src/utils/getGobletConfig.js"],
       "@GSH/AsyncWrap": ["src/express/asyncWrap.js"],
       "@GSH/Repo": ["src/repo"],
+      "@GSH/Parkin": ["src/libs/parkin"],
       "@GSH": ["src"],
       "@GSHRoot": ["."],
-      "@gobletqa/test-utils": ["../testUtils/src"],
-      "@gobletqa/test-utils/*": ["../testUtils/src/*"],
       "@gobletqa/workflows": ["../workflows/src"],
       "@gobletqa/workflows/*": ["../workflows/src/*"]
     }

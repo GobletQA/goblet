@@ -14,7 +14,7 @@ const { checkVncEnv } = require('@gobletqa/screencast/libs/utils/vncActiveEnv')
 const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
 const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
 const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowserOpts')
-const { taskEnvToBrowserOpts } = require('@gobletqa/shared/utils/taskEnvToBrowserOpts')
+const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
 
 /**
  * Builds the launch / browser options for the jest-playwright-config

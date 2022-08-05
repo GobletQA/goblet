@@ -3,12 +3,9 @@
  * Helper method to validate the require request is for Parkin
  */
 const parkinCheck = (request) => (
-  request === `GobletParkin` ||
   request === "@gobletqa/test-utils/parkin" ||
-  request === "@gobletqa/test-utils/Parkin" ||
-  request === "@Parkin"
+  request === `GobletParkin`
 )
-
 
 /**
  * Override module for Parkin to allow loading the repo specific parkin instance

@@ -1,8 +1,8 @@
 const path = require('path')
+const { checkVncEnv } = require('../../utils/vncActiveEnv')
+const { taskEnvToBrowserOpts } = require('../../utils/taskEnvToBrowserOpts')
 const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
-const { taskEnvToBrowserOpts } = require('@gobletqa/shared/utils/taskEnvToBrowserOpts')
-const { checkVncEnv } = require('../../utils/vncActiveEnv')
 const {
   exists,
   noOpObj,
