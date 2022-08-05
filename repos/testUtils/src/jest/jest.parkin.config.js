@@ -68,6 +68,7 @@ module.exports = async () => {
   const config = getGobletConfig()
   const baseDir = getRepoGobletDir(config)
   const { devices, ...browserOpts } = taskEnvToBrowserOpts(config)
+  const gobletOpts = buildJestGobletOpts(config, browserOpts)
   const contextOpts = getContextOpts(noOpObj, config)
 
   const { testUtilsDir, reportsTempDir } = config.internalPaths
@@ -98,9 +99,9 @@ module.exports = async () => {
           ...config.paths,
           reportTempPath: reportOutputPath
         },
+        options: gobletOpts,
         browser: { options: browserOpts },
         context: { options: contextOpts },
-        options: buildJestGobletOpts(config, browserOpts, contextOpts),
       },
     },
     /** Add all support and step files and ensure they are loaded before running the tests */

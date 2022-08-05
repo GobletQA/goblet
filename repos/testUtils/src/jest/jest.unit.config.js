@@ -78,6 +78,7 @@ module.exports = async () => {
   const optsKey = vncActive ? 'launchOptions' : 'connectOptions'
   const launchOpts = await buildLaunchOpts(config, taskOpts, optsKey)
   const browserOpts = launchOpts[optsKey]
+  const gobletOpts = buildJestGobletOpts(config, browserOpts)
   const contextOpts = getContextOpts(noOpObj, config)
 
   const { testUtilsDir, reportsTempDir } = config.internalPaths
@@ -101,10 +102,10 @@ module.exports = async () => {
           ...config.paths,
           reportTempPath: reportOutputPath
         },
+        options: gobletOpts,
         browser: { options: browserOpts },
         context: { options: contextOpts },
         internalPaths: config.internalPaths,
-        options: buildJestGobletOpts(config, browserOpts, contextOpts),
       },
     },
     setupFilesAfterEnv: [

@@ -1,6 +1,6 @@
 const { noOpObj, deepMerge } = require('@keg-hub/jsutils')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 const { taskEnvToContextOpts } = require('../../utils/taskEnvToContextOpts')
+const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
 
 /**
  * Builds the config for a Playwright browser context
@@ -26,7 +26,7 @@ const getContextOpts = (contextOpts=noOpObj, config) => {
      * These come from the options passed to a task that started the process
      * This ensures those options gets set
      */
-    taskEnvToContextOpts(config)
+    taskEnvToContextOpts(config, gobletOpts)
   )
 }
 
