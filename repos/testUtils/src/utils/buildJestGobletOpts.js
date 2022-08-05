@@ -1,6 +1,6 @@
 const path = require('path')
 const { toBool } = require('@keg-hub/jsutils')
-const { ARTIFACT_TYPES } = require('@GTU/Constants')
+const { ARTIFACT_TYPES } = require('@gobletqa/shared/constants')
 const { canRecordVideo } = require('@gobletqa/screencast/constants')
 const { getPathFromBase } = require('@gobletqa/shared/utils/getPathFromBase')
 const { artifactSaveOption, artifactSaveActive } = require('@GTU/Utils/artifactSaveOption')

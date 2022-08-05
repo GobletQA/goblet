@@ -1,5 +1,4 @@
 module.exports = {
-  PARKIN_SPEC_RESULT_LOG: `------- PARKIN SPEC RESULT LOG -------`,
   ARTIFACT_TYPES: [
     `traces`,
     `videos`,

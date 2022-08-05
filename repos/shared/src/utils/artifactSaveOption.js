@@ -1,4 +1,4 @@
-const { ARTIFACT_SAVE_OPTS } = require('@gobletqa/shared/constants')
+const { ARTIFACT_SAVE_OPTS } = require('@GSH/Constants')
 
 /**
  * Checks the value of the passed in option to define when an artifact should be saved

@@ -4,6 +4,7 @@
     "baseUrl": "./",
     "outDir": "./dist",
     "paths": {
+      "@GSH/Constants": ["src/constants"],
       "@GSH/Template": ["src/templates"],
       "@GSH/FileSys": ["src/libs/fileSys"],
       "@GSH/Features": ["src/libs/features"],

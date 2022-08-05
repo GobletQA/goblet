@@ -1,6 +1,6 @@
 const { gobletMountDir } = require('@GTasks/paths')
 const { setSharedOptions } = require('@keg-hub/cli-utils')
-const { ARTIFACT_SAVE_OPTS } = require('@gobletqa/test-utils/constants')
+const { ARTIFACT_SAVE_OPTS } = require('@gobletqa/shared/constants')
 const artifactSaveOpts = Object(ARTIFACT_SAVE_OPTS).values
 
 const dynamicOpts = {

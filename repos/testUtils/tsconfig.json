@@ -16,8 +16,6 @@
       "@GTU/Support/*": ["src/support/*"],
       "@GTU/Reports": ["src/reports"],
       "@GTU/Reports/*": ["src/reports/*"],
-      "@GTU/Constants": ["src/constants"],
-      "@GTU/Constants/*": ["src/constants/*"],
       "@GTU/Playwright": ["src/playwright"],
       "@GTU/Playwright/*": ["src/playwright/*"],
       "@GTU/TestMeta": ["src/testMeta"],

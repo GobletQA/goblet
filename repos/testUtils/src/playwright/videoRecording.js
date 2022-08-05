@@ -1,9 +1,9 @@
 const fs = require('fs')
-const { ARTIFACT_SAVE_OPTS } = require('@GTU/Constants')
-const { appendToLatest } = require('@GTU/TestMeta/testMeta')
 const { fileSys, Logger } = require('@keg-hub/cli-utils')
 const { noOpObj, get, wait } = require('@keg-hub/jsutils')
+const { appendToLatest } = require('@GTU/TestMeta/testMeta')
 const { getTestResult } = require('@GTU/Reports/jasmineReporter')
+const { ARTIFACT_SAVE_OPTS } = require('@gobletqa/shared/constants')
 const {
   getGeneratedName,
   copyArtifactToRepo,
