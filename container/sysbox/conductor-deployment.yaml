@@ -1,0 +1,67 @@
+# This is based on this tutorial here => https://spacelift.io/blog/ci-cd-workers-in-kubernetes-dind
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conductor-spawner
+  labels:
+    app: conductor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: conductor
+  template:
+    metadata:
+      labels:
+        app: conductor
+      annotations:
+        io.kubernetes.cri-o.userns-mode: "auto:size=65536"
+    spec:
+      nodeName: docker-desktop
+      runtimeClassName: sysbox-runc
+      volumes:
+        - name: conductor-storage
+          emptyDir: {}
+      containers:
+      - name: conductor-worker
+        image: ghcr.io/gobletqa/goblet-conductor
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 9901
+        env:
+          - name: DOCKER_HOST
+            value: tcp://localhost:2375
+        volumeMounts:
+        - name: conductor-storage
+          mountPath: /opt/conductor
+          subPath: conductor
+      - name: ubu-bio-systemd-docker
+        image: ghcr.io/nestybox/ubuntu-focal-docker:latest
+        # command: ["/sbin/init"]
+        command: ["dockerd", "--host", "tcp://127.0.0.1:2375"]
+        volumeMounts:
+        - name: conductor-storage
+          mountPath: /var/lib/docker
+          subPath: docker
+        - name: conductor-storage
+          mountPath: /opt/conductor
+          subPath: conductor
+
+    # - name: conductor-dind
+    #   image: "docker:dind"
+    #   imagePullPolicy: Always
+    #   command: ["dockerd", "--host", "tcp://127.0.0.1:2375"]
+    #   securityContext:
+    #     privileged: true
+    #   volumeMounts:
+    #     - name: conductor-storage
+    #       mountPath: /var/lib/docker
+    #       subPath: docker
+    #     - name: conductor-storage
+    #       mountPath: /opt/conductor
+    #       subPath: conductor
+
+
+
+
+
