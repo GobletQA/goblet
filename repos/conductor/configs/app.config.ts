@@ -1,26 +1,32 @@
 
 import { omitKeys } from '@keg-hub/jsutils'
+import { inDocker } from '@keg-hub/cli-utils'
 import { TConductorOpts } from '@gobletqa/conductor/types'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 const nodeEnv = process.env.NODE_ENV || `local`
 
-const containerEnvs = omitKeys(loadEnvs({
-  name: `goblet`,
-  locations: [],
-  force: true,
-  override: nodeEnv === 'local'
-}), [
+// TODO: figure out what other envs should be removed
+const removeEnvs = [
   `GB_NO_VNC_PORT`,
   `GB_FE_PORT`,
   `GB_BE_PORT`,
   `GB_BE_HOST`,
-  `GB_VNC_SERVER_PORT`,
-  `GB_VNC_SERVER_HOST`,
   `GB_SC_PORT`,
   `GB_SC_HOST`,
   `GB_BE_SOCKET_PORT`,
-  `GB_BE_SOCKET_HOST`
-])
+  `GB_BE_SOCKET_HOST`,
+  `GB_VNC_SERVER_PORT`,
+  `GB_VNC_SERVER_HOST`,
+]
+
+const containerEnvs = inDocker()
+  ? omitKeys(process.env, removeEnvs)
+  : omitKeys(loadEnvs({
+      force: true,
+      name: `goblet`,
+      locations: [],
+      override: nodeEnv === 'local'
+    }), removeEnvs)
 
 export const appConfig:TConductorOpts = {
   proxy: {
@@ -59,17 +65,13 @@ export const appConfig:TConductorOpts = {
 
           GB_BE_HOST: `urls.7005`,
           GB_BE_PORT: `ports.7005`,
+          GB_BE_SOCKET_PORT: `ports.7005`,
           GB_NO_VNC_PORT: `ports.26369`,
           GB_FE_PORT: `ports.19006`,
           GB_VNC_SERVER_HOST: `urls.26370`,
           GB_VNC_SERVER_PORT: `ports.26370`,
           GB_SC_HOST: `urls.7006`,
           GB_SC_PORT: `ports.7006`,
-
-          // TODO: investigate why GB_BE_SOCKET_PORT is needed but not GB_BE_SOCKET_HOST
-          GB_BE_SOCKET_PORT: `ports.7005`,
-          // GB_BE_SOCKET_HOST: `urls.7005`,
-
           // TODO: this should be dynamically set to the auth users email
           // which is passed in at run time
           // GB_GITHUB_AUTH_USERS: `user.email`,

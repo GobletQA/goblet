@@ -1,7 +1,7 @@
 // TODO: Implement Gitlab / BitBucket providers via OAuth Provider
 // import { GithubAuthProvider, OAuthProvider } from "firebase/auth";
 import { GithubAuthProvider } from "firebase/auth"
-import { get, set, isArr, isObj } from '@keg-hub/jsutils'
+import { set, isArr, isObj } from '@keg-hub/jsutils'
 
 const FBProviders = {
   GithubAuthProvider
@@ -56,5 +56,4 @@ try {
 }
 
 export const getConfig = () => rawConfig && setupAuthProviders(rawConfig)
-
 

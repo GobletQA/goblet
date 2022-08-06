@@ -100,8 +100,8 @@ const serverListen = (app, serverConf, exitListen=true) => {
  *
  * @retruns {Object} - Response from server setup method
  */
-const setupServerListen = (app, config) => {
-  return serverListen(app || getApp(), config)
+const setupServerListen = (app, config, exitListen) => {
+  return serverListen(app || getApp(), config, exitListen)
 }
 
 module.exports = {
