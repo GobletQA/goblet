@@ -143,6 +143,7 @@ env:
   GB_SC_IMAGE_TAG: latest
   GB_SC_DEPLOYMENT: goblet-screencast
   GB_SC_IMAGE: 'ghcr.io/gobletqa/goblet-screencast'
+  # Screencast API port
   GB_SC_PORT: 7006
   # URL where the screencast is being displayed
   # This is the URL of the server the proxy connects to
@@ -152,5 +153,6 @@ env:
   # This is internal, and generally should not change
   GB_VNC_SERVER_HOST: 0.0.0.0
   GB_VNC_SERVER_PORT: 26370
+  
   GB_VNC_VIEW_HEIGHT: 900
   GB_VNC_VIEW_WIDTH: 1440

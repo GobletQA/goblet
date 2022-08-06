@@ -116,5 +116,3 @@ module.exports = {
   startVNC,
   stopVNC,
 }
-
-require.main === module && startVNC(noOpObj)

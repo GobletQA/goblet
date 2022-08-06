@@ -115,5 +115,3 @@ module.exports = {
   startSockify,
   stopSockify,
 }
-
-require.main === module && startSockify(noOpObj)

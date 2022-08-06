@@ -1,6 +1,6 @@
 #! /bin/bash
-echo "Sleeping for 10 seconds to allow sync to complete..."
-sleep 10
+# echo "Sleeping for 10 seconds to allow sync to complete..."
+# sleep 10
 echo "Starting goblet application..."
 
 # When running in dev, sometimes we need to add new packages
@@ -19,40 +19,23 @@ goblet_run_dev_yarn_install(){
 }
 
 # Check if we should install new packages
-[ -z "$GB_NM_INSTALL" ] && goblet_run_dev_yarn_install
- 
-
-# Starts the screen cast servers
-# TODO: this should be done via pm2 instead
-gobletRunScreencast(){
-
-  # Check if the vnc screen-cast servers should be started
-  START_VNC_SERVER=""
-  if [[ -z "$GOBLET_SUB_REPO" ]]; then
-    START_VNC_SERVER=1
-  elif [[ "$GOBLET_SUB_REPO" == "screencast" ]]; then
-    START_VNC_SERVER=1
-  fi
-
-  # Starts the screen cast servers when not using a websocket from the hostmachine
-  if [[ "$GB_VNC_ACTIVE" == "true" || "$START_VNC_SERVER" ]]; then
-    cd /goblet/app/repos/screencast
-    yarn sc:pm2 >> /proc/1/fd/1 &
-  fi
-}
+[ "$GB_NM_INSTALL" ] && goblet_run_dev_yarn_install
 
 # If a sub-repo is defined only run that one repo
 # Check if the process to run is defined, then run it
-if [[ "$GOBLET_SUB_REPO" ]]; then
+if [ "$GOBLET_SUB_REPO" ]; then
 
-  gobletRunScreencast "$@"
+  # Starts the vnc servers for screencast
+  if [ "$GOBLET_SUB_REPO" == "screencast" ]; then
+    cd /goblet/app/repos/screencast
+    yarn vnc:start >> /proc/1/fd/1 &
+  fi
 
   cd repos/$GOBLET_SUB_REPO
   yarn start >> /proc/1/fd/1 &
 else
   # Start each of the services and canvas
-  yarn start
-  tail -f /goblet/app/logs/*.* >> /proc/1/fd/1 &
+  yarn start >> /proc/1/fd/1 & 
 fi
 
 # Tail /dev/null to keep the container running
