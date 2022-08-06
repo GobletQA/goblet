@@ -143,7 +143,11 @@ export class Conductor {
    */
   async start() {
     const { server } = createServer(this.config.server)
-    const proxyHandler = createProxy({ ...this.config.proxy, proxyRouter: this.proxyRouter.bind(this) })
+    const proxyHandler = createProxy({
+      ...this.config.proxy,
+      proxyRouter: this.proxyRouter.bind(this)
+    })
+
     server.on('upgrade', proxyHandler.upgrade)
 
     return this
