@@ -1,6 +1,3 @@
-const path = require('path')
-const { appRoot } = require('../../paths')
-const packConf = require(path.join(appRoot, 'package.json'))
 const { resolveContext } = require('../kubectl/resolveContext')
 
 /**

@@ -139,6 +139,9 @@ env:
   # Salting the user hash string. Not intended to be secure just anonymous
   GB_CD_HASH_KEY: C0nDuc10R
 
+  # When manually running the conductor app in a container
+  # This ensures the docker.sock is mounted into the container
+  GB_CD_DOC_VOLUMES: /var/run/docker.sock
 
 # --- SCREENCAST ENVs --- #
   GB_SC_IMAGE_TAG: latest

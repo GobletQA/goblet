@@ -5,6 +5,7 @@ const { error, docker, Logger } = require('@keg-hub/cli-utils')
 const { getNpmToken } = require('../../utils/envs/getNpmToken')
 const { addRunEnvs } = require('../../utils/docker/addRunEnvs')
 const { addRunPorts } = require('../../utils/docker/addRunPorts')
+const { addRunVolumes } = require('../../utils/docker/addRunVolumes')
 const { getTagOptions } = require('../../utils/docker/getTagOptions')
 const { resolveImgName } = require('../../utils/docker/resolveImgName')
 const { resolveContext } = require('../../utils/kubectl/resolveContext')
@@ -99,6 +100,7 @@ const runImg = async (args) => {
     ...getDockerRunArgs(params),
     ...addRunEnvs(allEnvs, docFileCtx),
     ...addRunPorts(params, allEnvs, docFileCtx),
+    ...addRunVolumes(params, allEnvs, docFileCtx),
     imgToRun,
     ...getRunCmd(params, options),
   ].filter((arg) => arg)
@@ -157,6 +159,12 @@ module.exports = {
         alias: ['nm'],
         example: `--name my-container`,
         description: 'Name of the container being run',
+      },
+      volumes: {
+        type: 'array',
+        alias: ['vol', 'vols'],
+        example: `--volumes /local/1/path:/remote/1/path,/local/2/path:/remote/2/path`,
+        description: 'Volumes to mount to the running container separated by a comma',
       },
       image: {
         alias: ['img', 'igm', 'im'],
