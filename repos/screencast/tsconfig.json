@@ -19,6 +19,6 @@
       "@gobletqa/screencast/*": ["src/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "vnc.js"],
   "exclude": ["node_modules", "dist"]
 }

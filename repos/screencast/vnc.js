@@ -1,5 +1,5 @@
-const { startVNC } = require('./vnc')
-const { startSockify } = require('./sockify')
+const { startVNC } = require('@GSC/Vnc/vnc')
+const { startSockify } = require('@GSC/Vnc/sockify')
 const { noOpObj } = require('@keg-hub/jsutils')
 
 ;(async () => {
