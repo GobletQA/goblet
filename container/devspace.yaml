@@ -70,17 +70,6 @@ vars:
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_CD_PORT"
 
-# ----- Proxy Values ----- #
-# - name: GB_PX_DEPLOYMENT
-#   source: command
-#   command: "node ../scripts/js/getYamlValue.js GB_PX_DEPLOYMENT"
-# - name: GB_PX_IMG_URI
-#   source: command
-#   command: "node ../scripts/js/resolveImgUri.js PX"
-# - name: GB_PX_PORT
-#   source: command
-#   command: "node ../scripts/js/getYamlValue.js GB_PX_PORT"
-
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
 # See the ../scripts/js/resolvePullSecrets.js script for more information
@@ -110,7 +99,6 @@ deployments:
 # - name: $(node ../scripts/js/resolveDeployment.js FE IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 # - name: $(node ../scripts/js/resolveDeployment.js BE IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 # - name: $(node ../scripts/js/resolveDeployment.js CD IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
-# - name: $(node ../scripts/js/resolveDeployment.js SC IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 
 # ----- Frontend Deployment ----- #
 - name: ${GB_FE_DEPLOYMENT}
@@ -252,7 +240,5 @@ profiles:
   - op: replace
     path: deployments.name=${GB_CD_DEPLOYMENT}.helm.values.containers[0].image
     value: ${IMAGE}:${IMAGE_TAG}
-- name: develop
 - name: staging
-- name: qa
 - name: production
