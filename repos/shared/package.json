@@ -45,6 +45,7 @@
     "express-winston": "4.2.0",
     "express-blacklist": "1.0.3",
     "express-defend": "1.0.9",
+    "glob": "8.0.3",
     "is-secret": "1.2.1",
     "mime": "3.0.0",
     "module-alias": "2.2.2",

@@ -239,24 +239,20 @@ dev:
   # Since we configured port-forwarding, we can use a localhost address here to access our application
   open: $(node ../scripts/js/resolveOpenBrowser.js GB_FE_ACTIVE ${GB_FE_PORT})
 
-# Use profile to dynamically switch out the app specific docker image for the development image
-# profiles:
-# - name: local
-#   patches:
-#   - op: replace
-#     path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
-#     value: ${IMAGE}:${IMAGE_TAG}
-#   - op: replace
-#     path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
-#     value: ${IMAGE}:${IMAGE_TAG}
-# - name: develop
-#   patches:
-#   - op: replace
-#     path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
-#     value: ${IMAGE}:${IMAGE_TAG}
-#   - op: replace
-#     path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
-#     value: ${IMAGE}:${IMAGE_TAG}
-# - name: staging
-# - name: qa
-# - name: production
+Use profile to dynamically switch out the app specific docker image for the development image
+profiles:
+- name: local
+  patches:
+  - op: replace
+    path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}
+  - op: replace
+    path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}
+  - op: replace
+    path: deployments.name=${GB_CD_DEPLOYMENT}.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}
+- name: develop
+- name: staging
+- name: qa
+- name: production
