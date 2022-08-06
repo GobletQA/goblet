@@ -24,7 +24,6 @@ export const createServer = (config:TServerConfig) => {
   setupAuthUser(app)
   setupServer(app, false, false)
   setupRouters(app)
-  
 
   const { insecureServer, secureServer } = setupServerListen(app, serverConf)
   setupLoggerErr(app)

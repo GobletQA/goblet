@@ -123,12 +123,11 @@ env:
 # --- CONDUCTOR ENVs --- #
   # Host the FE uses to connect to the BE
   GB_CD_PORT: 9901
-  GB_CD_HOST: 0.0.0.0
+  # GB_CD_HOST: 0.0.0.0
+  GB_CD_HOST: local.keghub.io
   GB_CD_IMAGE_TAG: latest
   GB_CD_DEPLOYMENT: goblet-conductor
   GB_CD_IMAGE: 'ghcr.io/gobletqa/goblet-conductor'
-  # GB_CD_HOST: local.keghub.io
-  # GB_CD_DOMAIN: local.keghub.io
 
   GB_CD_TIMEOUT: 5000
   GB_CD_SERVER_SECRET: ""

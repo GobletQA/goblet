@@ -9,6 +9,7 @@ import { dockerEvents } from '../utils/dockerEvents'
 import { buildPullOpts } from '../utils/buildPullOpts'
 import { CONDUCTOR_SUBDOMAIN_LABEL } from '../constants'
 import { Logger } from '@gobletqa/conductor/utils/logger'
+import { removeContainer } from '../utils/removeContainer'
 import { buildContainerPorts } from '../utils/buildContainerPorts'
 import { buildContainerConfig } from '../utils/buildContainerConfig'
 import { generateUrls, generateExternalUrls } from '../utils/generateUrls'
@@ -64,7 +65,7 @@ export class Docker extends Controller {
       if(!container.Labels[CONDUCTOR_SUBDOMAIN_LABEL]) return acc
 
       if(container.State !== 'running'){
-        this.docker.getContainer(container.Id).remove()
+        removeContainer(this.docker.getContainer(container.Id))
         return acc
       }
 
@@ -142,13 +143,7 @@ export class Docker extends Controller {
     const cont = await this.docker.getContainer(containerData.Id)
 
     Logger.info(`Removing container with ID ${cont.id}`)
-
-    // Called inside an iif to it doesn't holdup the response 
-    // Basically fire and forget
-    ;(async () => {
-      await cont.stop()
-      await cont.remove()
-    })()
+    removeContainer(cont)
 
     this.containers = Object.entries(this.containers)
       .reduce((acc, [ref, cont]:[string, TContainerData]) => {
@@ -170,14 +165,8 @@ export class Docker extends Controller {
     const removed = await Promise.all(
       containers.map(container => {
         if(container.Labels[CONDUCTOR_SUBDOMAIN_LABEL]){
-          try {
-            ;(async () => {
-              const cont = this.docker.getContainer(container.Id)
-              await cont.stop()
-              await cont.remove()
-            })()
-          }
-          catch(err){}
+          const cont = this.docker.getContainer(container.Id)
+          cont && removeContainer(cont)
 
           return container
         }

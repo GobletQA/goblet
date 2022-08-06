@@ -72,7 +72,6 @@ export type TPortsMap = Record<string, string>
 
 export type TProxyConfig = {
   host?: string
-  domain?:string
   proxy: Options
   hashKey: string
   timeout: number

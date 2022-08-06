@@ -1,10 +1,7 @@
-import { Express, Request, Response, NextFunction } from 'express'
-import { getApp } from '@gobletqa/shared/express/app'
-import type { Conductor } from '../conductor'
 import { hashString } from '@keg-hub/jsutils'
-
-// TODO: This may need to go on both routers, need to validate
-import { AppRouter } from '@gobletqa/conductor/server/routers'
+import type { Conductor } from '../conductor'
+import { getApp } from '@gobletqa/shared/express/app'
+import { Express, Request, Response, NextFunction } from 'express'
 
 export const setupAuthUser = (app:Express) => {
   app = app || getApp() as Express
