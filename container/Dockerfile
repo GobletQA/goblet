@@ -23,8 +23,6 @@ RUN yarn install --frozen-lockfile
 
 # ---- Build Stage ---- #
 FROM $GB_BASE_IMAGE as goblet-build
-ARG NPM_TOKEN
-ENV NPM_TOKEN=$NPM_TOKEN
 WORKDIR /goblet/app
 COPY --from=goblet-installer /goblet/app/ .
 COPY . .

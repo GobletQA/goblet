@@ -38,6 +38,7 @@ COPY --from=goblet-builder /goblet/app/repos/screencast/dist repos/screencast/di
 COPY --from=goblet-builder /goblet/app/repos/screencast/package.json repos/screencast/package.json
 COPY --from=goblet-builder /goblet/app/repos/screencast/node_modules repos/screencast/node_modules
 COPY --from=goblet-builder /goblet/app/repos/screencast/tsconfig.json repos/screencast/tsconfig.json
+COPY --from=goblet-builder /goblet/app/repos/screencast/configs/vnc.pm2.config.js repos/screencast/configs/vnc.pm2.config.js
 
 WORKDIR /usr/src/goblet/app/repos/screencast
 ARG GB_SC_PORT=7006

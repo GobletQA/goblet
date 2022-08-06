@@ -1,10 +1,7 @@
-require('../resolveRoot')
 const path = require('path')
-const { aliases } = require('@GConfigs/aliases.config')
 
-/** Path to the logs directory */
-const logDir = aliases[`@GLogs`]
-const scRoot = aliases[`@GSCRoot`]
+const scRoot = path.join(__dirname, `../`)
+const logDir = path.join(__dirname, `../../../logs`)
 
 module.exports = {
   apps : [
