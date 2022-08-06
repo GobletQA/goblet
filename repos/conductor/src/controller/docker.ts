@@ -7,6 +7,7 @@ import { noOp, isObj } from '@keg-hub/jsutils'
 import { buildImgUri } from '../utils/buildImgUri'
 import { dockerEvents } from '../utils/dockerEvents'
 import { buildPullOpts } from '../utils/buildPullOpts'
+import { hydrateRoutes } from '../utils/hydrateRoutes'
 import { CONDUCTOR_SUBDOMAIN_LABEL } from '../constants'
 import { Logger } from '@gobletqa/conductor/utils/logger'
 import { removeContainer } from '../utils/removeContainer'
@@ -19,6 +20,7 @@ import {
   TRunOpts,
   TPullOpts,
   TImgsConfig,
+  TDockerEvent,
   TRunResponse,
   TContainerRef,
   TDockerConfig,
@@ -50,7 +52,18 @@ export class Docker extends Controller {
     // List for docker events, and cleanup our local cache
     this.events = dockerEvents(this.docker, {
       destroy: this.removeFromCache,
+      start: this.hydrateSingle
     })
+  }
+
+  hydrateSingle = async (message:TDockerEvent) => {
+    Logger.info(`Hydrating container ${message?.Actor?.Attributes?.name} from start event`)
+
+    const id = message?.id as string
+    const containerInspect = await this.docker.getContainer(id).inspect() as TContainerInspect
+    this.containers[id] = containerInspect
+
+    hydrateRoutes(this, { [id]: containerInspect })
   }
 
   /**
@@ -76,6 +89,8 @@ export class Docker extends Controller {
 
     const hydrateCount = Object.keys(this.containers).length
     hydrateCount && Logger.info(`Hydrating ${hydrateCount} container(s) into runtime cache`)
+
+    hydrateRoutes(this, this.containers as Record<string, TContainerInspect>)
 
     return this.containers as Record<string, TContainerInspect>
   }
@@ -121,7 +136,7 @@ export class Docker extends Controller {
    * Removes a container from the runtime cache based on Id
    * @member Docker
    */
-  removeFromCache = (message:Record<any,any>) => {
+  removeFromCache = (message:TDockerEvent) => {
     Logger.info(`Removing container ${message?.Actor?.Attributes?.name} from cache`)
 
     this.containers = Object.entries(this.containers)
@@ -230,9 +245,6 @@ export class Docker extends Controller {
     // Start the container that was just created
     const containerInspect = await startContainer(image, container)
 
-    // Cache the container in runtime cache
-    this.containers[container.id] = containerInspect
-
     // Generate the urls for accessing the container
     Logger.info(`Generating container urls...`)
     const { meta, map } = generateUrls(
@@ -240,6 +252,8 @@ export class Docker extends Controller {
       portData.ports,
       this.conductor
     )
+    
+    this.routes[subdomain] = map
 
     return {
       map,

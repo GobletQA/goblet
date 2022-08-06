@@ -1,8 +1,10 @@
+import { Request } from 'express'
 import type { Conductor } from '../conductor'
 import { buildImgUri } from '../utils/buildImgUri'
 import { capitalize, deepMerge } from '@keg-hub/jsutils'
 import { checkImgConfig } from '../utils/checkImgConfig'
 import {
+  TUrlMap,
   TImgRef,
   TRunOpts,
   TPullOpts,
@@ -26,6 +28,7 @@ export class Controller {
   conductor: Conductor
   config: TControllerConfig
   containers:Record<string, TContainerData> = {}
+  routes: Record<string, Record<string, TUrlMap>> = {}
 
   constructor(conductor:Conductor, config:TControllerConfig){
     this.config = config
@@ -105,6 +108,19 @@ export class Controller {
   cleanup = async () => {
     throwOverrideErr()
     return undefined
+  }
+
+  getRoute = (req:Request) => {
+    const [port, subdomain] = (req.subdomains || []).reverse()
+    const routeData = this.routes?.[subdomain]?.[port]
+    if(routeData) return routeData
+
+    // Websocket connection don't seem to get the subdomains added the the request
+    // So we have to manually parse it from the host header
+    // There's probably a better way to do this, and may need to be investigated
+    const [ hPort, hSubdomain ] = req?.headers?.host.split(`.`)
+
+    return this.routes?.[hSubdomain]?.[hPort]
   }
 
   notFoundErr = (args:Record<string, string>) => {

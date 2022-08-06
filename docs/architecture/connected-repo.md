@@ -1,9 +1,9 @@
 # Connected Repo Steps
 
-
 ## Page Load
 
 ### Frontend
+
 * Pull repo from local storage if it exists
 * Clear out local storage
   * At this point we don't know if the repo is still mounted, even if in local storage
@@ -19,6 +19,5 @@
     * repo data should be returned in the response, so save it to the store
 
 ## Backend
-* On all to repoStatus endpoint
-  * 
 
+* On all to repoStatus endpoint

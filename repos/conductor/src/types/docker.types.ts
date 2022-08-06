@@ -39,3 +39,27 @@ export type TRunResponse = {
   urls?: Record<string, string>
   meta?: Record<string, any>
 }
+
+
+export type TDockerActorAttrs = {
+  image: string
+  name: string
+  [key:string]: string
+}
+
+export type TDockerEventActor = {
+  ID: string
+  Attributes: TDockerActorAttrs
+}
+
+export type TDockerEvent = {
+  id: string,
+  from: string,
+  Type: string,
+  time: number,
+  scope: string,
+  status: string
+  Action: string,
+  timeNano: number
+  Actor: TDockerEventActor,
+}

@@ -1,5 +1,5 @@
 import { generateUrls } from './generateUrls'
-import type { Conductor } from '../conductor'
+import type { Controller } from '../controller'
 import { TContainerInspect, TPortsMap } from '../types'
 import { CONDUCTOR_SUBDOMAIN_LABEL } from '../constants'
 
@@ -21,25 +21,25 @@ const buildPorts = (ports:TPorts):TPortsMap => {
   }, {})
 }
 
-export const routesFromContainer = (conductor:Conductor, container:TContainerInspect) => {
+export const routesFromContainer = (controller:Controller, container:TContainerInspect) => {
   const subdomain = container.Config.Labels[CONDUCTOR_SUBDOMAIN_LABEL]
   if(!subdomain) return
 
   const { map } = generateUrls(
     container,
     buildPorts(container.NetworkSettings.Ports),
-    conductor
+    controller.conductor
   )
 
-  conductor.routes[subdomain] = map
+  controller.routes[subdomain] = map
 }
 
 export const hydrateRoutes = (
-  conductor:Conductor,
+  controller:Controller,
   containers:Record<string, TContainerInspect>
 ) => {
   return Promise.all(
     Object.entries(containers)
-      .map(([key, container]) => routesFromContainer(conductor, container))
+      .map(([key, container]) => routesFromContainer(controller, container))
   )
 }

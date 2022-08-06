@@ -1,7 +1,7 @@
 import Dockerode from 'dockerode'
 import { Logger } from '@gobletqa/conductor/utils/logger'
 import DockerEvents from 'docker-events'
-import { TControllerEvts } from '../types'
+import { TControllerEvts, TDockerEvent } from '../types'
 import { checkCall, noOpObj } from '@keg-hub/jsutils'
 
 const eventTypes = [
@@ -22,7 +22,7 @@ export const dockerEvents = (docker:Dockerode, events:TControllerEvts=noOpObj):D
   const emitter = new DockerEvents({ docker })
 
   eventTypes.map(type => {
-    emitter.on(type, (message?:string) => {
+    emitter.on(type, (message?:TDockerEvent) => {
       Logger.log(`Docker-Api Event: "${type}"`)
       checkCall(events[type], message)
     })
