@@ -53,6 +53,10 @@ export const appConfig:TConductorOpts = {
           KEG_DOCKER_EXEC: `conductor`,
         },
         runtimeEnvs: {
+          // TODO: remove these once the frontend image is properly built
+          GB_BE_API_HOST: `urls.7005`,
+          GB_BE_API_PORT: `ports.7005`,
+
           GB_BE_HOST: `urls.7005`,
           GB_BE_PORT: `ports.7005`,
           GB_NO_VNC_PORT: `ports.26369`,
