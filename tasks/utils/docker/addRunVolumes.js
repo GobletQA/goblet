@@ -57,12 +57,14 @@ const checkLocalPath = (vol) => {
 const addRunVolumes = (params, envs, docFileCtx) => {
   const vols = resolveVols(params, envs, docFileCtx)
 
-  return vols.reduce((volArgs, vol) => {
+  return vols.reduce((acc, vol) => {
+    if(!vol) return acc
+    
     !vol.includes(`:`)
-      ? volArgs.push(`-v`, `${vol}:${vol}`)
-      : volArgs.push(`-v`, checkLocalPath(vol))
+      ? acc.push(`-v`, `${vol}:${vol}`)
+      : acc.push(`-v`, checkLocalPath(vol))
 
-    return volArgs
+    return acc
   }, [])
 }
 

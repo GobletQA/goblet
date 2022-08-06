@@ -60,12 +60,11 @@ const addRunPorts = (params, envs, docFileCtx) => {
   if (skipPortBind(params.ports)) return []
 
   return resolveAllPorts(params, envs, docFileCtx).reduce((acc, port) => {
-    port = isStr(port) ? port : `${port}`
+    if(!port || !isStr(port)) return acc
 
-    port &&
-      (port.includes(`:`) || port.includes(`/`)
-        ? acc.push(`-p`, port)
-        : acc.push(`-p`, `${port}:${port}`))
+    port.includes(`:`) || port.includes(`/`
+      ? acc.push(`-p`, port)
+      : acc.push(`-p`, `${port}:${port}`))
 
     return acc
   }, [])
