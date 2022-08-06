@@ -27,7 +27,6 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "start": "DEV_BUILD=1 node configs/build.config.js",
     "serve": "node dist/index.js",
-    "task": "node tasks/runTask.js",
     "validate": "tsc --noEmit",
     "watch": "nodemon --config configs/nodemon.be.json"
   },

@@ -29,7 +29,6 @@
     "sc:serve": "node dist/index.js",
     "serve": "yarn vnc:serve && yarn sc:serve",
     "start": "DEV_BUILD=1 node configs/build.config.js",
-    "task": "node tasks/runTask.js",
     "vnc:build": "node configs/vnc.build.config.js",
     "vnc:start": "DEV_BUILD=1 node configs/vnc.build.config.js",
     "vnc:serve": "pm2 start configs/vnc.pm2.config.js"
