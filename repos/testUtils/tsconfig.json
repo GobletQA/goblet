@@ -26,7 +26,9 @@
       "@gobletqa/shared": ["../shared/src"],
       "@gobletqa/shared/*": ["../shared/src/*"],
       "@gobletqa/screencast": ["../screencast/src"],
-      "@gobletqa/screencast/*": ["../screencast/src/*"]
+      "@gobletqa/screencast/*": ["../screencast/src/*"],
+      "@gobletqa/test-utils": ["src"],
+      "@gobletqa/test-utils/*": ["src/*"]
     }
   },
   "include": ["src/**/*"],

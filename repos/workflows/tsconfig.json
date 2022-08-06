@@ -5,7 +5,9 @@
     "outDir": "./dist",
     "paths": {
       "@GWF": ["src"],
-      "@GWFRoot": ["./."]
+      "@GWFRoot": ["./."],
+      "@gobletqa/workflows": ["src"],
+      "@gobletqa/workflows/*": ["src/*"]
     }
   },
   "include": ["src/**/*"],

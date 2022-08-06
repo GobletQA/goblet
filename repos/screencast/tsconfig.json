@@ -14,7 +14,9 @@
       "@GSC": ["src"],
       "@GSCRoot": ["./"],
       "@gobletqa/shared": ["../shared/src"],
-      "@gobletqa/shared/*": ["../shared/src/*"]
+      "@gobletqa/shared/*": ["../shared/src/*"],
+      "@gobletqa/screencast": ["src"],
+      "@gobletqa/screencast/*": ["src/*"]
     }
   },
   "include": ["src/**/*"],
