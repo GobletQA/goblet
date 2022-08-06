@@ -27,7 +27,7 @@ const parentNodeExists = (nodes, parentPath, newItem) => {
 
 /**
  * Gets the metadata of a path from the local filesystem
- * @param {string} filePath - full path to the folder or file i.e '/keg/tap/tests/bdd/features'
+ * @param {string} filePath - full path to the folder or file i.e '/goblet/app/tests/bdd/features'
  *
  * @returns {Object} - Meta data containing {name, parent, type ( folder || file )} properties
  */
@@ -45,7 +45,7 @@ const getPathMeta = async filePath => {
 
 /**
  * Transforms the paths string to a specific data object
- * @param {Array<string>} paths - full paths to the folder or file i.e '/keg/tap/tests/bdd/features'
+ * @param {Array<string>} paths - full paths to the folder or file i.e '/goblet/app/tests/bdd/features'
  *
  * @returns {Array<Object>} - each object has the form:
  *                            {id, location, children: [], modified}

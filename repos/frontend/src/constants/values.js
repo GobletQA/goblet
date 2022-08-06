@@ -16,7 +16,7 @@ let Values = deepFreeze({
     CREATE_NEW_FILE: 'Create New File',
     CREATE_NEW_REPO: 'Create New Repo',
     KEG_DOM_STYLES_ID: 'keg-dom-styles',
-    TAP_PATH_PREFIX: '/keg/tap',
+    TAP_PATH_PREFIX: '/goblet/app/repos',
     SCREENCAST_CANVAS: `screencast-canvas-element`,
     PARKIN_SPEC_RESULT_LOG: `------- PARKIN SPEC RESULT LOG -------`
   },

@@ -26,7 +26,7 @@ const syncFrontendConfig = (deployment) => (`
   disableDownload: true
   initialSync: mirrorLocal
   localSubPath: ../
-  containerPath: /app
+  containerPath: /goblet/app
   uploadExcludePaths:
   - /repos/backend
   - /repos/conductor
@@ -40,7 +40,7 @@ const syncBackendConfig = (deployment, extraIgnore) => (`
   disableDownload: true
   initialSync: mirrorLocal
   localSubPath: ../
-  containerPath: /app
+  containerPath: /goblet/app
   uploadExcludePaths:
   - /repos/admin
   - /repos/frontend

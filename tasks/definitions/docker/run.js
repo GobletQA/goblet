@@ -126,7 +126,7 @@ module.exports = {
       },
       cmd: {
         alias: ['command', 'cdm', 'cd'],
-        example: '--cmd "ls -ls /app"',
+        example: '--cmd "ls -ls /goblet/app"',
         description: `Override the default command of the docker image`,
       },
       ports: {

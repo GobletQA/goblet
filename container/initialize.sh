@@ -8,12 +8,12 @@ echo "Starting goblet application..."
 goblet_run_dev_yarn_install(){
   if [ "$GB_NM_INSTALL" == "all" ]; then
     echo "Running yarn install for all repos..."
-    cd /keg/tap
+    cd /goblet/app
     yarn install
 
   elif [ "$GB_NM_INSTALL" == "$GB_SUB_REPO" ]; then
     echo "Running yarn install for $GB_SUB_REPO..."
-    cd /keg/tap/repos/$GB_SUB_REPO
+    cd /goblet/app/repos/$GB_SUB_REPO
     yarn install
   fi
 }
@@ -36,7 +36,7 @@ gobletRunScreencast(){
 
   # Starts the screen cast servers when not using a websocket from the hostmachine
   if [[ "$GB_VNC_ACTIVE" == "true" || "$START_VNC_SERVER" ]]; then
-    cd /keg/tap/repos/screencast
+    cd /goblet/app/repos/screencast
     yarn sc:pm2 >> /proc/1/fd/1 &
   fi
 }
@@ -48,12 +48,12 @@ if [[ "$GOBLET_SUB_REPO" ]]; then
   gobletRunScreencast "$@"
 
   cd repos/$GOBLET_SUB_REPO
-  yarn pm2 >> /proc/1/fd/1 &
+  yarn start >> /proc/1/fd/1 &
 else
   # Start each of the services and canvas
-  yarn pm2
-  tail -f /keg/tap/logs/*.* >> /proc/1/fd/1 &
+  yarn start
+  tail -f /goblet/app/logs/*.* >> /proc/1/fd/1 &
 fi
 
 # Tail /dev/null to keep the container running
-tail -f /keg/tap/logs/*.* && exit 0;
+tail -f /goblet/app/logs/*.* && exit 0;

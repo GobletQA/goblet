@@ -28,7 +28,7 @@ ENV HOME=/root \
     PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
 
 # Set the current directory to tap repo
-WORKDIR /keg/tap
+WORKDIR /goblet/app
 
 # Install the dependecies with yarn setup, nstall gitFS
 RUN yarn global add pm2 npm-run-all expo-cli@$EXPO_CLI_VERSION; \

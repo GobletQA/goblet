@@ -54,7 +54,7 @@ module.exports = {
   paths: {
     /**
      * Path to the connected repo's root directory
-     * i.e. /keg/repos/<git-user-name>/current
+     * i.e. /goblet/repos/<git-user-name>/current
      * @type {string} - Absolute Path
      */
     // TODO IMPORTANT - This is pointing to the goblet root directory, needs fixed

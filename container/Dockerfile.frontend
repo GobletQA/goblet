@@ -6,7 +6,7 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 FROM $IMAGE_FROM AS goblet-pruner
 ARG NPM_TOKEN
 ENV NPM_TOKEN=$NPM_TOKEN
-WORKDIR /app
+WORKDIR /goblet/app
 RUN yarn global add turbo
 COPY . .
 RUN turbo prune --docker --scope=@gobletqa/frontend
@@ -14,18 +14,18 @@ RUN turbo prune --docker --scope=@gobletqa/frontend
 
 # ---- Install Dependencies Stage ---- #
 FROM $IMAGE_FROM AS goblet-installer
-WORKDIR /app
-COPY --from=goblet-pruner /app/out/json/ .
-COPY --from=goblet-pruner /app/out/yarn.lock ./yarn.lock
+WORKDIR /goblet/app
+COPY --from=goblet-pruner /goblet/app/out/json/ .
+COPY --from=goblet-pruner /goblet/app/out/yarn.lock ./yarn.lock
 RUN yarn install --frozen-lockfile
 # ---- End Stage ---- #
 
 # ---- Build App Stage ---- #
 FROM $IMAGE_FROM AS goblet-builder
-WORKDIR /app
-COPY --from=goblet-pruner /app/tsconfig* .
-COPY --from=goblet-pruner /app/out/full/ .
-COPY --from=goblet-installer /app/ .
+WORKDIR /goblet/app
+COPY --from=goblet-pruner /goblet/app/tsconfig* .
+COPY --from=goblet-pruner /goblet/app/out/full/ .
+COPY --from=goblet-installer /goblet/app/ .
 ENV NODE_ENV=production
 RUN yarn turbo run build --filter=@gobletqa/frontend
 # ---- End Stage ---- #
@@ -39,7 +39,7 @@ ARG GB_FE_PORT
 ENV NODE_ENV=production \
     GB_FE_PORT=$GB_FE_PORT
 
-COPY --from=goblet-builder /app/repos/frontend/build .
+COPY --from=goblet-builder /goblet/app/repos/frontend/build .
 COPY ./container/scripts/nginx.conf /etc/nginx/http.d/default.conf
 RUN sed -i "s/\$\{GB_FE_PORT\}/$GB_FE_PORT/g" /etc/nginx/http.d/default.conf
 

@@ -12,7 +12,7 @@ const fileUpload = async (selector, filePath, world) => {
   const handle = await page.$(selector)
   // TODO: Fix this step... needs a lot of work
   //restricting file path to /tests/bdd/support folder
-  const assetsFolder = '/keg/tap/tests/bdd/support'
+  const assetsFolder = '/goblet/app/tests/bdd/support'
   const fullFilePath = filePath.startsWith('/')
     ? assetsFolder + filePath
     : assetsFolder + '/' + filePath

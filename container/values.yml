@@ -42,7 +42,7 @@ env:
   GB_KUBE_NAMESPACE: gb-local
   GB_KUBE_CONTEXT: docker-desktop
   GB_GITFS_VER: 0.0.0
-  GB_SH_MOUNT_ROOT: /keg/repos
+  GB_SH_MOUNT_ROOT: /goblet/repos
   GB_SH_LOCAL_MOUNT: goblet-local/current
   GB_SERVER_ORIGINS: 'localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io'
   # TODO: @lance-tipton - Make this more dynamic - value comes from firebase?
@@ -114,7 +114,7 @@ env:
   GB_FE_DEPLOYMENT: goblet-frontend
   GB_FE_IMAGE: 'ghcr.io/gobletqa/goblet-frontend'
   # --- TODO: Update this as needed for deployments
-  GB_FE_ROOT_DIR: /keg/tap/repos/frontend
+  GB_FE_ROOT_DIR: /goblet/app/repos/frontend
 
 
 # --- CONDUCTOR ENVs --- #

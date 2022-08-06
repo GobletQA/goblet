@@ -8,7 +8,7 @@ const { buildWaypointEnvs } = require('@GTasks/utils/envs/buildWaypointEnvs')
 
 /**
  * Run task for waypoint scripts
- * node ./tasks/runTask.js waypoint run context=/keg/repos/lancetipton/current/goblet/waypoint/first.waypoint.js
+ * node ./tasks/runTask.js waypoint run context=/goblet/repos/lancetipton/current/goblet/waypoint/first.waypoint.js
  */
 const runWp = async args => {
   const { params, goblet, task } = args

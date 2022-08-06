@@ -2,7 +2,7 @@ import { Values } from 'HKConstants'
 const { SOCKR_MSG_TYPES } = Values
 
 export const testRunModelMock = {
-  file: '/keg/tap/tests/bdd/features/scrollSessions.feature',
+  file: '/goblet/app/tests/bdd/features/scrollSessions.feature',
   fileType: 'feature',
   lastRun: 1616084542851,
   exitCode: 1,

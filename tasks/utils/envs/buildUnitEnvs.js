@@ -28,7 +28,7 @@ const buildUnitEnvs = (browser, goblet, params, reportPath, type) => {
   // Set up html test reporting ENV for jest
   buildJestTestEnvs(browser, env, params.context, reportPath, type)
 
-  // Set the NODE_PATH env, defaults setting it to /keg/tap/node_modules
+  // Set the NODE_PATH env, defaults setting it to /goblet/app/node_modules
   setNodePath(env, true)
 
   return {env}

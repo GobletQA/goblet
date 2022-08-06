@@ -1,5 +1,5 @@
 const path = require('path')
-const { GB_SH_MOUNT_ROOT = `/keg/repos` } = process.env
+const { GB_SH_MOUNT_ROOT = `/goblet/repos` } = process.env
 
 /**
  * Gets the mount root directory

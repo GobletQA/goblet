@@ -3,7 +3,7 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 # ---- Prune App Stage ---- #
 FROM $IMAGE_FROM as goblet-pruner
-WORKDIR /app
+WORKDIR /goblet/app
 RUN yarn global add turbo
 COPY . .
 RUN turbo prune --docker --scope=@gobletqa/backend
@@ -13,17 +13,17 @@ COPY ./gobletRoot.js ./out/full/gobletRoot.js
 
 # ---- Install Stage ---- #
 FROM $IMAGE_FROM as goblet-installer
-WORKDIR /app
-COPY --from=goblet-pruner /app/out/json/ .
-COPY --from=goblet-pruner /app/out/yarn.lock ./yarn.lock
+WORKDIR /goblet/app
+COPY --from=goblet-pruner /goblet/app/out/json/ .
+COPY --from=goblet-pruner /goblet/app/out/yarn.lock ./yarn.lock
 RUN yarn install --frozen-lockfile
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
 FROM $IMAGE_FROM as goblet-builder
-WORKDIR /app
-COPY --from=goblet-pruner /app/out/full/ .
-COPY --from=goblet-installer /app/ .
+WORKDIR /goblet/app
+COPY --from=goblet-pruner /goblet/app/out/full/ .
+COPY --from=goblet-installer /goblet/app/ .
 RUN yarn global add turbo
 RUN turbo run build --filter=@gobletqa/backend && \
     yarn install --frozen-lockfile --production
@@ -31,15 +31,15 @@ RUN turbo run build --filter=@gobletqa/backend && \
 
 # ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
-WORKDIR /usr/src/app
-COPY --from=goblet-builder /app/node_modules node_modules
-COPY --from=goblet-builder /app/repos/backend/dist repos/backend/dist
-COPY --from=goblet-builder /app/repos/backend/package.json repos/backend/package.json
-COPY --from=goblet-builder /app/repos/backend/node_modules repos/backend/node_modules
-COPY --from=goblet-builder /app/repos/backend/tsconfig.json repos/backend/tsconfig.json
-COPY --from=goblet-builder /app/repos/shared/src/templates repos/backend/templates
+WORKDIR /usr/src/goblet/app
+COPY --from=goblet-builder /goblet/app/node_modules node_modules
+COPY --from=goblet-builder /goblet/app/repos/backend/dist repos/backend/dist
+COPY --from=goblet-builder /goblet/app/repos/backend/package.json repos/backend/package.json
+COPY --from=goblet-builder /goblet/app/repos/backend/node_modules repos/backend/node_modules
+COPY --from=goblet-builder /goblet/app/repos/backend/tsconfig.json repos/backend/tsconfig.json
+COPY --from=goblet-builder /goblet/app/repos/shared/src/templates repos/backend/templates
 
-WORKDIR /usr/src/app/repos/backend
+WORKDIR /usr/src/goblet/app/repos/backend
 ARG GB_BE_PORT=7005
 ENV GB_BE_PORT=$GB_BE_PORT
 EXPOSE $GB_BE_PORT

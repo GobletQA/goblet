@@ -52,7 +52,7 @@ const { getFirebaseProject } = require('../firebase/getFirebaseProject')
     params: {
       ...args.params,
       action: `tap:bundle`,
-      workdir: `/keg/tap`,
+      workdir: `/goblet/app`,
       log: true,
     },
   }))
@@ -72,7 +72,7 @@ const { getFirebaseProject } = require('../firebase/getFirebaseProject')
     local: distDir,
     container: envs.CONTAINER_NAME,
     // Copy directly from the web-build export in keg-core
-    remote: `/keg/tap/node_modules/keg-core/web-build/.`,
+    remote: `/goblet/app/node_modules/keg-core/web-build/.`,
   })
 }
 
