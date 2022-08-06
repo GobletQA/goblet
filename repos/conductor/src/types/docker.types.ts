@@ -7,6 +7,22 @@ import {
   ContainerInspectInfo,
 } from 'dockerode'
 
+export type TDockerAuth = {
+  key?: string
+  auth?: string,
+  email?: string,
+  username?: string,
+  password?: string,
+  serveraddress?: string
+}
+
+export type TPullOpts = {
+  [key:string]: any
+  authconfig: TDockerAuth
+}
+
+export type TContainerLabels = Record<string, string>
+
 export type TContainerInspect = ContainerInspectInfo & {}
 export type TContainerInfo = ContainerInfo & {
   Name: string

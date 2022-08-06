@@ -1,4 +1,5 @@
-import { TPorts, TImgConfig, TContainerConfig, TLogLevel, TControllerType } from './conductor.types'
+import { TControllerType } from './controller.types'
+import { TImgConfig, TContainerConfig, TLogLevel } from './conductor.types'
 
 export type TContainerOpts = TContainerConfig & {}
 

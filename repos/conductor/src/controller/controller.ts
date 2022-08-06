@@ -85,6 +85,11 @@ export class Controller {
     return undefined
   }
 
+  hydrateSingle = async (data:any) => {
+    throwOverrideErr()
+    return undefined
+  }
+
   pull = async (imageRef:TImgRef, pullOpts?:TPullOpts) => {
     throwOverrideErr()
     return undefined

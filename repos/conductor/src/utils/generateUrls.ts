@@ -68,14 +68,13 @@ export const generateUrls = (
 
   return Object.entries(ports).reduce((acc, [cPort, hPort]:[string, string]) => {
     const route = buildRoute(ipAddress, cPort, hPort, conductor)
-    acc.map[cPort] = {
-      route,
-      // Build the route, that the proxy should route to => i.e. forward incoming traffic to here
-      // internal: `${route.protocol}//${route.host}:${route.port}`,
-      internal: isDocker
+    // Build the route, that the proxy should route to => i.e. forward incoming traffic to here
+    // internal: `${route.protocol}//${route.host}:${route.port}`,
+    const internal = isDocker
         ? `${route.protocol}//${route.host}:${route.port}`
-        : `${route.protocol}//${domain}:${route.port}`,
-    }
+        : `${route.protocol}//${domain}:${route.port}`
+        
+    acc.map[cPort] = { route, internal }
 
     return acc
   }, {
