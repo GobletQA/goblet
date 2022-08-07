@@ -1,9 +1,9 @@
-const path = require('path')
-const { appRoot, scriptsDir } = require('../../paths')
-const { docker, Logger } = require('@keg-hub/cli-utils')
+const { appRoot } = require('../../paths')
+const { docker } = require('../../utils/docker/docker')
 const { loadEnvs } = require('../../utils/envs/loadEnvs')
 const { getNpmToken } = require('../../utils/envs/getNpmToken')
 const { setupBuildX } = require('../../utils/docker/setupBuildX')
+const { docker:dockerCmd, Logger } = require('@keg-hub/cli-utils')
 const { toBuildArgsArr } = require('../../utils/docker/buildArgs')
 const { addPlatforms } = require('../../utils/docker/addPlatforms')
 const { getDockerFile } = require('../../utils/docker/getDockerFile')
@@ -12,8 +12,6 @@ const { resolveContext } = require('../../utils/kubectl/resolveContext')
 const { getDockerLabels } = require('../../utils/docker/getDockerLabels')
 const { getContextValue } = require('../../utils/helpers/getContextValue')
 const { getDockerBuildParams } = require('../../utils/docker/getDockerBuildParams')
-
-const { dockerLogin } = require(path.join(scriptsDir, 'js/dockerLogin'))
 
 /**
  * Looks for a custom IMAGE_FROM value based on the context or custom context env
@@ -72,7 +70,7 @@ const buildImg = async (args) => {
   // Ensure we are logged into docker
   // Uses the DOCKER_REGISTRY env or the final images name to get the registry url to log into
   const registryUrl = envs.DOCKER_REGISTRY || imageName.split('/').shift()
-  await dockerLogin(token, registryUrl)
+  await docker.login(token, registryUrl)
 
   // Set the custom base image based on the from option and context
   allEnvs.IMAGE_FROM = resolveImgFrom(docFileCtx, allEnvs, from, imageName)
@@ -93,7 +91,7 @@ const buildImg = async (args) => {
 
   log && Logger.pair(`Running Cmd:`, `docker ${cmdArgs.join(' ')}\n`)
 
-  const output = await docker(cmdArgs, { cwd: appRoot, env: allEnvs })
+  const output = await dockerCmd(cmdArgs, { cwd: appRoot, env: allEnvs })
   if (!log) return
 
   output

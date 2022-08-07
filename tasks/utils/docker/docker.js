@@ -1,10 +1,13 @@
-const { appRoot } = require('../../paths')
+const path = require('path')
 const { loadEnvs } = require('../envs/loadEnvs')
 const { addPlatforms } = require('./addPlatforms')
+const { appRoot, scriptsDir } = require('../../paths')
 const { docker: dockerCmd, Logger } = require('@keg-hub/cli-utils')
+const { dockerLogin } = require(path.join(scriptsDir, 'js/dockerLogin'))
 const {
   isStr,
   isObj,
+  isArr,
   noOpObj,
   noPropArr,
   deepMerge,
@@ -99,8 +102,10 @@ const dockerExec = async (cmd, preArgs, postArgs, opts) => {
   return await dockerCmd(cmdArgs, options, cwd)
 }
 
-const login = async (args=noPropArr, options=noOpObj, cwd=appRoot) => {
-  return await dockerCmd(['login', ...args], options, cwd)
+const login = async (...args) => {
+  return !isArr(args[0]) && (!args[1] || isStr(args[1]))
+    ? await dockerLogin(...args)
+    : await dockerCmd(['login', ...args[0]], args[1], args[2])
 }
 
 const createContext = async (args, options=noOpObj, cwd=appRoot) => {
@@ -116,6 +121,7 @@ docker.run = (...args) => docker('run', ...args)
 docker.stop = (...args) => docker('stop', ...args)
 docker.remove = (...args) => docker('rm', ...args)
 docker.exec = (...args) => docker('exec', ...args)
+docker.pull = (...args) => dockerCmd(['pull', ...toArr(args.shift())], ...args)
 docker.build = (...args) => buildX('build', (...args) => docker(...args), ...args)
 docker.attach = docker.exec
 docker.login = login

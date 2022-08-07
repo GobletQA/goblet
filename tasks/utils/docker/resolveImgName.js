@@ -27,6 +27,7 @@ const resolveImgName = (params, docFileCtx, envs) => {
         sc: envs.GB_SC_IMAGE,
         px: envs.GB_PX_IMAGE,
         db: envs.GB_DB_IMAGE,
+        bs: envs.GB_IMAGE_FROM,
       },
       envs.IMAGE
     )
@@ -39,13 +40,16 @@ const resolveImgName = (params, docFileCtx, envs) => {
   // If it has a /, then it's a full image url, so just return it
   if (imgName.includes(`/`)) return imgName
 
-  // Otherwise parse the default envs.IMAGE value to get the provider url
-  // Then add the image name to the provider url
-  const imgSplit = (envs.DOCKER_REGISTRY || envs.IMAGE).split('/')
-  imgSplit.pop()
-  imgSplit.push(imgName)
+  // Try to find the image registry to use
+  const registry = params.registry
+    || envs.DOCKER_REGISTRY
+    || envs.IMAGE.split('/').shift()
 
-  return imgSplit.join('/')
+  // If there's a registry, add it to the image name
+  // Otherwise just return the image name
+  return registry
+    ? path.join(registry, imgName)
+    : imgName
 }
 
 module.exports = {

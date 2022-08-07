@@ -1,9 +1,8 @@
-const path = require('path')
-const { scriptsDir } = require('../../paths')
 const { Logger } = require('@keg-hub/cli-utils')
+const { docker } = require('../../utils/docker/docker')
 const { loadEnvs } = require('../../utils/envs/loadEnvs')
 const { getNpmToken } = require('../../utils/envs/getNpmToken')
-const { dockerLogin } = require(path.join(scriptsDir, 'js/dockerLogin'))
+
 
 /**
  * Login into the docker container registry relative to the docker image name
@@ -25,7 +24,7 @@ const docLogin = async (args) => {
   const token = params.token || getNpmToken()
   const registryUrl = registry || envs.DOCKER_REGISTRY || envs.IMAGE.split('/').shift()
 
-  const output = await dockerLogin(token, registryUrl)
+  const output = await docker.login(token, registryUrl)
   log && Logger.log(output)
 
   return output

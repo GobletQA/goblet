@@ -5,6 +5,7 @@ module.exports = {
     tasks: {
       ...require('./build'),
       ...require('./login'),
+      ...require('./pull'),
       ...require('./run'),
     },
   },
