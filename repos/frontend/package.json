@@ -29,7 +29,7 @@
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "rm:dist": "rm -rf dist",
-    "start": "cd node_modules/keg-core; yarn tap:start"
+    "start": "cd ../../node_modules/keg-core; yarn web"
   },
   "resolutions": {
     "@keg-hub/cli-utils": "0.7.0",

@@ -22,7 +22,7 @@ module.exports = {
     envs: {
       'process.env.NODE_ENV': NODE_ENV,
       'process.env.GB_BE_HOST': config.server.host,
-      'process.env.GB_NO_VNC_PATH': config.proxy.path,
+      'process.env.GB_NO_VNC_PATH': config.screencast.proxy.path,
       'process.env.GB_AUTH_ACTIVE': GB_AUTH_ACTIVE,
       'process.env.GB_PW_SOCKET_ACTIVE': GB_PW_SOCKET_ACTIVE,
       'process.env.GB_GITHUB_CLIENT_ID': GB_GITHUB_CLIENT_ID,

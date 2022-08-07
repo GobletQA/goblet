@@ -22,6 +22,7 @@ const resolveVols = ({ volumes }, envs, docFileCtx) => {
         sc: envs.GB_SC_DOC_VOLUMES,
         px: envs.GB_PX_DOC_VOLUMES,
         db: envs.GB_DB_DOC_VOLUMES,
+        app: envs.GB_APP_DOC_VOLUMES,
       },
       ``
     ).split(`,`)
@@ -39,9 +40,11 @@ const checkLocalPath = (vol) => {
 
   const source = local.startsWith(`~`)
     ? local.replace(`~`, homeDir) 
-    : local.startsWith(`./`)
-      ? local.replace(`./`, `${appRoot}/`)
-      : local
+    : local === `.`
+      ? appRoot
+      : local.startsWith(`./`)
+        ? local.replace(`./`, `${appRoot}/`)
+        : local
 
   return `${source}:${rest.join(`:`)}`
 }

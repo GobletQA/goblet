@@ -39,4 +39,4 @@ else
 fi
 
 # Tail /dev/null to keep the container running
-tail -f /goblet/app/logs/*.* && exit 0;
+tail -f /dev/null && exit 0;

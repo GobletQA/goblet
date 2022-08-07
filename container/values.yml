@@ -67,6 +67,9 @@ env:
   GB_LOG_PRETTY_PRINT: true
   GB_LOG_HANDLE_EXCEPTION: true
 
+# ---- App Development ENVs ---- #
+  # GB_APP_DOC_VOLUMES: ".:/goblet/app"
+
 # ---- Backend ENVs ---- #
   GB_BE_PORT: 7005
   GB_BE_SECURE_PORT: 443

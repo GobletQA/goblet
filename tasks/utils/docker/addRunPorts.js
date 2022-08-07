@@ -1,5 +1,5 @@
-const { ensureArr, isArr, toBool, isStr } = require('@keg-hub/jsutils')
 const { resolveContext } = require('../../utils/kubectl/resolveContext')
+const { ensureArr, toBool, isStr, isNum, toStr, noPropArr } = require('@keg-hub/jsutils')
 
 /**
  * Finds the ports to bind from the localhost to a docker container
@@ -23,19 +23,21 @@ const resolveAllPorts = (params, envs, docFileCtx) => {
         sc: envs.GB_SC_PORT,
         px: envs.GB_PX_PORT,
         db: envs.GB_DB_PORT,
+        app: [
+          envs.GB_BE_PORT,
+          envs.GB_FE_PORT,
+          envs.GB_CD_PORT,
+          envs.GB_SC_PORT,
+          envs.GB_DB_PORT,
+          envs.GB_PX_PORT
+        ]
       },
-      [
-        envs.GB_BE_PORT,
-        envs.GB_FE_PORT,
-        envs.GB_CD_PORT,
-        envs.GB_SC_PORT,
-        envs.GB_DB_PORT,
-        envs.GB_PX_PORT
-      ]
+      noPropArr
     )
   )
 
-  return paramPorts.concat(envPorts)
+  const toAdd = isStr(envPorts) ? envPorts.split(`,`) : envPorts
+  return toAdd.length ? paramPorts.concat(toAdd) : paramPorts
 }
 
 /**
@@ -44,8 +46,8 @@ const resolveAllPorts = (params, envs, docFileCtx) => {
  *
  * @returns {Boolean} - True if ports should be bound
  */
-const skipPortBind = (ports) => {
-  return Boolean(!isArr(ports) || ports.map(toBool).includes(false))
+const skipPortBind = (ports=noPropArr) => {
+  return ports.map(toBool).includes(false)
 }
 
 /**
@@ -57,17 +59,19 @@ const skipPortBind = (ports) => {
  * @returns {Array} - Formatted port arguments to pass to the docker run cli
  */
 const addRunPorts = (params, envs, docFileCtx) => {
-  if (skipPortBind(params.ports)) return []
+  if(skipPortBind(params.ports)) return noPropArr
 
-  return resolveAllPorts(params, envs, docFileCtx).reduce((acc, port) => {
-    if(!port || !isStr(port)) return acc
+  return resolveAllPorts(params, envs, docFileCtx)
+    .map(p =>  p && toStr(p))
+    .reduce((acc, port) => {
+      if(!port || (!isStr(port) && !isNum(port))) return acc
 
-    port.includes(`:`) || port.includes(`/`
-      ? acc.push(`-p`, port)
-      : acc.push(`-p`, `${port}:${port}`))
+      port.includes(`:`) || port.includes(`/`)
+        ? acc.push(`-p`, port)
+        : acc.push(`-p`, `${port}:${port}`)
 
-    return acc
-  }, [])
+      return acc
+    }, [])
 }
 
 module.exports = {
