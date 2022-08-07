@@ -37,23 +37,6 @@ module.exports = {
       }),
     },
     cli: {
-      publish: {
-        goblet: {
-          tasks: {
-            install: true,
-            test: true,
-            build: true,
-            publish: true,
-            commit: true,
-          },
-          tap: true,
-          name: 'goblet',
-          dependent: false,
-          order: {
-            0: '@gobletqa/goblet',
-          },
-        },
-      },
       paths: {
         container: `./container`,
         repos: `./repos`,

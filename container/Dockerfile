@@ -41,6 +41,6 @@ ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
 COPY . .
 COPY --from=goblet-installer /goblet/app /goblet/app
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
-    ln -s /goblet/app/node_modules /keg/node_modules
+    ln -s /goblet/app/node_modules /goblet/node_modules
 
 CMD [ "/bin/bash", "container/initialize.sh" ]

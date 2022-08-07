@@ -7,7 +7,7 @@ const bundleCmd = `web:bundle`
 /**
  * **IMPORTANT** - Called from within the docker container when using the deploy task
  *
- * Builds the frontend application, then copies it to the app-root/dist/tap directory
+ * Builds the frontend application, then copies it to the app-root/dist/app directory
  * @function
  * @public
  * @param {Object} args.params - Options passed to the task parsed as an object
@@ -26,11 +26,11 @@ const buildFrontend = async args => {
   await runCmd(`apt`, [`install`, `-y`, `g++`, `make`], { ...cmdOpts })
   await yarn([`global`, `add`, `sharp-cli`], cmdOpts)
 
-  // Build the tap frontend application
+  // Build the goblet frontend application
   log && Logger.pair(`Running frontend build command`, `yarn ${bundleCmd}`)
   await yarn([bundleCmd], cmdOpts)
 
-  // Copy the build from the keg-core directory to the taps dist directory
+  // Copy the build from the keg-core directory to the apps dist directory
   log && Logger.pair(`\nMoving build artifacts to`, distDir)
   fileSys.copySync(coreBuildDir, distDir)
   

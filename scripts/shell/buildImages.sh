@@ -6,36 +6,49 @@ if [ "$1" ]; then
   BUILD_IMGS=$1
 fi
 
+
+BUILD_ARGS=""
+if [ "$2" ]; then
+  BUILD_IMGS="${@:2}"
+fi
+
+
+if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "base" ] || [ "$BUILD_IMGS" == "bs" ]; then
+  echo "Building Base Docker Iamge ..."
+  echo ""
+  yarn doc build --context base "$BUILD_ARGS"
+fi
+
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "app" ]; then
   echo "Building Base Docker Iamge ..."
   echo ""
-  yarn doc build --no-push
+  yarn doc build "$BUILD_ARGS"
 fi
 
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "backend" ] || [ "$BUILD_IMGS" == "be" ]; then
   echo ""
   echo "Building Backend Docker Iamge ..."
   echo ""
-  yarn doc build --context backend --no-push
+  yarn doc build --context backend "$BUILD_ARGS"
 fi
 
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "frontend" ] || [ "$BUILD_IMGS" == "fe" ]; then
   echo ""
   echo "Building Frontend Docker Iamge ..."
   echo ""
-  yarn doc build --context frontend --no-push
+  yarn doc build --context frontend "$BUILD_ARGS"
 fi
 
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "conductor" ] || [ "$BUILD_IMGS" == "cd" ]; then
   echo "Building Proxy Docker Iamge ..."
   echo ""
-  yarn doc build --context conductor --no-push
+  yarn doc build --context conductor "$BUILD_ARGS"
 fi
 
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "screencast" ] || [ "$BUILD_IMGS" == "sc" ]; then
   echo "Building Proxy Docker Iamge ..."
   echo ""
-  yarn doc build --context screencast --no-push
+  yarn doc build --context screencast "$BUILD_ARGS"
 fi
 
 echo ""

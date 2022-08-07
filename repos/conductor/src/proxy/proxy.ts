@@ -29,7 +29,7 @@ const mapResponseHeaders = (proxyRes, res) => {
 /**
  * Global proxy handler. Any request that reach here, get passed on to a container via the proxy
  * It's not documented anywhere, but if null is returned, the express app router handles the request
- * This allows the `<domain>/tap-proxy/**` routes to work
+ * This allows the `<domain>/proxy/**` routes to work
  * @function
  * 
  * @returns {Object} - Contains the port and host ip address to proxy the request to

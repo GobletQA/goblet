@@ -5,7 +5,7 @@ const nodePath = require('path')
 
 /**
  * @param {String} path - client app path
- * @returns {String} - tap alias for tap at path
+ * @returns {String} - frontend alias as a tap at the current path
  */
 const getAppAlias = path =>
   get(getTapConfig({ path: nodePath.resolve(path) })[0], 'keg.alias')
