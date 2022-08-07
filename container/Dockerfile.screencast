@@ -6,8 +6,12 @@ FROM $IMAGE_FROM as goblet-pruner
 WORKDIR /goblet/app
 RUN yarn global add turbo
 COPY . .
-RUN turbo prune --docker --scope=@gobletqa/screencast
+# The test-utils repo has a dependecy on the screencast repo
+# So by pruning the test-utils repo, we get the screencast repo
+# Plus all other code needed to execute tests
+RUN turbo prune --docker --scope=@gobletqa/test-utils
 COPY ./configs ./out/full/configs
+COPY ./tasks ./out/full/tasks
 COPY ./gobletRoot.js ./out/full/gobletRoot.js
 # ---- End Stage ---- #
 
@@ -33,12 +37,7 @@ RUN turbo run build --filter=@gobletqa/screencast && \
 FROM $IMAGE_FROM as goblet-runner
 WORKDIR /usr/src/goblet/app
 
-COPY --from=goblet-builder /goblet/app/node_modules node_modules
-COPY --from=goblet-builder /goblet/app/repos/screencast/dist repos/screencast/dist
-COPY --from=goblet-builder /goblet/app/repos/screencast/package.json repos/screencast/package.json
-COPY --from=goblet-builder /goblet/app/repos/screencast/node_modules repos/screencast/node_modules
-COPY --from=goblet-builder /goblet/app/repos/screencast/tsconfig.json repos/screencast/tsconfig.json
-COPY --from=goblet-builder /goblet/app/repos/screencast/configs/vnc.pm2.config.js repos/screencast/configs/vnc.pm2.config.js
+COPY --from=goblet-builder /goblet/app/. .
 
 WORKDIR /usr/src/goblet/app/repos/screencast
 ARG GB_SC_PORT=7006
