@@ -1,7 +1,7 @@
 const { get } = require('@keg-hub/jsutils')
 const { Logger } = require('@keg-hub/cli-utils')
 const { pm2Status } = require('../../utils/process/command')
-const { devspaceRunning } = require('../../utils/devspace/devspaceRunning')
+const { devspace } = require('../../utils/devspace/devspace')
 
 const STOPPED = Logger.colors.red(`Stopped`)
 const RUNNING = Logger.colors.green(`Running`)
@@ -29,7 +29,7 @@ const getPm2Status = async () => {
  * @returns {Object} - Status metadata of devspace
  */
 const getDevspaceStatus = async (params) => {
-  const devspacePod = await devspaceRunning({ ...params, exec: true })
+  const devspacePod = await devspace.running({ ...params, exec: true })
   return !devspacePod
     ? { 'Devspace        ': { status: STOPPED } }
     : {

@@ -1,4 +1,4 @@
-const { devspaceEnter } = require('../../utils/devspace/devspaceEnter')
+const { devspace } = require('../../utils/devspace/devspace')
 
 /**
  * Run the devspace enter command to attach to a running pod
@@ -13,7 +13,7 @@ const { devspaceEnter } = require('../../utils/devspace/devspaceEnter')
  * @returns {void}
  */
 const attach = async ({ params }) => {
-  return await devspaceEnter(params)
+  return await devspace.enter(params)
 }
 
 module.exports = {

@@ -1,5 +1,5 @@
 const { containerDir } = require('../../paths')
-const { devspaceRun } = require('../../utils/devspace/devspaceRun')
+const { devspace } = require('../../utils/devspace/devspace')
 
 /**
  * Log the output of a running kubernetes pod
@@ -18,7 +18,7 @@ const run = async ({ params }) => {
    * Devspace requires the command be run from the same dir as the devspace.yml file
    * Seems to be a bug, but it's the only way it works even with the --config path set
    */
-  return await devspaceRun({ ...params, cwd: containerDir })
+  return await devspace.run({ ...params, cwd: containerDir })
 }
 
 module.exports = {

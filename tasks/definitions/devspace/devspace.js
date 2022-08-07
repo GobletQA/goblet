@@ -4,7 +4,6 @@ module.exports = {
     alias: ['ds', 'dev'],
     tasks: {
       ...require('./attach'),
-      ...require('./build'),
       ...require('./clean'),
       ...require('./cmd'),
       ...require('./deploy'),

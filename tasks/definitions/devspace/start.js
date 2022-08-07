@@ -1,6 +1,6 @@
 const { getNpmToken } = require('../../utils/envs')
 const { exists, isBool, isStr } = require('@keg-hub/jsutils')
-const { devspaceStart } = require('../../utils/devspace/devspaceStart')
+const { devspace } = require('../../utils/devspace/devspace')
 const { resolveContext } = require('../../utils/kubectl/resolveContext')
 const { getDeployments } = require('../../utils/devspace/getDeployments')
 
@@ -76,7 +76,7 @@ const start = async ({ params, task }) => {
   const deployments = getDeployments(context, skip, params.env)
 
   getNpmToken()
-  return await devspaceStart({ ...altParams, deployments }, { daemon, watch })
+  return await devspace.start({ ...altParams, deployments }, { daemon, watch })
 }
 
 module.exports = {

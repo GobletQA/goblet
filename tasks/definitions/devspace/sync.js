@@ -1,4 +1,4 @@
-const { devspaceSync } = require('../../utils/devspace/devspaceSync')
+const { devspace } = require('../../utils/devspace/devspace')
 
 /**
  * Runs the sync script to sync local and container files
@@ -13,7 +13,7 @@ const { devspaceSync } = require('../../utils/devspace/devspaceSync')
  * @returns {void}
  */
 const sync = async (args) => {
-  return await devspaceSync(args.params)
+  return await devspace.sync(args.params)
 }
 
 module.exports = {

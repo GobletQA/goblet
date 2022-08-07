@@ -1,4 +1,4 @@
-const { devspaceLogs } = require('../../utils/devspace/devspaceLogs')
+const { devspace } = require('../../utils/devspace/devspace')
 
 /**
  * Log the output of a running kubernetes pod
@@ -13,7 +13,7 @@ const { devspaceLogs } = require('../../utils/devspace/devspaceLogs')
  * @returns {void}
  */
 const logOutput = async ({ params }) => {
-  return await devspaceLogs(params)
+  return await devspace.logs(params)
 }
 
 module.exports = {

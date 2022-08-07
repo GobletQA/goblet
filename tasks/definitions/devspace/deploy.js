@@ -1,5 +1,5 @@
 const { getNpmToken } = require('../../utils/envs')
-const { devspaceDeploy } = require('../../utils/devspace/devspaceDeploy')
+const { devspace } = require('../../utils/devspace/devspace')
 
 /**
  * Start devspace environment
@@ -15,7 +15,7 @@ const { devspaceDeploy } = require('../../utils/devspace/devspaceDeploy')
  */
 const deploy = async ({ params }) => {
   getNpmToken()
-  return await devspaceDeploy(params)
+  return await devspace.deploy(params)
 }
 
 module.exports = {

@@ -1,8 +1,7 @@
 const { Logger } = require('@keg-hub/cli-utils')
+const { devspace } = require('../../utils/devspace/devspace')
 const { cleanPm2Daemon } = require('../../utils/process/command')
-const { devspacePurge } = require('../../utils/devspace/devspacePurge')
 const { removeCacheDir } = require('../../utils/devspace/removeCacheDir')
-const { devspaceCleanImgs } = require('../../utils/devspace/devspaceCleanImgs')
 
 /**
  * Cleans the devspace environment and lingering images that may not be needed
@@ -21,8 +20,8 @@ const clean = async (args) => {
   params.log && Logger.info(`\nCleaning Dev Environment...`)
   daemon && (await cleanPm2Daemon(`devspace-dev`, { exec: true }))
 
-  await devspacePurge(params)
-  params.images && (await devspaceCleanImgs(params))
+  await devspace.purge(params)
+  params.images && (await devspace.cleanImgs(params))
   params.cache && (await removeCacheDir(params))
 
   params.log && Logger.success(`\nFinished cleaning Dev Environment\n`)
