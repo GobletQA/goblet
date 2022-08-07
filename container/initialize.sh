@@ -37,10 +37,9 @@ if [ "$GOBLET_SUB_REPO" ]; then
   yarn start >> /proc/1/fd/1 &
 else
   # Start each of the services via pm2
-  yarn start & 
-  tail -f /goblet/app/logs/*.* >> /proc/1/fd/1 &
+  yarn start
+  tail -f /goblet/app/logs/*.log >> /proc/1/fd/1 &
 fi
 
-# Tail /dev/null to keep the container running
-# tail -f /dev/null && exit 0;
-tail -f /goblet/app/logs/*.* && exit 0;
+# Tail the logs dir to keep the container running
+tail -f /goblet/app/logs/*.log && exit 0;
