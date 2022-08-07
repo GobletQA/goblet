@@ -52,13 +52,11 @@ env:
   # ---- Docker Images ---- #
   # Image tags added to all built images
   GB_IMAGE_BUILD_TAGS: values,package
-  # This image is built using the GB_BASE_IMAGE_FROM value
-  # Which outputs the goblet-base:develop image
+  # The goblet base image is built using the GB_BASE_IMAGE_FROM value
+  # Which outputs the goblet-base:latest image
   GB_BASE_IMAGE_FROM: mcr.microsoft.com/playwright:v1.23.4-focal
-  GB_BASE_IMAGE: ghcr.io/gobletqa/goblet-base
-
-  # Then, all sub goblet images are built from this image
-  GB_IMAGE_FROM: ghcr.io/gobletqa/goblet-base:develop
+  # Then, all sub goblet images are built from the goblet-base image
+  GB_IMAGE_FROM: ghcr.io/gobletqa/goblet-base:latest
 
   # ---- Logger ENVs ---- #
   # Enable to set custom log-level for conductor

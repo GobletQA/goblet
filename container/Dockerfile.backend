@@ -1,4 +1,4 @@
-ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:develop
+ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 # ---- Prune App Stage ---- #

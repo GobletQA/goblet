@@ -2,7 +2,6 @@ const path = require('path')
 const { appRoot, scriptsDir } = require('../../paths')
 const { docker, Logger } = require('@keg-hub/cli-utils')
 const { loadEnvs } = require('../../utils/envs/loadEnvs')
-const { getContext } = require('../../utils/helpers/contexts')
 const { getNpmToken } = require('../../utils/envs/getNpmToken')
 const { setupBuildX } = require('../../utils/docker/setupBuildX')
 const { toBuildArgsArr } = require('../../utils/docker/buildArgs')
@@ -11,6 +10,7 @@ const { getDockerFile } = require('../../utils/docker/getDockerFile')
 const { resolveImgTags } = require('../../utils/docker/resolveImgTags')
 const { resolveContext } = require('../../utils/kubectl/resolveContext')
 const { getDockerLabels } = require('../../utils/docker/getDockerLabels')
+const { getContextValue } = require('../../utils/helpers/getContextValue')
 const { getDockerBuildParams } = require('../../utils/docker/getDockerBuildParams')
 
 const { dockerLogin } = require(path.join(scriptsDir, 'js/dockerLogin'))
@@ -23,21 +23,15 @@ const { dockerLogin } = require(path.join(scriptsDir, 'js/dockerLogin'))
  *
  * @returns {void}
  */
-const resolveImgFrom = (docFileCtx, shortContext, allEnvs, from, imageName) => {
-  if (!docFileCtx) return
-
+const resolveImgFrom = (docFileCtx, allEnvs, from, imageName) => {
+  // If from option is set, then set the IMAGE_FROM value
+  // Which will override the default IMAGE_FROM in the Dockerfile
+  // If it includes a : assume a image and tag, otherwise assume from is a tag
   return from
-    ? // If from option is set, then set the IMAGE_FROM value
-      // Which will override the default IMAGE_FROM in the Dockerfile
-      // If it includes a : assume a image and tag, otherwise assume from is a tag
-      from.includes(':')
+    ? from.includes(':')
         ? from
         : `${imageName}:${from}`
-    : // Check if there is a custom env set based on the docFileContext
-  // And use that to override the default IMAGE_FROM
-  // This allows each dockerfile to use it's own base image if needed
-    allEnvs[`GB_${docFileCtx.toUpperCase()}_IMAGE_FROM`] ||
-        allEnvs[`GB_${shortContext.toUpperCase()}_IMAGE_FROM`]
+    : getContextValue(docFileCtx, allEnvs, `IMAGE_FROM`, allEnvs.GB_IMAGE_FROM)
 }
 
 /**
@@ -72,14 +66,8 @@ const buildImg = async (args) => {
     db: 'database',
   }, ``)
 
-  const shortContext = getContext(docFileCtx)?.short
-
   // Get the name of the image that will be built
-  const imageName =
-    image ||
-    envs[`GB_${docFileCtx.toUpperCase()}_IMAGE`] ||
-    (shortContext && envs[`GB_${shortContext.toUpperCase()}_IMAGE`]) ||
-    envs.IMAGE
+  const imageName = image || getContextValue(docFileCtx, envs, `IMAGE`, envs.IMAGE)
 
   // Ensure we are logged into docker
   // Uses the DOCKER_REGISTRY env or the final images name to get the registry url to log into
@@ -87,9 +75,7 @@ const buildImg = async (args) => {
   await dockerLogin(token, registryUrl)
 
   // Set the custom base image based on the from option and context
-  allEnvs.IMAGE_FROM =
-    resolveImgFrom(docFileCtx, shortContext, allEnvs, from, imageName) ||
-    allEnvs.IMAGE_FROM
+  allEnvs.IMAGE_FROM = resolveImgFrom(docFileCtx, allEnvs, from, imageName)
 
   const builtTags = await resolveImgTags(params, docFileCtx, envs)
 

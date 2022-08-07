@@ -1,8 +1,8 @@
 
-ARG GB_BASE_IMAGE=ghcr.io/gobletqa/goblet-base:develop
+ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
 
 # ---- Prune Stage ---- #
-FROM $GB_BASE_IMAGE as goblet-pruner
+FROM $GB_IMAGE_FROM as goblet-pruner
 WORKDIR /goblet/app
 COPY . .
 RUN cd /goblet/app/repos && \
@@ -15,14 +15,14 @@ RUN cd /goblet/app/repos && \
 # ---- End Stage ---- #
 
 # ---- Install Stage  ---- #
-FROM $GB_BASE_IMAGE as goblet-installer
+FROM $GB_IMAGE_FROM as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 RUN yarn install --frozen-lockfile
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
-FROM $GB_BASE_IMAGE as goblet-build
+FROM $GB_IMAGE_FROM as goblet-build
 WORKDIR /goblet/app
 COPY --from=goblet-installer /goblet/app/ .
 COPY . .
@@ -30,7 +30,7 @@ RUN yarn build
 # ---- End Stage ---- #
 
 # ---- Run Stage  ---- #
-FROM $GB_BASE_IMAGE as goblet-runner
+FROM $GB_IMAGE_FROM as goblet-runner
 WORKDIR /goblet/app
 EXPOSE $KEG_PROXY_PORT
 ARG KEG_PROXY_PORT=19006
