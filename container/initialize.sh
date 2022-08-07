@@ -3,6 +3,8 @@
 # sleep 10
 echo "Starting goblet application..."
 
+set -Eeo pipefail
+
 # When running in dev, sometimes we need to add new packages
 # Only needed in development
 goblet_run_dev_yarn_install(){
@@ -34,8 +36,9 @@ if [ "$GOBLET_SUB_REPO" ]; then
   cd repos/$GOBLET_SUB_REPO
   yarn start >> /proc/1/fd/1 &
 else
-  # Start each of the services and canvas
-  yarn start >> /proc/1/fd/1 & 
+  # Start each of the services via pm2
+  yarn start & 
+  tail -f /keg/tap/logs/*.* >> /proc/1/fd/1 &
 fi
 
 # Tail /dev/null to keep the container running
