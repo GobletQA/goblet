@@ -68,7 +68,10 @@ env:
   GB_LOG_HANDLE_EXCEPTION: true
 
 # ---- App Development ENVs ---- #
-  # GB_APP_DOC_VOLUMES: ".:/goblet/app"
+  # Needed for conductor
+  GB_APP_DOC_VOLUMES: /var/run/docker.sock
+  # Uncomment this to mount the whole repo into the container
+  # GB_APP_DOC_VOLUMES: ".:/goblet/app,/var/run/docker.sock"
 
 # ---- Backend ENVs ---- #
   GB_BE_PORT: 7005
