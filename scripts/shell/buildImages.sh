@@ -17,12 +17,14 @@ if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "base" ] || [ "$BUILD_IMGS" 
   echo "Building Base Docker Iamge ..."
   echo ""
   yarn doc build --context base "$BUILD_ARGS"
+  echo ""
 fi
 
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "app" ]; then
   echo "Building App Docker Iamge ..."
   echo ""
   yarn doc build "$BUILD_ARGS"
+  echo ""
 fi
 
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "backend" ] || [ "$BUILD_IMGS" == "be" ]; then
@@ -30,6 +32,7 @@ if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "backend" ] || [ "$BUILD_IMG
   echo "Building Backend Docker Iamge ..."
   echo ""
   yarn doc build --context backend "$BUILD_ARGS"
+  echo ""
 fi
 
 # if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "frontend" ] || [ "$BUILD_IMGS" == "fe" ]; then
@@ -43,13 +46,15 @@ if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "conductor" ] || [ "$BUILD_I
   echo "Building Conductor Docker Iamge ..."
   echo ""
   yarn doc build --context conductor "$BUILD_ARGS"
+  echo ""
 fi
 
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "screencast" ] || [ "$BUILD_IMGS" == "sc" ]; then
   echo "Building Screencast Docker Iamge ..."
   echo ""
   yarn doc build --context screencast "$BUILD_ARGS"
+  echo ""
 fi
 
-echo ""
 echo "Finished building and pushing docker images"
+echo ""
