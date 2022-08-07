@@ -8,7 +8,7 @@ const logDir = aliases[`@GLogs`]
 /** Ensure the logs directory exists */
 !fs.existsSync(logDir) && fs.mkdirSync(logDir)
 
-const beConfdir = aliases[`@GBK/Configs`]
+const beConfdir = aliases[`@GBE/Configs`]
 const cdConfdir = aliases[`@GCD/Configs`]
 const scConfdir = aliases[`@GSC/Configs`]
 const feConfdir = aliases[`@GFE/Configs`]
