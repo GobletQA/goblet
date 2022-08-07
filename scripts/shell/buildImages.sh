@@ -9,7 +9,7 @@ fi
 
 BUILD_ARGS=""
 if [ "$2" ]; then
-  BUILD_IMGS="${@:2}"
+  BUILD_ARGS="${@:2}"
 fi
 
 
@@ -20,7 +20,7 @@ if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "base" ] || [ "$BUILD_IMGS" 
 fi
 
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "app" ]; then
-  echo "Building Base Docker Iamge ..."
+  echo "Building App Docker Iamge ..."
   echo ""
   yarn doc build "$BUILD_ARGS"
 fi
@@ -32,21 +32,21 @@ if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "backend" ] || [ "$BUILD_IMG
   yarn doc build --context backend "$BUILD_ARGS"
 fi
 
-if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "frontend" ] || [ "$BUILD_IMGS" == "fe" ]; then
-  echo ""
-  echo "Building Frontend Docker Iamge ..."
-  echo ""
-  yarn doc build --context frontend "$BUILD_ARGS"
-fi
+# if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "frontend" ] || [ "$BUILD_IMGS" == "fe" ]; then
+#   echo ""
+#   echo "Building Frontend Docker Iamge ..."
+#   echo ""
+#   yarn doc build --context frontend "$BUILD_ARGS"
+# fi
 
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "conductor" ] || [ "$BUILD_IMGS" == "cd" ]; then
-  echo "Building Proxy Docker Iamge ..."
+  echo "Building Conductor Docker Iamge ..."
   echo ""
   yarn doc build --context conductor "$BUILD_ARGS"
 fi
 
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "screencast" ] || [ "$BUILD_IMGS" == "sc" ]; then
-  echo "Building Proxy Docker Iamge ..."
+  echo "Building Screencast Docker Iamge ..."
   echo ""
   yarn doc build --context screencast "$BUILD_ARGS"
 fi
