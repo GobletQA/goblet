@@ -13,8 +13,8 @@ module.exports = {
       args: 'start',
       name: `screencast`,
       interpreter: '/bin/bash',
-      out_file: path.join(logDir, `screencast.out`),
-      error_file: path.join(logDir, `screencast.err`),
+      out_file: path.join(logDir, `screencast.out.log`),
+      error_file: path.join(logDir, `screencast.err.log`),
     },
   ]
 }

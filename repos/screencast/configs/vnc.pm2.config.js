@@ -7,16 +7,16 @@ module.exports = {
   apps : [
     {
       args: 'vnc',
-      name: `TigerVnc`,
-      out_file: path.join(logDir, `vnc.out`),
-      error_file: path.join(logDir, `vnc.err`),
+      name: `vnc`,
+      out_file: path.join(logDir, `vnc.out.log`),
+      error_file: path.join(logDir, `vnc.err.log`),
       script : path.join(scRoot, `dist/vnc.js`),
     },
     {
       args: 'sock',
-      name: `WebSockify`,
-      out_file: path.join(logDir, `sockify.out`),
-      error_file: path.join(logDir, `sockify.err`),
+      name: `sockify`,
+      out_file: path.join(logDir, `sockify.out.log`),
+      error_file: path.join(logDir, `sockify.err.log`),
       script : path.join(scRoot, `dist/vnc.js`),
     }
   ]

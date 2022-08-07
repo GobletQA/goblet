@@ -13,8 +13,8 @@ module.exports = {
       args: 'start',
       name: `conductor`,
       interpreter: '/bin/bash',
-      out_file: path.join(logDir, `conductor.out`),
-      error_file: path.join(logDir, `conductor.err`),
+      out_file: path.join(logDir, `conductor.out.log`),
+      error_file: path.join(logDir, `conductor.err.log`),
     },
   ]
 }

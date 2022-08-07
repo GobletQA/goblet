@@ -1,6 +1,9 @@
 const path = require('path')
+const { inDocker } = require('@keg-hub/cli-utils')
 
 const resolveRoot = () => {
+  if(inDocker()) return `/goblet/app`
+  
   const fileName = __filename.split(`/`).pop()
   if(fileName === `gobletRoot.js`) return __dirname
 
