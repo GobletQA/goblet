@@ -1,3 +1,3 @@
 module.exports = {
-  transformer: require('./transformer'),
+  waypointTransformer: require('./transformer'),
 }

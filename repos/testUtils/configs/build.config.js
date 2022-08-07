@@ -1,5 +1,6 @@
 require('../resolveRoot')
 const path = require('path')
+const glob = require("glob")
 const { spawn } = require('child_process')
 const { loadConfigs } = require('@keg-hub/parse-config')
 const { aliases } = require('@GConfigs/aliases.config')
@@ -13,7 +14,10 @@ const isDev = process.env.DEV_BUILD === `1`
 const nodeEnv = process.env.NODE_ENV || `local`
 const rootDir = path.join(__dirname, `../`)
 const distDir = path.join(rootDir, `dist`)
-const entryFile = path.join(rootDir, `index.js`)
+const entryFiles = glob.sync(
+  path.join(rootDir, '**/*.js'),
+  {ignore: [`**/node_modules/**/*.js`, `**/dist/**/*.js`, `**/configs/**/*.js`]}
+)
 
 /**
  * Load the ENVs from <node-env>.env ( local.env || prod.env )
@@ -49,14 +53,14 @@ const devServer = async () => {
  */
 build({
   outdir: distDir,
-  bundle: true,
+  // bundle: true,
   minify: false,
   sourcemap: true,
   target: 'es2017',
   platform: 'node',
   assetNames: '[name]',
   allowOverwrite: true,
-  entryPoints: [entryFile],
+  entryPoints: entryFiles,
   watch: isDev && {
     onRebuild(error, result) {
       if (error) console.error(`Error rebuilding app`, error)
