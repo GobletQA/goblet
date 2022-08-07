@@ -3,5 +3,6 @@
   "@GRepos": "repos",
   "@GTasks": "tasks",
   "@GConfigs": "configs",
-  "@GEnvironment": "scripts/environment"
+  "@GEnvironment": "scripts/environment",
+  "@GCD/Configs": "repos/conductor/configs"
 }
