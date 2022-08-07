@@ -1,11 +1,10 @@
 const { appRoot } = require('../../paths')
+const { Logger, error } = require('@keg-hub/cli-utils')
 const { docker } = require('../../utils/docker/docker')
 const { loadEnvs } = require('../../utils/envs/loadEnvs')
 const { getNpmToken } = require('../../utils/envs/getNpmToken')
 const { setupBuildX } = require('../../utils/docker/setupBuildX')
-const { docker:dockerCmd, Logger } = require('@keg-hub/cli-utils')
 const { toBuildArgsArr } = require('../../utils/docker/buildArgs')
-const { addPlatforms } = require('../../utils/docker/addPlatforms')
 const { getDockerFile } = require('../../utils/docker/getDockerFile')
 const { resolveImgTags } = require('../../utils/docker/resolveImgTags')
 const { resolveContext } = require('../../utils/kubectl/resolveContext')
@@ -62,7 +61,11 @@ const buildImg = async (args) => {
     be: 'backend',
     fe: 'frontend',
     db: 'database',
+    app: ``
   }, ``)
+
+  !docFileCtx
+    && error.throwError(`Could not find Dockerfile from context "${context}"`)
 
   // Get the name of the image that will be built
   const imageName = image || getContextValue(docFileCtx, envs, `IMAGE`, envs.IMAGE)
@@ -78,20 +81,17 @@ const buildImg = async (args) => {
   const builtTags = await resolveImgTags(params, docFileCtx, envs)
 
   const cmdArgs = [
-    `buildx`,
-    `build`,
     ...getDockerBuildParams(params),
     ...builtTags,
     ...getDockerLabels(docFileCtx, envs),
     ...getDockerFile(docFileCtx),
-    ...addPlatforms(platforms, push),
     ...toBuildArgsArr(allEnvs),
     `.`,
   ].filter((arg) => arg)
 
   log && Logger.pair(`Running Cmd:`, `docker ${cmdArgs.join(' ')}\n`)
 
-  const output = await dockerCmd(cmdArgs, { cwd: appRoot, env: allEnvs })
+  const output = await docker.build(cmdArgs, { cwd: appRoot, env: allEnvs }, params)
   if (!log) return
 
   output

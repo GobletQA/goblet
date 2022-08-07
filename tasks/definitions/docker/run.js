@@ -1,7 +1,8 @@
 const { appRoot } = require('../../paths')
 const { noOpArr } = require('@keg-hub/jsutils')
+const { docker } = require('../../utils/docker/docker')
+const { error, Logger } = require('@keg-hub/cli-utils')
 const { loadEnvs } = require('../../utils/envs/loadEnvs')
-const { error, docker, Logger } = require('@keg-hub/cli-utils')
 const { getNpmToken } = require('../../utils/envs/getNpmToken')
 const { addRunEnvs } = require('../../utils/docker/addRunEnvs')
 const { addRunPorts } = require('../../utils/docker/addRunPorts')
@@ -97,7 +98,6 @@ const runImg = async (args) => {
   const imgToRun = await getImgToRun(params, docFileCtx, envs)
 
   const cmdArgs = [
-    `run`,
     ...getDockerRunArgs(params),
     ...addRunEnvs(allEnvs, docFileCtx),
     ...addRunPorts(params, allEnvs, docFileCtx),
@@ -108,7 +108,7 @@ const runImg = async (args) => {
 
   log && Logger.pair(`Running Cmd:`, `docker ${cmdArgs.join(' ')}\n`)
 
-  const output = await docker(cmdArgs, { cwd: appRoot, env: allEnvs })
+  const output = await docker.run(cmdArgs, { cwd: appRoot, env: allEnvs })
   log && Logger.log(output)
 
   return output
