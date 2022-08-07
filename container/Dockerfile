@@ -57,8 +57,7 @@ ENV GB_FE_PORT=$GB_FE_PORT \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION
 
-COPY . .
-COPY --from=goblet-installer /goblet/app /goblet/app
+COPY --from=goblet-build /goblet/app/ .
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules
 
