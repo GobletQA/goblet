@@ -33,7 +33,7 @@ const [
   bePort,
   noVncPort,
   cdActive,
-  cfPort,
+  cdPort,
 ] = process.argv.slice(2)
 
 const fePortForward = generateLabelSelector(feActive, fePort)

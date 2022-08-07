@@ -38,10 +38,11 @@ env:
   PLAYWRIGHT_BROWSERS_VERSION: 1.23.4
 
 # ---- Goblet Shared ENVs ---- #
-  GB_TOKEN: 12345
-  GB_KUBE_NAMESPACE: gb-local
-  GB_KUBE_CONTEXT: docker-desktop
+  GB_TOKEN: a-10K3n-g0bLe1
   GB_GITFS_VER: 0.0.0
+  # ENV only used in dev. Set to the name of a sub-repo folder || all
+  # When set, will run `yarn install` before starting the server
+  GB_NM_INSTALL: ''
   GB_SH_MOUNT_ROOT: /goblet/repos
   GB_SH_LOCAL_MOUNT: goblet-local/current
   GB_SERVER_ORIGINS: 'localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io'
@@ -95,9 +96,9 @@ env:
   GB_BE_SOCKR_PATH: '/sockr-socket'
 
   # --- Backend JWT AUTH --- #
-  GB_BE_JWT_EXP: 7200000
+  GB_BE_JWT_EXP: '7200000'
   GB_BE_JWT_CREDENTIALS: true
-  GB_BE_JWT_REFRESH_EXP: 7200000
+  GB_BE_JWT_REFRESH_EXP: '7200000'
   GB_BE_JWT_SECRET: k3G-H3rkiN-1234
   GB_BE_JWT_KEY: goblet-be-auth-token
   GB_BE_JWT_REFRESH_SECRET: 4926-G0b13T-g3K
@@ -131,7 +132,7 @@ env:
   GB_CD_IMAGE: 'ghcr.io/gobletqa/goblet-conductor'
 
   GB_CD_TIMEOUT: 5000
-  GB_CD_SERVER_SECRET: ""
+  GB_CD_SERVER_SECRET: "c0nDuC7oR-6ObL3T"
   # Enable to set custom log-level for conductor
   # GB_CD_LOG_LEVEL: info
   GB_CD_PIDS_LIMIT: 500

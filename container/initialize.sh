@@ -25,15 +25,15 @@ goblet_run_dev_yarn_install(){
 
 # If a sub-repo is defined only run that one repo
 # Check if the process to run is defined, then run it
-if [ "$GOBLET_SUB_REPO" ]; then
+if [ "$GB_SUB_REPO" ]; then
 
   # Starts the vnc servers for screencast
-  if [ "$GOBLET_SUB_REPO" == "screencast" ]; then
+  if [ "$GB_SUB_REPO" == "screencast" ]; then
     cd /goblet/app/repos/screencast
     yarn vnc:start >> /proc/1/fd/1 &
   fi
 
-  cd repos/$GOBLET_SUB_REPO
+  cd repos/$GB_SUB_REPO
   yarn start >> /proc/1/fd/1 &
 else
   # Start each of the services via pm2

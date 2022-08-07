@@ -4,7 +4,6 @@
  */
 
 const sharedIgnored = `
-  - /repos/traceViewer
   - node_modules/
   - .*
   - /container/.*
@@ -44,6 +43,7 @@ const syncBackendConfig = (deployment, extraIgnore) => (`
   uploadExcludePaths:
   - /repos/admin
   - /repos/frontend
+  - /repos/traceViewer
   ${sharedIgnored}
 `)
 

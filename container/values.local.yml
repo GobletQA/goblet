@@ -1,0 +1,7 @@
+# Values only loaded in a local environment, when NODE_ENV === 'local'
+env:
+  # ---- Shared ENVs ---- #
+  NODE_ENV: local
+  DEVSPACE_INJECT_LOCAL: true
+  GB_KUBE_NAMESPACE: gb-local
+  GB_KUBE_CONTEXT: docker-desktop

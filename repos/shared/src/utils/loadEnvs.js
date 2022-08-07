@@ -39,7 +39,7 @@ const loadEnvs = ({
   locations=noPropArr,
   ...envOpts
 }) => {
-  const nodeEnv = env || process.env.NODE_ENV || `local`
+  const nodeEnv = process.env.NODE_ENV || env || `local`
 
   // When running in test environment
   // Ensure specific envs don't get loaded
@@ -65,6 +65,9 @@ const loadEnvs = ({
     locations: [ ...locations, appRoot],
     ...envOpts,
   })
+
+  // Ensure node ENV is set is it doesn't exist
+  if(!process.env.NODE_ENV) process.env.NODE_ENV = __LOADED_ENVS__.NODE_ENV || env || `local`
 
   // Add the loaded envs to process.env if override is set
   // Or env if local, and override is not explicitly set to false
