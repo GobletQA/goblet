@@ -40,9 +40,6 @@ env:
 # ---- Goblet Shared ENVs ---- #
   GB_TOKEN: a-10K3n-g0bLe1
   GB_GITFS_VER: 0.0.0
-  # ENV only used in dev. Set to the name of a sub-repo folder || all
-  # When set, will run `yarn install` before starting the server
-  GB_NM_INSTALL: ''
   GB_SH_MOUNT_ROOT: /goblet/repos
   GB_SH_LOCAL_MOUNT: goblet-local/current
   GB_SERVER_ORIGINS: 'localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io'
@@ -70,7 +67,7 @@ env:
 
 # ---- App Development ENVs ---- #
   # Needed for conductor
-  GB_APP_DOC_VOLUMES: /var/run/docker.sock
+  # GB_APP_DOC_VOLUMES: /var/run/docker.sock
   # Uncomment this to mount the whole repo into the container
   # GB_APP_DOC_VOLUMES: ".:/goblet/app,/var/run/docker.sock"
 

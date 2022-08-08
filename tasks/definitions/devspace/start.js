@@ -1,4 +1,4 @@
-const { clean } = require('./clean')
+const { clean:cleanTask } = require('./clean')
 const { getNpmToken } = require('../../utils/envs')
 const { exists, isBool, isStr } = require('@keg-hub/jsutils')
 const { devspace } = require('../../utils/devspace/devspace')
@@ -83,7 +83,7 @@ const start = async (args) => {
     ...altParams
   } = params
   
-  clean && await clean.action({
+  clean && await cleanTask.action({
     ...args,
     params: {
       skip,
@@ -91,6 +91,7 @@ const start = async (args) => {
       images,
       daemon,
       context,
+      env: altParams.env
     }
   })
 
