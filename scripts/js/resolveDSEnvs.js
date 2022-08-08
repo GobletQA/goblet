@@ -44,11 +44,11 @@ const buildEnvs = (envs, list) => {
 }
 
 const [repo] = process.argv.slice(2)
-const isFE = repo === `frontend`
-const envs = resolveValues()
 let dsEnvs = addEnv(`GB_SUB_REPO`, repo)
+dsEnvs += addEnv(`GB_VNC_ACTIVE`, `"true"`)
 
+const envs = resolveValues()
 dsEnvs+= buildEnvs(envs, defEnvs)
-dsEnvs+= isFE ? buildEnvs(envs, feKeys) : buildEnvs(envs, beKeys)
+dsEnvs+= repo === `frontend` ? buildEnvs(envs, feKeys) : buildEnvs(envs, beKeys)
 
 process.stdout.write(dsEnvs)
