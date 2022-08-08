@@ -1,3 +1,4 @@
+const { error } = require('@keg-hub/cli-utils')
 const { loadEnvs } = require('../envs/loadEnvs')
 const { resolveContext } = require('../kubectl/resolveContext')
 
@@ -19,6 +20,8 @@ const getLabelSelector = (params) => {
     db: `app.kubernetes.io/component=${envs.GB_DB_DEPLOYMENT}`,
     px: `app.kubernetes.io/component=${envs.GB_PX_DEPLOYMENT}`,
   })
+
+  !selector && error.throwError(`Could not find selector for context "${context}"`)
 
   return {
     selector,

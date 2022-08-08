@@ -39,13 +39,13 @@ module.exports = {
         type: 'array',
         example: `--context proxy`,
         alias: ['ctx', `name`, `type`, 'deployment', 'deploy'],
-        description: `Contexts or names of apps to be started`,
+        description: `Contexts or names of apps to be cleaned`,
       },
       skip: {
         type: 'array',
         alias: ['bypass'],
         example: `--skip proxy`,
-        description: `Contexts or names of apps NOT to be started`,
+        description: `Contexts or names of apps NOT to be cleaned`,
       },
       config: {
         description: 'Optional filepath for yaml file',

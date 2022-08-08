@@ -1,3 +1,4 @@
+const { clean } = require('./clean')
 const { getNpmToken } = require('../../utils/envs')
 const { exists, isBool, isStr } = require('@keg-hub/jsutils')
 const { devspace } = require('../../utils/devspace/devspace')
@@ -64,10 +65,35 @@ const setStartEnvs = (params) => {
  *
  * @returns {void}
  */
-const start = async ({ params, task }) => {
+const start = async (args) => {
+  const { params } = args
+
   // Extract the daemon flag so it doesn't impact other commands
   // We only want it set on the devspace start command
-  const { daemon, watch, install, context, skip, pull, ...altParams } = params
+  const {
+    skip,
+    pull,
+    clean,
+    cache,
+    watch,
+    images,
+    daemon,
+    install,
+    context,
+    ...altParams
+  } = params
+  
+  clean && await clean.action({
+    ...args,
+    params: {
+      skip,
+      cache,
+      images,
+      daemon,
+      context,
+    }
+  })
+
   setStartEnvs(params)
 
   /**
@@ -151,6 +177,25 @@ module.exports = {
         alias: [`pull_policy`, `pullpolicy`, `pp`],
         allowed: [`IfNotPresent`, `Always`, `Never`, 'present', 'exists'],
         description: `Set the image pull policy when starting the docker container, based on kubernetes pull policy`,
+      },
+      clean: {
+        default: false,
+        type: `boolean`,
+        alias: [`cln`],
+        example: `--clean`,
+        description: `Cleans the deployment before deploying. Same as running the "clean" task`
+      },
+      images: {
+        default: false,
+        type: `boolean`,
+        alias: [`imgs`],
+        example: `--images`,
+        description: `Remove all images while cleaning. Only valid when clean option is true`
+      },
+      cache: {
+        default: true,
+        type: 'boolean',
+        description: 'Remove devspace cache. Only valid when clean option is true',
       },
     },
   },

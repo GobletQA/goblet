@@ -23,10 +23,10 @@ const getKubePod = async (params = noOpObj) => {
     sc: envs.GB_SC_DEPLOYMENT,
     db: envs.GB_DB_DEPLOYMENT,
     px: envs.GB_PX_DEPLOYMENT,
-  })
+  }, false)
 
   !match &&
-    error.throwError(`Can not match a pod to non-existing match argument ${match}`)
+    error.throwError(`Can not match a pod to non-existing match argument ${context}`)
 
   const { items } = await getKubePods(params)
 

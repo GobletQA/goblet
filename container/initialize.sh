@@ -35,11 +35,11 @@ if [ "$GB_SUB_REPO" ]; then
 
   cd repos/$GB_SUB_REPO
   yarn start >> /proc/1/fd/1 &
+  # Tail /dev/null to keep the container running
+  tail -f /dev/null && exit 0;
 else
   # Start each of the services via pm2
   yarn start
-  tail -f /goblet/app/logs/*.log >> /proc/1/fd/1 &
+  # Tail the logs dir to keep the container running
+  tail -f /goblet/app/logs/*.log && exit 0;
 fi
-
-# Tail the logs dir to keep the container running
-tail -f /goblet/app/logs/*.log && exit 0;

@@ -175,7 +175,7 @@ module.exports = {
       },
       tag: {
         alias: ['tg', 'tga'],
-        default: `package`,
+        default: `values`,
         example: `--tag package`,
         description:
           'Name of the tag of the image to be run if separate from the defined image',

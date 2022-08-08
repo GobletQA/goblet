@@ -1,5 +1,6 @@
 const { loadEnvs } = require('../envs/loadEnvs')
 const { noOpObj } = require('@keg-hub/jsutils')
+const { error } = require('@keg-hub/cli-utils')
 const { resolveContext } = require('../kubectl/resolveContext')
 
 /**
@@ -13,9 +14,10 @@ const { resolveContext } = require('../kubectl/resolveContext')
 const getEnvImgTag = async (params = noOpObj, docFileCtx = ``, envs) => {
   envs = envs || loadEnvs({ env: params.env })
 
-  return resolveContext(
+  const imgTag = resolveContext(
     docFileCtx,
     {
+      app: envs.IMAGE_TAG,
       be: envs.GB_BE_IMAGE_TAG,
       fe: envs.GB_FE_IMAGE_TAG,
       cd: envs.GB_CD_IMAGE_TAG,
@@ -25,6 +27,8 @@ const getEnvImgTag = async (params = noOpObj, docFileCtx = ``, envs) => {
     },
     envs.IMAGE_TAG
   )
+
+  return imgTag || error.throwError(`Could not find image tag for context "${docFileCtx}"`)
 }
 
 module.exports = {

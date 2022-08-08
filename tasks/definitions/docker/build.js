@@ -54,6 +54,7 @@ const buildImg = async (args) => {
   // Get the context for the docker image being built
   // Defaults to using the `container/Dockerfile`, without `.<context>`
   const docFileCtx = resolveContext(context, {
+    app: `app`,
     bs: 'base',
     px: `proxy`,
     sc: `screencast`,
@@ -61,7 +62,6 @@ const buildImg = async (args) => {
     be: 'backend',
     fe: 'frontend',
     db: 'database',
-    app: ``
   }, ``)
 
   !docFileCtx

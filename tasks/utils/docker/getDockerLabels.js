@@ -1,3 +1,4 @@
+const { error } = require('@keg-hub/cli-utils')
 const { resolveContext } = require('../kubectl/resolveContext')
 
 /**
@@ -8,11 +9,10 @@ const { resolveContext } = require('../kubectl/resolveContext')
  * @returns {Array<string>} - Build labels for the docker image
  */
 const getDockerLabels = (docFileCtx, envs) => {
-  return [
-    `--label`,
-    resolveContext(
+  const dockerLabel = resolveContext(
       docFileCtx,
       {
+        app: `goblet-app`,
         fe: envs.GB_FE_DEPLOYMENT,
         be: envs.GB_BE_DEPLOYMENT,
         cd: envs.GB_CD_DEPLOYMENT,
@@ -20,9 +20,12 @@ const getDockerLabels = (docFileCtx, envs) => {
         px: envs.GB_PX_DEPLOYMENT,
         db: envs.GB_DB_DEPLOYMENT,
       },
-      `goblet-app`
+      false
     )
-  ]
+
+  return dockerLabel
+    ? [`--label`, dockerLabel]
+    : error.throwError(`Could not find docker label for context "${docFileCtx}"`)
 }
 
 module.exports = {

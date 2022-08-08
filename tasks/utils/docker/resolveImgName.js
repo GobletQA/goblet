@@ -17,22 +17,19 @@ const resolveImgName = (params, docFileCtx, envs) => {
   let imgName = params.image
     || (docFileCtx && envs[`GB_${docFileCtx.toUpperCase()}_IMAGE`])
     || (shortContext && envs[`GB_${shortContext.toUpperCase()}_IMAGE`])
-    || resolveContext(
-        docFileCtx,
-        {
-          fe: envs.GB_FE_IMAGE,
-          be: envs.GB_BE_IMAGE,
-          cd: envs.GB_CD_IMAGE,
-          sc: envs.GB_SC_IMAGE,
-          px: envs.GB_PX_IMAGE,
-          db: envs.GB_DB_IMAGE,
-          bs: envs.GB_IMAGE_FROM,
-        },
-        envs.IMAGE
-      )
+    || resolveContext(docFileCtx, {
+        app: envs.IMAGE,
+        fe: envs.GB_FE_IMAGE,
+        be: envs.GB_BE_IMAGE,
+        cd: envs.GB_CD_IMAGE,
+        sc: envs.GB_SC_IMAGE,
+        px: envs.GB_PX_IMAGE,
+        db: envs.GB_DB_IMAGE,
+        bs: envs.GB_IMAGE_FROM,
+      }, false)
 
   !imgName &&
-    error.throwError(`An image argument or IMAGE env must exist to build the docker image`)
+    error.throwError(`Could not find image or IMAGE env for context "${docFileCtx}"`)
 
   // Ensure the image tag is removed
   imgName = imgName.indexOf(`:`) ? imgName.split(`:`).shift() : imgName
