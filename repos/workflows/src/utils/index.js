@@ -4,6 +4,5 @@ module.exports = {
   ...require('./ensurePath'),
   ...require('./getRepoName'),
   ...require('./buildHeaders'),
-  ...require('./configureGitArgs'),
-  ...require('./getCurrentRepoPath'),
+  ...require('./configureGitArgs')
 }

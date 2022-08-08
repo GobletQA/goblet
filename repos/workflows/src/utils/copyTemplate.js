@@ -2,8 +2,7 @@ const path = require('path')
 const { Logger } = require('@keg-hub/cli-utils')
 const { copyContent } = require('./copyContent')
 const { aliases } = require('@GConfigs/aliases.config')
-const { checkGobletConfig } = require('./checkGobletConfig')
-const { getCurrentRepoPath } = require('./getCurrentRepoPath')
+const { loadConfigFromFolder } = require('@gobletqa/shared/utils/getGobletConfig')
 
 /**
  * Copies the goblet template files into the mounted repo
@@ -17,14 +16,13 @@ const { getCurrentRepoPath } = require('./getCurrentRepoPath')
  */
 const copyTemplate = async (local, template) => {
   Logger.info(`Searching for goblet config...`)
-  const configLoc = await checkGobletConfig(local)
+  const configLoc = await loadConfigFromFolder(local)
   if (configLoc) return true
 
   Logger.info(`Creating goblet setup from template...`)
   const src = template || path.join(aliases[`@GWF`], `templates/repo/*`)
-  const dest = await getCurrentRepoPath(local)
 
-  return await copyContent({ src, dest })
+  return await copyContent({ src, dest: local })
     .then(() => true)
     .catch(err => {
       Logger.error(`Creating goblet from template failed`)

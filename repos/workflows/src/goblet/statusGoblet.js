@@ -4,7 +4,7 @@ const { Logger } = require('@keg-hub/cli-utils')
 const { LOCAL_MOUNT } = require('../constants')
 const { getRepoName } = require('../utils/getRepoName')
 const { isRepoMounted } = require('../gitfs/isRepoMounted')
-const { loadGobletConfig } = require('../utils/loadGobletConfig')
+const { getConfigAtPath } = require('@gobletqa/shared/utils/getGobletConfig')
 
 const { fileSys } = require('@keg-hub/cli-utils')
 
@@ -45,7 +45,7 @@ const statusForLocal = async (config, metadata) => {
 
   // Check if the local mount folder exists
   // If not then it's empty
-  const gobletConfig = isValidPath && (await loadGobletConfig(LOCAL_MOUNT))
+  const gobletConfig = isValidPath && (await getConfigAtPath(LOCAL_MOUNT))
 
   return !isValidPath || !gobletConfig
     ? {
@@ -100,7 +100,7 @@ const statusForVnc = async (config, metadata = noOpObj) => {
   if (!isMounted) return unknownStatus
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = await loadGobletConfig(local)
+  const gobletConfig = await getConfigAtPath(local)
 
   return !gobletConfig
     ? unknownStatus

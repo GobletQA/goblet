@@ -21,7 +21,7 @@ const mountRepo = async args => {
   const [err, output] = await gitfs(args)
 
   if (err) throw new Error(err)
-  if (output)
+  if (output?.exitCode)
     throw new Error(
       `Could not mount repository. Check the log file at ${
         args.log || '/var/log/gitfs.log'

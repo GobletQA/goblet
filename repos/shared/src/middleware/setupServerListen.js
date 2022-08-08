@@ -12,10 +12,10 @@ const { Logger } = require('@keg-hub/cli-utils')
  *
  */
 const addExitTimeout = (exitTimeout, exitCode=0) => {
-  setTimeout(() => {
+  return setTimeout(() => {
     Logger.info(`[Goblet] Server did not shutdown in time, force exiting the process!`)
     process.exit(exitCode)
-  }, exitTimeout).unref()
+  }, exitTimeout)
 }
 
 /**
@@ -40,7 +40,8 @@ const addExitListener = (insecureServer, secureServer, exitTimeout=3000) => {
       if(exitCalled) return
 
       const exitCode = type === `uncaughtException` ? 1 : 0
-      exitTimeout && addExitTimeout(exitTimeout, exitCode)
+      const timeout = exitTimeout && addExitTimeout(exitTimeout, exitCode)
+      timeout.unref()
 
       let secureClosed
       let insecureClosed
@@ -50,17 +51,26 @@ const addExitListener = (insecureServer, secureServer, exitTimeout=3000) => {
         secureServer.close(() => {
           secureClosed = true
           Logger.success(`[Goblet] Finished cleaning up secure server!`)
-          ;(!insecureServer || insecureClosed) && process.exit(exitCode)
+          
+          if(insecureServer && !insecureClosed) return
+          
+          timeout && clearTimeout(timeout)
+          process.exit(exitCode)
         })
 
       insecureServer &&
         insecureServer.close(() => {
           insecureClosed = true
           Logger.success(`[Goblet] Finished cleaning up insecure server!`)
-          ;(!secureServer || secureClosed) && process.exit(exitCode)
+          if(secureServer && !secureClosed) return
+
+          timeout && clearTimeout(timeout)
+          process.exit(exitCode)
         })
       
-      !secureServer && !insecureServer && process.exit(exitCode)
+      if((!secureServer && !insecureServer) || (insecureClosed && secureClosed))
+        process.exit(exitCode)
+
     })
   })
 }

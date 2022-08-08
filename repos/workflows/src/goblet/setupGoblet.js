@@ -5,8 +5,8 @@ const { failResp, successResp } = require('./response')
 const { getRepoName } = require('../utils/getRepoName')
 const { copyTemplate } = require('../utils/copyTemplate')
 const { isRepoMounted } = require('../gitfs/isRepoMounted')
-const { loadGobletConfig } = require('../utils/loadGobletConfig')
 const { configureGitArgs } = require('../utils/configureGitArgs')
+const { getConfigAtPath } = require('@gobletqa/shared/utils/getGobletConfig')
 
 /**
  * Workflow that creates the folder structure for goblet (templates/repo/default-template)
@@ -36,7 +36,7 @@ const setupGoblet = async (args, gitArgs, mounted) => {
     )
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = await loadGobletConfig(gitArgs.local)
+  const gobletConfig = await getConfigAtPath(gitArgs.local)
 
   return gobletConfig
     ? successResp(
