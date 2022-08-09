@@ -69,7 +69,7 @@ const setNoRepoStatus = status => {
 }
 
 /**
- * Calls the Backend API to get the current status of a connected repo ( mounted || via gitfs )
+ * Calls the Backend API to get the current status of a connected repo ( mounted || via git )
  * @param {Object} params - Arguments for making the Backend API call
  * 
  * @returns {Object} - status object returned from the Backend API

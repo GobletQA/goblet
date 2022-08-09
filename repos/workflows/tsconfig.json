@@ -4,8 +4,12 @@
     "baseUrl": "./",
     "outDir": "./dist",
     "paths": {
+      "@GWF/git": [ "src/git" ],
       "@GWF": ["src"],
       "@GWFRoot": ["./."],
+      "@GConfigs/*": ["../../configs/*"],
+      "@gobletqa/workflows/types": ["src/types"],
+      "@gobletqa/workflows/types/*": ["src/types/*"],
       "@gobletqa/workflows": ["src"],
       "@gobletqa/workflows/*": ["src/*"]
     }
