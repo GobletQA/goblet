@@ -27,8 +27,7 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "start": "DEV_BUILD=1 node configs/build.config.js",
     "serve": "node dist/index.js",
-    "validate": "tsc --noEmit",
-    "watch": "nodemon --config configs/nodemon.be.json"
+    "validate": "tsc --noEmit"
   },
   "resolutions": {
     "@keg-hub/cli-utils": "0.7.0",
