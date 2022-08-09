@@ -1,19 +1,7 @@
+const { getRepoGit } = require('../utils/getRepoGit')
 const { Repo } = require('@gobletqa/shared/repo/repo')
-const { AppRouter } = require('@gobletqa/shared/express/appRouter')
 const { asyncWrap } = require('@gobletqa/shared/express')
-const { pickKeys, deepMerge } = require('@keg-hub/jsutils')
-
-/**
- * Gets the git keys off the request for all request types
- */
-const getRepoGit = ({ query, params, body }) => {
-  return pickKeys(deepMerge(params, query, body), [
-    'path',
-    'local',
-    'remote',
-    'branch',
-  ])
-}
+const { AppRouter } = require('@gobletqa/shared/express/appRouter')
 
 /**
  * Finds the currently active repo for the request

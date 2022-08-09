@@ -8,6 +8,7 @@ const {
   setReqRepo,
   setupVNCProxy,
   validateUser,
+  setupConductorProxy,
 } = require('@GBE/Middleware')
 const {
   setupJWT,
@@ -37,6 +38,7 @@ const initApi = async () => {
   setupServer(app)
   setupStatic(app)
   validateUser(app)
+  setupConductorProxy(app)
   setReqRepo(app)
   apiEndpoints(app)
   setupLoggerErr(app)

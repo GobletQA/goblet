@@ -47,11 +47,13 @@ export const initializeGoblet = async (args:TWFArgs) => {
     ? Logger.log(`Creating new branch...`)
     : Logger.log(`Reusing existing branch...`)
 
+  // Check if we should create a new branch
   const branch = gitArgs.createBranch
     ? await branchRepo(gitArgs)
     : gitArgs.branch
 
   Logger.log(`Mounting remote repo...`)
+  // Mount the git repo, passing in the branch to be used
   await mountRepo({ ...gitArgs, branch })
 
   Logger.log(`Setting up Goblet...`)

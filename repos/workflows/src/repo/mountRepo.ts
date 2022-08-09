@@ -1,7 +1,5 @@
 import { git, RepoWatcher } from '../git'
-
-import { TGitOpts } from '@gobletqa/workflows/types'
-
+import { TGitOpts, TRepoWatchCb } from '@gobletqa/workflows/types'
 
 /**
  *
@@ -31,6 +29,10 @@ const onEvent = (args:TGitOpts) => ((event:string, path:string) => {
 
 })
 
+export const createRepoWatcher = (args:TGitOpts, callback?:TRepoWatchCb, autoStart:boolean=true) => {
+  return RepoWatcher.create(args, callback || onEvent(args), autoStart)
+}
+
 /**
  * Workflow for cloning a git repo from a git provider
  * @function
@@ -46,5 +48,5 @@ export const mountRepo = async (args:TGitOpts) => {
   if (output?.exitCode)
     throw new Error(`Could not mount repository\n${output?.error || output?.data || ''}`)
 
-  RepoWatcher.create(args, onEvent(args), true)
+  createRepoWatcher(args)
 }

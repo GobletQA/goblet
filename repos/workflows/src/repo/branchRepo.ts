@@ -43,6 +43,9 @@ const getBranchHash = async ({ branch, remote, token, log }:TGitOpts) => {
   )
 }
 
+/**
+ * Uses the github API to create a new branch based on the passed in git options
+ */
 const createNewBranch = async ({ branch, newBranch, remote, token, log }:TGitOpts, hash:string) => {
   const remoteUrl = buildAPIUrl(remote, [`git/refs`])
   newBranch = newBranch || `${branch}-${new Date().getTime()}`

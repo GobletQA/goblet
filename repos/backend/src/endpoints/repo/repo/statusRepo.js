@@ -1,4 +1,5 @@
 const { Repo } = require('@gobletqa/shared/repo/repo')
+const { getRepoGit } = require('../../../utils/getRepoGit')
 const { asyncWrap, apiRes } = require('@gobletqa/shared/express')
 const { loadRepoContent } = require('@gobletqa/shared/repo/loadRepoContent')
 

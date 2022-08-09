@@ -1,6 +1,5 @@
-const path = require('path')
+import path from 'path'
 import { throwErr } from './throwErr'
-import { ensurePath } from './ensurePath'
 import { getRepoPath } from './getRepoPath'
 import { isObj, exists, isStr } from '@keg-hub/jsutils'
 
@@ -27,10 +26,6 @@ export const configureGitArgs = async (args:TWFArgs) => {
 
   const branchCreate = repo?.createBranch
   const createBranch = exists(branchCreate) ? branchCreate : true
-
-  // Ensure the repo path exists, and if not then throw
-  const pathExists = await ensurePath(repoPath)
-  !pathExists && throwErr(`Repo directory could not be created`)
 
   return {
     createBranch,

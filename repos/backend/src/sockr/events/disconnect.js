@@ -1,5 +1,3 @@
-const { Repo } = require('@gobletqa/shared/repo/repo')
-
 // Called when a user disconnects from the Sockr-Websocket
 const disconnect = app => {
   return async ({ socket, Manager }, tokenData) => {

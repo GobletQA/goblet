@@ -1,9 +1,10 @@
 import path from 'path'
-import { git } from '../git'
+import { git, RepoWatcher } from '../git'
 import { noOpObj } from '@keg-hub/jsutils'
 import { LOCAL_MOUNT } from '../constants'
 import { getRepoName } from '../utils/getRepoName'
 import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { createRepoWatcher } from '../repo/mountRepo'
 
 // TODO: Figure out how to load this from shared repo. May need to more to diff location
 // Maybe create a gobletConfig repo - Dedicating to loading the config
@@ -88,10 +89,10 @@ const statusForLocal = async (config:TGobletConfig) => {
  *
  * @return {RepoStatus} - Status object for the checked repo
  */
-const statusForVnc = async (metadata:TGitOpts=emptyOpts) => {
+const statusForVnc = async (gitOpts:TGitOpts=emptyOpts) => {
   Logger.info(`Checking repo status in vnc mode...`)
 
-  const { username, branch, remote, local } = metadata
+  const { username, branch, remote, local } = gitOpts
 
   const unknownStatus:TWFResp = {
     mode: 'vnc',
@@ -111,6 +112,13 @@ const statusForVnc = async (metadata:TGitOpts=emptyOpts) => {
   const isMounted = await git.exists(null, local)
   if (!isMounted) return unknownStatus
 
+  Logger.log(`Checking for repo watcher at path ${gitOpts.local}...`)
+  const watcher = RepoWatcher.getWatcher(gitOpts.local)
+  watcher
+    ? Logger.log(`Found existing watcher at path ${gitOpts.local}`)
+    : createRepoWatcher(gitOpts)
+
+
   Logger.log(`Loading goblet.config...`)
   const gobletConfig = await getConfigAtPath(local)
 
@@ -122,7 +130,7 @@ const statusForVnc = async (metadata:TGitOpts=emptyOpts) => {
         mounted: true,
         status: 'mounted',
         repo: {
-          git: metadata,
+          git: gitOpts,
           ...gobletConfig,
           name: getRepoName(remote),
         },
@@ -139,7 +147,7 @@ const statusForVnc = async (metadata:TGitOpts=emptyOpts) => {
  *
  * @return {RepoStatus} - Status object for the checked repo
  */
-export const statusGoblet = async (config:TGobletConfig, metadata, log=true) => {
+export const statusGoblet = async (config:TGobletConfig, metadata:TGitOpts, log=true) => {
   log && Logger.subHeader(`Running Status Goblet Workflow`)
 
   if (!config)

@@ -1,9 +1,11 @@
 
 import fs from 'node:fs'
+import path from 'node:path'
 import { URL } from 'node:url'
 import { loadToken } from './loadToken'
 import { RepoWatcher } from './repoWatcher'
 import { throwErr } from '../utils/throwErr'
+import { ensurePath } from '../utils/ensurePath'
 import { getRepoPath } from '../utils/getRepoPath'
 import { fileSys, runCmd, Logger } from '@keg-hub/cli-utils'
 import { isObj, limbo, deepMerge, exists } from '@keg-hub/jsutils'
@@ -86,13 +88,28 @@ git.clone = async (
   cmdOpts?:TRunCmdOpts
 ):Promise<[err:Error, resp:TCmdResp]> => {
   const options = validateGitOpts(gitOpts)
-  const { local, remote, token } = options
+  const { local, remote, token, branch=`main` } = options
 
+  // Ensure the repo path exists, and if not then throw
+  const pathExists = await ensurePath(local)
+  !pathExists && throwErr(`Unknown error, repo directory could not be created`)
+
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+
+  // Init the repo
+  const [initErr, initResp] = await git([`init`], joinedOpts, local)
+  if(initErr) return [initErr, initResp]
+
+  // Checkout the desired branch
+  const [chErr, chResp] = await git([`checkout`, `-b`, branch], joinedOpts, local)
+  if(chErr) return [chErr, chResp]
+
+  // Pull code from the remote url
   const url = new URL(remote)
   const gitUrl = `${url.protocol}//${token}@${url.host}${url.pathname}`
-
-  const [err, resp] = await git([ `clone`, gitUrl], deepMerge(defCmdOpts, cmdOpts), local)
+  const [err, resp] = await git([`pull`, gitUrl, branch], joinedOpts, local)
   if(err) return [err, resp]
+
 
   // If repo already exists, then just reuse it
   const alreadyExists = resp?.exitCode === 128
@@ -111,7 +128,6 @@ git.remove = async (args:TGitMeta) => {
 
   // Stop and remove the repo watcher before removing the folder from the FS
   await RepoWatcher.remove(repoPath)
-
   Logger.log(`Removing repo at path ${repoPath}`)
 
   // Remove the repo directory

@@ -36,10 +36,10 @@ const handleExisting = (
 export class RepoWatcher {
 
   options:TGitOpts
-  watcher: FSWatcher
-  onEvent: TRepoWatchCb
-  static watchers: Record<string, RepoWatcher>
-  static showLogs:boolean=Boolean(process.env.NODE_ENV === 'local')
+  watcher:FSWatcher
+  onEvent:TRepoWatchCb
+  static watchers:Record<string, RepoWatcher> = {}
+  static showLogs:boolean = Boolean(process.env.NODE_ENV === 'local')
 
 
 /**
@@ -48,6 +48,13 @@ export class RepoWatcher {
  */
   static log(message:string, type=`info`){
     RepoWatcher.showLogs &&  Logger[type](message)
+  }
+
+/**
+ * Gets a cached watcher based on the passed in local string
+ */
+  static getWatcher(local:string){
+    return RepoWatcher.watchers[local]
   }
 
   /**
