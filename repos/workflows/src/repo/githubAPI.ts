@@ -1,6 +1,7 @@
-const axios = require('axios')
-const { GRAPH } = require('../constants/graph')
-const {
+import axios from 'axios'
+import { GRAPH } from '../constants/graph'
+
+import {
   get,
   isArr,
   isStr,
@@ -10,7 +11,17 @@ const {
   noPropArr,
   deepClone,
   deepMerge,
-} = require("@keg-hub/jsutils")
+} from "@keg-hub/jsutils"
+import {
+  TGCacheOpts,
+  TGraphApiVars,
+  TGraphApiResp,
+  TGraphPageInfo
+} from '@gobletqa/workflows/types'
+
+const defOpts:TGCacheOpts = noOpObj as TGCacheOpts
+const defVarOpts:TGraphApiVars = noOpObj as TGraphApiVars
+const defPageInfo:TGraphPageInfo = noOpObj as TGraphPageInfo
 
 /**
  * Class to with methods for accessing the graphQL cached variables
@@ -35,8 +46,9 @@ class GraphCache {
 
   #token = ``
   url = `https://api.github.com/graphql`
+  variables:Record<any, any>
 
-  constructor(opts=noOpObj){
+  constructor(opts:TGCacheOpts=defOpts){
     this.variables = deepClone(this.#defaultVars)
     if(opts.url) this.url = opts.url
     
@@ -49,7 +61,7 @@ class GraphCache {
    * 
    * @returns {Object|undefined} - The cached data object if it exists
    */
-  get = request => {
+  get = (request:string) => {
     return this.variables[request] || noOpObj
   }
 
@@ -60,7 +72,7 @@ class GraphCache {
    * 
    * @returns {Void}
    */
-  set = (request, data) => {
+  set = (request:string, data:Record<any, any>) => {
     this.variables[request] = deepMerge(this.variables[request], data)
   }
 
@@ -70,18 +82,20 @@ class GraphCache {
    * 
    * @returns {Void}
    */
-  reset = request => {
+  reset = (request:string) => {
     this.variables[request] &&
       (this.variables[request] = deepClone(this.#defaultVars[request]))
   }
 
-  buildHeaders = (headers) => {
+  buildHeaders = (headers:Record<any, any>) => {
     return deepMerge({
       "content-type": "application/json",
       authorization: `token ${this.#token}`
     }, headers)
   }
-  
+
+
+
   /**
    * Builds the variables for making a Github GraphQL request
    * @param {Object} opts - Data to override the cached variables
@@ -89,7 +103,7 @@ class GraphCache {
    * 
    * @returns {Object} - Variables to be used in a GraphQL Request
    */
-  buildVars = (opts=noOpObj, request) => {
+  buildVars = (opts:TGraphApiVars=defVarOpts, request:string) => {
     return {
       ...this.get(request),
       ...Object.entries(opts)
@@ -117,6 +131,8 @@ class GraphCache {
   }
 }
 
+
+
 /**
  * Calls Github's GraphQL API endpoint to get a list of a users repos
  * @param {string} query - GraphQL query string
@@ -129,7 +145,7 @@ class GraphCache {
  * @param {Array} [affiliations] - Github defined array of affiliations
  * @param {Object} headers - Extra headers to add the API call
  */
-const graphApiCall = async (args) => {
+const graphApiCall = async (args:TGraphApiVars) => {
   const { headers:customHeaders, endpoint } = args
   const {
     QUERY: query,
@@ -158,7 +174,7 @@ const graphApiCall = async (args) => {
   if(errors && errors.length)
     throw new Error(errors[0].message || `Could not complete github.listRepos API call. Please try again later`)
 
-  const { nodes=noPropArr, pageInfo=noOpObj } = get(data, dataPath, noOpObj)
+  const { nodes=noPropArr, pageInfo=defPageInfo } = get(data, dataPath, noOpObj) as TGraphApiResp
 
   if(pageInfo.hasNextPage && pageInfo.endCursor){
     graphCache.set(endpointKey, { after: pageInfo.endCursor })
@@ -190,28 +206,19 @@ const graphApiCall = async (args) => {
  *
  * @returns {*} - Query Response
 */
-const getUserRepos = async opts => {
-
-  // if((process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'local') && opts.loadMocks)
-  //   return require('../../__mocks__/repos').mockRepos
-
+export const getUserRepos = async opts => {
   return await graphApiCall({
     ...opts,
     endpoint: GRAPH.ENDPOINTS.REPO.LIST_ALL,
   })
 }
 
-const getRepoBranches = async opts => {
+export const getRepoBranches = async opts => {
   console.warn(`Not implemented`)
   return []
   // return await graphApiCall({
   //   ...opts,
   //   endpoint: GRAPH.ENDPOINTS.REPO.BRANCHES,
   // })
-}
-
-module.exports = {
-  getUserRepos,
-  getRepoBranches
 }
 

@@ -7,20 +7,20 @@
  *  * Data: { ref: `refs/heads/${newBranch}`, sha: <hash-from-step-2> }
  */
 
+import axios, { AxiosRequestConfig } from 'axios'
+import { limbo } from '@keg-hub/jsutils'
+import { Logger } from '@keg-hub/cli-utils'
+import { throwGitError, buildHeaders, buildAPIUrl } from './gitUtils'
+import { TGitOpts } from '@gobletqa/workflows/types'
 
-const axios = require('axios')
-const { limbo } = require('@keg-hub/jsutils')
-const { Logger } = require('@keg-hub/cli-utils')
-const { throwGitError, buildHeaders, buildAPIUrl } = require('./gitUtils')
 
-
-const getBranchHash = async ({ branch, remote, token, log }) => {
+const getBranchHash = async ({ branch, remote, token, log }:TGitOpts) => {
   const remoteUrl = buildAPIUrl(remote, [`git/refs`])
   const params = {
     method: 'GET',
     url: `${remoteUrl}/heads/${branch}`,
     headers: buildHeaders(token),
-  }
+  } as AxiosRequestConfig
 
   log && Logger.log(`Get Repo SHA Request Params:\n`, params)
 
@@ -34,7 +34,7 @@ const getBranchHash = async ({ branch, remote, token, log }) => {
     )
 
   return (
-    resp?.data?.object?.sha ||
+    (resp?.data?.object?.sha as string) ||
     throwGitError(
       new Error(resp?.data),
       remoteUrl,
@@ -43,7 +43,7 @@ const getBranchHash = async ({ branch, remote, token, log }) => {
   )
 }
 
-const createNewBranch = async ({ branch, newBranch, remote, token, log }, hash) => {
+const createNewBranch = async ({ branch, newBranch, remote, token, log }:TGitOpts, hash:string) => {
   const remoteUrl = buildAPIUrl(remote, [`git/refs`])
   newBranch = newBranch || `${branch}-${new Date().getTime()}`
 
@@ -52,10 +52,10 @@ const createNewBranch = async ({ branch, newBranch, remote, token, log }, hash) 
     url: remoteUrl,
     headers: buildHeaders(token),
     data: {
-      ref: `refs/heads/${newBranch}`,
       sha: hash,
+      ref: `refs/heads/${newBranch}`,
     },
-  }
+  } as AxiosRequestConfig
 
   log && Logger.log(`Create Branch Request Params:\n`, params)
 
@@ -77,17 +77,11 @@ const createNewBranch = async ({ branch, newBranch, remote, token, log }, hash) 
  * @public
  * @throws
  * See this gist for more info => https://gist.github.com/potherca/3964930
- * @param {Object} args - Data needed to execute the workflow
- * @param {Object} args.repo - Repo metadata for setting up goblet
  *
  * @returns {string} - Name of the newly created branch
  */
-const branchRepo = async gitArgs => {
+export const branchRepo = async (gitArgs:TGitOpts) => {
   const hash = await getBranchHash(gitArgs)
 
-  return await createNewBranch(gitArgs, hash)
-}
-
-module.exports = {
-  branchRepo,
+  return await createNewBranch(gitArgs, hash as string)
 }

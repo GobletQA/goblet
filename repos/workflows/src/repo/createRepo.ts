@@ -13,15 +13,18 @@
  * https://api.github.com/orgs/ORGANIZATION_NAME/repos
 */
 
-const axios = require('axios')
-const { limbo } = require('@keg-hub/jsutils')
-const { Logger } = require('@keg-hub/cli-utils')
-const { throwGitError, buildHeaders, buildAPIUrl } = require('./gitUtils')
+import { limbo } from '@keg-hub/jsutils'
+import { Logger } from '@keg-hub/cli-utils'
+import axios, { AxiosRequestConfig } from 'axios'
+import { throwGitError, buildHeaders, buildAPIUrl } from './gitUtils'
+
+import { TGitOpts } from '@gobletqa/workflows/types'
 
 /**
  * TODO - Creates a new repo by calling github's API via axios
+ * Figure out how to set the default branch or call the create branch right after this method
  */
-const createRepo = async ({ remote, token, log }, repoName) => {
+export const createRepo = async ({ remote, token, log, branch }:TGitOpts, repoName:string) => {
   const remoteUrl = buildAPIUrl(remote)
 
   const params = {
@@ -29,7 +32,7 @@ const createRepo = async ({ remote, token, log }, repoName) => {
     url: remoteUrl,
     data: { repoName },
     headers: buildHeaders(token),
-  }
+  } as AxiosRequestConfig
 
   log && Logger.log(`Create Repo Request Params:\n`, params)
 
@@ -42,9 +45,5 @@ const createRepo = async ({ remote, token, log }, repoName) => {
       `[WRK-FL BRANCH] Github API error while getting creating repo ${branch} sha`
     )
 
-  return newBranch
-}
-
-module.exports = {
-  createRepo
+  return branch
 }
