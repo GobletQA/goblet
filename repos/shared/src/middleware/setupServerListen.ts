@@ -1,8 +1,15 @@
-const fs = require('fs')
-const http = require('http')
-const https = require('https')
-const { getApp } = require('@GSH/App')
-const { Logger } = require('@keg-hub/cli-utils')
+import fs from 'fs'
+import http from 'http'
+import https from 'https'
+import { getApp } from '@GSH/App'
+import { Express } from 'express'
+import { Logger } from '@keg-hub/cli-utils'
+
+type TCredentials = {
+  ca?: string
+  key?: string
+  cert?: string
+}
 
 /**
  * Adds a timer to force exiting the current process after a given time
@@ -11,12 +18,12 @@ const { Logger } = require('@keg-hub/cli-utils')
  * @param {number} exitCode - Code relative to the type of exit event that fired
  *
  */
-const addExitTimeout = (exitTimeout, exitCode=0) => {
+const addExitTimeout = (exitTimeout:number, exitCode:number=0) => {
   return setTimeout(() => {
-    Logger.info(`[Goblet] Server did not shutdown in time, force exiting the process!`)
     process.exit(exitCode)
   }, exitTimeout)
 }
+
 
 /**
  * Adds exit listeners to allow graceful shutdown of the servers
@@ -26,7 +33,11 @@ const addExitTimeout = (exitTimeout, exitCode=0) => {
  * @param {number} exitTimeout - Amount of time to wait until force exiting the process
  *
  */
-const addExitListener = (insecureServer, secureServer, exitTimeout=3000) => {
+const addExitListener = (
+  insecureServer:http.Server,
+  secureServer:https.Server,
+  exitTimeout:number=3000
+) => {
   let exitCalled
   ;([
     `SIGINT`,
@@ -47,6 +58,7 @@ const addExitListener = (insecureServer, secureServer, exitTimeout=3000) => {
       let insecureClosed
       exitCalled = true
       Logger.info(`[Goblet] Server cleaning up...`)
+
       secureServer &&
         secureServer.close(() => {
           secureClosed = true
@@ -67,7 +79,7 @@ const addExitListener = (insecureServer, secureServer, exitTimeout=3000) => {
           timeout && clearTimeout(timeout)
           process.exit(exitCode)
         })
-      
+
       if((!secureServer && !insecureServer) || (insecureClosed && secureClosed))
         process.exit(exitCode)
 
@@ -83,7 +95,12 @@ const addExitListener = (insecureServer, secureServer, exitTimeout=3000) => {
  *
  * @returns {Object} - Insecure / Secure server object and Express app object
  */
-const serverListen = (app, serverConf, exitListener=true, exitTimeout) => {
+const serverListen = (
+  app:Express,
+  serverConf:Record<any, any>,
+  exitListener:boolean=true,
+  exitTimeout?:number
+) => {
   const { securePort, port, host, name } = serverConf
   const creds = {
     key: process.env.GB_SSL_KEY,
@@ -95,7 +112,7 @@ const serverListen = (app, serverConf, exitListener=true, exitTimeout) => {
     fs.existsSync(loc) && (conf[key] = fs.readFileSync(loc, 'utf8'))
 
     return conf
-  }, {})
+  }, {} as TCredentials)
 
   const httpServer = http.createServer(app)
   const httpsServer = credentials.cert &&
@@ -131,15 +148,16 @@ const serverListen = (app, serverConf, exitListener=true, exitTimeout) => {
  * Sets up a server based on config settings
  * @param {Object} app - Express app to create the server from
  * @param {Object} config - Goblet Server config
- * @param {boolean} exitListen - Add exit listener to the servers
- * @param {number} exitTimeout - Amount of time to wait until force exiting the process
+ * @param {boolean} [exitListen] - Add exit listener to the servers
+ * @param {number} [exitTimeout] - Amount of time to wait until force exiting the process
  *
  * @returns {Object} - Response from server setup method
  */
-const setupServerListen = (app, config, exitListener, exitTimeout) => {
+export const setupServerListen = (
+  app:Express,
+  config:Record<any, any>,
+  exitListener?:boolean,
+  exitTimeout?:number
+) => {
   return serverListen(app || getApp(), config, exitListener, exitTimeout)
-}
-
-module.exports = {
-  setupServerListen
 }

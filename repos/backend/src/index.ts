@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-require('../resolveRoot')
-const { initApi } = require('./server')
+import '../resolveRoot'
+import { initApi } from './server'
 
 const start = () => {
   process.on('SIGINT', () => {

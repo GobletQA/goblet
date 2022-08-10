@@ -1,16 +1,16 @@
 #!/usr/bin/env node
-require('../resolveRoot')
-const apiEndpoints = require('@GBE/Endpoints')
-const { initSockr } = require('@GBE/Sockr/sockr')
-const { getApp } = require('@gobletqa/shared/express/app')
-const { isDeployedEnv } = require('@gobletqa/shared/utils/isDeployedEnv')
-const {
+import '../resolveRoot'
+import apiEndpoints from '@GBE/Endpoints'
+import { initSockr } from '@GBE/Sockr/sockr'
+import { getApp } from '@gobletqa/shared/express/app'
+import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
+import {
   setReqRepo,
   setupVNCProxy,
   validateUser,
   setupConductorProxy,
-} = require('@GBE/Middleware')
-const {
+} from '@GBE/Middleware'
+import {
   setupJWT,
   setupCors,
   setupServer,
@@ -19,7 +19,7 @@ const {
   setupLoggerReq,
   setupLoggerErr,
   setupServerListen,
-} = require('@gobletqa/shared/middleware')
+} from '@gobletqa/shared/middleware'
 
 /**
  * Starts a express API server, and connects the sockr Websocket
@@ -27,7 +27,7 @@ const {
  *
  * @returns {Object} - Express app, server and socket.io socket
  */
-const initApi = async () => {
+export const initApi = async () => {
   const app = getApp()
   const { sockr, server:serverConf } = app.locals.config
 
@@ -65,6 +65,3 @@ const initApi = async () => {
 !isDeployedEnv &&
   process.once('SIGUSR2', () => process.kill(process.pid, 'SIGUSR2'))
 
-module.exports = {
-  initApi,
-}
