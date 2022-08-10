@@ -1,4 +1,4 @@
 export * from './branchRepo'
-export * from './commitRepo'
+export * from './saveRepo'
 export * from './mountRepo'
 export * from './githubAPI'

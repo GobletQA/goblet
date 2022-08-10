@@ -1,7 +1,7 @@
 import path from 'path'
 import { git, RepoWatcher } from '../git'
-import { noOpObj } from '@keg-hub/jsutils'
 import { LOCAL_MOUNT } from '../constants'
+import { noOpObj, omitKeys } from '@keg-hub/jsutils'
 import { getRepoName } from '../utils/getRepoName'
 import { fileSys, Logger } from '@keg-hub/cli-utils'
 import { createRepoWatcher } from '../repo/mountRepo'
@@ -89,10 +89,10 @@ const statusForLocal = async (config:TGobletConfig) => {
  *
  * @return {RepoStatus} - Status object for the checked repo
  */
-const statusForVnc = async (gitOpts:TGitOpts=emptyOpts) => {
+const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
   Logger.info(`Checking repo status in vnc mode...`)
 
-  const { username, branch, remote, local } = gitOpts
+  const { username, branch, remote, local } = opts
 
   const unknownStatus:TWFResp = {
     mode: 'vnc',
@@ -112,11 +112,11 @@ const statusForVnc = async (gitOpts:TGitOpts=emptyOpts) => {
   const isMounted = await git.exists(null, local)
   if (!isMounted) return unknownStatus
 
-  Logger.log(`Checking for repo watcher at path ${gitOpts.local}...`)
-  const watcher = RepoWatcher.getWatcher(gitOpts.local)
+  Logger.log(`Checking for repo watcher at path ${opts.local}...`)
+  const watcher = RepoWatcher.getWatcher(opts.local)
   watcher
-    ? Logger.log(`Found existing watcher at path ${gitOpts.local}`)
-    : createRepoWatcher(gitOpts)
+    ? Logger.log(`Found existing watcher at path ${opts.local}`)
+    : createRepoWatcher(opts)
 
 
   Logger.log(`Loading goblet.config...`)
@@ -130,7 +130,7 @@ const statusForVnc = async (gitOpts:TGitOpts=emptyOpts) => {
         mounted: true,
         status: 'mounted',
         repo: {
-          git: gitOpts,
+          git: omitKeys(opts, [`token`]),
           ...gobletConfig,
           name: getRepoName(remote),
         },
@@ -140,20 +140,20 @@ const statusForVnc = async (gitOpts:TGitOpts=emptyOpts) => {
 /**
  * Default implementation for running Goblet locally
  * This is expected to be overwritten by External Services
- * Builds a Repo Model Object based on the local metadata
+ * Builds a Repo Model Object based on the local opts
  *
  * @param {Object} config - Global Goblet config object
- * @param {Object} metadata - Git Metadata about the repo
+ * @param {Object} opts - Git Metadata about the repo
  *
  * @return {RepoStatus} - Status object for the checked repo
  */
-export const statusGoblet = async (config:TGobletConfig, metadata:TGitOpts, log=true) => {
+export const statusGoblet = async (config:TGobletConfig, opts:TGitOpts, log=true) => {
   log && Logger.subHeader(`Running Status Goblet Workflow`)
 
   if (!config)
     throw new Error(`The statusGoblet workflow requires a goblet config object`)
 
   return config?.screencast?.active
-    ? await statusForVnc(metadata)
+    ? await statusForVnc(opts)
     : await statusForLocal(config)
 }

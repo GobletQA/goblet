@@ -1,6 +1,5 @@
 
 import fs from 'node:fs'
-import path from 'node:path'
 import { URL } from 'node:url'
 import { loadToken } from './loadToken'
 import { RepoWatcher } from './repoWatcher'
@@ -14,7 +13,8 @@ import {
   TGitOpts,
   TGitMeta,
   TRunCmdOpts,
-  TLimboCmdResp
+  TLimboCmdResp,
+  TSaveMetaData
 } from '@gobletqa/workflows/types'
 
 /**
@@ -35,31 +35,54 @@ const defCmdOpts:TRunCmdOpts = {
  */
 const validateGitOpts = (gitOpts:TGitOpts):TGitOpts => {
   // Ensure an object is passed
-  !isObj(gitOpts) &&
-    throwErr(`GitFS requires an options object. Received ${typeof gitOpts}`)
+  !isObj(gitOpts)
+    && throwErr(`Git command requires an options object. Received ${typeof gitOpts}`)
+
   ;['local', 'remote', 'branch', 'username'].map(key => {
-    !gitOpts[key] &&
-      throwErr(
-        `GitFS requires a ${key} property and value in the git options object`
-      )
+    !gitOpts[key]
+      && throwErr(`Git command requires a ${key} property and value in the git options object`)
   })
 
   !gitOpts.token &&
-    !exists(process.env.GOBLET_GIT_TOKEN) &&
-    throwErr(
-      `GitFS requires a valid token property. Or set the GOBLET_GIT_TOKEN env`
-    )
+    !exists(process.env.GOBLET_GIT_TOKEN)
+    && throwErr(`Git command requires a valid token.`)
 
   return {
     local: gitOpts.local,
     remote: gitOpts.remote,
-    branch: gitOpts.branch,
     username: gitOpts.username,
+    branch: gitOpts.branch || `main`,
     name: gitOpts.name || gitOpts.username,
     token: gitOpts.token || process.env.GOBLET_GIT_TOKEN,
     email: gitOpts.email || `${gitOpts.username}@goblet.io`,
   }
 }
+
+/**
+ * Helper to generate the repos remote url to clone / push / pull from 
+ */
+const generateRemoteUrl = ({remote, token}:TGitOpts) => {
+  const url = new URL(remote)
+  return `${url.protocol}//${token}@${url.host}${url.pathname}`
+}
+
+/**
+ * Helper to log git command error messages
+ */
+const hasGitError = (err?:Error, resp?:TCmdResp, command:string=``) => {
+  let message
+  if(err) message = err.message
+  else if(resp?.exitCode) message = resp.error || `An unknown error occurred`
+
+  if(!message) return
+
+  Logger.error(`Error running git ${command}:\n`)
+  Logger.log(message)
+  Logger.empty()
+
+  return true
+}
+
 
 /**
  * Helper for running git commands
@@ -72,6 +95,29 @@ export const git = async (
   return await limbo(runCmd('git', args, opts, ...params)) as TLimboCmdResp
 }
 
+git.setUser = async (
+  gitOpts:TGitOpts,
+  cmdOpts?:TRunCmdOpts,
+) => {
+
+  const options = validateGitOpts(gitOpts)
+  const { local, email, name, username } = options
+  const gitName = name || username || email.split(`@`).shift()
+
+  // Ensure the repo path exists, and if not then throw
+  const pathExists = await ensurePath(local)
+  !pathExists && throwErr(`Unknown error, repo directory could not be created`)
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+
+  Logger.info(`Configuring git user email...`)
+  const [emailErr, emailResp] = await git([`config`, `user.email`, email], joinedOpts, local)
+  if(hasGitError(emailErr, emailResp, `config-email`)) return [emailErr, emailResp]
+  
+  Logger.info(`Configuring git user name...`)
+  const [nameErr, nameResp] = await git([`config`, `user.name`, gitName], joinedOpts, local)
+  if(hasGitError(nameErr, nameResp, `config-name`)) return [nameErr, nameResp]
+
+}
 
 /**
  * Helper for loading the Git Token
@@ -88,7 +134,7 @@ git.clone = async (
   cmdOpts?:TRunCmdOpts
 ):Promise<[err:Error, resp:TCmdResp]> => {
   const options = validateGitOpts(gitOpts)
-  const { local, remote, token, branch=`main` } = options
+  const { local, branch } = options
 
   // Ensure the repo path exists, and if not then throw
   const pathExists = await ensurePath(local)
@@ -98,18 +144,40 @@ git.clone = async (
 
   // Init the repo
   const [initErr, initResp] = await git([`init`], joinedOpts, local)
-  if(initErr) return [initErr, initResp]
+  if(hasGitError(initErr, initResp, `init`)) return [initErr, initResp]
 
   // Checkout the desired branch
   const [chErr, chResp] = await git([`checkout`, `-b`, branch], joinedOpts, local)
-  if(chErr) return [chErr, chResp]
+  if(hasGitError(chErr, chResp, `checkout`)) return [chErr, chResp]
 
+  const [pullErr, pullResp] = await git.pull(gitOpts, cmdOpts)
+
+  // Ensure the user is configured for future git operations after pulling
+  await git.setUser(gitOpts, cmdOpts)
+
+  // Return the pull response so it can be handled by the mountRepo method
+  return [pullErr, pullResp]
+}
+
+/**
+ * Calls git pull in a subshell after building the options from the passed in args
+ * @function
+ *
+ */
+git.pull = async (
+  gitOpts:TGitOpts,
+  cmdOpts?:TRunCmdOpts
+):Promise<[err:Error, resp:TCmdResp]> => {
+
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+
+  const options = validateGitOpts(gitOpts)
+  const { local, branch } = options
+  
   // Pull code from the remote url
-  const url = new URL(remote)
-  const gitUrl = `${url.protocol}//${token}@${url.host}${url.pathname}`
+  const gitUrl = generateRemoteUrl(options)
   const [err, resp] = await git([`pull`, gitUrl, branch], joinedOpts, local)
-  if(err) return [err, resp]
-
+  if(hasGitError(err, resp, `pull`)) return [err, resp]
 
   // If repo already exists, then just reuse it
   const alreadyExists = resp?.exitCode === 128
@@ -119,9 +187,66 @@ git.clone = async (
   return alreadyExists ? [null, null] : [err, resp]
 }
 
+/**
+ * Calls git commit --all in a subshell after building the options from the passed in args
+ * @function
+ *
+ */
+git.commit = async (
+  gitOpts:TGitOpts,
+  cmdOpts?:TRunCmdOpts,
+  metaData?:TSaveMetaData
+):Promise<[err:Error, resp:TCmdResp]> => {
+  const message = metaData?.message || `test(goblet): auto-commit`
+  const options = validateGitOpts(gitOpts)
+  const { local } = options
+
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+
+  // Add all changes that currently exist
+  Logger.info(`Adding all changes in repo at path ${local}`)
+  const [addErr, addResp] = await git([`add`, `--all`], joinedOpts, local)
+  if(hasGitError(addErr, addResp, `add`)) return [addErr, addResp]
+
+  // Commit all changes that currently exist
+  Logger.info(`Committing all staged changes in repo at path ${local}`)
+  const [commitErr, commitResp ] = await git([`commit`, `-m`, `"${message}"`], joinedOpts, local)
+
+  if(commitResp.exitCode && commitResp.data.includes(`nothing to commit`))
+    return [commitErr, commitResp]
+
+  hasGitError(commitErr, commitResp, `commit`)
+
+  return [commitErr, commitResp]
+}
+
+/**
+ * Calls git pull in a subshell after building the options from the passed in args
+ * @function
+ *
+ */
+git.push = async (
+  gitOpts:TGitOpts,
+  cmdOpts?:TRunCmdOpts
+):Promise<[err:Error, resp:TCmdResp, saved:boolean]> => {
+
+  const options = validateGitOpts(gitOpts)
+  const { local, branch, remote } = options
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+
+  const gitUrl = generateRemoteUrl(options)
+  Logger.info(`Pushing changes to repo remote ${remote}`)
+  const [err, resp] = await git([`push`, gitUrl, branch], joinedOpts, local)
+
+  return hasGitError(err, resp, `push`)
+    ? [err, resp, false]
+    : [err, resp, true]
+
+}
 
 /**
  * Not technically a git method but relative to the repo in this context
+ * Checks to see if the repo folder exists, and if so, removes it
  */
 git.remove = async (args:TGitMeta) => {
   const repoPath = getRepoPath(args)
@@ -143,6 +268,10 @@ git.remove = async (args:TGitMeta) => {
   err && throwErr(err)
 }
 
+/**
+ * Checks to see if the repo folder exists
+ * Not technically a git method but relative to the repo in this context
+ */
 git.exists = async (args:TGitMeta, localPath?:string) => {
   const repoPath = localPath || getRepoPath(args)
 

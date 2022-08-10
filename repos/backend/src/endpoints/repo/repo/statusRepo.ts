@@ -1,14 +1,15 @@
-const { Repo } = require('@gobletqa/shared/repo/repo')
-const { getRepoGit } = require('../../../utils/getRepoGit')
-const { asyncWrap, apiRes } = require('@gobletqa/shared/express')
-const { loadRepoContent } = require('@gobletqa/shared/repo/loadRepoContent')
+import { Request, Response } from 'express'
+import { Repo } from '@gobletqa/shared/repo/repo'
+import { asyncWrap, apiRes } from '@gobletqa/shared/express'
+import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
 
 /**
  * Could be used to get repos when unmounted and in vnc mode, but logged in
  * Makes the initial status query take a while, so skipping for now
  * May want to add later, so keeping the code
  */
-const handleUnmounted = async (req, res, status) => {
+const handleUnmounted = async (req:Request, res:Response, status:Record<any, any>) => {
+  // @ts-ignore
   const { query, session } = req
   if(!session.token || status.mode !== 'vnc') return apiRes(req, res, { status })
 
@@ -22,10 +23,13 @@ const handleUnmounted = async (req, res, status) => {
  * Gets the status of a connected repo
  * Calls the statusGoblet workflow
  */
-const statusRepo = asyncWrap(async (req, res) => {
+export const statusRepo = asyncWrap(async (req:Request, res:Response) => {
   const { query } = req
+
+  // @ts-ignore
+  const { token } = req.user
   const { config } = req.app.locals
-  const { repo, status } = await Repo.status(config, query)
+  const { repo, status } = await Repo.status(config, { token, ...query })
 
   // If not mounted, return the unmounted status, so the ui can update base on the mode
   // In local mode, it just shows the editor
@@ -37,7 +41,9 @@ const statusRepo = asyncWrap(async (req, res) => {
 
   // Extra check just incase we missed something
   if (!foundRepo) {
+    // TODO: create error override and use that instead of normal error
     const error = new Error(`Error getting repo status. No repo exists.`)
+    // @ts-ignore
     error.code = 422
     throw error
   }
@@ -46,7 +52,3 @@ const statusRepo = asyncWrap(async (req, res) => {
 
   return apiRes(req, res, repoContent)
 })
-
-module.exports = {
-  statusRepo,
-}

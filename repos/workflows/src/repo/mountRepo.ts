@@ -1,3 +1,4 @@
+import { saveRepo } from './saveRepo'
 import { git, RepoWatcher } from '../git'
 import { TGitOpts, TRepoWatchCb } from '@gobletqa/workflows/types'
 
@@ -10,27 +11,20 @@ import { TGitOpts, TRepoWatchCb } from '@gobletqa/workflows/types'
  *
  */
 
-
 /**
  * Event handler to commit and push changes to the repos git origin
  * Whenever a change event happens
  */
-const onEvent = (args:TGitOpts) => ((event:string, path:string) => {
-  // TODO: add commit and push methods here
-
-  console.log(`------- Repo Git Options -------`)
-  console.log(args)
-  
-  console.log(`------- Repo change event -------`)
-  console.log(event)
-
-  console.log(`------- path changed -------`)
-  console.log(path)
-
+const onEvent = (opts:TGitOpts) => ((event:string, path:string) => {
+  return saveRepo(opts, { message: `test(goblet): ${path} - ${event} auto-commit`}, true)
 })
 
-export const createRepoWatcher = (args:TGitOpts, callback?:TRepoWatchCb, autoStart:boolean=true) => {
-  return RepoWatcher.create(args, callback || onEvent(args), autoStart)
+/**
+ * Helper to create an instance of the RepoWatcher based on the passed in git options
+ * Called when a new repo is mounted, or after git-repo-status api call
+ */
+export const createRepoWatcher = (opts:TGitOpts, callback?:TRepoWatchCb, autoStart:boolean=true) => {
+  return RepoWatcher.create(opts, callback || onEvent(opts), autoStart)
 }
 
 /**
@@ -40,13 +34,13 @@ export const createRepoWatcher = (args:TGitOpts, callback?:TRepoWatchCb, autoSta
  * @throws
  *
  */
-export const mountRepo = async (args:TGitOpts) => {
-  const [err, output] = await git.clone(args)
+export const mountRepo = async (opts:TGitOpts) => {
+  const [err, output] = await git.clone(opts)
 
   if (err) throw err
 
   if (output?.exitCode)
     throw new Error(`Could not mount repository\n${output?.error || output?.data || ''}`)
 
-  createRepoWatcher(args)
+  createRepoWatcher(opts)
 }

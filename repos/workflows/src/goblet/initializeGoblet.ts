@@ -15,7 +15,7 @@ import { TWFArgs } from '@gobletqa/workflows/types'
  *  1. Clones down a repo from a git provider (/repo/mountRepo)
  *  2. Creates a new branch from the default branch (/repo/branchRepo)
  *  3. Sets up goblet config and folder structure (/goblet/setupGoblet)
- *  4. Commits the changes to the repo (/repo/commitRepo)
+ *  4. Saves the changes to the repo (/repo/saveRepo)
  *  5. Pushes the branch with the changes to the git provider (/repo/pushRepo)
  * @function
  * @public

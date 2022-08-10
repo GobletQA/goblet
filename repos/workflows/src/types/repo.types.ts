@@ -30,3 +30,9 @@ export type TGraphApiResp = {
   nodes: any[],
   pageInfo: TGraphPageInfo
 }
+
+
+export type TSaveMetaData = {
+  message?: string
+  [key: string]: any
+}
