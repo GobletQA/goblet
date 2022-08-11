@@ -13,17 +13,10 @@ if [ "$2" ]; then
 fi
 
 
-if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "base" ] || [ "$BUILD_IMGS" == "bs" ]; then
-  echo "Building Base Docker Iamge ..."
-  echo ""
-  yarn doc build --context base "$BUILD_ARGS"
-  echo ""
-fi
-
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "app" ]; then
   echo "Building App Docker Iamge ..."
   echo ""
-  yarn doc build "$BUILD_ARGS"
+  yarn doc build --context app "$BUILD_ARGS"
   echo ""
 fi
 

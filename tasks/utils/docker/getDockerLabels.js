@@ -9,7 +9,7 @@ const { getDeployContext } = require('../helpers/contexts')
  * @returns {Array<string>} - Build labels for the docker image
  */
 const getDockerLabels = (docFileCtx, env) => {
-  const dockerLabel = getDeployContext(context, env)
+  const dockerLabel = getDeployContext(docFileCtx, env)
 
   return dockerLabel
     ? [`--label`, dockerLabel]
