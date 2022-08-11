@@ -70,6 +70,20 @@ vars:
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_CD_PORT"
 
+# ----- Conductor Values ----- #
+- name: GB_DD_DEPLOYMENT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_DEPLOYMENT"
+- name: GB_DD_IMG_URI
+  source: command
+  command: "node ../scripts/js/resolveImgUri.js DD"
+- name: GB_DD_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_PORT"
+- name: GB_DD_PRIVILEGED
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_PRIVILEGED"
+
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
 # See the ../scripts/js/resolvePullSecrets.js script for more information
@@ -100,14 +114,34 @@ deployments:
 # - name: $(node ../scripts/js/resolveDeployment.js BE IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 # - name: $(node ../scripts/js/resolveDeployment.js CD IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 
-# ----- DinD Deployment ----- #
-# TODO: convert this to use shared helm chart
-# Not working because each deployment tries to add it
-# - name: dind-deployment
-#   kubectl:
-#     manifests:
-#     - templates/dind-deployment.yaml
-#     - templates/dind-service.yaml
+# TODO: update this to use a mounted volume that is shared with the conductor instance
+# Then set the "DOCKER_TLS_CERTDIR" env to the directory of that shared volume
+# Then update the conductor to use certs in the volume to connect to the docker API
+# See more info here => https://hub.docker.com/_/docker
+- name: ${GB_DD_DEPLOYMENT}
+  helm:
+    chart:
+      name: ./
+    cleanupOnFail: true
+    valuesFiles:
+    - ./values.yml
+    - ./values.${NODE_ENV}.yml
+    values:
+      containers:
+      - image: ${GB_DD_IMG_URI}
+        imagePullPolicy: ${IMAGE_PULL_POLICY}
+        env: $(node ../scripts/js/resolveDSEnvs.js dind)
+        # TODO: remove this once shared certs volume is configured
+        command: ["dockerd"]
+        args: [ "--host=unix:///var/run/docker.sock", "--host=tcp://${GB_DD_HOST}:${GB_DD_PORT}" ]
+        # TODO: use sysbox or gvisor to remove the need for privileged context
+        securityContext:
+          privileged: ${GB_DD_PRIVILEGED}
+        # TODO: add shared certs volume for security to share with conductor
+      service:
+        name: ${GB_DD_DEPLOYMENT}
+        ports:
+        - port: ${GB_DD_PORT}
 
 # ----- Frontend Deployment ----- #
 - name: ${GB_FE_DEPLOYMENT}

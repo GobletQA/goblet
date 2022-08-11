@@ -29,6 +29,7 @@ module.exports = {
     */
     appContexts: [
       [`app`],
+      [`dind`, `dnd`, `dd`],
       [`proxy`, `prx`, `px`],
       [`frontend`, `fre`, `fe`],
       [`backend`, `bae`, `be`],

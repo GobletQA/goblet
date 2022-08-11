@@ -19,31 +19,35 @@ loadEnvs({
 })
 
 const {
-  GOBLET_DIND_SERVICE_HOST,
-  GOBLET_DIND_SERVICE_PORT,
+  GB_CD_PORT,
+  GB_CD_HOST=DEF_HOST_IP,
   GB_LOG_LEVEL,
   GB_CD_TIMEOUT,
+  GB_CD_HASH_KEY,
   GB_CD_LOG_LEVEL=GB_LOG_LEVEL,
   GB_CD_PIDS_LIMIT,
-  GB_CD_PORT,
   GB_CD_RATE_LIMIT,
+  GB_CD_DOC_VOLUMES,
   GB_CD_SERVER_SECRET,
+  GOBLET_DIND_SERVICE_HOST,
+  GOBLET_DIND_SERVICE_PORT,
   // Salting the user hash string. Not intended to be secure, just anonymous
-  GB_CD_HASH_KEY,
-  GB_CD_HOST=DEF_HOST_IP,
 } = process.env
 
-
-const controllerOpts = inDocker()
-  ? {
-      host: GOBLET_DIND_SERVICE_HOST,
-      port: GOBLET_DIND_SERVICE_PORT
-    }
-  : {}
+/**
+ * Helper to generate the options for connecting to the controller (i.e. docker)
+ */
+const getControllerOpts = () => {
+  return !inDocker()
+    ? {}
+    : GOBLET_DIND_SERVICE_HOST && GOBLET_DIND_SERVICE_PORT
+      ? { host: GOBLET_DIND_SERVICE_HOST, port: GOBLET_DIND_SERVICE_PORT }
+      : { socketPath: GB_CD_DOC_VOLUMES }
+}
 
 export const conductorConfig:TConductorConfig = {
   controller: {
-    options: controllerOpts,
+    options: getControllerOpts(),
     pidsLimit: toNum(GB_CD_PIDS_LIMIT) as number,
   } as TDockerConfig,
   proxy: {
