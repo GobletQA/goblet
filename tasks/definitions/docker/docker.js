@@ -1,7 +1,7 @@
 module.exports = {
   docker: {
-    name: 'docker',
-    alias: ['doc', 'dc'],
+    name: `docker`,
+    alias: [ `dock`, `doc`, `dc`],
     tasks: {
       ...require('./build'),
       ...require('./login'),
