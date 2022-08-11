@@ -1,38 +1,32 @@
-const { toBool } = require('@keg-hub/jsutils')
+import { toBool } from '@keg-hub/jsutils'
+import { TScreenDims, TGScreencastConfig } from '@gobletqa/screencast/src/types'
 
 const {
   GB_SC_HOST,
   GB_BE_HOST,
   GB_VNC_ACTIVE,
   DISPLAY=':0.0',
-  GB_SC_PORT=7006,
+  GB_SC_PORT,
+  GB_NO_VNC_PORT,
 
-  GB_NO_VNC_PORT=26369,
-  GB_NO_VNC_PATH=`/novnc`,
-  GB_NO_VNC_PROTOCOL=`ws`,
-
-  GB_VNC_VIEW_HEIGHT=900,
-  GB_VNC_VIEW_WIDTH=1440,
-  GB_VNC_SERVER_PORT=26370,
+  GB_VNC_VIEW_HEIGHT,
+  GB_VNC_VIEW_WIDTH,
+  GB_VNC_SERVER_PORT,
   GB_VNC_SERVER_HOST=GB_SC_HOST,
 } = process.env
 
 
-const screenDims = {
-  width: parseInt(GB_VNC_VIEW_WIDTH, 10) ?? 900,
-  height: parseInt(GB_VNC_VIEW_HEIGHT, 10) ?? 1440,
+const screenDims:TScreenDims = {
+  width: parseInt(GB_VNC_VIEW_WIDTH as string, 10) ?? 900,
+  height: parseInt(GB_VNC_VIEW_HEIGHT as string, 10) ?? 1440,
 }
 
-const screencastConfig = {
+export const screencastConfig:TGScreencastConfig = {
   // Set if the screencast is active or not
   active: toBool(GB_VNC_ACTIVE),
-  // TODO - This should be moved from screencast to server config
-  // Proxy settings, for connecting the backend API to the noVNC server
-  proxy: {
+  novnc: {
     host: GB_BE_HOST,
-    path: GB_NO_VNC_PATH,
     port: GB_NO_VNC_PORT,
-    protocol: GB_NO_VNC_PROTOCOL,
   },
   // Uses to start separate screencast API
   server: {
@@ -56,6 +50,3 @@ const screencastConfig = {
   browser: {},
 }
 
-module.exports = {
-  screencastConfig,
-}

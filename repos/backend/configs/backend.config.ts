@@ -2,10 +2,10 @@
 import '../resolveRoot'
 import path from 'path'
 import { toBool } from '@keg-hub/jsutils'
+import { sockrCmds } from './sockrCmds.config'
 import { aliases } from '@GConfigs/aliases.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
-
 import { TBackendConfig } from '@gobletqa/backend/src/types'
 
 const nodeEnv = process.env.NODE_ENV || `local`
@@ -30,6 +30,10 @@ const {
   GB_BE_HOST,
   GB_BE_SECURE_PORT,
 
+  GB_NO_VNC_PATH,
+  GB_NO_VNC_PORT,
+  GB_NO_VNC_PROTOCOL,
+
   GB_BE_JWT_EXP,
   GB_BE_JWT_ALGO,
   GB_BE_JWT_SECRET,
@@ -49,17 +53,22 @@ const {
   GB_BE_COOKIE_EXP = new Date(new Date().getTime() + 86400000),
 } = process.env
 
-
 export const backendConfig:TBackendConfig  = {
   port: GB_BE_PORT,
   host: GB_BE_HOST,
-  securePort: GB_BE_SECURE_PORT,
   environment: nodeEnv,
   path: GB_BE_SOCKR_PATH,
   logLevel: GB_LOG_LEVEL,
   auth: toBool(GB_AUTH_ACTIVE),
+  securePort: GB_BE_SECURE_PORT,
   hostPWSocket: toBool(GB_PW_SOCKET_ACTIVE),
   origins: generateOrigins(GB_SERVER_ORIGINS),
+  screencast: {
+    host: GB_BE_HOST,
+    path: GB_NO_VNC_PATH,
+    port: GB_NO_VNC_PORT,
+    protocol: GB_NO_VNC_PROTOCOL,
+  },
   cookie: {
     key: GB_BE_COOKIE_KEY,
     name: GB_BE_COOKIE_NAME,
@@ -72,6 +81,7 @@ export const backendConfig:TBackendConfig  = {
     overwrite: toBool(GB_BE_COOKIE_OVERWRITE),
   },
   sockr: {
+    ...sockrCmds,
     path: GB_BE_SOCKR_PATH,
     port: GB_BE_SOCKET_PORT || GB_BE_PORT,
     host: GB_BE_SOCKET_HOST || GB_BE_HOST,

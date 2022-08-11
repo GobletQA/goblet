@@ -8,9 +8,6 @@
 require('./aliases.config').registerAliases()
 
 const { firebase } = require('./firebase.config')
-const { serverConfig } = require('./server.config')
-const { sockrCmds } = require('./sockrCmds.config')
-const { screencastConfig } = require('./screencast.config')
 
 const {
   GOBLET_ROOT,
@@ -26,15 +23,8 @@ const {
   SUB_REPOS,
 } = require('./paths.config')
 
-
 module.exports = {
   firebase,
-  sockr: {
-    ...sockrCmds,
-    ...serverConfig.sockr,
-  },
-  server: serverConfig,
-  screencast: screencastConfig,
 
   /**
    * Options for browser recorder
@@ -43,9 +33,6 @@ module.exports = {
   recorder: {
     locator: `-- 🍷 GOBLET`,
   },
-
-  // TODO: IMPORTANT - this should **NOT** be part of the default config
-  // It needs to be removed
 
   /**
    * Paths to a repos goblet specific files

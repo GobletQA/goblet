@@ -1,4 +1,5 @@
 const express = require('express')
+const { noOpObj, deepMerge } = require('@keg-hub/jsutils')
 const { getGobletConfig, resetGobletConfig } = require('@GSH/Utils/getGobletConfig')
 
 let _APP
@@ -29,8 +30,8 @@ const reloadGobletConfig = type => {
  *
  * @returns {Object} - Express App Object
  */
-const setupApp = type => {
-  !_APP.locals.config && (_APP.locals.config = getGobletConfig())
+const setupApp = (serverConf) => {
+  !_APP.locals.config && (_APP.locals.config = deepMerge(getGobletConfig(), serverConf))
 
   return _APP
 }
@@ -42,10 +43,10 @@ const setupApp = type => {
  *
  * @returns {Object} - Express App Object
  */
-const getApp = type => {
+const getApp = (serverConf=noOpObj) => {
   !_APP && (_APP = express())
 
-  return setupApp(type)
+  return setupApp(serverConf)
 }
 
 module.exports = {

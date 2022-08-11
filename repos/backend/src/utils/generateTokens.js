@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
  
 /**
  * Validates the required authentication information exists
- * @param {Object} config - JWT config defined in the server.config.js file
+ * @param {Object} config - JWT config defined in the backend.config.js file
  * @param {Object} data - User data to store in the token
  *
  * @returns {Object} - Returns new JWT tokens

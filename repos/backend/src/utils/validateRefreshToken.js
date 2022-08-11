@@ -4,7 +4,7 @@ const { generateTokens } = require('./generateTokens')
 /**
  * Validates the passed in refresh token, and if valid creates new JWT tokens
  * Ensures the refreshToken data matches the current tokens data
- * @param {Object} config - JWT config defined in the server.config.js file
+ * @param {Object} config - JWT config defined in the backend.config.js file
  * @param {Object} user - User object parsed from the original JWT token
  * @param {string} refreshToken - Old refresh token used to validate against the user object
  *

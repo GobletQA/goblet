@@ -29,8 +29,8 @@ import {
  * @returns {Object} - Express app, server and socket.io socket
  */
 export const initApi = async () => {
-  const app = getApp()
-  const { sockr, server:serverConf } = backendConfig
+  const app = getApp({ sockr: backendConfig.sockr, server: backendConfig, })
+  const { sockr, server:serverConf } = app.locals.config
 
   setupLoggerReq(app)
   setupBlacklist(app)
@@ -43,11 +43,11 @@ export const initApi = async () => {
   setReqRepo(app)
   apiEndpoints(app)
   setupLoggerErr(app)
-  
+
   const wsProxy = setupVNCProxy(app)
   const {
+    secureServer,
     insecureServer,
-    secureServer
   } = setupServerListen(app, { name: `Backend`, ...serverConf })
 
   const server = secureServer || insecureServer

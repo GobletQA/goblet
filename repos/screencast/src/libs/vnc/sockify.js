@@ -34,7 +34,7 @@ const startSockify = async ({
   env = noOpObj,
 }) => {
   const config = getGobletConfig()
-  const { proxy, vnc } = config.screencast
+  const { novnc, vnc } = config.screencast
 
   const status = await statusSockify()
 
@@ -68,7 +68,7 @@ const startSockify = async ({
         ...wssArgs,
         '--web',
         '/usr/share/novnc',
-        `${proxy.host}:${proxy.port}`,
+        `${novnc.host}:${novnc.port}`,
         `${vnc.host}:${vnc.port}`,
       ],
       args

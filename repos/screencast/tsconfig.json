@@ -5,6 +5,7 @@
     "outDir": "./dist",
     "paths": {
       "@GSC/Configs": ["configs"],
+      "@GSC/Configs/*": ["configs/*"],
       "@GSC/Constants": ["src/constants"],
       "@GSC/Endpoints": ["src/endpoints"],
       "@GSC/Screencast": ["src/screencast"],
@@ -19,6 +20,5 @@
       "@gobletqa/screencast/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "vnc.js"],
   "exclude": ["node_modules", "dist"]
 }

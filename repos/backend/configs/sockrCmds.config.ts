@@ -1,4 +1,4 @@
-const sockrCmds = {
+export const sockrCmds = {
   groups: {
     tests: {
       filters: {},
@@ -74,8 +74,4 @@ const sockrCmds = {
       },
     },
   },
-}
-
-module.exports = {
-  sockrCmds,
 }

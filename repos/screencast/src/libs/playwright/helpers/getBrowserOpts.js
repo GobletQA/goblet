@@ -13,33 +13,6 @@ const {
 } = require('@keg-hub/jsutils')
 
 /**
-options
-  args: [],
-  channel: ''
-  chromiumSandbox: ''
-  devtools: true,
-  env: {},
-  executablePath: '
-  firefoxUserPrefs: {}
-  handleSIGHUP: true
-  handleSIGINT: true
-  handleSIGTERM: true
-  headless: true,
-  ignoreDefaultArgs: false
-  logger: Logger Object
-  proxy: Proxy Object
-    server: ''
-    bypass: ''
-    username: ''
-    password: ''
-  slowMo: 0
-  timeout: 3000
-  wsPath: '/custom-ws-path' (to serve websocket)
-  tracesDir: /goblet/artifacts/traces
-  downloadsPath: /goblet/artifacts/downloads
-*/
-
-/**
  * Default browser optons
  * @type {Object}
  */

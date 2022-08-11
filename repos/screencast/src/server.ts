@@ -1,15 +1,16 @@
-const apiEndpoints = require('@GSC/Endpoints')
-const { validateUser } = require('./middleware')
-const { getApp } = require('@gobletqa/shared/express/app')
-const { isDeployedEnv } = require('@gobletqa/shared/utils/isDeployedEnv')
-const {
+import apiEndpoints from '@GSC/Endpoints'
+import { validateUser } from './middleware'
+import { getApp } from '@gobletqa/shared/express/app'
+import { screencastConfig } from '@GSC/Configs/screencast.config'
+import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
+import {
   setupCors,
   setupServer,
   setupLoggerReq,
   setupLoggerErr,
   setupBlacklist,
   setupServerListen,
-} = require('@gobletqa/shared/middleware')
+} from '@gobletqa/shared/middleware'
 
 /**
  * Starts a express API server for screencast
@@ -18,7 +19,7 @@ const {
  * @returns {Object} - Express app, server and socket.io socket
  */
 const initApi = async () => {
-  const app = getApp()
+  const app = getApp({ screencast: screencastConfig })
 
   const { screencast } = app.locals.config
 
