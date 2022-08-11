@@ -1,3 +1,5 @@
+import type { GraphCache } from '../repo/githubAPI'
+
 export type TGCacheOpts = {
   url?: string
   token: string

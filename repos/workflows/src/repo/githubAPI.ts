@@ -28,7 +28,7 @@ const defPageInfo:TGraphPageInfo = noOpObj as TGraphPageInfo
  * Allows for paging by caching past requests via this.variables object
  * @type Class
  */
-class GraphCache {
+export class GraphCache {
 
   /**
    * Holds the default variables for making requests to github API

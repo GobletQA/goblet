@@ -3,6 +3,7 @@ import '../resolveRoot'
 import apiEndpoints from '@GBE/Endpoints'
 import { initSockr } from '@GBE/Sockr/sockr'
 import { getApp } from '@gobletqa/shared/express/app'
+import { backendConfig } from '@GBE/Configs/backend.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
   setReqRepo,
@@ -29,7 +30,7 @@ import {
  */
 export const initApi = async () => {
   const app = getApp()
-  const { sockr, server:serverConf } = app.locals.config
+  const { sockr, server:serverConf } = backendConfig
 
   setupLoggerReq(app)
   setupBlacklist(app)

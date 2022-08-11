@@ -5,6 +5,7 @@
     "outDir": "./dist",
     "paths": {
       "@GBE/Configs": ["configs"],
+      "@GBE/Configs/*": ["configs/*"],
       "@GBE/Libs": ["src/libs"],
       "@GBE/Libs/*": ["src/libs/*"],
       "@GBE/Utils": ["src/utils"],
@@ -17,16 +18,23 @@
       "@GBE/Middleware/*": ["src/middleware/*"],
       "@GBE/Template": ["templates"],
       "@GBE/Template/*": ["templates/*"],
+      "@GBE/Types": ["src/types"],
+      "@GBE/Types/*": ["src/types/*"],
       "@GBE": ["src"],
       "@GBE/Root": ["./"],
+      "@gobletqa/shared/utils/loadEnvs": ["../shared/src/utils/loadEnvs"],
+      "@gobletqa/shared/utils/getOrigin": ["../shared/src/utils/getOrigin"],
       "@gobletqa/shared": ["../shared/src"],
       "@gobletqa/shared/*": ["../shared/src/*"],
       "@gobletqa/screencast": ["../screencast/src"],
       "@gobletqa/screencast/*": ["../screencast/src/*"],
       "@gobletqa/backend": ["src"],
-      "@gobletqa/backend/*": ["src/*"]
+      "@gobletqa/backend/*": ["src/*"],
+      "@GLogs/*": ["../../logs/*"],
+      "@GRepos/*": ["../../repos/*"],
+      "@GConfigs/*": ["../../configs/*"],
+      "@GEnvironment": ["../../scripts/environment"]
     }
   },
-  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
