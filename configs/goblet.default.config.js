@@ -161,6 +161,4 @@ module.exports = {
     reportsTempFile: `${GOBLET_ROOT}/temp/reports/html-report.html`,
   },
 
-  /** Property to define a valid goblet config object */
-  __VALID_GOBLET_CONFIG: true,
 }

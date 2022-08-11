@@ -55,7 +55,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'; \
     echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf; \
     sysctl -p; \
-    /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
+    /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd; \
+    curl -fsSL https://get.docker.com | sh
 
 ARG GB_FE_PORT=19006
 ARG GB_BE_PORT=7005

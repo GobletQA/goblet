@@ -39,9 +39,8 @@ type TGFileTypes = {
 
 export type TGobletConfig = { 
   recorder: TRecorderOpts
+  fileTypes: TGFileTypes
   paths: Record<string, string>
   screencast: TGScreencastConfig
   internalPaths: Record<string, string>
-  __VALID_GOBLET_CONFIG?: boolean
-  fileTypes: TGFileTypes
 }

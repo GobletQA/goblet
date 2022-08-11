@@ -25,19 +25,7 @@ class Repo {
    * @returns {Array} - Found repos and their branches
    */
   static getUserRepos = async opts => {
-    const repos = await getUserRepos({...opts, loadMocks: true})
-
-    return repos.filter(repo => isObj(repo))
-      .map(repo => {
-        const { refs, url, name } = repo
-        return !refs || !refs.nodes || !refs.nodes.length
-          ? {url, name, branches: noPropArr}
-          : {
-              url,
-              name,
-              branches: refs.nodes.map(branch => branch.name).filter(name => name)
-            }
-      })
+    
   }
 
   /**
@@ -48,11 +36,7 @@ class Repo {
    * @returns {Object} - Repo Model object built by the response of the statusGoblet workflow
    */
   static status = async (config, repoData) => {
-    const { repo, ...status } = await statusGoblet(config, repoData, false)
-
-    return !repo || !status.mounted
-      ? { status }
-      : { status, repo: new Repo(repo) }
+   
   }
 
   /**
@@ -63,11 +47,7 @@ class Repo {
    * @returns {Object} - Response from the disconnectGoblet workflow
    */
   static disconnect = async ({ username }) => {
-    return await disconnectGoblet({
-      user: {
-        gitUser: username,
-      },
-    })
+    
   }
 
   /**
@@ -77,40 +57,12 @@ class Repo {
    * @returns {Object} - Response from the initializeGoblet workflow
    */
   static fromWorkflow = async (args) => {
-    const {
-      token,
-      branch,
-      repoUrl,
-      username,
-      newBranch,
-      createBranch,
-    } = args
+    
+  }
 
-    const url = new URL(repoUrl)
-    const name = url.pathname.split('/').pop().replace('.git', '')
-    const provider = url.host.split('.').slice(0).join('.')
 
-    const resp = await initializeGoblet({
-      repo: {
-        name,
-        token,
-        branch,
-        provider,
-        newBranch,
-        createBranch,
-        url: repoUrl,
-      },
-      user: { gitUser: username },
-    })
-
-    if (!resp || !resp.mounted)
-      throw new Error(
-        `[ERROR] Could not mount repo ${repoUrl}.\n${resp ? resp.message : ''}`
-      )
-
-    return new Repo({
-      ...resp.repo,
-    })
+  constructor(config = noOpObj) {
+    
   }
 
   /**
@@ -119,7 +71,11 @@ class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  world = undefined
+  get world () {
+    
+    return {}
+  }
+
 
   /**
    * Paths object for the repo
@@ -127,7 +83,10 @@ class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  paths = undefined
+  get paths () {
+    
+    return {}
+  }
 
   /**
    * Git metadata for the repo
@@ -135,8 +94,10 @@ class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  git = undefined
-
+  get git () {
+    
+    return {}
+  }
 
   /**
    * Instance of the parkin class
@@ -144,16 +105,9 @@ class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  parkin = undefined
-
-  constructor(config = noOpObj) {
-    const { paths, git, name } = config
-    this.git = git
-    this.name = name
-    this.paths = paths
-    this.world = getWorld(config)
-    this.parkin = new Parkin(this.world)
-    this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)
+  get parkin () {
+    
+    return {}
   }
 
   /**
@@ -164,10 +118,7 @@ class Repo {
    * @return {Object} - The reloaded repo.world object
    */
   refreshWorld = async () => {
-    this.world = getWorld(this)
-    this.parkin.world = this.world
 
-    return this.world
   }
 }
 

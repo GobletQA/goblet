@@ -10,8 +10,7 @@ const { getGobletConfig } = require('./getGobletConfig')
  * @returns {string} - Path to the goblet directory in a repo
  */
 const getRepoGobletDir = config => {
-  config =
-    config && config.__VALID_GOBLET_CONFIG ? config : getGobletConfig(config)
+  config = config || getGobletConfig(config)
   const { repoRoot, workDir } = config.paths
 
   return workDir ? path.join(repoRoot, workDir) : repoRoot

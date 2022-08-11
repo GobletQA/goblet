@@ -47,7 +47,8 @@ RUN yarn global add pm2; \
     pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'; \
     echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf; \
     sysctl -p; \
-    /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
+    /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd; \
+    curl -fsSL https://get.docker.com | sh
 
 COPY --from=goblet-builder /goblet/app/node_modules node_modules
 COPY --from=goblet-builder /goblet/app/repos/conductor/dist repos/conductor/dist
