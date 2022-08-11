@@ -1,5 +1,6 @@
 
 import { toNum } from '@keg-hub/jsutils'
+import { inDocker } from '@keg-hub/cli-utils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { DEF_HOST_IP } from '@gobletqa/conductor/constants/constants'
 import {
@@ -18,6 +19,8 @@ loadEnvs({
 })
 
 const {
+  GOBLET_DIND_SERVICE_HOST,
+  GOBLET_DIND_SERVICE_PORT,
   GB_LOG_LEVEL,
   GB_CD_TIMEOUT,
   GB_CD_LOG_LEVEL=GB_LOG_LEVEL,
@@ -30,9 +33,17 @@ const {
   GB_CD_HOST=DEF_HOST_IP,
 } = process.env
 
+
+const controllerOpts = inDocker()
+  ? {
+      host: GOBLET_DIND_SERVICE_HOST,
+      port: GOBLET_DIND_SERVICE_PORT
+    }
+  : {}
+
 export const conductorConfig:TConductorConfig = {
   controller: {
-    options: {},
+    options: controllerOpts,
     pidsLimit: toNum(GB_CD_PIDS_LIMIT) as number,
   } as TDockerConfig,
   proxy: {

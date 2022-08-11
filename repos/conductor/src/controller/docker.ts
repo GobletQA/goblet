@@ -31,6 +31,31 @@ import {
 
 import { createContainer, startContainer } from '../utils/runContainerHelpers'
 
+
+/**
+ * Connection back off helper for connecting to docker's api
+ * Sometimes the docker container is not complete by the time this kicks off
+ */
+const connectBackOff = (instance:Docker,  config:TDockerConfig, attempts:number) => {
+  Logger.info(`Attempt ${attempts}: connecting to docker`)
+  try {
+    instance.docker = new Dockerode(config?.options)
+    instance.events = dockerEvents(instance.docker, {
+      destroy: instance.removeFromCache,
+      start: instance.hydrateSingle
+    })
+  }
+  catch(err){
+    if(!attempts) throw new Error()
+    else Logger.warn(`Attempt ${attempts}: Failed to connect to docker, waiting 3 seconds to try again...`)
+    
+    setTimeout(() => {
+      const nextAttempt = attempts--
+      connectBackOff(instance, config, nextAttempt)
+    }, 3000)
+  }
+}
+
 /**
  * Docker controller class with interfacing with the Docker-Api via Dockerode
  * Matches the Controller class interface
@@ -47,13 +72,7 @@ export class Docker extends Controller {
   constructor(conductor:Conductor, config:TDockerConfig){
     super(conductor, config)
     this.config = config
-    this.docker = new Dockerode(config?.options)
-
-    // List for docker events, and cleanup our local cache
-    this.events = dockerEvents(this.docker, {
-      destroy: this.removeFromCache,
-      start: this.hydrateSingle
-    })
+    connectBackOff(this, config, 3)
   }
 
   hydrateSingle = async (message:TDockerEvent) => {

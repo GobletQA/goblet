@@ -48,9 +48,6 @@ let dsEnvs = addEnv(`GB_SUB_REPO`, repo)
 dsEnvs += addEnv(`GB_VNC_ACTIVE`, `"true"`)
 dsEnvs += addEnv(`GB_AUTH_ACTIVE`, `"true"`)
 
-// Add the docker-host env only to conductor so it can talk to the dind sidecar
-repo === `conductor` && (dsEnvs += addEnv(`DOCKER_HOST`, `tcp://localhost:2375`))
-
 const envs = resolveValues()
 dsEnvs+= buildEnvs(envs, defEnvs)
 dsEnvs+= repo === `frontend` ? buildEnvs(envs, feKeys) : buildEnvs(envs, beKeys)

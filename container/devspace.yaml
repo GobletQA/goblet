@@ -100,6 +100,15 @@ deployments:
 # - name: $(node ../scripts/js/resolveDeployment.js BE IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 # - name: $(node ../scripts/js/resolveDeployment.js CD IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 
+# ----- DinD Deployment ----- #
+# TODO: convert this to use shared helm chart
+# Not working because each deployment tries to add it
+# - name: dind-deployment
+#   kubectl:
+#     manifests:
+#     - templates/dind-deployment.yaml
+#     - templates/dind-service.yaml
+
 # ----- Frontend Deployment ----- #
 - name: ${GB_FE_DEPLOYMENT}
   helm:
@@ -175,7 +184,6 @@ deployments:
           serviceName: ${GB_CD_DEPLOYMENT}
           servicePort: ${GB_CD_PORT}
 
-
 # The `dev` section only applies to `yarn dev start` || `devspace dev` commands
 # Is not run for `yarn dev deploy` || `devspace deploy` commands
 dev:
@@ -194,13 +202,13 @@ profiles:
 - name: local
   patches:
   - op: replace
+    path: deployments.name=${GB_CD_DEPLOYMENT}.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}
+  - op: replace
     path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
     value: ${IMAGE}:${IMAGE_TAG}
   - op: replace
     path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
-  - op: replace
-    path: deployments.name=${GB_CD_DEPLOYMENT}.helm.values.containers[0].image
     value: ${IMAGE}:${IMAGE_TAG}
 - name: staging
 - name: production
