@@ -7,10 +7,9 @@ const { setupBuildX } = require('../../utils/docker/setupBuildX')
 const { toBuildArgsArr } = require('../../utils/docker/buildArgs')
 const { getDockerFile } = require('../../utils/docker/getDockerFile')
 const { resolveImgTags } = require('../../utils/docker/resolveImgTags')
-const { resolveContext } = require('../../utils/kubectl/resolveContext')
 const { getDockerLabels } = require('../../utils/docker/getDockerLabels')
-const { getContextValue } = require('../../utils/helpers/getContextValue')
 const { getDockerBuildParams } = require('../../utils/docker/getDockerBuildParams')
+const { getContextValue, getLongContext } = require('../../utils/helpers/contexts')
 
 /**
  * Looks for a custom IMAGE_FROM value based on the context or custom context env
@@ -42,7 +41,7 @@ const resolveImgFrom = (docFileCtx, allEnvs, from, imageName) => {
  */
 const buildImg = async (args) => {
   const { params } = args
-  const { builder, context, env, from, image, log, platforms, push } = params
+  const { builder, context, env, from, image, log } = params
 
   const envs = loadEnvs({ env })
   const token = getNpmToken()
@@ -52,17 +51,7 @@ const buildImg = async (args) => {
   builder && (await setupBuildX(builder, appRoot, allEnvs))
 
   // Get the context for the docker image being built
-  // Defaults to using the `container/Dockerfile`, without `.<context>`
-  const docFileCtx = resolveContext(context, {
-    app: `app`,
-    bs: 'base',
-    px: `proxy`,
-    sc: `screencast`,
-    cd: `conductor`,
-    be: 'backend',
-    fe: 'frontend',
-    db: 'database',
-  }, ``)
+  const docFileCtx = getLongContext(context)
 
   !docFileCtx
     && error.throwError(`Could not find Dockerfile from context "${context}"`)
@@ -83,7 +72,7 @@ const buildImg = async (args) => {
   const cmdArgs = [
     ...getDockerBuildParams(params),
     ...builtTags,
-    ...getDockerLabels(docFileCtx, envs),
+    ...getDockerLabels(docFileCtx, env),
     ...getDockerFile(docFileCtx),
     ...toBuildArgsArr(allEnvs),
     `.`,

@@ -1,27 +1,15 @@
 const { error } = require('@keg-hub/cli-utils')
-const { resolveContext } = require('../kubectl/resolveContext')
+const { getDeployContext } = require('../helpers/contexts')
 
 /**
  * Builds the labels to add to the docker image
  * @param {string} docFileCtx - Context of the Dockerfile to use
- * @param {Object} envs - ENV values loaded from the values.yml files
+ * @param {string} env - The current environment
  *
  * @returns {Array<string>} - Build labels for the docker image
  */
-const getDockerLabels = (docFileCtx, envs) => {
-  const dockerLabel = resolveContext(
-      docFileCtx,
-      {
-        app: `goblet-app`,
-        fe: envs.GB_FE_DEPLOYMENT,
-        be: envs.GB_BE_DEPLOYMENT,
-        cd: envs.GB_CD_DEPLOYMENT,
-        sc: envs.GB_SC_DEPLOYMENT,
-        px: envs.GB_PX_DEPLOYMENT,
-        db: envs.GB_DB_DEPLOYMENT,
-      },
-      false
-    )
+const getDockerLabels = (docFileCtx, env) => {
+  const dockerLabel = getDeployContext(context, env)
 
   return dockerLabel
     ? [`--label`, dockerLabel]

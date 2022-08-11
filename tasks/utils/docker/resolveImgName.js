@@ -1,6 +1,5 @@
 const { error } = require('@keg-hub/cli-utils')
-const { getContext } = require('../helpers/contexts')
-const { resolveContext } = require('../kubectl/resolveContext')
+const { getContextValue } = require('../helpers/contexts')
 
 /**
  * Finds the correct image name to use based on the params and docFileCtx
@@ -11,22 +10,9 @@ const { resolveContext } = require('../kubectl/resolveContext')
  * @return {string} - Resolved name of the docker image
  */
 const resolveImgName = (params, docFileCtx, envs) => {
-  const shortContext = getContext(docFileCtx)?.short
 
   // Get the name of the image that will be built
-  let imgName = params.image
-    || (docFileCtx && envs[`GB_${docFileCtx.toUpperCase()}_IMAGE`])
-    || (shortContext && envs[`GB_${shortContext.toUpperCase()}_IMAGE`])
-    || resolveContext(docFileCtx, {
-        app: envs.IMAGE,
-        fe: envs.GB_FE_IMAGE,
-        be: envs.GB_BE_IMAGE,
-        cd: envs.GB_CD_IMAGE,
-        sc: envs.GB_SC_IMAGE,
-        px: envs.GB_PX_IMAGE,
-        db: envs.GB_DB_IMAGE,
-        bs: envs.GB_IMAGE_FROM,
-      }, false)
+  let imgName = params.image || getContextValue(docFileCtx, envs, `IMAGE`, envs.IMAGE)
 
   !imgName &&
     error.throwError(`Could not find image or IMAGE env for context "${docFileCtx}"`)

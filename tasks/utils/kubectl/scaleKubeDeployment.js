@@ -1,8 +1,7 @@
 const { kubectl } = require('./kubectl')
-const { noOpObj, isNum } = require('@keg-hub/jsutils')
 const { error } = require('@keg-hub/cli-utils')
-const { loadEnvs } = require('../envs/loadEnvs')
-const { resolveContext } = require('./resolveContext')
+const { noOpObj, isNum } = require('@keg-hub/jsutils')
+const { getDeployContext } = require('../helpers/contexts')
 
 /**
  * Scales a deployments replicas up or down based on passed in params
@@ -18,15 +17,7 @@ const scaleKubeDeployment = async (params = noOpObj) => {
     error.throwError(`The deployment context param is required to scale a deployment`)
   !isNum(amount) && error.throwError(`The amount param is required to scale a deployment`)
 
-  const envs = loadEnvs({ env })
-  const deployment = resolveContext(context, {
-    be: envs.GB_BE_DEPLOYMENT,
-    fe: envs.GB_FE_DEPLOYMENT,
-    cd: envs.GB_CD_DEPLOYMENT,
-    sc: envs.GB_SC_DEPLOYMENT,
-    db: envs.GB_DB_DEPLOYMENT,
-    px: envs.GB_PX_DEPLOYMENT,
-  }, false)
+  const deployment = getDeployContext(context, env)
 
   !deployment && error.throwError(`Can not find deployment for context "${context}"`)
 

@@ -1,8 +1,7 @@
 const { noOpObj } = require('@keg-hub/jsutils')
 const { error } = require('@keg-hub/cli-utils')
-const { loadEnvs } = require('../envs/loadEnvs')
-const { resolveContext } = require('./resolveContext')
 const { getKubePods } = require('../kubectl/getKubePods')
+const { getDeployContext } = require('../helpers/contexts')
 
 /**
  * Finds a single pod based on the pods metadata labels
@@ -15,15 +14,7 @@ const getKubePod = async (params = noOpObj) => {
   const { context, env } = params
   !context && error.throwError(`The context param is required to find a pod`)
 
-  const envs = loadEnvs({ env })
-  const match = resolveContext(context, {
-    fe: envs.GB_FE_DEPLOYMENT,
-    be: envs.GB_BE_DEPLOYMENT,
-    cd: envs.GB_CD_DEPLOYMENT,
-    sc: envs.GB_SC_DEPLOYMENT,
-    db: envs.GB_DB_DEPLOYMENT,
-    px: envs.GB_PX_DEPLOYMENT,
-  })
+  const match = getDeployContext(context, env)
 
   !match &&
     error.throwError(`Can not match a pod to non-existing match argument ${context}`)

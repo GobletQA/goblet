@@ -1,5 +1,5 @@
 
-ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
+ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.23.4-focal
 
 # ---- Prune Stage ---- #
 FROM $GB_IMAGE_FROM as goblet-pruner
@@ -32,6 +32,30 @@ RUN yarn build
 # ---- Run Stage  ---- #
 FROM $GB_IMAGE_FROM as goblet-runner
 WORKDIR /goblet/app
+ENV HOME=/root \
+    DISPLAY=:0.0 \
+    DEBUG=pw:api* \
+    LC_ALL=C.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    EXPO_CLI_VERSION=5.3.2 \
+    DEBIAN_FRONTEND=noninteractive \
+    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    novnc \
+    tigervnc-standalone-server \
+    apt-get clean && \
+    apt-get autoclean && \
+    apt-get autoremove && \
+    rm -rf /var/cache/apk/*; \
+    yarn global add pm2 expo-cli@$EXPO_CLI_VERSION; \
+    pm2 install pm2-logrotate && \
+    pm2 set pm2-logrotate:retain '7' && \
+    pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'; \
+    echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf; \
+    sysctl -p; \
+    /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
 
 ARG GB_FE_PORT=19006
 ARG GB_BE_PORT=7005

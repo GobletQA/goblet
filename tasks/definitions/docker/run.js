@@ -6,10 +6,10 @@ const { loadEnvs } = require('../../utils/envs/loadEnvs')
 const { getNpmToken } = require('../../utils/envs/getNpmToken')
 const { addRunEnvs } = require('../../utils/docker/addRunEnvs')
 const { addRunPorts } = require('../../utils/docker/addRunPorts')
+const { getLongContext } = require('../../utils/helpers/contexts')
 const { addRunVolumes } = require('../../utils/docker/addRunVolumes')
 const { getTagOptions } = require('../../utils/docker/getTagOptions')
 const { resolveImgName } = require('../../utils/docker/resolveImgName')
-const { resolveContext } = require('../../utils/kubectl/resolveContext')
 
 /**
  * TODO: @lance-tipton We could try to parse the cmd form the options array
@@ -81,19 +81,7 @@ const runImg = async (args) => {
   const allEnvs = { ...envs, NPM_TOKEN: token }
 
   // Get the context for the docker image being run
-  const docFileCtx = resolveContext(
-    context,
-    {
-      app: `app`,
-      px: `proxy`,
-      db: 'database',
-      sc: `screencast`,
-      cd: `conductor`,
-      be: 'backend',
-      fe: 'frontend',
-    },
-    'app'
-  )
+  const docFileCtx = getLongContext(context, 'app')
 
   const imgToRun = await getImgToRun(params, docFileCtx, envs)
 
@@ -101,7 +89,7 @@ const runImg = async (args) => {
     ...getDockerRunArgs(params),
     ...addRunEnvs(allEnvs, docFileCtx),
     ...addRunPorts(params, allEnvs, docFileCtx),
-    ...addRunVolumes(params, allEnvs, docFileCtx),
+    ...addRunVolumes(params, docFileCtx),
     imgToRun,
     ...getRunCmd(params, options),
   ].filter((arg) => arg)

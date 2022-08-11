@@ -20,7 +20,6 @@ const generateTagMatches = (params, docFileCtx = ``, envs, tagOptions) => {
   
   const contextTags = flatUnion(convertTags(docFileCtx, envs), convertTags(sContext, envs))
   const buildTags = contextTags.length ? contextTags : convertTags(`IMAGE`, envs)
-
   const tags = flatUnion(ensureArr(params.tag), buildTags).filter(Boolean)
 
   if (!params.tagMatch) return tags

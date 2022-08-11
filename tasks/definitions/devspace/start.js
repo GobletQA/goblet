@@ -2,7 +2,7 @@ const { clean:cleanTask } = require('./clean')
 const { getNpmToken } = require('../../utils/envs')
 const { exists, isBool, isStr } = require('@keg-hub/jsutils')
 const { devspace } = require('../../utils/devspace/devspace')
-const { resolveContext } = require('../../utils/kubectl/resolveContext')
+const { getLongContext } = require('../../utils/helpers/contexts')
 const { getDeployments } = require('../../utils/devspace/getDeployments')
 
 /**
@@ -36,19 +36,7 @@ const setStartEnvs = (params) => {
    * Set the GB_NM_INSTALL env based on the passed in install option
    * Tells the corresponding app to run yarn install prior to starting
    */
-  const nmInstall = resolveContext(
-    install,
-    {
-      all: `all`,
-      px: `proxy`,
-      db: 'database',
-      sc: `screencast`,
-      cd: `conductor`,
-      be: `backend`,
-      fe: `frontend`,
-    },
-    false
-  )
+  const nmInstall = getLongContext(install)
 
   if (nmInstall) process.env.GB_NM_INSTALL = nmInstall
 }

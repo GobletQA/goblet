@@ -2,10 +2,9 @@ const { getNpmToken } = require('../../utils/envs')
 const { error } = require('@keg-hub/cli-utils')
 const { devspace } = require('../../utils/devspace/devspace')
 const { setDeploymentEnvs } = require('../../utils/envs/setDeploymentEnvs')
-const { getDeploymentOpts } = require('../../utils/devspace/getDeploymentOpts')
 
 /**
- * General devspace command the forards the first argument on to the devspace executable
+ * General devspace command the forwards the first argument on to the devspace executable
  * @param {Object} args - arguments passed from the runTask method
  * @param {string} args.command - Root task name
  * @param {Object} args.tasks - All registered tasks of the CLI
@@ -26,8 +25,7 @@ const command = async ({ task, params }) => {
       )}`
     )
 
-  const [_, deployments, activeMap] = getDeploymentOpts(params.env)
-  setDeploymentEnvs(deployments, activeMap)
+  setDeploymentEnvs(params.env)
 
   getNpmToken()
   return await devspace([cmd, `--debug`], params)

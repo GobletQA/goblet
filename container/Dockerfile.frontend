@@ -1,4 +1,4 @@
-ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
+ARG GB_IMAGE_FROM=node:16.16.0-alpine3.16
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 # ARG IMAGE_FROM=node:16.16.0-alpine3.16
 
@@ -35,6 +35,24 @@ RUN yarn turbo run build --filter=@gobletqa/frontend
 # ---- Serve App Stage ---- #
 FROM $IMAGE_FROM AS goblet-serve
 WORKDIR /usr/share/nginx/html
+ENV HOME=/root \
+    DISPLAY=:0.0 \
+    DEBUG=pw:api* \
+    LC_ALL=C.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    EXPO_CLI_VERSION=5.3.2 \
+    DEBIAN_FRONTEND=noninteractive \
+    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
+
+RUN yarn global add pm2 expo-cli@$EXPO_CLI_VERSION; \
+    pm2 install pm2-logrotate && \
+    pm2 set pm2-logrotate:retain '7' && \
+    pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'; \
+    echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf; \
+    sysctl -p; \
+    /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
+
 ARG GB_FE_PORT
 ENV NODE_ENV=production \
     GB_FE_PORT=$GB_FE_PORT

@@ -1,6 +1,6 @@
 const { homeDir, appRoot } = require('../../paths')
+const { getVolumeContext } = require('../helpers/contexts')
 const { ensureArr, flatUnion } = require('@keg-hub/jsutils')
-const { resolveContext } = require('../kubectl/resolveContext')
 
 /**
  * Merges the passed in param volumes with the env defined volumes 
@@ -10,22 +10,10 @@ const { resolveContext } = require('../kubectl/resolveContext')
  *
  * @returns {Array<string>} - Array of volumes strings
  */
-const resolveVols = ({ volumes }, envs, docFileCtx) => {
+const resolveVols = ({ volumes, env }, docFileCtx) => {
   return flatUnion([
     ...ensureArr(volumes),
-    ...resolveContext(
-      docFileCtx,
-      {
-        fe: envs.GB_FE_DOC_VOLUMES,
-        be: envs.GB_BE_DOC_VOLUMES,
-        cd: envs.GB_CD_DOC_VOLUMES,
-        sc: envs.GB_SC_DOC_VOLUMES,
-        px: envs.GB_PX_DOC_VOLUMES,
-        db: envs.GB_DB_DOC_VOLUMES,
-        app: envs.GB_APP_DOC_VOLUMES,
-      },
-      ``
-    ).split(`,`)
+    ...getVolumeContext(docFileCtx, env, ``).split(`,`)
   ])
 }
 
@@ -52,13 +40,12 @@ const checkLocalPath = (vol) => {
 /**
  * Converts passed in volume params to docker api format
  * @param {Object} params - Parsed options passed to the run task
- * @param {Object} envs - ENV values loaded from the container/value.yml files
  * @param {string} docFileCtx - Current context of the docker image to run
  *
  * @returns {Array<string>} - Array of volumes string in docker api format
  */
-const addRunVolumes = (params, envs, docFileCtx) => {
-  const vols = resolveVols(params, envs, docFileCtx)
+const addRunVolumes = (params, docFileCtx) => {
+  const vols = resolveVols(params, docFileCtx)
 
   return vols.reduce((acc, vol) => {
     if(!vol) return acc

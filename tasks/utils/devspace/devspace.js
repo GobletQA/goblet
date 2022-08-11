@@ -1,4 +1,3 @@
-const { loadEnvs } = require('../envs/loadEnvs')
 const { command } = require('../process/command')
 const { getCmdOptions } = require('./getCmdOptions')
 const { getConfigPath } = require('./getConfigPath')
@@ -7,7 +6,6 @@ const { getKubePod } = require('../kubectl/getKubePod')
 const { getLabelSelector } = require('./getLabelSelector')
 const { getDevspaceContext } = require('./getDevspaceContext')
 const { get, ensureArr, noOpObj } = require('@keg-hub/jsutils')
-const { resolveContext } = require('../kubectl/resolveContext')
 
 /**
  * Finds the index of the last argument with a --, and appends the default devspace arguments
@@ -102,22 +100,13 @@ devspace.cleanImgs = async (params = noOpObj) => (await devspace([`cleanup`, `im
  * @returns {Promise<*>} - Response from the devspace command
  */
 devspace.logs = async (params = noOpObj) => {
-  const { context, env, follow } = params
+  const { follow } = params
 
   const cmdArgs = [`logs`]
   follow && cmdArgs.push(`--follow`)
 
-  const envs = loadEnvs({ env })
-  const selector = resolveContext(context, {
-    be: `app.kubernetes.io/component=${envs.GB_BE_DEPLOYMENT}`,
-    fe: `app.kubernetes.io/component=${envs.GB_FE_DEPLOYMENT}`,
-    sc: `app.kubernetes.io/component=${envs.GB_SC_DEPLOYMENT}`,
-    cd: `app.kubernetes.io/component=${envs.GB_CD_DEPLOYMENT}`,
-    db: `app.kubernetes.io/component=${envs.GB_DB_DEPLOYMENT}`,
-    px: `app.kubernetes.io/component=${envs.GB_PX_DEPLOYMENT}`,
-  })
-
-  selector && cmdArgs.push(`--label-selector`, selector)
+  const { selector, args } = getLabelSelector(params)
+  selector && cmdArgs.push(...args)
 
   return await devspace(cmdArgs, params)
 }

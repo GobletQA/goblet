@@ -1,4 +1,4 @@
-ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
+ARG GB_IMAGE_FROM=node:16.16.0-alpine3.16
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 # ---- Turbo Prune Stage ---- #
@@ -32,6 +32,22 @@ RUN turbo run build --filter=@gobletqa/conductor && \
 # ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
 WORKDIR /usr/src/goblet/app
+ENV HOME=/root \
+    DISPLAY=:0.0 \
+    DEBUG=pw:api* \
+    LC_ALL=C.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive \
+    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
+
+RUN yarn global add pm2; \
+    pm2 install pm2-logrotate && \
+    pm2 set pm2-logrotate:retain '7' && \
+    pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'; \
+    echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf; \
+    sysctl -p; \
+    /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
 
 COPY --from=goblet-builder /goblet/app/node_modules node_modules
 COPY --from=goblet-builder /goblet/app/repos/conductor/dist repos/conductor/dist

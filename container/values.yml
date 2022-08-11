@@ -39,7 +39,6 @@ env:
 
 # ---- Goblet Shared ENVs ---- #
   GB_TOKEN: a-10K3n-g0bLe1
-  GB_GITFS_VER: 0.0.0
   GB_SH_MOUNT_ROOT: /goblet/repos
   GB_SH_LOCAL_MOUNT: goblet-local/current
   GB_SERVER_ORIGINS: 'localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io'
@@ -50,11 +49,8 @@ env:
   # ---- Docker Images ---- #
   # Image tags added to all built images
   GB_IMAGE_BUILD_TAGS: values,package
-  # The goblet base image is built using the GB_BASE_IMAGE_FROM value
-  # Which outputs the goblet-base:latest image
-  GB_BASE_IMAGE_FROM: mcr.microsoft.com/playwright:v1.23.4-focal
   # Then, all sub goblet images are built from the goblet-base image
-  GB_IMAGE_FROM: ghcr.io/gobletqa/goblet-base:latest
+  GB_IMAGE_FROM: mcr.microsoft.com/playwright:v1.23.4-focal
 
   # ---- Logger ENVs ---- #
   # Enable to set custom log-level for conductor
@@ -86,6 +82,7 @@ env:
   GB_BE_IMAGE_TAG: latest
   GB_BE_DEPLOYMENT: goblet-backend
   GB_BE_IMAGE: 'ghcr.io/gobletqa/goblet-backend'
+  GB_BE_IMAGE_FROM: 'node:16.16.0-alpine3.16'
 
   # ---- Backend Websocket ENVs ---- #
   GB_BE_SOCKET_PORT: 7005
@@ -127,6 +124,7 @@ env:
   GB_CD_IMAGE_TAG: latest
   GB_CD_DEPLOYMENT: goblet-conductor
   GB_CD_IMAGE: 'ghcr.io/gobletqa/goblet-conductor'
+  GB_CD_IMAGE_FROM: 'node:16.16.0-alpine3.16'
 
   GB_CD_TIMEOUT: 5000
   GB_CD_SERVER_SECRET: "c0nDuC7oR-6ObL3T"

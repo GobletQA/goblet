@@ -1,4 +1,4 @@
-const { resolveContext } = require('../../utils/kubectl/resolveContext')
+const { getContextValue } = require('../../utils/helpers/contexts')
 const { ensureArr, toBool, isStr, isNum, toStr, noPropArr } = require('@keg-hub/jsutils')
 
 /**
@@ -12,32 +12,17 @@ const { ensureArr, toBool, isStr, isNum, toStr, noPropArr } = require('@keg-hub/
 const resolveAllPorts = (params, envs, docFileCtx) => {
   const paramPorts = ensureArr(params.ports || [])
 
-  // Get the context for the docker image being run
-  const envPorts = ensureArr(
-    resolveContext(
-      docFileCtx,
-      {
-        fe: envs.GB_FE_PORT,
-        be: envs.GB_BE_PORT,
-        cd: envs.GB_CD_PORT,
-        sc: envs.GB_SC_PORT,
-        px: envs.GB_PX_PORT,
-        db: envs.GB_DB_PORT,
-        app: [
-          envs.GB_BE_PORT,
-          envs.GB_FE_PORT,
-          envs.GB_CD_PORT,
-          envs.GB_SC_PORT,
-          envs.GB_DB_PORT,
-          envs.GB_PX_PORT
-        ]
-      },
-      noPropArr
-    )
-  )
+  // Get the ports for the docker image being run
+  const envPorts = getContextValue(docFileCtx, envs, `PORT`, [
+    envs.GB_BE_PORT,
+    envs.GB_FE_PORT,
+    envs.GB_CD_PORT,
+    envs.GB_SC_PORT,
+    envs.GB_DB_PORT,
+    envs.GB_PX_PORT
+  ])
 
-  const toAdd = isStr(envPorts) ? envPorts.split(`,`) : envPorts
-  return toAdd.length ? paramPorts.concat(toAdd) : paramPorts
+  return paramPorts.concat(envPorts)
 }
 
 /**

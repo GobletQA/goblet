@@ -4,9 +4,11 @@ const { Logger } = require('@keg-hub/cli-utils')
 const { docker } = require('../../utils/docker/docker')
 const { loadEnvs } = require('../../utils/envs/loadEnvs')
 const { getNpmToken } = require('../../utils/envs/getNpmToken')
+const { getLongContext } = require('../../utils/helpers/contexts')
 const { resolveImgName } = require('../../utils/docker/resolveImgName')
-const { resolveContext } = require('../../utils/kubectl/resolveContext')
 const { dockerLogin } = require(path.join(scriptsDir, 'js/dockerLogin'))
+
+
 
 /**
  * Helper to parse the context, image, and tag params
@@ -64,16 +66,9 @@ const docPull = async (args) => {
 
   // Get the context for the docker image being built
   // Defaults to using the `container/Dockerfile`, without `.<context>`
-  const docFileCtx = resolveContext(context, {
-    bs: 'base',
-    px: `proxy`,
-    sc: `screencast`,
-    cd: `conductor`,
-    be: 'backend',
-    fe: 'frontend',
-    db: 'database',
-  }, ``)
+  const docFileCtx = getLongContext(context, 'app')
 
+    // Get the name for the docker image being run
   const resolvedName = resolveImgName(params, docFileCtx, allEnvs)
 
   // Ensure we are logged into docker

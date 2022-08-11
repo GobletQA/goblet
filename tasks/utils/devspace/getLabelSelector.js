@@ -1,6 +1,5 @@
 const { error } = require('@keg-hub/cli-utils')
-const { loadEnvs } = require('../envs/loadEnvs')
-const { resolveContext } = require('../kubectl/resolveContext')
+const { getLabelContext } = require('../helpers/contexts')
 
 /**
  * Gets the label used to select the a specific container relative to an application
@@ -10,16 +9,7 @@ const { resolveContext } = require('../kubectl/resolveContext')
  */
 const getLabelSelector = (params) => {
   const { context, env } = params
-
-  const envs = loadEnvs({ env })
-  const selector = resolveContext(context, {
-    be: `app.kubernetes.io/component=${envs.GB_BE_DEPLOYMENT}`,
-    fe: `app.kubernetes.io/component=${envs.GB_FE_DEPLOYMENT}`,
-    sc: `app.kubernetes.io/component=${envs.GB_SC_DEPLOYMENT}`,
-    cd: `app.kubernetes.io/component=${envs.GB_CD_DEPLOYMENT}`,
-    db: `app.kubernetes.io/component=${envs.GB_DB_DEPLOYMENT}`,
-    px: `app.kubernetes.io/component=${envs.GB_PX_DEPLOYMENT}`,
-  })
+  const selector = getLabelContext(context, env)
 
   !selector && error.throwError(`Could not find selector for context "${context}"`)
 
@@ -32,3 +22,5 @@ const getLabelSelector = (params) => {
 module.exports = {
   getLabelSelector,
 }
+
+  

@@ -18,16 +18,22 @@ module.exports = {
       optionsAsk: false,
     },
   },
-  /**
-   * Contexts to reference durning task execution
-   */
-  appContexts: [
-    [`app`],
-    [`base`, `bse`, `bs`],
-    [`proxy`, `prx`, `px`],
-    [`frontend`, `fre`, `fe`],
-    [`backend`, `bae`, `be`],
-    [`conductor`, `cod`, `cd`],
-    [`screencast`, `scr`, `sc`],
-  ],
+
+  tasks: {
+    /**
+    * ENV prefix to append to all dynamically set envs durning lookup
+    */
+    prefix: `GB`,
+    /**
+    * Contexts to reference durning task execution
+    */
+    appContexts: [
+      [`app`],
+      [`proxy`, `prx`, `px`],
+      [`frontend`, `fre`, `fe`],
+      [`backend`, `bae`, `be`],
+      [`conductor`, `cod`, `cd`],
+      [`screencast`, `scr`, `sc`],
+    ],
+  }
 }
