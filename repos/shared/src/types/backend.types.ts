@@ -1,4 +1,14 @@
 
+export type TReqHeaders = Record<string, string>
+
+export type TConductorServiceConfig = {
+  host: string
+  port?: string
+  protocol?: string
+  headers: Record<string, string>
+  [key:string]: any
+}
+
 export type TJwtConfig = {
   exp: string
   secret: string
@@ -46,5 +56,6 @@ export type TBackendConfig = {
   jwt: TJwtConfig
   sockr: TSockrConfig
   cookie: TCookieConfig
+  conductor: TConductorServiceConfig
   [key:string]: any
 }

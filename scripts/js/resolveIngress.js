@@ -15,12 +15,11 @@ const getEnvValue = (values, key) => {
   return process.env[key] || values[key]
 }
 
-;(async () => {
-  const prefix = process.argv.slice(2).shift()
-  if(!prefix) return
-
-  const values = resolveValues()
-
+/**
+ * Builds the ingress host from the prefix relative to a deployment
+ * i.e. goblet-backend.local.goblet.app
+ */
+const buildHost = (prefix, values) => {
   const subDomain = getEnvValue(values, `GB_${prefix}_SUB_DOMAIN`)
     || getEnvValue(values, `GB_SUB_DOMAIN`)
 
@@ -28,15 +27,29 @@ const getEnvValue = (values, key) => {
     || getEnvValue(values, `GB_HOST_DOMAIN`)
     || `local.gobletqa.app`
 
-  const deployment = getEnvValue(values, `GB_${prefix}_DEPLOYMENT`)
+  const deployment = getEnvValue(values, `GB_${prefix}_DEPLOYMENT`).replace(/_/g, `-`).split(`-`).pop()
 
   /**
    * Build the ingress host based on the host and sub domains
    */
-  const ingressHost = subDomain
+  return subDomain
     ? `${subDomain}.${hostDomain}`
-    : `${deployment.replace('_', '-')}.${hostDomain}`
+    : `${deployment}.${hostDomain}`
+}
 
-  process.stdout.write(ingressHost)
+;(async () => {
+
+  const [prefix, subdomains] = process.argv.slice(2)
+  if(!prefix) return
+
+  const values = resolveValues()
+  /**
+   * Build the ingress host based on the host and sub domains
+   */
+  const ingressHost = buildHost(prefix, values)
+
+  subdomains && subdomains.length
+    ? process.stdout.write(`${subdomains}.${ingressHost}`)
+    : process.stdout.write(ingressHost)
 
 })()

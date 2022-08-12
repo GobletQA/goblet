@@ -6,7 +6,10 @@ export const buildSubdomains = (host:string):string => {
     ? split.slice(0, split.length - 2)
     : []
 
-  return subdomains.length
-    ? `${SUBDOMAIN}.${subdomains.join(`.`)}`
-    : SUBDOMAIN
+  return !subdomains.length
+    ? SUBDOMAIN
+    : subdomains[0] === SUBDOMAIN
+      ? subdomains.join(`.`)
+      : `${SUBDOMAIN}.${subdomains.join(`.`)}`
+
 }

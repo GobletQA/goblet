@@ -5,3 +5,4 @@ env:
   DEVSPACE_INJECT_LOCAL: true
   GB_KUBE_NAMESPACE: gb-local
   GB_KUBE_CONTEXT: docker-desktop
+  GB_HOST_DOMAIN: local.gobletqa.app

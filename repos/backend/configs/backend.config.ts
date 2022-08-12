@@ -5,8 +5,8 @@ import { toBool } from '@keg-hub/jsutils'
 import { sockrCmds } from './sockrCmds.config'
 import { aliases } from '@GConfigs/aliases.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
 import { TBackendConfig } from '@gobletqa/backend/src/types'
+import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
 
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({
@@ -51,7 +51,11 @@ const {
   GB_BE_COOKIE_SAME_SITE,
   GB_BE_COOKIE_MAX_AGE = 12 * 60 * 60 * 1000,
   GB_BE_COOKIE_EXP = new Date(new Date().getTime() + 86400000),
+  
+  
+  GOBLET_CONDUCTOR_SERVICE_PORT
 } = process.env
+
 
 export const backendConfig:TBackendConfig  = {
   port: GB_BE_PORT,
@@ -63,6 +67,10 @@ export const backendConfig:TBackendConfig  = {
   securePort: GB_BE_SECURE_PORT,
   hostPWSocket: toBool(GB_PW_SOCKET_ACTIVE),
   origins: generateOrigins(GB_SERVER_ORIGINS),
+  conductor: {
+    port: GOBLET_CONDUCTOR_SERVICE_PORT,
+    host: process.env[`GOBLET_CONDUCTOR_PORT_${GOBLET_CONDUCTOR_SERVICE_PORT}_TCP_ADDR`],
+  },
   screencast: {
     host: GB_BE_HOST,
     path: GB_NO_VNC_PATH,

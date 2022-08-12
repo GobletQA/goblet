@@ -114,6 +114,15 @@ deployments:
 # - name: $(node ../scripts/js/resolveDeployment.js BE IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 # - name: $(node ../scripts/js/resolveDeployment.js CD IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 
+# Must be deployed to the cluster separately???
+# helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx  --namespace gb-local --create-namespace
+# - name: goblet-ingress
+#   helm:
+#     chart:
+#       name: ingress-nginx
+#       repo: https://kubernetes.github.io/ingress-nginx
+#     values:
+
 # TODO: update this to use a mounted volume that is shared with the conductor instance
 # Then set the "DOCKER_TLS_CERTDIR" env to the directory of that shared volume
 # Then update the conductor to use certs in the volume to connect to the docker API
@@ -143,6 +152,34 @@ deployments:
         ports:
         - port: ${GB_DD_PORT}
 
+# ----- Conductor Deployment ----- #
+- name: ${GB_CD_DEPLOYMENT}
+  helm:
+    chart:
+      name: ./
+    cleanupOnFail: true
+    valuesFiles:
+    - ./values.yml
+    - ./values.${NODE_ENV}.yml
+    values:
+      containers:
+      - image: ${GB_CD_IMG_URI}
+        imagePullPolicy: ${IMAGE_PULL_POLICY}
+        env: $(node ../scripts/js/resolveDSEnvs.js conductor)
+      service:
+        name: ${GB_CD_DEPLOYMENT}
+        ports:
+        - port: ${GB_CD_PORT}
+      ingress:
+        name: ${GB_CD_DEPLOYMENT}-ingress
+        rules:
+        - host: $(node ../scripts/js/resolveIngress.js CD)
+          serviceName: ${GB_CD_DEPLOYMENT}
+          servicePort: ${GB_CD_PORT}
+        - host: $(node ../scripts/js/resolveIngress.js CD "*")
+          serviceName: ${GB_CD_DEPLOYMENT}
+          servicePort: ${GB_CD_PORT}
+
 # ----- Frontend Deployment ----- #
 - name: ${GB_FE_DEPLOYMENT}
   helm:
@@ -168,31 +205,6 @@ deployments:
           serviceName: ${GB_FE_DEPLOYMENT}
           servicePort: ${GB_FE_PORT}
 
-# ----- Conductor Deployment ----- #
-- name: ${GB_CD_DEPLOYMENT}
-  helm:
-    chart:
-      name: ./
-    cleanupOnFail: true
-    valuesFiles:
-    - ./values.yml
-    - ./values.${NODE_ENV}.yml
-    values:
-      containers:
-      - image: ${GB_CD_IMG_URI}
-        imagePullPolicy: ${IMAGE_PULL_POLICY}
-        env: $(node ../scripts/js/resolveDSEnvs.js conductor)
-      service:
-        name: ${GB_CD_DEPLOYMENT}
-        ports:
-        - port: ${GB_CD_PORT}
-      ingress:
-        name: ${GB_CD_DEPLOYMENT}-ingress
-        rules:
-        - host: $(node ../scripts/js/resolveIngress.js CD)
-          serviceName: ${GB_CD_DEPLOYMENT}
-          servicePort: ${GB_CD_PORT}
-
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
   helm:
@@ -217,6 +229,10 @@ deployments:
         - host: $(node ../scripts/js/resolveIngress.js BE)
           serviceName: ${GB_BE_DEPLOYMENT}
           servicePort: ${GB_BE_PORT}
+        - host: $(node ../scripts/js/resolveIngress.js BE "*")
+          serviceName: ${GB_BE_DEPLOYMENT}
+          servicePort: ${GB_BE_PORT}
+
 
 # The `dev` section only applies to `yarn dev start` || `devspace dev` commands
 # Is not run for `yarn dev deploy` || `devspace deploy` commands

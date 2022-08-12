@@ -20,6 +20,8 @@
       "@GBE/Template/*": ["templates/*"],
       "@GBE/Types": ["src/types"],
       "@GBE/Types/*": ["src/types/*"],
+      "@GBE/Conductor": ["src/conductor"],
+      "@GBE/Conductor/*": ["src/conductor/*"],
       "@GBE": ["src"],
       "@GBE/Root": ["./"],
       "@gobletqa/shared/utils/loadEnvs": ["../shared/src/utils/loadEnvs"],
