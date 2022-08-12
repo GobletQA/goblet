@@ -55,6 +55,7 @@ export type TServerConfig = {
   port: number,
   host?: string,
   rateLimit: number
+  securePort: number
   logLevel: TLogLevel
 }
 

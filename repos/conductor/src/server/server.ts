@@ -16,16 +16,16 @@ import {
 } from '@gobletqa/shared/middleware'
 
 export const createServer = (config:TServerConfig) => {
-  const serverConf = {name: `Conductor`, host: DEF_HOST_IP, ...config}
-
   const app = getApp() as Express
+  app.locals.config.server = {name: `Conductor`, host: DEF_HOST_IP, ...config}
+
   setupLoggerReq(app)
   setupCors(app)
   setupAuthUser(app)
   setupServer(app, false, false)
   setupRouters(app)
 
-  const { insecureServer, secureServer } = setupServerListen(app, serverConf)
+  const { insecureServer, secureServer } = setupServerListen(app, app.locals.config.server)
   setupLoggerErr(app)
 
   const server = (secureServer as https.Server) || (insecureServer as http.Server)

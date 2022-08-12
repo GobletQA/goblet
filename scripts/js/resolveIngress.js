@@ -20,16 +20,21 @@ const getEnvValue = (values, key) => {
   if(!prefix) return
 
   const values = resolveValues()
-  const subDomain = getEnvValue(values, `GB_SUB_DOMAIN`)
-  const hostDomain = getEnvValue(values, `GB_HOST_DOMAIN`)
+
+  const subDomain = getEnvValue(values, `GB_${prefix}_SUB_DOMAIN`)
+    || getEnvValue(values, `GB_SUB_DOMAIN`)
+
+  const hostDomain = getEnvValue(values, `GB_${prefix}_HOST_DOMAIN`)
+    || getEnvValue(values, `GB_HOST_DOMAIN`)
+
   const deployment = getEnvValue(values, `GB_${prefix}_DEPLOYMENT`)
 
   /**
    * Build the ingress host based on the host and sub domains
    */
   const ingressHost = hostDomain && subDomain
-    ? `${subDomain}-${prefix.toLowerCase()}.${hostDomain}`
-    : `${deployment.replace('_', '-')}.localhost`
+    ? `${subDomain}.${hostDomain}`
+    : `${deployment.replace('_', '.')}.localhost`
 
   process.stdout.write(ingressHost)
 
