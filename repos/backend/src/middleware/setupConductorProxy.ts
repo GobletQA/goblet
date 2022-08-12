@@ -10,8 +10,12 @@ const conductorProxy = asyncWrap(async (req:Request, res:Response, next:NextFunc
   next()
 })
 
-export const setupConductorProxy = (app:Express) => {
-  app.locals.conductor = app.locals.conductor || new ConductorService(app.locals.config.conductor)
+export const setupConductorProxy = async (app:Express) => {
+  const { server } = app?.locals?.config
+  app.locals.conductor = app?.locals?.conductor || new ConductorService(server?.conductor)
+
+  await app.locals.conductor.validate()
+
   AppRouter.use(`/repo/:repo/*`, conductorProxy)
 }
 

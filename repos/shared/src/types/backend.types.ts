@@ -3,9 +3,10 @@ export type TReqHeaders = Record<string, string>
 
 export type TConductorServiceConfig = {
   host: string
+  key?: string
   port?: string
   protocol?: string
-  headers: Record<string, string>
+  headers?: Record<string, string>
   [key:string]: any
 }
 

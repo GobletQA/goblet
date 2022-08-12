@@ -53,6 +53,7 @@ const {
   GB_BE_COOKIE_EXP = new Date(new Date().getTime() + 86400000),
   
   
+  GB_VALIDATION_KEY,
   GOBLET_CONDUCTOR_SERVICE_PORT
 } = process.env
 
@@ -68,6 +69,7 @@ export const backendConfig:TBackendConfig  = {
   hostPWSocket: toBool(GB_PW_SOCKET_ACTIVE),
   origins: generateOrigins(GB_SERVER_ORIGINS),
   conductor: {
+    key: GB_VALIDATION_KEY,
     port: GOBLET_CONDUCTOR_SERVICE_PORT,
     host: process.env[`GOBLET_CONDUCTOR_PORT_${GOBLET_CONDUCTOR_SERVICE_PORT}_TCP_ADDR`],
   },

@@ -53,6 +53,7 @@ export type TProxyConfig = {
 
 export type TServerConfig = {
   port: number,
+  key?: string,
   host?: string,
   rateLimit: number
   securePort: number

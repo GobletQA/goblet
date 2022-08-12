@@ -46,6 +46,8 @@ env:
   # TODO: @lance-tipton - Make this more dynamic - value comes from firebase?
   GB_GITHUB_AUTH_USERS: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lance.tipton@workboard.com
   GB_BUILD_PLATFORMS: linux/amd64,linux/arm64
+  
+  GB_VALIDATION_KEY: "gb-1234567"
 
   # ---- Docker Images ---- #
   # Image tags added to all built images
@@ -121,7 +123,7 @@ env:
   # Host the FE uses to connect to the BE
   GB_CD_PORT: 9901
   # GB_CD_HOST: host.docker.internal
-  GB_CD_HOST: conductor.local.gobletqa.app
+  GB_CD_HOST: local.gobletqa.app
   # Not currently used
   # GB_CD_SECURE_PORT: 9902
   GB_CD_IMAGE_TAG: latest

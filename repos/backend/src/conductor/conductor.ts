@@ -1,13 +1,25 @@
-import fetch from 'node-fetch'
-import { deepMerge } from '@keg-hub/jsutils'
+
 import { Request, Response } from 'express'
+import { deepMerge, noOpObj, limbo } from '@keg-hub/jsutils'
 import { TConductorServiceConfig, TReqHeaders } from '@gobletqa/backend/src/types'
+
+let __FETCH__
+const getFetch = async () => {
+  __FETCH__ = __FETCH__
+    || await import('node-fetch').then(({ default:fetch, ...resp}) => Object.assign(fetch, resp))
+
+  return __FETCH__
+}
+
+
+
+const defConfig = { headers: noOpObj } as TConductorServiceConfig
 
 const buildHeaders = (
   conductor:ConductorService,
   extra?:TReqHeaders
 ):Record<string, string> => {
-  return deepMerge(conductor.config.headers, extra)
+  return deepMerge(conductor?.config?.headers, extra)
 }
 
 type TPostParams = {
@@ -18,13 +30,28 @@ type TPostParams = {
 export class ConductorService {
   
   config:TConductorServiceConfig
+  fetch: any
 
-  constructor(config:TConductorServiceConfig){
+  constructor(config:TConductorServiceConfig=defConfig){
     this.config = config
     this.config.headers = buildHeaders(this, {
-      'Content-Type': 'application/json'
+      Host: process.env[`GB_CD_HOST`],
+      'Content-Type': `application/json`,
+      'GB-Validation-Key': this.config.key
     })
+  }
 
+  async validate(){
+    const fetch = await getFetch()
+    const [err, resp] = await limbo(fetch(this.uri, {
+      headers: this.config.headers
+    }))
+
+
+    if(err) throw new Error(`Could validate with Conductor API. \n${err.stack}`)
+
+    const data = await resp.json()
+    if(!resp.ok) throw new Error(`Could validate with Conductor API. \n${JSON.stringify(data)}`)
   }
 
   get uri():string{
@@ -46,13 +73,15 @@ export class ConductorService {
   }
 
   async post({ body, headers }:TPostParams) {
-    const response = await fetch(this.uri, {
+    const { fetch } = await getFetch()
+    
+    const [err, resp] = await limbo(fetch(this.uri, {
       method: 'post',
       body: JSON.stringify(body),
       headers: buildHeaders(this, headers)
-    })
+    }))
 
-    return await response.json()
+    return await resp.json()
   }
   
 }

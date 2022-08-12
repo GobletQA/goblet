@@ -22,6 +22,7 @@ loadEnvs({
 
 const {
   GB_CD_PORT,
+  GB_VALIDATION_KEY,
   GB_CD_SECURE_PORT,
   GB_CD_HOST=DEF_HOST_IP,
   GB_LOG_LEVEL,
@@ -64,6 +65,7 @@ export const conductorConfig:TConductorConfig = {
   server: {
     name: `Conductor`,
     host: GB_CD_HOST,
+    key: GB_VALIDATION_KEY,
     logLevel: GB_CD_LOG_LEVEL,
     port: (toNum(GB_CD_PORT) || 9901) as number,
     securePort:  (toNum(GB_CD_SECURE_PORT) || 9901) as number,
