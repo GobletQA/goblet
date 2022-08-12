@@ -26,15 +26,16 @@ const getEnvValue = (values, key) => {
 
   const hostDomain = getEnvValue(values, `GB_${prefix}_HOST_DOMAIN`)
     || getEnvValue(values, `GB_HOST_DOMAIN`)
+    || `local.gobletqa.app`
 
   const deployment = getEnvValue(values, `GB_${prefix}_DEPLOYMENT`)
 
   /**
    * Build the ingress host based on the host and sub domains
    */
-  const ingressHost = hostDomain && subDomain
+  const ingressHost = subDomain
     ? `${subDomain}.${hostDomain}`
-    : `${deployment.replace('_', '.')}.localhost`
+    : `${deployment.replace('_', '-')}.${hostDomain}`
 
   process.stdout.write(ingressHost)
 

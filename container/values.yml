@@ -119,8 +119,7 @@ env:
 # --- CONDUCTOR ENVs --- #
   # Host the FE uses to connect to the BE
   GB_CD_PORT: 9901
-  GB_CD_CONTAINER_HOST: goblet-conductor
-  GB_CD_LOCAL_HOST: localhost
+  GB_CD_HOST: local.gobletqa.app
   # Not currently used
   # GB_CD_SECURE_PORT: 9902
   GB_CD_IMAGE_TAG: latest

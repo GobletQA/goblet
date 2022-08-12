@@ -168,31 +168,6 @@ deployments:
           serviceName: ${GB_FE_DEPLOYMENT}
           servicePort: ${GB_FE_PORT}
 
-# ----- Backend API Deployment ----- #
-- name: ${GB_BE_DEPLOYMENT}
-  helm:
-    chart:
-      name: ./
-    cleanupOnFail: true
-    valuesFiles:
-    - ./values.yml
-    - ./values.${NODE_ENV}.yml
-    values:
-      containers:
-      - image: ${GB_BE_IMG_URI}
-        imagePullPolicy: ${IMAGE_PULL_POLICY}
-        env: $(node ../scripts/js/resolveDSEnvs.js backend)
-      service:
-        name: ${GB_BE_DEPLOYMENT}
-        ports:
-        - port: ${GB_BE_PORT}
-      ingress:
-        name: ${GB_BE_DEPLOYMENT}-ingress
-        rules:
-        - host: $(node ../scripts/js/resolveIngress.js BE)
-          serviceName: ${GB_BE_DEPLOYMENT}
-          servicePort: ${GB_BE_PORT}
-
 # ----- Conductor Deployment ----- #
 - name: ${GB_CD_DEPLOYMENT}
   helm:
@@ -217,6 +192,31 @@ deployments:
         - host: $(node ../scripts/js/resolveIngress.js CD)
           serviceName: ${GB_CD_DEPLOYMENT}
           servicePort: ${GB_CD_PORT}
+
+# ----- Backend API Deployment ----- #
+- name: ${GB_BE_DEPLOYMENT}
+  helm:
+    chart:
+      name: ./
+    cleanupOnFail: true
+    valuesFiles:
+    - ./values.yml
+    - ./values.${NODE_ENV}.yml
+    values:
+      containers:
+      - image: ${GB_BE_IMG_URI}
+        imagePullPolicy: ${IMAGE_PULL_POLICY}
+        env: $(node ../scripts/js/resolveDSEnvs.js backend)
+      service:
+        name: ${GB_BE_DEPLOYMENT}
+        ports:
+        - port: ${GB_BE_PORT}
+      ingress:
+        name: ${GB_BE_DEPLOYMENT}-ingress
+        rules:
+        - host: $(node ../scripts/js/resolveIngress.js BE)
+          serviceName: ${GB_BE_DEPLOYMENT}
+          servicePort: ${GB_BE_PORT}
 
 # The `dev` section only applies to `yarn dev start` || `devspace dev` commands
 # Is not run for `yarn dev deploy` || `devspace deploy` commands
