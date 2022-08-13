@@ -10,3 +10,9 @@ export const CONTAINER_LABELS = [
   `timeout`,
   `rateLimit`
 ]
+
+export const AUTH_BYPASS_ROUTES = [
+  `/`,
+  `/health-check`,
+  `/favicon.ico`,
+]

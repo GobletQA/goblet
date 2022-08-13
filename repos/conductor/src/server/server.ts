@@ -4,10 +4,12 @@ import { TServerConfig } from '../types'
 import { Express } from 'express'
 import { DEF_HOST_IP } from '../constants/constants'
 import { getApp } from '@gobletqa/shared/express/app'
-
 import { setupRouters } from '@gobletqa/conductor/middleware/setupRouters'
 import { setupAuthUser } from '@gobletqa/conductor/middleware/setupAuthUser'
+import { setupValidationHeader } from '@gobletqa/conductor/middleware/setupValidationHeader'
+
 import {
+  setupJWT,
   setupCors,
   setupServer,
   setupLoggerReq,
@@ -17,10 +19,11 @@ import {
 
 export const createServer = (config:TServerConfig) => {
   const app = getApp() as Express
-  app.locals.config.server = {name: `Conductor`, host: DEF_HOST_IP, ...config}
 
   setupLoggerReq(app)
   setupCors(app)
+  setupValidationHeader(app)
+  setupJWT(app, [`/`])
   setupAuthUser(app)
   setupServer(app, false, false)
   setupRouters(app)

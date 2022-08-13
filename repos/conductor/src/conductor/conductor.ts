@@ -32,8 +32,8 @@ export class Conductor {
 
     config.images
       && this.controller.buildImgs(this.config.images)
-    
-    const app = getApp() as Express
+
+    const app = getApp({ name: `Conductor`, ...this.config }) as Express
     app.locals.conductor = this as Conductor
     this.controller.hydrate()
   }

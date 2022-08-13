@@ -55,6 +55,7 @@ const {
   
   
   GB_VALIDATION_KEY,
+  GB_VALIDATION_HEADER,
   GOBLET_CONDUCTOR_SERVICE_PORT
 } = process.env
 
@@ -91,6 +92,7 @@ export const backendConfig:TBackendConfig  = {
   },
   conductor: {
     key: GB_VALIDATION_KEY,
+    keyHeader: GB_VALIDATION_HEADER,
     port: GOBLET_CONDUCTOR_SERVICE_PORT,
     host: process.env[`GOBLET_CONDUCTOR_PORT_${GOBLET_CONDUCTOR_SERVICE_PORT}_TCP_ADDR`],
   },

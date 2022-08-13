@@ -1,5 +1,5 @@
 
-import { toNum } from '@keg-hub/jsutils'
+import { toNum, toBool } from '@keg-hub/jsutils'
 import { inDocker } from '@keg-hub/cli-utils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { DEF_HOST_IP } from '@gobletqa/conductor/constants/constants'
@@ -22,7 +22,6 @@ loadEnvs({
 
 const {
   GB_CD_PORT,
-  GB_VALIDATION_KEY,
   GB_CD_SECURE_PORT,
   GB_CD_HOST=DEF_HOST_IP,
   GB_LOG_LEVEL,
@@ -35,6 +34,20 @@ const {
   GB_CD_SERVER_SECRET,
   GOBLET_DIND_SERVICE_HOST,
   GOBLET_DIND_SERVICE_PORT,
+  
+  // TODO: rename these so they are not backend specific
+  GB_BE_JWT_EXP,
+  GB_BE_JWT_ALGO,
+  GB_BE_JWT_SECRET,
+  GB_BE_JWT_CREDENTIALS,
+  GB_BE_JWT_REFRESH_EXP,
+  GB_BE_JWT_REFRESH_SECRET,
+
+  GB_VALIDATION_KEY,
+  GB_VALIDATION_HEADER,
+
+  GB_VNC_ACTIVE,
+
   // Salting the user hash string. Not intended to be secure, just anonymous
 } = process.env
 
@@ -50,6 +63,9 @@ const getControllerOpts = () => {
 }
 
 export const conductorConfig:TConductorConfig = {
+  screencast: {
+    active: toBool(GB_VNC_ACTIVE),
+  },
   controller: {
     options: getControllerOpts(),
     pidsLimit: toNum(GB_CD_PIDS_LIMIT) as number,
@@ -65,10 +81,22 @@ export const conductorConfig:TConductorConfig = {
   server: {
     name: `Conductor`,
     host: GB_CD_HOST,
-    key: GB_VALIDATION_KEY,
     logLevel: GB_CD_LOG_LEVEL,
     port: (toNum(GB_CD_PORT) || 9901) as number,
     securePort:  (toNum(GB_CD_SECURE_PORT) || 9901) as number,
     rateLimit: (toNum(GB_CD_RATE_LIMIT) || 5000) as number,
+    auth: true,
+    validation: {
+      key: GB_VALIDATION_KEY,
+      keyHeader: GB_VALIDATION_HEADER,
+    },
+    jwt: {
+      exp: GB_BE_JWT_EXP,
+      secret: GB_BE_JWT_SECRET,
+      refreshExp: GB_BE_JWT_REFRESH_EXP,
+      refreshSecret: GB_BE_JWT_REFRESH_SECRET,
+      algorithms: [GB_BE_JWT_ALGO || 'HS256'],
+      credentialsRequired: toBool(GB_BE_JWT_CREDENTIALS || true),
+    }
   } as TServerConfig,
 }

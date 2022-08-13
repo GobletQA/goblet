@@ -1,16 +1,8 @@
+import axios from 'axios'
 import { Request, Response } from 'express'
-import axios, { AxiosRequestConfig } from 'axios'
 import { deepMerge, noOpObj, limbo } from '@keg-hub/jsutils'
+import { axiosToExp, expToAxios, checkAxiosError } from '@GBE/utils/axiosProxy'
 import { TConductorServiceConfig, TReqHeaders } from '@gobletqa/backend/src/types'
-
-let __FETCH__
-const getFetch = async () => {
-  __FETCH__ = __FETCH__
-    || await import('node-fetch').then(({ default:fetch, ...resp}) => Object.assign(fetch, resp))
-
-  return __FETCH__
-}
-
 
 const defConfig = { headers: noOpObj } as TConductorServiceConfig
 
@@ -19,11 +11,6 @@ const buildHeaders = (
   extra?:TReqHeaders
 ):Record<string, string> => {
   return deepMerge(conductor?.config?.headers, extra)
-}
-
-type TPostParams = {
-  body: Record<any, any> 
-  headers: TReqHeaders
 }
 
 export class ConductorService {
@@ -36,20 +23,18 @@ export class ConductorService {
     this.config.headers = buildHeaders(this, {
       Host: process.env[`GB_CD_HOST`],
       'Content-Type': `application/json`,
-      'GB-Validation-Key': this.config.key
+      [this.config.keyHeader]: this.config.key
     })
   }
 
   async validate(){
-    const fetch = await getFetch()
-    const [err, resp] = await limbo(fetch(this.uri, {
+    const [err, resp] = await limbo(axios({
+      url: this.uri,
+      method: 'get',
       headers: this.config.headers
     }))
 
-    if(err) throw new Error(`Could validate with Conductor API. \n${err.stack}`)
-
-    const data = await resp.json()
-    if(!resp.ok) throw new Error(`Could validate with Conductor API. \n${JSON.stringify(data)}`)
+    checkAxiosError(err, resp)
   }
 
   get uri():string{
@@ -59,34 +44,16 @@ export class ConductorService {
     return `${protocol}://${domain}`
   }
 
-  async forwardRequest(req:Request, res:Response){
-    const {data} = await axios({
+  async proxyRequest(req:Request, res:Response){
+    const [err, aRes] = await expToAxios(req, {
+      responseType: 'stream',
+      headers: this.config.headers,
       url: this.uri + req.originalUrl,
-      responseType: 'stream'
     })
 
-    data.pipe(res)
+    checkAxiosError(err, aRes)
+    axiosToExp(aRes, res, true)
   }
 
-  async spawn() {
-    const resp = await this.post({
-      body: {},
-      headers: {}
-    })
-  }
-
-  async post({ body, headers }:TPostParams) {
-    const { fetch } = await getFetch()
-    
-    const [err, resp] = await limbo(fetch(this.uri, {
-      method: 'post',
-      body: JSON.stringify(body),
-      headers: buildHeaders(this, headers)
-    }))
-
-    return await resp.json()
-  }
-  
 }
-
 

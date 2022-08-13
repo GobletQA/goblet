@@ -48,6 +48,7 @@ env:
   GB_BUILD_PLATFORMS: linux/amd64,linux/arm64
   
   GB_VALIDATION_KEY: "gb-1234567"
+  GB_VALIDATION_HEADER: GB-Validation-Key
 
   # ---- Docker Images ---- #
   # Image tags added to all built images

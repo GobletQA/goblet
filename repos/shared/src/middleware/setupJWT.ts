@@ -1,6 +1,7 @@
-const jwt = require('express-jwt')
+import jwt from 'express-jwt'
+import { Express } from 'express'
 
-const setupJWT = (app, bypassRoutes) => {
+export const setupJWT = (app:Express, bypassRoutes:string[]) => {
   const config = app.locals.config.server
   const { secret, algorithms, credentialsRequired } = config.jwt
 
@@ -14,8 +15,4 @@ const setupJWT = (app, bypassRoutes) => {
       })
       .unless({path: bypassRoutes})
     )
-}
-
-module.exports = {
-  setupJWT
 }

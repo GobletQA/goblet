@@ -6,7 +6,7 @@ import { Express, Request, Response, NextFunction } from 'express'
 const conductorProxy = asyncWrap(async (req:Request, res:Response, next:NextFunction) => {
   !req.originalUrl.startsWith(`/repo`)
     ? next()
-    : await req.app.locals.conductor.forwardRequest(req, res)
+    : await req.app.locals.conductor.proxyRequest(req, res)
 })
 
 export const setupConductorProxy = async (app:Express) => {

@@ -51,13 +51,33 @@ export type TProxyConfig = {
   proxyRouter:(req:Request) => Record<any, any>|string
 }
 
+export type TValidationConfig = {
+  key: string
+  keyHeader: string
+}
+
+export type TJWTConfig = {
+  exp: string
+  secret: string
+  refreshExp: string
+  refreshSecret: string
+  algorithms: string[],
+  credentialsRequired: boolean
+}
+
 export type TServerConfig = {
   port: number,
   key?: string,
   host?: string,
+  jwt: TJWTConfig
   rateLimit: number
   securePort: number
   logLevel: TLogLevel
+  validation?: TValidationConfig
+}
+
+export type TScreencastConf = {
+  active: boolean
 }
 
 export type TConductorConfig = {
@@ -65,6 +85,7 @@ export type TConductorConfig = {
   proxy: TProxyConfig
   images?: TImgsConfig
   controller: TDockerConfig
+  screencast: TScreencastConf
 }
 
 export type TSpawnOpts = {
