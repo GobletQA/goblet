@@ -9,7 +9,6 @@ import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
   setReqRepo,
   setupVNCProxy,
-  validateUser,
   setupConductorProxy,
 } from '@GBE/middleware'
 import {
@@ -21,6 +20,7 @@ import {
   setupLoggerReq,
   setupLoggerErr,
   setupServerListen,
+  validateUser,
 } from '@gobletqa/shared/middleware'
 
 /**
@@ -39,8 +39,8 @@ export const initApi = async () => {
   setupJWT(app, ['/auth/validate'])
   setupServer(app)
   setupStatic(app)
-  validateUser(app)
-  setupConductorProxy(app)
+  validateUser(app, `/repo\/*`)
+  await setupConductorProxy(app)
   setReqRepo(app)
   apiEndpoints(app)
   setupLoggerErr(app)

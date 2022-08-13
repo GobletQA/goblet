@@ -4,10 +4,9 @@ import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { Express, Request, Response, NextFunction } from 'express'
 
 const conductorProxy = asyncWrap(async (req:Request, res:Response, next:NextFunction) => {
-  const conductor = req.app.locals.conductor
-  res.locals.conductorData = await conductor.forwardRequest(req, res)
-
-  next()
+  !req.originalUrl.startsWith(`/repo`)
+    ? next()
+    : await req.app.locals.conductor.forwardRequest(req, res)
 })
 
 export const setupConductorProxy = async (app:Express) => {
@@ -16,6 +15,7 @@ export const setupConductorProxy = async (app:Express) => {
 
   await app.locals.conductor.validate()
 
+  AppRouter.use(`/repo/status`, conductorProxy)
   AppRouter.use(`/repo/:repo/*`, conductorProxy)
 }
 

@@ -1,5 +1,3 @@
-export * from './pull'
-export * from './spawn'
-export * from './remove'
-export * from './inspect'
+export * from './container'
+export * from './repo'
 export * from './root'

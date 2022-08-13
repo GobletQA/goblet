@@ -17,9 +17,9 @@ export const remove = async (req:Request, res:Response) => {
   res.status(200).json(status)
 }
 
-AppRouter.post(`/remove-all`, removeAll)
-AppRouter.post(`/remove/:containerRef`, remove)
+AppRouter.post(`/container/remove-all`, removeAll)
+AppRouter.post(`/container/remove/:containerRef`, remove)
 
 // TODO: remove this, it should only be used temporarly
-AppRouter.get(`/remove-all`, removeAll)
-AppRouter.get(`/remove/:containerRef`, remove)
+AppRouter.get(`/container/remove-all`, removeAll)
+AppRouter.get(`/container/remove/:containerRef`, remove)

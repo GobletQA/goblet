@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
+import { asyncWrap, apiRes } from '@gobletqa/shared/express'
 import { AppRouter } from '@gobletqa/conductor/server/routers'
 
-export const spawn = async (req:Request, res:Response) => {
+export const spawn = asyncWrap(async (req:Request, res:Response) => {
   const conductor = req.app.locals.conductor
 
   const status = await conductor.spawn(
@@ -10,9 +11,9 @@ export const spawn = async (req:Request, res:Response) => {
     res.locals.subdomain
   )
 
-  res.status(200).json(status)
-}
+  return apiRes(req, res, status)
+})
 
-AppRouter.post(`/spawn/:imageRef`, spawn)
+AppRouter.post(`/container/spawn/:imageRef`, spawn)
 // TODO: remove this, it should only be used temporarly
-AppRouter.get(`/spawn/:imageRef`, spawn)
+AppRouter.get(`/container/spawn/:imageRef`, spawn)

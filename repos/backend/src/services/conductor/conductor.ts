@@ -1,5 +1,5 @@
-
 import { Request, Response } from 'express'
+import axios, { AxiosRequestConfig } from 'axios'
 import { deepMerge, noOpObj, limbo } from '@keg-hub/jsutils'
 import { TConductorServiceConfig, TReqHeaders } from '@gobletqa/backend/src/types'
 
@@ -10,7 +10,6 @@ const getFetch = async () => {
 
   return __FETCH__
 }
-
 
 
 const defConfig = { headers: noOpObj } as TConductorServiceConfig
@@ -47,7 +46,6 @@ export class ConductorService {
       headers: this.config.headers
     }))
 
-
     if(err) throw new Error(`Could validate with Conductor API. \n${err.stack}`)
 
     const data = await resp.json()
@@ -62,7 +60,12 @@ export class ConductorService {
   }
 
   async forwardRequest(req:Request, res:Response){
-    
+    const {data} = await axios({
+      url: this.uri + req.originalUrl,
+      responseType: 'stream'
+    })
+
+    data.pipe(res)
   }
 
   async spawn() {
