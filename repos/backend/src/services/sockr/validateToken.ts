@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
 
 /**
  * Validates the passed in refresh token, and if valid creates new JWT tokens
@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken')
  *
  * @returns {Object|boolean} - Returns new JWT tokens or false it token is invalid
  */
-const validateToken = (app, callback) => {
+export const validateToken = (app, callback) => {
   const { secret } = app?.locals?.config?.server?.jwt
   return (args) => {
     const { data, Manager, socket } = args
@@ -23,8 +23,4 @@ const validateToken = (app, callback) => {
       return false
     }
   }
-}
-
-module.exports = {
-  validateToken
 }

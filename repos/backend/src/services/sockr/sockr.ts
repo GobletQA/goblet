@@ -1,6 +1,10 @@
-const { noOpObj } = require('@keg-hub/jsutils')
-const { validateToken }  = require('./validateToken')
-const { sockr } = require('@ltipton/sockr/src/server')
+import type { Server } from 'http'
+import type { Express } from 'express'
+import type { TSockrConfig } from '@GBE/types'
+import * as SkrEvents from './events'
+import { noOpObj } from '@keg-hub/jsutils'
+import { validateToken }  from './validateToken'
+import { sockr } from '@ltipton/sockr/src/server'
 const {
   authToken,
   repoStatus,
@@ -10,18 +14,20 @@ const {
   browserRunTests,
   browserRecorder,
   ...customEvents
-} = require('./events')
+} = SkrEvents
+
+const defConfig = noOpObj as TSockrConfig
 
 /**
  * Init sockr passing in the custom event listeners
  */
-const initSockr = (app, server, config = noOpObj, cmdType) => {
+export const initSockr = (app:Express, server:Server, config:TSockrConfig = defConfig, cmdType?:string) => {
   return sockr(
     server,
     {
       ...config,
       events: {
-        ...config.events,
+        ...config?.events,
         ...customEvents,
         authToken: authToken(app),
         disconnect: disconnect(app),
@@ -34,8 +40,4 @@ const initSockr = (app, server, config = noOpObj, cmdType) => {
     },
     cmdType
   )
-}
-
-module.exports = {
-  initSockr,
 }

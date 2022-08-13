@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import '../resolveRoot'
+import type { Express } from 'express'
 import apiEndpoints from '@GBE/endpoints'
-import { initSockr } from '@GBE/Sockr/sockr'
+import { initSockr } from '@GBE/services/sockr'
 import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
@@ -29,7 +30,7 @@ import {
  * @returns {Object} - Express app, server and socket.io socket
  */
 export const initApi = async () => {
-  const app = getApp(backendConfig)
+  const app = getApp(backendConfig) as Express
   const { sockr, server:serverConf } = app.locals.config
 
   setupLoggerReq(app)
