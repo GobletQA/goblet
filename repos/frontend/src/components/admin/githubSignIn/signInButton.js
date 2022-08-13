@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react'
-import { signInWithPopup, GithubAuthProvider } from 'firebase/auth'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
 import { useIconProps } from 'HKHooks/useIconProps'
 import { View, Button, Text } from '@keg-hub/keg-components'
+import { signInWithPopup, GithubAuthProvider } from 'firebase/auth'
 
 const defPrefix = 'goblet-github-button'
 const defClasses = {

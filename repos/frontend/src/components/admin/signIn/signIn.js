@@ -4,8 +4,8 @@ import { OtherProviders } from '../otherProviders'
 import { checkCall, isArr } from '@keg-hub/jsutils'
 import { GithubIcn } from '../githubSignIn/githubIcn'
 import { loadUser } from 'HKActions/admin/user/loadUser'
+import { getProviderMetadata } from 'HKServices/providers'
 import { SignInButton } from '../githubSignIn/signInButton'
-import { getProviderMetadata } from 'HKAdminServices/providers'
 import { onSuccessAuth, onFailedAuth } from 'HKActions/admin/provider'
 const { auth, config } = getProviderMetadata()
 

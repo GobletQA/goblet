@@ -9,7 +9,7 @@ import { useSelector } from 'HKHooks/useSelector'
 import { Loading } from '@keg-hub/keg-components'
 import { setActiveModal } from 'HKActions/modals/setActiveModal'
 import { setModalVisibility } from 'HKActions/modals/setModalVisibility'
-const LazySignIn = lazy(() => import('HKAdminComponents/signIn/signIn'))
+const LazySignIn = lazy(() => import('HKComponents/admin/signIn/signIn'))
 
 const { STORAGE, MODAL_TYPES } = Values
 

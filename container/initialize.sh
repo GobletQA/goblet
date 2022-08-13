@@ -39,7 +39,7 @@ if [ "$GB_SUB_REPO" ]; then
   tail -f /dev/null && exit 0;
 else
   # Start each of the services via pm2
-  yarn start
+  yarn pm2
   # Tail the logs dir to keep the container running
   tail -f /goblet/app/logs/*.log && exit 0;
 fi
