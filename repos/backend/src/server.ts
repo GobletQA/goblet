@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import '../resolveRoot'
-import apiEndpoints from '@GBE/Endpoints'
+import apiEndpoints from '@GBE/endpoints'
 import { initSockr } from '@GBE/Sockr/sockr'
 import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
@@ -10,7 +10,7 @@ import {
   setupVNCProxy,
   validateUser,
   setupConductorProxy,
-} from '@GBE/Middleware'
+} from '@GBE/middleware'
 import {
   setupJWT,
   setupCors,

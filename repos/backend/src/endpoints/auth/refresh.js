@@ -1,4 +1,4 @@
-const { validateRefreshToken } = require('@GBE/Utils/validateRefreshToken')
+const { validateRefreshToken } = require('@GBE/utils/validateRefreshToken')
 const { asyncWrap, apiRes, resError } = require('@gobletqa/shared/express')
 
 /**

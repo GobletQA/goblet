@@ -1,5 +1,5 @@
 import { asyncWrap } from '@gobletqa/shared/express'
-import { ConductorService } from '@GBE/Conductor/conductor'
+import { ConductorService } from '@GBE/services/conductor'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { Express, Request, Response, NextFunction } from 'express'
 

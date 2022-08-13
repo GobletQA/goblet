@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { Repo } = require('@gobletqa/shared/repo/repo')
-const { generateTokens } = require('@GBE/Utils/generateTokens')
+const { generateTokens } = require('@GBE/utils/generateTokens')
 const { asyncWrap, apiRes } = require('@gobletqa/shared/express')
 
 /**
