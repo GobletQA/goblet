@@ -71,8 +71,6 @@ module.exports = {
           // So we have to go-back 4 dirs to get back to tap-root, and find the admin repo
           GSHUtils: '../../../../repos/shared/src/utils/frontend',
           GSHModels: '../../../../repos/shared/src/models',
-          AdminActions: '../../../../repos/admin/src/actions',
-          AdminServices: '../../../../repos/admin/src/services',
           AdminComponents: '../../../../repos/admin/src/components',
         },
       },
