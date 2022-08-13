@@ -2,11 +2,11 @@ import React, { useCallback, useMemo } from 'react'
 
 import { Values } from 'HKConstants'
 import { Times } from 'HKAssets/icons/times'
-import { gitAuthSignOut } from 'HKActions/admin'
 import { GobletButton } from './button.restyle'
 import { useSelector } from 'HKHooks/useSelector'
 import { isEmptyColl, checkCall } from '@keg-hub/jsutils'
 import { useDisconnectRepo } from 'HKHooks/repo/useDisconnectRepo'
+import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
 
 const { STORAGE } = Values
 
@@ -31,7 +31,7 @@ export const DisconnectRepoButton = props => {
 
   const onDisconnect = useCallback(
     evt => {
-      signOutUser && gitAuthSignOut()
+      signOutUser && signOutAuthUser()
       checkCall(onClickCb, evt)
     },
     [onClickCb, signOutUser]

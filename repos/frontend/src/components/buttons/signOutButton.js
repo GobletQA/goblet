@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { SignOut } from 'HKAssets/icons/signOut'
 import { GobletButton } from './button.restyle'
-import { gitAuthSignOut } from 'HKActions/admin'
+import { SignOut } from 'HKAssets/icons/signOut'
 import { useDisconnectRepo } from 'HKHooks/repo/useDisconnectRepo'
+import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
 
 /**
  * SignOutButton - Component to log a signed in user out
@@ -13,7 +13,7 @@ import { useDisconnectRepo } from 'HKHooks/repo/useDisconnectRepo'
 export const SignOutButton = props => {
   const { children, text = 'SignOut', ...args } = props
 
-  const onClick = useDisconnectRepo(gitAuthSignOut)
+  const onClick = useDisconnectRepo(signOutAuthUser)
 
   return (
     <GobletButton

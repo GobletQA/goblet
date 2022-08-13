@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { ReMessage } from './signIn.restyle'
-import { GitUser } from 'HKAdminServices/gitUser'
 import { OtherProviders } from '../otherProviders'
 import { checkCall, isArr } from '@keg-hub/jsutils'
 import { GithubIcn } from '../githubSignIn/githubIcn'
+import { loadUser } from 'HKActions/admin/user/loadUser'
 import { SignInButton } from '../githubSignIn/signInButton'
 import { getProviderMetadata } from 'HKAdminServices/providers'
-import { onSuccessAuth, onFailedAuth } from 'HKAdminActions/provider'
+import { onSuccessAuth, onFailedAuth } from 'HKActions/admin/provider'
 const { auth, config } = getProviderMetadata()
 
 /**
@@ -18,7 +18,7 @@ const SignIn = props => {
 
   const {authDisabled, onNoAuthConfig, MessageComponent} = props
 
-  useEffect(() => authDisabled || !authConfig ? checkCall(onNoAuthConfig) : GitUser.loadUser())
+  useEffect(() => authDisabled || !authConfig ? checkCall(onNoAuthConfig) : loadUser())
 
   const [signingIn, setSigningIn] = useState(false)
   const [signInError, setSignInError] = useState()

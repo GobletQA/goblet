@@ -1,5 +1,4 @@
 import { Values } from 'HKConstants'
-import { loadUser } from 'HKActions/admin'
 import { isEmptyColl } from '@keg-hub/jsutils'
 import { loadFile } from './files/api/loadFile'
 import { setActiveModal } from 'HKActions/modals'
@@ -7,6 +6,7 @@ import { isAuthActive } from 'HKUtils/isAuthActive'
 import { setActiveSidebar } from 'HKActions/sidebar'
 import { statusRepo } from 'HKActions/repo/api/status'
 import { getQueryData } from 'HKUtils/url/getQueryData'
+import { loadUser } from 'HKActions/admin/user/loadUser'
 import { setScreenById } from 'HKActions/screens/setScreenById'
 
 const { MODAL_TYPES, SIDEBAR_TYPES, SCREENS } = Values

@@ -3,14 +3,13 @@ import { Values } from 'HKConstants'
 import { Cog } from 'HKAssets/icons/cog'
 import { useStyle } from '@keg-hub/re-theme'
 import { SignOut } from 'HKAssets/icons/signOut'
-import { gitAuthSignOut } from 'HKActions/admin'
 import { setActiveModal } from 'HKActions/modals'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
 import { isAuthActive } from 'HKUtils/isAuthActive'
 import { AppHeader, View, H5 } from '@keg-hub/keg-components'
 import { useDisconnectRepo } from 'HKHooks/repo/useDisconnectRepo'
 import { CondensedButton } from 'HKComponents/buttons/condensedButton'
-
+import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
 
 const { MODAL_TYPES } = Values
 
@@ -27,7 +26,7 @@ const HeaderRight = props => {
     setActiveModal(MODAL_TYPES.TEST_SELECTOR)
   }, [])
 
-  const onClickSignOut = useDisconnectRepo(gitAuthSignOut)
+  const onClickSignOut = useDisconnectRepo(signOutAuthUser)
 
   return (
     <ReRightMain>

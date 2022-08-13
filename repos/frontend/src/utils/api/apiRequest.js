@@ -1,13 +1,13 @@
 import { addToast } from 'HKActions/toasts'
-import { isObj, get, noOpObj } from '@keg-hub/jsutils'
 import { getBaseApiUrl } from './getBaseApiUrl'
-import { gitAuthSignOut } from 'HKActions/admin'
+import { isObj, get, noOpObj } from '@keg-hub/jsutils'
 import { networkRequest } from 'HKServices/networkRequest'
 import { localStorage } from'HKUtils/storage/localStorage'
+import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
 
 /**
  * Check the response from the API for an expired session
- * If expired, sign out and open the sign in modal by calling gitAuthSignOut
+ * If expired, sign out and open the sign in modal by calling signOutAuthUser
  * @param {boolean} success - True if the request was successful
  * @param {number} statusCode - Response code returned from the Backend API
  * @param {string} message - Response message returned from the Backend API
@@ -19,7 +19,7 @@ const isValidSession = async (success, statusCode, message, showAlert) =>{
   showAlert &&
     addToast({ type: 'warn', message: message || `User session is expired, please sign in` })
 
-  await gitAuthSignOut()
+  await signOutAuthUser()
 }
 
 /**

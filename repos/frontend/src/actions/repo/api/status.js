@@ -1,12 +1,12 @@
 import { Values } from 'HKConstants'
 import { setRepo } from '../local/setRepo'
 import { addToast } from 'HKActions/toasts'
-import { gitAuthSignOut } from 'HKActions/admin'
 import { removeRepo } from '../local/removeRepo'
 import { setActiveModal } from 'HKActions/modals'
 import { apiRequest } from 'HKUtils/api/apiRequest'
 import { checkCall, noOpObj } from '@keg-hub/jsutils'
 import { localStorage } from'HKUtils/storage/localStorage'
+import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
 
 const { MODAL_TYPES, STATUS_TYPES } = Values
 
@@ -47,7 +47,7 @@ const setNoLocalMountState = async status => {
  */
 const setErrorState = async error => {
   await removeRepo()
-  await gitAuthSignOut()
+  await signOutAuthUser()
   setActiveModal(MODAL_TYPES.SIGN_IN)
 }
 
