@@ -1,8 +1,8 @@
 import { Values } from 'HKConstants'
-import { GitUser } from 'HKAdminServices/gitUser'
+import { GitUser } from 'HKServices/gitUser'
 import { isAuthActive } from 'HKUtils/isAuthActive'
 import { localStorage } from'HKUtils/storage/localStorage'
-import { getProviderMetadata } from 'HKAdminServices/providers'
+import { getProviderMetadata } from 'HKServices/providers'
 import { setActiveModal } from 'HKActions/modals/setActiveModal'
 
 const { MODAL_TYPES } = Values

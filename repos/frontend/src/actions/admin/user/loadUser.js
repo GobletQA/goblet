@@ -1,4 +1,4 @@
-import { GitUser } from 'HKAdminServices/gitUser'
+import { GitUser } from 'HKServices/gitUser'
 
 /**
  * Proxy action to the Admin gitUser.loadUser method

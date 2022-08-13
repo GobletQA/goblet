@@ -1,7 +1,7 @@
 import { onAuthStateChanged } from "firebase/auth"
 import { signOutAuthUser } from './signOutAuthUser'
 import { isAuthActive } from 'HKUtils/isAuthActive'
-import { getProviderMetadata } from 'HKAdminServices/providers'
+import { getProviderMetadata } from 'HKServices/providers'
 
 const authActive = isAuthActive()
 const { auth } = getProviderMetadata()

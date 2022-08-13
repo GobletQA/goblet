@@ -1,5 +1,5 @@
+import { GitUser } from 'HKServices/gitUser'
 import { isAllowedUser } from './isAllowedUser'
-import { GitUser } from 'HKAdminServices/gitUser'
 import { apiRequest } from 'HKUtils/api/apiRequest'
 import { signOutAuthUser } from './signOutAuthUser'
 import { setRepos } from 'HKActions/repo/local/setRepos'
