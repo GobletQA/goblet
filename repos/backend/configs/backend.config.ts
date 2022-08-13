@@ -30,6 +30,7 @@ const {
   GB_BE_HOST,
   GB_BE_SECURE_PORT,
 
+  GB_VNC_ACTIVE,
   GB_NO_VNC_PATH,
   GB_NO_VNC_PORT,
   GB_NO_VNC_PROTOCOL,
@@ -57,38 +58,41 @@ const {
   GOBLET_CONDUCTOR_SERVICE_PORT
 } = process.env
 
-
 export const backendConfig:TBackendConfig  = {
-  port: GB_BE_PORT,
-  host: GB_BE_HOST,
-  environment: nodeEnv,
-  path: GB_BE_SOCKR_PATH,
-  logLevel: GB_LOG_LEVEL,
-  auth: toBool(GB_AUTH_ACTIVE),
-  securePort: GB_BE_SECURE_PORT,
-  hostPWSocket: toBool(GB_PW_SOCKET_ACTIVE),
-  origins: generateOrigins(GB_SERVER_ORIGINS),
+  server: {
+    port: GB_BE_PORT,
+    host: GB_BE_HOST,
+    environment: nodeEnv,
+    path: GB_BE_SOCKR_PATH,
+    logLevel: GB_LOG_LEVEL,
+    auth: toBool(GB_AUTH_ACTIVE),
+    securePort: GB_BE_SECURE_PORT,
+    hostPWSocket: toBool(GB_PW_SOCKET_ACTIVE),
+    origins: generateOrigins(GB_SERVER_ORIGINS),
+    cookie: {
+      key: GB_BE_COOKIE_KEY,
+      name: GB_BE_COOKIE_NAME,
+      expires: GB_BE_COOKIE_EXP as string,
+      secret: GB_BE_COOKIE_SECRET,
+      maxAge: GB_BE_COOKIE_MAX_AGE as string,
+      sameSite: GB_BE_COOKIE_SAME_SITE,
+      secure: toBool(GB_BE_COOKIE_SECURE),
+      httpOnly: toBool(GB_BE_COOKIE_HTTP_ONLY),
+      overwrite: toBool(GB_BE_COOKIE_OVERWRITE),
+    },
+    jwt: {
+      exp: GB_BE_JWT_EXP,
+      secret: GB_BE_JWT_SECRET,
+      refreshExp: GB_BE_JWT_REFRESH_EXP,
+      refreshSecret: GB_BE_JWT_REFRESH_SECRET,
+      algorithms: [GB_BE_JWT_ALGO || 'HS256'],
+      credentialsRequired: toBool(GB_BE_JWT_CREDENTIALS || true),
+    }
+  },
   conductor: {
     key: GB_VALIDATION_KEY,
     port: GOBLET_CONDUCTOR_SERVICE_PORT,
     host: process.env[`GOBLET_CONDUCTOR_PORT_${GOBLET_CONDUCTOR_SERVICE_PORT}_TCP_ADDR`],
-  },
-  screencast: {
-    host: GB_BE_HOST,
-    path: GB_NO_VNC_PATH,
-    port: GB_NO_VNC_PORT,
-    protocol: GB_NO_VNC_PROTOCOL,
-  },
-  cookie: {
-    key: GB_BE_COOKIE_KEY,
-    name: GB_BE_COOKIE_NAME,
-    expires: GB_BE_COOKIE_EXP as string,
-    secret: GB_BE_COOKIE_SECRET,
-    maxAge: GB_BE_COOKIE_MAX_AGE as string,
-    sameSite: GB_BE_COOKIE_SAME_SITE,
-    secure: toBool(GB_BE_COOKIE_SECURE),
-    httpOnly: toBool(GB_BE_COOKIE_HTTP_ONLY),
-    overwrite: toBool(GB_BE_COOKIE_OVERWRITE),
   },
   sockr: {
     ...sockrCmds,
@@ -101,12 +105,11 @@ export const backendConfig:TBackendConfig  = {
       script: path.join(aliases.GobletRoot, 'scripts/sockr.cmd.sh'),
     },
   },
-  jwt: {
-    exp: GB_BE_JWT_EXP,
-    secret: GB_BE_JWT_SECRET,
-    refreshExp: GB_BE_JWT_REFRESH_EXP,
-    refreshSecret: GB_BE_JWT_REFRESH_SECRET,
-    algorithms: [GB_BE_JWT_ALGO || 'HS256'],
-    credentialsRequired: toBool(GB_BE_JWT_CREDENTIALS || true),
-  }
+  screencast: {
+    host: GB_BE_HOST,
+    path: GB_NO_VNC_PATH,
+    port: GB_NO_VNC_PORT,
+    protocol: GB_NO_VNC_PROTOCOL,
+    active: toBool(GB_VNC_ACTIVE),
+  },
 }

@@ -1,3 +1,4 @@
+import { TScreencastServer } from './screencast.types'
 
 export type TReqHeaders = Record<string, string>
 
@@ -44,7 +45,7 @@ export type TCookieConfig = {
   overwrite: boolean
 }
 
-export type TBackendConfig = {
+export type TBEServerConfig = {
   port: string
   host: string
   path: string
@@ -55,8 +56,12 @@ export type TBackendConfig = {
   environment: string
   hostPWSocket: boolean
   jwt: TJwtConfig
-  sockr: TSockrConfig
   cookie: TCookieConfig
+}
+
+export type TBackendConfig = {
+  sockr: TSockrConfig
+  server: TBEServerConfig
   conductor: TConductorServiceConfig
-  [key:string]: any
+  screencast: TScreencastServer
 }

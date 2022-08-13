@@ -30,8 +30,7 @@ const setupVNCProxy = app => {
     host,
     protocol,
     ...options
-  } = get(config, `server.screencast`, {})
-
+  } = config?.screencast ?? {}
 
   if(!host) throw new Error(`VNC Proxy host is required!`)
 

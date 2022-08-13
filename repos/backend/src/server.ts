@@ -29,7 +29,7 @@ import {
  * @returns {Object} - Express app, server and socket.io socket
  */
 export const initApi = async () => {
-  const app = getApp({ sockr: backendConfig.sockr, server: backendConfig, })
+  const app = getApp(backendConfig)
   const { sockr, server:serverConf } = app.locals.config
 
   setupLoggerReq(app)

@@ -11,8 +11,8 @@ const conductorProxy = asyncWrap(async (req:Request, res:Response, next:NextFunc
 })
 
 export const setupConductorProxy = async (app:Express) => {
-  const { server } = app?.locals?.config
-  app.locals.conductor = app?.locals?.conductor || new ConductorService(server?.conductor)
+  const { conductor } = app?.locals?.config
+  app.locals.conductor = app?.locals?.conductor || new ConductorService(conductor)
 
   await app.locals.conductor.validate()
 

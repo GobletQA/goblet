@@ -1,47 +1,77 @@
 const winston = require('winston')
 const { noOpObj } = require('@keg-hub/jsutils')
 const { safeReplacer } = require('./safeReplacer')
-
 const { createLogger, transports, format } = winston
-const { combine, label:logLabel, json, splat, timestamp, prettyPrint } = format
+const {
+  json,
+  splat,
+  simple,
+  combine,
+  timestamp,
+  prettyPrint,
+  label:logLabel,
+} = format
 
 let __LOGGER
 
-const buildLogger = (options=noOpObj, useDefault=true) => {
-  if(useDefault && __LOGGER) return __LOGGER
+
+/**
+ * Winston transform helper to filter out OPTIONS requests from the browser 
+ */
+const filterOptionsReq = () => {
+  format.transform = (info) => {
+    return info.message.startsWith(`OPTIONS `)
+      ? null
+      : info
+  }
+
+  return format
+}
+
+const getFormatter = (label) => {
+  return process.env.NODE_ENV !== 'production'
+    ? combine(
+        filterOptionsReq(),
+        timestamp(),
+        logLabel({ label }),
+        simple(),
+        json({ replacer: safeReplacer }),
+        prettyPrint({ colorize: true })
+      )
+    : combine(
+        filterOptionsReq(),
+        splat(),
+        timestamp(),
+        logLabel({ label }),
+        json({ replacer: safeReplacer })
+      )
+}
+
+const buildLogger = (options=noOpObj, defaultLogger=true) => {
+  if(defaultLogger && __LOGGER) return __LOGGER
 
   const {
-    level=`info`,
     silent=false,
-    pretty=true,
+    level=`info`,
+    label=`Goblet`,
     exitOnError=false,
     handleExceptions=true,
-    label=`Goblet`,
   } = options
-  
-  const winstonFormat = combine(
-    splat(),
-    timestamp(),
-    logLabel({ label }),
-    pretty
-      ? prettyPrint({ colorize: true })
-      : json({ replacer: safeReplacer })
-  )
 
   const logger = createLogger({
+    silent: silent,
+    exitOnError: exitOnError,
     transports: [
       new transports.Console({
-        handleExceptions: handleExceptions,
         level: level,
-        format: winstonFormat,
+        format: getFormatter(label),
+        handleExceptions: handleExceptions,
       }),
     ],
-    exitOnError: exitOnError,
-    silent: silent,
   })
-  
-  if(!useDefault) return logger
-  
+
+  if(!defaultLogger) return logger
+
   __LOGGER = logger
   return __LOGGER
 }

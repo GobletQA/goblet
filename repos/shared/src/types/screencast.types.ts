@@ -12,6 +12,9 @@ export type TRecorderOpts = {
 export type TScreencastServer = {
   port: string
   host: string
+  path?: string
+  active?: boolean
+  protocol?: string
 }
 
 export type TBrowserContext = {
