@@ -25,19 +25,7 @@ class Repo {
    * @returns {Array} - Found repos and their branches
    */
   static getUserRepos = async opts => {
-    const repos = await getUserRepos({...opts, loadMocks: true})
-
-    return repos.filter(repo => isObj(repo))
-      .map(repo => {
-        const { refs, url, name } = repo
-        return !refs || !refs.nodes || !refs.nodes.length
-          ? {url, name, branches: noPropArr}
-          : {
-              url,
-              name,
-              branches: refs.nodes.map(branch => branch.name).filter(name => name)
-            }
-      })
+    return await getUserRepos(opts)
   }
 
   /**

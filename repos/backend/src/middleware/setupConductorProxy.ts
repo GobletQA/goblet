@@ -15,7 +15,6 @@ export const setupConductorProxy = async (app:Express) => {
 
   await app.locals.conductor.validate()
 
-  AppRouter.use(`/repo/status`, conductorProxy)
   AppRouter.use(`/repo/:repo/*`, conductorProxy)
 }
 

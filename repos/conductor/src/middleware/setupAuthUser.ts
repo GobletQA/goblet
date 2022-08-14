@@ -10,7 +10,12 @@ const decodeToken = (authHeader:string, secret:string) => {
   return jwt.verify(authHeader.split(`Bearer `).pop(), secret)
 }
 
-const validateUser = asyncWrap((req:Request, res:Response, next:NextFunction) => {
+const validateUser = asyncWrap((
+  req:Request,
+  res:Response,
+  next:NextFunction
+) => {
+
   if (AUTH_BYPASS_ROUTES.includes(req.originalUrl)) return next()
   
   const conductor = req.app.locals.conductor as Conductor

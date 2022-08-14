@@ -5,22 +5,6 @@ import { AppRouter } from '@gobletqa/conductor/server/routers'
 import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
 
 /**
- * Could be used to get repos when unmounted and in vnc mode, but logged in
- * Makes the initial status query take a while, so skipping for now
- * May want to add later, so keeping the code
- */
-const handleUnmounted = async (req:Request, res:Response, status:Record<any, any>) => {
-  // @ts-ignore
-  const { query, session } = req
-  if(!session.token || status.mode !== 'vnc') return apiRes(res, { status })
-
-  const repos = !query.getRepos &&
-    await Repo.getUserRepos(session)
-
-  return apiRes(res, {status, repos})
-}
-
-/**
  * Gets the status of a connected repo
  * Calls the statusGoblet workflow
  */

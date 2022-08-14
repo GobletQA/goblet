@@ -94,6 +94,29 @@ export class Conductor {
   }
 
   /**
+   * Gets the status of a user based on the subdomain
+   * Subdomain is derived from the user and a hash so it's always the same
+   */
+  async status(req:Request, subdomain){
+    const { ensure } = req.query
+    const { imageRef } = req.params
+    const route = this.controller.routes?.[subdomain]
+
+    console.log(`------- found route -------`)
+    console.log(route)
+
+    return route
+      ? route
+      : ensure && imageRef
+        ? await this.spawn(
+            imageRef as string,
+            req.body as TSpawnOpts,
+            subdomain
+          )
+        : {}
+  }
+
+  /**
    * Removes a container be reference name
    */
   async remove(containerRef:TContainerRef){

@@ -7,6 +7,7 @@ import {
   isStr,
   isNum,
   limbo,
+  isObj,
   noOpObj,
   noPropArr,
   deepClone,
@@ -207,10 +208,22 @@ const graphApiCall = async (args:TGraphApiVars) => {
  * @returns {*} - Query Response
 */
 export const getUserRepos = async opts => {
-  return await graphApiCall({
+  const repos = await graphApiCall({
     ...opts,
     endpoint: GRAPH.ENDPOINTS.REPO.LIST_ALL,
   })
+
+  return repos.filter(repo => isObj(repo))
+    .map(repo => {
+      const { refs, url, name } = repo
+      return !refs || !refs.nodes || !refs.nodes.length
+        ? {url, name, branches: noPropArr}
+        : {
+            url,
+            name,
+            branches: refs.nodes.map(branch => branch.name).filter(name => name)
+          }
+    })
 }
 
 export const getRepoBranches = async opts => {

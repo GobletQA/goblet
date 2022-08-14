@@ -1,14 +1,15 @@
 import type { Response, Request } from 'express'
-
-import { Repo } from '@gobletqa/shared/repo/repo'
+import { getUserRepos } from '@gobletqa/workflows'
 import { generateTokens } from '@GBE/utils/generateTokens'
 import { asyncWrap, apiRes } from '@gobletqa/shared/express'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
+
 
 /**
  * Validates the required authentication information exists
  */
 export const validate = asyncWrap(async (req:Request, res:Response) => {
+  const { conductor } = req.app.locals
   const { id, username, token, provider } = req.body
 
   if (!id || !username || !token || !provider)
@@ -16,7 +17,7 @@ export const validate = asyncWrap(async (req:Request, res:Response) => {
 
   const config = req.app.locals.config.server
 
-  // Add the user data to the jwt
+  // First generate tokens for accessing conductor form the frontend
   const jwtTokens = generateTokens(config.jwt, {
     userId: id,
     token: token,
@@ -24,8 +25,19 @@ export const validate = asyncWrap(async (req:Request, res:Response) => {
     provider: provider,
   })
 
-  // Preload the users repos from the provider
-  const repos = await Repo.getUserRepos({ token })
+  // Next call conductor to spin of a container for the user
+  // /container/status/:imageRef
+  const status = await conductor.request({
+    url: `/container/spawn/goblet?ensure=1`,
+    headers: req.headers
+  })
+
+  console.log(`------- Figure out what to do with container status here  -------`)
+  console.log(status)
+
+  // While the container is spinning up
+  // Get the users repos from the git provider
+  const repos = await getUserRepos({ token })
 
   return apiRes(res, {...jwtTokens, id, username, provider, repos}, 200)
 })

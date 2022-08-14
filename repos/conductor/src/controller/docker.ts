@@ -272,6 +272,13 @@ export class Docker extends Controller {
       this.conductor
     )
     
+    console.log(`------- built container ursl -------`)
+    console.log(meta)
+    console.log(`------- built map -------`)
+    console.log(map)
+    console.log(`------- built urls -------`)
+    console.log(urls)
+    
     this.routes[subdomain] = map
 
     return {

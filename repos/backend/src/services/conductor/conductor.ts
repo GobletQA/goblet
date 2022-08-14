@@ -1,4 +1,6 @@
-import axios from 'axios'
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
+
+import path from 'node:path'
 import { Request, Response } from 'express'
 import { deepMerge, noOpObj, limbo } from '@keg-hub/jsutils'
 import { axiosToExp, expToAxios, checkAxiosError } from '@GBE/utils/axiosProxy'
@@ -53,6 +55,30 @@ export class ConductorService {
 
     checkAxiosError(err, aRes)
     axiosToExp(aRes, res, true)
+  }
+
+  async request(opts:AxiosRequestConfig) {
+    const url = opts.url.includes(`://`)
+      ? opts.url
+      : `${this.uri}/${opts.url.split('/').filter(Boolean).join('/')}`
+
+    console.log(`------- built url -------`)
+    console.log(url)
+
+    const [err, resp] = await limbo(axios({
+      method: 'get',
+      ...opts,
+      url,
+      headers: buildHeaders(this, opts?.headers)
+    }))
+    
+    console.log(`------- finished calling conductor -------`)
+    resp && console.log(`resp`, resp)
+    err && console.log(`err`, err)
+    
+    if(err) throw err
+
+    return resp.data 
   }
 
 }

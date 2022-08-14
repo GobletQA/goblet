@@ -47,16 +47,21 @@ export const init = async () => {
   // Load the local storage user if they exist
   const activeUser = await loadUser()
 
-  !activeUser && authActive && setActiveModal(MODAL_TYPES.SIGN_IN)
+  // First ensure the user is logged in
+  // Otherwise, show login modal and return
+  if(!activeUser && authActive)
+    return setActiveModal(MODAL_TYPES.SIGN_IN)
 
-  // First check the status of the mounted repo
+  // If user is logged in,
+  // Next check the status of the mounted repo
   // TODO: If no locally mounted volume
   // Then setup a fake mounted repo at the default location
   // Will allow using goblet without persisting changes
   const status = await statusRepo()
   if (!status || !status.mounted) return
 
-  // Get the query params from the url
+  // Finally if the repo is mounted
+  // Then get the query data to route to the correct tab as needed
   const queryObj = getQueryData()
 
   // Load the initial screen

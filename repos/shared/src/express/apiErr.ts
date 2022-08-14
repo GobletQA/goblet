@@ -6,13 +6,14 @@ type TError = Error & {
   statusCode:number
 }
 
-export const apiErr = (err:TError, status:number, req:Request, res:Response) => {
+export const apiErr = (res:Response, err:TError, status:number) => {
   const error = {
     message: isObj(err) ? err.message : err || `An api error occurred!`,
   }
-  Logger.error(err.stack || err.message)
 
-  if(res.headersSent) return 
+  Logger.error(err?.stack || err?.message)
+
+  if(res.headersSent) return
 
   res.statusCode = toNum(err.statusCode || status || 400)
   res.json(error)

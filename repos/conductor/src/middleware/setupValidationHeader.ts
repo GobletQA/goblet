@@ -4,7 +4,12 @@ import { getApp } from '@gobletqa/shared/express/app'
 import { Express, Request, Response, NextFunction } from 'express'
 
 
-const checkValidationHeader = asyncWrap(async (req:Request, res:Response, next:NextFunction) => {
+const checkValidationHeader = asyncWrap(async (
+  req:Request,
+  res:Response,
+  next:NextFunction
+) => {
+
   const conductor = req.app.locals.conductor as Conductor
   if(!conductor) throw new Error(`Missing Conductor Instance`)
   const { key, keyHeader } = conductor?.config?.server?.validation
