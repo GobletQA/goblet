@@ -1,6 +1,6 @@
 const path = require('path')
 const glob = require('glob')
-const { getGobletConfig } = require('@GSH/Utils/getGobletConfig')
+const { getGobletConfig } = require('@GSH/utils/getGobletConfig')
 const { tryRequireSync, deepMerge } = require('@keg-hub/jsutils/src/node')
 
 /**

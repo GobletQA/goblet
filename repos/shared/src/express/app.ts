@@ -1,8 +1,9 @@
-const express = require('express')
-const { noOpObj, deepMerge } = require('@keg-hub/jsutils')
-const { getGobletConfig, resetGobletConfig } = require('@GSH/Utils/getGobletConfig')
+import type { Express } from 'express'
+import express from 'express'
+import { noOpObj, deepMerge } from '@keg-hub/jsutils'
+import { getGobletConfig, resetGobletConfig } from '@GSH/utils/getGobletConfig'
 
-let _APP
+let _APP:Express
 
 /**
  * Reloads the goblet config be deleting the current config and calling getGobletConfig
@@ -13,13 +14,13 @@ let _APP
  *
  * @returns {void}
  */
-const reloadGobletConfig = type => {
+export const reloadGobletConfig = (serverConf:Record<any, any> = noOpObj) => {
   // Remove the old config
   resetGobletConfig()
   delete _APP.locals.config
 
   // Reload the app with the config
-  setupApp(type)
+  setupApp(serverConf)
 }
 
 /**
@@ -43,13 +44,8 @@ const setupApp = (serverConf) => {
  *
  * @returns {Object} - Express App Object
  */
-const getApp = (serverConf=noOpObj) => {
+export const getApp = (serverConf=noOpObj) => {
   !_APP && (_APP = express())
 
   return setupApp(serverConf)
-}
-
-module.exports = {
-  getApp,
-  reloadGobletConfig,
 }

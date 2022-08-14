@@ -1,6 +1,6 @@
 import path from 'path'
 import express from 'express'
-import { getApp } from '@GSH/App'
+import { getApp } from '@GSH/express/app'
 import { aliases } from '@GConfigs/aliases.config'
 import { isArr, isObj, exists, isStr } from '@keg-hub/jsutils'
 import type { Express } from 'express'

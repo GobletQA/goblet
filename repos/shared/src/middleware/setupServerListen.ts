@@ -1,7 +1,7 @@
 import fs from 'fs'
 import http from 'http'
 import https from 'https'
-import { getApp } from '@GSH/App'
+import { getApp } from '@GSH/express/app'
 import { Express } from 'express'
 import { Logger } from '@keg-hub/cli-utils'
 

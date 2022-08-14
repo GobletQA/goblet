@@ -1,7 +1,7 @@
-import express from 'express'
-import { getApp } from '@GSH/App'
-import { AppRouter } from '@GSH/Router'
 import type { Express } from 'express'
+import express from 'express'
+import { getApp } from '@GSH/express/app'
+import { AppRouter } from '@GSH/express/appRouter'
 
 /**
  * Adds json parsing middleware

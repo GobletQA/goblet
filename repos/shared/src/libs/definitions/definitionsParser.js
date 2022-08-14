@@ -1,9 +1,9 @@
 const fs = require('fs')
 const { Logger } = require('@keg-hub/cli-utils')
 const { checkCall } = require('@keg-hub/jsutils')
-const { buildFileModel } = require('@GSH/Utils/buildFileModel')
-const { parkinCheck } = require('@GSH/Libs/overrides/parkinOverride')
-const { requireOverride } = require('@GSH/Libs/overrides/requireOverride')
+const { buildFileModel } = require('@GSH/utils/buildFileModel')
+const { parkinCheck } = require('@GSH/libs/overrides/parkinOverride')
+const { requireOverride } = require('@GSH/libs/overrides/requireOverride')
 
 class DefinitionsParser {
 

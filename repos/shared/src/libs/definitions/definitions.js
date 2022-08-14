@@ -1,9 +1,9 @@
 const path = require('path')
 const glob = require('glob')
 const { DefinitionsParser } = require('./definitionsParser')
-const { getDefaultGobletConfig } = require('@GSH/Config')
-const { getPathFromBase } = require('@GSH/Utils/getPathFromBase')
-const { parkinOverride } = require('@GSH/Libs/overrides/parkinOverride')
+const { getPathFromBase } = require('@GSH/utils/getPathFromBase')
+const { getDefaultGobletConfig } = require('@GSH/utils/getGobletConfig')
+const { parkinOverride } = require('@GSH/libs/overrides/parkinOverride')
 
 /**
  * Searches the step definition directory for step definitions

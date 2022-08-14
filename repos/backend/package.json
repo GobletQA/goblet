@@ -45,7 +45,7 @@
     "http-proxy-middleware": "2.0.4",
     "jsonwebtoken": "8.5.1",
     "module-alias": "2.2.2",
-    "node-fetch": "3.2.10"
+    "source-map-support": "0.5.21"
   },
   "devDependencies": {
     "@types/debug": "4.1.5",

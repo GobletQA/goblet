@@ -1,4 +1,4 @@
-const { pathExists, readFile } = require('@GSH/FileSys/fileSys')
+const { pathExists, readFile } = require('@GSH/libs/fileSys/fileSys')
 
 /**
  * Gets the text content of a file from the passed in location

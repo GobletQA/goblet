@@ -1,5 +1,5 @@
-const { loadDefinitions } = require('@GSH/Definitions/definitions')
-const { definitionsByType } = require('@GSH/Utils/definitionsByType')
+const { loadDefinitions } = require('@GSH/libs/definitions/definitions')
+const { definitionsByType } = require('@GSH/utils/definitionsByType')
 
 const getDefinitions = async (repo, config) => {
   const definitions = await loadDefinitions(repo, config)

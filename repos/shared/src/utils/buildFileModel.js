@@ -1,8 +1,8 @@
 const path = require('path')
 const { getType } = require('mime')
 const { getFileType } = require('./getFileType')
-const { fileModel } = require('@GSH/Models')
-const { getLastModified } = require('@GSH/FileSys/fileSys')
+const { fileModel } = require('@GSH/models')
+const { getLastModified } = require('@GSH/libs/fileSys/fileSys')
 
 /**
  * Builds a fileModel from the fileModel object and passed arguments

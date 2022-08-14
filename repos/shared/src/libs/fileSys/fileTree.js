@@ -1,8 +1,8 @@
 const path = require('path')
-const { treeNodeModel } = require('@GSH/Models')
+const { treeNodeModel } = require('@GSH/models')
 const { isDirectory, getFolderContent } = require('./fileSys')
-const { resolveFileType } = require('@GSH/Utils/resolveFileType')
-const { getRepoGobletDir } = require('@GSH/Utils/getRepoGobletDir')
+const { resolveFileType } = require('@GSH/utils/resolveFileType')
+const { getRepoGobletDir } = require('@GSH/utils/getRepoGobletDir')
 
 /**
  * Recursively checks to find the parent node for a given item
