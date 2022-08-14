@@ -5,7 +5,7 @@ const { asyncWrap, apiRes } = require('@gobletqa/shared/express')
  */
 const listReports = asyncWrap(async (req, res) => {
   // TODO: add list of all current reports based on fileType
-  return apiRes(req, res, { success: true } || {}, 200)
+  return apiRes(res, { success: true } || {}, 200)
 })
 
 module.exports = {

@@ -9,7 +9,7 @@ const getRepos = asyncWrap(async (req, res) => {
   const { iat, exp, ...user } = req.user
   const repos = await Repo.getUserRepos(user)
 
-  return apiRes(req, res, {repos}, 200)
+  return apiRes(res, {repos}, 200)
 })
 
 module.exports = {

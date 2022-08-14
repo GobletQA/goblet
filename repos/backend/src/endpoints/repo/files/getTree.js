@@ -11,7 +11,6 @@ const getTree = asyncWrap(async (req, res) => {
   const { nodes, rootPaths } = await buildFileTree(res.locals.repo, req.params)
 
   return apiRes(
-    req,
     res,
     {
       nodes,

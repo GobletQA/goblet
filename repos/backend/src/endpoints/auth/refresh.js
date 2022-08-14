@@ -11,7 +11,7 @@ const refresh = asyncWrap(async (req, res) => {
   const jwtTokens = validateRefreshToken(config.jwt, req.user, refreshToken)
 
   return jwtTokens
-    ? apiRes(req, res, jwtTokens, 200)
+    ? apiRes(res, jwtTokens, 200)
     : resError(`User session is expired, please sign in`, 401)
 })
 

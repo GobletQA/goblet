@@ -12,12 +12,12 @@ import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
 const handleUnmounted = async (req:Request, res:Response, status:Record<any, any>) => {
   // @ts-ignore
   const { query, session } = req
-  if(!session.token || status.mode !== 'vnc') return apiRes(req, res, { status })
+  if(!session.token || status.mode !== 'vnc') return apiRes(res, { status })
 
   const repos = !query.getRepos &&
     await Repo.getUserRepos(session)
 
-  return apiRes(req, res, {status, repos})
+  return apiRes(res, {status, repos})
 }
 
 /**
@@ -35,7 +35,7 @@ export const statusRepo = asyncWrap(async (req:Request, res:Response) => {
   // If not mounted, return the unmounted status, so the ui can update base on the mode
   // In local mode, it just shows the editor
   // In VNC mode, it shows the git modal to connect a repo
-  if (!status.mounted) return apiRes(req, res, { status })
+  if (!status.mounted) return apiRes(res, { status })
 
   // If we get here only if repo exists on res.locals or status.repo
   const foundRepo = repo || res.locals.repo
@@ -51,7 +51,7 @@ export const statusRepo = asyncWrap(async (req:Request, res:Response) => {
 
   const repoContent = await loadRepoContent(foundRepo, config, status)
 
-  return apiRes(req, res, repoContent)
+  return apiRes(res, repoContent)
 })
 
 

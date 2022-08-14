@@ -10,7 +10,7 @@ const deleteFile = asyncWrap(async (req, res) => {
   const { file } = req.query
   const meta = await deleteGobletFile(res.locals.repo, file)
 
-  return apiRes(req, res, meta || {}, 200)
+  return apiRes(res, meta || {}, 200)
 })
 
 module.exports = {

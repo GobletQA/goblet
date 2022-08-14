@@ -11,7 +11,7 @@ export const spawn = asyncWrap(async (req:Request, res:Response) => {
     res.locals.subdomain
   )
 
-  return apiRes(req, res, status)
+  return apiRes(res, status)
 })
 
 AppRouter.post(`/container/spawn/:imageRef`, spawn)

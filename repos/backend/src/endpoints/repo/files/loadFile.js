@@ -10,7 +10,7 @@ const loadFile = asyncWrap(async (req, res) => {
   const filePath = req.query.path
   const file = await getGobletFile(res.locals.repo, filePath)
 
-  return apiRes(req, res, (file ? {file} : {}), 200)
+  return apiRes(res, (file ? {file} : {}), 200)
 })
 
 module.exports = {

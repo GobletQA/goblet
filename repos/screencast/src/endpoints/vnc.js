@@ -11,23 +11,23 @@ const {
 
 const vncStatus = asyncWrap(async (req, res) => {
   const status = await statusVNC()
-  return apiRes(req, res, { status }, 200)
+  return apiRes(res, { status }, 200)
 })
 
 const vncStart = asyncWrap(async (req, res) => {
   const status = await startVNC()
-  return apiRes(req, res, { status }, 200)
+  return apiRes(res, { status }, 200)
 })
 
 const vncStop = asyncWrap(async (req, res) => {
   const status = await stopVNC()
-  return apiRes(req, res, { status }, 200)
+  return apiRes(res, { status }, 200)
 })
 
 const vncRestart = asyncWrap(async (req, res) => {
   await stopVNC()
   const status = await startVNC()
-  return apiRes(req, res, { status }, 200)
+  return apiRes(res, { status }, 200)
 })
 
 module.exports = (...args) => {

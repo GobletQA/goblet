@@ -9,7 +9,6 @@ const loadBddFiles = asyncWrap(async (req, res) => {
   )
 
   return apiRes(
-    req,
     res,
     {
       definitionTypes,

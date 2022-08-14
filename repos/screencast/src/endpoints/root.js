@@ -5,7 +5,6 @@ const apiRoot = asyncWrap(async (req, res) => {
   const config = req.app.locals.config
 
   return apiRes(
-    req,
     res,
     {
       host: config.server.host,

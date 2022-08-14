@@ -12,7 +12,7 @@ const saveFile = asyncWrap(async (req, res) => {
 
   const meta = await saveGobletFile(res.locals.repo, location, content, type)
 
-  return apiRes(req, res, meta || {}, 200)
+  return apiRes(res, meta || {}, 200)
 })
 
 module.exports = {

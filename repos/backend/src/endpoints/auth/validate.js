@@ -25,7 +25,7 @@ const validate = asyncWrap(async (req, res) => {
   // Preload the users repos from the provider
   const repos = await Repo.getUserRepos({ token })
 
-  return apiRes(req, res, {...jwtTokens, id, username, provider, repos}, 200)
+  return apiRes(res, {...jwtTokens, id, username, provider, repos}, 200)
 })
 
 module.exports = {

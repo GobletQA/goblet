@@ -7,7 +7,7 @@ const { asyncWrap, apiRes } = require('@gobletqa/shared/express')
 const disconnectRepo = asyncWrap(async (req, res) => {
   // TODO: Add req.body validation
   const repo = await Repo.disconnect(req.body)
-  return apiRes(req, res, { repo }, 200)
+  return apiRes(res, { repo }, 200)
 })
 
 module.exports = {

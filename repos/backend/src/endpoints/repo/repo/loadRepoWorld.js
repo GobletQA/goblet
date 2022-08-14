@@ -5,7 +5,7 @@ const { asyncWrap, apiRes } = require('@gobletqa/shared/express')
  */
 const loadRepoWorld = asyncWrap(async (req, res) => {
   const world = await res.locals.repo.refreshWorld()
-  return apiRes(req, res, { world }, 200)
+  return apiRes(res, { world }, 200)
 })
 
 module.exports = {

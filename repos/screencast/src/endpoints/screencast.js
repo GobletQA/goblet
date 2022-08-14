@@ -18,7 +18,7 @@ const scStatus = asyncWrap(async (req, res) => {
   })
   status.lastCheck = new Date().getTime()
 
-  return apiRes(req, res, status, 200)
+  return apiRes(res, status, 200)
 })
 
 /**
@@ -30,7 +30,7 @@ const scRestart = asyncWrap(async (req, res) => {
   await stopScreencast(params)
   const status = await startScreencast(params)
 
-  return apiRes(req, res, status, 200)
+  return apiRes(res, status, 200)
 })
 
 /**
@@ -40,7 +40,7 @@ const scStart = asyncWrap(async (req, res) => {
   const { params } = req
   const status = await startScreencast(params)
 
-  return apiRes(req, res, status, 200)
+  return apiRes(res, status, 200)
 })
 
 /**
@@ -50,7 +50,7 @@ const scStop = asyncWrap(async (req, res) => {
   const { params } = req
   const status = await stopScreencast(params)
 
-  return apiRes(req, res, status, 200)
+  return apiRes(res, status, 200)
 })
 
 module.exports = (...args) => {

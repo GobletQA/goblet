@@ -20,7 +20,7 @@ const browserStart = asyncWrap(async (req, res) => {
   const { query } = req
   const { status } = await startBrowser(joinBrowserConf(query))
 
-  return apiRes(req, res, status, 200)
+  return apiRes(res, status, 200)
 })
 
 /**
@@ -31,7 +31,7 @@ const browserStatus = asyncWrap(async (req, res) => {
   const { query } = req
   const { status } = await statusBrowser(joinBrowserConf(query))
 
-  return apiRes(req, res, status, 200)
+  return apiRes(res, status, 200)
 })
 
 /**
@@ -42,7 +42,7 @@ const browserRestart = asyncWrap(async (req, res) => {
   const { params } = req
   const { status } = await restartBrowser(joinBrowserConf(params))
 
-  return apiRes(req, res, status, 200)
+  return apiRes(res, status, 200)
 })
 
 /**
@@ -53,7 +53,7 @@ const browserStop = asyncWrap(async (req, res) => {
   const { params } = req
   const status = await stopBrowser(joinBrowserConf(params))
 
-  return apiRes(req, res, status, 200)
+  return apiRes(res, status, 200)
 })
 
 /**
@@ -67,7 +67,7 @@ const browserAction = asyncWrap(async (req, res) => {
 
   await actionBrowser({ ref, actions, id: req.user.userId }, browserConf)
 
-  return apiRes(req, res, noOpObj, 200)
+  return apiRes(res, noOpObj, 200)
 })
 
 module.exports = () => {

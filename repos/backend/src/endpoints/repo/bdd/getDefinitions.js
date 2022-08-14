@@ -11,7 +11,6 @@ const getDefinitions = asyncWrap(async (req, res) => {
   const definitionTypes = definitionsByType(definitions)
 
   return apiRes(
-    req,
     res,
     {
       definitionTypes,

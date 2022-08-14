@@ -17,7 +17,7 @@ const connectRepo = asyncWrap(async (req, res) => {
   const { config } = req.app.locals
   const content = await loadRepoContent(repo, config)
 
-  return apiRes(req, res, content, 200)
+  return apiRes(res, content, 200)
 })
 
 module.exports = {
