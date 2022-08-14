@@ -31,7 +31,6 @@ import {
 
 import { createContainer, startContainer } from '../utils/runContainerHelpers'
 
-
 /**
  * Connection back off helper for connecting to docker's api
  * Sometimes the docker container is not complete by the time this kicks off
