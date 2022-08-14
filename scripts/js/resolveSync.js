@@ -41,7 +41,6 @@ const syncBackendConfig = (deployment, extraIgnore) => (`
   localSubPath: ../
   containerPath: /goblet/app
   uploadExcludePaths:
-  - /repos/admin
   - /repos/frontend
   - /repos/traceViewer
   ${sharedIgnored}

@@ -1,0 +1,157 @@
+# yaml-language-server: $schema=container/devspace.yaml
+version: v1beta11
+
+# Currently we have to define some variables in the yaml that we want to use outside the valuesFiles key in the deployment section
+# https://github.com/loft-sh/devspace/issues/1716
+
+# All vars are loaded from the getYamlValue.js script
+# This allows them to be loaded from the current ENV, the values.yml files, or a fallback
+# See the ../scripts/js/getYamlValue.js script for more information
+vars:
+
+# ----- General Values ----- #
+- name: GB_TOKEN
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_TOKEN"
+- name: NPM_TOKEN
+  source: command
+  command: "node ../scripts/js/getYamlValue.js NPM_TOKEN"
+- name: NODE_ENV
+  source: command
+  command: "node ../scripts/js/getYamlValue.js NODE_ENV"
+- name: BUILD_LOCAL_IMAGE
+  source: command
+  command: "node ../scripts/js/getYamlValue.js BUILD_LOCAL_IMAGE false"
+- name: IMAGE_PULL_POLICY
+  source: command
+  command: "node ../scripts/js/getYamlValue.js IMAGE_PULL_POLICY Always"
+- name: GB_NM_INSTALL
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_NM_INSTALL"
+
+# ----- Docker Image Values ----- #
+- name: IMAGE
+  source: command
+  command: "node ../scripts/js/getYamlValue.js IMAGE"
+- name: IMAGE_TAG
+  source: command
+  command: "node ../scripts/js/getYamlValue.js IMAGE_TAG"
+
+# ----- Screencast API Values ----- #
+- name: GB_SC_DEPLOYMENT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_SC_DEPLOYMENT"
+- name: GB_SC_IMG_URI
+  source: command
+  command: "node ../scripts/js/resolveImgUri.js SC"
+- name: GB_SC_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_SC_PORT"
+- name: GB_VNC_SERVER_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_VNC_SERVER_PORT"
+
+# Load any pull secrets from the environment by calling the resolvePullSecrets.js script
+# The script returns a formatted response as a string
+# See the ../scripts/js/resolvePullSecrets.js script for more information
+pullSecrets: $(node ../scripts/js/resolvePullSecrets.js)
+
+# Defines if and how the docker image will be built before running it as a container
+images:
+  goblet-screencast:
+    image: ${IMAGE}
+    createPullSecret: true
+    injectRestartHelper: false
+    tags:
+    - ${IMAGE_TAG}
+    - '####-${NODE_ENV}-${devspace.git.commit}'
+    dockerfile: ./Dockerfile
+    context: ../
+    build:
+      # Expression to disable building the image only when BUILD_LOCAL_IMAGE is true
+      disabled: $([ ${BUILD_LOCAL_IMAGE} == "true" ] && echo false || echo true)
+      buildKit:
+        options:
+          buildArgs:
+            NPM_TOKEN: ${NPM_TOKEN}
+
+# The `deployments` section tells devspace how to deploy this project into the cluster
+deployments: 
+
+# ----- Backend API Deployment ----- #
+- name: ${GB_SC_DEPLOYMENT}
+  helm:
+    chart:
+      name: ./
+    cleanupOnFail: true
+    valuesFiles:
+    - ./values.yml
+    - ./values.${NODE_ENV}.yml
+    values:
+      containers:
+      - image: ${GB_SC_IMG_URI}
+        imagePullPolicy: ${IMAGE_PULL_POLICY}
+        env: $(node ../scripts/js/resolveDSEnvs.js backend)
+      service:
+        name: ${GB_SC_DEPLOYMENT}
+        ports:
+        - port: ${GB_SC_PORT}
+      ingress:
+        name: ${GB_SC_DEPLOYMENT}-ingress
+        rules:
+        - host: $(node ../scripts/js/resolveIngress.js SC)
+          serviceName: ${GB_SC_DEPLOYMENT}
+          servicePort: ${GB_SC_PORT}
+        - host: $(node ../scripts/js/resolveIngress.js SC "*")
+          serviceName: ${GB_SC_DEPLOYMENT}
+          servicePort: ${GB_VNC_SERVER_PORT}
+
+
+# The `dev` section only applies to `yarn dev start` || `devspace dev` commands
+# Is not run for `yarn dev deploy` || `devspace deploy` commands
+dev:
+  sync:
+  - labelSelector:
+      app.kubernetes.io/component: ${GB_SC_DEPLOYMENT}
+    disableDownload: true
+    initialSync: mirrorLocal
+    localSubPath: ../
+    containerPath: /goblet/app
+    uploadExcludePaths:
+    - /repos/backend
+    - /repos/conductor
+    - /repos/frontend
+    - /repos/traceViewer
+    - node_modules/
+    - .*
+    - /container/.*
+    - /container/scripts
+    - /container/templates
+    - /container/Dockerfile*
+    - /docs
+    - /helm
+    - /scripts
+    - __tests__/
+    - __mocks__/
+
+  # Gets the ports that should be exposed to the host machine from the running pod
+  ports: 
+  - labelSelector:
+      app.kubernetes.io/component: ${GB_SC_DEPLOYMENT}
+    forward:
+    - port: ${port}
+  - labelSelector:
+      app.kubernetes.io/component: ${GB_SC_DEPLOYMENT}
+    forward:
+    - port: ${port}
+
+
+# Use profile to dynamically switch out the app specific docker image for the development image
+profiles:
+- name: local
+  patches:
+  - op: replace
+    path: deployments.name=${GB_SC_DEPLOYMENT}.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}
+- name: staging
+- name: production
