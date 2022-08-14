@@ -22,31 +22,33 @@ const screenDims:TScreenDims = {
 }
 
 export const screencastConfig:TGScreencastConfig = {
-  // Set if the screencast is active or not
-  active: toBool(GB_VNC_ACTIVE),
-  novnc: {
-    host: GB_BE_HOST,
-    port: GB_NO_VNC_PORT,
-  },
   // Uses to start separate screencast API
   server: {
     port: GB_SC_PORT,
     host: GB_SC_HOST,
   },
-  vnc: {
-    display: DISPLAY,
-    host: GB_VNC_SERVER_HOST,
-    port: GB_VNC_SERVER_PORT,
-    width: GB_VNC_VIEW_WIDTH,
-    height: GB_VNC_VIEW_HEIGHT,
-  },
-  // Default playwright context settings
-  context: {
-    screen: screenDims,
-    viewport: screenDims,
-  },
-  // Default playwright browser launch settings
-  // TODO: add defaults here for Screencast
-  browser: {},
+  screencast: {
+    // Set if the screencast is active or not
+    active: toBool(GB_VNC_ACTIVE),
+    // Default playwright browser launch settings
+    // TODO: add defaults here for Screencast
+    browser: {},
+    // Default playwright context settings
+    context: {
+      screen: screenDims,
+      viewport: screenDims,
+    },
+    novnc: {
+      host: GB_BE_HOST,
+      port: GB_NO_VNC_PORT,
+    },
+    vnc: {
+      display: DISPLAY,
+      host: GB_VNC_SERVER_HOST,
+      port: GB_VNC_SERVER_PORT,
+      width: GB_VNC_VIEW_WIDTH,
+      height: GB_VNC_VIEW_HEIGHT,
+    },
+  }
 }
 

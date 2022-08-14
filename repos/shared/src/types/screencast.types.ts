@@ -22,6 +22,10 @@ export type TBrowserContext = {
   viewport: TScreenDims,
 }
 
+export type TBrowserPage = {
+  [key:string]: any
+}
+
 export type TVncConfig = {
   host: string
   port: string
@@ -35,13 +39,20 @@ export type TNoVncProxy = {
   port: string
 }
 
-export type TBrowserConfig = Record<any, any>
+export type TBrowserConfig = {
+  [key:string]: any
+}
+
+export type TScreencastConfig = {
+  active?: boolean
+  vnc?: TVncConfig
+  novnc?: TNoVncProxy
+  page?: TBrowserPage
+  browser?: TBrowserConfig
+  context?: TBrowserContext
+}
 
 export type TGScreencastConfig = {
-  vnc: TVncConfig
-  active: boolean
-  novnc: TNoVncProxy
-  browser: TBrowserConfig
-  context: TBrowserContext
   server: TScreencastServer
+  screencast: TScreencastConfig
 }

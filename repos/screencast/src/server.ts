@@ -20,9 +20,7 @@ import {
  * @returns {Object} - Express app, server and socket.io socket
  */
 const initApi = async () => {
-  const app = getApp({ screencast: screencastConfig })
-
-  const { screencast } = app.locals.config
+  const app = getApp(screencastConfig)
 
   setupLoggerReq(app)
   setupBlacklist(app)
@@ -36,7 +34,10 @@ const initApi = async () => {
   const {
     secureServer,
     insecureServer,
-  } = setupServerListen(app, { name: `Screencast`, ...screencast.server })
+  } = setupServerListen(app, {
+    name: `Screencast`,
+    ...app.locals.config.server
+  })
 
   return { app, server: secureServer || insecureServer }
 }
