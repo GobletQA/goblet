@@ -1,7 +1,8 @@
-const { config } = require('winston')
-const { noOpObj } = require('@keg-hub/jsutils')
-const expressWinston = require('express-winston')
-const { buildLogger } = require('../utils/buildLogger')
+import { config } from 'winston'
+import { Express } from 'express'
+import { noOpObj } from '@keg-hub/jsutils'
+import expressWinston from 'express-winston'
+import { buildLogger } from '../utils/buildLogger'
 
 /**
  * Adds middleware logging for requests
@@ -9,7 +10,7 @@ const { buildLogger } = require('../utils/buildLogger')
  *
  * @return {void}
  */
-const setupLoggerReq = (app, middlewareOpts=noOpObj) => {
+export const setupLoggerReq = (app:Express, middlewareOpts:Record<any, any>) => {
   const loggerOpts = app.locals.config.logger || noOpObj
   const logger = buildLogger(loggerOpts)
   const logLevel = config.npm.levels[loggerOpts.level || 'info']
@@ -21,7 +22,7 @@ const setupLoggerReq = (app, middlewareOpts=noOpObj) => {
     /** Only log the metadata, if the log level is set to at least verbose */
     meta: Boolean(logLevel >= config.npm.levels.verbose),
     /** override options above with passed in options */
-    ...middlewareOpts,
+    ...(middlewareOpts || noOpObj),
   })
 
   app.use(requestLogger)
@@ -35,7 +36,7 @@ const setupLoggerReq = (app, middlewareOpts=noOpObj) => {
  *
  * @return {void}
  */
-const setupLoggerErr = (app, middlewareOpts=noOpObj) => {
+export const setupLoggerErr = (app:Express, middlewareOpts:Record<any, any>) => {
   const loggerOpts = app.locals.config.logger || noOpObj
   const logger = buildLogger(loggerOpts)
   const logLevel = config.npm.levels[loggerOpts.level || 'info']
@@ -45,7 +46,7 @@ const setupLoggerErr = (app, middlewareOpts=noOpObj) => {
     /** Only log the metadata, if the log level is set to at least verbose */
     meta: Boolean(logLevel >= config.npm.levels.verbose),
     /** override options above with passed in options */
-    ...middlewareOpts,
+    ...(middlewareOpts || noOpObj),
   })
 
   app.use(errorLogger)
@@ -53,7 +54,3 @@ const setupLoggerErr = (app, middlewareOpts=noOpObj) => {
   return errorLogger
 }
 
-module.exports = {
-  setupLoggerReq,
-  setupLoggerErr
-}

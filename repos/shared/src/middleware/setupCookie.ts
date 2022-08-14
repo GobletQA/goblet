@@ -1,12 +1,13 @@
-const cookieSession = require('cookie-session')
-const { exists } = require('@keg-hub/jsutils')
+import type { Express } from 'express'
+import cookieSession from 'cookie-session'
+import { exists } from '@keg-hub/jsutils'
 
 /**
  * Sets up a cookie that will be stored client side
  * Will automatically expire at the end of a session or in 12hrs
  */
-const setupCookie = app => {
-  config = app.locals.config.server
+const setupCookie = (app:Express) => {
+  const config = app.locals.config.server
   const {
     key,
     name,

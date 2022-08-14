@@ -1,5 +1,6 @@
-const { getOrigin } = require('../utils/getOrigin')
-const { isDeployedEnv } = require('../utils/isDeployedEnv')
+import { getOrigin }from '../utils/getOrigin'
+import { isDeployedEnv }from '../utils/isDeployedEnv'
+import type { Express } from 'express'
 
 /**
  * Configures cors for the backend API and websocket
@@ -8,7 +9,7 @@ const { isDeployedEnv } = require('../utils/isDeployedEnv')
  *
  * @returns {void}
  */
-const setupCors = app => {
+export const setupCors = (app:Express) => {
   const config = app?.locals?.config?.server
   if (!app) throw new Error(`Error setting up Cors. Express app does not exist`)
   if(!config) throw new Error(`Error setting up Cors. Server config does not exist`)
@@ -41,8 +42,4 @@ const setupCors = app => {
 
     return req.method === 'OPTIONS' ? res.status(200).send('OK') : next()
   })
-}
-
-module.exports = {
-  setupCors,
 }

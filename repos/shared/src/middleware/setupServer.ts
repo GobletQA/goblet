@@ -1,13 +1,13 @@
-const express = require('express')
-const { getApp } = require('@GSH/App')
-const { AppRouter } = require('@GSH/Router')
-
+import express from 'express'
+import { getApp } from '@GSH/App'
+import { AppRouter } from '@GSH/Router'
+import type { Express } from 'express'
 
 /**
  * Adds json parsing middleware
  * Can cause issues when using a Proxy, so it's configured via a flag
  */
-const jsonParsing = (app) => {
+const jsonParsing = (app:Express) => {
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
 }
@@ -18,7 +18,7 @@ const jsonParsing = (app) => {
  *
  * @returns {void}
  */
-const setupServer = (app, addAppRouter=true, parseJson=true) => {
+export const setupServer = (app:Express, addAppRouter=true, parseJson=true) => {
   app = app || getApp()
 
   app.set('trust proxy', 1)
@@ -28,8 +28,4 @@ const setupServer = (app, addAppRouter=true, parseJson=true) => {
 
   // Add the express router to the app
   addAppRouter && app.use(AppRouter)
-}
-
-module.exports = {
-  setupServer,
 }

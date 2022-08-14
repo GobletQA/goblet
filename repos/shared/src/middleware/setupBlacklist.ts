@@ -1,16 +1,17 @@
-const fs = require('fs')
-const path = require('path')
-const { noOp } = require('@keg-hub/jsutils')
-const { getApp } = require('@GSH/App')
-const blacklist = require('express-blacklist')
-const expressDefend = require('express-defend')
-const { aliases } = require('@GConfigs/aliases.config')
+import fs from 'fs'
+import path from 'path'
+import { getApp } from '@GSH/App'
+import type { Express } from 'express'
+import { noOp } from '@keg-hub/jsutils'
+import blacklist from 'express-blacklist'
+import expressDefend from 'express-defend'
+import { aliases } from '@GConfigs/aliases.config'
 
 /**
  * Overwrite the default to allow passing a callback to fs.appendFile
  * Which fixes an error in the express-defend repo
  */
-expressDefend.fileAppender = (logFile, message) => fs.appendFile(logFile, message, noOp)
+expressDefend.fileAppender = (logFile:string, message:string) => fs.appendFile(logFile, message, noOp)
 
 /** Path to the logs directory */
 const logDir = aliases[`@GLogs`]
@@ -22,7 +23,7 @@ const logDir = aliases[`@GLogs`]
  * Sets up IP blocking via a blacklist
  * Attempts to track suspicious activity and then block that IP from access
  */
-const setupBlacklist = (app) => {
+export const setupBlacklist = (app:Express) => {
   app = app || getApp()
 
   app.use(blacklist.blockRequests(path.join(logDir, `blacklist.txt`)))
@@ -37,8 +38,4 @@ const setupBlacklist = (app) => {
     }
   }))
 
-}
-
-module.exports = {
-  setupBlacklist
 }

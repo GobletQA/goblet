@@ -24,7 +24,11 @@
       "@GSH": ["src"],
       "@GSHRoot": ["."],
       "@gobletqa/workflows": ["../workflows/src"],
-      "@gobletqa/workflows/*": ["../workflows/src/*"]
+      "@gobletqa/workflows/*": ["../workflows/src/*"],
+      "@GLogs/*": ["../../logs/*"],
+      "@GRepos/*": ["../../repos/*"],
+      "@GConfigs/*": ["../../configs/*"],
+      "@GEnvironment": ["../../scripts/environment"]
     }
   },
   "include": ["src/**/*"],

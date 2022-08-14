@@ -1,8 +1,11 @@
-const path = require('path')
-const express = require('express')
-const { getApp } = require('@GSH/App')
-const { GobletRoot } = require('@GSH/Paths')
-const { isArr, isObj, exists, isStr } = require('@keg-hub/jsutils')
+import path from 'path'
+import express from 'express'
+import { getApp } from '@GSH/App'
+import { aliases } from '@GConfigs/aliases.config'
+import { isArr, isObj, exists, isStr } from '@keg-hub/jsutils'
+import type { Express } from 'express'
+
+const { GobletRoot } = aliases
 
 /**
  * Configures middleware on the app to allow serving static paths based on the loc arg
@@ -13,7 +16,7 @@ const { isArr, isObj, exists, isStr } = require('@keg-hub/jsutils')
  *
  * @returns {void}
  */
-const addStaticPath = (app, name, loc) => {
+const addStaticPath = (app:Express, name:string, loc?:string) => {
   loc
     ? app.use(name, express.static(path.join(GobletRoot, loc)))
     : app.use(express.static(path.join(GobletRoot, name)))
@@ -25,7 +28,7 @@ const addStaticPath = (app, name, loc) => {
  *
  * @returns {void}
  */
-const setupStatic = app => {
+export const setupStatic = (app:Express) => {
   app = app || getApp()
   const config = app.locals.config
 
@@ -33,14 +36,14 @@ const setupStatic = app => {
   isStr(config.static)
     ? app.use(express.static(config.static))
     : isArr(config.static)
-    ? config.static.map(loc => addStaticPath(app, loc))
-    : isObj(config.static)
-    ? Object.entries(config.static).map(([name, loc]) =>
-        addStaticPath(app, name, loc)
-      )
-    : exists(config.static)
-    ? app.use(express.static(GobletRoot))
-    : false
+      ? config.static.map(loc => addStaticPath(app, loc))
+      : isObj(config.static)
+        ? Object.entries(config.static).map(([name, loc]) =>
+            addStaticPath(app, name, loc as string)
+          )
+        : exists(config.static)
+          ? app.use(express.static(GobletRoot))
+          : false
 
   // If nodeModules is explicitly set to true,
   // then the node_modules folder is served as a static path
@@ -50,8 +53,4 @@ const setupStatic = app => {
       '/node_modules',
       express.static(path.join(GobletRoot + './node_modules'))
     )
-}
-
-module.exports = {
-  setupStatic,
 }
