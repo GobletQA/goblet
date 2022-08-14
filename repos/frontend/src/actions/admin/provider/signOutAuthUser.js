@@ -17,6 +17,7 @@ const { auth } = getProviderMetadata()
  * @return {Void}
  */
 export const signOutAuthUser = async () => {
+  return undefined
 
   await localStorage.removeJwt()
   const currentUser = GitUser.getUser()
