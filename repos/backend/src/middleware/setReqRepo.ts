@@ -1,14 +1,15 @@
-const { getRepoGit } = require('../utils/getRepoGit')
-const { Repo } = require('@gobletqa/shared/repo/repo')
-const { asyncWrap } = require('@gobletqa/shared/express')
-const { AppRouter } = require('@gobletqa/shared/express/appRouter')
+import type { Express, Request, Response, NextFunction } from 'express'
+import { getRepoGit } from '../utils/getRepoGit'
+import { Repo } from '@gobletqa/shared/repo/repo'
+import { asyncWrap } from '@gobletqa/shared/express'
+import { AppRouter } from '@gobletqa/shared/express/appRouter'
 
 /**
  * Finds the currently active repo for the request
  * Then ensures it's loaded on the res.locals.repo property
  *
  */
-const findRepo = asyncWrap(async (req, res, next) => {
+const findRepo = asyncWrap(async (req:Request, res:Response, next:NextFunction) => {
   // If loading a report, we don't need to check repo status
   // Just try to load the report if it exists, so skip loading the repo
   if (req.originalUrl.startsWith(`/repo/${req.params.repo}/reports/`))
@@ -22,6 +23,7 @@ const findRepo = asyncWrap(async (req, res, next) => {
       `Endpoint requires a locally mounted path, I.E. /repo/:repo-name/*`
     )
 
+  // @ts-ignore
   const { iat, exp, ...user } = req.user
   const { repo } = await Repo.status(config, { ...repoGit, ...user })
 
@@ -36,10 +38,6 @@ const findRepo = asyncWrap(async (req, res, next) => {
  * Middleware to set the repo for each request
  * Ensures the repo instance can be loaded before processes the request
  */
-const setReqRepo = app => {
+export const setReqRepo = (app:Express) => {
   AppRouter.use('/repo/:repo/*', findRepo)
-}
-
-module.exports = {
-  setReqRepo,
 }

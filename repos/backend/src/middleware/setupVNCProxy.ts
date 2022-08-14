@@ -1,17 +1,17 @@
-const { get } = require('@keg-hub/jsutils')
-const { createProxyMiddleware } = require('http-proxy-middleware')
-const { stopScreencast, startScreencast } = require('@gobletqa/screencast/screencast')
+import type { Express, Request, Response } from 'express'
+import { createProxyMiddleware } from 'http-proxy-middleware'
+import { stopScreencast, startScreencast } from '@gobletqa/screencast/screencast'
 
 /**
  * Called when proxy throws an error and can not be connected to
  * This will restart the Screencast and the Browser
  */
-const onProxyError = app => {
-  return async (err, req, res, target) => {
+const onProxyError = (app:Express) => {
+  return async (err:Error, req:Request, res:Response, target:string) => {
     // If the screencast proxy errors
     // Try to restart it
     await stopScreencast()
-    await startScreencast({})
+    await startScreencast()
 
     // TODO: Add Logger
     res.end(`[SC-Error]: Screencast not running, restarting...`)
@@ -21,7 +21,7 @@ const onProxyError = app => {
 /**
  * Setup the novnc proxy to forward all requests to that server
  */
-const setupVNCProxy = app => {
+export const setupVNCProxy = (app:Express) => {
   const config = app.locals.config || {}
 
   const {
@@ -48,8 +48,4 @@ const setupVNCProxy = app => {
   app.use(wsProxy)
 
   return wsProxy
-}
-
-module.exports = {
-  setupVNCProxy,
 }

@@ -134,14 +134,14 @@ const restartScreencast = async params => {
  * @function
  * @public
  *
- * @param {Object} params
- * @param {Object} params.vnc - Config used when starting the vnc server
- * @param {Object} params.sockify - Config used when starting the websockify novnc server
- * @param {Object} params.playwright - Config used when starting the browser via playwright
+ * @param {Object} [params]
+ * @param {Object} [params.vnc] - Config used when starting the vnc server
+ * @param {Object} [params.sockify] - Config used when starting the websockify novnc server
+ * @param {Object} [params.playwright] - Config used when starting the browser via playwright
  *
  * @returns {Object} - Contains the browser, context, page, and child process of the servers
  */
-const startScreencast = async params => {
+const startScreencast = async (params=noOpObj) => {
   const {
     args,
     __internal,

@@ -6,15 +6,11 @@ const MULTI_LINE_MATCH = /\/\*(.*\n)*\*\//
  * Very simple comment stripper, that only gets rid of `//` and /* ... *\/
  * Does not cover all used cases, and most likely will fail on edge cases
  */
-const stripComments = str => {
+export const stripComments = (str:string) => {
   return str
     .trim()
     .split(NEWLINES_MATCH)
     .filter(line => !COMMENT_MATCH.test(line.trim()))
     .join(`\n`)
     .replace(MULTI_LINE_MATCH, '')
-}
-
-module.exports = {
-  stripComments,
 }

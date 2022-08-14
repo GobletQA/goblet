@@ -1,6 +1,6 @@
-const path = require('path')
-const { noOpObj } = require('@keg-hub/jsutils')
-const { getMountRootDir } = require('@gobletqa/shared/utils/getMountRootDir')
+import path from 'path'
+import { noOpObj } from '@keg-hub/jsutils'
+import { getMountRootDir } from '@gobletqa/shared/utils/getMountRootDir'
 /**
  * Checks if a path is in the reports folder
  * If it is, then build an ast object with the fileType
@@ -10,7 +10,11 @@ const { getMountRootDir } = require('@gobletqa/shared/utils/getMountRootDir')
  *
  * @returns {Object} - Reports ast || empty object
  */
-const resolveReportAst = (repo, fullPath, baseDir) => {
+export const resolveReportAst = (
+  repo:Record<any, any>,
+  fullPath:string,
+  baseDir:string
+) => {
   const { reportsDir } = repo.paths
   return fullPath.startsWith(path.join(baseDir, reportsDir))
     ? {
@@ -24,8 +28,4 @@ const resolveReportAst = (repo, fullPath, baseDir) => {
         },
       }
     : noOpObj
-}
-
-module.exports = {
-  resolveReportAst,
 }

@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken')
-const { generateTokens } = require('./generateTokens')
+import jwt from 'jsonwebtoken'
+import { generateTokens } from './generateTokens'
 
 /**
  * Validates the passed in refresh token, and if valid creates new JWT tokens
@@ -10,7 +10,11 @@ const { generateTokens } = require('./generateTokens')
  *
  * @returns {Object|boolean} - Returns new JWT tokens or false it token is invalid
  */
-const validateRefreshToken = (config, user, refreshToken) => {
+export const validateRefreshToken = (
+  config:Record<any, any>,
+  user:Record<any, any>,
+  refreshToken:string
+) => {
   const { refreshSecret } = config
 
   try {
@@ -25,8 +29,4 @@ const validateRefreshToken = (config, user, refreshToken) => {
   catch(err){
     return false
   }
-}
-
-module.exports = {
-  validateRefreshToken
 }

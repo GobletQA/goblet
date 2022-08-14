@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+import jwt from 'jsonwebtoken'
 
 /**
  * Validates the required authentication information exists
@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken')
  *
  * @returns {Object} - Returns new JWT tokens
  */
-const generateTokens = (config, data) => {
+export const generateTokens = (config:Record<any, any>, data:Record<any, any>) => {
   const {
     exp,
     secret,
@@ -29,8 +29,4 @@ const generateTokens = (config, data) => {
     jwt: jwt.sign(data, secret, { algorithm: algorithms[0], expiresIn: exp }),
     refresh: jwt.sign(refreshData, refreshSecret, { algorithm: algorithms[0], expiresIn: refreshExp }),
   }
-}
-
-module.exports = {
-  generateTokens,
 }

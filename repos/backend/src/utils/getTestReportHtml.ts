@@ -1,7 +1,7 @@
-const path = require('path')
-const { getFileContent } = require('@gobletqa/shared/utils/getFileContent')
-const { getMountRootDir } = require('@gobletqa/shared/utils/getMountRootDir')
-const { reportHeight } = require(`@gobletqa/shared/templates/reportHeight.template`)
+import path from 'path'
+import { getFileContent } from '@gobletqa/shared/utils/getFileContent'
+import { getMountRootDir } from '@gobletqa/shared/utils/getMountRootDir'
+import { reportHeight } from '@gobletqa/shared/templates/reportHeight.template'
 
 /**
  * Loads a report by it's name and fileType
@@ -13,7 +13,7 @@ const { reportHeight } = require(`@gobletqa/shared/templates/reportHeight.templa
  * @return {string} - Loaded report html or reports404 html if not found
  */
 // const getTestReportHtml = async (repo, fileType, reportName) => {
-const getTestReportHtml = async reportPath => {
+export const getTestReportHtml = async (reportPath:string) => {
   if (!reportPath) return undefined
 
   // Remove the path ext if it exists
@@ -28,8 +28,4 @@ const getTestReportHtml = async reportPath => {
   // Add the inject reportHeight template to the content
   // It allows setting the height of the IFramed report in the UI
   return content && `${content}${reportHeight}`
-}
-
-module.exports = {
-  getTestReportHtml,
 }
