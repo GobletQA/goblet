@@ -35,7 +35,7 @@ RUN turbo run build --filter=@gobletqa/screencast && \
 
 # ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
-WORKDIR /usr/src/goblet/app
+WORKDIR /goblet/app
 ENV HOME=/root \
     DISPLAY=:0.0 \
     DEBUG=pw:api* \
@@ -62,7 +62,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=goblet-builder /goblet/app/. .
 
-WORKDIR /usr/src/goblet/app/repos/screencast
+WORKDIR /goblet/app/repos/screencast
 ARG GB_SC_PORT=7006
 ENV GB_SC_PORT=$GB_SC_PORT
 EXPOSE $GB_SC_PORT
