@@ -45,7 +45,6 @@ export type TProxyConfig = {
   proxy: Options
   hashKey: string
   timeout: number
-  secret?: string
   rateLimit: number
   logLevel: TLogLevel
   proxyRouter:(req:Request) => Record<any, any>|string

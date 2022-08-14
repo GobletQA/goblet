@@ -89,10 +89,14 @@ const getDeploymentOpts = (env, envs) => {
 
       if (!deployVal || !ref) return acc
 
+      const prefix = `${__PRE}${ref.toUpperCase()}`
+
       acc.deployments[short] = deployVal
-      acc.volumes[ref] = `${__PRE}${ref.toUpperCase()}_DOC_VOLUMES`
-      acc.activeMap[deployVal] = `${__PRE}${ref.toUpperCase()}_ACTIVE`
+      acc.activeMap[deployVal] = `${prefix}_ACTIVE`
       acc.labelSelectors[ref] = `app.kubernetes.io/component=${deployVal}`
+
+      const volEnv = `${prefix}_DOC_VOLUMES`
+      envs[volEnv] && (acc.volumes[ref] = volEnv)
 
       return acc
     },

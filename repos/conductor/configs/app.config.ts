@@ -29,9 +29,6 @@ const containerEnvs = inDocker()
     }), removeEnvs)
 
 export const appConfig:TConductorOpts = {
-  proxy: {
-    secret: `c8da1644628fdfecf45bc26d79e242036ec65d3f34a6daf3981ae818da22cda0`
-  },
   controller: {
     type: 'Docker'
   },

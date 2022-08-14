@@ -31,7 +31,6 @@ const {
   GB_CD_PIDS_LIMIT,
   GB_CD_RATE_LIMIT,
   GB_CD_DOC_VOLUMES,
-  GB_CD_SERVER_SECRET,
   GOBLET_DIND_SERVICE_HOST,
   GOBLET_DIND_SERVICE_PORT,
   
@@ -73,7 +72,6 @@ export const conductorConfig:TConductorConfig = {
   proxy: {
     host: GB_CD_HOST,
     hashKey: GB_CD_HASH_KEY,
-    secret: GB_CD_SERVER_SECRET,
     logLevel: GB_CD_LOG_LEVEL,
     timeout: (toNum(GB_CD_TIMEOUT) || 5000) as number,
     rateLimit: (toNum(GB_CD_RATE_LIMIT) || 5000) as number,

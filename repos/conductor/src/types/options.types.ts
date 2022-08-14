@@ -20,7 +20,6 @@ export type TControllerOpts = {
 export type TProxyOpts = {
   host?: string
   timeout?: number
-  secret?: string
   rateLimit?: number
   logLevel?: TLogLevel
   port?: string | number
