@@ -25,8 +25,14 @@ module.exports = {
     example: 'yarn task deploy <options>',
     description: 'Calls the yarn devspace deploy command',
     options: {
-      config: {
-        description: 'Optional filepath for yaml file',
+      context: {
+        type: 'array',
+        example: `--context app1,app2`,
+        alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+        description: `Contexts or names of apps to be deployed`,
+      },
+      devspace: {
+        description: 'Optional filepath for devspace.yaml file',
       },
       log: {
         type: 'boolean',

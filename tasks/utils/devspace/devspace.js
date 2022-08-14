@@ -33,7 +33,7 @@ const addDefaultArgs = async (cmd, params) => {
 
   const defArgs = [
     `--config`,
-    getConfigPath(params.config),
+    getConfigPath(params),
     `--profile`,
     params.profile || params.env,
   ]

@@ -75,6 +75,15 @@ module.exports = {
     action: status,
     example: 'yarn task devspace status <options>',
     description: 'Gets the current status of host environment',
-    options: {},
+    options: {
+      context: {
+        example: `--context proxy`,
+        alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+        description: `Context or name of devspace to get the status of`,
+      },
+      devspace: {
+        description: 'Optional filepath for devspace.yaml file',
+      },
+    },
   },
 }

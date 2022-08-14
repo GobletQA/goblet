@@ -25,12 +25,12 @@ module.exports = {
     description: 'Calls the yarn devspace enter command to attach to the running pod',
     options: {
       context: {
-        default: `backend`,
-        alias: ['name', 'selector'],
-        description: 'Context for the task being run relative to the devspace pods',
+        example: `--context app`,
+        alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+        description: 'Name of the running app to attach to relative to devspace deployments',
       },
-      config: {
-        description: 'Optional filepath for yaml file',
+      devspace: {
+        description: 'Optional filepath for devspace.yaml file',
       },
       log: {
         type: 'boolean',

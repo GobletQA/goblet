@@ -91,7 +91,7 @@ const start = async (args) => {
   const deployments = getDeployments(context, skip, params.env)
 
   getNpmToken()
-  return await devspace.start({ ...altParams, deployments }, { daemon, watch })
+  return await devspace.start({ ...altParams, context, deployments }, { daemon, watch })
 }
 
 module.exports = {
@@ -103,8 +103,8 @@ module.exports = {
     options: {
       context: {
         type: 'array',
-        example: `--context proxy`,
-        alias: ['ctx', `name`, `type`, 'deployment', 'deploy'],
+        example: `--context app1,app2`,
+        alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
         description: `Contexts or names of apps to be started`,
       },
       skip: {
@@ -113,8 +113,8 @@ module.exports = {
         example: `--skip proxy`,
         description: `Contexts or names of apps NOT to be started`,
       },
-      config: {
-        description: 'Optional filepath for yaml file',
+      devspace: {
+        description: 'Optional filepath for devspace.yaml file',
       },
       build: {
         default: false,

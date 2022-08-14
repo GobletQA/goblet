@@ -50,6 +50,12 @@ vars:
 - name: GB_VNC_SERVER_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_VNC_SERVER_PORT"
+- name: GB_SC_INGRESS_HOST
+  source: command
+  command: "node ../scripts/js/resolveIngress.js SC"
+- name: GB_SC_INGRESS_HOST_WILD_CARD
+  source: command
+  command: "node ../scripts/js/resolveIngress.js SC \"*\""
 
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
@@ -76,9 +82,9 @@ images:
             NPM_TOKEN: ${NPM_TOKEN}
 
 # The `deployments` section tells devspace how to deploy this project into the cluster
-deployments: 
+deployments:
 
-# ----- Backend API Deployment ----- #
+# ----- Screencast API Deployment ----- #
 - name: ${GB_SC_DEPLOYMENT}
   helm:
     chart:
@@ -96,13 +102,20 @@ deployments:
         name: ${GB_SC_DEPLOYMENT}
         ports:
         - port: ${GB_SC_PORT}
+        - port: ${GB_VNC_SERVER_PORT}
       ingress:
         name: ${GB_SC_DEPLOYMENT}-ingress
         rules:
-        - host: $(node ../scripts/js/resolveIngress.js SC)
+        - host: ${GB_SC_INGRESS_HOST}
           serviceName: ${GB_SC_DEPLOYMENT}
           servicePort: ${GB_SC_PORT}
-        - host: $(node ../scripts/js/resolveIngress.js SC "*")
+        - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
+          serviceName: ${GB_SC_DEPLOYMENT}
+          servicePort: ${GB_SC_PORT}
+        - host: ${GB_SC_INGRESS_HOST}
+          serviceName: ${GB_SC_DEPLOYMENT}
+          servicePort: ${GB_VNC_SERVER_PORT}
+        - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
           serviceName: ${GB_SC_DEPLOYMENT}
           servicePort: ${GB_VNC_SERVER_PORT}
 
@@ -139,12 +152,11 @@ dev:
   - labelSelector:
       app.kubernetes.io/component: ${GB_SC_DEPLOYMENT}
     forward:
-    - port: ${port}
+    - port: ${GB_SC_PORT}
   - labelSelector:
       app.kubernetes.io/component: ${GB_SC_DEPLOYMENT}
     forward:
-    - port: ${port}
-
+    - port: ${GB_VNC_SERVER_PORT}
 
 # Use profile to dynamically switch out the app specific docker image for the development image
 profiles:

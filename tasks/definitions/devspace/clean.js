@@ -47,8 +47,8 @@ module.exports = {
         example: `--skip proxy`,
         description: `Contexts or names of apps NOT to be cleaned`,
       },
-      config: {
-        description: 'Optional filepath for yaml file',
+      devspace: {
+        description: 'Optional filepath for devspace.yaml file',
       },
       dependencies: {
         alias: ['deps'],

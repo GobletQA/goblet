@@ -1,6 +1,8 @@
 const { homeDir, appRoot } = require('../../paths')
 const { getVolumeContext } = require('../helpers/contexts')
 const { ensureArr, flatUnion } = require('@keg-hub/jsutils')
+const { resolveLocalPath } = require('../helpers/resolveLocalPath')
+
 
 /**
  * Merges the passed in param volumes with the env defined volumes 
@@ -26,13 +28,7 @@ const resolveVols = ({ volumes, env }, docFileCtx) => {
 const checkLocalPath = (vol) => {
   const [local, ...rest] = vol.split(`:`)
 
-  const source = local.startsWith(`~`)
-    ? local.replace(`~`, homeDir) 
-    : local === `.`
-      ? appRoot
-      : local.startsWith(`./`)
-        ? local.replace(`./`, `${appRoot}/`)
-        : local
+  const source = resolveLocalPath(local)
 
   return `${source}:${rest.join(`:`)}`
 }

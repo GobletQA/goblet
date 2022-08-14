@@ -16,7 +16,7 @@ const { devspace } = require('../../utils/devspace/devspace')
 const run = async ({ params }) => {
   /**
    * Devspace requires the command be run from the same dir as the devspace.yml file
-   * Seems to be a bug, but it's the only way it works even with the --config path set
+   * Seems to be a bug, but it's the only way it works even with the devspace --config argument set
    */
   return await devspace.run({ ...params, cwd: containerDir })
 }
@@ -34,8 +34,13 @@ module.exports = {
         alias: ['context', 'command'],
         description: 'Name of the command to be run from the container/devspace.yml file',
       },
-      config: {
-        description: 'Optional filepath for yaml file',
+      context: {
+        example: `--context app`,
+        alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+        description: `Context or name of devspace app to be run`,
+      },
+      devspace: {
+        description: 'Optional filepath for devspace.yaml file',
       },
       log: {
         type: 'boolean',

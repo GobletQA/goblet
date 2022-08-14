@@ -25,7 +25,8 @@ module.exports = {
     options: {
       context: {
         required: true,
-        alias: ['name', 'selector'],
+        example: `--context app`,
+        alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
         description: 'Context for the task being run relative to the devspace pods',
       },
       log: {

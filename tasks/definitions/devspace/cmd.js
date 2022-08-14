@@ -38,6 +38,15 @@ module.exports = {
     action: command,
     example: 'yarn dev <cmd> <options>',
     description: 'Calls the devspace command',
-    options: {},
+    options: {
+      context: {
+        example: `--context app`,
+        alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+        description: `Context or name of devspace app that has a corresponding devspace config`,
+      },
+      devspace: {
+        description: 'Optional filepath for devspace.yaml file',
+      },
+    },
   },
 }

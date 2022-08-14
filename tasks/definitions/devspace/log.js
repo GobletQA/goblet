@@ -25,9 +25,9 @@ module.exports = {
     description: 'Calls the yarn devspace log command',
     options: {
       context: {
-        default: `backend`,
-        alias: ['name', 'selector'],
-        description: 'Context for the task being run relative to the devspace pods',
+        example: `--context app`,
+        alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+        description: 'Name of the app to be log relative to devspace deployments',
       },
       follow: {
         default: true,
@@ -35,8 +35,8 @@ module.exports = {
         alias: ['fl', 'watch'],
         description: 'Follow the logs in realtime',
       },
-      config: {
-        description: 'Optional filepath for yaml file',
+      devspace: {
+        description: 'Optional filepath for devspace.yaml file',
       },
     },
   },
