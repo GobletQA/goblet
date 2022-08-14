@@ -97,7 +97,7 @@ deployments:
       containers:
       - image: ${GB_SC_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
-        env: $(node ../scripts/js/resolveDSEnvs.js backend)
+        env: $(node ../scripts/js/resolveDSEnvs.js screencast)
       service:
         name: ${GB_SC_DEPLOYMENT}
         ports:

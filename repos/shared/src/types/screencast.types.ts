@@ -1,4 +1,18 @@
 
+export type TChildProcArgs = {
+  cwd: string
+  args: string[]
+  env: Record<string, any>
+  options: Record<string, any>
+}
+
+export type TSSLCreds = {
+  ca: string
+  key: string
+  cert: string
+}
+
+
 export type TScreenDims = {
   width: number,
   height: number,

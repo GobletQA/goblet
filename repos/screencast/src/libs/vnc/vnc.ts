@@ -1,16 +1,19 @@
-#!/usr/bin/env node
-require('../../../resolveRoot')
-const { Logger } = require('@keg-hub/cli-utils')
-const { findProc, killProc } = require('@GSC/libs/proc')
-const { create: childProc } = require('@keg-hub/spawn-cmd/src/childProcess')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
-const {
+import type { TChildProcArgs } from '@GSC/types'
+
+import { Logger }from '@keg-hub/cli-utils'
+import { findProc, killProc }from '@GSC/libs/proc'
+import { screencastConfig } from '@GSC/Configs/screencast.config'
+import { getGobletConfig }from '@gobletqa/shared/utils/getGobletConfig'
+import { create as childProc }from '@keg-hub/spawn-cmd/src/childProcess'
+import {
   limbo,
   noOpObj,
   deepMerge,
   flatUnion,
   noPropArr,
-} = require('@keg-hub/jsutils')
+} from '@keg-hub/jsutils'
+
+const defVncArgs = noOpObj as TChildProcArgs
 
 /**
  * Cache holder for the tigervnc process
@@ -33,12 +36,12 @@ const {
  *
  * @returns {Object} - Child process running tigervnc
  */
-const startVNC = async ({
-  args = noPropArr,
+export const startVNC = async ({
   cwd,
-  options = noOpObj,
   env = noOpObj,
-}=noOpObj) => {
+  args = noPropArr,
+  options = noOpObj,
+}:TChildProcArgs=defVncArgs) => {
   const status = await statusVNC()
 
   if (status.pid) {
@@ -48,9 +51,9 @@ const startVNC = async ({
 
   Logger.log(`- Starting tigervnc server...`)
   const config = getGobletConfig()
-  const { vnc } = config.screencast
+  const { vnc } = screencastConfig.screencast
 
-  return await childProc({
+  const resp =await childProc({
     log: true,
     cmd: 'Xtigervnc',
     args: flatUnion(
@@ -88,6 +91,13 @@ const startVNC = async ({
       { env }
     ),
   })
+  
+  Logger.log(`\nTigerVnc server settings:`)
+  Logger.log(`  - Listen on ${vnc.host}:${vnc.port}`)
+  Logger.log(`  - Display ${vnc.display}`)
+  Logger.log(`  - Dimensions ${vnc.width}x${vnc.height}x24`)
+
+  return resp
 }
 
 /**
@@ -96,7 +106,7 @@ const startVNC = async ({
  *
  * @return {Void}
  */
-const stopVNC = async () => {
+export const stopVNC = async () => {
   const status = await statusVNC()
   status && status.pid && killProc(status)
 }
@@ -106,13 +116,7 @@ const stopVNC = async () => {
  *
  * @returns {Object} - Status of the tiger vnc process
  */
-const statusVNC = async () => {
+export const statusVNC = async () => {
   const [_, status] = await limbo(findProc('Xtigervnc'))
   return status
-}
-
-module.exports = {
-  statusVNC,
-  startVNC,
-  stopVNC,
 }

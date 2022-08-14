@@ -1,3 +1,4 @@
+require('./resolveRoot')
 const { startVNC } = require('@GSC/libs/vnc/vnc')
 const { startSockify } = require('@GSC/libs/vnc/sockify')
 const { noOpObj } = require('@keg-hub/jsutils')

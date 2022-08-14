@@ -1,18 +1,20 @@
-#!/usr/bin/env node
-require('../../../resolveRoot')
-const fs = require('fs')
-const { Logger } = require('@keg-hub/cli-utils')
-const { findProc, killProc } = require('@GSC/libs/proc')
-const { create: childProc } = require('@keg-hub/spawn-cmd/src/childProcess')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
-const {
+import type { TSSLCreds, TChildProcArgs } from '@GSC/types'
+import fs from 'fs'
+import { Logger } from '@keg-hub/cli-utils'
+import { findProc, killProc } from '@GSC/libs/proc'
+import { screencastConfig } from '@GSC/Configs/screencast.config'
+import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
+import { create as childProc } from '@keg-hub/spawn-cmd/src/childProcess'
+import {
   limbo,
   noOpObj,
   deepMerge,
   flatUnion,
   noPropArr,
-} = require('@keg-hub/jsutils')
+} from '@keg-hub/jsutils'
 
+
+const defSockArgs = noOpObj as TChildProcArgs
 
 /**
  * Starts websockify to allow loading VNC in the browser
@@ -27,15 +29,15 @@ const {
  * websockify -v --web /usr/share/novnc 0.0.0.0:26369 0.0.0.0:26370
  * @returns {Object} - Child process running websockify
  */
-const startSockify = async ({
-  args = noPropArr,
+export const startSockify = async ({
   cwd,
-  options = noOpObj,
   env = noOpObj,
-}) => {
-  const config = getGobletConfig()
-  const { novnc, vnc } = config.screencast
+  args = noPropArr,
+  options = noOpObj,
+}:TChildProcArgs=defSockArgs) => {
 
+  const config = getGobletConfig()
+  const { novnc, vnc } = screencastConfig.screencast
   const status = await statusSockify()
 
   if (status.pid) {
@@ -43,7 +45,7 @@ const startSockify = async ({
     return status
   }
 
-  const creds = {
+  const creds:TSSLCreds = {
     key: process.env.GB_SSL_KEY,
     cert: process.env.GB_SSL_CERT,
     ca: process.env.GB_SSL_CA,
@@ -53,7 +55,7 @@ const startSockify = async ({
     fs.existsSync(loc) && (conf[key] = creds[key])
 
     return conf
-  }, {})
+  }, {} as TSSLCreds)
 
   const wssArgs = credentials.cert && credentials.key
     ? [`--cert=${credentials.cert}`, `--key=${credentials.key}`]
@@ -95,7 +97,7 @@ const startSockify = async ({
  *
  * @return {Void}
  */
-const stopSockify = async () => {
+export const stopSockify = async () => {
   const status = await statusSockify()
   status && status.pid && killProc(status)
 }
@@ -105,13 +107,8 @@ const stopSockify = async () => {
  *
  * @returns {Object} - Status of the tiger vnc process
  */
-const statusSockify = async () => {
+export const statusSockify = async () => {
   const [_, status] = await limbo(findProc('websockify'))
   return status
 }
 
-module.exports = {
-  statusSockify,
-  startSockify,
-  stopSockify,
-}
