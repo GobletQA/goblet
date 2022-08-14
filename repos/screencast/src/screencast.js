@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 require('../resolveRoot')
 const { Logger } = require('@keg-hub/cli-utils')
-const { checkArgs } = require('@GSC/Libs/utils/checkArgs')
-const { daemonize } = require('@GSC/Libs/utils/daemonize')
+const { checkArgs } = require('@GSC/libs/utils/checkArgs')
+const { daemonize } = require('@GSC/libs/utils/daemonize')
 const { noOpObj, exists, wait, get } = require('@keg-hub/jsutils')
 const {
   stopServer,
   statusServer,
   statusBrowser,
-} = require('@GSC/Playwright')
+} = require('@GSC/libs/playwright')
 const {
   stopVNC,
   startVNC,
@@ -16,7 +16,7 @@ const {
   stopSockify,
   startSockify,
   statusSockify,
-} = require('@GSC/Libs/vnc')
+} = require('@GSC/libs/vnc')
 
 /**
  * Helper method to get the PId of the screencast servers

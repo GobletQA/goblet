@@ -1,5 +1,5 @@
 import { toNum, noOpObj } from '@keg-hub/jsutils'
-import type { Response, Request } from 'express'
+import type { Response } from 'express'
 
 /**
  * Api response helper called by all json api endpoints

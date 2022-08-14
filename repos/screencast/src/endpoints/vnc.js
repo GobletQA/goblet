@@ -7,7 +7,7 @@ const {
   stopSockify,
   startSockify,
   statusSockify,
-} = require('@GSC/Libs/vnc')
+} = require('@GSC/libs/vnc')
 
 const vncStatus = asyncWrap(async (req, res) => {
   const status = await statusVNC()

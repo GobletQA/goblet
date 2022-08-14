@@ -8,7 +8,7 @@ const {
   actionBrowser,
   statusBrowser,
   restartBrowser,
-} = require('@GSC/Playwright')
+} = require('@GSC/libs/playwright')
 
 /**
  * Starts a Playwright Browser using the passed in params as launch options

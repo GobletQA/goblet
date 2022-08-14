@@ -1,3 +1,4 @@
+import type { Request, Response } from 'express'
 import { apiErr } from './apiErr'
 import { isFunc } from '@keg-hub/jsutils'
 
@@ -11,10 +12,10 @@ import { isFunc } from '@keg-hub/jsutils'
  */
 export const asyncWrap = (
   handler: (...args:any) => any,
-  errHandler=apiErr
-) => (async (...args) => {
+  errHandler:(...args:any) => any=apiErr
+) => (async (req:Request, res:Response, ...args:any[]) => {
   try {
-    await handler(...args)
+    await handler(req, res, ...args)
   }
   catch (err) {
     // @ts-ignore
@@ -22,7 +23,7 @@ export const asyncWrap = (
     const errMethod = wrapErrHandler || errHandler || args[2]
 
     isFunc(errMethod) &&
-      errMethod(err, err.status || err.statusCode || 400, ...args)
+      errMethod(res, err, err.status || err.statusCode || 400, ...args)
   }
 })
 

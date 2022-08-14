@@ -5,8 +5,4 @@ const express = require('express')
  * @type {Object}
  * @public
  */
-const AppRouter = express.Router()
-
-module.exports = {
-  AppRouter,
-}
+export const AppRouter = express.Router()

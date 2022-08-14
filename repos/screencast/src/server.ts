@@ -1,4 +1,4 @@
-import apiEndpoints from '@GSC/Endpoints'
+import apiEndpoints from '@GSC/endpoints'
 import { getApp } from '@gobletqa/shared/express/app'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'

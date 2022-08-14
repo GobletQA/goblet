@@ -1,4 +1,4 @@
-const { browserNames } = require('@GSC/Constants')
+const { browserNames } = require('@GSC/constants')
 const { findProc } = require('../../proc/findProc')
 const { limbo, exists } = require('@keg-hub/jsutils')
 

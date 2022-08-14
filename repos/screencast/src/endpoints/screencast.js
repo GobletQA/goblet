@@ -5,7 +5,7 @@ const {
   stopScreencast,
   startScreencast,
   statusScreencast,
-} = require('@GSC/Screencast')
+} = require('@GSC/screencast')
 
 /**
  * Endpoint to get the current status  of the browser
