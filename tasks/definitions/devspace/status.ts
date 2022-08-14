@@ -1,7 +1,7 @@
-const { get } = require('@keg-hub/jsutils')
-const { Logger } = require('@keg-hub/cli-utils')
-const { pm2Status } = require('../../utils/process/command')
-const { devspace } = require('../../utils/devspace/devspace')
+import { get } from '@keg-hub/jsutils'
+import { Logger } from '@keg-hub/cli-utils'
+import { pm2Status } from '../../utils/process/command'
+import { devspace } from '../../utils/devspace/devspace'
 
 const STOPPED = Logger.colors.red(`Stopped`)
 const RUNNING = Logger.colors.green(`Running`)
@@ -52,7 +52,7 @@ const getDevspaceStatus = async (params) => {
  *
  * @returns {void}
  */
-const status = async ({ params }) => {
+const statusAct = async ({ params }) => {
   const status = {
     ...(await getDevspaceStatus(params)),
     ...(await getPm2Status()),
@@ -69,21 +69,19 @@ const status = async ({ params }) => {
   Logger.empty()
 }
 
-module.exports = {
-  status: {
-    name: 'status',
-    action: status,
-    example: 'yarn task devspace status <options>',
-    description: 'Gets the current status of host environment',
-    options: {
-      context: {
-        example: `--context proxy`,
-        alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
-        description: `Context or name of devspace to get the status of`,
-      },
-      devspace: {
-        description: 'Optional filepath for devspace.yaml file',
-      },
+export const status = {
+  name: 'status',
+  action: statusAct,
+  example: 'yarn task devspace status <options>',
+  description: 'Gets the current status of host environment',
+  options: {
+    context: {
+      example: `--context proxy`,
+      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+      description: `Context or name of devspace to get the status of`,
+    },
+    devspace: {
+      description: 'Optional filepath for devspace.yaml file',
     },
   },
 }

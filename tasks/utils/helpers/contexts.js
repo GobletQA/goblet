@@ -117,7 +117,7 @@ const getDeploymentOpts = (env, envs) => {
 /**
  * Returns the long context relative to the passed in context
  * @param {string} context - Context reference
- * @param {string} fallback - Context value to use if not found
+ * @param {string} [fallback] - Context value to use if not found
  *
  * @returns {Object} Long context name or fallback
  */

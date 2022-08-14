@@ -1,7 +1,7 @@
-const { getNpmToken } = require('../../utils/envs')
-const { error } = require('@keg-hub/cli-utils')
-const { devspace } = require('../../utils/devspace/devspace')
-const { setDeploymentEnvs } = require('../../utils/envs/setDeploymentEnvs')
+import { error } from '@keg-hub/cli-utils'
+import { getNpmToken } from '../../utils/envs'
+import { devspace } from '../../utils/devspace/devspace'
+import { setDeploymentEnvs } from '../../utils/envs/setDeploymentEnvs'
 
 /**
  * General devspace command the forwards the first argument on to the devspace executable
@@ -15,7 +15,7 @@ const { setDeploymentEnvs } = require('../../utils/envs/setDeploymentEnvs')
  *
  * @returns {void}
  */
-const command = async ({ task, params }) => {
+const commandAct = async ({ task, params }) => {
   const cmd = process.argv.slice(3).shift()
 
   !task.alias.includes(cmd) &&
@@ -31,22 +31,20 @@ const command = async ({ task, params }) => {
   return await devspace([cmd, `--debug`], params)
 }
 
-module.exports = {
-  cmd: {
-    name: 'cmd',
-    alias: ['analyze', 'render', 'print', 'ui'],
-    action: command,
-    example: 'yarn dev <cmd> <options>',
-    description: 'Calls the devspace command',
-    options: {
-      context: {
-        example: `--context app`,
-        alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
-        description: `Context or name of devspace app that has a corresponding devspace config`,
-      },
-      devspace: {
-        description: 'Optional filepath for devspace.yaml file',
-      },
+export const cmd = {
+  name: 'cmd',
+  alias: ['analyze', 'render', 'print', 'ui'],
+  action: commandAct,
+  example: 'yarn dev <cmd> <options>',
+  description: 'Calls the devspace command',
+  options: {
+    context: {
+      example: `--context app`,
+      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+      description: `Context or name of devspace app that has a corresponding devspace config`,
+    },
+    devspace: {
+      description: 'Optional filepath for devspace.yaml file',
     },
   },
 }
