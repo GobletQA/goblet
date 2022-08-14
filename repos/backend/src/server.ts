@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 import '../resolveRoot'
 import type { Express } from 'express'
-import apiEndpoints from '@GBE/endpoints'
 import { initSockr } from '@GBE/services/sockr'
 import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
-  setReqRepo,
   setupVNCProxy,
+  setupEndpoints,
   setupConductorProxy,
 } from '@GBE/middleware'
 import {
@@ -41,8 +40,7 @@ export const initApi = async () => {
   setupStatic(app)
   validateUser(app, `/repo\/*`)
   await setupConductorProxy(app)
-  setReqRepo(app)
-  apiEndpoints(app)
+  await setupEndpoints()
   setupLoggerErr(app)
 
   const wsProxy = setupVNCProxy(app)

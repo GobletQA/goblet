@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { Repo } from '@gobletqa/shared/repo/repo'
 import { asyncWrap, apiRes } from '@gobletqa/shared/express'
+import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
 
 /**
@@ -52,3 +53,6 @@ export const statusRepo = asyncWrap(async (req:Request, res:Response) => {
 
   return apiRes(res, repoContent)
 })
+
+
+AppRouter.get('/repo/status', statusRepo)

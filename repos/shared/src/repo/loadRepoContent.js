@@ -11,7 +11,7 @@ const { fileModelArrayToObj } = require('@GSH/utils/fileModelArrayToObj')
  *
  * @param {Object} repo - Repo Class Instance
  * @param {Object} config - Goblet config object for the repo class instance
- * @param {Object} status - status response object from the statusGoblet workflow
+ * @param {Object} [status] - status response object from the statusGoblet workflow
  *
  * @returns {Object} - Repo file content object
  */

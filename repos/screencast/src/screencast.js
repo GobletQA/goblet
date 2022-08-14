@@ -52,6 +52,7 @@ const stopScreencast = async () => {
   await stopVNC()
 
   Logger.info(`[ ScreenCast ] Processes have been terminated!\n`)
+
 }
 
 /**

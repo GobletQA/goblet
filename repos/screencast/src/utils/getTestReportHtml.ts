@@ -12,7 +12,6 @@ import { reportHeight } from '@gobletqa/shared/templates/reportHeight.template'
  *
  * @return {string} - Loaded report html or reports404 html if not found
  */
-// const getTestReportHtml = async (repo, fileType, reportName) => {
 export const getTestReportHtml = async (reportPath:string) => {
   if (!reportPath) return undefined
 

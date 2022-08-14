@@ -10,7 +10,7 @@ import { buildLogger } from '../utils/buildLogger'
  *
  * @return {void}
  */
-export const setupLoggerReq = (app:Express, middlewareOpts:Record<any, any>) => {
+export const setupLoggerReq = (app:Express, middlewareOpts?:Record<any, any>) => {
   const loggerOpts = app.locals.config.logger || noOpObj
   const logger = buildLogger(loggerOpts)
   const logLevel = config.npm.levels[loggerOpts.level || 'info']
@@ -36,7 +36,7 @@ export const setupLoggerReq = (app:Express, middlewareOpts:Record<any, any>) => 
  *
  * @return {void}
  */
-export const setupLoggerErr = (app:Express, middlewareOpts:Record<any, any>) => {
+export const setupLoggerErr = (app:Express, middlewareOpts?:Record<any, any>) => {
   const loggerOpts = app.locals.config.logger || noOpObj
   const logger = buildLogger(loggerOpts)
   const logLevel = config.npm.levels[loggerOpts.level || 'info']

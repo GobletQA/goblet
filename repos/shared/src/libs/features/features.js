@@ -146,11 +146,10 @@ const parseFeatures = (repo, featureFiles, featuresDir) => {
  * @function
  * @export
  * @param {Object} config - Goblet Config object
- * @param {Array<Object>} definitions - Loaded definitions
  *
  * @returns {Promise<Array<string>>} - Group of parsed feature files as FileModel objects
  */
-const loadFeatures = async (repo, definitions) => {
+const loadFeatures = async (repo) => {
   const { featuresDir, repoRoot } = repo.paths
   if (!featuresDir || !repoRoot)
     throw new Error(

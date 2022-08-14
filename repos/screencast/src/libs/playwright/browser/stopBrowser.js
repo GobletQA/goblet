@@ -11,9 +11,9 @@ const { getBrowser, closeBrowser, setBrowser } = require('./browser')
  * @public
  *
  * @param {Object} browserConf - Config for a Playwright browser
- * @param {string} type - Playwright browser type ( chromium | firefox | webkit )
+ * @param {string} [type] - Playwright browser type ( chromium | firefox | webkit )
  *
- * @return {Void}
+ * @return {Object} - Browser status object
  */
 const stopBrowser = async (browserConf = noOpObj, type) => {
   type = type || browserConf.type

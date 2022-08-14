@@ -19,7 +19,7 @@ const {
 
 /**
  * Starts tigervnc to allow loading VNC in the browser
- * @param {Object} args - options for setting up tigervnc
+ * @param {Object} [args] - options for setting up tigervnc
  * @param {Array} args.args - Arguments to pass to the Xtigervnc command
  * @param {Array} args.cwd - Location where the command should be run
  * @param {Array} args.env - Extra environment variables to pass
@@ -38,7 +38,7 @@ const startVNC = async ({
   cwd,
   options = noOpObj,
   env = noOpObj,
-}) => {
+}=noOpObj) => {
   const status = await statusVNC()
 
   if (status.pid) {

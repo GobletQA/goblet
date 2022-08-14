@@ -1,3 +1,3 @@
-export * from './setReqRepo'
 export * from './setupVNCProxy'
+export * from './setupEndpoints'
 export * from './setupConductorProxy'

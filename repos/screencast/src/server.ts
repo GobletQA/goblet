@@ -1,8 +1,9 @@
-import apiEndpoints from '@GSC/endpoints'
+import { setupEndpoints } from '@GSC/middleware'
 import { getApp } from '@gobletqa/shared/express/app'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
+  setupRepo,
   setupCors,
   setupServer,
   setupLoggerReq,
@@ -28,7 +29,8 @@ const initApi = async () => {
   setupCors(app)
   setupServer(app)
   validateUser(app, `/screencast\/*`)
-  apiEndpoints(app)
+  setupRepo(app)
+  await setupEndpoints()
   setupLoggerErr(app)
 
   const {
