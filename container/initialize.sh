@@ -33,7 +33,7 @@ if [ "$GB_SUB_REPO" ]; then
     yarn vnc:start >> /proc/1/fd/1 &
   fi
 
-  cd repos/$GB_SUB_REPO
+  cd /goblet/app/repos/$GB_SUB_REPO
   yarn start >> /proc/1/fd/1 &
   # Tail /dev/null to keep the container running
   tail -f /dev/null && exit 0;

@@ -119,7 +119,7 @@ devspace.logs = async (params = noOpObj) => {
  * @returns {Promise<*>} - Response from the devspace command
  */
 devspace.purge = async (params = noOpObj) => {
-  const { context, skip, ...cmdParams } = params
+  const { skip, ...cmdParams } = params
 
   const cmdArgs = []
   params.dependencies && cmdArgs.push(`--all`)
@@ -127,7 +127,7 @@ devspace.purge = async (params = noOpObj) => {
   /**
    * Check the context and skip arrays for which apps to deploy
    */
-  const deployments = getDeployments(context, skip, params.env)
+  const deployments = getDeployments(cmdParams.context, skip, params.env)
   deployments && cmdArgs.push(`--deployments`, deployments)
 
   return await devspace([`purge`, ...cmdArgs], cmdParams)
