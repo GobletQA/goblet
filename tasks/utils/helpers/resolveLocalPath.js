@@ -1,3 +1,4 @@
+const path = require('path')
 const { homeDir, appRoot } = require('../../paths')
 
 /**
@@ -8,12 +9,12 @@ const { homeDir, appRoot } = require('../../paths')
  */
 const resolveLocalPath = (location) => {
   return location.startsWith(`~`)
-    ? location.replace(`~`, homeDir) 
+    ? path.resolve(path.join(homeDir, location.replace(`~`, '')))
     : location === `.`
       ? appRoot
       : location.startsWith(`./`)
-        ? location.replace(`./`, `${appRoot}/`)
-        : location
+        ? path.resolve(path.join(`${appRoot}/`, location.replace(`./`, ``)))
+        : path.resolve(path.join(appRoot, location))
 }
 
 

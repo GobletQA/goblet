@@ -20,6 +20,16 @@ goblet_run_dev_yarn_install(){
   fi
 }
 
+goblet_screencast(){
+  cd /goblet/app/repos/screencast
+  yarn vnc:start >> /proc/1/fd/1 &
+}
+
+goblet_conductor(){
+  export DOCKER_HOST="tcp://$GOBLET_DIND_SERVICE_HOST:$GOBLET_DIND_SERVICE_PORT"
+  echo "$DOCKER_AUTH_PASSWORD" | docker login $DOCKER_REGISTRY --username $DOCKER_AUTH_USER --password-stdin
+}
+
 # Check if we should install new packages
 [ "$GB_NM_INSTALL" ] && goblet_run_dev_yarn_install
 
@@ -27,11 +37,9 @@ goblet_run_dev_yarn_install(){
 # Check if the process to run is defined, then run it
 if [ "$GB_SUB_REPO" ]; then
 
-  # Starts the vnc servers for screencast
-  if [ "$GB_SUB_REPO" == "screencast" ]; then
-    cd /goblet/app/repos/screencast
-    yarn vnc:start >> /proc/1/fd/1 &
-  fi
+  # Handle repo specific tasks as needed
+  [ "$GB_SUB_REPO" == "conductor" ] && goblet_conductor
+  [ "$GB_SUB_REPO" == "screencast" ] && goblet_screencast
 
   cd /goblet/app/repos/$GB_SUB_REPO
   yarn start >> /proc/1/fd/1 &

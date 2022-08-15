@@ -14,12 +14,15 @@ export const axiosToExp = async (aRes: AxiosResponse, eResp: Response, stream?:b
  * Converts an express request into an axios request
  */
 export const expToAxios = async (req:Request, config:AxiosRequestConfig) => {
-  return limbo<AxiosResponse>(axios(deepMerge({
+
+  const axiosConfig = deepMerge({
     data: req.body,
     params: req.params,
     method: req.method as Method,
     headers: req.headers as Record<string, string>,
-  }, config)))
+  }, config)
+
+  return limbo<AxiosResponse>(axios(axiosConfig))
 }
 
 /**

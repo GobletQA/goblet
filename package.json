@@ -36,6 +36,7 @@
     "format:all": "yarn format && lerna run format",
     "format:lint": "yarn lint .",
     "format:pretty": "yarn pretty .",
+    "kube": "node tasks/entry.js kube",
     "images:build": "/bin/bash scripts/shell/buildImages.sh",
     "lint": "eslint --color --cache --fix --ignore-path .root.ignore --config ./configs/eslintrc.config.js",
     "make": "GB_ROOT_DIR=$(pwd) ./scripts/shell/init/init.sh \"$@\"",

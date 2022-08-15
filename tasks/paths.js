@@ -10,6 +10,7 @@ module.exports = {
   homeDir,
   reposDir,
   appRoot: GobletRoot,
+  tempDir: os.tmpdir(),
   repos: getRepoPaths(reposDir),
   distDir: path.join(GobletRoot, `dist/app`),
   scriptsDir: path.join(GobletRoot, `scripts`),

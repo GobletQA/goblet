@@ -190,7 +190,7 @@ deployments:
       containers:
       - image: ${GB_CD_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
-        env: $(node ../scripts/js/resolveDSEnvs.js conductor)
+        env: $(node ../scripts/js/resolveDSEnvs.js conductor docker-auth:user docker-auth:password)
       service:
         name: ${GB_CD_DEPLOYMENT}
         ports:

@@ -43,7 +43,39 @@ const buildEnvs = (envs, list) => {
     },``)
 }
 
-const [repo] = process.argv.slice(2)
+const addSecret = (envName, name, key, optional) => (`
+- name: ${envName}
+  valueFrom:
+    secretKeyRef:
+      name: ${name}
+      key: ${key}
+      optional: ${optional}
+`)
+
+const cleanStr = (str) => {
+  return str.replace(/\s|\.|-/g, `_`)
+    .replace(/[^a-zA-Z ]+[^a-zA-Z0-9_]/g, ``)
+    .toUpperCase()
+}
+
+const buildFromSecrets = (envs, fromSecrets) => {
+  return fromSecrets.reduce((acc, secret) => {
+    if(!secret) return acc
+
+    const [name, key, optional='false'] = secret.trim().split(`:`)
+    name && key
+      && (acc+= addSecret(
+        `${cleanStr(name)}_${cleanStr(key)}`,
+        name.trim(),
+        key.trim(),
+        optional.trim()
+      ))
+
+    return acc
+  }, ``)
+}
+
+const [repo, ...fromSecrets] = process.argv.slice(2)
 let dsEnvs = addEnv(`GB_SUB_REPO`, repo)
 dsEnvs += addEnv(`GB_VNC_ACTIVE`, `"true"`)
 dsEnvs += addEnv(`GB_AUTH_ACTIVE`, `"true"`)
@@ -51,5 +83,8 @@ dsEnvs += addEnv(`GB_AUTH_ACTIVE`, `"true"`)
 const envs = resolveValues()
 dsEnvs+= buildEnvs(envs, defEnvs)
 dsEnvs+= repo === `frontend` ? buildEnvs(envs, feKeys) : buildEnvs(envs, beKeys)
+
+fromSecrets.length && (dsEnvs+= buildFromSecrets(envs, fromSecrets))
+
 
 process.stdout.write(dsEnvs)
