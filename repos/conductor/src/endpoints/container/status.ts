@@ -8,10 +8,7 @@ import { AppRouter } from '@gobletqa/conductor/server/routers'
  */
 export const statusContainer = asyncWrap(async (req:Request, res:Response) => {
   const conductor = req.app.locals.conductor
-  console.log(`------- status container - subdomain -------`)
-  console.log(res.locals.subdomain)
-
-  const status = await conductor.status(res, res.locals.subdomain)
+  const status = await conductor.status(req, res.locals.subdomain)
 
   return apiRes(res, status)
 })

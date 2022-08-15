@@ -26,20 +26,16 @@ export const validate = asyncWrap(async (req:Request, res:Response) => {
   })
 
   // Next call conductor to spin of a container for the user
-  // /container/status/:imageRef
-  const status = await conductor.request({
-    url: `/container/spawn/goblet?ensure=1`,
-    headers: { ...req.headers, authorization: `Bearer ${jwtTokens.jwt}`}
+  // Add the token we just generated for authorization
+  const status = await conductor.status({
+    headers: { authorization: `Bearer ${jwtTokens.jwt}`}
   })
-
-  console.log(`------- Figure out what to do with container status here  -------`)
-  console.log(status)
 
   // While the container is spinning up
   // Get the users repos from the git provider
   const repos = await getUserRepos({ token })
 
-  return apiRes(res, {...jwtTokens, id, username, provider, repos}, 200)
+  return apiRes(res, {...jwtTokens, id, username, provider, status, repos}, 200)
 
 })
 

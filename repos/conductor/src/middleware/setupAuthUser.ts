@@ -30,11 +30,10 @@ const validateUser = asyncWrap((
 
   if(!decoded) throw new Error(`Request not authorized, invalid Auth-Token`)
 
-  const user = decoded
-  res.locals.user = user
-  res.locals.subdomain = hashString(`${user.username}-${hashKey}`)
+  res.locals.user = decoded
+  res.locals.subdomain = hashString(`${decoded.username}-${hashKey}`)
 
-  next()
+  return next()
 })
 
 export const setupAuthUser = (app:Express) => {

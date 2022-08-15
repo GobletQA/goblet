@@ -10,5 +10,6 @@ export const pull = async (req:Request, res:Response) => {
 }
 
 AppRouter.post(`/pull/:imageRef`, pull)
-// TODO: pull this, it should only be used temporarly
-AppRouter.get(`/pull/:imageRef`, pull)
+// Only load in a test environment
+process.env.NODE_ENV === `test`
+  && AppRouter.get(`/pull/:imageRef`, pull)

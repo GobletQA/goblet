@@ -98,12 +98,9 @@ export class Conductor {
    * Subdomain is derived from the user and a hash so it's always the same
    */
   async status(req:Request, subdomain){
-    const { ensure } = req.query
-    const { imageRef } = req.params
+    const { ensure } = req?.query 
+    const { imageRef } = req?.params
     const route = this.controller.routes?.[subdomain]
-
-    console.log(`------- found route -------`)
-    console.log(route)
 
     return route
       ? route

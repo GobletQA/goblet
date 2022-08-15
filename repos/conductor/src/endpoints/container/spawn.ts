@@ -15,5 +15,7 @@ export const spawn = asyncWrap(async (req:Request, res:Response) => {
 })
 
 AppRouter.post(`/container/spawn/:imageRef`, spawn)
-// TODO: remove this, it should only be used temporarily
-AppRouter.get(`/container/spawn/:imageRef`, spawn)
+
+// Only load in a test environment
+process.env.NODE_ENV === `test`
+  && AppRouter.get(`/container/spawn/:imageRef`, spawn)

@@ -1,11 +1,11 @@
 import { GitUser } from 'HKServices/gitUser'
+import { pickKeys } from '@keg-hub/jsutils'
 import { isAllowedUser } from './isAllowedUser'
 import { apiRequest } from 'HKUtils/api/apiRequest'
 import { signOutAuthUser } from './signOutAuthUser'
 import { setRepos } from 'HKActions/repo/local/setRepos'
 import { localStorage } from'HKUtils/storage/localStorage'
-import { isArr, pickKeys, noPropArr } from '@keg-hub/jsutils'
-
+import { setContainer } from 'HKActions/container/local/setContainer'
 
 /**
  * Formats the response from the git provider sign in
@@ -58,12 +58,12 @@ const validateResp = resp => {
   if (!resp || resp.error || !resp.username || !resp.id || !resp.provider || !resp.jwt)
     throw new Error(resp?.error || `Invalid user authentication`)
 
-  const { repos, jwt, ...user } = resp
+  const { jwt, status, ...user } = resp
 
   return {
     jwt,
     user,
-    repos: isArr(repos) ? repos : noPropArr,
+    status
   }
 }
 
@@ -98,12 +98,19 @@ export const onSuccessAuth = async (authData, callback) => {
     // If response if false, the session is invalid, and the user must sign in again
     if(error || !success) throw new Error(error)
 
-    const {repos, user, jwt} = validateResp(data)
-
-    repos && repos.length && setRepos({repos})
-
+    const {repos, status, user, jwt} = validateResp(data)
     await localStorage.setJwt(jwt)
     new GitUser(user)
+
+    // Wrap container and repos so if they throw, the login auth is still valid
+    try {
+      repos && repos.length && setRepos({ repos })
+      setContainer(status)
+    }
+    catch(err){
+      console.warn(`[Auth State Error] Error setting Container or Repos status.`)
+      console.error(err.message)
+    }
 
   }
   catch (err) {

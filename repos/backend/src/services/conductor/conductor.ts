@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 
 import { Logger } from '@keg-hub/cli-utils'
 import { Request, Response } from 'express'
@@ -73,24 +73,40 @@ export class ConductorService {
 
   /**
    * Helper method to manually call the conductor api
-   * Use in the status and validate endpoints
-   *
    */
   async request(opts:AxiosRequestConfig) {
     const url = opts.url.includes(`://`)
       ? opts.url
       : `${this.uri}/${opts.url.split('/').filter(Boolean).join('/')}`
 
-    const [err, resp] = await limbo(axios({
+    const config = {
       method: 'get',
       ...opts,
       url,
       headers: buildHeaders(this, opts?.headers),
-    }))
+    } as AxiosRequestConfig
+
+    const [err, resp] = await limbo(axios(config))
 
     if(err) throw err
 
-    return resp.data 
+    return resp.data
+  }
+
+  /**
+   * Helper method to manually call the conductor spawn api
+   * Use in the status and validate endpoints
+   *
+   */
+  async status(opts:AxiosRequestConfig) {
+    return await this.request({
+      ...opts,
+      url: `/container/status/${this.config.imageRef}`,
+      params: {
+        ensure: `1`,
+        ...opts?.params
+      },
+    })
   }
 
 }

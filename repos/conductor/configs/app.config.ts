@@ -28,16 +28,44 @@ const containerEnvs = inDocker()
       override: nodeEnv === 'local'
     }), removeEnvs)
 
+const {
+  GB_SC_IMAGE,
+  GB_SC_IMAGE_TAG,
+  GB_SC_DEPLOYMENT,
+  GB_CD_CONTROLLER_TYPE=`Docker`
+} = containerEnvs
+
+/**
+* Gets the spawn image metadata from the screencast envs
+*/
+const getContainerConfig = () => {
+  const [provider, user, name] = GB_SC_IMAGE.split(`/`)
+  const tag = GB_SC_IMAGE_TAG
+  if(!provider || !user || !name || !tag)
+    throw new Error([
+      `Missing required envs:`,
+      ` - GB_SC_IMAGE => ${GB_SC_IMAGE}`,
+      ` - GB_SC_IMAGE_TAG => ${GB_SC_IMAGE_TAG}`,
+      ` - GB_SC_DEPLOYMENT => ${GB_SC_DEPLOYMENT}`
+    ].join(`\n`))
+
+  return {
+    tag,
+    name,
+    user,
+    provider,
+  }
+}
+
+const imgConfig = getContainerConfig()
+
 export const appConfig:TConductorOpts = {
   controller: {
-    type: 'Docker'
+    type: GB_CD_CONTROLLER_TYPE
   },
   images: {
-    goblet: {
-      tag: `latest`,
-      name: `goblet-screencast`,
-      user: `gobletqa`,
-      provider: `ghcr.io`,
+    [GB_SC_DEPLOYMENT]: {
+      ...imgConfig,
       container: {
         mem: 0,
         idle: 5000,

@@ -144,6 +144,7 @@ env:
   # When manually running the conductor app in a container
   # This ensures the docker.sock is mounted into the container
   GB_CD_DOC_VOLUMES: /var/run/docker.sock
+  GB_CD_CONTROLLER_TYPE: Docker
 
 # --- SCREENCAST ENVs --- #
   GB_SC_IMAGE_TAG: latest

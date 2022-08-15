@@ -53,7 +53,7 @@ const {
   GB_BE_COOKIE_MAX_AGE = 12 * 60 * 60 * 1000,
   GB_BE_COOKIE_EXP = new Date(new Date().getTime() + 86400000),
   
-  
+  GB_SC_DEPLOYMENT,
   GB_VALIDATION_KEY,
   GB_VALIDATION_HEADER,
   GOBLET_CONDUCTOR_SERVICE_PORT
@@ -92,6 +92,7 @@ export const backendConfig:TBackendConfig  = {
   },
   conductor: {
     key: GB_VALIDATION_KEY,
+    imageRef: GB_SC_DEPLOYMENT,
     keyHeader: GB_VALIDATION_HEADER,
     port: GOBLET_CONDUCTOR_SERVICE_PORT,
     host: process.env[`GOBLET_CONDUCTOR_PORT_${GOBLET_CONDUCTOR_SERVICE_PORT}_TCP_ADDR`],

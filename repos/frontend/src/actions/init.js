@@ -8,6 +8,7 @@ import { statusRepo } from 'HKActions/repo/api/status'
 import { getQueryData } from 'HKUtils/url/getQueryData'
 import { loadUser } from 'HKActions/admin/user/loadUser'
 import { setScreenById } from 'HKActions/screens/setScreenById'
+import { statusContainer } from 'HKActions/container/api'
 
 const { MODAL_TYPES, SIDEBAR_TYPES, SCREENS } = Values
 const authActive = isAuthActive()
@@ -53,12 +54,14 @@ export const init = async () => {
     return setActiveModal(MODAL_TYPES.SIGN_IN)
 
   // If user is logged in,
-  // Next check the status of the mounted repo
+  // Next check the status of users session container
+  const status = await statusContainer()
+
   // TODO: If no locally mounted volume
   // Then setup a fake mounted repo at the default location
   // Will allow using goblet without persisting changes
-  const status = await statusRepo()
-  if (!status || !status.mounted) return
+  const repoStatus = await statusRepo({ status })
+  if (!repoStatus || !repoStatus.mounted) return
 
   // Finally if the repo is mounted
   // Then get the query data to route to the correct tab as needed

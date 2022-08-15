@@ -20,6 +20,10 @@ export const remove = async (req:Request, res:Response) => {
 AppRouter.post(`/container/remove-all`, removeAll)
 AppRouter.post(`/container/remove/:containerRef`, remove)
 
-// TODO: remove this, it should only be used temporarly
-AppRouter.get(`/container/remove-all`, removeAll)
-AppRouter.get(`/container/remove/:containerRef`, remove)
+// Only load in a test environment
+process.env.NODE_ENV === `test`
+  && AppRouter.get(`/container/remove-all`, removeAll)
+
+// Only load in a test environment
+process.env.NODE_ENV === `test`
+  && AppRouter.get(`/container/remove/:containerRef`, remove)
