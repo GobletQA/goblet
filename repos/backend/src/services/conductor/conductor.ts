@@ -24,8 +24,8 @@ export class ConductorService {
   constructor(config:TConductorServiceConfig=defConfig){
     this.config = config
     this.config.headers = buildHeaders(this, {
-      Host: process.env[`GB_CD_HOST`],
-      'Content-Type': `application/json`,
+      host: process.env[`GB_CD_HOST`],
+      'content-type': `application/json`,
       [this.config.keyHeader]: this.config.key
     })
   }
