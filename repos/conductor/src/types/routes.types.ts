@@ -1,8 +1,16 @@
 
+type TPublicUrl = string
+type TInternalUrl = string
+
+type TSubdomain = string
+type TContainerId = string
+type TContainerPort = string
+type TContainerName = string
+
 export type TContainerRoute = {
   host: string
   port: string|number
-  protocol?: 'http' | 'https'
+  protocol?: 'http' | 'https' | 'ws' | 'wss'
 }
 
 export type TProxyRoute = {
@@ -16,16 +24,26 @@ export type TProxyRoutes = {
 }
 
 export type TUrlMap = {
-  internal: string
+  internal: TInternalUrl
   route: TProxyRoute
 }
 
-export type TUrlsMap = {
-  meta?: Record<string, any>
-  map: Record<string, TUrlMap>
+export type TContainerMeta = {
+  id: TContainerId
+  name: TContainerName
+}
+
+export type TPublicUrls = {
+  [key:TContainerPort]: TPublicUrl
+}
+
+export type TRouteMeta = {
+  urls?: TPublicUrls
+  meta?: TContainerMeta
+  map: Record<TContainerPort, TUrlMap>
 }
 
 
-export type TUrls = {
-  [key:string]: string
+export type TControllerRoutes = {
+  [key:TSubdomain]: TRouteMeta
 }

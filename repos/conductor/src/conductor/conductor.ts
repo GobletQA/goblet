@@ -35,7 +35,7 @@ export class Conductor {
 
     const app = getApp({ name: `Conductor`, ...this.config }) as Express
     app.locals.conductor = this as Conductor
-    this.controller.hydrate()
+
   }
 
   /**
@@ -159,6 +159,9 @@ export class Conductor {
    * Starts conductor by creating the Express Server and Proxy
    */
   async start() {
+    // Ensure the controller is configuration properly 
+    await this.controller.validate()
+
     const { server } = createServer(this.config.server)
     const proxyHandler = createProxy({
       ...this.config.proxy,

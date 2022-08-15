@@ -11,6 +11,7 @@ import { hydrateRoutes } from '../utils/hydrateRoutes'
 import { CONDUCTOR_SUBDOMAIN_LABEL } from '../constants'
 import { Logger } from '@gobletqa/conductor/utils/logger'
 import { removeContainer } from '../utils/removeContainer'
+import { waitRetry } from '@gobletqa/shared/utils/waitRetry'
 import { buildContainerPorts } from '../utils/buildContainerPorts'
 import { buildContainerConfig } from '../utils/buildContainerConfig'
 import { generateUrls, generateExternalUrls } from '../utils/generateUrls'
@@ -32,30 +33,6 @@ import {
 import { createContainer, startContainer } from '../utils/runContainerHelpers'
 
 /**
- * Connection back off helper for connecting to docker's api
- * Sometimes the docker container is not complete by the time this kicks off
- */
-const connectBackOff = (instance:Docker,  config:TDockerConfig, attempts:number) => {
-  Logger.info(`Attempt ${attempts}: connecting to docker`)
-  try {
-    instance.docker = new Dockerode(config?.options)
-    instance.events = dockerEvents(instance.docker, {
-      destroy: instance.removeFromCache,
-      start: instance.hydrateSingle
-    })
-  }
-  catch(err){
-    if(!attempts) throw new Error()
-    else Logger.warn(`Attempt ${attempts}: Failed to connect to docker, waiting 3 seconds to try again...`)
-    
-    setTimeout(() => {
-      const nextAttempt = attempts--
-      connectBackOff(instance, config, nextAttempt)
-    }, 3000)
-  }
-}
-
-/**
  * Docker controller class with interfacing with the Docker-Api via Dockerode
  * Matches the Controller class interface
  */
@@ -71,7 +48,6 @@ export class Docker extends Controller {
   constructor(conductor:Conductor, config:TDockerConfig){
     super(conductor, config)
     this.config = config
-    connectBackOff(this, config, 3)
   }
 
   hydrateSingle = async (message:TDockerEvent) => {
@@ -270,22 +246,34 @@ export class Docker extends Controller {
       portData.ports,
       this.conductor
     )
-    
-    console.log(`------- built container ursl -------`)
-    console.log(meta)
-    console.log(`------- built map -------`)
-    console.log(map)
-    console.log(`------- built urls -------`)
-    console.log(urls)
-    
-    this.routes[subdomain] = map
 
-    return {
-      map,
-      urls,
-      meta,
-    }
+    this.routes[subdomain] = { map, urls, meta }
+
+    return this.routes[subdomain]
 
   }
 
+  /**
+   * Connection back off helper for connecting to docker's api
+   * Sometimes the docker container is not complete by the time this kicks off
+   */
+  validate = async (attempts=3, waitTime=3000) => {
+    await waitRetry((attempt) => {
+      Logger.info(`Attempt ${attempt}: connecting to Docker Api`)
+
+      this.docker = new Dockerode(this.config?.options)
+
+    }, attempts, waitTime)
+
+    // We should only get here if the waitRetry doesn't throw
+    // This way we know it's connected to the docker api
+
+    this.events = dockerEvents(this.docker, {
+      destroy: this.removeFromCache,
+      start: this.hydrateSingle
+    })
+
+    this.hydrate()
+  }
+ 
 }

@@ -34,8 +34,8 @@ export const appConfig:TConductorOpts = {
   },
   images: {
     goblet: {
-      tag: `develop`,
-      name: `goblet`,
+      tag: `latest`,
+      name: `goblet-screencast`,
       user: `gobletqa`,
       provider: `ghcr.io`,
       container: {
@@ -46,7 +46,6 @@ export const appConfig:TConductorOpts = {
         ports: [
           7005,
           7006,
-          19006,
           26369,
         ],
         envs: {
@@ -56,15 +55,10 @@ export const appConfig:TConductorOpts = {
           KEG_DOCKER_EXEC: `conductor`,
         },
         runtimeEnvs: {
-          // TODO: remove these once the frontend image is properly built
-          GB_BE_API_HOST: `urls.7005`,
-          GB_BE_API_PORT: `ports.7005`,
-
           GB_BE_HOST: `urls.7005`,
           GB_BE_PORT: `ports.7005`,
           GB_BE_SOCKET_PORT: `ports.7005`,
           GB_NO_VNC_PORT: `ports.26369`,
-          GB_FE_PORT: `ports.19006`,
           GB_VNC_SERVER_HOST: `urls.26370`,
           GB_VNC_SERVER_PORT: `ports.26370`,
           GB_SC_HOST: `urls.7006`,

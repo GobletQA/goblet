@@ -86,4 +86,8 @@ COPY --from=goblet-build /goblet/app/ .
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules
 
+# TODO: Edd entrypoint to set the DOCKER_HOST env
+# Can't be done at build because we don't know the value of the envs
+# export DOCKER_HOST="tcp://$GOBLET_DIND_SERVICE_HOST:$GOBLET_DIND_SERVICE_PORT"
+
 CMD [ "/bin/bash", "container/initialize.sh" ]

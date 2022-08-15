@@ -29,7 +29,7 @@ export const validate = asyncWrap(async (req:Request, res:Response) => {
   // /container/status/:imageRef
   const status = await conductor.request({
     url: `/container/spawn/goblet?ensure=1`,
-    headers: req.headers
+    headers: { ...req.headers, authorization: `Bearer ${jwtTokens.jwt}`}
   })
 
   console.log(`------- Figure out what to do with container status here  -------`)
@@ -40,6 +40,7 @@ export const validate = asyncWrap(async (req:Request, res:Response) => {
   const repos = await getUserRepos({ token })
 
   return apiRes(res, {...jwtTokens, id, username, provider, repos}, 200)
+
 })
 
 

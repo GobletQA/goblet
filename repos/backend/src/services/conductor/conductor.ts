@@ -1,8 +1,9 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 
-import path from 'node:path'
+import { Logger } from '@keg-hub/cli-utils'
 import { Request, Response } from 'express'
 import { deepMerge, noOpObj, limbo } from '@keg-hub/jsutils'
+import { waitRetry } from '@gobletqa/shared/utils/waitRetry'
 import { axiosToExp, expToAxios, checkAxiosError } from '@GBE/utils/axiosProxy'
 import { TConductorServiceConfig, TReqHeaders } from '@gobletqa/backend/src/types'
 
@@ -29,16 +30,25 @@ export class ConductorService {
     })
   }
 
-  async validate(){
-    const [err, resp] = await limbo(axios({
-      url: this.uri,
-      method: 'get',
-      headers: this.config.headers
-    }))
+  /**
+   * Validates the the conductor API is accessible from the backend API
+   */
+  async validate(attempts=3){
+    await waitRetry(async (attempt) => {
+      Logger.info(`Attempt ${attempt}: connecting to Conductor pod...`)
 
-    checkAxiosError(err, resp)
+      const [err, resp] = await limbo(axios({
+        url: this.uri,
+        method: 'get',
+        headers: this.config.headers
+      }))
+      checkAxiosError(err, resp)
+    }, attempts, 3000)
   }
 
+  /**
+   * Generates the URL for calling the conductor API based on the current config
+   */
   get uri():string{
     const { host, port, protocol=`http` } = this.config
     const domain = port ? `${host}:${port}` : host
@@ -46,6 +56,10 @@ export class ConductorService {
     return `${protocol}://${domain}`
   }
 
+  /**
+   * Helper method to proxy request to the conductor API via axios
+   * It called automatically via middleware for almost all repo-requests
+   */
   async proxyRequest(req:Request, res:Response){
     const [err, aRes] = await expToAxios(req, {
       responseType: 'stream',
@@ -57,25 +71,23 @@ export class ConductorService {
     axiosToExp(aRes, res, true)
   }
 
+  /**
+   * Helper method to manually call the conductor api
+   * Use in the status and validate endpoints
+   *
+   */
   async request(opts:AxiosRequestConfig) {
     const url = opts.url.includes(`://`)
       ? opts.url
       : `${this.uri}/${opts.url.split('/').filter(Boolean).join('/')}`
 
-    console.log(`------- built url -------`)
-    console.log(url)
-
     const [err, resp] = await limbo(axios({
       method: 'get',
       ...opts,
       url,
-      headers: buildHeaders(this, opts?.headers)
+      headers: buildHeaders(this, opts?.headers),
     }))
-    
-    console.log(`------- finished calling conductor -------`)
-    resp && console.log(`resp`, resp)
-    err && console.log(`err`, err)
-    
+
     if(err) throw err
 
     return resp.data 

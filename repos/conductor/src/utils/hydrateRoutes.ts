@@ -13,6 +13,8 @@ type TPorts = {
 
 const buildPorts = (ports:TPorts):TPortsMap => {
   return Object.entries(ports).reduce((acc, [cPortProto, hostData]) => {
+    if(!hostData) return acc
+
     const cPort = cPortProto.split(`/`).shift()
     const hPort = (hostData.shift() || {})?.HostPort
     cPort && hPort && (acc[cPort] = hPort)
@@ -25,13 +27,13 @@ export const routesFromContainer = (controller:Controller, container:TContainerI
   const subdomain = container.Config.Labels[CONDUCTOR_SUBDOMAIN_LABEL]
   if(!subdomain) return
 
-  const { map } = generateUrls(
+  controller.routes[subdomain] = generateUrls(
     container,
     buildPorts(container.NetworkSettings.Ports),
-    controller.conductor
+    controller.conductor,
+    subdomain
   )
 
-  controller.routes[subdomain] = map
 }
 
 export const hydrateRoutes = (

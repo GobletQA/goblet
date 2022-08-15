@@ -13,6 +13,7 @@ import {
   TRunResponse,
   TContainerRef,
   TContainerData,
+  TControllerRoutes,
   TContainerInspect,
   TControllerConfig,
 } from '../types'
@@ -27,8 +28,8 @@ export class Controller {
   images: TImgsConfig
   conductor: Conductor
   config: TControllerConfig
+  routes: TControllerRoutes = {}
   containers:Record<string, TContainerData> = {}
-  routes: Record<string, Record<string, TUrlMap>> = {}
 
   constructor(conductor:Conductor, config:TControllerConfig){
     this.config = config
@@ -115,9 +116,14 @@ export class Controller {
     return undefined
   }
 
+  validate = async (amount?:number, waitTime?:number) => {
+    throwOverrideErr()
+    return undefined
+  }
+
   getRoute = (req:Request) => {
     const [port, subdomain] = (req.subdomains || []).reverse()
-    const routeData = this.routes?.[subdomain]?.[port]
+    const routeData = this.routes?.[subdomain]?.map?.[port]
     if(routeData) return routeData
 
     // Websocket connection don't seem to get the subdomains added the the request
@@ -125,7 +131,7 @@ export class Controller {
     // There's probably a better way to do this, and may need to be investigated
     const [ hPort, hSubdomain ] = req?.headers?.host.split(`.`)
 
-    return this.routes?.[hSubdomain]?.[hPort]
+    return this.routes?.[hSubdomain]?.map?.[hPort]
   }
 
   notFoundErr = (args:Record<string, string>) => {

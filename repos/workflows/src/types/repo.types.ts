@@ -38,3 +38,9 @@ export type TSaveMetaData = {
   message?: string
   [key: string]: any
 }
+
+export type TRepo = {
+  url: string
+  name:string
+  branches:string[]
+}

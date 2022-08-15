@@ -2,7 +2,7 @@ import { resolveIp } from './resolveIp'
 import { inDocker } from '@keg-hub/cli-utils'
 import { buildSubdomains } from './buildSubdomains'
 import type { Conductor } from '@gobletqa/conductor/conductor'
-import { TUrls, TUrlsMap, TPortsMap, TContainerInspect } from '../types'
+import { TPublicUrls, TRouteMeta, TPortsMap, TContainerInspect } from '../types'
 import { DEF_HOST_IP } from '@gobletqa/conductor/constants'
 const isDocker = inDocker()
 
@@ -43,7 +43,7 @@ export const generateExternalUrls = (
     acc[cPort] = `${protocol}//${cPort}.${subdomain}.${buildSubdomains(``)}.${conductor?.domain}:${sPort}`
 
     return acc
-  }, {} as TUrls)
+  }, {} as TPublicUrls)
 
 }
 
@@ -58,15 +58,16 @@ export const generateExternalUrls = (
 export const generateUrls = (
   containerInfo:TContainerInspect,
   ports:TPortsMap,
-  conductor:Conductor
-):TUrlsMap => {
+  conductor:Conductor,
+  subdomain?:string
+):TRouteMeta => {
   const domain = conductor?.domain
 
   // TODO: Update this to find the domain when deploy instead of the IP address
   // ipAddress should be something like <app-subdomain>.<goblet-QA-domain>.run
   const ipAddress = resolveIp(containerInfo) || DEF_HOST_IP
 
-  return Object.entries(ports).reduce((acc, [cPort, hPort]:[string, string]) => {
+  const generated = Object.entries(ports).reduce((acc, [cPort, hPort]:[string, string]) => {
     const route = buildRoute(ipAddress, cPort, hPort, conductor)
     // Build the route, that the proxy should route to => i.e. forward incoming traffic to here
     // internal: `${route.protocol}//${route.host}:${route.port}`,
@@ -83,7 +84,11 @@ export const generateUrls = (
       id: containerInfo.Id,
       name: containerInfo.Name,
     }
-  } as TUrlsMap)
+  } as TRouteMeta)
 
+  if(subdomain)
+    generated.urls = generateExternalUrls(ports, subdomain, conductor)
+
+  return generated
 }
 
