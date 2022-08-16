@@ -142,11 +142,26 @@ deployments:
         env: $(node ../scripts/js/resolveDSEnvs.js dind)
         # TODO: remove this once shared certs volume is configured
         command: ["dockerd"]
-        args: [ "--host=unix:///var/run/docker.sock", "--host=tcp://${GB_DD_HOST}:${GB_DD_PORT}" ]
+        args: [ "--tlsverify", "--tlscacert=/etc/docker/certs.d/ca-public.pem", "--tlscert=/etc/docker/certs.d/certificate.pem", "--tlskey=/etc/docker/certs.d/server-key.pem", "--host=unix:///var/run/docker.sock", "--host=tcp://${GB_DD_HOST}:${GB_DD_PORT}" ]
         # TODO: use sysbox or gvisor to remove the need for privileged context
         securityContext:
           privileged: ${GB_DD_PRIVILEGED}
-        # TODO: add shared certs volume for security to share with conductor
+        volumeMounts:
+        - containerPath: /etc/docker
+          volume:
+            name: docker-server
+            readOnly: true
+      volumes:
+      - name: docker-server
+        secret:
+          secretName: docker-server
+          items:
+          - key: certificate
+            path: certs.d/certificate.pem
+          - key: server-key
+            path: certs.d/server-key.pem
+          - key: ca-public
+            path: certs.d/ca-public.pem
       service:
         name: ${GB_DD_DEPLOYMENT}
         ports:
@@ -191,6 +206,22 @@ deployments:
       - image: ${GB_CD_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js conductor docker-auth:user docker-auth:password)
+        volumeMounts:
+        - containerPath: /root
+          volume:
+            name: docker-client
+            readOnly: true
+      volumes:
+      - name: docker-client
+        secret:
+          secretName: docker-client
+          items:
+          - key: client-certificate
+            path: .docker/cert.pem
+          - key: client-key
+            path: .docker/key.pem
+          - key: ca-public
+            path: .docker/ca.pem
       service:
         name: ${GB_CD_DEPLOYMENT}
         ports:

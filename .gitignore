@@ -173,3 +173,6 @@ repos/devspace
 /temp/**/*
 !.keep
 !/**/.keep
+
+/certs
+/certs/**/*

@@ -113,7 +113,9 @@ fromSecrets.length && (dsEnvs+= buildFromSecrets(envs, fromSecrets))
  * Uses the kubernetes env syntax to generate the docker host from runtime envs
  * [See more here](https://kubernetes.io/docs/tasks/inject-data-application/define-interdependent-environment-variables/)
  */
-repo === `conductor`
-  && (dsEnvs += addEnv(`DOCKER_HOST`, `"tcp://$(GOBLET_DIND_SERVICE_HOST):$(GOBLET_DIND_SERVICE_PORT)"`))
+if(repo === `conductor`){
+  dsEnvs += addEnv(`DOCKER_HOST`, `"tcp://$(GOBLET_DIND_SERVICE_HOST):$(GOBLET_DIND_SERVICE_PORT)"`)
+  ;`${envs.GB_DD_PORT}` === `2376` && (dsEnvs += addEnv(`DOCKER_TLS_VERIFY`, `"1"`))
+}
 
 process.stdout.write(dsEnvs)

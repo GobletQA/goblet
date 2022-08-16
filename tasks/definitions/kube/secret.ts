@@ -38,8 +38,8 @@ const buildLocs = (params:Record<any, any>, name:string, defkey:string) => {
     secrets,
     keyvalue,
   } = params
-  
-  
+
+
   const secretFiles = files
     ? files.split(`,`)
     : file
@@ -48,6 +48,8 @@ const buildLocs = (params:Record<any, any>, name:string, defkey:string) => {
   
   const builtArr = secretFiles.reduce((acc, joined) => {
     const [key, loc] = joined.trim().split(`:`)
+    if(!loc) return acc
+
     key && loc && acc.push(`--from-file=${key}=${resolveLocalPath(loc)}`)
 
     log && logCreate(name, key, loc)
@@ -59,11 +61,15 @@ const buildLocs = (params:Record<any, any>, name:string, defkey:string) => {
     ? secrets.split(`,`)
     : keyvalue
       ? [keyvalue]
-      : [`${defkey}:${val}`]
+      : val
+        ? [`${defkey}:${val}`]
+        : []
 
   const tempFiles = []
   const secretArgs = secretsFrom.reduce((acc, joined) => {
     const [key, value] = joined.trim().split(`:`)
+    if(!value) return acc
+
     const loc = saveTempSecret(value)
     tempFiles.push(loc)
     key && loc && acc.push(`--from-file=${key}=${saveTempSecret(value)}`)
@@ -99,7 +105,7 @@ const logCreate = (name:string, key:string, loc:string) => {
  * @returns {void}
  */
 const secretAct = async ({ params }) => {
-  const { type=`generic`, value, file, log, files, secrets, keyvalue } = params
+  const { type=`generic`, value, file, files, secrets, keyvalue } = params
 
   !value
     && !keyvalue

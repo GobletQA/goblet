@@ -25,6 +25,7 @@
     "build:all": "turbo run build",
     "bundle": "node scripts/bundle.js",
     "bundle:compile": "yarn bundle && yarn compile",
+    "certs": "/bin/bash scripts/shell/generate.sh $@",
     "clean": "yarn clean:full",
     "clean:full": "yarn clean:nm && yarn cache clean && yarn install",
     "clean:nm": "rm -rf node_modules && lerna run clean:nm",
