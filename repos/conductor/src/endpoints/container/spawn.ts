@@ -15,7 +15,8 @@ export const spawn = asyncWrap(async (req:Request, res:Response) => {
 })
 
 AppRouter.post(`/container/spawn/:imageRef`, spawn)
+AppRouter.get(`/container/spawn/:imageRef`, spawn)
 
 // Only load in a test environment
-process.env.NODE_ENV === `test`
-  && AppRouter.get(`/container/spawn/:imageRef`, spawn)
+// process.env.NODE_ENV === `test`
+//   && AppRouter.get(`/container/spawn/:imageRef`, spawn)

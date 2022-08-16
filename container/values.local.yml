@@ -7,6 +7,11 @@ env:
   GB_KUBE_CONTEXT: docker-desktop
   GB_HOST_DOMAIN: local.gobletqa.app
 
+
+
+# --- Should only used for development --- #
+
   # --- Custom screencast devspace config --- #
-  # --- Only used for development --- #
   GB_SC_DEVSPACE_CONFIG: container/devspace.screencast.yaml
+  # --- Run the conductor in local dev mode --- #
+  GB_CD_LOCAL_DEV_MODE: true

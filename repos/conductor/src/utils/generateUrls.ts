@@ -22,14 +22,15 @@ const buildRoute = (
 
   // TODO: Update this to find the domain when deploy instead of the IP address
   // ipAddress should be something like <app-subdomain>.<goblet-QA-domain>.run
-  const ipAddress = conductor?.controller?.config?.host
+  const ipAddress = conductor?.controller?.config?.options?.host
   const host = !isDocker || !ipAddress || ipAddress.includes(`docker.sock`)
     ? resolveIp(containerInfo) || conductor?.domain
     : ipAddress
 
   return {
     host,
-    port: isDocker ? cPort : hPort,
+    port: hPort,
+    // port: isDocker ? cPort : hPort,
     // TODO: figure out a way to check if port is secure for ports
     // 443 is default, but would be better to allow it to be any port
     protocol: getProtocol(cPort)

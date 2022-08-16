@@ -77,7 +77,7 @@ export class Conductor {
    * Pulls an image by forwarding it to the controller.pull method
    */
   async pull(imageRef:TImgRef){
-    await this.controller.pull(imageRef)
+    return await this.controller.pull(imageRef)
   } 
 
   /**
@@ -146,6 +146,10 @@ export class Conductor {
     // this.handleRateLimit(req)
 
     const routeData = this.controller.getRoute(req)
+    
+    // console.log(`------- routeData -------`)
+    // console.log(routeData)
+    
     return routeData?.route
       || routeData?.internal
       || undefined

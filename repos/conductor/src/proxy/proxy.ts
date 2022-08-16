@@ -55,7 +55,7 @@ export const createProxy = (config:TProxyConfig) => {
     ...proxy,
   })
 
-  ProxyRouter.use(`*`, proxyHandler)
+  ProxyRouter.use(proxyHandler)
 
   return proxyHandler
 }

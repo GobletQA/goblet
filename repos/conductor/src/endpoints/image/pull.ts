@@ -9,7 +9,8 @@ export const pull = async (req:Request, res:Response) => {
   res.status(200).json(status)
 }
 
-AppRouter.post(`/pull/:imageRef`, pull)
+AppRouter.post(`/image/pull/:imageRef`, pull)
+AppRouter.get(`/image/pull/:imageRef`, pull)
 // Only load in a test environment
-process.env.NODE_ENV === `test`
-  && AppRouter.get(`/pull/:imageRef`, pull)
+// process.env.NODE_ENV === `test`
+//   && AppRouter.get(`/pull/:imageRef`, pull)

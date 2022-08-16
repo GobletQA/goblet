@@ -16,9 +16,9 @@ const whiteList = [
 ]
 
 const blackList = [
-  `GB_SC_PORT`,
-  `GB_NO_VNC_PORT`,
-  `GB_VNC_SERVER_PORT`,
+  // `GB_SC_PORT`,
+  // `GB_NO_VNC_PORT`,
+  // `GB_VNC_SERVER_PORT`,
 ]
 
 /**
@@ -95,9 +95,9 @@ export const appConfig:TConductorOpts = {
           GB_AUTH_ACTIVE: true,
         },
         runtimeEnvs: {
-          GB_SC_PORT: `ports.7006`,
-          GB_NO_VNC_PORT: `ports.26369`,
-          GB_VNC_SERVER_PORT: `ports.26370`,
+          // GB_SC_PORT: `7006`,
+          // GB_NO_VNC_PORT: `26369`,
+          // GB_VNC_SERVER_PORT: `26370`,
         }
       }
     }

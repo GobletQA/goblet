@@ -86,8 +86,13 @@ COPY --from=goblet-build /goblet/app/ .
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules
 
+# Helper script to auto-login to set the DOCKER_HOST env and auto-login
+# Only runs when GB_SUB_REPO env is conductor
 RUN echo "#! /bin/bash" >> /init.sh && \
-    echo "[ \"\$GB_SUB_REPO\" == \"conductor\" ] && export DOCKER_HOST=\"tcp://\$GOBLET_DIND_SERVICE_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /init.sh && \
+    echo "if [ \"\$GB_SUB_REPO\" == \"conductor\" ]; then" >> /init.sh && \
+    echo "  export DOCKER_HOST=\"tcp://\$GOBLET_DIND_SERVICE_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /init.sh && \
+    echo "  echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /init.sh && \
+    echo "fi" >> /init.sh && \
     echo "exec \$@" >> /init.sh && \
     chmod a+x /init.sh && \
     chmod a+x /goblet/app/container/initialize.sh

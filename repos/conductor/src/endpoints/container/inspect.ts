@@ -12,8 +12,8 @@ export const inspect = async (req:Request, res:Response) => {
   res.status(200).json({ container, routes })
 }
 
-AppRouter.post(`/inspect/:containerRef`, inspect)
+AppRouter.post(`/container/inspect/:containerRef`, inspect)
 
 // Only load in a test environment
 process.env.NODE_ENV === `test`
-  && AppRouter.get(`/inspect/:containerRef`, inspect)
+  && AppRouter.get(`/container/inspect/:containerRef`, inspect)

@@ -1,3 +1,3 @@
 export * from './container'
-export * from './repo'
+export * from './image'
 export * from './root'

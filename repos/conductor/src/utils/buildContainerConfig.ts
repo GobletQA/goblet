@@ -42,6 +42,8 @@ export const buildContainerConfig = async (
     HostConfig: {
       ...runOpts.hostConfig,
       IpcMode: `private`,
+      // IpcMode: `host`,
+      NetworkMode: 'host',
       PortBindings: bindings,
       PidsLimit: image?.pidsLimit || docker?.config?.pidsLimit,
       RestartPolicy: { Name: `on-failure`, MaximumRetryCount: 2 },

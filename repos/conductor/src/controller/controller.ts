@@ -122,7 +122,10 @@ export class Controller {
   }
 
   getRoute = (req:Request) => {
+    
     const [port, subdomain] = (req.subdomains || []).reverse()
+    // console.log(this.routes?.[subdomain]?.map)
+
     const routeData = this.routes?.[subdomain]?.map?.[port]
     if(routeData) return routeData
 

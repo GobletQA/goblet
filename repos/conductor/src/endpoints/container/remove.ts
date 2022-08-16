@@ -21,9 +21,11 @@ AppRouter.post(`/container/remove-all`, removeAll)
 AppRouter.post(`/container/remove/:containerRef`, remove)
 
 // Only load in a test environment
-process.env.NODE_ENV === `test`
-  && AppRouter.get(`/container/remove-all`, removeAll)
+// process.env.NODE_ENV === `test`
+//   && 
+  AppRouter.get(`/container/remove-all`, removeAll)
 
 // Only load in a test environment
-process.env.NODE_ENV === `test`
-  && AppRouter.get(`/container/remove/:containerRef`, remove)
+// process.env.NODE_ENV === `test`
+//   && 
+AppRouter.get(`/container/remove/:containerRef`, remove)

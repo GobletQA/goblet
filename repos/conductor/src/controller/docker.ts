@@ -1,12 +1,12 @@
 import { ReadStream } from 'tty'
 import Dockerode from 'dockerode'
 import DockerEvents from 'docker-events'
+import { isObj } from '@keg-hub/jsutils'
 import { Controller } from './controller'
+import { docker } from '@keg-hub/cli-utils'
 import type { Conductor } from '../conductor'
-import { noOp, isObj } from '@keg-hub/jsutils'
 import { buildImgUri } from '../utils/buildImgUri'
 import { dockerEvents } from '../utils/dockerEvents'
-import { buildPullOpts } from '../utils/buildPullOpts'
 import { hydrateRoutes } from '../utils/hydrateRoutes'
 import { CONDUCTOR_SUBDOMAIN_LABEL } from '../constants'
 import { Logger } from '@gobletqa/conductor/utils/logger'
@@ -86,6 +86,8 @@ export class Docker extends Controller {
 
     hydrateRoutes(this, this.containers as Record<string, TContainerInspect>)
 
+    // console.log(this.routes['1899639476'].map)
+
     return this.containers as Record<string, TContainerInspect>
   }
 
@@ -93,25 +95,22 @@ export class Docker extends Controller {
    * Pulls a docker image locally so it can be run
    * @member Docker
    */
-  pull = async (imageRef:TImgRef, pullOpts:TPullOpts):Promise<void> => {
+  pull = async (imageRef:TImgRef) => {
     const image = this.getImg(imageRef)
     !image && this.notFoundErr({ type: `image`, ref: imageRef as string })
 
-    const repoTag = buildImgUri(image)
-    const options = buildPullOpts(image, pullOpts)
+    const imgUri = buildImgUri(image)
+    Logger.info(`Pulling image ${imgUri}...`)
 
-    Logger.info(`Pulling image ${repoTag}...`)
+    const { error, data, exitCode } = await docker(
+      [`pull`, imgUri],
+      { envs: process.env, exec: true }
+    )
 
-    return new Promise((res, rej) => {
-      this.docker.pull(repoTag, options, (err:Error, stream:ReadStream) => {
-        if(err) return rej(err)
-        this.docker.modem.followProgress(
-          stream,
-          err => err ? rej(err) : res(),
-          noOp
-        )
-      })
-    })
+    if(error || exitCode)
+      throw new Error(error || `Error pulling image ${imgUri}. Command failed with exit code ${exitCode}`)
+
+    return { data }
   }
 
   /**

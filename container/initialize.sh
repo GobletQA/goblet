@@ -25,11 +25,6 @@ goblet_screencast(){
   yarn vnc:start >> /proc/1/fd/1 &
 }
 
-goblet_conductor(){
-  export DOCKER_HOST="tcp://$GOBLET_DIND_SERVICE_HOST:$GOBLET_DIND_SERVICE_PORT"
-  echo "$DOCKER_AUTH_PASSWORD" | docker login $DOCKER_REGISTRY --username $DOCKER_AUTH_USER --password-stdin
-}
-
 # Check if we should install new packages
 [ "$GB_NM_INSTALL" ] && goblet_run_dev_yarn_install
 
@@ -38,7 +33,6 @@ goblet_conductor(){
 if [ "$GB_SUB_REPO" ]; then
 
   # Handle repo specific tasks as needed
-  [ "$GB_SUB_REPO" == "conductor" ] && goblet_conductor
   [ "$GB_SUB_REPO" == "screencast" ] && goblet_screencast
 
   cd /goblet/app/repos/$GB_SUB_REPO
