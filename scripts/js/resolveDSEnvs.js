@@ -23,6 +23,10 @@ const secretEnvs = loadYmlSync({
 
 if(!secretEnvs) throw new Error(`Secret Envs List could not be loaded from ${secretEnvsKeys}`)
 
+/**
+ * TODO: come up with a better way to filter frontend vs backend envs
+ * Right now just filtering out firebase envs
+ */
 Object.keys(secretEnvs)
   .forEach(key => key.startsWith(`FIRE`) ? feKeys.push(key) : beKeys.push(key))
 
@@ -84,7 +88,17 @@ const envs = resolveValues()
 dsEnvs+= buildEnvs(envs, defEnvs)
 dsEnvs+= repo === `frontend` ? buildEnvs(envs, feKeys) : buildEnvs(envs, beKeys)
 
+/**
+ * If Kubernetes secrets are passed
+ * Then generate the envs for them using `valueFrom: secretKeyRef:` syntax
+ */
 fromSecrets.length && (dsEnvs+= buildFromSecrets(envs, fromSecrets))
 
+/**
+ * Uses the kubernetes env syntax to generate the docker host from runtime envs
+ * [See more here](https://kubernetes.io/docs/tasks/inject-data-application/define-interdependent-environment-variables/)
+ */
+repo === `conductor`
+  && (dsEnvs += addEnv(`DOCKER_HOST`, `"tcp://$(GOBLET_DIND_SERVICE_HOST):$(GOBLET_DIND_SERVICE_PORT)"`))
 
 process.stdout.write(dsEnvs)

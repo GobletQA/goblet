@@ -3,7 +3,6 @@ import { TScreenDims, TGScreencastConfig } from '@gobletqa/screencast/src/types'
 
 const {
   GB_SC_HOST,
-  GB_BE_HOST,
   GB_VNC_ACTIVE,
   DISPLAY=':0.0',
   GB_SC_PORT,
@@ -39,7 +38,7 @@ export const screencastConfig:TGScreencastConfig = {
       viewport: screenDims,
     },
     novnc: {
-      host: GB_BE_HOST,
+      host: GB_SC_HOST,
       port: GB_NO_VNC_PORT,
     },
     vnc: {

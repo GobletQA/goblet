@@ -86,4 +86,11 @@ COPY --from=goblet-build /goblet/app/ .
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules
 
-CMD [ "/bin/bash", "container/initialize.sh" ]
+RUN echo "#! /bin/bash" >> /init.sh && \
+    echo "[ \"\$GB_SUB_REPO\" == \"conductor\" ] && export DOCKER_HOST=\"tcp://\$GOBLET_DIND_SERVICE_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /init.sh && \
+    echo "exec \$@" >> /init.sh && \
+    chmod a+x /init.sh && \
+    chmod a+x /goblet/app/container/initialize.sh
+
+ENTRYPOINT ["/init.sh"]
+CMD [ "container/initialize.sh" ]
