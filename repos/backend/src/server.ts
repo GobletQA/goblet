@@ -6,7 +6,6 @@ import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
-  setupVNCProxy,
   setupEndpoints,
   setupConductorProxy,
 } from '@GBE/middleware'
@@ -21,6 +20,8 @@ import {
   setupServerListen,
   validateUser,
 } from '@gobletqa/shared/middleware'
+
+// import { setupVNCProxy } from '@gobletqa/shared/middleware/setupVNCProxy'
 
 /**
  * Starts a express API server, and connects the sockr Websocket
@@ -43,14 +44,14 @@ export const initApi = async () => {
   await setupEndpoints()
   setupLoggerErr(app)
 
-  const wsProxy = setupVNCProxy(app)
+  // const wsProxy = setupVNCProxy(app)
+  // server.on('upgrade', wsProxy.upgrade)
   const {
     secureServer,
     insecureServer,
   } = setupServerListen(app, { name: `Backend`, ...serverConf })
 
   const server = secureServer || insecureServer
-  server.on('upgrade', wsProxy.upgrade)
   const socket = await initSockr(app, server, sockr, 'tests')
 
   return { app, server, socket }

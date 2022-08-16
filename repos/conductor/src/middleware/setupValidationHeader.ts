@@ -12,6 +12,12 @@ const checkValidationHeader = asyncWrap(async (
 
   const conductor = req.app.locals.conductor as Conductor
   if(!conductor) throw new Error(`Missing Conductor Instance`)
+
+  /**
+   * Should only be set to true in dev, defaults to false
+   */
+  if(conductor?.config?.localDevMode) return next()
+
   const { key, keyHeader } = conductor?.config?.server?.validation
 
   if(req.headers[keyHeader.toLowerCase()] === key) return next()

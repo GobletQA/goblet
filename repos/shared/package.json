@@ -31,7 +31,8 @@
     "@keg-hub/jsutils": "9.2.0"
   },
   "peerDependencies": {
-    "express": ">=4.X"
+    "express": ">=4.X",
+    "http-proxy-middleware": ">=2.0.4"
   },
   "dependencies": {
     "@keg-hub/cli-utils": "0.7.0",

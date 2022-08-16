@@ -47,6 +47,8 @@ const {
 
   GB_VNC_ACTIVE,
 
+
+  GB_CD_LOCAL_DEV_MODE
   // Salting the user hash string. Not intended to be secure, just anonymous
 } = process.env
 
@@ -97,4 +99,9 @@ export const conductorConfig:TConductorConfig = {
       credentialsRequired: toBool(GB_BE_JWT_CREDENTIALS || true),
     }
   } as TServerConfig,
+
+  /**
+   * Only turn on local dev mode when explicitly defined, and in a local environment
+   */
+  localDevMode: nodeEnv === 'local' && Boolean(GB_CD_LOCAL_DEV_MODE === 'true'),
 }

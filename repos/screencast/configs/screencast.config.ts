@@ -14,7 +14,6 @@ const {
   GB_VNC_SERVER_HOST=GB_SC_HOST,
 } = process.env
 
-
 const screenDims:TScreenDims = {
   width: parseInt(GB_VNC_VIEW_WIDTH as string, 10) ?? 900,
   height: parseInt(GB_VNC_VIEW_HEIGHT as string, 10) ?? 1440,

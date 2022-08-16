@@ -11,6 +11,21 @@ const defEnvs = [
   `GB_TOKEN`,
   `NODE_ENV`,
   `GB_NM_INSTALL`,
+  // Add these default backend env to default so frontend knows how to connect to it
+  // Need a better way to know how to load these
+  `GB_BE_HOST`,
+  `GB_BE_PORT`,
+  `GB_VNC_ACTIVE`,
+  `GB_NO_VNC_PATH`,
+  `GB_VNC_VIEW_WIDTH`,
+  `GB_VNC_VIEW_HEIGHT`,
+  `GB_AUTH_ACTIVE`,
+  `GB_BE_SOCKR_PATH`,
+  `GB_BE_SOCKET_PORT`,
+  `GB_BE_SOCKET_HOST`,
+  `GB_PW_SOCKET_ACTIVE`,
+  `GB_GITHUB_CLIENT_ID`,
+  `GB_GITHUB_AUTH_USERS`,
 ]
 const feKeys = []
 const beKeys = []

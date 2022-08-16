@@ -85,6 +85,7 @@ export type TConductorConfig = {
   images?: TImgsConfig
   controller: TDockerConfig
   screencast: TScreencastConf
+  localDevMode?: boolean
 }
 
 export type TSpawnOpts = {

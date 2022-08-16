@@ -35,23 +35,23 @@ export const buildContainerConfig = async (
         urls,
         ports,
         subdomain,
-        options:runOpts,
-        config: docker.config,
-        conductor: docker.conductor,
+        // options:runOpts,
+        // config: docker.config,
+        // conductor: docker.conductor,
     }),
     HostConfig: {
-      RestartPolicy: { Name: `on-failure`, MaximumRetryCount: 2 },
       ...runOpts.hostConfig,
+      IpcMode: `private`,
       PortBindings: bindings,
       PidsLimit: image?.pidsLimit || docker?.config?.pidsLimit,
-      IpcMode: `host`,
+      RestartPolicy: { Name: `on-failure`, MaximumRetryCount: 2 },
       // Privileged: true
-      Devices: [{
-        PathOnHost: `/dev/fuse`,
-        CgroupPermissions: `rwm`,
-        PathInContainer: `/dev/fuse`,
-      }],
-      CapAdd: [`SYS_ADMIN`],
+      // Devices: [{
+      //   PathOnHost: `/dev/fuse`,
+      //   CgroupPermissions: `rwm`,
+      //   PathInContainer: `/dev/fuse`,
+      // }],
+      // CapAdd: [`SYS_ADMIN`],
       // --cap-add SYS_ADMIN --device /dev/fuse
       // TODO: investigate this
       // IpcMode: 'none',

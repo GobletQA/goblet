@@ -17,13 +17,15 @@ import {
   setupServerListen,
 } from '@gobletqa/shared/middleware'
 
-export const createServer = (config:TServerConfig) => {
+export const createServer = (config:TServerConfig, localDevMode:boolean=false) => {
   const app = getApp() as Express
 
   setupLoggerReq(app)
   setupCors(app)
   setupValidationHeader(app)
-  setupJWT(app, [`/`])
+
+  localDevMode !== true && setupJWT(app, [`/`])
+
   setupAuthUser(app)
   setupServer(app, false, false)
   setupRouters(app)

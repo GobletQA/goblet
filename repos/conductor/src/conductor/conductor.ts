@@ -146,7 +146,6 @@ export class Conductor {
     // this.handleRateLimit(req)
 
     const routeData = this.controller.getRoute(req)
-
     return routeData?.route
       || routeData?.internal
       || undefined
@@ -159,7 +158,7 @@ export class Conductor {
     // Ensure the controller is configuration properly 
     await this.controller.validate()
 
-    const { server } = createServer(this.config.server)
+    const { server } = createServer(this.config.server, this.config?.localDevMode)
     const proxyHandler = createProxy({
       ...this.config.proxy,
       proxyRouter: this.proxyRouter.bind(this)

@@ -73,5 +73,5 @@ export type TBackendConfig = {
   sockr: TSockrConfig
   server: TBEServerConfig
   conductor: TConductorServiceConfig
-  screencast: TScreencastServer
+  screencast?: TScreencastServer
 }
