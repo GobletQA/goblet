@@ -7,7 +7,8 @@ containers: []
 initContainers: []
 
 service:
-  type: NodePort
+  # type: NodePort
+  type: ClusterIP
   labels: {}
   annotations: {}
   ports: []
@@ -110,7 +111,6 @@ env:
   GB_BE_COOKIE_SAME_SITE: None
   GB_BE_COOKIE_KEY: goblet-cookie-7979
 
-
 # ---- Frontend ENVs ---- #
   GB_FE_PORT: 19006
   GB_FE_IMAGE_TAG: latest
@@ -118,7 +118,6 @@ env:
   GB_FE_IMAGE: 'ghcr.io/gobletqa/goblet-frontend'
   # --- TODO: Update this as needed for deployments
   GB_FE_ROOT_DIR: /goblet/app/repos/frontend
-
 
 # --- CONDUCTOR ENVs --- #
   # Host the FE uses to connect to the BE
@@ -165,8 +164,8 @@ env:
   GB_VNC_VIEW_WIDTH: 1440
 
 # --- DIND ENVs --- #
-  # GB_DD_PORT: 2375
-  GB_DD_PORT: 2376
+  GB_DD_PORT: 2375
+  # GB_DD_PORT: 2376
   GB_DD_HOST: 0.0.0.0
   GB_DD_IMAGE_TAG: latest
   GB_DD_DEPLOYMENT: goblet-dind

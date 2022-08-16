@@ -1,4 +1,5 @@
-
+import type { DockerOptions } from 'dockerode'
+import fs from 'node:fs'
 import { toNum, toBool } from '@keg-hub/jsutils'
 import { inDocker } from '@keg-hub/cli-utils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
@@ -52,15 +53,28 @@ const {
   // Salting the user hash string. Not intended to be secure, just anonymous
 } = process.env
 
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+
 /**
  * Helper to generate the options for connecting to the controller (i.e. docker)
  */
 const getControllerOpts = () => {
-  return !isDocker
+  const opts:DockerOptions = !isDocker
     ? {}
+      // TODO: need to find the dind container IP address, not the service port
     : GOBLET_DIND_SERVICE_HOST && GOBLET_DIND_SERVICE_PORT
-      ? { host: GOBLET_DIND_SERVICE_HOST, port: GOBLET_DIND_SERVICE_PORT }
+      ? { host: GOBLET_DIND_SERVICE_HOST, port: GOBLET_DIND_SERVICE_PORT, protocol: `http` }
       : { socketPath: GB_CD_DOC_VOLUMES }
+
+  
+  if(GOBLET_DIND_SERVICE_PORT === `2376` && !Boolean(GB_CD_LOCAL_DEV_MODE)){
+    opts.protocol = `https`
+    opts.ca = fs.readFileSync('/root/.docker/ca.pem').toString()
+    opts.cert = fs.readFileSync('/root/.docker/cert.pem').toString()
+    opts.key = fs.readFileSync('/root/.docker/key.pem').toString()
+  }
+
+  return opts
 }
 
 export const conductorConfig:TConductorConfig = {
