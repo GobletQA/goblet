@@ -88,14 +88,14 @@ RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
 
 # Helper script to auto-login to set the DOCKER_HOST env and auto-login
 # Only runs when GB_SUB_REPO env is conductor
-RUN echo "#! /bin/bash" >> /init.sh && \
-    echo "if [ \"\$GB_SUB_REPO\" == \"conductor\" ]; then" >> /init.sh && \
-    echo "  export DOCKER_HOST=\"tcp://\$GOBLET_DIND_SERVICE_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /init.sh && \
-    echo "  echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /init.sh && \
-    echo "fi" >> /init.sh && \
-    echo "exec \$@" >> /init.sh && \
-    chmod a+x /init.sh && \
+RUN echo "#! /bin/bash" >> /entrypoint.sh && \
+    echo "if [ \"\$GB_SUB_REPO\" == \"conductor\" ]; then" >> /entrypoint.sh && \
+    echo "  export DOCKER_HOST=\"tcp://\$GOBLET_DIND_SERVICE_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /entrypoint.sh && \
+    echo "  echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /entrypoint.sh && \
+    echo "fi" >> /entrypoint.sh && \
+    echo "exec \$@" >> /entrypoint.sh && \
+    chmod a+x /entrypoint.sh && \
     chmod a+x /goblet/app/container/initialize.sh
 
-ENTRYPOINT ["/init.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "container/initialize.sh" ]

@@ -19,19 +19,31 @@ export const buildRuntimeEnvs = (image:TImgConfig, data?:Record<any,any>):string
 }
 
 /**
- * Builds envs for a container in the format needed for the docker-api
+ * Loops over an env object and converts the key/value pairs into an array of joined strings
  */
-export const buildContainerEnvs = (image:TImgConfig, data?:Record<any,any>):string[] => {
-  const imgEnvs = buildRuntimeEnvs(image, data)
-
-  const envs = image?.container?.envs
-    ? Object.entries(image?.container?.envs)
+const loopEnvObj = (envObj:Record<string,string>, existingEnvs:string[]=[]):string[] => {
+  return envObj
+    ? Object.entries(envObj)
       .reduce((acc, [name, value]) => {
         exists(value) && acc.push(`${name}=${value}`)
 
         return acc
-      }, [])
-    : []
+      }, existingEnvs)
+    : existingEnvs
+}
+
+/**
+ * Builds envs for a container in the format needed for the docker-api
+ */
+export const buildContainerEnvs = (
+  image:TImgConfig,
+  data?:Record<any,any>,
+  defEnvs?:Record<string,string>
+):string[] => {
+
+  const builtEnvs = loopEnvObj(defEnvs)
+  const envs = loopEnvObj(defEnvs, builtEnvs)
+  const imgEnvs = buildRuntimeEnvs(image, data)
 
   return flatUnion(envs, imgEnvs)
 }

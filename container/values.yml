@@ -172,3 +172,6 @@ env:
   GB_DD_IMAGE: 'ghcr.io/gobletqa/goblet-dind'
   GB_DD_IMAGE_FROM: 'docker:20.10.17-dind'
   GB_DD_PRIVILEGED: true
+  
+  GB_DD_PROXY_PORT: 8083
+  GB_DD_PROXY_NETWORK: goblet-proxy

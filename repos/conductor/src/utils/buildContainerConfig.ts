@@ -38,6 +38,11 @@ export const buildContainerConfig = async (
         // options:runOpts,
         // config: docker.config,
         // conductor: docker.conductor,
+    }, {
+      // TODO: configure this to use the correct subdomain
+      // VIRTUAL_HOST: `subdomain.virtualhost.com`
+      // Define which port will be exposed, need to expose more then one port?
+      // VIRTUAL_PORT: exposed port
     }),
     HostConfig: {
       ...runOpts.hostConfig,

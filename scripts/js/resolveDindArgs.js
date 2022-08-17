@@ -12,9 +12,9 @@ const args = isSecure
       `"--host=tcp://${envs.GB_DD_HOST}:${envs.GB_DD_PORT}"`
     ]
   : [
-      `"--tls=false"`,
       `"--host=unix:///var/run/docker.sock"`,
-      `"--host=tcp://${envs.GB_DD_HOST}:${envs.GB_DD_PORT}"`
+      // `"--tls=false"`,
+      // `"--host=tcp://${envs.GB_DD_HOST}:${envs.GB_DD_PORT}"`
     ]
 
 process.stdout.write(`[${args.join(', ')}]`)

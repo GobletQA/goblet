@@ -1,0 +1,7 @@
+ARG GB_IMAGE_FROM=docker:20.10.17-dind
+ARG IMAGE_FROM=$GB_IMAGE_FROM
+
+FROM $IMAGE_FROM as goblet-dind
+
+# TODO: add nginx in front of the docker API
+# Allows adding auth && white listing only specific API from specific sources

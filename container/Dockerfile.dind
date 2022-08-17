@@ -1,7 +1,74 @@
-ARG GB_IMAGE_FROM=docker:20.10.17-dind
-ARG IMAGE_FROM=$GB_IMAGE_FROM
+ARG UBUNTU_VERSION=20.04
+FROM ubuntu:${UBUNTU_VERSION}
 
-FROM $IMAGE_FROM as goblet-dind
+ARG DOCKER_VERSION=20.10.16
+ARG DOCKER_COMPOSE_VERSION=1.29.2
+ARG DEBIAN_FRONTEND=noninteractive
 
-# TODO: add nginx in front of the docker API
-# Allows adding auth && white listing only specific API from specific sources
+ENV DOCKER_CHANNEL=stable \
+    DOCKER_VERSION=$DOCKER_VERSION \
+    DOCKER_COMPOSE_VERSION=$DOCKER_COMPOSE_VERSION \
+    DEBUG=false
+
+RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
+    apt-get update && apt-get install --yes --no-install-recommends \
+    curl \
+    wget \
+    iptables \
+    supervisor \
+    ca-certificates \
+    openssh-client && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+  arch="$(uname --m)"; \
+  case "$arch" in \
+    x86_64) dockerArch='x86_64';; \
+    armhf) dockerArch='armel';; \
+    armv7) dockerArch='armhf';; \
+    aarch64) dockerArch='aarch64';; \
+    *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
+  esac && \
+  if ! wget -O docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-${DOCKER_VERSION}.tgz"; then \
+    echo >&2 "error: failed to download 'docker-${DOCKER_VERSION}' from '${DOCKER_CHANNEL}' for '${dockerArch}'" && \
+    exit 1; \
+  fi && \
+  tar --extract --file docker.tgz --strip-components 1 --directory /usr/local/bin/ && \
+  rm docker.tgz && \
+  dockerd --version && \
+  docker --version
+
+RUN export DOCKER_CONF=/etc/supervisor/conf.d/dockerd.conf && \
+    echo "[program:dockerd]" >> $DOCKER_CONF && \
+    echo "command=/usr/local/bin/dockerd" >> $DOCKER_CONF && \
+    echo "autostart=true" >> $DOCKER_CONF && \
+    echo "autorestart=true" >> $DOCKER_CONF && \
+    echo "stderr_logfile=/var/log/dockerd.err.log" >> $DOCKER_CONF && \
+    echo "stdout_logfile=/var/log/dockerd.out.log" >> $DOCKER_CONF
+
+RUN export MODPROBE=/usr/local/bin/modprobe && \
+    echo "#!/bin/sh" >> $MODPROBE && \
+    echo "set -eu" >> $MODPROBE && \
+    echo "for module; do" >> $MODPROBE && \
+    echo "  if [ \"\${module#-}\" = \"\$module\" ]; then" >> $MODPROBE && \
+    echo "    ip link show \"\$module\" || true" >> $MODPROBE && \
+    echo "    lsmod | grep \"\$module\" || true" >> $MODPROBE && \
+    echo "  fi" >> $MODPROBE && \
+    echo "done" >> $MODPROBE && \
+    echo "export PATH='/usr/sbin:/usr/bin:/sbin:/bin'" >> $MODPROBE && \
+    echo "exec modprobe \"\$@\"" >> $MODPROBE && \
+    chmod +x $MODPROBE
+
+COPY container/scripts/proxy.sh /goblet-proxy.sh
+COPY container/scripts/proxy-template.conf /proxy-templates/nginx.tmpl
+
+RUN echo "#! /bin/bash" >> /entrypoint.sh && \
+    echo "/usr/bin/supervisord -n >> /dev/null 2>&1 &" >> /entrypoint.sh && \
+    echo "exec \$@" >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh && \
+    chmod +x /goblet-proxy.sh
+    
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/goblet-proxy.sh"]
