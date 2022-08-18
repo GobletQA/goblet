@@ -66,13 +66,6 @@ const getControllerOpts = () => {
       ? { host: GOBLET_DIND_SERVICE_HOST, port: GOBLET_DIND_SERVICE_PORT, protocol: `http` }
       : { socketPath: GB_CD_DOC_VOLUMES }
 
-  
-  if(GOBLET_DIND_SERVICE_PORT === `2376` && !Boolean(GB_CD_LOCAL_DEV_MODE)){
-    opts.protocol = `https`
-    opts.ca = fs.readFileSync('/root/.docker/ca.pem').toString()
-    opts.cert = fs.readFileSync('/root/.docker/cert.pem').toString()
-    opts.key = fs.readFileSync('/root/.docker/key.pem').toString()
-  }
 
   return opts
 }

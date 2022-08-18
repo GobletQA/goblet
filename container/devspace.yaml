@@ -244,10 +244,10 @@ deployments:
 # Is not run for `yarn dev deploy` || `devspace deploy` commands
 dev:
   # Gets the apps that should sync with the host machine
-  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_CD_ACTIVE)
+  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_CD_ACTIVE GB_DD_ACTIVE)
 
   # Gets the ports that should be exposed to the host machine from the running pod
-  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_CD_ACTIVE ${GB_CD_PORT})
+  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_CD_ACTIVE ${GB_CD_PORT} GB_DD_ACTIVE ${GB_DD_PORT} ${GB_DD_EXP_ADMIN_PORT})
 
   # The `open` field tells DevSpace to open a URL as soon as it returns HTTP status 200
   # Since we configured port-forwarding, we can use a localhost address here to access our application

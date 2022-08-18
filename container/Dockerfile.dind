@@ -1,81 +1,6 @@
 ARG GB_IMAGE_FROM=ubuntu:20.04
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
-FROM $IMAGE_FROM as goblet-supervisor
-RUN <<EOF
-  set -eux;
-  mkdir -p /etc/supervisor/conf.d
-
-  # Build the docker config file for supervisor
-  export DOCKER_CONF=/etc/supervisor/conf.d/dockerd.conf
-  echo "[program:dockerd]" >> $DOCKER_CONF
-  echo "command=/usr/local/bin/dockerd" >> $DOCKER_CONF
-  echo "autostart=true" >> $DOCKER_CONF
-  echo "autorestart=true" >> $DOCKER_CONF
-  echo "stdout_logfile_maxbytes=0" >> $DOCKER_CONF
-  echo "stdout_logfile=/proc/1/fd/1" >> $DOCKER_CONF
-  echo "stderr_logfile_maxbytes=0" >> $DOCKER_CONF
-  echo "stderr_logfile=/proc/1/fd/1" >> $DOCKER_CONF
-  # echo "user = goblet" >> $DOCKER_CONF
-  # echo "environment = HOME=\"/goblet\", USER=\"goblet\"" >> $DOCKER_CONF
-
-  # Build the caddy config file for supervisor
-  export CADDY_CONF=/etc/supervisor/conf.d/caddy.conf
-  echo "[program:caddy]" >> $CADDY_CONF
-  echo "command=/usr/bin/caddy run -config=\"/etc/caddy/Caddyfile\"" >> $CADDY_CONF
-  echo "autostart=true" >> $CADDY_CONF
-  echo "autorestart=true" >> $CADDY_CONF
-  echo "startsecs=10" >> $CADDY_CONF
-  echo "stopwaitsecs=30" >> $CADDY_CONF
-  echo "startretries=3" >> $CADDY_CONF
-  echo "stdout_logfile_maxbytes=0" >> $CADDY_CONF
-  echo "stdout_logfile=/proc/1/fd/1" >> $CADDY_CONF
-  echo "stderr_logfile_maxbytes=0" >> $CADDY_CONF
-  echo "stderr_logfile=/proc/1/fd/1" >> $CADDY_CONF
-  
-  # echo "user = goblet" >> $CADDY_CONF
-  # echo "environment = HOME=\"/goblet\", USER=\"goblet\"" >> $CADDY_CONF
-
-EOF
-
-
-FROM $IMAGE_FROM as goblet-caddy
-ARG GB_DD_PORT=2371
-ARG GB_DD_CADDY_HOST=localhost
-ARG GB_DD_LOCAL_ADMIN_PORT=2381
-
-ENV GB_DD_PORT=$GB_DD_PORT \
-    GB_DD_CADDY_HOST=$GB_DD_CADDY_HOST \
-    GB_DD_LOCAL_ADMIN_PORT=$GB_DD_LOCAL_ADMIN_PORT
-
-RUN <<EOF
-  set -eux;
-  mkdir -p /etc/caddy
-  export CADDY_FILE=/etc/caddy/Caddyfile
-
-  echo "{" >> $CADDY_FILE
-  echo "	debug" >> $CADDY_FILE
-  echo "	admin :$GB_DD_LOCAL_ADMIN_PORT" >> $CADDY_FILE
-  echo "}" >> $CADDY_FILE
-  echo "" >> $CADDY_FILE
-  echo "http://$GB_DD_CADDY_HOST:$GB_DD_PORT {" >> $CADDY_FILE
-  echo "	reverse_proxy unix///var/run/docker.sock" >> $CADDY_FILE
-  echo "}" >> $CADDY_FILE
-  echo "" >> $CADDY_FILE
-
-EOF
-
-FROM $IMAGE_FROM as goblet-entrypoint
-RUN <<EOF
-  set -eux;
-  # Build the entrypoint file
-  echo "#! /bin/bash" >> /entrypoint.sh
-  echo "/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf" >> /entrypoint.sh
-  # echo "exec \$@" >> /entrypoint.sh
-  chmod +x /entrypoint.sh
-EOF
-
-
 FROM $IMAGE_FROM as goblet-modprobe
 RUN <<EOF
   set -eux;
@@ -195,10 +120,10 @@ RUN <<EOF
 
 EOF
 
-COPY --from=goblet-entrypoint /entrypoint.sh /entrypoint.sh
-COPY --from=goblet-caddy /etc/caddy/Caddyfile /etc/caddy/Caddyfile
+COPY repos/dind/entrypoint.sh /entrypoint.sh
+COPY repos/dind/etc/caddy/Caddyfile /etc/caddy/Caddyfile
+COPY repos/dind/etc/supervisor/conf.d /etc/supervisor/conf.d
 COPY --from=goblet-modprobe /usr/local/bin/modprobe /usr/local/bin/modprobe
-COPY --from=goblet-supervisor /etc/supervisor/conf.d /etc/supervisor/conf.d
 
 # Set the entry point to ensure supervisord always gets started
 ENTRYPOINT ["/entrypoint.sh"]

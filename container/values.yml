@@ -164,8 +164,7 @@ env:
   GB_VNC_VIEW_WIDTH: 1440
 
 # --- DIND ENVs --- #
-  # docker -H tcp://localhost:2371 info
-  GB_DD_PORT: 2371
+  GB_DD_PORT: 2375
   GB_DD_HOST: 0.0.0.0
   # Required for dind
   GB_DD_PRIVILEGED: true

@@ -33,7 +33,7 @@ const syncFrontendConfig = (deployment) => (`
   ${sharedIgnored}
 `)
 
-const syncBackendConfig = (deployment, extraIgnore) => (`
+const syncBackendConfig = (deployment) => (`
 - labelSelector:
     app.kubernetes.io/component: ${deployment}
   disableDownload: true
@@ -46,24 +46,35 @@ const syncBackendConfig = (deployment, extraIgnore) => (`
   ${sharedIgnored}
 `)
 
+const syncDDConfig = (deployment) => (`
+- labelSelector:
+    app.kubernetes.io/component: ${deployment}
+  disableDownload: true
+  initialSync: preferLocal
+  localSubPath: ../repos/dind/etc
+  containerPath: /etc
+`)
 
 /**
  * Check if the app is being deploy
  * If it is, build the sync config based off the deployment
  */
-const generateSync = (isActiveEnv, backend) => {
+const generateSync = (isActiveEnv, backend, isDD) => {
   const deployment = process.env[isActiveEnv]
-  return Boolean(deployment)
-    ? backend
-      ? syncBackendConfig(deployment)
-      : syncFrontendConfig(deployment)
-    : ``
+  return isDD
+    ? syncDDConfig(deployment)
+    : Boolean(deployment)
+      ? backend
+        ? syncBackendConfig(deployment)
+        : syncFrontendConfig(deployment)
+      : ``
 }
 
 const args = process.argv.slice(2)
 const feDeployment = generateSync(args.shift())
 const beDeployment = generateSync(args.shift(), true)
 const cdDeployment = generateSync(args.shift(), true)
+const ddDeployment = generateSync(args.shift(), true, `dd`)
 // const pxDeployment = generateSync(args.shift(), true)
 // const scDeployment = generateSync(args.shift(), true)
 
@@ -71,6 +82,7 @@ let syncs = ``
 feDeployment && (syncs += feDeployment)
 beDeployment && (syncs += beDeployment)
 cdDeployment && (syncs += cdDeployment)
+ddDeployment && (syncs += ddDeployment)
 // pxDeployment && (syncs += pxDeployment)
 // scDeployment && (syncs += scDeployment)
 
