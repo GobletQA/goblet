@@ -31,7 +31,7 @@ RUN turbo run build --filter=@gobletqa/conductor && \
 
 # ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
-WORKDIR /usr/src/goblet/app
+WORKDIR /goblet/app
 ENV HOME=/root \
     DISPLAY=:0.0 \
     DEBUG=pw:api* \
@@ -56,7 +56,7 @@ COPY --from=goblet-builder /goblet/app/repos/conductor/package.json repos/conduc
 COPY --from=goblet-builder /goblet/app/repos/conductor/node_modules repos/conductor/node_modules
 COPY --from=goblet-builder /goblet/app/repos/conductor/tsconfig.json repos/conductor/tsconfig.json
 
-WORKDIR /usr/src/goblet/app/repos/conductor
+WORKDIR /goblet/app/repos/conductor
 ARG GB_CD_PORT=9901
 ENV GB_CD_PORT=$GB_CD_PORT
 EXPOSE $GB_CD_PORT

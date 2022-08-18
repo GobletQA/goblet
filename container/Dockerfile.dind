@@ -1,74 +1,204 @@
-ARG UBUNTU_VERSION=20.04
-FROM ubuntu:${UBUNTU_VERSION}
+ARG GB_IMAGE_FROM=ubuntu:20.04
+ARG IMAGE_FROM=$GB_IMAGE_FROM
 
+FROM $IMAGE_FROM as goblet-supervisor
+RUN <<EOF
+  set -eux;
+  mkdir -p /etc/supervisor/conf.d
+
+  # Build the docker config file for supervisor
+  export DOCKER_CONF=/etc/supervisor/conf.d/dockerd.conf
+  echo "[program:dockerd]" >> $DOCKER_CONF
+  echo "command=/usr/local/bin/dockerd" >> $DOCKER_CONF
+  echo "autostart=true" >> $DOCKER_CONF
+  echo "autorestart=true" >> $DOCKER_CONF
+  echo "stdout_logfile_maxbytes=0" >> $DOCKER_CONF
+  echo "stdout_logfile=/proc/1/fd/1" >> $DOCKER_CONF
+  echo "stderr_logfile_maxbytes=0" >> $DOCKER_CONF
+  echo "stderr_logfile=/proc/1/fd/1" >> $DOCKER_CONF
+  # echo "user = goblet" >> $DOCKER_CONF
+  # echo "environment = HOME=\"/goblet\", USER=\"goblet\"" >> $DOCKER_CONF
+
+  # Build the caddy config file for supervisor
+  export CADDY_CONF=/etc/supervisor/conf.d/caddy.conf
+  echo "[program:caddy]" >> $CADDY_CONF
+  echo "command=/usr/bin/caddy run -config=\"/etc/caddy/Caddyfile\"" >> $CADDY_CONF
+  echo "autostart=true" >> $CADDY_CONF
+  echo "autorestart=true" >> $CADDY_CONF
+  echo "startsecs=10" >> $CADDY_CONF
+  echo "stopwaitsecs=30" >> $CADDY_CONF
+  echo "startretries=3" >> $CADDY_CONF
+  echo "stdout_logfile_maxbytes=0" >> $CADDY_CONF
+  echo "stdout_logfile=/proc/1/fd/1" >> $CADDY_CONF
+  echo "stderr_logfile_maxbytes=0" >> $CADDY_CONF
+  echo "stderr_logfile=/proc/1/fd/1" >> $CADDY_CONF
+  
+  # echo "user = goblet" >> $CADDY_CONF
+  # echo "environment = HOME=\"/goblet\", USER=\"goblet\"" >> $CADDY_CONF
+
+EOF
+
+
+FROM $IMAGE_FROM as goblet-caddy
+ARG GB_DD_PORT=2371
+ARG GB_DD_CADDY_HOST=localhost
+ARG GB_DD_LOCAL_ADMIN_PORT=2381
+
+ENV GB_DD_PORT=$GB_DD_PORT \
+    GB_DD_CADDY_HOST=$GB_DD_CADDY_HOST \
+    GB_DD_LOCAL_ADMIN_PORT=$GB_DD_LOCAL_ADMIN_PORT
+
+RUN <<EOF
+  set -eux;
+  mkdir -p /etc/caddy
+  export CADDY_FILE=/etc/caddy/Caddyfile
+
+  echo "{" >> $CADDY_FILE
+  echo "	debug" >> $CADDY_FILE
+  echo "	admin :$GB_DD_LOCAL_ADMIN_PORT" >> $CADDY_FILE
+  echo "}" >> $CADDY_FILE
+  echo "" >> $CADDY_FILE
+  echo "http://$GB_DD_CADDY_HOST:$GB_DD_PORT {" >> $CADDY_FILE
+  echo "	reverse_proxy unix///var/run/docker.sock" >> $CADDY_FILE
+  echo "}" >> $CADDY_FILE
+  echo "" >> $CADDY_FILE
+
+EOF
+
+FROM $IMAGE_FROM as goblet-entrypoint
+RUN <<EOF
+  set -eux;
+  # Build the entrypoint file
+  echo "#! /bin/bash" >> /entrypoint.sh
+  echo "/usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf" >> /entrypoint.sh
+  # echo "exec \$@" >> /entrypoint.sh
+  chmod +x /entrypoint.sh
+EOF
+
+
+FROM $IMAGE_FROM as goblet-modprobe
+RUN <<EOF
+  set -eux;
+  # Build the replacement for modprobe, which is needed due to docker 
+  export MODPROBE=/usr/local/bin/modprobe
+  echo "#!/bin/sh" >> $MODPROBE
+  echo "set -eu" >> $MODPROBE
+  echo "for module; do" >> $MODPROBE
+  echo "  if [ \"\${module#-}\" = \"\$module\" ]; then" >> $MODPROBE
+  echo "    ip link show \"\$module\" || true" >> $MODPROBE
+  echo "    lsmod | grep \"\$module\" || true" >> $MODPROBE
+  echo "  fi" >> $MODPROBE
+  echo "done" >> $MODPROBE
+  echo "export PATH='/usr/sbin:/usr/bin:/sbin:/bin'" >> $MODPROBE
+  echo "exec modprobe \"\$@\"" >> $MODPROBE
+  chmod +x $MODPROBE
+EOF
+
+
+FROM $IMAGE_FROM as goblet-docker
+WORKDIR /
 ARG DOCKER_VERSION=20.10.16
 ARG DOCKER_COMPOSE_VERSION=1.29.2
 ARG DEBIAN_FRONTEND=noninteractive
-
 ENV DOCKER_CHANNEL=stable \
     DOCKER_VERSION=$DOCKER_VERSION \
     DOCKER_COMPOSE_VERSION=$DOCKER_COMPOSE_VERSION \
     DEBUG=false
+RUN <<EOF
+  set -eux;
+  # Enabel all sources
+  sed -i 's/# deb/deb/g' /etc/apt/sources.list
+  # Preinstall any dependecies for settting up the image
+  apt-get update && apt-get install --yes --no-install-recommends \
+    wget \
+    openssh-client \
+    ca-certificates
+  
+  # Figure out which version of docker should be downloaded
+  arch="$(uname --m)";
+  case "$arch" in
+    x86_64)
+      dockerArch='x86_64'
+      ;;
+    armhf)
+      dockerArch='armel'
+      ;;
+    armv7)
+      dockerArch='armhf'
+      ;;
+    aarch64)
+      dockerArch='aarch64'
+      ;;
+    *)
+      echo >&2 "error: unsupported architecture ($arch)"
+      exit 1
+      ;;
+  esac
+  # Attempt to download docker 
+  DOCKER_URL="https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-${DOCKER_VERSION}.tgz"
+  if ! wget -O docker.tgz $DOCKER_URL; then
+    echo >&2 "error: failed to download 'docker-${DOCKER_VERSION}' from '${DOCKER_CHANNEL}' for '${dockerArch}'"
+    exit 1;
+  fi
+EOF
 
-RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
-    apt-get update && apt-get install --yes --no-install-recommends \
+
+FROM $IMAGE_FROM as goblet-runner
+WORKDIR /
+ENV HOME=/root \
+    DISPLAY=:0.0 \
+    DEBUG=pw:api* \
+    LC_ALL=C.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    EXPO_CLI_VERSION=5.3.2 \
+    DEBIAN_FRONTEND=noninteractive \
+    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
+COPY --from=goblet-docker /docker.tgz /docker.tgz
+RUN <<EOF
+  set -eux;
+  # Enabel all sources
+  sed -i 's/# deb/deb/g' /etc/apt/sources.list
+  # Preinstall any dependecies for settting up the image
+  apt-get update && apt-get install --yes --no-install-recommends \
     curl \
     wget \
+    nano \
+    gpg \
+    nginx \
     iptables \
     supervisor \
+    openssh-client \
     ca-certificates \
-    openssh-client && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    debian-keyring \
+    apt-transport-https \
+    debian-archive-keyring
 
-RUN set -eux; \
-  arch="$(uname --m)"; \
-  case "$arch" in \
-    x86_64) dockerArch='x86_64';; \
-    armhf) dockerArch='armel';; \
-    armv7) dockerArch='armhf';; \
-    aarch64) dockerArch='aarch64';; \
-    *) echo >&2 "error: unsupported architecture ($arch)"; exit 1 ;;\
-  esac && \
-  if ! wget -O docker.tgz "https://download.docker.com/linux/static/${DOCKER_CHANNEL}/${dockerArch}/docker-${DOCKER_VERSION}.tgz"; then \
-    echo >&2 "error: failed to download 'docker-${DOCKER_VERSION}' from '${DOCKER_CHANNEL}' for '${dockerArch}'" && \
-    exit 1; \
-  fi && \
-  tar --extract --file docker.tgz --strip-components 1 --directory /usr/local/bin/ && \
-  rm docker.tgz && \
-  dockerd --version && \
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
+  apt-get update && apt-get install --yes --no-install-recommends caddy
+  
+  # Cleanup after install
+  apt-get clean
+  rm -rf /var/lib/apt/lists/*
+
+  # Extract the downloaded docker file and validate docker was installed
+  groupadd docker
+  tar --extract --file docker.tgz --strip-components 1 --directory /usr/local/bin/
+  rm docker.tgz
+  dockerd --version
   docker --version
+  # Install node and yarn
+  curl -sL https://deb.nodesource.com/setup_16.x | bash -
+  apt-get install -y nodejs
+  npm install -g yarn
 
-RUN export DOCKER_CONF=/etc/supervisor/conf.d/dockerd.conf && \
-    echo "[program:dockerd]" >> $DOCKER_CONF && \
-    echo "command=/usr/local/bin/dockerd" >> $DOCKER_CONF && \
-    echo "autostart=true" >> $DOCKER_CONF && \
-    echo "autorestart=true" >> $DOCKER_CONF && \
-    echo "stderr_logfile=/var/log/dockerd.err.log" >> $DOCKER_CONF && \
-    echo "stdout_logfile=/var/log/dockerd.out.log" >> $DOCKER_CONF
+EOF
 
-RUN export MODPROBE=/usr/local/bin/modprobe && \
-    echo "#!/bin/sh" >> $MODPROBE && \
-    echo "set -eu" >> $MODPROBE && \
-    echo "for module; do" >> $MODPROBE && \
-    echo "  if [ \"\${module#-}\" = \"\$module\" ]; then" >> $MODPROBE && \
-    echo "    ip link show \"\$module\" || true" >> $MODPROBE && \
-    echo "    lsmod | grep \"\$module\" || true" >> $MODPROBE && \
-    echo "  fi" >> $MODPROBE && \
-    echo "done" >> $MODPROBE && \
-    echo "export PATH='/usr/sbin:/usr/bin:/sbin:/bin'" >> $MODPROBE && \
-    echo "exec modprobe \"\$@\"" >> $MODPROBE && \
-    chmod +x $MODPROBE
+COPY --from=goblet-entrypoint /entrypoint.sh /entrypoint.sh
+COPY --from=goblet-caddy /etc/caddy/Caddyfile /etc/caddy/Caddyfile
+COPY --from=goblet-modprobe /usr/local/bin/modprobe /usr/local/bin/modprobe
+COPY --from=goblet-supervisor /etc/supervisor/conf.d /etc/supervisor/conf.d
 
-COPY container/scripts/proxy.sh /goblet-proxy.sh
-COPY container/scripts/proxy-template.conf /proxy-templates/nginx.tmpl
-
-RUN echo "#! /bin/bash" >> /entrypoint.sh && \
-    echo "/usr/bin/supervisord -n >> /dev/null 2>&1 &" >> /entrypoint.sh && \
-    echo "exec \$@" >> /entrypoint.sh && \
-    chmod +x /entrypoint.sh && \
-    chmod +x /goblet-proxy.sh
-    
-
+# Set the entry point to ensure supervisord always gets started
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/goblet-proxy.sh"]

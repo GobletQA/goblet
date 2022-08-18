@@ -70,7 +70,7 @@ vars:
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_CD_PORT"
 
-# ----- Conductor Values ----- #
+# ----- DinD Values ----- #
 - name: GB_DD_DEPLOYMENT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_DEPLOYMENT"
@@ -83,6 +83,13 @@ vars:
 - name: GB_DD_PRIVILEGED
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_PRIVILEGED"
+- name: GB_DD_EXP_ADMIN_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_EXP_ADMIN_PORT"
+- name: GB_DD_LOCAL_ADMIN_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_LOCAL_ADMIN_PORT"
+
 
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
@@ -141,8 +148,6 @@ deployments:
         image: ${GB_DD_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js dind)
-        command: ["dockerd"]
-        args: $(node ../scripts/js/resolveDindArgs.js)
         # TODO: use sysbox or gvisor to remove the need for privileged context
         securityContext:
           privileged: ${GB_DD_PRIVILEGED}
@@ -152,6 +157,8 @@ deployments:
         name: ${GB_DD_DEPLOYMENT}
         ports:
         - port: ${GB_DD_PORT}
+        - port: ${GB_DD_EXP_ADMIN_PORT}
+          containerPort: ${GB_DD_LOCAL_ADMIN_PORT}
 
 # ----- Frontend Deployment ----- #
 - name: ${GB_FE_DEPLOYMENT}

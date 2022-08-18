@@ -164,14 +164,18 @@ env:
   GB_VNC_VIEW_WIDTH: 1440
 
 # --- DIND ENVs --- #
-  GB_DD_PORT: 2375
-  # GB_DD_PORT: 2376
+  # docker -H tcp://localhost:2371 info
+  GB_DD_PORT: 2371
   GB_DD_HOST: 0.0.0.0
+  # Required for dind
+  GB_DD_PRIVILEGED: true
   GB_DD_IMAGE_TAG: latest
+  GB_DD_NETWORK: goblet-proxy
   GB_DD_DEPLOYMENT: goblet-dind
   GB_DD_IMAGE: 'ghcr.io/gobletqa/goblet-dind'
-  GB_DD_IMAGE_FROM: 'docker:20.10.17-dind'
-  GB_DD_PRIVILEGED: true
-  
-  GB_DD_PROXY_PORT: 8083
-  GB_DD_PROXY_NETWORK: goblet-proxy
+  GB_DD_IMAGE_FROM: 'ubuntu:20.04'
+
+  # Must be localhost due to caddy config, if can not be an ip address
+  GB_DD_CADDY_HOST: localhost
+  GB_DD_EXP_ADMIN_PORT: 2018
+  GB_DD_LOCAL_ADMIN_PORT: 2019
