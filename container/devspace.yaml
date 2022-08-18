@@ -151,8 +151,6 @@ deployments:
         # TODO: use sysbox or gvisor to remove the need for privileged context
         securityContext:
           privileged: ${GB_DD_PRIVILEGED}
-        volumeMounts: $(node ../scripts/js/resolveVols.js dind mounts)
-      volumes: $(node ../scripts/js/resolveVols.js dind)
       service:
         name: ${GB_DD_DEPLOYMENT}
         ports:
@@ -200,8 +198,6 @@ deployments:
         image: ${GB_CD_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js conductor docker-auth:user docker-auth:password)
-        volumeMounts: $(node ../scripts/js/resolveVols.js conductor mounts)
-      volumes: $(node ../scripts/js/resolveVols.js conductor)
       service:
         name: ${GB_CD_DEPLOYMENT}
         ports:
