@@ -61,11 +61,17 @@ ARG GB_CD_PORT=9901
 ENV GB_CD_PORT=$GB_CD_PORT
 EXPOSE $GB_CD_PORT
 
-RUN echo "#! /bin/bash" >> /entrypoint.sh && \
-    echo "export DOCKER_HOST=\"tcp://\$GOBLET_DIND_SERVICE_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /entrypoint.sh && \
-    echo "echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /entrypoint.sh && \
-    echo "exec \$@" >> /entrypoint.sh && \
-    chmod a+x /entrypoint.sh
+RUN <<EOF
+  set -eux;
+  echo "#! /bin/bash" >> /entrypoint.sh
+  echo "export DOCKER_HOST=\"tcp://\$GOBLET_DIND_SERVICE_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /entrypoint.sh
+  echo "echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /entrypoint.sh
+  echo "yarn pull images" >> /entrypoint.sh
+  echo "exec \$@" >> /entrypoint.sh
+  chmod a+x /entrypoint.sh
+EOF
+
+
 
 ENTRYPOINT ["/entrypoint.sh"]
 

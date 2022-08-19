@@ -4,6 +4,8 @@
     "baseUrl": "./",
     "outDir": "./dist",
     "paths": {
+      "@GCD": ["src"],
+      "@GCD/*": ["src/*"],
       "@gobletqa/shared/utils/loadEnvs": ["../shared/src/utils/loadEnvs"],
       "@gobletqa/shared/utils/getOrigin": ["../shared/src/utils/getOrigin"],
       "@gobletqa/shared": ["../shared/src"],
@@ -12,9 +14,13 @@
       "@gobletqa/conductor/configs/*": ["./configs/*"],
       "@gobletqa/conductor": ["src"],
       "@gobletqa/conductor/*": ["src/*"],
-      "@gobletqa/conductor/root": ["./"]
+      "@gobletqa/conductor/root": ["./"],
+      "@GLogs/*": ["../../logs/*"],
+      "@GRepos/*": ["../../repos/*"],
+      "@GConfigs/*": ["../../configs/*"],
+      "@GEnvironment": ["../../scripts/environment"]
     }
   },
-  "include": ["src/**/*", "configs/**/*"],
+  "include": ["src/**/*", "configs/**/*", "scripts/**/*"],
   "exclude": ["node_modules", "dist"]
 }

@@ -70,15 +70,20 @@ EOF
 
 FROM $IMAGE_FROM as goblet-runner
 WORKDIR /
+ARG GB_DD_PORT=2375
+ARG GB_DD_HOST=0.0.0.0
 ENV HOME=/root \
     DISPLAY=:0.0 \
     DEBUG=pw:api* \
     LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
-    EXPO_CLI_VERSION=5.3.2 \
+    GB_DD_PORT=$GB_DD_PORT \
+    GB_DD_HOST=$GB_DD_HOST \
     DEBIAN_FRONTEND=noninteractive \
     PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
+
+COPY repos/dind/entrypoint.sh /entrypoint.sh
 COPY --from=goblet-docker /docker.tgz /docker.tgz
 RUN <<EOF
   set -eux;
@@ -118,11 +123,12 @@ RUN <<EOF
   apt-get install -y nodejs
   npm install -g yarn
 
+  chmod a+x /entrypoint.sh
 EOF
 
-COPY repos/dind/entrypoint.sh /entrypoint.sh
+COPY repos/dind/etc/supervisor /etc/supervisor
 COPY repos/dind/etc/caddy/Caddyfile /etc/caddy/Caddyfile
-COPY repos/dind/etc/supervisor/conf.d /etc/supervisor/conf.d
+COPY repos/dind/etc/docker/daemon.json /etc/docker/daemon.json
 COPY --from=goblet-modprobe /usr/local/bin/modprobe /usr/local/bin/modprobe
 
 # Set the entry point to ensure supervisord always gets started
