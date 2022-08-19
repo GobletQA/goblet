@@ -1,5 +1,4 @@
 {
   "tls": false,
-  "debug": true,
   "userns-remap": "default"
 }
