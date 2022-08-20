@@ -1,2 +1,2 @@
 export * from './setupEndpoints'
-export * from './setupConductorProxy'
+export * from './setupConductor'

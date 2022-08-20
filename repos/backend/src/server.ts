@@ -7,7 +7,7 @@ import { backendConfig } from '@GBE/Configs/backend.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
   setupEndpoints,
-  setupConductorProxy,
+  setupConductor,
 } from '@GBE/middleware'
 import {
   setupJWT,
@@ -40,7 +40,7 @@ export const initApi = async () => {
   setupServer(app)
   setupStatic(app)
   validateUser(app, `/repo\/*`)
-  await setupConductorProxy(app)
+  await setupConductor(app)
   await setupEndpoints()
   setupLoggerErr(app)
 

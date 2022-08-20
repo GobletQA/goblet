@@ -3,13 +3,7 @@ import { TScreencastServer } from './screencast.types'
 export type TReqHeaders = Record<string, string>
 
 export type TConductorServiceConfig = {
-  host: string
-  imageRef: string
-  key?: string
-  port?: string
-  protocol?: string
-  keyHeader?: string
-  headers?: Record<string, string>
+  [key:string]: any
 }
 
 export type TJwtConfig = {

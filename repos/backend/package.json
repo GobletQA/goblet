@@ -37,6 +37,7 @@
     "@gobletqa/screencast": "*",
     "@gobletqa/shared": "*",
     "@gobletqa/workflows": "*",
+    "@gobletqa/conductor": "*",
     "@keg-hub/cli-utils": "0.7.0",
     "@keg-hub/jsutils": "9.2.0",
     "@keg-hub/parse-config": "2.0.2",
