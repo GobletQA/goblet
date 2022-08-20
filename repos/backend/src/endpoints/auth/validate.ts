@@ -1,14 +1,14 @@
 import type { Response, Request } from 'express'
+import { apiRes } from '@gobletqa/shared/express'
 import { getUserRepos } from '@gobletqa/workflows'
 import { generateTokens } from '@GBE/utils/generateTokens'
-import { asyncWrap, apiRes } from '@gobletqa/shared/express'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 
 
 /**
  * Validates the required authentication information exists
  */
-export const validate = asyncWrap(async (req:Request, res:Response) => {
+export const validate = async (req:Request, res:Response) => {
   const { conductor } = req.app.locals
   const { id, username, token, provider } = req.body
 
@@ -37,7 +37,7 @@ export const validate = asyncWrap(async (req:Request, res:Response) => {
 
   return apiRes(res, {...jwtTokens, id, username, provider, status, repos}, 200)
 
-})
+}
 
 
-AppRouter.post('/auth/validate', validate)
+AsyncRouter.post('/auth/validate', validate)

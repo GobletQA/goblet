@@ -4,7 +4,7 @@ import subdomain from 'express-subdomain'
 import type { Conductor } from '../conductor'
 import { getApp } from '@gobletqa/shared/express/app'
 import { buildSubdomains } from '../utils/buildSubdomains'
-import { AppRouter, ProxyRouter } from '@gobletqa/conductor/server/routers'
+import { AppRouter, ProxyRouter } from '../server/routers'
 
 import 'app/endpoints'
 

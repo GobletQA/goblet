@@ -1,25 +1,16 @@
 import { Request, Response } from 'express'
-import { getUserRepos } from '@gobletqa/workflows'
 import { asyncWrap, apiRes } from '@gobletqa/shared/express'
-import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 
 /**
  * Gets the status of a connected repo
  * Calls the statusGoblet workflow
  */
-export const statusContainer = asyncWrap(async (req:Request, res:Response) => {
-  const { conductor } = req.app.locals
+export const statusContainer = async (req:Request, res:Response) => {
+  const conductor = req.app.locals.conductor
+  const status = await conductor.status(req, res.locals.subdomain)
 
-  // Call conductor to ensure a container is running for the user
-  const status = await conductor.status({ headers: req.headers })
+  return apiRes(res, status)
+}
 
-  // Figure out where to get the token from
-  // @ts-ignore
-  const repos = await getUserRepos({ token: req?.user?.token })
-
-  // Finally return the data based on the repo status
-  return apiRes(res, { status, repos }, 200)
-})
-
-
-AppRouter.get(`/container/status`, statusContainer)
+AsyncRouter.get(`/container/status/:imageRef`, statusContainer)
