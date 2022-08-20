@@ -7,25 +7,23 @@
 	storage file_system {$GB_DD_CADDY_REMOTE_DIR}
 }
 
-http://{$GB_DD_CADDY_HOST:localhost}:{$GB_DD_DOCKER_PORT:2375} {
-	bind unix///var/run/docker.sock
+# Configures the docker socket for local and internal access
+# TODO: put more secure boundries around this - Figure out authentication
+# Call this endpoint from pod:
+#   * docker -H http://goblet-dind:2375 info
+http://{$GB_DD_CADDY_HOST:localhost}:{$GB_DD_DOCKER_PORT:2375}, http://{$GB_DD_DEPLOYMENT:goblet-dind}:{$GB_DD_DOCKER_PORT:2375} {
+	log
+	reverse_proxy unix///var/run/docker.sock
 }
 
-http://*.local.gobletqa.app, http://*.conductor.local.gobletqa.app {
-	tls internal
+# Grabs the last subdomain of the host, and uses it as the port in the reverse_proxy
+# This allows dynamic routing to exposed ports based on the Host headers last subdomain
+# Call this endpoint from pod:
+#   * curl --header "Host: <port>.<user-id>.conductor.local.gobletqa.app" http://goblet-dind:2121
+http://*.*.conductor.local.gobletqa.app:{$GB_DD_PROXY_PORT} {
+	reverse_proxy localhost:{labels.5}
 
-	# @authkey {
-	# 	header {env.GB_VALIDATION_HEADER} {env.GB_VALIDATION_KEY}
-	# }
-
-	@conductor host http://*.conductor.local.gobletqa.app
-	handle @conductor {
-		# reverse_proxy @authkey localhost:7006
-		reverse_proxy localhost:{labels.5}
-	}
-
-	# Fallback for otherwise unhandled domains
-	handle {
-		abort
+	handle_errors {
+		respond "\{\"error\":\"{err.status_code} {err.status_text}\"\}"
 	}
 }
