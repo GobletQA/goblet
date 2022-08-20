@@ -1,5 +1,5 @@
-import { ReadStream } from 'tty'
 import Dockerode from 'dockerode'
+import { Caddy } from '../caddy/caddy'
 import DockerEvents from 'docker-events'
 import { isObj } from '@keg-hub/jsutils'
 import { Controller } from './controller'
@@ -19,7 +19,6 @@ import { generateUrls, generateExternalUrls } from '../utils/generateUrls'
 import {
   TImgRef,
   TRunOpts,
-  TPullOpts,
   TImgsConfig,
   TDockerEvent,
   TRunResponse,
@@ -38,6 +37,7 @@ import { createContainer, startContainer } from '../utils/runContainerHelpers'
  */
 export class Docker extends Controller {
 
+  caddy: Caddy
   domain: string
   docker: Dockerode
   images: TImgsConfig
@@ -48,6 +48,7 @@ export class Docker extends Controller {
   constructor(conductor:Conductor, config:TDockerConfig){
     super(conductor, config)
     this.config = config
+    this.caddy = new Caddy(conductor, conductor.config.caddy)
   }
 
   hydrateSingle = async (message:TDockerEvent) => {
@@ -86,7 +87,7 @@ export class Docker extends Controller {
 
     hydrateRoutes(this, this.containers as Record<string, TContainerInspect>)
 
-    // console.log(this.routes['1899639476'].map)
+    this.routes = await this.caddy.hydrate(this.routes)
 
     return this.containers as Record<string, TContainerInspect>
   }
@@ -96,21 +97,26 @@ export class Docker extends Controller {
    * @member Docker
    */
   pull = async (imageRef:TImgRef) => {
-    const image = this.getImg(imageRef)
-    !image && this.notFoundErr({ type: `image`, ref: imageRef as string })
+    const intervalId = setInterval(() => Logger.info(`Still pulling...`), 3000)
 
-    const imgUri = buildImgUri(image)
-    Logger.info(`Pulling image ${imgUri}...`)
+    return new Promise(async (res, rej) => {
+      const image = this.getImg(imageRef)
+      !image && this.notFoundErr({ type: `image`, ref: imageRef as string })
 
-    const { error, data, exitCode } = await docker(
-      [`pull`, imgUri],
-      { envs: process.env, exec: true }
-    )
+      const imgUri = buildImgUri(image)
+      Logger.info(`Pulling image ${imgUri}...`)
 
-    if(error || exitCode)
-      throw new Error(error || `Error pulling image ${imgUri}. Command failed with exit code ${exitCode}`)
+      const { error, data, exitCode } = await docker(
+        [`pull`, imgUri],
+        { envs: process.env, exec: true }
+      )
 
-    return { data }
+      clearInterval(intervalId)
+
+      error || exitCode
+        ? rej(`Error pulling image ${imgUri}. Command failed with exit code ${exitCode}`)
+        : res({ data })
+    })
   }
 
   /**

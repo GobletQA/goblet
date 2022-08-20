@@ -3508,6 +3508,13 @@ cachedir@2.3.0:
   resolved "https://registry.yarnpkg.com/cachedir/-/cachedir-2.3.0.tgz#0c75892a052198f0b21c7c1804d8331edfcae0e8"
   integrity sha512-A+Fezp4zxnit6FanDmv9EqXNAi3vt9DWp51/71UEhXukb7QUuvtv9344h91dyAxuTLoSYJFU299qzR3tzwPAhw==
 
+caddyserver@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmjs.org/caddyserver/-/caddyserver-0.1.1.tgz#1991bb3e8b75b071f3d5dc980fe2545442b98557"
+  integrity sha512-3F7juA4JUNtzbHaQ/COL1Xjj9uem2MA299t2DsFf+5FcN+yoZFX8zXpyPKSJD2fPMYjQq4rgWcMMXIX6tLGsHg==
+  dependencies:
+    node-fetch "^2.6.0"
+
 call-bind@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/call-bind/-/call-bind-1.0.2.tgz#b1d4e89e688119c3c9a903ad30abb2f6a919be3c"
@@ -4639,7 +4646,7 @@ esbuild-plugin-path-alias@1.0.6:
   resolved "https://registry.yarnpkg.com/esbuild-plugin-path-alias/-/esbuild-plugin-path-alias-1.0.6.tgz#94d576295a97b44a2a668123d1f4c71eba88f81f"
   integrity sha512-cFzLuY+SMDCYy5meq679KBrp89f3rm7R1m8a1SthMf2lZeDmgxdFVDbZ1x/9VrWwiUoj440hHxKzQCf7muNiKg==
 
-esbuild-register@^3.3.3:
+esbuild-register@3.3.3:
   version "3.3.3"
   resolved "https://registry.npmjs.org/esbuild-register/-/esbuild-register-3.3.3.tgz#5bd80025c80caf77e6484ced5cc77233b1d39688"
   integrity sha512-eFHOkutgIMJY5gc8LUp/7c+LLlDqzNi9T6AwCZ2WKKl3HmT+5ef3ZRyPPxDOynInML0fgaC50yszPKfPnjC0NQ==
@@ -7404,7 +7411,7 @@ nise@^4.0.4:
     just-extend "^4.0.2"
     path-to-regexp "^1.7.0"
 
-node-fetch@2.6.7, node-fetch@^2.6.7:
+node-fetch@2.6.7, node-fetch@^2.6.0, node-fetch@^2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==

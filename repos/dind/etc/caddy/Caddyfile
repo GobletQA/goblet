@@ -1,9 +1,9 @@
 {
-	debug
-	admin :{$GB_DD_LOCAL_ADMIN_PORT:2019}
+  debug
+  admin :{$GB_DD_LOCAL_ADMIN_PORT:2019}
 }
 
 http://{$GB_DD_CADDY_HOST:localhost}:{$GB_DD_PORT:2375} {
-	# reverse_proxy unix///var/run/docker.sock
-	bind unix///var/run/docker.sock
+  # reverse_proxy unix///var/run/docker.sock
+  bind unix///var/run/docker.sock
 }

@@ -1,7 +1,8 @@
 import { Request } from 'express'
+import { TCaddyConfig } from './caddy.types'
 import { Options } from 'http-proxy-middleware'
-import { ContainerCreateOptions, Container } from 'dockerode'
 import { TControllerConfig } from './controller.types'
+import { ContainerCreateOptions, Container } from 'dockerode'
 
 export type TPort = number | string
 export type TPorts = TPort[]
@@ -80,6 +81,7 @@ export type TScreencastConf = {
 }
 
 export type TConductorConfig = {
+  caddy: TCaddyConfig
   server: TServerConfig
   proxy: TProxyConfig
   images?: TImgsConfig

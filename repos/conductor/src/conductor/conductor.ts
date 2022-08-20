@@ -4,6 +4,7 @@ import { Request, Express } from 'express'
 import { getDomain } from '../utils/getDomain'
 import { buildConfig } from '../utils/buildConfig'
 import { Controller } from '../controller/controller'
+
 import { getApp } from '@gobletqa/shared/express/app'
 import { getController } from '../controller/controllerTypes'
 import {
@@ -37,6 +38,10 @@ export class Conductor {
     app.locals.conductor = this as Conductor
 
   }
+
+  static async initialImagePull(config:TConductorOpts) {
+    buildConfig(config)
+  } 
 
   /**
    * Ensures the passed in config is valid

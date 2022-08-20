@@ -1,7 +1,7 @@
 import type { DockerOptions } from 'dockerode'
 import fs from 'node:fs'
-import { toNum, toBool } from '@keg-hub/jsutils'
 import { inDocker } from '@keg-hub/cli-utils'
+import { toNum, toBool, exists } from '@keg-hub/jsutils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { DEF_HOST_IP } from '@gobletqa/conductor/constants/constants'
 import {
@@ -13,6 +13,8 @@ import {
 
 
 const isDocker = inDocker()
+const isKube = isDocker && exists(process.env.KUBERNETES_SERVICE_HOST)
+
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({
   name: `goblet`,
@@ -48,12 +50,29 @@ const {
 
   GB_VNC_ACTIVE,
 
+  GB_DD_CADDY_HOST,
+  GB_DD_DEPLOYMENT,
+  GB_DD_EXP_ADMIN_PORT,
+  GB_DD_LOCAL_ADMIN_PORT,
 
-  GB_CD_LOCAL_DEV_MODE
+  GB_CD_LOCAL_DEV_MODE,
   // Salting the user hash string. Not intended to be secure, just anonymous
 } = process.env
 
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+
+/**
+ * Helper to resolve the host for docker and caddy
+ */
+const getDinDHost = () => {
+  return !isKube
+    ? GB_DD_CADDY_HOST
+    : exists(GB_DD_DEPLOYMENT)
+      ? GB_DD_DEPLOYMENT
+      : exists(GOBLET_DIND_SERVICE_HOST)
+        ? GOBLET_DIND_SERVICE_HOST
+        : GB_DD_CADDY_HOST
+}
+const dindHost = getDinDHost()
 
 /**
  * Helper to generate the options for connecting to the controller (i.e. docker)
@@ -61,21 +80,40 @@ const {
 const getControllerOpts = () => {
   const opts:DockerOptions = !isDocker
     ? {}
-      // TODO: need to find the dind container IP address, not the service port
-    : GOBLET_DIND_SERVICE_HOST && GOBLET_DIND_SERVICE_PORT
-      ? { host: GOBLET_DIND_SERVICE_HOST, port: GOBLET_DIND_SERVICE_PORT, protocol: `http` }
+    : dindHost && GOBLET_DIND_SERVICE_PORT
+      ? { host: dindHost, port: GOBLET_DIND_SERVICE_PORT, protocol: `http` }
       : { socketPath: GB_CD_DOC_VOLUMES }
-
 
   return opts
 }
 
+const getCaddyOpts = (dindOpts:DockerOptions) => {
+  const url = dindOpts.host
+      ? `${dindOpts.protocol}://${dindOpts.host}:${GB_DD_EXP_ADMIN_PORT}`
+      : isDocker
+        ? `http://${GB_DD_CADDY_HOST}:${GB_DD_EXP_ADMIN_PORT}`
+        : `http://${GB_DD_CADDY_HOST}:${GB_DD_LOCAL_ADMIN_PORT}`
+
+  return {
+    url,
+    host: dindHost,
+    headers: {
+      host: GB_CD_HOST,
+      'content-type': `application/json`,
+      [GB_VALIDATION_HEADER]: GB_VALIDATION_KEY
+    }
+  }
+}
+
+const dindOpts = getControllerOpts()
+
 export const conductorConfig:TConductorConfig = {
+  caddy: getCaddyOpts(dindOpts),
   screencast: {
     active: toBool(GB_VNC_ACTIVE),
   },
   controller: {
-    options: getControllerOpts(),
+    options: dindOpts,
     pidsLimit: toNum(GB_CD_PIDS_LIMIT) as number,
   } as TDockerConfig,
   proxy: {

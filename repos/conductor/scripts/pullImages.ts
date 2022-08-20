@@ -1,27 +1,41 @@
 require('source-map-support').install({ environment: 'node' })
-import { Conductor } from '../'
+import { docker } from '@keg-hub/cli-utils'
 import { Logger } from '@GCD/utils/logger'
+import { buildImgUri } from '@GCD/utils/buildImgUri'
 import { appConfig } from '@gobletqa/conductor/configs/app.config'
 
 ;(async () => {
-  
   Logger.info(`Starting images pull....`)
-  
-  const conductor = new Conductor(appConfig)
-  await conductor.start()
 
-  Object.keys(appConfig.images)
-    .reduce(async (toResolve, key) => {
+  Object.entries(appConfig.images)
+    .reduce(async (toResolve, [name, image]) => {
+      await toResolve
+
+      const intervalID = setInterval(() => {
+        Logger.info(`still pulling ${name}...`)
+      }, 5000)
+
       try {
         await toResolve
-        Logger.info(`Pulling image ${key}...`)
-        await conductor.pull(key)
-        Logger.success(`Image ${key} pulled successfully`)
+        const imageUri = buildImgUri(image)
+        Logger.info(`Pulling image ${name} from ${imageUri}...`)
+
+        const { error, data, exitCode } = await docker(
+          [`pull`, imageUri],
+          { envs: process.env, exec: true }
+        )
+        if(error) throw new Error(error)
+
+        Logger.success(`Image ${name} pulled successfully`)
       }
       catch(err){
-        Logger.error(`Image ${key} pull failed`)
+        Logger.error(`Image ${name} pull failed`)
         Logger.log(err.stack)
       }
+      finally {
+        clearInterval(intervalID)
+      }
+
     }, Promise.resolve())
 
 })()
