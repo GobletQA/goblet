@@ -26,7 +26,8 @@ export type TProxyOpts = {
 }
 
 export type TConductorOpts = {
-  proxy?: TProxyOpts
+  domain?: string
+  subdomain?: string
   images:  TImagesOpts
   controller?:TControllerOpts
 }

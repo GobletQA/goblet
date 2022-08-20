@@ -1,5 +1,4 @@
 import type { TConductorOpts, TControllerType } from '@GBE/types'
-
 import { inDocker } from '@keg-hub/cli-utils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 
@@ -15,11 +14,14 @@ const whiteList = [
   `GB_VALIDATION`,
 ]
 
-const blackList = [
-  // `GB_SC_PORT`,
-  // `GB_NO_VNC_PORT`,
-  // `GB_VNC_SERVER_PORT`,
-]
+const blackList = []
+
+const envs = loadEnvs({
+  force: true,
+  name: `goblet`,
+  locations: [],
+  override: NODE_ENV === 'local'
+})
 
 /**
 * Loads the envs and filters out all except for the those the match the whiteList prefix
@@ -27,12 +29,7 @@ const blackList = [
 const containerEnvs = Object.entries(
   inDocker()
     ? process.env
-    : loadEnvs({
-        force: true,
-        name: `goblet`,
-        locations: [],
-        override: NODE_ENV === 'local'
-      })
+    : envs
 ).reduce((acc, [key, value]) => {
   whiteList.find(prefix => key.startsWith(prefix))
     && !blackList.includes(key)
@@ -42,7 +39,12 @@ const containerEnvs = Object.entries(
 }, {} as Record<string, any>)
 
 
-const { GB_SC_IMAGE, GB_SC_IMAGE_TAG, GB_SC_DEPLOYMENT } = containerEnvs
+const {
+  GB_SC_IMAGE,
+  GB_SC_IMAGE_TAG,
+  GB_SC_DEPLOYMENT,
+  GB_CD_SUB_DOMAIN
+} = envs
 
 
 /**
@@ -70,6 +72,7 @@ const getContainerConfig = () => {
 const imgConfig = getContainerConfig()
 
 export const conductorConfig:TConductorOpts = {
+  subdomain: GB_CD_SUB_DOMAIN || NODE_ENV,
   controller: {
     type: GB_CD_CONTROLLER_TYPE as TControllerType
   },
@@ -94,11 +97,7 @@ export const conductorConfig:TConductorOpts = {
           GB_VNC_ACTIVE: true,
           GB_AUTH_ACTIVE: true,
         },
-        runtimeEnvs: {
-          // GB_SC_PORT: `7006`,
-          // GB_NO_VNC_PORT: `26369`,
-          // GB_VNC_SERVER_PORT: `26370`,
-        }
+        runtimeEnvs: {}
       }
     }
   }

@@ -81,7 +81,9 @@ export type TScreencastConf = {
 }
 
 export type TConductorConfig = {
-  caddy: TCaddyConfig
+  domain?: string
+  subdomain?: string
+  caddy?: TCaddyConfig
   images?: TImgsConfig
   controller: TDockerConfig
 }

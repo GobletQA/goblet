@@ -1,7 +1,7 @@
 import { resError } from '../express/resError'
-import { AppRouter } from '../express/appRouter'
+import { getRouter } from '../express/appRouter'
 import { asyncWrap } from '../express/asyncWrap'
-import type { Express, Request, Response, NextFunction } from 'express'
+import type { Express, Request, Response, NextFunction, Router } from 'express'
 
 /**
  * Checks if the user and their token exists in the session.
@@ -19,8 +19,10 @@ const checkUserInRequest = asyncWrap(async (req:Request, res:Response, next:Next
  * Checks if server auth is enabled
  * Then adds middleware to validation a users session
  */
-export const validateUser = (app:Express, route:string) => {
-  app.locals.config.server.auth &&
-    AppRouter.use(route, checkUserInRequest)
+export const validateUser = (app:Express, route:string, expressRouter?:Router|boolean|string,) => {
+  if(!app.locals?.config?.server?.auth) return
+
+  const router = getRouter(expressRouter)
+  router && router.use(route, checkUserInRequest)
 }
 

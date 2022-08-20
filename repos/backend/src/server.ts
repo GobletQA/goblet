@@ -6,6 +6,7 @@ import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
+  setupRouters,
   setupEndpoints,
   setupConductor,
 } from '@GBE/middleware'
@@ -37,9 +38,10 @@ export const initApi = async () => {
   setupBlacklist(app)
   setupCors(app)
   setupJWT(app, ['/auth/validate'])
-  setupServer(app)
+  setupServer(app, false)
+  setupRouters(app)
   setupStatic(app)
-  validateUser(app, `/repo\/*`)
+  validateUser(app, `/repo\/*`, `async`)
   await setupConductor(app)
   await setupEndpoints()
   setupLoggerErr(app)

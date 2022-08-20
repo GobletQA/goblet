@@ -1,13 +1,14 @@
+import type { Router } from 'express'
 import express from 'express'
+import { asyncWrap } from './asyncWrap'
 import { isFunc } from '@keg-hub/jsutils'
-import { asyncWrap } from '@gobletqa/shared/express'
 
-const Router = express.Router()
-const boundGet = Router.get.bind(Router)
-const boundPut = Router.put.bind(Router)
-const boundPost = Router.post.bind(Router)
-const boundPatch = Router.patch.bind(Router)
-const boundDelete = Router.delete.bind(Router)
+const ExpRouter = express.Router()
+const boundGet = ExpRouter.get.bind(ExpRouter)
+const boundPut = ExpRouter.put.bind(ExpRouter)
+const boundPost = ExpRouter.post.bind(ExpRouter)
+const boundPatch = ExpRouter.patch.bind(ExpRouter)
+const boundDelete = ExpRouter.delete.bind(ExpRouter)
 const defaultMiddleWare = [express.json(), express.urlencoded({ extended: true })]
 
 /**
@@ -27,7 +28,7 @@ const wrapInAsync = (boundMethod, ...args) => {
  * Extends the express Router, and overrides the main HTTP verb methods
  * It wraps the methods with asyncWrap so it's added by default to those methods
  */
-export const AsyncRouter = Object.assign(Router, {
+export const AsyncRouter = Object.assign(ExpRouter, {
   get: (...args: Array<any>) => wrapInAsync(boundGet, ...args),
   put: (...args: Array<any>) => wrapInAsync(boundPut, ...args),
   post: (...args: Array<any>) => wrapInAsync(boundPost, ...args),
@@ -41,3 +42,16 @@ export const AsyncRouter = Object.assign(Router, {
  * @public
  */
 export const AppRouter = express.Router()
+
+/**
+ * Helper method to get the correct Express router based on passed in argument
+ */
+export const getRouter = (expressRouter?:Router|boolean|string) => {
+  return expressRouter === false
+    ? undefined
+    : expressRouter === undefined || expressRouter === true
+      ? AppRouter
+      : typeof expressRouter !== 'string'
+        ? expressRouter
+        : expressRouter === 'async' && AsyncRouter
+}

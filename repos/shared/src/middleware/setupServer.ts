@@ -1,7 +1,7 @@
-import type { Express } from 'express'
+import type { Express, Router } from 'express'
 import express from 'express'
 import { getApp } from '@GSH/express/app'
-import { AppRouter } from '@GSH/express/appRouter'
+import { getRouter } from '@GSH/express/appRouter'
 
 /**
  * Adds json parsing middleware
@@ -18,7 +18,11 @@ const jsonParsing = (app:Express) => {
  *
  * @returns {void}
  */
-export const setupServer = (app:Express, addAppRouter=true, parseJson=true) => {
+export const setupServer = (
+  app:Express,
+  expressRouter?:Router|boolean|string,
+  parseJson=true,
+) => {
   app = app || getApp()
 
   app.set('trust proxy', 1)
@@ -26,6 +30,7 @@ export const setupServer = (app:Express, addAppRouter=true, parseJson=true) => {
 
   parseJson && jsonParsing(app)
 
-  // Add the express router to the app
-  addAppRouter && app.use(AppRouter)
+  const router = getRouter(expressRouter)
+  router && app.use(router)
+
 }
