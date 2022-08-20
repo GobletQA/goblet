@@ -15,14 +15,14 @@
       "@gobletqa/conductor/*": ["../conductor/src/*"],
       "@gobletqa/screencast": ["../screencast/src"],
       "@gobletqa/screencast/*": ["../screencast/src/*"],
-      "@gobletqa/shared": ["../shared/src"],
       "@gobletqa/shared/*": ["../shared/src/*"],
+      "@gobletqa/shared": ["../shared/src"],
       "@GLogs/*": ["../../logs/*"],
       "@GRepos/*": ["../../repos/*"],
       "@GConfigs/*": ["../../configs/*"],
       "@GEnvironment": ["../../scripts/environment"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "configs/**/*"],
   "exclude": ["node_modules", "dist"]
 }

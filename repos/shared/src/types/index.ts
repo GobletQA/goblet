@@ -1,4 +1,5 @@
 export * from './backend.types'
+export * from './conductor.types'
 export * from './configs.types'
 export * from './express.types'
 export * from './files.types'

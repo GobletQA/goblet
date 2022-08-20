@@ -2,11 +2,14 @@
 import '../resolveRoot'
 import path from 'path'
 import { toBool } from '@keg-hub/jsutils'
+import { TBackendConfig } from '@GBE/types'
 import { sockrCmds } from './sockrCmds.config'
 import { aliases } from '@GConfigs/aliases.config'
+import { conductorConfig } from './conductor.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { TBackendConfig } from '@gobletqa/backend/src/types'
 import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
+
+export { loadEnvs }
 
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({
@@ -90,13 +93,7 @@ export const backendConfig:TBackendConfig  = {
       credentialsRequired: toBool(GB_BE_JWT_CREDENTIALS || true),
     }
   },
-  conductor: {
-    key: GB_VALIDATION_KEY,
-    imageRef: GB_SC_DEPLOYMENT,
-    keyHeader: GB_VALIDATION_HEADER,
-    port: GOBLET_CONDUCTOR_SERVICE_PORT,
-    host: process.env[`GOBLET_CONDUCTOR_PORT_${GOBLET_CONDUCTOR_SERVICE_PORT}_TCP_ADDR`],
-  },
+  conductor: conductorConfig,
   sockr: {
     ...sockrCmds,
     path: GB_BE_SOCKR_PATH,

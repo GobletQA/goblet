@@ -1,10 +1,7 @@
+import { TConductorOpts } from './conductor.types'
 import { TScreencastServer } from './screencast.types'
 
 export type TReqHeaders = Record<string, string>
-
-export type TConductorServiceConfig = {
-  [key:string]: any
-}
 
 export type TJwtConfig = {
   exp: string
@@ -66,6 +63,6 @@ export type TBEServerConfig = {
 export type TBackendConfig = {
   sockr: TSockrConfig
   server: TBEServerConfig
-  conductor: TConductorServiceConfig
+  conductor: TConductorOpts
   screencast?: TScreencastServer
 }

@@ -1,4 +1,4 @@
-import type { TConductorOpts, TControllerType } from '@gobletqa/conductor'
+import type { TConductorOpts, TControllerType } from '@GBE/types'
 
 import { inDocker } from '@keg-hub/cli-utils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
@@ -69,7 +69,7 @@ const getContainerConfig = () => {
 
 const imgConfig = getContainerConfig()
 
-export const appConfig:TConductorOpts = {
+export const conductorConfig:TConductorOpts = {
   controller: {
     type: GB_CD_CONTROLLER_TYPE as TControllerType
   },
