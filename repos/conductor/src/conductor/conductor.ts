@@ -1,12 +1,10 @@
-import { createProxy } from '../proxy'
-import { createServer } from '../server'
 import { Request, Express } from 'express'
-import { getDomain } from '../utils/getDomain'
-import { buildConfig } from '../utils/buildConfig'
-import { Controller } from '../controller/controller'
+import { getDomain } from './utils/getDomain'
+import { buildConfig } from './utils/buildConfig'
+import { Controller } from './controller/controller'
 
 import { getApp } from '@gobletqa/shared/express/app'
-import { getController } from '../controller/controllerTypes'
+import { getController } from './controller/controllerTypes'
 import {
   TImgRef,
   TSpawnOpts,
@@ -161,15 +159,6 @@ export class Conductor {
   async start() {
     // Ensure the controller is configuration properly 
     await this.controller.validate()
-
-    const { server } = createServer(this.config.server, this.config?.localDevMode)
-    const proxyHandler = createProxy({
-      ...this.config.proxy,
-      proxyRouter: this.proxyRouter.bind(this)
-    })
-
-    server.on('upgrade', proxyHandler.upgrade)
-
     return this
   }
 

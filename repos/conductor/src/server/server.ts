@@ -4,9 +4,11 @@ import http from 'http'
 import https from 'https'
 import { Express } from 'express'
 import { getApp } from '@gobletqa/shared/express/app'
-import { setupRouters } from '@gobletqa/conductor/middleware/setupRouters'
-import { setupAuthUser } from '@gobletqa/conductor/middleware/setupAuthUser'
-import { setupValidationHeader } from '@gobletqa/conductor/middleware/setupValidationHeader'
+import {
+  setupRouters,
+  setupAuthUser,
+  setupValidationHeader
+} from '@gobletqa/conductor/middleware'
 
 import {
   setupJWT,

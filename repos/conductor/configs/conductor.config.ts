@@ -1,9 +1,7 @@
 import type { DockerOptions } from 'dockerode'
-import fs from 'node:fs'
 import { inDocker } from '@keg-hub/cli-utils'
 import { toNum, toBool, exists } from '@keg-hub/jsutils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { DEF_HOST_IP } from '@gobletqa/conductor/constants/constants'
 import {
   TDockerConfig,
   TProxyConfig,
@@ -25,8 +23,8 @@ loadEnvs({
 
 const {
   GB_CD_PORT,
+  GB_CD_HOST,
   GB_CD_SECURE_PORT,
-  GB_CD_HOST=DEF_HOST_IP,
   GB_LOG_LEVEL,
   GB_CD_TIMEOUT,
   GB_CD_HASH_KEY,

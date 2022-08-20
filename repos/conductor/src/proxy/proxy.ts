@@ -1,9 +1,30 @@
-import { TProxyConfig } from '../types'
-import { DEF_HOST_IP } from '../constants/constants'
-import { onProxyError } from '@gobletqa/conductor/utils'
+import { Request, Response } from 'express' 
+import { TProxyConfig } from '@gobletqa/conductor/types'
+
 import { getOrigin } from '@gobletqa/shared/utils/getOrigin'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import { ProxyRouter } from '@gobletqa/conductor/server/routers'
+
+const { HOSTNAME, GB_CD_HOST } = process.env
+
+/**
+ * Called when the proxy request throws an error
+ * If the hostname matches the proxyHost, then we re-route to it
+ * Otherwise we response with 404
+ * @function
+ * @private
+ * @param {Object} err - Error that was thrown while attempting to proxy
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {string} target - The hostname of the proxy request that failed
+ * 
+ * @returns {*} - Response in JSON of all routes in the RoutesTable 
+ */
+export const onProxyError = (err, req:Request, res:Response, proxyHost:string) => {
+  res && res.status && res.status(404).send(err.message || 'Proxy Route not found')
+}
+
+
 
 const addAllowOriginHeader = (proxyRes, origin) => {
   proxyRes.headers['Access-Control-Allow-Origin'] = origin
@@ -43,7 +64,7 @@ export const createProxy = (config:TProxyConfig) => {
     logLevel: 'error',
     router: proxyRouter,
     onError: onProxyError,
-    target: host || DEF_HOST_IP,
+    target: host || HOSTNAME || GB_CD_HOST,
     onProxyReq: (proxyReq, req, res) => {
       mapRequestHeaders(proxyReq, req)
     },
