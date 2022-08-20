@@ -1,21 +1,21 @@
 require('source-map-support').install({ environment: 'node' })
 import { Conductor } from '@gobletqa/conductor'
-import { createProxy } from '@gobletqa/conductor/proxy'
-import { createServer } from '@gobletqa/conductor/server'
+import { createProxy } from './proxy'
+import { createServer } from './server'
 import { appConfig } from '@gobletqa/conductor/configs/app.config'
 
 ;(async () => {
 
   const conductor = new Conductor(appConfig)
-  await conductor.start()
+  await conductor.validate()
   
   const { server } = createServer(
-    conductor.config.server,
-    conductor.config?.localDevMode
+    appConfig.server,
+    appConfig?.localDevMode
   )
 
   const proxyHandler = createProxy({
-    ...conductor.config.proxy,
+    ...appConfig.proxy,
     proxyRouter: conductor.proxyRouter.bind(conductor)
   })
 

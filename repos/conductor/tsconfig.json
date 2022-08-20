@@ -21,6 +21,5 @@
       "@GEnvironment": ["../../scripts/environment"]
     }
   },
-  "include": ["src/**/*", "configs/**/*", "scripts/**/*", "src/app.ts"],
   "exclude": ["node_modules", "dist"]
 }

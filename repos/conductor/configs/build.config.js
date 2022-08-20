@@ -14,7 +14,7 @@ const nodeEnv = process.env.NODE_ENV || `local`
 const rootDir = path.join(__dirname, `../`)
 const distDir = path.join(rootDir, `dist`)
 const outFile = path.join(distDir, `index.js`)
-const entryFile = path.join(rootDir, `src/app.js`)
+const entryFile = path.join(rootDir, `app/app.js`)
 
 /**
  * Load the ENVs from <node-env>.env ( local.env || prod.env )

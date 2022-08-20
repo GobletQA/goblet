@@ -156,7 +156,7 @@ export class Conductor {
   /**
    * Starts conductor by creating the Express Server and Proxy
    */
-  async start() {
+  async validate() {
     // Ensure the controller is configuration properly 
     await this.controller.validate()
     return this

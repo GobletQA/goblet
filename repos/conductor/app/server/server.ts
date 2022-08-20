@@ -1,4 +1,4 @@
-import type { TServerConfig } from '../types'
+import type { TServerConfig } from '@gobletqa/conductor/types'
 
 import http from 'http'
 import https from 'https'

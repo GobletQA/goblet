@@ -8,9 +8,9 @@ import { AppRouter, ProxyRouter } from '@gobletqa/conductor/server/routers'
 
 import 'app/endpoints'
 
-export const setupRouters = (app?:Express, subdomain:string) => {
+export const setupRouters = (app?:Express) => {
   app = app || getApp() as Express
-  AppRouter.use(subdomain(`*.${subdomain}`, ProxyRouter))
+  AppRouter.use(subdomain(`*.local`, ProxyRouter))
 
   app.use(AppRouter)
 }
