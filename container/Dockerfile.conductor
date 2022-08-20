@@ -57,12 +57,8 @@ COPY --from=goblet-builder /goblet/app/repos/conductor/node_modules repos/conduc
 COPY --from=goblet-builder /goblet/app/repos/conductor/tsconfig.json repos/conductor/tsconfig.json
 
 WORKDIR /goblet/app/repos/conductor
-ARG GB_CD_PORT=9901
 ARG GB_DD_PROXY_PORT=2121
-ENV GB_CD_PORT=$GB_CD_PORT \
-    GB_DD_PROXY_PORT=$GB_DD_PROXY_PORT
-
-EXPOSE $GB_CD_PORT
+ENV GB_DD_PROXY_PORT=$GB_DD_PROXY_PORT
 
 RUN <<EOF
   set -eux;

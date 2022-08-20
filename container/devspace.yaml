@@ -59,17 +59,6 @@ vars:
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_BE_PORT"
 
-# ----- Conductor Values ----- #
-- name: GB_CD_DEPLOYMENT
-  source: command
-  command: "node ../scripts/js/getYamlValue.js GB_CD_DEPLOYMENT"
-- name: GB_CD_IMG_URI
-  source: command
-  command: "node ../scripts/js/resolveImgUri.js CD"
-- name: GB_CD_PORT
-  source: command
-  command: "node ../scripts/js/getYamlValue.js GB_CD_PORT"
-
 # ----- DinD Values ----- #
 - name: GB_DD_DEPLOYMENT
   source: command
@@ -119,7 +108,6 @@ images:
 deployments: 
 # - name: $(node ../scripts/js/resolveDeployment.js FE IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 # - name: $(node ../scripts/js/resolveDeployment.js BE IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
-# - name: $(node ../scripts/js/resolveDeployment.js CD IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
 
 # Must be deployed to the cluster separately???
 # helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx  --namespace gb-local --create-namespace
@@ -184,34 +172,6 @@ deployments:
           serviceName: ${GB_FE_DEPLOYMENT}
           servicePort: ${GB_FE_PORT}
 
-# ----- Conductor Deployment ----- #
-- name: ${GB_CD_DEPLOYMENT}
-  helm:
-    chart:
-      name: ./
-    cleanupOnFail: true
-    valuesFiles:
-    - ./values.yml
-    - ./values.${NODE_ENV}.yml
-    values:
-      containers:
-      - name: ${GB_CD_DEPLOYMENT}
-        image: ${GB_CD_IMG_URI}
-        imagePullPolicy: ${IMAGE_PULL_POLICY}
-        env: $(node ../scripts/js/resolveDSEnvs.js conductor docker-auth:user docker-auth:password)
-      service:
-        name: ${GB_CD_DEPLOYMENT}
-        ports:
-        - port: ${GB_CD_PORT}
-      ingress:
-        name: ${GB_CD_DEPLOYMENT}-ingress
-        rules:
-        - host: $(node ../scripts/js/resolveIngress.js CD)
-          serviceName: ${GB_CD_DEPLOYMENT}
-          servicePort: ${GB_CD_PORT}
-        - host: $(node ../scripts/js/resolveIngress.js CD "*")
-          serviceName: ${GB_CD_DEPLOYMENT}
-          servicePort: ${GB_CD_PORT}
 
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
@@ -226,7 +186,7 @@ deployments:
       containers:
       - image: ${GB_BE_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
-        env: $(node ../scripts/js/resolveDSEnvs.js backend)
+        env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
       service:
         name: ${GB_BE_DEPLOYMENT}
         ports:
@@ -245,11 +205,11 @@ deployments:
 # Is not run for `yarn dev deploy` || `devspace deploy` commands
 dev:
   # Gets the apps that should sync with the host machine
-  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_CD_ACTIVE GB_DD_ACTIVE)
+  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_DD_ACTIVE)
 
   # Gets the ports that should be exposed to the host machine from the running pod
-  # ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_CD_ACTIVE ${GB_CD_PORT} GB_DD_ACTIVE ${GB_DD_PROXY_PORT} ${GB_DD_EXP_ADMIN_PORT})
-  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_CD_ACTIVE ${GB_CD_PORT})
+  # ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_DD_ACTIVE ${GB_DD_PROXY_PORT} ${GB_DD_EXP_ADMIN_PORT})
+  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT})
 
   # The `open` field tells DevSpace to open a URL as soon as it returns HTTP status 200
   # Since we configured port-forwarding, we can use a localhost address here to access our application
@@ -259,9 +219,6 @@ dev:
 profiles:
 - name: local
   patches:
-  - op: replace
-    path: deployments.name=${GB_CD_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
   - op: replace
     path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
     value: ${IMAGE}:${IMAGE_TAG}

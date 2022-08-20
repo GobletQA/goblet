@@ -16,7 +16,6 @@ const resolveAllPorts = (params, envs, docFileCtx) => {
   const envPorts = getContextValue(docFileCtx, envs, `PORT`, [
     envs.GB_BE_PORT,
     envs.GB_FE_PORT,
-    envs.GB_CD_PORT,
     envs.GB_SC_PORT,
     envs.GB_DB_PORT,
     envs.GB_PX_PORT

@@ -14,4 +14,4 @@ env:
   # --- Custom screencast devspace config --- #
   GB_SC_DEVSPACE_CONFIG: container/devspace.screencast.yaml
   # --- Run the conductor in local dev mode --- #
-  GB_CD_LOCAL_DEV_MODE: true
+  GB_LOCAL_DEV_MODE: true

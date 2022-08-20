@@ -84,7 +84,6 @@ const args = process.argv.slice(2)
 
 const feDeployment = generateSync(args.shift())
 const beDeployment = generateSync(args.shift(), true)
-const cdDeployment = generateSync(args.shift(), true)
 const ddDeployment = generateSync(args.shift(), true, `dd`, envs.GB_DD_CADDY_REMOTE_DIR)
 // const pxDeployment = generateSync(args.shift(), true)
 // const scDeployment = generateSync(args.shift(), true)
@@ -92,7 +91,6 @@ const ddDeployment = generateSync(args.shift(), true, `dd`, envs.GB_DD_CADDY_REM
 let syncs = ``
 feDeployment && (syncs += feDeployment)
 beDeployment && (syncs += beDeployment)
-cdDeployment && (syncs += cdDeployment)
 ddDeployment && (syncs += ddDeployment)
 // pxDeployment && (syncs += pxDeployment)
 // scDeployment && (syncs += scDeployment)

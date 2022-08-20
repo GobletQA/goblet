@@ -24,7 +24,8 @@ export type TCreatePortsObj = {
 export type TControllerType = 'docker' | 'Docker'
 
 export type TControllerConfig = DockerOptions & {
-  pidsLimit: number
+  pidsLimit?: number
+  rateLimit?: number
   type: TControllerType
   options:DockerOptions
 }

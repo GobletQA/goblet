@@ -109,8 +109,7 @@ dsEnvs+= repo === `frontend` ? buildEnvs(envs, feKeys) : buildEnvs(envs, beKeys)
  */
 fromSecrets.length && (dsEnvs+= buildFromSecrets(envs, fromSecrets))
 
-
-if(repo === `conductor`){
+if(repo === `backend`){
   /**
   * Uses the kubernetes env syntax to generate the docker host from runtime envs
   * [See more here](https://kubernetes.io/docs/tasks/inject-data-application/define-interdependent-environment-variables/)

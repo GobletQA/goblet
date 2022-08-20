@@ -31,8 +31,6 @@ const [
   fePort,
   beActive,
   bePort,
-  cdActive,
-  cdPort,
   // ddActive,
   // ddPort,
   // ddAdminPort
@@ -40,14 +38,12 @@ const [
 
 const fePortForward = generateLabelSelector(feActive, fePort)
 const bePortForward = generateLabelSelector(beActive, bePort)
-const cdPortForward = generateLabelSelector(cdActive, cdPort)
 // const ddPortForward = generateLabelSelector(ddActive, ddPort)
 // const ddAdminPortForward = generateLabelSelector(ddActive, ddAdminPort)
 
 let portForward = ``
 fePortForward && (portForward += fePortForward)
 bePortForward && (portForward += bePortForward)
-cdPortForward && (portForward += cdPortForward)
 // ddPortForward && (portForward += ddPortForward)
 // ddPortForward && (portForward += ddAdminPortForward)
 

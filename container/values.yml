@@ -120,29 +120,14 @@ env:
   GB_FE_ROOT_DIR: /goblet/app/repos/frontend
 
 # --- CONDUCTOR ENVs --- #
-  # Host the FE uses to connect to the BE
-  GB_CD_PORT: 9901
   # GB_CD_HOST: host.docker.internal
   GB_CD_HOST: local.gobletqa.app
-  # Not currently used
-  # GB_CD_SECURE_PORT: 9902
-  GB_CD_IMAGE_TAG: latest
-  GB_CD_DEPLOYMENT: goblet-conductor
-  GB_CD_IMAGE: 'ghcr.io/gobletqa/goblet-conductor'
-  GB_CD_IMAGE_FROM: 'node:16.16.0-alpine3.16'
-
-  GB_CD_TIMEOUT: 5000
-  GB_CD_SERVER_SECRET: "c0nDuC7oR-6ObL3T"
-  # Enable to set custom log-level for conductor
-  # GB_CD_LOG_LEVEL: info
   GB_CD_PIDS_LIMIT: 500
   GB_CD_RATE_LIMIT: 5000
+  # TOOD: add this to set a timeout on a spawned container
+  GB_CD_CONTAINER_TIMEOUT: 50000
   # Salting the user hash string. Not intended to be secure just anonymous
   GB_CD_HASH_KEY: C0nDuc10R
-
-  # When manually running the conductor app in a container
-  # This ensures the docker.sock is mounted into the container
-  GB_CD_DOC_VOLUMES: /var/run/docker.sock
   GB_CD_CONTROLLER_TYPE: Docker
 
 # --- SCREENCAST ENVs --- #

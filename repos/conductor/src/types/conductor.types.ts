@@ -82,12 +82,8 @@ export type TScreencastConf = {
 
 export type TConductorConfig = {
   caddy: TCaddyConfig
-  server: TServerConfig
-  proxy: TProxyConfig
   images?: TImgsConfig
   controller: TDockerConfig
-  screencast: TScreencastConf
-  localDevMode?: boolean
 }
 
 export type TSpawnOpts = {

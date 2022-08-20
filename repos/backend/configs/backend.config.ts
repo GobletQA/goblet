@@ -59,7 +59,9 @@ const {
   GB_SC_DEPLOYMENT,
   GB_VALIDATION_KEY,
   GB_VALIDATION_HEADER,
-  GOBLET_CONDUCTOR_SERVICE_PORT
+  GOBLET_CONDUCTOR_SERVICE_PORT,
+  
+  GB_LOCAL_DEV_MODE
 } = process.env
 
 export const backendConfig:TBackendConfig  = {
@@ -112,4 +114,8 @@ export const backendConfig:TBackendConfig  = {
     protocol: GB_NO_VNC_PROTOCOL,
     active: toBool(GB_VNC_ACTIVE),
   },
+    /**
+   * Only turn on local dev mode when explicitly defined, and in a local environment
+   */
+  localDevMode: nodeEnv === 'local' && Boolean(GB_LOCAL_DEV_MODE === 'true'),
 }

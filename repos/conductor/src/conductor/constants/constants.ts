@@ -1,5 +1,3 @@
-const { HOSTNAME, GB_CD_HOST } = process.env
-
 export const SUBDOMAIN = `conductor`
 export const CONDUCTOR_LABEL = `com.gobletqa`
 export const CONDUCTOR_SUBDOMAIN_LABEL = `${CONDUCTOR_LABEL}.conductor`

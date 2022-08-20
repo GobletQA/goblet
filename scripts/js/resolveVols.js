@@ -21,31 +21,10 @@ const getDinDVols = () => (`
       path: ca-public.pem
 `)
 
-const getConductorMounts = () => (`
-- containerPath: /root
-  volume:
-    name: docker-client
-`)
-
-const getConductorDVols = () => (`
-- name: docker-client
-  secret:
-    secretName: docker-client
-    items:
-    - key: client-certificate
-      path: .docker/cert.pem
-    - key: client-key
-      path: .docker/key.pem
-    - key: ca-public
-      path: .docker/ca.pem
-`)
-
 const getVolumeMounts = (repo, volumeMounts) => {
   switch(repo){
     case 'dind': 
       return volumeMounts ? getDinDMounts() : getDinDVols()
-    case 'conductor': 
-      return volumeMounts ? getConductorMounts() : getConductorDVols()
     default:
       return ``
   }
@@ -53,7 +32,7 @@ const getVolumeMounts = (repo, volumeMounts) => {
 
 const [repo, volumeMounts] = process.argv.slice(2)
 const envs = resolveValues()
-const isSecure = `${envs.GB_DD_DOCKER_PORT}` === `2376` && !Boolean(envs.GB_CD_LOCAL_DEV_MODE)
+const isSecure = `${envs.GB_DD_DOCKER_PORT}` === `2376` && !Boolean(envs.GB_LOCAL_DEV_MODE)
 
 const volumes = isSecure
   ? getVolumeMounts(repo, Boolean(volumeMounts))

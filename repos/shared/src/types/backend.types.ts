@@ -65,4 +65,5 @@ export type TBackendConfig = {
   server: TBEServerConfig
   conductor: TConductorOpts
   screencast?: TScreencastServer
+  localDevMode?: boolean
 }
