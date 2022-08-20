@@ -42,6 +42,13 @@ if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "conductor" ] || [ "$BUILD_I
   echo ""
 fi
 
+if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "dind" ] || [ "$BUILD_IMGS" == "dd" ]; then
+  echo "Building Screencast Docker Iamge ..."
+  echo ""
+  yarn doc build --context dd "$BUILD_ARGS"
+  echo ""
+fi
+
 if [ "$BUILD_IMGS" == "all" ] || [ "$BUILD_IMGS" == "screencast" ] || [ "$BUILD_IMGS" == "sc" ]; then
   echo "Building Screencast Docker Iamge ..."
   echo ""
