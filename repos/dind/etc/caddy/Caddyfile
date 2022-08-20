@@ -1,9 +1,28 @@
 {
-  debug
-  admin :{$GB_DD_LOCAL_ADMIN_PORT:2019}
+	debug
+	auto_https off
+	admin :{$GB_DD_LOCAL_ADMIN_PORT:2019}
+	storage file_system {$GB_DD_CADDY_REMOTE_DIR}
 }
 
-http://{$GB_DD_CADDY_HOST:localhost}:{$GB_DD_PORT:2375} {
-  # reverse_proxy unix///var/run/docker.sock
-  bind unix///var/run/docker.sock
+http://{$GB_DD_CADDY_HOST:localhost}:{$GB_DD_DOCKER_PORT:2375} {
+	# reverse_proxy unix///var/run/docker.sock
+	bind unix///var/run/docker.sock
+}
+
+local.gobletqa.app {
+	# @authkey {
+	# 	header {env.GB_VALIDATION_HEADER} {env.GB_VALIDATION_KEY}
+	# }
+
+	@conductor host http://*.conductor.local.gobletqa.app
+	handle @conductor {
+		# reverse_proxy @authkey localhost:7006
+		reverse_proxy localhost:{labels.5}
+	}
+
+	# Fallback for otherwise unhandled domains
+	handle {
+		abort
+	}
 }

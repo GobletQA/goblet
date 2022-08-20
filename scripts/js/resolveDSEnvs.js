@@ -109,7 +109,6 @@ dsEnvs+= repo === `frontend` ? buildEnvs(envs, feKeys) : buildEnvs(envs, beKeys)
  */
 fromSecrets.length && (dsEnvs+= buildFromSecrets(envs, fromSecrets))
 
-const isSecure = `${envs.GB_DD_PORT}` === `2376` && !Boolean(envs.GB_CD_LOCAL_DEV_MODE)
 
 if(repo === `conductor`){
   /**
@@ -117,11 +116,16 @@ if(repo === `conductor`){
   * [See more here](https://kubernetes.io/docs/tasks/inject-data-application/define-interdependent-environment-variables/)
   */
   dsEnvs += addEnv(`DOCKER_HOST`, `"tcp://$(GOBLET_DIND_SERVICE_HOST):$(GOBLET_DIND_SERVICE_PORT)"`)
-  isSecure && (dsEnvs += addEnv(`DOCKER_TLS_VERIFY`, `"1"`))
 }
-else if(repo === 'dind' && isSecure){
-  dsEnvs += addEnv(`DOCKER_CERT_PATH`, `/etc/docker/certs.d`)
-  dsEnvs += addEnv(`DOCKER_TLS_VERIFY`, `true`)
+else if(repo === 'dind'){
+  /**
+   * Caddy uses the XDG_DATA_HOME env to save files and data
+   * So we set it to the remote folder synced via devspace
+   * The same /goblet/remote can be found in the scripts/js/resolveSync.js file
+   * The sync is setup to copy files from the dind container to the local repos/dind/goblet/remote path
+   */
+  addEnv(`XDG_DATA_HOME`, envs.GB_DD_CADDY_REMOTE_DIR || `/goblet/remote`)
 }
+
 
 process.stdout.write(dsEnvs)

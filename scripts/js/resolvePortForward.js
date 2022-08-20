@@ -33,23 +33,23 @@ const [
   bePort,
   cdActive,
   cdPort,
-  ddActive,
-  ddPort,
-  ddAdminPort
+  // ddActive,
+  // ddPort,
+  // ddAdminPort
 ] = process.argv.slice(2)
 
 const fePortForward = generateLabelSelector(feActive, fePort)
 const bePortForward = generateLabelSelector(beActive, bePort)
 const cdPortForward = generateLabelSelector(cdActive, cdPort)
-const ddPortForward = generateLabelSelector(ddActive, ddPort)
-const ddAdminPortForward = generateLabelSelector(ddActive, ddAdminPort)
+// const ddPortForward = generateLabelSelector(ddActive, ddPort)
+// const ddAdminPortForward = generateLabelSelector(ddActive, ddAdminPort)
 
 let portForward = ``
 fePortForward && (portForward += fePortForward)
 bePortForward && (portForward += bePortForward)
 cdPortForward && (portForward += cdPortForward)
-ddPortForward && (portForward += ddPortForward)
-ddPortForward && (portForward += ddAdminPortForward)
+// ddPortForward && (portForward += ddPortForward)
+// ddPortForward && (portForward += ddAdminPortForward)
 
 /**
   * Check if the app is being deploy

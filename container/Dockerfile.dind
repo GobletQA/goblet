@@ -70,17 +70,22 @@ EOF
 
 FROM $IMAGE_FROM as goblet-runner
 WORKDIR /
-ARG GB_DD_PORT=2375
-ARG GB_DD_HOST=0.0.0.0
+ARG GB_DD_PROXY_PORT=2121
+ARG GB_DD_DOCKER_PORT=2375
+ARG GB_DD_DOCKER_HOST=0.0.0.0
+ARG GB_DD_CADDY_REMOTE_DIR=/goblet/remote
+
 ENV HOME=/root \
     DISPLAY=:0.0 \
     DEBUG=pw:api* \
     LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
-    GB_DD_PORT=$GB_DD_PORT \
-    GB_DD_HOST=$GB_DD_HOST \
     DEBIAN_FRONTEND=noninteractive \
+    GB_DD_PROXY_PORT=$GB_DD_PROXY_PORT \
+    GB_DD_DOCKER_HOST=$GB_DD_DOCKER_HOST \
+    GB_DD_DOCKER_PORT=$GB_DD_DOCKER_PORT \
+    GB_DD_CADDY_REMOTE_DIR=$GB_DD_CADDY_REMOTE_DIR \
     PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
 
 COPY repos/dind/entrypoint.sh /entrypoint.sh
@@ -124,6 +129,9 @@ RUN <<EOF
   npm install -g yarn
 
   chmod a+x /entrypoint.sh
+
+  # Ensure the folder exists where caddy stores files
+  mkdir -p $GB_DD_CADDY_REMOTE_DIR
 EOF
 
 COPY repos/dind/etc/supervisor /etc/supervisor

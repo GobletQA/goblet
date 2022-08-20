@@ -53,7 +53,7 @@ const getVolumeMounts = (repo, volumeMounts) => {
 
 const [repo, volumeMounts] = process.argv.slice(2)
 const envs = resolveValues()
-const isSecure = `${envs.GB_DD_PORT}` === `2376` && !Boolean(envs.GB_CD_LOCAL_DEV_MODE)
+const isSecure = `${envs.GB_DD_DOCKER_PORT}` === `2376` && !Boolean(envs.GB_CD_LOCAL_DEV_MODE)
 
 const volumes = isSecure
   ? getVolumeMounts(repo, Boolean(volumeMounts))
