@@ -1,4 +1,4 @@
-import { generateUrls } from './generateUrls'
+import { generateRoutes } from './generators'
 import type { Controller } from '../controller'
 import { TContainerInspect, TPortsMap } from '../types'
 import { CONDUCTOR_SUBDOMAIN_LABEL } from '../constants'
@@ -27,7 +27,7 @@ export const routesFromContainer = (controller:Controller, container:TContainerI
   const subdomain = container.Config.Labels[CONDUCTOR_SUBDOMAIN_LABEL]
   if(!subdomain) return
 
-  controller.routes[subdomain] = generateUrls(
+  controller.routes[subdomain] = generateRoutes(
     container,
     buildPorts(container.NetworkSettings.Ports),
     controller.conductor,

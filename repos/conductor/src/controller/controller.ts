@@ -4,13 +4,12 @@ import { buildImgUri } from '../utils/buildImgUri'
 import { capitalize, deepMerge } from '@keg-hub/jsutils'
 import { checkImgConfig } from '../utils/checkImgConfig'
 import {
-  TUrlMap,
   TImgRef,
   TRunOpts,
   TPullOpts,
   TImgConfig,
   TImgsConfig,
-  TRunResponse,
+  TRouteMeta,
   TContainerRef,
   TContainerData,
   TControllerRoutes,
@@ -96,7 +95,7 @@ export class Controller {
     return undefined
   }
 
-  run = async (imageRef:TImgRef, runOpts:TRunOpts, subdomain:string):Promise<TRunResponse> => {
+  run = async (imageRef:TImgRef, runOpts:TRunOpts, subdomain:string):Promise<TRouteMeta> => {
     throwOverrideErr()
     return undefined
   }
@@ -122,11 +121,8 @@ export class Controller {
   }
 
   getRoute = (req:Request) => {
-    
     const [port, subdomain] = (req.subdomains || []).reverse()
-    // console.log(this.routes?.[subdomain]?.map)
-
-    const routeData = this.routes?.[subdomain]?.map?.[port]
+    const routeData = this.routes?.[subdomain]?.routes?.[port]
     if(routeData) return routeData
 
     // Websocket connection don't seem to get the subdomains added the the request
@@ -134,7 +130,7 @@ export class Controller {
     // There's probably a better way to do this, and may need to be investigated
     const [ hPort, hSubdomain ] = req?.headers?.host.split(`.`)
 
-    return this.routes?.[hSubdomain]?.map?.[hPort]
+    return this.routes?.[hSubdomain]?.routes?.[hPort]
   }
 
   notFoundErr = (args:Record<string, string>) => {

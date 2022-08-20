@@ -14,14 +14,14 @@ import { removeContainer } from '../utils/removeContainer'
 import { waitRetry } from '@gobletqa/shared/utils/waitRetry'
 import { buildContainerPorts } from '../utils/buildContainerPorts'
 import { buildContainerConfig } from '../utils/buildContainerConfig'
-import { generateUrls, generateExternalUrls } from '../utils/generateUrls'
+import { generateRoutes, generateExternalUrls } from '../utils/generators'
 
 import {
   TImgRef,
   TRunOpts,
+  TRouteMeta,
   TImgsConfig,
   TDockerEvent,
-  TRunResponse,
   TContainerRef,
   TDockerConfig,
   TContainerData,
@@ -86,8 +86,6 @@ export class Docker extends Controller {
     hydrateCount && Logger.info(`Hydrating ${hydrateCount} container(s) into runtime cache`)
 
     hydrateRoutes(this, this.containers as Record<string, TContainerInspect>)
-
-    this.routes = await this.caddy.hydrate(this.routes)
 
     return this.containers as Record<string, TContainerInspect>
   }
@@ -221,7 +219,7 @@ export class Docker extends Controller {
     imageRef:TImgRef,
     runOpts:TRunOpts,
     subdomain:string
-  ):Promise<TRunResponse> => {
+  ):Promise<TRouteMeta> => {
     const image = this.getImg(imageRef)
     !image && this.notFoundErr({ type: `image`, ref: imageRef as string })
 
@@ -246,13 +244,14 @@ export class Docker extends Controller {
 
     // Generate the urls for accessing the container
     Logger.info(`Generating container urls...`)
-    const { meta, map } = generateUrls(
+    const routeMeta = generateRoutes(
       containerInspect,
       portData.ports,
-      this.conductor
+      this.conductor,
+      subdomain
     )
 
-    this.routes[subdomain] = { map, urls, meta }
+    this.routes[subdomain] = routeMeta
 
     return this.routes[subdomain]
 

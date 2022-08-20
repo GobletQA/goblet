@@ -93,9 +93,9 @@ export class Conductor {
     if(!imageRef && !spawnOpts.name)
       throw new Error(`Image ref or name is require to spawn a new container`)
 
-    const { urls, meta } = await this.controller.run(imageRef, spawnOpts, subdomain)
+    const { routes, meta } = await this.controller.run(imageRef, spawnOpts, subdomain)
 
-    return { urls, meta }
+    return { routes, meta }
   }
 
   /**
@@ -149,15 +149,10 @@ export class Conductor {
   async proxyRouter(req:Request):Promise<TProxyRoute|string> {
     // TODO: add rate limiting for requests
     // this.handleRateLimit(req)
-
     const routeData = this.controller.getRoute(req)
-    
-    // console.log(`------- routeData -------`)
-    // console.log(routeData)
-    
-    return routeData?.route
-      || routeData?.internal
-      || undefined
+
+    // TODO: fix this so it returns with the correct route data
+    return routeData
   }
 
   /**

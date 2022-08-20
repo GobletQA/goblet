@@ -1,11 +1,11 @@
 
 type TPublicUrl = string
-type TInternalUrl = string
-
 type TSubdomain = string
 type TContainerId = string
 type TContainerPort = string
 type TContainerName = string
+
+export type TPort = string | number
 
 export type TContainerRoute = {
   host: string
@@ -14,18 +14,15 @@ export type TContainerRoute = {
 }
 
 export type TProxyRoute = {
-  host: string,
-  protocol: string,
-  port: string|number,
+  host: string
+  port: TPort
+  protocol: string
+  containerPort: TPort
+  headers?: Record<"Host", TPublicUrl>
 }
 
 export type TProxyRoutes = {
   [key:string]: TProxyRoute
-}
-
-export type TUrlMap = {
-  internal: TInternalUrl
-  route: TProxyRoute
 }
 
 export type TContainerMeta = {
@@ -38,9 +35,8 @@ export type TPublicUrls = {
 }
 
 export type TRouteMeta = {
-  urls?: TPublicUrls
   meta?: TContainerMeta
-  map: Record<TContainerPort, TUrlMap>
+  routes: Record<TContainerPort, TProxyRoute>
 }
 
 
