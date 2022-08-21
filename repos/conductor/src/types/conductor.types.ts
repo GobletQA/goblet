@@ -1,11 +1,7 @@
-import { Request } from 'express'
-import { TCaddyConfig } from './caddy.types'
-import { Options } from 'http-proxy-middleware'
-import { TControllerConfig } from './controller.types'
-import { ContainerCreateOptions, Container } from 'dockerode'
-
-export type TPort = number | string
-export type TPorts = TPort[]
+import type { TProxyConfig } from './proxy.types'
+import type { TLogLevel, TPorts } from './helpers.types'
+import type { TControllerConfig } from './controller.types'
+import type { ContainerCreateOptions, Container } from 'dockerode'
 
 export type TContainerConfig = {
   mem: number
@@ -37,18 +33,6 @@ export type TImgsConfig = {
 export type TImgRef = string | TImgConfig
 
 export type TDockerConfig = TControllerConfig & {
-}
-
-export type TLogLevel = 'info' | 'warn' | 'error' | 'debug' | 'verbose'
-
-export type TProxyConfig = {
-  host?: string
-  proxy: Options
-  hashKey: string
-  timeout: number
-  rateLimit: number
-  logLevel: TLogLevel
-  proxyRouter:(req:Request) => Record<any, any>|string
 }
 
 export type TValidationConfig = {
@@ -84,17 +68,16 @@ export type TConductorConfig = {
   hashKey?: string
   domain?: string
   subdomain?: string
-  caddy?: TCaddyConfig
   images?: TImgsConfig
-  proxyPort?: string|number
+  proxy?: TProxyConfig
   controller: TDockerConfig
 }
 
 export type TSpawnOpts = {
-  imageRef: string
   tag?: string
   name?: string
   user?: string
+  imageRef: string
   provider?: string
   [key: string]: any
 }

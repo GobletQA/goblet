@@ -1,13 +1,6 @@
+import type { Express } from 'express'
 import { Conductor } from '@gobletqa/conductor'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
-import { Express, Request, Response, NextFunction } from 'express'
-
-const conductorProxy = async (req:Request, res:Response, next:NextFunction) => {
-  !req.originalUrl.startsWith(`/repo`)
-    ? next()
-    : await req.app.locals.conductor.proxyRequest(req, res)
-}
-
 
 export const setupConductor = async (app:Express) => {
   const { conductor } = app?.locals?.config
@@ -15,6 +8,6 @@ export const setupConductor = async (app:Express) => {
 
   await app.locals.conductor.validate()
 
-  AsyncRouter.use(`/container|repo|image/*`, conductorProxy)
+  AsyncRouter.use(`/repo/*`, app.locals.conductor.createProxy())
 }
 

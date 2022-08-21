@@ -25,21 +25,18 @@ const {
   GOBLET_DIND_SERVICE_HOST,
   GOBLET_DIND_SERVICE_PORT,
 
-  GB_VALIDATION_KEY,
-  GB_VALIDATION_HEADER,
+  GB_DD_VALIDATION_KEY,
+  GB_DD_VALIDATION_HEADER,
 
   GB_DD_PROXY_PORT,
   GB_DD_CADDY_HOST,
   GB_DD_DEPLOYMENT,
-  GB_DD_EXP_ADMIN_PORT,
-  GB_DD_LOCAL_ADMIN_PORT,
 
   // Salting the user hash string. Not intended to be secure, just anonymous
 } = process.env
 
-
 /**
- * Helper to resolve the host for docker and caddy
+ * Helper to resolve the host for docker and the proxy
  */
 const getDinDHost = () => {
   return !isKube
@@ -50,7 +47,6 @@ const getDinDHost = () => {
         ? GOBLET_DIND_SERVICE_HOST
         : GB_DD_CADDY_HOST
 }
-const dindHost = getDinDHost()
 
 /**
  * Helper to generate the options for connecting to the controller (i.e. docker)
@@ -63,32 +59,27 @@ const getControllerOpts = () => {
   return opts
 }
 
-const getCaddyOpts = (dindOpts:DockerOptions) => {
-  const url = dindOpts.host
-      ? `${dindOpts.protocol}://${dindOpts.host}:${GB_DD_EXP_ADMIN_PORT}`
-      : isDocker
-        ? `http://${GB_DD_CADDY_HOST}:${GB_DD_EXP_ADMIN_PORT}`
-        : `http://${GB_DD_CADDY_HOST}:${GB_DD_LOCAL_ADMIN_PORT}`
-
+const proxyOpts = (dindOpts:DockerOptions, dindHost:string) => {
+  const proto = dindOpts?.protocol || (GB_DD_PROXY_PORT === `443` ? `https` : `http`)
   return {
-    url,
-    host: dindHost,
+    port: GB_DD_PROXY_PORT,
+    target: `${proto}://${dindHost}:${GB_DD_PROXY_PORT}`,
     headers: {
-      host: GB_CD_HOST,
       'content-type': `application/json`,
-      [GB_VALIDATION_HEADER]: GB_VALIDATION_KEY
+      [GB_DD_VALIDATION_HEADER]: GB_DD_VALIDATION_KEY
     }
   }
 }
 
+const dindHost = getDinDHost()
 const dindOpts = getControllerOpts()
+
 
 export const conductorConfig:TConductorConfig = {
   domain: GB_CD_HOST,
   subdomain: GB_CD_SUB_DOMAIN,
-  proxyPort: GB_DD_PROXY_PORT,
   hashKey: GB_CD_HASH_KEY || ``,
-  caddy: getCaddyOpts(dindOpts),
+  proxy: proxyOpts(dindOpts, dindHost),
   controller: {
     options: dindOpts,
     pidsLimit: toNum(GB_CD_PIDS_LIMIT) as number,

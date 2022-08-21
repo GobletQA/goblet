@@ -1,5 +1,7 @@
-import { TControllerType } from './controller.types'
-import { TImgConfig, TContainerConfig, TLogLevel } from './conductor.types'
+import type { Options } from 'http-proxy-middleware'
+import type { TPort } from './helpers.types'
+import type { TControllerType } from './controller.types'
+import type { TImgConfig, TContainerConfig } from './conductor.types'
 
 export type TContainerOpts = TContainerConfig & {}
 
@@ -18,18 +20,17 @@ export type TControllerOpts = {
 }
 
 export type TProxyOpts = {
-  host?: string
-  timeout?: number
-  rateLimit?: number
-  logLevel?: TLogLevel
-  port?: string | number
+  port?: TPort
+  proxy?: Options
+  target?: string
+  headers?: Record<string, string>
 }
 
 export type TConductorOpts = {
   domain?: string
   hashKey?: string
   subdomain?: string
-  images:  TImagesOpts
-  proxyPort?: string|number
+  proxy?: TProxyOpts
+  images: TImagesOpts
   controller?:TControllerOpts
 }

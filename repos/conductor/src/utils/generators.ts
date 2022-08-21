@@ -63,7 +63,7 @@ const buildRoute = (
   userHash:TUserHash
 ) => {
 
-  const proxyPort = conductor?.config?.proxyPort
+  const proxyPort = conductor?.config?.proxy?.port
   const proto = getProtocol(cPort)
   const { host:dockerHost } = conductor?.controller?.config?.options
   const host = !isDocker || !dockerHost || dockerHost.includes(`docker.sock`)

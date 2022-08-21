@@ -1,5 +1,6 @@
 import type { Caddy } from './caddy'
-import { TRouteMeta, TCaddyApiServers } from '../types'
+import { TRouteMeta } from '../types'
+import { TCaddyApiServers } from '../types/caddy.types'
 
 export const buildCaddyProxy = (
   caddy:Caddy,

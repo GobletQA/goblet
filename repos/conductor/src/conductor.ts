@@ -1,17 +1,20 @@
-import { Request, Express } from 'express'
-import { buildConfig } from './utils/buildConfig'
-import { Controller } from './controller/controller'
-import { getApp } from '@gobletqa/shared/express/app'
-import { getController } from './controller/controllerTypes'
-import {
+import type { Request, Router, Express } from 'express'
+import type {
   TImgRef,
   TUserHash,
   TSpawnOpts,
   TProxyRoute,
+  TProxyConfig,
   TContainerRef,
   TConductorOpts,
   TConductorConfig,
 } from '@gobletqa/conductor/types'
+
+import { createProxy } from './proxy/proxy'
+import { buildConfig } from './utils/buildConfig'
+import { Controller } from './controller/controller'
+import { getApp } from '@gobletqa/shared/express/app'
+import { getController } from './controller/controllerTypes'
 
 export class Conductor {
 
@@ -148,6 +151,15 @@ export class Conductor {
 
     // TODO: fix this so it returns with the correct route data
     return routeData
+  }
+
+  createProxy(config?:TProxyConfig, ProxyRouter?:Router) {
+    return createProxy({
+      ...this.config.proxy,
+      ...config,
+      proxyRouter: this.proxyRouter.bind(this),
+      headers: { ...this.config?.proxy?.headers, ...config?.headers },
+    }, ProxyRouter)
   }
 
   /**

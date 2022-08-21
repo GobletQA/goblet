@@ -1,11 +1,9 @@
+import type { TUserHash, TPort } from './helpers.types'
 
 type TPublicUrl = string
 type TContainerId = string
 type TContainerPort = string
 type TContainerName = string
-
-export type TUserHash = string
-export type TPort = string | number
 
 export type TContainerRoute = {
   host: string
