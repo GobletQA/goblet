@@ -13,6 +13,7 @@ import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 export const validate = async (req:Request, res:Response) => {
   const { conductor } = req.app.locals
   const { id, username, token, provider } = req.body
+  const imageRef = Object.keys(conductor.config.images).shift()
 
   if (!id || !username || !token || !provider)
     throw new Error(`Provider metadata is unknown. Please sign in again`)
@@ -33,9 +34,9 @@ export const validate = async (req:Request, res:Response) => {
   // Next call conductor to spin of a container for the user
   // Add the token we just generated for authorization
   const status = await conductor.status({
-    body: {},
     query: {},
-    params: {},
+    params: { imageRef },
+    body: { ensure: true },
   } as Partial<Request>)
 
   // While the container is spinning up

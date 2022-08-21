@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { asyncWrap, apiRes } from '@gobletqa/shared/express'
+import { apiRes } from '@gobletqa/shared/express'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 
 /**
@@ -8,9 +8,16 @@ import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
  */
 export const statusContainer = async (req:Request, res:Response) => {
   const conductor = req.app.locals.conductor
-  const status = await conductor.status(req, res.locals.subdomain)
+  const imageRef = req?.params?.imageRef || Object.keys(conductor.config.images).shift()
+
+  const status = await conductor.status({
+    query: { ...req?.query },
+    body: { ...req?.body },
+    params: { ...req?.params, imageRef },
+  }, req?.user?.subdomain)
 
   return apiRes(res, status)
 }
 
+AsyncRouter.get(`/container/status`, statusContainer)
 AsyncRouter.get(`/container/status/:imageRef`, statusContainer)
