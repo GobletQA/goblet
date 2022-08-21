@@ -1,10 +1,10 @@
 
 type TPublicUrl = string
-type TSubdomain = string
 type TContainerId = string
 type TContainerPort = string
 type TContainerName = string
 
+export type TUserHash = string
 export type TPort = string | number
 
 export type TContainerRoute = {
@@ -41,5 +41,5 @@ export type TRouteMeta = {
 
 
 export type TControllerRoutes = {
-  [key:TSubdomain]: TRouteMeta
+  [key:TUserHash]: TRouteMeta
 }

@@ -5,6 +5,7 @@ import { getApp } from '@gobletqa/shared/express/app'
 import { getController } from './controller/controllerTypes'
 import {
   TImgRef,
+  TUserHash,
   TSpawnOpts,
   TProxyRoute,
   TContainerRef,
@@ -14,7 +15,6 @@ import {
 
 export class Conductor {
 
-  domain: string
   controller: Controller
   config: TConductorConfig
   rateLimitMap:Record<any, any>
@@ -24,7 +24,6 @@ export class Conductor {
     this.rateLimitMap = {}
     this.containerTimeoutMap = {}
     this.config = buildConfig(config)
-    this.domain = this.config.domain
     this.controller = getController(this, this.config.controller)
 
     config.images
@@ -85,7 +84,7 @@ export class Conductor {
    * Spawns a new container based on the passed in request
    * Is called from the spawn endpoint
    */
-  async spawn(imageRef:TImgRef, spawnOpts:TSpawnOpts, userHash:string) {
+  async spawn(imageRef:TImgRef, spawnOpts:TSpawnOpts, userHash:TUserHash) {
     if(!imageRef && !spawnOpts.name)
       throw new Error(`Image ref or name is require to spawn a new container`)
 
@@ -96,7 +95,7 @@ export class Conductor {
 
   /**
    * Gets the status of a user based on the userHash
-   * Subdomain is derived from the user and a hash so it's always the same
+   * Route is derived from the user and a hash so it's always the same
    */
   async status(req:Partial<Request>, userHash?:string){
     const { ensure, ...spawnOpts } = (req?.body || {})

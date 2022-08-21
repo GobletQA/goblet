@@ -30,11 +30,8 @@ const setPortConfig = (acc:TCreatePortsObj, port:string|number, found:string):TC
 
 
 /**
- * TODO: If running Conductor in a container, then we don't need to bind the ports to the host
- * It should have access to the spawned container because they are the same network
- * Just need to expose conductor to the host and use the IP of the spawned container for access
- * Need to investigate adding the spawned containers port as a subdomain
- * This way it can be defined and accessed externally while still using the conductor proxy
+ * Builds the ports that will be exposed outside of the container
+ * Maps them to the ports exposed by the container
  */
 export const buildPorts = async (image:TImgConfig):Promise<TCreatePortsObj> => {
   let cachePorts:number[] = []

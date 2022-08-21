@@ -1,8 +1,14 @@
 import type { Conductor } from '@gobletqa/conductor/conductor'
 
 import { inDocker } from '@keg-hub/cli-utils'
-import { buildSubdomains } from './buildSubdomains'
-import { TPort, TPublicUrls, TRouteMeta, TPortsMap, TContainerInspect } from '../types'
+import {
+  TPort,
+  TUserHash,
+  TPublicUrls,
+  TRouteMeta,
+  TPortsMap,
+  TContainerInspect
+} from '@gobletqa/conductor/types'
 const isDocker = inDocker()
 
 /**
@@ -33,16 +39,17 @@ const resolveIp = (containerInfo:TContainerInspect) => {
   return containerInfo?.NetworkSettings?.Networks?.[networkName]?.IPAddress
 }
 
-
 /**
- * Generates a host domain url for accessing an exposed container on the dind pod
+ * Generates a host url for accessing an exposed container on the dind pod
  */
 export const generateExternalUrl = (
   hostPort:TPort,
-  userHash:string,
-  domain:string
+  userHash:TUserHash,
+  conductor:Conductor,
 ) => {
-  return `${hostPort}.${userHash}.${buildSubdomains(``)}.${domain}`
+  const { domain, subdomain } = conductor?.config
+  
+  return `${hostPort}.${userHash}.${subdomain}.${domain}`
 }
 
 
@@ -54,14 +61,12 @@ const buildRoute = (
   cPort:string,
   hostPort:string|number,
   conductor:Conductor,
-  userHash:string
+  userHash:TUserHash
 ) => {
 
-  // TODO: Update this to find the domain when deploy instead of the IP address
-  // dockerHost should be something like <app-userHash>.<goblet-QA-domain>.run
   const { host:dockerHost, port } = conductor?.controller?.config?.options
   const host = !isDocker || !dockerHost || dockerHost.includes(`docker.sock`)
-    ? resolveIp(containerInfo) || conductor.domain
+    ? resolveIp(containerInfo) || conductor?.config?.domain
     : dockerHost
 
   return {
@@ -72,7 +77,7 @@ const buildRoute = (
     // 443 is default, but would be better to allow it to be any port
     protocol: getProtocol(cPort),
     headers: {
-      Host: generateExternalUrl(hostPort, userHash, conductor.domain)
+      Host: generateExternalUrl(hostPort, userHash, conductor)
     },
   }
 }
@@ -82,12 +87,12 @@ const buildRoute = (
  */
 export const generateExternalUrls = (
   ports:TPortsMap,
-  userHash:string,
+  userHash:TUserHash,
   conductor:Conductor
 ) => {
 
   return Object.entries(ports).reduce((acc, [cPort, hostPort]:[string, string]) => {
-    acc[cPort] = generateExternalUrl(ports[cPort], userHash, conductor?.domain)
+    acc[cPort] = generateExternalUrl(ports[cPort], userHash, conductor)
 
     return acc
   }, {} as TPublicUrls)
@@ -95,7 +100,7 @@ export const generateExternalUrls = (
 }
 
 /**
- * Loops over the possible ports and generates uris for them relative to the IP ||domain
+ * Loops over the possible ports and generates uris for them relative to the IP || domain
  * @function
  * @public
  * @param {Object} containerInfo - JSON object instance of a container inspect returned from dockerode
@@ -106,7 +111,7 @@ export const generateRoutes = (
   containerInfo:TContainerInspect,
   ports:TPortsMap,
   conductor:Conductor,
-  userHash:string
+  userHash:TUserHash
 ):TRouteMeta => {
 
   return Object.entries(ports)

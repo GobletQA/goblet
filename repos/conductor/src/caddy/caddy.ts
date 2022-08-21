@@ -99,9 +99,9 @@ export class Caddy {
     const servers = filterServers(config)
     
     Object.entries(routes)
-    .reduce(async (toResolve, [subdomain, meta]) => {
+    .reduce(async (toResolve, [userHash, meta]) => {
       const acc = await toResolve
-      const proxy = buildCaddyProxy(this, subdomain, meta, servers)
+      const proxy = buildCaddyProxy(this, userHash, meta, servers)
 
       return acc
     }, Promise.resolve())

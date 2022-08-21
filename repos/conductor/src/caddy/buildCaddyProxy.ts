@@ -3,7 +3,7 @@ import { TRouteMeta, TCaddyApiServers } from '../types'
 
 export const buildCaddyProxy = (
   caddy:Caddy,
-  subdomain:string,
+  userHash:string,
   route:TRouteMeta,
   servers:TCaddyApiServers
 ) => {
@@ -15,14 +15,14 @@ export const buildCaddyProxy = (
   const svrName = 'virtual.server'
   const svrPort = 'virtual.port'
 
-  const domainHndlr = {
+  const routeHndlr = {
     handler: 'reverse_proxy',
     upstreams: [{ dial: `${svrName}:${svrPort}` }],
   }
 
   const handler = {
     handler: 'subroute',
-    routes: [{ handle: [domainHndlr] }],
+    routes: [{ handle: [routeHndlr] }],
   }
   
   

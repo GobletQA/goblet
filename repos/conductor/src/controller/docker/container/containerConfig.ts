@@ -20,7 +20,7 @@ export type TCreateContResp = {
 export const containerConfig = async (
   docker:Docker,
   image:TImgConfig,
-  subdomain:string,
+  userHash:string,
   runOpts:TRunOpts,
   portData:TCreatePortsObj,
   urls: TPublicUrls
@@ -31,23 +31,23 @@ export const containerConfig = async (
   return {
     // TODO: figure out the best way to name the containers to avoid collisions
     // Doing it this way will fail if the user tries to create more then one image of the same type
-    // name: subdomain,
+    // name: userHash,
 
     // TODO: investigate createContainer options that should be allowed form a request
     ...runOpts,
     ExposedPorts: exposed,
     Image: buildImgUri(image),
-    Labels: buildLabels(image, subdomain),
+    Labels: buildLabels(image, userHash),
     Env: buildContainerEnvs(image, {
         urls,
         ports,
-        subdomain,
+        userHash,
         // options:runOpts,
         // config: docker.config,
         // conductor: docker.conductor,
     }, {
-      // TODO: configure this to use the correct subdomain
-      // VIRTUAL_HOST: `subdomain.virtualhost.com`
+      // TODO: configure this to use the correct userHash
+      // VIRTUAL_HOST: `userHash.virtualhost.com`
       // Define which port will be exposed, need to expose more then one port?
       // VIRTUAL_PORT: exposed port
     }),

@@ -16,7 +16,6 @@ loadEnvs({
 })
 
 const {
-  HOSTNAME,
   GB_CD_HOST,
   GB_CD_HASH_KEY,
   GB_CD_SUB_DOMAIN,
@@ -84,9 +83,9 @@ const getCaddyOpts = (dindOpts:DockerOptions) => {
 const dindOpts = getControllerOpts()
 
 export const conductorConfig:TConductorConfig = {
+  domain: GB_CD_HOST,
+  subdomain: GB_CD_SUB_DOMAIN,
   hashKey: GB_CD_HASH_KEY || ``,
-  domain: GB_CD_HOST || HOSTNAME,
-  subdomain: GB_CD_SUB_DOMAIN || `conductor.local`,
   caddy: getCaddyOpts(dindOpts),
   controller: {
     options: dindOpts,

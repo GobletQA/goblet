@@ -61,22 +61,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ARG GB_FE_PORT=19006
 ARG GB_BE_PORT=7005
 ARG GB_SC_PORT=7006
+ARG GB_DD_DEPLOYMENT
 ARG GB_NO_VNC_PORT=26369
 ARG GB_DD_PROXY_PORT=2121
 ARG GB_VNC_SERVER_PORT=26370
 ARG PLAYWRIGHT_BROWSERS_VERSION
-
-EXPOSE $GB_FE_PORT
-EXPOSE $GB_BE_PORT
-EXPOSE $GB_SC_PORT
-EXPOSE $GB_NO_VNC_PORT
-EXPOSE $GB_VNC_SERVER_PORT
 
 ENV GB_FE_PORT=$GB_FE_PORT \
     GB_BE_PORT=$GB_BE_PORT \
     GB_SC_PORT=$GB_SC_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
     GB_DD_PROXY_PORT=$GB_DD_PROXY_PORT \
+    GB_DD_DEPLOYMENT=$GB_DD_DEPLOYMENT \
     GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION
@@ -91,14 +87,22 @@ RUN <<EOF
   set -eux;
   echo "#! /bin/bash" >> /entrypoint.sh
   echo "if [ \"\$GB_SUB_REPO\" == \"backend\" ]; then" >> /entrypoint.sh
-  echo "  export DOCKER_HOST=\"tcp://\$GB_DD_DEPLOYMENT:\$GOBLET_DIND_SERVICE_PORT\"" >> /entrypoint.sh
+  echo "  GB_DIND_HOST=${GB_DD_DEPLOYMENT:-$GOBLET_DIND_SERVICE_HOST}" >> /entrypoint.sh
+  echo "  export DOCKER_HOST=\"tcp://\$GB_DIND_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /entrypoint.sh
   echo "  echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /entrypoint.sh
   echo "  yarn pull images >> /proc/1/fd/1 &" >> /entrypoint.sh
+  echo "  unset DOCKER_AUTH_PASSWORD" >> /entrypoint.sh
   echo "fi" >> /entrypoint.sh
   echo "exec \$@" >> /entrypoint.sh
   chmod a+x /entrypoint.sh
   chmod a+x /goblet/app/container/initialize.sh
 EOF
+
+EXPOSE $GB_FE_PORT
+EXPOSE $GB_BE_PORT
+EXPOSE $GB_SC_PORT
+EXPOSE $GB_NO_VNC_PORT
+EXPOSE $GB_VNC_SERVER_PORT
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "container/initialize.sh" ]

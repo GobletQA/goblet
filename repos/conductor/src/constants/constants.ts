@@ -1,4 +1,3 @@
-export const SUBDOMAIN = `conductor`
 export const CONDUCTOR_LABEL = `com.gobletqa`
 export const CONDUCTOR_USER_HASH_LABEL = `${CONDUCTOR_LABEL}.conductor`
 

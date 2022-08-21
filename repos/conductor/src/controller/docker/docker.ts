@@ -36,7 +36,6 @@ import { createContainer, startContainer } from './container/runContainerHelpers
  */
 export class Docker extends Controller {
 
-  domain: string
   docker: Dockerode
   images: TImgsConfig
   conductor: Conductor
