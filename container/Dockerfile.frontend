@@ -25,9 +25,10 @@ WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/tsconfig* .
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
+WORKDIR /goblet/app/repos/frontend
 ENV NODE_ENV=production
 RUN yarn global add expo-cli@$EXPO_CLI_VERSION; \
-    yarn turbo run build --filter=@gobletqa/frontend
+    yarn build:fe --filter=@gobletqa/frontend
 # ---- End Stage ---- #
 
 # TODO: Update this to build and deploy to firebase instead of serving vai nginx
@@ -49,7 +50,7 @@ ARG GB_FE_PORT
 ENV NODE_ENV=production \
     GB_FE_PORT=$GB_FE_PORT
 
-COPY --from=goblet-builder /goblet/app/repos/frontend/build .
+COPY --from=goblet-builder /goblet/app/repos/frontend/dist/. .
 COPY ./container/scripts/fe.nginx.conf /etc/nginx/http.d/default.conf
 RUN sed -i "s/\$\{GB_FE_PORT\}/$GB_FE_PORT/g" /etc/nginx/http.d/default.conf; \
     echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf; \

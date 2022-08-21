@@ -17,6 +17,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "build:fe": "yarn rm:dist && yarn bundle && yarn copy:bundle",
     "bundle": "cd ../../node_modules/keg-core; yarn build:web && cd ../../repos/frontend",
     "copy:bundle": "cp -R ../../node_modules/keg-core/web-build ./dist",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
@@ -24,7 +25,6 @@
     "clean:full": "yarn clean; yarn clean:nm; yarn install",
     "clean:nm": "rm -rf node_modules",
     "develop": "cd ../../node_modules/keg-core && yarn web",
-    "fe:build": "yarn rm:dist && yarn bundle && yarn copy:bundle",
     "format": "yarn lint && yarn pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
