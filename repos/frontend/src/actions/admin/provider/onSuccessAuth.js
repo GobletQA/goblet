@@ -5,7 +5,7 @@ import { apiRequest } from 'HKUtils/api/apiRequest'
 import { signOutAuthUser } from './signOutAuthUser'
 import { setRepos } from 'HKActions/repo/local/setRepos'
 import { localStorage } from'HKUtils/storage/localStorage'
-import { setContainer } from 'HKActions/container/local/setContainer'
+import { setContainerRoutes } from 'HKActions/container/local/setContainerRoutes'
 
 /**
  * Formats the response from the git provider sign in
@@ -85,6 +85,11 @@ export const onSuccessAuth = async (authData, callback) => {
     const userData = formatUser(authData)
     await isAllowedUser(userData.email)
 
+    // TODO: update this so show a message
+    // The user has logged in, and now we spin up a container for them
+    // This can take a while, so ensure we update the user so they know what's happening
+    // Also encrypt the user data to ensure it's not passed on via plain-text
+
     const {
       data,
       error,
@@ -105,7 +110,7 @@ export const onSuccessAuth = async (authData, callback) => {
     // Wrap container and repos so if they throw, the login auth is still valid
     try {
       repos && repos.length && setRepos({ repos })
-      setContainer(status)
+      status?.routes && setContainerRoutes(status)
     }
     catch(err){
       console.warn(`[Auth State Error] Error setting Container or Repos status.`)

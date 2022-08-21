@@ -75,7 +75,7 @@ const setNoRepoStatus = status => {
  * 
  * @returns {Object} - status object returned from the Backend API
  */
-export const statusRepo = async ({ status=noOpObj, ...params}=noOpObj) => {
+export const statusRepo = async ({ routes=noOpObj, ...params}=noOpObj) => {
   addToast({
     type: 'info',
     message: `Getting Repo status...`,
@@ -83,7 +83,6 @@ export const statusRepo = async ({ status=noOpObj, ...params}=noOpObj) => {
 
   const savedRepo = await localStorage.getRepo()
 
-  // TODO: containers status => status to override the url and call the conductor
   const {
     data,
     error,
@@ -91,13 +90,11 @@ export const statusRepo = async ({ status=noOpObj, ...params}=noOpObj) => {
   } = await apiRequest({
     method: 'GET',
     url: `/repo/status`,
+    headers: routes?.[`7006`]?.headers,
     params: {...params, ...savedRepo?.git},
   })
 
   if(!success || error) return setErrorState(error)
-
-  console.log(`------- data -------`)
-  console.log(data)
 
   return !data?.status.mounted
       ? setNoLocalMountState(data?.status)

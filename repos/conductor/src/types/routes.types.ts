@@ -13,12 +13,18 @@ export type TContainerRoute = {
   protocol?: 'http' | 'https' | 'ws' | 'wss'
 }
 
+export type TProxyForwardHeaders = {
+  [`X-Forwarded-Proto`]: string
+  [`X-Forwarded-Port`]: string
+  [`X-Forwarded-Host`]: string
+}
+
 export type TProxyRoute = {
   host: string
   port: TPort
   protocol: string
   containerPort: TPort
-  headers?: Record<"Host", TPublicUrl>
+  headers?: TProxyForwardHeaders
 }
 
 export type TProxyRoutes = {

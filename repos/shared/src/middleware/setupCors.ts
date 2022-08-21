@@ -37,7 +37,7 @@ export const setupCors = (app:Express) => {
     )
     res.setHeader(
       'Access-Control-Allow-Headers',
-      'X-PINGOTHER,Origin,X-Requested-With,Content-Type,Accept,Authorization,AuthToken'
+      'X-PINGOTHER,Origin,X-Requested-With,Content-Type,Accept,Authorization,AuthToken,X-Forwarded-Host,X-Forwarded-Proto,X-Forwarded-Port'
     )
 
     return req.method === 'OPTIONS' ? res.status(200).send('OK') : next()

@@ -28,6 +28,7 @@ const {
   GB_VALIDATION_KEY,
   GB_VALIDATION_HEADER,
 
+  GB_DD_PROXY_PORT,
   GB_DD_CADDY_HOST,
   GB_DD_DEPLOYMENT,
   GB_DD_EXP_ADMIN_PORT,
@@ -85,6 +86,7 @@ const dindOpts = getControllerOpts()
 export const conductorConfig:TConductorConfig = {
   domain: GB_CD_HOST,
   subdomain: GB_CD_SUB_DOMAIN,
+  proxyPort: GB_DD_PROXY_PORT,
   hashKey: GB_CD_HASH_KEY || ``,
   caddy: getCaddyOpts(dindOpts),
   controller: {

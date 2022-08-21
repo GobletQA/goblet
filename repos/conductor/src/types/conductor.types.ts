@@ -86,6 +86,7 @@ export type TConductorConfig = {
   subdomain?: string
   caddy?: TCaddyConfig
   images?: TImgsConfig
+  proxyPort?: string|number
   controller: TDockerConfig
 }
 

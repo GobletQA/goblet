@@ -64,20 +64,24 @@ const buildRoute = (
   userHash:TUserHash
 ) => {
 
-  const { host:dockerHost, port } = conductor?.controller?.config?.options
+  const proxyPort = conductor?.config?.proxyPort
+  const proto = getProtocol(cPort)
+  const { host:dockerHost } = conductor?.controller?.config?.options
   const host = !isDocker || !dockerHost || dockerHost.includes(`docker.sock`)
     ? resolveIp(containerInfo) || conductor?.config?.domain
     : dockerHost
 
   return {
     host,
-    port: port,
+    port: proxyPort,
     containerPort: hostPort,
     // TODO: figure out a way to check if port is secure for ports
     // 443 is default, but would be better to allow it to be any port
-    protocol: getProtocol(cPort),
+    protocol: proto,
     headers: {
-      Host: generateExternalUrl(hostPort, userHash, conductor)
+      [`X-Forwarded-Proto`]: proto,
+      [`X-Forwarded-Port`]: proxyPort,
+      [`X-Forwarded-Host`]: generateExternalUrl(hostPort, userHash, conductor)
     },
   }
 }

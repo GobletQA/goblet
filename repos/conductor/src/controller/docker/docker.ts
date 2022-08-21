@@ -64,10 +64,22 @@ export class Docker extends Controller {
    */
   hydrate = async ():Promise<Record<string, TContainerInspect>> => {
     const containers = await this.getAll()
+    
+    const imgNames = Object.keys(this.conductor.config.images)
+
     this.containers = await containers.reduce(async (toResolve, container) => {
       const acc = await toResolve
-      if(!container.Labels[CONDUCTOR_USER_HASH_LABEL]) return acc
 
+      // Check if there's an existing container that's owned by goblet
+      // But missing the correct user hash. If there is, then remove it
+      if(!container.Labels[CONDUCTOR_USER_HASH_LABEL]){
+        const fromGoblet = Object.keys(container.Labels).find((label:string) => imgNames.includes(label))
+        fromGoblet && removeContainer(this.docker.getContainer(container.Id))
+        return acc
+      }
+
+      // Any container not running always just remove it
+      // The user can't access it anyways
       if(container.State !== 'running'){
         removeContainer(this.docker.getContainer(container.Id))
         return acc

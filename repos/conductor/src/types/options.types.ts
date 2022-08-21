@@ -30,5 +30,6 @@ export type TConductorOpts = {
   hashKey?: string
   subdomain?: string
   images:  TImagesOpts
+  proxyPort?: string|number
   controller?:TControllerOpts
 }

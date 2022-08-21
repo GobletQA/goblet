@@ -1,11 +1,10 @@
 import { Values } from 'HKConstants'
-import { noOpObj } from '@keg-hub/jsutils'
 import { addToast } from 'HKActions/toasts'
 import { setActiveModal } from 'HKActions/modals'
 import { apiRequest } from 'HKUtils/api/apiRequest'
-import { setContainer } from '../local/setContainer'
 import { removeRepo } from 'HKActions/repo/local/removeRepo'
 import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
+import { setContainerRoutes } from 'HKActions/container/local/setContainerRoutes'
 
 const { MODAL_TYPES } = Values
 
@@ -48,8 +47,7 @@ export const statusContainer = async params => {
 
   if(!success || error) return setErrorState(error)
 
-  const { status=noOpObj } = data
-  setContainer(status)
+  setContainerRoutes(data)
 
-  return status
+  return data
 }

@@ -29,7 +29,8 @@ export const categories = deepFreeze({
     SPEC_RESULTS: `specResults`,
     RECORD_RESULTS: `recordResults`,
     RECORDING_BROWSER: 'recordingBrowser',
-    RECORDING_ACTIONS: `recordingActions` 
+    RECORDING_ACTIONS: `recordingActions`,
+    ROUTES: `routes`
   },
   SUB_CATEGORIES: {
     NODES: 'nodes',

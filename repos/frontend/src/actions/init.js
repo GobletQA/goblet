@@ -60,7 +60,7 @@ export const init = async () => {
   // TODO: If no locally mounted volume
   // Then setup a fake mounted repo at the default location
   // Will allow using goblet without persisting changes
-  const repoStatus = await statusRepo({ status })
+  const repoStatus = await statusRepo({ routes: status?.routes })
   if (!repoStatus || !repoStatus.mounted) return
 
   // Finally if the repo is mounted
