@@ -93,8 +93,7 @@ export class Caddy {
       url: getUrl(this.config.url, endpoint + path),
     }, `DELETE Server`)
   }
-  
-  
+
   async hydrate(routes:TControllerRoutes){
     const config = await this.getConfig()
     const servers = filterServers(config)

@@ -1,4 +1,6 @@
 import type { Response, Request } from 'express'
+
+import { hashString } from '@keg-hub/jsutils'
 import { apiRes } from '@gobletqa/shared/express'
 import { getUserRepos } from '@gobletqa/workflows'
 import { generateTokens } from '@GBE/utils/generateTokens'
@@ -16,6 +18,8 @@ export const validate = async (req:Request, res:Response) => {
     throw new Error(`Provider metadata is unknown. Please sign in again`)
 
   const config = req.app.locals.config.server
+  
+  res.locals.subdomain = hashString(`${username}-${config?.conductor?.hashKey}`)
 
   // First generate tokens for accessing conductor form the frontend
   const jwtTokens = generateTokens(config.jwt, {
@@ -23,13 +27,15 @@ export const validate = async (req:Request, res:Response) => {
     token: token,
     username: username,
     provider: provider,
+    subdomain: res.locals.subdomain
   })
 
   // Next call conductor to spin of a container for the user
   // Add the token we just generated for authorization
   const status = await conductor.status({
-    headers: { authorization: `Bearer ${jwtTokens.jwt}`}
-  })
+    body: {},
+    params: {},
+  } as Partial<Request>)
 
   // While the container is spinning up
   // Get the users repos from the git provider

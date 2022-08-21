@@ -23,34 +23,28 @@ const envs = loadEnvs({
   override: NODE_ENV === 'local'
 })
 
-/**
-* Loads the envs and filters out all except for the those the match the whiteList prefix
-*/
-const containerEnvs = Object.entries(
-  inDocker()
-    ? process.env
-    : envs
-).reduce((acc, [key, value]) => {
-  whiteList.find(prefix => key.startsWith(prefix))
-    && !blackList.includes(key)
-    && (acc[key] = value)
-
-  return acc
-}, {} as Record<string, any>)
-
-
 const {
   GB_SC_IMAGE,
   GB_SC_IMAGE_TAG,
-  GB_SC_DEPLOYMENT,
-  GB_CD_SUB_DOMAIN
+  GB_SC_DEPLOYMENT
 } = envs
 
+/**
+* Loads the envs and filters out all except for the those the match the whiteList prefix
+*/
+const containerEnvs = Object.entries(inDocker() ? process.env : envs)
+  .reduce((acc, [key, value]) => {
+    whiteList.find(prefix => key.startsWith(prefix))
+      && !blackList.includes(key)
+      && (acc[key] = value)
+
+    return acc
+  }, {} as Record<string, any>)
 
 /**
 * Gets the spawn image metadata from the screencast envs
 */
-const getContainerConfig = () => {
+const getImgConfig = () => {
   const [provider, user, name] = GB_SC_IMAGE.split(`/`)
   const tag = GB_SC_IMAGE_TAG
   if(!provider || !user || !name || !tag)
@@ -69,16 +63,13 @@ const getContainerConfig = () => {
   }
 }
 
-const imgConfig = getContainerConfig()
-
 export const conductorConfig:TConductorOpts = {
-  subdomain: GB_CD_SUB_DOMAIN || NODE_ENV,
   controller: {
     type: GB_CD_CONTROLLER_TYPE as TControllerType
   },
   images: {
     [GB_SC_DEPLOYMENT]: {
-      ...imgConfig,
+      ... getImgConfig(),
       container: {
         mem: 0,
         idle: 5000,

@@ -7,13 +7,7 @@ export const buildCaddyProxy = (
   route:TRouteMeta,
   servers:TCaddyApiServers
 ) => {
-  const { map } = route
-  
-  console.log(`------- route -------`)
-  console.log(route)
-  console.log(`------- map -------`)
-  console.log(map)
-  
+
   const hostDomain = {
     host: [caddy.config.host],
   }

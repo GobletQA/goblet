@@ -122,6 +122,8 @@ env:
 # --- CONDUCTOR ENVs --- #
   # GB_CD_HOST: host.docker.internal
   GB_CD_HOST: local.gobletqa.app
+  GB_CD_SUB_DOMAIN: conductor
+
   GB_CD_PIDS_LIMIT: 500
   GB_CD_RATE_LIMIT: 5000
   # TOOD: add this to set a timeout on a spawned container

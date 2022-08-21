@@ -1,8 +1,6 @@
 import { Request, Express } from 'express'
-import { getDomain } from './utils/getDomain'
 import { buildConfig } from './utils/buildConfig'
 import { Controller } from './controller/controller'
-
 import { getApp } from '@gobletqa/shared/express/app'
 import { getController } from './controller/controllerTypes'
 import {
@@ -12,7 +10,7 @@ import {
   TContainerRef,
   TConductorOpts,
   TConductorConfig,
-} from '../types'
+} from '@gobletqa/conductor/types'
 
 export class Conductor {
 
@@ -26,7 +24,7 @@ export class Conductor {
     this.rateLimitMap = {}
     this.containerTimeoutMap = {}
     this.config = buildConfig(config)
-    this.domain = getDomain(this.config)
+    this.domain = this.config.domain
     this.controller = getController(this, this.config.controller)
 
     config.images
@@ -59,11 +57,11 @@ export class Conductor {
    * Ensures a single IP doesn't make to many requests
    */
   async handleRateLimit(req:Request) {
-    if (this.config.proxy.rateLimit <= 0) return
+    if (this.config.controller.rateLimit <= 0) return
 
     const addr = req?.socket?.remoteAddress
     const now = new Date().getTime()
-    let nextTime = now + this.config.proxy.rateLimit
+    let nextTime = now + this.config.controller.rateLimit
 
     if (addr in this.rateLimitMap) {
       const lastTime = this.rateLimitMap[addr]
@@ -87,31 +85,31 @@ export class Conductor {
    * Spawns a new container based on the passed in request
    * Is called from the spawn endpoint
    */
-  async spawn(imageRef:TImgRef, spawnOpts:TSpawnOpts, subdomain:string) {
+  async spawn(imageRef:TImgRef, spawnOpts:TSpawnOpts, userHash:string) {
     if(!imageRef && !spawnOpts.name)
       throw new Error(`Image ref or name is require to spawn a new container`)
 
-    const { routes, meta } = await this.controller.run(imageRef, spawnOpts, subdomain)
+    const { routes, meta } = await this.controller.run(imageRef, spawnOpts, userHash)
 
     return { routes, meta }
   }
 
   /**
-   * Gets the status of a user based on the subdomain
+   * Gets the status of a user based on the userHash
    * Subdomain is derived from the user and a hash so it's always the same
    */
-  async status(req:Request, subdomain){
-    const { ensure } = req?.query 
-    const { imageRef } = req?.params
-    const route = this.controller.routes?.[subdomain]
+  async status(req:Partial<Request>, userHash?:string){
+    const { ensure, ...spawnOpts } = (req?.body || {})
+    const { imageRef } = (req?.params || {})
+    const route = this.controller.routes?.[userHash]
 
     return route
       ? route
       : ensure && imageRef
         ? await this.spawn(
             imageRef as string,
-            req.body as TSpawnOpts,
-            subdomain
+            spawnOpts as TSpawnOpts,
+            userHash
           )
         : {}
   }

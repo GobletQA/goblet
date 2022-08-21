@@ -39,10 +39,10 @@ export const initApi = async () => {
   setupCors(app)
   setupJWT(app, ['/auth/validate'])
   setupServer(app, false)
+  await setupConductor(app)
   setupRouters(app)
   setupStatic(app)
   validateUser(app, `/repo\/*`, `async`)
-  await setupConductor(app)
   await setupEndpoints()
   setupLoggerErr(app)
 

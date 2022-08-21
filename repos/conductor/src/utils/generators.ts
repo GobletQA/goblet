@@ -39,10 +39,10 @@ const resolveIp = (containerInfo:TContainerInspect) => {
  */
 export const generateExternalUrl = (
   hostPort:TPort,
-  subdomain:string,
+  userHash:string,
   domain:string
 ) => {
-  return `${hostPort}.${subdomain}.${buildSubdomains(``)}.${domain}`
+  return `${hostPort}.${userHash}.${buildSubdomains(``)}.${domain}`
 }
 
 
@@ -54,11 +54,11 @@ const buildRoute = (
   cPort:string,
   hostPort:string|number,
   conductor:Conductor,
-  subdomain:string
+  userHash:string
 ) => {
 
   // TODO: Update this to find the domain when deploy instead of the IP address
-  // dockerHost should be something like <app-subdomain>.<goblet-QA-domain>.run
+  // dockerHost should be something like <app-userHash>.<goblet-QA-domain>.run
   const { host:dockerHost, port } = conductor?.controller?.config?.options
   const host = !isDocker || !dockerHost || dockerHost.includes(`docker.sock`)
     ? resolveIp(containerInfo) || conductor.domain
@@ -72,7 +72,7 @@ const buildRoute = (
     // 443 is default, but would be better to allow it to be any port
     protocol: getProtocol(cPort),
     headers: {
-      Host: generateExternalUrl(hostPort, subdomain, conductor.domain)
+      Host: generateExternalUrl(hostPort, userHash, conductor.domain)
     },
   }
 }
@@ -82,12 +82,12 @@ const buildRoute = (
  */
 export const generateExternalUrls = (
   ports:TPortsMap,
-  subdomain:string,
+  userHash:string,
   conductor:Conductor
 ) => {
 
   return Object.entries(ports).reduce((acc, [cPort, hostPort]:[string, string]) => {
-    acc[cPort] = generateExternalUrl(ports[cPort], subdomain, conductor?.domain)
+    acc[cPort] = generateExternalUrl(ports[cPort], userHash, conductor?.domain)
 
     return acc
   }, {} as TPublicUrls)
@@ -106,12 +106,12 @@ export const generateRoutes = (
   containerInfo:TContainerInspect,
   ports:TPortsMap,
   conductor:Conductor,
-  subdomain:string
+  userHash:string
 ):TRouteMeta => {
 
   return Object.entries(ports)
     .reduce((acc, [cPort, hostPort]:[string, string]) => {
-      const route = buildRoute(containerInfo, cPort, hostPort, conductor, subdomain)
+      const route = buildRoute(containerInfo, cPort, hostPort, conductor, userHash)
 
       acc.routes[cPort] = route
 

@@ -19,7 +19,6 @@
   "scripts": {
     "build": "node configs/build.config.js",
     "cd:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
-    "cd:map": "tsc -sourcemap src/app.ts --outDir dist",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:install": "yarn clean:full; yarn install",
     "clean:full": "yarn clean; yarn clean:nm; yarn install",
@@ -28,8 +27,6 @@
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "pull": "node -r esbuild-register scripts/pullImages.ts",
-    "start": "DEV_BUILD=1 node configs/build.config.js",
-    "serve": "node dist/index.js",
     "types": "tsc --emitDeclarationOnly --outDir dist",
     "validate": "tsc --noEmit"
   },

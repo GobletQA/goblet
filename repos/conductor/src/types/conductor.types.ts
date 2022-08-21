@@ -81,6 +81,7 @@ export type TScreencastConf = {
 }
 
 export type TConductorConfig = {
+  hashKey?: string
   domain?: string
   subdomain?: string
   caddy?: TCaddyConfig

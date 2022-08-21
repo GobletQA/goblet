@@ -95,7 +95,7 @@ export class Controller {
     return undefined
   }
 
-  run = async (imageRef:TImgRef, runOpts:TRunOpts, subdomain:string):Promise<TRouteMeta> => {
+  run = async (imageRef:TImgRef, runOpts:TRunOpts, userHash:string):Promise<TRouteMeta> => {
     throwOverrideErr()
     return undefined
   }
@@ -121,16 +121,16 @@ export class Controller {
   }
 
   getRoute = (req:Request) => {
-    const [port, subdomain] = (req.subdomains || []).reverse()
-    const routeData = this.routes?.[subdomain]?.routes?.[port]
+    const [port, userHash] = (req.subdomains || []).reverse()
+    const routeData = this.routes?.[userHash]?.routes?.[port]
     if(routeData) return routeData
 
     // Websocket connection don't seem to get the subdomains added the the request
     // So we have to manually parse it from the host header
     // There's probably a better way to do this, and may need to be investigated
-    const [ hPort, hSubdomain ] = req?.headers?.host.split(`.`)
+    const [ hPort, hUserHash ] = req?.headers?.host.split(`.`)
 
-    return this.routes?.[hSubdomain]?.routes?.[hPort]
+    return this.routes?.[hUserHash]?.routes?.[hPort]
   }
 
   notFoundErr = (args:Record<string, string>) => {

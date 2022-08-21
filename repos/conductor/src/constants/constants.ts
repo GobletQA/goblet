@@ -1,6 +1,6 @@
 export const SUBDOMAIN = `conductor`
 export const CONDUCTOR_LABEL = `com.gobletqa`
-export const CONDUCTOR_SUBDOMAIN_LABEL = `${CONDUCTOR_LABEL}.conductor`
+export const CONDUCTOR_USER_HASH_LABEL = `${CONDUCTOR_LABEL}.conductor`
 
 export const CONTAINER_LABELS = [
   `idle`,

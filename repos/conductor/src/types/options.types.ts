@@ -27,6 +27,7 @@ export type TProxyOpts = {
 
 export type TConductorOpts = {
   domain?: string
+  hashKey?: string
   subdomain?: string
   images:  TImagesOpts
   controller?:TControllerOpts

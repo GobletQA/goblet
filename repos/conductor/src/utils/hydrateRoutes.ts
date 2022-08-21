@@ -1,7 +1,7 @@
 import { generateRoutes } from './generators'
 import type { Controller } from '../controller'
 import { TContainerInspect, TPortsMap } from '../types'
-import { CONDUCTOR_SUBDOMAIN_LABEL } from '../constants'
+import { CONDUCTOR_USER_HASH_LABEL } from '../constants'
 
 type TPort = {
   HostIp:string
@@ -24,14 +24,14 @@ const buildPorts = (ports:TPorts):TPortsMap => {
 }
 
 export const routesFromContainer = (controller:Controller, container:TContainerInspect) => {
-  const subdomain = container.Config.Labels[CONDUCTOR_SUBDOMAIN_LABEL]
-  if(!subdomain) return
+  const userHash = container.Config.Labels[CONDUCTOR_USER_HASH_LABEL]
+  if(!userHash) return
 
-  controller.routes[subdomain] = generateRoutes(
+  controller.routes[userHash] = generateRoutes(
     container,
     buildPorts(container.NetworkSettings.Ports),
     controller.conductor,
-    subdomain
+    userHash
   )
 
 }

@@ -22,7 +22,7 @@ import { buildImgUri } from './image/buildImgUri'
 import { buildPorts } from './container/buildPorts'
 import { Logger } from '@gobletqa/shared/libs/logger'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
-import { CONDUCTOR_SUBDOMAIN_LABEL } from '../../constants'
+import { CONDUCTOR_USER_HASH_LABEL } from '../../constants'
 import { waitRetry } from '@gobletqa/shared/utils/waitRetry'
 import { containerConfig } from './container/containerConfig'
 import { removeContainer } from './container/removeContainer'
@@ -67,7 +67,7 @@ export class Docker extends Controller {
     const containers = await this.getAll()
     this.containers = await containers.reduce(async (toResolve, container) => {
       const acc = await toResolve
-      if(!container.Labels[CONDUCTOR_SUBDOMAIN_LABEL]) return acc
+      if(!container.Labels[CONDUCTOR_USER_HASH_LABEL]) return acc
 
       if(container.State !== 'running'){
         removeContainer(this.docker.getContainer(container.Id))
@@ -173,7 +173,7 @@ export class Docker extends Controller {
     const containers = await this.getAll()
     const removed = await Promise.all(
       containers.map(container => {
-        if(container.Labels[CONDUCTOR_SUBDOMAIN_LABEL]){
+        if(container.Labels[CONDUCTOR_USER_HASH_LABEL]){
           const cont = this.docker.getContainer(container.Id)
           cont && removeContainer(cont)
 
@@ -215,19 +215,19 @@ export class Docker extends Controller {
   run = async (
     imageRef:TImgRef,
     runOpts:TRunOpts,
-    subdomain:string
+    userHash:string
   ):Promise<TRouteMeta> => {
     const image = this.getImg(imageRef)
     !image && this.notFoundErr({ type: `image`, ref: imageRef as string })
 
     // Build the container ports and container create config 
     const portData = await buildPorts(image)
-    const urls = generateExternalUrls(portData.ports, subdomain, this.conductor)
+    const urls = generateExternalUrls(portData.ports, userHash, this.conductor)
     
     const containerConf = await containerConfig(
       this,
       image,
-      subdomain,
+      userHash,
       runOpts,
       portData,
       urls
@@ -245,12 +245,12 @@ export class Docker extends Controller {
       containerInspect,
       portData.ports,
       this.conductor,
-      subdomain
+      userHash
     )
 
-    this.routes[subdomain] = routeMeta
+    this.routes[userHash] = routeMeta
 
-    return this.routes[subdomain]
+    return this.routes[userHash]
 
   }
 
