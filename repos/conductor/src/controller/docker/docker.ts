@@ -54,6 +54,7 @@ const containerStart = async (
   dockerInstance.routes[userHash] = {
     ...dockerInstance.routes[userHash],
     meta: {
+      state: `Running`,
       id: containerInspect.Id,
       name: containerInspect.Name,
     }
@@ -181,6 +182,9 @@ export class Docker extends Controller {
           && (acc[ref] = container)
         return acc
       }, {})
+
+      const userHash = message?.Actor?.Attributes[CONDUCTOR_USER_HASH_LABEL]
+      delete this.routes[userHash]
   }
 
   /**
@@ -279,7 +283,8 @@ export class Docker extends Controller {
     const routeMeta = generateRoutes(
       portData.ports,
       this.conductor,
-      userHash
+      userHash,
+      { state: `Creating` }
     )
     this.routes[userHash] = routeMeta
 
@@ -307,7 +312,7 @@ export class Docker extends Controller {
     // This way we know it's connected to the docker api
 
     this.events = dockerEvents(this.docker, {
-      destroy: this.removeFromCache,
+      die: this.removeFromCache,
       start: this.hydrateSingle
     })
 

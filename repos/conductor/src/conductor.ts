@@ -104,16 +104,19 @@ export class Conductor {
     const { ensure, ...spawnOpts } = Object.assign({}, req?.query, req?.body)
     const { imageRef } = (req?.params || {})
     const route = this.controller.routes?.[userHash]
+    if(route) return route
+    
+    if(!ensure || !imageRef)
+      throw new Error([
+        `[Conductor] Status Error: Container session does not exist and can not be started.`,
+        `Missing "imageRef": ${imageRef} or "ensure" ${ensure} arguments.`
+      ].join(`\n`))
 
-    return route
-      ? route
-      : ensure && imageRef
-        ? await this.spawn(
-            imageRef as string,
-            spawnOpts as TSpawnOpts,
-            userHash
-          )
-        : {}
+    return await this.spawn(
+      imageRef as string,
+      spawnOpts as TSpawnOpts,
+      userHash
+    )
   }
 
   /**

@@ -30,7 +30,12 @@ export const routesFromContainer = (controller:Controller, container:TContainerI
   controller.routes[userHash] = generateRoutes(
     buildPorts(container.NetworkSettings.Ports),
     controller.conductor,
-    userHash
+    userHash,
+    {
+      state: `Running`,
+      id: container.Id,
+      name: container?.Name,
+    }
   )
 
 }

@@ -32,6 +32,7 @@ export type TProxyRoutes = {
 export type TContainerMeta = {
   id: TContainerId
   name: TContainerName
+  state: `Creating` | `Running` | `Stopped` | `Missing`
 }
 
 export type TPublicUrls = {

@@ -1,5 +1,7 @@
 import type { TConductorOpts, TControllerType } from '@GBE/types'
+import { toNum } from '@keg-hub/jsutils'
 import { inDocker } from '@keg-hub/cli-utils'
+
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 
 const { NODE_ENV=`local`, GB_CD_CONTROLLER_TYPE=`Docker` } = process.env
@@ -24,9 +26,12 @@ const envs = loadEnvs({
 })
 
 const {
+  GB_SC_PORT,
+  GB_NO_VNC_PORT,
+  GB_VNC_SERVER_PORT,
   GB_SC_IMAGE,
   GB_SC_IMAGE_TAG,
-  GB_SC_DEPLOYMENT
+  GB_SC_DEPLOYMENT,
 } = envs
 
 /**
@@ -77,12 +82,12 @@ export const conductorConfig:TConductorOpts = {
         rateLimit: 5000,
         ports: [
           // Screencast API Port
-          7006,
+          toNum(GB_SC_PORT),
           // NoVnc Websocket Port
-          26369,
+          toNum(GB_NO_VNC_PORT),
           // TigerVnc Server port
-          26370
-        ],
+          toNum(GB_VNC_SERVER_PORT),
+        ].filter(Boolean),
         envs: {
           ...containerEnvs,
           GB_VNC_ACTIVE: true,

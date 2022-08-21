@@ -7,6 +7,7 @@ import {
   TUserHash,
   TRouteMeta,
   TPublicUrls,
+  TContainerMeta,
   TContainerInspect
 } from '@gobletqa/conductor/types'
 const isDocker = inDocker()
@@ -113,7 +114,8 @@ export const generateExternalUrls = (
 export const generateRoutes = (
   ports:TPortsMap,
   conductor:Conductor,
-  userHash:TUserHash
+  userHash:TUserHash,
+  meta?: Partial<TContainerMeta>
 ):TRouteMeta => {
 
   return Object.entries(ports)
@@ -123,6 +125,6 @@ export const generateRoutes = (
       acc.routes[cPort] = route
 
       return acc
-    }, { routes: {} } as TRouteMeta)
+    }, { routes: {}, meta } as TRouteMeta)
 }
 

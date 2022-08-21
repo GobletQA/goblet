@@ -21,7 +21,7 @@ export const buildRuntimeEnvs = (image:TImgConfig, data?:Record<any,any>):string
 /**
  * Loops over an env object and converts the key/value pairs into an array of joined strings
  */
-const loopEnvObj = (envObj:Record<string,string>, existingEnvs:string[]=[]):string[] => {
+const loopEnvObj = (envObj:Record<string,string|number|boolean>, existingEnvs:string[]=[]):string[] => {
   return envObj
     ? Object.entries(envObj)
       .reduce((acc, [name, value]) => {
@@ -42,7 +42,7 @@ export const buildContainerEnvs = (
 ):string[] => {
 
   const builtEnvs = loopEnvObj(defEnvs)
-  const envs = loopEnvObj(defEnvs, builtEnvs)
+  const envs = loopEnvObj(image?.container?.envs, builtEnvs)
   const imgEnvs = buildRuntimeEnvs(image, data)
 
   return flatUnion(envs, imgEnvs)

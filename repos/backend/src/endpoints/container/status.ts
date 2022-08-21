@@ -12,7 +12,7 @@ export const statusContainer = async (req:Request, res:Response) => {
 
   const status = await conductor.status({
     query: { ...req?.query },
-    body: { ...req?.body },
+    body: { ...req?.body, ensure: true },
     params: { ...req?.params, imageRef },
   }, req?.user?.subdomain)
 
