@@ -27,13 +27,14 @@ export const validate = async (req:Request, res:Response) => {
     token: token,
     username: username,
     provider: provider,
-    subdomain: res.locals.subdomain
+    subdomain: res.locals.subdomain,
   })
 
   // Next call conductor to spin of a container for the user
   // Add the token we just generated for authorization
   const status = await conductor.status({
     body: {},
+    query: {},
     params: {},
   } as Partial<Request>)
 

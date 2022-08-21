@@ -25,6 +25,7 @@
     "format": "yarn lint && yarn pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
+    "pull": "node -r esbuild-register scripts/pullImages.ts",
     "start": "DEV_BUILD=1 node configs/build.config.js",
     "serve": "node dist/index.js",
     "validate": "tsc --noEmit"
@@ -45,6 +46,7 @@
     "axios": "0.24.0",
     "docker-events": "0.0.2",
     "dockerode": "3.3.2",
+    "esbuild-register": "3.3.3",
     "express": "4.17.3",
     "express-subdomain": "1.0.5",
     "get-port-please": "2.5.0",

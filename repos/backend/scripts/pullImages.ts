@@ -1,13 +1,13 @@
 require('source-map-support').install({ environment: 'node' })
 import { docker } from '@keg-hub/cli-utils'
-import { Logger } from '@GCD/utils/logger'
-import { buildImgUri } from '@GCD/utils/buildImgUri'
-import { appConfig } from '@gobletqa/conductor/configs/app.config'
+import { Logger } from '@gobletqa/shared/libs/logger'
+import { conductorConfig } from '@GBE/Configs/conductor.config'
+import { buildImgUri } from '@gobletqa/conductor/controller/docker/image/buildImgUri'
 
 ;(async () => {
   Logger.info(`Starting images pull....`)
 
-  Object.entries(appConfig.images)
+  Object.entries(conductorConfig.images)
     .reduce(async (toResolve, [name, image]) => {
       await toResolve
 

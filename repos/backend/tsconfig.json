@@ -23,6 +23,6 @@
       "@GEnvironment": ["../../scripts/environment"]
     }
   },
-  "include": ["src/**/*", "configs/**/*"],
+  "include": ["src/**/*", "configs/**/*", "scripts/**/*"],
   "exclude": ["node_modules", "dist"]
 }
