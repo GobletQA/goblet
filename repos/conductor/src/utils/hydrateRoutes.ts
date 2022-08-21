@@ -28,7 +28,6 @@ export const routesFromContainer = (controller:Controller, container:TContainerI
   if(!userHash) return
 
   controller.routes[userHash] = generateRoutes(
-    container,
     buildPorts(container.NetworkSettings.Ports),
     controller.conductor,
     userHash

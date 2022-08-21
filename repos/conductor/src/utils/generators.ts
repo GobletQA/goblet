@@ -3,10 +3,10 @@ import type { Conductor } from '@gobletqa/conductor/conductor'
 import { inDocker } from '@keg-hub/cli-utils'
 import {
   TPort,
-  TUserHash,
-  TPublicUrls,
-  TRouteMeta,
   TPortsMap,
+  TUserHash,
+  TRouteMeta,
+  TPublicUrls,
   TContainerInspect
 } from '@gobletqa/conductor/types'
 const isDocker = inDocker()
@@ -57,7 +57,6 @@ export const generateExternalUrl = (
  * Builds a route used by the proxy to forward requests
  */
 const buildRoute = (
-  containerInfo:TContainerInspect,
   cPort:string,
   hostPort:string|number,
   conductor:Conductor,
@@ -68,7 +67,7 @@ const buildRoute = (
   const proto = getProtocol(cPort)
   const { host:dockerHost } = conductor?.controller?.config?.options
   const host = !isDocker || !dockerHost || dockerHost.includes(`docker.sock`)
-    ? resolveIp(containerInfo) || conductor?.config?.domain
+    ? conductor?.config?.domain
     : dockerHost
 
   return {
@@ -112,7 +111,6 @@ export const generateExternalUrls = (
  * @returns {Object} - Generated Uris to access the container
  */
 export const generateRoutes = (
-  containerInfo:TContainerInspect,
   ports:TPortsMap,
   conductor:Conductor,
   userHash:TUserHash
@@ -120,17 +118,11 @@ export const generateRoutes = (
 
   return Object.entries(ports)
     .reduce((acc, [cPort, hostPort]:[string, string]) => {
-      const route = buildRoute(containerInfo, cPort, hostPort, conductor, userHash)
+      const route = buildRoute(cPort, hostPort, conductor, userHash)
 
       acc.routes[cPort] = route
 
       return acc
-    }, {
-      routes: {},
-      meta: {
-        id: containerInfo.Id,
-        name: containerInfo.Name,
-      }
-    } as TRouteMeta)
+    }, { routes: {} } as TRouteMeta)
 }
 

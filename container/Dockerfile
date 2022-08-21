@@ -72,7 +72,6 @@ ENV GB_FE_PORT=$GB_FE_PORT \
     GB_SC_PORT=$GB_SC_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
     GB_DD_PROXY_PORT=$GB_DD_PROXY_PORT \
-    GB_DD_DEPLOYMENT=$GB_DD_DEPLOYMENT \
     GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION
@@ -87,11 +86,15 @@ RUN <<EOF
   set -eux;
   echo "#! /bin/bash" >> /entrypoint.sh
   echo "if [ \"\$GB_SUB_REPO\" == \"backend\" ]; then" >> /entrypoint.sh
-  echo "  GB_DIND_HOST=${GB_DD_DEPLOYMENT:-$GOBLET_DIND_SERVICE_HOST}" >> /entrypoint.sh
+  echo "  export GOBLET_DIND_SERVICE_HOST=\${GOBLET_DIND_SERVICE_HOST:-0.0.0.0}" >> /entrypoint.sh
+  echo "  export GOBLET_DIND_SERVICE_PORT=\${GOBLET_DIND_SERVICE_PORT:-2573}" >> /entrypoint.sh
+  echo "  GB_DIND_HOST=\${GB_DD_DEPLOYMENT:-\$GOBLET_DIND_SERVICE_HOST}" >> /entrypoint.sh
   echo "  export DOCKER_HOST=\"tcp://\$GB_DIND_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /entrypoint.sh
   echo "  echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /entrypoint.sh
-  echo "  yarn pull images >> /proc/1/fd/1 &" >> /entrypoint.sh
+  echo "  cd repos/backend" >> /entrypoint.sh
+  echo "  yarn pull >> /proc/1/fd/1 &" >> /entrypoint.sh
   echo "  unset DOCKER_AUTH_PASSWORD" >> /entrypoint.sh
+  echo "  cd /goblet/app" >> /entrypoint.sh
   echo "fi" >> /entrypoint.sh
   echo "exec \$@" >> /entrypoint.sh
   chmod a+x /entrypoint.sh

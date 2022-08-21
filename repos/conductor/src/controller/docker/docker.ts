@@ -1,8 +1,10 @@
 import type { Conductor } from '../../conductor'
+import type { ContainerCreateOptions } from 'dockerode'
 import {
   TImgRef,
   TRunOpts,
   TRouteMeta,
+  TImgConfig,
   TImgsConfig,
   TDockerEvent,
   TContainerRef,
@@ -29,6 +31,34 @@ import { removeContainer } from './container/removeContainer'
 import { generateRoutes, generateExternalUrls } from '../../utils/generators'
 import { createContainer, startContainer } from './container/runContainerHelpers'
 
+/**
+ * Helper method to start a container, then update the docker instance metadata
+ * Is called in the background, and should not stop process execution
+ */
+const containerStart = async (
+  dockerInstance:Docker,
+  image: TImgConfig,
+  userHash:string,
+  containerConf:ContainerCreateOptions
+) => {
+  // Create the container from the image
+  const container = await createContainer(dockerInstance, image, containerConf)
+
+  // Start the container that was just created
+  const containerInspect = await startContainer(image, container)
+
+  // If not running in Kubernetes need to loop over the routes
+  // Then replace the host of each with the container IP address
+  // resolveIp(containerInspect)
+
+  dockerInstance.routes[userHash] = {
+    ...dockerInstance.routes[userHash],
+    meta: {
+      id: containerInspect.Id,
+      name: containerInspect.Name,
+    }
+  }
+}
 
 /**
  * Docker controller class with interfacing with the Docker-Api via Dockerode
@@ -244,25 +274,21 @@ export class Docker extends Controller {
       urls
     )
 
-    // Create the container from the image
-    const container = await createContainer(this, image, containerConf)
-
-    // Start the container that was just created
-    const containerInspect = await startContainer(image, container)
-
     // Generate the urls for accessing the container
     Logger.info(`Generating container urls...`)
     const routeMeta = generateRoutes(
-      containerInspect,
       portData.ports,
       this.conductor,
       userHash
     )
-
     this.routes[userHash] = routeMeta
 
-    return this.routes[userHash]
+    // Call the method to start the container, but don't wait for it to finish
+    // This way we can respond to the FE more quickly
+    // While the container starts in the background
+    containerStart(this, image, userHash, containerConf)
 
+    return this.routes[userHash]
   }
 
   /**
