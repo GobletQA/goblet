@@ -1,7 +1,7 @@
 
+import { conductorConfig } from '@GCD/configs/conductor.config'
 import { deepMerge, exists, isEmptyColl } from '@keg-hub/jsutils'
 import { TConductorOpts, TConductorConfig } from '@gobletqa/conductor/types'
-import { conductorConfig } from '@gobletqa/conductor/configs/conductor.config'
 
 type TPartialConf = Record<any, any>
 

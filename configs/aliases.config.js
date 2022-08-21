@@ -54,11 +54,10 @@ const addRepoAliases = () => {
           data = Object.entries(paths)
             .reduce((locs, [alias, arr]) => {
               const first = arr[0]
-              if(!first || !alias.toLowerCase().startsWith(`@g`)) return locs
+              if(!first || !alias.toLowerCase().startsWith(`@g`) || first.endsWith(`/*`))
+                return locs
 
               locs[alias] = first
-              // If no extension, then add the start pattern
-              !path.extname(first) && (locs[`${alias}/*`] = `${first}/*`)
 
               return locs
             }, {})

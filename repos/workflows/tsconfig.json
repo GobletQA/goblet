@@ -8,6 +8,8 @@
       "@GWF": ["src"],
       "@GWFRoot": ["./."],
       "@GConfigs/*": ["../../configs/*"],
+      "@gobletqa/shared/*": ["../shared/src/*"],
+      "@gobletqa/shared": ["../shared/src"],
       "@gobletqa/workflows/types": ["src/types"],
       "@gobletqa/workflows/types/*": ["src/types/*"],
       "@gobletqa/workflows": ["src"],

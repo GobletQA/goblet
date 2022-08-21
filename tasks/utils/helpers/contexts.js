@@ -18,14 +18,14 @@ const setContexts = (contexts, prefix) => {
   
   __CONTEXTS = isArr(contexts)
     ? contexts.reduce((acc, keys) => {
-      const long = keys[0]
-      const short = keys[keys.length - 1]
-      // Both short and log ref the same object
-      acc[short] = { keys, short, long }
-      acc[long] = acc[short]
-
+        const long = keys[0]
+        const short = keys[keys.length - 1]
+        // Both short and log ref the same object
+        acc[short] = { keys, short, long }
+        acc[long] = acc[short]
+        acc.CONTEXT_LIST.push(long)
       return acc
-    }, {})
+    }, { CONTEXT_LIST: [] })
     : contexts
 }
 
@@ -55,6 +55,8 @@ const resolveContext = (context = ``, selectors = noOpObj, fallback) => {
   const allContexts = getContexts()
 
   const found = Object.entries(allContexts).reduce((found, [ref, value]) => {
+    if(ref === 'CONTEXT_LIST') return found
+    
     const { keys, long, short } = allContexts[ref]
 
     return !found && keys.includes(lowercaseContext)
@@ -78,6 +80,8 @@ const getDeploymentOpts = (env, envs) => {
 
   const deployOpts = Object.entries(allContexts).reduce(
     (acc, [key, value]) => {
+      if(key === 'CONTEXT_LIST') return acc
+      
       const { long, short } = allContexts[key]
 
       if (long === key) return acc

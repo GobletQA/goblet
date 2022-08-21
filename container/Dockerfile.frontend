@@ -50,7 +50,7 @@ ENV NODE_ENV=production \
     GB_FE_PORT=$GB_FE_PORT
 
 COPY --from=goblet-builder /goblet/app/repos/frontend/build .
-COPY ./container/scripts/nginx.conf /etc/nginx/http.d/default.conf
+COPY ./container/scripts/fe.nginx.conf /etc/nginx/http.d/default.conf
 RUN sed -i "s/\$\{GB_FE_PORT\}/$GB_FE_PORT/g" /etc/nginx/http.d/default.conf; \
     echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf; \
     sysctl -p; \

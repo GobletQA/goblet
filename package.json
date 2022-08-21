@@ -38,7 +38,7 @@
     "format:lint": "yarn lint .",
     "format:pretty": "yarn pretty .",
     "kube": "node tasks/entry.js kube",
-    "images:build": "/bin/bash scripts/shell/buildImages.sh",
+    "imgs": "node tasks/entry.js docker images",
     "lint": "eslint --color --cache --fix --ignore-path .root.ignore --config ./configs/eslintrc.config.js",
     "make": "GB_ROOT_DIR=$(pwd) ./scripts/shell/init/init.sh \"$@\"",
     "pretty": "prettier --ignore-path .root.ignore --config ./configs/prettier.config.js --write",

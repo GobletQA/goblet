@@ -33,7 +33,6 @@ module.exports = {
       [`proxy`, `prx`, `px`],
       [`frontend`, `fre`, `fe`],
       [`backend`, `bae`, `be`],
-      [`conductor`, `cod`, `cd`],
       [`screencast`, `scr`, `sc`],
     ],
   }
