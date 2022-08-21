@@ -1,8 +1,8 @@
 import type { ClientRequest, IncomingMessage } from 'http' 
 import type { Request, Response, Router } from 'express' 
+import type { TProxyConfig } from '@gobletqa/conductor/types'
 
-import { deepMerge } from '@keg-hub/jsutils'
-import { TProxyConfig } from '@gobletqa/conductor/types'
+import { FORWARD_HOST_HEADER } from '@GCD/constants'
 import { getOrigin } from '@gobletqa/shared/utils/getOrigin'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 
@@ -33,10 +33,25 @@ const addAllowOriginHeader = (proxyRes:IncomingMessage, origin:string) => {
   proxyRes.headers['Access-Control-Allow-Origin'] = origin
 }
 
-// TODO: convert the X-Forwarded-* headers to override defaults 
-const mapRequestHeaders = (proxyReq:ClientRequest, req:Request) => {
-  Object.keys(req.headers)
-    .forEach(key => proxyReq.setHeader(key, req.headers[key]))
+/**
+ * Maps the request headers into the proxy request
+ * Also replaces the Host header, with the host needed for accessing caddy
+ */
+const mapRequestHeaders = (
+  proxyReq:ClientRequest,
+  req:Request,
+  addHeaders:Record<string, string>
+) => {
+  const headers = Object.assign({}, req.headers, addHeaders)
+
+  Object.keys(headers)
+    .forEach(key => {
+      const lower = key.toLowerCase()
+      lower === 'host'
+        ? proxyReq.setHeader(key, req.headers[FORWARD_HOST_HEADER])
+        : req.headers[key] &&  proxyReq.setHeader(key, req.headers[key])
+    })
+
 }
 
 /**
@@ -61,6 +76,7 @@ const mapResponseHeaders = (proxyRes:IncomingMessage, res:Response) => {
  */
 export const createProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
   const { target, proxyRouter, headers, proxy } = config
+  const addHeaders = { ...headers, ...proxy?.headers }
   const proxyHandler = createProxyMiddleware({
     ws: true,
     xfwd: true,
@@ -68,7 +84,7 @@ export const createProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
     logLevel: 'error',
     onError: onProxyError,
     onProxyReq: (proxyReq, req, res) => {
-      mapRequestHeaders(proxyReq, req)
+      mapRequestHeaders(proxyReq, req, addHeaders)
     },
     onProxyRes: (proxyRes:IncomingMessage, req, res) => {
       const origin = getOrigin(req)
@@ -78,7 +94,6 @@ export const createProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
     ...proxy,
     target,
     router: proxyRouter,
-    headers: { ...headers, ...proxy?.headers }
   })
 
   ProxyRouter && ProxyRouter.use(proxyHandler)

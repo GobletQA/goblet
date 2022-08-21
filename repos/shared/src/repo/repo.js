@@ -1,7 +1,7 @@
 const { Parkin } = require('@ltipton/parkin')
 const { getWorld } = require('@GSH/repo/world')
+const { noOpObj, } = require('@keg-hub/jsutils')
 const { getFileTypes } = require('@GSH/utils/getFileTypes')
-const { isObj, noOpObj, noPropArr, } = require('@keg-hub/jsutils')
 const {
   getUserRepos,
   statusGoblet,

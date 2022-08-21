@@ -22,10 +22,11 @@ export const setupServer = (
   app:Express,
   expressRouter?:Router|boolean|string,
   parseJson=true,
+  trustProxy:string|number|boolean=1
 ) => {
   app = app || getApp()
 
-  app.set('trust proxy', 1)
+  trustProxy !== false && app.set('trust proxy', 1)
   app.disable('x-powered-by')
 
   parseJson && jsonParsing(app)

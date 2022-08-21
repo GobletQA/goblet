@@ -38,7 +38,7 @@ export const initApi = async () => {
   setupBlacklist(app)
   setupCors(app)
   setupJWT(app, ['/auth/validate'])
-  setupServer(app, false)
+  setupServer(app, false, false, false)
   await setupConductor(app)
   setupRouters(app)
   setupStatic(app)

@@ -8,6 +8,5 @@ export const setupConductor = async (app:Express) => {
 
   await app.locals.conductor.validate()
 
-  AsyncRouter.use(`/repo/*`, app.locals.conductor.createProxy())
+  AsyncRouter.use(/^\/repo\/(?!(all)).*/, app.locals.conductor.createProxy())
 }
-

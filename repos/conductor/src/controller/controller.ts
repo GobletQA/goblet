@@ -1,5 +1,6 @@
-import { Request } from 'express'
+import type { Request } from 'express'
 import type { Conductor } from '../conductor'
+import { FORWARD_PORT_HEADER } from '@GCD/constants'
 import { buildImgUri } from './docker/image/buildImgUri'
 import { capitalize, deepMerge } from '@keg-hub/jsutils'
 import { checkImgConfig } from '../utils/checkImgConfig'
@@ -121,16 +122,10 @@ export class Controller {
   }
 
   getRoute = (req:Request) => {
-    const [port, userHash] = (req.subdomains || []).reverse()
-    const routeData = this.routes?.[userHash]?.routes?.[port]
-    if(routeData) return routeData
+    const userHash = req?.user?.subdomain
+    const proxyPort = (req.headers[FORWARD_PORT_HEADER] || ``).toString().split(`,`).shift()
 
-    // Websocket connection don't seem to get the subdomains added the the request
-    // So we have to manually parse it from the host header
-    // There's probably a better way to do this, and may need to be investigated
-    const [ hPort, hUserHash ] = req?.headers?.host.split(`.`)
-
-    return this.routes?.[hUserHash]?.routes?.[hPort]
+    return this.routes?.[userHash]?.routes?.[proxyPort]
   }
 
   notFoundErr = (args:Record<string, string>) => {

@@ -3,13 +3,13 @@ import type {
   TImgRef,
   TUserHash,
   TSpawnOpts,
-  TProxyRoute,
   TProxyConfig,
   TContainerRef,
   TConductorOpts,
   TConductorConfig,
 } from '@gobletqa/conductor/types'
 
+import { omitKeys } from '@keg-hub/jsutils'
 import { createProxy } from './proxy/proxy'
 import { buildConfig } from './utils/buildConfig'
 import { Controller } from './controller/controller'
@@ -147,13 +147,12 @@ export class Conductor {
    * Gets the routeData from the controller
    * Response matches the API from http-proxy-middleware#router as a method
    */
-  async proxyRouter(req:Request):Promise<TProxyRoute|string> {
+  async proxyRouter(req:Request) {
     // TODO: add rate limiting for requests
     // this.handleRateLimit(req)
     const routeData = this.controller.getRoute(req)
 
-    // TODO: fix this so it returns with the correct route data
-    return routeData
+    return routeData ? omitKeys(routeData, [`headers`, `containerPort`]) : undefined
   }
 
   createProxy(config?:TProxyConfig, ProxyRouter?:Router) {

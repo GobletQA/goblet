@@ -12,9 +12,9 @@ export type TContainerRoute = {
 }
 
 export type TProxyForwardHeaders = {
-  [`X-Forwarded-Host`]: string
-  [`X-Forwarded-Proto`]: string
-  [`X-Forwarded-Port`]: string | number
+  [`x-forwarded-host`]: string
+  [`x-forwarded-proto`]: string
+  [`x-forwarded-port`]: string | number
 }
 
 export type TProxyRoute = {

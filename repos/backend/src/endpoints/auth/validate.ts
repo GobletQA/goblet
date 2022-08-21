@@ -2,7 +2,6 @@ import type { Response, Request } from 'express'
 
 import { hashString } from '@keg-hub/jsutils'
 import { apiRes } from '@gobletqa/shared/express'
-import { getUserRepos } from '@gobletqa/workflows'
 import { generateTokens } from '@GBE/utils/generateTokens'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 
@@ -44,12 +43,8 @@ export const validate = async (req:Request, res:Response) => {
     subdomain: res.locals.subdomain,
   })
 
-  // While the container is spinning up
-  // Get the users repos from the git provider
-  const repos = await getUserRepos({ token })
 
-  return apiRes(res, {...jwtTokens, id, username, provider, status, repos}, 200)
-
+  return apiRes(res, {...jwtTokens, id, username, provider, status }, 200)
 }
 
 
