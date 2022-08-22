@@ -4,15 +4,18 @@ import type { TContainerRoute } from './routes.types'
 import type { TControllerType } from './controller.types'
 import type { TImgConfig, TContainerConfig } from './conductor.types'
 
-export type TContainerOpts = TContainerConfig & {}
+export type TContainerOpts = TContainerConfig & {
+}
 
 export type TImgOpts = TImgConfig & {
+  tag: string
+  name: string
+  user: string
+  provider: string
   container?: TContainerOpts
 }
 
-export type TImagesOpts = {
-  [key:string]: TImgOpts
-}
+export type TImagesOpts = Record<string, TImgOpts>
 
 export type TControllerOpts = {
   pidsLimit?: number

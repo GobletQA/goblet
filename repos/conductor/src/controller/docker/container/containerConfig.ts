@@ -45,12 +45,7 @@ export const containerConfig = async (
         // options:runOpts,
         // config: docker.config,
         // conductor: docker.conductor,
-    }, {
-      // TODO: configure this to use the correct userHash
-      // VIRTUAL_HOST: `userHash.virtualhost.com`
-      // Define which port will be exposed, need to expose more then one port?
-      // VIRTUAL_PORT: exposed port
-    }),
+    }, {}),
     HostConfig: {
       ...runOpts.hostConfig,
       IpcMode: `private`,
@@ -58,7 +53,10 @@ export const containerConfig = async (
       // NetworkMode: 'host',
       PortBindings: bindings,
       PidsLimit: image?.pidsLimit || docker?.config?.pidsLimit,
-      RestartPolicy: { Name: `on-failure`, MaximumRetryCount: 2 },
+      RestartPolicy: {
+        Name: image?.container?.restartPolicy,
+        MaximumRetryCount: image?.container?.retryCount,
+      },
       // Privileged: true
       // Devices: [{
       //   PathOnHost: `/dev/fuse`,

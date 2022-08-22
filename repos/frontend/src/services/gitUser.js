@@ -64,7 +64,7 @@ export class GitUser {
 
     __CURRENT_USER = this
 
-    localStorage.setUser(JSON.stringify(data))
+    localStorage.setUser(data)
 
     upsertUser(__CURRENT_USER)
 

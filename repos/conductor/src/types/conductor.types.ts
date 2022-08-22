@@ -1,7 +1,8 @@
 import type { TProxyConfig } from './proxy.types'
-import type { TLogLevel, TPorts } from './helpers.types'
+import type { TLogLevel, TPorts, TRestartPolicy } from './helpers.types'
 import type { TControllerConfig } from './controller.types'
 import type { ContainerCreateOptions, Container } from 'dockerode'
+
 
 export type TContainerConfig = {
   mem: number
@@ -9,6 +10,8 @@ export type TContainerConfig = {
   ports?: TPorts
   timeout: number
   rateLimit: number
+  retryCount: number
+  restartPolicy: TRestartPolicy
   runtimeEnvs?: Record<string, string>
   envs?: Record<string, string|boolean|number>
   afterStart?: (container:Container) => void

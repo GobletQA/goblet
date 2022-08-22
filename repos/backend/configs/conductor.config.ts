@@ -18,6 +18,17 @@ const whiteList = [
   `DISPLAY`,
   `PLAYWRIGHT_`,
   `GB_VALIDATION`,
+  `GB_SERVER_ORIGINS`,
+
+  `GB_BE_SOCKR_PATH`,
+  `GB_BE_SECURE_PORT`,
+  `GB_BE_JWT_EXP`,
+  `GB_BE_JWT_ALGO`,
+  `GB_BE_JWT_SECRET`,
+  `GB_BE_JWT_CREDENTIALS`,
+  `GB_BE_JWT_REFRESH_EXP`,
+  `GB_BE_JWT_REFRESH_SECRET`,
+
 ]
 
 const blackList = []
@@ -98,6 +109,8 @@ export const conductorConfig:TConductorOpts = {
         idle: 5000,
         timeout: 5000,
         rateLimit: 5000,
+        retryCount: 2,
+        restartPolicy: `on-failure`,
         ports: [
           // Screencast API Port
           toNum(GB_SC_PORT),

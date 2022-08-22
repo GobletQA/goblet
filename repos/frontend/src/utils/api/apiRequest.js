@@ -29,9 +29,8 @@ const isValidSession = async (success, statusCode, message, showAlert) =>{
  *
  * @return {Object} - Built headers object, with the JWT added if it exists
  */
-const addHeaders = async (headers=noOpObj) => {
+const addHeaders = async (headers=noOpObj, routeHeaders) => {
   const jwt = await localStorage.getJwt()
-  const routeHeaders = await localStorage.getHeaders()
 
   return {
     // Add the headers to all api requests so we know how to route in the backend
@@ -60,7 +59,13 @@ export const apiRequest = async request => {
 
   // Add to ensure cookies get sent with the requests
   builtRequest.withCredentials = true
-  builtRequest.headers = await addHeaders(builtRequest.headers)
+  
+  const routeHeaders = await localStorage.getHeaders()
+
+  if(!routeHeaders && builtRequest.url.indexOf(`/repo`))
+    console.log(`Missing Route headers for route ${builtRequest.url}`)
+
+  builtRequest.headers = await addHeaders(builtRequest.headers, routeHeaders)
 
   const { data, success, statusCode, errorMessage } = await networkRequest(
     builtRequest

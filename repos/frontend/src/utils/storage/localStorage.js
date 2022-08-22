@@ -24,14 +24,19 @@ class Storage {
   }
 
 
-  set = async (key, data) => {
+  set = async (key, data, stringify) => {
     const name = STORAGE[key] || key
     if(!name) return console.error(`A key is required to set a local storage item, instead got "${name}"`)
 
     try {
-      return await KeyStore.setItem(name, data)
+      const save = stringify && typeof data !== 'string'
+        ? JSON.stringify(data)
+        : data
+      return await KeyStore.setItem(name, save)
     }
-    catch (err) {}
+    catch (err) {
+      console.error(`Error saving ${key} to local-storage.\n${err.message}`)
+    }
   }
 
   /**
@@ -44,11 +49,13 @@ class Storage {
     try {
       return await KeyStore.removeItem(name)
     }
-    catch (err) {}
+    catch (err) {
+      console.error(`Error removing ${key} from local-storage.\n${err.message}`)
+    }
   }
 
   getUser = async () => this.get(STORAGE.USER, true)
-  setUser = async (data) => this.set(STORAGE.USER, data)
+  setUser = async (data) => this.set(STORAGE.USER, data, true)
   removeUser = async () => this.remove(STORAGE.USER)
  
   getJwt = async () => this.get(STORAGE.JWT)
@@ -59,8 +66,8 @@ class Storage {
   setRepo = async (data) => this.set(STORAGE.REPO, data)
   removeRepo = async () => this.remove(STORAGE.REPO)
 
-  getHeaders = async () => this.get(STORAGE.ROUTE_HEADERS, true)
-  setHeaders = async (data) => this.set(STORAGE.ROUTE_HEADERS, data)
+  getHeaders = async () => await this.get(STORAGE.ROUTE_HEADERS, true)
+  setHeaders = async (data) => await this.set(STORAGE.ROUTE_HEADERS, data, true)
   removeHeaders = async () => this.remove(STORAGE.ROUTE_HEADERS)
 
 }

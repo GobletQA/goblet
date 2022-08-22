@@ -114,7 +114,7 @@ if(repo === `backend`){
   * Uses the kubernetes env syntax to generate the docker host from runtime envs
   * [See more here](https://kubernetes.io/docs/tasks/inject-data-application/define-interdependent-environment-variables/)
   */
-  dsEnvs += addEnv(`DOCKER_HOST`, `"tcp://$(GOBLET_DIND_SERVICE_HOST):$(GOBLET_DIND_SERVICE_PORT)"`)
+  dsEnvs += addEnv(`DOCKER_HOST`, `"tcp://$(GB_DD_DEPLOYMENT):$(GOBLET_DIND_SERVICE_PORT)"`)
 }
 else if(repo === 'dind'){
   /**
