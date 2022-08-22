@@ -4,7 +4,6 @@ import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
   setupJWT,
-  setupRepo,
   setupCors,
   setupServer,
   setupLoggerReq,
@@ -13,6 +12,7 @@ import {
   setupServerListen,
   validateUser,
 } from '@gobletqa/shared/middleware'
+import { setupRepo } from '@gobletqa/shared/middleware/setupRepo'
 
 /**
  * Starts a express API server for screencast

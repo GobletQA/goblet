@@ -1,6 +1,5 @@
 export * from './setupJWT'
 export * from './setupCors'
-export * from './setupRepo'
 export * from './setupCookie'
 export * from './setupLogger'
 export * from './setupServer'

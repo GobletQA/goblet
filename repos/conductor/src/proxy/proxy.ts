@@ -1,7 +1,8 @@
-import type { ClientRequest, IncomingMessage } from 'http' 
-import type { Request, Response, Router } from 'express' 
+import type { ClientRequest, IncomingMessage } from 'http'
+import type { Request, Response, Router } from 'express'
 import type { TProxyConfig } from '@gobletqa/conductor/types'
 
+import { checkCall } from '@keg-hub/jsutils'
 import { FORWARD_HOST_HEADER } from '@GCD/constants'
 import { getOrigin } from '@gobletqa/shared/utils/getOrigin'
 import { createProxyMiddleware } from 'http-proxy-middleware'
@@ -78,22 +79,30 @@ export const createProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
   const { target, proxyRouter, headers, proxy } = config
   const addHeaders = { ...headers, ...proxy?.headers }
   const proxyHandler = createProxyMiddleware({
-    ws: true,
+    ws: false,
     xfwd: true,
     toProxy: true,
     logLevel: 'error',
     onError: onProxyError,
-    onProxyReq: (proxyReq, req, res) => {
-      mapRequestHeaders(proxyReq, req, addHeaders)
+    target,
+    ...proxy,
+    router: (req:Request) => {
+      const route = proxyRouter(req)
+      return typeof proxy?.router === 'function'
+        // @ts-ignore
+        ? proxy?.router(req, route) || route
+        : route
     },
-    onProxyRes: (proxyRes:IncomingMessage, req, res) => {
+    onProxyReq: (proxyReq, req:Request, res:Response) => {
+      mapRequestHeaders(proxyReq, req, addHeaders)
+      checkCall(proxy?.onProxyReq, proxyReq, req, res)
+    },
+    onProxyRes: (proxyRes:IncomingMessage, req:Request, res:Response) => {
       const origin = getOrigin(req)
       mapResponseHeaders(proxyRes, res)
       addAllowOriginHeader(proxyRes, origin)
+      checkCall(proxy?.onProxyRes, proxyRes, req, res)
     },
-    ...proxy,
-    target,
-    router: proxyRouter,
   })
 
   ProxyRouter && ProxyRouter.use(proxyHandler)

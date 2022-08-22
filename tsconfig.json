@@ -17,6 +17,10 @@
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      "./repos/shared/src/types",
+      "./node_modules/@types"
+    ],
   }
 }

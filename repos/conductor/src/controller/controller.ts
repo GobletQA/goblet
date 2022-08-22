@@ -3,16 +3,16 @@ import type { Conductor } from '../conductor'
 import { buildImgUri } from './docker/image/buildImgUri'
 import { capitalize, deepMerge } from '@keg-hub/jsutils'
 import { checkImgConfig } from '../utils/checkImgConfig'
-import { FORWARD_PORT_HEADER, FORWARD_SUBDOMAIN_HEADER } from '@GCD/constants'
 import {
   TImgRef,
   TRunOpts,
   TPullOpts,
   TImgConfig,
-  TImgsConfig,
   TRouteMeta,
+  TImgsConfig,
   TContainerRef,
   TContainerData,
+  TContainerRoute,
   TControllerRoutes,
   TContainerInspect,
   TControllerConfig,
@@ -121,7 +121,7 @@ export class Controller {
     return undefined
   }
 
-  getRoute = (req:Request) => {
+  getRoute = (req:Request):TContainerRoute => {
     throwOverrideErr()
     return undefined
   }

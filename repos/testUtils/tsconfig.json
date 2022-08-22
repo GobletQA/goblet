@@ -3,6 +3,11 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist",
+    "typeRoots": [
+      "../shared/src/types",
+      "./node_modules/@types",
+      "../../node_modules/@types"
+    ],
     "paths": {
       "@GTU/Jest": ["src/jest"],
       "@GTU/Jest/*": ["src/jest/*"],

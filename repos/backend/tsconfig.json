@@ -3,6 +3,12 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist",
+    "typeRoots": [
+      "./src/types",
+      "../shared/src/types",
+      "./node_modules/@types",
+      "../../node_modules/@types"
+    ],
     "paths": {
       "@GBE/Configs": ["configs"],
       "@GBE/Configs/*": ["configs/*"],
@@ -23,6 +29,13 @@
       "@GEnvironment": ["../../scripts/environment"]
     }
   },
-  "include": ["src/**/*", "configs/**/*", "scripts/**/*"],
+  "include": [
+    "src",
+    "configs",
+    "scripts",
+    "../shared",
+    "../testUtils",
+    "../workflows"
+  ],
   "exclude": ["node_modules", "dist"]
 }

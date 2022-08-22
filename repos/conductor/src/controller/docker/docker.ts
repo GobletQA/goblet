@@ -13,6 +13,7 @@ import {
   TDockerConfig,
   TContainerData,
   TContainerInfo,
+  TContainerRoute,
   TContainerInspect
 } from '@gobletqa/conductor/types'
 
@@ -329,7 +330,8 @@ export class Docker extends Controller {
     const proxyPort = (req.headers[FORWARD_PORT_HEADER] || ``).toString().split(`,`).shift()
     const userHash = (req.headers[FORWARD_SUBDOMAIN_HEADER] || ``).toString().split(`,`).shift()
     const route = this.routes?.[userHash]?.routes?.[proxyPort]
-    return omitKeys(route, [`headers`, `containerPort`])
+
+    return omitKeys(route, [`headers`, `containerPort`]) as TContainerRoute
 
   }
 
