@@ -19,6 +19,4 @@ export const scStatus = asyncWrap(async (req:Request, res:Response) => {
   return apiRes(res, status, 200)
 })
 
-
-
 AppRouter.get('/screencast/status', scStatus)

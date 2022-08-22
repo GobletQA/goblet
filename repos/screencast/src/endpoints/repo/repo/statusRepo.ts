@@ -55,4 +55,4 @@ export const statusRepo = asyncWrap(async (req:Request, res:Response) => {
 })
 
 
-AppRouter.get('/repo/status', statusRepo)
+AppRouter.get(`/repo/status`, statusRepo)

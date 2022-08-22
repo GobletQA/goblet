@@ -5,15 +5,18 @@ type TContainerId = string
 type TContainerPort = string
 type TContainerName = string
 
+export type TProtocol = 'http' | 'https' | 'ws' | 'wss' | 'http:' | 'https:' | 'ws:' | 'wss:'
+
 export type TContainerRoute = {
-  host: string
-  port: string|number
-  protocol?: 'http' | 'https' | 'ws' | 'wss'
+  host?: string
+  port?: string|number
+  protocol?: TProtocol
 }
 
 export type TProxyForwardHeaders = {
   [`x-forwarded-host`]: string
   [`x-forwarded-proto`]: string
+  [`x-forwarded-subdomain`]: string
   [`x-forwarded-port`]: string | number
 }
 

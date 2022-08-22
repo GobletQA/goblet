@@ -1,5 +1,15 @@
 import { toBool } from '@keg-hub/jsutils'
 import { TScreenDims, TGScreencastConfig } from '@gobletqa/screencast/src/types'
+import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
+import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
+
+const nodeEnv = process.env.NODE_ENV || `local`
+loadEnvs({
+  force: true,
+  locations: [],
+  name: `goblet`,
+  override: nodeEnv === 'local'
+})
 
 const {
   GB_SC_HOST,
@@ -12,6 +22,21 @@ const {
   GB_VNC_VIEW_WIDTH,
   GB_VNC_SERVER_PORT,
   GB_VNC_SERVER_HOST=GB_SC_HOST,
+
+  GB_LOG_LEVEL,
+  GB_SERVER_ORIGINS,
+  GB_AUTH_ACTIVE,
+  GB_PW_SOCKET_ACTIVE,
+
+  GB_BE_SOCKR_PATH,
+  GB_BE_SECURE_PORT,
+  GB_BE_JWT_EXP,
+  GB_BE_JWT_ALGO,
+  GB_BE_JWT_SECRET,
+  GB_BE_JWT_CREDENTIALS,
+  GB_BE_JWT_REFRESH_EXP,
+  GB_BE_JWT_REFRESH_SECRET,
+
 } = process.env
 
 const screenDims:TScreenDims = {
@@ -24,6 +49,21 @@ export const screencastConfig:TGScreencastConfig = {
   server: {
     port: GB_SC_PORT,
     host: GB_SC_HOST,
+    environment: nodeEnv,
+    path: GB_BE_SOCKR_PATH,
+    logLevel: GB_LOG_LEVEL,
+    auth: toBool(GB_AUTH_ACTIVE),
+    securePort: GB_BE_SECURE_PORT,
+    hostPWSocket: toBool(GB_PW_SOCKET_ACTIVE),
+    origins: generateOrigins(GB_SERVER_ORIGINS),
+    jwt: {
+      exp: GB_BE_JWT_EXP,
+      secret: GB_BE_JWT_SECRET,
+      refreshExp: GB_BE_JWT_REFRESH_EXP,
+      refreshSecret: GB_BE_JWT_REFRESH_SECRET,
+      algorithms: [GB_BE_JWT_ALGO || 'HS256'],
+      credentialsRequired: toBool(GB_BE_JWT_CREDENTIALS || true),
+    }
   },
   screencast: {
     // Set if the screencast is active or not

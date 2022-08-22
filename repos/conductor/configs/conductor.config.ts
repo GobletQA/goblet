@@ -32,6 +32,8 @@ const {
   GB_DD_CADDY_HOST,
   GB_DD_DEPLOYMENT,
 
+  // In dev running screen-cast as it's own deployment
+  GB_SC_DEPLOYMENT,
   // Salting the user hash string. Not intended to be secure, just anonymous
 } = process.env
 
@@ -74,13 +76,14 @@ const proxyOpts = (dindOpts:DockerOptions, dindHost:string) => {
 const dindHost = getDinDHost()
 const dindOpts = getControllerOpts()
 
-
 export const conductorConfig:TConductorConfig = {
   domain: GB_CD_HOST,
+  altDomain: GB_SC_DEPLOYMENT,
   subdomain: GB_CD_SUB_DOMAIN,
   hashKey: GB_CD_HASH_KEY || ``,
   proxy: proxyOpts(dindOpts, dindHost),
   controller: {
+    devRouter: {},
     options: dindOpts,
     pidsLimit: toNum(GB_CD_PIDS_LIMIT) as number,
     rateLimit: (toNum(GB_CD_RATE_LIMIT) || 5000) as number,

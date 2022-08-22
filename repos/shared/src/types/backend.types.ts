@@ -1,16 +1,8 @@
+import { TJwtConfig } from './helpers.types'
 import { TConductorOpts } from './conductor.types'
 import { TScreencastServer } from './screencast.types'
 
 export type TReqHeaders = Record<string, string>
-
-export type TJwtConfig = {
-  exp: string
-  secret: string
-  refreshExp: string
-  refreshSecret: string
-  algorithms: string[],
-  credentialsRequired: boolean
-}
 
 export type TSockrProcessConfig = {
   root: string

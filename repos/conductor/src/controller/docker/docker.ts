@@ -1,5 +1,7 @@
 import type { Conductor } from '../../conductor'
+import type { Request } from 'express'
 import type { ContainerCreateOptions } from 'dockerode'
+import { FORWARD_PORT_HEADER, FORWARD_SUBDOMAIN_HEADER } from '@GCD/constants'
 import {
   TImgRef,
   TRunOpts,
@@ -16,11 +18,11 @@ import {
 
 import Dockerode from 'dockerode'
 import DockerEvents from 'docker-events'
-import { isObj } from '@keg-hub/jsutils'
 import { Controller } from '../controller'
 import { docker } from '@keg-hub/cli-utils'
 import { dockerEvents } from './dockerEvents'
 import { buildImgUri } from './image/buildImgUri'
+import { isObj, omitKeys } from '@keg-hub/jsutils'
 import { buildPorts } from './container/buildPorts'
 import { Logger } from '@gobletqa/shared/libs/logger'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
@@ -318,5 +320,17 @@ export class Docker extends Controller {
 
     this.hydrate()
   }
+
+  // TODO: need to figure out VNC screen casting
+  getRoute = (req:Request) => {
+    if(this?.config?.devRouter && this.config?.devRouter?.host)
+      return this.config.devRouter
  
+    const proxyPort = (req.headers[FORWARD_PORT_HEADER] || ``).toString().split(`,`).shift()
+    const userHash = (req.headers[FORWARD_SUBDOMAIN_HEADER] || ``).toString().split(`,`).shift()
+    const route = this.routes?.[userHash]?.routes?.[proxyPort]
+    return omitKeys(route, [`headers`, `containerPort`])
+
+  }
+
 }

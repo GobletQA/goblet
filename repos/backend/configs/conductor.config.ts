@@ -1,5 +1,9 @@
-import type { TConductorOpts, TControllerType } from '@GBE/types'
-import { toNum } from '@keg-hub/jsutils'
+import type {
+  TProtocol,
+  TConductorOpts,
+  TControllerType,
+} from '@GBE/types'
+import { toNum, exists } from '@keg-hub/jsutils'
 import { inDocker } from '@keg-hub/cli-utils'
 
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
@@ -32,7 +36,20 @@ const {
   GB_SC_IMAGE,
   GB_SC_IMAGE_TAG,
   GB_SC_DEPLOYMENT,
+  GOBLET_SCREENCAST_PORT,
+  GOBLET_SCREENCAST_SERVICE_HOST,
 } = envs
+
+
+const devRouter = NODE_ENV === `local`
+  && exists(GOBLET_SCREENCAST_SERVICE_HOST)
+  && exists(GOBLET_SCREENCAST_PORT)
+    ? {
+        host: GB_SC_DEPLOYMENT,
+        port: GOBLET_SCREENCAST_PORT,
+        protocol: 'http:' as TProtocol,
+      }
+    : {}
 
 /**
 * Loads the envs and filters out all except for the those the match the whiteList prefix
@@ -70,6 +87,7 @@ const getImgConfig = () => {
 
 export const conductorConfig:TConductorOpts = {
   controller: {
+    devRouter,
     type: GB_CD_CONTROLLER_TYPE as TControllerType
   },
   images: {

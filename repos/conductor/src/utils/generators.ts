@@ -1,6 +1,11 @@
 import type { Conductor } from '@gobletqa/conductor/conductor'
-import { FORWARD_HOST_HEADER, FORWARD_PORT_HEADER, FORWARD_PROTO_HEADER } from '@GCD/constants'
 import { inDocker } from '@keg-hub/cli-utils'
+import {
+  FORWARD_HOST_HEADER,
+  FORWARD_PORT_HEADER,
+  FORWARD_PROTO_HEADER,
+  FORWARD_SUBDOMAIN_HEADER
+} from '@GCD/constants'
 import {
   TPort,
   TPortsMap,
@@ -48,9 +53,12 @@ export const generateExternalUrl = (
   userHash:TUserHash,
   conductor:Conductor,
 ) => {
-  const { domain, subdomain } = conductor?.config
-  
+  const { domain, altDomain, subdomain } = conductor?.config
   return `${hostPort}.${userHash}.${subdomain}.${domain}`
+
+  // return altDomain
+  //   ? `${hostPort}.${userHash}.${altDomain}.${domain}`
+  //   : `${hostPort}.${userHash}.${subdomain}.${domain}`
 }
 
 
@@ -79,8 +87,9 @@ const buildRoute = (
     // 443 is default, but would be better to allow it to be any port
     protocol: proto,
     headers: {
-      [FORWARD_PROTO_HEADER]: proto,
       [FORWARD_PORT_HEADER]: cPort,
+      [FORWARD_PROTO_HEADER]: proto,
+      [FORWARD_SUBDOMAIN_HEADER]: userHash,
       [FORWARD_HOST_HEADER]: generateExternalUrl(hostPort, userHash, conductor)
     },
   }

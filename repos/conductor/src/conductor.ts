@@ -151,8 +151,7 @@ export class Conductor {
     // TODO: add rate limiting for requests
     // this.handleRateLimit(req)
     const routeData = this.controller.getRoute(req)
-
-    return routeData ? omitKeys(routeData, [`headers`, `containerPort`]) : undefined
+    return routeData
   }
 
   createProxy(config?:TProxyConfig, ProxyRouter?:Router) {

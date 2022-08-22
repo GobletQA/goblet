@@ -1,9 +1,9 @@
 import type { Request } from 'express'
 import type { Conductor } from '../conductor'
-import { FORWARD_PORT_HEADER } from '@GCD/constants'
 import { buildImgUri } from './docker/image/buildImgUri'
 import { capitalize, deepMerge } from '@keg-hub/jsutils'
 import { checkImgConfig } from '../utils/checkImgConfig'
+import { FORWARD_PORT_HEADER, FORWARD_SUBDOMAIN_HEADER } from '@GCD/constants'
 import {
   TImgRef,
   TRunOpts,
@@ -122,10 +122,8 @@ export class Controller {
   }
 
   getRoute = (req:Request) => {
-    const userHash = req?.user?.subdomain
-    const proxyPort = (req.headers[FORWARD_PORT_HEADER] || ``).toString().split(`,`).shift()
-
-    return this.routes?.[userHash]?.routes?.[proxyPort]
+    throwOverrideErr()
+    return undefined
   }
 
   notFoundErr = (args:Record<string, string>) => {

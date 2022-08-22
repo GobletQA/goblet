@@ -1,11 +1,22 @@
 require('./configs/aliases.config').registerAliases()
 // TODO: figure out how to make this an alias instead of relative path
 const { getGobletConfig } = require('./repos/shared/src/utils/getGobletConfig')
+const { loadEnvs } = require('./repos/shared/src/utils/loadEnvs')
+
+const nodeEnv = process.env.NODE_ENV || `local`
+loadEnvs({
+  force: true,
+  locations: [],
+  name: `goblet`,
+  override: nodeEnv === 'local'
+})
+
 const config = getGobletConfig()
 const { serviceAccount, ...firebaseConfig } = config.firebase
 const {
   NODE_ENV,
   GB_BE_PORT,
+  GB_SC_PORT,
   GB_BE_HOST,
   GB_AUTH_ACTIVE,
   GB_VNC_ACTIVE,
@@ -35,6 +46,7 @@ module.exports = {
       'process.env.NODE_ENV': NODE_ENV,
       'process.env.GB_BE_HOST': GB_BE_HOST,
       'process.env.GB_BE_PORT': GB_BE_PORT,
+      'process.env.GB_SC_PORT': GB_SC_PORT,
       'process.env.GB_VNC_ACTIVE': GB_VNC_ACTIVE,
       'process.env.GB_NO_VNC_PATH': GB_NO_VNC_PATH,
       'process.env.GB_AUTH_ACTIVE': GB_AUTH_ACTIVE,

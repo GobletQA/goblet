@@ -1,3 +1,4 @@
+import { TJwtConfig } from './helpers.types'
 
 export type TChildProcArgs = {
   cwd: string
@@ -27,8 +28,15 @@ export type TScreencastServer = {
   port: string
   host: string
   path?: string
+  auth?: boolean
   active?: boolean
   protocol?: string
+  origins: string[]
+  logLevel: string
+  securePort: string
+  environment: string
+  hostPWSocket: boolean
+  jwt: TJwtConfig
 }
 
 export type TBrowserContext = {

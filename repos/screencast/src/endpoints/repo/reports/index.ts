@@ -1,2 +1,2 @@
 export * from './listReports'
-export * from './loadReports'
+export * from './loadReport'

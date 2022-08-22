@@ -3,6 +3,7 @@ import { getApp } from '@gobletqa/shared/express/app'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
+  setupJWT,
   setupRepo,
   setupCors,
   setupServer,
@@ -25,6 +26,7 @@ const initApi = async () => {
   setupLoggerReq(app)
   setupBlacklist(app)
   setupCors(app)
+  setupJWT(app, [])
   setupServer(app)
   validateUser(app, `/screencast\/*`)
   setupRepo(app)

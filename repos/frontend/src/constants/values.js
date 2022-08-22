@@ -18,7 +18,8 @@ let Values = deepFreeze({
     KEG_DOM_STYLES_ID: 'keg-dom-styles',
     TAP_PATH_PREFIX: '/goblet/app/repos',
     SCREENCAST_CANVAS: `screencast-canvas-element`,
-    PARKIN_SPEC_RESULT_LOG: `------- PARKIN SPEC RESULT LOG -------`
+    PARKIN_SPEC_RESULT_LOG: `------- PARKIN SPEC RESULT LOG -------`,
+    GB_SC_PORT: process.env.GB_SC_PORT || `7006`,
   },
   ...storage,
   ...screens,

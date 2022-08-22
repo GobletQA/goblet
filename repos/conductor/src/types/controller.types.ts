@@ -1,4 +1,5 @@
 import { DockerOptions } from 'dockerode'
+import { TContainerRoute } from './routes.types'
 
 export type TControllerEvt = (message?:Record<any, any>) => void
 
@@ -23,9 +24,11 @@ export type TCreatePortsObj = {
 
 export type TControllerType = 'docker' | 'Docker'
 
-export type TControllerConfig = DockerOptions & {
+
+export type TControllerConfig = {
   pidsLimit?: number
   rateLimit?: number
   type: TControllerType
   options:DockerOptions
+  devRouter?: TContainerRoute
 }
