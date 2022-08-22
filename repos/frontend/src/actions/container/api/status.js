@@ -47,7 +47,7 @@ export const statusContainer = async params => {
 
   if(!success || error) return setErrorState(error)
 
-  setContainerRoutes(data)
+  await setContainerRoutes(data)
 
   return data
 }

@@ -7,6 +7,8 @@ import { storage } from './storage'
 import { screens } from './screens'
 import { categories } from './categories'
 import { screencast } from './screencast'
+const screencastPort = process.env.GB_SC_PORT || `7006`
+
 
 let Values = deepFreeze({
   ...{
@@ -19,7 +21,7 @@ let Values = deepFreeze({
     TAP_PATH_PREFIX: '/goblet/app/repos',
     SCREENCAST_CANVAS: `screencast-canvas-element`,
     PARKIN_SPEC_RESULT_LOG: `------- PARKIN SPEC RESULT LOG -------`,
-    GB_SC_PORT: process.env.GB_SC_PORT || `7006`,
+    GB_SC_PORT: screencastPort,
   },
   ...storage,
   ...screens,

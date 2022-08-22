@@ -19,6 +19,7 @@ const { auth } = getProviderMetadata()
 export const signOutAuthUser = async () => {
 
   await localStorage.removeJwt()
+  await localStorage.removeHeaders()
   const currentUser = GitUser.getUser()
 
   // Remove local user data here

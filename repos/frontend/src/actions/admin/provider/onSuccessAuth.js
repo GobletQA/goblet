@@ -110,7 +110,7 @@ export const onSuccessAuth = async (authData, callback) => {
     // Wrap container and repos so if they throw, the login auth is still valid
     try {
       repos && repos.length && setRepos({ repos })
-      status?.routes && setContainerRoutes(status)
+      await setContainerRoutes(status)
     }
     catch(err){
       console.warn(`[Auth State Error] Error setting Container or Repos status.`)

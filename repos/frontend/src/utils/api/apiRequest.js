@@ -1,12 +1,9 @@
-import { getStore } from 'HKStore'
-import { Values } from 'HKConstants'
 import { addToast } from 'HKActions/toasts'
 import { getBaseApiUrl } from './getBaseApiUrl'
 import { isObj, get, noOpObj } from '@keg-hub/jsutils'
 import { networkRequest } from 'HKServices/networkRequest'
 import { localStorage } from'HKUtils/storage/localStorage'
 import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
-const { GB_SC_PORT } = Values
 
 /**
  * Check the response from the API for an expired session
@@ -33,12 +30,12 @@ const isValidSession = async (success, statusCode, message, showAlert) =>{
  * @return {Object} - Built headers object, with the JWT added if it exists
  */
 const addHeaders = async (headers=noOpObj) => {
-  const { items } = getStore()?.getState()
-
   const jwt = await localStorage.getJwt()
+  const routeHeaders = await localStorage.getHeaders()
+
   return {
     // Add the headers to all api requests so we know how to route in the backend
-   ...(items?.routes?.[GB_SC_PORT]?.headers || {}),
+   ...(routeHeaders || {}),
     ...headers,
    ...(jwt && { Authorization: `Bearer ${jwt}` }),
   }

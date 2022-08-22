@@ -5,5 +5,6 @@ export const storage = deepFreeze({
     JWT: `jwt`,
     REPO: 'repo',
     USER: 'user',
+    ROUTE_HEADERS: `route-headers`,
   },
 })

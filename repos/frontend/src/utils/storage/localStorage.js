@@ -59,6 +59,10 @@ class Storage {
   setRepo = async (data) => this.set(STORAGE.REPO, data)
   removeRepo = async () => this.remove(STORAGE.REPO)
 
+  getHeaders = async () => this.get(STORAGE.ROUTE_HEADERS, true)
+  setHeaders = async (data) => this.set(STORAGE.ROUTE_HEADERS, data)
+  removeHeaders = async () => this.remove(STORAGE.ROUTE_HEADERS)
+
 }
 
 export const localStorage = new Storage()
