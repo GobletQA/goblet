@@ -29,11 +29,3 @@ http://*.*.{$GB_CD_SUB_DOMAIN}.{$GB_CD_HOST}:{$GB_DD_PROXY_PORT} {
 		respond "\{\"error\":\"{err.status_code} {err.status_text}\"\}"
 	}
 }
-
-http://*.*.{$GB_SC_DEPLOYMENT}.{$GB_CD_HOST}:{$GB_DD_PROXY_PORT} {
-	reverse_proxy {$GB_SC_DEPLOYMENT}:{labels.5}
-
-	handle_errors {
-		respond "\{\"error\":\"{err.status_code} {err.status_text}\"\}"
-	}
-}
