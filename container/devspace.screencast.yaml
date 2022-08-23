@@ -47,9 +47,9 @@ vars:
 - name: GB_SC_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_SC_PORT"
-- name: GB_VNC_SERVER_PORT
+- name: GB_NO_VNC_PORT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_VNC_SERVER_PORT"
+  command: "node ../scripts/js/getYamlValue.js GB_NO_VNC_PORT"
 - name: GB_SC_INGRESS_HOST
   source: command
   command: "node ../scripts/js/resolveIngress.js SC"
@@ -147,11 +147,6 @@ deployments:
         - port: ${GB_SC_PORT}
         # NoVnc Websocket Port
         - port: ${GB_NO_VNC_PORT}
-          # Investigate it this is needed
-          # The no-vnc server is exposed in the container via GB_NO_VNC_PORT
-          # This port it proxies to via the GB_NO_VNC_PORT from websockify
-          # TigerVnc Server port
-        - port: ${GB_VNC_SERVER_PORT}
       ingress:
         name: ${GB_SC_DEPLOYMENT}-ingress
         rules:

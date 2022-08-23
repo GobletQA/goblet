@@ -19,7 +19,6 @@ loadEnvs({
 
 const {
   GOBLET_SCREENCAST_PORT,
-  GOBLET_DIND_SERVICE_HOST,
   GOBLET_SCREENCAST_SERVICE_HOST,
 
   GB_SC_PORT,
@@ -29,9 +28,6 @@ const {
 
   GB_NO_VNC_PORT,
   GB_VNC_SERVER_PORT,
-
-  GB_DD_CADDY_HOST,
-  GB_DD_DEPLOYMENT,
   GB_CD_CONTROLLER_TYPE=`Docker`,
 } = process.env
 
@@ -139,12 +135,6 @@ export const conductorConfig:TConductorOpts = {
           toNum(GB_SC_PORT),
           // NoVnc Websocket Port
           toNum(GB_NO_VNC_PORT),
-
-          // Investigate it this is needed
-          // The no-vnc server is exposed in the container via GB_NO_VNC_PORT
-          // This port it proxies to via the GB_NO_VNC_PORT from websockify
-          // TigerVnc Server port
-          toNum(GB_VNC_SERVER_PORT),
         ].filter(Boolean),
         envs: {
           ...containerEnvs,

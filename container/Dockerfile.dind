@@ -88,7 +88,7 @@ ENV HOME=/root \
     GB_DD_CADDY_REMOTE_DIR=$GB_DD_CADDY_REMOTE_DIR \
     PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
 
-COPY repos/dind/entrypoint.sh /entrypoint.sh
+COPY repos/dind/src/entrypoint.sh /entrypoint.sh
 COPY --from=goblet-docker /docker.tgz /docker.tgz
 RUN <<EOF
   set -eux;
@@ -134,9 +134,7 @@ RUN <<EOF
   mkdir -p $GB_DD_CADDY_REMOTE_DIR
 EOF
 
-COPY repos/dind/etc/supervisor /etc/supervisor
-COPY repos/dind/etc/caddy/Caddyfile /etc/caddy/Caddyfile
-COPY repos/dind/etc/docker/daemon.json /etc/docker/daemon.json
+COPY repos/dind/etc/* /etc/*
 COPY --from=goblet-modprobe /usr/local/bin/modprobe /usr/local/bin/modprobe
 
 # Set the entry point to ensure supervisord always gets started
