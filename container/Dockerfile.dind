@@ -134,7 +134,7 @@ RUN <<EOF
   mkdir -p $GB_DD_CADDY_REMOTE_DIR
 EOF
 
-COPY repos/dind/etc/* /etc/*
+COPY repos/dind/src/etc /etc
 COPY --from=goblet-modprobe /usr/local/bin/modprobe /usr/local/bin/modprobe
 
 # Set the entry point to ensure supervisord always gets started
