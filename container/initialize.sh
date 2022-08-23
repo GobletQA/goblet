@@ -1,6 +1,5 @@
 #! /bin/bash
-# echo "Sleeping for 10 seconds to allow sync to complete..."
-# sleep 10
+
 echo "Starting goblet application..."
 
 set -Eeo pipefail

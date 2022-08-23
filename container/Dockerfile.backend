@@ -56,7 +56,6 @@ COPY --from=goblet-builder /goblet/app/repos/backend/package.json repos/backend/
 COPY --from=goblet-builder /goblet/app/repos/backend/node_modules repos/backend/node_modules
 COPY --from=goblet-builder /goblet/app/repos/backend/tsconfig.json repos/backend/tsconfig.json
 COPY --from=goblet-builder /goblet/app/repos/shared/src/templates repos/backend/templates
-COPY --from=goblet-builder /goblet/app/repos/testUtils repos/backend/testUtils
 
 WORKDIR /usr/src/goblet/app/repos/backend
 ARG GB_BE_PORT=7005
