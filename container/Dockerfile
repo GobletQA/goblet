@@ -85,6 +85,7 @@ RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
 RUN <<EOF
   set -eux;
   echo "#! /bin/bash" >> /entrypoint.sh
+  echo "" >> /entrypoint.sh
   echo "if [ \"\$GB_SUB_REPO\" == \"backend\" ]; then" >> /entrypoint.sh
   echo "  export GOBLET_DIND_SERVICE_HOST=\${GOBLET_DIND_SERVICE_HOST:-0.0.0.0}" >> /entrypoint.sh
   echo "  export GOBLET_DIND_SERVICE_PORT=\${GOBLET_DIND_SERVICE_PORT:-2573}" >> /entrypoint.sh
@@ -93,9 +94,9 @@ RUN <<EOF
   echo "  echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /entrypoint.sh
   echo "  cd repos/backend" >> /entrypoint.sh
   echo "  yarn pull >> /proc/1/fd/1 &" >> /entrypoint.sh
-  echo "  unset DOCKER_AUTH_PASSWORD" >> /entrypoint.sh
   echo "  cd /goblet/app" >> /entrypoint.sh
   echo "fi" >> /entrypoint.sh
+  echo "" >> /entrypoint.sh
   echo "exec \$@" >> /entrypoint.sh
   chmod a+x /entrypoint.sh
   chmod a+x /goblet/app/container/initialize.sh

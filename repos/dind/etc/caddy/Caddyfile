@@ -23,7 +23,7 @@ http://{$GB_DD_CADDY_HOST:localhost}:{$GB_DD_DOCKER_PORT:2375}, http://{$GB_DD_D
 #   * curl --header "Host: <port>.<user-id>.conductor.local.gobletqa.app" http://goblet-dind:2121
 # curl --header "Host: 34375.2098242360.conductor.local.gobletqa.app" http://goblet-dind:2121
 http://*.*.{$GB_CD_SUB_DOMAIN}.{$GB_CD_HOST}:{$GB_DD_PROXY_PORT} {
-	reverse_proxy localhost:{labels.5}
+	reverse_proxy {$GB_DD_PROXY_DOMAIN:localhost}:{labels.5}
 
 	handle_errors {
 		respond "\{\"error\":\"{err.status_code} {err.status_text}\"\}"

@@ -62,7 +62,7 @@ export const apiRequest = async request => {
   
   const routeHeaders = await localStorage.getHeaders()
 
-  if(!routeHeaders && builtRequest.url.indexOf(`/repo`))
+  if(!routeHeaders && builtRequest.url.includes(`/repo`))
     console.log(`Missing Route headers for route ${builtRequest.url}`)
 
   builtRequest.headers = await addHeaders(builtRequest.headers, routeHeaders)

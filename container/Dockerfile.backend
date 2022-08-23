@@ -41,7 +41,8 @@ ENV HOME=/root \
     DEBIAN_FRONTEND=noninteractive \
     PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
 
-RUN yarn global add pm2; \
+RUN apk add docker; \
+    yarn global add pm2; \
     pm2 install pm2-logrotate && \
     pm2 set pm2-logrotate:retain '7' && \
     pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'; \
@@ -55,6 +56,7 @@ COPY --from=goblet-builder /goblet/app/repos/backend/package.json repos/backend/
 COPY --from=goblet-builder /goblet/app/repos/backend/node_modules repos/backend/node_modules
 COPY --from=goblet-builder /goblet/app/repos/backend/tsconfig.json repos/backend/tsconfig.json
 COPY --from=goblet-builder /goblet/app/repos/shared/src/templates repos/backend/templates
+COPY --from=goblet-builder /goblet/app/repos/testUtils repos/backend/testUtils
 
 WORKDIR /usr/src/goblet/app/repos/backend
 ARG GB_BE_PORT=7005
@@ -70,18 +72,20 @@ EXPOSE $GB_NO_VNC_PORT
 
 RUN <<EOF
   set -eux;
-  echo "#! /bin/bash" >> /entrypoint.sh
-  echo "export GOBLET_DIND_SERVICE_HOST=\${GOBLET_DIND_SERVICE_HOST:-0.0.0.0}" >> /entrypoint.sh
-  echo "export GOBLET_DIND_SERVICE_PORT=\${GOBLET_DIND_SERVICE_PORT:-2573}" >> /entrypoint.sh
-  echo "GB_DIND_HOST=\${GB_DD_DEPLOYMENT:-\$GOBLET_DIND_SERVICE_HOST}" >> /entrypoint.sh
-  echo "export DOCKER_HOST=\"tcp://\$GB_DIND_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /entrypoint.sh
-  echo "echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /entrypoint.sh
-  echo "yarn pull &" >> /entrypoint.sh
-  echo "unset DOCKER_AUTH_PASSWORD" >> /entrypoint.sh
+  echo "#! /bin/sh" >> /entrypoint.sh
+  echo "" >> /entrypoint.sh
+  echo "if [ \"\$GOBLET_DIND_SERVICE_PORT\" ]; then" >> /entrypoint.sh
+  echo "  export GOBLET_DIND_SERVICE_HOST=\${GOBLET_DIND_SERVICE_HOST:-0.0.0.0}" >> /entrypoint.sh
+  echo "  export GOBLET_DIND_SERVICE_PORT=\${GOBLET_DIND_SERVICE_PORT:-2573}" >> /entrypoint.sh
+  echo "  GB_DIND_HOST=\${GB_DD_DEPLOYMENT:-\$GOBLET_DIND_SERVICE_HOST}" >> /entrypoint.sh
+  echo "  export DOCKER_HOST=\"tcp://\$GB_DIND_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /entrypoint.sh
+  echo "  echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /entrypoint.sh
+  echo "  yarn pull &" >> /entrypoint.sh
+  echo "fi" >> /entrypoint.sh
+  echo "" >> /entrypoint.sh
   echo "exec \$@" >> /entrypoint.sh
   chmod a+x /entrypoint.sh
 EOF
 
 ENTRYPOINT ["/entrypoint.sh"]
-
 CMD [ "yarn", "serve" ]
