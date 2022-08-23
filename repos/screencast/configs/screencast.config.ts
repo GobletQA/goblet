@@ -17,6 +17,7 @@ const {
   DISPLAY=':0.0',
   GB_SC_PORT,
   GB_NO_VNC_PORT,
+  GB_NO_VNC_HOST=GB_SC_HOST,
 
   GB_VNC_VIEW_HEIGHT,
   GB_VNC_VIEW_WIDTH,
@@ -24,11 +25,9 @@ const {
   GB_VNC_SERVER_HOST=GB_SC_HOST,
 
   GB_LOG_LEVEL,
-  GB_SERVER_ORIGINS,
   GB_AUTH_ACTIVE,
-  GB_PW_SOCKET_ACTIVE,
+  GB_SERVER_ORIGINS,
 
-  GB_BE_SOCKR_PATH,
   GB_BE_SECURE_PORT,
   GB_BE_JWT_EXP,
   GB_BE_JWT_ALGO,
@@ -36,6 +35,11 @@ const {
   GB_BE_JWT_CREDENTIALS,
   GB_BE_JWT_REFRESH_EXP,
   GB_BE_JWT_REFRESH_SECRET,
+
+  // TODO Add these envs as a header for request validation
+  // This will ensure requests are coming from the backend API only
+  GB_DD_VALIDATION_KEY,
+  GB_DD_VALIDATION_HEADER,
 
 } = process.env
 
@@ -50,11 +54,9 @@ export const screencastConfig:TGScreencastConfig = {
     port: GB_SC_PORT,
     host: GB_SC_HOST,
     environment: nodeEnv,
-    path: GB_BE_SOCKR_PATH,
     logLevel: GB_LOG_LEVEL,
     auth: toBool(GB_AUTH_ACTIVE),
     securePort: GB_BE_SECURE_PORT,
-    hostPWSocket: toBool(GB_PW_SOCKET_ACTIVE),
     origins: generateOrigins(GB_SERVER_ORIGINS),
     jwt: {
       exp: GB_BE_JWT_EXP,
@@ -77,7 +79,7 @@ export const screencastConfig:TGScreencastConfig = {
       viewport: screenDims,
     },
     novnc: {
-      host: GB_SC_HOST,
+      host: GB_NO_VNC_HOST,
       port: GB_NO_VNC_PORT,
     },
     vnc: {

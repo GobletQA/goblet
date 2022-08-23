@@ -143,7 +143,14 @@ deployments:
       service:
         name: ${GB_SC_DEPLOYMENT}
         ports:
+        # Screencast API Port
         - port: ${GB_SC_PORT}
+        # NoVnc Websocket Port
+        - port: ${GB_NO_VNC_PORT}
+          # Investigate it this is needed
+          # The no-vnc server is exposed in the container via GB_NO_VNC_PORT
+          # This port it proxies to via the GB_NO_VNC_PORT from websockify
+          # TigerVnc Server port
         - port: ${GB_VNC_SERVER_PORT}
       ingress:
         name: ${GB_SC_DEPLOYMENT}-ingress
@@ -156,10 +163,10 @@ deployments:
           servicePort: ${GB_SC_PORT}
         - host: ${GB_SC_INGRESS_HOST}
           serviceName: ${GB_SC_DEPLOYMENT}
-          servicePort: ${GB_VNC_SERVER_PORT}
+          servicePort: ${GB_NO_VNC_PORT}
         - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
           serviceName: ${GB_SC_DEPLOYMENT}
-          servicePort: ${GB_VNC_SERVER_PORT}
+          servicePort: ${GB_NO_VNC_PORT}
 
 - name: ${GB_DD_DEPLOYMENT}
   helm:
@@ -241,48 +248,9 @@ deployments:
           servicePort: ${GB_BE_PORT}
 
 
-# The `dev` section only applies to `yarn dev start` || `devspace dev` commands
-# Is not run for `yarn dev deploy` || `devspace deploy` commands
-dev:
-  sync:
-  - labelSelector:
-      app.kubernetes.io/component: ${GB_SC_DEPLOYMENT}
-    disableDownload: true
-    initialSync: mirrorLocal
-    localSubPath: ../
-    containerPath: /goblet/app
-    uploadExcludePaths:
-    - /repos/backend
-    - /repos/conductor
-    - /repos/frontend
-    - /repos/traceViewer
-    - node_modules/
-    - .*
-    - /container/.*
-    - /container/scripts
-    - /container/templates
-    - /container/Dockerfile*
-    - /docs
-    - /helm
-    - /scripts
-    - __tests__/
-    - __mocks__/
-  # Gets the ports that should be exposed to the host machine from the running pod
-  ports: 
-  - labelSelector:
-      app.kubernetes.io/component: ${GB_SC_DEPLOYMENT}
-    forward:
-    - port: ${GB_SC_PORT}
-  - labelSelector:
-      app.kubernetes.io/component: ${GB_SC_DEPLOYMENT}
-    forward:
-    - port: ${GB_VNC_SERVER_PORT}
-
-
-# TODO: Add screencast to the script below instead of above
 dev:
   # Gets the apps that should sync with the host machine
-  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_DD_ACTIVE)
+  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_DD_ACTIVE GB_SC_ACTIVE)
 
   # Gets the ports that should be exposed to the host machine from the running pod
   # ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_DD_ACTIVE ${GB_DD_PROXY_PORT} ${GB_DD_EXP_ADMIN_PORT})

@@ -47,15 +47,14 @@ export type TBEServerConfig = {
   logLevel: string
   securePort: string
   environment: string
-  hostPWSocket: boolean
   jwt: TJwtConfig
   cookie: TCookieConfig
 }
 
 export type TBackendConfig = {
   sockr: TSockrConfig
+  localDevMode?: boolean
   server: TBEServerConfig
   conductor: TConductorOpts
-  screencast?: TScreencastServer
-  localDevMode?: boolean
+  screencast?: Partial<TScreencastServer>
 }

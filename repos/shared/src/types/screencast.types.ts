@@ -35,7 +35,6 @@ export type TScreencastServer = {
   logLevel: string
   securePort: string
   environment: string
-  hostPWSocket: boolean
   jwt: TJwtConfig
 }
 

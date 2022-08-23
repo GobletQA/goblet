@@ -116,6 +116,10 @@ export const conductorConfig:TConductorOpts = {
           toNum(GB_SC_PORT),
           // NoVnc Websocket Port
           toNum(GB_NO_VNC_PORT),
+
+          // Investigate it this is needed
+          // The no-vnc server is exposed in the container via GB_NO_VNC_PORT
+          // This port it proxies to via the GB_NO_VNC_PORT from websockify
           // TigerVnc Server port
           toNum(GB_VNC_SERVER_PORT),
         ].filter(Boolean),

@@ -23,7 +23,6 @@ const {
   GB_LOG_LEVEL,
   GB_SERVER_ORIGINS,
   GB_AUTH_ACTIVE,
-  GB_PW_SOCKET_ACTIVE,
 
   GB_BE_SOCKR_PATH,
   GB_BE_SOCKET_PORT,
@@ -33,6 +32,7 @@ const {
   GB_BE_HOST,
   GB_BE_SECURE_PORT,
 
+  GB_SC_DEPLOYMENT,
   GB_VNC_ACTIVE,
   GB_NO_VNC_PATH,
   GB_NO_VNC_PORT,
@@ -55,12 +55,7 @@ const {
   GB_BE_COOKIE_SAME_SITE,
   GB_BE_COOKIE_MAX_AGE = 12 * 60 * 60 * 1000,
   GB_BE_COOKIE_EXP = new Date(new Date().getTime() + 86400000),
-  
-  GB_SC_DEPLOYMENT,
-  GB_DD_VALIDATION_KEY,
-  GB_DD_VALIDATION_HEADER,
-  GOBLET_CONDUCTOR_SERVICE_PORT,
-  
+
   GB_LOCAL_DEV_MODE
 } = process.env
 
@@ -73,7 +68,6 @@ export const backendConfig:TBackendConfig  = {
     logLevel: GB_LOG_LEVEL,
     auth: toBool(GB_AUTH_ACTIVE),
     securePort: GB_BE_SECURE_PORT,
-    hostPWSocket: toBool(GB_PW_SOCKET_ACTIVE),
     origins: generateOrigins(GB_SERVER_ORIGINS),
     cookie: {
       key: GB_BE_COOKIE_KEY,
@@ -108,11 +102,15 @@ export const backendConfig:TBackendConfig  = {
     },
   },
   screencast: {
-    host: GB_BE_HOST,
     path: GB_NO_VNC_PATH,
     port: GB_NO_VNC_PORT,
+    environment: nodeEnv,
+    // TODO: Need to add check for running in one container for multiple
+    // When in one container, everything should be 0.0.0.0
+    // Might be easier to manually modify the hosts file with the routes in single container mode
+    host: GB_SC_DEPLOYMENT,
     protocol: GB_NO_VNC_PROTOCOL,
-    active: toBool(GB_VNC_ACTIVE),
+    active: toBool(GB_VNC_ACTIVE)
   },
     /**
    * Only turn on local dev mode when explicitly defined, and in a local environment
