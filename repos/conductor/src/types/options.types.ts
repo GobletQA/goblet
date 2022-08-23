@@ -24,7 +24,7 @@ export type TControllerOpts = {
   devRouter?: TRouteMeta
 }
 
-export type TProxyOpts = {
+type TConductorProxyOpts = {
   port?: TPort
   proxy?: Options
   target?: string
@@ -35,7 +35,7 @@ export type TConductorOpts = {
   domain?: string
   hashKey?: string
   subdomain?: string
-  proxy?: TProxyOpts
   images: TImagesOpts
+  proxy?: TConductorProxyOpts
   controller?:TControllerOpts
 }

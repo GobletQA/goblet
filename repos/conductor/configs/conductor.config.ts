@@ -1,11 +1,12 @@
 import type { DockerOptions } from 'dockerode'
 import { inDocker } from '@keg-hub/cli-utils'
-import { toNum, exists } from '@keg-hub/jsutils'
+import { toNum } from '@keg-hub/jsutils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { TDockerConfig, TConductorConfig, TRouteMeta } from '@gobletqa/conductor/types'
+import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 
 const isDocker = inDocker()
-const isKube = isDocker && exists(process.env.KUBERNETES_SERVICE_HOST)
+
 
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({
@@ -22,33 +23,16 @@ const {
 
   GB_CD_PIDS_LIMIT,
   GB_CD_RATE_LIMIT,
-  GOBLET_DIND_SERVICE_HOST,
   GOBLET_DIND_SERVICE_PORT,
 
   GB_DD_VALIDATION_KEY,
   GB_DD_VALIDATION_HEADER,
 
   GB_DD_PROXY_PORT,
-  GB_DD_CADDY_HOST,
-  GB_DD_DEPLOYMENT,
 
-  // In dev running screen-cast as it's own deployment
-  GB_SC_DEPLOYMENT,
   // Salting the user hash string. Not intended to be secure, just anonymous
 } = process.env
 
-/**
- * Helper to resolve the host for docker and the proxy
- */
-const getDinDHost = () => {
-  return !isKube
-    ? GB_DD_CADDY_HOST
-    : exists(GB_DD_DEPLOYMENT)
-      ? GB_DD_DEPLOYMENT
-      : exists(GOBLET_DIND_SERVICE_HOST)
-        ? GOBLET_DIND_SERVICE_HOST
-        : GB_DD_CADDY_HOST
-}
 
 /**
  * Helper to generate the options for connecting to the controller (i.e. docker)
@@ -73,7 +57,7 @@ const proxyOpts = (dindOpts:DockerOptions, dindHost:string) => {
   }
 }
 
-const dindHost = getDinDHost()
+const dindHost = getDindHost()
 const dindOpts = getControllerOpts()
 
 export const conductorConfig:TConductorConfig = {

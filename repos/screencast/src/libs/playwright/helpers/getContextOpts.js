@@ -26,7 +26,7 @@ const getContextOpts = (contextOpts=noOpObj, config) => {
      * These come from the options passed to a task that started the process
      * This ensures those options gets set
      */
-    taskEnvToContextOpts(config, gobletOpts)
+    taskEnvToContextOpts(config)
   )
 }
 

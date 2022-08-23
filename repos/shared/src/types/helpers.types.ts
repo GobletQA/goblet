@@ -1,3 +1,5 @@
+import type { Options } from 'http-proxy-middleware'
+
 export type TJwtConfig = {
   exp: string
   secret: string
@@ -5,4 +7,12 @@ export type TJwtConfig = {
   refreshSecret: string
   algorithms: string[],
   credentialsRequired: boolean
+}
+
+
+export type TProxyOpts = Options & {
+  host:string
+  port?:string
+  path?:string
+  protocol?:string
 }

@@ -8,8 +8,7 @@ import { aliases } from '@GConfigs/aliases.config'
 import { conductorConfig } from './conductor.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
-
-export { loadEnvs }
+import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({
@@ -56,8 +55,12 @@ const {
   GB_BE_COOKIE_MAX_AGE = 12 * 60 * 60 * 1000,
   GB_BE_COOKIE_EXP = new Date(new Date().getTime() + 86400000),
 
-  GB_LOCAL_DEV_MODE
+  GB_LOCAL_DEV_MODE,
+  GB_DD_PROXY_PORT,
+  GOBLET_DIND_SERVICE_PORT
 } = process.env
+
+const dindHost = getDindHost()
 
 export const backendConfig:TBackendConfig  = {
   server: {
@@ -111,6 +114,12 @@ export const backendConfig:TBackendConfig  = {
     host: GB_SC_DEPLOYMENT,
     protocol: GB_NO_VNC_PROTOCOL,
     active: toBool(GB_VNC_ACTIVE)
+  },
+  vncProxy: {
+    host: dindHost,
+    path: GB_NO_VNC_PATH,
+    protocol: GB_NO_VNC_PROTOCOL,
+    port: GB_DD_PROXY_PORT || GOBLET_DIND_SERVICE_PORT
   },
     /**
    * Only turn on local dev mode when explicitly defined, and in a local environment

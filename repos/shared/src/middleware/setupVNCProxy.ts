@@ -1,16 +1,10 @@
 import type { Express } from 'express'
-import type { Options } from 'http-proxy-middleware'
+import type { TProxyOpts } from '@GSH/types'
 
 import { getApp } from '../express/app'
 import { exists } from '@keg-hub/jsutils'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 
-type TProxyOpts = Options & {
-  host:string
-  port?:string
-  path?:string
-  protocol?:string
-}
 
 // TODO: Update this to be dynamic based on containers started from the conductor
 // This might need to be moved

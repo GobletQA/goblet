@@ -5,12 +5,10 @@ import type {
   TControllerType,
 } from '@GBE/types'
 import { toNum, exists } from '@keg-hub/jsutils'
-import { inDocker } from '@keg-hub/cli-utils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
+import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 
-const { NODE_ENV=`local`, KUBERNETES_SERVICE_HOST } = process.env
-const isDocker = inDocker()
-const isKube = isDocker && exists(KUBERNETES_SERVICE_HOST)
+const { NODE_ENV=`local` } = process.env
 
 loadEnvs({
   force: true,
@@ -59,17 +57,8 @@ const whiteList = [
 
 const blackList = []
 
-/**
- * Helper to resolve the host for docker and the proxy
- */
-const dindHost = !isKube
-    ? GB_DD_CADDY_HOST
-    : exists(GB_DD_DEPLOYMENT)
-      ? GB_DD_DEPLOYMENT
-      : exists(GOBLET_DIND_SERVICE_HOST)
-        ? GOBLET_DIND_SERVICE_HOST
-        : GB_DD_CADDY_HOST
 
+const dindHost = getDindHost()
 const devRouter = NODE_ENV === `local`
   && exists(GOBLET_SCREENCAST_SERVICE_HOST)
   && exists(GOBLET_SCREENCAST_PORT)
