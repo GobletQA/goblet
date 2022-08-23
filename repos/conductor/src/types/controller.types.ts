@@ -1,5 +1,5 @@
 import { DockerOptions } from 'dockerode'
-import { TContainerRoute } from './routes.types'
+import { TRouteMeta } from './routes.types'
 
 export type TControllerEvt = (message?:Record<any, any>) => void
 
@@ -30,5 +30,5 @@ export type TControllerConfig = {
   rateLimit?: number
   type: TControllerType
   options:DockerOptions
-  devRouter?: TContainerRoute
+  devRouter?: TRouteMeta
 }

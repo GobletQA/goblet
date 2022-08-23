@@ -53,21 +53,17 @@ export const generateExternalUrl = (
   userHash:TUserHash,
   conductor:Conductor,
 ) => {
-  const { domain, altDomain, subdomain } = conductor?.config
+  const { domain, subdomain } = conductor?.config
   return `${hostPort}.${userHash}.${subdomain}.${domain}`
-
-  // return altDomain
-  //   ? `${hostPort}.${userHash}.${altDomain}.${domain}`
-  //   : `${hostPort}.${userHash}.${subdomain}.${domain}`
 }
 
 
 /**
  * Builds a route used by the proxy to forward requests
  */
-const buildRoute = (
-  cPort:string,
-  hostPort:string|number,
+export const generateRoute = (
+  cPort:TPort,
+  hostPort:TPort,
   conductor:Conductor,
   userHash:TUserHash
 ) => {
@@ -129,9 +125,7 @@ export const generateRoutes = (
 
   return Object.entries(ports)
     .reduce((acc, [cPort, hostPort]:[string, string]) => {
-      const route = buildRoute(cPort, hostPort, conductor, userHash)
-
-      acc.routes[cPort] = route
+      acc.routes[cPort] = generateRoute(cPort, hostPort, conductor, userHash)
 
       return acc
     }, { routes: {}, meta } as TRouteMeta)

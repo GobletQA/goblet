@@ -1,7 +1,7 @@
 import type { Conductor } from '../../conductor'
 import type { Request } from 'express'
 import type { ContainerCreateOptions } from 'dockerode'
-import { FORWARD_PORT_HEADER, FORWARD_SUBDOMAIN_HEADER } from '@GCD/constants'
+import { FORWARD_PORT_HEADER, FORWARD_SUBDOMAIN_HEADER, DEV_USER_HASH } from '@GCD/constants'
 import {
   TImgRef,
   TRunOpts,
@@ -23,7 +23,6 @@ import { Controller } from '../controller'
 import { docker } from '@keg-hub/cli-utils'
 import { dockerEvents } from './dockerEvents'
 import { buildImgUri } from './image/buildImgUri'
-import { isObj, omitKeys } from '@keg-hub/jsutils'
 import { buildPorts } from './container/buildPorts'
 import { Logger } from '@gobletqa/shared/libs/logger'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
@@ -31,7 +30,8 @@ import { CONDUCTOR_USER_HASH_LABEL } from '../../constants'
 import { waitRetry } from '@gobletqa/shared/utils/waitRetry'
 import { containerConfig } from './container/containerConfig'
 import { removeContainer } from './container/removeContainer'
-import { generateRoutes, generateExternalUrls } from '../../utils/generators'
+import { isObj, omitKeys, isEmptyColl } from '@keg-hub/jsutils'
+import { generateRoute, generateRoutes, generateExternalUrls } from '../../utils/generators'
 import { createContainer, startContainer } from './container/runContainerHelpers'
 
 /**
@@ -75,13 +75,17 @@ export class Docker extends Controller {
   conductor: Conductor
   config: TDockerConfig
   events: DockerEvents
+  devRouterActive: boolean
 
   constructor(conductor:Conductor, config:TDockerConfig){
     super(conductor, config)
     this.config = config
+    this.devRouterActive = !isEmptyColl(this.config.devRouter)
   }
 
   hydrateSingle = async (message:TDockerEvent) => {
+    if(this.devRouterActive) return
+    
     Logger.info(`Hydrating container ${message?.Actor?.Attributes?.name} from start event`)
 
     const id = message?.id as string
@@ -97,6 +101,8 @@ export class Docker extends Controller {
    * @member Docker
    */
   hydrate = async ():Promise<Record<string, TContainerInspect>> => {
+    if(this.devRouterActive) return
+    
     const containers = await this.getAll()
     
     const imgNames = Object.keys(this.conductor.config.images)
@@ -132,6 +138,22 @@ export class Docker extends Controller {
     return this.containers as Record<string, TContainerInspect>
   }
 
+  hydrateDevRouter = async () => {
+    Logger.warn(`Running in dev mode, dind will not be active!`)
+
+    this.routes[DEV_USER_HASH] = Object.entries(this.config.devRouter.routes)
+      .reduce((acc, [port, config]) => {
+        acc.routes[port] = generateRoute(
+          config.port,
+          config.containerPort,
+          this.conductor,
+          DEV_USER_HASH
+        )
+
+        return acc
+      }, { routes: {}, meta: this.config.devRouter.meta } as TRouteMeta)
+  }
+
   /**
    * Pulls a docker image locally so it can be run
    * @member Docker
@@ -165,9 +187,16 @@ export class Docker extends Controller {
    */
   getAll = async ():Promise<TContainerInfo[]> => {
     return new Promise((res, rej) => {
-      this.docker.listContainers({ all: true }, (err, containers) => {
-        err ? rej(err) : res(containers.map(container => ({ ...container, Name: container.Names[0] })))
-      })
+      if(!this.docker) return res([])
+      
+        this.docker.listContainers({ all: true }, (err, containers) => {
+          err
+            ? rej(err)
+            : res(containers.map(container => ({
+                ...container,
+                Name: container.Names[0]
+              })))
+        })
     })
   }
 
@@ -176,6 +205,8 @@ export class Docker extends Controller {
    * @member Docker
    */
   removeFromCache = (message:TDockerEvent) => {
+    if(this.devRouterActive) return
+    
     Logger.info(`Removing container ${message?.Actor?.Attributes?.name} from cache`)
 
     this.containers = Object.entries(this.containers)
@@ -194,6 +225,8 @@ export class Docker extends Controller {
    * Removes a container from docker, by calling the Docker API
    */
   remove = async (containerRef:TContainerRef) => {
+    if(this.devRouterActive) return
+    
     const containerData = this.getContainer(containerRef)
     !containerData && this.notFoundErr({ type: `container`, ref: containerRef as string })
 
@@ -218,6 +251,8 @@ export class Docker extends Controller {
    * @member Docker
    */
   removeAll = async () => {
+    if(this.devRouterActive) return
+
     const containers = await this.getAll()
     const removed = await Promise.all(
       containers.map(container => {
@@ -238,6 +273,8 @@ export class Docker extends Controller {
    * @member Docker
    */
   cleanup = async () => {
+    if(this.devRouterActive) return
+    
     return new Promise(async (res, rej) => {
       try {
         // TODO: figure out if these take a callback
@@ -265,6 +302,8 @@ export class Docker extends Controller {
     runOpts:TRunOpts,
     userHash:string
   ):Promise<TRouteMeta> => {
+    if(this.devRouterActive) return this.routes[DEV_USER_HASH]
+
     const image = this.getImg(imageRef)
     !image && this.notFoundErr({ type: `image`, ref: imageRef as string })
 
@@ -304,11 +343,11 @@ export class Docker extends Controller {
    * Sometimes the docker container is not complete by the time this kicks off
    */
   validate = async (attempts=3, waitTime=3000) => {
+    if(this.devRouterActive) return this.hydrateDevRouter()
+
     await waitRetry((attempt) => {
       Logger.info(`Attempt ${attempt}: connecting to Docker Api`)
-
       this.docker = new Dockerode(this.config?.options)
-
     }, attempts, waitTime)
 
     // We should only get here if the waitRetry doesn't throw
@@ -323,16 +362,12 @@ export class Docker extends Controller {
   }
 
   // TODO: need to figure out VNC screen casting
-  getRoute = (req:Request) => {
-    if(this?.config?.devRouter && this.config?.devRouter?.host)
-      return this.config.devRouter
- 
+  getRoute = (req:Request) => { 
     const proxyPort = (req.headers[FORWARD_PORT_HEADER] || ``).toString().split(`,`).shift()
     const userHash = (req.headers[FORWARD_SUBDOMAIN_HEADER] || ``).toString().split(`,`).shift()
     const route = this.routes?.[userHash]?.routes?.[proxyPort]
 
     return omitKeys(route, [`headers`, `containerPort`]) as TContainerRoute
-
   }
 
 }

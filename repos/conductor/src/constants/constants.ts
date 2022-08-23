@@ -4,7 +4,7 @@ export const FORWARD_HOST_HEADER = `x-forwarded-host`
 export const FORWARD_PORT_HEADER = `x-forwarded-port`
 export const FORWARD_PROTO_HEADER = `x-forwarded-proto`
 export const FORWARD_SUBDOMAIN_HEADER = `x-forwarded-subdomain`
-
+export const DEV_USER_HASH = `goblet-dev-user`
 
 export const CONTAINER_LABELS = [
   `idle`,

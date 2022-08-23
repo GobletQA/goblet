@@ -2,7 +2,7 @@ import type { DockerOptions } from 'dockerode'
 import { inDocker } from '@keg-hub/cli-utils'
 import { toNum, exists } from '@keg-hub/jsutils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { TDockerConfig, TConductorConfig } from '@gobletqa/conductor/types'
+import { TDockerConfig, TConductorConfig, TRouteMeta } from '@gobletqa/conductor/types'
 
 const isDocker = inDocker()
 const isKube = isDocker && exists(process.env.KUBERNETES_SERVICE_HOST)
@@ -78,12 +78,11 @@ const dindOpts = getControllerOpts()
 
 export const conductorConfig:TConductorConfig = {
   domain: GB_CD_HOST,
-  altDomain: GB_SC_DEPLOYMENT,
   subdomain: GB_CD_SUB_DOMAIN,
   hashKey: GB_CD_HASH_KEY || ``,
   proxy: proxyOpts(dindOpts, dindHost),
   controller: {
-    devRouter: {},
+    devRouter: {} as TRouteMeta,
     options: dindOpts,
     pidsLimit: toNum(GB_CD_PIDS_LIMIT) as number,
     rateLimit: (toNum(GB_CD_RATE_LIMIT) || 5000) as number,
