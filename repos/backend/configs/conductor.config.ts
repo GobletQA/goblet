@@ -1,5 +1,6 @@
 import type {
   TProtocol,
+  TRouteMeta,
   TConductorOpts,
   TControllerType,
 } from '@GBE/types'
@@ -79,10 +80,10 @@ const devRouter = NODE_ENV === `local`
           name: GB_SC_DEPLOYMENT,
         },
         routes: {
-          [GOBLET_SCREENCAST_PORT]: {
+          [GB_SC_PORT]: {
             host: dindHost,
-            port: GOBLET_SCREENCAST_PORT,
-            containerPort: GOBLET_SCREENCAST_PORT,
+            port: GB_SC_PORT,
+            containerPort: GB_SC_PORT,
             protocol: 'http:' as TProtocol,
           },
           [GB_NO_VNC_PORT]: {
@@ -131,7 +132,7 @@ const getImgConfig = () => {
 
 export const conductorConfig:TConductorOpts = {
   controller: {
-    devRouter,
+    devRouter: devRouter as TRouteMeta,
     type: GB_CD_CONTROLLER_TYPE as TControllerType
   },
   images: {

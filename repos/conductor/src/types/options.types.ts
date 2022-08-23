@@ -1,6 +1,6 @@
 import type { Options } from 'http-proxy-middleware'
 import type { TPort } from './helpers.types'
-import type { TProxyRoutes } from './routes.types'
+import type { TRouteMeta } from './routes.types'
 import type { TControllerType } from './controller.types'
 import type { TImgConfig, TContainerConfig } from './conductor.types'
 
@@ -21,7 +21,7 @@ export type TControllerOpts = {
   pidsLimit?: number
   type: TControllerType
   connect?: Record<any, any>
-  devRouter?: TProxyRoutes
+  devRouter?: TRouteMeta
 }
 
 export type TProxyOpts = {
