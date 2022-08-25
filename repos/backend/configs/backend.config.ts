@@ -56,7 +56,7 @@ const {
   GB_BE_COOKIE_EXP = new Date(new Date().getTime() + 86400000),
 
   GB_LOCAL_DEV_MODE,
-  GB_DD_PROXY_PORT,
+  GB_DD_VNC_PROXY_PORT,
   GOBLET_DIND_SERVICE_PORT
 } = process.env
 
@@ -104,6 +104,7 @@ export const backendConfig:TBackendConfig  = {
       script: path.join(aliases.GobletRoot, 'scripts/sockr.cmd.sh'),
     },
   },
+  // TODO: check if this can be deleted, uses vncProxy now instead
   screencast: {
     path: GB_NO_VNC_PATH,
     port: GB_NO_VNC_PORT,
@@ -119,7 +120,10 @@ export const backendConfig:TBackendConfig  = {
     host: dindHost,
     path: GB_NO_VNC_PATH,
     protocol: GB_NO_VNC_PROTOCOL,
-    port: GB_DD_PROXY_PORT || GOBLET_DIND_SERVICE_PORT
+    // TODO: update fallback to use vnc port
+    // Something like `GOBLET_DIND_VNC_SERVICE_PORT`
+    // ENV is injected from kubernetes
+    port: GB_DD_VNC_PROXY_PORT || GOBLET_DIND_SERVICE_PORT
   },
     /**
    * Only turn on local dev mode when explicitly defined, and in a local environment

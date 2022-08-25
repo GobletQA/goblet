@@ -143,7 +143,7 @@ env:
   GB_NO_VNC_PORT: 26369
   GB_NO_VNC_HOST: 0.0.0.0
   GB_NO_VNC_PATH: /novnc
-  GB_NO_VNC_PROTOCOL: 'ws'
+  GB_NO_VNC_PROTOCOL: http
 
   # Host of VNC server for tigerVNC, that receives requests from the proxy
   # This is internal, and generally should not change
@@ -167,8 +167,10 @@ env:
   # Path where caddy will store files
   GB_DD_CADDY_REMOTE_DIR: /goblet/remote
 
-  # Exposed Port used for all container proxies
+  # Exposed Port used for all container API proxies
   GB_DD_PROXY_PORT: 2121
+  # Exposed Port used for all container VNC proxies
+  GB_DD_VNC_PROXY_PORT: 2122
 
   # Must be localhost due to caddy config, if can not be an ip address
   GB_DD_CADDY_HOST: localhost

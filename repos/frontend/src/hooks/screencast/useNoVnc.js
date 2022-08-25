@@ -3,6 +3,7 @@ import { Values } from 'HKConstants'
 import { useSelector } from 'HKHooks/useSelector'
 import { useScreenResize } from './useScreenResize'
 import { getWorldVal } from 'HKUtils/repo/getWorldVal'
+import { localStorage } from'HKUtils/storage/localStorage'
 import { actionBrowser } from 'HKActions/screencast/api/actionBrowser'
 
 const { STORAGE, CATEGORIES } = Values
@@ -45,8 +46,9 @@ export const useNoVnc = (element, vncUrl, creds) => {
 
   useEffect(() => {
     import('HKServices/noVncService')
-      .then(({ NoVncService }) => {
-        setNoVnc(new NoVncService(onConnected))
+      .then(async ({ NoVncService }) => {
+        const scPort = await localStorage.getScPort()
+        setNoVnc(new NoVncService(onConnected, scPort))
       })
   }, [])
 

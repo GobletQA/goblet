@@ -5,11 +5,11 @@ import { initSockr } from '@GBE/services/sockr'
 import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
-import { setupVNCProxy } from '@gobletqa/shared/middleware/setupVNCProxy'
 import {
   setupRouters,
   setupEndpoints,
   setupConductor,
+  setupVNCProxy,
 } from '@GBE/middleware'
 import {
   setupJWT,

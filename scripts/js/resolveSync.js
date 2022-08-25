@@ -52,8 +52,8 @@ const syncDDConfig = (deployment, remoteDir=`/goblet/remote`) => (`
     app.kubernetes.io/component: ${deployment}
   disableDownload: true
   initialSync: preferLocal
-  localSubPath: ../repos/dind/src
-  containerPath: /
+  localSubPath: ../repos/dind/src/etc
+  containerPath: /etc
 - labelSelector:
     app.kubernetes.io/component: ${deployment}
   disableUpload: true

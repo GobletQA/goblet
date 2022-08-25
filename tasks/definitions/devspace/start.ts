@@ -91,7 +91,11 @@ const startAct = async (args) => {
   const deployments = getDeployments(context, skip, params.env)
 
   getNpmToken()
-  return await devspace.start({ ...altParams, context, deployments }, { daemon, watch })
+  return await devspace.start({
+    ...altParams,
+    context,
+    deployments,
+  }, { daemon, watch })
 }
 
 export const start = {

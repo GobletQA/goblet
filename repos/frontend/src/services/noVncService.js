@@ -20,14 +20,24 @@ const noUpdate = (instance, element, url, creds) => {
   )
 }
 
+const missingConnectProp = (instance) => {
+  return [ `element`, `url`, `scPort` ].map(prop => {
+    if(instance[prop]) return true
+    console.error(`The NoVncService instance is missing property ${prop}`, instance)
+    return false
+  }).includes(false)
+}
+
 export class NoVncService {
   url = null
   element = null
   creds = noOpObj
   isConnected = null
+  scPort = undefined
   setConnected = noOp
 
-  constructor(setConnected) {
+  constructor(setConnected, scPort) {
+    this.scPort = scPort
     this.setConnected = setConnected
   }
 
@@ -57,9 +67,9 @@ export class NoVncService {
   onKeyDown = () => {}
 
   connect = () => {
-    if (!this.element || !this.url || this.connected) return
+    if(this.connected || missingConnectProp(this)) return
 
-    const rfb = new RFB(this.element, this.url, {
+    const rfb = new RFB(this.element, `${this.url}?${this.scPort}`, {
       credentials: { ...this.creds },
       wsProtocols: ['binary', 'base64'],
     })

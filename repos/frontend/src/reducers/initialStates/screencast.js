@@ -1,5 +1,5 @@
 import { Values } from 'HKConstants'
-const { CATEGORIES, SCREENCAST_DEFAULTS, BROWSER_DEFAULTS } = Values
+const { CATEGORIES, SCREENCAST_DEFAULTS, BROWSER_DEFAULTS, STORAGE } = Values
 
 /**
  * Sets screencast store defaults from constants
@@ -8,6 +8,7 @@ const { CATEGORIES, SCREENCAST_DEFAULTS, BROWSER_DEFAULTS } = Values
  * @returns {void}
  */
 export const screencast = {
+  [STORAGE.SC_PORT]: undefined,
   [CATEGORIES.SCREENCAST_STATUS]: {
     ...SCREENCAST_DEFAULTS,
   },

@@ -98,6 +98,14 @@ vars:
 - name: GB_DD_LOCAL_ADMIN_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_LOCAL_ADMIN_PORT"
+- name: GB_DD_PROXY_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_PROXY_PORT"
+- name: GB_DD_VNC_PROXY_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_VNC_PROXY_PORT"
+
+
 
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
@@ -185,6 +193,7 @@ deployments:
         ports:
         - port: ${GB_DD_DOCKER_PORT}
         - port: ${GB_DD_PROXY_PORT}
+        - port: ${GB_DD_VNC_PROXY_PORT}
         - port: ${GB_DD_EXP_ADMIN_PORT}
           containerPort: ${GB_DD_LOCAL_ADMIN_PORT}
 

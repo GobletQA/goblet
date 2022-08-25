@@ -1,9 +1,15 @@
-const { Logger } = require('@keg-hub/cli-utils')
-const { get, noOpObj } = require('@keg-hub/jsutils')
-const { statusBrowser } = require('@gobletqa/screencast/libs/playwright/browser/statusBrowser')
+import type { Express, Request } from 'express'
+import { Logger } from '@keg-hub/cli-utils'
+import { get, noOpObj } from '@keg-hub/jsutils'
+import { expToAxios } from '@GBE/utils/axiosProxy'
+// import { statusBrowser } from '@gobletqa/screencast/libs/playwright/browser/statusBrowser'
 
-let watchInterval = false
+
+type TStatus = Record<any, any>
+
 let prevStatus
+let watchInterval:ReturnType<typeof setTimeout>
+const defMessage = noOpObj as Record<any, any>
 
 /**
  * Calls the statusBrowser to get the status of the browser
@@ -13,12 +19,24 @@ let prevStatus
  *
  * @returns {void}
  */
-const getStatusUpdate = async (browserConf, Mgr) => {
-  const status = await statusBrowser(browserConf)
+const getStatusUpdate = async (
+  browserConf:Record<any, any>,
+  Mgr:Record<any, any>
+) => {
+  
+  // TODO: 
+  // const status = await statusBrowser(browserConf)
+  const status = await expToAxios({
+    params: {},
+    headers: {},
+    method: 'get',
+    body: browserConf,
+  } as Request, { url: `/todo/url/to/screencast` }) as TStatus
+  
   // If no status chance, don't update the backend
-  if (prevStatus === status.status) return
+  if (prevStatus === status?.status) return
 
-  prevStatus = status.status
+  prevStatus = status?.status
   Mgr.emitAll(`browserStatus`, { data: status })
 }
 
@@ -32,7 +50,11 @@ const getStatusUpdate = async (browserConf, Mgr) => {
  *
  * @returns {function} - setInterval response for clearing the interval
  */
-const startWatching = (app, options, Manager) => {
+const startWatching = (
+  app:Express,
+  options:Record<any, any>,
+  Manager:Record<any, any>
+) => {
   const browserConf = get(app, 'locals.config.screencast.browser', noOpObj)
 
   return setInterval(
@@ -56,17 +78,16 @@ const startWatching = (app, options, Manager) => {
  *
  * @returns {function} - Custom Event Method passed to Sockr to be called from the frontend
  */
-const browserStatus = app => {
-  return ({ message = noOpObj, socket, config, Manager, io }) => {
-    if (message.stopWatching) {
+export const browserStatus = (app:Express) => {
+  return ({
+    Manager,
+    message = defMessage,
+  }) => {
+    if (message?.stopWatching) {
       watchInterval && clearInterval(watchInterval)
-      return (watchInterval = false)
+      return (watchInterval = undefined)
     }
 
     watchInterval = startWatching(app, message, Manager)
   }
-}
-
-module.exports = {
-  browserStatus,
 }
