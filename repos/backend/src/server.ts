@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import '../resolveRoot'
 import type { Express } from 'express'
-import { initSockr } from '@GBE/services/sockr'
 import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
@@ -53,9 +52,8 @@ export const initApi = async () => {
   const server = secureServer || insecureServer
   server.on('upgrade', proxies?.vncProxy?.upgrade)
 
-  const socket = await initSockr(app, server, sockr, 'tests')
 
-  return { app, server, socket }
+  return { app, server }
 }
 
 /**

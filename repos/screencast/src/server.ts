@@ -1,3 +1,4 @@
+import { initSockr } from '@GSC/libs/sockr'
 import { setupEndpoints } from '@GSC/middleware'
 import { getApp } from '@gobletqa/shared/express/app'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
@@ -41,7 +42,10 @@ const initApi = async () => {
     ...app.locals.config.server
   })
 
-  return { app, server: secureServer || insecureServer }
+  const server = secureServer || insecureServer
+  const socket = await initSockr(app, server, app?.locals?.config?.sockr, 'tests')
+
+  return { app, server, socket }
 }
 
 /**

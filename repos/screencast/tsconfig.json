@@ -12,6 +12,8 @@
     "paths": {
       "@GSC/Configs": ["configs"],
       "@GSC/Configs/*": ["configs/*"],
+      "@GSC/Scripts": ["scripts"],
+      "@GSC/Scripts/*": ["scripts/*"],
       "@GSC": ["src"],
       "@GSC/*": ["src/*"],
       "@GSCRoot": ["./"],
@@ -19,8 +21,20 @@
       "@gobletqa/shared": ["../shared/src"],
       "@gobletqa/shared/*": ["../shared/src/*"],
       "@gobletqa/screencast": ["src"],
-      "@gobletqa/screencast/*": ["src/*"]
+      "@gobletqa/screencast/*": ["src/*"],
+      "@GLogs/*": ["../../logs/*"],
+      "@GRepos/*": ["../../repos/*"],
+      "@GConfigs/*": ["../../configs/*"],
+      "@GEnvironment": ["../../scripts/environment"]
     }
   },
+  "include": [
+    "src",
+    "configs",
+    "scripts",
+    "../shared",
+    "../testUtils",
+    "../workflows"
+  ],
   "exclude": ["node_modules", "dist"]
 }

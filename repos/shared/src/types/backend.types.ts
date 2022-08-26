@@ -1,30 +1,10 @@
-import { TJwtConfig, TProxyOpts } from './helpers.types'
+import { TSockrConfig } from './sockr.types'
 import { TConductorOpts } from './conductor.types'
 import { TScreencastServer } from './screencast.types'
+import { TJwtConfig, TProxyOpts } from './helpers.types'
 
 export type TReqHeaders = Record<string, string>
 
-export type TSockrProcessConfig = {
-  root: string
-  debug: boolean
-  script: string
-}
-
-export type TSockrEvent = {
-  [key:string]: any
-}
-
-export type TSockrEvents = {
-  [key:string]: TSockrEvent
-}
-
-export type TSockrConfig = {
-  path: string
-  port: string
-  host: string
-  events?: TSockrEvents
-  process: TSockrProcessConfig
-}
 
 export type TCookieConfig = {
   key: string
@@ -52,7 +32,7 @@ export type TBEServerConfig = {
 }
 
 export type TBackendConfig = {
-  sockr: TSockrConfig
+  sockr?: TSockrConfig
   vncProxy?: TProxyOpts
   localDevMode?: boolean
   server: TBEServerConfig

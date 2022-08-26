@@ -1,4 +1,5 @@
 import { TJwtConfig } from './helpers.types'
+import { TSockrConfig } from './sockr.types'
 
 export type TChildProcArgs = {
   cwd: string
@@ -76,4 +77,6 @@ export type TScreencastConfig = {
 export type TGScreencastConfig = {
   server: TScreencastServer
   screencast: TScreencastConfig
+  sockr: TSockrConfig
 }
+

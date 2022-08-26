@@ -1,7 +1,12 @@
+import '../resolveRoot'
+import path from 'path'
+
 import { toBool } from '@keg-hub/jsutils'
-import { TScreenDims, TGScreencastConfig } from '@gobletqa/screencast/src/types'
+import { sockrCmds } from './sockrCmds.config'
+import { aliases } from '@GConfigs/aliases.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
+import { TScreenDims, TGScreencastConfig } from '@gobletqa/screencast/src/types'
 
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({
@@ -35,6 +40,12 @@ const {
   GB_BE_JWT_CREDENTIALS,
   GB_BE_JWT_REFRESH_EXP,
   GB_BE_JWT_REFRESH_SECRET,
+
+
+  GB_BE_SOCKR_PATH,
+  GB_SC_SOCKR_PATH=GB_BE_SOCKR_PATH,
+  GB_SC_SOCKET_PORT=GB_SC_PORT,
+  GB_SC_SOCKET_HOST=GB_SC_HOST,
 
   // TODO Add these envs as a header for request validation
   // This will ensure requests are coming from the backend API only
@@ -89,6 +100,17 @@ export const screencastConfig:TGScreencastConfig = {
       width: GB_VNC_VIEW_WIDTH,
       height: GB_VNC_VIEW_HEIGHT,
     },
-  }
+  },
+  sockr: {
+    ...sockrCmds,
+    path: GB_SC_SOCKR_PATH || GB_SC_PORT,
+    port: GB_SC_SOCKET_PORT,
+    host: GB_SC_SOCKET_HOST,
+    process: {
+      root: aliases.GobletRoot,
+      debug: Boolean(GB_LOG_LEVEL == 'debug'),
+      script: path.join(aliases[`@GSC/Scripts`], 'sockr.cmd.sh'),
+    },
+  },
 }
 
