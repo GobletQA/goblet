@@ -3,8 +3,9 @@
  * Helper method to validate the require request is for Parkin
  */
 const parkinCheck = (request) => (
-  request === "@gobletqa/test-utils/parkin" ||
-  request === `GobletParkin`
+  request.startsWith(`@gobletqa/test-utils/parkin`) ||
+  request.startsWith(`GobletParkin`) ||
+  request.startsWith(`@GTU/Parkin`)
 )
 
 /**
