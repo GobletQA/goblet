@@ -168,7 +168,7 @@ env:
   GB_DD_CADDY_REMOTE_DIR: /goblet/remote
 
   # Exposed Port used for all container API proxies
-  GB_DD_PROXY_PORT: 2121
+  GB_DD_API_PROXY_PORT: 2121
   # Exposed Port used for all container VNC proxies
   GB_DD_VNC_PROXY_PORT: 2122
 

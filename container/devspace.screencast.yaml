@@ -98,9 +98,9 @@ vars:
 - name: GB_DD_LOCAL_ADMIN_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_LOCAL_ADMIN_PORT"
-- name: GB_DD_PROXY_PORT
+- name: GB_DD_API_PROXY_PORT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_DD_PROXY_PORT"
+  command: "node ../scripts/js/getYamlValue.js GB_DD_API_PROXY_PORT"
 - name: GB_DD_VNC_PROXY_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_VNC_PROXY_PORT"
@@ -192,7 +192,7 @@ deployments:
         name: ${GB_DD_DEPLOYMENT}
         ports:
         - port: ${GB_DD_DOCKER_PORT}
-        - port: ${GB_DD_PROXY_PORT}
+        - port: ${GB_DD_API_PROXY_PORT}
         - port: ${GB_DD_VNC_PROXY_PORT}
         - port: ${GB_DD_EXP_ADMIN_PORT}
           containerPort: ${GB_DD_LOCAL_ADMIN_PORT}
@@ -257,7 +257,7 @@ dev:
   sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_DD_ACTIVE GB_SC_ACTIVE)
 
   # Gets the ports that should be exposed to the host machine from the running pod
-  # ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_DD_ACTIVE ${GB_DD_PROXY_PORT} ${GB_DD_EXP_ADMIN_PORT})
+  # ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_DD_ACTIVE ${GB_DD_API_PROXY_PORT} ${GB_DD_EXP_ADMIN_PORT})
   ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT})
 
   # The `open` field tells DevSpace to open a URL as soon as it returns HTTP status 200

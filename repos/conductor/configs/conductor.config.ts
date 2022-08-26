@@ -28,7 +28,7 @@ const {
   GB_DD_VALIDATION_KEY,
   GB_DD_VALIDATION_HEADER,
 
-  GB_DD_PROXY_PORT,
+  GB_DD_API_PROXY_PORT,
 
   // Salting the user hash string. Not intended to be secure, just anonymous
 } = process.env
@@ -46,10 +46,10 @@ const getControllerOpts = () => {
 }
 
 const proxyOpts = (dindOpts:DockerOptions, dindHost:string) => {
-  const proto = dindOpts?.protocol || (GB_DD_PROXY_PORT === `443` ? `https` : `http`)
+  const proto = dindOpts?.protocol || (GB_DD_API_PROXY_PORT === `443` ? `https` : `http`)
   return {
-    port: GB_DD_PROXY_PORT,
-    target: `${proto}://${dindHost}:${GB_DD_PROXY_PORT}`,
+    port: GB_DD_API_PROXY_PORT,
+    target: `${proto}://${dindHost}:${GB_DD_API_PROXY_PORT}`,
     headers: {
       'content-type': `application/json`,
       [GB_DD_VALIDATION_HEADER]: GB_DD_VALIDATION_KEY
