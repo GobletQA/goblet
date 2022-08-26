@@ -75,7 +75,7 @@ const mapResponseHeaders = (proxyRes:IncomingMessage, res:Response) => {
  * 
  * @returns {Object} - Contains the port and host ip address to proxy the request to
  */
-export const createProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
+export const createApiProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
   const { target, proxyRouter, headers, proxy } = config
   const addHeaders = { ...headers, ...proxy?.headers }
   const proxyHandler = createProxyMiddleware({

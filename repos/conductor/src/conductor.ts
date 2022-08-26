@@ -9,9 +9,9 @@ import type {
   TConductorConfig,
 } from '@gobletqa/conductor/types'
 
-import { omitKeys } from '@keg-hub/jsutils'
-import { createProxy } from './proxy/proxy'
 import { buildConfig } from './utils/buildConfig'
+import { createApiProxy } from './proxy/apiProxy'
+import { createVNCProxy } from './proxy/vncProxy'
 import { Controller } from './controller/controller'
 import { getApp } from '@gobletqa/shared/express/app'
 import { getController } from './controller/controllerTypes'
@@ -154,13 +154,20 @@ export class Conductor {
     return routeData
   }
 
-  createProxy(config?:TProxyConfig, ProxyRouter?:Router) {
-    return createProxy({
+  createProxy(app?:Express, ProxyRouter?:Router) {
+    const apiProxy = createApiProxy({
       ...this.config.proxy,
-      ...config,
+      ...app?.locals?.config?.proxy,
       proxyRouter: this.proxyRouter.bind(this),
-      headers: { ...this.config?.proxy?.headers, ...config?.headers },
+      headers: {
+        ...this.config?.proxy?.headers,
+        ...app?.locals?.config?.proxy?.headers
+      },
     }, ProxyRouter)
+
+    const vncProxy = createVNCProxy(app?.locals?.config?.vncProxy, app)
+
+    return { apiProxy, vncProxy }
   }
 
   /**

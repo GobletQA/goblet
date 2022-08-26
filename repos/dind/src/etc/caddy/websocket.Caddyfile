@@ -1,5 +1,0 @@
-# @websockets {
-# 	header Connection *Upgrade*
-# 	header Upgrade websocket
-# }
-# reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{$GB_NO_VNC_PORT}

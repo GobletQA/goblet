@@ -9,7 +9,6 @@ import {
   setupRouters,
   setupEndpoints,
   setupConductor,
-  setupVNCProxy,
 } from '@GBE/middleware'
 import {
   setupJWT,
@@ -38,21 +37,21 @@ export const initApi = async () => {
   setupCors(app)
   setupJWT(app, ['/auth/validate'])
   setupServer(app, false, false, false)
-  await setupConductor(app)
   setupRouters(app)
   setupStatic(app)
   validateUser(app, `/repo\/*`, `async`)
   await setupEndpoints()
   setupLoggerErr(app)
 
-  const wsProxy = setupVNCProxy(vncProxy, app)
+  const proxies = await setupConductor(app)
+
   const {
     secureServer,
     insecureServer,
   } = setupServerListen(app, { name: `Backend`, ...serverConf })
 
   const server = secureServer || insecureServer
-  server.on('upgrade', wsProxy.upgrade)
+  server.on('upgrade', proxies?.vncProxy?.upgrade)
 
   const socket = await initSockr(app, server, sockr, 'tests')
 
