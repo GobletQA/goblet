@@ -31,12 +31,21 @@ http://*.*.{$GB_CD_SUB_DOMAIN}.{$GB_CD_HOST}:{$GB_DD_API_PROXY_PORT} {
 }
 
 # We don't have access to override the host header, so instead we pass the port as a query param
-# Unfortunitly, this uses the query param as the port
 # This follows a non-standard process of passing the port as a param
-# It passes just the value, and not a keg=value pair as is standard paractice
+# It passes just the value, and not a keg=value pair as is standard
 # Doing it this way allows us to use the query directly as the port without any parsing
 # 
+
 http://{$GB_DD_DEPLOYMENT}:{$GB_DD_VNC_PROXY_PORT} {
+	@websockets {
+		header Connection *Upgrade*
+		header Upgrade websocket
+	}
+
+	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query}
+}
+
+http://{$GB_DD_DEPLOYMENT}:{$GB_DD_WS_PROXY_PORT} {
 	@websockets {
 		header Connection *Upgrade*
 		header Upgrade websocket

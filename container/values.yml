@@ -72,6 +72,7 @@ env:
   # Uncomment this to mount the whole repo into the container
   # GB_APP_DOC_VOLUMES: ".:/goblet/app,/var/run/docker.sock"
 
+
 # ---- Backend ENVs ---- #
   GB_BE_PORT: 7005
   GB_BE_SECURE_PORT: 443
@@ -86,9 +87,10 @@ env:
   GB_BE_IMAGE_FROM: 'node:16.16.0-alpine3.16'
 
   # ---- Backend Websocket ENVs ---- #
-  GB_BE_SOCKET_PORT: 7005
-  GB_BE_SOCKET_HOST: 0.0.0.0
-  GB_BE_SOCKR_PATH: '/sockr-socket'
+  GB_BE_WS_PORT: 7005
+  GB_BE_WS_HOST: 0.0.0.0
+  GB_BE_WS_PATH: /sockr-socket
+  GB_BE_WS_PROTOCOL: http
 
   # --- Backend JWT AUTH --- #
   GB_BE_JWT_EXP: '7200000'
@@ -107,6 +109,7 @@ env:
   GB_BE_COOKIE_SAME_SITE: None
   GB_BE_COOKIE_KEY: goblet-cookie-7979
 
+
 # ---- Frontend ENVs ---- #
   GB_FE_PORT: 19006
   GB_FE_IMAGE_TAG: latest
@@ -114,6 +117,7 @@ env:
   GB_FE_IMAGE: 'ghcr.io/gobletqa/goblet-frontend'
   # --- TODO: Update this as needed for deployments
   GB_FE_ROOT_DIR: /goblet/app/repos/frontend
+
 
 # --- CONDUCTOR ENVs --- #
   # GB_CD_HOST: host.docker.internal
@@ -128,6 +132,7 @@ env:
   GB_CD_HASH_KEY: C0nDuc10R
   GB_CD_CONTROLLER_TYPE: Docker
 
+
 # --- SCREENCAST ENVs --- #
   GB_SC_IMAGE_TAG: latest
   GB_SC_DEPLOYMENT: goblet-screencast
@@ -138,6 +143,10 @@ env:
   # This is the URL of the server the proxy connects to
   # Update this to call an externally available VNC websocket host
   GB_SC_HOST: 0.0.0.0
+
+  GB_SC_WS_PORT: 7006
+  GB_SC_WS_HOST: 0.0.0.0
+  GB_SC_WS_PATH: /sockr-socket
 
   # Port to forward connections from backend API to screencast
   GB_NO_VNC_PORT: 26369
@@ -152,6 +161,7 @@ env:
   
   GB_VNC_VIEW_HEIGHT: 900
   GB_VNC_VIEW_WIDTH: 1440
+
 
 # --- DIND ENVs --- #
   GB_DD_DOCKER_PORT: 2375
@@ -169,8 +179,13 @@ env:
 
   # Exposed Port used for all container API proxies
   GB_DD_API_PROXY_PORT: 2121
+
+  # Exposed Port used for all container websocket proxies
+  GB_DD_WS_PROXY_PORT: 2122
+
   # Exposed Port used for all container VNC proxies
-  GB_DD_VNC_PROXY_PORT: 2122
+  GB_DD_VNC_PROXY_PORT: 2123
+  
 
   # Must be localhost due to caddy config, if can not be an ip address
   GB_DD_CADDY_HOST: localhost

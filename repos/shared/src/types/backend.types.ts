@@ -27,13 +27,14 @@ export type TBEServerConfig = {
   logLevel: string
   securePort: string
   environment: string
-  jwt: TJwtConfig
-  cookie: TCookieConfig
+  jwt?: TJwtConfig
+  cookie?: TCookieConfig
 }
 
 export type TBackendConfig = {
   sockr?: TSockrConfig
   vncProxy?: TProxyOpts
+  wsProxy?: TProxyOpts
   localDevMode?: boolean
   server: TBEServerConfig
   conductor: TConductorOpts

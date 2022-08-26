@@ -29,7 +29,6 @@ import {
  */
 export const initApi = async () => {
   const app = getApp(backendConfig) as Express
-  const { sockr, server:serverConf, vncProxy } = app.locals.config
 
   setupLoggerReq(app)
   setupBlacklist(app)
@@ -47,11 +46,10 @@ export const initApi = async () => {
   const {
     secureServer,
     insecureServer,
-  } = setupServerListen(app, { name: `Backend`, ...serverConf })
+  } = setupServerListen(app, { name: `Backend`, ...app?.locals?.config?.server })
 
   const server = secureServer || insecureServer
   server.on('upgrade', proxies?.vncProxy?.upgrade)
-
 
   return { app, server }
 }

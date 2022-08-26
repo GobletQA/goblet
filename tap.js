@@ -21,9 +21,9 @@ const {
   GB_AUTH_ACTIVE,
   GB_VNC_ACTIVE,
   GB_NO_VNC_PATH,
-  GB_BE_SOCKR_PATH,
-  GB_BE_SOCKET_PORT,
-  GB_BE_SOCKET_HOST,
+  GB_BE_WS_PATH,
+  GB_BE_WS_PORT,
+  GB_BE_WS_HOST,
   GB_PW_SOCKET_ACTIVE,
   GB_GITHUB_CLIENT_ID,
   GB_GITHUB_AUTH_USERS,
@@ -32,9 +32,9 @@ const {
 } = process.env
 
 const wsServerConfig = {
-  path: GB_BE_SOCKR_PATH,
-  port: GB_BE_SOCKET_PORT || GB_BE_PORT,
-  host: GB_BE_SOCKET_HOST || GB_BE_HOST,
+  path: GB_BE_WS_PATH,
+  port: GB_BE_WS_PORT || GB_BE_PORT,
+  host: GB_BE_WS_HOST || GB_BE_HOST,
 }
 
 module.exports = {

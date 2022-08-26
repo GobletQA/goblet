@@ -41,11 +41,9 @@ const {
   GB_BE_JWT_REFRESH_EXP,
   GB_BE_JWT_REFRESH_SECRET,
 
-
-  GB_BE_SOCKR_PATH,
-  GB_SC_SOCKR_PATH=GB_BE_SOCKR_PATH,
-  GB_SC_SOCKET_PORT=GB_SC_PORT,
-  GB_SC_SOCKET_HOST=GB_SC_HOST,
+  GB_SC_WS_PATH,
+  GB_SC_WS_PORT,
+  GB_SC_WS_HOST,
 
   // TODO Add these envs as a header for request validation
   // This will ensure requests are coming from the backend API only
@@ -103,9 +101,9 @@ export const screencastConfig:TGScreencastConfig = {
   },
   sockr: {
     ...sockrCmds,
-    path: GB_SC_SOCKR_PATH || GB_SC_PORT,
-    port: GB_SC_SOCKET_PORT,
-    host: GB_SC_SOCKET_HOST,
+    path: GB_SC_WS_PATH,
+    port: GB_SC_WS_PORT,
+    host: GB_SC_WS_HOST,
     process: {
       root: aliases.GobletRoot,
       debug: Boolean(GB_LOG_LEVEL == 'debug'),
