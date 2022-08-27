@@ -3,18 +3,16 @@ import type {
   TImgRef,
   TUserHash,
   TSpawnOpts,
-  TProxyConfig,
   TContainerRef,
   TConductorOpts,
   TConductorConfig,
 } from '@gobletqa/conductor/types'
 
 import { buildConfig } from './utils/buildConfig'
-import { createApiProxy } from './proxy/apiProxy'
-import { createVNCProxy } from './proxy/vncProxy'
 import { Controller } from './controller/controller'
 import { getApp } from '@gobletqa/shared/express/app'
 import { getController } from './controller/controllerTypes'
+import { createApiProxy, createVNCProxy, createWSProxy } from './proxy'
 
 export class Conductor {
 
@@ -165,9 +163,11 @@ export class Conductor {
       },
     }, ProxyRouter)
 
+
+    const wsProxy = createWSProxy(app?.locals?.config?.wsProxy, app)
     const vncProxy = createVNCProxy(app?.locals?.config?.vncProxy, app)
 
-    return { apiProxy, vncProxy }
+    return { apiProxy, vncProxy, wsProxy }
   }
 
   /**

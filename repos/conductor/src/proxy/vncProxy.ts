@@ -26,9 +26,10 @@ export const createVNCProxy = (config:TProxyOpts, app:Express) => {
   const url = port ? `${host}:${port}` : host
   const pxTarget = target || `${protocol}://${url}`
 
-  const wsProxy = createProxyMiddleware(path, {
+  const vncProxy = createProxyMiddleware(path, {
     ws: true,
     xfwd:true,
+    logLevel: 'error',
     ignorePath: true,
     target: pxTarget,
     changeOrigin: true,
@@ -41,7 +42,9 @@ export const createVNCProxy = (config:TProxyOpts, app:Express) => {
     ...options,
   })
 
-  app.use(wsProxy)
+  app.use(vncProxy)
+  // @ts-ignore
+  vncProxy.path = path
 
-  return wsProxy
+  return vncProxy
 }

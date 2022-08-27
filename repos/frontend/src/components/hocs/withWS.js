@@ -28,7 +28,10 @@ export const withWS = (Component) => {
       if(!user || !routes?.screencast) return undefined
 
       WSService.path = WSService.path
-      WSService.query = { containerPort: routes?.screencast?.containerPort }
+      WSService.ioConfig.query = {
+        ...WSService.ioConfig.query,
+        containerPort: routes?.api?.containerPort,
+      }
 
       return WSService
 
@@ -39,7 +42,7 @@ export const withWS = (Component) => {
     return !WSConf
       ? renderedComp
       : (
-          <SockrProvider debug={sockrDebug} config={WSService}>
+          <SockrProvider debug={sockrDebug} config={WSService} >
             {renderedComp}
           </SockrProvider>
         )

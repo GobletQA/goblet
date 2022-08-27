@@ -41,7 +41,7 @@ export const initApi = async () => {
   await setupEndpoints()
   setupLoggerErr(app)
 
-  const proxies = await setupConductor(app)
+  const { vncProxy, wsProxy } = await setupConductor(app)
 
   const {
     secureServer,
@@ -49,7 +49,11 @@ export const initApi = async () => {
   } = setupServerListen(app, { name: `Backend`, ...app?.locals?.config?.server })
 
   const server = secureServer || insecureServer
-  server.on('upgrade', proxies?.vncProxy?.upgrade)
+  server.on('upgrade', (req, ...args) => {
+    req.url.includes(vncProxy?.path)
+      ? vncProxy?.upgrade(req, ...args)
+      : wsProxy?.upgrade(req, ...args)
+  })
 
   return { app, server }
 }

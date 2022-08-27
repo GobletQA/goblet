@@ -27,7 +27,6 @@ const {
   GB_SC_DEPLOYMENT,
 
   GB_NO_VNC_PORT,
-  GB_VNC_SERVER_PORT,
   GB_CD_CONTROLLER_TYPE=`Docker`,
 } = process.env
 

@@ -1,19 +1,14 @@
 import { getStore } from 'HKStore'
 import { Values } from 'HKConstants'
-import { isDev } from 'HKUtils/isDev'
 import * as sockrActions from 'HKActions/sockr'
 import { localStorage } from'HKUtils/storage/localStorage'
 import { camelCase, snakeCase, checkCall } from '@keg-hub/jsutils'
+import { getWebsocketConfig } from 'HKUtils/api/getWebsocketConfig'
 import { WSService as SockrService, EventTypes } from '@ltipton/sockr'
 import { updateStatus } from 'HKActions/screencast/socket/updateStatus'
 
 import { recordAction } from 'HKActions/recorder/local/recordAction'
 import { setBrowserRecording } from 'HKActions/recorder/local/setBrowserRecording'
-
-const serverConfig = JSON.parse(process.env.WS_SERVER_CONFIG)
-
-// TODO: @lance-tipton - This should only exist in deployed envs
-if(!isDev) serverConfig.port = ''
 
 const { STORAGE } = Values
 
@@ -73,19 +68,22 @@ const events = {
  * @function
  * @private
  *
- * @param {Object} config - Websocket client config object matching the config spec
  * @param {function} dispatch - Method to be called to update the websocket state
  * @param {string} token - Auth token for connecting to the websocket
  *
  * @returns {Object} - Instance of SocketService
  */
 class SocketService {
-  constructor(config) {
+  
+  ioConfig = {}
+  
+  constructor() {
     this.events = Object.entries(events).reduce((bound, [name, func]) => {
       bound[name] = func.bind(this)
       return bound
     }, {})
-
+    
+    const config = getWebsocketConfig()
     Object.assign(this, config)
   }
 
@@ -146,4 +144,4 @@ class SocketService {
   disconnect = () => SockrService.disconnect()
 }
 
-export const WSService = new SocketService(serverConfig)
+export const WSService = new SocketService()

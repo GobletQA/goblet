@@ -26,11 +26,13 @@ const logBuildErr = (ctx:string, err:Error) => {
  */
 const buildPush = async (args) => {
   const { params } = args
-  const { context } = params
+  const { context, local } = params
 
-  const contexts = context && context?.length && !context.includes(`all`)
-    ? context
-    : getContexts()?.CONTEXT_LIST
+  const contexts = local
+    ? [`app`,`dind`,`screencast`]
+    : context && context?.length && !context.includes(`all`)
+      ? context
+      : getContexts()?.CONTEXT_LIST
 
   let login = true
 
@@ -66,7 +68,7 @@ const buildPush = async (args) => {
 
 export const images = {
   name: 'images',
-  alias: ['imgs'],
+  alias: [`imgs`, `image`, `img`],
   action: buildPush,
   example: 'yarn task dev img build <options>',
   description: 'Calls the image build command',
@@ -78,5 +80,11 @@ export const images = {
       alias: [`ctx`, `name`, `type`],
       description: `Contexts or names of images to build`,
     },
+    local: {
+      type: `bool`,
+      example: `--local`,
+      alias: [`lc`],
+      description: `Build the images needed for local development`
+    }
   }
 }
