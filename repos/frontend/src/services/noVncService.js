@@ -69,7 +69,8 @@ export class NoVncService {
   connect = () => {
     if(this.connected || missingConnectProp(this)) return
 
-    const rfb = new RFB(this.element, `${this.url}?${this.scPort}`, {
+    // The Caddy proxy looks for the containerPort to know how to redirect the request
+    const rfb = new RFB(this.element, `${this.url}?containerPort=${this.scPort}`, {
       credentials: { ...this.creds },
       wsProtocols: ['binary', 'base64'],
     })

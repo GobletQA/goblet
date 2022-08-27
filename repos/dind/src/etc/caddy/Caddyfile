@@ -42,7 +42,7 @@ http://{$GB_DD_DEPLOYMENT}:{$GB_DD_VNC_PROXY_PORT} {
 		header Upgrade websocket
 	}
 
-	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query}
+	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
 }
 
 http://{$GB_DD_DEPLOYMENT}:{$GB_DD_WS_PROXY_PORT} {
@@ -51,5 +51,5 @@ http://{$GB_DD_DEPLOYMENT}:{$GB_DD_WS_PROXY_PORT} {
 		header Upgrade websocket
 	}
 
-	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query}
+	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
 }

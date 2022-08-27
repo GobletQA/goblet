@@ -29,7 +29,7 @@ export const createVNCProxy = (config:TProxyOpts, app:Express) => {
   const vncProxy = createProxyMiddleware(path, {
     ws: true,
     xfwd:true,
-    logLevel: 'error',
+    logLevel: 'warn',
     ignorePath: true,
     target: pxTarget,
     changeOrigin: true,

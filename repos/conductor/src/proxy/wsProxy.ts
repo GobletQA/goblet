@@ -25,21 +25,14 @@ export const createWSProxy = (config:TProxyOpts, app:Express) => {
   if(!host && !target) throw new Error(`VNC Proxy host or target is required!`)
 
   const url = port ? `${host}:${port}` : host
-  const pxTarget = target || `${protocol}://${url}/${path}`
+  const pxTarget = target || `${protocol}://${url}`
 
   const wsProxy = createProxyMiddleware(path, {
     ws: true,
     xfwd:true,
-    ignorePath: true,
+    logLevel: 'warn',
     target: pxTarget,
     changeOrigin: true,
-    router: (req:Request) => {
-      const url = new URL(req.url)
-      const port = url.searchParams.get(`containerPort`)
-      const route = `${pxTarget}?${port}`
-
-      return route
-    },
     ...options,
   })
 

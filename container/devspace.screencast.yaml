@@ -101,10 +101,12 @@ vars:
 - name: GB_DD_API_PROXY_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_API_PROXY_PORT"
+- name: GB_DD_WS_PROXY_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_WS_PROXY_PORT"
 - name: GB_DD_VNC_PROXY_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_VNC_PROXY_PORT"
-
 
 
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
@@ -192,6 +194,7 @@ deployments:
         name: ${GB_DD_DEPLOYMENT}
         ports:
         - port: ${GB_DD_DOCKER_PORT}
+        - port: ${GB_DD_WS_PROXY_PORT}
         - port: ${GB_DD_API_PROXY_PORT}
         - port: ${GB_DD_VNC_PROXY_PORT}
         - port: ${GB_DD_EXP_ADMIN_PORT}
