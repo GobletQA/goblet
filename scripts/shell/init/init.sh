@@ -35,6 +35,7 @@ gb_load_env(){
   . $GB_INIT_DIR/devspace.sh
   . $GB_INIT_DIR/node.sh
   . $GB_INIT_DIR/goblet.sh
+  . $GB_INIT_DIR/setup.sh
   . $GB_INIT_DIR/stdio.sh
 
 }
@@ -92,6 +93,13 @@ gb_setup(){
     gb_check_devspace_and_dependencies
     # Setup devspace for the host machine
     gb_setup_devspace
+  fi
+
+  # Run setup tasks to configure the environment
+  if [[ -z "$SETUP_TYPE" || "$SETUP_TYPE" == "setup" ]]; then
+    gb_message "Running setup tasks ..."
+    # Runs setup tasks from the tasks folder
+    goblet_run_setup_tasks
   fi
 
   echo ""

@@ -11,16 +11,21 @@ const { loadEnvs } = require('../envs/loadEnvs')
 const getDevspaceContext = (params = noOpObj) => {
   const { namespace, kubeContext, env } = params
   const { GB_KUBE_NAMESPACE = `gb-local`, GB_KUBE_CONTEXT } = loadEnvs({ env })
+  const { GB_KUBE_NAMESPACE:ENV_GB_KUBE_NAMESPACE, GB_KUBE_CONTEXT:ENV_GB_KUBE_CONTEXT } = process.env
 
+  !kubeContext &&
   !GB_KUBE_CONTEXT &&
     error.throwError(`The "GB_KUBE_CONTEXT" is required to run devspace commands`)
 
-  return [
-    `--namespace`,
-    namespace || GB_KUBE_NAMESPACE,
-    `--kube-context`,
-    kubeContext || GB_KUBE_CONTEXT,
-  ]
+  const ctx = kubeContext || ENV_GB_KUBE_CONTEXT || GB_KUBE_CONTEXT
+  const ns = namespace || ENV_GB_KUBE_NAMESPACE || GB_KUBE_NAMESPACE
+  const arrayCtx = [`--namespace`, ns, `--kube-context`, ctx]
+
+  // A bit of a heck, but allows accessing the namespace and context in either an array or object
+  arrayCtx.namespace = ns
+  arrayCtx.context = ctx
+
+  return arrayCtx
 }
 
 module.exports = {
