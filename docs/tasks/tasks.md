@@ -1,45 +1,25 @@
 # Tasks
 
 * Custom tasks used to manage the GobletQA monorepo
+* Allow writing in typescript or JS
+  * Tasks are executed using the [esbuild-register](https://github.com/egoist/esbuild-register) package
+  * Because it uses esbuild, types are not validate. That must be done manually
+  * See [esbuild](https://esbuild.github.io/) for more information
 
+## Config
 
-## Devsapce
+* A custom config used by the tasks is defined at `<root-dir>/configs/tasks.config.js`
+* Used for defining general task config settings and different `app contexts` used by the tasks
 
-* Cmd: `yarn devspace <sub-task> <options>`
-* Alias: `kubectl`, `kb`, `kcl`
-* Description: Run tasks related to devspace
-* Example `yarn dev start`
+### App Contexts
 
-### Start
-
-* Cmd: `yarn dev start <options>`
-* Alias: `st`
-* Description: Runs the dev environment by default using devspace to deploy helm charts
-* Example `yarn dev start`
-
-## Kube
-
-* Cmd: `yarn kube <sub-tasks> <options>`
-* Alias: `kubectl`, `kb`, `kcl`
-* Description: Run tasks related to kubernetes and helm
-* Example `yarn kube ingress`
-
-### Auth
-
-* Cmd: `yarn kube auth  <options>`
-* Description: Create `docker-auth` secrets used by the Backend API, calls the `secret` task internally
-* Example `yarn kube auth`
-
-
-### Secret
-
-* Cmd: `yarn kube secret <options>`
-* Description: Create kubernetes secrets for the environment
-* Example `yarn kube secret --name my-secret --key my-key --value my-value`
-
-
-### Ingress
-
-* Cmd: `yarn kube ingress <options>`
-* Description: Create an new `nginx ingress` for the current kubernetes namespace via `helm chart`
-* Example `yarn kube ingress`
+* These define the different apps are used by the tasks for context specific execution
+* They allow a task to reference a specific app based on a passed in task option
+* For example
+  * Running task command `yarn doc build backend`, will build the backend docker image
+  * It assumes
+    * A `backend` context is defined in the `tasks.config.js`
+    * A Dockerfile exists at `<root-dir>/container/Dockerfile.backend`
+**appContext**
+* Contexts can be defined by setting the `appContext` property in the `tasks.config.js` to an array or arrays
+  * Each sub-array
