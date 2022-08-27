@@ -1,6 +1,7 @@
 import path from 'path'
 import { writeFileSync, rmSync } from 'fs'
 import { tempDir } from'../../paths'
+import { auth } from'./auth'
 import { uuid } from'@keg-hub/jsutils'
 import { Logger, error } from'@keg-hub/cli-utils'
 import { kubectl } from '../../utils/kubectl/kubectl'
@@ -136,6 +137,9 @@ export const secret = {
   name: 'secret',
   alias: ['scrt', 'sct'],
   action: secretAct,
+  tasks: {
+    auth
+  },
   example: 'yarn task devspace secret <options>',
   description: 'Calls the kubectl create secret command',
   options: {
@@ -154,7 +158,7 @@ export const secret = {
     },
     secrets: {
       alias: [`data`],
-      example: `--data key1:value1,key2:value2`,
+      example: `--secrets key1:value1,key2:value2`,
       description: `Key value pairs for setting multiple secrets separated by comma. Overrides keyvalue and key and value options`,
     },
     key: {

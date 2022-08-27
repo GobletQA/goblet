@@ -151,7 +151,8 @@ const getContextValue = (context, envs, postFix, fallback) => {
 /**
  * Returns the deploy context relative to the passed in context
  * @param {string} context - Context reference
- * @param {string} fallback - Context value to use if not found
+ * @param {string} env - Context value to use if not found
+ * @param {string} [fallback] - Context value to use if not found
  *
  * @returns {Object} deploy context or fallback
  */

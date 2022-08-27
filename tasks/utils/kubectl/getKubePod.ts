@@ -1,7 +1,7 @@
-const { noOpObj } = require('@keg-hub/jsutils')
-const { error } = require('@keg-hub/cli-utils')
-const { getKubePods } = require('../kubectl/getKubePods')
-const { getDeployContext } = require('../helpers/contexts')
+import { noOpObj } from '@keg-hub/jsutils'
+import { error } from '@keg-hub/cli-utils'
+import { getKubePods } from '../kubectl/getKubePods'
+import { getDeployContext } from '../helpers/contexts'
 
 /**
  * Finds a single pod based on the pods metadata labels
@@ -10,7 +10,7 @@ const { getDeployContext } = require('../helpers/contexts')
  *
  * @return {Object} - Found pod object or undefined
  */
-const getKubePod = async (params = noOpObj) => {
+export const getKubePod = async (params:Record<any, any> = noOpObj) => {
   const { context, env } = params
   !context && error.throwError(`The context param is required to find a pod`)
 
@@ -23,11 +23,7 @@ const getKubePod = async (params = noOpObj) => {
 
   return items.find((item) =>
     Object.values(item.metadata.labels)
-      .map((val) => val.toLowerCase().trim())
+      .map((val) => (val as string).toLowerCase().trim())
       .includes(match.toLowerCase().trim())
   )
-}
-
-module.exports = {
-  getKubePod,
 }

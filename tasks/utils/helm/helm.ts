@@ -1,4 +1,4 @@
-const { command } = require('../process/command')
+import { command } from '../process/command'
 
 /**
  * Runs a kubectl command and returns the output
@@ -10,8 +10,8 @@ const { command } = require('../process/command')
  *
  * @returns {Void}
  */
-const kubectl = command(`kubectl`)
+const helmCmd = command(`helm`)
 
-module.exports = {
-  kubectl,
+export const helm = async (args:string[], opts:Record<any, any>) => {
+  return await helmCmd(args, opts)
 }

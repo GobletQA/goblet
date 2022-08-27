@@ -70,7 +70,7 @@ const startPm2Daemon = async (executable, args, opts = noOpObj, name, watch) => 
  * @param {string|Array<string>} cmd - arguments to pass to the executable when run
  * @param {Object} params - Passed in task options, converted into an object
  *
- * @returns {Void}
+ * @returns {function} - Method to run the passed executable
  */
 const command = (executable) => {
   return async (cmd, params = noOpObj, validExitCode) => {

@@ -1,7 +1,7 @@
-const { kubectl } = require('./kubectl')
-const { error } = require('@keg-hub/cli-utils')
-const { noOpObj, isNum } = require('@keg-hub/jsutils')
-const { getDeployContext } = require('../helpers/contexts')
+import { kubectl } from './kubectl'
+import { error } from '@keg-hub/cli-utils'
+import { noOpObj, isNum } from '@keg-hub/jsutils'
+import { getDeployContext } from '../helpers/contexts'
 
 /**
  * Scales a deployments replicas up or down based on passed in params
@@ -10,7 +10,7 @@ const { getDeployContext } = require('../helpers/contexts')
  *
  * @return {Object} - Found pod object or undefined
  */
-const scaleKubeDeployment = async (params = noOpObj) => {
+export const scaleKubeDeployment = async (params:Record<any, any> = noOpObj) => {
   const { amount, context, env } = params
 
   !context &&
@@ -25,8 +25,4 @@ const scaleKubeDeployment = async (params = noOpObj) => {
     ...params,
     exec: true,
   })
-}
-
-module.exports = {
-  scaleKubeDeployment,
 }
