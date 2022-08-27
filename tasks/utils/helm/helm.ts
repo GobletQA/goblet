@@ -1,4 +1,6 @@
 import { command } from '../process/command'
+import { noPropArr, noOpObj } from '@keg-hub/jsutils'
+import { getDevspaceContext } from '../devspace/getDevspaceContext'
 
 /**
  * Runs a kubectl command and returns the output
@@ -12,6 +14,31 @@ import { command } from '../process/command'
  */
 const helmCmd = command(`helm`)
 
-export const helm = async (args:string[], opts:Record<any, any>) => {
-  return await helmCmd(args, opts)
+export const helm = async (
+  args:string[] = noPropArr,
+  opts:Record<any, any> = noOpObj,
+  params:Record<any, any> = noOpObj
+) => {
+  const contextArgs = await getDevspaceContext(params)
+  // Get the helm command, so we can add it before the namespace add
+  const cmd = args.shift()
+  
+  return await helmCmd([
+    cmd,
+    // Add the active namespace where helm should run the command
+    ...contextArgs.slice(0,2),
+    ...args,
+  ], opts)
+}
+
+
+helm.upgrade = async (
+  args:string[] = noPropArr,
+  opts:Record<any, any> = noOpObj,
+  params:Record<any, any> = noOpObj
+) => {
+  return await helm([
+    `upgrade`,
+    ...args
+  ], opts)
 }

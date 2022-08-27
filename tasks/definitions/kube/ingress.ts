@@ -17,10 +17,17 @@ import { loadEnvs } from '../../utils/envs/loadEnvs'
  * @param {Object} args.globalConfig - Global config object for the keg-cli
  * @param {Object} args.params - Passed in options, converted into an object
  */
-const ingressAct = async ({ params }) => {
-  const {} = params
-  
-  
+const ingressAct = async ({ params }:{params:Record<any, any>}) => {
+  const { name, ingress, repo } = params
+
+  await helm.upgrade([
+    `--install`,
+    name,
+    ingress,
+    `--repo`,
+    repo,
+  ])
+
 }
 
 export const ingress = {
@@ -28,6 +35,23 @@ export const ingress = {
   action: ingressAct,
   alias: [ `ing`, `in`],
   options: {
-    
+    name: {
+      alias: [`nm`],
+      default: `ingress-nginx`,
+      example: `--name my-ingress`,
+      description: `Name of the ingress`,
+    },
+    ingress: {
+      alias: [`ing`, `in`],
+      default: `ingress-nginx`,
+      example: `--ingress my-ingress`,
+      description: `Ingress to install with helm`,
+    },
+    repo: {
+      example: `--repo custom-repo-url`,
+      default: `https://kubernetes.github.io/ingress-nginx`,
+      alias: [`rp`, `url`, `uri`, `path`, `locaction`, `loc`],
+      description: `Url or local path to the folder containing the helm chart`,
+    },
   }
 }
