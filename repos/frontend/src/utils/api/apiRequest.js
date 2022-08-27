@@ -5,6 +5,7 @@ import { networkRequest } from 'HKServices/networkRequest'
 import { localStorage } from'HKUtils/storage/localStorage'
 import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
 
+
 /**
  * Check the response from the API for an expired session
  * If expired, sign out and open the sign in modal by calling signOutAuthUser

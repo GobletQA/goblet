@@ -37,6 +37,26 @@ vars:
   source: command
   command: "node ../scripts/js/getYamlValue.js IMAGE_TAG"
 
+# ----- Screencast API Values ----- #
+- name: GB_SC_DEPLOYMENT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_SC_DEPLOYMENT"
+- name: GB_SC_IMG_URI
+  source: command
+  command: "node ../scripts/js/resolveImgUri.js SC"
+- name: GB_SC_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_SC_PORT"
+- name: GB_NO_VNC_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_NO_VNC_PORT"
+- name: GB_SC_INGRESS_HOST
+  source: command
+  command: "node ../scripts/js/resolveIngress.js SC"
+- name: GB_SC_INGRESS_HOST_WILD_CARD
+  source: command
+  command: "node ../scripts/js/resolveIngress.js SC \"*\""
+
 # ----- Frontend Values ----- #
 - name: GB_FE_DEPLOYMENT
   source: command
@@ -81,6 +101,9 @@ vars:
 - name: GB_DD_API_PROXY_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_API_PROXY_PORT"
+- name: GB_DD_WS_PROXY_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_WS_PROXY_PORT"
 - name: GB_DD_VNC_PROXY_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_VNC_PROXY_PORT"
@@ -148,6 +171,7 @@ deployments:
         name: ${GB_DD_DEPLOYMENT}
         ports:
         - port: ${GB_DD_DOCKER_PORT}
+        - port: ${GB_DD_WS_PROXY_PORT}
         - port: ${GB_DD_API_PROXY_PORT}
         - port: ${GB_DD_VNC_PROXY_PORT}
         - port: ${GB_DD_EXP_ADMIN_PORT}

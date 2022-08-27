@@ -95,9 +95,9 @@ gb_setup(){
   fi
 
   echo ""
-  gb_message_green "[GOBLET] ------------------------------------ [GOBLET]"
-  echo "       Goblet Application setup complete!"
-  gb_message_green "[GOBLET] ------------------------------------ [GOBLET]"
+  gb_message_green "[GOBLET] -------------------------------- [GOBLET]"
+  echo "              Goblet setup complete!"
+  gb_message_green "[GOBLET] -------------------------------- [GOBLET]"
   echo ""
 
 }
