@@ -129,9 +129,9 @@ RUN <<EOF
   dockerd --version
   docker --version
   # Install node and yarn
-  curl -sL https://deb.nodesource.com/setup_16.x | bash -
-  apt-get install -y nodejs
-  npm install -g yarn
+  # curl -sL https://deb.nodesource.com/setup_16.x | bash -
+  # apt-get install -y nodejs
+  # npm install -g yarn
 
   chmod a+x /entrypoint.sh
 
