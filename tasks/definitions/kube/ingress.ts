@@ -29,6 +29,7 @@ const ingressAct = async ({ params }:{params:Record<any, any>}) => {
     ingress,
     `--repo`,
     repo,
+    `--create-namespace`
   ])
 
 }

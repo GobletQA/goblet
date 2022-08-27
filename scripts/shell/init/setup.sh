@@ -21,8 +21,23 @@ goblet_ensure_root() {
   fi
 }
 
+goblet_print_config_message(){
+  gb_info "Kubernetes is required to execute the setup tasks"
+  gb_message "  - Please enable kubernetes from the docker-desktop ui"
+  gb_message "  - Then run \"yarn make setup\" from the projects root directory"
+  echo ""
+}
+
 # Runs the setup tasks to ensure kuberentes is configured properly
 goblet_run_setup_tasks() {
+  
+  # If docker was just installed, we can't run the setup tasks
+  # So print a message and return
+  if [ "$DOCKER_DOWNLOADED" ]; then
+    goblet_print_config_message
+    return
+  fi
+
   goblet_ensure_root
 
   # Ensure devspace, kubectl, and helm are installed

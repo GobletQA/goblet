@@ -94,6 +94,8 @@ const syncSCConfig = (deployment) => (`
  * If it is, build the sync config based off the deployment
  */
 const generateSync = (isActiveEnv, backend, type, remoteDir) => {
+  if(!isActiveEnv) return ``
+  
   const deployment = process.env[isActiveEnv]
   return type === `dd`
     ? syncDDConfig(deployment, remoteDir)

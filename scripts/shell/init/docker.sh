@@ -77,6 +77,9 @@ gb_check_docker_app(){
 
     # Clean up after installing
     gb_mac_unmount_docker_volume
+
+    # Set a flag so we know docker-desktop was downloaded
+    export DOCKER_DOWNLOADED=1
   else
     gb_error "Downloading docker-desktop is only supported on a Mac OS.\n\t Please download docker manually"
     exit 1
