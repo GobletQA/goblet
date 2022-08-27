@@ -4,14 +4,12 @@ import { SafeAreaView, StatusBar } from 'react-native'
 import { keg } from 'HKConfig'
 import { getStore } from 'HKStore'
 import { Provider } from 'react-redux'
-import { WSService } from 'HKServices'
 import { getHistory } from 'HKNavigation'
 import { Toast } from 'HKComponents/toast'
 import { Router } from 'HKComponents/router'
 import { checkCall } from '@keg-hub/jsutils'
 import { tapColors } from 'HKTheme/tapIndex'
 import { FadeOut } from 'HKComponents/fadeOut'
-import { SockrProvider } from '@ltipton/sockr'
 import { initAppAction, init } from 'HKActions'
 import { DomStyles } from 'HKComponents/domStyles'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
@@ -20,10 +18,6 @@ import { ContainerRoutes } from 'HKNavigation/containerRoutes'
 import { ModalManager } from 'HKComponents/modals/modalManager'
 import { ReThemeProvider, getDefaultTheme } from '@keg-hub/re-theme'
 
-// Uncomment to see sockr logs in development
-// const sockrDebug = process.env.NODE_ENV !== 'production'
-// Remove to see sockr logs in development
-const sockrDebug = false
 
 const checkAppInit = async setApiTimeout => {
   let timeout
@@ -57,7 +51,6 @@ const App = props => {
           <Provider store={getStore()}>
             <ReThemeProvider theme={activeTheme}>
               <DomStyles />
-              <SockrProvider debug={sockrDebug} config={WSService}>
                 <AppMain>
                   <ContainerRoutes navigationConfigs={keg.routes} />
                   <ModalManager />
@@ -66,7 +59,6 @@ const App = props => {
                 <FadeOut>
                   {apiTimeout && <Timeout>{apiTimeout}</Timeout>}
                 </FadeOut>
-              </SockrProvider>
             </ReThemeProvider>
           </Provider>
         </SafeAreaView>

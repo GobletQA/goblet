@@ -1937,7 +1937,7 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@keg-hub/args-parse@*", "@keg-hub/args-parse@8.0.0", "@keg-hub/args-parse@9.0.0":
+"@keg-hub/args-parse@*", "@keg-hub/args-parse@9.0.0":
   version "9.0.0"
   resolved "https://registry.npmjs.org/@keg-hub/args-parse/-/args-parse-9.0.0.tgz#4525f33a8ccabb968fd8358bb23c49f4caf24c76"
   integrity sha512-N7/98lGiZDWGbYAWz1Q/EvknrT4GywjQV9gGtxZco0JP2HJR/9rU3fP4Vl7ciGWLxIXikjt4N5t1j8g4rp6FbQ==
@@ -1969,7 +1969,7 @@
     colors "1.4.0"
     fs-extra "9.0.1"
 
-"@keg-hub/jsutils@*", "@keg-hub/jsutils@8.8.0", "@keg-hub/jsutils@9.0.3", "@keg-hub/jsutils@9.2.0":
+"@keg-hub/jsutils@*", "@keg-hub/jsutils@9.2.0":
   version "9.2.0"
   resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.2.0.tgz#e02a75faa11c5a1ebb4eda5b1f5ff1766b3972b1"
   integrity sha512-aYKzp7aMre1LrfFyIeu1RFXKB1VJGP15SRwme0NcHh8/8aPuJ+gBHHLLf88qusizcX2bj9JKXKVPYNS1yx/NaQ==
@@ -1991,20 +1991,6 @@
   integrity sha512-j3NgwuE6NYT01FApe+XpthsYh1pOy9zf95kre0Re5nVQboEWjIgk84qAg30ypi75gucll8wWUuVraHNCYT5FeA==
   dependencies:
     "@keg-hub/jsutils" "*"
-    app-root-path "3.0.0"
-    cli-progress "3.9.1"
-    cli-spinners "2.6.1"
-    cross-spawn "7.0.3"
-    log-update "4.0.0"
-    shell-exec "1.0.2"
-    tree-kill "1.2.2"
-
-"@keg-hub/spawn-cmd@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@keg-hub/spawn-cmd/-/spawn-cmd-0.3.0.tgz#f4d974d295b511710fecd9f6bdb7903ee5a82649"
-  integrity sha512-ptRmt8UUzzZYeX9VoXjncfDnXxq1ITfC1scA/JTuwCeOpPwAbh1paXj0OQhP2z2tMMUqIk9mgBDG2bBk9Oxppw==
-  dependencies:
-    "@keg-hub/jsutils" "8.8.0"
     app-root-path "3.0.0"
     cli-progress "3.9.1"
     cli-spinners "2.6.1"
@@ -2207,14 +2193,14 @@
   resolved "https://registry.npmjs.org/@ltipton/parkin/-/parkin-1.4.0.tgz#5f00225933fe68b53ba255d40cac0aa0a84314c1"
   integrity sha512-FXJ9Cm7YhipWobQbTP9TUcivWYCS+bQ90f3sxHbmjZyk1H+beP8YtM+oVrPVl5vuCHWGYGaP6cp2iMF3rQ8kFA==
 
-"@ltipton/sockr@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@ltipton/sockr/-/sockr-0.3.0.tgz#b17ca8a4aa1a23333841017897c734d4c957c349"
-  integrity sha512-RFnrPbOAuoU1fVIOJYxESCni471uAzNJiTVZsLlBKFPCh+seWgAdw/IVpxdNWAQ7BSOpkeu0xG5oIqdEWJeRpQ==
+"@ltipton/sockr@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/@ltipton/sockr/-/sockr-1.1.0.tgz#a2caddbcc4c9ef37d982496d00d93dd7e2467981"
+  integrity sha512-q6ZOyRAJfqaopd52iarhgNs/lnyWhEsxlm79zO8Y/2HQ+rwe/EXdnyo7WrfIMX00KULuAdK3BqsFve+sHWjRjw==
   dependencies:
-    "@keg-hub/args-parse" "8.0.0"
-    "@keg-hub/jsutils" "9.0.3"
-    "@keg-hub/spawn-cmd" "0.3.0"
+    "@keg-hub/args-parse" "9.0.0"
+    "@keg-hub/jsutils" "9.2.0"
+    "@keg-hub/spawn-cmd" "0.3.2"
     app-root-path "3.0.0"
     socket.io "4.3.1"
     socket.io-client "4.3.2"

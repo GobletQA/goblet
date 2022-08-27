@@ -117,7 +117,7 @@ export const start = {
       description: `Contexts or names of apps NOT to be started`,
     },
     devspace: {
-      alias: [`dsp`, `ds`],
+      alias: [`dsp`, `ds`, `dev`],
       description: 'Optional filepath for devspace.yaml file',
     },
     build: {

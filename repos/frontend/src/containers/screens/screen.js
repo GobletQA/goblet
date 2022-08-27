@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import * as Screens from './index'
 import { Values } from 'HKConstants'
 import { Tabbar } from 'HKComponents/tabbar'
+import { withWS } from 'HKComponents/hocs/withWS'
 import { deepMerge, capitalize } from '@keg-hub/jsutils'
 import { useScreenSelect } from 'HKHooks/useScreenSelect'
 import { useStoreItems } from 'HKHooks/store/useStoreItems'
@@ -17,8 +18,8 @@ const { CATEGORIES, SCREENS } = Values
 const screenTabs = Object.values(Screens).reduce((acc, View) => {
   ;(SCREENS.SCREENCAST || View.tabTitle !== 'Screencast') &&
     acc.push({
-      View,
       id: View.tabId,
+      View: View,
       Icon: View.tabIcon,
       fileTypes: View.fileTypes,
       title:
@@ -56,7 +57,7 @@ const useScreenTab = (id, screenModels) => {
  * @param {object} props
  * @param {object} [props.activeScreen] - Currently active screen
  */
-export const Screen = props => {
+export const Screen = withWS(props => {
   const screenModels = useStoreItems(CATEGORIES.SCREENS)
   const screenTab = useScreenTab(props?.activeScreen, screenModels)
   const onTabSelect = useScreenSelect(screenTab, screenModels, screenTabs)
@@ -77,4 +78,4 @@ export const Screen = props => {
     )) ||
     null
   )
-}
+})

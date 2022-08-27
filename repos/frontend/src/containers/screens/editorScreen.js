@@ -2,7 +2,6 @@ import React from 'react'
 import { EmptyScreen } from './index'
 import { ReEditorMain } from './screens.restyle'
 import { CodeEditor } from 'HKComponents/codeEditor'
-import { Resize } from 'HKComponents/resize/resize'
 import { useActiveFile } from 'HKHooks/activeFile/useActiveFile'
 import { AsideCmdOutput } from 'HKComponents/cmdOutput/asideCmdOutput'
 

@@ -87,8 +87,6 @@ env:
   GB_BE_IMAGE_FROM: 'node:16.16.0-alpine3.16'
 
   # ---- Backend Websocket ENVs ---- #
-  GB_BE_WS_PORT: 7005
-  GB_BE_WS_HOST: 0.0.0.0
   GB_BE_WS_PATH: /sockr-socket
   GB_BE_WS_PROTOCOL: http
 
