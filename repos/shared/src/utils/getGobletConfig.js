@@ -33,8 +33,7 @@ const {
  * No other file should import the default goblet config
  * **IMPORTANT**
  */
-const defaultConfig = require('@GConfigs/goblet.default.config.js')
-
+let __DEF_CONFIG
 let __GOBLET_CONFIG
 
 /**
@@ -253,9 +252,13 @@ const getGobletConfig = (argsConfig = noOpObj) => {
     )
   }
 
+  // Load here so it doesn't pull in other files which call loadEnvs
+  // The loadEnvs response is cached, so we only want to call it at the right time
+  __DEF_CONFIG = __DEF_CONFIG || require('@GConfigs/goblet.default.config.js')
+
   __GOBLET_CONFIG = addConfigFileTypes(
     deepMerge(
-      defaultConfig,
+      __DEF_CONFIG,
       // Base if a folder path, not a config file path
       baseConfig,
       // Comes after baseConfig because it's more specific
@@ -265,7 +268,7 @@ const getGobletConfig = (argsConfig = noOpObj) => {
 
   // The default config.internalPaths should never be overwritten
   // So reset it here just in case it was
-  __GOBLET_CONFIG.internalPaths = defaultConfig.internalPaths
+  __GOBLET_CONFIG.internalPaths = __DEF_CONFIG.internalPaths
 
   return __GOBLET_CONFIG
 }
@@ -286,7 +289,8 @@ const resetGobletConfig = () => {
  * @returns {Object} - default Goblet Config
  */
 const getDefaultGobletConfig = () => {
-  return defaultConfig
+  __DEF_CONFIG = __DEF_CONFIG || require('@GConfigs/goblet.default.config.js')
+  return __DEF_CONFIG
 }
 
 module.exports = {

@@ -1,8 +1,8 @@
 import path from 'path'
-import { writeFileSync, rmSync } from 'fs'
-import { tempDir } from'../../paths'
 import { auth } from'./auth'
+import { tempDir } from'../../paths'
 import { uuid } from'@keg-hub/jsutils'
+import { writeFileSync, rmSync } from 'fs'
 import { Logger, error } from'@keg-hub/cli-utils'
 import { kubectl } from '../../utils/kubectl/kubectl'
 import { resolveLocalPath } from '../../utils/helpers/resolveLocalPath'
@@ -19,12 +19,8 @@ const resolveNames = (name:string, key:string, keyvalue:string) => {
 }
 
 
-const temptFile = () => {
-  return path.join(tempDir, `${uuid()}.txt`)
-}
-
 const saveTempSecret = (value:string) => {
-  const tempFileLoc = temptFile()
+  const tempFileLoc = path.join(tempDir, `${uuid()}.txt`)
   writeFileSync(tempFileLoc, value)
 
   return tempFileLoc
@@ -120,8 +116,7 @@ const secretAct = async ({ params }) => {
   const { tempFiles,  secretArgs } = buildLocs(params, name, key)
 
   // @ts-ignore
-  await kubectl([
-    `create`,
+  await kubectl.create([
     `secret`,
     type,
     name,

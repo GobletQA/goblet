@@ -8,11 +8,15 @@ const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
  * @return {function} - Function to inject the goblet config
  */
 const injectGobletConfig = taskAction => {
-  return args =>
-    taskAction({
+  return args => {
+    args?.params?.env !== process.env.NODE_ENV
+      && (process.env.NODE_ENV = args?.params?.env)
+
+    return taskAction({
       ...args,
       goblet: getGobletConfig(args.params),
     })
+  }
 }
 
 /**

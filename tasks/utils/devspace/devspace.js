@@ -1,8 +1,8 @@
 const { command } = require('../process/command')
+const { kubectl } = require('../kubectl/kubectl')
 const { getCmdOptions } = require('./getCmdOptions')
 const { getConfigPath } = require('./getConfigPath')
 const { getDeployments } = require('./getDeployments')
-const { getKubePod } = require('../kubectl/getKubePod')
 const { getLabelSelector } = require('./getLabelSelector')
 const { getDevspaceContext } = require('./getDevspaceContext')
 const { get, ensureArr, noOpObj } = require('@keg-hub/jsutils')
@@ -149,7 +149,7 @@ devspace.run = async (params = noOpObj) => (await devspace([`run`, params.cmd], 
  */
 devspace.running = async (params = noOpObj) => {
   await devspace.use(params)
-  const pod = await getKubePod({ ...params, context: 'app' })
+  const pod = await kubectl.getPod({ ...params, context: 'app' })
 
   return get(pod, `status.phase`) === `Running` ? pod : false
 }

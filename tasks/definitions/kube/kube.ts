@@ -1,6 +1,8 @@
 import { auth } from'./auth'
 import { secret } from './secret'
 import { ingress } from './ingress'
+import { namespace } from './namespace'
+
 
 export const kube = {
   name: 'kube',
@@ -9,5 +11,6 @@ export const kube = {
     auth,
     secret,
     ingress,
+    namespace,
   },
 }
