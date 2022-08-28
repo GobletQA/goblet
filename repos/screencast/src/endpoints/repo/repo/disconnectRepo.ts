@@ -7,10 +7,9 @@ import { AppRouter } from '@gobletqa/shared/express/appRouter'
  * Disconnects a connected repo ( VNC mode only )
  */
 export const disconnectRepo = asyncWrap(async (req:Request, res:Response) => {
-  // TODO: Add req.body validation
-  const { disconnectTimeout } = req?.app?.locals?.config?.container
+  const { disconnectTimeout, timeoutActive } = req?.app?.locals?.config?.container
 
-  if(disconnectTimeout){
+  if(timeoutActive && disconnectTimeout){
     console.log(`Waiting ${disconnectTimeout} seconds to kill container...`)
     setTimeout(() => {
       console.log(`Killing session container due to user log out.`)
@@ -18,6 +17,7 @@ export const disconnectRepo = asyncWrap(async (req:Request, res:Response) => {
     }, disconnectTimeout)
   }
 
+  // TODO: Add req.body validation
   const repo = await Repo.disconnect(req.body)
   return apiRes(res, { repo }, 200)
 })

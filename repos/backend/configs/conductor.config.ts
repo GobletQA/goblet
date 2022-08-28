@@ -142,6 +142,7 @@ export const conductorConfig:TConductorOpts = {
           GB_AUTH_ACTIVE: true,
           // Amount to time to wait before auto-killing the container
           // When a user logs out
+          GB_SC_TIMEOUT_ACTIVE: true,
           GB_SC_INACTIVE_TIMEOUT: containerEnvs.GB_SC_INACTIVE_TIMEOUT || `20`,
           GB_SC_DISCONNECT_TIMEOUT:  containerEnvs.GB_SC_DISCONNECT_TIMEOUT || `5`
         },

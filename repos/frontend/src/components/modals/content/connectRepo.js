@@ -20,16 +20,9 @@ import { SyncReposButton } from 'HKComponents/buttons/syncReposButton'
 import { setModalVisibility } from 'HKActions/modals/setModalVisibility'
 import { ControlledCheckbox } from 'HKComponents/form/controlledCheckbox'
 import { ConnectRepoButton } from 'HKComponents/buttons/connectRepoButton'
+import { ContainerSessionState } from 'HKComponents/container/containerSessionState'
 
 // TODO: @lance-tipton - Add ability to create a new repo, use Values.CREATE_NEW_REPO as selector
-
-/**
- * TODO: @lance-tipton - Block mounting the repo until the session container is started
- * State of container must be Running before the repo can be mounted
- * const { routes } = useSelector(STORAGE.USER, CATEGORIES.ROUTES)
- * routes?.meta?.state === CONTAINER.STATE.RUNNING
- */
-
 
 const {
   SCREENS,
@@ -169,7 +162,7 @@ export const ConnectRepoModal = props => {
   const disabled = useMemo(() => {
     return !Boolean(branch && isUrl(repoUrl) && !isConnecting)
   }, [repoUrl, branch, isConnecting])
-  
+
   return (
     <Modal
       Icon={Git}
@@ -249,6 +242,7 @@ export const ConnectRepoModal = props => {
           className={'modal-repo-branch-name-field'}
         />
       ) || null}
+      <ContainerSessionState />
     </Modal>
   )
 }

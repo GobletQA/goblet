@@ -11,14 +11,14 @@ import { Loading, Text, View } from '@keg-hub/keg-components'
 const { CONTAINER, CATEGORIES, STORAGE } = Values
 
 const ReMain = reStyle(View)(theme => ({
-  rt: 0,
+  lt: 0,
   bt: 0,
   zI: 11,
   h: 18,
   w: 125,
   pL: 0,
   d: `flex`,
-  bTLR: `5px`,
+  bTRR: `5px`,
   jtC: `center`,
   pos: `absolute`,
   bgC: tapColors?.defaultDark,
@@ -42,6 +42,7 @@ const usePropsFromContainerState = (user, containerState) => {
 
     switch(containerState){
       case CONTAINER.STATE.RUNNING: {
+        data.content = `Session Ready`
         data.styles.bgC = tapColors?.successDark
         data.Icon = (<Check color="#FFFFFF" size="14px" />)
         break

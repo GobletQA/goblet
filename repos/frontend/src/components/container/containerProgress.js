@@ -44,8 +44,7 @@ const usePropsFromContainerState = (user, containerState) => {
 
 export const ContainerProgress = (props) => {
   const { user, routes } = useSelector(STORAGE.USER, CATEGORIES.ROUTES)
-  const containerState = routes?.meta?.state
-  const { flashing, styles } = usePropsFromContainerState(user, containerState)
+  const { flashing, styles } = usePropsFromContainerState(user, routes?.meta?.state)
 
   return (
     <SlowFlash flashing={flashing} >

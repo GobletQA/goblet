@@ -46,6 +46,7 @@ const {
   GB_SC_WS_HOST,
 
   // Set defaults to ensure the container dies if not being used
+  GB_SC_TIMEOUT_ACTIVE,
   GB_SC_INACTIVE_TIMEOUT=20,
   GB_SC_DISCONNECT_TIMEOUT=5,
 
@@ -81,6 +82,7 @@ export const screencastConfig:TGScreencastConfig = {
     }
   },
   container: {
+    timeoutActive: toBool(GB_SC_TIMEOUT_ACTIVE),
     inactiveTimeout:  toNum(GB_SC_INACTIVE_TIMEOUT) * 60000,
     disconnectTimeout: toNum(GB_SC_DISCONNECT_TIMEOUT) * 1000
   },

@@ -6,7 +6,7 @@ import { useSelector } from 'HKHooks/useSelector'
 import { checkCall, isEmptyColl } from '@keg-hub/jsutils'
 import { connectRepo } from 'HKActions/repo/api/connect'
 
-const { STORAGE } = Values
+const { STORAGE, CATEGORIES, CONTAINER } = Values
 
 export const ConnectRepoButton = props => {
   const {
@@ -22,12 +22,17 @@ export const ConnectRepoButton = props => {
     onConnect: onConnectCb,
   } = props
 
-  const { user, repo } = useSelector(STORAGE.USER, STORAGE.REPO)
+  const { user, repo, routes } = useSelector(STORAGE.USER, STORAGE.REPO, CATEGORIES.ROUTES)
 
   const disabledBtn = useMemo(
     // If repo is not empty, then force disable the button
-    () => (!isEmptyColl(repo) ? true : disabled),
-    [repo, disabled]
+    // Or the session container in not ready
+    () => (
+      !isEmptyColl(repo) || routes?.meta?.state !== CONTAINER.STATE.RUNNING
+        ? true
+        : disabled
+    ),
+    [repo, disabled, routes]
   )
 
   const onConnect = useCallback(async () => {
@@ -69,6 +74,7 @@ export const ConnectRepoButton = props => {
     onConnecting,
     createBranch,
   ])
+
 
   return (
     <GobletButton

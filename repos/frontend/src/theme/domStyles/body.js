@@ -45,6 +45,10 @@ export const body = theme => ({
     width: 12,
     height: 12,
   },
+  [`.container-session-state div.keg-indicator > div[role="progressbar"] > div`]: {
+    width: 14,
+    height: 14,
+  },
   // Custom styles for recording line number indicator
   // Currently just a red-dot, could be styled better
   [`.cgmr.editor-glyph-margin`]: {
