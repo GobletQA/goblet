@@ -1,6 +1,7 @@
 const babelJest = require('babel-jest')
 const { createHash } = require('crypto')
 const { getWorld } = require('@gobletqa/shared/repo/world')
+const {getCacheKey} = babelJest.createTransformer()
 
 /**
  * Custom jest transformer for wrapping waypoint scripts in a test method
@@ -9,7 +10,7 @@ const { getWorld } = require('@gobletqa/shared/repo/world')
  */
  module.exports = {
   getCacheKey(fileData, filename, ...rest) {
-    const babelCacheKey = babelJest.getCacheKey(fileData, filename, ...rest)
+    const babelCacheKey = getCacheKey(fileData, filename, ...rest)
 
     return createHash('md5')
       .update(babelCacheKey)
@@ -26,7 +27,7 @@ const { getWorld } = require('@gobletqa/shared/repo/world')
      * Ensure Jest doesn't throw or complain having no tests
      * It also allows us to use the same jest-html-test reporter
      */
-    const content = [
+    const code = [
       `describe('Goblet Waypoint', () => {`,
       `  test('Executing File: ${name}', async () => {`,
       `     delete jest.resetMocks`,
@@ -40,6 +41,6 @@ const { getWorld } = require('@gobletqa/shared/repo/world')
       `})`
     ].join(`\n`)
 
-    return babelJest.process(content, filename, ...rest);
+    return { code }
   },
 }
