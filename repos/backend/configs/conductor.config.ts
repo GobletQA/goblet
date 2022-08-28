@@ -48,10 +48,11 @@ const whiteList = [
   `GB_BE_JWT_CREDENTIALS`,
   `GB_BE_JWT_REFRESH_EXP`,
   `GB_BE_JWT_REFRESH_SECRET`,
+  `GB_SC_INACTIVE_TIMEOUT`,
+  `GB_SC_DISCONNECT_TIMEOUT`,
 ]
 
 const blackList = []
-
 
 const dindHost = getDindHost()
 const devRouter = NODE_ENV === `local`
@@ -139,6 +140,10 @@ export const conductorConfig:TConductorOpts = {
           ...containerEnvs,
           GB_VNC_ACTIVE: true,
           GB_AUTH_ACTIVE: true,
+          // Amount to time to wait before auto-killing the container
+          // When a user logs out
+          GB_SC_INACTIVE_TIMEOUT: containerEnvs.GB_SC_INACTIVE_TIMEOUT || `20`,
+          GB_SC_DISCONNECT_TIMEOUT:  containerEnvs.GB_SC_DISCONNECT_TIMEOUT || `5`
         },
         runtimeEnvs: {}
       }

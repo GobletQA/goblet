@@ -32,42 +32,30 @@ export const containerConfig = async (
     // TODO: figure out the best way to name the containers to avoid collisions
     // Doing it this way will fail if the user tries to create more then one image of the same type
     // name: userHash,
-
-    // TODO: investigate createContainer options that should be allowed form a request
     ...runOpts,
     ExposedPorts: exposed,
     Image: buildImgUri(image),
     Labels: buildLabels(image, userHash),
     Env: buildContainerEnvs(image, {
-        urls,
-        ports,
-        userHash,
-        // options:runOpts,
-        // config: docker.config,
-        // conductor: docker.conductor,
+      urls,
+      ports,
+      userHash,
     }, {}),
     HostConfig: {
       ...runOpts.hostConfig,
       IpcMode: `private`,
-      // IpcMode: `host`,
-      // NetworkMode: 'host',
       PortBindings: bindings,
       PidsLimit: image?.pidsLimit || docker?.config?.pidsLimit,
-      RestartPolicy: {
-        Name: image?.container?.restartPolicy,
-        MaximumRetryCount: image?.container?.retryCount,
-      },
-      // Privileged: true
-      // Devices: [{
-      //   PathOnHost: `/dev/fuse`,
-      //   CgroupPermissions: `rwm`,
-      //   PathInContainer: `/dev/fuse`,
-      // }],
-      // CapAdd: [`SYS_ADMIN`],
-      // --cap-add SYS_ADMIN --device /dev/fuse
-      // TODO: investigate this
-      // IpcMode: 'none',
-      // AutoRemove: true,
+
+      // TODO: Investigate auto-remove with RestartPolicy - can't have both?
+      AutoRemove: true,
+      // RestartPolicy: {
+      //   Name: image?.container?.restartPolicy,
+      //   MaximumRetryCount: image?.container?.retryCount,
+      // },
+      // Explicitly set Privileged to ensure it can't be overwritten
+      Privileged: false,
+      // TODO: investigate containe StorageOpt, this
       // StorageOpt: { size: `10G`},
     }
   }

@@ -41,6 +41,10 @@ export const body = theme => ({
     position: 'relative',
     color: tapColors.danger,
   },
+  [`.gb-container-state div.keg-indicator > div[role="progressbar"] > div`]: {
+    width: 12,
+    height: 12,
+  },
   // Custom styles for recording line number indicator
   // Currently just a red-dot, could be styled better
   [`.cgmr.editor-glyph-margin`]: {

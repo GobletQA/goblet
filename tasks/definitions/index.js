@@ -1,9 +1,9 @@
+const { inDocker } = require('@keg-hub/cli-utils')
 const { initialize } = require('../utils/helpers/initDefs')
-const { GOBLET_RUN_FROM_CI } = process.env
-
+const { GOBLET_RUN_FROM_CI, GOBLET_RUN_FROM_UI } = process.env
 
 const definitions = () => {
-  return !GOBLET_RUN_FROM_CI
+  return !inDocker() && !GOBLET_RUN_FROM_CI && !GOBLET_RUN_FROM_UI
     ? {
         ...initialize(require('./kube')),
         ...initialize(require('./docker')),

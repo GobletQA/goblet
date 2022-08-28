@@ -15,8 +15,8 @@ class Storage {
     if(!name) return console.error(`A key is required to get a local storage item, instead got "${name}"`)
 
     try {
-      const cached = this.cache[name] = data
-      if(cached) return cached
+      // const cached = this.cache[name] = data
+      // if(cached) return cached
       
       const savedData = await KeyStore.getItem(name)
       return !savedData
@@ -34,7 +34,7 @@ class Storage {
     if(!name) return console.error(`A key is required to set a local storage item, instead got "${name}"`)
 
     try {
-      this.cache[name] = data
+      // this.cache[name] = data
       const save = stringify && typeof data !== 'string'
         ? JSON.stringify(data)
         : data
@@ -54,7 +54,7 @@ class Storage {
     if(!name) return console.error(`A key is required to remove a local storage item, instead got "${name}"`)
     
     try {
-      delete this.cache[name]
+      // delete this.cache[name]
       return await KeyStore.removeItem(name)
     }
     catch (err) {
@@ -64,7 +64,7 @@ class Storage {
 
   cleanup = async () => {
     try {
-      this.cache = {}
+      // this.cache = {}
       await this.removeJwt()
       await this.removeScPort()
       await this.removeHeaders()

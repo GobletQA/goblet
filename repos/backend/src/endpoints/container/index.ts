@@ -1,4 +1,5 @@
 export * from './spawn'
 export * from './remove'
 export * from './status'
+export * from './state'
 export * from './inspect'

@@ -3,10 +3,11 @@ import { addToast } from 'HKActions/toasts'
 import { setActiveModal } from 'HKActions/modals'
 import { apiRequest } from 'HKUtils/api/apiRequest'
 import { removeRepo } from 'HKActions/repo/local/removeRepo'
+import { waitForRunning } from 'HKActions/container/api/waitForRunning'
 import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
 import { setContainerRoutes } from 'HKActions/container/local/setContainerRoutes'
 
-const { MODAL_TYPES } = Values
+const { MODAL_TYPES, CONTAINER } = Values
 
 /**
  * Clear and cache repo data in the store or local storage
@@ -49,5 +50,7 @@ export const statusContainer = async params => {
 
   await setContainerRoutes(data)
 
-  return data
+  return data?.meta?.state !== CONTAINER?.STATE?.RUNNING
+    ? await waitForRunning()
+    : data
 }

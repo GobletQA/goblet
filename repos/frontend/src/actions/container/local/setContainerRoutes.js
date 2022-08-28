@@ -21,7 +21,7 @@ const throwRoutesError = (routes, type) => {
  * 
  */
 export const setContainerRoutes = async (data=noOpObj) => {
-  const { routes=noOpObj } = data
+  const { routes=noOpObj, meta=noOpObj } = data
   if(!routes) return throwRoutesError(data, `session container routes`)
 
   const { api, screencast } = Object.entries(routes)
@@ -43,6 +43,6 @@ export const setContainerRoutes = async (data=noOpObj) => {
     ? throwRoutesError(routes, `api route headers`)
     : await localStorage.setHeaders(api?.headers)
 
-  setItems(CATEGORIES.ROUTES, {api, screencast})
+  setItems(CATEGORIES.ROUTES, {api, screencast, meta})
   return routes
 }

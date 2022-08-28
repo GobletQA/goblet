@@ -1,7 +1,7 @@
 import '../resolveRoot'
 import path from 'path'
 
-import { toBool } from '@keg-hub/jsutils'
+import { toBool, toNum } from '@keg-hub/jsutils'
 import { sockrCmds } from './sockrCmds.config'
 import { aliases } from '@GConfigs/aliases.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
@@ -45,6 +45,10 @@ const {
   GB_SC_WS_PORT,
   GB_SC_WS_HOST,
 
+  // Set defaults to ensure the container dies if not being used
+  GB_SC_INACTIVE_TIMEOUT=20,
+  GB_SC_DISCONNECT_TIMEOUT=5,
+
   // TODO Add these envs as a header for request validation
   // This will ensure requests are coming from the backend API only
   GB_DD_VALIDATION_KEY,
@@ -75,6 +79,10 @@ export const screencastConfig:TGScreencastConfig = {
       algorithms: [GB_BE_JWT_ALGO || 'HS256'],
       credentialsRequired: toBool(GB_BE_JWT_CREDENTIALS || true),
     }
+  },
+  container: {
+    inactiveTimeout:  toNum(GB_SC_INACTIVE_TIMEOUT) * 60000,
+    disconnectTimeout: toNum(GB_SC_DISCONNECT_TIMEOUT) * 1000
   },
   screencast: {
     // Set if the screencast is active or not

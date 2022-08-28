@@ -6,6 +6,7 @@ import { types } from './types'
 import { storage } from './storage'
 import { screens } from './screens'
 import { isDev } from 'HKUtils/isDev'
+import { container } from './container'
 import { categories } from './categories'
 import { screencast } from './screencast'
 const screencastPort = process.env.GB_SC_PORT || `7006`
@@ -35,6 +36,7 @@ let Values = deepFreeze({
   ...tabs,
   ...screencast,
   ...types,
+  ...container
 })
 
 /**

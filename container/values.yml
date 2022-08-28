@@ -160,6 +160,12 @@ env:
   GB_VNC_VIEW_HEIGHT: 900
   GB_VNC_VIEW_WIDTH: 1440
 
+  # --- CONTAINER TIMEOUT ENVs --- #
+  # In minutes (x * 60000)
+  GB_SC_INACTIVE_TIMEOUT: 20
+  # In seconds (x * 1000)
+  GB_SC_DISCONNECT_TIMEOUT: 20
+
 
 # --- DIND ENVs --- #
   GB_DD_DOCKER_PORT: 2375

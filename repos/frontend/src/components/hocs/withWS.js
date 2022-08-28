@@ -2,10 +2,9 @@ import React, { useMemo } from 'react'
 import { Values } from 'HKConstants'
 import { useSelector } from 'HKHooks'
 import { WSService } from 'HKServices'
-import { isEmptyColl } from '@keg-hub/jsutils'
 import { SockrProvider } from '@ltipton/sockr'
 
-const { CATEGORIES, STORAGE } = Values
+const { CONTAINER, CATEGORIES, STORAGE } = Values
 
 
 // Uncomment to see sockr logs in development
@@ -23,23 +22,23 @@ const sockrDebug = false
  */
 export const withWS = (Component) => {
   const WSHoc = props => {
-    const { user, routes } = useSelector(STORAGE.USER, CATEGORIES.ROUTES)
-    const WSConf = useMemo(() => {
-      if(!user || !routes?.screencast) return undefined
 
-      WSService.path = WSService.path
+    const { user, routes } = useSelector(STORAGE.USER, CATEGORIES.ROUTES)
+    const socketReady = useMemo(() => {
+      if(!user || !routes?.api || routes?.meta?.state !== CONTAINER.STATE.RUNNING)
+        return false
+
       WSService.ioConfig.query = {
         ...WSService.ioConfig.query,
         containerPort: routes?.api?.containerPort,
       }
 
-      return WSService
-
+      return true
     }, [user, routes])
 
     const renderedComp = <Component {...props} />
 
-    return !WSConf
+    return !socketReady
       ? renderedComp
       : (
           <SockrProvider debug={sockrDebug} config={WSService} >

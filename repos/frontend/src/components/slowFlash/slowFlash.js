@@ -11,7 +11,7 @@ const useAnimatedFlash = (props, opacity, opacityValue) => {
     delayVisible=300,
     delayInvisible=0,
   } = props
-  
+
   const animatedFlash = useCallback(() => {
     const toValue = opacityValue.current === maxOpacity ? minOpacity : maxOpacity
 

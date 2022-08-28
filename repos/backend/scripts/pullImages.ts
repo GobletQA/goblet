@@ -26,7 +26,9 @@ import { buildImgUri } from '@gobletqa/conductor/controller/docker/image/buildIm
         )
         if(error) throw new Error(error)
 
+        Logger.log(data)
         Logger.success(`Image ${name} pulled successfully`)
+
       }
       catch(err){
         Logger.error(`Image ${name} pull failed`)

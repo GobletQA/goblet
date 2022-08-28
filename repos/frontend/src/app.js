@@ -17,6 +17,8 @@ import { View, Text } from '@keg-hub/keg-components'
 import { ContainerRoutes } from 'HKNavigation/containerRoutes'
 import { ModalManager } from 'HKComponents/modals/modalManager'
 import { ReThemeProvider, getDefaultTheme } from '@keg-hub/re-theme'
+import { ContainerState } from 'HKComponents/container/containerState'
+import { ContainerProgress } from 'HKComponents/container/containerProgress'
 
 
 const checkAppInit = async setApiTimeout => {
@@ -51,14 +53,16 @@ const App = props => {
           <Provider store={getStore()}>
             <ReThemeProvider theme={activeTheme}>
               <DomStyles />
-                <AppMain>
-                  <ContainerRoutes navigationConfigs={keg.routes} />
-                  <ModalManager />
-                  <Toast />
-                </AppMain>
-                <FadeOut>
-                  {apiTimeout && <Timeout>{apiTimeout}</Timeout>}
-                </FadeOut>
+              <ContainerProgress />
+              <AppMain>
+                <ContainerRoutes navigationConfigs={keg.routes} />
+                <ModalManager />
+              </AppMain>
+              <Toast />
+              <FadeOut>
+                {apiTimeout && <Timeout>{apiTimeout}</Timeout>}
+              </FadeOut>
+              <ContainerState />
             </ReThemeProvider>
           </Provider>
         </SafeAreaView>

@@ -74,9 +74,15 @@ export type TScreencastConfig = {
   context?: TBrowserContext
 }
 
+export type TSCContainerConfig = {
+  inactiveTimeout: number
+  disconnectTimeout: number
+}
+
 export type TGScreencastConfig = {
   server: TScreencastServer
   screencast: TScreencastConfig
   sockr: TSockrConfig
+  container: TSCContainerConfig
 }
 

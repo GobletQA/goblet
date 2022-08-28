@@ -5,6 +5,7 @@ import { apiRequest } from 'HKUtils/api/apiRequest'
 import { signOutAuthUser } from './signOutAuthUser'
 import { setRepos } from 'HKActions/repo/local/setRepos'
 import { localStorage } from'HKUtils/storage/localStorage'
+import { waitForRunning } from 'HKActions/container/api/waitForRunning'
 import { setContainerRoutes } from 'HKActions/container/local/setContainerRoutes'
 
 /**
@@ -106,6 +107,8 @@ export const onSuccessAuth = async (authData, callback) => {
     const {repos, status, user, jwt} = validateResp(data)
     await localStorage.setJwt(jwt)
     new GitUser(user)
+    
+    status?.meta?.state === `Creating` && waitForRunning()
 
     // Wrap container and repos so if they throw, the login auth is still valid
     try {

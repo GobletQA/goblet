@@ -1,11 +1,7 @@
 import type { Express, Request } from 'express'
 import { Logger } from '@keg-hub/cli-utils'
 import { get, noOpObj } from '@keg-hub/jsutils'
-import { expToAxios } from '@GBE/utils/axiosProxy'
-// import { statusBrowser } from '@gobletqa/screencast/libs/playwright/browser/statusBrowser'
-
-
-type TStatus = Record<any, any>
+import { statusBrowser } from '@GSC/libs/playwright/browser/statusBrowser'
 
 let prevStatus
 let watchInterval:ReturnType<typeof setTimeout>
@@ -24,15 +20,7 @@ const getStatusUpdate = async (
   Mgr:Record<any, any>
 ) => {
   
-  // TODO: 
-  // const status = await statusBrowser(browserConf)
-  const status = await expToAxios({
-    params: {},
-    headers: {},
-    method: 'get',
-    body: browserConf,
-  } as Request, { url: `/todo/url/to/screencast` }) as TStatus
-  
+  const status = await statusBrowser(browserConf)
   // If no status chance, don't update the backend
   if (prevStatus === status?.status) return
 
