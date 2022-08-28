@@ -6,6 +6,5 @@ export const storage = deepFreeze({
     REPO: 'repo',
     USER: 'user',
     ROUTE_HEADERS: `route-headers`,
-    SC_PORT: `screencast-port`
   },
 })

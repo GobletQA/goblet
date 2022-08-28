@@ -41,6 +41,23 @@ export const ReMessageText = reStyle(Text)(theme => ({
   c: theme.colors.palette.white01,
 }))
 
+export const ReInlineCmdMain = reStyle(Grid)(theme => ({
+  flex: 'unset',
+  display: 'unset',
+}))
+
+export const ReInlineCmdRow = reStyle(Row)(theme => ({
+  bW: 2,
+  h: 450,
+  maxH: 450,
+  overflowY: 'auto',
+  borderRightWidth: 0,
+  p: theme.padding.size,
+  bgC: theme.tapColors.defaultDark60,
+  bC: theme.tapColors.borderColor,
+  bRad: theme.tapColors.borderRadius,
+}))
+
 /**
  export const ReMessageSuccess = reStyle(Text)(theme => ({
    c: theme.tapColors.success,

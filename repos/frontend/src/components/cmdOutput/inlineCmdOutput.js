@@ -1,17 +1,17 @@
 import React from 'react'
 import { RenderOutput } from './renderOutput'
 import { useActiveTestRuns } from 'HKHooks/activeFile/useActiveTestRuns'
-import { ReCmdRow, ReCmdMain, ReCmdSurface } from './cmd.restyle'
+import { ReInlineCmdRow, ReInlineCmdMain } from './cmd.restyle'
 
-export const CmdOutput = props => {
+export const InlineCmdOutput = props => {
   const { activeFile } = props
   const testRunModel = useActiveTestRuns()
 
   return (
-    <ReCmdMain className={`cmd-grid`}>
-      <ReCmdRow className='cmd-cmd-row'>
+    <ReInlineCmdMain className={`inline-cmd-grid`}>
+      <ReInlineCmdRow className='inline-cmd-row'>
         <RenderOutput testRunModel={testRunModel} testFile={activeFile} />
-      </ReCmdRow>
-    </ReCmdMain>
+      </ReInlineCmdRow>
+    </ReInlineCmdMain>
   )
 }

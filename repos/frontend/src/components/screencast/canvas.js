@@ -16,13 +16,14 @@ export const Canvas = React.memo(props => {
     isConnected,
   } = props
 
+  const styles = useMemo(() => ({minWidth: width, height: height}), [width, height])
+
   return (
     <>
       <CanvasMain
         tabIndex={0}
-        width={width}
         ref={canvasRef}
-        height={height}
+        style={styles}
         id={SCREENCAST_CANVAS}
         className='sc-canvas-main'
       />

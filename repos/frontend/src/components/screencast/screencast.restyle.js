@@ -6,14 +6,14 @@ import { Text, View, Column } from '@keg-hub/keg-components'
 export const LSurface = React.memo(reStyle(Surface, 'styles')((theme, props) => ({
   main: {
     fl: 2,
-    maxW: props.leftWidth || `60vw`,
+    maxW: props.leftWidth || `50vw`,
   }
 })))
 
 export const RSurface = React.memo(reStyle(Surface, 'styles')({
   main: {
     fl: 1,
-    minW: `40vw`,
+    maxW: `100vw`,
   }
 }))
 
@@ -27,8 +27,6 @@ export const CanvasMain = reStyle(View)((theme, props) => ({
   alI: 'center',
   ovf: 'hidden',
   display: 'initial',
-  width: props.width,
-  height: props.height,
   textSizeAdjust: '100%',
   boxSizing: `border-box`,
   bgC: theme.tapColors.white,

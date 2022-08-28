@@ -1,10 +1,11 @@
-import { noOpObj } from '@keg-hub/jsutils'
+import { noOpObj, debounce } from '@keg-hub/jsutils'
 import { useState, useRef, useEffect } from 'react'
 
 const defSize = {
-  height: parseInt(process.env.GB_VNC_VIEW_HEIGHT) || 900,
-  width: parseInt(process.env.GB_VNC_VIEW_WIDTH) || 1440,
+  height: (parseInt(process.env.GB_VNC_VIEW_HEIGHT) || 900),
+  width: (parseInt(process.env.GB_VNC_VIEW_WIDTH) || 1440),
 }
+
 
 defSize.ratio = defSize.width / defSize.height
 
@@ -20,10 +21,13 @@ export const sizeFromRatio = ({ height, width }) => {
     size.height = width / defSize.ratio
   }
 
-  return {
+  const calcSize = {
     width: Math.round(size.width),
     height: Math.round(size.height),
+    // height: height ? Math.round(height / 2) : `50%`
   }
+
+  return calcSize
 }
 
 export const useScreenResize = (element, screenSize = noOpObj) => {
@@ -31,6 +35,7 @@ export const useScreenResize = (element, screenSize = noOpObj) => {
   const screenRef = useRef()
 
   useEffect(() => {
+
     if (element && !screenRef.current) screenRef.current = element
     if (!screenRef.current) return
 
@@ -44,7 +49,7 @@ export const useScreenResize = (element, screenSize = noOpObj) => {
       })
     )
 
-    const observer = new ResizeObserver(entries => {
+    const observer = new ResizeObserver(debounce(entries => {
       const contentRect = entries[0]?.contentRect
       if (!contentRect) return
 
@@ -59,7 +64,7 @@ export const useScreenResize = (element, screenSize = noOpObj) => {
       window.requestAnimationFrame(() =>
         window.dispatchEvent(new UIEvent('resize'))
       )
-    })
+    }))
 
     observer.observe(canvasParentEl)
 

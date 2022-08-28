@@ -1,6 +1,7 @@
 import React from 'react'
 import { CmdOutput } from './cmdOutput'
 import { Aside } from 'HKComponents/aside'
+import { ReCmdSurface } from './cmd.restyle'
 
 const asideProps = {
   to: 0,
@@ -24,7 +25,14 @@ export const AsideCmdOutput = props => {
 
   return (
     <Aside {...asideProps}>
-      <CmdOutput activeFile={props.activeFile} />
+      <ReCmdSurface
+        capitalize={false}
+        className={`cmd-main`}
+        prefix={`Test Output`}
+        title={props?.activeFile?.name}
+      >
+        <CmdOutput activeFile={props.activeFile} />
+      </ReCmdSurface>
     </Aside>
   )
 }

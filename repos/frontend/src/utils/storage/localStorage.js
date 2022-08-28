@@ -66,7 +66,6 @@ class Storage {
     try {
       // this.cache = {}
       await this.removeJwt()
-      await this.removeScPort()
       await this.removeHeaders()
     }
     catch(err){
@@ -85,10 +84,6 @@ class Storage {
   getRepo = async () => this.get(STORAGE.REPO, true)
   setRepo = async (data) => this.set(STORAGE.REPO, data)
   removeRepo = async () => this.remove(STORAGE.REPO)
-
-  getScPort = async () => await this.get(STORAGE.SC_PORT)
-  setScPort = async (data) => await this.set(STORAGE.SC_PORT, data)
-  removeScPort = async () => this.remove(STORAGE.SC_PORT)
 
   getHeaders = async () => await this.get(STORAGE.ROUTE_HEADERS, true)
   setHeaders = async (data) => await this.set(STORAGE.ROUTE_HEADERS, data, true)

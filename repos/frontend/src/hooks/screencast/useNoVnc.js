@@ -3,7 +3,6 @@ import { Values } from 'HKConstants'
 import { useSelector } from 'HKHooks/useSelector'
 import { useScreenResize } from './useScreenResize'
 import { getWorldVal } from 'HKUtils/repo/getWorldVal'
-import { localStorage } from'HKUtils/storage/localStorage'
 import { actionBrowser } from 'HKActions/screencast/api/actionBrowser'
 
 const { STORAGE, CATEGORIES } = Values
@@ -25,6 +24,13 @@ const openAppUrl = repo => {
     }, false)
 }
 
+const throwMissingPort = (routes) => {
+  console.error(`Can not connect VNC, missing container port`)
+  console.log(routes)
+
+  throw new Error(`VNC Error - Missing container port`)
+}
+
 /**
  * Helper to initialize noVNC service
  * @param {Object} element - Dom element to attach the canvas to
@@ -36,7 +42,11 @@ const openAppUrl = repo => {
 export const useNoVnc = (element, vncUrl, creds) => {
   const [noVnc, setNoVnc] = useState(null)
   const [connected, setConnected] = useState(false)
-  const { repo, recordingBrowser } = useSelector(STORAGE.REPO, CATEGORIES.RECORDING_BROWSER)
+  const { repo, routes, recordingBrowser } = useSelector(
+    STORAGE.REPO,
+    CATEGORIES.ROUTES,
+    CATEGORIES.RECORDING_BROWSER,
+  )
   const { isRecording } = recordingBrowser
   
   const onConnected = useCallback(isConnected => {
@@ -47,8 +57,10 @@ export const useNoVnc = (element, vncUrl, creds) => {
   useEffect(() => {
     import('HKServices/noVncService')
       .then(async ({ NoVncService }) => {
-        const scPort = await localStorage.getScPort()
-        setNoVnc(new NoVncService(onConnected, scPort))
+        const containerPort = routes?.screencast?.containerPort
+        containerPort
+          ? setNoVnc(new NoVncService(onConnected, containerPort))
+          : throwMissingPort(routes)
       })
   }, [])
 

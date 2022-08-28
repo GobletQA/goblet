@@ -6,6 +6,11 @@ import { Recorder } from 'HKComponents/recorder/recorder'
 import { useNoVnc, useScreencastUrl } from 'HKHooks/screencast'
 import { ResizeHandle } from 'HKComponents/resize/resizeHandle'
 import { useResizeHooks } from 'HKComponents/resize/useResizeHooks'
+
+// TODO: figure out screen dims before this can be added
+// import { InlineCmdOutput } from 'HKComponents/cmdOutput/inlineCmdOutput'
+// <InlineCmdOutput activeFile={activeFile} />
+
 import {
   SCMain,
   LSurface,
@@ -75,9 +80,6 @@ export const Screencast = props => {
       />
       <RSurface
         hasToggle={false}
-        capitalize={false}
-        prefix={'Screencast'}
-        title={'Test Runner'}
         className={`screencast-canvas-surface`}
       >
         <Canvas

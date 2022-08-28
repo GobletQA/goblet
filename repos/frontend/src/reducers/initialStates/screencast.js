@@ -8,7 +8,6 @@ const { CATEGORIES, SCREENCAST_DEFAULTS, BROWSER_DEFAULTS, STORAGE } = Values
  * @returns {void}
  */
 export const screencast = {
-  [STORAGE.SC_PORT]: undefined,
   [CATEGORIES.SCREENCAST_STATUS]: {
     ...SCREENCAST_DEFAULTS,
   },

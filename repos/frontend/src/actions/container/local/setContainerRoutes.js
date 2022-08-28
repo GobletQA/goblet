@@ -34,11 +34,6 @@ export const setContainerRoutes = async (data=noOpObj) => {
     }, {})
 
 
-  const scPort = screencast?.containerPort
-  !scPort
-    ? throwRoutesError(routes, `screencast url`)
-    : await localStorage.setScPort(scPort)
-
   !api?.headers
     ? throwRoutesError(routes, `api route headers`)
     : await localStorage.setHeaders(api?.headers)
