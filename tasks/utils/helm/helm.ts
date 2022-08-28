@@ -23,12 +23,16 @@ export const helm = async (
   // Get the helm command, so we can add it before the namespace add
   const cmd = args.shift()
   
-  return await helmCmd([
+  const cmdArgs = [
     cmd,
-    // Add the active namespace where helm should run the command
-    ...contextArgs.slice(0,2),
     ...args,
-  ], opts)
+    // Add the active namespace where helm should run the command
+    ...contextArgs,
+  ]
+
+  // console.log([`helm`, ...cmdArgs].join(' '))
+
+  return await helmCmd(cmdArgs, opts, params)
 }
 
 

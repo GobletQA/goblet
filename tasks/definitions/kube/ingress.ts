@@ -21,17 +21,18 @@ import { helm } from '../../utils/helm/helm'
  *
  */
 const ingressAct = async ({ params }:{params:Record<any, any>}) => {
-  const { name, ingress, repo } = params
-
-  await helm.upgrade([
-    `--install`,
+  const { name, ingress, repo, create } = params
+  const cmdArgs = [
     name,
     ingress,
     `--repo`,
     repo,
-    `--create-namespace`
-  ])
+    `--install`
+  ]
 
+  create && cmdArgs.push(`--create-namespace`)
+
+  return await helm.upgrade(cmdArgs)
 }
 
 export const ingress = {
@@ -61,6 +62,12 @@ export const ingress = {
       alias: [`nsp`, `ns`],
       example: `--namespace custom-namespace`,
       description: `Custom namespace to use`,
+    },
+    create: {
+      type: `boolean`,
+      example: `--create`,
+      alias: [`new`, `cr`],
+      description: `Create the namespace if it does not exist`,
     }
   }
 }

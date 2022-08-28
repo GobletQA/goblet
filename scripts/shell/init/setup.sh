@@ -40,9 +40,6 @@ goblet_run_setup_tasks() {
 
   goblet_ensure_root
 
-  # Ensure devspace, kubectl, and helm are installed
-  # Also sets the correct kubernetes context and namespace
-  yarn make devspace
 
   # Setup the nginx ingress for the current namespace
   yarn kube ingress

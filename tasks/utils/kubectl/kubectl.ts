@@ -110,11 +110,17 @@ kubectl.ensureContext = resolveArgs<string>(async (
   args?:string|string[],
   params?:TTaskParams,
 ) => {
-  const { context, env } = params
+  const { context, env, log } = params
   const { GB_KUBE_CONTEXT } = loadEnvs({ env })
 
   const curContext = await kubectl.currentContext()
   const kubeContext = params.kubeContext || context || process.env.GB_KUBE_CONTEXT || GB_KUBE_CONTEXT || ``
+  const switchContexts = kubeContext && curContext !== kubeContext.trim()
+
+  if(log)
+    switchContexts
+      ? Logger.pair(`Using context ${kubeContext}`)
+      : Logger.pair(`Using context ${curContext}`)
 
   return kubeContext && curContext !== kubeContext.trim()
     ? await kubectl.useContext(kubeContext)
