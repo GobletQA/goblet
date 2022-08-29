@@ -76,7 +76,6 @@ EXPOSE $GB_NO_VNC_PORT
 RUN <<EOF
   set -eux;
   echo "#! /bin/sh" >> /entrypoint.sh
-  echo "" >> /entrypoint.sh
   echo "if [ \"\$GOBLET_DIND_SERVICE_PORT\" ]; then" >> /entrypoint.sh
   echo "  export GOBLET_DIND_SERVICE_HOST=\${GOBLET_DIND_SERVICE_HOST:-0.0.0.0}" >> /entrypoint.sh
   echo "  export GOBLET_DIND_SERVICE_PORT=\${GOBLET_DIND_SERVICE_PORT:-2573}" >> /entrypoint.sh
@@ -85,7 +84,6 @@ RUN <<EOF
   echo "  echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /entrypoint.sh
   echo "  yarn pull &" >> /entrypoint.sh
   echo "fi" >> /entrypoint.sh
-  echo "" >> /entrypoint.sh
   echo "exec \$@" >> /entrypoint.sh
   chmod a+x /entrypoint.sh
 EOF

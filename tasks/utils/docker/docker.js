@@ -20,11 +20,18 @@ const {
  */
 const buildX = (cmd, callback, cmdArgs=noPropArr, options=noOpObj, params=noOpObj) => {
   const { push } = params
-  
+
   // Add the build platform for the image
   const platformOpts = !push
     ? [ cmd, `--load`]
-    : [ cmd, `--push`, ...addPlatforms(options.platforms, push)]
+    : [
+        cmd,
+        `--push`,
+        ...addPlatforms(
+          [ ...(params?.platforms || noPropArr), ...(options?.platforms || noPropArr) ],
+          push
+        )
+      ]
 
   // Call the callback, adding the platform args array with the first arg, which should be an array
   // Then spread the other args to match calling the docker command
