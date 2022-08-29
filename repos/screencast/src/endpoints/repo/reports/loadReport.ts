@@ -1,6 +1,8 @@
 import { Request, Response } from 'express'
+import { htmlErr }from '@gobletqa/shared/express/htmlErr'
+import { htmlRes }from '@gobletqa/shared/express/htmlRes'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { htmlRes, htmlErr, asyncWrap }from '@gobletqa/shared/express'
+import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { getTestReportHtml }from '@GSC/utils/getTestReportHtml'
 import { loadTemplate }from '@gobletqa/shared/templates/loadTemplate'
 

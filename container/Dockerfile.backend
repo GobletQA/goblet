@@ -31,7 +31,7 @@ RUN turbo run build --filter=@gobletqa/backend && \
 
 # ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
-WORKDIR /usr/src/goblet/app
+WORKDIR /goblet/app
 ENV HOME=/root \
     DISPLAY=:0.0 \
     DEBUG=pw:api* \
@@ -57,7 +57,7 @@ COPY --from=goblet-builder /goblet/app/repos/backend/node_modules repos/backend/
 COPY --from=goblet-builder /goblet/app/repos/backend/tsconfig.json repos/backend/tsconfig.json
 COPY --from=goblet-builder /goblet/app/repos/shared/src/templates repos/backend/templates
 
-WORKDIR /usr/src/goblet/app/repos/backend
+WORKDIR /goblet/app/repos/backend
 ARG GB_BE_PORT=7005
 ARG GB_NO_VNC_PORT=26369
 ARG GB_DD_API_PROXY_PORT=2121

@@ -14,6 +14,8 @@
       "@GSC/Configs/*": ["configs/*"],
       "@GSC/Scripts": ["scripts"],
       "@GSC/Scripts/*": ["scripts/*"],
+      "@GSC/Templates": ["templates"],
+      "@GSC/Templates/*": ["templates/*"],
       "@GSC": ["src"],
       "@GSC/*": ["src/*"],
       "@GSCRoot": ["./"],

@@ -1,7 +1,8 @@
 import type { Response, Request } from 'express'
+import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { resError } from '@gobletqa/shared/express/resError'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 import { validateRefreshToken } from '@GBE/utils/validateRefreshToken'
-import { apiRes, resError } from '@gobletqa/shared/express'
 
 /**
  * Validates the required authentication information exists

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { apiRes } from '@gobletqa/shared/express'
+import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 
 /**

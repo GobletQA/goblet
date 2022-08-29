@@ -1,7 +1,7 @@
 import type { Response, Request } from 'express'
 
 import { hashString } from '@keg-hub/jsutils'
-import { apiRes } from '@gobletqa/shared/express'
+import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { generateTokens } from '@GBE/utils/generateTokens'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 

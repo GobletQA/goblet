@@ -2,7 +2,8 @@ import type { Response, Request } from 'express'
 
 import { noOpObj } from '@keg-hub/jsutils'
 import { actionBrowser } from '@GSC/libs/playwright'
-import { asyncWrap, apiRes } from '@gobletqa/shared/express'
+import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 

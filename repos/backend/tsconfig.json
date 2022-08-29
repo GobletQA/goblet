@@ -12,6 +12,8 @@
     "paths": {
       "@GBE/Configs": ["configs"],
       "@GBE/Configs/*": ["configs/*"],
+      "@GBE/Templates": ["templates"],
+      "@GBE/Templates/*": ["templates/*"],
       "@GBE": ["src"],
       "@GBE/*": ["src/*"],
       "@GBE/Root": ["./"],

@@ -1,6 +1,7 @@
 import type { Request, Response } from 'express'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { asyncWrap, apiRes } from '@gobletqa/shared/express'
+import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 
 /**
  * Responds with the parkin report html as string
