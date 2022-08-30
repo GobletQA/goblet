@@ -33,12 +33,12 @@ import {
 const handleUncaughtExp = (exitCode:number=0, err:Error) => {
   if(exitCode && err?.message?.includes(`connect ECONNREFUSED`)) {
       Logger.log([
-        ``,
+        `\n`,
         Logger.colors.red(`------ [Server Error] ------`),
         `Server could not be started properly.`,
         `Restart the server, or it not not run as expected.`,
         err.stack,
-        ``,
+        `\n`,
       ].join(`\n`))
 
     return true

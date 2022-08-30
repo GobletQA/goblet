@@ -1,10 +1,14 @@
 ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.23.4-focal
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
-# ---- Turbo Prune Stage ---- #
-FROM $IMAGE_FROM as goblet-pruner
-WORKDIR /goblet/app
+# ---- Turbo Stage ---- #
+FROM $IMAGE_FROM as goblet-turbo
 RUN yarn global add turbo
+# ---- End Stage ---- #
+
+# ---- Prune Stage ---- #
+FROM goblet-turbo as goblet-pruner
+WORKDIR /goblet/app
 COPY . .
 # The test-utils repo has a dependecy on the screencast repo
 # So by pruning the test-utils repo, we get the screencast repo
@@ -13,10 +17,11 @@ RUN turbo prune --docker --scope=@gobletqa/test-utils
 COPY ./configs ./out/full/configs
 COPY ./tasks ./out/full/tasks
 COPY ./gobletRoot.js ./out/full/gobletRoot.js
+COPY ./tsconfig.json ./out/full/tsconfig.json
 # ---- End Stage ---- #
 
 # ---- Install Stage ---- #
-FROM $IMAGE_FROM as goblet-installer
+FROM goblet-turbo as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 COPY --from=goblet-pruner /goblet/app/out/yarn.lock ./yarn.lock
@@ -24,11 +29,10 @@ RUN yarn install --frozen-lockfile
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
-FROM $IMAGE_FROM as goblet-builder
+FROM goblet-turbo as goblet-builder
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
-RUN yarn global add turbo
 RUN turbo run build --filter=@gobletqa/screencast && \
     yarn install --frozen-lockfile --production
 # ---- End Stage ---- #

@@ -1,18 +1,23 @@
 ARG GB_IMAGE_FROM=node:16.16.0-alpine3.16
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
-# ---- Prune App Stage ---- #
-FROM $IMAGE_FROM as goblet-pruner
-WORKDIR /goblet/app
+# ---- Turbo Stage ---- #
+FROM $IMAGE_FROM as goblet-turbo
 RUN yarn global add turbo
+# ---- End Stage ---- #
+
+# ---- Prune Stage ---- #
+FROM goblet-turbo as goblet-pruner
+WORKDIR /goblet/app
 COPY . .
 RUN turbo prune --docker --scope=@gobletqa/backend
 COPY ./configs ./out/full/configs
 COPY ./gobletRoot.js ./out/full/gobletRoot.js
+COPY ./tsconfig.json ./out/full/tsconfig.json
 # ---- End Stage ---- #
 
 # ---- Install Stage ---- #
-FROM $IMAGE_FROM as goblet-installer
+FROM goblet-turbo as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 COPY --from=goblet-pruner /goblet/app/out/yarn.lock ./yarn.lock
@@ -20,14 +25,13 @@ RUN yarn install --frozen-lockfile
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
-FROM $IMAGE_FROM as goblet-builder
+FROM goblet-turbo as goblet-builder
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app/repos/backend
 RUN yarn build:script
 WORKDIR /goblet/app
-RUN yarn global add turbo
 RUN turbo run build --filter=@gobletqa/backend && \
     yarn install --frozen-lockfile --production
 RUN <<EOF
