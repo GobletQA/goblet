@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 
 # Creates an nginx ingress on the same name-space as the goblet pods
 # Does not seem to be supported via devspace.yaml config file
