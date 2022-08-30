@@ -1,14 +1,25 @@
+import type { Express } from 'express'
+
 import fs from 'fs'
 import http from 'http'
 import https from 'https'
 import { getApp } from '@GSH/express/app'
-import { Express } from 'express'
 import { Logger } from '@keg-hub/cli-utils'
 
 type TCredentials = {
   ca?: string
   key?: string
   cert?: string
+}
+
+type TUncaughtExpCB = (exitCode:number, err:Error) => boolean
+
+type TServerListen = {
+  app:Express,
+  config:Record<any, any>,
+  exitListener?:boolean,
+  exitTimeout?:number,
+  uncaughtExpCB?:TUncaughtExpCB,
 }
 
 /**
@@ -24,7 +35,13 @@ const addExitTimeout = (exitTimeout:number, exitCode:number=0) => {
   }, exitTimeout)
 }
 
+/**
+ * Def method used if uncaughtExpCB is not passed in
+ */
+const handleUncaughtExp = (exitCode:number=0, err:Error) => false
 
+
+// handleUncaughtException
 /**
  * Adds exit listeners to allow graceful shutdown of the servers
  * @exits
@@ -36,9 +53,11 @@ const addExitTimeout = (exitTimeout:number, exitCode:number=0) => {
 const addExitListener = (
   insecureServer:http.Server,
   secureServer:https.Server,
-  exitTimeout:number=3000
+  exitTimeout:number=3000,
+  uncaughtExpCB:TUncaughtExpCB=handleUncaughtExp
 ) => {
-  let exitCalled
+  let exitCalled:boolean
+
   ;([
     `SIGINT`,
     `SIGTERM`,
@@ -47,18 +66,12 @@ const addExitListener = (
     `uncaughtException`,
   ]).map(type => {
     
-    process.on(type, (err) => {
-
-      if(exitCalled) return
-
+    process.on(type, (err:Error) => {
       const exitCode = type === `uncaughtException` ? 1 : 0
 
-      if(exitCode && err?.message?.includes(`connect ECONNREFUSED`))
-        return Logger.log([
-          `Server Error - server could not be started properly.`,
-          `Please restart the server, or it not server will not run as expected`,
-          err.stack
-        ].join(`\n`))
+      if(uncaughtExpCB(exitCode, err)) return
+
+      if(exitCalled) return
 
       const timeout = exitTimeout && addExitTimeout(exitTimeout, exitCode)
       timeout.unref()
@@ -72,9 +85,8 @@ const addExitListener = (
         secureServer.close(() => {
           secureClosed = true
           Logger.success(`[Goblet] Finished cleaning up secure server!`)
-          
           if(insecureServer && !insecureClosed) return
-          
+
           timeout && clearTimeout(timeout)
           process.exit(exitCode)
         })
@@ -108,7 +120,8 @@ const serverListen = (
   app:Express,
   serverConf:Record<any, any>,
   exitListener:boolean=true,
-  exitTimeout?:number
+  exitTimeout?:number,
+  uncaughtExpCB?:TUncaughtExpCB,
 ) => {
   const { securePort, port, host, name } = serverConf
   const creds = {
@@ -146,7 +159,8 @@ const serverListen = (
     addExitListener(
       insecureServer,
       secureServer,
-      exitTimeout || serverConf.exitTimeout
+      exitTimeout || serverConf.exitTimeout,
+      uncaughtExpCB
     )
 
   return { insecureServer, secureServer, app }
@@ -155,18 +169,19 @@ const serverListen = (
 
 /**
  * Sets up a server based on config settings
- * @param {Object} app - Express app to create the server from
- * @param {Object} config - Goblet Server config
- * @param {boolean} [exitListen] - Add exit listener to the servers
- * @param {number} [exitTimeout] - Amount of time to wait until force exiting the process
- *
- * @returns {Object} - Response from server setup method
  */
-export const setupServerListen = (
-  app:Express,
-  config:Record<any, any>,
-  exitListener?:boolean,
-  exitTimeout?:number
-) => {
-  return serverListen(app || getApp(), config, exitListener, exitTimeout)
+export const setupServerListen = ({
+  app,
+  config,
+  exitListener,
+  exitTimeout,
+  uncaughtExpCB=handleUncaughtExp,
+}: TServerListen) => {
+  return serverListen(
+    app || getApp(),
+    config,
+    exitListener,
+    exitTimeout,
+    uncaughtExpCB,
+  )
 }

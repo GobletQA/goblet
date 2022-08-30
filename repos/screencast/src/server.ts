@@ -38,9 +38,9 @@ const initApi = async () => {
   const {
     secureServer,
     insecureServer,
-  } = setupServerListen(app, {
-    name: `Screencast`,
-    ...app.locals.config.server
+  } = setupServerListen({
+    app,
+    config: {name: `Screencast`, ...app.locals.config.server}
   })
 
   const server = secureServer || insecureServer
