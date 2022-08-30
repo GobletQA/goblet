@@ -1,14 +1,11 @@
-const path = require('path')
-const { scriptsDir } = require('../../paths')
-const { Logger } = require('@keg-hub/cli-utils')
-const { docker } = require('../../utils/docker/docker')
-const { loadEnvs } = require('../../utils/envs/loadEnvs')
-const { getNpmToken } = require('../../utils/envs/getNpmToken')
-const { getLongContext } = require('../../utils/helpers/contexts')
-const { resolveImgName } = require('../../utils/docker/resolveImgName')
-const { dockerLogin } = require(path.join(scriptsDir, 'js/dockerLogin'))
-
-
+import path from 'path'
+import { scriptsDir } from '../../paths'
+import { Logger } from '@keg-hub/cli-utils'
+import { docker } from '../../utils/docker/docker'
+import { loadEnvs } from '../../utils/envs/loadEnvs'
+import { getNpmToken } from '../../utils/envs/getNpmToken'
+import { getLongContext } from '../../utils/helpers/contexts'
+import { resolveImgName } from '../../utils/docker/resolveImgName'
 
 /**
  * Helper to parse the context, image, and tag params
@@ -74,6 +71,8 @@ const docPull = async (args) => {
   // Ensure we are logged into docker
   // Uses the images name to get the registry url to log into it
   const registryUrl = resolvedName.indexOf(`/`) ? resolvedName.split('/').shift() : ``
+
+  const { dockerLogin } = await import(path.join(scriptsDir, 'js/dockerLogin.js'))
   await dockerLogin(token, registryUrl)
 
   // Ensure the correct tag it added to the image
@@ -93,38 +92,36 @@ const docPull = async (args) => {
     : Logger.success(`Image pull succeeded\n`)
 }
 
-module.exports = {
-  pull: {
-    name: 'pull',
-    action: docPull,
-    alias: [`pul`, `pl`],
-    options: {
-      context: {
-        example: `--context proxy`,
-        alias: ['ctx', `name`, `type`],
-        description: `Name of the sub-repo image to pull and optionally its tag seperated by a ":"`,
-      },
-      tag: {
-        alias: ['tg'],
-        type: `string`,
-        example: `--tag package`,
-        allowed: [`package`, `branch`, `commit`, `values`, `env`, `node`],
-        description: 'Tag name of the image to pull, overridden by context',
-      },
-      image: {
-        alias: ['img'],
-        example: `--img my-image`,
-        description: 'Name of the docker image to pull, overridden by context',
-      },
-      registry: {
-        alias: ['reg'],
-        example: '--registry ghcr.io',
-        description: 'Docker Registry url to log into, defaults to DOCKER_REGISTRY env',
-      },
-      log: {
-        type: 'boolean',
-        description: 'Log command before they are build',
-      },
+export const pull = {
+  name: 'pull',
+  action: docPull,
+  alias: [`pul`, `pl`],
+  options: {
+    context: {
+      example: `--context proxy`,
+      alias: ['ctx', `name`, `type`],
+      description: `Name of the sub-repo image to pull and optionally its tag seperated by a ":"`,
+    },
+    tag: {
+      alias: ['tg'],
+      type: `string`,
+      example: `--tag package`,
+      allowed: [`package`, `branch`, `commit`, `values`, `env`, `node`],
+      description: 'Tag name of the image to pull, overridden by context',
+    },
+    image: {
+      alias: ['img'],
+      example: `--img my-image`,
+      description: 'Name of the docker image to pull, overridden by context',
+    },
+    registry: {
+      alias: ['reg'],
+      example: '--registry ghcr.io',
+      description: 'Docker Registry url to log into, defaults to DOCKER_REGISTRY env',
+    },
+    log: {
+      type: 'boolean',
+      description: 'Log command before they are build',
     },
   },
 }

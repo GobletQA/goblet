@@ -1,7 +1,7 @@
-const { Logger } = require('@keg-hub/cli-utils')
-const { docker } = require('../../utils/docker/docker')
-const { loadEnvs } = require('../../utils/envs/loadEnvs')
-const { getNpmToken } = require('../../utils/envs/getNpmToken')
+import { Logger } from '@keg-hub/cli-utils'
+import { docker } from '../../utils/docker/docker'
+import { loadEnvs } from '../../utils/envs/loadEnvs'
+import { getNpmToken } from '../../utils/envs/getNpmToken'
 
 
 /**
@@ -30,26 +30,24 @@ const docLogin = async (args) => {
   return output
 }
 
-module.exports = {
-  login: {
-    name: 'login',
-    action: docLogin,
-    alias: [`lgn`, `auth`],
-    options: {
-      registry: {
-        alias: ['reg'],
-        example: '--registry ghcr.io',
-        description: 'Docker Registry url to log into, defaults to DOCKER_REGISTRY env',
-      },
-      token: {
-        alias: ['tok'],
-        example: '--token ****',
-        description: `Custom login token for the active git user, defaults to resolved NPM token`,
-      },
-      log: {
-        type: 'boolean',
-        description: 'Log command before they are build',
-      },
+export const login = {
+  name: 'login',
+  action: docLogin,
+  alias: [`lgn`, `auth`],
+  options: {
+    registry: {
+      alias: ['reg'],
+      example: '--registry ghcr.io',
+      description: 'Docker Registry url to log into, defaults to DOCKER_REGISTRY env',
+    },
+    token: {
+      alias: ['tok'],
+      example: '--token ****',
+      description: `Custom login token for the active git user, defaults to resolved NPM token`,
+    },
+    log: {
+      type: 'boolean',
+      description: 'Log command before they are build',
     },
   },
 }
