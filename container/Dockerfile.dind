@@ -1,6 +1,7 @@
 ARG GB_IMAGE_FROM=ubuntu:20.04
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
+# ---- Build docker-modprobe stage ---- #
 FROM $IMAGE_FROM as goblet-modprobe
 RUN <<EOF
   set -eux;
@@ -18,8 +19,9 @@ RUN <<EOF
   echo "exec modprobe \"\$@\"" >> $MODPROBE
   chmod +x $MODPROBE
 EOF
+# ---- End Stage ---- #
 
-
+# ---- Download docker stage ---- #
 FROM $IMAGE_FROM as goblet-docker
 WORKDIR /
 ARG DOCKER_VERSION=20.10.16
@@ -66,8 +68,9 @@ RUN <<EOF
     exit 1;
   fi
 EOF
+# ---- End Stage ---- #
 
-
+# ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
 WORKDIR /
 ARG GB_DD_API_PROXY_PORT=2121
@@ -128,13 +131,7 @@ RUN <<EOF
   rm docker.tgz
   dockerd --version
   docker --version
-  # Install node and yarn
-  # curl -sL https://deb.nodesource.com/setup_16.x | bash -
-  # apt-get install -y nodejs
-  # npm install -g yarn
-
   chmod a+x /entrypoint.sh
-
   # Ensure the folder exists where caddy stores files
   mkdir -p $GB_DD_CADDY_REMOTE_DIR
 EOF

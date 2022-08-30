@@ -11,7 +11,7 @@ const loopEnsure = (mergedConfig:TPartialConf, config:TPartialConf) => {
     ? mergedConfig
     : Object.entries(mergedConfig)
       .reduce((acc, [key, value]) => {
-        acc[key] = exists(value) ? value : tracker[key]
+        acc[key] = exists(value) ? value : tracker?.[key]
 
         if(key === 'options' && isEmptyColl(acc[key]))
           acc[key] = {socketPath: '/var/run/docker.sock'}
