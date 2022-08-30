@@ -1,25 +1,10 @@
 import { clean as cleanTask } from './clean'
 import { getNpmToken } from '../../utils/envs'
-import { exists, isBool, isStr } from '@keg-hub/jsutils'
 import { devspace } from '../../utils/devspace/devspace'
 import { getLongContext } from '../../utils/helpers/contexts'
+import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
 import { getDeployments } from '../../utils/devspace/getDeployments'
 
-/**
- * Set a custom pull policy for all of the docker images used
- * Set pull to `false || never` to use a locally built image
- */
-const setPullPolicy = (pull) => {
-  if (isBool(pull))
-    return (process.env.IMAGE_PULL_POLICY = pull === false ? `Never` : `Always`)
-
-  if (!exists(pull) || !isStr(pull)) return
-
-  const compare = pull.toLowerCase()
-  const policy =
-    compare === 'present' || compare === 'exists' ? `IfNotPresent` : undefined
-  exists(policy) && (process.env.IMAGE_PULL_POLICY = policy)
-}
 
 const setStartEnvs = (params) => {
   const { install, pull, build } = params

@@ -118,11 +118,16 @@ kubectl.ensureContext = resolveArgs<string>(async (
   const switchContexts = kubeContext && curContext !== kubeContext.trim()
 
   if(log)
-    switchContexts
-      ? Logger.pair(`Using context ${kubeContext}`)
-      : Logger.pair(`Using context ${curContext}`)
+    !switchContexts
+      ? Logger.pair(`Using context:`, curContext)
+      : Logger.log(
+          `Switching kube-context`,
+          Logger.colors.warn(curContext),
+          `to`,
+          Logger.colors.success(kubeContext)
+        )
 
-  return kubeContext && curContext !== kubeContext.trim()
+  return switchContexts
     ? await kubectl.useContext(kubeContext)
     : curContext
 })

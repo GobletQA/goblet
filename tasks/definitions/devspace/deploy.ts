@@ -1,5 +1,6 @@
 import { getNpmToken } from '../../utils/envs'
 import { devspace } from '../../utils/devspace/devspace'
+import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
 
 /**
  * Start devspace environment
@@ -14,6 +15,10 @@ import { devspace } from '../../utils/devspace/devspace'
  * @returns {void}
  */
 const deployAct = async ({ params }) => {
+  const { pull } = params
+
+  setPullPolicy(pull)
+
   getNpmToken()
   return await devspace.deploy(params)
 }
@@ -25,17 +30,28 @@ export const deploy = {
   description: 'Calls the yarn devspace deploy command',
   options: {
     context: {
-      type: 'array',
+      type: `array`,
       example: `--context app1,app2`,
-      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+      alias: [`ctx`, `name`],
       description: `Contexts or names of apps to be deployed`,
     },
+    skip: {
+      type: `array`,
+      alias: [`bypass`],
+      example: `--skip proxy`,
+      description: `Contexts or names of apps NOT to be started`,
+    },
     devspace: {
-      description: 'Optional filepath for devspace.yaml file',
+      alias: [`dsp`, `ds`, `dev`],
+      description: `Optional filepath for devspace.yaml file`,
+    },
+    force: {
+      type: `boolean`,
+      description: `Force deployments`,
     },
     log: {
-      type: 'boolean',
-      description: 'Log the devspace command to be run',
+      type: `boolean`,
+      description: `Log the devspace command to be run`,
     },
   },
 }

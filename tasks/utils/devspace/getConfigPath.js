@@ -17,12 +17,13 @@ const resolveFromDSParam = (params) => {
   !isStr(devspace)
     && error.throwError(`The devspace option ${devspace} is not a valid config path`)
 
-  // If the dsValue is the same as devspace, then consider it a path
-  // If it's different, then it's a context we can use to find the devspace config
-  const dsValue = isStr(devspace) ? getLongContext(devspace, devspace) : devspace
-  const altConfig = dsValue === devspace
-    ? devspace
-    : getContextValue(dsValue, envs, `DEVSPACE_CONFIG`)
+  const lgCtx = getLongContext(devspace)
+
+  // If no long context, then consider passed in devspace param a path
+  if(!lgCtx) return resolveLocalPath(devspace)
+  
+  // Get the context value path from the long context
+  const altConfig = getContextValue(lgCtx, envs, `DEVSPACE_CONFIG`)
 
   return !isStr(altConfig)
     ? error.throwError(`Could not find devspace config at path ${devspace}`)

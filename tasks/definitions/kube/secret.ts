@@ -138,13 +138,21 @@ export const secret = {
   example: 'yarn task devspace secret <options>',
   description: 'Calls the kubectl create secret command',
   options: {
-    type: {
-      description: 'Name of the command to be run from the container/devspace.yml file',
-    },
     name: {
       alias: [`nm`],
       example: `--name my-secret`,
       description: `Name of the secret, uses key when name is not set`,
+    },
+    namespace: {
+      alias: [`nsp`, `ns`],
+      example: `--namespace my-namespace`,
+      description: `Namespace to use when creating the secret`,
+    },
+    context: {
+      alias: [`kube-context`, `kc`, `ctx`],
+      example: `--context my-context`,
+      env: `GB_KUBE_CONTEXT`,
+      description: `Kubernetes context to use when creating the secret`,
     },
     keyvalue: {
       alias: [`kv`],
@@ -176,9 +184,12 @@ export const secret = {
       example: `--files key1:/relative/path/to/secret/file1,key2:/relative/path/to/secret/file2`,
       description: `Key value pairs for setting multiple secrets from files separated by comma. Overrides all other options`,
     },
+    type: {
+      description: `Type of kubernetes secret to create`,
+    },
     log: {
       type: `boolean`,
-      description: `Log the devspace command to be run`,
+      description: `Log the commands to be run`,
     },
   },
 }

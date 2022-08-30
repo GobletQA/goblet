@@ -1,4 +1,28 @@
+import { cert } from './cert'
 import { helm } from '../../utils/helm/helm'
+
+
+const createIngress = async (params:Record<any, any>) => {
+  const { name, ingress, repo, create } = params
+  const cmdArgs = [
+    name,
+    ingress,
+    `--repo`,
+    repo,
+    `--install`
+  ]
+
+  create && cmdArgs.push(`--create-namespace`)
+
+  return await helm.upgrade(cmdArgs)
+}
+
+const createCertManager = async (args:Record<any, any>) => {
+  return await cert.action({
+    ...args,
+    params: { ...args.params }
+  })
+}
 
 /**
  * Creates an nginx ingress on the same name-space as the goblet pods
@@ -20,19 +44,12 @@ import { helm } from '../../utils/helm/helm'
  * --namespace gb-local
  *
  */
-const ingressAct = async ({ params }:{params:Record<any, any>}) => {
-  const { name, ingress, repo, create } = params
-  const cmdArgs = [
-    name,
-    ingress,
-    `--repo`,
-    repo,
-    `--install`
-  ]
+const ingressAct = async (args:Record<any, any>) => {
+  const { params } = args
 
-  create && cmdArgs.push(`--create-namespace`)
-
-  return await helm.upgrade(cmdArgs)
+  const { certs } = params as Record<any, any>
+  await createIngress(params)
+  certs && createCertManager(args)
 }
 
 export const ingress = {
@@ -68,6 +85,14 @@ export const ingress = {
       example: `--create`,
       alias: [`new`, `cr`],
       description: `Create the namespace if it does not exist`,
-    }
+    },
+    cert: {
+      type: `boolean`,
+      description: `Create the kubernetes resource for the cert-manager`,
+    },
+    log: {
+      type: `boolean`,
+      description: `Log the commands to be run`,
+    },
   }
 }

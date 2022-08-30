@@ -2,6 +2,7 @@
 import '../resolveRoot'
 import type { Express } from 'express'
 import { getApp } from '@gobletqa/shared/express/app'
+import { AUTH_BYPASS_ROUTES } from '@GBE/constants'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
@@ -33,7 +34,7 @@ export const initApi = async () => {
   setupLoggerReq(app)
   setupBlacklist(app)
   setupCors(app)
-  setupJWT(app, ['/auth/validate'])
+  setupJWT(app, AUTH_BYPASS_ROUTES)
   setupServer(app, false, false, false)
   setupRouters(app)
   setupStatic(app)

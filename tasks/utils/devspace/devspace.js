@@ -68,7 +68,18 @@ const devspace = async (cmd, params = noOpObj) => {
  *
  * @returns {Promise<*>} - Response from the devspace command
  */
-devspace.deploy = async (params = noOpObj) => (await devspace([`deploy`], params))
+devspace.deploy = async (params = noOpObj) => {
+  const { skip, force, ...cmdParams } = params
+  const cmdArgs = []
+
+  /**
+   * Check the context and skip arrays for which apps to deploy
+   */
+  const deployments = getDeployments(cmdParams.context, skip, params.env)
+  deployments && cmdArgs.push(`--deployments`, deployments)
+
+  await devspace([`deploy`, ...cmdArgs], cmdParams)
+}
 
 /**
  * Runs the devspace start command
@@ -202,9 +213,12 @@ devspace.sync = async (params = noOpObj) => {
  *
  * @returns {Promise<*>} - Response from the devspace command
  */
-devspace.use = async (params = noOpObj) => {
-  const [__, namespace] = getDevspaceContext(params)
-  return await devspace([`use`, `namespace`, namespace], params)
+devspace.use = async (params = noOpObj, opts = noOpObj) => {
+  const types = opts?.types || [`namespace`, `context`]
+
+  const [__, namespace, ___, context] = getDevspaceContext(params)
+  types.includes(`context`) && await devspace([`use`, `context`, context], params)
+  types.includes(`namespace`) && await devspace([`use`, `namespace`, namespace], params)
 }
 
 
