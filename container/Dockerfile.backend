@@ -24,18 +24,21 @@ FROM $IMAGE_FROM as goblet-builder
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
+WORKDIR /goblet/app/repos/backend
+RUN yarn build:script
+WORKDIR /goblet/app
 RUN yarn global add turbo
 RUN turbo run build --filter=@gobletqa/backend && \
     yarn install --frozen-lockfile --production
 RUN <<EOF
-  mkdir -p /goblet-runner/repos/backend
+  mkdir -p /goblet-runner/repos/backend/scripts
   cp -R /goblet/app/node_modules /goblet-runner/node_modules
   cp -R /goblet/app/repos/backend/dist /goblet-runner/repos/backend/dist
-  cp -R /goblet/app/repos/backend/scripts /goblet-runner/repos/backend/scripts
   cp -R /goblet/app/repos/shared/src/templates /goblet-runner/repos/backend/templates
   cp -R /goblet/app/repos/backend/node_modules /goblet-runner/repos/backend/node_modules
   cp -R /goblet/app/repos/backend/package.json /goblet-runner/repos/backend/package.json
   cp -R /goblet/app/repos/backend/tsconfig.json /goblet-runner/repos/backend/tsconfig.json
+  cp -R /goblet/app/repos/backend/dist/pullImages.ts /goblet-runner/repos/backend/scripts/pullImages.ts
 EOF
 # ---- End Stage ---- #
 

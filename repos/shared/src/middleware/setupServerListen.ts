@@ -47,10 +47,19 @@ const addExitListener = (
     `uncaughtException`,
   ]).map(type => {
     
-    process.on(type, () => {
+    process.on(type, (err) => {
+
       if(exitCalled) return
 
       const exitCode = type === `uncaughtException` ? 1 : 0
+
+      if(exitCode && err?.message?.includes(`connect ECONNREFUSED`))
+        return Logger.log([
+          `Server Error - server could not be started properly.`,
+          `Please restart the server, or it not server will not run as expected`,
+          err.stack
+        ].join(`\n`))
+
       const timeout = exitTimeout && addExitTimeout(exitTimeout, exitCode)
       timeout.unref()
 
