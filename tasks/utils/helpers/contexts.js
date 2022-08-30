@@ -99,8 +99,8 @@ const getDeploymentOpts = (env, envs) => {
       acc.activeMap[deployVal] = `${prefix}_ACTIVE`
       acc.labelSelectors[ref] = `app.kubernetes.io/component=${deployVal}`
 
-      const volEnv = `${prefix}_DOC_VOLUMES`
-      envs[volEnv] && (acc.volumes[ref] = volEnv)
+      const volEnv = envs[`${prefix}_DOC_VOLUMES`]
+      volEnv && (acc.volumes[ref] = volEnv)
 
       return acc
     },
@@ -182,7 +182,9 @@ const getLabelContext = (context, env, fallback) => {
  */
 const getVolumeContext = (context, env, fallback) => {
   const { volumes } = getDeploymentOpts(env)
-  return resolveContext(context, volumes, fallback)
+  const volCtx = resolveContext(context, volumes, fallback)
+
+  return volCtx
 }
 
 

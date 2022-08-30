@@ -1,5 +1,4 @@
 import { appRoot } from '../../paths'
-import { noOpArr } from '@keg-hub/jsutils'
 import { docker } from '../../utils/docker/docker'
 import { error, Logger } from '@keg-hub/cli-utils'
 import { loadEnvs } from '../../utils/envs/loadEnvs'
@@ -7,6 +6,7 @@ import { getNpmToken } from '../../utils/envs/getNpmToken'
 import { addRunEnvs } from '../../utils/docker/addRunEnvs'
 import { addRunPorts } from '../../utils/docker/addRunPorts'
 import { getLongContext } from '../../utils/helpers/contexts'
+import { noOpArr, noOpObj, ensureArr } from '@keg-hub/jsutils'
 import { addRunVolumes } from '../../utils/docker/addRunVolumes'
 import { getTagOptions } from '../../utils/docker/getTagOptions'
 import { resolveImgName } from '../../utils/docker/resolveImgName'
@@ -47,17 +47,33 @@ const getImgToRun = async (params, docFileCtx, envs) => {
  *
  * @returns {Array} - Generated docker cli run command arguments
  */
-const getDockerRunArgs = ({ remove, attach, name, pull }) => {
+const getDockerRunArgs = ({ remove, attach, name, pull, privileged }) => {
   const args = []
   remove && args.push(`--rm`)
   attach && args.push(`-it`)
   name && args.push(`--name`, name)
+  privileged && args.push(`--privileged`)
 
   ;([`missing`, `never`, `always`]).includes(pull)
     ? args.push(`--pull=${pull}`)
     : args.push(`--pull=never`)
 
   return args
+}
+
+
+const getParamEnvs = ({ envs }) => {
+  return !envs
+    ? noOpObj
+    : (ensureArr(envs) as string[]).reduce((acc:Record<string, string>, item:string) => {
+        if(!item.includes(`:`))
+          error.throwError(`Missing key/value separator ":" for env: ${item}`)
+
+        const [key, val] = item.split(`:`)
+        acc[key] = val
+
+        return acc
+      }, {})
 }
 
 /**
@@ -78,7 +94,7 @@ const runImg = async (args) => {
 
   const envs = loadEnvs({ env })
   const token = getNpmToken()
-  const allEnvs = { ...envs, NPM_TOKEN: token }
+  const allEnvs = { ...envs, NPM_TOKEN: token, ...getParamEnvs(params) }
 
   // Get the context for the docker image being run
   const docFileCtx = getLongContext(context, 'app')
@@ -105,71 +121,80 @@ const runImg = async (args) => {
 export const run = {
   name: 'run',
   action: runImg,
-  alias: ['rn', 'rnu'],
+  alias: [`rn`, `rnu`],
   options: {
     context: {
       example: `--context proxy`,
-      alias: ['ctx', `name`, `type`],
+      alias: [`ctx`, `name`, `type`],
       description: `Context or name to use when resolving the Dockerfile to built`,
     },
     cmd: {
-      alias: ['command', 'cdm', 'cd'],
-      example: '--cmd "ls -ls /goblet/app"',
+      alias: [`command`, `cdm`, `cd`],
+      example: `--cmd "ls -ls /goblet/app"`,
       description: `Override the default command of the docker image`,
     },
     ports: {
       default: [],
-      type: 'array',
-      alias: ['pt', 'port'],
-      description: 'Bind a local port to the docker containers port',
+      type: `array`,
+      alias: [`pt`, `port`],
+      description: `Bind a local port to the docker containers port`,
     },
     attach: {
       default: true,
-      type: 'boolean',
-      alias: ['it', 'att'],
+      type: `boolean`,
+      alias: [`it`, `att`],
       description:
-        'Attach to the stdio of the running container, same as -it option of the docker cli',
+        `Attach to the stdio of the running container, same as -it option of the docker cli`,
     },
     remove: {
       default: true,
-      alias: ['rm'],
-      type: 'boolean',
+      alias: [`rm`],
+      type: `boolean`,
       description:
-        'Automatically remove the container once it is stopped, same as --rm option of the docker cli',
+        `Automatically remove the container once it is stopped, same as --rm option of the docker cli`,
     },
     pull: {
-      alias: ['pl'],
+      alias: [`pl`],
       example: `--pull`,
       default: `never`,
-      description: 'Image pull policy passed to the docker cli',
+      description: `Image pull policy passed to the docker cli`,
     },
     name: {
-      alias: ['nm'],
+      alias: [`nm`],
       example: `--name my-container`,
-      description: 'Name of the container being run',
+      description: `Name of the container being run`,
     },
     volumes: {
-      type: 'array',
-      alias: ['vol', 'vols'],
+      type: `array`,
+      alias: [`vol`, `vols`],
       example: `--volumes /local/1/path:/remote/1/path,/local/2/path:/remote/2/path`,
-      description: 'Volumes to mount to the running container separated by a comma',
+      description: `Volumes to mount to the running container separated by a comma`,
     },
     image: {
-      alias: ['img', 'igm', 'im'],
+      alias: [`img`, `igm`, `im`],
       example: `--image backend`,
-      description:
-        'Name of the image to be run, can also include the tag separated by a :',
+      description: `Name of the image to be run, can also include the tag separated by a :`,
     },
     tag: {
-      alias: ['tg', 'tga'],
+      alias: [`tg`, `tga`],
       default: `values`,
       example: `--tag package`,
-      description:
-        'Name of the tag of the image to be run if separate from the defined image',
+      description: `Name of the tag of the image to be run if separate from the defined image`,
+    },
+    privileged: {
+      type: `boolean`,
+      alias: [`priv`, `prv`],
+      example: `--privileged`,
+      description: `Run the docker images with the --privileged option`,
+    },
+    envs: {
+      type: `array`,
+      example: `--envs key1:value1,key2:value2`,
+      description: `Custom envs to pass to the image. Override the default from values file`,
     },
     log: {
-      type: 'boolean',
-      description: 'Log command before they are build',
+      type: `boolean`,
+      description: `Log command before they are build`,
     },
   },
 }

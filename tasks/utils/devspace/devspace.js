@@ -77,6 +77,7 @@ devspace.deploy = async (params = noOpObj) => {
    */
   const deployments = getDeployments(cmdParams.context, skip, params.env)
   deployments && cmdArgs.push(`--deployments`, deployments)
+  force && cmdArgs.push(`--force-deploy`)
 
   await devspace([`deploy`, ...cmdArgs], cmdParams)
 }

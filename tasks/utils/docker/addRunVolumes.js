@@ -1,4 +1,3 @@
-const { homeDir, appRoot } = require('../../paths')
 const { getVolumeContext } = require('../helpers/contexts')
 const { ensureArr, flatUnion } = require('@keg-hub/jsutils')
 const { resolveLocalPath } = require('../helpers/resolveLocalPath')
