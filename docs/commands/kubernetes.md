@@ -14,6 +14,8 @@
   * `devspace use context lke70246-ctx`
 * Ensure correct namespace is used - should be done automatically via devspace
   * `devspace use namespace gb-production`
+* To set both context and namespace for an environment
+  * `yarn kube set <environment>` - environment should be one of `local`, `production`, etc...
 * Set the default namespace
   * `kubectl config set-context --current --namespace=gb-production`
 * Deploy to production kubernetes

@@ -16,3 +16,7 @@ helm install gb-cert-manager cert-manager/cert-manager --namespace cert-manager 
 
 # Get the pod to validate it was deployed
 kubectl get pods --namespace cert-manager
+
+
+# Create an issuer
+kubectl create --edit -f https://raw.githubusercontent.com/cert-manager/website/master/content/docs/tutorials/acme/example/production-issuer.yaml

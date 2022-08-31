@@ -19,6 +19,14 @@ module.exports = {
     },
   },
 
+  // TODO: move this config to values.yml files
+  // Then use it to blacklist and whitelist envs
+  envs: {
+    whitelist: [],
+    blacklist: [
+      `GB_CERT_ISSUER`
+    ]
+  },
   tasks: {
     /**
     * ENV prefix to append to all dynamically set envs durning lookup

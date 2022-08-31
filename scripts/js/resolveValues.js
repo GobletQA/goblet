@@ -6,6 +6,19 @@ const appRoot = path.join(__dirname, `../../`)
 
 const package = require(path.join(appRoot, './package.json'))
 const { getNpmToken } = require(path.join(appRoot, './tasks/utils/envs/getNpmToken.js'))
+const { loadConfigs } = require('@keg-hub/parse-config')
+
+
+const resolveConfig = (config=noOpObj) => {
+  return loadConfigs(deepMerge({
+    noEnv: true,
+    ymlPath: '',
+    name: `goblet`,
+    mergeStrategy: `unique`,
+    locations: [appRoot],
+    env: process.env.NODE_ENV || `local`,
+  }, config))
+}
 
 /**
  * Gets a value form the values.yml files from passed in arguments
@@ -33,5 +46,6 @@ const resolveNPMToken = () => {
 
 module.exports = {
   resolveNPMToken,
-  resolveValues
+  resolveValues,
+  resolveConfig,
 }
