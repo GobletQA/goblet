@@ -34,9 +34,10 @@ const addDefaultArgs = async (cmd, params) => {
   const defArgs = [
     `--config`,
     getConfigPath(params),
-    `--profile`,
-    params.profile || params.env,
   ]
+
+  const profile = params.profile || params.env
+  profile && defArgs.push(`--profile`, profile)
 
   /** Add the default arguments at the found insertIdx */
   cmdArr.splice(insertIdx, 0, ...contextArgs, ...defArgs)
@@ -160,7 +161,9 @@ devspace.run = async (params = noOpObj) => (await devspace([`run`, params.cmd], 
  * @return {boolean} - True if the pod is running
  */
 devspace.running = async (params = noOpObj) => {
-  await devspace.use(params)
+  const [__, namespace, ___, context] = getDevspaceContext(params)
+  await devspace.use({ namespace, context })
+
   const pod = await kubectl.getPod({ ...params, context: 'app' })
 
   return get(pod, `status.phase`) === `Running` ? pod : false
@@ -214,14 +217,11 @@ devspace.sync = async (params = noOpObj) => {
  *
  * @returns {Promise<*>} - Response from the devspace command
  */
-devspace.use = async (params = noOpObj, opts = noOpObj) => {
-  const types = opts?.types || [`namespace`, `context`]
-
-  const [__, namespace, ___, context] = getDevspaceContext(params)
-  types.includes(`context`) && await devspace([`use`, `context`, context], params)
-  types.includes(`namespace`) && await devspace([`use`, `namespace`, namespace], params)
+devspace.use = async (params) => {
+  const { namespace, context } = params
+  context && await devspace([`use`, `context`, context], params)
+  namespace && await devspace([`use`, `namespace`, namespace], params)
 }
-
 
 module.exports = {
   devspace,
