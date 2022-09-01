@@ -9,17 +9,25 @@ import { kubectl } from '../../utils/kubectl/kubectl'
 
 
 const saveTempFile = (value:string) => {
-  const tempFileLoc = path.join(tempDir, `${uuid()}.txt`)
+  const tempFileLoc = path.join(tempDir, `${uuid()}.yaml`)
   writeFileSync(tempFileLoc, value)
 
   return tempFileLoc
 }
 
+/**
+ * Urls for interacting with letsencrypt and creating certs
+ * Keys represent
+ */
 const urls = {
   production: `https://acme-v02.api.letsencrypt.org/directory`,
   staging: `https://acme-staging-v02.api.letsencrypt.org/directory`,
 }
 
+/**
+ * Generates a config file for a ClusterIssuer resource
+ * Requires cert-manager be installed
+ */
 const getClusterIssuer = ({ env, name, email }:Record<any, any>) => `
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -117,11 +125,15 @@ const certAct = async (args:Record<any, any>) => {
   )
 
   const issuerLoc = params.issuerLoc || await buildIssuer(params)
-  
-  log  && Logger.pair(`Creating kubernetes issuer`, issuerLoc)
-  await kubectl.create([`-f`, issuerLoc], { ...params, throwErr: true })
 
-  rmSync(issuerLoc)
+  try {
+    log  && Logger.pair(`Creating kubernetes issuer`, issuerLoc)
+    await kubectl.create([`-f`, issuerLoc], { ...params, throwErr: true })
+  }
+  catch(err){
+    rmSync(issuerLoc)
+    error.throwError(err)
+  }
 
   log && Logger.success(`Successfully deployed Cert-Manager`)
 
@@ -176,6 +188,7 @@ export const cert = {
       description: `Email address to use for cert validation`,
     },
     clean: {
+      alias: [`cl`],
       type: `boolean`,
       description: `Remove the deploy helm release before installing`,
     },

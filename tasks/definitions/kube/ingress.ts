@@ -17,13 +17,6 @@ const createIngress = async (params:Record<any, any>) => {
   return await helm.upgrade(cmdArgs)
 }
 
-const createCertManager = async (args:Record<any, any>) => {
-  return await cert.action({
-    ...args,
-    params: { ...args.params }
-  })
-}
-
 /**
  * Creates an nginx ingress on the same name-space as the goblet pods
  * Does not seem to be supported via devspace.yaml config file
@@ -49,7 +42,6 @@ const ingressAct = async (args:Record<any, any>) => {
 
   const { certs } = params as Record<any, any>
   await createIngress(params)
-  certs && createCertManager(args)
 }
 
 export const ingress = {
@@ -85,10 +77,6 @@ export const ingress = {
       example: `--create`,
       alias: [`new`, `cr`],
       description: `Create the namespace if it does not exist`,
-    },
-    cert: {
-      type: `boolean`,
-      description: `Create the kubernetes resource for the cert-manager`,
     },
     log: {
       type: `boolean`,

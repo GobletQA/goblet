@@ -25,6 +25,8 @@
   * `kubectl get clusterissuers.cert-manager.io`
 * Describe a cluster issuer
   * `kubectl describe clusterissuers.cert-manager.io <name>`
+* Delete a cluster issure
+  * `kubectl delete clusterissuers.cert-manager.io <name>`
 
 ## Production
 * Ensure correct context is used - should be done automatically via devspace
