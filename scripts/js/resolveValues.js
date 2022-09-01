@@ -1,23 +1,33 @@
 const path = require('path')
 const { loadConfigs } = require('@keg-hub/parse-config')
-const { noOpObj, deepMerge } = require('@keg-hub/jsutils')
+const {
+  isStr,
+  noOpObj,
+  deepMerge,
+  tryRequireSync,
+} = require('@keg-hub/jsutils/src/node')
 
 const appRoot = path.join(__dirname, `../../`)
 
 const package = require(path.join(appRoot, './package.json'))
 const { getNpmToken } = require(path.join(appRoot, './tasks/utils/envs/getNpmToken.js'))
-const { loadConfigs } = require('@keg-hub/parse-config')
 
+/**
+ * Resolves the task config
+ */
+const resolveConfig = (configPath) => {
+  const configPaths = [
+    configPath,
+    process.env.TASK_CONFIG_PATH,
+    process.env.PARSE_CONFIG_PATH,
+    path.join(appRoot, `configs/tasks.config.js`),
+    path.join(appRoot, `tasks.config.js`)
+  ].filter(Boolean)
 
-const resolveConfig = (config=noOpObj) => {
-  return loadConfigs(deepMerge({
-    noEnv: true,
-    ymlPath: '',
-    name: `goblet`,
-    mergeStrategy: `unique`,
-    locations: [appRoot],
-    env: process.env.NODE_ENV || `local`,
-  }, config))
+  const taskConfig = configPaths.reduce((found, loc) => found || isStr(loc) && tryRequireSync(loc), false)
+  if(taskConfig) return taskConfig
+
+  throw new Error(`Could not find task.config.js in the follow paths:\n${configPaths.join(`\n`)}`)
 }
 
 /**

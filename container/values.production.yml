@@ -1,7 +1,7 @@
 service:
   ports: [ '7005', '19001' ]
 
-env: 
+env:
 
   GB_KUBE_CONTEXT: lke70246-ctx
   GB_KUBE_NAMESPACE: gb-production

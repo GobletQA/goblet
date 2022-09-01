@@ -18,29 +18,52 @@ module.exports = {
       optionsAsk: false,
     },
   },
-
-  // TODO: move this config to values.yml files
-  // Then use it to blacklist and whitelist envs
-  envs: {
-    whitelist: [],
-    blacklist: [
-      `GB_CERT_ISSUER`
-    ]
+  
+  apps: {
+    _all: {
+      /**
+      * ENV prefix to append to all dynamically set envs durning lookup
+      */
+      prefix: `GB`,
+      envs: {
+        blacklist: [
+          `IMAGE_TAG`,
+          `DOCKER_REGISTRY`,
+          `GB_CERT_ISSUER`,
+          `GB_IMAGE_BUILD_TAGS`,
+          `GB_IMAGE_FROM`,
+          `*_DOC_VOLUMES`,
+          `GB_BUILD_PLATFORMS`,
+        ]
+      }
+    },
+    backend: {
+      /**
+      * Contexts to reference durning task execution
+      */
+      contexts: [`backend`, `bae`, `be`],
+      envs: {
+        /**
+        * ENVs to not include in the backend
+        */
+        blacklist: [
+          `GB_CERT_ISSUER`,
+          `GB_FE_*`,
+          `DISPLAY`
+        ]
+      }
+    },
+    app: {
+      contexts: [`app`],
+    },
+    dind: {
+      contexts: [`dind`, `dnd`, `dd`],
+    },
+    frontend: {
+      contexts: [`frontend`, `fre`, `fe`],
+    },
+    screencast: {
+      contexts: [`screencast`, `scr`, `sc`],
+    }
   },
-  tasks: {
-    /**
-    * ENV prefix to append to all dynamically set envs durning lookup
-    */
-    prefix: `GB`,
-    /**
-    * Contexts to reference durning task execution
-    */
-    appContexts: [
-      [`app`],
-      [`dind`, `dnd`, `dd`],
-      [`frontend`, `fre`, `fe`],
-      [`backend`, `bae`, `be`],
-      [`screencast`, `scr`, `sc`],
-    ],
-  }
 }

@@ -1,7 +1,7 @@
 process.env.PARSE_CONFIG_PATH = `configs/tasks.config.js`
-const { tasks } = require('../configs/tasks.config')
+const { apps } = require('../configs/tasks.config')
 
-require('./utils/helpers/contexts').setContexts(tasks.appContexts, tasks.prefix)
+require('./utils/helpers/contexts').setContexts(apps)
 
 process.env.TASKS_DEBUG
   && require('@keg-hub/jsutils').setLogs(true, `log`, `[Goblet]`)

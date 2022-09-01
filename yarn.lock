@@ -1974,10 +1974,10 @@
   resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.2.0.tgz#e02a75faa11c5a1ebb4eda5b1f5ff1766b3972b1"
   integrity sha512-aYKzp7aMre1LrfFyIeu1RFXKB1VJGP15SRwme0NcHh8/8aPuJ+gBHHLLf88qusizcX2bj9JKXKVPYNS1yx/NaQ==
 
-"@keg-hub/parse-config@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/@keg-hub/parse-config/-/parse-config-2.0.2.tgz#5cca6949623b5d080e1bb981253e0d5541f5426d"
-  integrity sha512-oQ6Qv6PPh2uNJ2j8gVPPlo9dG8e2CKBEm4EchUYe6EmqXDOObCH3y6FnVhY/Bh3XrnoO8jb5T9WlPlUUymHN7A==
+"@keg-hub/parse-config@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.npmjs.org/@keg-hub/parse-config/-/parse-config-2.1.0.tgz#23fdcc5fc3d6573629701204cc732660b5b123bb"
+  integrity sha512-6AZyINWm8S6oWSbUxwzSTZ1BBcXpne7BiDDreRdN2GJ3kU8dDfwd1cJvQtggo4p0KRMw8fTDgtMv7PjH0bFgVQ==
   dependencies:
     "@keg-hub/cli-utils" "*"
     "@keg-hub/jsutils" "*"

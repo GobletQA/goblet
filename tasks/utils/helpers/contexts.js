@@ -1,5 +1,5 @@
 const { loadEnvs } = require('../envs/loadEnvs')
-const { isArr, noOpObj, exists } = require('@keg-hub/jsutils')
+const { isArr, noOpObj, exists, deepMerge, omitKeys } = require('@keg-hub/jsutils')
 
 /**
  * Cache holder for the app contexts, prefix and deployments
@@ -8,25 +8,45 @@ let __PRE = ``
 let __CONTEXTS = {}
 let __DEPLOYMENT_OPTS
 
+
+/**
+ * Builds the short and long context from app config
+ * @param {Object} acc - 
+ * @param {Object} contexts - Contexts object with defined app contexts
+ */
+const buildContexts = (acc, contexts) => {
+  const long = contexts[0]
+  const short = contexts[contexts.length - 1]
+  // Both short and log ref the same object
+  acc[short] = { keys: contexts, short, long }
+  acc[long] = acc[short]
+  acc.CONTEXT_LIST.push(long)
+  
+  return acc
+}
+
 /**
  * Sets the contexts that can be used durning task execution
  * @param {Object} contexts - Contexts object with defined app contexts
  * @param {string} prefix - Prefix to append in front of each env
  */
-const setContexts = (contexts, prefix) => {
+const setContexts = (apps, prefix) => {
+  const { _all, ...appConfigs } = apps
+  prefix = prefix || _all.prefix || `DS`
+
   if(prefix) __PRE = prefix.endsWith(`_`) ? prefix : `${prefix}_`
-  
-  __CONTEXTS = isArr(contexts)
-    ? contexts.reduce((acc, keys) => {
-        const long = keys[0]
-        const short = keys[keys.length - 1]
-        // Both short and log ref the same object
-        acc[short] = { keys, short, long }
-        acc[long] = acc[short]
-        acc.CONTEXT_LIST.push(long)
-      return acc
+
+  __CONTEXTS = Object.entries(appConfigs)
+    .reduce((acc, [key, data]) => {
+      data = deepMerge(_all, data || noOpObj)
+      const name = data?.name || key
+      const contexts = data?.contexts || []
+      !contexts.includes(name) && contexts.shift(name)
+
+      return buildContexts(acc, contexts)
+
     }, { CONTEXT_LIST: [] })
-    : contexts
+
 }
 
 /**
