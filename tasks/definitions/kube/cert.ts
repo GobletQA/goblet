@@ -1,9 +1,3 @@
-
-// TODO: Fix this task not currently working
-// await helm.install command not working
-// And errors are not being properly thrown
-
-
 import path from 'path'
 import { uuid } from'@keg-hub/jsutils'
 import { writeFileSync, rmSync } from 'fs'
@@ -55,6 +49,19 @@ const buildIssuer = async (params:Record<any, any>) => {
   return saveTempFile(content)
 }
 
+const cleanUp = async (params:Record<any, any>, certNamespace:string) => {
+  await helm.delete([certNamespace, `--namespace`, certNamespace], params)
+
+  !params.issuerLoc
+    ? await kubectl.delete([`clusterissuers.cert-manager.io`, certNamespace], params)
+    : Logger.log(
+        Logger.colors.yellow(`Skipping clean up of issuer.\n`),
+        Logger.colors.white(`Custom issuer location options was passed`)
+      )
+
+  await kubectl.delete([`namespace`, certNamespace], params)
+}
+
 /**
  * Creates a kubernetes cert-manager resource
  * Does not seem to be supported via devspace.yaml config file
@@ -72,12 +79,19 @@ const buildIssuer = async (params:Record<any, any>) => {
  *
  */
 const certAct = async (args:Record<any, any>) => {
-  const { params } = args
+  const { clean, remove, ...params } = args.params
   const { env, name=env, log } = params
+  const skipParams = {...params, skipNs: true, skipContext: true}
   
   const certNamespace = `${params.certNamespace}-${name}`
   const version = params.version.startsWith(`v`) ? params.version : `v${params.version}`
   const certLoc = params.certLoc || `https://github.com/cert-manager/cert-manager/releases/download/${version}/cert-manager.crds.yaml`
+
+  await kubectl.ensureContext(params)
+  ;(clean || remove) && await cleanUp(skipParams, certNamespace)
+
+  if(remove)
+    return log ? Logger.success(`Successfully removed Cert-Manager resources\n`) : undefined
 
   log && Logger.pair(`Applying cert-manager from location`, certLoc)
   await kubectl.apply([`-f`, certLoc], params)
@@ -85,7 +99,7 @@ const certAct = async (args:Record<any, any>) => {
   log && Logger.pair(`Creating cert-manager namespace`, certNamespace)
   await kubectl.create([`namespace`, certNamespace], params)
 
-  await helm.repo.add([certNamespace, `https://charts.jetstack.io`], params)
+  await helm.repo.add([`jetstack`, `https://charts.jetstack.io`], params)
   await helm.repo.update([], params)
 
   log && Logger.pair(`Installing cert-manager`, certNamespace)
@@ -93,23 +107,23 @@ const certAct = async (args:Record<any, any>) => {
   await helm.install(
     [
       certNamespace,
-      `cert-manager/cert-manager`,
       `--namespace`,
       certNamespace,
       `--version`,
-      version
+      version,
+      `jetstack/cert-manager`,
     ],
-    { ...params, skipNs: true, skipContext: true}
+    {...skipParams, throwErr: true}
   )
 
   const issuerLoc = params.issuerLoc || await buildIssuer(params)
   
   log  && Logger.pair(`Creating kubernetes issuer`, issuerLoc)
-  await kubectl.create([`-f`, issuerLoc])
+  await kubectl.create([`-f`, issuerLoc], { ...params, throwErr: true })
 
   rmSync(issuerLoc)
 
-  log && Logger.success(`Successfully created Cert-Manager`)
+  log && Logger.success(`Successfully deployed Cert-Manager`)
 
 }
 
@@ -160,6 +174,15 @@ export const cert = {
       alias: [`eml`],
       example: `--email my@email.com`,
       description: `Email address to use for cert validation`,
+    },
+    clean: {
+      type: `boolean`,
+      description: `Remove the deploy helm release before installing`,
+    },
+    remove: {
+      alias: [`rm`],
+      type: `boolean`,
+      description: `Only cleanup deployed resources. Do not redeploy`,
     },
     log: {
       type: `boolean`,

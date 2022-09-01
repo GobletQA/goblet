@@ -16,6 +16,7 @@ type TCallback<T> = (args?:string|string[]|TTaskParams, params?:TTaskParams) => 
 type TKubeCtl = {
   (cmd:string|string[], params:TTaskParams, validExitCode?:string|number[]): Promise<string>
   create: TCallback<string>
+  delete: TCallback<string>
   useContext: TCallback<string>
   getContexts: TCallback<string[]>
   ensureContext: TCallback<string>
@@ -41,7 +42,7 @@ const resolveArgs = <T>(callback:TCallback<T>) => {
       ? params || noOpObj as TTaskParams
       : args || noOpObj as TTaskParams
 
-    return await callback(kArgs, kParams)
+    return await callback(kArgs, { exec: true, ...kParams})
   }
 }
 
@@ -65,7 +66,15 @@ kubectl.create = resolveArgs<string>(async (
   params?:TTaskParams,
 ) => {
   await kubectl.ensureContext(args, params)
-  return await kubectl([`create`, ...args], {exec: true, ...params})
+  return await kubectl([`create`, ...args], params)
+})
+
+kubectl.delete = resolveArgs<string>(async (
+  args:string|string[],
+  params?:TTaskParams,
+) => {
+  await kubectl.ensureContext(args, params)
+  return await kubectl([`delete`, ...args], params)
 })
 
 
@@ -77,7 +86,7 @@ kubectl.apply = resolveArgs<string>(async (
   params?:TTaskParams,
 ) => {
   await kubectl.ensureContext(args, params)
-  return await kubectl([`apply`, ...args], {exec: true, ...params})
+  return await kubectl([`apply`, ...args], params)
 })
 
 
@@ -88,7 +97,7 @@ kubectl.currentContext = resolveArgs<string>(async (
   args?:string|string[],
   params?:TTaskParams,
 ) => {
-  const output = await kubectl([`config`, `current-context`, ...args], {exec: true, ...params})
+  const output = await kubectl([`config`, `current-context`, ...args], params)
   return output.trim()
 })
 
@@ -99,7 +108,7 @@ kubectl.getContexts = resolveArgs<string[]>(async (
   args?:string|string[],
   params?:TTaskParams,
 ) => {
-  const output = await kubectl([`config`, `get-contexts`, ...args], {exec: true, ...params})
+  const output = await kubectl([`config`, `get-contexts`, ...args], params)
   return output.split(`\n`).map(ctx => ctx.trim())
 })
 
@@ -110,7 +119,7 @@ kubectl.useContext = resolveArgs<string>(async (
   args?:string|string[],
   params?:TTaskParams,
 ) => {
-  const resp = await kubectl([`config`, `use-context`, ...args], {exec: true, ...params})
+  const resp = await kubectl([`config`, `use-context`, ...args], params)
   params.log && Logger.log(resp)
 
   return await kubectl.currentContext(params)
@@ -154,7 +163,7 @@ kubectl.getPods = resolveArgs<Record<any, any>>(async (
   params?:TTaskParams,
 ) => {
   await kubectl.ensureContext(args, params)
-  const output = await kubectl([`get`, `pods`, `-o`, `json`, ...args], { ...params, exec: true })
+  const output = await kubectl([`get`, `pods`, `-o`, `json`, ...args], params)
   return parseJSON(output, false)
 })
 

@@ -74,7 +74,17 @@ const startPm2Daemon = async (executable, args, opts = noOpObj, name, watch) => 
  */
 const command = (executable) => {
   return async (cmd, params = noOpObj, validExitCode) => {
-    const { daemon, watch, env, log, exec, envs, cwd = appRoot } = params
+    const {
+      env,
+      log,
+      exec,
+      envs,
+      watch,
+      daemon,
+      throwErr,
+      handleOutput,
+      cwd = appRoot,
+    } = params
     const args = ensureArr(cmd)
 
     log && Logger.pair(`Running Cmd:`, `${executable} ${args.join(' ')}\n`)
@@ -99,14 +109,15 @@ const command = (executable) => {
       ? await startPm2Daemon(executable, args, opts, pm2Name, watch)
       : await runCmd(executable, args, opts)
 
-    if (!isObj(output)) return output
+    if (!isObj(output) || handleOutput) return output
 
     const { data, error, exitCode } = output
 
-    exitCode &&
-      validExitCode &&
-      !ensureArr(validExitCode).includes(exitCode) &&
-      processError(error, exitCode, log)
+    exitCode
+      && (throwErr || (validExitCode && !ensureArr(validExitCode).includes(exitCode)))
+      // TODO: Investigate changing to this, so error are auto-thrown when not validExitCode exists
+      // && (!validExitCode || validExitCode && !ensureArr(validExitCode).includes(exitCode)) &&
+      && processError(error, exitCode, log)
 
     log && data && Logger.pair(`Cmd Output:\n`, data)
 

@@ -25,19 +25,14 @@ export const helm = async (
   args:string[] = noPropArr,
   params:Record<any, any> = noOpObj
 ) => {
+
+  const cmdArgs = [...args]
   const contextArgs = await getDevspaceContext(params)
-  // Get the helm command, so we can add it before the namespace add
-  const cmd = args.shift()
-  
-  const cmdArgs = [
-    cmd,
-    ...args,
-    // Add the active namespace where helm should run the command
-    ...contextArgs,
-  ]
 
   !params.skipNs && cmdArgs.push(`--namespace`, contextArgs.namespace)
   !params.skipContext && cmdArgs.push(`--kube-context`, contextArgs.context)
+
+  // console.log(`helm ${cmdArgs.join(' ')}`)
 
   return await helmCmd(cmdArgs, params)
 }
@@ -50,9 +45,8 @@ const helmAction = async (
   return await helm([
     method,
     ...args
-  ], params)
+  ], { exec: true, ...params })
 }
-
 
 helm.upgrade = async (
   args:string[] = noPropArr,
@@ -63,6 +57,11 @@ helm.install = async (
   args:string[] = noPropArr,
   params:Record<any, any> = noOpObj
 ) => helmAction(`install`, args, params)
+
+helm.delete = async (
+  args:string[] = noPropArr,
+  params:Record<any, any> = noOpObj
+) => helmAction(`delete`, args, params)
 
 helm.repo = {} as TRepoObj
 
