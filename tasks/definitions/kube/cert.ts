@@ -20,7 +20,7 @@ const saveTempFile = (value:string) => {
  * Keys represent
  */
 const urls = {
-  production: `https://acme-v02.api.letsencrypt.org/directory`,
+  // production: `https://acme-v02.api.letsencrypt.org/directory`,
   staging: `https://acme-staging-v02.api.letsencrypt.org/directory`,
 }
 
@@ -61,7 +61,7 @@ const cleanUp = async (params:Record<any, any>, certNamespace:string) => {
   await helm.delete([certNamespace, `--namespace`, certNamespace], params)
 
   !params.issuerLoc
-    ? await kubectl.delete([`clusterissuers.cert-manager.io`, certNamespace], params)
+    ? await kubectl.delete([`clusterissuers.cert-manager.io`, `letsencrypt-${params.name}`], params)
     : Logger.log(
         Logger.colors.yellow(`Skipping clean up of issuer.\n`),
         Logger.colors.white(`Custom issuer location options was passed`)
@@ -89,7 +89,7 @@ const cleanUp = async (params:Record<any, any>, certNamespace:string) => {
 const certAct = async (args:Record<any, any>) => {
   const { clean, remove, ...params } = args.params
   const { env, name=env, log } = params
-  const skipParams = {...params, skipNs: true, skipContext: true}
+  const skipParams = {...params, name, skipNs: true, skipContext: true}
   
   const certNamespace = `${params.certNamespace}-${name}`
   const version = params.version.startsWith(`v`) ? params.version : `v${params.version}`
