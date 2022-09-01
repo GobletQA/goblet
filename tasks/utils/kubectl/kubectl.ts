@@ -68,6 +68,19 @@ kubectl.create = resolveArgs<string>(async (
   return await kubectl([`create`, ...args], {exec: true, ...params})
 })
 
+
+/**
+ * Creates a kubernetes object from the passed in args 
+ */
+kubectl.apply = resolveArgs<string>(async (
+  args:string|string[],
+  params?:TTaskParams,
+) => {
+  await kubectl.ensureContext(args, params)
+  return await kubectl([`apply`, ...args], {exec: true, ...params})
+})
+
+
 /**
  * Gets the current kube-context
  */

@@ -47,9 +47,9 @@ const setAct = async (args:Record<any, any>) => {
 }
 
 export const set = {
-  name: 'set',
+  name: `set`,
   action: setAct,
-  alias: [],
+  alias: [`use`],
   options: {
     context: {
       env: `GB_KUBE_CONTEXT`,

@@ -1,4 +1,59 @@
+
+// TODO: Fix this task not currently working
+// await helm.install command not working
+// And errors are not being properly thrown
+
+
+import path from 'path'
+import { uuid } from'@keg-hub/jsutils'
+import { writeFileSync, rmSync } from 'fs'
 import { helm } from '../../utils/helm/helm'
+import { tempDir, scriptsDir } from'../../paths'
+import { Logger, error } from'@keg-hub/cli-utils'
+import { loadEnvs } from '../../utils/envs/loadEnvs'
+import { kubectl } from '../../utils/kubectl/kubectl'
+
+
+const saveTempFile = (value:string) => {
+  const tempFileLoc = path.join(tempDir, `${uuid()}.txt`)
+  writeFileSync(tempFileLoc, value)
+
+  return tempFileLoc
+}
+
+const urls = {
+  production: `https://acme-v02.api.letsencrypt.org/directory`,
+  staging: `https://acme-staging-v02.api.letsencrypt.org/directory`,
+}
+
+const getClusterIssuer = ({ env, name, email }:Record<any, any>) => `
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-${name}
+spec:
+  acme:
+    email: ${email}
+    server: ${urls[env] || urls.staging}
+    privateKeySecretRef:
+      name: letsencrypt-${name}-secret
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+`
+
+const buildIssuer = async (params:Record<any, any>) => {
+  const { env, name=env } = params
+  const { getDockerUser } = await import(path.join(scriptsDir, 'js/dockerLogin.js'))
+  
+  // Get the user name in the same way docker and devspace do
+  const envs = loadEnvs({ env, force: true, override: true })
+  const email =  params.email || await getDockerUser(envs)
+  const content = getClusterIssuer({ ...params, email, name })
+
+  return saveTempFile(content)
+}
 
 /**
  * Creates a kubernetes cert-manager resource
@@ -18,8 +73,44 @@ import { helm } from '../../utils/helm/helm'
  */
 const certAct = async (args:Record<any, any>) => {
   const { params } = args
+  const { env, name=env, log } = params
+  
+  const certNamespace = `${params.certNamespace}-${name}`
+  const version = params.version.startsWith(`v`) ? params.version : `v${params.version}`
+  const certLoc = params.certLoc || `https://github.com/cert-manager/cert-manager/releases/download/${version}/cert-manager.crds.yaml`
 
-  console.log(`TODO - Not implemented!`)
+  log && Logger.pair(`Applying cert-manager from location`, certLoc)
+  await kubectl.apply([`-f`, certLoc], params)
+
+  log && Logger.pair(`Creating cert-manager namespace`, certNamespace)
+  await kubectl.create([`namespace`, certNamespace], params)
+
+  await helm.repo.add([certNamespace, `https://charts.jetstack.io`], params)
+  await helm.repo.update([], params)
+
+  log && Logger.pair(`Installing cert-manager`, certNamespace)
+
+  await helm.install(
+    [
+      certNamespace,
+      `cert-manager/cert-manager`,
+      `--namespace`,
+      certNamespace,
+      `--version`,
+      version
+    ],
+    { ...params, skipNs: true, skipContext: true}
+  )
+
+  const issuerLoc = params.issuerLoc || await buildIssuer(params)
+  
+  log  && Logger.pair(`Creating kubernetes issuer`, issuerLoc)
+  await kubectl.create([`-f`, issuerLoc])
+
+  rmSync(issuerLoc)
+
+  log && Logger.success(`Successfully created Cert-Manager`)
+
 }
 
 export const cert = {
@@ -37,6 +128,38 @@ export const cert = {
       alias: [`nsp`, `ns`],
       example: `--namespace custom-namespace`,
       description: `Custom namespace to use`,
+    },
+    version: {
+      alias: [`ver`],
+      default: `1.9.1`,
+      example: `--version 1.9.1`,
+      description: `Set the version of the cert-manager to use`,
+    },
+    name: {
+      alias: [`nm`],
+      example: `--name my-cert-manager`,
+      description: `Name of the cert-manager`,
+    },
+    certNamespace: {
+      alias: [`cns`, `cnsp`],
+      default: `cert-manager`,
+      example: `--certNamespace custom-cert-namespace`,
+      description: `Custom namespace to use for the cert-manager`,
+    },
+    certLoc: {
+      alias: [`cl`],
+      example: `--certLoc /path/to/cert-manager.yaml`,
+      description: `Path or URI to a kubernetes resource definition of the cert-manager`,
+    },
+    issuerLoc: {
+      alias: [`il`],
+      example: `--issuerLoc /path/to/issuer.yaml`,
+      description: `Path or URI to a kubernetes resource definition of the Issuer or ClusterIssuer`,
+    },
+    email: {
+      alias: [`eml`],
+      example: `--email my@email.com`,
+      description: `Email address to use for cert validation`,
     },
     log: {
       type: `boolean`,

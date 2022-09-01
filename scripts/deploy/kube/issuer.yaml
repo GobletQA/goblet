@@ -28,3 +28,5 @@ apiVersion: cert-manager.io/v1
        - http01:
            ingress:
              class: nginx
+
+

@@ -11,7 +11,12 @@ type TParams = {
   [key:string]: any
 }
 
-type TResp = Record<string|number, string>
+type TDSArr = string[]
+type TDSObj = {
+  context?: string
+  namespace?: string
+}
+type TDSContext = TDSArr & TDSObj
 
 
 /**
@@ -36,8 +41,7 @@ export const getDevspaceContext = (
   const ctx = kubeContext || ENV_GB_KUBE_CONTEXT || GB_KUBE_CONTEXT
   const ns = namespace || ENV_GB_KUBE_NAMESPACE || GB_KUBE_NAMESPACE
 
-  const builtArr:Record<number, string> = [`--namespace`, ns, `--kube-context`, ctx]
-  const arrayCtx:TResp = builtArr
+  const arrayCtx:TDSContext = [`--namespace`, ns, `--kube-context`, ctx]
 
   // A bit of a heck, but allows accessing the namespace and context in either an array or object
   arrayCtx.namespace = ns

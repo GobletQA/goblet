@@ -1,6 +1,13 @@
 import { command } from '../process/command'
+
 import { noPropArr, noOpObj } from '@keg-hub/jsutils'
 import { getDevspaceContext } from '../devspace/getDevspaceContext'
+
+type TCallback = (args:string|string[], params?:Record<any, any>) => Promise<any>
+type TRepoObj = {
+  add: TCallback
+  update: TCallback
+}
 
 /**
  * Runs a kubectl command and returns the output
@@ -16,7 +23,6 @@ const helmCmd = command(`helm`)
 
 export const helm = async (
   args:string[] = noPropArr,
-  opts:Record<any, any> = noOpObj,
   params:Record<any, any> = noOpObj
 ) => {
   const contextArgs = await getDevspaceContext(params)
@@ -30,19 +36,54 @@ export const helm = async (
     ...contextArgs,
   ]
 
-  // console.log([`helm`, ...cmdArgs].join(' '))
+  !params.skipNs && cmdArgs.push(`--namespace`, contextArgs.namespace)
+  !params.skipContext && cmdArgs.push(`--kube-context`, contextArgs.context)
 
-  return await helmCmd(cmdArgs, opts, params)
+  return await helmCmd(cmdArgs, params)
+}
+
+const helmAction = async (
+  method:string,
+  args:string[] = noPropArr,
+  params:Record<any, any> = noOpObj
+) => {
+  return await helm([
+    method,
+    ...args
+  ], params)
 }
 
 
 helm.upgrade = async (
   args:string[] = noPropArr,
-  opts:Record<any, any> = noOpObj,
+  params:Record<any, any> = noOpObj
+) => helmAction(`upgrade`, args, params)
+
+helm.install = async (
+  args:string[] = noPropArr,
+  params:Record<any, any> = noOpObj
+) => helmAction(`install`, args, params)
+
+helm.repo = {} as TRepoObj
+
+const repoAction = async (
+  method:string,
+  args:string[] = noPropArr,
   params:Record<any, any> = noOpObj
 ) => {
   return await helm([
-    `upgrade`,
+    `repo`,
+    method,
     ...args
-  ], opts)
+  ], params)
 }
+
+helm.repo.add = async (
+  args:string[] = noPropArr,
+  params:Record<any, any> = noOpObj
+) => repoAction(`add`, args, params)
+
+helm.repo.update = async (
+  args:string[] = noPropArr,
+  params:Record<any, any> = noOpObj
+) => repoAction(`update`, args, params)
