@@ -37,7 +37,7 @@
   "dependencies": {
     "@keg-hub/cli-utils": "0.7.0",
     "@keg-hub/jsutils": "9.2.0",
-    "@keg-hub/parse-config": "2.0.2",
+    "@keg-hub/parse-config": "2.1.0",
     "@ltipton/parkin": "1.4.0",
     "cookie-session": "2.0.0",
     "cors": "2.8.5",

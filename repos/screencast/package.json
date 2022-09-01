@@ -44,7 +44,7 @@
     "@gobletqa/shared": "*",
     "@keg-hub/cli-utils": "0.7.0",
     "@keg-hub/jsutils": "9.2.0",
-    "@keg-hub/parse-config": "2.0.2",
+    "@keg-hub/parse-config": "2.1.0",
     "@keg-hub/spawn-cmd": "0.3.2",
     "@ltipton/parkin": "1.4.0",
     "@ltipton/sockr": "1.1.0",
