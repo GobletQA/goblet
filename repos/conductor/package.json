@@ -31,11 +31,11 @@
   },
   "resolutions": {
     "@keg-hub/cli-utils": "0.7.0",
-    "@keg-hub/jsutils": "9.2.0"
+    "@keg-hub/jsutils": "*"
   },
   "dependencies": {
     "@keg-hub/cli-utils": "0.7.0",
-    "@keg-hub/jsutils": "9.2.0",
+    "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "2.1.0",
     "axios": "0.24.0",
     "docker-events": "0.0.2",

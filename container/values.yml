@@ -47,8 +47,6 @@ env:
   # TODO: @lance-tipton - Make this more dynamic - value comes from firebase?
   GB_GITHUB_AUTH_USERS: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lance.tipton@workboard.com
   GB_BUILD_PLATFORMS: linux/amd64,linux/arm64
-  # Disable certs in local. Set to the cluster issuer name in values.<env>.yaml file for ssl
-  # GB_CERT_ISSUER: false
 
   # ---- Docker Images ---- #
   # Image tags added to all built images
@@ -107,6 +105,8 @@ env:
   GB_BE_COOKIE_SAME_SITE: None
   GB_BE_COOKIE_KEY: goblet-cookie-7979
 
+  # Disable certs in local. Set to the cluster issuer name in values.<env>.yaml file for ssl
+  # GB_BE_CERT_ISSUER: false
 
 # ---- Frontend ENVs ---- #
   GB_FE_PORT: 19006

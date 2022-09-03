@@ -12,7 +12,7 @@ import {
   noPropArr,
   deepClone,
   deepMerge,
-} from "@keg-hub/jsutils"
+} from '@keg-hub/jsutils'
 import {
   TRepo,
   TGCacheOpts,

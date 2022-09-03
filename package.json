@@ -54,7 +54,7 @@
     "@keg-hub/args-parse": "9.0.0",
     "@keg-hub/ask-it": "1.1.2",
     "@keg-hub/cli-utils": "0.7.0",
-    "@keg-hub/jsutils": "9.2.0",
+    "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "2.1.0",
     "cross-env": "7.0.3",
     "esbuild-register": "3.3.3",
@@ -64,7 +64,7 @@
     "@keg-hub/args-parse": "9.0.0",
     "@keg-hub/ask-it": "1.1.2",
     "@keg-hub/cli-utils": "0.7.0",
-    "@keg-hub/jsutils": "9.2.0",
+    "@keg-hub/jsutils": ">=9.3.2",
     "@monaco-editor/react": "4.3.1"
   },
   "devDependencies": {

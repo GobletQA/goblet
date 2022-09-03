@@ -3,7 +3,7 @@ env:
   GB_KUBE_CONTEXT: lke70246-ctx
   GB_KUBE_NAMESPACE: gb-production
   GB_HOST_DOMAIN: dev.gobletqa.app
-  GB_CERT_ISSUER: letsencrypt-production
+  GB_BE_CERT_ISSUER: letsencrypt-production
   # GB_SUB_DOMAIN: production
 
   NODE_ENV: production

@@ -29,7 +29,7 @@ module.exports = {
         blacklist: [
           `IMAGE_TAG`,
           `DOCKER_REGISTRY`,
-          `GB_CERT_ISSUER`,
+          `*_CERT_ISSUER`,
           `GB_IMAGE_BUILD_TAGS`,
           `GB_IMAGE_FROM`,
           `*_DOC_VOLUMES`,
@@ -47,7 +47,6 @@ module.exports = {
         * ENVs to not include in the backend
         */
         blacklist: [
-          `GB_CERT_ISSUER`,
           `GB_FE_*`,
           `DISPLAY`
         ]

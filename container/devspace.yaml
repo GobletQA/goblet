@@ -28,10 +28,6 @@ vars:
 - name: GB_NM_INSTALL
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_NM_INSTALL"
-- name: GB_CERT_ISSUER
-  source: command
-  command: "node ../scripts/js/getYamlValue.js GB_CERT_ISSUER false"
-
 
 # ----- Docker Image Values ----- #
 - name: IMAGE
@@ -56,10 +52,10 @@ vars:
   command: "node ../scripts/js/getYamlValue.js GB_NO_VNC_PORT"
 - name: GB_SC_INGRESS_HOST
   source: command
-  command: "node ../scripts/js/resolveIngress.js SC"
+  command: "node ../scripts/js/resolveHost.js SC"
 - name: GB_SC_INGRESS_HOST_WILD_CARD
   source: command
-  command: "node ../scripts/js/resolveIngress.js SC \"*\""
+  command: "node ../scripts/js/resolveHost.js SC \"*\""
 
 # ----- Frontend Values ----- #
 - name: GB_FE_DEPLOYMENT
@@ -138,22 +134,6 @@ images:
 
 # The `deployments` section tells devspace how to deploy this project into the cluster
 deployments: 
-# - name: $(node ../scripts/js/resolveDeployment.js FE IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
-# - name: $(node ../scripts/js/resolveDeployment.js BE IMAGE_PULL_POLICY NPM_TOKEN GB_NM_INSTALL)
-
-# Must be deployed to the cluster separately???
-# helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx  --namespace gb-local --create-namespace
-# - name: goblet-ingress
-#   helm:
-#     chart:
-#       name: ingress-nginx
-#       repo: https://kubernetes.github.io/ingress-nginx
-#     values:
-
-# TODO: update this to use a mounted volume that is shared with the conductor instance
-# Then set the "DOCKER_TLS_CERTDIR" env to the directory of that shared volume
-# Then update the conductor to use certs in the volume to connect to the docker API
-# See more info here => https://hub.docker.com/_/docker
 - name: ${GB_DD_DEPLOYMENT}
   helm:
     chart:
@@ -169,17 +149,8 @@ deployments:
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js dind)
         # TODO: use sysbox or gvisor to remove the need for privileged context
-        securityContext:
-          privileged: ${GB_DD_PRIVILEGED}
-      service:
-        name: ${GB_DD_DEPLOYMENT}
-        ports:
-        - port: ${GB_DD_DOCKER_PORT}
-        - port: ${GB_DD_WS_PROXY_PORT}
-        - port: ${GB_DD_API_PROXY_PORT}
-        - port: ${GB_DD_VNC_PROXY_PORT}
-        - port: ${GB_DD_EXP_ADMIN_PORT}
-          containerPort: ${GB_DD_LOCAL_ADMIN_PORT}
+        securityContext: $(node ../scripts/js/resolveSecurity.js DD)
+      service: $(node ../scripts/js/resolveService.js $GB_DD_DEPLOYMENT $GB_DD_DOCKER_PORT $GB_DD_WS_PROXY_PORT $GB_DD_API_PROXY_PORT $GB_DD_VNC_PROXY_PORT $GB_DD_EXP_ADMIN_PORT:$GB_DD_LOCAL_ADMIN_PORT)
 
 # ----- Frontend Deployment ----- #
 - name: ${GB_FE_DEPLOYMENT}
@@ -195,17 +166,8 @@ deployments:
       - image: ${GB_FE_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js frontend)
-      service:
-        name: ${GB_FE_DEPLOYMENT}
-        ports:
-        - port: ${GB_FE_PORT}
-      ingress:
-        name: ${GB_FE_DEPLOYMENT}-ingress
-        rules:
-        - host: $(node ../scripts/js/resolveIngress.js FE)
-          serviceName: ${GB_FE_DEPLOYMENT}
-          servicePort: ${GB_FE_PORT}
-
+      service: $(node ../scripts/js/resolveService.js $GB_FE_DEPLOYMENT $GB_FE_PORT)
+      ingress: $(node ../scripts/js/resolveIngress.js FE $GB_FE_DEPLOYMENT $GB_FE_PORT)
 
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
@@ -223,25 +185,8 @@ deployments:
       - image: ${GB_BE_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
-      service:
-        name: ${GB_BE_DEPLOYMENT}
-        ports:
-        - port: ${GB_BE_PORT}
-      ingress:
-        # TODO: fix this for both dev and production envs
-        # Currently hard coded for production only
-        tls: true
-        name: ${GB_BE_DEPLOYMENT}-ingress
-        tlsClusterIssuer: ${GB_CERT_ISSUER}
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
-        rules:
-        - host: $(node ../scripts/js/resolveIngress.js BE)
-          serviceName: ${GB_BE_DEPLOYMENT}
-          servicePort: ${GB_BE_PORT}
-        - host: $(node ../scripts/js/resolveIngress.js BE "*")
-          serviceName: ${GB_BE_DEPLOYMENT}
-          servicePort: ${GB_BE_PORT}
+      service: $(node ../scripts/js/resolveService.js $GB_BE_DEPLOYMENT $GB_BE_PORT)
+      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_DEPLOYMENT $GB_BE_PORT "*")
 
 # The `dev` section only applies to `yarn dev start` || `devspace dev` commands
 # Is not run for `yarn dev deploy` || `devspace deploy` commands

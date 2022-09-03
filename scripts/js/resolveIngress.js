@@ -1,55 +1,74 @@
 /**
- * Used by devspace in the devspace.yml to dynamically generate an ingress hosts
- * Should only generate config when a host and sub domain exist
+ * Used by devspace in the devspace.yml to dynamically generate a full ingress config object
+ * Includes tls config when a cert-issuer env is found
+ * Run the following command to test
+ * node scripts/js/resolveIngress.js BE goblet-backend 7005 "*"
  */
-const { resolveValues } = require('./resolveValues')
+ 
+const { resolveHost, resolveValues, resolveValue } = require('./resolveValues')
 
-/**
- * Gets the value to use when generating the ingress hosts from the process or values file
- * @param {Object} values - ENVs loaded from the values file
- * @param {string} key - ENV name to get the value of
- *
- * @returns {string|undefined} - found value or undefined
- */
-const getEnvValue = (values, key) => {
-  return process.env[key] || values[key]
+const buildIngressName = (deployment) => (`name: ${deployment}-ingress`)
+
+// TODO: may need to add this as an annotations
+// #cert-manager.io/cluster-issuer: "${issuer}"
+const buildTls = (issuer, type=`nginx`) => (`
+tls: true
+tlsClusterIssuer: ${issuer}
+annotations:
+  kubernetes.io/ingress.class: "${type}"
+`)
+
+const buildRule = (host, serviceName, servicePort) => (`
+- host: "${host}"
+  serviceName: ${serviceName}
+  servicePort: ${servicePort}
+`)
+
+const getSubdomainsRules = (host, deployment, mainPort, subdomains) => {
+  return subdomains.length &&
+    subdomains.map(item => {
+      const [sub, port] = item.includes(`:`)
+        ? item.split(`:`)
+        : [item, mainPort]
+
+      return buildRule(`${sub}.${host}`, deployment, port)
+    }).join(`\n`) || ``
 }
 
-/**
- * Builds the ingress host from the prefix relative to a deployment
- * i.e. goblet-backend.local.goblet.app
- */
-const buildHost = (prefix, values) => {
-  const subDomain = getEnvValue(values, `GB_${prefix}_SUB_DOMAIN`)
-    || getEnvValue(values, `GB_SUB_DOMAIN`)
+const buildRules = (host, deployment, port) => (`rules:${buildRule(host, deployment, port)}`)
 
-  const hostDomain = getEnvValue(values, `GB_${prefix}_HOST_DOMAIN`)
-    || getEnvValue(values, `GB_HOST_DOMAIN`)
-    || `local.gobletqa.app`
-
-  const deployment = getEnvValue(values, `GB_${prefix}_DEPLOYMENT`).replace(/_/g, `-`).split(`-`).pop()
-
-  /**
-   * Build the ingress host based on the host and sub domains
-   */
-  return subDomain
-    ? `${subDomain}.${hostDomain}`
-    : `${deployment}.${hostDomain}`
-}
+const buildTlsRules = (issuer, host, deployment, port) => (`
+${buildTls(issuer).trim()}
+${buildRules(host, deployment, port).trim()}
+`)
 
 ;(async () => {
+  const [
+    prefix,
+    deployment,
+    port,
+    ...subdomains
+  ] = process.argv.slice(2)
 
-  const [prefix, subdomains] = process.argv.slice(2)
-  if(!prefix) return
+  if(!prefix || !deployment) return
 
   const values = resolveValues()
-  /**
-   * Build the ingress host based on the host and sub domains
-   */
-  const ingressHost = buildHost(prefix, values)
+  const host = resolveHost(prefix, values)
+  const issuer = resolveValue(`GB_${prefix}_CERT_ISSUER`, values)
 
-  subdomains && subdomains.length
-    ? process.stdout.write(`${subdomains}.${ingressHost}`)
-    : process.stdout.write(ingressHost)
+  const name = buildIngressName(deployment)
+  const subRules = getSubdomainsRules(host, deployment, port, subdomains)
+  const rules = issuer
+    ? buildTlsRules(issuer, host, deployment, port)
+    : buildRules(host, deployment, port)
+
+process.stdout.write(`
+${name.trim()}
+${rules.trim()}
+${subRules.trim()}
+`)
 
 })()
+
+
+

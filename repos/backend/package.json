@@ -33,7 +33,7 @@
   },
   "resolutions": {
     "@keg-hub/cli-utils": "0.7.0",
-    "@keg-hub/jsutils": "9.2.0"
+    "@keg-hub/jsutils": "*"
   },
   "dependencies": {
     "@gobletqa/screencast": "*",
@@ -41,7 +41,7 @@
     "@gobletqa/workflows": "*",
     "@gobletqa/conductor": "*",
     "@keg-hub/cli-utils": "0.7.0",
-    "@keg-hub/jsutils": "9.2.0",
+    "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "2.1.0",
     "@ltipton/sockr": "1.1.0",
     "axios": "0.24.0",
