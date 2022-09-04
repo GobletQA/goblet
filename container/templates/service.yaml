@@ -76,7 +76,7 @@ spec:
       protocol: {{ $portMap.protocol | default "TCP" | quote }}
     {{- end }}
   selector:
-    "app.kubernetes.io/name": "devspace-app"
+    "app.kubernetes.io/name": "gobletqa-app"
     "app.kubernetes.io/component": {{ $.Release.Name | quote }}
   type: {{ $.Values.service.type | default "ClusterIP" | quote }}
 {{- end }}
