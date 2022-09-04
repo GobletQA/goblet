@@ -2138,7 +2138,7 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@keg-hub/args-parse@*", "@keg-hub/args-parse@9.0.0", "@keg-hub/args-parse@>=9.0.0":
+"@keg-hub/args-parse@*", "@keg-hub/args-parse@9.0.0":
   version "9.0.0"
   resolved "https://registry.npmjs.org/@keg-hub/args-parse/-/args-parse-9.0.0.tgz#4525f33a8ccabb968fd8358bb23c49f4caf24c76"
   integrity sha512-N7/98lGiZDWGbYAWz1Q/EvknrT4GywjQV9gGtxZco0JP2HJR/9rU3fP4Vl7ciGWLxIXikjt4N5t1j8g4rp6FbQ==
@@ -2147,7 +2147,7 @@
     "@keg-hub/jsutils" "*"
     app-root-path "3.0.0"
 
-"@keg-hub/ask-it@*", "@keg-hub/ask-it@>=1.1.2":
+"@keg-hub/ask-it@*", "@keg-hub/ask-it@1.1.2":
   version "1.1.2"
   resolved "https://registry.npmjs.org/@keg-hub/ask-it/-/ask-it-1.1.2.tgz#36708b17c3149d1693817ca3ba160dcbd999d6bd"
   integrity sha512-i/KMYeNZGOA++LHRM0tsJ57pa2qaFyRMrDq9Q0zCilu3ET+gFBphrrQuzJB+03jA/HNpNUjNwNFc5XjkgfBbjA==
@@ -2156,7 +2156,7 @@
     colors "1.4.0"
     inquirer "7.3.3"
 
-"@keg-hub/cli-utils@*", "@keg-hub/cli-utils@>=0.7.0":
+"@keg-hub/cli-utils@*", "@keg-hub/cli-utils@0.7.0":
   version "0.7.0"
   resolved "https://registry.npmjs.org/@keg-hub/cli-utils/-/cli-utils-0.7.0.tgz#1832a47e4e390d1d92f3a0484e4256fa42ae6a51"
   integrity sha512-r044xoIcXiYudShalw71+snBywsuGEOCZQ68nc1f17kTGK1qxDu90sL1ktcAa1WEPl22JnJBV9Ts9Y9//f3DnQ==
@@ -2170,12 +2170,12 @@
     colors "1.4.0"
     fs-extra "9.0.1"
 
-"@keg-hub/jsutils@*", "@keg-hub/jsutils@9.2.0", "@keg-hub/jsutils@>=9.3.2":
+"@keg-hub/jsutils@*", "@keg-hub/jsutils@9.2.0", "@keg-hub/jsutils@9.3.2":
   version "9.3.2"
   resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.3.2.tgz#c2679d59dda837801682c73196377e2a52c8ed20"
   integrity sha512-GEXTVUEVLU/+ajZTfn5yU0sFW9HW3JALSQmsAS+F3BtIKF7T0BRfXaMSFWl01AB8KxdcoaRQ7jyUm48f0nP9Ww==
 
-"@keg-hub/parse-config@*", "@keg-hub/parse-config@>=2.1.0":
+"@keg-hub/parse-config@*", "@keg-hub/parse-config@2.1.0":
   version "2.1.0"
   resolved "https://registry.npmjs.org/@keg-hub/parse-config/-/parse-config-2.1.0.tgz#23fdcc5fc3d6573629701204cc732660b5b123bb"
   integrity sha512-6AZyINWm8S6oWSbUxwzSTZ1BBcXpne7BiDDreRdN2GJ3kU8dDfwd1cJvQtggo4p0KRMw8fTDgtMv7PjH0bFgVQ==
@@ -2389,7 +2389,7 @@
     write-json-file "^4.3.0"
     yargs "^17.5.1"
 
-"@ltipton/parkin@*", "@ltipton/parkin@>=1.4.0":
+"@ltipton/parkin@*", "@ltipton/parkin@1.4.0":
   version "1.4.0"
   resolved "https://registry.npmjs.org/@ltipton/parkin/-/parkin-1.4.0.tgz#5f00225933fe68b53ba255d40cac0aa0a84314c1"
   integrity sha512-FXJ9Cm7YhipWobQbTP9TUcivWYCS+bQ90f3sxHbmjZyk1H+beP8YtM+oVrPVl5vuCHWGYGaP6cp2iMF3rQ8kFA==
@@ -2819,7 +2819,7 @@
     "@types/node" "*"
     "@types/ssh2" "*"
 
-"@types/dockerode@^3.3.9":
+"@types/dockerode@3.3.9":
   version "3.3.9"
   resolved "https://registry.npmjs.org/@types/dockerode/-/dockerode-3.3.9.tgz#8c6e519fd4d0d86717b2c6a864904f4e6aa8af40"
   integrity sha512-SYRN5FF/qmwpxUT6snJP5D8k0wgoUKOGVs625XvpRJOOUi6s//UYI4F0tbyE3OmzpI70Fo1+aqpzX27zCrInww==

@@ -32,8 +32,8 @@
     "start": "cd ../../node_modules/keg-core; yarn web"
   },
   "resolutions": {
-    "@keg-hub/cli-utils": ">=0.7.0",
-    "@keg-hub/jsutils": ">=9.3.2"
+    "@keg-hub/cli-utils": "0.7.0",
+    "@keg-hub/jsutils": "9.3.2"
   },
   "dependencies": {},
   "devDependencies": {
