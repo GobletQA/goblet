@@ -180,3 +180,4 @@ repos/devspace
 # Ignore remotes files downloaded from the dind pod
 repos/dind/remote/**
 !repos/dind/remote/README.md
+/out
