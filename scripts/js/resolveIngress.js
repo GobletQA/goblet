@@ -9,13 +9,13 @@ const { resolveHost, resolveValues, resolveValue } = require('./resolveValues')
 
 const buildIngressName = (deployment) => (`name: ${deployment}-ingress`)
 
-// TODO: may need to add this as an annotations
-// #cert-manager.io/cluster-issuer: "${issuer}"
-const buildTls = (issuer, type=`nginx`) => (`
-tls: true
+
+const buildTls = (issuer, tlsName=true, type=`nginx`) => (`
+tls: ${tlsName}
 tlsClusterIssuer: ${issuer}
 annotations:
   kubernetes.io/ingress.class: "${type}"
+  cert-manager.io/cluster-issuer: "${issuer}"
 `)
 
 const buildRule = (host, serviceName, servicePort) => (`
@@ -37,8 +37,8 @@ const getSubdomainsRules = (host, deployment, mainPort, subdomains) => {
 
 const buildRules = (host, deployment, port) => (`rules:${buildRule(host, deployment, port)}`)
 
-const buildTlsRules = (issuer, host, deployment, port) => (`
-${buildTls(issuer).trim()}
+const buildTlsRules = (issuer, tlsName=true, host, deployment, port) => (`
+${buildTls(issuer, tlsName).trim()}
 ${buildRules(host, deployment, port).trim()}
 `)
 
@@ -55,11 +55,12 @@ ${buildRules(host, deployment, port).trim()}
   const values = resolveValues()
   const host = resolveHost(prefix, values)
   const issuer = resolveValue(`GB_${prefix}_CERT_ISSUER`, values)
+  const tlsName = resolveValue(`GB_${prefix}_SECRET_TLS_NAME`, values)
 
   const name = buildIngressName(deployment)
   const subRules = getSubdomainsRules(host, deployment, port, subdomains)
   const rules = issuer
-    ? buildTlsRules(issuer, host, deployment, port)
+    ? buildTlsRules(issuer, tlsName, host, deployment, port)
     : buildRules(host, deployment, port)
 
 process.stdout.write(`
