@@ -2,8 +2,13 @@ import { cert } from './cert'
 import { helm } from '../../utils/helm/helm'
 
 
+/**
+ * Removes the ingress using the helm uninstall commend
+ * @example
+ * `helm install ingress-nginx ingress-nginx --repo <repo> --install --namespace <current-namespace>`
+ */
 const createIngress = async (params:Record<any, any>) => {
-  const { name, ingress, repo, create } = params
+  const { name, ingress, repo, createNamespace } = params
   const cmdArgs = [
     name,
     ingress,
@@ -12,10 +17,22 @@ const createIngress = async (params:Record<any, any>) => {
     `--install`
   ]
 
-  create && cmdArgs.push(`--create-namespace`)
+  createNamespace && cmdArgs.push(`--create-namespace`)
 
-  return await helm.upgrade(cmdArgs)
+  return await helm.upgrade(cmdArgs, params)
 }
+
+
+/**
+ * Removes the ingress using the helm uninstall commend
+ * @example
+ * `helm uninstall ingress-nginx --namespace <current-namespace>`
+ */
+const cleanIngress = async (params:Record<any, any>) => {
+  const { name } = params
+  return await helm.uninstall([params.name], params)
+}
+
 
 /**
  * Creates an nginx ingress on the same name-space as the goblet pods
@@ -40,8 +57,10 @@ const createIngress = async (params:Record<any, any>) => {
 const ingressAct = async (args:Record<any, any>) => {
   const { params } = args
 
-  const { certs } = params as Record<any, any>
-  await createIngress(params)
+  const { certs, clean } = params as Record<any, any>
+  return clean
+    ? await cleanIngress(params)
+    : await createIngress(params)
 }
 
 export const ingress = {
@@ -72,11 +91,17 @@ export const ingress = {
       example: `--namespace custom-namespace`,
       description: `Custom namespace to use`,
     },
-    create: {
+    createNamespace: {
       type: `boolean`,
       example: `--create`,
-      alias: [`new`, `cr`],
+      alias: [ `create`, `cr`, `crn`, `cn`],
       description: `Create the namespace if it does not exist`,
+    },
+    clean: {
+      type: `boolean`,
+      example: `--clean`,
+      alias: [ `cl`, `kill`, `kl`, `stop`, `stp`, `sp`, `delete`, `del`],
+      description: `Remove the ingress from the namespace`,
     },
     log: {
       type: `boolean`,

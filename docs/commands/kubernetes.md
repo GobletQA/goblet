@@ -22,7 +22,7 @@
   * Cluster Issuer -`clusterissuers.cert-manager.io`
   * Certificate Requests - `certificaterequests.cert-manager.io`
 * List all cluster issuers
-  * `kubectl get clusterissuers.cert-manager.io`
+  * `kubectl get clusterissuers`
 * Describe a cluster issuer
   * `kubectl describe clusterissuers.cert-manager.io <name>`
 * Delete a cluster issure
@@ -30,6 +30,9 @@
 * See certificates
   * `kubectl get certificate`
   * `kubectl describe certificate <name>`
+* Describe issuer
+  * `kubectl describe issuer`
+
 
 
 ## Production

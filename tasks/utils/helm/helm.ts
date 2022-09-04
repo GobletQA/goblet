@@ -58,6 +58,11 @@ helm.install = async (
   params:Record<any, any> = noOpObj
 ) => helmAction(`install`, args, params)
 
+helm.uninstall = async (
+  args:string[] = noPropArr,
+  params:Record<any, any> = noOpObj
+) => helmAction(`uninstall`, args, params)
+
 helm.delete = async (
   args:string[] = noPropArr,
   params:Record<any, any> = noOpObj
