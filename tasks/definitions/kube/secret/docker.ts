@@ -1,8 +1,8 @@
 import path from 'path'
-import { scriptsDir } from '../../paths'
+import { scriptsDir } from '../../../paths'
 import { Logger, error } from'@keg-hub/cli-utils'
-import { loadEnvs } from '../../utils/envs/loadEnvs'
-import { getNpmToken } from '../../utils/envs/getNpmToken'
+import { loadEnvs } from '../../../utils/envs/loadEnvs'
+import { getNpmToken } from '../../../utils/envs/getNpmToken'
 
 /**
  * Log the output of a running kubernetes pod
@@ -16,7 +16,7 @@ import { getNpmToken } from '../../utils/envs/getNpmToken'
  *
  * @returns {void}
  */
-const authAct = async (args) => {
+const docAuthAct = async (args) => {
   const { params, tasks } = args
   const secretTask = tasks?.kube?.tasks?.secret
   !secretTask &&
@@ -46,11 +46,12 @@ const authAct = async (args) => {
   })
 }
 
-export const auth = {
-  name: 'auth',
-  action: authAct,
-  example: 'yarn task kube secrets auth <options>',
-  description: 'Calls the kubectl create secrets command with the docker-authentication',
+export const docker = {
+  name: `docker`,
+  action: docAuthAct,
+  alias: [ `doc`, `docauth`, `docAuth`, `da`],
+  example: `yarn task kube secrets auth <options>`,
+  description: `Calls the kubectl create secrets command with the docker-authentication`,
   options: {
     token: {
       alias: ['tok'],

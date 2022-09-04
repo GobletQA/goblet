@@ -28,11 +28,13 @@ module.exports = {
       envs: {
         blacklist: [
           `IMAGE_TAG`,
+          `GB_CM_*`,
           `DOCKER_REGISTRY`,
           `*_CERT_ISSUER`,
           `GB_IMAGE_BUILD_TAGS`,
           `GB_IMAGE_FROM`,
           `*_DOC_VOLUMES`,
+          `GB_LINODE_TOKEN`,
           `GB_BUILD_PLATFORMS`,
         ]
       }

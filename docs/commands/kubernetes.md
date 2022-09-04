@@ -33,19 +33,23 @@
 * Describe issuer
   * `kubectl describe issuer`
 
-
+`kubectl describe order`
+`kubectl get certificate gb-production-tls -o wide`
+kubectl get certificate gb-production-tls -o wide -n cert-manager
+kubectl get certificate
 
 ## Production
-* Ensure correct context is used - should be done automatically via devspace
-  * `devspace use context lke70246-ctx`
-* Ensure correct namespace is used - should be done automatically via devspace
-  * `devspace use namespace gb-production`
-* To set both context and namespace for an environment
+* Set both context and namespace for an environment
   * `yarn kube set <environment>` - environment should be one of `local`, `production`, etc...
-* Set the default namespace
-  * `kubectl config set-context --current --namespace=gb-production`
+* Set just the namespace
+  * `kubectl config set-context --current --namespace=gb-production` - Namespace is set as the default
+  * `devspace use namespace gb-production` - should be done automatically via devspace
+* Set just the context
+  * `devspace use context lke70246-ctx` - should be done automatically via devspace
+  * `kubectl config set-context lke70246-ctx`
 * Deploy to production kubernetes
   * `yarn dev deploy --env prod --log --skip fe`
+  * **IMPORTANT** - Don't forget to add `--env prod` to ensure you are using the correct environment
 * Curl cmds to test Backend API
   * `curl -kivL -H 'Host: backend.dev.gobletqa.app' -H 'Origin: localhost' 'http://45.79.63.61'`
 * See the ingress-nginx, and get the IP address of it

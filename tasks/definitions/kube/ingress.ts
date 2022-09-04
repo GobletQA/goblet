@@ -1,11 +1,11 @@
-import { cert } from './cert'
 import { helm } from '../../utils/helm/helm'
+import { Logger } from '@keg-hub/cli-utils'
 
 
 /**
- * Removes the ingress using the helm uninstall commend
+ * Create the ingress using the helm upgrade commend
  * @example
- * `helm install ingress-nginx ingress-nginx --repo <repo> --install --namespace <current-namespace>`
+ * `helm upgrade ingress-nginx ingress-nginx --repo <repo> --install --create-namespace`
  */
 const createIngress = async (params:Record<any, any>) => {
   const { name, ingress, repo, createNamespace } = params
@@ -20,17 +20,6 @@ const createIngress = async (params:Record<any, any>) => {
   createNamespace && cmdArgs.push(`--create-namespace`)
 
   return await helm.upgrade(cmdArgs, params)
-}
-
-
-/**
- * Removes the ingress using the helm uninstall commend
- * @example
- * `helm uninstall ingress-nginx --namespace <current-namespace>`
- */
-const cleanIngress = async (params:Record<any, any>) => {
-  const { name } = params
-  return await helm.uninstall([params.name], params)
 }
 
 
@@ -56,11 +45,18 @@ const cleanIngress = async (params:Record<any, any>) => {
  */
 const ingressAct = async (args:Record<any, any>) => {
   const { params } = args
+  const { clean, name, remove, log } = params as Record<any, any>
 
-  const { certs, clean } = params as Record<any, any>
-  return clean
-    ? await cleanIngress(params)
-    : await createIngress(params)
+  /**
+  * Removes the ingress using the helm uninstall commend
+  * @example
+  * `helm uninstall ingress-nginx --namespace <current-namespace>`
+  */
+  ;(clean || remove) && await helm.uninstall([name], params)
+
+  !remove && await createIngress(params)
+
+  log && Logger.success(`Successfully deployed Nginx Ingress-Controller`)
 }
 
 export const ingress = {
@@ -72,18 +68,18 @@ export const ingress = {
       alias: [`nm`],
       default: `ingress-nginx`,
       example: `--name my-ingress`,
-      description: `Name of the ingress`,
+      description: `Name of the ingress to create in the namespace`,
     },
     ingress: {
       alias: [`ing`, `in`],
       default: `ingress-nginx`,
       example: `--ingress my-ingress`,
-      description: `Ingress to install with helm`,
+      description: `Name of the ngress to install with helm`,
     },
     repo: {
       example: `--repo custom-repo-url`,
       default: `https://kubernetes.github.io/ingress-nginx`,
-      alias: [`rp`, `url`, `uri`, `path`, `locaction`, `loc`],
+      alias: [`rp`, `url`, `uri`, `path`],
       description: `Url or local path to the folder containing the helm chart`,
     },
     namespace: {
@@ -101,9 +97,15 @@ export const ingress = {
       type: `boolean`,
       example: `--clean`,
       alias: [ `cl`, `kill`, `kl`, `stop`, `stp`, `sp`, `delete`, `del`],
-      description: `Remove the ingress from the namespace`,
+      description: `Remove the ingress from the namespace then redeploy it`,
+    },
+    remove: {
+      alias: [`rm`],
+      type: `boolean`,
+      description: `Only remove deployed ingress resources. Do not redeploy`,
     },
     log: {
+      default: true,
       type: `boolean`,
       description: `Log the commands to be run`,
     },

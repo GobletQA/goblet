@@ -1,9 +1,9 @@
-import { auth } from'./auth'
 import { set } from './set'
-import { cert } from './cert'
-import { secret } from './secret'
+import { certs } from './certs'
 import { ingress } from './ingress'
 import { namespace } from './namespace'
+import { secret } from './secret/secret'
+import { provider } from './provider/provider'
 
 
 export const kube = {
@@ -11,10 +11,10 @@ export const kube = {
   alias: [ `kubectl`, `kb`, `kcl` ],
   tasks: {
     set,
-    cert,
-    auth,
+    certs,
     secret,
     ingress,
+    provider,
     namespace,
   },
 }

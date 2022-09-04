@@ -167,7 +167,8 @@ deployments:
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js frontend)
       service: $(node ../scripts/js/resolveService.js $GB_FE_DEPLOYMENT $GB_FE_PORT)
-      ingress: $(node ../scripts/js/resolveIngress.js FE $GB_FE_DEPLOYMENT $GB_FE_PORT)
+      # Check if this can be removed, pretty sure it's not needed
+      # ingress: $(node ../scripts/js/resolveIngress.js FE $GB_FE_DEPLOYMENT $GB_FE_PORT)
 
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}

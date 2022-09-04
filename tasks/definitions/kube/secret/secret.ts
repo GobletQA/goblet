@@ -1,11 +1,12 @@
 import path from 'path'
-import { auth } from'./auth'
-import { tempDir } from'../../paths'
-import { uuid } from'@keg-hub/jsutils'
+import { docker } from './docker'
+import { provider } from './provider'
+import { uuid } from '@keg-hub/jsutils'
+import { tempDir } from '../../../paths'
 import { writeFileSync, rmSync } from 'fs'
-import { Logger, error } from'@keg-hub/cli-utils'
-import { kubectl } from '../../utils/kubectl/kubectl'
-import { resolveLocalPath } from '../../utils/helpers/resolveLocalPath'
+import { Logger, error } from '@keg-hub/cli-utils'
+import { kubectl } from '../../../utils/kubectl/kubectl'
+import { resolveLocalPath } from '../../../utils/helpers/resolveLocalPath'
 
 const resolveNames = (name:string, key:string, keyvalue:string) => {
   const splitK = keyvalue && keyvalue.trim().split(`:`).shift()
@@ -26,14 +27,31 @@ const saveTempSecret = (value:string) => {
   return tempFileLoc
 }
 
+
+const addSecretArg = ({
+  key,
+  log,
+  args,
+  name,
+  files,
+  value,
+}:Record<any, any>) => {
+  const loc = saveTempSecret(value)
+  key && loc && args.push(`--from-file=${key}=${loc}`)
+  loc && files.push(loc)
+  log && logCreate(name, key, loc)
+  return loc
+}
+
 const buildLocs = (params:Record<any, any>, name:string, defkey:string) => {
   const {
     file,
     log,
-    value:val,
     files,
+    literal,
     secrets,
     keyvalue,
+    value:val,
   } = params
 
 
@@ -58,23 +76,36 @@ const buildLocs = (params:Record<any, any>, name:string, defkey:string) => {
     ? secrets.split(`,`)
     : keyvalue
       ? [keyvalue]
-      : val
-        ? [`${defkey}:${val}`]
-        : []
+      : []
 
   const tempFiles = []
   const secretArgs = secretsFrom.reduce((acc, joined) => {
     const [key, value] = joined.trim().split(`:`)
-    if(!value) return acc
 
-    const loc = saveTempSecret(value)
-    tempFiles.push(loc)
-    key && loc && acc.push(`--from-file=${key}=${saveTempSecret(value)}`)
-
-    log && logCreate(name, key, loc)
+    value &&
+      addSecretArg({
+        log,
+        key,
+        name,
+        value,
+        args: acc,
+        files: tempFiles
+      })
 
     return acc
   }, builtArr)
+
+  if(val)
+    literal
+      ? secretArgs.push(`--from-literal=${defkey}=${val}`)
+      : addSecretArg({
+          log,
+          name,
+          value: val,
+          key: defkey,
+          files: tempFiles,
+          args: secretArgs,
+        })
 
   return { tempFiles,  secretArgs }
 }
@@ -102,7 +133,15 @@ const logCreate = (name:string, key:string, loc:string) => {
  * @returns {void}
  */
 const secretAct = async ({ params }) => {
-  const { type=`generic`, value, file, files, secrets, keyvalue } = params
+  const {
+    file,
+    files,
+    value,
+    secrets,
+    keyvalue,
+    namespace,
+    type=`generic`,
+  } = params
 
   !value
     && !keyvalue
@@ -114,6 +153,7 @@ const secretAct = async ({ params }) => {
   const { name, key } = resolveNames(params.name, params.key, keyvalue)
 
   const { tempFiles,  secretArgs } = buildLocs(params, name, key)
+  namespace && secretArgs.push(`--namespace`, namespace)
 
   // @ts-ignore
   await kubectl.create([
@@ -129,14 +169,15 @@ const secretAct = async ({ params }) => {
 }
 
 export const secret = {
-  name: 'secret',
-  alias: ['scrt', 'sct'],
+  name: `secret`,
+  alias: [ `secrets`, `scrt`, `sct`, `sec`],
   action: secretAct,
   tasks: {
-    auth
+    docker,
+    provider,
   },
-  example: 'yarn task devspace secret <options>',
-  description: 'Calls the kubectl create secret command',
+  example: `yarn task devspace secret <options>`,
+  description: `Calls the kubectl create secret command`,
   options: {
     name: {
       alias: [`nm`],
@@ -167,7 +208,7 @@ export const secret = {
     key: {
       alias: [`ky`],
       example: `--key secrets-key-name`,
-      description: `Key name of the secret, uses name when key is not set`,
+      description: `Key name of the secret, uses name when key is not already set`,
     },
     value: {
       alias: [`val`],
@@ -187,8 +228,15 @@ export const secret = {
     type: {
       description: `Type of kubernetes secret to create`,
     },
+    literal: {
+      alias: [`lit`],
+      type: `boolean`,
+      example: `--literal`,
+      description: `Create the kubernetes secret from a literal value`,
+    },
     log: {
       type: `boolean`,
+      default: true,
       description: `Log the commands to be run`,
     },
   },
