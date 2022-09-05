@@ -1,10 +1,7 @@
 
 import '../resolveRoot'
-import path from 'path'
 import { toBool } from '@keg-hub/jsutils'
 import { TBackendConfig } from '@GBE/types'
-import { sockrCmds } from './sockrCmds.config'
-import { aliases } from '@GConfigs/aliases.config'
 import { conductorConfig } from './conductor.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
@@ -21,7 +18,6 @@ loadEnvs({
 const {
   GB_LOG_LEVEL,
   GB_SERVER_ORIGINS,
-  GB_AUTH_ACTIVE,
 
   GB_BE_WS_PATH,
   GB_BE_WS_PROTOCOL,
@@ -43,19 +39,18 @@ const {
   GB_BE_JWT_REFRESH_SECRET,
 
   GB_LOCAL_DEV_MODE,
-  GOBLET_DIND_SERVICE_PORT
 } = process.env
 
 const dindHost = getDindHost()
 
 export const backendConfig:TBackendConfig  = {
   server: {
+    auth: true,
     port: GB_BE_PORT,
     host: GB_BE_HOST,
     environment: nodeEnv,
     path: GB_BE_WS_PATH,
     logLevel: GB_LOG_LEVEL,
-    auth: toBool(GB_AUTH_ACTIVE),
     securePort: GB_BE_SECURE_PORT,
     origins: generateOrigins(GB_SERVER_ORIGINS),
     jwt: {

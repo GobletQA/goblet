@@ -36,7 +36,7 @@ const { getFirebaseProject } = require('../firebase/getFirebaseProject')
  const runBundleActions = async args => {
   const { params, tasks }= args
   const { version, confirm, log } = params
-  process.env.KEG_ACTION_PARAMS = [
+  process.env.GB_ACTION_PARAMS = [
     `frontend=true`,
     `version=${version || false}`,
     `confirm=${confirm}`,

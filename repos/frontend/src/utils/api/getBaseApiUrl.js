@@ -8,15 +8,17 @@ let __BASE_API_URL
 export const getBaseApiUrl = () => {
   if(__BASE_API_URL) return __BASE_API_URL
 
+  const bePort = process.env.GB_BE_PORT
+
   // Use the hostname for the base on dev
   // Otherwise cookies will not be set, due to being served via http
   // If we start serving local dev via https, this this will not be needed
   let apiBaseHost = process.env.GB_BE_HOST
 
   // If the port exists, then add it to the apiBase host
-  process.env.GB_BE_PORT &&
-  !apiBaseHost.includes(`:`) &&
-    (apiBaseHost += `:${process.env.GB_BE_PORT}`)
+  bePort
+    && !apiBaseHost.includes(`:`)
+    && (apiBaseHost += `:${bePort}`)
 
   // Remove all protocols variations, to ensure it does not exist
   const noProtoHost = apiBaseHost.replace(`https://`, '')

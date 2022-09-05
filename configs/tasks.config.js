@@ -26,18 +26,20 @@ module.exports = {
       */
       prefix: `GB`,
       envs: {
-        blacklist: [
+        omit: [
+          `KEG_*`,
+          `IMAGE`,
           `IMAGE_TAG`,
-          `GB_CR_*`,
-          `DOCKER_REGISTRY`,
-          `*_CERT_ISSUER`,
-          `GB_IMAGE_BUILD_TAGS`,
+          `FIRE_BASE_*`,
           `GB_IMAGE_FROM`,
+          `GB_IMAGE_BUILD_TAGS`,
+          `DOCKER_REGISTRY`,
           `*_DOC_VOLUMES`,
-          `GB_LINODE_TOKEN`,
-          `GB_BUILD_PLATFORMS`,
         ]
       }
+    },
+    app: {
+      contexts: [`app`],
     },
     backend: {
       /**
@@ -48,23 +50,65 @@ module.exports = {
         /**
         * ENVs to not include in the backend
         */
-        blacklist: [
+        omit: [
+          `GB_CR_*`,
           `GB_FE_*`,
-          `DISPLAY`
+          `FIRE_BASE_*`
         ]
       }
     },
-    app: {
-      contexts: [`app`],
-    },
     dind: {
       contexts: [`dind`, `dnd`, `dd`],
+      envs: {
+        /**
+        * ENVs to not include in the backend
+        */
+        omit: [
+          `GB_BE_*`,
+          `GB_CR_*`,
+          `GB_FE_*`,
+          `FIRE_BASE_*`
+        ]
+      }
     },
     frontend: {
       contexts: [`frontend`, `fre`, `fe`],
+      envs: {
+        // Will not be omitted if same env is in the pick list
+        // But will override wildcards in the pick list when more specific
+        // i.e. If pick list has `FIRE_BASE_*`, and omit list has `FIRE_BASE_SERVICE_ACCOUNT`
+        // All ENVs with `FIRE_BASE_` will be picked except for FIRE_BASE_SERVICE_ACCOUNT
+        // It will be omitted due to being in the omit list, and more specific
+        omit: [
+          `FIRE_BASE_SERVICE_ACCOUNT`
+        ],
+        // Any keys specifically set will get picked
+        // Wildcards can be overwritten by omit list
+        pick: [
+          `NODE_ENV`,
+          `GB_FE_PORT`,
+          `GB_BE_PORT`,
+          `GB_SC_PORT`,
+          `GB_BE_HOST`,
+          `FIRE_BASE_*`,
+          `GB_VNC_ACTIVE`,
+          `GB_NO_VNC_PATH`,
+          `GB_BE_WS_PATH`,
+          `GB_VNC_VIEW_WIDTH`,
+          `GB_VNC_VIEW_HEIGHT`,
+          `GB_GITHUB_AUTH_USERS`,
+        ]
+      }
     },
     screencast: {
       contexts: [`screencast`, `scr`, `sc`],
+      envs: {
+        omit: [
+          `GB_CR_*`,
+          `GB_FE_*`,
+          `FIRE_BASE_*`
+        ]
+      }
     }
   },
 }

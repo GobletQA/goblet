@@ -7,7 +7,7 @@ import { convertToCss } from '@keg-hub/re-theme/styleInjector'
 
 let DomStyleSheet
 let stylesAdded = false
-const { KEG_DOM_STYLES_ID } = Values
+const { DOM_STYLES_ID } = Values
 const isProduction = process.env.NODE_ENV === 'production'
 
 /**
@@ -25,7 +25,7 @@ export const useDomStyles = (styles = noOpObj) => {
     stylesAdded = true
 
     DomStyleSheet =
-      DomStyleSheet || document.head.querySelector(`#${KEG_DOM_STYLES_ID}`)
+      DomStyleSheet || document.head.querySelector(`#${DOM_STYLES_ID}`)
 
     DomStyleSheet &&
       Object.entries(globalStyles).map(([selector, rules]) => {
@@ -49,4 +49,4 @@ export const useDomStyles = (styles = noOpObj) => {
 /**
  * Helper to auto-add the ace editor style overrides
  */
-;(() => createDomNode(KEG_DOM_STYLES_ID, 'style', 'head'))()
+;(() => createDomNode(DOM_STYLES_ID, 'style', 'head'))()

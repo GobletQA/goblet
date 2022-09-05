@@ -1,6 +1,5 @@
-import { getOrigin }from '../utils/getOrigin'
-import { isDeployedEnv }from '../utils/isDeployedEnv'
 import type { Express } from 'express'
+import { getOrigin }from '../utils/getOrigin'
 
 /**
  * Configures cors for the backend API and websocket
@@ -19,7 +18,7 @@ export const setupCors = (app:Express) => {
 
     // If in a deployed env, then validate the origin
     // Otherwise allow the origin in development envs
-    const foundOrigin = isDeployedEnv
+    const foundOrigin = config.environment !== `local`
       ? config.origins.includes(`*`) || config.origins.includes(origin)
         ? origin
         : undefined

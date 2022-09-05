@@ -22,7 +22,7 @@ let Values = deepFreeze({
     VERTICAL_BAR_HEIGHTS: 170,
     CREATE_NEW_FILE: 'Create New File',
     CREATE_NEW_REPO: 'Create New Repo',
-    KEG_DOM_STYLES_ID: 'keg-dom-styles',
+    DOM_STYLES_ID: 'keg-dom-styles',
     TAP_PATH_PREFIX: '/goblet/app/repos',
     SCREENCAST_CANVAS: `screencast-canvas-element`,
     PARKIN_SPEC_RESULT_LOG: `------- PARKIN SPEC RESULT LOG -------`,

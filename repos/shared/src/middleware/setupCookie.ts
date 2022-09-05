@@ -25,11 +25,6 @@ const setupCookie = (app:Express) => {
     maxAge,
     httpOnly,
     overwrite,
-    // If not in a deploy env then
-    // We need the set a strict same site value, and non-secure
-    // This allow setting the cookie in a dev env without https
-    // If https is ever setup, then this could be removed
-    // sameSite: isDeployedEnv ? 'None' : 'Strict',
     sameSite,
     ...(exists(maxAge) && {maxAge}),
     ...(exists(secure) && {secure}),

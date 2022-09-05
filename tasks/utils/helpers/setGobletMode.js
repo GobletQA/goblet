@@ -24,9 +24,8 @@ const mountEnvs = {
  */
 const setGobletMode = params => {
   const { launch, local, vnc } = params
-
   const mode = params.mode || (vnc && 'vnc') || (local && 'local') || undefined
-  // const gobletMode = exists(mode) ? mode : launch ? 'local' : 'vnc'
+
   const gobletMode = exists(mode)
     ? mode
     : !exists(launch) || launch
@@ -35,16 +34,6 @@ const setGobletMode = params => {
   const vncActive = gobletMode === 'vnc' ? true : false
 
   setVncENV(vncActive)
-  addToProcess(
-    {
-      ...(vncActive ? vncEnvs : mountEnvs),
-      KEG_COMPOSE_GOBLET: path.join(
-        containerDir,
-        `docker-compose-${gobletMode}.yml`
-      ),
-    },
-    { force: true }
-  )
 
   return gobletMode
 }

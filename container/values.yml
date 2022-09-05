@@ -46,7 +46,6 @@ env:
   GB_SERVER_ORIGINS: 'localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io'
   # TODO: @lance-tipton - Make this more dynamic - value comes from firebase?
   GB_GITHUB_AUTH_USERS: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lance.tipton@workboard.com
-  GB_BUILD_PLATFORMS: linux/amd64,linux/arm64
 
   # ---- Docker Images ---- #
   # Image tags added to all built images
@@ -113,9 +112,6 @@ env:
   GB_FE_IMAGE_TAG: latest
   GB_FE_DEPLOYMENT: goblet-frontend
   GB_FE_IMAGE: 'ghcr.io/gobletqa/goblet-frontend'
-  # --- TODO: Update this as needed for deployments
-  GB_FE_ROOT_DIR: /goblet/app/repos/frontend
-
 
 # --- CONDUCTOR ENVs --- #
   # GB_CD_HOST: host.docker.internal
@@ -129,6 +125,17 @@ env:
   # Salting the user hash string. Not intended to be secure just anonymous
   GB_CD_HASH_KEY: C0nDuc10R
   GB_CD_CONTROLLER_TYPE: Docker
+
+  # --- Certs ENVs --- #
+  GB_CR_DEBUG: true
+  GB_CR_CHART_TAG: 0.0.1
+  GB_CR_MANAGE_ALL_NS: true
+  GB_CR_DEPLOYMENT: goblet-certs
+  GB_CR_CHART_URL: oci://ghcr.io/gobletqa/goblet-certs-chart
+
+  GB_CR_SECRET: provider-auth
+  GB_CR_SECRET_KEY: api-key
+  GB_CR_SECRET_ENV: LINODE_V4_API_KEY
 
 
 # --- SCREENCAST ENVs --- #

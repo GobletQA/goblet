@@ -62,13 +62,34 @@ vars:
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_VNC_PROXY_PORT"
 
+# ----- Cert Values ----- #
+- name: GB_CR_DEBUG
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_CR_DEBUG"
+- name: GB_CR_DEPLOYMENT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_CR_DEPLOYMENT"
+- name: GB_CR_CHART_URL
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_CR_CHART_URL"
+- name: GB_CR_CHART_TAG
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_CR_CHART_TAG"
+- name: GB_CR_MANAGE_ALL_NS
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_CR_MANAGE_ALL_NS"
+- name: GB_CR_SECRET
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_CR_SECRET"
+- name: GB_CR_SECRET_KEY
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_CR_SECRET_KEY"
+- name: GB_CR_SECRET_ENV
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_CR_SECRET_ENV"
 
-# Load any pull secrets from the environment by calling the resolvePullSecrets.js script
-# The script returns a formatted response as a string
-# See the ../scripts/js/resolvePullSecrets.js script for more information
 pullSecrets: $(node ../scripts/js/resolvePullSecrets.js)
 
-# Defines if and how the docker image will be built before running it as a container
 images:
   goblet-app:
     image: ${IMAGE}
@@ -84,6 +105,8 @@ images:
 
 # The `deployments` section tells devspace how to deploy this project into the cluster
 deployments:
+
+# ----- DinD API Deployment ----- #
 - name: ${GB_DD_DEPLOYMENT}
   helm:
     chart:
@@ -99,17 +122,8 @@ deployments:
         imagePullPolicy: Always
         env: $(node ../scripts/js/resolveDSEnvs.js dind)
         # TODO: use sysbox or gvisor to remove the need for privileged context
-        securityContext:
-          privileged: ${GB_DD_PRIVILEGED}
-      service:
-        name: ${GB_DD_DEPLOYMENT}
-        ports:
-        - port: ${GB_DD_DOCKER_PORT}
-        - port: ${GB_DD_WS_PROXY_PORT}
-        - port: ${GB_DD_API_PROXY_PORT}
-        - port: ${GB_DD_VNC_PROXY_PORT}
-        - port: ${GB_DD_EXP_ADMIN_PORT}
-          containerPort: ${GB_DD_LOCAL_ADMIN_PORT}
+        securityContext: $(node ../scripts/js/resolveSecurity.js DD)
+      service: $(node ../scripts/js/resolveService.js $GB_DD_DEPLOYMENT $GB_DD_DOCKER_PORT $GB_DD_WS_PROXY_PORT $GB_DD_API_PROXY_PORT $GB_DD_VNC_PROXY_PORT $GB_DD_EXP_ADMIN_PORT:$GB_DD_LOCAL_ADMIN_PORT)
 
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
@@ -125,19 +139,16 @@ deployments:
       - image: ${GB_BE_IMG_URI}
         imagePullPolicy: Always
         env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
-      service:
-        name: ${GB_BE_DEPLOYMENT}
-        ports:
-        - port: ${GB_BE_PORT}
-      ingress:
-        name: ${GB_BE_DEPLOYMENT}-ingress
-        annotations:
-          kubernetes.io/ingress.class: nginx
-          cert-manager.io/issuer: letsencrypt-prod
-        rules:
-        - host: $(node ../scripts/js/resolveIngress.js BE)
-          serviceName: ${GB_BE_DEPLOYMENT}
-          servicePort: ${GB_BE_PORT}
-        - host: $(node ../scripts/js/resolveIngress.js BE "*")
-          serviceName: ${GB_BE_DEPLOYMENT}
-          servicePort: ${GB_BE_PORT}
+      service: $(node ../scripts/js/resolveService.js $GB_BE_DEPLOYMENT $GB_BE_PORT)
+      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_DEPLOYMENT $GB_BE_PORT "*")
+
+# ----- Certs API Deployment ----- #
+- name: ${GB_CR_DEPLOYMENT}
+  helm:
+    chart:
+      name: ${GB_CR_CHART_URL}:${GB_CR_CHART_TAG}
+    cleanupOnFail: true
+    values:
+      debug: ${GB_CR_DEBUG}
+      manageAllNamespaces: ${GB_CR_MANAGE_ALL_NS}
+      env: $(node ../scripts/js/resolveDSEnvs.js certs $GB_CR_SECRET:$GB_CR_SECRET_KEY:$GB_CR_SECRET_ENV)

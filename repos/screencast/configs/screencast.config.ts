@@ -30,7 +30,6 @@ const {
   GB_VNC_SERVER_HOST=GB_SC_HOST,
 
   GB_LOG_LEVEL,
-  GB_AUTH_ACTIVE,
   GB_SERVER_ORIGINS,
 
   GB_BE_SECURE_PORT,
@@ -65,11 +64,11 @@ const screenDims:TScreenDims = {
 export const screencastConfig:TGScreencastConfig = {
   // Uses to start separate screencast API
   server: {
+    auth: true,
     port: GB_SC_PORT,
     host: GB_SC_HOST,
     environment: nodeEnv,
     logLevel: GB_LOG_LEVEL,
-    auth: toBool(GB_AUTH_ACTIVE),
     securePort: GB_BE_SECURE_PORT,
     origins: generateOrigins(GB_SERVER_ORIGINS),
     jwt: {

@@ -5,7 +5,6 @@ import { Logger } from '@keg-hub/cli-utils'
 import { AUTH_BYPASS_ROUTES } from '@GBE/constants'
 import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
-import { isDeployedEnv } from '@gobletqa/shared/utils/isDeployedEnv'
 import {
   setupRouters,
   setupEndpoints,
@@ -87,13 +86,3 @@ export const initApi = async () => {
 
   return { app, server }
 }
-
-/**
- * Ensure nodemon restarts properly
- * Sometimes nodemon tries to restart faster then the process can shutdown
- * This should force kill the process when it receives the SIGUSR2 event from nodemon
- * Taken from https://github.com/standard-things/esm/issues/676#issuecomment-766338189
- */
-!isDeployedEnv &&
-  process.once('SIGUSR2', () => process.kill(process.pid, 'SIGUSR2'))
-
