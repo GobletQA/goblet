@@ -28,7 +28,7 @@ module.exports = {
       envs: {
         blacklist: [
           `IMAGE_TAG`,
-          `GB_CM_*`,
+          `GB_CR_*`,
           `DOCKER_REGISTRY`,
           `*_CERT_ISSUER`,
           `GB_IMAGE_BUILD_TAGS`,

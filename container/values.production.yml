@@ -7,20 +7,18 @@ env:
 
   # Name of the kubernetes secret used in the ingress
   GB_BE_SECRET_TLS_NAME: gb-production-tls
-  GB_BE_CERT_ISSUER: letsencrypt-production
 
   NODE_ENV: production
   GB_LOCAL_DEV_MODE: false
   DEVSPACE_INJECT_LOCAL: false
 
   # --- Cert-Manager - CLOUD PROVIDER ENVs --- #
-  GB_CM_WEBHOOK_CHART_NAME: cert-manager-webhook-linode
-  GB_CM_WEBHOOK_CHART_URL: https://github.com/slicen/cert-manager-webhook-linode/releases/download/v0.2.0/cert-manager-webhook-linode-v0.2.0.tgz
-  GB_CM_SOLVER_NAME: linode
-  GB_CM_NAMESPACE: cert-manager
-  GB_CM_PROVIDER_TOKEN_KEY: token
-  GB_CM_GROUP_NAME: dev.gobletqa.app
-  GB_CM_USER_EMAIL: lancetipton04@gmail.com
-  GB_CM_PROVIDER_TOKEN_NAME: linode-credentials
-  GB_CM_PROVIDER_TOKEN_PATH: {{ cli.paths.config }}/linode/api-token
-
+  GB_CR_WEBHOOK_CHART_NAME: cert-manager-webhook-linode
+  GB_CR_WEBHOOK_CHART_URL: https://github.com/slicen/cert-manager-webhook-linode/releases/download/v0.2.0/cert-manager-webhook-linode-v0.2.0.tgz
+  GB_CR_SOLVER_NAME: linode
+  GB_CR_NAMESPACE: cert-manager
+  GB_CR_PROVIDER_TOKEN_KEY: token
+  GB_CR_GROUP_NAME: dev.gobletqa.app
+  GB_CR_USER_EMAIL: lancetipton04@gmail.com
+  GB_CR_PROVIDER_TOKEN_NAME: linode-credentials
+  GB_CR_PROVIDER_TOKEN_PATH: "{{ cli.paths.config }}/linode/api-token"

@@ -9,13 +9,25 @@ const { resolveHost, resolveValues, resolveValue } = require('./resolveValues')
 
 const buildIngressName = (deployment) => (`name: ${deployment}-ingress`)
 
-
-const buildTls = (issuer, tlsName=true, type=`nginx`) => (`
-tls: ${tlsName}
-tlsClusterIssuer: ${issuer}
+/**
+ * Adds annotations needed for generating ssl certs via the certs helm chart
+ * When testing, add the annotation
+ *  - acme.kubernetes.io/staging: "true"
+ * This tells the certs pod to use the letsencrypt staging server, so we don't get rate-limited
+ */
+const buildTls = ({
+  email,
+  tls=true,
+}) => (`
+tls: ${tls}
+disableCertManager: true
+labels:
 annotations:
-  kubernetes.io/ingress.class: "${type}"
-  cert-manager.io/cluster-issuer: "${issuer}"
+  acme.kubernetes.io/enable: "true"
+  acme.kubernetes.io/staging: "false"
+  acme.kubernetes.io/dns: "dns_linode_v4"
+  acme.kubernetes.io/pre-cmd: "acme.sh --register-account -m ${email}"
+  acme.kubernetes.io/add-args: "--dnssleep 120"
 `)
 
 const buildRule = (host, serviceName, servicePort) => (`
@@ -37,8 +49,14 @@ const getSubdomainsRules = (host, deployment, mainPort, subdomains) => {
 
 const buildRules = (host, deployment, port) => (`rules:${buildRule(host, deployment, port)}`)
 
-const buildTlsRules = (issuer, tlsName=true, host, deployment, port) => (`
-${buildTls(issuer, tlsName).trim()}
+const buildTlsRules = ({
+  port,
+  host,
+  email,
+  tls=true,
+  deployment,
+}) => (`
+${buildTls({ email, tls }).trim()}
 ${buildRules(host, deployment, port).trim()}
 `)
 
@@ -54,14 +72,20 @@ ${buildRules(host, deployment, port).trim()}
 
   const values = resolveValues()
   const host = resolveHost(prefix, values)
-  const issuer = resolveValue(`GB_${prefix}_CERT_ISSUER`, values)
-  const tlsName = resolveValue(`GB_${prefix}_SECRET_TLS_NAME`, values)
+  const tls = resolveValue(`GB_${prefix}_SECRET_TLS_NAME`, values)
+  const email = resolveValue(`GB_CR_USER_EMAIL`, values)
 
   const name = buildIngressName(deployment)
   const subRules = getSubdomainsRules(host, deployment, port, subdomains)
-  const rules = issuer
-    ? buildTlsRules(issuer, tlsName, host, deployment, port)
-    : buildRules(host, deployment, port)
+  const rules = !tls
+    ? buildRules(host, deployment, port)
+    : buildTlsRules({
+        tls,
+        host,
+        port,
+        email,
+        deployment,
+      })
 
 process.stdout.write(`
 ${name.trim()}

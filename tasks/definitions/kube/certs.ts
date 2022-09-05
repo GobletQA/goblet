@@ -36,8 +36,8 @@ const installProviderWebhook = async ({
   params,
   certNamespace,
 }:Record<any, any>) => {
-  const wbName = params.webhookName || envs.GB_CM_WEBHOOK_CHART_NAME
-  const wbUrl = params.webhookUrl || envs.GB_CM_WEBHOOK_CHART_URL
+  const wbName = params.webhookName || envs.GB_CR_WEBHOOK_CHART_NAME
+  const wbUrl = params.webhookUrl || envs.GB_CR_WEBHOOK_CHART_URL
   if(!wbName || !wbUrl) return
 
   params.log && Logger.success(`Installing provider cert-manager webhook...\n`)
@@ -50,13 +50,13 @@ const installProviderWebhook = async ({
  */
 const buildCertParams = (params:Record<any, any>, envs:Record<any, any>) => {
   const {
-    GB_CM_VERSION,
-    GB_CM_REPO_URL=CERT_REPO_URL,
-    GB_CM_NAMESPACE=`cert-manager`
+    GB_CR_VERSION,
+    GB_CR_REPO_URL=CERT_REPO_URL,
+    GB_CR_NAMESPACE=`cert-manager`
   } = envs
   
-  const { env, name=env, certNamespace=GB_CM_NAMESPACE } = params
-  let version = params.version || GB_CM_VERSION
+  const { env, name=env, certNamespace=GB_CR_NAMESPACE } = params
+  let version = params.version || GB_CR_VERSION
   version = version.startsWith(`v`) ? version : `v${version}`
 
   return {
@@ -64,7 +64,7 @@ const buildCertParams = (params:Record<any, any>, envs:Record<any, any>) => {
     version,
     certNamespace,
     skipParams: {...params, name, skipNs: true, skipContext: true},
-    certLoc: params.certLoc || GB_CM_REPO_URL.replace(`{{version}}`, version),
+    certLoc: params.certLoc || GB_CR_REPO_URL.replace(`{{version}}`, version),
   }
 }
 
@@ -79,14 +79,14 @@ const buildIssuerTemplate = async ({
 }:Record<any, any>) => {
   const { env, solverType } = params
   const { getDockerUser } = await import(path.join(scriptsDir, 'js/dockerLogin.js'))
-  const email =  params.email || envs.GB_CM_USER_EMAIL || await getDockerUser(envs)
+  const email =  params.email || envs.GB_CR_USER_EMAIL || await getDockerUser(envs)
 
   const content = getClusterIssuer({
     env,
     email,
     prefixName: getPrefixedName(`letsencrypt`, name),
-    groupName: params.groupName || envs.GB_CM_GROUP_NAME,
-    solverName: params.solverName || envs.GB_CM_SOLVER_NAME,
+    groupName: params.groupName || envs.GB_CR_GROUP_NAME,
+    solverName: params.solverName || envs.GB_CR_SOLVER_NAME,
   }, solverType)
 
   return saveTempFile(content)

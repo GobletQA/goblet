@@ -144,9 +144,9 @@ kubectl.ensureContext = resolveArgs<string>(async (
       ? Logger.pair(`Using context:`, curContext)
       : Logger.log(
           `Switching kube-context`,
-          Logger.colors.warn(curContext),
+          Logger.colors.yellow(curContext),
           `to`,
-          Logger.colors.success(kubeContext)
+          Logger.colors.green(kubeContext)
         )
 
   return switchContexts

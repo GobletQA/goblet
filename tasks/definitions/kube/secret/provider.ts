@@ -13,10 +13,10 @@ const getProviderToken = async (
   token?:string,
   file?:string
 ) => {
-  const tokenName = name || envs.GB_CM_PROVIDER_TOKEN_NAME
-  const tokenKey = key || envs.GB_CM_PROVIDER_TOKEN_KEY
+  const tokenName = name || envs.GB_CR_PROVIDER_TOKEN_NAME
+  const tokenKey = key || envs.GB_CR_PROVIDER_TOKEN_KEY
   let fileLoc = file && resolvePath(file, appRoot)
-  fileLoc = fileLoc || path.resolve(envs.GB_CM_PROVIDER_TOKEN_PATH)
+  fileLoc = fileLoc || path.resolve(envs.GB_CR_PROVIDER_TOKEN_PATH)
 
   return token
     ? [tokenName, tokenKey, token]
@@ -45,7 +45,7 @@ const providerAct = async (args) => {
 
   // Get the user name in the same way docker and devspace do
   const envs = loadEnvs({ env: params.env })
-  const namespace = params.namespace || (cert ? envs.GB_CM_NAMESPACE : envs.GB_KUBE_NAMESPACE)
+  const namespace = params.namespace || (cert ? envs.GB_CR_NAMESPACE : envs.GB_KUBE_NAMESPACE)
 
   // Get the auth token in the same way docker and devspace do
   const [name, key, token] = pToken && pName

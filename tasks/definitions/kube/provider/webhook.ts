@@ -7,8 +7,8 @@ import { kubectl } from '../../../utils/kubectl/kubectl'
  * Builds, cleans, and ensures the correct params exist in the correct format
  */
 const buildCertParams = (params:Record<any, any>, envs:Record<any, any>) => {
-  const { GB_CM_NAMESPACE=`cert-manager` } = envs
-  const { env, name=env, certNamespace=GB_CM_NAMESPACE } = params
+  const { GB_CR_NAMESPACE=`cert-manager` } = envs
+  const { env, name=env, certNamespace=GB_CR_NAMESPACE } = params
 
   return {
     name,
@@ -27,8 +27,8 @@ const installProviderWebhook = async ({
   params,
   certNamespace,
 }:Record<any, any>) => {
-  const wbName = params.webhookName || envs.GB_CM_WEBHOOK_CHART_NAME
-  const wbUrl = params.webhookUrl || envs.GB_CM_WEBHOOK_CHART_URL
+  const wbName = params.webhookName || envs.GB_CR_WEBHOOK_CHART_NAME
+  const wbUrl = params.webhookUrl || envs.GB_CR_WEBHOOK_CHART_URL
   if(!wbName || !wbUrl) return
 
   params.log && Logger.success(`Installing provider cert-manager webhook...\n`)

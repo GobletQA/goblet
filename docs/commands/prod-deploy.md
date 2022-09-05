@@ -14,7 +14,7 @@
   * `yarn dev deploy --env prod --log --skip fe`
   * **IMPORTANT** - Don't forget to add `--env prod` to ensure you are using the correct environment
 * Curl cmds to test Backend API
-  * `curl -kivL -H 'Host: backend.dev.gobletqa.app' -H 'Origin: localhost' 'http://45.79.242.185'`
+  * `curl -kivL -H 'Host: backend.dev.gobletqa.app' -H 'Origin: localhost' 'http://198.58.121.252'`
 * See the ingress-nginx, and get the IP address of it
   * `kubectl --namespace gb-production get services -o wide -w ingress-nginx-controller`
 * Watch ingress deployment status
@@ -23,16 +23,17 @@
 
 ## Steps
 * Set the namespace and context
-  * `yarn kube set prod  --log`
+  * `yarn kube set prod --log`
 * Add the docker image pull secrets
-  * `yarn kube secret docker  --log`
-* Create the namespace for the cert-manager
-  * `yarn kube cert --env prod --skip c,w,i  --log`
+  * `yarn kube secret docker --env prod --log`
 * Add the cloud provider API Token secrets
   * `yarn kube secret provider --env prod --cert --log`
-* Deploy the Backend Apps
-  * `yarn dev deploy --end prod --log --skip fe`
 * Deploy the Nginx Ingress Controller
   * `yarn kube ingress --env prod --log`
-* Deploy Cert-Manager Cluster-Issuer, skip creating the namespace
-  * `yarn kube cert --env prod --skip n, --log`
+* Deploy the Backend Apps
+  * `yarn dev deploy --end prod --log --skip fe`
+* Deploy KCert
+  * `kubectl apply -f scripts/deploy/kube/cert.yaml`
+
+
+

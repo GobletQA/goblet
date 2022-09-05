@@ -106,7 +106,7 @@ env:
   GB_BE_COOKIE_KEY: goblet-cookie-7979
 
   # Disable certs in local. Set to the cluster issuer name in values.<env>.yaml file for ssl
-  # GB_BE_CERT_ISSUER: false
+  GB_BE_SECRET_TLS_NAME: false
 
 # ---- Frontend ENVs ---- #
   GB_FE_PORT: 19006
