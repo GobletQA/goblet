@@ -20,8 +20,6 @@ const checkUserInRequest = asyncWrap(async (req:Request, res:Response, next:Next
  * Then adds middleware to validation a users session
  */
 export const validateUser = (app:Express, route:string, expressRouter?:Router|boolean|string,) => {
-  if(!app.locals?.config?.server?.auth) return
-
   const router = getRouter(expressRouter)
   router && router.use(route, checkUserInRequest)
 }

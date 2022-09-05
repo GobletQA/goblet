@@ -52,10 +52,10 @@ vars:
   command: "node ../scripts/js/getYamlValue.js GB_NO_VNC_PORT"
 - name: GB_SC_INGRESS_HOST
   source: command
-  command: "node ../scripts/js/resolveIngress.js SC"
+  command: "node ../scripts/js/resolveHost.js SC"
 - name: GB_SC_INGRESS_HOST_WILD_CARD
   source: command
-  command: "node ../scripts/js/resolveIngress.js SC \"*\""
+  command: "node ../scripts/js/resolveHost.js SC \"*\""
 
 # ----- Frontend Values ----- #
 - name: GB_FE_DEPLOYMENT
@@ -108,7 +108,6 @@ vars:
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_DD_VNC_PROXY_PORT"
 
-
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
 # See the ../scripts/js/resolvePullSecrets.js script for more information
@@ -116,7 +115,7 @@ pullSecrets: $(node ../scripts/js/resolvePullSecrets.js)
 
 # Defines if and how the docker image will be built before running it as a container
 images:
-  goblet-screencast:
+  goblet-app:
     image: ${IMAGE}
     createPullSecret: true
     injectRestartHelper: false
@@ -134,9 +133,8 @@ images:
             NPM_TOKEN: ${NPM_TOKEN}
 
 # The `deployments` section tells devspace how to deploy this project into the cluster
-deployments:
-# TODO: Convert screencast deployment to be consistent with other deployments
-# ----- Screencast API Deployment ----- #
+deployments: 
+
 - name: ${GB_SC_DEPLOYMENT}
   helm:
     chart:
@@ -150,13 +148,7 @@ deployments:
       - image: ${GB_SC_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js screencast)
-      service:
-        name: ${GB_SC_DEPLOYMENT}
-        ports:
-        # Screencast API Port
-        - port: ${GB_SC_PORT}
-        # NoVnc Websocket Port
-        - port: ${GB_NO_VNC_PORT}
+      service: $(node ../scripts/js/resolveService.js $GB_SC_DEPLOYMENT $GB_SC_PORT $GB_NO_VNC_PORT)
       ingress:
         name: ${GB_SC_DEPLOYMENT}-ingress
         rules:
@@ -188,17 +180,8 @@ deployments:
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js dind)
         # TODO: use sysbox or gvisor to remove the need for privileged context
-        securityContext:
-          privileged: ${GB_DD_PRIVILEGED}
-      service:
-        name: ${GB_DD_DEPLOYMENT}
-        ports:
-        - port: ${GB_DD_DOCKER_PORT}
-        - port: ${GB_DD_WS_PROXY_PORT}
-        - port: ${GB_DD_API_PROXY_PORT}
-        - port: ${GB_DD_VNC_PROXY_PORT}
-        - port: ${GB_DD_EXP_ADMIN_PORT}
-          containerPort: ${GB_DD_LOCAL_ADMIN_PORT}
+        securityContext: $(node ../scripts/js/resolveSecurity.js DD)
+      service: $(node ../scripts/js/resolveService.js $GB_DD_DEPLOYMENT $GB_DD_DOCKER_PORT $GB_DD_WS_PROXY_PORT $GB_DD_API_PROXY_PORT $GB_DD_VNC_PROXY_PORT $GB_DD_EXP_ADMIN_PORT:$GB_DD_LOCAL_ADMIN_PORT)
 
 # ----- Frontend Deployment ----- #
 - name: ${GB_FE_DEPLOYMENT}
@@ -214,17 +197,9 @@ deployments:
       - image: ${GB_FE_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js frontend)
-      service:
-        name: ${GB_FE_DEPLOYMENT}
-        ports:
-        - port: ${GB_FE_PORT}
-      ingress:
-        name: ${GB_FE_DEPLOYMENT}-ingress
-        rules:
-        - host: $(node ../scripts/js/resolveIngress.js FE)
-          serviceName: ${GB_FE_DEPLOYMENT}
-          servicePort: ${GB_FE_PORT}
-
+      service: $(node ../scripts/js/resolveService.js $GB_FE_DEPLOYMENT $GB_FE_PORT)
+      # Check if this can be removed, pretty sure it's not needed
+      # ingress: $(node ../scripts/js/resolveIngress.js FE $GB_FE_DEPLOYMENT $GB_FE_PORT)
 
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
@@ -240,20 +215,8 @@ deployments:
       - image: ${GB_BE_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
-      service:
-        name: ${GB_BE_DEPLOYMENT}
-        ports:
-        - port: ${GB_BE_PORT}
-      ingress:
-        name: ${GB_BE_DEPLOYMENT}-ingress
-        rules:
-        - host: $(node ../scripts/js/resolveIngress.js BE)
-          serviceName: ${GB_BE_DEPLOYMENT}
-          servicePort: ${GB_BE_PORT}
-        - host: $(node ../scripts/js/resolveIngress.js BE "*")
-          serviceName: ${GB_BE_DEPLOYMENT}
-          servicePort: ${GB_BE_PORT}
-
+      service: $(node ../scripts/js/resolveService.js $GB_BE_DEPLOYMENT $GB_BE_PORT)
+      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_DEPLOYMENT $GB_BE_PORT "*")
 
 dev:
   # Gets the apps that should sync with the host machine
@@ -266,7 +229,6 @@ dev:
   # The `open` field tells DevSpace to open a URL as soon as it returns HTTP status 200
   # Since we configured port-forwarding, we can use a localhost address here to access our application
   open: $(node ../scripts/js/resolveOpenBrowser.js GB_FE_ACTIVE ${GB_FE_PORT})
-
 
 # Use profile to dynamically switch out the app specific docker image for the development image
 profiles:
@@ -281,5 +243,4 @@ profiles:
   - op: replace
     path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
     value: ${IMAGE}:${IMAGE_TAG}
-- name: staging
 - name: production

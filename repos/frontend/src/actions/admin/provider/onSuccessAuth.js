@@ -100,7 +100,7 @@ export const onSuccessAuth = async (authData, callback) => {
       method: 'POST',
       url: `/auth/validate`,
     })
-    
+
     // If response if false, the session is invalid, and the user must sign in again
     if(error || !success) throw new Error(error)
 

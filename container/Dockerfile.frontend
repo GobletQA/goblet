@@ -22,20 +22,6 @@ RUN yarn install --frozen-lockfile
 # ---- Build App Stage ---- #
 FROM $IMAGE_FROM AS goblet-builder
 WORKDIR /goblet/app
-COPY --from=goblet-pruner /goblet/app/tsconfig* .
-COPY --from=goblet-pruner /goblet/app/out/full/ .
-COPY --from=goblet-installer /goblet/app/ .
-WORKDIR /goblet/app/repos/frontend
-ENV NODE_ENV=production
-RUN yarn global add expo-cli@$EXPO_CLI_VERSION; \
-    yarn build:fe --filter=@gobletqa/frontend
-# ---- End Stage ---- #
-
-# TODO: Update this to build and deploy to firebase instead of serving vai nginx
-
-# ---- Serve App Stage ---- #
-FROM $IMAGE_FROM AS goblet-serve
-WORKDIR /usr/share/nginx/html
 ENV HOME=/root \
     DISPLAY=:0.0 \
     DEBUG=pw:api* \
@@ -46,20 +32,29 @@ ENV HOME=/root \
     DEBIAN_FRONTEND=noninteractive \
     PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
 
-ARG GB_FE_PORT
+COPY --from=goblet-pruner /goblet/app/tsconfig* .
+COPY --from=goblet-pruner /goblet/app/out/full/ .
+COPY --from=goblet-installer /goblet/app/ .
+WORKDIR /goblet/app
+ARG FIREBASE_TOKEN
+ARG FIREBASE_PROJECT
 ENV NODE_ENV=production \
-    GB_FE_PORT=$GB_FE_PORT
+    FIREBASE_TOKEN=$FIREBASE_TOKEN \
+    FIREBASE_PROJECT=$FIREBASE_PROJECT
 
-COPY --from=goblet-builder /goblet/app/repos/frontend/dist/. .
-COPY ./container/scripts/fe.nginx.conf /etc/nginx/http.d/default.conf
-RUN sed -i "s/\$\{GB_FE_PORT\}/$GB_FE_PORT/g" /etc/nginx/http.d/default.conf; \
-    echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf; \
-    sysctl -p; \
-    /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
+RUN <<EOF
+    apt install -y g++ make
+    yarn global add expo-cli@$EXPO_CLI_VERSION sharp-cli firebase-tools
 
-EXPOSE $GB_FE_PORT
-WORKDIR /etc/nginx
+    cd /goblet/app/repos/frontend
+    NODE_ENV=production yarn build:fe
 
-CMD nginx -g 'daemon off;'
+    rm -rf /goblet/app/repos/frontend/dist
+    cp -R /goblet/app/node_modules/keg-core/web-build /goblet/app/repos/frontend/dist
+
+    firebase deploy --non-interactive --token $FIREBASE_TOKEN --project $FIREBASE_PROJECT --only hosting
+EOF
+
+
 
 

@@ -196,7 +196,6 @@ env:
 
   # Exposed Port used for all container VNC proxies
   GB_DD_VNC_PROXY_PORT: 2123
-  
 
   # Must be localhost due to caddy config, if can not be an ip address
   GB_DD_CADDY_HOST: localhost
