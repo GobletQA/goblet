@@ -2,7 +2,6 @@ const path = require('path')
 const { appRoot } = require('../../paths')
 const { fileSys } = require('@keg-hub/cli-utils')
 
-
 /**
  * Gets the name of a firebase project based on those defined in the .firebaserc file
  * @function
@@ -21,7 +20,7 @@ const getFirebaseProject = async ({ params }, envs) => {
   const content = fileSys.readFileSync(path.join(appRoot, `.firebaserc`))
   const data = JSON.parse(content)
 
-  return data.projects[project] || project
+  return data.projects[project] ?? envs.FIRE_BASE_PROJECT_ID ?? project
 }
 
 

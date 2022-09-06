@@ -4,8 +4,8 @@
  * Run command below to test
  * `node scripts/js/resolveDSEnvs.js certs provider-auth:api-key:LINODE_V4_API_KEY`
  */
+const { exists } = require('@keg-hub/jsutils') 
 const { resolveValues, resolveConfig } = require('./resolveValues')
-const { pickKeys, exists, omitKeys } = require('@keg-hub/jsutils') 
 
 const { apps } = resolveConfig()
 
@@ -43,7 +43,7 @@ const buildEnvs = (envs, pickList=[], omitList=[]) => {
   const hasPick = Boolean(pickList.length)
   const hasOmit = Boolean(omitList.length)
 
-  const builtEnvs = Object.entries(envs)
+  return Object.entries(envs)
     .reduce((acc, [key, value]) => {
       const val = process.env[key] ?? value
       if(!exists(val) || val === "") return acc
@@ -57,24 +57,26 @@ const buildEnvs = (envs, pickList=[], omitList=[]) => {
       if (hasPick)
         shouldPick
           && (pickList.includes(key) || !omitList.includes(key))
-          && (acc[key] = addEnv(key, `"${val}"`))
+          && (acc[key] = val)
 
       // Add if omit list exists and there's no pick list OR it should be picked
       else if(hasOmit)
         !shouldOmit
           && (!hasPick || shouldPick)
-          && (acc[key] = addEnv(key, `"${val}"`))
+          && (acc[key] = val)
 
 
       // Add if no omit list and no pick list exist
       else
-        acc[key] = addEnv(key, `"${val}"`)
+        acc[key] = val
 
       return acc
     }, {})
+}
 
 
-  return Object.values(builtEnvs).join(``)
+const convertToYaml = (envs) => {
+  return Object.entries(envs).reduce((acc, [key, value]) => `${acc}${addEnv(key, '"'+ value +'"')}`, ``)
 }
 
 /**
@@ -93,15 +95,36 @@ const buildLists = (repo) => {
   }
 }
 
-const filterEnvs = (repo) => {
+/**
+ * Filters an Envs object passed to it
+ * Returns the filtered envs as an object. **NOT** yaml
+ * @param {string} repo - Name of the repos to filter the envs for
+ * @param {Object} existingEnvs - Envs object to be filtered
+ *
+ * @returns {Object} - Filtered envs Object
+ */
+const filterExistingEnvs = (repo, existingEnvs) => {
+  const { pickList, omitList } = buildLists(repo)
+  return buildEnvs(existingEnvs, pickList, omitList)
+}
+
+/**
+ * Filters an Envs loaded from the values files
+ * Then formats them as a yaml string
+ * @param {string} repo - Name of the repos to filter the envs for
+ *
+ * @returns {string} - Filtered and formatted yaml string of the Envs
+ */
+const filterEnvsAsYaml = (repo) => {
   const { pickList, omitList } = buildLists(repo)
   const envs = resolveValues()
   const built = buildEnvs(envs, pickList, omitList)
 
-  return built
+  return convertToYaml(built)
 }
 
 module.exports = {
   addEnv,
-  filterEnvs
+  filterEnvsAsYaml,
+  filterExistingEnvs
 }

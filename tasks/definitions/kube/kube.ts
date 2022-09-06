@@ -3,8 +3,6 @@ import { certs } from './certs'
 import { ingress } from './ingress'
 import { namespace } from './namespace'
 import { secret } from './secret/secret'
-import { provider } from './provider/provider'
-
 
 export const kube = {
   name: 'kube',
@@ -14,7 +12,6 @@ export const kube = {
     certs,
     secret,
     ingress,
-    provider,
     namespace,
   },
 }

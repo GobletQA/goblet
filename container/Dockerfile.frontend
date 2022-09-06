@@ -36,23 +36,22 @@ COPY --from=goblet-pruner /goblet/app/tsconfig* .
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app
-ARG FIREBASE_TOKEN
-ARG FIREBASE_PROJECT
+ARG FIRE_BASE_PROJECT_ID
 ENV NODE_ENV=production \
-    FIREBASE_TOKEN=$FIREBASE_TOKEN \
-    FIREBASE_PROJECT=$FIREBASE_PROJECT
+    FIRE_BASE_PROJECT_ID=$FIRE_BASE_PROJECT_ID
 
 RUN <<EOF
-    apt install -y g++ make
-    yarn global add expo-cli@$EXPO_CLI_VERSION sharp-cli firebase-tools
+    apt-get update
+    apt-get install -y g++ make
+    yarn global add expo-cli@$EXPO_CLI_VERSION expo-optimize sharp-cli firebase-tools
 
-    cd /goblet/app/repos/frontend
-    NODE_ENV=production yarn build:fe
+    # cd /goblet/app/repos/frontend
+    # NODE_ENV=production yarn build:fe
 
-    rm -rf /goblet/app/repos/frontend/dist
-    cp -R /goblet/app/node_modules/keg-core/web-build /goblet/app/repos/frontend/dist
+    # rm -rf /goblet/app/repos/frontend/dist
+    # cp -R /goblet/app/node_modules/keg-core/web-build /goblet/app/repos/frontend/dist
 
-    firebase deploy --non-interactive --token $FIREBASE_TOKEN --project $FIREBASE_PROJECT --only hosting
+    # firebase deploy --non-interactive --token $FIREBASE_TOKEN --project $FIRE_BASE_PROJECT_ID --only hosting
 EOF
 
 

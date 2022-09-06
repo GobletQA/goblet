@@ -1,7 +1,8 @@
-const { getVolumeContext } = require('../helpers/contexts')
+// const { appRoot } = require('../../paths')
+const { loadEnvs } = require('../envs/loadEnvs')
 const { ensureArr, flatUnion } = require('@keg-hub/jsutils')
 const { resolveLocalPath } = require('../helpers/resolveLocalPath')
-
+const { getContextValue, getVolumeContext } = require('../helpers/contexts')
 
 /**
  * Merges the passed in param volumes with the env defined volumes 
@@ -11,8 +12,12 @@ const { resolveLocalPath } = require('../helpers/resolveLocalPath')
  *
  * @returns {Array<string>} - Array of volumes strings
  */
-const resolveVols = ({ volumes, env }, docFileCtx) => {
+const resolveVols = ({ volumes, mount, env }, docFileCtx) => {
+  const envs = loadEnvs({ env })
+  const mountLoc = mount && getContextValue(docFileCtx, envs, `MOUNT_PATH`)
+
   return flatUnion([
+    mountLoc,
     ...ensureArr(volumes),
     ...getVolumeContext(docFileCtx, env, ``).split(`,`)
   ])

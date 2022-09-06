@@ -1,5 +1,5 @@
 const { loadEnvs } = require('../envs/loadEnvs')
-const { isArr, noOpObj, exists, deepMerge, omitKeys } = require('@keg-hub/jsutils')
+const { noOpObj, exists, deepMerge } = require('@keg-hub/jsutils')
 
 /**
  * Cache holder for the app contexts, prefix and deployments
@@ -206,7 +206,6 @@ const getVolumeContext = (context, env, fallback) => {
 
   return volCtx
 }
-
 
 module.exports = {
   getContext,

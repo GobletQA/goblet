@@ -4,11 +4,12 @@ loadEnvs({ override: nodeEnv === 'local'})
 
 const {
   FIRE_BASE_KEY,
-  FIRE_BASE_AUTH_DOMAIN,
-  FIRE_BASE_PROJECT_ID,
-  FIRE_BASE_STORAGE_BUCKET,
-  FIRE_BASE_MESSAGING_SENDER_ID,
   FIRE_BASE_APP_ID,
+  FIRE_BASE_PROJECT_ID,
+  FIRE_BASE_AUTH_DOMAIN,
+  FIRE_BASE_STORAGE_BUCKET,
+  FIRE_BASE_PERSISTENCE=`local`,
+  FIRE_BASE_MESSAGING_SENDER_ID,
   FIRE_BASE_MEASURMENT_ID,
 } = process.env
 
@@ -17,12 +18,12 @@ const firebase = FIRE_BASE_KEY
       version: `8.7.1`,
       credentials: {
         apiKey: FIRE_BASE_KEY,
-        authDomain: FIRE_BASE_AUTH_DOMAIN,
+        appId: FIRE_BASE_APP_ID,
         projectId: FIRE_BASE_PROJECT_ID,
+        authDomain: FIRE_BASE_AUTH_DOMAIN,
+        measurementId: FIRE_BASE_MEASURMENT_ID,
         storageBucket: FIRE_BASE_STORAGE_BUCKET,
         messagingSenderId: FIRE_BASE_MESSAGING_SENDER_ID,
-        appId: FIRE_BASE_APP_ID,
-        measurementId: FIRE_BASE_MEASURMENT_ID,
       },
       ui: {
         version: `4.8.0`,
@@ -42,7 +43,7 @@ const firebase = FIRE_BASE_KEY
       // * https://github.com/benwinding/react-admin-firebase#options
       firestore: {
         logging: false,
-        persistence: 'local',
+        persistence: FIRE_BASE_PERSISTENCE,
         renameMetaFields: {
           created_at: 'createdAt',
           created_by: 'createdBy',

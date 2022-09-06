@@ -21,10 +21,10 @@ const {
   GB_VNC_ACTIVE,
   GB_NO_VNC_PATH,
   GB_BE_WS_PATH,
-  GB_PW_SOCKET_ACTIVE,
   GB_GITHUB_AUTH_USERS,
   GB_VNC_VIEW_WIDTH=1440,
   GB_VNC_VIEW_HEIGHT=900,
+  GB_PW_SOCKET_ACTIVE,
 } = process.env
 
 const wsServerConfig = {

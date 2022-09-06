@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
+import { getAnalytics } from "firebase/analytics"
 import { getConfig } from './firebaseConfig'
 import {
   getAuth,
@@ -12,6 +13,9 @@ const firebaseConfig = getConfig()
 const firebaseApp = firebaseConfig && initializeApp(firebaseConfig.credentials)
 const firestore = firebaseApp && getFirestore(firebaseApp)
 const firebaseAuth = firebaseApp && getAuth(firebaseApp)
+const firebaseAnal = process.env.NODE_ENV !== `local`
+  ? firebaseApp && getAnalytics(firebaseApp)
+  : {}
 
 // Setup auth persistence
 firebaseApp &&
@@ -43,6 +47,7 @@ export const getUserToken = async (forceRefresh = true) => {
 export const getProviderMetadata = () => ({
   app: firebaseApp,
   auth: firebaseAuth,
+  anal: firebaseAnal,
   database: firestore,
   config: firebaseConfig,
 })

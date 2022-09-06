@@ -100,10 +100,11 @@ const runImg = async (args) => {
   const docFileCtx = getLongContext(context, 'app')
 
   const imgToRun = await getImgToRun(params, docFileCtx, envs)
+  const runEnvs = await addRunEnvs(docFileCtx, allEnvs)
 
   const cmdArgs = [
     ...getDockerRunArgs(params),
-    ...addRunEnvs(allEnvs, docFileCtx),
+    ...runEnvs,
     ...addRunPorts(params, allEnvs, docFileCtx),
     ...addRunVolumes(params, docFileCtx),
     imgToRun,
@@ -169,6 +170,12 @@ export const run = {
       alias: [`vol`, `vols`],
       example: `--volumes /local/1/path:/remote/1/path,/local/2/path:/remote/2/path`,
       description: `Volumes to mount to the running container separated by a comma`,
+    },
+    mount: {
+      alias: [`mt`],
+      type: `boolean`,
+      example: `--mount `,
+      description: `Auto mounts the root directory into the container`,
     },
     image: {
       alias: [`img`, `igm`, `im`],

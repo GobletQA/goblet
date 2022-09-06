@@ -1,24 +1,31 @@
 env:
 
+# ---- General Shared ENVs ---- #
+
   GB_KUBE_CONTEXT: lke70246-ctx
   GB_KUBE_NAMESPACE: gb-production
   GB_HOST_DOMAIN: dev.gobletqa.app
-  # GB_SUB_DOMAIN: production
-
-  # Name of the kubernetes secret used in the ingress
-  GB_BE_SECRET_TLS_NAME: gb-production-tls
-
   NODE_ENV: production
   GB_LOCAL_DEV_MODE: false
   DEVSPACE_INJECT_LOCAL: false
 
-  # --- Cert-Manager - CLOUD PROVIDER ENVs --- #
-  GB_CR_WEBHOOK_CHART_NAME: cert-manager-webhook-linode
-  GB_CR_WEBHOOK_CHART_URL: https://github.com/slicen/cert-manager-webhook-linode/releases/download/v0.2.0/cert-manager-webhook-linode-v0.2.0.tgz
-  GB_CR_SOLVER_NAME: linode
-  GB_CR_NAMESPACE: cert-manager
-  GB_CR_PROVIDER_TOKEN_KEY: token
-  GB_CR_GROUP_NAME: dev.gobletqa.app
+# ---- Backend ENVs ---- #
+  # Use ssl in production, so port is always 443
+  # The ingress will terminate and proxy to backend as 7005
+  GB_BE_PORT: 443
+  GB_BE_WS_PROTOCOL: https
+  GB_BE_HOST: backend.dev.gobletqa.app
+  # Name of the kubernetes secret used in the ingress
+  GB_BE_SECRET_TLS_NAME: gb-production-tls
+
+  # --- Goblet-Certs ENVs  --- #
+  GB_CR_SECRET: provider-auth
+  GB_CR_SECRET_KEY: token
+  GB_CR_SECRET_ENV: LINODE_V4_API_KEY
   GB_CR_USER_EMAIL: lancetipton04@gmail.com
-  GB_CR_PROVIDER_TOKEN_NAME: linode-credentials
-  GB_CR_PROVIDER_TOKEN_PATH: "{{ cli.paths.config }}/linode/api-token"
+  GB_CR_SECRET_VALUE_PATH: "{{ cli.paths.config }}/linode/api-token"
+
+  # --- VNC ENVs --- #
+  # TODO: these will change if ever running locally and in production environment
+  GB_VNC_ACTIVE: true
+  GB_PW_SOCKET_ACTIVE: false

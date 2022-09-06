@@ -3,6 +3,7 @@ import { scriptsDir } from '../../../paths'
 import { Logger, error } from'@keg-hub/cli-utils'
 import { loadEnvs } from '../../../utils/envs/loadEnvs'
 import { getNpmToken } from '../../../utils/envs/getNpmToken'
+import { loadScript } from '../../../utils/helpers/loadScript'
 
 /**
  * Log the output of a running kubernetes pod
@@ -22,7 +23,7 @@ const docAuthAct = async (args) => {
   !secretTask &&
     error.throwError(`The "kube.tasks.secret" task can not be found. Ensure it exists before running this command`)
 
-  const { getDockerUser } = await import(path.join(scriptsDir, 'js/dockerLogin.js'))
+  const { getDockerUser } = await loadScript('dockerLogin')
 
   const { token:pToken, user:pUser, ...secParams } = params
 

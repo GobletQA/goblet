@@ -5,7 +5,7 @@
  * `node scripts/js/resolveDSEnvs.js certs provider-auth:api-key:LINODE_V4_API_KEY`
  */
 const { resolveValues } = require('./resolveValues')
-const { filterEnvs, addEnv } = require('./filterEnvs')
+const { filterEnvsAsYaml, addEnv } = require('./filterEnvs')
 const { buildEnvSecrets } = require('./buildEnvSecrets')
 
 
@@ -18,7 +18,7 @@ const { buildEnvSecrets } = require('./buildEnvSecrets')
   ].join(``)
 
   const envs = resolveValues()
-  dsEnvs+= filterEnvs(repo)
+  dsEnvs+= filterEnvsAsYaml(repo)
 
   /**
   * If Kubernetes secrets are passed

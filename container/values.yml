@@ -64,10 +64,9 @@ env:
 
 # ---- App Development ENVs ---- #
   # Needed for conductor
-  # GB_APP_DOC_VOLUMES: /var/run/docker.sock
-  # GB_BE_DOC_VOLUMES: /var/run/docker.sock
   # Uncomment this to mount the whole repo into the container
   # GB_APP_DOC_VOLUMES: ".:/goblet/app,/var/run/docker.sock"
+  GB_APP_MOUNT_PATH: /goblet/app
 
 
 # ---- Backend ENVs ---- #
@@ -112,6 +111,7 @@ env:
   GB_FE_IMAGE_TAG: latest
   GB_FE_DEPLOYMENT: goblet-frontend
   GB_FE_IMAGE: 'ghcr.io/gobletqa/goblet-frontend'
+  GB_FE_MOUNT_PATH: .:/goblet/app
 
 # --- CONDUCTOR ENVs --- #
   # GB_CD_HOST: host.docker.internal
@@ -133,10 +133,11 @@ env:
   GB_CR_DEPLOYMENT: goblet-certs
   GB_CR_CHART_URL: oci://ghcr.io/gobletqa/goblet-certs-chart
 
-  GB_CR_SECRET: provider-auth
   GB_CR_SECRET_KEY: api-key
-  GB_CR_SECRET_ENV: LINODE_V4_API_KEY
-
+  GB_CR_SECRET: provider-auth
+  GB_CR_USER_EMAIL: lancetipton04@gmail.com
+  GB_CR_SECRET_ENV: ""
+  GB_CR_SECRET_VALUE_PATH: ""
 
 # --- SCREENCAST ENVs --- #
   GB_SC_IMAGE_TAG: latest
