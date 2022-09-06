@@ -38,22 +38,23 @@ COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app
 ARG FIRE_BASE_PROJECT_ID
 ENV NODE_ENV=production \
+    npm_config_yes=true \
     FIRE_BASE_PROJECT_ID=$FIRE_BASE_PROJECT_ID
 
 RUN <<EOF
-    apt-get update
-    apt-get install -y g++ make
-    yarn global add expo-cli@$EXPO_CLI_VERSION expo-optimize sharp-cli firebase-tools
+  set -eux;
+  apt-get update
+  apt-get install -y g++ make
+  yarn global add expo-cli@$EXPO_CLI_VERSION expo-optimize sharp-cli firebase-tools
 
-    # cd /goblet/app/repos/frontend
-    # NODE_ENV=production yarn build:fe
-
-    # rm -rf /goblet/app/repos/frontend/dist
-    # cp -R /goblet/app/node_modules/keg-core/web-build /goblet/app/repos/frontend/dist
-
-    # firebase deploy --non-interactive --token $FIREBASE_TOKEN --project $FIRE_BASE_PROJECT_ID --only hosting
+  echo "#! /bin/bash" >> /deploy.sh
+  echo "" >> /deploy.sh
+  echo "cd /goblet/app/repos/frontend" >> /deploy.sh
+  echo "npm_config_yes=true NODE_ENV=production yarn build:fe" >> /deploy.sh
+  echo "rm -rf /goblet/app/repos/frontend/dist" >> /deploy.sh
+  echo "cp -R /goblet/app/node_modules/keg-core/web-build /goblet/app/repos/frontend/dist" >> /deploy.sh
+  echo "firebase deploy --non-interactive --token \$FIREBASE_TOKEN --project \$FIRE_BASE_PROJECT_ID --only hosting" >> /deploy.sh
+  chmod a+x /deploy.sh
 EOF
 
-
-
-
+CMD [ "/bin/bash" ]

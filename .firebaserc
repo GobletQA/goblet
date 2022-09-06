@@ -1,8 +1,5 @@
 {
   "projects": {
-    "default": "herkin-dev",
-    "local": "herkin-dev",
-    "development": "herkin-dev",
-    "production": "herkin-dev"
+    "default": "gobletqa-dev"
   }
 }

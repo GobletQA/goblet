@@ -182,3 +182,4 @@ repos/dind/remote/**
 !repos/dind/remote/README.md
 /out
 container/values.certs.yaml
+.firebase
