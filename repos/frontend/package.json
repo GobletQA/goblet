@@ -35,8 +35,10 @@
     "@keg-hub/cli-utils": "0.7.0",
     "@keg-hub/jsutils": "9.3.2"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "devDependencies": {
+    "@gobletqa/shared": "*",
     "@keg-hub/cli-utils": "*",
     "@keg-hub/jsutils": "*",
     "@cucumber/language-service": "0.11.0",
