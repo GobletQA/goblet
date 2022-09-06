@@ -17,6 +17,6 @@ export const getWebsocketConfig = () => {
     host,
     ...WS_CONFIG,
     protocol: proto,
-    endpoint: `http://${host}`
+    endpoint: `${protocol}//${host}`
   }
 }

@@ -13,7 +13,7 @@ env:
   # Use ssl in production, so port is always 443
   # The ingress will terminate and proxy to backend as 7005
   GB_BE_PORT: 443
-  GB_BE_WS_PROTOCOL: https
+  GB_BE_WS_PROTOCOL: http
   GB_BE_HOST: backend.dev.gobletqa.app
   # Name of the kubernetes secret used in the ingress
   GB_BE_SECRET_TLS_NAME: gb-production-tls

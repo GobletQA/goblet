@@ -30,8 +30,7 @@ export const getBaseApiUrl = () => {
   // They should always match
   // Deployed environments will be https, local is http
   const { protocol } = new URL(window.location.origin)
-  const proto = protocol.includes('https') ? 'https' : 'http'
-  __BASE_API_URL = `${proto}://${noProtoHost}`
+  __BASE_API_URL = `${protocol}//${noProtoHost}`
 
   return __BASE_API_URL
 }

@@ -21,12 +21,12 @@ export const disconnectRepo = async username => {
     },
   })
 
-  error &&
-    addToast({
-      type: 'error',
-      message:
-        error.message || `An error occurred while disconnecting the repo :(`,
-    })
+  error
+    && error.message
+    && addToast({
+        type: 'error',
+        message: error.message,
+      })
 
   get(data, `repo.unmounted`) &&
     addToast({
