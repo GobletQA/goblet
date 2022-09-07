@@ -91,7 +91,7 @@ const jestConfig = (config, opts=noOpObj) => {
     // Jest no loading tests outside of the rootDir
     // So set the root to be the parent of keg-config and the repos dir
     // If no rootDir override is set
-    rootDir: opts.rootDir || GB_SH_MOUNT_ROOT || '/keg',
+    rootDir: opts.rootDir || GB_SH_MOUNT_ROOT || '/goblet',
     globals: {
       'ts-jest': {
         tsconfig: path.join(testUtilsDir, `tsconfig.json`),

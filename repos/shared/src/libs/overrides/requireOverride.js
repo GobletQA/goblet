@@ -34,7 +34,8 @@ const validateRequest = (request, { repoRoot }) => {
   const isGobletRoot = request.startsWith(GobletRoot)
 
   // Check if the root is the regular docker container or a github action paths
-  const isRootPathValid = request.startsWith('/keg')
+  const isRootPathValid = request.startsWith('/goblet')
+    || request.startsWith('/keg')
     || request.startsWith('/home/runner')
     || request.startsWith('/github/workspace')
     || request.startsWith('/github/alt')

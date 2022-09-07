@@ -1,7 +1,6 @@
-import type { Express, Request } from 'express'
+import type { Express } from 'express'
 import type { TProxyOpts } from '@gobletqa/shared/types'
 
-import { URL } from 'node:url'
 import { getApp } from '@gobletqa/shared/express/app'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 
