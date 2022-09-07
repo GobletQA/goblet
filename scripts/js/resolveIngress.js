@@ -28,6 +28,13 @@ annotations:
   acme.kubernetes.io/dns: "dns_linode_v4"
   acme.kubernetes.io/pre-cmd: "acme.sh --register-account -m ${email}"
   acme.kubernetes.io/add-args: "--dnssleep 120"
+  nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+  nginx.ingress.kubernetes.io/configuration-snippet: |
+    more_set_headers "X-Goblet-Host: $http_x_goblet_host";
+    more_set_headers "X-Goblet-Port: $http_x_goblet_port";
+    more_set_headers "X-Goblet-Proto: $http_x_goblet_proto";
+    more_set_headers "X-Goblet-Subdomain: $http_x_goblet_subdomain";
 `)
 
 const buildRule = (host, serviceName, servicePort) => (`

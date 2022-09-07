@@ -31,7 +31,7 @@
 * Deploy the Nginx Ingress Controller
   * `yarn kube ingress --env prod --log`
 * Deploy the Backend Apps
-  * `yarn dev deploy --env prod --log --skip fe,dd`
+  * `yarn dev deploy --env prod --log --skip fe`
 * Deploy KCert
   * `kubectl apply -f scripts/deploy/kube/cert.yaml`
 
