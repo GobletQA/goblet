@@ -41,8 +41,6 @@ const {
   GB_BE_JWT_REFRESH_SECRET,
 
   GB_SC_WS_PATH,
-  GB_SC_WS_PORT,
-  GB_SC_WS_HOST,
 
   // Set defaults to ensure the container dies if not being used
   GB_SC_TIMEOUT_ACTIVE,
@@ -110,9 +108,9 @@ export const screencastConfig:TGScreencastConfig = {
   },
   sockr: {
     ...sockrCmds,
+    port: GB_SC_PORT,
+    host: GB_SC_HOST,
     path: GB_SC_WS_PATH,
-    port: GB_SC_WS_PORT,
-    host: GB_SC_WS_HOST,
     process: {
       root: aliases.GobletRoot,
       debug: Boolean(GB_LOG_LEVEL == 'debug'),

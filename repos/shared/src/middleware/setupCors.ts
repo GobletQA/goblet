@@ -1,6 +1,33 @@
 import type { Express } from 'express'
 import { getOrigin }from '../utils/getOrigin'
 
+const allowedHeaders = [
+  `X-PINGOTHER`,
+  `Origin`,
+  `X-Requested-With`,
+  `Content-Type`,
+  `Accept`,
+  `Authorization`,
+  `AuthToken`,
+  `x-goblet-host`,
+  `x-goblet-proto`,
+  `x-goblet-port`,
+  `x-goblet-subdomain`,
+  `x-forwarded-proto`,
+  `x-forwarded-host`,
+  `x-forwarded-for`
+].join(`,`)
+
+const allowedMethods = [
+  `GET`,
+  `POST`,
+  `PUT`,
+  `PATCH`,
+  `DELETE`,
+  `HEAD`,
+  `OPTIONS`
+].join(`,`)
+
 /**
  * Configures cors for the backend API and websocket
  * Defines the origins that are allow to connect to the API
@@ -30,14 +57,8 @@ export const setupCors = (app:Express) => {
     res.setHeader('Access-Control-Allow-Origin', foundOrigin)
     res.setHeader('Vary', 'Origin,Access-Control-Request-Headers')
     res.setHeader('Access-Control-Allow-Credentials', 'true')
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS'
-    )
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'X-PINGOTHER,Origin,X-Requested-With,Content-Type,Accept,Authorization,AuthToken,x-goblet-host,x-goblet-proto,x-goblet-port,x-goblet-subdomain'
-    )
+    res.setHeader('Access-Control-Allow-Methods', allowedMethods)
+    res.setHeader('Access-Control-Allow-Headers', allowedHeaders)
 
     return req.method === 'OPTIONS' ? res.status(200).send('OK') : next()
   })

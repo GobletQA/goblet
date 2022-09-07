@@ -150,8 +150,6 @@ env:
   # Update this to call an externally available VNC websocket host
   GB_SC_HOST: 0.0.0.0
 
-  GB_SC_WS_PORT: 7006
-  GB_SC_WS_HOST: 0.0.0.0
   GB_SC_WS_PATH: /sockr-socket
 
   # Port to forward connections from backend API to screencast
