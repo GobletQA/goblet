@@ -94,7 +94,7 @@ const deployToFirebase = async (args, envs) => {
   await yarn([`global`, `add`, `firebase-tools`], cmdOpts)
 
   // Get the firebase token
-  const token = await getFirebaseToken(args, envs)
+  const token = await getFirebaseToken(args.params, envs)
 
   // Get the project name to be deployed
   const project = await getFirebaseProject(args, envs)

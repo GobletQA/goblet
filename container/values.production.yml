@@ -29,3 +29,6 @@ env:
   # TODO: these will change if ever running locally and in production environment
   GB_VNC_ACTIVE: true
   GB_PW_SOCKET_ACTIVE: false
+
+  # --- CONTAINER TIMEOUT ENVs --- #
+  GB_SC_TIMEOUT_ACTIVE: true

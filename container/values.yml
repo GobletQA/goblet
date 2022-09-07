@@ -169,6 +169,7 @@ env:
   GB_VNC_VIEW_WIDTH: 1440
 
   # --- CONTAINER TIMEOUT ENVs --- #
+  GB_SC_TIMEOUT_ACTIVE: false
   # In minutes (x * 60000)
   GB_SC_INACTIVE_TIMEOUT: 20
   # In seconds (x * 1000)

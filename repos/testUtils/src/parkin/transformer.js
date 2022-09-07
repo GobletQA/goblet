@@ -1,4 +1,5 @@
 const babelJest = require('babel-jest')
+const { createHash } = require('crypto')
 const {getCacheKey} = babelJest.createTransformer()
 
 /**

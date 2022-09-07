@@ -23,6 +23,11 @@ import {
 } from '@gobletqa/shared/middleware'
 
 
+const ignoreError = [
+  `connect ECONNREFUSED`,
+  `(HTTP code 404) no such container`,
+]
+
 
 /**
  * There are some cases where we don't want to exit when an UncaughtException is thrown
@@ -30,12 +35,14 @@ import {
  *
  */
 const handleUncaughtExp = (exitCode:number=0, err:Error) => {
-  if(exitCode && err?.message?.includes(`connect ECONNREFUSED`)) {
+  const shouldIgnore = ignoreError.find(text => err?.message?.includes(text))
+  
+  
+  if(exitCode && shouldIgnore) {
       Logger.log([
         `\n`,
         Logger.colors.red(`------ [Server Error] ------`),
-        `Server could not be started properly.`,
-        `Restart the server, or it not not run as expected.`,
+        `Docker API server is not responding properly`,
         err.stack,
         `\n`,
       ].join(`\n`))

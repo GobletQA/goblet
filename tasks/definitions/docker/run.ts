@@ -1,15 +1,16 @@
 import { appRoot } from '../../paths'
+import { Logger } from '@keg-hub/cli-utils'
+import { noOpArr } from '@keg-hub/jsutils'
 import { docker } from '../../utils/docker/docker'
-import { error, Logger } from '@keg-hub/cli-utils'
 import { loadEnvs } from '../../utils/envs/loadEnvs'
+import { getRunImg } from '../../utils/docker/getRunImg'
+import { getRunArgs } from '../../utils/docker/getRunArgs'
 import { getNpmToken } from '../../utils/envs/getNpmToken'
 import { addRunEnvs } from '../../utils/docker/addRunEnvs'
 import { addRunPorts } from '../../utils/docker/addRunPorts'
+import { getParamEnvs } from '../../utils/envs/getParamEnvs'
 import { getLongContext } from '../../utils/helpers/contexts'
-import { noOpArr, noOpObj, ensureArr } from '@keg-hub/jsutils'
 import { addRunVolumes } from '../../utils/docker/addRunVolumes'
-import { getTagOptions } from '../../utils/docker/getTagOptions'
-import { resolveImgName } from '../../utils/docker/resolveImgName'
 
 /**
  * TODO: @lance-tipton We could try to parse the cmd form the options array
@@ -19,61 +20,6 @@ import { resolveImgName } from '../../utils/docker/resolveImgName'
 const getRunCmd = (params) => {
   const { cmd } = params
   return (cmd && cmd.split(' ')) || noOpArr
-}
-
-/**
- * Finds the correct image to run based on passed in params
- * @param {Object} params - Parsed options passed to the run task
- * @param {string} docFileCtx - Current context of the docker image to run
- * @param {Object} envs - ENV values loaded from the container/value.yml files
- *
- * @returns {string} - Image to use when running the container
- */
-const getImgToRun = async (params, docFileCtx, envs) => {
-  let tag = params?.image?.includes(':')
-    ? params?.image?.split(':').pop()
-    : (await getTagOptions(params, docFileCtx, envs))?.[params?.tag] || params?.tag
-
-  const image = resolveImgName(params, docFileCtx, envs)
-
-  return image
-    ? `${image}:${tag}`
-    : error.throwError(`Count not resolve image to run`, params, docFileCtx, envs)
-}
-
-/**
- * Gets the arguments to pass to the docker cli run command
- * @param {Object} params - Parsed options passed to the run task
- *
- * @returns {Array} - Generated docker cli run command arguments
- */
-const getDockerRunArgs = ({ remove, attach, name, pull, privileged }) => {
-  const args = []
-  remove && args.push(`--rm`)
-  attach && args.push(`-it`)
-  name && args.push(`--name`, name)
-  privileged && args.push(`--privileged`)
-
-  ;([`missing`, `never`, `always`]).includes(pull)
-    ? args.push(`--pull=${pull}`)
-    : args.push(`--pull=never`)
-
-  return args
-}
-
-
-const getParamEnvs = ({ envs }) => {
-  return !envs
-    ? noOpObj
-    : (ensureArr(envs) as string[]).reduce((acc:Record<string, string>, item:string) => {
-        if(!item.includes(`:`))
-          error.throwError(`Missing key/value separator ":" for env: ${item}`)
-
-        const [key, val] = item.split(`:`)
-        acc[key] = val
-
-        return acc
-      }, {})
 }
 
 /**
@@ -99,11 +45,11 @@ const runImg = async (args) => {
   // Get the context for the docker image being run
   const docFileCtx = getLongContext(context, 'app')
 
-  const imgToRun = await getImgToRun(params, docFileCtx, envs)
+  const imgToRun = await getRunImg(params, docFileCtx, envs)
   const runEnvs = await addRunEnvs(docFileCtx, allEnvs)
 
   const cmdArgs = [
-    ...getDockerRunArgs(params),
+    ...getRunArgs(params),
     ...runEnvs,
     ...addRunPorts(params, allEnvs, docFileCtx),
     ...addRunVolumes(params, docFileCtx),

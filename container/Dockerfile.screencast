@@ -66,6 +66,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=goblet-builder /goblet/app/. .
 
+RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
+    ln -s /goblet/app/node_modules /goblet/node_modules
+
 WORKDIR /goblet/app/repos/screencast
 ARG GB_SC_PORT=7006
 ARG GB_NO_VNC_PORT=26369

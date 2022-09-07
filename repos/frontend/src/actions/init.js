@@ -57,8 +57,8 @@ export const init = async () => {
   // Next check the status of users session container
   const status = await statusContainer()
 
-  // TODO: If no locally mounted volume
-  // Then setup a fake mounted repo at the default location
+
+
   // Will allow using goblet without persisting changes
   const repoStatus = await statusRepo({ routes: status?.routes })
   if (!repoStatus || !repoStatus.mounted) return

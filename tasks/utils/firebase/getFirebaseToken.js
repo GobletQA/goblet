@@ -10,7 +10,7 @@ const { fileSys } = require('@keg-hub/cli-utils')
  * 
  * @returns {string} - Found firebase token
  */
-const getFirebaseToken = async ({ params }, envs) => {
+const getFirebaseToken = async (params, envs) => {
   const token = params.token || process.env.FIREBASE_TOKEN || envs.FIREBASE_TOKEN
   if(token) return token.trim()
 

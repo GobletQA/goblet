@@ -48,6 +48,7 @@ const whiteList = [
   `GB_BE_JWT_CREDENTIALS`,
   `GB_BE_JWT_REFRESH_EXP`,
   `GB_BE_JWT_REFRESH_SECRET`,
+  `GB_SC_TIMEOUT_ACTIVE`,
   `GB_SC_INACTIVE_TIMEOUT`,
   `GB_SC_DISCONNECT_TIMEOUT`,
 ]
@@ -141,7 +142,7 @@ export const conductorConfig:TConductorOpts = {
           GB_VNC_ACTIVE: true,
           // Amount to time to wait before auto-killing the container
           // When a user logs out
-          GB_SC_TIMEOUT_ACTIVE: true,
+          GB_SC_TIMEOUT_ACTIVE: containerEnvs.GB_SC_TIMEOUT_ACTIVE,
           GB_SC_INACTIVE_TIMEOUT: containerEnvs.GB_SC_INACTIVE_TIMEOUT || `20`,
           GB_SC_DISCONNECT_TIMEOUT:  containerEnvs.GB_SC_DISCONNECT_TIMEOUT || `5`
         },
