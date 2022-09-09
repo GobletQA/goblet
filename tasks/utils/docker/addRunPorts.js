@@ -13,6 +13,7 @@ const resolveAllPorts = (params, envs, docFileCtx) => {
   const paramPorts = ensureArr(params.ports || [])
 
   // Get the ports for the docker image being run
+  // TODO: @lance-tipton make this so it's not hard coded to ENVs
   const envPorts = getContextValue(docFileCtx, envs, `PORT`, [
     envs.GB_BE_PORT,
     envs.GB_FE_PORT,

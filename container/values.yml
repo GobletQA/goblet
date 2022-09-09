@@ -71,6 +71,7 @@ env:
 
 # ---- Backend ENVs ---- #
   GB_BE_PORT: 7005
+  GB_BE_CONTAINER_PORT: 7005
   GB_BE_SECURE_PORT: 443
   # Host the FE uses to connect to the BE
   GB_BE_HOST: 0.0.0.0

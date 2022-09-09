@@ -28,6 +28,7 @@ annotations:
   acme.kubernetes.io/dns: "dns_linode_v4"
   acme.kubernetes.io/pre-cmd: "acme.sh --register-account -m ${email}"
   acme.kubernetes.io/add-args: "--dnssleep 120"
+  nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600"
   nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
   nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
   nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -35,6 +36,36 @@ annotations:
     more_set_headers "X-Goblet-Port: $http_x_goblet_port";
     more_set_headers "X-Goblet-Proto: $http_x_goblet_proto";
     more_set_headers "X-Goblet-Subdomain: $http_x_goblet_subdomain";
+
+  nginx.ingress.kubernetes.io/server-snippets: |
+    location ~* "^/sockr-socket" {
+      proxy_http_version 1.1;
+
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $connection_upgrade;
+
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Host $http_host;
+      proxy_set_header X-Forwarded-For $remote_addr;
+
+      proxy_socket_keepalive on;
+    }
+    location ~* "/novnc" {
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $connection_upgrade;
+
+      proxy_set_header Host $host;
+      proxy_cache_bypass $http_upgrade;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Host $http_host;
+      proxy_set_header X-Forwarded-For $remote_addr;
+
+      proxy_socket_keepalive on;
+    }
 `)
 
 const buildRule = (host, serviceName, servicePort) => (`

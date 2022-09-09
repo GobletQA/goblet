@@ -98,6 +98,7 @@ module.exports = {
           `GB_VNC_VIEW_HEIGHT`,
           `GB_PW_SOCKET_ACTIVE`,
           `GB_GITHUB_AUTH_USERS`,
+          `GB_BE_CONTAINER_PORT`,
         ]
       }
     },

@@ -32,6 +32,9 @@ vars:
 - name: GB_BE_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_BE_PORT"
+- name: GB_BE_CONTAINER_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_BE_CONTAINER_PORT"
 
 # ----- DinD Values ----- #
 - name: GB_DD_DEPLOYMENT
@@ -139,8 +142,8 @@ deployments:
       - image: ${GB_BE_IMG_URI}
         imagePullPolicy: Always
         env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
-      service: $(node ../scripts/js/resolveService.js $GB_BE_DEPLOYMENT $GB_BE_PORT)
-      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_DEPLOYMENT $GB_BE_PORT "*")
+      service: $(node ../scripts/js/resolveService.js $GB_BE_DEPLOYMENT $GB_BE_CONTAINER_PORT)
+      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_DEPLOYMENT $GB_BE_CONTAINER_PORT "*")
 
 # ----- Certs API Deployment ----- #
 - name: ${GB_CR_DEPLOYMENT}
