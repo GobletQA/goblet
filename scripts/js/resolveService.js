@@ -5,6 +5,7 @@
  * Run command below to test
  * `node ../scripts/js/resolveService.js goblet-dind 2375 2122 2121 2123 2018:2019`
  */
+ const { resolveHost, resolveValues, resolveValue } = require('./resolveValues')
  
 const { exists } = require('@keg-hub/jsutils')
 
@@ -25,17 +26,32 @@ const buildPorts = (ports) => (
   }).filter(Boolean).join(`\n`)
 )
 
+
+const buildTlsAnnotations = (secret) => (`
+annotations:
+  service.beta.kubernetes.io/linode-loadbalancer-default-protocol: http
+  service.beta.kubernetes.io/linode-loadbalancer-port-443: '{"tls-secret-name": "${secret}", "protocol": "https"}'
+`)
+
 ;(() => {
-    const [
-    deployment,
+  const [
+    prefix,
     ...srvPorts
   ] = process.argv.slice(2)
   
-  const name = buildServiceName(deployment)
   const ports = buildPorts(srvPorts)
+
+  const values = resolveValues()
+
+  const deployment = resolveValue(`GB_${prefix}_DEPLOYMENT`, values)
+  const name = buildServiceName(deployment)
+
+  const secret = resolveValue(`GB_${prefix}_SECRET_TLS_NAME`, values)
+  const annotations = secret ? buildTlsAnnotations(secret) : ``
 
 process.stdout.write(`
 ${name}
+${annotations}
 ports:
 ${ports}
 `)

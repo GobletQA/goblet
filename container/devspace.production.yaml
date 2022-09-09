@@ -32,9 +32,6 @@ vars:
 - name: GB_BE_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_BE_PORT"
-- name: GB_BE_CONTAINER_PORT
-  source: command
-  command: "node ../scripts/js/getYamlValue.js GB_BE_CONTAINER_PORT"
 
 # ----- DinD Values ----- #
 - name: GB_DD_DEPLOYMENT
@@ -126,7 +123,7 @@ deployments:
         env: $(node ../scripts/js/resolveDSEnvs.js dind)
         # TODO: use sysbox or gvisor to remove the need for privileged context
         securityContext: $(node ../scripts/js/resolveSecurity.js DD)
-      service: $(node ../scripts/js/resolveService.js $GB_DD_DEPLOYMENT $GB_DD_DOCKER_PORT $GB_DD_WS_PROXY_PORT $GB_DD_API_PROXY_PORT $GB_DD_VNC_PROXY_PORT $GB_DD_EXP_ADMIN_PORT:$GB_DD_LOCAL_ADMIN_PORT)
+      service: $(node ../scripts/js/resolveService.js DD $GB_DD_DOCKER_PORT $GB_DD_WS_PROXY_PORT $GB_DD_API_PROXY_PORT $GB_DD_VNC_PROXY_PORT $GB_DD_EXP_ADMIN_PORT:$GB_DD_LOCAL_ADMIN_PORT)
 
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
@@ -142,8 +139,8 @@ deployments:
       - image: ${GB_BE_IMG_URI}
         imagePullPolicy: Always
         env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
-      service: $(node ../scripts/js/resolveService.js $GB_BE_DEPLOYMENT $GB_BE_CONTAINER_PORT)
-      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_DEPLOYMENT $GB_BE_CONTAINER_PORT "*")
+      service: $(node ../scripts/js/resolveService.js BE $GB_BE_PORT)
+      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_PORT "*")
 
 # ----- Certs API Deployment ----- #
 - name: ${GB_CR_DEPLOYMENT}

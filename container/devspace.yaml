@@ -78,10 +78,12 @@ vars:
 - name: GB_BE_PORT
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_BE_PORT"
-- name: GB_BE_CONTAINER_PORT
+- name: GB_BE_WS_PATH
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_BE_CONTAINER_PORT"
-
+  command: "node ../scripts/js/getYamlValue.js GB_BE_WS_PATH"
+- name: GB_NO_VNC_PATH
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_NO_VNC_PATH"
 
 # ----- DinD Values ----- #
 - name: GB_DD_DEPLOYMENT
@@ -154,7 +156,7 @@ deployments:
         env: $(node ../scripts/js/resolveDSEnvs.js dind)
         # TODO: use sysbox or gvisor to remove the need for privileged context
         securityContext: $(node ../scripts/js/resolveSecurity.js DD)
-      service: $(node ../scripts/js/resolveService.js $GB_DD_DEPLOYMENT $GB_DD_DOCKER_PORT $GB_DD_WS_PROXY_PORT $GB_DD_API_PROXY_PORT $GB_DD_VNC_PROXY_PORT $GB_DD_EXP_ADMIN_PORT:$GB_DD_LOCAL_ADMIN_PORT)
+      service: $(node ../scripts/js/resolveService.js DD $GB_DD_DOCKER_PORT $GB_DD_WS_PROXY_PORT $GB_DD_API_PROXY_PORT $GB_DD_VNC_PROXY_PORT $GB_DD_EXP_ADMIN_PORT:$GB_DD_LOCAL_ADMIN_PORT)
 
 # ----- Frontend Deployment ----- #
 - name: ${GB_FE_DEPLOYMENT}
@@ -170,9 +172,9 @@ deployments:
       - image: ${GB_FE_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js frontend)
-      service: $(node ../scripts/js/resolveService.js $GB_FE_DEPLOYMENT $GB_FE_PORT)
+      service: $(node ../scripts/js/resolveService.js FE $GB_FE_PORT)
       # Check if this can be removed, pretty sure it's not needed
-      # ingress: $(node ../scripts/js/resolveIngress.js FE $GB_FE_DEPLOYMENT $GB_FE_PORT)
+      # ingress: $(node ../scripts/js/resolveIngress.js FE $GB_FE_PORT)
 
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
@@ -190,8 +192,8 @@ deployments:
       - image: ${GB_BE_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
-      service: $(node ../scripts/js/resolveService.js $GB_BE_DEPLOYMENT $GB_BE_CONTAINER_PORT)
-      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_DEPLOYMENT $GB_BE_CONTAINER_PORT "*")
+      service: $(node ../scripts/js/resolveService.js BE $GB_BE_PORT)
+      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH/:Prefix" "$GB_NO_VNC_PATH:Prefix")
 
 # The `dev` section only applies to `yarn dev start` || `devspace dev` commands
 # Is not run for `yarn dev deploy` || `devspace deploy` commands

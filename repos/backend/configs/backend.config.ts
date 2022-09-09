@@ -26,7 +26,6 @@ const {
   GB_BE_PORT,
   GB_BE_HOST,
   GB_BE_SECURE_PORT,
-  GB_BE_CONTAINER_PORT,
 
   GB_NO_VNC_PATH,
   GB_NO_VNC_PROTOCOL,
@@ -47,12 +46,12 @@ const dindHost = getDindHost()
 export const backendConfig:TBackendConfig  = {
   server: {
     auth: true,
+    port: GB_BE_PORT,
     host: GB_BE_HOST,
     environment: nodeEnv,
     path: GB_BE_WS_PATH,
     logLevel: GB_LOG_LEVEL,
     securePort: GB_BE_SECURE_PORT,
-    port: GB_BE_CONTAINER_PORT || GB_BE_PORT,
     origins: generateOrigins(GB_SERVER_ORIGINS),
     jwt: {
       exp: GB_BE_JWT_EXP,

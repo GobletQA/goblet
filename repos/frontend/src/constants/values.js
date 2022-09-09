@@ -5,15 +5,11 @@ import { tests } from './tests'
 import { types } from './types'
 import { storage } from './storage'
 import { screens } from './screens'
-import { isDev } from 'HKUtils/isDev'
 import { container } from './container'
 import { categories } from './categories'
 import { screencast } from './screencast'
 const screencastPort = process.env.GB_SC_PORT || `7006`
 const wsConfig = JSON.parse(process.env.WS_SERVER_CONFIG)
-
-// TODO: @lance-tipton - This should only exist in deployed envs
-if(!isDev) wsConfig.port = ''
 
 let Values = deepFreeze({
   ...{

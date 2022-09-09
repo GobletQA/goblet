@@ -26,66 +26,65 @@ annotations:
   acme.kubernetes.io/enable: "true"
   acme.kubernetes.io/staging: "false"
   acme.kubernetes.io/dns: "dns_linode_v4"
-  acme.kubernetes.io/pre-cmd: "acme.sh --register-account -m ${email}"
   acme.kubernetes.io/add-args: "--dnssleep 120"
+  acme.kubernetes.io/pre-cmd: "acme.sh --register-account -m ${email}"
   nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600"
   nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
   nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
   nginx.ingress.kubernetes.io/configuration-snippet: |
+    add_header 'Access-Control-Allow-Origin' '*' always;
     more_set_headers "X-Goblet-Host: $http_x_goblet_host";
     more_set_headers "X-Goblet-Port: $http_x_goblet_port";
     more_set_headers "X-Goblet-Proto: $http_x_goblet_proto";
     more_set_headers "X-Goblet-Subdomain: $http_x_goblet_subdomain";
-
-  nginx.ingress.kubernetes.io/server-snippets: |
-    location ~* "^/sockr-socket" {
-      proxy_http_version 1.1;
-
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection $connection_upgrade;
-
-      proxy_set_header Host $host;
-      proxy_cache_bypass $http_upgrade;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header X-Forwarded-Proto $scheme;
-      proxy_set_header X-Forwarded-Host $http_host;
-      proxy_set_header X-Forwarded-For $remote_addr;
-
-      proxy_socket_keepalive on;
-    }
-    location ~* "/novnc" {
-      proxy_http_version 1.1;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_set_header Connection $connection_upgrade;
-
-      proxy_set_header Host $host;
-      proxy_cache_bypass $http_upgrade;
-      proxy_set_header X-Forwarded-Proto $scheme;
-      proxy_set_header X-Forwarded-Host $http_host;
-      proxy_set_header X-Forwarded-For $remote_addr;
-
-      proxy_socket_keepalive on;
-    }
 `)
 
-const buildRule = (host, serviceName, servicePort) => (`
+
+const buildRule = (host, serviceName, servicePort, path=`/`, type=`ImplementationSpecific`) => (`
 - host: "${host}"
   serviceName: ${serviceName}
   servicePort: ${servicePort}
+  path: ${path}
+  pathType: ${type}
 `)
 
-const getSubdomainsRules = (host, deployment, mainPort, subdomains) => {
+
+const getSubdomainsRules = (host, deployment, mainPort, subdomains, options) => {
   return subdomains.length &&
     subdomains.map(item => {
       const [sub, port] = item.includes(`:`)
         ? item.split(`:`)
         : [item, mainPort]
 
-      return buildRule(`${sub}.${host}`, deployment, port)
+      return !options || !options.length
+        ? buildRule(`${sub}.${host}`, deployment, port)
+        : options.map(opt => buildRule(`${sub}.${host}`, deployment, port, opt.path, opt.type)).join(`\n`)
+
     }).join(`\n`) || ``
 }
 
-const buildRules = (host, deployment, port) => (`rules:${buildRule(host, deployment, port)}`)
+const buildOptions = (item) => {
+  const  [path, type] = item.split(`:`)
+  return {path, type}
+}
+
+const parseOptions = (args) => {
+  return args.reduce((acc, item) => {
+    item.includes(`:`)
+      ? acc.options.push(buildOptions(item))
+      : acc.subdomains.push(item)
+    
+    return acc
+  }, { subdomains: [], options: [] })
+}
+
+const buildRules = (host, deployment, port, options) => {
+  const builtRules = !options || !options.length
+    ? buildRule(host, deployment, port)
+    : options.map(opt => buildRule(host, deployment, port, opt.path, opt.type)).join(`\n`)
+
+  return `rules:${builtRules}`
+}
 
 const buildTlsRules = ({
   port,
@@ -93,36 +92,40 @@ const buildTlsRules = ({
   email,
   tls=true,
   deployment,
+  options
 }) => (`
 ${buildTls({ email, tls }).trim()}
-${buildRules(host, deployment, port).trim()}
+${buildRules(host, deployment, port, options).trim()}
 `)
 
 ;(async () => {
   const [
     prefix,
-    deployment,
     port,
-    ...subdomains
+    ...args
   ] = process.argv.slice(2)
+
+  const { subdomains, options } = parseOptions(args)
+  const values = resolveValues()
+  const deployment = resolveValue(`GB_${prefix}_DEPLOYMENT`, values)
 
   if(!prefix || !deployment) return
 
-  const values = resolveValues()
   const host = resolveHost(prefix, values)
   const tls = resolveValue(`GB_${prefix}_SECRET_TLS_NAME`, values)
   const email = resolveValue(`GB_CR_USER_EMAIL`, values)
 
   const name = buildIngressName(deployment)
-  const subRules = getSubdomainsRules(host, deployment, port, subdomains)
+  const subRules = getSubdomainsRules(host, deployment, port, subdomains, options)
   const rules = !tls
-    ? buildRules(host, deployment, port)
+    ? buildRules(host, deployment, port, options)
     : buildTlsRules({
         tls,
         host,
         port,
         email,
         deployment,
+        options
       })
 
 process.stdout.write(`

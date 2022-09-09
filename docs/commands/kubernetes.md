@@ -13,31 +13,6 @@
   * `kubectl get all --all-namespaces`
 
 
-## Cert-Manager - LetsEncrypt
-* Kubernetes resource names
-  * Issuer - `issuers.cert-manager.io`
-  * Order - `orders.acme.cert-manager.io`
-  * Certificate - `certificates.cert-manager.io`
-  * Challenges - `challenges.acme.cert-manager.io`
-  * Cluster Issuer -`clusterissuers.cert-manager.io`
-  * Certificate Requests - `certificaterequests.cert-manager.io`
-* List all cluster issuers
-  * `kubectl get clusterissuers`
-* Describe a cluster issuer
-  * `kubectl describe clusterissuers.cert-manager.io <name>`
-* Delete a cluster issure
-  * `kubectl delete clusterissuers.cert-manager.io <name>`
-* See certificates
-  * `kubectl get certificate`
-  * `kubectl describe certificate <name>`
-* Describe issuer
-  * `kubectl describe issuer`
-
-`kubectl describe order`
-`kubectl get certificate gb-production-tls -o wide`
-kubectl get certificate gb-production-tls -o wide -n cert-manager
-kubectl get certificate
-
 ## Production
 * Set both context and namespace for an environment
   * `yarn kube set <environment>` - environment should be one of `local`, `production`, etc...
@@ -51,7 +26,6 @@ kubectl get certificate
   * `yarn dev deploy --env prod --log --skip fe`
   * **IMPORTANT** - Don't forget to add `--env prod` to ensure you are using the correct environment
 * Curl cmds to test Backend API
-  * `curl -kivL -H 'Host: backend.dev.gobletqa.app' -H 'Origin: localhost' 'http://45.79.63.61'`
+  * `curl -kivL -H 'Host: backend.dev.gobletqa.app' -H 'Origin: localhost' 'http://198.58.121.252'`
 * See the ingress-nginx, and get the IP address of it
   * `kubectl --namespace gb-production get services -o wide -w ingress-nginx-controller`
-

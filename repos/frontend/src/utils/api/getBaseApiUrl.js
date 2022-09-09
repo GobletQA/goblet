@@ -8,7 +8,13 @@ let __BASE_API_URL
 export const getBaseApiUrl = () => {
   if(__BASE_API_URL) return __BASE_API_URL
 
-  const bePort = process.env.GB_BE_PORT
+  // Use the windows current protocol to set the servers protocol
+  // They should always match
+  // Deployed environments will be https, local is http
+  const { protocol } = new URL(window.location.origin)
+  const isHttps = Boolean(protocol.includes(`https`))
+
+  const bePort = !isHttps && process.env.GB_BE_PORT
 
   // Use the hostname for the base on dev
   // Otherwise cookies will not be set, due to being served via http
@@ -17,6 +23,8 @@ export const getBaseApiUrl = () => {
 
   // If the port exists, then add it to the apiBase host
   bePort
+    && bePort !== `80`
+    && bePort !== `443`
     && !apiBaseHost.includes(`:`)
     && (apiBaseHost += `:${bePort}`)
 
@@ -26,10 +34,6 @@ export const getBaseApiUrl = () => {
     .replace(`wss://`, '')
     .replace(`ws://`, '')
 
-  // Use the windows current protocol to set the servers protocol
-  // They should always match
-  // Deployed environments will be https, local is http
-  const { protocol } = new URL(window.location.origin)
   __BASE_API_URL = `${protocol}//${noProtoHost}`
 
   return __BASE_API_URL
