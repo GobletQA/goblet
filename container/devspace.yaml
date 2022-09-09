@@ -193,7 +193,7 @@ deployments:
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
       service: $(node ../scripts/js/resolveService.js BE $GB_BE_PORT)
-      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH/:Prefix" "$GB_NO_VNC_PATH:Prefix")
+      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH/" "$GB_NO_VNC_PATH")
 
 # The `dev` section only applies to `yarn dev start` || `devspace dev` commands
 # Is not run for `yarn dev deploy` || `devspace deploy` commands

@@ -3,6 +3,7 @@
  * Includes tls config when a cert-issuer env is found
  * Run the following command to test
  * node scripts/js/resolveIngress.js BE goblet-backend 7005 "*"
+  node scripts/js/resolveIngress.js BE 7005 "*" "/sockr-socket/:Prefix" "/novnc:Prefix"
  */
  
 const { resolveHost, resolveValues, resolveValue } = require('./resolveValues')
@@ -40,13 +41,13 @@ annotations:
 `)
 
 
-const buildRule = (host, serviceName, servicePort, path=`/`, type=`ImplementationSpecific`) => (`
+const buildRule = (host, serviceName, servicePort, path, type) => (`
 - host: "${host}"
   serviceName: ${serviceName}
   servicePort: ${servicePort}
-  path: ${path}
-  pathType: ${type}
-`)
+  path: ${path || '/'}
+  pathType: ${type || 'ImplementationSpecific'}
+`.trim())
 
 
 const getSubdomainsRules = (host, deployment, mainPort, subdomains, options) => {
@@ -58,7 +59,10 @@ const getSubdomainsRules = (host, deployment, mainPort, subdomains, options) => 
 
       return !options || !options.length
         ? buildRule(`${sub}.${host}`, deployment, port)
-        : options.map(opt => buildRule(`${sub}.${host}`, deployment, port, opt.path, opt.type)).join(`\n`)
+        : [
+            buildRule(`${sub}.${host}`, deployment, port),
+            ...options.map(opt => buildRule(`${sub}.${host}`, deployment, port, opt.path, opt.type))
+          ].join(`\n`)
 
     }).join(`\n`) || ``
 }
@@ -70,7 +74,7 @@ const buildOptions = (item) => {
 
 const parseOptions = (args) => {
   return args.reduce((acc, item) => {
-    item.includes(`:`)
+    item.includes(`:`) || item.includes(`/`)
       ? acc.options.push(buildOptions(item))
       : acc.subdomains.push(item)
     
@@ -81,10 +85,14 @@ const parseOptions = (args) => {
 const buildRules = (host, deployment, port, options) => {
   const builtRules = !options || !options.length
     ? buildRule(host, deployment, port)
-    : options.map(opt => buildRule(host, deployment, port, opt.path, opt.type)).join(`\n`)
+    : [
+        buildRule(host, deployment, port),
+        ...options.map(opt => buildRule(host, deployment, port, opt.path, opt.type))
+      ].join(`\n`)
 
-  return `rules:${builtRules}`
-}
+  return `rules:
+${builtRules}
+`}
 
 const buildTlsRules = ({
   port,
