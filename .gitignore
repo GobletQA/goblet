@@ -128,7 +128,6 @@ results
 browser-meta.json
 
 # repos to ignore
-repos/sockr
 !tests/**/.keep
 repos/testUtils/___*
 tests/bdd/features/*

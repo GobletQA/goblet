@@ -69,6 +69,7 @@ const syncSCConfig = (deployment) => (`
   - '**'
   - '!/repos/screencast'
   - '!/repos/shared'
+  - '!/repos/sockr'
   - '!/repos/testUtils'
   - '!/repos/workflows'
   - 'node_modules'
