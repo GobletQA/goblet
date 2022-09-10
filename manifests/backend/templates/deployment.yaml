@@ -1,0 +1,517 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "goblet-backend"
+  labels:
+    "app.kubernetes.io/name": "gobletqa-app"
+    "app.kubernetes.io/component": "goblet-backend"
+    "app.kubernetes.io/managed-by": "Helm"
+  annotations:
+    "helm.sh/chart": "gobletqa-chart-0.0.0"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      "app.kubernetes.io/name": "gobletqa-app"
+      "app.kubernetes.io/component": "goblet-backend"
+      "app.kubernetes.io/managed-by": "Helm"
+  template:
+    metadata:
+      labels:
+        "app.kubernetes.io/name": "gobletqa-app"
+        "app.kubernetes.io/component": "goblet-backend"
+        "app.kubernetes.io/managed-by": "Helm"
+      annotations:
+        "helm.sh/chart": "gobletqa-chart-0.0.0"
+    spec:
+      imagePullSecrets:
+      nodeSelector:
+        null
+      nodeName:
+        null
+      affinity:
+        null
+      tolerations:
+        null
+      dnsConfig:
+        null
+      hostAliases:
+        null
+      overhead:
+        null
+      readinessGates:
+        null
+      securityContext:
+        null
+      topologySpreadConstraints:
+        null
+      terminationGracePeriodSeconds: 5
+      ephemeralContainers:
+        null
+      containers:
+        - image: "ghcr.io/gobletqa/goblet-app:latest"
+          name: "container-0"
+          imagePullPolicy: Always
+          command:
+          args:
+          env:
+          - name: DEVSPACE_INJECT_LOCAL
+            value: "false"
+          - name: DISPLAY
+            value: ":0.0"
+          - name: DOCKER_REGISTRY
+            value: "ghcr.io"
+          - name: GB_APP_MOUNT_PATH
+            value: "/goblet/app"
+          - name: GB_BE_COOKIE_HTTP_ONLY
+            value: "true"
+          - name: GB_BE_COOKIE_KEY
+            value: "goblet-cookie-7979"
+          - name: GB_BE_COOKIE_NAME
+            value: "goblet"
+          - name: GB_BE_COOKIE_OVERWRITE
+            value: "true"
+          - name: GB_BE_COOKIE_SAME_SITE
+            value: "None"
+          - name: GB_BE_COOKIE_SECURE
+            value: "true"
+          - name: GB_BE_DEPLOYMENT
+            value: "goblet-backend"
+          - name: GB_BE_HOST
+            value: "backend.dev.gobletqa.app"
+          - name: GB_BE_IMAGE
+            value: "ghcr.io/gobletqa/goblet-backend"
+          - name: GB_BE_IMAGE_FROM
+            value: "node:16.16.0-alpine3.16"
+          - name: GB_BE_IMAGE_TAG
+            value: "latest"
+          - name: GB_BE_JWT_CREDENTIALS
+            value: "true"
+          - name: GB_BE_JWT_EXP
+            value: "7200000"
+          - name: GB_BE_JWT_KEY
+            value: "goblet-be-auth-token"
+          - name: GB_BE_JWT_REFRESH_EXP
+            value: "7200000"
+          - name: GB_BE_JWT_REFRESH_SECRET
+            value: "4926-G0b13T-g3K"
+          - name: GB_BE_JWT_SECRET
+            value: "k3G-H3rkiN-1234"
+          - name: GB_BE_PORT
+            value: "7005"
+          - name: GB_BE_SECRET_TLS_NAME
+            value: "gb-production-tls"
+          - name: GB_BE_SECURE_PORT
+            value: "443"
+          - name: GB_BE_WS_PATH
+            value: "/sockr-socket"
+          - name: GB_BE_WS_PROTOCOL
+            value: "http"
+          - name: GB_CD_CONTAINER_TIMEOUT
+            value: "50000"
+          - name: GB_CD_CONTROLLER_TYPE
+            value: "Docker"
+          - name: GB_CD_HASH_KEY
+            value: "C0nDuc10R"
+          - name: GB_CD_HOST
+            value: "local.gobletqa.app"
+          - name: GB_CD_PIDS_LIMIT
+            value: "500"
+          - name: GB_CD_RATE_LIMIT
+            value: "5000"
+          - name: GB_CD_SUB_DOMAIN
+            value: "conductor"
+          - name: GB_CR_CHART_TAG
+            value: "0.0.1"
+          - name: GB_CR_CHART_URL
+            value: "oci://ghcr.io/gobletqa/goblet-certs-chart"
+          - name: GB_CR_DEBUG
+            value: "true"
+          - name: GB_CR_DEPLOYMENT
+            value: "goblet-certs"
+          - name: GB_CR_MANAGE_ALL_NS
+            value: "true"
+          - name: GB_CR_SECRET
+            value: "provider-auth"
+          - name: GB_CR_SECRET_ENV
+            value: "LINODE_V4_API_KEY"
+          - name: GB_CR_SECRET_KEY
+            value: "token"
+          - name: GB_CR_SECRET_VALUE_PATH
+            value: "{{ cli.paths.config }}/linode/api-token"
+          - name: GB_CR_USER_EMAIL
+            value: "lancetipton04@gmail.com"
+          - name: GB_DD_API_PROXY_PORT
+            value: "2121"
+          - name: GB_DD_CADDY_HOST
+            value: "localhost"
+          - name: GB_DD_CADDY_REMOTE_DIR
+            value: "/goblet/remote"
+          - name: GB_DD_DEPLOYMENT
+            value: "goblet-dind"
+          - name: GB_DD_DOCKER_HOST
+            value: "0.0.0.0"
+          - name: GB_DD_DOCKER_PORT
+            value: "2375"
+          - name: GB_DD_EXP_ADMIN_PORT
+            value: "2018"
+          - name: GB_DD_IMAGE
+            value: "ghcr.io/gobletqa/goblet-dind"
+          - name: GB_DD_IMAGE_FROM
+            value: "ubuntu:20.04"
+          - name: GB_DD_IMAGE_TAG
+            value: "latest"
+          - name: GB_DD_LOCAL_ADMIN_PORT
+            value: "2019"
+          - name: GB_DD_NETWORK
+            value: "goblet-proxy"
+          - name: GB_DD_PRIVILEGED
+            value: "true"
+          - name: GB_DD_VALIDATION_HEADER
+            value: "GB-Validation-Key"
+          - name: GB_DD_VALIDATION_KEY
+            value: "gb-1234567"
+          - name: GB_DD_VNC_PROXY_PORT
+            value: "2123"
+          - name: GB_DD_WS_PROXY_PORT
+            value: "2122"
+          - name: GB_FE_DEPLOYMENT
+            value: "goblet-frontend"
+          - name: GB_FE_IMAGE
+            value: "ghcr.io/gobletqa/goblet-frontend"
+          - name: GB_FE_IMAGE_TAG
+            value: "latest"
+          - name: GB_FE_MOUNT_PATH
+            value: ".:/goblet/app"
+          - name: GB_FE_PORT
+            value: "19006"
+          - name: GB_GITHUB_AUTH_USERS
+            value: "geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lance.tipton@workboard.com"
+          - name: GB_HOST_DOMAIN
+            value: "dev.gobletqa.app"
+          - name: GB_IMAGE_BUILD_TAGS
+            value: "values,package"
+          - name: GB_IMAGE_FROM
+            value: "mcr.microsoft.com/playwright:v1.23.4-focal"
+          - name: GB_KUBE_CONTEXT
+            value: "lke70246-ctx"
+          - name: GB_KUBE_NAMESPACE
+            value: "gb-production"
+          - name: GB_LOCAL_DEV_MODE
+            value: "false"
+          - name: GB_LOG_DISABLED
+            value: "false"
+          - name: GB_LOG_EXIT_ON_ERR
+            value: "false"
+          - name: GB_LOG_HANDLE_EXCEPTION
+            value: "true"
+          - name: GB_LOG_LABEL
+            value: "Goblet"
+          - name: GB_LOG_LEVEL
+            value: "debug"
+          - name: GB_LOG_PRETTY_PRINT
+            value: "true"
+          - name: GB_NO_VNC_HOST
+            value: "0.0.0.0"
+          - name: GB_NO_VNC_PATH
+            value: "/novnc"
+          - name: GB_NO_VNC_PORT
+            value: "26369"
+          - name: GB_NO_VNC_PROTOCOL
+            value: "http"
+          - name: GB_PW_SOCKET_ACTIVE
+            value: "false"
+          - name: GB_SC_DEPLOYMENT
+            value: "goblet-screencast"
+          - name: GB_SC_DISCONNECT_TIMEOUT
+            value: "20"
+          - name: GB_SC_HOST
+            value: "0.0.0.0"
+          - name: GB_SC_IMAGE
+            value: "ghcr.io/gobletqa/goblet-screencast"
+          - name: GB_SC_IMAGE_TAG
+            value: "latest"
+          - name: GB_SC_INACTIVE_TIMEOUT
+            value: "20"
+          - name: GB_SC_PORT
+            value: "7006"
+          - name: GB_SC_TIMEOUT_ACTIVE
+            value: "true"
+          - name: GB_SC_WS_PATH
+            value: "/sockr-socket"
+          - name: GB_SERVER_ORIGINS
+            value: "localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app"
+          - name: GB_SH_LOCAL_MOUNT
+            value: "goblet-local/current"
+          - name: GB_SH_MOUNT_ROOT
+            value: "/goblet/repos"
+          - name: GB_TOKEN
+            value: "a-10K3n-g0bLe1"
+          - name: GB_VNC_ACTIVE
+            value: "true"
+          - name: GB_VNC_SERVER_HOST
+            value: "0.0.0.0"
+          - name: GB_VNC_SERVER_PORT
+            value: "26370"
+          - name: GB_VNC_VIEW_HEIGHT
+            value: "900"
+          - name: GB_VNC_VIEW_WIDTH
+            value: "1440"
+          - name: IMAGE
+            value: "ghcr.io/gobletqa/goblet-app:latest"
+          - name: IMAGE_TAG
+            value: "latest"
+          - name: NODE_ENV
+            value: "production"
+          - name: PLAYWRIGHT_BROWSERS_VERSION
+            value: "1.23.4"
+          - name: GB_SUB_REPO
+            value: backend
+          - name: GB_VNC_ACTIVE
+            value: "true"
+          - name: CLI_PATH
+            value: /Users/lancetipton/keg-hub/repos/keg-cli
+          - name: CONTAINERS_PATH
+            value: /Users/lancetipton/keg-hub/repos/keg-cli/containers
+          - name: CORE_PATH
+            value: /Users/lancetipton/keg-hub/repos/keg-core
+          - name: COMPONENTS_PATH
+            value: /Users/lancetipton/keg-hub/repos/keg-components
+          - name: RETHEME_PATH
+            value: /Users/lancetipton/keg-hub/repos/re-theme
+          - name: JSUTILS_PATH
+            value: /Users/lancetipton/keg-hub/repos/jsutils
+          - name: GIT_KEY
+            value: INITIAL
+          - name: DOC_CLI_PATH
+            value: /keg/keg-cli
+          - name: DOC_CORE_PATH
+            value: /keg/keg-core
+          - name: DOC_COMPONENTS_PATH
+            value: /keg/keg-components
+          - name: DOC_RESOLVER_PATH
+            value: /keg/tap-resolver
+          - name: DOC_APP_PATH
+            value: /keg/tap
+          - name: GIT_HUB_URL
+            value: https://github.com/keg-hub/keg-hub.git
+          - name: GIT_HUB_BRANCH
+            value: develop
+          - name: GIT_CLI_URL
+            value: https://github.com/keg-hub/keg-cli.git
+          - name: GIT_CLI_BRANCH
+            value: master
+          - name: EXPO_CLI_VERSION
+            value: 5.0.3
+          - name: DISPLAY
+            value: :0.0
+          - name: PLAYWRIGHT_BROWSERS_VERSION
+            value: 1.23.4
+          - name: GB_TOKEN
+            value: a-10K3n-g0bLe1
+          - name: GB_SH_MOUNT_ROOT
+            value: /goblet/repos
+          - name: GB_SH_LOCAL_MOUNT
+            value: goblet-local/current
+          - name: GB_SERVER_ORIGINS
+            value: localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app
+          - name: GB_GITHUB_AUTH_USERS
+            value: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lance.tipton@workboard.com
+          - name: GB_LOG_LEVEL
+            value: debug
+          - name: GB_LOG_LABEL
+            value: Goblet
+          - name: GB_LOG_DISABLED
+            value: "false"
+          - name: GB_LOG_EXIT_ON_ERR
+            value: "false"
+          - name: GB_LOG_PRETTY_PRINT
+            value: "true"
+          - name: GB_LOG_HANDLE_EXCEPTION
+            value: "true"
+          - name: GB_APP_MOUNT_PATH
+            value: /goblet/app
+          - name: GB_BE_PORT
+            value: "7005"
+          - name: GB_BE_SECURE_PORT
+            value: "443"
+          - name: GB_BE_HOST
+            value: backend.dev.gobletqa.app
+          - name: GB_BE_IMAGE_TAG
+            value: latest
+          - name: GB_BE_DEPLOYMENT
+            value: goblet-backend
+          - name: GB_BE_IMAGE
+            value: ghcr.io/gobletqa/goblet-backend
+          - name: GB_BE_IMAGE_FROM
+            value: node:16.16.0-alpine3.16
+          - name: GB_BE_WS_PATH
+            value: /sockr-socket
+          - name: GB_BE_WS_PROTOCOL
+            value: http
+          - name: GB_BE_JWT_EXP
+            value: "7200000"
+          - name: GB_BE_JWT_CREDENTIALS
+            value: "true"
+          - name: GB_BE_JWT_REFRESH_EXP
+            value: "7200000"
+          - name: GB_BE_JWT_SECRET
+            value: aQ-1eLBo6-4E2l
+          - name: GB_BE_JWT_KEY
+            value: goblet-be-auth-token
+          - name: GB_BE_JWT_REFRESH_SECRET
+            value: G0b13T-h9sB-3vX
+          - name: GB_BE_COOKIE_SECURE
+            value: "true"
+          - name: GB_BE_COOKIE_NAME
+            value: goblet
+          - name: GB_BE_COOKIE_HTTP_ONLY
+            value: "true"
+          - name: GB_BE_COOKIE_OVERWRITE
+            value: "true"
+          - name: GB_BE_COOKIE_SAME_SITE
+            value: None
+          - name: GB_BE_COOKIE_KEY
+            value: goblet-cookie-7979
+          - name: GB_BE_SECRET_TLS_NAME
+            value: gb-production-tls
+          - name: GB_CD_HOST
+            value: local.gobletqa.app
+          - name: GB_CD_SUB_DOMAIN
+            value: conductor
+          - name: GB_CD_PIDS_LIMIT
+            value: "500"
+          - name: GB_CD_RATE_LIMIT
+            value: "5000"
+          - name: GB_CD_CONTAINER_TIMEOUT
+            value: "50000"
+          - name: GB_CD_HASH_KEY
+            value: C0nDuc10R
+          - name: GB_CD_CONTROLLER_TYPE
+            value: Docker
+          - name: GB_SC_IMAGE_TAG
+            value: latest
+          - name: GB_SC_DEPLOYMENT
+            value: goblet-screencast
+          - name: GB_SC_IMAGE
+            value: ghcr.io/gobletqa/goblet-screencast
+          - name: GB_SC_PORT
+            value: "7006"
+          - name: GB_SC_HOST
+            value: 0.0.0.0
+          - name: GB_SC_WS_PATH
+            value: /sockr-socket
+          - name: GB_NO_VNC_PORT
+            value: "26369"
+          - name: GB_NO_VNC_HOST
+            value: 0.0.0.0
+          - name: GB_NO_VNC_PATH
+            value: /novnc
+          - name: GB_NO_VNC_PROTOCOL
+            value: http
+          - name: GB_VNC_SERVER_HOST
+            value: 0.0.0.0
+          - name: GB_VNC_SERVER_PORT
+            value: "26370"
+          - name: GB_VNC_VIEW_HEIGHT
+            value: "900"
+          - name: GB_VNC_VIEW_WIDTH
+            value: "1440"
+          - name: GB_SC_TIMEOUT_ACTIVE
+            value: "true"
+          - name: GB_SC_INACTIVE_TIMEOUT
+            value: "20"
+          - name: GB_SC_DISCONNECT_TIMEOUT
+            value: "20"
+          - name: GB_DD_DOCKER_PORT
+            value: "2375"
+          - name: GB_DD_DOCKER_HOST
+            value: 0.0.0.0
+          - name: GB_DD_PRIVILEGED
+            value: "true"
+          - name: GB_DD_IMAGE_TAG
+            value: latest
+          - name: GB_DD_NETWORK
+            value: goblet-proxy
+          - name: GB_DD_DEPLOYMENT
+            value: goblet-dind
+          - name: GB_DD_IMAGE
+            value: ghcr.io/gobletqa/goblet-dind
+          - name: GB_DD_IMAGE_FROM
+            value: ubuntu:20.04
+          - name: GB_DD_CADDY_REMOTE_DIR
+            value: /goblet/remote
+          - name: GB_DD_API_PROXY_PORT
+            value: "2121"
+          - name: GB_DD_WS_PROXY_PORT
+            value: "2122"
+          - name: GB_DD_VNC_PROXY_PORT
+            value: "2123"
+          - name: GB_DD_CADDY_HOST
+            value: localhost
+          - name: GB_DD_EXP_ADMIN_PORT
+            value: "2018"
+          - name: GB_DD_LOCAL_ADMIN_PORT
+            value: "2019"
+          - name: GB_DD_VALIDATION_KEY
+            value: gb-1234567
+          - name: GB_DD_VALIDATION_HEADER
+            value: GB-Validation-Key
+          - name: GB_LOCAL_DEV_MODE
+            value: "false"
+          - name: GB_KUBE_CONTEXT
+            value: lke70246-ctx
+          - name: GB_KUBE_NAMESPACE
+            value: gb-production
+          - name: GB_HOST_DOMAIN
+            value: dev.gobletqa.app
+          - name: NODE_ENV
+            value: production
+          - name: DEVSPACE_INJECT_LOCAL
+            value: "false"
+          - name: GB_VNC_ACTIVE
+            value: "true"
+          - name: GB_PW_SOCKET_ACTIVE
+            value: "false"
+          - name: FIREBASE_TOKEN_FILE
+            value: /Users/lancetipton/.kegConfig/goblet/firebase-goblet-ci-token
+          - name: GITHUB_CLIENT_SECRET
+            value: 16ef4414d2d22ea7de73f6b27ec937d5b77884c6
+          - name: GITHUB_CLIENT_ID
+            value: f8d9703332b05f61ab46
+          - name: LINODE_V4_API_KEY
+            value: b7dcca7e3c08a089626caea2c7f6cbdfe1fde473435859f56ac5daaf8dd6d65e
+          - name: DOCKER_AUTH_USER
+            valueFrom:
+              secretKeyRef:
+                key: user
+                name: docker-auth
+                optional: false
+          - name: DOCKER_AUTH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: docker-auth
+                optional: false
+          - name: DOCKER_HOST
+            value: tcp://$(GB_DD_DEPLOYMENT):$(GOBLET_DIND_SERVICE_PORT)
+          envFrom:
+            null
+          securityContext:
+            null
+          lifecycle:
+            null
+          livenessProbe:
+            null
+          readinessProbe:
+            null
+          startupProbe:
+            null
+          volumeDevices:
+            null
+          volumeMounts:
+      initContainers:
+      volumes:
+  volumeClaimTemplates:

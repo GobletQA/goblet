@@ -1,0 +1,70 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "goblet-backend-ingress"
+  labels:
+    "app.kubernetes.io/name": "goblet-backend"
+    "app.kubernetes.io/managed-by": "Helm"
+  annotations:
+    "helm.sh/chart": "gobletqa-chart-0.0.0"
+    "acme.kubernetes.io/add-args": "--dnssleep 120"
+    "acme.kubernetes.io/dns": "dns_linode_v4"
+    "acme.kubernetes.io/enable": "true"
+    "acme.kubernetes.io/pre-cmd": "acme.sh --register-account -m lancetipton04@gmail.com"
+    "acme.kubernetes.io/staging": "false"
+spec:
+  ingressClassName: caddy
+  rules:
+  - host: "backend.dev.gobletqa.app"
+    http:
+      paths:
+      - backend:
+          serviceName: goblet-backend
+          servicePort: 7005
+        path: "/"
+        pathType: "ImplementationSpecific"
+  - host: "backend.dev.gobletqa.app"
+    http:
+      paths:
+      - backend:
+          serviceName: goblet-backend
+          servicePort: 7005
+        path: "/sockr-socket"
+        pathType: "ImplementationSpecific"
+  - host: "backend.dev.gobletqa.app"
+    http:
+      paths:
+      - backend:
+          serviceName: goblet-backend
+          servicePort: 7005
+        path: "/novnc"
+        pathType: "ImplementationSpecific"
+  - host: "*.backend.dev.gobletqa.app"
+    http:
+      paths:
+      - backend:
+          serviceName: goblet-backend
+          servicePort: 7005
+        path: "/"
+        pathType: "ImplementationSpecific"
+  - host: "*.backend.dev.gobletqa.app"
+    http:
+      paths:
+      - backend:
+          serviceName: goblet-backend
+          servicePort: 7005
+        path: "/sockr-socket"
+        pathType: "ImplementationSpecific"
+  - host: "*.backend.dev.gobletqa.app"
+    http:
+      paths:
+      - backend:
+          serviceName: goblet-backend
+          servicePort: 7005
+        path: "/novnc"
+        pathType: "ImplementationSpecific"
+  tls:
+  - hosts:
+    - "backend.dev.gobletqa.app"
+    - "*.backend.dev.gobletqa.app"
+    secretName: "gb-production-tls"

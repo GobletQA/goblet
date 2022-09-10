@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "goblet-screencast"
+  labels:
+    "app.kubernetes.io/name": "goblet-screencast"
+    "app.kubernetes.io/managed-by": "Helm"
+  annotations:
+    "helm.sh/chart": "gobletqa-chart-0.0.0"
+spec:
+  externalIPs:
+  ports:
+    - name: "port-0"
+      port: 7006
+      targetPort: 7006
+      protocol: "TCP"
+    - name: "port-1"
+      port: 26369
+      targetPort: 26369
+      protocol: "TCP"
+  selector:
+    "app.kubernetes.io/name": "gobletqa-app"
+    "app.kubernetes.io/component": "goblet-screencast"
+  type: "ClusterIP"
