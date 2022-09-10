@@ -3,6 +3,7 @@ import * as clean from './clean'
 import * as cmd from './cmd'
 import * as deploy from './deploy'
 import * as log from './log'
+import * as render from './render'
 import * as run from './run'
 import * as start from './start'
 import * as status from './status'
@@ -18,6 +19,7 @@ export const devspace = {
     ...deploy,
     ...log,
     ...run,
+    ...render,
     ...start,
     ...status,
     ...sync,

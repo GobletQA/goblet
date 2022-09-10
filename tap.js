@@ -74,6 +74,7 @@ module.exports = {
         dynamic: {
           // Path is relative to <tap-root>/node_modules/keg-core/core/base
           // So we have to go-back 4 dirs to get back to tap-root, and find the admin repo
+          "@ltipton/sockr": '../../../../repos/sockr/src/client',
           GSHModels: '../../../../repos/shared/src/models',
           GSHUtils: '../../../../repos/shared/src/utils/frontend',
         },

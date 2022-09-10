@@ -2,6 +2,7 @@ import { error } from '@keg-hub/cli-utils'
 import { getNpmToken } from '../../utils/envs'
 import { devspace } from '../../utils/devspace/devspace'
 import { setDeploymentEnvs } from '../../utils/envs/setDeploymentEnvs'
+import { getDeployments } from '../../utils/devspace/getDeployments'
 
 /**
  * General devspace command the forwards the first argument on to the devspace executable
@@ -15,33 +16,40 @@ import { setDeploymentEnvs } from '../../utils/envs/setDeploymentEnvs'
  *
  * @returns {void}
  */
-const commandAct = async ({ task, params }) => {
-  const cmd = process.argv.slice(3).shift()
-
-  !task.alias.includes(cmd) &&
-    error.throwError(
-      `Command ${cmd} is not a valid devspace command. Must be one of ${task.alias.join(
-        ' | '
-      )}`
-    )
-
+const renderAct = async ({ task, params }) => {
   setDeploymentEnvs(params.env)
+    /**
+   * Check the context and skip arrays for which apps to deploy
+   */
+  const deployments = getDeployments(params.context, params.skip, params.env)
+  const cmdArgs = [
+    `render`,
+    `--debug`
+  ]
+  deployments && deployments.length && cmdArgs.push(`--deployments`, deployments)
 
   getNpmToken()
-  return await devspace([cmd, `--debug`], params)
+  return await devspace(cmdArgs, params)
 }
 
-export const cmd = {
-  name: 'cmd',
-  alias: ['analyze', 'print', 'ui'],
-  action: commandAct,
-  example: 'yarn dev <cmd> <options>',
-  description: 'Calls the devspace command',
+export const render = {
+  name: 'render',
+  alias: ['ren', 'rdr'],
+  action: renderAct,
+  example: 'yarn dev render <options>',
+  description: 'Calls the devspace render command',
   options: {
     context: {
-      example: `--context app`,
+      type: 'array',
+      example: `--context app1,app2`,
       alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
-      description: `Context or name of devspace app that has a corresponding devspace config`,
+      description: `Contexts or names of apps to be started`,
+    },
+    skip: {
+      type: 'array',
+      alias: ['bypass'],
+      example: `--skip proxy`,
+      description: `Contexts or names of apps NOT to be started`,
     },
     devspace: {
       description: 'Optional filepath for devspace.yaml file',
