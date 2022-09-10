@@ -1,4 +1,5 @@
 import type { Express } from 'express'
+import httpProxyAgent from 'http-proxy-agent'
 import type { TProxyOpts } from '@gobletqa/shared/types'
 
 import { getApp } from '@gobletqa/shared/express/app'
@@ -28,6 +29,7 @@ export const createWSProxy = (config:TProxyOpts, app:Express) => {
   const wsProxy = createProxyMiddleware(path, {
     ws: true,
     xfwd:true,
+    toProxy: true,
     logLevel: 'warn',
     target: pxTarget,
     changeOrigin: true,

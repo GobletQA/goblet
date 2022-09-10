@@ -2,6 +2,7 @@ import io from 'socket.io-client'
 import {
   checkCall,
   get,
+  isArr,
   isFunc,
   noOpObj,
   camelCase,
@@ -123,6 +124,14 @@ const getCommand = (commands, cmdOrId) => {
   }, false)
 }
 
+const getTransports = (ioConfig) => {
+  const transports = isArr(ioConfig.transports)
+    ? ioConfig.transports
+    : []
+
+  return transports.length ? transports : ['polling', 'websocket']
+}
+
 /**
  * Service class for managing client websocket events
  * @function
@@ -193,11 +202,11 @@ export class SocketService {
 
     // Setup the socket, and connect to the server
     this.socket = io(endpoint, {
-      path: config.path,
       upgrade: true,
-      transports: [  'polling', 'websocket'],
+      path: config.path,
       ...(token && { auth: { token } }),
       ...ioConfig,
+      transports: getTransports(ioConfig),
       extraHeaders: {
         ...(ioConfig.extraHeaders || {}),
         ...(token ? { [authTokenHeader]: token } : {}),

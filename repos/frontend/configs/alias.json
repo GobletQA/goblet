@@ -12,5 +12,6 @@
   "@GFE/Theme": "src/theme",
   "@GFE/Utils": "src/utils",
   "@GFE": "src",
-  "@GFERoot": "."
+  "@GFERoot": ".",
+  "@gobletqa/shared": "../shared/src"
 }

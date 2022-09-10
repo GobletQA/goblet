@@ -2,7 +2,7 @@ import { getStore } from 'HKStore'
 import { Values } from 'HKConstants'
 import * as sockrActions from 'HKActions/sockr'
 import { localStorage } from'HKUtils/storage/localStorage'
-import { camelCase, snakeCase, checkCall } from '@keg-hub/jsutils'
+import { camelCase, snakeCase, checkCall, noPropArr } from '@keg-hub/jsutils'
 import { getWebsocketConfig } from 'HKUtils/api/getWebsocketConfig'
 import { WSService as SockrService, EventTypes } from 'HKGSockr'
 import { updateStatus } from 'HKActions/screencast/socket/updateStatus'
@@ -83,7 +83,9 @@ class SocketService {
       return bound
     }, {})
     
-    const config = getWebsocketConfig()
+    const { transports=noPropArr, ...config} = getWebsocketConfig()
+    this.ioConfig.transports = transports
+
     Object.assign(this, config)
   }
 

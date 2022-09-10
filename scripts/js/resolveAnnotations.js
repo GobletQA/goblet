@@ -57,6 +57,7 @@ const corsAnnotations = (origins) => (`
 
 const proxyAnnotations = () => (`
   nginx.ingress.kubernetes.io/affinity: "cookie"
+  nginx.ingress.kubernetes.io/proxy-body-size: "8m"
   nginx.ingress.kubernetes.io/proxy-connect-timeout: "75"
   nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
   nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
@@ -68,11 +69,11 @@ const proxyAnnotations = () => (`
     more_set_headers "X-Goblet-Subdomain: $http_x_goblet_subdomain";
 
     proxy_set_header Authorization $http_authorization;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection "Upgrade";
-    proxy_set_header Host $host;
 `)
 
+    // proxy_set_header Upgrade $http_upgrade;
+    // proxy_set_header Connection "Upgrade";
+    // proxy_set_header Host $host;
 /**
  * Helper method to parse a string of origins, and convert them to a cleaned array
  */

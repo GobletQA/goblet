@@ -28,6 +28,7 @@ export const withWS = (Component) => {
       if(!user || !routes?.api || routes?.meta?.state !== CONTAINER.STATE.RUNNING)
         return false
 
+      WSService.protocol = `http`
       WSService.ioConfig.query = {
         ...WSService.ioConfig.query,
         containerPort: routes?.api?.containerPort,
