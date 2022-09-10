@@ -204,3 +204,5 @@ env:
 
   GB_DD_VALIDATION_KEY: "gb-1234567"
   GB_DD_VALIDATION_HEADER: GB-Validation-Key
+  
+  GB_LOCAL_DEV_MODE: true

@@ -140,6 +140,37 @@ images:
 
 # The `deployments` section tells devspace how to deploy this project into the cluster
 deployments: 
+
+- name: ${GB_SC_DEPLOYMENT}
+  helm:
+    chart:
+      name: ./
+    cleanupOnFail: true
+    valuesFiles:
+    - ./values.yml
+    - ./values.${NODE_ENV}.yml
+    values:
+      containers:
+      - image: ${GB_SC_IMG_URI}
+        imagePullPolicy: ${IMAGE_PULL_POLICY}
+        env: $(node ../scripts/js/resolveDSEnvs.js screencast)
+      service: $(node ../scripts/js/resolveService.js SC $GB_SC_PORT $GB_NO_VNC_PORT)
+      ingress:
+        name: ${GB_SC_DEPLOYMENT}-ingress
+        rules:
+        - host: ${GB_SC_INGRESS_HOST}
+          serviceName: ${GB_SC_DEPLOYMENT}
+          servicePort: ${GB_SC_PORT}
+        - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
+          serviceName: ${GB_SC_DEPLOYMENT}
+          servicePort: ${GB_SC_PORT}
+        - host: ${GB_SC_INGRESS_HOST}
+          serviceName: ${GB_SC_DEPLOYMENT}
+          servicePort: ${GB_NO_VNC_PORT}
+        - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
+          serviceName: ${GB_SC_DEPLOYMENT}
+          servicePort: ${GB_NO_VNC_PORT}
+
 - name: ${GB_DD_DEPLOYMENT}
   helm:
     chart:
@@ -173,8 +204,7 @@ deployments:
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js frontend)
       service: $(node ../scripts/js/resolveService.js FE $GB_FE_PORT)
-      # Check if this can be removed, pretty sure it's not needed
-      # ingress: $(node ../scripts/js/resolveIngress.js FE $GB_FE_PORT)
+      ingress: $(node ../scripts/js/resolveIngress.js FE $GB_FE_PORT)
 
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
@@ -193,13 +223,15 @@ deployments:
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
       service: $(node ../scripts/js/resolveService.js BE $GB_BE_PORT)
-      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH/" "$GB_NO_VNC_PATH")
+      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH" "$GB_NO_VNC_PATH")
 
 # The `dev` section only applies to `yarn dev start` || `devspace dev` commands
 # Is not run for `yarn dev deploy` || `devspace deploy` commands
 dev:
   # Gets the apps that should sync with the host machine
-  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_DD_ACTIVE)
+  # sync: $(node ../scripts/js/resolveSync.js GB_BE_ACTIVE)
+  # sync: $(node ../scripts/js/resolveSync.js GB_BE_ACTIVE GB_DD_ACTIVE GB_SC_ACTIVE)
+  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_DD_ACTIVE GB_SC_ACTIVE)
 
   # Gets the ports that should be exposed to the host machine from the running pod
   # ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_DD_ACTIVE ${GB_DD_API_PROXY_PORT} ${GB_DD_EXP_ADMIN_PORT})
@@ -207,7 +239,7 @@ dev:
 
   # The `open` field tells DevSpace to open a URL as soon as it returns HTTP status 200
   # Since we configured port-forwarding, we can use a localhost address here to access our application
-  open: $(node ../scripts/js/resolveOpenBrowser.js GB_FE_ACTIVE ${GB_FE_PORT})
+  # open: $(node ../scripts/js/resolveOpenBrowser.js GB_FE_ACTIVE ${GB_FE_PORT})
 
 # Use profile to dynamically switch out the app specific docker image for the development image
 profiles:
@@ -219,5 +251,14 @@ profiles:
   - op: replace
     path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
     value: ${IMAGE}:${IMAGE_TAG}
+  - op: replace
+    path: deployments.name=${GB_SC_DEPLOYMENT}.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}
 - name: production
-
+  patches:
+  - op: replace
+    path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}
+  - op: replace
+    path: deployments.name=${GB_SC_DEPLOYMENT}.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}

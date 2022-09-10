@@ -37,8 +37,6 @@ const {
   GB_BE_JWT_CREDENTIALS,
   GB_BE_JWT_REFRESH_EXP,
   GB_BE_JWT_REFRESH_SECRET,
-
-  GB_LOCAL_DEV_MODE,
 } = process.env
 
 const dindHost = getDindHost()

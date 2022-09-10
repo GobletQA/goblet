@@ -17,7 +17,7 @@ const allowedHeaders = [
   `x-forwarded-port`,
   `x-forwarded-proto`,
   `x-forwarded-host`,
-  `x-forwarded-for`
+  `x-forwarded-for`,
 ].join(`,`)
 
 const allowedMethods = [
@@ -29,7 +29,6 @@ const allowedMethods = [
   `HEAD`,
   `OPTIONS`
 ].join(`,`)
-
 
 /**
  * Configures cors for the backend API and websocket

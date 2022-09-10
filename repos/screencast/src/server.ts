@@ -42,8 +42,9 @@ const initApi = async () => {
     config: {name: `Screencast`, ...app.locals.config.server}
   })
 
+  const sockrConf = app?.locals?.config?.sockr
   const server = secureServer || insecureServer
-  const socket = await initSockr(app, server, app?.locals?.config?.sockr, 'tests')
+  const socket = await initSockr(app, server, sockrConf, 'tests')
 
   return { app, server, socket }
 }

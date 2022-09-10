@@ -34,9 +34,10 @@ http://*.*.{$GB_CD_SUB_DOMAIN}.{$GB_CD_HOST}:{$GB_DD_API_PROXY_PORT} {
 # This follows a non-standard process of passing the port as a param
 # It passes just the value, and not a keg=value pair as is standard
 # Doing it this way allows us to use the query directly as the port without any parsing
-# 
+# Test the connection wscat --show-ping-pong --connect ws://goblet-dind:2123/novnc?containerPort=43291
 
 http://{$GB_DD_DEPLOYMENT}:{$GB_DD_VNC_PROXY_PORT} {
+	log
 	@websockets {
 		header Connection *Upgrade*
 		header Upgrade websocket
@@ -46,6 +47,7 @@ http://{$GB_DD_DEPLOYMENT}:{$GB_DD_VNC_PROXY_PORT} {
 }
 
 http://{$GB_DD_DEPLOYMENT}:{$GB_DD_WS_PROXY_PORT} {
+	log
 	@websockets {
 		header Connection *Upgrade*
 		header Upgrade websocket
