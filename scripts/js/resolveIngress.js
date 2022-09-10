@@ -12,10 +12,7 @@ const { resolveHost, resolveValues, resolveValue } = require('./resolveValues')
 const buildIngressName = (deployment) => (`name: ${deployment}-ingress`)
 
 /**
- * Adds annotations needed for generating ssl certs via the certs helm chart
- * When testing, add the annotation
- *  - acme.kubernetes.io/staging: "true"
- * This tells the certs pod to use the letsencrypt staging server, so we don't get rate-limited
+ * Builds all annotations needed when using tls
  */
 const buildTls = ({
   email,

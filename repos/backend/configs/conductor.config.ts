@@ -25,9 +25,10 @@ const {
   GB_SC_IMAGE,
   GB_SC_IMAGE_TAG,
   GB_SC_DEPLOYMENT,
-
   GB_NO_VNC_PORT,
   GB_CD_CONTROLLER_TYPE=`Docker`,
+
+  GB_LOCAL_DEV_MODE,
 } = process.env
 
 const whiteList = [
@@ -56,7 +57,8 @@ const whiteList = [
 const blackList = []
 
 const dindHost = getDindHost()
-const devRouter = NODE_ENV === `local`
+
+const devRouter = (NODE_ENV === `local` || Boolean(GB_LOCAL_DEV_MODE === 'true'))
   && exists(GOBLET_SCREENCAST_SERVICE_HOST)
   && exists(GOBLET_SCREENCAST_PORT)
     ? {

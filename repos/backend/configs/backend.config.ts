@@ -74,9 +74,5 @@ export const backendConfig:TBackendConfig  = {
     path: GB_BE_WS_PATH,
     port: GB_DD_WS_PROXY_PORT,
     protocol: GB_BE_WS_PROTOCOL,
-  },
-    /**
-   * Only turn on local dev mode when explicitly defined, and in a local environment
-   */
-  localDevMode: nodeEnv === 'local' && Boolean(GB_LOCAL_DEV_MODE === 'true'),
+  }
 }

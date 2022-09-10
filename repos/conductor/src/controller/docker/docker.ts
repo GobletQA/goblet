@@ -92,7 +92,11 @@ export class Docker extends Controller {
     const containerInspect = await this.docker.getContainer(id).inspect() as TContainerInspect
     this.containers[id] = containerInspect
 
-    hydrateRoutes(this, { [id]: containerInspect })
+    Logger.info(`Waiting 5 seconds to hydrate container...`)
+    setTimeout(() => {
+      Logger.info(`Finished waiting, hydrating container...`)
+      hydrateRoutes(this, { [id]: containerInspect })
+    }, 5000)
   }
 
   /**

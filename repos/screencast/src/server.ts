@@ -30,7 +30,7 @@ const initApi = async () => {
   setupServer(app)
   validateUser(app, `/screencast\/*`)
   setupRepo(app)
-  setupInactiveTimeout(app)
+  // setupInactiveTimeout(app)
   await setupEndpoints()
   setupLoggerErr(app)
 

@@ -20,13 +20,10 @@ export const setupInactiveTimeout = async (app:Express) => {
   let timeoutId = createTimeout(inactiveTimeout)
   app.use((req:Request, res:Response, next:NextFunction) => {
     // Clear the last timeout, to the container does not exit
-    // clearTimeout(timeoutId)
+    clearTimeout(timeoutId)
     // // Restart the timeout
-    // timeoutId = createTimeout(inactiveTimeout)
-    
+    timeoutId = createTimeout(inactiveTimeout)    
     console.log(`Restarting timeout timer...`)
-    // Start the timeout
-    timeoutId.refresh()
 
     next()
   })

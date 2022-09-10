@@ -34,6 +34,12 @@ const allowedMethods = [
   `OPTIONS`
 ].join(`,`)
 
+/**
+ * Adds annotations needed for generating ssl certs via the certs helm chart
+ * When testing, add the annotation
+ *  - acme.kubernetes.io/staging: "true"
+ * This tells the certs pod to use the letsencrypt staging server, so we don't get rate-limited
+ */
 const sslAnnotations = (email) => (`
   acme.kubernetes.io/enable: "true"
   acme.kubernetes.io/staging: "false"
@@ -60,6 +66,7 @@ const proxyAnnotations = () => (`
     more_set_headers "X-Goblet-Proto: $http_x_goblet_proto";
     more_set_headers "X-Goblet-Subdomain: $http_x_goblet_subdomain";
 
+    proxy_set_header Authorization $http_authorization;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "Upgrade";
     proxy_set_header Host $host;
@@ -100,3 +107,9 @@ const resolveAnnotations = ({
   origins && corsAnnotations(origins),
   proxyAnnotations()
 ].filter(Boolean).join(`\n`))
+
+
+module.exports = {
+  generateOrigins,
+  resolveAnnotations,
+}
