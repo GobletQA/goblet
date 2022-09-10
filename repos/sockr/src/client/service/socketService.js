@@ -194,7 +194,8 @@ export class SocketService {
     // Setup the socket, and connect to the server
     this.socket = io(endpoint, {
       path: config.path,
-      transports: [ 'websocket', 'polling', 'flashsocket' ],
+      upgrade: true,
+      transports: [  'polling', 'websocket'],
       ...(token && { auth: { token } }),
       ...ioConfig,
       extraHeaders: {

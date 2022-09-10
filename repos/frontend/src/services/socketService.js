@@ -4,7 +4,7 @@ import * as sockrActions from 'HKActions/sockr'
 import { localStorage } from'HKUtils/storage/localStorage'
 import { camelCase, snakeCase, checkCall } from '@keg-hub/jsutils'
 import { getWebsocketConfig } from 'HKUtils/api/getWebsocketConfig'
-import { WSService as SockrService, EventTypes } from '@ltipton/sockr'
+import { WSService as SockrService, EventTypes } from 'HKGSockr'
 import { updateStatus } from 'HKActions/screencast/socket/updateStatus'
 
 import { recordAction } from 'HKActions/recorder/local/recordAction'

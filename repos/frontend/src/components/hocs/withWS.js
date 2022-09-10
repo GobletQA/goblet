@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { Values } from 'HKConstants'
 import { useSelector } from 'HKHooks'
 import { WSService } from 'HKServices'
-import { SockrProvider } from '@ltipton/sockr'
+import { SockrProvider } from 'HKGSockr'
 
 const { CONTAINER, CATEGORIES, STORAGE } = Values
 

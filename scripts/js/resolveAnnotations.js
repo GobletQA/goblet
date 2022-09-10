@@ -56,6 +56,7 @@ const corsAnnotations = (origins) => (`
 `)
 
 const proxyAnnotations = () => (`
+  nginx.ingress.kubernetes.io/affinity: "cookie"
   nginx.ingress.kubernetes.io/proxy-connect-timeout: "75"
   nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
   nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"

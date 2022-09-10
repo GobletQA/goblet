@@ -1,7 +1,0 @@
-
-env: 
-
-  # --- TODO: Set to the correct context when linode is setup
-  GB_KUBE_CONTEXT: linode-context
-  GB_HOST_DOMAIN: dev.gobletqa.app
-  GB_SUB_DOMAIN: develop

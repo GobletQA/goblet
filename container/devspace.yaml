@@ -147,29 +147,13 @@ deployments:
       name: ./
     cleanupOnFail: true
     valuesFiles:
-    - ./values.yml
-    - ./values.${NODE_ENV}.yml
+    - ./values.empty.yaml
     values:
       containers:
       - image: ${GB_SC_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js screencast)
       service: $(node ../scripts/js/resolveService.js SC $GB_SC_PORT $GB_NO_VNC_PORT)
-      ingress:
-        name: ${GB_SC_DEPLOYMENT}-ingress
-        rules:
-        - host: ${GB_SC_INGRESS_HOST}
-          serviceName: ${GB_SC_DEPLOYMENT}
-          servicePort: ${GB_SC_PORT}
-        - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
-          serviceName: ${GB_SC_DEPLOYMENT}
-          servicePort: ${GB_SC_PORT}
-        - host: ${GB_SC_INGRESS_HOST}
-          serviceName: ${GB_SC_DEPLOYMENT}
-          servicePort: ${GB_NO_VNC_PORT}
-        - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
-          serviceName: ${GB_SC_DEPLOYMENT}
-          servicePort: ${GB_NO_VNC_PORT}
 
 - name: ${GB_DD_DEPLOYMENT}
   helm:
@@ -177,8 +161,7 @@ deployments:
       name: ./
     cleanupOnFail: true
     valuesFiles:
-    - ./values.yml
-    - ./values.${NODE_ENV}.yml
+    - ./values.empty.yaml
     values:
       containers:
       - name: ${GB_DD_DEPLOYMENT}
@@ -196,8 +179,7 @@ deployments:
       name: ./
     cleanupOnFail: true
     valuesFiles:
-    - ./values.yml
-    - ./values.${NODE_ENV}.yml
+    - ./values.empty.yaml
     values:
       containers:
       - image: ${GB_FE_IMG_URI}
@@ -215,8 +197,7 @@ deployments:
       name: ./
     cleanupOnFail: true
     valuesFiles:
-    - ./values.yml
-    - ./values.${NODE_ENV}.yml
+    - ./values.empty.yaml
     values:
       containers:
       - image: ${GB_BE_IMG_URI}

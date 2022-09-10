@@ -15,9 +15,7 @@ const syncFrontendConfig = (deployment) => (`
   containerPath: /goblet/app
   excludePaths:
   - '**'
-  - '!/repos/frontend'
-  - '!/repos/traceViewer'
-  - '!/container'
+  - '!/'
   - 'node_modules'
   - 'node_modules/**'
 `)
@@ -31,10 +29,12 @@ const syncBackendConfig = (deployment) => (`
   containerPath: /goblet/app
   excludePaths:
   - '**'
+  - '!/configs'
+  - '!/container'
   - '!/repos/backend'
   - '!/repos/conductor'
   - '!/repos/screencast'
-  - '!/container'
+  - '!/repos/sockr'
   - '!/repos/shared'
   - 'node_modules'
   - 'node_modules/**'
@@ -67,6 +67,8 @@ const syncSCConfig = (deployment) => (`
   containerPath: /goblet/app
   excludePaths:
   - '**'
+  - '!/configs'
+  - '!/container'
   - '!/repos/screencast'
   - '!/repos/shared'
   - '!/repos/sockr'

@@ -26,6 +26,15 @@ const constants = deepFreeze({
     chrome: 'chromium',
   },
   browserStatus: keyMap([`stopped`, `running`, `starting`, `unknown`]),
+  
+  AUTH_BYPASS_ROUTES: [
+    `/`,
+    `/auth/validate`,
+    `/health-check`,
+    `/favicon.ico`,
+    `/sockr-socket`,
+    `/sockr-socket/`,
+  ]
 })
 
 module.exports = constants

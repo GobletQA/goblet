@@ -198,7 +198,7 @@ env:
   GB_DD_VNC_PROXY_PORT: 2123
 
   # Must be localhost due to caddy config, if can not be an ip address
-  GB_DD_CADDY_HOST: localhost
+  GB_DD_CADDY_HOST: goblet-dind
   GB_DD_EXP_ADMIN_PORT: 2018
   GB_DD_LOCAL_ADMIN_PORT: 2019
 

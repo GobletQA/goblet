@@ -27,7 +27,11 @@
       "@GLogs/*": ["../../logs/*"],
       "@GRepos/*": ["../../repos/*"],
       "@GConfigs/*": ["../../configs/*"],
-      "@GEnvironment": ["../../scripts/environment"]
+      "@GEnvironment": ["../../scripts/environment"],
+      "@ltipton/sockr": ["../sockr"],
+      "@ltipton/sockr/src": ["../sockr/src"],
+      "@ltipton/sockr/src/*": ["../sockr/src/*"],
+      "@ltipton/sockr/*": ["../sockr/*"]
     }
   },
   "include": [

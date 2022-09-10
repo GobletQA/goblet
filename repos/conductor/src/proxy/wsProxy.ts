@@ -25,7 +25,6 @@ export const createWSProxy = (config:TProxyOpts, app:Express) => {
 
   const url = port ? `${host}:${port}` : host
   const pxTarget = target || `${protocol}://${url}`
-
   const wsProxy = createProxyMiddleware(path, {
     ws: true,
     xfwd:true,

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 import { Values } from 'HKConstants'
-import { useSockr } from '@ltipton/sockr'
+import { useSockr } from 'HKGSockr'
 import { runTests } from 'HKActions/runner/runTests'
 import { addToast } from 'HKActions/toasts/addToast'
 import { noOpObj, get, noOp } from '@keg-hub/jsutils'

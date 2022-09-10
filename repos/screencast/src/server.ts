@@ -1,4 +1,5 @@
 import { initSockr } from '@GSC/libs/sockr'
+import { AUTH_BYPASS_ROUTES } from '@GSC/constants'
 import { getApp } from '@gobletqa/shared/express/app'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { setupEndpoints, setupInactiveTimeout } from '@GSC/middleware'
@@ -27,6 +28,7 @@ const initApi = async () => {
   setupBlacklist(app)
   setupCors(app)
   setupJWT(app, [])
+  setupJWT(app, AUTH_BYPASS_ROUTES)
   setupServer(app)
   validateUser(app, `/screencast\/*`)
   setupRepo(app)

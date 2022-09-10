@@ -43,6 +43,7 @@ const addRepoAliases = () => {
       // If no data is returned, then try to load paths from tsconfig.json
       if(!data){
         const tsConfResp = requireFile(location, `tsconfig.json`)
+
         if(!tsConfResp){
           console.log(`[Alias Warning] Could not find tsconfig.json at path ${location}`)
           return acc
@@ -54,7 +55,11 @@ const addRepoAliases = () => {
           data = Object.entries(paths)
             .reduce((locs, [alias, arr]) => {
               const first = arr[0]
-              if(!first || !alias.toLowerCase().startsWith(`@g`) || first.endsWith(`/*`))
+              const lowerAlias = alias.toLowerCase()
+              if(!first
+                  || (!lowerAlias.startsWith(`@g`) && !lowerAlias.startsWith(`@ltipton`))
+                  || first.endsWith(`/*`)
+                )
                 return locs
 
               locs[alias] = first
