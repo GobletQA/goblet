@@ -133,8 +133,12 @@ spec:
   {{- if ne (printf "%s" $tlsSecretName) "" }}
   tls:
   - hosts:
+    {{- $hosts := list }}
     {{- range $ingressRuleIndex, $ingressRule := $.Values.ingress.rules }}
-    - {{ $ingressRule.host | quote }}
+      {{- $hosts = append $hosts $ingressRule.host }}
+    {{- end }}
+    {{- range $hostIndex, $host := $hosts | uniq }}
+    - {{ $host | quote }}
     {{- end }}
     secretName: {{ $tlsSecretName | quote }}
   {{- end }}

@@ -6,6 +6,7 @@
   node scripts/js/resolveIngress.js BE 7005 "*" "/sockr-socket/:Prefix" "/novnc:Prefix"
  */
  
+const { resolveAnnotations, generateOrigins } = require('./resolveAnnotations')
 const { resolveHost, resolveValues, resolveValue } = require('./resolveValues')
 
 const buildIngressName = (deployment) => (`name: ${deployment}-ingress`)
@@ -18,28 +19,15 @@ const buildIngressName = (deployment) => (`name: ${deployment}-ingress`)
  */
 const buildTls = ({
   email,
+  origins,
   tls=true,
 }) => (`
 tls: ${tls}
 disableCertManager: true
 labels:
 annotations:
-  acme.kubernetes.io/enable: "true"
-  acme.kubernetes.io/staging: "false"
-  acme.kubernetes.io/dns: "dns_linode_v4"
-  acme.kubernetes.io/add-args: "--dnssleep 120"
-  acme.kubernetes.io/pre-cmd: "acme.sh --register-account -m ${email}"
-  nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600"
-  nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-  nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-  nginx.ingress.kubernetes.io/configuration-snippet: |
-    add_header 'Access-Control-Allow-Origin' '*' always;
-    more_set_headers "X-Goblet-Host: $http_x_goblet_host";
-    more_set_headers "X-Goblet-Port: $http_x_goblet_port";
-    more_set_headers "X-Goblet-Proto: $http_x_goblet_proto";
-    more_set_headers "X-Goblet-Subdomain: $http_x_goblet_subdomain";
+${resolveAnnotations({ email, origins })}
 `)
-
 
 const buildRule = (host, serviceName, servicePort, path, type) => (`
 - host: "${host}"
@@ -48,7 +36,6 @@ const buildRule = (host, serviceName, servicePort, path, type) => (`
   path: ${path || '/'}
   pathType: ${type || 'ImplementationSpecific'}
 `.trim())
-
 
 const getSubdomainsRules = (host, deployment, mainPort, subdomains, options) => {
   return subdomains.length &&
@@ -98,11 +85,12 @@ const buildTlsRules = ({
   port,
   host,
   email,
+  origins,
+  options,
   tls=true,
   deployment,
-  options
 }) => (`
-${buildTls({ email, tls }).trim()}
+${buildTls({ email, tls, origins }).trim()}
 ${buildRules(host, deployment, port, options).trim()}
 `)
 
@@ -121,6 +109,8 @@ ${buildRules(host, deployment, port, options).trim()}
 
   const host = resolveHost(prefix, values)
   const tls = resolveValue(`GB_${prefix}_SECRET_TLS_NAME`, values)
+  const origins = generateOrigins(resolveValue(`GB_SERVER_ORIGINS`, values))
+
   const email = resolveValue(`GB_CR_USER_EMAIL`, values)
 
   const name = buildIngressName(deployment)
@@ -132,8 +122,9 @@ ${buildRules(host, deployment, port, options).trim()}
         host,
         port,
         email,
+        origins,
+        options,
         deployment,
-        options
       })
 
 process.stdout.write(`

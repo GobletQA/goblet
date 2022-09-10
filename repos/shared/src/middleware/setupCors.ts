@@ -13,6 +13,8 @@ const allowedHeaders = [
   `x-goblet-proto`,
   `x-goblet-port`,
   `x-goblet-subdomain`,
+  `x-forwarded-subdomain`,
+  `x-forwarded-port`,
   `x-forwarded-proto`,
   `x-forwarded-host`,
   `x-forwarded-for`
@@ -27,6 +29,7 @@ const allowedMethods = [
   `HEAD`,
   `OPTIONS`
 ].join(`,`)
+
 
 /**
  * Configures cors for the backend API and websocket

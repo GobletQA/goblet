@@ -1,24 +1,10 @@
 /**
  * Used by devspace in the devspace.yml to generate file-syncing for the application deployments
  * Ensures only deployed apps actually get a sync created
+ * Test script by running the following command
+ * GB_BE_ACTIVE=goblet-backend node scripts/js/resolveSync.js GB_BE_ACTIVE
  */
 const { resolveValues } = require('./resolveValues')
-
-const sharedIgnored = `
-  - node_modules/
-  - .*
-  - /container/.*
-  - /container/scripts
-  - /container/templates
-  - /container/Dockerfile*
-  - /deploy
-  - /docs
-  - /helm
-  - /scripts
-  - /tasks
-  - __tests__/
-  - __mocks__/
-`
 
 const syncFrontendConfig = (deployment) => (`
 - labelSelector:
@@ -27,11 +13,13 @@ const syncFrontendConfig = (deployment) => (`
   initialSync: mirrorLocal
   localSubPath: ../
   containerPath: /goblet/app
-  uploadExcludePaths:
-  - /repos/backend
-  - /repos/conductor
-  - /repos/screencast
-  ${sharedIgnored}
+  excludePaths:
+  - '**'
+  - '!/repos/frontend'
+  - '!/repos/traceViewer'
+  - '!/container'
+  - 'node_modules'
+  - 'node_modules/**'
 `)
 
 const syncBackendConfig = (deployment) => (`
@@ -41,10 +29,14 @@ const syncBackendConfig = (deployment) => (`
   initialSync: mirrorLocal
   localSubPath: ../
   containerPath: /goblet/app
-  uploadExcludePaths:
-  - /repos/frontend
-  - /repos/traceViewer
-  ${sharedIgnored}
+  excludePaths:
+  - '**'
+  - '!/repos/backend'
+  - '!/repos/conductor'
+  - '!/repos/screencast'
+  - '!/container'
+  - 'node_modules'
+  - 'node_modules/**'
 `)
 
 const syncDDConfig = (deployment, remoteDir=`/goblet/remote`) => (`
@@ -111,17 +103,16 @@ const generateSync = (isActiveEnv, backend, type, remoteDir) => {
 const envs = resolveValues()
 const args = process.argv.slice(2)
 
-const feDeployment = generateSync(args.shift())
+// const feDeployment = generateSync(args.shift())
 const beDeployment = generateSync(args.shift(), true)
 const ddDeployment = generateSync(args.shift(), true, `dd`, envs.GB_DD_CADDY_REMOTE_DIR)
 const scDeployment = generateSync(args.shift(), true, `sc`)
 // const pxDeployment = generateSync(args.shift(), true)
 
 let syncs = ``
-feDeployment && (syncs += feDeployment)
+// feDeployment && (syncs += feDeployment)
 beDeployment && (syncs += beDeployment)
 ddDeployment && (syncs += ddDeployment)
 scDeployment && (syncs += scDeployment)
-// pxDeployment && (syncs += pxDeployment)
 
 process.stdout.write(syncs)
