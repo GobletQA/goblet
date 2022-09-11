@@ -8,6 +8,8 @@ const { resolveValues } = require('./resolveValues')
 
 const sharedIgnore = (`
   - '.*'
+  - '!/configs'
+  - '!/container'
   - 'node_modules'
   - 'node_modules/**'
   - 'container/scripts'
@@ -23,8 +25,6 @@ const syncFrontendConfig = (deployment) => (`
   localSubPath: ../
   containerPath: /goblet/app
   excludePaths:
-  - '**'
-  - '!/'
   - 'temp'
   - 'logs'
   - 'tasks'
@@ -47,8 +47,6 @@ const syncBackendConfig = (deployment) => (`
   containerPath: /goblet/app
   excludePaths:
   - '**'
-  - '!/configs'
-  - '!/container'
   - '!/repos/backend'
   - '!/repos/conductor'
   - '!/repos/screencast'
@@ -84,8 +82,6 @@ const syncSCConfig = (deployment) => (`
   containerPath: /goblet/app
   excludePaths:
   - '**'
-  - '!/configs'
-  - '!/container'
   - '!/repos/screencast'
   - '!/repos/shared'
   - '!/repos/sockr'
