@@ -1,3 +1,4 @@
+export * from './kube.types'
 export * from './proxy.types'
 export * from './docker.types'
 export * from './routes.types'

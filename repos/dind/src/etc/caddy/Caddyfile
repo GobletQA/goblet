@@ -14,7 +14,6 @@
 http://{$GB_DD_CADDY_HOST:localhost}:{$GB_DD_DOCKER_PORT:2375}, http://{$GB_DD_DOCKER_HOST:0.0.0.0}:{$GB_DD_DOCKER_PORT:2375} {
 	log
 	reverse_proxy unix///var/run/docker.sock
-	# bind unix///var/run/docker.sock
 }
 
 # Grabs the last subdomain of the host, and uses it as the port in the reverse_proxy
@@ -23,6 +22,14 @@ http://{$GB_DD_CADDY_HOST:localhost}:{$GB_DD_DOCKER_PORT:2375}, http://{$GB_DD_D
 #   * curl --header "Host: <port>.<user-id>.conductor.local.gobletqa.app" http://goblet-dind:2121
 # 	* curl --header "Host: 34375.2098242360.conductor.local.gobletqa.app" http://goblet-dind:2121
 http://*.*.{$GB_CD_SUB_DOMAIN}.{$GB_CD_HOST}:{$GB_DD_API_PROXY_PORT} {
+	log
+
+	# Ensure the validation header exists
+	@denied not header {$GB_DD_VALIDATION_HEADER} {$GB_DD_VALIDATION_KEY}
+	abort @denied
+	# Remove the validation header in the response
+	header -{$GB_DD_VALIDATION_HEADER}
+
 	reverse_proxy {$GB_DD_PROXY_DOMAIN:localhost}:{labels.5}
 
 	handle_errors {
@@ -30,39 +37,38 @@ http://*.*.{$GB_CD_SUB_DOMAIN}.{$GB_CD_HOST}:{$GB_DD_API_PROXY_PORT} {
 	}
 }
 
-# We don't have access to override the host header, so instead we pass the port as a query param
-# This follows a non-standard process of passing the port as a param
-# It passes just the value, and not a keg=value pair as is standard
-# Doing it this way allows us to use the query directly as the port without any parsing
-# Test the connection wscat --show-ping-pong --connect ws://goblet-dind:2123/novnc?containerPort=43291
-
+# Proxy for all novnc requests
 http://{$GB_DD_DEPLOYMENT}:{$GB_DD_VNC_PROXY_PORT} {
 	log
-	reverse_proxy {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
+
+	# Only match requests when the containerPort exists
+	@websockets {
+		query containerPort=*
+	}
+
+	# Ensure the validation header exists
+	@denied not header {$GB_DD_VALIDATION_HEADER} {$GB_DD_VALIDATION_KEY}
+	abort @denied
+	# Remove the validation header in the response
+	header -{$GB_DD_VALIDATION_HEADER}
+
+	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
 }
 
+# Proxy for all socker.io requests
 http://{$GB_DD_DEPLOYMENT}:{$GB_DD_WS_PROXY_PORT} {
 	log
-	reverse_proxy {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
+
+	# Only match requests when the containerPort exists
+	@websockets {
+		query containerPort=*
+	}
+
+	# Ensure the validation header exists
+	@denied not header {$GB_DD_VALIDATION_HEADER} {$GB_DD_VALIDATION_KEY}
+	abort @denied
+	# Remove the validation header in the response
+	header -{$GB_DD_VALIDATION_HEADER}
+
+	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
 }
-# TODO: need this for dev, but the above for prod
-# Figure out a way to switch based on environment
-# http://{$GB_DD_DEPLOYMENT}:{$GB_DD_VNC_PROXY_PORT} {
-# 	log
-# 	@websockets {
-# 		header Connection *Upgrade*
-# 		header Upgrade websocket
-# 	}
-
-# 	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
-# }
-
-# http://{$GB_DD_DEPLOYMENT}:{$GB_DD_WS_PROXY_PORT} {
-# 	log
-# 	@websockets {
-# 		header Connection *Upgrade*
-# 		header Upgrade websocket
-# 	}
-
-# 	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
-# }

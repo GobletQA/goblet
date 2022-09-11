@@ -140,6 +140,13 @@ export class Conductor {
     return await this.controller.cleanup()
   }
 
+  async updateSession() {
+    // TODO: updates a session containers timeout status
+    // After it's been running without interaction
+    // Then the container is automatically killed
+    // This method should update that timer on each request
+  }
+
   /**
    * Handles proxy requests to containers
    * Gets the routeData from the controller
@@ -162,7 +169,6 @@ export class Conductor {
         ...app?.locals?.config?.proxy?.headers
       },
     }, ProxyRouter)
-
 
     const wsProxy = createWSProxy(app?.locals?.config?.wsProxy, app)
     const vncProxy = createVNCProxy(app?.locals?.config?.vncProxy, app)
