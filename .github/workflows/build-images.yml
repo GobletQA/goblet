@@ -40,7 +40,7 @@ jobs:
         with:
           node-version: "16"
           registry-url: https://npm.pkg.github.com/
-          scope: "@workboard"
+          scope: "@gobletqa"
 
       - name: Set up Docker Buildx
         id: buildx
@@ -74,6 +74,7 @@ jobs:
         uses: docker/build-push-action@v3.1.0
         with:
           build-args: |
+            NPM_TOKEN=${{ secrets.GIT_TOKEN }}
             ${{ steps.args.outputs.list }}
           cache-from: type=gha, scope=${{ github.workflow }}
           cache-to: type=gha, scope=${{ github.workflow }}

@@ -40,10 +40,10 @@ gb_load_env(){
 
 }
 
-# Setups of the host machine for development of the workboard stratgy repo
+# Setups of the host machine for development of the goblet repo
 gb_setup(){
 
-  # Make sure we are in the workboard root directory
+  # Make sure we are in the goblet root directory
   cd $GB_ROOT_DIR
 
   # Determin the setup type

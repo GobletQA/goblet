@@ -69,12 +69,12 @@ gb_setup_npmrc(){
   else
     [ -z "$GB_GIT_TOKEN" ] && gb_setup_github_pat
 
-    gb_info "Adding workboard repositry to $GB_NPMRC_PATH"
+    gb_info "Adding goblet repositry to $GB_NPMRC_PATH"
 
     # Add content to the ~/.npmrc file including the github PAT
     # The file is outside of the repo, so the PAT will not be tracked by git
     echo "//npm.pkg.github.com/:_authToken=$GB_GIT_TOKEN" > $GB_NPMRC_PATH
-    echo "@workboard:registry=https://npm.pkg.github.com" >> $GB_NPMRC_PATH
+    echo "@gobletqa:registry=https://npm.pkg.github.com" >> $GB_NPMRC_PATH
     echo "registry=https://registry.npmjs.org" >> $GB_NPMRC_PATH
 
   fi
