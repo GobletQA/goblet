@@ -9,6 +9,7 @@ import {
   TImgConfig,
   TImgsConfig,
   TDockerEvent,
+  TUserHashMap,
   TContainerRef,
   TDockerConfig,
   TContainerData,
@@ -76,6 +77,7 @@ export class Docker extends Controller {
   config: TDockerConfig
   events: DockerEvents
   devRouterActive: boolean
+  userHashMap:TUserHashMap = {}
 
   constructor(conductor:Conductor, config:TDockerConfig){
     super(conductor, config)
@@ -362,10 +364,17 @@ export class Docker extends Controller {
       start: this.hydrateSingle
     })
 
+    // TODO: pre-create containers so they are preloaded before the user logs in
+    // Need to create a fake user-hash
+    // Then map that user hash to the real user hash when they start making requests
     this.hydrate()
+      // .then(() => {
+      // })
   }
 
-  // TODO: need to figure out VNC screen casting
+  /**
+   * Gets a route from the passed in headers of the request
+   */
   getRoute = (req:Request) => { 
     const proxyPort = (req.headers[FORWARD_PORT_HEADER] || ``).toString().split(`,`).shift()
     const userHash = (req.headers[FORWARD_SUBDOMAIN_HEADER] || ``).toString().split(`,`).shift()
