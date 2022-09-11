@@ -18,6 +18,8 @@ const addEnv = (name, value) => (`
 `.trimStart()
 )
 
+const addArg = (name, value) => (`\n${name}=${value}`)
+
 /**
  * Checks if the passed in item has a * in it
  * Then uses the * to check if parts of the item exist in the key
@@ -76,8 +78,16 @@ const buildEnvs = (envs, pickList=[], omitList=[]) => {
 
 
 const convertToYaml = (envs) => {
-  return Object.entries(envs).reduce((acc, [key, value]) => `${acc}${addEnv(key, '"'+ value +'"')}`, ``)
+  return Object.entries(envs)
+    .reduce((acc, [key, value]) => `${acc}${addEnv(key, '"'+ value +'"')}`, ``)
 }
+
+const convertToArgs = (envs) => {
+  return Object.entries(envs)
+    .reduce((acc, [key, value]) => (value ? `${acc.trimEnd()}\n${key}=${value}` : acc), ``)
+    .trimEnd()
+}
+
 
 /**
  * Builds the list to pick and omit envs based on the passed in repo
@@ -123,8 +133,18 @@ const filterEnvsAsYaml = (repo) => {
   return convertToYaml(built)
 }
 
+const filterEnvsAsArgs = (repo) => {
+  const { pickList, omitList } = buildLists(repo)
+  const envs = resolveValues()
+  const built = buildEnvs(envs, pickList, omitList)
+
+  return convertToArgs(built)
+}
+
 module.exports = {
+  addArg,
   addEnv,
   filterEnvsAsYaml,
+  filterEnvsAsArgs,
   filterExistingEnvs
 }

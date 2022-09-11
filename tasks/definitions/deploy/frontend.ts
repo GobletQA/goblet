@@ -1,6 +1,6 @@
 import { appRoot } from '../../paths'
+import { Logger } from '@keg-hub/cli-utils'
 import { docker } from '../../utils/docker/docker'
-import { error, Logger } from '@keg-hub/cli-utils'
 import { loadEnvs } from '../../utils/envs/loadEnvs'
 import { getRunImg } from '../../utils/docker/getRunImg'
 import { getNpmToken } from '../../utils/envs/getNpmToken'
@@ -8,9 +8,7 @@ import { addRunEnvs } from '../../utils/docker/addRunEnvs'
 import { getRunArgs } from '../../utils/docker/getRunArgs'
 import { addRunPorts } from '../../utils/docker/addRunPorts'
 import { getParamEnvs } from '../../utils/envs/getParamEnvs'
-import { noOpArr, noOpObj, ensureArr } from '@keg-hub/jsutils'
 import { addRunVolumes } from '../../utils/docker/addRunVolumes'
-import { getTagOptions } from '../../utils/docker/getTagOptions'
 import { getFirebaseToken } from '../../utils/firebase/getFirebaseToken'
 
 

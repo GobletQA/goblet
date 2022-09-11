@@ -28,12 +28,35 @@ module.exports = {
       envs: {
         omit: [
           `KEG_*`,
+          `DOC_*`,
+          `EXPO_*`,
           `IMAGE`,
+          `GIT_CLI_*`,
+          `GIT_HUB_*`,
+          `GB_KUBE_*`,
           `IMAGE_TAG`,
           `FIRE_BASE_*`,
+          `GB_BE_IMAGE`,
+          `*_IMAGE_FROM`,
           `GB_IMAGE_FROM`,
-          `GB_IMAGE_BUILD_TAGS`,
           `*_DOC_VOLUMES`,
+          `GITHUB_CLIENT_*`,
+          `GB_BE_IMAGE_TAG`,
+          `*_DEVSPACE_CONFIG`,
+          `GB_IMAGE_BUILD_TAGS`,
+          `FIREBASE_TOKEN_*`
+        ]
+      },
+      sync: {
+        ignore: [
+          '.*',
+          '!/configs',
+          '!/container',
+          'node_modules',
+          'node_modules/**',
+          'container/scripts',
+          'container/.devspace',
+          'container/templates',
         ]
       }
     },
@@ -52,7 +75,7 @@ module.exports = {
         omit: [
           `GB_CR_*`,
           `GB_FE_*`,
-          `FIRE_BASE_*`
+          `FIRE_BASE_*`,
         ],
       }
     },

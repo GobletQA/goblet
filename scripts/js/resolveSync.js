@@ -4,20 +4,15 @@
  * Test script by running the following command
  * GB_FE_ACTIVE=goblet-frontend GB_BE_ACTIVE=goblet-backend node scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE
  */
-const { resolveValues } = require('./resolveValues')
+const { resolveValues, resolveConfig } = require('./resolveValues')
 
-const sharedIgnore = (`
-  - '.*'
-  - '!/configs'
-  - '!/container'
-  - 'node_modules'
-  - 'node_modules/**'
-  - 'container/scripts'
-  - 'container/.devspace'
-  - 'container/templates'
-`)
+const config = resolveConfig()
 
-const syncFrontendConfig = (deployment) => (`
+const generateList = (list=[]) => {
+  return list.reduce((acc, item) => `${acc}  - '${item}'\n`, ``).trimEnd()
+}
+
+const syncFrontendConfig = (deployment, sharedIgnore) => (`
 - labelSelector:
     app.kubernetes.io/component: ${deployment}
   disableDownload: true
@@ -38,7 +33,7 @@ const syncFrontendConfig = (deployment) => (`
 ${sharedIgnore}
 `)
 
-const syncBackendConfig = (deployment) => (`
+const syncBackendConfig = (deployment, sharedIgnore) => (`
 - labelSelector:
     app.kubernetes.io/component: ${deployment}
   disableDownload: true
@@ -73,7 +68,7 @@ const syncDDConfig = (deployment, remoteDir=`/goblet/remote`) => (`
 `)
 
 
-const syncSCConfig = (deployment) => (`
+const syncSCConfig = (deployment, sharedIgnore) => (`
 - labelSelector:
     app.kubernetes.io/component: ${deployment}
   disableDownload: true
@@ -94,7 +89,13 @@ ${sharedIgnore}
  * Check if the app is being deploy
  * If it is, build the sync config based off the deployment
  */
-const generateSync = (isActiveEnv, backend, type, remoteDir) => {
+const generateSync = ({
+  type,
+  backend,
+  remoteDir,
+  isActiveEnv,
+  sharedIgnore,
+}) => {
   const deployment = process.env[isActiveEnv]
 
   return (!isActiveEnv || !deployment)
@@ -102,21 +103,41 @@ const generateSync = (isActiveEnv, backend, type, remoteDir) => {
     : type === `dd`
       ? syncDDConfig(deployment, remoteDir)
       : type === `sc`
-        ? syncSCConfig(deployment)
+        ? syncSCConfig(deployment, sharedIgnore)
         : Boolean(deployment)
           ? backend
-            ? syncBackendConfig(deployment)
-            : syncFrontendConfig(deployment)
+            ? syncBackendConfig(deployment, sharedIgnore)
+            : syncFrontendConfig(deployment, sharedIgnore)
           : ``
 }
 
 const envs = resolveValues()
+const sharedIgnore = generateList(config?.apps?._all?.sync?.ignore)
+
 const args = process.argv.slice(2)
 
-const feDeployment = generateSync(args.shift())
-const beDeployment = generateSync(args.shift(), true)
-const ddDeployment = generateSync(args.shift(), true, `dd`, envs.GB_DD_CADDY_REMOTE_DIR)
-const scDeployment = generateSync(args.shift(), true, `sc`)
+const feDeployment = generateSync({
+  sharedIgnore,
+  isActiveEnv: args.shift(),
+})
+const beDeployment = generateSync({
+  sharedIgnore,
+  backend: true,
+  isActiveEnv: args.shift(),
+})
+const ddDeployment = generateSync({
+  isActiveEnv: args.shift(),
+  type: `dd`,
+  sharedIgnore,
+  backend: true,
+  remoteDir: envs.GB_DD_CADDY_REMOTE_DIR
+})
+const scDeployment = generateSync({
+  type: `sc`,
+  sharedIgnore,
+  backend: true,
+  isActiveEnv: args.shift(),
+})
 
 let syncs = ``
 feDeployment && (syncs += feDeployment)
