@@ -1,5 +1,4 @@
 import type { Express } from 'express'
-import httpProxyAgent from 'http-proxy-agent'
 import type { TProxyOpts } from '@gobletqa/shared/types'
 
 import { getApp } from '@gobletqa/shared/express/app'

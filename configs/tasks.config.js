@@ -33,7 +33,6 @@ module.exports = {
           `FIRE_BASE_*`,
           `GB_IMAGE_FROM`,
           `GB_IMAGE_BUILD_TAGS`,
-          `DOCKER_REGISTRY`,
           `*_DOC_VOLUMES`,
         ]
       }
@@ -54,7 +53,7 @@ module.exports = {
           `GB_CR_*`,
           `GB_FE_*`,
           `FIRE_BASE_*`
-        ]
+        ],
       }
     },
     dind: {

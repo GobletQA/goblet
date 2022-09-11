@@ -1,11 +1,17 @@
-import type { ClientRequest, IncomingMessage } from 'http'
+import type { IncomingMessage } from 'http'
 import type { Request, Response, Router } from 'express'
 import type { TProxyConfig } from '@gobletqa/conductor/types'
 
 import { checkCall } from '@keg-hub/jsutils'
-import { FORWARD_HOST_HEADER } from '@GCD/constants'
 import { getOrigin } from '@gobletqa/shared/utils/getOrigin'
 import { createProxyMiddleware } from 'http-proxy-middleware'
+
+import {
+  mapRequestHeaders,
+  mapResponseHeaders,
+  addAllowOriginHeader,
+} from './proxyHelpers'
+
 
 /**
  * Called when the proxy request throws an error
@@ -22,49 +28,6 @@ import { createProxyMiddleware } from 'http-proxy-middleware'
  */
 export const onProxyError = (err:Error, req:Request, res:Response, proxyHost:string) => {
   res && res.status && res.status(404).send(err?.message || 'Proxy Route not found')
-}
-
-
-/**
- * Sets the Allow Origin header to enable cors
- *
- * @returns {void}
- */
-const addAllowOriginHeader = (proxyRes:IncomingMessage, origin:string) => {
-  proxyRes.headers['Access-Control-Allow-Origin'] = origin
-}
-
-/**
- * Maps the request headers into the proxy request
- * Also replaces the Host header, with the host needed for accessing caddy
- */
-const mapRequestHeaders = (
-  proxyReq:ClientRequest,
-  req:Request,
-  addHeaders:Record<string, string>
-) => {
-  const headers = Object.assign({}, req.headers, addHeaders)
-
-  Object.keys(headers)
-    .forEach(key => {
-      const lower = key.toLowerCase()
-      lower === 'host'
-        ? proxyReq.setHeader(key, req.headers[FORWARD_HOST_HEADER])
-        : req.headers[key] &&  proxyReq.setHeader(key, req.headers[key])
-    })
-
-}
-
-/**
- * Maps the response headers from the response to the proxied response
- * @param {Object} proxyRes - Respose object used by the proxy
- * @param {Object} res - Original response object
- *
- * @returns {void}
- */
-const mapResponseHeaders = (proxyRes:IncomingMessage, res:Response) => {
-  Object.keys(proxyRes.headers)
-    .forEach(key => res.append(key, proxyRes.headers[key]))
 }
 
 /**

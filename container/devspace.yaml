@@ -236,10 +236,10 @@ profiles:
     path: deployments.name=${GB_SC_DEPLOYMENT}.helm.values.containers[0].image
     value: ${IMAGE}:${IMAGE_TAG}
 - name: production
-  patches:
-  - op: replace
-    path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
-  - op: replace
-    path: deployments.name=${GB_SC_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
+  # patches:
+  # - op: replace
+  #   path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
+  #   value: ${IMAGE}:${IMAGE_TAG}
+  # - op: replace
+  #   path: deployments.name=${GB_SC_DEPLOYMENT}.helm.values.containers[0].image
+  #   value: ${IMAGE}:${IMAGE_TAG}

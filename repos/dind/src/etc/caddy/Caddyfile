@@ -38,20 +38,31 @@ http://*.*.{$GB_CD_SUB_DOMAIN}.{$GB_CD_HOST}:{$GB_DD_API_PROXY_PORT} {
 
 http://{$GB_DD_DEPLOYMENT}:{$GB_DD_VNC_PROXY_PORT} {
 	log
-	@websockets {
-		header Connection *Upgrade*
-		header Upgrade websocket
-	}
-
-	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
+	reverse_proxy {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
 }
 
 http://{$GB_DD_DEPLOYMENT}:{$GB_DD_WS_PROXY_PORT} {
 	log
-	@websockets {
-		header Connection *Upgrade*
-		header Upgrade websocket
-	}
-
-	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
+	reverse_proxy {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
 }
+# TODO: need this for dev, but the above for prod
+# Figure out a way to switch based on environment
+# http://{$GB_DD_DEPLOYMENT}:{$GB_DD_VNC_PROXY_PORT} {
+# 	log
+# 	@websockets {
+# 		header Connection *Upgrade*
+# 		header Upgrade websocket
+# 	}
+
+# 	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
+# }
+
+# http://{$GB_DD_DEPLOYMENT}:{$GB_DD_WS_PROXY_PORT} {
+# 	log
+# 	@websockets {
+# 		header Connection *Upgrade*
+# 		header Upgrade websocket
+# 	}
+
+# 	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
+# }

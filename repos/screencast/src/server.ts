@@ -27,7 +27,6 @@ const initApi = async () => {
   setupLoggerReq(app)
   setupBlacklist(app)
   setupCors(app)
-  setupJWT(app, [])
   setupJWT(app, AUTH_BYPASS_ROUTES)
   setupServer(app)
   validateUser(app, `/screencast\/*`)
