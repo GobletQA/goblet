@@ -49,6 +49,7 @@ export const createApiProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
     onError: onProxyError,
     target,
     ...proxy,
+    headers: addHeaders,
     router: (req:Request) => {
       const route = proxyRouter(req)
       return typeof proxy?.router === 'function'

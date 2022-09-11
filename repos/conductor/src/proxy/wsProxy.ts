@@ -29,7 +29,7 @@ export const createWSProxy = (config:TProxyOpts, app:Express) => {
     ws: true,
     xfwd:true,
     toProxy: true,
-    logLevel: 'warn',
+    logLevel: 'info',
     target: pxTarget,
     changeOrigin: true,
     ...options,

@@ -170,7 +170,6 @@ export class Conductor {
       },
     }, ProxyRouter)
 
-
     const wsProxy = createWSProxy(app?.locals?.config?.wsProxy, app)
     const vncProxy = createVNCProxy(app?.locals?.config?.vncProxy, app)
 

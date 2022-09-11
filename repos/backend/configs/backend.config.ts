@@ -37,6 +37,9 @@ const {
   GB_BE_JWT_CREDENTIALS,
   GB_BE_JWT_REFRESH_EXP,
   GB_BE_JWT_REFRESH_SECRET,
+
+  GB_DD_VALIDATION_KEY,
+  GB_DD_VALIDATION_HEADER,
 } = process.env
 
 const dindHost = getDindHost()
@@ -66,11 +69,17 @@ export const backendConfig:TBackendConfig  = {
     path: GB_NO_VNC_PATH,
     port: GB_DD_VNC_PROXY_PORT,
     protocol: GB_NO_VNC_PROTOCOL,
+    headers: {
+      [GB_DD_VALIDATION_HEADER]: GB_DD_VALIDATION_KEY
+    }
   },
   wsProxy: {
     host: dindHost,
     path: GB_BE_WS_PATH,
     port: GB_DD_WS_PROXY_PORT,
     protocol: GB_BE_WS_PROTOCOL,
+    headers: {
+      [GB_DD_VALIDATION_HEADER]: GB_DD_VALIDATION_KEY
+    }
   }
 }
