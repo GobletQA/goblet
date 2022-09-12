@@ -20,8 +20,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - service: frontend
-            dockerfile: container/Dockerfile.frontend
           - service: backend
             dockerfile: container/Dockerfile.backend
           - service: dind
