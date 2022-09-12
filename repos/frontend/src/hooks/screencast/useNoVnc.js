@@ -55,7 +55,7 @@ export const useNoVnc = (element, vncUrl, creds) => {
   }, [repo, connected, setConnected, isRecording])
 
   useEffect(() => {
-    import('HKServices/noVncService')
+    import('GBServices/noVncService')
       .then(async ({ NoVncService }) => {
         const containerPort = routes?.screencast?.containerPort
         containerPort

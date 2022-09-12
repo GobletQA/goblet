@@ -9,7 +9,7 @@ import { useSelector } from 'GBHooks/useSelector'
 import { Loading } from '@keg-hub/keg-components'
 import { setActiveModal } from 'GBActions/modals/setActiveModal'
 import { setModalVisibility } from 'GBActions/modals/setModalVisibility'
-const LazySignIn = lazy(() => import('HKComponents/admin/signIn/signIn'))
+const LazySignIn = lazy(() => import('GBComponents/admin/signIn/signIn'))
 
 const { STORAGE, MODAL_TYPES } = Values
 
