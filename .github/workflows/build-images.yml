@@ -81,7 +81,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
         env:
-          NPM_TOKEN=${{ secrets.GIT_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GIT_TOKEN }}
 
       - name: Generate Builds Args
         id: args
