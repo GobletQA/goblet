@@ -1,7 +1,7 @@
 import React from 'react'
-import { useIconProps } from 'HKHooks/useIconProps'
+import { useIconProps } from 'GBHooks/useIconProps'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
-import { useClassNames } from 'HKHooks/useClassNames'
+import { useClassNames } from 'GBHooks/useClassNames'
 import { View, Button, Text } from '@keg-hub/keg-components'
 
 const defClasses = {

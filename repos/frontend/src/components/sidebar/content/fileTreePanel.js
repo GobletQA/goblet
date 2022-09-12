@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { useTheme } from '@keg-hub/re-theme'
-import { NoteAdd } from 'HKAssets/icons/noteAdd'
-import { setActiveModal } from 'HKActions/modals'
+import { NoteAdd } from 'GBAssets/icons/noteAdd'
+import { setActiveModal } from 'GBActions/modals'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
-import { TreeList } from 'HKComponents/list/treeList'
+import { TreeList } from 'GBComponents/list/treeList'
 import { Touchable, Text, View } from '@keg-hub/keg-components'
 
 const { MODAL_TYPES } = Values

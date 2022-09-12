@@ -1,4 +1,4 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { saveFile } from '../api/saveFile'
 import { setActiveFileFromType } from './setActiveFileFromType'
 const { SCREENS } = Values

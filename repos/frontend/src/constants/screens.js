@@ -1,5 +1,5 @@
 import { deepFreeze } from '@keg-hub/jsutils'
-import { isVNCMode } from 'HKUtils/isVNCMode'
+import { isVNCMode } from 'GBUtils/isVNCMode'
 
 const screenMap = {
   EMPTY: 'empty',

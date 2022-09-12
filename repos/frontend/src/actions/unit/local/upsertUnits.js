@@ -1,6 +1,6 @@
-import { dispatch } from 'HKStore'
+import { dispatch } from 'GBStore'
 import { noPropArr } from '@keg-hub/jsutils'
-import { Values, ActionTypes } from 'HKConstants'
+import { Values, ActionTypes } from 'GBConstants'
 
 const { CATEGORIES } = Values
 

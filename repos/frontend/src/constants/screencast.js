@@ -1,5 +1,5 @@
-import { isVNCMode } from 'HKUtils/isVNCMode'
-import { getVncPath } from 'HKUtils/getVncPath'
+import { isVNCMode } from 'GBUtils/isVNCMode'
+import { getVncPath } from 'GBUtils/getVncPath'
 
 import { deepFreeze } from '@keg-hub/jsutils'
 

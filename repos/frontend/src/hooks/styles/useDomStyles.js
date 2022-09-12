@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { useStyle } from '@keg-hub/re-theme'
 import { noOpObj, isStr, checkCall } from '@keg-hub/jsutils'
-import { createDomNode } from 'HKUtils/helpers/createDomNode'
+import { createDomNode } from 'GBUtils/helpers/createDomNode'
 import { convertToCss } from '@keg-hub/re-theme/styleInjector'
 
 let DomStyleSheet

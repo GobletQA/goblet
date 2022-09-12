@@ -1,7 +1,7 @@
 import React from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
-import { CaretDown } from 'HKAssets/icons/caretDown'
+import { CaretDown } from 'GBAssets/icons/caretDown'
 import { useThemeHover, useStyle } from '@keg-hub/re-theme'
 import { Touchable, Drawer, Text, View } from '@keg-hub/keg-components'
 

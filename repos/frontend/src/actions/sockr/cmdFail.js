@@ -1,9 +1,9 @@
 import { addToast } from '../toasts/addToast'
 import { get, noOpObj } from '@keg-hub/jsutils'
-import { getStore } from 'HKStore'
+import { getStore } from 'GBStore'
 import { setTestRun } from '../runner/setTestRun'
-import { Values } from 'HKConstants'
-import { getReportsActiveFile } from 'HKUtils/helpers/getReportsActiveFile'
+import { Values } from 'GBConstants'
+import { getReportsActiveFile } from 'GBUtils/helpers/getReportsActiveFile'
 
 const { CATEGORIES, SOCKR_MSG_TYPES } = Values
 

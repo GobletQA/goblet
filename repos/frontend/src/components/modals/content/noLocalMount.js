@@ -1,13 +1,13 @@
 import React, { useCallback, useMemo } from 'react'
 import { Modal } from '../modal'
-import { Values } from 'HKConstants'
-import { Times } from 'HKAssets/icons/times'
+import { Values } from 'GBConstants'
+import { Times } from 'GBAssets/icons/times'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
 import { Touchable, P } from '@keg-hub/keg-components'
-import { signOut } from 'HKActions/admin/user/signOut'
-import { GobletButton } from 'HKComponents/buttons/button.restyle'
-import { ExclamationCircle } from 'HKAssets/icons/exclamationCircle'
-import { setModalVisibility, setLocalModalState } from 'HKActions/modals'
+import { signOut } from 'GBActions/admin/user/signOut'
+import { GobletButton } from 'GBComponents/buttons/button.restyle'
+import { ExclamationCircle } from 'GBAssets/icons/exclamationCircle'
+import { setModalVisibility, setLocalModalState } from 'GBActions/modals'
 
 const { MODAL_TYPES } = Values
 

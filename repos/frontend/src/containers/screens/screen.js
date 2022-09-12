@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react'
 import * as Screens from './index'
-import { Values } from 'HKConstants'
-import { Tabbar } from 'HKComponents/tabbar'
-import { withWS } from 'HKComponents/hocs/withWS'
+import { Values } from 'GBConstants'
+import { Tabbar } from 'GBComponents/tabbar'
+import { withWS } from 'GBComponents/hocs/withWS'
 import { deepMerge, capitalize } from '@keg-hub/jsutils'
-import { useScreenSelect } from 'HKHooks/useScreenSelect'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
+import { useScreenSelect } from 'GBHooks/useScreenSelect'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
 import { ReScreenParent, ReHeaderSpacer } from './screens.restyle'
 
 const { CATEGORIES, SCREENS } = Values

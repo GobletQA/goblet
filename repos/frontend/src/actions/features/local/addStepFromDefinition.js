@@ -1,6 +1,6 @@
-import { addToast } from 'HKActions/toasts'
-import { Values } from 'HKConstants'
-import { copyToDefinitionClipboard } from 'HKUtils/definitions'
+import { addToast } from 'GBActions/toasts'
+import { Values } from 'GBConstants'
+import { copyToDefinitionClipboard } from 'GBUtils/definitions'
 
 const { CATEGORIES } = Values
 

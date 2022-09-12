@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { isEmptyColl, noOpObj } from '@keg-hub/jsutils'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
-import { getFileName } from 'HKUtils/fileTree/getFileName'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
+import { getFileName } from 'GBUtils/fileTree/getFileName'
 
 const { CATEGORIES, CREATE_NEW_FILE, TAP_PATH_PREFIX } = Values
 

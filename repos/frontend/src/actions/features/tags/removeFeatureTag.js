@@ -1,6 +1,6 @@
-import { dispatch } from 'HKStore'
-import { Values, ActionTypes } from 'HKConstants'
-import { validateFeatureAction } from 'HKUtils/features/validateFeatureAction'
+import { dispatch } from 'GBStore'
+import { Values, ActionTypes } from 'GBConstants'
+import { validateFeatureAction } from 'GBUtils/features/validateFeatureAction'
 const { CATEGORIES } = Values
 
 /**

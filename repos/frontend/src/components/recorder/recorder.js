@@ -1,10 +1,10 @@
 import React, {useRef, useCallback, useEffect} from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { RecorderMain } from './recorder.restyle'
-import { useSelector } from 'HKHooks/useSelector'
+import { useSelector } from 'GBHooks/useSelector'
 import { noOpObj, noPropArr } from '@keg-hub/jsutils'
-import { EditorFromType } from 'HKComponents/codeEditor/editorFromType'
-import { setRecordLineNumber } from 'HKActions/recorder/local/setRecordLineNumber'
+import { EditorFromType } from 'GBComponents/codeEditor/editorFromType'
+import { setRecordLineNumber } from 'GBActions/recorder/local/setRecordLineNumber'
 
 const { CATEGORIES } = Values
 

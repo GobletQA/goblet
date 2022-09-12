@@ -1,8 +1,8 @@
-import { getStore } from 'HKStore'
+import { getStore } from 'GBStore'
 import { noOpObj } from '@keg-hub/jsutils'
-import { addToast } from 'HKActions/toasts'
-import { createApiFile } from 'HKUtils/api/createApiFile'
-import { getFileTree } from 'HKActions/files/api/getFileTree'
+import { addToast } from 'GBActions/toasts'
+import { createApiFile } from 'GBUtils/api/createApiFile'
+import { getFileTree } from 'GBActions/files/api/getFileTree'
 import { setActiveFileFromType } from '../local/setActiveFileFromType'
 
 /**

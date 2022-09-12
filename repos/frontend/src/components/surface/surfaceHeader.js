@@ -1,7 +1,7 @@
 import React from 'react'
 import { DrawerToggle } from './drawerToggle'
 import { ItemHeader } from '@keg-hub/keg-components'
-import { PrefixTitleHeader } from 'HKComponents/labels/prefixTitleHeader'
+import { PrefixTitleHeader } from 'GBComponents/labels/prefixTitleHeader'
 import { renderFromType } from '@keg-hub/keg-components'
 
 export const SurfaceHeader = props => {

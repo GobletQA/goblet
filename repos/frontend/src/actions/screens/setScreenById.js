@@ -1,5 +1,5 @@
-import { getStore } from 'HKStore'
-import { Values } from 'HKConstants'
+import { getStore } from 'GBStore'
+import { Values } from 'GBConstants'
 import { setScreen } from './setScreen'
 
 const { CATEGORIES } = Values

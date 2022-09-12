@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { RenderNode } from './renderNode'
 import { RenderTree } from './renderTree'
 import { Loading } from '@keg-hub/keg-components'
-import { constructFileTree } from 'HKUtils/fileTree'
+import { constructFileTree } from 'GBUtils/fileTree'
 import { noOpObj, checkCall } from '@keg-hub/jsutils'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
-import { useLoadFileByType } from 'HKHooks/activeFile/useLoadFileByType'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
+import { useLoadFileByType } from 'GBHooks/activeFile/useLoadFileByType'
 
 const { CATEGORIES } = Values
 

@@ -1,10 +1,10 @@
 import React from 'react'
 import { Icon } from '@keg-hub/keg-components/icon'
 import { Text } from '@keg-hub/keg-components/text'
-import { PlusCircle } from 'HKAssets/icons/plusCircle'
-import { MinusCircle } from 'HKAssets/icons/minusCircle'
+import { PlusCircle } from 'GBAssets/icons/plusCircle'
+import { MinusCircle } from 'GBAssets/icons/minusCircle'
 import { Touchable } from '@keg-hub/keg-components/touchable'
-import { useToggledStyles } from 'HKHooks/styles/useToggledStyles'
+import { useToggledStyles } from 'GBHooks/styles/useToggledStyles'
 
 export const DrawerToggle = ({
   onPress,

@@ -1,10 +1,10 @@
 import React, { useCallback, useMemo } from 'react'
-import { Values } from 'HKConstants'
-import { Exchange } from 'HKAssets/icons/exchange'
+import { Values } from 'GBConstants'
+import { Exchange } from 'GBAssets/icons/exchange'
 import { GobletButton } from './button.restyle'
-import { useSelector } from 'HKHooks/useSelector'
+import { useSelector } from 'GBHooks/useSelector'
 import { checkCall, isEmptyColl } from '@keg-hub/jsutils'
-import { connectRepo } from 'HKActions/repo/api/connect'
+import { connectRepo } from 'GBActions/repo/api/connect'
 
 const { STORAGE, CATEGORIES, CONTAINER } = Values
 

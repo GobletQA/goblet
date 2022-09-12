@@ -1,9 +1,9 @@
-import { getStore } from 'HKStore'
-import { Values } from 'HKConstants'
+import { getStore } from 'GBStore'
+import { Values } from 'GBConstants'
 import { noOpObj } from '@keg-hub/jsutils'
-import { addToast } from 'HKActions/toasts'
-import { apiRequest } from 'HKUtils/api/apiRequest'
-import { setSCStatus } from 'HKActions/screencast/local/setSCStatus'
+import { addToast } from 'GBActions/toasts'
+import { apiRequest } from 'GBUtils/api/apiRequest'
+import { setSCStatus } from 'GBActions/screencast/local/setSCStatus'
 
 const { HttpMethods, CATEGORIES } = Values
 

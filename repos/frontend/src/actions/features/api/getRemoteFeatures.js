@@ -1,6 +1,6 @@
-import { addToast } from 'HKActions/toasts/addToast'
+import { addToast } from 'GBActions/toasts/addToast'
 import { upsertFeatures } from '../local/upsertFeatures'
-import { apiRepoRequest } from 'HKUtils/api/apiRepoRequest'
+import { apiRepoRequest } from 'GBUtils/api/apiRepoRequest'
 
 /**
  * Calls the API backend to load the parsed feature definitions

@@ -1,7 +1,7 @@
-import { upsertItems } from 'HKActions'
+import { upsertItems } from 'GBActions'
 import { noOpObj } from '@keg-hub/jsutils'
-import { Values } from 'HKConstants'
-import { definitionsByType } from 'HKUtils/shared'
+import { Values } from 'GBConstants'
+import { definitionsByType } from 'GBUtils/shared'
 
 const { CATEGORIES } = Values
 

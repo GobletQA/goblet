@@ -1,8 +1,8 @@
 import React from 'react'
-import { Sync } from 'HKAssets/icons/sync'
+import { Sync } from 'GBAssets/icons/sync'
 import { useStylesCallback } from '@keg-hub/re-theme'
-import { getRepos } from 'HKActions/repo/api/getRepos'
-import { CondensedButton } from 'HKComponents/buttons/condensedButton'
+import { getRepos } from 'GBActions/repo/api/getRepos'
+import { CondensedButton } from 'GBComponents/buttons/condensedButton'
 
 
 const buildStyle = (theme) => {

@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { noOpObj } from '@keg-hub/jsutils'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
 const { CATEGORIES, SUB_CATEGORIES } = Values
 
 /**

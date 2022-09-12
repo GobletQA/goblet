@@ -1,18 +1,18 @@
 
 import React, { useCallback } from 'react'
-import { Values } from 'HKConstants'
-import { Save } from 'HKAssets/icons/save'
-import { Times } from 'HKAssets/icons/times'
+import { Values } from 'GBConstants'
+import { Save } from 'GBAssets/icons/save'
+import { Times } from 'GBAssets/icons/times'
 import { noOp, noOpObj } from '@keg-hub/jsutils'
-import { setActiveModal } from 'HKActions/modals'
-import { MonacoEditor } from 'HKComponents/monacoEditor/monacoEditor'
-import { useEditorFileName } from 'HKHooks/activeFile/useEditorFileName'
-import { useSaveActiveFile } from 'HKHooks/activeFile/useSaveActiveFile'
+import { setActiveModal } from 'GBActions/modals'
+import { MonacoEditor } from 'GBComponents/monacoEditor/monacoEditor'
+import { useEditorFileName } from 'GBHooks/activeFile/useEditorFileName'
+import { useSaveActiveFile } from 'GBHooks/activeFile/useSaveActiveFile'
 import {
   Surface,
   SurfaceAction,
   SurfaceActionSpacer
-} from 'HKComponents/surface'
+} from 'GBComponents/surface'
 
 const { MODAL_TYPES } = Values
 

@@ -1,7 +1,7 @@
 import React from 'react'
-import { Save } from 'HKAssets/icons/save'
+import { Save } from 'GBAssets/icons/save'
 import { GobletButton } from './button.restyle'
-import { useSaveActiveFile } from 'HKHooks/activeFile/useSaveActiveFile'
+import { useSaveActiveFile } from 'GBHooks/activeFile/useSaveActiveFile'
 
 /**
  * SaveFileButton - Component saving a file

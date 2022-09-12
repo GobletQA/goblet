@@ -1,4 +1,4 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { KeyStore } from 'KegNative/keyStore'
 const { STORAGE } = Values
 

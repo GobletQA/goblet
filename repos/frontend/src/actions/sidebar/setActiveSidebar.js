@@ -1,6 +1,6 @@
-import { dispatch } from 'HKStore'
-import { ActionTypes } from 'HKConstants'
-import { Values } from 'HKConstants'
+import { dispatch } from 'GBStore'
+import { ActionTypes } from 'GBConstants'
+import { Values } from 'GBConstants'
 import { mapObj } from '@keg-hub/jsutils'
 
 const { CATEGORIES, SIDEBAR_TYPES } = Values

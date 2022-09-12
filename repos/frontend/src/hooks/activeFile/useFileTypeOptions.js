@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { mapObj, capitalize, noPropArr, isEmptyColl } from '@keg-hub/jsutils'
 
 /**

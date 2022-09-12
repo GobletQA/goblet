@@ -1,6 +1,6 @@
-import { setItems } from 'HKActions'
-import { Values } from 'HKConstants'
-import { localStorage } from'HKUtils/storage/localStorage'
+import { setItems } from 'GBActions'
+import { Values } from 'GBConstants'
+import { localStorage } from 'GBUtils/storage/localStorage'
 
 const { CATEGORIES } = Values
 

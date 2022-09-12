@@ -1,6 +1,6 @@
-import { getStore } from 'HKStore'
-import { setItem } from 'HKActions'
-import { Values } from 'HKConstants'
+import { getStore } from 'GBStore'
+import { setItem } from 'GBActions'
+import { Values } from 'GBConstants'
 import { get, noOpObj } from '@keg-hub/jsutils'
 import { addToast } from '../toasts/addToast'
 const { CATEGORIES } = Values

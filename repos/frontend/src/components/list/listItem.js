@@ -3,7 +3,7 @@ import { ListItemAction } from './listItemAction'
 import { useThemeHover, useStyle } from '@keg-hub/re-theme'
 import { isStr, checkCall, noOpObj, noPropArr } from '@keg-hub/jsutils'
 import { Icon, View, Row, Text, Touchable } from '@keg-hub/keg-components'
-import { renderCustomOrDefault } from 'HKUtils/components/renderCustomOrDefault'
+import { renderCustomOrDefault } from 'GBUtils/components/renderCustomOrDefault'
 
 /**
  * RenderActions - Default component to render the actions of the ListItem

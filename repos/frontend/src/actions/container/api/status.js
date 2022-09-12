@@ -1,11 +1,11 @@
-import { Values } from 'HKConstants'
-import { addToast } from 'HKActions/toasts'
-import { setActiveModal } from 'HKActions/modals'
-import { apiRequest } from 'HKUtils/api/apiRequest'
-import { removeRepo } from 'HKActions/repo/local/removeRepo'
-import { waitForRunning } from 'HKActions/container/api/waitForRunning'
-import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
-import { setContainerRoutes } from 'HKActions/container/local/setContainerRoutes'
+import { Values } from 'GBConstants'
+import { addToast } from 'GBActions/toasts'
+import { setActiveModal } from 'GBActions/modals'
+import { apiRequest } from 'GBUtils/api/apiRequest'
+import { removeRepo } from 'GBActions/repo/local/removeRepo'
+import { waitForRunning } from 'GBActions/container/api/waitForRunning'
+import { signOutAuthUser } from 'GBActions/admin/provider/signOutAuthUser'
+import { setContainerRoutes } from 'GBActions/container/local/setContainerRoutes'
 
 const { MODAL_TYPES, CONTAINER } = Values
 

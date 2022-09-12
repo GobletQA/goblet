@@ -1,7 +1,7 @@
-import { getStore } from 'HKStore'
-import { Values } from 'HKConstants'
+import { getStore } from 'GBStore'
+import { Values } from 'GBConstants'
 import { noOpObj } from '@keg-hub/jsutils'
-import { WSService } from 'HKServices/socketService'
+import { WSService } from 'GBServices/socketService'
 
 const { SOCKR_MSG_TYPES } = Values
 

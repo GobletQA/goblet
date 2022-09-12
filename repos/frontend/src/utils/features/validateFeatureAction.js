@@ -1,4 +1,4 @@
-import { getStore } from 'HKStore'
+import { getStore } from 'GBStore'
 import { noOpObj } from '@keg-hub/jsutils'
 
 /**

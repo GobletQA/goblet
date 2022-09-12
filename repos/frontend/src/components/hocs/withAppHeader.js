@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react'
-import { Values } from 'HKConstants'
-import { Cog } from 'HKAssets/icons/cog'
+import { Values } from 'GBConstants'
+import { Cog } from 'GBAssets/icons/cog'
 import { useStyle } from '@keg-hub/re-theme'
-import { SignOut } from 'HKAssets/icons/signOut'
-import { setActiveModal } from 'HKActions/modals'
+import { SignOut } from 'GBAssets/icons/signOut'
+import { setActiveModal } from 'GBActions/modals'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
-import { isAuthActive } from 'HKUtils/isAuthActive'
+import { isAuthActive } from 'GBUtils/isAuthActive'
 import { AppHeader, View, H5 } from '@keg-hub/keg-components'
-import { useDisconnectRepo } from 'HKHooks/repo/useDisconnectRepo'
-import { CondensedButton } from 'HKComponents/buttons/condensedButton'
-import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
+import { useDisconnectRepo } from 'GBHooks/repo/useDisconnectRepo'
+import { CondensedButton } from 'GBComponents/buttons/condensedButton'
+import { signOutAuthUser } from 'GBActions/admin/provider/signOutAuthUser'
 
 const { MODAL_TYPES } = Values
 

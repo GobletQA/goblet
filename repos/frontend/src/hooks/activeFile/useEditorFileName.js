@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { noOpObj } from '@keg-hub/jsutils'
-import { getFileName } from 'HKUtils/fileTree/getFileName'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
+import { getFileName } from 'GBUtils/fileTree/getFileName'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
 
 const { CATEGORIES } = Values
 

@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo } from 'react'
 
-import { Values } from 'HKConstants'
-import { Times } from 'HKAssets/icons/times'
+import { Values } from 'GBConstants'
+import { Times } from 'GBAssets/icons/times'
 import { GobletButton } from './button.restyle'
-import { useSelector } from 'HKHooks/useSelector'
+import { useSelector } from 'GBHooks/useSelector'
 import { isEmptyColl, checkCall } from '@keg-hub/jsutils'
-import { useDisconnectRepo } from 'HKHooks/repo/useDisconnectRepo'
-import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
+import { useDisconnectRepo } from 'GBHooks/repo/useDisconnectRepo'
+import { signOutAuthUser } from 'GBActions/admin/provider/signOutAuthUser'
 
 const { STORAGE } = Values
 

@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
-import { Values } from 'HKConstants'
-import { addToast } from 'HKActions/toasts'
+import { Values } from 'GBConstants'
+import { addToast } from 'GBActions/toasts'
 import { checkCall } from '@keg-hub/jsutils'
-import { setActiveModal } from 'HKActions/modals'
-import { useSelector } from 'HKHooks/useSelector'
-import { removeRepo } from 'HKActions/repo/local/removeRepo'
-import { disconnectRepo } from 'HKActions/repo/api/disconnect'
+import { setActiveModal } from 'GBActions/modals'
+import { useSelector } from 'GBHooks/useSelector'
+import { removeRepo } from 'GBActions/repo/local/removeRepo'
+import { disconnectRepo } from 'GBActions/repo/api/disconnect'
 
 const { STORAGE, MODAL_TYPES } = Values
 

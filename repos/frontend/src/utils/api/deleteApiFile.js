@@ -1,5 +1,5 @@
 import { apiRepoRequest } from './apiRepoRequest'
-import { addToast } from 'HKActions/toasts/addToast'
+import { addToast } from 'GBActions/toasts/addToast'
 
 /**
  * Helper to make file delete requests to the Backend API

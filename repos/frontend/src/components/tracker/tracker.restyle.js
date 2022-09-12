@@ -1,8 +1,8 @@
 import React from 'react'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
 import { Text, View } from '@keg-hub/keg-components'
-import { Check } from 'HKAssets/icons/check'
-import { Times } from 'HKAssets/icons/times'
+import { Check } from 'GBAssets/icons/check'
+import { Times } from 'GBAssets/icons/times'
 import { Loading } from '@keg-hub/keg-components'
 
 const textStyle = {

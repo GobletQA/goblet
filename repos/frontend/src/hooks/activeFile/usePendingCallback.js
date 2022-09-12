@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
-import { getStore } from 'HKStore'
+import { getStore } from 'GBStore'
 import { throttleLast } from '@keg-hub/jsutils'
-import { getActiveFile } from 'HKUtils/helpers/getActiveFile'
-import { removePendingFile, setPendingFile } from 'HKActions/files/local'
+import { getActiveFile } from 'GBUtils/helpers/getActiveFile'
+import { removePendingFile, setPendingFile } from 'GBActions/files/local'
 
 /**
  * Sets an active files pending content when it changes

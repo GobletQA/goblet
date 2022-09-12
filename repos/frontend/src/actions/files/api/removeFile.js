@@ -1,7 +1,7 @@
 import { noOpObj } from '@keg-hub/jsutils'
 import { getFileTree } from './getFileTree'
-import { addToast } from 'HKActions/toasts'
-import { deleteApiFile } from 'HKUtils/api/deleteApiFile'
+import { addToast } from 'GBActions/toasts'
+import { deleteApiFile } from 'GBUtils/api/deleteApiFile'
 import { clearActiveFile } from '../local/clearActiveFile'
 
 /**

@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from 'react'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
-import { useIconProps } from 'HKHooks/useIconProps'
+import { useIconProps } from 'GBHooks/useIconProps'
 import { View, Button, Text } from '@keg-hub/keg-components'
 import { signInWithPopup, GithubAuthProvider } from 'firebase/auth'
 

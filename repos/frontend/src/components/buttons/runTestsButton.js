@@ -1,7 +1,7 @@
 import React from 'react'
-import { Rabbit } from 'HKAssets/icons/rabbit'
+import { Rabbit } from 'GBAssets/icons/rabbit'
 import { GobletButton } from './button.restyle'
-import { useRunAction } from 'HKHooks/tests/useRunAction'
+import { useRunAction } from 'GBHooks/tests/useRunAction'
 
 /**
  * RunTestsButton - Component for start a test run using sockr

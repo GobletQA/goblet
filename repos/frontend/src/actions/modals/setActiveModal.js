@@ -1,6 +1,6 @@
-import { dispatch } from 'HKStore'
+import { dispatch } from 'GBStore'
 import { noOpObj } from '@keg-hub/jsutils'
-import { ActionTypes, Values } from 'HKConstants'
+import { ActionTypes, Values } from 'GBConstants'
 import { getLocalModalState } from './localModalState'
 
 const { CATEGORIES, MODAL_TYPES } = Values

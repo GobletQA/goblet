@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { isFunc } from '@keg-hub/jsutils'
-import { Tabbar } from 'HKComponents/tabbar'
+import { Tabbar } from 'GBComponents/tabbar'
 import { View } from '@keg-hub/keg-components'
-import { useOnTabSelect } from 'HKHooks/tabs/useOnTabSelect'
-import { RunTestsButton } from 'HKComponents/buttons/runTestsButton'
+import { useOnTabSelect } from 'GBHooks/tabs/useOnTabSelect'
+import { RunTestsButton } from 'GBComponents/buttons/runTestsButton'
 
 const ignoreTabs = [`editor-actions`]
 

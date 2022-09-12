@@ -1,8 +1,8 @@
 import React, {useMemo, useCallback} from 'react'
 import { checkCall } from '@keg-hub/jsutils'
 import { NoActiveDefinition } from './noActiveDefinition'
-import { MonacoEditor } from 'HKComponents/monacoEditor/monacoEditor'
-import { removePendingFile, setPendingFile } from 'HKActions/files/local'
+import { MonacoEditor } from 'GBComponents/monacoEditor/monacoEditor'
+import { removePendingFile, setPendingFile } from 'GBActions/files/local'
 
 /**
  * ActiveDefinitionsEditor - Renders an editor to modify a definition file

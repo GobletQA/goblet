@@ -1,6 +1,6 @@
-import { dispatch, getStore } from 'HKStore'
-import { Values, ActionTypes } from 'HKConstants'
-import { getActiveScreen } from 'HKUtils/helpers/getActiveScreen'
+import { dispatch, getStore } from 'GBStore'
+import { Values, ActionTypes } from 'GBConstants'
+import { getActiveScreen } from 'GBUtils/helpers/getActiveScreen'
 
 const { CATEGORIES } = Values
 

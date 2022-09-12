@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 
-import { tapColors } from 'HKTheme/tapColors'
-import { Record } from 'HKAssets/icons/record'
+import { tapColors } from 'GBTheme/tapColors'
+import { Record } from 'GBAssets/icons/record'
 import { GobletButton } from './button.restyle'
-import { SlowFlash } from 'HKComponents/slowFlash'
-import { useRecordAction } from 'HKHooks/screencast/useRecordAction'
+import { SlowFlash } from 'GBComponents/slowFlash'
+import { useRecordAction } from 'GBHooks/screencast/useRecordAction'
 import { Loading } from '@keg-hub/keg-components'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
 

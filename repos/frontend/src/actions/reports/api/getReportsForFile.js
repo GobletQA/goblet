@@ -1,5 +1,5 @@
-import { addToast } from 'HKActions/toasts/addToast'
-import { apiRepoRequest } from 'HKUtils/api/apiRepoRequest'
+import { addToast } from 'GBActions/toasts/addToast'
+import { apiRepoRequest } from 'GBUtils/api/apiRepoRequest'
 
 /**
  * Calls the API backend to load reports for a single file

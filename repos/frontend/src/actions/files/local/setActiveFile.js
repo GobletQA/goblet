@@ -1,9 +1,9 @@
-import { dispatch, getStore } from 'HKStore'
+import { dispatch, getStore } from 'GBStore'
 import { addToast } from '../../toasts/addToast'
-import { Values, ActionTypes } from 'HKConstants'
-import { updateUrlQuery } from 'HKUtils/url/updateUrlQuery'
-import { getActiveScreen } from 'HKUtils/helpers/getActiveScreen'
-import { updateAllScreensActiveFile } from 'HKActions/files/local/updateAllScreensActiveFile'
+import { Values, ActionTypes } from 'GBConstants'
+import { updateUrlQuery } from 'GBUtils/url/updateUrlQuery'
+import { getActiveScreen } from 'GBUtils/helpers/getActiveScreen'
+import { updateAllScreensActiveFile } from 'GBActions/files/local/updateAllScreensActiveFile'
 
 const { CATEGORIES, SUB_CATEGORIES } = Values
 

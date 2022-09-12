@@ -1,8 +1,8 @@
 
 import { useMemo } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { get, noOpObj } from '@keg-hub/jsutils'
-import { useSelector } from 'HKHooks/useSelector'
+import { useSelector } from 'GBHooks/useSelector'
 
 const { STORAGE } = Values
 

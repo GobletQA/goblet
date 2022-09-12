@@ -1,6 +1,6 @@
 import { View } from '@keg-hub/keg-components'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
-import { EllipsisV } from 'HKAssets/icons/ellipsisV'
+import { EllipsisV } from 'GBAssets/icons/ellipsisV'
 
 
 export const ReHandle = reStyle(View)(theme => ({

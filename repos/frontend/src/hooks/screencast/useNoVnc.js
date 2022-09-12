@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
-import { Values } from 'HKConstants'
-import { useSelector } from 'HKHooks/useSelector'
+import { Values } from 'GBConstants'
+import { useSelector } from 'GBHooks/useSelector'
 import { useScreenResize } from './useScreenResize'
-import { getWorldVal } from 'HKUtils/repo/getWorldVal'
-import { actionBrowser } from 'HKActions/screencast/api/actionBrowser'
+import { getWorldVal } from 'GBUtils/repo/getWorldVal'
+import { actionBrowser } from 'GBActions/screencast/api/actionBrowser'
 
 const { STORAGE, CATEGORIES } = Values
 

@@ -1,6 +1,6 @@
-import { isAuthActive } from 'HKUtils/isAuthActive'
-import { localStorage } from'HKUtils/storage/localStorage'
-import { clearUser, upsertUser } from 'HKActions/admin/user'
+import { isAuthActive } from 'GBUtils/isAuthActive'
+import { localStorage } from 'GBUtils/storage/localStorage'
+import { clearUser, upsertUser } from 'GBActions/admin/user'
 
 const authActive = isAuthActive()
 

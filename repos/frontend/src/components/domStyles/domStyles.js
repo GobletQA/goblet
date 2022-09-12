@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
-import { useDomStyles } from 'HKHooks/styles/useDomStyles'
+import { useDomStyles } from 'GBHooks/styles/useDomStyles'
 
 /**
  * Calls useDomStyles hook with global styles and always returns null

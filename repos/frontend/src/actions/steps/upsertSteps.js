@@ -1,5 +1,5 @@
-import { Values, ActionTypes } from 'HKConstants'
-import { dispatch } from 'HKStore'
+import { Values, ActionTypes } from 'GBConstants'
+import { dispatch } from 'GBStore'
 const { CATEGORIES } = Values
 
 export const upsertSteps = steps => {

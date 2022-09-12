@@ -1,9 +1,9 @@
 import React from 'react'
 import { EmptyScreen } from './index'
 import { ReEditorMain } from './screens.restyle'
-import { CodeEditor } from 'HKComponents/codeEditor'
-import { useActiveFile } from 'HKHooks/activeFile/useActiveFile'
-import { AsideCmdOutput } from 'HKComponents/cmdOutput/asideCmdOutput'
+import { CodeEditor } from 'GBComponents/codeEditor'
+import { useActiveFile } from 'GBHooks/activeFile/useActiveFile'
+import { AsideCmdOutput } from 'GBComponents/cmdOutput/asideCmdOutput'
 
 /**
  * EditorScreen - Renders code editors based on the type of file selected

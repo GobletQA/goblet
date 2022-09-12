@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
-import { Values } from 'HKConstants'
-import { saveFile } from 'HKActions/files/api/saveFile'
+import { Values } from 'GBConstants'
+import { saveFile } from 'GBActions/files/api/saveFile'
 import { noOpObj, isFunc, exists } from '@keg-hub/jsutils'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
-import { useActiveFile } from 'HKHooks/activeFile/useActiveFile'
-import { savePendingContent } from 'HKActions/files/local/savePendingContent'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
+import { useActiveFile } from 'GBHooks/activeFile/useActiveFile'
+import { savePendingContent } from 'GBActions/files/local/savePendingContent'
 const { CATEGORIES } = Values
 
 /**

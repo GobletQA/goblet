@@ -1,12 +1,12 @@
 import { addToast } from '../toasts/addToast'
-import { dispatch, getStore } from 'HKStore'
-import { Values, ActionTypes } from 'HKConstants'
+import { dispatch, getStore } from 'GBStore'
+import { Values, ActionTypes } from 'GBConstants'
 import { get, noOpObj } from '@keg-hub/jsutils'
-import { testRunModel } from 'HKModels'
+import { testRunModel } from 'GBModels'
 import { setTestRun } from '../runner/setTestRun'
 import { toggleTestRunning } from '../runner/toggleTestRunning'
-import { setScreenById } from 'HKActions/screens/setScreenById'
-import { getReportsActiveFile } from 'HKUtils/helpers/getReportsActiveFile'
+import { setScreenById } from 'GBActions/screens/setScreenById'
+import { getReportsActiveFile } from 'GBUtils/helpers/getReportsActiveFile'
 
 const { CATEGORIES, SCREENS, SOCKR_MSG_TYPES } = Values
 

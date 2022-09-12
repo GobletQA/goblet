@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { useTheme } from '@keg-hub/re-theme'
 import { useSelector, shallowEqual } from 'react-redux'
 import { View, Loading } from '@keg-hub/keg-components'
-import { SimpleList } from 'HKComponents/list/simpleList'
+import { SimpleList } from 'GBComponents/list/simpleList'
 import { pickKeys, exists, noOp } from '@keg-hub/jsutils'
-import { setActiveFile } from 'HKActions/files/local/setActiveFile'
+import { setActiveFile } from 'GBActions/files/local/setActiveFile'
 
 const { CATEGORIES } = Values
 const onHeaderPress = noOp

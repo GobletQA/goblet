@@ -1,7 +1,7 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { noOpObj } from '@keg-hub/jsutils'
 import { useActiveFile } from './useActiveFile'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
 
 const { CATEGORIES } = Values
 

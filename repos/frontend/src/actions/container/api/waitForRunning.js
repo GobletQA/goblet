@@ -1,7 +1,7 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { noOpObj } from '@keg-hub/jsutils'
-import { apiRequest } from 'HKUtils/api/apiRequest'
-import { setContainerRoutes } from 'HKActions/container/local/setContainerRoutes'
+import { apiRequest } from 'GBUtils/api/apiRequest'
+import { setContainerRoutes } from 'GBActions/container/local/setContainerRoutes'
 
 const { CONTAINER } = Values
 

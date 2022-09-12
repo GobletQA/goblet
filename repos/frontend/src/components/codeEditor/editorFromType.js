@@ -1,12 +1,12 @@
 import React from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { DefaultEditor } from './defaultEditor'
 import { noOpObj, capitalize } from '@keg-hub/jsutils'
 import { ReResizeContainer } from './codeEditor.restyle'
-import { Screencast } from 'HKComponents/screencast/screencast'
-import { FeatureEditor } from 'HKComponents/feature/featureEditor'
-import { usePendingCallback } from 'HKHooks/activeFile/usePendingCallback'
-import { DefinitionsEditor } from 'HKComponents/definition/definitionsEditor'
+import { Screencast } from 'GBComponents/screencast/screencast'
+import { FeatureEditor } from 'GBComponents/feature/featureEditor'
+import { usePendingCallback } from 'GBHooks/activeFile/usePendingCallback'
+import { DefinitionsEditor } from 'GBComponents/definition/definitionsEditor'
 
 const {
   SCREENS,

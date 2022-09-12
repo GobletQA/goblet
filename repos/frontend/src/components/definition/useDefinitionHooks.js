@@ -1,13 +1,13 @@
 import {useState, useCallback, useMemo} from 'react'
-import { Values } from 'HKConstants'
-import { addToast } from 'HKActions/toasts'
-import { useSelector } from 'HKHooks/useSelector'
-import { useActiveTab } from 'HKHooks/useActiveTab'
+import { Values } from 'GBConstants'
+import { addToast } from 'GBActions/toasts'
+import { useSelector } from 'GBHooks/useSelector'
+import { useActiveTab } from 'GBHooks/useActiveTab'
 import { checkCall, noOpObj } from '@keg-hub/jsutils'
-import { saveFile } from 'HKActions/files/api/saveFile'
-import { getQueryData } from 'HKUtils/url/getQueryData'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
-import { updateUrlQuery, removeFromQuery } from 'HKUtils/url/updateUrlQuery'
+import { saveFile } from 'GBActions/files/api/saveFile'
+import { getQueryData } from 'GBUtils/url/getQueryData'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
+import { updateUrlQuery, removeFromQuery } from 'GBUtils/url/updateUrlQuery'
 
 const { DEFINITION_TABS, CATEGORIES } = Values
 

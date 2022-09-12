@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
-import { addToast } from 'HKActions/toasts'
+import { addToast } from 'GBActions/toasts'
 import { checkCall } from '@keg-hub/jsutils'
-import { loadFile } from 'HKActions/files/api/loadFile'
-import { openArtifact } from 'HKActions/artifacts/openArtifact'
+import { loadFile } from 'GBActions/files/api/loadFile'
+import { openArtifact } from 'GBActions/artifacts/openArtifact'
 
 /**
  * Helper to load a file based on it's type and fileType

@@ -1,6 +1,6 @@
 import React from 'react'
-import { ExternalLink } from 'HKAssets/icons/externalLink'
-import { PrefixTitleHeader } from 'HKComponents/labels/prefixTitleHeader'
+import { ExternalLink } from 'GBAssets/icons/externalLink'
+import { PrefixTitleHeader } from 'GBComponents/labels/prefixTitleHeader'
 import { ReIframeHeaderMain, ReIframeHeaderIcon } from './iframe.restyle'
 
 /**

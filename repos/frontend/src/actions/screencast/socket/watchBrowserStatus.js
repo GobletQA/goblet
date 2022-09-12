@@ -1,8 +1,8 @@
-import { dispatch, getStore } from 'HKStore'
-import { Values } from 'HKConstants'
-import { addToast } from 'HKActions/toasts'
+import { dispatch, getStore } from 'GBStore'
+import { Values } from 'GBConstants'
+import { addToast } from 'GBActions/toasts'
 import { noOpObj, get } from '@keg-hub/jsutils'
-import { WSService } from 'HKServices/socketService'
+import { WSService } from 'GBServices/socketService'
 import { setBrowserStatus } from '../local/setBrowserStatus'
 
 const { CATEGORIES, SOCKR_MSG_TYPES } = Values

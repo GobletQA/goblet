@@ -1,4 +1,4 @@
-import { setScreenById } from 'HKActions/screens/setScreenById'
+import { setScreenById } from 'GBActions/screens/setScreenById'
 
 /**
  * Creates a new unit test file using the filesModel

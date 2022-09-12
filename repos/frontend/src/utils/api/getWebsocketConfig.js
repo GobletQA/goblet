@@ -1,5 +1,5 @@
-import { Values } from 'HKConstants'
-import { getBaseApiUrl } from 'HKUtils/api/getBaseApiUrl'
+import { Values } from 'GBConstants'
+import { getBaseApiUrl } from 'GBUtils/api/getBaseApiUrl'
 const { WS_CONFIG } = Values
 
 /**

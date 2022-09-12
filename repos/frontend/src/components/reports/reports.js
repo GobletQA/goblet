@@ -1,20 +1,20 @@
 import React, { useMemo } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { noOp } from '@keg-hub/jsutils'
 import { ReportsTabs } from './reportsTabs'
 import { TestsRunning } from './testsRunning'
-import { Surface } from 'HKComponents/surface'
+import { Surface } from 'GBComponents/surface'
 import { SelectReport } from './selectReport'
 import { ReReportsMain } from './reports.restyle'
-import { Iframe } from 'HKComponents/iframe/iframe'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
-import { IframeHeader } from 'HKComponents/iframe/iframeHeader'
-import { useActiveFile } from 'HKHooks/activeFile/useActiveFile'
-import { useActiveTestRuns } from 'HKHooks/activeFile/useActiveTestRuns'
+import { Iframe } from 'GBComponents/iframe/iframe'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
+import { IframeHeader } from 'GBComponents/iframe/iframeHeader'
+import { useActiveFile } from 'GBHooks/activeFile/useActiveFile'
+import { useActiveTestRuns } from 'GBHooks/activeFile/useActiveTestRuns'
 
 const { SCREENS, CATEGORIES } = Values
 
-import { getBaseApiUrl } from 'HKUtils/api'
+import { getBaseApiUrl } from 'GBUtils/api'
 
 /**
  * Callback hook to open the test report in a new window

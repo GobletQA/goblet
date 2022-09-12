@@ -1,5 +1,5 @@
 import React from 'react'
-import { TimesFilled } from 'HKAssets/icons/timesFilled'
+import { TimesFilled } from 'GBAssets/icons/timesFilled'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
 import { Modal, ItemHeader, View, Text, H5, Loading } from '@keg-hub/keg-components'
 

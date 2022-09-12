@@ -1,4 +1,4 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 const { CATEGORIES } = Values
 
 export const specResults = {

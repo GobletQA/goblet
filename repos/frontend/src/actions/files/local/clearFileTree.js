@@ -1,5 +1,5 @@
-import { setItems } from 'HKActions'
-import { Values } from 'HKConstants'
+import { setItems } from 'GBActions'
+import { Values } from 'GBConstants'
 
 const { CATEGORIES } = Values
 

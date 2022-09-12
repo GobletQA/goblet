@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
-import { FileSig } from 'HKAssets/icons/fileSig'
-import { formatFileName } from 'HKUtils/helpers/formatFileName'
-import { ControlledInput } from 'HKComponents/form/controlledInput'
+import { FileSig } from 'GBAssets/icons/fileSig'
+import { formatFileName } from 'GBUtils/helpers/formatFileName'
+import { ControlledInput } from 'GBComponents/form/controlledInput'
 
 
 /**

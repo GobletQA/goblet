@@ -1,6 +1,6 @@
 import React from 'react'
 import { CmdOutput } from './cmdOutput'
-import { Aside } from 'HKComponents/aside'
+import { Aside } from 'GBComponents/aside'
 import { ReCmdSurface } from './cmd.restyle'
 
 const asideProps = {

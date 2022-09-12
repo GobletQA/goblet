@@ -1,4 +1,4 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { get } from '@keg-hub/jsutils'
 
 const { CATEGORIES } = Values

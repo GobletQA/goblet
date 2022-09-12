@@ -1,11 +1,11 @@
-import { setItems } from 'HKActions'
-import { Values } from 'HKConstants'
-import { localStorage } from'HKUtils/storage/localStorage'
-import { clearFileTree } from 'HKActions/files/local/clearFileTree'
-import { clearFeatures } from 'HKActions/features/local/clearFeatures'
-import { clearActiveFile } from 'HKActions/files/local/clearActiveFile'
-import { clearPendingFiles } from 'HKActions/files/local/clearPendingFiles'
-import { clearDefinitions } from 'HKActions/definitions/local/clearDefinitions'
+import { setItems } from 'GBActions'
+import { Values } from 'GBConstants'
+import { localStorage } from 'GBUtils/storage/localStorage'
+import { clearFileTree } from 'GBActions/files/local/clearFileTree'
+import { clearFeatures } from 'GBActions/features/local/clearFeatures'
+import { clearActiveFile } from 'GBActions/files/local/clearActiveFile'
+import { clearPendingFiles } from 'GBActions/files/local/clearPendingFiles'
+import { clearDefinitions } from 'GBActions/definitions/local/clearDefinitions'
 
 const { STORAGE } = Values
 

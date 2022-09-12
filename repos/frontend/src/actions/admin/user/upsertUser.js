@@ -1,6 +1,6 @@
-import { dispatch } from 'HKStore'
-import { addToast } from 'HKActions/toasts'
-import { Values, ActionTypes } from 'HKConstants'
+import { dispatch } from 'GBStore'
+import { addToast } from 'GBActions/toasts'
+import { Values, ActionTypes } from 'GBConstants'
 
 const { STORAGE } = Values
 

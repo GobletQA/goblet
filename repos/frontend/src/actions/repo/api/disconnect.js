@@ -1,7 +1,7 @@
 import { get } from '@keg-hub/jsutils'
-import { addToast } from 'HKActions/toasts'
+import { addToast } from 'GBActions/toasts'
 import { removeRepo } from '../local/removeRepo'
-import { apiRequest } from 'HKUtils/api/apiRequest'
+import { apiRequest } from 'GBUtils/api/apiRequest'
 
 export const disconnectRepo = async username => {
   addToast({

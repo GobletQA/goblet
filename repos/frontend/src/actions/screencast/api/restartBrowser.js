@@ -1,9 +1,9 @@
-import { getStore } from 'HKStore'
-import { Values } from 'HKConstants'
-import { addToast } from 'HKActions/toasts'
+import { getStore } from 'GBStore'
+import { Values } from 'GBConstants'
+import { addToast } from 'GBActions/toasts'
 import { noOpObj, get } from '@keg-hub/jsutils'
-import { apiRequest } from 'HKUtils/api/apiRequest'
-import { getActiveScreen } from 'HKUtils/helpers/getActiveScreen'
+import { apiRequest } from 'GBUtils/api/apiRequest'
+import { getActiveScreen } from 'GBUtils/helpers/getActiveScreen'
 
 const { HttpMethods, CATEGORIES, SCREENS } = Values
 

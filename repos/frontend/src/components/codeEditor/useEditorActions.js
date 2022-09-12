@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
-import { Values } from 'HKConstants'
-import { addToast } from 'HKActions/toasts/addToast'
-import { runTests } from 'HKActions/runner/runTests'
-import { savePendingContent } from 'HKActions/files/local/savePendingContent'
+import { Values } from 'GBConstants'
+import { addToast } from 'GBActions/toasts/addToast'
+import { runTests } from 'GBActions/runner/runTests'
+import { savePendingContent } from 'GBActions/files/local/savePendingContent'
 
 const { SCREENS } = Values
 

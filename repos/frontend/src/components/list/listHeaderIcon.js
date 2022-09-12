@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { isStr } from '@keg-hub/jsutils'
 import { Animated } from 'react-native'
 import { useTheme } from '@keg-hub/re-theme'
-import { useToggleAnimate } from 'HKHooks/styles/useToggleAnimate'
+import { useToggleAnimate } from 'GBHooks/styles/useToggleAnimate'
 
 /**
  * Memoizes props for the Icon component

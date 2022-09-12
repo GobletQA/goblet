@@ -1,7 +1,7 @@
 import { Animated, Easing } from 'react-native'
 import { checkCall, isObj } from '@keg-hub/jsutils'
 import React, { useState, useLayoutEffect, useRef } from 'react'
-import { setNativeDriver } from 'HKUtils/helpers/setNativeDriver'
+import { setNativeDriver } from 'GBUtils/helpers/setNativeDriver'
 
 /**
  * Default animation config

@@ -1,10 +1,10 @@
-import { getStore } from 'HKStore'
-import { Values } from 'HKConstants'
+import { getStore } from 'GBStore'
+import { Values } from 'GBConstants'
 import { addToast } from '../toasts/addToast'
 import { get, noOpObj } from '@keg-hub/jsutils'
 import { setTestRun } from '../runner/setTestRun'
 import { upsertSpec } from '../tracker/upsertSpec'
-import { getReportsActiveFile } from 'HKUtils/helpers/getReportsActiveFile'
+import { getReportsActiveFile } from 'GBUtils/helpers/getReportsActiveFile'
 
 const {
   CATEGORIES,

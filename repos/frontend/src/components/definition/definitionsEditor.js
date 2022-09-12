@@ -1,22 +1,22 @@
 import React, {useCallback} from 'react'
 
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { noOpObj } from '@keg-hub/jsutils'
-import { Sync } from 'HKAssets/icons/sync'
-import { Save } from 'HKAssets/icons/save'
-import { Times } from 'HKAssets/icons/times'
+import { Sync } from 'GBAssets/icons/sync'
+import { Save } from 'GBAssets/icons/save'
+import { Times } from 'GBAssets/icons/times'
 import { DefinitionList } from './definitionList'
 import { DefinitionTabs } from './definitionTabs'
-import { setActiveModal } from 'HKActions/modals'
+import { setActiveModal } from 'GBActions/modals'
 import { useDefinitionHooks } from './useDefinitionHooks'
 import { ActiveDefinitionsEditor } from './activeDefinitionsEditor'
-import { useEditorFileName } from 'HKHooks/activeFile/useEditorFileName'
-import { getRemoteDefinitions } from 'HKActions/definitions/api/getRemoteDefinitions'
+import { useEditorFileName } from 'GBHooks/activeFile/useEditorFileName'
+import { getRemoteDefinitions } from 'GBActions/definitions/api/getRemoteDefinitions'
 import {
   Surface,
   SurfaceAction,
   SurfaceActionSpacer
-} from 'HKComponents/surface'
+} from 'GBComponents/surface'
 
 const {DEFINITION_TABS, MODAL_TYPES} = Values
 

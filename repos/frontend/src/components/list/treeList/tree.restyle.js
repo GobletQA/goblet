@@ -1,4 +1,4 @@
-import { ChevronDown } from 'HKAssets/icons/chevronDown'
+import { ChevronDown } from 'GBAssets/icons/chevronDown'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
 import { View, Text } from '@keg-hub/keg-components'
 

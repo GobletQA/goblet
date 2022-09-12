@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
-import { Values } from 'HKConstants'
-import { useSelector } from 'HKHooks/useSelector'
+import { Values } from 'GBConstants'
+import { useSelector } from 'GBHooks/useSelector'
 import {
   ReRunning,
   ReMetaText,

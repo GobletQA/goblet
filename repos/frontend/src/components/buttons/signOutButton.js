@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { GobletButton } from './button.restyle'
-import { SignOut } from 'HKAssets/icons/signOut'
-import { useDisconnectRepo } from 'HKHooks/repo/useDisconnectRepo'
-import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
+import { SignOut } from 'GBAssets/icons/signOut'
+import { useDisconnectRepo } from 'GBHooks/repo/useDisconnectRepo'
+import { signOutAuthUser } from 'GBActions/admin/provider/signOutAuthUser'
 
 /**
  * SignOutButton - Component to log a signed in user out

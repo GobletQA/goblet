@@ -1,7 +1,7 @@
 import React from 'react'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
-import { Values } from 'HKConstants'
-import { FileTreePanel } from 'HKComponents/sidebar/content'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
+import { Values } from 'GBConstants'
+import { FileTreePanel } from 'GBComponents/sidebar/content'
 
 const { CATEGORIES, SIDEBAR_TYPES } = Values
 

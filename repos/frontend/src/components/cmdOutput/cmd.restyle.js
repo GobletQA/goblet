@@ -1,4 +1,4 @@
-import { Surface } from 'HKComponents/surface'
+import { Surface } from 'GBComponents/surface'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
 import { Grid, Row, View, Text } from '@keg-hub/keg-components'
 

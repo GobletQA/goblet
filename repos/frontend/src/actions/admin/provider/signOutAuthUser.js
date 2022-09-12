@@ -1,11 +1,11 @@
-import { Values } from 'HKConstants'
-import { GitUser } from 'HKServices/gitUser'
-import { isAuthActive } from 'HKUtils/isAuthActive'
-import { WSService } from 'HKServices/socketService'
-import { localStorage } from'HKUtils/storage/localStorage'
-import { getProviderMetadata } from 'HKServices/providers'
-import { setActiveModal } from 'HKActions/modals/setActiveModal'
-import { clearContainerRoutes } from 'HKActions/container/local/clearContainerRoutes'
+import { Values } from 'GBConstants'
+import { GitUser } from 'GBServices/gitUser'
+import { isAuthActive } from 'GBUtils/isAuthActive'
+import { WSService } from 'GBServices/socketService'
+import { localStorage } from 'GBUtils/storage/localStorage'
+import { getProviderMetadata } from 'GBServices/providers'
+import { setActiveModal } from 'GBActions/modals/setActiveModal'
+import { clearContainerRoutes } from 'GBActions/container/local/clearContainerRoutes'
 
 const { MODAL_TYPES } = Values
 const authActive = isAuthActive()

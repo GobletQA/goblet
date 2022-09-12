@@ -1,5 +1,5 @@
 import React from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { capitalize } from '@keg-hub/jsutils'
 import { Option, Select } from '@keg-hub/keg-components'
 import { useStyle } from '@keg-hub/re-theme'

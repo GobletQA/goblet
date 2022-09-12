@@ -1,9 +1,9 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { getQueryData } from './getQueryData'
-import { setActiveModal } from 'HKActions/modals'
+import { setActiveModal } from 'GBActions/modals'
 import { isEmptyColl, noOpObj } from '@keg-hub/jsutils'
-import { loadFile } from 'HKActions/files/api/loadFile'
-import { setScreenById } from 'HKActions/screens/setScreenById'
+import { loadFile } from 'GBActions/files/api/loadFile'
+import { setScreenById } from 'GBActions/screens/setScreenById'
 
 const { MODAL_TYPES, SCREENS } = Values
 

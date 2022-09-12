@@ -1,5 +1,5 @@
-import { saveApiFile } from 'HKUtils/api'
-import { addToast } from 'HKActions/toasts'
+import { saveApiFile } from 'GBUtils/api'
+import { addToast } from 'GBActions/toasts'
 import { noOpObj } from '@keg-hub/jsutils'
 import { removePendingFile } from '../local/removePendingFile'
 

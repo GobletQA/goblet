@@ -1,10 +1,10 @@
 import React from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { EmptyScreen } from './index'
-import { Reports } from 'HKComponents/reports'
+import { Reports } from 'GBComponents/reports'
 import { RsScreenMain } from './screens.restyle'
-import { useActiveFile } from 'HKHooks/activeFile/useActiveFile'
-import { AsideCmdOutput } from 'HKComponents/cmdOutput/asideCmdOutput'
+import { useActiveFile } from 'GBHooks/activeFile/useActiveFile'
+import { AsideCmdOutput } from 'GBComponents/cmdOutput/asideCmdOutput'
 
 const { SCREENS } = Values
 

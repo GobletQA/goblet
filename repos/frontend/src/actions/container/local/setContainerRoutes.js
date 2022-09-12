@@ -1,7 +1,7 @@
-import { setItems } from 'HKActions'
-import { Values } from 'HKConstants'
+import { setItems } from 'GBActions'
+import { Values } from 'GBConstants'
 import { noOpObj, toStr } from '@keg-hub/jsutils'
-import { localStorage } from'HKUtils/storage/localStorage'
+import { localStorage } from 'GBUtils/storage/localStorage'
 
 const { CATEGORIES, GB_SC_PORT } = Values
 

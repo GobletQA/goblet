@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { noOpObj, checkCall } from '@keg-hub/jsutils'
 import { useThemeHover } from '@keg-hub/re-theme'
-import { useClassNames } from 'HKHooks/useClassNames'
+import { useClassNames } from 'GBHooks/useClassNames'
 import {
   View,
   Text,

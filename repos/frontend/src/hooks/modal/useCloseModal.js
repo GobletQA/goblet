@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { exists } from '@keg-hub/jsutils'
-import { setModalVisibility } from 'HKActions/modals'
+import { setModalVisibility } from 'GBActions/modals'
 
 const { SCREENS } = Values
 

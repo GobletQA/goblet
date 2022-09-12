@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { Edit } from 'HKAssets/icons/edit'
-import { Copy } from 'HKAssets/icons/copy'
+import { Edit } from 'GBAssets/icons/edit'
+import { Copy } from 'GBAssets/icons/copy'
 import { reduceObj, deepClone } from '@keg-hub/jsutils'
 
 /**

@@ -1,5 +1,5 @@
-import { Values } from 'HKConstants'
-import { getStore } from 'HKStore'
+import { Values } from 'GBConstants'
+import { getStore } from 'GBStore'
 import { getActiveFile } from './getActiveFile'
 
 const { CATEGORIES, SCREENS } = Values

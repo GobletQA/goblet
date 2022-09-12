@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { insertContent } from 'HKActions/features/local/insertContent'
+import { insertContent } from 'GBActions/features/local/insertContent'
 import { noOpObj } from '@keg-hub/jsutils'
 
 export const useInsertContent = (props=noOpObj) => {

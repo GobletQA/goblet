@@ -1,1 +1,1 @@
-module.exports = require('HKGSHUtils')
+module.exports = require('GBSHUtils')

@@ -1,7 +1,7 @@
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
 import { reduceObj } from '@keg-hub/jsutils'
 import { useMemo } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 
 const { CATEGORIES, SCREENS } = Values
 /**

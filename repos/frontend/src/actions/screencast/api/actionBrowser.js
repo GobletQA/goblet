@@ -1,6 +1,6 @@
-import { Values } from 'HKConstants'
-import { addToast } from 'HKActions/toasts'
-import { apiRequest } from 'HKUtils/api/apiRequest'
+import { Values } from 'GBConstants'
+import { addToast } from 'GBActions/toasts'
+import { apiRequest } from 'GBUtils/api/apiRequest'
 const { HttpMethods } = Values
 
 export const actionBrowser = async (props, log=true) => {

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { getScreencastUrl } from 'HKUtils/api/getScreencastUrl'
+import { getScreencastUrl } from 'GBUtils/api/getScreencastUrl'
 
 /**
  * Hook to dynamically build the novnc url

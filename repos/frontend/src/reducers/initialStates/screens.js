@@ -1,5 +1,5 @@
-import { screenModel } from 'HKModels'
-import { Values } from 'HKConstants'
+import { screenModel } from 'GBModels'
+import { Values } from 'GBConstants'
 
 const { CATEGORIES, SCREENS } = Values
 

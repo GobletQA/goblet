@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
-import { Values } from 'HKConstants'
-import { useSelector } from 'HKHooks'
-import { tapColors } from 'HKTheme/tapColors'
+import { Values } from 'GBConstants'
+import { useSelector } from 'GBHooks'
+import { tapColors } from 'GBTheme/tapColors'
 import { View } from '@keg-hub/keg-components'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
-import { SlowFlash } from 'HKComponents/slowFlash/slowFlash'
+import { SlowFlash } from 'GBComponents/slowFlash/slowFlash'
 const { STORAGE, CONTAINER, CATEGORIES } = Values
 
 const ReMain = reStyle(View)(theme => ({

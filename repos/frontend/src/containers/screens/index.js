@@ -1,10 +1,10 @@
 
 import React, { lazy, Suspense } from 'react'
-import { Values } from 'HKConstants'
-import { Code } from 'HKAssets/icons/code'
-import { Desktop } from 'HKAssets/icons/desktop'
+import { Values } from 'GBConstants'
+import { Code } from 'GBAssets/icons/code'
+import { Desktop } from 'GBAssets/icons/desktop'
 import { Loading } from '@keg-hub/keg-components'
-import { ClipboardCheck } from 'HKAssets/icons/clipboardCheck'
+import { ClipboardCheck } from 'GBAssets/icons/clipboardCheck'
 
 const { FILE_TYPES, SCREENS } = Values
 

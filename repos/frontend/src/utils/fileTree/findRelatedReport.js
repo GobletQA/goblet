@@ -1,5 +1,5 @@
-import { Values } from 'HKConstants'
-import { loadApiFile } from 'HKUtils/api'
+import { Values } from 'GBConstants'
+import { loadApiFile } from 'GBUtils/api'
 
 /**
  * Removes the extension from a file name

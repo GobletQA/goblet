@@ -1,12 +1,12 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { setRepo } from '../local/setRepo'
-import { addToast } from 'HKActions/toasts'
+import { addToast } from 'GBActions/toasts'
 import { removeRepo } from '../local/removeRepo'
-import { setActiveModal } from 'HKActions/modals'
-import { apiRequest } from 'HKUtils/api/apiRequest'
+import { setActiveModal } from 'GBActions/modals'
+import { apiRequest } from 'GBUtils/api/apiRequest'
 import { checkCall, noOpObj } from '@keg-hub/jsutils'
-import { localStorage } from'HKUtils/storage/localStorage'
-import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
+import { localStorage } from 'GBUtils/storage/localStorage'
+import { signOutAuthUser } from 'GBActions/admin/provider/signOutAuthUser'
 
 const { MODAL_TYPES, STATUS_TYPES } = Values
 

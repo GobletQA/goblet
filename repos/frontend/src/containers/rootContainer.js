@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { Screen } from './screens/screen'
 import { Sidebar, View } from '@keg-hub/keg-components'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
-import { withAppHeader } from 'HKComponents/hocs/withAppHeader'
-import { useVisibleModal } from 'HKHooks/modal/useVisibleModal'
-import { useActiveFile } from 'HKHooks/activeFile/useActiveFile'
-import { SidebarContent } from 'HKComponents/sidebar/sidebarContent'
+import { withAppHeader } from 'GBComponents/hocs/withAppHeader'
+import { useVisibleModal } from 'GBHooks/modal/useVisibleModal'
+import { useActiveFile } from 'GBHooks/activeFile/useActiveFile'
+import { SidebarContent } from 'GBComponents/sidebar/sidebarContent'
 
 const sidebarProps = {
   to: 0,

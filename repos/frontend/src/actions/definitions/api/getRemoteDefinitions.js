@@ -1,6 +1,6 @@
-import { addToast } from 'HKActions/toasts/addToast'
+import { addToast } from 'GBActions/toasts/addToast'
 import { setDefinitions } from '../local/setDefinitions'
-import { apiRepoRequest } from 'HKUtils/api/apiRepoRequest'
+import { apiRepoRequest } from 'GBUtils/api/apiRepoRequest'
 
 /**
  * Calls the API backend to load the parsed step definitions

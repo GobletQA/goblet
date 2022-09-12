@@ -1,6 +1,6 @@
 import { isObj } from '@keg-hub/jsutils'
-import { dispatch, getStore } from 'HKStore'
-import { Values, ActionTypes } from 'HKConstants'
+import { dispatch, getStore } from 'GBStore'
+import { Values, ActionTypes } from 'GBConstants'
 
 const { CATEGORIES } = Values
 

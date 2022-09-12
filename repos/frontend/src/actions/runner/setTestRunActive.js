@@ -1,9 +1,9 @@
-import { getStore } from 'HKStore'
-import { Values } from 'HKConstants'
+import { getStore } from 'GBStore'
+import { Values } from 'GBConstants'
 import { setTestRun } from './setTestRun'
-import { addToast } from 'HKActions/toasts'
+import { addToast } from 'GBActions/toasts'
 import { get, noOpObj } from '@keg-hub/jsutils'
-import { getReportsActiveFile } from 'HKUtils/helpers/getReportsActiveFile'
+import { getReportsActiveFile } from 'GBUtils/helpers/getReportsActiveFile'
 
 const { CATEGORIES } = Values
 

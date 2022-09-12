@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
-import { Values } from 'HKConstants'
-import { useSelector } from 'HKHooks'
-import { WSService } from 'HKServices'
-import { SockrProvider } from 'HKGSockr'
+import { Values } from 'GBConstants'
+import { useSelector } from 'GBHooks'
+import { WSService } from 'GBServices'
+import { SockrProvider } from 'GBSockr'
 
 const { CONTAINER, CATEGORIES, STORAGE } = Values
 

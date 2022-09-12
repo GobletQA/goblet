@@ -1,7 +1,7 @@
 import React from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { useStyle } from '@keg-hub/re-theme'
-import { useSelector } from 'HKHooks/useSelector'
+import { useSelector } from 'GBHooks/useSelector'
 import { Label, Option, Select, View } from '@keg-hub/keg-components'
 
 const { CATEGORIES, EMPTY_STEP } = Values

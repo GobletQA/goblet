@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { Values } from 'HKConstants'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
-import { getSCStatus } from 'HKActions/screencast/api/getSCStatus'
+import { Values } from 'GBConstants'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
+import { getSCStatus } from 'GBActions/screencast/api/getSCStatus'
 
 const { CATEGORIES } = Values
 

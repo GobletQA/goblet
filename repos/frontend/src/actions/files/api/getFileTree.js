@@ -1,6 +1,6 @@
 import { setFileTree } from '../local/setFileTree'
-import { addToast } from 'HKActions/toasts/addToast'
-import { apiRepoRequest } from 'HKUtils/api/apiRepoRequest'
+import { addToast } from 'GBActions/toasts/addToast'
+import { apiRepoRequest } from 'GBUtils/api/apiRepoRequest'
 
 /**
  * Makes call to the backend API to load the fileTree

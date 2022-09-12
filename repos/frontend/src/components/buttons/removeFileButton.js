@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
-import { Save } from 'HKAssets/icons/save'
+import { Save } from 'GBAssets/icons/save'
 import { GobletButton } from './button.restyle'
-import { removeFile } from 'HKActions/files/api/removeFile'
+import { removeFile } from 'GBActions/files/api/removeFile'
 
 /**
  * SaveFileButton - Component saving a file

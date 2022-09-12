@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { exists } from '@keg-hub/jsutils'
-import { useSetTimeout } from 'HKHooks/useSetTimeout'
+import { useSetTimeout } from 'GBHooks/useSetTimeout'
 import { Row, Loading } from '@keg-hub/keg-components'
 import { useSelector, shallowEqual } from 'react-redux'
 import { Fade, FadeView, FadeSection } from './fadeOut.restyle.js'

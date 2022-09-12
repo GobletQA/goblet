@@ -1,4 +1,4 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 const { SOCKR_MSG_TYPES } = Values
 
 export const testRunModelMock = {

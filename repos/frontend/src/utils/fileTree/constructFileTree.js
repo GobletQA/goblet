@@ -1,5 +1,5 @@
 import { noPropArr, applyToCloneOf } from '@keg-hub/jsutils'
-import { findNode } from 'HKUtils/fileTree'
+import { findNode } from 'GBUtils/fileTree'
 /**
  * Recursively constructs the fileTree array
  * @param {Array<string>} rootPaths - array of path strings

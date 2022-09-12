@@ -1,5 +1,5 @@
 import { noOpObj } from '@keg-hub/jsutils'
-import { addToast } from 'HKActions/toasts'
+import { addToast } from 'GBActions/toasts'
 
 /**
  * Action to open an artifact in a new browser window tab

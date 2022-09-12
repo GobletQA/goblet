@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
-import { Values } from 'HKConstants'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
-import { setScreenById } from 'HKActions/screens/setScreenById'
-import { findRelatedReport } from 'HKUtils/fileTree/findRelatedReport'
+import { Values } from 'GBConstants'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
+import { setScreenById } from 'GBActions/screens/setScreenById'
+import { findRelatedReport } from 'GBUtils/fileTree/findRelatedReport'
 import { isArr, exists, isEmpty, noOpObj, noPropArr } from '@keg-hub/jsutils'
 
 const { CATEGORIES, SCREENS } = Values

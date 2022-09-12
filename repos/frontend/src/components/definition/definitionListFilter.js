@@ -1,7 +1,7 @@
 import React from 'react'
-import { Search } from 'HKAssets/icons/search'
+import { Search } from 'GBAssets/icons/search'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
-import { ControlledInput } from 'HKComponents/form/controlledInput'
+import { ControlledInput } from 'GBComponents/form/controlledInput'
 
 const FilterInput = reStyle(
   ControlledInput,

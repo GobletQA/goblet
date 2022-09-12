@@ -5,14 +5,14 @@ import React, {
   useCallback,
   useLayoutEffect,
 } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { EditorTabs } from './editorTabs'
 import { EditorFromType } from './editorFromType'
 import { useEditorActions } from './useEditorActions'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
 import { useStyle, useDimensions } from '@keg-hub/re-theme'
-import { ResizeHandle } from 'HKComponents/resize/resizeHandle'
-import { useResizeHooks } from 'HKComponents/resize/useResizeHooks'
+import { ResizeHandle } from 'GBComponents/resize/resizeHandle'
+import { useResizeHooks } from 'GBComponents/resize/useResizeHooks'
 import {
   noOpObj,
   exists,

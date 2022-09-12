@@ -1,8 +1,8 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { setRepo } from '../local/setRepo'
-import { addToast } from 'HKActions/toasts'
-import { apiRequest } from 'HKUtils/api/apiRequest'
-import { setActiveSidebar } from 'HKActions/sidebar'
+import { addToast } from 'GBActions/toasts'
+import { apiRequest } from 'GBUtils/api/apiRequest'
+import { setActiveSidebar } from 'GBActions/sidebar'
 
 const { SIDEBAR_TYPES } = Values
 

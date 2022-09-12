@@ -76,13 +76,13 @@ const loadConfig = (aliases) => {
           tapSrc: './repos/frontend/src',
         },
         aliases: {
-          nameSpace: "HK",
+          nameSpace: "GB",
           dynamic: {
             // Path is relative to <tap-root>/node_modules/keg-core/core/base
             // So we have to go-back 4 dirs to get back to tap-root
-            GSockr: '../../../../repos/sockr/src/client',
-            GSHModels: '../../../../repos/shared/src/models',
-            GSHUtils: '../../../../repos/shared/src/utils/frontend',
+            Sockr: '../../../../repos/sockr/src/client',
+            SHModels: '../../../../repos/shared/src/models',
+            SHUtils: '../../../../repos/shared/src/utils/frontend',
           },
         },
       },

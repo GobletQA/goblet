@@ -1,5 +1,5 @@
 import React from 'react'
-import { Surface } from 'HKComponents/surface'
+import { Surface } from 'GBComponents/surface'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
 import { Text, View, Column } from '@keg-hub/keg-components'
 

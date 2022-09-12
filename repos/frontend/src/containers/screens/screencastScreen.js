@@ -1,12 +1,12 @@
 import React from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { EmptyScreen } from './index'
 import { capitalize } from '@keg-hub/jsutils'
 import { RsScreenMain } from './screens.restyle'
-import { useIsSCRunning } from 'HKHooks/screencast'
-import { Screencast } from 'HKComponents/screencast/screencast'
-import { useActiveFile } from 'HKHooks/activeFile/useActiveFile'
-import { AsideCmdOutput } from 'HKComponents/cmdOutput/asideCmdOutput'
+import { useIsSCRunning } from 'GBHooks/screencast'
+import { Screencast } from 'GBComponents/screencast/screencast'
+import { useActiveFile } from 'GBHooks/activeFile/useActiveFile'
+import { AsideCmdOutput } from 'GBComponents/cmdOutput/asideCmdOutput'
 
 const { SCREENS } = Values
 

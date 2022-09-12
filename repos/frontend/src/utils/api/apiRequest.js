@@ -1,9 +1,9 @@
-import { addToast } from 'HKActions/toasts'
+import { addToast } from 'GBActions/toasts'
 import { getBaseApiUrl } from './getBaseApiUrl'
 import { isObj, get, noOpObj } from '@keg-hub/jsutils'
-import { networkRequest } from 'HKServices/networkRequest'
-import { localStorage } from'HKUtils/storage/localStorage'
-import { signOutAuthUser } from 'HKActions/admin/provider/signOutAuthUser'
+import { networkRequest } from 'GBServices/networkRequest'
+import { localStorage } from 'GBUtils/storage/localStorage'
+import { signOutAuthUser } from 'GBActions/admin/provider/signOutAuthUser'
 
 
 /**

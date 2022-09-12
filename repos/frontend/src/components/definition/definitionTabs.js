@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { isFunc } from '@keg-hub/jsutils'
-import { Tabbar } from 'HKComponents/tabbar'
-import { useOnTabSelect } from 'HKHooks/tabs/useOnTabSelect'
+import { Tabbar } from 'GBComponents/tabbar'
+import { useOnTabSelect } from 'GBHooks/tabs/useOnTabSelect'
 
 const { DEFINITION_TABS } = Values
 

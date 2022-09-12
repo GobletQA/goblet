@@ -1,9 +1,9 @@
 import { useCallback, useState, useEffect } from 'react'
-import { Values } from 'HKConstants'
-import { useSelector } from 'HKHooks/useSelector'
+import { Values } from 'GBConstants'
+import { useSelector } from 'GBHooks/useSelector'
 import { noOp, checkCall } from '@keg-hub/jsutils'
-import { getWorldVal } from 'HKUtils/repo/getWorldVal'
-import { setRecorderStatus } from 'HKActions/screencast/socket/setRecorderStatus'
+import { getWorldVal } from 'GBUtils/repo/getWorldVal'
+import { setRecorderStatus } from 'GBActions/screencast/socket/setRecorderStatus'
 
 const { CATEGORIES, RECORD_ACTIONS } = Values
 

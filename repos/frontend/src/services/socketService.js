@@ -1,14 +1,14 @@
-import { getStore } from 'HKStore'
-import { Values } from 'HKConstants'
-import * as sockrActions from 'HKActions/sockr'
-import { localStorage } from'HKUtils/storage/localStorage'
+import { getStore } from 'GBStore'
+import { Values } from 'GBConstants'
+import * as sockrActions from 'GBActions/sockr'
+import { localStorage } from 'GBUtils/storage/localStorage'
 import { camelCase, snakeCase, checkCall, noPropArr } from '@keg-hub/jsutils'
-import { getWebsocketConfig } from 'HKUtils/api/getWebsocketConfig'
-import { WSService as SockrService, EventTypes } from 'HKGSockr'
-import { updateStatus } from 'HKActions/screencast/socket/updateStatus'
+import { getWebsocketConfig } from 'GBUtils/api/getWebsocketConfig'
+import { WSService as SockrService, EventTypes } from 'GBSockr'
+import { updateStatus } from 'GBActions/screencast/socket/updateStatus'
 
-import { recordAction } from 'HKActions/recorder/local/recordAction'
-import { setBrowserRecording } from 'HKActions/recorder/local/setBrowserRecording'
+import { recordAction } from 'GBActions/recorder/local/recordAction'
+import { setBrowserRecording } from 'GBActions/recorder/local/setBrowserRecording'
 
 const { STORAGE } = Values
 

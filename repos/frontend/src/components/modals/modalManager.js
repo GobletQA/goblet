@@ -1,6 +1,6 @@
 import React from 'react'
-import { Values } from 'HKConstants'
-import { useStoreItems } from 'HKHooks/store/useStoreItems'
+import { Values } from 'GBConstants'
+import { useStoreItems } from 'GBHooks/store/useStoreItems'
 import { SignInModal } from './content/signIn'
 import { ConnectRepoModal } from './content/connectRepo'
 import { FileSelectorModal } from './content/fileSelector'

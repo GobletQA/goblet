@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { useSelector } from 'HKHooks'
-import { Values } from 'HKConstants'
+import { useSelector } from 'GBHooks'
+import { Values } from 'GBConstants'
 
 const { CONTAINER, CATEGORIES } = Values
 

@@ -1,12 +1,12 @@
 import { useCallback, useMemo } from 'react'
-import { Values } from 'HKConstants'
-import { useSockr } from 'HKGSockr'
-import { runTests } from 'HKActions/runner/runTests'
-import { addToast } from 'HKActions/toasts/addToast'
+import { Values } from 'GBConstants'
+import { useSockr } from 'GBSockr'
+import { runTests } from 'GBActions/runner/runTests'
+import { addToast } from 'GBActions/toasts/addToast'
 import { noOpObj, get, noOp } from '@keg-hub/jsutils'
-import { useActiveFile } from 'HKHooks/activeFile/useActiveFile'
-import { usePendingCheck } from 'HKHooks/activeFile/usePendingCheck'
-import { savePendingContent } from 'HKActions/files/local/savePendingContent'
+import { useActiveFile } from 'GBHooks/activeFile/useActiveFile'
+import { usePendingCheck } from 'GBHooks/activeFile/usePendingCheck'
+import { savePendingContent } from 'GBActions/files/local/savePendingContent'
 
 const { SCREENS, RUN_ALL_TESTS } = Values
 

@@ -1,7 +1,7 @@
 import RFB from '@novnc/novnc/core/rfb'
 import { noOpObj, noOp } from '@keg-hub/jsutils'
 import KeyTable from '@novnc/novnc/core/input/keysym'
-import { statusBrowser } from 'HKActions/screencast/api/statusBrowser'
+import { statusBrowser } from 'GBActions/screencast/api/statusBrowser'
 
 /**
  * Check if the instance content has updated

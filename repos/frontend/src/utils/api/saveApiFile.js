@@ -1,6 +1,6 @@
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { apiRepoRequest } from './apiRepoRequest'
-import { addToast } from 'HKActions/toasts/addToast'
+import { addToast } from 'GBActions/toasts/addToast'
 
 const { HttpMethods } = Values
 /**

@@ -1,8 +1,8 @@
 import { addToast } from '../toasts/addToast'
-import { dispatch, getStore } from 'HKStore'
-import { Values, ActionTypes } from 'HKConstants'
+import { dispatch, getStore } from 'GBStore'
+import { Values, ActionTypes } from 'GBConstants'
 import { setScreenInactive } from './setScreenInactive'
-import { updateUrlQuery } from 'HKUtils/url/updateUrlQuery'
+import { updateUrlQuery } from 'GBUtils/url/updateUrlQuery'
 
 const { CATEGORIES, SCREENS } = Values
 

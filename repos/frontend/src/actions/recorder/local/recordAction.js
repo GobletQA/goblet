@@ -1,7 +1,7 @@
-import { ActionTypes, Values } from 'HKConstants'
-import { getStore, dispatch } from 'HKStore'
-import { getActiveFile } from 'HKUtils/helpers/getActiveFile'
-import { setActiveFileFromType } from 'HKActions/files/local/setActiveFileFromType'
+import { ActionTypes, Values } from 'GBConstants'
+import { getStore, dispatch } from 'GBStore'
+import { getActiveFile } from 'GBUtils/helpers/getActiveFile'
+import { setActiveFileFromType } from 'GBActions/files/local/setActiveFileFromType'
 
 const { CATEGORIES } = Values
 

@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react'
 import { exists } from '@keg-hub/jsutils'
 import { View, Sidebar } from '@keg-hub/keg-components'
-import { convertCSSUnits } from 'HKUtils/helpers/styles'
+import { convertCSSUnits } from 'GBUtils/helpers/styles'
 import { useDimensions, useStyle } from '@keg-hub/re-theme'
 
 /**

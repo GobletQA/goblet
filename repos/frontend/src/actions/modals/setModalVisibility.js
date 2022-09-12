@@ -1,6 +1,6 @@
-import { dispatch } from 'HKStore'
-import { Values } from 'HKConstants'
-import { ActionTypes } from 'HKConstants'
+import { dispatch } from 'GBStore'
+import { Values } from 'GBConstants'
+import { ActionTypes } from 'GBConstants'
 
 const { CATEGORIES } = Values
 /**

@@ -1,6 +1,6 @@
-import { addToast } from 'HKActions/toasts/addToast'
+import { addToast } from 'GBActions/toasts/addToast'
 import { upsertReports } from '../local/upsertReports'
-import { apiRepoRequest } from 'HKUtils/api/apiRepoRequest'
+import { apiRepoRequest } from 'GBUtils/api/apiRepoRequest'
 
 /**
  * Calls the API backend to load reports of past run tests

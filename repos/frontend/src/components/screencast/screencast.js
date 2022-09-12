@@ -2,13 +2,13 @@ import React, { useCallback, useState, useRef } from 'react'
 import { Canvas } from './canvas'
 import { noOpObj } from '@keg-hub/jsutils'
 import { ScreencastTabs } from './screencastTabs'
-import { Recorder } from 'HKComponents/recorder/recorder'
-import { useNoVnc, useScreencastUrl } from 'HKHooks/screencast'
-import { ResizeHandle } from 'HKComponents/resize/resizeHandle'
-import { useResizeHooks } from 'HKComponents/resize/useResizeHooks'
+import { Recorder } from 'GBComponents/recorder/recorder'
+import { useNoVnc, useScreencastUrl } from 'GBHooks/screencast'
+import { ResizeHandle } from 'GBComponents/resize/resizeHandle'
+import { useResizeHooks } from 'GBComponents/resize/useResizeHooks'
 
 // TODO: figure out screen dims before this can be added
-// import { InlineCmdOutput } from 'HKComponents/cmdOutput/inlineCmdOutput'
+// import { InlineCmdOutput } from 'GBComponents/cmdOutput/inlineCmdOutput'
 // <InlineCmdOutput activeFile={activeFile} />
 
 import {

@@ -1,9 +1,9 @@
-import { dispatch } from 'HKStore'
-import { Values, ActionTypes } from 'HKConstants'
-import { setFileTypeConstants } from 'HKConstants/values'
-import { upsertFeatures } from 'HKActions/features/local'
-import { upsertDefinitions } from 'HKActions/definitions/local'
-import { setFileTree } from 'HKActions/files/local/setFileTree'
+import { dispatch } from 'GBStore'
+import { Values, ActionTypes } from 'GBConstants'
+import { setFileTypeConstants } from 'GBConstants/values'
+import { upsertFeatures } from 'GBActions/features/local'
+import { upsertDefinitions } from 'GBActions/definitions/local'
+import { setFileTree } from 'GBActions/files/local/setFileTree'
 const { STORAGE } = Values
 
 /**

@@ -1,6 +1,6 @@
 import React from 'react'
 import { RenderOutput } from './renderOutput'
-import { useActiveTestRuns } from 'HKHooks/activeFile/useActiveTestRuns'
+import { useActiveTestRuns } from 'GBHooks/activeFile/useActiveTestRuns'
 import { ReInlineCmdRow, ReInlineCmdMain } from './cmd.restyle'
 
 export const InlineCmdOutput = props => {

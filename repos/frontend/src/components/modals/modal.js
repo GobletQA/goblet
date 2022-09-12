@@ -3,8 +3,8 @@ import { noOpObj, checkCall } from '@keg-hub/jsutils'
 import { ModalHeader } from './modalHeader'
 import { ModalFooter } from './modalFooter'
 import { ReModal, ReForm } from './modal.restyle'
-import { useCloseModal } from 'HKHooks/modal/useCloseModal'
-import { useActiveScreenTab } from 'HKHooks/useActiveScreenTab'
+import { useCloseModal } from 'GBHooks/modal/useCloseModal'
+import { useActiveScreenTab } from 'GBHooks/useActiveScreenTab'
 
 export const Modal = props => {
   const {

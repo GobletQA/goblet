@@ -1,15 +1,15 @@
 import React, { useCallback, useMemo } from 'react'
 import { Modal } from '../modal'
-import { Values } from 'HKConstants'
-import { addToast } from 'HKActions/toasts'
-import { Times } from 'HKAssets/icons/times'
-import { Trash } from 'HKAssets/icons/trash'
+import { Values } from 'GBConstants'
+import { addToast } from 'GBActions/toasts'
+import { Times } from 'GBAssets/icons/times'
+import { Trash } from 'GBAssets/icons/trash'
 import { P, Text } from '@keg-hub/keg-components'
-import { setActiveModal } from 'HKActions/modals'
+import { setActiveModal } from 'GBActions/modals'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
-import { removeFile } from 'HKActions/files/api/removeFile'
-import { GobletButton } from 'HKComponents/buttons/button.restyle'
-import { ExclamationCircle } from 'HKAssets/icons/exclamationCircle'
+import { removeFile } from 'GBActions/files/api/removeFile'
+import { GobletButton } from 'GBComponents/buttons/button.restyle'
+import { ExclamationCircle } from 'GBAssets/icons/exclamationCircle'
 
 const { MODAL_TYPES } = Values
 

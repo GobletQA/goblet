@@ -1,12 +1,12 @@
-import { GitUser } from 'HKServices/gitUser'
+import { GitUser } from 'GBServices/gitUser'
 import { pickKeys } from '@keg-hub/jsutils'
 import { isAllowedUser } from './isAllowedUser'
-import { apiRequest } from 'HKUtils/api/apiRequest'
+import { apiRequest } from 'GBUtils/api/apiRequest'
 import { signOutAuthUser } from './signOutAuthUser'
-import { setRepos } from 'HKActions/repo/local/setRepos'
-import { localStorage } from'HKUtils/storage/localStorage'
-import { waitForRunning } from 'HKActions/container/api/waitForRunning'
-import { setContainerRoutes } from 'HKActions/container/local/setContainerRoutes'
+import { setRepos } from 'GBActions/repo/local/setRepos'
+import { localStorage } from 'GBUtils/storage/localStorage'
+import { waitForRunning } from 'GBActions/container/api/waitForRunning'
+import { setContainerRoutes } from 'GBActions/container/local/setContainerRoutes'
 
 /**
  * Formats the response from the git provider sign in

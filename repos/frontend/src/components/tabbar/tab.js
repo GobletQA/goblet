@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react'
-import { useIconProps } from 'HKHooks/useIconProps'
+import { useIconProps } from 'GBHooks/useIconProps'
 import { useThemeHover, useStyle } from '@keg-hub/re-theme'
 import { get, isStr, isArr, noOpObj } from '@keg-hub/jsutils'
 import {

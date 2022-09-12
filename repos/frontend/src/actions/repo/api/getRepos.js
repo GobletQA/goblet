@@ -1,6 +1,6 @@
 import { setRepos } from '../local/setRepos'
-import { addToast } from 'HKActions/toasts/addToast'
-import { apiRepoRequest } from 'HKUtils/api/apiRepoRequest'
+import { addToast } from 'GBActions/toasts/addToast'
+import { apiRepoRequest } from 'GBUtils/api/apiRepoRequest'
 
 /**
  * Gets all repos for the logged in user from the authorized provider

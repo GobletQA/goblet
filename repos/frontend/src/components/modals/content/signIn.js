@@ -1,14 +1,14 @@
 import React, { useEffect, lazy, Suspense } from 'react'
 import { Modal } from '../modal'
-import { Values } from 'HKConstants'
-import { Git } from 'HKAssets/icons/git'
+import { Values } from 'GBConstants'
+import { Git } from 'GBAssets/icons/git'
 import { isEmptyColl } from '@keg-hub/jsutils'
 import { ModalMessage } from '../modalMessage'
 import { ReSignInMain } from '../modal.restyle'
-import { useSelector } from 'HKHooks/useSelector'
+import { useSelector } from 'GBHooks/useSelector'
 import { Loading } from '@keg-hub/keg-components'
-import { setActiveModal } from 'HKActions/modals/setActiveModal'
-import { setModalVisibility } from 'HKActions/modals/setModalVisibility'
+import { setActiveModal } from 'GBActions/modals/setActiveModal'
+import { setModalVisibility } from 'GBActions/modals/setModalVisibility'
 const LazySignIn = lazy(() => import('HKComponents/admin/signIn/signIn'))
 
 const { STORAGE, MODAL_TYPES } = Values

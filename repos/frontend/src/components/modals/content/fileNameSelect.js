@@ -1,8 +1,8 @@
 import React, { useCallback, useState, useRef, useEffect } from 'react'
-import { Values } from 'HKConstants'
+import { Values } from 'GBConstants'
 import { capitalize } from '@keg-hub/jsutils'
-import { PlusCircle } from 'HKAssets/icons/plusCircle'
-import { ControlledAuto } from 'HKComponents/form/controlledAuto'
+import { PlusCircle } from 'GBAssets/icons/plusCircle'
+import { ControlledAuto } from 'GBComponents/form/controlledAuto'
 
 const { CREATE_NEW_FILE } = Values
 

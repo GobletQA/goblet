@@ -2,7 +2,7 @@ import React from 'react'
 import { useThemeHover } from '@keg-hub/re-theme'
 import { reStyle } from '@keg-hub/re-theme/reStyle'
 import { Text } from '@keg-hub/keg-components/text'
-import { useIconProps } from 'HKHooks/useIconProps'
+import { useIconProps } from 'GBHooks/useIconProps'
 import { Touchable } from '@keg-hub/keg-components/touchable'
 
 export const SurfaceAction = reStyle(props => {

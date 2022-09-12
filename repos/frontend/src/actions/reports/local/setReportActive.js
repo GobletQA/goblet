@@ -1,5 +1,5 @@
-import { getStore } from 'HKStore'
-import { loadApiFile } from 'HKUtils/api'
+import { getStore } from 'GBStore'
+import { loadApiFile } from 'GBUtils/api'
 import { addToast } from '../../toasts/addToast'
 import { setReportsScreen } from '../../screens/setReportsScreen'
 

@@ -1,5 +1,5 @@
-import { Values, ActionTypes } from 'HKConstants'
-import { dispatch, getStore } from 'HKStore'
+import { Values, ActionTypes } from 'GBConstants'
+import { dispatch, getStore } from 'GBStore'
 const { CATEGORIES } = Values
 
 export const removeToast = toast => {
