@@ -1,6 +1,6 @@
 import type { ElementType } from 'react'
 import Typography from '@mui/material/Typography'
-import AdbIcon from '@mui/icons-material/Adb'
+import { Goblet } from '@components/Icons/Goblet'
 
 type TLogoProps = {
   href?: string
@@ -12,7 +12,7 @@ type TLogoProps = {
 
 const styles = {
   mobile: {
-    icon: { display: { xs: 'flex', md: 'none' }, mr: 1 },
+    icon: { display: { xs: 'flex', md: 'none' }, mr: 2 },
     title: {
       mr: 2,
       display: { xs: 'flex', md: 'none' },
@@ -25,7 +25,7 @@ const styles = {
     }
   },
   main: {
-    icon: { display: { xs: 'none', md: 'flex' }, mr: 1 },
+    icon: { display: { xs: 'none', md: 'flex' }, mr: 2 },
     title: {
       mr: 2,
       display: { xs: 'none', md: 'flex' },
@@ -50,8 +50,7 @@ const LogoComp = (props:TLogoProps) => {
     <>
       {Icon
         ? <Icon sx={styles?.icon} />
-        : (<AdbIcon sx={styles?.icon as Record<string, string>} />
-      )}
+        : (<Goblet sx={styles?.icon as Record<string, string>} width="20px" fill="#ffffff" />)}
       <Typography
         noWrap
         href={href}

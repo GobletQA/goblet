@@ -17,6 +17,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
+      "@assets": [ "src/assets" ],
+      "@assets/*": [ "src/assets/*" ],
       "@components": [ "src/components" ],
       "@components/*": [ "src/components/*" ],
       "@containers": [ "src/containers" ],
