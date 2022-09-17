@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@GVT/Configs": [ "configs" ],
+      "@GVT/Actions": [ "src/actions" ],
+      "@GVT/Assets": [ "src/assets" ],
+      "@GVT/Components": [ "src/components" ],
+      "@GVT/Constants": [ "src/constants" ],
+      "@GVT/Containers": [ "src/containers" ],
+      "@GVT/Hooks": [ "src/hooks" ],
+      "@GVT/Models": [ "src/models" ],
+      "@GVT/Reducers": [ "src/reducers" ],
+      "@GVT/Services": [ "src/services" ],
+      "@GVT/Theme": [ "src/theme" ],
+      "@GVT/Utils": [ "src/utils" ],
+      "@GVT": [ "src" ],
+      "@GVTRoot": [ "." ],
+      "@gobletqa/shared": [ "../shared/src" ]
+    }
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
