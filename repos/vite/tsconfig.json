@@ -17,6 +17,10 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
+      "@components": [ "src/components" ],
+      "@components/*": [ "src/components/*" ],
+      "@containers": [ "src/containers" ],
+      "@containers/*": [ "src/containers/*" ],
       "@GVT/Configs": [ "configs" ],
       "@GVT/Actions": [ "src/actions" ],
       "@GVT/Assets": [ "src/assets" ],

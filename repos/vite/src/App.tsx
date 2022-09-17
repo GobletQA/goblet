@@ -1,15 +1,18 @@
 import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
+import { RootContainer } from '@containers/root'
 
-export default function App() {
+
+const App = () => {
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
+    <RootContainer>
+      <Box>
         <Typography variant="h4" component="h1" gutterBottom>
           This IS VITE!!!
         </Typography>
       </Box>
-    </Container>
-  );
+    </RootContainer>
+  )
 }
+
+export default App
