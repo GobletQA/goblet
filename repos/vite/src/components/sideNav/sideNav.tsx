@@ -3,8 +3,8 @@ import { useState, useCallback, Fragment } from 'react'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 
-import { Sidebar } from '../sidebar'
-import { NavList, TNavItemProps } from '../navList'
+import { Sidebar } from '../Sidebar'
+import { NavList, TNavItemProps } from '../NavList'
 
 
 const groups = [
@@ -52,9 +52,7 @@ const groups = [
   },
 ]
 
-
 type TSideNavProps = {
-  // groups: TGroupItem[]
   initialOpen?: boolean
 }
 
