@@ -47,20 +47,20 @@ const LogoComp = (props:TLogoProps) => {
   } = props
 
   return (
-    <>
-      {Icon
+    <Typography
+      noWrap
+      href={href}
+      variant="h6"
+      component="a"
+      sx={styles?.title as Record<string, string>}
+    >
+    {
+      Icon
         ? <Icon sx={styles?.icon} />
-        : (<Goblet sx={styles?.icon as Record<string, string>} width="20px" fill="#ffffff" />)}
-      <Typography
-        noWrap
-        href={href}
-        variant="h6"
-        component="a"
-        sx={styles?.title as Record<string, string>}
-      >
-        {title}
-      </Typography>
-    </>
+        : (<Goblet sx={styles?.icon as Record<string, string>} width="20px" fill="#ffffff" />)
+    }
+      {title}
+    </Typography>
   )
 }
 

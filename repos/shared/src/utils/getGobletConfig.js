@@ -26,6 +26,7 @@ const {
   noOpObj,
   deepMerge,
 } = require('@keg-hub/jsutils')
+const defConfig = require(path.join(__dirname, '../../../../configs/goblet.default.config.js'))
 
 /**
  * **IMPORTANT**
@@ -254,7 +255,7 @@ const getGobletConfig = (argsConfig = noOpObj) => {
 
   // Load here so it doesn't pull in other files which call loadEnvs
   // The loadEnvs response is cached, so we only want to call it at the right time
-  __DEF_CONFIG = __DEF_CONFIG || require('@GConfigs/goblet.default.config.js')
+  __DEF_CONFIG = __DEF_CONFIG || deepMerge(defConfig)
 
   __GOBLET_CONFIG = addConfigFileTypes(
     deepMerge(
@@ -289,7 +290,7 @@ const resetGobletConfig = () => {
  * @returns {Object} - default Goblet Config
  */
 const getDefaultGobletConfig = () => {
-  __DEF_CONFIG = __DEF_CONFIG || require('@GConfigs/goblet.default.config.js')
+  __DEF_CONFIG = __DEF_CONFIG || deepMerge(defConfig)
   return __DEF_CONFIG
 }
 

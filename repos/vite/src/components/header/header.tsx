@@ -50,7 +50,7 @@ export const Header = (props:THeaderProps) => {
   }
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Logo />

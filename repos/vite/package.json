@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "vite -c configs/vite.config.ts",
+    "build": "tsc && vite build -c configs/vite.config.ts",
+    "preview": "vite preview -c configs/vite.config.ts",
+    "start": "vite -c configs/vite.config.ts"
   },
   "dependencies": {
     "@emotion/react": "11.10.4",
@@ -23,6 +24,7 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.1.0",
+    "vite-plugin-environment": "1.1.2",
     "vite-plugin-svgr-component": "1.0.1",
     "typescript": "^4.6.4",
     "vite": "^3.1.0",

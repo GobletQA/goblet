@@ -167,6 +167,9 @@ env:
   GB_VNC_VIEW_HEIGHT: 900
   GB_VNC_VIEW_WIDTH: 1440
 
+  GB_VNC_ACTIVE: true
+  GB_PW_SOCKET_ACTIVE: false
+
   # --- CONTAINER TIMEOUT ENVs --- #
   GB_SC_TIMEOUT_ACTIVE: false
   # In minutes (x * 60000)

@@ -7,6 +7,7 @@ import ListItemText from '@mui/material/ListItemText'
 
 export type TNavItemProps = {
   title: string
+  open?: boolean
   index?: number
   group?: string
   last?: boolean
@@ -17,30 +18,45 @@ export type TNavItemProps = {
 export type TNavListProps = {
   group: string
   index?: number
+  open?: boolean
   items: TNavItemProps[]
 }
 
 const NavItem = (props:TNavItemProps) => {
   const {
-    group,
     title,
-    Icon
+    Icon,
+    open
   } = props
-  
+
   return (
-    <ListItem disablePadding>
-      <ListItemButton>
-        <ListItemIcon>
-          {Icon && <Icon />}
-        </ListItemIcon>
-        <ListItemText primary={title} />
+    <ListItem disablePadding sx={{ display: 'block' }}>
+      <ListItemButton
+        sx={{
+          px: 2.5,
+          minHeight: 48,
+          justifyContent: open ? 'initial' : 'center',
+        }}
+      >
+        {Icon && (
+          <ListItemIcon
+            sx={{
+              minWidth: 0,
+              mr: open ? 3 : 'auto',
+              justifyContent: 'center',
+            }}
+          >
+            <Icon />
+          </ListItemIcon>
+        )}
+        <ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />
       </ListItemButton>
     </ListItem>
   )
 }
 
 export const NavList = (props:TNavListProps) => {
-  const { items, group } = props
+  const { items, group, open } = props
   const itemLength = items.length - 1
   return (
     <List>
@@ -49,6 +65,7 @@ export const NavList = (props:TNavListProps) => {
           <NavItem
             key={`${group}-${item.title}`}
             {...item}
+            open={open}
             group={group}
             index={idx}
             first={idx === 0}

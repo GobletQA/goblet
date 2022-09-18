@@ -11,6 +11,12 @@ type TRenderToggleProps = {
   [key:string|number|symbol]: any
 }
 
+type TRenderContentProps = {
+  open: boolean
+  toggleDrawer:(event: React.KeyboardEvent | React.MouseEvent) => void
+  [key:string|number|symbol]: any
+}
+
 type TSidebarProps = {
   anchor?: 'top' | 'left' | 'bottom' | 'right'
   children:ReactNode
@@ -18,6 +24,8 @@ type TSidebarProps = {
   onClose?: TDrawerCb
   onToggle?: TDrawerCb
   onOpen?: TDrawerCb
+  variant?: "permanent" | "persistent" | "temporary"
+  renderContent?: (props:TRenderContentProps) => ReactNode
   renderToggle?: (props:TRenderToggleProps) => ReactNode
 }
 
@@ -31,10 +39,12 @@ export const Sidebar = (props:TSidebarProps) => {
   const {
     onOpen,
     onClose,
+    variant,
     onToggle,
     children,
     anchor='left',
     renderToggle,
+    renderContent,
     initialOpen=false,
   } = props
 
@@ -57,10 +67,12 @@ export const Sidebar = (props:TSidebarProps) => {
       <Drawer
         open={open}
         anchor={anchor}
+        variant={variant}
         onClose={toggleDrawer}
       >
         <>
           {children}
+          {renderContent?.({ ...props, open, toggleDrawer })}
         </>
       </Drawer>
     </Box>

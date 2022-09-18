@@ -1,1 +1,2 @@
-export * from './navList'
+export * from './NavList'
+export * from './NavGroups'
