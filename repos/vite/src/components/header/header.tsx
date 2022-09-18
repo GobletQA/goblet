@@ -1,14 +1,8 @@
 import * as React from 'react'
+import { SideNav } from '@constants/Nav'
 import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import Menu from '@mui/material/Menu'
-import MenuIcon from '@mui/icons-material/Menu'
-import Container from '@mui/material/Container'
-import MenuItem from '@mui/material/MenuItem'
-import AdbIcon from '@mui/icons-material/Adb'
+import { AppHeader } from './Header.styled'
 
 import { Logo } from './Logo'
 import { Tabs } from './Tabs'
@@ -50,26 +44,24 @@ export const Header = (props:THeaderProps) => {
   }
 
   return (
-    <AppBar position="fixed">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Tabs
-            tabs={pages}
-            anchorEl={anchorElNav}
-            onTabClick={onTabClick}
-            onOpenNav={handleOpenNavMenu}
-            onCloseTab={handleCloseNavMenu}
-          />
-          <Logo mobile />
-          <Settings
-            settings={settings}
-            anchorEl={anchorElUser}
-            onOpenSettings={handleOpenUserMenu}
-            onCloseSettings={handleCloseUserMenu}
-          />
-        </Toolbar>
-      </Container>
-    </AppBar>
+    <AppHeader position="fixed">
+      <Toolbar disableGutters>
+        <Tabs
+          tabs={pages}
+          anchorEl={anchorElNav}
+          onTabClick={onTabClick}
+          onOpenNav={handleOpenNavMenu}
+          onCloseTab={handleCloseNavMenu}
+        />
+        <Logo mobile />
+        <Settings
+          settings={settings}
+          anchorEl={anchorElUser}
+          onOpenSettings={handleOpenUserMenu}
+          onCloseSettings={handleCloseUserMenu}
+        />
+      </Toolbar>
+    </AppHeader>
   )
 }
 

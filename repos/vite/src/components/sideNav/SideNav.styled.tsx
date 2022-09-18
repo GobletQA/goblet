@@ -1,9 +1,9 @@
-import { styled, Theme, CSSObject } from '@mui/material/styles'
+import { dims } from '@theme'
 import MuiDrawer from '@mui/material/Drawer'
-import { SideNav } from '@constants/Nav'
+import { styled, Theme, CSSObject } from '@mui/material/styles'
 
 const openedMixin = (theme: Theme): CSSObject => ({
-  width: SideNav.openWidth,
+  width: dims.nav.openWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -28,7 +28,7 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   padding: theme.spacing(0, 1),
-  width: SideNav.closedWidth,
+  width: dims.nav.closedWidth,
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }))
@@ -37,7 +37,7 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
 export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     flexShrink: 0,
-    width: SideNav.openWidth,
+    width: dims.nav.openWidth,
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',
     ...(open && {

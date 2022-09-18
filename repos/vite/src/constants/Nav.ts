@@ -1,9 +1,6 @@
 
-export const Nav = {}
 
 export const SideNav = {
-  openWidth: 240,
-  closedWidth: 64,
   groups: [
     {
       name: `core-navigation`,

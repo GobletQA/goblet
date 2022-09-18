@@ -46,7 +46,10 @@ export const SideNav = (props:TSideNavProps) => {
 
   return (
     <Drawer className="side-nav-drawer" variant="permanent" open={open}>
-      <DrawerHeader className="side-nav-header" >
+      <DrawerHeader
+        className="side-nav-header"
+        sx={{ minHeight: `${SideNavConst.headerHeight}px !important` }}
+      >
         <Box className="side-nav-header-icon" >
           <IconButton className="side-nav-header-icon-button" onClick={toggleDrawer} >
             {/* {open ? <ChevronLeftIcon /> : <Goblet />} */}

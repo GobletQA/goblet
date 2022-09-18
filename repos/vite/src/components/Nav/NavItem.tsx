@@ -1,11 +1,12 @@
-import type { ElementType, CSSProperties } from 'react'
+import type { ElementType } from 'react'
+
+import { dims } from '@theme'
 import Box from '@mui/material/Box'
 import ListItem from '@mui/material/ListItem'
 import Typography from '@mui/material/Typography'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
-import { SideNav } from '@constants/Nav'
 
 export type TNavItemProps = {
   title: string
@@ -63,7 +64,7 @@ export const NavItem = (props:TNavItemProps) => {
     <ListItem
       disablePadding
       sx={{
-        width: SideNav.closedWidth
+        width: dims.nav.closedWidth
       }}
     >
       <ListItemButton
