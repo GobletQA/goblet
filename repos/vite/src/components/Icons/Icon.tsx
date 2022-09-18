@@ -1,5 +1,5 @@
 import type { ElementType } from 'react'
-import Box from '@mui/material/Box'
+import SvgIcon from '@mui/material/SvgIcon'
 
 export type TIconProps = {
   Icon?: any
@@ -7,6 +7,7 @@ export type TIconProps = {
   color?: string
   width?: string
   height?: string
+  stroke?: string
   RootEl?: ElementType
   sx?: Record<string, string>
   styles?: Record<string, string>
@@ -16,15 +17,14 @@ export const Icon = (props:TIconProps) => {
   const {
     sx,
     styles,
-    RootEl=Box,
+    RootEl=SvgIcon,
     Icon:IconComp,
     ...iconProps
   } = props
-  
+
   return (
-    <RootEl sx={[sx, styles]} >
+    <RootEl sx={[sx, styles]} inheritViewBox={true} >
       {IconComp && (<IconComp {...iconProps} />)}
     </RootEl>
   )
-  
 }
