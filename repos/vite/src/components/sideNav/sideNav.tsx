@@ -1,18 +1,16 @@
-import type { ElementType } from 'react'
 import type { TNavItemProps } from '../Nav/NavItem'
 
 import { useState } from 'react'
-import { useTheme } from '@mui/material/styles'
+import { dims } from '@theme'
 import Box from '@mui/material/Box'
-import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import { DrawerHeader, Drawer } from './SideNav.styled'
-import { NavGroups, TGroupItem } from '../Nav'
-import { SideNav as SideNavConst } from '@constants/Nav'
 import * as Icons from '@components/Icons'
+import Divider from '@mui/material/Divider'
+import { NavGroups, TGroupItem } from '../Nav'
+import { useTheme } from '@mui/material/styles'
 import { Goblet } from '@components/Icons/Goblet'
+import IconButton from '@mui/material/IconButton'
+import { DrawerHeader, Drawer } from './SideNav.styled'
+import { SideNav as SideNavConst } from '@constants/Nav'
 
 
 const groups = SideNavConst.groups.map(group => {
@@ -48,7 +46,7 @@ export const SideNav = (props:TSideNavProps) => {
     <Drawer className="side-nav-drawer" variant="permanent" open={open}>
       <DrawerHeader
         className="side-nav-header"
-        sx={{ minHeight: `${SideNavConst.headerHeight}px !important` }}
+        sx={{ minHeight: `${dims.header.height}px !important` }}
       >
         <Box className="side-nav-header-icon" >
           <IconButton className="side-nav-header-icon-button" onClick={toggleDrawer} >
