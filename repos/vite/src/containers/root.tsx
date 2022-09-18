@@ -1,14 +1,16 @@
+import type { TThemeTypes } from '@theme/theme.types'
+
 import { ReactNode } from 'react'
+import { Screen } from './Screen'
 import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
-import CssBaseline from '@mui/material/CssBaseline'
 import { Header } from '@components/Header'
 import { Footer } from '@components/Footer'
 import { SideNav } from '@components/SideNav'
-import { Screen } from './Screen'
+import Container from '@mui/material/Container'
 
 
 type TRootProps = {
+  themeSwitch?: (type:TThemeTypes) => void
   children?: ReactNode
 }
 
