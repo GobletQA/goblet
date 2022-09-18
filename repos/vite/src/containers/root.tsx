@@ -5,24 +5,22 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { Header } from '@components/Header'
 import { Footer } from '@components/Footer'
 import { SideNav } from '@components/SideNav'
+import { Screen } from './Screen'
 
 
 type TRootProps = {
-  children: ReactNode
+  children?: ReactNode
 }
 
 export const RootContainer = (props:TRootProps) => {
   return (
-    <>
-      <CssBaseline />
-      <Container maxWidth={false} disableGutters>
-        <Box sx={{ display: 'flex' }}>
-          <Header />
-          <SideNav />
-          {props.children}
-          <Footer />
-        </Box>
-      </Container>
-    </>
+    <Container maxWidth={false} disableGutters>
+      <Box sx={{ display: 'flex' }}>
+        <Header />
+        <SideNav />
+        <Screen {...props} />
+        <Footer />
+      </Box>
+    </Container>
   )
 }
