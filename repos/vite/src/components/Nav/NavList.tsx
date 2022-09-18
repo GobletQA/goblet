@@ -1,76 +1,39 @@
-import type { ElementType } from 'react'
-import List from '@mui/material/List'
-import ListItem from '@mui/material/ListItem'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
+import type { CSSProperties } from 'react'
 
-export type TNavItemProps = {
-  title: string
-  open?: boolean
-  index?: number
-  group?: string
-  last?: boolean
-  first?: boolean
-  Icon?: ElementType
-}
+import { Fragment } from 'react'
+import type { TNavItemProps } from './NavItem'
+import { NavItem } from './NavItem'
+import List from '@mui/material/List'
+import Divider from '@mui/material/Divider'
+
 
 export type TNavListProps = {
   group: string
   index?: number
   open?: boolean
   items: TNavItemProps[]
-}
-
-const NavItem = (props:TNavItemProps) => {
-  const {
-    title,
-    Icon,
-    open
-  } = props
-
-  return (
-    <ListItem disablePadding sx={{ display: 'block' }}>
-      <ListItemButton
-        sx={{
-          px: 2.5,
-          minHeight: 48,
-          justifyContent: open ? 'initial' : 'center',
-        }}
-      >
-        {Icon && (
-          <ListItemIcon
-            sx={{
-              minWidth: 0,
-              mr: open ? 3 : 'auto',
-              justifyContent: 'center',
-            }}
-          >
-            <Icon />
-          </ListItemIcon>
-        )}
-        <ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />
-      </ListItemButton>
-    </ListItem>
-  )
+  groupStyle?: CSSProperties
 }
 
 export const NavList = (props:TNavListProps) => {
-  const { items, group, open } = props
+  const { items, groupStyle, group, open } = props
   const itemLength = items.length - 1
   return (
-    <List>
+    <List sx={groupStyle} className={`${group}-group-nav-list`}  >
       {items.map((item:TNavItemProps, idx:number) => {
         return (
-          <NavItem
-            key={`${group}-${item.title}`}
-            {...item}
-            open={open}
-            group={group}
-            index={idx}
-            first={idx === 0}
-            last={idx === itemLength}
-          />
+          <Fragment key={`${group}-${item.title}`} >
+            {(item.divider === 'top' || item.divider === true) && (<Divider />)}
+            <NavItem
+              {...item}
+              open={open}
+              group={group}
+              index={idx}
+              first={idx === 0}
+              last={idx === itemLength}
+            />
+            {(item.divider === 'bottom' || item.divider === true) && (<Divider />)}
+          </Fragment>
         )
       })}
     </List>

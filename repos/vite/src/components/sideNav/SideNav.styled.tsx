@@ -3,7 +3,7 @@ import MuiDrawer from '@mui/material/Drawer'
 import { SideNav } from '@constants/Nav'
 
 const openedMixin = (theme: Theme): CSSObject => ({
-  width: SideNav.width,
+  width: SideNav.openWidth,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -26,8 +26,9 @@ const closedMixin = (theme: Theme): CSSObject => ({
 export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
+  justifyContent: 'center',
   padding: theme.spacing(0, 1),
+  width: SideNav.closedWidth,
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }))
@@ -36,7 +37,7 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
 export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     flexShrink: 0,
-    width: SideNav.width,
+    width: SideNav.openWidth,
     whiteSpace: 'nowrap',
     boxSizing: 'border-box',
     ...(open && {

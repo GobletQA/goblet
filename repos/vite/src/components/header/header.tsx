@@ -21,7 +21,7 @@ type THeaderProps = {
 
 export const Header = (props:THeaderProps) => {
   const {
-    pages=['Products', 'Pricing', 'Blog'],
+    pages=[],
     settings=['Profile', 'Account', 'Dashboard', 'Logout']
   } = props
   
@@ -53,7 +53,6 @@ export const Header = (props:THeaderProps) => {
     <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Logo />
           <Tabs
             tabs={pages}
             anchorEl={anchorElNav}

@@ -1,6 +1,9 @@
 import type { ElementType } from 'react'
+import type { TNavItemProps } from '../Nav/NavItem'
+
 import { useState } from 'react'
 import { useTheme } from '@mui/material/styles'
+import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -9,17 +12,18 @@ import { DrawerHeader, Drawer } from './SideNav.styled'
 import { NavGroups, TGroupItem } from '../Nav'
 import { SideNav as SideNavConst } from '@constants/Nav'
 import * as Icons from '@components/Icons'
+import { Goblet } from '@components/Icons/Goblet'
 
 
 const groups = SideNavConst.groups.map(group => {
-  const builtGrp = { name: group.name, items: [] } as TGroupItem
+  const builtGrp = { ...group, items: [] } as TGroupItem
   group.items.map(({ icon, ...item}) => {
     // @ts-ignore
     const Icon = Icons[icon]
     builtGrp.items.push({
       ...item,
       Icon,
-    })
+    } as TNavItemProps)
   })
 
   return builtGrp
@@ -41,11 +45,14 @@ export const SideNav = (props:TSideNavProps) => {
   }
 
   return (
-    <Drawer variant="permanent" open={open}>
-      <DrawerHeader>
-        <IconButton onClick={toggleDrawer}>
-          {open ? <ChevronLeftIcon /> : <MenuIcon />}
-        </IconButton>
+    <Drawer className="side-nav-drawer" variant="permanent" open={open}>
+      <DrawerHeader className="side-nav-header" >
+        <Box className="side-nav-header-icon" >
+          <IconButton className="side-nav-header-icon-button" onClick={toggleDrawer} >
+            {/* {open ? <ChevronLeftIcon /> : <Goblet />} */}
+            <Goblet />
+          </IconButton>
+        </Box>
       </DrawerHeader>
       <Divider />
       <NavGroups

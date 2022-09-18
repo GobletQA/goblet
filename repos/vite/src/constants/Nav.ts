@@ -2,7 +2,8 @@
 export const Nav = {}
 
 export const SideNav = {
-  width: 240,
+  openWidth: 240,
+  closedWidth: 64,
   groups: [
     {
       name: `core-navigation`,
@@ -29,12 +30,16 @@ export const SideNav = {
         },
         {
           title: `Steps`,
-          icon: `Steps`
+          icon: `Steps`,
         },
       ]
     },
     {
       name: `settings`,
+      style: {
+        bottom: 0,
+        position: `absolute`,
+      },
       items: [
         {
           title: `Settings`,

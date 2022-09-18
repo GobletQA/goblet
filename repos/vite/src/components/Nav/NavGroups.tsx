@@ -1,8 +1,10 @@
+import type {CSSProperties } from 'react'
 import { Fragment } from 'react'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 
-import { NavList, TNavItemProps } from './NavList'
+import type { TNavItemProps } from './NavItem'
+import { NavList } from './NavList'
 
 type TNavGroupProps = {
   open?: boolean
@@ -13,6 +15,8 @@ type TNavGroupProps = {
 
 export type TGroupItem = {
   name: string
+  divider?: boolean | 'top' | 'bottom'
+  style?: CSSProperties
   items: TNavItemProps[]
 }
 
@@ -25,7 +29,7 @@ export const NavGroups = (props: TNavGroupProps) => {
   } = props
   
   const groupLength = groups.length - 1
-  
+
   return (
     <Box
       component="div"
@@ -36,8 +40,15 @@ export const NavGroups = (props: TNavGroupProps) => {
     >
       {groups.map((group, index:number) => (
         <Fragment key={group.name}>
-          <NavList group={group.name} items={group.items} index={index} open={open} />
-          {index < groupLength && (<Divider />)}
+          {(group.divider === 'top' || group.divider === true) && (<Divider />)}
+          <NavList
+            open={open}
+            index={index}
+            group={group.name}
+            items={group.items}
+            groupStyle={group.style}
+          />
+          {(group.divider === 'bottom' || group.divider === true) && (<Divider />)}
         </Fragment>
       ))}
     </Box>
