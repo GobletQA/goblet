@@ -7,3 +7,6 @@ export default function Profile(){
     </div>
   )
 }
+
+Profile.element = `Profile`
+Profile.path = `/profile`

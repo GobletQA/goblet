@@ -11,9 +11,7 @@ type THeaderProps = {
 }
 
 export const Header = (props:THeaderProps) => {
-  const {
-    settings=['Profile', 'Settings', 'Dashboard', 'Logout']
-  } = props
+  const settings = props.settings || []
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
 

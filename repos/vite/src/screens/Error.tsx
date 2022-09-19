@@ -8,7 +8,7 @@ type RouteError = {
   [key: string]: any
 }
 
-export default function ErrorScreen() {
+export default function Error() {
   const error = useRouteError() as RouteError
   console.error(error)
 
@@ -22,3 +22,5 @@ export default function ErrorScreen() {
     </Box>
   );
 } 
+
+Error.element = `Error`

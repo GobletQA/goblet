@@ -6,3 +6,6 @@ export default function Settings(){
     </div>
   )
 }
+
+Settings.element = `Settings`
+Settings.path = `/settings`

@@ -9,18 +9,33 @@ type THomeProps = {
   [key:string]: any
 }
 
-export default function HomeScreen(props:THomeProps) {
+export default function Home(props:THomeProps) {
   return (
     <>
       <ScreenWrap className="screen-container">
         <Outlet />
       </ScreenWrap>
       <Box sx={{ display: 'flex' }}>
-        <Header />
+        <Header settings={settings} />
         <SideNav />
         <Footer />
       </Box>
     </>
   )
-  
 }
+
+Home.path = `/`
+Home.element = `Home`
+Home.children = [
+  {
+    element: `Profile`,
+  },
+  {
+    element: `Settings`,
+  },
+  {
+    element: `Team`,
+  }
+]
+
+const settings = [...Home.children.map(child => child.element), `Logout`]
