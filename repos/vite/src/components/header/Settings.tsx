@@ -5,6 +5,11 @@ import Menu from '@mui/material/Menu'
 import Avatar from '@mui/material/Avatar'
 import Tooltip from '@mui/material/Tooltip'
 import MenuItem from '@mui/material/MenuItem'
+import Link from '@mui/material/Link'
+import {
+  Link as RouterLink,
+  LinkProps as RouterLinkProps,
+} from 'react-router-dom'
 
 type TSettingsCB = (...args:any[]) => any
 
@@ -48,7 +53,9 @@ export const Settings = (props:TSettingsProps) => {
       >
         {settings.map((setting) => (
           <MenuItem key={setting} onClick={onCloseSettings}>
-            <Typography textAlign="center">{setting}</Typography>
+            <Link component={RouterLink} to={`/${setting}`}>
+              <Typography textAlign="center">{setting}</Typography>
+            </Link>
           </MenuItem>
         ))}
       </Menu>

@@ -4,7 +4,7 @@ import { AppFooter } from './Footer.styled'
 
 export const Footer = () => {
   return (
-    <AppFooter position="fixed" color="primary">
+    <AppFooter component="footer" position="fixed" color="primary">
       <Toolbar>
         <Box sx={{ flexGrow: 1 }} />
       </Toolbar>
