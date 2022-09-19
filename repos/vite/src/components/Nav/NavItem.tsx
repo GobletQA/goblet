@@ -1,5 +1,5 @@
 import type { ElementType } from 'react'
-
+import { useMemo } from 'react'
 import { dims } from '@theme'
 import Box from '@mui/material/Box'
 import ListItem from '@mui/material/ListItem'
@@ -15,6 +15,7 @@ export type TNavItemProps = {
   group?: string
   last?: boolean
   first?: boolean
+  activeNav?: string
   divider?: boolean | 'bottom' | 'top'
   Icon?: ElementType
 }
@@ -57,17 +58,26 @@ export const NavItem = (props:TNavItemProps) => {
   const {
     title,
     Icon,
-    open
+    open,
+    activeNav
   } = props
+
+  const cleaned = useMemo(() => (title || ``).replace(/\s_-\//gim, ``).toLowerCase(), [title])
+
+  // TODO: use activeNav to set a css color of the active element
 
   return (
     <ListItem
+      data-nav-item={cleaned}
+      className={`nav-list-item nav-item-${cleaned}`}
       disablePadding
       sx={{
         width: dims.nav.closedWidth
       }}
     >
       <ListItemButton
+        data-nav-item={cleaned}
+        className={`nav-item-button nav-item-button-${cleaned}`}
         sx={{
           px: 2.5,
           minHeight: 48,
@@ -76,7 +86,13 @@ export const NavItem = (props:TNavItemProps) => {
       >
       {Icon
         ? (<NavIcon {...props} />)
-        : (<ListItemText primary={title} sx={{ opacity: open ? 1 : 0 }} />)
+        : (
+            <ListItemText
+              primary={title}
+              data-nav-item={cleaned}
+              sx={{ opacity: open ? 1 : 0 }}
+            />
+          )
       }
       </ListItemButton>
     </ListItem>

@@ -4,7 +4,7 @@ export const dims = {
     height: 50
   },
   nav: {
-    openWidth: 240,
+    openWidth: 350,
     closedWidth: 64,
   },
 }

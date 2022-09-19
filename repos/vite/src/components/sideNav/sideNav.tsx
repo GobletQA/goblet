@@ -1,6 +1,6 @@
 import type { TNavItemProps } from '../Nav/NavItem'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { dims } from '@theme'
 import Box from '@mui/material/Box'
 import * as Icons from '@components/Icons'
@@ -12,6 +12,18 @@ import IconButton from '@mui/material/IconButton'
 import { DrawerHeader, Drawer } from './SideNav.styled'
 import { SideNav as SideNavConst } from '@constants/Nav'
 
+
+
+const findNavItem = (element:HTMLElement):string|undefined => {
+  const navItem = element?.dataset?.navItem
+  if(navItem) return navItem
+
+  const parent = element?.parentNode as HTMLElement
+
+  return !parent || parent?.classList?.contains(SideNavConst.groupClassName)
+      ? undefined
+      : findNavItem(parent as HTMLElement)
+}
 
 const groups = SideNavConst.groups.map(group => {
   const builtGrp = { ...group, items: [] } as TGroupItem
@@ -37,10 +49,21 @@ type TSideNavProps = {
 export const SideNav = (props:TSideNavProps) => {
   const theme = useTheme()
   const [open, setOpen] = useState(false)
+  const [activeNav, setActiveNav] = useState<string|undefined>()
 
-  const toggleDrawer = () => {
-    setOpen(!open)
-  }
+  const toggleDrawer = useCallback((event:Record<string, any>) => {
+    const updatedOpen = !open
+    const navItem = findNavItem(event?.target as HTMLElement)
+    if((!navItem || navItem === activeNav) && !updatedOpen){
+      setOpen(updatedOpen)
+      setActiveNav(undefined)
+    }
+    else {
+      setOpen(true)
+      setActiveNav(navItem)
+    }
+
+  }, [open, activeNav])
 
   return (
     <Drawer className="side-nav-drawer" variant="permanent" open={open}>
@@ -60,7 +83,9 @@ export const SideNav = (props:TSideNavProps) => {
         {...props}
         open={open}
         groups={groups}
+        activeNav={activeNav}
         toggleDrawer={toggleDrawer}
+        className={SideNavConst.groupClassName}
       />
     </Drawer>
   )

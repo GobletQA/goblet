@@ -1,5 +1,6 @@
 
 export const SideNav = {
+  groupClassName: `group-nav-list`,
   groups: [
     {
       name: `core-navigation`,

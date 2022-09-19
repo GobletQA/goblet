@@ -11,15 +11,17 @@ export type TNavListProps = {
   group: string
   index?: number
   open?: boolean
+  activeNav?: string
+  className?: string
   items: TNavItemProps[]
   groupStyle?: CSSProperties
 }
 
 export const NavList = (props:TNavListProps) => {
-  const { items, groupStyle, group, open } = props
+  const { items, groupStyle, group, open, className, activeNav } = props
   const itemLength = items.length - 1
   return (
-    <List sx={groupStyle} className={`${group}-group-nav-list`}  >
+    <List sx={groupStyle} className={`${group}-group-nav-list ${className || ``}`.trim()}  >
       {items.map((item:TNavItemProps, idx:number) => {
         return (
           <Fragment key={`${group}-${item.title}`} >
@@ -30,6 +32,7 @@ export const NavList = (props:TNavListProps) => {
               group={group}
               index={idx}
               first={idx === 0}
+              activeNav={activeNav}
               last={idx === itemLength}
             />
             {(item.divider === 'bottom' || item.divider === true) && (<Divider />)}
