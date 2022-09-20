@@ -92,7 +92,8 @@ RUN <<EOF
   rm -rf package.json
 EOF
 RUN cd /goblet/app/repos/kind && \
-    yarn install
+    yarn install && \
+    ln -s /goblet/app/repos/kind/node_modules $HOME/.node_modules
 
 # ---- Run Stage ---- #
 FROM goblet-yarn as goblet-runner
