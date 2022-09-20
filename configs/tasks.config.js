@@ -133,6 +133,9 @@ module.exports = {
           `FIRE_BASE_*`
         ]
       }
+    },
+    kind: {
+      contexts: [`kind`, `kd`],
     }
   },
 }

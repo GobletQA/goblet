@@ -1,0 +1,25 @@
+{
+  "name": "@gobletqa/kind",
+  "version": "0.0.0",
+  "description": "Api Access to kubectl",
+  "main": "index.js",
+  "author": "LanceTipton",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@keg-hub/cli-utils": "0.7.0",
+    "@keg-hub/jsutils": "9.3.2",
+    "@kubernetes/client-node": "^0.17.1",
+    "esbuild-register": "3.3.3",
+    "esbuild": "0.15.3",
+    "esbuild-plugin-path-alias": "1.0.6",
+    "ts-jest": "28.0.8",
+    "typescript": "4.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.13"
+  }
+}

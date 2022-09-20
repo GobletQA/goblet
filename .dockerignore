@@ -46,3 +46,5 @@ pids
 *.seed*
 *.pid.lock*
 **/dist
+certs
+bundle

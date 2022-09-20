@@ -1,0 +1,39 @@
+# Creates a service account that will be used to make Kubernetes API calls
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: goblet-pods-exec
+
+---
+
+# Creates the role to allow modifying pods in the cluster
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: goblet-pods-role
+rules:
+  - apiGroups: [""]
+    resources: 
+      - pods
+      - pods/exec
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - watch
+
+---
+
+# Binds the Role to the ServiceAccount so it can access the Kubernetes API
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: goblet-pods-binding
+subjects:
+  - kind: ServiceAccount
+    name: goblet-pods-exec
+roleRef:
+  kind: ClusterRole
+  name: goblet-pods-role
+  apiGroup: rbac.authorization.k8s.io

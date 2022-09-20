@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exec-curl
+spec:
+  # Adds the ServiceAccount to the pod to allow access to the Kubernetes API
+  serviceAccountName: goblet-pods-exec
+  containers:
+    - name: kubectl
+      image: rancher/kubectl:v1.23.3
+      command: ["kubectl"]
+      args: []

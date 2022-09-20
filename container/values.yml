@@ -209,3 +209,10 @@ env:
   GB_DD_VALIDATION_HEADER: GB-Validation-Key
   
   GB_LOCAL_DEV_MODE: true
+
+# --- KIND ENVs --- #
+  GB_KD_IMAGE_TAG: latest
+  GB_KD_DEPLOYMENT: goblet-kind
+  GB_KD_IMAGE_FROM: 'ubuntu:20.04'
+  GB_KD_IMAGE: 'ghcr.io/gobletqa/goblet-kind'
+  GB_KD_DOC_VOLUMES: ".:/goblet/app,/var/run/docker.sock"

@@ -1,0 +1,119 @@
+ARG GB_IMAGE_FROM=ubuntu:20.04
+ARG IMAGE_FROM=$GB_IMAGE_FROM
+
+# ---- Download kubectl stage ---- #
+FROM $IMAGE_FROM as goblet-kubectl
+WORKDIR /
+ARG DEBIAN_FRONTEND=noninteractive
+RUN <<EOF
+  set -eux;
+  # Enabel all sources
+  sed -i 's/# deb/deb/g' /etc/apt/sources.list
+  # Preinstall any dependecies for settting up the image
+  apt-get update && apt-get install --yes --no-install-recommends \
+    curl \
+    openssh-client \
+    ca-certificates
+
+  # Download kubectl
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  chmod +x kubectl
+  mkdir -p ~/.local/bin
+  mv ./kubectl ~/.local/bin/kubectl
+EOF
+# ---- End Stage ---- #
+
+FROM $IMAGE_FROM as goblet-yarn
+WORKDIR /goblet/app
+ARG GB_DD_API_PROXY_PORT=2121
+ARG GB_DD_WS_PROXY_PORT=2122
+ARG GB_DD_VNC_PROXY_PORT=2123
+
+ARG GB_DD_DOCKER_PORT=2375
+ARG GB_DD_DOCKER_HOST=0.0.0.0
+ARG GB_DD_CADDY_REMOTE_DIR=/goblet/remote
+
+ENV HOME=/root \
+    DISPLAY=:0.0 \
+    DEBUG=pw:api* \
+    LC_ALL=C.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive \
+    GB_DD_WS_PROXY_PORT=$GB_DD_WS_PROXY_PORT \
+    GB_DD_API_PROXY_PORT=$GB_DD_API_PROXY_PORT \
+    GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT \
+    GB_DD_DOCKER_HOST=$GB_DD_DOCKER_HOST \
+    GB_DD_DOCKER_PORT=$GB_DD_DOCKER_PORT \
+    GB_DD_CADDY_REMOTE_DIR=$GB_DD_CADDY_REMOTE_DIR \
+    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin:/root/.local/bin
+
+RUN <<EOF
+  set -eux;
+  # Enabel all sources
+  sed -i 's/# deb/deb/g' /etc/apt/sources.list
+  # Preinstall any dependecies for settting up the image
+  apt-get update && apt-get install --yes --no-install-recommends \
+    curl \
+    wget \
+    nano \
+    gpg \
+    iptables \
+    supervisor \
+    openssh-client \
+    ca-certificates \
+    debian-keyring \
+    apt-transport-https \
+    debian-archive-keyring
+
+  curl -sL https://deb.nodesource.com/setup_16.x | bash -
+  apt-get install -y nodejs
+  npm install -g yarn
+EOF
+
+FROM goblet-yarn as goblet-install
+WORKDIR /goblet/app
+COPY . /goblet/app
+RUN <<EOF
+  rm -rf repos/backend
+  rm -rf repos/conductor
+  rm -rf repos/dind
+  rm -rf repos/frontend
+  rm -rf repos/screencast
+  rm -rf repos/sockr
+  rm -rf repos/testUtils
+  rm -rf repos/vite
+  rm -rf repos/workflows
+  rm -rf tasks
+  rm -rf bundle
+  rm -rf docs
+  rm -rf goblet
+  rm -rf temp
+  rm -rf package.json
+EOF
+RUN cd /goblet/app/repos/kind && \
+    yarn install
+
+# ---- Run Stage ---- #
+FROM goblet-yarn as goblet-runner
+WORKDIR /goblet/app
+COPY repos/kind/scripts/entrypoint.sh /entrypoint.sh
+RUN <<EOF
+  set -eux;
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+  curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
+  apt-get update && apt-get install --yes --no-install-recommends caddy
+  # Cleanup after install
+  apt-get clean
+  rm -rf /var/lib/apt/lists/*
+  # Ensure the folder exists where caddy stores files
+  mkdir -p $GB_DD_CADDY_REMOTE_DIR
+EOF
+
+COPY --from=goblet-kubectl /root/.local/bin/kubectl /root/.local/bin/kubectl
+COPY --from=goblet-install /goblet/app /goblet/app
+
+WORKDIR /goblet/app/repos/kind
+
+# Set the entry point to ensure supervisord always gets started
+CMD ["/entrypoint.sh"]

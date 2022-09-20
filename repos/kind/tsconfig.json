@@ -1,0 +1,31 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "typeRoots": [
+      "./src/types",
+      "../shared/src/types",
+      "./node_modules/@types",
+      "../../node_modules/@types"
+    ],
+    "paths": {
+      "@GKD/Configs": ["configs"],
+      "@GKD/Configs/*": ["configs/*"],
+      "@GKD": ["src"],
+      "@GKD/*": ["src/*"],
+      "@GKD/Root": ["./"],
+      "@gobletqa/shared/*": ["../shared/src/*"],
+      "@gobletqa/shared": ["../shared/src"],
+      "@GLogs/*": ["../../logs/*"],
+      "@GRepos/*": ["../../repos/*"],
+      "@GConfigs/*": ["../../configs/*"],
+      "@GEnvironment": ["../../scripts/environment"]
+    }
+  },
+  "include": [
+    "src",
+    "configs",
+  ],
+  "exclude": ["node_modules", "dist"]
+}
