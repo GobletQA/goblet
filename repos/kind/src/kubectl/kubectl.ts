@@ -1,4 +1,9 @@
-import type { TKubeError, TKubeConfig, TWatchRes } from '../types'
+import type {
+  TPodManifest,
+  TWatchRes,
+  TKubeError,
+  TKubeConfig,
+} from '../types'
 
 import { limbo } from '@keg-hub/jsutils'
 import * as k8s from '@kubernetes/client-node'
@@ -19,11 +24,13 @@ export class KubeCtl {
   kc: k8s.KubeConfig
   client: k8s.CoreV1Api
   watchAbort: TWatchRes
+  objectClient: k8s.KubernetesObjectApi
   
   constructor(config?:TKubeConfig){
     this.kc = new k8s.KubeConfig()
     this.kc.loadFromDefault()
     this.client = this.kc.makeApiClient(k8s.CoreV1Api)
+    this.objectClient = k8s.KubernetesObjectApi.makeApiClient(this.kc)
     this.namespace = config?.namespace || GB_KUBE_NAMESPACE
   }
 
@@ -39,10 +46,13 @@ export class KubeCtl {
   }
 
   /**
-   * Kill a pod based on a reference
+   * Delete a pod based on a reference
    */
-  killPod = async () => {
-    
+  deletePod = async (selector:string) => {
+    const [err, res] = await limbo<Record<'body', any>, TKubeError>(
+      this.client.deleteNamespacedPod(selector, this.namespace)
+    )
+    return err ? throwError(err) : res?.body
   }
 
   /**
@@ -52,11 +62,47 @@ export class KubeCtl {
     
   }
 
+
   /**
    * Create a pod based on the passed in config
    */
-  createPod = async () => {
-    
+  createPod = async (podManifest:TPodManifest) => {
+    const [err, res] = await limbo<Record<'body', any>, TKubeError>(
+      this.client.createNamespacedPod(this.namespace, podManifest)
+    )
+
+    // const [err, res] = await limbo<Record<'body', any>, TKubeError>(
+    //   this.objectClient.create(podManifest)
+    // )
+    return err ? throwError(err) : res?.body
+  }
+
+  /**
+   * Create a pod based on the passed in config
+   */
+  applyPod = async (podManifest:TPodManifest) => {
+    try {
+      return this.patchPod(podManifest)
+    }
+    catch(error){
+      return this.createPod(podManifest)
+    }
+  }
+
+  /**
+   * Create a pod based on the passed in config
+   */
+  patchPod = async (podManifest:TPodManifest) => {
+    const [readErr] = await limbo<Record<'body', any>, TKubeError>(
+      this.objectClient.read(podManifest)
+    )
+    readErr && throwError(readErr)
+
+    const [patchErr, patchRes] = await limbo<Record<'body', any>, TKubeError>(
+      this.objectClient.patch(podManifest)
+    )
+
+    return patchErr ? throwError(patchErr) : patchRes?.body
   }
 
   /**
