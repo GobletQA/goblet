@@ -216,3 +216,6 @@ env:
   GB_KD_IMAGE_FROM: 'ubuntu:20.04'
   GB_KD_IMAGE: 'ghcr.io/gobletqa/goblet-kind'
   GB_KD_DOC_VOLUMES: ".:/goblet/app,/var/run/docker.sock"
+  GB_KD_ROLE_NAME: goblet-modify-pods
+  GB_KD_SERVICE_ACCOUNT: goblet-pods-exec
+  GB_KD_ROLE_BINDING_NAME: goblet-pods-role-binding

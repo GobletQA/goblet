@@ -1,0 +1,136 @@
+# yaml-language-server: $schema=container/devspace.yaml
+version: v1beta11
+
+# Currently we have to define some variables in the yaml that we want to use outside the valuesFiles key in the deployment section
+# https://github.com/loft-sh/devspace/issues/1716
+
+# All vars are loaded from the getYamlValue.js script
+# This allows them to be loaded from the current ENV, the values.yml files, or a fallback
+# See the ../scripts/js/getYamlValue.js script for more information
+vars:
+
+# ----- General Values ----- #
+- name: GB_TOKEN
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_TOKEN"
+- name: NPM_TOKEN
+  source: command
+  command: "node ../scripts/js/getYamlValue.js NPM_TOKEN"
+- name: NODE_ENV
+  source: command
+  command: "node ../scripts/js/getYamlValue.js NODE_ENV"
+- name: BUILD_LOCAL_IMAGE
+  source: command
+  command: "node ../scripts/js/getYamlValue.js BUILD_LOCAL_IMAGE false"
+- name: IMAGE_PULL_POLICY
+  source: command
+  command: "node ../scripts/js/getYamlValue.js IMAGE_PULL_POLICY Always"
+- name: GB_NM_INSTALL
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_NM_INSTALL"
+
+# ----- DinD Values ----- #
+- name: GB_DD_DOCKER_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_DOCKER_PORT"
+- name: GB_DD_PRIVILEGED
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_PRIVILEGED"
+- name: GB_DD_EXP_ADMIN_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_EXP_ADMIN_PORT"
+- name: GB_DD_LOCAL_ADMIN_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_LOCAL_ADMIN_PORT"
+- name: GB_DD_API_PROXY_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_API_PROXY_PORT"
+- name: GB_DD_WS_PROXY_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_WS_PROXY_PORT"
+- name: GB_DD_VNC_PROXY_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_DD_VNC_PROXY_PORT"
+
+# ----- KinD Values ----- #
+- name: GB_KD_DEPLOYMENT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_KD_DEPLOYMENT"
+- name: GB_KD_IMG_URI
+  source: command
+  command: "node ../scripts/js/resolveImgUri.js KD"
+- name: GB_KD_SERVICE_ACCOUNT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_KD_SERVICE_ACCOUNT"
+- name: GB_KD_ROLE_NAME
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_KD_ROLE_NAME"
+- name: GB_KD_ROLE_BINDING_NAME
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_KD_ROLE_BINDING_NAME"
+
+# Load any pull secrets from the environment by calling the resolvePullSecrets.js script
+# The script returns a formatted response as a string
+# See the ../scripts/js/resolvePullSecrets.js script for more information
+pullSecrets: $(node ../scripts/js/resolvePullSecrets.js)
+
+# Defines if and how the docker image will be built before running it as a container
+images:
+  goblet-app:
+    image: ${IMAGE}
+    createPullSecret: true
+    injectRestartHelper: false
+    tags:
+    - ${IMAGE_TAG}
+    - '####-${NODE_ENV}-${devspace.git.commit}'
+    dockerfile: ./Dockerfile
+    context: ../
+    build:
+      disabled: true
+      buildKit:
+        options:
+          buildArgs:
+            NPM_TOKEN: ${NPM_TOKEN}
+
+# The `deployments` section tells devspace how to deploy this project into the cluster
+deployments: 
+- name: ${GB_KD_DEPLOYMENT}
+  helm:
+    chart:
+      name: ./
+    cleanupOnFail: true
+    valuesFiles:
+    - ./values.yml
+    - ./values.${NODE_ENV}.yml
+    values:
+      serviceAccountName: ${GB_KD_SERVICE_ACCOUNT}
+      serviceAccountMeta:
+        name: ${GB_KD_SERVICE_ACCOUNT}
+        binding:
+          name: ${GB_KD_ROLE_BINDING_NAME}
+        role:
+          name: ${GB_KD_ROLE_NAME}
+          resources:
+          - pods
+          - pods/exec
+          verbs:
+          - create
+          - delete
+          - get
+          - list
+          - watch
+      containers:
+      - name: ${GB_KD_DEPLOYMENT}
+        image: ${GB_KD_IMG_URI}
+        imagePullPolicy: Never
+        env: $(node ../scripts/js/resolveDSEnvs.js kind)
+      service: $(node ../scripts/js/resolveService.js KD $GB_DD_DOCKER_PORT $GB_DD_WS_PROXY_PORT $GB_DD_API_PROXY_PORT $GB_DD_VNC_PROXY_PORT $GB_DD_EXP_ADMIN_PORT:$GB_DD_LOCAL_ADMIN_PORT)
+
+dev:
+  # Gets the apps that should sync with the host machine
+  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_DD_ACTIVE GB_SC_ACTIVE GB_KD_ACTIVE)
+
+# Use profile to dynamically switch out the app specific docker image for the development image
+profiles:
+- name: local
+- name: production

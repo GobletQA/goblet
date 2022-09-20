@@ -67,7 +67,6 @@ const syncDDConfig = (deployment, remoteDir=`/goblet/remote`) => (`
   containerPath: ${remoteDir}
 `)
 
-
 const syncSCConfig = (deployment, sharedIgnore) => (`
 - labelSelector:
     app.kubernetes.io/component: ${deployment}
@@ -82,6 +81,21 @@ const syncSCConfig = (deployment, sharedIgnore) => (`
   - '!/repos/sockr'
   - '!/repos/testUtils'
   - '!/repos/workflows'
+${sharedIgnore}
+`)
+
+const syncKDConfig = (deployment, sharedIgnore) => (`
+- labelSelector:
+    app.kubernetes.io/component: ${deployment}
+  disableDownload: true
+  initialSync: mirrorLocal
+  localSubPath: ../
+  containerPath: /goblet/app
+  excludePaths:
+  - '**'
+  - '!/repos/kind'
+  - '!/repos/shared'
+  - '/repos/kind/yarn.lock'
 ${sharedIgnore}
 `)
 
@@ -102,13 +116,15 @@ const generateSync = ({
     ? ``
     : type === `dd`
       ? syncDDConfig(deployment, remoteDir)
-      : type === `sc`
-        ? syncSCConfig(deployment, sharedIgnore)
-        : Boolean(deployment)
-          ? backend
-            ? syncBackendConfig(deployment, sharedIgnore)
-            : syncFrontendConfig(deployment, sharedIgnore)
-          : ``
+      : type === 'kd'
+        ? syncKDConfig(deployment, sharedIgnore)
+        : type === `sc`
+          ? syncSCConfig(deployment, sharedIgnore)
+          : Boolean(deployment)
+            ? backend
+              ? syncBackendConfig(deployment, sharedIgnore)
+              : syncFrontendConfig(deployment, sharedIgnore)
+            : ``
 }
 
 const envs = resolveValues()
@@ -138,11 +154,18 @@ const scDeployment = generateSync({
   backend: true,
   isActiveEnv: args.shift(),
 })
+const kdDeployment = generateSync({
+  type: `kd`,
+  sharedIgnore,
+  backend: true,
+  isActiveEnv: args.shift(),
+})
 
 let syncs = ``
 feDeployment && (syncs += feDeployment)
 beDeployment && (syncs += beDeployment)
 ddDeployment && (syncs += ddDeployment)
 scDeployment && (syncs += scDeployment)
+kdDeployment && (syncs += kdDeployment)
 
 process.stdout.write(syncs)
