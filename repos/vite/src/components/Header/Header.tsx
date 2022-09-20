@@ -1,10 +1,10 @@
-import * as React from 'react'
+import type { MouseEvent } from 'react'
+
 import Box from '@mui/material/Box'
+import { Settings } from './Settings'
 import Toolbar from '@mui/material/Toolbar'
 import { AppHeader } from './Header.styled'
-
-import { Logo } from './Logo'
-import { Settings } from './Settings'
+import { useStateReset } from '@hooks/useReset'
 
 type THeaderProps = {
   settings?: string[]
@@ -12,16 +12,13 @@ type THeaderProps = {
 
 export const Header = (props:THeaderProps) => {
   const settings = props.settings || []
-
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget)
-  }
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null)
-  }
+  
+  const [
+    anchorEl,
+    __,
+    resetAnchor,
+    updateAnchor,
+  ] = useStateReset<null | HTMLElement, MouseEvent<HTMLElement>>(null, null, `currentTarget`)
 
   return (
     <AppHeader position="fixed">
@@ -29,9 +26,9 @@ export const Header = (props:THeaderProps) => {
         <Box sx={{ flex: 1 }} />
         <Settings
           settings={settings}
-          anchorEl={anchorElUser}
-          onOpenSettings={handleOpenUserMenu}
-          onCloseSettings={handleCloseUserMenu}
+          anchorEl={anchorEl}
+          onOpenSettings={updateAnchor}
+          onCloseSettings={resetAnchor}
         />
       </Toolbar>
     </AppHeader>

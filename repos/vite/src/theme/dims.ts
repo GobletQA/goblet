@@ -1,7 +1,13 @@
 
 export const dims = {
   header: {
-    height: 50
+    height: 45,
+    avatar: {
+      size: 35
+    }
+  },
+  footer: {
+    height: 5
   },
   nav: {
     openWidth: 350,

@@ -15,6 +15,9 @@ export const colors:TColors = {
   // ---- Common Theme Colors
   error: `rgb(232, 51, 51)`,
   success: `rgb(76,175,80)`,
+
+  // ---- Default Theme Colors
+  white: `#FFFFFF`
 } 
 
 const paletteCommon = {

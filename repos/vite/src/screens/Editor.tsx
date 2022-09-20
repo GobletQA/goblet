@@ -1,4 +1,5 @@
 
+import { dims } from '@theme'
 import { Section } from '@components/Section'
 import Grid2 from '@mui/material/Unstable_Grid2'
 import Container from '@mui/material/Container'
@@ -6,6 +7,7 @@ import { Terminal } from '@components/Terminal'
 import { CodeEditor } from '@components/CodeEditor'
 import { Screencast } from '@components/Screencast'
 import { Definitions } from '@components/Definitions'
+
 
 export type TEditorProps = {
   
@@ -40,9 +42,9 @@ export default function Editor(props:TEditorProps){
             />
             <Definitions
               sx={{
-                position: `absolute`,
-                bottom: `20px`,
                 minHeight: `40px`,
+                position: `absolute`,
+                bottom: dims.footer.height,
               }}
             />
           </Container>

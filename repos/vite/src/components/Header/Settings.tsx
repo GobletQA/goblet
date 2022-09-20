@@ -1,3 +1,4 @@
+import { dims } from '@theme'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -32,7 +33,13 @@ export const Settings = (props:TSettingsProps) => {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={onOpenSettings} sx={{ p: 0 }}>
-          <Avatar alt="User Name" />
+          <Avatar
+            alt="User Name"
+            sx={{
+              width: `${dims.header.avatar.size}px`,
+              height: `${dims.header.avatar.size}px`,
+            }}
+          />
         </IconButton>
       </Tooltip>
       <Menu
