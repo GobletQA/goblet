@@ -37,9 +37,16 @@ export default function Editor(props:TEditorProps){
     >
       <Grid2 xs={6} alignItems="stretch" >
         <Section sx={sectionStyles.full} >
-          <Container sx={{ backgroundColor: `#2a2a2a`, position: `relative` }} disableGutters >
-            <CodeEditor
-            />
+          <Container
+            disableGutters
+            sx={{
+              display: `flex`,
+              overflow: `hidden`,
+              position: `relative`,
+              backgroundColor: `#2a2a2a`,
+            }}
+          >
+            <CodeEditor/>
             <Definitions
               sx={{
                 minHeight: `40px`,

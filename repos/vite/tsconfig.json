@@ -41,7 +41,8 @@
       "@theme/*": [ "src/theme/*" ],
       "@utils": [ "src/utils" ],
       "@utils/*": [ "src/utils/*" ],
-      "@gobletqa/shared": [ "../shared/src" ]
+      "@gobletqa/shared": [ "../shared/src" ],
+      "@gobletqa/shared/*": [ "../shared/src/*" ]
     }
   },
   "include": ["src"],
