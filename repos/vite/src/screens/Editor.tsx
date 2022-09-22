@@ -1,13 +1,23 @@
 
 import { dims } from '@theme'
+import Box from '@mui/material/Box'
 import { Section } from '@components/Section'
-import Grid2 from '@mui/material/Unstable_Grid2'
 import Container from '@mui/material/Container'
 import { Terminal } from '@components/Terminal'
 import { CodeEditor } from '@components/CodeEditor'
 import { Screencast } from '@components/Screencast'
 import { Definitions } from '@components/Definitions'
+import {
+    HorizontalPageSplit,
+} from 'react-page-split'
+import 'react-page-split/style.css'
 
+
+// import ResizeObserver from "react-resize-observer"
+      // <ResizeObserver
+      //   onResize={onResizeCb}
+      //   onPosition={onPositionCb}
+      // />
 
 export type TEditorProps = {
   
@@ -23,19 +33,29 @@ const sectionStyles = {
     display: `flex`,
     minHeight: `50%`,
     alignItems: `stretch`,
+  },
+  panel: {
+    display: `flex`,
+    minHeight: `100%`,
+    flexDirection: `column`,
   }
 }
 
+/**
+  <Definitions
+    sx={{
+      minHeight: `40px`,
+      position: `absolute`,
+      bottom: dims.footer.height,
+    }}
+  />
+
+ */
+
 export default function Editor(props:TEditorProps){
   return (
-    <Grid2
-      container
-      spacing={0}
-      width={"100%"}
-      alignItems="stretch"
-      justifyContent="space-evenly"
+    <HorizontalPageSplit
     >
-      <Grid2 xs={6} alignItems="stretch" >
         <Section sx={sectionStyles.full} >
           <Container
             disableGutters
@@ -44,20 +64,14 @@ export default function Editor(props:TEditorProps){
               overflow: `hidden`,
               position: `relative`,
               backgroundColor: `#2a2a2a`,
+              // height: '100vh',
+              height: `calc( 100vh - ${dims.header.height + dims.footer.height}px)`,
             }}
           >
             <CodeEditor/>
-            <Definitions
-              sx={{
-                minHeight: `40px`,
-                position: `absolute`,
-                bottom: dims.footer.height,
-              }}
-            />
           </Container>
         </Section>
-      </Grid2>
-      <Grid2 xs={6} alignItems="stretch" >
+      <Section sx={sectionStyles.panel} >
         <Section sx={sectionStyles.half}>
           <Screencast
           />
@@ -66,8 +80,8 @@ export default function Editor(props:TEditorProps){
           <Terminal
           />
         </Section>
-      </Grid2>
-    </Grid2>
+      </Section>
+    </HorizontalPageSplit>
   )
 }
 
