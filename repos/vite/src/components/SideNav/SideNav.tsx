@@ -10,9 +10,7 @@ import { useTheme } from '@mui/material/styles'
 import { Goblet } from '@components/Icons/Goblet'
 import IconButton from '@mui/material/IconButton'
 import { DrawerHeader, Drawer } from './SideNav.styled'
-import { SideNav as SideNavConst } from '@constants/Nav'
-
-
+import { SideNav as SideNavConst } from '@constants/nav'
 
 const findNavItem = (element:HTMLElement):string|undefined => {
   const navItem = element?.dataset?.navItem
@@ -27,6 +25,7 @@ const findNavItem = (element:HTMLElement):string|undefined => {
 
 const groups = SideNavConst.groups.map(group => {
   const builtGrp = { ...group, items: [] } as TGroupItem
+  // @ts-ignore
   group.items.map(({ icon, ...item}) => {
     // @ts-ignore
     const Icon = Icons[icon]

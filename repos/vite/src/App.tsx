@@ -7,6 +7,8 @@ import { Fadeout } from '@components/Fadeout'
 import { RootScreen } from 'src/screens/Root'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
+import { Store } from '@store'
+import { Provider } from 'react-redux'
 
 const onAppInit = async (setApiTimeout:(...args:any[])=>any) => {
   let timeout:NodeJS.Timeout
@@ -31,11 +33,13 @@ const App = () => {
   }, [])
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <RootScreen themeSwitch={setThemeType} />
-      <Fadeout start={start} content={apiTimeout} />
-    </ThemeProvider>
+    <Provider store={Store}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <RootScreen themeSwitch={setThemeType} />
+        <Fadeout start={start} content={apiTimeout} />
+      </ThemeProvider>
+    </Provider>
   )
 }
 
