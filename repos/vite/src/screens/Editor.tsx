@@ -8,7 +8,9 @@ import { CodeEditor } from '@components/CodeEditor'
 import { Screencast } from '@components/Screencast'
 import { Definitions } from '@components/Definitions'
 import {
-    HorizontalPageSplit,
+  Proportional,
+  VerticalPageSplit,
+  HorizontalPageSplit,
 } from 'react-page-split'
 import 'react-page-split/style.css'
 
@@ -23,23 +25,16 @@ export type TEditorProps = {
   
 }
 
-const sectionStyles = {
-  full: {
-    display: `flex`,
-    minHeight: `100%`,
-    alignItems: `stretch`,
-  },
-  half: {
-    display: `flex`,
-    minHeight: `50%`,
-    alignItems: `stretch`,
-  },
-  panel: {
-    display: `flex`,
-    minHeight: `100%`,
-    flexDirection: `column`,
-  }
+
+
+const fullHeight = {
+  height: `calc( 100vh - ${dims.header.height + dims.footer.height}px)`,
 }
+const noOverflow = {
+  ...fullHeight,
+  overflow: `hidden`
+}
+
 
 /**
   <Definitions
@@ -52,35 +47,21 @@ const sectionStyles = {
 
  */
 
+
 export default function Editor(props:TEditorProps){
   return (
     <HorizontalPageSplit
+      resize={Proportional}
     >
-        <Section sx={sectionStyles.full} >
-          <Container
-            disableGutters
-            sx={{
-              display: `flex`,
-              overflow: `hidden`,
-              position: `relative`,
-              backgroundColor: `#2a2a2a`,
-              // height: '100vh',
-              height: `calc( 100vh - ${dims.header.height + dims.footer.height}px)`,
-            }}
-          >
-            <CodeEditor/>
-          </Container>
-        </Section>
-      <Section sx={sectionStyles.panel} >
-        <Section sx={sectionStyles.half}>
-          <Screencast
-          />
-        </Section>
-        <Section sx={sectionStyles.half} >
-          <Terminal
-          />
-        </Section>
-      </Section>
+      <Container disableGutters sx={noOverflow}>
+        <CodeEditor/>
+      </Container>
+      <Container disableGutters sx={fullHeight}>
+        <VerticalPageSplit>
+          <Screencast />
+          <Terminal />
+        </VerticalPageSplit>
+      </Container>
     </HorizontalPageSplit>
   )
 }
