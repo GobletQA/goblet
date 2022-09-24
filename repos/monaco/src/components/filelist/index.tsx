@@ -1,11 +1,11 @@
 import React, { useCallback, useState, useMemo, useRef, useEffect } from 'react'
-import AddFileIcon from '@components/icons/addfile'
-import AddFolderIcon from '@components/icons/addfolder'
-import Icon from '@components/icons'
-import Arrow from '@components/icons/arrow'
-import DeleteIcon from '@components/icons/delete'
-import EditIcon from '@components/icons/edit'
-import Modal from '@components/modal'
+import AddFileIcon from '../icons/addfile'
+import AddFolderIcon from '../icons/addfolder'
+import Icon from '../icons'
+import Arrow from '../icons/arrow'
+import DeleteIcon from '../icons/delete'
+import EditIcon from '../icons/edit'
+import Modal from '../modal'
 import {
   generateFileTree,
   addSourceFile,
@@ -14,7 +14,7 @@ import {
   addSourceFolder,
   deleteSourceFolder,
   editSourceFolderName,
-} from '@utils/index'
+} from '../../utils'
 import './index.css'
 
 const File: React.FC<{

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import Arrow from '@components/icons/arrow'
+import Arrow from '../icons/arrow'
 import Menu from './components/menu'
 import Position from './components/position'
 import './index.css'

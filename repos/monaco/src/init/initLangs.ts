@@ -1,10 +1,11 @@
 import { loadWASM } from 'onigasm'
-import { PATHS } from '@constants'
-import type { TEditorConfig } from '@types'
+import { PATHS, LANGS } from '../constants'
+import type { TEditorConfig } from '../types'
 import { setTheme } from './setTheme'
 
-const addExtraLib = async () => {
-  let res = await (await fetch(`${PATHS.assets}@types/react/index.d.ts`)).text()
+
+const addExtraLib = async (config:TEditorConfig) => {
+  let res = await (await fetch(`${PATHS.assets}@gobletqa/monaco/types/react/index.d.ts`)).text()
   window.monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
     allowJs: true,
     allowNonTsExtensions: true,
@@ -13,13 +14,13 @@ const addExtraLib = async () => {
   })
   window.monaco.languages.typescript.javascriptDefaults.addExtraLib(
     res,
-    'goblet:/node_modules/@types/react/index.d.ts'
+    'goblet:/node_modules/@gobletqa/monaco/types/react/index.d.ts'
   )
   window.monaco.languages.typescript.typescriptDefaults.addExtraLib(
     res,
-    'goblet:/node_modules/@types/react/index.d.ts'
+    'goblet:/node_modules/@gobletqa/monaco/types/react/index.d.ts'
   )
-  res = await (await fetch(`${PATHS.assets}@types/react/global.d.ts`)).text()
+  res = await (await fetch(`${PATHS.assets}@gobletqa/monaco/types/react/global.d.ts`)).text()
   window.monaco.languages.typescript.javascriptDefaults.addExtraLib(
     res,
     'goblet:/node_modules/%40types/react/global.d.ts'
@@ -28,20 +29,20 @@ const addExtraLib = async () => {
     res,
     'goblet:/node_modules/%40types/react/global.d.ts'
   )
-  res = await (await fetch(`${PATHS.assets}@types/react-dom/index.d.ts`)).text()
+  res = await (await fetch(`${PATHS.assets}@gobletqa/monaco/types/react-dom/index.d.ts`)).text()
   window.monaco.languages.typescript.javascriptDefaults.addExtraLib(
     res,
-    'goblet:/node_modules/@types/react-dom/index.d.ts'
+    'goblet:/node_modules/@gobletqa/monaco/types/react-dom/index.d.ts'
   )
   window.monaco.languages.typescript.typescriptDefaults.addExtraLib(
     res,
-    'goblet:/node_modules/@types/react-dom/index.d.ts'
+    'goblet:/node_modules/@gobletqa/monaco/types/react-dom/index.d.ts'
   )
 }
 
-const registerLangs = () => {
-  window.monaco.languages.register({ id: 'JavascriptReact' })
-  window.monaco.languages.register({ id: 'TypescriptReact' })
+const registerLangs = (config:TEditorConfig) => {
+  const langs = [ ...LANGS, (config?.monaco?.languages || []) ] as string[]
+  langs.forEach(lang => window.monaco.languages.register({ id: lang }))
 }
 
 export const initLangs = async (config:TEditorConfig) => {
@@ -53,7 +54,9 @@ export const initLangs = async (config:TEditorConfig) => {
   })
 
   await loadWASM(`${PATHS.assets}onigasm.wasm`)
-  setTheme(config?.editor?.theme || 'OneDarkPro')
-  addExtraLib()
-  registerLangs()
+  config?.theme?.name
+    && setTheme(config?.theme?.name, config?.theme?.theme)
+
+  addExtraLib(config)
+  registerLangs(config)
 }

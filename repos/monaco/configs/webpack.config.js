@@ -6,7 +6,8 @@ const hq = require('alias-hq')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const rootDir = path.resolve(__dirname, '..') 
-const publicAssets = path.join(rootDir, '../../node_modules/@gobletqa/monaco-public')
+const gobletRoot = hq.get('webpack').GobletRoot
+const publicAssets = path.join(gobletRoot, 'node_modules/@gobletqa/monaco-public')
 
 module.exports = {
   entry: {

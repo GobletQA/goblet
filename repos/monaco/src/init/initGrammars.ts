@@ -1,9 +1,6 @@
-import type { TEditorConfig } from '@types'
-
-import { PATHS } from '@constants'
-
+import type { TEditorConfig } from '../types'
+import { PATHS } from '../constants'
 import { Registry } from 'monaco-textmate'
-import { wireTmGrammars } from 'monaco-editor-textmate'
 
 
 const grammerMap: {

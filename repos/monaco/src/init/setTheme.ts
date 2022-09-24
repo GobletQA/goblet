@@ -1,13 +1,13 @@
-import type { TEditorTheme } from '@types'
-import { PATHS } from '@constants'
+import type { TEditorThemes, TEditorTheme } from '../types'
+import { PATHS } from '../constants'
 
 
-export const themes: TEditorTheme = {}
+export const themes: TEditorThemes = {}
 
-export const  setTheme = async (name: string) => {
-  let theme = themes[name]
+export const  setTheme = async (name: string, themeObj?:TEditorTheme) => {
+  let theme = themes[name] || themeObj
   if (!theme) {
-    theme = JSON.parse(await (await fetch(`${PATHS.assets}themes/${name}.json`)).text())
+    theme = {} as TEditorTheme
     themes[name] = theme
     window.monaco.editor.defineTheme(name, theme)
   }

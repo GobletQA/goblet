@@ -1,3 +1,4 @@
+import type { TEditorConfig, TEditorTheme } from '../types'
 import React, {
   useCallback,
   useEffect,
@@ -6,17 +7,18 @@ import React, {
   useImperativeHandle,
   useMemo,
 } from 'react'
-import { THEMES } from '@constants'
+
+import { THEMES } from '../constants'
 import * as monacoType from 'monaco-editor'
-import Modal from '@components/modal'
-import Select from '@components/select'
-import Close from '@components/icons/close'
-import Prettier from '@components/prettier'
-import FileList from '@components/filelist'
+import Modal from '../components/modal'
+import Select from '../components/select'
+import Close from '../components/icons/close'
+import Prettier from '../components/prettier'
+import FileList from '../components/filelist'
 import { setTheme } from '../init/setTheme'
-import OpenedTab from '@components/openedtab'
-import SettingIcon from '@components/icons/setting'
-import { worker, createOrUpdateModel, deleteModel } from '@utils'
+import OpenedTab from '../components/openedtab'
+import SettingIcon from '../components/icons/setting'
+import { createOrUpdateModel, deleteModel } from '../utils'
 
 export interface filelist {
   [key: string]: string | null
@@ -31,6 +33,7 @@ export interface MultiEditorIProps {
   onFileChange?: (key: string, value: string) => void
   defaultFiles?: filelist
   // files?: filelist,
+  config?: TEditorConfig,
   options: monacoType.editor.IStandaloneEditorConstructionOptions
 }
 
@@ -38,7 +41,7 @@ export interface MultiRefType {
   getValue: (path: string) => string | null
   getAllValue: () => filelist
   getSupportThemes: () => Array<string>
-  setTheme: (name: string) => void
+  setTheme: (name: string, theme?:TEditorTheme) => void
 }
 
 export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>(
@@ -53,6 +56,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
       defaultFiles = {},
       // files,
       onFileChange,
+      config={},
       options,
     },
     ref
@@ -137,44 +141,44 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
               onValueChangeRef.current(v)
             }
 
-            if (timer) clearTimeout(timer)
-            timer = setTimeout(() => {
-              timer = null
-              worker.then(res =>
-                res.postMessage({
-                  code: model.getValue(),
-                  version: model.getVersionId(),
-                  path,
-                })
-              )
-            }, 500)
+            // if (timer) clearTimeout(timer)
+            // timer = setTimeout(() => {
+            //   timer = null
+            //   worker.then(res =>
+            //     res.postMessage({
+            //       code: model.getValue(),
+            //       version: model.getVersionId(),
+            //       path,
+            //     })
+            //   )
+            // }, 500)
           })
         }
-        worker.then(res =>
-          res.postMessage({
-            code: model.getValue(),
-            version: model.getVersionId(),
-            path,
-          })
-        )
+        // worker.then(res =>
+        //   res.postMessage({
+        //     code: model.getValue(),
+        //     version: model.getVersionId(),
+        //     path,
+        //   })
+        // )
         prePath.current = path
         return model
       }
       return false
     }, [])
 
-    useEffect(() => {
-      worker.then(
-        res =>
-          (res.onmessage = function (event) {
-            const { markers, version } = event.data
-            const model = editorRef.current?.getModel()
-            if (model && model.getVersionId() === version) {
-              window.monaco.editor.setModelMarkers(model, 'eslint', markers)
-            }
-          })
-      )
-    }, [])
+    // useEffect(() => {
+    //   worker.then(
+    //     res =>
+    //       (res.onmessage = function (event) {
+    //         const { markers, version } = event.data
+    //         const model = editorRef.current?.getModel()
+    //         if (model && model.getVersionId() === version) {
+    //           window.monaco.editor.setModelMarkers(model, 'eslint', markers)
+    //         }
+    //       })
+    //   )
+    // }, [])
 
     const openOrFocusPath = useCallback((path: string) => {
       setOpenedFiles(pre => {
@@ -394,12 +398,10 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     useEffect(() => {
       if (editorRef.current) {
-        if (options.theme) {
-          setTheme(options.theme)
-        }
+        if(config.theme) setTheme(config.theme.name, config.theme.theme)
         editorRef.current.updateOptions(options)
       }
-    }, [options])
+    }, [options, config])
 
     useEffect(() => {
       if (onPathChangeRef.current && curPath) {
@@ -409,10 +411,10 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     }, [curPath])
 
     useImperativeHandle(ref, () => ({
-      getValue: (path: string) => filesRef.current[path],
-      getAllValue: () => filesRef.current,
+      setTheme,
       getSupportThemes: () => THEMES,
-      setTheme: name => setTheme(name),
+      getAllValue: () => filesRef.current,
+      getValue: (path: string) => filesRef.current[path],
     }))
 
     const addFile = useCallback(

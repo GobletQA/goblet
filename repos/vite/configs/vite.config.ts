@@ -1,5 +1,5 @@
 import path from 'path'
-import { defineConfig } from 'vite'
+import { defineConfig, searchForWorkspaceRoot } from 'vite'
 import mkcert from'vite-plugin-mkcert'
 import react from '@vitejs/plugin-react'
 import { loadConfig } from './frontend.config'
@@ -10,8 +10,9 @@ import { svgrComponent } from 'vite-plugin-svgr-component'
 const rootDir = path.join(__dirname, '..')
 process.env.PLUGIN_DATA_DIR = path.join(rootDir, `../../certs`)
 
-export default defineConfig(async ({ command, mode, ssrBuild }) => {
-  const {envs, port} = loadConfig()
+// @ts-ignore
+export default defineConfig(async () => {
+  const { envs, port} = loadConfig()
 
   return {
     root: rootDir,

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import { createRoot } from 'react-dom/client'
-import Close from '@components/icons/close'
-import Button from '@components/button'
+import Close from '../icons/close'
+import Button from '../button'
 import './index.css'
 
 interface Props {

@@ -1,7 +1,7 @@
 import './index.css'
 import React, { useEffect, useState } from 'react'
 import Editor, { MultiEditorIProps, MultiRefType } from './Editor'
-import { Loading } from '@components/icons/loading'
+import { Loading } from '../components/icons/loading'
 
 export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(
   (props, ref) => {

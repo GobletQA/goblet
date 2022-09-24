@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { PATHS } from '@constants'
+import { PATHS } from '../../constants'
 
 import './index.css'
 

@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react'
-import Modal from '@components/modal'
-import Arrow from '@components/icons/arrow'
-import AddFileIcon from '@components/icons/addfile'
-import AddFolderIcon from '@components/icons/addfolder'
+import Modal from '../modal'
+import Arrow from '../icons/arrow'
+import AddFileIcon from '../icons/addfile'
+import AddFolderIcon from '../icons/addfolder'
 import {
   generateFileTree,
   addSourceFile,
@@ -11,7 +11,7 @@ import {
   addSourceFolder,
   deleteSourceFolder,
   editSourceFolderName,
-} from '@utils/index'
+} from '@gobletqa/monaco/utils/index'
 import { File } from './file'
 import './index.css'
 

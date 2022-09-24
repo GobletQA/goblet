@@ -1,7 +1,6 @@
-import type { TEditorConfig } from '@types'
+import type { TEditorConfig } from '../types'
 
-import { loadWASM } from 'onigasm'
-import { PATHS } from '@constants'
+import { PATHS } from '../constants'
 import { initLangs } from './initLangs'
 import { Registry } from 'monaco-textmate'
 import { wireTmGrammars } from 'monaco-editor-textmate'

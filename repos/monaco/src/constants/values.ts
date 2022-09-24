@@ -11,9 +11,21 @@ export const MONACO_URLS = {
   },
 }
 
+const getAssetsPath = () => {
+  let found = `/`
+  // @ts-ignore
+  try { found = ASSETS_PATH } catch(err){}
+
+  return found
+}
+
 export const PATHS = {
   vs: 'vs/editor/editor.main',
   // @ts-ignore
-  assets: ASSETS_PATH as string
+  assets: getAssetsPath() as string
 }
 
+export const LANGS = [
+  'JavascriptReact',
+  'TypescriptReact'
+]

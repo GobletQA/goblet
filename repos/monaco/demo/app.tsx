@@ -1,6 +1,6 @@
-import type { TFilelist } from '@types'
+import type { TFilelist } from '@gobletqa/monaco/types'
 import ReactDOM from 'react-dom'
-import { THEMES } from '@constants'
+import { THEMES } from '@gobletqa/monaco/constants'
 import MultiEditor from '../src/multi'
 import { useCallback, useRef } from 'react'
 import { createRoot } from 'react-dom/client'

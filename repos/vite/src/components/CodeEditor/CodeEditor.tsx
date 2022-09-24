@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react'
-import { MultiEditor } from 'yuzai-base-editor'
-
+// import { MultiEditor } from 'yuzai-base-editor'
+import { MultiEditor } from '@gobletqa/monaco'
 
 export type TCodeEditorProps = {
   

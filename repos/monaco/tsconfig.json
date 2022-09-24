@@ -19,18 +19,11 @@
     "outDir": "build",
     "baseUrl": "./",
     "paths": {
-      "@assets": ["src/assets"],
-      "@assets/*": ["src/assets/*"],
-      "@constants": ["src/constants"],
-      "@constants/*": ["src/constants/*"],
-      "@components": ["src/components"],
-      "@components/*": ["src/components/*"],
-      "@init": ["src/init"],
-      "@init/*": ["src/init/*"],
-      "@types": ["src/types"],
-      "@types/*": ["src/types/*"],
-      "@utils": ["src/utils"],
-      "@utils/*": ["src/utils/*"]
+      "@gobletqa/monaco": [ "../monaco/src" ],
+      "@gobletqa/monaco/*": [ "../monaco/src/*" ],
+      "@gobletqa/monaco-public": ["../../node_modules/@gobletqa/monaco-public"],
+      "@gobletqa/monaco-public/*": ["../../node_modules/@gobletqa/monaco-public/*"],
+      "GobletRoot": ["../../"]
     }
   },
   "include": [

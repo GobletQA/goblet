@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useCallback, useEffect, useState, useRef } from 'react'
-import Modal from '@components/modal'
+import Modal from '../modal'
 import Icon from '../icons'
 import './index.css'
 

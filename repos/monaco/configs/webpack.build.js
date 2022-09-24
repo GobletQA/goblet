@@ -51,10 +51,10 @@ module.exports = {
     },
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
-      '@constants': path.resolve(rootDir, './src/constants'),
-      '@components': path.resolve(rootDir, './src/components'),
-      '@types': path.resolve(__dirname, './src/types'),
-      '@utils': path.resolve(rootDir, './src/utils'),
+      '@gobletqa/monaco/constants': path.resolve(rootDir, './src/constants'),
+      '@gobletqa/monaco/components': path.resolve(rootDir, './src/components'),
+      '@gobletqa/monaco/types': path.resolve(__dirname, './src/types'),
+      '@gobletqa/monaco/utils': path.resolve(rootDir, './src/utils'),
     },
   },
   externals: {
