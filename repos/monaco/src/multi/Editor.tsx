@@ -9,11 +9,11 @@ import React, {
 import { THEMES } from '@constants'
 import * as monacoType from 'monaco-editor'
 import Modal from '@components/modal'
-import { configTheme } from '../editor'
 import Select from '@components/select'
 import Close from '@components/icons/close'
 import Prettier from '@components/prettier'
 import FileList from '@components/filelist'
+import { setTheme } from '../init/setTheme'
 import OpenedTab from '@components/openedtab'
 import SettingIcon from '@components/icons/setting'
 import { worker, createOrUpdateModel, deleteModel } from '@utils'
@@ -395,7 +395,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     useEffect(() => {
       if (editorRef.current) {
         if (options.theme) {
-          configTheme(options.theme)
+          setTheme(options.theme)
         }
         editorRef.current.updateOptions(options)
       }
@@ -412,7 +412,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
       getValue: (path: string) => filesRef.current[path],
       getAllValue: () => filesRef.current,
       getSupportThemes: () => THEMES,
-      setTheme: name => configTheme(name),
+      setTheme: name => setTheme(name),
     }))
 
     const addFile = useCallback(
@@ -658,7 +658,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
               <div className='goblet-monaco-editor-input-row'>
                 <div className='goblet-monaco-editor-input-name'>Theme</div>
                 <div className='goblet-monaco-editor-input-value'>
-                  <Select defaultValue='OneDarkPro' onChange={v => configTheme(v.value)}>
+                  <Select defaultValue='OneDarkPro' onChange={v => setTheme(v.value)}>
                     {THEMES.map(theme => (
                       <Select.Menu label={theme} value={theme} key={theme} />
                     ))}

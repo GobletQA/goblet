@@ -45,6 +45,8 @@
       "@types/*": [ "src/types/*" ],
       "@utils": [ "src/utils" ],
       "@utils/*": [ "src/utils/*" ],
+      "@gobletqa/monaco": [ "../monaco/src" ],
+      "@gobletqa/monaco/*": [ "../monaco/src/*" ],
       "@gobletqa/shared": [ "../shared/src" ],
       "@gobletqa/shared/*": [ "../shared/src/*" ]
     }

@@ -1,4 +1,4 @@
 import './app'
-import { initEditor } from '../src/editor'
+import { initMonaco } from '../src'
 
-initEditor()
+initMonaco()

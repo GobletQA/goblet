@@ -1,7 +1,8 @@
-import type { TEditorConfig } from './types'
+import type { TEditorConfig } from '@types'
 
 import { loadWASM } from 'onigasm'
-import { PATHS } from './constants'
+import { PATHS } from '@constants'
+import { initLangs } from './initLangs'
 import { Registry } from 'monaco-textmate'
 import { wireTmGrammars } from 'monaco-editor-textmate'
 declare type monacoType = typeof import('monaco-editor')
@@ -43,83 +44,6 @@ const grammerMap: {
   'text.html.basic': 'html.tmLanguage.json',
 }
 
-export const themes: {
-  [key: string]: any
-} = {}
-
-export async function configTheme(name: string) {
-  let theme = themes[name]
-  if (!theme) {
-    theme = JSON.parse(await (await fetch(`${PATHS.assets}themes/${name}.json`)).text())
-    themes[name] = theme
-    window.monaco.editor.defineTheme(name, theme)
-  }
-
-  const prefix = '--monaco-'
-
-  Object.keys(theme.colors).forEach(v => {
-    document.documentElement.style.setProperty(
-      `${prefix}${v.replace('.', '-')}`,
-      theme.colors[v] || themes.OneDarkPro.colors[v] || 'rgba(0, 0, 0, 0)'
-    )
-  })
-
-  window.monaco.editor.setTheme(name)
-}
-
-async function addExtraLib() {
-  let res = await (await fetch(`${PATHS.assets}@types/react/index.d.ts`)).text()
-  window.monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-    allowJs: true,
-    allowNonTsExtensions: true,
-    // for use of import React from 'react' ranther than import * as React from 'react'
-    allowSyntheticDefaultImports: true,
-  })
-  window.monaco.languages.typescript.javascriptDefaults.addExtraLib(
-    res,
-    'goblet:/node_modules/@types/react/index.d.ts'
-  )
-  window.monaco.languages.typescript.typescriptDefaults.addExtraLib(
-    res,
-    'goblet:/node_modules/@types/react/index.d.ts'
-  )
-  res = await (await fetch(`${PATHS.assets}@types/react/global.d.ts`)).text()
-  window.monaco.languages.typescript.javascriptDefaults.addExtraLib(
-    res,
-    'goblet:/node_modules/%40types/react/global.d.ts'
-  )
-  window.monaco.languages.typescript.typescriptDefaults.addExtraLib(
-    res,
-    'goblet:/node_modules/%40types/react/global.d.ts'
-  )
-  res = await (await fetch(`${PATHS.assets}@types/react-dom/index.d.ts`)).text()
-  window.monaco.languages.typescript.javascriptDefaults.addExtraLib(
-    res,
-    'goblet:/node_modules/@types/react-dom/index.d.ts'
-  )
-  window.monaco.languages.typescript.typescriptDefaults.addExtraLib(
-    res,
-    'goblet:/node_modules/@types/react-dom/index.d.ts'
-  )
-}
-
-
-const initLangs = async () => {
-  window.monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
-  window.monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
-    noSemanticValidation: true,
-    noSyntaxValidation: true,
-  })
-
-  await loadWASM(`${PATHS.assets}onigasm.wasm`)
-  configTheme('OneDarkPro')
-  addExtraLib()
-}
-
-const registerLangs = () => {
-  window.monaco.languages.register({ id: 'JavascriptReact' })
-  window.monaco.languages.register({ id: 'TypescriptReact' })
-}
 
 const initGrammars = () => {
   const grammars = new Map()
@@ -146,15 +70,14 @@ const initGrammars = () => {
   return { grammars, registry }
 }
 
-const setupMonaco = () => {
-  initLangs()
-  registerLangs()
+const setupMonaco = (config:TEditorConfig) => {
+  initLangs(config)
   const { grammars, registry } = initGrammars()
 
   setTimeout(() => wireTmGrammars(window.monaco, registry, grammars) , 3000)
 }
 
-export const initEditor = (config?:TEditorConfig) => {
+export const initMonaco = (config:TEditorConfig={} as TEditorConfig) => {
   if (__INIT_CALLED) return
   __INIT_CALLED = true
 
@@ -194,7 +117,7 @@ export const initEditor = (config?:TEditorConfig) => {
   )
   const interval = setInterval(() => {
     if (window.monaco) {
-      setupMonaco()
+      setupMonaco(config)
       clearInterval(interval)
     }
   }, 100)

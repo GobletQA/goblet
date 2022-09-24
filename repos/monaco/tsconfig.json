@@ -25,6 +25,8 @@
       "@constants/*": ["src/constants/*"],
       "@components": ["src/components"],
       "@components/*": ["src/components/*"],
+      "@init": ["src/init"],
+      "@init/*": ["src/init/*"],
       "@types": ["src/types"],
       "@types/*": ["src/types/*"],
       "@utils": ["src/utils"],
