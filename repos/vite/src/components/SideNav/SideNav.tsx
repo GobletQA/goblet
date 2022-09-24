@@ -11,6 +11,7 @@ import { Goblet } from '@components/Icons/Goblet'
 import IconButton from '@mui/material/IconButton'
 import { DrawerHeader, Drawer } from './SideNav.styled'
 import { SideNav as SideNavConst } from '@constants/nav'
+import ClickAwayListener from '@mui/base/ClickAwayListener'
 
 const findNavItem = (element:HTMLElement):string|undefined => {
   const navItem = element?.dataset?.navItem
@@ -44,7 +45,6 @@ type TSideNavProps = {
   initialOpen?: boolean
 }
 
-
 export const SideNav = (props:TSideNavProps) => {
   const theme = useTheme()
   const [open, setOpen] = useState(false)
@@ -64,28 +64,34 @@ export const SideNav = (props:TSideNavProps) => {
 
   }, [open, activeNav])
 
+  const onClickAway = useCallback((event: MouseEvent | TouchEvent) => {
+    open && setOpen(false)
+  }, [open])
+
   return (
-    <Drawer className="side-nav-drawer" variant="permanent" open={open}>
-      <DrawerHeader
-        className="side-nav-header"
-        sx={{ minHeight: `${dims.header.height}px !important` }}
-      >
-        <Box className="side-nav-header-icon" >
-          <IconButton className="side-nav-header-icon-button" onClick={toggleDrawer} >
-            {/* {open ? <ChevronLeftIcon /> : <Goblet />} */}
-            <Goblet />
-          </IconButton>
-        </Box>
-      </DrawerHeader>
-      <Divider />
-      <NavGroups
-        {...props}
-        open={open}
-        groups={groups}
-        activeNav={activeNav}
-        toggleDrawer={toggleDrawer}
-        className={SideNavConst.groupClassName}
-      />
-    </Drawer>
+    <ClickAwayListener onClickAway={onClickAway} >
+      <Drawer className="side-nav-drawer" variant="permanent" open={open}>
+        <DrawerHeader
+          className="side-nav-header"
+          sx={{ minHeight: `${dims.header.height}px !important` }}
+        >
+          <Box className="side-nav-header-icon" >
+            <IconButton className="side-nav-header-icon-button" onClick={toggleDrawer} >
+              {/* {open ? <ChevronLeftIcon /> : <Goblet />} */}
+              <Goblet />
+            </IconButton>
+          </Box>
+        </DrawerHeader>
+        <Divider />
+        <NavGroups
+          {...props}
+          open={open}
+          groups={groups}
+          activeNav={activeNav}
+          toggleDrawer={toggleDrawer}
+          className={SideNavConst.groupClassName}
+        />
+      </Drawer>
+    </ClickAwayListener>
   )
 }

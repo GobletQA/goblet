@@ -3,6 +3,8 @@ import { useState, useCallback, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
+import ClickAwayListener from '@mui/base/ClickAwayListener'
+
 
 type TDrawerCb = (...args:any[]) => any
 
@@ -13,7 +15,7 @@ type TRenderToggleProps = {
 
 type TRenderContentProps = {
   open: boolean
-  toggleDrawer:(event: React.KeyboardEvent | React.MouseEvent) => void
+  toggleDrawer:(event: React.KeyboardEvent | React.MouseEvent, drawerState?:boolean) => void
   [key:string|number|symbol]: any
 }
 
@@ -61,20 +63,28 @@ export const Sidebar = (props:TSidebarProps) => {
 
   }, [open, onClose, onOpen, onToggle])
 
+  const onClickAway = useCallback((event: MouseEvent | TouchEvent) => {
+    open && setOpen(false)
+    onToggle?.(event, false)
+    onClose?.(event, false)
+  }, [open, onClose, onToggle])
+
   return (
     <Box>
       {renderToggle ? renderToggle({ toggleDrawer }) : (<DefToggle toggleDrawer={toggleDrawer} />)}
-      <Drawer
-        open={open}
-        anchor={anchor}
-        variant={variant}
-        onClose={toggleDrawer}
-      >
-        <>
-          {children}
-          {renderContent?.({ ...props, open, toggleDrawer })}
-        </>
-      </Drawer>
+      <ClickAwayListener onClickAway={onClickAway} >
+        <Drawer
+          open={open}
+          anchor={anchor}
+          variant={variant}
+          onClose={toggleDrawer}
+        >
+          <>
+            {children}
+            {renderContent?.({ ...props, open, toggleDrawer })}
+          </>
+        </Drawer>
+      </ClickAwayListener>
     </Box>
   )
 }
