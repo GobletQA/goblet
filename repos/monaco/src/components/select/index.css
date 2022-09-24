@@ -1,0 +1,65 @@
+.music-monaco-editor-select {
+  width: 140px;
+  height: 19px;
+  position: relative;
+  display: inline-block;
+  background: var(--monaco-list-activeSelectionBackground);
+  color: var(--monaco-list-activeSelectionForeground);
+  user-select: none;
+  font-size: 12px;
+  line-height: 19px;
+  border: 1px solid var(--monaco-checkbox-border);
+  cursor: pointer;
+}
+.music-monaco-editor-select-content {
+  padding-left: 10px;
+  position: relative;
+}
+.music-monaco-editor-select-content-arrow {
+  position: absolute;
+  top: 1px;
+  right: 5px;
+}
+.music-monaco-editor-select-items {
+  font-size: 12px;
+  color: var(--monaco-list-activeSelectionForeground);
+  line-height: 19px;
+  box-sizing: border-box;
+  cursor: pointer;
+  border: 1px solid var(--monaco-checkbox-border);
+  position: absolute;
+  top: 19px;
+  left: 0;
+  right: 0;
+  max-height: 100px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.music-monaco-editor-select-items::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.music-monaco-editor-select-items::-webkit-scrollbar-track {
+  background: var(--monaco-editor-background);
+  box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
+  -webkit-box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
+}
+.music-monaco-editor-select-items::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: var(--monaco-scrollbarSlider-background);
+  box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
+  -webkit-box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
+}
+.music-monaco-editor-select-item {
+  cursor: pointer;
+  padding-left: 10px;
+}
+.music-monaco-editor-select-item-selected {
+  background: var(--monaco-list-activeSelectionBackground);
+  color: var(--monaco-list-activeSelectionForeground);
+  opacity: 0.8;
+}
+.music-monaco-editor-select-item:hover {
+  background: var(--monaco-list-activeSelectionBackground);
+  color: var(--monaco-list-activeSelectionForeground);
+}

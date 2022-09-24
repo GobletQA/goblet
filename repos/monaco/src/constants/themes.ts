@@ -1,0 +1,40 @@
+export const DARKTHEMES = [
+  'AtlanticNight',
+  'Nebula',
+  'ShadesOfPurple',
+  'AtomOneDark',
+  'NoctisAzureus',
+  'AuroraX',
+  'Hopscotch',
+  'NoctisBordo',
+  'SnazzyOperator',
+  'NoctisLux',
+  'SublimeMaterialThemeDark',
+  'HybridNext',
+  'OneDarkPro',
+  'SynthWave84',
+  'KimbieDark',
+  'OneMonokai',
+  'TokyoNightStorm',
+  'CodeSandBox',
+  'Lucario',
+  'Panda',
+  'TomorrowNightBlue',
+  'Darktooth',
+  'MonokaiDimmed',
+  'ReUI',
+  'Twilight',
+  'MonokaiPro',
+  'RemedyDark',
+]
+
+export const LIGHTTHEMES = [
+  'EvaLight',
+  'FlatUI',
+  'SnazzyLight',
+  'AyuLight',
+  'BlulocoLight',
+  'HorlaLightTheme',
+]
+
+export const THEMES = DARKTHEMES.concat(LIGHTTHEMES)

@@ -1,0 +1,13 @@
+.music-monaco-editor-button {
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  background: var(--monaco-button-background);
+  cursor: pointer;
+}
+.music-monaco-editor-button:hover {
+  opacity: 0.8;
+}
+.music-monaco-editor-button-primary {
+  background: var(--monaco-editorCursor-foreground);
+}
