@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import Close from '@components/icons/close'
 import Button from '@components/button'
 import './index.css'
@@ -50,12 +51,12 @@ Modal.create = (props: any) => {
     rootEl && rootEl.contains(el) && rootEl.removeChild(el)
   }
 
-  ReactDOM.render(
+  const root = createRoot(el)
+  root.render(
     <div className={`music-monaco-editor-modal ${props.className || ''}`}>
       <div className='music-monaco-editor-modal-mask' onClick={close} />
       <div className='music-monaco-editor-modal-content'>{props.content(close)}</div>
-    </div>,
-    el
+    </div>
   )
 
   const rootEl = props.target || document.body
@@ -75,7 +76,8 @@ Modal.confirm = (props: any) => {
     rootEl && rootEl.contains(el) && rootEl.removeChild(el)
   }
 
-  ReactDOM.render(
+  const root = createRoot(el)
+  root.render(
     <div className={`music-monaco-editor-modal ${props.className || ''}`}>
       <div className='music-monaco-editor-modal-mask' onClick={close} />
       <div className='music-monaco-editor-modal-content music-monaco-editor-modal-content-confirm'>
@@ -117,8 +119,7 @@ Modal.confirm = (props: any) => {
           />
         </div>
       </div>
-    </div>,
-    el
+    </div>
   )
 
   const rootEl = props.target || document.body

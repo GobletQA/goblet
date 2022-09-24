@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { THEMES } from '@constants'
 import MultiEditor from '../src/multi'
 import { useCallback, useRef } from 'react'
+import { createRoot } from 'react-dom/client'
 
 const fileList: TFilelist = {
   '/file1.js': `console.log('file 1')`,
@@ -84,4 +85,5 @@ const App = () => {
   )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+const root = createRoot(document.getElementById('root') as HTMLElement)
+root.render(<App />)

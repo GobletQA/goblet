@@ -94,6 +94,7 @@ const Select: SelectInterface = ({
           {React.Children.toArray(children).map(child =>
             React.isValidElement(child)
               ? React.cloneElement(child, {
+                // @ts-ignore
                 defaultValue: data.value,
                 handleSelect,
               })
