@@ -12,7 +12,7 @@ const Button: React.FC<{
     <div
       onClick={onClick}
       style={style}
-      className={`music-monaco-editor-button music-monaco-editor-button-${type} ${className}`}
+      className={`goblet-monaco-editor-button goblet-monaco-editor-button-${type} ${className}`}
     >
       {children}
     </div>

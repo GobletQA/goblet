@@ -568,12 +568,12 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     return (
       <div
         ref={rootRef}
-        id='music-monaco-editor-root'
+        id='goblet-monaco-editor-root'
         tabIndex={1}
         onKeyDown={dealKey}
         onMouseMove={handleMove}
         onMouseUp={handleMoveEnd}
-        className='music-monaco-editor'
+        className='goblet-monaco-editor'
       >
         <FileList
           rootEl={rootRef.current}
@@ -589,8 +589,8 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
           defaultFiles={defaultFiles}
           onPathChange={handlePathChange}
         />
-        <div onMouseDown={handleMoveStart} className='music-monaco-editor-drag' />
-        <div className='music-monaco-editor-area'>
+        <div onMouseDown={handleMoveStart} className='goblet-monaco-editor-drag' />
+        <div className='goblet-monaco-editor-area'>
           <OpenedTab
             onCloseOtherFiles={closeOtherFiles}
             onSaveFile={saveFile}
@@ -603,13 +603,13 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
           />
           <div ref={editorNodeRef} style={{ flex: 1, width: '100%' }} />
           {openedFiles.length === 0 && (
-            <div className='music-monaco-editor-area-empty'>
+            <div className='goblet-monaco-editor-area-empty'>
               <div>Goblet Editor</div>
             </div>
           )}
         </div>
         <div
-          className='music-monaco-editor-setting-button'
+          className='goblet-monaco-editor-setting-button'
           onClick={() => setSettingVisible(true)}
         >
           <SettingIcon
@@ -619,7 +619,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
             }}
           />
         </div>
-        <Prettier onClick={handleFromat} className='music-monaco-editor-prettier' />
+        <Prettier onClick={handleFromat} className='goblet-monaco-editor-prettier' />
         <Modal
           destroyOnClose
           onClose={() => {
@@ -628,12 +628,12 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
           visible={settingVisible}
           target={rootRef.current}
         >
-          <div className='music-monaco-editor-setting'>
-            <div className='music-monaco-editor-setting-header'>
+          <div className='goblet-monaco-editor-setting'>
+            <div className='goblet-monaco-editor-setting-header'>
               Settings
               <div
                 onClick={() => setSettingVisible(false)}
-                className='music-monaco-editor-setting-header-close'
+                className='goblet-monaco-editor-setting-header-close'
               >
                 <Close
                   style={{
@@ -643,10 +643,10 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                 />
               </div>
             </div>
-            <div className='music-monaco-editor-setting-content'>
-              <div className='music-monaco-editor-input-row'>
-                <div className='music-monaco-editor-input-name'>prettier</div>
-                <div className='music-monaco-editor-input-value'>
+            <div className='goblet-monaco-editor-setting-content'>
+              <div className='goblet-monaco-editor-input-row'>
+                <div className='goblet-monaco-editor-input-name'>prettier</div>
+                <div className='goblet-monaco-editor-input-value'>
                   <input
                     defaultChecked={autoPrettierRef.current}
                     type='checkbox'
@@ -655,9 +655,9 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                   <label>Prettier on Save</label>
                 </div>
               </div>
-              <div className='music-monaco-editor-input-row'>
-                <div className='music-monaco-editor-input-name'>Theme</div>
-                <div className='music-monaco-editor-input-value'>
+              <div className='goblet-monaco-editor-input-row'>
+                <div className='goblet-monaco-editor-input-name'>Theme</div>
+                <div className='goblet-monaco-editor-input-value'>
                   <Select defaultValue='OneDarkPro' onChange={v => configTheme(v.value)}>
                     {THEMES.map(theme => (
                       <Select.Menu label={theme} value={theme} key={theme} />

@@ -45,7 +45,7 @@ const Prettier = (props: any) => {
 
   return (
     <div {...props}>
-      <PrettierIcon className='music-monaco-editor-prettier-icon' />
+      <PrettierIcon className='goblet-monaco-editor-prettier-icon' />
     </div>
   )
 }

@@ -35,7 +35,7 @@ export function createOrUpdateModel(path: string, value: string) {
     model = window.monaco.editor.createModel(
       value,
       config[type] || type,
-      new window.monaco.Uri().with({ path, scheme: 'music' })
+      new window.monaco.Uri().with({ path, scheme: 'goblet' })
     )
     model.updateOptions({
       tabSize: 4,

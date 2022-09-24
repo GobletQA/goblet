@@ -5,7 +5,7 @@ import Position from './components/position'
 import './index.css'
 
 const instance = document.createElement('div')
-instance.className = 'music-monaco-editor-select-items'
+instance.className = 'goblet-monaco-editor-select-items'
 
 interface SelectInterface
   extends React.FC<{
@@ -75,16 +75,16 @@ const Select: SelectInterface = ({
 
   return (
     <React.Fragment>
-      <div ref={targetRef} className='music-monaco-editor-select'>
+      <div ref={targetRef} className='goblet-monaco-editor-select'>
         <div
-          className='music-monaco-editor-select-content'
+          className='goblet-monaco-editor-select-content'
           onClick={e => {
             e.stopPropagation()
             setVisible(pre => !pre)
           }}
         >
           {data.label}
-          <div className='music-monaco-editor-select-content-arrow'>
+          <div className='goblet-monaco-editor-select-content-arrow'>
             <Arrow collpase={!visible} />
           </div>
         </div>

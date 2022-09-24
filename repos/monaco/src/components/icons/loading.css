@@ -1,0 +1,14 @@
+
+#gb-monaco-loading-icon {
+  display: inline-block;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  -webkit-animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}

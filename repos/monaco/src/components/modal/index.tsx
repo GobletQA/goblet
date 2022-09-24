@@ -31,12 +31,12 @@ const Modal: ModalInterface = (props: any) => {
   }, [props.visible])
 
   return ReactDOM.createPortal(
-    <div className='music-monaco-editor-modal'>
+    <div className='goblet-monaco-editor-modal'>
       <div
-        className='music-monaco-editor-modal-mask'
+        className='goblet-monaco-editor-modal-mask'
         onClick={() => props.onClose && props.onClose()}
       />
-      <div className='music-monaco-editor-modal-content'>
+      <div className='goblet-monaco-editor-modal-content'>
         {props.destroyOnClose && !props.visible ? null : props.children}
       </div>
     </div>,
@@ -53,9 +53,9 @@ Modal.create = (props: any) => {
 
   const root = createRoot(el)
   root.render(
-    <div className={`music-monaco-editor-modal ${props.className || ''}`}>
-      <div className='music-monaco-editor-modal-mask' onClick={close} />
-      <div className='music-monaco-editor-modal-content'>{props.content(close)}</div>
+    <div className={`goblet-monaco-editor-modal ${props.className || ''}`}>
+      <div className='goblet-monaco-editor-modal-mask' onClick={close} />
+      <div className='goblet-monaco-editor-modal-content'>{props.content(close)}</div>
     </div>
   )
 
@@ -78,16 +78,16 @@ Modal.confirm = (props: any) => {
 
   const root = createRoot(el)
   root.render(
-    <div className={`music-monaco-editor-modal ${props.className || ''}`}>
-      <div className='music-monaco-editor-modal-mask' onClick={close} />
-      <div className='music-monaco-editor-modal-content music-monaco-editor-modal-content-confirm'>
+    <div className={`goblet-monaco-editor-modal ${props.className || ''}`}>
+      <div className='goblet-monaco-editor-modal-mask' onClick={close} />
+      <div className='goblet-monaco-editor-modal-content goblet-monaco-editor-modal-content-confirm'>
         {props.title && (
-          <div className='music-monaco-editor-modal-content-title'>{props.title}</div>
+          <div className='goblet-monaco-editor-modal-content-title'>{props.title}</div>
         )}
-        <div className='music-monaco-editor-modal-content-content'>
+        <div className='goblet-monaco-editor-modal-content-content'>
           {props.content(close)}
         </div>
-        <div className='music-monaco-editor-modal-content-footer'>
+        <div className='goblet-monaco-editor-modal-content-footer'>
           <Button
             onClick={() => {
               if (props.onCancel) {
@@ -110,7 +110,7 @@ Modal.confirm = (props: any) => {
             {props.okText || 'OK'}
           </Button>
         </div>
-        <div className='music-monaco-editor-modal-content-close' onClick={close}>
+        <div className='goblet-monaco-editor-modal-content-close' onClick={close}>
           <Close
             style={{
               width: '12px',

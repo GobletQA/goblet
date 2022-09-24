@@ -161,9 +161,9 @@ const File: React.FC<{
         data-src={file.path}
         onClick={handlePathChange}
         key={file.path}
-        className={`music-monaco-editor-list-file-item-row ${
+        className={`goblet-monaco-editor-list-file-item-row ${
           currentPath === file.path
-            ? 'music-monaco-editor-list-file-item-row-focused'
+            ? 'goblet-monaco-editor-list-file-item-row-focused'
             : ''
         }`}
       >
@@ -182,14 +182,14 @@ const File: React.FC<{
                 e.stopPropagation()
                 setEditing(true)
               }}
-              className='music-monaco-editor-list-split-icon'
+              className='goblet-monaco-editor-list-split-icon'
             />
             <DeleteIcon
               onClick={(e: Event) => {
                 e.stopPropagation()
                 onDeleteFile(file.path)
               }}
-              className='music-monaco-editor-list-split-icon'
+              className='goblet-monaco-editor-list-split-icon'
             />
           </>
         ) : (
@@ -201,7 +201,7 @@ const File: React.FC<{
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
             ref={nameRef}
-            className='music-monaco-editor-list-file-item-new'
+            className='goblet-monaco-editor-list-file-item-new'
             contentEditable
           />
         )}
@@ -209,9 +209,9 @@ const File: React.FC<{
     )
   }
   return (
-    <div className='music-monaco-editor-list-file-item'>
+    <div className='goblet-monaco-editor-list-file-item'>
       {file._isDirectory && (
-        <div onClick={handleClick} className='music-monaco-editor-list-file-item-row'>
+        <div onClick={handleClick} className='goblet-monaco-editor-list-file-item-row'>
           <Arrow collpase={!showChild} />
           <Icon
             style={{
@@ -227,14 +227,14 @@ const File: React.FC<{
                   e.stopPropagation()
                   setEditing(true)
                 }}
-                className='music-monaco-editor-list-split-icon'
+                className='goblet-monaco-editor-list-split-icon'
               />
               <DeleteIcon
                 onClick={(e: Event) => {
                   e.stopPropagation()
                   onDeleteFolder(file.path)
                 }}
-                className='music-monaco-editor-list-split-icon'
+                className='goblet-monaco-editor-list-split-icon'
               />
               <AddFileIcon
                 onClick={(e: Event) => {
@@ -242,7 +242,7 @@ const File: React.FC<{
                   setShowChild(true)
                   onAddFile(file.path + '/')
                 }}
-                className='music-monaco-editor-list-split-icon'
+                className='goblet-monaco-editor-list-split-icon'
               />
               <AddFolderIcon
                 onClick={(e: Event) => {
@@ -250,7 +250,7 @@ const File: React.FC<{
                   setShowChild(true)
                   onAddFolder(file.path + '/')
                 }}
-                className='music-monaco-editor-list-split-icon'
+                className='goblet-monaco-editor-list-split-icon'
               />
             </>
           ) : (
@@ -262,7 +262,7 @@ const File: React.FC<{
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               ref={nameRef}
-              className='music-monaco-editor-list-file-item-new'
+              className='goblet-monaco-editor-list-file-item-new'
               contentEditable
             />
           )}
@@ -435,28 +435,28 @@ const FileTree: React.FC<{
   }, [])
 
   return (
-    <div className='music-monaco-editor-list-wrapper' style={style}>
-      <div className='music-monaco-editor-list-title'>{title}</div>
-      <div className='music-monaco-editor-list-split' onClick={handleCollapse}>
+    <div className='goblet-monaco-editor-list-wrapper' style={style}>
+      <div className='goblet-monaco-editor-list-title'>{title}</div>
+      <div className='goblet-monaco-editor-list-split' onClick={handleCollapse}>
         <Arrow collpase={collpase} />
-        <span style={{ flex: 1 }}>Files</span>
+        <span style={{ flex: 1 }}>&nbsp;Files</span>
         <AddFileIcon
           onClick={(e: Event) => {
             e.stopPropagation()
             addFile('/')
           }}
-          className='music-monaco-editor-list-split-icon'
+          className='goblet-monaco-editor-list-split-icon'
         />
         <AddFolderIcon
           onClick={(e: Event) => {
             e.stopPropagation()
             addFolder('/')
           }}
-          className='music-monaco-editor-list-split-icon'
+          className='goblet-monaco-editor-list-split-icon'
         />
       </div>
       {!collpase && (
-        <div className='music-monaco-editor-list-files'>
+        <div className='goblet-monaco-editor-list-files'>
           <File
             onEditFileName={editFileName}
             onEditFolderName={editFolderName}

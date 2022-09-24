@@ -31,7 +31,7 @@ const Icon: React.FC<{
       onError={handleError}
       style={style}
       src={src}
-      className={`music-monaco-icons ${className}`}
+      className={`goblet-monaco-icons ${className}`}
     />
   )
 }

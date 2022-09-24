@@ -6,6 +6,7 @@ const hq = require('alias-hq')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const rootDir = path.resolve(__dirname, '..') 
+const publicAssets = path.join(rootDir, '../../node_modules/@gobletqa/monaco-public')
 
 module.exports = {
   entry: {
@@ -20,7 +21,11 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
-  devServer: {},
+  devServer: {
+    static: {
+      directory: publicAssets,
+    },
+  },
   module: {
     rules: [
       {

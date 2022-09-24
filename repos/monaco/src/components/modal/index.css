@@ -1,4 +1,4 @@
-.music-monaco-editor-modal {
+.goblet-monaco-editor-modal {
   position: absolute;
   top: 0;
   left: 0;
@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
 }
-.music-monaco-editor-modal-mask {
+.goblet-monaco-editor-modal-mask {
   position: absolute;
   top: 0;
   left: 0;
@@ -17,17 +17,17 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.2);
 }
-.music-monaco-editor-modal-content {
+.goblet-monaco-editor-modal-content {
   position: relative;
 }
-.music-monaco-editor-modal-content-confirm {
+.goblet-monaco-editor-modal-content-confirm {
   width: 400px;
   border-radius: 10px;
   background: var(--monaco-editor-background);
   color: var(--monaco-list-activeSelectionForeground);
   padding-bottom: 10px;
 }
-.music-monaco-editor-modal-content-title {
+.goblet-monaco-editor-modal-content-title {
   background: var(--monaco-editorCursor-foreground);
   height: 30px;
   border-radius: 10px 10px 0 0;
@@ -35,23 +35,23 @@
   line-height: 30px;
   color: var(--monaco-settings-headerForeground);
 }
-.music-monaco-editor-modal-content-content {
+.goblet-monaco-editor-modal-content-content {
   font-size: 14px;
   padding: 20px;
 }
-.music-monaco-editor-modal-content-footer {
+.goblet-monaco-editor-modal-content-footer {
   padding: 0 10px;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
-.music-monaco-editor-modal-content-close {
+.goblet-monaco-editor-modal-content-close {
   position: absolute;
   right: 10px;
   top: 5px;
   cursor: pointer;
   color: var(--monaco-settings-headerForeground);
 }
-.music-monaco-editor-modal-content-close:focus {
+.goblet-monaco-editor-modal-content-close:focus {
   color: var(--monaco-list-hoverForeground);
 }

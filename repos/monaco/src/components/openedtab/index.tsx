@@ -128,14 +128,14 @@ const TabItem: React.FC<{
                 top: `${position.y}px`,
                 left: `${position.x}px`,
               }}
-              className='music-monaco-editor-rightclick-panel'
+              className='goblet-monaco-editor-rightclick-panel'
             >
               <div
                 onClick={e => {
                   close()
                   handleClose(e)
                 }}
-                className='music-monaco-editor-rightclick-panel-item'
+                className='goblet-monaco-editor-rightclick-panel-item'
               >
                 Close
               </div>
@@ -144,7 +144,7 @@ const TabItem: React.FC<{
                   close()
                   onCloseOtherFiles(file.path)
                 }}
-                className='music-monaco-editor-rightclick-panel-item'
+                className='goblet-monaco-editor-rightclick-panel-item'
               >
                 Close others
               </div>
@@ -153,13 +153,13 @@ const TabItem: React.FC<{
                   close()
                   onCloseOtherFiles('')
                 }}
-                className='music-monaco-editor-rightclick-panel-item'
+                className='goblet-monaco-editor-rightclick-panel-item'
               >
                 Close all
               </div>
             </div>
           ),
-          className: 'music-monaco-editor-modal-rightclick',
+          className: 'goblet-monaco-editor-modal-rightclick',
         })
       })
     },
@@ -182,8 +182,8 @@ const TabItem: React.FC<{
       onMouseOver={handleOver}
       onMouseLeave={handleLeave}
       data-src={file.path}
-      className={`music-monaco-editor-opened-tab-item ${
-        active ? 'music-monaco-editor-opened-tab-item-focused' : ''
+      className={`goblet-monaco-editor-opened-tab-item ${
+        active ? 'goblet-monaco-editor-opened-tab-item-focused' : ''
       }`}
       onClick={handlePathChange}
     >
@@ -191,7 +191,7 @@ const TabItem: React.FC<{
       <span style={{ flex: 1, paddingRight: '5px' }}>{name}</span>
       <span
         data-name='editing'
-        className='music-monaco-editor-opened-tab-item-editing'
+        className='goblet-monaco-editor-opened-tab-item-editing'
         style={{
           visibility: file.status === 'editing' && !hoverRight ? 'visible' : 'hidden',
         }}
@@ -202,7 +202,7 @@ const TabItem: React.FC<{
         style={{
           visibility: closeVisible ? 'visible' : 'hidden',
         }}
-        className='music-monaco-editor-opened-tab-item-close'
+        className='goblet-monaco-editor-opened-tab-item-close'
       >
         x
       </span>
@@ -233,8 +233,8 @@ const OpenedTab: React.FC<{
   onCloseOtherFiles,
 }) => {
   return (
-    <div className='music-monaco-editor-opened-tab-wrapper'>
-      <div className='music-monaco-editor-opened-tab'>
+    <div className='goblet-monaco-editor-opened-tab-wrapper'>
+      <div className='goblet-monaco-editor-opened-tab'>
         {openedFiles.map(file => (
           <TabItem
             onSaveFile={onSaveFile}

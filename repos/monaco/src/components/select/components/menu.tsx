@@ -20,8 +20,8 @@ const Menu: React.FC<{
       onClick={() => {
         handleSelect({ value, label })
       }}
-      className={`music-monaco-editor-select-item ${
-        selected ? 'music-monaco-editor-select-item-selected' : ''
+      className={`goblet-monaco-editor-select-item ${
+        selected ? 'goblet-monaco-editor-select-item-selected' : ''
       }`}
     >
       {label}

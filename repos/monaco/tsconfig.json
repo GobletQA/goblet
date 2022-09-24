@@ -19,6 +19,8 @@
     "outDir": "build",
     "baseUrl": "./",
     "paths": {
+      "@assets": ["src/assets"],
+      "@assets/*": ["src/assets/*"],
       "@constants": ["src/constants"],
       "@constants/*": ["src/constants/*"],
       "@components": ["src/components"],
