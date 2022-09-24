@@ -3,10 +3,13 @@ import { deepMerge } from '@keg-hub/jsutils'
 
 export type TUserState = {
   uid: string
-  email: string
+  id?:string
+  username?: string
+  provider?: string
   providerId: string
-  displayName?: string
   screenName?: string
+  email: string | null
+  displayName: string | null
   profile?: Record<string, any>
 }
 
