@@ -1,19 +1,16 @@
 import type { TEditorConfig } from '../types'
-import { PATHS } from '../constants'
 import { Registry } from 'monaco-textmate'
-
 
 const grammerMap: {
   [key: string]: string
 } = {
-  'source.ts': 'Typescript.tmLanguage.json',
-  'source.js': 'Javascript.tmLanguage.json',
-  'source.js.jsx': 'JavaScriptReact.tmLanguage.json',
-  'source.ts.tsx': 'TypesSriptReact.tmLanguage.json',
-  'source.css': 'css.tmLanguage.json',
-  'text.html.basic': 'html.tmLanguage.json',
+  'source.ts': 'Typescript.tmLanguage',
+  'source.js': 'Javascript.tmLanguage',
+  'source.js.jsx': 'JavaScriptReact.tmLanguage',
+  'source.ts.tsx': 'TypesSriptReact.tmLanguage',
+  'source.css': 'css.tmLanguage',
+  'text.html.basic': 'html.tmLanguage',
 }
-
 
 export const initGrammars = (config:TEditorConfig) => {
   const grammars = new Map()
@@ -27,12 +24,10 @@ export const initGrammars = (config:TEditorConfig) => {
 
   const registry = new Registry({
     getGrammarDefinition: async scopeName => {
-      const res = await (
-        await fetch(`${PATHS.assets}Grammars/${grammerMap[scopeName]}`)
-      ).text()
+      const {default:content} = await import(`../vendor/Grammars/${grammerMap[scopeName]}.txt?raw`)
       return {
+        content,
         format: 'json',
-        content: res,
       }
     },
   })

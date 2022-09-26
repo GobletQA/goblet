@@ -9,6 +9,7 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(
 
     useEffect(() => {
       const interval = setInterval(() => {
+
         setCount(pre => pre + 1)
         if (window.monaco) {
           clearInterval(interval)
@@ -18,6 +19,15 @@ export const MultiEditor = React.forwardRef<MultiRefType, MultiEditorIProps>(
         clearInterval(interval)
       }
     }, [])
+
+    useEffect(() => {
+      ;(async () => {
+        const { initMonaco } = await import('../init')
+        // Initialize monaco - update to pass in config object
+        initMonaco()
+      })()
+    }, [])
+
 
     if (window.monaco) {
       return <Editor {...props} ref={ref} />

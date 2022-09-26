@@ -30,6 +30,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.txt$/i,
+        use: 'raw-loader',
+      },
+      {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: ['babel-loader'],
@@ -64,6 +68,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       ASSETS_PATH: JSON.stringify('/'),
+      WEBPACK_LOADER: JSON.stringify(true)
     })
   ],
   resolve: {

@@ -1,13 +1,25 @@
 import type { TEditorThemes, TEditorTheme } from '../types'
-import { PATHS } from '../constants'
-
 
 export const themes: TEditorThemes = {}
+
+const importTheme = async (themeName:string) => {
+  try {
+    const { __esModule, ...theme } = await import(`../themes/${themeName}.json`)
+    return theme
+  }
+  catch(err:any){
+    console.error(err.message)
+    return false
+  }
+}
+
 
 export const  setTheme = async (name: string, themeObj?:TEditorTheme) => {
   let theme = themes[name] || themeObj
   if (!theme) {
-    theme = {} as TEditorTheme
+    theme = await importTheme(name) as TEditorTheme
+    if(!theme) return
+
     themes[name] = theme
     window.monaco.editor.defineTheme(name, theme)
   }

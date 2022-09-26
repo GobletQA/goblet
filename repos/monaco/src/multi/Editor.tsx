@@ -1,18 +1,18 @@
 import type { TEditorConfig, TEditorTheme } from '../types'
 import React, {
-  useCallback,
-  useEffect,
   useRef,
-  useState,
-  useImperativeHandle,
   useMemo,
+  useState,
+  useEffect,
+  useCallback,
+  useImperativeHandle,
 } from 'react'
 
 import { THEMES } from '../constants'
-import * as monacoType from 'monaco-editor'
 import Modal from '../components/modal'
-import FileList from '../components/filelist'
+import * as monacoType from 'monaco-editor'
 import { setTheme } from '../init/setTheme'
+import FileList from '../components/filelist'
 import OpenedTab from '../components/openedtab'
 import { createOrUpdateModel, deleteModel } from '../utils'
 
@@ -21,17 +21,17 @@ export interface filelist {
 }
 export interface MultiEditorIProps {
   defaultPath?: string
+  defaultFiles?: filelist
+  config?: TEditorConfig
   onPathChange?: (key: string) => void
   onValueChange?: (v: string) => void
   onFileChange?: (key: string, value: string) => void
-  defaultFiles?: filelist
-  config?: TEditorConfig,
   options: monacoType.editor.IStandaloneEditorConstructionOptions
 }
 
 export interface MultiRefType {
-  getValue: (path: string) => string | null
   getAllValue: () => filelist
+  getValue: (path: string) => string | null
   getSupportThemes: () => Array<string>
   setTheme: (name: string, theme?:TEditorTheme) => void
 }
@@ -49,6 +49,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     },
     ref
   ) => {
+
     const onPathChangeRef = useRef(onPathChange)
     const onValueChangeRef = useRef(onValueChange)
     const onFileChangeRef = useRef(onFileChange)
@@ -463,6 +464,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
       width: 0,
       start: false,
     })
+
     const handleMoveStart = useCallback(
       (e:any) => {
         dragStartRef.current = {

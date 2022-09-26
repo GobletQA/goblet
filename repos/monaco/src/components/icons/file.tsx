@@ -3,15 +3,17 @@ import { useIcon } from '../../hooks'
 
 
 export const FileIcon = (props:TIcon) => {
+  const iconProps = useIcon(props)
   const {
     style,
     className,
-  } = useIcon(props)
+  } = iconProps
 
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 32 32"
+      style={style}
       className={className}
     >
       <title>{props.title || 'File'}</title>
@@ -21,4 +23,8 @@ export const FileIcon = (props:TIcon) => {
       />
     </svg>
   )
+}
+
+FileIcon.defaultProps = {
+  fill: `#c5c5c5`
 }

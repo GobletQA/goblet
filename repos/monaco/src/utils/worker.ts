@@ -1,8 +1,7 @@
-import { PATHS } from '../constants'
+// @ts-ignore
+import codeString from '!raw-loader!../workers/eslint.worker.js'
 
 export const worker = new Promise<Worker>(async resolve => {
-  const codeString = await import('@gobletqa/monaco-public/eslint.worker.js')
-  
   const localWorkerUrl = window.URL.createObjectURL(
     new Blob([codeString], {
       type: 'application/javascript',
