@@ -11,13 +11,9 @@ import React, {
 import { THEMES } from '../constants'
 import * as monacoType from 'monaco-editor'
 import Modal from '../components/modal'
-import Select from '../components/select'
-import Close from '../components/icons/close'
-import Prettier from '../components/prettier'
 import FileList from '../components/filelist'
 import { setTheme } from '../init/setTheme'
 import OpenedTab from '../components/openedtab'
-import SettingIcon from '../components/icons/setting'
 import { createOrUpdateModel, deleteModel } from '../utils'
 
 export interface filelist {
@@ -25,14 +21,10 @@ export interface filelist {
 }
 export interface MultiEditorIProps {
   defaultPath?: string
-  // path?: string,
   onPathChange?: (key: string) => void
-  // defaultValue?: string,
-  // value?: string,
   onValueChange?: (v: string) => void
   onFileChange?: (key: string, value: string) => void
   defaultFiles?: filelist
-  // files?: filelist,
   config?: TEditorConfig,
   options: monacoType.editor.IStandaloneEditorConstructionOptions
 }
@@ -48,13 +40,9 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
   (
     {
       defaultPath,
-      // path,
       onPathChange,
-      // defaultValue,
-      // value,
       onValueChange,
       defaultFiles = {},
-      // files,
       onFileChange,
       config={},
       options,
@@ -69,7 +57,6 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     onValueChangeRef.current = onValueChange
     onFileChangeRef.current = onFileChange
     optionsRef.current = options
-    const autoPrettierRef = useRef<boolean>(true)
 
     const editorNodeRef = useRef<HTMLDivElement>(null)
     const editorRef = useRef<monacoType.editor.IStandaloneCodeEditor | null>(null)
@@ -167,19 +154,6 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
       return false
     }, [])
 
-    // useEffect(() => {
-    //   worker.then(
-    //     res =>
-    //       (res.onmessage = function (event) {
-    //         const { markers, version } = event.data
-    //         const model = editorRef.current?.getModel()
-    //         if (model && model.getVersionId() === version) {
-    //           window.monaco.editor.setModelMarkers(model, 'eslint', markers)
-    //         }
-    //       })
-    //   )
-    // }, [])
-
     const openOrFocusPath = useCallback((path: string) => {
       setOpenedFiles(pre => {
         let exist = false
@@ -235,30 +209,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     }, [openOrFocusPath])
 
     const saveFile = useCallback(() => {
-      if (autoPrettierRef.current) {
-        handleFromat()?.then(() => {
-          setOpenedFiles(pre =>
-            pre.map(v => {
-              if (v.path === curPathRef.current) {
-                v.status = 'saved'
-              }
-              return v
-            })
-          )
-          filesRef.current[curPathRef.current] = curValueRef.current
-        })
-      }
-      else {
-        setOpenedFiles(pre =>
-          pre.map(v => {
-            if (v.path === curPathRef.current) {
-              v.status = 'saved'
-            }
-            return v
-          })
-        )
-        filesRef.current[curPathRef.current] = curValueRef.current
-      }
+      filesRef.current[curPathRef.current] = curValueRef.current
     }, [handleFromat])
 
     const onCloseFile = useCallback(
@@ -323,21 +274,8 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
                 const model = window.monaco.editor
                   .getModels()
                   .find(model => model.uri.path === v.path)
-                if (autoPrettierRef.current) {
-                  const p = window.require('prettier')
-                  if (!p.prettier) return
-                  const text = p.prettier.format(model?.getValue(), {
-                    filepath: model?.uri.path,
-                    plugins: p.prettierPlugins,
-                    singleQuote: true,
-                    tabWidth: 4,
-                  })
-                  filesRef.current[v.path] = text
-                  createOrUpdateModel(v.path, text)
-                }
-                else {
-                  filesRef.current[v.path] = model?.getValue() || ''
-                }
+
+                filesRef.current[v.path] = model?.getValue() || ''
               })
               setOpenedFiles(pre => pre.filter(p => p.path === path))
               restoreModel(path)
@@ -554,12 +492,6 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
 
     const rootRef = useRef(null)
 
-    const [settingVisible, setSettingVisible] = useState(false)
-
-    const handleSetAutoPrettier = useCallback((e:any) => {
-      autoPrettierRef.current = e.target.checked
-    }, [])
-
     const styles = useMemo(
       () => ({
         width: `${filelistWidth}px`,
@@ -610,66 +542,6 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
             </div>
           )}
         </div>
-        <div
-          className='goblet-monaco-editor-setting-button'
-          onClick={() => setSettingVisible(true)}
-        >
-          <SettingIcon
-            style={{
-              width: '20px',
-              height: '20px',
-            }}
-          />
-        </div>
-        <Prettier onClick={handleFromat} className='goblet-monaco-editor-prettier' />
-        <Modal
-          destroyOnClose
-          onClose={() => {
-            setSettingVisible(false)
-          }}
-          visible={settingVisible}
-          target={rootRef.current}
-        >
-          <div className='goblet-monaco-editor-setting'>
-            <div className='goblet-monaco-editor-setting-header'>
-              Settings
-              <div
-                onClick={() => setSettingVisible(false)}
-                className='goblet-monaco-editor-setting-header-close'
-              >
-                <Close
-                  style={{
-                    width: '12px',
-                    height: '12px',
-                  }}
-                />
-              </div>
-            </div>
-            <div className='goblet-monaco-editor-setting-content'>
-              <div className='goblet-monaco-editor-input-row'>
-                <div className='goblet-monaco-editor-input-name'>prettier</div>
-                <div className='goblet-monaco-editor-input-value'>
-                  <input
-                    defaultChecked={autoPrettierRef.current}
-                    type='checkbox'
-                    onChange={handleSetAutoPrettier}
-                  />
-                  <label>Prettier on Save</label>
-                </div>
-              </div>
-              <div className='goblet-monaco-editor-input-row'>
-                <div className='goblet-monaco-editor-input-name'>Theme</div>
-                <div className='goblet-monaco-editor-input-value'>
-                  <Select defaultValue='OneDarkPro' onChange={v => setTheme(v.value)}>
-                    {THEMES.map(theme => (
-                      <Select.Menu label={theme} value={theme} key={theme} />
-                    ))}
-                  </Select>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Modal>
       </div>
     )
   }

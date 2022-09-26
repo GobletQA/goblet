@@ -1,5 +1,5 @@
+import type { CSSProperties } from 'react'
 import type { editor } from 'monaco-editor'
-
 
 export type TTSCompileOpts = {
   allowJs: boolean
@@ -41,5 +41,16 @@ export type TEditorTheme = editor.IStandaloneThemeData & {
 
 export type TEditorThemes = {
   [key: string]: TEditorTheme
-  
+}
+
+
+export type TIcon = {
+  title?: string
+  size?: string
+  height?: string
+  width?: string
+  color?:string
+  fill?:string
+  className?:string
+  style?: CSSProperties
 }

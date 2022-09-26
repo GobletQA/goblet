@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useCallback, useEffect, useState, useRef } from 'react'
 import Modal from '../modal'
-import Icon from '../icons'
 import './index.css'
+import { FileIcon } from '../icons/file'
 
 const TabItem: React.FC<{
   file: {
@@ -187,7 +187,7 @@ const TabItem: React.FC<{
       }`}
       onClick={handlePathChange}
     >
-      <Icon type={fileType} style={{ marginRight: '2px' }} />
+      <FileIcon style={{ marginRight: '2px' }} />
       <span style={{ flex: 1, paddingRight: '5px' }}>{name}</span>
       <span
         data-name='editing'

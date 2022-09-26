@@ -1,6 +1,6 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 // import { MultiEditor } from 'yuzai-base-editor'
-import { MultiEditor } from '@gobletqa/monaco'
+import { MultiEditor, initMonaco } from '@gobletqa/monaco'
 
 export type TCodeEditorProps = {
   
@@ -30,6 +30,8 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     console.log(`------- file -------`)
     console.log(file)
   }, [])
+
+  useEffect(() => initMonaco(), [])
 
   return (
     <MultiEditor

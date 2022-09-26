@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { PATHS } from '../../constants'
 
-import './index.css'
-
 const fileTypeMap = (fileType: string): string => {
   const type = fileType.split('_').slice(-1)[0]
   const config: {

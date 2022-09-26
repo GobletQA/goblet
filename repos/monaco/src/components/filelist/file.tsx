@@ -2,6 +2,9 @@ import React, { useCallback, useState, useMemo, useRef, useEffect } from 'react'
 import Icon from '../icons'
 import Arrow from '../icons/arrow'
 import EditIcon from '../icons/edit'
+import { FileIcon } from '../icons/file'
+import { FolderIcon } from '../icons/folder'
+import { FolderOpenedIcon } from '../icons/folderOpened'
 import DeleteIcon from '../icons/delete'
 import AddFileIcon from '../icons/addfile'
 import AddFolderIcon from '../icons/addfolder'
@@ -156,8 +159,7 @@ export const File: React.FC<{
             : ''
         }`}
       >
-        <Icon
-          type={fileType}
+        <FileIcon
           style={{
             marginLeft: '14px',
             marginRight: '5px',
@@ -197,17 +199,14 @@ export const File: React.FC<{
       </div>
     )
   }
+
   return (
     <div className='goblet-monaco-editor-list-file-item'>
       {file._isDirectory && (
         <div onClick={handleClick} className='goblet-monaco-editor-list-file-item-row'>
           <Arrow collpase={!showChild} />
-          <Icon
-            style={{
-              marginRight: '5px',
-            }}
-            type={showChild ? 'default_folder_opened' : 'default_folder'}
-          />
+          {showChild ? <FolderOpenedIcon /> : <FolderIcon />}
+
           {file.name && !editing ? (
             <>
               <span style={{ flex: 1 }}>{file.name}</span>
