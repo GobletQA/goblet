@@ -1,6 +1,15 @@
 import type { CSSProperties } from 'react'
 import type { editor } from 'monaco-editor'
 
+export type TAllowedFileTypes = {
+  js: 'javascript',
+  ts: 'typescript',
+  less: 'less',
+  jsx: 'javascript',
+  tsx: 'typescript',
+  [key:string]: string
+}
+
 export type TTSCompileOpts = {
   allowJs: boolean
   allowNonTsExtensions: boolean

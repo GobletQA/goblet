@@ -30,6 +30,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.worker\.js$/i,
+        use: 'worker-loader',
+      },
+      {
         test: /\.txt$/i,
         use: 'raw-loader',
       },

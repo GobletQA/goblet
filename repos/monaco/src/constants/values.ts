@@ -1,3 +1,12 @@
+import type { TAllowedFileTypes } from '../types'
+
+export const ALLOWED_FILE_TYPES:TAllowedFileTypes = {
+  js: 'javascript',
+  ts: 'typescript',
+  less: 'less',
+  jsx: 'javascript',
+  tsx: 'typescript',
+}
 
 export const MONACO_URLS = {
   loader: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.30.1/min/vs/loader.min.js',

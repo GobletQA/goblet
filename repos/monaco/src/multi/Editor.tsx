@@ -14,6 +14,8 @@ import * as monacoType from 'monaco-editor'
 import { setTheme } from '../init/setTheme'
 import FileList from '../components/filelist'
 import OpenedTab from '../components/openedtab'
+// @ts-ignore
+import ESLintWorker from '../workers/eslint.worker?worker'
 import { createOrUpdateModel, deleteModel } from '../utils'
 
 export interface filelist {
@@ -50,6 +52,7 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
     ref
   ) => {
 
+    const lintWorkerRef = useRef(null)
     const onPathChangeRef = useRef(onPathChange)
     const onValueChangeRef = useRef(onValueChange)
     const onFileChangeRef = useRef(onFileChange)
@@ -94,14 +97,17 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
       const model = window.monaco.editor
         .getModels()
         .find(model => model.uri.path === path)
-      if (path !== prePath.current && prePath.current) {
+
+      if (path !== prePath.current && prePath.current){
         editorStates.set(prePath.current, editorRef.current?.saveViewState())
       }
       if (valueLisenerRef.current && valueLisenerRef.current.dispose) {
         valueLisenerRef.current.dispose()
       }
       if (model && editorRef.current) {
+
         editorRef.current.setModel(model)
+
         if (path !== prePath.current) {
           const editorState = editorStates.get(path)
           if (editorState) {
@@ -128,27 +134,30 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
             if (onValueChangeRef.current) {
               onValueChangeRef.current(v)
             }
-
-            // if (timer) clearTimeout(timer)
-            // timer = setTimeout(() => {
-            //   timer = null
-            //   worker.then(res =>
-            //     res.postMessage({
-            //       code: model.getValue(),
-            //       version: model.getVersionId(),
-            //       path,
-            //     })
-            //   )
-            // }, 500)
+            
+            if (timer) clearTimeout(timer)
+            timer = setTimeout(() => {
+              timer = null
+              
+              // @ts-ignore
+              lintWorkerRef?.current?.postMessage({
+                code: model.getValue(),
+                version: model.getVersionId(),
+                path,
+              })
+              
+            }, 500)
+            
           })
         }
-        // worker.then(res =>
-        //   res.postMessage({
-        //     code: model.getValue(),
-        //     version: model.getVersionId(),
-        //     path,
-        //   })
-        // )
+
+        // @ts-ignore
+        lintWorkerRef?.current?.postMessage({
+          code: model.getValue(),
+          version: model.getVersionId(),
+          path,
+        })
+
         prePath.current = path
         return model
       }
@@ -180,6 +189,24 @@ export const MultiEditorComp = React.forwardRef<MultiRefType, MultiEditorIProps>
       },
       [restoreModel, openOrFocusPath]
     )
+
+    useEffect(() => {
+      lintWorkerRef.current = lintWorkerRef.current || new ESLintWorker()
+
+      // @ts-ignore
+      lintWorkerRef?.current?.addEventListener('message', ({ data }: any) => {
+        const { markers, version } = data
+        const model = editorRef.current?.getModel()
+        if (model && model.getVersionId() === version)
+          window.monaco.editor.setModelMarkers(model, 'eslint', markers)
+      })
+
+      return () => {
+        // @ts-ignore
+        lintWorkerRef?.current && lintWorkerRef?.current?.terminate()
+      }
+      
+    }, [])
 
     useEffect(() => {
       editorRef.current = window.monaco.editor.create(editorNodeRef.current!, {

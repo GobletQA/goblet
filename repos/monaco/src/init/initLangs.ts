@@ -10,12 +10,21 @@ const registerLangs = (config:TEditorConfig) => {
   langs.forEach(lang => window.monaco.languages.register({ id: lang }))
 }
 
+const compilerOptions = {
+  allowJs: true,
+  allowNonTsExtensions: true,
+  // for use of import React from 'react' rather than import * as React from 'react'
+  allowSyntheticDefaultImports: true,
+}
+
 const setCompileOpts = (config:TEditorConfig) => {
   window.monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-    allowJs: true,
-    allowNonTsExtensions: true,
-    // for use of import React from 'react' rather than import * as React from 'react'
-    allowSyntheticDefaultImports: true,
+    ...compilerOptions,
+    ...config?.tsconfig?.compilerOptions
+  })
+
+  window.monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+    ...compilerOptions,
     ...config?.tsconfig?.compilerOptions
   })
 }
