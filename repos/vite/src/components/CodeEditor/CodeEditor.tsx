@@ -1,4 +1,4 @@
-import { MultiEditor } from '@gobletqa/monaco'
+import { MonacoEditor } from '@gobletqa/monaco'
 import { useState, useCallback, useRef, useEffect } from 'react'
 
 export type TCodeEditorProps = {
@@ -31,7 +31,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
   }, [])
 
   return (
-    <MultiEditor
+    <MonacoEditor
       ref={editorRef}
       // path={path}
       // value={value}

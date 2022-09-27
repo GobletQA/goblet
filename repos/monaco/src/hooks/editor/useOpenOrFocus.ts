@@ -1,0 +1,68 @@
+import type { SetStateAction, RefObject, MutableRefObject } from 'react'
+import * as TMonacoType from 'monaco-editor'
+import { TEditorOpenFiles } from '../../types'
+
+import { useEffect, useCallback } from 'react'
+
+export type TUseOpenOrFocus = {
+  editorNodeRef: RefObject<HTMLDivElement>
+  setCurPath: (value: SetStateAction<string>) => void
+  setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
+  editorRef: MutableRefObject<TMonacoType.editor.IStandaloneCodeEditor | null>
+  optionsRef: MutableRefObject<TMonacoType.editor.IStandaloneEditorConstructionOptions>
+}
+
+export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
+  const {
+    editorRef,
+    optionsRef,
+    setCurPath,
+    editorNodeRef,
+    setOpenedFiles,
+  } = props
+
+  const openOrFocusPath = useCallback((path: string) => {
+    setOpenedFiles(pre => {
+      let exist = false
+      pre.forEach(v => {
+        if (v.path === path) {
+          exist = true
+        }
+      })
+      if (exist) {
+        return pre
+      }
+      return [...pre, { path: path }]
+    })
+    setCurPath(path)
+  }, [])
+
+
+  useEffect(() => {
+    editorRef.current = window.monaco.editor.create(editorNodeRef.current!, {
+      ...optionsRef.current,
+      model: null,
+    })
+
+    const editorService = (editorRef.current as any)._codeEditorService
+    const openEditorBase = editorService.openCodeEditor.bind(editorService)
+    editorService.openCodeEditor = async (input: any, source: any, sideBySide: any) => {
+      const result = await openEditorBase(input, source)
+      if (result === null) {
+        const fullPath = input.resource.path
+        source.setModel(window.monaco.editor.getModel(input.resource))
+        openOrFocusPath(fullPath)
+        source.setSelection(input.options.selection)
+        source.revealLine(input.options.selection.startLineNumber)
+      }
+      // always return the base result
+      return result
+    }
+
+    return () => {
+      editorRef.current && editorRef.current.dispose()
+    }
+  }, [openOrFocusPath])
+  
+  return openOrFocusPath
+}

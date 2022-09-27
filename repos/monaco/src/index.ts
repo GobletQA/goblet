@@ -1,2 +1,2 @@
-export * from './multi'
+export * from './components/Editor'
 export * from './init'

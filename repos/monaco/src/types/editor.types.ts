@@ -1,5 +1,6 @@
-import type { CSSProperties } from 'react'
 import type { editor } from 'monaco-editor'
+
+export type TEditorOpenFiles = Array<{status?: string, path: string}>
 
 export type TAllowedFileTypes = {
   js: 'javascript',
@@ -14,10 +15,6 @@ export type TTSCompileOpts = {
   allowJs: boolean
   allowNonTsExtensions: boolean
   allowSyntheticDefaultImports: boolean
-}
-
-export interface TFilelist {
-  [key: string]: string
 }
 
 export type TEditorThemeConfig = {
@@ -43,23 +40,10 @@ export type TEditorConfig = {
   [key: string]: any
 }
 
-
 export type TEditorTheme = editor.IStandaloneThemeData & {
   [key: string]: any
 }
 
 export type TEditorThemes = {
   [key: string]: TEditorTheme
-}
-
-
-export type TIcon = {
-  title?: string
-  size?: string
-  height?: string
-  width?: string
-  color?:string
-  fill?:string
-  className?:string
-  style?: CSSProperties
 }

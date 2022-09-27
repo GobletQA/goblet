@@ -1,23 +1,33 @@
 import type { TColors, TPalette } from './theme.types'
 import { PaletteOptions } from '@mui/material'
 
+
 export const colors:TColors = {
   // ---- Light Theme Colors
   lightPrimary: `#00b8d4`,
   lightPaper: `#ffffff`,
   lightBackground: `#f0f0f0`,
 
+  // ---- Monaco Theme Colors
+  lightDragHandle: `#efefef`,
+  lightDragHandleHover: `#528bff`,
+
   // ---- Dark Theme Colors
   darkPrimary: `#00b8d4`,
   darkPaper: `#242526`,
   darkBackground: `#303030`,
+
+  // ---- Monaco Theme Colors
+  darkDragHandle: `#282c34`,
+  darkDragHandleHover: `#528bff`,
 
   // ---- Common Theme Colors
   error: `rgb(232, 51, 51)`,
   success: `rgb(76,175,80)`,
 
   // ---- Default Theme Colors
-  white: `#FFFFFF`
+  white: `#FFFFFF`,
+
 } 
 
 const paletteCommon = {

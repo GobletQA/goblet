@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useMemo, useRef, useEffect } from 'react'
 import AddFileIcon from '../icons/addfile'
 import AddFolderIcon from '../icons/addfolder'
-import Icon from '../icons'
 import { FileIcon } from '../icons/file'
 import { FolderIcon } from '../icons/folder'
 import { FolderOpenedIcon } from '../icons/folderOpened'

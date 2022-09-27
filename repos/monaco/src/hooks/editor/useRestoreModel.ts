@@ -1,0 +1,100 @@
+import type { TLinter } from './useLintWorker'
+import type { Dispatch, MutableRefObject } from 'react'
+import type { TEditorOpenFiles } from '../../types'
+import * as TMonacoType from 'monaco-editor'
+
+import { useCallback } from 'react'
+
+export type TUseRestoreModel = {
+  curValueRef: MutableRefObject<string>
+  prePath: MutableRefObject<string | null>
+  lintWorkerRef: MutableRefObject<TLinter>
+  editorStatesRef:MutableRefObject<Map<any, any>>
+  setOpenedFiles: Dispatch<React.SetStateAction<TEditorOpenFiles>>
+  onValueChangeRef: MutableRefObject<((v: string) => void) | undefined>
+  valueListenerRef: MutableRefObject<TMonacoType.IDisposable | undefined>
+  editorRef: MutableRefObject<TMonacoType.editor.IStandaloneCodeEditor | null>
+  onFileChangeRef: MutableRefObject<((key: string, value: string) => void) | undefined>
+}
+
+export const useRestoreModel = (props:TUseRestoreModel) => {
+  const {
+    prePath,
+    editorRef,
+    curValueRef,
+    lintWorkerRef,
+    setOpenedFiles,
+    onFileChangeRef,
+    editorStatesRef,
+    valueListenerRef,
+    onValueChangeRef,
+  } = props
+
+  return useCallback((path: string) => {
+    const editorStates = editorStatesRef.current
+    const model = window.monaco.editor
+      .getModels()
+      .find(model => model.uri.path === path)
+
+    if (path !== prePath.current && prePath.current)
+      editorStates.set(prePath.current, editorRef.current?.saveViewState())
+
+    if (valueListenerRef.current && valueListenerRef.current.dispose)
+      valueListenerRef.current.dispose()
+
+    if (model && editorRef.current) {
+
+      editorRef.current.setModel(model)
+
+      if (path !== prePath.current) {
+        const editorState = editorStates.get(path)
+        if (editorState) editorRef.current?.restoreViewState(editorState)
+
+        editorRef.current?.focus()
+        let timer: any = null
+        valueListenerRef.current = model.onDidChangeContent(() => {
+          const v = model.getValue()
+          setOpenedFiles(pre =>
+            pre.map(v => {
+              if (v.path === path) {
+                v.status = 'editing'
+              }
+              return v
+            })
+          )
+          // filesRef.current[path] = v;
+          if (onFileChangeRef.current) {
+            onFileChangeRef.current(path, v)
+          }
+          curValueRef.current = v
+          if (onValueChangeRef.current) {
+            onValueChangeRef.current(v)
+          }
+          
+          if (timer) clearTimeout(timer)
+          timer = setTimeout(() => {
+            timer = null
+            
+            lintWorkerRef?.current?.postMessage({
+              code: model.getValue(),
+              version: model.getVersionId(),
+              path,
+            })
+            
+          }, 500)
+          
+        })
+      }
+
+      lintWorkerRef?.current?.postMessage({
+        code: model.getValue(),
+        version: model.getVersionId(),
+        path,
+      })
+
+      prePath.current = path
+      return model
+    }
+    return false
+  }, [])
+}
