@@ -12,6 +12,7 @@ export interface IMonacoEditorProps {
   defaultPath?: string
   config?: TEditorConfig
   defaultFiles?: TFilelist
+  initialFileTreeWidth?: number
   initialFileTreeStatus?: boolean
   onPathChange?: (key: string) => void
   onValueChange?: (v: string) => void

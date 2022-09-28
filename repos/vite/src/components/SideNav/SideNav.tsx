@@ -19,7 +19,7 @@ const findNavItem = (element:HTMLElement):string|undefined => {
 
   const parent = element?.parentNode as HTMLElement
 
-  return !parent || parent?.classList?.contains(SideNavConst.groupClassName)
+  return !parent || parent?.classList?.contains(SideNavConst.groupClassName || ``)
       ? undefined
       : findNavItem(parent as HTMLElement)
 }

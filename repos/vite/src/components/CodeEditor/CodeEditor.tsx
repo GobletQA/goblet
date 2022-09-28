@@ -31,12 +31,9 @@ export const CodeEditor = (props:TCodeEditorProps) => {
   }, [])
 
   useEffect(() => {
-    setTimeout(() => {
-      console.log(`------- editor ref -------`)
-      console.log(editorRef.current)
-    // TODO: call this method from the side-menu somehow?
-      editorRef?.current?.resizeFileTree?.(200)
-    }, 1000)
+    // setTimeout(() => {
+    //   editorRef?.current?.resizeFileTree?.(200)
+    // }, 1000)
 
   }, [])
 
@@ -46,6 +43,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
       // path={path}
       // value={value}
       defaultFiles={files}
+      initialFileTreeWidth={0}
       onPathChange={onPathChange}
       onValueChange={onValueChange}
       onFileChange={onFileChange}

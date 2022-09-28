@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { dims } from '@theme'
 import Box from '@mui/material/Box'
 import ListItem from '@mui/material/ListItem'
+import { useTheme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
@@ -15,7 +16,9 @@ export type TNavItemProps = {
   group?: string
   last?: boolean
   first?: boolean
+  color?: string
   activeNav?: string
+  isActive?: boolean
   divider?: boolean | 'bottom' | 'top'
   Icon?: ElementType
 }
@@ -25,24 +28,28 @@ const NavIcon = (props:TNavItemProps) => {
   const {
     title,
     Icon,
-    open
+    open,
+    color,
+    isActive,
   } = props
 
   return Icon && (
     <Box>
       <ListItemIcon
         sx={{
+          color,
           mr: 'auto',
           minWidth: 0,
-          justifyContent: 'center',
-          flexDirection: 'column',
           alignItems: 'center',
+          flexDirection: 'column',
+          justifyContent: 'center',
         }}
       >
         <Icon width="24px" />
         <Typography
           component="span"
           sx={{
+            color,
             fontSize: '12px',
           }}
         >
@@ -62,9 +69,23 @@ export const NavItem = (props:TNavItemProps) => {
     activeNav
   } = props
 
+  const theme = useTheme()
+
   const cleaned = useMemo(() => (title || ``).replace(/\s_-\//gim, ``).toLowerCase(), [title])
 
-  // TODO: use activeNav to set a css color of the active element
+  const {
+    isActive,
+    color,
+    backgroundColor
+  } = useMemo(() => {
+    const isActive = cleaned === activeNav
+
+    return {
+      isActive,
+      backgroundColor: isActive ? theme.palette.action.focus : `transparent`,
+      color: isActive ? theme.palette.primary.main : theme.palette.action.active,
+    }
+  }, [cleaned, activeNav, theme])
 
   return (
     <ListItem
@@ -72,6 +93,7 @@ export const NavItem = (props:TNavItemProps) => {
       className={`nav-list-item nav-item-${cleaned}`}
       disablePadding
       sx={{
+        backgroundColor,
         width: dims.nav.closedWidth
       }}
     >
@@ -85,12 +107,12 @@ export const NavItem = (props:TNavItemProps) => {
         }}
       >
       {Icon
-        ? (<NavIcon {...props} />)
+        ? (<NavIcon {...props} isActive={isActive} color={color} />)
         : (
             <ListItemText
               primary={title}
               data-nav-item={cleaned}
-              sx={{ opacity: open ? 1 : 0 }}
+              sx={{ color, opacity: open ? 1 : 0 }}
             />
           )
       }

@@ -5,8 +5,10 @@
   height: 100%;
   background: var(--monaco-editor-background);
   color: var(--monaco-editor-foreground);
-  overflow: scroll;
   flex-shrink: 0;
+  /* overflow: scroll; */
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .goblet-monaco-editor-list-wrapper::-webkit-scrollbar {
