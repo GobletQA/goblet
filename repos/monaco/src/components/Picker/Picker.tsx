@@ -1,28 +1,26 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Menu } from './Menu'
 import Arrow from '../icons/arrow'
-import Menu from './components/menu'
-import Position from './components/position'
+import { Position } from './Position'
 import './index.css'
 
 const instance = document.createElement('div')
-instance.className = 'goblet-monaco-editor-select-items'
+instance.className = 'goblet-monaco-editor-picker-items'
 
-interface SelectInterface
-  extends React.FC<{
-    defaultValue?: any
-    onChange?: (value: any) => void
-    getContainer?: () => HTMLElement
-    children?: React.ReactNode
-  }> {
+export type TPicker = {
+  defaultValue?: any
+  onChange?: (value: any) => void
+  getContainer?: () => HTMLElement
+  children?: React.ReactNode
   Menu: typeof Menu
 }
 
-const Select: SelectInterface = ({
+export const Picker = ({
+  children,
+  getContainer,
   defaultValue,
   onChange = () => ({}),
-  getContainer,
-  children,
-}) => {
+}: TPicker) => {
   const [visible, setVisible] = useState(false)
   const [data, setData] = useState({ value: defaultValue, label: '' })
   const targetRef = useRef<HTMLDivElement>(null)
@@ -43,25 +41,16 @@ const Select: SelectInterface = ({
 
   useEffect(() => {
     return () => {
-      if (document.body.contains(instance)) {
-        document.body.removeChild(instance)
-      }
+      document.body.contains(instance)
+        && document.body.removeChild(instance)
     }
   }, [])
 
   useEffect(() => {
-    function hide() {
-      setVisible(false)
-    }
-    if (visible) {
-      document.body.addEventListener('click', hide)
-    }
-    else {
-      document.body.removeEventListener('click', hide)
-    }
-    return () => {
-      document.body.removeEventListener('click', hide)
-    }
+    const hide = () => setVisible(false)
+    visible ? document.body.addEventListener('click', hide) : document.body.removeEventListener('click', hide)
+
+    return () => document.body.removeEventListener('click', hide)
   }, [visible])
 
   const handleSelect = useCallback(
@@ -75,16 +64,16 @@ const Select: SelectInterface = ({
 
   return (
     <React.Fragment>
-      <div ref={targetRef} className='goblet-monaco-editor-select'>
+      <div ref={targetRef} className='goblet-monaco-editor-picker'>
         <div
-          className='goblet-monaco-editor-select-content'
+          className='goblet-monaco-editor-picker-content'
           onClick={e => {
             e.stopPropagation()
             setVisible(pre => !pre)
           }}
         >
           {data.label}
-          <div className='goblet-monaco-editor-select-content-arrow'>
+          <div className='goblet-monaco-editor-picker-content-arrow'>
             <Arrow collpase={!visible} />
           </div>
         </div>
@@ -106,6 +95,5 @@ const Select: SelectInterface = ({
   )
 }
 
-Select.Menu = Menu
+Picker.Menu = Menu
 
-export default Select

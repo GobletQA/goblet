@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import { createRoot } from 'react-dom/client'
 import Close from '../icons/close'
-import Button from '../button'
+import { Button } from '../Button'
 import './index.css'
 
 interface Props {

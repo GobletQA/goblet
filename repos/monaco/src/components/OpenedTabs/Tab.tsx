@@ -1,9 +1,9 @@
-import React, { MouseEventHandler, useCallback, useEffect, useState, useRef } from 'react'
+import type { MouseEventHandler } from 'react'
+import React, { useCallback, useEffect, useState, useRef } from 'react'
 import Modal from '../modal'
-import './index.css'
 import { FileIcon } from '../icons/file'
 
-const TabItem: React.FC<{
+export type Tab = {
   file: {
     status?: string
     path: string
@@ -15,7 +15,9 @@ const TabItem: React.FC<{
   onSaveFile: (path: string) => void
   onAbortSave: (path: string) => void
   onCloseOtherFiles: (path: string) => void
-}> = ({
+}
+
+export const Tab = ({
   file,
   onPathChange,
   currentPath,
@@ -24,7 +26,7 @@ const TabItem: React.FC<{
   onSaveFile,
   onAbortSave,
   onCloseOtherFiles,
-}) => {
+}:Tab) => {
   const itemRef = useRef<HTMLDivElement | null>(null)
   const name = file.path.split('/').slice(-1)[0]
   let fileType
@@ -209,48 +211,3 @@ const TabItem: React.FC<{
     </div>
   )
 }
-
-const OpenedTab: React.FC<{
-  openedFiles: Array<{
-    status?: string
-    path: string
-  }>
-  onPathChange?: (key: string) => void
-  currentPath?: string
-  onCloseFile: (path: string) => void
-  rootEl: HTMLElement | null
-  onSaveFile: (path: string) => void
-  onAbortSave: (path: string) => void
-  onCloseOtherFiles: (path: string) => void
-}> = ({
-  openedFiles,
-  onPathChange,
-  currentPath,
-  onCloseFile,
-  rootEl,
-  onSaveFile,
-  onAbortSave,
-  onCloseOtherFiles,
-}) => {
-  return (
-    <div className='goblet-monaco-editor-opened-tab-wrapper'>
-      <div className='goblet-monaco-editor-opened-tab'>
-        {openedFiles.map(file => (
-          <TabItem
-            onSaveFile={onSaveFile}
-            onAbortSave={onAbortSave}
-            rootEl={rootEl}
-            onCloseFile={onCloseFile}
-            file={file}
-            key={file.path}
-            onPathChange={onPathChange}
-            currentPath={currentPath}
-            onCloseOtherFiles={onCloseOtherFiles}
-          />
-        ))}
-      </div>
-    </div>
-  )
-}
-
-export default OpenedTab

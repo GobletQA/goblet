@@ -9,8 +9,9 @@ import React, {
   useState,
 } from 'react'
 
-import FileList from '../filelist'
-import OpenedTab from '../openedtab'
+import { Empty } from '../Empty'
+import { FileTree } from '../FileTree'
+import { OpenedTabs } from '../OpenedTabs'
 import * as TMonacoType from 'monaco-editor'
 import { setTheme } from '../../init/setTheme'
 import { createOrUpdateModel, deleteModel } from '../../utils'
@@ -22,9 +23,10 @@ import { useFolderCallbacks } from '../../hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
 
 
-export const MultiEditorComp = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
+export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
   (
     {
+      emptyText,
       defaultPath,
       onPathChange,
       onValueChange,
@@ -150,7 +152,7 @@ export const MultiEditorComp = React.forwardRef<IMultiRefType, IMonacoEditorProp
         onMouseUp={handleMoveEnd}
         className='goblet-monaco-editor'
       >
-        <FileList
+        <FileTree
           rootEl={rootRef.current}
           onEditFileName={editFileName}
           onDeleteFile={deleteFile}
@@ -166,7 +168,7 @@ export const MultiEditorComp = React.forwardRef<IMultiRefType, IMonacoEditorProp
         />
         <div onMouseDown={handleMoveStart} className='goblet-monaco-editor-drag' />
         <div className='goblet-monaco-editor-area'>
-          <OpenedTab
+          <OpenedTabs
             onCloseOtherFiles={closeOtherFiles}
             onSaveFile={saveFile}
             onAbortSave={abortFileChange}
@@ -177,17 +179,13 @@ export const MultiEditorComp = React.forwardRef<IMultiRefType, IMonacoEditorProp
             onPathChange={handlePathChange}
           />
           <div ref={editorNodeRef} style={{ flex: 1, width: '100%' }} />
-          {openedFiles.length === 0 && (
-            <div className='goblet-monaco-editor-area-empty'>
-              <div>Goblet Editor</div>
-            </div>
-          )}
+          {openedFiles.length === 0 && (<Empty text={emptyText} />)}
         </div>
       </div>
     )
   }
 )
 
-export default MultiEditorComp
+export default MonacoEditor
 
-MultiEditorComp.displayName = 'MultiEditorComp'
+MonacoEditor.displayName = 'MonacoEditor'

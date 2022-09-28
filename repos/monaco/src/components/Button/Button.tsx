@@ -1,13 +1,15 @@
-import React from 'react'
 import './index.css'
 
-const Button: React.FC<{
+export type Button = {
   type?: string
   className?: string
   children?: any
   onClick?: (...args: any[]) => void
   style?: any
-}> = ({ type = 'default', className = '', children, onClick = () => {}, style }) => {
+}
+
+export const Button = (props:Button) => {
+  const { type = 'default', className = '', children, onClick = () => {}, style } = props
   return (
     <div
       onClick={onClick}
@@ -19,4 +21,4 @@ const Button: React.FC<{
   )
 }
 
-export default Button
+

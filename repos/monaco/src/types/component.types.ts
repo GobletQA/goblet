@@ -8,9 +8,10 @@ export interface TFilelist {
 }
 
 export interface IMonacoEditorProps {
+  emptyText?: string
   defaultPath?: string
-  defaultFiles?: TFilelist
   config?: TEditorConfig
+  defaultFiles?: TFilelist
   onPathChange?: (key: string) => void
   onValueChange?: (v: string) => void
   onFileChange?: (key: string, value: string) => void

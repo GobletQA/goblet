@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react'
-import Modal from '../modal'
-import Arrow from '../icons/arrow'
+import { memo, useCallback, useState } from 'react'
 import AddFileIcon from '../icons/addfile'
 import AddFolderIcon from '../icons/addfolder'
+import Arrow from '../icons/arrow'
+
+import Modal from '../modal'
 import {
   generateFileTree,
   addSourceFile,
@@ -11,12 +12,11 @@ import {
   addSourceFolder,
   deleteSourceFolder,
   editSourceFolderName,
-} from '@gobletqa/monaco/utils/index'
-import { File } from './file'
-import './index.css'
+} from '../../utils'
+import './FileTree.css'
+import { File } from './File'
 
-
-const FileTree: React.FC<{
+export type FileTree = {
   defaultFiles: any
   onPathChange: (key: string) => void
   title?: string
@@ -29,7 +29,9 @@ const FileTree: React.FC<{
   onDeleteFolder: (path: string) => void
   onEditFolderName: (path: string, name: string) => void
   rootEl: HTMLElement | null
-}> = ({
+}
+
+export const FileTree = memo(({
   defaultFiles,
   onPathChange,
   title = 'monaco-base-editor',
@@ -42,7 +44,7 @@ const FileTree: React.FC<{
   onDeleteFolder,
   onEditFolderName,
   rootEl,
-}) => {
+}: FileTree) => {
   const [collpase, setCollpase] = useState(false)
 
   const [filetree, setFiletree] = useState(() => generateFileTree(defaultFiles))
@@ -198,6 +200,5 @@ const FileTree: React.FC<{
       )}
     </div>
   )
-}
+})
 
-export default React.memo(FileTree)

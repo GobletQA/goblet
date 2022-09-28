@@ -1,19 +1,24 @@
-import React, { useEffect } from 'react'
+import type { RefObject, ReactNode } from 'react'
+import { useEffect } from 'react'
 import ReactDom from 'react-dom'
 
-const Position: React.FC<{
+export type Position = {
   instance: HTMLElement
-  children?: React.ReactNode
-  targetRef: React.RefObject<HTMLElement>
+  children?: ReactNode
+  targetRef: RefObject<HTMLElement>
   getContainer?: () => HTMLElement
   onNotVisibleArea?: () => void
-}> = ({
-  instance,
-  targetRef,
-  children,
-  getContainer,
-  onNotVisibleArea = () => ({}),
-}) => {
+}
+
+export const Position = (props:Position) => {
+  const {
+    instance,
+    targetRef,
+    children,
+    getContainer,
+    onNotVisibleArea = () => ({}),
+  } = props
+  
   const container = (getContainer && getContainer()) || document.body
 
   useEffect(() => {
@@ -58,7 +63,7 @@ const Position: React.FC<{
     }
   }, [targetRef])
 
-  return ReactDom.createPortal(children, instance)
+
+  return (<>{ReactDom.createPortal(children, instance)}</>)
 }
 
-export default Position
