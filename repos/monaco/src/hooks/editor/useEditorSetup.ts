@@ -1,5 +1,5 @@
 import type { ForwardedRef, MutableRefObject } from 'react'
-import * as TMonacoType from 'monaco-editor'
+import type { editor } from 'monaco-editor'
 import { IMultiRefType, TEditorConfig, TFilelist, TEditorTheme } from '../../types'
 
 import { THEMES } from '../../constants'
@@ -12,13 +12,13 @@ export type TUseEditorSetup = {
   ref: ForwardedRef<IMultiRefType>
   curPathRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
+  resizeFileTree: (width:number) => void
   createOrUpdateModel: (path: string, value: string) => void
-  options: TMonacoType.editor.IStandaloneEditorConstructionOptions
+  options: editor.IStandaloneEditorConstructionOptions
   onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
-  editorRef:MutableRefObject<TMonacoType.editor.IStandaloneCodeEditor | null>
+  editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setTheme: (name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
 }
-
 
 export const useEditorSetup = (props:TUseEditorSetup) => {
 
@@ -31,6 +31,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     setTheme,
     editorRef,
     curPathRef,
+    resizeFileTree,
     onPathChangeRef,
     createOrUpdateModel,
   } = props
@@ -59,6 +60,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
 
   useImperativeHandle(ref, () => ({
     setTheme,
+    resizeFileTree,
     getSupportThemes: () => THEMES,
     getAllValue: () => filesRef.current,
     getValue: (path: string) => filesRef.current[path],

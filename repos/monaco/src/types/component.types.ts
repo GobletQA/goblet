@@ -1,5 +1,5 @@
 
-import * as MonacoType from 'monaco-editor'
+import type { editor } from 'monaco-editor'
 import type { CSSProperties, ReactNode } from 'react'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
 
@@ -12,10 +12,12 @@ export interface IMonacoEditorProps {
   defaultPath?: string
   config?: TEditorConfig
   defaultFiles?: TFilelist
+  initialFileTreeStatus?: boolean
   onPathChange?: (key: string) => void
   onValueChange?: (v: string) => void
   onFileChange?: (key: string, value: string) => void
-  options: MonacoType.editor.IStandaloneEditorConstructionOptions
+  onFileTreeResize?: (width:number) => void
+  options: editor.IStandaloneEditorConstructionOptions
 }
 
 export interface IMultiRefType {

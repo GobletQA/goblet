@@ -1,5 +1,5 @@
+import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
-import * as TMonacoType from 'monaco-editor'
 import { TEditorOpenFiles } from '../../types'
 
 import { useCallback } from 'react'
@@ -8,7 +8,7 @@ import { useCallback } from 'react'
 export type TUseCloseFile = {
   prePath: MutableRefObject<string | null>
   curPathRef: MutableRefObject<string>
-  restoreModel: (path: string) => false | TMonacoType.editor.ITextModel
+  restoreModel: (path: string) => false | editor.ITextModel
   setCurPath: (value: SetStateAction<string>) => void
   setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
 }

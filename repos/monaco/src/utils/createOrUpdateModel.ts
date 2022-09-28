@@ -32,6 +32,7 @@ const createModel = (path:string, value:string) => {
     ALLOWED_FILE_TYPES[type] || type,
     new window.monaco.Uri().with({ path, scheme: 'goblet' })
   )
+
   model.updateOptions({
     tabSize: 2,
     insertSpaces: true,

@@ -8,15 +8,20 @@ export type TDragObj = {
 
 export type TUseFileListResize = {
   initialWidth?: number
+  initialStatus?:boolean
+  onFileTreeResize?: (width:number) => void
 }
 
 export const useFileListResize = (props:TUseFileListResize) => {
 
   const {
-    initialWidth=180
+    onFileTreeResize,
+    initialWidth=180,
+    initialStatus=false
   } = props
 
-  const [fileListWidth, setFileListWidth] = useState<number>(initialWidth)
+
+  const [fileListWidth, setFileListWidth] = useState<number>(initialStatus ? initialWidth : 0)
 
   const dragStartRef = useRef<TDragObj>({
     pageX: 0,
@@ -58,6 +63,11 @@ export const useFileListResize = (props:TUseFileListResize) => {
     [fileListWidth]
   )
 
+  const resizeFileTree = useCallback((width:number) => {
+    setFileListWidth(width)
+    onFileTreeResize?.(width)
+  }, [onFileTreeResize, setFileListWidth])
+
   return {
     styles,
     dragStartRef,
@@ -65,6 +75,7 @@ export const useFileListResize = (props:TUseFileListResize) => {
     handleMoveEnd,
     handleMoveStart,
     fileListWidth,
+    resizeFileTree,
     setFileListWidth,
   }
 

@@ -1,3 +1,4 @@
+import type { editor, IDisposable } from 'monaco-editor'
 import type {
   IMultiRefType,
   TEditorConfig,
@@ -12,10 +13,10 @@ import React, {
 import { Empty } from '../Empty'
 import { FileTree } from '../FileTree'
 import { OpenedTabs } from '../OpenedTabs'
-import * as TMonacoType from 'monaco-editor'
 import { setTheme } from '../../init/setTheme'
 import { createOrUpdateModel, deleteModel } from '../../utils'
 import { useLintWorker } from '../../hooks/editor/useLintWorker'
+import { useTypesWorker } from '../../hooks/editor/useTypesWorker'
 import { useEditorSetup } from '../../hooks/editor/useEditorSetup'
 import { useFileCallbacks } from '../../hooks/editor/useFileCallbacks'
 import { useFileListResize } from '../../hooks/editor/useFileListResize'
@@ -32,6 +33,8 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
       onValueChange,
       defaultFiles = {},
       onFileChange,
+      onFileTreeResize,
+      initialFileTreeStatus,
       config={} as TEditorConfig,
       options,
     },
@@ -48,14 +51,15 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     optionsRef.current = options
 
     const editorNodeRef = useRef<HTMLDivElement>(null)
-    const editorRef = useRef<TMonacoType.editor.IStandaloneCodeEditor | null>(null)
+    const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
     const prePath = useRef<string | null>(defaultPath || '')
     const filesRef = useRef(defaultFiles)
-    const valueListenerRef = useRef<TMonacoType.IDisposable>()
+    const valueListenerRef = useRef<IDisposable>()
     const editorStatesRef = useRef(new Map())
     const rootRef = useRef(null)
 
     const [lintWorkerRef] = useLintWorker({ editorRef })
+    const [typesWorkerRef] = useTypesWorker({ editorRef })
 
     const [curPath, setCurPath] = useState(defaultPath || '')
     const curPathRef = useRef(defaultPath || '')
@@ -74,11 +78,24 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
       curValueRef,
       defaultPath,
       lintWorkerRef,
+      typesWorkerRef,
       editorNodeRef,
       onFileChangeRef,
       editorStatesRef,
       valueListenerRef,
       onValueChangeRef,
+    })
+
+    const {
+      styles,
+      handleMove,
+      handleMoveEnd,
+      handleMoveStart,
+      resizeFileTree,
+    } = useFileListResize({
+      onFileTreeResize,
+      initialStatus: initialFileTreeStatus,
+      initialWidth: config?.editor?.fileList?.width || 180
     })
 
     useEditorSetup({
@@ -90,6 +107,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
       setTheme,
       editorRef,
       curPathRef,
+      resizeFileTree,
       onPathChangeRef,
       createOrUpdateModel,
     })
@@ -131,15 +149,6 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
       setOpenedFiles,
       handlePathChange,
       createOrUpdateModel
-    })
-
-    const {
-      styles,
-      handleMove,
-      handleMoveEnd,
-      handleMoveStart,
-    } = useFileListResize({
-      initialWidth: config?.editor?.fileList?.width || 180
     })
 
     return (

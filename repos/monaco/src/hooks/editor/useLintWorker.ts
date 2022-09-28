@@ -1,11 +1,11 @@
 import type { MutableRefObject } from 'react'
-import * as TMonacoType from 'monaco-editor'
+import type { editor } from 'monaco-editor'
 import { useEffect, useRef } from 'react'
 // @ts-ignore
 import ESLintWorker from '../../workers/eslint.worker?worker'
 
 export type TUseLintWorker = {
-  editorRef:MutableRefObject<TMonacoType.editor.IStandaloneCodeEditor | null>
+  editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
 }
 
 export type TLinter = {

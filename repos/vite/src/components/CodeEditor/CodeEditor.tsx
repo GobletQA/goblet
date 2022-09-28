@@ -30,6 +30,16 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     console.log(file)
   }, [])
 
+  useEffect(() => {
+    setTimeout(() => {
+      console.log(`------- editor ref -------`)
+      console.log(editorRef.current)
+    // TODO: call this method from the side-menu somehow?
+      editorRef?.current?.resizeFileTree?.(200)
+    }, 1000)
+
+  }, [])
+
   return (
     <MonacoEditor
       ref={editorRef}

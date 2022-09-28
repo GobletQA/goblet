@@ -1,7 +1,9 @@
 import type { TLinter } from './useLintWorker'
+import type { TTypes } from './useTypesWorker'
 import type { Dispatch, MutableRefObject } from 'react'
 import type { TEditorOpenFiles } from '../../types'
-import * as TMonacoType from 'monaco-editor'
+import type { editor, IDisposable } from 'monaco-editor'
+
 
 import { useCallback } from 'react'
 
@@ -9,11 +11,12 @@ export type TUseRestoreModel = {
   curValueRef: MutableRefObject<string>
   prePath: MutableRefObject<string | null>
   lintWorkerRef: MutableRefObject<TLinter>
+  typesWorkerRef: MutableRefObject<TTypes>
   editorStatesRef:MutableRefObject<Map<any, any>>
   setOpenedFiles: Dispatch<React.SetStateAction<TEditorOpenFiles>>
   onValueChangeRef: MutableRefObject<((v: string) => void) | undefined>
-  valueListenerRef: MutableRefObject<TMonacoType.IDisposable | undefined>
-  editorRef: MutableRefObject<TMonacoType.editor.IStandaloneCodeEditor | null>
+  valueListenerRef: MutableRefObject<IDisposable | undefined>
+  editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>
   onFileChangeRef: MutableRefObject<((key: string, value: string) => void) | undefined>
 }
 
@@ -23,6 +26,7 @@ export const useRestoreModel = (props:TUseRestoreModel) => {
     editorRef,
     curValueRef,
     lintWorkerRef,
+    typesWorkerRef,
     setOpenedFiles,
     onFileChangeRef,
     editorStatesRef,

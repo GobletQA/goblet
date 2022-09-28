@@ -11,6 +11,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  scrollbar-width: none;
 }
 .goblet-monaco-editor-opened-tab::-webkit-scrollbar {
   width: 6px;

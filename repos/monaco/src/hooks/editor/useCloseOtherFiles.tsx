@@ -1,5 +1,5 @@
+import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
-import * as TMonacoType from 'monaco-editor'
 import { TEditorOpenFiles, TFilelist } from '../../types'
 import Modal from '../../components/modal'
 
@@ -13,7 +13,7 @@ export type TUseCloseOtherFiles = {
   setCurPath: (value: SetStateAction<string>) => void
   createOrUpdateModel:(path: string, value: string) => void
   setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
-  restoreModel: (path: string) => false | TMonacoType.editor.ITextModel
+  restoreModel: (path: string) => false | editor.ITextModel
 }
 
 export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
