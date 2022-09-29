@@ -1,5 +1,6 @@
 import type { TAction } from '@reducers'
 import { deepMerge } from '@keg-hub/jsutils'
+import { createDispatcher } from '@utils/dispatcher'
 
 export type TWorld = {
   [key:string]: any
@@ -21,3 +22,4 @@ export const repoActions = {
   upsert: (state:TRepoState, action:TAction<TRepoState>) => deepMerge<TRepoState>(state, action?.payload),
 }
 
+export const repoDispatch = createDispatcher(repoActions)

@@ -1,3 +1,5 @@
+import Box from '@mui/material/Box'
+
 
 export type TBuilder = {
   
@@ -5,8 +7,8 @@ export type TBuilder = {
 
 export const Builder = (props:TBuilder) => {
   return (
-    <div>
+    <Box>
       Builder
-    </div>
+    </Box>
   )
 }

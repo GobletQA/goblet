@@ -1,1 +1,1 @@
-export {}
+export * from '@gobletqa/shared/models'

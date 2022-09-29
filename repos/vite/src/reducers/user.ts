@@ -1,5 +1,6 @@
 import type { TAction } from '@reducers'
 import { deepMerge } from '@keg-hub/jsutils'
+import { createDispatcher } from '@utils/dispatcher'
 
 export type TUserState = {
   uid: string
@@ -20,3 +21,4 @@ export const userActions = {
   upsert: (state:TUserState, action:TAction<TUserState>) => deepMerge<TUserState>(state, action?.payload),
 }
 
+export const userDispatch = createDispatcher(userActions)

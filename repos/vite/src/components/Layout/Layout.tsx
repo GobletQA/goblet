@@ -13,6 +13,7 @@ import 'react-page-split/style.css'
 
 const fullHeight = {
   height: `calc( 100vh - ${dims.header.height + dims.footer.height}px)`,
+  overflow: `hidden`
 }
 const noOverflow = {
   ...fullHeight,
