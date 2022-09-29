@@ -20,7 +20,6 @@ const onAppInit = async (setApiTimeout:(...args:any[])=>any) => {
   .catch(() => setApiTimeout(`Backend API Server is not responding`))
 }
 
-
 const App = () => {
   const [themeType, setThemeType] = useState<TThemeTypes>(`light`)
   const theme = useMemo(() => createTheme(themeType), [themeType])

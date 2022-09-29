@@ -19,6 +19,7 @@ export type TRouterConfig = {
 export type TRoute = {
   path?: string
   children?: TRoute[]
+  layout?: boolean
   element: string | typeof Component,
   errorElement?: string | typeof Component,
 }
@@ -26,7 +27,7 @@ export type TRoute = {
 export type TRouteComponents = Record<string, typeof Component>
 
 export const buildRoute = (route:TRoute, RouteComponents:TRouteComponents) => {
-  const { element, errorElement, path, children, ...altProps } = route
+  const { element, layout, errorElement, path, children, ...altProps } = route
   const built = {...altProps } as RouteObject
 
   if(typeof element === 'string'){

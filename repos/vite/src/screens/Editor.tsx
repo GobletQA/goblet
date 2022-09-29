@@ -1,18 +1,10 @@
-
-import { dims } from '@theme'
-import Box from '@mui/material/Box'
-import { Section } from '@components/Section'
-import Container from '@mui/material/Container'
-import { Terminal } from '@components/Terminal'
+import { useState } from 'react'
 import { CodeEditor } from '@components/CodeEditor'
-import { Screencast } from '@components/Screencast'
+import { Builder } from '@components/Builder'
 import { Definitions } from '@components/Definitions'
-import {
-  Proportional,
-  VerticalPageSplit,
-  HorizontalPageSplit,
-} from 'react-page-split'
-import 'react-page-split/style.css'
+import { Layout } from '@components/Layout'
+
+// Builder
 
 
 // import ResizeObserver from "react-resize-observer"
@@ -20,20 +12,6 @@ import 'react-page-split/style.css'
       //   onResize={onResizeCb}
       //   onPosition={onPositionCb}
       // />
-
-export type TEditorProps = {
-  
-}
-
-
-
-const fullHeight = {
-  height: `calc( 100vh - ${dims.header.height + dims.footer.height}px)`,
-}
-const noOverflow = {
-  ...fullHeight,
-  overflow: `hidden`
-}
 
 
 /**
@@ -44,25 +22,24 @@ const noOverflow = {
       bottom: dims.footer.height,
     }}
   />
-
  */
 
 
+export type TEditorProps = {
+  
+}
+
 export default function Editor(props:TEditorProps){
+  const [editorType, setEditorType] = useState<string>(`code`)
+
   return (
-    <HorizontalPageSplit
-      resize={Proportional}
-    >
-      <Container disableGutters sx={noOverflow}>
-        <CodeEditor/>
-      </Container>
-      <Container disableGutters sx={fullHeight}>
-        <VerticalPageSplit>
-          <Screencast />
-          <Terminal />
-        </VerticalPageSplit>
-      </Container>
-    </HorizontalPageSplit>
+    <Layout>
+      {
+        editorType === `code`
+          ? (<CodeEditor />)
+          : (<Builder />)
+      }
+    </Layout>
   )
 }
 

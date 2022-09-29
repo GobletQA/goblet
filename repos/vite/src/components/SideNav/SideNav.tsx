@@ -1,4 +1,9 @@
+import type { Dispatch, SetStateAction } from 'react'
 import type { TNavItemProps } from '../Nav/NavItem'
+import type { OpenFileTreeEvent } from '@types'
+
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { OpenFileTreeEvt, FileTreeWidth } from '@constants'
 
 import { useState, useCallback } from 'react'
 import { dims } from '@theme'
@@ -6,7 +11,6 @@ import Box from '@mui/material/Box'
 import * as Icons from '@components/Icons'
 import Divider from '@mui/material/Divider'
 import { NavGroups, TGroupItem } from '../Nav'
-import { useTheme } from '@mui/material/styles'
 import { Goblet } from '@components/Icons/Goblet'
 import IconButton from '@mui/material/IconButton'
 import { DrawerHeader, Drawer } from './SideNav.styled'
@@ -22,6 +26,43 @@ const findNavItem = (element:HTMLElement):string|undefined => {
   return !parent || parent?.classList?.contains(SideNavConst.groupClassName || ``)
       ? undefined
       : findNavItem(parent as HTMLElement)
+}
+
+
+const useToggleDrawer = (
+  open:boolean,
+  setOpen:Dispatch<SetStateAction<boolean>>,
+  activeNav:string|undefined,
+  setActiveNav:Dispatch<SetStateAction<string | undefined>>
+) => {
+  return useCallback((event:Record<string, any>) => {
+    const updatedOpen = !open
+    const navItem = findNavItem(event?.target as HTMLElement)
+
+    if(navItem === `files`){
+      if(activeNav === `files`){
+        EE.emit<OpenFileTreeEvent>(OpenFileTreeEvt, { size: 0 })
+        setActiveNav(undefined)
+      }
+      else {
+        EE.emit<OpenFileTreeEvent>(OpenFileTreeEvt, { size: FileTreeWidth })
+        setActiveNav(navItem)
+      }
+      setOpen(false)
+      return
+    }
+
+    if((!navItem || navItem === activeNav) && !updatedOpen){
+      setOpen(updatedOpen)
+      setActiveNav(undefined)
+    }
+    else {
+      setOpen(true)
+      setActiveNav(navItem)
+    }
+
+  }, [open, activeNav])
+
 }
 
 const groups = SideNavConst.groups.map(group => {
@@ -46,23 +87,15 @@ type TSideNavProps = {
 }
 
 export const SideNav = (props:TSideNavProps) => {
-  const theme = useTheme()
   const [open, setOpen] = useState(false)
   const [activeNav, setActiveNav] = useState<string|undefined>()
 
-  const toggleDrawer = useCallback((event:Record<string, any>) => {
-    const updatedOpen = !open
-    const navItem = findNavItem(event?.target as HTMLElement)
-    if((!navItem || navItem === activeNav) && !updatedOpen){
-      setOpen(updatedOpen)
-      setActiveNav(undefined)
-    }
-    else {
-      setOpen(true)
-      setActiveNav(navItem)
-    }
-
-  }, [open, activeNav])
+  const toggleDrawer = useToggleDrawer(
+    open,
+    setOpen,
+    activeNav,
+    setActiveNav
+  )
 
   const onClickAway = useCallback((event: MouseEvent | TouchEvent) => {
     open && setOpen(false)
@@ -77,7 +110,6 @@ export const SideNav = (props:TSideNavProps) => {
         >
           <Box className="side-nav-header-icon" >
             <IconButton className="side-nav-header-icon-button" onClick={toggleDrawer} >
-              {/* {open ? <ChevronLeftIcon /> : <Goblet />} */}
               <Goblet />
             </IconButton>
           </Box>

@@ -1,5 +1,11 @@
+import type { OpenFileTreeEvent } from '@types'
+
+import { exists } from '@keg-hub/jsutils'
 import { MonacoEditor } from '@gobletqa/monaco'
 import { useState, useCallback, useRef, useEffect } from 'react'
+
+import { OpenFileTreeEvt } from '@constants'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 export type TCodeEditorProps = {
   
@@ -31,10 +37,13 @@ export const CodeEditor = (props:TCodeEditorProps) => {
   }, [])
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   editorRef?.current?.resizeFileTree?.(200)
-    // }, 1000)
+    EE.on<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
+      exists(size) && editorRef?.current?.resizeFileTree?.(size)
+    }, `${OpenFileTreeEvt}-code-editor`)
 
+    return () => {
+      EE.off<OpenFileTreeEvent>(OpenFileTreeEvt, `${OpenFileTreeEvt}-code-editor`)
+    }
   }, [])
 
   return (
