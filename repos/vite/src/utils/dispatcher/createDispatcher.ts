@@ -6,11 +6,11 @@ export const createDispatcher = <T extends AnyReducerFuncs>(
   prefix?: string
 ): ActionDispatcher<T> => {
   const keys = Object.keys(actions)
-  const dispatcher = getDispatch()
   const dispatchActions: Record<string, any> = {}
   for (const key of keys) {
     const dispatcherType = prefix ? `${prefix}/${key}` : key
     dispatchActions[key] = (payload?: any) => {
+      const dispatcher = getDispatch()
       dispatcher({
         type: dispatcherType,
         payload,
