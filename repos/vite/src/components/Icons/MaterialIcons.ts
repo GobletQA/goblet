@@ -4,6 +4,7 @@ import MapPoint from '@mui/icons-material/PlaceOutlined'
 import Globe from '@mui/icons-material/LanguageOutlined'
 import Settings from '@mui/icons-material/SettingsOutlined'
 import Picture from '@mui/icons-material/InsertPhotoOutlined'
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 export {
   Steps,
@@ -12,4 +13,5 @@ export {
   MapPoint,
   RuleCheck,
   Settings,
+  GitHubIcon
 }

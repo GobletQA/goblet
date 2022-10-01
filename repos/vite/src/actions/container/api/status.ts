@@ -31,7 +31,7 @@ const setErrorState = async (error?:string) => {
  * 
  * @returns {Object} - status object returned from the Backend API
  */
-export const statusContainer = async (params:Record<any, any>) => {
+export const statusContainer = async (params?:Record<any, any>) => {
   addToast({
     type: 'info',
     message: `Getting Session status...`,

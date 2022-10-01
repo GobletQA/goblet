@@ -30,7 +30,7 @@ export const Select = (props:TSelect) => {
   return (
     <Input value="empty" {...rest} SelectProps={selectProps} select >
       {options ? (
-        options.map(opt => {
+        options.map((opt) => {
           const { key, label, value, ...optRest } = typeof opt === `object`
             ? opt
             : { key: opt, value: opt, label: opt }
