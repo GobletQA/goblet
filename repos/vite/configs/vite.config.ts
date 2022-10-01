@@ -24,6 +24,9 @@ export default defineConfig(async () => {
       port,
       https: true,
     },
+    esbuild: {
+      logOverride: { 'this-is-undefined-in-esm': 'silent' }
+    },
     plugins: [
       // @ts-ignore
       monacoEditorPlugin.default({
