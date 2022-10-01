@@ -1,5 +1,6 @@
-import type { TReduxAction } from '@reducers'
+import type { TReduxAction, TCombinedState } from '@reducers'
 
+import { get } from '@keg-hub/jsutils'
 import { Store as ReduxStore } from 'redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { reducer, preloadedState } from '@reducers'
@@ -22,6 +23,14 @@ export const Store: ReduxStore<RootState> = configureStore({
 
 export const useDispatch = () => useReduxDispatch<AppDispatch>()
 export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector
+
+export const useSelect = (...items:string[]) => {
+  return items.reduce((acc, item) => {
+    const key = item.split(`.`).pop()
+    acc[key as string] = useSelector((state) => get(state, item))
+    return acc
+  }, {} as Record<string, keyof TCombinedState>)
+}
 
 export const getStore = () => Store
 export const getDispatch: () => AppDispatch = () => Store.dispatch

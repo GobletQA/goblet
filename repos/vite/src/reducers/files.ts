@@ -9,7 +9,47 @@ export type TFilesState = {
   files: TFileModel[]
   pendingFiles: TPendingFiles
 }
-export const filesState = {} as TFilesState
+export const filesState = {
+  files: [
+    {
+      name: `test-file-1.ts`,
+      ext: `.ts`,
+      location: `/test/test-file-1.ts`,
+      relative: `./test/test-file-1.ts`,
+      content: ``,
+      fileType: `typescript`,
+      mime: `js`,
+      ast: {},
+      lastModified: 0,
+      uuid: `/test/test-file-1.ts`
+    },
+    {
+      name: `test-file-1.feature`,
+      ext: `feature`,
+      location: `/test/test-file-1.feature`,
+      relative: `./test/test-file-1.feature`,
+      content: ``,
+      fileType: `gherkin`,
+      mime: `feature`,
+      ast: {},
+      lastModified: 0,
+      uuid: `/test/test-file-1.feature`
+    },
+    {
+      name: `test-file-2.feature`,
+      ext: `feature`,
+      location: `/test/test-file-2.feature`,
+      relative: `./test/test-file-2.feature`,
+      content: ``,
+      fileType: `gherkin`,
+      mime: `feature`,
+      ast: {},
+      lastModified: 0,
+      uuid: `/test/test-file-2.feature`
+    },
+  ]
+  
+} as TFilesState
 
 export const filesActions = {
   clear: (state:TFilesState, action:TAction<TFilesState>) => (filesState),
