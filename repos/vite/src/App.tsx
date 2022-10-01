@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { initApp } from '@actions/init'
 import { createTheme } from '@theme/Theme'
 import { Fadeout } from '@components/Fadeout'
+import { ModalManager } from '@components/ModalManager'
 import { RootScreen } from 'src/screens/Root'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
@@ -36,6 +37,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <RootScreen themeSwitch={setThemeType} />
+        <ModalManager />
         <Fadeout start={start} content={apiTimeout} />
       </ThemeProvider>
     </Provider>

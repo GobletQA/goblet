@@ -5,11 +5,9 @@ import InputLabel from '@mui/material/InputLabel'
 import MuiTextField from '@mui/material/TextField'
 import FormHelperText from '@mui/material/FormHelperText'
 
-
 export type THelperText = ComponentProps<typeof FormHelperText> & {
   HelperText: ReactNode
 }
-
 
 export type TInputLabel = ComponentProps<typeof InputLabel> & {
   label?: string

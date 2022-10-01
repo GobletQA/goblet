@@ -36,7 +36,7 @@ const listenToPopState = async (event:any) => {
 
   // Load the init modal
   // display options modal if no valid querystring passed in
-  isEmptyColl(queryObj) && setActiveModal(ModalTypes.TEST_SELECTOR)
+  isEmptyColl(queryObj) && setActiveModal(ModalTypes.REPO)
 
   IN_POP_STATE = false
 }

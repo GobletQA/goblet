@@ -37,6 +37,13 @@ import {
 } from './fileTree'
 
 import {
+  TModalState,
+  modalState,
+  modalActions,
+  modalDispatch
+} from './modal'
+
+import {
   TRepoState,
   repoState,
   repoActions,
@@ -71,6 +78,7 @@ export type TCombinedState = {
   features: TFeaturesState
   files: TFilesState
   fileTree: TFileTreeState
+  modal: TModalState
   repo: TRepoState
   repos: TReposState
   user: TUserState
@@ -84,6 +92,7 @@ export const preloadedState = {
   features: featuresState,
   files: filesState,
   fileTree: fileTreeState,
+  modal: modalState,
   repo: repoState,
   user: userState,
 }
@@ -94,6 +103,7 @@ export const reducer = combineReducers<TState>({
   features: createReducer(featuresState, featuresActions),
   files: createReducer(filesState, filesActions),
   fileTree: createReducer(fileTreeState, fileTreeActions),
+  modal: createReducer(modalState, modalActions),
   repo: createReducer(repoState, repoActions),
   repos: createReducer(reposState, reposActions),
   user: createReducer(userState, userActions)
@@ -106,6 +116,7 @@ export {
   featuresDispatch,
   filesDispatch,
   fileTreeDispatch,
+  modalDispatch,
   repoDispatch,
   reposDispatch,
   userDispatch,

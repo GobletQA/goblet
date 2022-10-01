@@ -68,7 +68,7 @@ export const filesActions = {
   ) => {
     return {
       ...state,
-      activeFile: {},
+      activeFile: {} as TFileModel,
     }
   },
   setFile: (

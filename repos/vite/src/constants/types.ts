@@ -26,14 +26,16 @@ export {
 }
 
 export enum ModalTypes {
+  confirm = 'confirm',
+  CONFIRM = 'confirm',
+  CONNECT = 'connect',
+  connect = 'connect',
+  REPO = 'repo',
+  repo = 'repo',
+  SETTINGS = 'settings',
+  settings = 'settings',
   SIGN_IN = 'signIn',
-  signIn = 'SIGN_IN',
-  NO_LOCAL_MOUNT = 'noLocalMount',
-  noLocalMount = 'NO_LOCAL_MOUNT',
-  CONNECT_REPO = 'connectRepoModal',
-  connectRepoModal = 'CONNECT_REPO',
-  TEST_SELECTOR = 'testSelectorModal',
-  testSelectorModal = 'TEST_SELECTOR',
+  signIn = 'signIn',
 } 
 
 
