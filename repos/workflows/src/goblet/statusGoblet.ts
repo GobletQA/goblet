@@ -1,3 +1,5 @@
+import type { TWFGobletConfig, TWFResp, TGitOpts } from '@gobletqa/workflows/types'
+
 import path from 'path'
 import { git, RepoWatcher } from '../git'
 import { LOCAL_MOUNT } from '../constants'
@@ -10,7 +12,7 @@ import { createRepoWatcher } from '../repo/mountRepo'
 // Maybe create a gobletConfig repo - Dedicating to loading the config
 // @ts-ignore
 import { getConfigAtPath } from '@gobletqa/shared/utils/getGobletConfig'
-import { TGobletConfig, TWFResp, TGitOpts } from '@gobletqa/workflows/types'
+
 
 const { pathExists } = fileSys
 const emptyOpts = noOpObj as TGitOpts
@@ -43,7 +45,7 @@ const validatePath = async location => {
  *
  * @return {RepoStatus} - Status object for the checked repo
  */
-const statusForLocal = async (config:TGobletConfig) => {
+const statusForLocal = async (config:TWFGobletConfig) => {
   Logger.info(`Checking repo status in local mode...`)
 
   const isValidPath = await validatePath(LOCAL_MOUNT)
@@ -147,7 +149,7 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
  *
  * @return {RepoStatus} - Status object for the checked repo
  */
-export const statusGoblet = async (config:TGobletConfig, opts:TGitOpts, log=true) => {
+export const statusGoblet = async (config:TWFGobletConfig, opts:TGitOpts, log=true) => {
   log && Logger.subHeader(`Running Status Goblet Workflow`)
 
   if (!config)

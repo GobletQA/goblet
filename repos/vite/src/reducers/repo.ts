@@ -19,7 +19,8 @@ export const repoState = {} as TRepoState
 
 export const repoActions = {
   clear: (state:TRepoState, action:TAction<TRepoState>) => (repoState),
-  upsert: (state:TRepoState, action:TAction<TRepoState>) => deepMerge<TRepoState>(state, action?.payload),
+  setRepo: (state:TRepoState, action:TAction<TRepoState>) => action?.payload,
+  upsertRepo: (state:TRepoState, action:TAction<TRepoState>) => deepMerge<TRepoState>(state, action?.payload),
 }
 
 export const repoDispatch = createDispatcher(repoActions)

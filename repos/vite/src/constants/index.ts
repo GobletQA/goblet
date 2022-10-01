@@ -5,3 +5,5 @@ export * from './nav'
 export * from './storage'
 export * from './types'
 export * from './values'
+export * from './categories'
+

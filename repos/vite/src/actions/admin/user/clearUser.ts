@@ -1,5 +1,5 @@
 import { dispatch } from '@store'
-import { STORAGE, ActionTypes } from '@constants'
+import { StorageKeys, ActionTypes } from '@constants'
 import { noOpObj } from '@keg-hub/jsutils'
 
 /**
@@ -10,7 +10,7 @@ export const clearUser = () => {
   dispatch({
     type: ActionTypes.SET_ITEMS,
     payload: {
-      category: STORAGE.USER,
+      category: StorageKeys.USER,
       items: noOpObj,
     },
   })

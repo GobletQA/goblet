@@ -1,4 +1,5 @@
-import { HTTP_METHODS } from '@constants'
+import type { TFileModel } from '@types'
+import { HttpMethods } from '@constants'
 import { apiRepoRequest } from './apiRepoRequest'
 import { addToast } from '@actions/toasts/addToast'
 
@@ -41,9 +42,9 @@ export const saveApiFile = async ({
       ].join(`\n`)
     })
     
-  const resp = await apiRepoRequest({
+  const resp = await apiRepoRequest<Record<'file', TFileModel>>({
     url: `/files/save`,
-    method: HTTP_METHODS.POST,
+    method: HttpMethods.POST,
     params: {
       type,
       content,
@@ -76,7 +77,7 @@ export const loadApiFile = async ({ location }:TFileApi) => {
       ].join(`\n`)
     })
   
-  const resp = await apiRepoRequest(`/files/load?path=${location}`)
+  const resp = await apiRepoRequest<Record<'file', TFileModel>>(`/files/load?path=${location}`)
 
   if(!resp?.success || resp?.error)
     addToast({
@@ -106,8 +107,8 @@ export const createApiFile = async ({ name, type }:TCreateFile) => {
       ].join(`\n`)
     })
 
-  const resp = await apiRepoRequest({
-    method: HTTP_METHODS.POST,
+  const resp = await apiRepoRequest<Record<'file', TFileModel>>({
+    method: HttpMethods.POST,
     url: `/files/create`,
     params: { name, type },
   })
@@ -139,7 +140,7 @@ export const deleteApiFile = async ({ location }:TFileApi) => {
       ].join(`\n`)
     })
   
-  const resp = await apiRepoRequest({
+  const resp = await apiRepoRequest<Record<'location', string>>({
     method: 'delete',
     url: `/files/delete`,
     params: { file: location },

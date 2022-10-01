@@ -2,7 +2,7 @@ import type { TStateKey, TRepoState } from '@reducers'
 import type { THeaders, TRequest, TResponse } from '@services/axios.types'
 
 import { getStore } from '@store'
-import { STORAGE } from '@constants'
+import { StorageKeys } from '@constants'
 import { apiRequest } from './apiRequest'
 import { isObj, deepMerge, noOpObj } from '@keg-hub/jsutils'
 
@@ -15,7 +15,7 @@ import { isObj, deepMerge, noOpObj } from '@keg-hub/jsutils'
  */
 const getRepoData = () => {
   const storeItems = getStore()?.getState()
-  const key:TStateKey = STORAGE.REPO
+  const key:TStateKey = StorageKeys.REPO
 
   return (storeItems[key] || noOpObj) as TRepoState
 }
@@ -48,13 +48,13 @@ const formatUrl = (repoName:string, url:string) => {
  *
  * @returns {Object|Boolean} - Data returned from the apiRequest method
  */
-export const apiRepoRequest = async (request:TRequest|string) => {
+export const apiRepoRequest = async <T=Record<any, any>>(request:TRequest|string) => {
   const req = isObj<TRequest>(request) ? request : { url: request }
 
   const repoData = getRepoData()
   req.url = formatUrl(repoData.name, req.url)
 
-  return apiRequest(deepMerge(
+  return apiRequest<T>(deepMerge(
     {
       params: {
         local: repoData?.git?.local,

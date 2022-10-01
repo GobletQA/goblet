@@ -1,6 +1,6 @@
 import { dispatch } from '@store'
 import { addToast } from '@actions/toasts'
-import { STORAGE, ActionTypes } from '@constants'
+import { StorageKeys, ActionTypes } from '@constants'
 
 
 /**
@@ -17,7 +17,7 @@ export const upsertUser = async user => {
   dispatch({
     type: ActionTypes.UPSERT_ITEMS,
     payload: {
-      category: STORAGE.USER,
+      category: StorageKeys.USER,
       items: user,
     },
   })

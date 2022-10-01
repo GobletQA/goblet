@@ -1,6 +1,6 @@
 import { deepFreeze } from '@keg-hub/jsutils'
 
-export const STORAGE = deepFreeze({
+export const StorageKeys = deepFreeze({
   JWT: `goblet-jwt`,
   REPO: `goblet-repo`,
   USER: `goblet-user`,

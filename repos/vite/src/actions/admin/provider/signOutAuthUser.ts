@@ -1,4 +1,4 @@
-import { MODAL_TYPES } from '@constants'
+import { ModalTypes } from '@constants'
 import { GitUser } from '@services/gitUser'
 import { WSService } from '@services/socketService'
 import { localStorage } from '@services/localStorage'
@@ -46,5 +46,5 @@ export const signOutAuthUser = async () => {
   catch(err:any){ console.error(`Error in auth sign out.\n${err.message}`) }
 
   // Open the sign in modal to force the user to re-sign in
-  setActiveModal(MODAL_TYPES.SIGN_IN)
+  setActiveModal(ModalTypes.SIGN_IN)
 }

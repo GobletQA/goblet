@@ -6,6 +6,8 @@ import { deepFreeze } from '@keg-hub/jsutils'
 const activeVNC = isVNCMode()
 const noVncPath = getVncPath()
 
+
+
 export const screencast = deepFreeze({
   VNC_ACTIVE: activeVNC,
   NO_VNC_PATH: noVncPath,

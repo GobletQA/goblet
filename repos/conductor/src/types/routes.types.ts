@@ -5,6 +5,7 @@ type TContainerId = string
 type TContainerPort = string
 type TContainerName = string
 
+export type TContainerState = `Creating` | `Running` | `Stopped` | `Missing`
 export type TProtocol = 'http' | 'https' | 'ws' | 'wss' | 'http:' | 'https:' | 'ws:' | 'wss:'
 
 export type TContainerRoute = {
@@ -35,7 +36,7 @@ export type TProxyRoutes = {
 export type TContainerMeta = {
   id: TContainerId
   name: TContainerName
-  state: `Creating` | `Running` | `Stopped` | `Missing`
+  state: TContainerState
 }
 
 export type TPublicUrls = {

@@ -13,6 +13,11 @@ export type TDefinitionMeta = {
   [key:string]: any
 }
 
+export type TDefinitionParent = {
+  uuid: string
+  location: string
+}
+
 export type TDefinitionAst = {
   type: string
   name: string
@@ -20,12 +25,14 @@ export type TDefinitionAst = {
   content: string
   meta: TDefinitionMeta
   match: string | RegExp
+  parent?: TDefinitionParent
   tokens: TDefinitionToken[]
   variant: EDefinitionVariant
 }
 
-export type TDefinitionsAst = TDefinitionAst[]
+export type TDefinitionsAstList = Record<string, TDefinitionAst>
+export type TDefinitionsAstArr = TDefinitionAst[]
 
-export type TDefinitionsTypeMapAst = {
-  [key in EStepKey]: TDefinitionsAst
+export type TDefinitionsAstTypeMap = {
+  [key in EStepKey]: TDefinitionsAstArr
 }

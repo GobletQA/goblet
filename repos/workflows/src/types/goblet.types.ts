@@ -37,7 +37,7 @@ type TGFileTypes = {
   [key:string]: TGFileType
 }
 
-export type TGobletConfig = { 
+export type TWFGobletConfig = {
   recorder: TRecorderOpts
   fileTypes: TGFileTypes
   paths: Record<string, string>

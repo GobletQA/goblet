@@ -2,7 +2,7 @@ import type { TGFileTypes } from './files.types'
 import type { TRecorderOpts, TGScreencastConfig } from './screencast.types'
 
 
-export type TGobletConfig = { 
+export type TGobletConfig = {
   recorder: TRecorderOpts
   fileTypes: TGFileTypes
   paths: Record<string, string>

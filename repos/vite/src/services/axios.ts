@@ -3,13 +3,13 @@ import type { TRequestError, TRequest, TBuiltRequest, TResponse } from '@service
 
 import axios from 'axios'
 import { deepFreeze, isStr } from '@keg-hub/jsutils'
-import { HTTP_METHODS, ENVIRONMENT } from '@constants'
+import { HttpMethods, ENVIRONMENT } from '@constants'
 
-const { GET, ...HttpMethodsWithBody } = HTTP_METHODS
+const { GET, ...HttpMethodsWithBody } = HttpMethods
 
 
 export const networkRequestModel = deepFreeze({
-  method: HTTP_METHODS.GET,
+  method: HttpMethods.GET,
   url: null,
   headers: {
     Accept: 'application/json',

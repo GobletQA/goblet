@@ -49,9 +49,11 @@
       "@gobletqa/monaco/*": [ "../monaco/src/*" ],
       "@gobletqa/shared": [ "../shared/src" ],
       "@gobletqa/shared/*": [ "../shared/src/*" ],
+      "@gobletqa/workflows": [ "../workflows/src" ],
+      "@gobletqa/workflows/*": [ "../workflows/src/*" ],
       "GobletRoot": ["../../"]
     }
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "tsconfig.vite.json" }]
 }

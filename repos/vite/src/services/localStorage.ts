@@ -1,7 +1,7 @@
 
 
 import { limbo } from '@keg-hub/jsutils'
-import { STORAGE, ENVIRONMENT } from '@constants'
+import { StorageKeys, ENVIRONMENT } from '@constants'
 
 export type TWrapperFunc = (...args:any[]) => void
 
@@ -95,7 +95,7 @@ class Storage {
   * Then immediately removes it from local storage
   */
   get = async (key:string, parse?:boolean) => {
-    const name = STORAGE[key] || key
+    const name = StorageKeys[key] || key
     if(!name) return console.error(`A key is required to get a local storage item, instead got "${name}"`)
 
     try {
@@ -111,7 +111,7 @@ class Storage {
 
 
   set = async (key:string, data:any, stringify?:boolean) => {
-    const name = STORAGE[key] || key
+    const name = StorageKeys[key] || key
     if(!name) return console.error(`A key is required to set a local storage item, instead got "${name}"`)
 
     try {
@@ -129,7 +129,7 @@ class Storage {
    * Removes the store repo from local storage
    */
   remove = async (key:string) => {
-    const name = STORAGE[key] || key
+    const name = StorageKeys[key] || key
 
     if(!name) return console.error(`A key is required to remove a local storage item, instead got "${name}"`)
     
@@ -152,21 +152,21 @@ class Storage {
     }
   }
 
-  getUser = async () => this.get(STORAGE.USER, true)
-  setUser = async (data:any) => this.set(STORAGE.USER, data, true)
-  removeUser = async () => this.remove(STORAGE.USER)
+  getUser = async () => this.get(StorageKeys.USER, true)
+  setUser = async (data:any) => this.set(StorageKeys.USER, data, true)
+  removeUser = async () => this.remove(StorageKeys.USER)
  
-  getJwt = async () => this.get(STORAGE.JWT)
-  setJwt = async (data:any) => this.set(STORAGE.JWT, data)
-  removeJwt = async () => this.remove(STORAGE.JWT)
+  getJwt = async () => this.get(StorageKeys.JWT)
+  setJwt = async (data:any) => this.set(StorageKeys.JWT, data)
+  removeJwt = async () => this.remove(StorageKeys.JWT)
 
-  getRepo = async () => this.get(STORAGE.REPO, true)
-  setRepo = async (data:any) => this.set(STORAGE.REPO, data)
-  removeRepo = async () => this.remove(STORAGE.REPO)
+  getRepo = async () => this.get(StorageKeys.REPO, true)
+  setRepo = async (data:any) => this.set(StorageKeys.REPO, data)
+  removeRepo = async () => this.remove(StorageKeys.REPO)
 
-  getHeaders = async () => await this.get(STORAGE.ROUTE_HEADERS, true)
-  setHeaders = async (data:any) => await this.set(STORAGE.ROUTE_HEADERS, data, true)
-  removeHeaders = async () => this.remove(STORAGE.ROUTE_HEADERS)
+  getHeaders = async () => await this.get(StorageKeys.ROUTE_HEADERS, true)
+  setHeaders = async (data:any) => await this.set(StorageKeys.ROUTE_HEADERS, data, true)
+  removeHeaders = async () => this.remove(StorageKeys.ROUTE_HEADERS)
 
 }
 

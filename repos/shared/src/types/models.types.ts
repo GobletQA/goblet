@@ -1,5 +1,5 @@
 import type { TFeatureAst } from './features.types'
-import type { TDefinitionsAst } from './definitions.types'
+import type { TDefinitionAst } from './definitions.types'
 
 export type TGeneralAst = Record<any, any>
 
@@ -75,6 +75,6 @@ export type TFeatureFileModel = Omit<TFileModel, 'ast'> & {
 }
 
 export type TDefinitionFileModel = Omit<TFileModel, 'ast'> & {
-  ast: TDefinitionsAst
+  ast: TDefinitionAst
 }
 
