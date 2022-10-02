@@ -1,10 +1,18 @@
-import Box from '@mui/material/Box'
 import Editor from './Editor'
+import Box from '@mui/material/Box'
 import { ScreenWrap } from './Root.styled'
 import { Header } from '@components/Header'
 import { Footer } from '@components/Footer'
 import { SideNav } from '@components/SideNav'
 import { Outlet, useLocation } from "react-router-dom"
+import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
+import {
+  TeamIcon,
+  LogoutIcon,
+  ProfileIcon,
+  SettingsIcon,
+} from '@components/Icons'
+
 
 type THomeProps = {
   [key:string]: any
@@ -34,14 +42,25 @@ Home.path = `/`
 Home.element = `Home`
 Home.children = [
   {
-    element: `Profile`,
+    label: `Profile`,
+    Icon: ProfileIcon,
   },
   {
-    element: `Settings`,
+    label: `Settings`,
+    Icon: SettingsIcon,
   },
   {
-    element: `Team`,
+    label: `Team`,
+    Icon: TeamIcon,
   }
 ]
 
-const settings = [...Home.children.map(child => child.element), `Logout`]
+const settings = [
+  ...Home.children,
+  {
+    divider: true,
+    label: `Logout`,
+    Icon: LogoutIcon,
+    onClick: signOutAuthUser,
+  }
+]

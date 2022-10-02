@@ -1,4 +1,11 @@
+import { TAnyCB } from './shared.types'
 import type { ReactNode, CSSProperties } from 'react'
+import type {
+  LinkProps,
+  SvgIconProps,
+  MenuItemProps,
+  TypographyProps,
+} from '@mui/material'
 
 export type TNavItem = {
   title: string,
@@ -17,4 +24,16 @@ export type TNavGroup = {
 export type TSideNav = {
   groupClassName?: string
   groups: TNavGroup[]
+}
+
+export type TSettingNavItem = {
+  Icon?: any
+  path?: string
+  label: string
+  onClick?: TAnyCB
+  divider?: boolean
+  linkProps?: LinkProps
+  iconProps?: SvgIconProps
+  itemProps?: MenuItemProps
+  textProps?:TypographyProps
 }

@@ -1,4 +1,5 @@
 import type { MouseEvent } from 'react'
+import type { TSettingNavItem } from '@types'
 
 import Box from '@mui/material/Box'
 import { Settings } from './Settings'
@@ -6,8 +7,9 @@ import Toolbar from '@mui/material/Toolbar'
 import { AppHeader } from './Header.styled'
 import { useStateReset } from '@hooks/useReset'
 
+
 type THeaderProps = {
-  settings?: string[]
+  settings?: TSettingNavItem[]
 }
 
 export const Header = (props:THeaderProps) => {
