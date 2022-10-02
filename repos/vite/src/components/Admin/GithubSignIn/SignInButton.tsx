@@ -1,9 +1,7 @@
 import type { ReactNode } from 'react'
 import {useCallback} from 'react'
-
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
+import ListItem from '@mui/material/ListItem'
 import { signInWithPopup, GithubAuthProvider } from 'firebase/auth'
 
 const defPrefix = 'goblet-github-button'
@@ -32,21 +30,18 @@ export type TSignInButton = {
 
 export const SignInButton = (props:TSignInButton) => {
   const {
-    children,
     Icon,
     text,
     auth,
-    styles,
     onFail,
     provider,
+    children,
     onSuccess,
     onSigningIn,
     prefix=defPrefix,
     classes=defClasses,
     ...btnProps
   } = props
-
-  const iconProps = {} as any
 
   const onBtnPress = useCallback(async (evt:any) => {
     onSigningIn?.(true)
@@ -74,65 +69,24 @@ export const SignInButton = (props:TSignInButton) => {
   }, [auth, provider, onSuccess, onFail])
   
   return (
-    <Box
-      style={styles?.main}
+    <ListItem
+      sx={{ minWidth: 120 }}
       className={`${prefix}-${classes?.main}`}
     >
       <Button
+        variant="contained"
+        startIcon={Icon && (<Icon className={`${prefix}-${classes?.icon}`} />)}
         {...btnProps}
         onClick={onBtnPress}
         className={`${prefix}-${classes?.button}`}
+        sx={{
+          width: `100%`,
+          color: `common.white`,
+          backgroundColor: `grey.900`,
+        }}
       >
-        {Icon && (
-          <Icon
-            className={`${prefix}-${classes?.icon}`}
-            {...iconProps}
-          />
-        )}
-        {(children || text) && (
-          <Typography
-            style={styles?.text}
-            className={`${prefix}-${classes?.text}`}
-          >
-            {children || text}
-          </Typography>
-        )}
+        {children || text}
       </Button>
-    </Box>
+    </ListItem>
   )
 }
-// (({ theme }) => ({
-//   main: {
-//     flD: 'column',
-//     alI: 'center',
-//     jtC: 'center',
-//     mB: theme.margin.size,
-//   },
-//   button: {
-//     default: {
-//       main: {
-//         maxW: 220,
-//         flD: 'row',
-//         alI: 'center',
-//         jtC: 'center',
-//         pH: theme.padding.size,
-//         pV: (theme.padding.size / 3) * 2,
-//         backgroundColor: '#333333',
-//       },
-//     },
-//     hover: {
-//       main: {
-//         backgroundColor: '#555555',
-//       },
-//     },
-//   },
-//   icon: {
-//     mR: 10,
-//     fontSize: 20,
-//     color: theme.colors.palette.white01,
-//   },
-//   text: {
-//     fontSize: 14,
-//     color: theme.colors.palette.white01,
-//   },
-// }))

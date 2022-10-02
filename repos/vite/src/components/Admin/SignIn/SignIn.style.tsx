@@ -3,12 +3,6 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
 
-export const ReMessage = styled(Box)(({ theme }) => ({
-  // mB: theme.margin.size / 2,
-  // minH: theme.margin.size * 2
-}))
-
-
 export const ReLoading = styled(Box)(({ theme }) => ({
   // alI: 'center',
   // jtC: 'center',

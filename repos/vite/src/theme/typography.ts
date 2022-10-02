@@ -1,84 +1,68 @@
-import { CSSProperties } from 'react'
+import { Theme } from '@mui/material/styles'
 
-export const typography = {
-  fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-  fontSize: 14,
-  fontWeightLight: 300,
-  fontWeightRegular: 400,
-  fontWeightMedium: 500,
-  h5: {
-    fontSize: "7rem",
-    fontWeight: 300,
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    letterSpacing: "-.04em",
-    lineHeight: "1.14286em",
-    marginLeft: "-.04em",
-    color: "rgba(0, 0, 0, 0.54)"
-  },
-  h4: {
-    fontSize: "3.5rem",
-    fontWeight: 400,
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    letterSpacing: "-.02em",
-    lineHeight: "1.30357em",
-    marginLeft: "-.02em",
-    color: "rgba(0, 0, 0, 0.54)"
-  },
-  h3: {
-    fontSize: "2.8125rem",
-    fontWeight: 400,
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    lineHeight: "1.06667em",
-    marginLeft: "-.02em",
-    color: "rgba(0, 0, 0, 0.54)"
+const fontCommon = {
+  fontFamily: "'Inter', sans-serif",
+}
+
+export const typography = (muiTheme:Theme) => ({
+  ...fontCommon,
+  h1: {
+    ...fontCommon,
+    fontSize: '2.125rem',
+    fontWeight: 700
   },
   h2: {
-    fontSize: "2.125rem",
-    fontWeight: 400,
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    lineHeight: "1.20588em",
-    color: "rgba(0, 0, 0, 0.54)"
+    ...fontCommon,
+    fontSize: '1.5rem',
+    fontWeight: 700
   },
-  h1: {
-    fontSize: "1.5rem",
-    fontWeight: 400,
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    lineHeight: "1.35417em",
-    color: "rgba(0, 0, 0, 0.87)"
+  h3: {
+    ...fontCommon,
+    fontSize: '1.25rem',
+    fontWeight: 600
   },
-  subtitle1: {
-    fontSize: "1rem",
-    fontWeight: 400,
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    lineHeight: "1.5em",
-    color: "rgba(0, 0, 0, 0.87)"
+  h4: {
+    ...fontCommon,
+    fontSize: '1rem',
+    fontWeight: 600
   },
-  body2: {
-    fontSize: "0.875rem",
-    fontWeight: 500,
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    lineHeight: "1.71429em",
-    color: "rgba(0, 0, 0, 0.87)"
+  h5: {
+    ...fontCommon,
+    fontSize: '0.875rem',
+    fontWeight: 500
+  },
+  h6: {
+    ...fontCommon,
+    fontSize: '0.75rem',
+    fontWeight: 500
   },
   body1: {
-    fontSize: "0.875rem",
+    ...fontCommon,
     fontWeight: 400,
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    lineHeight: "1.46429em",
-    color: "rgba(0, 0, 0, 0.87)"
+    fontSize: '0.875rem',
+    lineHeight: '1.334em'
+  },
+  body2: {
+    ...fontCommon,
+    fontWeight: 400,
+    lineHeight: '1.5em',
+    letterSpacing: '0em',
+  },
+  subtitle1: {
+    ...fontCommon,
+    fontWeight: 500,
+    fontSize: '0.875rem',
+    color: muiTheme.palette.grey[500]
+  },
+  subtitle2: {
+    ...fontCommon,
+    fontWeight: 400,
+    fontSize: '0.75rem',
+    color: muiTheme.palette.grey[500]
   },
   caption: {
-    fontSize: "0.75rem",
     fontWeight: 400,
-    fontFamily: "\"Roboto\", \"Helvetica\", \"Arial\", sans-serif",
-    lineHeight: "1.375em",
-    color: "rgba(0, 0, 0, 0.54)"
+    fontSize: '0.75rem',
+    color: muiTheme.palette.grey[300],
   },
-  button: {
-    fontSize: "0.875rem",
-    textTransform: "uppercase" as CSSProperties['textTransform'],
-    fontWeight: 500,
-    fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-    color: "rgba(0, 0, 0, 0.87)"
-  }
-}
+})

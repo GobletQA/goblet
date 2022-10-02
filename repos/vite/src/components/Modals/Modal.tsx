@@ -1,12 +1,16 @@
 
-import type { ReactNode, ComponentProps } from 'react'
+import type { ReactNode, ComponentProps, CSSProperties } from 'react'
 import { forwardRef, useCallback } from 'react'
+import { noOpObj } from '@keg-hub/jsutils'
 
-import { ModalTypes } from '@constants'
+import Box from '@mui/material/Box'
+import { gutter } from '@theme/gutter'
 import Slide from '@mui/material/Slide'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
+import Divider from '@mui/material/Divider'
 import { toggleModal } from '@actions/modals'
+import Typography from '@mui/material/Typography'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -31,6 +35,10 @@ export type TModalAction = {
   buttonProps?: ComponentProps<typeof Button>
 }
 
+export type TModalTitle = ComponentProps<typeof DialogTitle> & {
+  Icon?: ReactNode
+}
+
 export type TModal = Omit<ComponentProps<typeof Dialog>, "open"> & {
   type?: string
   text?: ReactNode
@@ -42,9 +50,46 @@ export type TModal = Omit<ComponentProps<typeof Dialog>, "open"> & {
   overrideContent?:boolean
   actions?: TModalAction[]
   onClose?: (...args:any[]) => void
-  titleProps?: ComponentProps<typeof DialogTitle>
+  titleProps?: TModalTitle
   actionProps?: ComponentProps<typeof DialogActions>
   contentProps?: ComponentProps<typeof DialogContent>
+}
+
+export const ModalHeader = (props:TModal) => {
+  const {
+    title,
+    titleProps=noOpObj as TModalTitle,
+  } = props
+
+  const { Icon, ...rest } = titleProps
+
+  return (
+    <Box
+      display="flex"
+      flexDirection="row"
+      alignContent="center"
+      alignItems="center"
+      justifyContent="center"
+      color="common.white"
+      bgcolor="colors.navyBlue"
+      padding={`${gutter.padding.tQpx} ${gutter.padding.px}`}
+    >
+      {Icon}
+      <Typography
+        id="gb-modal-title"
+        variant="h2"
+        {...rest}
+        sx={[{
+          padding: 'none',
+          textAlign: `center`,
+          marginLeft: gutter.margin.hpx,
+        }, titleProps?.sx as CSSProperties]}
+      >
+        {title}
+      </Typography>
+      <Divider />
+    </Box>
+  )
 }
 
 export const Modal = (props:TModal) => {
@@ -89,17 +134,17 @@ export const Modal = (props:TModal) => {
       aria-describedby={contentProps?.id || "gb-modal-description"}
       {...rest}
       open={open}
-      onClose={onCloseModal}
       maxWidth={maxWidth}
       fullWidth={fullWidth}
+      onClose={onCloseModal}
       fullScreen={fullScreen}
     >
       {overrideContent ? children : (
         <>
-          {Title || (title && (<DialogTitle id="gb-modal-title" {...titleProps} >{title}</DialogTitle>))}
+          {Title || (title && (<ModalHeader {...props} />))}
 
           {Content || (
-            <DialogContent id="gb-modal-description" {...contentProps} >
+            <DialogContent id="gb-modal-description" dividers {...contentProps} >
               {children}
               {text && (<DialogContentText>{text}</DialogContentText>)}
             </DialogContent>

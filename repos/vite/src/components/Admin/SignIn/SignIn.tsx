@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import { ReMessage } from './SignIn.style'
+import { useEffect, useState, useCallback } from 'react'
+import Box from '@mui/material/Box'
+import List from '@mui/material/List'
+import { GitHubIcon } from '@components/Icons'
 import { OtherProviders } from '../OtherProviders'
 import { checkCall, isArr } from '@keg-hub/jsutils'
-import { GitHubIcon } from '@components/Icons'
 import { loadUser } from '@actions/admin/user/loadUser'
 import { getProviderMetadata } from '@services/providers'
 import { SignInButton } from '../GithubSignIn/SignInButton'
@@ -21,10 +22,10 @@ const authConfig = config && config.ui
 
 const SignIn = (props:TSignIn) => {
 
-  const {authDisabled, onNoAuthConfig, MessageComponent} = props
+  const {onNoAuthConfig, MessageComponent} = props
 
   useEffect(() => {
-    authDisabled || !authConfig ? checkCall(onNoAuthConfig) : loadUser()
+    !authConfig ? checkCall(onNoAuthConfig) : loadUser()
   })
 
   const [signingIn, setSigningIn] = useState(false)
@@ -36,37 +37,42 @@ const SignIn = (props:TSignIn) => {
     onFailedAuth(err)
   }, [])
 
-  // Only show the auth buttons when they are enabled
-  // In local mode auth is disabled, so no need to show them
-  return authDisabled || !authConfig || !isArr(authConfig?.signInOptions)
+  return !authConfig || !isArr(authConfig?.signInOptions)
     ? null
     : (
-      <>
-        <ReMessage>
+      <Box
+        display="flex"
+        alignItems="center"
+        alignContent="center"
+        justifyContent="center"
+      >
+        <Box>
           {MessageComponent && (
             <MessageComponent
               error={signInError}
               loading={signingIn && 'Signing in ...'}
             />
           )}
-        </ReMessage>
-        {/* TODO: update this when more providers are added */}
-        {authConfig.signInOptions.map((option:any) => 
-          <SignInButton
-            auth={auth}
-            Icon={GitHubIcon}
-            provider={option}
-            prefix='keg-github'
-            disabled={signingIn}
-            onFail={onFailedSignIn}
-            onSigningIn={setSigningIn}
-            onSuccess={onSuccessAuth}
-            key={option.providerId}
-            children='Sign in with GitHub'
-          />
-        )}
-        <OtherProviders />
-      </>
+        </Box>
+        <List>
+          {/* TODO: update this when more providers are added */}
+          {authConfig.signInOptions.map((option:any) => 
+            <SignInButton
+              auth={auth}
+              Icon={GitHubIcon}
+              provider={option}
+              prefix='keg-github'
+              disabled={signingIn}
+              onFail={onFailedSignIn}
+              onSigningIn={setSigningIn}
+              onSuccess={onSuccessAuth}
+              key={option.providerId}
+              children='Sign in with GitHub'
+            />
+          )}
+          <OtherProviders />
+        </List>
+      </Box>
     )
 }
 

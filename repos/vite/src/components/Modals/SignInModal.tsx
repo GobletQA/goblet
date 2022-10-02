@@ -1,8 +1,10 @@
 import type { ComponentProps } from 'react'
-import { useEffect, lazy, Suspense } from 'react'
+
+import { lazy, Suspense } from 'react'
 import { Modal } from './Modal'
-import { ModalTypes } from '@constants'
 import Box from '@mui/material/Box'
+import { ModalTypes } from '@constants'
+import { Git } from '@components/Icons/Git'
 import { Loading } from '@components/Loading'
 const LazySignIn = lazy(() => import('@components/Admin/SignIn/SignIn'))
 
@@ -14,14 +16,16 @@ export const SignInModal = (props:TSignInModal) => {
   return (
     <Modal
       {...props}
+      maxWidth="sm"
       title={`Sign In`}
       manualClose={false}
+      titleProps={{
+        Icon: (<Git />)
+      }}
     >
-      <Box>
-        <Suspense fallback={<Loading />} >
-          <LazySignIn />
-        </Suspense>
-      </Box>
+      <Suspense fallback={<Loading />} >
+        <LazySignIn />
+      </Suspense>
     </Modal>
   )
 }

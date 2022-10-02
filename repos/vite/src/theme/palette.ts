@@ -1,6 +1,5 @@
 import type { TColors, TPalette } from './theme.types'
-import { PaletteOptions } from '@mui/material'
-
+import { Theme } from '@mui/material/styles'
 
 export const colors:TColors = {
   // ---- Light Theme Colors
@@ -27,10 +26,16 @@ export const colors:TColors = {
 
   // ---- Default Theme Colors
   white: `#FFFFFF`,
+  navyBlue: `#252c37`,
 
+  // ---- Provider Specific Colors
+  // githubBackground: `#161b22`,
+  githubBackground: `#333333`
+  
 } 
 
 const paletteCommon = {
+  colors,
   error: {
     main: colors.error
   },
@@ -40,7 +45,7 @@ const paletteCommon = {
 }
 
 export const palette:TPalette = {
-  dark: {
+  dark: (muiTheme:Theme) => ({
     ...paletteCommon,
     mode: `dark`,
     background: {
@@ -50,8 +55,8 @@ export const palette:TPalette = {
     primary: {
       main: colors.darkPrimary
     },
-  },
-  light: {
+  }),
+  light: (muiTheme:Theme) => ({
     ...paletteCommon,
     mode: `light`,
     background: {
@@ -61,5 +66,5 @@ export const palette:TPalette = {
     primary: {
       main: colors.lightPrimary
     },
-  }
+  })
 }
