@@ -23,7 +23,7 @@ export const Header = (props:THeaderProps) => {
   ] = useStateReset<null | HTMLElement, MouseEvent<HTMLElement>>(null, null, `currentTarget`)
 
   return (
-    <AppHeader position="fixed">
+    <AppHeader position="fixed" >
       <Toolbar disableGutters>
         <Box sx={{ flex: 1 }} />
         <Settings
