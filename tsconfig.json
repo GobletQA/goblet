@@ -22,5 +22,14 @@
       "./repos/shared/src/types",
       "./node_modules/@types"
     ],
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "bundle",
+    ".yarn",
+    ".git",
+    ".firebase",
+    "logs",
+    "temp",
+  ]
 }

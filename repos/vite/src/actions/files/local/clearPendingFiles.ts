@@ -1,4 +1,4 @@
-import { filesDispatch } from '@reducers'
+import { filesDispatch } from '@store'
 
 /**
  * Clears all pendingFiles

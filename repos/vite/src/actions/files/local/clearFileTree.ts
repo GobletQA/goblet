@@ -1,4 +1,4 @@
-import { fileTreeDispatch } from '@reducers'
+import { fileTreeDispatch } from '@store'
 
 export const clearFileTree = () => {
   fileTreeDispatch.clear()

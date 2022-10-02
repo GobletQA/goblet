@@ -172,22 +172,6 @@ deployments:
         securityContext: $(node ../scripts/js/resolveSecurity.js DD)
       service: $(node ../scripts/js/resolveService.js DD $GB_DD_DOCKER_PORT $GB_DD_WS_PROXY_PORT $GB_DD_API_PROXY_PORT $GB_DD_VNC_PROXY_PORT $GB_DD_EXP_ADMIN_PORT:$GB_DD_LOCAL_ADMIN_PORT)
 
-# ----- Frontend Deployment ----- #
-- name: ${GB_FE_DEPLOYMENT}
-  helm:
-    chart:
-      name: ./
-    cleanupOnFail: true
-    valuesFiles:
-    - ./values.empty.yaml
-    values:
-      containers:
-      - image: ${GB_FE_IMG_URI}
-        imagePullPolicy: ${IMAGE_PULL_POLICY}
-        env: $(node ../scripts/js/resolveDSEnvs.js frontend)
-      service: $(node ../scripts/js/resolveService.js FE $GB_FE_PORT)
-      ingress: $(node ../scripts/js/resolveIngress.js FE $GB_FE_PORT)
-
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
   helm:
@@ -212,11 +196,11 @@ dev:
   # Gets the apps that should sync with the host machine
   # sync: $(node ../scripts/js/resolveSync.js GB_BE_ACTIVE)
   # sync: $(node ../scripts/js/resolveSync.js GB_BE_ACTIVE GB_DD_ACTIVE GB_SC_ACTIVE)
-  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_DD_ACTIVE GB_SC_ACTIVE)
+  sync: $(node ../scripts/js/resolveSync.js GB_FE_INACTIVE GB_BE_ACTIVE GB_DD_ACTIVE GB_SC_ACTIVE)
 
   # Gets the ports that should be exposed to the host machine from the running pod
   # ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_DD_ACTIVE ${GB_DD_API_PROXY_PORT} ${GB_DD_EXP_ADMIN_PORT})
-  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_ACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT})
+  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_INACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT})
 
   # The `open` field tells DevSpace to open a URL as soon as it returns HTTP status 200
   # Since we configured port-forwarding, we can use a localhost address here to access our application
@@ -226,9 +210,6 @@ dev:
 profiles:
 - name: local
   patches:
-  - op: replace
-    path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
   - op: replace
     path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
     value: ${IMAGE}:${IMAGE_TAG}

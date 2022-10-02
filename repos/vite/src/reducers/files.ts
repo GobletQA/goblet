@@ -1,6 +1,5 @@
 import type { TAction } from '@reducers'
 import type { TFileModel } from '@types'
-import { createDispatcher } from '@utils/dispatcher'
 
 type TPendingFiles = Record<string, string>
 
@@ -139,5 +138,3 @@ export const filesActions = {
     }
   },
 }
-
-export const filesDispatch = createDispatcher(filesActions)

@@ -1,4 +1,4 @@
-import { repoDispatch } from '@reducers'
+import { repoDispatch } from '@store'
 import { localStorage } from '@services/localStorage'
 import { clearFileTree } from '@actions/files/local/clearFileTree'
 import { clearFeatures } from '@actions/features/local/clearFeatures'

@@ -1,7 +1,6 @@
 import type { TAction } from '@reducers'
 import { ModalTypes } from '@constants'
 import { deepMerge } from '@keg-hub/jsutils'
-import { createDispatcher } from '@utils/dispatcher'
 
 
 export type TModalState = {
@@ -24,4 +23,3 @@ export const modalActions = {
   }
 }
 
-export const modalDispatch = createDispatcher(modalActions)

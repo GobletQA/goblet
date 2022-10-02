@@ -1,6 +1,5 @@
 import type { TAction } from '@reducers'
 import type { TFeatureFileModel } from '@types'
-import { createDispatcher } from '@utils/dispatcher'
 
 export type TFeaturesState = {
   activeFeature?: TFeatureFileModel
@@ -60,5 +59,3 @@ export const featuresActions = {
     }
   },
 }
-
-export const featuresDispatch = createDispatcher(featuresActions)

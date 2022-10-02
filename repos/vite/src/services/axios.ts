@@ -7,7 +7,6 @@ import { HttpMethods, ENVIRONMENT } from '@constants'
 
 const { GET, ...HttpMethodsWithBody } = HttpMethods
 
-
 export const networkRequestModel = deepFreeze({
   method: HttpMethods.GET,
   url: null,

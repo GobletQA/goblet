@@ -26,7 +26,12 @@ const {
   noOpObj,
   deepMerge,
 } = require('@keg-hub/jsutils')
-const defConfig = require(path.join(__dirname, '../../../../configs/goblet.default.config.js'))
+
+const { GSHRoot } = require('../../resolveRoot')
+const defConfig = require(path.join(
+  path.join(GSHRoot, `../../`),
+  'configs/goblet.default.config.js'
+))
 
 /**
  * **IMPORTANT**

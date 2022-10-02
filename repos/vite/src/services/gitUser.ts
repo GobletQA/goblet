@@ -1,6 +1,7 @@
 import type { TUserState } from "@reducers"
 import { localStorage } from '@services/localStorage'
-import { clearUser, upsertUser } from '@actions/admin/user'
+import { clearUser } from '@actions/admin/user/clearUser'
+import { upsertUser } from '@actions/admin/user/upsertUser'
 
 
 /**
@@ -33,7 +34,6 @@ export class GitUser {
     if (__CURRENT_USER) return __CURRENT_USER
 
     const parsedUser = await localStorage.getUser()
-
     __CURRENT_USER = parsedUser && new GitUser(parsedUser)
 
     return __CURRENT_USER

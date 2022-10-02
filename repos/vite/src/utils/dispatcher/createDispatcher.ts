@@ -1,4 +1,4 @@
-import type { ActionDispatcher, AnyReducerFuncs, ReduxAction } from '@types'
+import type { ActionDispatcher, AnyReducerFuncs } from '@types'
 import { getDispatch } from '@store'
 
 export const createDispatcher = <T extends AnyReducerFuncs>(

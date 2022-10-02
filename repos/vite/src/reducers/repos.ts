@@ -1,7 +1,6 @@
 import type { TRepo } from '@types'
 import type { TAction } from '@reducers'
 import { deepMerge } from '@keg-hub/jsutils'
-import { createDispatcher } from '@utils/dispatcher'
 
 export type TReposState = TRepo[]
 
@@ -12,5 +11,3 @@ export const reposActions = {
   setRepos: (state:TReposState, action:TAction<TReposState>) => action?.payload,
   upsertRepos: (state:TReposState, action:TAction<TReposState>) => deepMerge<TReposState>(state, action?.payload),
 }
-
-export const reposDispatch = createDispatcher(reposActions)

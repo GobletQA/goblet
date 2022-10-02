@@ -1,5 +1,5 @@
 import { TFileModel } from '@types'
-import { filesDispatch } from '@reducers'
+import { filesDispatch } from '@store'
 import { updateUrlQuery } from '@utils/url/updateUrlQuery'
 
 /**

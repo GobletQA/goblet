@@ -1,5 +1,5 @@
 import type { TFeatureFileModel } from '@types'
-import { featuresDispatch } from '@reducers'
+import { featuresDispatch } from '@store'
 import { validateFeatureAction } from '@utils/features/validateFeatureAction'
 
 

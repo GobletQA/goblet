@@ -1,6 +1,6 @@
 import type { TApiRepoResp } from '@types'
 
-import { repoDispatch } from '@reducers'
+import { repoDispatch } from '@store'
 import { setFileTypeConstants } from '@constants/types'
 import { upsertFeatures } from '@actions/features/local'
 import { upsertDefinitions } from '@actions/definitions/local'

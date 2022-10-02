@@ -1,5 +1,5 @@
 import { TFileModel } from '@types'
-import { filesDispatch } from '@reducers'
+import { filesDispatch } from '@store'
 
 /**
  * sets the currently activeFile as an item in pendingFiles. given a valid pendingContent

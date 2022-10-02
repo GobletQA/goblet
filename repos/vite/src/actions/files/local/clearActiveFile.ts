@@ -1,5 +1,5 @@
 import { getStore } from '@store'
-import { filesDispatch } from '@reducers'
+import { filesDispatch } from '@store'
 
 // TODO: allow for multiple active files somehow?
 

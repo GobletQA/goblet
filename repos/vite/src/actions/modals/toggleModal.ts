@@ -1,4 +1,4 @@
-import { modalDispatch } from '@reducers'
+import { modalDispatch } from '@store'
 
 /**
  * Updates the current active modal visibility

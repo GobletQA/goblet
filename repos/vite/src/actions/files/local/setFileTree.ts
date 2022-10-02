@@ -1,5 +1,5 @@
 import type { TFileTree } from '@types'
-import { fileTreeDispatch } from '@reducers'
+import { fileTreeDispatch } from '@store'
 
 
 export const setFileTree = (fileTree:TFileTree) => {

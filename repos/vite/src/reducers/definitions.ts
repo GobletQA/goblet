@@ -4,7 +4,6 @@ import type {
   TDefinitionsAstTypeMap
 } from '@types'
 import type { TAction } from '@reducers'
-import { createDispatcher } from '@utils/dispatcher'
 
 export type TDefinitionsState = {
   activeDefinition?: TDefinitionAst
@@ -100,4 +99,3 @@ export const definitionsActions = {
   },
 }
 
-export const definitionsDispatch = createDispatcher(definitionsActions)

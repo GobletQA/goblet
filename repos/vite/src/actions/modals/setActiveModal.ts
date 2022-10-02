@@ -1,5 +1,5 @@
 import { ModalTypes } from '@constants'
-import { modalDispatch } from '@reducers'
+import { modalDispatch } from '@store'
 import { noOpObj } from '@keg-hub/jsutils'
 
 /**

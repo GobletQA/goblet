@@ -1,6 +1,5 @@
 import type { TAction } from '@reducers'
 import type { TFileTree as TFileTreeState } from '@types'
-import { createDispatcher } from '@utils/dispatcher'
 
 export type { TFileTreeState }
 
@@ -18,5 +17,3 @@ export const fileTreeActions = {
     }
   },
 }
-
-export const fileTreeDispatch = createDispatcher(fileTreeActions)

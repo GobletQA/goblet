@@ -1,5 +1,5 @@
 import { TFileModel } from '@types'
-import { filesDispatch } from '@reducers'
+import { filesDispatch } from '@store'
 
 /**
  * Removes the key item from pendingFiles store

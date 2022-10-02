@@ -1,17 +1,12 @@
-import { dispatch } from '@store'
-import { StorageKeys, ActionTypes } from '@constants'
+import { TUserState } from '@reducers'
+import { userDispatch } from '@store'
+
 import { noOpObj } from '@keg-hub/jsutils'
 
 /**
- * Creates a user in the store
+ * Clears the user from the redux store
  *
  */
 export const clearUser = () => {
-  dispatch({
-    type: ActionTypes.SET_ITEMS,
-    payload: {
-      category: StorageKeys.USER,
-      items: noOpObj,
-    },
-  })
+  userDispatch.clear(noOpObj as TUserState)
 }

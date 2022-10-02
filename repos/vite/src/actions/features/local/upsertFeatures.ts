@@ -1,5 +1,5 @@
 import type { TFeatureFileModel } from '@types'
-import { featuresDispatch } from '@reducers'
+import { featuresDispatch } from '@store'
 
 /**
  * Dispatches the passed in features to the Store

@@ -1,67 +1,58 @@
-import { CombinedState, combineReducers } from 'redux'
 import { createReducer } from '@reduxjs/toolkit'
+import { CombinedState, combineReducers } from 'redux'
 
 import {
   TContainerState,
   containerState,
-  containerActions,
-  containerDispatch
+  containerActions
 } from './container'
 
 import {
   TDefinitionsState,
   definitionsState,
-  definitionsActions,
-  definitionsDispatch
+  definitionsActions
 } from './definitions'
 
 import {
   TFeaturesState,
   featuresState,
-  featuresActions,
-  featuresDispatch
+  featuresActions
 } from './features'
 
 import {
   TFilesState,
   filesState,
-  filesActions,
-  filesDispatch
+  filesActions
 } from './files'
 
 import {
   TFileTreeState,
   fileTreeState,
-  fileTreeActions,
-  fileTreeDispatch
+  fileTreeActions
 } from './fileTree'
 
 import {
   TModalState,
   modalState,
-  modalActions,
-  modalDispatch
+  modalActions
 } from './modal'
 
 import {
   TRepoState,
   repoState,
-  repoActions,
-  repoDispatch
+  repoActions
 } from './repo'
 
 import {
   TReposState,
   reposState,
-  reposActions,
-  reposDispatch
+  reposActions
 } from './repos'
 
 import {
   TUserState,
   userState,
-  userActions,
-  userDispatch
+  userActions
 } from './user'
 
 export type {
@@ -108,16 +99,3 @@ export const reducer = combineReducers<TState>({
   repos: createReducer(reposState, reposActions),
   user: createReducer(userState, userActions)
 })
-
-export {
-  containerDispatch,
-  definitionsDispatch,
-  definitionsDispatch as defsDispatch,
-  featuresDispatch,
-  filesDispatch,
-  fileTreeDispatch,
-  modalDispatch,
-  repoDispatch,
-  reposDispatch,
-  userDispatch,
-}

@@ -40,3 +40,5 @@ export const select = <T>(func: (state: RootState) => T) => {
   const currentState = getStore().getState()
   return func(currentState) as T
 }
+
+export * from './dispatchers'

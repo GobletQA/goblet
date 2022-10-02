@@ -1,15 +1,12 @@
 import path from 'path'
 import { defineConfig } from 'vite'
-import mkcert from'vite-plugin-mkcert'
+// import mkcert from'vite-plugin-mkcert'
 import react from '@vitejs/plugin-react'
 import { loadConfig } from './frontend.config'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import EnvironmentPlugin from 'vite-plugin-environment'
 import { svgrComponent } from 'vite-plugin-svgr-component'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
-
-
-
 
 const rootDir = path.join(__dirname, '..')
 process.env.PLUGIN_DATA_DIR = path.join(rootDir, `../../certs`)
@@ -22,7 +19,7 @@ export default defineConfig(async () => {
     root: rootDir,
     server: {
       port,
-      https: true,
+      // https: true,
     },
     esbuild: {
       logOverride: { 'this-is-undefined-in-esm': 'silent' }
@@ -34,7 +31,7 @@ export default defineConfig(async () => {
         languageWorkers: ['editorWorkerService', 'html', 'json', 'typescript']
       }),
       react(),
-      mkcert(),
+      // mkcert(),
       tsconfigPaths(),
       EnvironmentPlugin(envs),
       svgrComponent({

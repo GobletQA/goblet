@@ -7,6 +7,9 @@ import { isObj, get, noOpObj } from '@keg-hub/jsutils'
 import { localStorage } from '@services/localStorage'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
 
+const baseApiUrl = getBaseApiUrl()
+console.log(baseApiUrl)
+
 /**
  * Check the response from the API for an expired session
  * If expired, sign out and open the sign in modal by calling signOutAuthUser
