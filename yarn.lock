@@ -3098,15 +3098,10 @@
     colors "1.4.0"
     fs-extra "9.0.1"
 
-"@keg-hub/jsutils@*", "@keg-hub/jsutils@9.3.2":
+"@keg-hub/jsutils@*", "@keg-hub/jsutils@9.2.0", "@keg-hub/jsutils@9.3.2":
   version "9.3.2"
   resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.3.2.tgz#c2679d59dda837801682c73196377e2a52c8ed20"
   integrity sha512-GEXTVUEVLU/+ajZTfn5yU0sFW9HW3JALSQmsAS+F3BtIKF7T0BRfXaMSFWl01AB8KxdcoaRQ7jyUm48f0nP9Ww==
-
-"@keg-hub/jsutils@9.2.0":
-  version "9.2.0"
-  resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.2.0.tgz#e02a75faa11c5a1ebb4eda5b1f5ff1766b3972b1"
-  integrity sha512-aYKzp7aMre1LrfFyIeu1RFXKB1VJGP15SRwme0NcHh8/8aPuJ+gBHHLLf88qusizcX2bj9JKXKVPYNS1yx/NaQ==
 
 "@keg-hub/parse-config@*", "@keg-hub/parse-config@2.1.0":
   version "2.1.0"
@@ -4522,7 +4517,7 @@
   resolved "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==
 
-"@types/styled-jsx@^3.4.4":
+"@types/styled-jsx@3.4.4":
   version "3.4.4"
   resolved "https://registry.npmjs.org/@types/styled-jsx/-/styled-jsx-3.4.4.tgz#643b49a892f596ee8d8e588e0270d6c05947048d"
   integrity sha512-PRRa7gU7ske4Vs7sKWrqfKnuIIS6E/Yj5oKyxuM11AwOKhH9HlbQ7cKGLluXkOXzpEoDJE+6kQMj3AE34/JooQ==
@@ -19879,15 +19874,10 @@ typedarray@^0.0.6:
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typescript@*, typescript@4.8.2, typescript@^4.4.3, typescript@^4.5.2, typescript@^4.6.4:
+typescript@*, typescript@4.8.2, typescript@4.8.3, typescript@^4.4.3, typescript@^4.5.2, typescript@^4.6.4:
   version "4.8.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.8.2.tgz#e3b33d5ccfb5914e4eeab6699cf208adee3fd790"
   integrity sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==
-
-typescript@4.8.3:
-  version "4.8.3"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.8.3.tgz#d59344522c4bc464a65a730ac695007fdb66dd88"
-  integrity sha512-goMHfm00nWPa8UvR/CPSvykqf6dVV8x/dp0c5mFTMTIu0u0FlGWRioyy7Nn0PGAdHxpJZnuO/ut+PpQ8UiHAig==
 
 uglify-js@^3.1.4:
   version "3.17.0"
