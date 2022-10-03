@@ -11,7 +11,9 @@ import TeamIcon from '@mui/icons-material/Groups'
 import LogoutIcon from '@mui/icons-material/Logout'
 import ConnectIcon from '@mui/icons-material/CloudSync'
 import SyncIcon from '@mui/icons-material/Sync'
-
+import ErrorIcon from '@mui/icons-material/Error'
+import PendingIcon from '@mui/icons-material/Pending'
+import InfoIcon from '@mui/icons-material/Info'
 export {
   Steps,
   Globe,
@@ -25,5 +27,8 @@ export {
   TeamIcon,
   SyncIcon,
   ConnectIcon,
-  LogoutIcon
+  LogoutIcon,
+  ErrorIcon,
+  PendingIcon,
+  InfoIcon
 }

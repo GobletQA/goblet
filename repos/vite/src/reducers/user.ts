@@ -5,7 +5,7 @@ export type TUserState = {
   id?:string
   username?: string
   provider?: string
-  email: string | null
+  email?: string | null
   displayName?: string | null
 }
 

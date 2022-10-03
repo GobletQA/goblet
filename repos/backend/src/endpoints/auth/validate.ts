@@ -27,6 +27,7 @@ export const validate = async (req:Request, res:Response) => {
 
   // Next call conductor to spin of a container for the user
   // Add the token we just generated for authorization
+  // Add type for status === TRouteMeta
   const status = await conductor.status({
     query: {},
     params: { imageRef },

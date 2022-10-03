@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useSelector } from '@store'
 import { ModalRoot } from './ModalRoot'
+import { ModalMessage } from './ModalMessage'
 import * as ModalMap from '@components/Modals'
 
 export const ModalManager = () => {
@@ -16,7 +17,12 @@ export const ModalManager = () => {
       visible={visible}
       {...modalProps}
     >
-      <Modal type={type ||  Modal.modalType} visible={visible} {...modalProps} />
+      <Modal
+        ModalMessage={ModalMessage}
+        type={type ||  Modal.modalType}
+        visible={visible}
+        {...modalProps}
+      />
     </ModalRoot>
   ) || null
 }

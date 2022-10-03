@@ -9,7 +9,6 @@ import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
 
-
 /**
  * Clear and cache repo data in the store or local storage
  * Then opens the sign in modal and opens a toast warning about the error

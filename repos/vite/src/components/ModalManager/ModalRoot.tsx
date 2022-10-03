@@ -45,6 +45,7 @@ export type TModal = Omit<ComponentProps<typeof Dialog>, "open"> & {
   open?: boolean,
   visible?: boolean,
   Title?: ReactNode
+  ModalMessage?: any
   Content?: ReactNode
   manualClose?:boolean
   overrideContent?:boolean

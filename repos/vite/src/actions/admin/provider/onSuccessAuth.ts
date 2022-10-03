@@ -1,3 +1,5 @@
+import type { TValidateResp } from '@types'
+
 import { TUserState } from '@reducers'
 import { GitUser } from '@services/gitUser'
 import { pickKeys } from '@keg-hub/jsutils'
@@ -56,7 +58,7 @@ const formatUser = (data:Record<any, any>) => {
  * 
  * @return {Object} - Contains the user object and repos array returned from the Backend API
  */
-const validateResp = (resp:Record<any, any>) => {
+const validateResp = (resp:TValidateResp) => {
   if (!resp || resp.error || !resp.username || !resp.id || !resp.provider || !resp.jwt)
     throw new Error(resp?.error || `Invalid user authentication`)
 
@@ -97,7 +99,7 @@ export const onSuccessAuth = async (authData:Record<any, any>) => {
       data,
       error,
       success
-    } = await apiRequest({
+    } = await apiRequest<TValidateResp>({
       params: userData,
       method: 'POST',
       url: `/auth/validate`,
@@ -121,7 +123,6 @@ export const onSuccessAuth = async (authData:Record<any, any>) => {
       console.warn(`[Auth State Error] Error setting Container or Repos status.`)
       console.error(err.message)
     }
-
   }
   catch (err:any) {
     console.warn(

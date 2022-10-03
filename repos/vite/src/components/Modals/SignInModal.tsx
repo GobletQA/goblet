@@ -13,7 +13,7 @@ export type TSignInModal = ComponentProps<typeof ModalRoot>
 export const SignInModal = (props:TSignInModal) => {
   return (
     <Suspense fallback={<Loading />} >
-      <LazySignIn />
+      <LazySignIn MessageComponent={props.ModalMessage} />
     </Suspense>
   )
 }

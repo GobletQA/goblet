@@ -1,8 +1,14 @@
 import type { TAction } from '@reducers'
-import { deepMerge } from '@keg-hub/jsutils'
-import type { TRouteMeta as TContainerState } from '@types'
+import type { TContainerMeta, TProxyRoute } from '@types'
 
-export type { TContainerState }
+import { deepMerge } from '@keg-hub/jsutils'
+
+
+export type TContainerState = {
+  api: TProxyRoute
+  meta: TContainerMeta
+  screencast: TProxyRoute
+}
 
 export const containerState = {} as TContainerState
 
