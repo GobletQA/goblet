@@ -18,7 +18,10 @@ const checkContainerState = async (params:any) => {
  * 
  * @returns {Object} - status object returned from the Backend API
  */
-export const waitForRunning = async (params:any=noOpObj, loopCalls=0):Promise<TRouteMeta> => {
+export const waitForRunning = async (
+  params:any=noOpObj,
+  loopCalls:number=0
+):Promise<TRouteMeta> => {
   const {
     data,
     error,

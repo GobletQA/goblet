@@ -18,10 +18,7 @@ export type TValidateResp = {
   username:string
   provider:string
   status: TRouteMeta
-  // These don't actually exist on this response
-  // But they are referenced. Should fix
-  error?: any
-  repos?: TRepo[]
+  error?: string
 }
 
 export type TRepoStatus = {

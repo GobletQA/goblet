@@ -14,12 +14,6 @@ import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
 /**
  * Formats the response from the git provider sign in
  * Builds a user object from the provided data
- * @function
- * @private
- *
- * @param {Object} data - Response from Git Provider Sign In
- *
- * @return {Object} - Built user item
  */
 const formatUser = (data:Record<any, any>) => {
   const { uid, email, displayName } = pickKeys(data.user, [
@@ -53,22 +47,17 @@ const formatUser = (data:Record<any, any>) => {
 /**
  * Validate the response from the Backend API
  * Ensure we have all the correct Provider user metadata
- * @param {Object} resp - Response from the Backend API call
- * @throws
- * 
- * @return {Object} - Contains the user object and repos array returned from the Backend API
  */
 const validateResp = (resp:TValidateResp) => {
   if (!resp || resp.error || !resp.username || !resp.id || !resp.provider || !resp.jwt)
     throw new Error(resp?.error || `Invalid user authentication`)
 
-  const { repos, jwt, status, ...user } = resp
+  const { jwt, status, ...user } = resp
 
   return {
     jwt,
-    repos,
-    status,
     user,
+    status,
   }
 }
 
@@ -77,13 +66,6 @@ const validateResp = (resp:TValidateResp) => {
  * If they are a new user, it creates a new user and account
  * On each sign in, it also saves the users auth token, which can be used for accessing the git provider
  * Then loads the Dashboard root
- * @callback
- * @function
- * @public
- *
- * @param {Object} data - Response from the Auth provider on a successful sign in
- *
- * @return {Void}
  */
 export const onSuccessAuth = async (authData:Record<any, any>) => {
   try {
@@ -108,7 +90,7 @@ export const onSuccessAuth = async (authData:Record<any, any>) => {
     // If response if false, the session is invalid, and the user must sign in again
     if(error || !success) throw new Error(error)
 
-    const {repos, status, user, jwt} = validateResp(data)
+    const {status, user, jwt} = validateResp(data)
     await localStorage.setJwt(jwt)
     new GitUser(user as TUserState)
     
@@ -116,7 +98,6 @@ export const onSuccessAuth = async (authData:Record<any, any>) => {
 
     // Wrap container and repos so if they throw, the login auth is still valid
     try {
-      repos && repos.length && setRepos({ repos })
       await setContainerRoutes(status)
     }
     catch(err:any){
