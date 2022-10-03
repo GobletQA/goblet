@@ -7,7 +7,7 @@ export type TLoading = ComponentProps<typeof CircularProgress> & {
   
 }
 
-export const Loading = (props:TLoading) => {
+export const FormLoading = (props:TLoading) => {
   const {
     ...progProps
   } = props
@@ -18,4 +18,3 @@ export const Loading = (props:TLoading) => {
     </Box>
   )
 }
-

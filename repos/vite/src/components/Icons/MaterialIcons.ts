@@ -9,6 +9,8 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import ProfileIcon from '@mui/icons-material/ManageAccounts'
 import TeamIcon from '@mui/icons-material/Groups'
 import LogoutIcon from '@mui/icons-material/Logout'
+import ConnectIcon from '@mui/icons-material/CloudSync'
+import SyncIcon from '@mui/icons-material/Sync'
 
 export {
   Steps,
@@ -21,5 +23,7 @@ export {
   ProfileIcon,
   SettingsIcon,
   TeamIcon,
+  SyncIcon,
+  ConnectIcon,
   LogoutIcon
 }

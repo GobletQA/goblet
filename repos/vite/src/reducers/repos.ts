@@ -1,10 +1,11 @@
 import type { TRepo } from '@types'
 import type { TAction } from '@reducers'
 import { deepMerge } from '@keg-hub/jsutils'
+import reposJson from './repos.test.json'
 
 export type TReposState = TRepo[]
 
-export const reposState = [] as TReposState
+export const reposState = reposJson as TReposState
 
 export const reposActions = {
   clear: (state:TReposState, action:TAction<TReposState>) => (reposState),

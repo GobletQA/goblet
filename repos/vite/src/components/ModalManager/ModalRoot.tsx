@@ -46,7 +46,7 @@ export type TModal = Omit<ComponentProps<typeof Dialog>, "open"> & {
   visible?: boolean,
   Title?: ReactNode
   Content?: ReactNode
-  manualClose:boolean
+  manualClose?:boolean
   overrideContent?:boolean
   actions?: TModalAction[]
   onClose?: (...args:any[]) => void
@@ -92,7 +92,7 @@ export const ModalHeader = (props:TModal) => {
   )
 }
 
-export const Modal = (props:TModal) => {
+export const ModalRoot = (props:TModal) => {
   
   const {
     visible=false,

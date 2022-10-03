@@ -1,67 +1,19 @@
 import type { ComponentProps } from 'react'
-import { Form } from './Form'
+import type {
+  TFCRow,
+  TFCBase,
+  TFCItem,
+  TFormGen,
+  TFCSection,
+  TFormContainer,
+} from './form.types'
+export * from './form.types'
 
+import { Form } from './Form'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-
-import { InputTypes } from './InputTypes'
-
-export type TFCBase = {
-  id?: string
-  key?: string
-  name?: string
-  parentKey?: string
-}
-
-export type TFCRulePattern = {
-  value: string,
-  message: string
-}
-
-export type TFCRule = {
-  required?: boolean,
-  pattern?: TFCRulePattern
-}
-
-export type TFCItem<T=Record<any, any>> = TFCBase & {
-  label?: string
-  itemProps?: T
-  rules?: TFCRule
-  type: keyof typeof InputTypes
-}
-
-export type TFCRow<T=ComponentProps<typeof Grid>> = TFCBase & {
-  rowProps?: T
-  RowNode?: any
-  size?: number
-  items?: TFCItem[]
-  sections?: TFCSection[]
-}
-
-export type TFCSection<T=ComponentProps<typeof Paper>> = TFCBase & {
-  rows?: TFCRow[]
-  items?: TFCItem[]
-  sectionProps?: T,
-  SectionNode?: any,
-  parentKey?: string
-}
-
-
-export type TFConfig = TFCBase & {
-  rows?: TFCRow[]
-  sections?: TFCSection[]
-}
-
-// R=extends React.FC<any> | React.ComponentClass<any>
-export type TFormContainer = ComponentProps<typeof Grid>
-
-export type TFormGen = {
-  RootNode?: any
-  ContainerNode?: any
-  containerProps?:TFormContainer
-  config: TFConfig
-}
-
+import { FormLoading } from './FormLoading'
+import { InputTypes } from './Inputs/InputTypes'
 
 const generateKeys = (props:TFCBase, child:TFCBase) => {
   const {
@@ -87,7 +39,7 @@ const RenderItem = (props:TFCItem) => {
     // @ts-ignore
     <Comp
       label={label || name}
-      {...itemProps}
+      {...compProps}
     />
   )
 }
@@ -163,29 +115,34 @@ const RenderContainer = (props:TFormContainer) => {
 
 export const FormGen = (props:TFormGen) => {
   const {
+    config,
+    loading,
+    loadingProps,
     RootNode=Form,
     containerProps,
     ContainerNode=RenderContainer,
-    config
+    Loading=(<FormLoading {...loadingProps} />),
   } = props
 
   const { rows, sections } = config
 
-  return (
-    <RootNode>
-      <ContainerNode {...containerProps} >
-        {sections && sections.map((section) => (
-          <RenderSection
-            {...generateKeys(config, section)}
-            {...section}
-          />
-        ))}
-        {rows && rows.map((row) => (
-          <RenderRow
-            {...generateKeys(config, row)}
-            {...row} />
-        ))}
-      </ContainerNode>
-    </RootNode>
-  )
+  return loading
+    ? <>{Loading}</>
+    : (
+        <RootNode>
+          <ContainerNode {...containerProps} >
+            {sections && sections.map((section) => (
+              <RenderSection
+                {...generateKeys(config, section)}
+                {...section}
+              />
+            ))}
+            {rows && rows.map((row) => (
+              <RenderRow
+                {...generateKeys(config, row)}
+                {...row} />
+            ))}
+          </ContainerNode>
+        </RootNode>
+      )
 }

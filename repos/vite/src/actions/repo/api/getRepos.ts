@@ -1,3 +1,4 @@
+import type { TAPIReposResp } from '@types'
 import { setRepos } from '../local/setRepos'
 import { addToast } from '@actions/toasts/addToast'
 import { apiRepoRequest } from '@utils/api/apiRepoRequest'
@@ -5,8 +6,6 @@ import { apiRepoRequest } from '@utils/api/apiRepoRequest'
 /**
  * Gets all repos for the logged in user from the authorized provider
  * Then adds them to store, overwriting any existing provider repos
- *
- * @returns {Array} - List of loaded repos
  */
 export const getRepos = async () => {
   addToast({
@@ -18,7 +17,7 @@ export const getRepos = async () => {
     data,
     error,
     success
-  } = await apiRepoRequest(`/repo/all`)
+  } = await apiRepoRequest<TAPIReposResp>(`/repo/all`)
 
   if(!success || error)
     addToast({

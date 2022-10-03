@@ -1,16 +1,9 @@
 import type { ComponentProps } from 'react'
+import type { TOptions } from '../form.types'
+
 import MuiSelect from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { Input } from './Input'
-
-export type TObjectOpt = {
-  key: string
-  value: any
-  label: any
-  [key: string|number]: any
-}
-
-export type TOptions = string[] | number[] | TObjectOpt[]
 
 export type TSelect = ComponentProps<typeof Input> & {
   selectProps?: ComponentProps<typeof MuiSelect>
@@ -28,7 +21,7 @@ export const Select = (props:TSelect) => {
   } = props
   
   return (
-    <Input value="empty" {...rest} SelectProps={selectProps} select >
+    <Input value="" {...rest} SelectProps={selectProps} select >
       {options ? (
         options.map((opt) => {
           const { key, label, value, ...optRest } = typeof opt === `object`
@@ -38,7 +31,7 @@ export const Select = (props:TSelect) => {
           return (
             <MenuItem
               {...optionProps}
-              key={key || value}
+              key={key || label || value}
               value={value}
             >
               {label || value}
@@ -50,7 +43,7 @@ export const Select = (props:TSelect) => {
           <MenuItem
             {...optionProps}
             key={'form-get-empty'}
-            value="empty"
+            value=""
           >
             Empty
           </MenuItem>

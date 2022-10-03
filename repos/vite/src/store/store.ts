@@ -42,3 +42,4 @@ export const select = <T>(func: (state: RootState) => T) => {
 }
 
 export * from './dispatchers'
+export * from './selectorHooks'
