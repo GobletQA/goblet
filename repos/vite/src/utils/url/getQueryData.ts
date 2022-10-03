@@ -1,5 +1,10 @@
 import { queryToObj, noOpObj } from '@keg-hub/jsutils'
 
+type TQueryData = {
+  file: string
+  [Key: string]: any
+}
+
 /**
  * Gets the query params from the current url location
  * @function
@@ -9,5 +14,5 @@ import { queryToObj, noOpObj } from '@keg-hub/jsutils'
 export const getQueryData = () => {
   return typeof document === 'undefined'
     ? noOpObj
-    : queryToObj(document?.location?.search)
+    : queryToObj(document?.location?.search) as TQueryData
 }

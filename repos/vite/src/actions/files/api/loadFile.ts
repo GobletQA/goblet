@@ -24,7 +24,6 @@ const findFileInTree = (
  */
 export const loadFile = async (
   fileNode:TFileTreeNode|string,
-  screenId?:string,
   mergeQuery?:boolean
 ) => {
   const { fileTree } = getStore()?.getState()
@@ -48,6 +47,6 @@ export const loadFile = async (
     })
 
 
-  setActiveFileFromType(resp?.data?.file, screenId, mergeQuery)
+  setActiveFileFromType(resp?.data?.file, mergeQuery)
 
 }

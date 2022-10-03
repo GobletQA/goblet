@@ -1,15 +1,20 @@
 import path from 'path'
 import { defineConfig } from 'vite'
-// import mkcert from'vite-plugin-mkcert'
+import mkcert from'vite-plugin-mkcert'
 import react from '@vitejs/plugin-react'
+// @ts-ignore
 import { loadConfig } from './frontend.config'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import EnvironmentPlugin from 'vite-plugin-environment'
 import { svgrComponent } from 'vite-plugin-svgr-component'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
+import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
 
 const rootDir = path.join(__dirname, '..')
 process.env.PLUGIN_DATA_DIR = path.join(rootDir, `../../certs`)
+const isHttps = Boolean(
+  process.env.VITE_HTTPS && (process.env.VITE_HTTPS === 'true' || process.env.VITE_HTTPS === '1')
+)
 
 // @ts-ignore
 export default defineConfig(async () => {
@@ -19,19 +24,21 @@ export default defineConfig(async () => {
     root: rootDir,
     server: {
       port,
-      // https: true,
+      https: isHttps,
     },
     esbuild: {
       logOverride: { 'this-is-undefined-in-esm': 'silent' }
     },
     plugins: [
+      viteCommonjs(),
+
       // @ts-ignore
       monacoEditorPlugin.default({
         globalAPI: true,
         languageWorkers: ['editorWorkerService', 'html', 'json', 'typescript']
       }),
       react(),
-      // mkcert(),
+      isHttps && mkcert(),
       tsconfigPaths(),
       EnvironmentPlugin(envs),
       svgrComponent({

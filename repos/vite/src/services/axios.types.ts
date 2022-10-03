@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig, ResponseType } from 'axios'
 
-export type THeaders = Record<string, string>
+export type THeaders = Record<string, string|number>
 
 export type TAXResponse = {
   data: any

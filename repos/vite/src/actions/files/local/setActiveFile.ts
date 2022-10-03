@@ -10,7 +10,6 @@ import { updateUrlQuery } from '@utils/url/updateUrlQuery'
  */
 export const setActiveFile = (
   fileModel:TFileModel,
-  screenId?:string,
   mergeQuery?:boolean
 ) => {
 

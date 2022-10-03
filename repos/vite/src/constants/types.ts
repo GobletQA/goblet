@@ -38,4 +38,7 @@ export enum ModalTypes {
   signIn = 'signIn',
 } 
 
-
+export enum StatusTypes {
+  VNC = 'vnc',
+  LOCAL = 'local',
+}

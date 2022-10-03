@@ -12,7 +12,6 @@ import { addToast } from '../../toasts/addToast'
  */
 export const setActiveFileFromType = (
   fileModel:TFileModel,
-  screenId?:string,
   mergeQuery?:boolean
 ) => {
 
@@ -21,7 +20,7 @@ export const setActiveFileFromType = (
       console.log(`------- Figure out what to do for reports -------`)
       return null
     case FileTypes.FEATURE:
-      return setActiveFile(fileModel, screenId, exists(mergeQuery) ? mergeQuery : true)
+      return setActiveFile(fileModel, exists(mergeQuery) ? mergeQuery : true)
     case FileTypes.UNIT:
     case FileTypes.WAYPOINT:
     case FileTypes.DEFINITION:
@@ -30,7 +29,7 @@ export const setActiveFileFromType = (
       // This includes general support, html and markdown class types
       // case FileTypes.HTML:
       // case FileTypes.DOCS:
-      return setActiveFile(fileModel, screenId, exists(mergeQuery) ? mergeQuery : false)
+      return setActiveFile(fileModel, exists(mergeQuery) ? mergeQuery : false)
     default:
       return addToast({
         type: `error`,

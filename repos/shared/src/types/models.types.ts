@@ -1,6 +1,3 @@
-import type { TFeatureAst } from './features.types'
-import type { TDefinitionAst } from './definitions.types'
-
 export type TGeneralAst = Record<any, any>
 
 export type TChildTreeNode = {
@@ -68,13 +65,3 @@ export type TTestRunModel = {
   params: string[],
   messages: Record<string, TCmdMessage>,
 }
-
-
-export type TFeatureFileModel = Omit<TFileModel, 'ast'> & {
-  ast: TFeatureAst
-}
-
-export type TDefinitionFileModel = Omit<TFileModel, 'ast'> & {
-  ast: TDefinitionAst
-}
-

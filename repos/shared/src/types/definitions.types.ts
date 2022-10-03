@@ -1,4 +1,5 @@
 import type { EStepKey } from './features.types'
+import type { TFileModel } from './models.types'
 
 export enum EDefinitionVariant {
   regex = 'regex',
@@ -35,4 +36,8 @@ export type TDefinitionsAstArr = TDefinitionAst[]
 
 export type TDefinitionsAstTypeMap = {
   [key in EStepKey]: TDefinitionsAstArr
+}
+
+export type TDefinitionFileModel = Omit<TFileModel, 'ast'> & {
+  ast: TDefinitionAst
 }

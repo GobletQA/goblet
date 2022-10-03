@@ -1,9 +1,9 @@
 import type { TAction } from '@reducers'
-import type { TFeatureFileModel } from '@types'
+import type { TFeatureFileModelList, TFeatureFileModel } from '@types'
 
 export type TFeaturesState = {
   activeFeature?: TFeatureFileModel
-  files: TFeatureFileModel[]
+  files: TFeatureFileModelList
 }
 export const featuresState = {} as TFeaturesState
 
@@ -27,19 +27,16 @@ export const featuresActions = {
       activeFeature: state?.activeFeature?.uuid === action.payload.uuid
         ? action.payload
         : state?.activeFeature,
-      files: state.files.reduce((acc, file) => {
-        file.uuid === action.payload.uuid
-          ? acc.push(action.payload)
-          : acc.push(file)
-
-        return acc
-      }, [] as TFeatureFileModel[]),
+      files: {
+        ...state.files,
+        [action.payload.location]: action.payload
+      }
     }
   },
 
   setFeatures: (
     state:TFeaturesState,
-    action:TAction<TFeatureFileModel[]>
+    action:TAction<TFeatureFileModelList>
   ) => {
     return {
       ...state,
@@ -48,14 +45,14 @@ export const featuresActions = {
   },
   upsertFeatures: (
     state:TFeaturesState,
-    action:TAction<TFeatureFileModel[]>
+    action:TAction<TFeatureFileModelList>
   ) => {
     return {
       ...state,
-      files: [
+      files: {
         ...state.files,
         ...action?.payload
-      ]
+      }
     }
   },
 }

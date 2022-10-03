@@ -1,3 +1,4 @@
+import type { TFileModel } from './models.types'
 
 export enum EAstObjects {
   feature = 'feature',
@@ -68,5 +69,10 @@ export type TFeatureAst = {
   scenarios: TScenarioAst[]
 }
 
-
 export type TAstType = TFeatureAst | TRuleAst | TBackgroundAst | TScenarioAst | TStepAst
+
+export type TFeatureFileModel = Omit<TFileModel, 'ast'> & {
+  ast: TFeatureAst
+}
+
+export type TFeatureFileModelList = Record<string, TFeatureFileModel>

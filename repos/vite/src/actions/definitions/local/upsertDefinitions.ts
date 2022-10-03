@@ -1,6 +1,6 @@
 import type { TDefinitionsAstList, TDefinitionsAstTypeMap } from '@types'
 
-import { defsDispatch } from '@reducers'
+import { defsDispatch } from '@dispatchers'
 import { noOpObj } from '@keg-hub/jsutils'
 import { definitionsByType } from '@utils/shared'
 
