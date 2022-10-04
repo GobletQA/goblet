@@ -1,6 +1,21 @@
 import type { TSideNav } from '@types'
 import { deepFreeze } from '@keg-hub/jsutils'
 
+export const HeaderNav = [
+  {
+    label: `Profile`,
+    Icon: `ProfileIcon`,
+  },
+  {
+    label: `Settings`,
+    Icon: `SettingsIcon`,
+  },
+  {
+    label: `Team`,
+    Icon: `TeamIcon`,
+  }
+]
+
 export const SideNav = deepFreeze({
   groupClassName: `group-nav-list`,
   groups: [

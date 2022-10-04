@@ -84,6 +84,15 @@ const useBranchSelect = ({
   }, built)
 }
 
+const useNewBranch = () => {
+  
+}
+
+const useBranchName = () => {
+  
+}
+
+
 export const useConnectForm = () => {
   const repos = useRepos()
 
