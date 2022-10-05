@@ -4,6 +4,19 @@ import Paper from '@mui/material/Paper'
 import { FormLoading } from './FormLoading'
 import { InputTypes } from './Inputs/InputTypes'
 
+export enum EItemParent {
+  rows = `rows`,
+  sections = `sections`,
+  row = `row`,
+  section = `section`
+}
+
+export type TParentMeta = {
+  path: string,
+  type: EItemParent,
+  parent: TFCRow | TFCSection
+}
+
 export type TObjectOpt = {
   key?: string
   label: any
@@ -45,6 +58,8 @@ export type TFCItem<T=Record<any, any>> = TFCBase & {
 }
 
 export type TFCRow<T=ComponentProps<typeof Grid>> = TFCBase & {
+  path?: string
+  type?: EItemParent.row
   rowProps?: T
   RowNode?: any
   size?: number
@@ -53,6 +68,8 @@ export type TFCRow<T=ComponentProps<typeof Grid>> = TFCBase & {
 }
 
 export type TFCSection<T=ComponentProps<typeof Paper>> = TFCBase & {
+  path?: string
+  type?: EItemParent.section
   rows?: TFCRow[]
   items?: TFCItem[]
   sectionProps?: T,

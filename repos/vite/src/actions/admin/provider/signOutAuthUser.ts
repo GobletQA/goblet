@@ -17,8 +17,6 @@ const { auth } = getProviderMetadata()
  * @return {Void}
  */
 export const signOutAuthUser = async () => {
-  return undefined
-  
   // Remove the local cache
   try { await localStorage.cleanup() }
   catch(err:any){ console.error(`Error clearing local storage.\n${err.message}`) }

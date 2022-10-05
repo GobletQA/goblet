@@ -9,6 +9,7 @@ import type {
 } from './form.types'
 export * from './form.types'
 
+import { omitKeys } from '@keg-hub/jsutils'
 import { Form } from './Form'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
@@ -55,8 +56,9 @@ const RenderRow = (props:TFCRow) => {
 
   return (
     <RowNode item xs={size} {...rowProps} >
-      {items && items.map((item) => (
+      {items && items.map((item, idx) => (
         <RenderItem
+          key={idx}
           {...generateKeys(props, item)}
           {...item}
         />
@@ -64,7 +66,7 @@ const RenderRow = (props:TFCRow) => {
       {sections && sections.map((section) => (
         <RenderSection
           {...generateKeys(props, section)}
-          {...section}
+          {...omitKeys(section, [`key`])}
         />
       ))}
     </RowNode>
@@ -88,13 +90,13 @@ const RenderSection = (props:TFCSection) => {
       {items && items.map((item) => (
         <RenderItem
           {...generateKeys(props, item)}
-          {...item}
+          {...omitKeys(item, [`key`])}
         />
       ))}
       {rows && rows.map((row) => (
         <RenderRow
           {...generateKeys(props, row)}
-          {...row} />
+          {...omitKeys(row, [`key`])} />
       ))}
     </SectionNode>
   )
@@ -134,13 +136,13 @@ export const FormGen = (props:TFormGen) => {
             {sections && sections.map((section) => (
               <RenderSection
                 {...generateKeys(config, section)}
-                {...section}
+                {...omitKeys(section, [`key`])}
               />
             ))}
             {rows && rows.map((row) => (
               <RenderRow
                 {...generateKeys(config, row)}
-                {...row} />
+                {...omitKeys(row, [`key`])} />
             ))}
           </ContainerNode>
         </RootNode>
