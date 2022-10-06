@@ -12,6 +12,12 @@
     "paths": {
       "@GKD/Configs": ["configs"],
       "@GKD/Configs/*": ["configs/*"],
+      "@GKD/Constants": ["src/constants"],
+      "@GKD/Constants/*": ["src/constants/*"],
+      "@GKD/Middleware": ["src/middleware"],
+      "@GKD/Middleware/*": ["src/middleware/*"],
+      "@GKD/Types": ["src/types"],
+      "@GKD/Types/*": ["src/types/*"],
       "@GKD": ["src"],
       "@GKD/*": ["src/*"],
       "@GKD/Root": ["./"],
@@ -25,7 +31,7 @@
   },
   "include": [
     "src",
-    "configs",
+    "configs"
   ],
   "exclude": ["node_modules", "dist"]
 }

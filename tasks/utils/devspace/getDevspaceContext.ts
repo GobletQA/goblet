@@ -1,6 +1,6 @@
-import { error } from '@keg-hub/cli-utils'
 import { noOpObj } from '@keg-hub/jsutils'
 import { loadEnvs } from '../envs/loadEnvs'
+import { error } from '@keg-hub/cli-utils'
 
 type TParams = {
   env?: string

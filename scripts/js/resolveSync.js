@@ -25,6 +25,7 @@ const syncFrontendConfig = (deployment, sharedIgnore) => (`
   - 'tasks'
   - 'certs'
   - 'goblet'
+  - 'repos/kind'
   - 'repos/dind'
   - 'repos/scripts'
   - 'repos/backend'

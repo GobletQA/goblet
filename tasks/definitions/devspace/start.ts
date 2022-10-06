@@ -1,3 +1,5 @@
+import type { TTaskParams } from '../../types'
+
 import { clean as cleanTask } from './clean'
 import { getNpmToken } from '../../utils/envs'
 import { devspace } from '../../utils/devspace/devspace'
@@ -28,17 +30,9 @@ const setStartEnvs = (params) => {
 
 /**
  * Start devspace environment
- * @param {Object} args - arguments passed from the runTask method
- * @param {string} args.command - Root task name
- * @param {Object} args.tasks - All registered tasks of the CLI
- * @param {string} args.task - Task Definition of the task being run
- * @param {Array} args.options - arguments passed from the command line
- * @param {Object} args.globalConfig - Global config object for the keg-cli
- * @param {Object} args.params - Passed in options, converted into an object
- *
  * @returns {void}
  */
-const startAct = async (args) => {
+const startAct = async (args:TTaskParams) => {
   const { params } = args
 
   // Extract the daemon flag so it doesn't impact other commands
@@ -53,6 +47,7 @@ const startAct = async (args) => {
     daemon,
     install,
     context,
+    devspace:ds,
     ...altParams
   } = params
   
@@ -64,6 +59,7 @@ const startAct = async (args) => {
       images,
       daemon,
       context,
+      devspace:ds,
       env: altParams.env
     }
   })
@@ -79,6 +75,7 @@ const startAct = async (args) => {
   return await devspace.start({
     ...altParams,
     context,
+    devspace:ds,
     deployments,
   }, { daemon, watch })
 }

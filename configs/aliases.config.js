@@ -42,6 +42,7 @@ const addRepoAliases = () => {
 
       // If no data is returned, then try to load paths from tsconfig.json
       if(!data){
+        // Add true as last argument to see any errors when loading the file
         const tsConfResp = requireFile(location, `tsconfig.json`)
 
         if(!tsConfResp){

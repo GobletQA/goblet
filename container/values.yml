@@ -125,7 +125,7 @@ env:
   GB_CD_CONTAINER_TIMEOUT: 50000
   # Salting the user hash string. Not intended to be secure just anonymous
   GB_CD_HASH_KEY: C0nDuc10R
-  GB_CD_CONTROLLER_TYPE: Docker
+  GB_CD_CONTROLLER_TYPE: Kube
 
   # --- Certs ENVs --- #
   GB_CR_DEBUG: true
@@ -219,3 +219,15 @@ env:
   GB_KD_ROLE_NAME: goblet-modify-pods
   GB_KD_SERVICE_ACCOUNT: goblet-pods-exec
   GB_KD_ROLE_BINDING_NAME: goblet-pods-role-binding
+  GB_KD_DEVSPACE_CONFIG: container/devspace.kind.yaml
+  # Exposed Port used for all container API proxies
+  GB_KD_PORT: 2375
+  GB_KD_HOST: 0.0.0.0
+  GB_KD_SECURE_PORT: 443
+  GB_KD_WS_PATH: /sockr-socket
+
+  GB_KD_WS_PROXY_PORT: 2122
+  GB_KD_VNC_PROXY_PORT: 2123
+  GB_KD_VALIDATION_KEY: "gb-k1nD567"
+  GB_KD_VALIDATION_HEADER: GB-Validation-Key
+

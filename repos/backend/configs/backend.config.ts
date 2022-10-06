@@ -1,11 +1,12 @@
 
 import '../resolveRoot'
-import { toBool } from '@keg-hub/jsutils'
+import { toBool, deepMerge } from '@keg-hub/jsutils'
 import { TBackendConfig } from '@GBE/types'
 import { conductorConfig } from './conductor.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
 import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
+import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
+import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
 
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({
@@ -38,13 +39,41 @@ const {
   GB_BE_JWT_REFRESH_EXP,
   GB_BE_JWT_REFRESH_SECRET,
 
+  GB_CD_CONTROLLER_TYPE,
   GB_DD_VALIDATION_KEY,
   GB_DD_VALIDATION_HEADER,
+  GB_KD_VALIDATION_KEY,
+  GB_KD_VALIDATION_HEADER,
+
+  GB_KD_WS_PROXY_PORT,
+  GB_KD_VNC_PROXY_PORT,
+
 } = process.env
 
-const dindHost = getDindHost()
+const isDockerHost = (GB_CD_CONTROLLER_TYPE || ``).toLowerCase() === `docker`
+const controllerHost = isDockerHost
+  ? getDindHost()
+  : getKindHost()
 
-export const backendConfig:TBackendConfig  = {
+const buildBackendConf = () => {
+  return !isDockerHost && {
+    vncProxy: {
+      port: GB_KD_VNC_PROXY_PORT,
+      headers: {
+        [GB_KD_VALIDATION_HEADER]: GB_KD_VALIDATION_KEY
+      }
+    },
+    wsProxy: {
+      port: GB_KD_WS_PROXY_PORT,
+      headers: {
+        [GB_KD_VALIDATION_HEADER]: GB_KD_VALIDATION_KEY
+      }
+    }
+  }
+}
+
+
+export const backendConfig:TBackendConfig = deepMerge<TBackendConfig>({
   server: {
     auth: true,
     port: GB_BE_PORT,
@@ -65,7 +94,7 @@ export const backendConfig:TBackendConfig  = {
   },
   conductor: conductorConfig,
   vncProxy: {
-    host: dindHost,
+    host: controllerHost,
     path: GB_NO_VNC_PATH,
     port: GB_DD_VNC_PROXY_PORT,
     protocol: GB_NO_VNC_PROTOCOL,
@@ -74,7 +103,7 @@ export const backendConfig:TBackendConfig  = {
     }
   },
   wsProxy: {
-    host: dindHost,
+    host: controllerHost,
     path: GB_BE_WS_PATH,
     port: GB_DD_WS_PROXY_PORT,
     protocol: GB_BE_WS_PROTOCOL,
@@ -82,4 +111,4 @@ export const backendConfig:TBackendConfig  = {
       [GB_DD_VALIDATION_HEADER]: GB_DD_VALIDATION_KEY
     }
   }
-}
+}, buildBackendConf())

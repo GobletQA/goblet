@@ -1,16 +1,18 @@
-const path = require('path')
-const { error } = require('@keg-hub/cli-utils')
-const { containerDir } = require('../../paths')
-const { loadEnvs } = require('../envs/loadEnvs')
-const { isStr, exists, isArr } = require('@keg-hub/jsutils')
-const { resolveLocalPath } = require('../helpers/resolveLocalPath')
-const { getContextValue, getLongContext } = require('../helpers/contexts')
+import type { TTaskParams } from '../../types'
+
+import path from 'path'
+import { error } from '@keg-hub/cli-utils'
+import { containerDir } from '../../paths'
+import { loadEnvs } from '../envs/loadEnvs'
+import { isStr, exists, isArr } from '@keg-hub/jsutils'
+import { resolveLocalPath } from '../helpers/resolveLocalPath'
+import { getContextValue, getLongContext } from '../helpers/contexts'
 
 /**
  * Try to resolve the path to the devspace config from the passed in option param
  * If not found throws an error
  */
-const resolveFromDSParam = (params) => {
+const resolveFromDSParam = (params:TTaskParams) => {
   const { env, devspace } = params
   const envs = loadEnvs({ env })
 
@@ -34,7 +36,7 @@ const resolveFromDSParam = (params) => {
  * Try to resolve the path to the devspace config from the passed in context
  * If not found, uses the default devspace config
  */
-const resolveFromContext = (params) => {
+const resolveFromContext = (params:TTaskParams) => {
   const { env, context } = params
   if(!context) return path.join(containerDir, `devspace.yaml`)
 
@@ -52,21 +54,11 @@ const resolveFromContext = (params) => {
 /**
  * Checks if a custom config location is passed in and returns it
  * Otherwise returns the default config location
- * @param {Object} params - Parsed options passed to the original task
- * @param {string} params.env - Environment the task is being run in
- * @param {string} [params.context] - Current context for the task
- * @param {string} [params.devspace] - Path to a custom devspace config file
  *
  * @returns {string} - Path to the resolved devspace config file
  */
-const getConfigPath = (params) => {
+export const getConfigPath = (params:TTaskParams) => {
   return params.devspace
     ? resolveFromDSParam(params)
     : resolveFromContext(params)
-}
-
-
-
-module.exports = {
-  getConfigPath,
 }

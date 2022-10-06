@@ -29,6 +29,31 @@ vars:
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_NM_INSTALL"
 
+# ----- Docker Image Values ----- #
+- name: IMAGE
+  source: command
+  command: "node ../scripts/js/getYamlValue.js IMAGE"
+- name: IMAGE_TAG
+  source: command
+  command: "node ../scripts/js/getYamlValue.js IMAGE_TAG"
+
+# ----- Backend API Values ----- #
+- name: GB_BE_DEPLOYMENT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_BE_DEPLOYMENT"
+- name: GB_BE_IMG_URI
+  source: command
+  command: "node ../scripts/js/resolveImgUri.js BE"
+- name: GB_BE_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_BE_PORT"
+- name: GB_BE_WS_PATH
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_BE_WS_PATH"
+- name: GB_NO_VNC_PATH
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_NO_VNC_PATH"
+
 # ----- DinD Values ----- #
 - name: GB_DD_DOCKER_PORT
   source: command
@@ -68,6 +93,26 @@ vars:
 - name: GB_KD_ROLE_BINDING_NAME
   source: command
   command: "node ../scripts/js/getYamlValue.js GB_KD_ROLE_BINDING_NAME"
+
+# ----- Screencast API Values ----- #
+- name: GB_SC_DEPLOYMENT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_SC_DEPLOYMENT"
+- name: GB_SC_IMG_URI
+  source: command
+  command: "node ../scripts/js/resolveImgUri.js SC"
+- name: GB_SC_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_SC_PORT"
+- name: GB_NO_VNC_PORT
+  source: command
+  command: "node ../scripts/js/getYamlValue.js GB_NO_VNC_PORT"
+- name: GB_SC_INGRESS_HOST
+  source: command
+  command: "node ../scripts/js/resolveHost.js SC"
+- name: GB_SC_INGRESS_HOST_WILD_CARD
+  source: command
+  command: "node ../scripts/js/resolveHost.js SC \"*\""
 
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
@@ -126,11 +171,34 @@ deployments:
         env: $(node ../scripts/js/resolveDSEnvs.js kind)
       service: $(node ../scripts/js/resolveService.js KD $GB_DD_DOCKER_PORT $GB_DD_WS_PROXY_PORT $GB_DD_API_PROXY_PORT $GB_DD_VNC_PROXY_PORT $GB_DD_EXP_ADMIN_PORT:$GB_DD_LOCAL_ADMIN_PORT)
 
+# ----- Backend API Deployment ----- #
+- name: ${GB_BE_DEPLOYMENT}
+  helm:
+    upgradeArgs:
+      - "--force"
+    chart:
+      name: ./
+    cleanupOnFail: true
+    valuesFiles:
+    - ./values.empty.yaml
+    values:
+      containers:
+      - image: ${GB_BE_IMG_URI}
+        imagePullPolicy: ${IMAGE_PULL_POLICY}
+        env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
+      service: $(node ../scripts/js/resolveService.js BE $GB_BE_PORT)
+      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH" "$GB_NO_VNC_PATH")
+
 dev:
   # Gets the apps that should sync with the host machine
-  sync: $(node ../scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE GB_DD_ACTIVE GB_SC_ACTIVE GB_KD_ACTIVE)
+  sync: $(node ../scripts/js/resolveSync.js GB_FE_INACTIVE GB_BE_ACTIVE GB_DD_INACTIVE GB_SC_INACTIVE GB_KD_ACTIVE)
+  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_INACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT})
 
 # Use profile to dynamically switch out the app specific docker image for the development image
 profiles:
 - name: local
+  patches:
+  - op: replace
+    path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}
 - name: production

@@ -3,10 +3,12 @@ import type {
   TRouteMeta,
   TConductorOpts,
   TControllerType,
+  TControllerConnectOpts,
 } from '@GBE/types'
-import { toNum, exists } from '@keg-hub/jsutils'
+import { toNum, exists, deepMerge } from '@keg-hub/jsutils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
+import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
 
 const { NODE_ENV=`local` } = process.env
 
@@ -26,9 +28,15 @@ const {
   GB_SC_IMAGE_TAG,
   GB_SC_DEPLOYMENT,
   GB_NO_VNC_PORT,
-  GB_CD_CONTROLLER_TYPE=`Docker`,
+  GB_CD_CONTROLLER_TYPE,
 
   GB_LOCAL_DEV_MODE,
+  
+  GB_KD_PORT,
+  GB_KD_VALIDATION_KEY,
+  GB_KD_VALIDATION_HEADER,
+  GOBLET_KIND_SERVICE_PORT
+  
 } = process.env
 
 const whiteList = [
@@ -56,7 +64,10 @@ const whiteList = [
 
 const blackList = []
 
-const dindHost = getDindHost()
+const isDockerHost = (GB_CD_CONTROLLER_TYPE || ``).toLowerCase() === `docker`
+const controllerHost = isDockerHost
+  ? getDindHost()
+  : getKindHost()
 
 const devRouter = (NODE_ENV === `local` || Boolean(GB_LOCAL_DEV_MODE === 'true'))
   && exists(GOBLET_SCREENCAST_SERVICE_HOST)
@@ -69,13 +80,13 @@ const devRouter = (NODE_ENV === `local` || Boolean(GB_LOCAL_DEV_MODE === 'true')
         },
         routes: {
           [GB_SC_PORT]: {
-            host: dindHost,
+            host: controllerHost,
             port: GB_SC_PORT,
             containerPort: GB_SC_PORT,
             protocol: 'http:' as TProtocol,
           },
           [GB_NO_VNC_PORT]: {
-            host: dindHost,
+            host: controllerHost,
             port: GB_NO_VNC_PORT,
             containerPort: GB_NO_VNC_PORT,
             protocol: 'http:' as TProtocol,
@@ -118,10 +129,34 @@ const getImgConfig = () => {
   }
 }
 
-export const conductorConfig:TConductorOpts = {
+const buildConductorConf = () => {
+  return isDockerHost
+    ? {}
+    : {
+        proxy: {
+          port: GB_KD_PORT,
+          target: `${proto}://${controllerHost}:${GB_KD_PORT}`,
+          headers: {
+            'content-type': `application/json`,
+            [GB_KD_VALIDATION_HEADER]: GB_KD_VALIDATION_KEY
+          }
+        },
+        controller: {
+          options: {
+            protocol: `http`,
+            host: controllerHost,
+            port: GOBLET_KIND_SERVICE_PORT,
+          } as TControllerConnectOpts,
+        },
+      }
+}
+
+
+const proto = GB_KD_PORT === `443` ? `https` : `http`
+export const conductorConfig:TConductorOpts = deepMerge({
   controller: {
     devRouter: devRouter as TRouteMeta,
-    type: GB_CD_CONTROLLER_TYPE as TControllerType
+    type: GB_CD_CONTROLLER_TYPE as TControllerType,
   },
   images: {
     [GB_SC_DEPLOYMENT]: {
@@ -152,4 +187,4 @@ export const conductorConfig:TConductorOpts = {
       }
     }
   }
-}
+}, buildConductorConf())

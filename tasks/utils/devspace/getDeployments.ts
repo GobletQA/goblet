@@ -1,23 +1,26 @@
-const { error } = require('@keg-hub/cli-utils')
-const { setDeploymentEnvs } = require('../envs/setDeploymentEnvs')
-const { exists, isStr, noOpArr, isArr } = require('@keg-hub/jsutils')
-const { getDeployContext, getDeploymentOpts } = require('../helpers/contexts')
+import { setDeploymentEnvs } from '../envs/setDeploymentEnvs'
+import { exists, isStr, noOpArr, isArr } from '@keg-hub/jsutils'
+import { getDeployContext, getDeploymentOpts } from '../helpers/contexts'
+
+// @ts-ignore
+import { error } from '@keg-hub/cli-utils'
 
 /**
  * Gets all allowed apps to deploy relative to the skip array
- * @param {Array<string>|string} skip - List of apps that should not run for the command
- * @param {Object} envs - All envs parsed from the value files for the current environment
  *
- * @return {Array} - All allow apps that can be deployed
  */
-const getAllowedDeployments = (skipArr, deployArr, env) => {
+const getAllowedDeployments = (
+  skipArr:string[],
+  deployArr:string[],
+  env:string
+) => {
   const shouldSkip = skipArr.reduce((acc, app) => {
     const deployment = getDeployContext(app, env)
 
     deployment && acc.push(deployment)
 
     return acc
-  }, [])
+  }, [] as string[])
 
   // Filter out any apps that are not allowed to deploy
   const allowedDeploys = deployArr.filter(
@@ -38,7 +41,11 @@ const getAllowedDeployments = (skipArr, deployArr, env) => {
  *
  * @return {string} - Context converted into a string of app deployments
  */
-const getDeployments = (context, skip, env) => {
+export const getDeployments = (
+  context:string|string[],
+  skip:string|string[],
+  env:string
+) => {
   const { deployArr } = getDeploymentOpts(env)
 
   // If no context and no skip, return undefined to deploy all
@@ -76,7 +83,7 @@ const getDeployments = (context, skip, env) => {
     allowedDeploys.includes(deployment) && acc.push(deployment)
 
     return acc
-  }, [])
+  }, [] as string[])
 
   // Ensure there are apps to deploy, otherwise throw
   !deployments.length &&
@@ -85,8 +92,4 @@ const getDeployments = (context, skip, env) => {
   setDeploymentEnvs(env, deployments)
 
   return deployments.join(',')
-}
-
-module.exports = {
-  getDeployments,
 }

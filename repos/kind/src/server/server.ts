@@ -1,15 +1,14 @@
 #!/usr/bin/env node
-import '../resolveRoot'
+import '../../resolveRoot'
 import type { Express } from 'express'
 import { Logger } from '@keg-hub/cli-utils'
-import { AUTH_BYPASS_ROUTES } from '@GBE/constants'
+import { AUTH_BYPASS_ROUTES } from '@GKD/Constants'
 import { getApp } from '@gobletqa/shared/express/app'
-import { backendConfig } from '@GBE/Configs/backend.config'
+import { config } from '@GKD/Configs/kind.config'
 import {
   setupRouters,
   setupEndpoints,
-  setupConductor,
-} from '@GBE/middleware'
+} from '@GKD/Middleware'
 import {
   setupJWT,
   setupCors,
@@ -57,7 +56,7 @@ const handleUncaughtExp = (exitCode:number=0, err:Error) => {
  * @returns {Object} - Express app, server and socket.io socket
  */
 export const initApi = async () => {
-  const app = getApp(backendConfig) as Express
+  const app = getApp(config) as Express
 
   setupLoggerReq(app)
   setupBlacklist(app)
@@ -69,8 +68,6 @@ export const initApi = async () => {
   validateUser(app, `/repo\/*`, `async`)
   await setupEndpoints()
   setupLoggerErr(app)
-
-  const { vncProxy, wsProxy } = await setupConductor(app)
 
   const {
     secureServer,
@@ -85,11 +82,5 @@ export const initApi = async () => {
 
   const server = secureServer || insecureServer
  
-  server.on('upgrade', (req, socket, head) => {
-    req.url.includes(vncProxy?.path)
-      ? vncProxy?.upgrade(req, socket, head)
-      : wsProxy?.upgrade(req, socket, head)
-  })
-
   return { app, server }
 }

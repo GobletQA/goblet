@@ -25,6 +25,7 @@ export class Conductor {
     this.rateLimitMap = {}
     this.containerTimeoutMap = {}
     this.config = buildConfig(config)
+
     this.controller = getController(this, this.config.controller)
 
     config.images

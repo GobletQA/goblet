@@ -5,4 +5,6 @@ require('esbuild-register/dist/node').register({
   loader: 'ts',
 })
 
-require('./src')
+module.exports = require('./index.ts')
+
+ 

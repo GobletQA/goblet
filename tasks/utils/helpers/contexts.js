@@ -89,8 +89,6 @@ const resolveContext = (context = ``, selectors = noOpObj, fallback) => {
 
 /**
  * Gets the all deployment options
- * @param {Object} envs - All envs parsed from the value files for the current environment
- * @return {Array} - All allow apps that can be deployed as object and array
  */
 const getDeploymentOpts = (env, envs) => {
   if (__DEPLOYMENT_OPTS) return __DEPLOYMENT_OPTS
@@ -152,12 +150,6 @@ const getLongContext = (context, fallback) => {
 
 /**
  * Gets an env value based on the passed in context
- * @param {string} context - App context to get the value from
- * @param {Object} envs - Loaded envs from values files
- * @param {string} postFix - the post-fix of the env
- * @param {*} fallback - Value to return if the env value is not found
- *
- * @returns {*} - Found env value or fallback
  */
 const getContextValue = (context, envs, postFix, fallback) => {
   const shortContext = getContext(context)?.short
@@ -183,10 +175,6 @@ const getDeployContext = (context, env, fallback) => {
 
 /**
  * Returns the selector label context relative to the passed in context
- * @param {string} context - Context reference
- * @param {string} fallback - Context value to use if not found
- *
- * @returns {Object} selector label context or fallback
  */
 const getLabelContext = (context, env, fallback) => {
   const { labelSelectors } = getDeploymentOpts(env)

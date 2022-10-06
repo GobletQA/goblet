@@ -58,6 +58,7 @@ RUN <<EOF
     wget \
     nano \
     gpg \
+    git \
     iptables \
     supervisor \
     openssh-client \
@@ -83,17 +84,14 @@ RUN <<EOF
   rm -rf repos/sockr
   rm -rf repos/testUtils
   rm -rf repos/vite
-  rm -rf repos/workflows
   rm -rf tasks
   rm -rf bundle
   rm -rf docs
   rm -rf goblet
   rm -rf temp
-  rm -rf package.json
 EOF
-RUN cd /goblet/app/repos/kind && \
-    yarn install && \
-    ln -s /goblet/app/repos/kind/node_modules $HOME/.node_modules
+RUN cd /goblet/app && \
+    yarn install
 
 # ---- Run Stage ---- #
 FROM goblet-yarn as goblet-runner
@@ -109,6 +107,10 @@ RUN <<EOF
   rm -rf /var/lib/apt/lists/*
   # Ensure the folder exists where caddy stores files
   mkdir -p $GB_DD_CADDY_REMOTE_DIR
+
+  # Make the modules gobally avalible
+  ln -s /goblet/app/repos/kind/node_modules $HOME/.node_modules
+  ln -s /goblet/app/repos/kind/node_modules /goblet/node_modules
 EOF
 
 COPY --from=goblet-kubectl /root/.local/bin/kubectl /root/.local/bin/kubectl

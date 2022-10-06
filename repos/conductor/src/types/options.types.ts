@@ -17,11 +17,18 @@ export type TImgOpts = TImgConfig & {
 
 export type TImagesOpts = Record<string, TImgOpts>
 
+export type TControllerConnectOpts = {
+  port?:string
+  host?:string
+  protocol?:string
+}
+
 export type TControllerOpts = {
   pidsLimit?: number
   type: TControllerType
   connect?: Record<any, any>
   devRouter?: TRouteMeta
+  options: TControllerConnectOpts
 }
 
 type TConductorProxyOpts = {
