@@ -17,11 +17,11 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "yarn sc:build && yarn vnc:build",
+    "build": "yarn build:docker",
+    "build:docker": "yarn sc:build && yarn vnc:build",
     "clean:install": "yarn clean:full; yarn install",
     "clean:full": "yarn clean; yarn clean:nm; yarn install",
     "clean:nm": "rm -rf node_modules",
-    "docker:build": "yarn build",
     "vnc": "PWDEBUG=1 DEBUG=pw:api node dist/vnc.js",
     "format": "yarn lint && yarn pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",

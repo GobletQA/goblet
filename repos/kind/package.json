@@ -7,9 +7,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "node configs/build.config.js",
-    "build:script": "GB_BUILD_PULL_SCRIPT=1 node configs/build.config.js",
-    "docker:build": "yarn build",
+    "build": "yarn build:docker",
+    "build:docker": "node configs/build.config.js",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:install": "yarn clean:full; yarn install",
     "clean:full": "yarn clean; yarn clean:nm; yarn install",

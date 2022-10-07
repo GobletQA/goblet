@@ -92,7 +92,7 @@ RUN <<EOF
   rm -rf temp
 EOF
 RUN cd /goblet/app && \
-    yarn install
+    yarn install --ignore-optional
 
 # ---- Run Stage ---- #
 FROM goblet-yarn as goblet-runner

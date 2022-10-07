@@ -17,7 +17,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build:fe": "yarn rm:dist && yarn bundle && yarn copy:bundle",
+    "build": "yarn build:docker",
+    "build:fe": "yarn build:docker",
+    "build:docker": "yarn rm:dist && yarn bundle && yarn copy:bundle",
     "bundle": "cd ../../node_modules/keg-core; yarn build:web && cd ../../repos/frontend",
     "copy:bundle": "cp -R ../../node_modules/keg-core/web-build ./dist",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",

@@ -21,6 +21,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "build:docker": "turbo run build:docker",
     "build:fe": "node tasks/entry.js deploy build -- frontend=true",
     "build:all": "turbo run build",
     "bundle": "node scripts/bundle.js",

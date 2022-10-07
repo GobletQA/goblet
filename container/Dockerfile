@@ -18,7 +18,7 @@ RUN cd /goblet/app/repos && \
 FROM $GB_IMAGE_FROM as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --ignore-optional
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
@@ -26,7 +26,7 @@ FROM $GB_IMAGE_FROM as goblet-build
 WORKDIR /goblet/app
 COPY --from=goblet-installer /goblet/app/ .
 COPY . .
-RUN yarn build
+RUN yarn build:docker
 # ---- End Stage ---- #
 
 # ---- Run Stage  ---- #

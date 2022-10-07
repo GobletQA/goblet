@@ -21,7 +21,7 @@ FROM goblet-turbo as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 COPY --from=goblet-pruner /goblet/app/out/yarn.lock ./yarn.lock
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --ignore-optional
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
@@ -32,8 +32,8 @@ COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app/repos/backend
 RUN yarn build:script
 WORKDIR /goblet/app
-RUN turbo run build --filter=@gobletqa/backend && \
-    yarn install --frozen-lockfile --production
+RUN turbo run build:docker --filter=@gobletqa/backend && \
+    yarn install --frozen-lockfile --production --ignore-optional
 RUN <<EOF
   mkdir -p /goblet-runner/repos/backend/scripts
   cp -R /goblet/app/node_modules /goblet-runner/node_modules

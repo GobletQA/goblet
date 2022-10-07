@@ -1,6 +1,5 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "baseBranch": "origin/main",
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
@@ -13,8 +12,8 @@
     "clean:nm": {
       "outputs": []
     },
-    "docker:build": {
-      "dependsOn": ["^docker:build"],
+    "build:docker": {
+      "dependsOn": ["^build:docker"],
       "outputs": ["dist/**", "build/**"],
       "inputs": ["configs/*.*", "scripts/*.*", "src/**/*.tsx", "src/**/*.ts", "src/**/*.jsx", "src/**/*.js"]
     },
