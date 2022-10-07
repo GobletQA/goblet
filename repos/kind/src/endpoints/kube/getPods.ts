@@ -1,3 +1,4 @@
+import type { Kubectl } from '@GKD/Types'
 import { Request, Response } from 'express'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
@@ -8,9 +9,10 @@ import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
  */
 
 export const getPods = async (req:Request, res:Response) => {
-
-
-  return apiRes(res, { pods: [`Get the pods`] }, 200)
+  const kubectl = req.app.locals.kubectl as Kubectl
+  const pods = await kubectl.getPods()
+  
+  return apiRes(res, { pods }, 200)
 }
 
 AsyncRouter.get(`/kube/pods`, getPods)

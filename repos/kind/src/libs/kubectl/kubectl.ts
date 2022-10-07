@@ -3,12 +3,10 @@ import type {
   TWatchRes,
   TKubeError,
   TKubeConfig,
-} from '../types'
+} from '@GKD/Types'
 
 import { limbo } from '@keg-hub/jsutils'
 import * as k8s from '@kubernetes/client-node'
-
-const { GB_KUBE_NAMESPACE='default' } = process.env
 
 const throwError = (err:TKubeError) => {
   throw new Error(`${err.statusCode} - ${err.message}`)
@@ -18,7 +16,7 @@ const throwError = (err:TKubeError) => {
  * Class for interacting with a kubernetes cluster via the kubernetes API
  * Requires a per-configured ServiceAccount Role and RoleBinding
  */
-export class KubeCtl {
+export class Kubectl {
   namespace:string
   watch: k8s.Watch
   kc: k8s.KubeConfig
@@ -27,11 +25,12 @@ export class KubeCtl {
   objectClient: k8s.KubernetesObjectApi
   
   constructor(config?:TKubeConfig){
+    this.namespace = config.namespace
+
     this.kc = new k8s.KubeConfig()
     this.kc.loadFromDefault()
     this.client = this.kc.makeApiClient(k8s.CoreV1Api)
     this.objectClient = k8s.KubernetesObjectApi.makeApiClient(this.kc)
-    this.namespace = config?.namespace || GB_KUBE_NAMESPACE
   }
 
   /**
@@ -167,10 +166,4 @@ export class KubeCtl {
 
 }
 
-;(async () => {
-  const kubectl = new KubeCtl()
-  const pods = await kubectl.getPods()
-  console.log(`------- pods -------`)
-  console.log(pods)
-})()
 

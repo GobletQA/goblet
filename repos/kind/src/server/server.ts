@@ -6,6 +6,7 @@ import { AUTH_BYPASS_ROUTES } from '@GKD/Constants'
 import { getApp } from '@gobletqa/shared/express/app'
 import { config } from '@GKD/Configs/kind.config'
 import {
+  setupKubectl,
   setupRouters,
   setupEndpoints,
 } from '@GKD/Middleware'
@@ -66,6 +67,7 @@ export const initApi = async () => {
   setupRouters(app)
   setupStatic(app)
   // validateUser(app, `/kube\/*`, `async`)
+  setupKubectl(app)
   await setupEndpoints()
   setupLoggerErr(app)
 

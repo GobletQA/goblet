@@ -1,7 +1,7 @@
 
 import '../resolveRoot'
 import { toBool, deepMerge } from '@keg-hub/jsutils'
-import { TKindConfig } from '@GKD/types'
+import { TKindConfig } from '../src/types'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
@@ -37,11 +37,12 @@ const {
 
   GB_KD_WS_PROXY_PORT,
   GB_KD_VNC_PROXY_PORT,
+  GB_KUBE_NAMESPACE='default',
 
 } = process.env
 
 
-export const config = {
+export const config:TKindConfig = {
   server: {
     auth: true,
     port: GB_KD_PORT,
@@ -60,4 +61,7 @@ export const config = {
       credentialsRequired: toBool(GB_BE_JWT_CREDENTIALS || true),
     }
   },
+  kubectl: {
+    namespace: GB_KUBE_NAMESPACE
+  }
 }

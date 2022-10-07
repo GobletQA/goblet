@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist",
+    "forceConsistentCasingInFileNames": true,
     "typeRoots": [
       "./src/types",
       "../shared/src/types",
@@ -14,12 +15,14 @@
       "@GKD/Configs/*": ["configs/*"],
       "@GKD/Constants": ["src/constants"],
       "@GKD/Constants/*": ["src/constants/*"],
+      "@GKD/Kubectl": ["src/libs/kubectl"],
+      "@GKD/Kubectl/*": ["src/libs/kubectl/*"],
+      "@GKD/Libs": ["src/libs"],
+      "@GKD/Libs/*": ["src/libs/*"],
       "@GKD/Middleware": ["src/middleware"],
       "@GKD/Middleware/*": ["src/middleware/*"],
       "@GKD/Types": ["src/types"],
       "@GKD/Types/*": ["src/types/*"],
-      "@GKD": ["src"],
-      "@GKD/*": ["src/*"],
       "@GKD/Root": ["./"],
       "@gobletqa/shared/*": ["../shared/src/*"],
       "@gobletqa/shared": ["../shared/src"],
@@ -32,6 +35,6 @@
   "include": [
     "src",
     "configs"
-  ],
+, "scripts/kubectl"  ],
   "exclude": ["node_modules", "dist"]
 }

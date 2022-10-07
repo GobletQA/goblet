@@ -9,7 +9,7 @@ import {
   TImgsConfig,
   TDockerEvent,
   TContainerRef,
-  TKubeConfig,
+  TKubeController,
   TContainerData,
   TContainerInfo,
   TContainerRoute,
@@ -26,7 +26,7 @@ export class Kube extends Controller {
   
   devRouterActive: boolean
 
-  constructor(conductor:Conductor, config:TKubeConfig){
+  constructor(conductor:Conductor, config:TKubeController){
     super(conductor, config)
     this.config = config
     this.devRouterActive = !isEmptyColl(this.config.devRouter)
