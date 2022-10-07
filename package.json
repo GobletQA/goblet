@@ -56,7 +56,7 @@
     "@keg-hub/args-parse": "9.0.0",
     "@keg-hub/ask-it": "1.1.2",
     "@keg-hub/cli-utils": "0.7.0",
-    "@keg-hub/jsutils": "9.3.2",
+    "@keg-hub/jsutils": "9.3.5",
     "@keg-hub/parse-config": "2.1.0",
     "@keg-hub/spawn-cmd": "0.3.2",
     "@ltipton/parkin": "1.4.0",
@@ -64,7 +64,7 @@
     "nodemon": "2.0.19",
     "ts-jest": "28.0.8",
     "ts-node": "10.9.1",
-    "typescript": "4.8.2"
+    "typescript": "4.8.4"
   },
   "dependencies": {},
   "devDependencies": {
@@ -73,7 +73,7 @@
     "@keg-hub/args-parse": "9.0.0",
     "@keg-hub/ask-it": "1.1.2",
     "@keg-hub/cli-utils": "0.7.0",
-    "@keg-hub/jsutils": "9.3.2",
+    "@keg-hub/jsutils": "9.3.5",
     "@keg-hub/parse-config": "2.1.0",
     "@keg-hub/spawn-cmd": "0.3.2",
     "@ltipton/parkin": "1.4.0",
@@ -94,13 +94,13 @@
     "lint-staged": "12.3.4",
     "module-alias": "2.2.2",
     "nodemon": "2.0.19",
-    "playwright": "1.23.4",
+    "playwright": "1.27.0",
     "prettier": "2.5.1",
     "semver": "7.3.7",
     "turbo": "1.4.5",
     "ts-jest": "28.0.8",
     "ts-node": "10.9.1",
-    "typescript": "4.8.2"
+    "typescript": "4.8.4"
   },
   "config": {
     "commitizen": {

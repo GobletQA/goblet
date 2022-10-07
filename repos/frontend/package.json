@@ -18,8 +18,7 @@
   "private": true,
   "scripts": {
     "build": "yarn build:docker",
-    "build:fe": "yarn build:docker",
-    "build:docker": "yarn rm:dist && yarn bundle && yarn copy:bundle",
+    "build:fe": "yarn rm:dist && yarn bundle && yarn copy:bundle",
     "bundle": "cd ../../node_modules/keg-core; yarn build:web && cd ../../repos/frontend",
     "copy:bundle": "cp -R ../../node_modules/keg-core/web-build ./dist",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
@@ -35,7 +34,7 @@
   },
   "resolutions": {
     "@keg-hub/cli-utils": "0.7.0",
-    "@keg-hub/jsutils": "9.3.2"
+    "@keg-hub/jsutils": "9.3.5"
   },
   "dependencies": {
   },

@@ -1,5 +1,5 @@
 
-ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.23.4-focal
+ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.27.0-focal
 
 # ---- Prune Stage ---- #
 FROM $GB_IMAGE_FROM as goblet-pruner

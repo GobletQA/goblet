@@ -43,9 +43,6 @@ const devServer = async () => {
   process.on(`exit`, () => __server && __server.pid && process.kill(__server.pid))
 }
 
-console.log(`------- aliases -------`)
-console.log(aliases)
-
 /**
  * Build the code, then run the devServer
  * ESBuild config object

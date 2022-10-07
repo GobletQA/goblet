@@ -37,7 +37,7 @@ env:
   IMAGE: 'ghcr.io/gobletqa/goblet-app'
   DISPLAY: ":0.0"
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
-  PLAYWRIGHT_BROWSERS_VERSION: 1.23.4
+  PLAYWRIGHT_BROWSERS_VERSION: 1.27.0
 
 # ---- Goblet Shared ENVs ---- #
   GB_TOKEN: a-10K3n-g0bLe1
@@ -52,7 +52,7 @@ env:
   # Image tags added to all built images
   GB_IMAGE_BUILD_TAGS: values,package
   # Then, all sub goblet images are built from the goblet-base image
-  GB_IMAGE_FROM: mcr.microsoft.com/playwright:v1.23.4-focal
+  GB_IMAGE_FROM: mcr.microsoft.com/playwright:v1.27.0-focal
 
   # ---- Logger ENVs ---- #
   # Enable to set custom log-level for conductor
