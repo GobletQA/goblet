@@ -96,7 +96,7 @@ const syncKDConfig = (deployment, sharedIgnore) => (`
   - '**'
   - '!/repos/kind'
   - '!/repos/shared'
-  - '/repos/kind/yarn.lock'
+  - '!/repos/workflows'
 ${sharedIgnore}
 `)
 

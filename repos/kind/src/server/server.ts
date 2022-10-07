@@ -61,11 +61,11 @@ export const initApi = async () => {
   setupLoggerReq(app)
   setupBlacklist(app)
   setupCors(app)
-  setupJWT(app, AUTH_BYPASS_ROUTES)
+  // setupJWT(app, AUTH_BYPASS_ROUTES)
   setupServer(app, false, false, false)
   setupRouters(app)
   setupStatic(app)
-  validateUser(app, `/repo\/*`, `async`)
+  // validateUser(app, `/kube\/*`, `async`)
   await setupEndpoints()
   setupLoggerErr(app)
 

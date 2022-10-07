@@ -81,6 +81,7 @@ RUN <<EOF
   rm -rf repos/dind
   rm -rf repos/frontend
   rm -rf repos/screencast
+  rm -rf repos/monaco
   rm -rf repos/sockr
   rm -rf repos/testUtils
   rm -rf repos/vite
@@ -107,14 +108,14 @@ RUN <<EOF
   rm -rf /var/lib/apt/lists/*
   # Ensure the folder exists where caddy stores files
   mkdir -p $GB_DD_CADDY_REMOTE_DIR
-
-  # Make the modules gobally avalible
-  ln -s /goblet/app/repos/kind/node_modules $HOME/.node_modules
-  ln -s /goblet/app/repos/kind/node_modules /goblet/node_modules
 EOF
 
 COPY --from=goblet-kubectl /root/.local/bin/kubectl /root/.local/bin/kubectl
 COPY --from=goblet-install /goblet/app /goblet/app
+
+# Make the modules gobally avalible
+RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
+    ln -s /goblet/app/node_modules /goblet/node_modules
 
 WORKDIR /goblet/app/repos/kind
 

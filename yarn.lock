@@ -3103,15 +3103,10 @@
     colors "1.4.0"
     fs-extra "9.0.1"
 
-"@keg-hub/jsutils@*", "@keg-hub/jsutils@9.3.2":
+"@keg-hub/jsutils@*", "@keg-hub/jsutils@9.2.0", "@keg-hub/jsutils@9.3.2":
   version "9.3.2"
   resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.3.2.tgz#c2679d59dda837801682c73196377e2a52c8ed20"
   integrity sha512-GEXTVUEVLU/+ajZTfn5yU0sFW9HW3JALSQmsAS+F3BtIKF7T0BRfXaMSFWl01AB8KxdcoaRQ7jyUm48f0nP9Ww==
-
-"@keg-hub/jsutils@9.2.0":
-  version "9.2.0"
-  resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.2.0.tgz#e02a75faa11c5a1ebb4eda5b1f5ff1766b3972b1"
-  integrity sha512-aYKzp7aMre1LrfFyIeu1RFXKB1VJGP15SRwme0NcHh8/8aPuJ+gBHHLLf88qusizcX2bj9JKXKVPYNS1yx/NaQ==
 
 "@keg-hub/parse-config@*", "@keg-hub/parse-config@2.1.0":
   version "2.1.0"
@@ -3138,7 +3133,7 @@
     shell-exec "1.0.2"
     tree-kill "1.2.2"
 
-"@kubernetes/client-node@^0.17.1":
+"@kubernetes/client-node@0.17.1":
   version "0.17.1"
   resolved "https://registry.npmjs.org/@kubernetes/client-node/-/client-node-0.17.1.tgz#a5740712848d77823e7d0eee70229936398b4142"
   integrity sha512-qXANjukuTq/drb1hq1NCYZafpdRTvbyTzbliWO6RwW7eEb2b9qwINbw0DiVHpBQg3e9DeQd8+brI1sR1Fck5kQ==
@@ -3762,7 +3757,7 @@
   dependencies:
     "@octokit/openapi-types" "^13.11.0"
 
-"@originjs/vite-plugin-commonjs@^1.0.3":
+"@originjs/vite-plugin-commonjs@1.0.3":
   version "1.0.3"
   resolved "https://registry.npmjs.org/@originjs/vite-plugin-commonjs/-/vite-plugin-commonjs-1.0.3.tgz#2e3fb11ec78847da9422b79c103953f94d667f09"
   integrity sha512-KuEXeGPptM2lyxdIEJ4R11+5ztipHoE7hy8ClZt3PYaOVQ/pyngd2alaSrPnwyFeOW1UagRBaQ752aA1dTMdOQ==
@@ -20018,15 +20013,10 @@ typedarray@^0.0.6:
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
 
-typescript@*, typescript@4.8.2, typescript@^4.4.3, typescript@^4.5.2, typescript@^4.6.4:
+typescript@*, typescript@4.8.2, typescript@4.8.3, typescript@^4.4.3, typescript@^4.5.2, typescript@^4.6.4:
   version "4.8.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.8.2.tgz#e3b33d5ccfb5914e4eeab6699cf208adee3fd790"
   integrity sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==
-
-typescript@4.8.3:
-  version "4.8.3"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.8.3.tgz#d59344522c4bc464a65a730ac695007fdb66dd88"
-  integrity sha512-goMHfm00nWPa8UvR/CPSvykqf6dVV8x/dp0c5mFTMTIu0u0FlGWRioyy7Nn0PGAdHxpJZnuO/ut+PpQ8UiHAig==
 
 uglify-js@^3.1.4:
   version "3.17.0"
@@ -20475,20 +20465,10 @@ vite-plugin-mkcert@1.9.0:
     picocolors "^1.0.0"
     vite "^3.0.0"
 
-vite-plugin-monaco-editor@^1.1.0:
+vite-plugin-monaco-editor@1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/vite-plugin-monaco-editor/-/vite-plugin-monaco-editor-1.1.0.tgz#a6238c2e13d5e98dd54a1bc51f6f189325219de3"
   integrity sha512-IvtUqZotrRoVqwT0PBBDIZPNraya3BxN/bfcNfnxZ5rkJiGcNtO5eAOWWSgT7zullIAEqQwxMU83yL9J5k7gww==
-
-vite-plugin-require-transform@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.npmjs.org/vite-plugin-require-transform/-/vite-plugin-require-transform-1.0.3.tgz#fcab87248dc26849809402c32a2b69ca3abb3adc"
-  integrity sha512-zTymn40H+T3GVAhEP9Aqk5R4gKngiPCb3KImDBI91f97126hoS15ugOO2fnlCJwuIj/J78A9oU+xS6QD8ytCaw==
-  dependencies:
-    "@babel/generator" "^7.15.8"
-    "@babel/parser" "^7.15.8"
-    "@babel/traverse" "^7.15.4"
-    "@babel/types" "^7.15.6"
 
 vite-plugin-svgr-component@1.0.1:
   version "1.0.1"

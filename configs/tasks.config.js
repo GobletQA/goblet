@@ -67,7 +67,7 @@ module.exports = {
       /**
       * Contexts to reference durning task execution
       */
-      contexts: [`backend`, `bae`, `be`],
+      contexts: [`backend`, `be`],
       envs: {
         /**
         * ENVs to not include in the backend
@@ -80,7 +80,7 @@ module.exports = {
       }
     },
     dind: {
-      contexts: [`dind`, `dnd`, `dd`],
+      contexts: [`dind`, `dd`],
       envs: {
         /**
         * ENVs to not include in the backend
@@ -94,7 +94,7 @@ module.exports = {
       }
     },
     frontend: {
-      contexts: [`frontend`, `fre`, `fe`],
+      contexts: [`frontend`, `fe`],
       envs: {
         // Will not be omitted if same env is in the pick list
         // But will override wildcards in the pick list when more specific
@@ -125,7 +125,7 @@ module.exports = {
       }
     },
     screencast: {
-      contexts: [`screencast`, `scr`, `sc`],
+      contexts: [`screencast`, `sc`],
       envs: {
         omit: [
           `GB_CR_*`,

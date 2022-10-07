@@ -6,7 +6,7 @@ export const apiRoot = async (req:Request, res:Response) => {
   return apiRes(
     res,
     {
-      message: `GB Backend server is running`,
+      message: `GB Kind server is running`,
     },
     200
   )
