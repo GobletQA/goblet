@@ -49,6 +49,7 @@
     "@keg-hub/cli-utils": "*",
     "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "*",
+    "@kubernetes/client-node": "0.17.1",
     "axios": "0.24.0",
     "docker-events": "0.0.2",
     "dockerode": "3.3.2",
