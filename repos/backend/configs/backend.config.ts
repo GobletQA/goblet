@@ -40,15 +40,13 @@ const {
   GB_BE_JWT_REFRESH_SECRET,
 
   GB_CD_CONTROLLER_TYPE,
-  GB_DD_VALIDATION_KEY,
-  GB_DD_VALIDATION_HEADER,
-  GB_KD_VALIDATION_KEY,
-  GB_KD_VALIDATION_HEADER,
-
+  GB_CD_VALIDATION_KEY,
+  GB_CD_VALIDATION_HEADER,
   GB_KD_WS_PROXY_PORT,
   GB_KD_VNC_PROXY_PORT,
 
 } = process.env
+
 
 const isDockerHost = (GB_CD_CONTROLLER_TYPE || ``).toLowerCase() === `docker`
 const controllerHost = isDockerHost
@@ -56,20 +54,23 @@ const controllerHost = isDockerHost
   : getKindHost()
 
 const buildBackendConf = () => {
-  return !isDockerHost && {
-    vncProxy: {
-      port: GB_KD_VNC_PROXY_PORT,
-      headers: {
-        [GB_KD_VALIDATION_HEADER]: GB_KD_VALIDATION_KEY
+  return isDockerHost
+    ? {
+        vncProxy: {
+          port: GB_DD_VNC_PROXY_PORT,
+        },
+        wsProxy: {
+          port: GB_DD_WS_PROXY_PORT,
+        }
       }
-    },
-    wsProxy: {
-      port: GB_KD_WS_PROXY_PORT,
-      headers: {
-        [GB_KD_VALIDATION_HEADER]: GB_KD_VALIDATION_KEY
+    : {
+        vncProxy: {
+          port: GB_KD_VNC_PROXY_PORT,
+        },
+        wsProxy: {
+          port: GB_KD_WS_PROXY_PORT,
+        }
       }
-    }
-  }
 }
 
 
@@ -96,19 +97,17 @@ export const backendConfig:TBackendConfig = deepMerge<TBackendConfig>({
   vncProxy: {
     host: controllerHost,
     path: GB_NO_VNC_PATH,
-    port: GB_DD_VNC_PROXY_PORT,
     protocol: GB_NO_VNC_PROTOCOL,
     headers: {
-      [GB_DD_VALIDATION_HEADER]: GB_DD_VALIDATION_KEY
+      [GB_CD_VALIDATION_HEADER]: GB_CD_VALIDATION_KEY
     }
   },
   wsProxy: {
     host: controllerHost,
     path: GB_BE_WS_PATH,
-    port: GB_DD_WS_PROXY_PORT,
     protocol: GB_BE_WS_PROTOCOL,
     headers: {
-      [GB_DD_VALIDATION_HEADER]: GB_DD_VALIDATION_KEY
+      [GB_CD_VALIDATION_HEADER]: GB_CD_VALIDATION_KEY
     }
   }
 }, buildBackendConf())

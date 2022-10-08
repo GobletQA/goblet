@@ -25,8 +25,8 @@ const {
   GB_CD_RATE_LIMIT,
   GOBLET_DIND_SERVICE_PORT,
 
-  GB_DD_VALIDATION_KEY,
-  GB_DD_VALIDATION_HEADER,
+  GB_CD_VALIDATION_KEY,
+  GB_CD_VALIDATION_HEADER,
 
   GB_DD_API_PROXY_PORT,
 
@@ -52,7 +52,7 @@ const proxyOpts = (dindOpts:DockerOptions, dindHost:string) => {
     target: `${proto}://${dindHost}:${GB_DD_API_PROXY_PORT}`,
     headers: {
       'content-type': `application/json`,
-      [GB_DD_VALIDATION_HEADER]: GB_DD_VALIDATION_KEY
+      [GB_CD_VALIDATION_HEADER]: GB_CD_VALIDATION_KEY
     }
   }
 }

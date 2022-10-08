@@ -49,8 +49,8 @@ const {
 
   // TODO Add these envs as a header for request validation
   // This will ensure requests are coming from the backend API only
-  GB_DD_VALIDATION_KEY,
-  GB_DD_VALIDATION_HEADER,
+  GB_CD_VALIDATION_KEY,
+  GB_CD_VALIDATION_HEADER,
 
 } = process.env
 

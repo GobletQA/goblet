@@ -8,4 +8,5 @@ export type TKubeEvent = {
 }
 
 export type TKubeController = TControllerConfig & {
+  namespace: string
 }

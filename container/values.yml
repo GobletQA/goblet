@@ -127,6 +127,11 @@ env:
   GB_CD_HASH_KEY: C0nDuc10R
   GB_CD_CONTROLLER_TYPE: Kube
 
+  # Conductor controller validation
+  GB_CD_VALIDATION_KEY: "gb-cd-1234567"
+  GB_CD_VALIDATION_HEADER: GB-cd-Validation-Key
+
+
   # --- Certs ENVs --- #
   GB_CR_DEBUG: true
   GB_CR_CHART_TAG: 0.0.1
@@ -205,9 +210,6 @@ env:
   GB_DD_EXP_ADMIN_PORT: 2018
   GB_DD_LOCAL_ADMIN_PORT: 2019
 
-  GB_DD_VALIDATION_KEY: "gb-1234567"
-  GB_DD_VALIDATION_HEADER: GB-Validation-Key
-  
   GB_LOCAL_DEV_MODE: true
 
 # --- KIND ENVs --- #
@@ -230,8 +232,6 @@ env:
 
   GB_KD_KUBE_PROXY_PROTO: http
   GB_KD_KUBE_PROXY_HOST: 127.0.0.1
-  GB_KD_VALIDATION_KEY: "gb-k1nD567"
-  GB_KD_VALIDATION_HEADER: GB-Validation-Key
 
   GB_KD_WS_PROXY_PORT: 2122
   GB_KD_VNC_PROXY_PORT: 2123

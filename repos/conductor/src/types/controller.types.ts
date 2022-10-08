@@ -22,8 +22,7 @@ export type TCreatePortsObj = {
   bindings: Record<string, Record<'HostPort', string>[]>
 }
 
-export type TControllerType = 'docker' | 'Docker'
-
+export type TControllerType = 'docker' | 'Docker' | 'Kube' | 'kube'
 
 export type TControllerConfig = {
   pidsLimit?: number

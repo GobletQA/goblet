@@ -32,10 +32,12 @@ const {
 
   GB_LOCAL_DEV_MODE,
   
+  GB_KUBE_NAMESPACE,
+
   GB_KD_PORT,
-  GB_KD_VALIDATION_KEY,
-  GB_KD_VALIDATION_HEADER,
-  GOBLET_KIND_SERVICE_PORT
+  GB_CD_VALIDATION_KEY,
+  GB_CD_VALIDATION_HEADER,
+  GOBLET_KIND_SERVICE_PORT,
   
 } = process.env
 
@@ -137,11 +139,12 @@ const buildConductorConf = () => {
           port: GB_KD_PORT,
           target: `${proto}://${controllerHost}:${GB_KD_PORT}`,
           headers: {
-            'content-type': `application/json`,
-            [GB_KD_VALIDATION_HEADER]: GB_KD_VALIDATION_KEY
+            [`content-type`]: `application/json`,
+            [GB_CD_VALIDATION_HEADER]: GB_CD_VALIDATION_KEY
           }
         },
         controller: {
+          namespace: GB_KUBE_NAMESPACE,
           options: {
             protocol: `http`,
             host: controllerHost,

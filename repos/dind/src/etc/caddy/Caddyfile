@@ -25,10 +25,10 @@ http://*.*.{$GB_CD_SUB_DOMAIN}.{$GB_CD_HOST}:{$GB_DD_API_PROXY_PORT} {
 	log
 
 	# Ensure the validation header exists
-	@denied not header {$GB_DD_VALIDATION_HEADER} {$GB_DD_VALIDATION_KEY}
+	@denied not header {$GB_CD_VALIDATION_HEADER} {$GB_CD_VALIDATION_KEY}
 	abort @denied
 	# Remove the validation header in the response
-	header -{$GB_DD_VALIDATION_HEADER}
+	header -{$GB_CD_VALIDATION_HEADER}
 
 	reverse_proxy {$GB_DD_PROXY_DOMAIN:localhost}:{labels.5}
 
@@ -47,10 +47,10 @@ http://{$GB_DD_DEPLOYMENT}:{$GB_DD_VNC_PROXY_PORT} {
 	}
 
 	# Ensure the validation header exists
-	@denied not header {$GB_DD_VALIDATION_HEADER} {$GB_DD_VALIDATION_KEY}
+	@denied not header {$GB_CD_VALIDATION_HEADER} {$GB_CD_VALIDATION_KEY}
 	abort @denied
 	# Remove the validation header in the response
-	header -{$GB_DD_VALIDATION_HEADER}
+	header -{$GB_CD_VALIDATION_HEADER}
 
 	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
 }
@@ -65,10 +65,10 @@ http://{$GB_DD_DEPLOYMENT}:{$GB_DD_WS_PROXY_PORT} {
 	}
 
 	# Ensure the validation header exists
-	@denied not header {$GB_DD_VALIDATION_HEADER} {$GB_DD_VALIDATION_KEY}
+	@denied not header {$GB_CD_VALIDATION_HEADER} {$GB_CD_VALIDATION_KEY}
 	abort @denied
 	# Remove the validation header in the response
-	header -{$GB_DD_VALIDATION_HEADER}
+	header -{$GB_CD_VALIDATION_HEADER}
 
 	reverse_proxy @websockets {$GB_DD_PROXY_DOMAIN:localhost}:{query.containerPort}
 }

@@ -115,8 +115,18 @@ module.exports = {
         ]
       },
       envs: {
+        // Any keys specifically set will get picked
+        // Wildcards can be overwritten by omit list
+        pick: [
+          `GB_KUBE_NAMESPACE`,
+        ],
         /**
         * ENVs to not include in the backend
+        * Will not be omitted if same env is in the pick list
+        * But will override wildcards in the pick list when more specific
+        * i.e. If pick list has `FIRE_BASE_*`, and omit list has `FIRE_BASE_SERVICE_ACCOUNT`
+        * All ENVs with `FIRE_BASE_` will be picked except for FIRE_BASE_SERVICE_ACCOUNT
+        * It will be omitted due to being in the omit list, and more specific
         */
         omit: [
           `GB_CR_*`,

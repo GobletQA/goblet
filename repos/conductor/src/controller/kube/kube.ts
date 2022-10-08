@@ -23,10 +23,11 @@ import { isObj, omitKeys, isEmptyColl } from '@keg-hub/jsutils'
  */
 export class Kube extends Controller {
 
-  
+  config: TKubeController
   devRouterActive: boolean
 
   constructor(conductor:Conductor, config:TKubeController){
+
     super(conductor, config)
     this.config = config
     this.devRouterActive = !isEmptyColl(this.config.devRouter)

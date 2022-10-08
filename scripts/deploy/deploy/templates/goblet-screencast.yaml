@@ -181,10 +181,10 @@ spec:
             value: {{ env.GB_SC_INACTIVE_TIMEOUT }}
           - name: GB_SC_DISCONNECT_TIMEOUT
             value: {{ env.GB_SC_DISCONNECT_TIMEOUT }}
-          - name: GB_DD_VALIDATION_KEY
-            value: {{ env.GB_DD_VALIDATION_KEY }}
-          - name: GB_DD_VALIDATION_HEADER
-            value: {{ env.GB_DD_VALIDATION_HEADER }}
+          - name: GB_CD_VALIDATION_KEY
+            value: {{ env.GB_CD_VALIDATION_KEY }}
+          - name: GB_CD_VALIDATION_HEADER
+            value: {{ env.GB_CD_VALIDATION_HEADER }}
           - name: GB_HOST_DOMAIN
             value: {{ env.GB_HOST_DOMAIN }}
           - name: NODE_ENV
