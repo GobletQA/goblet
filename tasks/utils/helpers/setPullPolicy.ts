@@ -5,13 +5,17 @@ import { exists, isBool, isStr } from '@keg-hub/jsutils'
  * Set pull to `false || never` to use a locally built image
  */
 export const setPullPolicy = (pull:boolean|string) => {
-  if (isBool(pull) as boolean)
-    return (process.env.IMAGE_PULL_POLICY = pull === false ? `Never` : `Always`)
+  if (isBool(pull) as boolean){
+    process.env.IMAGE_PULL_POLICY = pull === false ? `Never` : `Always`
+    return process.env.IMAGE_PULL_POLICY
+    
+  }
 
   if (!exists(pull) || !isStr(pull)) return
 
   const compare = (pull as string).toLowerCase()
-  const policy =
-    compare === 'present' || compare === 'exists' ? `IfNotPresent` : undefined
+  const policy = compare === 'present' || compare === 'exists' ? `IfNotPresent` : undefined
   exists(policy) && (process.env.IMAGE_PULL_POLICY = policy)
+
+  return process.env.IMAGE_PULL_POLICY
 }
