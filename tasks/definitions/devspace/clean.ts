@@ -46,10 +46,6 @@ export const clean = {
       example: `--skip proxy`,
       description: `Contexts or names of apps NOT to be cleaned`,
     },
-    devspace: {
-      alias: [`dsp`, `ds`, `dev`],
-      description: `Optional filepath for devspace.yaml file`,
-    },
     dependencies: {
       alias: ['deps'],
       type: 'boolean',

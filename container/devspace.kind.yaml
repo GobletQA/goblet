@@ -122,14 +122,17 @@ images:
 
 # The `deployments` section tells devspace how to deploy this project into the cluster
 deployments: 
-- name: ${GB_KD_DEPLOYMENT}
+
+# ----- Backend API Deployment ----- #
+- name: ${GB_BE_DEPLOYMENT}
   helm:
+    upgradeArgs:
+      - "--force"
     chart:
       name: ./
     cleanupOnFail: true
     valuesFiles:
-    - ./values.yml
-    - ./values.${NODE_ENV}.yml
+    - ./values.empty.yaml
     values:
       serviceAccountName: ${GB_KD_SERVICE_ACCOUNT}
       serviceAccountMeta:
@@ -148,24 +151,6 @@ deployments:
           - list
           - watch
       containers:
-      - name: ${GB_KD_DEPLOYMENT}
-        image: ${GB_KD_IMG_URI}
-        imagePullPolicy: Never
-        env: $(node ../scripts/js/resolveDSEnvs.js kind)
-      service: $(node ../scripts/js/resolveService.js KD $GB_KD_PORT $GB_KD_KUBE_PROXY_PORT)
-
-# ----- Backend API Deployment ----- #
-- name: ${GB_BE_DEPLOYMENT}
-  helm:
-    upgradeArgs:
-      - "--force"
-    chart:
-      name: ./
-    cleanupOnFail: true
-    valuesFiles:
-    - ./values.empty.yaml
-    values:
-      containers:
       - image: ${GB_BE_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
         env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
@@ -175,7 +160,7 @@ deployments:
 dev:
   # Gets the apps that should sync with the host machine
   sync: $(node ../scripts/js/resolveSync.js GB_FE_INACTIVE GB_BE_ACTIVE GB_DD_INACTIVE GB_SC_INACTIVE GB_KD_ACTIVE)
-  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_INACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT} GB_KD_ACTIVE ${GB_KD_PORT})
+  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_INACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT})
 
 # Use profile to dynamically switch out the app specific docker image for the development image
 profiles:

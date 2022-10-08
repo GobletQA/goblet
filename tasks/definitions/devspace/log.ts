@@ -33,9 +33,6 @@ export const log = {
       type: 'boolean',
       alias: ['fl', 'watch'],
       description: 'Follow the logs in realtime',
-    },
-    devspace: {
-      description: 'Optional filepath for devspace.yaml file',
-    },
+    }
   },
 }

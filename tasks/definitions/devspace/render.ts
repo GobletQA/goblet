@@ -51,9 +51,5 @@ export const render = {
       example: `--skip proxy`,
       description: `Contexts or names of apps NOT to be started`,
     },
-    devspace: {
-      alias: [`dsp`, `ds`, `dev`],
-      description: `Optional filepath for devspace.yaml file`,
-    },
   },
 }

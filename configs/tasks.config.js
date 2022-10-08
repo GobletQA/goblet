@@ -11,6 +11,22 @@ module.exports = {
     },
   },
 
+  // Default args passed to all tasks
+  defaultArgs: {
+    env: {
+      alias: [ 'environment' ],
+      description: 'Environment to run the task in',
+      example: '<command> --env staging',
+      default: 'development',
+    },
+    devspace: {
+      alias: [`dsp`, `ds`, `dev`],
+      example: '<command> --devspace staging',
+      default: `container/devspace.kind.yaml`,
+      description: `Optional filepath for devspace.yaml file`,
+    },
+  },
+
   // Task parsing settings
   settings: {
     defaultEnv: 'local',

@@ -88,6 +88,21 @@ RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
 # Only runs when GB_SUB_REPO env is conductor
 RUN <<EOF
   set -eux;
+
+  # Enabel all sources
+  sed -i 's/# deb/deb/g' /etc/apt/sources.list
+  # Preinstall any dependecies for settting up the image
+  apt-get update && apt-get install --yes --no-install-recommends \
+    curl \
+    openssh-client \
+    ca-certificates
+
+  # Download kubectl
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  chmod +x kubectl
+  mkdir -p ~/.local/bin
+  mv ./kubectl ~/.local/bin/kubectl
+
   echo "#! /bin/bash" >> /entrypoint.sh
   echo "" >> /entrypoint.sh
   echo "if [ \"\$GB_SUB_REPO\" == \"backend\" ]; then" >> /entrypoint.sh

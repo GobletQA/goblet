@@ -28,9 +28,6 @@ export const attach = {
       alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
       description: 'Name of the running app to attach to relative to devspace deployments',
     },
-    devspace: {
-      description: 'Optional filepath for devspace.yaml file',
-    },
     log: {
       type: 'boolean',
       description: 'Log the devspace command to be run',

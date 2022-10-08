@@ -38,9 +38,6 @@ export const run = {
       alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
       description: `Context or name of devspace app to be run`,
     },
-    devspace: {
-      description: 'Optional filepath for devspace.yaml file',
-    },
     log: {
       type: 'boolean',
       description: 'Log the devspace command to be run',

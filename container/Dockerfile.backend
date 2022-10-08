@@ -1,4 +1,4 @@
-ARG GB_IMAGE_FROM=node:16.16.0-alpine3.16
+ARG GB_IMAGE_FROM=sitespeedio/node:ubuntu-20.04-nodejs-16.16.0
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 # ---- Turbo Stage ---- #
@@ -52,6 +52,20 @@ WORKDIR /goblet/app
 
 RUN <<EOF
   set -eux;
+  # Enabel all sources
+  sed -i 's/# deb/deb/g' /etc/apt/sources.list
+  # Preinstall any dependecies for settting up the image
+  apt-get update && apt-get install --yes --no-install-recommends \
+    curl \
+    openssh-client \
+    ca-certificates
+
+  # Download kubectl
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  chmod +x kubectl
+  mkdir -p ~/.local/bin
+  mv ./kubectl ~/.local/bin/kubectl
+
   echo "#! /bin/sh" >> /entrypoint.sh
   echo "if [ \"\$GOBLET_DIND_SERVICE_PORT\" ]; then" >> /entrypoint.sh
   echo "  export GOBLET_DIND_SERVICE_HOST=\${GOBLET_DIND_SERVICE_HOST:-0.0.0.0}" >> /entrypoint.sh

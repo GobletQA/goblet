@@ -80,8 +80,5 @@ export const status = {
       alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
       description: `Context or name of devspace to get the status of`,
     },
-    devspace: {
-      description: 'Optional filepath for devspace.yaml file',
-    },
   },
 }

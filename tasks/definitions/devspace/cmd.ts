@@ -43,9 +43,5 @@ export const cmd = {
       alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
       description: `Context or name of devspace app that has a corresponding devspace config`,
     },
-    devspace: {
-      alias: [`dsp`, `ds`, `dev`],
-      description: `Optional filepath for devspace.yaml file`,
-    },
   },
 }
