@@ -1,5 +1,5 @@
 /**
- * URI of the image to be used for the passed in service
+ * Used by devspace to generate the image pull policy for the passed in service
  */
 const { resolveValues, getEnvPrefix } = require('./resolveValues')
 const ePreFix = getEnvPrefix()
@@ -19,9 +19,10 @@ const getEnvValue = (values, key) => {
   const prefix = process.argv.slice(2).shift()
 
   const values = resolveValues()
-  const image = getEnvValue(values, `${ePreFix}${prefix}_IMAGE`)
-  const tag = getEnvValue(values, `${ePreFix}${prefix}_IMAGE_TAG`)
+  const servicePP = getEnvValue(values, `${ePreFix}${prefix}_PULL_POLICY`)
+    || getEnvValue(values, `${ePreFix}IMAGE_PULL_POLICY`)
+    || getEnvValue(values, `IMAGE_PULL_POLICY`)
 
-  process.stdout.write(`${image}:${tag}`)
+  process.stdout.write(servicePP)
 
 })()

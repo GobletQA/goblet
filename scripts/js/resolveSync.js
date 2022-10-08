@@ -129,7 +129,7 @@ const generateSync = ({
 }
 
 const envs = resolveValues()
-const sharedIgnore = generateList(config?.apps?._all?.sync?.ignore)
+const sharedIgnore = generateList(config?.apps?.default?.sync?.ignore)
 
 const args = process.argv.slice(2)
 

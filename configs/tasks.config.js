@@ -34,9 +34,16 @@ module.exports = {
       optionsAsk: false,
     },
   },
-  
+  domains: {
+    default: {
+      host: `local.gobletqa.app`
+    },
+    local: {
+      host: `local.gobletqa.app`
+    }
+  },
   apps: {
-    _all: {
+    default: {
       /**
       * ENV prefix to append to all dynamically set envs durning lookup
       */

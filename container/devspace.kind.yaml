@@ -152,7 +152,7 @@ deployments:
           - watch
       containers:
       - image: ${GB_BE_IMG_URI}
-        imagePullPolicy: ${IMAGE_PULL_POLICY}
+        imagePullPolicy: $(node ../scripts/js/resolvePullPolicy.js BE)
         env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
       service: $(node ../scripts/js/resolveService.js BE $GB_BE_PORT)
       ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH" "$GB_NO_VNC_PATH")

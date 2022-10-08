@@ -31,14 +31,14 @@ const buildContexts = (acc, contexts) => {
  * @param {string} prefix - Prefix to append in front of each env
  */
 const setContexts = (apps, prefix) => {
-  const { _all, ...appConfigs } = apps
-  prefix = prefix || _all.prefix || `DS`
+  const { default:defApp, ...appConfigs } = apps
+  prefix = prefix || defApp.prefix || `DS`
 
   if(prefix) __PRE = prefix.endsWith(`_`) ? prefix : `${prefix}_`
 
   __CONTEXTS = Object.entries(appConfigs)
     .reduce((acc, [key, data]) => {
-      data = deepMerge(_all, data || noOpObj)
+      data = deepMerge(defApp, data || noOpObj)
       const name = data?.name || key
       const contexts = data?.contexts || []
       !contexts.includes(name) && contexts.shift(name)

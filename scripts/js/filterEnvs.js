@@ -95,11 +95,11 @@ const convertToArgs = (envs) => {
 const buildLists = (repo) => {
   return {
     omitList: [
-      ...(apps?._all?.envs?.omit ?? []),
+      ...(apps?.default?.envs?.omit ?? []),
       ...(apps?.[repo]?.envs?.omit ?? []),
     ],
     pickList: [
-      ...(apps?._all?.envs?.pick ?? []),
+      ...(apps?.default?.envs?.pick ?? []),
       ...(apps?.[repo]?.envs?.pick ?? []),
     ]
   }

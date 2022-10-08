@@ -26,8 +26,6 @@ jobs:
             dockerfile: container/Dockerfile.dind
           - service: screencast
             dockerfile: container/Dockerfile.screencast
-          - service: kind
-            dockerfile: container/Dockerfile.kind
           - service: app
             dockerfile: container/Dockerfile
 

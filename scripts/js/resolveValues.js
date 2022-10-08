@@ -19,9 +19,17 @@ const package = require(path.join(appRoot, './package.json'))
 const { getNpmToken } = require(path.join(appRoot, './tasks/utils/envs/getNpmToken.js'))
 
 /**
+ * Loaded Task Config
+ */
+let __TASK_CONFIG = {}
+let __ENV_PREFIX
+
+/**
  * Resolves the task config
  */
-const resolveConfig = (configPath) => {
+const resolveConfig = (opts=noOpObj) => {
+  const { configPath, throwErr=true } = opts
+
   const configPaths = [
     configPath,
     process.env.TASK_CONFIG_PATH,
@@ -31,9 +39,31 @@ const resolveConfig = (configPath) => {
   ].filter(Boolean)
 
   const taskConfig = configPaths.reduce((found, loc) => found || isStr(loc) && tryRequireSync(loc), false)
-  if(taskConfig) return taskConfig
+  if(!taskConfig && throwErr){
+    throw new Error(`Could not find task.config.js in the follow paths:\n${configPaths.join(`\n`)}`)
+  }
+  __TASK_CONFIG = taskConfig || noOpObj
 
-  throw new Error(`Could not find task.config.js in the follow paths:\n${configPaths.join(`\n`)}`)
+  return __TASK_CONFIG
+}
+
+/**
+ * Finds the workspaces ENV prefix
+ * Uses `DS` if one does not exist - devspace
+ */
+const getEnvPrefix = (opts) => {
+  if(!__ENV_PREFIX){
+    const { apps=noOpObj } = resolveConfig(opts)
+    const prefix = apps?.default?.prefix
+
+    __ENV_PREFIX = prefix
+      ? prefix[prefix.length -1] === `_`
+        ? prefix
+        : `${prefix}_`
+      : `DS_`
+  }
+
+  return __ENV_PREFIX
 }
 
 /**
@@ -95,16 +125,22 @@ const resolveFixedValues = (pre, post, values) => {
  * @return {string} - Resolved host with subdomain when it exists
  */
 const resolveHost = (prefix, values) => {
+  const ePrefix = getEnvPrefix()
+  const { domains=noOpObj } = resolveConfig(opts)
+  const env = process.env.NODE_ENV || 'local'
+
   values = values || resolveValues()
   
-  const subDomain = resolveValue(`GB_${prefix}_SUB_DOMAIN`, values)
-    || resolveValue(`GB_SUB_DOMAIN`, values)
+  const subDomain = resolveValue(`${ePrefix}${prefix}_SUB_DOMAIN`, values)
+    || resolveValue(`${ePrefix}SUB_DOMAIN`, values)
 
-  const hostDomain = resolveValue(`GB_${prefix}_HOST_DOMAIN`, values)
-    || resolveValue(`GB_HOST_DOMAIN`, values)
-    || `local.gobletqa.app`
+  const hostDomain = resolveValue(`${ePrefix}${prefix}_HOST_DOMAIN`, values)
+    || resolveValue(`${ePrefix}HOST_DOMAIN`, values)
+    || domains?.[env]?.host
+    || domains?.default?.host
+    || `localhost`
 
-  const deployment = (resolveValue(`GB_${prefix}_DEPLOYMENT`, values) || ``).replace(/_/g, `-`).split(`-`).pop()
+  const deployment = (resolveValue(`${ePrefix}${prefix}_DEPLOYMENT`, values) || ``).replace(/_/g, `-`).split(`-`).pop()
 
   /**
    * Build the ingress host based on the host and sub domains
@@ -129,6 +165,7 @@ module.exports = {
   appRoot,
   containerDir,
   resolveHost,
+  getEnvPrefix,
   resolveConfig,
   resolveNPMToken,
   resolveValue,

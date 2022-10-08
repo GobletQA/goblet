@@ -84,11 +84,12 @@ COPY --from=goblet-build /goblet/app/ .
 RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules
 
+COPY ./container/scripts/docker/be.entrypoint.sh /entrypoint.sh
+
 # Helper script to auto-login to set the DOCKER_HOST env and auto-login
 # Only runs when GB_SUB_REPO env is conductor
 RUN <<EOF
   set -eux;
-
   # Enabel all sources
   sed -i 's/# deb/deb/g' /etc/apt/sources.list
   # Preinstall any dependecies for settting up the image
@@ -103,20 +104,12 @@ RUN <<EOF
   mkdir -p ~/.local/bin
   mv ./kubectl ~/.local/bin/kubectl
 
-  echo "#! /bin/bash" >> /entrypoint.sh
-  echo "" >> /entrypoint.sh
-  echo "if [ \"\$GB_SUB_REPO\" == \"backend\" ]; then" >> /entrypoint.sh
-  echo "  export GOBLET_DIND_SERVICE_HOST=\${GOBLET_DIND_SERVICE_HOST:-0.0.0.0}" >> /entrypoint.sh
-  echo "  export GOBLET_DIND_SERVICE_PORT=\${GOBLET_DIND_SERVICE_PORT:-2573}" >> /entrypoint.sh
-  echo "  GB_DIND_HOST=\${GB_DD_DEPLOYMENT:-\$GOBLET_DIND_SERVICE_HOST}" >> /entrypoint.sh
-  echo "  export DOCKER_HOST=\"tcp://\$GB_DIND_HOST:\$GOBLET_DIND_SERVICE_PORT\"" >> /entrypoint.sh
-  echo "  echo \"\$DOCKER_AUTH_PASSWORD\" | docker login \$DOCKER_REGISTRY --username \$DOCKER_AUTH_USER --password-stdin" >> /entrypoint.sh
-  echo "  cd repos/backend" >> /entrypoint.sh
-  echo "  yarn pull >> /proc/1/fd/1 &" >> /entrypoint.sh
-  echo "  cd /goblet/app" >> /entrypoint.sh
-  echo "fi" >> /entrypoint.sh
-  echo "" >> /entrypoint.sh
-  echo "exec \$@" >> /entrypoint.sh
+  rm -rf /var/lib/apt/lists/*
+  rm -rf /var/lib/apt/lists.d/*
+  apt-get autoremove
+  apt-get clean
+  apt-get autoclean
+
   chmod a+x /entrypoint.sh
   chmod a+x /goblet/app/container/initialize.sh
 EOF
