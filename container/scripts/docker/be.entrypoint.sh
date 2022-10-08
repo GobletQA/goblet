@@ -1,7 +1,7 @@
-#! /bin/sh
+#! /bin/bash
 
-if [ "$GB_SUB_REPO" == "backend" ]; then
-  if [ "$GOBLET_DIND_SERVICE_PORT" ]; then
+if [[ "$GB_SUB_REPO" == "backend" ]]; then
+  if [[ "$GOBLET_DIND_SERVICE_PORT" ]]; then
     export GOBLET_DIND_SERVICE_HOST=${GOBLET_DIND_SERVICE_HOST:-0.0.0.0}
     export GOBLET_DIND_SERVICE_PORT=${GOBLET_DIND_SERVICE_PORT:-2573}
     GB_DIND_HOST=${GB_DD_DEPLOYMENT:-$GOBLET_DIND_SERVICE_HOST}

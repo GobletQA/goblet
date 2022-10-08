@@ -1,9 +1,27 @@
-const { exists } = require('@keg-hub/jsutils')
-
 /**
  * Used by devspace in the devspace.yml to dynamically forward ports for the application deployment
  * Ensures only deployed apps actually get their ports forwarded to the host
+ * GB_FE_ACTIVE=goblet-frontend GB_BE_ACTIVE=goblet-backend node scripts/js/resolvePortForward.js FE BE
  */
+const { exists, noPropArr } = require('@keg-hub/jsutils')
+const {
+  getAppConfig,
+  resolveValue,
+  resolveValues,
+  resolveConfig,
+  getEnvPrefix,
+  getAppContexts,
+} = require('./resolveValues')
+
+const ePreFix = getEnvPrefix()
+const config = resolveConfig()
+
+
+const getPort = (port, envs, envPrefix) => {
+  return resolveValue(port, envs)
+    || (envPrefix && resolveValue(`${envPrefix}_${port}`, envs))
+    || port
+}
 
 const labelSelectorConfig = (selector, port) => (`
 - labelSelector:
@@ -18,39 +36,69 @@ const imageSelectorConfig = (selector, port) => (`
   - port: ${port}
 `)
 
-const generateLabelSelector = (isActiveEnv, port) => {
-  const deployment = process.env[isActiveEnv]
+const generateLabelSelector = ({ deployment, port }) => {
   return Boolean(deployment) && exists(port) ? labelSelectorConfig(deployment, port) : ``
 }
 
-const generateImgSelector = (isActiveEnv, selector, port) => {
-  const deployment = process.env[isActiveEnv]
+const generateImgSelector = ({ deployment, selector, port }) => {
   return Boolean(deployment) && exists(port) ? imageSelectorConfig(selector, port) : ``
 }
 
-const [
-  feActive,
-  fePort,
-  beActive,
-  bePort,
-  ctlActive,
-  ctlPort,
-  ctlAdminPort
-] = process.argv.slice(2)
+const loopBuildPorts = ({ envs, config, deployment, envPrefix }) => {
 
-const fePortForward = generateLabelSelector(feActive, fePort)
-const bePortForward = generateLabelSelector(beActive, bePort)
-const ctlPortForward = generateLabelSelector(ctlActive, ctlPort)
-const ctlAdminPortForward = generateLabelSelector(ctlActive, ctlAdminPort)
+  const ports = [
+    ...(config?.portForward?.ports || noPropArr),
+    ...(resolveValue(`${envPrefix}_FORWARD_PORTS`, envs) || ``).split(`,`),
+    resolveValue(`${envPrefix}_FORWARD_PORT`, envs)
+  ].filter(Boolean)
 
-let portForward = ``
-fePortForward && (portForward += fePortForward)
-bePortForward && (portForward += bePortForward)
-ctlPortForward && (portForward += ctlPortForward)
-ctlPortForward && (portForward += ctlAdminPortForward)
+  if(!config || !config?.portForward || !ports.length) return ``
 
-/**
-  * Check if the app is being deploy
-  * If it is, build the sync config based off the deployment
-  */
-process.stdout.write(portForward)
+  const [generator, selector] = config?.portForward?.selector === `image`
+    ? [generateImgSelector, resolveValue(`${envPrefix}_IMAGE`, envs)]
+    : [generateLabelSelector, config?.portForward?.selector || deployment]
+
+  return ports.reduce((fPorts, port) => {
+    const built = generator({
+      selector,
+      envPrefix,
+      deployment,
+      port: getPort(port, envs, envPrefix),
+    })
+    built && (fPorts += built)
+
+    return fPorts
+  }, ``)
+
+}
+
+
+;(() => {
+  
+  const args = process.argv.slice(2)
+  const envs = resolveValues()
+  const contexts = getAppContexts(config)
+
+  const portForward = args.reduce((acc, prefix) => {
+    const envPrefix = `${ePreFix}${prefix}`
+    const deployment = process.env[`${envPrefix}_ACTIVE`]
+    if(!deployment) return
+
+    const appConf = getAppConfig({ prefix, config, contexts })
+
+    const builtPorts = loopBuildPorts({
+      envs,
+      envPrefix,
+      deployment,
+      config: appConf
+    })
+
+    builtPorts && (acc += builtPorts)
+
+    return acc
+  }, ``)
+
+  process.stdout.write(portForward)
+
+})()
+

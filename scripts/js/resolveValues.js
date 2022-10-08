@@ -21,13 +21,16 @@ const { getNpmToken } = require(path.join(appRoot, './tasks/utils/envs/getNpmTok
 /**
  * Loaded Task Config
  */
-let __TASK_CONFIG = {}
+let __TASK_CONFIG
 let __ENV_PREFIX
+let __CONTEXTS
 
 /**
  * Resolves the task config
  */
 const resolveConfig = (opts=noOpObj) => {
+  if(__TASK_CONFIG) return __TASK_CONFIG
+  
   const { configPath, throwErr=true } = opts
 
   const configPaths = [
@@ -64,6 +67,48 @@ const getEnvPrefix = (opts=noOpObj) => {
   }
 
   return __ENV_PREFIX
+}
+
+const getAppContexts = (config=__TASK_CONFIG) => {
+  config = config || resolveConfig()
+
+  __CONTEXTS = __CONTEXTS || Object.entries(config?.apps)
+    .reduce((acc, [key, data]) => {
+      if(!data) return acc
+      
+      const name = data?.name || key
+      const contexts = data?.contexts || []
+      if(!contexts || !name) return acc
+
+      const sorted = contexts.sort((a, b) => (b.length - a.length))
+      const long = sorted[0]
+      const short = sorted[sorted.length - 1]
+
+      if(!long || !short) return acc
+
+      const ref = { keys: sorted, short, long }
+      acc[long.toLowerCase()] = ref
+      acc[long.toUpperCase()] = ref
+      acc[short.toLowerCase()] = ref
+      acc[short.toUpperCase()] = ref
+
+      return acc
+    }, {})
+
+  return __CONTEXTS
+}
+
+const getAppConfig = ({
+  prefix,
+  contexts=__CONTEXTS,
+  config=__TASK_CONFIG,
+}) => {
+  config = config || resolveConfig()
+  contexts = contexts || getAppContexts(config)
+  const context = contexts[prefix]
+  if(!context) return
+
+  return config.apps[context?.long] || config.apps[context?.short]
 }
 
 /**
@@ -170,5 +215,7 @@ module.exports = {
   resolveNPMToken,
   resolveValue,
   resolveValues,
+  getAppConfig,
+  getAppContexts,
   resolveFixedValues,
 }

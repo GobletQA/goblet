@@ -75,7 +75,11 @@ module.exports = {
         ]
       },
       sync: {
-        ignore: [
+        localSubPath: `../`,
+        disableDownload: true,
+        initialSync: `mirrorLocal`,
+        containerPath: `/goblet/app`,
+        excludePaths: [
           '.*',
           '!/configs',
           '!/container',
@@ -95,6 +99,21 @@ module.exports = {
       * Contexts to reference durning task execution
       */
       contexts: [`backend`, `be`],
+      portForward: {
+        ports: [
+          `GB_BE_PORT`,
+        ]
+      },
+      sync: {
+        excludePaths: [
+          '**',
+          '!/repos/backend',
+          '!/repos/conductor',
+          '!/repos/screencast',
+          '!/repos/sockr',
+          '!/repos/shared',
+        ]
+      },
       envs: {
         /**
         * ENVs to not include in the backend
@@ -122,6 +141,26 @@ module.exports = {
     },
     frontend: {
       contexts: [`frontend`, `fe`],
+      portForward: {
+        ports: [
+          `GB_FE_PORT`,
+        ]
+      },
+      sync: {
+        excludePaths: [
+          'temp',
+          'logs',
+          'tasks',
+          'certs',
+          'goblet',
+          'repos/kind',
+          'repos/dind',
+          'repos/scripts',
+          'repos/backend',
+          'repos/conductor',
+          'repos/screencast',
+        ]
+      },
       envs: {
         // Will not be omitted if same env is in the pick list
         // But will override wildcards in the pick list when more specific
@@ -153,6 +192,16 @@ module.exports = {
     },
     screencast: {
       contexts: [`screencast`, `sc`],
+      sync: {
+        excludePaths: [
+          '**',
+          '!/repos/screencast',
+          '!/repos/shared',
+          '!/repos/sockr',
+          '!/repos/testUtils',
+          '!/repos/workflows',
+        ]
+      },
       envs: {
         omit: [
           `GB_CR_*`,

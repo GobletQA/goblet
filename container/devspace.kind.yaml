@@ -159,8 +159,8 @@ deployments:
 
 dev:
   # Gets the apps that should sync with the host machine
-  sync: $(node ../scripts/js/resolveSync.js GB_FE_INACTIVE GB_BE_ACTIVE GB_DD_INACTIVE GB_SC_INACTIVE GB_KD_ACTIVE)
-  ports: $(node ../scripts/js/resolvePortForward.js GB_FE_INACTIVE ${GB_FE_PORT} GB_BE_ACTIVE ${GB_BE_PORT})
+  sync: $(node ../scripts/js/resolveSync.js BE)
+  ports: $(node ../scripts/js/resolvePortForward.js BE)
 
 # Use profile to dynamically switch out the app specific docker image for the development image
 profiles:

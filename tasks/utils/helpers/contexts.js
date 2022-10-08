@@ -15,10 +15,12 @@ let __DEPLOYMENT_OPTS
  * @param {Object} contexts - Contexts object with defined app contexts
  */
 const buildContexts = (acc, contexts) => {
-  const long = contexts[0]
-  const short = contexts[contexts.length - 1]
+  const sorted = contexts.sort((a, b) => (b.length - a.length))
+  
+  const long = sorted[0]
+  const short = sorted[sorted.length - 1]
   // Both short and log ref the same object
-  acc[short] = { keys: contexts, short, long }
+  acc[short] = { keys: sorted, short, long }
   acc[long] = acc[short]
   acc.CONTEXT_LIST.push(long)
   
