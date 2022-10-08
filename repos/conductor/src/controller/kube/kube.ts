@@ -33,8 +33,12 @@ export class Kube extends Controller {
 
   }
 
+  // TODO:  may need to override, but not sure yet
+  // getContainer = async (containerRef:TContainerRef):TContainerData => {
+  //   return {}
+  // }
+
   hydrate = async ():Promise<Record<string, TContainerInspect>> => {
-    
     return 
   }
 

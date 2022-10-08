@@ -1,5 +1,5 @@
 import type { Kubectl } from '@GKD/Kubectl'
-import type { TJwtConfig } from './shared.types'
+import type { TJwtConfig, TProxyConfig } from './shared.types'
 import type { TKubeConfig } from './kubectl.types'
 
 export type AppLocals = {
@@ -22,6 +22,7 @@ export type TKDServerConfig = {
 export type TKindConfig = {
   server: TKDServerConfig
   kubectl: TKubeConfig
+  kubeProxy: TProxyConfig
 }
 
 export type {

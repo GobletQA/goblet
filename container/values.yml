@@ -220,14 +220,21 @@ env:
   GB_KD_SERVICE_ACCOUNT: goblet-pods-exec
   GB_KD_ROLE_BINDING_NAME: goblet-pods-role-binding
   GB_KD_DEVSPACE_CONFIG: container/devspace.kind.yaml
+
   # Exposed Port used for all container API proxies
   GB_KD_PORT: 2375
   GB_KD_HOST: 0.0.0.0
   GB_KD_SECURE_PORT: 443
   GB_KD_WS_PATH: /sockr-socket
 
-  GB_KD_WS_PROXY_PORT: 2122
-  GB_KD_VNC_PROXY_PORT: 2123
+  GB_KD_KUBE_PROXY_PORT: 2121
+  GB_KD_KUBE_PROXY_PROTO: http
+  GB_KD_KUBE_PROXY_HOST: 127.0.0.1
   GB_KD_VALIDATION_KEY: "gb-k1nD567"
   GB_KD_VALIDATION_HEADER: GB-Validation-Key
+
+  GB_KD_WS_PROXY_PORT: 2122
+  GB_KD_VNC_PROXY_PORT: 2123
+  # GB_KD_EXP_ADMIN_PORT: 2018
+  # GB_KD_LOCAL_ADMIN_PORT: 2019
 

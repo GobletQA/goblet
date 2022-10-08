@@ -1,3 +1,5 @@
+const { exists } = require('@keg-hub/jsutils')
+
 /**
  * Used by devspace in the devspace.yml to dynamically forward ports for the application deployment
  * Ensures only deployed apps actually get their ports forwarded to the host
@@ -18,12 +20,12 @@ const imageSelectorConfig = (selector, port) => (`
 
 const generateLabelSelector = (isActiveEnv, port) => {
   const deployment = process.env[isActiveEnv]
-  return Boolean(deployment) ? labelSelectorConfig(deployment, port) : ``
+  return Boolean(deployment) && exists(port) ? labelSelectorConfig(deployment, port) : ``
 }
 
 const generateImgSelector = (isActiveEnv, selector, port) => {
   const deployment = process.env[isActiveEnv]
-  return Boolean(deployment) ? imageSelectorConfig(selector, port) : ``
+  return Boolean(deployment) && exists(port) ? imageSelectorConfig(selector, port) : ``
 }
 
 const [
@@ -31,21 +33,21 @@ const [
   fePort,
   beActive,
   bePort,
-  // ddActive,
-  // ddPort,
-  // ddAdminPort
+  ctlActive,
+  ctlPort,
+  ctlAdminPort
 ] = process.argv.slice(2)
 
 const fePortForward = generateLabelSelector(feActive, fePort)
 const bePortForward = generateLabelSelector(beActive, bePort)
-// const ddPortForward = generateLabelSelector(ddActive, ddPort)
-// const ddAdminPortForward = generateLabelSelector(ddActive, ddAdminPort)
+const ctlPortForward = generateLabelSelector(ctlActive, ctlPort)
+const ctlAdminPortForward = generateLabelSelector(ctlActive, ctlAdminPort)
 
 let portForward = ``
 fePortForward && (portForward += fePortForward)
 bePortForward && (portForward += bePortForward)
-// ddPortForward && (portForward += ddPortForward)
-// ddPortForward && (portForward += ddAdminPortForward)
+ctlPortForward && (portForward += ctlPortForward)
+ctlPortForward && (portForward += ctlAdminPortForward)
 
 /**
   * Check if the app is being deploy

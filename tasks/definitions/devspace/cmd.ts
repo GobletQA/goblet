@@ -44,7 +44,8 @@ export const cmd = {
       description: `Context or name of devspace app that has a corresponding devspace config`,
     },
     devspace: {
-      description: 'Optional filepath for devspace.yaml file',
+      alias: [`dsp`, `ds`, `dev`],
+      description: `Optional filepath for devspace.yaml file`,
     },
   },
 }

@@ -3,8 +3,6 @@ import '../resolveRoot'
 import { toBool, deepMerge } from '@keg-hub/jsutils'
 import { TKindConfig } from '../src/types'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
-import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
-import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
 import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
 
 const nodeEnv = process.env.NODE_ENV || `local`
@@ -37,7 +35,10 @@ const {
 
   GB_KD_WS_PROXY_PORT,
   GB_KD_VNC_PROXY_PORT,
-  GB_KUBE_NAMESPACE='default',
+  GB_KD_KUBE_PROXY_PORT,
+  GB_KD_KUBE_PROXY_HOST,
+  GB_KD_KUBE_PROXY_PROTO,
+  GB_KUBE_NAMESPACE='gb-local',
 
 } = process.env
 
@@ -59,6 +60,14 @@ export const config:TKindConfig = {
       refreshSecret: GB_BE_JWT_REFRESH_SECRET,
       algorithms: [GB_BE_JWT_ALGO || 'HS256'],
       credentialsRequired: toBool(GB_BE_JWT_CREDENTIALS || true),
+    }
+  },
+  kubeProxy: {
+    // TODO: make adding the port dynamic
+    target: `${GB_KD_KUBE_PROXY_HOST}:${GB_KD_KUBE_PROXY_PORT}`,
+    proxy: {},
+    headers: {
+      [GB_KD_VALIDATION_HEADER]: GB_KD_VALIDATION_KEY
     }
   },
   kubectl: {

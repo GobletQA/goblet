@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import '../../resolveRoot'
+import type { TExpApp } from '@GKD/Types'
 import type { Express } from 'express'
 import { Logger } from '@keg-hub/cli-utils'
 import { AUTH_BYPASS_ROUTES } from '@GKD/Constants'
@@ -8,6 +9,7 @@ import { config } from '@GKD/Configs/kind.config'
 import {
   setupKubectl,
   setupRouters,
+  setupKubeProxy,
   setupEndpoints,
 } from '@GKD/Middleware'
 import {
@@ -68,6 +70,8 @@ export const initApi = async () => {
   setupStatic(app)
   // validateUser(app, `/kube\/*`, `async`)
   setupKubectl(app)
+  
+  setupKubeProxy(`/kube`, app?.locals?.config?.kubeProxy)
   await setupEndpoints()
   setupLoggerErr(app)
 
