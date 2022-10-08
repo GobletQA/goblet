@@ -4,8 +4,8 @@
  * Test script by running the following command
  * GB_FE_ACTIVE=goblet-frontend GB_BE_ACTIVE=goblet-backend node scripts/js/resolveSync.js GB_FE_ACTIVE GB_BE_ACTIVE
  */
-const { resolveValues, resolveConfig } = require('./resolveValues')
-
+const { resolveValues, resolveConfig, getEnvPrefix } = require('./resolveValues')
+const ePreFix = getEnvPrefix()
 const config = resolveConfig()
 
 const generateList = (list=[]) => {
@@ -147,7 +147,7 @@ const ddDeployment = generateSync({
   type: `dd`,
   sharedIgnore,
   backend: true,
-  remoteDir: envs.GB_DD_CADDY_REMOTE_DIR
+  remoteDir: envs[`${ePreFix}DD_CADDY_REMOTE_DIR`]
 })
 const scDeployment = generateSync({
   type: `sc`,

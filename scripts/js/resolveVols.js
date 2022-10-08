@@ -1,5 +1,6 @@
 
-const { resolveValues } = require('./resolveValues')
+const { resolveValues, getEnvPrefix } = require('./resolveValues')
+const ePreFix = getEnvPrefix()
 
 const getDinDMounts = () => (`
 - containerPath: /etc/docker/certs.d
@@ -32,7 +33,9 @@ const getVolumeMounts = (repo, volumeMounts) => {
 
 const [repo, volumeMounts] = process.argv.slice(2)
 const envs = resolveValues()
-const isSecure = `${envs.GB_DD_DOCKER_PORT}` === `2376` && !Boolean(envs.GB_LOCAL_DEV_MODE)
+
+const dockerPort = envs[`${ePreFix}DD_DOCKER_PORT`]
+const isSecure = dockerPort === `2376` && !Boolean(envs[`${ePreFix}LOCAL_DEV_MODE`])
 
 const volumes = isSecure
   ? getVolumeMounts(repo, Boolean(volumeMounts))

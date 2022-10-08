@@ -5,7 +5,8 @@
  * Run command below to test
  * `node ../scripts/js/resolveService.js goblet-dind 2375 2122 2121 2123 2018:2019`
  */
- const { resolveHost, resolveValues, resolveValue } = require('./resolveValues')
+ const { resolveValues, resolveValue, getEnvPrefix } = require('./resolveValues')
+ const ePreFix = getEnvPrefix()
  
 const { exists } = require('@keg-hub/jsutils')
 
@@ -43,10 +44,10 @@ annotations:
 
   const values = resolveValues()
 
-  const deployment = resolveValue(`GB_${prefix}_DEPLOYMENT`, values)
+  const deployment = resolveValue(`${ePreFix}${prefix}_DEPLOYMENT`, values)
   const name = buildServiceName(deployment)
 
-  const secret = resolveValue(`GB_${prefix}_SECRET_TLS_NAME`, values)
+  const secret = resolveValue(`${ePreFix}${prefix}_SECRET_TLS_NAME`, values)
   const annotations = secret ? buildTlsAnnotations(secret) : ``
 
 process.stdout.write(`

@@ -2,7 +2,8 @@
 /**
  * Used by devspace in the devspace.yml to generate a deployment matching the yaml spec
  */
-const { resolveValues } = require('./resolveValues')
+const { resolveValues, getEnvPrefix } = require('./resolveValues')
+const ePreFix = getEnvPrefix()
 
 const values = resolveValues()
 const getEnvValue = (key, fallback) => {
@@ -16,8 +17,8 @@ const getRepo = (deployment) => {
 const resolveIngress = (deployment) => {
   if(!deployment) return
 
-  const subDomain = getEnvValue(`GB_SUB_DOMAIN`)
-  const hostDomain = getEnvValue(`GB_HOST_DOMAIN`)
+  const subDomain = getEnvValue(`${ePreFix}SUB_DOMAIN`)
+  const hostDomain = getEnvValue(`${ePreFix}HOST_DOMAIN`)
 
   /**
    * Build the ingress host based on the host and sub domains
@@ -55,9 +56,9 @@ ${deployment}
           value: ${npmToken}
         - name: NODE_ENV
           value: ${nodeEnv}
-        - name: GB_SUB_REPO
+        - name: ${ePreFix}SUB_REPO
           value: ${getRepo(deployment)}
-        - name: GB_NM_INSTALL
+        - name: ${ePreFix}NM_INSTALL
           value: ${nmInstall}
       service:
         name: ${deployment}
@@ -81,13 +82,13 @@ const npmToken = args.shift()
 const nmInstall = args.shift()
 
 const deploy = buildDeployment(
-  getEnvValue(`GB_${prefix}_DEPLOYMENT`),
+  getEnvValue(`${ePreFix}${prefix}_DEPLOYMENT`),
   getEnvValue(`NODE_ENV`, 'local'),
-  getEnvValue(`GB_${prefix}_IMG_URI`),
+  getEnvValue(`${ePreFix}${prefix}_IMG_URI`),
   pullPolicy,
   npmToken,
   nmInstall,
-  getEnvValue(`GB_${prefix}_PORT`),
+  getEnvValue(`${ePreFix}${prefix}_PORT`),
 )
 
 process.stdout.write(deploy)

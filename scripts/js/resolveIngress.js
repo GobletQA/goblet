@@ -7,8 +7,8 @@
  */
  
 const { resolveAnnotations, generateOrigins } = require('./resolveAnnotations')
-const { resolveHost, resolveValues, resolveValue } = require('./resolveValues')
-
+const { resolveHost, resolveValues, resolveValue, getEnvPrefix } = require('./resolveValues')
+const ePreFix = getEnvPrefix()
 const buildIngressName = (deployment) => (`name: ${deployment}-ingress`)
 
 /**
@@ -100,15 +100,15 @@ ${buildRules(host, deployment, port, options).trim()}
 
   const { subdomains, options } = parseOptions(args)
   const values = resolveValues()
-  const deployment = resolveValue(`GB_${prefix}_DEPLOYMENT`, values)
+  const deployment = resolveValue(`${ePreFix}${prefix}_DEPLOYMENT`, values)
 
   if(!prefix || !deployment) return
 
   const host = resolveHost(prefix, values)
-  const tls = resolveValue(`GB_${prefix}_SECRET_TLS_NAME`, values)
-  const origins = generateOrigins(resolveValue(`GB_SERVER_ORIGINS`, values))
+  const tls = resolveValue(`${ePreFix}${prefix}_SECRET_TLS_NAME`, values)
+  const origins = generateOrigins(resolveValue(`${ePreFix}SERVER_ORIGINS`, values))
 
-  const email = resolveValue(`GB_CR_USER_EMAIL`, values)
+  const email = resolveValue(`${ePreFix}CR_USER_EMAIL`, values)
 
   const name = buildIngressName(deployment)
   const subRules = getSubdomainsRules(host, deployment, port, subdomains, options)

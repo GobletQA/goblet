@@ -48,6 +48,10 @@ module.exports = {
       * ENV prefix to append to all dynamically set envs durning lookup
       */
       prefix: `GB`,
+      /**
+      * Prefix used for the injected kubernetes ENV
+      */
+      servicePrefix: `GOBLET`,
       envs: {
         omit: [
           `KEG_*`,

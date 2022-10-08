@@ -4,17 +4,17 @@
  * Run command below to test
  * `node scripts/js/resolveDSEnvs.js certs provider-auth:api-key:LINODE_V4_API_KEY`
  */
-const { resolveValues } = require('./resolveValues')
+const { resolveValues, ePreFix } = require('./resolveValues')
 const { filterEnvsAsYaml, addEnv } = require('./filterEnvs')
 const { buildEnvSecrets } = require('./buildEnvSecrets')
-
+const ePreFix = getEnvPrefix()
 
 ;(async () => {
   const [repo, ...fromSecrets] = process.argv.slice(2)
 
   let dsEnvs = [
-    addEnv(`GB_SUB_REPO`, repo).trimStart(),
-    addEnv(`GB_VNC_ACTIVE`, `"true"`),
+    addEnv(`${ePreFix}SUB_REPO`, repo).trimStart(),
+    addEnv(`${ePreFix}VNC_ACTIVE`, `"true"`),
   ].join(``)
 
   const envs = resolveValues()
@@ -31,7 +31,7 @@ const { buildEnvSecrets } = require('./buildEnvSecrets')
     * Uses the kubernetes env syntax to generate the docker host from runtime envs
     * [See more here](https://kubernetes.io/docs/tasks/inject-data-application/define-interdependent-environment-variables/)
     */
-    dsEnvs += addEnv(`DOCKER_HOST`, `"tcp://$(GB_DD_DEPLOYMENT):$(GOBLET_DIND_SERVICE_PORT)"`)
+    dsEnvs += addEnv(`DOCKER_HOST`, `"tcp://$(${ePreFix}DD_DEPLOYMENT):$(GOBLET_DIND_SERVICE_PORT)"`)
   }
   else if(repo === 'dind'){
     /**
@@ -40,7 +40,7 @@ const { buildEnvSecrets } = require('./buildEnvSecrets')
     * The same /goblet/remote can be found in the scripts/js/resolveSync.js file
     * The sync is setup to copy files from the dind container to the local repos/dind/goblet/remote path
     */
-    addEnv(`XDG_DATA_HOME`, envs.GB_DD_CADDY_REMOTE_DIR || `/goblet/remote`)
+    addEnv(`XDG_DATA_HOME`, envs[`${ePreFix}DD_CADDY_REMOTE_DIR`] || `/goblet/remote`)
   }
 
   process.stdout.write(dsEnvs)
