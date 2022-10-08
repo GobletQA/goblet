@@ -57,6 +57,7 @@
     "get-port-please": "2.5.0",
     "http-proxy-middleware": "2.0.4",
     "jsonwebtoken": "8.5.1",
+    "kube-watch": "0.5.4",
     "module-alias": "2.2.2",
     "source-map-support": "0.5.21"
   },
