@@ -51,7 +51,7 @@ const resolveConfig = (opts=noOpObj) => {
  * Finds the workspaces ENV prefix
  * Uses `DS` if one does not exist - devspace
  */
-const getEnvPrefix = (opts) => {
+const getEnvPrefix = (opts=noOpObj) => {
   if(!__ENV_PREFIX){
     const { apps=noOpObj } = resolveConfig(opts)
     const prefix = apps?.default?.prefix
@@ -126,7 +126,7 @@ const resolveFixedValues = (pre, post, values) => {
  */
 const resolveHost = (prefix, values) => {
   const ePrefix = getEnvPrefix()
-  const { domains=noOpObj } = resolveConfig(opts)
+  const { domains=noOpObj } = resolveConfig()
   const env = process.env.NODE_ENV || 'local'
 
   values = values || resolveValues()

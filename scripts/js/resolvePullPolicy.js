@@ -1,5 +1,6 @@
 /**
  * Used by devspace to generate the image pull policy for the passed in service
+ * To Test node scripts/js/resolvePullPolicy.js BE
  */
 const { resolveValues, getEnvPrefix } = require('./resolveValues')
 const ePreFix = getEnvPrefix()
@@ -17,12 +18,13 @@ const getEnvValue = (values, key) => {
 
 ;(async () => {
   const prefix = process.argv.slice(2).shift()
-
   const values = resolveValues()
-  const servicePP = getEnvValue(values, `${ePreFix}${prefix}_PULL_POLICY`)
+
+  const pullPolicy = getEnvValue(values, `${ePreFix}${prefix}_PULL_POLICY`)
     || getEnvValue(values, `${ePreFix}IMAGE_PULL_POLICY`)
     || getEnvValue(values, `IMAGE_PULL_POLICY`)
+    || `Always`
 
-  process.stdout.write(servicePP)
+  process.stdout.write(pullPolicy)
 
 })()

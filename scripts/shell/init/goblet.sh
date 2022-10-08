@@ -20,7 +20,6 @@ gb_yarn_global_check_install(){
 gb_install_repo_deps(){
   if [[ -x "$(command -v yarn -v 2>/dev/null)" ]]; then
     gb_set_node_version
-    gb_yarn_global_check_install "lerna" "lerna -v"
     gb_yarn_global_check_install "pm2" "pm2 -v"
 
     # Check the root directory for node_modules 
