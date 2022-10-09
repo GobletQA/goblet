@@ -359,7 +359,7 @@ export class Docker extends Controller {
     // We should only get here if the waitRetry doesn't throw
     // This way we know it's connected to the docker api
 
-    this.events = dockerEvents(this.docker, {
+    dockerEvents(this.docker, {
       die: this.removeFromCache,
       start: this.hydrateSingle
     })

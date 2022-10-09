@@ -31,3 +31,15 @@ export type TControllerConfig = {
   options:DockerOptions
   devRouter?: TRouteMeta
 }
+
+// TODO: Update to use this general object as the main route interface
+// Both docker and kube make to this 
+// Instead of ContainerInspect || Pod
+export type TCtlContainer = {
+  id: string
+  ip?: string
+  name: string
+  state?: string
+  labels: Record<string, string>
+  ports: Record<string, string>
+}

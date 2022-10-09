@@ -86,7 +86,7 @@ export class Controller {
     return undefined
   }
 
-  hydrateSingle = async (data:any) => {
+  hydrateSingle = async (...args:any[]) => {
     throwOverrideErr()
     return undefined
   }
