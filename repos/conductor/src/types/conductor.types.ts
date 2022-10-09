@@ -26,6 +26,7 @@ export type TImgConfig = {
   uri?: string
   provider: string
   pidsLimit?: number
+  deployment?: string
   container: TContainerConfig
 }
 

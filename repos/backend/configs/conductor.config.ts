@@ -114,8 +114,9 @@ const containerEnvs = Object.entries(process.env)
 */
 const getImgConfig = () => {
   const [provider, user, name] = GB_SC_IMAGE.split(`/`)
-  const tag = GB_SC_IMAGE_TAG
-  if(!provider || !user || !name || !tag)
+  const tag = GB_SC_IMAGE_TAG || (name || ``).split(':').pop()
+
+  if(!provider || !user || !name || !tag || !GB_SC_DEPLOYMENT)
     throw new Error([
       `Missing required envs:`,
       ` - GB_SC_IMAGE => ${GB_SC_IMAGE}`,
@@ -128,6 +129,7 @@ const getImgConfig = () => {
     name,
     user,
     provider,
+    deployment: GB_SC_DEPLOYMENT,
   }
 }
 
@@ -154,7 +156,6 @@ const buildConductorConf = () => {
       }
 }
 
-
 const proto = GB_KD_PORT === `443` ? `https` : `http`
 export const conductorConfig:TConductorOpts = deepMerge({
   controller: {
@@ -163,14 +164,14 @@ export const conductorConfig:TConductorOpts = deepMerge({
   },
   images: {
     [GB_SC_DEPLOYMENT]: {
-      ... getImgConfig(),
+      ...getImgConfig(),
       container: {
         mem: 0,
         idle: 5000,
         timeout: 5000,
         rateLimit: 5000,
         retryCount: 2,
-        restartPolicy: `on-failure`,
+        restartPolicy: isDockerHost ? `on-failure` : `OnFailure`,
         ports: [
           // Screencast API Port
           toNum(GB_SC_PORT),

@@ -16,16 +16,28 @@ import type {
   TContainerInspect,
   TEventWatchObj,
 } from '@gobletqa/conductor/types'
+
+
+import { ERestartPolicy, EImgPullPolicy } from '@gobletqa/conductor/types'
+import { buildPorts } from '../docker/container/buildPorts'
+import { buildLabels } from '../docker/container/buildLabels'
+import { buildImgUri } from '../docker/image/buildImgUri'
+import { generateRoute, generateRoutes, generateExternalUrls } from '../../utils/generators'
+
 import { Kubectl } from './kubectl'
 import { PodLabels } from './constants'
+import { buildPodManifest } from './pod'
 import { Controller } from '../controller'
-
+import { Logger } from '@gobletqa/shared/libs/logger'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
 import { mapPodToContainer } from '../../utils/mapPodToContainer'
-
-import { Logger } from '@gobletqa/shared/libs/logger'
-
 import { isObj, omitKeys, isEmptyColl } from '@keg-hub/jsutils'
+import {
+  DEV_USER_HASH,
+  FORWARD_PORT_HEADER,
+  FORWARD_SUBDOMAIN_HEADER,
+  CONDUCTOR_USER_HASH_LABEL,
+} from '@GCD/constants'
 
 
 /**
@@ -75,6 +87,73 @@ export class Kube extends Controller {
   }
 
   run = async (imageRef:TImgRef, runOpts:TRunOpts, userHash:string):Promise<TRouteMeta> => {
+    if(this.devRouterActive) return this.routes[DEV_USER_HASH]
+
+    const image = this.getImg(imageRef)
+    !image && this.notFoundErr({ type: `image`, ref: imageRef as string })
+
+    const {
+      tag,
+      name,
+      user,
+      provider,
+      deployment,
+      container 
+    } = image
+    const {
+      mem,
+      idle,
+      envs,
+      ports,
+      timeout,
+      rateLimit,
+      retryCount,
+      runtimeEnvs,
+      restartPolicy
+    } = container
+
+    const portData = await buildPorts(image)
+    const nameRef = `${userHash}-${deployment}`
+    const podManifest = buildPodManifest({
+      meta: {
+        name: nameRef,
+        namespace: this.config.namespace,
+        labels: {
+          ...buildLabels(image, userHash),
+          'app.kubernetes.io/name': `gobletqa-app`,
+          'app.kubernetes.io/component': deployment,
+          'app.kubernetes.io/managed-by': `goblet-conductor`,
+        },
+      },
+      spec: {
+        restart: ERestartPolicy[restartPolicy] || ERestartPolicy.OnFailure,
+        containers: {
+          [nameRef]: {
+            envs,
+            ports,
+            tty: true,
+            stdin: true,
+            image: buildImgUri(image),
+            pullPolicy: EImgPullPolicy.Always,
+          }
+        }
+      }
+    })
+
+    const routeMeta = generateRoutes(
+      portData.ports,
+      this.conductor,
+      userHash,
+      { state: `Creating` }
+    )
+    this.routes[userHash] = routeMeta
+
+    // TODO: test creating the POD, then accessing it
+    // Update hydrate to work with pod,
+    // Change object type to be common between docker on kubernetes
+    // Use only require data, not entire docker-inspect object
+    const resp = await this.kubectl.createPod(podManifest)
+    
     return undefined
   }
 
