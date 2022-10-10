@@ -1,6 +1,6 @@
 import type { ClientRequest, IncomingMessage } from 'http'
 import type { Request, Response } from 'express'
-import { FORWARD_HOST_HEADER } from '@GCD/constants'
+import { ForwardHostHeader } from '@GCD/constants'
 
 
 /**
@@ -45,7 +45,7 @@ export const mapRequestHeaders = (
     .forEach(key => {
       const lower = key.toLowerCase()
       lower === 'host'
-        ? proxyReq.setHeader(key, req.headers[FORWARD_HOST_HEADER])
+        ? proxyReq.setHeader(key, req.headers[ForwardHostHeader])
         : req.headers[key] &&  proxyReq.setHeader(key, req.headers[key])
     })
 

@@ -1,7 +1,7 @@
-import type { V1Pod, KubernetesObject } from '@kubernetes/client-node'
-import { TControllerConfig } from './controller.types'
+import type { TPod } from './pods.types'
+import type { KubernetesObject } from '@kubernetes/client-node'
+import type { TControllerConfig } from './controller.types'
 
-export type TPod = V1Pod
 export type TEventWatchObj = { type: string; object: KubernetesObject }
 export type TKubeEventCB = (pod:TPod, watch:TEventWatchObj) => any
 

@@ -28,7 +28,7 @@ export type TContainerInfo = ContainerInfo & {
   Name: string
 }
 
-export type TContainerRef = string | TContainerInfo | TContainerInspect
+export type TContainerRef = string | TContainerInfo | TContainerInspect | TContainerMap
 
 export type TImageObj = Image & {
   [key:string]: any

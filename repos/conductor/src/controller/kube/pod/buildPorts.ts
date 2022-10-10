@@ -19,7 +19,7 @@ const getPortObj = (key:string, portItem:TPortObj|string|number|boolean) => {
 
 export const buildPorts = (
   container:TPodContainer,
-  opts:any
+  opts?:any
 ):V1ContainerPort[] => {
   const portsObj = isArr<TPortItem[]>(container.ports)
     ? container.ports.reduce((acc, item) => {
@@ -43,7 +43,7 @@ export const buildPorts = (
       } = getPortObj(key, portItem)
 
       const contPort = toNum(containerPort || port)
-      if(!contPort) return 
+      if(!contPort) return
       
       const builtPort:V1ContainerPort = { containerPort: contPort } as any
 

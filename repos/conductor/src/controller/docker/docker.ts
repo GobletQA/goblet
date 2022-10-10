@@ -1,7 +1,7 @@
 import type { Conductor } from '../../conductor'
 import type { Request } from 'express'
 import type { ContainerCreateOptions } from 'dockerode'
-import { FORWARD_PORT_HEADER, FORWARD_SUBDOMAIN_HEADER, DEV_USER_HASH } from '@GCD/constants'
+import { ForwardPortHeader, ForwardSubdomainHeader, DevUserHash } from '@GCD/constants'
 import {
   TImgRef,
   TRunOpts,
@@ -25,16 +25,16 @@ import { docker } from '@keg-hub/cli-utils'
 import { dockerEvents } from './dockerEvents'
 import { buildImgUri } from './image/buildImgUri'
 import { buildPorts } from './container/buildPorts'
+import { isObj, isEmptyColl } from '@keg-hub/jsutils'
 import { Logger } from '@gobletqa/shared/libs/logger'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
-import { CONDUCTOR_USER_HASH_LABEL } from '../../constants'
+import { ConductorUserHashLabel } from '../../constants'
 import { waitRetry } from '@gobletqa/shared/utils/waitRetry'
 import { containerConfig } from './container/containerConfig'
 import { removeContainer } from './container/removeContainer'
-import { isObj, omitKeys, isEmptyColl } from '@keg-hub/jsutils'
 import { buildContainerMap } from './container/buildContainerMap'
-import { generateRoute, generateRoutes, generateExternalUrls } from '../../utils/generators'
 import { createContainer, startContainer } from './container/runContainerHelpers'
+import { generateRoute, generateRoutes, generateExternalUrls } from '../../utils/generators'
 
 /**
  * Helper method to start a container, then update the docker instance metadata
@@ -121,7 +121,7 @@ export class Docker extends Controller {
 
       // Check if there's an existing container that's owned by goblet
       // But missing the correct user hash. If there is, then remove it
-      if(!container.Labels[CONDUCTOR_USER_HASH_LABEL]){
+      if(!container.Labels[ConductorUserHashLabel]){
         const fromGoblet = Object.keys(container.Labels).find((label:string) => imgNames.includes(label))
         fromGoblet && removeContainer(this.docker.getContainer(container.Id))
         return acc
@@ -149,16 +149,21 @@ export class Docker extends Controller {
     return this.containerMaps
   }
 
+  /**
+   * hydrates the dev router and bypasses Kubernetes API entirely
+   * Allows running the screen-cast pod manually when in local development
+   * @member Docker
+   */
   hydrateDevRouter = async () => {
     Logger.warn(`Running in dev mode, dind will not be active!`)
 
-    this.routes[DEV_USER_HASH] = Object.entries(this.config.devRouter.routes)
+    this.routes[DevUserHash] = Object.entries(this.config.devRouter.routes)
       .reduce((acc, [port, config]) => {
         acc.routes[port] = generateRoute(
           config.port,
           config.containerPort,
           this.conductor,
-          DEV_USER_HASH
+          DevUserHash
         )
 
         return acc
@@ -228,7 +233,7 @@ export class Docker extends Controller {
         return acc
       }, {})
 
-      const userHash = message?.Actor?.Attributes[CONDUCTOR_USER_HASH_LABEL]
+      const userHash = message?.Actor?.Attributes[ConductorUserHashLabel]
       delete this.routes[userHash]
   }
 
@@ -267,7 +272,7 @@ export class Docker extends Controller {
     const containers = await this.getAll()
     const removed = await Promise.all(
       containers.map(container => {
-        if(container.Labels[CONDUCTOR_USER_HASH_LABEL]){
+        if(container.Labels[ConductorUserHashLabel]){
           const cont = this.docker.getContainer(container.Id)
           cont && removeContainer(cont)
 
@@ -313,7 +318,7 @@ export class Docker extends Controller {
     runOpts:TRunOpts,
     userHash:string
   ):Promise<TRouteMeta> => {
-    if(this.devRouterActive) return this.routes[DEV_USER_HASH]
+    if(this.devRouterActive) return this.routes[DevUserHash]
 
     const image = this.getImg(imageRef)
     !image && this.notFoundErr({ type: `image`, ref: imageRef as string })
@@ -375,17 +380,6 @@ export class Docker extends Controller {
     this.hydrate()
       // .then(() => {
       // })
-  }
-
-  /**
-   * Gets a route from the passed in headers of the request
-   */
-  getRoute = (req:Request) => { 
-    const proxyPort = (req.headers[FORWARD_PORT_HEADER] || ``).toString().split(`,`).shift()
-    const userHash = (req.headers[FORWARD_SUBDOMAIN_HEADER] || ``).toString().split(`,`).shift()
-    const route = this.routes?.[userHash]?.routes?.[proxyPort]
-
-    return omitKeys(route, [`headers`, `containerPort`]) as TContainerRoute
   }
 
 }

@@ -1,3 +1,4 @@
+import { TContainerMap } from './helpers.types'
 import { V1Pod, V1ObjectMeta } from '@kubernetes/client-node'
 
 export enum EImgPullPolicy {
@@ -14,6 +15,9 @@ export enum ERestartPolicy {
   OnFailure=`OnFailure`,
   onFailure=`OnFailure`,
 }
+
+export type TPod = V1Pod
+export type TPodRef = TContainerMap | TPod | string
 
 export type TPodMetaOpts = {
   name?: string

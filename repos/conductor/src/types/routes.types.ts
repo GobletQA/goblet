@@ -1,12 +1,11 @@
 import type { TPort } from './ports.types'
-import type { TUserHash } from './helpers.types'
+import type { TUserHash, TContainerState } from './helpers.types'
 
 type TPublicUrl = string
 type TContainerId = string
 type TContainerPort = string
 type TContainerName = string
 
-export type TContainerState = `Creating` | `Running` | `Stopped` | `Missing`
 export type TProtocol = 'http' | 'https' | 'ws' | 'wss' | 'http:' | 'https:' | 'ws:' | 'wss:'
 
 export type TContainerRoute = {

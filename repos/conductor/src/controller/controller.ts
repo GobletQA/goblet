@@ -1,10 +1,11 @@
 import type { Request } from 'express'
 import type { Conductor } from '../conductor'
 import { buildImgUri } from './docker/image/buildImgUri'
-import { capitalize, deepMerge } from '@keg-hub/jsutils'
 import { checkImgConfig } from '../utils/checkImgConfig'
+import { capitalize, deepMerge, omitKeys } from '@keg-hub/jsutils'
 import {
   TImgRef,
+  TPodRef,
   TRunOpts,
   TPullOpts,
   TImgConfig,
@@ -16,6 +17,8 @@ import {
   TControllerRoutes,
   TControllerConfig,
 } from '../types'
+
+import { ForwardPortHeader, ForwardSubdomainHeader } from '@GCD/constants'
 
 
 const throwOverrideErr = (message?:string) => {
@@ -58,7 +61,7 @@ export class Controller {
       }, {})
   }
 
-  getContainer(containerRef:TContainerRef):TContainerMap {
+  getContainer(containerRef:TContainerRef|TPodRef):TContainerMap {
     const isStr = typeof containerRef === 'string'
 
     // There's an odd bug where dockerode is adding / before a named container
@@ -111,7 +114,7 @@ export class Controller {
     return undefined
   }
 
-  remove = async (containerRef:TContainerRef) => {
+  remove = async (containerRef:TContainerRef|TPodRef) => {
     throwOverrideErr()
     return undefined
   }
@@ -131,9 +134,15 @@ export class Controller {
     return undefined
   }
 
-  getRoute = (req:Request):TContainerRoute => {
-    throwOverrideErr()
-    return undefined
+  /**
+   * Gets a route from the passed in headers of the request
+   */
+  getRoute = (req:Request) => {
+    const proxyPort = (req.headers[ForwardPortHeader] || ``).toString().split(`,`).shift()
+    const userHash = (req.headers[ForwardSubdomainHeader] || ``).toString().split(`,`).shift()
+    const route = this.routes?.[userHash]?.routes?.[proxyPort]
+
+    return omitKeys(route, [`headers`, `containerPort`]) as TContainerRoute
   }
 
   notFoundErr = (args:Record<string, string>) => {

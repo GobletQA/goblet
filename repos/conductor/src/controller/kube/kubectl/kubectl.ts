@@ -1,4 +1,4 @@
-import type { V1Pod } from '@kubernetes/client-node'
+import type { V1Pod, V1PodList } from '@kubernetes/client-node'
 
 import type {
   TWatchRes,
@@ -43,7 +43,7 @@ export class Kubectl {
    * Get all pods in the configured namespace
    */
   getPods = async () => {
-    const [err, res] = await limbo<Record<'body', any>, TKubeError>(
+    const [err, res] = await limbo<Record<'body', V1PodList>, TKubeError>(
       this.client.listNamespacedPod(this.config.namespace)
     )
 

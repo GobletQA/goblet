@@ -1,19 +1,19 @@
-export const CONDUCTOR_LABEL = `com.gobletqa`
-export const CONDUCTOR_USER_HASH_LABEL = `${CONDUCTOR_LABEL}.conductor`
-export const FORWARD_HOST_HEADER = `x-goblet-host`
-export const FORWARD_PORT_HEADER = `x-goblet-port`
-export const FORWARD_PROTO_HEADER = `x-goblet-proto`
-export const FORWARD_SUBDOMAIN_HEADER = `x-goblet-subdomain`
-export const DEV_USER_HASH = `goblet-dev-user`
+export const ConductorLabel = `com.gobletqa`
+export const ConductorUserHashLabel = `${ConductorLabel}.conductor`
+export const ForwardHostHeader = `x-goblet-host`
+export const ForwardPortHeader = `x-goblet-port`
+export const ForwardProtoHeader = `x-goblet-proto`
+export const ForwardSubdomainHeader = `x-goblet-subdomain`
+export const DevUserHash = `goblet-dev-user`
 
-export const CONTAINER_LABELS = [
+export const ContainerLabels = [
   `idle`,
   `timeout`,
   `rateLimit`
 ]
 
-export const AUTH_BYPASS_ROUTES = [
-  `/`,
-  `/health-check`,
-  `/favicon.ico`,
-]
+export const PodAnnotations = {
+  name: `${ConductorLabel}.name`,
+  ports: `${ConductorLabel}.ports`,
+  component: `${ConductorLabel}.component`,
+}

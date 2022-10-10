@@ -1,10 +1,10 @@
 import type { Conductor } from '@gobletqa/conductor/conductor'
 import { inDocker } from '@keg-hub/cli-utils'
 import {
-  FORWARD_HOST_HEADER,
-  FORWARD_PORT_HEADER,
-  FORWARD_PROTO_HEADER,
-  FORWARD_SUBDOMAIN_HEADER
+  ForwardHostHeader,
+  ForwardPortHeader,
+  ForwardProtoHeader,
+  ForwardSubdomainHeader
 } from '@GCD/constants'
 import {
   TPort,
@@ -13,7 +13,6 @@ import {
   TRouteMeta,
   TPublicUrls,
   TContainerMeta,
-  TContainerInspect
 } from '@gobletqa/conductor/types'
 const isDocker = inDocker()
 
@@ -62,10 +61,10 @@ export const generateRoute = (
     // 443 is default, but would be better to allow it to be any port
     protocol: proto,
     headers: {
-      [FORWARD_PORT_HEADER]: cPort,
-      [FORWARD_PROTO_HEADER]: proto,
-      [FORWARD_SUBDOMAIN_HEADER]: userHash,
-      [FORWARD_HOST_HEADER]: generateExternalUrl(hostPort, userHash, conductor)
+      [ForwardPortHeader]: cPort,
+      [ForwardProtoHeader]: proto,
+      [ForwardSubdomainHeader]: userHash,
+      [ForwardHostHeader]: generateExternalUrl(hostPort, userHash, conductor)
     },
   }
 }
