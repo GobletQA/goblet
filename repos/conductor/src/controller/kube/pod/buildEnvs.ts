@@ -2,7 +2,7 @@ import type { V1EnvVar, V1EnvFromSource } from '@kubernetes/client-node'
 import type { TPodContainer, TEnvRefConfig, TEnvFrom } from '../../../types'
 
 import { addIfExists } from './helpers'
-import { isStr, isObj, isNum, exists } from '@keg-hub/jsutils'
+import { isStr, isObj, isNum, exists, noOpObj } from '@keg-hub/jsutils'
 
 const buildEnvRefObj = (
   item:string|TEnvRefConfig,
@@ -19,7 +19,7 @@ export const buildEnvsFrom = (
   container:TPodContainer,
   opts:any
 ):V1EnvFromSource[] => {
-  return Object.entries(container.envFrom)
+  return Object.entries(container.envFrom || noOpObj)
     .map(([name, fromObj]) => {
       const {
         secret,
@@ -47,7 +47,7 @@ export const buildEnvs = (
   container:TPodContainer,
   opts:any
 ):V1EnvVar[] => {
-  return Object.entries(container.envs).map(([name, value]:[string, any]) => {
+  return Object.entries(container.envs || noOpObj).map(([name, value]:[string, any]) => {
     return !exists(value)
       ? undefined
       : {

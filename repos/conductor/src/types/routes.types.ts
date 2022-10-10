@@ -1,4 +1,5 @@
-import type { TUserHash, TPort } from './helpers.types'
+import type { TPort } from './ports.types'
+import type { TUserHash } from './helpers.types'
 
 type TPublicUrl = string
 type TContainerId = string
@@ -44,6 +45,7 @@ export type TPublicUrls = {
 }
 
 export type TRouteMeta = {
+  error?: string
   meta?: TContainerMeta
   routes: Record<TContainerPort, TProxyRoute>
 }

@@ -1,3 +1,4 @@
+import { TContainerMap } from './helpers.types'
 import { TContainerConfig } from './conductor.types'
 import {
   Image,
@@ -26,13 +27,8 @@ export type TContainerInspect = ContainerInspectInfo & {}
 export type TContainerInfo = ContainerInfo & {
   Name: string
 }
-export type TContainerData = TContainerInfo | TContainerInspect
 
-export type TContainerObj = Container & {
-  [key:string]: any
-}
-
-export type TContainerRef = string | TContainerObj | TContainerInfo | TContainerInspect
+export type TContainerRef = string | TContainerInfo | TContainerInspect
 
 export type TImageObj = Image & {
   [key:string]: any

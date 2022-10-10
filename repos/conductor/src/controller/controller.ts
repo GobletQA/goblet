@@ -11,10 +11,9 @@ import {
   TRouteMeta,
   TImgsConfig,
   TContainerRef,
-  TContainerData,
+  TContainerMap,
   TContainerRoute,
   TControllerRoutes,
-  TContainerInspect,
   TControllerConfig,
 } from '../types'
 
@@ -29,7 +28,7 @@ export class Controller {
   conductor: Conductor
   config: TControllerConfig
   routes: TControllerRoutes = {}
-  containers:Record<string, TContainerData> = {}
+  containerMaps: Record<string, TContainerMap> = {}
 
   constructor(conductor:Conductor, config:TControllerConfig){
     this.config = config
@@ -59,7 +58,7 @@ export class Controller {
       }, {})
   }
 
-  getContainer(containerRef:TContainerRef):TContainerData {
+  getContainer(containerRef:TContainerRef):TContainerMap {
     const isStr = typeof containerRef === 'string'
 
     // There's an odd bug where dockerode is adding / before a named container
@@ -67,21 +66,32 @@ export class Controller {
     // first remove it if it exists, then added back to it works with or without it
     const strRef = isStr && `/${containerRef.replace(`/`, ``)}`
 
-    if(strRef && this.containers[strRef])
-      return this.containers[strRef]
+    if(strRef && this.containerMaps[strRef])
+      return this.containerMaps[strRef]
 
-    return Object.values(this.containers)
+    return Object.values(this.containerMaps)
       .find((cont) => {
-        const container = cont as TContainerInspect
-        return isStr
-          ? container?.Id.startsWith(containerRef)
-            || container?.Name.startsWith(strRef)
-          : container?.Id.startsWith(containerRef?.Id)
-            || container?.Name.startsWith(`/${containerRef?.Name.replace(`/`, ``)}`)
+        const container = cont as TContainerMap
+        if(isStr)
+          return container?.id.startsWith(containerRef)
+            || container?.name.startsWith(strRef)
+        
+        // Convert to any to fix issue with checking type on TContainerMap and TContainerRef
+        // We check for both uppercase and lowercase 
+        const {
+          id,
+          Id,
+          name,
+          Name
+        } = containerRef as any
+
+        return container?.id.startsWith(id || Id)
+          || container?.name.startsWith(`/${(name || Name).replace(`/`, ``)}`)
+
       })
   }
 
-  hydrate = async (hydrateCache?:any):Promise<Record<string, TContainerInspect>> => {
+  hydrate = async (hydrateCache?:any):Promise<Record<string, TContainerMap>> => {
     throwOverrideErr()
     return undefined
   }

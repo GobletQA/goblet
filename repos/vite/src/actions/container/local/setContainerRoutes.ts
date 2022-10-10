@@ -13,14 +13,19 @@ type SplitRoutes = {
 /**
  * Helper to throw an error if the routes are not configured properly
  */
-const throwRoutesError = (status:TRouteMeta, type:string) => {
-  console.error(`Could not set ${type}, it does not exist on the routes object`)
+const throwRoutesError = (status:TRouteMeta, type:string, error?:string) => {
+  type
+    ? console.error(`Could not set ${type}, it does not exist on the routes object`)
+    : error && console.error(error)
+
   console.log(`Routes:`, status)
   throw new Error(`Error setting container routes`)
 }
 
 export const setContainerRoutes = async (status:TRouteMeta) => {
-  const { routes=noOpObj, meta=noOpObj as TContainerMeta } = status
+  const { error, routes=noOpObj, meta=noOpObj as TContainerMeta } = status
+
+  if(error) return throwRoutesError(status, ``, error)
   if(!routes) return throwRoutesError(status, `session container routes`)
 
   const { api, screencast } = Object.entries(routes)

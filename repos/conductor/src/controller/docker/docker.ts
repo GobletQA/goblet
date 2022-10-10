@@ -12,7 +12,7 @@ import {
   TUserHashMap,
   TContainerRef,
   TDockerConfig,
-  TContainerData,
+  TContainerMap,
   TContainerInfo,
   TContainerRoute,
   TContainerInspect
@@ -32,6 +32,7 @@ import { waitRetry } from '@gobletqa/shared/utils/waitRetry'
 import { containerConfig } from './container/containerConfig'
 import { removeContainer } from './container/removeContainer'
 import { isObj, omitKeys, isEmptyColl } from '@keg-hub/jsutils'
+import { buildContainerMap } from './container/buildContainerMap'
 import { generateRoute, generateRoutes, generateExternalUrls } from '../../utils/generators'
 import { createContainer, startContainer } from './container/runContainerHelpers'
 
@@ -77,6 +78,7 @@ export class Docker extends Controller {
   config: TDockerConfig
   events: DockerEvents
   devRouterActive: boolean
+  containerMaps: Record<string, TContainerMap>
   userHashMap:TUserHashMap = {}
 
   constructor(conductor:Conductor, config:TDockerConfig){
@@ -92,12 +94,13 @@ export class Docker extends Controller {
 
     const id = message?.id as string
     const containerInspect = await this.docker.getContainer(id).inspect() as TContainerInspect
-    this.containers[id] = containerInspect
+    const mapped = buildContainerMap(containerInspect)
+    this.containerMaps[id] = mapped
 
     Logger.info(`Waiting 5 seconds to hydrate container...`)
     setTimeout(() => {
       Logger.info(`Finished waiting, hydrating container...`)
-      hydrateRoutes(this, { [id]: containerInspect })
+      hydrateRoutes(this, { [id]: mapped })
     }, 5000)
   }
 
@@ -106,14 +109,14 @@ export class Docker extends Controller {
    * Allows starting / restarting conductor at anytime and it still works
    * @member Docker
    */
-  hydrate = async ():Promise<Record<string, TContainerInspect>> => {
+  hydrate = async ():Promise<Record<string, TContainerMap>> => {
     if(this.devRouterActive) return
     
     const containers = await this.getAll()
     
     const imgNames = Object.keys(this.conductor.config.images)
 
-    this.containers = await containers.reduce(async (toResolve, container) => {
+    this.containerMaps = await containers.reduce(async (toResolve, container) => {
       const acc = await toResolve
 
       // Check if there's an existing container that's owned by goblet
@@ -131,17 +134,19 @@ export class Docker extends Controller {
         return acc
       }
 
-      acc[container.Id] = await this.docker.getContainer(container.Id).inspect()
+      const containerInspect = await this.docker.getContainer(container.Id).inspect()
+      const mapped = buildContainerMap(containerInspect)
+      acc[container.Id] = mapped
 
       return acc
     }, Promise.resolve({}))
 
-    const hydrateCount = Object.keys(this.containers).length
+    const hydrateCount = Object.keys(this.containerMaps).length
     hydrateCount && Logger.info(`Hydrating ${hydrateCount} container(s) into runtime cache`)
 
-    hydrateRoutes(this, this.containers as Record<string, TContainerInspect>)
+    hydrateRoutes(this, this.containerMaps)
 
-    return this.containers as Record<string, TContainerInspect>
+    return this.containerMaps
   }
 
   hydrateDevRouter = async () => {
@@ -215,10 +220,10 @@ export class Docker extends Controller {
     
     Logger.info(`Removing container ${message?.Actor?.Attributes?.name} from cache`)
 
-    this.containers = Object.entries(this.containers)
-      .reduce((acc, [ref, container]:[string, TContainerData]) => {
+    this.containerMaps = Object.entries(this.containerMaps)
+      .reduce((acc, [ref, container]:[string, TContainerMap]) => {
         isObj(message)
-          && message?.id !== container.Id
+          && message?.id !== container.id
           && (acc[ref] = container)
         return acc
       }, {})
@@ -233,17 +238,17 @@ export class Docker extends Controller {
   remove = async (containerRef:TContainerRef) => {
     if(this.devRouterActive) return
     
-    const containerData = this.getContainer(containerRef)
-    !containerData && this.notFoundErr({ type: `container`, ref: containerRef as string })
+    const containerMap = this.getContainer(containerRef)
+    !containerMap && this.notFoundErr({ type: `container`, ref: containerRef as string })
 
-    const cont = await this.docker.getContainer(containerData.Id)
+    const cont = await this.docker.getContainer(containerMap.id)
 
     Logger.info(`Removing container with ID ${cont.id}`)
     removeContainer(cont)
 
-    this.containers = Object.entries(this.containers)
-      .reduce((acc, [ref, cont]:[string, TContainerData]) => {
-        cont.Id !== containerData.Id && (acc[ref] = cont)
+    this.containerMaps = Object.entries(this.containerMaps)
+      .reduce((acc, [ref, cont]:[string, TContainerMap]) => {
+        cont.id !== containerMap.id && (acc[ref] = cont)
 
         return acc
       }, {})

@@ -1,8 +1,7 @@
 import type {
-  TPodContainer,
   TPortObj,
   TPortItem,
-  TPortItemObj
+  TPodContainer,
 } from '../../../types'
 import type { V1ContainerPort } from '@kubernetes/client-node'
 

@@ -1,6 +1,7 @@
 export * from './kube.types'
 export * from './pods.types'
 export * from './proxy.types'
+export * from './ports.types'
 export * from './docker.types'
 export * from './routes.types'
 export * from './helpers.types'

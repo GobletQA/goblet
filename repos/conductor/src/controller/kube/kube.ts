@@ -10,19 +10,19 @@ import type {
   TDockerEvent,
   TContainerRef,
   TKubeController,
-  TContainerData,
   TContainerInfo,
+  TContainerMap,
   TContainerRoute,
   TContainerInspect,
   TEventWatchObj,
 } from '@gobletqa/conductor/types'
 
 
-import { ERestartPolicy, EImgPullPolicy } from '@gobletqa/conductor/types'
+import { generateRoutes } from '../../utils/generators'
+import { buildImgUri } from '../docker/image/buildImgUri'
 import { buildPorts } from '../docker/container/buildPorts'
 import { buildLabels } from '../docker/container/buildLabels'
-import { buildImgUri } from '../docker/image/buildImgUri'
-import { generateRoute, generateRoutes, generateExternalUrls } from '../../utils/generators'
+import { ERestartPolicy, EImgPullPolicy } from '@gobletqa/conductor/types'
 
 import { Kubectl } from './kubectl'
 import { PodLabels } from './constants'
@@ -30,7 +30,7 @@ import { buildPodManifest } from './pod'
 import { Controller } from '../controller'
 import { Logger } from '@gobletqa/shared/libs/logger'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
-import { mapPodToContainer } from '../../utils/mapPodToContainer'
+import { buildContainerMap } from './pod/buildContainerMap'
 import { isObj, omitKeys, isEmptyColl } from '@keg-hub/jsutils'
 import {
   DEV_USER_HASH,
@@ -50,6 +50,7 @@ export class Kube extends Controller {
   config: TKubeController
   devRouterActive: boolean
   pods: Record<string, TPod>
+  containerMaps: Record<string, TContainerMap>
 
   constructor(conductor:Conductor, config:TKubeController){
     super(conductor, config)
@@ -58,21 +59,23 @@ export class Kube extends Controller {
   }
 
   // TODO:  may need to override, but not sure yet
-  // getContainer = async (containerRef:TContainerRef):TContainerData => {
+  // getContainer = async (containerRef:TContainerRef):TContainerMap => {
   //   return {}
   // }
 
-  hydrate = async ():Promise<Record<string, TContainerInspect>> => {
+  hydrate = async ():Promise<Record<string, TContainerMap>> => {
     return 
   }
 
   hydrateSingle = async (pod:TPod, watchObj:TEventWatchObj) => {
-    const podName = pod.metadata.labels[PodLabels.component] 
+    const userHash = pod.metadata.labels[CONDUCTOR_USER_HASH_LABEL]
+    if(!userHash) return
 
+    const podName = pod.metadata.labels[PodLabels.component] 
     Logger.info(`Hydrating pod ${podName} from start event`)
     const id = pod.metadata.name
-    const mapped = mapPodToContainer(pod, watchObj)
-    this.containers[id] = mapped
+    const mapped = buildContainerMap(pod)
+    this.containerMaps[id] = mapped
 
     Logger.info(`Waiting 5 seconds to hydrate container...`)
 

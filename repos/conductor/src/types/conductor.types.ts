@@ -1,6 +1,7 @@
+import type { TPorts } from './ports.types'
 import type { TProxyConfig } from './proxy.types'
-import type { TLogLevel, TPorts, TRestartPolicy } from './helpers.types'
 import type { TControllerConfig } from './controller.types'
+import type { TLogLevel, TRestartPolicy } from './helpers.types'
 import type { ContainerCreateOptions, Container } from 'dockerode'
 
 

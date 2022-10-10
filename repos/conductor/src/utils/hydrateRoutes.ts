@@ -1,40 +1,26 @@
-import { generateRoutes } from './generators'
 import type { Controller } from '../controller'
-import { TContainerInspect, TPortsMap } from '../types'
+import type { TContainerInspect, TContainerMap, } from '../types'
+
+import { generateRoutes } from './generators'
 import { CONDUCTOR_USER_HASH_LABEL } from '../constants'
 
-type TPort = {
-  HostIp:string
-  HostPort:string
-}
-type TPorts = {
-  [key:string]: TPort[]
-}
 
-const buildPorts = (ports:TPorts):TPortsMap => {
-  return Object.entries(ports).reduce((acc, [cPortProto, hostData]) => {
-    if(!hostData) return acc
-
-    const cPort = cPortProto.split(`/`).shift()
-    const hPort = (hostData.shift() || {})?.HostPort
-    cPort && hPort && (acc[cPort] = hPort)
-
-    return acc
-  }, {})
-}
-
-export const routesFromContainer = (controller:Controller, container:TContainerInspect) => {
-  const userHash = container.Config.Labels[CONDUCTOR_USER_HASH_LABEL]
+const routesFromContainer = (
+  controller:Controller,
+  container:TContainerMap,
+) => {
+  const userHash = container.labels[CONDUCTOR_USER_HASH_LABEL]
   if(!userHash) return
 
+
   controller.routes[userHash] = generateRoutes(
-    buildPorts(container.NetworkSettings.Ports),
+    container.ports,
     controller.conductor,
     userHash,
     {
       state: `Running`,
-      id: container.Id,
-      name: container?.Name,
+      id: container.id,
+      name: container.name,
     }
   )
 
@@ -42,7 +28,7 @@ export const routesFromContainer = (controller:Controller, container:TContainerI
 
 export const hydrateRoutes = (
   controller:Controller,
-  containers:Record<string, TContainerInspect>
+  containers:Record<string, TContainerMap>
 ) => {
   return Promise.all(
     Object.entries(containers)

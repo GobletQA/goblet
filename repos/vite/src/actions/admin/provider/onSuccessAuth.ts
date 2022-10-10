@@ -68,6 +68,8 @@ const validateResp = (resp:TValidateResp) => {
  * Then loads the Dashboard root
  */
 export const onSuccessAuth = async (authData:Record<any, any>) => {
+  let statusCodeNum
+  
   try {
     const userData = formatUser(authData)
     await isAllowedUser(userData.email)
@@ -80,13 +82,15 @@ export const onSuccessAuth = async (authData:Record<any, any>) => {
     const {
       data,
       error,
-      success
+      success,
+      statusCode,
     } = await apiRequest<TValidateResp>({
       params: userData,
       method: 'POST',
       url: `/auth/validate`,
     })
 
+    statusCodeNum = statusCode
     // If response if false, the session is invalid, and the user must sign in again
     if(error || !success) throw new Error(error)
 
@@ -110,6 +114,7 @@ export const onSuccessAuth = async (authData:Record<any, any>) => {
       `[Auth State Error] Could not validate user. Please try agin later.`
     )
     console.error(err.message)
-    await signOutAuthUser()
+    ;(!statusCodeNum || statusCodeNum === 401) && await signOutAuthUser()
+
   }
 }

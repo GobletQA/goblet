@@ -1,6 +1,6 @@
 import type { Request } from 'express'
 import type { Options } from 'http-proxy-middleware'
-import type { TPort } from './helpers.types'
+import type { TPort } from './ports.types'
 
 export type TProxyConfig = {
   port?: TPort
