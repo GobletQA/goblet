@@ -47,7 +47,6 @@ const {
 
 } = process.env
 
-
 const isDockerHost = (GB_CD_CONTROLLER_TYPE || ``).toLowerCase() === `docker`
 const controllerHost = isDockerHost
   ? getDindHost()

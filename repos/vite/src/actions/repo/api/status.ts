@@ -98,6 +98,7 @@ export const statusRepo = async ({
   } = await apiRequest<TApiRepoResp>({
     method: 'GET',
     url: `/repo/status`,
+    // Fix this, don't used the port number directly, WTF man?
     headers: routes?.[`7006`]?.headers,
     params: {...params, ...savedRepo?.git},
   })

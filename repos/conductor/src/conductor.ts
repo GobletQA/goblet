@@ -25,7 +25,6 @@ export class Conductor {
     this.rateLimitMap = {}
     this.containerTimeoutMap = {}
     this.config = buildConfig(config)
-
     this.controller = getController(this, this.config.controller)
 
     config.images
@@ -162,7 +161,7 @@ export class Conductor {
    * Gets the routeData from the controller
    * Response matches the API from http-proxy-middleware#router as a method
    */
-  async proxyRouter(req:Request) {
+  proxyRouter(req:Request) {
     // TODO: add rate limiting for requests
     // this.handleRateLimit(req)
     const routeData = this.controller.getRoute(req)

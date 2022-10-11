@@ -46,7 +46,7 @@ export const mapRequestHeaders = (
       const lower = key.toLowerCase()
       lower === 'host'
         ? proxyReq.setHeader(key, req.headers[ForwardHostHeader])
-        : req.headers[key] &&  proxyReq.setHeader(key, req.headers[key])
+        : req.headers[key] && proxyReq.setHeader(key, req.headers[key])
     })
 
 }

@@ -33,7 +33,6 @@ const {
   // Salting the user hash string. Not intended to be secure, just anonymous
 } = process.env
 
-
 /**
  * Helper to generate the options for connecting to the controller (i.e. docker)
  */

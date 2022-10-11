@@ -48,7 +48,10 @@ export const generateRoute = ({
   containerPort:cPort,
 }:TGenRoute) => {
 
-  const proxyPort = conductor?.config?.proxy?.port
+  const proxyPort = conductor?.controller?.config?.type === `Kube`
+    ? hostPort
+    : conductor?.config?.proxy?.port
+
   const proto = getProtocol(cPort)
 
   return {

@@ -129,7 +129,7 @@ env:
 
   # Conductor controller validation
   GB_CD_VALIDATION_KEY: "gb-cd-1234567"
-  GB_CD_VALIDATION_HEADER: GB-cd-Validation-Key
+  GB_CD_VALIDATION_HEADER: GB-CD-Validation-Key
 
 
   # --- Certs ENVs --- #
