@@ -12,16 +12,17 @@ const routesFromContainer = (
   const userHash = container.labels[ConductorUserHashLabel]
   if(!userHash) return
 
-  controller.routes[userHash] = generateRoutes(
-    container.ports,
-    controller.conductor,
+  controller.routes[userHash] = generateRoutes({
     userHash,
-    {
+    ports: container.ports,
+    conductor: controller.conductor,
+    meta: {
       id: container.id,
+      host: container.host,
       name: container.name,
       state: container.state,
     }
-  )
+  })
 
 }
 

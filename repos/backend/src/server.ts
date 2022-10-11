@@ -7,6 +7,7 @@ import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import {
   setupRouters,
+  setupTestUser,
   setupEndpoints,
   setupConductor,
 } from '@GBE/middleware'
@@ -67,6 +68,8 @@ export const initApi = async () => {
   setupRouters(app)
   setupStatic(app)
   validateUser(app, `/repo\/*`, `async`)
+  // Only for dev
+  // setupTestUser(app)
   await setupEndpoints()
   setupLoggerErr(app)
 

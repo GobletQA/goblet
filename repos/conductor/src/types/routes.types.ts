@@ -1,4 +1,5 @@
-import type { TPort } from './ports.types'
+import type { TPort, TPortsMap } from './ports.types'
+import type { Conductor } from '../conductor'
 import type { TUserHash, TContainerState } from './helpers.types'
 
 type TPublicUrl = string
@@ -34,6 +35,7 @@ export type TProxyRoutes = {
 }
 
 export type TContainerMeta = {
+  host: string
   id: TContainerId
   name: TContainerName
   state: TContainerState
@@ -45,11 +47,27 @@ export type TPublicUrls = {
 
 export type TRouteMeta = {
   error?: string
-  meta?: TContainerMeta
+  meta: TContainerMeta
   routes: Record<TContainerPort, TProxyRoute>
 }
 
 
 export type TControllerRoutes = {
   [key:TUserHash]: TRouteMeta
+}
+
+
+export type TGenRoute = {
+  hostPort:TPort,
+  userHash:TUserHash,
+  containerPort:TPort,
+  conductor:Conductor,
+  meta: TContainerMeta
+}
+
+export type TGenRoutes = {
+  ports:TPortsMap,
+  userHash:TUserHash,
+  conductor:Conductor,
+  meta: TContainerMeta
 }

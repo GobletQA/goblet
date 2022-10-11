@@ -77,6 +77,7 @@ const devRouter = (NODE_ENV === `local` || Boolean(GB_LOCAL_DEV_MODE === 'true')
     ? {
         meta: {
           state: `Running`,
+          host: controllerHost,
           id: GB_SC_DEPLOYMENT,
           name: GB_SC_DEPLOYMENT,
         },

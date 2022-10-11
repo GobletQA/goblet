@@ -1,7 +1,7 @@
 import jwt from 'express-jwt'
 import { Express } from 'express'
 
-export const setupJWT = (app:Express, bypassRoutes:string[]) => {
+export const setupJWT = (app:Express, bypassRoutes:(string|RegExp)[]) => {
   const config = app.locals.config.server
   const { secret, algorithms, credentialsRequired } = config.jwt
 

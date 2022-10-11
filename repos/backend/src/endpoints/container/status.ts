@@ -14,7 +14,7 @@ export const statusContainer = async (req:Request, res:Response) => {
     query: { ...req?.query },
     body: { ...req?.body, ensure: true },
     params: { ...req?.params, imageRef },
-  }, req?.user?.subdomain)
+  }, req?.user?.subdomain || res?.locals?.subdomain)
 
   return apiRes(res, status)
 }

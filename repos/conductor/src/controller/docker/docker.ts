@@ -14,6 +14,7 @@ import {
   TDockerConfig,
   TContainerMap,
   TContainerInfo,
+  TContainerMeta,
   TContainerRoute,
   TContainerInspect
 } from '@gobletqa/conductor/types'
@@ -27,6 +28,7 @@ import { buildImgUri } from './image/buildImgUri'
 import { buildPorts } from './container/buildPorts'
 import { isObj, isEmptyColl } from '@keg-hub/jsutils'
 import { Logger } from '@gobletqa/shared/libs/logger'
+import { resolveHost } from './container/resolveHost'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
 import { ConductorUserHashLabel } from '../../constants'
 import { waitRetry } from '@gobletqa/shared/utils/waitRetry'
@@ -62,6 +64,7 @@ const containerStart = async (
       state: `Running`,
       id: containerInspect.Id,
       name: containerInspect.Name,
+      host: resolveHost(dockerInstance),
     }
   }
 }
@@ -94,7 +97,7 @@ export class Docker extends Controller {
 
     const id = message?.id as string
     const containerInspect = await this.docker.getContainer(id).inspect() as TContainerInspect
-    const mapped = buildContainerMap(containerInspect)
+    const mapped = buildContainerMap(containerInspect, this)
     this.containerMaps[id] = mapped
 
     Logger.info(`Waiting 5 seconds to hydrate container...`)
@@ -135,7 +138,7 @@ export class Docker extends Controller {
       }
 
       const containerInspect = await this.docker.getContainer(container.Id).inspect()
-      const mapped = buildContainerMap(containerInspect)
+      const mapped = buildContainerMap(containerInspect, this)
       acc[container.Id] = mapped
 
       return acc
@@ -159,12 +162,13 @@ export class Docker extends Controller {
 
     this.routes[DevUserHash] = Object.entries(this.config.devRouter.routes)
       .reduce((acc, [port, config]) => {
-        acc.routes[port] = generateRoute(
-          config.port,
-          config.containerPort,
-          this.conductor,
-          DevUserHash
-        )
+        acc.routes[port] = generateRoute({
+          userHash: DevUserHash,
+          conductor: this.conductor,
+          containerPort: config.port,
+          hostPort: config.containerPort,
+          meta: this.config.devRouter.meta,
+        })
 
         return acc
       }, { routes: {}, meta: this.config.devRouter.meta } as TRouteMeta)
@@ -336,20 +340,24 @@ export class Docker extends Controller {
       urls
     )
 
-    // Generate the urls for accessing the container
-    Logger.info(`Generating container urls...`)
-    const routeMeta = generateRoutes(
-      portData.ports,
-      this.conductor,
-      userHash,
-      { state: `Creating` }
-    )
-    this.routes[userHash] = routeMeta
-
     // Call the method to start the container, but don't wait for it to finish
     // This way we can respond to the FE more quickly
     // While the container starts in the background
     containerStart(this, image, userHash, containerConf)
+
+    // Generate the urls for accessing the container
+    Logger.info(`Generating container urls...`)
+    const routeMeta = generateRoutes({
+      ports: portData.ports,
+      conductor: this.conductor,
+      userHash: userHash,
+      // TODO: add the host for dind
+      meta: {
+        state: `Creating`,
+        host: resolveHost(this),
+      } as TContainerMeta
+    })
+    this.routes[userHash] = routeMeta
 
     return this.routes[userHash]
   }

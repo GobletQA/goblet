@@ -1,5 +1,4 @@
 import type { Conductor } from '@gobletqa/conductor/conductor'
-import { inDocker } from '@keg-hub/cli-utils'
 import {
   ForwardHostHeader,
   ForwardPortHeader,
@@ -10,11 +9,12 @@ import {
   TPort,
   TPortsMap,
   TUserHash,
+  TGenRoute,
   TRouteMeta,
+  TGenRoutes,
   TPublicUrls,
-  TContainerMeta,
 } from '@gobletqa/conductor/types'
-const isDocker = inDocker()
+
 
 /**
  * Figure out a better way to set http vs https
@@ -31,6 +31,7 @@ export const generateExternalUrl = (
   userHash:TUserHash,
   conductor:Conductor,
 ) => {
+
   const { domain, subdomain } = conductor?.config
   return `${hostPort}.${userHash}.${subdomain}.${domain}`
 }
@@ -39,22 +40,19 @@ export const generateExternalUrl = (
 /**
  * Builds a route used by the proxy to forward requests
  */
-export const generateRoute = (
-  cPort:TPort,
-  hostPort:TPort,
-  conductor:Conductor,
-  userHash:TUserHash
-) => {
+export const generateRoute = ({
+  meta,
+  hostPort,
+  userHash,
+  conductor,
+  containerPort:cPort,
+}:TGenRoute) => {
 
   const proxyPort = conductor?.config?.proxy?.port
   const proto = getProtocol(cPort)
-  const { host:dockerHost } = conductor?.controller?.config?.options
-  const host = !isDocker || !dockerHost || dockerHost.includes(`docker.sock`)
-    ? conductor?.config?.domain
-    : dockerHost
 
   return {
-    host,
+    host: meta?.host,
     port: proxyPort,
     containerPort: hostPort,
     // TODO: figure out a way to check if port is secure for ports
@@ -94,16 +92,22 @@ export const generateExternalUrls = (
  *
  * @returns {Object} - Generated Uris to access the container
  */
-export const generateRoutes = (
-  ports:TPortsMap,
-  conductor:Conductor,
-  userHash:TUserHash,
-  meta?: Partial<TContainerMeta>
-):TRouteMeta => {
+export const generateRoutes = ({
+  meta,
+  ports,
+  userHash,
+  conductor,
+}:TGenRoutes):TRouteMeta => {
 
   return Object.entries(ports)
     .reduce((acc, [cPort, hostPort]:[string, string]) => {
-      acc.routes[cPort] = generateRoute(cPort, hostPort, conductor, userHash)
+      acc.routes[cPort] = generateRoute({
+        meta,
+        userHash,
+        hostPort,
+        conductor,
+        containerPort: cPort,
+      })
 
       return acc
     }, { routes: {}, meta } as TRouteMeta)

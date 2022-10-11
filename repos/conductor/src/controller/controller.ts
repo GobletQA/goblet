@@ -62,12 +62,12 @@ export class Controller {
   }
 
   getContainer(containerRef:TContainerRef|TPodRef):TContainerMap {
-    const isStr = typeof containerRef === 'string'
+    const isRefStr = typeof containerRef === 'string'
 
     // There's an odd bug where dockerode is adding / before a named container
     // So we have to compare the name include a / on the ref
     // first remove it if it exists, then added back to it works with or without it
-    const strRef = isStr && `/${containerRef.replace(`/`, ``)}`
+    const strRef = isRefStr ? containerRef.replace(/^\//, ``) : ``
 
     if(strRef && this.containerMaps[strRef])
       return this.containerMaps[strRef]
@@ -75,7 +75,7 @@ export class Controller {
     return Object.values(this.containerMaps)
       .find((cont) => {
         const container = cont as TContainerMap
-        if(isStr)
+        if(isRefStr)
           return container?.id.startsWith(containerRef)
             || container?.name.startsWith(strRef)
         

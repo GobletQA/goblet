@@ -10,4 +10,6 @@ export const AUTH_BYPASS_ROUTES = [
   `/favicon.ico`,
   `/sockr-socket`,
   `/sockr-socket/`,
+  // For DEV Only -- remember to remove this
+  // /\/container\/.*/,
 ]
