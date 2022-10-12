@@ -45,6 +45,7 @@ export type TFCRule = {
 export type TFCItem<T=Record<any, any>> = TFCBase & {
   label?: string
   value?: any
+  path?: string
   itemProps?: T
   width?: string
   rules?: TFCRule

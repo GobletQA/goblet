@@ -72,7 +72,7 @@ export const ModalHeader = (props:TModal) => {
       alignItems="center"
       justifyContent="center"
       color="common.white"
-      bgcolor="colors.navyBlue"
+      bgcolor="grey.900"
       padding={`${gutter.padding.tQpx} ${gutter.padding.px}`}
     >
       {Icon}
@@ -145,7 +145,13 @@ export const ModalRoot = (props:TModal) => {
           {Title || (title && (<ModalHeader {...props} />))}
 
           {Content || (
-            <DialogContent id="gb-modal-description" dividers {...contentProps} >
+            <DialogContent
+              id="gb-modal-description"
+              sx={{
+                borderTop: "2px solid #00b8d4"
+              }}
+              dividers {...contentProps}
+            >
               {children}
               {text && (<DialogContentText>{text}</DialogContentText>)}
             </DialogContent>

@@ -1,8 +1,6 @@
 import type { TReposState } from '@reducers'
 import type { TFConfig, TFCRow } from '@components/Form'
-
-
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRepos, } from '@store'
 import { exists } from '@keg-hub/jsutils'
 import { getRepos } from '@actions/repo/api/getRepos'
@@ -21,6 +19,13 @@ const ConnectForm:TFConfig = {
       items: []
     }
   ]
+}
+
+type BranchSelect = {
+  repo: number
+  built:Record<any, any>
+  repos:Record<any, any>
+  isConnecting:boolean
 }
 
 const useBuildRepos = (repos:TReposState) => {
@@ -54,13 +59,6 @@ const useRepoSelect = (repos:TReposState) => {
   return { getRepo, built }
 }
 
-type BranchSelect = {
-  repo: number
-  built:Record<any, any>
-  repos:Record<any, any>
-  isConnecting:boolean
-}
-
 const useBranchSelect = ({
   repo,
   built,
@@ -82,87 +80,42 @@ const useBranchSelect = ({
   }, built)
 }
 
-const useNewBranch = () => {
-  
-}
-
-const useBranchName = () => {
-  
-}
-
-const config = {}
-const row = {
-  type: EItemParent.row,
-  items: [
-    {
-      type: `input`,
-      width: `full`,
-      required: true,
-      label: `Repo URL`,
-      key: `repo-url-select`,
-      placeholder: `Select a repo to connect`,
-    },
-    {
-      type: `input`,
-      width: `full`,
-      required: true,
-      label: `Branch`,
-      key: `branch-name-select`,
-      placeholder: `Select the branch`,
-    }
-  ]
-} as TFCRow
-
-const opts = { config, parent: 'rows' }
-const useBuildForm = () => {
-  const resp = useBuildInputs(row, opts)
-  console.log(`------- resp -------`)
-  console.log(resp)
-  
-  return resp
-  
-
-}
-
-
 export const useConnectForm = () => {
-  return useBuildForm()
-  
-  // const repos = useRepos()
+  const repos = useRepos()
 
-  // const [loading, setLoading] = useState(true)
-  // const [isConnecting, setIsConnecting] = useState(false)
-  // const [connectError, setConnectError] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [isConnecting, setIsConnecting] = useState(false)
+  const [connectError, setConnectError] = useState(false)
 
-  // const onError = useCallback((error:any) => {
-  //   setIsConnecting(false)
-  //   error && setConnectError(error.message)
-  // }, [])
+  const onError = useCallback((error:any) => {
+    setIsConnecting(false)
+    error && setConnectError(error.message)
+  }, [])
 
-  // const { getRepo, built } = useRepoSelect(repos)
-  // const repo = getRepo()
-  // const resp = useBranchSelect({
-  //   repo,
-  //   repos,
-  //   built,
-  //   isConnecting
-  // })
+  const { getRepo, built } = useRepoSelect(repos)
+  const repo = getRepo()
+  const resp = useBranchSelect({
+    repo,
+    repos,
+    built,
+    isConnecting
+  })
 
-  // // On initial load of the component, load the users repos
-  // useEffect(() => {
-  //   if(!loading) return
-  //   if(!repos || !repos.length) getRepos()
-  //   else setLoading(false)
-  // }, [repos])
+  // On initial load of the component, load the users repos
+  useEffect(() => {
+    if(!loading) return
+    if(!repos || !repos.length) getRepos()
+    else setLoading(false)
+  }, [repos])
 
-  // return {
-  //   ...resp,
-  //   loading,
-  //   setLoading,
-  //   onError,
-  //   connectError,
-  //   isConnecting,
-  //   setIsConnecting,
-  // }
+  return {
+    ...resp,
+    loading,
+    setLoading,
+    onError,
+    connectError,
+    isConnecting,
+    setIsConnecting,
+  }
 
 }

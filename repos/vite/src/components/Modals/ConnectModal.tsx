@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import { useConnectForm } from '@hooks'
 import { ModalTypes } from '@constants'
 import { FormGen } from '@components/Form'
-import { ConnectIcon } from '@components/Icons'
+import { PlugIcon } from '@components/Icons'
 
 import { ModalRoot } from '@components/ModalManager/ModalRoot'
 export type TConnectModal = ComponentProps<typeof ModalRoot>
@@ -38,6 +38,6 @@ ConnectModal.modalProps = {
   title: `Connect Repo`,
   manualClose: false,
   titleProps: {
-    Icon: (<ConnectIcon />)
+    Icon: (<PlugIcon />)
   }
 }

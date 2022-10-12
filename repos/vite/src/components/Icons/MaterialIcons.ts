@@ -14,6 +14,7 @@ import SyncIcon from '@mui/icons-material/Sync'
 import ErrorIcon from '@mui/icons-material/Error'
 import PendingIcon from '@mui/icons-material/Pending'
 import InfoIcon from '@mui/icons-material/Info'
+import PlugIcon from '@mui/icons-material/ElectricalServices'
 export {
   Steps,
   Globe,
@@ -21,6 +22,7 @@ export {
   MapPoint,
   RuleCheck,
   Settings,
+  PlugIcon,
   GitHubIcon,
   ProfileIcon,
   SettingsIcon,

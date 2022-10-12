@@ -16,20 +16,18 @@ import Paper from '@mui/material/Paper'
 import { FormLoading } from './FormLoading'
 import { InputTypes } from './Inputs/InputTypes'
 
-const generateKeys = (props:TFCBase, child:TFCBase) => {
+const generateKeys = (props:any, child:TFCItem|TFCSection|TFCRow|TFCBase) => {
   const {
     id,
     name,
     parentKey,
   } = props
 
-  const parent = `${parentKey || ``}-${id || props.key || name || ``}`.trim()
-  const full = `${parent}-${child.id || child.key || name || ``}`
+  const parent = `${parentKey || ``}-${id || props.path || name || ``}`.trim()
+  const childKey = child.id || (child as TFCItem)?.path || (child as TFCItem)?.placeholder || (child as TFCItem)?.label || name || ``
+  const key = childKey && `${parent}-${childKey}`
 
-  return {
-    key: full,
-    parentKey: full
-  }
+  return { key, parentKey: key || `-${parent}` }
 }
 
 const RenderItem = (props:TFCItem) => {
@@ -54,15 +52,19 @@ const RenderRow = (props:TFCRow) => {
     RowNode=Grid,
   } = props
 
+
   return (
     <RowNode item xs={size} {...rowProps} >
-      {items && items.map((item, idx) => (
-        <RenderItem
-          key={idx}
-          {...generateKeys(props, item)}
-          {...item}
-        />
-      ))}
+      {items && items.map((item) => {
+        const {key, ...rest} = generateKeys(props, item)
+        return (
+          <RenderItem
+            {...rest}
+            {...item}
+            key={key || item.key}
+          />
+        )
+      })}
       {sections && sections.map((section) => (
         <RenderSection
           {...generateKeys(props, section)}
