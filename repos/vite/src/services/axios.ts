@@ -64,7 +64,7 @@ export const networkRequest = async <T=Record<any, any>>(request:TRequest|string
     const builtRequest = buildRequest(request)
 
     // Log the request when in DEV environment
-    ENVIRONMENT === `local` && console.log(`Network Request:\n`, builtRequest)
+    // ENVIRONMENT === `local` && console.log(`Network Request:\n`, builtRequest)
 
     // builds request and pull out the data and status property
     const { data, status } = await axios(builtRequest) as AxiosResponse<T>

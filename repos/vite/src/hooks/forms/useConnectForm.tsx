@@ -1,10 +1,10 @@
 import type { TReposState } from '@reducers'
-import type { TFConfig, TFCRow } from '@components/Form'
+import type { TFConfig, TFCRow } from '@components/FormGen'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRepos, } from '@store'
 import { exists } from '@keg-hub/jsutils'
 import { getRepos } from '@actions/repo/api/getRepos'
-import { EItemParent, useBuildInput, useBuildInputs } from '@components/Form'
+import { EItemParent, useBuildInput, useBuildInputs } from '@components/FormGen'
 
 
 const ConnectForm:TFConfig = {
@@ -44,7 +44,7 @@ const useRepoSelect = (repos:TReposState) => {
   const buildRepos = useBuildRepos(repos)
   const {
     getValue:getRepo,
-    ...built
+    ...repoConf
   } = useBuildInput({
     path: `rows.0.items.0`,
     type: `select`,
@@ -56,7 +56,7 @@ const useRepoSelect = (repos:TReposState) => {
     placeholder: `Select a repo to connect`,
   }, { config: ConnectForm })
 
-  return { getRepo, built }
+  return { getRepo, repoConf }
 }
 
 const useBranchSelect = ({
@@ -67,7 +67,10 @@ const useBranchSelect = ({
 }:BranchSelect) => {
   const buildBranches = useCallback(() => repos[repo]?.branches, [repos, repo])
 
-  return useBuildInput({
+  const {
+    getValue:getBranch,
+    ...config
+  } = useBuildInput({
     path: `rows.1.items.0`,
     type: `select`,
     width: `full`,
@@ -78,6 +81,8 @@ const useBranchSelect = ({
     placeholder: `Select the branch`,
     disabled: !exists(repo) || isConnecting,
   }, built)
+  
+  return { getBranch, branchConf:config }
 }
 
 export const useConnectForm = () => {
@@ -92,14 +97,20 @@ export const useConnectForm = () => {
     error && setConnectError(error.message)
   }, [])
 
-  const { getRepo, built } = useRepoSelect(repos)
+  const { getRepo, repoConf } = useRepoSelect(repos)
   const repo = getRepo()
-  const resp = useBranchSelect({
+
+  const {
+    getBranch,
+    branchConf
+  } = useBranchSelect({
     repo,
     repos,
-    built,
-    isConnecting
+    isConnecting,
+    built: repoConf,
   })
+
+  const branch = getBranch()
 
   // On initial load of the component, load the users repos
   useEffect(() => {
@@ -109,7 +120,9 @@ export const useConnectForm = () => {
   }, [repos])
 
   return {
-    ...resp,
+    ...branchConf,
+    repo,
+    branch,
     loading,
     setLoading,
     onError,

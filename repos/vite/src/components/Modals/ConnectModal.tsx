@@ -1,9 +1,11 @@
 import type { ComponentProps } from 'react'
 
+import { useState } from 'react'
 import Box from '@mui/material/Box'
-import { useConnectForm } from '@hooks'
+
 import { ModalTypes } from '@constants'
-import { FormGen } from '@components/Form'
+
+
 import { PlugIcon } from '@components/Icons'
 
 import { ModalRoot } from '@components/ModalManager/ModalRoot'
@@ -11,13 +13,8 @@ export type TConnectModal = ComponentProps<typeof ModalRoot>
 
 export const ConnectModal = (props:TConnectModal) => {
   const { ModalMessage } = props
-
-  const {
-    config,
-    loading,
-    isConnecting,
-    connectError
-  } = useConnectForm()
+  const [isConnecting, setIsConnecting] = useState(false)
+  const [connectError, setConnectError] = useState(``)
 
   return (
     <Box>
@@ -25,10 +22,7 @@ export const ConnectModal = (props:TConnectModal) => {
         error={connectError}
         loading={isConnecting && 'Connecting Repo ...'}
       />
-      <FormGen
-        config={config}
-        loading={loading}
-      />
+
     </Box>
   )
 }
