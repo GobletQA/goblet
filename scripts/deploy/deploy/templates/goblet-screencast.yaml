@@ -97,8 +97,8 @@ spec:
             value: {{ env.PLAYWRIGHT_BROWSERS_VERSION }}
           - name: GB_TOKEN
             value: {{ env.GB_TOKEN }}
-          - name: GB_SH_MOUNT_ROOT
-            value: {{ env.GB_SH_MOUNT_ROOT }}
+          - name: GOBLET_MOUNT_ROOT
+            value: {{ env.GOBLET_MOUNT_ROOT }}
           - name: GB_SH_LOCAL_MOUNT
             value: {{ env.GB_SH_LOCAL_MOUNT }}
           - name: GB_SERVER_ORIGINS

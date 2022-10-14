@@ -39,9 +39,13 @@ env:
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
   PLAYWRIGHT_BROWSERS_VERSION: 1.27.0
 
+# ---- Goblet Action Shared ENVs ---- #
+# These ENVs should be overwritten by the github action
+  GOBLET_MOUNT_ROOT: /goblet/repos
+
 # ---- Goblet Shared ENVs ---- #
+
   GB_TOKEN: a-10K3n-g0bLe1
-  GB_SH_MOUNT_ROOT: /goblet/repos
   GB_SH_LOCAL_MOUNT: goblet-local/current
   GB_SERVER_ORIGINS: 'localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app'
   # TODO: @lance-tipton - Make this more dynamic - value comes from firebase?
