@@ -1,134 +1,82 @@
-import type { TReposState } from '@reducers'
-import type { TFConfig, TFCRow } from '@components/FormGen'
-import { useEffect, useState, useCallback, useRef } from 'react'
-import { useRepos, } from '@store'
-import { exists } from '@keg-hub/jsutils'
-import { getRepos } from '@actions/repo/api/getRepos'
-import { EItemParent, useBuildInput, useBuildInputs } from '@components/FormGen'
+import type { ComponentProps } from 'react'
+import type { THFormHelpers } from './useFormHelpers'
 
+import { useMemo } from 'react'
+import { deepMerge } from '@keg-hub/jsutils'
+import { useFormHelpers } from './useFormHelpers'
 
-const ConnectForm:TFConfig = {
-  name: `Feature Builder`,
-  rows: [
-    {
-      id: `select-repo`,
-      items: []
+const formProps = {
+  form: {
+    values: {
+      repo: ``,
+      branch: ``,
     },
-    {
-      id: `select-branch`,
-      items: []
+  },
+  repo: {
+    required: true,
+    name: `repo`,
+    label: `Select Repo`,
+    textFieldProps: {
+      placeholder: `Select a repo to connect to...`,
+    },
+    rules: {
+      required: `Please select a repository`
     }
-  ]
-}
-
-type BranchSelect = {
-  repo: number
-  built:Record<any, any>
-  repos:Record<any, any>
-  isConnecting:boolean
-}
-
-const useBuildRepos = (repos:TReposState) => {
-  return useCallback(() => {
-    return !repos || !repos.length
-      ? []
-      : repos.map((repo, idx) => ({
-          value: idx,
-          key: repo.url || repo.name,
-          label: repo.url || repo.name,
-        }))
-  }, [repos])
-}
-
-const useRepoSelect = (repos:TReposState) => {
-  const buildRepos = useBuildRepos(repos)
-  const {
-    getValue:getRepo,
-    ...repoConf
-  } = useBuildInput({
-    path: `rows.0.items.0`,
-    type: `select`,
-    width: `full`,
+  },
+  branch: {
     required: true,
-    label: `Repo URL`,
-    key: `repo-url-select`,
-    buildOptions: buildRepos,
-    placeholder: `Select a repo to connect`,
-  }, { config: ConnectForm })
-
-  return { getRepo, repoConf }
+    name: `branch`,
+    label: `Select Branch`,
+    textFieldProps: {
+      placeholder: `Select the branch to use...`,
+    },
+    rules: {
+      required: `Please select a branch`
+    }
+  },
+  createBranch: {
+    name: `createBranch`,
+    label: `Create Branch`,
+  },
+  branchName: {
+    name: `branchName`,
+    label: `Branch Name`,
+    textFieldProps: {
+      placeholder: `Enter a branch name...`,
+    },
+  }
 }
 
-const useBranchSelect = ({
-  repo,
-  built,
-  repos,
-  isConnecting,
-}:BranchSelect) => {
-  const buildBranches = useCallback(() => repos[repo]?.branches, [repos, repo])
+export type TConnectFormProps = {
+  form: typeof formProps
+}
 
-  const {
-    getValue:getBranch,
-    ...config
-  } = useBuildInput({
-    path: `rows.1.items.0`,
-    type: `select`,
-    width: `full`,
-    required: true,
-    label: `Branch`,
-    key: `branch-name-select`,
-    buildOptions: buildBranches,
-    placeholder: `Select the branch`,
-    disabled: !exists(repo) || isConnecting,
-  }, built)
+export type TConnectForm = THFormHelpers & {
+  values?:Record<any, any>
+}
+
+export const useConnectForm = (props:TConnectForm) => {
+  const { values } = props
+
+  const form = useMemo(() => {
+    return deepMerge<typeof formProps>(formProps, { form: { values } })
+  }, [values])
   
-  return { getBranch, branchConf:config }
-}
-
-export const useConnectForm = () => {
-  const repos = useRepos()
-
-  const [loading, setLoading] = useState(true)
-  const [isConnecting, setIsConnecting] = useState(false)
-  const [connectError, setConnectError] = useState(false)
-
-  const onError = useCallback((error:any) => {
-    setIsConnecting(false)
-    error && setConnectError(error.message)
-  }, [])
-
-  const { getRepo, repoConf } = useRepoSelect(repos)
-  const repo = getRepo()
-
   const {
-    getBranch,
-    branchConf
-  } = useBranchSelect({
-    repo,
-    repos,
-    isConnecting,
-    built: repoConf,
-  })
-
-  const branch = getBranch()
-
-  // On initial load of the component, load the users repos
-  useEffect(() => {
-    if(!loading) return
-    if(!repos || !repos.length) getRepos()
-    else setLoading(false)
-  }, [repos])
-
+    onSuccess,
+    isLoading:isConnecting,
+    loadingError:connectError,
+    setIsLoading:setIsConnecting,
+    setLoadingError:setIsConnectError,
+  } = useFormHelpers(props)
+  
   return {
-    ...branchConf,
-    repo,
-    branch,
-    loading,
-    setLoading,
-    onError,
+    form,
+    onSuccess,
     connectError,
     isConnecting,
     setIsConnecting,
+    setIsConnectError
   }
-
+  
 }

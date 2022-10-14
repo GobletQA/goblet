@@ -1,14 +1,15 @@
+import type { ComponentProps } from 'react'
+import { AutocompleteElement } from 'react-hook-form-mui'
 
-export type TAutoInput = {
+export type TAutoInput = ComponentProps<typeof AutocompleteElement> & {
   
 }
 
 
 export const AutoInput = (props:TAutoInput) => {
-  
+  const { ...rest } = props
+
   return (
-    <div>
-      AutoInput
-    </div>
+    <AutocompleteElement {...rest} />
   )
 }

@@ -1,13 +1,13 @@
-export type TSelect = {
+import type { ComponentProps } from 'react'
+import { SelectElement } from 'react-hook-form-mui'
+
+export type TSelect = ComponentProps<typeof SelectElement> & {
   
 }
 
-
 export const Select = (props:TSelect) => {
-  
+  const { ...rest } = props
   return (
-    <div>
-      Select
-    </div>
+    <SelectElement {...rest} />
   )
 }

@@ -1,14 +1,14 @@
+import type { ComponentProps } from 'react'
+import { CheckboxElement } from 'react-hook-form-mui'
 
-export type TCheckbox = {
+export type TCheckbox = ComponentProps<typeof CheckboxElement> & {
   
 }
 
-
 export const Checkbox = (props:TCheckbox) => {
-  
+  const { ...rest } = props
+
   return (
-    <div>
-      Checkbox
-    </div>
+    <CheckboxElement {...rest} />
   )
 }
