@@ -1,5 +1,5 @@
 const path = require('path')
-const { dockerCmd } = require('@keg-hub/cli-utils')
+const { dockerCmd, Logger } = require('@keg-hub/cli-utils')
 const { noPropArr, toBool } = require('@keg-hub/jsutils')
 const { ARTIFACT_SAVE_OPTS } = require('@gobletqa/shared/constants')
 const { runCommands } = require('@GTasks/utils/helpers/runCommands')
@@ -52,7 +52,7 @@ const buildBrowserCmd = (args) => {
 
     // Only copy the reports if testReport option is set, otherwise just return
     const saveArtifact = shouldSaveArtifact(params.testReport, testStatus)
-    if(!saveArtifact) return
+    if(!saveArtifact) return resp.exitCode
 
     // Copy the report after the tests have run, because it doesn't get created until the very end
     await copyArtifactToRepo(

@@ -26,6 +26,7 @@ const clearTestMetaDirs = () => {
       }
       catch(err){
         Logger.log(`Error cleaning temp dir, skipping!`)
+        Logger.log(err.message)
       }
 
     })

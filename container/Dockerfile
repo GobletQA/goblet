@@ -32,31 +32,6 @@ RUN yarn build:docker
 # ---- Run Stage  ---- #
 FROM $GB_IMAGE_FROM as goblet-runner
 WORKDIR /goblet/app
-ENV HOME=/root \
-    DISPLAY=:0.0 \
-    DEBUG=pw:api* \
-    LC_ALL=C.UTF-8 \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
-    EXPO_CLI_VERSION=5.3.2 \
-    DEBIAN_FRONTEND=noninteractive \
-    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    novnc \
-    tigervnc-standalone-server; \
-    apt-get clean && \
-    apt-get autoclean && \
-    apt-get autoremove && \
-    rm -rf /var/cache/apk/*; \
-    yarn global add pm2 expo-cli@$EXPO_CLI_VERSION; \
-    pm2 install pm2-logrotate && \
-    pm2 set pm2-logrotate:retain '7' && \
-    pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'; \
-    echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf; \
-    sysctl -p; \
-    /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd; \
-    curl -fsSL https://get.docker.com | sh
 
 ARG GB_FE_PORT=19006
 ARG GB_BE_PORT=7005
@@ -69,25 +44,26 @@ ARG GB_DD_VNC_PROXY_PORT=2123
 ARG GB_VNC_SERVER_PORT=26370
 ARG PLAYWRIGHT_BROWSERS_VERSION
 
-ENV GB_FE_PORT=$GB_FE_PORT \
+ENV HOME=/root \
+    DISPLAY=:0.0 \
+    DEBUG=pw:api* \
+    LC_ALL=C.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    EXPO_CLI_VERSION=5.3.2 \
+    DEBIAN_FRONTEND=noninteractive \
+    GB_FE_PORT=$GB_FE_PORT \
     GB_BE_PORT=$GB_BE_PORT \
     GB_SC_PORT=$GB_SC_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
+    GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT \
     GB_DD_WS_PROXY_PORT=$GB_DD_WS_PROXY_PORT \
     GB_DD_API_PROXY_PORT=$GB_DD_API_PROXY_PORT \
     GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT \
-    GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-    PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION
+    PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION \
+    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
 
-COPY --from=goblet-build /goblet/app/ .
-RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
-    ln -s /goblet/app/node_modules /goblet/node_modules
-
-COPY ./container/scripts/docker/be.entrypoint.sh /entrypoint.sh
-
-# Helper script to auto-login to set the DOCKER_HOST env and auto-login
-# Only runs when GB_SUB_REPO env is conductor
 RUN <<EOF
   set -eux;
   # Enabel all sources
@@ -95,23 +71,39 @@ RUN <<EOF
   # Preinstall any dependecies for settting up the image
   apt-get update && apt-get install --yes --no-install-recommends \
     curl \
+    novnc \
     openssh-client \
-    ca-certificates
+    ca-certificates \
+    tigervnc-standalone-server
+
+  yarn global add pm2
+  pm2 install pm2-logrotate
+  pm2 set pm2-logrotate:retain '7'
+  pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'
+  echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf
+  sysctl -p
+  /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
+  curl -fsSL https://get.docker.com | sh
 
   # Download kubectl
   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
   chmod +x kubectl
   mv ./kubectl /usr/bin/kubectl
 
-  rm -rf /var/lib/apt/lists/*
-  rm -rf /var/lib/apt/lists.d/*
-  apt-get autoremove
   apt-get clean
   apt-get autoclean
+  apt-get autoremove
+  rm -rf /var/lib/apt/lists/*
+  rm -rf /var/lib/apt/lists.d/*
 
-  chmod a+x /entrypoint.sh
-  chmod a+x /goblet/app/container/initialize.sh
 EOF
+
+COPY --from=goblet-build /goblet/app/ .
+RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
+    ln -s /goblet/app/node_modules /goblet/node_modules && \
+    mv /goblet/app/container/scripts/docker/be.entrypoint.sh /entrypoint.sh && \
+    chmod a+x /entrypoint.sh && \
+    chmod a+x /goblet/app/container/initialize.sh
 
 EXPOSE $GB_FE_PORT
 EXPOSE $GB_BE_PORT

@@ -1,6 +1,4 @@
-const babelJest = require('babel-jest')
-const { createHash } = require('crypto')
-const {getCacheKey} = babelJest.createTransformer()
+const { default:createCacheKeyFunction } = require('@jest/create-cache-key-function')
 
 /**
  * Custom jest transformer for parsing feature files
@@ -9,14 +7,7 @@ const {getCacheKey} = babelJest.createTransformer()
  * @return {Object} - Jest custom transformer model object
  */
 module.exports = {
-  getCacheKey(fileData, filename, ...rest) {
-    const babelCacheKey = getCacheKey(fileData, filename, ...rest)
-
-    return createHash('md5')
-      .update(babelCacheKey)
-      .update('goblet')
-      .digest('hex')
-  },
+  getCacheKey: createCacheKeyFunction([], []),
   process(src) {
     return {
       code: [
