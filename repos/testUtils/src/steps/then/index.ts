@@ -1,0 +1,13 @@
+export * from './elementCount'
+export * from './pageTitleIs'
+export * from './pageTitleIsNot'
+export * from './containsText'
+export * from './exactText'
+export * from './compareSavedElement'
+export * from './compareSavedElementCount'
+export * from './getCheckedState'
+export * from './descendentContainsText'
+export * from './descendentExactText'
+export * from './getSelectedOption'
+export * from './getAttribute'
+

@@ -45,5 +45,4 @@ module.exports = {
   setContextCookie,
   defaultCookieFile,
   saveContextCookie,
-  
 }

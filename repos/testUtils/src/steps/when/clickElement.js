@@ -5,7 +5,7 @@ const { getPage, getLocator } = require('@GTU/Playwright')
  * Click the element matching `selector`
  * @param {String} selector - valid playwright selector
  */
-const clickElement = async selector => {
+const clickElementHandler = async selector => {
   const page = await getPage()
   // Actionability checks (Auto-Waiting) seem to fail in headless mode
   // So we use locator.waitFor to ensure the element exist on the dom
@@ -16,6 +16,7 @@ const clickElement = async selector => {
   })
 
 }
+
 
 const meta = {
   module: `clickElement`,
@@ -33,10 +34,10 @@ const meta = {
   ],
 }
 
-When('I click {string}', clickElement, meta)
-When('I click the {string}', clickElement, meta)
-When('I click the element {string}', clickElement, meta)
+When('I click {string}', clickElementHandler, meta)
+When('I click the {string}', clickElementHandler, meta)
+When('I click the element {string}', clickElementHandler, meta)
 
 module.exports = {
-  clickElement,
+  clickElementHandler,
 }
