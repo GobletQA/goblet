@@ -14,7 +14,7 @@
 
 ## Dependencies
 * [socket.io](https://www.npmjs.com/package/socket.io)
-* [@keg-hub/spawn-cmd](https://www.npmjs.com/package/@keg-hub/spawn-cmd)
+* [@keg-hub/args-parse](https://www.npmjs.com/package/@keg-hub/args-parse)
 
 ## Use
 **Backend**

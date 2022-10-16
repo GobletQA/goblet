@@ -1,5 +1,5 @@
 const { loadEnvs } = require('../envs/loadEnvs')
-const { noOpObj, exists, deepMerge } = require('@keg-hub/jsutils')
+const { noOpObj, exists, deepMerge, get, styleCase } = require('@keg-hub/jsutils')
 
 /**
  * Cache holder for the app contexts, prefix and deployments
@@ -11,10 +11,11 @@ let __DEPLOYMENT_OPTS
 
 /**
  * Builds the short and long context from app config
- * @param {Object} acc - 
+ * @param {Object} acc - Cache object that holds the app contexts and configs
  * @param {Object} contexts - Contexts object with defined app contexts
+ * @param {Object} contexts - Context config object with the configs of each app
  */
-const buildContexts = (acc, contexts) => {
+const buildContexts = (acc, contexts, data) => {
   const sorted = contexts.sort((a, b) => (b.length - a.length))
   
   const long = sorted[0]
@@ -23,7 +24,8 @@ const buildContexts = (acc, contexts) => {
   acc[short] = { keys: sorted, short, long }
   acc[long] = acc[short]
   acc.CONTEXT_LIST.push(long)
-  
+  acc.CONTEXT_CONFIGS[long] = data
+
   return acc
 }
 
@@ -45,9 +47,9 @@ const setContexts = (apps, prefix) => {
       const contexts = data?.contexts || []
       !contexts.includes(name) && contexts.shift(name)
 
-      return buildContexts(acc, contexts)
+      return buildContexts(acc, contexts, data)
 
-    }, { CONTEXT_LIST: [] })
+    }, { CONTEXT_LIST: [], CONTEXT_CONFIGS: {} })
 
 }
 
@@ -77,7 +79,7 @@ const resolveContext = (context = ``, selectors = noOpObj, fallback) => {
   const allContexts = getContexts()
 
   const found = Object.entries(allContexts).reduce((found, [ref, value]) => {
-    if(ref === 'CONTEXT_LIST') return found
+    if(ref === `CONTEXT_LIST` || ref === `CONTEXT_CONFIGS`) return found
     
     const { keys, long, short } = allContexts[ref]
 
@@ -100,7 +102,7 @@ const getDeploymentOpts = (env, envs) => {
 
   const deployOpts = Object.entries(allContexts).reduce(
     (acc, [key, value]) => {
-      if(key === 'CONTEXT_LIST') return acc
+      if(key === `CONTEXT_LIST` || key === `CONTEXT_CONFIGS`) return acc
       
       const { long, short } = allContexts[key]
 
@@ -154,12 +156,39 @@ const getLongContext = (context, fallback) => {
  * Gets an env value based on the passed in context
  */
 const getContextValue = (context, envs, postFix, fallback) => {
+  if(!context) return fallback
+
+  const upperCtx = context.toUpperCase()
+  const envCtxRef = `${__PRE}${upperCtx}_${postFix}`
+
   const shortContext = getContext(context)?.short
-  return (
-    (context && envs[`${__PRE}${context.toUpperCase()}_${postFix}`]) ||
-    (shortContext && envs[`${__PRE}${shortContext.toUpperCase()}_${postFix}`]) ||
-    fallback
+  const upperSCtx = shortContext && shortContext.toUpperCase()
+  const envSCtxRef = upperSCtx && `${__PRE}${upperSCtx}_${postFix}`
+
+  // TODO: need to merge task.config env.values with envs
+  // For now, just merging envs with task.config app env.values
+  // This means envs defined in task.config only work in tasks and not the app code
+  // Will need to re-work the loadEnvs method to include task.config env.values
+  const config = __CONTEXTS.CONTEXT_CONFIGS[context]
+    || __CONTEXTS.CONTEXT_CONFIGS[shortContext]
+
+  const taskEnvs = get(config, `envs.values`, noOpObj)
+
+  const found = (
+    // Task config envs.values are scoped so they don't have include the prefix of the app
+    // So first check if it exists in the camelCase format
+    // Then check for the explicitly defined ENV that matches ENVs in the values.yaml files
+    // Then check the envs from the values files - Eventually the two will be merged
+    // And the envs object will container them both
+    taskEnvs[styleCase(postFix)]
+    || taskEnvs[envCtxRef]
+    || taskEnvs[envSCtxRef]
+    || envs[envCtxRef]
+    || (envSCtxRef && envs[envSCtxRef])
+    || fallback
   )
+  
+  return found
 }
 
 /**

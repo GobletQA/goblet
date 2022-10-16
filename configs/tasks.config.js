@@ -94,6 +94,16 @@ module.exports = {
     app: {
       contexts: [`app`],
     },
+    action: {
+      contexts: [`action`, `act`],
+      envs: {
+        values: {
+          imageTag: `latest`,
+          image: `ghcr.io/gobletqa/goblet-action`,
+          imageFrom: `mcr.microsoft.com/playwright:v1.27.0-focal`,
+        }
+      },
+    },
     backend: {
       /**
       * Contexts to reference durning task execution

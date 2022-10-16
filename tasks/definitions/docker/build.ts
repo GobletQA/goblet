@@ -69,12 +69,17 @@ const buildImg = async (args) => {
 
   const builtTags = await resolveImgTags(params, docFileCtx, envs)
 
+  const buildParams = getDockerBuildParams(params)
+  const labels = getDockerLabels(docFileCtx, env)
+  const dockerFile = getDockerFile(docFileCtx)
+  const buildArgsArr = toBuildArgsArr(allEnvs)
+
   const cmdArgs = [
-    ...getDockerBuildParams(params),
+    ...buildParams,
     ...builtTags,
-    ...getDockerLabels(docFileCtx, env),
-    ...getDockerFile(docFileCtx),
-    ...toBuildArgsArr(allEnvs),
+    ...labels,
+    ...dockerFile,
+    ...buildArgsArr,
     `.`,
   ].filter((arg) => arg)
 
