@@ -20,6 +20,7 @@ const {
   GOBLET_WAYPOINT_DIR,
   GOBLET_ARTIFACTS_DIR,
   GOBLET_PW_METADATA_DIR,
+  GOBLET_ENVIRONMENTS_DIR,
   SUB_REPOS,
 } = require('./paths.config')
 
@@ -77,6 +78,15 @@ module.exports = {
      * @example - "/artifacts"
      */
     artifactsDir: GOBLET_ARTIFACTS_DIR,
+
+    /**
+     * Path to the environment folder
+     * Holds configuration for different environments
+     * Relative to the `<repoRoot>/<workDir>/`
+     * @type {string} - Relative Path
+     * @example - "/environments"
+     */
+    environmentsDir: GOBLET_ENVIRONMENTS_DIR,
 
     /**
      * Path to the Gherkin feature folder

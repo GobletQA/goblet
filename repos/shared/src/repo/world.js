@@ -17,8 +17,4 @@ const getWorld = config => {
 
 module.exports = {
   getWorld,
-  // This is the initial world
-  // Here for backwards compatibility
-  // Will be removed at some point
-  world: getWorld(),
 }
