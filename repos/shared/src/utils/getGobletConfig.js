@@ -151,7 +151,7 @@ const findConfig = startDir => {
 
 /**
  * Loads a goblet.config from a folder path recursively
- * @param {string} base - Folder to start the search from
+ * @param {string} [base=] - Folder to start the search from
  *
  * @return {Object?} - the goblet config if the config exists at $(cwd)/goblet.config.js, else null
  */
