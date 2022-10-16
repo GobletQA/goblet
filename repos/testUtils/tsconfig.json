@@ -33,7 +33,9 @@
       "@gobletqa/screencast": ["../screencast/src"],
       "@gobletqa/screencast/*": ["../screencast/src/*"],
       "@gobletqa/test-utils": ["src"],
-      "@gobletqa/test-utils/*": ["src/*"]
+      "@gobletqa/test-utils/*": ["src/*"],
+      "@GEnv": ["../../scripts/environment"],
+      "@GEnvironment": ["../../scripts/environment"]
     }
   },
   "include": ["src/**/*"],
