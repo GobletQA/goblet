@@ -27,11 +27,16 @@
       "@GLogs/*": ["../../logs/*"],
       "@GRepos/*": ["../../repos/*"],
       "@GConfigs/*": ["../../configs/*"],
-      "@GEnvironment": ["../../scripts/environment"],
       "@ltipton/sockr": ["../sockr"],
       "@ltipton/sockr/src": ["../sockr/src"],
       "@ltipton/sockr/src/*": ["../sockr/src/*"],
-      "@ltipton/sockr/*": ["../sockr/*"]
+      "@ltipton/sockr/*": ["../sockr/*"],
+      "@GEnv": ["../shared/src/environment/environment"],
+      "@GEnv/secrets": ["../shared/src/environment/secrets"],
+      "@GEnv/values": ["../shared/src/environment/values"],
+      "@GEnvironment": ["../shared/src/environment/environment"],
+      "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
+      "@GEnvironment/values": ["../shared/src/environment/values"]
     }
   },
   "include": [

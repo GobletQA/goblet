@@ -34,8 +34,12 @@
       "@gobletqa/screencast/*": ["../screencast/src/*"],
       "@gobletqa/test-utils": ["src"],
       "@gobletqa/test-utils/*": ["src/*"],
-      "@GEnv": ["../../scripts/environment"],
-      "@GEnvironment": ["../../scripts/environment"]
+      "@GEnv": ["../shared/src/environment/environment"],
+      "@GEnv/secrets": ["../shared/src/environment/secrets"],
+      "@GEnv/values": ["../shared/src/environment/values"],
+      "@GEnvironment": ["../shared/src/environment/environment"],
+      "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
+      "@GEnvironment/values": ["../shared/src/environment/values"]
     }
   },
   "include": ["src/**/*"],

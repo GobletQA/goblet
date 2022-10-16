@@ -29,7 +29,10 @@
       "@GLogs/*": ["../../logs/*"],
       "@GRepos/*": ["../../repos/*"],
       "@GConfigs/*": ["../../configs/*"],
-      "@GEnvironment": ["../../scripts/environment"]
+      "@GEnv": ["../shared/src/environment"],
+      "@GEnv/*": ["../shared/src/environment/*"],
+      "@GEnvironment": ["../shared/src/environment"],
+      "@GEnvironment/*": ["../shared/src/environment/*"],
     }
   },
   "include": [

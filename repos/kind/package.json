@@ -30,6 +30,7 @@
     "typescript": "4.8.4"
   },
   "dependencies": {
+    "@gobletqa/shared": "*",
     "@keg-hub/cli-utils": "*",
     "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "*",
