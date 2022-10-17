@@ -39,7 +39,7 @@
   "dependencies": {
     "@gobletqa/screencast": "*",
     "@gobletqa/shared": "*",
-    "@jest/create-cache-key-function": "^29.2.0",
+    "@jest/create-cache-key-function": "29.2.0",
     "@keg-hub/cli-utils": "*",
     "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "*",
