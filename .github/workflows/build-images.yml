@@ -20,14 +20,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - service: backend
-            dockerfile: container/Dockerfile.backend
-          - service: dind
-            dockerfile: container/Dockerfile.dind
-          - service: screencast
-            dockerfile: container/Dockerfile.screencast
           - service: app
             dockerfile: container/Dockerfile
+          - service: action
+            dockerfile: container/Dockerfile.action
+          - service: backend
+            dockerfile: container/Dockerfile.backend
+          - service: screencast
+            dockerfile: container/Dockerfile.screencast
 
     steps:
       - name: Checkout source
