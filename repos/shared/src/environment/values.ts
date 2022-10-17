@@ -1,37 +1,40 @@
 // TODO: update this to load repo specific ENV values
 // Will not be considered secure
 // ADD encryption to and from here
+import './ensureGobletEnv'
+import { mapValues } from './mapValues'
+import { loadEnvFile } from './loadEnvFile'
+import { deepFreeze } from '@keg-hub/jsutils'
+import { getReplaceOnlyEmpty } from './getReplaceOnlyEmpty'
 
-import path from 'path'
-import { camelCase, noOpObj } from '@keg-hub/jsutils'
-import { loadEnvSync } from '@keg-hub/parse-config'
-import { getPathFromConfig } from '../utils/getPathFromConfig'
-
-const { NODE_ENV } = process.env
-if(!process.env.GOBLET_ENV && NODE_ENV !== `test`) process.env.GOBLET_ENV = NODE_ENV
 const { GOBLET_ENV } = process.env
 
+let values = mapValues({
+  existing: {},
+  values: loadEnvFile({ file: `values.env` }),
+})
 
-const environmentsDir = getPathFromConfig(`environmentsDir`)
-const valuesEnvs = {
-  ...loadEnvSync({
-    error: false,
-    location: path.join(environmentsDir, `values.env`)
-  }),
-  ...(
-    GOBLET_ENV
-      ? loadEnvSync({
-          error: false,
-          location: path.join(environmentsDir, `values.${GOBLET_ENV}.env`)
-        })
-      : noOpObj
-  )
+if(GOBLET_ENV)
+  values = mapValues({
+    existing: values,
+    values: loadEnvFile({ file: `values.${GOBLET_ENV}.env` }),
+  })
+
+/**
+ * Add values from the current process
+ * Only add ENVs where the keys already exist in the values object ( i.e. addNew )
+ */
+values = mapValues({
+  existing: values,
+  values: process.env,
+  opts: {
+    addNew: false,
+    replaceOnlyEmpty: getReplaceOnlyEmpty(values.GOBLET_REPLACE_ONLY_EMPTY),
+  },
+})
+
+const frozen = deepFreeze(values)
+
+export {
+  frozen as values
 }
-
-export const values = Object.entries({...valuesEnvs, ...process.env})
-  .reduce((acc, [key, value]) => {
-    acc[key] = value
-    acc[camelCase(key)] = value
-
-    return acc
-  }, {} as Record<string, any>)

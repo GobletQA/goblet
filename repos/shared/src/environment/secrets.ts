@@ -1,38 +1,40 @@
 // TODO: update this to load repo specific secrets
 // Should be considered secure - Still figuring out what that looks like
-import path from 'path'
-import { camelCase, exists, noOpObj } from '@keg-hub/jsutils'
-import { loadEnvSync } from '@keg-hub/parse-config'
-import { getPathFromConfig } from '../utils/getPathFromConfig'
+// Need to add git encryption to secrets files
 
-const { NODE_ENV } = process.env
-if(!process.env.GOBLET_ENV && NODE_ENV !== `test`) process.env.GOBLET_ENV = NODE_ENV
+import './ensureGobletEnv'
+import { values } from './values'
+import { mapValues } from './mapValues'
+import { loadEnvFile } from './loadEnvFile'
+import { deepFreeze } from '@keg-hub/jsutils'
+import { getReplaceOnlyEmpty } from './getReplaceOnlyEmpty'
+
 const { GOBLET_ENV } = process.env
 
-const environmentsDir = getPathFromConfig(`environmentsDir`)
-const secretsEnvs = {
-  ...loadEnvSync({
-    error: false,
-    location: path.join(environmentsDir, `secrets.env`)
-  }),
-  ...(
-    GOBLET_ENV
-      ? loadEnvSync({
-          error: false,
-          location: path.join(environmentsDir, `secrets.${GOBLET_ENV}.env`)
-        })
-      : noOpObj
-  )
-}
+let secrets =  mapValues({
+  existing: {},
+  values: loadEnvFile({ file: `secrets.env` }),
+})
 
-export const secrets = Object.entries(secretsEnvs)
-  .reduce((acc, [key, value]) => {
-    const val = (!exists(value) || value === ``) && process.env[key]
-      ? process.env[key]
-      : value
+if(GOBLET_ENV)
+  secrets = mapValues({
+    existing: secrets,
+    values: loadEnvFile({ file: `secrets.${GOBLET_ENV}.env` }),
+  })
 
-    acc[key] = val
-    acc[camelCase(key)] = val
+/**
+ * Add secrets from the current process
+ * Only add ENVs where the keys already exist in the secrets object ( i.e. addNew )
+ */
+secrets = mapValues({
+  existing: secrets,
+  values: process.env,
+  opts: {
+    addNew: false,
+    replaceOnlyEmpty: getReplaceOnlyEmpty(values.GOBLET_REPLACE_ONLY_EMPTY),
+  },
+})
 
-    return acc
-  }, { ...secretsEnvs } as Record<string, any>)
+const frozen = deepFreeze(secrets)
+
+export { frozen as secrets }
