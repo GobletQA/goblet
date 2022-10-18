@@ -1,4 +1,11 @@
-import type { TValidateResp } from '@types'
+import type {
+  TAuthData,
+  TAuthUserRaw,
+  TValidateResp,
+  TFormattedUser,
+  TAuthCredential,
+  TAuthAdditionalUserInfo,
+} from '@types'
 
 import { TUserState } from '@reducers'
 import { GitUser } from '@services/gitUser'
@@ -15,20 +22,20 @@ import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
  * Formats the response from the git provider sign in
  * Builds a user object from the provided data
  */
-const formatUser = (data:Record<any, any>) => {
-  const { uid, email, displayName } = pickKeys(data.user, [
+const formatUser = (data:TAuthData):TFormattedUser => {
+  const { uid, email, displayName } = pickKeys<TAuthUserRaw>(data.user, [
     'uid',
     'email',
     'displayName',
   ])
 
-  const { screenName:username, profile } = pickKeys(data.additionalUserInfo, [
+  const { screenName:username, profile } = pickKeys<TAuthAdditionalUserInfo>(data.additionalUserInfo, [
     'profile',
     'screenName',
   ])
 
 
-  const { providerId, accessToken } = pickKeys(data.credential, [
+  const { providerId, accessToken } = pickKeys<TAuthCredential>(data.credential, [
     'accessToken',
     'providerId',
   ])
@@ -67,7 +74,7 @@ const validateResp = (resp:TValidateResp) => {
  * On each sign in, it also saves the users auth token, which can be used for accessing the git provider
  * Then loads the Dashboard root
  */
-export const onSuccessAuth = async (authData:Record<any, any>) => {
+export const onSuccessAuth = async (authData:TAuthData) => {
   let statusCodeNum
   
   try {
