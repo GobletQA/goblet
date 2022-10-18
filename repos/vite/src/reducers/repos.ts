@@ -1,5 +1,5 @@
-import type { TRepo } from '@types'
-import type { TAction } from '@reducers'
+import type { TAction, TRepo } from '@types'
+
 import { deepMerge } from '@keg-hub/jsutils'
 import reposJson from './repos.test.json'
 

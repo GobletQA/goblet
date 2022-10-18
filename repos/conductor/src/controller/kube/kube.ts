@@ -217,10 +217,7 @@ export class Kube extends Controller {
     // Call the method to start the container, but don't wait for it to finish
     // This way we can respond to the FE more quickly
     // While the container starts in the background
-    const resp = await this.kubectl.createPod(podManifest)
-
-    console.log(`------- resp -------`)
-    console.log(resp)
+    await this.kubectl.createPod(podManifest)
 
     const routeMeta = generateRoutes({
       userHash,
@@ -262,7 +259,7 @@ export class Kube extends Controller {
           && (acc[ref] = container)
         return acc
       }, {})
-      
+
     const userHash = pod.metadata.annotations[ConductorUserHashLabel]
     delete this.routes[userHash]
 

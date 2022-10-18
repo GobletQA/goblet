@@ -4,7 +4,6 @@ export type TUserHash = string
 export type TUserHashMap = Record<TUserHash, TUserHash>
 export type TLogLevel = 'info' | 'warn' | 'error' | 'debug' | 'verbose'
 export type TRestartPolicy = `always` | `on-failure` | `never`
-export type TContainerState = `Creating` | `Running` | `Stopped` | `Missing` | `Pending` | `Error`
 
 export enum EContainerState {
   ERROR = `Error`,

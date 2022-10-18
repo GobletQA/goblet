@@ -1,5 +1,4 @@
-import type { TAction } from '@reducers'
-import type { TFileModel } from '@types'
+import type { TAction, TFileModel } from '@types'
 
 type TPendingFiles = Record<string, string>
 

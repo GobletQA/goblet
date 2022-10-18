@@ -1,5 +1,4 @@
-import type { TAction } from '@reducers'
-import type { TContainerMeta, TProxyRoute } from '@types'
+import type { TAction, TContainerMeta, TProxyRoute } from '@types'
 
 import { deepMerge } from '@keg-hub/jsutils'
 

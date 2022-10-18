@@ -1,4 +1,4 @@
-import type { TStateKey, TRepoState } from '@reducers'
+import type { TStateKey, TRepoState } from '@types'
 import type { THeaders, TRequest, TResponse } from '@services/axios.types'
 
 import { getStore } from '@store'

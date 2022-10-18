@@ -1,4 +1,4 @@
-import type { TAction } from '@reducers'
+import type { TAction } from '@types'
 import { ModalTypes } from '@constants'
 import { deepMerge } from '@keg-hub/jsutils'
 

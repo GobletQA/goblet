@@ -1,4 +1,4 @@
-import type { TReduxAction, TCombinedState } from '@reducers'
+import type { TCombinedState, TReduxAction } from '@types'
 
 import { get } from '@keg-hub/jsutils'
 import { Store as ReduxStore } from 'redux'

@@ -1,10 +1,10 @@
-import type { ActionDispatcher, AnyReducerFuncs } from '@types'
+import type { TActionDispatcher, TAnyReducerFuncs } from '@types'
 import { getDispatch } from '@store'
 
-export const createDispatcher = <T extends AnyReducerFuncs>(
+export const createDispatcher = <T extends TAnyReducerFuncs>(
   actions: T,
   prefix?: string
-): ActionDispatcher<T> => {
+): TActionDispatcher<T> => {
   const keys = Object.keys(actions)
   const dispatchActions: Record<string, any> = {}
   for (const key of keys) {
@@ -17,5 +17,5 @@ export const createDispatcher = <T extends AnyReducerFuncs>(
       })
     }
   }
-  return dispatchActions as ActionDispatcher<T>
+  return dispatchActions as TActionDispatcher<T>
 }

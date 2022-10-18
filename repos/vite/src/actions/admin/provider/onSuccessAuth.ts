@@ -1,5 +1,6 @@
 import type {
   TAuthData,
+  TUserState,
   TAuthUserRaw,
   TValidateResp,
   TFormattedUser,
@@ -7,7 +8,6 @@ import type {
   TAuthAdditionalUserInfo,
 } from '@types'
 
-import { TUserState } from '@reducers'
 import { EContainerState } from '@types'
 import { GitUser } from '@services/gitUser'
 import { pickKeys } from '@keg-hub/jsutils'

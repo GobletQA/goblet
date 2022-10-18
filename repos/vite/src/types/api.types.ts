@@ -1,4 +1,4 @@
-import type { TRepoState } from '@reducers'
+import type { TRepoState } from './reducer.types'
 import type {
   TRepo,
   TFileTree,

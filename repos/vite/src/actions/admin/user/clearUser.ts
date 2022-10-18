@@ -1,4 +1,4 @@
-import { TUserState } from '@reducers'
+import { TUserState } from '@types'
 import { userDispatch } from '@store'
 
 import { noOpObj } from '@keg-hub/jsutils'

@@ -1,5 +1,4 @@
-import type { TAction } from '@reducers'
-import type { TFeatureFileModelList, TFeatureFileModel } from '@types'
+import type { TAction, TFeatureFileModelList, TFeatureFileModel } from '@types'
 
 export type TFeaturesState = {
   activeFeature?: TFeatureFileModel

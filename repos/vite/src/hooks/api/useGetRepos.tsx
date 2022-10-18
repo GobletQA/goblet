@@ -1,4 +1,4 @@
-import type { TReposState } from '@reducers'
+import type { TReposState } from '@types'
 import { useEffect, useState, useMemo } from 'react'
 
 import { useRepos, } from '@store'

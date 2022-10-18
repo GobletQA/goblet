@@ -1,4 +1,4 @@
-import type { TUserState } from "@reducers"
+import type { TUserState } from "@types"
 import { localStorage } from '@services/localStorage'
 import { clearUser } from '@actions/admin/user/clearUser'
 import { upsertUser } from '@actions/admin/user/upsertUser'

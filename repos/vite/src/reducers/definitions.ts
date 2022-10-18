@@ -1,9 +1,9 @@
 import type {
+  TAction,
   TDefinitionAst,
   TDefinitionsAstList,
   TDefinitionsAstTypeMap
 } from '@types'
-import type { TAction } from '@reducers'
 
 export type TDefinitionsState = {
   activeDefinition?: TDefinitionAst

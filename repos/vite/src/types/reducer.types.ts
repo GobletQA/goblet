@@ -1,27 +1,69 @@
-export type ReduxAction = {
+import { CombinedState } from 'redux'
+import { TRepoState } from '@reducers/repo'
+import { TUserState } from '@reducers/user'
+import { TFilesState } from '@reducers/files'
+import { TReposState } from '@reducers/repos'
+import { TModalState } from '@reducers/modal'
+import { TFileTreeState } from '@reducers/fileTree'
+import { TFeaturesState } from '@reducers/features'
+import { TContainerState } from '@reducers/container'
+import { TDefinitionsState } from '@reducers/definitions'
+
+export type {
+  TContainerState,
+  TDefinitionsState,
+  TFeaturesState,
+  TFilesState,
+  TFileTreeState,
+  TModalState,
+  TRepoState,
+  TReposState,
+  TUserState
+}
+
+export type TCombinedState = {
+  container: TContainerState
+  definitions: TDefinitionsState
+  features: TFeaturesState
+  files: TFilesState
+  fileTree: TFileTreeState
+  modal: TModalState
+  repo: TRepoState
+  repos: TReposState
+  user: TUserState
+}
+export type TState = CombinedState<TCombinedState>
+export type TStateKey = keyof TState
+
+export type TReduxAction = {
   type: string
   payload?: any
 }
 
-export interface BasicAction {
+export interface TBasicAction {
   type: string
 }
 
-export interface ActionPayload<P = void> extends BasicAction {
+export interface TActionPayload<P = void> extends TBasicAction {
   payload: P
 }
 
-export type ReducerFunc<T> = (state: T, action: any) => T
+export type TReducerFunc<T> = (state: T, action: any) => T
 
-export type ActionReducers<T> = { [actionName: string]: ReducerFunc<T> }
+export type TActionReducers<T> = { [actionName: string]: TReducerFunc<T> }
 
-type Dispatcher<T extends (state: any, action: BasicAction) => any> =
-  Parameters<T>[1] extends ActionPayload<infer P> ? (payload?: P) => void : () => void
+type TDispatcher<T extends (state: any, action: TBasicAction) => any> =
+  Parameters<T>[1] extends TActionPayload<infer P> ? (payload?: P) => void : () => void
 
-export type AnyReducerFuncs<> = {
+export type TAnyReducerFuncs = {
   [name: string]: (state: any, action: any) => any
 }
 
-export type ActionDispatcher<T extends AnyReducerFuncs> = {
-  [K in keyof T]: Dispatcher<T[K]>
+export type TActionDispatcher<T extends TAnyReducerFuncs> = {
+  [K in keyof T]: TDispatcher<T[K]>
+}
+
+export type TAction<T> = {
+  type: string
+  payload: T
 }

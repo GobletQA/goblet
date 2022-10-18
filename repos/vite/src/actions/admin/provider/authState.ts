@@ -1,4 +1,4 @@
-import type { TUserState } from "@reducers"
+import type { TUserState } from "@types"
 import type { NextOrObserver } from "firebase/auth"
 
 import { onAuthStateChanged } from "firebase/auth"

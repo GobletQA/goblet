@@ -1,5 +1,5 @@
-import type { TAction } from '@reducers'
 import type {
+  TAction,
   TBrowserOpts,
   TScreencastStatus,
   TRecordingActions,
