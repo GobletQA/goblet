@@ -1,6 +1,7 @@
 import type { TRouteMeta } from '@types'
 
-import { ContainerStates, ModalTypes } from '@constants'
+import { ModalTypes } from '@constants'
+import { EContainerState } from '@types'
 import { addToast } from '@actions/toasts'
 import { apiRequest } from '@utils/api/apiRequest'
 import { removeRepo } from '@actions/repo/local/removeRepo'
@@ -50,7 +51,7 @@ export const statusContainer = async (params?:Record<any, any>) => {
 
   await setContainerRoutes(data)
 
-  return data?.meta?.state !== ContainerStates.RUNNING
+  return data?.meta?.state !== EContainerState.RUNNING
     ? await waitForRunning()
     : data
 }

@@ -1,6 +1,6 @@
 import type { TPort, TPortsMap } from './ports.types'
 import type { Conductor } from '../conductor'
-import type { TUserHash, TContainerState } from './helpers.types'
+import type { TUserHash, EContainerState } from './helpers.types'
 
 type TPublicUrl = string
 type TContainerId = string
@@ -34,15 +34,12 @@ export type TProxyRoutes = {
   [key:string]: TProxyRoute
 }
 
-export type TContainerMeta = {
-  host: string
-  id: TContainerId
-  name: TContainerName
-  state: TContainerState
-}
 
-export type TPublicUrls = {
-  [key:TContainerPort]: TPublicUrl
+export type TContainerMeta = {
+  host?: string
+  id?: TContainerId
+  name?: TContainerName
+  state: EContainerState
 }
 
 export type TRouteMeta = {
@@ -51,11 +48,14 @@ export type TRouteMeta = {
   routes: Record<TContainerPort, TProxyRoute>
 }
 
+export type TPublicUrls = {
+  [key:TContainerPort]: TPublicUrl
+}
+
 
 export type TControllerRoutes = {
   [key:TUserHash]: TRouteMeta
 }
-
 
 export type TGenRoute = {
   hostPort:TPort,

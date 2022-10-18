@@ -3,6 +3,7 @@ import type {
   TImgRef,
   TUserHash,
   TSpawnOpts,
+  TRouteMeta,
   TContainerRef,
   TConductorOpts,
   TConductorConfig,
@@ -11,6 +12,7 @@ import type {
 import { buildConfig } from './utils/buildConfig'
 import { Controller } from './controller/controller'
 import { getApp } from '@gobletqa/shared/express/app'
+import { EContainerState } from '@gobletqa/conductor/types'
 import { getController } from './controller/controllerTypes'
 import { createApiProxy, createVNCProxy, createWSProxy } from './proxy'
 
@@ -85,7 +87,11 @@ export class Conductor {
    * Spawns a new container based on the passed in request
    * Is called from the spawn endpoint
    */
-  async spawn(imageRef:TImgRef, spawnOpts:TSpawnOpts, userHash:TUserHash) {
+  async spawn(
+    imageRef:TImgRef,
+    spawnOpts:TSpawnOpts,
+    userHash:TUserHash
+  ):Promise<TRouteMeta> {
     if(!imageRef && !spawnOpts.name)
       throw new Error(`Image ref or name is require to spawn a new container`)
 
@@ -121,6 +127,9 @@ export class Conductor {
     catch(err:any){
       return {
         routes: {},
+        meta: {
+          state: EContainerState.Error
+        },
         error: err.message,
       }
     }

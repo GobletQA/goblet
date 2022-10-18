@@ -8,13 +8,13 @@ import type {
 } from '@types'
 
 import { TUserState } from '@reducers'
+import { EContainerState } from '@types'
 import { GitUser } from '@services/gitUser'
 import { pickKeys } from '@keg-hub/jsutils'
 import { isAllowedUser } from './isAllowedUser'
 import { apiRequest } from '@utils/api/apiRequest'
 import { signOutAuthUser } from './signOutAuthUser'
 import { localStorage } from '@services/localStorage'
-import { setRepos } from '@actions/repo/local/setRepos'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
 
@@ -105,7 +105,7 @@ export const onSuccessAuth = async (authData:TAuthData) => {
     await localStorage.setJwt(jwt)
     new GitUser(user as TUserState)
     
-    status?.meta?.state === `Creating` && waitForRunning()
+    status?.meta?.state === EContainerState.CREATING && waitForRunning()
 
     // Wrap container and repos so if they throw, the login auth is still valid
     try {

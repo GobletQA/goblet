@@ -1,5 +1,4 @@
 import type { Conductor } from '../../conductor'
-import type { V1ContainerPort } from '@kubernetes/client-node'
 import type {
   TPod,
   TPodRef,
@@ -20,13 +19,14 @@ import { buildPortMap } from './pod/buildPortMap'
 import { shouldRemove } from './pod/shouldRemove'
 import { shouldHydrate } from './pod/shouldHydrate'
 import { Logger } from '@gobletqa/shared/libs/logger'
+import { isObj, isEmptyColl } from '@keg-hub/jsutils'
 import { buildPodManifest } from './pod/buildPodManifest'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
 import { buildImgUri } from '../docker/image/buildImgUri'
 import { buildContainerMap } from './pod/buildContainerMap'
 import { getPodAnnotations } from './pod/getPodAnnotations'
+import { EContainerState } from '@gobletqa/conductor/types'
 import { buildLabels } from '../docker/container/buildLabels'
-import { isObj, isEmptyColl, noOpObj } from '@keg-hub/jsutils'
 import { generateRoute, generateRoutes } from '../../utils/generators'
 import { ERestartPolicy, EImgPullPolicy } from '@gobletqa/conductor/types'
 import { DevUserHash, PodAnnotations, ConductorUserHashLabel } from '@GCD/constants'
@@ -227,7 +227,7 @@ export class Kube extends Controller {
       ports: mappedPorts,
       conductor: this.conductor,
       meta: {
-        state: `Creating`
+        state: EContainerState.Creating,
       } as TContainerMeta
     })
 

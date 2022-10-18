@@ -1,5 +1,5 @@
 import type { TRouteMeta } from '@types'
-import { ContainerStates } from '@constants'
+import { EContainerState } from '@types'
 import { noOpObj } from '@keg-hub/jsutils'
 import { apiRequest } from '@utils/api/apiRequest'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
@@ -34,7 +34,7 @@ export const waitForRunning = async (
     return {} as TRouteMeta
   }
 
-  if(data?.meta?.state === ContainerStates.RUNNING) return data
+  if(data?.meta?.state === EContainerState.RUNNING) return data
 
   // Return a promise that resolves after 3 seconds
   // Then call the waitForRunning again to check on the container state
