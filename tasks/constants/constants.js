@@ -25,22 +25,25 @@ const constants = deepFreeze({
   envFilter: {
     starts: [
       `npm_`,
-      `DOC`,
-      `COMPOSE`,
       `HOME`,
       `KEG_`,
-      `FIRE`,
-      `GIT`,
+      `FIREBASE`,
+      `FIRE_BASE`,
       `GOOGLE`,
       `AZURE`,
       `AWS`
+      // `DOC`,
+      // `COMPOSE`,
+      // `GIT`,
     ],
+    // Need better way to handle this relative to secrets
+    // Otherwise can't pass secrets via ENV when running in CI
     contains: [
-      `PWD`,
-      `KEY`,
-      `AUTH`,
-      `COOKIE`,
-      `PASS`
+      // `PWD`,
+      // `KEY`,
+      // `AUTH`,
+      // `COOKIE`,
+      // `PASS`
     ],
     ends: [
       `_PATH`,
