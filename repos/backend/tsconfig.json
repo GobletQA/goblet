@@ -21,8 +21,6 @@
       "@gobletqa/backend/*": ["src/*"],
       "@gobletqa/conductor": ["../conductor/src"],
       "@gobletqa/conductor/*": ["../conductor/src/*"],
-      "@gobletqa/screencast": ["../screencast/src"],
-      "@gobletqa/screencast/*": ["../screencast/src/*"],
       "@gobletqa/shared/*": ["../shared/src/*"],
       "@gobletqa/shared": ["../shared/src"],
       "@GLogs/*": ["../../logs/*"],

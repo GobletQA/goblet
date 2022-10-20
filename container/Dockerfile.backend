@@ -7,9 +7,6 @@ WORKDIR /goblet/app
 ENV GB_SUB_REPO=backend
 COPY container/scripts/docker/be.entrypoint.sh /entrypoint.sh
 COPY .nvmrc .nvmrc 
-RUN <<EOF
-  set -eux;
-EOF
 
 RUN <<EOF
   set -eux;

@@ -43,7 +43,6 @@
   },
   "dependencies": {
     "@gobletqa/conductor": "*",
-    "@gobletqa/screencast": "*",
     "@gobletqa/shared": "*",
     "@gobletqa/workflows": "*",
     "@keg-hub/cli-utils": "*",
