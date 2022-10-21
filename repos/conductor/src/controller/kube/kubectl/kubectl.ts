@@ -145,6 +145,9 @@ export class Kubectl {
    * Error Handler called when listening throws an error
    */
   onListenError = (err:Error) => {
+    if(!err)
+      return console.log(`The onListenError event was called without an error object`)
+
     throwError({ statusCode: 1000, ...err })
   }
 

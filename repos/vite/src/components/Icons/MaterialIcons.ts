@@ -16,6 +16,7 @@ import PendingIcon from '@mui/icons-material/Pending'
 import InfoIcon from '@mui/icons-material/Info'
 import PlugIcon from '@mui/icons-material/ElectricalServices'
 import CloudDownIcon from '@mui/icons-material/CloudDownload'
+import SubArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight'
 
 export {
   Steps,
@@ -35,5 +36,6 @@ export {
   ErrorIcon,
   PendingIcon,
   InfoIcon,
-  CloudDownIcon
+  CloudDownIcon,
+  SubArrowRightIcon
 }

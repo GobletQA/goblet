@@ -1,6 +1,6 @@
 export * from './AutoInput'
-export * from './Button'
 export * from './Checkbox'
 export * from './Input'
+export * from './IconToggle'
 export * from './Select'
 export * from './Switch'

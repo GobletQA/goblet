@@ -1,23 +1,23 @@
 import type { ComponentProps } from 'react'
-import type { TConnectFormProps } from '@hooks/forms/useConnectForm'
-import { useWatch } from 'react-hook-form-mui'
 
 import Box from '@mui/material/Box'
+import { useWatch } from 'react-hook-form-mui'
 import Grid from '@mui/material/Unstable_Grid2'
 import { ModalTypes } from '@constants'
 import { PlugIcon } from '@components/Icons'
 import { useGetRepos } from '@hooks/api/useGetRepos'
-import { LogoutIcon, SyncIcon, CloudDownIcon }  from '@components/Icons'
-import { ModalRoot } from '@components/ModalManager/ModalRoot'
-
+import { useColorMap } from '@hooks/theme/useColorMap'
+import { IconButton } from '@components/Buttons/IconButton'
 import { useConnectForm } from '@hooks/forms/useConnectForm'
+import { ModalRoot } from '@components/ModalManager/ModalRoot'
+import type { TConnectFormProps } from '@hooks/forms/useConnectForm'
+import { LogoutIcon, SyncIcon, CloudDownIcon, SubArrowRightIcon }  from '@components/Icons'
+
 import {
-  Input,
   Form,
-  Button,
-  Switch,
-  Checkbox,
+  Input,
   AutoInput,
+  IconToggle,
 } from '@components/Form'
 
 export type TConnectModal = ComponentProps<typeof ModalRoot>
@@ -27,11 +27,13 @@ const ConnectForm = (props:TConnectFormProps) => {
     form
   } = props
 
+  const colorMap = useColorMap()
+
   const [
     repo,
     branch,
-    createBranch,
     newBranch,
+    createBranch,
   ] = useWatch({
     name: [`repo`, `branch`, `createBranch`, `newBranch`]
   })
@@ -40,34 +42,42 @@ const ConnectForm = (props:TConnectFormProps) => {
     repo,
     branch
   })
-
+  
+  const createActive = Boolean(createBranch)
+  
   return (
-    <Box>
+    <Box
+      marginBottom='24px'
+    >
       <Grid
         container
+        columns={16}
         rowSpacing={2}
         columnSpacing={1}
         disableEqualOverflow={true}
       >
-        <Grid xs={12}>
-          <AutoInput
-            {...form.repo}
-            options={repos}
-          />
-        </Grid>
         <Grid
           xs="auto"
           display="flex"
           alignItems="center"
           justifyContent="center"
         >
-          <Button>
+          <IconButton color="secondary" >
             <SyncIcon />
-          </Button>
+          </IconButton>
         </Grid>
-        <Grid xs={12}>
+        <Grid xs={13} sm={14} md={15} >
+          <AutoInput
+            {...form.repo}
+            required={true}
+            options={repos}
+          />
+        </Grid>
+        <Grid xs={16}>
           <AutoInput
             {...form.branch}
+            required={true}
+            disabled={!repo}
             options={branches}
           />
         </Grid>
@@ -77,12 +87,26 @@ const ConnectForm = (props:TConnectFormProps) => {
           alignItems="center"
           justifyContent="center"
         >
-        <Checkbox
-          label={'New Branch'}
-          name={'createBranch'}
-        />
+          <IconToggle
+            disabled={!repo}
+            labelPos='bottom'
+            label='New Branch'
+            name='createBranch'
+            active={createActive}
+            Icon={SubArrowRightIcon}
+            iconProps={{ fontSize: 'small' }}
+            // @ts-ignore
+            labelProps={{
+              sx: {
+                [`> .MuiFormControlLabel-label`]: {
+                  fontSize: `10px`,
+                  marginTop: `-5px`,
+                }
+              }
+            }}
+          />
         </Grid>
-        <Grid xs={true} >
+        <Grid xs={13} sm={14} >
           <Input
             disabled={!createBranch}
             name={'newBranch'}
@@ -142,7 +166,7 @@ ConnectModal.modalProps = {
   },
   actions: [
     {
-      color: `error`,
+      color: `secondary`,
       variant: `text`,
       label: `Sign Out`,
       startIcon: <LogoutIcon />,
