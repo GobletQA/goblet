@@ -3,15 +3,19 @@ import type { TConnectFormProps } from '@hooks/forms/useConnectForm'
 import { useWatch } from 'react-hook-form-mui'
 
 import Box from '@mui/material/Box'
+import Grid from '@mui/material/Unstable_Grid2'
 import { ModalTypes } from '@constants'
 import { PlugIcon } from '@components/Icons'
 import { useGetRepos } from '@hooks/api/useGetRepos'
+import { LogoutIcon, SyncIcon, CloudDownIcon }  from '@components/Icons'
 import { ModalRoot } from '@components/ModalManager/ModalRoot'
 
 import { useConnectForm } from '@hooks/forms/useConnectForm'
 import {
   Input,
   Form,
+  Button,
+  Switch,
   Checkbox,
   AutoInput,
 } from '@components/Form'
@@ -22,42 +26,71 @@ const ConnectForm = (props:TConnectFormProps) => {
   const {
     form
   } = props
-  
-  const watched = useWatch({
+
+  const [
+    repo,
+    branch,
+    createBranch,
+    newBranch,
+  ] = useWatch({
     name: [`repo`, `branch`, `createBranch`, `newBranch`]
   })
   
   const { repos, branches } = useGetRepos({
-    repo: watched[0],
-    branch:watched[1]
+    repo,
+    branch
   })
 
-  console.log(`------- watched -------`)
-  console.log(watched)
-
   return (
-    <>
-      <AutoInput
-        {...form.repo}
-        options={repos}
-      />
-      <br/>
-      <AutoInput
-        {...form.branch}
-        options={branches}
-      />
-      <br/>
-      <Checkbox
-        name={'createBranch'}
-        label={'Create Branch'}
-      />
-      <br/>
-      <br/>
-      <Input
-        name={'newBranch'}
-        label={'Branch Name'}
-      />
-    </>
+    <Box>
+      <Grid
+        container
+        rowSpacing={2}
+        columnSpacing={1}
+        disableEqualOverflow={true}
+      >
+        <Grid xs={12}>
+          <AutoInput
+            {...form.repo}
+            options={repos}
+          />
+        </Grid>
+        <Grid
+          xs="auto"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Button>
+            <SyncIcon />
+          </Button>
+        </Grid>
+        <Grid xs={12}>
+          <AutoInput
+            {...form.branch}
+            options={branches}
+          />
+        </Grid>
+        <Grid
+          xs="auto"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+        <Checkbox
+          label={'New Branch'}
+          name={'createBranch'}
+        />
+        </Grid>
+        <Grid xs={true} >
+          <Input
+            disabled={!createBranch}
+            name={'newBranch'}
+            label={'Branch Name'}
+          />
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
 
@@ -84,7 +117,10 @@ export const ConnectModal = (props:TConnectModal) => {
         error={connectError}
         loading={isConnecting && 'Connecting Repo ...'}
       />
-      <Form {...form.form} onSuccess={onSuccess} >
+      <Form
+        {...form.form}
+        onSuccess={onSuccess}
+      >
         <ConnectForm form={form} />
       </Form>
     </Box>
@@ -97,5 +133,25 @@ ConnectModal.modalProps = {
   manualClose: true,
   titleProps: {
     Icon: (<PlugIcon />)
-  }
+  },
+  actionProps: {
+    sx: {
+      padding: `16px 24px`,
+      justifyContent: `space-between`,
+    }
+  },
+  actions: [
+    {
+      color: `error`,
+      variant: `text`,
+      label: `Sign Out`,
+      startIcon: <LogoutIcon />,
+    },
+    {
+      color: `primary`,
+      variant: `contained`,
+      label: `Connect Repo`,
+      startIcon: <CloudDownIcon />,
+    },
+  ]
 }

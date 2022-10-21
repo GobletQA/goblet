@@ -6,7 +6,6 @@ import * as ModalMap from '@components/Modals'
 
 export const ModalManager = () => {
   const { type, visible, modalProps } = useSelector(state => state.modal)
-
   const Modal = useMemo(() => Object.values(ModalMap).find(Modal => Modal.modalType === type), [type])
 
   return Modal && (

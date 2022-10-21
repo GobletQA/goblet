@@ -1,11 +1,23 @@
-import { Button as MuiButton } from '@mui/material'
-import type { ComponentProps } from 'react'
+import type { ReactNode, ComponentProps } from 'react'
 
-export type TButton = ComponentProps<typeof MuiButton> & {
+import IconButton from '@mui/material/IconButton'
+import MuiButton from '@mui/material/Button'
+
+export type TMuiButton = ComponentProps<typeof MuiButton> & {
   
 }
 
-export const Button = (props:TButton) => {
+export type TIconButton = ComponentProps<typeof IconButton> & {
+  icon?: ReactNode
+}
+
+type TBothButtons = TIconButton | TMuiButton
+
+export type TButton = TBothButtons & {
+  icon?: ReactNode
+}
+
+const Btn = (props:TMuiButton) => {
   const {
      children,
      ...rest
@@ -17,4 +29,25 @@ export const Button = (props:TButton) => {
       {children}
     </Button>
   )
+}
+
+const IconBtn = (props:TIconButton) => {
+  const {
+    icon,
+     children,
+     ...rest
+  } = props
+  
+  
+  return (
+    <IconButton {...rest} >
+      { icon || children}
+    </IconButton>
+  )
+}
+
+export const Button = ({ icon, ...props }:TButton) => {
+  return icon
+    ? <IconBtn {...(props as TIconButton)} icon={icon} />
+    : <Btn {...(props as TMuiButton)} />
 }

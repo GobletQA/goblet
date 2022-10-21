@@ -15,6 +15,8 @@ import ErrorIcon from '@mui/icons-material/Error'
 import PendingIcon from '@mui/icons-material/Pending'
 import InfoIcon from '@mui/icons-material/Info'
 import PlugIcon from '@mui/icons-material/ElectricalServices'
+import CloudDownIcon from '@mui/icons-material/CloudDownload'
+
 export {
   Steps,
   Globe,
@@ -32,5 +34,6 @@ export {
   LogoutIcon,
   ErrorIcon,
   PendingIcon,
-  InfoIcon
+  InfoIcon,
+  CloudDownIcon
 }

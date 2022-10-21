@@ -5,4 +5,3 @@ export * from './shared.types'
 export * from './events.types'
 export * from './reducer.types'
 export * from './screencast.types'
-
