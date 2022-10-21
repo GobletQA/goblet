@@ -12,9 +12,19 @@ export type TCodeEditorProps = {
 }
 
 const fileList:Record<string, string> = {
-  '/file1.js': `console.log('file 1')`,
-  '/file2.js': `const test = 'file 2'\nconsole.log(test)`,
-  '/file3.ts': `const test = () => console.log('file 3')\ntest()`
+  '/select-strategy.feature': `Feature: Strategy Overview
+    As a user of the strategy application with at least one strategy created
+    I want to see an overview of the strategy when I click into it
+    So that I can easily identify what part of it I want to work on
+
+    Example:
+        Given I use the saved page cookie
+        Given I navigate to "$world.app.url"
+        Given I click "$$firstStrategy"
+        I wait for "$$inviteBtn"
+`,
+  '/remove-strategy.feature': ``,
+  '/goblet.config.ts': `const test = () => console.log('file 3')\ntest()`
 }
 
 export const CodeEditor = (props:TCodeEditorProps) => {

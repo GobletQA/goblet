@@ -94,7 +94,7 @@ export const ConnectModal = (props:TConnectModal) => {
 ConnectModal.modalType = ModalTypes.connect
 ConnectModal.modalProps = {
   title: `Connect Repo`,
-  manualClose: false,
+  manualClose: true,
   titleProps: {
     Icon: (<PlugIcon />)
   }

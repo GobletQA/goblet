@@ -84,6 +84,11 @@ const loadConfig = (aliases) => {
             SHModels: '../../../../repos/shared/src/models',
             SHUtils: '../../../../repos/shared/src/utils/frontend',
           },
+          web: {
+            'react': require.resolve('react'),
+            'react-dom': require.resolve('react-dom'),
+            'react-redux': require.resolve('react-redux'),
+          }
         },
       },
     },
