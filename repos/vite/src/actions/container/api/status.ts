@@ -23,6 +23,8 @@ const setErrorState = async (error?:string) => {
   await removeRepo()
   await signOutAuthUser()
   setActiveModal(ModalTypes.SIGN_IN)
+
+  return undefined
 }
 
 /**
@@ -31,7 +33,9 @@ const setErrorState = async (error?:string) => {
  * 
  * @returns {Object} - status object returned from the Backend API
  */
-export const statusContainer = async (params?:Record<any, any>) => {
+export const statusContainer = async (
+  params?:Record<any, any>
+):Promise<TRouteMeta | undefined> => {
   addToast({
     type: 'info',
     message: `Getting Session status...`,

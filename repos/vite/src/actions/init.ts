@@ -1,3 +1,4 @@
+import type { TRouteMeta } from '@types'
 
 import { ModalTypes } from '@constants'
 import { isEmptyColl } from '@keg-hub/jsutils'
@@ -27,15 +28,11 @@ const loadInitModal = (queryObj:Record<any, any>) => {
     setActiveModal(ModalTypes.REPO)
 }
 
-export const initApp = async () => {
-
-  // Load the local storage user if they exist
-  const activeUser = await loadUser()
-  if(!activeUser) return setActiveModal(ModalTypes.SIGN_IN)
-
+export const initStatus = async (status?:TRouteMeta) => {
   // If user is logged in, check the status of users session container
-  const status = await statusContainer()
-
+  // If not logged in the status should come as an argument from the onSuccessAuth method
+  status = status || await statusContainer()
+  
   // Will allow using goblet without persisting changes
   const repoStatus = await statusRepo({ routes: status?.routes })
   if (!repoStatus || !repoStatus.mounted) return
@@ -49,5 +46,13 @@ export const initApp = async () => {
 
   // Load the init modal
   loadInitModal(queryObj)
+}
 
+export const initApp = async () => {
+  // Load the local storage user if they exist
+  const activeUser = await loadUser()
+
+  return !activeUser
+    ? setActiveModal(ModalTypes.SIGN_IN)
+    : initStatus()
 }

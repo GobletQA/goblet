@@ -1,4 +1,9 @@
-import type { TApiRepoResp, TStatusRoutes, TRepoStatus, TRouteMeta } from '@types'
+import type {
+  TApiRepoResp,
+  TStatusRoutes,
+  TRepoStatus,
+  TRouteMeta,
+} from '@types'
 
 import { ModalTypes, StatusTypes } from '@constants'
 import { setRepo } from '../local/setRepo'
@@ -11,7 +16,7 @@ import { localStorage } from '@services/localStorage'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
 
 
-type TStatusRepo = Omit<TRouteMeta, "routes"> & {
+type TStatusRepo = Omit<TRouteMeta, "routes" | "meta"> & {
   routes?: TStatusRoutes
 }
 
@@ -79,9 +84,9 @@ const setNoRepoStatus = (status:TRepoStatus) => {
  * 
  * @returns {Object} - status object returned from the Backend API
  */
+ 
 export const statusRepo = async ({
   routes=noOpObj as TStatusRoutes,
-  ...params
 }:TStatusRepo=noOpObj as TStatusRepo) => {
 
   addToast({
@@ -100,7 +105,7 @@ export const statusRepo = async ({
     url: `/repo/status`,
     // Fix this, don't used the port number directly, WTF man?
     headers: routes?.[`7006`]?.headers,
-    params: {...params, ...savedRepo?.git},
+    params: {...savedRepo?.git},
   })
 
   if(!success || error) return setErrorState(error)

@@ -17,7 +17,8 @@ const { auth } = getProviderMetadata()
  * @return {Void}
  */
 export const signOutAuthUser = async () => {
-  return undefined
+  // REMEMBER - THIS WILL CAUSE CONNECT MODAL TO NOT SHOW UP ON LOGIN
+  // return undefined
 
   // Remove the local cache
   try { await localStorage.cleanup() }
