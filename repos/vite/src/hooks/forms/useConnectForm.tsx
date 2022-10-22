@@ -1,11 +1,11 @@
-import type { ComponentProps } from 'react'
-import type { THFormHelpers } from './useFormHelpers'
-
-import { useMemo } from 'react'
+import type { ComponentType } from 'react'
 import { deepMerge } from '@keg-hub/jsutils'
 import { useFormHelpers } from './useFormHelpers'
+import type { THFormHelpers } from './useFormHelpers'
+import { useMemo, useState, useCallback } from 'react'
 
-const formProps = {
+const formProps = {}
+const formFields = {
   form: {
     values: {
       repo: ``,
@@ -16,6 +16,11 @@ const formProps = {
     required: true,
     name: `repo`,
     label: `Select Repo`,
+    decor: {
+      color: "secondary",
+      Component: IconButton,
+      Icon: SyncIcon,
+    },
     textFieldProps: {
       placeholder: `Select a repo to connect to...`,
     },
@@ -28,6 +33,7 @@ const formProps = {
     name: `branch`,
     label: `Select Branch`,
     textFieldProps: {
+      inputProps: {},
       placeholder: `Select the branch to use...`,
     },
     rules: {
@@ -41,8 +47,20 @@ const formProps = {
   branchName: {
     name: `branchName`,
     label: `Branch Name`,
-    textFieldProps: {
-      placeholder: `Enter a branch name...`,
+    placeholder: `Enter a branch name...`,
+    decor: {
+      labelPos: 'bottom',
+      label: 'New Branch',
+      name: 'createBranch',
+      Component: IconToggle,
+      Icon: SubArrowRightIcon,
+      iconProps:{ fontSize: 'small' },
+      labelSx: {
+        [`> .MuiFormControlLabel-label`]: {
+          fontSize: `10px`,
+          marginTop: `-5px`,
+        }
+      }
     },
   }
 }
@@ -58,10 +76,6 @@ export type TConnectForm = THFormHelpers & {
 export const useConnectForm = (props:TConnectForm) => {
   const { values } = props
 
-  const form = useMemo(() => {
-    return deepMerge<typeof formProps>(formProps, { form: { values } })
-  }, [values])
-  
   const {
     onSuccess,
     isLoading:isConnecting,
@@ -69,14 +83,37 @@ export const useConnectForm = (props:TConnectForm) => {
     setIsLoading:setIsConnecting,
     setLoadingError:setIsConnectError,
   } = useFormHelpers(props)
-  
+
+  const form = useMemo(() => {
+    return Object.assign(formProps, formFields, {
+      form: {
+        values: { ...formFields.values, ...values },
+      }
+    })
+  }, [values])
+
+  const [formValues, setFormValues] = useState({})
+  const [createActive, setCreateActive] = useState(false)
+
+  form.branchName.disabled = !createActive
+  form.branchName.decor.disabled = !formValues.branch
+
+  form.branchName.decor.active = createActive
+  form.branchName.decor.onClick = useCallback((evt:any) => {
+    const checked = evt.target.checked
+    setCreateActive(checked)
+    setFormValues({ ...formValues, createBranch: checked })
+  }, [formValues, createActive])
+
   return {
     form,
     onSuccess,
     connectError,
     isConnecting,
     setIsConnecting,
-    setIsConnectError
+    setIsConnectError,
+    values: formValues,
+    setForm:setFormValues,
   }
   
 }

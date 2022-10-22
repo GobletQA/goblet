@@ -1,12 +1,19 @@
-import { useState } from 'react'
+import type { ComponentMap } from './Register'
+
+import { useState, useRef } from 'react'
 import { useInline } from '../useInline'
 import { noOp, noOpObj } from '@keg-hub/jsutils'
 
+
 export type THFormHelpers = {
+  components?:ComponentMap,
   onSuccess?:(data:any) => any
 }
 
-export const useFormHelpers = ({ onSuccess:onSuccessCb=noOp }:THFormHelpers=noOpObj) => {
+export const useFormHelpers = ({
+  components,
+  onSuccess:onSuccessCb=noOp,
+}:THFormHelpers=noOpObj) => {
   
   const onSuccess = useInline(onSuccessCb)
   const [isLoading, setIsLoading] = useState(false)
@@ -17,7 +24,7 @@ export const useFormHelpers = ({ onSuccess:onSuccessCb=noOp }:THFormHelpers=noOp
     onSuccess,
     loadingError,
     setIsLoading,
-    setLoadingError
+    setLoadingError,
   }
   
 }

@@ -1,9 +1,9 @@
+import type { CssProps, CSSObj } from '@types'
 import type { ComponentProps, ComponentType, CSSProperties } from 'react'
-import { SxProps, Theme } from '@mui/system';
+
 import { useMemo } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
 import { useTheme } from '@mui/material/styles'
-import { FormControlLabel } from '@mui/material'
 import { CheckboxElement } from './CheckboxElement'
 import { SvgIconProps } from '@mui/material/SvgIcon'
 import { useColorMap } from '@hooks/theme/useColorMap'
@@ -16,11 +16,12 @@ export type TIconToggle = ComponentProps<typeof CheckboxElement> & {
   onProps?: SvgIconProps
   offProps?: SvgIconProps
   iconProps?: SvgIconProps
-  onSx?: CSSProperties
-  offSx?: CSSProperties
-  OnIcon?: ComponentType<any>,
-  Icon?: ComponentType<any>,
-  OffIcon?: ComponentType<any>,
+  onSx?: CSSObj
+  offSx?: CSSObj
+  labelSx?: CSSObj
+  OnIcon?: ComponentType<any>
+  Icon?: ComponentType<any>
+  OffIcon?: ComponentType<any>
 }
 
 export const IconToggle = (props:TIconToggle) => {
@@ -31,19 +32,18 @@ export const IconToggle = (props:TIconToggle) => {
     onProps,
     offProps,
     iconProps,
-    onColor='primary',
-    offColor='disabled',
     Icon,
+    labelSx,
     OnIcon=Icon,
     OffIcon=Icon || OnIcon,
-    labelSx,
+    onColor='primary',
+    offColor='disabled',
     labelProps=noOpObj as FormControlLabelProps,
     ...rest
   } = props
 
   const theme = useTheme()
   const colorMap = useColorMap()
-
 
   const primaryColor = theme.palette.primary.main
   const disableColor = theme.palette.action.disabled
@@ -57,7 +57,7 @@ export const IconToggle = (props:TIconToggle) => {
 
     return {
       ...labelProps,
-      sx: [labelProps?.sx, labelSx, { color }] as SxProps<Theme>
+      sx: [labelProps?.sx, labelSx, { color }] as CssProps
     }
   }, [
     active,

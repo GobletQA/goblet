@@ -1,5 +1,7 @@
 import type { ComponentProps } from 'react'
+import type { TConnectFormProps } from '@hooks/forms/useConnectForm'
 
+import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import { useWatch } from 'react-hook-form-mui'
 import Grid from '@mui/material/Unstable_Grid2'
@@ -7,11 +9,9 @@ import { ModalTypes } from '@constants'
 import { PlugIcon } from '@components/Icons'
 import { useGetRepos } from '@hooks/api/useGetRepos'
 import { useColorMap } from '@hooks/theme/useColorMap'
-import { IconButton } from '@components/Buttons/IconButton'
 import { useConnectForm } from '@hooks/forms/useConnectForm'
 import { ModalRoot } from '@components/ModalManager/ModalRoot'
-import type { TConnectFormProps } from '@hooks/forms/useConnectForm'
-import { LogoutIcon, SyncIcon, CloudDownIcon, SubArrowRightIcon }  from '@components/Icons'
+import { LogoutIcon, CloudDownIcon, SubArrowRightIcon }  from '@components/Icons'
 
 import {
   Form,
@@ -24,7 +24,9 @@ export type TConnectModal = ComponentProps<typeof ModalRoot>
 
 const ConnectForm = (props:TConnectFormProps) => {
   const {
-    form
+    form,
+    values,
+    setForm
   } = props
 
   const colorMap = useColorMap()
@@ -32,12 +34,12 @@ const ConnectForm = (props:TConnectFormProps) => {
   const [
     repo,
     branch,
-    newBranch,
+    branchName,
     createBranch,
   ] = useWatch({
-    name: [`repo`, `branch`, `createBranch`, `newBranch`]
+    name: [`repo`, `branch`, `branchName`, `createBranch`]
   })
-  
+
   const { repos, branches } = useGetRepos({
     repo,
     branch
@@ -45,73 +47,51 @@ const ConnectForm = (props:TConnectFormProps) => {
   
   const createActive = Boolean(createBranch)
   
+  useEffect(() => {
+    let obj = values
+    
+    if(values?.repo !== repo)
+      obj = { ...obj, repo }
+    if(values?.branch !== branch)
+      obj = { ...obj, branch }
+    if(values?.branchName !== branchName)
+      obj = { ...obj, branchName }
+    if(values?.createBranch !== createBranch)
+      obj = { ...obj, createBranch }
+
+    values !== obj && setForm({ ...values, ...obj })
+
+  }, [
+    repo,
+    branch,
+    values,
+    branchName,
+    createBranch,
+  ])
+
   return (
-    <Box
-      marginBottom='24px'
-    >
+    <Box marginBottom='24px' >
       <Grid
         container
-        columns={16}
         rowSpacing={2}
         columnSpacing={1}
         disableEqualOverflow={true}
       >
-        <Grid
-          xs="auto"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <IconButton color="secondary" >
-            <SyncIcon />
-          </IconButton>
-        </Grid>
-        <Grid xs={13} sm={14} md={15} >
+        <Grid xs={true} >
           <AutoInput
             {...form.repo}
-            required={true}
             options={repos}
           />
         </Grid>
-        <Grid xs={16}>
+        <Grid xs={12}>
           <AutoInput
             {...form.branch}
-            required={true}
             disabled={!repo}
             options={branches}
           />
         </Grid>
-        <Grid
-          xs="auto"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <IconToggle
-            disabled={!repo}
-            labelPos='bottom'
-            label='New Branch'
-            name='createBranch'
-            active={createActive}
-            Icon={SubArrowRightIcon}
-            iconProps={{ fontSize: 'small' }}
-            // @ts-ignore
-            labelProps={{
-              sx: {
-                [`> .MuiFormControlLabel-label`]: {
-                  fontSize: `10px`,
-                  marginTop: `-5px`,
-                }
-              }
-            }}
-          />
-        </Grid>
-        <Grid xs={13} sm={14} >
-          <Input
-            disabled={!createBranch}
-            name={'newBranch'}
-            label={'Branch Name'}
-          />
+        <Grid xs={8} sm={10} >
+          <Input {...form.branchName} />
         </Grid>
       </Grid>
     </Box>
@@ -123,6 +103,8 @@ export const ConnectModal = (props:TConnectModal) => {
 
   const {
     form,
+    values,
+    setForm,
     onSuccess,
     isConnecting,
     connectError,
@@ -145,7 +127,7 @@ export const ConnectModal = (props:TConnectModal) => {
         {...form.form}
         onSuccess={onSuccess}
       >
-        <ConnectForm form={form} />
+        <ConnectForm form={form} setForm={setForm} values={values} />
       </Form>
     </Box>
   )
