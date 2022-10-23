@@ -4,28 +4,44 @@ import type { TModalAction } from '@types'
 import Button from '@mui/material/Button'
 import DialogActions from '@mui/material/DialogActions'
 
-export type TModalFooter = {
-  actions?: TModalAction[]
+export type TModalFooter = ComponentProps<typeof DialogActions> & {
   actionProps?: ComponentProps<typeof DialogActions>
+  actions?: TModalAction[] | Record<string, TModalAction>
 }
 
 export const ModalFooter = (props:TModalFooter) => {
   const {
     actions,
+    children,
     actionProps,
+    ...rest
   } = props
 
-  return actions && actions.length
+  return actions
     ? (
-        <DialogActions {...actionProps} >
-          {actions?.map((action) => {
-            const { label, text=label, ...buttonProps } = action
+        <DialogActions {...rest} {...actionProps} >
+          {Object.values(actions)?.map((action) => {
+            const {
+              label,
+              text=label,
+              EndIcon,
+              StartIcon,
+              iconProps,
+              ...buttonProps
+            } = action
+
             return (
-              <Button key={text} {...buttonProps} >
+              <Button
+                endIcon={EndIcon && (<EndIcon {...iconProps} />)}
+                startIcon={StartIcon && (<StartIcon {...iconProps} />)}
+                key={text}
+                {...buttonProps}
+              >
                 {text}
               </Button>
             )
           })}
+          {children}
         </DialogActions>
       )
     : null

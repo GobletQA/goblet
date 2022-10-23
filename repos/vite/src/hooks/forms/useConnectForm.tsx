@@ -1,9 +1,10 @@
-import type { THFormHelpers } from './useFormHelpers'
+import type { THFormHelpers } from '@types'
 
 import { noOpObj } from '@keg-hub/jsutils'
 import { useState, useCallback } from 'react'
-
-import { evtFnNoOp,  useBuildForm } from './useBuildForm'
+import { useBuildForm } from './useBuildForm'
+import { evtFnNoOp } from './useBuildFormValues'
+import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
 
 const formFields = {
   form: {
@@ -18,6 +19,22 @@ const formFields = {
     container: true,
     columnSpacing: 1,
     disableEqualOverflow: true
+  },
+  $actions: {
+    signOut: {
+      label: `Sign Out`,
+      onClick: signOutAuthUser,
+      variant: `text`  as const,
+      color: `secondary` as const,
+      StartIcon: `$component.CloudDownIcon`,
+    },
+    connectRepo: {
+      color: `primary`  as const,
+      variant: `contained`  as const,
+      label: `Connect Repo`,
+      disabled: `$values.not.branch`,
+      StartIcon: `$component.CloudDownIcon`,
+    }
   },
   fields: {
     repo: {

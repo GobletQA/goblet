@@ -18,6 +18,9 @@ export type TModalComponent = ComponentProps<typeof ModalRoot>
 export type TModalTransition = TransitionProps & { children: React.ReactElement<any, any> }
     
 export type TModalAction = Omit<ComponentProps<typeof Button>, `onClick` | `color` | `variant`> & {
+  EndIcon?: ComponentType<any>
+  StartIcon?: ComponentType<any>
+  iconProps?: ComponentProps<any>
   onClick?: (...args:any[]) => void
   text?: string
   label?: string

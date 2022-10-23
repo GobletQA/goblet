@@ -3,6 +3,7 @@ const paddingSize = 20
 
 export const gutter = {
   padding: {
+    none: `0px`,
     size: paddingSize,
     px: `${paddingSize}px`,
     half: paddingSize / 2,
@@ -11,6 +12,7 @@ export const gutter = {
     tQpx: `${(paddingSize / 4) * 3}px`,
   },
   margin: {
+    none: `0px`,
     size: marginSize,
     px: `${marginSize}px`,
     half: marginSize / 2,

@@ -1,4 +1,4 @@
-import type { TBuiltForm, TFormRootProps } from '@hooks/forms'
+import type { TBuiltForm, TFormRootProps, TFormActions } from '@hooks/forms'
 
 import { noOpObj, isStr } from '@keg-hub/jsutils'
 import Grid from '@mui/material/Unstable_Grid2'
@@ -9,6 +9,7 @@ export type TRenderInputs = Record<`form`, TBuiltForm> & Record<string, any>
 export const RenderInputs = (props:Record<any, any>) => {
   const {
     form,
+    $actions=noOpObj as TFormActions,
     $root=noOpObj as TFormRootProps,
     ...fields
   } = props.form as TBuiltForm

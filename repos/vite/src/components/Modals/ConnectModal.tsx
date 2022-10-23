@@ -1,24 +1,21 @@
-import type { TBuiltForm } from '@hooks/forms'
+import type { TBuiltForm } from '@types'
 import type { TModalComponent, TModalRef } from '@types'
-import type { ReactNode } from 'react'
 
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
+
+import { gutter } from '@theme'
 import Box from '@mui/material/Box'
 import { ModalTypes } from '@constants'
 import Divider from '@mui/material/Divider'
+import { noPropArr } from '@keg-hub/jsutils'
 import { PlugIcon } from '@components/Icons'
 import { RenderInputs } from '@components/Form'
 import { useGetRepos } from '@hooks/api/useGetRepos'
-import { noOpObj, noPropArr } from '@keg-hub/jsutils'
-import DialogContent from '@mui/material/DialogContent'
 import { useConnectForm } from '@hooks/forms/useConnectForm'
 import { useWatch, useController } from 'react-hook-form-mui'
-import { LogoutIcon, CloudDownIcon }  from '@components/Icons'
 import { ModalFooter } from '@components/ModalManager/ModalFooter'
-import { ModalContent } from '@components/ModalManager/ModalContent'
 
 import { Form } from '@components/Form'
-
 
 export type TConnectFormProps = {
   form: TBuiltForm
@@ -81,33 +78,6 @@ const ConnectForm = (props:TConnectFormProps) => {
   )
 }
 
-const actionProps = {
-  sx: {
-    // padding: `0px`,
-    // paddingTop: `24px`,
-    // paddingBottom: `0px`,
-    padding: `20px 24px`,
-    justifyContent: `space-between`,
-  }
-}
-const actions = [
-  {
-    color: `secondary` as const,
-    variant: `text`  as const,
-    label: `Sign Out`,
-    onClick: (evt:Event, data:Record<any, any>) => {
-      console.log(`------- logout -------`)
-    },
-    startIcon: <LogoutIcon />,
-  },
-  {
-    color: `primary`  as const,
-    variant: `contained`  as const,
-    label: `Connect Repo`,
-    startIcon: <CloudDownIcon />,
-  },
-]
-
 export const ConnectModal:TModalRef = (props:TModalComponent) => {
   const { ModalMessage } = props
 
@@ -118,14 +88,13 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
     onSuccess,
     isConnecting,
     connectError,
-  } = useConnectForm({
-    onSuccess: (data) => {
-      console.log(`------- data -------`)
-      console.log(data)
-    }
-  })
+  } = useConnectForm()
 
-  actions[1].onClick = onSuccess
+  form.$actions.connectRepo.onClick = useCallback(() => {
+    console.log(`------- values -------`)
+    console.log(values)
+
+  }, [values])
 
   return (
     <>
@@ -145,8 +114,11 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
       </Box>
       <Divider />
       <ModalFooter
-        actions={actions}
-        actionProps={actionProps}
+        actions={form.$actions}
+        sx={{
+          padding: gutter.padding.px,
+          justifyContent: `space-between`,
+        }}
       />
     </>
   )
@@ -158,7 +130,7 @@ ConnectModal.modalProps = {
   manualClose: true,
   contentProps: {
     sx: {
-      padding: `0px`,
+      padding: gutter.padding.none,
     }
   },
   title: `Connect Repo`,
