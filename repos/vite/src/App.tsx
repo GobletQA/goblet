@@ -1,5 +1,5 @@
 import type { TThemeTypes } from '@theme/theme.types'
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 
 import { initApp } from '@actions/init'
 import { createTheme } from '@theme/Theme'
@@ -24,10 +24,14 @@ const onAppInit = async (setApiTimeout:(...args:any[])=>any) => {
 const App = () => {
   const [themeType, setThemeType] = useState<TThemeTypes>(`light`)
   const theme = useMemo(() => createTheme(themeType), [themeType])
+  const appInitRef = useRef<boolean>(false)
 
   const [apiTimeout, setApiTimeout] = useState(false)
   const [start, setStart] = useState(false)
   useEffect(() => {
+    if(appInitRef.current) return
+
+    appInitRef.current = true
     onAppInit(setApiTimeout)
     setStart(true)
   }, [])

@@ -12,7 +12,7 @@ import { setActiveModal } from '@actions/modals/setActiveModal'
 /**
  * Checks if an initial test file should be loaded, and makes call to load it
  */
-const loadInitTestFiles = async (
+const loadInitRepoFiles = async (
   queryObj:Record<any, any>,
   mergeQuery: boolean
 ) => {
@@ -32,9 +32,10 @@ export const initStatus = async (status?:TRouteMeta) => {
   // If user is logged in, check the status of users session container
   // If not logged in the status should come as an argument from the onSuccessAuth method
   status = status || await statusContainer()
-  
+
   // Will allow using goblet without persisting changes
   const repoStatus = await statusRepo({ routes: status?.routes })
+
   if (!repoStatus || !repoStatus.mounted) return
 
   // Finally if the repo is mounted
@@ -42,7 +43,7 @@ export const initStatus = async (status?:TRouteMeta) => {
   const queryObj = getQueryData()
 
   // Load the initial test file
-  await loadInitTestFiles(queryObj, true)
+  await loadInitRepoFiles(queryObj, true)
 
   // Load the init modal
   loadInitModal(queryObj)
@@ -53,6 +54,6 @@ export const initApp = async () => {
   const activeUser = await loadUser()
 
   return !activeUser
-    ? setActiveModal(ModalTypes.SIGN_IN)
+    ? setActiveModal(ModalTypes.SignIn)
     : initStatus()
 }

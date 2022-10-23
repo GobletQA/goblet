@@ -143,7 +143,6 @@ class Storage {
 
   cleanup = async () => {
     try {
-      // this.cache = {}
       await this.removeJwt()
       await this.removeHeaders()
     }
@@ -161,7 +160,7 @@ class Storage {
   removeJwt = async () => this.remove(StorageKeys.JWT)
 
   getRepo = async () => this.get(StorageKeys.REPO, true)
-  setRepo = async (data:any) => this.set(StorageKeys.REPO, data)
+  setRepo = async (data:any) => this.set(StorageKeys.REPO, data, true)
   removeRepo = async () => this.remove(StorageKeys.REPO)
 
   getHeaders = async () => await this.get(StorageKeys.ROUTE_HEADERS, true)
