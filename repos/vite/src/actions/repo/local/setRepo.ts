@@ -40,6 +40,9 @@ export const setRepo = (params:TApiRepoResp) => {
     definitionTypes
   } = params
 
+  console.log(`------- params -------`)
+  console.log(params)
+
   repo && setRepoData(repo)
 
   features && upsertFeatures(features)

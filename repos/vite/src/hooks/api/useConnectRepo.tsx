@@ -44,7 +44,8 @@ export const useConnectRepo = (props:THConnectRepo) => {
       // // Close the modal
       toggleModal(false)
 
+      // TODO: this was the only way, valide we don't do it this way any more
       // Open the selector modal to allow selecting a file from the mounted repo
-      setActiveModal(ModalTypes.repo)
+      // setActiveModal(ModalTypes.repo)
   })
 }

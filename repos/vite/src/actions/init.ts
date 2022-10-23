@@ -45,8 +45,9 @@ export const initStatus = async (status?:TRouteMeta) => {
   // Load the initial test file
   await loadInitRepoFiles(queryObj, true)
 
+  // TODO: this was the only way, don't think we're doing it that way any more
   // Load the init modal
-  loadInitModal(queryObj)
+  // loadInitModal(queryObj)
 }
 
 export const initApp = async () => {
