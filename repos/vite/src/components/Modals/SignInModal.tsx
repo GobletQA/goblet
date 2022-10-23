@@ -1,5 +1,4 @@
-import type { ComponentProps } from 'react'
-import { ModalRoot } from '@components/ModalManager/ModalRoot'
+import type { TModalRef, TModalComponent } from '@types'
 import { lazy, Suspense, useEffect } from 'react'
 
 import { ModalTypes } from '@constants'
@@ -12,9 +11,7 @@ import { setActiveModal } from '@actions/modals/setActiveModal'
 
 const LazySignIn = lazy(() => import('@components/Admin/SignIn/SignIn'))
 
-export type TSignInModal = ComponentProps<typeof ModalRoot>
-
-export const SignInModal = (props:TSignInModal) => {
+export const SignInModal:TModalRef = (props:TModalComponent) => {
 
   const user = useUser()
   const repo = useRepo()

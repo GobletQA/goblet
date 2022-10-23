@@ -21,6 +21,10 @@ import {
 
 export const evtFnNoOp = noOp as (...args:any[]) => any
 
+export type TFormRootProps = GridProps & {
+  Component?: ComponentType<any>
+}
+
 export type TFormRef = {
   name: string
   values: Record<any, any>
@@ -54,12 +58,12 @@ export type TFormFields = Record<string, TBuildFormField>
 
 export type TBuildFormObj = {
   form: TFormRef
-  $root: GridProps
+  $root: TFormRootProps
   fields: TFormFields
 }
 
 export type TBuiltForm = Record<'form', Omit<TFormRef, 'name'>>
-  & Record<'$root', GridProps>
+  & Record<'$root', TFormRootProps>
   & Record<string, TBuildFormField>
 
 

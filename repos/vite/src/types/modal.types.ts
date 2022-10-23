@@ -1,0 +1,66 @@
+import type { ReactNode, ComponentProps, ComponentType } from 'react'
+import type Button from '@mui/material/Button'
+import type Dialog from '@mui/material/Dialog'
+import type DialogTitle from '@mui/material/DialogTitle'
+import type DialogActions from '@mui/material/DialogActions'
+import type DialogContent from '@mui/material/DialogContent'
+import type { TransitionProps } from '@mui/material/transitions'
+import type { ModalRoot } from '@components/ModalManager/ModalRoot'
+
+export type TModalRef = typeof ModalRoot & {
+  modalType: string
+  modalProps: Partial<TModalComponent>
+}
+
+export type TModalContext = Record<any, any>
+export type TModalComponent = ComponentProps<typeof ModalRoot>
+
+export type TModalTransition = TransitionProps & { children: React.ReactElement<any, any> }
+    
+export type TModalAction = Omit<ComponentProps<typeof Button>, `onClick` | `color` | `variant`> & {
+  onClick?: (...args:any[]) => void
+  text?: string
+  label?: string
+}
+
+export type TModalTitle = ComponentProps<typeof DialogTitle> & {
+  Icon?: ReactNode
+}
+
+export type TModalSlots = {
+  Container?: ComponentType<any> | false
+  Title?: ComponentType<any> | false
+  Header?: ComponentType<any> | false
+  Content?: ComponentType<any> | false
+  ContentText?: ComponentType<any> | false
+  Footer?: ComponentType<any> | false
+}
+
+export type TModal = Omit<ComponentProps<typeof Dialog>, "open"> & {
+  type?: string
+  text?: ReactNode
+  open?: boolean,
+  visible?: boolean,
+  Container?: ComponentType<any> | false
+  Title?: ComponentType<any> | false
+  Header?: ComponentType<any> | false
+  Content?: ComponentType<any> | false
+  ContentText?: ComponentType<any> | false
+  Footer?: ComponentType<any> | false
+  slots?: TModalSlots
+  ModalMessage?: any
+  manualClose?:boolean
+  overrideContent?:boolean
+  actions?: TModalAction[]
+  onClose?: (...args:any[]) => void
+  titleProps?: TModalTitle
+  actionProps?: ComponentProps<typeof DialogActions>
+  contentProps?: ComponentProps<typeof DialogContent>
+  modalContext: TModalContext
+  setModalContext: (ctx:TModalContext) => void
+}
+
+export type TModalFooter = {
+  actions?: TModalAction[]
+  actionProps: ComponentProps<typeof DialogActions>
+}

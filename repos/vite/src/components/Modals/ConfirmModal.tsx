@@ -1,11 +1,8 @@
-import type { ComponentProps } from 'react'
-import { ModalRoot } from '@components/ModalManager/ModalRoot'
+import type { TModalRef, TModalComponent } from '@types'
 
 import { ModalTypes } from '@constants'
 
-export type TConfirmModal = ComponentProps<typeof ModalRoot>
-
-export const ConfirmModal = (props:TConfirmModal) => {
+export const ConfirmModal:TModalRef = (props:TModalComponent) => {
   return (
     <div>
       ConfirmModal

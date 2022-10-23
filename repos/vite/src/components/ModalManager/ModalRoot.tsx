@@ -1,10 +1,18 @@
-import type { TModal, TModalTransition } from './modal.types'
+import type { TModalSlots, TModal, TModalTransition } from '@types'
 
-import { forwardRef, useCallback } from 'react'
+import {
+  useMemo,
+  Fragment,
+  forwardRef,
+  useCallback,
+} from 'react'
+
 import Slide from '@mui/material/Slide'
 import Dialog from '@mui/material/Dialog'
+import { noOpObj, exists } from '@keg-hub/jsutils'
 import { ModalFooter } from './ModalFooter'
 import { ModalHeader } from './ModalHeader'
+import { ModalContent } from './ModalContent'
 import { toggleModal } from '@actions/modals'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
@@ -19,17 +27,49 @@ const Transition = forwardRef((props: TModalTransition, ref: React.Ref<unknown>)
   />
 ))
 
+
+const useModalSlots = (props:TModal) => {
+  const {
+    Title,
+    Header,
+    Footer,
+    Content,
+    Container,
+    ContentText,
+    slots=noOpObj as TModalSlots
+  } = props
+
+  return useMemo(() => {
+    return {
+      Title: exists(slots.Title) ? slots.Title : Title,
+      Footer: exists(slots.Footer) ? slots.Footer : Footer,
+      Header: exists(slots.Header) ? slots.Header : Header,
+      Content: exists(slots.Content) ? slots.Content : Content,
+      Container: exists(slots.Container) ? slots.Container : Container,
+      ContentText: exists(slots.ContentText) ? slots.ContentText : ContentText,
+    }
+  }, [
+    slots,
+    Title,
+    Header,
+    Footer,
+    Content,
+    Container,
+    ContentText,
+  ])
+  
+}
+
 export const ModalRoot = (props:TModal) => {
   
   const {
     visible=false,
     open=visible,
     text,
-    Title,
+    slots,
     title,
     onClose,
     actions,
-    Content,
     children,
     titleProps,
     actionProps,
@@ -38,8 +78,16 @@ export const ModalRoot = (props:TModal) => {
     contentProps,
     maxWidth='md',
     fullWidth=true,
+    modalContext,
+    setModalContext,
     overrideContent,
     fullScreen=false,
+    Title:_TNoOp,
+    Header:_HNoOp,
+    Footer:_FNoOp,
+    Content:_CNoOp,
+    Content:_CTNoOp,
+    Container:_CNNoOp,
     ...rest
   } = props
 
@@ -50,6 +98,19 @@ export const ModalRoot = (props:TModal) => {
     toggleModal(false)
 
   }, [manualClose, onClose])
+
+  const modalSlots = useModalSlots(props)
+  const {
+    Header,
+    Footer,
+    Content,
+    Container,
+    ContentText,
+  } = modalSlots
+
+  const [ContComp, contProps] = Container
+    ? [Container, props]
+    : [Fragment, noOpObj]
 
   return (
     <Dialog
@@ -66,29 +127,64 @@ export const ModalRoot = (props:TModal) => {
       fullScreen={fullScreen}
     >
       {overrideContent ? children : (
-        <>
-          {Title || (title && (<ModalHeader {...props} />))}
-
-          {Content || (
-            <DialogContent
-              id="gb-modal-description"
-              sx={{
-                borderTop: "2px solid #00b8d4"
-              }}
-              dividers {...contentProps}
-            >
-              {children}
-              {text && (<DialogContentText>{text}</DialogContentText>)}
-            </DialogContent>
-          )}
-
-          {actions && (
-            <ModalFooter
-              actions={actions}
-              actionProps={actionProps}
-            />
-          )}
-        </>
+        <ContComp {...contProps} >
+          {
+            exists(Header)
+              ? Header
+                ? (
+                    <Header
+                      {...props}
+                      {...modalSlots}
+                      slots={modalSlots}
+                    />
+                  )
+                : null
+              : (
+                  <ModalHeader
+                    {...props}
+                    {...modalSlots}
+                    slots={modalSlots}
+                  />
+                )
+          }
+          {
+            exists(Content)
+              ? Content
+                ? (
+                    <Content
+                      {...props}
+                      {...modalSlots}
+                      slots={modalSlots}
+                    />
+                  )
+                : null
+              : (
+                  <ModalContent
+                    {...props}
+                    {...modalSlots}
+                    slots={modalSlots}
+                  />
+                )
+          }
+          {
+            exists(Footer)
+              ?  Footer
+                ? (
+                    <Footer
+                      {...props}
+                      {...modalSlots}
+                      slots={modalSlots} 
+                    />
+                  )
+                : null
+              : (
+                  <ModalFooter
+                    actions={actions}
+                    actionProps={actionProps}
+                  />
+                )
+        }
+        </ContComp>
       )}
     </Dialog>
   )

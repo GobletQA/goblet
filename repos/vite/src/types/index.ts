@@ -1,6 +1,7 @@
 export * from './api.types'
 export * from './auth.types'
 export * from './nav.types'
+export * from './modal.types'
 export * from './shared.types'
 export * from './events.types'
 export * from './reducer.types'

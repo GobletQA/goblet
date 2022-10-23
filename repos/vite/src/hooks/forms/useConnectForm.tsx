@@ -1,6 +1,8 @@
 import type { THFormHelpers } from './useFormHelpers'
 
+import { noOpObj } from '@keg-hub/jsutils'
 import { useState, useCallback } from 'react'
+
 import { evtFnNoOp,  useBuildForm } from './useBuildForm'
 
 const formFields = {
@@ -90,12 +92,11 @@ const formFields = {
   }
 }
 
-
 export type TConnectForm = THFormHelpers & {
   values?:Record<any, any>
 }
 
-export const useConnectForm = (props:TConnectForm) => {
+export const useConnectForm = (props:TConnectForm=noOpObj) => {
 
   const [values, setValues] = useState<Record<any, any>>(props.values || {})
 

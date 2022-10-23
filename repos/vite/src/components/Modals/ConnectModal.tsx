@@ -1,32 +1,24 @@
-import type { ComponentProps, ReactNode, ComponentType } from 'react'
 import type { TBuiltForm } from '@hooks/forms'
+import type { TModalComponent, TModalRef } from '@types'
+import type { ReactNode } from 'react'
 
 import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import { ModalTypes } from '@constants'
-
-import { noOpObj, noPropArr } from '@keg-hub/jsutils'
-
-
-
+import Divider from '@mui/material/Divider'
 import { PlugIcon } from '@components/Icons'
-import { useWatch, useController } from 'react-hook-form-mui'
-import Grid from '@mui/material/Unstable_Grid2'
+import { RenderInputs } from '@components/Form'
 import { useGetRepos } from '@hooks/api/useGetRepos'
-
-import { FormComponents, RenderInputs } from '@components/Form'
+import { noOpObj, noPropArr } from '@keg-hub/jsutils'
+import DialogContent from '@mui/material/DialogContent'
 import { useConnectForm } from '@hooks/forms/useConnectForm'
-
-import { ModalRoot } from '@components/ModalManager/ModalRoot'
+import { useWatch, useController } from 'react-hook-form-mui'
 import { LogoutIcon, CloudDownIcon }  from '@components/Icons'
+import { ModalFooter } from '@components/ModalManager/ModalFooter'
+import { ModalContent } from '@components/ModalManager/ModalContent'
 
-import {
-  Form,
-  Input,
-  AutoInput,
-} from '@components/Form'
+import { Form } from '@components/Form'
 
-export type TConnectModal = ComponentProps<typeof ModalRoot>
 
 export type TConnectFormProps = {
   form: TBuiltForm
@@ -50,8 +42,7 @@ const ConnectForm = (props:TConnectFormProps) => {
     name: [`repo`, `branch`, `branchName`, `createBranch`]
   })
   
-  const { field } = useController({ name: `branch` })
-  const { onChange:onChangeBranch } = field
+  const { field:{ onChange:onChangeBranch } } = useController({ name: `branch` })
 
   const { repos } = useGetRepos({ repo, branch })
 
@@ -82,24 +73,42 @@ const ConnectForm = (props:TConnectFormProps) => {
   ])
 
   return (
-    <Box marginBottom='24px' >
-      <Grid
-        container
-        rowSpacing={2}
-        columnSpacing={1}
-        disableEqualOverflow={true}
-      >
-        <RenderInputs
-          form={form}
-          repo={{ options: repos }}
-          branch={{ options: repo?.branches || noPropArr, disabled: !repo }}
-        />
-      </Grid>
-    </Box>
+    <RenderInputs
+      form={form}
+      repo={{ options: repos }}
+      branch={{ options: repo?.branches || noPropArr, disabled: !repo }}
+    />
   )
 }
 
-export const ConnectModal = (props:TConnectModal) => {
+const actionProps = {
+  sx: {
+    // padding: `0px`,
+    // paddingTop: `24px`,
+    // paddingBottom: `0px`,
+    padding: `20px 24px`,
+    justifyContent: `space-between`,
+  }
+}
+const actions = [
+  {
+    color: `secondary` as const,
+    variant: `text`  as const,
+    label: `Sign Out`,
+    onClick: (evt:Event, data:Record<any, any>) => {
+      console.log(`------- logout -------`)
+    },
+    startIcon: <LogoutIcon />,
+  },
+  {
+    color: `primary`  as const,
+    variant: `contained`  as const,
+    label: `Connect Repo`,
+    startIcon: <CloudDownIcon />,
+  },
+]
+
+export const ConnectModal:TModalRef = (props:TModalComponent) => {
   const { ModalMessage } = props
 
   const {
@@ -109,8 +118,6 @@ export const ConnectModal = (props:TConnectModal) => {
     onSuccess,
     isConnecting,
     connectError,
-    setIsConnecting,
-    setIsConnectError,
   } = useConnectForm({
     onSuccess: (data) => {
       console.log(`------- data -------`)
@@ -118,47 +125,44 @@ export const ConnectModal = (props:TConnectModal) => {
     }
   })
 
+  actions[1].onClick = onSuccess
+
   return (
-    <Box>
-      <ModalMessage
-        error={connectError}
-        loading={isConnecting && 'Connecting Repo ...'}
+    <>
+      <Box padding='20px 24px'>
+        <ModalMessage
+          error={connectError}
+          loading={isConnecting && 'Connecting Repo ...'}
+        />
+        <Form
+          {...form.form}
+          onSuccess={onSuccess}
+        >
+          <Box marginBottom='24px' >
+            <ConnectForm form={form} setForm={setForm} values={values} />
+          </Box>
+        </Form>
+      </Box>
+      <Divider />
+      <ModalFooter
+        actions={actions}
+        actionProps={actionProps}
       />
-      <Form
-        {...form.form}
-        onSuccess={onSuccess}
-      >
-        <ConnectForm form={form} setForm={setForm} values={values} />
-      </Form>
-    </Box>
+    </>
   )
 }
 
 ConnectModal.modalType = ModalTypes.connect
 ConnectModal.modalProps = {
-  title: `Connect Repo`,
+  Footer: false,
   manualClose: true,
-  titleProps: {
-    Icon: (<PlugIcon />)
-  },
-  actionProps: {
+  contentProps: {
     sx: {
-      padding: `16px 24px`,
-      justifyContent: `space-between`,
+      padding: `0px`,
     }
   },
-  actions: [
-    {
-      color: `secondary`,
-      variant: `text`,
-      label: `Sign Out`,
-      startIcon: <LogoutIcon />,
-    },
-    {
-      color: `primary`,
-      variant: `contained`,
-      label: `Connect Repo`,
-      startIcon: <CloudDownIcon />,
-    },
-  ]
+  title: `Connect Repo`,
+  titleProps: {
+    Icon: (<PlugIcon />)
+  }
 }
