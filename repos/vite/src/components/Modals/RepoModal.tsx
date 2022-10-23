@@ -1,18 +1,47 @@
-import type { TModalRef, TModalComponent } from '@types'
+import type { TModalComponent, TModalRef } from '@types'
 
+import { gutter } from '@theme'
 import { ModalTypes } from '@constants'
-
+import Divider from '@mui/material/Divider'
+import { SourceIcon } from '@components/Icons'
+import { RepoForm } from '@components/Forms/RepoForm'
+import { ModalFooter } from '@components/ModalManager/ModalFooter'
 
 export const RepoModal:TModalRef = (props:TModalComponent) => {
+  const { ModalMessage } = props
+
   return (
-    <div>
-      RepoModal
-    </div>
+    <RepoForm
+      FormMessage={ModalMessage}
+      FormActions={(props:any) => {
+        return (
+          <>
+            <Divider />
+            <ModalFooter
+              {...props}
+              sx={{
+                padding: `${gutter.padding.px} ${gutter.padding.dpx}`,
+                justifyContent: `space-between`,
+              }}
+            />
+          </>
+        )
+      }}
+    />
   )
 }
 
 RepoModal.modalType = ModalTypes.repo
 RepoModal.modalProps = {
   title: `Repo`,
-  titleProps: {}
+  Footer: false,
+  manualClose: true,
+  contentProps: {
+    sx: {
+      padding: gutter.padding.none,
+    }
+  },
+  titleProps: {
+    Icon: (<SourceIcon />)
+  }
 }

@@ -2,8 +2,8 @@ import type { THFormHelpers, TSetupForm } from '@types'
 
 import { noOpObj } from '@keg-hub/jsutils'
 import { useState, useCallback } from 'react'
-import { useBuildForm } from './useBuildForm'
-import { evtFnNoOp } from './useBuildFormValues'
+import { useBuildForm } from '@hooks/form/useBuildForm'
+import { evtFnNoOp } from '@hooks/form/useBuildFormValues'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
 
 const formFields = {
@@ -110,7 +110,7 @@ const formFields = {
 }
 
 export type TConnectForm = THFormHelpers & {
-  setupForm: TSetupForm
+  setupForm?: TSetupForm
   values?:Record<any, any>
   onConnect?: (...args:any[]) => void
 }

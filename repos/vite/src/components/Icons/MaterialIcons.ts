@@ -14,9 +14,12 @@ import SyncIcon from '@mui/icons-material/Sync'
 import ErrorIcon from '@mui/icons-material/Error'
 import PendingIcon from '@mui/icons-material/Pending'
 import InfoIcon from '@mui/icons-material/Info'
+import OpenFileIcon from '@mui/icons-material/FileOpen'
 import PlugIcon from '@mui/icons-material/ElectricalServices'
 import CloudDownIcon from '@mui/icons-material/CloudDownload'
 import SubArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight'
+import CodeIcon from '@mui/icons-material/Code'
+import SourceIcon from '@mui/icons-material/Source'
 
 export {
   Steps,
@@ -36,6 +39,9 @@ export {
   ErrorIcon,
   PendingIcon,
   InfoIcon,
+  CodeIcon,
+  SourceIcon,
+  OpenFileIcon,
   CloudDownIcon,
   SubArrowRightIcon
 }
