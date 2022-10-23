@@ -1,4 +1,4 @@
-import type { THFormHelpers } from '@types'
+import type { THFormHelpers, TSetupForm } from '@types'
 
 import { noOpObj } from '@keg-hub/jsutils'
 import { useState, useCallback } from 'react'
@@ -78,14 +78,14 @@ const formFields = {
       name: `createBranch`,
       label: `Create Branch`,
     },
-    branchName: {
+    newBranch: {
       Component: `Input`,
       active: false,
       disabled: `$values.not.createBranch`,
       gridOptions: {
         xs: 12,
       },
-      name: `branchName`,
+      name: `newBranch`,
       label: `Branch Name`,
       placeholder: `Enter a branch name...`,
       decor: {
@@ -110,26 +110,28 @@ const formFields = {
 }
 
 export type TConnectForm = THFormHelpers & {
+  setupForm: TSetupForm
   values?:Record<any, any>
+  onConnect?: (...args:any[]) => void
 }
 
-export const useConnectForm = (props:TConnectForm=noOpObj) => {
-
-  const [values, setValues] = useState<Record<any, any>>(props.values || {})
+export const useConnectForm = (props:TConnectForm=noOpObj as TConnectForm) => {
+  const [values, setForm] = useState<Record<any, any>>(props.values || {})
 
   const {
     form,
+    loading,
     onSuccess,
-    isLoading:isConnecting,
-    loadingError:connectError,
-    setIsLoading:setIsConnecting,
-    setLoadingError:setIsConnectError,
+    formError,
+    setLoading,
+    setFormError,
   } = useBuildForm(formFields, {
     ...props,
     values,
+    setForm,
     pathValues: {
-      [`branchName.decor.onClick`]: useCallback((evt:any) => {
-        setValues({ ...values, createBranch: evt.target.checked })
+      [`newBranch.decor.onClick`]: useCallback((evt:any) => {
+        setForm({ ...values, createBranch: evt.target.checked })
       }, [values])
     }
   })
@@ -137,12 +139,11 @@ export const useConnectForm = (props:TConnectForm=noOpObj) => {
   return {
     form,
     values,
+    loading,
+    setForm,
+    formError,
     onSuccess,
-    connectError,
-    isConnecting,
-    setIsConnecting,
-    setIsConnectError,
-    setForm:setValues,
+    setLoading,
+    setFormError,
   }
-  
 }

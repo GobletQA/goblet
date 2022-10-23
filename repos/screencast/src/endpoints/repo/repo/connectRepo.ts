@@ -21,6 +21,7 @@ export const connectRepo = asyncWrap(async (req:Request, res:Response) => {
   const { config } = req.app.locals
   const content = await loadRepoContent(repo, config)
 
+  // TODO: update to not include repo.parkin to the frontend  
   return apiRes(res, content, 200)
 })
 

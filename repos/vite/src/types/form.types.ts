@@ -9,13 +9,12 @@ export type THFormHelpers = {
 }
 
 export type THFormHelpersResp = {
-  isLoading:boolean
-  loadingError: string
+  loading:boolean
+  formError: string
   onSuccess: (...args:any[]) => any,
-  setIsLoading: Dispatch<SetStateAction<boolean>>
-  setLoadingError: Dispatch<SetStateAction<string>>
+  setLoading: Dispatch<SetStateAction<boolean>>
+  setFormError: Dispatch<SetStateAction<string>>
 }
-
 
 export type TFormRootProps = GridProps & {
   Component?: ComponentType<any>
@@ -26,8 +25,18 @@ export type TFormRef = {
   values: Record<any, any>
 }
 
+export type TSetupFormProps = {
+  form:TBuiltForm,
+  original:TBuildFormObj,
+  options:TBuildFormOpts,
+  formHelpers:THFormHelpersResp,
+}
+export type TSetupForm = (props:TSetupFormProps) => TBuiltForm
+
 export type TBuildFormOpts = Omit<TFormRef, 'name'> & THFormHelpers & {
+  setupForm?: TSetupForm
   pathValues: Record<string, any>
+  [key: string]:  any
 }
 
 export type TBuildFieldRules = {

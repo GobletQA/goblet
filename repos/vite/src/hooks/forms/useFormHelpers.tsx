@@ -9,14 +9,14 @@ export const useFormHelpers = ({
 }:THFormHelpers=noOpObj):THFormHelpersResp => {
 
   const onSuccess = useInline(onSuccessCb)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [loadingError, setLoadingError] = useState<string>(``)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [formError, setFormError] = useState<string>(``)
 
   return {
-    isLoading,
+    loading,
     onSuccess,
-    loadingError,
-    setIsLoading,
-    setLoadingError,
+    formError,
+    setLoading,
+    setFormError,
   }
 }

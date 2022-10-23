@@ -2,11 +2,12 @@ import type { ReactNode, ComponentProps } from 'react'
 import { gutter } from '@theme'
 import Box from '@mui/material/Box'
 import { ErrorIcon, PendingIcon, InfoIcon } from '@components/Icons'
+import CircularProgress from '@mui/material/CircularProgress'
 
 export type TModalMessage = {
-  error: ReactNode
-  loading: ReactNode
-  message: ReactNode
+  error?: ReactNode
+  loading?: ReactNode
+  message?: ReactNode
 }
 
 const defStyle = {
@@ -25,11 +26,10 @@ export const ModalMessage = (props:TModalMessage) => {
     message,
   } = props
 
-
   return (
     <Box
       width="100%"
-      marginBottom={gutter.margin.hpx}
+      marginBottom={gutter.margin.px}
     >
       {error && (
         <Box
@@ -47,7 +47,11 @@ export const ModalMessage = (props:TModalMessage) => {
           color="secondary.main"
           className='goblet-repo-connect-loading'
         >
-          <PendingIcon fontSize="small" sx={{ marginRight: '5px' }} />
+          <CircularProgress
+            color="secondary"
+            size={'16px'}
+            sx={{ marginRight: '10px' }}
+          />
           {loading}
         </Box>
       )}

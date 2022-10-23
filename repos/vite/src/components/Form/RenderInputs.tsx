@@ -1,12 +1,16 @@
-import type { TBuiltForm, TFormRootProps, TFormActions } from '@hooks/forms'
+import type { TBuiltForm, TFormRootProps, TFormActions } from '@types'
 
 import { noOpObj, isStr } from '@keg-hub/jsutils'
 import Grid from '@mui/material/Unstable_Grid2'
 import { FormComponents } from '@components/Form'
 
-export type TRenderInputs = Record<`form`, TBuiltForm> & Record<string, any>
+export type TRenderInputs = Record<`form`, TBuiltForm>
+  & Record<'disableAll', boolean>
+  & Record<string, any>
+
 
 export const RenderInputs = (props:Record<any, any>) => {
+  const { disableAll } = props
   const {
     form,
     $actions=noOpObj as TFormActions,
@@ -18,6 +22,8 @@ export const RenderInputs = (props:Record<any, any>) => {
     Component=Grid,
     ...rootRest
   } = $root
+
+  const disabledProps = disableAll ? { disabled: disableAll } : noOpObj
 
   return (
       <Component {...rootRest} >
@@ -39,7 +45,11 @@ export const RenderInputs = (props:Record<any, any>) => {
           Comp &&
             Inputs.push(
               <GridComp key={name} {...gridOptions}>
-                <Comp {...rest} {...inputProps} />
+                <Comp
+                  {...rest}
+                  {...inputProps}
+                  {...disabledProps}
+                />
               </GridComp>
             )
 

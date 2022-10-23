@@ -26,14 +26,19 @@ export {
 }
 
 export enum ModalTypes {
-  confirm = 'confirm',
+  Confirm = 'confirm',
   CONFIRM = 'confirm',
+  confirm = 'confirm',
+  Connect = 'connect',
   CONNECT = 'connect',
   connect = 'connect',
+  Repo = 'repo',
   REPO = 'repo',
   repo = 'repo',
+  Settings = 'settings',
   SETTINGS = 'settings',
   settings = 'settings',
+  SignIn = 'signIn',
   SIGN_IN = 'signIn',
   signIn = 'signIn',
 } 

@@ -37,6 +37,8 @@ export const connectRepo = async (params:TConnectRepo) => {
   // Set the repo data in the store
   setRepo(data)
 
+  // TODO: update the files in the monaco editor
+  // setActiveSidebar(SIDEBAR_TYPES.FILE_TREE)
 
   data.repo &&
     addToast({

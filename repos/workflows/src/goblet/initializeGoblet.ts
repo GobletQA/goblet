@@ -48,7 +48,7 @@ export const initializeGoblet = async (args:TWFArgs) => {
     : Logger.log(`Reusing existing branch...`)
 
   // Check if we should create a new branch
-  const branch = gitArgs.createBranch
+  const branch = gitArgs.createBranch && gitArgs.newBranch
     ? await branchRepo(gitArgs)
     : gitArgs.branch
 
