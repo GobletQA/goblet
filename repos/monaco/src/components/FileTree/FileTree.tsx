@@ -1,200 +1,80 @@
-import { memo, useCallback, useState } from 'react'
-import AddFileIcon from '../icons/addfile'
-import AddFolderIcon from '../icons/addfolder'
-import Arrow from '../icons/arrow'
+import type { CSSProperties } from 'react'
 
-import Modal from '../modal'
-import {
-  generateFileTree,
-  addSourceFile,
-  deleteSourceFile,
-  editSourceFileName,
-  addSourceFolder,
-  deleteSourceFolder,
-  editSourceFolderName,
-} from '../../utils'
+import { memo, useCallback, useState } from 'react'
+import { FileTreeHeader } from './FileTreeHeader'
+import { useFileTree } from '../../hooks/fileTree/useFileTree'
+
 import './FileTree.css'
 import { File } from './File'
+import { Modal } from '../Modal/Modal'
 
 export type FileTree = {
-  defaultFiles: any
-  onPathChange: (key: string) => void
+  style?: CSSProperties
+  Modal: Modal
   title?: string
   currentPath?: string
-  style?: any
+  rootEl: HTMLElement | null
   onAddFile: (...args: any) => void
+  onAddFolder: (...args: any) => void
+  onPathChange: (key: string) => void
   onDeleteFile: (...args: any) => void
   onEditFileName: (...args: any) => void
-  onAddFolder: (...args: any) => void
   onDeleteFolder: (path: string) => void
+  files?: Record<string, Record<string, any>>
+  defaultFiles: any
+  // defaultFiles: Record<string, Record<string, any>>
   onEditFolderName: (path: string, name: string) => void
-  rootEl: HTMLElement | null
 }
 
-export const FileTree = memo(({
-  defaultFiles,
-  onPathChange,
-  title = 'monaco-base-editor',
-  currentPath = '',
-  style,
-  onAddFile,
-  onDeleteFile,
-  onEditFileName,
-  onAddFolder,
-  onDeleteFolder,
-  onEditFolderName,
-  rootEl,
-}: FileTree) => {
-  const [collpase, setCollpase] = useState(false)
+export const FileTree = memo((props: FileTree) => {
+  const {
+    style,
+    onPathChange,
+    currentPath = '',
+    title = 'goblet-base-editor',
+  } = props
 
-  const [filetree, setFiletree] = useState(() => generateFileTree(defaultFiles))
-
-  const addFile = useCallback(
-    (path: string) => {
-      setFiletree(addSourceFile(filetree, path))
-    },
-    [filetree]
-  )
-
-  const deleteFile = useCallback(
-    (path: string) => {
-      Modal.confirm({
-        target: rootEl,
-        okText: 'OK',
-        onOk: (close: () => void) => {
-          setFiletree(deleteSourceFile(filetree, path))
-          onDeleteFile(path)
-          close()
-        },
-        title: 'Confirm Delete',
-        content: () => (
-          <div>
-            <div>Are you sure?</div>
-            <div>File: {path}</div>
-          </div>
-        ),
-      })
-    },
-    [filetree, onDeleteFile, rootEl]
-  )
-
-  const editFileName = useCallback(
-    (path: string, name: string) => {
-      setFiletree(editSourceFileName(filetree, path, name))
-      onEditFileName(path, name)
-    },
-    [filetree, onEditFileName]
-  )
-
-  const handleConfirmAddFile = useCallback(
-    (file: any) => {
-      let tree: any = {}
-      if (file.name) {
-        tree = deleteSourceFile(filetree, file.path)
-        tree = addSourceFile(tree, file.path + file.name)
-        onAddFile(file.path + file.name)
-      }
-      else {
-        tree = deleteSourceFile(filetree, file.path)
-      }
-      setFiletree(tree)
-    },
-    [filetree, onAddFile]
-  )
-
-  const addFolder = useCallback(
-    (path: string) => {
-      setFiletree(addSourceFolder(filetree, path))
-    },
-    [filetree]
-  )
-
-  const deleteFolder = useCallback(
-    (path: string) => {
-      Modal.confirm({
-        target: rootEl,
-        okText: 'OK',
-        onOk: (close: () => void) => {
-          setFiletree(deleteSourceFolder(filetree, path))
-          onDeleteFolder(path)
-          close()
-        },
-        title: 'Confirm Delete',
-        content: () => (
-          <div>
-            <div>Are you sure?</div>
-            <div>Delete: {path}</div>
-          </div>
-        ),
-      })
-    },
-    [filetree, onDeleteFolder, rootEl]
-  )
-
-  const editFolderName = useCallback(
-    (path: string, name: string) => {
-      setFiletree(editSourceFolderName(filetree, path, name))
-      onEditFolderName(path, name)
-    },
-    [filetree, onEditFolderName]
-  )
-
-  const handleConfirmAddFolder = useCallback(
-    (file: any) => {
-      let tree: any = {}
-      if (file.name) {
-        tree = deleteSourceFolder(filetree, file.path)
-        tree = addSourceFolder(tree, file.path + file.name)
-        onAddFolder(file.path + file.name)
-      }
-      else {
-        tree = deleteSourceFolder(filetree, file.path)
-      }
-      setFiletree(tree)
-    },
-    [filetree, onAddFolder]
-  )
-
-  const handleCollapse = useCallback(() => {
-    setCollpase(pre => !pre)
+  const [collapse, setCollapse] = useState(false)
+  const onCollapse = useCallback(() => {
+    setCollapse(pre => !pre)
   }, [])
+
+  const {
+    filetree,
+    addFile,
+    addFolder,
+    deleteFile,
+    editFileName,
+    deleteFolder,
+    editFolderName,
+    onConfirmAddFile,
+    onConfirmAddFolder
+  } = useFileTree(props)
 
   return (
     <div className='goblet-monaco-editor-list-wrapper' style={style}>
-      <div className='goblet-monaco-editor-list-title'>{title}</div>
-      <div className='goblet-monaco-editor-list-split' onClick={handleCollapse}>
-        <Arrow collpase={collpase} />
-        <span style={{ flex: 1 }}>&nbsp;Files</span>
-        <AddFileIcon
-          onClick={(e: Event) => {
-            e.stopPropagation()
-            addFile('/')
-          }}
-          className='goblet-monaco-editor-list-split-icon'
-        />
-        <AddFolderIcon
-          onClick={(e: Event) => {
-            e.stopPropagation()
-            addFolder('/')
-          }}
-          className='goblet-monaco-editor-list-split-icon'
-        />
-      </div>
-      {!collpase && (
+      <FileTreeHeader
+        title={title}
+        addFile={addFile}
+        collapse={collapse}
+        addFolder={addFolder}
+        onCollapse={onCollapse}
+      />
+      {!collapse && (
         <div className='goblet-monaco-editor-list-files'>
           <File
-            onEditFileName={editFileName}
-            onEditFolderName={editFolderName}
-            onDeleteFile={deleteFile}
-            onDeleteFolder={deleteFolder}
-            onAddFile={addFile}
-            onAddFolder={addFolder}
-            onConfirmAddFile={handleConfirmAddFile}
-            onConfirmAddFolder={handleConfirmAddFolder}
-            currentPath={currentPath}
             root
             file={filetree}
+            onAddFile={addFile}
+            onAddFolder={addFolder}
+            onDeleteFile={deleteFile}
+            currentPath={currentPath}
             onPathChange={onPathChange}
+            onDeleteFolder={deleteFolder}
+            onEditFileName={editFileName}
+            onEditFolderName={editFolderName}
+            onConfirmAddFile={onConfirmAddFile}
+            onConfirmAddFolder={onConfirmAddFolder}
           />
         </div>
       )}

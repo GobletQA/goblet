@@ -1,41 +1,43 @@
-import { deepCopy } from './deepCopy'
+import { deepMerge } from '@keg-hub/jsutils'
+import { buildFolder } from './buildFolder'
 
-
-function editSubFolder(tree: any, oldPath: string, newPath: string) {
+const editSubFolder = (tree: any, oldPath: string, newPath: string) => {
   tree.path = tree.path.replace(oldPath, newPath)
   if (tree._isDirectory) {
-    Object.keys(tree.children).forEach(v =>
-      editSubFolder(tree.children[v], oldPath, newPath)
+    Object.keys(tree.children).forEach(child =>
+      editSubFolder(tree.children[child], oldPath, newPath)
     )
   }
 }
 
-export function editSourceFolderName(sourcetree: any, path: string, name: string) {
-  const copy = deepCopy(sourcetree)
+export const editSourceFolderName = (sourcetree: any, path: string, name: string) => {
+  const copy = deepMerge(sourcetree)
   const paths = (path || '/').slice(1).split('/')
   let temp = copy.children
   const newPath = '/' + paths.slice(0, -1).concat(name).join('/')
-  paths.forEach((v, index) => {
+  paths.forEach((part, index) => {
     if (index === paths.length - 1) {
-      temp[name] = {
+      temp[name] = buildFolder({
+        part,
+        paths,
         name,
+        index,
         path: newPath,
-        children: temp[v].children,
-        _isDirectory: true,
-      }
-      delete temp[v]
+        children: temp[part].children,
+      })
+      delete temp[part]
     }
-    else if (temp[v]) {
-      temp = temp[v].children
-    }
+
+    else if (temp[part])
+      return (temp = temp[part].children)
     else {
-      temp[v] = {
-        _isDirectory: true,
-        children: {},
-        path: '/' + paths.slice(0, index + 1).join('/'),
-        name: v,
-      }
-      temp = temp[v].children
+      temp[part] = buildFolder({
+        index,
+        paths,
+        part,
+      })
+
+      temp = temp[part].children
     }
   })
 

@@ -16,7 +16,7 @@ export const useFileListResize = (props:TUseFileListResize) => {
 
   const {
     onFileTreeResize,
-    initialWidth=180,
+    initialWidth=200,
     initialStatus=false
   } = props
 

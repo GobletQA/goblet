@@ -1,5 +1,5 @@
-const Arrow = ({ collpase = true }) =>
-  collpase ? (
+const Arrow = ({ collapse = true }) =>
+  collapse ? (
     <svg
       width='1em'
       height='1em'

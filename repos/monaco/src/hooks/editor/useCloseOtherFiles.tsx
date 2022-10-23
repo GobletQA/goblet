@@ -1,7 +1,7 @@
 import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
 import { TEditorOpenFiles, TFilelist } from '../../types'
-import Modal from '../../components/modal'
+import { Modal } from '../../components/Modal'
 
 import { useCallback } from 'react'
 

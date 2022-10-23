@@ -1,35 +1,96 @@
-export function generateFileTree(files: any) {
-  const keys = Object.keys(files)
-  const tree = {
-    isDirectory: true,
-    children: {},
-    path: '/',
+import type { TMItem, TRootDir, TFolder, TFolderChildren } from '../types'
+
+import { buildFile } from './buildFile'
+import { buildFolder } from './buildFolder'
+import { buildRootDir } from './buildRootDir'
+
+export type TLoopBuildTree = {
+  keys?: string[]
+  tree?: TRootDir | TFolder
+  files: Record<string, string>
+}
+
+export type TLoopPathArr = {
+  key: string
+  paths: string[]
+  children: TFolderChildren
+  files: Record<string, string>
+}
+
+export type THandlePart = {
+  key: string
+  part: string,
+  index: number
+  paths: string[]
+  temp: TFolderChildren
+  files: Record<string, string>
+}
+
+const handlePart = ({
+  key,
+  temp,
+  index,
+  part,
+  files,
+  paths,
+}:THandlePart) => {
+  if (index === paths.length - 1){
+    temp[part] = buildFile({ key, part, value: files[key] })
+    return temp
   }
-  keys.forEach(key => {
-    const path = key.slice(1).split('/')
-    let temp: any = tree.children
-    path.forEach((v, index) => {
-      if (index === path.length - 1) {
-        temp[v] = {
-          name: v,
-          path: key,
-          value: files[key],
-          _isFile: true,
-        }
-      }
-      else if (temp[v]) {
-        temp = temp[v].children
-      }
-      else {
-        temp[v] = {
-          _isDirectory: true,
-          children: {},
-          path: '/' + path.slice(0, index + 1).join('/'),
-          name: v,
-        }
-        temp = temp[v].children
-      }
+
+  if (temp[part]) return (temp[part] as TFolder).children
+
+  temp[part] = buildFolder({
+    part,
+    index,
+    paths
+  })
+
+  return (temp[part] as TFolder).children
+}
+
+export const loopPathArr = ({
+  key,
+  files,
+  paths,
+  children
+}:TLoopPathArr) => {
+  let temp: Record<string, TMItem> = children
+  paths.forEach((part, index) => {
+    temp = handlePart({
+      key,
+      part,
+      temp,
+      index,
+      files,
+      paths,
     })
   })
-  return tree
+
+  return children
+}
+
+export const loopBuildTree = ({
+  tree,
+  keys,
+  files,
+}:TLoopBuildTree) => {
+  const RootTree = tree || buildRootDir()
+  keys = keys || Object.keys(files)
+
+  keys.forEach(key => {
+    loopPathArr({
+      key,
+      files,
+      children: RootTree.children,
+      paths: key.slice(1).split('/'),
+    })
+  })
+
+  return RootTree
+}
+
+export const generateFileTree = (files: Record<string, string>) => {
+  return loopBuildTree({ files })
 }

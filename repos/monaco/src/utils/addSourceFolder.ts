@@ -1,7 +1,7 @@
-import { deepCopy } from './deepCopy'
+import { deepMerge } from '@keg-hub/jsutils'
 
 export function addSourceFolder(sourcetree: any, path: string, value?: string) {
-  const copy = deepCopy(sourcetree)
+  const copy = deepMerge(sourcetree)
   const paths = (path || '/').slice(1).split('/')
   let temp = copy.children
   paths.forEach((v, index) => {

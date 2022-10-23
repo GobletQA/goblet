@@ -1,6 +1,6 @@
 import type { MouseEventHandler } from 'react'
 import React, { useCallback, useEffect, useState, useRef } from 'react'
-import Modal from '../modal'
+import { Modal } from '../Modal'
 import { FileIcon } from '../icons/file'
 
 export type Tab = {

@@ -1,25 +1,27 @@
-import { deepCopy } from './deepCopy'
+import { deepMerge } from '@keg-hub/jsutils'
+import { buildFolder } from './buildFolder'
 
-export function deleteSourceFile(sourcetree: any, path: string) {
-  const copy = deepCopy(sourcetree)
+export const deleteSourceFile = (sourcetree: any, path: string) => {
+  const copy = deepMerge(sourcetree)
   const paths = (path || '/').slice(1).split('/')
   let temp = copy.children
-  paths.forEach((v, index) => {
+
+  paths.forEach((part, index) => {
     if (index === paths.length - 1) {
-      delete temp[v]
+      delete temp[part]
+      return
     }
-    else if (temp[v]) {
-      temp = temp[v].children
-    }
-    else {
-      temp[v] = {
-        _isDirectory: true,
-        children: {},
-        path: '/' + paths.slice(0, index + 1).join('/'),
-        name: v,
-      }
-      temp = temp[v].children
-    }
+    else if (temp[part])
+      return (temp = temp[v].children)
+
+    temp[part] = buildFolder({
+      part,
+      index,
+      paths,
+    })
+
+    temp = temp[part].children
+
   })
   return copy
 }

@@ -96,7 +96,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     } = useFileListResize({
       onFileTreeResize,
       initialStatus: initialFileTreeStatus,
-      initialWidth: initialFileTreeWidth ?? config?.editor?.fileTree?.width ?? 180
+      initialWidth: initialFileTreeWidth ?? config?.editor?.fileTree?.width ?? 200
     })
 
     useEditorSetup({
