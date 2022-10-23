@@ -1,15 +1,11 @@
-import { InputDecor } from '@types'
+import { TInputDecor } from '@types'
 import InputAdornment from '@mui/material/InputAdornment'
 import type { ComponentType, ReactNode } from 'react'
 
-
-export type TDecor = InputDecor & {
-  Component: ComponentType<any>
-}
-
-export const Decor = (props:TDecor) => {
+export const Decor = (props:TInputDecor) => {
   const {
     pos=`start`,
+    active,
     Component:DecorComp,
     ...decorProps
   } = props

@@ -1,4 +1,4 @@
-import type { InputDecor } from '@types'
+import type { TInputDecor } from '@types'
 import type { ComponentProps } from 'react'
 import type { InputProps } from '@mui/material'
 
@@ -7,7 +7,7 @@ import { noOpObj } from '@keg-hub/jsutils'
 import { AutocompleteElement } from 'react-hook-form-mui'
 
 export type TAutoInput = ComponentProps<typeof AutocompleteElement> & {
-  decor?: InputDecor
+  decor?: TInputDecor
   disabled?: boolean
 }
 
@@ -15,7 +15,7 @@ export const AutoInput = (props:TAutoInput) => {
   const {
     disabled,
     textFieldProps,
-    decor=noOpObj as InputDecor,
+    decor=noOpObj as TInputDecor,
     ...rest
   } = props
   const { Component, pos } = decor

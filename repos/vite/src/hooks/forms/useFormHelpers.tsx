@@ -1,23 +1,28 @@
-import type { ComponentMap } from './Register'
+import type { Dispatch, SetStateAction } from 'react'
 
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { useInline } from '../useInline'
 import { noOp, noOpObj } from '@keg-hub/jsutils'
 
-
 export type THFormHelpers = {
-  components?:ComponentMap,
   onSuccess?:(data:any) => any
 }
 
+export type THFormHelpersResp = {
+  isLoading:boolean
+  loadingError: string
+  onSuccess: (...args:any[]) => any,
+  setIsLoading: Dispatch<SetStateAction<boolean>>
+  setLoadingError: Dispatch<SetStateAction<string>>
+}
+
 export const useFormHelpers = ({
-  components,
   onSuccess:onSuccessCb=noOp,
-}:THFormHelpers=noOpObj) => {
-  
+}:THFormHelpers=noOpObj):THFormHelpersResp => {
+
   const onSuccess = useInline(onSuccessCb)
-  const [isLoading, setIsLoading] = useState(false)
-  const [loadingError, setLoadingError] = useState(``)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [loadingError, setLoadingError] = useState<string>(``)
 
   return {
     isLoading,
@@ -26,5 +31,4 @@ export const useFormHelpers = ({
     setIsLoading,
     setLoadingError,
   }
-  
 }

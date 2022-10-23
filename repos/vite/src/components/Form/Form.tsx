@@ -1,4 +1,4 @@
-import type { ComponentType, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import type { ComponentProps } from 'react'
 import { FormContainer as FormContainerMui } from 'react-hook-form-mui'
 import { noOpObj, noOp } from '@keg-hub/jsutils'

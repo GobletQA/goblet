@@ -1,26 +1,38 @@
-import type { ComponentProps } from 'react'
-import type { TConnectFormProps } from '@hooks/forms/useConnectForm'
+import type { ComponentProps, ReactNode, ComponentType } from 'react'
+import type { TBuiltForm } from '@hooks/forms'
 
 import { useEffect } from 'react'
 import Box from '@mui/material/Box'
-import { useWatch } from 'react-hook-form-mui'
-import Grid from '@mui/material/Unstable_Grid2'
 import { ModalTypes } from '@constants'
+
+import { noOpObj, noPropArr } from '@keg-hub/jsutils'
+
+
+
 import { PlugIcon } from '@components/Icons'
+import { useWatch, useController } from 'react-hook-form-mui'
+import Grid from '@mui/material/Unstable_Grid2'
 import { useGetRepos } from '@hooks/api/useGetRepos'
-import { useColorMap } from '@hooks/theme/useColorMap'
+
+import { FormComponents, RenderInputs } from '@components/Form'
 import { useConnectForm } from '@hooks/forms/useConnectForm'
+
 import { ModalRoot } from '@components/ModalManager/ModalRoot'
-import { LogoutIcon, CloudDownIcon, SubArrowRightIcon }  from '@components/Icons'
+import { LogoutIcon, CloudDownIcon }  from '@components/Icons'
 
 import {
   Form,
   Input,
   AutoInput,
-  IconToggle,
 } from '@components/Form'
 
 export type TConnectModal = ComponentProps<typeof ModalRoot>
+
+export type TConnectFormProps = {
+  form: TBuiltForm
+  values:Record<any, any>
+  setForm: (...args:any[]) => void
+}
 
 const ConnectForm = (props:TConnectFormProps) => {
   const {
@@ -28,8 +40,6 @@ const ConnectForm = (props:TConnectFormProps) => {
     values,
     setForm
   } = props
-
-  const colorMap = useColorMap()
 
   const [
     repo,
@@ -39,20 +49,21 @@ const ConnectForm = (props:TConnectFormProps) => {
   ] = useWatch({
     name: [`repo`, `branch`, `branchName`, `createBranch`]
   })
+  
+  const { field } = useController({ name: `branch` })
+  const { onChange:onChangeBranch } = field
 
-  const { repos, branches } = useGetRepos({
-    repo,
-    branch
-  })
-  
-  const createActive = Boolean(createBranch)
-  
+  const { repos } = useGetRepos({ repo, branch })
+
   useEffect(() => {
     let obj = values
     
-    if(values?.repo !== repo)
-      obj = { ...obj, repo }
-    if(values?.branch !== branch)
+    if(values?.repo !== repo){
+      obj = { ...obj, repo, branch: `` }
+      // Reset the branch when the repo changes
+      onChangeBranch(``)
+    }
+    else if(values?.branch !== branch)
       obj = { ...obj, branch }
     if(values?.branchName !== branchName)
       obj = { ...obj, branchName }
@@ -62,9 +73,10 @@ const ConnectForm = (props:TConnectFormProps) => {
     values !== obj && setForm({ ...values, ...obj })
 
   }, [
+    onChangeBranch,
+    values,
     repo,
     branch,
-    values,
     branchName,
     createBranch,
   ])
@@ -77,22 +89,11 @@ const ConnectForm = (props:TConnectFormProps) => {
         columnSpacing={1}
         disableEqualOverflow={true}
       >
-        <Grid xs={true} >
-          <AutoInput
-            {...form.repo}
-            options={repos}
-          />
-        </Grid>
-        <Grid xs={12}>
-          <AutoInput
-            {...form.branch}
-            disabled={!repo}
-            options={branches}
-          />
-        </Grid>
-        <Grid xs={8} sm={10} >
-          <Input {...form.branchName} />
-        </Grid>
+        <RenderInputs
+          form={form}
+          repo={{ options: repos }}
+          branch={{ options: repo?.branches || noPropArr, disabled: !repo }}
+        />
       </Grid>
     </Box>
   )

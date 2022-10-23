@@ -1,119 +1,130 @@
-import type { ComponentType } from 'react'
-import { deepMerge } from '@keg-hub/jsutils'
-import { useFormHelpers } from './useFormHelpers'
 import type { THFormHelpers } from './useFormHelpers'
-import { useMemo, useState, useCallback } from 'react'
 
-const formProps = {}
+import { useState, useCallback } from 'react'
+import { evtFnNoOp,  useBuildForm } from './useBuildForm'
+
 const formFields = {
   form: {
+    name: `connect-form`,
     values: {
       repo: ``,
       branch: ``,
     },
   },
-  repo: {
-    required: true,
-    name: `repo`,
-    label: `Select Repo`,
-    decor: {
-      color: "secondary",
-      Component: IconButton,
-      Icon: SyncIcon,
-    },
-    textFieldProps: {
-      placeholder: `Select a repo to connect to...`,
-    },
-    rules: {
-      required: `Please select a repository`
-    }
+  $root: {
+    rowSpacing: 2,
+    container: true,
+    columnSpacing: 1,
+    disableEqualOverflow: true
   },
-  branch: {
-    required: true,
-    name: `branch`,
-    label: `Select Branch`,
-    textFieldProps: {
-      inputProps: {},
-      placeholder: `Select the branch to use...`,
-    },
-    rules: {
-      required: `Please select a branch`
-    }
-  },
-  createBranch: {
-    name: `createBranch`,
-    label: `Create Branch`,
-  },
-  branchName: {
-    name: `branchName`,
-    label: `Branch Name`,
-    placeholder: `Enter a branch name...`,
-    decor: {
-      labelPos: 'bottom',
-      label: 'New Branch',
-      name: 'createBranch',
-      Component: IconToggle,
-      Icon: SubArrowRightIcon,
-      iconProps:{ fontSize: 'small' },
-      labelSx: {
-        [`> .MuiFormControlLabel-label`]: {
-          fontSize: `10px`,
-          marginTop: `-5px`,
-        }
+  fields: {
+    repo: {
+      Component: `AutoInput`,
+      required: true,
+      name: `repo`,
+      gridOptions: {
+        xs: 12,
+      },
+      label: `Select Repo`,
+      decor: {
+        name: `syncRepos`,
+        color: `secondary`,
+        Icon: `$component.SyncIcon`,
+        Component: `$component.IconButton`,
+      },
+      textFieldProps: {
+        placeholder: `Select a repo to connect to...`,
+      },
+      rules: {
+        required: `Please select a repository`
       }
     },
+    branch: {
+      Component: `AutoInput`,
+      required: true,
+      name: `branch`,
+      label: `Select Branch`,
+      gridOptions: {
+        xs: 12,
+      },
+      textFieldProps: {
+        inputProps: {},
+        placeholder: `Select the branch to use...`,
+      },
+      rules: {
+        required: `Please select a branch`
+      }
+    },
+    createBranch: {
+      name: `createBranch`,
+      label: `Create Branch`,
+    },
+    branchName: {
+      Component: `Input`,
+      active: false,
+      disabled: `$values.not.createBranch`,
+      gridOptions: {
+        xs: 12,
+      },
+      name: `branchName`,
+      label: `Branch Name`,
+      placeholder: `Enter a branch name...`,
+      decor: {
+        disabled: `$values.not.branch`,
+        active: `$values.is.createBranch`,
+        onClick: evtFnNoOp,
+        labelPos: 'bottom',
+        label: 'New Branch',
+        name: 'createBranch',
+        Component: `$component.IconToggle`,
+        Icon: `$component.SubArrowRightIcon`,
+        iconProps:{ fontSize: 'small' },
+        labelSx: {
+          [`> .MuiFormControlLabel-label`]: {
+            fontSize: `10px`,
+            marginTop: `-5px`,
+          }
+        }
+      },
+    }
   }
 }
 
-export type TConnectFormProps = {
-  form: typeof formProps
-}
 
 export type TConnectForm = THFormHelpers & {
   values?:Record<any, any>
 }
 
 export const useConnectForm = (props:TConnectForm) => {
-  const { values } = props
+
+  const [values, setValues] = useState<Record<any, any>>(props.values || {})
 
   const {
+    form,
     onSuccess,
     isLoading:isConnecting,
     loadingError:connectError,
     setIsLoading:setIsConnecting,
     setLoadingError:setIsConnectError,
-  } = useFormHelpers(props)
-
-  const form = useMemo(() => {
-    return Object.assign(formProps, formFields, {
-      form: {
-        values: { ...formFields.values, ...values },
-      }
-    })
-  }, [values])
-
-  const [formValues, setFormValues] = useState({})
-  const [createActive, setCreateActive] = useState(false)
-
-  form.branchName.disabled = !createActive
-  form.branchName.decor.disabled = !formValues.branch
-
-  form.branchName.decor.active = createActive
-  form.branchName.decor.onClick = useCallback((evt:any) => {
-    const checked = evt.target.checked
-    setCreateActive(checked)
-    setFormValues({ ...formValues, createBranch: checked })
-  }, [formValues, createActive])
+  } = useBuildForm(formFields, {
+    ...props,
+    values,
+    pathValues: {
+      [`branchName.decor.onClick`]: useCallback((evt:any) => {
+        setValues({ ...values, createBranch: evt.target.checked })
+      }, [values])
+    }
+  })
 
   return {
     form,
+    values,
     onSuccess,
     connectError,
     isConnecting,
     setIsConnecting,
     setIsConnectError,
-    values: formValues,
-    setForm:setFormValues,
+    setForm:setValues,
   }
   
 }

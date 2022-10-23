@@ -9,14 +9,20 @@ import type { Theme } from '@mui/material'
 export type CssProps = SxProps<Theme>
 export type CSSObj = SystemStyleObject<Theme>
 
-
-export type TRenderComp = (...args:any[]) => ReactNode
-export type InputDecor = {
-  pos?: `start` | `end`
+export type TInputDecor = {
+  name: string
+  label?: string
+  labelSx?: CSSObj
+  labelPos?:string
+  active?: boolean|string
+  disabled?: boolean|string
   children?: ReactNode
+  pos?: `start` | `end`
   onClick?:(evt:Event) => void
   onHover?:(evt:Event) => void
-  Component?: TRenderComp
+  iconProps?: Record<any, any>
+  Icon?: ComponentType<any> | string
+  Component?: ComponentType<any> | string
   [key: string]: any
 }
 
