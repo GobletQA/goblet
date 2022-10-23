@@ -1,36 +1,23 @@
 import type { OpenFileTreeEvent } from '@types'
+import type { MutableRefObject } from 'react'
 
 import { exists } from '@keg-hub/jsutils'
 import { MonacoEditor } from '@gobletqa/monaco'
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
+import { useFileTree, useFiles, useRepo } from '@store'
 
-import { OpenFileTreeEvt } from '@constants'
+import { OpenFileTreeEvt, FileTreeWidth } from '@constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 export type TCodeEditorProps = {
   
 }
 
-const fileList:Record<string, string> = {
-  '/select-strategy.feature': `Feature: Strategy Overview
-    As a user of the strategy application with at least one strategy created
-    I want to see an overview of the strategy when I click into it
-    So that I can easily identify what part of it I want to work on
 
-    Example:
-        Given I use the saved page cookie
-        Given I navigate to "$world.app.url"
-        Given I click "$$firstStrategy"
-        I wait for "$$inviteBtn"
-`,
-  '/remove-strategy.feature': ``,
-  '/goblet.config.ts': `const test = () => console.log('file 3')\ntest()`
-}
-
-export const CodeEditor = (props:TCodeEditorProps) => {
-  const [files, setFiles] = useState<any>(fileList)
-  const editorRef = useRef<any>(null)
-
+const useEditorHooks = (
+  props:TCodeEditorProps,
+  editorRef:MutableRefObject<any>
+) => {
   const onPathChange = useCallback((key: string) => {
     console.log(`------- path -------`)
     console.log(key)
@@ -56,13 +43,59 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     }
   }, [])
 
+  return {
+    onFileChange,
+    onPathChange,
+    onValueChange,
+  }
+}
+
+
+export const CodeEditor = (props:TCodeEditorProps) => {
+  const fileTree = useFileTree()
+  const repoFiles = useFiles()
+  const repo = useRepo()
+
+  const editorFiles = useMemo(() => {
+    if(!repo?.fileTypes || !fileTree?.paths) return {}
+
+    const exts = Object.values(repo?.fileTypes).map((fileType) => (fileType as Record<'ext', string>).ext)
+
+    return fileTree?.paths?.reduce((acc, loc) => {
+      const ext = loc.split(`.`).pop() as string
+      if(!exts.includes(ext)) return acc
+
+      const fileModel = repoFiles.files[loc]
+
+      const relative = loc.split(`${repo?.paths?.repoRoot}/${repo?.paths?.workDir}`).pop() as string
+      acc[relative] = fileModel?.content || ``
+
+      return acc
+    }, {} as Record<string, string>) ?? {}
+  }, [
+    repo?.paths,
+    repo?.fileTypes,
+    fileTree?.paths,
+    repoFiles?.files,
+  ])
+  
+
+  const editorRef = useRef<any>(null)
+
+  const {
+    onFileChange,
+    onPathChange,
+    onValueChange,
+  } = useEditorHooks(props, editorRef)
+
   return (
     <MonacoEditor
       ref={editorRef}
       // path={path}
       // value={value}
-      defaultFiles={files}
-      initialFileTreeWidth={0}
+      defaultFiles={editorFiles}
+      initialFileTreeStatus={true}
+      initialFileTreeWidth={FileTreeWidth}
       onPathChange={onPathChange}
       onValueChange={onValueChange}
       onFileChange={onFileChange}

@@ -19,6 +19,7 @@ export type TFileTreeNode = {
 }
 
 export type TFileTree = {
+  paths: string[]
   rootPaths: string[]
   nodes: TFileTreeNode[]
 }
