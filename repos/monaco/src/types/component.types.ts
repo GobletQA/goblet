@@ -1,8 +1,8 @@
 
 import type { editor } from 'monaco-editor'
-import type { CSSProperties, ReactNode, ComponentType<any> } from 'react'
+import type { Modal } from '../components/Modal/Modal'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
-import { Modal } from '../components/Modal/Modal'
+import type { CSSProperties, ReactNode, ComponentType } from 'react'
 
 export interface TFilelist {
   [key: string]: string | null
@@ -10,6 +10,7 @@ export interface TFilelist {
 
 export interface IMonacoEditorProps {
   Modal: ComponentType
+  title?: string
   emptyText?: string
   defaultPath?: string
   config?: TEditorConfig

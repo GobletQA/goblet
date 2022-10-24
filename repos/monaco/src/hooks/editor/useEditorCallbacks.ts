@@ -68,7 +68,7 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
     setOpenedFiles,
   })
 
-  const handlePathChange = useCallback(
+  const pathChange = useCallback(
     (path: string) => {
       const model = restoreModel(path)
       model && openOrFocusPath(path)
@@ -77,10 +77,10 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
   )
 
   return {
+    pathChange,
     openedFiles,
     restoreModel,
     setOpenedFiles,
     openOrFocusPath,
-    handlePathChange
   }
 }

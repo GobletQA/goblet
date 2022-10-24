@@ -12,8 +12,8 @@ export const Button = (props:Button) => {
   const { type = 'default', className = '', children, onClick = () => {}, style } = props
   return (
     <div
-      onClick={onClick}
       style={style}
+      onClick={onClick}
       className={`goblet-monaco-editor-button goblet-monaco-editor-button-${type} ${className}`}
     >
       {children}

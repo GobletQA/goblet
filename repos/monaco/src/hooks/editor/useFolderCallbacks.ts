@@ -8,9 +8,9 @@ import { useCallback } from 'react'
 export type TUseFolderCallbacks = {
   deleteFile: (path: string) => void
   deleteModel: (path: string) => void
+  pathChange: (path: string) => void
   curPathRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
-  handlePathChange: (path: string) => void
   createOrUpdateModel:(path: string, value: string) => void
   setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
 }
@@ -20,10 +20,10 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
   const {
     filesRef,
     curPathRef,
+    pathChange,
     deleteFile,
     deleteModel,
     setOpenedFiles,
-    handlePathChange,
     createOrUpdateModel
   } = props
 
@@ -80,11 +80,11 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
 
         if (curPathRef.current.startsWith(path + '/')) {
           setTimeout(() => {
-            handlePathChange(curPathRef.current.replace(path + '/', newPath + '/'))
+            pathChange(curPathRef.current.replace(path + '/', newPath + '/'))
           }, 50)
         }
       },
-      [handlePathChange, addFolder]
+      [pathChange, addFolder]
     )
 
   

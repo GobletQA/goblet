@@ -16,7 +16,7 @@ export type TUseFileCallbacks = {
   curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
-  handlePathChange: (path: string) => void
+  pathChange: (path: string) => void
   setCurPath: (value: SetStateAction<string>) => void
   createOrUpdateModel:(path: string, value: string) => void
   setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
@@ -32,12 +32,12 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
     editorRef,
     curPathRef,
     setCurPath,
+    pathChange,
     curValueRef,
     deleteModel,
     openedFiles,
     restoreModel,
     setOpenedFiles,
-    handlePathChange,
     createOrUpdateModel
   } = props
 
@@ -97,10 +97,10 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
       createOrUpdateModel(path, value || '')
       filesRef.current[path] = value || ''
       setTimeout(() => {
-        handlePathChange(path)
+        pathChange(path)
       }, 50)
     },
-    [handlePathChange]
+    [pathChange]
   )
 
   const deleteFile = useCallback(

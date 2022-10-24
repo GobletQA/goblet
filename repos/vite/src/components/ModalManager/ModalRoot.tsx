@@ -61,7 +61,7 @@ const useModalSlots = (props:TModal) => {
 }
 
 export const ModalRoot = (props:TModal) => {
-  
+
   const {
     visible=false,
     open=visible,

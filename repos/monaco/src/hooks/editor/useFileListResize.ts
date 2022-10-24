@@ -29,7 +29,7 @@ export const useFileListResize = (props:TUseFileListResize) => {
     start: false,
   })
 
-  const handleMoveStart = useCallback(
+  const onMoveStart = useCallback(
     (e:any) => {
       dragStartRef.current = {
         pageX: e.pageX,
@@ -40,7 +40,7 @@ export const useFileListResize = (props:TUseFileListResize) => {
     [fileListWidth]
   )
 
-  const handleMove = useCallback((e:any) => {
+  const onMove = useCallback((e:any) => {
     if (dragStartRef.current.start) {
       setFileListWidth(
         dragStartRef.current.width + (e.pageX - dragStartRef.current.pageX)
@@ -48,7 +48,7 @@ export const useFileListResize = (props:TUseFileListResize) => {
     }
   }, [])
 
-  const handleMoveEnd = useCallback((e:any) => {
+  const onMoveEnd = useCallback((e:any) => {
     dragStartRef.current = {
       pageX: e.pageX,
       width: 0,
@@ -71,9 +71,9 @@ export const useFileListResize = (props:TUseFileListResize) => {
   return {
     styles,
     dragStartRef,
-    handleMove,
-    handleMoveEnd,
-    handleMoveStart,
+    onMove,
+    onMoveEnd,
+    onMoveStart,
     fileListWidth,
     resizeFileTree,
     setFileListWidth,

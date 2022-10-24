@@ -1,4 +1,3 @@
-import type { CSSObj } from '@types'
 import type { ComponentProps, ComponentType } from 'react'
 
 import { useRef } from 'react'
@@ -11,6 +10,8 @@ import { Loading } from '@components/Loading'
 import { MonacoEditor } from '@gobletqa/monaco'
 import { ConfirmModal } from '@components/Modals/ConfirmModal'
 import { useEditorHooks } from './editorHooks'
+
+const Modal = ConfirmModal as ComponentType<any>
 
 export type TCodeEditorProps = {
   
@@ -101,8 +102,8 @@ export const CodeEditor = (props:TCodeEditorProps) => {
   return connected
     ? (
         <MonacoEditor
+          Modal={Modal}
           ref={editorRef}
-          Modal={ConfirmModal}
           defaultFiles={editorFiles}
           initialFileTreeStatus={true}
           initialFileTreeWidth={FileTreeWidth}
@@ -110,7 +111,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onValueChange={onValueChange}
           onFileChange={onFileChange}
           options={{
-            fontSize: 14,
+            fontSize: 16,
             automaticLayout: true,
           }}
         />
