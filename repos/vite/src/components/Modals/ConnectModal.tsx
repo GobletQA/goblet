@@ -34,7 +34,7 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
 ConnectModal.modalType = ModalTypes.connect
 ConnectModal.modalProps = {
   Footer: false,
-  manualClose: true,
+  manualClose: false,
   contentProps: {
     sx: {
       padding: gutter.padding.none,
