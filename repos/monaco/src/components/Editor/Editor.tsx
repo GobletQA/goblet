@@ -27,6 +27,7 @@ import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
 export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
   (
     {
+      Modal,
       emptyText,
       defaultPath,
       onPathChange,
@@ -163,6 +164,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
         className='goblet-monaco-editor'
       >
         <FileTree
+          Modal={Modal}
           rootEl={rootRef.current}
           onEditFileName={editFileName}
           onDeleteFile={deleteFile}

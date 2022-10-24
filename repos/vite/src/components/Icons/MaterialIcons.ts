@@ -20,6 +20,8 @@ import CloudDownIcon from '@mui/icons-material/CloudDownload'
 import SubArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight'
 import CodeIcon from '@mui/icons-material/Code'
 import SourceIcon from '@mui/icons-material/Source'
+import CloudOffIcon from '@mui/icons-material/CloudOff'
+import BlockIcon from '@mui/icons-material/Block'
 
 export {
   Steps,
@@ -43,5 +45,7 @@ export {
   SourceIcon,
   OpenFileIcon,
   CloudDownIcon,
+  CloudOffIcon,
+  BlockIcon,
   SubArrowRightIcon
 }

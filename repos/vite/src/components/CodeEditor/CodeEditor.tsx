@@ -1,85 +1,94 @@
-import type { OpenFileTreeEvent } from '@types'
-import type { MutableRefObject } from 'react'
+import type { CSSObj } from '@types'
+import type { ComponentProps, ComponentType } from 'react'
 
-import { exists } from '@keg-hub/jsutils'
+import { useRef } from 'react'
+import Box from '@mui/material/Box'
+import { Text } from '@components/Text'
+import { BlockIcon } from '@components/Icons'
+import { gutter, monaco, colors } from '@theme'
+import { FileTreeWidth } from '@constants'
+import { Loading } from '@components/Loading'
 import { MonacoEditor } from '@gobletqa/monaco'
-import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { useFileTree, useFiles, useRepo } from '@store'
-
-import { OpenFileTreeEvt, FileTreeWidth } from '@constants'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { ConfirmModal } from '@components/Modals/ConfirmModal'
+import { useEditorHooks, useEditorFiles } from './editorHooks'
 
 export type TCodeEditorProps = {
   
 }
 
+export type TEditorLoading = ComponentProps<typeof Loading> 
 
-const useEditorHooks = (
-  props:TCodeEditorProps,
-  editorRef:MutableRefObject<any>
-) => {
-  const onPathChange = useCallback((key: string) => {
-    console.log(`------- path -------`)
-    console.log(key)
-  }, [])
+export type TEditorError = {
+  message: string
+  Icon: ComponentType<any>
+}
 
-  const onValueChange = useCallback((value: any) => {
-    console.log(`------- value -------`)
-    console.log(value)
-  }, [])
+const EditorLoading = (props:TEditorLoading) => {
+  const {
+    messageSx,
+    hideSpinner,
+    message=`Editor Loading`
+  } = props
+  
+  return (
+    <Box
+      className='editor-loading'
+      height='100%'
+      display='flex'
+      alignItems='center'
+      justifyContent='center'
+      bgcolor={monaco.editorBackground}
+    >
+      <Loading
+        message={message}
+        hideSpinner={hideSpinner}
+        messageSx={messageSx ?? { color: colors.white }}
+      />
+    </Box>
+  )
+}
 
-  const onFileChange = useCallback((file: any) => {
-    console.log(`------- file -------`)
-    console.log(file)
-  }, [])
-
-  useEffect(() => {
-    EE.on<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
-      exists(size) && editorRef?.current?.resizeFileTree?.(size)
-    }, `${OpenFileTreeEvt}-code-editor`)
-
-    return () => {
-      EE.off<OpenFileTreeEvent>(OpenFileTreeEvt, `${OpenFileTreeEvt}-code-editor`)
-    }
-  }, [])
-
-  return {
-    onFileChange,
-    onPathChange,
-    onValueChange,
-  }
+const RepoNotConnected = (props:TEditorError) => {
+  const {
+    Icon,
+    message,
+  } = props
+  
+  
+  return (
+    <Box
+      className='editor-error'
+      height='100%'
+      display='flex'
+      alignItems='center'
+      flexDirection='column'
+      justifyContent='center'
+      bgcolor={monaco.editorBackground}
+    >
+      <Icon
+        sx={{
+          fontSize: `40px`,
+          color: colors.error,
+        }}
+      />
+      <Text
+        type='h6'
+        sx={{
+          fontSize: `20px`,
+          color: colors.white,
+          marginTop: gutter.margin.hpx
+        }}
+      >
+        {message}
+      </Text>
+    </Box>
+  )
 }
 
 
 export const CodeEditor = (props:TCodeEditorProps) => {
-  const fileTree = useFileTree()
-  const repoFiles = useFiles()
-  const repo = useRepo()
 
-  const editorFiles = useMemo(() => {
-    if(!repo?.fileTypes || !fileTree?.paths) return {}
-
-    const exts = Object.values(repo?.fileTypes).map((fileType) => (fileType as Record<'ext', string>).ext)
-
-    return fileTree?.paths?.reduce((acc, loc) => {
-      const ext = loc.split(`.`).pop() as string
-      if(!exts.includes(ext)) return acc
-
-      const fileModel = repoFiles.files[loc]
-
-      const relative = loc.split(`${repo?.paths?.repoRoot}/${repo?.paths?.workDir}`).pop() as string
-      acc[relative] = fileModel?.content || ``
-
-      return acc
-    }, {} as Record<string, string>) ?? {}
-  }, [
-    repo?.paths,
-    repo?.fileTypes,
-    fileTree?.paths,
-    repoFiles?.files,
-  ])
-  
-
+  const { repo, connected, editorFiles } = useEditorFiles()
   const editorRef = useRef<any>(null)
 
   const {
@@ -88,22 +97,28 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     onValueChange,
   } = useEditorHooks(props, editorRef)
 
-  return (
-    <MonacoEditor
-      ref={editorRef}
-      // path={path}
-      // value={value}
-      defaultFiles={editorFiles}
-      initialFileTreeStatus={true}
-      initialFileTreeWidth={FileTreeWidth}
-      onPathChange={onPathChange}
-      onValueChange={onValueChange}
-      onFileChange={onFileChange}
-      options={{
-        fontSize: 14,
-        automaticLayout: true,
-      }}
-    />
-  )
+  return connected
+    ? (
+        <MonacoEditor
+          ref={editorRef}
+          Modal={ConfirmModal}
+          defaultFiles={editorFiles}
+          initialFileTreeStatus={true}
+          initialFileTreeWidth={FileTreeWidth}
+          onPathChange={onPathChange}
+          onValueChange={onValueChange}
+          onFileChange={onFileChange}
+          options={{
+            fontSize: 14,
+            automaticLayout: true,
+          }}
+        />
+      )
+    : (
+        <RepoNotConnected
+          Icon={BlockIcon}
+          message='Repository not connected'
+        />
+      )
   
 }

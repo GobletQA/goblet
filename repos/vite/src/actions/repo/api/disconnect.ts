@@ -1,9 +1,12 @@
 import { get } from '@keg-hub/jsutils'
+import { ModalTypes } from '@constants'
 import { addToast } from '@actions/toasts'
+import { GitUser } from '@services/gitUser'
 import { removeRepo } from '../local/removeRepo'
 import { apiRequest } from '@utils/api/apiRequest'
+import { setActiveModal } from '@actions/modals/setActiveModal'
 
-export const disconnectRepo = async (username:string) => {
+export const disconnectRepo = async (username?:string) => {
   addToast({
     type: 'info',
     message: `Disconnecting repo...`,
@@ -12,6 +15,10 @@ export const disconnectRepo = async (username:string) => {
   // Remove the repo locally first
   await removeRepo()
 
+  // @ts-ignore
+  username = username || GitUser.getUser()?.username
+
+  // Log-out the github user
   // Then call the backend api to unmount the repo
   const {data, error} = await apiRequest({
     method: 'POST',
@@ -33,4 +40,8 @@ export const disconnectRepo = async (username:string) => {
       type: 'success',
       message: `Repo has been disconnected`,
     })
+
+  // Open the connect repo modal after disconnecting
+  setActiveModal(ModalTypes.CONNECT)
+
 }

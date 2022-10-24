@@ -13,7 +13,11 @@ export const HeaderNav = [
   {
     label: `Team`,
     Icon: `TeamIcon`,
-  }
+  },
+  {
+    label: `Unmount Repo`,
+    Icon: `CloudOffIcon`,
+  },
 ]
 
 export const SideNav = deepFreeze({

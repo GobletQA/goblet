@@ -7,8 +7,8 @@ import { Header } from '@components/Header'
 import { Footer } from '@components/Footer'
 import { SideNav } from '@components/SideNav'
 import { Outlet, useLocation } from "react-router-dom"
+import { disconnectRepo } from '@actions/repo/api/disconnect'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
-
 
 type THomeProps = {
   [key:string]: any
@@ -34,10 +34,22 @@ export default function Home(props:THomeProps) {
   )
 }
 
+const navActions = {
+  Logout: signOutAuthUser,
+  [`Unmount Repo`]: disconnectRepo,
+}
+
 Home.path = `/`
 Home.element = `Home`
 // @ts-ignore
-Home.children = HeaderNav.map(item => ({ ...item, Icon: Icons[item.Icon] }))
+Home.children = HeaderNav.map((item) => {
+  const action = navActions[item?.label as keyof typeof navActions]
+  return {
+    ...item,
+    Icon: Icons[item.Icon as keyof typeof Icons],
+    ...(action ? { onClick: action } : {})
+  }
+})
 
 const settings = [
   ...Home.children,

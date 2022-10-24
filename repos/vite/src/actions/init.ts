@@ -20,13 +20,6 @@ const loadInitRepoFiles = async (
   queryObj?.file && (await loadFile(queryObj?.file, mergeQuery))
 }
 
-/**
- * Checks if the initial settings modal should be shown, and makes call to update the store
- */
-const loadInitModal = (queryObj:Record<any, any>) => {
-  ;(!queryObj || !queryObj?.file || isEmptyColl(queryObj)) &&
-    setActiveModal(ModalTypes.REPO)
-}
 
 export const initStatus = async (status?:TRouteMeta) => {
   // If user is logged in, check the status of users session container
@@ -44,10 +37,6 @@ export const initStatus = async (status?:TRouteMeta) => {
 
   // Load the initial test file
   await loadInitRepoFiles(queryObj, true)
-
-  // TODO: this was the only way, don't think we're doing it that way any more
-  // Load the init modal
-  // loadInitModal(queryObj)
 }
 
 export const initApp = async () => {
