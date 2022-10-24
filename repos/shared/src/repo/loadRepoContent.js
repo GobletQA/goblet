@@ -21,8 +21,8 @@ const loadRepoContent = async (repo, config, status) => {
     content.fileTree = await buildFileTree(repo)
     const definitions = await loadDefinitions(repo, config)
     content.definitionTypes = definitionsByType(definitions)
-    const features = await loadFeatures(repo, content.definitionTypes)
 
+    const features = await loadFeatures(repo, content.definitionTypes)
     content.features = fileModelArrayToObj(features)
     content.definitions = fileModelArrayToObj(definitions)
 
@@ -30,7 +30,7 @@ const loadRepoContent = async (repo, config, status) => {
   }
   catch(err){
     Logger.warn(`[Repo Content Error] Could not load repo content files...`)
-    Logger.stderr(err)
+    Logger.error(err)
     throw err
   }
 }

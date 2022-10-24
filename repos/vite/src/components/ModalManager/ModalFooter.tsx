@@ -23,6 +23,8 @@ export const ModalFooter = (props:TModalFooter) => {
           {Object.values(actions)?.map((action) => {
             const {
               label,
+              loading,
+              disabled,
               text=label,
               EndIcon,
               StartIcon,
@@ -32,9 +34,10 @@ export const ModalFooter = (props:TModalFooter) => {
 
             return (
               <Button
+                key={text}
+                disabled={disabled || loading}
                 endIcon={EndIcon && (<EndIcon {...iconProps} />)}
                 startIcon={StartIcon && (<StartIcon {...iconProps} />)}
-                key={text}
                 {...buttonProps}
               >
                 {text}

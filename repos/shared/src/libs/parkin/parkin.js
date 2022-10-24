@@ -17,8 +17,9 @@ const setParkinInstance = (instance) => {
   return __ParkinInstance
 }
 
-const getParkinInstance = () => {
-  __ParkinInstance = __ParkinInstance || new Parkin(getWorld())
+const getParkinInstance = (repo) => {
+  __ParkinInstance = __ParkinInstance || new Parkin(getWorld(repo))
+
   return __ParkinInstance
 }
 

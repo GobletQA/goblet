@@ -77,20 +77,20 @@ const devRouter = (NODE_ENV === `local` || Boolean(GB_LOCAL_DEV_MODE === 'true')
     ? {
         meta: {
           state: `Running`,
-          host: controllerHost,
           id: GB_SC_DEPLOYMENT,
+          host: GB_SC_DEPLOYMENT,
           name: GB_SC_DEPLOYMENT,
         },
         routes: {
           [GB_SC_PORT]: {
-            host: controllerHost,
             port: GB_SC_PORT,
+            host: GB_SC_DEPLOYMENT,
             containerPort: GB_SC_PORT,
             protocol: 'http:' as TProtocol,
           },
           [GB_NO_VNC_PORT]: {
-            host: controllerHost,
             port: GB_NO_VNC_PORT,
+            host: GB_SC_DEPLOYMENT,
             containerPort: GB_NO_VNC_PORT,
             protocol: 'http:' as TProtocol,
           }

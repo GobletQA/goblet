@@ -1,8 +1,18 @@
 const path = require('path')
-const { getType } = require('mime')
+const mime = require('mime')
 const { getFileType } = require('./getFileType')
 const { fileModel } = require('@GSH/models')
 const { getLastModified } = require('@GSH/libs/fileSys/fileSys')
+
+/**
+ * getType seemed to stop working, the owner of the package is doing odd things
+ * So we normalize the getType and lookup methods incase one can't be found
+ */
+const getMime = (location) => {
+  const ext = path.extname(location).replace(`.`, ``)
+  return mime.types[ext] || `text/plain`
+}
+
 
 /**
  * Builds a fileModel from the fileModel object and passed arguments
@@ -22,7 +32,7 @@ const buildFileModel = async (
     fileType,
     location,
     uuid: location,
-    mime: getType(location),
+    mime: getMime(location),
     name: location.split('/').pop(),
     relative: location.replace(repo.paths.repoRoot, ''),
     ext: path.extname(location).replace('.', ''),

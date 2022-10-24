@@ -48,11 +48,9 @@ const useSetupForm = ({
   const { loading } = formHelpers
 
   return useMemo(() => {
+    form.$actions.signOut.loading = loading
+    form.$actions.connectRepo.loading = loading
     form.$actions.connectRepo.onClick = connectRepo
-    if(loading){
-      form.$actions.signOut.disabled = loading
-      form.$actions.connectRepo.disabled = loading
-    }
 
     return form
   }, [form, connectRepo, loading])

@@ -1,3 +1,9 @@
+require('esbuild-register/dist/node').register({
+  loader: 'ts',
+  minify: false,
+  target: "es2015",
+})
+
 require('source-map-support').install({ environment: 'node' })
 require('../../configs/aliases.config').registerAliases()
 
