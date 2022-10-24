@@ -29,7 +29,7 @@ export const Loading = (props:TLoading) => {
     },
     messageSx as CSSObj
   ]
-  
+
   return (
     <Box 
       className="loading-container"

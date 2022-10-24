@@ -10,7 +10,7 @@ import { FileTreeWidth } from '@constants'
 import { Loading } from '@components/Loading'
 import { MonacoEditor } from '@gobletqa/monaco'
 import { ConfirmModal } from '@components/Modals/ConfirmModal'
-import { useEditorHooks, useEditorFiles } from './editorHooks'
+import { useEditorHooks } from './editorHooks'
 
 export type TCodeEditorProps = {
   
@@ -88,10 +88,11 @@ const RepoNotConnected = (props:TEditorError) => {
 
 export const CodeEditor = (props:TCodeEditorProps) => {
 
-  const { repo, connected, editorFiles } = useEditorFiles()
   const editorRef = useRef<any>(null)
 
   const {
+    connected,
+    editorFiles,
     onFileChange,
     onPathChange,
     onValueChange,

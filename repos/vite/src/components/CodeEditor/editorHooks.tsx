@@ -1,4 +1,4 @@
-import type { OpenFileTreeEvent } from '@types'
+import type { OpenFileTreeEvent, TRepoState, TFileTree, TFilesState } from '@types'
 import type { MutableRefObject } from 'react'
 import type { TCodeEditorProps } from './CodeEditor'
 
@@ -6,23 +6,28 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 import { exists } from '@keg-hub/jsutils'
 import { OpenFileTreeEvt } from '@constants'
+import { loadFile } from '@actions/files/api/loadFile'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useFileTree, useFiles, useRepo } from '@store'
 
-
 export type THEditorFiles = {
-  
+  repo: TRepoState
+  fileTree: TFileTree
+  repoFiles: TFilesState
 }
 
-export const useEditorFiles = () => {
-  const fileTree = useFileTree()
-  const repoFiles = useFiles()
-  const repo = useRepo()
+export const useEditorFiles = (props:THEditorFiles) => {
+  const {
+    repo,
+    fileTree,
+    repoFiles,
+  } = props
   
   const editorFiles = useMemo(() => {
     if(!repo?.fileTypes || !fileTree?.paths) return {}
 
-    const exts = Object.values(repo?.fileTypes).map((fileType) => (fileType as Record<'ext', string>).ext)
+    const exts = Object.values(repo?.fileTypes)
+      .map((fileType) => (fileType as Record<'ext', string>).ext)
 
     return fileTree?.paths?.reduce((acc, loc) => {
       const ext = loc.split(`.`).pop() as string
@@ -43,11 +48,8 @@ export const useEditorFiles = () => {
   ])
   
   return {
-    repo,
-    fileTree,
-    repoFiles,
     editorFiles,
-    connected: Boolean(repo?.url && repo?.name)
+    connected: Boolean(repo?.paths && repo?.name)
   }
 }
 
@@ -57,10 +59,26 @@ export const useEditorHooks = (
   editorRef:MutableRefObject<any>
 ) => {
 
-  const onPathChange = useCallback((key: string) => {
-    console.log(`------- path -------`)
-    console.log(key)
-  }, [])
+  const repo = useRepo()
+  const repoFiles = useFiles()
+  const fileTree = useFileTree()
+  const repoPath = `${repo?.paths?.repoRoot}/${repo?.paths?.workDir}`
+
+  const editorFiles = useEditorFiles({
+    repo,
+    fileTree,
+    repoFiles,
+  })
+
+  const onPathChange = useCallback(async (key: string) => {
+
+    const found = fileTree.nodes.find(node => node.id === `${repoPath}${key}`)
+
+    found
+      ? await loadFile(found)
+      : console.warn(`File could not be found with key ${key}`)
+
+  }, [fileTree, repoPath])
 
   const onValueChange = useCallback((value: any) => {
     console.log(`------- value -------`)
@@ -71,6 +89,7 @@ export const useEditorHooks = (
     console.log(`------- file -------`)
     console.log(file)
   }, [])
+
 
   useEffect(() => {
     EE.on<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
@@ -86,5 +105,6 @@ export const useEditorHooks = (
     onFileChange,
     onPathChange,
     onValueChange,
+    ...editorFiles,
   }
 }
