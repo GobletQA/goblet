@@ -82,7 +82,7 @@ export class Kube extends Controller {
 
       // Any container not running always just remove it
       // The user can't access it anyways
-      if(mapped.state !== 'Running'){
+      if(mapped.state !== EContainerState.Running){
         this.remove(pod)
         return acc
       }

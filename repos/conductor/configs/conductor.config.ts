@@ -65,8 +65,8 @@ export const conductorConfig:TConductorConfig = {
   hashKey: GB_CD_HASH_KEY || ``,
   proxy: proxyOpts(dindOpts, dindHost),
   controller: {
-    devRouter: {} as TRouteMeta,
     options: dindOpts,
+    devRouter: {} as TRouteMeta,
     pidsLimit: toNum(GB_CD_PIDS_LIMIT) as number,
     rateLimit: (toNum(GB_CD_RATE_LIMIT) || 5000) as number,
   } as TDockerConfig

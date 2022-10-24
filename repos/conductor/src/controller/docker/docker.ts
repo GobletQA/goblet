@@ -1,8 +1,7 @@
 import type { Conductor } from '../../conductor'
 import type { Request } from 'express'
 import type { ContainerCreateOptions } from 'dockerode'
-import { ForwardPortHeader, ForwardSubdomainHeader, DevUserHash } from '@GCD/constants'
-import {
+import type {
   TImgRef,
   TRunOpts,
   TRouteMeta,
@@ -23,14 +22,16 @@ import Dockerode from 'dockerode'
 import DockerEvents from 'docker-events'
 import { Controller } from '../controller'
 import { docker } from '@keg-hub/cli-utils'
+import { DevUserHash } from '@GCD/constants'
 import { dockerEvents } from './dockerEvents'
 import { buildImgUri } from './image/buildImgUri'
 import { buildPorts } from './container/buildPorts'
-import { isObj, isEmptyColl } from '@keg-hub/jsutils'
-import { Logger } from '@gobletqa/shared/libs/logger'
 import { resolveHost } from './container/resolveHost'
-import { hydrateRoutes } from '../../utils/hydrateRoutes'
+import { Logger } from '@gobletqa/shared/libs/logger'
+import { isObj, isEmptyColl } from '@keg-hub/jsutils'
 import { ConductorUserHashLabel } from '../../constants'
+import { hydrateRoutes } from '../../utils/hydrateRoutes'
+import { EContainerState } from '@gobletqa/conductor/types'
 import { waitRetry } from '@gobletqa/shared/utils/waitRetry'
 import { containerConfig } from './container/containerConfig'
 import { removeContainer } from './container/removeContainer'
@@ -61,9 +62,9 @@ const containerStart = async (
   dockerInstance.routes[userHash] = {
     ...dockerInstance.routes[userHash],
     meta: {
-      state: `Running`,
       id: containerInspect.Id,
       name: containerInspect.Name,
+      state: EContainerState.Running,
       host: resolveHost(dockerInstance),
     }
   }
