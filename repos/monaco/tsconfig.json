@@ -23,6 +23,8 @@
       "@gobletqa/monaco/*": [ "../monaco/src/*" ],
       "@gobletqa/monaco-public": ["../../node_modules/@gobletqa/monaco-public"],
       "@gobletqa/monaco-public/*": ["../../node_modules/@gobletqa/monaco-public/*"],
+      "@gobletqa/shared": [ "../shared/src" ],
+      "@gobletqa/shared/*": [ "../shared/src/*" ],
       "GobletRoot": ["../../"]
     }
   },
