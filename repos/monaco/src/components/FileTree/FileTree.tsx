@@ -12,6 +12,7 @@ export type FileTree = {
   style?: CSSProperties
   Modal: Modal
   title?: string
+  rootPrefix?: string
   currentPath?: string
   rootEl: HTMLElement | null
   onAddFile: (...args: any) => void
@@ -30,6 +31,7 @@ export const FileTree = memo((props: FileTree) => {
   const {
     style,
     onPathChange,
+    rootPrefix=``,
     currentPath = '',
     title = 'goblet-base-editor',
   } = props
@@ -66,6 +68,7 @@ export const FileTree = memo((props: FileTree) => {
             root
             file={filetree}
             onAddFile={addFile}
+            rootPrefix={rootPrefix}
             onAddFolder={addFolder}
             onDeleteFile={deleteFile}
             currentPath={currentPath}

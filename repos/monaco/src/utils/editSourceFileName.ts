@@ -2,8 +2,20 @@ import { deepMerge } from '@keg-hub/jsutils'
 import { buildFile } from './buildFile'
 import { buildFolder } from './buildFolder'
 
-export const editSourceFileName = (sourcetree: any, path: string, name: string) => {
-  const copy = deepMerge(sourcetree)
+export type TEditSrcFileName = {
+  name: string
+  path: string
+  filetree: any
+  rootPrefix?: string
+}
+
+export const editSourceFileName = ({
+  name,
+  path,
+  filetree,
+  rootPrefix
+}:TEditSrcFileName) => {
+  const copy = deepMerge(filetree)
   const paths = (path || '/').slice(1).split('/')
   let temp = copy.children
   paths.forEach((part, index) => {

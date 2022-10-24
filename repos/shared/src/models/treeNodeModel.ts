@@ -1,4 +1,5 @@
-const { buildModel } = require('./buildModel')
+import type { TTreeNodeModel } from '../types'
+import { buildModel } from './buildModel'
 
 /**
  * Models a file tree node
@@ -18,8 +19,4 @@ const Model = {
   location: '',
 }
 
-const treeNodeModel = overrides => buildModel(overrides, Model)
-
-module.exports = {
-  treeNodeModel,
-}
+export const treeNodeModel = (overrides:Partial<TTreeNodeModel>):TTreeNodeModel => buildModel<TTreeNodeModel>(overrides, Model)

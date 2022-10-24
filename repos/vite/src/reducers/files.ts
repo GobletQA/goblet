@@ -9,44 +9,7 @@ export type TFilesState = {
 }
 export const filesState = {
   pendingFiles: {},
-  files: {
-    '/test/test-file-1.ts': {
-      name: `test-file-1.ts`,
-      ext: `.ts`,
-      location: `/test/test-file-1.ts`,
-      relative: `./test/test-file-1.ts`,
-      content: ``,
-      fileType: `typescript`,
-      mime: `js`,
-      ast: {},
-      lastModified: 0,
-      uuid: `/test/test-file-1.ts`
-    },
-    '/test/test-file-1.feature': {
-      name: `test-file-1.feature`,
-      ext: `feature`,
-      location: `/test/test-file-1.feature`,
-      relative: `./test/test-file-1.feature`,
-      content: ``,
-      fileType: `gherkin`,
-      mime: `feature`,
-      ast: {},
-      lastModified: 0,
-      uuid: `/test/test-file-1.feature`
-    },
-    '/test/test-file-2.feature': {
-      name: `test-file-2.feature`,
-      ext: `feature`,
-      location: `/test/test-file-2.feature`,
-      relative: `./test/test-file-2.feature`,
-      content: ``,
-      fileType: `gherkin`,
-      mime: `feature`,
-      ast: {},
-      lastModified: 0,
-      uuid: `/test/test-file-2.feature`
-    },
-  },
+  files: {},
 } as TFilesState
 
 export const filesActions = {
@@ -78,13 +41,10 @@ export const filesActions = {
       activeFile: state?.activeFile?.uuid === action.payload.uuid
         ? action.payload
         : state?.activeFile,
-      files: Object.entries(state.files).reduce((acc, [uuid, file]) => {
-        uuid === action.payload.uuid
-          ? (acc[uuid] = action.payload)
-          : (acc[uuid] = file)
-
-        return acc
-      }, {} as Record<string, TFileModel>),
+      files: {
+        ...state.files,
+        [action.payload.uuid]: action.payload
+      },
     }
   },
   setFiles: (

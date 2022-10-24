@@ -18,15 +18,12 @@ const hex2rgba = (hex:string=``, alpha:string|number = .3) => {
 export const Loading = (props:TLoading) => {
   const style = useMemo(() => {
     const color = props.color || `#ffffff`
-    
-    const border = `3px solid ${hex2rgba(color, props.alpha)}`
-    console.log(border)
 
     return {
+      borderTopColor: color,
       height: props.heigh || props.size || `22px`,
       width: props.width || props.size || `22px`,
       border: `3px solid ${hex2rgba(color, props.alpha)}`,
-      borderTopColor: color,
     }
   }, [props.size, props.heigh, props.width, props.color, props.alpha])
 

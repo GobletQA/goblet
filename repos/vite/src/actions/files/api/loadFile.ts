@@ -3,8 +3,8 @@ import type { TFileTreeNode } from '@types'
 import { getStore } from '@store'
 import { loadApiFile } from '@utils/api'
 import { isObj } from '@keg-hub/jsutils'
+import { setFile } from '../local/setFile'
 import { addToast } from '../../toasts/addToast'
-import { setActiveFileFromType } from '../local/setActiveFileFromType'
 
 /**
  * Helper to find the treeNodeModel of the passed in file
@@ -29,7 +29,6 @@ export const loadFile = async (
   const { fileTree } = getStore()?.getState()
   if (!fileTree || !fileTree?.nodes?.length || !fileTree?.rootPaths?.length) return
 
-
   const fileName = isObj<TFileTreeNode>(fileNode) ? fileNode.name : fileNode
   
   const nodeToLoad = findFileInTree(fileTree.nodes, fileNode)
@@ -47,6 +46,6 @@ export const loadFile = async (
     })
 
 
-  setActiveFileFromType(resp?.data?.file, mergeQuery)
+  setFile(resp?.data?.file)
 
 }

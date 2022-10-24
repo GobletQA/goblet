@@ -8,12 +8,26 @@ export interface TFilelist {
   [key: string]: string | null
 }
 
+export type TMFile = {
+  ext: string
+  uuid: string
+  name: string
+  content: string
+  location: string
+  relative: string
+}
+export type TMFiles = {
+  [key:string]: TMFile
+}
+
 export interface IMonacoEditorProps {
   Modal: ComponentType
   title?: string
+  rootPrefix?: string
   emptyText?: string
   defaultPath?: string
   config?: TEditorConfig
+  files?: TMFiles
   defaultFiles?: TFilelist
   initialFileTreeWidth?: number
   initialFileTreeStatus?: boolean

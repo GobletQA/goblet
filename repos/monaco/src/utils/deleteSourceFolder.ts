@@ -1,8 +1,18 @@
 import { deepMerge } from '@keg-hub/jsutils'
 import { buildFolder } from './buildFolder'
 
-export function deleteSourceFolder(sourcetree: any, path: string) {
-  const copy = deepMerge(sourcetree)
+export type TDelSrcFolder = {
+  path: string
+  filetree: any,
+  rootPrefix?: string
+}
+
+export const deleteSourceFolder = ({
+  path,
+  filetree,
+  rootPrefix
+}: TDelSrcFolder) => {
+  const copy = deepMerge(filetree)
   const paths = (path || '/').slice(1).split('/')
   let temp = copy.children
 

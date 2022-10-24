@@ -1,7 +1,20 @@
 import { deepMerge } from '@keg-hub/jsutils'
 
-export function addSourceFile(sourcetree: any, path: string, value?: string) {
-  const copy = deepMerge(sourcetree)
+export type TAddSrcFile = {
+  path: string,
+  value?: string,
+  filetree: any,
+  rootPrefix?: string,
+}
+
+// sourcetree, path, value
+export const addSourceFile = ({
+  path,
+  value,
+  filetree,
+  rootPrefix=``,
+}:TAddSrcFile) => {
+  const copy = deepMerge(filetree)
   const paths = (path || '/').slice(1).split('/')
   const name = paths[paths.length - 1]
   let temp = copy.children

@@ -92,8 +92,9 @@ export const CodeEditor = (props:TCodeEditorProps) => {
   const editorRef = useRef<any>(null)
 
   const {
+    files,
     connected,
-    editorFiles,
+    rootPrefix,
     onFileChange,
     onPathChange,
     onValueChange,
@@ -104,7 +105,9 @@ export const CodeEditor = (props:TCodeEditorProps) => {
         <MonacoEditor
           Modal={Modal}
           ref={editorRef}
-          defaultFiles={editorFiles}
+          defaultFiles={{}}
+          files={files}
+          rootPrefix={rootPrefix}
           initialFileTreeStatus={true}
           initialFileTreeWidth={FileTreeWidth}
           onPathChange={onPathChange}

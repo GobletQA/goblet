@@ -1,4 +1,5 @@
-const { buildModel } = require('./buildModel')
+import type { TTestsModel } from '../types'
+import { buildModel } from './buildModel'
 
 /**
  * Model for all test types
@@ -16,8 +17,4 @@ const Model = {
   waypoint: [],
 }
 
-const testsModel = overrides => buildModel(overrides, Model)
-
-module.exports = {
-  testsModel,
-}
+export const testsModel = (overrides:Partial<TTestsModel>):TTestsModel => buildModel<TTestsModel>(overrides, Model)

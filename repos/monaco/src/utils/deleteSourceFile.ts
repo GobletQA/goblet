@@ -1,8 +1,19 @@
 import { deepMerge } from '@keg-hub/jsutils'
 import { buildFolder } from './buildFolder'
 
-export const deleteSourceFile = (sourcetree: any, path: string) => {
-  const copy = deepMerge(sourcetree)
+export type TDelSrcFile = {
+  path: string,
+  value?: string,
+  filetree: any,
+  rootPrefix?: string,
+}
+
+export const deleteSourceFile = ({
+  path,
+  filetree,
+  rootPrefix
+}:TDelSrcFile) => {
+  const copy = deepMerge(filetree)
   const paths = (path || '/').slice(1).split('/')
   let temp = copy.children
 
@@ -12,7 +23,7 @@ export const deleteSourceFile = (sourcetree: any, path: string) => {
       return
     }
     else if (temp[part])
-      return (temp = temp[v].children)
+      return (temp = temp[part].children)
 
     temp[part] = buildFolder({
       part,

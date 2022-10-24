@@ -3,6 +3,7 @@ import { addSourceFile } from '../../utils/addSourceFile'
 import { deleteSourceFile } from '../../utils/deleteSourceFile'
 
 export type THConfirmAddFile = {
+  rootPrefix?: string
   filetree: Record<any, any>,
   updateFiletree: (...args:any[]) => any,
   onAddFile: (...args:any[]) => any,
@@ -12,6 +13,7 @@ export const useConfirmAddFile = (props:THConfirmAddFile) => {
   const {
     filetree,
     onAddFile,
+    rootPrefix,
     updateFiletree,
   } = props
   
@@ -19,12 +21,24 @@ export const useConfirmAddFile = (props:THConfirmAddFile) => {
     (file: any) => {
       let tree: any = {}
       if (file.name) {
-        tree = deleteSourceFile(filetree, file.path)
-        tree = addSourceFile(tree, file.path + file.name)
+        tree = deleteSourceFile({
+          filetree,
+          rootPrefix,
+          path: file.path,
+        })
+        tree = addSourceFile({
+          rootPrefix,
+          filetree: tree,
+          path: file.path + file.name,
+        })
         onAddFile(file.path + file.name)
       }
       else {
-        tree = deleteSourceFile(filetree, file.path)
+        tree = deleteSourceFile({
+          filetree,
+          rootPrefix,
+          path: file.path
+        })
       }
       updateFiletree(tree)
     },

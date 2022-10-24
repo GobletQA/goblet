@@ -10,6 +10,7 @@ import EditIcon from '../icons/edit'
 
 export type File = {
   file: any
+  rootPrefix?:string
   onPathChange: (key: string) => void
   root: boolean
   currentPath?: string
@@ -26,17 +27,18 @@ export type File = {
 
 export const File = ({
   file,
-  onPathChange,
-  currentPath = '',
   root,
   onAddFile,
-  onConfirmAddFile,
-  onDeleteFile,
-  onEditFileName,
-  onConfirmAddFolder,
   onAddFolder,
+  onPathChange,
+  onDeleteFile,
+  rootPrefix=``,
+  onEditFileName,
   onDeleteFolder,
+  currentPath = '',
   onEditFolderName,
+  onConfirmAddFile,
+  onConfirmAddFolder,
 }:File) => {
   const [showChild, setShowChild] = useState(false)
   const [editing, setEditing] = useState(false)
@@ -205,7 +207,7 @@ export const File = ({
     <div className='goblet-monaco-editor-list-file-item'>
       {file._isDirectory && (
         <div onClick={handleClick} className='goblet-monaco-editor-list-file-item-row'>
-          <Arrow collpase={!showChild} />
+          <Arrow collapse={!showChild} />
           {showChild
             ? <FolderOpenedIcon style={{ marginRight: '5px' }} />
             : <FolderIcon style={{ marginRight: '5px' }} />
@@ -263,6 +265,7 @@ export const File = ({
         <div style={{ paddingLeft: file._isDirectory ? '7px' : '0' }}>
           {keys.map(item => (
             <File
+              rootPrefix={rootPrefix}
               onEditFileName={onEditFileName}
               onEditFolderName={onEditFolderName}
               onDeleteFile={onDeleteFile}

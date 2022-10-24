@@ -1,4 +1,4 @@
-import type { OpenFileTreeEvent, TRepoState, TFileTree, TFilesState } from '@types'
+import type { OpenFileTreeEvent, TRepoState, TFileTree, TFilesState, TFileModel } from '@types'
 import type { MutableRefObject } from 'react'
 import type { TCodeEditorProps } from './CodeEditor'
 
@@ -6,12 +6,14 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 import { exists } from '@keg-hub/jsutils'
 import { OpenFileTreeEvt } from '@constants'
+import { fileModel } from '@models'
 import { loadFile } from '@actions/files/api/loadFile'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useFileTree, useFiles, useRepo } from '@store'
 
 export type THEditorFiles = {
   repo: TRepoState
+  repoPath: string,
   fileTree: TFileTree
   repoFiles: TFilesState
 }
@@ -20,27 +22,35 @@ export const useEditorFiles = (props:THEditorFiles) => {
   const {
     repo,
     fileTree,
+    repoPath,
     repoFiles,
   } = props
-  
-  const editorFiles = useMemo(() => {
-    if(!repo?.fileTypes || !fileTree?.paths) return {}
+
+  const files = useMemo(() => {
+    if(!repo?.fileTypes || !fileTree?.paths) return repoFiles?.files
 
     const exts = Object.values(repo?.fileTypes)
       .map((fileType) => (fileType as Record<'ext', string>).ext)
 
     return fileTree?.paths?.reduce((acc, loc) => {
+      if(acc[loc]) return acc
+
       const ext = loc.split(`.`).pop() as string
       if(!exts.includes(ext)) return acc
 
-      const fileModel = repoFiles.files[loc]
-
-      const relative = loc.split(`${repo?.paths?.repoRoot}/${repo?.paths?.workDir}`).pop() as string
-      acc[relative] = fileModel?.content || ``
+      acc[loc] = fileModel({
+        ext,
+        uuid: loc,
+        name: loc.split(`/`).pop(),
+        location: loc,
+        relative: loc.replace(repoPath, ``)
+      }) as TFileModel
 
       return acc
-    }, {} as Record<string, string>) ?? {}
+    }, { ...repoFiles?.files }) ?? {}
+
   }, [
+    repoPath,
     repo?.paths,
     repo?.fileTypes,
     fileTree?.paths,
@@ -48,7 +58,7 @@ export const useEditorFiles = (props:THEditorFiles) => {
   ])
   
   return {
-    editorFiles,
+    files,
     connected: Boolean(repo?.paths && repo?.name)
   }
 }
@@ -67,8 +77,15 @@ export const useEditorHooks = (
   const editorFiles = useEditorFiles({
     repo,
     fileTree,
+    repoPath,
     repoFiles,
   })
+
+  const rootPrefix = useMemo(() => {
+    return repo?.paths?.workDir
+      ? `${repo?.paths?.repoRoot}/${repo?.paths?.workDir}`
+      : repo?.paths?.repoRoot
+  }, [repo?.paths?.repoRoot, repo?.paths?.workDir])
 
   const onPathChange = useCallback(async (key: string) => {
 
@@ -102,6 +119,7 @@ export const useEditorHooks = (
   }, [])
 
   return {
+    rootPrefix,
     onFileChange,
     onPathChange,
     onValueChange,

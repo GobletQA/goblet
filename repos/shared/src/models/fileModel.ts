@@ -1,5 +1,5 @@
-const { buildModel } = require('./buildModel')
-
+import type { TFileModel } from '../types'
+import { buildModel } from './buildModel'
 /**
  * Models a file loaded into memory
  * @typedef FileModel
@@ -26,8 +26,5 @@ const Model = {
   uuid: '',
 }
 
-const fileModel = overrides => buildModel(overrides, Model)
+export const fileModel = (overrides:Partial<TFileModel>):TFileModel => buildModel<TFileModel>(overrides, Model)
 
-module.exports = {
-  fileModel,
-}

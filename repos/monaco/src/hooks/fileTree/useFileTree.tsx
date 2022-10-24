@@ -17,6 +17,7 @@ export const useFileTree = (props:FileTree) => {
     Modal,
     files,
     rootEl,
+    rootPrefix,
     defaultFiles,
     onAddFile,
     onAddFolder,
@@ -31,6 +32,7 @@ export const useFileTree = (props:FileTree) => {
   const addFile = useAddFile({
     filetree,
     onAddFile,
+    rootPrefix,
     updateFiletree: setFiletree,
   })
 
@@ -39,6 +41,7 @@ export const useFileTree = (props:FileTree) => {
     rootEl,
     filetree,
     onDeleteFile,
+    rootPrefix,
     updateFiletree: setFiletree,
   })
 
@@ -46,6 +49,7 @@ export const useFileTree = (props:FileTree) => {
     Modal,
     rootEl,
     filetree,
+    rootPrefix,
     onEditFileName,
     updateFiletree: setFiletree,
   })
@@ -53,11 +57,13 @@ export const useFileTree = (props:FileTree) => {
   const onConfirmAddFile = useConfirmAddFile({
     filetree,
     onAddFile,
+    rootPrefix,
     updateFiletree: setFiletree,
   })
   
   const addFolder = useAddFolder({
     filetree,
+    rootPrefix,
     onAddFolder,
     updateFiletree: setFiletree,
   })
@@ -66,6 +72,7 @@ export const useFileTree = (props:FileTree) => {
     Modal,
     rootEl,
     filetree,
+    rootPrefix,
     onDeleteFolder,
     updateFiletree: setFiletree,
   })
@@ -73,12 +80,14 @@ export const useFileTree = (props:FileTree) => {
 
   const editFolderName = useEditFolderName({
     filetree,
+    rootPrefix,
     onEditFolderName,
     updateFiletree: setFiletree,
   })
 
   const onConfirmAddFolder = useConfirmAddFolder({
     filetree,
+    rootPrefix,
     onAddFolder,
     updateFiletree: setFiletree,
   })

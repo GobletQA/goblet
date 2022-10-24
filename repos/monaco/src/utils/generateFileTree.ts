@@ -6,6 +6,7 @@ import { buildRootDir } from './buildRootDir'
 
 export type TLoopBuildTree = {
   keys?: string[]
+  rootPrefix?: string
   tree?: TRootDir | TFolder
   files: Record<string, string>
 }
@@ -13,6 +14,7 @@ export type TLoopBuildTree = {
 export type TLoopPathArr = {
   key: string
   paths: string[]
+  rootPrefix?:string
   children: TFolderChildren
   files: Record<string, string>
 }
@@ -22,6 +24,7 @@ export type THandlePart = {
   part: string,
   index: number
   paths: string[]
+  rootPrefix?:string
   temp: TFolderChildren
   files: Record<string, string>
 }
@@ -33,6 +36,7 @@ const handlePart = ({
   part,
   files,
   paths,
+  rootPrefix
 }:THandlePart) => {
   if (index === paths.length - 1){
     temp[part] = buildFile({ key, part, value: files[key] })
@@ -54,7 +58,8 @@ export const loopPathArr = ({
   key,
   files,
   paths,
-  children
+  children,
+  rootPrefix,
 }:TLoopPathArr) => {
   let temp: Record<string, TMItem> = children
   paths.forEach((part, index) => {
@@ -65,6 +70,7 @@ export const loopPathArr = ({
       index,
       files,
       paths,
+      rootPrefix
     })
   })
 
@@ -75,6 +81,7 @@ export const loopBuildTree = ({
   tree,
   keys,
   files,
+  rootPrefix
 }:TLoopBuildTree) => {
   const RootTree = tree || buildRootDir()
   keys = keys || Object.keys(files)
@@ -83,6 +90,7 @@ export const loopBuildTree = ({
     loopPathArr({
       key,
       files,
+      rootPrefix,
       children: RootTree.children,
       paths: key.slice(1).split('/'),
     })
@@ -91,6 +99,6 @@ export const loopBuildTree = ({
   return RootTree
 }
 
-export const generateFileTree = (files: Record<string, string>) => {
-  return loopBuildTree({ files })
+export const generateFileTree = (files: Record<string, string>, rootPrefix?: string) => {
+  return loopBuildTree({ files, rootPrefix })
 }

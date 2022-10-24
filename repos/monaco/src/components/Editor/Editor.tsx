@@ -27,10 +27,12 @@ import { useComponentOverride } from '../../hooks/editor/useComponentOverride'
 export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>((props, ref) => {
   
   const {
+    files,
     emptyText,
     defaultPath,
     onPathChange,
     onValueChange,
+    rootPrefix=``,
     Modal:ModalComp,
     defaultFiles = {},
     onFileChange,
@@ -55,7 +57,10 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
   const editorNodeRef = useRef<HTMLDivElement>(null)
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
   const prePath = useRef<string | null>(defaultPath || '')
+  
+  // const filesRef = useRef(files)
   const filesRef = useRef(defaultFiles)
+  
   const valueListenerRef = useRef<IDisposable>()
   const editorStatesRef = useRef(new Map())
   const rootRef = useRef(null)
@@ -171,10 +176,12 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     >
       <FileTree
         Modal={Modal}
+        files={files}
         title={title}
         style={styles}
         onAddFile={addFile}
         currentPath={curPath}
+        rootPrefix={rootPrefix}
         onAddFolder={addFolder}
         rootEl={rootRef.current}
         onPathChange={pathChange}

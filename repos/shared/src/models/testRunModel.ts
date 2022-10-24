@@ -1,4 +1,5 @@
-const { buildModel } = require('./buildModel')
+import type { TTestRunModel } from '../types'
+import { buildModel } from './buildModel'
 
 /**
  * Model for the output of tests that were run
@@ -23,8 +24,4 @@ const Model = {
   messages: {},
 }
 
-const testRunModel = overrides => buildModel(overrides, Model)
-
-module.exports = {
-  testRunModel,
-}
+export const testRunModel = (overrides:Partial<TTestRunModel>):TTestRunModel => buildModel<TTestRunModel>(overrides, Model)

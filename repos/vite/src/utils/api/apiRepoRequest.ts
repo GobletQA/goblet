@@ -15,9 +15,7 @@ import { isObj, deepMerge, noOpObj } from '@keg-hub/jsutils'
  */
 const getRepoData = () => {
   const storeItems = getStore()?.getState()
-  const key:TStateKey = StorageKeys.REPO
-
-  return (storeItems[key] || noOpObj) as TRepoState
+  return (storeItems?.repo || noOpObj) as TRepoState
 }
 
 /**

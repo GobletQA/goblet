@@ -5,6 +5,7 @@ import { deleteSourceFolder } from '../../utils'
 export type THDeleteFolder = {
   Modal: any
   rootEl: any
+  rootPrefix?: string
   filetree: Record<any, any>,
   updateFiletree: (...args:any[]) => any,
   onDeleteFolder: (...args:any[]) => any,
@@ -15,6 +16,7 @@ export const useDeleteFolder = (props:THDeleteFolder) => {
     Modal,
     rootEl,
     filetree,
+    rootPrefix,
     updateFiletree,
     onDeleteFolder
   } = props
@@ -26,7 +28,7 @@ export const useDeleteFolder = (props:THDeleteFolder) => {
         target: rootEl,
         okText: 'OK',
         onOk: (close: () => void) => {
-          updateFiletree(deleteSourceFolder(filetree, path))
+          updateFiletree(deleteSourceFolder({ filetree, path, rootPrefix }))
           onDeleteFolder(path)
           close()
         },

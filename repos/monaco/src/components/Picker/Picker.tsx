@@ -74,7 +74,7 @@ export const Picker = ({
         >
           {data.label}
           <div className='goblet-monaco-editor-picker-content-arrow'>
-            <Arrow collpase={!visible} />
+            <Arrow collapse={!visible} />
           </div>
         </div>
       </div>

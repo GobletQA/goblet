@@ -10,8 +10,20 @@ const editSubFolder = (tree: any, oldPath: string, newPath: string) => {
   }
 }
 
-export const editSourceFolderName = (sourcetree: any, path: string, name: string) => {
-  const copy = deepMerge(sourcetree)
+export type TEditSrcFolderName = {
+  name: string
+  path: string
+  filetree: any
+  rootPrefix?: string
+}
+
+export const editSourceFolderName = ({
+  name,
+  path,
+  filetree,
+  rootPrefix,
+}:TEditSrcFolderName) => {
+  const copy = deepMerge(filetree)
   const paths = (path || '/').slice(1).split('/')
   let temp = copy.children
   const newPath = '/' + paths.slice(0, -1).concat(name).join('/')

@@ -1,4 +1,4 @@
-const { deepMerge, pickKeys } = require('@keg-hub/jsutils')
+import { deepMerge, pickKeys } from '@keg-hub/jsutils'
 
 /**
  * Builds a model with real values from the passed in overrides and Model objects
@@ -9,9 +9,5 @@ const { deepMerge, pickKeys } = require('@keg-hub/jsutils')
  *
  * @returns {Object} - Built model
  */
-const buildModel = (overrides, Model) =>
+export const buildModel = <T=any>(overrides:any, Model:any): T =>
   deepMerge(Model, pickKeys(overrides, Object.keys(Model)))
-
-module.exports = {
-  buildModel,
-}

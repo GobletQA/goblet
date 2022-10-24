@@ -1,5 +1,6 @@
-const { buildModel } = require('./buildModel')
-const { noOp, noPropArr } = require('@keg-hub/jsutils')
+import type { TScreenModel } from '../types'
+import { buildModel } from './buildModel'
+import { noOp, noPropArr } from '@keg-hub/jsutils'
 /**
  * Models a UI screen
  * @typedef ScreenModel
@@ -18,8 +19,4 @@ const Model = {
   fileTypes: noPropArr,
 }
 
-const screenModel = overrides => buildModel(overrides, Model)
-
-module.exports = {
-  screenModel,
-}
+export const screenModel = (overrides:Partial<TScreenModel>):TScreenModel => buildModel<TScreenModel>(overrides, Model)
