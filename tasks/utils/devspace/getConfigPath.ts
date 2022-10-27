@@ -38,7 +38,7 @@ const resolveFromDSParam = (params:TTaskParams) => {
  */
 const resolveFromContext = (params:TTaskParams) => {
   const { env, context } = params
-  if(!context) return path.join(containerDir, `devspace.kind.yaml`)
+  if(!context) return path.join(containerDir, `devspace.yaml`)
 
   const envs = loadEnvs({ env })
 
@@ -48,7 +48,7 @@ const resolveFromContext = (params:TTaskParams) => {
 
   return exists(altConfig) && isStr(altConfig)
     ? resolveLocalPath(altConfig)
-    : path.join(containerDir, `devspace.kind.yaml`)
+    : path.join(containerDir, `devspace.yaml`)
 }
 
 /**

@@ -22,7 +22,7 @@ module.exports = {
     devspace: {
       alias: [`dsp`, `ds`, `dev`],
       example: '<command> --devspace staging',
-      default: `container/devspace.kind.yaml`,
+      default: `container/devspace.yaml`,
       description: `Optional filepath for devspace.yaml file`,
     },
   },

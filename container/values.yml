@@ -225,7 +225,7 @@ env:
   GB_KD_ROLE_NAME: goblet-modify-pods
   GB_KD_SERVICE_ACCOUNT: goblet-pods-exec
   GB_KD_ROLE_BINDING_NAME: goblet-pods-role-binding
-  GB_KD_DEVSPACE_CONFIG: container/devspace.kind.yaml
+  GB_KD_DEVSPACE_CONFIG: container/devspace.yaml
 
   # Exposed Port used for all container API proxies
   GB_KD_PORT: 2375

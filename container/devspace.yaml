@@ -134,6 +134,8 @@ deployments:
     valuesFiles:
     - ./values.empty.yaml
     values:
+      # TODO: this is causing the backend to not be able to pull images from github
+      # Need to investigate
       serviceAccountName: ${GB_KD_SERVICE_ACCOUNT}
       serviceAccountMeta:
         name: ${GB_KD_SERVICE_ACCOUNT}
