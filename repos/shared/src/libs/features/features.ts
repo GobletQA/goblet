@@ -1,10 +1,12 @@
-const path = require('path')
-const glob = require('glob')
-const { featuresParser } = require('./featuresParser')
-const { fileSys, Logger } = require('@keg-hub/cli-utils')
-const { buildFileModel } = require('@GSH/utils/buildFileModel')
-const { getPathFromBase } = require('@GSH/utils/getPathFromBase')
-const { limbo, noPropArr, noOpObj } = require('@keg-hub/jsutils')
+import type { Repo } from '@GSH/repo/repo'
+
+import path from 'path'
+import glob from 'glob'
+import { featuresParser } from './featuresParser'
+import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { buildFileModel } from '@GSH/utils/buildFileModel'
+import { getPathFromBase } from '@GSH/utils/getPathFromBase'
+import { limbo, noPropArr, noOpObj } from '@keg-hub/jsutils'
 
 /**
  * TODO: Move this to the Parkin Lib
@@ -15,7 +17,7 @@ const { limbo, noPropArr, noOpObj } = require('@keg-hub/jsutils')
  *
  * @returns {Object} - FileModel of the feature file
  */
-const mapStepsToDefinitions = (repo, fileModel) => {
+export const mapStepsToDefinitions = (repo, fileModel) => {
   fileModel.ast && 
     fileModel.ast.map(feature => {
       feature.scenarios &&
@@ -60,7 +62,7 @@ const buildFeatureFileModel = async (repo, ast, content, location) => {
  *
  * @returns {Object} - FileModel of the feature file
  */
-const loadFeature = async (repo, location) => {
+export const loadFeature = async (repo:Repo, location:string) => {
   const [_, content] = await fileSys.readFile(location)
 
   return await buildFeatureFileModel(
@@ -79,7 +81,7 @@ const loadFeature = async (repo, location) => {
  *
  * @returns {Promise<Array<string>>} - Found feature file paths
  */
-const loadFeatureFiles = featuresDir => {
+const loadFeatureFiles = (featuresDir:string) => {
   return new Promise((res, rej) => {
     glob(
       path.join(featuresDir, '**/*.feature'),
@@ -102,7 +104,7 @@ const loadFeatureFiles = featuresDir => {
  *
  * @returns {Promise<Array<string>>} - Group of parsed feature file AST Objects including their location
  */
-const parseFeatures = (repo, featureFiles, featuresDir) => {
+const parseFeatures = (repo:Repo, featureFiles:string[], featuresDir:string) => {
   return featureFiles.reduce(async (toResolve, file) => {
     const loaded = await toResolve
     if (!file) return loaded
@@ -149,7 +151,7 @@ const parseFeatures = (repo, featureFiles, featuresDir) => {
  *
  * @returns {Promise<Array<string>>} - Group of parsed feature files as FileModel objects
  */
-const loadFeatures = async (repo) => {
+export const loadFeatures = async (repo:Repo) => {
   const { featuresDir, repoRoot } = repo.paths
   if (!featuresDir || !repoRoot)
     throw new Error(
@@ -159,14 +161,8 @@ const loadFeatures = async (repo) => {
       `
     )
 
-  const pathToFeatures = getPathFromBase(featuresDir, repo)
-  const featureFiles = featuresDir && (await loadFeatureFiles(pathToFeatures))
+  const pathToFeatures = getPathFromBase(featuresDir, repo) as string
+  const featureFiles = featuresDir && (await loadFeatureFiles(pathToFeatures)) as string[]
 
   return await parseFeatures(repo, featureFiles, pathToFeatures)
-}
-
-module.exports = {
-  loadFeature,
-  loadFeatures,
-  mapStepsToDefinitions,
 }

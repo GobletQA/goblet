@@ -1,9 +1,12 @@
-const { Logger } = require('@keg-hub/cli-utils')
-const { loadFeatures } = require('@GSH/libs/features/features')
-const { buildFileTree } = require('@GSH/libs/fileSys/fileTree')
-const { definitionsByType } = require('@GSH/utils/definitionsByType')
-const { loadDefinitions } = require('@GSH/libs/definitions/definitions')
-const { fileModelArrayToObj } = require('@GSH/utils/fileModelArrayToObj')
+import type { TGobletConfig } from '@GSH/types'
+import type { Repo } from '@GSH/repo/repo'
+
+import { Logger } from '@keg-hub/cli-utils'
+import { loadFeatures } from '@GSH/libs/features/features'
+import { buildFileTree } from '@GSH/libs/fileSys/fileTree'
+import { definitionsByType } from '@GSH/utils/definitionsByType'
+import { loadDefinitions } from '@GSH/libs/definitions/definitions'
+import { fileModelArrayToObj } from '@GSH/utils/fileModelArrayToObj'
 
 /**
  * Loads all the needed content for a repo
@@ -15,14 +18,18 @@ const { fileModelArrayToObj } = require('@GSH/utils/fileModelArrayToObj')
  *
  * @returns {Object} - Repo file content object
  */
-const loadRepoContent = async (repo, config, status) => {
+export const loadRepoContent = async (
+  repo:Repo,
+  config:TGobletConfig,
+  status:Record<string, any>
+) => {
   try {
-    const content = { repo, status }
+    const content = { repo, status } as any
     content.fileTree = await buildFileTree(repo)
     const definitions = await loadDefinitions(repo, config)
     content.definitionTypes = definitionsByType(definitions)
 
-    const features = await loadFeatures(repo, content.definitionTypes)
+    const features = await loadFeatures(repo)
     content.features = fileModelArrayToObj(features)
     content.definitions = fileModelArrayToObj(definitions)
 
@@ -33,8 +40,4 @@ const loadRepoContent = async (repo, config, status) => {
     Logger.error(err)
     throw err
   }
-}
-
-module.exports = {
-  loadRepoContent,
 }
