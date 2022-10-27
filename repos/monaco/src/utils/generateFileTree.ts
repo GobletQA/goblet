@@ -1,4 +1,4 @@
-import type { TMItem, TRootDir, TFolder, TFolderChildren } from '../types'
+import type { TMItem, TRootDir, TFolder, TFolderChildren, TFilelist } from '../types'
 
 import { buildFile } from './buildFile'
 import { buildFolder } from './buildFolder'
@@ -6,17 +6,17 @@ import { buildRootDir } from './buildRootDir'
 
 export type TLoopBuildTree = {
   keys?: string[]
+  files: TFilelist
   rootPrefix?: string
   tree?: TRootDir | TFolder
-  files: Record<string, string>
 }
 
 export type TLoopPathArr = {
   key: string
   paths: string[]
+  files: TFilelist
   rootPrefix?:string
   children: TFolderChildren
-  files: Record<string, string>
 }
 
 export type THandlePart = {
@@ -24,9 +24,9 @@ export type THandlePart = {
   part: string,
   index: number
   paths: string[]
+  files: TFilelist
   rootPrefix?:string
   temp: TFolderChildren
-  files: Record<string, string>
 }
 
 const handlePart = ({
@@ -99,6 +99,6 @@ export const loopBuildTree = ({
   return RootTree
 }
 
-export const generateFileTree = (files: Record<string, string>, rootPrefix?: string) => {
+export const generateFileTree = (files: TFilelist, rootPrefix?: string) => {
   return loopBuildTree({ files, rootPrefix })
 }

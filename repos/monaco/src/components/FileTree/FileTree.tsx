@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import type { TMFiles, TFilelist } from '../../types'
 
 import { memo, useCallback, useState } from 'react'
 import { FileTreeHeader } from './FileTreeHeader'
@@ -8,7 +9,7 @@ import './FileTree.css'
 import { File } from './File'
 import { Modal } from '../Modal/Modal'
 
-export type FileTree = {
+export type TFileTree = {
   style?: CSSProperties
   Modal: Modal
   title?: string
@@ -21,13 +22,12 @@ export type FileTree = {
   onDeleteFile: (...args: any) => void
   onEditFileName: (...args: any) => void
   onDeleteFolder: (path: string) => void
-  files?: Record<string, Record<string, any>>
-  defaultFiles: any
-  // defaultFiles: Record<string, Record<string, any>>
+  files?: TMFiles
+  defaultFiles: TFilelist
   onEditFolderName: (path: string, name: string) => void
 }
 
-export const FileTree = memo((props: FileTree) => {
+export const FileTree = memo((props: TFileTree) => {
   const {
     style,
     onPathChange,

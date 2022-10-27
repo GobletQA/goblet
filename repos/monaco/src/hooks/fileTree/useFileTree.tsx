@@ -1,4 +1,4 @@
-import type { FileTree } from '../../components/FileTree/FileTree'
+import type { TFileTree } from '../../components/FileTree/FileTree'
 
 import { useState } from 'react'
 import { generateFileTree } from '../../utils/generateFileTree'
@@ -12,7 +12,7 @@ import { useConfirmAddFile } from './useConfirmAddFile'
 import { useEditFolderName } from './useEditFolderName'
 import { useConfirmAddFolder } from './useConfirmAddFolder'
 
-export const useFileTree = (props:FileTree) => {
+export const useFileTree = (props:TFileTree) => {
   const {
     Modal,
     files,

@@ -23,17 +23,18 @@ import { useFileListResize } from '../../hooks/editor/useFileListResize'
 import { useFolderCallbacks } from '../../hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
 import { useComponentOverride } from '../../hooks/editor/useComponentOverride'
+import { createOrUpdateFileModel } from '../../utils/createOrUpdateFileModel'
 
 export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>((props, ref) => {
   
   const {
-    files,
     emptyText,
     defaultPath,
     onPathChange,
     onValueChange,
     rootPrefix=``,
     Modal:ModalComp,
+    files = {},
     defaultFiles = {},
     onFileChange,
     onFileTreeResize,
@@ -58,7 +59,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
   const prePath = useRef<string | null>(defaultPath || '')
   
-  // const filesRef = useRef(files)
+  const fileModelsRef = useRef(files)
   const filesRef = useRef(defaultFiles)
   
   const valueListenerRef = useRef<IDisposable>()
@@ -114,9 +115,11 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     setTheme,
     editorRef,
     curPathRef,
+    fileModelsRef,
     resizeFileTree,
     onPathChangeRef,
     createOrUpdateModel,
+    createOrUpdateFileModel,
   })
 
   const {
@@ -132,6 +135,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     rootRef,
     prePath,
     filesRef,
+    fileModelsRef,
     editorRef,
     curPathRef,
     pathChange,
@@ -141,7 +145,8 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     openedFiles,
     restoreModel,
     setOpenedFiles,
-    createOrUpdateModel
+    createOrUpdateModel,
+    createOrUpdateFileModel,
   })
 
   const {
@@ -150,12 +155,14 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     editFolderName
   } = useFolderCallbacks({
     filesRef,
+    fileModelsRef,
     curPathRef,
     pathChange,
     deleteFile,
     deleteModel,
     setOpenedFiles,
-    createOrUpdateModel
+    createOrUpdateModel,
+    createOrUpdateFileModel,
   })
 
   const {

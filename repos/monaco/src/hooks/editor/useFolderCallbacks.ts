@@ -1,5 +1,5 @@
 import type { SetStateAction, MutableRefObject } from 'react'
-import { TEditorOpenFiles, TFilelist } from '../../types'
+import { TMFiles, TMFile, TEditorOpenFiles, TFilelist } from '../../types'
 
 
 import { useCallback } from 'react'
@@ -11,7 +11,9 @@ export type TUseFolderCallbacks = {
   pathChange: (path: string) => void
   curPathRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
+  fileModelsRef: MutableRefObject<TMFiles>
   createOrUpdateModel:(path: string, value: string) => void
+  createOrUpdateFileModel:(path: string, fileModel: TMFile) => void
   setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
 }
 
@@ -23,8 +25,10 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
     pathChange,
     deleteFile,
     deleteModel,
+    fileModelsRef,
     setOpenedFiles,
-    createOrUpdateModel
+    createOrUpdateModel,
+    createOrUpdateFileModel
   } = props
 
     const addFolder = useCallback((path: string) => {
@@ -32,8 +36,16 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
       Object.keys(filesRef.current).forEach(p => {
         if (p.startsWith(path + '/')) hasChild = true
       })
-
       if (!hasChild) filesRef.current[path] = null
+
+      // TODO: investigate if this is needed for file models
+      let modelHasChild =false
+      Object.keys(fileModelsRef.current).forEach(p => {
+        if (p.startsWith(path + '/')) modelHasChild = true
+      })
+      // @ts-ignore
+      if (!modelHasChild) fileModelsRef.current[path].content = undefined
+
     }, [])
 
     const deleteFolder = useCallback(
@@ -45,6 +57,14 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
             if (typeof value === 'string') deleteFile(p)
           }
         })
+
+        delete fileModelsRef.current[path]
+        Object.keys(fileModelsRef.current).forEach(p => {
+          if (p.startsWith(path + '/')) {
+            const value = fileModelsRef.current[p].content
+            if (typeof value === 'string') deleteFile(p)
+          }
+        })
       },
       [deleteFile]
     )
@@ -53,6 +73,34 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
       (path: string, name: string) => {
         const paths = (path || '/').slice(1).split('/')
         const newPath = '/' + paths.slice(0, -1).concat(name).join('/')
+        // TODO: update to use file models
+        // delete fileModelsRef.current[path]
+        delete fileModelsRef.current[path]
+        addFolder(newPath)
+        Object.keys(fileModelsRef.current).forEach(p => {
+          if (p.startsWith(path + '/')) {
+            const value = fileModelsRef.current[p].content
+            if (typeof value === 'string') {
+              setTimeout(() => {
+                deleteModel(p)
+                const finalPath = p.replace(path + '/', newPath + '/')
+                createOrUpdateFileModel(finalPath, fileModelsRef.current[finalPath])
+                fileModelsRef.current[finalPath].content = value || ''
+              }, 50)
+            }
+            delete fileModelsRef.current[p]
+          }
+        })
+        setOpenedFiles(pre =>
+          pre.map(file => {
+            if (file.path.startsWith(path + '/')) {
+              file.path = file.path.replace(path + '/', newPath + '/')
+            }
+            return file
+          })
+        )
+
+
         delete filesRef.current[path]
         addFolder(newPath)
         Object.keys(filesRef.current).forEach(p => {

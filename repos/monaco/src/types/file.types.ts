@@ -4,7 +4,7 @@
 export type TBuildFile =  {
   part:string
   key:string
-  value:string
+  value:string|null
 }
 
 export type TBuildFolder =  {
@@ -32,7 +32,7 @@ export type TRootDir = {
 export type TFile = {
   path: string
   name: string
-  value: string
+  value: string|null
   _isFile: boolean
 }
 
