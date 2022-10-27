@@ -1,24 +1,10 @@
 
 import type { editor } from 'monaco-editor'
 import type { Modal } from '../components/Modal/Modal'
+import type { TFilelist } from './file.types'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
 import type { CSSProperties, ReactNode, ComponentType } from 'react'
 
-export interface TFilelist {
-  [key: string]: string | null
-}
-
-export type TMFile = {
-  ext: string
-  uuid: string
-  name: string
-  content: string
-  location: string
-  relative: string
-}
-export type TMFiles = {
-  [key:string]: TMFile
-}
 
 export interface IMonacoEditorProps {
   Modal: ComponentType
@@ -27,7 +13,6 @@ export interface IMonacoEditorProps {
   emptyText?: string
   defaultPath?: string
   config?: TEditorConfig
-  files?: TMFiles
   defaultFiles?: TFilelist
   initialFileTreeWidth?: number
   initialFileTreeStatus?: boolean
@@ -58,4 +43,22 @@ export type TIcon = {
   fill?:string
   className?:string
   style?: CSSProperties
+}
+
+export type TFileCallback = (...args: any[]) => void
+
+export type TFileProps = {
+  file: any
+  root: boolean
+  rootPrefix?:string
+  currentPath?: string
+  onAddFile: TFileCallback
+  onAddFolder: TFileCallback
+  onDeleteFile: TFileCallback
+  onEditFileName: TFileCallback
+  onDeleteFolder: TFileCallback
+  onEditFolderName: TFileCallback
+  onConfirmAddFile: TFileCallback
+  onConfirmAddFolder: TFileCallback
+  onPathChange: (key: string) => void
 }

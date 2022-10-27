@@ -7,7 +7,6 @@ export type TAddSrcFile = {
   rootPrefix?: string,
 }
 
-// sourcetree, path, value
 export const addSourceFile = ({
   path,
   value,
@@ -24,7 +23,7 @@ export const addSourceFile = ({
         name,
         value: value || '',
         path,
-        _isFile: true,
+        ext: name.split('.').pop() || `unknown`,
       }
     }
     else if (temp[v]) {

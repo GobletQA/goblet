@@ -27,7 +27,7 @@ export const useEditorFiles = (props:THEditorFiles) => {
   } = props
 
   const files = useMemo(() => {
-    if(!repo?.fileTypes || !fileTree?.paths) return repoFiles?.files
+    if(!repo?.fileTypes || !fileTree?.paths) return {}
 
     const exts = Object.values(repo?.fileTypes)
       .map((fileType) => (fileType as Record<'ext', string>).ext)
@@ -38,16 +38,12 @@ export const useEditorFiles = (props:THEditorFiles) => {
       const ext = loc.split(`.`).pop() as string
       if(!exts.includes(ext)) return acc
 
-      acc[loc] = fileModel({
-        ext,
-        uuid: loc,
-        name: loc.split(`/`).pop(),
-        location: loc,
-        relative: loc.replace(repoPath, ``)
-      }) as TFileModel
+      const model = repoFiles.files[loc]
+      const key = model?.relative || loc.replace(repoPath, ``)
+      acc[key] = repoFiles?.pendingFiles?.[loc] || model?.content || null
 
       return acc
-    }, { ...repoFiles?.files }) ?? {}
+    }, {} as Record<string, string|null>) ?? {}
 
   }, [
     repoPath,

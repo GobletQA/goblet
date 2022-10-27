@@ -1,11 +1,11 @@
 import type { TFile, TBuildFile } from '../types'
 
 
-export const buildFile = ({ part, key, value }:TBuildFile):TFile => {
+export const buildFile = ({ part, key, value, ext }:TBuildFile):TFile => {
   return {
     value,
     path: key,
     name: part,
-    _isFile: true,
+    ext: ext || part.split('.').pop() || `unknown`,
   }
 }

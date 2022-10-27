@@ -1,13 +1,28 @@
 
+export interface TFilelist {
+  [key: string]: string | null
+}
 
+export type TMFile = {
+  ext: string
+  uuid: string
+  name: string
+  content: string
+  location: string
+  relative: string
+}
+export type TMFiles = {
+  [key:string]: TMFile
+}
 
-export type TBuildFile =  {
+export type TBuildFile = {
+  ext?:string
   part:string
   key:string
   value:string|null
 }
 
-export type TBuildFolder =  {
+export type TBuildFolder = {
   part:string
   name?: string
   path?: string
@@ -30,10 +45,10 @@ export type TRootDir = {
 }
 
 export type TFile = {
+  ext:string
   path: string
   name: string
   value: string|null
-  _isFile: boolean
 }
 
 export type TFolderChildren = Record<string, TMItem>
