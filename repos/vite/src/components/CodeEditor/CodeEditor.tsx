@@ -105,8 +105,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
         <MonacoEditor
           Modal={Modal}
           ref={editorRef}
-          defaultFiles={{}}
-          files={files}
+          defaultFiles={files}
           rootPrefix={rootPrefix}
           initialFileTreeStatus={true}
           initialFileTreeWidth={FileTreeWidth}

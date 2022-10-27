@@ -20,10 +20,8 @@ export type TUseEditorSetup = {
   curPathRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   resizeFileTree: (width:number) => void
-  fileModelsRef: MutableRefObject<TMFiles>
   options: editor.IStandaloneEditorConstructionOptions
   createOrUpdateModel: (path: string, value: string) => void
-  createOrUpdateFileModel:(path: string, fileModel: TMFile) => void
   onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setTheme: (name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
@@ -40,11 +38,9 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     setTheme,
     editorRef,
     curPathRef,
-    fileModelsRef,
     resizeFileTree,
     onPathChangeRef,
     createOrUpdateModel,
-    createOrUpdateFileModel,
   } = props
 
     useEffect(() => {
@@ -52,12 +48,6 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
         const value = filesRef.current[key]
         typeof value === 'string'
           && createOrUpdateModel(key, value)
-      })
-
-      Object.keys(fileModelsRef.current).forEach(key => {
-        const model = fileModelsRef.current[key]
-        typeof model === 'object'
-          && createOrUpdateFileModel(key, model)
       })
     }, [])
 
@@ -82,9 +72,6 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
 
     getAllValue: () => filesRef.current,
     getValue: (path: string) => filesRef.current[path],
-
-    getAllFiles: () => fileModelsRef.current,
-    getFile: (path:string) => fileModelsRef.current[path],
   }))
 
 }

@@ -10,11 +10,9 @@ export type TUseCloseOtherFiles = {
   openedFiles: TEditorOpenFiles
   rootRef: MutableRefObject<any>
   filesRef: MutableRefObject<TFilelist>
-  fileModelsRef: MutableRefObject<TMFiles>
   prePath: MutableRefObject<string | null>
   setCurPath: (value: SetStateAction<string>) => void
   createOrUpdateModel:(path: string, value: string) => void
-  createOrUpdateFileModel:(path: string, fileModel: TMFile) => void
   setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
   restoreModel: (path: string) => false | editor.ITextModel
 }
@@ -27,10 +25,8 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
     setCurPath,
     openedFiles,
     restoreModel,
-    fileModelsRef,
     setOpenedFiles,
     createOrUpdateModel,
-    createOrUpdateFileModel
   } = props
 
   return useCallback(
@@ -52,8 +48,6 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
             unSavedFiles.forEach((file:any) => {
               const value = filesRef.current[file.path] || ''
               createOrUpdateModel(file.path, value)
-              const model = fileModelsRef.current[file.path]
-              createOrUpdateFileModel(file.path, model)
             })
             prePath.current = path
           },
@@ -65,7 +59,6 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
                 .find(model => model.uri.path === file.path)
 
               filesRef.current[file.path] = model?.getValue() || ''
-              fileModelsRef.current[file.path].content = model?.getValue() || ''
             })
             setOpenedFiles(pre => pre.filter(p => p.path === path))
             restoreModel(path)
