@@ -6,6 +6,8 @@ import EditIcon from '../icons/edit'
 import { FileIcon } from '../icons/file'
 import DeleteIcon from '../icons/delete'
 import { useCallback, useMemo } from 'react'
+
+// import { useFileType } from '../../hooks/file/useFileType'
 import { stopPropagation } from '../../utils/dom/stopPropagation'
 
 export type TTreeFile = {
@@ -38,11 +40,7 @@ export const TreeFile = ({
   filePathChange,
 }:TTreeFile) => {
 
-  // const fileType = useMemo(() => {
-  //   return file.name && file.name.indexOf('.') !== -1
-  //     ? `file_type_${file.name.split('.').slice(-1)}`
-  //     : 'default_file'
-  // }, [file.name])
+  // const fileType = useFileType(file.name)
 
   const onEdit = useCallback((e: Event) => {
     e.stopPropagation()

@@ -1,14 +1,15 @@
 import type { TFileProps } from '../../types'
 
-import { useFileHooks } from '../../hooks/file/useFileHooks'
 import { TreeFile } from './TreeFile'
-import { useFileCallbacks } from '../../hooks/file/useFileCallbacks'
 import { TreeDirectory } from './TreeDirectory'
+import { useFileHooks } from '../../hooks/file/useFileHooks'
+import { useFileCallbacks } from '../../hooks/file/useFileCallbacks'
 
 export const File = (props:TFileProps) => {
   const {
     file,
     root,
+    Modal,
     onAddFile,
     onAddFolder,
     onPathChange,
@@ -88,6 +89,7 @@ export const File = (props:TFileProps) => {
                 <File
                   key={item}
                   root={false}
+                  Modal={Modal}
                   onAddFile={onAddFile}
                   rootPrefix={rootPrefix}
                   onAddFolder={onAddFolder}

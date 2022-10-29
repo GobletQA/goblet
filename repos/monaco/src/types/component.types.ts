@@ -5,6 +5,7 @@ import type { TFilelist } from './file.types'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
 import type { CSSProperties, ReactNode, ComponentType } from 'react'
 
+export type TModal = Modal
 
 export interface IMonacoEditorProps {
   Modal: ComponentType
@@ -50,6 +51,7 @@ export type TFileCallback = (...args: any[]) => void
 
 export type TFileProps = {
   file: any
+  Modal: TModal
   root: boolean
   rootPrefix?:string
   currentPath?: string

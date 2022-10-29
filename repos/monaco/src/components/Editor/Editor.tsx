@@ -75,6 +75,12 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
   const curValueRef = useRef('')
 
   const {
+    Modal,
+  } = useComponentOverride({
+    Modal: ModalComp
+  })
+
+  const {
     pathChange,
     openedFiles,
     restoreModel,
@@ -133,6 +139,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     abortFileChange,
     closeOtherFiles,
   } = useFileCallbacks({
+    Modal,
     rootRef,
     prePath,
     filesRef,
@@ -162,11 +169,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     createOrUpdateModel,
   })
 
-  const {
-    Modal,
-  } = useComponentOverride({
-    Modal: ModalComp
-  })
+
 
   return (
     <div
@@ -197,6 +200,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
       <div onMouseDown={onMoveStart} className='goblet-monaco-editor-drag' />
       <div className='goblet-monaco-editor-area'>
         <OpenedTabs
+          Modal={Modal}
           onSaveFile={saveFile}
           currentPath={curPath}
           rootEl={rootRef.current}

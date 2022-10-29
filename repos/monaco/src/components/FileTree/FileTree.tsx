@@ -10,11 +10,12 @@ import { File } from './File'
 import { Modal } from '../Modal/Modal'
 
 export type TFileTree = {
-  style?: CSSProperties
   Modal: Modal
   title?: string
   rootPrefix?: string
   currentPath?: string
+  style?: CSSProperties
+  defaultFiles: TFilelist
   rootEl: HTMLElement | null
   onAddFile: (...args: any) => void
   onAddFolder: (...args: any) => void
@@ -22,8 +23,6 @@ export type TFileTree = {
   onDeleteFile: (...args: any) => void
   onEditFileName: (...args: any) => void
   onDeleteFolder: (path: string) => void
-  files?: TMFiles
-  defaultFiles: TFilelist
   onEditFolderName: (path: string, name: string) => void
 }
 
@@ -66,6 +65,7 @@ export const FileTree = memo((props: TFileTree) => {
         <div className='goblet-monaco-editor-list-files'>
           <File
             root
+            Modal={Modal}
             file={filetree}
             onAddFile={addFile}
             rootPrefix={rootPrefix}

@@ -1,7 +1,6 @@
-import type { SetStateAction, MutableRefObject } from 'react'
 import type { editor } from 'monaco-editor'
-
-import { TMFiles, TMFile, TFilelist, TEditorOpenFiles } from '../../types'
+import type { SetStateAction, MutableRefObject } from 'react'
+import type { TFilelist, TEditorOpenFiles, TModal } from '../../types'
 
 import { useCloseFile } from './useCloseFile'
 import { useCloseOtherFiles } from './useCloseOtherFiles'
@@ -9,6 +8,7 @@ import { useCloseOtherFiles } from './useCloseOtherFiles'
 import { useCallback } from 'react'
 
 export type TUseFileCallbacks = {
+  Modal: TModal
   openedFiles: TEditorOpenFiles
   rootRef: MutableRefObject<any>
   curPathRef: MutableRefObject<string>
@@ -26,6 +26,7 @@ export type TUseFileCallbacks = {
 
 export const useFileCallbacks = (props:TUseFileCallbacks) => {
   const {
+    Modal,
     rootRef,
     prePath,
     filesRef,
@@ -50,6 +51,7 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
     })
     
     const closeOtherFiles = useCloseOtherFiles({
+      Modal,
       prePath,
       rootRef,
       filesRef,

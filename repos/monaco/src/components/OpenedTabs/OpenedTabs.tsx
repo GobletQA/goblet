@@ -1,4 +1,5 @@
 import './OpenedTabs.css'
+import type { TModal } from '../../types'
 
 import { Tab } from './Tab'
 
@@ -7,6 +8,7 @@ export type OpenedTabs = {
     status?: string
     path: string
   }>
+  Modal: TModal
   onPathChange?: (key: string) => void
   currentPath?: string
   onCloseFile: (path: string) => void
@@ -17,13 +19,14 @@ export type OpenedTabs = {
 }
 
 export const OpenedTabs = ({
-  openedFiles,
-  onPathChange,
-  currentPath,
-  onCloseFile,
+  Modal,
   rootEl,
   onSaveFile,
+  openedFiles,
   onAbortSave,
+  currentPath,
+  onCloseFile,
+  onPathChange,
   onCloseOtherFiles,
 }:OpenedTabs) => {
   return (
@@ -31,14 +34,15 @@ export const OpenedTabs = ({
       <div className='goblet-monaco-editor-opened-tab'>
         {openedFiles.map(file => (
           <Tab
+            file={file}
+            Modal={Modal}
+            key={file.path}
+            rootEl={rootEl}
             onSaveFile={onSaveFile}
             onAbortSave={onAbortSave}
-            rootEl={rootEl}
             onCloseFile={onCloseFile}
-            file={file}
-            key={file.path}
-            onPathChange={onPathChange}
             currentPath={currentPath}
+            onPathChange={onPathChange}
             onCloseOtherFiles={onCloseOtherFiles}
           />
         ))}

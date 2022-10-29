@@ -33,6 +33,8 @@ export class Modal {
 
   confirm = (params:TModalConfirm) => {
     
+    console.log(`------- confirm -------`)
+    
   }
 
 } 
