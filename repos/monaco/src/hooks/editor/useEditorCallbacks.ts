@@ -21,7 +21,7 @@ export type TUseFileCallbacks = {
   contentListenerRef: MutableRefObject<IDisposable | undefined>
   editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>
   onValueChangeRef: MutableRefObject<((v: string) => void) | undefined>
-  onLoadFileRef:MutableRefObject<((path: string) => string) | undefined>
+  onLoadFileRef:MutableRefObject<((path: string) => Promise<string|null>) | undefined>
   optionsRef: MutableRefObject<editor.IStandaloneEditorConstructionOptions>
   onFileChangeRef: MutableRefObject<((key: string, content: string) => void) | undefined>
 }

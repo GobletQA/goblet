@@ -2,7 +2,7 @@ import type { editor } from 'monaco-editor'
 import { ALLOWED_FILE_TYPES } from '../constants'
 import { getModelFromPath } from './editor/getModelFromPath'
 
-const updateModel = (model:editor.ITextModel, content:string|null) => {
+export const updateModel = (model:editor.ITextModel, content:string|null) => {
   if (model.getValue() !== content) {
     // If a model exists, we need to update it's content
     // This is needed because the content for the file might have been modified externally

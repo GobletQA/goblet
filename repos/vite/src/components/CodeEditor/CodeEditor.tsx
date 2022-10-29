@@ -1,6 +1,6 @@
 import type { ComponentProps, ComponentType } from 'react'
 
-import { useRef } from 'react'
+import { useRef, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import { Text } from '@components/Text'
 import { BlockIcon } from '@components/Icons'
@@ -87,17 +87,6 @@ const RepoNotConnected = (props:TEditorError) => {
 }
 
 
-const onLoadFile = (path:string) => {
-  // TODO: load the file content here and return it
-  // Is called from the useRestoreModel hook of the monaco editor
-
-  console.log(`------- path -------`)
-  console.log(path)
-  
-  return path
-  
-}
-
 export const CodeEditor = (props:TCodeEditorProps) => {
 
   const editorRef = useRef<any>(null)
@@ -106,6 +95,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     files,
     connected,
     rootPrefix,
+    onLoadFile,
     onFileChange,
     onPathChange,
     onValueChange,

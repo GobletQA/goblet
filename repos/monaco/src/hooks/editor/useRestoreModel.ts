@@ -3,9 +3,10 @@ import type { TTypes } from './useTypesWorker'
 import type { Dispatch, MutableRefObject } from 'react'
 import type { editor, IDisposable } from 'monaco-editor'
 import type { TEditorOpenFiles, TFilelist } from '../../types'
-import { getModelFromPath } from '../../utils/editor/getModelFromPath'
 
 import { useCallback } from 'react'
+import { isStr } from '@keg-hub/jsutils'
+import { getModelFromPath } from '../../utils/editor/getModelFromPath'
 
 export type TUseRestoreModel = {
   curValueRef: MutableRefObject<string>
@@ -17,7 +18,7 @@ export type TUseRestoreModel = {
   contentListenerRef: MutableRefObject<IDisposable | undefined>
   editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>
   setOpenedFiles: Dispatch<React.SetStateAction<TEditorOpenFiles>>
-  onLoadFileRef:MutableRefObject<((path: string) => string) | undefined>
+  onLoadFileRef:MutableRefObject<((path: string) => Promise<string|null>) | undefined>
   onValueChangeRef: MutableRefObject<((path: string) => void) | undefined>
   onFileChangeRef: MutableRefObject<((key: string, content: string) => void) | undefined>
 }
@@ -105,6 +106,25 @@ const pathRestore = (
   restoreContentListener(path, model, props)
 }
 
+const loadFileContent = async (
+  path:string,
+  model:editor.ITextModel,
+  props:TUseRestoreModel
+) => {
+
+  const {
+    filesRef,
+    onLoadFileRef
+  } = props
+
+  const content = await onLoadFileRef?.current?.(path)
+  if(!isStr(content)) return
+
+  filesRef.current[path] = content
+  content && model.setValue(content)
+}
+
+
 const modelRestore = (
   path:string,
   model:editor.ITextModel,
@@ -114,12 +134,11 @@ const modelRestore = (
     prePath,
     filesRef,
     editorRef,
-    onLoadFileRef,
     lintWorkerRef,
   } = props
 
   const content = filesRef.current[path]
-  if(content === null) loadFileContent(path, model, onLoadFileRef)
+  if(content === null) loadFileContent(path, model, props)
 
   editorRef?.current?.setModel(model)
 
@@ -132,28 +151,10 @@ const modelRestore = (
   return model
 }
 
-const loadFileContent = async (
-  path:string,
-  model:editor.ITextModel,
-  onLoadFileRef?:MutableRefObject<((path: string) => string) | undefined>
-) => {
-
-  const loadedContent = onLoadFileRef?.current?.(path)
-
-  // TODO: Set the model content here returned from the onLoadFile callback
-  // console.log(`------- model -------`)
-  // console.log(model.setValue)
-  console.log(`------- loadedContent -------`)
-  console.log(loadedContent)
-}
-
-
 export const useRestoreModel = (props:TUseRestoreModel) => {
   const {
     prePath,
-    filesRef,
     editorRef,
-    onLoadFileRef,
     editorStatesRef,
     contentListenerRef,
   } = props

@@ -1,4 +1,4 @@
-import type { TFileTreeNode } from '@types'
+import type { TFileTreeNode, TFileTree } from '@types'
 
 import { getStore } from '@store'
 import { loadApiFile } from '@utils/api'
@@ -18,34 +18,46 @@ const findFileInTree = (
     node => node === file || node.location === file || node.name === file
   )
 
+
+const getFileTreeNode = (fileNode:TFileTreeNode|string) => {
+  if(isObj<TFileTreeNode>(fileNode))
+    return { node: fileNode, name: fileNode.name }
+
+  const { fileTree } = getStore()?.getState()
+  if (!fileTree || !fileTree?.nodes?.length || !fileTree?.rootPaths?.length)
+    return { name: fileNode }
+
+  const node = findFileInTree(fileTree.nodes, fileNode)
+  return { node, name: fileNode }
+}
+
 /**
  * Sets a test file as the activeFile, after loading it's fileModel from the backend
  * Then calls setActiveFileFromType to set the file Active
  */
 export const loadFile = async (
   fileNode:TFileTreeNode|string,
-  mergeQuery?:boolean
 ) => {
-  const { fileTree } = getStore()?.getState()
-  if (!fileTree || !fileTree?.nodes?.length || !fileTree?.rootPaths?.length) return
 
-  const fileName = isObj<TFileTreeNode>(fileNode) ? fileNode.name : fileNode
-  
-  const nodeToLoad = findFileInTree(fileTree.nodes, fileNode)
-  if (!nodeToLoad)
+  const { node, name } = getFileTreeNode(fileNode)
+
+  if (!node)
     return addToast({
       type: `warn`,
-      message: `Could not load file ${fileName}. It does not exist in the file tree`,
+      message: `Could not load file ${name}. It does not exist in the file tree`,
     })
 
-  const resp = await loadApiFile(nodeToLoad)
+  const resp = await loadApiFile(node)
+
   if(!resp)
     return addToast({
       type: `warn`,
-      message: `Could not load file ${fileName} from the API!`,
+      message: `Could not load file ${name} from the API!`,
     })
 
+  const file = resp?.data?.file
 
-  setFile(resp?.data?.file)
+  setFile(file)
 
+  return file
 }

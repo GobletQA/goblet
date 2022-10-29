@@ -31,12 +31,12 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     onLoadFile,
     defaultPath,
     onPathChange,
+    onFileChange,
     onValueChange,
     rootPrefix=``,
     Modal:ModalComp,
-    defaultFiles = {},
-    onFileChange,
     onFileTreeResize,
+    defaultFiles = {},
     initialFileTreeWidth,
     title='Goblet Editor',
     initialFileTreeStatus,
@@ -51,9 +51,10 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
   const onValueChangeRef = useRef(onValueChange)
   const onFileChangeRef = useRef(onFileChange)
   const optionsRef = useRef(options)
+  onLoadFileRef.current = onLoadFile
   onPathChangeRef.current = onPathChange
-  onValueChangeRef.current = onValueChange
   onFileChangeRef.current = onFileChange
+  onValueChangeRef.current = onValueChange
   optionsRef.current = options
 
   const editorNodeRef = useRef<HTMLDivElement>(null)

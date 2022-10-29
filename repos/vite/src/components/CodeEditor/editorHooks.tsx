@@ -11,12 +11,22 @@ import { loadFile } from '@actions/files/api/loadFile'
 import { useCallback, useEffect, useMemo } from 'react'
 import { useFileTree, useFiles, useRepo } from '@store'
 
+export type THOnLoadFile = THEditorFiles & {
+  rootPrefix:string
+  files: Record<string, string|null>
+}
+
 export type THEditorFiles = {
   repo: TRepoState
   repoPath: string,
   fileTree: TFileTree
   repoFiles: TFilesState
 }
+
+
+const addRootToLoc = (loc:string, root:string) => `${root}${loc}`
+const removeRootFromLoc = (loc:string, root:string) => loc.replace(root, ``)
+
 
 export const useEditorFiles = (props:THEditorFiles) => {
   const {
@@ -39,7 +49,7 @@ export const useEditorFiles = (props:THEditorFiles) => {
       if(!exts.includes(ext)) return acc
 
       const model = repoFiles.files[loc]
-      const key = model?.relative || loc.replace(repoPath, ``)
+      const key = model?.relative || removeRootFromLoc(loc, repoPath)
       acc[key] = repoFiles?.pendingFiles?.[loc] || model?.content || null
 
       return acc
@@ -57,6 +67,29 @@ export const useEditorFiles = (props:THEditorFiles) => {
     files,
     connected: Boolean(repo?.paths && repo?.name)
   }
+}
+
+
+const useOnLoadFile = ({
+  repoPath,
+  repoFiles,
+}:THOnLoadFile) => {
+
+  return useCallback(async (path:string) => {
+    const full = addRootToLoc(path, repoPath)
+    const existing = repoFiles?.pendingFiles?.[full] || repoFiles?.files?.[full]?.content
+    if(existing) return existing
+
+    // The loadFile action will also update repoFiles.files
+    // So we don't need to worry about it here
+    const loaded = await loadFile(full)
+
+    return loaded ? loaded?.content : null
+  }, [
+    repoPath,
+    repoFiles
+  ])
+
 }
 
 
@@ -83,24 +116,28 @@ export const useEditorHooks = (
       : repo?.paths?.repoRoot
   }, [repo?.paths?.repoRoot, repo?.paths?.workDir])
 
-  const onPathChange = useCallback(async (key: string) => {
-
-    const found = fileTree.nodes.find(node => node.id === `${repoPath}${key}`)
-
-    found
-      ? await loadFile(found)
-      : console.warn(`File could not be found with key ${key}`)
-
+  const onLoadFile = useOnLoadFile({
+    repo,
+    fileTree,
+    repoPath,
+    repoFiles,
+    rootPrefix,
+    ...editorFiles
+  })
+  
+  const onPathChange = useCallback(async (path: string) => {
+    // console.log(`------- onPath change -------`)
+    // console.log(key)
   }, [fileTree, repoPath])
 
   const onValueChange = useCallback((value: any) => {
-    console.log(`------- value -------`)
-    console.log(value)
+    // console.log(`------- onValueChange -------`)
+    // console.log(value)
   }, [])
 
-  const onFileChange = useCallback((file: any) => {
-    console.log(`------- file -------`)
-    console.log(file)
+  const onFileChange = useCallback((path: any) => {
+    // console.log(`------- file -------`)
+    // console.log(file)
   }, [])
 
 
@@ -116,6 +153,7 @@ export const useEditorHooks = (
 
   return {
     rootPrefix,
+    onLoadFile,
     onFileChange,
     onPathChange,
     onValueChange,

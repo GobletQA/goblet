@@ -62,9 +62,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
   }, [options, config])
 
   useEffect(() => {
-    if (onPathChangeRef.current && curPath) {
-      onPathChangeRef.current(curPath)
-    }
+    if (onPathChangeRef.current && curPath) onPathChangeRef.current(curPath)
     curPathRef.current = curPath
   }, [curPath])
 
@@ -72,7 +70,6 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     setTheme,
     resizeFileTree,
     getSupportThemes: () => THEMES,
-
     getAllValue: () => filesRef.current,
     getValue: (path: string) => filesRef.current[path],
   }))
