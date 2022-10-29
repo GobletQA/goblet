@@ -19,6 +19,9 @@ export const Store: ReduxStore<RootState> = configureStore({
   reducer,
   preloadedState,
   devTools: process.env.NODE_ENV !== 'production',
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  }),
 })
 
 export const useDispatch = () => useReduxDispatch<AppDispatch>()

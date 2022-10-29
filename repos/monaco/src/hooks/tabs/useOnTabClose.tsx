@@ -23,33 +23,40 @@ export const useOnTabClose = (props:THOnTabClose) => {
   
   return useCallback((event:any) => {
     event.stopPropagation()
+    event.preventDefault()
+
     if(file.status !== 'editing')
       return onCloseFile(file.path)
 
     setTimeout(() => {
       Modal.confirm({
-        target: rootEl,
-        okText: 'OK',
-        title: 'Confirm Close',
-        cancelText: 'Cancel',
-        onCancel: (close: () => void) => {
-          close()
-          onAbortSave(file.path)
-        },
-        onOk: (close: () => void) => {
-          close()
-          onCloseFile(file.path)
-          onSaveFile(file.path)
-        },
-        content: () => (
-          <div>
-            <div>File has unsaved changes</div>
-            <div>File: {file.path}</div>
-          </div>
-        )
+        title: `Close File`,
+        content: [
+          `File: ${file.path}, has unsaved changes`,
+        ],
+        // actions: [
+        //   {
+        //     text: `Cancel`,
+        //     type: `warn`,
+        //     action: () => {
+        //       console.log(`------- cancel action -------`)
+        //       onAbortSave(file.path)
+        //     }
+        //   },
+        //   {
+        //     text: `Ok`,
+        //     type: `primary`,
+        //     action: () => {
+        //       console.log(`------- ok action -------`)
+                
+        //       onCloseFile(file.path)
+        //       onSaveFile(file.path)
+        //     }
+        //   },
+        // ],
+
       })
     })
-
   }, [
     file,
     Modal,

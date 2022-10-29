@@ -9,13 +9,11 @@ import {
 
 import Slide from '@mui/material/Slide'
 import Dialog from '@mui/material/Dialog'
-import { noOpObj, exists } from '@keg-hub/jsutils'
 import { ModalFooter } from './ModalFooter'
 import { ModalHeader } from './ModalHeader'
 import { ModalContent } from './ModalContent'
 import { toggleModal } from '@actions/modals'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
+import { noOpObj, exists } from '@keg-hub/jsutils'
 
 const modalCloseReasons = [`escapeKeyDown`, `backdropClick`]
 
@@ -78,8 +76,6 @@ export const ModalRoot = (props:TModal) => {
     contentProps,
     maxWidth='md',
     fullWidth=true,
-    modalContext,
-    setModalContext,
     overrideContent,
     fullScreen=false,
     Title:_TNoOp,
@@ -105,7 +101,6 @@ export const ModalRoot = (props:TModal) => {
     Footer,
     Content,
     Container,
-    ContentText,
   } = modalSlots
 
   const [ContComp, contProps] = Container

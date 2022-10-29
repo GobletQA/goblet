@@ -15,11 +15,11 @@ import { useLintWorker } from '../../hooks/editor/useLintWorker'
 import { useEditorRefs } from '../../hooks/editor/useEditorRefs'
 import { useTypesWorker } from '../../hooks/editor/useTypesWorker'
 import { useEditorSetup } from '../../hooks/editor/useEditorSetup'
+import { useModalActions } from '../../hooks/editor/useModalActions'
 import { useFileCallbacks } from '../../hooks/editor/useFileCallbacks'
 import { useFileListResize } from '../../hooks/editor/useFileListResize'
 import { useFolderCallbacks } from '../../hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
-import { useComponentOverride } from '../../hooks/editor/useComponentOverride'
 
 export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props, ref) => {
   
@@ -74,7 +74,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
 
   const {
     Modal,
-  } = useComponentOverride({
+  } = useModalActions({
     Modal: ModalComp
   })
 

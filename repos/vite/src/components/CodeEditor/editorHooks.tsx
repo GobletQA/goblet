@@ -1,15 +1,17 @@
-import type { OpenFileTreeEvent, TRepoState, TFileTree, TFilesState, TFileModel } from '@types'
 import type { MutableRefObject } from 'react'
 import type { TCodeEditorProps } from './CodeEditor'
+import type { OpenFileTreeEvent, TRepoState, TFileTree, TFilesState } from '@types'
 
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
+import { ModalTypes } from '@constants'
 import { exists } from '@keg-hub/jsutils'
 import { OpenFileTreeEvt } from '@constants'
-import { fileModel } from '@models'
 import { loadFile } from '@actions/files/api/loadFile'
-import { useCallback, useEffect, useMemo } from 'react'
 import { useFileTree, useFiles, useRepo } from '@store'
+import { useCallback, useEffect, useMemo } from 'react'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { toggleModal } from '@actions/modals/toggleModal'
+import { setActiveModal } from '@actions/modals/setActiveModal'
 
 export type THOnLoadFile = THEditorFiles & {
   rootPrefix:string
@@ -23,9 +25,38 @@ export type THEditorFiles = {
   repoFiles: TFilesState
 }
 
+const modalActions = {
+  closeModal: () => {
+    toggleModal(false)
+  },
+  openModal: (props?:Record<any, any>) => {
+    setActiveModal(ModalTypes.Confirm, true, props)
+  },
+}
 
 const addRootToLoc = (loc:string, root:string) => `${root}${loc}`
 const removeRootFromLoc = (loc:string, root:string) => loc.replace(root, ``)
+
+const useOnLoadFile = ({
+  repoPath,
+  repoFiles,
+}:THOnLoadFile) => {
+
+  return useCallback(async (path:string) => {
+    const full = addRootToLoc(path, repoPath)
+    const existing = repoFiles?.pendingFiles?.[full] || repoFiles?.files?.[full]?.content
+    if(existing) return existing
+
+    // The loadFile action will also update repoFiles.files
+    // So we don't need to worry about it here
+    const loaded = await loadFile(full)
+
+    return loaded ? loaded?.content : null
+  }, [
+    repoPath,
+    repoFiles
+  ])
+}
 
 
 export const useEditorFiles = (props:THEditorFiles) => {
@@ -68,30 +99,6 @@ export const useEditorFiles = (props:THEditorFiles) => {
     connected: Boolean(repo?.paths && repo?.name)
   }
 }
-
-
-const useOnLoadFile = ({
-  repoPath,
-  repoFiles,
-}:THOnLoadFile) => {
-
-  return useCallback(async (path:string) => {
-    const full = addRootToLoc(path, repoPath)
-    const existing = repoFiles?.pendingFiles?.[full] || repoFiles?.files?.[full]?.content
-    if(existing) return existing
-
-    // The loadFile action will also update repoFiles.files
-    // So we don't need to worry about it here
-    const loaded = await loadFile(full)
-
-    return loaded ? loaded?.content : null
-  }, [
-    repoPath,
-    repoFiles
-  ])
-
-}
-
 
 export const useEditorHooks = (
   props:TCodeEditorProps,
@@ -156,6 +163,7 @@ export const useEditorHooks = (
     onLoadFile,
     onFileChange,
     onPathChange,
+    modalActions,
     onValueChange,
     ...editorFiles,
   }

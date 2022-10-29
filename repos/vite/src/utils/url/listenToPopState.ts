@@ -29,10 +29,10 @@ const listenToPopState = async (event:any) => {
   // Get the query params from the url
   const queryObj = getQueryData() || noOpObj
 
-  const { screen, file } = queryObj as Record<string, string>
+  const { file } = queryObj as Record<string, string>
 
   // screen && setScreenById(screen)
-  file && (await loadFile(file, screen))
+  file && (await loadFile(file))
 
   // Load the init modal
   // display options modal if no valid querystring passed in

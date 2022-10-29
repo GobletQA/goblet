@@ -25,7 +25,6 @@ export const useDeleteFolder = (props:THDeleteFolder) => {
   return useCallback(
     (path: string) => {
       Modal.confirm({
-        target: rootEl,
         okText: 'OK',
         onOk: (close: () => void) => {
           updateFiletree(deleteSourceFolder({ filetree, path, rootPrefix }))

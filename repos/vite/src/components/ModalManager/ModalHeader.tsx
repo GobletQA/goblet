@@ -14,8 +14,6 @@ export const ModalHeader = (props:TModal) => {
   const {
     title,
     Title,
-    modalContext,
-    setModalContext,
     titleProps=noOpObj as TModalTitle,
   } = props
 

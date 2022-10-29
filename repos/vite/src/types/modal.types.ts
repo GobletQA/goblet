@@ -12,7 +12,6 @@ export type TModalRef = typeof ModalRoot & {
   modalProps: Partial<TModalComponent>
 }
 
-export type TModalContext = Record<any, any>
 export type TModalComponent = ComponentProps<typeof ModalRoot>
 
 export type TModalTransition = TransitionProps & { children: React.ReactElement<any, any> }
@@ -56,12 +55,10 @@ export type TModal = Omit<ComponentProps<typeof Dialog>, "open"> & {
   manualClose?:boolean
   overrideContent?:boolean
   actions?: TModalAction[]
-  onClose?: (...args:any[]) => void
   titleProps?: TModalTitle
+  onClose?: (...args:any[]) => void
   actionProps?: ComponentProps<typeof DialogActions>
   contentProps?: ComponentProps<typeof DialogContent>
-  modalContext: TModalContext
-  setModalContext: (ctx:TModalContext) => void
 }
 
 export type TModalFooter = {

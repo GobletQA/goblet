@@ -36,9 +36,8 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
 
       if (unSavedFiles.length) {
         Modal.confirm({
-          title: 'Confirm',
-          target: rootRef.current,
           okText: 'OK',
+          title: 'Confirm',
           cancelText: 'Cancel',
           onCancel: (close: () => void) => {
             close()
