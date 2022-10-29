@@ -28,6 +28,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
   
   const {
     emptyText,
+    onLoadFile,
     defaultPath,
     onPathChange,
     onValueChange,
@@ -44,6 +45,8 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
   } = props
   
 
+  
+  const onLoadFileRef = useRef(onLoadFile)
   const onPathChangeRef = useRef(onPathChange)
   const onValueChangeRef = useRef(onValueChange)
   const onFileChangeRef = useRef(onFileChange)
@@ -77,12 +80,14 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     setOpenedFiles,
   } = useEditorCallbacks({
     prePath,
+    filesRef,
     editorRef,
     optionsRef,
     setCurPath,
     curValueRef,
     defaultPath,
     lintWorkerRef,
+    onLoadFileRef,
     typesWorkerRef,
     editorNodeRef,
     onFileChangeRef,

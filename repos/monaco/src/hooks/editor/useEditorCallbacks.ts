@@ -1,7 +1,7 @@
 import type { TLinter } from './useLintWorker'
 import type { TTypes } from './useTypesWorker'
 import type { editor, IDisposable } from 'monaco-editor'
-import type { TEditorOpenFiles } from '../../types'
+import type { TEditorOpenFiles, TFilelist } from '../../types'
 import type { SetStateAction, RefObject, Dispatch, MutableRefObject } from 'react'
 
 import { useCallback, useState } from 'react'
@@ -10,16 +10,18 @@ import { useRestoreModel } from './useRestoreModel'
 
 export type TUseFileCallbacks = {
   defaultPath: string | undefined
-  editorNodeRef: RefObject<HTMLDivElement>
-  setCurPath: (data: SetStateAction<string>) => void
+  filesRef: MutableRefObject<TFilelist>
   curValueRef: MutableRefObject<string>
+  editorNodeRef: RefObject<HTMLDivElement>
   prePath: MutableRefObject<string | null>
   typesWorkerRef: MutableRefObject<TTypes>
   lintWorkerRef: MutableRefObject<TLinter>
   editorStatesRef:MutableRefObject<Map<any, any>>
-  onValueChangeRef: MutableRefObject<((v: string) => void) | undefined>
+  setCurPath: (data: SetStateAction<string>) => void
   contentListenerRef: MutableRefObject<IDisposable | undefined>
   editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>
+  onValueChangeRef: MutableRefObject<((v: string) => void) | undefined>
+  onLoadFileRef:MutableRefObject<((path: string) => string) | undefined>
   optionsRef: MutableRefObject<editor.IStandaloneEditorConstructionOptions>
   onFileChangeRef: MutableRefObject<((key: string, content: string) => void) | undefined>
 }
@@ -28,11 +30,13 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
 
   const {
     prePath,
+    filesRef,
     editorRef,
     optionsRef,
     setCurPath,
     curValueRef,
     defaultPath,
+    onLoadFileRef,
     lintWorkerRef,
     typesWorkerRef,
     editorNodeRef,
@@ -49,8 +53,10 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
 
   const restoreModel = useRestoreModel({
     prePath,
+    filesRef,
     editorRef,
     curValueRef,
+    onLoadFileRef,
     lintWorkerRef,
     typesWorkerRef,
     setOpenedFiles,

@@ -87,6 +87,17 @@ const RepoNotConnected = (props:TEditorError) => {
 }
 
 
+const onLoadFile = (path:string) => {
+  // TODO: load the file content here and return it
+  // Is called from the useRestoreModel hook of the monaco editor
+
+  console.log(`------- path -------`)
+  console.log(path)
+  
+  return path
+  
+}
+
 export const CodeEditor = (props:TCodeEditorProps) => {
 
   const editorRef = useRef<any>(null)
@@ -106,6 +117,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           Modal={Modal}
           ref={editorRef}
           defaultFiles={files}
+          onLoadFile={onLoadFile}
           rootPrefix={rootPrefix}
           initialFileTreeStatus={true}
           initialFileTreeWidth={FileTreeWidth}

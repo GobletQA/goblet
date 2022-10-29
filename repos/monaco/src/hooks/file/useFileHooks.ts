@@ -38,20 +38,23 @@ export const useFileHooks = (props:TFileProps) => {
   }, [editing, file])
 
   useEffect(() => {
-    if (currentPath && currentPath.startsWith(file.path + '/')) {
-      setShowChild(true)
-    }
+    currentPath
+      && currentPath.startsWith(file.path + '/')
+      && setShowChild(true)
   }, [currentPath, file.path])
 
   const keys = useMemo(() => {
     if (file.ext) return []
-    const childs = file.children
-    const folders = Object.keys(childs)
-      .filter(key => !childs[key].ext)
+    const children = file.children
+  
+    const folders = Object.keys(children)
+      .filter(key => !children[key].ext)
       .sort()
-    const files = Object.keys(childs)
-      .filter(key => childs[key].ext)
+
+    const files = Object.keys(children)
+      .filter(key => children[key].ext)
       .sort()
+
     return folders.concat(files)
   }, [file])
 

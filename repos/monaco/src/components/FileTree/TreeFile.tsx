@@ -1,9 +1,12 @@
 import type { TFileCallback } from '../../types'
 import type { RefObject, Dispatch, SetStateAction } from 'react'
 
+
 import EditIcon from '../icons/edit'
-import DeleteIcon from '../icons/delete'
 import { FileIcon } from '../icons/file'
+import DeleteIcon from '../icons/delete'
+import { useCallback, useMemo } from 'react'
+import { stopPropagation } from '../../utils/dom/stopPropagation'
 
 export type TTreeFile = {
   file: any
@@ -15,6 +18,11 @@ export type TTreeFile = {
   filePathChange: TFileCallback
   nameRef:RefObject<HTMLDivElement>
   setEditing: Dispatch<SetStateAction<boolean>>
+}
+
+const fIconStl = {
+  marginLeft: '14px',
+  marginRight: '5px',
 }
 
 
@@ -30,45 +38,49 @@ export const TreeFile = ({
   filePathChange,
 }:TTreeFile) => {
 
-  const fileType = file.name && file.name.indexOf('.') !== -1
-    ? `file_type_${file.name.split('.').slice(-1)}`
-    : 'default_file'
+  // const fileType = useMemo(() => {
+  //   return file.name && file.name.indexOf('.') !== -1
+  //     ? `file_type_${file.name.split('.').slice(-1)}`
+  //     : 'default_file'
+  // }, [file.name])
 
-  console.log(`------- file -------`)
-  console.log(file)
+  const onEdit = useCallback((e: Event) => {
+    e.stopPropagation()
+    setEditing(true)
+  }, [setEditing])
+
+  const onDelete = useCallback((e: Event) => {
+    e.stopPropagation()
+    onDeleteFile(file.path)
+  }, [file.path])
+
+  const classNames = useMemo(() => {
+    return [
+      `goblet-monaco-editor-list-file-item-row`,
+      currentPath === file.path &&
+        `goblet-monaco-editor-list-file-item-row-focused`,
+    ].filter(Boolean).join(` `).trim()
+  }, [currentPath, file.path])
 
   return (
     <div
+      key={file.path}
       data-src={file.path}
       onClick={filePathChange}
-      key={file.path}
-      className={`goblet-monaco-editor-list-file-item-row ${
-        currentPath === file.path
-          ? 'goblet-monaco-editor-list-file-item-row-focused'
-          : ''
-      }`}
+      className={classNames}
     >
-      <FileIcon
-        style={{
-          marginLeft: '14px',
-          marginRight: '5px',
-        }}
-      />
+      {/* fileType is used here for different file type icons */}
+      {/* For now, just default to basic file type */}
+      <FileIcon style={fIconStl} />
       {file.name && !editing ? (
         <>
           <span style={{ flex: 1 }}>{file.name}</span>
           <EditIcon
-            onClick={(e: Event) => {
-              e.stopPropagation()
-              setEditing(true)
-            }}
+            onClick={onEdit}
             className='goblet-monaco-editor-list-split-icon'
           />
           <DeleteIcon
-            onClick={(e: Event) => {
-              e.stopPropagation()
-              onDeleteFile(file.path)
-            }}
+            onClick={onDelete}
             className='goblet-monaco-editor-list-split-icon'
           />
         </>
@@ -79,7 +91,7 @@ export const TreeFile = ({
           onBlur={fileBlur}
           spellCheck={false}
           onKeyDown={fileKeyDown}
-          onClick={(e: any) => e.stopPropagation()}
+          onClick={stopPropagation}
           className='goblet-monaco-editor-list-file-item-new'
         />
       )}

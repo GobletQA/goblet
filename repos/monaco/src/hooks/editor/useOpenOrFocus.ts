@@ -24,15 +24,9 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
   const openOrFocusPath = useCallback((path: string) => {
     setOpenedFiles(pre => {
       let exist = false
-      pre.forEach(v => {
-        if (v.path === path) {
-          exist = true
-        }
-      })
-      if (exist) {
-        return pre
-      }
-      return [...pre, { path: path }]
+      pre.forEach(loc => loc.path === path && (exist = true))
+
+      return exist ? pre : [...pre, { path: path }]
     })
     setCurPath(path)
   }, [])
@@ -46,6 +40,7 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
 
     const editorService = (editorRef.current as any)._codeEditorService
     const openEditorBase = editorService.openCodeEditor.bind(editorService)
+
     editorService.openCodeEditor = async (input: any, source: any, sideBySide: any) => {
       const result = await openEditorBase(input, source)
       if (result === null) {
@@ -55,6 +50,7 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
         source.setSelection(input.options.selection)
         source.revealLine(input.options.selection.startLineNumber)
       }
+
       // always return the base result
       return result
     }

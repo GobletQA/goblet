@@ -1,13 +1,16 @@
 import type { TFileCallback } from '../../types'
 import type { RefObject, Dispatch, SetStateAction } from 'react'
 
-import AddFileIcon from '../icons/addfile'
-import AddFolderIcon from '../icons/addfolder'
-import { FolderIcon } from '../icons/folder'
-import { FolderOpenedIcon } from '../icons/folderOpened'
+import { useCallback } from 'react'
+
 import Arrow from '../icons/arrow'
-import DeleteIcon from '../icons/delete'
 import EditIcon from '../icons/edit'
+import DeleteIcon from '../icons/delete'
+import AddFileIcon from '../icons/addfile'
+import { FolderIcon } from '../icons/folder'
+import AddFolderIcon from '../icons/addfolder'
+import { FolderOpenedIcon } from '../icons/folderOpened'
+import { stopPropagation } from '../../utils/dom/stopPropagation'
 
 
 export type TTreeDirectory = {
@@ -32,13 +35,38 @@ export const TreeDirectory = ({
   fileBlur,
   showChild,
   fileClick,
-  onAddFile,
   setEditing,
   fileKeyDown,
-  onAddFolder,
   setShowChild,
   onDeleteFolder,
+  onAddFile:addFile,
+  onAddFolder:addFolder,
 }:TTreeDirectory) => {
+
+  const onEdit = useCallback((e: Event) => {
+    e.stopPropagation()
+    setEditing(true)
+  }, [setEditing])
+
+  const onDelete = useCallback((e: Event) => {
+    e.stopPropagation()
+    onDeleteFolder(file.path)
+  }, [file.path])
+
+  const onAddFolder = useCallback((e: Event) => {
+    e.stopPropagation()
+    e.stopPropagation()
+    setShowChild(true)
+    addFolder(file.path + '/')
+
+  }, [addFolder, file.path])
+
+  const onAddFile = useCallback((e: Event) => {
+    e.stopPropagation()
+    setShowChild(true)
+    addFile(file.path + '/')
+  }, [addFile, file.path])
+
 
   return (
     <div onClick={fileClick} className='goblet-monaco-editor-list-file-item-row'>
@@ -51,33 +79,19 @@ export const TreeDirectory = ({
         <>
           <span style={{ flex: 1 }}>{file.name}</span>
           <EditIcon
-            onClick={(e: Event) => {
-              e.stopPropagation()
-              setEditing(true)
-            }}
+            onClick={onEdit}
             className='goblet-monaco-editor-list-split-icon'
           />
           <DeleteIcon
-            onClick={(e: Event) => {
-              e.stopPropagation()
-              onDeleteFolder(file.path)
-            }}
+            onClick={onDelete}
             className='goblet-monaco-editor-list-split-icon'
           />
           <AddFileIcon
-            onClick={(e: Event) => {
-              e.stopPropagation()
-              setShowChild(true)
-              onAddFile(file.path + '/')
-            }}
+            onClick={onAddFile}
             className='goblet-monaco-editor-list-split-icon'
           />
           <AddFolderIcon
-            onClick={(e: Event) => {
-              e.stopPropagation()
-              setShowChild(true)
-              onAddFolder(file.path + '/')
-            }}
+            onClick={onAddFolder}
             className='goblet-monaco-editor-list-split-icon'
           />
         </>
@@ -88,7 +102,7 @@ export const TreeDirectory = ({
           onBlur={fileBlur}
           spellCheck={false}
           onKeyDown={fileKeyDown}
-          onClick={(e: any) => e.stopPropagation()}
+          onClick={stopPropagation}
           className='goblet-monaco-editor-list-file-item-new'
         />
       )}

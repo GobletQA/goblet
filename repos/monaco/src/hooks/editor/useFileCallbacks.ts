@@ -18,10 +18,10 @@ export type TUseFileCallbacks = {
   prePath: MutableRefObject<string | null>
   pathChange: (path: string) => void
   setCurPath: (content: SetStateAction<string>) => void
-  createOrUpdateModel:(path: string, content: string) => void
-  setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
   restoreModel: (path: string) => false | editor.ITextModel
+  createOrUpdateModel:(path: string, content: string) => void
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
+  setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
 }
 
 export const useFileCallbacks = (props:TUseFileCallbacks) => {

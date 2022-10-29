@@ -8,9 +8,9 @@ import { useCallback } from 'react'
 export type TUseCloseFile = {
   prePath: MutableRefObject<string | null>
   curPathRef: MutableRefObject<string>
-  restoreModel: (path: string) => false | editor.ITextModel
   setCurPath: (data: SetStateAction<string>) => void
   setOpenedFiles: (data: SetStateAction<TEditorOpenFiles>) => void
+  restoreModel: (path: string) => Promise<false | editor.ITextModel>
 }
 
 export const useCloseFile = (props:TUseCloseFile) => {

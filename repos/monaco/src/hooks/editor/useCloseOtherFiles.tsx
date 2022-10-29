@@ -1,10 +1,10 @@
 import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
-import type { TEditorOpenFiles, TFilelist, TMFiles, TMFile } from '../../types'
-
-import { Modal } from '../../components/Modal'
+import type { TEditorOpenFiles, TFilelist } from '../../types'
 
 import { useCallback } from 'react'
+import { Modal } from '../../components/Modal'
+import { getModelFromPath } from '../../utils/editor/getModelFromPath'
 
 export type TUseCloseOtherFiles = {
   openedFiles: TEditorOpenFiles
@@ -12,9 +12,9 @@ export type TUseCloseOtherFiles = {
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
   setCurPath: (data: SetStateAction<string>) => void
+  restoreModel: (path: string) => false | editor.ITextModel
   createOrUpdateModel:(path: string, content: string) => void
   setOpenedFiles: (data: SetStateAction<TEditorOpenFiles>) => void
-  restoreModel: (path: string) => false | editor.ITextModel
 }
 
 export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
@@ -54,10 +54,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
           onOk: (close: () => void) => {
             close()
             unSavedFiles.forEach((file:any) => {
-              const model = window.monaco.editor
-                .getModels()
-                .find(model => model.uri.path === file.path)
-
+              const model = getModelFromPath(file.path)
               filesRef.current[file.path] = model?.getValue() || ''
             })
             setOpenedFiles(pre => pre.filter(p => p.path === path))

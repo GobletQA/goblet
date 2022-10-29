@@ -18,6 +18,7 @@ export interface IMonacoEditorProps {
   initialFileTreeStatus?: boolean
   onPathChange?: (key: string) => void
   onValueChange?: (v: string) => void
+  onLoadFile?: (path: string) => string
   onFileChange?: (key: string, content: string) => void
   onFileTreeResize?: (width:number) => void
   options: editor.IStandaloneEditorConstructionOptions

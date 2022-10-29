@@ -36,7 +36,7 @@ export const useFileCallbacks = (props:THFileCallbacks) => {
   const filePathChange = useCallback(
     (e:any) => {
       const key = e.currentTarget.dataset.src!
-      onPathChange(key)
+      onPathChange?.(key)
     },
     [onPathChange]
   )

@@ -21,7 +21,7 @@ export type TUseEditorSetup = {
   filesRef: MutableRefObject<TFilelist>
   resizeFileTree: (width:number) => void
   options: editor.IStandaloneEditorConstructionOptions
-  createOrUpdateModel: (path: string, content: string) => void
+  createOrUpdateModel: (path: string, content: string|null) => void
   onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setTheme: (name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
@@ -43,10 +43,13 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     createOrUpdateModel,
   } = props
 
+    // Hook that runs on load of the editor component
+    // Creates monaco models for each of the defaultFiles
+    // that get set to the filesRef in the editor component
     useEffect(() => {
       Object.keys(filesRef.current).forEach(key => {
         const content = filesRef.current[key]
-        typeof content === 'string'
+        typeof content === 'string' || content === null
           && createOrUpdateModel(key, content)
       })
     }, [])

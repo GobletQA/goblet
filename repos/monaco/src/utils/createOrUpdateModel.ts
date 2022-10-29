@@ -1,8 +1,8 @@
 import type { editor } from 'monaco-editor'
 import { ALLOWED_FILE_TYPES } from '../constants'
+import { getModelFromPath } from './editor/getModelFromPath'
 
-
-const updateModel = (model:editor.ITextModel, content:string) => {
+const updateModel = (model:editor.ITextModel, content:string|null) => {
   if (model.getValue() !== content) {
     // If a model exists, we need to update it's content
     // This is needed because the content for the file might have been modified externally
@@ -22,13 +22,13 @@ const updateModel = (model:editor.ITextModel, content:string) => {
   return model
 }
 
-const createModel = (path:string, content:string) => {
+const createModel = (path:string, content:string | null) => {
   const type = path.indexOf('.') !== -1
     ? path.split('.').slice(-1)[0]
     : ALLOWED_FILE_TYPES.js
 
   const model = window.monaco.editor.createModel(
-    content,
+    content || ``,
     ALLOWED_FILE_TYPES[type] || type,
     new window.monaco.Uri().with({ path, scheme: 'goblet' })
   )
@@ -41,7 +41,7 @@ const createModel = (path:string, content:string) => {
   return model
 }
 
-export const createOrUpdateModel = (path: string, content: string) => {
-  const model = window.monaco.editor.getModels().find(model => model.uri.path === path)
+export const createOrUpdateModel = (path: string, content: string|null) => {
+  const model = getModelFromPath(path)
   model ? updateModel(model, content) : createModel(path, content)
 }
