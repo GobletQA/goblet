@@ -3,8 +3,8 @@ import { buildFolder } from './buildFolder'
 
 export type TDelSrcFile = {
   path: string,
-  value?: string,
   filetree: any,
+  content?: string,
   rootPrefix?: string,
 }
 
@@ -18,10 +18,12 @@ export const deleteSourceFile = ({
   let temp = copy.children
 
   paths.forEach((part, index) => {
+
     if (index === paths.length - 1) {
       delete temp[part]
       return
     }
+
     else if (temp[part])
       return (temp = temp[part].children)
 

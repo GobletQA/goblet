@@ -9,8 +9,8 @@ export type TUseCloseFile = {
   prePath: MutableRefObject<string | null>
   curPathRef: MutableRefObject<string>
   restoreModel: (path: string) => false | editor.ITextModel
-  setCurPath: (value: SetStateAction<string>) => void
-  setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
+  setCurPath: (data: SetStateAction<string>) => void
+  setOpenedFiles: (data: SetStateAction<TEditorOpenFiles>) => void
 }
 
 export const useCloseFile = (props:TUseCloseFile) => {

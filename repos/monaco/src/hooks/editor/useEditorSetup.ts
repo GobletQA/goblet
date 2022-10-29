@@ -21,7 +21,7 @@ export type TUseEditorSetup = {
   filesRef: MutableRefObject<TFilelist>
   resizeFileTree: (width:number) => void
   options: editor.IStandaloneEditorConstructionOptions
-  createOrUpdateModel: (path: string, value: string) => void
+  createOrUpdateModel: (path: string, content: string) => void
   onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setTheme: (name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
@@ -45,9 +45,9 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
 
     useEffect(() => {
       Object.keys(filesRef.current).forEach(key => {
-        const value = filesRef.current[key]
-        typeof value === 'string'
-          && createOrUpdateModel(key, value)
+        const content = filesRef.current[key]
+        typeof content === 'string'
+          && createOrUpdateModel(key, content)
       })
     }, [])
 

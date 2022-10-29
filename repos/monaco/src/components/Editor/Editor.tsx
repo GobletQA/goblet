@@ -59,7 +59,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
   
   const filesRef = useRef(defaultFiles)
   
-  const valueListenerRef = useRef<IDisposable>()
+  const contentListenerRef = useRef<IDisposable>()
   const editorStatesRef = useRef(new Map())
   const rootRef = useRef(null)
 
@@ -87,7 +87,7 @@ export const MonacoEditor = React.forwardRef<IMultiRefType, IMonacoEditorProps>(
     editorNodeRef,
     onFileChangeRef,
     editorStatesRef,
-    valueListenerRef,
+    contentListenerRef,
     onValueChangeRef,
   })
 

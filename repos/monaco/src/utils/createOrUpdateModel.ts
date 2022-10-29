@@ -2,9 +2,9 @@ import type { editor } from 'monaco-editor'
 import { ALLOWED_FILE_TYPES } from '../constants'
 
 
-const updateModel = (model:editor.ITextModel, value:string) => {
-  if (model.getValue() !== value) {
-    // If a model exists, we need to update it's value
+const updateModel = (model:editor.ITextModel, content:string) => {
+  if (model.getValue() !== content) {
+    // If a model exists, we need to update it's content
     // This is needed because the content for the file might have been modified externally
     // Use `pushEditOperations` instead of `setValue` or `applyEdits` to preserve undo stack
     model.pushEditOperations(
@@ -12,7 +12,7 @@ const updateModel = (model:editor.ITextModel, value:string) => {
       [
         {
           range: model?.getFullModelRange(),
-          text: value,
+          text: content,
         },
       ],
       () => []
@@ -22,13 +22,13 @@ const updateModel = (model:editor.ITextModel, value:string) => {
   return model
 }
 
-const createModel = (path:string, value:string) => {
+const createModel = (path:string, content:string) => {
   const type = path.indexOf('.') !== -1
     ? path.split('.').slice(-1)[0]
     : ALLOWED_FILE_TYPES.js
 
   const model = window.monaco.editor.createModel(
-    value,
+    content,
     ALLOWED_FILE_TYPES[type] || type,
     new window.monaco.Uri().with({ path, scheme: 'goblet' })
   )
@@ -41,7 +41,7 @@ const createModel = (path:string, value:string) => {
   return model
 }
 
-export const createOrUpdateModel = (path: string, value: string) => {
+export const createOrUpdateModel = (path: string, content: string) => {
   const model = window.monaco.editor.getModels().find(model => model.uri.path === path)
-  model ? updateModel(model, value) : createModel(path, value)
+  model ? updateModel(model, content) : createModel(path, content)
 }

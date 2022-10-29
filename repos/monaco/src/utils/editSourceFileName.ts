@@ -22,7 +22,7 @@ export const editSourceFileName = ({
     if (index === paths.length - 1) {
       temp[name] = buildFile({
         part: name,
-        value: temp[part].value,
+        content: temp[part].content,
         key: '/' + paths.slice(0, index).concat(name).join('/'),
       })
 

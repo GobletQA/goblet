@@ -15,9 +15,9 @@ export type TUseRestoreModel = {
   editorStatesRef:MutableRefObject<Map<any, any>>
   setOpenedFiles: Dispatch<React.SetStateAction<TEditorOpenFiles>>
   onValueChangeRef: MutableRefObject<((v: string) => void) | undefined>
-  valueListenerRef: MutableRefObject<IDisposable | undefined>
+  contentListenerRef: MutableRefObject<IDisposable | undefined>
   editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>
-  onFileChangeRef: MutableRefObject<((key: string, value: string) => void) | undefined>
+  onFileChangeRef: MutableRefObject<((key: string, content: string) => void) | undefined>
 }
 
 export const useRestoreModel = (props:TUseRestoreModel) => {
@@ -30,7 +30,7 @@ export const useRestoreModel = (props:TUseRestoreModel) => {
     setOpenedFiles,
     onFileChangeRef,
     editorStatesRef,
-    valueListenerRef,
+    contentListenerRef,
     onValueChangeRef,
   } = props
 
@@ -43,8 +43,8 @@ export const useRestoreModel = (props:TUseRestoreModel) => {
     if (path !== prePath.current && prePath.current)
       editorStates.set(prePath.current, editorRef.current?.saveViewState())
 
-    if (valueListenerRef.current && valueListenerRef.current.dispose)
-      valueListenerRef.current.dispose()
+    if (contentListenerRef.current && contentListenerRef.current.dispose)
+      contentListenerRef.current.dispose()
 
     if (model && editorRef.current) {
 
@@ -56,7 +56,7 @@ export const useRestoreModel = (props:TUseRestoreModel) => {
 
         editorRef.current?.focus()
         let timer: any = null
-        valueListenerRef.current = model.onDidChangeContent(() => {
+        contentListenerRef.current = model.onDidChangeContent(() => {
           const v = model.getValue()
           setOpenedFiles(pre =>
             pre.map(v => {

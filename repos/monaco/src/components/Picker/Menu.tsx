@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useCallback, useState, useEffect, useMemo } from 'react'
+import { noOp } from '@keg-hub/jsutils'
 
 export type Menu = {
   value: any
@@ -9,24 +10,31 @@ export type Menu = {
 }
 
 export const Menu = (props:Menu) => {
-  const { label = '', value, className, defaultValue = '', handleSelect = () => ({}) } = props
-  const [selected, setSelected] = useState(false)
+  const {
+    value,
+    className,
+    label = '',
+    defaultValue = '',
+    handleSelect = noOp
+  } = props
 
   useEffect(() => {
-    if (defaultValue === value) {
-      setSelected(true)
-    }
+    defaultValue === value && setSelected(true)
   }, [value, defaultValue])
 
+  const [selected, setSelected] = useState(false)
+  const onClick = useCallback(() => handleSelect({ value, label }), [value, label])
+
+  const classNames = useMemo(() => {
+    return [
+      `goblet-monaco-editor-picker-item`,
+      selected && `goblet-monaco-editor-picker-item-selected`,
+      className
+    ].filter(Boolean).join(` `).trim()
+  }, [selected, className])
+
   return (
-    <div
-      onClick={() => {
-        handleSelect({ value, label })
-      }}
-      className={`goblet-monaco-editor-picker-item ${
-        selected ? 'goblet-monaco-editor-picker-item-selected' : ''
-      }`}
-    >
+    <div className={classNames} onClick={onClick}>
       {label}
     </div>
   )

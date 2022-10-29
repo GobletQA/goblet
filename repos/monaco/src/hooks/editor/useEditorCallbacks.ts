@@ -11,17 +11,17 @@ import { useRestoreModel } from './useRestoreModel'
 export type TUseFileCallbacks = {
   defaultPath: string | undefined
   editorNodeRef: RefObject<HTMLDivElement>
-  setCurPath: (value: SetStateAction<string>) => void
+  setCurPath: (data: SetStateAction<string>) => void
   curValueRef: MutableRefObject<string>
   prePath: MutableRefObject<string | null>
   typesWorkerRef: MutableRefObject<TTypes>
   lintWorkerRef: MutableRefObject<TLinter>
   editorStatesRef:MutableRefObject<Map<any, any>>
   onValueChangeRef: MutableRefObject<((v: string) => void) | undefined>
-  valueListenerRef: MutableRefObject<IDisposable | undefined>
+  contentListenerRef: MutableRefObject<IDisposable | undefined>
   editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>
   optionsRef: MutableRefObject<editor.IStandaloneEditorConstructionOptions>
-  onFileChangeRef: MutableRefObject<((key: string, value: string) => void) | undefined>
+  onFileChangeRef: MutableRefObject<((key: string, content: string) => void) | undefined>
 }
 
 export const useEditorCallbacks = (props:TUseFileCallbacks) => {
@@ -38,7 +38,7 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
     editorNodeRef,
     onFileChangeRef,
     editorStatesRef,
-    valueListenerRef,
+    contentListenerRef,
     onValueChangeRef,
   } = props
 
@@ -56,7 +56,7 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
     setOpenedFiles,
     onFileChangeRef,
     editorStatesRef,
-    valueListenerRef,
+    contentListenerRef,
     onValueChangeRef,
   })
 

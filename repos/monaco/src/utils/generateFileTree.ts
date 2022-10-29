@@ -39,7 +39,7 @@ const handlePart = ({
   rootPrefix
 }:THandlePart) => {
   if (index === paths.length - 1){
-    temp[part] = buildFile({ key, part, value: files[key] })
+    temp[part] = buildFile({ key, part, content: files[key] })
     return temp
   }
 

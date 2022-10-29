@@ -6,8 +6,8 @@ import { useEffect, useCallback } from 'react'
 
 export type TUseOpenOrFocus = {
   editorNodeRef: RefObject<HTMLDivElement>
-  setCurPath: (value: SetStateAction<string>) => void
-  setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
+  setCurPath: (content: SetStateAction<string>) => void
+  setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
   editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>
   optionsRef: MutableRefObject<editor.IStandaloneEditorConstructionOptions>
 }

@@ -19,7 +19,7 @@ export type TBuildFile = {
   ext?:string
   part:string
   key:string
-  value:string|null
+  content:string|null
 }
 
 export type TBuildFolder = {
@@ -48,7 +48,7 @@ export type TFile = {
   ext:string
   path: string
   name: string
-  value: string|null
+  content: string|null
 }
 
 export type TFolderChildren = Record<string, TMItem>

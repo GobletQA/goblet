@@ -17,9 +17,9 @@ export type TUseFileCallbacks = {
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
   pathChange: (path: string) => void
-  setCurPath: (value: SetStateAction<string>) => void
-  createOrUpdateModel:(path: string, value: string) => void
-  setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
+  setCurPath: (content: SetStateAction<string>) => void
+  createOrUpdateModel:(path: string, content: string) => void
+  setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
   restoreModel: (path: string) => false | editor.ITextModel
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
 }
@@ -73,8 +73,8 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
 
   const abortFileChange = useCallback(
     (path: string) => {
-      const value = filesRef.current[path] || ''
-      createOrUpdateModel(path, value)
+      const content = filesRef.current[path] || ''
+      createOrUpdateModel(path, content)
 
       onCloseFile(path)
     },
@@ -95,9 +95,9 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
   )
 
   const addFile = useCallback(
-    (path: string, value?: string) => {
-      createOrUpdateModel(path, value || '')
-      filesRef.current[path] = value || ''
+    (path: string, content?: string) => {
+      createOrUpdateModel(path, content || '')
+      filesRef.current[path] = content || ''
 
       setTimeout(() => {
         pathChange(path)
@@ -117,11 +117,11 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
 
   const editFileName = useCallback(
     (path: string, name: string) => {
-      const value = filesRef.current[path] || ''
+      const content = filesRef.current[path] || ''
       setTimeout(() => {
         deleteFile(path)
         const newPath = path.split('/').slice(0, -1).concat(name).join('/')
-        addFile(newPath, value)
+        addFile(newPath, content)
       }, 50)
     },
     [deleteFile, addFile]

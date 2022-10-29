@@ -34,6 +34,9 @@ export const TreeFile = ({
     ? `file_type_${file.name.split('.').slice(-1)}`
     : 'default_file'
 
+  console.log(`------- file -------`)
+  console.log(file)
+
   return (
     <div
       data-src={file.path}

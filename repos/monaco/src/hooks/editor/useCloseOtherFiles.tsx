@@ -11,9 +11,9 @@ export type TUseCloseOtherFiles = {
   rootRef: MutableRefObject<any>
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
-  setCurPath: (value: SetStateAction<string>) => void
-  createOrUpdateModel:(path: string, value: string) => void
-  setOpenedFiles: (value: SetStateAction<TEditorOpenFiles>) => void
+  setCurPath: (data: SetStateAction<string>) => void
+  createOrUpdateModel:(path: string, content: string) => void
+  setOpenedFiles: (data: SetStateAction<TEditorOpenFiles>) => void
   restoreModel: (path: string) => false | editor.ITextModel
 }
 
@@ -46,8 +46,8 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
             restoreModel(path)
             setCurPath(path)
             unSavedFiles.forEach((file:any) => {
-              const value = filesRef.current[file.path] || ''
-              createOrUpdateModel(file.path, value)
+              const content = filesRef.current[file.path] || ''
+              createOrUpdateModel(file.path, content)
             })
             prePath.current = path
           },
