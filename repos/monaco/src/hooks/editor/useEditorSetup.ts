@@ -1,8 +1,6 @@
 import type { ForwardedRef, MutableRefObject } from 'react'
 import type { editor } from 'monaco-editor'
-import {
-  TMFile,
-  TMFiles,
+import type {
   TFilelist,
   TEditorTheme,
   IMultiRefType,
@@ -11,7 +9,7 @@ import {
 
 import { THEMES } from '../../constants'
 import { useEffect, useImperativeHandle } from 'react'
-
+import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 export type TUseEditorSetup = {
   curPath: string
@@ -21,7 +19,6 @@ export type TUseEditorSetup = {
   filesRef: MutableRefObject<TFilelist>
   resizeFileTree: (width:number) => void
   options: editor.IStandaloneEditorConstructionOptions
-  createOrUpdateModel: (path: string, content: string|null) => void
   onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setTheme: (name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
@@ -40,7 +37,6 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     curPathRef,
     resizeFileTree,
     onPathChangeRef,
-    createOrUpdateModel,
   } = props
 
     // Hook that runs on load of the editor component

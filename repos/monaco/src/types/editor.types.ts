@@ -3,9 +3,9 @@ import type { editor } from 'monaco-editor'
 export type TEditorOpenFiles = Array<{status?: string, path: string}>
 
 export type TAllowedFileTypes = {
+  less: 'less',
   js: 'javascript',
   ts: 'typescript',
-  less: 'less',
   jsx: 'javascript',
   tsx: 'typescript',
   [key:string]: string

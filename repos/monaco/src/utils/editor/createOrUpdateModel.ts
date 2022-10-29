@@ -1,6 +1,6 @@
 import type { editor } from 'monaco-editor'
-import { ALLOWED_FILE_TYPES } from '../constants'
-import { getModelFromPath } from './editor/getModelFromPath'
+import { ALLOWED_FILE_TYPES } from '../../constants'
+import { getModelFromPath } from './getModelFromPath'
 
 export const updateModel = (model:editor.ITextModel, content:string|null) => {
   if (model.getValue() !== content) {

@@ -1,6 +1,6 @@
 import type { SetStateAction, MutableRefObject } from 'react'
-import { TMFiles, TMFile, TEditorOpenFiles, TFilelist } from '../../types'
-
+import type { TEditorOpenFiles, TFilelist } from '../../types'
+import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 import { useCallback } from 'react'
 
@@ -11,7 +11,6 @@ export type TUseFolderCallbacks = {
   pathChange: (path: string) => void
   curPathRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
-  createOrUpdateModel:(path: string, content: string) => void
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
 }
 
@@ -24,7 +23,6 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
     deleteFile,
     deleteModel,
     setOpenedFiles,
-    createOrUpdateModel,
   } = props
 
     const addFolder = useCallback((path: string) => {

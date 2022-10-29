@@ -4,6 +4,7 @@ import type { TFilelist, TEditorOpenFiles, TModal } from '../../types'
 
 import { useCloseFile } from './useCloseFile'
 import { useCloseOtherFiles } from './useCloseOtherFiles'
+import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 import { useCallback } from 'react'
 
@@ -19,7 +20,6 @@ export type TUseFileCallbacks = {
   pathChange: (path: string) => void
   setCurPath: (content: SetStateAction<string>) => void
   restoreModel: (path: string) => false | editor.ITextModel
-  createOrUpdateModel:(path: string, content: string) => void
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
 }
@@ -39,7 +39,6 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
     openedFiles,
     restoreModel,
     setOpenedFiles,
-    createOrUpdateModel,
   } = props
 
     const onCloseFile = useCloseFile({
@@ -59,7 +58,6 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
       openedFiles,
       restoreModel,
       setOpenedFiles,
-      createOrUpdateModel,
     })
 
 

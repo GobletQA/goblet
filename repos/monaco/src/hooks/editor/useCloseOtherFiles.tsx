@@ -1,6 +1,7 @@
 import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
 import type { TEditorOpenFiles, TFilelist, TModal } from '../../types'
+import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 import { useCallback } from 'react'
 import { getModelFromPath } from '../../utils/editor/getModelFromPath'
@@ -13,7 +14,6 @@ export type TUseCloseOtherFiles = {
   prePath: MutableRefObject<string | null>
   setCurPath: (data: SetStateAction<string>) => void
   restoreModel: (path: string) => false | editor.ITextModel
-  createOrUpdateModel:(path: string, content: string) => void
   setOpenedFiles: (data: SetStateAction<TEditorOpenFiles>) => void
 }
 
@@ -27,7 +27,6 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
     openedFiles,
     restoreModel,
     setOpenedFiles,
-    createOrUpdateModel,
   } = props
 
   return useCallback(
