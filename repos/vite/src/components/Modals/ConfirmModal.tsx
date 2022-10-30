@@ -4,15 +4,12 @@ import { ModalTypes } from '@constants'
 import { WarningIcon } from '@components/Icons'
 
 export const ConfirmModal:TModalRef = (props:TModalComponent) => {
-  const {
-    title,
-    children,
-  } = props
+  const { children } = props
 
   return (
-    <div>
+    <>
       {children}
-    </div>
+    </>
   )
 }
 
@@ -21,5 +18,12 @@ ConfirmModal.modalProps = {
   title: `Confirm`,
   titleProps: {
     Icon: (<WarningIcon />)
-  }
+  },
+  actionProps: {
+    sx: {
+      paddingTop: `10px`,
+      paddingBottom: `20px`,
+      justifyContent: `space-around`
+    }
+  },
 }

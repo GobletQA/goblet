@@ -42,6 +42,7 @@ export type TModalMethod = {
   actions?: TModalActions
   onOk?: (...args:any[]) => any
   onCancel?: (...args:any[]) => any,
+  actionProps?: Record<any, any>
   sx?: Array<CSSProperties> | CSSProperties
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false | string
 }
@@ -76,19 +77,25 @@ const wrapActions = (
   const builtActs:TModalActions = [
     onCancel && ({
       text: `CANCEL`,
-      onClick: onCancel,
       color: `error`,
       variant: `contained`,
-      sx: { marginRight: `12px`, minWidth: `100px` },
       startIcon: `CancelIcon`,
+      sx: { marginRight: `12px`, minWidth: `100px` },
+      onClick: (...args:any) => {
+        const resp = onCancel?.(...args)
+        modal.close?.(resp, ...args)
+      },
     } as TModalAction),
     onOk && ({
       text: `OK`,
-      onClick: onOk,
       color: `success`,
       variant: `contained`,
       startIcon: `CheckIcon`,
       sx: { color: `#FFFFFF`, minWidth: `100px` },
+      onClick: (...args:any) => {
+        const resp = onOk?.(...args)
+        modal.close?.(resp, ...args)
+      },
     } as TModalAction)
   ].filter(Boolean) as TModalActions
 

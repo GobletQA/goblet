@@ -30,7 +30,7 @@ export const useOnTabClose = (props:THOnTabClose) => {
 
     setTimeout(() => {
       Modal.confirm({
-        maxWidth: `sm`,
+        maxWidth: `xs`,
         title: `Unsaved Changes`,
         content: (
           <>
@@ -41,7 +41,7 @@ export const useOnTabClose = (props:THOnTabClose) => {
         ),
         onCancel: () => {
           console.log(`------- cancel action -------`)
-          onAbortSave(file.path)
+          // onAbortSave(file.path)
         },
         onOk: () => {
           console.log(`------- ok action -------`)
