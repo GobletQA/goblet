@@ -1,6 +1,6 @@
-import AddFileIcon from '../icons/addfile'
-import AddFolderIcon from '../icons/addfolder'
-import Arrow from '../icons/arrow'
+import AddFileIcon from '../Icons/Addfile'
+import AddFolderIcon from '../Icons/Addfolder'
+import Arrow from '../Icons/Arrow'
 
 export type TTreeHeader = {
   title: string

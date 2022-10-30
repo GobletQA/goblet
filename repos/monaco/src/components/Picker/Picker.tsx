@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Menu } from './Menu'
-import Arrow from '../icons/arrow'
+import Arrow from '../Icons/Arrow'
 import { Position } from './Position'
 import './index.css'
 

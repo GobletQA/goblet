@@ -2,9 +2,9 @@ import type { TFileCallback } from '../../types'
 import type { RefObject, Dispatch, SetStateAction } from 'react'
 
 
-import EditIcon from '../icons/edit'
-import { FileIcon } from '../icons/file'
-import DeleteIcon from '../icons/delete'
+import EditIcon from '../Icons/Edit'
+import { FileIcon } from '../Icons/File'
+import DeleteIcon from '../Icons/Delete'
 import { useCallback, useMemo } from 'react'
 
 // import { useFileType } from '../../hooks/file/useFileType'

@@ -3,13 +3,13 @@ import type { RefObject, Dispatch, SetStateAction } from 'react'
 
 import { useCallback } from 'react'
 
-import Arrow from '../icons/arrow'
-import EditIcon from '../icons/edit'
-import DeleteIcon from '../icons/delete'
-import AddFileIcon from '../icons/addfile'
-import { FolderIcon } from '../icons/folder'
-import AddFolderIcon from '../icons/addfolder'
-import { FolderOpenedIcon } from '../icons/folderOpened'
+import Arrow from '../Icons/Arrow'
+import EditIcon from '../Icons/Edit'
+import DeleteIcon from '../Icons/Delete'
+import AddFileIcon from '../Icons/Addfile'
+import { FolderIcon } from '../Icons/Folder'
+import AddFolderIcon from '../Icons/Addfolder'
+import { FolderOpenedIcon } from '../Icons/FolderOpened'
 import { stopPropagation } from '../../utils/dom/stopPropagation'
 
 

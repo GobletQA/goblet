@@ -2,7 +2,7 @@ import type { IMultiRefType, TMonacoEditor } from '../../types'
 
 import './index.css'
 import Editor from './Editor'
-import { Loading } from '../icons/loading'
+import { Loading } from '../Icons/Loading'
 import { forwardRef, useEffect, useState } from 'react'
 
 const useInitMonaco = () => {

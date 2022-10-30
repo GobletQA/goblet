@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 import type { TModal } from '../../types'
 
 import { useEffect, useRef, useMemo } from 'react'
-import { FileIcon } from '../icons/file'
+import { FileIcon } from '../Icons/File'
 import { preventDefault } from '../../utils/dom/preventDefault'
 import { useTabCallbacks } from '../../hooks/tabs/useTabCallbacks'
 

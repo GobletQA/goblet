@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import PrettierIcon from '../icons/prettier'
+import PrettierIcon from '../Icons/Prettier'
 import './index.css'
 
 const Prettier = (props: any) => {
