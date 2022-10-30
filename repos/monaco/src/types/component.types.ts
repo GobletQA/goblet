@@ -2,9 +2,9 @@
 import type { editor } from 'monaco-editor'
 
 import type { Modal, TModalOpts } from '../components/Modal/Modal'
-import type { TFilelist } from './file.types'
+import type { TRootDir, TFolder, TFileItem, TFilelist } from './file.types'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
-import type { CSSProperties, ReactNode, ComponentType } from 'react'
+import type { Dispatch, SetStateAction, MutableRefObject, CSSProperties, ReactNode } from 'react'
 import type {
   TEditorCB,
   TFileCallback,
@@ -59,18 +59,22 @@ export type TIcon = {
 }
 
 export type TFileProps = {
-  file: any
+  file: TFileItem
+  parent: TFolder
   Modal: TModal
   root: boolean
   rootPrefix?:string
   currentPath?: string
   onAddFile: TFileCallback
   onAddFolder: TFileCallback
+  abortAddFile:TFileCallback
   onDeleteFile: TFileCallback
+  abortAddFolder:TFileCallback
   onEditFileName: TFileCallback
   onDeleteFolder: TFileCallback
   onEditFolderName: TFileCallback
   onConfirmAddFile: TFileCallback
   onConfirmAddFolder: TFileCallback
   onPathChange: (key: string) => void
+  filesRef: MutableRefObject<TFilelist>
 }

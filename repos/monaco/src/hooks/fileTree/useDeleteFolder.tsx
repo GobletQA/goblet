@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { noOp } from '@keg-hub/jsutils'
-import { deleteSourceFolder } from '../../utils'
+import { deleteSourceFolder } from '../../utils/deleteSourceFolder'
 
 
 export type THDeleteFolder = {

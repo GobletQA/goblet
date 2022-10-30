@@ -1,3 +1,6 @@
+import { buildFile } from './buildFile'
+import { buildFolder } from './buildFolder'
+
 import { deepMerge } from '@keg-hub/jsutils'
 
 export type TAddSrcFile = {
@@ -11,32 +14,35 @@ export const addSourceFile = ({
   path,
   filetree,
   content,
-  rootPrefix=``,
+  rootPrefix,
 }:TAddSrcFile) => {
   const copy = deepMerge(filetree)
   const paths = (path || '/').slice(1).split('/')
   const name = paths[paths.length - 1]
+
   let temp = copy.children
 
   paths.forEach((loc, index) => {
 
     if (index === paths.length - 1)
-      temp[loc] = {
-        name,
-        path,
+      temp[name] = buildFile({
+        part: name,
+        key: path,
+        rootPrefix,
         content: content || '',
-        ext: name.split('.').pop() || `unknown`,
-      }
-    
+        ext: name.split('.').pop() || ` `,
+      })
+
     else if (temp[loc]) temp = temp[loc].children
 
     else {
-      temp[loc] = {
-        _isDirectory: true,
-        children: {},
-        path: '/' + paths.slice(0, index + 1).join('/'),
-        name: loc,
-      }
+      temp[loc] = buildFolder({
+        index,
+        paths,
+        part: loc,
+        path: '/' + paths.slice(0, index + 1).join('/')
+      })
+
       temp = temp[loc].children
     }
 

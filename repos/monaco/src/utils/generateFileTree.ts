@@ -1,4 +1,4 @@
-import type { TMItem, TRootDir, TFolder, TFolderChildren, TFilelist } from '../types'
+import type { TFileItem, TRootDir, TFolder, TFolderChildren, TFilelist } from '../types'
 
 import { buildFile } from './buildFile'
 import { buildFolder } from './buildFolder'
@@ -39,7 +39,13 @@ const handlePart = ({
   rootPrefix
 }:THandlePart) => {
   if (index === paths.length - 1){
-    temp[part] = buildFile({ key, part, content: files[key] })
+    temp[part] = buildFile({
+      key,
+      part,
+      rootPrefix,
+      content: files[key]
+    })
+
     return temp
   }
 
@@ -61,7 +67,7 @@ export const loopPathArr = ({
   children,
   rootPrefix,
 }:TLoopPathArr) => {
-  let temp: Record<string, TMItem> = children
+  let temp: Record<string, TFileItem> = children
   paths.forEach((part, index) => {
     temp = handlePart({
       key,

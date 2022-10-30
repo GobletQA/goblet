@@ -1,12 +1,12 @@
-import type { TFileProps } from '../../types'
+import type { TFile, TFolder, TFileProps } from '../../types'
 
 import { useState, useMemo, useRef, useEffect } from 'react'
 
 export const useFileHooks = (props:TFileProps) => {
 
   const {
-    file,
     root,
+    file,
     currentPath = '',
   } = props
 
@@ -15,23 +15,28 @@ export const useFileHooks = (props:TFileProps) => {
   const nameRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!root && !file.name) {
-      nameRef.current!.focus()
-    }
+    !root
+      && !(file as TFile).name
+      && nameRef?.current?.focus?.()
   }, [file, root])
 
   useEffect(() => {
     if (editing) {
-      const dotIndex = file.name.indexOf('.')
-      nameRef.current!.textContent = file.name
+      const dotIndex = (file as TFile).name.indexOf('.')
+      nameRef.current!.textContent = (file as TFile).name
       nameRef.current!.focus()
       const selection = window.getSelection()
       const range = document.createRange()
-      range.setStart(nameRef.current?.firstChild!, 0)
-      range.setEnd(
-        nameRef.current?.firstChild!,
-        dotIndex > 0 ? dotIndex : file.name.length
-      )
+
+      let firstChild = nameRef?.current?.firstChild
+      if(!firstChild){
+        const textNode = document.createTextNode(``)
+        nameRef?.current?.appendChild(textNode)
+        firstChild = textNode
+      }
+
+      range.setStart(firstChild, 0)
+      range.setEnd(firstChild, dotIndex > 0 ? dotIndex : (file as TFile).name.length)
       selection?.removeAllRanges()
       selection?.addRange(range)
     }
@@ -44,15 +49,15 @@ export const useFileHooks = (props:TFileProps) => {
   }, [currentPath, file.path])
 
   const keys = useMemo(() => {
-    if (file.ext) return []
-    const children = file.children
+    if ((file as TFile).ext) return []
+    const children = (file as TFolder).children
   
     const folders = Object.keys(children)
-      .filter(key => !children[key].ext)
+      .filter(key => !(children[key] as TFile).ext)
       .sort()
 
     const files = Object.keys(children)
-      .filter(key => children[key].ext)
+      .filter(key => (children[key] as TFile).ext)
       .sort()
 
     return folders.concat(files)

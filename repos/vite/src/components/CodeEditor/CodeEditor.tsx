@@ -13,6 +13,9 @@ export const CodeEditor = (props:TCodeEditorProps) => {
 
   const {
     files,
+    onAddFile,
+    onSaveFile,
+    onDeleteFile,
     connected,
     rootPrefix,
     onLoadFile,
@@ -22,12 +25,6 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     onValueChange,
   } = useEditorHooks(props, editorRef)
 
-  // TODO: add callbacks for these methods to handled calling server
-  // And updating the redux store
-  // onDeleteFile
-  // onAddFile
-  // onSaveFile
-
   return connected
     ? (
         <MonacoEditor
@@ -36,6 +33,9 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           defaultFiles={files}
           onLoadFile={onLoadFile}
           rootPrefix={rootPrefix}
+          onAddFile={onAddFile}
+          onSaveFile={onSaveFile}
+          onDeleteFile={onDeleteFile}
           initialFileTreeStatus={true}
           initialFileTreeWidth={FileTreeWidth}
           onPathChange={onPathChange}

@@ -2,13 +2,13 @@ import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
 import type { TFilelist, TEditorOpenFiles, TModal } from '../../types'
 
+import { useCallback } from 'react'
 import { useCloseFile } from './useCloseFile'
 import { useCloseOtherFiles } from './useCloseOtherFiles'
 import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
-import { useCallback, useEffect } from 'react'
 
-export type TUseFileCallbacks = {
+export type TUseEditorFileCallbacks = {
   Modal: TModal
   openedFiles: TEditorOpenFiles
   rootRef: MutableRefObject<any>
@@ -27,14 +27,7 @@ export type TUseFileCallbacks = {
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
 }
 
-const preventDefault = (event:Event) => event.preventDefault()
-const windowListen = () => {
-  window.addEventListener('keydown', preventDefault)
-  return () => window.removeEventListener('keydown', preventDefault)
-}
-
-
-export const useFileCallbacks = (props:TUseFileCallbacks) => {
+export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
   const {
     Modal,
     rootRef,
@@ -107,23 +100,33 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
   )
 
   const addFile = useCallback(
-    (path: string, content?: string) => {
+    (path: string, content?: string, isEdit?:boolean) => {
+      const missingNamed = path.startsWith(`/`) && path.endsWith(`/`)
+      const newNamedFile = !missingNamed && !isEdit
+
+      if(newNamedFile && path in filesRef.current){
+        console.log(`------- existing -------`)
+      }
+
       const cont = content || ''
       createOrUpdateModel(path, cont)
       filesRef.current[path] = cont
-      onAddFile?.(path, cont)
 
-      setTimeout(() => pathChange(path), 50)
+      newNamedFile && onAddFile?.(path, cont)
+
+      // Figure out why this is being called
+      // Not really needed it seems
+      // setTimeout(() => pathChange(path), 50)
     },
     [onAddFile, pathChange]
   )
 
   const deleteFile = useCallback(
-    (path: string) => {
+    (path: string, isEdit?:boolean) => {
       deleteModel(path)
       delete filesRef.current[path]
       closeFile(path)
-      onDeleteFile?.(path)
+      !isEdit && onDeleteFile?.(path)
     },
     [onDeleteFile, closeFile]
   )
@@ -132,9 +135,9 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
     (path: string, name: string) => {
       const content = filesRef.current[path] || ''
       setTimeout(() => {
-        deleteFile(path)
+        deleteFile(path, true)
         const newPath = path.split('/').slice(0, -1).concat(name).join('/')
-        addFile(newPath, content)
+        addFile(newPath, content, true)
       }, 50)
     },
     [deleteFile, addFile]

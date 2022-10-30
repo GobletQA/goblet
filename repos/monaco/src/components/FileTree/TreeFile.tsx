@@ -1,19 +1,23 @@
-import type { TFileCallback } from '../../types'
+import type { TFolder, TFile, TFileCallback } from '../../types'
 import type { RefObject, Dispatch, SetStateAction } from 'react'
 
+
+import { useCallback, useMemo } from 'react'
 
 import EditIcon from '../Icons/Edit'
 import { FileIcon } from '../Icons/File'
 import DeleteIcon from '../Icons/Delete'
-import { useCallback, useMemo } from 'react'
+import { noOpObj } from '@keg-hub/jsutils'
 
 // import { useFileType } from '../../hooks/file/useFileType'
 import { stopPropagation } from '../../utils/dom/stopPropagation'
 
 export type TTreeFile = {
-  file: any
+  file: TFile
+  parent: TFolder
   editing: boolean
   currentPath: string
+  nameConflict?: boolean
   fileBlur: TFileCallback
   fileKeyDown: TFileCallback
   onDeleteFile: TFileCallback
@@ -22,9 +26,15 @@ export type TTreeFile = {
   setEditing: Dispatch<SetStateAction<boolean>>
 }
 
-const fIconStl = {
-  marginLeft: '14px',
-  marginRight: '5px',
+const styles = {
+  fileIcon: {
+    marginLeft: '14px',
+    marginRight: '5px',
+  },
+  nameConflict: {
+    color: `#E83333`,
+    border: `1px solid #E83333`,
+  }
 }
 
 
@@ -37,6 +47,7 @@ export const TreeFile = ({
   currentPath,
   fileKeyDown,
   onDeleteFile,
+  nameConflict,
   filePathChange,
 }:TTreeFile) => {
 
@@ -69,7 +80,7 @@ export const TreeFile = ({
     >
       {/* fileType is used here for different file type icons */}
       {/* For now, just default to basic file type */}
-      <FileIcon style={fIconStl} />
+      <FileIcon style={styles.fileIcon} />
       {file.name && !editing ? (
         <>
           <span style={{ flex: 1 }}>{file.name}</span>
@@ -91,6 +102,7 @@ export const TreeFile = ({
           onKeyDown={fileKeyDown}
           onClick={stopPropagation}
           className='goblet-monaco-editor-list-file-item-new'
+          style={nameConflict ? styles.nameConflict : noOpObj}
         />
       )}
     </div>

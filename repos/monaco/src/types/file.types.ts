@@ -19,6 +19,7 @@ export type TBuildFile = {
   ext?:string
   part:string
   key:string
+  rootPrefix?:string
   content:string|null
 }
 
@@ -49,8 +50,12 @@ export type TFile = {
   path: string
   name: string
   content: string|null
+  uuid?:string
+  location?: string
+  relative?: string
 }
 
-export type TFolderChildren = Record<string, TMItem>
+export type TFolderChildren = Record<string, TFileItem>
 
-export type TMItem = TFolder | TFile
+export type TFileItem = TRootDir | TFolder | TFile
+export type TItem = TFolder | TFile

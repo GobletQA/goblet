@@ -5,9 +5,11 @@ import { generateFileTree } from '../../utils/generateFileTree'
 
 import { useAddFile } from './useAddFile'
 import { useAddFolder } from './useAddFolder'
+import { useAbortAddFile } from './useAbortAddFile'
 import { useDeleteFile } from './useDeleteFile'
 import { useEditFileName } from './useEditFileName'
 import { useDeleteFolder } from './useDeleteFolder'
+import { useAbortAddFolder } from './useAbortAddFolder'
 import { useConfirmAddFile } from './useConfirmAddFile'
 import { useEditFolderName } from './useEditFolderName'
 import { useConfirmAddFolder } from './useConfirmAddFolder'
@@ -15,7 +17,6 @@ import { useConfirmAddFolder } from './useConfirmAddFolder'
 export const useFileTree = (props:TFileTree) => {
   const {
     Modal,
-    files,
     rootEl,
     rootPrefix,
     defaultFiles,
@@ -32,6 +33,12 @@ export const useFileTree = (props:TFileTree) => {
   const addFile = useAddFile({
     filetree,
     onAddFile,
+    rootPrefix,
+    updateFiletree: setFiletree,
+  })
+
+  const abortAddFile = useAbortAddFile({
+    filetree,
     rootPrefix,
     updateFiletree: setFiletree,
   })
@@ -68,6 +75,12 @@ export const useFileTree = (props:TFileTree) => {
     updateFiletree: setFiletree,
   })
 
+  const abortAddFolder = useAbortAddFolder({
+    filetree,
+    rootPrefix,
+    updateFiletree: setFiletree,
+  })
+
   const deleteFolder = useDeleteFolder({
     Modal,
     rootEl,
@@ -100,9 +113,12 @@ export const useFileTree = (props:TFileTree) => {
     deleteFile,
     editFileName,
     deleteFolder,
+    abortAddFile,
+    abortAddFolder,
     editFolderName,
     onConfirmAddFile,
-    onConfirmAddFolder
+    onConfirmAddFolder,
+    updateFiletree: setFiletree,
   }
 
 }

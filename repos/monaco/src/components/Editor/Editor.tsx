@@ -16,10 +16,10 @@ import { useEditorRefs } from '../../hooks/editor/useEditorRefs'
 import { useTypesWorker } from '../../hooks/editor/useTypesWorker'
 import { useEditorSetup } from '../../hooks/editor/useEditorSetup'
 import { useModalActions } from '../../hooks/editor/useModalActions'
-import { useFileCallbacks } from '../../hooks/editor/useFileCallbacks'
 import { useFileListResize } from '../../hooks/editor/useFileListResize'
 import { useFolderCallbacks } from '../../hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
+import { useEditorFileCallbacks } from '../../hooks/editor/useEditorFileCallbacks'
 
 const editorStyles = { flex: 1, width: '100%' }
 
@@ -140,7 +140,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     editFileName,
     abortFileChange,
     closeOtherFiles,
-  } = useFileCallbacks({
+  } = useEditorFileCallbacks({
     Modal,
     rootRef,
     prePath,
@@ -187,6 +187,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         Modal={Modal}
         title={title}
         style={styles}
+        filesRef={filesRef}
         onAddFile={addFile}
         currentPath={curPath}
         rootPrefix={rootPrefix}

@@ -1,7 +1,8 @@
-import type { TFileCallback } from '../../types'
+import type { TFolder, TFileCallback } from '../../types'
 import type { RefObject, Dispatch, SetStateAction } from 'react'
 
 import { useCallback } from 'react'
+import { noOpObj } from '@keg-hub/jsutils'
 
 import Arrow from '../Icons/Arrow'
 import EditIcon from '../Icons/Edit'
@@ -13,9 +14,11 @@ import { FolderOpenedIcon } from '../Icons/FolderOpened'
 import { stopPropagation } from '../../utils/dom/stopPropagation'
 
 export type TTreeDirectory = {
-  file: any
+  file: TFolder
+  parent: TFolder
   editing: boolean
   showChild: boolean
+  nameConflict?: boolean
   fileBlur: TFileCallback
   fileClick:TFileCallback
   onAddFile: TFileCallback
@@ -33,6 +36,9 @@ const styles = {
   },
   folderIcon: {
     marginRight: '5px'
+  },
+  nameConflict: {
+    color: `#E83333`,
   }
 }
 
@@ -46,6 +52,7 @@ export const TreeDirectory = ({
   setEditing,
   fileKeyDown,
   setShowChild,
+  nameConflict,
   onDeleteFolder,
   onAddFile:addFile,
   onAddFolder:addFolder,
@@ -112,6 +119,7 @@ export const TreeDirectory = ({
           onKeyDown={fileKeyDown}
           onClick={stopPropagation}
           className='goblet-monaco-editor-list-file-item-new'
+          style={nameConflict ? styles.nameConflict : noOpObj}
         />
       )}
     </div>

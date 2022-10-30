@@ -60,6 +60,24 @@ const useOnLoadFile = ({
 }
 
 
+const useOnSaveFile = () => {
+  return useCallback((loc:string, content:string) => {
+    console.log(`------- on save file -------`)
+  }, [])
+}
+
+const useOnAddFile = () => {
+  return useCallback((loc:string) => {
+    console.log(`------- on add file -------`)
+  }, [])
+}
+
+const useOnDeleteFile = () => {
+  return useCallback((loc:string) => {
+    console.log(`------- on delete file -------`)
+  }, [])
+}
+
 export const useEditorFiles = (props:THEditorFiles) => {
   const {
     repo,
@@ -148,6 +166,9 @@ export const useEditorHooks = (
     // console.log(file)
   }, [])
 
+  const onDeleteFile = useOnDeleteFile()
+  const onAddFile = useOnAddFile()
+  const onSaveFile = useOnSaveFile()
 
   useEffect(() => {
     EE.on<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
@@ -166,6 +187,9 @@ export const useEditorHooks = (
     onPathChange,
     modalActions,
     onValueChange,
+    onAddFile,
+    onSaveFile,
+    onDeleteFile,
     ...editorFiles,
   }
 }

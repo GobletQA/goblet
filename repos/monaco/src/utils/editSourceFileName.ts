@@ -20,10 +20,13 @@ export const editSourceFileName = ({
   let temp = copy.children
   paths.forEach((part, index) => {
     if (index === paths.length - 1) {
+      const fullPath = '/' + paths.slice(0, index).concat(name).join('/')
+      
       temp[name] = buildFile({
         part: name,
+        rootPrefix,
+        key: fullPath,
         content: temp[part].content,
-        key: '/' + paths.slice(0, index).concat(name).join('/'),
       })
 
       delete temp[part]
