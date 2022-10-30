@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
-import type { TMFiles, TFilelist } from '../../types'
+import type { Modal } from '../Modal/Modal'
+import type { TFilelist } from '../../types'
 
 import { memo, useCallback, useState } from 'react'
 import { FileTreeHeader } from './FileTreeHeader'
@@ -7,7 +8,6 @@ import { useFileTree } from '../../hooks/fileTree/useFileTree'
 
 import './FileTree.css'
 import { File } from './File'
-import { Modal } from '../Modal/Modal'
 
 export type TFileTree = {
   Modal: Modal
@@ -29,6 +29,7 @@ export type TFileTree = {
 export const FileTree = memo((props: TFileTree) => {
   const {
     style,
+    Modal,
     onPathChange,
     rootPrefix=``,
     currentPath = '',

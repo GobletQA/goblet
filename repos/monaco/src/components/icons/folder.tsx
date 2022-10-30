@@ -4,11 +4,13 @@ import { useIcon } from '../../hooks'
 export const FolderIcon = (props:TIcon) => {
   const {
     style,
-    className
+    svgStyle,
+    className,
   } = useIcon({ fill: "#c09553", ...props })
 
   return (
     <svg
+      style={svgStyle}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 32 32"
       className={className}

@@ -52,6 +52,7 @@ export type TIcon = {
   fill?:string
   className?:string
   style?: CSSProperties
+  svgStyle?: CSSProperties
 }
 
 export type TFileProps = {

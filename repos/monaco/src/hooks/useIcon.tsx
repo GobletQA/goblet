@@ -1,5 +1,6 @@
 import { useMemo, useRef, CSSProperties } from 'react'
 import { TIcon } from '../types'
+import { omitKeys } from '@keg-hub/jsutils'
 
 export type TIconProps = {
   height?: string
@@ -8,13 +9,12 @@ export type TIconProps = {
   color?: string
   className?:string
   style?: CSSProperties
+  svgStyle?: CSSProperties
 }
 
 const iconDefs = {
-  height: '14px',
-  width: '14px',
+  fill: `#ffffff`,
   color: `#ffffff`,
-  fill: `#ffffff`
 }
 
 export const useIcon = (props:TIcon) => {
@@ -24,12 +24,16 @@ export const useIcon = (props:TIcon) => {
   return useMemo(() => {
     const iconProps = {
       className: `goblet-monaco-icons ${props.className || ''}`.trim(),
-      width: props.width || styleRef?.current?.width || props.size || iconDefs.width,
-      height: props.height || styleRef?.current?.height || props.size || iconDefs.height,
       color: props.color || styleRef?.current?.color || props.fill || styleRef?.current?.fill || iconDefs.fill,
       fill: props.fill || styleRef?.current?.fill || props.color || styleRef?.current?.color || iconDefs.color,
+      svgStyle: omitKeys(styleRef.current || {}, [`fill`, `color`, `width`, `height`]),
     } as TIconProps
     
+    const width = props.width || styleRef?.current?.width || props.size
+    if(width) iconProps.width = `${width}`
+    const height = props.height || styleRef?.current?.height || props.size
+    if(height) iconProps.height = `${height}`
+
     iconProps.style = {
       fill: iconProps.fill,
       color: iconProps.color,

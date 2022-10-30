@@ -1,5 +1,5 @@
-import AddFileIcon from '../Icons/Addfile'
-import AddFolderIcon from '../Icons/Addfolder'
+import AddFileIcon from '../Icons/AddFile'
+import AddFolderIcon from '../Icons/AddFolder'
 import Arrow from '../Icons/Arrow'
 
 export type TTreeHeader = {
@@ -10,19 +10,15 @@ export type TTreeHeader = {
   onCollapse: (...args:any[]) => void
 }
 
-export const TreeTitle = (props:TTreeHeader) => {
-  const { title } = props
-
-  return (
-    <div className='goblet-monaco-editor-list-title'>
-      {title}
-    </div>
-  )
+const styles = {
+  header: {
+    flex: 1,
+    paddingLeft: `5px`,
+  }
 }
 
 export const TreeActions = (props:TTreeHeader) => {
   const {
-    title,
     addFile,
     addFolder,
     collapse,
@@ -35,7 +31,7 @@ export const TreeActions = (props:TTreeHeader) => {
       className='goblet-monaco-editor-list-split'
     >
       <Arrow collapse={collapse} />
-      <span style={{ flex: 1 }}>&nbsp;Files</span>
+      <span style={styles.header}>Files</span>
 
       <AddFileIcon
         onClick={(e: Event) => {
@@ -58,10 +54,5 @@ export const TreeActions = (props:TTreeHeader) => {
 }
 
 export const FileTreeHeader = (props:TTreeHeader) => {
-  return (
-    <>
-      <TreeTitle {...props} />
-      <TreeActions {...props} />
-    </>
-  )
+  return (<TreeActions {...props} />)
 }

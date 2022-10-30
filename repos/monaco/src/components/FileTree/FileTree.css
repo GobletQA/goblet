@@ -1,12 +1,12 @@
 .goblet-monaco-editor-list-wrapper {
   width: 180px;
+  height: 100%;
+  padding-left: 5px;
   font-size: 14px;
   line-height: 25px;
-  height: 100%;
   background: var(--monaco-editor-background);
   color: var(--monaco-editor-foreground);
   flex-shrink: 0;
-  /* overflow: scroll; */
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -37,14 +37,18 @@
 }
 
 .goblet-monaco-editor-list-split {
+  height: 32px;
   display: flex;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  line-height: 32px;
+  font-weight: bold;
   flex-direction: row;
   align-items: center;
-  height: 25px;
-  user-select: none;
-  cursor: pointer;
-  line-height: 25px;
+  border-bottom: 2px solid #272A32;
 }
+
 .goblet-monaco-editor-list-split .goblet-monaco-editor-list-split-icon {
   visibility: visible;
 }
