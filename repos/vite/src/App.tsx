@@ -1,15 +1,16 @@
 import type { TThemeTypes } from '@theme/theme.types'
 import { useState, useMemo, useEffect, useRef } from 'react'
 
+import { Store } from '@store'
+import { Provider } from 'react-redux'
 import { initApp } from '@actions/init'
 import { createTheme } from '@theme/Theme'
 import { Fadeout } from '@components/Fadeout'
-import { ModalManager } from '@components/ModalManager'
 import { RootScreen } from 'src/screens/Root'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
-import { Store } from '@store'
-import { Provider } from 'react-redux'
+import { ModalProvider } from '@contexts/ModalContext'
+import { ModalManager } from '@components/ModalManager'
 
 const onAppInit = async (setApiTimeout:(...args:any[])=>any) => {
   let timeout:NodeJS.Timeout
@@ -40,8 +41,10 @@ const App = () => {
     <Provider store={Store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <RootScreen themeSwitch={setThemeType} />
-        <ModalManager />
+        <ModalProvider>
+          <RootScreen themeSwitch={setThemeType} />
+          <ModalManager />
+        </ModalProvider>
         <Fadeout start={start} content={apiTimeout} />
       </ThemeProvider>
     </Provider>

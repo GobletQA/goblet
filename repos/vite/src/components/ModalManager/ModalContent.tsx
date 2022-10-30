@@ -11,7 +11,7 @@ export const ModalContent = (props:TModal) => {
     ContentText,
     contentProps,
   } = props
-  
+
   return (
     <DialogContent
       id="gb-modal-description"

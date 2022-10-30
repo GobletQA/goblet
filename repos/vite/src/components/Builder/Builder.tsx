@@ -2,7 +2,7 @@ import type { TFeatureFileModel } from '@types'
 import Box from '@mui/material/Box'
 import { useSelector } from '@store'
 import { Features } from './Features'
-import { FormGen, TFConfig } from '@components/FormGen/FormGen'
+
 
 export type TBuilder = {
   
@@ -66,9 +66,7 @@ export const Builder = (props:TBuilder) => {
         margin: `20px`
       }}
     >
-      <FormGen
-        config={buildConfig}
-      />
+      {`Builder Form goes here :)`}
     </Box>
   )
 }

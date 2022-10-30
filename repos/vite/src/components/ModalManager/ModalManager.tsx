@@ -5,12 +5,14 @@ import { useSelector } from '@store'
 import { ModalRoot } from './ModalRoot'
 import { ModalMessage } from './ModalMessage'
 import * as ModalMap from '@components/Modals'
+import { useModalProps } from '@contexts/useModalProps'
 
 const MapModals = ModalMap as unknown as Record<any, TModalRef>
 
 export const ModalManager = () => {
   const { type, visible, modalProps } = useSelector(state => state.modal)
   const Modal = useMemo(() => Object.values(MapModals).find(Modal => Modal.modalType === type), [type])
+  const contextProps = useModalProps()
 
   return Modal && (
     <ModalRoot
@@ -18,12 +20,14 @@ export const ModalManager = () => {
       type={type ||  Modal.modalType}
       visible={visible}
       {...modalProps}
+      {...contextProps}
     >
       <Modal
         ModalMessage={ModalMessage}
         type={type ||  Modal.modalType}
         visible={visible}
         {...modalProps}
+        {...contextProps}
       />
     </ModalRoot>
   ) || null

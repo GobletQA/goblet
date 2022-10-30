@@ -30,31 +30,24 @@ export const useOnTabClose = (props:THOnTabClose) => {
 
     setTimeout(() => {
       Modal.confirm({
-        title: `Close File`,
-        content: [
-          `File: ${file.path}, has unsaved changes`,
-        ],
-        // actions: [
-        //   {
-        //     text: `Cancel`,
-        //     type: `warn`,
-        //     action: () => {
-        //       console.log(`------- cancel action -------`)
-        //       onAbortSave(file.path)
-        //     }
-        //   },
-        //   {
-        //     text: `Ok`,
-        //     type: `primary`,
-        //     action: () => {
-        //       console.log(`------- ok action -------`)
-                
-        //       onCloseFile(file.path)
-        //       onSaveFile(file.path)
-        //     }
-        //   },
-        // ],
-
+        maxWidth: `sm`,
+        title: `Unsaved Changes`,
+        content: (
+          <>
+            File <b>{file.path}</b> has unsaved changes.
+            <br/>
+            Do you want to save the changes before closing?
+          </>
+        ),
+        onCancel: () => {
+          console.log(`------- cancel action -------`)
+          onAbortSave(file.path)
+        },
+        onOk: () => {
+          console.log(`------- ok action -------`)
+          onCloseFile(file.path)
+          onSaveFile(file.path)
+        }
       })
     })
   }, [

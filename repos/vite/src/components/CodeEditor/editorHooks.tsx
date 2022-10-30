@@ -3,13 +3,13 @@ import type { TCodeEditorProps } from './CodeEditor'
 import type { OpenFileTreeEvent, TRepoState, TFileTree, TFilesState } from '@types'
 
 
-import { ModalTypes } from '@constants'
 import { exists } from '@keg-hub/jsutils'
 import { OpenFileTreeEvt } from '@constants'
 import { loadFile } from '@actions/files/api/loadFile'
 import { useFileTree, useFiles, useRepo } from '@store'
 import { useCallback, useEffect, useMemo } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { ModalTypes, UpdateModalEvt } from '@constants'
 import { toggleModal } from '@actions/modals/toggleModal'
 import { setActiveModal } from '@actions/modals/setActiveModal'
 
@@ -26,11 +26,12 @@ export type THEditorFiles = {
 }
 
 const modalActions = {
-  closeModal: () => {
+  close: () => {
     toggleModal(false)
   },
-  openModal: (props?:Record<any, any>) => {
-    setActiveModal(ModalTypes.Confirm, true, props)
+  open: (props?:Record<any, any>) => {
+    EE.emit(UpdateModalEvt, props)
+    setActiveModal(ModalTypes.Confirm, true)
   },
 }
 

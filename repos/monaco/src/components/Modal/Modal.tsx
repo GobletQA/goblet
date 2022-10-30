@@ -1,79 +1,163 @@
+import type {
+  ReactNode,
+  CSSProperties,
+  ComponentType,
+  ComponentProps,
+} from 'react'
+
+import { Fragment } from 'react'
+import { isArr } from '@keg-hub/jsutils'
+
+
+type TColorOpt = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning' | string
 
 export type TModalAction = {
   text?: string
-  type?: string
-  action?: (...args:any[]) => any
+  label?: string
+  type?: TColorOpt
+  color?: TColorOpt
+  loading?: boolean
+  disabled?: boolean
+  fullWidth?: boolean
+  children?: ReactNode
+  EndIcon?: ComponentType<any>
+  StartIcon?: ComponentType<any>
+  iconProps?: ComponentProps<any>
+  onClick?: (...args:any[]) => any
+  sx?: Array<CSSProperties> | CSSProperties
+  size?: 'small' | 'medium' | 'large' | string
+  classes?: string[] | Record<string, string> | string
+  variant?: 'contained' | 'outlined' | 'text' | string
 }
 
 export type TModalActions = TModalAction[]
 
-export type TModalCreate = {
+export type TModalMethod = {
   title: string
   className?: string
-  actions: TModalActions
-  content?: any
+  content?: ReactNode
+  children?: ReactNode
+  fullWidth?: boolean
+  fullScreen?: boolean
+  actions?: TModalActions
   onOk?: (...args:any[]) => any
   onCancel?: (...args:any[]) => any,
+  sx?: Array<CSSProperties> | CSSProperties
+  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | false | string
 }
 
-export type TModalConfirm = {
-  title: string,
-  content?: any,
-  className?: string
-  actions?: TModalActions
-  onOk?: (...args:any[]) => any,
-  onCancel?: (...args:any[]) => any,
-}
 
 export type TModalOpts = {
-  openModal: (...args:any[]) => any
-  closeModal: (...args:any[]) => any
-  confirmModal?: (...args:any[]) => any
+  open: (...args:any[]) => any
+  close: (...args:any[]) => any
+  confirm?: (...args:any[]) => any
 }
 
-const wrapActions = (modal:Modal, actions:TModalActions) => {
-  return actions.map((act) => {
-    const { action, ...rest } = act
+const wrapContent = (
+  content?: ReactNode,
+  children?: ReactNode,
+) => {
+  children = children || content
+  return !isArr(children)
+    ? children
+    : <Fragment>{children.join(`\n`)}</Fragment>
+}
+
+/**
+ * Loop the actions and wrap the onClick handler
+ * Add call to close modal after onClick
+ */
+const wrapActions = (
+  modal:Modal,
+  actions:TModalActions,
+  onOk?:(...args:any[]) => any,
+  onCancel?:(...args:any[]) => any,
+) => {
+  const builtActs:TModalActions = [
+    onCancel && ({
+      text: `CANCEL`,
+      onClick: onCancel,
+      color: `error`,
+      variant: `contained`,
+      sx: { marginRight: `12px`, minWidth: `100px` },
+      startIcon: `CancelIcon`,
+    } as TModalAction),
+    onOk && ({
+      text: `OK`,
+      onClick: onOk,
+      color: `success`,
+      variant: `contained`,
+      startIcon: `CheckIcon`,
+      sx: { color: `#FFFFFF`, minWidth: `100px` },
+    } as TModalAction)
+  ].filter(Boolean) as TModalActions
+
+  return (actions.map((act) => {
+    const {
+      text,
+      type,
+      color,
+      onClick,
+      children,
+      ...rest
+    } = act
     return {
-      ...act,
-      action: (...args:any) => {
-        const resp = action?.(...args)
-        modal.closeModal?.(resp, ...args)
+      ...rest,
+      color: color || type,
+      text: children || text,
+      onClick: (...args:any) => {
+        const resp = onClick?.(...args)
+        modal.close?.(resp, ...args)
       }
     }
-  })
+  }) as TModalActions).concat(builtActs)
+}
+
+const buildModalParams = (modal:Modal, params:TModalMethod, noWrap:boolean) => {
+  if(noWrap) return params
+
+    const {
+      onOk,
+      actions,
+      onCancel,
+      content,
+      children,
+      ...rest
+    } = params
+  
+  return {
+    ...rest,
+    children: wrapContent(content, children),
+    actions: wrapActions(modal, actions || [], onOk, onCancel)
+  }
 }
 
 export class Modal {
-  openModal: (...args:any[]) => any
-  closeModal: (...args:any[]) => any
-  confirmModal?: (...args:any[]) => any
+  
+  close: (...args:any[]) => any
+  #openModal: (...args:any[]) => any
+  #confirmModal: (...args:any[]) => any
 
   constructor(modalConf:TModalOpts){
     const {
-      openModal,
-      closeModal,
-      confirmModal=openModal
+      open,
+      close,
+      confirm=open
     } = modalConf
 
-    this.openModal = openModal
-    this.closeModal = closeModal
-    this.confirmModal = confirmModal
+    this.close = close
+    this.#openModal = open
+    this.#confirmModal = confirm
   }
 
-  create = (params:TModalCreate) => {
-    this.openModal({
-      ...params,
-      actions: wrapActions(this, params.actions || [])
-    })
+  confirm = (params:TModalMethod, noWrap:boolean=false) => {
+    this.#confirmModal(buildModalParams(this, params, noWrap))
   }
 
-  confirm = (params:TModalConfirm) => {
-    this.confirmModal?.({
-      ...params,
-      actions: wrapActions(this, params.actions || [])
-    })
+  create = (params:TModalMethod, noWrap:boolean=false) => this.open(params, noWrap)
+  open = (params:TModalMethod, noWrap:boolean=false) => {
+    this.#openModal(buildModalParams(this, params, noWrap))
   }
 
-} 
+}
 

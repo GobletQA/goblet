@@ -29,6 +29,8 @@
       "@configs/*": [ "configs/*" ],
       "@constants": [ "src/constants" ],
       "@constants/*": [ "src/constants/*" ],
+      "@contexts": [ "src/contexts" ],
+      "@contexts/*": [ "src/contexts/*" ],
       "@hooks": [ "src/hooks" ],
       "@hooks/*": [ "src/hooks/*" ],
       "@models": [ "src/models" ],

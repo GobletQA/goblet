@@ -22,6 +22,9 @@ import CodeIcon from '@mui/icons-material/Code'
 import SourceIcon from '@mui/icons-material/Source'
 import CloudOffIcon from '@mui/icons-material/CloudOff'
 import BlockIcon from '@mui/icons-material/Block'
+import CheckIcon from '@mui/icons-material/Check'
+import CancelIcon from '@mui/icons-material/Clear'
+import WarningIcon from '@mui/icons-material/Warning'
 
 export {
   Steps,
@@ -47,5 +50,8 @@ export {
   CloudDownIcon,
   CloudOffIcon,
   BlockIcon,
-  SubArrowRightIcon
+  SubArrowRightIcon,
+  CheckIcon,
+  CancelIcon,
+  WarningIcon
 }

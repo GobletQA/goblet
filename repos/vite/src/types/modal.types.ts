@@ -12,7 +12,9 @@ export type TModalRef = typeof ModalRoot & {
   modalProps: Partial<TModalComponent>
 }
 
-export type TModalComponent = ComponentProps<typeof ModalRoot>
+export type TModalComponent = ComponentProps<typeof ModalRoot> & {
+  className?: string
+}
 
 export type TModalTransition = TransitionProps & { children: React.ReactElement<any, any> }
     

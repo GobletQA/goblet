@@ -4,11 +4,10 @@ import type {
   TBuildFormOpts,
 } from '@types'
 
-import { useMemo } from 'react'
 import { useFormHelpers } from './useFormHelpers'
 import { useBuildFormValues } from './useBuildFormValues'
+import { useHardReplace, useDynReplace } from './useReplace'
 import { getCacheForm, useClearFormCache } from './FormCache'
-import { useHardReplace, useDynReplace  } from './useReplace'
 
 export const useBuildForm = (
   formObj:TBuildFormObj,
