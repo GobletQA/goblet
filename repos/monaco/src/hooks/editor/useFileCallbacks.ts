@@ -6,7 +6,7 @@ import { useCloseFile } from './useCloseFile'
 import { useCloseOtherFiles } from './useCloseOtherFiles'
 import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 export type TUseFileCallbacks = {
   Modal: TModal
@@ -18,11 +18,21 @@ export type TUseFileCallbacks = {
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
   pathChange: (path: string) => void
+  onDeleteFile?: (path: string) => void
+  onAddFile?: (path: string, content:string) => void
+  onSaveFile?: (path: string, content: string) => void
   setCurPath: (content: SetStateAction<string>) => void
   restoreModel: (path: string) => false | editor.ITextModel
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
 }
+
+const preventDefault = (event:Event) => event.preventDefault()
+const windowListen = () => {
+  window.addEventListener('keydown', preventDefault)
+  return () => window.removeEventListener('keydown', preventDefault)
+}
+
 
 export const useFileCallbacks = (props:TUseFileCallbacks) => {
   const {
@@ -36,30 +46,32 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
     pathChange,
     curValueRef,
     deleteModel,
+    onAddFile,
+    onSaveFile,
     openedFiles,
     restoreModel,
+    onDeleteFile,
     setOpenedFiles,
   } = props
 
-    const onCloseFile = useCloseFile({
-      prePath,
-      curPathRef,
-      setCurPath,
-      restoreModel,
-      setOpenedFiles
-    })
-    
-    const closeOtherFiles = useCloseOtherFiles({
-      Modal,
-      prePath,
-      rootRef,
-      filesRef,
-      setCurPath,
-      openedFiles,
-      restoreModel,
-      setOpenedFiles,
-    })
-
+  const closeFile = useCloseFile({
+    prePath,
+    curPathRef,
+    setCurPath,
+    restoreModel,
+    setOpenedFiles
+  })
+  
+  const closeOtherFiles = useCloseOtherFiles({
+    Modal,
+    prePath,
+    rootRef,
+    filesRef,
+    setCurPath,
+    openedFiles,
+    restoreModel,
+    setOpenedFiles,
+  })
 
   const handleFormat = useCallback(
     () => editorRef.current?.getAction('editor.action.formatDocument').run(),
@@ -68,26 +80,26 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
 
   const saveFile = useCallback(() => {
     filesRef.current[curPathRef.current] = curValueRef.current
-  }, [handleFormat])
-
+    onSaveFile?.(curPathRef.current, curValueRef.current)
+  }, [onSaveFile, handleFormat])
 
   const abortFileChange = useCallback(
     (path: string) => {
       const content = filesRef.current[path] || ''
       createOrUpdateModel(path, content)
-
-      onCloseFile(path)
+      closeFile(path)
     },
-    [onCloseFile]
+    [closeFile]
   )
 
-  const dealKey = useCallback(
-    (e: React.KeyboardEvent<HTMLElement>) => {
-      const ctrlKey = e.ctrlKey || e.metaKey
-      const keyCode = e.keyCode
+  const keyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLElement>) => {
+      const ctrlKey = event.ctrlKey || event.metaKey
+      const key = event.key.toLowerCase()
 
-      if (ctrlKey && keyCode === 83) {
-        e.preventDefault()
+      if (ctrlKey && key === `s`) {
+        event.preventDefault()
+        event.stopPropagation()
         saveFile()
       }
     },
@@ -96,23 +108,24 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
 
   const addFile = useCallback(
     (path: string, content?: string) => {
-      createOrUpdateModel(path, content || '')
-      filesRef.current[path] = content || ''
+      const cont = content || ''
+      createOrUpdateModel(path, cont)
+      filesRef.current[path] = cont
+      onAddFile?.(path, cont)
 
-      setTimeout(() => {
-        pathChange(path)
-      }, 50)
+      setTimeout(() => pathChange(path), 50)
     },
-    [pathChange]
+    [onAddFile, pathChange]
   )
 
   const deleteFile = useCallback(
     (path: string) => {
       deleteModel(path)
       delete filesRef.current[path]
-      onCloseFile(path)
+      closeFile(path)
+      onDeleteFile?.(path)
     },
-    [onCloseFile]
+    [onDeleteFile, closeFile]
   )
 
   const editFileName = useCallback(
@@ -130,10 +143,10 @@ export const useFileCallbacks = (props:TUseFileCallbacks) => {
 
   return {
     saveFile,
-    dealKey,
+    keyDown,
     addFile,
     deleteFile,
-    onCloseFile,
+    closeFile,
     editFileName,
     handleFormat,
     closeOtherFiles,

@@ -21,20 +21,18 @@ export const useOnTabDown = (props:THOnTabDown) => {
 
   return useCallback(
     (e:any) => {
-      if (e.button !== 2) {
-        return
-      }
+      if (e.button !== 2) return
+
       const position = {
         x: e.clientX,
         y: e.clientY,
       }
       setTimeout(() => {
         Modal.create({
-          title: '????？',
-          onOk: (close: () => void) => {
-            close()
-          },
-          content: (close: any) => (
+          floatContent: true,
+          title: 'Actions',
+          className: 'goblet-monaco-editor-modal-rightclick',
+          content: (
             <div
               style={{
                 top: `${position.y}px`,
@@ -43,9 +41,9 @@ export const useOnTabDown = (props:THOnTabDown) => {
               className='goblet-monaco-editor-rightclick-panel'
             >
               <div
-                onClick={e => {
-                  close()
-                  onTabClose?.(e)
+                onClick={() => {
+                  Modal.close()
+                  onTabClose?.(event)
                 }}
                 className='goblet-monaco-editor-rightclick-panel-item'
               >
@@ -53,7 +51,7 @@ export const useOnTabDown = (props:THOnTabDown) => {
               </div>
               <div
                 onClick={() => {
-                  close()
+                  Modal.close()
                   onCloseOtherFiles(file.path)
                 }}
                 className='goblet-monaco-editor-rightclick-panel-item'
@@ -62,7 +60,7 @@ export const useOnTabDown = (props:THOnTabDown) => {
               </div>
               <div
                 onClick={() => {
-                  close()
+                  Modal.close()
                   onCloseOtherFiles('')
                 }}
                 className='goblet-monaco-editor-rightclick-panel-item'
@@ -71,7 +69,6 @@ export const useOnTabDown = (props:THOnTabDown) => {
               </div>
             </div>
           ),
-          className: 'goblet-monaco-editor-modal-rightclick',
         })
       })
     },

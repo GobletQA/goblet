@@ -1,4 +1,5 @@
 import { useCallback } from 'react'
+import { noOp } from '@keg-hub/jsutils'
 import { deleteSourceFolder } from '../../utils'
 
 
@@ -25,14 +26,15 @@ export const useDeleteFolder = (props:THDeleteFolder) => {
   return useCallback(
     (path: string) => {
       Modal.confirm({
-        okText: 'OK',
-        onOk: (close: () => void) => {
+        title: `Delete Folder`,
+        okText: `Yes`,
+        onOk: () => {
           updateFiletree(deleteSourceFolder({ filetree, path, rootPrefix }))
           onDeleteFolder(path)
-          close()
         },
-        title: 'Confirm Delete',
-        content: () => (
+        cancelText: `No`,
+        onCancel: noOp,
+        content: (
           <div>
             <div>Are you sure?</div>
             <div>Delete: {path}</div>

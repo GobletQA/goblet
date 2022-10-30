@@ -6,7 +6,7 @@ import type {
 } from 'react'
 
 import { Fragment } from 'react'
-import { isArr } from '@keg-hub/jsutils'
+import { isArr, noOpObj } from '@keg-hub/jsutils'
 
 
 type TColorOpt = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning' | string
@@ -39,8 +39,11 @@ export type TModalMethod = {
   children?: ReactNode
   fullWidth?: boolean
   fullScreen?: boolean
+  floatContent?: boolean
   actions?: TModalActions
+  okText?: string
   onOk?: (...args:any[]) => any
+  cancelText?: string
   onCancel?: (...args:any[]) => any,
   actionProps?: Record<any, any>
   sx?: Array<CSSProperties> | CSSProperties
@@ -71,15 +74,17 @@ const wrapContent = (
 const wrapActions = (
   modal:Modal,
   actions:TModalActions,
+  okText?:string,
   onOk?:(...args:any[]) => any,
+  cancelText?:string,
   onCancel?:(...args:any[]) => any,
 ) => {
   const builtActs:TModalActions = [
     onCancel && ({
-      text: `CANCEL`,
       color: `error`,
       variant: `contained`,
       startIcon: `CancelIcon`,
+      text: cancelText || `CANCEL`,
       sx: { marginRight: `12px`, minWidth: `100px` },
       onClick: (...args:any) => {
         const resp = onCancel?.(...args)
@@ -87,9 +92,9 @@ const wrapActions = (
       },
     } as TModalAction),
     onOk && ({
-      text: `OK`,
       color: `success`,
       variant: `contained`,
+      text: okText || `OK`,
       startIcon: `CheckIcon`,
       sx: { color: `#FFFFFF`, minWidth: `100px` },
       onClick: (...args:any) => {
@@ -129,13 +134,24 @@ const buildModalParams = (modal:Modal, params:TModalMethod, noWrap:boolean) => {
       onCancel,
       content,
       children,
+      okText,
+      cancelText,
+      floatContent,
       ...rest
     } = params
-  
+
   return {
     ...rest,
+    ...(floatContent ? { overrideContent: true } : noOpObj),
     children: wrapContent(content, children),
-    actions: wrapActions(modal, actions || [], onOk, onCancel)
+    actions: wrapActions(
+      modal,
+      actions || [],
+      okText,
+      onOk,
+      cancelText,
+      onCancel
+    )
   }
 }
 

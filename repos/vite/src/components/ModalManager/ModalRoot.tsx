@@ -84,6 +84,7 @@ export const ModalRoot = (props:TModal) => {
     Content:_CNoOp,
     Content:_CTNoOp,
     Container:_CNNoOp,
+    disableTransition,
     ...rest
   } = props
 
@@ -107,13 +108,18 @@ export const ModalRoot = (props:TModal) => {
     ? [Container, props]
     : [Fragment, noOpObj]
 
+  const transitionProps = useMemo(() => {
+    return overrideContent || disableTransition
+      ? noOpObj
+      : { transitionDuration: 500, TransitionComponent: Transition }
+  }, [overrideContent, disableTransition])
+
   return (
     <Dialog
       keepMounted
-      transitionDuration={500}
-      TransitionComponent={Transition}
       aria-labelledby={titleProps?.id || "gb-modal-title"}
       aria-describedby={contentProps?.id || "gb-modal-description"}
+      {...transitionProps}
       {...rest}
       open={open}
       maxWidth={maxWidth}

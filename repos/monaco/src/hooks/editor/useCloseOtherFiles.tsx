@@ -32,15 +32,14 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
   return useCallback(
     (path: string) => {
 
-      const unSavedFiles = openedFiles.filter(v => v.status === 'editing')
+      const unSavedFiles = openedFiles.filter(file => file.status === 'editing')
 
       if (unSavedFiles.length) {
         Modal.confirm({
           okText: 'OK',
-          title: 'Confirm',
+          title: 'Close other files',
           cancelText: 'Cancel',
-          onCancel: (close: () => void) => {
-            close()
+          onCancel: () => {
             setOpenedFiles(pre => pre.filter(p => p.path === path))
             restoreModel(path)
             setCurPath(path)
@@ -50,8 +49,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
             })
             prePath.current = path
           },
-          onOk: (close: () => void) => {
-            close()
+          onOk: () => {
             unSavedFiles.forEach((file:any) => {
               const model = getModelFromPath(file.path)
               filesRef.current[file.path] = model?.getValue() || ''
@@ -61,14 +59,16 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
             setCurPath(path)
             prePath.current = path
           },
-          content: () => (
-            <div>
-              <div>There are unsaved changes, are you sure?</div>
-              <div>Files:</div>
+          content: (
+            <>
+              <div>The following files have unsaved changes</div>
+              <br/>
               {unSavedFiles.map((file:any) => (
                 <div key={file.path}>{file.path}</div>
               ))}
-            </div>
+              <br/>
+              <div>Do you want to save these files before closing?</div>
+            </>
           ),
         })
       }

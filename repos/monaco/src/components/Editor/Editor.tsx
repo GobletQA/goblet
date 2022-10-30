@@ -21,12 +21,17 @@ import { useFileListResize } from '../../hooks/editor/useFileListResize'
 import { useFolderCallbacks } from '../../hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
 
+const editorStyles = { flex: 1, width: '100%' }
+
 export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props, ref) => {
   
   const {
     emptyText,
     onLoadFile,
+    onAddFile,
+    onSaveFile,
     defaultPath,
+    onDeleteFile,
     onPathChange,
     onFileChange,
     onValueChange,
@@ -127,11 +132,11 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
   })
 
   const {
-    dealKey,
+    keyDown,
     addFile,
     saveFile,
+    closeFile,
     deleteFile,
-    onCloseFile,
     editFileName,
     abortFileChange,
     closeOtherFiles,
@@ -141,12 +146,15 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     prePath,
     filesRef,
     editorRef,
+    onAddFile,
+    onSaveFile,
     curPathRef,
     pathChange,
     setCurPath,
     curValueRef,
     deleteModel,
     openedFiles,
+    onDeleteFile,
     restoreModel,
     setOpenedFiles,
   })
@@ -169,7 +177,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     <div
       tabIndex={1}
       ref={rootRef}
-      onKeyDown={dealKey}
+      onKeyDown={keyDown}
       onMouseMove={onMove}
       onMouseUp={onMoveEnd}
       id='goblet-monaco-editor-root'
@@ -199,12 +207,12 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
           currentPath={curPath}
           rootEl={rootRef.current}
           openedFiles={openedFiles}
-          onCloseFile={onCloseFile}
+          onCloseFile={closeFile}
           onPathChange={pathChange}
           onAbortSave={abortFileChange}
           onCloseOtherFiles={closeOtherFiles}
         />
-        <div ref={editorNodeRef} style={{ flex: 1, width: '100%' }} />
+        <div ref={editorNodeRef} style={editorStyles} />
         {openedFiles.length === 0 && (<Empty text={emptyText} />)}
       </div>
     </div>

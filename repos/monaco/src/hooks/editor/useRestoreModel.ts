@@ -57,6 +57,7 @@ const restoreContentListener = (
 ) => {
 
   const {
+    filesRef,
     curValueRef,
     lintWorkerRef,
     setOpenedFiles,
@@ -66,17 +67,19 @@ const restoreContentListener = (
   } = props
 
   let timer: any = null
-  contentListenerRef.current = model.onDidChangeContent(() => {
 
+  contentListenerRef.current = model.onDidChangeContent(() => {
     const content = model.getValue()
-    setOpenedFiles(pre =>
-      pre.map(loc => {
-        if (loc.path === path) loc.status = 'editing'
-        return loc
+
+    setOpenedFiles(pre => {
+      return pre.map(file => {
+        if (file.path === path && filesRef.current[path] !== content)
+          file.status = 'editing'
+
+        return file
       })
-    )
+    })
   
-    // filesRef.current[path] = content;
     onFileChangeRef.current
       && onFileChangeRef.current(path, content)
 

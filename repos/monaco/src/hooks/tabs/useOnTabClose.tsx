@@ -20,7 +20,7 @@ export const useOnTabClose = (props:THOnTabClose) => {
   onCloseFile,
   onAbortSave,
   } = props
-  
+
   return useCallback((event:any) => {
     event.stopPropagation()
     event.preventDefault()
@@ -30,7 +30,6 @@ export const useOnTabClose = (props:THOnTabClose) => {
 
     setTimeout(() => {
       Modal.confirm({
-        maxWidth: `xs`,
         title: `Unsaved Changes`,
         content: (
           <>
@@ -39,12 +38,12 @@ export const useOnTabClose = (props:THOnTabClose) => {
             Do you want to save the changes before closing?
           </>
         ),
+        cancelText: `No`,
         onCancel: () => {
-          console.log(`------- cancel action -------`)
-          // onAbortSave(file.path)
+          onAbortSave(file.path)
         },
+        okText: `Yes`,
         onOk: () => {
-          console.log(`------- ok action -------`)
           onCloseFile(file.path)
           onSaveFile(file.path)
         }

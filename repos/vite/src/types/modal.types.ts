@@ -44,8 +44,9 @@ export type TModalSlots = {
 export type TModal = Omit<ComponentProps<typeof Dialog>, "open"> & {
   type?: string
   text?: ReactNode
-  open?: boolean,
-  visible?: boolean,
+  open?: boolean
+  visible?: boolean
+  disableTransition?: boolean
   Container?: ComponentType<any> | false
   Title?: ComponentType<any> | false
   Header?: ComponentType<any> | false

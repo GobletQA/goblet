@@ -22,6 +22,12 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     onValueChange,
   } = useEditorHooks(props, editorRef)
 
+  // TODO: add callbacks for these methods to handled calling server
+  // And updating the redux store
+  // onDeleteFile
+  // onAddFile
+  // onSaveFile
+
   return connected
     ? (
         <MonacoEditor
@@ -36,7 +42,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onValueChange={onValueChange}
           onFileChange={onFileChange}
           options={{
-            fontSize: 16,
+            fontSize: 14,
             automaticLayout: true,
           }}
         />

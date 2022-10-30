@@ -15,6 +15,7 @@ export const ConfirmModal:TModalRef = (props:TModalComponent) => {
 
 ConfirmModal.modalType = ModalTypes.confirm
 ConfirmModal.modalProps = {
+  maxWidth: `xs`,
   title: `Confirm`,
   titleProps: {
     Icon: (<WarningIcon />)
