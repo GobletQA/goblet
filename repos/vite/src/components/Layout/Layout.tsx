@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { dims } from '@theme'
+import { Browser } from '@components/Browser'
 import Container from '@mui/material/Container'
 import { Terminal } from '@components/Terminal'
 import { Screencast } from '@components/Screencast'
@@ -34,7 +35,7 @@ export const Layout = (props:TLayout) => {
       </Container>
       <Container disableGutters sx={fullHeight}>
         <VerticalPageSplit>
-          <Screencast />
+          <Browser />
           <Terminal />
         </VerticalPageSplit>
       </Container>

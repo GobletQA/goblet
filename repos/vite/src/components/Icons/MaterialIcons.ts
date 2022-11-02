@@ -25,6 +25,10 @@ import BlockIcon from '@mui/icons-material/Block'
 import CheckIcon from '@mui/icons-material/Check'
 import CancelIcon from '@mui/icons-material/Clear'
 import WarningIcon from '@mui/icons-material/Warning'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import CachedIcon from '@mui/icons-material/Cached'
+import DangerousIcon from '@mui/icons-material/Dangerous'
 
 export {
   Steps,
@@ -53,5 +57,9 @@ export {
   SubArrowRightIcon,
   CheckIcon,
   CancelIcon,
-  WarningIcon
+  WarningIcon,
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  CachedIcon,
+  DangerousIcon
 }

@@ -6,3 +6,7 @@ export const ENVIRONMENT = process.env.NODE_ENV || `local`
 export const GB_SC_PORT = process.env.GB_SC_PORT || `7006`
 
 export const FileTreeWidth = 200
+
+
+export const GobletQAUrl = "https://www.gobletqa.com"
+export const GoogleSearchUrl = "https://www.google.com/search?igu=1&q="
