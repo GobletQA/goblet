@@ -1,71 +1,59 @@
+import { useCallback, useRef, useState } from "react"
 
 import Box from '@mui/material/Box'
-import useHistory from './useHistory'
-
 import { GobletQAUrl } from '@constants'
 import { BrowserNav } from './BrowserNav'
 import { BrowserIframe } from './BrowserIframe'
 import { useWindowResize } from '@hooks/dom/useWindowResize'
-import { useProcesses, ProcessProvider } from './useProcesses'
-import { useCallback, useEffect, useRef, useState } from "react"
-import { getUrlOrSearch } from '@utils/components/getUrlOrSearch'
+import { useIframeURL, useIframeHistory } from './BrowserHooks'
 import { useIframeRescale, GB_IFRAME_ID } from '@hooks/dom/useIframeRescale'
 
-export type TBrowser = {}
+export type TBrowser = {
+  src:string
+}
 
 const id = `goblet-browser`
-export const BrowserComp = (props:TBrowser) => {
-  const {
-    url: changeUrl,
-    processes: { [id]: process },
-  } = useProcesses()
 
-  const { url = "" } = process || {}
-  const initialUrl = url || GobletQAUrl
+
+export const BrowserComp = (props:TBrowser) => {
+
+  const { src } = props
+
   const [loading, setLoading] = useState(false)
   const inputRef = useRef<HTMLInputElement | null>(null)
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
+
+  const {
+    setUrl,
+    changeUrl,
+    currentUrlRef,
+  } = useIframeURL({
+    inputRef,
+    iframeRef,
+    setLoading,
+    initialUrl: src || GobletQAUrl,
+  })
+  
   const {
     history,
     position,
     canGoBack,
-    moveHistory,
     canGoForward,
-  } = useHistory(initialUrl, id)
-
-  const changeHistory = (step: number): void => {
-    moveHistory(step)
-    if (inputRef.current) inputRef.current.value = history[position + step]
-  }
-
-  const currentUrl = useRef("")
-  const setUrl = useCallback(
-    async (addressInput: string): Promise<void> => {
-      const { contentWindow } = iframeRef.current || {}
-      if(!contentWindow?.location) return
-
-      setLoading(true)
-      const addressUrl = await getUrlOrSearch(addressInput)
-      contentWindow.location.replace(addressUrl)
-    },
-    []
-  )
-
-  useEffect(() => {
-    if (history[position] !== currentUrl.current) {
-      currentUrl.current = history[position]
-      setUrl(history[position])
-    }
-  }, [history, position, setUrl])
+    changeHistory,
+  } = useIframeHistory({
+    setUrl,
+    inputRef,
+    changeUrl,
+    currentUrlRef,
+  })
 
   const rescaleIframe = useIframeRescale(iframeRef, true)
 
   useWindowResize({ onResize: rescaleIframe })
 
   const onIframeLoad = useCallback(() => {
-    rescaleIframe()
-    setLoading(false)
-  }, [rescaleIframe, loading])
+
+  }, [])
 
   return (
     <Box
@@ -85,9 +73,9 @@ export const BrowserComp = (props:TBrowser) => {
         inputRef={inputRef}
         changeUrl={changeUrl}
         canGoBack={canGoBack}
-        initialUrl={initialUrl}
         canGoForward={canGoForward}
         changeHistory={changeHistory}
+        initialUrl={currentUrlRef.current}
       />
       <BrowserIframe
         title={id}
@@ -106,9 +94,5 @@ export const BrowserComp = (props:TBrowser) => {
 
 
 export const Browser = (props:TBrowser) => {
-  return (
-    <ProcessProvider>
-      <BrowserComp {...props} />
-    </ProcessProvider>
-  )
+  return (<BrowserComp {...props} />)
 }

@@ -62,3 +62,54 @@ export const mapResponseHeaders = (proxyRes:IncomingMessage, res:Response) => {
   Object.keys(proxyRes.headers)
     .forEach(key => res.append(key, proxyRes.headers[key]))
 }
+
+
+export const iframeHeaders = (proxyRes:IncomingMessage, origin:string) => {
+  addAllowOriginHeader(proxyRes, origin)
+  delete proxyRes.headers[`x-frame-options`]
+
+}
+
+export const withCORS = (headers:Record<string, string>, request:Request) => {
+  headers['access-control-allow-origin'] = '*'
+
+  if (request.headers['access-control-request-method']) {
+    headers['access-control-allow-methods'] = request.headers['access-control-request-method']
+    delete request.headers['access-control-request-method']
+  }
+
+  if (request.headers['access-control-request-headers']) {
+    headers['access-control-allow-headers'] = request.headers['access-control-request-headers']
+    delete request.headers['access-control-request-headers']
+  }
+
+  headers['access-control-expose-headers'] = Object.keys(headers).join(',')
+
+  return headers
+}
+
+
+export const replaceResponseText = async (
+  responseText:string,
+  upstreamDomain:string,
+  localDomain:string,
+  rules:Record<string, string>
+) => {
+
+  const regexp_upstreamHostname = new RegExp('{upstream_hostname}', 'g')
+  const regexp_proxyHostname = new RegExp('{proxy_hostname}', 'g')
+
+  if (rules) {
+    for (let key in rules) {
+      let rule = rules[key]
+
+      key = key.replace(regexp_upstreamHostname, upstreamDomain)
+      key = key.replace(regexp_proxyHostname, localDomain)
+      rule = rule.replace(regexp_upstreamHostname, upstreamDomain)
+      rule = rule.replace(regexp_proxyHostname, localDomain)
+      responseText = responseText.replace(new RegExp(key, 'g'), rule)
+    }
+  }
+
+  return responseText
+}

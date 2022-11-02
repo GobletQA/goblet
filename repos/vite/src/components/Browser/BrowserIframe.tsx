@@ -27,6 +27,7 @@ export type TBrowserIframe = {
 export const BrowserIframe = (props:TBrowserIframe) => {
 
   const {
+    onLoad,
     loading,
     iframeRef,
     setLoading,
@@ -40,8 +41,12 @@ export const BrowserIframe = (props:TBrowserIframe) => {
   const onIframeLoad = useCallback(() => {
     rescaleIframe()
     setLoading(false)
-
-  }, [rescaleIframe, loading])
+    onLoad?.()
+  }, [
+    onLoad,
+    loading,
+    rescaleIframe,
+  ])
 
   return (
     <BrowserFrame
