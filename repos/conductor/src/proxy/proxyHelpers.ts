@@ -60,14 +60,27 @@ export const mapRequestHeaders = (
  */
 export const mapResponseHeaders = (proxyRes:IncomingMessage, res:Response) => {
   Object.keys(proxyRes.headers)
-    .forEach(key => res.append(key, proxyRes.headers[key]))
+    .forEach(key => 
+      !proxyRes.headers[key]
+        && res.append(key, proxyRes.headers[key]
+    ))
 }
 
 
-export const iframeHeaders = (proxyRes:IncomingMessage, origin:string) => {
+export const iframeResHeaders = (proxyRes:IncomingMessage, res:Response, origin:string) => {
   addAllowOriginHeader(proxyRes, origin)
-  delete proxyRes.headers[`x-frame-options`]
+  mapResponseHeaders(proxyRes, res)
+  res.removeHeader(`x-frame-options`)
+}
 
+export const iframeReqHeaders = (
+  proxyReq:ClientRequest,
+  req:Request,
+  addHeaders:Record<string, string>
+) => {
+  const headers = Object.assign({}, req.headers, addHeaders)
+  Object.keys(headers)
+    .forEach(key => req.headers[key] && proxyReq.setHeader(key, req.headers[key]))
 }
 
 export const withCORS = (headers:Record<string, string>, request:Request) => {
@@ -89,27 +102,21 @@ export const withCORS = (headers:Record<string, string>, request:Request) => {
 }
 
 
-export const replaceResponseText = async (
-  responseText:string,
-  upstreamDomain:string,
-  localDomain:string,
-  rules:Record<string, string>
-) => {
 
-  const regexp_upstreamHostname = new RegExp('{upstream_hostname}', 'g')
-  const regexp_proxyHostname = new RegExp('{proxy_hostname}', 'g')
 
-  if (rules) {
-    for (let key in rules) {
-      let rule = rules[key]
+const shouldRewrite = (req:Request, res:Response) => {
 
-      key = key.replace(regexp_upstreamHostname, upstreamDomain)
-      key = key.replace(regexp_proxyHostname, localDomain)
-      rule = rule.replace(regexp_upstreamHostname, upstreamDomain)
-      rule = rule.replace(regexp_proxyHostname, localDomain)
-      responseText = responseText.replace(new RegExp(key, 'g'), rule)
-    }
-  }
+  console.log(`Request Content-Type`, req.get(`Content-Type`))
+  console.log(
+    `any`, req.is(`*/*`),
+    `text`, req.is(`text/*`),
+    `html`, req.is(`*/html`),
+    `json`, req.is(`json`),
+    `*/json`, req.is(`*/json`)
+  )
 
-  return responseText
+  const contentType = res.get(`Content-Type`)
+  console.log(`Response Content-Type`, contentType)
+
+  return
 }

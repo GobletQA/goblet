@@ -2,7 +2,6 @@ import type { TOptFunc, TBuildFormOpts, TBuiltForm } from '@types'
 import { useMemo } from 'react'
 import { FormComponents } from '@components/Form'
 import {
-  noOp,
   set,
   get,
   isStr,
@@ -10,12 +9,12 @@ import {
   isArr,
   exists,
   toBool,
-  deepMerge,
 } from '@keg-hub/jsutils'
 
 const Options = {
   exists: (val:any) => exists(val),
   is: (val:any) => toBool(val) === true,
+  no: (val:any) => toBool(val) === false,
   not: (val:any) => toBool(val) === false,
 }
 

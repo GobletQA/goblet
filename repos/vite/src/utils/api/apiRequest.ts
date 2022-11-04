@@ -8,7 +8,6 @@ import { localStorage } from '@services/localStorage'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
 
 const baseApiUrl = getBaseApiUrl()
-console.log(baseApiUrl)
 
 /**
  * Check the response from the API for an expired session

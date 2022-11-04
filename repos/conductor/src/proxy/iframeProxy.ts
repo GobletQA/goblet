@@ -1,19 +1,17 @@
 import type { IncomingMessage } from 'http'
 import type { Request, Response, Router } from 'express'
-import type { TProxyConfig } from '@gobletqa/conductor/types'
+import type { TProxyOpts } from '@gobletqa/shared/types'
 
-import { checkCall, exists } from '@keg-hub/jsutils'
+import { exists } from '@keg-hub/jsutils'
 import { getOrigin } from '@gobletqa/shared/utils/getOrigin'
 import { createProxyMiddleware, responseInterceptor } from 'http-proxy-middleware'
 
 import {
-  iframeHeaders,
-  mapRequestHeaders,
-  mapResponseHeaders,
-  replaceResponseText,
-  addAllowOriginHeader,
+  iframeResHeaders,
+  iframeReqHeaders,
 } from './proxyHelpers'
 
+import { uriReplacer } from './uriReplacer'
 
 /**
  * Called when the proxy request throws an error
@@ -28,7 +26,7 @@ import {
  * 
  * @returns {*} - Response in JSON of all routes in the RoutesTable 
  */
-export const onProxyError = (err:Error, req:Request, res:Response, proxyHost:string) => {
+const onProxyError = (err:Error, req:Request, res:Response, proxyHost:string) => {
   res && res.status && res.status(404).send(err?.message || 'Proxy Route not found')
 }
 
@@ -51,59 +49,70 @@ const ensureHeaders = (headers:Record<string, string>) => {
  * 
  * @returns {Object} - Contains the port and host ip address to proxy the request to
  */
-export const createIframeProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
-  const { target, proxyRouter, headers, proxy } = config
-  const addHeaders = ensureHeaders({ ...headers, ...proxy?.headers })
-  
+export const createIframeProxy = (config:TProxyOpts, ProxyRouter?:Router) => {
+  const { target, protocol, host, headers, path, port } = config
 
-  const proxyHandler = createProxyMiddleware({
+  const addHeaders = ensureHeaders({ ...headers, ...(headers || {}) })
+  const url = port ? `${host}:${port}` : host
+  const pxTarget = target || `${protocol}://${url}`
+
+  const iframeProxy = createProxyMiddleware(path, {
     ws: true,
     secure: false,
-    logLevel: 'error',
-    autoRewrite: true,
+    logLevel: 'info',
+    target: pxTarget,
+    ignorePath: true,
+    // autoRewrite: true,
     changeOrigin: true,
     onError: onProxyError,
+    followRedirects: true,
     selfHandleResponse: true,
-    target,
-    ...proxy,
     headers: addHeaders,
     router: (req:Request) => {
-      
-      return ''
+      const reqUrl = new URL(`${req.protocol}://${req.get('host')}${req.originalUrl}`)
+      const proxyUrl = new URL(reqUrl.searchParams.get(`url`))
+
+      return {
+        host: proxyUrl.host,
+        hash: proxyUrl.hash,
+        search: proxyUrl.search,
+        origin: proxyUrl.origin,
+        protocol: proxyUrl.protocol,
+        hostname: proxyUrl.hostname,
+        pathname: proxyUrl.pathname,
+        port: proxyUrl.port || proxyUrl.protocol === 'https:' ? 443 : 80
+      }
+
     },
-    onProxyReq: (proxyReq, req:Request, res:Response) => {
-      // mapRequestHeaders(proxyReq, req, addHeaders)
-      // let url = new URL(`${req.protocol}://${req.get('host')}${req.originalUrl}`)
-      
-    },
+    // onProxyReq: (proxyReq, req:Request, res:Response) => {
+    //   iframeReqHeaders(proxyReq, req, addHeaders)
+    // },
     onProxyRes: responseInterceptor(async (
       buffer,
       proxyRes:IncomingMessage,
       req:Request,
-      res:Response
+      res:Response,
     ) => {
-      // const origin = getOrigin(req)
-      // const responseText = buffer.toString('utf8')
+      
+      const origin = getOrigin(req)
+      iframeResHeaders(proxyRes, res, origin)
+      const responseText = buffer.toString('utf8')
+
+      return responseText
+
+      // const replaced = uriReplacer(responseText, replaceUri)
       // const hostDomain = req.get('host')
-
-      
-      // replaceResponseText(
-      //   responseText,
-      //   origin,
-      //   hostDomain,
-      //   {
-      //     '{upstream_hostname}': '{proxy_hostname}',
-      //   }
-      // )
-      
+      // const origin = getOrigin(req)
       // iframeHeaders(proxyRes, origin)
-      // mapResponseHeaders(proxyRes, res)
 
-      return buffer
+      // return responseText
     }),
   })
 
-  ProxyRouter && ProxyRouter.use(proxyHandler)
+  ProxyRouter && ProxyRouter.use(iframeProxy)
 
-  return proxyHandler
+  // @ts-ignore
+  iframeProxy.path = path
+
+  return iframeProxy
 }

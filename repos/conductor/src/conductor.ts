@@ -14,7 +14,12 @@ import { Controller } from './controller/controller'
 import { getApp } from '@gobletqa/shared/express/app'
 import { EContainerState } from '@gobletqa/conductor/types'
 import { getController } from './controller/controllerTypes'
-import { createApiProxy, createVNCProxy, createWSProxy } from './proxy'
+import {
+  createWSProxy,
+  createApiProxy,
+  createVNCProxy,
+  createIframeProxy
+} from './proxy'
 
 export class Conductor {
 
@@ -190,8 +195,9 @@ export class Conductor {
 
     const wsProxy = createWSProxy(app?.locals?.config?.wsProxy, app)
     const vncProxy = createVNCProxy(app?.locals?.config?.vncProxy, app)
+    const iframeProxy = createIframeProxy(app?.locals?.config?.iframeProxy, app)
 
-    return { apiProxy, vncProxy, wsProxy }
+    return { apiProxy, vncProxy, wsProxy, iframeProxy }
   }
 
   /**

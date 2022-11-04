@@ -14,6 +14,7 @@ import { useIframeRescale, GB_IFRAME_ID } from '@hooks/dom/useIframeRescale'
 
 export type TBrowserIframe = {
   id?:string
+  src?:string
   title?:string
   sandbox?:string
   loading?:boolean

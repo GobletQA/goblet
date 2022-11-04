@@ -46,14 +46,14 @@ export type TBuildFieldRules = {
 export type TBuildFormField = {
   name: string,
   label?: string,
-  active?: boolean|string
-  disabled?: boolean|string
-  required?: boolean|string,
   placeholder?: string
   decor?: TInputDecor,
+  gridProps?: GridProps
+  active?: boolean|string
   rules?: TBuildFieldRules
+  disabled?: boolean|string
+  required?: boolean|string,
   Grid?: ComponentType<any>
-  gridOptions?: GridProps
   textFieldProps?: TextFieldProps
   Component?: ComponentType<any> | keyof typeof FormComponents
   [key:string]: any

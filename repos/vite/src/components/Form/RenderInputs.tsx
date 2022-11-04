@@ -31,7 +31,7 @@ export const RenderInputs = (props:Record<any, any>) => {
         Object.entries(fields).reduce((Inputs, [name, inputOpts]) => {
           const {
             Component,
-            gridOptions,
+            gridProps,
             Grid:GridComp=Grid,
             ...rest
           } = inputOpts
@@ -44,7 +44,7 @@ export const RenderInputs = (props:Record<any, any>) => {
 
           Comp &&
             Inputs.push(
-              <GridComp key={name} {...gridOptions}>
+              <GridComp key={name} {...gridProps}>
                 <Comp
                   {...rest}
                   {...inputProps}

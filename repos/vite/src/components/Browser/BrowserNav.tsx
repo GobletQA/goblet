@@ -1,5 +1,6 @@
 import type { MutableRefObject } from 'react'
 
+import { useCallback } from 'react'
 import Box from '@mui/material/Box'
 import { BrowserButton } from './BrowserButton'
 import {
@@ -42,6 +43,14 @@ export const BrowserNav = (props:TBrowserNav) => {
     changeHistory
   } = props
   
+  const onKeyDown = useCallback(({ key }:Record<'key', string>) => {
+    if(!inputRef?.current || key !== "Enter") return
+
+    changeUrl(inputRef.current.value)
+    window.getSelection()?.removeAllRanges()
+    inputRef.current.blur()
+  }, [])
+  
   return (
       <BrowserNavComp className='goblet-browser-nav'>
         <Box
@@ -77,15 +86,9 @@ export const BrowserNav = (props:TBrowserNav) => {
           ref={inputRef}
           enterKeyHint="go"
           className='nav-input'
+          onKeyDown={onKeyDown}
           defaultValue={initialUrl}
           onFocusCapture={() => inputRef.current?.select()}
-          onKeyDown={({ key }) => {
-            if (inputRef.current && key === "Enter") {
-              changeUrl(inputRef.current.value)
-              window.getSelection()?.removeAllRanges()
-              inputRef.current.blur()
-            }
-          }}
           type="text"
         />
       </BrowserNavComp>

@@ -25,7 +25,7 @@ export const BrowserComp = (props:TBrowser) => {
 
   const {
     setUrl,
-    changeUrl,
+    iframeUrl,
     currentUrlRef,
   } = useIframeURL({
     inputRef,
@@ -37,13 +37,13 @@ export const BrowserComp = (props:TBrowser) => {
   const {
     history,
     position,
+    changeUrl,
     canGoBack,
     canGoForward,
     changeHistory,
   } = useIframeHistory({
     setUrl,
     inputRef,
-    changeUrl,
     currentUrlRef,
   })
 
@@ -52,7 +52,11 @@ export const BrowserComp = (props:TBrowser) => {
   useWindowResize({ onResize: rescaleIframe })
 
   const onIframeLoad = useCallback(() => {
+    const iframeWin = iframeRef?.current?.contentWindow
+    if(!iframeWin) return
 
+    console.log(`------- iframeWin -------`)
+    console.log(iframeWin.location.search)
   }, [])
 
   return (
@@ -79,8 +83,9 @@ export const BrowserComp = (props:TBrowser) => {
       />
       <BrowserIframe
         title={id}
-        loading={loading}
+        src={iframeUrl}
         id={GB_IFRAME_ID}
+        loading={loading}
         iframeRef={iframeRef}
         onLoad={onIframeLoad}
         setLoading={setLoading}

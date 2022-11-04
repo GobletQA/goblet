@@ -15,7 +15,7 @@ export const Input = (props:TInput) => {
   const {
     sx,
     active,
-    gridOptions,
+    gridProps,
     Component:__,
     decor=noOpObj as TInputDecor,
     InputProps=noOpObj as InputProps,

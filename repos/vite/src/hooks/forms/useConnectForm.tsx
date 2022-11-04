@@ -2,6 +2,7 @@ import type { THFormHelpers, TSetupForm } from '@types'
 
 import { noOpObj } from '@keg-hub/jsutils'
 import { useState, useCallback } from 'react'
+import { getRepos } from '@actions/repo/api/getRepos'
 import { useBuildForm } from '@hooks/form/useBuildForm'
 import { evtFnNoOp } from '@hooks/form/useBuildFormValues'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
@@ -32,7 +33,7 @@ const formFields = {
       color: `primary`  as const,
       variant: `contained`  as const,
       label: `Connect Repo`,
-      disabled: `$values.not.branch`,
+      disabled: `$values.no.branch`,
       StartIcon: `$component.CloudDownIcon`,
     }
   },
@@ -41,14 +42,19 @@ const formFields = {
       Component: `AutoInput`,
       required: true,
       name: `repo`,
-      gridOptions: {
+      gridProps: {
         xs: 12,
       },
       label: `Select Repo`,
       decor: {
         name: `syncRepos`,
         color: `secondary`,
+        labelPos: `bottom`,
+        onClick: getRepos,
+        label: `Sync Repos`,
         Icon: `$component.SyncIcon`,
+        buttonProps: { size: `small` },
+        iconProps:{ fontSize: `small` },
         Component: `$component.IconButton`,
       },
       textFieldProps: {
@@ -63,7 +69,7 @@ const formFields = {
       required: true,
       name: `branch`,
       label: `Select Branch`,
-      gridOptions: {
+      gridProps: {
         xs: 12,
       },
       textFieldProps: {
@@ -81,23 +87,24 @@ const formFields = {
     newBranch: {
       Component: `Input`,
       active: false,
-      disabled: `$values.not.createBranch`,
-      gridOptions: {
+      disabled: `$values.no.createBranch`,
+      gridProps: {
         xs: 12,
       },
       name: `newBranch`,
       label: `Branch Name`,
       placeholder: `Enter a branch name...`,
       decor: {
-        disabled: `$values.not.branch`,
-        active: `$values.is.createBranch`,
+        adornmentProps: {},
         onClick: evtFnNoOp,
-        labelPos: 'bottom',
-        label: 'New Branch',
-        name: 'createBranch',
+        labelPos: `bottom`,
+        label: `New Branch`,
+        name: `createBranch`,
+        disabled: `$values.no.branch`,
+        active: `$values.is.createBranch`,
         Component: `$component.IconToggle`,
         Icon: `$component.SubArrowRightIcon`,
-        iconProps:{ fontSize: 'small' },
+        iconProps:{ fontSize: `small` },
         labelSx: {
           [`> .MuiFormControlLabel-label`]: {
             fontSize: `10px`,

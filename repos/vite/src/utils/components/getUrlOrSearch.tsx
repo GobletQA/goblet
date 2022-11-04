@@ -1,6 +1,7 @@
 import { GoogleSearchUrl } from '@constants'
 
-export const getUrlOrSearch = async (input: string): Promise<string> => {
+export const getUrlOrSearch = (input: string): Record<string, string> => {
+  let url = ``
   const winProto = window.location.protocol
   const hasHttpSchema = input.startsWith("http://") || input.startsWith("https://")
   const hasTld = input.endsWith(".com")
@@ -16,9 +17,20 @@ export const getUrlOrSearch = async (input: string): Promise<string> => {
       (hasHttpSchema || !hasTld) ? input : `${winProto}://${input}`
     )
 
-    return href
+    url = href
   }
   catch {
-    return `${GoogleSearchUrl}${input}`
+    url = `${GoogleSearchUrl}${input}`
   }
+  finally {
+    const addressUrl = new URL(url).href
+    const localUrl = new URL(window.location.origin)
+    localUrl.pathname = `/goblet-iframe`
+    localUrl.search = `url=${encodeURI(addressUrl)}`
+    return {
+      addressUrl,
+      iframeUrl: localUrl.toString()
+    }
+  }
+
 }

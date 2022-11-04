@@ -57,7 +57,6 @@ export const useGetRepos = ({
     ;(!repos || !repos.length) ? getRepos() : setLoading(false)
   }, [repos])
 
-
   // On initial load of the component, load the users repos
   useEffect(() => {
     if(initRepo && !repo) setRepo(initRepo)

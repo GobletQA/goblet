@@ -51,7 +51,12 @@ export const ModalFooter = (props:TModalFooter) => {
   return actions
     ? (
         <DialogActions {...rest} {...actionProps} >
-          {Object.values(actions)?.map((action) => (<FooterAction key={action.text} {...action} />))}
+          {Object.values(actions)?.map((action) => (
+            <FooterAction
+              key={action?.label || action?.text}
+              {...action}
+            />
+          ))}
           {children}
         </DialogActions>
       )

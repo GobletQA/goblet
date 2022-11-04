@@ -1,6 +1,5 @@
 import type { TBuiltForm, TSetupFormProps } from '@types'
 import type { ComponentType, MutableRefObject } from 'react'
-import type { THConnectRepo } from '@hooks/api/useConnectRepo'
 
 import { gutter } from '@theme'
 import Box from '@mui/material/Box'
@@ -95,12 +94,12 @@ const ConnectInputs = (props:TConnectFormProps) => {
     values !== obj && setForm({ ...values, ...obj })
 
   }, [
-    onChangeBranch,
-    values,
     repo,
     branch,
+    values,
     newBranch,
     createBranch,
+    onChangeBranch,
   ])
 
   return (
