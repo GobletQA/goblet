@@ -9,7 +9,7 @@ import { useIframeURL, useIframeHistory } from './BrowserHooks'
 import { useIframeRescale, GB_IFRAME_ID } from '@hooks/dom/useIframeRescale'
 
 export type TBrowser = {
-  src:string
+  src?:string
 }
 
 const id = `goblet-browser`

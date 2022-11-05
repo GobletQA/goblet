@@ -2,7 +2,7 @@
 
 const GobletIframe = () => {
   return (
-    <div>
+    <div style={{ color: `#111111` }} >
       I am the Iframe
     </div>
   )

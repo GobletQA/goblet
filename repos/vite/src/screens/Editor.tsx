@@ -79,10 +79,10 @@ export default function Editor(props:TEditorProps){
   
   return (
     <Layout>
-      <RenderToggle
+      {/* <RenderToggle
         onToggle={toggleType}
         editorType={editorType}
-      />
+      /> */}
       <EditorComp />
     </Layout>
   )

@@ -30,8 +30,12 @@ export const colors:TColors = {
 
   // ---- Provider Specific Colors
   // githubBackground: `#161b22`,
-  githubBackground: `#333333`
+  githubBackground: `#333333`,
   
+  monacoFocus: `#323842`,
+  monacoBorder: `#272A32`,
+  monacoBackground: `#282c34`,
+  monacoForeground: `#323842`,
 } 
 
 const paletteCommon = {

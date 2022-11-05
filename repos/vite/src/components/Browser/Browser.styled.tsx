@@ -1,12 +1,14 @@
 import { styled } from '@mui/material/styles'
+import { colors } from '@theme'
 
 export const BrowserNav = styled('nav')(({ theme }) => `
   display: flex;
   padding: 4px 0;
   place-items: center;
   place-content: center;
-  background-color: #282c34;
-  
+  background-color: ${colors.monacoBackground};
+  border-bottom: 2px solid rgba(0,0,0, 0.20);
+
   div:not(:first-of-type) {
     height: 33px;
     justify-content: left;
@@ -22,14 +24,16 @@ export const BrowserNav = styled('nav')(({ theme }) => `
 
 export const BrowserFrame = styled('iframe')(({ theme }) => `
   border: 0;
-  height: 100%;
   width: 100%;
+  height: 100%;
   flex-grow: 1;
+  background-color: #FFFFFF;
+  // background-color: ${colors.monacoBorder};
 `)
 
 export const BrowserInput = styled('input')(({ theme }) => `
   border: none;
-  background-color: #323842;
+  background-color: ${colors.monacoBorder};
   border-radius: 18px;
   color: rgb(255, 255, 255);
   font-family: inherit;
