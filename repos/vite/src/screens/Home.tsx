@@ -4,13 +4,13 @@ import { HeaderNav } from '@constants'
 import * as Icons from '@components/Icons'
 import { ScreenWrap } from './Root.styled'
 import { Header } from '@components/Header'
+import { asCallback } from '@utils/helpers'
 import { Footer } from '@components/Footer'
 import { SideNav } from '@components/SideNav'
 import { settingsModal } from '@actions/modals'
 import { Outlet, useLocation } from "react-router-dom"
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
-
 
 type THomeProps = {
   [key:string]: any
@@ -38,16 +38,16 @@ export default function Home(props:THomeProps) {
 
 const navActions = {
   Logout: signOutAuthUser,
-  [`Unmount Repo`]: () => disconnectRepo(),
-  // settingsModal
-  
+  Settings: asCallback(settingsModal, false),
+  UnmountRepo: asCallback(disconnectRepo, false),
 }
 
 Home.path = `/`
 Home.element = `Home`
 // @ts-ignore
 Home.children = HeaderNav.map((item) => {
-  const action = navActions[item?.label as keyof typeof navActions]
+  const navKey = item?.label.replace(/\s/g,``) as keyof typeof navActions
+  const action = navActions[navKey]
   return {
     ...item,
     Icon: Icons[item.Icon as keyof typeof Icons],
