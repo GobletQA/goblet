@@ -4,20 +4,20 @@ import type { OpenFileTreeEvent, TRepoState, TFileTree, TFilesState } from '@typ
 
 
 import { exists } from '@keg-hub/jsutils'
+import { UpdateModalEvt } from '@constants'
 import { OpenFileTreeEvt } from '@constants'
+import { confirmModal } from '@actions/modals/modals'
 import { loadFile } from '@actions/files/api/loadFile'
 import { saveFile } from '@actions/files/api/saveFile'
-import { removeFile } from '@actions/files/api/removeFile'
 import { useFileTree, useFiles, useRepo } from '@store'
 import { useCallback, useEffect, useMemo } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { ModalTypes, UpdateModalEvt } from '@constants'
 import { toggleModal } from '@actions/modals/toggleModal'
-import { setActiveModal } from '@actions/modals/setActiveModal'
+import { removeFile } from '@actions/files/api/removeFile'
 
 export type THEditorFiles = {
   repo: TRepoState
-  rootPrefix: string,
+  rootPrefix: string
   fileTree: TFileTree
   repoFiles: TFilesState
 }
@@ -34,7 +34,7 @@ const modalActions = {
   },
   open: (props?:Record<any, any>) => {
     EE.emit(UpdateModalEvt, props)
-    setActiveModal(ModalTypes.Confirm, true)
+    confirmModal({ visible: true})
   },
 }
 

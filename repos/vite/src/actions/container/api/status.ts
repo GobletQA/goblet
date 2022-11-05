@@ -1,11 +1,10 @@
 import type { TRouteMeta } from '@types'
 
-import { ModalTypes } from '@constants'
 import { EContainerState } from '@types'
 import { addToast } from '@actions/toasts'
 import { apiRequest } from '@utils/api/apiRequest'
+import { signInModal } from '@actions/modals/modals'
 import { removeRepo } from '@actions/repo/local/removeRepo'
-import { setActiveModal } from '@actions/modals/setActiveModal'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
@@ -22,7 +21,7 @@ import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
 const setErrorState = async (error?:string) => {
   await removeRepo()
   await signOutAuthUser()
-  setActiveModal(ModalTypes.SIGN_IN)
+  signInModal()
 
   return undefined
 }

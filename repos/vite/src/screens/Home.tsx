@@ -6,9 +6,11 @@ import { ScreenWrap } from './Root.styled'
 import { Header } from '@components/Header'
 import { Footer } from '@components/Footer'
 import { SideNav } from '@components/SideNav'
+import { settingsModal } from '@actions/modals'
 import { Outlet, useLocation } from "react-router-dom"
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
+
 
 type THomeProps = {
   [key:string]: any
@@ -37,6 +39,8 @@ export default function Home(props:THomeProps) {
 const navActions = {
   Logout: signOutAuthUser,
   [`Unmount Repo`]: () => disconnectRepo(),
+  // settingsModal
+  
 }
 
 Home.path = `/`

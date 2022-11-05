@@ -5,14 +5,14 @@ import type {
   TRouteMeta,
 } from '@types'
 
-import { ModalTypes, StatusTypes } from '@constants'
+import { StatusTypes } from '@constants'
 import { setRepo } from '../local/setRepo'
 import { addToast } from '@actions/toasts'
 import { removeRepo } from '../local/removeRepo'
-import { setActiveModal } from '@actions/modals'
 import { apiRequest } from '@utils/api/apiRequest'
 import { checkCall, noOpObj } from '@keg-hub/jsutils'
 import { localStorage } from '@services/localStorage'
+import { signInModal, connectModal } from '@actions/modals'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
 
 
@@ -32,8 +32,7 @@ type TStatusRepo = Omit<TRouteMeta, "routes" | "meta"> & {
  * @returns {Object} - Passed in status object
  */
 const setNoLocalMountState = async (status:TRepoStatus) => {
-  if(status.mode === StatusTypes.VNC)
-    return setActiveModal(ModalTypes.CONNECT)
+  if(status.mode === StatusTypes.VNC) return connectModal()
 
   addToast({
     type: 'warn',
@@ -57,7 +56,7 @@ const setNoLocalMountState = async (status:TRepoStatus) => {
 const setErrorState = async (error:any) => {
   await removeRepo()
   await signOutAuthUser()
-  setActiveModal(ModalTypes.SIGN_IN)
+  signInModal()
 }
 
 /**

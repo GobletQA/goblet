@@ -1,2 +1,3 @@
-export * from './setActiveModal'
+export * from './modals'
 export * from './toggleModal'
+export * from './setActiveModal'

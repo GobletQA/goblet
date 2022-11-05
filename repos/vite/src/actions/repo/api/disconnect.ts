@@ -1,10 +1,9 @@
 import { get } from '@keg-hub/jsutils'
-import { ModalTypes } from '@constants'
 import { addToast } from '@actions/toasts'
 import { GitUser } from '@services/gitUser'
 import { removeRepo } from '../local/removeRepo'
 import { apiRequest } from '@utils/api/apiRequest'
-import { setActiveModal } from '@actions/modals/setActiveModal'
+import { connectModal } from '@actions/modals/modals'
 
 export const disconnectRepo = async (username?:string) => {
   addToast({
@@ -41,6 +40,6 @@ export const disconnectRepo = async (username?:string) => {
     })
 
   // Open the connect repo modal after disconnecting
-  setActiveModal(ModalTypes.CONNECT)
+  connectModal()
 
 }

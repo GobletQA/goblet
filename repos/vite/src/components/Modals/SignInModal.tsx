@@ -6,8 +6,8 @@ import { useUser, useRepo } from '@store'
 import { Git } from '@components/Icons/Git'
 import { Loading } from '@components/Loading'
 import { isEmptyColl } from '@keg-hub/jsutils'
+import { connectModal } from '@actions/modals/modals'
 import { toggleModal } from '@actions/modals/toggleModal'
-import { setActiveModal } from '@actions/modals/setActiveModal'
 
 const LazySignIn = lazy(() => import('@components/Admin/SignIn/SignIn'))
 
@@ -24,7 +24,7 @@ export const SignInModal:TModalRef = (props:TModalComponent) => {
 
     // If the repo is empty then,
     // open the load repo modal to allow connecting repo
-    isEmptyColl(repo) && setActiveModal(ModalTypes.CONNECT)
+    isEmptyColl(repo) && connectModal()
   }, [user, repo])
 
   return (

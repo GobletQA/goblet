@@ -1,12 +1,7 @@
-import { ModalTypes } from '@constants'
 import { getQueryData } from './getQueryData'
-import { isEmptyColl, noOpObj } from '@keg-hub/jsutils'
+import { repoModal } from '@actions/modals/modals'
 import { loadFile } from '@actions/files/api/loadFile'
-import { setActiveModal } from '@actions/modals/setActiveModal'
-
-// TODO: figure out what to do with screens
-// import { setScreenById } from '@actions/screens/setScreenById'
-
+import { isEmptyColl, noOpObj } from '@keg-hub/jsutils'
 
 /**
  * The current popstate
@@ -31,12 +26,10 @@ const listenToPopState = async (event:any) => {
 
   const { file } = queryObj as Record<string, string>
 
-  // screen && setScreenById(screen)
   file && (await loadFile(file))
 
-  // Load the init modal
   // display options modal if no valid querystring passed in
-  isEmptyColl(queryObj) && setActiveModal(ModalTypes.REPO)
+  isEmptyColl(queryObj) && repoModal()
 
   IN_POP_STATE = false
 }

@@ -60,8 +60,8 @@ export const SideNav = deepFreeze({
       },
       items: [
         {
+          icon: `Settings`,
           title: `Settings`,
-          icon: `Settings`
         }
       ]
     }

@@ -1,25 +1,11 @@
 import type { TRouteMeta } from '@types'
 
-import { ModalTypes } from '@constants'
-import { isEmptyColl } from '@keg-hub/jsutils'
 import { loadFile } from './files/api/loadFile'
+import { signInModal } from '@actions/modals/modals'
 import { statusRepo } from '@actions/repo/api/status'
 import { getQueryData } from '@utils/url/getQueryData'
 import { loadUser } from '@actions/admin/user/loadUser'
 import { statusContainer } from '@actions/container/api'
-import { setActiveModal } from '@actions/modals/setActiveModal'
-
-/**
- * Checks if an initial test file should be loaded, and makes call to load it
- */
-const loadInitRepoFiles = async (
-  queryObj:Record<any, any>,
-  mergeQuery: boolean
-) => {
-  // Load the initial file from query params if it exists
-  queryObj?.file && (await loadFile(queryObj?.file, mergeQuery))
-}
-
 
 export const initStatus = async (status?:TRouteMeta) => {
   // If user is logged in, check the status of users session container
@@ -33,17 +19,15 @@ export const initStatus = async (status?:TRouteMeta) => {
 
   // Finally if the repo is mounted
   // Then get the query data to route to the correct tab as needed
-  const queryObj = getQueryData()
+  const queryObj = getQueryData() as Record<string, any>
 
-  // Load the initial test file
-  await loadInitRepoFiles(queryObj, true)
+  // Load the initial file from query params if it exists
+  queryObj?.file && (await loadFile(queryObj?.file))
 }
 
 export const initApp = async () => {
   // Load the local storage user if they exist
   const activeUser = await loadUser()
 
-  return !activeUser
-    ? setActiveModal(ModalTypes.SignIn)
-    : initStatus()
+  return !activeUser ? signInModal() : initStatus()
 }
