@@ -1,10 +1,10 @@
 import type { TInputDecor } from '@types'
 import type { ComponentProps } from 'react'
-import type { InputProps } from '@mui/material'
+import type { InputProps, InputLabelProps } from '@mui/material'
 
 import { Decor } from './Decor'
 import { noOpObj } from '@keg-hub/jsutils'
-import { AutocompleteElement } from 'react-hook-form-mui'
+import { AutocompleteElement } from './AutocompleteElement'
 
 export type TAutoInput = ComponentProps<typeof AutocompleteElement> & {
   decor?: TInputDecor
@@ -36,7 +36,11 @@ export const AutoInput = (props:TAutoInput) => {
             )
           }),
           ...(textFieldProps?.InputProps || noOpObj),
-        } as InputProps
+        } as InputProps,
+        InputLabelProps: {
+          shrink: true,
+          ...(textFieldProps?.InputLabelProps || noOpObj),
+        } as InputLabelProps
       }}
       autocompleteProps={{ disabled }}
     />

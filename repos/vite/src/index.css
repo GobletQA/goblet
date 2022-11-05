@@ -11,6 +11,22 @@ body {
   overflow-x: hidden;
 }
 
+input:-internal-autofill-selected {
+  
+}
+
 @media (prefers-color-scheme: light) {
+
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+  box-shadow: 0 0 0px 40rem #ffff inset;
+  -webkit-box-shadow: 0 0 0px 40rem #ffff inset;
+  -webkit-text-fill-color: rgba(0,0,0,0.87);
+  /* -webkit-text-fill-color: currentColor; */
+  /* background-color: -internal-light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4)) !important;
+  color: fieldtext !important; */
 
 }

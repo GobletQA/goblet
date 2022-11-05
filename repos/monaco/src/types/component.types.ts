@@ -30,6 +30,7 @@ export interface IMonacoEditorProps {
   onFileChange?: TEditorFileCB
   onFileTreeResize?: (width:number) => void
   onDeleteFile?: TEditorCB
+  onRenameFile?: TEditorCB
   onAddFile?: TEditorFileCB
   onSaveFile?: TEditorFileCB
   options: editor.IStandaloneEditorConstructionOptions

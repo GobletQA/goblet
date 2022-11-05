@@ -32,6 +32,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onSaveFile,
     defaultPath,
     onDeleteFile,
+    onRenameFile,
     onPathChange,
     onFileChange,
     onValueChange,
@@ -102,8 +103,8 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     editorNodeRef,
     onFileChangeRef,
     editorStatesRef,
-    contentListenerRef,
     onValueChangeRef,
+    contentListenerRef,
   })
 
   const {
@@ -154,6 +155,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     curValueRef,
     deleteModel,
     openedFiles,
+    onRenameFile,
     onDeleteFile,
     restoreModel,
     setOpenedFiles,

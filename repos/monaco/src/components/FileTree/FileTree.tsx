@@ -1,7 +1,12 @@
 import type { MutableRefObject, CSSProperties } from 'react'
 import type { Modal } from '../Modal/Modal'
-import type { TFolder, TFilelist } from '../../types'
-
+import type {
+  TFolder,
+  TFilelist,
+  TEditorCB,
+  TEditorFileCB,
+  TFileCallback,
+} from '../../types'
 import { memo, useCallback, useState } from 'react'
 import { FileTreeHeader } from './FileTreeHeader'
 import { useFileTree } from '../../hooks/fileTree/useFileTree'
@@ -16,15 +21,15 @@ export type TFileTree = {
   currentPath?: string
   style?: CSSProperties
   defaultFiles: TFilelist
+  onPathChange: TEditorCB
+  onDeleteFile: TEditorCB
+  onAddFile: TFileCallback
+  onDeleteFolder: TEditorCB
+  onAddFolder: TFileCallback
   rootEl: HTMLElement | null
-  onAddFile: (...args: any) => void
-  onAddFolder: (...args: any) => void
-  onPathChange: (key: string) => void
-  onDeleteFile: (...args: any) => void
+  onEditFileName: TFileCallback
+  onEditFolderName: TFileCallback
   filesRef: MutableRefObject<TFilelist>
-  onEditFileName: (...args: any) => void
-  onDeleteFolder: (path: string) => void
-  onEditFolderName: (path: string, name: string) => void
 }
 
 export const FileTree = memo((props: TFileTree) => {
@@ -52,7 +57,6 @@ export const FileTree = memo((props: TFileTree) => {
     deleteFolder,
     abortAddFile,
     abortAddFolder,
-    updateFiletree,
     editFolderName,
     onConfirmAddFile,
     onConfirmAddFolder

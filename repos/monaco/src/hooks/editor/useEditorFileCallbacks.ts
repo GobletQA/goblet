@@ -18,6 +18,7 @@ export type TUseEditorFileCallbacks = {
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
   pathChange: (path: string) => void
+  onRenameFile?: (path: string) => void
   onDeleteFile?: (path: string) => void
   onAddFile?: (path: string, content:string) => void
   onSaveFile?: (path: string, content: string) => void
@@ -44,6 +45,7 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
     openedFiles,
     restoreModel,
     onDeleteFile,
+    onRenameFile,
     setOpenedFiles,
   } = props
 
@@ -104,19 +106,15 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
       const missingNamed = path.startsWith(`/`) && path.endsWith(`/`)
       const newNamedFile = !missingNamed && !isEdit
 
-      if(newNamedFile && path in filesRef.current){
-        console.log(`------- existing -------`)
-      }
-
       const cont = content || ''
       createOrUpdateModel(path, cont)
       filesRef.current[path] = cont
 
-      newNamedFile && onAddFile?.(path, cont)
+      if(!newNamedFile) return
 
-      // Figure out why this is being called
-      // Not really needed it seems
-      // setTimeout(() => pathChange(path), 50)
+      // Auto open the file in the editor when a new file is created
+      pathChange(path)
+      onAddFile?.(path, cont)
     },
     [onAddFile, pathChange]
   )
@@ -134,15 +132,15 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
   const editFileName = useCallback(
     (path: string, name: string) => {
       const content = filesRef.current[path] || ''
-      setTimeout(() => {
-        deleteFile(path, true)
-        const newPath = path.split('/').slice(0, -1).concat(name).join('/')
-        addFile(newPath, content, true)
-      }, 50)
-    },
-    [deleteFile, addFile]
-  )
+      deleteFile(path, true)
+      const newPath = path.split('/').slice(0, -1).concat(name).join('/')
+      addFile(newPath, content, true)
 
+      onRenameFile?.(newPath)
+      setTimeout(() => pathChange(newPath), 50)
+    },
+    [deleteFile, addFile, onRenameFile]
+  )
 
   return {
     saveFile,

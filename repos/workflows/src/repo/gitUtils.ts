@@ -34,8 +34,8 @@ export const throwGitError = (
  */
 export const buildHeaders = (token:string) => ({
   ...(token && { Authorization: `token ${token}` }),
-  'Content-Type': 'application/json',
-  Accept: `application/vnd.github.v3+json`,
+  'Content-Type': `application/json`,
+  Accept: `application/vnd.github+json`,
 })
 
 /**

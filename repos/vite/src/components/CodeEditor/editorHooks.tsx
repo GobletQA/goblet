@@ -6,6 +6,8 @@ import type { OpenFileTreeEvent, TRepoState, TFileTree, TFilesState } from '@typ
 import { exists } from '@keg-hub/jsutils'
 import { OpenFileTreeEvt } from '@constants'
 import { loadFile } from '@actions/files/api/loadFile'
+import { saveFile } from '@actions/files/api/saveFile'
+import { removeFile } from '@actions/files/api/removeFile'
 import { useFileTree, useFiles, useRepo } from '@store'
 import { useCallback, useEffect, useMemo } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
@@ -13,17 +15,18 @@ import { ModalTypes, UpdateModalEvt } from '@constants'
 import { toggleModal } from '@actions/modals/toggleModal'
 import { setActiveModal } from '@actions/modals/setActiveModal'
 
+export type THEditorFiles = {
+  repo: TRepoState
+  rootPrefix: string,
+  fileTree: TFileTree
+  repoFiles: TFilesState
+}
+
 export type THOnLoadFile = THEditorFiles & {
   rootPrefix:string
   files: Record<string, string|null>
 }
 
-export type THEditorFiles = {
-  repo: TRepoState
-  repoPath: string,
-  fileTree: TFileTree
-  repoFiles: TFilesState
-}
 
 const modalActions = {
   close: () => {
@@ -39,12 +42,12 @@ const addRootToLoc = (loc:string, root:string) => `${root}${loc}`
 const removeRootFromLoc = (loc:string, root:string) => loc.replace(root, ``)
 
 const useOnLoadFile = ({
-  repoPath,
+  rootPrefix,
   repoFiles,
 }:THOnLoadFile) => {
 
   return useCallback(async (path:string) => {
-    const full = addRootToLoc(path, repoPath)
+    const full = addRootToLoc(path, rootPrefix)
     const existing = repoFiles?.pendingFiles?.[full] || repoFiles?.files?.[full]?.content
     if(existing) return existing
 
@@ -54,35 +57,57 @@ const useOnLoadFile = ({
 
     return loaded ? loaded?.content : null
   }, [
-    repoPath,
+    rootPrefix,
     repoFiles
   ])
 }
 
-
-const useOnSaveFile = () => {
-  return useCallback((loc:string, content:string) => {
-    console.log(`------- on save file -------`)
-  }, [])
+const useOnRenameFile = (repoFiles:TFilesState, rootPrefix:string) => {
+  return useCallback((loc:string) => {
+    if(!loc) console.warn(`Can not rename file, missing file location`)
+    console.log(`------- TODO - renameFile -------`)
+  }, [repoFiles, rootPrefix])
 }
 
-const useOnAddFile = () => {
-  return useCallback((loc:string) => {
-    console.log(`------- on add file -------`)
-  }, [])
+const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
+  return useCallback(async (loc:string, content:string) => {
+    if(!loc) console.warn(`Can not save file, missing file location`)
+
+    // TODO: add auto same on blur
+    const fullLoc = addRootToLoc(loc, rootPrefix)
+    const fileModel = repoFiles?.files[fullLoc]
+
+    if(!fileModel) console.warn(`Can not save file. Missing file model at ${fullLoc}`)
+
+    await saveFile({ ...(fileModel || {}), content })
+
+  }, [repoFiles, rootPrefix])
 }
 
-const useOnDeleteFile = () => {
+const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string) => {
   return useCallback((loc:string) => {
-    console.log(`------- on delete file -------`)
-  }, [])
+    if(!loc) console.warn(`Can not add file, missing file location`)
+    
+    console.log(`------- TODO - addFile -------`)
+  }, [repoFiles, rootPrefix])
+}
+
+const useOnDeleteFile = (repoFiles:TFilesState, rootPrefix:string) => {
+  return useCallback(async (loc:string) => {
+    if(!loc) console.warn(`Can not delete file, missing file location`)
+
+    const fullLoc = addRootToLoc(loc, rootPrefix)
+    const fileModel = repoFiles?.files[fullLoc]
+    await removeFile(fileModel || { name: loc, location: fullLoc })
+
+  }, [repoFiles, rootPrefix])
 }
 
 export const useEditorFiles = (props:THEditorFiles) => {
   const {
     repo,
     fileTree,
-    repoPath,
+    rootPrefix,
     repoFiles,
   } = props
 
@@ -99,14 +124,14 @@ export const useEditorFiles = (props:THEditorFiles) => {
       if(!exts.includes(ext)) return acc
 
       const model = repoFiles.files[loc]
-      const key = model?.relative || removeRootFromLoc(loc, repoPath)
+      const key = model?.relative || removeRootFromLoc(loc, rootPrefix)
       acc[key] = repoFiles?.pendingFiles?.[loc] || model?.content || null
 
       return acc
     }, {} as Record<string, string|null>) ?? {}
 
   }, [
-    repoPath,
+    rootPrefix,
     repo?.paths,
     repo?.fileTypes,
     fileTree?.paths,
@@ -127,14 +152,6 @@ export const useEditorHooks = (
   const repo = useRepo()
   const repoFiles = useFiles()
   const fileTree = useFileTree()
-  const repoPath = `${repo?.paths?.repoRoot}/${repo?.paths?.workDir}`
-
-  const editorFiles = useEditorFiles({
-    repo,
-    fileTree,
-    repoPath,
-    repoFiles,
-  })
 
   const rootPrefix = useMemo(() => {
     return repo?.paths?.workDir
@@ -142,10 +159,17 @@ export const useEditorHooks = (
       : repo?.paths?.repoRoot
   }, [repo?.paths?.repoRoot, repo?.paths?.workDir])
 
+  const editorFiles = useEditorFiles({
+    repo,
+    fileTree,
+    repoFiles,
+    rootPrefix,
+  })
+
+
   const onLoadFile = useOnLoadFile({
     repo,
     fileTree,
-    repoPath,
     repoFiles,
     rootPrefix,
     ...editorFiles
@@ -154,7 +178,7 @@ export const useEditorHooks = (
   const onPathChange = useCallback(async (path: string) => {
     // console.log(`------- onPath change -------`)
     // console.log(key)
-  }, [fileTree, repoPath])
+  }, [fileTree, rootPrefix])
 
   const onValueChange = useCallback((value: any) => {
     // console.log(`------- onValueChange -------`)
@@ -166,9 +190,10 @@ export const useEditorHooks = (
     // console.log(file)
   }, [])
 
-  const onDeleteFile = useOnDeleteFile()
-  const onAddFile = useOnAddFile()
-  const onSaveFile = useOnSaveFile()
+  const onDeleteFile = useOnDeleteFile(repoFiles, rootPrefix)
+  const onAddFile = useOnAddFile(repoFiles, rootPrefix)
+  const onSaveFile = useOnSaveFile(repoFiles, rootPrefix)
+  const onRenameFile = useOnRenameFile(repoFiles, rootPrefix)
 
   useEffect(() => {
     EE.on<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
@@ -189,6 +214,7 @@ export const useEditorHooks = (
     onValueChange,
     onAddFile,
     onSaveFile,
+    onRenameFile,
     onDeleteFile,
     ...editorFiles,
   }

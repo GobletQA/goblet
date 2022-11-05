@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
-import type { InputProps } from '@mui/material'
 import type { TInputDecor, CssProps } from '@types'
+import type { InputProps, InputLabelProps } from '@mui/material'
 
 import { Decor } from './Decor'
 import { noOpObj } from '@keg-hub/jsutils'
@@ -19,6 +19,7 @@ export const Input = (props:TInput) => {
     Component:__,
     decor=noOpObj as TInputDecor,
     InputProps=noOpObj as InputProps,
+    InputLabelProps=noOpObj as InputProps,
     ...rest
   } = props
   const { Component, pos } = decor
@@ -37,6 +38,10 @@ export const Input = (props:TInput) => {
           )
         }  as InputProps),
         ...InputProps,
+      }}
+      InputLabelProps={{
+        shrink: true,
+        ...InputLabelProps,
       }}
       {...rest}
     />

@@ -15,7 +15,6 @@ export const disconnectRepo = async (username?:string) => {
   // Remove the repo locally first
   await removeRepo()
 
-  // @ts-ignore
   username = username || GitUser.getUser()?.username
 
   // Log-out the github user

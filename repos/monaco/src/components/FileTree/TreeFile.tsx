@@ -9,7 +9,6 @@ import { FileIcon } from '../Icons/File'
 import DeleteIcon from '../Icons/Delete'
 import { noOpObj } from '@keg-hub/jsutils'
 
-// import { useFileType } from '../../hooks/file/useFileType'
 import { stopPropagation } from '../../utils/dom/stopPropagation'
 
 export type TTreeFile = {

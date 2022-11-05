@@ -22,8 +22,7 @@ const getBranchHash = async ({ branch, remote, token, log }:TGitOpts) => {
     headers: buildHeaders(token),
   } as AxiosRequestConfig
 
-  log && Logger.log(`Get Repo SHA Request Params:\n`, params)
-
+  log !== false && Logger.log(`Get Repo SHA Request Params:\n`, params)
   const [err, resp] = await limbo(axios(params))
 
   err &&
@@ -46,9 +45,17 @@ const getBranchHash = async ({ branch, remote, token, log }:TGitOpts) => {
 /**
  * Uses the github API to create a new branch based on the passed in git options
  */
-const createNewBranch = async ({ branch, newBranch, remote, token, log }:TGitOpts, hash:string) => {
+const createNewBranch = async ({
+  log,
+  token,
+  remote,
+  branch,
+  newBranch,
+}:TGitOpts, hash:string) => {
+
   const remoteUrl = buildAPIUrl(remote, [`git/refs`])
   newBranch = newBranch || `${branch}-${new Date().getTime()}`
+  log !== false && Logger.log(`Create Branch Names: ${newBranch}`)
 
   const params = {
     method: 'POST',
@@ -60,7 +67,7 @@ const createNewBranch = async ({ branch, newBranch, remote, token, log }:TGitOpt
     },
   } as AxiosRequestConfig
 
-  log && Logger.log(`Create Branch Request Params:\n`, params)
+  log !== false && Logger.log(`Create Branch Request Params:\n`, params)
 
   const [err] = await limbo(axios(params))
 
@@ -85,6 +92,5 @@ const createNewBranch = async ({ branch, newBranch, remote, token, log }:TGitOpt
  */
 export const branchRepo = async (gitArgs:TGitOpts) => {
   const hash = await getBranchHash(gitArgs)
-
   return await createNewBranch(gitArgs, hash as string)
 }

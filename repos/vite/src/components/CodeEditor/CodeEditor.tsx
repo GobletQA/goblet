@@ -15,6 +15,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     files,
     onAddFile,
     onSaveFile,
+    onRenameFile,
     onDeleteFile,
     connected,
     rootPrefix,
@@ -35,6 +36,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           rootPrefix={rootPrefix}
           onAddFile={onAddFile}
           onSaveFile={onSaveFile}
+          onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
           initialFileTreeStatus={true}
           initialFileTreeWidth={FileTreeWidth}

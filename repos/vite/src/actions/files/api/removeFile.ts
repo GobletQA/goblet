@@ -1,10 +1,17 @@
-import type { TFileTreeNode } from '@types'
+import type { TFileTreeNode, TFileModel } from '@types'
 
 import { noOpObj } from '@keg-hub/jsutils'
 import { getFileTree } from './getFileTree'
 import { addToast } from '@actions/toasts'
 import { deleteApiFile } from '@utils/api/deleteApiFile'
-import { clearActiveFile } from '../local/clearActiveFile'
+
+export type TRemoveFileLoc = {
+  name:string
+  location: string
+}
+
+// Not currently using an active file. Monaco manages that for us
+// import { clearActiveFile } from '../local/clearActiveFile'
 
 /**
  * Deletes a file via the path from the passed in fileModel
@@ -13,7 +20,7 @@ import { clearActiveFile } from '../local/clearActiveFile'
  *
  * @returns {Object} - {success}
  */
-export const removeFile = async (fileModel:TFileTreeNode, screenId:string|false) => {
+export const removeFile = async (fileModel:TFileTreeNode|TFileModel|TRemoveFileLoc) => {
   addToast({
     type: 'warn',
     message: `Removing file ${fileModel.name}!`,
@@ -33,12 +40,7 @@ export const removeFile = async (fileModel:TFileTreeNode, screenId:string|false)
     message: `The file ${fileModel.name} was removed!`,
   })
 
-  // Only clear the activeFile from the screen if the id is passed, or it's undefined
-  // If false, then skip clearing the active file
-  // Used for the features / step-definitions split
-  // Otherwise it would clear the feature file when a step definition is removed
-  screenId !== false && clearActiveFile(screenId)
-
+  // clearActiveFile()
   // reload the file tree after the file was removed
   getFileTree()
 

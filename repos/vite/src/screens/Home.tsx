@@ -36,7 +36,7 @@ export default function Home(props:THomeProps) {
 
 const navActions = {
   Logout: signOutAuthUser,
-  [`Unmount Repo`]: disconnectRepo,
+  [`Unmount Repo`]: () => disconnectRepo(),
 }
 
 Home.path = `/`

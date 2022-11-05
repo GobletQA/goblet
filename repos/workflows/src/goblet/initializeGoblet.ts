@@ -35,14 +35,6 @@ export const initializeGoblet = async (args:TWFArgs) => {
       'Failed repo mount. Improper git validation'
     )
 
-  // Ensure the repo is not already mounted before trying to mount it
-  const mounted = await git.exists(args)
-  if (mounted) {
-    Logger.log(`Repo is already mounted at ${gitArgs.local}`)
-
-    return await setupGoblet(args, gitArgs, true)
-  }
-
   gitArgs.createBranch
     ? Logger.log(`Creating new branch...`)
     : Logger.log(`Reusing existing branch...`)
@@ -51,6 +43,14 @@ export const initializeGoblet = async (args:TWFArgs) => {
   const branch = gitArgs.createBranch && gitArgs.newBranch
     ? await branchRepo(gitArgs)
     : gitArgs.branch
+
+  // Ensure the repo is not already mounted before trying to mount it
+  const mounted = await git.exists(args)
+  if (mounted) {
+    Logger.log(`Repo is already mounted at ${gitArgs.local}`)
+
+    return await setupGoblet(args, gitArgs, true)
+  }
 
   Logger.log(`Mounting remote repo...`)
   // Mount the git repo, passing in the branch to be used
