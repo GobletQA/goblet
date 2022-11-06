@@ -13,6 +13,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
 
   const {
     files,
+    options,
     onAddFile,
     onSaveFile,
     onRenameFile,
@@ -30,12 +31,13 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     ? (
         <MonacoEditor
           ref={editorRef}
+          options={options}
           Modal={modalActions}
           defaultFiles={files}
-          onLoadFile={onLoadFile}
-          rootPrefix={rootPrefix}
           onAddFile={onAddFile}
           onSaveFile={onSaveFile}
+          rootPrefix={rootPrefix}
+          onLoadFile={onLoadFile}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
           initialFileTreeStatus={true}
@@ -43,10 +45,6 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onPathChange={onPathChange}
           onValueChange={onValueChange}
           onFileChange={onFileChange}
-          options={{
-            fontSize: 14,
-            automaticLayout: true,
-          }}
         />
       )
     : (

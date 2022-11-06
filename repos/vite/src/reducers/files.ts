@@ -49,7 +49,7 @@ export const filesActions = {
   },
   setFiles: (
     state:TFilesState,
-    action:TAction<TFileModel[]>
+    action:TAction<Record<string, TFileModel>>
   ) => {
     return {
       ...state,
@@ -86,7 +86,7 @@ export const filesActions = {
   }),
   upsertFiles: (
     state:TFilesState,
-    action:TAction<TFileModel[]>
+    action:TAction<Record<string, TFileModel>>
   ) => {
     return {
       ...state,

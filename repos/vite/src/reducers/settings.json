@@ -1,0 +1,22 @@
+{
+  "editor": {
+    "autoSave": {
+      "key": "autoSave",
+      "value": true,
+      "active": true,
+      "group": "editor"
+    },
+    "fontSize": {
+      "key": "fontSize",
+      "value": 14,
+      "active": true,
+      "group": "editor"
+    },
+    "automaticLayout": {
+      "key": "automaticLayout",
+      "value": true,
+      "active": true,
+      "group": "editor"
+    }
+  }
+}

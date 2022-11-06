@@ -1,6 +1,13 @@
 import type { MutableRefObject } from 'react'
 import type { TCodeEditorProps } from './CodeEditor'
-import type { OpenFileTreeEvent, TRepoState, TFileTree, TFilesState } from '@types'
+import type {
+  TRepoState,
+  TFileTree,
+  TFilesState,
+  OpenFileTreeEvent,
+  TEditorSettingValues
+} from '@types'
+
 
 
 import { exists } from '@keg-hub/jsutils'
@@ -9,11 +16,12 @@ import { OpenFileTreeEvt } from '@constants'
 import { confirmModal } from '@actions/modals/modals'
 import { loadFile } from '@actions/files/api/loadFile'
 import { saveFile } from '@actions/files/api/saveFile'
-import { useFileTree, useFiles, useRepo } from '@store'
 import { useCallback, useEffect, useMemo } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { toggleModal } from '@actions/modals/toggleModal'
 import { removeFile } from '@actions/files/api/removeFile'
+import { useSettingValues } from '@hooks/store/useSettingValues'
+import { useFileTree, useFiles, useRepo, useSettings } from '@store'
 
 export type THEditorFiles = {
   repo: TRepoState
@@ -166,7 +174,6 @@ export const useEditorHooks = (
     rootPrefix,
   })
 
-
   const onLoadFile = useOnLoadFile({
     repo,
     fileTree,
@@ -195,6 +202,8 @@ export const useEditorHooks = (
   const onSaveFile = useOnSaveFile(repoFiles, rootPrefix)
   const onRenameFile = useOnRenameFile(repoFiles, rootPrefix)
 
+  const options = useSettingValues<TEditorSettingValues>(`editor`)
+
   useEffect(() => {
     EE.on<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
       exists(size) && editorRef?.current?.resizeFileTree?.(size)
@@ -206,6 +215,7 @@ export const useEditorHooks = (
   }, [])
 
   return {
+    options,
     rootPrefix,
     onLoadFile,
     onFileChange,

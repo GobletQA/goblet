@@ -7,6 +7,7 @@ import { repoState, repoActions } from './repo'
 import { modalState, modalActions } from './modal'
 import { reposState, reposActions } from './repos'
 import { filesState, filesActions } from './files'
+import { settingsState, settingsActions } from './settings'
 import { featuresState, featuresActions } from './features'
 import { fileTreeState, fileTreeActions } from './fileTree'
 import { containerState, containerActions } from './container'
@@ -21,7 +22,9 @@ export const preloadedState = {
   modal: modalState,
   repo: repoState,
   user: userState,
+  settings: settingsState
 }
+
 
 export const reducer = combineReducers<TState>({
   container: createReducer(containerState, containerActions),
@@ -32,5 +35,6 @@ export const reducer = combineReducers<TState>({
   modal: createReducer(modalState, modalActions),
   repo: createReducer(repoState, repoActions),
   repos: createReducer(reposState, reposActions),
+  settings: createReducer(settingsState, settingsActions),
   user: createReducer(userState, userActions)
 })

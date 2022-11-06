@@ -1,6 +1,5 @@
 import { noOp, isFunc, eitherObj, isBool } from '@keg-hub/jsutils'
 
-
 /**
  * Converts the passed in method into a callback to allow calling the method in place
  * Second argument can be a boolean or defaults object
