@@ -20,7 +20,7 @@ input:-internal-autofill-selected {
 }
 
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
+input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
   box-shadow: 0 0 0px 40rem #ffff inset;
   -webkit-box-shadow: 0 0 0px 40rem #ffff inset;

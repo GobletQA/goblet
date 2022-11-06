@@ -1,7 +1,7 @@
 import type { TValueGroup, TSetting } from '@types'
 
 import { useSettings } from '@store'
-import { get, noOpObj } from '@keg-hub/jsutils'
+import { get, noOpObj, exists } from '@keg-hub/jsutils'
 
 
 /**
@@ -14,7 +14,9 @@ export const useSettingValues = <T extends TValueGroup>(loc:string):T => {
 
   return Object.entries(group)
     .reduce((acc, [key, settingObj]:[string, TSetting]) => {
-      settingObj.active && (acc[key as keyof T] = settingObj?.value)
+      settingObj.active
+        ? (acc[key as keyof T] = settingObj?.value)
+        : exists(settingObj.default) && (acc[key as keyof T] = settingObj?.default)
 
       return acc
     }, {} as T)

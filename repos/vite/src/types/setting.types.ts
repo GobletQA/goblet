@@ -3,6 +3,11 @@ export type TSetting = {
   key?: string
   group?: string
   active?: boolean
+  options?: string[]
+  default?: any
+  prefix?: string
+  postfix?: string
+  type?: `string` | `boolean` | `array` | `object` | `number`
 }
 
 type TNoSettingKeys = {
@@ -35,7 +40,13 @@ export type TSettingGroupMeta = {
   settings: TSettingGroup | TSetting
 }
 
+export type TSettingsConfig = {
+  editKeys: string[]
+  hiddenKeys: string[]
+}
+
 export type TSettings = {
+  $config: TSettingsConfig
   editor: TEditorSettings
 }
 

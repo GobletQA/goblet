@@ -1,4 +1,4 @@
-import type { CssProps, CSSObj } from '@types'
+import type { CSSProps, CSSObj } from '@types'
 import type { ReactNode, CSSProperties } from 'react'
 
 import { useMemo } from 'react'
@@ -57,7 +57,7 @@ export const useLabelProps = <T=Record<any, any>>(props:THLabelProps) => {
       ...rest,
       ...buttonProps,
       label: label || labelProps?.label,
-      sx: [labelProps?.sx, buttonProps?.sx, labelSx, buttonSx, { color }] as CssProps,
+      sx: [labelProps?.sx, buttonProps?.sx, labelSx, buttonSx, { color }] as CSSProps,
       labelPlacement: labelPlacement || labelPos || labelProps?.labelPlacement || labelProps.labelPos
     } as T
   }, [

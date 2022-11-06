@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react'
-import type { TInputDecor, CssProps } from '@types'
+import type { TInputDecor, CSSProps } from '@types'
 import type { InputProps, InputLabelProps } from '@mui/material'
 
 import { Decor } from './Decor'
@@ -7,8 +7,10 @@ import { noOpObj } from '@keg-hub/jsutils'
 import { TextFieldElement } from 'react-hook-form-mui'
 
 export type TInput =  ComponentProps<typeof TextFieldElement> & {
+  sx?: CSSProps
+  active?:boolean
   decor?: TInputDecor
-  sx?: CssProps
+  gridProps?:Record<any, any>
 }
 
 export const Input = (props:TInput) => {

@@ -21,10 +21,16 @@ const styles = {
 }
 
 const useGroupMeta = (settings:TSettings) => {
+
   const groups = useMemo(() => {
     return Object.entries(settings)
-      .reduce((acc, [group, settings], idx) => {
-        acc.push({ name: group, settings, idx })
+      .reduce((acc, [group, settings]) => {
+        !group.startsWith(`$`)
+          && acc.push({
+              settings,
+              name: group,
+              idx: acc.length
+            } as TSettingGroupMeta)
 
         return acc
       }, [] as TSettingGroupMeta[])
@@ -52,9 +58,9 @@ const useGroupMeta = (settings:TSettings) => {
 }
 
 export const Settings = () => {
-  const [value, setValue] = useState(0)
 
   const settings = useSettings()
+
   const {
     groups,
     groupIdx,
@@ -75,6 +81,7 @@ export const Settings = () => {
               <SettingPanel
                 group={group}
                 value={groupIdx}
+                config={settings.$config}
                 key={`${group.idx}-${group.name}`}
               />
             )

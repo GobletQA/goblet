@@ -6,6 +6,7 @@ import { reposActions } from '@reducers/repos'
 import { filesActions } from '@reducers/files'
 import { featuresActions } from '@reducers/features'
 import { fileTreeActions } from '@reducers/fileTree'
+import { settingsActions } from '@reducers/settings'
 import { containerActions } from '@reducers/container'
 import { definitionsActions } from '@reducers/definitions'
 
@@ -17,4 +18,5 @@ export const fileTreeDispatch = createDispatcher(fileTreeActions)
 export const modalDispatch = createDispatcher(modalActions)
 export const repoDispatch = createDispatcher(repoActions)
 export const reposDispatch = createDispatcher(reposActions)
+export const settingsDispatch = createDispatcher(settingsActions)
 export const userDispatch = createDispatcher(userActions)

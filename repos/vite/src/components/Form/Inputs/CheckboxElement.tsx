@@ -1,4 +1,4 @@
-import type { CssProps, CSSObj } from '@types'
+import type { CSSObj } from '@types'
 import type { TExtLabelProps } from './inputHooks'
 import type { ReactNode, CSSProperties } from 'react'
 

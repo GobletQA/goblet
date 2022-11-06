@@ -1,12 +1,12 @@
-import type { TSettingGroupMeta } from '@types'
+import type { TSettingGroupMeta, TSettingsConfig } from '@types'
 
 import { gutter } from '@theme'
 import Box from '@mui/material/Box'
-import Paper from '@mui/material/Paper'
-import { SettingsTable } from '@components/Settings/SettingsTable'
+import { SettingsList } from '@components/Settings/SettingsList'
 
-interface TSettingPanel {
+export type TSettingPanel = {
   value: number
+  config: TSettingsConfig
   group: TSettingGroupMeta
 }
 
@@ -29,7 +29,7 @@ const styles = {
 }
 
 export const SettingPanel = (props: TSettingPanel) => {
-  const { value, group, ...rest } = props
+  const { value, group, config, ...rest } = props
 
   return (
     <Box
@@ -43,7 +43,7 @@ export const SettingPanel = (props: TSettingPanel) => {
     >
       {value === group.idx && (
         <Box className='settings-panel-content' sx={styles.content.container}>
-          <SettingsTable group={group} />
+          <SettingsList group={group} config={config} />
         </Box>
       )}
     </Box>

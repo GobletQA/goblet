@@ -9,14 +9,31 @@ export type TSettingsState = TSettings
 // Use deepMerge to ensure the settingsState is a unique copy
 export const settingsState = deepMerge<TSettingsState>(settingsJson)
 
-const missingSetting = (state:TSettingsState, setting:string) => {
+const missingSetting = (setting:string) => {
   console.warn(`Tried to update a non-existing setting at path: ${setting}`)
-  return state
+  return noOpObj as any
 }
 
-const noSetting = (state:TSettingsState, setting:string) => {
+const noSetting = (setting:string) => {
   console.warn(`A setting key name or path string is required. Instead got ${setting}`)
-  return state
+  return noOpObj as any
+}
+
+const findSetting = (
+  state:TSettingsState,
+  action:TAction<TSettingAct>
+) => {
+  const { setting } = action?.payload
+
+  if(!setting) return noSetting(setting)
+
+  // Get the setting object to be updated, if non exists, the do nothing
+  // Only alow pre-defined settings
+  const found = get(state, setting)
+  if(!isSetting(found)) return missingSetting(setting)
+
+  return { found, setting }
+
 }
 
 export const settingsActions = {
@@ -32,43 +49,43 @@ export const settingsActions = {
     state:TSettingsState,
     action:TAction<TSettingAct>
   ) => {
-    const { setting } = action?.payload
-    if(!setting) return noSetting(state, setting)
-
-    // Get the setting from the original setting state
-    // Which we can then use to reset the setting state
-    const defSetting = get(settingsState, setting)
-    if(!isSetting(defSetting)) missingSetting(state, setting)
-
-    // Create a new state object, to ensure an update
-    const updated = { ...state }
+    
+    const { found, setting } = findSetting(settingsState, action)
+    if(!found) return state
 
     // Use deepMerge to ensure the setting object gets recreated
-    set(updated, setting, deepMerge<TSetting>(defSetting))
+    set(state, setting, deepMerge<TSetting>(found))
 
-    return updated
+    return state
+  },
+  toggleActive: (
+    state:TSettingsState,
+    action:TAction<TSettingAct>
+  ) => {
+    
+    const { found, setting } = findSetting(state, action)
+    if(!found) return state
+
+    // If value property is in data, it will override passed in value
+    // Use deepMerge to ensure the setting object gets merged and recreated
+    const settingObj = deepMerge(found, { active: !found.active })
+    set(state, setting, settingObj)
+
+    return state
   },
   update: (
     state:TSettingsState,
     action:TAction<TSettingAct>
   ) => {
-    const { setting, value, data=noOpObj } = action?.payload
-    if(!setting) return noSetting(state, setting)
-
-    // Get the setting object to be updated, if non exists, the do nothing
-    // Only alow pre-defined settings
-    const foundSetting = get(state, setting)
-    if(!isSetting(foundSetting)) missingSetting(state, setting)
-
-    // Create a new state object, to ensure an update
-    const updated = { ...state }
+    const { found, setting } = findSetting(state, action)
+    if(!found) return state
 
     // If value property is in data, it will override passed in value
     // Use deepMerge to ensure the setting object gets merged and recreated
-    const settingObj = deepMerge(foundSetting, { value, ...data })
+    const { value, data=noOpObj } = action?.payload
+    const settingObj = deepMerge(found, { value, ...data })
+    set(state, setting, settingObj)
 
-    set(updated, setting, settingObj)
-
-    return updated
+    return state
   },
 }

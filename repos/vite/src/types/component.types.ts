@@ -6,7 +6,7 @@ import type { Theme } from '@mui/material'
 // ((theme: Theme) => SystemStyleObject<Theme>)
 // ReadonlyArray<boolean | SystemStyleObject<Theme> | ((theme: Theme) => SystemStyleObject<Theme>)>;
 
-export type CssProps = SxProps<Theme>
+export type CSSProps = SxProps<Theme>
 export type CSSObj = SystemStyleObject<Theme>
 
 export type TInputDecor = {
