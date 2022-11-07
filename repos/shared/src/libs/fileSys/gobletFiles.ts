@@ -35,7 +35,7 @@ const checkPathExists = async (location:string, skipThrow?:boolean) => {
       msg: `Path not found: ${location}`,
     })
 
-  return err || exists ? true : false
+  return exists ? true : false
 }
 
 const inTestRoot = (
@@ -220,16 +220,19 @@ export const renameGobletFile = async (
 
   await checkPathExists(oldLoc)
   const existingLoc = await checkPathExists(newLoc, true)
+
   if(existingLoc)
     throw new Exception({
       status: 400,
-      msg: `Path not found: ${location}`,
+      msg: `File path "${newLoc}" already exists`,
       err: isBool(existingLoc) ? `Unknown file status` : existingLoc,
     })
 
   const moved = await movePath(oldLoc, newLoc)
+  const file = await getGobletFile(repo, newLoc)
 
   return {
+    file,
     success: moved,
     location: newLoc,
   }

@@ -1,4 +1,4 @@
-import type { TAction } from '@types'
+import type { TAction, TFileTypes } from '@types'
 import { deepMerge } from '@keg-hub/jsutils'
 
 export type TWorld = {
@@ -9,6 +9,7 @@ export type TRepoState = {
   name: string
   url: string
   world: TWorld
+  fileTypes: TFileTypes
   git: Record<string, any>
   paths: Record<string, string>
   [key:string]: any

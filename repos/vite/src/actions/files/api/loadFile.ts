@@ -1,21 +1,24 @@
-import type { TFileTreeNode, TFileTree } from '@types'
+import type { TFileTreeNode } from '@types'
 
 import { getStore } from '@store'
 import { loadApiFile } from '@utils/api'
-import { isObj } from '@keg-hub/jsutils'
 import { setFile } from '../local/setFile'
 import { addToast } from '../../toasts/addToast'
+import { isObj, noOpObj } from '@keg-hub/jsutils'
 
 /**
  * Helper to find the treeNodeModel of the passed in file
  * Matches a node, a node's location or a node's name
  */
 const findFileInTree = (
-  nodes:TFileTreeNode[],
+  nodes:Record<string, TFileTreeNode>,
   file:TFileTreeNode|string
 ) =>
-  nodes.find(
-    node => node === file || node.location === file || node.name === file
+  Object.values(nodes).find(
+    node => node === file
+      || node.id === file
+      || node.location === file
+      || node.name === file
   )
 
 
@@ -24,7 +27,7 @@ const getFileTreeNode = (fileNode:TFileTreeNode|string) => {
     return { node: fileNode, name: fileNode.name }
 
   const { fileTree } = getStore()?.getState()
-  if (!fileTree || !fileTree?.nodes?.length || !fileTree?.rootPaths?.length)
+  if (!fileTree || !Object.keys(fileTree?.nodes || noOpObj).length)
     return { name: fileNode }
 
   const node = findFileInTree(fileTree.nodes, fileNode)

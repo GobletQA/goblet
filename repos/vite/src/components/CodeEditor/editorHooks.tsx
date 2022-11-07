@@ -16,12 +16,15 @@ import { OpenFileTreeEvt } from '@constants'
 import { confirmModal } from '@actions/modals/modals'
 import { loadFile } from '@actions/files/api/loadFile'
 import { saveFile } from '@actions/files/api/saveFile'
+import { createFile } from '@actions/files/api/createFile'
+import { removeFile } from '@actions/files/api/removeFile'
+import { renameFile } from '@actions/files/api/renameFile'
+
+import { useFileTree, useFiles, useRepo } from '@store'
 import { useCallback, useEffect, useMemo } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { toggleModal } from '@actions/modals/toggleModal'
-import { removeFile } from '@actions/files/api/removeFile'
 import { useSettingValues } from '@hooks/store/useSettingValues'
-import { useFileTree, useFiles, useRepo, useSettings } from '@store'
 
 export type THEditorFiles = {
   repo: TRepoState
@@ -71,9 +74,16 @@ const useOnLoadFile = ({
 }
 
 const useOnRenameFile = (repoFiles:TFilesState, rootPrefix:string) => {
-  return useCallback((loc:string) => {
-    if(!loc) console.warn(`Can not rename file, missing file location`)
-    console.log(`------- TODO - renameFile -------`)
+  return useCallback(async (oldFile:string, newFile:string) => {
+
+    if(!oldFile) console.warn(`Can not rename file, missing old file location`)
+    if(!newFile) console.warn(`Can not rename file, missing new file location`)
+
+    const oldLoc = addRootToLoc(oldFile, rootPrefix)
+    const newLoc = addRootToLoc(newFile, rootPrefix)
+
+    await renameFile(oldLoc, newLoc)
+
   }, [repoFiles, rootPrefix])
 }
 
@@ -92,12 +102,22 @@ const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
   }, [repoFiles, rootPrefix])
 }
 
-const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string) => {
-  return useCallback((loc:string) => {
+const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string, repo:TRepoState) => {
+  return useCallback(async (loc:string, isFolder:boolean) => {
     if(!loc) console.warn(`Can not add file, missing file location`)
     
-    console.log(`------- TODO - addFile -------`)
-  }, [repoFiles, rootPrefix])
+    const ext = loc.split(`.`).pop()
+
+    const fileType = isFolder
+      ? `folder`
+      : Object.values(repo.fileTypes).find(typeObj => typeObj.ext === ext)
+
+    if(!fileType) throw new Error(`Invalid file type. Please use a valid file extension`)
+
+    const fullLoc = addRootToLoc(loc, rootPrefix)
+
+    await createFile(fileType, fullLoc, isFolder)
+  }, [repoFiles, rootPrefix, repo.fileTypes])
 }
 
 const useOnDeleteFile = (repoFiles:TFilesState, rootPrefix:string) => {
@@ -120,29 +140,31 @@ export const useEditorFiles = (props:THEditorFiles) => {
   } = props
 
   const files = useMemo(() => {
-    if(!repo?.fileTypes || !fileTree?.paths) return {}
+    if(!repo?.fileTypes || !fileTree?.nodes) return {}
 
     const exts = Object.values(repo?.fileTypes)
       .map((fileType) => (fileType as Record<'ext', string>).ext)
 
-    return fileTree?.paths?.reduce((acc, loc) => {
-      if(acc[loc]) return acc
+    return Object.entries(fileTree?.nodes)
+      .reduce((acc, [id, node]) => {
+        const loc = node.location
+        if(acc[loc]) return acc
 
-      const ext = loc.split(`.`).pop() as string
-      if(!exts.includes(ext)) return acc
+        const ext = loc.split(`.`).pop() as string
+        if(!exts.includes(ext)) return acc
 
-      const model = repoFiles.files[loc]
-      const key = model?.relative || removeRootFromLoc(loc, rootPrefix)
-      acc[key] = repoFiles?.pendingFiles?.[loc] || model?.content || null
+        const model = repoFiles.files[loc]
+        const key = model?.relative || removeRootFromLoc(loc, rootPrefix)
+        acc[key] = repoFiles?.pendingFiles?.[loc] || model?.content || null
 
-      return acc
-    }, {} as Record<string, string|null>) ?? {}
+        return acc
+      }, {} as Record<string, string|null>) ?? {}
 
   }, [
     rootPrefix,
     repo?.paths,
     repo?.fileTypes,
-    fileTree?.paths,
+    fileTree?.nodes,
     repoFiles?.files,
   ])
   
@@ -198,7 +220,7 @@ export const useEditorHooks = (
   }, [])
 
   const onDeleteFile = useOnDeleteFile(repoFiles, rootPrefix)
-  const onAddFile = useOnAddFile(repoFiles, rootPrefix)
+  const onAddFile = useOnAddFile(repoFiles, rootPrefix, repo)
   const onSaveFile = useOnSaveFile(repoFiles, rootPrefix)
   const onRenameFile = useOnRenameFile(repoFiles, rootPrefix)
 

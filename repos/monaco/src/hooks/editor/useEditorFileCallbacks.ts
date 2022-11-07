@@ -18,11 +18,11 @@ export type TUseEditorFileCallbacks = {
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
   pathChange: (path: string) => void
-  onRenameFile?: (path: string) => void
   onDeleteFile?: (path: string) => void
   onAddFile?: (path: string, content:string) => void
   onSaveFile?: (path: string, content: string) => void
   setCurPath: (content: SetStateAction<string>) => void
+  onRenameFile?: (oldLoc: string, newLoc:string) => void
   restoreModel: (path: string) => false | editor.ITextModel
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
@@ -136,7 +136,7 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
       const newPath = path.split('/').slice(0, -1).concat(name).join('/')
       addFile(newPath, content, true)
 
-      onRenameFile?.(newPath)
+      onRenameFile?.(path, newPath)
       setTimeout(() => pathChange(newPath), 50)
     },
     [deleteFile, addFile, onRenameFile]

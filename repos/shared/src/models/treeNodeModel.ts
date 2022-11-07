@@ -15,8 +15,8 @@ const Model = {
   name: '',
   type: '',
   fileType: '',
-  children: [],
   location: '',
+  children: {} as Record<string, TTreeNodeModel>,
 }
 
 export const treeNodeModel = (overrides:Partial<TTreeNodeModel>):TTreeNodeModel => buildModel<TTreeNodeModel>(overrides, Model)

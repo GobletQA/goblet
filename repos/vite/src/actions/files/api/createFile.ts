@@ -1,47 +1,74 @@
-import { getStore } from '@store'
-import { noOpObj } from '@keg-hub/jsutils'
-import { addToast } from '@actions/toasts'
-import { createApiFile } from '@utils/api/createApiFile'
-import { getFileTree } from '@actions/files/api/getFileTree'
+import type { TFileType } from '@types'
 
-// TODO: figure how this is going to be handled now ???
-import { setActiveFileFromType } from '../local/setActiveFileFromType'
+import { getStore } from '@store'
+import { addToast } from '@actions/toasts'
+import { noOpObj, isObj } from '@keg-hub/jsutils'
+import { setFile } from '@actions/files/local/setFile'
+import { createApiFile } from '@utils/api/createApiFile'
 
 /**
  * Checks the file extension based on fileType, and adds it if needed
  */
-const ensureExtension = (fileType:string, fileName:string) => {
+const ensureExtension = (
+  fileType:string|TFileType,
+  fileName:string,
+  isFolder:boolean,
+) => {
+  
+  if(isFolder)
+    return {
+      file:fileName,
+      typeMeta: { type: `folder`, ext: ``, location: ``, }
+    }
+  
   const { repo } = getStore().getState()
+
   const fileTypes = repo?.fileTypes
+  if(!fileTypes)
+    return {
+      file: ``,
+      typeMeta: noOpObj as TFileType,
+      error: `Missing valid file types for repo. Please reconnect the repository`,
+    }
 
-  if(!fileTypes || !fileTypes[fileType])
-    return { error: `Missing valid file types for repo. Please reconnect the repository`, file: `` }
+  const typeMeta = isObj<TFileType>(fileType) ? fileType : fileTypes[fileType]
 
-  const typeMeta = fileTypes[fileType]
   if(!typeMeta || !typeMeta.ext)
-    return {error: [
-      `File type "${fileType}" is misconfigured in the repos "goblet.config.js".`,
-      `Please fix configuration for this file type to resolve the issue.`
-    ].join(`\n`), file: ``}
+    return {
+      file: ``,
+      typeMeta,
+      error: [
+        `File type "${fileType}" is misconfigured in the repos "goblet.config.js".`,
+        `Please fix configuration for this file type to resolve the issue.`
+      ].join(`\n`),
+    }
 
   const ext = typeMeta.ext
-  if (!fileName.includes('.')) return {file: `${fileName}.${ext}`}
+  if (!fileName.includes('.')) return {file: `${fileName}.${ext}`, typeMeta}
 
   const last = fileName.split('.').pop()
   return last === ext
-    ? {file: fileName}
-    : {error: [
-        `Invalid extension ".${last}".`,
-        `Files of type "${fileType}" must include ".${ext}" at the end.`
-      ].join(`\n`), file: ``}
+    ? {file: fileName, typeMeta }
+    : {
+        file: ``,
+        typeMeta,
+        error: [
+          `Invalid extension ".${last}".`,
+          `Files of type "${fileType}" must include ".${ext}" at the end.`
+        ].join(`\n`),
+      }
 }
 
 /**
  * Creates a new file from the passed in fileModel
  *
  */
-export const createFile = async (fileType:string, fileName:string, screenId:string) => {
-  const { file, error } = ensureExtension(fileType, fileName)
+export const createFile = async (
+  fileType:string|TFileType,
+  fileName:string,
+  isFolder:boolean,
+) => {
+  const { file, typeMeta, error } = ensureExtension(fileType, fileName, isFolder)
 
   if (error)
     return addToast({
@@ -57,7 +84,7 @@ export const createFile = async (fileType:string, fileName:string, screenId:stri
 
   const resp = await createApiFile({
     name: file,
-    type: fileType,
+    type: typeMeta.type,
   })
   if(!resp?.success) return noOpObj
 
@@ -74,11 +101,7 @@ export const createFile = async (fileType:string, fileName:string, screenId:stri
     message: `New file ${fileModel.name} was created!`,
   })
 
-  // reload the file tree after the new file was created
-  getFileTree()
-
-  // TODO: figure how this is going to be handled now ???
-  // screenId && setActiveFileFromType(fileModel, screenId)
+  setFile(fileModel)
 
   return resp?.data
 }

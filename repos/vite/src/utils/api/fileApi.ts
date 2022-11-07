@@ -9,13 +9,18 @@ export type TFileApi = {
 
 export type TSaveFile = {
   type:string
-  location:string,
-  content:string,
+  content:string
+  location:string
 }
 
 export type TCreateFile = {
   name:string
   type:string
+}
+
+export type TRenameFile = {
+  oldLoc:string
+  newLoc:string
 }
 
 /**
@@ -151,6 +156,46 @@ export const deleteApiFile = async ({ location }:TFileApi) => {
       type: 'error',
       message: resp?.error || `Error deleting file, please try again later.`,
     })
+
+  return resp
+}
+
+
+/**
+ * Helper to make a file rename requests to the Backend API
+ *
+ */
+export const renameApiFile = async ({
+  oldLoc,
+  newLoc,
+}:TRenameFile) => {
+
+  if(!oldLoc)
+    return addToast({
+      type: `error`,
+      message: `Failed to rename file. An old file path is required`
+    })
+
+  if(!newLoc)
+    return addToast({
+      type: `error`,
+      message: `Failed to rename file. A new file path is required`
+    })
+
+  const resp = await apiRepoRequest<Record<'file', TFileModel>>({
+    url: `/files/rename`,
+    method: HttpMethods.POST,
+    params: {
+      oldLoc,
+      newLoc
+    },
+  })
+
+  if(!resp?.success || resp?.error)
+    addToast({
+        type: 'error',
+        message: resp?.error || `Error renaming file, please try again later.`,
+      })
 
   return resp
 }

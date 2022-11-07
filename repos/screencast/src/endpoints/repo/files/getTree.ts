@@ -11,16 +11,8 @@ import { buildFileTree } from '@gobletqa/shared/libs/fileSys/fileTree'
  * @returns {Object} - { rootPaths: array of root paths, nodes: array of all valid node object }
  */
 export const getTree = asyncWrap(async (req:Request, res:Response) => {
-  const { nodes, rootPaths } = await buildFileTree(res.locals.repo)
-
-  return apiRes(
-    res,
-    {
-      nodes,
-      rootPaths,
-    } || {},
-    200
-  )
+  const meta = await buildFileTree(res.locals.repo)
+  return apiRes(res, meta || {}, 200)
 })
 
 AppRouter.get('/repo/:repo/files/tree', getTree)

@@ -19,7 +19,14 @@ export type TFileTreeNode = {
 }
 
 export type TFileTree = {
-  paths: string[]
-  rootPaths: string[]
-  nodes: TFileTreeNode[]
+  nodes: Record<string, TFileTreeNode>
 }
+
+export type TFileType = {
+  ext: string
+  type: string
+  location: string
+  typeInName?: boolean
+}
+
+export type TFileTypes = Record<string, TFileType>

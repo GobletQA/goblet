@@ -21,16 +21,21 @@ const { getFolderContent } = fileSys
  * @returns - whether a parent node exists and push was successful
  */
 export const parentNodeExists = (
-  nodes:TTreeNodeModel[],
+  nodes:Record<string, TTreeNodeModel>,
   parentPath:string,
-  newItem:Record<any, any>
+  newItem:TTreeNodeModel
 ) => {
-  const found = nodes.find(node => {
-    return node.location === parentPath
-      ? Boolean(node.children.push(newItem.id)) && nodes.push(newItem as TTreeNodeModel)
-      : node.children &&
-          node.children.length &&
-          parentNodeExists(node.children, parentPath, newItem)
+  
+  const found = Object.values(nodes).find((node) => {
+    if(node.location === parentPath){
+      node.children[newItem.id] = newItem
+      nodes[newItem.id] = newItem
+
+      return nodes
+    }
+    else {
+      node.children && parentNodeExists(node.children, parentPath, newItem)
+    }
   })
 
   return Boolean(found)
@@ -60,7 +65,7 @@ export const getPathMeta = async (filePath:string) => {
  * @param paths - full paths to the folder or file i.e '/goblet/app/tests/bdd/features'
  *
  * @returns  - each object has the form:
- *                            {id, location, children: [], modified}
+ *   {id, location, children: {}}
  */
 export const getPathNodes = async (
   paths:string[],
@@ -80,17 +85,17 @@ export const getPathNodes = async (
     if (pathMeta.type === 'file' && pathMeta.name.startsWith('.')) return nodes
 
     const node = treeNodeModel({
-      children: [],
+      children: {},
       ...pathMeta,
       fileType: resolveFileType(repo, filePath),
     })
 
     // either push the node or add it to an existing node.children
-    ;(!nodes.length || !parentNodeExists(nodes, parent, node)) &&
-      nodes.push(node)
+    ;(!Object.keys(nodes).length || !parentNodeExists(nodes, parent, node)) &&
+      (nodes[filePath] = node)
 
     return nodes
-  }, Promise.resolve([]))
+  }, Promise.resolve({}))
 }
 
 /**
@@ -126,7 +131,6 @@ export const buildFileTree = async (repo:Repo) => {
   const baseDir = getRepoGobletDir(repo)
   const paths = await getFolderContent(baseDir, searchOpts)
   const nodes = await getPathNodes(paths, repo)
-  const rootPaths = await getRootPaths(paths, baseDir)
 
-  return { paths, nodes, rootPaths }
+  return { nodes }
 }

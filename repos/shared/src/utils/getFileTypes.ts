@@ -1,4 +1,6 @@
-const path = require('path')
+import type { TFileTypes } from '../types'
+
+import path from 'path'
 
 /**
  * Builds the paths from the two different variations
@@ -46,7 +48,10 @@ const normalizePaths = paths => {
  *
  * @returns {Object} - Built allowed file types object
  */
-const getFileTypes = (repoRoot, paths) => {
+export const getFileTypes = (
+  repoRoot:string,
+  paths:Record<string, string>
+) => {
   const locations = normalizePaths(paths)
   const baseDir = locations.workDir
     ? path.join(repoRoot, locations.workDir)
@@ -90,9 +95,6 @@ const getFileTypes = (repoRoot, paths) => {
       typeInName: true,
       location: path.join(baseDir, locations.waypointDir),
     },
-  }
+  } as TFileTypes
 }
 
-module.exports = {
-  getFileTypes,
-}
