@@ -12,7 +12,7 @@ import { createApiFile } from '@utils/api/fileApi'
 const ensureExtension = (
   fileType:string|TFileType,
   fileName:string,
-  isFolder:boolean,
+  isFolder?:boolean,
 ) => {
   
   const type = isObj(fileType) ? fileType.type : fileType
@@ -74,7 +74,7 @@ const ensureExtension = (
 export const createFile = async (
   fileType:string|TFileType,
   fileName:string,
-  isFolder:boolean,
+  isFolder?:boolean,
 ) => {
   const { file, typeMeta, error } = ensureExtension(fileType, fileName, isFolder)
 

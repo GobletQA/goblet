@@ -21,10 +21,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     connected,
     rootPrefix,
     onLoadFile,
-    onFileChange,
-    onPathChange,
     modalActions,
-    onValueChange,
   } = useEditorHooks(props, editorRef)
 
   return connected
@@ -40,10 +37,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onLoadFile={onLoadFile}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
-          onFileChange={onFileChange}
-          onPathChange={onPathChange}
           initialFileTreeStatus={true}
-          onValueChange={onValueChange}
           initialFileTreeWidth={FileTreeWidth}
         />
       )

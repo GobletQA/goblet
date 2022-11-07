@@ -100,7 +100,7 @@ const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
 }
 
 const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string, repo:TRepoState) => {
-  return useCallback(async (loc:string, isFolder:boolean) => {
+  return useCallback(async (loc:string, isFolder?:boolean) => {
     if(!loc) console.warn(`Can not add file, missing file location`)
     
     const ext = loc.split(`.`).pop()
@@ -182,21 +182,6 @@ export const useEditorHooks = (
     rootPrefix,
     ...editorFiles
   })
-  
-  const onPathChange = useCallback(async (path: string) => {
-    // console.log(`------- onPath change -------`)
-    // console.log(key)
-  }, [rootPrefix])
-
-  const onValueChange = useCallback((value: any) => {
-    // console.log(`------- onValueChange -------`)
-    // console.log(value)
-  }, [])
-
-  const onFileChange = useCallback((path: any) => {
-    // console.log(`------- file -------`)
-    // console.log(file)
-  }, [])
 
   const onDeleteFile = useOnDeleteFile(repoFiles, rootPrefix)
   const onAddFile = useOnAddFile(repoFiles, rootPrefix, repo)
@@ -219,10 +204,7 @@ export const useEditorHooks = (
     options,
     rootPrefix,
     onLoadFile,
-    onFileChange,
-    onPathChange,
     modalActions,
-    onValueChange,
     onAddFile,
     onSaveFile,
     onRenameFile,
