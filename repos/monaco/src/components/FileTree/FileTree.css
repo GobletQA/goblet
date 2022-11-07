@@ -52,41 +52,62 @@
 .goblet-monaco-editor-list-split .goblet-monaco-editor-list-split-icon {
   visibility: visible;
 }
+
 .goblet-monaco-editor-list-split-icon {
   visibility: hidden;
   font-size: 16px;
   color: var(--monaco-editor-foreground);
   margin-right: 4px;
 }
+
 .goblet-monaco-editor-list-split-icon:hover {
   color: var(--monaco-list-hoverForeground);
 }
+
 .goblet-monaco-editor-list-file-item {
   user-select: none;
 }
+
 .goblet-monaco-editor-list-file-item-new {
   flex: 1;
   outline: none;
   border: 1px solid var(--monaco-editor-wordHighlightBorder);
 }
+
 .goblet-monaco-editor-list-file-item-new:focus {
   cursor: text;
 }
+
 .goblet-monaco-editor-list-file-item-row {
+  display: flex;
   cursor: pointer;
   user-select: none;
-  display: flex;
   flex-direction: row;
   align-items: center;
 }
+
 .goblet-monaco-editor-list-file-item-row:hover {
   background-color: var(--monaco-list-hoverBackground);
   color: var(--monaco-list-hoverForeground);
 }
+
 .goblet-monaco-editor-list-file-item-row:hover .goblet-monaco-editor-list-split-icon {
   visibility: visible;
 }
+
 .goblet-monaco-editor-list-file-item-row-focused {
   background-color: var(--monaco-list-focusBackground);
   color: var(--monaco-list-focusForeground);
+}
+
+.goblet-monaco-editor-list-file-item-row .goblet-editor-actions-container {
+  right: 0px;
+  height: 25px;
+  padding-top: 3px;
+  padding-left: 5px;
+  position: absolute;
+}
+
+.goblet-monaco-editor-list-file-item-row:hover .goblet-editor-actions-container {
+  background-color: var(--monaco-list-hoverBackground);
 }

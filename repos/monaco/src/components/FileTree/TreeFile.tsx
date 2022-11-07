@@ -76,6 +76,9 @@ export const TreeFile = ({
       data-src={file.path}
       onClick={filePathChange}
       className={classNames}
+      style={{
+        position: `relative`,
+      }}
     >
       {/* fileType is used here for different file type icons */}
       {/* For now, just default to basic file type */}
@@ -83,14 +86,16 @@ export const TreeFile = ({
       {file.name && !editing ? (
         <>
           <span style={{ flex: 1 }}>{file.name}</span>
-          <EditIcon
-            onClick={onEdit}
-            className='goblet-monaco-editor-list-split-icon'
-          />
-          <DeleteIcon
-            onClick={onDelete}
-            className='goblet-monaco-editor-list-split-icon'
-          />
+          <span className='goblet-editor-actions-container'>
+            <EditIcon
+              onClick={onEdit}
+              className='goblet-monaco-editor-list-split-icon'
+            />
+            <DeleteIcon
+              onClick={onDelete}
+              className='goblet-monaco-editor-list-split-icon'
+            />
+          </span>
         </>
       ) : (
         <div

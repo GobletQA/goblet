@@ -82,9 +82,14 @@ export const TreeDirectory = ({
     addFile(file.path + '/')
   }, [addFile, file.path])
 
-
   return (
-    <div onClick={fileClick} className='goblet-monaco-editor-list-file-item-row'>
+    <div
+      onClick={fileClick}
+      className='goblet-monaco-editor-list-file-item-row'
+      style={{
+        position: `relative`,
+      }}
+    >
       <Arrow collapse={!showChild} />
       {showChild
         ? <FolderOpenedIcon style={styles.folderIcon} />
@@ -93,22 +98,24 @@ export const TreeDirectory = ({
       {file.name && !editing ? (
         <>
           <span style={styles.name}>{file.name}</span>
-          <EditIcon
-            onClick={onEdit}
-            className='goblet-monaco-editor-list-split-icon'
-          />
-          <DeleteIcon
-            onClick={onDelete}
-            className='goblet-monaco-editor-list-split-icon'
-          />
-          <AddFileIcon
-            onClick={onAddFile}
-            className='goblet-monaco-editor-list-split-icon'
-          />
-          <AddFolderIcon
-            onClick={onAddFolder}
-            className='goblet-monaco-editor-list-split-icon'
-          />
+          <span className='goblet-editor-actions-container' >
+            <EditIcon
+              onClick={onEdit}
+              className='goblet-monaco-editor-list-split-icon'
+            />
+            <DeleteIcon
+              onClick={onDelete}
+              className='goblet-monaco-editor-list-split-icon'
+            />
+            <AddFileIcon
+              onClick={onAddFile}
+              className='goblet-monaco-editor-list-split-icon'
+            />
+            <AddFolderIcon
+              onClick={onAddFolder}
+              className='goblet-monaco-editor-list-split-icon'
+            />
+          </span>
         </>
       ) : (
         <div
