@@ -1,9 +1,9 @@
 const fs = require('fs')
 const path = require('path')
 const { fileSys } = require('@keg-hub/cli-utils')
-const { get, limbo } = require('@keg-hub/jsutils')
+const { get } = require('@keg-hub/jsutils')
 
-const { mkDir, removeFile, copyStream } = fileSys
+const { mkDir, removeFile } = fileSys
 const nameCache = {}
 
 /**

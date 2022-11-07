@@ -19,6 +19,7 @@
       "@GRepos/*": ["../../repos/*"],
       "@GConfigs/*": ["../../configs/*"],
       "@GEnv": ["../shared/src/environment/environment"],
+      "@GException": ["../shared/src/exceptions/Exception"],
       "@GEnv/secrets": ["../shared/src/environment/secrets"],
       "@GEnv/values": ["../shared/src/environment/values"],
       "@GEnvironment": ["../shared/src/environment/environment"],

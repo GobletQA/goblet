@@ -1,11 +1,12 @@
 const path = require('path')
+const { writeFileSync } = require('fs')
 const { ask } = require('@keg-hub/ask-it')
 const { appRoot } = require('../../paths')
 const { toBool } = require('@keg-hub/jsutils')
 const semverLt = require('semver/functions/lt')
 const semverInc = require('semver/functions/inc')
 const semverValid = require('semver/functions/valid')
-const { Logger, fileSys, constants } = require('@keg-hub/cli-utils')
+const { Logger, fileSys } = require('@keg-hub/cli-utils')
 const packagePath = path.join(appRoot, `package.json`)
 // const { SEMVER_TYPES } = constants
 
@@ -58,7 +59,7 @@ const SEMVER_TYPES = [
  */
 const writePackageVersion = (package, version) => {
   version && (package.version = version)
-  return fileSys.writeFileSync(packagePath, JSON.stringify(package, null, 2) + '\n')
+  return writeFileSync(packagePath, JSON.stringify(package, null, 2) + '\n')
 }
 
 /**

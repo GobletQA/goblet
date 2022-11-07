@@ -16,3 +16,9 @@ export type TProxyOpts = Options & {
   path?:string
   protocol?:string
 }
+
+export type TError = Error & {
+  statusCode:number
+}
+
+export type TException = TError

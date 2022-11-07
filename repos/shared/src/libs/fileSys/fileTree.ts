@@ -1,22 +1,33 @@
-const path = require('path')
-const { treeNodeModel } = require('@GSH/models')
-const { isDirectory, getFolderContent } = require('./fileSys')
-const { resolveFileType } = require('@GSH/utils/resolveFileType')
-const { getRepoGobletDir } = require('@GSH/utils/getRepoGobletDir')
+import type { Repo } from '../../repo/repo'
+import type { TTreeNodeModel } from '../../types'
+
+import fs from 'fs'
+import path from 'path'
+import { treeNodeModel } from '@GSH/models'
+import { limboify } from '@keg-hub/jsutils'
+import { fileSys } from '@keg-hub/cli-utils'
+import { resolveFileType } from '@GSH/utils/resolveFileType'
+import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
+
+const { getFolderContent } = fileSys
 
 /**
  * Recursively checks to find the parent node for a given item
  * if a parent exists, it will add it as a child
- * @param {Array<Object>} nodes
- * @param {string} parentPath
- * @param {Object} newItem
+ * @param nodes
+ * @param parentPath
+ * @param newItem
  *
- * @returns {Boolean} - whether a parent node exists and push was successful
+ * @returns - whether a parent node exists and push was successful
  */
-const parentNodeExists = (nodes, parentPath, newItem) => {
+export const parentNodeExists = (
+  nodes:TTreeNodeModel[],
+  parentPath:string,
+  newItem:Record<any, any>
+) => {
   const found = nodes.find(node => {
     return node.location === parentPath
-      ? Boolean(node.children.push(newItem.id)) && nodes.push(newItem)
+      ? Boolean(node.children.push(newItem.id)) && nodes.push(newItem as TTreeNodeModel)
       : node.children &&
           node.children.length &&
           parentNodeExists(node.children, parentPath, newItem)
@@ -27,13 +38,14 @@ const parentNodeExists = (nodes, parentPath, newItem) => {
 
 /**
  * Gets the metadata of a path from the local filesystem
- * @param {string} filePath - full path to the folder or file i.e '/goblet/app/tests/bdd/features'
+ * @param filePath - full path to the folder or file i.e '/goblet/app/tests/bdd/features'
  *
- * @returns {Object} - Meta data containing {name, parent, type ( folder || file )} properties
+ * @returns - Meta data containing {name, parent, type ( folder || file )} properties
  */
-const getPathMeta = async filePath => {
-  const isDir = await isDirectory(filePath)
-
+export const getPathMeta = async (filePath:string) => {
+  const [_, stat] = await limboify(fs.stat, filePath)
+  const isDir = stat.isDirectory()
+  
   return {
     id: filePath,
     location: filePath,
@@ -45,12 +57,15 @@ const getPathMeta = async filePath => {
 
 /**
  * Transforms the paths string to a specific data object
- * @param {Array<string>} paths - full paths to the folder or file i.e '/goblet/app/tests/bdd/features'
+ * @param paths - full paths to the folder or file i.e '/goblet/app/tests/bdd/features'
  *
- * @returns {Array<Object>} - each object has the form:
+ * @returns  - each object has the form:
  *                            {id, location, children: [], modified}
  */
-const getPathNodes = async (paths, repo) => {
+export const getPathNodes = async (
+  paths:string[],
+  repo:Repo
+) => {
   /**
    * 1. create new object for each 'path' item
    * 2. if the parent path of current 'path' item exists, add it as the child
@@ -66,7 +81,6 @@ const getPathNodes = async (paths, repo) => {
 
     const node = treeNodeModel({
       children: [],
-      modified: false,
       ...pathMeta,
       fileType: resolveFileType(repo, filePath),
     })
@@ -81,16 +95,19 @@ const getPathNodes = async (paths, repo) => {
 
 /**
  * Returns an array of root paths
- * @param {Array<string>} fullPaths
- * @param {string} repoRoot
+ * @param fullPaths
+ * @param repoRoot
  *
- * @returns {Array<string>}
+ * @returns - filtered paths
  */
-const getRootPaths = (fullPaths, repoRoot) => {
+export const getRootPaths = (
+  fullPaths:string[],
+  repoRoot:string
+) => {
   return fullPaths.filter(fullPath => path.dirname(fullPath) === repoRoot)
 }
 
-const buildFileTree = async repo => {
+export const buildFileTree = async (repo:Repo) => {
   const searchOpts = {
     full: true,
     recursive: true,
@@ -112,12 +129,4 @@ const buildFileTree = async repo => {
   const rootPaths = await getRootPaths(paths, baseDir)
 
   return { paths, nodes, rootPaths }
-}
-
-module.exports = {
-  buildFileTree,
-  getPathMeta,
-  getPathNodes,
-  getRootPaths,
-  parentNodeExists,
 }

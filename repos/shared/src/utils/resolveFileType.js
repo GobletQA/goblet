@@ -5,7 +5,7 @@
  * @param {Object} repo - Goblet repo config object
  * @param {string} filePath - Path to a test file
  *
- * @returns {string|boolean} - Found test file type or false
+ * @returns {string} - Found test file type or false
  */
 const resolveFileType = (repo, filePath) => {
   const { fileTypes } = repo
@@ -17,7 +17,7 @@ const resolveFileType = (repo, filePath) => {
     return filePath.startsWith(metaData.location)
       ? metaData.type || typeName
       : found
-  }, false)
+  }, ``)
 }
 module.exports = {
   resolveFileType,

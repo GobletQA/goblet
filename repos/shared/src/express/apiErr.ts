@@ -1,10 +1,9 @@
+import type { TError } from '../types'
+import type { Response } from 'express'
+
 import { Logger } from '@keg-hub/cli-utils'
 import { isObj, toNum } from '@keg-hub/jsutils'
-import type { Response, Request } from 'express'
 
-type TError = Error & {
-  statusCode:number
-}
 
 export const apiErr = (res:Response, err:TError, status:number) => {
   const error = {

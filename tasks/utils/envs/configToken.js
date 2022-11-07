@@ -1,8 +1,9 @@
 const crypto = require('crypto')
+const { writeFileSync } = require('fs')
 const { get, set } = require('@keg-hub/jsutils')
 const { constants, fileSys, error, getKegGlobalConfig } = require('@keg-hub/cli-utils')
 
-const { ensureDirSync, writeFileSync } = fileSys
+const { ensureDirSync } = fileSys
 const { GLOBAL_CONFIG_PATHS, GLOBAL_CONFIG_FOLDER, GLOBAL_CONFIG_FILE } = constants
 
 const salt = 'a4E36cDq'
