@@ -1,7 +1,9 @@
 import type { Repo } from '@GSH/repo/repo'
 
 import path from 'path'
+import fs from 'fs-extra'
 import { Exception } from '@GException'
+import { limbo } from '@keg-hub/jsutils'
 import { fileSys } from '@keg-hub/cli-utils'
 import { loadReport } from '@GSH/utils/loadReport'
 import { wordCaps, get, isBool } from '@keg-hub/jsutils'
@@ -12,12 +14,8 @@ import { resolveFileType } from '@GSH/utils/resolveFileType'
 import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
 
 const {
-  mkDir,
-  movePath,
   readFile,
   writeFile,
-  removeFile,
-  pathExists
 } = fileSys
 
 /**
@@ -26,7 +24,7 @@ const {
  * @throw {Error} if location not found on file system
  */
 const checkPathExists = async (location:string, skipThrow?:boolean) => {
-  const [err, exists] = await pathExists(location)
+  const [err, exists] = await limbo(fs.pathExists(location))
 
   if ((err || !exists) && !skipThrow)
     throw new Exception({
@@ -75,7 +73,7 @@ export const deleteGobletFile = async (
 
   inTestRoot(repo, location)
 
-  const [err] = await removeFile(location)
+  const [err] = await limbo(fs.remove(location))
   if (err)
     throw new Exception({
       err,
@@ -228,7 +226,7 @@ export const renameGobletFile = async (
       err: isBool(existingLoc) ? `Unknown file status` : existingLoc,
     })
 
-  const moved = await movePath(oldLoc, newLoc)
+  const moved = await limbo(fs.move(oldLoc, newLoc))
   const file = await getGobletFile(repo, newLoc)
 
   return {
@@ -257,12 +255,12 @@ export const createGobletFile = async (
   inTestRoot(repo, location)
 
   // Check if the path already exists, so we don't overwrite an existing file
-  const [existsErr, fileExists] = await pathExists(location)  
+  const [existsErr, fileExists] = await limbo(fs.pathExists(location))
   if (fileExists)
     throw new Exception(`File already exists at that location!`, 422)
 
   if(fileType === `folder`){
-    const [mkDErr, mkDSuccess] = await mkDir(location)
+    const [mkDErr, mkDSuccess] = await limbo(fs.ensureDir(location))
     if (mkDErr) throw new Exception(mkDErr, 422)
 
     return {
@@ -283,7 +281,7 @@ export const createGobletFile = async (
   const dirname = path.dirname(location)
 
   // Ensure the directory exists for the file
-  const [mkDirErr, mkDirSuccess] = await mkDir(dirname)
+  const [mkDirErr, mkDirSuccess] = await limbo(fs.ensureDir(dirname))
   if (mkDirErr) throw new Exception(mkDirErr, 422)
 
   // Create the new test file using the template for the file type

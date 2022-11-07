@@ -50,6 +50,7 @@
     "express-jwt": "6.1.1",
     "express-winston": "4.2.0",
     "glob": "8.0.3",
+    "fs-extra": "10.1.0",
     "is-secret": "1.2.1",
     "mime": "3.0.0",
     "module-alias": "2.2.2",

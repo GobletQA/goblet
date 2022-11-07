@@ -167,10 +167,13 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     editFolderName
   } = useFolderCallbacks({
     filesRef,
+    onAddFile,
     curPathRef,
     pathChange,
     deleteFile,
     deleteModel,
+    onRenameFile,
+    onDeleteFile,
     setOpenedFiles,
   })
 

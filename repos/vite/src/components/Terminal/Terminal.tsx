@@ -28,7 +28,7 @@ export const Terminal = (props:TTerminalProps) => {
       <Box
         ref={termRef}
         className="terminal-element"
-        sx={[{ width: '100%', backgroundColor: `rgb(0,0,0)` }, props.tSx || noOpObj]}
+        sx={[{ overflow: 'hidden', width: '100%', backgroundColor: `rgb(0,0,0)` }, props.tSx || noOpObj]}
       />
     </Container>
   )

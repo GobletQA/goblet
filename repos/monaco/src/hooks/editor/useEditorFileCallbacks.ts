@@ -1,6 +1,6 @@
 import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
-import type { TFilelist, TEditorOpenFiles, TModal, TEditorAddFile } from '../../types'
+import type { TEditorDeleteFile, TEditorRenameFile, TFilelist, TEditorOpenFiles, TModal, TEditorAddFile } from '../../types'
 
 import { useCallback } from 'react'
 import { useCloseFile } from './useCloseFile'
@@ -10,6 +10,9 @@ import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 export type TUseEditorFileCallbacks = {
   Modal: TModal
+  onAddFile?: TEditorAddFile
+  onDeleteFile?: TEditorDeleteFile
+  onRenameFile?: TEditorRenameFile
   openedFiles: TEditorOpenFiles
   rootRef: MutableRefObject<any>
   curPathRef: MutableRefObject<string>
@@ -18,11 +21,8 @@ export type TUseEditorFileCallbacks = {
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
   pathChange: (path: string) => void
-  onDeleteFile?: (path: string) => void
-  onAddFile?: TEditorAddFile
   onSaveFile?: (path: string, content: string) => void
   setCurPath: (content: SetStateAction<string>) => void
-  onRenameFile?: (oldLoc: string, newLoc:string) => void
   restoreModel: (path: string) => false | editor.ITextModel
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void

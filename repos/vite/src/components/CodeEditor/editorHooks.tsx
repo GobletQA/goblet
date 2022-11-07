@@ -107,9 +107,7 @@ const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string, repo:TRepoState)
 
     const fileType = isFolder
       ? `folder`
-      : Object.values(repo.fileTypes).find(typeObj => typeObj.ext === ext)
-
-    if(!fileType) throw new Error(`Invalid file type. Please use a valid file extension`)
+      : Object.values(repo.fileTypes).find(typeObj => typeObj.ext === ext) || `file`
 
     const fullLoc = addRootToLoc(loc, rootPrefix)
 

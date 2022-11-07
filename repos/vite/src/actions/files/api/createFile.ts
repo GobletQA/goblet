@@ -15,10 +15,18 @@ const ensureExtension = (
   isFolder:boolean,
 ) => {
   
+  const type = isObj(fileType) ? fileType.type : fileType
+  
   if(isFolder)
     return {
       file:fileName,
-      typeMeta: { type: `folder`, ext: ``, location: ``, }
+      typeMeta: { type, ext: ``, location: ``, }
+    }
+
+  if(fileType === `file`)
+    return {
+      file:fileName,
+      typeMeta: { type, ext: ``, location: fileName }
     }
   
   const { repo } = getStore().getState()

@@ -1,11 +1,14 @@
 import type { SetStateAction, MutableRefObject } from 'react'
-import type { TEditorOpenFiles, TFilelist } from '../../types'
+import type { TEditorDeleteFile, TEditorAddFile, TEditorRenameFile, TEditorOpenFiles, TFilelist } from '../../types'
 import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 import { useCallback } from 'react'
 
 
 export type TUseFolderCallbacks = {
+  onAddFile?: TEditorAddFile
+  onDeleteFile?: TEditorDeleteFile
+  onRenameFile?: TEditorRenameFile
   deleteFile: (path: string) => void
   deleteModel: (path: string) => void
   pathChange: (path: string) => void
@@ -18,6 +21,9 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
 
   const {
     filesRef,
+    onAddFile,
+    onDeleteFile,
+    onRenameFile,
     curPathRef,
     pathChange,
     deleteFile,
@@ -25,17 +31,18 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
     setOpenedFiles,
   } = props
 
-    const addFolder = useCallback((path: string) => {
+    const addFolder = useCallback((path: string, isRename?:boolean) => {
       let hasChild = false
       Object.keys(filesRef.current).forEach(p => {
         if (p.startsWith(path + '/')) hasChild = true
       })
       if (!hasChild) filesRef.current[path] = null
 
-    }, [])
+      !isRename && onAddFile?.(path, true)
+    }, [onAddFile])
 
     const deleteFolder = useCallback(
-      (path: string) => {
+      (path: string, isRename?:boolean) => {
         delete filesRef.current[path]
         Object.keys(filesRef.current).forEach(p => {
           if (p.startsWith(path + '/')) {
@@ -44,6 +51,7 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
           }
         })
 
+        !isRename && onDeleteFile?.(path, true)
       },
       [deleteFile]
     )
@@ -53,9 +61,9 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
         const paths = (path || '/').slice(1).split('/')
         const newPath = '/' + paths.slice(0, -1).concat(name).join('/')
 
-
         delete filesRef.current[path]
-        addFolder(newPath)
+        addFolder(newPath, true)
+
         Object.keys(filesRef.current).forEach(p => {
           if (p.startsWith(path + '/')) {
             const content = filesRef.current[p]
@@ -70,6 +78,7 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
             delete filesRef.current[p]
           }
         })
+
         setOpenedFiles(pre =>
           pre.map(v => {
             if (v.path.startsWith(path + '/')) {
@@ -84,8 +93,10 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
             pathChange(curPathRef.current.replace(path + '/', newPath + '/'))
           }, 50)
         }
+
+        onRenameFile?.(path, newPath)
       },
-      [pathChange, addFolder]
+      [pathChange, addFolder, onRenameFile]
     )
 
   
