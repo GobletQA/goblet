@@ -1,6 +1,6 @@
+import { Arrow } from '../Icons/Arrow'
 import AddFileIcon from '../Icons/AddFile'
 import AddFolderIcon from '../Icons/AddFolder'
-import Arrow from '../Icons/Arrow'
 
 export type TTreeHeader = {
   title: string

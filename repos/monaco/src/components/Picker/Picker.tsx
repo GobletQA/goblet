@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Menu } from './Menu'
-import Arrow from '../Icons/Arrow'
 import { Position } from './Position'
+import { Arrow } from '../Icons/Arrow'
 import './index.css'
 
 const instance = document.createElement('div')
