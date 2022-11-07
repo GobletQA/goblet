@@ -1,9 +1,8 @@
-import type { TApiRepoResp } from '@types'
+import type { TRepoState, TApiRepoResp } from '@types'
 
 import { repoDispatch } from '@store'
 import { localStorage } from '@services/localStorage'
 import { setFileTypeConstants } from '@constants/types'
-import type { TRepoState } from '@types'
 import { upsertFeatures } from '@actions/features/local'
 import { upsertDefinitions } from '@actions/definitions/local'
 import { setFileTree } from '@actions/files/local/setFileTree'

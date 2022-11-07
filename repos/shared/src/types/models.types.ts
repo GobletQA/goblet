@@ -1,14 +1,5 @@
 export type TGeneralAst = Record<any, any>
 
-export type TTreeNodeModel = {
-  id: string
-  name: string
-  type: string
-  fileType: string
-  location: string
-  children: Record<string, TTreeNodeModel>
-}
-
 export type TFileModel = {
   name: string
   ext: string

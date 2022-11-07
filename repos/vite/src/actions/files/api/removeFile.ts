@@ -1,4 +1,4 @@
-import type { TFileTreeNode, TFileModel } from '@types'
+import type { TFileModel } from '@types'
 
 import { noOpObj } from '@keg-hub/jsutils'
 import { getFileTree } from './getFileTree'
@@ -20,7 +20,7 @@ export type TRemoveFileLoc = {
  *
  * @returns {Object} - {success}
  */
-export const removeFile = async (fileModel:TFileTreeNode|TFileModel|TRemoveFileLoc) => {
+export const removeFile = async (fileModel:TFileModel|TRemoveFileLoc) => {
   addToast({
     type: 'warn',
     message: `Removing file ${fileModel.name}!`,

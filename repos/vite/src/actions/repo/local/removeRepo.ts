@@ -3,7 +3,6 @@ import { localStorage } from '@services/localStorage'
 import { clearFileTree } from '@actions/files/local/clearFileTree'
 import { clearFeatures } from '@actions/features/local/clearFeatures'
 import { clearActiveFile } from '@actions/files/local/clearActiveFile'
-import { clearPendingFiles } from '@actions/files/local/clearPendingFiles'
 import { clearDefinitions } from '@actions/definitions/local/clearDefinitions'
 
 export type TActionFunc = (...args:any[]) => void
@@ -29,7 +28,6 @@ export const removeRepo = async () => {
   tryAction(clearDefinitions, `clearDefinitions`)
   tryAction(clearFileTree, `clearFileTree`)
   tryAction(clearActiveFile, `clearActiveFile`)
-  tryAction(clearPendingFiles, `clearPendingFiles`)
 
   await localStorage.removeRepo()
 }

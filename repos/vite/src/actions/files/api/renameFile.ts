@@ -1,32 +1,11 @@
 import type { TFileModel } from '@types'
 
-import { getStore } from '@store'
 import { noOpObj } from '@keg-hub/jsutils'
 import { renameApiFile } from '@utils/api'
 import { addToast } from '@actions/toasts'
 import { setFile } from '@actions/files/local/setFile'
-import { setTreeNode } from '@actions/files/local/setTreeNode'
-import { removeTreeNode } from '@actions/files/local/removeTreeNode'
+import { renameFile as renameFileLoc } from '@actions/files/local/renameFile'
 
-const updateFileTree = (
-  oldLoc:string,
-  newLoc:string,
-  file: TFileModel,
-) => {
-  const { fileTree } = getStore().getState()
-  const node = fileTree?.nodes?.[oldLoc]
-  if(!node) return
-
-  setTreeNode({
-    ...node,
-    name: file.name,
-    id: file.location,
-    location: file.location,
-  })
-
-  removeTreeNode(oldLoc)
-
-}
 
 /**
  * Save the content to the given file. if no filePath passed in. it will save it on the currently active file
@@ -56,14 +35,7 @@ export const renameFile = async (
   })
 
   const { file } = resp?.data
-  if(file){
-    setFile(file)
-    updateFileTree(
-      oldLoc,
-      newLoc,
-      file
-    )
-  }
+  file && renameFileLoc(oldLoc, newLoc, file)
 
   return resp?.data
 }

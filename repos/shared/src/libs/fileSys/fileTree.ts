@@ -1,45 +1,13 @@
 import type { Repo } from '../../repo/repo'
-import type { TTreeNodeModel } from '../../types'
 
 import fs from 'fs'
 import path from 'path'
-import { treeNodeModel } from '@GSH/models'
 import { limboify } from '@keg-hub/jsutils'
 import { fileSys } from '@keg-hub/cli-utils'
-import { resolveFileType } from '@GSH/utils/resolveFileType'
 import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
 
 const { getFolderContent } = fileSys
 
-/**
- * Recursively checks to find the parent node for a given item
- * if a parent exists, it will add it as a child
- * @param nodes
- * @param parentPath
- * @param newItem
- *
- * @returns - whether a parent node exists and push was successful
- */
-export const parentNodeExists = (
-  nodes:Record<string, TTreeNodeModel>,
-  parentPath:string,
-  newItem:TTreeNodeModel
-) => {
-  
-  const found = Object.values(nodes).find((node) => {
-    if(node.location === parentPath){
-      node.children[newItem.id] = newItem
-      nodes[newItem.id] = newItem
-
-      return nodes
-    }
-    else {
-      node.children && parentNodeExists(node.children, parentPath, newItem)
-    }
-  })
-
-  return Boolean(found)
-}
 
 /**
  * Gets the metadata of a path from the local filesystem
@@ -47,17 +15,9 @@ export const parentNodeExists = (
  *
  * @returns - Meta data containing {name, parent, type ( folder || file )} properties
  */
-export const getPathMeta = async (filePath:string) => {
+export const isFolder = async (filePath:string) => {
   const [_, stat] = await limboify(fs.stat, filePath)
-  const isDir = stat.isDirectory()
-  
-  return {
-    id: filePath,
-    location: filePath,
-    name: path.basename(filePath),
-    parent: path.dirname(filePath),
-    type: isDir ? 'folder' : 'file',
-  }
+  return stat.isDirectory()
 }
 
 /**
@@ -67,34 +27,22 @@ export const getPathMeta = async (filePath:string) => {
  * @returns  - each object has the form:
  *   {id, location, children: {}}
  */
-export const getPathNodes = async (
+export const getFilesObj = async (
   paths:string[],
-  repo:Repo
 ) => {
+  
   /**
    * 1. create new object for each 'path' item
    * 2. if the parent path of current 'path' item exists, add it as the child
    */
-  return await paths.reduce(async (toResolve, filePath) => {
-    const nodes = await toResolve
+  return await paths.reduce(async (toResolve, loc) => {
+    const acc = await toResolve
+    const isDir = await isFolder(loc)
+    const final = isDir ? loc.endsWith(`/`) ? loc : `${loc}/` : loc
 
-    // Get the meta data for this path
-    const { parent, ...pathMeta } = await getPathMeta(filePath)
+    acc[final] = null
 
-    // Ignore hidden files that start with a .
-    if (pathMeta.type === 'file' && pathMeta.name.startsWith('.')) return nodes
-
-    const node = treeNodeModel({
-      children: {},
-      ...pathMeta,
-      fileType: resolveFileType(repo, filePath),
-    })
-
-    // either push the node or add it to an existing node.children
-    ;(!Object.keys(nodes).length || !parentNodeExists(nodes, parent, node)) &&
-      (nodes[filePath] = node)
-
-    return nodes
+    return acc
   }, Promise.resolve({}))
 }
 
@@ -130,7 +78,7 @@ export const buildFileTree = async (repo:Repo) => {
   // Get all the paths from the testRoot directory
   const baseDir = getRepoGobletDir(repo)
   const paths = await getFolderContent(baseDir, searchOpts)
-  const nodes = await getPathNodes(paths, repo)
+  const files = await getFilesObj(paths)
 
-  return { nodes }
+  return files
 }

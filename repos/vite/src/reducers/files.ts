@@ -1,14 +1,19 @@
-import type { TAction, TFileModel } from '@types'
+import type { TFileTree, TAction, TFileModel } from '@types'
 
-type TPendingFiles = Record<string, string>
+import { exists, deepMerge } from '@keg-hub/jsutils'
+
+type TRenameFile = {
+  oldLoc:string,
+  newLoc:string,
+  file:Partial<TFileModel>
+  merge?:boolean
+}
 
 export type TFilesState = {
+  files: TFileTree
   activeFile?: TFileModel
-  files: Record<string, TFileModel>
-  pendingFiles: TPendingFiles
 }
 export const filesState = {
-  pendingFiles: {},
   files: {},
 } as TFilesState
 
@@ -47,52 +52,65 @@ export const filesActions = {
       },
     }
   },
+  removeFile: (
+    state:TFilesState,
+    action:TAction<string>
+  ) => {
+    if(state.files[action.payload])
+      delete state.files[action.payload]
+  },
+  upsertFile: (
+    state:TFilesState,
+    action:TAction<TFileModel>
+  ) => {
+    return {
+      ...state,
+      activeFile: state?.activeFile?.uuid === action.payload.uuid
+        ? action.payload
+        : state?.activeFile,
+      files: {
+        ...state.files,
+        [action.payload.uuid]: {
+          ...state.files[action.payload.uuid],
+          ...action.payload
+        }
+      },
+    }
+  },
+  renameFile: (
+    state:TFilesState,
+    action:TAction<TRenameFile>
+  ) => {
+    const { oldLoc, newLoc, file, merge=true } = action.payload
+    const model = state.files[oldLoc]
+    state.files[newLoc] = merge ? deepMerge<TFileModel>(model, file) : file as TFileModel
+
+    delete state.files[oldLoc]
+  },
   setFiles: (
     state:TFilesState,
-    action:TAction<Record<string, TFileModel>>
+    action:TAction<TFileTree>
   ) => {
     return {
       ...state,
       files: action?.payload,
     }
   },
-  setPending: (
-    state:TFilesState,
-    action:TAction<TPendingFiles>
-  ) => {
-    return {
-      ...state,
-      pendingFiles: {
-        ...state.pendingFiles,
-        ...action?.payload
-      },
-    }
-  },
-  removePending: (
-    state:TFilesState,
-    action:TAction<string>
-  ) => {
-    const pending = {...state.pendingFiles}
-    delete pending[action?.payload]
-
-    return { ...state, pendingFiles: pending }
-  },
-  clearPending: (
-    state:TFilesState,
-    action:TAction<string>
-  ) => ({
-    ...state,
-    pendingFiles: {},
-  }),
   upsertFiles: (
     state:TFilesState,
-    action:TAction<Record<string, TFileModel>>
+    action:TAction<TFileTree>
   ) => {
     return {
       ...state,
       files: {
         ...state.files,
-        ...action?.payload
+        ...Object.entries(action?.payload).reduce((acc, [key, model]) => {
+          acc[key] = exists(state.files[key])
+            ? deepMerge(state.files[key], model)
+            : model
+
+          return acc
+        }, {} as TFileTree)
       }
     }
   },

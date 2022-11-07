@@ -5,7 +5,6 @@ import { TFilesState } from '@reducers/files'
 import { TReposState } from '@reducers/repos'
 import { TModalState } from '@reducers/modal'
 import { TSettingsState } from '@reducers/settings'
-import { TFileTreeState } from '@reducers/fileTree'
 import { TFeaturesState } from '@reducers/features'
 import { TContainerState } from '@reducers/container'
 import { TDefinitionsState } from '@reducers/definitions'
@@ -15,7 +14,6 @@ export type {
   TDefinitionsState,
   TFeaturesState,
   TFilesState,
-  TFileTreeState,
   TModalState,
   TRepoState,
   TReposState,
@@ -28,7 +26,6 @@ export type TCombinedState = {
   definitions: TDefinitionsState
   features: TFeaturesState
   files: TFilesState
-  fileTree: TFileTreeState
   modal: TModalState
   repo: TRepoState
   repos: TReposState

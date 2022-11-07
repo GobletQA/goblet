@@ -3,7 +3,6 @@ import type { TFileModel } from '@types'
 import { saveApiFile } from '@utils/api'
 import { addToast } from '@actions/toasts'
 import { noOpObj } from '@keg-hub/jsutils'
-import { removePendingFile } from '../local/removePendingFile'
 
 /**
  * Save the content to the given file. if no filePath passed in. it will save it on the currently active file
@@ -25,7 +24,6 @@ export const saveFile = async (fileToSave:TFileModel = noOpObj as TFileModel) =>
   const resp = await saveApiFile({ location, content, type: fileType })
   if(!resp?.success) return noOpObj as Record<"file", TFileModel>
 
-  removePendingFile(fileToSave)
   addToast({
     type: 'success',
     message: `File ${fileToSave.name} was saved!`,

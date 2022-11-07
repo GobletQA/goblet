@@ -2,25 +2,25 @@ import type { MutableRefObject } from 'react'
 import type { TCodeEditorProps } from './CodeEditor'
 import type {
   TRepoState,
-  TFileTree,
+  TFileModel,
   TFilesState,
   OpenFileTreeEvent,
   TEditorSettingValues
 } from '@types'
 
 
-
-import { exists } from '@keg-hub/jsutils'
+import { exists, noOpObj } from '@keg-hub/jsutils'
 import { UpdateModalEvt } from '@constants'
 import { OpenFileTreeEvt } from '@constants'
 import { confirmModal } from '@actions/modals/modals'
 import { loadFile } from '@actions/files/api/loadFile'
 import { saveFile } from '@actions/files/api/saveFile'
+import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { createFile } from '@actions/files/api/createFile'
 import { removeFile } from '@actions/files/api/removeFile'
 import { renameFile } from '@actions/files/api/renameFile'
 
-import { useFileTree, useFiles, useRepo } from '@store'
+import { useFiles, useRepo } from '@store'
 import { useCallback, useEffect, useMemo } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { toggleModal } from '@actions/modals/toggleModal'
@@ -29,7 +29,6 @@ import { useSettingValues } from '@hooks/store/useSettingValues'
 export type THEditorFiles = {
   repo: TRepoState
   rootPrefix: string
-  fileTree: TFileTree
   repoFiles: TFilesState
 }
 
@@ -59,7 +58,7 @@ const useOnLoadFile = ({
 
   return useCallback(async (path:string) => {
     const full = addRootToLoc(path, rootPrefix)
-    const existing = repoFiles?.pendingFiles?.[full] || repoFiles?.files?.[full]?.content
+    const existing = repoFiles?.files?.[full]?.content
     if(existing) return existing
 
     // The loadFile action will also update repoFiles.files
@@ -97,7 +96,7 @@ const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
 
     if(!fileModel) console.warn(`Can not save file. Missing file model at ${fullLoc}`)
 
-    await saveFile({ ...(fileModel || {}), content })
+    await saveFile({ ...(fileModel as TFileModel), content })
 
   }, [repoFiles, rootPrefix])
 }
@@ -134,28 +133,18 @@ const useOnDeleteFile = (repoFiles:TFilesState, rootPrefix:string) => {
 export const useEditorFiles = (props:THEditorFiles) => {
   const {
     repo,
-    fileTree,
     rootPrefix,
     repoFiles,
   } = props
 
   const files = useMemo(() => {
-    if(!repo?.fileTypes || !fileTree?.nodes) return {}
+    if(!Object.values(repoFiles?.files || noOpObj).length) return {}
 
-    const exts = Object.values(repo?.fileTypes)
-      .map((fileType) => (fileType as Record<'ext', string>).ext)
+    return Object.entries(repoFiles?.files)
+      .reduce((acc, [loc, model]) => {
 
-    return Object.entries(fileTree?.nodes)
-      .reduce((acc, [id, node]) => {
-        const loc = node.location
-        if(acc[loc]) return acc
-
-        const ext = loc.split(`.`).pop() as string
-        if(!exts.includes(ext)) return acc
-
-        const model = repoFiles.files[loc]
-        const key = model?.relative || removeRootFromLoc(loc, rootPrefix)
-        acc[key] = repoFiles?.pendingFiles?.[loc] || model?.content || null
+        const key = removeRootFromLoc(loc, rootPrefix)
+        acc[key] = model?.content || null
 
         return acc
       }, {} as Record<string, string|null>) ?? {}
@@ -163,11 +152,9 @@ export const useEditorFiles = (props:THEditorFiles) => {
   }, [
     rootPrefix,
     repo?.paths,
-    repo?.fileTypes,
-    fileTree?.nodes,
     repoFiles?.files,
   ])
-  
+
   return {
     files,
     connected: Boolean(repo?.paths && repo?.name)
@@ -181,24 +168,20 @@ export const useEditorHooks = (
 
   const repo = useRepo()
   const repoFiles = useFiles()
-  const fileTree = useFileTree()
 
-  const rootPrefix = useMemo(() => {
-    return repo?.paths?.workDir
-      ? `${repo?.paths?.repoRoot}/${repo?.paths?.workDir}`
-      : repo?.paths?.repoRoot
-  }, [repo?.paths?.repoRoot, repo?.paths?.workDir])
+  const rootPrefix = useMemo(
+    () => getRootPrefix(repo),
+    [repo?.paths?.repoRoot, repo?.paths?.workDir]
+  )
 
   const editorFiles = useEditorFiles({
     repo,
-    fileTree,
     repoFiles,
     rootPrefix,
   })
 
   const onLoadFile = useOnLoadFile({
     repo,
-    fileTree,
     repoFiles,
     rootPrefix,
     ...editorFiles
@@ -207,7 +190,7 @@ export const useEditorHooks = (
   const onPathChange = useCallback(async (path: string) => {
     // console.log(`------- onPath change -------`)
     // console.log(key)
-  }, [fileTree, rootPrefix])
+  }, [rootPrefix])
 
   const onValueChange = useCallback((value: any) => {
     // console.log(`------- onValueChange -------`)

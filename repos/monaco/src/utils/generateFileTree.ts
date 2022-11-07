@@ -29,6 +29,8 @@ export type THandlePart = {
   temp: TFolderChildren
 }
 
+
+
 const handlePart = ({
   key,
   temp,
@@ -38,7 +40,11 @@ const handlePart = ({
   paths,
   rootPrefix
 }:THandlePart) => {
+
   if (index === paths.length - 1){
+    // If it's a folder, and no more parts then it's empty, so just return temp
+    if(key.endsWith(`/`)) return temp
+
     temp[part] = buildFile({
       key,
       part,

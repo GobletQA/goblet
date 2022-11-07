@@ -22,6 +22,7 @@ export const getFileTree = async () => {
       message: error || `Error loading File-Tree, please try again later.`,
     })
 
+
   data && setFileTree(data)
 
   return data

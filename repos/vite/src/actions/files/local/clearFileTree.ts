@@ -1,5 +1,5 @@
-import { fileTreeDispatch } from '@store'
+import { filesDispatch } from '@store'
 
 export const clearFileTree = () => {
-  fileTreeDispatch.clear()
+  filesDispatch.clear()
 }
