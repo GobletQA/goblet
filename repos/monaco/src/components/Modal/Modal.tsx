@@ -86,8 +86,8 @@ const wrapActions = (
       startIcon: `CancelIcon`,
       text: cancelText || `CANCEL`,
       sx: { marginRight: `12px`, minWidth: `100px` },
-      onClick: (...args:any) => {
-        const resp = onCancel?.(...args)
+      onClick: async (...args:any) => {
+        const resp = await onCancel?.(...args)
         modal.close?.(resp, ...args)
       },
     } as TModalAction),
@@ -97,8 +97,8 @@ const wrapActions = (
       text: okText || `OK`,
       startIcon: `CheckIcon`,
       sx: { color: `#FFFFFF`, minWidth: `100px` },
-      onClick: (...args:any) => {
-        const resp = onOk?.(...args)
+      onClick: async (...args:any) => {
+        const resp = await onOk?.(...args)
         modal.close?.(resp, ...args)
       },
     } as TModalAction)

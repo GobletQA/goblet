@@ -1,6 +1,6 @@
-import { useMemo } from 'react'
 import type { TModalRef } from '@types'
 
+import { useMemo } from 'react'
 import { useSelector } from '@store'
 import { ModalRoot } from './ModalRoot'
 import { ModalMessage } from './ModalMessage'

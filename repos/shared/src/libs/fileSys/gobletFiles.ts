@@ -46,9 +46,9 @@ const inTestRoot = (
   // Check that the file being remove is in the mounted repo folder
   // This ensure no other files can be removed
   const { repoRoot } = repo.paths
-  const inTestRoot = location.startsWith(repoRoot)
+  const isTestRoot = location.startsWith(repoRoot)
 
-  if(!inTestRoot){
+  if(!isTestRoot){
     if(skipThrow) return false
   
     throw new Exception(
@@ -240,37 +240,44 @@ export const renameGobletFile = async (
 }
 
 /**
- * Create a file based on location and fileName
+ * Create a file based on location and location
  * Only saved within the docker mounted test root path
  * @param repo - Repo Class instance for the currently active repo
- * @param fileName - Name / Location of the file to be saved
+ * @param location - Name / Location of the file to be saved
  * @param fileType - The type of file to be saved, one of the FILE_TYPES constants
  *
  * @returns - Contains boolean if create was successful and its fileModel
  */
 export const createGobletFile = async (
   repo:Repo,
-  fileName:string,
+  location:string,
   fileType:string
 ) => {
-  const { fileTypes } = repo
-  const foundType = fileTypes[fileType]
 
-  // Ensure the test type exists
-  // If not, then we can't create the file
-  if (!foundType)
-    throw new Exception(
-      `Invalid test type "${fileType}". Must be one of\n${Object.keys(fileTypes)}`,
-      400
-    )
-
-  // Build the path to the file and it's meta data
-  const location = path.join(foundType.location, fileName)
+  inTestRoot(repo, location)
 
   // Check if the path already exists, so we don't overwrite an existing file
-  const [existsErr, fileExists] = await pathExists(location)
+  const [existsErr, fileExists] = await pathExists(location)  
   if (fileExists)
     throw new Exception(`File already exists at that location!`, 422)
+
+  if(fileType === `folder`){
+    const [mkDErr, mkDSuccess] = await mkDir(location)
+    if (mkDErr) throw new Exception(mkDErr, 422)
+
+    return {
+      success: true,
+      // Build the file model for the new test file
+      file: await buildFileModel(
+        {
+          fileType,
+          location,
+        },
+        repo
+      ),
+    }
+
+  }
 
   const basename = path.basename(location)
   const dirname = path.dirname(location)

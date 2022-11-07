@@ -4,7 +4,7 @@ import { getStore } from '@store'
 import { addToast } from '@actions/toasts'
 import { noOpObj, isObj } from '@keg-hub/jsutils'
 import { setFile } from '@actions/files/local/setFile'
-import { createApiFile } from '@utils/api/createApiFile'
+import { createApiFile } from '@utils/api/fileApi'
 
 /**
  * Checks the file extension based on fileType, and adds it if needed
@@ -83,7 +83,7 @@ export const createFile = async (
   })
 
   const resp = await createApiFile({
-    name: file,
+    location: file,
     type: typeMeta.type,
   })
   if(!resp?.success) return noOpObj

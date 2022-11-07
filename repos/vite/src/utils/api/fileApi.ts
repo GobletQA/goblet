@@ -14,8 +14,8 @@ export type TSaveFile = {
 }
 
 export type TCreateFile = {
-  name:string
   type:string
+  location:string
 }
 
 export type TRenameFile = {
@@ -101,13 +101,13 @@ export const loadApiFile = async ({ location }:TFileApi) => {
  *
  * @returns {*} - Response from the Backend API or callback function when it exists
  */
-export const createApiFile = async ({ name, type }:TCreateFile) => {
-  if(!name || !type)
+export const createApiFile = async ({ location, type }:TCreateFile) => {
+  if(!location || !type)
     return addToast({
       type: 'error',
       message: [
-        `Failed to create file. The file name and type are required`,
-        `Name: ${name}`,
+        `Failed to create file. The file location and type are required`,
+        `Location: ${location}`,
         `Type: ${type}`
       ].join(`\n`)
     })
@@ -115,7 +115,7 @@ export const createApiFile = async ({ name, type }:TCreateFile) => {
   const resp = await apiRepoRequest<Record<'file', TFileModel>>({
     method: HttpMethods.POST,
     url: `/files/create`,
-    params: { name, type },
+    params: { location, type },
   })
 
   if(!resp?.success || resp?.error)

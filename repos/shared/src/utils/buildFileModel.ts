@@ -51,14 +51,27 @@ export const buildFileModel = async (
   const { location, uuid, ...modelData } = data
   
   const fileType = data.fileType || getFileType(location, repo.fileTypes)
+  
+  let finalLoc = location
+  let name = location.split('/').pop()
+
+  if(fileType === `folder`){
+    // Ensure a / at the end when it's a folder
+    const finalLoc = location.endsWith(`/`) ? location : `${location}/`
+    // To get the name, split on / and get the second to last value
+    // This ensures we always get the folder name, and not the last empty string from / split
+    const split = finalLoc.split('/')
+    split.pop()
+    name = split.pop()
+  }
 
   return fileModel({
     ...modelData,
+    name,
     fileType,
-    location,
-    uuid: location,
+    uuid: finalLoc,
+    location: finalLoc,
     mime: getMime(location),
-    name: location.split('/').pop(),
     ext: path.extname(location).replace('.', ''),
     lastModified: await getLastModified(location),
     relative: location.replace(repo.paths.repoRoot, ''),

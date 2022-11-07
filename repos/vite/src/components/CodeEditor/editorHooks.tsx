@@ -39,9 +39,7 @@ export type THOnLoadFile = THEditorFiles & {
 
 
 const modalActions = {
-  close: () => {
-    toggleModal(false)
-  },
+  close: () => toggleModal(false),
   open: (props?:Record<any, any>) => {
     EE.emit(UpdateModalEvt, props)
     confirmModal({ visible: true})

@@ -2,14 +2,16 @@
 import type { editor } from 'monaco-editor'
 
 import type { Modal, TModalOpts } from '../components/Modal/Modal'
-import type { TRootDir, TFolder, TFileItem, TFilelist } from './file.types'
+import type { TFolder, TFileItem, TFilelist } from './file.types'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
-import type { Dispatch, SetStateAction, MutableRefObject, CSSProperties, ReactNode } from 'react'
+import type { MutableRefObject, CSSProperties, ReactNode } from 'react'
 import type {
   TEditorCB,
   TFileCallback,
   TEditorFileCB,
+  TEditorAddFile,
   TEditorPromiseCB,
+  TEditorRenameFile,
 } from './helpers.types'
 
 export type TModal = Modal
@@ -30,9 +32,9 @@ export interface IMonacoEditorProps {
   onFileChange?: TEditorFileCB
   onFileTreeResize?: (width:number) => void
   onDeleteFile?: TEditorCB
-  onRenameFile?: TEditorCB
-  onAddFile?: TEditorFileCB
+  onAddFile?: TEditorAddFile
   onSaveFile?: TEditorFileCB
+  onRenameFile?: TEditorRenameFile
   options: editor.IStandaloneEditorConstructionOptions
 }
 

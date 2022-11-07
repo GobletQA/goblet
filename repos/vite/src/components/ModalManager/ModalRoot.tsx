@@ -7,6 +7,7 @@ import {
   useCallback,
 } from 'react'
 
+import { useSelector } from '@store'
 import Slide from '@mui/material/Slide'
 import Dialog from '@mui/material/Dialog'
 import { ModalFooter } from './ModalFooter'
@@ -62,7 +63,6 @@ export const ModalRoot = (props:TModal) => {
 
   const {
     visible=false,
-    open=visible,
     text,
     slots,
     title,
@@ -114,9 +114,12 @@ export const ModalRoot = (props:TModal) => {
       : { transitionDuration: 500, TransitionComponent: Transition }
   }, [overrideContent, disableTransition])
 
+  // Not sure why, but visible prop is not updating
+  // So we have to re-pull the open state from the store
+  const open = useSelector(state => state.modal.visible)
+
   return (
     <Dialog
-      keepMounted
       aria-labelledby={titleProps?.id || "gb-modal-title"}
       aria-describedby={contentProps?.id || "gb-modal-description"}
       {...transitionProps}

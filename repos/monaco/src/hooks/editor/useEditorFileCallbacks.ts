@@ -1,6 +1,6 @@
 import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
-import type { TFilelist, TEditorOpenFiles, TModal } from '../../types'
+import type { TFilelist, TEditorOpenFiles, TModal, TEditorAddFile } from '../../types'
 
 import { useCallback } from 'react'
 import { useCloseFile } from './useCloseFile'
@@ -19,7 +19,7 @@ export type TUseEditorFileCallbacks = {
   prePath: MutableRefObject<string | null>
   pathChange: (path: string) => void
   onDeleteFile?: (path: string) => void
-  onAddFile?: (path: string, content:string) => void
+  onAddFile?: TEditorAddFile
   onSaveFile?: (path: string, content: string) => void
   setCurPath: (content: SetStateAction<string>) => void
   onRenameFile?: (oldLoc: string, newLoc:string) => void
@@ -114,7 +114,7 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
 
       // Auto open the file in the editor when a new file is created
       pathChange(path)
-      onAddFile?.(path, cont)
+      onAddFile?.(path, false)
     },
     [onAddFile, pathChange]
   )

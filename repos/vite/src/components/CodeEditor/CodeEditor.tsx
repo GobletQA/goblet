@@ -40,11 +40,11 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onLoadFile={onLoadFile}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
-          initialFileTreeStatus={true}
-          initialFileTreeWidth={FileTreeWidth}
-          onPathChange={onPathChange}
-          onValueChange={onValueChange}
           onFileChange={onFileChange}
+          onPathChange={onPathChange}
+          initialFileTreeStatus={true}
+          onValueChange={onValueChange}
+          initialFileTreeWidth={FileTreeWidth}
         />
       )
     : (
