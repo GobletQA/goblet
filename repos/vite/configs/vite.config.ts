@@ -1,8 +1,8 @@
+import 'esbuild-register'
 import path from 'path'
 import { defineConfig } from 'vite'
 import mkcert from'vite-plugin-mkcert'
 import react from '@vitejs/plugin-react'
-// @ts-ignore
 import { loadConfig } from './frontend.config'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import EnvironmentPlugin from 'vite-plugin-environment'
@@ -16,7 +16,6 @@ const isHttps = Boolean(
   process.env.VITE_HTTPS && (process.env.VITE_HTTPS === 'true' || process.env.VITE_HTTPS === '1')
 )
 
-// @ts-ignore
 export default defineConfig(async () => {
   const { envs, port} = loadConfig()
 

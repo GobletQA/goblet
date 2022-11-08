@@ -1,5 +1,6 @@
 import { addToProcess } from '@keg-hub/cli-utils'
 import { loadConfigs } from '@keg-hub/parse-config'
+  // @ts-ignore
 import { getGobletConfig } from '../../shared/src/utils/getGobletConfig.js'
 
 /**

@@ -3,7 +3,15 @@
     "composite": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@gobletqa/shared": [ "../shared/src" ],
+      "@gobletqa/shared/*": [ "../shared/src" ],
+    }
   },
-  "include": ["configs/vite.config.ts"]
+  "include": [
+    "configs/vite.config.ts",
+    "configs/frontend.config.ts",
+  ]
 }

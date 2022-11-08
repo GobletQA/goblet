@@ -182,3 +182,4 @@ repos/dind/remote/**
 /out
 container/values.certs.yaml
 .firebase
+vite.config.ts.timestamp*
