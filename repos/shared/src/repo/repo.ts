@@ -1,20 +1,23 @@
-const { Parkin } = require('@ltipton/parkin')
-const { getWorld } = require('@GSH/repo/world')
-const { noOpObj, } = require('@keg-hub/jsutils')
-const { getFileTypes } = require('@GSH/utils/getFileTypes')
-const {
+import type { TFileTypes, TGobletConfig, TRepoOpts } from '../types'
+import type { TWFGobletConfig, TGitOpts } from '@gobletqa/workflows/types'
+
+import { Parkin } from '@ltipton/parkin'
+import { getWorld } from '@GSH/repo/world'
+import { noOpObj, } from '@keg-hub/jsutils'
+import { getFileTypes } from '@GSH/utils/getFileTypes'
+import {
   getUserRepos,
   statusGoblet,
   initializeGoblet,
   disconnectGoblet,
-} = require('@gobletqa/workflows')
+} from '@gobletqa/workflows'
 
 
 /**
  * Class variation of the a goblet config
  * Has the same properties as a Goblet Config object, but includes some helper methods
  */
-class Repo {
+export class Repo {
 
   /**
    * Gets all repos for a user, including each repos branches
@@ -24,7 +27,7 @@ class Repo {
    * 
    * @returns {Array} - Found repos and their branches
    */
-  static getUserRepos = async opts => {
+  static getUserRepos = async (opts:Record<string, any>) => {
     return await getUserRepos(opts)
   }
 
@@ -35,7 +38,10 @@ class Repo {
    *
    * @returns {Object} - Repo Model object built by the response of the statusGoblet workflow
    */
-  static status = async (config, repoData) => {
+  static status = async (
+    config:TWFGobletConfig,
+    repoData:TGitOpts
+  ) => {
     const { repo, ...status } = await statusGoblet(config, repoData, false)
 
     return !repo || !status.mounted
@@ -107,7 +113,7 @@ class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  world = undefined
+  world:Record<string, any>
 
   /**
    * Paths object for the repo
@@ -115,7 +121,7 @@ class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  paths = undefined
+  paths:Record<string, string>
 
   /**
    * Git metadata for the repo
@@ -123,7 +129,7 @@ class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  git = undefined
+  git:Record<string, any>
 
 
   /**
@@ -134,7 +140,10 @@ class Repo {
    */
   parkin = undefined
 
-  constructor(config = noOpObj) {
+  name:string
+  fileTypes:TFileTypes
+
+  constructor(config:TRepoOpts = noOpObj as TRepoOpts) {
     const { paths, git, name } = config
     this.git = git
     this.name = name
@@ -142,6 +151,10 @@ class Repo {
     this.world = getWorld(config)
     this.parkin = new Parkin(this.world)
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)
+    
+    console.log(`------- this.world -------`)
+    console.log(this.world)
+    
   }
 
   /**
@@ -159,6 +172,3 @@ class Repo {
   }
 }
 
-module.exports = {
-  Repo,
-}

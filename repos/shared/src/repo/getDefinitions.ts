@@ -1,10 +1,12 @@
-const { loadDefinitions } = require('@GSH/libs/definitions/definitions')
-const { definitionsByType } = require('@GSH/utils/definitionsByType')
+import type { Repo } from './repo'
+
+import { definitionsByType } from '@GSH/utils/definitionsByType'
+import { loadDefinitions } from '@GSH/libs/definitions/definitions'
 
 /**
  * Loads the definitions, then splits them based on their type
  */
-const getDefinitions = async (repo, config) => {
+export const getDefinitions = async (repo:Repo, config) => {
   const definitions = await loadDefinitions(repo, config)
   const definitionTypes = definitionsByType(definitions)
 
@@ -12,8 +14,4 @@ const getDefinitions = async (repo, config) => {
     definitions,
     definitionTypes
   }
-}
-
-module.exports = {
-  getDefinitions
 }

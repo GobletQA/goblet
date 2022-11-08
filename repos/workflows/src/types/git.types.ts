@@ -23,7 +23,7 @@ export type TGitUser = {
 
 export type TGitRepo = {
   url: string
-  local: string
+  local?: string
   [key:string]: any
 }
 

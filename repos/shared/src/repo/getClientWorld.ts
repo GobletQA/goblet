@@ -1,16 +1,15 @@
-const path = require('path')
-const glob = require('glob')
-
-const { getGobletConfig } = require('@GSH/utils/getGobletConfig')
-const { getPathFromConfig } = require('@GSH/utils/getPathFromConfig')
-const { tryRequireSync, deepMerge, noOpObj } = require('@keg-hub/jsutils/src/node')
+import path from 'path'
+import glob from 'glob'
+import { getGobletConfig } from '@GSH/utils/getGobletConfig'
+import { getPathFromConfig } from '@GSH/utils/getPathFromConfig'
+import { tryRequireSync, deepMerge, noOpObj } from '@keg-hub/jsutils/src/node'
 
 /**
  * Searches the client's support directory for a world export
  *
  * @return {Object?} - the client's world object, or undefined if it does not exist
  */
-const searchWorld = (config) => {
+const searchWorld = (config?:Record<string, any>) => {
   config = config || getGobletConfig()
   const { repoRoot, workDir } = config.paths
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
@@ -29,7 +28,7 @@ const searchWorld = (config) => {
  *
  * @return {Object?} - the client's world object, or undefined if it does not exist
  */
-const getClientWorld = (config) => {
+export const getClientWorld = (config?:Record<string, any>) => {
   config = config || getGobletConfig()
   const worldPath = getPathFromConfig(`world`, config)
   const clientExport = tryRequireSync(worldPath) || searchWorld(config)
@@ -37,4 +36,3 @@ const getClientWorld = (config) => {
   return deepMerge(config.world, clientExport && clientExport.world || clientExport)
 }
 
-module.exports = { getClientWorld }
