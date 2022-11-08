@@ -166,8 +166,9 @@ deployments:
       # TODO: this is causing the backend to not be able to pull images from github
       # Need to investigate
       serviceAccountName: ${GB_KD_SERVICE_ACCOUNT}
-      serviceAccountMeta:
+      customServiceAccount:
         name: ${GB_KD_SERVICE_ACCOUNT}
+        imagePullSecret: $(node ../scripts/js/resolvePullSecretName.js)
         binding:
           name: ${GB_KD_ROLE_BINDING_NAME}
         role:
