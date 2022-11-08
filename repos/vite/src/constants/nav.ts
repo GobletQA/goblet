@@ -31,7 +31,15 @@ export const SideNav = deepFreeze({
           icon: `FileTree`
         },
         {
-          title: `Reports`,
+          title: `Steps`,
+          icon: `Steps`,
+        },
+        {
+          title: `Waypoint`,
+          icon: `MapPoint`
+        },
+        {
+          title: `Unit`,
           icon: `RuleCheck`
         },
         {
@@ -39,16 +47,12 @@ export const SideNav = deepFreeze({
           icon: `Picture`
         },
         {
-          title: `Waypoint`,
-          icon: `MapPoint`
-        },
-        {
           title: `World`,
           icon: `Globe`
         },
         {
-          title: `Steps`,
-          icon: `Steps`,
+          title: `Env`,
+          icon: `SettingsEthernetIcon`
         },
       ]
     },
