@@ -1,4 +1,4 @@
-import type { TFileTypes, TGobletConfig, TRepoOpts } from '../types'
+import type { TFileTypes, TRepoOpts } from '../types'
 import type { TWFGobletConfig, TGitOpts } from '@gobletqa/workflows/types'
 
 import { Parkin } from '@ltipton/parkin'
@@ -141,20 +141,32 @@ export class Repo {
   parkin = undefined
 
   name:string
+  environment:string
   fileTypes:TFileTypes
 
   constructor(config:TRepoOpts = noOpObj as TRepoOpts) {
-    const { paths, git, name } = config
+    const { environment, paths, git, name } = config
+
+    this.setEnvironment(environment)
+
     this.git = git
     this.name = name
     this.paths = paths
-    this.world = getWorld(config)
+    this.world = getWorld(config, this)
     this.parkin = new Parkin(this.world)
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)
-    
-    console.log(`------- this.world -------`)
-    console.log(this.world)
-    
+
+  }
+
+  /**
+   * Sets the loaded environment for the repo
+   * @memberOf Repo
+   * @type {function}
+   *
+   */
+  setEnvironment = (environment?:string) => {
+    this.environment = environment || process.env.GOBLET_ENV || `develop`
+    if(!process.env.GOBLET_ENV) process.env.GOBLET_ENV = this.environment
   }
 
   /**
@@ -164,7 +176,10 @@ export class Repo {
    *
    * @return {Object} - The reloaded repo.world object
    */
-  refreshWorld = async () => {
+  refreshWorld = async (opts:Record<string, any>=noOpObj) => {
+    const { environment } = opts
+    this.setEnvironment(environment)
+    
     this.world = getWorld(this)
     this.parkin.world = this.world
 
