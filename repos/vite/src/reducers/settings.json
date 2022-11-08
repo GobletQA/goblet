@@ -13,6 +13,40 @@
       "active"
     ]
   },
+  "goblet": {
+    "features": {
+      "key": "features",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "goblet"
+    },
+    "customSteps": {
+      "key": "customSteps",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "goblet"
+    },
+    "waypoint": {
+      "key": "waypoint",
+      "value": false,
+      "active": false,
+      "default": false,
+      "type": "boolean",
+      "group": "goblet"
+    },
+    "unit": {
+      "key": "unit",
+      "value": false,
+      "active": false,
+      "default": false,
+      "type": "boolean",
+      "group": "goblet"
+    }
+  },
   "editor": {
     "autoSave": {
       "key": "autoSave",
@@ -38,6 +72,81 @@
       "default": true,
       "type": "boolean",
       "group": "editor"
+    }
+  },
+  "browser": {
+    "slowMo": {
+      "key": "slowMo",
+      "value": 100,
+      "active": true,
+      "default": 100,
+      "postfix": "ms",
+      "type": "number",
+      "group": "browser"
+    },
+    "timeout": {
+      "key": "timeout",
+      "value": 15000,
+      "active": true,
+      "default": 15000,
+      "postfix": "ms",
+      "type": "number",
+      "group": "browser"
+    },
+    "debug": {
+      "key": "debug",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "browser"
+    },
+    "width": {
+      "key": "width",
+      "value": 1440,
+      "active": false,
+      "default": 1440,
+      "postfix": "px",
+      "type": "number",
+      "group": "browser"
+    },
+    "height": {
+      "key": "height",
+      "value": 900,
+      "active": false,
+      "default": 900,
+      "postfix": "px",
+      "type": "number",
+      "group": "browser"
+    }
+  },
+  "terminal": {
+    "fontSize": {
+      "key": "fontSize",
+      "value": 14,
+      "default": 14,
+      "active": true,
+      "type": "number",
+      "postfix": "px",
+      "group": "terminal"
+    },
+    "fontColor": {
+      "key": "fontColor",
+      "value": "FFFFFF",
+      "default": "FFFFFF",
+      "active": true,
+      "type": "string",
+      "prefix": "#",
+      "group": "terminal"
+    },
+    "backgroundColor": {
+      "key": "backgroundColor",
+      "value": "000000",
+      "default": "000000",
+      "active": true,
+      "type": "string",
+      "prefix": "#",
+      "group": "terminal"
     }
   }
 }

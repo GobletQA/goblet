@@ -21,6 +21,8 @@ export type TInput = ComponentProps<typeof TextField> & {
   prefix?:string
   postfix?:string
   align: `left`|`right`
+  onBlur: (...args:any[]) => void
+  onChange: (...args:any[]) => void
 }
 
 export const Input = (props:TInput) => {
@@ -31,7 +33,7 @@ export const Input = (props:TInput) => {
     prefix,
     postfix,
     className,
-    inputProps=noOpObj,
+    inputProps=noOpObj as Record<string, any>,
     ...rest
   } = props
 
@@ -63,14 +65,14 @@ export const Input = (props:TInput) => {
         className={`setting-input ${className || ''}`.trim()}
         sx={[{
           minWidth: `30px`,
-          width: `${(('' + val).length * 10)}px`
-        }, sx]}
+          width: `${(('' + val).length * 12)}px`
+        }, sx as CSSObj]}
         inputProps={{
           ...inputProps,
           sx: [{
             padding: `4px`,
             textAlign: align,
-          }, inputProps?.sx]
+          }, inputProps?.sx as CSSObj]
         }}
         value={val}
         inputRef={inputRef}
@@ -103,7 +105,7 @@ export const Text = (props:TText) => {
       sx={[{
         width: `100%`,
         textAlign: align
-      }, sx]}
+      }, sx as CSSObj]}
     >
       {`${value}`}
     </Typography>
