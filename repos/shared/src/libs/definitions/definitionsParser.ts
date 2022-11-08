@@ -1,9 +1,12 @@
-const fs = require('fs')
-const { Logger } = require('@keg-hub/cli-utils')
-const { checkCall } = require('@keg-hub/jsutils')
-const { buildFileModel } = require('@GSH/utils/buildFileModel')
-const { parkinCheck } = require('@GSH/libs/overrides/parkinOverride')
-const { requireOverride } = require('@GSH/libs/overrides/requireOverride')
+import type { Repo } from '../../repo/repo'
+import type { TFileModel } from '../../types'
+
+import fs from 'fs'
+import { Logger } from '@keg-hub/cli-utils'
+import { checkCall } from '@keg-hub/jsutils'
+import { buildFileModel } from '@GSH/utils/buildFileModel'
+import { parkinCheck } from '@GSH/libs/overrides/parkinOverride'
+import { requireOverride } from '@GSH/libs/overrides/requireOverride'
 
 class DefinitionsParser {
 
@@ -11,7 +14,7 @@ class DefinitionsParser {
    * Clears out any previously loaded step definitions from the repo.parkin instance
    * @param {Object} repo - Repo Class instance for the currently active repo
    */
-  clear = (repo) => {
+  clear = (repo:Repo) => {
     repo.parkin.steps.clear()
   }
 
@@ -23,7 +26,11 @@ class DefinitionsParser {
    *
    * @returns {Array} - Loaded Definition file model
    */
-  getDefinitions = async (filePath, repo, overrideParkin) => {
+  getDefinitions = async (
+    filePath:string,
+    repo:Repo,
+    overrideParkin:(...args:any[]) => any
+  ) => {
     try {
 
       const { fileModel } = await this.parseDefinition(filePath, repo, overrideParkin)
@@ -57,7 +64,11 @@ class DefinitionsParser {
     }
   }
 
-  parseDefinition = (filePath, repo, overrideMethod) => {
+  parseDefinition = (
+    filePath:string,
+    repo:Repo,
+    overrideMethod:(...args:any[]) => any
+  ):Promise<Record<'fileModel', TFileModel>> => {
     return new Promise((res, rej) => {
       let requireError
       const requireReset = overrideMethod &&
@@ -95,6 +106,7 @@ class DefinitionsParser {
         const fileModel = await buildFileModel(
           {
             location: filePath,
+            // @ts-ignore
             error: requireError,
             content: content.toString(),
             fileType: 'definition',
@@ -119,7 +131,6 @@ class DefinitionsParser {
 }
 
 const definitionsParser = new DefinitionsParser()
-
-module.exports = {
-  DefinitionsParser: definitionsParser,
+export {
+  definitionsParser as DefinitionsParser
 }

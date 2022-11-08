@@ -10,9 +10,6 @@ const parkinCheck = (request) => (
 
 /**
  * Override module for Parkin to allow loading the repo specific parkin instance
- * @param {Object} repo - Instance of the Repo class
- *
- * @returns {function} - Method to resolve the repo specific parkin instance
  */
 const parkinOverride = (repo) => {
   return () => ({

@@ -1,17 +1,17 @@
-const path = require('path')
-const glob = require('glob')
-const { DefinitionsParser } = require('./definitionsParser')
-const { getPathFromBase } = require('@GSH/utils/getPathFromBase')
-const { getDefaultGobletConfig } = require('@GSH/utils/getGobletConfig')
-const { parkinOverride } = require('@GSH/libs/overrides/parkinOverride')
+import type { Repo } from '../../repo/repo'
+import type { TGobletConfig } from '../../types'
+
+import path from 'path'
+import glob from 'glob'
+import { DefinitionsParser } from './definitionsParser'
+import { getPathFromBase } from '@GSH/utils/getPathFromBase'
+import { getDefaultGobletConfig } from '@GSH/utils/getGobletConfig'
+import { parkinOverride } from '@GSH/libs/overrides/parkinOverride'
 
 /**
  * Searches the step definition directory for step definitions
- * @param {Object} repo - Repo Class instance for the currently active repo
- *
- * @returns {Array} - Found paths to step definition files
  */
-const loadDefinitionsFiles = stepsDir => {
+export const loadDefinitionsFiles = (stepsDir:string):Promise<string[]> => {
   return new Promise((res, rej) => {
     // TODO: Investigate if it's better to include the ignore
     // Would make loading the definitions faster, but
@@ -28,11 +28,12 @@ const loadDefinitionsFiles = stepsDir => {
 
 /**
  * Builds the definitions models from the loaded definitions
- * @param {Object} repo - Repo Class instance for the currently active repo
- *
- * @returns {Array} - Loaded Definitions models
  */
-const parseDefinitions = async (repo, definitionFiles, overrideParkin) => {
+const parseDefinitions = async (
+  repo:Repo,
+  definitionFiles:string[],
+  overrideParkin:(...args:any) => any
+) => {
   return definitionFiles.reduce(async (toResolve, file) => {
     const loaded = await toResolve
     if (!file) return loaded
@@ -46,12 +47,11 @@ const parseDefinitions = async (repo, definitionFiles, overrideParkin) => {
 
 /**
  * Loads the definitions file from the passed in repo instance
- * @param {Object} repo - Repo Class instance for the currently active repo
- * @param {Object} [gobletConfig] - The global goblet.config
- *
- * @returns {Array} - Loaded Definitions models
  */
-const loadDefinitions = async (repo, gobletConfig) => {
+export const loadDefinitions = async (
+  repo:Repo,
+  gobletConfig:TGobletConfig
+) => {
   // Clear out any steps that were already loaded
   DefinitionsParser.clear(repo)
   gobletConfig = gobletConfig || getDefaultGobletConfig()
@@ -78,10 +78,4 @@ const loadDefinitions = async (repo, gobletConfig) => {
   const defs = clientDefinitions.concat(gobletDefinitions)
 
   return defs
-}
-
-module.exports = {
-  loadDefinitions,
-  loadDefinitionsFiles,
-  DefinitionsParser,
 }
