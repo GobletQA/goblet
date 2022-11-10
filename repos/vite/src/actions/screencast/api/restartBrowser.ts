@@ -1,7 +1,6 @@
-import { HttpMethods } from '@constants'
 import { noOpObj } from '@keg-hub/jsutils'
 import { addToast } from '@actions/toasts'
-import { apiRequest } from '@utils/api/apiRequest'
+import { screencastApi } from '@services/screencastApi'
 import { getSettingsValues } from '@utils/store/getSettingsValues'
 
 /**
@@ -16,15 +15,8 @@ export const restartBrowser = async (options:Record<any, any> = noOpObj) => {
     data,
     error,
     success
-  } = await apiRequest({
-    url: '/screencast/browser/restart',
-    method: HttpMethods.POST,
-    params: {
-      ...browserOpts,
-      ...options,
-    },
-  })
-
+  } = await screencastApi.restart({ ...browserOpts, ...options})
+  
   if(!success || error)
     addToast({
       type: 'error',

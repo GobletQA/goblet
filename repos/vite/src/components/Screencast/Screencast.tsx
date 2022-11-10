@@ -1,12 +1,13 @@
 import type { CSSProperties } from 'react'
 import type { VncScreenHandle } from 'react-vnc/dist/types/lib/VncScreen'
 
-import { useRef } from 'react'
+import { useRef, useCallback } from 'react'
 
 import { useEffect } from 'react'
 import { Canvas } from './Canvas'
 import { noOpObj } from '@keg-hub/jsutils'
 import Container from '@mui/material/Container'
+import { restartBrowser } from '@actions/screencast/api'
 import { useScreencastUrl }  from '@hooks/components/useScreencastUrl'
 
 export type TScreencastProps = {
@@ -25,7 +26,12 @@ export const Screencast = (props:TScreencastProps) => {
     if(VncService.connected) return
 
     VncService.connect()
+  }, [])
 
+  
+
+  const onConnect = useCallback((...args:any[]) => {
+    restartBrowser()
   }, [])
 
   return (
@@ -41,6 +47,7 @@ export const Screencast = (props:TScreencastProps) => {
       <Canvas
         url={screencastUrl}
         canvasRef={canvasRef}
+        onConnect={onConnect}
         autoConnect={false}
         scaleViewport={true}
         rfbOptions={{

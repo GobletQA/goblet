@@ -1,7 +1,6 @@
-import { HttpMethods } from '@constants'
 import { noOpObj } from '@keg-hub/jsutils'
 import { addToast } from '@actions/toasts'
-import { apiRequest } from '@utils/api/apiRequest'
+import { screencastApi } from '@services/screencastApi'
 import { setBrowserStatus } from '../local/setBrowserStatus'
 import { getSettingsValues } from '@utils/store/getSettingsValues'
 
@@ -19,11 +18,7 @@ export const statusBrowser = async (options = noOpObj) => {
     data,
     error,
     success
-  } = await apiRequest({
-    url: '/screencast/browser/status',
-    method: HttpMethods.GET,
-    params: { ...browserOpts, ...options },
-  })
+  } = await screencastApi.status({ ...browserOpts, ...options })
 
   !success || error
     ? addToast({

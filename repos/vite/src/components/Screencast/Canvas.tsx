@@ -1,3 +1,4 @@
+import type { CSSObj } from '@types'
 import type { ComponentProps, RefObject } from 'react'
 import type { VncScreenHandle } from 'react-vnc/dist/types/lib/VncScreen'
 
@@ -48,6 +49,24 @@ export type TCanvas = VNCSrc & {
   // onCapabilities?: (e?: { detail: { capabilities: RFB["capabilities"] } }) => void;
 }
 
+const styles:Record<string, CSSObj> = {
+  loading: {
+    width: `100%`,
+    alignSelf: `center`,
+  } as CSSObj
+}
+
+const CanvasLoading = () => {
+  return (
+    <Loading
+      size={30}
+      color={`secondary`}
+      message={`Browser Loading`}
+      containerSx={styles.loading}
+    />
+  )
+}
+
 export const Canvas = (props:TCanvas) => {
   const {
     url,
@@ -61,8 +80,8 @@ export const Canvas = (props:TCanvas) => {
           {...(rest as Omit<VNCSrcProps, 'url'>)}
           url={url}
           ref={canvasRef}
-          loadingUI={<Loading />}
+          loadingUI={<CanvasLoading />}
         />
       )
-    : <Loading />
+    : <CanvasLoading />
 }

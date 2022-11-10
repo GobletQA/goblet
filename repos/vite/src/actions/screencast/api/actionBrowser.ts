@@ -1,17 +1,12 @@
-import { HttpMethods } from '@constants'
 import { addToast } from '@actions/toasts'
-import { apiRequest } from '@utils/api/apiRequest'
+import { screencastApi } from '@services/screencastApi'
 
 export const actionBrowser = async (props:Record<any, any>, log=true) => {
   const {
     data,
     error,
     success
-  } = await apiRequest({
-    url: '/screencast/browser/action',
-    method: HttpMethods.POST,
-    params: props,
-  })
+  } = await screencastApi.action(props)
 
   if(!success || error)
     return addToast({

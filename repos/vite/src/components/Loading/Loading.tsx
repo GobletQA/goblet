@@ -8,6 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress'
 export type TLoading = ComponentProps<typeof CircularProgress> & {
   message?:string
   messageSx?: CSSObj
+  containerSx?:CSSObj
   hideSpinner?:boolean
   pos?: `before` | `after`
 }
@@ -17,6 +18,7 @@ export const Loading = (props:TLoading) => {
     message,
     messageSx,
     hideSpinner,
+    containerSx,
     pos=`after`,
     ...progProps
   } = props
@@ -32,9 +34,10 @@ export const Loading = (props:TLoading) => {
 
   return (
     <Box 
-      className="loading-container"
       width='100%'
       textAlign='center'
+      className="loading-container"
+      sx={containerSx}
     >
       {message && pos !== `after` && (
         <Text type="h6" sx={styleArr} >

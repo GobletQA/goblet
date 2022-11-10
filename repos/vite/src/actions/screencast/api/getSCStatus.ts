@@ -1,7 +1,6 @@
-import { HttpMethods } from '@constants'
 import { noOpObj } from '@keg-hub/jsutils'
 import { addToast } from '@actions/toasts'
-import { apiRequest } from '@utils/api/apiRequest'
+import { screencastApi } from '@services/screencastApi'
 import { getSettingsValues } from '@utils/store/getSettingsValues'
 import { setSCStatus } from '@actions/screencast/local/setSCStatus'
 
@@ -18,15 +17,8 @@ export const getSCStatus = async (options:Record<any, any> = noOpObj) => {
     data,
     error,
     success
-  } = await apiRequest({
-    url: '/screencast/status',
-    method: HttpMethods.GET,
-    params: {
-      browser: {
-        ...browserOpts,
-        ...options.browser,
-      },
-    },
+  } = await screencastApi.serviceStatus({
+    browser: { ...browserOpts, ...options.browser },
   })
 
   !success || error
