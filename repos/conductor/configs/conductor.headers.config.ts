@@ -1,0 +1,13 @@
+const {
+  GB_CD_FORWARD_HOST_HEADER,
+  GB_CD_FORWARD_PORT_HEADER,
+  GB_CD_FORWARD_PROTO_HEADER,
+  GB_CD_FORWARD_SUBDOMAIN_HEADER,
+} = process.env
+
+export const conductorHeaders = {
+  hostHeader: GB_CD_FORWARD_HOST_HEADER,
+  portHeader: GB_CD_FORWARD_PORT_HEADER,
+  protoHeader: GB_CD_FORWARD_PROTO_HEADER,
+  subdomainHeader: GB_CD_FORWARD_SUBDOMAIN_HEADER,
+}

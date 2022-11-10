@@ -1,8 +1,12 @@
 import type { CSSProperties } from 'react'
+import type { RFBOptions, VncScreenHandle } from 'react-vnc/dist/types/lib/VncScreen'
 
-import Box from '@mui/material/Box'
+import { useRef } from 'react'
+
+import { Canvas } from './Canvas'
 import { noOpObj } from '@keg-hub/jsutils'
 import Container from '@mui/material/Container'
+import { useScreencastUrl }  from '@hooks/components/useScreencastUrl'
 
 export type TScreencastProps = {
   sx?: CSSProperties
@@ -10,6 +14,9 @@ export type TScreencastProps = {
 }
 
 export const Screencast = (props:TScreencastProps) => {
+  const canvasRef = useRef<VncScreenHandle>(null)
+  const screencastUrl = useScreencastUrl()
+  
   return (
     <Container
       className='screencast-container'
@@ -20,12 +27,15 @@ export const Screencast = (props:TScreencastProps) => {
         backgroundColor: `#9a9a9a`,
       }, props.sx || noOpObj]}
     >
-      <Box
-        className='screencast-element'
-        sx={[{ width: '100%' }, props.sSx || noOpObj]}
-      >
-        Screencast
-      </Box>
+      <Canvas
+        url={screencastUrl}
+        canvasRef={canvasRef}
+        autoConnect={false}
+        scaleViewport={true}
+        rfbOptions={{
+          wsProtocols: ['binary', 'base64'],
+        }}
+      />
     </Container>
   )
 }

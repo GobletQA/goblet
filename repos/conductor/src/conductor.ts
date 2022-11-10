@@ -183,18 +183,25 @@ export class Conductor {
   }
 
   createProxy(app?:Express, ProxyRouter?:Router) {
+    const proxyRouter = this.proxyRouter.bind(this)
+    
     const apiProxy = createApiProxy({
       ...this.config.proxy,
       ...app?.locals?.config?.proxy,
-      proxyRouter: this.proxyRouter.bind(this),
+      proxyRouter,
       headers: {
         ...this.config?.proxy?.headers,
         ...app?.locals?.config?.proxy?.headers
       },
     }, ProxyRouter)
 
-    const wsProxy = createWSProxy(app?.locals?.config?.wsProxy, app)
-    const vncProxy = createVNCProxy(app?.locals?.config?.vncProxy, app)
+    const wsProxy = createWSProxy({
+      ...app?.locals?.config?.wsProxy,
+    }, app)
+    const vncProxy = createVNCProxy({
+      ...app?.locals?.config?.vncProxy,
+      proxyRouter,
+    }, app)
     const iframeProxy = createIframeProxy(app?.locals?.config?.iframeProxy, app)
 
     return { apiProxy, vncProxy, wsProxy, iframeProxy }

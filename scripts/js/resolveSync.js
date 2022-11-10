@@ -64,7 +64,7 @@ const generateSync = (deployment, config) => {
 
   const syncs = args.reduce((acc, prefix) => {
     const deployment = process.env[`${ePreFix}${prefix}_ACTIVE`]
-    if(!deployment) return
+    if(!deployment) return acc
 
     const appConf = getAppConfig({ prefix, config, contexts })
 

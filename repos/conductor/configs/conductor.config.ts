@@ -4,7 +4,7 @@ import { toNum } from '@keg-hub/jsutils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { TDockerConfig, TConductorConfig, TRouteMeta } from '@gobletqa/conductor/types'
 import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
-
+import { conductorHeaders } from './conductor.headers.config'
 const isDocker = inDocker()
 
 
@@ -63,11 +63,13 @@ export const conductorConfig:TConductorConfig = {
   domain: GB_CD_HOST,
   subdomain: GB_CD_SUB_DOMAIN,
   hashKey: GB_CD_HASH_KEY || ``,
+  headers: conductorHeaders,
   proxy: proxyOpts(dindOpts, dindHost),
   controller: {
     options: dindOpts,
     devRouter: {} as TRouteMeta,
     pidsLimit: toNum(GB_CD_PIDS_LIMIT) as number,
     rateLimit: (toNum(GB_CD_RATE_LIMIT) || 5000) as number,
-  } as TDockerConfig
+  } as TDockerConfig,
+  
 }

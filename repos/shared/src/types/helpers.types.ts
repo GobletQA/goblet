@@ -1,3 +1,4 @@
+import type { Request } from 'express'
 import type { Options } from 'http-proxy-middleware'
 
 export type TJwtConfig = {
@@ -15,6 +16,7 @@ export type TProxyOpts = Options & {
   port?:string
   path?:string
   protocol?:string
+  proxyRouter?:(req:Request) => Record<any, any>|string
 }
 
 export type TError = Error & {

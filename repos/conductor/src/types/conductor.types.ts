@@ -69,6 +69,13 @@ export type TScreencastConf = {
   active: boolean
 }
 
+export type TConductorHeaders = {
+  hostHeader:string
+  portHeader:string
+  protoHeader:string
+  subdomainHeader:string
+} 
+
 export type TConductorConfig = {
   hashKey?: string
   domain?: string
@@ -76,6 +83,7 @@ export type TConductorConfig = {
   images?: TImgsConfig
   proxy?: TProxyConfig
   controller: TDockerConfig
+  headers?: TConductorHeaders
 }
 
 export type TSpawnOpts = {

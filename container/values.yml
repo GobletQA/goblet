@@ -135,6 +135,10 @@ env:
   GB_CD_VALIDATION_KEY: "gb-cd-1234567"
   GB_CD_VALIDATION_HEADER: GB-CD-Validation-Key
 
+  GB_CD_FORWARD_HOST_HEADER: x-goblet-host
+  GB_CD_FORWARD_PORT_HEADER: x-goblet-port
+  GB_CD_FORWARD_PROTO_HEADER: x-goblet-proto
+  GB_CD_FORWARD_SUBDOMAIN_HEADER: x-goblet-subdomain
 
   # --- Certs ENVs --- #
   GB_CR_DEBUG: true

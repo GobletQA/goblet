@@ -98,8 +98,6 @@ export class Kube extends Controller {
     hydrateRoutes(this, this.containerMaps)
 
     return this.containerMaps
-
-    return 
   }
 
   /**

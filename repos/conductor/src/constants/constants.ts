@@ -1,9 +1,11 @@
+import { conductorHeaders } from '@GCD/configs/conductor.headers.config'
+
 export const ConductorLabel = `com.gobletqa`
 export const ConductorUserHashLabel = `${ConductorLabel}.conductor`
-export const ForwardHostHeader = `x-goblet-host`
-export const ForwardPortHeader = `x-goblet-port`
-export const ForwardProtoHeader = `x-goblet-proto`
-export const ForwardSubdomainHeader = `x-goblet-subdomain`
+export const ForwardHostHeader = conductorHeaders.hostHeader
+export const ForwardPortHeader = conductorHeaders.portHeader
+export const ForwardProtoHeader = conductorHeaders.protoHeader
+export const ForwardSubdomainHeader = conductorHeaders.subdomainHeader
 export const DevUserHash = `goblet-dev-user`
 
 export const ContainerLabels = [

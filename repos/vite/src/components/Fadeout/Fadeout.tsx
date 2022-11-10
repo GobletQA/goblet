@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { TStyles, TStyle } from '@types'
 import { useEffect, useState, useMemo } from 'react'
 import { exists } from '@keg-hub/jsutils'
 import { useSetTimeout } from '@hooks/useSetTimeout'
@@ -6,10 +6,11 @@ import { Fade, FadeSection, FadeView } from './Fadeout.styled'
 
 type TFadeoutProps = {
   content?: any
-  start?: boolean
   speed?: number
   color?: string
-  styles?: Record<string, any>
+  start?: boolean
+  styles?: TStyles
+  initOpacity?: number
 }
 
 /**
@@ -25,18 +26,22 @@ const useFadeStart = (start?:boolean) => {
   )
 }
 
-
 /**
  * Hook to check if the element should fade out
  * If so, then it updates the styles to fade out the element
  */
-const useFadeEffect = (start?:boolean, speed?:number, styles?:Record<string, any>) => {
-  const [style, setStyle] = useState({ ...(styles?.main || {}), opacity: 1 })
+const useFadeEffect = (
+  start?:boolean,
+  speed?:number,
+  styles?:TStyles,
+  initOpacity:number=1
+) => {
+  const [style, setStyle] = useState<TStyle>({ ...(styles?.main || {}), opacity: 1 })
 
   useEffect(() => {
     start &&
       !style.display &&
-      style.opacity === 1 &&
+      style.opacity === initOpacity &&
       setStyle({ ...style, opacity: 0 })
   }, [start, style])
 
@@ -51,18 +56,23 @@ const useFadeEffect = (start?:boolean, speed?:number, styles?:Record<string, any
 
 export const Fadeout = (props:TFadeoutProps) => {
   const {
-    content,
     start,
     color,
     styles,
+    content,
     speed=2000,
+    initOpacity=1,
   } = props
 
   const fadeStart = useFadeStart(start)
-  const [fadeStyle] = useFadeEffect(fadeStart, speed, styles)
+  const [fadeStyle] = useFadeEffect(fadeStart, speed, styles, initOpacity)
 
   return (
-    <Fade className='gb-fade-out' speed={speed} sx={fadeStyle}>
+    <Fade
+      speed={speed}
+      className='gb-fade-out'
+      sx={fadeStyle as TStyle}
+    >
       <FadeSection>
         <FadeView color={color} >
           {content}

@@ -8,8 +8,6 @@ import { Terminal } from '@components/Terminal'
 import { Screencast } from '@components/Screencast'
 import {
   Proportional,
-  VerticalDivider,
-  HorizontalDivider,
   VerticalPageSplit,
   HorizontalPageSplit,
 } from 'react-page-split'
@@ -41,7 +39,7 @@ export const Layout = (props:TLayout) => {
         <VerticalPageSplit
           divider={(props:ComponentProps<typeof Divider>) => (<Divider {...props} vertical />)}
         >
-          <Browser />
+          <Screencast />
           <Terminal />
         </VerticalPageSplit>
       </Container>

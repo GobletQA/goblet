@@ -3,6 +3,7 @@ import type { Conductor } from '../conductor'
 import { buildImgUri } from './docker/image/buildImgUri'
 import { checkImgConfig } from '../utils/checkImgConfig'
 import { capitalize, deepMerge, omitKeys } from '@keg-hub/jsutils'
+import { ForwardPortHeader, ForwardSubdomainHeader } from '@GCD/constants'
 import {
   TImgRef,
   TPodRef,
@@ -18,7 +19,7 @@ import {
   TControllerConfig,
 } from '../types'
 
-import { ForwardPortHeader, ForwardSubdomainHeader } from '@GCD/constants'
+
 
 
 const throwOverrideErr = (message?:string) => {

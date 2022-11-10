@@ -1,8 +1,10 @@
 import type { Express, Request } from 'express'
 import type { TProxyOpts } from '@gobletqa/shared/types'
 
+import { queryToObj } from '@keg-hub/jsutils'
 import { getApp } from '@gobletqa/shared/express/app'
 import { createProxyMiddleware } from 'http-proxy-middleware'
+import { ForwardPortHeader, ForwardSubdomainHeader } from '@GCD/constants'
 
 /**
  * Setup the novnc proxy to forward all requests to that server
@@ -17,6 +19,7 @@ export const createVNCProxy = (config:TProxyOpts, app:Express) => {
     host,
     target,
     protocol,
+    proxyRouter,
     changeOrigin,
     ...options
   } = (config ?? {}) as TProxyOpts
@@ -35,10 +38,7 @@ export const createVNCProxy = (config:TProxyOpts, app:Express) => {
     target: pxTarget,
     changeOrigin: true,
     router: (req:Request) => {
-      const port = req.url.split(`?`).pop()
-      const route = `${pxTarget}?${port}`
-
-      return route
+      return proxyRouter({ ...req, headers: queryToObj(req.url) } as Request)
     },
     ...options,
   })

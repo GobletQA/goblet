@@ -1,15 +1,23 @@
+import type { TStyle } from '@types'
+import type { Theme } from '@mui/material/styles'
 import { styled } from '@mui/system'
 import { dims, colors } from '@theme'
 import Box, { BoxProps } from '@mui/material/Box'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 
-export const Fade = styled(Box)<BoxProps>(
-  ({theme, speed }:Record<string, any>) => ({
+export type TFade = BoxProps & {
+  theme?:Theme
+  speed?:number
+  sx?: TStyle
+}
+
+export const Fade = styled(Box)<TFade>(
+  ({theme, speed }) => ({
+    top: 0,
     left: 0,
     right: 0,
-    top: dims.header.height,
-    bottom: dims.footer.height * -1,
-    zIndex: 10000,
+    bottom: 0,
+    zIndex: 1300,
     height: '100vh',
     position: 'fixed',
     backgroundColor: colors.white,

@@ -1,39 +1,8 @@
-import type { TStateKey, TRepoState } from '@types'
-import type { THeaders, TRequest, TResponse } from '@services/axios.types'
+import type { TRequest } from '@services/axios.types'
 
-import { getStore } from '@store'
-import { StorageKeys } from '@constants'
 import { apiRequest } from './apiRequest'
-import { isObj, deepMerge, noOpObj } from '@keg-hub/jsutils'
-
-
-/**
- * Helper to get the repo name form the store
- * @function
- * @private
- *
- */
-const getRepoData = () => {
-  const storeItems = getStore()?.getState()
-  return (storeItems?.repo || noOpObj) as TRepoState
-}
-
-/**
- * Helper to add the /repo/repoName to the request url
- * @function
- * @private
- * @param {string} repoName - Name of the repo
- * @param {string} url - Request url to add the path to
- *
- * @returns {string} - Url with the /repo/repoName prepended to it
- */
-const formatUrl = (repoName:string, url:string) => {
-  return url.indexOf('/repo') === 0
-    ? url
-    : url[0] === '/'
-    ? `/repo/${repoName}${url}`
-    : `/repo/${repoName}/${url}`
-}
+import { isObj, deepMerge } from '@keg-hub/jsutils'
+import { getRepoData, formatRepoUrl } from './apiHelpers'
 
 /**
  * Wrapper to append /repo/repoName to a request url
@@ -50,7 +19,7 @@ export const apiRepoRequest = async <T=Record<any, any>>(request:TRequest|string
   const req = isObj<TRequest>(request) ? request : { url: request }
 
   const repoData = getRepoData()
-  req.url = formatUrl(repoData.name, req.url)
+  req.url = formatRepoUrl(repoData.name, req.url)
 
   return apiRequest<T>(deepMerge(
     {
