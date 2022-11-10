@@ -45,9 +45,16 @@ export type TSettingsConfig = {
   hiddenKeys: string[]
 }
 
+export type TGeneralSettings = {
+  [key:string]: TSettingGroup | TSetting
+}
+
 export type TSettings = {
   $config: TSettingsConfig
   editor: TEditorSettings
+  goblet: TSettingGroup
+  browser: TSettingGroup
+  terminal: TSettingGroup
 }
 
 export type TEditorSettingValues = {

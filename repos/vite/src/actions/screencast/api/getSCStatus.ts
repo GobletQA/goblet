@@ -1,0 +1,40 @@
+import { HttpMethods } from '@constants'
+import { noOpObj } from '@keg-hub/jsutils'
+import { addToast } from '@actions/toasts'
+import { apiRequest } from '@utils/api/apiRequest'
+import { getSettingsValues } from '@utils/store/getSettingsValues'
+import { setSCStatus } from '@actions/screencast/local/setSCStatus'
+
+/**
+ * Calls the backend API to get the status of the screencast processes
+ * Updates the store with the response
+ *
+ * @returns {Object} - Response from the backend API
+ */
+export const getSCStatus = async (options:Record<any, any> = noOpObj) => {
+  const browserOpts = getSettingsValues(`browser`)
+
+  const {
+    data,
+    error,
+    success
+  } = await apiRequest({
+    url: '/screencast/status',
+    method: HttpMethods.GET,
+    params: {
+      browser: {
+        ...browserOpts,
+        ...options.browser,
+      },
+    },
+  })
+
+  !success || error
+    ? addToast({
+        type: 'error',
+        message: error || `Failed to get screencast status`
+      })
+    : data && setSCStatus(data)
+
+  return data
+}

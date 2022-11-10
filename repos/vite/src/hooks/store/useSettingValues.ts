@@ -1,8 +1,8 @@
-import type { TValueGroup, TSetting } from '@types'
+import type { TValueGroup } from '@types'
 
+import { useMemo } from 'react'
 import { useSettings } from '@store'
-import { get, noOpObj, exists } from '@keg-hub/jsutils'
-
+import { getSettingsValues } from '@utils/store/getSettingsValues'
 
 /**
  * Helper to extract the values from a settings object and match it to the key
@@ -10,14 +10,5 @@ import { get, noOpObj, exists } from '@keg-hub/jsutils'
  */
 export const useSettingValues = <T extends TValueGroup>(loc:string):T => {
   const settings = useSettings()
-  const group = get(settings, loc, noOpObj)
-
-  return Object.entries(group)
-    .reduce((acc, [key, settingObj]:[string, TSetting]) => {
-      settingObj.active
-        ? (acc[key as keyof T] = settingObj?.value)
-        : exists(settingObj.default) && (acc[key as keyof T] = settingObj?.default)
-
-      return acc
-    }, {} as T)
+  return useMemo(() => getSettingsValues(loc, settings), [loc, settings])
 }

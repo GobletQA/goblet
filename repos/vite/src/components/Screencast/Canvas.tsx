@@ -1,8 +1,6 @@
 import type { ComponentProps, RefObject } from 'react'
-import type RFB from 'react-vnc/dist/types/noVNC/core/rfb'
-import type { RFBOptions, VncScreenHandle } from 'react-vnc/dist/types/lib/VncScreen'
+import type { VncScreenHandle } from 'react-vnc/dist/types/lib/VncScreen'
 
-import { useEffect } from 'react'
 import { VncScreen } from 'react-vnc'
 import { Loading } from '@components/Loading'
 
@@ -56,13 +54,6 @@ export const Canvas = (props:TCanvas) => {
     canvasRef,
     ...rest
   } = props
-
-  useEffect(() => {
-    if(!canvasRef) return 
-    
-    console.log(canvasRef)
-    
-  }, [])
 
   return url
     ? (

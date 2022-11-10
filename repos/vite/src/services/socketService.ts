@@ -1,7 +1,11 @@
 
 class SocketService {
   
-  disconnect = async() => {
+  disconnect = async () => {
+    
+  }
+ 
+  emit = async (...args:any[]) => {
     
   }
   

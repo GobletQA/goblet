@@ -29,7 +29,16 @@ export type TRoute = {
 export type TRouteComponents = Record<string, typeof Component>
 
 export const buildRoute = (route:TRoute, RouteComponents:TRouteComponents) => {
-  const { element, label, layout, errorElement, path, children, ...altProps } = route
+  const {
+    path,
+    label,
+    layout,
+    element,
+    children,
+    errorElement,
+    ...altProps
+  } = route
+
   const built = {...altProps } as RouteObject
 
   if(isStr(element) || !element && isStr(label)){

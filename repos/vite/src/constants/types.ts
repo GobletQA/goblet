@@ -47,3 +47,15 @@ export enum StatusTypes {
   VNC = 'vnc',
   LOCAL = 'local',
 }
+
+export const SocketMsgTypes = {
+  CMD_RUN: `cmdRun`,
+  STD_OUT: `stdOut`,
+  STD_ERR: `stdErr`,
+  CMD_END: `cmdEnd`,
+  CMD_FAIL: `cmdFail`,
+  AUTH_TOKEN: `authToken`,
+  BROWSER_STATUS: `browserStatus`,
+  BROWSER_RECORDER: `browserRecorder`,
+  BROWSER_RUN_TESTS: `browserRunTests`
+}
