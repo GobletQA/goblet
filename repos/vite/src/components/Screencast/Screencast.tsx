@@ -1,12 +1,12 @@
 import type { CSSProperties } from 'react'
-import type { VncScreenHandle } from 'react-vnc/dist/types/lib/VncScreen'
+import type { TVncScreenHandle } from './vnc.types'
 
 import { useRef, useCallback } from 'react'
-
+import { Vnc } from './Vnc'
 import { useEffect } from 'react'
 import { Canvas } from './Canvas'
 import { noOpObj } from '@keg-hub/jsutils'
-import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
 import { restartBrowser } from '@actions/screencast/api'
 import { useScreencastUrl }  from '@hooks/components/useScreencastUrl'
 
@@ -16,26 +16,31 @@ export type TScreencastProps = {
 }
 
 export const Screencast = (props:TScreencastProps) => {
-  const canvasRef = useRef<VncScreenHandle>(null)
+  const vncRef = useRef<TVncScreenHandle>(null)
   const screencastUrl = useScreencastUrl()
 
   useEffect(() => {
-    if(!canvasRef?.current) return
-    
-    const VncService = canvasRef.current
+    if(!vncRef?.current) return
+
+    const VncService = vncRef.current
     if(VncService.connected) return
 
     VncService.connect()
-  }, [])
+    
 
-  
+  }, [screencastUrl])
 
   const onConnect = useCallback((...args:any[]) => {
-    restartBrowser()
+    // restartBrowser()
+    const VncService = vncRef.current
+    if(!VncService?.screen?.current) return 
+
+    VncService.screen.current.style.minHeight = `100%`
+    VncService.screen.current.style.minWidth = `100%`
   }, [])
 
   return (
-    <Container
+    <Box
       className='screencast-container'
       sx={[{
         display: `flex`,
@@ -44,16 +49,17 @@ export const Screencast = (props:TScreencastProps) => {
         backgroundColor: `#9a9a9a`,
       }, props.sx || noOpObj]}
     >
-      <Canvas
+      <Vnc
+        ref={vncRef}
         url={screencastUrl}
-        canvasRef={canvasRef}
         onConnect={onConnect}
         autoConnect={false}
         scaleViewport={true}
+        className='screencast-browser'
         rfbOptions={{
           wsProtocols: ['binary', 'base64'],
         }}
       />
-    </Container>
+    </Box>
   )
 }
