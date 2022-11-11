@@ -66,15 +66,15 @@ export const Fadeout = (props:TFadeoutProps) => {
 
   const fadeStart = useFadeStart(start)
   const [fadeStyle] = useFadeEffect(fadeStart, speed, styles, initOpacity)
-
+  
   return (
     <Fade
       speed={speed}
       className='gb-fade-out'
       sx={fadeStyle as TStyle}
     >
-      <FadeSection>
-        <FadeView color={color} >
+      <FadeSection sx={styles?.section} >
+        <FadeView color={color} sx={styles?.view} >
           {content}
         </FadeView>
       </FadeSection>

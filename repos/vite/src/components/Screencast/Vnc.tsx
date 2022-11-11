@@ -1,22 +1,40 @@
+import type { ComponentProps } from 'react'
 import type { TVncProps, TVncScreenHandle } from './vnc.types'
 
 import { useVncRefs } from './useVncRefs'
 import { useRFBHooks } from './useRFBHooks'
 import { useVncHooks } from './useVncHooks'
 import { Loading } from '@components/Loading'
+import { Fadeout } from '@components/Fadeout'
 import { useVncHandlers } from './useVncHandlers'
 import React, { forwardRef, useImperativeHandle } from 'react'
 
-const VncLoading = () => {
+type TVncLoading = ComponentProps<typeof Fadeout> & {
+  loading:boolean
+  forced:boolean|undefined
+}
+
+const VncLoading = (props:TVncLoading) => {
+  const {
+    forced,
+    loading,
+    ...rest
+  } = props
+  
   return (
-    <Loading
-      size={30}
-      color={`secondary`}
-      message={`Browser Loading`}
-      containerSx={{
-        width: `100%`,
-        alignSelf: `center`,
-      }}
+    <Fadeout
+      {...rest}
+      content={
+        <Loading
+          size={30}
+          color={`secondary`}
+          message={`Browser Loading`}
+          containerSx={{
+            width: `100%`,
+            alignSelf: `center`,
+          }}
+        />
+      }
     />
   )
 }
@@ -28,6 +46,8 @@ const VncScreen: React.ForwardRefRenderFunction<TVncScreenHandle, TVncProps> = (
     className,
     loadingUI,
     elementAttrs,
+    loadingProps,
+    forceShowLoading,
     autoConnect = true,
   } = props
 
@@ -117,7 +137,14 @@ const VncScreen: React.ForwardRefRenderFunction<TVncScreenHandle, TVncProps> = (
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       />
-      {loading && (loadingUI ?? <VncLoading />)}
+      {(forceShowLoading || loading)
+        && (
+          <VncLoading
+            loading={loading}
+            forced={forceShowLoading}
+            {...loadingProps}
+          />
+        )}
     </>
   )
 }

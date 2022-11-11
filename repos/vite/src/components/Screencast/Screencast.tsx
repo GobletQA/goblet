@@ -1,13 +1,12 @@
 import type { CSSProperties } from 'react'
 import type { TVncScreenHandle } from './vnc.types'
 
-import { useRef, useCallback } from 'react'
+import { useRef, useCallback, useState } from 'react'
 import { Vnc } from './Vnc'
 import { useEffect } from 'react'
-import { Canvas } from './Canvas'
-import { noOpObj } from '@keg-hub/jsutils'
 import Box from '@mui/material/Box'
-import { restartBrowser } from '@actions/screencast/api'
+import { noOpObj } from '@keg-hub/jsutils'
+import { statusBrowser, restartBrowser } from '@actions/screencast/api'
 import { useScreencastUrl }  from '@hooks/components/useScreencastUrl'
 
 export type TScreencastProps = {
@@ -15,9 +14,23 @@ export type TScreencastProps = {
   sSx?: CSSProperties
 }
 
+const LoadingProps = {
+  speed: 500,
+  styles: {
+    main: {
+      height: `100%`,
+      position: `absolute`,
+    },
+    view: {
+      top: `initial`
+    }
+  }
+}
+
 export const Screencast = (props:TScreencastProps) => {
   const vncRef = useRef<TVncScreenHandle>(null)
   const screencastUrl = useScreencastUrl()
+  const [fadeStart, setFadeStart] = useState<boolean>(false)
 
   useEffect(() => {
     if(!vncRef?.current) return
@@ -30,11 +43,13 @@ export const Screencast = (props:TScreencastProps) => {
 
   }, [screencastUrl])
 
-  const onConnect = useCallback((...args:any[]) => {
+  const onConnect = useCallback(async (...args:any[]) => {
     // TODO: need to figure out a solution for this
     // Should call restart browser only when it's not already running
     // Right now it calls it every time
-    // restartBrowser()
+    // const resp = await  restartBrowser()
+    const resp = await statusBrowser()
+    if(resp.running) setFadeStart(true)
     const VncService = vncRef.current
     if(!VncService?.screen?.current) return 
 
@@ -48,6 +63,7 @@ export const Screencast = (props:TScreencastProps) => {
       sx={[{
         display: `flex`,
         minHeight: `100%`,
+        position: `relative`,
         alignItems: `stretch`,
         backgroundColor: `#9a9a9a`,
       }, props.sx || noOpObj]}
@@ -58,6 +74,11 @@ export const Screencast = (props:TScreencastProps) => {
         onConnect={onConnect}
         autoConnect={false}
         scaleViewport={true}
+        forceShowLoading={true}
+        loadingProps={{
+          ...LoadingProps,
+          start: fadeStart,
+        }}
         className='screencast-browser'
         rfbOptions={{
           wsProtocols: ['binary', 'base64'],

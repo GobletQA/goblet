@@ -59,7 +59,9 @@ export type TVncProps = {
   resizeSession?: boolean
   showDotCursor?: boolean
   compressionLevel?: number
+  forceShowLoading?: boolean
   loadingUI?: React.ReactNode
+  loadingProps?: Record<any, any>
   onConnect?: (rfb?: RFB) => void
   rfbOptions?: Partial<TRFBOptions>
   onDisconnect?: (rfb?: RFB) => void
