@@ -66,7 +66,8 @@ const findProc = procName => {
 
     // Run the search command, and compare the output
     exec(cmd, (err, stdout, stderr) => {
-      if (err || stderr) return res({ running: false, name: procName })
+      if (err || stderr)
+        return res({ running: false, name: procName, err: err?.message || stderr })
 
       // Finding the pid on windows machine not currently supported
       // I would need a windows OS to see the tasklist cmd output, to know how to parse it

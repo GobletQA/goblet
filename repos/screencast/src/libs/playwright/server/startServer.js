@@ -1,10 +1,9 @@
 const { newServer } = require('./newServer')
 const { Logger } = require('@keg-hub/cli-utils')
 const { statusServer } = require('./statusServer')
-const { setServer, getServer } = require('./server')
-const { checkVncEnv } = require('../../utils/vncActiveEnv')
-const { getBrowserType } = require('../helpers/getBrowserType')
 const { get, noOpObj } = require('@keg-hub/jsutils')
+const { setServer, getServer } = require('./server')
+const { getBrowserType } = require('../helpers/getBrowserType')
 
 /**
  * Starts browser-server using playwright
@@ -19,11 +18,7 @@ const { get, noOpObj } = require('@keg-hub/jsutils')
  *
  * @returns {Object} - Contains the page, context, and browser created from playwright
  */
-const startServer = async (browserConf = noOpObj) => {
-  if (checkVncEnv().vncActive)
-    return Logger.warn(
-      `Browser Websocket server should not be run in Screencast Environment`
-    )
+const startServer = async (browserConf = noOpObj, detach=false) => {
 
   const browser = getBrowserType(browserConf.type)
 
@@ -37,6 +32,18 @@ const startServer = async (browserConf = noOpObj) => {
     // Get the most up-to-date server after setting it
     // Should be the same as the status variable
     return getServer()
+  }
+
+  // TODO: fix this to run the newServer in a different process
+  // This way it can be detached and run in the background
+  if(detach){
+    newServer(browser, {
+      ...browserConf,
+      // handleSIGINT: false,
+      // handleSIGHUP: false,
+      // handleSIGTERM: false,
+    })
+    return
   }
 
   return await newServer(browser, browserConf)

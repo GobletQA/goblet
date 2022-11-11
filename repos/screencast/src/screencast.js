@@ -100,6 +100,7 @@ const checkStatus = async () => {
  * @return {Object} - Contains status for screencast processes
  */
 const statusScreencast = async (params = noOpObj) => {
+
   const status = {}
   status.vnc = await statusVNC()
   status.sockify = await statusSockify()

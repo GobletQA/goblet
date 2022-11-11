@@ -220,6 +220,7 @@ module.exports = {
           '!/repos/sockr',
           '!/repos/testUtils',
           '!/repos/workflows',
+          '!/tasks',
         ]
       },
       envs: {

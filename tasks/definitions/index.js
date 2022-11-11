@@ -17,5 +17,6 @@ module.exports = {
   ...definitions(),
   ...initialize(require('./bdd')),
   ...initialize(require('./unit')),
-  ...initialize(require('./waypoint'))
+  ...initialize(require('./waypoint')),
+  ...initialize(require('./screencast')),
 }

@@ -43,6 +43,7 @@
     "src",
     "configs",
     "scripts",
+    "./tasks.ts",
     "../shared",
     "../testUtils",
     "../workflows"

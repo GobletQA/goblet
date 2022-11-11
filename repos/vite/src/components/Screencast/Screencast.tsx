@@ -31,6 +31,9 @@ export const Screencast = (props:TScreencastProps) => {
   }, [screencastUrl])
 
   const onConnect = useCallback((...args:any[]) => {
+    // TODO: need to figure out a solution for this
+    // Should call restart browser only when it's not already running
+    // Right now it calls it every time
     // restartBrowser()
     const VncService = vncRef.current
     if(!VncService?.screen?.current) return 

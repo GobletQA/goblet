@@ -44,6 +44,8 @@
     "make": "GB_ROOT_DIR=$(pwd) ./scripts/shell/init/init.sh",
     "mkcert": "GB_ROOT_DIR=$(pwd) ./scripts/shell/mkcert/mkcert.sh",
     "pretty": "prettier --ignore-path .root.ignore --config ./configs/prettier.config.js --write",
+    "sc": "node tasks/entry.js screencast",
+    "screencast": "node tasks/entry.js screencast",
     "task": "node tasks/entry.js",
     "cp:tracer": "node scripts/cpTracer.js",
     "pm2": "pm2 start configs/app.pm2.config.js",
