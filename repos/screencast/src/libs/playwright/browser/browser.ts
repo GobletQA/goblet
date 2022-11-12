@@ -1,6 +1,8 @@
-const { Logger } = require('@keg-hub/cli-utils')
-const { isFunc, get, set } = require('@keg-hub/jsutils')
-const { defaultBrowser } = require('@GSC/constants')
+import type { TBrowser, TBrowserContext, TBrowserPage } from '@GSC/types'
+
+import { Logger } from '@keg-hub/cli-utils'
+import { defaultBrowser } from '@GSC/constants'
+import { isFunc, get, set } from '@keg-hub/jsutils'
 
 /**
  * Cache holder for all launched playwright browsers by type
@@ -11,23 +13,16 @@ let PW_BROWSERS = {}
 /**
  * Returns the cached playwrite page
  * @function
- * @param {string} type - Playwright browser type ( chromium | firefox | webkit )
- *
- * @returns {Object} - Playwright browser page || undefined
  */
-const getPage = (type = defaultBrowser) => {
+export const getPage = (type:string = defaultBrowser) => {
   return get(PW_BROWSERS, [type, `page`])
 }
 
 /**
  * Sets the cached Playwright page
  * @function
- * @param {Object|undefined} page - Playwright browser page
- * @param {string} type - Playwright browser type ( chromium | firefox | webkit )
- *
- * @returns {void}
  */
-const setPage = (page, type = defaultBrowser) => {
+export const setPage = (page:TBrowserPage, type:string = defaultBrowser) => {
 
   const oldPage = getPage(type)
 
@@ -62,7 +57,7 @@ const setPage = (page, type = defaultBrowser) => {
  *
  * @returns {Object} - Playwright browser context || undefined
  */
-const getContext = (type = defaultBrowser) => {
+export const getContext = (type:string = defaultBrowser) => {
   return get(PW_BROWSERS, [type, `context`])
 }
 
@@ -74,10 +69,9 @@ const getContext = (type = defaultBrowser) => {
  *
  * @returns {void}
  */
-const setContext = (context, type = defaultBrowser) => {
-  
+export const setContext = (context:TBrowserContext, type:string = defaultBrowser) => {
   const oldContext = getContext(type)
-  
+
   if(oldContext){
     if(context && oldContext){
       console.log(`oldContext already set`)
@@ -103,20 +97,16 @@ const setContext = (context, type = defaultBrowser) => {
 /**
  * Returns the cached playwrite browser
  * @function
- * @param {string} type - Playwright browser type ( chromium | firefox | webkit )
- *
- * @return {Object|undefined} - Playwright browser object or undefined
  */
-const getBrowser = (type = defaultBrowser) => {
+export const getBrowser = (type:string = defaultBrowser) => {
   return get(PW_BROWSERS, [type, `browser`])
 }
 
 /**
  * Sets the cached playwrite server
  * @function
- * @return {Object|undefined} - Playwright browser object or undefined
  */
-const setBrowser = (browser, type = defaultBrowser) => {
+export const setBrowser = (browser:TBrowser, type:string = defaultBrowser) => {
   const oldBrowser = getBrowser(type)
 
   if(oldBrowser){
@@ -153,29 +143,14 @@ const setBrowser = (browser, type = defaultBrowser) => {
  * Is only removed if a type is passed
  * @function
  * @private
- *
- * @param {Object|string} browser - Playwright browser object || Browser type
- * @param {string} type - Playwright browser type ( chromium | firefox | webkit )
- *
- * @return {Object} - The PW_BROWSERS cache, with the browser removed
  */
-const closeBrowser = async (browser) => {
+export const closeBrowser = async (browser?:TBrowser) => {
   try {
-    browser && await browser.close()
+    browser && await browser?.close()
   }
   catch (err) {
     Logger.warn(err.message)
   }
 
   return PW_BROWSERS
-}
-
-module.exports = {
-  getPage,
-  setPage,
-  getContext,
-  setContext,
-  getBrowser,
-  setBrowser,
-  closeBrowser,
 }

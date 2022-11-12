@@ -1,14 +1,21 @@
-const { getScreenDims } = require('@gobletqa/shared/utils/getScreenDims')
-const { parseJsonEnvArr } = require('@gobletqa/shared/utils/parseJsonEnvArr')
-const { artifactSaveActive } = require('@gobletqa/shared/utils/artifactSaveOption')
-const {
+import type {
+  TScreenDims,
+  TGobletConfig,
+  TBrowserContextGeo,
+  TBrowserContextOpts
+} from '@GSC/types'
+
+import { getScreenDims } from '@gobletqa/shared/utils/getScreenDims'
+import { parseJsonEnvArr } from '@gobletqa/shared/utils/parseJsonEnvArr'
+import { artifactSaveActive } from '@gobletqa/shared/utils/artifactSaveOption'
+import {
   toBool,
   isArr,
   noOpObj,
   isNum,
   exists,
   isObj
-} = require('@keg-hub/jsutils')
+} from '@keg-hub/jsutils'
 
 /**
  * Parses the GOBLET_CONTEXT_GEO env into an object 
@@ -16,7 +23,7 @@ const {
  * 
  * @returns {Object} - Updated opts object with geolocation added if set
  */
-const parseGeo = value => {
+const parseGeo = (value:string) => {
   if(!exists(value)) return noOpObj
   const {geo} = parseJsonEnvArr('geo', value)
 
@@ -28,11 +35,11 @@ const parseGeo = value => {
     const parsed = parseInt(geo[idx])
     if(!isNum(parsed)) return acc
     
-    acc.geolocation = acc.geolocation || {}
+    acc.geolocation = (acc.geolocation || {}) as TBrowserContextGeo
     acc.geolocation[key] = parsed
 
     return acc
-  }, {})
+  }, {} as Partial<TBrowserContextOpts>)
 }
 
 /**
@@ -59,7 +66,13 @@ const addEnvToOpts = (opts, key, value) => {
  * 
  * @returns {Object} - Updated opts object with recording settings
  */
-const parseRecord = (config, opts, screenDims, shouldRecordVideo, fullScreen) => {
+const parseRecord = (
+  config:TGobletConfig,
+  opts:Partial<TBrowserContextOpts>,
+  screenDims:TScreenDims,
+  shouldRecordVideo:boolean,
+  fullScreen:boolean
+) => {
   if(!shouldRecordVideo) return opts
 
   opts.recordVideo = opts.recordVideo || {}
@@ -84,7 +97,7 @@ const parseRecord = (config, opts, screenDims, shouldRecordVideo, fullScreen) =>
  *
  * @return {Object} browser options
  */
-const taskEnvToContextOpts = config => {
+export const taskEnvToContextOpts = (config:TGobletConfig) => {
   const {
     GOBLET_CONTEXT_TZ, // string
     GOBLET_CONTEXT_GEO, // JSON array
@@ -96,7 +109,7 @@ const taskEnvToContextOpts = config => {
     GOBLET_TEST_VIDEO_RECORD, // boolean || string
   } = process.env
 
-  const opts = {
+  const opts:Partial<TBrowserContextOpts> = {
     ...parseJsonEnvArr('permissions', GOBLET_CONTEXT_PERMISSIONS),
     ...parseGeo(GOBLET_CONTEXT_GEO),
   }
@@ -121,8 +134,4 @@ const taskEnvToContextOpts = config => {
   }
 
   return opts
-}
-
-module.exports = {
-  taskEnvToContextOpts
 }

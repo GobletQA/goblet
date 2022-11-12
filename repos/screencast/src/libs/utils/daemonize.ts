@@ -1,5 +1,7 @@
-const { spawn } = require('child_process')
-const { noOpObj } = require('@keg-hub/jsutils')
+import type { StdioOptions } from 'child_process'
+
+import { spawn } from 'child_process'
+import { noOpObj } from '@keg-hub/jsutils'
 
 /**
  * Helper to get the passed in args of the current script
@@ -19,17 +21,23 @@ const getArgs = () => {
   return { args, script }
 }
 
+type TSpawnDaemon = {
+  cwd:string
+  stderr:string
+  stdout:string
+  env:Record<string, string>
+}
+
 /**
  * Daemonizes the script and return the spawned child object
  * @function
  * @public
- * @param {string} script - Path to the script to daemonize
- * @param {Array} args - Arguments to pass to the script
- * @param {Object} opts - Options to pass to the child spawned process
- *
- * @returns {Object} - Child process object
  */
-const spawnDaemon = (script, args, opt = noOpObj) => {
+export const spawnDaemon = (
+  script:string,
+  args:string[],
+  opt:TSpawnDaemon = noOpObj as TSpawnDaemon
+) => {
   const defstd = 'inherit'
 
   const {
@@ -43,8 +51,8 @@ const spawnDaemon = (script, args, opt = noOpObj) => {
     cwd,
     // Detaches the spawed process from the parent
     detached: true,
-    env: { ...env, ...process.env },
-    stdio: [defstd, stdout, stderr],
+    env: { ...env, ...process.env } as NodeJS.ProcessEnv,
+    stdio: [defstd, stdout, stderr] as StdioOptions,
   }
 
   // spawn the child using the same node process as ours
@@ -61,10 +69,8 @@ const spawnDaemon = (script, args, opt = noOpObj) => {
  * **IMPORTANT** - exits the current process after spawning it's self as a child
  * @function
  * @public
- * @exist
- * @param {Object} opts - Options to pass to the child spawned process
  */
-const daemonize = (opt = noOpObj) => {
+const daemonize = (opt:TSpawnDaemon = noOpObj as TSpawnDaemon) => {
   // we are a daemon, don't daemonize again
   if (process.env.__ALREADY_DAEMONIZED) return process.pid
 

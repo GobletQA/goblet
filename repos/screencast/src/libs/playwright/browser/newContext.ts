@@ -1,7 +1,9 @@
-const { newBrowser } = require('./newBrowser')
-const { noPropArr, noOpObj } = require('@keg-hub/jsutils')
-const { getBrowser, getContext, setContext } = require('./browser')
-const { getContextOpts } = require('../helpers/getContextOpts')
+import type { TBrowserConf } from '@GSC/types'
+
+import { newBrowser } from './newBrowser'
+import { noOpObj } from '@keg-hub/jsutils'
+import { getBrowser, getContext, setContext } from './browser'
+import { getContextOpts } from '../helpers/getContextOpts'
 
 /**
  * Checks if the browser already exists
@@ -12,11 +14,11 @@ const { getContextOpts } = require('../helpers/getContextOpts')
  *
  * @returns {Object} - The playwright browser context object, and isNew state
  */
-const ensureBrowser = async (browserConf = noOpObj) => {
+const ensureBrowser = async (browserConf:TBrowserConf = noOpObj as TBrowserConf) => {
   const pwBrowser = getBrowser(browserConf.type)
   if (pwBrowser) return pwBrowser
 
-  const { browser } = await newBrowser(browserConf)
+  const { browser } = await newBrowser(browserConf) as any
   return browser
 }
 
@@ -30,7 +32,7 @@ const ensureBrowser = async (browserConf = noOpObj) => {
  *
  * @returns {Object} - The playwright browser context object
  */
-const ensureContext = async (browser, browserConf) => {
+const ensureContext = async (browser, browserConf:TBrowserConf) => {
   const pwContext = getContext(browserConf.type)
   if (pwContext) return pwContext
 
@@ -48,13 +50,10 @@ const ensureContext = async (browser, browserConf) => {
  *
  * @returns {Object} - Contains the context, and browser created from playwright
  */
-const newContext = async (browserConf = noOpObj) => {
+export const newContext = async (browserConf:TBrowserConf = noOpObj as TBrowserConf) => {
   const browser = await ensureBrowser(browserConf)
   const context = await ensureContext(browser, browserConf)
 
   return { browser, context }
 }
 
-module.exports = {
-  newContext,
-}

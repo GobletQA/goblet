@@ -1,4 +1,4 @@
-const { checkCall } = require('@keg-hub/jsutils')
+import { checkCall } from '@keg-hub/jsutils'
 
 /**
  * Check if an arg exists, and calls the passed in method if it does
@@ -9,7 +9,11 @@ const { checkCall } = require('@keg-hub/jsutils')
  *
  * @return {Void}
  */
-const checkAndCall = async (args, arg, method) => {
+const checkAndCall = async (
+  args:string[],
+  arg:string,
+  method:(...args:any[]) => void
+) => {
   Boolean(args.find(_arg => _arg === arg)) && (await checkCall(method, args))
 }
 
@@ -23,15 +27,14 @@ const checkAndCall = async (args, arg, method) => {
  *
  * @return {Void}
  */
-const checkArgs = async (args, methods) => {
+export const checkArgs = async (
+  args:string[],
+  methods:Record<string, (...args:any[]) => void>
+) => {
   args = args || process.argv.slice(2)
   await checkAndCall(args, '--pid', methods.pid)
   await checkAndCall(args, '--status', methods.status)
   await checkAndCall(args, '--daemon', methods.daemon)
   await checkAndCall(args, '--restart', methods.restart)
   await checkAndCall(args, '--kill-all-screencast', methods.kill)
-}
-
-module.exports = {
-  checkArgs,
 }

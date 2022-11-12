@@ -1,5 +1,7 @@
-const { toBool, isStr, noOpObj } = require('@keg-hub/jsutils')
-const { parseJsonEnvArr } = require('@gobletqa/shared/utils/parseJsonEnvArr')
+import type { TGobletConfig, TBrowserConf } from '@GSC/types'
+
+import { toBool, isStr, noOpObj } from '@keg-hub/jsutils'
+import { parseJsonEnvArr } from '@gobletqa/shared/utils/parseJsonEnvArr'
 
 /**
  * Builds a list of devices to used based on the GOBLET_BROWSER_DEVICES env
@@ -25,11 +27,8 @@ const buildDeviceList = (envVal) => {
 /**
  * Gets the browser opts set as envs when a task is run
  * This allows passing values into the test environment
- * @param {Object} config - Goblet global config
- *
- * @return {Object} browser options
  */
-const taskEnvToBrowserOpts = config => {
+export const taskEnvToBrowserOpts = (config:TGobletConfig) => {
   const {
     GOBLET_HEADLESS,
     GOBLET_DEV_TOOLS,
@@ -51,9 +50,5 @@ const taskEnvToBrowserOpts = config => {
     slowMo: parseInt(GOBLET_BROWSER_SLOW_MO, 10),
     timeout: parseInt(GOBLET_BROWSER_TIMEOUT, 10),
     ...buildDeviceList(GOBLET_BROWSER_DEVICES),
-  }
-}
-
-module.exports = {
-  taskEnvToBrowserOpts
+  } as TBrowserConf
 }

@@ -1,3 +1,4 @@
+export type { Repo as TRepo } from '../repo/repo'
 
 export type TRepoOpts = {
   name:string

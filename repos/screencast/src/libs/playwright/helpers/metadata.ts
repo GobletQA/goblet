@@ -1,12 +1,20 @@
-const os = require('os')
-const path = require('path')
-const { fileSys, Logger } = require('@keg-hub/cli-utils')
-const { checkVncEnv } = require('../../utils/vncActiveEnv')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
-const { isStr, isObj, exists, noOpObj, validate } = require('@keg-hub/jsutils')
+import type { TBrowserMetaData, TBrowserConf } from '@GSC/types'
 
-const { mkDir, readFile, writeFile, pathExists, removeFile, pathExistsSync } =
-  fileSys
+import os from 'os'
+import path from 'path'
+import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { checkVncEnv } from '../../utils/vncActiveEnv'
+import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
+import { isStr, isObj, exists, noOpObj, validate } from '@keg-hub/jsutils'
+
+const {
+  mkDir,
+  readFile,
+  writeFile,
+  pathExists,
+  removeFile,
+  pathExistsSync
+} = fileSys
 
 /**
  * Finds the path to metadata folder and browser-meta.json file
@@ -45,11 +53,8 @@ const tryReadMeta = async () => {
 
 /**
  * Creates the browser metadata file if it does not exist
- * @param {Object} content - Initial content of the file
- *
- * @return {Void}
  */
-const create = async (content = noOpObj) => {
+export const create = async (content:TBrowserMetaData = noOpObj as TBrowserMetaData) => {
   const { metadataPath, metadataDir } = getMetaDataPaths()
   const [existsErr, exists] = await pathExists(metadataDir)
 
@@ -67,7 +72,7 @@ const create = async (content = noOpObj) => {
  *
  * @return {Object} - json of the metadata
  */
-const read = async type => {
+export const read = async (type?:string) => {
   try {
     const data = await tryReadMeta()
     const parsed = data ? JSON.parse(data) : {}
@@ -81,20 +86,19 @@ const read = async type => {
 
 /**
  * Saves browser metadata to file
- * @param {string} type - browser type (chromium, firefox, webkit, etc.)
- * @param {string} endpoint - websocket endpoint to the browser
- * @param {Object} launchOptions - playwright launch options used (e.g. { headless: false })
- *
- * @return {Void}
  */
-const save = async (type, endpoint, launchOptions) => {
+export const save = async (
+  type:string,
+  endpoint:string,
+  launchOptions:TBrowserConf
+) => {
   const { metadataPath } = getMetaDataPaths()
-  const [valid] = validate({ type, endpoint }, { $default: isStr })
+  const [valid] = validate({ type, endpoint }, { $default: isStr }, {})
   if (!valid) return
 
   const content = await read()
 
-  const nextMetadata = {
+  const nextMetadata:TBrowserMetaData = {
     ...content,
     [type]: {
       type,
@@ -116,23 +120,18 @@ const save = async (type, endpoint, launchOptions) => {
 
 /**
  * Removes the metadata to file
- *
- * @return {Void}
  */
-const remove = async () => {
+export const remove = async () => {
   const { metadataPath } = getMetaDataPaths()
   return await removeFile(metadataPath)
 }
 
 /**
  * Gets the location to where the browser metadata file is saved
- *
- * @return {Void}
  */
-const location = () => {
+export const location = () => {
   const { metadataPath } = getMetaDataPaths()
 
   return metadataPath
 }
 
-module.exports = { create, read, remove, save, location }

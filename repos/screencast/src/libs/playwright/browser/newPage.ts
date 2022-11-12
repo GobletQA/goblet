@@ -1,6 +1,9 @@
-const { newContext } = require('./newContext')
-const { getPage, getContext, setPage } = require('./browser')
-const { getPageOpts } = require('../helpers/getPageOpts')
+import type { TBrowserConf, TBrowserContext } from '@GSC/types'
+
+import { newContext } from './newContext'
+import { noOpObj } from '@keg-hub/jsutils'
+import { getPageOpts } from '../helpers/getPageOpts'
+import { getPage, getContext, setPage } from './browser'
 
 /**
  * Checks if the browser context already exists
@@ -11,7 +14,7 @@ const { getPageOpts } = require('../helpers/getPageOpts')
  *
  * @returns {Object} - The playwright browser context object, and isNew state
  */
-const ensureContext = async browserConf => {
+const ensureContext = async (browserConf:TBrowserConf) => {
   const pwContext = getContext(browserConf.type)
   if (pwContext) return pwContext
 
@@ -30,7 +33,7 @@ const ensureContext = async browserConf => {
  *
  * @returns {Object} - The playwright browser page object
  */
-const ensurePage = async (context, browserConf) => {
+const ensurePage = async (context:TBrowserContext, browserConf:TBrowserConf) => {
   const pwPage = getPage(browserConf.type)
   if (pwPage) return pwPage
 
@@ -49,13 +52,9 @@ const ensurePage = async (context, browserConf) => {
  *
  * @returns {Object} - Contains the page, and context created from playwright
  */
-const newPage = async (browserConf = noOpObj) => {
+export const newPage = async (browserConf:TBrowserConf = noOpObj as TBrowserConf) => {
   const context = await ensureContext(browserConf)
   const page = await ensurePage(context, browserConf)
 
   return { context, page }
-}
-
-module.exports = {
-  newPage,
 }

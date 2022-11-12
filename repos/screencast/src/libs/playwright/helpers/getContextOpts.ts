@@ -1,6 +1,8 @@
-const { noOpObj, deepMerge } = require('@keg-hub/jsutils')
-const { taskEnvToContextOpts } = require('../../utils/taskEnvToContextOpts')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
+import type { TBrowserContextOpts, TGobletConfig } from '@GSC/types'
+
+import { noOpObj, deepMerge } from '@keg-hub/jsutils'
+import { taskEnvToContextOpts } from '../../utils/taskEnvToContextOpts'
+import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
 
 /**
  * Builds the config for a Playwright browser context
@@ -9,13 +11,16 @@ const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
  *
  * @returns {Object} - Built context config
  */
-const getContextOpts = (contextOpts=noOpObj, config) => {
+export const getContextOpts = (
+  contextOpts:TBrowserContextOpts=noOpObj as TBrowserContextOpts,
+  config?:TGobletConfig
+) => {
   config = config || getGobletConfig()
   return deepMerge(
     /**
      * The default config options from the global config.config.js
      */
-    config?.screencast?.context,
+    config?.screencast?.screencast?.context,
     /**
      * Options passed to this function as the first argument
      * Should override all except for options set by a task via ENVs
@@ -28,8 +33,4 @@ const getContextOpts = (contextOpts=noOpObj, config) => {
      */
     taskEnvToContextOpts(config)
   )
-}
-
-module.exports = {
-  getContextOpts,
 }

@@ -1,5 +1,6 @@
 import { TJwtConfig } from './helpers.types'
 import { TSockrConfig } from './sockr.types'
+import { TBrowserContext, TBrowserConf, TBrowserPage } from './pw.types'
 
 export type TChildProcArgs = {
   cwd: string
@@ -12,12 +13,6 @@ export type TSSLCreds = {
   ca: string
   key: string
   cert: string
-}
-
-
-export type TScreenDims = {
-  width: number,
-  height: number,
 }
 
 export type TRecorderOpts = {
@@ -39,15 +34,6 @@ export type TScreencastServer = {
   jwt: TJwtConfig
 }
 
-export type TBrowserContext = {
-  screen: TScreenDims,
-  viewport: TScreenDims,
-}
-
-export type TBrowserPage = {
-  [key:string]: any
-}
-
 export type TVncConfig = {
   host: string
   port: string
@@ -61,16 +47,12 @@ export type TNoVncProxy = {
   port: string
 }
 
-export type TBrowserConfig = {
-  [key:string]: any
-}
-
 export type TScreencastConfig = {
   active?: boolean
   vnc?: TVncConfig
   novnc?: TNoVncProxy
   page?: TBrowserPage
-  browser?: TBrowserConfig
+  browser?: TBrowserConf
   context?: TBrowserContext
 }
 

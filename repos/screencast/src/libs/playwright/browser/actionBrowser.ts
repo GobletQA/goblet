@@ -1,20 +1,33 @@
-const { startBrowser } = require('./startBrowser')
-const { Player }  = require('../player/player')
-const { Recorder }  = require('../recorder/recorder')
-const { isArr, isStr, isFunc, noPropArr } = require('@keg-hub/jsutils')
+import type {
+  TBrowserConf,
+  TPWComponent,
+  TStartPlaying,
+  TBrowserAction,
+  TActionCallback,
+  TStartRecording,
+  TBrowserActionArgs,
+} from '@GSC/types'
+
+import { Player }  from '../player/player'
+import { startBrowser } from './startBrowser'
+import { Recorder }  from '../recorder/recorder'
+import { isArr, isStr, isFunc, noPropArr } from '@keg-hub/jsutils'
 
 /**
  * Helper to thrown an error
  * @param {string} message - Error message to throw
  */
-const throwErr = message => {
+const throwErr = (message:string) => {
   throw new Error(message)
 }
 
 /**
  * Helper to validate the correct arguments exist to run the actions
  */
-const validateArgs = (args, component) => {
+const validateArgs = (
+  args:Record<any, any>,
+  component:string
+) => {
   const { ref, actions = noPropArr, id } = args
 
   if (!isStr(id)) throwErr(`Invalid authorization id`)
@@ -35,26 +48,22 @@ const validateArgs = (args, component) => {
 
 /**
  * Calls a method on a playwright component (browser, context, page)
- * @param {Object} action - Action metadata defining the method to call
- * @param {string} action.action - Name of the action on the component to call
- * @param {boolean} action.prev - Add the response from the previous action as first prop
- * @param {string} [action.ref] - Reference to a playwright component (browser, context, or page)
- * @param {Array} action.props - Arguments to pass to the playwright component method
- * @param {Object} component - Default component to use if none defined in the action
- * @param {Object} pwComponents - Playwright component (browser, context, page)
- * @param {*} prevResp - Response from the previous action
- *
- * @returns {*} - Response from the component action
  */
-const callAction = async (action, component, pwComponents, prevResp, id, onEvent) => {
+const callAction = async (
+  action:TBrowserAction,
+  component:TPWComponent,
+  pwComponents:Record<string, TPWComponent>,
+  prevResp:any[]
+) => {
   const comp = pwComponents[action.ref] || component
   // Ensure props is an array
   const props = isArr(action.props) ? [...action.props] : []
+
   // Add the previous response to the props array if it exists and action.prev is true
   action.prev === true && prevResp && props.unshift(prevResp)
 
-  return isFunc(comp[action.action])
-    ? await comp[action.action](...props)
+  return isFunc<TActionCallback>(comp[action.action as string])
+    ? await (comp[action.action as string])(...props)
     : throwErr(
         `Playwright ${action.ref} must be one of browser, context, or page`
       )
@@ -62,20 +71,8 @@ const callAction = async (action, component, pwComponents, prevResp, id, onEvent
 
 /**
  * Execute an action on a browser
- * @param {Object} args
- * @param {Object} action - Action object for running a browser action
- * @param {string} id - Socket Id that is starting the recorder
- * @param {Array} [action.props] - Props to pass to the recorder action
- * @param {string} action.action - Name of the action being run
- * @param {Function} [onRecordEvent] - Method called when a record event fires
- * @param {Function} [onCleanup] - Method called when the recorder stop is called
- * @param {Object} [pwComponents] - Contains the playwright browser / context / page to be used
- * @param {Object} [browserConf] - Config for creating a new browser
- *
- *
- * @returns {Object} - Instance of the Recorder class
  */
-const startRecording = async data => {
+export const startRecording = async (data:TStartRecording) => {
   const {
     id,
     action,
@@ -103,7 +100,7 @@ const startRecording = async data => {
 }
 
 
-const startPlaying = async data => {
+export const startPlaying = async (data:TStartPlaying) => {
   const {
     id,
     repo,
@@ -147,12 +144,14 @@ const startPlaying = async data => {
  *
  * @returns {Array} - Responses of all executed actions in order of execution
  */
-const actionBrowser = async (args, browserConf) => {
+export const actionBrowser = async (
+  args:TBrowserActionArgs,
+  browserConf:TBrowserConf
+) => {
   const { ref = 'browser', actions = noPropArr, id, onRecordEvent } = args
   const pwComponents = await startBrowser(browserConf)
   const component = pwComponents[ref]
   validateArgs(args, component)
-
 
   const responses = []
   return actions.reduce(async (toResolve, action) => {
@@ -160,7 +159,7 @@ const actionBrowser = async (args, browserConf) => {
     const prevResp = responses[responses.length - 1]
 
     // If the action if a method, cal if an pass the callAction method and params
-    const resp = isFunc(action.action)
+    const resp = isFunc<TActionCallback>(action.action)
       ? await action.action(
           callAction,
           action,
@@ -171,17 +170,22 @@ const actionBrowser = async (args, browserConf) => {
           id
         )
       : action.action === 'record'
-        ? await startRecording({ action, id, onRecordEvent, pwComponents, browserConf })
-        : await callAction(action, component, pwComponents, prevResp, id)
+        ? await startRecording({
+            id,
+            action,
+            browserConf,
+            pwComponents,
+            onRecordEvent,
+          })
+        : await callAction(
+            action,
+            component,
+            pwComponents,
+            prevResp
+          )
 
     responses.push(resp)
 
     return responses
   }, Promise.resolve())
-}
-
-module.exports = {
-  actionBrowser,
-  startPlaying,
-  startRecording,
 }
