@@ -1,9 +1,9 @@
-import type {TVncProps, TVncEventListeners, TVncLogger } from '@types'
+import type {TCanvasProps, TCanvasEventListeners, TCanvasLogger } from '@types'
 
 import RFB from '@novnc/novnc/core/rfb'
 import { useMemo, useRef, useState } from 'react'
 
-const useLogger = (debug:boolean):TVncLogger => {
+const useLogger = (debug:boolean):TCanvasLogger => {
   return useMemo(() => ({
     log: (...args: any[]) => debug && console.log(...args),
     info: (...args: any[]) => debug && console.info(...args),
@@ -11,7 +11,7 @@ const useLogger = (debug:boolean):TVncLogger => {
   }), [debug])
 }
 
-export const useVncRefs = (props:TVncProps) => {
+export const useVncRefs = (props:TCanvasProps) => {
 
   const logger = useLogger(props.debug || false)
   const [loading, setLoading] = useState<boolean>(true)
@@ -19,7 +19,7 @@ export const useVncRefs = (props:TVncProps) => {
   const rfb = useRef<RFB | null>(null)
   const screen = useRef<HTMLDivElement>(null)
   const timeouts = useRef<Array<NodeJS.Timeout>>([])
-  const eventListeners = useRef<TVncEventListeners>({})
+  const eventListeners = useRef<TCanvasEventListeners>({})
   const connected = useRef<boolean>(props.autoConnect ?? true)
 
   const connectRef = useRef(() => {})

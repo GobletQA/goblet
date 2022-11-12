@@ -1,7 +1,7 @@
 import type {
   EEvents,
-  TVncExt,
-  TVncProps,
+  TCanvasExt,
+  TCanvasProps,
   TCredentials,
 } from '@types'
 
@@ -9,8 +9,8 @@ import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
 
 const useDisconnectCB = (
-  props:TVncProps,
-  ext:TVncExt
+  props:TCanvasProps,
+  ext:TCanvasExt
 ) => {
   const {
     onDisconnect,
@@ -78,7 +78,7 @@ const useDisconnectCB = (
 }
 
 
-export const useRFBHooks = (props:TVncProps, ext:TVncExt) => {
+export const useRFBHooks = (props:TCanvasProps, ext:TCanvasExt) => {
 
   const { rfb } = ext
   const { disconnect } = useDisconnectCB(props, ext)

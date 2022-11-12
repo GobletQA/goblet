@@ -1,6 +1,6 @@
 import type {
-  TVncExt,
-  TVncProps,
+  TCanvasExt,
+  TCanvasProps,
   TCredentials,
 } from '@types'
 import type { MutableRefObject } from 'react'
@@ -9,14 +9,14 @@ import RFB from '@novnc/novnc/core/rfb'
 
 import { useCallback, useRef } from 'react'
 
-type TConnectExt = TVncExt & {
+type TConnectExt = TCanvasExt & {
   _onConnect:() => void
   _onDisconnect:() => void
   _onCredentialsRequired:() => void
   _onDesktopName:(...args:any[]) => void
 }
 
-export const useConnectCB = (props:TVncProps, ext:TConnectExt) => {
+export const useConnectCB = (props:TCanvasProps, ext:TConnectExt) => {
   const {
     url,
     onBell,
@@ -51,11 +51,10 @@ export const useConnectCB = (props:TVncProps, ext:TConnectExt) => {
 
   return useCallback(() => {
     try {
-
-
       if (!url || (connected.current && !!rfb)) disconnectRef?.current?.()
 
-      if (!screen.current) return
+      if (!screen.current)
+        return console.warn(`Error loading browser. Dom Element could not be found.`)
 
       screen.current.innerHTML = ''
       const _rfb = new RFB(screen.current, url, rfbOptions)
@@ -113,7 +112,7 @@ export const useConnectCB = (props:TVncProps, ext:TConnectExt) => {
 
 }
 
-export const useVncHooks = (props:TVncProps, ext:TVncExt) => {
+export const useVncHooks = (props:TCanvasProps, ext:TCanvasExt) => {
   const {
     onConnect,
     rfbOptions,
