@@ -3,7 +3,7 @@ import type {
   TVncExt,
   TVncProps,
   TCredentials,
-} from './vnc.types'
+} from '@types'
 
 import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'

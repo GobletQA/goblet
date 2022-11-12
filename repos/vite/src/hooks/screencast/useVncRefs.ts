@@ -1,9 +1,7 @@
-import type {TVncProps, TVncEventListeners, TVncLogger } from './vnc.types'
+import type {TVncProps, TVncEventListeners, TVncLogger } from '@types'
 
 import RFB from '@novnc/novnc/core/rfb'
 import { useMemo, useRef, useState } from 'react'
-
-
 
 const useLogger = (debug:boolean):TVncLogger => {
   return useMemo(() => ({

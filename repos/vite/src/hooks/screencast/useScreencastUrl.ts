@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useContainer } from '@store'
 import { getScreencastUrl } from '@utils/api/getScreencastUrl'
 

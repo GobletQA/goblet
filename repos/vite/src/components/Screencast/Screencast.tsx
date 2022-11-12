@@ -1,13 +1,13 @@
 import type { CSSProperties } from 'react'
-import type { TVncScreenHandle } from './vnc.types'
+import type { TCanvasHandle } from '@types'
 
 import { useRef, useCallback, useState } from 'react'
-import { Vnc } from './Vnc'
+import { Canvas } from './Canvas'
 import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import { noOpObj } from '@keg-hub/jsutils'
-import { statusBrowser, restartBrowser } from '@actions/screencast/api'
-import { useScreencastUrl }  from '@hooks/components/useScreencastUrl'
+import { statusBrowser } from '@actions/screencast/api'
+import { useScreencastUrl }  from '@hooks/screencast/useScreencastUrl'
 
 export type TScreencastProps = {
   sx?: CSSProperties
@@ -28,7 +28,7 @@ const LoadingProps = {
 }
 
 export const Screencast = (props:TScreencastProps) => {
-  const vncRef = useRef<TVncScreenHandle>(null)
+  const vncRef = useRef<TCanvasHandle>(null)
   const screencastUrl = useScreencastUrl()
   const [fadeStart, setFadeStart] = useState<boolean>(false)
 
@@ -39,7 +39,6 @@ export const Screencast = (props:TScreencastProps) => {
     if(VncService.connected) return
 
     VncService.connect()
-    
 
   }, [screencastUrl])
 
@@ -68,7 +67,7 @@ export const Screencast = (props:TScreencastProps) => {
         backgroundColor: `#9a9a9a`,
       }, props.sx || noOpObj]}
     >
-      <Vnc
+      <Canvas
         ref={vncRef}
         url={screencastUrl}
         onConnect={onConnect}

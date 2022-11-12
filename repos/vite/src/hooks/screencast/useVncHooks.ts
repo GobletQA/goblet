@@ -2,7 +2,7 @@ import type {
   TVncExt,
   TVncProps,
   TCredentials,
-} from './vnc.types'
+} from '@types'
 import type { MutableRefObject } from 'react'
 
 import RFB from '@novnc/novnc/core/rfb'

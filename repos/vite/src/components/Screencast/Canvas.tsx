@@ -1,87 +1,121 @@
-import type { CSSObj } from '@types'
-import type { ComponentProps, RefObject } from 'react'
-import type { VncScreenHandle } from 'react-vnc/dist/types/lib/VncScreen'
+import type { TCanvasProps, TCanvasHandle } from '@types'
 
-import { VncScreen } from 'react-vnc'
-import { Loading } from '@components/Loading'
+import React, { forwardRef, useImperativeHandle } from 'react'
 
-export type RfbOpts = {
-  shared?: boolean;
-  credentials?: {
-    target?: string;
-    username?: string;
-    password?: string;
-  };
-  repeaterID?: string;
-  wsProtocols?: string[]
-}
+import { CanvasLoading } from './CanvasLoading'
+import { useVncRefs } from '@hooks/screencast/useVncRefs'
+import { useRFBHooks } from '@hooks/screencast/useRFBHooks'
+import { useVncHooks } from '@hooks/screencast/useVncHooks'
+import { useVncHandlers } from '@hooks/screencast/useVncHandlers'
 
-export type VNCSrcProps = ComponentProps<typeof VncScreen>
-export type VNCSrc = Omit<VNCSrcProps, `rfbOptions`>
 
-export type TCanvas = VNCSrc & {
-  rfbOptions?: RfbOpts
-  canvasRef?: RefObject<VncScreenHandle>
-  // url: string;
-  // style?: object;
-  // className?: string;
-  // viewOnly?: boolean;
-  // focusOnClick?: boolean;
-  // clipViewport?: boolean;
-  // dragViewport?: boolean;
-  // scaleViewport?: boolean;
-  // resizeSession?: boolean;
-  // showDotCursor?: boolean;
-  // background?: string;
-  // qualityLevel?: number;
-  // compressionLevel?: number;
-  // autoConnect?: number; // defaults to true
-  // retryDuration?: number; // in milliseconds
-  // debug?: boolean; // show logs in the console
-  // loadingUI?: React.ReactNode; // custom component that is displayed when loading
-  // onConnect?: (rfb?: RFB) => void;
-  // onDisconnect?: (rfb?: RFB) => void;
-  // onCredentialsRequired?: (rfb?: RFB) => void;
-  // onSecurityFailure?: (e?: { detail: { status: number, reason: string } }) => void;
-  // onClipboard?: (e?: { detail: { text: string } }) => void;
-  // onBell?: () => void;
-  // onDesktopName?: (e?: { detail: { name: string } }) => void;
-  // onCapabilities?: (e?: { detail: { capabilities: RFB["capabilities"] } }) => void;
-}
+const CanvasComp: React.ForwardRefRenderFunction<TCanvasHandle, TCanvasProps> = (props, ref) => {
 
-const styles:Record<string, CSSObj> = {
-  loading: {
-    width: `100%`,
-    alignSelf: `center`,
-  } as CSSObj
-}
+  const {
+    style,
+    className,
+    elementAttrs,
+    loadingProps,
+    forceShowLoading,
+    autoConnect = true,
+  } = props
 
-const CanvasLoading = () => {
+  const {
+    rfb,
+    logger,
+    screen,
+    loading,
+    timeouts,
+    connected,
+    setLoading,
+    connectRef,
+    disconnectRef,
+    eventListeners
+  } = useVncRefs(props)
+
+  const { connect } = useVncHooks(props, {
+    rfb,
+    screen,
+    logger,
+    timeouts,
+    connected,
+    setLoading,
+    connectRef,
+    disconnectRef,
+    eventListeners,
+  })
+
+  const {
+    blur,
+    focus,
+    sendKey,
+    disconnect,
+    machineReset,
+    machineReboot,
+    clipboardPaste,
+    sendCtrlAltDel,
+    machineShutdown,
+    sendCredentials,
+  } = useRFBHooks(props, {
+    rfb,
+    screen,
+    logger,
+    timeouts,
+    connected,
+    connectRef,
+    setLoading,
+    disconnectRef,
+    eventListeners,
+  })
+
+  const {
+    onMouseEnter,
+    onMouseLeave,
+  } = useVncHandlers({
+    rfb,
+    connect,
+    disconnect,
+    autoConnect
+  })
+
+  useImperativeHandle(ref, () => ({
+    blur,
+    focus,
+    screen,
+    connect,
+    sendKey,
+    disconnect,
+    machineReset,
+    machineReboot,
+    sendCtrlAltDel,
+    clipboardPaste,
+    sendCredentials,
+    machineShutdown,
+    rfb: rfb.current,
+    connected: connected.current,
+    eventListeners: eventListeners.current,
+  }))
+
   return (
-    <Loading
-      size={30}
-      color={`secondary`}
-      message={`Browser Loading`}
-      containerSx={styles.loading}
-    />
+    <>
+      <div
+        style={style}
+        {...elementAttrs}
+        ref={screen}
+        className={className}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      />
+      {(forceShowLoading || loading)
+        && (
+          <CanvasLoading
+            loading={loading}
+            forced={forceShowLoading}
+            {...loadingProps}
+          />
+        )}
+    </>
   )
 }
 
-export const Canvas = (props:TCanvas) => {
-  const {
-    url,
-    canvasRef,
-    ...rest
-  } = props
-
-  return url
-    ? (
-        <VncScreen
-          {...(rest as Omit<VNCSrcProps, 'url'>)}
-          url={url}
-          ref={canvasRef}
-          loadingUI={<CanvasLoading />}
-        />
-      )
-    : <CanvasLoading />
-}
+export const Canvas = forwardRef(CanvasComp)
