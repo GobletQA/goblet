@@ -70,7 +70,7 @@ export const spawnDaemon = (
  * @function
  * @public
  */
-const daemonize = (opt:TSpawnDaemon = noOpObj as TSpawnDaemon) => {
+export const daemonize = (opt:TSpawnDaemon = noOpObj as TSpawnDaemon) => {
   // we are a daemon, don't daemonize again
   if (process.env.__ALREADY_DAEMONIZED) return process.pid
 
@@ -88,9 +88,4 @@ const daemonize = (opt:TSpawnDaemon = noOpObj as TSpawnDaemon) => {
 
   // exit the parent process, but the child will continue running
   return process.exit()
-}
-
-module.exports = {
-  spawnDaemon,
-  daemonize,
 }

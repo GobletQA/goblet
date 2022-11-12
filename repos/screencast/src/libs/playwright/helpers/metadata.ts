@@ -135,3 +135,12 @@ export const location = () => {
   return metadataPath
 }
 
+const metadata = {
+  read,
+  save,
+  remove,
+  create,
+  location,
+}
+
+export default metadata 

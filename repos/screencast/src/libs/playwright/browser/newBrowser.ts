@@ -67,7 +67,7 @@ export const newBrowser = async (
 ) => {
   try {
     // If the websocket is active, then start a websocket browser
-    if (checkVncEnv().socketActive || browserServer)
+    if (browserServer || browserConf.ws || checkVncEnv().socketActive)
       return await newBrowserWS(browserConf, checkStatus)
 
     const type = getBrowserType(browserConf.type)
