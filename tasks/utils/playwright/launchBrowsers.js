@@ -22,7 +22,7 @@ const launchBrowsers = (launchParams, gobletMode) => {
       browser => () =>
         launchBrowser({
           ...browserParams,
-          browser,
+          type: browser,
           headless,
           log,
         })

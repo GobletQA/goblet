@@ -22,13 +22,13 @@ const defaultStateFile = 'browser-context-state'
 const setupBrowser = async () => {
   /** GOBLET_BROWSER is set by the task `keg goblet bdd run` */
   const { GOBLET_BROWSER='chromium' } = process.env
-  const { type, launchOptions } = await getMetadata(GOBLET_BROWSER)
+  const { type, browserConf } = await getMetadata(GOBLET_BROWSER)
 
   // TODO: Should update to check if in docker container
   // Then pass false based on that
   // Pass false to bypass checking the browser status
   const { browser } = await newBrowser({
-    ...launchOptions,
+    ...browserConf,
     type,
     ...get(global, `__goblet.browser.options`, noOpObj),
   }, false)

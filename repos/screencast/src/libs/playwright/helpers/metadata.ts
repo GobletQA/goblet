@@ -1,4 +1,4 @@
-import type { TBrowserMetaData, TBrowserConf } from '@GSC/types'
+import type { TBrowserMetaDataContext, TBrowserMetaData, TBrowserConf } from '@GSC/types'
 
 import os from 'os'
 import path from 'path'
@@ -67,22 +67,35 @@ export const create = async (content:TBrowserMetaData = noOpObj as TBrowserMetaD
 }
 
 /**
- * Reads browser metadata from file
- * @param {string?} [type] - specific browser to return. If omitted, returns all metadata
- *
- * @return {Object} - json of the metadata
+ * Reads browser metadata from file of a specific browser type
  */
-export const read = async (type?:string) => {
+export const read = async (type:string):Promise<TBrowserMetaDataContext> => {
   try {
     const data = await tryReadMeta()
     const parsed = data ? JSON.parse(data) : {}
-    const value = isObj(parsed) && type ? parsed[type] : parsed
-    return value || {}
-  } catch (err) {
+
+    return (isObj(parsed) ? parsed[type] : {}) as TBrowserMetaDataContext
+  }
+  catch (err) {
+    Logger.error(err)
+    return {} as TBrowserMetaDataContext
+  }
+}
+
+/**
+ * Reads all browser metadata from file
+ */
+export const readAll = async () => {
+  try {
+    const data = await tryReadMeta()
+    return data ? JSON.parse(data) : {}
+  }
+  catch (err) {
     Logger.error(err)
     return {}
   }
 }
+
 
 /**
  * Saves browser metadata to file
@@ -90,20 +103,21 @@ export const read = async (type?:string) => {
 export const save = async (
   type:string,
   endpoint:string,
-  launchOptions:TBrowserConf
+  // TODO: fix this name to be browserConf so it's consistent
+  browserConf:TBrowserConf
 ) => {
   const { metadataPath } = getMetaDataPaths()
   const [valid] = validate({ type, endpoint }, { $default: isStr }, {})
   if (!valid) return
 
-  const content = await read()
+  const content = await readAll()
 
   const nextMetadata:TBrowserMetaData = {
     ...content,
     [type]: {
       type,
       endpoint,
-      launchOptions,
+      browserConf,
       launchTime: new Date().getTime(),
     },
   }
@@ -140,6 +154,7 @@ const metadata = {
   save,
   remove,
   create,
+  readAll,
   location,
 }
 

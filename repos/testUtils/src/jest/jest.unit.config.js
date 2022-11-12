@@ -25,7 +25,7 @@ const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEn
  */
 const buildLaunchOpts = async (config, taskOpts, optsKey) => {
   const { vncActive, socketActive } = checkVncEnv()
-  const { endpoint, launchOptions } = await metadata.read(taskOpts.type)
+  const { endpoint, browserConf } = await metadata.read(taskOpts.type)
 
   /**
    * Check if the websocket is active
@@ -44,7 +44,7 @@ const buildLaunchOpts = async (config, taskOpts, optsKey) => {
    *  - tasks/utils/envs/buildPWEnvs.js
    *  - repos/shared/src/utils/taskEnvToBrowserOpts.js
    */
-  const opts = {[optsKey]: getBrowserOpts(launchOptions, config)}
+  const opts = {[optsKey]: getBrowserOpts(browserConf, config)}
 
   // If VNC is not active, then set the websocket endpoint
   if(!vncActive) opts[optsKey].wsEndpoint = wsEndpoint

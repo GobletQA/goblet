@@ -22,6 +22,14 @@
       "./repos/shared/src/types",
       "./node_modules/@types"
     ],
+    "paths": {
+      "@GTasks": ["./tasks"],
+      "@GTasks/*": ["./tasks/*"],
+      "@gobletqa/screencast": [ "./repos/screencast/src" ],
+      "@gobletqa/screencast/*": [ "./repos/screencast/src/*" ],
+      "@gobletqa/shared": [ "./repos/shared/src" ],
+      "@gobletqa/shared/*": [ "./repos/shared/src/*" ],
+    }
   },
   "exclude": [
     "node_modules",

@@ -24,7 +24,7 @@ const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers
  */
 const buildLaunchOpts = async (config, taskOpts, optsKey) => {
   const { vncActive, socketActive } = checkVncEnv()
-  const { endpoint, launchOptions } = await metadata.read(taskOpts.type)
+  const { endpoint, browserConf } = await metadata.read(taskOpts.type)
 
   /**
    * Check if the websocket is active
@@ -36,7 +36,7 @@ const buildLaunchOpts = async (config, taskOpts, optsKey) => {
       : endpoint
     : false
 
-  const opts = {[optsKey]: getBrowserOpts(launchOptions, config)}
+  const opts = {[optsKey]: getBrowserOpts(browserConf, config)}
 
   // If VNC is not active, then set the websocket endpoint
   if(!vncActive) opts[optsKey].wsEndpoint = wsEndpoint

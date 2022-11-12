@@ -1,66 +1,60 @@
 import type { TRepo } from './repo.types'
+import type {
+  Page,
+  Browser,
+  Geolocation,
+  ViewportSize,
+  LaunchOptions,
+  BrowserServer,
+  BrowserContext,
+  BrowserContextOptions,
+} from 'playwright'
 
-export type TBrowserType = `chrome` | `chromium` | `firefox` | `webkit` | string
+export type TBrowser = Browser
+export type TBrowserPage = Page
+export type TScreenDims = ViewportSize
+export type TBrowserServer = BrowserServer
+export type TBrowserContext = BrowserContext
+export type TBrowserContextGeo = Geolocation
+export type TBrowserLaunchOpts = LaunchOptions
+export type TBrowserContextOpts = BrowserContextOptions
+export type TColorSchema = null | `light` | `dark` | `no-preference`
+export type TBrowserType = `chromium` | `firefox` | `webkit` | string
 
-export type TContextEvtCallback = (...args:any[]) => void
-
-export type TScreenDims = {
-  width: number,
-  height: number,
-}
-
-export type TBrowserPage = {
-  [key:string]: any
+export type TBrowserContextVideo = {
+  dir: string;
+  size?: TScreenDims
 }
 
 export type TPageOpts = {
   [key:string]: any
 }
 
-export type TBrowserContext = {
-  screen: TScreenDims,
-  viewport: TScreenDims,
-  newPage: (page:TPageOpts) => TBrowserPage
-  on: (event:string, callback:TContextEvtCallback) => void
-}
-
-export type TBrowserContextGeo = {
-  latitude:string
-  longitude:string
-  accuracy:number
-}
-
-export type TBrowserContextOpts = {
-  hasTouch?:boolean
-  isMobile?:boolean
-  timezoneId?:string
-  screen?:TScreenDims
-  viewport?:TScreenDims
-  acceptDownloads?:boolean
-  geolocation?: TBrowserContextGeo
-  [key:string]: any
-}
-
-export type TBrowser = {
-  [key:string]: any
-}
-
-export type TBrowserConf = {
+export type TBrowserConf = TBrowserLaunchOpts & {
   type: TBrowserType
   ws?: boolean
   url?:string
-  args?:string[]
   page: TPageOpts
-  slowMo?: number
-  channel?:string
   restart?:boolean
-  headless?:boolean,
-  config:Record<any, any>
+  colorScheme?: TColorSchema
   context?:TBrowserContextOpts
+}
+
+export type TBrowserStatus = {
+  err?: string
+  message?: string,
+  running: boolean,
+  status: string|boolean,
 }
 
 export type TPWComponentRef = `browser` | `context` | `page` | string
 export type TPWComponent = TBrowser | TBrowserContext | TBrowserPage
+export type TPWComponents = {
+  browser: TBrowser
+  page: TBrowserPage
+  context: TBrowserContext
+  status?: TBrowserStatus
+}
 
 export type TActionCallback = (...args:any[]) => void
 
@@ -84,7 +78,7 @@ export type TStartPlaying = {
   action:TBrowserAction,
   onCleanup:TActionCallback
   browserConf: TBrowserConf
-  pwComponents:TPWComponent
+  pwComponents:TPWComponents
   onPlayEvent:TActionCallback
   onCreateNewPage:TActionCallback
 }
@@ -95,8 +89,8 @@ export type TStartRecording = {
   action:TBrowserAction,
   onCleanup?:TActionCallback
   browserConf: TBrowserConf
-  pwComponents:TPWComponent
-  onRecordEvent:TActionCallback,
+  pwComponents: TPWComponents
+  onRecordEvent:TActionCallback
   onCreateNewPage?:TActionCallback
 }
 
@@ -104,7 +98,7 @@ export type TBrowserMetaDataContext = {
   type:string,
   endpoint:string
   launchTime: string
-  launchOptions:TBrowserConf
+  browserConf:TBrowserConf
 }
 
 export type TBrowserMetaData = {
@@ -112,5 +106,4 @@ export type TBrowserMetaData = {
   webkit?:TBrowserMetaDataContext
   firefox?:TBrowserMetaDataContext
   chromium?:TBrowserMetaDataContext
-  [key:string]: any
 }

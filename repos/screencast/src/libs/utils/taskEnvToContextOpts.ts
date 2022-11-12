@@ -2,7 +2,8 @@ import type {
   TScreenDims,
   TGobletConfig,
   TBrowserContextGeo,
-  TBrowserContextOpts
+  TBrowserContextOpts,
+  TBrowserContextVideo,
 } from '@GSC/types'
 
 import { getScreenDims } from '@gobletqa/shared/utils/getScreenDims'
@@ -19,9 +20,6 @@ import {
 
 /**
  * Parses the GOBLET_CONTEXT_GEO env into an object 
- * @param {*} value - Value of the context options
- * 
- * @returns {Object} - Updated opts object with geolocation added if set
  */
 const parseGeo = (value:string) => {
   if(!exists(value)) return noOpObj
@@ -44,11 +42,6 @@ const parseGeo = (value:string) => {
 
 /**
  * Check's the passed in value, and adds it to the options if it exists
- * @param {Object} opts - Context options being built
- * @param {string} key - Property key name of the option
- * @param {*} value - Value of the context options
- * 
- * @returns {Object} - Updated opts object with property added when it exists
  */
 const addEnvToOpts = (opts, key, value) => {
   exists(value) && (opts[key] = value)
@@ -58,13 +51,6 @@ const addEnvToOpts = (opts, key, value) => {
 
 /**
  * Parses the GOBLET_TEST_VIDEO_RECORD env, and sets the height and width if true
- * @param {Object} config - Goblet global config
- * @param {Object} opts - Context options being built
- * @param {Object} screenDims - Screen dimensions of the browser
- * @param {boolean} value - True if recording should be turned on
- * @param {boolean} fullScreen - True if recording should be the full dimension
- * 
- * @returns {Object} - Updated opts object with recording settings
  */
 const parseRecord = (
   config:TGobletConfig,
@@ -75,12 +61,12 @@ const parseRecord = (
 ) => {
   if(!shouldRecordVideo) return opts
 
-  opts.recordVideo = opts.recordVideo || {}
+  opts.recordVideo = (opts.recordVideo || noOpObj) as TBrowserContextVideo
   opts.recordVideo.size = isObj(screenDims)
     ? !fullScreen
       ? {height: screenDims.height / 2, width: screenDims.width / 2}
       : screenDims
-    : {}
+    : noOpObj as TScreenDims
 
   // Save videos to the temp dir, and copy them to the repo dir as needed
   // I.E. a test fails
@@ -93,9 +79,6 @@ const parseRecord = (
 /**
  * Gets the browser opts set as envs when a task is run
  * This allows passing values into the test environment
- * @param {Object} config - Goblet global config
- *
- * @return {Object} browser options
  */
 export const taskEnvToContextOpts = (config:TGobletConfig) => {
   const {
@@ -109,10 +92,10 @@ export const taskEnvToContextOpts = (config:TGobletConfig) => {
     GOBLET_TEST_VIDEO_RECORD, // boolean || string
   } = process.env
 
-  const opts:Partial<TBrowserContextOpts> = {
+  const opts = {
     ...parseJsonEnvArr('permissions', GOBLET_CONTEXT_PERMISSIONS),
     ...parseGeo(GOBLET_CONTEXT_GEO),
-  }
+  } as Partial<TBrowserContextOpts>
 
   addEnvToOpts(opts, 'timezoneId', GOBLET_CONTEXT_TZ)
   addEnvToOpts(opts, 'hasTouch', toBool(GOBLET_CONTEXT_TOUCH))
@@ -133,5 +116,5 @@ export const taskEnvToContextOpts = (config:TGobletConfig) => {
     addEnvToOpts(opts, 'screen', screenDims)
   }
 
-  return opts
+  return opts as TBrowserContextOpts
 }

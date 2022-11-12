@@ -2,6 +2,7 @@ import type {
   TBrowserConf,
   TPWComponent,
   TStartPlaying,
+  TPWComponents,
   TBrowserAction,
   TActionCallback,
   TStartRecording,
@@ -52,7 +53,7 @@ const validateArgs = (
 const callAction = async (
   action:TBrowserAction,
   component:TPWComponent,
-  pwComponents:Record<string, TPWComponent>,
+  pwComponents:TPWComponents,
   prevResp:any[]
 ) => {
   const comp = pwComponents[action.ref] || component

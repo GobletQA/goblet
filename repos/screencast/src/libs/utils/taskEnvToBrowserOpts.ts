@@ -1,13 +1,10 @@
-import type { TGobletConfig, TBrowserConf } from '@GSC/types'
+import type { TGobletConfig, TBrowserLaunchOpts } from '@GSC/types'
 
 import { toBool, isStr, noOpObj } from '@keg-hub/jsutils'
 import { parseJsonEnvArr } from '@gobletqa/shared/utils/parseJsonEnvArr'
 
 /**
  * Builds a list of devices to used based on the GOBLET_BROWSER_DEVICES env
- * @param {string} envVal - Value of the GOBLET_BROWSER_DEVICES env
- *
- * @returns {Array<string>} - Group of formatted device names
  */
 const buildDeviceList = (envVal) => {
   if(!envVal) return noOpObj
@@ -50,5 +47,5 @@ export const taskEnvToBrowserOpts = (config:TGobletConfig) => {
     slowMo: parseInt(GOBLET_BROWSER_SLOW_MO, 10),
     timeout: parseInt(GOBLET_BROWSER_TIMEOUT, 10),
     ...buildDeviceList(GOBLET_BROWSER_DEVICES),
-  } as TBrowserConf
+  } as Partial<TBrowserLaunchOpts>
 }

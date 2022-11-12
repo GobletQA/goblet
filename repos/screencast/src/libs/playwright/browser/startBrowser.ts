@@ -10,8 +10,6 @@ import { getPage, getContext, getBrowser } from './browser'
  * See {@link https://playwright.dev/docs/api/class-browsertype#browser-type-launch|Playwright Docs} for more info
  * @function
  * @public
- *
- * @returns {Object} - Contains the page, context, and browser created from playwright
  */
 export const startBrowser = async (browserConf:TBrowserConf = noOpObj as TBrowserConf) => {
   await newPage(browserConf)

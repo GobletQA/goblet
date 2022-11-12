@@ -1,4 +1,4 @@
-import type { TBrowserType } from '@GSC/types'
+import type { TBrowserType, TBrowserStatus } from '@GSC/types'
 import { capitalize } from '@keg-hub/jsutils'
 import { browserStatus } from '@GSC/constants'
 import { getBrowserType } from './getBrowserType'
@@ -16,5 +16,5 @@ export const buildStatus = (
     status: status,
     message: message || `${name} Browser is ${status}`,
     running: status === browserStatus.running || status === true,
-  }
+  } as TBrowserStatus
 }

@@ -2,7 +2,6 @@ import type { TBrowserConf, TBrowserContext } from '@GSC/types'
 
 import { newContext } from './newContext'
 import { noOpObj } from '@keg-hub/jsutils'
-import { getPageOpts } from '../helpers/getPageOpts'
 import { getPage, getContext, setPage } from './browser'
 
 /**
@@ -37,7 +36,7 @@ const ensurePage = async (context:TBrowserContext, browserConf:TBrowserConf) => 
   const pwPage = getPage(browserConf.type)
   if (pwPage) return pwPage
 
-  const page = await context.newPage(getPageOpts(browserConf.page))
+  const page = await context.newPage()
   setPage(page, browserConf.type)
 
   return page

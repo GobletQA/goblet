@@ -9,7 +9,7 @@ const createTest = async args => {
   // Which allows recording actions in the browser as they happend
 
   // ensure a non-headless chromium instance is running
-  // await launchBrowser({ browser: 'chromium', headless: false, launch })
+  // await launchBrowser({ type: 'chromium', headless: false, launch })
   // return dockerCmd(container, ` create ${url} ${name}`)
 }
 

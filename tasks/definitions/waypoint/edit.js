@@ -28,7 +28,7 @@ const editTest = async args => {
   const { context, launch } = params
 
   // ensure a non-headless chromium instance is running
-  // await launchBrowser({ browser: 'chromium', headless: false, launch })
+  // await launchBrowser({ type: 'chromium', headless: false, launch })
 
   // runEditCmd(params.container, context)
 }

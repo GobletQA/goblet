@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import { noOpObj } from '@keg-hub/jsutils'
 import { statusBrowser } from '@actions/screencast/api'
+import { useLoadRepoUrl } from '@hooks/screencast/useLoadRepoUrl'
 import { useScreencastUrl }  from '@hooks/screencast/useScreencastUrl'
 
 export type TScreencastProps = {
@@ -43,22 +44,26 @@ export const Screencast = (props:TScreencastProps) => {
 
   }, [screencastUrl])
 
+  const loadRepoUrl = useLoadRepoUrl()
+
   const onConnect = useCallback(async (...args:any[]) => {
     const resp = await statusBrowser()
-    if(resp.running) setFadeStart(true)
+    if(resp.running){
+      setFadeStart(true)
+      loadRepoUrl()
+    }
     const VncService = vncRef.current
     if(!VncService?.screen?.current) return 
 
     VncService.screen.current.style.minHeight = `100%`
     VncService.screen.current.style.minWidth = `100%`
-  }, [])
+  }, [loadRepoUrl])
 
   const onDisconnect = useCallback(async (rfb?:RFB) => {
-
     const VncService = vncRef.current
-    console.log(`------- Vnc Service -------`)
+    console.log(`------- onDisconnect - Vnc Service -------`)
     console.log(VncService)
-
+    setFadeStart(false)
   }, [])
 
   return (
@@ -77,6 +82,7 @@ export const Screencast = (props:TScreencastProps) => {
         url={screencastUrl}
         autoConnect={false}
         scaleViewport={true}
+        showDotCursor={true}
         onConnect={onConnect}
         forceShowLoading={true}
         onDisconnect={onDisconnect}

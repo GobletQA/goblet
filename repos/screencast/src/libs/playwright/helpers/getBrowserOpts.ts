@@ -1,4 +1,4 @@
-import type { TBrowserConf, TGobletConfig } from '@GSC/types'
+import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GSC/types'
 
 import path from 'path'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
@@ -31,9 +31,11 @@ const options = {
       `--app`,
       `--no-first-run`,
       `--start-fullscreen`,
+      `--dark-mode-settings`,
+      `--kiosk`,
+      `--start-maximized`,
       // `--allow-insecure-localhost`,
       // `--unsafely-treat-insecure-origin-as-secure`,
-      // `--start-maximized`,
       // `--suppress-message-center-popups`
       // Investigate this - May allow keeping the browser alive in goblet UI app
       // Don't want this when running in CI or other environments
@@ -64,12 +66,15 @@ export const getBrowserOpts = (
   config?:TGobletConfig
 ) => {
   const {
+    ws,
     channel,
     restart,
     headless,
+    colorScheme,
     // Config for creating a browser context
     // Should not be included in the browser options
     context,
+    page,
     args = noPropArr,
     // type / url is not used, just pulled out of the config object
     type,
@@ -82,7 +87,7 @@ export const getBrowserOpts = (
     ? options.vnc
     : options.host
 
-  return deepMerge<TBrowserConf>(
+  return deepMerge<TBrowserLaunchOpts>(
     /**
      * Gets the default config options from the global goblet.config.js
      */
@@ -99,6 +104,7 @@ export const getBrowserOpts = (
       args: flatUnion(configModeArgs, args),
       ...(exists(headless) && { headless }),
       ...(exists(channel) && { channel }),
+      colorScheme: colorScheme || `dark`,
     },
     /**
      * Options passed to this function as the first argument

@@ -1,3 +1,5 @@
+import { TGobletConfig } from './shared.types'
+
 
 export type TParamValue = any
 export type TTaskParams = {
@@ -32,6 +34,7 @@ export type TTaskActionArgs = {
   tasks: TTasks
   options?: string[]
   params: TTaskParams
+  goblet?: TGobletConfig
   config?: Record<string, any>
 }
 

@@ -26,7 +26,7 @@ export const newServer = async (
   // Launch the playwright server
   const launchOpts = getBrowserOpts(browserConf)
   Logger.log(`Creating Browser Server with launchOpts`, launchOpts)
-  
+
   const pwServer = await playwright[browser].launchServer(launchOpts)
 
   Logger.log(`Configuring browser ${browser} websocket...`)
@@ -37,7 +37,7 @@ export const newServer = async (
   Logger.empty()
 
   // Save the playwright browser metadata to the <os-temp>/browser-meta.json, to be used for future connections
-  await metadata.save(browser, wsEndpoint, launchOpts)
+  await metadata.save(browser, wsEndpoint, browserConf)
 
   return setServer(pwServer)
 }

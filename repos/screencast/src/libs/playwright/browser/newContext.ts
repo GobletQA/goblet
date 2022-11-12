@@ -2,6 +2,7 @@ import type { TBrowserConf } from '@GSC/types'
 
 import { newBrowser } from './newBrowser'
 import { noOpObj } from '@keg-hub/jsutils'
+import { Logger } from '@keg-hub/cli-utils'
 import { getBrowser, getContext, setContext } from './browser'
 import { getContextOpts } from '../helpers/getContextOpts'
 
@@ -36,7 +37,10 @@ const ensureContext = async (browser, browserConf:TBrowserConf) => {
   const pwContext = getContext(browserConf.type)
   if (pwContext) return pwContext
 
-  const context = await browser.newContext(getContextOpts(browserConf.context))
+  const contextOpts = getContextOpts(browserConf.context)
+  Logger.log(`Creating new ${browserConf.type} Browser Context with options`, contextOpts)
+  const context = await browser.newContext(contextOpts)
+
   setContext(context, browserConf.type)
 
   return context
