@@ -8,6 +8,7 @@ import { startServer } from '../server/startServer'
 import { statusServer } from '../server/statusServer'
 import { Logger, inDocker } from '@keg-hub/cli-utils'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
+import { checkServerPid } from '../server/checkServerPid'
 import { getBrowserOpts } from '../helpers/getBrowserOpts'
 import { getBrowserType } from '../helpers/getBrowserType'
 
@@ -29,11 +30,10 @@ const getBrowserPid = async (type:string, checkStatus:boolean) => {
  * @function
  */
 export const newBrowserWS = async (
-  browserConf:TBrowserConf,
-  checkStatus:boolean = true
+  browserConf:TBrowserConf
 ) => {
   const type = getBrowserType(browserConf.type)
-  const statusPid = await getBrowserPid(type, checkStatus)
+  const statusPid = await checkServerPid(type)
 
   if (!statusPid) {
     Logger.log(`- Browser server not found. Starting new server...`)
@@ -68,7 +68,7 @@ export const newBrowser = async (
   try {
     // If the websocket is active, then start a websocket browser
     if (browserServer || browserConf.ws || checkVncEnv().socketActive)
-      return await newBrowserWS(browserConf, checkStatus)
+      return await newBrowserWS(browserConf)
 
     const type = getBrowserType(browserConf.type)
 
