@@ -176,9 +176,10 @@ env:
   # This is internal, and generally should not change
   GB_VNC_SERVER_HOST: 0.0.0.0
   GB_VNC_SERVER_PORT: 26370
-  
-  GB_VNC_VIEW_HEIGHT: 900
+
+  GB_VNC_VIEW_HEIGHT: 720
   GB_VNC_VIEW_WIDTH: 1440
+
 
   GB_VNC_ACTIVE: true
   GB_PW_SOCKET_ACTIVE: false

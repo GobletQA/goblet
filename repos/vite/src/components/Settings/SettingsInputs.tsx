@@ -5,12 +5,11 @@ import { useCallback, useState, useRef } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
 import MuiSwitch from '@mui/material/Switch'
 import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
 import { StyledInput } from './Settings.styled'
+import Typography from '@mui/material/Typography'
+import { useColorMap } from '@hooks/theme/useColorMap'
 
-export type TSwitch = ComponentProps<typeof MuiSwitch> & {
-  
-}
+export type TSwitch = ComponentProps<typeof MuiSwitch> & {}
 
 export const Switch = (props:TSwitch) => {
   const { ...rest } = props
@@ -21,8 +20,8 @@ export type TInput = ComponentProps<typeof TextField> & {
   prefix?:string
   postfix?:string
   align: `left`|`right`
-  onBlur: (...args:any[]) => void
-  onChange: (...args:any[]) => void
+  onBlur?: (...args:any[]) => void
+  onChange?: (...args:any[]) => void
 }
 
 export const Input = (props:TInput) => {
@@ -32,11 +31,13 @@ export const Input = (props:TInput) => {
     value,
     prefix,
     postfix,
+    disabled,
     className,
     inputProps=noOpObj as Record<string, any>,
     ...rest
   } = props
 
+  const colors = useColorMap()
   const [val, setVal] = useState(value)
   const inputRef = useRef<HTMLInputElement>()
 
@@ -59,9 +60,22 @@ export const Input = (props:TInput) => {
 
   return (
     <>
-      {prefix ? (<Typography sx={{ paddingRight: `2px` }} >{prefix}</Typography>) : null}
+      {prefix
+        ? (
+            <Typography
+              sx={[
+                { paddingRight: `2px` },
+                disabled && { color: colors.disabled } as any
+              ]}
+            >
+              {prefix}
+            </Typography>
+          )
+        : null
+      }
       <StyledInput
         {...rest}
+        disabled={disabled}
         className={`setting-input ${className || ''}`.trim()}
         sx={[{
           minWidth: `30px`,
@@ -80,7 +94,19 @@ export const Input = (props:TInput) => {
         onBlur={onChange as FocusEventHandler<HTMLInputElement>}
         onChange={onChange as ChangeEventHandler<HTMLInputElement>}
       />
-      {postfix ? (<Typography sx={{ paddingLeft: `2px` }} >{postfix}</Typography>) : null}
+      {postfix
+        ? (
+            <Typography
+              sx={[
+                { paddingLeft: `2px` },
+                disabled && { color: colors.disabled } as any
+              ]}
+            >
+              {postfix}
+            </Typography>
+          )
+        : null
+      }
     </>
   )
 }
@@ -88,6 +114,7 @@ export const Input = (props:TInput) => {
 export type TText = ComponentProps<typeof Typography> & {
   sx?:CSSObj
   value: any
+  disabled:boolean
   align: `left`|`right`
 }
 
@@ -96,16 +123,23 @@ export const Text = (props:TText) => {
     sx,
     align,
     value,
+    disabled,
     ...rest
   } = props
+
+  const colors = useColorMap()
 
   return (
     <Typography
       {...rest}
-      sx={[{
-        width: `100%`,
-        textAlign: align
-      }, sx as CSSObj]}
+      sx={[
+        {
+          width: `100%`,
+          textAlign: align
+        },
+        sx as CSSObj,
+        disabled && { color: colors.disabled } as CSSObj,
+      ]}
     >
       {`${value}`}
     </Typography>

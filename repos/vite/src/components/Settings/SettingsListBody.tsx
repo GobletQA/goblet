@@ -45,13 +45,13 @@ export const SettingsListBody = (props:TSettingBody) => {
 
                     acc.push(
                       <SettingsListItem
-                        key={`${item.key}-${key}`}
                         item={item}
                         colKey={key}
                         width={width}
                         align={align}
                         value={value}
                         config={config}
+                        key={`${item.key}-${key}`}
                         className='settings-list-body-item'
                       />
                     )

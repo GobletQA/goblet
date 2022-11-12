@@ -32,16 +32,22 @@ const RenderByType = (props:TSettingsListItem) => {
     colKey,
   } = props
 
+  const disabled = item?.enabled === false
+
   const onChangeValue = useCallback((evt:ChangeEvent<HTMLInputElement>|FocusEvent<HTMLInputElement>) => {
+    if(disabled) return
+
     const value = evt?.target?.type === `checkbox`
       ? evt?.target?.checked
       : evt?.target?.value
 
     item.value !== value
       && updateSettingValue({ value, setting: `${item.group}.${item.key}` })
-  }, [value, item])
+  }, [value, item, disabled])
 
   const onChangeActive = useCallback((evt:ChangeEvent<HTMLInputElement>) => {
+    if(disabled) return
+    
     const value = evt?.target?.checked
     item.active !== value
       && toggleSettingActive({ setting: `${item.group}.${item.key}` })
@@ -54,6 +60,7 @@ const RenderByType = (props:TSettingsListItem) => {
         align={align}
         value={value}
         sx={sx as CSSObj}
+        disabled={disabled}
       />
     )
 
@@ -63,6 +70,7 @@ const RenderByType = (props:TSettingsListItem) => {
       <Switch
         size='small'
         color='primary'
+        disabled={disabled}
         checked={item.active}
         onChange={onChangeActive}
         value={item.active ? `on` : `off`}
@@ -77,7 +85,7 @@ const RenderByType = (props:TSettingsListItem) => {
           size='small'
           color='primary'
           checked={value}
-          disabled={!item.active}
+          disabled={disabled || !item.active}
           onChange={onChangeValue}
           value={value ? `on` : `off`}
         />
@@ -96,8 +104,8 @@ const RenderByType = (props:TSettingsListItem) => {
           variant='outlined'
           prefix={item.prefix}
           postfix={item.postfix}
-          disabled={!item.active}
           required={!exists(item?.default)}
+          disabled={disabled || !item.active}
           onBlur={onChangeValue as FocusEventHandler<HTMLInputElement>}
         />
       )
@@ -113,10 +121,10 @@ const RenderByType = (props:TSettingsListItem) => {
           variant='outlined'
           prefix={item.prefix}
           postfix={item.postfix}
-          disabled={!item.active}
           onChange={onChangeValue}
           placeholder={`${item?.key}`}
           required={!exists(item?.default)}
+          disabled={disabled || !item.active}
         />
       )
   }

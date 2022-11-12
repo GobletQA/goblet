@@ -8,6 +8,7 @@ export type TSetting = {
   prefix?: string
   postfix?: string
   type?: `string` | `boolean` | `array` | `object` | `number`
+  enabled?: boolean
 }
 
 type TNoSettingKeys = {

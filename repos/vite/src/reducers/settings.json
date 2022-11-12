@@ -114,6 +114,15 @@
       "postfix": "px",
       "type": "number",
       "group": "browser"
+    },
+    "ws": {
+      "key": "ws",
+      "value": true,
+      "active": true,
+      "default": true,
+      "enabled": false,
+      "type": "boolean",
+      "group": "browser"
     }
   },
   "terminal": {
