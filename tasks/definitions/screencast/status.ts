@@ -6,6 +6,7 @@ import { repos } from '../../paths'
 const statusAction = async (args:TTaskParams) => {
   const { runSCTask } = require(path.join(repos.screencast, `tasks`))
   await runSCTask(`status`, args.params)
+  process.exit(0)
 }
 
 export const status = {

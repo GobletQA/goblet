@@ -53,7 +53,7 @@ export const startVNC = async ({
   const config = getGobletConfig()
   const { vnc } = screencastConfig.screencast
 
-  const resp =await childProc({
+  const child =await childProc({
     log: true,
     cmd: 'Xtigervnc',
     args: flatUnion(
@@ -91,13 +91,15 @@ export const startVNC = async ({
       { env }
     ),
   })
-  
+
   Logger.log(`\nTigerVnc server settings:`)
   Logger.log(`  - Listen on ${vnc.host}:${vnc.port}`)
   Logger.log(`  - Display ${vnc.display}`)
   Logger.log(`  - Dimensions ${vnc.width}x${vnc.height}x24`)
 
-  return resp
+  // Tell spawn-cmd not to close the process on exit of parent process
+  child.__spOnExitCalled = true
+  return child
 }
 
 /**

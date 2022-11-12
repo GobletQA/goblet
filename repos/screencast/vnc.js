@@ -1,7 +1,8 @@
 require('./resolveRoot')
+const { noOpObj } = require('@keg-hub/jsutils')
 const { startVNC } = require('@GSC/libs/vnc/vnc')
 const { startSockify } = require('@GSC/libs/vnc/sockify')
-const { noOpObj } = require('@keg-hub/jsutils')
+const { startServerAsWorker } = require('@GSC/libs/playwright')
 
 ;(async () => {
   const type = process.argv.slice(2).shift()
@@ -14,9 +15,14 @@ const { noOpObj } = require('@keg-hub/jsutils')
       startVNC(noOpObj)
       break
     }
+    case `browser`: {
+      startServerAsWorker(noOpObj)
+      break
+    }
     case `all`: {
       startSockify(noOpObj)
       startVNC(noOpObj)
+      startServerAsWorker(noOpObj)
       break
     }
     default: {

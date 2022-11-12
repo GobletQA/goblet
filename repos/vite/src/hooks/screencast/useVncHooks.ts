@@ -1,20 +1,13 @@
 import type {
   TCanvasExt,
+  TConnectExt,
   TCanvasProps,
   TCredentials,
 } from '@types'
-import type { MutableRefObject } from 'react'
 
+import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
 
-import { useCallback, useRef } from 'react'
-
-type TConnectExt = TCanvasExt & {
-  _onConnect:() => void
-  _onDisconnect:() => void
-  _onCredentialsRequired:() => void
-  _onDesktopName:(...args:any[]) => void
-}
 
 export const useConnectCB = (props:TCanvasProps, ext:TConnectExt) => {
   const {
@@ -144,13 +137,14 @@ export const useVncHooks = (props:TCanvasProps, ext:TCanvasExt) => {
 
   const _onDisconnect = useCallback(() => {
     if (onDisconnect) {
-      onDisconnect(rfb?.current ?? undefined)
+      onDisconnect?.(rfb?.current ?? undefined)
       setLoading(true)
       return
     }
 
     if (connected.current) {
-      logger.info(`Unexpectedly disconnected from remote VNC, retrying in ${retryDuration / 1000} seconds.`)
+      // connected.current = true
+      logger.info(`Disconnected from VNC server, Attempting to reconnect in ${retryDuration / 1000} seconds.`)
       timeouts.current.push(setTimeout(() => connectRef?.current?.(), retryDuration))
     }
     else logger.info(`Disconnected from remote VNC.`)

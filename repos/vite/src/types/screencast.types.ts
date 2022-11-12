@@ -4,6 +4,7 @@ import type { NoVncOptions, NoVncCredentials } from '@novnc/novnc/core/rfb'
 
 export type TCanvasExt = {
   logger:TCanvasLogger,
+  _onDisconnect?:() => void
   screen:RefObject<HTMLDivElement>
   rfb:MutableRefObject<RFB | null>
   connected:MutableRefObject<boolean>

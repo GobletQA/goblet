@@ -1,23 +1,25 @@
-const path = require('path')
-const { checkVncEnv } = require('../../utils/vncActiveEnv')
-const { taskEnvToBrowserOpts } = require('../../utils/taskEnvToBrowserOpts')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
-const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
-const {
+import type { TBrowserConf, TGobletConfig } from '@GSC/types'
+
+import path from 'path'
+import { checkVncEnv } from '../../utils/vncActiveEnv'
+import { taskEnvToBrowserOpts } from '../../utils/taskEnvToBrowserOpts'
+import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
+import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
+import {
   exists,
   noOpObj,
   omitKeys,
   flatUnion,
   noPropArr,
   deepMerge,
-} = require('@keg-hub/jsutils')
+} from '@keg-hub/jsutils'
 
 /**
- * Default browser optons
+ * Default browser options
  * @type {Object}
  */
 const options = {
-  host: {},
+  host: {} as Partial<TBrowserConf>,
   vnc: {
     slowMo: 100,
     headless: false,
@@ -26,11 +28,21 @@ const options = {
       `--disable-dev-shm-usage`,
       `--no-sandbox`,
       `--window-position=0,0`,
+      `--app`,
+      `--no-first-run`,
+      `--start-fullscreen`,
+      // `--allow-insecure-localhost`,
+      // `--unsafely-treat-insecure-origin-as-secure`,
+      // `--start-maximized`,
+      // `--suppress-message-center-popups`
+      // Investigate this - May allow keeping the browser alive in goblet UI app
+      // Don't want this when running in CI or other environments
+      // `--keep-alive-for-test`
     ],
-  },
+  } as Partial<TBrowserConf>,
 }
 
-const getGobletConfigOpts = config => {
+const getGobletConfigOpts = (config:TGobletConfig) => {
   const {
     tracesDir = 'artifacts/traces',
     downloadsDir = 'artifacts/downloads',
@@ -38,7 +50,7 @@ const getGobletConfigOpts = config => {
 
   const baseDir = getRepoGobletDir(config)
   return {
-    ...config?.screencast?.browser,
+    ...config?.screencast?.screencast?.browser,
     tracesDir: path.join(baseDir, tracesDir),
     downloadsPath: path.join(baseDir, downloadsDir),
   }
@@ -46,14 +58,11 @@ const getGobletConfigOpts = config => {
 
 /**
  * Builds the config for the browser merging the defaults with the passed in config
- * @function
- * @public
- * @param {Object} browserConf - Options to define how the browser starts
- * @param {Object} config - Global config config object
- *
- * @return {Object} - Config object to pass to playwright when starting a browser
  */
-const getBrowserOpts = (browserConf=noOpObj, config) => {
+export const getBrowserOpts = (
+  browserConf:TBrowserConf=noOpObj as TBrowserConf,
+  config?:TGobletConfig
+) => {
   const {
     channel,
     restart,
@@ -73,7 +82,7 @@ const getBrowserOpts = (browserConf=noOpObj, config) => {
     ? options.vnc
     : options.host
 
-  return deepMerge(
+  return deepMerge<TBrowserConf>(
     /**
      * Gets the default config options from the global goblet.config.js
      */
@@ -104,8 +113,4 @@ const getBrowserOpts = (browserConf=noOpObj, config) => {
      */
      omitKeys(taskEnvToBrowserOpts(config), ['devices']),
   )
-}
-
-module.exports = {
-  getBrowserOpts,
 }

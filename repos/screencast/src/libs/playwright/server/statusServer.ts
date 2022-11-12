@@ -1,16 +1,11 @@
-const { browserNames } = require('@GSC/constants')
-const { findProc } = require('../../proc/findProc')
-const { limbo, exists } = require('@keg-hub/jsutils')
+import { browserNames } from '@GSC/constants'
+import { findProc } from '../../proc/findProc'
+import { limbo, exists } from '@keg-hub/jsutils'
 
 /**
  * Gets the current running status of browser server the process
- * @function
- * @throws
- * @param {string} type - Name of the browser server to get the status for
- *
- * @return {Object} - Process Status object
  */
-const statusServer = async browser => {
+export const statusServer = async (browser?:string) => {
   const hasBrowser = exists(browser)
   if (hasBrowser && !browserNames.includes(browser))
     throw new Error(
@@ -19,7 +14,7 @@ const statusServer = async browser => {
       )}`
     )
 
-  return await browserNames.reduce(async (resp, type) => {
+  return await browserNames.reduce(async (resp:Record<any, any>, type:string) => {
     const acc = await resp
 
     if (exists(browser) && browser !== type) return acc
@@ -30,8 +25,4 @@ const statusServer = async browser => {
 
     return err ? acc : { ...acc, [type]: status }
   }, Promise.resolve({}))
-}
-
-module.exports = {
-  statusServer,
 }

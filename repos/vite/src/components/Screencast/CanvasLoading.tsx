@@ -14,7 +14,7 @@ export const CanvasLoading = (props:TCanvasLoading) => {
     loading,
     ...rest
   } = props
-  
+
   return (
     <Fadeout
       {...rest}

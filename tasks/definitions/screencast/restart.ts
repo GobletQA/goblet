@@ -6,6 +6,8 @@ import { repos } from '../../paths'
 const restartAction = async (args:TTaskParams) => {
   const { runSCTask } = require(path.join(repos.screencast, `tasks`))
   await runSCTask(`restart`, args.params)
+  // Force exit the process, because the browser server causes it to hang 
+  process.exit(0)
 }
 
 export const restart = {

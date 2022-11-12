@@ -12,42 +12,24 @@ const useDisconnectCB = (
   props:TCanvasProps,
   ext:TCanvasExt
 ) => {
-  const {
-    onDisconnect,
-    retryDuration=3000,
-  } = props
-  
+
   const {
   rfb,
   logger,
   timeouts,
   connected,
-  setLoading,
-  connectRef,
+  _onDisconnect,
   eventListeners,
 } = ext
 
-  const _onDisconnect = useCallback(() => {
-
-    if (onDisconnect) {
-      onDisconnect(rfb?.current ?? undefined)
-      setLoading(true)
-      return
-    }
-
-    if (connected.current) {
-      logger.info(`Unexpectedly disconnected from remote VNC, retrying in ${retryDuration / 1000} seconds.`)
-      timeouts.current.push(setTimeout(() => connectRef.current?.(), retryDuration))
-    }
-    else logger.info(`Disconnected from remote VNC.`)
-
-    setLoading(true)
-
-  }, [onDisconnect, retryDuration])
-
   const disconnect = useCallback(() => {
+
     try {
-      if (!rfb?.current) return
+
+      if (!rfb?.current){
+        _onDisconnect?.()
+        return
+      }
 
       timeouts.current.forEach(clearTimeout)
 
@@ -100,10 +82,12 @@ export const useRFBHooks = (props:TCanvasProps, ext:TCanvasExt) => {
   }, [])
 
   const focus = useCallback(() => {
+    console.log(`------- focus rfb -------`)
     rfb?.current?.focus()
   }, [])
 
   const blur = useCallback(() => {
+    console.log(`------- blur rfb -------`)
     rfb?.current?.blur()
   }, [])
 

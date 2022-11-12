@@ -144,8 +144,9 @@ module.exports = {
    */
   internalPaths: {
     gobletRoot: GOBLET_ROOT,
-    testUtilsDir: SUB_REPOS.TEST_UTILS_PATH,
     pwMetaDataDir: GOBLET_PW_METADATA_DIR,
+    testUtilsDir: SUB_REPOS.TEST_UTILS_PATH,
+    screencastDir: SUB_REPOS.SCREENCAST_PATH,
     // Temp directories for saving test artifacts
     // These paths should not be saved with the repo
     // They are only used when running tests, then discarded

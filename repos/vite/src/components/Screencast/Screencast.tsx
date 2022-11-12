@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react'
 import type { TCanvasHandle } from '@types'
+import type RFB from '@novnc/novnc/core/rfb'
 
 import { useRef, useCallback, useState } from 'react'
 import { Canvas } from './Canvas'
@@ -43,10 +44,6 @@ export const Screencast = (props:TScreencastProps) => {
   }, [screencastUrl])
 
   const onConnect = useCallback(async (...args:any[]) => {
-    // TODO: need to figure out a solution for this
-    // Should call restart browser only when it's not already running
-    // Right now it calls it every time
-    // const resp = await  restartBrowser()
     const resp = await statusBrowser()
     if(resp.running) setFadeStart(true)
     const VncService = vncRef.current
@@ -54,6 +51,14 @@ export const Screencast = (props:TScreencastProps) => {
 
     VncService.screen.current.style.minHeight = `100%`
     VncService.screen.current.style.minWidth = `100%`
+  }, [])
+
+  const onDisconnect = useCallback(async (rfb?:RFB) => {
+
+    const VncService = vncRef.current
+    console.log(`------- Vnc Service -------`)
+    console.log(VncService)
+
   }, [])
 
   return (
@@ -70,10 +75,11 @@ export const Screencast = (props:TScreencastProps) => {
       <Canvas
         ref={vncRef}
         url={screencastUrl}
-        onConnect={onConnect}
         autoConnect={false}
         scaleViewport={true}
+        onConnect={onConnect}
         forceShowLoading={true}
+        onDisconnect={onDisconnect}
         loadingProps={{
           ...LoadingProps,
           start: fadeStart,

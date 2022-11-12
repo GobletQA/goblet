@@ -1,22 +1,20 @@
-const playwright = require('playwright')
-const { noOpObj } = require('@keg-hub/jsutils')
-const { getMetadata } = require('../server/server')
-const { getBrowser, setBrowser } = require('./browser')
-const { startServer } = require('../server/startServer')
-const { statusServer } = require('../server/statusServer')
-const { Logger, inDocker } = require('@keg-hub/cli-utils')
-const { checkVncEnv } = require('../../utils/vncActiveEnv')
-const { getBrowserOpts } = require('../helpers/getBrowserOpts')
-const { getBrowserType } = require('../helpers/getBrowserType')
+import type { TBrowserConf } from '@GSC/types'
+
+import playwright from 'playwright'
+import { noOpObj } from '@keg-hub/jsutils'
+import { getMetadata } from '../server/server'
+import { getBrowser, setBrowser } from './browser'
+import { startServer } from '../server/startServer'
+import { statusServer } from '../server/statusServer'
+import { Logger, inDocker } from '@keg-hub/cli-utils'
+import { checkVncEnv } from '../../utils/vncActiveEnv'
+import { getBrowserOpts } from '../helpers/getBrowserOpts'
+import { getBrowserType } from '../helpers/getBrowserType'
 
 /**
  * Checks for the pid of an already running browser
- * @param {string} type - Name of the browser to check
- * @param {boolean} checkStatus - Should the browser status be checked
- *
- * @returns {number|boolean} - PID if found, true if checkStatus === false, or false if no PID
  */
-const getBrowserPid = async (type, checkStatus) => {
+const getBrowserPid = async (type:string, checkStatus:boolean) => {
   // If no status check, return true which is the same as having a pid for the browser
   if (!checkStatus) return true
 
@@ -29,15 +27,11 @@ const getBrowserPid = async (type, checkStatus) => {
 /**
  * Starts new browser by connecting to an existing browser server websocket
  * @function
- * @private
- * @param {string} browserConf.browserType - Name of the browser to launch
- * @param {Array} browserConf.args - Arguments to pass to the browser on launch
- * @param {Object} browserConf.config - Options to pass to the browser on launch
- * @param {boolean} [checkStatus=true] - Should the browser status be checked
- *
- * @returns {Object} - Contains the browser reference created from playwright
  */
-const newBrowserWS = async (browserConf, checkStatus = true) => {
+export const newBrowserWS = async (
+  browserConf:TBrowserConf,
+  checkStatus:boolean = true
+) => {
   const type = getBrowserType(browserConf.type)
   const statusPid = await getBrowserPid(type, checkStatus)
 
@@ -46,7 +40,7 @@ const newBrowserWS = async (browserConf, checkStatus = true) => {
     await startServer({ ...browserConf, type })
   }
 
-  const { endpoint } = await getMetadata(type)
+  const { endpoint } = await getMetadata(type) as Record<'endpoint', string>
 
   // Check if the websocket is active
   // If so, then update the endpoint url to target the host machine
@@ -65,19 +59,15 @@ const newBrowserWS = async (browserConf, checkStatus = true) => {
 
 /**
  * Starts new browser using the Playwright API
- * @function
- * @private
- * @param {string} browserConf.type - Name of the browser to launch
- * @param {Array} browserConf.args - Arguments to pass to the browser on launch
- * @param {Object} browserConf.config - Options to pass to the browser on launch
- * @param {boolean} checkStatus - Should the browser status be checked
- *
- * @returns {Object} - Contains the browser reference created from playwright
  */
-const newBrowser = async (browserConf = noOpObj, checkStatus) => {
+export const newBrowser = async (
+  browserConf:TBrowserConf = noOpObj as TBrowserConf,
+  checkStatus?:boolean,
+  browserServer?:boolean
+) => {
   try {
     // If the websocket is active, then start a websocket browser
-    if (checkVncEnv().socketActive)
+    if (checkVncEnv().socketActive || browserServer)
       return await newBrowserWS(browserConf, checkStatus)
 
     const type = getBrowserType(browserConf.type)
@@ -115,7 +105,4 @@ const newBrowser = async (browserConf = noOpObj, checkStatus) => {
   }
 }
 
-module.exports = {
-  newBrowser,
-  newBrowserWS,
-}
+newBrowser.creatingBrowser = false

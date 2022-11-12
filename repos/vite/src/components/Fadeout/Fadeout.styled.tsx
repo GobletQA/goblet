@@ -30,8 +30,8 @@ export const FadeSection = styled(Box)<BoxProps>({
   flex: 1,
   height: '100%',
   display: 'flex',
-  justifyContents: 'center',
   alignItems: 'center',
+  justifyContents: 'center',
 })
 
 export const FadeView = styled(Box)<BoxProps>({

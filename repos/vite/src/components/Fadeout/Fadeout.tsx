@@ -1,5 +1,5 @@
 import { TStyles, TStyle } from '@types'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef } from 'react'
 import { exists } from '@keg-hub/jsutils'
 import { useSetTimeout } from '@hooks/useSetTimeout'
 import { Fade, FadeSection, FadeView } from './Fadeout.styled'
@@ -36,6 +36,8 @@ const useFadeEffect = (
   styles?:TStyles,
   initOpacity:number=1
 ) => {
+
+  const startRef = useRef<boolean>(start || false)
   const [style, setStyle] = useState<TStyle>({ ...(styles?.main || {}), opacity: 1 })
 
   useEffect(() => {
@@ -50,6 +52,13 @@ const useFadeEffect = (
     condition: start && style.display !== 'none',
     callback: () => setStyle({ ...style, display: 'none' }),
   })
+
+  useEffect(() => {
+    if(!startRef.current) return
+
+    startRef.current = false
+    setStyle({ ...(styles?.main || {}), opacity: 1 })
+  }, [start])
 
   return [style, setStyle]
 }

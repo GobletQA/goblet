@@ -1,9 +1,11 @@
-const playwright = require('playwright')
-const { setServer } = require('./server')
-const { noOpObj } = require('@keg-hub/jsutils')
-const metadata = require('../helpers/metadata')
-const { Logger } = require('@keg-hub/cli-utils')
-const { getBrowserOpts } = require('../helpers/getBrowserOpts')
+import type { TBrowserConf } from '@GSC/types'
+
+import playwright from 'playwright'
+import { setServer } from './server'
+import { noOpObj } from '@keg-hub/jsutils'
+import metadata from '../helpers/metadata'
+import { Logger } from '@keg-hub/cli-utils'
+import { getBrowserOpts } from '../helpers/getBrowserOpts'
 
 /**
  * Starts new browser server using the Playwright API
@@ -14,13 +16,20 @@ const { getBrowserOpts } = require('../helpers/getBrowserOpts')
  *
  * @returns {Object} - Browser server reference
  */
-const newServer = async (browser, browserConf = noOpObj) => {
-  Logger.log(`- Starting playwright server ${browser}...`)
+export const newServer = async (
+  browser:string,
+  browserConf:TBrowserConf=noOpObj as TBrowserConf
+) => {
+
+  Logger.log(`Starting playwright server ${browser}...`)
+
   // Launch the playwright server
   const launchOpts = getBrowserOpts(browserConf)
+  Logger.log(`Creating Browser Server with launchOpts`, launchOpts)
+  
   const pwServer = await playwright[browser].launchServer(launchOpts)
 
-  Logger.log(`- Configuring browser ${browser} websocket...`)
+  Logger.log(`Configuring browser ${browser} websocket...`)
   const wsEndpoint = pwServer.wsEndpoint()
 
   Logger.empty()
@@ -31,8 +40,4 @@ const newServer = async (browser, browserConf = noOpObj) => {
   await metadata.save(browser, wsEndpoint, launchOpts)
 
   return setServer(pwServer)
-}
-
-module.exports = {
-  newServer,
 }

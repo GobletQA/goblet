@@ -62,7 +62,7 @@ export const startSockify = async ({
     : []
 
   Logger.log(`- Starting websockify server...`)
-  return await childProc({
+  const child = await childProc({
     cmd: 'websockify',
     args: flatUnion(
       [
@@ -87,6 +87,11 @@ export const startSockify = async ({
     ),
     log: true,
   })
+
+  // Tell spawn-cmd not to close the process on exit of parent process
+  child.__spOnExitCalled = true
+  
+  return child
 }
 
 /**

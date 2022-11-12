@@ -1,4 +1,4 @@
-import type { MutableRefObject } from 'react'
+import type { MutableRefObject, SyntheticEvent } from 'react'
 
 import RFB from '@novnc/novnc/core/rfb'
 import { useEffect, useCallback } from 'react'
@@ -27,7 +27,7 @@ export const useVncHandlers = (props:TVncHandlers) => {
   const onClick = useCallback(() => rfb?.current?.focus(), [])
   const onMouseLeave = useCallback(() => rfb?.current?.blur(), [])
 
-  const onMouseEnter = useCallback(() => {
+  const onMouseEnter = useCallback((event:SyntheticEvent) => {
     document.activeElement
       && document.activeElement instanceof HTMLElement
       && document.activeElement.blur()

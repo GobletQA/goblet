@@ -33,7 +33,10 @@ const CanvasComp: React.ForwardRefRenderFunction<TCanvasHandle, TCanvasProps> = 
     eventListeners
   } = useVncRefs(props)
 
-  const { connect } = useVncHooks(props, {
+  const {
+    connect,
+    _onDisconnect
+  } = useVncHooks(props, {
     rfb,
     screen,
     logger,
@@ -64,6 +67,7 @@ const CanvasComp: React.ForwardRefRenderFunction<TCanvasHandle, TCanvasProps> = 
     connected,
     connectRef,
     setLoading,
+    _onDisconnect,
     disconnectRef,
     eventListeners,
   })

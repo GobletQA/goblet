@@ -1,10 +1,10 @@
 import './resolveRoot'
-import { get, wait } from '@keg-hub/jsutils'
+import { get, wait, setLogs } from '@keg-hub/jsutils'
 import { Logger } from '@keg-hub/cli-utils'
 const {
   stopServer,
-  startServer,
   statusServer,
+  startServerAsWorker,
 } = require('@GSC/libs/playwright')
 import {
   stopVNC,
@@ -15,13 +15,13 @@ import {
   statusSockify,
 } from '@GSC/libs/vnc'
 
+setLogs(true, `log`, `[ Goblet Screencast ]`)
 
 const resolveContext = (context:string) => {
   if(!context || context === `all` || context === `a`) return { sock:true, vnc:true, browser:true }
   if(context === `vnc` || context === `v`) return { sock:false, vnc:true, browser:false }
   if(context === `sock` || context === `s`) return { sock:true, vnc:false, browser:false }
   if(context === `browser` || context === `b`) return { sock:false, vnc:false, browser:true }
-  if(context === `server` || context === `sr`) return { sock:false, vnc:false, browser:false }
 
   return context.split(`,`)
     .reduce((acc, item) => {
@@ -33,6 +33,7 @@ const resolveContext = (context:string) => {
 
 export const runSCTask = async (type:string, params:Record<any, any>) => {
   const { context, log } = params
+  const procs:Record<string, Record<any, any>> = {}
   const { sock, vnc, browser } = resolveContext(params.context as string)
 
   switch(type){
@@ -44,41 +45,52 @@ export const runSCTask = async (type:string, params:Record<any, any>) => {
         const { chromium } = await statusServer()
         status.browser = chromium
       }
-      return Logger.log(status)
+      Logger.log(status)
+      break
     }
     case 'stop': {
-      if(vnc) await stopVNC()
-      if(sock) await stopSockify()
-      if(browser) await stopServer()
-      return
+      await Promise.all([
+        vnc && stopVNC(),
+        sock && stopSockify(),
+        browser && stopServer(),
+      ])
+      break
     }
     case 'start': {
-      if(vnc) startVNC(params.vnc)
-      if(sock) startSockify(params.sock)
-      // TODO: need to run browser as a worker
-      if(context === `browser` || context === `b`) startServer(params.browser, true)
-      return
+      const proms = await Promise.all([
+        vnc && startVNC(params.vnc),
+        sock && startSockify(params.sock),
+        browser && startServerAsWorker(params.browser)
+      ])
+
+      ;[`vnc`, `sock`, `browser`].forEach((item, idx) => procs[item] = proms[idx])
+      break
     }
     case 'restart': {
+      await Promise.all([
+        vnc && stopVNC(),
+        sock && stopSockify(),
+        browser && stopServer(),
+      ])
+      
+      await wait(2000)
+
       if(vnc){
-        await stopVNC()
-        await wait(2000)
         const vncProc = await startVNC(params.vnc)
-        vncProc.unref()
+        procs.vnc = vncProc
+        vncProc?.unref?.()
       }
       if(sock){
-        await stopSockify()
-        await wait(2000)
         const sockProc = await startSockify(params.sock)
-        sockProc.unref()
+        procs.sock = sockProc
+        sockProc?.unref?.()
       }
-      // TODO: need to run browser as a worker
-      if(context === `browser` || context === `b`){
-        await stopServer()
-        await wait(2000)
-        startServer(params.browser, true)
+      if(browser){
+        const browserProc = await startServerAsWorker(params.browser)
+        browserProc?.unref?.()
+        procs.browser = browserProc
       }
-      return
+      break
     }
     case 'pid': {
       const status = {} as any
@@ -93,11 +105,12 @@ export const runSCTask = async (type:string, params:Record<any, any>) => {
         ? Logger.log(pid)
         : log && Logger.warn(`Pid not found for context ${context}`)
 
-      return
+      return procs
     }
     default:
       Logger.error(`Unknown screencast task action ${type}`)
-      return
+      break
   }
 
+  return procs
 }
