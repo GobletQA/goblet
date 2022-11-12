@@ -2,12 +2,28 @@ import type { TAction, TSettings, TSetting, TSettingAct } from '@types'
 
 import settingsJson from './settings.json'
 import { isSetting } from '@utils/store/isSetting'
-import { deepMerge, get, set, isObj, noOpObj } from '@keg-hub/jsutils'
+import { deepMerge, get, set, noOpObj, toNum } from '@keg-hub/jsutils'
+
+const defWidth = toNum(process.env.GB_VNC_VIEW_WIDTH) || 0
+const defHeight = toNum(process.env.GB_VNC_VIEW_HEIGHT) || 0
+
+const defSettings = deepMerge(settingsJson, {
+  browser: {
+    width: {
+      value: defWidth,
+      default: defWidth,
+    },
+    height: {
+      value: defHeight,
+      default: defHeight,
+    }
+  }
+})
 
 export type TSettingsState = TSettings
 
 // Use deepMerge to ensure the settingsState is a unique copy
-export const settingsState = deepMerge<TSettingsState>(settingsJson)
+export const settingsState = deepMerge<TSettingsState>(defSettings)
 
 const missingSetting = (setting:string) => {
   console.warn(`Tried to update a non-existing setting at path: ${setting}`)
@@ -40,7 +56,7 @@ export const settingsActions = {
   resetAll: (
     state:TSettingsState,
     action:TAction<any>
-  ) => deepMerge(settingsJson),
+  ) => deepMerge(defSettings),
   mergeAll: (
     state:TSettingsState,
     action:TAction<TSettingsState>

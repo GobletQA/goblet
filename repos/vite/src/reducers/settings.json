@@ -103,18 +103,14 @@
     },
     "width": {
       "key": "width",
-      "value": 1440,
       "active": false,
-      "default": 1440,
       "postfix": "px",
       "type": "number",
       "group": "browser"
     },
     "height": {
       "key": "height",
-      "value": 900,
       "active": false,
-      "default": 900,
       "postfix": "px",
       "type": "number",
       "group": "browser"

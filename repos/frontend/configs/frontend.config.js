@@ -27,8 +27,8 @@ const loadConfig = (aliases) => {
     GB_BE_WS_PATH,
     GB_WS_TRANSPORTS,
     GB_GITHUB_AUTH_USERS,
-    GB_VNC_VIEW_WIDTH=1440,
-    GB_VNC_VIEW_HEIGHT=900,
+    GB_VNC_VIEW_WIDTH,
+    GB_VNC_VIEW_HEIGHT,
     GB_PW_SOCKET_ACTIVE,
   } = process.env
 

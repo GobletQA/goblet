@@ -8,14 +8,14 @@ import { toNum } from '@keg-hub/jsutils'
  */
 export const getScreenDims = () => {
   const {
-    GB_VNC_VIEW_WIDTH = 1440,
-    GB_VNC_VIEW_HEIGHT = 900,
+    GB_VNC_VIEW_WIDTH,
+    GB_VNC_VIEW_HEIGHT,
     GOBLET_CONTEXT_WIDTH=GB_VNC_VIEW_WIDTH,
     GOBLET_CONTEXT_HEIGHT=GB_VNC_VIEW_HEIGHT,
   } = process.env
 
   return {
-    width: toNum(GOBLET_CONTEXT_WIDTH) || 1440,
-    height: toNum(GOBLET_CONTEXT_HEIGHT) || 900,
+    width: toNum(GOBLET_CONTEXT_WIDTH),
+    height: toNum(GOBLET_CONTEXT_HEIGHT),
   }
 }
