@@ -1,10 +1,9 @@
+import type { TFileModel } from '@GSH/types'
+
 /**
  * Helper to help map the fileModel array to object with location as the unique key
- * @param {Array} fileModels
- *
- * @returns {Object} { fileModel.location: fileModel, fileModel2.location: fileModel2, ... }
  */
-const fileModelArrayToObj = fileModels => {
+export const fileModelArrayToObj = (fileModels:TFileModel[]) => {
   return (
     fileModels &&
     fileModels.reduce((map, fileModel) => {
@@ -12,8 +11,4 @@ const fileModelArrayToObj = fileModels => {
       return map
     }, {})
   )
-}
-
-module.exports = {
-  fileModelArrayToObj,
 }

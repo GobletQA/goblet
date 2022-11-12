@@ -1,4 +1,4 @@
-const { toNum } = require('@keg-hub/jsutils')
+import { toNum } from '@keg-hub/jsutils'
 
 /**
  * Gets the screen dimensions from the current ENV
@@ -6,7 +6,7 @@ const { toNum } = require('@keg-hub/jsutils')
  * 
  * @returns {Object} - Screen Dims Object
  */
-const getScreenDims = () => {
+export const getScreenDims = () => {
   const {
     GB_VNC_VIEW_WIDTH = 1440,
     GB_VNC_VIEW_HEIGHT = 900,
@@ -18,8 +18,4 @@ const getScreenDims = () => {
     width: toNum(GOBLET_CONTEXT_WIDTH) || 1440,
     height: toNum(GOBLET_CONTEXT_HEIGHT) || 900,
   }
-}
-
-module.exports = {
-  getScreenDims
 }

@@ -24,12 +24,9 @@ const launchMethodMap = {
 /**
  * Gets the launch type to use when launching the browser 
  * Normalizes the launchType argument to allow shortcuts
- * 
- * @param {string} [launchType] - The browser launchType to use
- * 
- * @returns {string} - The found browser launchType
+ *
  */
-const getLaunchType = (launchType) => {
+export const getLaunchType = (launchType?:string) => {
   launchType = launchType ||
     process.env.GOBLET_BROWSER_LAUNCH_TYPE ||
     'launch'
@@ -40,17 +37,9 @@ const getLaunchType = (launchType) => {
 /**
  * Gets the playwright method name used to launch the browser 
  * Normalizes the launchType argument to allow shortcuts
- * 
- * @param {string} [launchType] - The browser launchType to use
- * 
- * @returns {string} - The name of the playwright launchType method
+ *
  */
-const getLaunchTypeMethod = (launchType) => {
+export const getLaunchTypeMethod = (launchType?:string) => {
   const lType = getLaunchType(launchType).toLowerCase()
   return launchMethodMap[lType] || launchMethodMap.launch
-}
-
-module.exports = {
-  getLaunchType,
-  getLaunchTypeMethod
 }

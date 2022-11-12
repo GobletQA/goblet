@@ -3,7 +3,7 @@
 /**
  * Helper method to parse a string of origins, and convert them to a cleaned array
  */
-const generateOrigins = (originsStr=``) => {
+export const generateOrigins = (originsStr=``) => {
   return (originsStr).split(',')
     .reduce((acc, origin) => {
       const host = (origin || '').trim()
@@ -25,8 +25,4 @@ const generateOrigins = (originsStr=``) => {
 
       return acc
     }, [])
-}
-
-module.exports = {
-  generateOrigins
 }

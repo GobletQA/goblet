@@ -1,9 +1,10 @@
+import type { Request } from 'express'
 
 /**
  * Resolves the origin from the passed in headers
  * @param {Object} req - Express request object
  */
-const getOrigin = req => {
+export const getOrigin = (req:Request) => {
   return (
     req.headers.origin ||
     (req.headers.referer && new URL(req?.headers?.referer).origin) ||
@@ -11,9 +12,4 @@ const getOrigin = req => {
       req.protocol &&
       `${req.protocol}://${req?.headers?.host?.split(':').shift()}`)
   )
-}
-
-
-module.exports = {
-  getOrigin
 }
