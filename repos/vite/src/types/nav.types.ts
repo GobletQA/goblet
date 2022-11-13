@@ -9,6 +9,7 @@ import type {
 
 export type TNavItem = {
   title: string,
+  tooltip: string,
   icon?: string | ReactNode
   style?: CSSProperties
   [key:string]: any

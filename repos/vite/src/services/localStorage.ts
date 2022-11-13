@@ -1,7 +1,7 @@
 
 
 import { limbo } from '@keg-hub/jsutils'
-import { StorageKeys, ENVIRONMENT } from '@constants'
+import { StorageKeys, Environment } from '@constants'
 
 export type TWrapperFunc = (...args:any[]) => void
 
@@ -40,7 +40,7 @@ class Storage {
    */
   logMessage = (type:string = 'log', ...message:any[]) => {
     // If we are in production, just return
-    if (ENVIRONMENT !== 'local') return
+    if (Environment !== 'local') return
 
     // If it's an error, then Throw
     if (type === 'error') throw new Error(...message)

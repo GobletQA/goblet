@@ -29,7 +29,7 @@ const defVncArgs = noOpObj as TChildProcArgs
  *
  * @example
  * // With auth
- * Xtigervnc -SecurityTypes None -geometry 1024x900x24 -rfbauth /root/.vnc/passwd -rfbport 26370 -alwaysshared :0
+ * Xtigervnc -SecurityTypes None -geometry 1024x768x24 -rfbauth /root/.vnc/passwd -rfbport 26370 -alwaysshared :0
  * @example
  * // With arm64 hack
  * LD_PRELOAD=/lib/aarch64-linux-gnu/libgcc_s.so.1 /usr/bin/Xtigervnc -SecurityTypes None -geometry 1024x900x24 -rfbport 26370 -alwaysshared :0

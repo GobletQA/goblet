@@ -3,7 +3,7 @@ import type { TRequestError, TRequest, TBuiltRequest, TResponse } from '@service
 
 import axios from 'axios'
 import { deepFreeze, isStr } from '@keg-hub/jsutils'
-import { HttpMethods, ENVIRONMENT } from '@constants'
+import { HttpMethods, Environment } from '@constants'
 
 const { GET, ...HttpMethodsWithBody } = HttpMethods
 
@@ -64,7 +64,7 @@ export const networkRequest = async <T=Record<any, any>>(request:TRequest|string
     const builtRequest = buildRequest(request)
 
     // Log the request when in DEV environment
-    // ENVIRONMENT === `local` && console.log(`Network Request:\n`, builtRequest)
+    // Environment === `local` && console.log(`Network Request:\n`, builtRequest)
 
     // builds request and pull out the data and status property
     const { data, status } = await axios(builtRequest) as AxiosResponse<T>

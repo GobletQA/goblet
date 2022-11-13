@@ -1,6 +1,6 @@
 import type { TRouteMeta, TProxyRoute, TContainerMeta } from '@types'
 
-import { GB_SC_PORT } from '@constants'
+import { ScreencastPort } from '@constants'
 import { containerDispatch } from '@store'
 import { noOpObj, toStr } from '@keg-hub/jsutils'
 import { localStorage } from '@services/localStorage'
@@ -30,7 +30,7 @@ export const setContainerRoutes = async (status:TRouteMeta) => {
 
   const { api, screencast } = Object.entries(routes)
     .reduce((acc, [port, data]) => {
-      toStr(port) === toStr(GB_SC_PORT)
+      toStr(port) === toStr(ScreencastPort)
         ? (acc.api = data)
         : (acc.screencast = data)
 

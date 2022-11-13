@@ -21,7 +21,8 @@ export const useLoadRepoUrl = (repo?:any) => {
         ref: 'page',
         actions: [{
           action: 'goto',
-          props: [appUrl],
+          // props: [appUrl],
+          props: [`http://www.gobletqa.com`],
         }],
       }, false)
     

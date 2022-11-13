@@ -52,10 +52,7 @@ export const SideNav = (props:TSideNavProps) => {
   return (
     <ClickAwayListener onClickAway={onClickAway} >
       <Drawer className="side-nav-drawer" variant="permanent" open={open}>
-        <DrawerHeader
-          className="side-nav-header"
-          sx={{ minHeight: `${dims.header.height}px !important` }}
-        >
+        <DrawerHeader className="side-nav-header" >
           <Box className="side-nav-header-icon" >
             <IconButton className="side-nav-header-icon-button" onClick={toggleDrawer} >
               <Goblet />

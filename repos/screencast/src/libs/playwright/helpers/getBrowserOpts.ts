@@ -27,7 +27,9 @@ const options = {
       `--disable-gpu`,
       `--disable-dev-shm-usage`,
       `--no-sandbox`,
-      `--window-position=0,0`,
+      // `--window-position=0,0`,
+      // Hides the top-bar header. Should validate this this is what we want
+      `--window-position=0,-74`,
       `--app`,
       `--no-first-run`,
       `--start-fullscreen`,

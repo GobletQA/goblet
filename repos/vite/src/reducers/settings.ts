@@ -2,20 +2,18 @@ import type { TAction, TSettings, TSetting, TSettingAct } from '@types'
 
 import settingsJson from './settings.json'
 import { isSetting } from '@utils/store/isSetting'
+import { ScreencastWidth, ScreencastHeight } from '@constants'
 import { deepMerge, get, set, noOpObj, toNum } from '@keg-hub/jsutils'
-
-const defWidth = toNum(process.env.GB_VNC_VIEW_WIDTH) || 0
-const defHeight = toNum(process.env.GB_VNC_VIEW_HEIGHT) || 0
 
 const defSettings = deepMerge(settingsJson, {
   browser: {
     width: {
-      value: defWidth,
-      default: defWidth,
+      value: ScreencastWidth,
+      default: ScreencastWidth,
     },
     height: {
-      value: defHeight,
-      default: defHeight,
+      value: ScreencastHeight,
+      default: ScreencastHeight,
     }
   }
 })

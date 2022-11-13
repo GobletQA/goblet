@@ -2,6 +2,7 @@ import type { ElementType } from 'react'
 import { useMemo } from 'react'
 import { dims } from '@theme'
 import Box from '@mui/material/Box'
+import { Tooltip } from '@components/Tooltip'
 import ListItem from '@mui/material/ListItem'
 import { useTheme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
@@ -11,6 +12,7 @@ import ListItemButton from '@mui/material/ListItemButton'
 
 export type TNavItemProps = {
   title: string
+  tooltip: string
   open?: boolean
   index?: number
   group?: string
@@ -21,6 +23,25 @@ export type TNavItemProps = {
   isActive?: boolean
   divider?: boolean | 'bottom' | 'top'
   Icon?: ElementType
+}
+
+const NavIconText = (props:TNavItemProps) => {
+  const {
+    title,
+    color,
+  } = props
+
+  return (
+    <Typography
+      component="span"
+      sx={{
+        color,
+        fontSize: '12px',
+      }}
+    >
+      {title}
+    </Typography>
+  )
 }
 
 const NavIcon = (props:TNavItemProps) => {
@@ -46,15 +67,6 @@ const NavIcon = (props:TNavItemProps) => {
         }}
       >
         <Icon width="24px" />
-        <Typography
-          component="span"
-          sx={{
-            color,
-            fontSize: '12px',
-          }}
-        >
-          {title}
-        </Typography>
       </ListItemIcon>
     </Box>
   ) || null
@@ -66,6 +78,7 @@ export const NavItem = (props:TNavItemProps) => {
     title,
     Icon,
     open,
+    tooltip,
     activeNav
   } = props
 
@@ -97,26 +110,28 @@ export const NavItem = (props:TNavItemProps) => {
         width: dims.nav.closedWidth
       }}
     >
-      <ListItemButton
-        data-nav-item={cleaned}
-        className={`nav-item-button nav-item-button-${cleaned}`}
-        sx={{
-          px: 2.5,
-          minHeight: 48,
-          justifyContent: 'center',
-        }}
-      >
-      {Icon
-        ? (<NavIcon {...props} isActive={isActive} color={color} />)
-        : (
-            <ListItemText
-              primary={title}
-              data-nav-item={cleaned}
-              sx={{ color, opacity: open ? 1 : 0 }}
-            />
-          )
-      }
-      </ListItemButton>
+      <Tooltip title={tooltip || title} loc='right' >
+        <ListItemButton
+          data-nav-item={cleaned}
+          className={`nav-item-button nav-item-button-${cleaned}`}
+          sx={{
+            px: 2.5,
+            minHeight: 48,
+            justifyContent: 'center',
+          }}
+        >
+        {Icon
+          ? (<NavIcon {...props} isActive={isActive} color={color} />)
+          : (
+              <ListItemText
+                primary={title}
+                data-nav-item={cleaned}
+                sx={{ color, opacity: open ? 1 : 0 }}
+              />
+            )
+        }
+        </ListItemButton>
+      </Tooltip>
     </ListItem>
   )
 }

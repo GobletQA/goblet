@@ -78,6 +78,9 @@ export const Sidebar = (props:TSidebarProps) => {
           anchor={anchor}
           variant={variant}
           onClose={toggleDrawer}
+          PaperProps={{
+            sx: { width: "45px" },
+          }}
         >
           <>
             {children}

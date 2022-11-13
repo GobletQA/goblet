@@ -1,9 +1,13 @@
 
+const header = { height: 40 }
+
+
 export const dims = {
   header: {
-    height: 45,
+    ...header,
+    hpx: `${header.height}px`,
     avatar: {
-      size: 35
+      size: 30
     }
   },
   footer: {
@@ -11,6 +15,6 @@ export const dims = {
   },
   nav: {
     openWidth: 350,
-    closedWidth: 64,
+    closedWidth: 50,
   },
 }

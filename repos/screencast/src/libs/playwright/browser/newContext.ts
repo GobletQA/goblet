@@ -28,8 +28,6 @@ const ensureBrowser = async (browserConf:TBrowserConf = noOpObj as TBrowserConf)
  * If it does not, then it create it
  * @function
  * @private
- * @param {Object} browser - The playwright browser object
- * @param {Object} browserConf - Config used when starting the browser via playwright
  *
  * @returns {Object} - The playwright browser context object
  */
@@ -37,11 +35,13 @@ const ensureContext = async (browser, browserConf:TBrowserConf) => {
   const pwContext = getContext(browserConf.type)
   if (pwContext) return pwContext
 
+  const browserType = browserConf.type || browser.browserType().name()
+
   const contextOpts = getContextOpts(browserConf.context)
-  Logger.log(`Creating new ${browserConf.type} Browser Context with options`, contextOpts)
+  Logger.log(`Creating new ${browserType} Browser Context with options`, contextOpts)
   const context = await browser.newContext(contextOpts)
 
-  setContext(context, browserConf.type)
+  setContext(context, browserType)
 
   return context
 }

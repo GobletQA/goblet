@@ -24,13 +24,6 @@ export type TSettingAct = {
   data?: Partial<TSetting>
 }
 
-export type TEditorSettings = {
-  autoSave: TSetting
-  fontSize: TSetting
-  automaticLayout: TSetting
-  [key:string]: TSettingGroup | TSetting
-}
-
 export type TSettingGroup = TNoSettingKeys & {
   [key:string]: TSettingGroup | TSetting
 }
@@ -50,18 +43,43 @@ export type TGeneralSettings = {
   [key:string]: TSettingGroup | TSetting
 }
 
+export type TValueGroup = {
+  [key:string]: any
+}
+
+
+// ---- Key specific Settings and Groups ---- //
+
 export type TSettings = {
   $config: TSettingsConfig
   editor: TEditorSettings
   goblet: TSettingGroup
-  browser: TSettingGroup
+  browser: TBrowserSettings
   terminal: TSettingGroup
+}
+
+export type TEditorSettings = {
+  autoSave: TSetting
+  fontSize: TSetting
+  automaticLayout: TSetting
+  [key:string]: TSettingGroup | TSetting
 }
 
 export type TEditorSettingValues = {
   [key: keyof TEditorSettings]: any
 }
 
-export type TValueGroup = {
-  [key:string]: any
+export type TBrowserSettings = {
+  ws: TSetting
+  debug: TSetting
+  slowMo: TSetting
+  height: TSetting
+  width: TSetting
+  timeout: TSetting
+  [key:string]: TSetting
 }
+
+export type TBrowserSettingValues = {
+  [key: keyof TBrowserSettings]: any
+}
+
