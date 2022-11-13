@@ -35,7 +35,7 @@ export class EventEmitter {
     return true
   }
 
-  off = <T=Record<any, any>>(event:string, ref:string|TEventCB<T>) => {
+  off = <T=Record<any, any>>(event:string, ref:string|TEventCB<T>=event) => {
     const cb = typeof ref === 'string' ? this.refKey[ref] : ref
     if(!cb) return
     

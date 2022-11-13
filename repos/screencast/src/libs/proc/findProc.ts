@@ -1,16 +1,12 @@
-const { exec } = require('child_process')
+import { exec } from 'child_process'
 
 /**
  * Parses the output of the search command
  * Assumes only a single running process could be found
  * @function
  * @private
- * @param {string} procName - The executable name to check
- * @param {string} output - Output of the process search command
- *
- * @returns {Object} - Status of the found process
  */
-const parseOutput = (procName, output) => {
+const parseOutput = (procName:string, output:string) => {
   const running = output.toLowerCase().includes(procName.toLowerCase())
   if (!running) return { running, name: procName }
 
@@ -27,16 +23,13 @@ const parseOutput = (procName, output) => {
   }
 }
 
+
 /**
  * Gets the command used to search for the process based on the platform
  * @function
  * @private
- * @param {string} procName The executable name to check
- * @param {string} platform - Name of the platform running the command
- *
- * @returns {string} - Search command to use
  */
-const getPlatformCmd = (procName, platform) => {
+const getPlatformCmd = (procName:string, platform:string) => {
   const proc = `"[${procName[0]}]${procName.substring(1)}"`
   switch (platform) {
     case 'linux':
@@ -53,11 +46,8 @@ const getPlatformCmd = (procName, platform) => {
  * Searches for a currently process by name, and returns it if found
  * @function
  * @public
- * @param {string} procName The executable name to check
- *
- * @returns {Object} - Status of the found process
  */
-const findProc = procName => {
+export const findProc = (procName:string) => {
   return new Promise((res, rej) => {
     const platform = process.platform
     // Use the platform to know the correct search command
@@ -82,8 +72,4 @@ const findProc = procName => {
       res(status)
     })
   })
-}
-
-module.exports = {
-  findProc,
 }

@@ -1,4 +1,6 @@
 import type { TThemeTypes } from '@theme/theme.types'
+
+import '@utils/components/globalOnCopy'
 import { useState, useMemo, useEffect, useRef } from 'react'
 
 import { Store } from '@store'

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { checkCall } from '@keg-hub/jsutils'
 
 type TTimeoutHookProps = {
@@ -9,11 +9,18 @@ type TTimeoutHookProps = {
 
 export const useSetTimeout = (props:TTimeoutHookProps) => {
   const { callback, delay, condition } = props
+  const timeoutRef = useRef<NodeJS.Timeout|undefined>()
 
   useEffect(() => {
-    const timeout =
-      condition && setTimeout(() => checkCall(callback, condition), delay)
+    if(timeoutRef.current) return
+    
+    timeoutRef.current = condition
+      ? setTimeout(() => checkCall(callback, condition), delay)
+      : undefined
 
-    return () => timeout && clearTimeout(timeout)
+    return () => {
+      timeoutRef.current && clearTimeout(timeoutRef.current)
+      timeoutRef.current = undefined
+    }
   }, [delay, condition])
 }

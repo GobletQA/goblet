@@ -1,6 +1,7 @@
 import { TStyles, TStyle } from '@types'
-import { useEffect, useState, useMemo, useRef } from 'react'
-import { exists } from '@keg-hub/jsutils'
+
+import { useEffect, useState, useMemo } from 'react'
+import { exists, checkCall } from '@keg-hub/jsutils'
 import { useSetTimeout } from '@hooks/useSetTimeout'
 import { Fade, FadeSection, FadeView } from './Fadeout.styled'
 
@@ -37,14 +38,14 @@ const useFadeEffect = (
   initOpacity:number=1
 ) => {
 
-  const startRef = useRef<boolean>(start || false)
-  const [style, setStyle] = useState<TStyle>({ ...(styles?.main || {}), opacity: 1 })
+  const [style, setStyle] = useState<TStyle>({ ...(styles?.main || {}), opacity: initOpacity })
 
   useEffect(() => {
-    start &&
-      !style.display &&
-      style.opacity === initOpacity &&
-      setStyle({ ...style, opacity: 0 })
+    start && !style.display && style.opacity === initOpacity
+      ? setStyle({ ...style, opacity: 0 })
+      : !start && style.display === `none`
+        ? setStyle({ ...(styles?.main || {}), opacity: initOpacity })
+        : undefined
   }, [start, style])
 
   useSetTimeout({
@@ -52,13 +53,6 @@ const useFadeEffect = (
     condition: start && style.display !== 'none',
     callback: () => setStyle({ ...style, display: 'none' }),
   })
-
-  useEffect(() => {
-    if(!startRef.current) return
-
-    startRef.current = false
-    setStyle({ ...(styles?.main || {}), opacity: 1 })
-  }, [start])
 
   return [style, setStyle]
 }
@@ -75,7 +69,7 @@ export const Fadeout = (props:TFadeoutProps) => {
 
   const fadeStart = useFadeStart(start)
   const [fadeStyle] = useFadeEffect(fadeStart, speed, styles, initOpacity)
-  
+
   return (
     <Fade
       speed={speed}

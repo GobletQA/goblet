@@ -16,14 +16,14 @@ export const useLoadRepoUrl = (repo?:any) => {
       repo
     })
 
-  appUrl &&
-    actionBrowser({
-      ref: 'page',
-      actions: [{
-        action: 'goto',
-        props: [appUrl],
-      }],
-    }, false)
+    return appUrl
+      && actionBrowser({
+        ref: 'page',
+        actions: [{
+          action: 'goto',
+          props: [appUrl],
+        }],
+      }, false)
     
   }, [repo])
   

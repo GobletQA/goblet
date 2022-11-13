@@ -10,8 +10,6 @@ import type {
 
 
 import { exists, noOpObj } from '@keg-hub/jsutils'
-import { UpdateModalEvt } from '@constants'
-import { OpenFileTreeEvt } from '@constants'
 import { confirmModal } from '@actions/modals/modals'
 import { loadFile } from '@actions/files/api/loadFile'
 import { saveFile } from '@actions/files/api/saveFile'
@@ -19,6 +17,7 @@ import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { createFile } from '@actions/files/api/createFile'
 import { removeFile } from '@actions/files/api/removeFile'
 import { renameFile } from '@actions/files/api/renameFile'
+import { OpenFileTreeEvt, UpdateModalEvt } from '@constants'
 
 import { useFiles, useRepo } from '@store'
 import { useCallback, useEffect, useMemo } from 'react'

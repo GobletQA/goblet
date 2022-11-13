@@ -23,11 +23,12 @@ const useDisconnectCB = (
 } = ext
 
   const disconnect = useCallback(() => {
+    const rfbObj = rfb?.current || undefined
 
     try {
 
       if (!rfb?.current){
-        _onDisconnect?.()
+        _onDisconnect?.(rfbObj)
         return
       }
 
@@ -44,7 +45,7 @@ const useDisconnectCB = (
       rfb?.current?.disconnect()
       rfb.current = null
       connected.current = false
-      _onDisconnect?.()
+      _onDisconnect?.(rfbObj)
     }
     catch (err) {
       logger.error(err)
@@ -104,8 +105,13 @@ export const useRFBHooks = (props:TCanvasProps, ext:TCanvasExt) => {
   }, [])
 
   const clipboardPaste = useCallback((text: string) => {
+    console.log(`------- text -------`)
+    console.log(text)
+
+    console.log(rfb?.current)
+
     rfb?.current?.clipboardPasteFrom(text)
-  }, [])
+  }, [rfb?.current])
 
   return {
     blur,

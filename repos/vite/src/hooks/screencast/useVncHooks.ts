@@ -3,6 +3,7 @@ import type {
   TConnectExt,
   TCanvasProps,
   TCredentials,
+  TCanvasDetailEvt,
 } from '@types'
 
 import { useCallback } from 'react'
@@ -14,6 +15,7 @@ export const useConnectCB = (props:TCanvasProps, ext:TConnectExt) => {
     url,
     onBell,
     viewOnly,
+    onKeyDown,
     background,
     rfbOptions,
     onClipboard,
@@ -79,6 +81,8 @@ export const useConnectCB = (props:TCanvasProps, ext:TConnectExt) => {
           && _rfb.addEventListener(event, eventListeners.current[event] as any)
       })
 
+      onKeyDown && screen.current.addEventListener("keydown", onKeyDown, true)
+
       connected.current = true
     }
     catch (err) {
@@ -88,6 +92,7 @@ export const useConnectCB = (props:TCanvasProps, ext:TConnectExt) => {
     url,
     onBell,
     viewOnly,
+    onKeyDown,
     background,
     rfbOptions,
     onClipboard,
@@ -135,9 +140,9 @@ export const useVncHooks = (props:TCanvasProps, ext:TCanvasExt) => {
     setLoading(false)
   }, [onConnect])
 
-  const _onDisconnect = useCallback(() => {
+  const _onDisconnect = useCallback((rfbObj?:RFB) => {
     if (onDisconnect) {
-      onDisconnect?.(rfb?.current ?? undefined)
+      onDisconnect?.(rfb?.current || rfbObj || undefined)
       setLoading(true)
       return
     }
@@ -162,8 +167,8 @@ export const useVncHooks = (props:TCanvasProps, ext:TCanvasExt) => {
     password && rfb?.current?.sendCredentials({ password } as TCredentials)
   }, [])
 
-  const _onDesktopName = useCallback((e: { detail: { name: string } }) => {
-    onDesktopName ? onDesktopName(e) : logger.info(`Desktop name is ${e.detail.name}`)
+  const _onDesktopName = useCallback((e:TCanvasDetailEvt) => {
+    onDesktopName ? onDesktopName(e) : logger.info(`Desktop name is ${e.detail?.name}`)
   }, [])
 
   const connect = useConnectCB(props, {

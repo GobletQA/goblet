@@ -72,6 +72,7 @@ RUN <<EOF
   apt-get update && apt-get install --yes --no-install-recommends \
     curl \
     novnc \
+    # autocutsel \
     openssh-client \
     ca-certificates \
     tigervnc-standalone-server

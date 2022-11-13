@@ -53,15 +53,16 @@ export const startVNC = async ({
   const config = getGobletConfig()
   const { vnc } = screencastConfig.screencast
 
+
   const child =await childProc({
     log: true,
-    cmd: 'Xtigervnc',
+    cmd: `Xtigervnc`,
     args: flatUnion(
       [
         `-verbose`,
         `-SecurityTypes`,
         `None`,
-        '-geometry',
+        `-geometry`,
         `${vnc.width}x${vnc.height}x24`,
         `-rfbport`,
         vnc.port,

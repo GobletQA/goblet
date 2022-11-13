@@ -1,10 +1,10 @@
 import type RFB from '@novnc/novnc/core/rfb'
-import type { RefObject, Dispatch, MutableRefObject } from 'react'
+import type { KeyboardEvent, RefObject, Dispatch, MutableRefObject } from 'react'
 import type { NoVncOptions, NoVncCredentials } from '@novnc/novnc/core/rfb'
 
 export type TCanvasExt = {
   logger:TCanvasLogger,
-  _onDisconnect?:() => void
+  _onDisconnect?:(rfb?:RFB) => void
   screen:RefObject<HTMLDivElement>
   rfb:MutableRefObject<RFB | null>
   connected:MutableRefObject<boolean>
@@ -17,7 +17,7 @@ export type TCanvasExt = {
 
 export type TConnectExt = TCanvasExt & {
   _onConnect:() => void
-  _onDisconnect:() => void
+  _onDisconnect:(rfb?:RFB) => void
   _onCredentialsRequired:() => void
   _onDesktopName:(...args:any[]) => void
 }
@@ -41,6 +41,17 @@ export type TRFBOptions = NoVncOptions & {
   credentials: TCredentials
   wsProtocols: string|string[]
 }
+export type TCanvasDetailEvt = {
+  detail: {
+    text?: string
+    name?: string
+    reason?: string
+    status?: number
+    capabilities?: RFB["capabilities"]
+  }
+}
+
+export type TCanvasCallback = (e?: TCanvasDetailEvt) => void
 
 export type TCanvasProps = {
   url: string
@@ -62,15 +73,16 @@ export type TCanvasProps = {
   compressionLevel?: number
   forceShowLoading?: boolean
   loadingProps?: Record<any, any>
+  onKeyDown?:( event:Event) => any
   onConnect?: (rfb?: RFB) => void
   rfbOptions?: Partial<TRFBOptions>
   onDisconnect?: (rfb?: RFB) => void
   elementAttrs?: Record<string, string|number>
   onCredentialsRequired?: (rfb?: RFB) => void
-  onClipboard?: (e?: { detail: { text: string } }) => void
-  onDesktopName?: (e?: { detail: { name: string } }) => void
-  onCapabilities?: (e?: { detail: { capabilities: RFB["capabilities"] } }) => void
-  onSecurityFailure?: (e?: { detail: { status: number, reason: string } }) => void
+  onClipboard?: TCanvasCallback
+  onDesktopName?: TCanvasCallback
+  onCapabilities?: TCanvasCallback
+  onSecurityFailure?: TCanvasCallback
 }
 
 export enum EEvents {
