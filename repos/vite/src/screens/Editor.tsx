@@ -1,17 +1,10 @@
 import { useState, useCallback } from 'react'
-import { CodeEditor } from '@components/CodeEditor'
-import { Builder } from '@components/Builder'
-import { Definitions } from '@components/Definitions'
-import { Layout } from '@components/Layout'
-import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-
-
-// import ResizeObserver from "react-resize-observer"
-      // <ResizeObserver
-      //   onResize={onResizeCb}
-      //   onPosition={onPositionCb}
-      // />
+import Button from '@mui/material/Button'
+import { Layout } from '@components/Layout'
+import { Builder } from '@components/Builder'
+import { CodeEditor } from '@components/CodeEditor'
+import { Definitions } from '@components/Definitions'
 
 
 /**
@@ -23,8 +16,6 @@ import Box from '@mui/material/Box'
     }}
   />
  */
-
-
 
 enum EEditorTypes {
   code='code',
