@@ -1,4 +1,3 @@
-
 ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.27.0-focal
 
 # ---- Prune Stage ---- #
@@ -72,7 +71,6 @@ RUN <<EOF
   apt-get update && apt-get install --yes --no-install-recommends \
     curl \
     novnc \
-    # autocutsel \
     openssh-client \
     ca-certificates \
     tigervnc-standalone-server
@@ -96,15 +94,17 @@ RUN <<EOF
   apt-get autoremove
   rm -rf /var/lib/apt/lists/*
   rm -rf /var/lib/apt/lists.d/*
-
 EOF
 
 COPY --from=goblet-build /goblet/app/ .
-RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
-    ln -s /goblet/app/node_modules /goblet/node_modules && \
-    mv /goblet/app/container/scripts/docker/be.entrypoint.sh /entrypoint.sh && \
-    chmod a+x /entrypoint.sh && \
-    chmod a+x /goblet/app/container/initialize.sh
+
+RUN <<EOF
+  ln -s /goblet/app/node_modules $HOME/.node_modules
+  ln -s /goblet/app/node_modules /goblet/node_modules
+  mv /goblet/app/container/scripts/docker/be.entrypoint.sh /entrypoint.sh
+  chmod a+x /entrypoint.sh
+  chmod a+x /goblet/app/container/initialize.sh
+EOF
 
 EXPOSE $GB_FE_PORT
 EXPOSE $GB_BE_PORT

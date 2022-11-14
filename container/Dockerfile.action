@@ -35,6 +35,7 @@ RUN <<EOF
   rm -rf repos/frontend
   rm -rf repos/kind
   rm -rf repos/monaco
+  rm -rf repos/resizer
   rm -rf repos/sockr
   rm -rf repos/traceViewer
   rm -rf repos/vite
