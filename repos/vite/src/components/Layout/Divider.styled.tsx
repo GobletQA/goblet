@@ -15,3 +15,8 @@ export const VDivider = styled(VerticalDivider)({
   maxHeight: `10px`,
   backgroundColor: colors.monacoFocus,
 })
+
+
+export const LayoutContainer = styled(`div`)`
+  width: 100%;
+`

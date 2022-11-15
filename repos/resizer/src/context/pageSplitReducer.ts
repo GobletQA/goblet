@@ -35,7 +35,7 @@ export const pageSplitReducer = (settings:any, self:any) => {
         })
       });
     case "ResizeStart":
-      var require = settings.boundingSize;
+      var boundingSize = settings.boundingSize;
       var data = (response = settings.panels, settings.drag);
       var temp = (index = self.index, self.input);
       var min = self.from;
@@ -49,7 +49,7 @@ export const pageSplitReducer = (settings:any, self:any) => {
         if (void 0 === (item = response.elements[i])) {
           break;
         }
-        result[i] = require(item);
+        result[i] = boundingSize(item);
       }
       return extend(extend({}, settings), {
         panels : extend(extend({}, settings.panels), {
