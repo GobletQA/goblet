@@ -47,7 +47,7 @@
     "sc": "node tasks/entry.js screencast",
     "screencast": "node tasks/entry.js screencast",
     "task": "node tasks/entry.js",
-    "cp:tracer": "node scripts/cpTracer.js",
+    "cp:tracer": "node scripts/js/cpTracer.js",
     "pm2": "pm2 start configs/app.pm2.config.js",
     "setup": "yarn install && yarn cp:tracer",
     "test": "turbo run test",
