@@ -1,9 +1,9 @@
 const path = require('path')
 const { loadEnvs } = require('../envs/loadEnvs')
 const { addPlatforms } = require('./addPlatforms')
-const { appRoot, scriptsDir } = require('../../paths')
+const { appRoot, containerDir } = require('../../paths')
 const { docker: dockerCmd, Logger } = require('@keg-hub/cli-utils')
-const { dockerLogin } = require(path.join(scriptsDir, 'js/dockerLogin'))
+const { dockerLogin } = require(path.join(containerDir, 'scripts/ds/dockerLogin'))
 const {
   isStr,
   isObj,

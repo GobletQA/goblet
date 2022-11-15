@@ -1,5 +1,5 @@
 import path from 'path'
-import { scriptsDir } from '../../paths'
+import { containerDir } from '../../paths'
 import { Logger } from '@keg-hub/cli-utils'
 import { docker } from '../../utils/docker/docker'
 import { loadEnvs } from '../../utils/envs/loadEnvs'
@@ -72,7 +72,7 @@ const docPull = async (args) => {
   // Uses the images name to get the registry url to log into it
   const registryUrl = resolvedName.indexOf(`/`) ? resolvedName.split('/').shift() : ``
 
-  const { dockerLogin } = await import(path.join(scriptsDir, 'js/dockerLogin.js'))
+  const { dockerLogin } = await import(path.join(containerDir, 'scripts/ds/dockerLogin.js'))
   await dockerLogin(token, registryUrl)
 
   // Ensure the correct tag it added to the image

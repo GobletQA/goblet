@@ -1,7 +1,7 @@
 /**
  * Used by devspace in the devspace.yml to dynamically pull secrets for the application deployment
  * Allows loading them from the container/values*.yaml based on NODE_ENV
- * Test =>  node scripts/js/resolvePullSecrets.js
+ * Test =>  node container/scripts/ds/resolvePullSecrets.js
  */
 
 const { resolveValues } = require('./resolveValues')

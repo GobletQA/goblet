@@ -6,101 +6,101 @@ version: v1beta11
 
 # All vars are loaded from the getYamlValue.js script
 # This allows them to be loaded from the current ENV, the values.yml files, or a fallback
-# See the ../scripts/js/getYamlValue.js script for more information
+# See the scripts/ds/getYamlValue.js script for more information
 vars:
 
 # ----- General Values ----- #
 - name: GB_TOKEN
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_TOKEN"
+  command: "node scripts/ds/getYamlValue.js GB_TOKEN"
 - name: NPM_TOKEN
   source: command
-  command: "node ../scripts/js/getYamlValue.js NPM_TOKEN"
+  command: "node scripts/ds/getYamlValue.js NPM_TOKEN"
 - name: NODE_ENV
   source: command
-  command: "node ../scripts/js/getYamlValue.js NODE_ENV"
+  command: "node scripts/ds/getYamlValue.js NODE_ENV"
 - name: BUILD_LOCAL_IMAGE
   source: command
-  command: "node ../scripts/js/getYamlValue.js BUILD_LOCAL_IMAGE false"
+  command: "node scripts/ds/getYamlValue.js BUILD_LOCAL_IMAGE false"
 - name: IMAGE_PULL_POLICY
   source: command
-  command: "node ../scripts/js/getYamlValue.js IMAGE_PULL_POLICY Always"
+  command: "node scripts/ds/getYamlValue.js IMAGE_PULL_POLICY Always"
 - name: GB_NM_INSTALL
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_NM_INSTALL"
+  command: "node scripts/ds/getYamlValue.js GB_NM_INSTALL"
 
 # ----- Docker Image Values ----- #
 - name: IMAGE
   source: command
-  command: "node ../scripts/js/getYamlValue.js IMAGE"
+  command: "node scripts/ds/getYamlValue.js IMAGE"
 - name: IMAGE_TAG
   source: command
-  command: "node ../scripts/js/getYamlValue.js IMAGE_TAG"
+  command: "node scripts/ds/getYamlValue.js IMAGE_TAG"
 
 # ----- Screencast API Values ----- #
 - name: GB_SC_DEPLOYMENT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_SC_DEPLOYMENT"
+  command: "node scripts/ds/getYamlValue.js GB_SC_DEPLOYMENT"
 - name: GB_SC_IMG_URI
   source: command
-  command: "node ../scripts/js/resolveImgUri.js SC"
+  command: "node scripts/ds/resolveImgUri.js SC"
 - name: GB_SC_PORT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_SC_PORT"
+  command: "node scripts/ds/getYamlValue.js GB_SC_PORT"
 - name: GB_NO_VNC_PORT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_NO_VNC_PORT"
+  command: "node scripts/ds/getYamlValue.js GB_NO_VNC_PORT"
 - name: GB_SC_INGRESS_HOST
   source: command
-  command: "node ../scripts/js/resolveHost.js SC"
+  command: "node scripts/ds/resolveHost.js SC"
 - name: GB_SC_INGRESS_HOST_WILD_CARD
   source: command
-  command: "node ../scripts/js/resolveHost.js SC \"*\""
+  command: "node scripts/ds/resolveHost.js SC \"*\""
 
 # ----- Backend API Values ----- #
 - name: GB_BE_DEPLOYMENT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_BE_DEPLOYMENT"
+  command: "node scripts/ds/getYamlValue.js GB_BE_DEPLOYMENT"
 - name: GB_BE_IMG_URI
   source: command
-  command: "node ../scripts/js/resolveImgUri.js BE"
+  command: "node scripts/ds/resolveImgUri.js BE"
 - name: GB_BE_PORT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_BE_PORT"
+  command: "node scripts/ds/getYamlValue.js GB_BE_PORT"
 - name: GB_BE_WS_PATH
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_BE_WS_PATH"
+  command: "node scripts/ds/getYamlValue.js GB_BE_WS_PATH"
 - name: GB_NO_VNC_PATH
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_NO_VNC_PATH"
+  command: "node scripts/ds/getYamlValue.js GB_NO_VNC_PATH"
 
 # ----- KinD Values ----- #
 - name: GB_KD_DEPLOYMENT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_KD_DEPLOYMENT"
+  command: "node scripts/ds/getYamlValue.js GB_KD_DEPLOYMENT"
 - name: GB_KD_IMG_URI
   source: command
-  command: "node ../scripts/js/resolveImgUri.js KD"
+  command: "node scripts/ds/resolveImgUri.js KD"
 - name: GB_KD_SERVICE_ACCOUNT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_KD_SERVICE_ACCOUNT"
+  command: "node scripts/ds/getYamlValue.js GB_KD_SERVICE_ACCOUNT"
 - name: GB_KD_ROLE_NAME
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_KD_ROLE_NAME"
+  command: "node scripts/ds/getYamlValue.js GB_KD_ROLE_NAME"
 - name: GB_KD_ROLE_BINDING_NAME
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_KD_ROLE_BINDING_NAME"
+  command: "node scripts/ds/getYamlValue.js GB_KD_ROLE_BINDING_NAME"
 - name: GB_KD_PORT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_KD_PORT"
+  command: "node scripts/ds/getYamlValue.js GB_KD_PORT"
 - name: GB_KD_KUBE_PROXY_PORT
   source: command
-  command: "node ../scripts/js/getYamlValue.js GB_KD_KUBE_PROXY_PORT"
+  command: "node scripts/ds/getYamlValue.js GB_KD_KUBE_PROXY_PORT"
 
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
-# See the ../scripts/js/resolvePullSecrets.js script for more information
-pullSecrets: $(node ../scripts/js/resolvePullSecrets.js)
+# See the scripts/ds/resolvePullSecrets.js script for more information
+pullSecrets: $(node scripts/ds/resolvePullSecrets.js)
 
 # Defines if and how the docker image will be built before running it as a container
 images:
@@ -136,8 +136,8 @@ deployments:
       containers:
       - image: ${GB_SC_IMG_URI}
         imagePullPolicy: ${IMAGE_PULL_POLICY}
-        env: $(node ../scripts/js/resolveDSEnvs.js screencast)
-      service: $(node ../scripts/js/resolveService.js SC $GB_SC_PORT $GB_NO_VNC_PORT)
+        env: $(node scripts/ds/resolveDSEnvs.js screencast)
+      service: $(node scripts/ds/resolveService.js SC $GB_SC_PORT $GB_NO_VNC_PORT)
       ingress:
         name: ${GB_SC_DEPLOYMENT}-ingress
         rules:
@@ -168,7 +168,7 @@ deployments:
       serviceAccountName: ${GB_KD_SERVICE_ACCOUNT}
       customServiceAccount:
         name: ${GB_KD_SERVICE_ACCOUNT}
-        imagePullSecret: $(node ../scripts/js/resolvePullSecretName.js)
+        imagePullSecret: $(node scripts/ds/resolvePullSecretName.js)
         binding:
           name: ${GB_KD_ROLE_BINDING_NAME}
         role:
@@ -184,15 +184,15 @@ deployments:
           - watch
       containers:
       - image: ${GB_BE_IMG_URI}
-        imagePullPolicy: $(node ../scripts/js/resolvePullPolicy.js BE)
-        env: $(node ../scripts/js/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
-      service: $(node ../scripts/js/resolveService.js BE $GB_BE_PORT)
-      ingress: $(node ../scripts/js/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH" "$GB_NO_VNC_PATH")
+        imagePullPolicy: $(node scripts/ds/resolvePullPolicy.js BE)
+        env: $(node scripts/ds/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
+      service: $(node scripts/ds/resolveService.js BE $GB_BE_PORT)
+      ingress: $(node scripts/ds/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH" "$GB_NO_VNC_PATH")
 
 dev:
   # Gets the apps that should sync with the host machine
-  sync: $(node ../scripts/js/resolveSync.js BE SC)
-  ports: $(node ../scripts/js/resolvePortForward.js BE SC)
+  sync: $(node scripts/ds/resolveSync.js BE SC)
+  ports: $(node scripts/ds/resolvePortForward.js BE SC)
 
 # Use profile to dynamically switch out the app specific docker image for the development image
 profiles:

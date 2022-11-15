@@ -1,6 +1,6 @@
 /**
  * URI of the image to be used for the passed in service
- * Test node scripts/js/resolveImgUri.js BE
+ * Test node container/scripts/ds/resolveImgUri.js BE
  */
 const { resolveValues, getEnvPrefix } = require('./resolveValues')
 const ePreFix = getEnvPrefix()

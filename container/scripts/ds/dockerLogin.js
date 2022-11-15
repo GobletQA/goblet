@@ -3,7 +3,7 @@ const { noOpObj } = require('@keg-hub/jsutils')
 const { Logger, execCmd, error } = require('@keg-hub/cli-utils')
 const { resolveValues, resolveNPMToken } = require('./resolveValues')
 
-const appRoot = path.join(__dirname, `../../`)
+const appRoot = path.join(__dirname, `../../../`)
 
 /**
  * Gets the url of the docker image defined in values.yml file

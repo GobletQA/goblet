@@ -2,8 +2,8 @@
  * Used by devspace in the devspace.yml to dynamically generate a full ingress config object
  * Includes tls config when a cert-issuer env is found
  * Run the following command to test
- * node scripts/js/resolveIngress.js BE goblet-backend 7005 "*"
-  node scripts/js/resolveIngress.js BE 7005 "*" "/sockr-socket/:Prefix" "/novnc:Prefix"
+ * node container/scripts/ds/resolveIngress.js BE goblet-backend 7005 "*"
+  node container/scripts/ds/resolveIngress.js BE 7005 "*" "/sockr-socket/:Prefix" "/novnc:Prefix"
  */
  
 const { resolveAnnotations, generateOrigins } = require('./resolveAnnotations')

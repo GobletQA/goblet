@@ -1,6 +1,6 @@
 /**
  * Used by devspace to generate the image pull policy for the passed in service
- * To Test node scripts/js/resolvePullPolicy.js BE
+ * To Test node container/scripts/ds/resolvePullPolicy.js BE
  */
 const { resolveValues, getEnvPrefix } = require('./resolveValues')
 const ePreFix = getEnvPrefix()

@@ -2,7 +2,7 @@
  * Used by devspace in the devspace.yml to generate file-syncing for the application deployments
  * Ensures only deployed apps actually get a sync created
  * Test script by running the following command
- * GB_FE_ACTIVE=goblet-frontend GB_BE_ACTIVE=goblet-backend node scripts/js/resolveSync.js FE BE
+ * GB_FE_ACTIVE=goblet-frontend GB_BE_ACTIVE=goblet-backend node container/scripts/ds/resolveSync.js FE BE
  */
 const { resolveConfig, getEnvPrefix, getAppContexts, getAppConfig } = require('./resolveValues')
 const ePreFix = getEnvPrefix()

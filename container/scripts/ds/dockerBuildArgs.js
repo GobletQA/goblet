@@ -2,7 +2,7 @@
  * Used by devspace in the devspace.yml to dynamically load values
  * Allows loading them from the container/values*.yaml based on NODE_ENV
  * Run command below to test
- * `node scripts/js/resolveDSEnvs.js certs provider-auth:api-key:LINODE_V4_API_KEY`
+ * `node container/scripts/ds/resolveDSEnvs.js certs provider-auth:api-key:LINODE_V4_API_KEY`
  */
 const { resolveValues, getEnvPrefix } = require('./resolveValues')
 const { filterEnvsAsArgs, addArg } = require('./filterEnvs')
@@ -31,7 +31,7 @@ const ePreFix = getEnvPrefix()
     /**
     * Caddy uses the XDG_DATA_HOME env to save files and data
     * So we set it to the remote folder synced via devspace
-    * The same /goblet/remote can be found in the scripts/js/resolveSync.js file
+    * The same /goblet/remote can be found in the container/scripts/ds/resolveSync.js file
     * The sync is setup to copy files from the dind container to the local repos/dind/goblet/remote path
     */
     

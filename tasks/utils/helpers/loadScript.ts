@@ -1,6 +1,6 @@
 import path from 'path'
-import { scriptsDir } from '../../paths'
+import { containerDir } from '../../paths'
 
 export const loadScript = async (script:string) => {
-  return await import(path.join(scriptsDir, `js/${script}${script.endsWith(`.js`) ? '' : '.js' }`))
+  return await import(path.join(containerDir, `scripts/ds/${script}${script.endsWith(`.js`) ? '' : '.js' }`))
 }

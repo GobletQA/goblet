@@ -25,7 +25,7 @@ const getFromValues = (key) => {
  * First should be the key name of the value to get
  * Second should be a fallback if the key is not found
  * @example
- * node scripts/js/getYamlValue.js MY_KEY_NAME fallback-value
+ * node container/scripts/ds/getYamlValue.js MY_KEY_NAME fallback-value
  *
 */
 const args = process.argv.slice(2)

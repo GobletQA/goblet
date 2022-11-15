@@ -3,7 +3,7 @@
  * Builds port mapping when arg contains <exposedPort>:<containerPort>
  * Otherwise the containerPort is not included
  * Run command below to test
- * `node ../scripts/js/resolveService.js goblet-dind 2375 2122 2121 2123 2018:2019`
+ * `node container/container/scripts/ds/resolveService.js goblet-dind 2375 2122 2121 2123 2018:2019`
  */
  const { resolveValues, resolveValue, getEnvPrefix } = require('./resolveValues')
  const ePreFix = getEnvPrefix()

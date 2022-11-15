@@ -2,7 +2,7 @@
  * Used by devspace in the devspace.yml to dynamically load values
  * Allows loading them from the container/values*.yaml based on NODE_ENV
  * Run command below to test
- * `node scripts/js/resolveDSEnvs.js certs provider-auth:api-key:LINODE_V4_API_KEY`
+ * `node container/scripts/ds/resolveDSEnvs.js certs provider-auth:api-key:LINODE_V4_API_KEY`
  */
 const { exists } = require('@keg-hub/jsutils') 
 const { resolveValues, resolveConfig } = require('./resolveValues')

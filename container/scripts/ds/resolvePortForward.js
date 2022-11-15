@@ -1,7 +1,7 @@
 /**
  * Used by devspace in the devspace.yml to dynamically forward ports for the application deployment
  * Ensures only deployed apps actually get their ports forwarded to the host
- * GB_FE_ACTIVE=goblet-frontend GB_BE_ACTIVE=goblet-backend node scripts/js/resolvePortForward.js FE BE
+ * GB_FE_ACTIVE=goblet-frontend GB_BE_ACTIVE=goblet-backend node container/scripts/ds/resolvePortForward.js FE BE
  */
 const { exists, noPropArr } = require('@keg-hub/jsutils')
 const {

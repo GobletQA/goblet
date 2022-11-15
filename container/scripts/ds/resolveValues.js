@@ -12,7 +12,7 @@ const {
   tryRequireSync,
 } = require('@keg-hub/jsutils/src/node')
 
-const appRoot = path.join(__dirname, `../../`)
+const appRoot = path.join(__dirname, `../../../`)
 const containerDir = path.join(appRoot, `container`)
 
 const package = require(path.join(appRoot, './package.json'))
