@@ -57,6 +57,7 @@ export type TBrowserProps = {
   url: string
   style?: object
   debug?: boolean
+  displayUrl:string
   className?: string
   viewOnly?: boolean
   onBell?: () => void
@@ -70,8 +71,10 @@ export type TBrowserProps = {
   scaleViewport?: boolean
   resizeSession?: boolean
   showDotCursor?: boolean
+  loadingFadeout?: boolean
   compressionLevel?: number
   forceShowLoading?: boolean
+  onError?: (event:any) => void
   loadingProps?: Record<any, any>
   onKeyDown?:( event:Event) => any
   onConnect?: (rfb?: RFB) => void

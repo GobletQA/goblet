@@ -29,16 +29,10 @@ export const useScreencastHooks = () => {
   }, [screencastUrl])
 
   const delayFadeState = useDelayCallback(setFadeStart)
-  const checkStatus = useCheckBrowserStatus(delayFadeState)
+  const [checkStatus, repoUrl] = useCheckBrowserStatus(delayFadeState)
 
   const onConnect = useCallback(async (...args:any[]) => {
     await checkStatus?.()
-
-    const Vnc = vncRef.current
-    if(!Vnc?.screen?.current) return
-
-    // Vnc.screen.current.style.minHeight = `100%`
-    // Vnc.screen.current.style.minWidth = `100%`
   }, [checkStatus])
 
 
@@ -51,6 +45,12 @@ export const useScreencastHooks = () => {
     // TODO: need to figure out other disconnect scenarios and handle them gracefully
   }, [checkStatus])
 
+
+  const onError = useCallback(async (evt?:any) => {
+    // TODO figure out how to capture the browser error
+    // Then force a reload
+    console.log(`------- on browser error -------`)
+  }, [])
 
   const onClipboard = useCallback(async (evt?:TBrowserDetailEvt) => {
     const text = evt?.detail?.text
@@ -78,6 +78,8 @@ export const useScreencastHooks = () => {
 
   return {
     vncRef,
+    repoUrl,
+    onError,
     fadeStart,
     onConnect,
     onKeyDown,

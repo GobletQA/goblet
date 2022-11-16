@@ -39,3 +39,8 @@ export const BrowserInput = styled('input')(({ theme }) => `
     outline: 2px solid rgb(138, 180, 248);
   }
 `)
+
+
+export const BrowserView = styled('div')`
+  min-width: 100%;
+`

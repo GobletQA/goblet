@@ -1,5 +1,5 @@
 
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { getWorldVal } from '@utils/repo/getWorldVal'
 import { actionBrowser } from '@actions/screencast/api/actionBrowser'
 
@@ -9,23 +9,28 @@ import { actionBrowser } from '@actions/screencast/api/actionBrowser'
  */
 export const useLoadRepoUrl = (repo?:any) => {
 
-  return useCallback(() => {
-    const appUrl = getWorldVal({
-      location: `url`,
-      fallback: `app.url`,
-      repo
-    })
+  const repoUrl = useMemo(() => {
+    return `http://www.gobletqa.com`
+    
+    // return getWorldVal({
+    //   location: `url`,
+    //   fallback: `app.url`,
+    //   repo
+    // })
+  }, [repo])
 
-    return appUrl
+  const loadRepoUrl = useCallback(() => {
+    return repoUrl
       && actionBrowser({
         ref: 'page',
         actions: [{
           action: 'goto',
-          // props: [appUrl],
-          props: [`http://www.gobletqa.com`],
+          props: [repoUrl],
         }],
       }, false)
     
-  }, [repo])
+  }, [repoUrl])
+  
+  return [loadRepoUrl, repoUrl] as [(...args:any[]) => any, string]
   
 }

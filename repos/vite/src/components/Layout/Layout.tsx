@@ -100,7 +100,6 @@ export const Layout = (props:TLayout) => {
       rVPanel.style.flexBasis = `${rHeight + adjust}px`
     }
 
-    console.log(lVPanel.style.flexBasis, rVPanel.style.flexBasis)
 
     resizeNumRef.current = event.to
   }, [])
@@ -115,6 +114,7 @@ export const Layout = (props:TLayout) => {
     if(!rVPanel) return console.warn(`Could not find Right Vertical Panel`)
 
     lVPanel.style.overflow = `hidden`
+    rVPanel.style.overflow = `hidden`
     lVPanelRef.current = lVPanel
     rVPanelRef.current = rVPanel
 

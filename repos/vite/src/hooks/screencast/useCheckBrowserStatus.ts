@@ -8,10 +8,10 @@ import { useLoadRepoUrl } from '@hooks/screencast/useLoadRepoUrl'
 export const useCheckBrowserStatus = (
   onRunningCB:(...args:any[]) => void,
 ) => {
-  const loadRepoUrl = useLoadRepoUrl()
+  const [loadRepoUrl, repoUrl] = useLoadRepoUrl()
   const checkingStatusRef = useRef<boolean>(false)
 
-  return useCallback(async () => {
+  const checkStatus = useCallback(async () => {
     if(checkingStatusRef.current) return
     
     checkingStatusRef.current = true
@@ -23,4 +23,6 @@ export const useCheckBrowserStatus = (
     }
     checkingStatusRef.current = false
   }, [onRunningCB, loadRepoUrl])
+  
+  return [checkStatus, repoUrl] as [(...args:any[]) => any, string]
 }
