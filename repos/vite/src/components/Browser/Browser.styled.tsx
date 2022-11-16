@@ -21,16 +21,6 @@ export const BrowserNav = styled('nav')(({ theme }) => `
   }
 `)
 
-
-export const BrowserFrame = styled('iframe')(({ theme }) => `
-  border: 0;
-  width: 100%;
-  height: 100%;
-  flex-grow: 1;
-  background-color: #FFFFFF;
-  // background-color: ${colors.monacoBorder};
-`)
-
 export const BrowserInput = styled('input')(({ theme }) => `
   border: none;
   background-color: ${colors.monacoBorder};

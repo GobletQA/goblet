@@ -3,12 +3,12 @@ import type { ComponentProps } from 'react'
 import { Loading } from '@components/Loading'
 import { Fadeout } from '@components/Fadeout'
 
-export type TCanvasLoading = ComponentProps<typeof Fadeout> & {
+export type TBrowserLoading = ComponentProps<typeof Fadeout> & {
   loading:boolean
   forced:boolean|undefined
 }
 
-export const CanvasLoading = (props:TCanvasLoading) => {
+export const BrowserLoading = (props:TBrowserLoading) => {
   const {
     forced,
     loading,

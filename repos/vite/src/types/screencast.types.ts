@@ -1,9 +1,9 @@
 import type RFB from '@novnc/novnc/core/rfb'
-import type { KeyboardEvent, RefObject, Dispatch, MutableRefObject } from 'react'
+import type { RefObject, Dispatch, MutableRefObject } from 'react'
 import type { NoVncOptions, NoVncCredentials } from '@novnc/novnc/core/rfb'
 
-export type TCanvasExt = {
-  logger:TCanvasLogger,
+export type TBrowserExt = {
+  logger:TBrowserLogger,
   _onDisconnect?:(rfb?:RFB) => void
   screen:RefObject<HTMLDivElement>
   rfb:MutableRefObject<RFB | null>
@@ -12,17 +12,17 @@ export type TCanvasExt = {
   disconnectRef:MutableRefObject<()=> void>
   timeouts:MutableRefObject<NodeJS.Timeout[]>
   setLoading: Dispatch<React.SetStateAction<boolean>>
-  eventListeners:MutableRefObject<TCanvasEventListeners>
+  eventListeners:MutableRefObject<TBrowserEventListeners>
 }
 
-export type TConnectExt = TCanvasExt & {
+export type TConnectExt = TBrowserExt & {
   _onConnect:() => void
   _onDisconnect:(rfb?:RFB) => void
   _onCredentialsRequired:() => void
   _onDesktopName:(...args:any[]) => void
 }
 
-export type TCanvasLogger = {
+export type TBrowserLogger = {
   log: (...args: any[]) => void
   info: (...args: any[]) => void
   error: (...args: any[]) => void
@@ -41,7 +41,7 @@ export type TRFBOptions = NoVncOptions & {
   credentials: TCredentials
   wsProtocols: string|string[]
 }
-export type TCanvasDetailEvt = {
+export type TBrowserDetailEvt = {
   detail: {
     text?: string
     name?: string
@@ -51,9 +51,9 @@ export type TCanvasDetailEvt = {
   }
 }
 
-export type TCanvasCallback = (e?: TCanvasDetailEvt) => void
+export type TBrowserCallback = (e?: TBrowserDetailEvt) => void
 
-export type TCanvasProps = {
+export type TBrowserProps = {
   url: string
   style?: object
   debug?: boolean
@@ -79,10 +79,10 @@ export type TCanvasProps = {
   onDisconnect?: (rfb?: RFB) => void
   elementAttrs?: Record<string, string|number>
   onCredentialsRequired?: (rfb?: RFB) => void
-  onClipboard?: TCanvasCallback
-  onDesktopName?: TCanvasCallback
-  onCapabilities?: TCanvasCallback
-  onSecurityFailure?: TCanvasCallback
+  onClipboard?: TBrowserCallback
+  onDesktopName?: TBrowserCallback
+  onCapabilities?: TBrowserCallback
+  onSecurityFailure?: TBrowserCallback
 }
 
 export enum EEvents {
@@ -96,9 +96,9 @@ export enum EEvents {
   credentialsrequired,
 }
 
-export type TCanvasEventListeners = { -readonly [key in keyof typeof EEvents]?: (e?: any) => void }
+export type TBrowserEventListeners = { -readonly [key in keyof typeof EEvents]?: (e?: any) => void }
 
-export type TCanvasHandle = {
+export type TBrowserHandle = {
   rfb: RFB | null
   blur: () => void
   focus: () => void
@@ -110,7 +110,7 @@ export type TCanvasHandle = {
   sendCtrlAltDel: () => void
   machineShutdown: () => void
   screen:RefObject<HTMLDivElement>
-  eventListeners: TCanvasEventListeners
+  eventListeners: TBrowserEventListeners
   clipboardPaste: (text: string) => void
   sendCredentials: (credentials: TCredentials) => void
   sendKey: (keysym: number, code: string, down?: boolean) => void

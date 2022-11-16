@@ -1,16 +1,16 @@
 import type {
-  TCanvasExt,
+  TBrowserExt,
   TConnectExt,
-  TCanvasProps,
+  TBrowserProps,
   TCredentials,
-  TCanvasDetailEvt,
+  TBrowserDetailEvt,
 } from '@types'
 
 import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
 
 
-export const useConnectCB = (props:TCanvasProps, ext:TConnectExt) => {
+export const useConnectCB = (props:TBrowserProps, ext:TConnectExt) => {
   const {
     url,
     onBell,
@@ -110,7 +110,7 @@ export const useConnectCB = (props:TCanvasProps, ext:TConnectExt) => {
 
 }
 
-export const useVncHooks = (props:TCanvasProps, ext:TCanvasExt) => {
+export const useVncHooks = (props:TBrowserProps, ext:TBrowserExt) => {
   const {
     onConnect,
     rfbOptions,
@@ -167,7 +167,7 @@ export const useVncHooks = (props:TCanvasProps, ext:TCanvasExt) => {
     password && rfb?.current?.sendCredentials({ password } as TCredentials)
   }, [])
 
-  const _onDesktopName = useCallback((e:TCanvasDetailEvt) => {
+  const _onDesktopName = useCallback((e:TBrowserDetailEvt) => {
     onDesktopName ? onDesktopName(e) : logger.info(`Desktop name is ${e.detail?.name}`)
   }, [])
 

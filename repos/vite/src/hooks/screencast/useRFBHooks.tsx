@@ -1,16 +1,16 @@
 import type {
   EEvents,
-  TCanvasExt,
-  TCanvasProps,
+  TBrowserExt,
   TCredentials,
+  TBrowserProps,
 } from '@types'
 
 import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
 
 const useDisconnectCB = (
-  props:TCanvasProps,
-  ext:TCanvasExt
+  props:TBrowserProps,
+  ext:TBrowserExt
 ) => {
 
   const {
@@ -61,7 +61,7 @@ const useDisconnectCB = (
 }
 
 
-export const useRFBHooks = (props:TCanvasProps, ext:TCanvasExt) => {
+export const useRFBHooks = (props:TBrowserProps, ext:TBrowserExt) => {
 
   const { rfb } = ext
   const { disconnect } = useDisconnectCB(props, ext)

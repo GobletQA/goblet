@@ -1,9 +1,9 @@
-import type {TCanvasProps, TCanvasEventListeners, TCanvasLogger } from '@types'
+import type {TBrowserProps, TBrowserEventListeners, TBrowserLogger } from '@types'
 
 import RFB from '@novnc/novnc/core/rfb'
 import { useMemo, useRef, useState } from 'react'
 
-const useLogger = (debug:boolean):TCanvasLogger => {
+const useLogger = (debug:boolean):TBrowserLogger => {
   return useMemo(() => ({
     log: (...args: any[]) => debug && console.log(...args),
     info: (...args: any[]) => debug && console.info(...args),
@@ -11,7 +11,7 @@ const useLogger = (debug:boolean):TCanvasLogger => {
   }), [debug])
 }
 
-export const useVncRefs = (props:TCanvasProps) => {
+export const useVncRefs = (props:TBrowserProps) => {
 
   const logger = useLogger(props.debug || false)
   const [loading, setLoading] = useState<boolean>(true)
@@ -19,7 +19,7 @@ export const useVncRefs = (props:TCanvasProps) => {
   const rfb = useRef<RFB | null>(null)
   const screen = useRef<HTMLDivElement>(null)
   const timeouts = useRef<Array<NodeJS.Timeout>>([])
-  const eventListeners = useRef<TCanvasEventListeners>({})
+  const eventListeners = useRef<TBrowserEventListeners>({})
   const connected = useRef<boolean>(props.autoConnect ?? true)
 
   const connectRef = useRef(() => {})

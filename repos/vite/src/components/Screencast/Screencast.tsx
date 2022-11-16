@@ -1,9 +1,9 @@
 import type { CSSProperties } from 'react'
 
 import { useMemo } from 'react'
-import { Canvas } from './Canvas'
 import Box from '@mui/material/Box'
 import { noOpObj } from '@keg-hub/jsutils'
+import { Browser } from '@components/Browser'
 
 import { useScreencastHooks } from '@hooks/screencast/useScreencastHooks'
 
@@ -16,7 +16,7 @@ const RFBOpts = {
   wsProtocols: ['binary', 'base64']
 }
 
-const canvasStyle = {
+const browserStyle = {
   minWidth: `100%`
 }
 
@@ -66,9 +66,9 @@ export const Screencast = (props:TScreencastProps) => {
         backgroundColor: `#9a9a9a`,
       }, props.sx || noOpObj]}
     >
-      <Canvas
+      <Browser
         ref={vncRef}
-        style={canvasStyle}
+        style={browserStyle}
         url={screencastUrl}
         autoConnect={false}
         scaleViewport={true}

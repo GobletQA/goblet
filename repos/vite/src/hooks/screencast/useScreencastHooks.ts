@@ -1,6 +1,5 @@
-import type { CSSProperties } from 'react'
 import type RFB from '@novnc/novnc/core/rfb'
-import type { TGlobalCopyEvent, TCanvasDetailEvt, TCanvasHandle } from '@types'
+import type { TGlobalCopyEvent, TBrowserDetailEvt, TBrowserHandle } from '@types'
 
 import { useRef, useCallback, useState, useEffect, useMemo } from 'react'
 import { GlobalCopyEvt } from '@constants'
@@ -15,7 +14,7 @@ const useDelayCallback = (method:(...args:any[]) => void, delay:number=2000) => 
 }
 
 export const useScreencastHooks = () => {
-  const vncRef = useRef<TCanvasHandle>(null)
+  const vncRef = useRef<TBrowserHandle>(null)
   const screencastUrl = useScreencastUrl()
   const [fadeStart, setFadeStart] = useState<boolean>(false)
 
@@ -53,7 +52,7 @@ export const useScreencastHooks = () => {
   }, [checkStatus])
 
 
-  const onClipboard = useCallback(async (evt?:TCanvasDetailEvt) => {
+  const onClipboard = useCallback(async (evt?:TBrowserDetailEvt) => {
     const text = evt?.detail?.text
     text && await Clipboard.copyText(text)
   }, [])
