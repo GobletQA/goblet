@@ -13,12 +13,11 @@ import {
   noPropArr,
 } from '@keg-hub/jsutils'
 
-const defVncArgs = noOpObj as TChildProcArgs
-
 /**
  * Cache holder for the tigervnc process
  * @type {Object|undefined}
  */
+const defVncArgs = noOpObj as TChildProcArgs
 
 /**
  * Starts tigervnc to allow loading VNC in the browser

@@ -8,16 +8,10 @@ export type TScreencastProps = {
   sSx?: CSSProperties
 }
 
-const RFBOpts = {
-  wsProtocols: ['binary', 'base64']
-}
-
-
 export const Screencast = (props:TScreencastProps) => {
   const {
     vncRef,
     repoUrl,
-    onError,
     fadeStart,
     onConnect,
     onKeyDown,
@@ -26,16 +20,13 @@ export const Screencast = (props:TScreencastProps) => {
     screencastUrl,
   } = useScreencastHooks()
 
-
   return (
     <Browser
       ref={vncRef}
-      onError={onError}
       url={screencastUrl}
       autoConnect={false}
       scaleViewport={true}
       displayUrl={repoUrl}
-      rfbOptions={RFBOpts}
       onConnect={onConnect}
       onKeyDown={onKeyDown}
       forceShowLoading={true}

@@ -25,7 +25,6 @@ export const useVncRefs = (props:TBrowserProps) => {
   const connectRef = useRef(() => {})
   const disconnectRef = useRef(() => {})
 
-  
   return {
     rfb,
     logger,

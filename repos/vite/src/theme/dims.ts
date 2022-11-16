@@ -1,6 +1,4 @@
-
 const header = { height: 40 }
-
 
 export const dims = {
   header: {
@@ -17,4 +15,10 @@ export const dims = {
     openWidth: 350,
     closedWidth: 50,
   },
+  browser: {
+    nav: {
+      height: 38,
+      hpx: `38px`,
+    }
+  }
 }

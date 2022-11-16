@@ -8,7 +8,7 @@ import type {
 
 import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
-
+import { noOpObj } from '@keg-hub/jsutils'
 
 export const useConnectCB = (props:TBrowserProps, ext:TConnectExt) => {
   const {
@@ -17,7 +17,6 @@ export const useConnectCB = (props:TBrowserProps, ext:TConnectExt) => {
     viewOnly,
     onKeyDown,
     background,
-    rfbOptions,
     onClipboard,
     qualityLevel,
     focusOnClick,
@@ -29,6 +28,7 @@ export const useConnectCB = (props:TBrowserProps, ext:TConnectExt) => {
     onCapabilities,
     compressionLevel,
     onSecurityFailure,
+    rfbOptions=noOpObj,
   } = props
   
   const {
@@ -52,7 +52,10 @@ export const useConnectCB = (props:TBrowserProps, ext:TConnectExt) => {
         return console.warn(`Error loading browser. Dom Element could not be found.`)
 
       screen.current.innerHTML = ''
-      const _rfb = new RFB(screen.current, url, rfbOptions)
+      const _rfb = new RFB(screen.current, url, {
+        wsProtocols: ['binary', 'base64'],
+        ...rfbOptions,
+      })
 
       _rfb.viewOnly = viewOnly ?? false
       _rfb.focusOnClick = focusOnClick ?? false
@@ -116,45 +119,30 @@ export const useVncHooks = (props:TBrowserProps, ext:TBrowserExt) => {
     rfbOptions,
     onDisconnect,
     onDesktopName,
-    retryDuration=3000,
     onCredentialsRequired,
   } = props
 
   const {
     rfb,
     logger,
-    timeouts,
     connected,
     connectRef,
     setLoading,
   } = ext
 
   const _onConnect = useCallback(() => {
-    if (onConnect) {
-      onConnect?.(rfb.current ?? undefined)
-      setLoading(false)
-      return
-    }
-
-    logger.info('Connected to remote VNC.')
+    connected.current = true
+    onConnect?.(rfb.current ?? undefined)
     setLoading(false)
   }, [onConnect])
 
   const _onDisconnect = useCallback((rfbObj?:RFB) => {
-    if (onDisconnect) {
-      onDisconnect?.(rfb?.current || rfbObj || undefined)
-      setLoading(true)
-      return
-    }
-
-    if (connected.current) {
-      // connected.current = true
-      logger.info(`Disconnected from VNC server, Attempting to reconnect in ${retryDuration / 1000} seconds.`)
-      timeouts.current.push(setTimeout(() => connectRef?.current?.(), retryDuration))
-    }
-    else logger.info(`Disconnected from remote VNC.`)
 
     setLoading(true)
+    connected.current = false
+    onDisconnect?.(rfb?.current || rfbObj || undefined)
+    connectRef?.current?.()
+
   }, [onDisconnect])
 
   const _onCredentialsRequired = useCallback(() => {

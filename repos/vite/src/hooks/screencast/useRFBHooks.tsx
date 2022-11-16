@@ -105,11 +105,6 @@ export const useRFBHooks = (props:TBrowserProps, ext:TBrowserExt) => {
   }, [])
 
   const clipboardPaste = useCallback((text: string) => {
-    console.log(`------- text -------`)
-    console.log(text)
-
-    console.log(rfb?.current)
-
     rfb?.current?.clipboardPasteFrom(text)
   }, [rfb?.current])
 

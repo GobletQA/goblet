@@ -4,9 +4,9 @@ import type { NoVncOptions, NoVncCredentials } from '@novnc/novnc/core/rfb'
 
 export type TBrowserExt = {
   logger:TBrowserLogger,
-  _onDisconnect?:(rfb?:RFB) => void
   screen:RefObject<HTMLDivElement>
   rfb:MutableRefObject<RFB | null>
+  _onDisconnect?:(rfb?:RFB) => void
   connected:MutableRefObject<boolean>
   connectRef:MutableRefObject<()=> void>
   disconnectRef:MutableRefObject<()=> void>
@@ -75,17 +75,17 @@ export type TBrowserProps = {
   compressionLevel?: number
   forceShowLoading?: boolean
   onError?: (event:any) => void
+  onClipboard?: TBrowserCallback
+  onConnect?: (rfb?: RFB) => void
   loadingProps?: Record<any, any>
   onKeyDown?:( event:Event) => any
-  onConnect?: (rfb?: RFB) => void
-  rfbOptions?: Partial<TRFBOptions>
-  onDisconnect?: (rfb?: RFB) => void
-  elementAttrs?: Record<string, string|number>
-  onCredentialsRequired?: (rfb?: RFB) => void
-  onClipboard?: TBrowserCallback
   onDesktopName?: TBrowserCallback
   onCapabilities?: TBrowserCallback
+  rfbOptions?: Partial<TRFBOptions>
+  onDisconnect?: (rfb?: RFB) => void
   onSecurityFailure?: TBrowserCallback
+  onCredentialsRequired?: (rfb?: RFB) => void
+  elementAttrs?: Record<string, string|number>
 }
 
 export enum EEvents {

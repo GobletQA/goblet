@@ -2,14 +2,17 @@ import type { TBrowserProps, TBrowserHandle } from '@types'
 
 import React, { forwardRef, useImperativeHandle } from 'react'
 
-import Box from '@mui/material/Box'
 import { BrowserNav } from './BrowserNav'
-import { BrowserView } from './Browser.styled'
 import { BrowserLoading } from './BrowserLoading'
 import { useVncRefs } from '@hooks/screencast/useVncRefs'
 import { useRFBHooks } from '@hooks/screencast/useRFBHooks'
 import { useVncHooks } from '@hooks/screencast/useVncHooks'
 import { useVncHandlers } from '@hooks/screencast/useVncHandlers'
+import {
+  BrowserView,
+  BrowserContainer,
+  BrowserViewContainer
+} from './Browser.styled'
 
 
 const loadingStyles = {
@@ -116,42 +119,34 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
   }))
 
   return (
-    <>
+    <BrowserContainer className='browser-container'>
       <BrowserNav
         loading={loading}
         initialUrl={displayUrl}
       />
-      <Box
-        className='screencast-container'
-        sx={{
-          display: `flex`,
-          minHeight: `100%`,
-          position: `relative`,
-          alignItems: `stretch`,
-          backgroundColor: `#9a9a9a`,
-        }}
-      >
+      <BrowserViewContainer className='browser-view-container' >
         <BrowserView
           style={style}
           {...elementAttrs}
+          tabIndex={0}
           ref={screen}
           className={className}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         />
-        {(forceShowLoading || loading)
+        {((forceShowLoading || loading))
           && (
             <BrowserLoading
               speed={800}
               loading={loading}
-              styles={loadingStyles}
               start={loadingFadeout}
+              styles={loadingStyles}
               forced={forceShowLoading}
               {...loadingProps}
             />
           )}
-      </Box>
-    </>
+      </BrowserViewContainer>
+    </BrowserContainer>
   )
 }
 

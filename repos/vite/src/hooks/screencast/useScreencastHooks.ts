@@ -1,7 +1,7 @@
 import type RFB from '@novnc/novnc/core/rfb'
 import type { TGlobalCopyEvent, TBrowserDetailEvt, TBrowserHandle } from '@types'
 
-import { useRef, useCallback, useState, useEffect, useMemo } from 'react'
+import { useRef, useCallback, useState, useEffect } from 'react'
 import { GlobalCopyEvt } from '@constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { Clipboard } from '@gobletqa/shared/frontend/dom/clipBoard'
@@ -37,20 +37,10 @@ export const useScreencastHooks = () => {
 
 
   const onDisconnect = useCallback(async (rfb?:RFB) => {
-    const Vnc = vncRef.current
-    if(!Vnc || !Vnc.screen?.current?.childNodes.length){
-      setFadeStart(false)
-      return setTimeout(() => checkStatus?.(), 3000)
-    }
-    // TODO: need to figure out other disconnect scenarios and handle them gracefully
+    !vncRef.current?.screen?.current?.childNodes?.length
+      && setFadeStart(false)
+
   }, [checkStatus])
-
-
-  const onError = useCallback(async (evt?:any) => {
-    // TODO figure out how to capture the browser error
-    // Then force a reload
-    console.log(`------- on browser error -------`)
-  }, [])
 
   const onClipboard = useCallback(async (evt?:TBrowserDetailEvt) => {
     const text = evt?.detail?.text
@@ -79,7 +69,6 @@ export const useScreencastHooks = () => {
   return {
     vncRef,
     repoUrl,
-    onError,
     fadeStart,
     onConnect,
     onKeyDown,

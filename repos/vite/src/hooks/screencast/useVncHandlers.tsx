@@ -1,7 +1,9 @@
 import type { MutableRefObject, SyntheticEvent } from 'react'
 
+import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
-import { useEffect, useCallback } from 'react'
+import { Environment } from '@constants'
+import { useEffectOnce } from '../useEffectOnce'
 
 export type TVncHandlers = {
   connect:() => void
@@ -19,13 +21,20 @@ export const useVncHandlers = (props:TVncHandlers) => {
     autoConnect
   } = props
 
-  useEffect(() => {
+
+  useEffectOnce(() => {
     autoConnect && connect()
-    return disconnect
+
+    return () => Environment !== `local` && disconnect?.()
+  })
+
+  const onClick = useCallback(() => {
+    rfb?.current?.focus()
   }, [])
 
-  const onClick = useCallback(() => rfb?.current?.focus(), [])
-  const onMouseLeave = useCallback(() => rfb?.current?.blur(), [])
+  const onMouseLeave = useCallback(() => {
+    rfb?.current?.blur()
+  }, [])
 
   const onMouseEnter = useCallback((event:SyntheticEvent) => {
     document.activeElement
