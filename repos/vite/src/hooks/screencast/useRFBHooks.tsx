@@ -22,7 +22,7 @@ const useDisconnectCB = (
   eventListeners,
 } = ext
 
-  const disconnect = useCallback(() => {
+  return useCallback(() => {
     const rfbObj = rfb?.current || undefined
 
     try {
@@ -53,23 +53,17 @@ const useDisconnectCB = (
       connected.current = false
     }
   }, [_onDisconnect])
-  
-  return {
-    disconnect,
-    _onDisconnect,
-  }
+
 }
 
 
 export const useRFBHooks = (props:TBrowserProps, ext:TBrowserExt) => {
 
-  const { rfb } = ext
-  const { disconnect } = useDisconnectCB(props, ext)
-
+  const { rfb, disconnectRef } = ext
   const setRfb = useCallback((_rfb: RFB | null) => {
     rfb.current = _rfb
   },[])
-  
+
   const sendCredentials = useCallback((credentials: TCredentials) => {
     rfb?.current?.sendCredentials(credentials)
   }, [])
@@ -107,6 +101,9 @@ export const useRFBHooks = (props:TBrowserProps, ext:TBrowserExt) => {
   const clipboardPaste = useCallback((text: string) => {
     rfb?.current?.clipboardPasteFrom(text)
   }, [rfb?.current])
+
+  const disconnect = useDisconnectCB(props, ext)
+  disconnectRef.current = disconnect
 
   return {
     blur,

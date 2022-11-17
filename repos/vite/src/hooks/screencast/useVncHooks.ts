@@ -134,6 +134,13 @@ export const useVncHooks = (props:TBrowserProps, ext:TBrowserExt) => {
     connected.current = true
     onConnect?.(rfb.current ?? undefined)
     setLoading(false)
+
+    // TODO: add some type of event dispatch once we know the canvas height and width
+    // const canvas = rfb.current?._canvas
+    // if(!canvas) return
+    // const canvasRect = canvas.getBoundingClientRect()
+    // console.log(canvasRect)
+
   }, [onConnect])
 
   const _onDisconnect = useCallback((rfbObj?:RFB) => {

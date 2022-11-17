@@ -1,9 +1,11 @@
-const header = { height: 40 }
+const bNavH = 45
+const bUrlH = 40
+const headerH = 40
 
 export const dims = {
   header: {
-    ...header,
-    hpx: `${header.height}px`,
+    height: headerH,
+    hpx: `${headerH}px`,
     avatar: {
       size: 30
     }
@@ -17,8 +19,12 @@ export const dims = {
   },
   browser: {
     nav: {
-      height: 38,
-      hpx: `38px`,
+      height: bNavH,
+      hpx: `${bNavH}px`,
+    },
+    url: {
+      height: bUrlH,
+      hpx: `${bUrlH}px`,
     }
   }
 }

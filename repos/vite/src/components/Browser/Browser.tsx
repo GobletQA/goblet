@@ -4,6 +4,7 @@ import React, { forwardRef, useImperativeHandle } from 'react'
 
 import { BrowserNav } from './BrowserNav'
 import { BrowserLoading } from './BrowserLoading'
+import { ScreencastBrowserSelector } from '@constants'
 import { useVncRefs } from '@hooks/screencast/useVncRefs'
 import { useRFBHooks } from '@hooks/screencast/useRFBHooks'
 import { useVncHooks } from '@hooks/screencast/useVncHooks'
@@ -13,7 +14,6 @@ import {
   BrowserContainer,
   BrowserViewContainer
 } from './Browser.styled'
-
 
 const loadingStyles = {
   main: {
@@ -47,6 +47,7 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
     connected,
     setLoading,
     connectRef,
+    onScreenNode,
     disconnectRef,
     eventListeners
   } = useVncRefs(props)
@@ -128,11 +129,11 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
         <BrowserView
           style={style}
           {...elementAttrs}
-          tabIndex={0}
-          ref={screen}
+          ref={onScreenNode}
           className={className}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
+          id={ScreencastBrowserSelector}
         />
         {((forceShowLoading || loading))
           && (

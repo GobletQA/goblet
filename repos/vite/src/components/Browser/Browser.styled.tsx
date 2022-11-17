@@ -13,31 +13,31 @@ export const BrowserNav = styled('nav')(({ theme }) => `
   background-color: ${colors.monacoBackground};
 
   div:not(:first-of-type) {
-    height: 33px;
-    justify-content: left;
     padding: 0 8px;
+    justify-content: left;
+    height: ${dims.browser.url.height}px;
 
     button {
-      margin-bottom: 4px;
       margin-right: 4px;
+      margin-bottom: 4px;
     }
   }
 `)
 
 export const BrowserInput = styled('input')(({ theme }) => `
-  border: none;
-  background-color: ${colors.monacoBorder};
-  border-radius: 18px;
-  color: rgb(255, 255, 255);
-  font-family: inherit;
-  font-size: 13px;
-  height: 28px;
-  letter-spacing: 0.2px;
-  line-height: 26px;
-  margin: 0 6px;
-  padding: 0 13px;
   width: 100%;
-  
+  border: none;
+  height: 28px;
+  margin: 0 6px;
+  font-size: 14px;
+  padding: 0 13px;
+  line-height: 26px;
+  border-radius: 18px;
+  font-family: inherit;
+  letter-spacing: 0.2px;
+  color: rgb(255, 255, 255);
+  background-color: ${colors.monacoBorder};
+
   &:focus {
     outline: 2px solid rgb(138, 180, 248);
   }

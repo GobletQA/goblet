@@ -28,7 +28,9 @@ export const BrowserNav = (props:TBrowserNav) => {
     inputRef,
     onGoBack,
     onKeyDown,
+    navLoading,
     onGoForward,
+    onReloadPage,
     backButtonActive,
     forwardButtonActive
   } = useBrowserNav(props)
@@ -58,10 +60,10 @@ export const BrowserNav = (props:TBrowserNav) => {
             <ArrowForwardIcon />
           </BrowserButton>
           <BrowserButton
-            disabled={loading}
-            onClick={() => {}}
+            onClick={onReloadPage}
+            disabled={loading || navLoading}
           >
-            {loading ? <DangerousIcon /> : <CachedIcon />}
+            {loading || navLoading ? <DangerousIcon /> : <CachedIcon />}
           </BrowserButton>
         </Box>
         <BrowserInput

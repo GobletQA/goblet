@@ -19,4 +19,5 @@ export const actionBrowser = async (props:Record<any, any>, log=true) => {
     message: `Browser action ran successfully`
   })
 
+  return data
 }

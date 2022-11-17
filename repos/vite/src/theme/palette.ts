@@ -1,6 +1,8 @@
 import type { TColors, TPalette } from './theme.types'
 import { Theme } from '@mui/material/styles'
 
+// #323842
+
 export const colors:TColors = {
   // ---- Light Theme Colors
   lightPrimary: `#00b8d4`,

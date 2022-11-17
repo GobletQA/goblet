@@ -16,3 +16,6 @@ export const FileTreeWidth = 200
 
 export const GobletQAUrl = "https://www.gobletqa.com"
 export const GoogleSearchUrl = "https://www.google.com/search?igu=1&q="
+
+export const ResizePanelClass = `.react-page-split`
+export const ScreencastBrowserSelector = `screencast-browser`

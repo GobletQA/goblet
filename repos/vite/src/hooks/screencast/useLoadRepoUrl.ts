@@ -1,7 +1,7 @@
 
 import { useCallback, useMemo } from 'react'
+import { pageService } from '@services/pageService'
 import { getWorldVal } from '@utils/repo/getWorldVal'
-import { actionBrowser } from '@actions/screencast/api/actionBrowser'
 
 /**
  * Helper method to auto open the ap url in the screencast browser when it loads
@@ -10,7 +10,8 @@ import { actionBrowser } from '@actions/screencast/api/actionBrowser'
 export const useLoadRepoUrl = (repo?:any) => {
 
   const repoUrl = useMemo(() => {
-    return `http://www.gobletqa.com`
+    // return `http://www.gobletqa.com`
+    return `http://www.google.com`
     
     // return getWorldVal({
     //   location: `url`,
@@ -19,16 +20,9 @@ export const useLoadRepoUrl = (repo?:any) => {
     // })
   }, [repo])
 
-  const loadRepoUrl = useCallback(() => {
+  const loadRepoUrl = useCallback(async () => {
     return repoUrl
-      && actionBrowser({
-        ref: 'page',
-        actions: [{
-          action: 'goto',
-          props: [repoUrl],
-        }],
-      }, false)
-    
+      && await pageService.goto(repoUrl)
   }, [repoUrl])
   
   return [loadRepoUrl, repoUrl] as [(...args:any[]) => any, string]

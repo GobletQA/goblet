@@ -1,4 +1,5 @@
 import type { TBrowserProps } from '@types'
+import { pageService } from '@services/pageService'
 
 import {
   useRef,
@@ -6,11 +7,6 @@ import {
   useState,
   useCallback
 } from 'react'
-
-  // initialUrl: string
-  // loading: boolean
-
-  
 
 export type THBrowserNav = {
   loading:boolean
@@ -22,14 +18,16 @@ export const useBrowserNav = (props:THBrowserNav) => {
 
   const inputRef = useRef<HTMLInputElement>(null)
 
+  const [navLoading, setNavLoading] = useState(false)
   const [position, setPosition] = useState<number>(0)
   const [history, setHistory] = useState<string[]>([initialUrl])
   
   const [url, setUrl] = useState<string>()
 
-  const updateUrl = useCallback((newUrl:string|undefined, type:`input`|`forward`|`backward`) => {
+  const updateUrl = useCallback(async (newUrl:string|undefined, type:`input`|`forward`|`backward`) => {
     if(!newUrl || newUrl === url) return console.log(`New URL matches current URL. Ignoring request`)
 
+    setNavLoading(true)
     // Check if position is the last item in the history
     // If not, reset the history starting from the current position
     const newHist = position !== history.length - 1
@@ -44,6 +42,10 @@ export const useBrowserNav = (props:THBrowserNav) => {
 
     // Update the url - TODO - Need to make call to API, to update on the server
     setUrl(newUrl)
+    
+    await pageService.goto(newUrl)
+
+    setNavLoading(false)
   }, [url, history, position])
 
   const onChangeUrl = useCallback(() => {
@@ -53,19 +55,20 @@ export const useBrowserNav = (props:THBrowserNav) => {
   const onKeyDown = useCallback(({ key }:Record<'key', string>) => {
     if(!inputRef?.current || key !== "Enter") return
 
-    updateUrl(inputRef?.current?.value, `input`)
+    const newUrl = inputRef?.current?.value
     window.getSelection()?.removeAllRanges()
     inputRef.current.blur()
+
+    updateUrl(newUrl, `input`)
   }, [])
 
   const backButtonActive = useMemo(() => {
-    return !loading && Boolean(history[position - 1])
-  }, [loading, history, position])
+    return !loading && !navLoading && Boolean(history[position - 1])
+  }, [loading, navLoading, history, position])
 
   const forwardButtonActive = useMemo(() => {
-    return !loading && Boolean(history[position + 1])
-  }, [loading, history, position])
-
+    return !loading && !navLoading && Boolean(history[position + 1])
+  }, [loading, navLoading, history, position])
 
   const onGoBack = useCallback(() => {
     if(!backButtonActive) return
@@ -97,6 +100,12 @@ export const useBrowserNav = (props:THBrowserNav) => {
 
   }, [history, forwardButtonActive])
 
+  const onReloadPage = useCallback(async () => {
+    setNavLoading(true)
+    await pageService.reload()
+    setNavLoading(false)
+  }, [])
+
   return {
     setUrl,
     history,
@@ -104,8 +113,10 @@ export const useBrowserNav = (props:THBrowserNav) => {
     onGoBack,
     onKeyDown,
     setHistory,
+    navLoading,
     onGoForward,
     onChangeUrl,
+    onReloadPage,
     backButtonActive,
     forwardButtonActive
   }
