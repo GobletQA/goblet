@@ -58,8 +58,8 @@ export const BrowserViewContainer = styled(Box)`
   display: flex;
   position: relative;
   align-items: stretch;
-  height: 100%;
-  // height: calc( 100% - ${dims.browser.nav.height * 2}px );
+  height: calc( 100% - ${dims.browser.nav.hpx} );
+  max-height: calc( 100% - ${dims.browser.nav.hpx} );
 `
 
 export const BrowserView = styled('div')`

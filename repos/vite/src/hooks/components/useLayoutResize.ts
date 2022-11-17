@@ -143,9 +143,10 @@ export const useLayoutResize = () => {
     const lHeight = toNum(lVPanel.style.flexBasis || lVPanel.offsetHeight)
     const rHeight = toNum(rVPanel.style.flexBasis || rVPanel.offsetHeight)
 
-    lVPanel.style.flexBasis = `calc( ${lHeight}px + ${dims.browser.nav.hpx} )`
-    rVPanel.style.flexBasis = `calc( ${rHeight}px - ${dims.browser.nav.hpx} )`
-    
+    const splitHeight = dims.browser.nav.height / 2
+    lVPanel.style.flexBasis = `calc( ${lHeight}px + ${splitHeight}px )`
+    rVPanel.style.flexBasis = `calc( ${rHeight}px - ${splitHeight}px )`
+
     lVPanelRef.current = lVPanel
     rVPanelRef.current = rVPanel
   }, [])

@@ -124,7 +124,7 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
         loading={loading}
         initialUrl={displayUrl}
       />
-      <BrowserViewContainer className='browser-view-container' >
+      <BrowserViewContainer className='browser-view-container'>
         <BrowserView
           style={style}
           {...elementAttrs}
