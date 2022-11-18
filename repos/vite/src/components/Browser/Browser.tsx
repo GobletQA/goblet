@@ -2,6 +2,7 @@ import type { TBrowserProps, TBrowserHandle } from '@types'
 
 import React, { forwardRef, useImperativeHandle } from 'react'
 
+import { cls } from '@keg-hub/jsutils'
 import { BrowserNav } from './BrowserNav'
 import { BrowserLoading } from './BrowserLoading'
 import { ScreencastBrowserSelector } from '@constants'
@@ -130,10 +131,10 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
           style={style}
           {...elementAttrs}
           ref={onScreenNode}
-          className={className}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           id={ScreencastBrowserSelector}
+          className={cls(className || ``, `gb-browser`)}
         />
         {((forceShowLoading || loading))
           && (

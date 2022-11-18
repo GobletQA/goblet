@@ -10,8 +10,8 @@ import { getWorldVal } from '@utils/repo/getWorldVal'
 export const useLoadRepoUrl = (repo?:any) => {
 
   const repoUrl = useMemo(() => {
-    // return `http://www.gobletqa.com`
-    return `http://www.google.com`
+    return `http://www.gobletqa.com`
+    // return `http://www.google.com`
     
     // return getWorldVal({
     //   location: `url`,

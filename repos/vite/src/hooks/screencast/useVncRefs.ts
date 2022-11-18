@@ -1,5 +1,4 @@
 import type {TBrowserProps, TBrowserEventListeners, TBrowserLogger } from '@types'
-import type { MutableRefObject } from 'react'
 
 import { noOp } from '@keg-hub/jsutils'
 import RFB from '@novnc/novnc/core/rfb'

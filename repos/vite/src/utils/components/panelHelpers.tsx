@@ -1,5 +1,3 @@
-import type { MutableRefObject } from 'react'
-import type { ResizeMoveEvent } from 'react-page-split'
 
 import { dims } from '@theme'
 import { toNum } from '@keg-hub/jsutils'
@@ -8,6 +6,7 @@ import { ResizePanelClass, ScreencastRatio } from '@constants'
 export type TChildPanels = {
   lPanel: HTMLDivElement
   rPanel: HTMLDivElement
+  canvas: HTMLCanvasElement
 }
 
 export type TOnSizeChange = TChildPanels & {
@@ -17,59 +16,13 @@ export type TOnSizeChange = TChildPanels & {
   rHeight: number
 }
 
-export const getChildPanels = (parentEl:HTMLDivElement, className:string=ResizePanelClass) => {
+const getChildPanels = (parentEl:HTMLDivElement, className:string=ResizePanelClass) => {
   const cls = className.startsWith(`.`) ? className : `.${className}`
   const found = parentEl?.querySelector?.(cls)
 
   return ([
     ...(found?.childNodes || [])
   ] as HTMLDivElement[]).filter(el => el.tagName === `DIV`)
-}
-
-export const getSizes = ({
-  lPanel,
-  rPanel,
-}: TChildPanels) => {
-
-  const lWidth = toNum(lPanel.offsetWidth)
-  const lHeight = toNum(lPanel.style.flexBasis || lPanel.offsetHeight)
-
-  return {
-    lWidth,
-    lHeight,
-    rHeight: toNum(rPanel.style.flexBasis || rPanel.offsetHeight),
-    lRatio: lWidth > lHeight ? (lWidth / ScreencastRatio) : (lHeight / ScreencastRatio),
-  }
-}
-
-export const onSmaller = ({
-  diff,
-  lPanel,
-  rPanel,
-  lRatio,
-  lHeight,
-  rHeight,
-}:TOnSizeChange) => {
-  // The left panel is getting smaller in width
-  // So make the right top vertical panel taller in height
-  const adjust = (lHeight + diff) / lRatio
-  lPanel.style.flexBasis = `${lHeight + diff}px`
-  rPanel.style.flexBasis = `${rHeight - adjust}px`
-}
-
-export const onLarger = ({
-  diff,
-  lRatio,
-  lPanel,
-  rPanel,
-  lHeight,
-  rHeight,
-}:TOnSizeChange) => {
-  // The left panel is getting greater in width
-  // So make the right top vertical panel shorter in height
-  const adjust = (lHeight + diff) / lRatio
-  lPanel.style.flexBasis = `${lHeight - diff}px`
-  rPanel.style.flexBasis = `${rHeight + adjust}px`
 }
 
 export const getPanels = (parentEl:HTMLDivElement|null) => {
@@ -84,24 +37,38 @@ export const getPanels = (parentEl:HTMLDivElement|null) => {
   return { lPPanel, rPPanel, lPanel, rPanel }
 }
 
-export const setPanelStyles = ({
+export const panelDimsFromCanvas = ({
   lPanel,
   rPanel,
+  canvas,
 }:TChildPanels) => {
-  lPanel.style.overflow = `hidden`
-  rPanel.style.overflow = `hidden`
-
-  // Get the current heights of the panels
+  // Get the current heights of the panels and canvas
+  const lWidth = lPanel.offsetWidth
   const lHeight = toNum(lPanel.style.flexBasis || lPanel.offsetHeight)
   const rHeight = toNum(rPanel.style.flexBasis || rPanel.offsetHeight)
 
-  // Get the default height of the browser nav bar
-  // Divide by 2 to split diff between both panels
-  const splitHeight = dims.browser.nav.height / 2
+  const cWidth = toNum(canvas?.offsetWidth) || lWidth
+  const cHeight = toNum(canvas?.offsetHeight) || lHeight
+  const wDiff = lWidth - cWidth
+  
+  // If there's no width difference, then adjust the height
+  if(!wDiff){
+    const panelParent = rPanel.parentNode as HTMLDivElement
+    const parentH = panelParent.offsetHeight
 
-  // Add half to top panel because it includes the browser and nav bar
-  lPanel.style.flexBasis = `calc( ${lHeight}px + ${splitHeight}px )`
+    // Left panel height is the canvas height + the browser nav height
+    const lPHeight = cHeight + dims.browser.nav.height
+    lPanel.style.flexBasis = `${lPHeight}px`
 
-  // Subtract half from bottom panel to adjust for the addition above
-  rPanel.style.flexBasis = `calc( ${rHeight}px - ${splitHeight}px )`
+    // Right panel height is the parent height minus the height of the left panel
+    // Minus the panel divider height
+    const rPHeight = parentH - lPHeight - dims.panel.divider.height
+    rPanel.style.flexBasis = `${rPHeight}px`
+  }
+  // Otherwise adjust the height relative to the width
+  else {
+    const adjust = wDiff / ScreencastRatio
+    lPanel.style.flexBasis = `${lHeight + adjust}px`
+    rPanel.style.flexBasis = `${rHeight - adjust}px`
+  }
 }

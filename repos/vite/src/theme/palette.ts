@@ -5,7 +5,7 @@ import { Theme } from '@mui/material/styles'
 
 export const colors:TColors = {
   // ---- Light Theme Colors
-  lightPrimary: `#00b8d4`,
+  lightPrimary: `#785b9c`,
   lightPaper: `#ffffff`,
   lightBackground: `#f0f0f0`,
 
@@ -14,7 +14,7 @@ export const colors:TColors = {
   lightDragHandleHover: `#528bff`,
 
   // ---- Dark Theme Colors
-  darkPrimary: `#00b8d4`,
+  darkPrimary: `#785b9c`,
   darkPaper: `#242526`,
   darkBackground: `#303030`,
 

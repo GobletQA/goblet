@@ -8,9 +8,11 @@ import { createTheme as createThemeMui } from '@mui/material/styles'
 const muiTheme = createThemeMui()
 
 export const createTheme = (type: TThemeTypes) => {
+  const builtPalette = palette[type](muiTheme)
+  
   return createThemeMui({
+    palette: builtPalette,
     typography: typography(muiTheme),
-    palette: palette[type](muiTheme),
-    components: components(muiTheme)
+    components: components(muiTheme, builtPalette)
   })
 }

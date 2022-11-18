@@ -27,8 +27,8 @@ const useDisconnectCB = (
 
     try {
 
-      if (!rfb?.current){
-        _onDisconnect?.(rfbObj)
+      if (!rfbObj){
+        _onDisconnect?.()
         return
       }
 
@@ -77,12 +77,10 @@ export const useRFBHooks = (props:TBrowserProps, ext:TBrowserExt) => {
   }, [])
 
   const focus = useCallback(() => {
-    console.log(`------- focus rfb -------`)
     rfb?.current?.focus()
   }, [])
 
   const blur = useCallback(() => {
-    console.log(`------- blur rfb -------`)
     rfb?.current?.blur()
   }, [])
 

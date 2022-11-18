@@ -1,0 +1,24 @@
+/* Coolors Exported Palette - https://coolors.co/785b9c-b53541-61ab82-ffb601 */
+
+/* CSV */
+785b9c,b53541,61ab82,ffb601
+
+/* With # */
+#785b9c, #b53541, #61ab82, #ffb601
+
+/* Array */
+["785b9c","b53541","61ab82","ffb601"]
+
+/* Object */
+{"Royal Purple":"785b9c","Cardinal":"b53541","Shiny Shamrock":"61ab82","Honey Yellow":"ffb601"}
+
+/* Extended Array */
+[{"name":"Royal Purple","hex":"785b9c","rgb":[120,91,156],"cmyk":[23,42,0,39],"hsb":[267,42,61],"hsl":[267,26,48],"lab":[44,26,-31]},{"name":"Cardinal","hex":"b53541","rgb":[181,53,65],"cmyk":[0,71,64,29],"hsb":[354,71,71],"hsl":[354,55,46],"lab":[42,52,23]},{"name":"Shiny Shamrock","hex":"61ab82","rgb":[97,171,130],"cmyk":[43,0,24,33],"hsb":[147,43,67],"hsl":[147,31,53],"lab":[64,-33,14]},{"name":"Honey Yellow","hex":"ffb601","rgb":[255,182,1],"cmyk":[0,29,100,0],"hsb":[43,100,100],"hsl":[43,100,50],"lab":[79,15,81]}]
+
+/* XML */
+<palette>
+  <color name="Royal Purple" hex="785b9c" r="120" g="91" b="156" />
+  <color name="Cardinal" hex="b53541" r="181" g="53" b="65" />
+  <color name="Shiny Shamrock" hex="61ab82" r="97" g="171" b="130" />
+  <color name="Honey Yellow" hex="ffb601" r="255" g="182" b="1" />
+</palette>

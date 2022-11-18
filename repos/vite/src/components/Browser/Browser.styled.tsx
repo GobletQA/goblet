@@ -67,4 +67,10 @@ export const BrowserView = styled('div')`
   text-size-adjust: 100%;
   box-sizing: border-box;
   font-smoothing: antialiased;
+  
+  canvas {
+    // NoVNC sets the margin style directly on the canvas element
+    // So we have to use important to override it
+    margin-top: 0px !important;
+  }
 `

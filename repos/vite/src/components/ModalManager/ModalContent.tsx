@@ -1,6 +1,7 @@
 import type { TModal } from '@types'
 
 import { exists } from '@keg-hub/jsutils'
+import { useTheme } from '@mui/material/styles'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 
@@ -12,10 +13,12 @@ export const ModalContent = (props:TModal) => {
     contentProps,
   } = props
 
+  const theme = useTheme()
+
   return (
     <DialogContent
       id="gb-modal-description"
-      sx={{ borderTop: "2px solid #00b8d4" }}
+      sx={{ borderTop: `2px solid ${theme.palette.primary.main}` }}
       {...contentProps}
     >
       {children}

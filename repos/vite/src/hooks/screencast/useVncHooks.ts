@@ -8,7 +8,9 @@ import type {
 
 import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
-import { noOpObj } from '@keg-hub/jsutils'
+import { VNCConnectedEvt } from '@constants'
+import { noOpObj, get } from '@keg-hub/jsutils'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 export const useConnectCB = (props:TBrowserProps, ext:TConnectExt) => {
   const {
@@ -46,7 +48,15 @@ export const useConnectCB = (props:TBrowserProps, ext:TConnectExt) => {
 
   return useCallback(() => {
     try {
-      if (!url || (connected.current && !!rfb)) disconnectRef?.current?.()
+
+      // URL is required, so don't build RFB any until the url exists
+      if(!url) return
+
+      // If connected is set and old rfb exists, then disconnect it
+      // So we can create the new one
+      connected.current
+        && !!rfb
+        && disconnectRef?.current?.()
 
       if (!screen.current)
         return console.warn(`Error loading browser. Dom Element could not be found.`)
@@ -130,17 +140,13 @@ export const useVncHooks = (props:TBrowserProps, ext:TBrowserExt) => {
     setLoading,
   } = ext
 
-  const _onConnect = useCallback(() => {
+  const _onConnect = useCallback((...args:any[]) => {
     connected.current = true
+
+    EE.emit(VNCConnectedEvt, rfb.current)
     onConnect?.(rfb.current ?? undefined)
+
     setLoading(false)
-
-    // TODO: add some type of event dispatch once we know the canvas height and width
-    // const canvas = rfb.current?._canvas
-    // if(!canvas) return
-    // const canvasRect = canvas.getBoundingClientRect()
-    // console.log(canvasRect)
-
   }, [onConnect])
 
   const _onDisconnect = useCallback((rfbObj?:RFB) => {

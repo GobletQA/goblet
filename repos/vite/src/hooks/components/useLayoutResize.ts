@@ -1,70 +1,69 @@
+import type RFB from '@novnc/novnc/core/rfb'
 import type { MutableRefObject } from 'react'
 import type { ResizeMoveEvent } from 'react-page-split'
 
-import { useCallback, useRef, useEffect } from 'react'
+import { useCallback, useRef } from 'react'
+
+import { get } from '@keg-hub/jsutils'
+import { VNCConnectedEvt } from '@constants'
+import { useEffectOnce } from '../useEffectOnce'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import {
-  getSizes,
-  onLarger,
   getPanels,
-  onSmaller,
-  setPanelStyles,
+  panelDimsFromCanvas,
 } from '@utils/components/panelHelpers'
 
 
 export const useLayoutResize = () => {
 
-  const resizeNumRef = useRef<number>(0)
   const parentElRef = useRef<HTMLDivElement|null>(null)
   const lVPanelRef = useRef<HTMLDivElement|null>(null)
   const rVPanelRef = useRef<HTMLDivElement|null>(null)
+  const canvasRef = useRef<HTMLCanvasElement|null>(null)
   
   const onResizeMove = useCallback((event:ResizeMoveEvent) => {
-    if(!resizeNumRef.current) return resizeNumRef.current = event.to
-
+    const canvas = canvasRef.current
     const lPanel = lVPanelRef.current
     const rPanel = rVPanelRef.current
 
-    if(!lPanel || !rPanel) return console.warn(`Vertical Panel Refs not set`, lPanel, rPanel)
+    if(!lPanel || !rPanel || !canvas) return console.warn(`Vertical Panel Refs not set`, lPanel, rPanel)
 
-    const {
-      lRatio,
-      lHeight,
-      rHeight,
-    } = getSizes({ lPanel, rPanel })
+    panelDimsFromCanvas({
+      lPanel,
+      rPanel,
+      canvas
+    })
 
-    resizeNumRef.current > event.to
-      ? onSmaller({
-          lPanel,
-          rPanel,
-          lRatio,
-          lHeight,
-          rHeight,
-          // The left panel is getting smaller in width
-          diff: resizeNumRef.current - event.to
-        })
-      : onLarger({
-          lPanel,
-          rPanel,
-          lRatio,
-          lHeight,
-          rHeight,
-          // The left panel is getting greater in width
-          diff: event.to - resizeNumRef.current
-        })
-
-    resizeNumRef.current = event.to
   }, [])
 
-  useEffect(() => {
-    const panels = getPanels(parentElRef.current)
-    if(!panels) return
+  useEffectOnce(() => {
 
-    setPanelStyles(panels)
+    EE.on<RFB>(VNCConnectedEvt, (rfb) => {
+      canvasRef.current = get<HTMLCanvasElement>(rfb, `_canvas`)
+      const panels = getPanels(parentElRef.current)
 
-    // Store the panels for use in the onResizeMove callback
-    lVPanelRef.current = panels.lPanel
-    rVPanelRef.current = panels.rPanel
-  }, [])
+      if(!canvasRef.current || !panels || !panels.lPanel || !panels.rPanel) return
+
+      panels.lPanel.style.overflow = `hidden`
+      panels.rPanel.style.overflow = `hidden`
+
+      // Store the panels for use in the onResizeMove callback
+      lVPanelRef.current = panels.lPanel
+      rVPanelRef.current = panels.rPanel
+      
+      panelDimsFromCanvas({
+        canvas: canvasRef.current,
+        rPanel: rVPanelRef.current,
+        lPanel: lVPanelRef.current,
+      })
+
+    })
+
+    return () => {
+      EE.off<RFB>(VNCConnectedEvt, VNCConnectedEvt)
+    }
+
+  })
 
   return [parentElRef, onResizeMove] as [MutableRefObject<HTMLDivElement>, (event: ResizeMoveEvent) => void]
 
