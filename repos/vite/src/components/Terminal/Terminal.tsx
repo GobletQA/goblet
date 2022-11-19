@@ -1,35 +1,28 @@
 import type { CSSProperties } from 'react'
 
-import Box from '@mui/material/Box'
-import { noOpObj } from '@keg-hub/jsutils'
-import Container from '@mui/material/Container'
-import { useTerminal } from '@hooks/services/useTerminal'
 import 'xterm/css/xterm.css'
+import { useTerminal } from '@store'
+import { noOpObj } from '@keg-hub/jsutils'
+import { TerminalBody } from './TerminalBody'
+import { TerminalHeader } from './TerminalHeader'
+import { TerminalContainer } from './Terminal.styled'
 
 export type TTerminalProps = {
   sx?:CSSProperties
-  tSx?:CSSProperties
 }
 
 export const Terminal = (props:TTerminalProps) => {
-  const [terminal, termRef] = useTerminal()
-
+  const { tabs, active } = useTerminal()
+  const activeTab = tabs[active] || tabs[0]
+  
   return (
-    <Container
+    <TerminalContainer
       disableGutters
+      sx={props.sx || noOpObj}
       className="terminal-container"
-      sx={[{
-        display: `flex`,
-        minHeight: `100%`,
-        alignItems: `stretch`,
-        backgroundColor: `#111111`,
-      }, props.sx || noOpObj]}
     >
-      <Box
-        ref={termRef}
-        className="terminal-element"
-        sx={[{ overflow: 'hidden', width: '100%', backgroundColor: `rgb(0,0,0)` }, props.tSx || noOpObj]}
-      />
-    </Container>
+      <TerminalHeader />
+      <TerminalBody tab={activeTab} />
+    </TerminalContainer>
   )
 }

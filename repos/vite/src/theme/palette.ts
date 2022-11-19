@@ -1,7 +1,9 @@
 import type { TColors, TPalette } from './theme.types'
 import { Theme } from '@mui/material/styles'
 
-// #323842
+
+
+
 
 export const colors:TColors = {
   // ---- Light Theme Colors
@@ -28,6 +30,8 @@ export const colors:TColors = {
 
   // ---- Default Theme Colors
   white: `#FFFFFF`,
+  gray009: `#9f9f9f`,
+  black: `#000000`,
   navyBlue: `#252c37`,
 
   // ---- Provider Specific Colors
@@ -38,6 +42,16 @@ export const colors:TColors = {
   monacoBorder: `#272A32`,
   monacoBackground: `#282c34`,
   monacoForeground: `#323842`,
+
+  headerDark: `#262931`,
+  borderDark: `#262A32`,
+  backgroundDark: `#17181d`,
+  pitchBlack: `rgb(0,0,0)`,
+  
+  fade25: `rgba(255,255,255, 0.25)`,
+  fade50: `rgba(255,255,255, 0.50)`,
+  fade75: `rgba(255,255,255, 0.75)`,
+  
 } 
 
 const paletteCommon = {

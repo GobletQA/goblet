@@ -30,6 +30,8 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import CachedIcon from '@mui/icons-material/Cached'
 import DangerousIcon from '@mui/icons-material/Dangerous'
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet'
+import AddIcon from '@mui/icons-material/Add'
+import CloseIcon from '@mui/icons-material/Close'
 
 export {
   Steps,
@@ -63,5 +65,7 @@ export {
   ArrowForwardIcon,
   CachedIcon,
   DangerousIcon,
-  SettingsEthernetIcon
+  SettingsEthernetIcon,
+  AddIcon,
+  CloseIcon
 }
