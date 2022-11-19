@@ -6,7 +6,7 @@ export const FolderIcon = (props:TIcon) => {
     style,
     svgStyle,
     className,
-  } = useIcon({ fill: "#c09553", ...props })
+  } = useIcon({ fill: "#abb2bf", ...props })
 
   return (
     <svg

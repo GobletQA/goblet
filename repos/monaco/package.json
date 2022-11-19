@@ -30,7 +30,7 @@
     "@babel/preset-typescript": "7.16.0",
     "@gobletqa/monaco-public": "git+https://github.com/GobletQA/monaco-public.git",
     "@gobletqa/shared": "*",
-    "@keg-hub/jsutils": "9.3.5",
+    "@keg-hub/jsutils": "9.4.0",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "alias-hq": "5.4.0",

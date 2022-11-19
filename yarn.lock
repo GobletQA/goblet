@@ -2747,10 +2747,10 @@
     colors "1.4.0"
     fs-extra "9.0.1"
 
-"@keg-hub/jsutils@*", "@keg-hub/jsutils@9.3.5":
-  version "9.3.5"
-  resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.3.5.tgz#0a898e35c0030a32777a611dbe9de94fb82168cd"
-  integrity sha512-Scf0xmhfuBJ3JEfXIDJDKVh46T5h9gnsMbeKMKcV+LVEs3NoAFwJcr/h/RCm13f3/rPNiQnhb8WDEr8lDG0PyQ==
+"@keg-hub/jsutils@*", "@keg-hub/jsutils@9.4.0":
+  version "9.4.0"
+  resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.4.0.tgz#03460de1e72f76e89c600e634e870834d62b6519"
+  integrity sha512-PZ+RjwJ6VBwGilvupv/di8iEZdoy2cDaTgJI2xL9DDS2TS8nyCzPKkIAn8Dr1WWuDqIy/qWs8SjzPC+7W2X/tg==
 
 "@keg-hub/parse-config@*", "@keg-hub/parse-config@2.1.0":
   version "2.1.0"

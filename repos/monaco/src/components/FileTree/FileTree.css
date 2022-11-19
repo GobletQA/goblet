@@ -46,7 +46,7 @@
   font-weight: bold;
   flex-direction: row;
   align-items: center;
-  border-bottom: 2px solid #272A32;
+  border-bottom: 5px solid #262A32;
 }
 
 .goblet-monaco-editor-list-split .goblet-monaco-editor-list-split-icon {
