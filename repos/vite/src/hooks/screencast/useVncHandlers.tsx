@@ -3,6 +3,7 @@ import type { MutableRefObject, SyntheticEvent } from 'react'
 import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
 import { Environment } from '@constants'
+import { useVncResize } from './useVncResize'
 import { useEffectOnce } from '../useEffectOnce'
 
 export type TVncHandlers = {
@@ -21,6 +22,7 @@ export const useVncHandlers = (props:TVncHandlers) => {
     autoConnect
   } = props
 
+  useVncResize(props)
 
   useEffectOnce(() => {
     autoConnect && connect()
@@ -43,6 +45,8 @@ export const useVncHandlers = (props:TVncHandlers) => {
 
     onClick()
   }, [onClick])
+
+  
 
   return {
     onClick,
