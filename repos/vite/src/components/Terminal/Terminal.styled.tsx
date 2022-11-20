@@ -13,7 +13,6 @@ export const TabsHeaderList = styled(Tabs)(`
   & .MuiTabs-indicator {
     display: none;
   }
-
 `)
 
 export const HeaderTab = styled(Tab)(({ theme }) => (`
@@ -28,12 +27,12 @@ export const HeaderTab = styled(Tab)(({ theme }) => (`
   flex-direction: row-reverse;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  background-color: ${colors.pitchBlack};
+  background-color: ${colors.black00};
   font-size: ${theme.typography.pxToRem(12)};
   font-weight: ${theme.typography.fontWeightRegular};
 
   &.Mui-selected {
-    color: ${colors.white};
+    color: ${colors.white00};
   }
 
   &.Mui-focusVisible {
@@ -61,5 +60,5 @@ export const TerminalInput = styled(Box)`
   overflow: hidden;
   padding-top: ${gutter.padding.tQpx};
   padding-left: ${gutter.padding.tQpx};
-  background-color: ${colors.pitchBlack};
+  background-color: ${colors.black00};
 `

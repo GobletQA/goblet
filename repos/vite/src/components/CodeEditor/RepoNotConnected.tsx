@@ -35,7 +35,7 @@ export const RepoNotConnected = (props:TNotConnected) => {
         type='h6'
         sx={{
           fontSize: `20px`,
-          color: colors.white,
+          color: colors.white00,
           marginTop: gutter.margin.hpx
         }}
       >

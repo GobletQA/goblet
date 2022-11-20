@@ -21,8 +21,8 @@ export const ResizePanelClass = `.react-page-split`
 export const ScreencastBrowserSelector = `screencast-browser`
 
 // Only used in local environments
-export const AuthActive = Environment === `local`
-  ? toBool(process.env.GB_AUTH_ACTIVE)
-  : true
+// export const AuthActive = Environment === `local`
+//   ? toBool(process.env.GB_AUTH_ACTIVE)
+//   : true
 
-// export const AuthActive = false
+export const AuthActive = false

@@ -6,9 +6,11 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { Store } from '@store'
 import { Provider } from 'react-redux'
 import { initApp } from '@actions/init'
+import { AuthActive } from '@constants'
 import { createTheme } from '@theme/Theme'
-import { Fadeout } from '@components/Fadeout'
 import { RootScreen } from 'src/screens/Root'
+import { Fadeout } from '@components/Fadeout'
+import { AppStyles } from '@components/AppStyles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { ModalProvider } from '@contexts/ModalContext'
@@ -40,16 +42,19 @@ const App = () => {
   }, [])
 
   return (
-    <Provider store={Store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ModalProvider>
-          <RootScreen themeSwitch={setThemeType} />
-          <ModalManager />
-        </ModalProvider>
-        <Fadeout start={start} content={apiTimeout} />
-      </ThemeProvider>
-    </Provider>
+    <>
+      <AppStyles theme={theme} />
+      <Provider store={Store}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <ModalProvider>
+            <RootScreen themeSwitch={setThemeType} />
+            <ModalManager />
+          </ModalProvider>
+          {AuthActive && (<Fadeout start={start} content={apiTimeout} />)}
+        </ThemeProvider>
+      </Provider>
+    </>
   )
 }
 

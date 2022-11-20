@@ -27,7 +27,7 @@ export const EditorLoading = (props:TEditorLoading) => {
       <Loading
         message={message}
         hideSpinner={hideSpinner}
-        messageSx={messageSx ?? { color: colors.white }}
+        messageSx={messageSx ?? { color: colors.white00 }}
       />
     </Box>
   )

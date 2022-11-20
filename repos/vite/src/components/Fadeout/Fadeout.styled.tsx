@@ -1,7 +1,7 @@
 import type { TStyle } from '@types'
 import type { Theme } from '@mui/material/styles'
+
 import { styled } from '@mui/system'
-import { dims, colors } from '@theme'
 import Box, { BoxProps } from '@mui/material/Box'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 
@@ -18,30 +18,30 @@ export const Fade = styled(Box)<TFade>(
     right: 0,
     bottom: 0,
     zIndex: 1300,
-    height: '100vh',
-    position: 'fixed',
-    backgroundColor: colors.white,
-    transitionProperty: 'opacity',
+    height: `100vh`,
+    position: `fixed`,
+    transitionProperty: `opacity`,
+    backgroundColor: theme.palette.colors.white00,
     transitionDuration: `${(speed || 2000) * 0.001}s`,
   })
 )
 
 export const FadeSection = styled(Box)<BoxProps>({
   flex: 1,
-  height: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContents: 'center',
+  height: `100%`,
+  display: `flex`,
+  alignItems: `center`,
+  justifyContents: `center`,
 })
 
 export const FadeView = styled(Box)<BoxProps>({
   flex: 1,
   top: -100,
   textAlign: `center`,
-  alignItems: 'center',
-  position: 'relative',
-  flexDirection: 'column',
-  justifyContents: 'center',
+  alignItems: `center`,
+  position: `relative`,
+  flexDirection: `column`,
+  justifyContents: `center`,
 })
 
 export const FadeText = styled(

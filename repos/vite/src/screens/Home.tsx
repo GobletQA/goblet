@@ -3,7 +3,6 @@ import { EContainerState } from '@types'
 import { useState, useEffect, useMemo } from 'react'
 import Editor from './Editor'
 import Box from '@mui/material/Box'
-import { HeaderNav } from '@constants'
 import * as Icons from '@components/Icons'
 import { ScreenWrap } from './Root.styled'
 import { Header } from '@components/Header'
@@ -13,6 +12,7 @@ import { SideNav } from '@components/SideNav'
 import { Fadeout } from '@components/Fadeout'
 import { useUser, useContainer } from '@store'
 import { settingsModal } from '@actions/modals'
+import { AuthActive, HeaderNav } from '@constants'
 import { Outlet, useLocation } from "react-router-dom"
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
@@ -57,7 +57,7 @@ export default function Home(props:THomeProps) {
         <SideNav />
         <Footer />
       </Box>
-      <Fadeout start={fade} content={fadeContent} />
+      {AuthActive && (<Fadeout start={fade} content={fadeContent} />)}
     </>
   )
 }
