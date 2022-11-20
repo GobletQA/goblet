@@ -37,26 +37,6 @@ vars:
   source: command
   command: "node scripts/ds/getYamlValue.js IMAGE_TAG"
 
-# ----- Screencast API Values ----- #
-- name: GB_SC_DEPLOYMENT
-  source: command
-  command: "node scripts/ds/getYamlValue.js GB_SC_DEPLOYMENT"
-- name: GB_SC_IMG_URI
-  source: command
-  command: "node scripts/ds/resolveImgUri.js SC"
-- name: GB_SC_PORT
-  source: command
-  command: "node scripts/ds/getYamlValue.js GB_SC_PORT"
-- name: GB_NO_VNC_PORT
-  source: command
-  command: "node scripts/ds/getYamlValue.js GB_NO_VNC_PORT"
-- name: GB_SC_INGRESS_HOST
-  source: command
-  command: "node scripts/ds/resolveHost.js SC"
-- name: GB_SC_INGRESS_HOST_WILD_CARD
-  source: command
-  command: "node scripts/ds/resolveHost.js SC \"*\""
-
 # ----- Backend API Values ----- #
 - name: GB_BE_DEPLOYMENT
   source: command
@@ -97,6 +77,26 @@ vars:
   source: command
   command: "node scripts/ds/getYamlValue.js GB_KD_KUBE_PROXY_PORT"
 
+# ----- Screencast API Values ----- #
+- name: GB_SC_DEPLOYMENT
+  source: command
+  command: "node scripts/ds/getYamlValue.js GB_SC_DEPLOYMENT"
+- name: GB_SC_IMG_URI
+  source: command
+  command: "node scripts/ds/resolveImgUri.js SC"
+- name: GB_SC_PORT
+  source: command
+  command: "node scripts/ds/getYamlValue.js GB_SC_PORT"
+- name: GB_NO_VNC_PORT
+  source: command
+  command: "node scripts/ds/getYamlValue.js GB_NO_VNC_PORT"
+- name: GB_SC_INGRESS_HOST
+  source: command
+  command: "node scripts/ds/resolveHost.js SC"
+- name: GB_SC_INGRESS_HOST_WILD_CARD
+  source: command
+  command: "node scripts/ds/resolveHost.js SC \"*\""
+
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
 # See the scripts/ds/resolvePullSecrets.js script for more information
@@ -114,8 +114,7 @@ images:
     dockerfile: ./Dockerfile
     context: ../
     build:
-      # Expression to disable building the image only when BUILD_LOCAL_IMAGE is true
-      disabled: $([ ${BUILD_LOCAL_IMAGE} == "true" ] && echo false || echo true)
+      disabled: true
       buildKit:
         options:
           buildArgs:
@@ -124,39 +123,11 @@ images:
 # The `deployments` section tells devspace how to deploy this project into the cluster
 deployments: 
 
-- name: ${GB_SC_DEPLOYMENT}
-  helm:
-    chart:
-      name: ./
-    cleanupOnFail: true
-    valuesFiles:
-    - ./values.yml
-    - ./values.${NODE_ENV}.yml
-    values:
-      containers:
-      - image: ${GB_SC_IMG_URI}
-        imagePullPolicy: ${IMAGE_PULL_POLICY}
-        env: $(node scripts/ds/resolveDSEnvs.js screencast)
-      service: $(node scripts/ds/resolveService.js SC $GB_SC_PORT $GB_NO_VNC_PORT)
-      ingress:
-        name: ${GB_SC_DEPLOYMENT}-ingress
-        rules:
-        - host: ${GB_SC_INGRESS_HOST}
-          serviceName: ${GB_SC_DEPLOYMENT}
-          servicePort: ${GB_SC_PORT}
-        - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
-          serviceName: ${GB_SC_DEPLOYMENT}
-          servicePort: ${GB_SC_PORT}
-        - host: ${GB_SC_INGRESS_HOST}
-          serviceName: ${GB_SC_DEPLOYMENT}
-          servicePort: ${GB_NO_VNC_PORT}
-        - host: ${GB_SC_INGRESS_HOST_WILD_CARD}
-          serviceName: ${GB_SC_DEPLOYMENT}
-          servicePort: ${GB_NO_VNC_PORT}
-
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
   helm:
+    upgradeArgs:
+      - "--force"
     chart:
       name: ./
     cleanupOnFail: true
@@ -191,19 +162,13 @@ deployments:
 
 dev:
   # Gets the apps that should sync with the host machine
-  sync: $(node scripts/ds/resolveSync.js BE SC)
-  ports: $(node scripts/ds/resolvePortForward.js BE SC)
+  sync: $(node scripts/ds/resolveSync.js BE)
+  ports: $(node scripts/ds/resolvePortForward.js BE)
 
 # Use profile to dynamically switch out the app specific docker image for the development image
 profiles:
 - name: local
   patches:
-  - op: replace
-    path: deployments.name=${GB_SC_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
-  - op: replace
-    path: deployments.name=${GB_FE_DEPLOYMENT}.helm.values.containers[0].image
-    value: ${IMAGE}:${IMAGE_TAG}
   - op: replace
     path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
     value: ${IMAGE}:${IMAGE_TAG}

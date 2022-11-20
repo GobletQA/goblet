@@ -5,15 +5,15 @@ import type {
   TRouteMeta,
 } from '@types'
 
-import { StatusTypes } from '@constants'
 import { setRepo } from '../local/setRepo'
 import { addToast } from '@actions/toasts'
+import { connectModal } from '@actions/modals'
 import { removeRepo } from '../local/removeRepo'
 import { apiRequest } from '@utils/api/apiRequest'
-import { checkCall, noOpObj } from '@keg-hub/jsutils'
 import { localStorage } from '@services/localStorage'
-import { signInModal, connectModal } from '@actions/modals'
-import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
+import { checkCall, noOpObj } from '@keg-hub/jsutils'
+import { StatusTypes, ScreencastPort, AuthActive } from '@constants'
+import { setErrorState } from '@actions/admin/provider/setErrorState'
 
 
 type TStatusRepo = Omit<TRouteMeta, "routes" | "meta"> & {
@@ -32,7 +32,7 @@ type TStatusRepo = Omit<TRouteMeta, "routes" | "meta"> & {
  * @returns {Object} - Passed in status object
  */
 const setNoLocalMountState = async (status:TRepoStatus) => {
-  if(status.mode === StatusTypes.VNC) return connectModal()
+  if(AuthActive && status.mode === StatusTypes.VNC) return connectModal()
 
   addToast({
     type: 'warn',
@@ -43,21 +43,6 @@ const setNoLocalMountState = async (status:TRepoStatus) => {
   return status
 }
 
-
-/**
- * Clear and cache repo data in the store or local storage
- * Then opens the sign in modal and opens a toast warning about the error
- *
- * @param {string} error - Error message returned from the API
- * @param {Object} data - Metadata about the API call
- * 
- * @returns {Object} - Passed in status object
- */
-const setErrorState = async (error:any) => {
-  await removeRepo()
-  await signOutAuthUser()
-  signInModal()
-}
 
 /**
  * Called when the repo status is not returned from the API
@@ -102,9 +87,8 @@ export const statusRepo = async ({
   } = await apiRequest<TApiRepoResp>({
     method: 'GET',
     url: `/repo/status`,
-    // Fix this, don't used the port number directly, WTF man?
-    headers: routes?.[`7006`]?.headers,
     params: {...savedRepo?.git},
+    headers: routes?.[ScreencastPort]?.headers,
   })
 
   if(!success || error) return setErrorState(error)

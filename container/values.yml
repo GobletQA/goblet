@@ -71,8 +71,8 @@ env:
   # Needed for conductor
   # Uncomment this to mount the whole repo into the container
   # GB_APP_DOC_VOLUMES: ".:/goblet/app,/var/run/docker.sock"
+  GB_AUTH_ACTIVE: true
   GB_APP_MOUNT_PATH: /goblet/app
-
 
 # ---- Backend ENVs ---- #
   GB_BE_PORT: 7005
@@ -180,7 +180,6 @@ env:
   GB_VNC_VIEW_HEIGHT: 720
   # GB_VNC_VIEW_WIDTH: 1280
   GB_VNC_VIEW_WIDTH: 1440
-
 
   GB_VNC_ACTIVE: true
   GB_PW_SOCKET_ACTIVE: false

@@ -1,7 +1,7 @@
 import type { TModalRef, TModalComponent } from '@types'
 import { lazy, Suspense, useEffect } from 'react'
 
-import { ModalTypes } from '@constants'
+import { ModalTypes, AuthActive } from '@constants'
 import { useUser, useRepo } from '@store'
 import { Git } from '@components/Icons/Git'
 import { Loading } from '@components/Loading'
@@ -38,7 +38,7 @@ SignInModal.modalType = ModalTypes.signIn
 SignInModal.modalProps = {
   maxWidth: `sm`,
   title: `Sign In`,
-  manualClose: false,
+  manualClose: !AuthActive,
   titleProps: {
     Icon: (<Git />)
   }

@@ -1,4 +1,4 @@
-import { toNum } from '@keg-hub/jsutils'
+import { toNum, toBool } from '@keg-hub/jsutils'
 
 // Get all allowed emails from the env
 export const AllowedUsers = (process.env.GB_GITHUB_AUTH_USERS || '').split(',')
@@ -19,3 +19,10 @@ export const GoogleSearchUrl = "https://www.google.com/search?igu=1&q="
 
 export const ResizePanelClass = `.react-page-split`
 export const ScreencastBrowserSelector = `screencast-browser`
+
+// Only used in local environments
+export const AuthActive = Environment === `local`
+  ? toBool(process.env.GB_AUTH_ACTIVE)
+  : true
+
+// export const AuthActive = false

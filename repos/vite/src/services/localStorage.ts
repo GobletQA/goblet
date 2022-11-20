@@ -1,12 +1,16 @@
-
-
+import { AuthActive } from '@constants'
 import { limbo } from '@keg-hub/jsutils'
+import { noAuthService } from './noAuthService'
 import { StorageKeys, Environment } from '@constants'
 
 export type TWrapperFunc = (...args:any[]) => void
 
 
 class Storage {
+
+  constructor(){
+    !AuthActive  && Object.assign(this, noAuthService)
+  }
 
   /**
    * Creates a promise around a passed in function

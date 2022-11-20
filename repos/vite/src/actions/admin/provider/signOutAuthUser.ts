@@ -1,8 +1,9 @@
+import { AuthActive } from '@constants'
 import { GitUser } from '@services/gitUser'
-import { WSService } from '@services/socketService/socketService'
 import { signInModal } from '@actions/modals/modals'
 import { localStorage } from '@services/localStorage'
 import { getProviderMetadata } from '@services/providers'
+import { WSService } from '@services/socketService/socketService'
 import { clearContainerRoutes } from '@actions/container/local/clearContainerRoutes'
 
 
@@ -16,8 +17,7 @@ const { auth } = getProviderMetadata()
  * @return {Void}
  */
 export const signOutAuthUser = async () => {
-  // REMEMBER - THIS WILL CAUSE CONNECT MODAL TO NOT SHOW UP ON LOGIN
-  // return undefined
+  if(!AuthActive) return
 
   // Remove the local cache
   try { await localStorage.cleanup() }
