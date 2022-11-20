@@ -1,38 +1,27 @@
-import { useEffect, useState } from 'react'
-import { debounce } from '@keg-hub/jsutils'
+import type { TThrottle } from '@types'
 
-type TResizeHandler = (ev: UIEvent) => any
-type TWindowSize = {
-  height: number
-  width: number
-}
+import { WindowResizeEvt } from '@constants'
+import { useEffectOnce } from '../useEffectOnce'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { throttleLast as jsThrottle } from '@keg-hub/jsutils'
 
-type ResizeProps = {
-  wait?: number
-  onResize: (size: TWindowSize, evt: UIEvent) => void
-}
+const throttle = jsThrottle as TThrottle
 
-export const useWindowResize = ({ wait = 250, onResize }: ResizeProps) => {
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+export const useWindowResize = () => {
+
+  useEffectOnce(() => {
+    // Throttle to avoid the function fire multiple times
+    const onResize = throttle(
+      () => EE.emit(WindowResizeEvt, { width: window.innerWidth, height: window.innerHeight }),
+      null,
+      500
+    )
+
+    // Add the debounced method as the resize listener on the window
+    window.addEventListener('resize', onResize)
+
+    // Cleanup the listener on unmount
+    return () => window.removeEventListener('resize', onResize)
   })
 
-  useEffect(() => {
-    const handler = (evt: UIEvent) => {
-      const size = { width: window.innerWidth, height: window.innerHeight }
-      setWindowSize(size)
-      onResize?.(size, evt)
-    }
-
-    // Debounce to avoid the function fire multiple times
-    const debouncedResize = debounce(handler, wait, false) as unknown as TResizeHandler
-    // Add the debounced method as the resize listener on the window
-    window.addEventListener('resize', debouncedResize)
-
-    // Cleanup the listner on unmount
-    return () => window.removeEventListener('resize', debouncedResize)
-  }, [wait, onResize])
-
-  return windowSize
 }

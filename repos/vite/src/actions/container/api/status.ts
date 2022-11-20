@@ -12,7 +12,7 @@ import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
  */
 export const statusContainer = async (
   params?:Record<any, any>
-):Promise<TRouteMeta | undefined> => {
+):Promise<TRouteMeta | string | void> => {
   addToast({
     type: 'info',
     message: `Getting Session status...`,

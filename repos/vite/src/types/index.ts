@@ -13,3 +13,9 @@ export * from './reducer.types'
 export * from './terminal.types'
 export * from './component.types'
 export * from './screencast.types'
+
+/**
+ * And overrides should eventually be removed
+ * Keeping separate to highlight that
+ */
+export * from './overrides.types'

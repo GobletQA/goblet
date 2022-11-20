@@ -77,7 +77,7 @@ export const read = async (type:string):Promise<TBrowserMetaDataContext> => {
     return (isObj(parsed) ? parsed[type] : {}) as TBrowserMetaDataContext
   }
   catch (err) {
-    Logger.error(err)
+    Logger.error(`[PW-META ERROR]: ${err.stack}`)
     return {} as TBrowserMetaDataContext
   }
 }
@@ -91,7 +91,7 @@ export const readAll = async () => {
     return data ? JSON.parse(data) : {}
   }
   catch (err) {
-    Logger.error(err)
+    Logger.error(`[PW-META ERROR]: ${err.stack}`)
     return {}
   }
 }
@@ -129,7 +129,7 @@ export const save = async (
 
   err && err.code === 'ENOENT'
     ? await create(nextMetadata)
-    : err && Logger.error(err)
+    : err && Logger.error(`[PW-META ERROR]: ${err.stack}`)
 }
 
 /**

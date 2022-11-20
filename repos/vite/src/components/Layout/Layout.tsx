@@ -1,19 +1,12 @@
 import type { ComponentProps, ReactNode } from 'react'
-import type { ResizeMoveEvent } from 'react-page-split'
 
 import 'react-page-split/style.css'
-import { useCallback, useRef, useEffect } from 'react'
-
 import { dims } from '@theme'
 import { Divider } from './Divider'
-import { toNum } from '@keg-hub/jsutils'
-import { ScreencastRatio } from '@constants'
 import Container from '@mui/material/Container'
 import { Terminal } from '@components/Terminal'
 import { LayoutContainer } from './Divider.styled'
 import { Screencast } from '@components/Screencast'
-
-import { getChildPanels } from '@utils/components/getChildPanels'
 import { useLayoutResize } from '@hooks/components/useLayoutResize'
 import {
   Proportional,
@@ -46,21 +39,11 @@ const noOverflow = {
   overflow: `hidden`
 }
 
-const verticalHeights = [
-  `calc( 50% + ${dims.browser.nav.hpx} )`,
-  `calc( 50% - ${dims.browser.nav.hpx} )`
-]
-
 export type TLayout = {
   children: ReactNode
 }
 
-export const Layout = (props:TLayout) => {
-  
-  
-  const parentElRef = useRef<HTMLDivElement|null>(null)
-
-  
+export const Layout = (props:TLayout) => { 
   const [ref, onResizeMove] = useLayoutResize()
 
   return (

@@ -1,5 +1,6 @@
 import type { TRouteMeta } from '@types'
 
+import { isStr } from '@keg-hub/jsutils'
 import { loadFile } from './files/api/loadFile'
 import { signInModal } from '@actions/modals/modals'
 import { statusRepo } from '@actions/repo/api/status'
@@ -10,10 +11,12 @@ import { statusContainer } from '@actions/container/api'
 export const initStatus = async (status?:TRouteMeta) => {
   // If user is logged in, check the status of users session container
   // If not logged in the status should come as an argument from the onSuccessAuth method
-  status = status || await statusContainer()
+  const resp = status || await statusContainer()
+  if(resp instanceof Error) throw resp
 
   // Will allow using goblet without persisting changes
   const repoStatus = await statusRepo({ routes: status?.routes })
+  if(repoStatus instanceof Error) throw repoStatus
 
   if (!repoStatus || !repoStatus.mounted) return
 

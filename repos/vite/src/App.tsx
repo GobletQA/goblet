@@ -1,4 +1,5 @@
-import type { TThemeTypes } from '@theme/theme.types'
+import type { TGobletTheme, TThemeTypes } from '@types'
+import type { Dispatch, SetStateAction } from 'react'
 
 import '@utils/components/globalOnCopy'
 import { useState, useMemo, useEffect, useRef } from 'react'
@@ -15,31 +16,52 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { ModalProvider } from '@contexts/ModalContext'
 import { ModalManager } from '@components/ModalManager'
+import { useWindowResize } from '@hooks/dom/useWindowResize'
 
-const onAppInit = async (setApiTimeout:(...args:any[])=>any) => {
+const onAppInit = async (
+  setApiTimeout:Dispatch<SetStateAction<string|false>>,
+  setStart:Dispatch<SetStateAction<boolean>>
+) => {
   let timeout:NodeJS.Timeout
 
   new Promise((res, rej) => {
     timeout = setTimeout(() => rej(), 3000)
-    return initApp().then(() => res(clearTimeout(timeout)))
+    return initApp()
+      .then(() => res(clearTimeout(timeout)))
+      .catch((err:any) => {
+        clearTimeout(timeout)
+        rej(err)
+      })
   })
-  .catch(() => setApiTimeout(`Backend API Server is not responding`))
+  .then(() => setStart(true))
+  .catch((err:any) => setApiTimeout(err?.message || `Backend API Server is not responding`))
 }
 
-const App = () => {
-  const [themeType, setThemeType] = useState<TThemeTypes>(`light`)
-  const theme = useMemo(() => createTheme(themeType), [themeType])
+const useAppInit = () => {
   const appInitRef = useRef<boolean>(false)
-
-  const [apiTimeout, setApiTimeout] = useState(false)
   const [start, setStart] = useState(false)
+  const [apiTimeout, setApiTimeout] = useState<string|false>(false)
+
   useEffect(() => {
     if(appInitRef.current) return
 
     appInitRef.current = true
-    onAppInit(setApiTimeout)
-    setStart(true)
+    onAppInit(setApiTimeout, setStart)
   }, [])
+
+  return {
+    start,
+    apiTimeout
+  }
+}
+
+const App = () => {
+
+  useWindowResize()
+  const { start, apiTimeout } = useAppInit()
+
+  const [themeType, setThemeType] = useState<TThemeTypes>(`light`)
+  const theme = useMemo(() => createTheme(themeType) as TGobletTheme, [themeType])
 
   return (
     <>
