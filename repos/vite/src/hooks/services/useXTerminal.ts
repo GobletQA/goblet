@@ -1,17 +1,36 @@
-import type { RefObject } from 'react'
+import type { TXTermIdMap, TXTerminal, TXTermRef } from '@types'
+
 import { useEffect, useRef } from 'react'
+import { noOpObj } from '@keg-hub/jsutils'
 import { XTerminal } from '@services/xterm'
 
-export const useXTerminal = () => {
-  const termElRef = useRef<HTMLDivElement|null>(null)
-  const termRef = useRef<XTerminal|null>(null)
+export const useXTerminal = (props:Partial<TXTerminal>=noOpObj, id?:string) => {
+  const termId:string = id || props.id || ``
+  const termRefs = useRef<TXTermIdMap>({} as TXTermIdMap)
+
+  const existing = termRefs.current?.[termId]?.element
+  const termElRef = useRef<HTMLDivElement|null>(existing?.current || null)
 
   useEffect(() => {
-    if((termRef && termRef.current) || !termElRef || !termElRef?.current) return
+    if(existing || !termId || termRefs?.current?.[termId] || !termElRef?.current) return
 
-    termRef.current = new XTerminal({element: termElRef.current})
+      termRefs.current[termId] = {
+        element: termElRef,
+        term: new XTerminal({
+          ...props,
+          id: termId,
+          element: termElRef.current
+        }),
+        remove: () => {
+          termRefs.current[termId]
+            && termRefs.current?.[termId]?.term?.remove?.()
 
-  }, [termRef, termElRef])
+          delete termRefs.current[termId]
+        }
+      }
+  }, [props, termId])
 
-  return [termRef.current, termElRef] as [XTerminal, RefObject<HTMLDivElement>]
+  const activeRef = termRefs.current[termId] || { element: termElRef }
+
+  return [activeRef, termRefs.current] as [TXTermRef, TXTermIdMap]
 }

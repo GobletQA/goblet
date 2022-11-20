@@ -1,9 +1,9 @@
-import { Theme, PaletteOptions } from '@mui/material/styles'
-import { CSSProperties } from 'react'
+import type { TPaletteOpts } from '@types'
+import type { Theme } from '@mui/material/styles'
 
 export const components = (
   muiTheme:Theme,
-  palette:PaletteOptions
+  palette:TPaletteOpts
 ):Theme[`components`] => {
   return {
     MuiButton: {
@@ -16,7 +16,6 @@ export const components = (
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          // color: "red",
           backgroundColor: (palette?.primary as Record<string, string>)?.main,
         }
       }

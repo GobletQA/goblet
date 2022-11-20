@@ -1,4 +1,4 @@
-import type { TThemeTypes } from './theme.types'
+import type { TThemeTypes, TPaletteOpts } from '@types'
 
 import { palette } from './palette'
 import { typography } from './typography'

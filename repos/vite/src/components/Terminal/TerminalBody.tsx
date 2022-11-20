@@ -1,29 +1,58 @@
-import type { CSSProperties } from 'react'
-import type { TTerminalTab } from '@types'
+import type { MutableRefObject } from 'react'
+import type { TTerminalTabs, TTerminalTab, TXTermRef } from '@types'
 
-import Box from '@mui/material/Box'
-import { noOpObj } from '@keg-hub/jsutils'
+import { useEffect } from 'react'
 import { TerminalInput } from './Terminal.styled'
 import { useXTerminal } from '@hooks/services/useXTerminal'
 
-export type TTerminalBodyProps = {
-  sx?:CSSProperties
-  tab: TTerminalTab
+export type TTerminalBody = {
+  tabs:TTerminalTabs
+  termRef: TXTermRef
+  activeTab: TTerminalTab
 }
 
-export const TerminalBody = (props:TTerminalBodyProps) => {
-  const {
-    tab,
-    sx=noOpObj,
-  } = props
-  
-  const [terminal, termRef] = useXTerminal()
+type TTerminalView = {
+  active: boolean
+  termRef: TXTermRef
+}
+
+const TerminalView = (props:TTerminalView) => {
+  const { termRef, active } = props
+
+  useEffect(() => {
+    if(!termRef?.term) return
+    active && termRef.term.term.focus()
+  }, [active, termRef])
 
   return (
     <TerminalInput
-      sx={sx}
-      ref={termRef}
+      ref={termRef.element}
       className="terminal-component"
+      sx={{ display: !active ? `none` : `initial` }}
     />
+  )
+}
+
+export const TerminalBody = (props:TTerminalBody) => {
+  const {
+    tabs,
+    termRef,
+    activeTab
+  } = props
+
+  return (
+    <>
+      {
+        tabs.map(tab => {
+          return (
+            <TerminalView
+              key={tab.id}
+              termRef={termRef}
+              active={activeTab === tab}
+            />
+          )
+        })
+      }
+    </>
   )
 }

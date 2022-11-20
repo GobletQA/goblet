@@ -1,17 +1,19 @@
+import type { TTerminalTabs, TXTermIdMap } from '@types'
 import type { SyntheticEvent } from 'react'
 
 import { useCallback } from 'react'
-import { useTerminal } from '@store'
 import { terminalDispatch } from '@store'
 import { TerminalTabs } from './TerminalTabs'
 
-export type TerminalHeader = {}
+export type TerminalHeader = {
+  active:number
+  tabs:TTerminalTabs
+  terminals: TXTermIdMap
+}
 
 export const TerminalHeader = (props:TerminalHeader) => {
 
-  const { tabs, active } = useTerminal()
-  const activeTab = tabs[active] || tabs[0]
-
+  const { active, tabs, terminals } = props
 
   const onChange = useCallback((evt:SyntheticEvent, value:`+`|number) => {
     value === `+`
@@ -24,9 +26,10 @@ export const TerminalHeader = (props:TerminalHeader) => {
     evt?.preventDefault()
     evt?.stopPropagation()
 
+    terminals?.[tabId]?.remove?.()
     terminalDispatch.remove(tabId)
 
-  }, [active, tabs])
+  }, [active, tabs, terminals])
 
   return (
     <>

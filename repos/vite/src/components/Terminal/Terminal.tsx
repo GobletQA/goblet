@@ -2,10 +2,10 @@ import type { CSSProperties } from 'react'
 
 import 'xterm/css/xterm.css'
 import { useTerminal } from '@store'
-import { noOpObj } from '@keg-hub/jsutils'
 import { TerminalBody } from './TerminalBody'
 import { TerminalHeader } from './TerminalHeader'
 import { TerminalContainer } from './Terminal.styled'
+import { useXTerminal } from '@hooks/services/useXTerminal'
 
 export type TTerminalProps = {
   sx?:CSSProperties
@@ -14,15 +14,16 @@ export type TTerminalProps = {
 export const Terminal = (props:TTerminalProps) => {
   const { tabs, active } = useTerminal()
   const activeTab = tabs[active] || tabs[0]
-  
+  const [termRef, terminals] = useXTerminal(activeTab)
+
   return (
     <TerminalContainer
+      sx={props.sx}
       disableGutters
-      sx={props.sx || noOpObj}
       className="terminal-container"
     >
-      <TerminalHeader />
-      <TerminalBody tab={activeTab} />
+      <TerminalHeader terminals={terminals} tabs={tabs} active={active} />
+      <TerminalBody termRef={termRef} activeTab={activeTab} tabs={tabs} />
     </TerminalContainer>
   )
 }

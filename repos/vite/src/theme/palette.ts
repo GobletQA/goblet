@@ -1,8 +1,5 @@
-import type { TColors, TPalette } from './theme.types'
 import { Theme } from '@mui/material/styles'
-
-
-
+import type { TColors, TPalette, TPaletteOpts } from '@types'
 
 
 export const colors:TColors = {
@@ -42,6 +39,8 @@ export const colors:TColors = {
   monacoBorder: `#272A32`,
   monacoBackground: `#282c34`,
   monacoForeground: `#323842`,
+  monacoSidebarGray: `#ABB2BF`,
+
 
   headerDark: `#262931`,
   borderDark: `#262A32`,
@@ -75,7 +74,7 @@ export const palette:TPalette = {
     primary: {
       main: colors.darkPrimary
     },
-  }),
+  } as TPaletteOpts),
   light: (muiTheme:Theme) => ({
     ...paletteCommon,
     mode: `light`,

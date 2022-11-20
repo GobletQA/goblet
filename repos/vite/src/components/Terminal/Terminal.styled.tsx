@@ -1,11 +1,10 @@
-import { colors } from '@theme'
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import Tabs from '@mui/material/Tabs'
+import { gutter, colors } from '@theme'
 import { styled } from '@mui/material/styles'
 import Container from '@mui/material/Container'
-import { AddIcon, CloseIcon } from '@components/Icons'
-
+import { CloseIcon } from '@components/Icons'
 
 export const TabsHeaderList = styled(Tabs)(`
   max-height: 28px;
@@ -60,5 +59,7 @@ export const TerminalContainer = styled(Container)`
 export const TerminalInput = styled(Box)`
   width: 100%;
   overflow: hidden;
+  padding-top: ${gutter.padding.tQpx};
+  padding-left: ${gutter.padding.tQpx};
   background-color: ${colors.pitchBlack};
 `
