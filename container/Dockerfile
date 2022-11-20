@@ -17,7 +17,15 @@ RUN cd /goblet/app/repos && \
 FROM $GB_IMAGE_FROM as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
+
+RUN <<EOF
+  apt update
+  # apt install -y --no-install-recommends build-essential zlib1g zlib1g-dev autoconf
+  apt install -y --no-install-recommends build-essential
+  # yarn install --frozen-lockfile
+EOF
 RUN yarn install --frozen-lockfile
+
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #

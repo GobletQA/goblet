@@ -1,11 +1,13 @@
+import type { TBrowserConf } from '@GSC/types'
+
 import './resolveRoot'
 import { get, wait, setLogs } from '@keg-hub/jsutils'
 import { Logger } from '@keg-hub/cli-utils'
-const {
+import {
   stopServer,
   statusServer,
   startServerAsWorker,
-} = require('@GSC/libs/playwright')
+} from '@GSC/libs/playwright'
 import {
   stopVNC,
   startVNC,
@@ -29,6 +31,11 @@ const resolveContext = (context:string) => {
 
       return acc
     }, { sock:false, vnc:false, browser:false })
+}
+
+const delayStartBrowser = async (params?:TBrowserConf) => {
+  await wait(3000)
+  return startServerAsWorker(params)
 }
 
 export const runSCTask = async (type:string, params:Record<any, any>) => {
@@ -60,7 +67,7 @@ export const runSCTask = async (type:string, params:Record<any, any>) => {
       const proms = await Promise.all([
         vnc && startVNC(params.vnc),
         sock && startSockify(params.sock),
-        browser && startServerAsWorker(params.browser)
+        browser && delayStartBrowser(params.browser)
       ])
 
       ;[`vnc`, `sock`, `browser`].forEach((item, idx) => procs[item] = proms[idx])

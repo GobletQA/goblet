@@ -1,12 +1,15 @@
 import type { IEvent, IDisposable } from 'xterm'
 
 import { Terminal } from 'xterm'
-import { isObj } from '@keg-hub/jsutils'
+import { isObj, limbo } from '@keg-hub/jsutils'
 import { FitAddon } from 'xterm-addon-fit'
+import LocalEchoController from 'local-echo'
 import { WebLinksAddon } from 'xterm-addon-web-links'
 
 export type TXTerminal = {
   stdin?: boolean
+  logLevel?:string
+  history?:string[]
   element: HTMLElement
 }
 
@@ -22,16 +25,18 @@ const printable = (event:KeyboardEvent) => (
 export class XTerminal {
 
   term:Terminal
+  cmd: string =``
   fitAddon:FitAddon
   stdin:boolean=false
+  promptText:string="$ "
   dispose: IDisposable | false
-  cmd: string =``
+  localEcho:ReturnType<typeof LocalEchoController>
 
   constructor(config: TXTerminal){
     this.term = new Terminal({
       fontSize: 16,
       scrollback: 300,
-      logLevel: 'debug',
+      // logLevel: 'debug',
       convertEol: true,
       cursorBlink: true,
       cursorStyle: 'block',
@@ -44,11 +49,17 @@ export class XTerminal {
     this.fitAddon = new FitAddon()
     this.term.loadAddon(this.fitAddon)
     this.term.loadAddon(new WebLinksAddon())
+
+    this.localEcho = new LocalEchoController()
+
+    this.term.loadAddon(this.localEcho)
+
     this.term.open(config.element)
     this.dispose = false
-    this.clear()
-    this.listen()
+    // this.clear()
+    // this.listen()
     this.resize()
+    this.readInput()
   }
 
   private onKey = (data:TEventData) => {
@@ -64,6 +75,8 @@ export class XTerminal {
       return
     }
     else if(domEvent.key === `Backspace`){
+      console.log(this.term)
+      
       this.term.write("\b \b")
     }
     else {
@@ -72,6 +85,15 @@ export class XTerminal {
       this.cmd += key
       this.term.write(key)
     }
+  }
+
+  private readInput = async ():Promise<void> => {
+    const [err, input] = await limbo(this.localEcho.read(this.promptText))
+
+    console.log(`------- handle input -------`)
+    console.log(input)
+
+    return this.readInput()
   }
 
   private listen = () => {

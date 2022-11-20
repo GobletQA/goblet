@@ -1,0 +1,2 @@
+declare module 'local-echo'
+

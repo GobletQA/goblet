@@ -9997,6 +9997,12 @@ loader-utils@^2.0.0, loader-utils@^2.0.2:
     emojis-list "^3.0.0"
     json5 "^2.1.2"
 
+local-echo@wavesoft/local-echo:
+  version "0.2.0"
+  resolved "https://codeload.github.com/wavesoft/local-echo/tar.gz/8d0b7f55c5cf4b0b5f7c5132825dc5bd984bf017"
+  dependencies:
+    shell-quote "^1.6.1"
+
 locate-path@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/locate-path/-/locate-path-3.0.0.tgz#dbec3b3ab759758071b58fe59fc41871af21400e"
@@ -12398,6 +12404,11 @@ shell-exec@1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/shell-exec/-/shell-exec-1.0.2.tgz#2e9361b0fde1d73f476c4b6671fa17785f696756"
   integrity sha512-jyVd+kU2X+mWKMmGhx4fpWbPsjvD53k9ivqetutVW/BQ+WIZoDoP4d8vUMGezV6saZsiNoW2f9GIhg9Dondohg==
+
+shell-quote@^1.6.1:
+  version "1.7.4"
+  resolved "https://registry.npmjs.org/shell-quote/-/shell-quote-1.7.4.tgz#33fe15dee71ab2a81fcbd3a52106c5cfb9fb75d8"
+  integrity sha512-8o/QEhSSRb1a5i7TFR0iM4G16Z0vYB2OQVs4G3aAFXjn3T6yEx8AZxy1PgDF7I00LZHYA3WxaSYIf5e5sAX8Rw==
 
 shelljs@^0.8.5:
   version "0.8.5"
