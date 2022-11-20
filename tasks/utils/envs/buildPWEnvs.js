@@ -44,7 +44,7 @@ const buildPWEnvs = (env={}, browser, params=noOpObj) => {
   addEnv(env, 'GOBLET_TEST_VIDEO_RECORD', params.record)
   addEnv(env, 'GOBLET_TEST_SCREENSHOT', params.screenshot)
 
-  params.debug && (env.DEBUG = 'pw:api*')
+  params.debug && (env.DEBUG = 'pw:api*,pw:browser*,pw:error*,pw:proxy*')
   params.debug && params.devtools && (env.GOBLET_DEV_TOOLS = true)
 
   env.NODE_ENV = `test`

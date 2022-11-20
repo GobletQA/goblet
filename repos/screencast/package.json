@@ -22,7 +22,6 @@
     "clean:install": "yarn clean:full; yarn install",
     "clean:full": "yarn clean; yarn clean:nm; yarn install",
     "clean:nm": "rm -rf node_modules",
-    "vnc": "PWDEBUG=1 DEBUG=pw:api* node dist/vnc.js",
     "format": "yarn lint && yarn pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
@@ -30,6 +29,7 @@
     "sc:serve": "node dist/index.js",
     "serve": "yarn vnc:serve && yarn sc:serve",
     "start": "DEV_BUILD=1 node configs/build.config.js",
+    "vnc": "node dist/vnc.js",
     "vnc:build": "node configs/vnc.build.config.js",
     "vnc:start": "DEV_BUILD=1 node configs/vnc.build.config.js",
     "vnc:serve": "pm2 start configs/vnc.pm2.config.js"

@@ -21,6 +21,7 @@ export const newServer = async (
   browserConf:TBrowserConf=noOpObj as TBrowserConf
 ) => {
 
+  process.env.DEBUG && Logger.log(`Playwright Debug set to: ${process.env.DEBUG}`)
   Logger.log(`Starting playwright server ${browser}...`)
 
   // Launch the playwright server

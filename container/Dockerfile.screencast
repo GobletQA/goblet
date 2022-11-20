@@ -42,7 +42,7 @@ FROM $IMAGE_FROM as goblet-runner
 WORKDIR /goblet/app
 ENV HOME=/root \
     DISPLAY=:0.0 \
-    DEBUG=pw:api* \
+    DEBUG=pw:api*,pw:browser*,pw:error*,pw:proxy* \
     LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \

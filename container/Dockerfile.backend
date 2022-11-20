@@ -104,10 +104,10 @@ ARG GB_DD_DEPLOYMENT
 
 ENV HOME=/root \
     DISPLAY=:0.0 \
-    DEBUG=pw:api* \
     LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
+    DEBUG=pw:api*,pw:browser*,pw:error*,pw:proxy* \
     GB_BE_PORT=$GB_BE_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
     DEBIAN_FRONTEND=noninteractive \

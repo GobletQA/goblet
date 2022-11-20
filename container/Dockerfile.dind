@@ -83,10 +83,10 @@ ARG GB_DD_CADDY_REMOTE_DIR=/goblet/remote
 
 ENV HOME=/root \
     DISPLAY=:0.0 \
-    DEBUG=pw:api* \
     LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
+    DEBUG=pw:api*,pw:browser*,pw:error*,pw:proxy* \
     DEBIAN_FRONTEND=noninteractive \
     GB_DD_WS_PROXY_PORT=$GB_DD_WS_PROXY_PORT \
     GB_DD_API_PROXY_PORT=$GB_DD_API_PROXY_PORT \

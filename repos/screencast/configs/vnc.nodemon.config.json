@@ -1,5 +1,5 @@
 {
-  "exec": "PWDEBUG=1 DEBUG=pw:api* node dist/vnc.js all",
+  "exec": "node dist/vnc.js all",
   "ext": "none",
   "verbose": true,
   "watch": [""],
