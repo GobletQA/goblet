@@ -1,5 +1,5 @@
 import { GitUser } from '@services/gitUser'
-import { WSService } from '@services/socketService'
+import { WSService } from '@services/socketService/socketService'
 import { signInModal } from '@actions/modals/modals'
 import { localStorage } from '@services/localStorage'
 import { getProviderMetadata } from '@services/providers'

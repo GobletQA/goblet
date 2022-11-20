@@ -1,21 +1,22 @@
 import type { TAction, TTerminalTabs, TTerminalTab } from '@types'
 
 import { isStr, isNum, uuid, ensureArr } from '@keg-hub/jsutils'
+import { randomName } from '@services/randomName'
 
 export type TTerminalState = {
   tabs: TTerminalTabs
   active: number
 }
 
-const buildTab = (name:string) => ({
-  name,
+const buildTab = (name?:string) => ({
   id: uuid(),
   history: [],
+  name: name || randomName(),
 })
 
 export const terminalState = {
   active: 0,
-  tabs: [buildTab(`terminal-0`)],
+  tabs: [buildTab()],
 } as TTerminalState
 
 
@@ -38,7 +39,7 @@ export const terminalActions = {
     }
   },
   create: (state:TTerminalState, action:TAction<Partial<TTerminalTab>>) => {
-    const newTab = buildTab(`terminal-${state.tabs.length}`)
+    const newTab = buildTab()
     return {
       ...state,
       active: state.tabs.length,
@@ -71,7 +72,7 @@ export const terminalActions = {
       : {
           ...state,
           active: activeIdx >= 0 ? activeIdx : 0,
-          tabs: filtered.length ? filtered : [buildTab(`terminal-0`)],
+          tabs: filtered.length ? filtered : [buildTab()],
         }
   },
 }

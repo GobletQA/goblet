@@ -6,6 +6,7 @@ import { FitAddon } from 'xterm-addon-fit'
 import { WebLinksAddon } from 'xterm-addon-web-links'
 
 export type TXTerminal = {
+  stdin?: boolean
   element: HTMLElement
 }
 
@@ -22,20 +23,24 @@ export class XTerminal {
 
   term:Terminal
   fitAddon:FitAddon
+  stdin:boolean=false
   dispose: IDisposable | false
   cmd: string =``
 
   constructor(config: TXTerminal){
     this.term = new Terminal({
-      convertEol: true,
       fontSize: 16,
-      allowProposedApi: true,
+      scrollback: 300,
+      logLevel: 'debug',
+      convertEol: true,
       cursorBlink: true,
       cursorStyle: 'block',
-      disableStdin: false,
-      logLevel: 'debug',
-      scrollback: 300,
+      allowProposedApi: true,
+      // Allow user input
+      // disableStdin: false,
+      disableStdin: this.stdin,
     })
+
     this.fitAddon = new FitAddon()
     this.term.loadAddon(this.fitAddon)
     this.term.loadAddon(new WebLinksAddon())
