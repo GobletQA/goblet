@@ -1,10 +1,10 @@
 import type { Theme } from '@mui/material/styles'
-import type { TPalette } from '@types'
+import type { TPalette, TPaletteOpts } from '@types'
 
 import { colors } from './colors'
 import { deepMerge } from '@keg-hub/jsutils'
 
-const commonPalette = {
+const commonPalette:TPaletteOpts = {
   colors,
   primary: {
     main: colors.royalPurple,
@@ -16,16 +16,16 @@ const commonPalette = {
     main: colors.honeyYellow,
   },
   success: {
-    main: colors.shinyShamrock,
+    main: colors.shamrock,
     contrastText: colors.white00,
   },
   info: {
-    main: colors.shinyShamrock,
+    main: colors.shamrock,
   },
 }
 
 const lightPalette = (muiTheme:Theme) => {
-  return deepMerge(commonPalette, {
+  return deepMerge<TPaletteOpts>(commonPalette, {
     mode: `light`,
     secondary: {
       main: colors.black06,
@@ -35,11 +35,14 @@ const lightPalette = (muiTheme:Theme) => {
       default: colors.white00,
       paper: colors.white00,
     },
+    text: {
+      primary: colors.black01
+    }
   })
 }
 
 const darkPalette = (muiTheme:Theme) => {
-  return deepMerge(commonPalette, {
+  return deepMerge<TPaletteOpts>(commonPalette, {
     mode: `dark`,
     secondary: {
       main: colors.monacoGray,
@@ -49,6 +52,9 @@ const darkPalette = (muiTheme:Theme) => {
       default: colors.black02,
       paper: colors.black02,
     },
+    text: {
+      primary: colors.white00
+    }
   })
 }
 

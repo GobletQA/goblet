@@ -1,8 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { colors } from '@theme'
 import { useMemo } from 'react'
-import { styled } from '@mui/material/styles'
 import {
   HDivider,
   VDivider,

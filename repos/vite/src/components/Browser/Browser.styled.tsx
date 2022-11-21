@@ -1,19 +1,21 @@
 import Box from '@mui/material/Box'
 import { colors, dims } from '@theme'
 import { styled } from '@mui/material/styles'
+import { getColor } from '@utils/theme/getColor'
+import { IconButton } from '@components/Buttons/IconButton'
 
 export const BrowserNav = styled('nav')(({ theme }) => `
   width: 100%;
   display: flex;
-  padding: 4px 0;
+  padding: 2px 0;
   place-items: center;
   place-content: center;
   height: ${dims.browser.nav.hpx};
-  border-bottom: 1px solid rgba(0,0,0, 0.20);
-  background-color: ${colors.black05};
+  border-bottom: 1px solid ${getColor(colors.gray04, colors.black04, theme)};
+  background-color: ${getColor(colors.gray02, colors.black05, theme)};
 
   div:not(:first-of-type) {
-    padding: 0 8px;
+    padding: 0 4px;
     justify-content: left;
     height: ${dims.browser.url.height}px;
 
@@ -27,19 +29,19 @@ export const BrowserNav = styled('nav')(({ theme }) => `
 export const BrowserInput = styled('input')(({ theme }) => `
   width: 100%;
   border: none;
-  height: 28px;
+  height: 26px;
   margin: 0 6px;
   font-size: 14px;
-  padding: 0 13px;
+  padding: 0 14px;
   line-height: 26px;
   border-radius: 18px;
   font-family: inherit;
   letter-spacing: 0.2px;
-  color: rgb(255, 255, 255);
-  background-color: ${colors.black02};
+  color: ${getColor(colors.black04, colors.white00, theme)};
+  background-color: ${getColor(colors.gray04, colors.black02, theme)};
 
   &:focus {
-    outline: 2px solid rgb(138, 180, 248);
+    outline: 2px solid ${colors.royalPurple};
   }
 `)
 
@@ -74,3 +76,20 @@ export const BrowserView = styled('div')`
     margin-top: 0px !important;
   }
 `
+
+export const BrowserBtn = styled(IconButton)(({ theme }) => `
+  width: 20px;
+  height: 20px;
+  display: flex;
+  border-radius: 50%;
+  place-items: center;
+  font-family: inherit;
+  place-content: center;
+  background-color: transparent;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  color: ${getColor(colors.gray08, colors.white00, theme)};
+
+  &:disabled: {
+    color: ${colors.fade25};
+  }
+`)

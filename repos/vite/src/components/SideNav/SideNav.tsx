@@ -1,15 +1,9 @@
-import type { Dispatch, SetStateAction } from 'react'
 import type { TNavItemProps } from '../Nav/NavItem'
 
 import { useState, useCallback } from 'react'
-import { dims } from '@theme'
-import Box from '@mui/material/Box'
+import { HeaderSpacer, Drawer } from './SideNav.styled'
 import * as Icons from '@components/Icons'
-import Divider from '@mui/material/Divider'
 import { NavGroups, TGroupItem } from '../Nav'
-import { Goblet } from '@components/Icons/Goblet'
-import IconButton from '@mui/material/IconButton'
-import { DrawerHeader, Drawer } from './SideNav.styled'
 import { SideNav as SideNavConst } from '@constants/nav'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
 import { useSideNavToggle } from '@hooks/components/useSideNavToggle'
@@ -52,14 +46,7 @@ export const SideNav = (props:TSideNavProps) => {
   return (
     <ClickAwayListener onClickAway={onClickAway} >
       <Drawer className="side-nav-drawer" variant="permanent" open={open}>
-        <DrawerHeader className="side-nav-header" >
-          <Box className="side-nav-header-icon" >
-            <IconButton className="side-nav-header-icon-button" onClick={toggleDrawer} >
-              <Goblet />
-            </IconButton>
-          </Box>
-        </DrawerHeader>
-        <Divider />
+        <HeaderSpacer />
         <NavGroups
           {...props}
           open={open}

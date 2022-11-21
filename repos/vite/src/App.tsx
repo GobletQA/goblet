@@ -7,11 +7,11 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { Store } from '@store'
 import { Provider } from 'react-redux'
 import { initApp } from '@actions/init'
-import { AuthActive } from '@constants'
-import { createTheme } from '@theme/Theme'
+import { getTheme } from '@theme/theme'
 import { RootScreen } from 'src/screens/Root'
 import { Fadeout } from '@components/Fadeout'
 import { AppStyles } from '@components/AppStyles'
+import { AuthActive, ThemeType } from '@constants'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { ModalProvider } from '@contexts/ModalContext'
@@ -60,8 +60,8 @@ const App = () => {
   useWindowResize()
   const { start, apiTimeout } = useAppInit()
 
-  const [themeType, setThemeType] = useState<TThemeTypes>(`light`)
-  const theme = useMemo(() => createTheme(themeType) as TGobletTheme, [themeType])
+  const [themeType, setThemeType] = useState<TThemeTypes>(ThemeType)
+  const theme = useMemo(() => getTheme(themeType) as TGobletTheme, [themeType])
 
   return (
     <>
@@ -73,7 +73,7 @@ const App = () => {
             <RootScreen themeSwitch={setThemeType} />
             <ModalManager />
           </ModalProvider>
-          {AuthActive && (<Fadeout start={start} content={apiTimeout} />)}
+          {AuthActive && (<Fadeout speed={250} start={start} content={apiTimeout} />)}
         </ThemeProvider>
       </Provider>
     </>

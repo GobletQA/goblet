@@ -1,3 +1,4 @@
+import { TPaletteOpts } from '@types'
 import { Theme } from '@mui/material/styles'
 
 const fontCommon = {
@@ -6,10 +7,10 @@ const fontCommon = {
   fontWeightRegular: 500,
 }
 
-export const typography = (muiTheme:Theme) => {
-  
-  console.log(muiTheme.palette)
-  
+export const typography = (
+  muiTheme:Theme,
+  palette:TPaletteOpts
+) => {
   return {
     ...fontCommon,
     h1: {
@@ -49,17 +50,17 @@ export const typography = (muiTheme:Theme) => {
     subtitle1: {
       fontWeight: 500,
       fontSize: '0.875rem',
-      color: muiTheme.palette.grey[500]
+      color: palette.colors.grey04
     },
     subtitle2: {
       fontWeight: 400,
       fontSize: '0.75rem',
-      color: muiTheme.palette.grey[500]
+      color: palette.colors.grey04
     },
     caption: {
       fontWeight: 400,
       fontSize: '0.75rem',
-      color: muiTheme.palette.grey[300],
+      color: palette.colors.grey03,
     },
   }
 }

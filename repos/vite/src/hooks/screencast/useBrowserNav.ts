@@ -26,23 +26,28 @@ export const useBrowserNav = (props:THBrowserNav) => {
 
   const updateUrl = useCallback(async (newUrl:string|undefined, type:`input`|`forward`|`backward`) => {
     if(!newUrl || newUrl === url) return console.log(`New URL matches current URL. Ignoring request`)
-
     setNavLoading(true)
-    // Check if position is the last item in the history
-    // If not, reset the history starting from the current position
-    const newHist = position !== history.length - 1
-      ? [...history.slice(0, position + 1), newUrl]
-      : [...history, newUrl]
 
-    // Update the history position
-    setPosition(newHist.length - 1)
+    if(type === `input`){
+      // Check if position is the last item in the history
+      // If not, reset the history starting from the current position
+      const newHist = position !== history.length - 1
+        ? [...history.slice(0, position + 1), newUrl]
+        : [...history, newUrl]
 
-    // Update the history
-    setHistory(newHist)
+      // Update the history position
+      setPosition(newHist.length - 1)
 
-    // Update the url - TODO - Need to make call to API, to update on the server
-    setUrl(newUrl)
-    
+      // Update the history
+      setHistory(newHist)
+    }
+
+    // Update the url directly on the input
+    // And update the save state
+    inputRef.current && (inputRef.current.value = newUrl)
+    ;setUrl(newUrl)
+
+    // Finally, call the backend to update to the new url in the screencast browser
     await pageService.goto(newUrl)
 
     setNavLoading(false)
@@ -78,9 +83,8 @@ export const useBrowserNav = (props:THBrowserNav) => {
     setPosition(pos)
 
     // Get the url at the new history position
-    const newUrl = history[pos]
-
     // Update the browser URL
+    const newUrl = history[pos]
     updateUrl(newUrl, `backward`)
 
   }, [history, updateUrl, backButtonActive])
@@ -93,9 +97,8 @@ export const useBrowserNav = (props:THBrowserNav) => {
     setPosition(pos)
 
     // Get the url at the new history position
-    const newUrl = history[position]
-
     // Update the browser URL
+    const newUrl = history[pos]
     updateUrl(newUrl, `forward`)
 
   }, [history, forwardButtonActive])
@@ -107,6 +110,7 @@ export const useBrowserNav = (props:THBrowserNav) => {
   }, [])
 
   return {
+    url,
     setUrl,
     history,
     inputRef,

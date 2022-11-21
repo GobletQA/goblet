@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 
-import { IconButton } from '@components/Buttons/IconButton'
 import { useCallback } from "react"
+import { BrowserBtn } from './Browser.styled'
+import { IconButton } from '@components/Buttons/IconButton'
 
 export type TBrowserButton = ComponentProps<typeof IconButton>
 
@@ -14,24 +15,9 @@ export const BrowserButton = (props:TBrowserButton) => {
   }, [onKeyDown])
 
   return (
-    <IconButton
+    <BrowserBtn
       {...rest}
       onKeyDown={onKeyDownCB}
-      sx={[{
-        width: `28px`,
-        height: `28px`,
-        display: `flex`,
-        color: `#FFFFFF`,
-        borderRadius: `50%`,
-        placeItems: `center`,
-        fontFamily: `inherit`,
-        placeContent: `center`,
-        backgroundColor: `transparent`,
-        transition: `background 0.2s ease-in-out`,
-        [`&:disabled`]: {
-          color: `rgba(255, 255, 2555, 0.25)`
-        }
-      }]}
     />
   )
 }

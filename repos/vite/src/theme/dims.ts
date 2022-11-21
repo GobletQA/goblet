@@ -1,7 +1,7 @@
-const bNavH = 45
-const bUrlH = 40
+const bNavH = 35
+const bUrlH = 30
 const headerH = 40
-const divider = 10
+const divider = 1
 
 export const dims = {
   panel: {
@@ -10,6 +10,8 @@ export const dims = {
       wpx: `${divider}px`,
       height: divider,
       hpx: `${divider}px`,
+      hover: 3,
+      hvrpx: `3px`,
     }
   },
   header: {

@@ -7,7 +7,6 @@ import * as Icons from '@components/Icons'
 import { ScreenWrap } from './Root.styled'
 import { Header } from '@components/Header'
 import { asCallback } from '@utils/helpers'
-import { Footer } from '@components/Footer'
 import { SideNav } from '@components/SideNav'
 import { Fadeout } from '@components/Fadeout'
 import { useUser, useContainer } from '@store'
@@ -53,9 +52,8 @@ export default function Home(props:THomeProps) {
         }
       </ScreenWrap>
       <Box sx={{ display: 'flex' }}>
-        <Header settings={settings} />
         <SideNav />
-        <Footer />
+        <Header settings={settings} />
       </Box>
       {AuthActive && (<Fadeout start={fade} content={fadeContent} />)}
     </>

@@ -6,7 +6,7 @@ import { Settings } from './Settings'
 import Toolbar from '@mui/material/Toolbar'
 import { AppHeader } from './Header.styled'
 import { useStateReset } from '@hooks/useReset'
-
+import { HeaderLogo } from './HeaderLogo'
 
 type THeaderProps = {
   settings?: TSettingNavItem[]
@@ -25,6 +25,7 @@ export const Header = (props:THeaderProps) => {
   return (
     <AppHeader position="fixed">
       <Toolbar disableGutters>
+        <HeaderLogo />
         <Box sx={{ flex: 1 }} />
         <Settings
           settings={settings}

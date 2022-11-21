@@ -1,15 +1,8 @@
-
 import { useMemo } from 'react'
 import { useTheme } from './useTheme'
-import { getThemeColor } from '@utils/components/getThemeColor'
+import { getColor } from '@utils/theme/getColor'
 
-
-
-export const useColor = (light:string, dark:string) => {
+export const useColor = (light:string|number, dark:string|number) => {
   const theme = useTheme()
-  
-  return useMemo(() => {
-    
-  }, [light, dark])
-  
+  return useMemo(() => getColor(light, dark, theme), [light, dark])
 }

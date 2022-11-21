@@ -5,11 +5,28 @@ export const gobletColors = {
   monacoGray: `#ABB2BF`,
   royalPurple: `#785B9C`,
   honeyYellow: `#FFB601`,
-  shinyShamrock: `#61AB82`,
+  shamrock: `#61AB82`,
+  shinyShamrock: `#148F4B`
 }
 
 export const white = {
   white00: `#FFFFFF`,
+  // Need to validate
+  white04: `#CDCFD1`,
+}
+// #6B6C6E
+export const gray = {
+  gray00: `#FDFDFD`,
+  gray01: `#FAFAFA`,
+  gray02: `#F0F0F4`,
+  gray03: `#E4E6EB`,
+  gray04: `#DEE1E6`,
+  gray05: `#CED0D1`,
+  gray08: `#5F6368`,
+  // Need to validate
+  gray06: `#9E9E9E`,
+  gray07: `#757575`,
+  gray09: `#212121`,
 }
 
 export const black = {
@@ -20,6 +37,9 @@ export const black = {
   black04: `#272A32`,
   black05: `#282c34`,
   black06: `#323842`,
+  // Need to validate
+  black07: `#505050`,
+  black08: `#6B6C6E`,
 }
 
 export const fade = {
@@ -45,6 +65,7 @@ export const fade = {
 export const colors:TColors = {
   ...gobletColors,
   ...white,
+  ...gray,
   ...black,
   ...fade,
 }

@@ -21,6 +21,8 @@ export type TBrowserNav = {
   initialUrl: string
 }
 
+const iconStyle = { height: `18px`, width: `18px` }
+
 export const BrowserNav = (props:TBrowserNav) => {
   
   const { loading, initialUrl } = props
@@ -51,19 +53,19 @@ export const BrowserNav = (props:TBrowserNav) => {
             onClick={onGoBack}
             disabled={!backButtonActive}
           >
-            <ArrowBackIcon />
+            <ArrowBackIcon sx={iconStyle} />
           </BrowserButton>
           <BrowserButton
             onClick={onGoForward}
             disabled={!forwardButtonActive}
           >
-            <ArrowForwardIcon />
+            <ArrowForwardIcon sx={iconStyle} />
           </BrowserButton>
           <BrowserButton
             onClick={onReloadPage}
             disabled={loading || navLoading}
           >
-            {loading || navLoading ? <DangerousIcon /> : <CachedIcon />}
+            {loading || navLoading ? <DangerousIcon sx={iconStyle} /> : <CachedIcon sx={iconStyle} />}
           </BrowserButton>
         </Box>
         <BrowserInput

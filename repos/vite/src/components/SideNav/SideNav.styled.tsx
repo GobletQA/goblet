@@ -1,4 +1,5 @@
 import { dims } from '@theme'
+import Box from '@mui/material/Box'
 import MuiDrawer from '@mui/material/Drawer'
 import { styled, Theme, CSSObject } from '@mui/material/styles'
 
@@ -19,22 +20,15 @@ const closedMixin = (theme: Theme): CSSObject => {
         duration: theme.transitions.duration.leavingScreen,
       }),
       overflowX: 'hidden',
-      width: dims.nav.closedWidth
+      width: dims.nav.closedWidth,
     }
   )
 }
 
-export const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: theme.spacing(0, 1),
-  width: dims.nav.closedWidth,
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  minHeight: `${dims.header.hpx} !important`,
-}))
 
+export const HeaderSpacer = styled(Box)`
+  height: ${dims.header.hpx};
+`
 
 export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
