@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useTheme } from '@mui/material/styles'
+import { useTheme } from '@hooks/theme/useTheme'
 
 
 export const useColorMap = () => {

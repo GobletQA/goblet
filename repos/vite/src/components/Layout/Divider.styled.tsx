@@ -8,12 +8,12 @@ import {
 
 export const HDivider = styled(HorizontalDivider)({
   maxWidth: `10px`,
-  backgroundColor: colors.monacoFocus
+  backgroundColor: colors.black06
 })
 
 export const VDivider = styled(VerticalDivider)({
   maxHeight: `10px`,
-  backgroundColor: colors.monacoFocus,
+  backgroundColor: colors.black06,
 })
 
 

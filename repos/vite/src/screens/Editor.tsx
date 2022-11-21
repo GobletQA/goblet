@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { Layout } from '@components/Layout'
+import { colors } from '@theme'
 import { Builder } from '@components/Builder'
 import { CodeEditor } from '@components/CodeEditor'
 import { Definitions } from '@components/Definitions'
@@ -41,7 +42,7 @@ const RenderToggle = ({ onToggle, editorType }:TToggle) => {
           top: 0,
           right: 0,
           position: `absolute`,
-          backgroundColor: `#ffffff`
+          backgroundColor: colors.white00
         }}
         onClick={onToggle}
       >

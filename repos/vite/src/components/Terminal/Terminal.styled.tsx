@@ -35,9 +35,6 @@ export const HeaderTab = styled(Tab)(({ theme }) => (`
     color: ${colors.white00};
   }
 
-  &.Mui-focusVisible {
-    background-color: rgba(100, 95, 228, 0.32);
-  }
 `))
 
 export const TabCloseIcon = styled(CloseIcon)`
@@ -52,7 +49,7 @@ export const TerminalContainer = styled(Container)`
   min-height: 100%;
   align-items: stretch;
   flex-direction: column;
-  background-color: ${colors.backgroundDark};
+  background-color: ${colors.black02};
 `
 
 export const TerminalInput = styled(Box)`

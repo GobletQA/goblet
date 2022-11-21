@@ -10,7 +10,7 @@ export const BrowserNav = styled('nav')(({ theme }) => `
   place-content: center;
   height: ${dims.browser.nav.hpx};
   border-bottom: 1px solid rgba(0,0,0, 0.20);
-  background-color: ${colors.monacoBackground};
+  background-color: ${colors.black05};
 
   div:not(:first-of-type) {
     padding: 0 8px;
@@ -36,7 +36,7 @@ export const BrowserInput = styled('input')(({ theme }) => `
   font-family: inherit;
   letter-spacing: 0.2px;
   color: rgb(255, 255, 255);
-  background-color: ${colors.monacoBorder};
+  background-color: ${colors.black02};
 
   &:focus {
     outline: 2px solid rgb(138, 180, 248);

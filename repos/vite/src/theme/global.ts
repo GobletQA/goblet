@@ -5,20 +5,24 @@ export type TGlobalStyles = {
 }
 
 export const globalStyles = ({ theme }:TGlobalStyles) => {
+  const { palette, typography } = theme
   const { mode, common, primary } = theme.palette
 
   return `
+    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap');
+
     :root {
       color-scheme: light dark;
-      font-synthesis: none;
-      -webkit-text-size-adjust: 100%;
-      -moz-osx-font-smoothing: grayscale;
-      text-rendering: optimizeLegibility;
-      -webkit-font-smoothing: antialiased;
+      // font-synthesis: none;
+      // -webkit-text-size-adjust: 100%;
+      // -moz-osx-font-smoothing: grayscale;
+      // text-rendering: optimizeLegibility;
+      // -webkit-font-smoothing: antialiased;
     }
 
     body {
       overflow-x: hidden;
+      font-family: ${typography.fontFamily};
       background: ${mode === 'light' ? common.white : common.black};
     }
 

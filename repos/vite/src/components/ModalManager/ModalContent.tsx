@@ -1,7 +1,7 @@
 import type { TModal } from '@types'
 
 import { exists } from '@keg-hub/jsutils'
-import { useTheme } from '@mui/material/styles'
+import { useTheme } from '@hooks/theme/useTheme'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 

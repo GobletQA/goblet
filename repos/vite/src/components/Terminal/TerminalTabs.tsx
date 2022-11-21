@@ -2,8 +2,9 @@ import type { TTerminalTabs } from '@types'
 import type { ComponentProps } from 'react'
 import type Tabs from '@mui/material/Tabs'
 
-import { AddIcon, CloseIcon } from '@components/Icons'
 import Box from '@mui/material/Box'
+import { AddIcon } from '@components/Icons'
+import { useTheme } from '@hooks/theme/useTheme'
 import { TabsHeaderList, HeaderTab, TabCloseIcon } from './Terminal.styled'
 
 export type TerminalTabs = ComponentProps<typeof Tabs> & {
@@ -21,6 +22,12 @@ export const TerminalTabs = (props:TerminalTabs) => {
     onTabChange,
     ...rest
   } = props
+
+  const { palette } = useTheme()
+
+  const addColor = palette.mode === `light`
+    ? palette.colors.white00
+    : palette.colors.black01
 
   return (
     <Box
@@ -48,7 +55,7 @@ export const TerminalTabs = (props:TerminalTabs) => {
           icon={<AddIcon sx={{ fontSize: `12px` }} />}
           sx={{
             minWidth: `20px`,
-            color: `#ffffff`,
+            color: addColor,
           }}
         />
       </TabsHeaderList>

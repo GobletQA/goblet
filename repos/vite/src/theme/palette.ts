@@ -6,23 +6,34 @@ import { deepMerge } from '@keg-hub/jsutils'
 
 const commonPalette = {
   colors,
+  primary: {
+    main: colors.royalPurple,
+  },
   error: {
-    main: colors.error
+    main: colors.cardinal,
+  },
+  warning: {
+    main: colors.honeyYellow,
   },
   success: {
-    main: colors.success
-  }
+    main: colors.shinyShamrock,
+    contrastText: colors.white00,
+  },
+  info: {
+    main: colors.shinyShamrock,
+  },
 }
 
 const lightPalette = (muiTheme:Theme) => {
   return deepMerge(commonPalette, {
     mode: `light`,
-    background: {
-      default: colors.lightBackground,
-      paper: colors.lightPaper,
+    secondary: {
+      main: colors.black06,
+      contrastText: colors.white00,
     },
-    primary: {
-      main: colors.lightPrimary
+    background: {
+      default: colors.white00,
+      paper: colors.white00,
     },
   })
 }
@@ -30,12 +41,13 @@ const lightPalette = (muiTheme:Theme) => {
 const darkPalette = (muiTheme:Theme) => {
   return deepMerge(commonPalette, {
     mode: `dark`,
-    background: {
-      default: colors.darkBackground,
-      paper: colors.darkPaper,
+    secondary: {
+      main: colors.monacoGray,
+      contrastText: colors.black01,
     },
-    primary: {
-      main: colors.darkPrimary
+    background: {
+      default: colors.black02,
+      paper: colors.black02,
     },
   })
 }

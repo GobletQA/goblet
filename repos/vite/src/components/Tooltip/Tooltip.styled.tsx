@@ -9,7 +9,7 @@ export const MuiTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: colors.monacoFocus,
+    backgroundColor: colors.black06,
     boxShadow: theme.shadows[3],
     fontSize: 14,
   },
