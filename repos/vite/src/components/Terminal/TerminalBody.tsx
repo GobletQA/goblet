@@ -1,9 +1,8 @@
-import type { MutableRefObject } from 'react'
+
 import type { TTerminalTabs, TTerminalTab, TXTermRef } from '@types'
 
 import { useEffect } from 'react'
 import { TerminalInput } from './Terminal.styled'
-import { useXTerminal } from '@hooks/terminal/useXTerminal'
 
 export type TTerminalBody = {
   tabs:TTerminalTabs
@@ -21,13 +20,13 @@ const TerminalView = (props:TTerminalView) => {
 
   useEffect(() => {
     if(!termRef?.term) return
-    active && termRef.term.term.focus()
+    active && termRef.term.xterm.focus()
   }, [active, termRef])
 
   return (
     <TerminalInput
       ref={termRef.element}
-      className="terminal-component"
+      className="terminal-input"
       sx={{ display: !active ? `none` : `initial` }}
     />
   )

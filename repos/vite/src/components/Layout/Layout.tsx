@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react'
 
 import 'react-page-split/style.css'
-import { dims } from '@theme'
+import { dims, colors } from '@theme'
 import { Divider } from './Divider'
 import Container from '@mui/material/Container'
 import { Terminal } from '@components/Terminal'
@@ -36,7 +36,8 @@ const fullHeight = {
 }
 const noOverflow = {
   ...fullHeight,
-  overflow: `hidden`
+  overflow: `hidden`,
+  borderRight: `5px solid ${colors.black03}`
 }
 
 export type TLayout = {

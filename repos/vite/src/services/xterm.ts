@@ -44,7 +44,7 @@ export class XTerminal {
 
   id:string
   cmd:string=``
-  term:Terminal
+  xterm:Terminal
   fitAddon:FitAddon
   stdin:boolean=false
   promptText:string="❯ "
@@ -61,20 +61,20 @@ export class XTerminal {
     
     this.id = id
     
-    this.term = new Terminal(deepMerge(defTermOpts, rest))
+    this.xterm = new Terminal(deepMerge(defTermOpts, rest))
 
     this.fitAddon = new FitAddon()
-    this.term.loadAddon(this.fitAddon)
-    this.term.loadAddon(new WebLinksAddon())
+    this.xterm.loadAddon(this.fitAddon)
+    this.xterm.loadAddon(new WebLinksAddon())
 
     this.localEcho = new LocalEchoController()
 
-    this.term.loadAddon(this.localEcho)
+    this.xterm.loadAddon(this.localEcho)
 
-    this.term.open(element)
+    this.xterm.open(element)
     this.dispose = false
     this.resize()
-    setHistory(this.term, history)
+    setHistory(this.xterm, history)
     this.readInput()
   }
 
@@ -92,7 +92,6 @@ export class XTerminal {
           break
         }
         default: {
-          console.log(`------- input -------`)
           console.log(input)
           break
         }
@@ -109,7 +108,7 @@ export class XTerminal {
 
   private readInput = async ():Promise<void> => {
     if(isObj<IDisposable>(this.dispose)) this.dispose.dispose()
-    this.dispose = this.term.onKey(this.onKey.bind(this))
+    this.dispose = this.xterm.onKey(this.onKey.bind(this))
 
     const [err, input] = await limbo(this.localEcho.read(this.promptText))
     await this.onInput(input)
@@ -122,12 +121,12 @@ export class XTerminal {
 
   clear = () => {
     this.cmd = ``
-    this.term.clear()
+    this.xterm.clear()
   }
 
   remove = () => {
     if(isObj<IDisposable>(this.dispose)) this.dispose.dispose()
-    this?.term?.dispose?.()
+    this?.xterm?.dispose?.()
   }
 
 }

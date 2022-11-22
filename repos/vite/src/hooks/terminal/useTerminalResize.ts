@@ -1,8 +1,6 @@
-import type RFB from '@novnc/novnc/core/rfb'
 import type { MutableRefObject } from 'react'
 import type { TXTermIdMap, TXTerminal, TXTermRef } from '@types'
 
-import { useEffect } from 'react'
 import { WindowResizeEvt } from '@constants'
 import { useEffectOnce } from '../useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'

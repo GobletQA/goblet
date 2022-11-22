@@ -1,3 +1,5 @@
+const tTabH = 26
+const tHeaderH = 30
 const bNavH = 35
 const bUrlH = 30
 const headerH = 40
@@ -36,6 +38,17 @@ export const dims = {
     url: {
       height: bUrlH,
       hpx: `${bUrlH}px`,
+    }
+  },
+  terminal: {
+    header: {
+      height: tHeaderH,
+      hpx: `${tHeaderH}px`,
+    },
+    tab: {
+      height: tTabH,
+      hpx: `${tTabH}px`,
+      maxWpx: `125px`
     }
   }
 }

@@ -46,13 +46,5 @@ export const globalStyles = ({ theme }:TGlobalStyles) => {
     .react-page-split__divider:hover {
       background-color: ${primary.main} !important;
     }
-    
-    .terminal-component .terminal.xterm .xterm-screen .xterm-rows {
-      /* Padding not working. Terminal input goes off the screen */
-      /* max-width: 100%; */
-      /* max-height: 100%; */
-      /* padding-top: ${gutter.padding.tQpx}; */
-      /* padding-left: ${gutter.padding.tQpx}; */
-    }
   `
 }

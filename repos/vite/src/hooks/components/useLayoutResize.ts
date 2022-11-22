@@ -5,14 +5,31 @@ import type { ResizeMoveEvent } from 'react-page-split'
 import { useCallback, useRef } from 'react'
 
 import { get } from '@keg-hub/jsutils'
-import { VNCResizeEvt, VNCConnectedEvt, WindowResizeEvt } from '@constants'
 import { useEffectOnce } from '../useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import {
-  getPanels,
-  panelDimsFromCanvas,
-} from '@utils/components/panelHelpers'
+import { VNCResizeEvt, VNCConnectedEvt } from '@constants'
+import { getPanels, panelDimsFromCanvas } from '@utils/components/panelHelpers'
 
+
+const resizePanels = (
+  canvasRef:MutableRefObject<HTMLCanvasElement|null>,
+  lVPanelRef:MutableRefObject<HTMLDivElement|null>,
+  rVPanelRef:MutableRefObject<HTMLDivElement|null>
+) => {
+
+  const canvas = canvasRef.current
+  const tPanel = lVPanelRef.current
+  const bPanel = rVPanelRef.current
+
+  if(!tPanel || !bPanel || !canvas)
+    return console.warn(`Layout-Resize - Vertical Panel Refs not set`, tPanel, bPanel)
+
+  panelDimsFromCanvas({
+    tPanel,
+    bPanel,
+    canvas
+  })
+}
 
 export const useLayoutResize = () => {
 
@@ -20,44 +37,21 @@ export const useLayoutResize = () => {
   const lVPanelRef = useRef<HTMLDivElement|null>(null)
   const rVPanelRef = useRef<HTMLDivElement|null>(null)
   const canvasRef = useRef<HTMLCanvasElement|null>(null)
-  
-  const onResizeMove = useCallback((event:ResizeMoveEvent) => {
-    const canvas = canvasRef.current
-    const lPanel = lVPanelRef.current
-    const rPanel = rVPanelRef.current
 
-    if(!lPanel || !rPanel || !canvas) return console.warn(`Drag-Resize - Vertical Panel Refs not set`, lPanel, rPanel)
+  const onResizeMove = useCallback(() => resizePanels(canvasRef, lVPanelRef, rVPanelRef), [])
 
-    panelDimsFromCanvas({
-      lPanel,
-      rPanel,
-      canvas
-    })
-
-  }, [])
-
+  // Listen to external resize events, like window?
+  // Then resizes the panels
   useEffectOnce(() => {
-    EE.on<RFB>(VNCResizeEvt, (rfb) => {
-      const canvas = canvasRef.current
-      const lPanel = lVPanelRef.current
-      const rPanel = rVPanelRef.current
-
-      if(!lPanel || !rPanel || !canvas)
-        return console.warn(`Window-Resize - Vertical Panel Refs not set`, lPanel, rPanel)
-
-      panelDimsFromCanvas({
-        lPanel,
-        rPanel,
-        canvas
-      })
-
-    }, `vnc-layout-resize`)
+    EE.on<RFB>(VNCResizeEvt, () => resizePanels(canvasRef, lVPanelRef, rVPanelRef), `vnc-layout-resize`)
 
     return () => {
       EE.off<RFB>(VNCResizeEvt, `vnc-layout-resize`)
     }
   })
 
+  // Initial setup of the panel and canvas refs
+  // Without this the other hooks don't work 
   useEffectOnce(() => {
 
     EE.on<RFB>(VNCConnectedEvt, (rfb) => {
@@ -75,8 +69,8 @@ export const useLayoutResize = () => {
       
       panelDimsFromCanvas({
         canvas: canvasRef.current,
-        rPanel: rVPanelRef.current,
-        lPanel: lVPanelRef.current,
+        tPanel: lVPanelRef.current,
+        bPanel: rVPanelRef.current,
       })
 
     }, VNCConnectedEvt)

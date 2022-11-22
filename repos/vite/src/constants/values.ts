@@ -1,6 +1,7 @@
 import { toNum, toBool } from '@keg-hub/jsutils'
 
 export const ThemeType = `light`
+// export const ThemeType = `dark`
 
 // Get all allowed emails from the env
 export const AllowedUsers = (process.env.GB_GITHUB_AUTH_USERS || '').split(',')
@@ -20,6 +21,8 @@ export const GobletQAUrl = "https://www.gobletqa.com"
 export const GoogleSearchUrl = "https://www.google.com/search?igu=1&q="
 
 export const ResizePanelClass = `.react-page-split`
+export const ResizePanelVClass = `.react-page-split--vertical`
+export const ResizePanelSplitClass = `.react-page-split__panel`
 export const ScreencastBrowserSelector = `screencast-browser`
 
 // Only used in local environments

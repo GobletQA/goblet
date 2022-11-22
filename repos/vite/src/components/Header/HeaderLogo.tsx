@@ -1,6 +1,5 @@
 
 import { Goblet } from '@components/Icons/Goblet'
-import Typography from '@mui/material/Typography'
 import { LogoContainer, LogoBtn, LogoText } from './Header.styled'
 
 const gotoHome = () => {

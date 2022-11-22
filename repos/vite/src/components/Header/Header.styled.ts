@@ -2,9 +2,9 @@ import type { TGobletTheme } from '@types'
 
 import Box from '@mui/material/Box'
 import MuiMenu from '@mui/material/Menu'
+import { dims, gutter } from '@theme'
 import AppBar from '@mui/material/AppBar'
 import { styled } from '@mui/material/styles'
-import { dims, gutter, colors } from '@theme'
 import { getColor } from '@utils/theme/getColor'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -34,14 +34,19 @@ export const LogoContainer = styled(Box)`
   align-items: center;
 `
 export const LogoBtn = styled(IconButton)`
-  padding: 0px 15px;
-  border-radius: 0px;
   display: flex;
+  position: relative;
+  border-radius: 0px;
   align-items: center;
+  
+  & svg {
+    margin: 0px 6px;
+  }
 `
 
-export const LogoText = styled(Typography)`
+export const LogoText = styled(Typography)(({ theme }) => `
   font-size: 20px;
-  padding-left: 5px;
-  color: ${colors.royalPurple}
-` as typeof Typography
+  position: absolute;
+  left: 100%;
+  color: ${getColor(`colors.royalPurple`, `colors.white00`, theme)}
+`) as typeof Typography
