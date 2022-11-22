@@ -8,7 +8,6 @@ const definitions = () => {
         ...initialize(require('./kube')),
         ...initialize(require('./docker')),
         ...initialize(require('./devspace')),
-        ...initialize(require('./metadata')),
       }
     : {}
 }
@@ -17,6 +16,7 @@ module.exports = {
   ...definitions(),
   ...initialize(require('./bdd')),
   ...initialize(require('./unit')),
+  ...initialize(require('./metadata')),
   ...initialize(require('./waypoint')),
   ...initialize(require('./screencast')),
 }

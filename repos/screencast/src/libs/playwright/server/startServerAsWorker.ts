@@ -1,7 +1,7 @@
 import type { TBrowserConf } from '@GSC/types'
 
 import path from 'path'
-import { noOpObj } from '@keg-hub/jsutils'
+import { noOpObj, wait } from '@keg-hub/jsutils'
 import { checkServerPid } from './checkServerPid'
 import { ChildBrowserServerKey } from '@GSC/constants'
 import { getBrowserType } from '../helpers/getBrowserType'

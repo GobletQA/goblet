@@ -1,4 +1,4 @@
-import type { TTaskParams } from '../../types'
+import type { TTaskActionArgs, TTaskParams } from '../../types'
 
 import { clean as cleanTask } from './clean'
 import { getNpmToken } from '../../utils/envs'
@@ -8,7 +8,7 @@ import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
 import { getDeployments } from '../../utils/devspace/getDeployments'
 
 
-const setStartEnvs = (params) => {
+const setStartEnvs = (params:TTaskParams) => {
   const { install, pull, build } = params
 
   setPullPolicy(pull)
@@ -32,7 +32,7 @@ const setStartEnvs = (params) => {
  * Start devspace environment
  * @returns {void}
  */
-const startAct = async (args:TTaskParams) => {
+const startAct = async (args:TTaskActionArgs) => {
   const { params } = args
 
   // Extract the daemon flag so it doesn't impact other commands

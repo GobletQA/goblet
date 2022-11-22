@@ -22,7 +22,10 @@ const { startServerAsWorker } = require('@GSC/libs/playwright')
     case `all`: {
       startSockify(noOpObj)
       startVNC(noOpObj)
-      startServerAsWorker(noOpObj)
+      // Commenting this out for now as it's not working
+      // Only works when manually started
+      // Need to investigate
+      // startServerAsWorker(noOpObj)
       break
     }
     default: {

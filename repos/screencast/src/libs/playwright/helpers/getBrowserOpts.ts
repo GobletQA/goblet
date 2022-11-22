@@ -30,11 +30,12 @@ const options = {
       // `--window-position=0,0`,
       // Hides the top-bar header. Should validate this this is what we want
       `--window-position=0,-74`,
-      `--app`,
+
+      // `--app`,
       // `--no-first-run`,
       `--start-fullscreen`,
       // `--dark-mode-settings`,
-      `--kiosk`,
+      // `--kiosk`,
       `--start-maximized`,
       // `--allow-insecure-localhost`,
       // `--unsafely-treat-insecure-origin-as-secure`,
