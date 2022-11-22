@@ -3,7 +3,7 @@ import type { TTerminalTabs, TTerminalTab, TXTermRef } from '@types'
 
 import { useEffect } from 'react'
 import { TerminalInput } from './Terminal.styled'
-import { useXTerminal } from '@hooks/services/useXTerminal'
+import { useXTerminal } from '@hooks/terminal/useXTerminal'
 
 export type TTerminalBody = {
   tabs:TTerminalTabs

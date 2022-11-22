@@ -1,6 +1,6 @@
 import type { MutableRefObject, SyntheticEvent } from 'react'
 
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
 import { Environment } from '@constants'
 import { useVncResize } from './useVncResize'
@@ -30,23 +30,30 @@ export const useVncHandlers = (props:TVncHandlers) => {
     return () => Environment !== `local` && disconnect?.()
   })
 
+  const focusElRef = useRef<HTMLElement| null>(null)
+
   const onClick = useCallback(() => {
     rfb?.current?.focus()
   }, [])
 
   const onMouseLeave = useCallback(() => {
+    // Blur the browser element
     rfb?.current?.blur()
+    // Refocus the previous element if one exists
+    focusElRef?.current?.focus()
+    // Unset the element, it's no longer needed
+    focusElRef.current = null
   }, [])
 
   const onMouseEnter = useCallback((event:SyntheticEvent) => {
-    document.activeElement
-      && document.activeElement instanceof HTMLElement
-      && document.activeElement.blur()
+    // Find the currently focused element
+    const focused = (document.querySelector(`:focus`) || document?.activeElement) as HTMLElement
+    // Blur it, and store it for later
+    focused?.blur?.()
+    focusElRef.current = focused
 
     onClick()
   }, [onClick])
-
-  
 
   return {
     onClick,

@@ -3,9 +3,8 @@ import type { ComponentProps } from 'react'
 import type Tabs from '@mui/material/Tabs'
 
 import Box from '@mui/material/Box'
-import { AddIcon } from '@components/Icons'
 import { useTheme } from '@hooks/theme/useTheme'
-import { TabsHeaderList, HeaderTab, TabCloseIcon } from './Terminal.styled'
+import { TabsHeaderList, HeaderTab, TabCloseIcon, TabAddIcon } from './Terminal.styled'
 
 export type TerminalTabs = ComponentProps<typeof Tabs> & {
   active:number
@@ -46,13 +45,18 @@ export const TerminalTabs = (props:TerminalTabs) => {
               value={idx}
               key={tab.id}
               label={tab.name || `terminal-${idx}`}
-              icon={(<TabCloseIcon onClick={event => onTabClose(event, tab.id)} />)}
+              icon={(
+                <TabCloseIcon
+                  className='terminal-tab-close-icon'
+                  onClick={event => onTabClose(event, tab.id)}
+                />
+              )}
             />
           )
         })}
         <HeaderTab
           value={`+`}
-          icon={<AddIcon sx={{ fontSize: `12px` }} />}
+          icon={<TabAddIcon className='terminal-tab-add-icon' />}
           sx={{
             minWidth: `20px`,
             color: addColor,

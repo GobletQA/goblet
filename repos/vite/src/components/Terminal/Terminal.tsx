@@ -5,7 +5,9 @@ import { useTerminal } from '@store'
 import { TerminalBody } from './TerminalBody'
 import { TerminalHeader } from './TerminalHeader'
 import { TerminalContainer } from './Terminal.styled'
-import { useXTerminal } from '@hooks/services/useXTerminal'
+import { useXTerminal } from '@hooks/terminal/useXTerminal'
+import { useTerminalResize } from '@hooks/terminal/useTerminalResize'
+
 
 export type TTerminalProps = {
   sx?:CSSProperties
@@ -15,6 +17,8 @@ export const Terminal = (props:TTerminalProps) => {
   const { tabs, active } = useTerminal()
   const activeTab = tabs[active] || tabs[0]
   const [termRef, terminals] = useXTerminal(activeTab)
+
+  useTerminalResize({ terminals })
 
   return (
     <TerminalContainer

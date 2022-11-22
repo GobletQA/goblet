@@ -1,5 +1,5 @@
 import type { TTerminalTabs, TXTermIdMap } from '@types'
-import type { SyntheticEvent } from 'react'
+import type { MutableRefObject, SyntheticEvent } from 'react'
 
 import { useCallback } from 'react'
 import { terminalDispatch } from '@store'
@@ -8,7 +8,7 @@ import { TerminalTabs } from './TerminalTabs'
 export type TerminalHeader = {
   active:number
   tabs:TTerminalTabs
-  terminals: TXTermIdMap
+  terminals: MutableRefObject<TXTermIdMap>
 }
 
 export const TerminalHeader = (props:TerminalHeader) => {
@@ -26,7 +26,7 @@ export const TerminalHeader = (props:TerminalHeader) => {
     evt?.preventDefault()
     evt?.stopPropagation()
 
-    terminals?.[tabId]?.remove?.()
+    terminals?.current?.[tabId]?.remove?.()
     terminalDispatch.remove(tabId)
 
   }, [active, tabs, terminals])
@@ -38,6 +38,7 @@ export const TerminalHeader = (props:TerminalHeader) => {
         active={active}
         onTabClose={onClose}
         onTabChange={onChange}
+        className='terminal-header-tabs'
         TabIndicatorProps={{ children: <span className="MuiTabs-indicator" /> }}
       />
     </>

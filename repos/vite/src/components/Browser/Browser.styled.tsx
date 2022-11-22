@@ -37,7 +37,7 @@ export const BrowserInput = styled('input')(({ theme }) => `
   border-radius: 18px;
   font-family: inherit;
   letter-spacing: 0.2px;
-  color: ${getColor(colors.black04, colors.white00, theme)};
+  color: ${getColor(colors.black06, colors.white00, theme)};
   background-color: ${getColor(colors.gray04, colors.black02, theme)};
 
   &:focus {
@@ -45,7 +45,8 @@ export const BrowserInput = styled('input')(({ theme }) => `
   }
 `)
 
-export const BrowserContainer = styled(Box)`
+export const BrowserContainer = styled(Box)(({ theme }) => `
+  padding-top: 2px;
   width: 100%;
   height: 100%;
   flex-grow: 1;
@@ -54,7 +55,8 @@ export const BrowserContainer = styled(Box)`
   flex-basis: auto;
   position: relative;
   box-sizing: border-box;
-`
+  background-color: ${getColor(colors.gray02, colors.black05, theme)};
+`)
 
 export const BrowserViewContainer = styled(Box)`
   display: flex;
@@ -87,9 +89,9 @@ export const BrowserBtn = styled(IconButton)(({ theme }) => `
   place-content: center;
   background-color: transparent;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-  color: ${getColor(colors.gray08, colors.white00, theme)};
+  color: ${getColor(colors.gray07, colors.white00, theme)};
 
   &:disabled: {
-    color: ${colors.fade25};
+    color: ${colors.fadeLight25};
   }
 `)

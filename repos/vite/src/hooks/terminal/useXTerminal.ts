@@ -1,3 +1,4 @@
+import type { MutableRefObject } from 'react'
 import type { TXTermIdMap, TXTerminal, TXTermRef } from '@types'
 
 import { useEffect, useRef } from 'react'
@@ -32,5 +33,5 @@ export const useXTerminal = (props:Partial<TXTerminal>=noOpObj, id?:string) => {
 
   const activeRef = termRefs.current[termId] || { element: termElRef }
 
-  return [activeRef, termRefs.current] as [TXTermRef, TXTermIdMap]
+  return [activeRef, termRefs] as [TXTermRef, MutableRefObject<TXTermIdMap>]
 }

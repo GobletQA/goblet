@@ -1,13 +1,9 @@
-import type { TThrottle } from '@types'
 import type RFB from '@novnc/novnc/core/rfb'
 import type { MutableRefObject } from 'react'
 
 import { useEffect } from 'react'
-import { VNCConnectedEvt } from '@constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { throttleLast as jsThrottle } from '@keg-hub/jsutils'
-
-const throttle = jsThrottle as TThrottle
+import { VNCResizeEvt, WindowResizeEvt } from '@constants'
 
 export type THScreenResize = {
   rfb:MutableRefObject<RFB | null>
@@ -17,10 +13,11 @@ export const useVncResize = (props:THScreenResize) => {
   const { rfb } = props
 
   useEffect(() => {
-    const onResize = throttle(() => EE.emit(VNCConnectedEvt, rfb.current), null, 500)
+    // On a window resize event, emit a VNC connected event to reset the browser
+    EE.on(WindowResizeEvt, () => EE.emit(VNCResizeEvt, rfb.current), `vnc-resize`)
 
-    window.addEventListener('resize', onResize)
-
-    return () => window.removeEventListener('resize', onResize)
+    return () => {
+      EE.off(WindowResizeEvt, `vnc-resize`)
+    }
   }, [])
 }
