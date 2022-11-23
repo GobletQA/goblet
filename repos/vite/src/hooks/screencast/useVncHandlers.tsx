@@ -13,6 +13,11 @@ export type TVncHandlers = {
   rfb:MutableRefObject<RFB | null>
 }
 
+const noFocusOverrideClasses = [
+  `browser-nav-input`,
+  `xterm-helper-textarea`
+] 
+
 export const useVncHandlers = (props:TVncHandlers) => {
 
   const {
@@ -48,6 +53,10 @@ export const useVncHandlers = (props:TVncHandlers) => {
   const onMouseEnter = useCallback((event:SyntheticEvent) => {
     // Find the currently focused element
     const focused = (document.querySelector(`:focus`) || document?.activeElement) as HTMLElement
+
+    const skipFocus = noFocusOverrideClasses.find(cls => focused?.classList?.contains(cls))
+    if(skipFocus) return
+
     // Blur it, and store it for later
     focused?.blur?.()
     focusElRef.current = focused

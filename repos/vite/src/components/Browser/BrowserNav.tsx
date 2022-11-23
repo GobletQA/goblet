@@ -80,9 +80,9 @@ export const BrowserNav = (props:TBrowserNav) => {
           type="text"
           ref={inputRef}
           enterKeyHint="go"
-          className='nav-input'
           onKeyDown={onKeyDown}
           defaultValue={initialUrl}
+          className='browser-nav-input'
           onFocusCapture={() => inputRef.current?.select()}
         />
         
