@@ -1,5 +1,3 @@
-
-import type { TThemeTypes } from '@types'
 import type { ReactNode, Component } from 'react'
 import type { RouteObject } from 'react-router-dom'
 

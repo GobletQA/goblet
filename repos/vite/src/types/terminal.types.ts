@@ -1,6 +1,7 @@
-import type { LogLevel } from 'xterm'
+import type { LogLevel, ITheme } from 'xterm'
 import type { MutableRefObject } from 'react'
 import type { XTerminal } from '@services/xterm'
+import type { EThemeType } from './theme.types'
 
 export type TTerminalTab = {
   id: string
@@ -16,6 +17,7 @@ export type TXTerminal = {
   history?:string[]
   element: HTMLElement
 
+  theme?: ITheme
   fontSize?: number
   logLevel?: LogLevel
   disableStdin?: boolean
@@ -30,6 +32,7 @@ export type TEventData = {
 export type TXTermRef = {
   term: XTerminal
   remove?: () => void
+  themeMode: EThemeType
   element: MutableRefObject<HTMLDivElement|null>
 }
 

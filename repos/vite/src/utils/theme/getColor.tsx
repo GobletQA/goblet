@@ -2,6 +2,7 @@ import type { TGobletTheme } from '@types'
 import type { Theme } from '@mui/material/styles'
 
 import { getTheme } from '@theme'
+import { EThemeType } from '@types'
 import { get } from '@keg-hub/jsutils'
 
 export const getColor = <T=string>(
@@ -13,5 +14,5 @@ export const getColor = <T=string>(
   const lColor = get(palette, `${light}`, light)
   const dColor = get(palette, `${dark}`, dark)
 
-  return (palette.mode === `light` ? lColor || dColor : dColor || lColor) as T
+  return (palette.mode === EThemeType.light ? lColor || dColor : dColor || lColor) as T
 }

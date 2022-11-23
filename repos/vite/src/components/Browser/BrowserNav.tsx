@@ -1,10 +1,9 @@
-import type { MutableRefObject } from 'react'
-
-import { useCallback } from 'react'
+import { gutter } from '@theme'
 import Box from '@mui/material/Box'
 import { BrowserButton } from './BrowserButton'
 import {
   CachedIcon,
+  RestartIcon,
   DangerousIcon,
   ArrowBackIcon,
   ArrowForwardIcon
@@ -15,13 +14,18 @@ import {
 } from './Browser.styled'
 import { useBrowserNav } from '@hooks/screencast/useBrowserNav'
 
-
 export type TBrowserNav = {
   loading: boolean
   initialUrl: string
 }
 
-const iconStyle = { height: `18px`, width: `18px` }
+const styles = {
+  icon: { height: `18px`, width: `18px` },
+  reconnect: {
+    marginLeft: gutter.margin.qpx,
+    marginRight: gutter.margin.hpx
+  }
+}
 
 export const BrowserNav = (props:TBrowserNav) => {
   
@@ -31,6 +35,7 @@ export const BrowserNav = (props:TBrowserNav) => {
     onGoBack,
     onKeyDown,
     navLoading,
+    onReconnect,
     onGoForward,
     onReloadPage,
     backButtonActive,
@@ -51,21 +56,24 @@ export const BrowserNav = (props:TBrowserNav) => {
         >
           <BrowserButton
             onClick={onGoBack}
+            tooltip='Click to go back'
             disabled={!backButtonActive}
           >
-            <ArrowBackIcon sx={iconStyle} />
+            <ArrowBackIcon sx={styles.icon} />
           </BrowserButton>
           <BrowserButton
             onClick={onGoForward}
+            tooltip='Click to go forward'
             disabled={!forwardButtonActive}
           >
-            <ArrowForwardIcon sx={iconStyle} />
+            <ArrowForwardIcon sx={styles.icon} />
           </BrowserButton>
           <BrowserButton
             onClick={onReloadPage}
+            tooltip='Reload this page'
             disabled={loading || navLoading}
           >
-            {loading || navLoading ? <DangerousIcon sx={iconStyle} /> : <CachedIcon sx={iconStyle} />}
+            {loading || navLoading ? <DangerousIcon sx={styles.icon} /> : <CachedIcon sx={styles.icon} />}
           </BrowserButton>
         </Box>
         <BrowserInput
@@ -77,6 +85,14 @@ export const BrowserNav = (props:TBrowserNav) => {
           defaultValue={initialUrl}
           onFocusCapture={() => inputRef.current?.select()}
         />
+        
+        <BrowserButton
+          sx={styles.reconnect}
+          onClick={onReconnect}
+          tooltip='Click to reconnect'
+        >
+          <RestartIcon sx={styles.icon} />
+        </BrowserButton>
       </BrowserNavComp>
   )
   

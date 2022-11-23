@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
 import { XTerminal } from '@services/xterm'
 import { useEffectOnce } from '@hooks/useEffectOnce'
+import { useTerminalTheme } from './useTerminalTheme'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { PanelDimsSetEvt, ResizePanelSplitClass } from '@constants'
 
@@ -34,6 +35,7 @@ export const useXTerminal = (props:Partial<TXTerminal>=noOpObj, id?:string) => {
   const termId:string = id || props.id || ``
   const termRefs = useRef<TXTermIdMap>({} as TXTermIdMap)
 
+  const terminalTheme = useTerminalTheme()
   const existing = termRefs.current?.[termId]?.element
   const termElRef = useRef<HTMLDivElement|null>(existing?.current || null)
 
@@ -55,10 +57,12 @@ export const useXTerminal = (props:Partial<TXTerminal>=noOpObj, id?:string) => {
 
     termRefs.current[termId] = {
       element: termElRef,
+      themeMode: terminalTheme.mode,
       term: new XTerminal({
         ...props,
         id: termId,
-        element: termElRef.current
+        element: termElRef.current,
+        theme: terminalTheme?.theme,
       }),
       remove: () => {
         termRefs.current[termId]
@@ -70,7 +74,20 @@ export const useXTerminal = (props:Partial<TXTerminal>=noOpObj, id?:string) => {
 
     setTerminalElement(termRefs.current[termId].term)
 
-  }, [props, termId])
+  }, [props, termId, terminalTheme])
+
+
+  useEffect(() => {
+
+    Object.values(termRefs.current)
+      .forEach(termRef => {
+        termRef.themeMode !== terminalTheme.mode
+          && termRef.term.setOption(`theme`, terminalTheme.theme)
+      })
+
+  }, [terminalTheme.mode])
+  
+  
 
   const activeRef = termRefs.current[termId] || { element: termElRef }
 

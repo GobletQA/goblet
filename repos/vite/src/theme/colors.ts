@@ -6,7 +6,8 @@ export const gobletColors = {
   royalPurple: `#785B9C`,
   honeyYellow: `#FFB601`,
   shamrock: `#61AB82`,
-  shinyShamrock: `#148F4B`
+  shinyShamrock: `#148F4B`,
+  terminalBlack: `#1f1d27`,
 }
 
 export const white = {

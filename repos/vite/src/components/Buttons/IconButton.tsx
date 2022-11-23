@@ -1,11 +1,12 @@
-import type { ComponentProps, ComponentType } from 'react'
+import type { ForwardedRef, ComponentProps, ComponentType } from 'react'
 import MuiIconBtn from '@mui/material/IconButton'
+import { forwardRef } from 'react'
 
 export type TIconButton = ComponentProps<typeof MuiIconBtn> & {
   Icon?: ComponentType<any>
 }
 
-export const IconButton = (props:TIconButton) => {
+export const IconButton = forwardRef((props:TIconButton, ref:ForwardedRef<HTMLButtonElement>) => {
   const {
     Icon,
      children,
@@ -13,8 +14,8 @@ export const IconButton = (props:TIconButton) => {
   } = props
 
   return (
-    <MuiIconBtn {...rest} >
+    <MuiIconBtn ref={ref} {...rest} >
       {Icon ? <Icon /> : children}
     </MuiIconBtn>
   )
-}
+})

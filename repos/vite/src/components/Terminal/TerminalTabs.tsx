@@ -56,6 +56,7 @@ export const TerminalTabs = (props:TerminalTabs) => {
         })}
         <HeaderTab
           value={`+`}
+          className='terminal-add-tab'
           icon={<TabAddIcon className='terminal-tab-add-icon' />}
           sx={{
             minWidth: `20px`,

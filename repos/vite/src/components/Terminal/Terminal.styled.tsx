@@ -37,13 +37,9 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
       color: ${getColor(`colors.fadeLight90`, `colors.fadeLight90`, theme)};
     }
 
-    & .terminal-tab-close-icon:hover {
+    & .terminal-tab-close-icon {
       color: ${colors.cardinal};
     }
-    & .terminal-tab-add-icon:hover {
-      color: ${colors.shamrock};
-    }
-    
   `
 
   return `
@@ -62,7 +58,7 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
     font-weight: ${theme.typography.fontWeightRegular};
     transition: background-color 200ms ease, color 200ms ease;
     color: ${getColor(`colors.fadeDark45`, `colors.fadeLight55`, theme)};
-    background-color: ${getColor(`colors.gray04`, `colors.fadeDark65`, theme)};
+    background-color: ${getColor(`colors.gray04`, `colors.fadeDark55`, theme)};
 
     &.Mui-selected {
       font-weight: ${theme.typography.fontWeightBold};
@@ -71,11 +67,17 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
 
     &:hover {
       ${shared}
+
+      .terminal-tab-add-icon {
+        color: ${colors.shamrock};
+      }
     }
 `
 })
 
 export const TabAddIcon = styled(AddIcon)(({ theme }) => `
+  width: 15px;
+  height: 15px;
   font-size: 12px;
   color: ${getColor(`colors.fadeDark45`, `colors.fadeLight55`, theme)};
 `)
@@ -92,6 +94,5 @@ export const TerminalInput = styled(Box)(({ theme }) => `
   width: 100%;
   flex-grow: 1;
   overflow: hidden;
-  /* background-color: ${getColor(`colors.gray01`, `colors.black00`, theme)}; */
   background-color: ${getColor(`colors.black00`, `colors.black00`, theme)};
 `)

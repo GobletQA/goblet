@@ -1,7 +1,8 @@
+import { EThemeType } from '@types'
 import { toNum, toBool } from '@keg-hub/jsutils'
 
-export const ThemeType = `light`
-// export const ThemeType = `dark`
+export const ThemeType = EThemeType.light
+// export const ThemeType = EThemeType.dark
 
 // Get all allowed emails from the env
 export const AllowedUsers = (process.env.GB_GITHUB_AUTH_USERS || '').split(',')

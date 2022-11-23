@@ -109,6 +109,10 @@ export const useBrowserNav = (props:THBrowserNav) => {
     setNavLoading(false)
   }, [])
 
+  const onReconnect = useCallback(async () => {
+    console.log(`------- TODO: reconnect the browser -------`)
+  }, [])
+
   return {
     url,
     setUrl,
@@ -120,6 +124,7 @@ export const useBrowserNav = (props:THBrowserNav) => {
     navLoading,
     onGoForward,
     onChangeUrl,
+    onReconnect,
     onReloadPage,
     backButtonActive,
     forwardButtonActive

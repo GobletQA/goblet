@@ -5,12 +5,18 @@ import { styled } from '@mui/material/styles'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 
 
-export const MuiTooltip = styled(({ className, ...props }: TooltipProps) => (
+export type TTooltipProps = TooltipProps & {
+  fontSize?: string
+}
+
+
+
+export const MuiTooltip = styled(({ className, fontSize, ...props }: TTooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
+))(({ theme, fontSize=14 }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: colors.black06,
+    fontSize,
     boxShadow: theme.shadows[3],
-    fontSize: 14,
+    backgroundColor: colors.black06,
   },
 }))

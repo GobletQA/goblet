@@ -5,6 +5,8 @@ export const gutter = {
   padding: {
     none: `0px`,
     size: paddingSize,
+    q: paddingSize / 4,
+    qpx: `${paddingSize / 4}px`,
     px: `${paddingSize}px`,
     half: paddingSize / 2,
     hpx: `${paddingSize / 2}px`,
@@ -16,6 +18,8 @@ export const gutter = {
   margin: {
     none: `0px`,
     size: marginSize,
+    q: marginSize / 4,
+    qpx: `${marginSize / 4}px`,
     px: `${marginSize}px`,
     half: marginSize / 2,
     hpx: `${marginSize / 2}px`,

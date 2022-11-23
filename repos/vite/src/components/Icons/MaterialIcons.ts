@@ -1,4 +1,3 @@
-import Steps from '@mui/icons-material/RouteOutlined'
 import RuleCheck from '@mui/icons-material/RuleOutlined'
 import MapPoint from '@mui/icons-material/PlaceOutlined'
 import Globe from '@mui/icons-material/LanguageOutlined'
@@ -34,9 +33,11 @@ import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
 import DarkModeIcon from '@mui/icons-material/DarkModeOutlined'
 import LightModeIcon from '@mui/icons-material/LightModeOutlined'
+import FileTreeIcon from '@mui/icons-material/AccountTreeOutlined'
+import FeaturesIcon from '@mui/icons-material/OutlinedFlagRounded'
+import RestartIcon from '@mui/icons-material/SettingsBackupRestoreOutlined'
 
 export {
-  Steps,
   Globe,
   Picture,
   MapPoint,
@@ -71,5 +72,8 @@ export {
   AddIcon,
   CloseIcon,
   DarkModeIcon,
-  LightModeIcon
+  LightModeIcon,
+  FileTreeIcon,
+  RestartIcon,
+  FeaturesIcon
 }

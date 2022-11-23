@@ -8,12 +8,10 @@ export type TExtPalette = {
 
 export type TPaletteOpts = PaletteOptions & TExtPalette
 
-export type TThemeTypes = 'dark' | 'light'
 export enum EThemeType {
   dark = 'dark',
   light = 'light'
 }
-
 
 export type TColors = Record<string, string>
 

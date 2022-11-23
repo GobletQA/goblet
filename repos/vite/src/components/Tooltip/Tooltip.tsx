@@ -1,4 +1,3 @@
-import type { CSSObj } from '@types'
 import type { ComponentProps } from 'react'
 import { MuiTooltip } from './Tooltip.styled'
 
@@ -17,8 +16,6 @@ export type TTooltip = ComponentProps<typeof MuiTooltip> & {
     | 'top-start'
     | 'top'
 }
-
-
 
 export const Tooltip = (props:TTooltip) => {
   const {

@@ -1,5 +1,5 @@
 import type { TXTerminal, TEventData } from '@types'
-import type { IDisposable } from 'xterm'
+import type { IDisposable, ITerminalOptions } from 'xterm'
 
 import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
@@ -122,6 +122,11 @@ export class XTerminal {
   clear = () => {
     this.cmd = ``
     this.xterm.clear()
+  }
+
+  setOption = (name:keyof ITerminalOptions, value:any) => {
+    this?.xterm?.options
+      && (this.xterm.options = { [name]: value })
   }
 
   remove = () => {
