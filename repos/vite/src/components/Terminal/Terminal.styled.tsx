@@ -7,10 +7,12 @@ import { styled } from '@mui/material/styles'
 import { CloseIcon } from '@components/Icons'
 import Container from '@mui/material/Container'
 import { getColor } from '@utils/theme/getColor'
+import { IconButton } from '@components/Buttons/IconButton'
 
 export const TerminalContainer = styled(Container)(({ theme }) => `
   display: flex;
   min-height: 100%;
+  position: relative;
   align-items: stretch;
   flex-direction: column;
   background-color: ${getColor(`colors.gray01`, `colors.black05`, theme)};
@@ -48,8 +50,8 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
     padding: 0px 10px;
     text-transform: none;
     flex-direction: row-reverse;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    // border-top-left-radius: 8px;
+    // border-top-right-radius: 8px;
     justify-content: space-between;
     max-height: ${dims.terminal.tab.hpx};
     min-height: ${dims.terminal.tab.hpx};
@@ -88,6 +90,17 @@ export const TabCloseIcon = styled(CloseIcon)(({ theme }) => `
   margin-left: 10px;
   position: relative;
   color: ${getColor(`colors.fadeDark45`, `colors.fadeLight55`, theme)};
+`)
+
+export const TerminalExpandBtn = styled(IconButton)(({ theme }) => `
+  width: 48px;
+  display: flex;
+  border-radius: 0px;
+  place-items: center;
+  font-family: inherit;
+  place-content: center;
+  background-color: transparent;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 `)
 
 export const TerminalInput = styled(Box)(({ theme }) => `

@@ -3,12 +3,19 @@ import type { MutableRefObject } from 'react'
 import type { ResizeMoveEvent } from 'react-page-split'
 
 import { useCallback, useRef } from 'react'
-
 import { get } from '@keg-hub/jsutils'
 import { useEffectOnce } from '../useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { VNCResizeEvt, VNCConnectedEvt } from '@constants'
-import { getPanels, panelDimsFromCanvas, parentDimsFromCanvas } from '@utils/components/panelHelpers'
+import {
+  getPanels,
+  panelDimsFromCanvas,
+  parentDimsFromCanvas
+} from '@utils/components/panelHelpers'
+import {
+  VNCResizeEvt,
+  VNCConnectedEvt,
+  TerminalExpandEvt
+} from '@constants'
 
 
 const resizeRightPanels = (
@@ -63,7 +70,11 @@ export const useLayoutResize = () => {
   const lPPanelRef = useRef<HTMLDivElement|null>(null)
   const canvasRef = useRef<HTMLCanvasElement|null>(null)
 
-  const onHorResizeMove = useCallback(() => resizeRightPanels(canvasRef, lVPanelRef, rVPanelRef), [])
+  const onHorResizeMove = useCallback(
+    () => resizeRightPanels(canvasRef, lVPanelRef, rVPanelRef),
+    []
+  )
+
   const onVerResizeMove = useCallback(
     () => resizeLeftPanel(lPPanelRef, canvasRef, lVPanelRef, rVPanelRef),
     []
@@ -83,6 +94,8 @@ export const useLayoutResize = () => {
   // Without this the other hooks don't work 
   useEffectOnce(() => {
 
+    // When the VNC service connects, get the browser canvas
+    // And use it to resize the panels relative to it
     EE.on<RFB>(VNCConnectedEvt, (rfb) => {
       canvasRef.current = get<HTMLCanvasElement>(rfb, `_canvas`)
       const panels = getPanels(parentElRef.current)
@@ -105,7 +118,17 @@ export const useLayoutResize = () => {
 
     }, VNCConnectedEvt)
 
+
+    // Listen for when the terminal should be expanded to full height
+    EE.on(TerminalExpandEvt, (expanded) => {
+      // TODO: update the right panels to expand the bottom terminal panel
+      console.log(`------- expand bottom terminal panel -------`)
+
+    }, TerminalExpandEvt)
+
+
     return () => {
+      EE.off(TerminalExpandEvt, TerminalExpandEvt)
       EE.off<RFB>(VNCConnectedEvt, VNCConnectedEvt)
     }
 

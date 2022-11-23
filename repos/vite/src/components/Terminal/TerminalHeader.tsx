@@ -1,9 +1,14 @@
 import type { TTerminalTabs, TXTermIdMap } from '@types'
 import type { MutableRefObject, SyntheticEvent } from 'react'
 
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
+import Box from '@mui/material/Box'
 import { terminalDispatch } from '@store'
 import { TerminalTabs } from './TerminalTabs'
+import { TerminalExpandEvt } from '@constants'
+import { TerminalExpandBtn } from './Terminal.styled'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { ChevronUpIcon, ChevronDownIcon } from '@components/Icons'
 
 export type TerminalHeader = {
   active:number
@@ -12,8 +17,8 @@ export type TerminalHeader = {
 }
 
 export const TerminalHeader = (props:TerminalHeader) => {
-
   const { active, tabs, terminals } = props
+  const [expanded, setExpanded] = useState<boolean>(false)
 
   const onChange = useCallback((evt:SyntheticEvent, value:`+`|number) => {
     value === `+`
@@ -21,6 +26,11 @@ export const TerminalHeader = (props:TerminalHeader) => {
       : terminalDispatch.setActive(value)
 
   }, [active, tabs])
+
+  const onExpand = useCallback(() => {
+    EE.emit<boolean>(TerminalExpandEvt, !expanded)
+    setExpanded(!expanded)
+  }, [expanded])
 
   const onClose = useCallback((evt:SyntheticEvent, tabId:string) => {
     evt?.preventDefault()
@@ -41,6 +51,17 @@ export const TerminalHeader = (props:TerminalHeader) => {
         className='terminal-header-tabs'
         TabIndicatorProps={{ children: <span className="MuiTabs-indicator" /> }}
       />
+      <Box
+        right="0px"
+        height="30px"
+        display='flex'
+        position='absolute'
+        justifyContent='end'
+      >
+        <TerminalExpandBtn onClick={onExpand} >
+          {expanded ? <ChevronDownIcon /> : <ChevronUpIcon /> }
+        </TerminalExpandBtn>
+      </Box>
     </>
   )
 }
