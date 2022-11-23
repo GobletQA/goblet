@@ -1,10 +1,12 @@
 import type { ElementType } from 'react'
+
 import { useMemo } from 'react'
 import { dims } from '@theme'
 import Box from '@mui/material/Box'
 import { Tooltip } from '@components/Tooltip'
 import ListItem from '@mui/material/ListItem'
 import { useTheme } from '@hooks/theme/useTheme'
+import { getColor } from '@utils/theme/getColor'
 import Typography from '@mui/material/Typography'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
@@ -92,11 +94,21 @@ export const NavItem = (props:TNavItemProps) => {
     backgroundColor
   } = useMemo(() => {
     const isActive = cleaned === activeNav
+    
+    // TODO: clean up the side-nav icon colors
+    // Need to fix on hover and active when in dark mode
+    const activeColor = getColor(`colors.fadeDark60`, `colors.fadeDark60`, theme)
+    const inactiveColor = getColor(`colors.fadeDark50`, `colors.fadeDark50`, theme)
+    const backgroundActiveColor = getColor(`colors.fadeDark15`, `colors.fadeDark15`, theme)
+
+    // const activeColor = getColor(`colors.white00`, `colors.fadeDark60`, theme)
+    // const inactiveColor = getColor(`colors.fadeLight30`, `colors.fadeDark50`, theme)
+    // const backgroundActiveColor = getColor(`colors.fadeLight10`, `colors.fadeDark15`, theme)
 
     return {
       isActive,
-      backgroundColor: isActive ? theme.palette.action.focus : `transparent`,
-      color: isActive ? theme.palette.primary.main : theme.palette.action.active,
+      color: isActive ? activeColor : inactiveColor,
+      backgroundColor: isActive ? backgroundActiveColor : `transparent`,
     }
   }, [cleaned, activeNav, theme])
 
