@@ -9,7 +9,6 @@ import { buildRouter } from '@services/router'
 import { RouterProvider } from 'react-router-dom'
 
 export type TRootProps = {
-  themeSwitch?: (type:TThemeTypes) => void
   children?: ReactNode
 }
 

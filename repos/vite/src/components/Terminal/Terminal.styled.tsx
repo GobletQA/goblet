@@ -90,7 +90,7 @@ export const TabCloseIcon = styled(CloseIcon)(({ theme }) => `
 
 export const TerminalInput = styled(Box)(({ theme }) => `
   width: 100%;
-  flex-Grow: 1;
+  flex-grow: 1;
   overflow: hidden;
   /* background-color: ${getColor(`colors.gray01`, `colors.black00`, theme)}; */
   background-color: ${getColor(`colors.black00`, `colors.black00`, theme)};

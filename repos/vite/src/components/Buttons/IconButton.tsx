@@ -1,4 +1,4 @@
-import type { ReactNode, ComponentProps, ComponentType } from 'react'
+import type { ComponentProps, ComponentType } from 'react'
 import MuiIconBtn from '@mui/material/IconButton'
 
 export type TIconButton = ComponentProps<typeof MuiIconBtn> & {

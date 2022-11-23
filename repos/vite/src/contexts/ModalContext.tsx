@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
 import { UpdateModalEvt } from '@constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
@@ -29,11 +30,15 @@ const ModalChild = memo((props:TModalProvider) => {
 /**
  * Create modal provider, and add event listener for updating the props
  */
-export const ModalContext = createContext({})
+export const ModalContext = createContext<Record<string, any>>({})
+
+export const useModalProps = () => {
+  return useContext(ModalContext)
+}
 
 export const ModalProvider = (props:TModalProvider) => {
 
-  const [modalProps, setModalProps] = useState(noOpObj)
+  const [modalProps, setModalProps] = useState<Record<string, any>>(noOpObj)
 
   useEffect(() => {
     EE.on<TModalEvtProps>(UpdateModalEvt, setModalProps, UpdateModalEvt)

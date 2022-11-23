@@ -3,9 +3,9 @@ import type { TModalRef } from '@types'
 import { useMemo } from 'react'
 import { useSelector } from '@store'
 import { ModalRoot } from './ModalRoot'
+import { useModalProps } from '@contexts'
 import { ModalMessage } from './ModalMessage'
 import * as ModalMap from '@components/Modals'
-import { useModalProps } from '@contexts/useModalProps'
 
 const MapModals = ModalMap as unknown as Record<any, TModalRef>
 

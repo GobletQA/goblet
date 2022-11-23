@@ -32,6 +32,8 @@ import DangerousIcon from '@mui/icons-material/Dangerous'
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
+import DarkModeIcon from '@mui/icons-material/DarkModeOutlined'
+import LightModeIcon from '@mui/icons-material/LightModeOutlined'
 
 export {
   Steps,
@@ -67,5 +69,7 @@ export {
   DangerousIcon,
   SettingsEthernetIcon,
   AddIcon,
-  CloseIcon
+  CloseIcon,
+  DarkModeIcon,
+  LightModeIcon
 }

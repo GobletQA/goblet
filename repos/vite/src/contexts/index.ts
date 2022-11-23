@@ -1,2 +1,2 @@
 export * from './ModalContext'
-export * from './useModalProps'
+export * from './ThemeTypeContext'

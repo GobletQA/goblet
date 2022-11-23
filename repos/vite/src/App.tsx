@@ -1,4 +1,4 @@
-import type { TGobletTheme, TThemeTypes } from '@types'
+import type { TGobletTheme, EThemeType } from '@types'
 import type { Dispatch, SetStateAction } from 'react'
 
 import '@utils/components/globalOnCopy'
@@ -17,6 +17,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import { ModalProvider } from '@contexts/ModalContext'
 import { ModalManager } from '@components/ModalManager'
 import { useWindowResize } from '@hooks/dom/useWindowResize'
+import { ThemeTypeProvider } from '@contexts/ThemeTypeContext'
 
 const onAppInit = async (
   setApiTimeout:Dispatch<SetStateAction<string|false>>,
@@ -56,27 +57,31 @@ const useAppInit = () => {
 }
 
 const App = () => {
-
   useWindowResize()
   const { start, apiTimeout } = useAppInit()
 
-  const [themeType, setThemeType] = useState<TThemeTypes>(ThemeType)
+  const [themeType, setThemeType] = useState<EThemeType>(ThemeType as EThemeType)
   const theme = useMemo(() => getTheme(themeType) as TGobletTheme, [themeType])
 
   return (
-    <>
+    <ThemeTypeProvider
+      type={themeType}
+      setType={setThemeType}
+    >
       <AppStyles theme={theme} />
       <Provider store={Store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <ModalProvider>
-            <RootScreen themeSwitch={setThemeType} />
+            <RootScreen />
             <ModalManager />
           </ModalProvider>
-          {AuthActive && (<Fadeout speed={250} start={start} content={apiTimeout} />)}
+          {
+            AuthActive && (<Fadeout speed={250} start={start} content={apiTimeout} />)
+          }
         </ThemeProvider>
       </Provider>
-    </>
+    </ThemeTypeProvider>
   )
 }
 
