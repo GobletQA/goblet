@@ -8,10 +8,15 @@ import {
   ResizePanelClass,
 } from '@constants'
 
+
 export type TChildPanels = {
   tPanel: HTMLDivElement
   bPanel: HTMLDivElement
   canvas: HTMLCanvasElement
+}
+
+export type TParentPanels = TChildPanels & {
+  lPPanel: HTMLDivElement
 }
 
 export type TOnSizeChange = TChildPanels & {
@@ -30,6 +35,29 @@ const getChildPanels = (parentEl:HTMLDivElement, className:string=ResizePanelCla
   ] as HTMLDivElement[]).filter(el => el.tagName === `DIV`)
 }
 
+const getPanelDims = ({
+  tPanel,
+  bPanel,
+  canvas,
+}:TChildPanels) => {
+  const lWidth = tPanel.offsetWidth
+  const lHeight = toNum(tPanel.style.flexBasis || tPanel.offsetHeight)
+  const rHeight = toNum(bPanel.style.flexBasis || bPanel.offsetHeight)
+
+  const cWidth = toNum(canvas?.offsetWidth) || lWidth
+  const cHeight = toNum(canvas?.offsetHeight) || lHeight
+  const wDiff = lWidth - cWidth
+
+  return {
+    lWidth,
+    lHeight,
+    rHeight,
+    cWidth,
+    cHeight,
+    wDiff
+  }
+}
+
 export const getPanels = (parentEl:HTMLDivElement|null) => {
   if(!parentEl) return
 
@@ -42,19 +70,38 @@ export const getPanels = (parentEl:HTMLDivElement|null) => {
   return { lPPanel, rPPanel, lPanel, rPanel }
 }
 
-export const panelDimsFromCanvas = ({
-  tPanel,
-  bPanel,
-  canvas,
-}:TChildPanels) => {
-  // Get the current heights of the panels and canvas
-  const lWidth = tPanel.offsetWidth
-  const lHeight = toNum(tPanel.style.flexBasis || tPanel.offsetHeight)
-  const rHeight = toNum(bPanel.style.flexBasis || bPanel.offsetHeight)
+export const parentDimsFromCanvas = (args:TParentPanels) => {
+  const { lPPanel } = args
 
-  const cWidth = toNum(canvas?.offsetWidth) || lWidth
-  const cHeight = toNum(canvas?.offsetHeight) || lHeight
-  const wDiff = lWidth - cWidth
+  const {
+    wDiff,
+    rHeight,
+  } = getPanelDims(args)
+  if(!wDiff) return
+
+  // TODO: get the terminal div, and check it's height relative to the bottom panel heigh
+  // Use the diff of that to calculate the Left parent panel width
+  // When making the terminal smaller, the Left parent panel width should be greater
+  // But not the full diff of the movement
+  // Must be resized smaller relative to the terminal size diff and the Screencast ration
+
+  // This only resizes when Terminal panel is made taller
+  // Does not work when terminal panel is made shorter
+  const lPWidth = toNum(lPPanel.style.flexBasis || lPPanel.offsetWidth)
+  const adjust = wDiff * ScreencastRatio
+  lPPanel.style.flexBasis = `${lPWidth + adjust}px`
+
+}
+
+export const panelDimsFromCanvas = (args:TChildPanels) => {
+  const { tPanel, bPanel } = args
+
+  const {
+    wDiff,
+    lHeight,
+    rHeight,
+    cHeight,
+  } = getPanelDims(args)
   
   // If there's no width difference, then adjust the height
   if(!wDiff){

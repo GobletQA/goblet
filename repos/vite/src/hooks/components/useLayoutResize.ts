@@ -8,10 +8,10 @@ import { get } from '@keg-hub/jsutils'
 import { useEffectOnce } from '../useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { VNCResizeEvt, VNCConnectedEvt } from '@constants'
-import { getPanels, panelDimsFromCanvas } from '@utils/components/panelHelpers'
+import { getPanels, panelDimsFromCanvas, parentDimsFromCanvas } from '@utils/components/panelHelpers'
 
 
-const resizePanels = (
+const resizeRightPanels = (
   canvasRef:MutableRefObject<HTMLCanvasElement|null>,
   lVPanelRef:MutableRefObject<HTMLDivElement|null>,
   rVPanelRef:MutableRefObject<HTMLDivElement|null>
@@ -22,7 +22,7 @@ const resizePanels = (
   const bPanel = rVPanelRef.current
 
   if(!tPanel || !bPanel || !canvas)
-    return console.warn(`Layout-Resize - Vertical Panel Refs not set`, tPanel, bPanel)
+    return console.warn(`Layout-Resize - Vertical Panel Refs not set`, canvas, tPanel, bPanel)
 
   panelDimsFromCanvas({
     tPanel,
@@ -31,19 +31,48 @@ const resizePanels = (
   })
 }
 
+const resizeLeftPanel = (
+  lPPanelRef:MutableRefObject<HTMLDivElement|null>,
+  canvasRef:MutableRefObject<HTMLCanvasElement|null>,
+  lVPanelRef:MutableRefObject<HTMLDivElement|null>,
+  rVPanelRef:MutableRefObject<HTMLDivElement|null>
+) => {
+
+  const canvas = canvasRef.current
+  const tPanel = lVPanelRef.current
+  const bPanel = rVPanelRef.current
+  const lPPanel = lPPanelRef.current
+
+  if(!lPPanel || !tPanel || !bPanel || !canvas)
+    return console.warn(`Layout-Resize - Horizontal Panel Refs not set`, lPPanel, canvas, tPanel, bPanel)
+
+  parentDimsFromCanvas({
+    canvas,
+    tPanel,
+    bPanel,
+    lPPanel
+  })
+
+}
+
 export const useLayoutResize = () => {
 
   const parentElRef = useRef<HTMLDivElement|null>(null)
   const lVPanelRef = useRef<HTMLDivElement|null>(null)
   const rVPanelRef = useRef<HTMLDivElement|null>(null)
+  const lPPanelRef = useRef<HTMLDivElement|null>(null)
   const canvasRef = useRef<HTMLCanvasElement|null>(null)
 
-  const onResizeMove = useCallback(() => resizePanels(canvasRef, lVPanelRef, rVPanelRef), [])
+  const onHorResizeMove = useCallback(() => resizeRightPanels(canvasRef, lVPanelRef, rVPanelRef), [])
+  const onVerResizeMove = useCallback(
+    () => resizeLeftPanel(lPPanelRef, canvasRef, lVPanelRef, rVPanelRef),
+    []
+  )
 
   // Listen to external resize events, like window?
   // Then resizes the panels
   useEffectOnce(() => {
-    EE.on<RFB>(VNCResizeEvt, () => resizePanels(canvasRef, lVPanelRef, rVPanelRef), `vnc-layout-resize`)
+    EE.on<RFB>(VNCResizeEvt, () => resizeRightPanels(canvasRef, lVPanelRef, rVPanelRef), `vnc-layout-resize`)
 
     return () => {
       EE.off<RFB>(VNCResizeEvt, `vnc-layout-resize`)
@@ -63,9 +92,10 @@ export const useLayoutResize = () => {
       panels.lPanel.style.overflow = `hidden`
       panels.rPanel.style.overflow = `hidden`
 
-      // Store the panels for use in the onResizeMove callback
+      // Store the panels for use in the onResizeMove callbacks
       lVPanelRef.current = panels.lPanel
       rVPanelRef.current = panels.rPanel
+      lPPanelRef.current = panels.lPPanel
       
       panelDimsFromCanvas({
         canvas: canvasRef.current,
@@ -81,6 +111,14 @@ export const useLayoutResize = () => {
 
   })
 
-  return [parentElRef, onResizeMove] as [MutableRefObject<HTMLDivElement>, (event: ResizeMoveEvent) => void]
+  return [
+    parentElRef,
+    onHorResizeMove,
+    onVerResizeMove
+  ] as [
+    MutableRefObject<HTMLDivElement>,
+    (event: ResizeMoveEvent) => void,
+    (event: ResizeMoveEvent) => void
+  ]
 
 }

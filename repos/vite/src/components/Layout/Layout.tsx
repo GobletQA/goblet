@@ -45,20 +45,21 @@ export type TLayout = {
 }
 
 export const Layout = (props:TLayout) => { 
-  const [ref, onResizeMove] = useLayoutResize()
+  const [ref, onHorResizeMove, onVerResizeMove] = useLayoutResize()
 
   return (
     <LayoutContainer ref={ref} className='layout-container'>
       <HorizontalPageSplit
         divider={Divider}
         resize={Proportional}
-        onResizeMove={onResizeMove}
+        onResizeMove={onHorResizeMove}
       >
         <Container disableGutters sx={noOverflow}>
           {props.children}
         </Container>
         <Container disableGutters sx={fullHeight}>
           <VerticalPageSplit
+            onResizeMove={onVerResizeMove}
             divider={(props:ComponentProps<typeof Divider>) => (<Divider {...props} vertical />)}
           >
             <Screencast />
