@@ -32,29 +32,9 @@ export const SideNav = deepFreeze({
           icon: `FileTreeIcon`
         },
         {
-          title: `Features`,
-          tooltip: ``,
-          icon: `FeaturesIcon`,
-        },
-        {
-          title: `Waypoint`,
-          tooltip: ``,
-          icon: `MapPoint`
-        },
-        {
-          title: `Unit`,
-          tooltip: ``,
-          icon: `RuleCheck`
-        },
-        {
           title: `Artifacts`,
           tooltip: ``,
           icon: `Picture`
-        },
-        {
-          title: `World`,
-          tooltip: ``,
-          icon: `Globe`
         },
         {
           title: `Envs`,
