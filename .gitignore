@@ -183,3 +183,5 @@ repos/dind/remote/**
 container/values.certs.yaml
 .firebase
 vite.config.ts.timestamp*
+
+noAuthData.json

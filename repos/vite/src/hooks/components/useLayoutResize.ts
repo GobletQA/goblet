@@ -3,11 +3,12 @@ import type { MutableRefObject } from 'react'
 import type { ResizeMoveEvent } from 'react-page-split'
 
 import { useCallback, useRef } from 'react'
-import { get } from '@keg-hub/jsutils'
+import { get, noOpArr } from '@keg-hub/jsutils'
 import { useEffectOnce } from '../useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import {
   getPanels,
+  setPanelFull,
   panelDimsFromCanvas,
   parentDimsFromCanvas
 } from '@utils/components/panelHelpers'
@@ -36,6 +37,7 @@ const resizeRightPanels = (
     bPanel,
     canvas
   })
+
 }
 
 const resizeLeftPanel = (
@@ -64,6 +66,7 @@ const resizeLeftPanel = (
 
 export const useLayoutResize = () => {
 
+  const rTPFullRef = useRef<string[]>(noOpArr)
   const parentElRef = useRef<HTMLDivElement|null>(null)
   const lVPanelRef = useRef<HTMLDivElement|null>(null)
   const rVPanelRef = useRef<HTMLDivElement|null>(null)
@@ -71,19 +74,36 @@ export const useLayoutResize = () => {
   const canvasRef = useRef<HTMLCanvasElement|null>(null)
 
   const onHorResizeMove = useCallback(
-    () => resizeRightPanels(canvasRef, lVPanelRef, rVPanelRef),
+    () => resizeRightPanels(
+      canvasRef,
+      lVPanelRef,
+      rVPanelRef
+    ),
     []
   )
 
   const onVerResizeMove = useCallback(
-    () => resizeLeftPanel(lPPanelRef, canvasRef, lVPanelRef, rVPanelRef),
+    () => resizeLeftPanel(
+      lPPanelRef,
+      canvasRef,
+      lVPanelRef,
+      rVPanelRef
+    ),
     []
   )
 
   // Listen to external resize events, like window?
   // Then resizes the panels
   useEffectOnce(() => {
-    EE.on<RFB>(VNCResizeEvt, () => resizeRightPanels(canvasRef, lVPanelRef, rVPanelRef), `vnc-layout-resize`)
+    EE.on<RFB>(
+      VNCResizeEvt,
+      () => resizeRightPanels(
+        canvasRef,
+        lVPanelRef,
+        rVPanelRef
+      ),
+      `vnc-layout-resize`
+    )
 
     return () => {
       EE.off<RFB>(VNCResizeEvt, `vnc-layout-resize`)
@@ -104,6 +124,7 @@ export const useLayoutResize = () => {
 
       panels.lPanel.style.overflow = `hidden`
       panels.rPanel.style.overflow = `hidden`
+      canvasRef?.current?.setAttribute(`willReadFrequently`, ``)
 
       // Store the panels for use in the onResizeMove callbacks
       lVPanelRef.current = panels.lPanel
@@ -120,9 +141,32 @@ export const useLayoutResize = () => {
 
 
     // Listen for when the terminal should be expanded to full height
-    EE.on(TerminalExpandEvt, (expanded) => {
-      // TODO: update the right panels to expand the bottom terminal panel
-      console.log(`------- expand bottom terminal panel -------`)
+    EE.on<boolean>(TerminalExpandEvt, (expanded) => {
+
+      const canvas = canvasRef.current
+      const tPanel = lVPanelRef.current
+      const bPanel = rVPanelRef.current
+      const lPPanel = lPPanelRef.current
+
+      if(!tPanel || !bPanel || !canvas || !lPPanel)
+        return console.warn(`Panel-Expand - Vertical Panel Refs not set`, canvas, tPanel, bPanel, lPPanel)
+
+      setPanelFull({
+        canvas,
+        lPPanel,
+        expanded,
+        zPanel: tPanel,
+        fPanel: bPanel,
+      })
+
+      requestAnimationFrame(() => {
+        !expanded &&
+          panelDimsFromCanvas({
+            tPanel,
+            bPanel,
+            canvas,
+          })
+      })
 
     }, TerminalExpandEvt)
 

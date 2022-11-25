@@ -1,14 +1,10 @@
-import type { ReactNode, Component } from 'react'
+import type { Component } from 'react'
 import type { RouteObject } from 'react-router-dom'
 
 import { isStr } from '@keg-hub/jsutils'
 import Screens from './Screens'
 import { buildRouter } from '@services/router'
 import { RouterProvider } from 'react-router-dom'
-
-export type TRootProps = {
-  children?: ReactNode
-}
 
 export type TRouterConfig = {
   routes: RouteObject[]
@@ -65,6 +61,6 @@ export const buildRoutes = (
 const routes = buildRoutes(Object.values(Screens), Screens as unknown as TRouteComponents)
 const router = buildRouter({ routes })
 
-export const RootScreen = (props:TRootProps) => {
+export const RootScreen = () => {
   return (<RouterProvider router={router} />)
 }

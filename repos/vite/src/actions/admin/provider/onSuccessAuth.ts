@@ -103,6 +103,7 @@ export const onSuccessAuth = async (authData:TAuthData) => {
 
     const {status, user, jwt} = validateResp(data)
     await localStorage.setJwt(jwt)
+    await localStorage.setUser(userData)
     new GitUser(user as TUserState)
     
     status?.meta?.state === EContainerState.CREATING && waitForRunning()

@@ -1,7 +1,7 @@
 import type { MutableRefObject } from 'react'
 
 import { ScreencastBrowserSelector } from '@constants'
-import { useMutationObserver } from '@hooks/components/useMutationObserver'
+import { useMutationObserver } from '@hooks/dom/useMutationObserver'
 
 export type THWatchScreen = {
   screenRef:MutableRefObject<Element | null>

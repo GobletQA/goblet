@@ -24,7 +24,11 @@ export const loadRepoContent = async (
   status:Record<string, any>
 ) => {
   try {
-    const content = { repo, status } as any
+    const { parkin, world, ...repoData } = repo
+    const content = {
+      status,
+      repo: { ...repoData, world: { ...world, secrets: {} }},
+    } as any
     content.fileTree = await buildFileTree(repo)
     const definitions = await loadDefinitions(repo, config)
     content.definitionTypes = definitionsByType(definitions)

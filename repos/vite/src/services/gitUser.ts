@@ -57,16 +57,13 @@ export class GitUser {
     // Ensure is a valid git user before storing the metadata
     if(!data.username || !data.id || !data.provider){
       console.error(`Invalid git user information. Please sign in again`)
+      console.log(`GitUser - constructor`, data)
       GitUser.signOut()
       return this
     }
 
     Object.assign(this, data)
-
     __CURRENT_USER = this
-
-    localStorage.setUser(data)
-
     upsertUser(__CURRENT_USER)
 
     return __CURRENT_USER

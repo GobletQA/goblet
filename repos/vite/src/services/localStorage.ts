@@ -8,8 +8,9 @@ export type TWrapperFunc = (...args:any[]) => void
 
 class Storage {
 
-  constructor(){
-    !AuthActive  && Object.assign(this, noAuthService)
+  devData = async () => {
+    await noAuthService.init()
+    Object.assign(this, noAuthService)
   }
 
   /**
@@ -174,3 +175,5 @@ class Storage {
 }
 
 export const localStorage = new Storage()
+
+!AuthActive && (async () => await localStorage.devData())()
