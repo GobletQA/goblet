@@ -13,6 +13,7 @@ export * from './reducer.types'
 export * from './terminal.types'
 export * from './component.types'
 export * from './screencast.types'
+export * from './websocket.types'
 
 /**
  * And overrides should eventually be removed

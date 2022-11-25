@@ -1,8 +1,9 @@
 import type { TRequest } from '@services/axios.types'
 
 import { apiRequest } from './apiRequest'
+import { formatRepoUrl } from './apiHelpers'
 import { isObj, deepMerge } from '@keg-hub/jsutils'
-import { getRepoData, formatRepoUrl } from './apiHelpers'
+import { getRepoData } from '@utils/store/getStoreData'
 
 /**
  * Wrapper to append /repo/repoName to a request url

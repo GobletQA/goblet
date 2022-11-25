@@ -24,10 +24,6 @@ export type TSocketEvt = {
   [key:string]: any
 }
 
-export type TIOConfig = {
-  extraHeaders: Record<string, string>
-  transports: string[]
-}
 
 export type TSocketEventCallback = (
   message:TSocketEvt,
@@ -42,6 +38,8 @@ export type TSocketEvents = {
 
 export type TSocketService = TEndpointConf & {
   path:string
-  ioConfig: TIOConfig
+  transports: string[]
   events:TSocketEvents
+  query: Record<string, string>
+  extraHeaders: Record<string, string>
 }

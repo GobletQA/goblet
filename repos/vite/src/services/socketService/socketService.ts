@@ -2,9 +2,8 @@ import type { Socket } from 'socket.io-client'
 import type { TSockCmds, TSocketService, TSockCmd } from '@types'
 
 import io from 'socket.io-client'
-
+import { TagPrefix } from '@constants/websocket'
 import * as EventTypes from '@constants/websocket'
-import { AuthTokenHeader, TagPrefix } from '@constants/websocket'
 import {
   getCommand,
   callAction,
@@ -69,20 +68,11 @@ export class SocketService {
   /**
    * Initializes the web-socket based on the passed in config
    * Starts initial handshake to connect with the backend
-   * @memberof SocketService
-   * @type function
-   * @public
-   *
-   * @param {Object} config - Options for setting up the websocket
-   * @param {string} token - Auth token for validating with the backend
-   * @param {boolean} logDebug - Should log Socket events as the happen
-   *
-   * @returns {void}
    */
   initSocket(
     config:TSocketService,
     token?:string,
-    logDebug = false
+    logDebug:boolean = false
   ) {
     // If the sockets already setup, just return
     if (this.socket) return
@@ -95,19 +85,14 @@ export class SocketService {
 
     this.logData(`Connecting to backend socket => ${endpoint}${config.path}`)
 
-    const ioConfig = config.ioConfig || { extraHeaders: {} }
-
     // Setup the socket, and connect to the server
     this.socket = io(endpoint, {
-      upgrade: true,
-      path: config.path,
       ...(token && { auth: { token } }),
-      ...ioConfig,
-      transports: getTransports(ioConfig),
-      extraHeaders: {
-        ...(ioConfig.extraHeaders || {}),
-        ...(token ? { [AuthTokenHeader]: token } : {}),
-      },
+      upgrade: true,
+      path: this.config.path,
+      query: this.config.query || noOpObj,
+      transports: getTransports(this.config),
+      extraHeaders: this.config.extraHeaders || noOpObj,
     })
 
     this.addEvents()

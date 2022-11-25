@@ -1,6 +1,9 @@
-import type { Express } from 'express'
+
+import type { ServerOptions } from 'http-proxy'
+import type { Express, Request } from 'express'
 import type { TProxyOpts } from '@gobletqa/shared/types'
 
+import { queryToObj } from '@keg-hub/jsutils'
 import { getApp } from '@gobletqa/shared/express/app'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 
@@ -17,6 +20,7 @@ export const createWSProxy = (config:TProxyOpts, app:Express) => {
     host,
     target,
     protocol,
+    proxyRouter,
     changeOrigin,
     ...options
   } = (config ?? {}) as TProxyOpts
@@ -25,6 +29,7 @@ export const createWSProxy = (config:TProxyOpts, app:Express) => {
 
   const url = port ? `${host}:${port}` : host
   const pxTarget = target || `${protocol}://${url}`
+
   const wsProxy = createProxyMiddleware(path, {
     ws: true,
     xfwd:true,
@@ -32,10 +37,13 @@ export const createWSProxy = (config:TProxyOpts, app:Express) => {
     logLevel: 'info',
     target: pxTarget,
     changeOrigin: true,
+    router: (req:Request) => proxyRouter({ ...req, headers: queryToObj(req.url) } as Request),
     ...options,
   })
 
   app.use(wsProxy)
+  // @ts-ignore
+  wsProxy.path = path
 
   return wsProxy
 }

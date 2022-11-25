@@ -36,8 +36,6 @@ const ignoreError = [
  */
 const handleUncaughtExp = (exitCode:number=0, err:Error) => {
   const shouldIgnore = ignoreError.find(text => err?.message?.includes(text))
-  
-  
   if(exitCode && shouldIgnore) {
       Logger.log([
         `\n`,
@@ -49,6 +47,10 @@ const handleUncaughtExp = (exitCode:number=0, err:Error) => {
 
     return true
   }
+
+  // TODO: update this to exit only on specific errors
+  // With this, uncaught errors will never exit
+  // return true
 }
 
 /**

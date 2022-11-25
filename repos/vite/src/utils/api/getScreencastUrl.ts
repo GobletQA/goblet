@@ -4,8 +4,8 @@ import {
   NO_VNC_PATH,
 } from '@constants'
 import { objToQuery } from '@keg-hub/jsutils'
-import { getContainerData } from './apiHelpers'
 import { getBaseApiUrl } from '@utils/api/getBaseApiUrl'
+import { getContainerData } from '@utils/store/getStoreData'
 
 /**
  * Returns the generated screencast url if VNC_ACTIVE is active

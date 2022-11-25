@@ -1,5 +1,12 @@
 import type { SocketService } from './socketService'
-import type { TSockCmds, TSockCmd, TSockCmdObj, TEndpointConf, TSocketEvt, TIOConfig } from '@types'
+import type {
+  TSockCmd,
+  TSockCmds,
+  TSocketEvt,
+  TSockCmdObj,
+  TEndpointConf,
+  TSocketService
+} from '@types'
 
 import {
   get,
@@ -134,9 +141,9 @@ export const getCommand = (
     }, false as TSockCmdObj|false)
 }
 
-export const getTransports = (ioConfig:TIOConfig) => {
-  const transports = isArr(ioConfig.transports)
-    ? ioConfig.transports
+export const getTransports = (config:TSocketService) => {
+  const transports = isArr(config.transports)
+    ? config.transports
     : []
 
   return transports.length ? transports : ['polling', 'websocket']

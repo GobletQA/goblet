@@ -1,6 +1,8 @@
 import type { TPort, TPortsMap } from './ports.types'
 import type { Conductor } from '../conductor'
 import type { TUserHash, EContainerState } from './helpers.types'
+import type { ProxyTarget, ServerOptions } from 'http-proxy'
+
 
 type TPublicUrl = string
 type TContainerId = string
@@ -9,7 +11,7 @@ type TContainerName = string
 
 export type TProtocol = 'http' | 'https' | 'ws' | 'wss' | 'http:' | 'https:' | 'ws:' | 'wss:'
 
-export type TContainerRoute = {
+export type TContainerRoute = ProxyTarget & {
   host?: string
   port?: string|number
   protocol?: TProtocol
