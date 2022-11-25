@@ -66,7 +66,6 @@ const resizeLeftPanel = (
 
 export const useLayoutResize = () => {
 
-  const rTPFullRef = useRef<string[]>(noOpArr)
   const parentElRef = useRef<HTMLDivElement|null>(null)
   const lVPanelRef = useRef<HTMLDivElement|null>(null)
   const rVPanelRef = useRef<HTMLDivElement|null>(null)
@@ -159,13 +158,12 @@ export const useLayoutResize = () => {
         fPanel: bPanel,
       })
 
-      requestAnimationFrame(() => {
-        !expanded &&
-          panelDimsFromCanvas({
-            tPanel,
-            bPanel,
-            canvas,
-          })
+    !expanded
+      && panelDimsFromCanvas({
+        tPanel,
+        bPanel,
+        canvas,
+        fromExpand: true
       })
 
     }, TerminalExpandEvt)
