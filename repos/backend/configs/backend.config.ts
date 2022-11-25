@@ -93,11 +93,6 @@ export const backendConfig:TBackendConfig = deepMerge<TBackendConfig>({
     }
   },
   conductor: conductorConfig,
-  iframeProxy: {
-    path: `/iframe`,
-    host: controllerHost,
-    protocol: GB_NO_VNC_PROTOCOL,
-  },
   vncProxy: {
     host: controllerHost,
     path: GB_NO_VNC_PATH,

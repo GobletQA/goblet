@@ -1,6 +1,6 @@
 import { TJwtConfig } from './helpers.types'
 import { TSockrConfig } from './sockr.types'
-import { TBrowserContext, TBrowserConf, TBrowserPage } from './pw.types'
+import { TBrowserContextOpts, TBrowserConf, TBrowserPage } from './pw.types'
 
 export type TChildProcArgs = {
   cwd: string
@@ -53,7 +53,7 @@ export type TScreencastConfig = {
   novnc?: TNoVncProxy
   page?: TBrowserPage
   browser?: TBrowserConf
-  context?: TBrowserContext
+  context?: TBrowserContextOpts
 }
 
 export type TSCContainerConfig = {

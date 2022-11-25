@@ -1,4 +1,6 @@
 import { initSockr } from '@GSC/libs/sockr'
+import { socketInit } from '@GSC/libs/websocket'
+
 // @ts-ignore
 import { AUTH_BYPASS_ROUTES } from '@GSC/constants'
 import { getApp } from '@gobletqa/shared/express/app'
@@ -45,7 +47,7 @@ const initApi = async () => {
 
   const sockrConf = app?.locals?.config?.sockr
   const server = secureServer || insecureServer
-  const socket = await initSockr(app, server, sockrConf, 'tests')
+  const socket = await socketInit(app, server, sockrConf, 'tests')
 
   return { app, server, socket }
 }

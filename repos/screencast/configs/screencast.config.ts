@@ -1,6 +1,7 @@
+import type { TBrowserConf } from '@GSC/types'
+
 import '../resolveRoot'
 import path from 'path'
-
 import { toBool, toNum } from '@keg-hub/jsutils'
 import { sockrCmds } from './sockrCmds.config'
 import { aliases } from '@GConfigs/aliases.config'
@@ -88,7 +89,7 @@ export const screencastConfig:TGScreencastConfig = {
     active: toBool(GB_VNC_ACTIVE),
     // Default playwright browser launch settings
     // TODO: add defaults here for Screencast
-    browser: {},
+    browser: {} as TBrowserConf,
     // Default playwright context settings
     context: {
       screen: screenDims,
