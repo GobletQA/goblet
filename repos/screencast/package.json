@@ -58,7 +58,6 @@
     "@keg-hub/parse-config": "*",
     "@keg-hub/spawn-cmd": "*",
     "@ltipton/parkin": "*",
-    "@ltipton/sockr": "1.1.0",
     "expect": "28.1.0",
     "express": "4.17.3",
     "jest": "29.2.0",

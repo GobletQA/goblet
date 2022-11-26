@@ -1,4 +1,3 @@
-import { initSockr } from '@GSC/libs/sockr'
 import { socketInit } from '@GSC/libs/websocket'
 
 // @ts-ignore
@@ -45,9 +44,9 @@ const initApi = async () => {
     config: {name: `Screencast`, ...app.locals.config.server}
   })
 
-  const sockrConf = app?.locals?.config?.sockr
+  const socketConf = app?.locals?.config?.socket
   const server = secureServer || insecureServer
-  const socket = await socketInit(app, server, sockrConf, 'tests')
+  const socket = await socketInit(app, server, socketConf, 'tests')
 
   return { app, server, socket }
 }

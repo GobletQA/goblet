@@ -120,7 +120,6 @@ module.exports = {
           '!/repos/backend',
           '!/repos/conductor',
           '!/repos/screencast',
-          '!/repos/sockr',
           '!/repos/shared',
         ]
       },
@@ -217,7 +216,6 @@ module.exports = {
           '**',
           '!/repos/screencast',
           '!/repos/shared',
-          '!/repos/sockr',
           '!/repos/testUtils',
           '!/repos/workflows',
           '!/tasks',

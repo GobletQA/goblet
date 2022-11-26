@@ -82,7 +82,6 @@ RUN <<EOF
   rm -rf repos/frontend
   rm -rf repos/screencast
   rm -rf repos/monaco
-  rm -rf repos/sockr
   rm -rf repos/testUtils
   rm -rf repos/vite
   rm -rf tasks

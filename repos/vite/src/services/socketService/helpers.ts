@@ -102,7 +102,7 @@ export const callAction = (
     customEvent && checkCallEvent(customEvent, message, instance, event)
 
     // Call the all action if it exists
-    // Is called for all sockr events that happen on the frontend
+    // Is called for all websocket events that happen on the frontend
     const allEvent = get(instance.config, `events.all`)
     allEvent && checkCallEvent(allEvent, message, instance, event)
   }

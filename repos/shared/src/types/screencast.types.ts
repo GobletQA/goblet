@@ -1,5 +1,5 @@
 import { TJwtConfig } from './helpers.types'
-import { TSockrConfig } from './sockr.types'
+import { TSocketConfig } from './socket.types'
 import { TBrowserContextOpts, TBrowserConf, TBrowserPage } from './pw.types'
 
 export type TChildProcArgs = {
@@ -63,9 +63,9 @@ export type TSCContainerConfig = {
 }
 
 export type TGScreencastConfig = {
+  socket: TSocketConfig
   server: TScreencastServer
   screencast: TScreencastConfig
-  sockr: TSockrConfig
   container?: TSCContainerConfig
 }
 

@@ -88,7 +88,7 @@ env:
   GB_BE_IMAGE_FROM: 'ubuntu:20.04'
 
   # ---- Backend Websocket ENVs ---- #
-  GB_BE_WS_PATH: /sockr-socket
+  GB_BE_WS_PATH: /goblet-socket
   GB_BE_WS_PROTOCOL: http
 
   # --- Backend JWT AUTH --- #
@@ -164,7 +164,7 @@ env:
   # Update this to call an externally available VNC websocket host
   GB_SC_HOST: 0.0.0.0
 
-  GB_SC_WS_PATH: /sockr-socket
+  GB_SC_WS_PATH: /goblet-socket
 
   # Port to forward connections from backend API to screencast
   GB_NO_VNC_PORT: 26369
@@ -237,7 +237,7 @@ env:
   GB_KD_HOST: 0.0.0.0
   GB_KD_KUBE_PROXY_PORT: 2121
   GB_KD_SECURE_PORT: 443
-  GB_KD_WS_PATH: /sockr-socket
+  GB_KD_WS_PATH: /goblet-socket
 
   GB_KD_KUBE_PROXY_PROTO: http
   GB_KD_KUBE_PROXY_HOST: 127.0.0.1

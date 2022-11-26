@@ -8,8 +8,8 @@ export const AUTH_BYPASS_ROUTES = [
   `/auth/validate`,
   `/health-check`,
   `/favicon.ico`,
-  `/sockr-socket`,
-  `/sockr-socket/`,
+  `/goblet-socket`,
+  `/goblet-socket/`,
   `/iframe`,
   `/iframe/`,
   // For DEV Only -- remember to remove this

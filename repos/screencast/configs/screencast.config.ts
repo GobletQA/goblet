@@ -3,7 +3,7 @@ import type { TBrowserConf } from '@GSC/types'
 import '../resolveRoot'
 import path from 'path'
 import { toBool, toNum } from '@keg-hub/jsutils'
-import { sockrCmds } from './sockrCmds.config'
+import { socketCmds } from './socketCmds.config'
 import { aliases } from '@GConfigs/aliases.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
@@ -107,15 +107,15 @@ export const screencastConfig:TGScreencastConfig = {
       height: GB_VNC_VIEW_HEIGHT,
     },
   },
-  sockr: {
-    ...sockrCmds,
+  socket: {
+    ...socketCmds,
     port: GB_SC_PORT,
     host: GB_SC_HOST,
     path: GB_SC_WS_PATH,
     process: {
       root: aliases.GobletRoot,
       debug: Boolean(GB_LOG_LEVEL == 'debug'),
-      script: path.join(aliases[`@GSC/Scripts`], 'sockr.cmd.sh'),
+      script: path.join(aliases[`@GSC/Scripts`], 'socket.cmd.sh'),
     },
   },
 }

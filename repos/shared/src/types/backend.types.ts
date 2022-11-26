@@ -1,4 +1,4 @@
-import { TSockrConfig } from './sockr.types'
+import { TSocketConfig } from './socket.types'
 import { TConductorOpts } from './conductor.types'
 import { TScreencastServer } from './screencast.types'
 import { TJwtConfig, TProxyOpts } from './helpers.types'
@@ -32,7 +32,7 @@ export type TBEServerConfig = {
 }
 
 export type TBackendConfig = {
-  sockr?: TSockrConfig
+  socket?: TSocketConfig
   vncProxy?: TProxyOpts
   wsProxy?: TProxyOpts
   localDevMode?: boolean

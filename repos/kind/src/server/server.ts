@@ -53,7 +53,7 @@ const handleUncaughtExp = (exitCode:number=0, err:Error) => {
 }
 
 /**
- * Starts a express API server, and connects the sockr Websocket
+ * Starts a express API server, and connects the Websocket
  * Loads the Goblet Config, which is used for configuring the server
  *
  * @returns {Object} - Express app, server and socket.io socket

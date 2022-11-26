@@ -27,8 +27,8 @@ export const AUTH_BYPASS_ROUTES = [
   `/auth/validate`,
   `/health-check`,
   `/favicon.ico`,
-  `/sockr-socket`,
-  `/sockr-socket/`,
+  `/goblet-socket`,
+  `/goblet-socket/`,
 ]
 
 
