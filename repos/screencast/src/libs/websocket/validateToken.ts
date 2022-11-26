@@ -1,5 +1,6 @@
 import type { Express } from 'express'
 import jwt from 'jsonwebtoken'
+import type { TSocketTokenData, TSocketEvtCBProps } from '@GSC/types'
 
 type TTokenCB = (...args:any[]) => any
 
@@ -14,13 +15,16 @@ type TTokenCB = (...args:any[]) => any
  */
 export const validateToken = (app:Express, callback:TTokenCB) => {
   const { secret } = app?.locals?.config?.server?.jwt
-  return (args) => {
+  return (args:TSocketEvtCBProps) => {
     const { data, Manager, socket } = args
     try {
-      return callback(args, jwt.verify(data?.jwt, secret))
+      return callback?.(args, jwt.verify(data?.jwt, secret) as TSocketTokenData)
     }
     catch(err){
       console.log(err.stack)
+      
+      callback?.(args, { error:err } as TSocketTokenData)
+      
       // TODO: Emit an invalid token error
       // Manager.emit(socket, `INVALID-TOKEN`, { message: `INVALID-TOKEN`, group: socket.id })
       return false

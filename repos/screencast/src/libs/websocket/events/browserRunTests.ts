@@ -1,3 +1,7 @@
+import type { Express } from 'express'
+import type { Socket } from 'socket.io'
+import type { SocketManager, TSocketTokenData, TSocketEvtCBProps } from '@GSC/types'
+
 import { Repo } from '@gobletqa/shared/repo/repo'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 import {
@@ -6,7 +10,13 @@ import {
   startPlaying,
 } from '@GSC/libs/playwright'
 
-const handleStartPlaying = async (data, repo, socket, Manager, app) => {
+const handleStartPlaying = async (
+  data:Record<any, any>,
+  repo:Repo,
+  socket:Socket,
+  Manager:SocketManager,
+  app:Express
+) => {
   const { token, ref, action, ...browser } = data
   const browserConf = joinBrowserConf(browser, app)
   const player = await startPlaying({
@@ -29,8 +39,11 @@ const handleStartPlaying = async (data, repo, socket, Manager, app) => {
   Manager.cache[socket.id].player = player
 }
 
-export const browserRunTests = app => {
-  return async ({ data, socket, config, Manager, io }, tokenData) => {
+export const browserRunTests = (app:Express) => {
+  return async (
+    {data, socket, Manager }:TSocketEvtCBProps,
+    tokenData:TSocketTokenData
+  ) => {
     const { iat, exp, ...user } = tokenData
     const { repo } = await Repo.status(app.locals.config, { ...data.repo, ...user })
     await repo.refreshWorld()

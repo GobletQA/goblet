@@ -1,8 +1,8 @@
 import type { Express } from 'express'
-
+import type { TSocketTokenData, TSocketEvtCBProps } from '@GSC/types'
 
 export const disconnect = (app:Express) => {
-  return async ({ socket, Manager }, tokenData:string) => {
+  return async ({ socket, Manager }:TSocketEvtCBProps) => {
 
     // TODO: Figure out how to get access to the user
     // Disconnect the user mounted repo is it exists when they disconnect

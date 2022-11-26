@@ -3,9 +3,9 @@ import * as SkrEvents from './events'
 import type { Express } from 'express'
 import type { TSocketConfig } from '@gobletqa/shared/types'
 
+import { socketInit } from './setup'
 import { noOpObj } from '@keg-hub/jsutils'
 import { validateToken }  from './validateToken'
-import { socketInit } from './setup'
 
 const {
   authToken,
@@ -23,14 +23,13 @@ const defConfig = noOpObj as TSocketConfig
 /**
  * Init websocket passing in the custom event listeners
  */
-export const initSockr = (
+export const initSocket = (
   app:Express,
   server:Server,
   config:TSocketConfig = defConfig,
   cmdType?:string
 ) => {
   return socketInit(
-    app,
     server,
     {
       ...config,

@@ -24,7 +24,9 @@
       "@GEnv/values": ["../shared/src/environment/values"],
       "@GEnvironment": ["../shared/src/environment/environment"],
       "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
-      "@GEnvironment/values": ["../shared/src/environment/values"]
+      "@GEnvironment/values": ["../shared/src/environment/values"],
+      "@gobletqa/screencast": ["../screencast/src/types"],
+      "@gobletqa/screencast/*": ["../screencast/src/types/*"]
     }
   },
   "include": ["src/**/*"],

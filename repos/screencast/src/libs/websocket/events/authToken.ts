@@ -1,9 +1,7 @@
 import type { Express } from 'express'
+import type { TSocketEvtCBProps } from '@GSC/types'
 
-import { Logger } from '@keg-hub/cli-utils'
-import { get, noOpObj } from '@keg-hub/jsutils'
-
-export const authToken = app => {
-  return ({ data, socket }) => {}
+export const authToken = (app:Express) => {
+  return ({ data, socket }:TSocketEvtCBProps) => {}
 }
 

@@ -1,4 +1,4 @@
-import { socketInit } from '@GSC/libs/websocket'
+import { initSocket } from '@GSC/libs/websocket'
 
 // @ts-ignore
 import { AUTH_BYPASS_ROUTES } from '@GSC/constants'
@@ -46,7 +46,7 @@ const initApi = async () => {
 
   const socketConf = app?.locals?.config?.socket
   const server = secureServer || insecureServer
-  const socket = await socketInit(app, server, socketConf, 'tests')
+  const socket = await initSocket(app, server, socketConf, 'tests')
 
   return { app, server, socket }
 }

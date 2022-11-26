@@ -1,4 +1,6 @@
 import type { Express } from 'express'
+import type { Socket } from 'socket.io'
+import type { SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
 import { noOpObj } from '@keg-hub/jsutils'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
@@ -21,7 +23,12 @@ import {
  *
  * @returns {void}
  */
-const handleStart = async (data, socket, Manager, app:Express) => {
+const handleStart = async (
+  data:Record<any, any>,
+  socket:Socket,
+  Manager:SocketManager,
+  app:Express
+) => {
   const { token, ref, action, repo, ...browser } = data
   const browserConf = joinBrowserConf(browser, app)
 
@@ -56,7 +63,12 @@ const handleStart = async (data, socket, Manager, app:Express) => {
  *
  * @returns {void}
  */
-const handleStop = async (data, socket, Manager, app:Express) => {
+const handleStop = async (
+  data:Record<any, any>,
+  socket:Socket,
+  Manager:SocketManager,
+  app:Express
+) => {
   const { action=noOpObj } = data
   const cache = Manager.cache[socket.id]
 
@@ -77,7 +89,7 @@ const handleStop = async (data, socket, Manager, app:Express) => {
  * @returns {function} - Custom Event Method passed to Sockr to be called from the frontend
  */
 export const browserRecorder = (app:Express) => {
-  return async ({ data, socket, Manager }) => {
+  return async ({ data, socket, Manager }:TSocketEvtCBProps) => {
     // TODO: add token validation
     const { action } = data
 

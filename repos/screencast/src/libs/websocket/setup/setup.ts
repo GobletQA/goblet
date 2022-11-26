@@ -1,11 +1,11 @@
 import type http from 'http'
 import type https from 'https'
-import type { Express } from 'express'
 import type { TSocketConfig, TProcConfig } from '@GSC/types'
 
 import { Server } from 'socket.io'
 import { Process } from '../process'
 import { setupCmds } from './setupCmds'
+import { setupConfig } from './setupConfig'
 import { setupEvents } from './setupEvents'
 import { checkCall, get } from '@keg-hub/jsutils'
 import { SocketManager } from '../manager/manager'
@@ -34,12 +34,13 @@ export const onConnect = (
 }
 
 export const socketInit = async (
-  app:Express,
   server:http.Server | https.Server,
-  config:TSocketConfig,
+  socketConfig:TSocketConfig,
   cmdGroup:string
 ) => {
-  
+
+  const config = await setupConfig(socketConfig, cmdGroup)
+
   const io = new Server({ path: config?.path })
   // attache to the server
   io.attach(server)
@@ -60,5 +61,12 @@ export const socketInit = async (
   )
 
   onConnect(config, io, Manager, Proc)
+
+  return {
+    io,
+    config,
+    Manager,
+    Process: Proc,
+  }
 
 }

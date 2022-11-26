@@ -1,11 +1,17 @@
-import type { Express, Request } from 'express'
+import type { Express } from 'express'
+import type { TBrowserConf, SocketManager, TSocketEvtCBProps } from '@GSC/types'
+
 import { Logger } from '@keg-hub/cli-utils'
 import { get, noOpObj } from '@keg-hub/jsutils'
 import { statusBrowser } from '@GSC/libs/playwright/browser/statusBrowser'
 
 let prevStatus
 let watchInterval:ReturnType<typeof setTimeout>
-const defMessage = noOpObj as Record<any, any>
+
+
+type TWatchOpts = Partial<TBrowserConf> & { interval?:number }
+
+const defMessage = noOpObj as TWatchOpts
 
 /**
  * Calls the statusBrowser to get the status of the browser
@@ -16,8 +22,8 @@ const defMessage = noOpObj as Record<any, any>
  * @returns {void}
  */
 const getStatusUpdate = async (
-  browserConf:Record<any, any>,
-  Mgr:Record<any, any>
+  browserConf:TBrowserConf,
+  Mgr:SocketManager
 ) => {
   
   const status = await statusBrowser(browserConf)
@@ -40,10 +46,11 @@ const getStatusUpdate = async (
  */
 const startWatching = (
   app:Express,
-  options:Record<any, any>,
-  Manager:Record<any, any>
+  options:TWatchOpts,
+  Manager:SocketManager
 ) => {
   const browserConf = get(app, 'locals.config.screencast.browser', noOpObj)
+  const { interval, ...opts } = options
 
   return setInterval(
     async (bConf, Mgr) => {
@@ -51,8 +58,8 @@ const startWatching = (
         Logger.error(err.message)
       )
     },
-    options.interval || 5000,
-    { ...browserConf, ...options },
+    interval || 5000,
+    { ...browserConf, ...opts } as TBrowserConf,
     Manager
   )
 }
@@ -62,20 +69,17 @@ const startWatching = (
  * Checks if it should start watching the browser, and calls the watching if needed
  * Allows passing a `stopWatching` to stop the loop check
  * @function
- * @param {Object} app - Express App object
- *
- * @returns {function} - Custom Event Method passed to Sockr to be called from the frontend
  */
 export const browserStatus = (app:Express) => {
   return ({
     Manager,
-    message = defMessage,
-  }) => {
-    if (message?.stopWatching) {
+    data = defMessage,
+  }:TSocketEvtCBProps) => {
+    if (data?.stopWatching) {
       watchInterval && clearInterval(watchInterval)
       return (watchInterval = undefined)
     }
 
-    watchInterval = startWatching(app, message, Manager)
+    watchInterval = startWatching(app, data, Manager)
   }
 }

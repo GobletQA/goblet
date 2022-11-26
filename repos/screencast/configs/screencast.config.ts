@@ -1,4 +1,4 @@
-import type { TBrowserConf } from '@GSC/types'
+import type { TCmdGroups, TBrowserConf } from '@GSC/types'
 
 import '../resolveRoot'
 import path from 'path'
@@ -108,10 +108,10 @@ export const screencastConfig:TGScreencastConfig = {
     },
   },
   socket: {
-    ...socketCmds,
     port: GB_SC_PORT,
     host: GB_SC_HOST,
     path: GB_SC_WS_PATH,
+    groups: socketCmds.groups as TCmdGroups,
     process: {
       root: aliases.GobletRoot,
       debug: Boolean(GB_LOG_LEVEL == 'debug'),
