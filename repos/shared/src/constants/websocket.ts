@@ -1,5 +1,5 @@
-export const TagPrefix = 'SOCKr'
-export const AuthTokenHeader = `SOCKR-AUTH-TOKEN`
+export const TagPrefix = `SOCKET`
+export const AuthTokenHeader = `SOCKET-AUTH-TOKEN`
 
 // General
 export const WS_INIT = `${TagPrefix}:INIT`

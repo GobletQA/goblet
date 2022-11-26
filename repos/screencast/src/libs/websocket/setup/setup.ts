@@ -10,6 +10,20 @@ import { setupEvents } from './setupEvents'
 import { checkCall, get } from '@keg-hub/jsutils'
 import { SocketManager } from '../manager/manager'
 
+const setupManager = (
+  config:TSocketConfig,
+  io:Server
+) => {
+  // Setup the Socket Manager
+  const Manager = new SocketManager()
+  // Ensure we have access to the SocketIO class
+  Manager.socketIo = Manager.socketIo || io
+  // Configure authentication
+  Manager.setAuth(config)
+  
+  return Manager
+}
+
 export const onConnect = (
   config:TSocketConfig,
   io:Server,
@@ -41,16 +55,12 @@ export const socketInit = async (
 
   const config = await setupConfig(socketConfig, cmdGroup)
 
-  const io = new Server({ path: config?.path })
-  // attache to the server
+  // Create the socket server, and  attach to the express server
+  const io = new Server({ path: config?.socket?.path })
   io.attach(server)
-  const Manager = new SocketManager()
-
-  // Ensure we have access to the SocketIO class
-  Manager.socketIo = Manager.socketIo || io
-
-  // Configure authentication
-  Manager.setAuth(config)
+  
+  // Setup the Socket Manager
+  const Manager = setupManager(config, io)
 
   // Create a new process instance
   const Proc = new Process(

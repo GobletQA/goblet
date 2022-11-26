@@ -4,7 +4,7 @@ export GOBLET_RUN_FROM_UI=1
 
 # Prints a message to the terminal through stderr
 printMessage(){
-  echo "[ SOCKr ] $@" >&2
+  echo "[ GB-SOCKET ] $@" >&2
   return
 }
 

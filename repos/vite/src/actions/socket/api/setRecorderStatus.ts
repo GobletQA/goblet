@@ -1,5 +1,5 @@
-import { SocketMsgTypes } from '@constants'
 import { noOpObj } from '@keg-hub/jsutils'
+import { SocketMsgTypes } from '@constants'
 import { WSService } from '@services/socketService/socketService'
 
 

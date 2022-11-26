@@ -69,6 +69,7 @@ const useWSHooks = () => {
 
     // Once the container?.api is loaded, then init the websocket
     const wsConfig = getWebsocketConfig(container.api)
+
     WSService.initSocket(wsConfig)
 
     // Now update the state to include the websocket

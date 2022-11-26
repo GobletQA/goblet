@@ -17,7 +17,7 @@ const defMessage = noOpObj as TWatchOpts
  * Calls the statusBrowser to get the status of the browser
  * @function
  * @param {Object} browserConf - Config options for checking the browser status
- * @param {Object} Manager - Sockr Manager Instance
+ * @param {Object} Manager - Socket Manager Instance
  *
  * @returns {void}
  */
@@ -40,7 +40,7 @@ const getStatusUpdate = async (
  * @function
  * @param {Object} app - Express App object
  * @param {Object} options - Options for watching the browser
- * @param {Object} Manager - Sockr Manager Instance
+ * @param {Object} Manager - Socket Manager Instance
  *
  * @returns {function} - setInterval response for clearing the interval
  */

@@ -30,7 +30,7 @@ const buildConfig = (
 ) => {
   const addDefConfig = Boolean(!serverConfig)
   // Extract the groups from the def config, so we don't add the example commands
-  const { groups: defGroups, ...sockrConf } = defServerConfig
+  const { groups: defGroups, ...socketConf } = defServerConfig
 
   const {
     host,
@@ -39,7 +39,7 @@ const buildConfig = (
     path: socketPath,
     ...config
   } = deepMerge(
-    addDefConfig ? defServerConfig : sockrConf,
+    addDefConfig ? defServerConfig : socketConf,
     serverConfig
   )
 

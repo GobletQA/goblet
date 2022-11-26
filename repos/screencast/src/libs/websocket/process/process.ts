@@ -63,7 +63,7 @@ export class Process {
     message?:TSocketMessage
   ) => {
     this.config.debug
-      && console.error(`[Sockr Error] ${err.message}`, message)
+      && console.error(`[Socket Error] ${err.message}`, message)
   }
 
   /**
@@ -73,7 +73,7 @@ export class Process {
     event:string,
     message?:TSocketMessage
   ) => {
-    this.config.debug && console.log(`[Sockr Event] ${event}`, message)
+    this.config.debug && console.log(`[Socket Event] ${event}`, message)
   }
 
   /**
@@ -199,8 +199,8 @@ export class Process {
     const err = isStr(_err) ? new Error(_err) : _err
 
     const message = err.message.indexOf('ENOENT') !== -1
-        ? `[ SOCKr CMD ERROR ] - Command '${cmd}' does not exist!\n\nMessage:\n${err.message}`
-        : `[ SOCKr CMD ERROR ] - Failed to run command!\n\nMessage:\n${err.message}`
+        ? `[ SOCKET CMD ERROR ] - Command '${cmd}' does not exist!\n\nMessage:\n${err.message}`
+        : `[ SOCKET CMD ERROR ] - Failed to run command!\n\nMessage:\n${err.message}`
 
     const emitMessage = {
       name,

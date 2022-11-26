@@ -30,16 +30,6 @@ const mockRepos = [
     }
   },
   {
-    name: "sockr",
-    url: "https://github.com/lancetipton/sockr",
-    refs: {
-      nodes: [
-        { name: 'main' },
-        { name: 'lancetipton/sockr' },
-      ]
-    }
-  },
-  {
     name: "rga4",
     url: "https://github.com/lancetipton/rga4",
     refs: {

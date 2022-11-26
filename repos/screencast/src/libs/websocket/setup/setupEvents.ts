@@ -1,7 +1,7 @@
 import type { Socket } from 'socket.io'
 import type {
-  TSockrEvents,
-  TSockrEventCB,
+  TSocketEvents,
+  TSocketEventCB,
   TSocketConfig,
   TSocketEvtCBProps,
 } from '@GSC/types'
@@ -15,7 +15,7 @@ type TCustomEvt = {
   name:string
   socket:Socket
   config:TSocketConfig
-  method:TSockrEventCB
+  method:TSocketEventCB
   Manager:SocketManager
 }
 
@@ -32,7 +32,7 @@ const handelCustomEvt = ({
 }:TCustomEvt) => {
   socket.on(name, async (data:Record<any, any>) => {
     Manager.checkAuth(socket, name, data, () => {
-      checkCall<TSockrEventCB>(method, {
+      checkCall<TSocketEventCB>(method, {
         io,
         data,
         socket,
@@ -87,7 +87,7 @@ export const setupEvents = (
   config:TSocketConfig,
   io:Server
 ) => {
-  const { events = noOpObj as TSockrEvents } = config
+  const { events = noOpObj as TSocketEvents } = config
 
   // Ensure the onDisconnect event get attached to the socket if no disconnect event
   !events.disconnect &&

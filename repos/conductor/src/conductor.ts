@@ -18,7 +18,6 @@ import {
   createWSProxy,
   createApiProxy,
   createVNCProxy,
-  createIframeProxy
 } from './proxy'
 
 export class Conductor {

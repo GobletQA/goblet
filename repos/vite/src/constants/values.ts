@@ -30,3 +30,13 @@ export const ScreencastBrowserSelector = `screencast-browser`
 export const AuthActive = Environment === `local`
   ? toBool(process.env.GB_AUTH_ACTIVE)
   : true
+
+
+export const WSRecordActions = {
+  stop:`stop`,
+  start:`start`,
+}
+export const WSPlayActions = {
+  stop:`stop`,
+  start:`start`,
+}

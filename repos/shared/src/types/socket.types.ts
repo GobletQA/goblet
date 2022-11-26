@@ -142,24 +142,28 @@ export type TSocketMessageObj = {
 
 export type TSocketMessage = TSocketMessageStr | TSocketMessageObj
 
-export type TSockrEventCB = (props:TSocketEvtCBProps) => any
+export type TSocketEventCB = (props:TSocketEvtCBProps) => any
 
-export type TSockrEvents = {
-  [key:string]: TSockrEventCB
+export type TSocketEvents = {
+  [key:string]: TSocketEventCB
 }
 
-export type TSockrAuthConfig = {
+export type TSocketAuthConfig = {
   onAuthFail?:(...args:any[]) => any
   onAuthenticate?:(...args:any[]) => any
 }
 
-export type TSocketConfig = TSockrAuthConfig & {
+export type TSocketServer = {
   path: string
   port: string
   host: string
+}
+
+export type TSocketConfig = TSocketAuthConfig & {
+  socket:TSocketServer
   groups: TCmdGroups
   filters?: TFilterObj
-  events?: TSockrEvents
+  events?: TSocketEvents
   commands?: TCmdsConfig
   process: Partial<TProcConfig>
 }

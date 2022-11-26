@@ -75,7 +75,7 @@ export const initApi = async () => {
   await setupEndpoints()
   setupLoggerErr(app)
 
-  const { vncProxy, wsProxy, iframeProxy } = await setupConductor(app)
+  const { vncProxy, wsProxy } = await setupConductor(app)
 
   const {
     secureServer,
@@ -91,12 +91,9 @@ export const initApi = async () => {
   const server = secureServer || insecureServer
  
   server.on('upgrade', (req, socket, head) => {
-
-    req.url.includes(iframeProxy?.path)
-      ? iframeProxy?.upgrade(req, socket, head)
-      : req.url.includes(vncProxy?.path)
-        ? vncProxy?.upgrade(req, socket, head)
-        : wsProxy?.upgrade(req, socket, head)
+    req.url.includes(vncProxy?.path)
+      ? vncProxy?.upgrade(req, socket, head)
+      : wsProxy?.upgrade(req, socket, head)
     
   })
 

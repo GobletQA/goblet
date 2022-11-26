@@ -32,8 +32,8 @@ export const AUTH_BYPASS_ROUTES = [
 ]
 
 
-export const TagPrefix = 'SOCKr'
-export const authTokenHeader = `SOCKR-AUTH-TOKEN`
+export const TagPrefix = `SOCKET`
+export const authTokenHeader = `SOCKET-AUTH-TOKEN`
 
 export const WSEventTypes = {
   // General

@@ -18,7 +18,7 @@ import {
  *
  * @param {Object} data - Data object passed to the socket event from the FE
  * @param {Object} socket - Socket.io Socket object
- * @param {Object} Manager - Sockr Manager instance
+ * @param {Object} Manager - Socket Manager instance
  * @param {Object} app - Express app instance
  *
  * @returns {void}
@@ -54,12 +54,12 @@ const handleStart = async (
 
 /**
  * Stops the browser recorder from recording actions
- * Pulls the Recorder instance from Sockr Manager Cache
+ * Pulls the Recorder instance from Socket Manager Cache
  * Then calls the recorders stop method
  *
  * @param {Object} data - Data object passed to the socket event from the FE
  * @param {Object} socket - Socket.io Socket object
- * @param {Object} Manager - Sockr Manager instance
+ * @param {Object} Manager - Socket Manager instance
  *
  * @returns {void}
  */
@@ -86,7 +86,7 @@ const handleStop = async (
  * @function
  * @param {Object} app - Express App object
  *
- * @returns {function} - Custom Event Method passed to Sockr to be called from the frontend
+ * @returns {function} - Custom Event Method passed to Socket to be called from the frontend
  */
 export const browserRecorder = (app:Express) => {
   return async ({ data, socket, Manager }:TSocketEvtCBProps) => {

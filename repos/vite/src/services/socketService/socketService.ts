@@ -2,6 +2,7 @@ import type { Socket } from 'socket.io-client'
 import type { TSockCmds, TSocketService, TSockCmd } from '@types'
 
 import io from 'socket.io-client'
+import { events } from './events'
 import { TagPrefix } from '@constants/websocket'
 import * as EventTypes from '@constants/websocket'
 import {
@@ -15,6 +16,7 @@ import {
   isObj,
   isFunc,
   noOpObj,
+  deepMerge,
   snakeCase,
 } from '@keg-hub/jsutils'
 
@@ -42,10 +44,6 @@ export class SocketService {
    * Helper to log data when logDebug is true
    * @memberof SocketService
    * @type function
-   * @public
-   * @param {*} data - Items to be logged
-   *
-   * @returns {void}
    */
   logData(...data:any[]) {
     this.logDebug && console.log(...data)
@@ -56,10 +54,6 @@ export class SocketService {
    * @memberof SocketService
    * @type function
    * @public
-   * @param {string} event - Websocket event to be logged
-   * @param {*} data - Items to be logged
-   *
-   * @returns {void}
    */
   logEvent(event:string, ...data:any[]) {
     this.logDebug && console.log(`Socket Event: ${event}`, ...data)
@@ -78,8 +72,8 @@ export class SocketService {
     if (this.socket) return
 
     this.token = token
-    this.config = config
     this.logDebug = logDebug
+    this.config = deepMerge({ events }, config)
 
     const endpoint = buildEndpoint(config)
 
@@ -106,12 +100,6 @@ export class SocketService {
    * @memberof SocketService
    * @type Object
    * @public
-   *
-   * @param {Object} config - Options for setting up the websocket
-   * @param {string} token - Auth token for validating with the backend
-   * @param {boolean} logDebug - Should log Socket events as the happen
-   *
-   * @returns {void}
    */
   addEvents() {
     if (!this.socket) return
@@ -149,15 +137,9 @@ export class SocketService {
    * Callback method called when the websocket connects to the backend
    * @memberof SocketService
    * @type function
-   * @public
-   * @param {string} token - Auth token for validating with the backend
-   * @param {Object} data - Content sent from the backend
-   *
-   * @returns {void}
    */
   onConnection(...args:string[]) {
     const [token, data] = args
-    
     // TODO: Implement token auth
     // Send the token to the server to be validated
     // this.emit(EventTypes.WS_AUTH_TOKEN, { token: token })

@@ -1,5 +1,5 @@
 import { TJwtConfig } from './helpers.types'
-import { TSocketConfigOpts, TSocketConfig } from './socket.types'
+import { TSocketConfigOpts } from './socket.types'
 import { TBrowserContextOpts, TBrowserConf, TBrowserPage } from './pw.types'
 
 export type TChildProcArgs = {
