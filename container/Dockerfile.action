@@ -33,7 +33,6 @@ RUN <<EOF
   rm -rf repos/conductor
   rm -rf repos/dind
   rm -rf repos/frontend
-  rm -rf repos/kind
   rm -rf repos/monaco
   rm -rf repos/resizer
   rm -rf repos/traceViewer

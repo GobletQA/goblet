@@ -172,7 +172,6 @@ module.exports = {
           'tasks',
           'certs',
           'goblet',
-          'repos/kind',
           'repos/dind',
           'repos/scripts',
           'repos/backend',
@@ -229,8 +228,5 @@ module.exports = {
         ]
       }
     },
-    kind: {
-      contexts: [`kind`, `kd`],
-    }
   },
 }

@@ -55,12 +55,6 @@ vars:
   command: "node scripts/ds/getYamlValue.js GB_NO_VNC_PATH"
 
 # ----- KinD Values ----- #
-- name: GB_KD_DEPLOYMENT
-  source: command
-  command: "node scripts/ds/getYamlValue.js GB_KD_DEPLOYMENT"
-- name: GB_KD_IMG_URI
-  source: command
-  command: "node scripts/ds/resolveImgUri.js KD"
 - name: GB_KD_SERVICE_ACCOUNT
   source: command
   command: "node scripts/ds/getYamlValue.js GB_KD_SERVICE_ACCOUNT"
@@ -73,9 +67,6 @@ vars:
 - name: GB_KD_PORT
   source: command
   command: "node scripts/ds/getYamlValue.js GB_KD_PORT"
-- name: GB_KD_KUBE_PROXY_PORT
-  source: command
-  command: "node scripts/ds/getYamlValue.js GB_KD_KUBE_PROXY_PORT"
 
 # ----- Screencast API Values ----- #
 - name: GB_SC_DEPLOYMENT
