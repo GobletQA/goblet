@@ -40,6 +40,8 @@ RUN <<EOF
   mkdir -p temp
   mkdir -p /github
   mv /goblet/app/ /github/app/
+  apt update
+  apt install -y --no-install-recommends build-essential
 EOF
 
 WORKDIR /github/app
