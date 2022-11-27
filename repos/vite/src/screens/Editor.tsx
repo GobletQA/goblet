@@ -71,10 +71,6 @@ export default function Editor(props:TEditorProps){
   
   return (
     <Layout>
-      {/* <RenderToggle
-        onToggle={toggleType}
-        editorType={editorType}
-      /> */}
       <EditorComp />
     </Layout>
   )

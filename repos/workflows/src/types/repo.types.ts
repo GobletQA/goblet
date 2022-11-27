@@ -39,7 +39,7 @@ export type TSaveMetaData = {
   [key: string]: any
 }
 
-export type TRepo = {
+export type TRepoMeta = {
   url: string
   name:string
   branches:string[]

@@ -76,9 +76,13 @@ const App = () => {
             <RootScreen />
             <ModalManager />
           </ModalProvider>
-          {
-            AuthActive && (<Fadeout speed={250} start={start} content={apiTimeout} />)
-          }
+          {AuthActive && (
+            <Fadeout
+              speed={250}
+              start={start}
+              content={apiTimeout}
+            />
+          )}
         </ThemeProvider>
       </Provider>
     </ThemeTypeProvider>

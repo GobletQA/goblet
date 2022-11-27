@@ -1,7 +1,7 @@
 import type { ReactNode, ComponentProps } from 'react'
 import { gutter } from '@theme'
 import Box from '@mui/material/Box'
-import { ErrorIcon, PendingIcon, InfoIcon } from '@components/Icons'
+import { ErrorIcon, InfoIcon } from '@components/Icons'
 import CircularProgress from '@mui/material/CircularProgress'
 
 export type TModalMessage = {

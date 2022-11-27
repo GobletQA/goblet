@@ -11,6 +11,8 @@ export type TAutoInput = ComponentProps<typeof AutocompleteElement> & {
   disabled?: boolean
 }
 
+const isOptionEqualToValue = (option:any, value:any) => option?.value === value?.value
+
 export const AutoInput = (props:TAutoInput) => {
   const {
     disabled,
@@ -24,6 +26,10 @@ export const AutoInput = (props:TAutoInput) => {
   return (
     <AutocompleteElement
       {...rest}
+      autocompleteProps={{
+        disabled,
+        isOptionEqualToValue
+      }}
       textFieldProps={{
         ...textFieldProps,
         InputProps: {
@@ -42,7 +48,6 @@ export const AutoInput = (props:TAutoInput) => {
           ...(textFieldProps?.InputLabelProps || noOpObj),
         } as InputLabelProps
       }}
-      autocompleteProps={{ disabled }}
     />
   )
 }

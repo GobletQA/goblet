@@ -1,9 +1,9 @@
 import type { CSSProperties } from 'react'
 
-import { colors } from '@theme'
-import { Browser } from '@components/Browser'
-import { ScreencastBrowserSelector } from '@constants'
-import { useScreencastHooks } from '@hooks/screencast/useScreencastHooks'
+import { useMemo } from 'react'
+import { useUser, useRepo } from '@store'
+import { ScreencastView } from './ScreencastView'
+import { ScreencastLoading } from './ScreencastLoading'
 
 export type TScreencastProps = {
   sx?: CSSProperties
@@ -11,32 +11,14 @@ export type TScreencastProps = {
 }
 
 export const Screencast = (props:TScreencastProps) => {
-  const {
-    vncRef,
-    repoUrl,
-    fadeStart,
-    onConnect,
-    onKeyDown,
-    onClipboard,
-    onDisconnect,
-    screencastUrl,
-  } = useScreencastHooks()
+  const user = useUser()
+  const repo = useRepo()
+  const showBrowser = useMemo(() => Boolean(user.id && repo.name), [user, repo])
 
   return (
-    <Browser
-      ref={vncRef}
-      url={screencastUrl}
-      autoConnect={false}
-      scaleViewport={true}
-      displayUrl={repoUrl}
-      onConnect={onConnect}
-      onKeyDown={onKeyDown}
-      forceShowLoading={true}
-      onClipboard={onClipboard}
-      loadingFadeout={fadeStart}
-      background={colors.black03}
-      onDisconnect={onDisconnect}
-      className={ScreencastBrowserSelector}
-    />
+    <>
+      {showBrowser && (<ScreencastView {...props} />)}
+      <ScreencastLoading start={showBrowser} />
+    </>
   )
 }

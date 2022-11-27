@@ -14,7 +14,7 @@ import {
   deepMerge,
 } from '@keg-hub/jsutils'
 import {
-  TRepo,
+  TRepoMeta,
   TGCacheOpts,
   TGraphApiVars,
   TGraphApiResp,
@@ -207,7 +207,7 @@ const graphApiCall = async (args:TGraphApiVars) => {
  * })
  *
 */
-export const getUserRepos = async (opts):Promise<TRepo[]> => {
+export const getUserRepos = async (opts):Promise<TRepoMeta[]> => {
   const repos = await graphApiCall({
     ...opts,
     endpoint: GRAPH.ENDPOINTS.REPO.LIST_ALL,
