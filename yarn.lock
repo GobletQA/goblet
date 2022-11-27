@@ -10768,17 +10768,17 @@ pkg-dir@^4.1.0, pkg-dir@^4.2.0:
   dependencies:
     find-up "^4.0.0"
 
-playwright-core@1.28.0:
-  version "1.28.0"
-  resolved "https://registry.npmjs.org/playwright-core/-/playwright-core-1.28.0.tgz#61df5c714f45139cca07095eccb4891e520e06f2"
-  integrity sha512-nJLknd28kPBiCNTbqpu6Wmkrh63OEqJSFw9xOfL9qxfNwody7h6/L3O2dZoWQ6Oxcm0VOHjWmGiCUGkc0X3VZA==
+playwright-core@1.28.1:
+  version "1.28.1"
+  resolved "https://registry.npmjs.org/playwright-core/-/playwright-core-1.28.1.tgz#8400be9f4a8d1c0489abdb9e75a4cc0ffc3c00cb"
+  integrity sha512-3PixLnGPno0E8rSBJjtwqTwJe3Yw72QwBBBxNoukIj3lEeBNXwbNiKrNuB1oyQgTBw5QHUhNO3SteEtHaMK6ag==
 
-playwright@1.28.0:
-  version "1.28.0"
-  resolved "https://registry.npmjs.org/playwright/-/playwright-1.28.0.tgz#eaec2e607858bd4c0bd7434ac01042720e6a39e3"
-  integrity sha512-kyOXGc5y1mgi+hgEcCIyE1P1+JumLrxS09nFHo5sdJNzrucxPRAGwM4A2X3u3SDOfdgJqx61yIoR6Av+5plJPg==
+playwright@1.28.1:
+  version "1.28.1"
+  resolved "https://registry.npmjs.org/playwright/-/playwright-1.28.1.tgz#f23247f1de466ff73d7230d94df96271e5da6583"
+  integrity sha512-92Sz6XBlfHlb9tK5UCDzIFAuIkHHpemA9zwUaqvo+w7sFMSmVMGmvKcbptof/eJObq63PGnMhM75x7qxhTR78Q==
   dependencies:
-    playwright-core "1.28.0"
+    playwright-core "1.28.1"
 
 pngquant-bin@^6.0.0:
   version "6.0.1"
@@ -12007,7 +12007,7 @@ socket.io-parser@~4.2.1:
     "@socket.io/component-emitter" "~3.1.0"
     debug "~4.3.1"
 
-socket.io@^4.5.4:
+socket.io@4.5.4:
   version "4.5.4"
   resolved "https://registry.npmjs.org/socket.io/-/socket.io-4.5.4.tgz#a4513f06e87451c17013b8d13fdfaf8da5a86a90"
   integrity sha512-m3GC94iK9MfIEeIBfbhJs5BqFibMtkRk8ZpKwG2QwxV0m/eEhPIV4ara6XCF1LWNAus7z58RodiZlAH71U3EhQ==
