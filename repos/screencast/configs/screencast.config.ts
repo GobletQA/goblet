@@ -1,7 +1,7 @@
 import type { TCmdGroups, TBrowserConf } from '@GSC/types'
-
 import '../resolveRoot'
 import path from 'path'
+import fs from 'fs-extra'
 import { toBool, toNum } from '@keg-hub/jsutils'
 import { socketCmds } from './socketCmds.config'
 import { aliases } from '@GConfigs/aliases.config'
@@ -62,6 +62,7 @@ const {
 // Overwrite it with the playwright log file location 
 const tailFile = PW_DEBUG_FILE || path.join(aliases[`@GLogs`], `pwlogs.log`)
 if(DEBUG_FILE !== tailFile) process.env.DEBUG_FILE = tailFile
+fs.ensureFileSync(tailFile)
 
 const screenDims:TScreenDims = {
   width: parseInt(GB_VNC_VIEW_WIDTH as string, 10),

@@ -117,6 +117,8 @@ deployments:
 
 - name: ${GB_SC_DEPLOYMENT}
   helm:
+    upgradeArgs:
+      - "--force"
     chart:
       name: ./
     cleanupOnFail: true
@@ -126,7 +128,7 @@ deployments:
     values:
       containers:
       - image: ${GB_SC_IMG_URI}
-        imagePullPolicy: ${IMAGE_PULL_POLICY}
+        imagePullPolicy: $(node scripts/ds/resolvePullPolicy.js SC)
         env: $(node scripts/ds/resolveDSEnvs.js screencast)
       service: $(node scripts/ds/resolveService.js SC $GB_SC_PORT $GB_NO_VNC_PORT)
       ingress:
@@ -148,6 +150,8 @@ deployments:
 # ----- Backend API Deployment ----- #
 - name: ${GB_BE_DEPLOYMENT}
   helm:
+    upgradeArgs:
+      - "--force"
     chart:
       name: ./
     cleanupOnFail: true
