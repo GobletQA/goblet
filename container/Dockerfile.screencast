@@ -3,11 +3,7 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 # ---- Turbo Stage ---- #
 FROM $IMAGE_FROM as goblet-turbo
-RUN <<EOF
-  apt update
-  apt install -y --no-install-recommends build-essential
-  yarn global add turbo
-EOF
+RUN yarn global add turbo
 # ---- End Stage ---- #
 
 # ---- Prune Stage ---- #

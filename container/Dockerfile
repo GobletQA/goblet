@@ -17,12 +17,6 @@ RUN cd /goblet/app/repos && \
 FROM $GB_IMAGE_FROM as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
-
-RUN <<EOF
-  set -eux;
-  apt update
-  apt install -y --no-install-recommends build-essential
-EOF
 RUN yarn install --frozen-lockfile
 # ---- End Stage ---- #
 

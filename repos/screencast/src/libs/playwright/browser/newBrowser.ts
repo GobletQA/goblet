@@ -49,9 +49,7 @@ export const newBrowserWS = async (
       ? endpoint.replace('127.0.0.1', 'host.docker.internal')
       : endpoint
 
-  const browser = await playwright[type].connect({
-    wsEndpoint: browserEndpoint,
-  })
+  const browser = await playwright[type].connect(browserEndpoint)
 
   setBrowser(browser, type)
   return { browser }
