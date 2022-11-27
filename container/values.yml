@@ -37,7 +37,7 @@ env:
   IMAGE: 'ghcr.io/gobletqa/goblet-app'
   DISPLAY: ":0.0"
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
-  PLAYWRIGHT_BROWSERS_VERSION: 1.27.1
+  PLAYWRIGHT_BROWSERS_VERSION: 1.28.1
 
   # Log file for all playwright logs
   # Gets set in container/scripts/resolveDSEnvs.js for screencast deployment
@@ -60,7 +60,7 @@ env:
   # Image tags added to all built images
   GB_IMAGE_BUILD_TAGS: values,package
   # Then, all sub goblet images are built from the goblet-base image
-  GB_IMAGE_FROM: mcr.microsoft.com/playwright:v1.27.1-focal
+  GB_IMAGE_FROM: mcr.microsoft.com/playwright:v1.28.1-focal
 
   # ---- Logger ENVs ---- #
   # Enable to set custom log-level for conductor
