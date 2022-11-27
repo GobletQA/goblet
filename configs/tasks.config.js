@@ -100,7 +100,7 @@ module.exports = {
         values: {
           imageTag: `latest`,
           image: `ghcr.io/gobletqa/goblet-action`,
-          imageFrom: `mcr.microsoft.com/playwright:v1.28.1-focal`,
+          imageFrom: `mcr.microsoft.com/playwright:v1.27.1-focal`,
         }
       },
     },

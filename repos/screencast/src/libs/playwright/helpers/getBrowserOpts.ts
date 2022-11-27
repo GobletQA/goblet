@@ -24,19 +24,18 @@ const options = {
     slowMo: 100,
     headless: false,
     args: [
-      `--disable-gpu`,
+      // `--disable-gpu`,
       // `--disable-dev-shm-usage`,
       // `--no-sandbox`,
       // `--window-position=0,0`,
       // Hides the top-bar header. Should validate this this is what we want
-      `--window-position=0,-74`,
-
+      // `--window-position=0,-74`,
       // `--app`,
       // `--no-first-run`,
-      `--start-fullscreen`,
+      // `--start-fullscreen`,
       // `--dark-mode-settings`,
       // `--kiosk`,
-      `--start-maximized`,
+      // `--start-maximized`,
       // `--allow-insecure-localhost`,
       // `--unsafely-treat-insecure-origin-as-secure`,
       // `--suppress-message-center-popups`
