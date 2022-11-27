@@ -22,6 +22,13 @@ export default function Home(props:THomeProps) {
 
   return (
     <SocketProvider>
+      <ScreenWrap className="screen-container">
+        {
+          location.pathname === '/' || location.pathname.startsWith(Editor.path)
+            ? (<Editor />)
+            : (<Outlet />)
+        }
+      </ScreenWrap>
       <Box sx={{ display: 'flex' }}>
         <SideNav />
         <Header settings={settings} />
