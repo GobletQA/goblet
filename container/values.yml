@@ -40,7 +40,8 @@ env:
   PLAYWRIGHT_BROWSERS_VERSION: 1.28.0
 
   # Log file for all playwright logs
-  DEBUG_FILE: /goblet/app/logs/pwlogs.log
+  # Gets set in container/scripts/resolveDSEnvs.js for screencast deployment
+  PW_DEBUG_FILE: /goblet/app/logs/pwlogs.log
 
 # ---- Goblet Action Shared ENVs ---- #
 # These ENVs should be overwritten by the github action

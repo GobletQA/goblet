@@ -19,6 +19,7 @@ loadEnvs({
 
 const {
   DEBUG_FILE,
+  PW_DEBUG_FILE,
   GB_SC_HOST,
   GB_VNC_ACTIVE,
   DISPLAY=':0.0',
@@ -57,8 +58,10 @@ const {
 
 } = process.env
 
-const tailFile = DEBUG_FILE || path.join(aliases[`@GLogs`], `pwlogs.log`)
-if(!DEBUG_FILE) process.env.DEBUG_FILE = tailFile
+// If DEBUG_FILE env is not set to the correct location
+// Overwrite it with the playwright log file location 
+const tailFile = PW_DEBUG_FILE || path.join(aliases[`@GLogs`], `pwlogs.log`)
+if(DEBUG_FILE !== tailFile) process.env.DEBUG_FILE = tailFile
 
 const screenDims:TScreenDims = {
   width: parseInt(GB_VNC_VIEW_WIDTH as string, 10),
