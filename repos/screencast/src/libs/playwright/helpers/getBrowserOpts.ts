@@ -24,20 +24,18 @@ const options = {
     slowMo: 100,
     headless: false,
     args: [
-      // `--disable-gpu`,
-      // `--disable-dev-shm-usage`,
-      // `--no-sandbox`,
-      // `--window-position=0,0`,
+      `--disable-gpu`,
+      `--disable-dev-shm-usage`,
       // Hides the top-bar header. Should validate this this is what we want
-      // `--window-position=0,-74`,
-      // `--app`,
-      // `--no-first-run`,
-      // `--start-fullscreen`,
+      `--window-position=0,-74`,
+      `--start-maximized`,
+      `--allow-insecure-localhost`,
+      `--app`,
+      `--no-first-run`,
+      `--start-fullscreen`,
+      `--unsafely-treat-insecure-origin-as-secure`,
       // `--dark-mode-settings`,
       // `--kiosk`,
-      // `--start-maximized`,
-      // `--allow-insecure-localhost`,
-      // `--unsafely-treat-insecure-origin-as-secure`,
       // `--suppress-message-center-popups`
       // Investigate this - May allow keeping the browser alive in goblet UI app
       // Don't want this when running in CI or other environments
