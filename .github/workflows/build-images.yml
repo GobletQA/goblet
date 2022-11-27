@@ -52,7 +52,7 @@ jobs:
           scope: "@gobletqa"
 
       - name: Set up QEMU
-        id: buildx
+        id: qemu
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
