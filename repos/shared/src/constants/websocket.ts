@@ -25,3 +25,6 @@ export const WS_CMD_END = `${TagPrefix}:CMD_END`
 export const WS_CMD_OUT = `${TagPrefix}:CMD_OUT`
 export const WS_CMD_ERR = `${TagPrefix}:CMD_ERR`
 export const WS_CMD_FAIL = `${TagPrefix}:CMD_FAIL`
+
+  // Playwright logs
+export const WS_PW_LOG = `${TagPrefix}:PW_LOG`

@@ -59,6 +59,7 @@
     "@ltipton/parkin": "*",
     "expect": "28.1.0",
     "express": "4.17.3",
+    "fs-extra": "10.1.0",
     "jest": "29.2.0",
     "module-alias": "2.2.2",
     "playwright": "1.28.0",

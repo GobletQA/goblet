@@ -39,6 +39,9 @@ env:
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
   PLAYWRIGHT_BROWSERS_VERSION: 1.28.0
 
+  # Log file for all playwright logs
+  DEBUG_FILE: /goblet/app/logs/pwlogs.log
+
 # ---- Goblet Action Shared ENVs ---- #
 # These ENVs should be overwritten by the github action
   GOBLET_MOUNT_ROOT: /goblet/repos

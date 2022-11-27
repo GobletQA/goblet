@@ -8,7 +8,8 @@ import type {
   TCmdExecEvents,
   TSocketMessageObj,
 } from '@GSC/types'
-import { WSEventTypes } from '../../../constants'
+
+import { WS_CMD_FAIL } from '@gobletqa/shared/constants/websocket'
 import {
   get,
   exists,
@@ -146,7 +147,7 @@ export const onInvalidCmd = (
 
   // Update manager, and emit a command failed event
   manager.isRunning = false
-  manager.emitAll(WSEventTypes.CMD_FAIL, {
+  manager.emitAll(WS_CMD_FAIL, {
     name,
     error: true,
     isRunning: manager.isRunning,

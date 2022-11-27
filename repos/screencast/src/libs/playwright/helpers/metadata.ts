@@ -32,8 +32,8 @@ const getMetaDataPaths = () => {
     exists(pwMetaDataDir) && pathExistsSync(pwMetaDataDir)
       ? pwMetaDataDir
       : checkVncEnv().vncActive
-      ? path.resolve(os.tmpdir(), 'goblet')
-      : gobletRoot
+        ? path.resolve(os.tmpdir(), 'goblet')
+        : gobletRoot
 
   const metadataPath = path.resolve(metadataDir, 'browser-meta.json')
 

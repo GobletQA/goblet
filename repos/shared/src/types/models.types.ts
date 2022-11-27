@@ -31,7 +31,7 @@ export type TTestsModel = {
   waypoint: TFileModel[],
 }
 
-export type TCmdMessage = {
+export type TRunCmdMessage = {
   [key:string]:  any
 }
 
@@ -45,5 +45,5 @@ export type TTestRunModel = {
   running: boolean,
   command: string | undefined,
   params: string[],
-  messages: Record<string, TCmdMessage>,
+  messages: Record<string, TRunCmdMessage>,
 }

@@ -18,6 +18,7 @@ loadEnvs({
 })
 
 const {
+  DEBUG_FILE,
   GB_SC_HOST,
   GB_VNC_ACTIVE,
   DISPLAY=':0.0',
@@ -52,8 +53,12 @@ const {
   // This will ensure requests are coming from the backend API only
   GB_CD_VALIDATION_KEY,
   GB_CD_VALIDATION_HEADER,
+  
 
 } = process.env
+
+const tailFile = DEBUG_FILE || path.join(aliases[`@GLogs`], `pwlogs.log`)
+if(!DEBUG_FILE) process.env.DEBUG_FILE = tailFile
 
 const screenDims:TScreenDims = {
   width: parseInt(GB_VNC_VIEW_WIDTH as string, 10),
@@ -118,5 +123,10 @@ export const screencastConfig:TGScreencastConfig = {
       script: path.join(aliases[`@GSC/Scripts`], 'socket.cmd.sh'),
     },
   },
+  tail: {
+    create: true,
+    truncate: true,
+    file: tailFile,
+  }
 }
 

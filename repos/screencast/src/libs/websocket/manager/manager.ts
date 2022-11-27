@@ -4,7 +4,17 @@ import type {
   TSocketMessage,
   TSocketMessageObj,
 } from '@GSC/types'
-import { WSEventTypes, TagPrefix } from '../../../constants'
+
+import * as WSConstants from '@gobletqa/shared/constants/websocket'
+import {
+  TagPrefix,
+  WS_INIT,
+  WS_ADD_PEER,
+  WS_NOT_AUTHORIZED,
+  WS_PEER_DISCONNECT,
+} from '@gobletqa/shared/constants/websocket'
+
+
 import {
   get,
   isFunc,
@@ -18,7 +28,7 @@ import {
   deepMerge,
 } from '@keg-hub/jsutils'
 
-const EventTypeValues = Object.values(WSEventTypes)
+const EventTypeValues = Object.values(WSConstants)
 
 /**
  * Gets the current time, used for a timestamp
@@ -329,13 +339,13 @@ export class SocketManager {
       const id = this.add(socket)
       if (!id) return console.error(`setupSocket - Could not add socket. No id returned.`, socket, id)
 
-      this.emit(socket, WSEventTypes.INIT, {
+      this.emit(socket, WS_INIT, {
         id,
         message: `Server socket initialized!`,
         data: { commands, peers: Object.keys(this.peers) },
       })
 
-      this.broadCastAll(socket, WSEventTypes.ADD_PEER, {
+      this.broadCastAll(socket, WS_ADD_PEER, {
         id: socket.id,
         data: { peers: Object.keys(this.peers) },
       })
@@ -355,7 +365,7 @@ export class SocketManager {
   disconnect = (
     _socket:Socket|string,
     message:TSocketMessageObj,
-    tag:string=WSEventTypes.NOT_AUTHORIZED
+    tag:string=WS_NOT_AUTHORIZED
   ) => {
 
     // Ensure we have the socket object and not the id
@@ -397,7 +407,7 @@ export class SocketManager {
 
       delete this.peers[socket.id]
 
-      this.emitAll(WSEventTypes.PEER_DISCONNECT, {
+      this.emitAll(WS_PEER_DISCONNECT, {
         id: socket.id,
         data: { peers: Object.keys(this.peers) },
       })
