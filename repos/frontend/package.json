@@ -15,9 +15,5 @@
   },
   "author": "Lance Tipton",
   "license": "MIT",
-  "private": true,
-  "scripts": {},
-  "resolutions": {},
-  "dependencies": {},
-  "devDependencies": {}
+  "private": true
 }
