@@ -1,4 +1,5 @@
 import type { Socket } from 'socket.io'
+import { aliases } from '@GConfigs/aliases.config'
 import type { SocketManager } from '../manager/manager'
 import type {
   TCmdMessage,
@@ -11,7 +12,6 @@ import type {
 
 import path from 'path'
 import { exec } from './exec'
-import appRootPath from 'app-root-path'
 import { deepMerge, noOpObj, isStr } from '@keg-hub/jsutils'
 import { shouldFilterMessage, validateCmd, addConfig } from './helpers'
 import {
@@ -22,9 +22,6 @@ import {
   WS_CMD_FAIL,
   WS_CMD_RUNNING,
 } from '@gobletqa/shared/constants/websocket'
-
-const appRoot = appRootPath.path
-const socketRoot = path.join(__dirname, `../../../`)
 
 /**
  * Class for managing child process run from a socket connection
@@ -41,9 +38,9 @@ export class Process {
     exec: {
       shell: '/bin/bash',
     },
-    root: appRoot,
-    script: path.join(socketRoot, `./scripts/exec.sh`),
     debug: false,
+    root: aliases.GobletRoot,
+    script: path.join(aliases[`@GSC/Scripts`], `socket.cmd.sh`),
   }
 
   commands:TCmdsConfig

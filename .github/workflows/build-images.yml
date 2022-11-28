@@ -52,22 +52,24 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: "@gobletqa"
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+
       - name: Cache node_modules
         id: yarn-cache
         uses: actions/cache@v3
         env:
           cache-name: yarn-cache-node-modules
         with:
-          path: |
-            node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: |
-          mv repos _repos
-          yarn install
-          mv _repos repos
+        run: yarn install --frozen-lockfile
         env:
           NPM_TOKEN: ${{ secrets.GIT_TOKEN }}
 
