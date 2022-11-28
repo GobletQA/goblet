@@ -18,9 +18,9 @@
   },
   "scripts": {
     "build": "node configs/build.config.js",
+    "clean": "yarn clean:dist; yarn clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
-    "clean:install": "yarn clean:full; yarn install",
-    "clean:full": "yarn clean; yarn clean:nm; yarn install",
+    "clean:full": "yarn clean; yarn install",
     "clean:nm": "rm -rf node_modules",
     "format": "yarn lint && yarn pretty",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
