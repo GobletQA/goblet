@@ -2,11 +2,10 @@
 /* eslint-disable */
 const path = require('path')
 const webpack = require('webpack')
-const hq = require('alias-hq')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const rootDir = path.resolve(__dirname, '..') 
-const gobletRoot = hq.get('webpack').GobletRoot
+const gobletRoot = path.resolve(rootDir, '../../') 
 const publicAssets = path.join(gobletRoot, 'node_modules/@gobletqa/monaco-public')
 
 module.exports = {
