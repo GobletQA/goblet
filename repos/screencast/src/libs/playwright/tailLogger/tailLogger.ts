@@ -9,6 +9,7 @@ export class TailLogger {
 
   tail:Tail
   file:string
+  started:boolean
   callbacks:TTailCallbacks
   filter:TLineFilter=defFilter
 
@@ -29,6 +30,10 @@ export class TailLogger {
     create && fs.ensureFileSync(this.file)
     truncate && this.truncate()
     this.tail = new Tail(this.file)
+
+    this.tail.on(`line`, this.onLine)
+    this.tail.on(`error`, this.onError)
+    this.tail.on(`ready`, this.onReady)
 
     start && this.start()
   }
@@ -55,6 +60,9 @@ export class TailLogger {
   }
   
   start = () => {
+    if(this.started) return
+
+    this.started = true
     this.tail.start()
   }
 

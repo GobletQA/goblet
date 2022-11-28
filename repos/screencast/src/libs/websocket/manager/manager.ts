@@ -298,6 +298,7 @@ export class SocketManager {
     tag:string,
     data:Record<any, any>
   ) => {
+
     try {
       if (!this.socketIo)
         return console.error(`Socket.IO is not set on SocketManager!`)
@@ -408,7 +409,7 @@ export class SocketManager {
       delete this.peers[socket.id]
 
       this.emitAll(WS_PEER_DISCONNECT, {
-        id: socket.id,
+        socketId: socket.id,
         data: { peers: Object.keys(this.peers) },
       })
     }

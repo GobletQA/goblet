@@ -124,9 +124,10 @@ export class SocketService {
     )
 
     // Socket Map Event types to internal actions
-    Object.entries(EventTypes).map(([ key, eventType ]) => {
-      this?.socket?.on(eventType, callAction(this, eventType))
-    })
+    // Investigate if this is still needed
+    // Object.entries(EventTypes).map(([ key, eventType ]) => {
+    //   this?.socket?.on(eventType, callAction(this, eventType))
+    // })
 
     // Initial connection to the server through the socket
     // Call the onConnection method which will handel authorization

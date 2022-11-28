@@ -1,7 +1,6 @@
 import type { Express } from 'express'
-import type { Socket } from 'socket.io'
 import type { TSocketEvtCBProps } from '@GSC/types'
-
+import { WS_PW_LOG } from '@gobletqa/shared/constants/websocket'
 
 export const connection = (app:Express) => {
   return ({ socket, Manager }:TSocketEvtCBProps) => {
@@ -15,12 +14,15 @@ export const connection = (app:Express) => {
     if(!tailLogger) return
 
     tailLogger.callbacks.onLine = (line:string) => {
-      Manager.emitAll(socket, {
+
+      Manager.emit(socket, WS_PW_LOG, {
         message: line,
-        group: 'goblet',
-        name: 'playwright',
       })
     }
+
+    // Start listening to logs
+    app.locals.tailLogger.start()
+    
   }
 }
 
