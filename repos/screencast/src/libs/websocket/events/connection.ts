@@ -2,6 +2,12 @@ import type { Express } from 'express'
 import type { TSocketEvtCBProps } from '@GSC/types'
 import { WS_PW_LOG } from '@gobletqa/shared/constants/websocket'
 
+// TODO: move this to constants, and add more as needed
+// Need to figure out how to fix these error at some point
+const logFilter = [
+  `Failed to adjust OOM score of renderer`,
+]
+
 export const connection = (app:Express) => {
   return ({ socket, Manager }:TSocketEvtCBProps) => {
 
@@ -14,10 +20,8 @@ export const connection = (app:Express) => {
     if(!tailLogger) return
 
     tailLogger.callbacks.onLine = (line:string) => {
-
-      Manager.emit(socket, WS_PW_LOG, {
-        message: line,
-      })
+      const shouldFilter = logFilter.find(filter => line.includes(filter))
+      !shouldFilter && Manager.emit(socket, WS_PW_LOG, { message: line })
     }
 
     // Start listening to logs
