@@ -15,7 +15,7 @@ import { limboify } from '@keg-hub/jsutils'
 const getMime = (location:string) => {
   const ext = path.extname(location).replace(`.`, ``)
   // @ts-ignore
-  return mime.types[ext] || `text/plain`
+  return mime?.types?.[ext] || mime?._types?.[ext] || `text/plain`
 }
 
 /**

@@ -4,21 +4,35 @@ ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.27.0-focal
 FROM $GB_IMAGE_FROM as goblet-pruner
 WORKDIR /goblet/app
 COPY . .
-RUN cd /goblet/app/repos && \
-    mkdir -p ../out/json/repos && \
-    find . -name 'package.json' -print0 -exec cp -fprv --parents '{}' '../out/json/repos' ';' && \
-    cd /goblet/app/out/json/repos && \
-    rm -rf ./**/node_modules && \
-    cp /goblet/app/yarn.lock /goblet/app/out/json/yarn.lock && \
-    cp /goblet/app/package.json /goblet/app/out/json/package.json
+RUN <<EOF
+  set -eux;
+  rm -rf repos/frontend
+  rm -rf repos/monaco
+  rm -rf repos/resizer
+  rm -rf repos/vite
+  cd /goblet/app/repos
+  mkdir -p ../out/json/repos
+  find . -name 'package.json' -print0 -exec cp -fprv --parents '{}' '../out/json/repos' ';'
+  cd /goblet/app/out/json/repos
+  rm -rf ./**/node_modules
+  cp /goblet/app/yarn.lock /goblet/app/out/json/yarn.lock
+  cp /goblet/app/turbo.json /goblet/app/out/json/turbo.json
+  cp /goblet/app/package.json /goblet/app/out/json/package.json
+EOF
 # ---- End Stage ---- #
 
 # ---- Install Stage  ---- #
 FROM $GB_IMAGE_FROM as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
-RUN yarn config set network-timeout 300000 && \
-    yarn install --frozen-lockfile
+RUN <<EOF
+  set -eux;
+  yarn global add json turbo
+  yarn json:rm
+  yarn json:repo-rm
+  yarn config set network-timeout 300000
+  yarn install --frozen-lockfile
+EOF
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #

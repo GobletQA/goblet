@@ -49,3 +49,8 @@ pids
 certs
 bundle
 repos/monaco-editor-boilerplate
+repos/frontend
+repos/monaco
+repos/resizer
+repos/traceViewer
+repos/vite

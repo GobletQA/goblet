@@ -19,12 +19,6 @@ vars:
 - name: NODE_ENV
   source: command
   command: "node scripts/ds/getYamlValue.js NODE_ENV"
-- name: BUILD_LOCAL_IMAGE
-  source: command
-  command: "node scripts/ds/getYamlValue.js BUILD_LOCAL_IMAGE false"
-- name: IMAGE_PULL_POLICY
-  source: command
-  command: "node scripts/ds/getYamlValue.js IMAGE_PULL_POLICY Always"
 - name: GB_NM_INSTALL
   source: command
   command: "node scripts/ds/getYamlValue.js GB_NM_INSTALL"
@@ -105,8 +99,8 @@ images:
     dockerfile: ./Dockerfile
     context: ../
     build:
-      # Expression to disable building the image only when BUILD_LOCAL_IMAGE is true
-      disabled: $([ ${BUILD_LOCAL_IMAGE} == "true" ] && echo false || echo true)
+      # Expression to disable building the images, should be built in the cloud
+      disabled: true
       buildKit:
         options:
           buildArgs:

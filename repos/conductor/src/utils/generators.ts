@@ -12,6 +12,7 @@ import {
   TGenRoute,
   TRouteMeta,
   TGenRoutes,
+  TProxyRoute,
   TPublicUrls,
 } from '@gobletqa/conductor/types'
 
@@ -67,7 +68,7 @@ export const generateRoute = ({
       [ForwardSubdomainHeader]: userHash,
       [ForwardHostHeader]: generateExternalUrl(hostPort, userHash, conductor)
     },
-  }
+  } as TProxyRoute
 }
 
 /**

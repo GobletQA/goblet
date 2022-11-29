@@ -21,6 +21,9 @@
       "outputs": [],
       "inputs": ["configs/*.*", "scripts/*.*", "src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "src/**/*.jsx", "src/**/*.js"]
     },
+    "json:rm": {
+      "outputs": []
+    },
     "test": {
       "dependsOn": ["^build"],
       "outputs": [],
