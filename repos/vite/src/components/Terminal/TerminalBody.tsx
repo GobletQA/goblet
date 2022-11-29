@@ -12,16 +12,31 @@ export type TTerminalBody = {
 
 type TTerminalView = {
   active: boolean
+  tab:TTerminalTab
   termRef: TXTermRef
 }
 
 const TerminalView = (props:TTerminalView) => {
-  const { termRef, active } = props
+  const { tab, termRef, active } = props
+
 
   useEffect(() => {
     if(!termRef?.term) return
-    active && termRef.term.xterm.focus()
+    active && termRef?.term?.xterm?.focus()
   }, [active, termRef])
+
+  useEffect(() => {
+    if(!termRef?.term || !tab?.history) return
+
+    const xtermHistory = Object.values(termRef?.term?.history)
+    // If the store history is less than or equal to xterm, then just return
+    if(tab.history.length <= xtermHistory.length)
+      return
+
+    const toAdd = tab.history.slice(xtermHistory.length)
+    toAdd.length && termRef.term.appendHistory(toAdd)
+
+  }, [tab.history.length])
 
   return (
     <TerminalInput
@@ -45,6 +60,7 @@ export const TerminalBody = (props:TTerminalBody) => {
         tabs.map(tab => {
           return (
             <TerminalView
+              tab={tab}
               key={tab.id}
               termRef={termRef}
               active={activeTab === tab}

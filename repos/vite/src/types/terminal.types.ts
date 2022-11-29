@@ -3,10 +3,18 @@ import type { MutableRefObject } from 'react'
 import type { XTerminal } from '@services/xterm'
 import type { EThemeType } from './theme.types'
 
+export type TTerminalLog = {
+  id: string
+  text?: string
+  message?: string
+  timestamp:number
+}
+
 export type TTerminalTab = {
   id: string
   name?:string
-  history: string[]
+  disabled?:boolean
+  history: TTerminalLog[]
 }
 
 export type TTerminalTabs = TTerminalTab[]
@@ -14,8 +22,9 @@ export type TTerminalTabs = TTerminalTab[]
 
 export type TXTerminal = {
   id: string
-  history?:string[]
+  disabled?:boolean
   element: HTMLElement
+  history?:TTerminalLog[]
 
   theme?: ITheme
   fontSize?: number

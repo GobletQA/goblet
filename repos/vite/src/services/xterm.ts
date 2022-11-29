@@ -1,11 +1,11 @@
-import type { TXTerminal, TEventData } from '@types'
+import type { TTerminalLog, TXTerminal, TEventData } from '@types'
 import type { IDisposable, ITerminalOptions } from 'xterm'
 
 import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
 import LocalEchoController from 'local-echo'
-import { isObj, limbo, deepMerge } from '@keg-hub/jsutils'
 import { WebLinksAddon } from 'xterm-addon-web-links'
+import { isObj, limbo, deepMerge, ensureArr } from '@keg-hub/jsutils'
 
 const printable = (event:KeyboardEvent) => (
   !event.altKey
@@ -15,17 +15,10 @@ const printable = (event:KeyboardEvent) => (
     && event.key !== `Backspace`
 )
 
-const setHistory = (term:Terminal, history?:string[]) => {
-  history
-    && history.length
-    && history.forEach(line => term.write(line))
-
-  term.scrollToBottom()
-}
-
 const defTermOpts = {
   fontSize: 16,
-  scrollback: 300,
+  lineHeight: 1.2,
+  scrollback: 1000000,
   convertEol: true,
   cursorBlink: true,
   logLevel: `error`,
@@ -49,6 +42,7 @@ export class XTerminal {
   stdin:boolean=false
   promptText:string="❯ "
   dispose: IDisposable | false
+  history:Record<number, TTerminalLog>={}
   localEcho:ReturnType<typeof LocalEchoController>
 
   constructor(config: TXTerminal){
@@ -56,11 +50,11 @@ export class XTerminal {
       id,
       element,
       history,
+      disabled,
       ...rest
     } = config
-    
+
     this.id = id
-    
     this.xterm = new Terminal(deepMerge(defTermOpts, rest))
 
     this.fitAddon = new FitAddon()
@@ -74,8 +68,9 @@ export class XTerminal {
     this.xterm.open(element)
     this.dispose = false
     this.resize()
-    setHistory(this.xterm, history)
-    this.readInput()
+    this.appendHistory(history)
+
+    !disabled && this.readInput()
   }
 
   private onKey = (data:TEventData) => {
@@ -113,6 +108,19 @@ export class XTerminal {
     const [err, input] = await limbo(this.localEcho.read(this.promptText))
     await this.onInput(input)
     return this.readInput()
+  }
+
+  appendHistory = (history?:TTerminalLog|TTerminalLog[]) => {
+    const toAdd = history && ensureArr(history)
+    toAdd
+      && toAdd.length
+      && toAdd.forEach(log => {
+          if(this.history[log.timestamp]) return
+
+          this.xterm.write(log.text || log.message)
+          this.history[log.timestamp] = log
+      })
+    this.xterm.scrollToBottom()
   }
 
   resize = () => {

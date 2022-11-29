@@ -59,3 +59,5 @@ export const SocketMsgTypes = {
   BROWSER_RECORDER: `browserRecorder`,
   BROWSER_RUN_TESTS: `browserRunTests`
 }
+
+export const BrowserLogTerminal = `browser-log`

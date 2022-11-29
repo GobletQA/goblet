@@ -24,12 +24,8 @@ export const events = {
 
     // Get the name of the action from sockr's Event Types
     // And convert into an action name for the taps sockr actions
-    // const actionName = camelCase((event.split(':')[1] || '').toLowerCase())
-    // checkCall(socketActions[actionName as keyof typeof socketActions], message)
-  },
-  pwLog:function (message:TSocketEvt){
-    console.log(`------- pwLog event -------`)
-    console.log(message)
+    const actionName = camelCase((event.split(':')[1] || '').toLowerCase())
+    checkCall(socketActions[actionName as keyof typeof socketActions], message)
   },
   init: function (message:TSocketEvt){
     // console.log(`------- init event -------`)

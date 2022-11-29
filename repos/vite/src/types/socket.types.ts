@@ -21,7 +21,16 @@ export type TEndpointConf = {
 }
 
 export type TSocketEvt = {
-  [key:string]: any
+  id: string
+  name: string
+  error:boolean
+  group: string
+  groupId: string
+  message: string
+  socketId: string
+  timestamp: number
+  isRunning: boolean
+  data: Record<string, any>
 }
 
 
