@@ -23,7 +23,7 @@ const defTermOpts = {
   cursorBlink: true,
   logLevel: `error`,
   disableStdin: false,
-  cursorStyle: 'block',
+  cursorStyle: `block`,
   allowProposedApi: true,
   screenReaderMode: true,
   // TODO: check if on windows on set based on that

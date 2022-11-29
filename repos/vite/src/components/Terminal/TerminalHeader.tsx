@@ -1,7 +1,7 @@
 import type { TTerminalTabs, TXTermIdMap } from '@types'
 import type { MutableRefObject, SyntheticEvent } from 'react'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useRef, useEffect } from 'react'
 import Box from '@mui/material/Box'
 import { terminalDispatch } from '@store'
 import { TerminalTabs } from './TerminalTabs'
@@ -19,6 +19,7 @@ export type TerminalHeader = {
 export const TerminalHeader = (props:TerminalHeader) => {
   const { active, tabs, terminals } = props
   const [expanded, setExpanded] = useState<boolean>(false)
+  const expandedRef = useRef<boolean>(expanded)
 
   const onChange = useCallback((evt:SyntheticEvent, value:`+`|number) => {
     value === `+`
@@ -30,7 +31,7 @@ export const TerminalHeader = (props:TerminalHeader) => {
   const onExpand = useCallback(() => {
     EE.emit<boolean>(TerminalExpandEvt, !expanded)
     setExpanded(!expanded)
-  }, [expanded])
+  }, [expanded, terminals])
 
   const onClose = useCallback((evt:SyntheticEvent, tabId:string) => {
     evt?.preventDefault()
@@ -40,6 +41,13 @@ export const TerminalHeader = (props:TerminalHeader) => {
     terminalDispatch.remove(tabId)
 
   }, [active, tabs, terminals])
+
+  useEffect(() => {
+    if(expandedRef.current === expanded) return
+    
+    expandedRef.current = expanded
+    Object.values(terminals.current).forEach(terminal => terminal?.term?.resize())
+  }, [expanded])
 
   return (
     <>

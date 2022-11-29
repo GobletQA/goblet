@@ -73,13 +73,9 @@ export const setPanelFull = ({
   lPPanel,
   expanded,
 }:TSetPanelFull) => {
-  if(expanded){
-    zPanel.style.maxHeight = `0px`
-    // zPanel.style.overflow = `none`
-  }
-  else {
-    zPanel.style.maxHeight = `unset`
-  }
+  expanded
+    ? (zPanel.style.maxHeight = `0px`)
+    : (zPanel.style.maxHeight = `unset`)
 }
 
 export const getPanels = (parentEl:HTMLDivElement|null) => {

@@ -5,6 +5,7 @@ import { WS_PW_LOG } from '@gobletqa/shared/constants/websocket'
 // TODO: move this to constants, and add more as needed
 // Need to figure out how to fix these error at some point
 const logFilter = [
+  `Failed to connect to the bus`,
   `Failed to adjust OOM score of renderer`,
 ]
 
