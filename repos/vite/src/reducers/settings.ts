@@ -1,9 +1,16 @@
-import type { TAction, TSettings, TSetting, TSettingAct } from '@types'
+import type {
+  TAction,
+  TSetting,
+  TSettings,
+  TSettingAct,
+  TStorageSetting
+} from '@types'
 
 import settingsJson from './settings.json'
-import { isSetting } from '@utils/store/isSetting'
+import { localStorage } from '@services/localStorage'
+import { findSetting } from '@utils/settings/findSetting'
 import { ScreencastWidth, ScreencastHeight } from '@constants'
-import { deepMerge, get, set, noOpObj, toNum } from '@keg-hub/jsutils'
+import { deepMerge, set, noOpObj, exists, pickKeys } from '@keg-hub/jsutils'
 
 const defSettings = deepMerge(settingsJson, {
   browser: {
@@ -23,34 +30,22 @@ export type TSettingsState = TSettings
 // Use deepMerge to ensure the settingsState is a unique copy
 export const settingsState = deepMerge<TSettingsState>(defSettings)
 
-const missingSetting = (setting:string) => {
-  console.warn(`Tried to update a non-existing setting at path: ${setting}`)
-  return noOpObj as any
-}
-
-const noSetting = (setting:string) => {
-  console.warn(`A setting key name or path string is required. Instead got ${setting}`)
-  return noOpObj as any
-}
-
-const findSetting = (
-  state:TSettingsState,
-  action:TAction<TSettingAct>
-) => {
-  const { setting } = action?.payload
-
-  if(!setting) return noSetting(setting)
-
-  // Get the setting object to be updated, if non exists, the do nothing
-  // Only alow pre-defined settings
-  const found = get(state, setting)
-  if(!isSetting(found)) return missingSetting(setting)
-
-  return { found, setting }
-
+const updateStorage = (setting:string, settingObj:TSetting) => {
+  /**
+   * No need to await the local storage call
+   * We do no depend on the value being set
+   */
+  localStorage.setSetting(
+    setting,
+    pickKeys<TStorageSetting>(settingObj, [`value`, `active`, `group`])
+  )
 }
 
 export const settingsActions = {
+  setAll: (
+    state:TSettingsState,
+    action:TAction<TSettingsState>
+  ) => action.payload,
   resetAll: (
     state:TSettingsState,
     action:TAction<any>
@@ -64,7 +59,7 @@ export const settingsActions = {
     action:TAction<TSettingAct>
   ) => {
     
-    const { found, setting } = findSetting(settingsState, action)
+    const { found, setting } = findSetting(action.payload?.setting, state)
     if(!found) return state
 
     // Use deepMerge to ensure the setting object gets recreated
@@ -77,13 +72,17 @@ export const settingsActions = {
     action:TAction<TSettingAct>
   ) => {
     
-    const { found, setting } = findSetting(state, action)
+    const { data } = action.payload
+    const { found, setting } = findSetting(action.payload?.setting, state)
     if(!found) return state
 
-    // If value property is in data, it will override passed in value
+    // Use the data.active value or the inverse of current active if no data
+    const active = exists(data?.active) ? data?.active : !found.active
+
     // Use deepMerge to ensure the setting object gets merged and recreated
-    const settingObj = deepMerge(found, { active: !found.active })
+    const settingObj = deepMerge(found, { active })
     set(state, setting, settingObj)
+    updateStorage(setting, settingObj)
 
     return state
   },
@@ -91,14 +90,17 @@ export const settingsActions = {
     state:TSettingsState,
     action:TAction<TSettingAct>
   ) => {
-    const { found, setting } = findSetting(state, action)
+    const { found, setting } = findSetting(action.payload?.setting, state)
     if(!found) return state
 
-    // If value property is in data, it will override passed in value
-    // Use deepMerge to ensure the setting object gets merged and recreated
+    /**
+     * If value property is in data, it will override passed in value
+     * Use deepMerge to ensure the setting object gets merged and recreated
+     */
     const { value, data=noOpObj } = action?.payload
     const settingObj = deepMerge(found, { value, ...data })
     set(state, setting, settingObj)
+    updateStorage(setting, settingObj)
 
     return state
   },

@@ -3,7 +3,7 @@ import { noOpObj } from '@keg-hub/jsutils'
 import { addToast } from '@actions/toasts'
 import { apiRequest } from '@utils/api/apiRequest'
 import { screencastApi } from '@services/screencastApi'
-import { getSettingsValues } from '@utils/store/getSettingsValues'
+import { getSettingsValues } from '@utils/settings/getSettingsValues'
 
 export const stopBrowser = async (options = noOpObj) => {
 

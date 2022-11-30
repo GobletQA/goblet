@@ -1,12 +1,12 @@
 import type { TRouteMeta } from '@types'
 
-import { isStr } from '@keg-hub/jsutils'
 import { loadFile } from './files/api/loadFile'
 import { signInModal } from '@actions/modals/modals'
 import { statusRepo } from '@actions/repo/api/status'
 import { getQueryData } from '@utils/url/getQueryData'
 import { loadUser } from '@actions/admin/user/loadUser'
 import { statusContainer } from '@actions/container/api'
+import { loadFromStorage } from './settings/loadFromStorage'
 
 export const initStatus = async (status?:TRouteMeta) => {
   // If user is logged in, check the status of users session container
@@ -29,6 +29,9 @@ export const initStatus = async (status?:TRouteMeta) => {
 }
 
 export const initApp = async () => {
+  // Load the users settings from local storage
+  await loadFromStorage()
+
   // Load the local storage user if they exist
   const activeUser = await loadUser()
 

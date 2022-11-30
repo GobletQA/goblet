@@ -1,3 +1,5 @@
+import type { TStorageSetting, TStorageSettings } from '@types'
+
 import { AuthActive } from '@constants'
 import { limbo } from '@keg-hub/jsutils'
 import { noAuthService } from './noAuthService'
@@ -5,6 +7,10 @@ import { StorageKeys, Environment } from '@constants'
 
 export type TWrapperFunc = (...args:any[]) => void
 
+const missingGroup = (setting:string, data:TStorageSetting) => {
+  console.error(`Can not save setting ${setting} without a group name.`, data)
+  throw new Error(`Error saving setting`)
+}
 
 class Storage {
 
@@ -99,7 +105,7 @@ class Storage {
   * Loads repo object from local storage
   * Then immediately removes it from local storage
   */
-  get = async (key:string, parse?:boolean) => {
+  get = async (key:string, parse:boolean=true) => {
     const name = StorageKeys[key] || key
     if(!name) return console.error(`A key is required to get a local storage item, instead got "${name}"`)
 
@@ -115,7 +121,7 @@ class Storage {
   }
 
 
-  set = async (key:string, data:any, stringify?:boolean) => {
+  set = async (key:string, data:any, stringify:boolean=true) => {
     const name = StorageKeys[key] || key
     if(!name) return console.error(`A key is required to set a local storage item, instead got "${name}"`)
 
@@ -156,21 +162,59 @@ class Storage {
     }
   }
 
-  getUser = async () => this.get(StorageKeys.USER, true)
-  setUser = async (data:any) => this.set(StorageKeys.USER, data, true)
-  removeUser = async () => this.remove(StorageKeys.USER)
- 
-  getJwt = async () => this.get(StorageKeys.JWT)
-  setJwt = async (data:any) => this.set(StorageKeys.JWT, data)
-  removeJwt = async () => this.remove(StorageKeys.JWT)
+  getUser = async () => await this.get(StorageKeys.USER)
+  setUser = async (data:any) => await this.set(StorageKeys.USER, data)
+  removeUser = async () => await this.remove(StorageKeys.USER)
 
-  getRepo = async () => this.get(StorageKeys.REPO, true)
-  setRepo = async (data:any) => this.set(StorageKeys.REPO, data, true)
-  removeRepo = async () => this.remove(StorageKeys.REPO)
+  getJwt = async () => await this.get(StorageKeys.JWT, false)
+  setJwt = async (data:any) => await this.set(StorageKeys.JWT, data, false)
+  removeJwt = async () => await this.remove(StorageKeys.JWT)
 
-  getHeaders = async () => await this.get(StorageKeys.ROUTE_HEADERS, true)
-  setHeaders = async (data:any) => await this.set(StorageKeys.ROUTE_HEADERS, data, true)
-  removeHeaders = async () => this.remove(StorageKeys.ROUTE_HEADERS)
+  getRepo = async () => await this.get(StorageKeys.REPO)
+  setRepo = async (data:any) => await this.set(StorageKeys.REPO, data)
+  removeRepo = async () => await this.remove(StorageKeys.REPO)
+
+  getHeaders = async () => await this.get(StorageKeys.ROUTE_HEADERS)
+  setHeaders = async (data:any) => await this.set(StorageKeys.ROUTE_HEADERS, data)
+  removeHeaders = async () => await this.remove(StorageKeys.ROUTE_HEADERS)
+
+  getSettings = async ():Promise<TStorageSettings> => await this.get(StorageKeys.SETTINGS) || {}
+  setSettings = async (data:TStorageSettings) => await this.set(StorageKeys.SETTINGS, data)
+  removeSettings = async () => await this.remove(StorageKeys.SETTINGS)
+
+  setSetting = async (
+    name:string,
+    data:Partial<TStorageSetting>,
+    settings?:TStorageSettings
+  ) => {
+    
+    const loc = name.includes(`.`)
+      ? name
+      : data?.group
+        ? `${data?.group}.${name}`
+        : undefined
+
+    if(!loc) return missingGroup(name, data as TStorageSetting)
+
+    settings = settings || await this.getSettings()
+    settings[loc] = {...settings[loc], ...data}
+
+    return await this.set(StorageKeys.SETTINGS, settings)
+  }
+
+  removeSetting = async (
+    loc:string,
+    settings?:TStorageSettings
+  ) => {
+    settings = settings || await this.getSettings()
+
+    if(!loc.includes(`.`))
+      return console.warn(`Can not remove setting; missing group and "." separator`)
+
+    delete settings[loc]
+
+    return await this.set(StorageKeys.SETTINGS, settings)
+  }
 
 }
 

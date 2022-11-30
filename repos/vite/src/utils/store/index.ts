@@ -1,2 +1,1 @@
-export * from './isSetting'
-export * from './getSettingsValues'
+export * from './getStoreData'

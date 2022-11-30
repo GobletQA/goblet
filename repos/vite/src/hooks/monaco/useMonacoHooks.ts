@@ -61,7 +61,8 @@ export const useMonacoHooks = (
 
   const config = useMonacoConfig()
   const { theme, ...options } = useSettingValues<TEditorSettingValues>(`editor`)
-  theme && set(config, `theme.name`, theme)
+
+  exists(theme) && set(config, `theme.name`, theme)
 
   useEffect(() => {
     EE.on<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {

@@ -3,7 +3,11 @@ import type { TEditorConfig } from '@gobletqa/monaco'
 import { useMemo } from 'react'
 import { deepMerge } from '@keg-hub/jsutils'
 
-const defConfig:TEditorConfig = {}
+const defConfig:TEditorConfig = {
+  theme: {
+    name: ''
+  }
+}
 
 export const useMonacoConfig = (config?:TEditorConfig) => {
   return useMemo(() => {

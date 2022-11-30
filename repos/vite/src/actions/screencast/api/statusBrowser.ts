@@ -2,7 +2,7 @@ import { noOpObj } from '@keg-hub/jsutils'
 import { addToast } from '@actions/toasts'
 import { screencastApi } from '@services/screencastApi'
 import { setBrowserStatus } from '../local/setBrowserStatus'
-import { getSettingsValues } from '@utils/store/getSettingsValues'
+import { getSettingsValues } from '@utils/settings/getSettingsValues'
 
 /**
  * Calls the backend API to get the browser status

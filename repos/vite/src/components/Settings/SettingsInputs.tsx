@@ -189,6 +189,18 @@ export const Select = (props:TSelect) => {
           value={value || item.emptyOption}
           onChange={onValueChange}
         >
+          {
+            item.emptyOption
+              && !item?.options?.includes(item.emptyOption as string)
+              && (
+                <MenuItem
+                  key={item.emptyOption}
+                  value={item.emptyOption}
+                >
+                  {item.emptyOption}
+                </MenuItem>
+              )
+          }
           {item?.options?.map((option:string) => (
             <MenuItem
               key={option}

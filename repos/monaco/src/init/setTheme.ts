@@ -18,6 +18,8 @@ const importTheme = async (themeName:string) => {
 export const  setTheme = async (name: string, themeObj?:TEditorTheme) => {
   let theme = themes[name] || themeObj
   if (!theme) {
+    if(!name) return
+
     theme = await importTheme(name) as TEditorTheme
     if(!theme) return
 

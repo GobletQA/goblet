@@ -2,7 +2,7 @@ import type { TValueGroup } from '@types'
 
 import { useMemo } from 'react'
 import { useSettings } from '@store'
-import { getSettingsValues } from '@utils/store/getSettingsValues'
+import { getSettingsValues } from '@utils/settings/getSettingsValues'
 
 /**
  * Helper to extract the values from a settings object and match it to the key

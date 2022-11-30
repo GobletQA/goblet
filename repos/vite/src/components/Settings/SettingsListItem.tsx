@@ -52,7 +52,12 @@ const RenderByType = (props:TSettingsListItem) => {
         ? evt?.target?.checked
         : evt?.target?.value
     }
-    else value = (event as SelectRecord).value
+    else {
+      value = (event as SelectRecord).value
+      // If the selected value is the empty option
+      // Reset the value to the default
+      if(value === item.emptyOption) value = item.default
+    }
 
     item.value !== value
       && updateSettingValue({ value, setting: `${item.group}.${item.key}` })
