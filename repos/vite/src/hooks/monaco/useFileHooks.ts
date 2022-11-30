@@ -1,29 +1,22 @@
 import type { MutableRefObject } from 'react'
-import type { TCodeEditorProps } from './CodeEditor'
 import type {
   TRepoState,
   TFileModel,
   TFilesState,
-  OpenFileTreeEvent,
-  TEditorSettingValues
 } from '@types'
 
-
-import { exists, noOpObj } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils'
 import { confirmModal } from '@actions/modals/modals'
 import { loadFile } from '@actions/files/api/loadFile'
 import { saveFile } from '@actions/files/api/saveFile'
-import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { createFile } from '@actions/files/api/createFile'
 import { removeFile } from '@actions/files/api/removeFile'
 import { renameFile } from '@actions/files/api/renameFile'
-import { OpenFileTreeEvt, UpdateModalEvt } from '@constants'
+import { UpdateModalEvt } from '@constants'
 
-import { useFiles, useRepo } from '@store'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { toggleModal } from '@actions/modals/toggleModal'
-import { useSettingValues } from '@hooks/store/useSettingValues'
 
 export type THEditorFiles = {
   repo: TRepoState
@@ -37,18 +30,10 @@ export type THOnLoadFile = THEditorFiles & {
 }
 
 
-const modalActions = {
-  close: () => toggleModal(false),
-  open: (props?:Record<any, any>) => {
-    EE.emit(UpdateModalEvt, props)
-    confirmModal({ visible: true})
-  },
-}
-
 const addRootToLoc = (loc:string, root:string) => `${root}${loc}`
 const removeRootFromLoc = (loc:string, root:string) => loc.replace(root, ``)
 
-const useOnLoadFile = ({
+export const useOnLoadFile = ({
   rootPrefix,
   repoFiles,
 }:THOnLoadFile) => {
@@ -69,7 +54,7 @@ const useOnLoadFile = ({
   ])
 }
 
-const useOnRenameFile = (repoFiles:TFilesState, rootPrefix:string) => {
+export const useOnRenameFile = (repoFiles:TFilesState, rootPrefix:string) => {
   return useCallback(async (oldFile:string, newFile:string) => {
 
     if(!oldFile) console.warn(`Can not rename file, missing old file location`)
@@ -83,7 +68,7 @@ const useOnRenameFile = (repoFiles:TFilesState, rootPrefix:string) => {
   }, [repoFiles, rootPrefix])
 }
 
-const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
+export const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
   return useCallback(async (loc:string, content:string) => {
     if(!loc) console.warn(`Can not save file, missing file location`)
 
@@ -98,7 +83,7 @@ const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
   }, [repoFiles, rootPrefix])
 }
 
-const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string, repo:TRepoState) => {
+export const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string, repo:TRepoState) => {
   return useCallback(async (loc:string, isFolder?:boolean) => {
     if(!loc) console.warn(`Can not add file, missing file location`)
     
@@ -114,7 +99,7 @@ const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string, repo:TRepoState)
   }, [repoFiles, rootPrefix, repo.fileTypes])
 }
 
-const useOnDeleteFile = (repoFiles:TFilesState, rootPrefix:string) => {
+export const useOnDeleteFile = (repoFiles:TFilesState, rootPrefix:string) => {
   return useCallback(async (loc:string) => {
     if(!loc) console.warn(`Can not delete file, missing file location`)
 
@@ -153,61 +138,5 @@ export const useEditorFiles = (props:THEditorFiles) => {
   return {
     files,
     connected: Boolean(repo?.paths && repo?.name)
-  }
-}
-
-export const useEditorHooks = (
-  props:TCodeEditorProps,
-  editorRef:MutableRefObject<any>
-) => {
-
-  const repo = useRepo()
-  const repoFiles = useFiles()
-
-  const rootPrefix = useMemo(
-    () => getRootPrefix(repo),
-    [repo?.paths?.repoRoot, repo?.paths?.workDir]
-  )
-
-  const editorFiles = useEditorFiles({
-    repo,
-    repoFiles,
-    rootPrefix,
-  })
-
-  const onLoadFile = useOnLoadFile({
-    repo,
-    repoFiles,
-    rootPrefix,
-    ...editorFiles
-  })
-
-  const onDeleteFile = useOnDeleteFile(repoFiles, rootPrefix)
-  const onAddFile = useOnAddFile(repoFiles, rootPrefix, repo)
-  const onSaveFile = useOnSaveFile(repoFiles, rootPrefix)
-  const onRenameFile = useOnRenameFile(repoFiles, rootPrefix)
-
-  const options = useSettingValues<TEditorSettingValues>(`editor`)
-
-  useEffect(() => {
-    EE.on<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
-      exists(size) && editorRef?.current?.resizeFileTree?.(size)
-    }, `${OpenFileTreeEvt}-code-editor`)
-
-    return () => {
-      EE.off<OpenFileTreeEvent>(OpenFileTreeEvt, `${OpenFileTreeEvt}-code-editor`)
-    }
-  }, [])
-
-  return {
-    options,
-    rootPrefix,
-    onLoadFile,
-    modalActions,
-    onAddFile,
-    onSaveFile,
-    onRenameFile,
-    onDeleteFile,
-    ...editorFiles,
   }
 }

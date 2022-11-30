@@ -31,3 +31,9 @@ export const AUTH_BYPASS_ROUTES = [
   `/goblet-socket`,
   `/goblet-socket/`,
 ]
+
+export const PWLogFilter = [
+  `dri3 extension not supported`,
+  `Failed to connect to the bus`,
+  `Failed to adjust OOM score of renderer`,
+]

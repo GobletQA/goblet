@@ -1,12 +1,20 @@
+import type { SelectChangeEvent } from '@mui/material/Select'
 import type { TSetting, TSettingsConfig, CSSObj } from '@types'
-import type { ChangeEvent, FocusEvent, FocusEventHandler } from 'react'
+import type { ChangeEvent, FocusEvent, ChangeEventHandler, FocusEventHandler } from 'react'
 
 import { useCallback } from 'react'
 import Grid from '@mui/material/Unstable_Grid2'
+
 import { noOpObj, exists } from '@keg-hub/jsutils'
-import { Input, Switch, Text } from './SettingsInputs'
+import { Input, Switch, Text, Select } from './SettingsInputs'
 import { updateSettingValue } from '@actions/settings/updateSettingValue'
 import { toggleSettingActive } from '@actions/settings/toggleSettingActive'
+
+
+type SelectRecord = Record<'value', any>
+type TInputChangeEvt = ChangeEvent<HTMLInputElement>
+  | FocusEvent<HTMLInputElement>
+  | SelectRecord
 
 export type TSettingsListItem = {
   value:any
@@ -34,15 +42,21 @@ const RenderByType = (props:TSettingsListItem) => {
 
   const disabled = item?.enabled === false
 
-  const onChangeValue = useCallback((evt:ChangeEvent<HTMLInputElement>|FocusEvent<HTMLInputElement>) => {
+  const onChangeValue = useCallback((event:TInputChangeEvt) => {
     if(disabled) return
 
-    const value = evt?.target?.type === `checkbox`
-      ? evt?.target?.checked
-      : evt?.target?.value
+    let value:any
+    if((event as any)?.target){
+      const evt = event as ChangeEvent<HTMLInputElement> | FocusEvent<HTMLInputElement>
+      value = evt?.target?.type === `checkbox`
+        ? evt?.target?.checked
+        : evt?.target?.value
+    }
+    else value = (event as SelectRecord).value
 
     item.value !== value
       && updateSettingValue({ value, setting: `${item.group}.${item.key}` })
+
   }, [value, item, disabled])
 
   const onChangeActive = useCallback((evt:ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +66,7 @@ const RenderByType = (props:TSettingsListItem) => {
     item.active !== value
       && toggleSettingActive({ setting: `${item.group}.${item.key}` })
   }, [value, item])
+
 
   // Handel all headers keys and non-editable fields
   if(header || !config.editKeys.includes(colKey))
@@ -110,23 +125,31 @@ const RenderByType = (props:TSettingsListItem) => {
         />
       )
     default:
-      return (
-        <Input
-          size='small'
-          value={value}
-          align={align}
-          margin='normal'
-          name={item.key}
-          fullWidth={false}
-          variant='outlined'
-          prefix={item.prefix}
-          postfix={item.postfix}
-          onChange={onChangeValue}
-          placeholder={`${item?.key}`}
-          required={!exists(item?.default)}
-          disabled={disabled || !item.active}
-        />
-      )
+      return item?.options?.length
+        ? (
+            <Select
+              item={item}
+              value={value}
+              onChange={onChangeValue}
+            />
+          )
+        : (
+          <Input
+            size='small'
+            value={value}
+            align={align}
+            margin='normal'
+            name={item.key}
+            fullWidth={false}
+            variant='outlined'
+            prefix={item.prefix}
+            postfix={item.postfix}
+            placeholder={`${item?.key}`}
+            required={!exists(item?.default)}
+            disabled={disabled || !item.active}
+            onChange={onChangeValue as ChangeEventHandler<HTMLInputElement>}
+          />
+        )
   }
 
 }

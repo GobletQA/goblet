@@ -19,7 +19,7 @@ export type TTSCompileOpts = {
 
 export type TEditorThemeConfig = {
   name: string
-  theme: TEditorTheme
+  theme?: TEditorTheme
 }
 
 export type TTSConfig = {
@@ -34,7 +34,7 @@ export type TMonacoConfig = {
 }
 
 export type TEditorConfig = {
-  extraLibs: any
+  extraLibs?: any
   monaco?: TMonacoConfig
   theme?: TEditorThemeConfig
   [key: string]: any

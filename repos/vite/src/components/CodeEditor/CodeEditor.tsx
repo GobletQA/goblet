@@ -1,18 +1,18 @@
 import { useRef } from 'react'
 import { FileTreeWidth } from '@constants'
 import { BlockIcon } from '@components/Icons'
-import { useEditorHooks } from './editorHooks'
 import { MonacoEditor } from '@gobletqa/monaco'
 import { RepoNotConnected } from './RepoNotConnected'
+import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
 
 export type TCodeEditorProps = {}
-
 export const CodeEditor = (props:TCodeEditorProps) => {
 
   const editorRef = useRef<any>(null)
 
   const {
     files,
+    config,
     options,
     onAddFile,
     onSaveFile,
@@ -22,12 +22,13 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     rootPrefix,
     onLoadFile,
     modalActions,
-  } = useEditorHooks(props, editorRef)
+  } = useMonacoHooks(editorRef)
 
   return connected
     ? (
         <MonacoEditor
           ref={editorRef}
+          config={config}
           options={options}
           Modal={modalActions}
           defaultFiles={files}

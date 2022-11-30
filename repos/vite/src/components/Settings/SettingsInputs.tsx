@@ -1,5 +1,12 @@
-import type { CSSObj } from '@types'
-import type { ComponentProps, ChangeEventHandler, ChangeEvent, FocusEvent, FocusEventHandler } from 'react'
+import type { TSetting, CSSObj } from '@types'
+import type {
+  FocusEvent,
+  ChangeEvent,
+  ComponentProps,
+  FocusEventHandler,
+  ChangeEventHandler,
+} from 'react'
+
 
 import { useCallback, useState, useRef } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
@@ -8,6 +15,16 @@ import TextField from '@mui/material/TextField'
 import { StyledInput } from './Settings.styled'
 import Typography from '@mui/material/Typography'
 import { useColorMap } from '@hooks/theme/useColorMap'
+
+
+import MuiInput from '@mui/material/Input'
+import MuiSelect from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+
+type TSelectEvent = {
+  target: Record<`value`, any>
+}
 
 export type TSwitch = ComponentProps<typeof MuiSwitch> & {}
 
@@ -144,4 +161,45 @@ export const Text = (props:TText) => {
       {`${value}`}
     </Typography>
   )
+}
+
+export type TSelect = Omit<ComponentProps<typeof MuiSelect>, `onChange`> & {
+  item:TSetting
+  onChange:(data:Record<'value', any>) => void
+}
+
+export const Select = (props:TSelect) => {
+  const {
+    item,
+    value,
+    onChange,
+    ...rest
+  } = props
+
+  const onValueChange = useCallback((evt:TSelectEvent) => {
+    value !== evt?.target?.value && onChange?.(evt?.target)
+  }, [value, onChange])
+
+  return (
+    <div>
+      <FormControl sx={{ m: 0, padding: `0px`, width: 125 }}>
+        <MuiSelect
+          input={<MuiInput />}
+          {...rest}
+          value={value || item.emptyOption}
+          onChange={onValueChange}
+        >
+          {item?.options?.map((option:string) => (
+            <MenuItem
+              key={option}
+              value={option}
+            >
+              {option}
+            </MenuItem>
+          ))}
+        </MuiSelect>
+      </FormControl>
+    </div>
+  )
+  
 }

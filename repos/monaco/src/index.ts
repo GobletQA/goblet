@@ -1,2 +1,3 @@
-export * from './components/Editor'
 export * from './init'
+export * from './types'
+export * from './components/Editor'

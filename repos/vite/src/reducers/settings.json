@@ -72,6 +72,23 @@
       "default": true,
       "type": "boolean",
       "group": "editor"
+    },
+    "theme": {
+      "key": "theme",
+      "value": "",
+      "active": true,
+      "default": "",
+      "group": "editor",
+      "emptyOption": "None",
+      "options": [
+        "None",
+        "NoctisBordo",
+        "RemedyDark",
+        "Panda",
+        "OneMonokai",
+        "CodeSandBox",
+        "FlatUI"
+      ]
     }
   },
   "browser": {

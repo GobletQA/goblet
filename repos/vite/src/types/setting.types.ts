@@ -7,6 +7,7 @@ export type TSetting = {
   default?: any
   prefix?: string
   postfix?: string
+  emptyOption?: string
   type?: `string` | `boolean` | `array` | `object` | `number`
   enabled?: boolean
 }

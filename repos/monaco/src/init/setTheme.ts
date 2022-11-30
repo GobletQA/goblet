@@ -4,7 +4,8 @@ export const themes: TEditorThemes = {}
 
 const importTheme = async (themeName:string) => {
   try {
-    const { __esModule, ...theme } = await import(`../themes/${themeName}.json`)
+    const resp = await import(`../themes/${themeName}.json`)
+    const { __esModule, ...theme } = resp
     return theme
   }
   catch(err:any){
