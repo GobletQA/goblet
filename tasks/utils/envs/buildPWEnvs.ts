@@ -1,5 +1,9 @@
-const { addEnv } = require('./addEnv')
-const { noOpObj } = require('@keg-hub/jsutils')
+import { TTaskParams, EBrowserType, TEnvObject } from '../../types'
+
+import { addEnv } from './addEnv'
+import { noOpObj } from '@keg-hub/jsutils'
+import { getDebugEnv } from './getDebugEnv'
+
 
 /**
  * Adds the default playwright ENVs to the current process
@@ -12,7 +16,11 @@ const { noOpObj } = require('@keg-hub/jsutils')
  * 
  * @returns {Object} - env object with the ENVs added
  */
-const buildPWEnvs = (env={}, browser, params=noOpObj) => {
+export const buildPWEnvs = (
+  env:TEnvObject={} as TEnvObject,
+  browser:EBrowserType,
+  params:TTaskParams=noOpObj as TTaskParams
+) => {
   const { GOBLET_RUN_FROM_UI, GOBLET_RUN_FROM_CI, PARKIN_LOG_JEST_SPEC } = process.env
 
   // Check if running form the UI and set the display as well as spec result logging
@@ -44,14 +52,14 @@ const buildPWEnvs = (env={}, browser, params=noOpObj) => {
   addEnv(env, 'GOBLET_TEST_VIDEO_RECORD', params.record)
   addEnv(env, 'GOBLET_TEST_SCREENSHOT', params.screenshot)
 
-  params.debug && (env.DEBUG = 'pw:api*,pw:browser*,pw:error*,pw:proxy*')
-  params.debug && params.devtools && (env.GOBLET_DEV_TOOLS = true)
+  const debugVal = getDebugEnv(params)
+
+  if(debugVal){
+    env.DEBUG = debugVal
+    params.devtools && (env.GOBLET_DEV_TOOLS = true)
+  }
 
   env.NODE_ENV = `test`
 
   return env
-}
-
-module.exports = {
-  buildPWEnvs
 }

@@ -31,7 +31,6 @@ const envs = loadConfigs({
  */
 const devServer = async () => {
   if (!isDev) return
-
   __server = spawn('nodemon', [`--config`, `configs/vnc.nodemon.config.json`], {
     cwd: rootDir,
     env: { ...envs, ...process.env },

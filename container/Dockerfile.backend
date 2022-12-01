@@ -66,7 +66,7 @@ FROM goblet-setup as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 COPY --from=goblet-pruner /goblet/app/out/yarn.lock ./yarn.lock
-RUN yarn install --frozen-lockfile
+RUN yarn install
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
@@ -75,10 +75,11 @@ WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app/repos/backend
-RUN yarn build:script
+RUN yarn build:script && \
+    yarn build:docker && \
+    yarn install --frozen-lockfile --production
+
 WORKDIR /goblet/app
-RUN turbo run build:docker --filter=@gobletqa/backend && \
-    yarn install --frozen-lockfile --production --ignore-optional
 RUN <<EOF
   mkdir -p /goblet-runner/repos/backend/scripts
   cp -R /goblet/app/node_modules /goblet-runner/node_modules
@@ -107,7 +108,7 @@ ENV HOME=/root \
     LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
-    DEBUG=pw:api*,pw:browser*,pw:error*,pw:proxy* \
+    DEBUG=pw:* \
     GB_BE_PORT=$GB_BE_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
     DEBIAN_FRONTEND=noninteractive \

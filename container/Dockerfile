@@ -57,13 +57,16 @@ ARG GB_DD_WS_PROXY_PORT=2122
 ARG GB_DD_VNC_PROXY_PORT=2123
 ARG GB_VNC_SERVER_PORT=26370
 ARG PLAYWRIGHT_BROWSERS_VERSION
+ARG PW_DEBUG_FILE=/goblet/app/logs/pwlogs.log
+ARG DEBUG_FILE=$PW_DEBUG_FILE
 
 ENV HOME=/root \
     DISPLAY=:0.0 \
     LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
-    DEBUG=pw:api*,pw:browser*,pw:error*,pw:proxy* \
+    DEBUG=pw:* \
+    DEBUG_FILE=$DEBUG_FILE \
     DEBIAN_FRONTEND=noninteractive \
     GB_FE_PORT=$GB_FE_PORT \
     GB_BE_PORT=$GB_BE_PORT \

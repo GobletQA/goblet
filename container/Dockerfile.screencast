@@ -25,7 +25,7 @@ FROM goblet-turbo as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 COPY --from=goblet-pruner /goblet/app/out/yarn.lock ./yarn.lock
-RUN yarn install --frozen-lockfile
+RUN yarn install
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
@@ -33,8 +33,9 @@ FROM goblet-turbo as goblet-builder
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
-RUN turbo run build:docker --filter=@gobletqa/screencast && \
-    yarn install --frozen-lockfile --production --ignore-optional
+WORKDIR /goblet/app/repos/screencast
+RUN yarn build:docker && \
+    yarn install --frozen-lockfile --production
 # ---- End Stage ---- #
 
 # ---- Run Stage ---- #
@@ -42,7 +43,7 @@ FROM $IMAGE_FROM as goblet-runner
 WORKDIR /goblet/app
 ENV HOME=/root \
     DISPLAY=:0.0 \
-    DEBUG=pw:api*,pw:browser*,pw:error*,pw:proxy* \
+    DEBUG=pw:* \
     LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
@@ -73,7 +74,11 @@ WORKDIR /goblet/app/repos/screencast
 ARG GB_SC_PORT=7006
 ARG GB_NO_VNC_PORT=26369
 ARG GB_VNC_SERVER_PORT=26370
-ENV GB_SC_PORT=$GB_SC_PORT \
+ARG PW_DEBUG_FILE=/goblet/app/logs/pwlogs.log
+ARG DEBUG_FILE=$PW_DEBUG_FILE
+
+ENV DEBUG_FILE=$DEBUG_FILE \
+    GB_SC_PORT=$GB_SC_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
     GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT
 

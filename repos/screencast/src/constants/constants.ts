@@ -14,13 +14,13 @@ export const browserNames = deepFreeze<string[]>([
 export const browserMap = {
   ...keyMap(browserNames),
   // Shortcuts to browser names
-  ff: 'firefox',
-  fox: 'firefox',
-  wk: 'webkit',
-  sa: 'webkit',
-  safari: 'webkit',
-  ch: 'chromium',
-  chrome: 'chromium',
+  ff: `firefox`,
+  fox: `firefox`,
+  wk: `webkit`,
+  sa: `webkit`,
+  safari: `webkit`,
+  ch: `chromium`,
+  chrome: `chromium`,
 }
 
 export const AUTH_BYPASS_ROUTES = [
@@ -33,6 +33,10 @@ export const AUTH_BYPASS_ROUTES = [
 ]
 
 export const PWLogFilter = [
+  // Disabled these for now, until figure out whats needed
+  // Need to figure out how to pipe pw:channel events?
+  `SEND ► {`,
+  `◀ RECV {`,
   `dri3 extension not supported`,
   `Failed to connect to the bus`,
   `Failed to adjust OOM score of renderer`,

@@ -1,6 +1,6 @@
 const path = require('path')
 const { testUtilsDir } = require('../paths')
-const { deepFreeze } = require('@keg-hub/jsutils')
+const { deepFreeze, keyMap } = require('@keg-hub/jsutils')
 
 const constants = deepFreeze({
   browsers: {
@@ -55,6 +55,26 @@ const constants = deepFreeze({
     add: [
       `GOBLET_ARTIFACTS_DEBUG`,
     ]
+  },
+
+  // Used to set DEBUG env when running playwright browser
+  PWDebug: {
+    options: keyMap([
+      `api`,
+      `browser`,
+      `channel`,
+      `error`,
+      `protocol`,
+      `install`,
+      `download`,
+      `proxy`,
+    ]),
+    // Channel sub-options
+    channel: keyMap([
+      `command`,
+      `response`,
+      `event`,
+    ]),
   }
 })
 

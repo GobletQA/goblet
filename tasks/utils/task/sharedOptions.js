@@ -276,7 +276,6 @@ const taskOptions = {
     },
     debug: {
       default: false,
-      type: `boolean`,
       env: 'GOBLET_BROWSER_DEBUG',
       description: 'Runs with playwright debug mode activated',
       example: 'keg goblet bdd test --debug',

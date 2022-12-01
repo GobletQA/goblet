@@ -20,6 +20,13 @@ goblet_run_dev_yarn_install(){
 }
 
 goblet_screencast(){
+  if [ "$PW_DEBUG_FILE" ]; then
+    export DEBUG_FILE=$PW_DEBUG_FILE
+  else
+    export DEBUG_FILE=/goblet/app/logs/pwlogs.log
+  fi
+
+  touch $DEBUG_FILE
   cd /goblet/app/repos/screencast
   yarn vnc:start >> /proc/1/fd/1 &
 }
