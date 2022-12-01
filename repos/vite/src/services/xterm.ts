@@ -125,6 +125,14 @@ export class XTerminal {
 
   resize = () => {
     this.fitAddon.fit()
+
+    const termEl = this?.xterm?.element?.parentNode as HTMLDivElement
+    if(!termEl) return
+
+    const viewEl = termEl.querySelector(`.xterm-viewport`) as HTMLDivElement
+    if(!viewEl) return
+
+    viewEl.style.height = `${termEl.offsetHeight}px`
   }
 
   clear = () => {
