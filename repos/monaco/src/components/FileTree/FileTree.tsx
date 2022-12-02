@@ -4,11 +4,14 @@ import type {
   TFolder,
   TFilelist,
   TEditorCB,
-  TEditorFileCB,
   TFileCallback,
 } from '../../types'
-import { memo, useCallback, useState } from 'react'
-import { FileTreeHeader } from './FileTreeHeader'
+
+import { useMemo, memo } from 'react'
+
+
+import { Panel } from '../Sidebar/Panel'
+import { FileTreeActions } from './FileTreeActions'
 import { useFileTree } from '../../hooks/fileTree/useFileTree'
 
 import './FileTree.css'
@@ -43,10 +46,6 @@ export const FileTree = memo((props: TFileTree) => {
     title = 'goblet-base-editor',
   } = props
 
-  const [collapse, setCollapse] = useState(false)
-  const onCollapse = useCallback(() => {
-    setCollapse(pre => !pre)
-  }, [])
 
   const {
     filetree,
@@ -62,40 +61,46 @@ export const FileTree = memo((props: TFileTree) => {
     onConfirmAddFolder
   } = useFileTree(props)
 
+  const actions = useMemo(() => {
+    return [
+      {
+        ...FileTreeActions[0],
+        action: addFile,
+      },
+      {
+        ...FileTreeActions[1],
+        action: addFolder
+      },
+    ]
+  }, [addFile, addFolder])
+
   return (
-    <div className='goblet-monaco-editor-list-wrapper' style={style}>
-      <FileTreeHeader
-        title={title}
-        addFile={addFile}
-        collapse={collapse}
-        addFolder={addFolder}
-        onCollapse={onCollapse}
+    <Panel
+      title='Files'
+      header={true}
+      actions={actions}
+    >
+      <File
+        root
+        Modal={Modal}
+        file={filetree}
+        filesRef={filesRef}
+        onAddFile={addFile}
+        rootPrefix={rootPrefix}
+        onAddFolder={addFolder}
+        onDeleteFile={deleteFile}
+        currentPath={currentPath}
+        onPathChange={onPathChange}
+        abortAddFile={abortAddFile}
+        parent={filetree as TFolder}
+        onDeleteFolder={deleteFolder}
+        onEditFileName={editFileName}
+        abortAddFolder={abortAddFolder}
+        onEditFolderName={editFolderName}
+        onConfirmAddFile={onConfirmAddFile}
+        onConfirmAddFolder={onConfirmAddFolder}
       />
-      {!collapse && (
-        <div className='goblet-monaco-editor-list-files'>
-          <File
-            root
-            Modal={Modal}
-            file={filetree}
-            filesRef={filesRef}
-            onAddFile={addFile}
-            rootPrefix={rootPrefix}
-            onAddFolder={addFolder}
-            onDeleteFile={deleteFile}
-            currentPath={currentPath}
-            onPathChange={onPathChange}
-            abortAddFile={abortAddFile}
-            parent={filetree as TFolder}
-            onDeleteFolder={deleteFolder}
-            onEditFileName={editFileName}
-            abortAddFolder={abortAddFolder}
-            onEditFolderName={editFolderName}
-            onConfirmAddFile={onConfirmAddFile}
-            onConfirmAddFolder={onConfirmAddFolder}
-          />
-        </div>
-      )}
-    </div>
+    </Panel>
   )
 })
 

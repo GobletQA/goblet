@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { FileTreeWidth } from '@constants'
+import { EditorSidebarWidth } from '@constants'
 import { BlockIcon } from '@components/Icons'
 import { MonacoEditor } from '@gobletqa/monaco'
 import { RepoNotConnected } from './RepoNotConnected'
@@ -30,6 +30,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           ref={editorRef}
           config={config}
           options={options}
+          sidebarStatus={true}
           Modal={modalActions}
           defaultFiles={files}
           onAddFile={onAddFile}
@@ -38,8 +39,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onLoadFile={onLoadFile}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
-          initialFileTreeStatus={true}
-          initialFileTreeWidth={FileTreeWidth}
+          sidebarWidth={EditorSidebarWidth}
         />
       )
     : (

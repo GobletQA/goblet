@@ -22,19 +22,19 @@ export interface IMonacoEditorProps {
   rootPrefix?: string
   emptyText?: string
   defaultPath?: string
+  sidebarWidth?: number
   config?: TEditorConfig
+  sidebarStatus?: boolean
   defaultFiles?: TFilelist
-  initialFileTreeWidth?: number
-  initialFileTreeStatus?: boolean
   onPathChange?: TEditorCB
   onValueChange?: TEditorCB
-  onLoadFile?: TEditorPromiseCB
-  onFileChange?: TEditorFileCB
-  onFileTreeResize?: (width:number) => void
   onDeleteFile?: TEditorCB
   onAddFile?: TEditorAddFile
   onSaveFile?: TEditorFileCB
+  onFileChange?: TEditorFileCB
+  onLoadFile?: TEditorPromiseCB
   onRenameFile?: TEditorRenameFile
+  onSidebarResize?: (width:number) => void
   options: editor.IStandaloneEditorConstructionOptions
 }
 

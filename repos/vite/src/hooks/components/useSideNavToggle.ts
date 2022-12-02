@@ -5,7 +5,7 @@ import { useCallback } from 'react'
 import { settingsModal } from '@actions/modals'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { SideNav as SideNavConst } from '@constants/nav'
-import { OpenFileTreeEvt, FileTreeWidth } from '@constants'
+import { OpenFileTreeEvt, EditorSidebarWidth } from '@constants'
 
 export type TNavItemClick = {
   navItem:string,
@@ -37,7 +37,7 @@ const onFilesClick = ({
     setActiveNav(undefined)
   }
   else {
-    EE.emit<OpenFileTreeEvent>(OpenFileTreeEvt, { size: FileTreeWidth })
+    EE.emit<OpenFileTreeEvent>(OpenFileTreeEvt, { size: EditorSidebarWidth })
     setActiveNav(navItem)
   }
   setOpen(false)

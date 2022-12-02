@@ -7,7 +7,7 @@ import type {
 import { useRef, useState, forwardRef } from 'react'
 
 import { Empty } from '../Empty'
-import { FileTree } from '../FileTree'
+import { Sidebar } from '../Sidebar'
 import { OpenedTabs } from '../OpenedTabs'
 import { setTheme } from '../../init/setTheme'
 import { deleteModel } from '../../utils/editor/deleteModel'
@@ -16,7 +16,7 @@ import { useEditorRefs } from '../../hooks/editor/useEditorRefs'
 import { useTypesWorker } from '../../hooks/editor/useTypesWorker'
 import { useEditorSetup } from '../../hooks/editor/useEditorSetup'
 import { useModalActions } from '../../hooks/editor/useModalActions'
-import { useFileListResize } from '../../hooks/editor/useFileListResize'
+import { useSidebarResize } from '../../hooks/sidebar/useSidebarResize'
 import { useFolderCallbacks } from '../../hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
 import { useEditorFileCallbacks } from '../../hooks/editor/useEditorFileCallbacks'
@@ -37,12 +37,12 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onFileChange,
     onValueChange,
     rootPrefix=``,
+    sidebarWidth,
+    sidebarStatus,
     Modal:ModalComp,
-    onFileTreeResize,
+    onSidebarResize,
     defaultFiles = {},
-    initialFileTreeWidth,
     title='Goblet Editor',
-    initialFileTreeStatus,
     config={} as TEditorConfig,
     options,
   } = props
@@ -112,11 +112,11 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onMove,
     onMoveEnd,
     onMoveStart,
-    resizeFileTree,
-  } = useFileListResize({
-    onFileTreeResize,
-    initialStatus: initialFileTreeStatus,
-    initialWidth: initialFileTreeWidth ?? config?.editor?.fileTree?.width ?? 200
+    resizeSidebar,
+  } = useSidebarResize({
+    onSidebarResize,
+    initialWidth: sidebarWidth,
+    initialStatus: sidebarStatus ?? config?.editor?.sidebar?.width ?? 200,
   })
 
   useEditorSetup({
@@ -128,7 +128,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     setTheme,
     editorRef,
     curPathRef,
-    resizeFileTree,
+    resizeSidebar,
     onPathChangeRef,
   })
 
@@ -188,7 +188,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
       id='goblet-monaco-editor-root'
       className='goblet-monaco-editor'
     >
-      <FileTree
+      <Sidebar
         Modal={Modal}
         title={title}
         style={styles}

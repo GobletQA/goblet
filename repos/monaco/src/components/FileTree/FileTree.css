@@ -1,40 +1,4 @@
-.goblet-monaco-editor-list-wrapper {
-  width: 180px;
-  height: 100%;
-  padding-left: 5px;
-  font-size: 14px;
-  line-height: 25px;
-  background: var(--monaco-editor-background);
-  color: var(--monaco-editor-foreground);
-  flex-shrink: 0;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
 
-.goblet-monaco-editor-list-wrapper::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.goblet-monaco-editor-list-wrapper::-webkit-scrollbar-track {
-  background: var(--monaco-editor-background);
-  box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
-  -webkit-box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
-}
-.goblet-monaco-editor-list-wrapper::-webkit-scrollbar-thumb {
-  border-radius: 3px;
-  background: var(--monaco-scrollbarSlider-background);
-  box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
-  -webkit-box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
-}
-
-.goblet-monaco-editor-list-wrapper::-webkit-scrollbar-corner,
-.goblet-monaco-editor-list-wrapper::-webkit-resizer {
-  border-radius: 3px;
-  background: var(--monaco-scrollbarSlider-background);
-  box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
-  -webkit-box-shadow: inset 0 0 5px var(--monaco-scrollbar-shadow);
-}
 
 .goblet-monaco-editor-list-split {
   height: 32px;
@@ -46,7 +10,7 @@
   font-weight: bold;
   flex-direction: row;
   align-items: center;
-  border-bottom: 5px solid #262A32;
+  border-bottom: 5px solid var(--monaco-scrollbar-shadow);
 }
 
 .goblet-monaco-editor-list-split .goblet-monaco-editor-list-split-icon {

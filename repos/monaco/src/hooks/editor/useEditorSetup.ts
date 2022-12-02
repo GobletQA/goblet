@@ -17,7 +17,7 @@ export type TUseEditorSetup = {
   ref: ForwardedRef<IMultiRefType>
   curPathRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
-  resizeFileTree: (width:number) => void
+  resizeSidebar: (width:number) => void
   options: editor.IStandaloneEditorConstructionOptions
   onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
   editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
@@ -35,7 +35,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     setTheme,
     editorRef,
     curPathRef,
-    resizeFileTree,
+    resizeSidebar,
     onPathChangeRef,
   } = props
 
@@ -64,7 +64,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
 
   useImperativeHandle(ref, () => ({
     setTheme,
-    resizeFileTree,
+    resizeSidebar,
     getSupportThemes: () => THEMES,
     getAllValue: () => filesRef.current,
     getValue: (path: string) => filesRef.current[path],
