@@ -1,9 +1,9 @@
 import type { TStorageSetting, TStorageSettings } from '@types'
 
-import { AuthActive } from '@constants'
 import { limbo } from '@keg-hub/jsutils'
+import { StorageKeys  } from '@constants'
 import { noAuthService } from './noAuthService'
-import { StorageKeys, Environment } from '@constants'
+import { AuthActive, Environment } from '@constants/environment'
 
 export type TWrapperFunc = (...args:any[]) => void
 
@@ -129,6 +129,7 @@ class Storage {
       const save = stringify && typeof data !== 'string'
         ? JSON.stringify(data)
         : data
+
       return await this.setItem(name, save)
     }
     catch (err:any) {
@@ -177,6 +178,9 @@ class Storage {
   getHeaders = async () => await this.get(StorageKeys.ROUTE_HEADERS)
   setHeaders = async (data:any) => await this.set(StorageKeys.ROUTE_HEADERS, data)
   removeHeaders = async () => await this.remove(StorageKeys.ROUTE_HEADERS)
+
+  getThemeType = async () => await this.get(StorageKeys.THEME_TYPE, false)
+  setThemeType = async (data:any) => await this.set(StorageKeys.THEME_TYPE, data, false)
 
   getSettings = async ():Promise<TStorageSettings> => await this.get(StorageKeys.SETTINGS) || {}
   setSettings = async (data:TStorageSettings) => await this.set(StorageKeys.SETTINGS, data)

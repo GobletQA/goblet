@@ -23,3 +23,14 @@ export type TPalette = {
 export type TGobletTheme = Omit<Theme, `palette`> & {
   palette: Palette & TExtPalette
 }
+
+export type TThemeType = {
+  type:EThemeType
+  setType: (type:EThemeType) => any
+}
+
+export type TThemeChildren = {
+  children: any
+}
+
+export type TThemeProvider = TThemeType & TThemeChildren

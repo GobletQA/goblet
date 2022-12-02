@@ -1,23 +1,28 @@
-import type { TGobletTheme, EThemeType } from '@types'
+import type { TGobletTheme } from '@types'
 import type { Dispatch, SetStateAction } from 'react'
 
 import '@utils/components/globalOnCopy'
 import { useState, useMemo, useEffect, useRef } from 'react'
 
 import { Store } from '@store'
+import { EThemeType } from '@types'
 import { Provider } from 'react-redux'
 import { initApp } from '@actions/init'
 import { getTheme } from '@theme/theme'
+import { AuthActive } from '@constants'
 import { RootScreen } from 'src/screens/Root'
 import { Fadeout } from '@components/Fadeout'
 import { AppStyles } from '@components/AppStyles'
-import { AuthActive, ThemeType } from '@constants'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { ModalProvider } from '@contexts/ModalContext'
 import { ModalManager } from '@components/ModalManager'
 import { useWindowResize } from '@hooks/dom/useWindowResize'
 import { ThemeTypeProvider } from '@contexts/ThemeTypeContext'
+
+const ThemeType = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  ? EThemeType.dark
+  : EThemeType.light
 
 const onAppInit = async (
   setApiTimeout:Dispatch<SetStateAction<string|false>>,

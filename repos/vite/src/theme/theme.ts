@@ -1,7 +1,6 @@
 import type { EThemeType, TGobletTheme } from '@types'
 
 import { palette } from './palette'
-import { ThemeType } from '@constants'
 import { typography } from './typography'
 import { components } from './components'
 import { createTheme as createThemeMui } from '@mui/material/styles'
@@ -9,7 +8,7 @@ import { createTheme as createThemeMui } from '@mui/material/styles'
 const muiTheme = createThemeMui()
 let __GobletTheme:TGobletTheme
 
-export const createTheme = (type:EThemeType=ThemeType) => {
+export const createTheme = (type:EThemeType) => {
   const builtPalette = palette[type](muiTheme)
 
   __GobletTheme = createThemeMui({
@@ -21,8 +20,7 @@ export const createTheme = (type:EThemeType=ThemeType) => {
   return __GobletTheme
 }
 
-
-export const getTheme = (type:EThemeType=ThemeType) => {
+export const getTheme = (type:EThemeType) => {
   const mode =__GobletTheme && __GobletTheme?.palette?.mode
 
   return __GobletTheme && (!mode || !type || mode === type)

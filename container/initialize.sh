@@ -26,6 +26,8 @@ goblet_screencast(){
     export DEBUG_FILE=/goblet/app/logs/pwlogs.log
   fi
 
+  LOG_DIR=$( dirname "$DEBUG_FILE" )
+  mkdir -p $LOG_DIR
   touch $DEBUG_FILE
   cd /goblet/app/repos/screencast
   yarn vnc:start >> /proc/1/fd/1 &

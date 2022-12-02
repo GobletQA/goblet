@@ -6,4 +6,4 @@ export * from './storage'
 export * from './types'
 export * from './values'
 export * from './categories'
-
+export * from './environment'

@@ -5,5 +5,6 @@ export const StorageKeys = deepFreeze({
   REPO: `goblet-repo`,
   USER: `goblet-user`,
   SETTINGS: `goblet-settings`,
+  THEME_TYPE: `goblet-theme-type`,
   ROUTE_HEADERS: `goblet-route-headers`,
 })
