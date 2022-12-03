@@ -1,4 +1,7 @@
 import type { TPanelHeaderAction } from './PanelHeader'
+import './Panel.css'
+import { PanelHeader } from './PanelHeader'
+import { useCallback, useState } from 'react'
 
 export type TPanel = {
   title:string
@@ -8,8 +11,6 @@ export type TPanel = {
   actions?:TPanelHeaderAction[]
 }
 
-import { PanelHeader } from './PanelHeader'
-import { useCallback, useState } from 'react'
 
 export const Panel = (props:TPanel) => {
   const {
@@ -23,7 +24,7 @@ export const Panel = (props:TPanel) => {
   const [collapse, setCollapse] = useState(false)
   const onCollapse = useCallback(() => setCollapse(pre => !pre), [])
 
-  const collapseCls = collapse ? `collapsed` : ``
+  const collapseCls = collapse ? `hide` : `show`
 
   return (
     <div className={`goblet-monaco-sidebar-panel ${className}`.trim()}>
@@ -36,7 +37,9 @@ export const Panel = (props:TPanel) => {
         />
       )}
       <div className={`goblet-monaco-sidebar-panel-content ${collapseCls}`}>
-        {!collapse && children}
+        <div>
+          {children}
+        </div>
       </div>
     </div>
   )

@@ -1,7 +1,6 @@
 
 import { Arrow } from '../Icons/Arrow'
 import { noOpObj } from '@keg-hub/jsutils'
-import './PanelHeader.css'
 
 export type TPanelHeaderAction = {
   id?:string

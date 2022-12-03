@@ -67,9 +67,9 @@
     },
     "automaticLayout": {
       "key": "automaticLayout",
-      "value": true,
+      "value": false,
       "active": true,
-      "default": true,
+      "default": false,
       "type": "boolean",
       "group": "editor"
     },

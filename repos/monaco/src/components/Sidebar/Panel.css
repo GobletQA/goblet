@@ -27,12 +27,18 @@
   color: var(--monaco-list-hoverForeground);
 }
 
-.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content {
-  max-height: 80vh;
-  overflow: hidden;
-  transition: max-height 0.5s linear;
+
+.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.show,
+.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.hide {
+  overflow:hidden;
 }
 
-.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.collapsed {
-  max-height: 0vh;
+.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.show > div,
+.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.hide > div {
+  transform: translateY(-100%);
+  transition: .2s ease-in-out;
+}
+
+.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.show > div {
+  transform: translateY(0);
 }

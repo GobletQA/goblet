@@ -53,7 +53,22 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
   useEffect(() => {
     if (editorRef.current) {
       if(config.theme) setTheme(config.theme.name, config.theme.theme)
-      editorRef.current.updateOptions(options)
+      
+
+      
+      editorRef.current.updateOptions({
+        // TODO: move these to settings
+          'semanticHighlighting.enabled': true,
+          // fontSize: 14,
+          codeLens: false,
+          contextmenu: false,
+          wordWrapColumn: 200,
+          wordWrap: 'bounded',
+          lineNumbersMinChars: 3,
+          tabSize: 2,
+          // glyphMargin: glyphMargin,
+        ...options,
+      })
     }
   }, [options, config])
 

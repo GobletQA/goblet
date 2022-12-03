@@ -10,37 +10,50 @@ export const gobletColors = {
   terminalBlack: `#1f1d27`,
 }
 
+export const purple = {
+  purple00: `#f2eff6`,
+  purple01: `#d8cfe3`,
+  purple02: `#bdaed0`,
+  purple03: `#a38ebd`,
+  purple04: `#896eaa`,
+  purple05: `#785B9C`,
+  purple06: `#6f5591`,
+  purple07: `#574271`,
+  purple08: `#3e2f51`,
+  purple09: `#251c30`,
+  purple10: `#0c0910`,
+}
+
 export const white = {
   white00: `#FFFFFF`,
-  // Need to validate
-  white04: `#CDCFD1`,
 }
-// #6B6C6E
+
 export const gray = {
-  gray00: `#FDFDFD`,
-  gray01: `#FAFAFA`,
-  gray02: `#F0F0F4`,
-  gray03: `#E4E6EB`,
-  gray04: `#DEE1E6`,
-  gray05: `#CED0D1`,
-  gray08: `#5F6368`,
-  // Need to validate
-  gray06: `#9E9E9E`,
-  gray07: `#757575`,
-  gray09: `#212121`,
+  gray00: `#F5F6F7`,
+  gray01: `#E4E6EB`,
+  gray02: `#D3D7DE`,
+  gray03: `#CBD0D8`,
+  gray04: `#B6BDC8`,
+  gray05: `#99a3b2`,
+  gray06: `#7c889c`,
+  gray07: `#636f83`,
+  gray08: `#4d5666`,
+  gray09: `#373e49`,
+  gray10: `#21252c`
 }
 
 export const black = {
   black00: `#000000`,
-  black01: `#0A0908`,
-  black02: `#17181D`,
-  black03: `#262A32`,
-  black04: `#272A32`,
-  black05: `#282c34`,
+  black01: `#08090b`,
+  black02: `#0b0c0e`,
+  black03: `#1c1e24`,
+  black04: `#21252b`,
+  black05: `#272A32`,
   black06: `#323842`,
-  // Need to validate
-  black07: `#505050`,
-  black08: `#6B6C6E`,
+  black07: `#4d5666`,
+  black08: `#636f83`,
+  black09: `#7c889c`,
+  black10: `#99a3b2`,
 }
 
 /**
