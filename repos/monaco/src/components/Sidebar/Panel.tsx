@@ -23,6 +23,8 @@ export const Panel = (props:TPanel) => {
   const [collapse, setCollapse] = useState(false)
   const onCollapse = useCallback(() => setCollapse(pre => !pre), [])
 
+  const collapseCls = collapse ? `collapsed` : ``
+
   return (
     <div className={`goblet-monaco-sidebar-panel ${className}`.trim()}>
       {header && (
@@ -33,7 +35,7 @@ export const Panel = (props:TPanel) => {
           onCollapse={onCollapse}
         />
       )}
-      <div className='goblet-monaco-sidebar-panel-content'>
+      <div className={`goblet-monaco-sidebar-panel-content ${collapseCls}`}>
         {!collapse && children}
       </div>
     </div>

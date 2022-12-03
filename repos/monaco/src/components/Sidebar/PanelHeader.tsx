@@ -1,6 +1,7 @@
 
 import { Arrow } from '../Icons/Arrow'
 import { noOpObj } from '@keg-hub/jsutils'
+import './PanelHeader.css'
 
 export type TPanelHeaderAction = {
   id?:string
@@ -76,7 +77,7 @@ export const PanelHeader = (props:TPanelHeader) => {
   return (
     <div
       onClick={onCollapse}
-      className='goblet-monaco-sidebar-panel-header goblet-monaco-editor-list-split'
+      className='goblet-monaco-sidebar-panel-header'
     >
       <Arrow collapse={collapse} />
       <span style={styles.header}>{title}</span>

@@ -1,10 +1,11 @@
 
 import type { editor } from 'monaco-editor'
 
+import type { TSidebarPanel } from '../components/Sidebar/Sidebar'
 import type { Modal, TModalOpts } from '../components/Modal/Modal'
 import type { TFolder, TFileItem, TFilelist } from './file.types'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
-import type { MutableRefObject, CSSProperties, ReactNode } from 'react'
+import type { MutableRefObject, CSSProperties, ReactNode, ComponentType } from 'react'
 import type {
   TEditorCB,
   TFileCallback,
@@ -23,6 +24,8 @@ export interface IMonacoEditorProps {
   emptyText?: string
   defaultPath?: string
   sidebarWidth?: number
+  Panels?:TSidebarPanel[]
+  PrePanels?:TSidebarPanel[]
   config?: TEditorConfig
   sidebarStatus?: boolean
   defaultFiles?: TFilelist
@@ -31,6 +34,7 @@ export interface IMonacoEditorProps {
   onDeleteFile?: TEditorCB
   onAddFile?: TEditorAddFile
   onSaveFile?: TEditorFileCB
+  Divider?:ComponentType<any>
   onFileChange?: TEditorFileCB
   onLoadFile?: TEditorPromiseCB
   onRenameFile?: TEditorRenameFile

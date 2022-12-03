@@ -1,7 +1,8 @@
 import { useRef } from 'react'
-import { EditorSidebarWidth } from '@constants'
 import { BlockIcon } from '@components/Icons'
+import { EditorSidebarWidth } from '@constants'
 import { MonacoEditor } from '@gobletqa/monaco'
+import { Divider } from '@components/Layout/Divider'
 import { RepoNotConnected } from './RepoNotConnected'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
 
@@ -29,6 +30,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
         <MonacoEditor
           ref={editorRef}
           config={config}
+          Divider={Divider}
           options={options}
           sidebarStatus={true}
           Modal={modalActions}

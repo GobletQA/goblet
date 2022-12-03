@@ -77,7 +77,7 @@ export const File = (props:TFileProps) => {
         />
       )
     : (
-        <div className='goblet-monaco-editor-list-file-item'>
+        <div className='goblet-monaco-file-item'>
           {(file as TFolder)?._isDirectory && (
             <TreeDirectory
               nameRef={nameRef}

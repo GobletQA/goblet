@@ -45,6 +45,9 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     title='Goblet Editor',
     config={} as TEditorConfig,
     options,
+    Panels,
+    PrePanels,
+    Divider=`div`,
   } = props
   
 
@@ -192,6 +195,8 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         Modal={Modal}
         title={title}
         style={styles}
+        Panels={Panels}
+        PrePanels={PrePanels}
         filesRef={filesRef}
         onAddFile={addFile}
         currentPath={curPath}
@@ -205,7 +210,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         onDeleteFolder={deleteFolder}
         onEditFolderName={editFolderName}
       />
-      <div onMouseDown={onMoveStart} className='goblet-monaco-editor-drag' />
+      <Divider onMouseDown={onMoveStart} className='goblet-monaco-editor-drag' />
       <div className='goblet-monaco-editor-area'>
         <OpenedTabs
           Modal={Modal}

@@ -19,6 +19,7 @@ const sharedStyle = `
 
 export const HDivider = styled(HorizontalDivider)`
   ${sharedStyle}
+  height: 100%;
   cursor: col-resize;
   max-width: ${divider.wpx};
   margin: 0 -${divider.hvrpx};

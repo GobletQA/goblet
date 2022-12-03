@@ -64,9 +64,9 @@ export const TreeFile = ({
 
   const classNames = useMemo(() => {
     return [
-      `goblet-monaco-editor-list-file-item-row`,
+      `goblet-monaco-file-item-row`,
       currentPath === file.path &&
-        `goblet-monaco-editor-list-file-item-row-focused`,
+        `goblet-monaco-file-item-row-focused`,
     ].filter(Boolean).join(` `).trim()
   }, [currentPath, file.path])
 
@@ -89,11 +89,11 @@ export const TreeFile = ({
           <span className='goblet-editor-actions-container'>
             <EditIcon
               onClick={onEdit}
-              className='goblet-monaco-editor-list-split-icon'
+              className='goblet-monaco-file-item-icon'
             />
             <DeleteIcon
               onClick={onDelete}
-              className='goblet-monaco-editor-list-split-icon'
+              className='goblet-monaco-file-item-icon'
             />
           </span>
         </>
@@ -105,7 +105,7 @@ export const TreeFile = ({
           spellCheck={false}
           onKeyDown={fileKeyDown}
           onClick={stopPropagation}
-          className='goblet-monaco-editor-list-file-item-new'
+          className='goblet-monaco-file-item-new'
           style={nameConflict ? styles.nameConflict : noOpObj}
         />
       )}

@@ -9,12 +9,12 @@ export const FileTreeActions:TPanelHeaderAction[] = [
     action:noOp,
     id:`add-root-file`,
     Component: AddFileIcon,
-    className:`'goblet-monaco-editor-list-split-icon'`,
+    className:`goblet-monaco-file-item-icon`,
   },
   {
     action:noOp,
     id: `add-root-folder`,
     Component: AddFolderIcon,
-    className:`'goblet-monaco-editor-list-split-icon'`,
+    className:`goblet-monaco-file-item-icon`,
   }
 ]

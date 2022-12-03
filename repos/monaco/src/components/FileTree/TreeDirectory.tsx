@@ -85,7 +85,7 @@ export const TreeDirectory = ({
   return (
     <div
       onClick={fileClick}
-      className='goblet-monaco-editor-list-file-item-row'
+      className='goblet-monaco-file-item-row'
       style={{
         position: `relative`,
       }}
@@ -101,19 +101,19 @@ export const TreeDirectory = ({
           <span className='goblet-editor-actions-container' >
             <EditIcon
               onClick={onEdit}
-              className='goblet-monaco-editor-list-split-icon'
+              className='goblet-monaco-file-item-icon'
             />
             <DeleteIcon
               onClick={onDelete}
-              className='goblet-monaco-editor-list-split-icon'
+              className='goblet-monaco-file-item-icon'
             />
             <AddFileIcon
               onClick={onAddFile}
-              className='goblet-monaco-editor-list-split-icon'
+              className='goblet-monaco-file-item-icon'
             />
             <AddFolderIcon
               onClick={onAddFolder}
-              className='goblet-monaco-editor-list-split-icon'
+              className='goblet-monaco-file-item-icon'
             />
           </span>
         </>
@@ -125,7 +125,7 @@ export const TreeDirectory = ({
           spellCheck={false}
           onKeyDown={fileKeyDown}
           onClick={stopPropagation}
-          className='goblet-monaco-editor-list-file-item-new'
+          className='goblet-monaco-file-item-new'
           style={nameConflict ? styles.nameConflict : noOpObj}
         />
       )}

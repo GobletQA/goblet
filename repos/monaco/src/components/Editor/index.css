@@ -1,22 +1,23 @@
 :root {
-  --monaco-list-activeSelectionBackground: #2c313a;
-  --monaco-list-activeSelectionForeground: #d7dae0;
-  --monaco-list-focusBackground: #323842;
-  --monaco-list-focusForeground: #f0f0f0;
-  --monaco-list-highlightForeground: #c5c5c5;
-  --monaco-list-hoverBackground: #2c313a;
+  --monaco-list-activeSelectionBackground: #234d708c;
+  --monaco-list-activeSelectionForeground: #ffffff;
+  --monaco-list-focusBackground: #010d18;
+  --monaco-list-focusForeground: #ffffff;
+  --monaco-list-highlightForeground: #ffffff;
+  --monaco-list-hoverBackground: #011627;
   --monaco-list-hoverForeground: #ffffff;
-  --monaco-list-inactiveSelectionBackground: #323842;
-  --monaco-list-inactiveSelectionForeground: #d7dae0;
-  --monaco-list-warningForeground: #d19a66;
-  --monaco-editor-background: #282c34;
-  --monaco-editor-foreground: #abb2bf;
-  --monaco-scrollbar-shadow: #23252c;
-  --monaco-scrollbarSlider-activeBackground: #747d9180;
-  --monaco-scrollbarSlider-background: #4e566660;
-  --monaco-scrollbarSlider-hoverBackground: #5a637580;
-  --monaco-editorCursor-foreground: #528bff;
+  --monaco-list-inactiveSelectionBackground: #0e293f;
+  --monaco-list-inactiveSelectionForeground: #5f7e97;
+  --monaco-list-warningForeground: #975f94;
+  --monaco-editor-background: #021524;
+  --monaco-editor-foreground: #d6deeb;
+  --monaco-scrollbar-shadow: #010b14;
+  --monaco-scrollbarSlider-activeBackground: #084d8180;
+  --monaco-scrollbarSlider-background: #084d8180;
+  --monaco-scrollbarSlider-hoverBackground: #084d8180;
+  --monaco-editorCursor-foreground: #785B9C;
 }
+
 .goblet-monaco-editor {
   display: flex;
   flex-direction: row;
@@ -27,6 +28,7 @@
   position: relative;
   color: var(--monaco-editor-foreground);
 }
+
 .goblet-monaco-editor-drag {
   width: 5px;
   background: var(--monaco-editor-background);
@@ -34,9 +36,11 @@
   cursor: col-resize;
   flex-shrink: 0;
 }
+
 .goblet-monaco-editor-drag:hover {
   background: var(--monaco-editorCursor-foreground);
 }
+
 .goblet-monaco-editor-area {
   color: var(--monaco-editor-foreground);
   background-color: var(--monaco-editor-background);
