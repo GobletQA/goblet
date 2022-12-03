@@ -1,5 +1,6 @@
 
 import type { editor } from 'monaco-editor'
+import type Monaco from 'monaco-editor'
 
 import type { TSidebarPanel } from '../components/Sidebar/Sidebar'
 import type { Modal, TModalOpts } from '../components/Modal/Modal'
@@ -11,6 +12,7 @@ import type {
   TFileCallback,
   TEditorFileCB,
   TEditorAddFile,
+  TOnEditorLoaded,
   TEditorPromiseCB,
   TEditorRenameFile,
 } from './helpers.types'
@@ -37,6 +39,7 @@ export interface IMonacoEditorProps {
   Divider?:ComponentType<any>
   onFileChange?: TEditorFileCB
   onLoadFile?: TEditorPromiseCB
+  onEditorLoaded?:TOnEditorLoaded
   onRenameFile?: TEditorRenameFile
   onSidebarResize?: (width:number) => void
   options: editor.IStandaloneEditorConstructionOptions
@@ -51,6 +54,7 @@ export interface IMultiRefType {
 
 export type TMonacoEditor = IMonacoEditorProps & {
   Loading?: ReactNode
+  onMonacoLoaded?: (monaco:typeof Monaco) => any
 }
 
 export type TIcon = {

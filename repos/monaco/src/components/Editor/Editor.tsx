@@ -39,6 +39,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     rootPrefix=``,
     sidebarWidth,
     sidebarStatus,
+    onEditorLoaded,
     Modal:ModalComp,
     onSidebarResize,
     defaultFiles = {},
@@ -132,6 +133,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     editorRef,
     curPathRef,
     resizeSidebar,
+    onEditorLoaded,
     onPathChangeRef,
   })
 

@@ -1,16 +1,21 @@
 import type { MutableRefObject } from 'react'
-import type { OpenFileTreeEvent, TEditorSettingValues } from '@types'
+import type {
+  TMonaco,
+  OpenFileTreeEvent,
+  TEditorSettingValues
+} from '@types'
 
-import { exists, set } from '@keg-hub/jsutils'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useCallback } from 'react'
 import { useFiles, useRepo } from '@store'
+import { exists, set } from '@keg-hub/jsutils'
+import { useMonacoConfig } from './useMonacoConfig'
 import { confirmModal } from '@actions/modals/modals'
+import { useGherkinSyntax } from './useGherkinSyntax'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { toggleModal } from '@actions/modals/toggleModal'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { OpenFileTreeEvt, UpdateModalEvt } from '@constants'
 import { useSettingValues } from '@hooks/store/useSettingValues'
-import { useMonacoConfig } from './useMonacoConfig'
 
 import {
   useOnAddFile,
@@ -28,6 +33,9 @@ const modalActions = {
     confirmModal({ visible: true})
   },
 }
+
+const defs:any[] = []
+
 
 export const useMonacoHooks = (
   editorRef:MutableRefObject<any>
@@ -73,6 +81,10 @@ export const useMonacoHooks = (
       EE.off<OpenFileTreeEvent>(OpenFileTreeEvt, `${OpenFileTreeEvt}-code-editor`)
     }
   }, [])
+  
+  
+  const gherkinSyntaxCb = useGherkinSyntax(defs)
+  const onMonacoLoaded = useCallback((monaco:TMonaco) => gherkinSyntaxCb(monaco), [gherkinSyntaxCb])
 
   return {
     config,
@@ -80,6 +92,7 @@ export const useMonacoHooks = (
     rootPrefix,
     onLoadFile,
     modalActions,
+    onMonacoLoaded,
     onAddFile,
     onSaveFile,
     onRenameFile,

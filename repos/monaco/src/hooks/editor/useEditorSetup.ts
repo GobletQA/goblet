@@ -5,6 +5,7 @@ import type {
   TEditorTheme,
   IMultiRefType,
   TEditorConfig,
+  TOnEditorLoaded
 } from '../../types'
 
 import { THEMES } from '../../constants'
@@ -14,6 +15,7 @@ import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 export type TUseEditorSetup = {
   curPath: string
   config: TEditorConfig
+  onEditorLoaded?:TOnEditorLoaded
   ref: ForwardedRef<IMultiRefType>
   curPathRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
@@ -36,6 +38,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     editorRef,
     curPathRef,
     resizeSidebar,
+    onEditorLoaded,
     onPathChangeRef,
   } = props
 
@@ -48,14 +51,14 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
         typeof content === 'string' || content === null
           && createOrUpdateModel(key, content)
       })
+
+      onEditorLoaded?.(editorRef.current as editor.IStandaloneCodeEditor, window.monaco)
     }, [])
 
   useEffect(() => {
     if (editorRef.current) {
       if(config.theme) setTheme(config.theme.name, config.theme.theme)
-      
 
-      
       editorRef.current.updateOptions({
         // TODO: move these to settings
           'semanticHighlighting.enabled': true,
