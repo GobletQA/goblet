@@ -1,4 +1,4 @@
-import type { NEditor, TTextEdit, TRange, TMonaco, NLanguages } from '@types'
+import type { IEditor, TTextEdit, TRange, TMonaco, NLanguages } from '@types'
 
 import type { Index } from '@cucumber/language-service'
 import type { Expression } from '@cucumber/cucumber-expressions'
@@ -74,7 +74,7 @@ const addAutoComplete = (
 const addDefinitionValidation = (
   monaco:TMonaco,
   expressions:Expression[],
-  editor:NEditor.IStandaloneCodeEditor
+  editor:IEditor
 ) => {
   // Diagnostics (Syntax validation)
   const runDefinitionValidation = () => {
@@ -134,7 +134,7 @@ export const addGherkinToMonaco = (
   addGherkinSyntax(monaco, expressions)
   addAutoComplete(monaco, index)
 
-  return  (editor:NEditor.IStandaloneCodeEditor) => {
+  return  (editor:IEditor) => {
     const requestValidation = addDefinitionValidation(monaco, expressions, editor)
     let validationTimeout:ReturnType<typeof setTimeout>
 

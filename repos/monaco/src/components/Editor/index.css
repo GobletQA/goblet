@@ -16,6 +16,8 @@
   --monaco-scrollbarSlider-background: #084d8180;
   --monaco-scrollbarSlider-hoverBackground: #084d8180;
   --monaco-editorCursor-foreground: #785B9C;
+  --monaco-sideBar-border: #102a44;
+  
 }
 
 .goblet-monaco-editor {

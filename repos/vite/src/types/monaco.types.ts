@@ -2,10 +2,13 @@ import type Monaco from 'monaco-editor'
 import type { Range, TextEdit } from 'vscode-languageserver-types'
 import type { editor as Editor, languages as Languages } from 'monaco-editor'
 
+export type IEditor = Editor.IStandaloneCodeEditor
+
 export type TMonaco = typeof Monaco
 export {
   Range as TRange,
   Editor as NEditor,
   TextEdit as TTextEdit,
   Languages as NLanguages
+  
 }

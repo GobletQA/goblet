@@ -3,18 +3,14 @@ import type { MutableRefObject, CSSProperties } from 'react'
 import type {
   TFilelist,
   TEditorCB,
+  TSidebarPanel,
   TEditorConfig,
   TFileCallback,
 } from '../../types'
-import type { TPanel } from './Panel'
 
 import './Sidebar.css'
 import { Panel } from './Panel'
 import { FileTree } from '../FileTree'
-
-export type TSidebarPanel = TPanel & {
-  pre?:boolean
-}
 
 export type TSidebar = {
   Modal: Modal
@@ -49,9 +45,9 @@ export const Sidebar = (props:TSidebar) => {
 
   return (
     <div style={style} className='goblet-monaco-sidebar-main' >
-      {PrePanels?.length && PrePanels.map(panel => <Panel {...panel} />)}
+      {PrePanels?.length && PrePanels.map(panel => <Panel key={panel.title || panel.id} {...panel} />)}
       <FileTree {...props} />
-      {Panels?.length && Panels.map(panel => <Panel {...panel} />)}
+      {Panels?.length && Panels.map(panel => <Panel key={panel.title || panel.id} {...panel} />)}
     </div>
   )
   

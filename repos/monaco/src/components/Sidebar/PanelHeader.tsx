@@ -1,24 +1,7 @@
 
 import { Arrow } from '../Icons/Arrow'
 import { noOpObj } from '@keg-hub/jsutils'
-
-export type TPanelHeaderAction = {
-  id?:string
-  name?:string
-  children?:any
-  component?:any
-  Component?:any
-  className?:string
-  iconProps?:Record<any, any>
-  action?:(...args:any[]) => void
-}
-
-export type TPanelHeader = {
-  title: string
-  collapse: boolean
-  actions?:TPanelHeaderAction[]
-  onCollapse: (...args:any[]) => void
-}
+import type { TPanelHeader } from '../../types'
 
 const styles = {
   header: {
@@ -68,19 +51,19 @@ export const PanelHeaderActions = (props:TPanelHeader) => {
 export const PanelHeader = (props:TPanelHeader) => {
   const {
     title,
+    closed,
     actions,
-    collapse,
     onCollapse
   } = props
 
   return (
     <div
       onClick={onCollapse}
-      className='goblet-monaco-sidebar-panel-header'
+      className={`goblet-monaco-sidebar-panel-header ${closed ? 'closed' : '' }`}
     >
-      <Arrow collapse={collapse} />
+      <Arrow collapse={closed} />
       <span style={styles.header}>{title}</span>
-      {actions?.length &&  (<PanelHeaderActions {...props} />)}
+      {actions?.length ? (<PanelHeaderActions {...props} />) : null}
     </div>
   )
 }

@@ -2,7 +2,7 @@
 import type { editor } from 'monaco-editor'
 import type Monaco from 'monaco-editor'
 
-import type { TSidebarPanel } from '../components/Sidebar/Sidebar'
+import type { TSidebarPanel } from './panel.types'
 import type { Modal, TModalOpts } from '../components/Modal/Modal'
 import type { TFolder, TFileItem, TFilelist } from './file.types'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
@@ -89,3 +89,4 @@ export type TFileProps = {
   onPathChange: (key: string) => void
   filesRef: MutableRefObject<TFilelist>
 }
+

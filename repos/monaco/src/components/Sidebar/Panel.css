@@ -1,7 +1,7 @@
 
 .goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-header {
   left: -5px;
-  height: 28px;
+  height: 30px;
   display: flex;
   cursor: pointer;
   font-size: 14px;
@@ -14,7 +14,12 @@
   width: calc( 100% + 5px );
   position: relative;
   background: var(--monaco-list-activeSelectionBackground);
-  /* border-bottom: 2px solid var(--monaco-scrollbar-shadow); */
+  transition: border-bottom 300ms ease;
+  border-bottom: 2px solid transparent;
+}
+
+.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-header.closed {
+  border-bottom: 2px solid var(--monaco-sideBar-border);
 }
 
 .goblet-monaco-sidebar-panel-header .goblet-monaco-panel-header-icon {
@@ -27,18 +32,10 @@
   color: var(--monaco-list-hoverForeground);
 }
 
-
-.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.show,
-.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.hide {
+.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content {
+  height: auto;
   overflow:hidden;
+  position: relative;
+  transition: max-height 300ms ease;
 }
 
-.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.show > div,
-.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.hide > div {
-  transform: translateY(-100%);
-  transition: .2s ease-in-out;
-}
-
-.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.show > div {
-  transform: translateY(0);
-}

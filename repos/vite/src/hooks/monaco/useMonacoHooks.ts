@@ -1,13 +1,14 @@
 import type { MutableRefObject } from 'react'
 import type {
   TMonaco,
+  IEditor,
   OpenFileTreeEvent,
-  TEditorSettingValues
+  TEditorSettingValues,
 } from '@types'
 
 import { useEffect, useMemo, useCallback } from 'react'
-import { useFiles, useRepo } from '@store'
-import { exists, set } from '@keg-hub/jsutils'
+import { useFiles, useRepo, useDefs } from '@store'
+import { exists, set, noOp } from '@keg-hub/jsutils'
 import { useMonacoConfig } from './useMonacoConfig'
 import { confirmModal } from '@actions/modals/modals'
 import { useGherkinSyntax } from './useGherkinSyntax'
@@ -34,8 +35,6 @@ const modalActions = {
   },
 }
 
-const defs:any[] = []
-
 
 export const useMonacoHooks = (
   editorRef:MutableRefObject<any>
@@ -43,6 +42,7 @@ export const useMonacoHooks = (
 
   const repo = useRepo()
   const repoFiles = useFiles()
+  const defs = useDefs()
 
   const rootPrefix = useMemo(
     () => getRootPrefix(repo),
@@ -83,8 +83,11 @@ export const useMonacoHooks = (
   }, [])
   
   
-  const gherkinSyntaxCb = useGherkinSyntax(defs)
-  const onMonacoLoaded = useCallback((monaco:TMonaco) => gherkinSyntaxCb(monaco), [gherkinSyntaxCb])
+  const addGherkinSyntax = useGherkinSyntax(defs.definitionTypes)
+  const onEditorLoaded = useCallback(
+    (editor:IEditor, monaco:TMonaco) => addGherkinSyntax(editor, monaco),
+    [addGherkinSyntax]
+  )
 
   return {
     config,
@@ -92,7 +95,8 @@ export const useMonacoHooks = (
     rootPrefix,
     onLoadFile,
     modalActions,
-    onMonacoLoaded,
+    onEditorLoaded,
+    onMonacoLoaded:noOp,
     onAddFile,
     onSaveFile,
     onRenameFile,

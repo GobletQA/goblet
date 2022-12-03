@@ -5,6 +5,14 @@ import { MonacoEditor } from '@gobletqa/monaco'
 import { Divider } from '@components/Layout/Divider'
 import { RepoNotConnected } from './RepoNotConnected'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
+import { ArtifactsPanel } from '@components/Artifacts/ArtifactsPanel'
+import { EnvironmentsPanel } from '@components/Environments/EnvironmentsPanel'
+
+
+const Panels = [
+  ArtifactsPanel,
+  EnvironmentsPanel
+]
 
 export type TCodeEditorProps = {}
 export const CodeEditor = (props:TCodeEditorProps) => {
@@ -24,12 +32,14 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     onLoadFile,
     modalActions,
     onMonacoLoaded,
+    onEditorLoaded,
   } = useMonacoHooks(editorRef)
 
   return connected
     ? (
         <MonacoEditor
           ref={editorRef}
+          Panels={Panels}
           config={config}
           Divider={Divider}
           options={options}
@@ -43,6 +53,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
           onMonacoLoaded={onMonacoLoaded}
+          onEditorLoaded={onEditorLoaded}
           sidebarWidth={EditorSidebarWidth}
         />
       )

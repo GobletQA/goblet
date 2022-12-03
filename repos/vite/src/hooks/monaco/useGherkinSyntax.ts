@@ -1,29 +1,30 @@
-import type { TMonaco } from '@types'
+import type { IEditor, TMonaco, TDefinitionsAstTypeMap, } from '@types'
 
 import { useCallback } from 'react'
 import { flatArr, noPropArr } from '@keg-hub/jsutils'
 
-export const useGherkinSyntax = (definitionTypes:any[]) => {
+export const useGherkinSyntax = (definitionTypes:TDefinitionsAstTypeMap) => {
   return useCallback(async (
+    editor:IEditor,
     monaco:TMonaco
   ) => {
+      const defs = flatArr(Object.values(definitionTypes), { truthy: true, exists: true, mutate:false })
+        .map(def => ({
+          suggestion: def.match,
+          segments: [def.match],
+          expression: def.variant,
+        }))
+
+      const findStepDefMatch = (matchText:string) => {
+        return defs.filter(def => (
+          def.suggestion
+            .toLowerCase()
+            .includes(matchText.toLowerCase())
+        ))
+      }
 
     import('@utils/features/addGherkinSyntax')
       .then(({ addGherkinToMonaco }) => {
-        const defs = flatArr(Object.values(definitionTypes), { truthy: true, exists: true, mutate:false })
-          .map(def => ({
-            suggestion: def.match,
-            segments: [def.match],
-            expression: def.variant,
-          }))
-
-        const findStepDefMatch = (matchText:string) => {
-          return defs.filter(def => (
-            def.suggestion
-              .toLowerCase()
-              .includes(matchText.toLowerCase())
-          ))
-        }
         addGherkinToMonaco(monaco, findStepDefMatch, noPropArr)
         /*
           TODO: For this to work, need something like Parkin.steps.match method
