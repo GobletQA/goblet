@@ -2,14 +2,14 @@ export type TSetting = {
   value: any
   key?: string
   group?: string
-  active?: boolean
-  options?: string[]
   default?: any
   prefix?: string
+  active?: boolean
   postfix?: string
-  emptyOption?: string
-  type?: `string` | `boolean` | `array` | `object` | `number`
   enabled?: boolean
+  options?: string[]
+  emptyOption?: string
+  type?: `string` | `number` | `select` | `boolean`
 }
 
 type TNoSettingKeys = {

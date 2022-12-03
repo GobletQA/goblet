@@ -36,6 +36,10 @@
   height: auto;
   overflow:hidden;
   position: relative;
-  transition: max-height 300ms ease;
+  padding-bottom: 0px;
+  transition: max-height 300ms ease, padding-bottom 300ms ease;
 }
 
+.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content.show {
+  padding-bottom: 5px;
+}

@@ -7,8 +7,11 @@ import { RepoNotConnected } from './RepoNotConnected'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
 import { ArtifactsPanel } from '@components/Artifacts/ArtifactsPanel'
 import { EnvironmentsPanel } from '@components/Environments/EnvironmentsPanel'
+import { ConnectPanel } from './ConnectPanel'
 
-
+const PrePanels = [
+  ConnectPanel
+]
 const Panels = [
   ArtifactsPanel,
   EnvironmentsPanel
@@ -46,6 +49,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           sidebarStatus={true}
           Modal={modalActions}
           defaultFiles={files}
+          PrePanels={PrePanels}
           onAddFile={onAddFile}
           onSaveFile={onSaveFile}
           rootPrefix={rootPrefix}

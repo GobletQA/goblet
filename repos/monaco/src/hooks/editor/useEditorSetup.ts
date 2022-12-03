@@ -59,20 +59,6 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     if (editorRef.current) {
       if(config.theme) setTheme(config.theme.name, config.theme.theme)
       editorRef.current.updateOptions(options)
-      // editorRef.current.updateOptions({
-      //     // wordWrapColumn: 200,
-      //     // glyphMargin: glyphMargin,
-
-      //     // TODO: move these to settings
-      //     tabSize: 2,
-      //     fontSize: 14,
-      //     codeLens: false,
-      //     contextmenu: false,
-      //     wordWrap: 'bounded',
-      //     lineNumbersMinChars: 3,
-      //     'semanticHighlighting.enabled': true,
-      //   ...options,
-      // })
     }
   }, [options, config])
 

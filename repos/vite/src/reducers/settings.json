@@ -65,13 +65,121 @@
       "postfix": "px",
       "group": "editor"
     },
+    "tabSize": {
+      "key": "tabSize",
+      "value": 2,
+      "active": true,
+      "default": 2,
+      "type": "number",
+      "group": "editor"
+    },
+    "cursorStyle": {
+      "key": "cursorStyle",
+      "value": "line",
+      "active": true,
+      "default": "line",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "line",
+      "options": [
+        "line",
+        "block",
+        "underline",
+        "line-thin",
+        "block-outline",
+        "underline-thin"
+      ]
+    },
+    "cursorBlinking": {
+      "key": "cursorBlinking",
+      "value": "phase",
+      "active": true,
+      "default": "phase",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "phase",
+      "options": [
+        "phase",
+        "blink",
+        "smooth",
+        "expand",
+        "solid"
+      ]
+    },
+    "wordWrap": {
+      "key": "wordWrap",
+      "value": "on",
+      "active": true,
+      "default": "on",
+      "type": "select",
+      "group": "editor",
+      "options": [
+        "on",
+        "off",
+        "wordWrapColumn",
+        "bounded"
+      ]
+    },
+    "wrappingIndent": {
+      "key": "wrappingIndent",
+      "value": "deepIndent",
+      "active": true,
+      "default": "deepIndent",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "deepIndent",
+      "options": [
+        "deepIndent",
+        "none",
+        "same",
+        "indent"
+      ]
+    },
     "automaticLayout": {
       "key": "automaticLayout",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "editor"
+    },
+    "codeLens": {
+      "key": "codeLens",
       "value": false,
       "active": true,
       "default": false,
       "type": "boolean",
       "group": "editor"
+    },
+    "lineDecorationsWidth": {
+      "key": "lineDecorationsWidth",
+      "value": 0,
+      "active": true,
+      "default": 0,
+      "type": "number",
+      "group": "editor"
+    },
+    "selectOnLineNumbers": {
+      "key": "selectOnLineNumbers",
+      "value": false,
+      "active": true,
+      "default": false,
+      "type": "boolean",
+      "group": "editor"
+    },
+    "renderValidationDecorations": {
+      "key": "renderValidationDecorations",
+      "value": "on",
+      "active": true,
+      "default": "on",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "on",
+      "options": [
+        "on",
+        "off",
+        "editable"
+      ]
     },
     "theme": {
       "key": "theme",
