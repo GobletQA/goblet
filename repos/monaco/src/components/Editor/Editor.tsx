@@ -50,12 +50,12 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     PrePanels,
     Divider=`div`,
   } = props
-  
 
   const {
     rootRef,
     prePath,
     filesRef,
+    autoSave,
     editorRef,
     optionsRef,
     editorNodeRef,
@@ -150,6 +150,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     Modal,
     rootRef,
     prePath,
+    autoSave,
     filesRef,
     editorRef,
     onAddFile,
@@ -172,6 +173,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     editFolderName
   } = useFolderCallbacks({
     filesRef,
+    autoSave,
     onAddFile,
     curPathRef,
     pathChange,

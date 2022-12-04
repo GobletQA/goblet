@@ -1,6 +1,14 @@
 import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
-import type { TEditorDeleteFile, TEditorRenameFile, TFilelist, TEditorOpenFiles, TModal, TEditorAddFile } from '../../types'
+import type {
+  TModal,
+  TFilelist,
+  TAutoSave,
+  TEditorAddFile,
+  TEditorDeleteFile,
+  TEditorRenameFile,
+  TEditorOpenFiles,
+} from '../../types'
 
 import { useCallback } from 'react'
 import { useCloseFile } from './useCloseFile'
@@ -10,6 +18,7 @@ import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 export type TUseEditorFileCallbacks = {
   Modal: TModal
+  autoSave: TAutoSave
   onAddFile?: TEditorAddFile
   onDeleteFile?: TEditorDeleteFile
   onRenameFile?: TEditorRenameFile
@@ -33,6 +42,8 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
     Modal,
     rootRef,
     prePath,
+    // TODO: add auto-save
+    autoSave,
     filesRef,
     editorRef,
     curPathRef,

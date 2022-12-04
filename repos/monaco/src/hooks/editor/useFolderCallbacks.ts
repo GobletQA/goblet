@@ -1,11 +1,20 @@
 import type { SetStateAction, MutableRefObject } from 'react'
-import type { TEditorDeleteFile, TEditorAddFile, TEditorRenameFile, TEditorOpenFiles, TFilelist } from '../../types'
+import type {
+  TFilelist,
+  TAutoSave,
+  TEditorAddFile,
+  TEditorOpenFiles,
+  TEditorDeleteFile,
+  TEditorRenameFile
+} from '../../types'
+
 import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 import { useCallback } from 'react'
 
 
 export type TUseFolderCallbacks = {
+  autoSave: TAutoSave
   onAddFile?: TEditorAddFile
   onDeleteFile?: TEditorDeleteFile
   onRenameFile?: TEditorRenameFile
@@ -20,6 +29,7 @@ export type TUseFolderCallbacks = {
 export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
 
   const {
+    autoSave,
     filesRef,
     onAddFile,
     onDeleteFile,

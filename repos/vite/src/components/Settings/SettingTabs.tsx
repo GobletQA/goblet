@@ -20,6 +20,7 @@ export const SettingTabs = (props:TSettingTabs) => {
   return (
     <Tabs
       sx={styles.tabs}
+      visibleScrollbar
       variant="scrollable"
       orientation="vertical"
       className='settings-tabs'

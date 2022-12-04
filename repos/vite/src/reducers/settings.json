@@ -45,16 +45,30 @@
       "default": false,
       "type": "boolean",
       "group": "goblet"
+    },
+    "lockResize": {
+      "key": "lockResize",
+      "value": true,
+      "active": false,
+      "default": true,
+      "type": "boolean",
+      "group": "goblet"
     }
   },
   "editor": {
     "autoSave": {
       "key": "autoSave",
-      "value": true,
+      "value": "blur",
       "active": true,
-      "default": true,
-      "type": "boolean",
-      "group": "editor"
+      "default": "blur",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "blur",
+      "options": [
+        "blur",
+        "change",
+        "off"
+      ]
     },
     "fontSize": {
       "key": "fontSize",

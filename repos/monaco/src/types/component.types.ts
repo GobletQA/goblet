@@ -9,6 +9,7 @@ import type { TEditorTheme, TEditorConfig } from './editor.types'
 import type { MutableRefObject, CSSProperties, ReactNode, ComponentType } from 'react'
 import type {
   TEditorCB,
+  TEditorOpts,
   TFileCallback,
   TEditorFileCB,
   TEditorAddFile,
@@ -25,6 +26,7 @@ export interface IMonacoEditorProps {
   rootPrefix?: string
   emptyText?: string
   defaultPath?: string
+  options: TEditorOpts
   sidebarWidth?: number
   Panels?:TSidebarPanel[]
   PrePanels?:TSidebarPanel[]
@@ -42,7 +44,6 @@ export interface IMonacoEditorProps {
   onEditorLoaded?:TOnEditorLoaded
   onRenameFile?: TEditorRenameFile
   onSidebarResize?: (width:number) => void
-  options: editor.IStandaloneEditorConstructionOptions
 }
 
 export interface IMultiRefType {

@@ -30,8 +30,10 @@ export const useEditorRefs = (props:THEditorRefs) => {
     onFileChange,
     onValueChange,
   } = props
-  
-  const optionsRef = useRef(options)
+
+  const { autoSave=`off`, ...opts } = options
+
+  const optionsRef = useRef(opts)
   optionsRef.current = options
 
   const onLoadFileRef = useRef(onLoadFile)
@@ -58,6 +60,7 @@ export const useEditorRefs = (props:THEditorRefs) => {
     rootRef,
     prePath,
     filesRef,
+    autoSave,
     editorRef,
     optionsRef,
     editorNodeRef,

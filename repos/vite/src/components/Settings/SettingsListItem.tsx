@@ -20,8 +20,8 @@ export type TSettingsListItem = {
   value:any
   sx?: CSSObj
   colSx?: CSSObj
-  item: TSetting
   colKey:string
+  item?: TSetting
   header?: boolean
   className?:string
   width: number|boolean
@@ -32,12 +32,12 @@ export type TSettingsListItem = {
 const RenderByType = (props:TSettingsListItem) => {
   const {
     sx,
-    item,
     align,
     value,
     header,
     config,
     colKey,
+    item=noOpObj as TSetting,
   } = props
 
   const disabled = item?.enabled === false
@@ -170,7 +170,7 @@ export const SettingsListItem = (props:TSettingsListItem) => {
     className=``,
     item=noOpObj as TSetting,
   } = props
-  
+
   return (
     <Grid
       xs={width}
