@@ -2,10 +2,10 @@ import type { TColors } from '@types'
 
 export const gobletColors = {
   cardinal: `#B53541`,
+  shamrock: `#61AB82`,
   monacoGray: `#ABB2BF`,
   royalPurple: `#785B9C`,
   honeyYellow: `#FFB601`,
-  shamrock: `#61AB82`,
   shinyShamrock: `#148F4B`,
   terminalBlack: `#1f1d27`,
 }
@@ -42,18 +42,33 @@ export const gray = {
   gray10: `#21252c`
 }
 
+// export const black = {
+//   black00: `#000000`,
+//   black01: `#08090b`,
+//   black02: `#0b0c0e`,
+//   black03: `#1c1e24`,
+//   black04: `#21252b`,
+//   black05: `#272A32`,
+//   black06: `#323842`,
+//   black07: `#4d5666`,
+//   black08: `#636f83`,
+//   black09: `#7c889c`,
+//   black10: `#99a3b2`,
+// }
+
+
 export const black = {
   black00: `#000000`,
-  black01: `#08090b`,
-  black02: `#0b0c0e`,
-  black03: `#1c1e24`,
-  black04: `#21252b`,
-  black05: `#272A32`,
-  black06: `#323842`,
-  black07: `#4d5666`,
-  black08: `#636f83`,
-  black09: `#7c889c`,
-  black10: `#99a3b2`,
+  black01: `#040506`,
+  black02: `#0d0e11`,
+  black03: `#16181d`,
+  black04: `#1f2228`,
+  black05: `#282b34`,
+  black06: `#31353f`,
+  black07: `#3a3f4a`,
+  black08: `#434856`,
+  black09: `#4c5261`,
+  black10: `#555b6d`,
 }
 
 /**

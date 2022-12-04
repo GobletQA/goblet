@@ -4,10 +4,13 @@ import type {
   TModalTitle,
 } from '@types'
 
+import { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import { gutter } from '@theme/gutter'
 import { noOpObj } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
+import { getColor } from '@utils/theme/getColor'
+import { useTheme } from '@hooks/theme/useTheme'
 import Typography from '@mui/material/Typography'
 
 export const ModalHeader = (props:TModal) => {
@@ -20,17 +23,24 @@ export const ModalHeader = (props:TModal) => {
   if(!title || Title) return null
 
   const { Icon, ...rest } = titleProps
+  const theme = useTheme()
+  const styles = useMemo(() => {
+    return {
+      color: getColor(`common.white`, `colors.white00`, theme),
+      bgcolor: getColor(`colors.gray10`, `colors.black01`, theme)
+    }
+    
+  }, [theme])
 
   return (
     <Box
       display="flex"
       flexDirection="row"
-      alignContent="center"
       alignItems="center"
+      alignContent="center"
       justifyContent="center"
-      color="common.white"
-      bgcolor="grey.900"
       padding={`${gutter.padding.tQpx} ${gutter.padding.px}`}
+      {...styles}
     >
       {Icon}
       {

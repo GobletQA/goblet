@@ -34,13 +34,8 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
 ConnectModal.modalType = ModalTypes.connect
 ConnectModal.modalProps = {
   Footer: false,
-  manualClose: !AuthActive,
-  contentProps: {
-    sx: {
-      padding: gutter.padding.none,
-    }
-  },
   title: `Connect Repo`,
+  manualClose: !AuthActive,
   titleProps: {
     Icon: (<PlugIcon />)
   }

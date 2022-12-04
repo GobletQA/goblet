@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import {useCallback} from 'react'
 import Button from '@mui/material/Button'
 import ListItem from '@mui/material/ListItem'
+import { useColor } from '@hooks/theme/useColor'
 import { signInWithPopup, GithubAuthProvider } from 'firebase/auth'
 
 const defPrefix = 'goblet-github-button'
@@ -68,6 +69,8 @@ export const SignInButton = (props:TSignInButton) => {
 
   }, [auth, provider, onSuccess, onFail])
   
+  const bgColor = useColor(`colors.gray10`, `colors.black05`)
+  
   return (
     <ListItem
       sx={{ minWidth: 120 }}
@@ -81,8 +84,8 @@ export const SignInButton = (props:TSignInButton) => {
         className={`${prefix}-${classes?.button}`}
         sx={{
           width: `100%`,
-          color: `common.white`,
-          backgroundColor: `grey.900`,
+          color: `colors.white00`,
+          backgroundColor: bgColor,
         }}
       >
         {children || text}
