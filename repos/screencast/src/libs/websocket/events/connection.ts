@@ -9,6 +9,7 @@ export const connection = (app:Express) => {
 
     // Todo Update to be the group / room name for the connected user
     const cache = Manager.cache[socket.id]
+
     cache.groupId = 'goblet'
 
     // Setup tailLogger to log playwright output from debug log file

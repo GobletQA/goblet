@@ -139,12 +139,8 @@ export class SocketService {
    * @type function
    */
   onConnection(...args:string[]) {
-    const [token, data] = args
-    // TODO: Implement token auth
-    // Send the token to the server to be validated
-    // this.emit(EventTypes.WS_AUTH_TOKEN, { token: token })
-    // Then call the `callAction` with the connected event args
-    callAction(this, `${TagPrefix}:CONNECT`)?.(data, token)
+    const [data] = args
+    callAction(this, `${TagPrefix}:CONNECT`)?.(data)
   }
 
   /**
@@ -172,27 +168,6 @@ export class SocketService {
   }
 
   /**
-   * Builds the command to be run, and sends it to the backend
-   * @memberof SocketService
-   * @type function
-   */
-  runCommand(command:TSockCmd, params:Record<string, any>) {
-    const foundCmd = getCommand(this.commands, command)
-
-    if(!foundCmd) return this.logData(`Socket command not found for ${command}`)
-
-    const { id, cmd, name, group } = foundCmd
-    return this.emit(EventTypes.WS_RUN_CMD, {
-      id,
-      cmd,
-      name,
-      group,
-      params,
-      token: this.token,
-    })
-  }
-
-  /**
    * Disconnects from the backend websocket
    * Cleans up any open object || handles
    * @memberof SocketService
@@ -206,6 +181,12 @@ export class SocketService {
     this.socket = null
     this.config = noOpObj as TSocketService
   }
+
+
+  runCommand(...args:any[]) {
+    console.error(`Don't Use this any more`)
+  }
+
 }
 
 export const WSService = new SocketService()

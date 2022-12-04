@@ -1,10 +1,10 @@
 import type { TFileModel } from '@types'
 
 import { addToast } from '@actions/toasts'
-import { WSRecordActions } from '@constants'
 import { WSService } from '@services/socketService'
 import { getWorldVal } from '@utils/repo/getWorldVal'
 import { clearSpecs } from '@actions/tracker/clearSpecs'
+import { SocketMsgTypes, WSRecordActions } from '@constants'
 import { buildCmdParams } from '@utils/browser/buildCmdParams'
 
 type TBuildOpts = {
@@ -60,6 +60,5 @@ export const runTests = async (
     cmd,
   })
 
-  WSService.runCommand(cmd, params)
-  // WSService.emit(SocketMsgTypes.BROWSER_RUN_TESTS, options)
+  WSService.emit(SocketMsgTypes.BROWSER_RUN_TESTS, options)
 }

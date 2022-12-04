@@ -21,7 +21,6 @@ type TCustomEvt = {
 
 type TDisconnectEvt = Omit<TCustomEvt, 'name'>
 
-
 const handelCustomEvt = ({
   io,
   name,
@@ -31,16 +30,14 @@ const handelCustomEvt = ({
   Manager,
 }:TCustomEvt) => {
   socket.on(name, async (data:Record<any, any>) => {
-    Manager.checkAuth(socket, name, data, () => {
-      checkCall<TSocketEventCB>(method, {
-        io,
-        data,
-        socket,
-        config,
-        Manager,
-        event: name,
-      } as TSocketEvtCBProps)
-    })
+    checkCall<TSocketEventCB>(method, {
+      io,
+      data,
+      socket,
+      config,
+      Manager,
+      event: name,
+    } as TSocketEvtCBProps)
   })
 }
 

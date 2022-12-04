@@ -1,6 +1,5 @@
 import type { Server, Socket } from 'socket.io'
 import type {
-  TSocketConfig,
   TSocketMessage,
   TSocketMessageObj,
 } from '@GSC/types'
@@ -21,10 +20,8 @@ import {
   isObj,
   isStr,
   uuid,
-  noOp,
   noOpObj,
   snakeCase,
-  checkCall,
   deepMerge,
 } from '@keg-hub/jsutils'
 
@@ -53,15 +50,12 @@ const logError = (err:Error = noOpObj as Error, method:string) => {
  * Handles broadcasting / emitting events
  * @class
  */
- 
- 
 export class SocketManager {
   socketIo:Server
   isRunning:boolean
   cache:Record<any, any>={}
   peers:Record<any, any>={}
-  auth:(...args:any[]) => any
-  
+
   constructor(opts = {}) {
     this.isRunning = false
   }
@@ -112,61 +106,6 @@ export class SocketManager {
       },
       messageObj
     )
-  }
-
-  /**
-   * Registers auth for connecting to the socket manager
-   * @memberof SocketManager
-   * @alias instance&period;setAuth
-   * @function
-   * @public
-   * @todo - Implement auth
-   */
-  setAuth = (config:TSocketConfig = noOpObj as TSocketConfig) => {
-    const { onAuthenticate = noOp, onAuthFail = noOp } = config
-    this.auth = (socket, event, message, callback) => {
-      const eventArgs = {
-        data: message,
-        socket,
-        config,
-        event,
-        io: this.socketIo,
-      }
-      new Promise(async (res, rej) => {
-        try {
-          await onAuthenticate(eventArgs)
-          res(true)
-        }
-        catch (err) {
-          rej(err)
-        }
-      })
-        .then(() => checkCall(callback, eventArgs))
-        .catch(err => {
-          onAuthFail({ ...eventArgs, err })
-          this.onDisconnect(socket)
-        })
-    }
-  }
-
-  /**
-   * Checks for authorization of a socket request
-   * @memberof SocketManager
-   * @alias instance&period;checkAuth
-   * @todo - Implement auth
-   * @todo - Checks the sockets auth before allow a socket request
-   * @function
-   * @public
-   */
-  checkAuth = (
-    socket:Socket|string,
-    event:string,
-    message:TSocketMessage,
-    callback:(...args:any[]) => any
-  ) => {
-    return !this.auth
-      ? checkCall(callback, this, socket, message)
-      : this.auth(socket, event, message, callback)
   }
 
   /**
@@ -332,10 +271,7 @@ export class SocketManager {
    * @function
    * @public
    */
-  setupSocket = (
-    socket:Socket,
-    commands:Record<any, any>
-  ) => {
+  setupSocket = (socket:Socket) => {
     try {
       const id = this.add(socket)
       if (!id) return console.error(`setupSocket - Could not add socket. No id returned.`, socket, id)
@@ -343,7 +279,7 @@ export class SocketManager {
       this.emit(socket, WS_INIT, {
         id,
         message: `Server socket initialized!`,
-        data: { commands, peers: Object.keys(this.peers) },
+        data: { peers: Object.keys(this.peers) },
       })
 
       this.broadCastAll(socket, WS_ADD_PEER, {

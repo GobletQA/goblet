@@ -93,9 +93,11 @@ export const callAction = (
     // Log the event for debugging
     instance.logEvent(event, message)
 
+    // --- Don't use this any more
     // Look for the init event, and pull out the commands from it
     // Init should only happen when we connect to the socket
-    eventName === 'init' && (instance.commands = get(message, 'data.commands'))
+    // eventName === 'init' && (instance.commands = get(message, 'data.commands'))
+
     // Call the custom action if it exists
     const customEvent = get(instance.config, `events.${eventName}`)
     customEvent && checkCallEvent(customEvent, message, instance, event)

@@ -40,14 +40,16 @@ const handleStartPlaying = async (
 }
 
 export const browserRunTests = (app:Express) => {
-  return async (
-    {data, socket, Manager }:TSocketEvtCBProps,
-    tokenData:TSocketTokenData
-  ) => {
-    const { iat, exp, ...user } = tokenData
-    const { repo } = await Repo.status(app.locals.config, { ...data.repo, ...user })
-    await repo.refreshWorld()
+  return async ({data, socket, Manager }:TSocketEvtCBProps,) => {
+    console.log(`------- browser run tests -------`)
+    // const { iat, exp, ...user } = tokenData
+    // const { repo } = await Repo.status(app.locals.config, { ...data.repo, ...user })
+    // await repo.refreshWorld()
+    
+    // console.log(`------- repo -------`)
+    // console.log(repo)
 
-    await handleStartPlaying(data, repo, socket, Manager, app)
+
+    // await handleStartPlaying(data, repo, socket, Manager, app)
   }
 }

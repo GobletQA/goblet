@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 import { EContainerState } from '@types'
-
 import {
   memo,
   useMemo,
@@ -14,6 +13,7 @@ import { AuthActive } from '@constants'
 import { noOpObj } from '@keg-hub/jsutils'
 import { Fadeout } from '@components/Fadeout'
 import { useContainer, useUser } from '@store'
+import { localStorage } from '@services/localStorage'
 import { SocketService, WSService } from '@services/socketService'
 import { getWebsocketConfig } from '@utils/api/getWebsocketConfig'
 
@@ -67,14 +67,19 @@ const useWSHooks = () => {
   useEffect(() => {
     if(wsService?.socket || !container?.api) return
 
-    // Once the container?.api is loaded, then init the websocket
-    const wsConfig = getWebsocketConfig(container.api)
+    (async () => {
+      const jwt = await localStorage.getJwt()
+      // Once the container?.api is loaded, then init the websocket
+      const wsConfig = getWebsocketConfig(container.api)
+      WSService.initSocket(wsConfig, jwt)
 
-    WSService.initSocket(wsConfig)
+      // Now update the state to include the websocket
+      // This way we don't initialize until the session container is running
+      setWSService(WSService)
 
-    // Now update the state to include the websocket
-    // This way we don't initialize until the session container is running
-    setWSService(WSService)
+    })()
+
+
   }, [
     container.api,
     wsService?.socket
