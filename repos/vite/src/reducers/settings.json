@@ -6,7 +6,8 @@
       "prefix",
       "postfix",
       "options",
-      "default"
+      "default",
+      "emptyOption"
     ],
     "editKeys": [
       "value",
@@ -86,6 +87,52 @@
       "default": 2,
       "type": "number",
       "group": "editor"
+    },
+    "theme": {
+      "key": "theme",
+      "value": "Goblet",
+      "active": true,
+      "default": "Goblet",
+      "group": "editor",
+      "emptyOption": "Goblet",
+      "options": [
+        "Goblet",
+        "AtlanticNight",
+        "AtomOneDark",
+        "AuroraX",
+        "AyuDark",
+        "AyuLight",
+        "BlulocoLight",
+        "CodeSandBox",
+        "Darktooth",
+        "Dracula",
+        "EvaLight",
+        "FlatUI",
+        "Hopscotch",
+        "HorlaLightTheme",
+        "HybridNext",
+        "KimbieDark",
+        "Lucario",
+        "MonokaiDimmed",
+        "MonokaiPro",
+        "Nebula",
+        "NoctisAzureus",
+        "NoctisBordo",
+        "NoctisLux",
+        "OneDarkPro",
+        "OneMonokai",
+        "Panda",
+        "ReUI",
+        "RemedyDark",
+        "ShadesOfPurple",
+        "SnazzyLight",
+        "SnazzyOperator",
+        "SublimeMaterialThemeDark",
+        "SynthWave84",
+        "TokyoNightStorm",
+        "TomorrowNightBlue",
+        "Twilight"
+      ]
     },
     "detectIndentation": {
       "key": "detectIndentation",
@@ -181,6 +228,94 @@
         "indent"
       ]
     },
+    "folding": {
+      "key": "folding",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "editor"
+    },
+    "foldingStrategy": {
+      "key": "foldingStrategy",
+      "value": "auto",
+      "active": true,
+      "default": "auto",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "auto",
+      "options": [
+        "auto",
+        "indentation"
+      ]
+    },
+    "showFoldingControls": {
+      "key": "showFoldingControls",
+      "value": "always",
+      "active": true,
+      "default": "always",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "always",
+      "options": [
+        "always",
+        "never",
+        "mouseover"
+      ]
+    },
+    "matchBrackets": {
+      "key": "matchBrackets",
+      "value": "always",
+      "active": true,
+      "default": "always",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "always",
+      "options": [
+        "always",
+        "never",
+        "near"
+      ]
+    },
+    "renderWhitespace": {
+      "key": "renderWhitespace",
+      "value": "selection",
+      "active": true,
+      "default": "selection",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "selection",
+      "options": [
+        "selection",
+        "none",
+        "boundary",
+        "trailing",
+        "all"
+      ]
+    },
+    "renderControlCharacters": {
+      "key": "renderControlCharacters",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "editor"
+    },
+    "renderLineHighlight": {
+      "key": "renderLineHighlight",
+      "value": "all",
+      "active": true,
+      "default": "all",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "none",
+      "options": [
+        "all",
+        "none",
+        "gutter",
+        "line"
+      ]
+    },
     "automaticLayout": {
       "key": "automaticLayout",
       "value": true,
@@ -199,9 +334,9 @@
     },
     "lineDecorationsWidth": {
       "key": "lineDecorationsWidth",
-      "value": 0,
+      "value": 10,
       "active": true,
-      "default": 0,
+      "default": 10,
       "type": "number",
       "group": "editor"
     },
@@ -227,51 +362,13 @@
         "editable"
       ]
     },
-    "theme": {
-      "key": "theme",
-      "value": "Goblet",
+    "lightbulb.enabled": {
+      "key": "lightbulb.enabled",
+      "value": false,
       "active": true,
-      "default": "Goblet",
-      "group": "editor",
-      "emptyOption": "Goblet",
-      "options": [
-        "Goblet",
-        "AtlanticNight",
-        "AtomOneDark",
-        "AuroraX",
-        "AyuDark",
-        "AyuLight",
-        "BlulocoLight",
-        "CodeSandBox",
-        "Darktooth",
-        "Dracula",
-        "EvaLight",
-        "FlatUI",
-        "Hopscotch",
-        "HorlaLightTheme",
-        "HybridNext",
-        "KimbieDark",
-        "Lucario",
-        "MonokaiDimmed",
-        "MonokaiPro",
-        "Nebula",
-        "NoctisAzureus",
-        "NoctisBordo",
-        "NoctisLux",
-        "OneDarkPro",
-        "OneMonokai",
-        "Panda",
-        "ReUI",
-        "RemedyDark",
-        "ShadesOfPurple",
-        "SnazzyLight",
-        "SnazzyOperator",
-        "SublimeMaterialThemeDark",
-        "SynthWave84",
-        "TokyoNightStorm",
-        "TomorrowNightBlue",
-        "Twilight"
-      ]
+      "default": false,
+      "type": "boolean",
+      "group": "editor"
     }
   },
   "browser": {

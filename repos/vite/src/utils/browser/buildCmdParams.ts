@@ -1,10 +1,17 @@
+import { TFileModel } from '@types'
+
 import {
-  get,
   exists,
   checkCall,
   deepMerge,
   noPropArr,
 } from '@keg-hub/jsutils'
+import { getStore } from '@store'
+
+export type TBuiltCmdParams = {
+  cmd:string
+  file:TFileModel
+}
 
 const conditionalAdd = (key:string, value:string) => {
   return exists(value) ? (key ? `${key}=${value}` : `--value`) : ''
@@ -19,14 +26,13 @@ const defSettings = {
 /**
  * Loads the world and store settings and merges them together
  * Then sets test run specific options based on the merged settings
- *
- * @return {Array} - Group of options to pass to the test run command
  */
-const resolveFromSettings = (args:Record<any, any>) => {
-  const { state } = args
-  const { repo, settings } = state?.items
+const resolveFromSettings = (args:TBuiltCmdParams) => {
+  const { repo, settings } = getStore()?.getState()
 
-  const mergedSettings = deepMerge(defSettings, repo?.world?.settings, settings)
+  // TODO: add stetting.browser values here
+  // Should only add if they have been modified from the default state
+  const mergedSettings = deepMerge(defSettings, repo?.world?.settings)
 
   return [
     conditionalAdd(`slowMo`, mergedSettings?.browser?.slowMo),
@@ -38,19 +44,13 @@ const resolveFromSettings = (args:Record<any, any>) => {
 /**
  * Builds the default params that all test exec type use
  * @function
- * @private
- * @param {Object} args.state - Redux Store State
- * @param {string} args.command - Command to be run
- * @param {Object} args.fileModel - Model of the file the command is being run for
- *
- * @return {Array} - Built default params for all command types
  */
-const buildDefaultParams = (args:Record<any, any>) => {
-  const { fileModel, state } = args
-  const repo = get(state, `items.repo`)
-
+const buildDefaultParams = (args:TBuiltCmdParams) => {
+  const { file } = args
+  const repo = getStore()?.getState().repo
+  
   return [
-    conditionalAdd(`context`, fileModel?.location),
+    conditionalAdd(`context`, file?.location),
     conditionalAdd(`base`, repo?.paths?.repoRoot),
     // Add user run settings here via state.settings and world.settings
     ...resolveFromSettings(args),
@@ -60,56 +60,38 @@ const buildDefaultParams = (args:Record<any, any>) => {
 /**
  * Builds the params for feature file commands
  * @function
- * @private
- * @param {Object} args.state - Redux Store State
- * @param {string} args.command - Command to be run
- * @param {Object} args.fileModel - Model of the file the command is being run for
- *
- * @return {Array} - Built params for the command
  */
-const buildFeatureParams = (args:Record<any, any>) => {
+const buildFeatureParams = (args:TBuiltCmdParams) => {
 
   return [
     // Build the default params for all text exec types
     ...buildDefaultParams(args),
     // Add Feature file specific params here
-  ]
+  ].filter(Boolean)
 }
 
 /**
  * Builds the params for waypoint commands
  * @function
- * @private
- * @param {Object} args.state - Redux Store State
- * @param {string} args.command - Command to be run
- * @param {Object} args.fileModel - Model of the file the command is being run for
- *
- * @return {Array} - Built params for the command
  */
-const buildWaypointParams = (args:Record<any, any>) => {
+const buildWaypointParams = (args:TBuiltCmdParams) => {
   return [
     // Build the default params for all text exec types
     ...buildDefaultParams(args),
     // Add Waypoint file specific params here
-  ]
+  ].filter(Boolean)
 }
 
 /**
  * Builds the params for unit commands
  * @function
- * @private
- * @param {Object} args.state - Redux Store State
- * @param {string} args.command - Command to be run
- * @param {Object} args.fileModel - Model of the file the command is being run for
- *
- * @return {Array} - Built params for the command
  */
-const buildUnitParams = (args:Record<any, any>) => {
+const buildUnitParams = (args:TBuiltCmdParams) => {
   return [
     // Build the default params for all text exec types
     ...buildDefaultParams(args),
     // Add Unit file specific params here
-  ]
+  ].filter(Boolean)
 }
 
 /**
@@ -125,16 +107,11 @@ const parmBuildMap = {
 /**
  * Finds the param build method based on file type and calls it
  * @function
- * @public
- * @export
- * @param {Object} args.state - Redux Store State
- * @param {string} args.command - Command to be run
- * @param {Object} args.fileModel - Model of the file the command is being run for
- *
- * @return {Array} - Built params for the command
  */
-export const buildCmdParams = (args:Record<any, any>) => {
-  const typeKey = args?.fileModel?.fileType as keyof typeof parmBuildMap
-  
+export const buildCmdParams = (args:TBuiltCmdParams) => {
+  const { file } = args
+
+  const typeKey = file?.fileType as keyof typeof parmBuildMap
+
   return checkCall(parmBuildMap[typeKey], args) || noPropArr
 }

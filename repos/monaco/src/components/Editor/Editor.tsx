@@ -239,7 +239,14 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         />
         <div ref={editorNodeRef} style={editorStyles} />
         {openedFiles.length === 0 && (<Empty text={emptyText} />)}
-        {actions?.length && <Actions actions={actions} />}
+        {actions?.length && (
+          <Actions
+            actions={actions}
+            editorRef={editorRef}
+            curPathRef={curPathRef}
+            curValueRef={curValueRef}
+          />
+        )}
       </div>
     </div>
   )

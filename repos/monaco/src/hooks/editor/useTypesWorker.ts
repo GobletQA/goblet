@@ -1,13 +1,12 @@
-
-
+import { TCodeEditorRef } from '../../types'
 import type { MutableRefObject } from 'react'
-import type { editor } from 'monaco-editor'
-import { useEffect, useRef } from 'react'
+
 // @ts-ignore
 import TypesWorker from '../../workers/typings.worker?worker'
+import { useEffect, useRef } from 'react'
 
 export type TUseTypesWorker = {
-  editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
+  editorRef:TCodeEditorRef
 }
 
 export type TTypes = {

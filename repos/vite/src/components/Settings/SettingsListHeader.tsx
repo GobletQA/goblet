@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { TSettingGroupMeta, TSetting, TSettingsConfig } from '@types'
+import type { TSettingsConfig } from '@types'
 
 import { wordCaps } from '@keg-hub/jsutils'
 import Grid from '@mui/material/Unstable_Grid2'

@@ -7,6 +7,8 @@ import type {
 import { noOpObj } from '@keg-hub/jsutils'
 import { loadFile } from '@actions/files/api/loadFile'
 import { saveFile } from '@actions/files/api/saveFile'
+import { addRootToLoc } from '@utils/repo/addRootToLoc'
+import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { createFile } from '@actions/files/api/createFile'
 import { removeFile } from '@actions/files/api/removeFile'
 import { renameFile } from '@actions/files/api/renameFile'
@@ -23,10 +25,6 @@ export type THOnLoadFile = THEditorFiles & {
   rootPrefix:string
   files: Record<string, string|null>
 }
-
-
-const addRootToLoc = (loc:string, root:string) => `${root}${loc}`
-const removeRootFromLoc = (loc:string, root:string) => loc.replace(root, ``)
 
 export const useOnLoadFile = ({
   rootPrefix,
@@ -120,7 +118,7 @@ export const useEditorFiles = (props:THEditorFiles) => {
     return Object.entries(repoFiles?.files)
       .reduce((acc, [loc, model]) => {
 
-        const key = removeRootFromLoc(loc, rootPrefix)
+        const key = rmRootFromLoc(loc, rootPrefix)
         acc[key] = model?.content || null
 
         return acc

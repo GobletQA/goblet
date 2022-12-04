@@ -2,13 +2,14 @@ import type { TLinter } from './useLintWorker'
 import type { TTypes } from './useTypesWorker'
 import type { Dispatch, MutableRefObject } from 'react'
 import type { editor, IDisposable } from 'monaco-editor'
-import type { TEditorOpenFiles, TFilelist } from '../../types'
+import type { TCodeEditorRef, TEditorOpenFiles, TFilelist } from '../../types'
 
 import { useCallback } from 'react'
 import { isStr } from '@keg-hub/jsutils'
 import { getModelFromPath } from '../../utils/editor/getModelFromPath'
 
 export type TUseRestoreModel = {
+  editorRef: TCodeEditorRef
   curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
@@ -16,10 +17,9 @@ export type TUseRestoreModel = {
   typesWorkerRef: MutableRefObject<TTypes>
   editorStatesRef:MutableRefObject<Map<any, any>>
   contentListenerRef: MutableRefObject<IDisposable | undefined>
-  editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>
   setOpenedFiles: Dispatch<React.SetStateAction<TEditorOpenFiles>>
-  onLoadFileRef:MutableRefObject<((path: string) => Promise<string|null>) | undefined>
   onValueChangeRef: MutableRefObject<((path: string) => void) | undefined>
+  onLoadFileRef:MutableRefObject<((path: string) => Promise<string|null>) | undefined>
   onFileChangeRef: MutableRefObject<((key: string, content: string) => void) | undefined>
 }
 

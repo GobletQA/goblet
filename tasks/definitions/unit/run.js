@@ -37,11 +37,11 @@ const runUnit = async args => {
 
 module.exports = {
   run: {
-    name: 'run',
-    alias: ['test'],
+    name: `run`,
+    alias: [`test`],
     action: runUnit,
-    example: 'keg goblet unit run',
-    description: 'Runs unit feature tests',
+    example: `yarn dev unit run`,
+    description: `Run unit tests for the mounted repo`,
     options: sharedOptions(
       'run',
       {},

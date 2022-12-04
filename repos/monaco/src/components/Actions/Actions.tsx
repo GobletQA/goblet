@@ -1,4 +1,4 @@
-import type { TEditorAction } from '../../types'
+import type { TCodeEditorRef, TEditorAction } from '../../types'
 import type { MutableRefObject } from 'react'
 
 import './Actions.css'
@@ -9,12 +9,21 @@ import { cls } from '@keg-hub/jsutils'
 export type TActions = {
   open?:boolean
   actions: TEditorAction[]
+  editorRef:TCodeEditorRef
+  curPathRef: MutableRefObject<string>
+  curValueRef: MutableRefObject<string>
 }
 
 const actionsStyle = { maxHeight: `0px` }
 
 export const Actions = (props:TActions) => {
-  const { actions } = props
+  const {
+    actions,
+    editorRef,
+    curPathRef,
+    curValueRef,
+  } = props
+
   const [open, setOpen] = useState<boolean>(props.open || false)
   const actionsRef = useRef<HTMLDivElement>(null)
   const lastHeightRef = useRef<number>(0) as MutableRefObject<number>
@@ -64,7 +73,15 @@ export const Actions = (props:TActions) => {
         className='goblet-monaco-actions-list'
       >
         {actions.map((action => {
-          return (<Action key={action.id || action.name} {...action} /> )
+          return (
+            <Action
+              key={action.id || action.name}
+              editorRef={editorRef}
+              curPathRef={curPathRef}
+              curValueRef={curValueRef}
+              {...action}
+            />
+          )
         }))}
       </div>
     </div>

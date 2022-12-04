@@ -1,7 +1,8 @@
-import type { editor, IDisposable } from 'monaco-editor'
+import type { IDisposable } from 'monaco-editor'
 import type {
   TFilelist,
   TEditorCB,
+  TCodeEditor,
   TEditorOpts,
   TEditorFileCB,
   TEditorPromiseCB,
@@ -61,10 +62,10 @@ export const useEditorRefs = (props:THEditorRefs) => {
   const rootRef = useRef(null)
   const filesRef = useRef(defaultFiles)
   const editorStatesRef = useRef(new Map())
+  const editorRef = useRef<TCodeEditor>(null)
   const contentListenerRef = useRef<IDisposable>()
   const editorNodeRef = useRef<HTMLDivElement>(null)
   const prePath = useRef<string | null>(defaultPath || '')
-  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null)
 
   return {
     rootRef,

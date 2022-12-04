@@ -178,8 +178,9 @@ export class SocketService {
    */
   runCommand(command:TSockCmd, params:Record<string, any>) {
     const foundCmd = getCommand(this.commands, command)
+
     if(!foundCmd) return this.logData(`Socket command not found for ${command}`)
-    
+
     const { id, cmd, name, group } = foundCmd
     return this.emit(EventTypes.WS_RUN_CMD, {
       id,

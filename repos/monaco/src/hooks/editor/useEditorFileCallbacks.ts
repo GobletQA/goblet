@@ -4,6 +4,7 @@ import type {
   TModal,
   TFilelist,
   TAutoSave,
+  TCodeEditorRef,
   TEditorAddFile,
   TEditorDeleteFile,
   TEditorRenameFile,
@@ -19,21 +20,21 @@ import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 export type TUseEditorFileCallbacks = {
   Modal: TModal
   autoSave: TAutoSave
+  editorRef:TCodeEditorRef
   onAddFile?: TEditorAddFile
   onDeleteFile?: TEditorDeleteFile
   onRenameFile?: TEditorRenameFile
   openedFiles: TEditorOpenFiles
   rootRef: MutableRefObject<any>
+  pathChange: (path: string) => void
   curPathRef: MutableRefObject<string>
   deleteModel: (path: string) => void
   curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
-  pathChange: (path: string) => void
   onSaveFile?: (path: string, content: string) => void
   setCurPath: (content: SetStateAction<string>) => void
   restoreModel: (path: string) => false | editor.ITextModel
-  editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
 }
 

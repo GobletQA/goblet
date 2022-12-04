@@ -3,9 +3,11 @@ import type { editor } from 'monaco-editor'
 import type {
   TAutoSave,
   TFilelist,
+  TCodeEditor,
   TEditorTheme,
   IMultiRefType,
   TEditorConfig,
+  TCodeEditorRef,
   TOnEditorLoaded,
   TEditorFileCBRef
 } from '../../types'
@@ -19,6 +21,7 @@ export type TUseEditorSetup = {
   autoSave: TAutoSave
   saveFile: () => void
   config: TEditorConfig
+  editorRef:TCodeEditorRef
   onEditorLoaded?:TOnEditorLoaded
   ref: ForwardedRef<IMultiRefType>
   onEditorBlurRef: TEditorFileCBRef
@@ -29,7 +32,6 @@ export type TUseEditorSetup = {
   resizeSidebar: (width:number) => void
   options: editor.IStandaloneEditorConstructionOptions
   onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
-  editorRef:MutableRefObject<editor.IStandaloneCodeEditor | null>
   setTheme: (name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
 }
 
@@ -94,7 +96,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
       })
 
       editorRef.current
-        && onEditorLoaded?.(editorRef.current as editor.IStandaloneCodeEditor, window.monaco)
+        && onEditorLoaded?.(editorRef.current as TCodeEditor, window.monaco)
     }, [])
 
   useEffect(() => {

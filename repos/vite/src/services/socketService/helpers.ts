@@ -88,7 +88,7 @@ export const callAction = (
     if (!eventName) return instance.logData(`Invalid event name!`, event)
 
     // Parse the data from string to object
-    const message = data && JSON.parse(data) as TSocketEvt || noOpObj
+    const message = data && JSON.parse(data) || noOpObj as TSocketEvt
 
     // Log the event for debugging
     instance.logEvent(event, message)
@@ -112,27 +112,19 @@ export const callAction = (
  * Searches through all loaded command, looking for a matching id
  * Otherwise returns false
  * @function
- * @private
- *
- * @param {Object} commands - All commands loaded from the back end
- * @param {Object|string} cmdOrId - Command object or id of the command
- *
- * @returns {Object|boolean} - The found command object or false
  */
 export const getCommand = (
   commands:TSockCmds,
-  cmdOrId:TSockCmd
+  cmdOrName:TSockCmd
 ) => {
-  const cmdId:string = isObj(cmdOrId) ? cmdOrId.id : cmdOrId
-
+  const cmdName:string = isObj(cmdOrName) ? cmdOrName.name : cmdOrName
   return Object.entries(commands)
     .reduce((found, [ group, subCmds ]) => {
-
       return found
         ? found
         : Object.entries(subCmds)
           .reduce((subFound, [ name, definition ]) => {
-              return !subFound && isObj(definition) && definition.id === cmdId
+              return !subFound && isObj(definition) && definition.name === cmdName
                 ? definition
                 : subFound
             }, false as TSockCmdObj|false)

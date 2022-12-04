@@ -1,14 +1,14 @@
 import type { SetStateAction, RefObject, MutableRefObject } from 'react'
 import type { editor } from 'monaco-editor'
-import { TEditorOpenFiles } from '../../types'
+import { TCodeEditorRef,TEditorOpenFiles } from '../../types'
 
 import { useEffect, useCallback } from 'react'
 
 export type TUseOpenOrFocus = {
+  editorRef: TCodeEditorRef
   editorNodeRef: RefObject<HTMLDivElement>
   setCurPath: (content: SetStateAction<string>) => void
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
-  editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>
   optionsRef: MutableRefObject<editor.IStandaloneEditorConstructionOptions>
 }
 

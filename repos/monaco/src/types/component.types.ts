@@ -1,5 +1,3 @@
-
-import type { editor } from 'monaco-editor'
 import type Monaco from 'monaco-editor'
 
 import type { TSidebarPanel } from './panel.types'
@@ -9,10 +7,12 @@ import type { TEditorTheme, TEditorConfig } from './editor.types'
 import type { MutableRefObject, CSSProperties, ReactNode, ComponentType } from 'react'
 import type {
   TEditorCB,
+  TCodeEditor,
   TEditorOpts,
   TFileCallback,
   TEditorFileCB,
   TEditorAddFile,
+  TCodeEditorRef,
   TOnEditorLoaded,
   TEditorPromiseCB,
   TEditorRenameFile,
@@ -20,13 +20,31 @@ import type {
 
 export type TModal = Modal
 
+export type TEditorActionExt = {
+  editorRef: TCodeEditorRef
+  curPathRef: MutableRefObject<string>
+  curValueRef: MutableRefObject<string>
+}
+
+export type TEditorActionCB = (
+  evt:Event,
+  editor:TCodeEditor,
+  path:string,
+  content:string
+) => void
 
 export type TEditorAction = {
   id?:string
   name:string
   className?:string
+  onClick?: TEditorActionCB
   Component:ComponentType<any>
   [key:string]: any
+}
+
+export type TEditorActionProps = {
+  id?:string
+  onClick?: (...args:any[]) => void
 }
 
 export interface IMonacoEditorProps {

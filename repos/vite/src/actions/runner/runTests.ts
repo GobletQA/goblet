@@ -1,6 +1,5 @@
 import type { TFileModel } from '@types'
 
-import { getStore } from '@store'
 import { addToast } from '@actions/toasts'
 import { WSRecordActions } from '@constants'
 import { WSService } from '@services/socketService'
@@ -8,23 +7,22 @@ import { getWorldVal } from '@utils/repo/getWorldVal'
 import { clearSpecs } from '@actions/tracker/clearSpecs'
 import { buildCmdParams } from '@utils/browser/buildCmdParams'
 
-
 type TBuildOpts = {
   appUrl:string
-  testCmd:string,
+  cmd:string,
   params:string[],
-  activeFile:TFileModel,
+  file:TFileModel,
 }
 
-const buildOptions = ({ params, testCmd, activeFile, appUrl }:TBuildOpts) => {
+const buildOptions = ({ params, cmd, file, appUrl }:TBuildOpts) => {
   return {
     ref: 'page',
     action: {
       props: [
         {
           params,
-          testCmd,
-          activeFile,
+          testCmd: cmd,
+          activeFile: file,
         },
         appUrl
       ],
@@ -36,38 +34,32 @@ const buildOptions = ({ params, testCmd, activeFile, appUrl }:TBuildOpts) => {
 
 /**
  * Uses a web-socket to run tests on a file from the backend
- * Also updates the current active test file, which is different from the activeFile per-screen
+ * Also updates the current active test file, which is different from the file per-screen
  * @function
  *
  */
 export const runTests = async (
-  activeFile:TFileModel,
-  testCmd:string,
+  file:TFileModel,
+  cmd:string,
 ) => {
   addToast({
-    type: 'info',
-    message: `Running ${testCmd} tests for file ${activeFile.name}!`,
+    type: `info`,
+    message: `Running ${cmd} tests for file ${file.name}!`,
   })
-  
+
   // Clear any existing tracker specs
   clearSpecs()
 
-  const state = getStore()?.getState()
   const appUrl = getWorldVal({ loc: `url`, fb: `app.url`})
-
-  const params = buildCmdParams({
-    state,
-    cmd: testCmd,
-    fileModel: activeFile,
-  })
+  const params = buildCmdParams({ file, cmd })
 
   const options = buildOptions({
+    file,
     appUrl,
     params,
-    testCmd,
-    activeFile,
+    cmd,
   })
 
-  WSService.runCommand(testCmd, params)
+  WSService.runCommand(cmd, params)
   // WSService.emit(SocketMsgTypes.BROWSER_RUN_TESTS, options)
 }

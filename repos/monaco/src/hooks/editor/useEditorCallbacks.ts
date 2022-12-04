@@ -4,6 +4,7 @@ import type { editor, IDisposable } from 'monaco-editor'
 import type { SetStateAction, RefObject, MutableRefObject } from 'react'
 import type {
   TFilelist,
+  TCodeEditorRef,
   TEditorFileCBRef,
   TEditorOpenFiles,
 } from '../../types'
@@ -13,6 +14,7 @@ import { useOpenOrFocus } from './useOpenOrFocus'
 import { useRestoreModel } from './useRestoreModel'
 
 export type TUseFileCallbacks = {
+  editorRef: TCodeEditorRef
   defaultPath: string | undefined
   onFileChangeRef: TEditorFileCBRef
   filesRef: MutableRefObject<TFilelist>
@@ -24,7 +26,6 @@ export type TUseFileCallbacks = {
   editorStatesRef:MutableRefObject<Map<any, any>>
   setCurPath: (data: SetStateAction<string>) => void
   contentListenerRef: MutableRefObject<IDisposable | undefined>
-  editorRef: MutableRefObject<editor.IStandaloneCodeEditor | null>
   onValueChangeRef: MutableRefObject<((v: string) => void) | undefined>
   onLoadFileRef:MutableRefObject<((path: string) => Promise<string|null>) | undefined>
   optionsRef: MutableRefObject<editor.IStandaloneEditorConstructionOptions>

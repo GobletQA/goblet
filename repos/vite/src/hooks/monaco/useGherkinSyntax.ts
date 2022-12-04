@@ -5,23 +5,25 @@ import { flatArr, noPropArr } from '@keg-hub/jsutils'
 
 export const useGherkinSyntax = (definitionTypes:TDefinitionsAstTypeMap) => {
   return useCallback(async (
-    editor:IEditor,
-    monaco:TMonaco
+    editor?:IEditor,
+    monaco?:TMonaco
   ) => {
-      const defs = flatArr(Object.values(definitionTypes), { truthy: true, exists: true, mutate:false })
-        .map(def => ({
-          suggestion: def.match,
-          segments: [def.match],
-          expression: def.variant,
-        }))
+    if(!monaco) return
 
-      const findStepDefMatch = (matchText:string) => {
-        return defs.filter(def => (
-          def.suggestion
-            .toLowerCase()
-            .includes(matchText.toLowerCase())
-        ))
-      }
+    const defs = flatArr(Object.values(definitionTypes), { truthy: true, exists: true, mutate:false })
+      .map(def => ({
+        suggestion: def.match,
+        segments: [def.match],
+        expression: def.variant,
+      }))
+
+    const findStepDefMatch = (matchText:string) => {
+      return defs.filter(def => (
+        def.suggestion
+          .toLowerCase()
+          .includes(matchText.toLowerCase())
+      ))
+    }
 
     import('@utils/features/addGherkinSyntax')
       .then(({ addGherkinToMonaco }) => {
@@ -41,5 +43,6 @@ export const useGherkinSyntax = (definitionTypes:TDefinitionsAstTypeMap) => {
           })))(editor)
         */
       })
+
   }, [definitionTypes])
 }
