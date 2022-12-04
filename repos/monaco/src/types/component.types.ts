@@ -55,6 +55,7 @@ export interface IMonacoEditorProps {
   defaultPath?: string
   options: TEditorOpts
   sidebarWidth?: number
+  actionsOpen?:boolean
   actions?:TEditorAction[]
   Panels?:TSidebarPanel[]
   PrePanels?:TSidebarPanel[]

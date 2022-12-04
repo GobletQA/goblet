@@ -95,11 +95,11 @@ const SocketChildren = memo((props:TSocketChildren) => {
     ...rest
   } = props
   
+      // {AuthActive && (<Fadeout {...rest} />)}
   
   return (
     <>
       {wsActive && props.children}
-      {AuthActive && (<Fadeout {...rest} />)}
     </>
   )
   

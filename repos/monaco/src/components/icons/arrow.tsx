@@ -2,7 +2,7 @@ import type { TIcon } from '../../types'
 import { useIcon } from '../../hooks'
 
 type TArrowIcon = TIcon & {
-  collapse:boolean
+  collapse?:boolean
 }
 
 export const Arrow = ({ collapse = true, ...props }:TArrowIcon) => {
@@ -11,7 +11,8 @@ export const Arrow = ({ collapse = true, ...props }:TArrowIcon) => {
     svgStyle,
     className,
   } = useIcon(props)
-  
+
+
   return collapse ? (
     <svg
       width='1em'

@@ -30,15 +30,16 @@
 }
 
 .goblet-monaco-actions-main .goblet-monaco-actions-toggle .goblet-monaco-icon-rotate {
-  transform-origin: center;
-  transition: transform 300ms;
+  transition: transform 300ms, top 300ms;
+  position: relative;
 }
 
 .goblet-monaco-actions-main .goblet-monaco-actions-toggle.closed .goblet-monaco-icon-rotate {
-  transform: rotate(0deg);
+  top: 3px;
 }
 
 .goblet-monaco-actions-main .goblet-monaco-actions-toggle.open .goblet-monaco-icon-rotate {
+  top: -1px;
   transform: rotate(-180deg);
 }
 
@@ -46,9 +47,6 @@
   opacity: 1;
 }
 
-.goblet-monaco-actions-toggle .goblet-monaco-actions-toggle-icon {
-  transform: scale(1.5, 0.75);
-}
 
 .goblet-monaco-actions-main .goblet-monaco-actions-list {
   height: auto;

@@ -26,7 +26,10 @@ export const useIcon = (props:TIcon) => {
       className: `goblet-monaco-icons ${props.className || ''}`.trim(),
       color: props.color || styleRef?.current?.color || props.fill || styleRef?.current?.fill || iconDefs.fill,
       fill: props.fill || styleRef?.current?.fill || props.color || styleRef?.current?.color || iconDefs.color,
-      svgStyle: omitKeys(styleRef.current || {}, [`fill`, `color`, `width`, `height`]),
+      svgStyle: {
+        ...props.svgStyle,
+        ...omitKeys(styleRef.current || {}, [`fill`, `color`, `width`, `height`]),
+      }
     } as TIconProps
     
     const width = props.width || styleRef?.current?.width || props.size
@@ -49,7 +52,8 @@ export const useIcon = (props:TIcon) => {
     props.color,
     props.height,
     props.width,
-    props.className
+    props.className,
+    props.svgStyle
   ])
 
 }
