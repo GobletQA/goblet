@@ -8,6 +8,7 @@ import { useRef, useState, forwardRef } from 'react'
 
 import { Empty } from '../Empty'
 import { Sidebar } from '../Sidebar'
+import { Actions } from '../Actions'
 import { OpenedTabs } from '../OpenedTabs'
 import { setTheme } from '../../init/setTheme'
 import { deleteModel } from '../../utils/editor/deleteModel'
@@ -24,7 +25,7 @@ import { useEditorFileCallbacks } from '../../hooks/editor/useEditorFileCallback
 const editorStyles = { flex: 1, width: '100%' }
 
 export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props, ref) => {
-  
+
   const {
     emptyText,
     onLoadFile,
@@ -47,6 +48,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     config={} as TEditorConfig,
     options,
     Panels,
+    actions,
     PrePanels,
     Divider=`div`,
   } = props
@@ -237,6 +239,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         />
         <div ref={editorNodeRef} style={editorStyles} />
         {openedFiles.length === 0 && (<Empty text={emptyText} />)}
+        {actions?.length && <Actions actions={actions} />}
       </div>
     </div>
   )

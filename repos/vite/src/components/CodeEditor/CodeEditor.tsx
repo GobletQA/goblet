@@ -1,13 +1,18 @@
 import { useRef } from 'react'
 import { BlockIcon } from '@components/Icons'
+import { ConnectPanel } from './ConnectPanel'
 import { EditorSidebarWidth } from '@constants'
 import { MonacoEditor } from '@gobletqa/monaco'
+import { RunTestsAction } from './RunTestsAction'
 import { Divider } from '@components/Layout/Divider'
 import { RepoNotConnected } from './RepoNotConnected'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
 import { ArtifactsPanel } from '@components/Artifacts/ArtifactsPanel'
 import { EnvironmentsPanel } from '@components/Environments/EnvironmentsPanel'
-import { ConnectPanel } from './ConnectPanel'
+
+const Actions = [
+  RunTestsAction
+]
 
 const PrePanels = [
   ConnectPanel
@@ -44,6 +49,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           ref={editorRef}
           Panels={Panels}
           config={config}
+          actions={Actions}
           Divider={Divider}
           options={options}
           sidebarStatus={true}

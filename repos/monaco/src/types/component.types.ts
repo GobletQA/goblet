@@ -20,6 +20,15 @@ import type {
 
 export type TModal = Modal
 
+
+export type TEditorAction = {
+  id?:string
+  name:string
+  className?:string
+  Component:ComponentType<any>
+  [key:string]: any
+}
+
 export interface IMonacoEditorProps {
   title?: string
   Modal: TModalOpts
@@ -28,6 +37,7 @@ export interface IMonacoEditorProps {
   defaultPath?: string
   options: TEditorOpts
   sidebarWidth?: number
+  actions?:TEditorAction[]
   Panels?:TSidebarPanel[]
   PrePanels?:TSidebarPanel[]
   config?: TEditorConfig

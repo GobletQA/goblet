@@ -87,6 +87,38 @@
       "type": "number",
       "group": "editor"
     },
+    "detectIndentation": {
+      "key": "detectIndentation",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "editor"
+    },
+    "minimap.enabled": {
+      "key": "minimap.enabled",
+      "value": false,
+      "active": true,
+      "default": false,
+      "type": "boolean",
+      "group": "editor"
+    },
+    "minimap.autohide": {
+      "key": "minimap.autohide",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "editor"
+    },
+    "minimap.renderCharacters": {
+      "key": "minimap.renderCharacters",
+      "value": false,
+      "active": true,
+      "default": false,
+      "type": "boolean",
+      "group": "editor"
+    },
     "cursorStyle": {
       "key": "cursorStyle",
       "value": "line",

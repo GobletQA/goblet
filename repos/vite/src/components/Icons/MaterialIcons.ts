@@ -38,6 +38,7 @@ import FeaturesIcon from '@mui/icons-material/OutlinedFlagRounded'
 import RestartIcon from '@mui/icons-material/SettingsBackupRestoreOutlined'
 import ChevronUpIcon from '@mui/icons-material/ExpandLess'
 import ChevronDownIcon from '@mui/icons-material/ExpandMore'
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
 
 export {
   Globe,
@@ -79,5 +80,6 @@ export {
   RestartIcon,
   FeaturesIcon,
   ChevronUpIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
+  PlayCircleOutlineIcon
 }

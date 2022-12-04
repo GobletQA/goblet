@@ -1,17 +1,17 @@
 .goblet-monaco-editor-opened-tab {
+  width: 100%;
   height: 35px;
-  box-sizing: border-box;
+  display: flex;
   font-size: 14px;
   overflow-x: scroll;
   overflow-y: hidden;
-  width: 100%;
   white-space: nowrap;
-  background-color: var(--monaco-editor-background);
-  display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
   scrollbar-width: none;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  background-color: var(--monaco-editor-background);
 }
 .goblet-monaco-editor-opened-tab::-webkit-scrollbar {
   width: 6px;
@@ -30,22 +30,22 @@
 }
 
 .goblet-monaco-editor-opened-tab-wrapper {
-  box-sizing: border-box;
   width: 100%;
-  padding-right: 30px;
   overflow: hidden;
+  box-sizing: border-box;
+  padding-right: 35px;
 }
 .goblet-monaco-editor-opened-tab-item {
-  cursor: pointer;
   height: 35px;
-  box-sizing: border-box;
-  padding: 0 5px 0 10px;
   display: flex;
+  cursor: pointer;
+  margin-right: 1px;
+  position: relative;
   flex-direction: row;
   align-items: center;
-  margin-right: 1px;
+  box-sizing: border-box;
+  padding: 0 5px 0 10px;
   background-color: var(--monaco-editor-background);
-  position: relative;
 }
 .goblet-monaco-editor-opened-tab-item-focused {
   background-color: var(--monaco-list-focusBackground);
@@ -64,25 +64,25 @@
   background-color: var(--monaco-list-focusBackground);
 }
 .goblet-monaco-editor-opened-tab-item-editing {
-  position: absolute;
   right: 10px;
   top: 15px;
   width: 7px;
   height: 7px;
-  background-color: var(--monaco-list-hoverForeground);
+  position: absolute;
   border-radius: 50%;
+  background-color: var(--monaco-list-hoverForeground);
 }
 .goblet-monaco-editor-modal-rightclick .goblet-monaco-editor-modal-mask {
   opacity: 0;
 }
 .goblet-monaco-editor-rightclick-panel {
   position: fixed;
-  background: var(--monaco-editorWidget-background);
   padding: 5px 0;
   font-size: 12px;
-  line-height: 30px;
   min-width: 150px;
+  line-height: 30px;
   color: var(--monaco-editor-foreground);
+  background: var(--monaco-editorWidget-background);
 }
 .goblet-monaco-editor-rightclick-panel-item {
   padding: 0 10px;

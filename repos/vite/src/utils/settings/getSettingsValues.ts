@@ -1,7 +1,7 @@
 import type { TValueGroup, TSetting, TSettings } from '@types'
 
 import { getStore } from '@store'
-import { get, noOpObj, exists } from '@keg-hub/jsutils'
+import { get, set, noOpObj, exists } from '@keg-hub/jsutils'
 
 /**
  * Helper to extract the values from a settings object and match it to the key
@@ -14,8 +14,8 @@ export const getSettingsValues = <T extends TValueGroup>(loc:string, settings?:T
   return Object.entries(group)
     .reduce((acc, [key, settingObj]:[string, TSetting]) => {
       settingObj.active
-        ? (acc[key as keyof T] = settingObj?.value)
-        : exists(settingObj.default) && (acc[key as keyof T] = settingObj?.default)
+        ? set(acc, key, settingObj?.value)
+        : exists(settingObj.default) && set(acc, key, settingObj?.default)
 
       return acc
     }, {} as T)

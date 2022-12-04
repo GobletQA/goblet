@@ -33,10 +33,13 @@ const createModel = (path:string, content:string | null) => {
     new window.monaco.Uri().with({ path, scheme: 'goblet' })
   )
 
-  model.updateOptions({
-    tabSize: 2,
-    insertSpaces: true,
-  })
+  // Model options get set on init
+  // It might be good to re-init them here, but will need to validate
+  // Also need to way to get access to the options within this method
+  // model.updateOptions({
+  //   tabSize: 2,
+  //   insertSpaces: true,
+  // })
 
   return model
 }

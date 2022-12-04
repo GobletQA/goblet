@@ -1,31 +1,36 @@
-import type { TPanel, TPanelHeaderAction } from '../../types'
-import type { MutableRefObject, RefObject } from 'react'
+import type { TPanel } from '../../types'
+import type { MutableRefObject } from 'react'
 
 import './Panel.css'
+import { cls } from '@keg-hub/jsutils'
 import { PanelHeader } from './PanelHeader'
-import { useCallback, useState, useRef } from 'react'
+import { useMemo, useCallback, useState, useRef, useEffect } from 'react'
 
 export const Panel = (props:TPanel) => {
   const {
     title,
     actions,
     children,
+    startOpen,
     header=true,
     className=``
   } = props
 
   const panelRef = useRef<HTMLDivElement>(null)
   const lastHeightRef = useRef<number>(0) as MutableRefObject<number>
-  const [closed, setCollapse] = useState(false)
+  const [closed, setCollapse] = useState(!startOpen)
   const onCollapse = useCallback(() => {
     const panel = panelRef.current as HTMLDivElement
     if(!panel) return
 
+    // Panel currently closed - Switch the panel from closed to open
     if(closed === true){
       panel.style.maxHeight = `${lastHeightRef.current || '100vh'}px`
       // IMPORTANT - timeout delay should match the transition time see ./Panel.css
       setTimeout(() => panel.style.maxHeight = ``, 300)
     }
+
+    // Panel currently open - Switch the panel from open to closed
     else {
       lastHeightRef.current = panel.offsetHeight
       panel.style.maxHeight = `${lastHeightRef.current}px`
@@ -35,10 +40,20 @@ export const Panel = (props:TPanel) => {
     setCollapse(!closed)
   }, [closed])
 
-  const closedCls = closed ? `hide` : `show`
+  
+
+  useEffect(() => {
+    const panel = panelRef.current as HTMLDivElement
+    if(!panel) return
+    lastHeightRef.current = panel.offsetHeight
+  }, [])
+
+  const style = useMemo(() => {
+    return startOpen ? { maxHeight: `100vh` } : { maxHeight: `0px` }
+  }, [startOpen])
 
   return (
-    <div className={`goblet-monaco-sidebar-panel ${className}`.trim()}>
+    <div className={cls(`goblet-monaco-sidebar-panel`, className)}>
       {header && (
         <PanelHeader
           title={title}
@@ -47,7 +62,11 @@ export const Panel = (props:TPanel) => {
           onCollapse={onCollapse}
         />
       )}
-      <div ref={panelRef} className={`goblet-monaco-sidebar-panel-content ${closedCls}`}>
+      <div
+        style={style}
+        ref={panelRef}
+        className={cls(`goblet-monaco-sidebar-panel-content`, { hide: closed, show: !closed })}
+      >
         {children}
       </div>
     </div>

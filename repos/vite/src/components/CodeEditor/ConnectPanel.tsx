@@ -24,8 +24,9 @@ export const ConnectContent = (props:TConnectContent) => {
 }
 
 export const ConnectPanel:TSidebarPanel = {
-  actions:[],
-  header:true,
+  actions: [],
+  header: true,
+  startOpen: true,
   title: `Repository`,
   children:(<ConnectContent />),
   className:`goblet-monaco-connect-panel`

@@ -1,0 +1,72 @@
+
+.goblet-monaco-editor .goblet-monaco-actions-main {
+  top: 0px;
+  right: 0px;
+  width: 35px;
+  max-width: 35px;
+  display: flex;
+  position: absolute;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--monaco-editor-background);
+}
+
+.goblet-monaco-editor .goblet-monaco-actions-main .goblet-monaco-actions-toggle {
+  width: 35px;
+  height: 30px;
+  opacity: 0.5;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--monaco-editor-foreground);
+  transition: opacity 300ms ease;
+  background: var(--monaco-list-activeSelectionBackground);
+}
+.goblet-monaco-editor .goblet-monaco-actions-main .goblet-monaco-actions-toggle:hover {
+  opacity: 1;
+}
+
+.goblet-monaco-actions-main .goblet-monaco-actions-toggle .goblet-monaco-icon-rotate {
+  transform-origin: center;
+  transition: transform 300ms;
+}
+
+.goblet-monaco-actions-main .goblet-monaco-actions-toggle.closed .goblet-monaco-icon-rotate {
+  transform: rotate(0deg);
+}
+
+.goblet-monaco-actions-main .goblet-monaco-actions-toggle.open .goblet-monaco-icon-rotate {
+  transform: rotate(-180deg);
+}
+
+.goblet-monaco-actions-main .goblet-monaco-actions-toggle.open {
+  opacity: 1;
+}
+
+.goblet-monaco-actions-toggle .goblet-monaco-actions-toggle-icon {
+  transform: scale(1.5, 0.75);
+}
+
+.goblet-monaco-actions-main .goblet-monaco-actions-list {
+  height: auto;
+  overflow: hidden;
+  position: relative;
+  transition: max-height 300ms ease;
+  color: var(--monaco-editor-foreground);
+}
+
+.goblet-monaco-actions-main .goblet-monaco-actions-list .goblet-monaco-action-main:first-child {
+  padding-top: 5px;
+}
+
+.goblet-monaco-action-main {
+  padding-top: 2.5px;
+  padding-bottom: 2.5px;
+  pointer-events: auto;
+  color: var(--monaco-editor-foreground);
+  background-color: var(--monaco-editor-background);
+}
+
