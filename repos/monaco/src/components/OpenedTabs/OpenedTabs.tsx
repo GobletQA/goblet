@@ -1,5 +1,5 @@
 import './OpenedTabs.css'
-import type { TModal } from '../../types'
+import type { TModal, TAutoSave } from '../../types'
 
 import { Tab } from './Tab'
 
@@ -9,6 +9,7 @@ export type OpenedTabs = {
     path: string
   }>
   Modal: TModal
+  autoSave:TAutoSave
   onPathChange?: (key: string) => void
   currentPath?: string
   onCloseFile: (path: string) => void
@@ -21,6 +22,7 @@ export type OpenedTabs = {
 export const OpenedTabs = ({
   Modal,
   rootEl,
+  autoSave,
   onSaveFile,
   openedFiles,
   onAbortSave,
@@ -38,6 +40,7 @@ export const OpenedTabs = ({
             Modal={Modal}
             key={file.path}
             rootEl={rootEl}
+            autoSave={autoSave}
             onSaveFile={onSaveFile}
             onAbortSave={onAbortSave}
             onCloseFile={onCloseFile}

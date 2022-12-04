@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import type { TModal } from '../../types'
+import type { TAutoSave, TModal } from '../../types'
 
 import { useEffect, useRef, useMemo } from 'react'
 import { FileIcon } from '../Icons/File'
@@ -14,6 +14,7 @@ export type TTabFile = {
 export type Tab = {
   Modal: TModal
   file: TTabFile
+  autoSave:TAutoSave
   currentPath?: string
   rootEl: HTMLElement | null
   onCloseFile: (key: string) => void

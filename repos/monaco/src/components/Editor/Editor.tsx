@@ -67,9 +67,9 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     contentListenerRef,
   } = useEditorRefs({
     options,
+    onLoadFile,
     defaultPath,
     defaultFiles,
-    onLoadFile,
     onPathChange,
     onFileChange,
     onValueChange
@@ -218,6 +218,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
       <div className='goblet-monaco-editor-area'>
         <OpenedTabs
           Modal={Modal}
+          autoSave={autoSave}
           onSaveFile={saveFile}
           currentPath={curPath}
           rootEl={rootRef.current}

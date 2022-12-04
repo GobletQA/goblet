@@ -1,6 +1,12 @@
 import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
-import type { TEditorOpenFiles, TFilelist, TModal } from '../../types'
+import type {
+  TModal,
+  TAutoSave,
+  TFilelist,
+  TEditorOpenFiles,
+} from '../../types'
+
 import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 import { useCallback } from 'react'
@@ -8,6 +14,7 @@ import { getModelFromPath } from '../../utils/editor/getModelFromPath'
 
 export type TUseCloseOtherFiles = {
   Modal: TModal
+  autoSave: TAutoSave
   openedFiles: TEditorOpenFiles
   rootRef: MutableRefObject<any>
   filesRef: MutableRefObject<TFilelist>
@@ -21,7 +28,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
   const {
     Modal,
     prePath,
-    rootRef,
+    autoSave,
     filesRef,
     setCurPath,
     openedFiles,
@@ -33,12 +40,25 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
     (path: string) => {
 
       const unSavedFiles = openedFiles.filter(file => file.status === 'editing')
+      const saveAllFiles = () => {
+        unSavedFiles.forEach((file:any) => {
+          const model = getModelFromPath(file.path)
+          filesRef.current[file.path] = model?.getValue() || ''
+        })
+        setOpenedFiles(pre => pre.filter(p => p.path === path))
+        restoreModel(path)
+        setCurPath(path)
+        prePath.current = path
+      }
 
       if (unSavedFiles.length) {
+        if(autoSave && autoSave !== `off`) return saveAllFiles()
+        
         Modal.confirm({
           okText: 'OK',
-          title: 'Close other files',
           cancelText: 'Cancel',
+          title: 'Close other files',
+          onOk: saveAllFiles,
           onCancel: () => {
             setOpenedFiles(pre => pre.filter(p => p.path === path))
             restoreModel(path)
@@ -47,16 +67,6 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
               const content = filesRef.current[file.path] || ''
               createOrUpdateModel(file.path, content)
             })
-            prePath.current = path
-          },
-          onOk: () => {
-            unSavedFiles.forEach((file:any) => {
-              const model = getModelFromPath(file.path)
-              filesRef.current[file.path] = model?.getValue() || ''
-            })
-            setOpenedFiles(pre => pre.filter(p => p.path === path))
-            restoreModel(path)
-            setCurPath(path)
             prePath.current = path
           },
           content: (
@@ -79,6 +89,6 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
         prePath.current = path
       }
     },
-    [restoreModel, openedFiles]
+    [autoSave, restoreModel, openedFiles]
   )
 }

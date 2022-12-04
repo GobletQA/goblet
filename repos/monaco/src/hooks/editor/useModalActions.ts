@@ -28,10 +28,10 @@ export const useModalActions = (props:THComponentOverride) => {
   const modalClsRef = useRef<ModalCls>()
   return useMemo(() => {
     if(!modalClsRef.current) modalClsRef.current = new ModalCls(Modal)
-    
-    updateModalMethod(Modal, modalClsRef, `openModal`)
-    updateModalMethod(Modal, modalClsRef, `closeModal`)
-    updateModalMethod(Modal, modalClsRef, `confirmModal`)
+
+    updateModalMethod(Modal, modalClsRef, `open`)
+    updateModalMethod(Modal, modalClsRef, `close`)
+    updateModalMethod(Modal, modalClsRef, `confirm`)
 
     return {
       Modal: modalClsRef.current

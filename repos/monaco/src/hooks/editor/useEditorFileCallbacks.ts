@@ -42,7 +42,6 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
     Modal,
     rootRef,
     prePath,
-    // TODO: add auto-save
     autoSave,
     filesRef,
     editorRef,
@@ -72,6 +71,7 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
     Modal,
     prePath,
     rootRef,
+    autoSave,
     filesRef,
     setCurPath,
     openedFiles,
@@ -103,13 +103,13 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
       const ctrlKey = event.ctrlKey || event.metaKey
       const key = event.key.toLowerCase()
 
-      if (ctrlKey && key === `s`) {
+      if (autoSave === `change` || ctrlKey && key === `s`) {
         event.preventDefault()
         event.stopPropagation()
         saveFile()
       }
     },
-    [saveFile]
+    [saveFile, autoSave]
   )
 
   const addFile = useCallback(

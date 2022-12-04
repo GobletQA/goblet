@@ -1,9 +1,10 @@
-import type { TModal } from '../../types'
+import type { TAutoSave, TModal } from '../../types'
 
 import { useCallback } from 'react'
 
 export type THOnTabClose = {
   Modal: TModal
+  autoSave: TAutoSave
   rootEl: HTMLElement | null
   onCloseFile: (key: string) => void
   onSaveFile: (path: string) => void
@@ -16,6 +17,7 @@ export const useOnTabClose = (props:THOnTabClose) => {
   file,
   Modal,
   rootEl,
+  autoSave,
   onSaveFile,
   onCloseFile,
   onAbortSave,
@@ -27,6 +29,11 @@ export const useOnTabClose = (props:THOnTabClose) => {
 
     if(file.status !== 'editing')
       return onCloseFile(file.path)
+
+    if(autoSave && autoSave !== `off`){
+      onCloseFile(file.path)
+      return onSaveFile(file.path)
+    }
 
     setTimeout(() => {
       Modal.confirm({
@@ -53,6 +60,7 @@ export const useOnTabClose = (props:THOnTabClose) => {
     file,
     Modal,
     rootEl,
+    autoSave,
     onSaveFile,
     onCloseFile,
     onAbortSave,

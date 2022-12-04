@@ -1,5 +1,5 @@
-import type { TModal } from '../../types'
-import type { MouseEventHandler } from 'react'
+import type { TAutoSave, TModal } from '../../types'
+
 
 import { useOnTabDown } from './useOnTabDown'
 import { useOnTabClose } from './useOnTabClose'
@@ -10,6 +10,7 @@ import { useCallback, useMemo } from 'react'
 
 export type THTabCallbacks = {
   Modal: TModal
+  autoSave: TAutoSave
   currentPath?: string
   rootEl: HTMLElement | null
   onCloseFile: (key: string) => void
@@ -56,6 +57,7 @@ export const useTabCallbacks = (props:THTabCallbacks, active:boolean) => {
     file,
     Modal,
     rootEl,
+    autoSave,
     onSaveFile,
     onAbortSave,
     onCloseFile,
@@ -86,6 +88,7 @@ export const useTabCallbacks = (props:THTabCallbacks, active:boolean) => {
     file,
     Modal,
     rootEl,
+    autoSave,
     onSaveFile,
     onAbortSave,
     onCloseFile,
@@ -97,7 +100,6 @@ export const useTabCallbacks = (props:THTabCallbacks, active:boolean) => {
     onTabClose,
     onCloseOtherFiles
   })
-
 
   const closeVisible = useCloseVisible({
     hover,
