@@ -1,4 +1,3 @@
-import type { MutableRefObject } from 'react'
 import type {
   TRepoState,
   TFileModel,
@@ -6,17 +5,13 @@ import type {
 } from '@types'
 
 import { noOpObj } from '@keg-hub/jsutils'
-import { confirmModal } from '@actions/modals/modals'
 import { loadFile } from '@actions/files/api/loadFile'
 import { saveFile } from '@actions/files/api/saveFile'
 import { createFile } from '@actions/files/api/createFile'
 import { removeFile } from '@actions/files/api/removeFile'
 import { renameFile } from '@actions/files/api/renameFile'
-import { UpdateModalEvt } from '@constants'
 
 import { useCallback, useMemo } from 'react'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { toggleModal } from '@actions/modals/toggleModal'
 
 export type THEditorFiles = {
   repo: TRepoState
@@ -70,17 +65,19 @@ export const useOnRenameFile = (repoFiles:TFilesState, rootPrefix:string) => {
 
 export const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
   return useCallback(async (loc:string, content:string) => {
-    if(!loc) console.warn(`Can not save file, missing file location`)
 
-    // TODO: add auto same on blur
+    if(!loc)
+      return console.warn(`Can not save file, missing file location`)
+
     const fullLoc = addRootToLoc(loc, rootPrefix)
     const fileModel = repoFiles?.files[fullLoc]
 
-    if(!fileModel) console.warn(`Can not save file. Missing file model at ${fullLoc}`)
+    if(!fileModel)
+      return console.warn(`Can not save file. Missing file model at ${fullLoc}`)
 
     await saveFile({ ...(fileModel as TFileModel), content })
 
-  }, [repoFiles, rootPrefix])
+  }, [repoFiles?.files, rootPrefix])
 }
 
 export const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string, repo:TRepoState) => {

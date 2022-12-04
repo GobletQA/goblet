@@ -27,7 +27,6 @@ export const File = (props:TFileProps) => {
     onConfirmAddFolder,
   } = props
 
-
   const {
     keys,
     editing,

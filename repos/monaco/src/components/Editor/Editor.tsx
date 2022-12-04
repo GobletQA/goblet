@@ -61,6 +61,8 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     editorNodeRef,
     onLoadFileRef,
     onPathChangeRef,
+    onEditorBlurRef,
+    onEditorFocusRef,
     editorStatesRef,
     onFileChangeRef,
     onValueChangeRef,
@@ -123,20 +125,6 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     initialStatus: sidebarStatus ?? config?.editor?.sidebar?.width ?? 200,
   })
 
-  useEditorSetup({
-    ref,
-    config,
-    curPath,
-    options,
-    filesRef,
-    setTheme,
-    editorRef,
-    curPathRef,
-    resizeSidebar,
-    onEditorLoaded,
-    onPathChangeRef,
-  })
-
   const {
     keyDown,
     addFile,
@@ -165,6 +153,25 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onDeleteFile,
     restoreModel,
     setOpenedFiles,
+  })
+
+  useEditorSetup({
+    ref,
+    config,
+    curPath,
+    options,
+    autoSave,
+    filesRef,
+    setTheme,
+    saveFile,
+    editorRef,
+    curPathRef,
+    curValueRef,
+    resizeSidebar,
+    onEditorLoaded,
+    onPathChangeRef,
+    onEditorBlurRef,
+    onEditorFocusRef,
   })
 
   const {

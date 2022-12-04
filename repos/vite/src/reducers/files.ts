@@ -13,6 +13,7 @@ export type TFilesState = {
   files: TFileTree
   activeFile?: TFileModel
 }
+
 export const filesState = {
   files: {},
 } as TFilesState

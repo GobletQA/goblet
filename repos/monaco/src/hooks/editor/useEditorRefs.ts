@@ -15,6 +15,8 @@ export type THEditorRefs = {
   defaultFiles: TFilelist
   onPathChange?: TEditorCB
   onValueChange?: TEditorCB
+  onEditorBlur?: TEditorFileCB
+  onEditorFocus?: TEditorFileCB
   onFileChange?: TEditorFileCB
   onLoadFile?: TEditorPromiseCB
   onFileTreeResize?: (width:number) => void
@@ -29,6 +31,8 @@ export const useEditorRefs = (props:THEditorRefs) => {
     onPathChange,
     onFileChange,
     onValueChange,
+    onEditorBlur,
+    onEditorFocus,
   } = props
 
   const { autoSave=`off`, ...opts } = options
@@ -47,6 +51,12 @@ export const useEditorRefs = (props:THEditorRefs) => {
 
   const onValueChangeRef = useRef(onValueChange)
   onValueChangeRef.current = onValueChange
+
+  const onEditorFocusRef = useRef(onEditorFocus)
+  onEditorFocusRef.current = onEditorFocus
+
+  const onEditorBlurRef = useRef(onEditorBlur)
+  onEditorBlurRef.current = onEditorBlur
 
   const rootRef = useRef(null)
   const filesRef = useRef(defaultFiles)
@@ -68,6 +78,8 @@ export const useEditorRefs = (props:THEditorRefs) => {
     onPathChangeRef,
     editorStatesRef,
     onFileChangeRef,
+    onEditorBlurRef,
+    onEditorFocusRef,
     onValueChangeRef,
     contentListenerRef,
   }

@@ -65,14 +65,20 @@ export const FileTree = memo((props: TFileTree) => {
     return [
       {
         ...FileTreeActions[0],
-        action: addFile,
+        action: (e: Event) =>  {
+          e.stopPropagation()
+          addFile?.(filetree.path)
+        },
       },
       {
         ...FileTreeActions[1],
-        action: addFolder
+        action: (e: Event) =>  {
+          e.stopPropagation()
+          addFolder?.(filetree.path)
+        }
       },
     ]
-  }, [addFile, addFolder])
+  }, [filetree.path, addFile, addFolder])
 
   return (
     <Panel

@@ -45,6 +45,8 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
           const model = getModelFromPath(file.path)
           filesRef.current[file.path] = model?.getValue() || ''
         })
+        // TODO: validate this is actually saving each file
+        // Pretty sure it's only updating locally
         setOpenedFiles(pre => pre.filter(p => p.path === path))
         restoreModel(path)
         setCurPath(path)
@@ -52,7 +54,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
       }
 
       if (unSavedFiles.length) {
-        if(autoSave && autoSave !== `off`) return saveAllFiles()
+        if(autoSave && autoSave === `change`) return saveAllFiles()
         
         Modal.confirm({
           okText: 'OK',

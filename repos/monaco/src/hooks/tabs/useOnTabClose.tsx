@@ -30,7 +30,7 @@ export const useOnTabClose = (props:THOnTabClose) => {
     if(file.status !== 'editing')
       return onCloseFile(file.path)
 
-    if(autoSave && autoSave !== `off`){
+    if(autoSave && autoSave === `change`){
       onCloseFile(file.path)
       return onSaveFile(file.path)
     }

@@ -39,6 +39,8 @@ export interface IMonacoEditorProps {
   onAddFile?: TEditorAddFile
   onSaveFile?: TEditorFileCB
   Divider?:ComponentType<any>
+  onEditorBlur?: TEditorFileCB
+  onEditorFocus?: TEditorFileCB
   onFileChange?: TEditorFileCB
   onLoadFile?: TEditorPromiseCB
   onEditorLoaded?:TOnEditorLoaded

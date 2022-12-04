@@ -1,8 +1,12 @@
 import type { TLinter } from './useLintWorker'
 import type { TTypes } from './useTypesWorker'
 import type { editor, IDisposable } from 'monaco-editor'
-import type { TEditorOpenFiles, TFilelist } from '../../types'
-import type { SetStateAction, RefObject, Dispatch, MutableRefObject } from 'react'
+import type { SetStateAction, RefObject, MutableRefObject } from 'react'
+import type {
+  TFilelist,
+  TEditorFileCBRef,
+  TEditorOpenFiles,
+} from '../../types'
 
 import { useCallback, useState } from 'react'
 import { useOpenOrFocus } from './useOpenOrFocus'
@@ -10,6 +14,7 @@ import { useRestoreModel } from './useRestoreModel'
 
 export type TUseFileCallbacks = {
   defaultPath: string | undefined
+  onFileChangeRef: TEditorFileCBRef
   filesRef: MutableRefObject<TFilelist>
   curValueRef: MutableRefObject<string>
   editorNodeRef: RefObject<HTMLDivElement>
@@ -23,7 +28,6 @@ export type TUseFileCallbacks = {
   onValueChangeRef: MutableRefObject<((v: string) => void) | undefined>
   onLoadFileRef:MutableRefObject<((path: string) => Promise<string|null>) | undefined>
   optionsRef: MutableRefObject<editor.IStandaloneEditorConstructionOptions>
-  onFileChangeRef: MutableRefObject<((key: string, content: string) => void) | undefined>
 }
 
 export const useEditorCallbacks = (props:TUseFileCallbacks) => {
