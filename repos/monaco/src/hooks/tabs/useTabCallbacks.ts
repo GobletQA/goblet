@@ -1,4 +1,4 @@
-import type { TAutoSave, TModal } from '../../types'
+import type { TFileMeta, TAutoSave, TModal } from '../../types'
 
 
 import { useOnTabDown } from './useOnTabDown'
@@ -10,6 +10,7 @@ import { useCallback, useMemo } from 'react'
 
 export type THTabCallbacks = {
   Modal: TModal
+  file: TFileMeta
   autoSave: TAutoSave
   currentPath?: string
   rootEl: HTMLElement | null
@@ -18,7 +19,6 @@ export type THTabCallbacks = {
   onAbortSave: (path: string) => void
   onPathChange?: (key: string) => void
   onCloseOtherFiles: (path: string) => void
-  file: { path: string, status?: string }
 }
 
 export type THCloseVisible = {

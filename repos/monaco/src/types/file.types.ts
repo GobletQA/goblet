@@ -3,6 +3,11 @@ export interface TFilelist {
   [key: string]: string | null
 }
 
+export type TFileMeta = {
+  status?: string
+  path: string
+}
+
 export type TMFile = {
   ext: string
   uuid: string

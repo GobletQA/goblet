@@ -1,15 +1,15 @@
-import type { TAutoSave, TModal } from '../../types'
+import type { TFileMeta, TAutoSave, TModal } from '../../types'
 
 import { useCallback } from 'react'
 
 export type THOnTabClose = {
   Modal: TModal
+  file: TFileMeta
   autoSave: TAutoSave
   rootEl: HTMLElement | null
   onCloseFile: (key: string) => void
   onSaveFile: (path: string) => void
   onAbortSave: (path: string) => void
-  file: { path: string, status?: string }
 }
 
 export const useOnTabClose = (props:THOnTabClose) => {

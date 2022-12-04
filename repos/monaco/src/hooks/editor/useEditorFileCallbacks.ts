@@ -59,12 +59,31 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
     setOpenedFiles,
   } = props
 
+  const handleFormat = useCallback(
+    () => editorRef.current?.getAction('editor.action.formatDocument').run(),
+    []
+  )
+
+  const saveFile = useCallback(() => {
+    filesRef.current[curPathRef.current] = curValueRef.current
+    onSaveFile?.(curPathRef.current, curValueRef.current)
+    setOpenedFiles(openedFiles => {
+      return openedFiles.map(file => {
+        file.path === curPathRef.current && (file.status = undefined)
+        return file
+      })
+    })
+
+  }, [onSaveFile, handleFormat])
+
   const closeFile = useCloseFile({
     prePath,
+    autoSave,
+    saveFile,
     curPathRef,
     setCurPath,
     restoreModel,
-    setOpenedFiles
+    setOpenedFiles,
   })
   
   const closeOtherFiles = useCloseOtherFiles({
@@ -77,17 +96,9 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
     openedFiles,
     restoreModel,
     setOpenedFiles,
+    // Pass the onSaveFile callback so we can pass the path and content directly
+    onSaveFile,
   })
-
-  const handleFormat = useCallback(
-    () => editorRef.current?.getAction('editor.action.formatDocument').run(),
-    []
-  )
-
-  const saveFile = useCallback(() => {
-    filesRef.current[curPathRef.current] = curValueRef.current
-    onSaveFile?.(curPathRef.current, curValueRef.current)
-  }, [onSaveFile, handleFormat])
 
   const abortFileChange = useCallback(
     (path: string) => {

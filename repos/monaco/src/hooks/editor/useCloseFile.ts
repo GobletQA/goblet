@@ -1,10 +1,12 @@
 import type { editor } from 'monaco-editor'
-import type { TEditorOpenFiles } from '../../types'
 import type { SetStateAction, MutableRefObject } from 'react'
+import type { TAutoSave, TEditorOpenFiles } from '../../types'
 
 import { useCallback } from 'react'
 
 export type TUseCloseFile = {
+  autoSave: TAutoSave
+  saveFile: () => void
   prePath: MutableRefObject<string | null>
   curPathRef: MutableRefObject<string>
   setCurPath: (data: SetStateAction<string>) => void
@@ -49,14 +51,19 @@ const resolvePreOpened = (
 export const useCloseFile = (props:TUseCloseFile) => {
   const {
     prePath,
+    saveFile,
+    autoSave,
     curPathRef,
     setCurPath,
     restoreModel,
     setOpenedFiles
   } = props
 
+  // TODO: Need to add modal confirm, in some cases it needs to be shown
   return useCallback(
     (path: string) => {
+      autoSave !== `off` && saveFile?.()
+      
       setOpenedFiles(pre => {
         if(!pre?.length) return pre
 
@@ -74,6 +81,6 @@ export const useCloseFile = (props:TUseCloseFile) => {
 
       })
     },
-    [restoreModel]
+    [autoSave, saveFile, restoreModel]
   )
 }

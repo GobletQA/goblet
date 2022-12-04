@@ -1,13 +1,13 @@
-import type { TModal } from '../../types'
+import type { TFileMeta, TModal } from '../../types'
 import type { MouseEventHandler } from 'react'
 
 import { useCallback } from 'react'
 
 export type THOnTabDown = {
   Modal: TModal
+  file: TFileMeta
   onTabClose?: (event: any) => void
   onCloseOtherFiles: (path: string) => void
-  file: { path: string, status?: string }
 }
 
 export const useOnTabDown = (props:THOnTabDown) => {

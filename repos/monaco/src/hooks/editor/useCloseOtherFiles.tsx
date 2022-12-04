@@ -20,6 +20,7 @@ export type TUseCloseOtherFiles = {
   filesRef: MutableRefObject<TFilelist>
   prePath: MutableRefObject<string | null>
   setCurPath: (data: SetStateAction<string>) => void
+  onSaveFile?: (path: string, content: string) => void
   restoreModel: (path: string) => false | editor.ITextModel
   setOpenedFiles: (data: SetStateAction<TEditorOpenFiles>) => void
 }
@@ -31,6 +32,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
     autoSave,
     filesRef,
     setCurPath,
+    onSaveFile,
     openedFiles,
     restoreModel,
     setOpenedFiles,
@@ -43,10 +45,11 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
       const saveAllFiles = () => {
         unSavedFiles.forEach((file:any) => {
           const model = getModelFromPath(file.path)
-          filesRef.current[file.path] = model?.getValue() || ''
+          const curVal = model?.getValue() || ''
+          filesRef.current[file.path] = curVal
+          // This could cause some issue if a lot of files are opened
+          onSaveFile?.(file.path, curVal)
         })
-        // TODO: validate this is actually saving each file
-        // Pretty sure it's only updating locally
         setOpenedFiles(pre => pre.filter(p => p.path === path))
         restoreModel(path)
         setCurPath(path)
@@ -91,6 +94,6 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
         prePath.current = path
       }
     },
-    [autoSave, restoreModel, openedFiles]
+    [autoSave, onSaveFile, restoreModel, openedFiles]
   )
 }

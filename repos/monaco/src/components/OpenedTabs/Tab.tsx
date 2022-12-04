@@ -1,19 +1,15 @@
 import type { CSSProperties } from 'react'
-import type { TAutoSave, TModal } from '../../types'
+import type { TFileMeta, TAutoSave, TModal } from '../../types'
 
 import { useEffect, useRef, useMemo } from 'react'
 import { FileIcon } from '../Icons/File'
 import { preventDefault } from '../../utils/dom/preventDefault'
 import { useTabCallbacks } from '../../hooks/tabs/useTabCallbacks'
 
-export type TTabFile = {
-  path: string
-  status?: string
-}
 
 export type Tab = {
   Modal: TModal
-  file: TTabFile
+  file: TFileMeta
   autoSave:TAutoSave
   currentPath?: string
   rootEl: HTMLElement | null
@@ -128,7 +124,7 @@ export const Tab = (props:Tab) => {
         style={styles.close}
         className='goblet-monaco-editor-opened-tab-item-close'
       >
-        x
+        ×
       </span>
     </div>
   )

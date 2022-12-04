@@ -1,15 +1,12 @@
 import './OpenedTabs.css'
-import type { TModal, TAutoSave } from '../../types'
+import type { TFileMeta, TModal, TAutoSave } from '../../types'
 
 import { Tab } from './Tab'
 
 export type OpenedTabs = {
-  openedFiles: Array<{
-    status?: string
-    path: string
-  }>
   Modal: TModal
   autoSave:TAutoSave
+  openedFiles: TFileMeta[]
   onPathChange?: (key: string) => void
   currentPath?: string
   onCloseFile: (path: string) => void

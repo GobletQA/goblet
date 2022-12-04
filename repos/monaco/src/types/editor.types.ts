@@ -1,6 +1,7 @@
 import type { editor } from 'monaco-editor'
+import type { TFileMeta } from './file.types'
 
-export type TEditorOpenFiles = Array<{status?: string, path: string}>
+export type TEditorOpenFiles = TFileMeta[]
 
 export type TAllowedFileTypes = {
   less: 'less',
