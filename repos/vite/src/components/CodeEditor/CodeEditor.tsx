@@ -6,12 +6,14 @@ import { MonacoEditor } from '@gobletqa/monaco'
 import { RunTestsAction } from './RunTestsAction'
 import { Divider } from '@components/Layout/Divider'
 import { RepoNotConnected } from './RepoNotConnected'
+import { RecordBrowserAction } from './RecordBrowserAction'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
 import { ArtifactsPanel } from '@components/Artifacts/ArtifactsPanel'
 import { EnvironmentsPanel } from '@components/Environments/EnvironmentsPanel'
 
 const Actions = [
-  RunTestsAction
+  RunTestsAction,
+  RecordBrowserAction
 ]
 
 const PrePanels = [

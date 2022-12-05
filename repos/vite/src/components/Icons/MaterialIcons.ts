@@ -39,6 +39,7 @@ import RestartIcon from '@mui/icons-material/SettingsBackupRestoreOutlined'
 import ChevronUpIcon from '@mui/icons-material/ExpandLess'
 import ChevronDownIcon from '@mui/icons-material/ExpandMore'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 
 export {
   Globe,
@@ -81,5 +82,6 @@ export {
   FeaturesIcon,
   ChevronUpIcon,
   ChevronDownIcon,
-  PlayCircleOutlineIcon
+  PlayCircleOutlineIcon,
+  RadioButtonCheckedIcon
 }
