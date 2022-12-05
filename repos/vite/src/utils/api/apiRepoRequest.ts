@@ -27,6 +27,7 @@ export const apiRepoRequest = async <T=Record<any, any>>(request:TRequest|string
       params: {
         local: repoData?.git?.local,
         remote: repoData?.git?.remote,
+        branch: repoData?.git?.branch,
       },
     },
     req

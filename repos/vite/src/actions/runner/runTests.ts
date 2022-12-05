@@ -1,8 +1,10 @@
-import type { TFileModel } from '@types'
+import type { TGitData, TFileModel } from '@types'
 
 import { addToast } from '@actions/toasts'
+import { pickKeys } from '@keg-hub/jsutils'
 import { WSService } from '@services/socketService'
 import { getWorldVal } from '@utils/repo/getWorldVal'
+import { getRepoData } from '@utils/store/getStoreData'
 import { clearSpecs } from '@actions/tracker/clearSpecs'
 import { SocketMsgTypes, WSRecordActions } from '@constants'
 import { buildCmdParams } from '@utils/browser/buildCmdParams'
@@ -14,15 +16,19 @@ type TBuildOpts = {
   file:TFileModel,
 }
 
-const buildOptions = ({ params, cmd, file, appUrl }:TBuildOpts) => {
+const buildOptions = ({ params, cmd, file, appUrl }:TBuildOpts, repo:TGitData) => {
   return {
+    repo,
+    // Add extra browser config if needed
+    // browser: {},
     ref: 'page',
     action: {
       props: [
         {
+          cmd,
           params,
-          testCmd: cmd,
-          activeFile: file,
+          file: pickKeys(file, [`fileType`, `location`, `uuid`, `name`])
+          
         },
         appUrl
       ],
@@ -50,15 +56,16 @@ export const runTests = async (
   // Clear any existing tracker specs
   clearSpecs()
 
-  const appUrl = getWorldVal({ loc: `url`, fb: `app.url`})
+  const repo = getRepoData()
   const params = buildCmdParams({ file, cmd })
+  const appUrl = getWorldVal({ loc: `url`, fb: `app.url`})
 
   const options = buildOptions({
     file,
     appUrl,
     params,
     cmd,
-  })
+  }, pickKeys(repo?.git, [`local`, `remote`, `username`, `branch`, `name`]))
 
   WSService.emit(SocketMsgTypes.BROWSER_RUN_TESTS, options)
 }

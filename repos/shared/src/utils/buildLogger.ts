@@ -1,6 +1,6 @@
-const winston = require('winston')
-const { noOpObj } = require('@keg-hub/jsutils')
-const { safeReplacer } = require('./safeReplacer')
+import winston from 'winston'
+import { noOpObj } from '@keg-hub/jsutils'
+import { safeReplacer } from './safeReplacer'
 const { createLogger, transports, format } = winston
 const {
   json,
@@ -15,20 +15,23 @@ const {
 let __LOGGER
 
 
+export type TLogOpts = winston.LoggerOptions & {
+  label:string
+}
+
 /**
  * Winston transform helper to filter out OPTIONS requests from the browser 
  */
 const filterOptionsReq = () => {
-  format.transform = (info) => {
+  return format((info) => {
     return info.message.startsWith(`OPTIONS `)
       ? null
       : info
-  }
+  })()
 
-  return format
 }
 
-const getFormatter = (label) => {
+const getFormatter = (label:string) => {
   return process.env.NODE_ENV !== 'production'
     ? combine(
         filterOptionsReq(),
@@ -47,7 +50,10 @@ const getFormatter = (label) => {
       )
 }
 
-const buildLogger = (options=noOpObj, defaultLogger=true) => {
+export const buildLogger = (
+  options:TLogOpts=noOpObj as TLogOpts,
+  defaultLogger:boolean=true
+) => {
   if(defaultLogger && __LOGGER) return __LOGGER
 
   const {
@@ -74,9 +80,4 @@ const buildLogger = (options=noOpObj, defaultLogger=true) => {
 
   __LOGGER = logger
   return __LOGGER
-}
-
-
-module.exports = {
-  buildLogger
 }

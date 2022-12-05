@@ -1,8 +1,9 @@
 import type http from 'http'
 import type https from 'https'
-import type { TSocketConfig } from '@GSC/types'
+import type { TSocketEvtCBProps, TSocketConfig } from '@GSC/types'
 
 import { Server } from 'socket.io'
+import { Logger } from '@GSC/utils/logger'
 import { setupConfig } from './setupConfig'
 import { setupEvents } from './setupEvents'
 import { validateToken } from './validateToken'
@@ -26,22 +27,21 @@ export const onConnect = (
 ) => {
   // Setup the socket listener, and add socket commands listener
   io.on('connection', socket => {
-    
     try {
       const { token } = socket.handshake.auth
       if(!token) throw new Error(`Missing auth token`)
-      
-      const data = validateToken(token)
+
+      const user = validateToken(token)
 
       // Setup the socket, and update connected peers
       Manager.setupSocket(socket)
 
-      // setupCmds(Manager, Proc, socket, config)
-      setupEvents(Manager, socket, config, io)
+      setupEvents(Manager, socket, config, io, user)
 
       // Call the connection event if it exists
-      checkCall(get(config, 'events.connection'), {
+      checkCall<TSocketEvtCBProps>(get(config, 'events.connection'), {
         io,
+        user,
         socket,
         config,
         Manager,
@@ -50,11 +50,9 @@ export const onConnect = (
 
     }
     catch(err){
-      console.log(`Error setting up websocket, force disconnecting...`)
+      Logger.info(`Error setting up websocket, force disconnecting...`)
       // Force disconnect the client if setup failed
       socket.disconnect(true)
-
-      console.error(err)
     }
 
   })
@@ -74,6 +72,7 @@ export const socketInit = async (
 
   // Setup the Socket Manager
   const Manager = setupManager(io)
+
   onConnect(config, io, Manager)
 
   return {

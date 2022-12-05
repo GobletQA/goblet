@@ -1,5 +1,6 @@
 import type {Socket, Server} from 'socket.io'
 import type { SocketManager } from '@gobletqa/screencast'
+import type { TTokenUser } from './user.types'
 
 export enum ESocketEnvironment {
   local = 'local',
@@ -13,16 +14,10 @@ export enum ESocketEnvironment {
   production = 'production',
 }
 
-export type TSocketTokenValid = {
+export type TSocketTokenValid = TTokenUser & {
   iat:string
   exp:string
-  token: string
   log?:boolean
-  name?:string
-  email?:string
-  remote?:string
-  branch?:string
-  username?:string
   error?:never
 } 
 
@@ -37,8 +32,9 @@ export type TSocketTokenData = TSocketTokenValid | TSocketTokenErr
 
 export type TSocketEvtCBProps = {
   io:Server
-  socket:Socket
   event:string
+  socket:Socket
+  user: TTokenUser
   config:TSocketConfig
   Manager:SocketManager
   data:Record<string, any>

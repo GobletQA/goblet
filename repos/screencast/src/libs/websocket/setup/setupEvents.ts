@@ -1,8 +1,9 @@
 import type { Socket } from 'socket.io'
 import type {
+  TTokenUser,
   TSocketEvents,
-  TSocketEventCB,
   TSocketConfig,
+  TSocketEventCB,
   TSocketEvtCBProps,
 } from '@GSC/types'
 
@@ -10,10 +11,11 @@ import { Server } from 'socket.io'
 import { SocketManager } from '../manager/manager'
 import { checkCall, noOpObj, isFunc } from '@keg-hub/jsutils'
 
-type TCustomEvt = {
+export type TCustomEvt = {
   io:Server
   name:string
   socket:Socket
+  user: TTokenUser,
   config:TSocketConfig
   method:TSocketEventCB
   Manager:SocketManager
@@ -23,6 +25,7 @@ type TDisconnectEvt = Omit<TCustomEvt, 'name'>
 
 const handelCustomEvt = ({
   io,
+  user,
   name,
   socket,
   method,
@@ -33,6 +36,7 @@ const handelCustomEvt = ({
     checkCall<TSocketEventCB>(method, {
       io,
       data,
+      user,
       socket,
       config,
       Manager,
@@ -43,6 +47,7 @@ const handelCustomEvt = ({
 
 const handleDisconnect = ({
   io,
+  user,
   socket,
   method,
   config,
@@ -58,6 +63,7 @@ const handleDisconnect = ({
       isFunc(method) &&
         (await method({
           io,
+          user,
           socket,
           config,
           Manager,
@@ -82,7 +88,8 @@ export const setupEvents = (
   Manager:SocketManager,
   socket:Socket,
   config:TSocketConfig,
-  io:Server
+  io:Server,
+  user:TTokenUser
 ) => {
   const { events = noOpObj as TSocketEvents } = config
 
@@ -94,6 +101,7 @@ export const setupEvents = (
     name !== 'connection' && name !== 'disconnect'
       ? handelCustomEvt({
           io,
+          user,
           name,
           socket,
           method,
@@ -103,6 +111,7 @@ export const setupEvents = (
       : name === 'disconnect' &&
         handleDisconnect({
           io,
+          user,
           method,
           socket,
           config,

@@ -113,5 +113,5 @@ export const buildCmdParams = (args:TBuiltCmdParams) => {
 
   const typeKey = file?.fileType as keyof typeof parmBuildMap
 
-  return checkCall(parmBuildMap[typeKey], args) || noPropArr
+  return (checkCall(parmBuildMap[typeKey], args) || noPropArr) as string[]
 }

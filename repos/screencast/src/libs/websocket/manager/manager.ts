@@ -4,6 +4,7 @@ import type {
   TSocketMessageObj,
 } from '@GSC/types'
 
+import { Logger } from '@GSC/utils/logger'
 import * as WSConstants from '@gobletqa/shared/constants/websocket'
 import {
   TagPrefix,
@@ -12,7 +13,6 @@ import {
   WS_NOT_AUTHORIZED,
   WS_PEER_DISCONNECT,
 } from '@gobletqa/shared/constants/websocket'
-
 
 import {
   get,
@@ -40,8 +40,8 @@ const getTimeStamp = () => new Date().getTime()
  * @private
  */
 const logError = (err:Error = noOpObj as Error, method:string) => {
-  console.log(`[ Socket Error ] --- SocketManager.${method}`)
-  err.stack && console.error(err.stack)
+  Logger.info(`[ Socket Error ] --- SocketManager.${method}`)
+  err.stack && Logger.error(err.stack)
 }
 
 /**
@@ -340,18 +340,17 @@ export class SocketManager {
       // Clear any cache data if needed
       delete this.cache[socket.id]
 
-      if (!this.peers[socket.id]) return
-
-      delete this.peers[socket.id]
+      if (this.peers[socket.id]) delete this.peers[socket.id]
 
       this.emitAll(WS_PEER_DISCONNECT, {
         socketId: socket.id,
         data: { peers: Object.keys(this.peers) },
       })
+
     }
     catch (err) {
       logError(err, 'onDisconnect')
-      if (isObj(this.peers)) delete this.peers[socket.id]
+      if (this.peers[socket.id]) delete this.peers[socket.id]
     }
   }
 }

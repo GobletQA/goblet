@@ -81,6 +81,8 @@ const App = () => {
             <RootScreen />
             <ModalManager />
           </ModalProvider>
+{/* 
+          Need to investigate, is not fading out properly
           {AuthActive && (
             <Fadeout
               speed={250}
@@ -88,6 +90,8 @@ const App = () => {
               content={apiTimeout}
             />
           )}
+*/}
+
         </ThemeProvider>
       </Provider>
     </ThemeTypeProvider>

@@ -80,11 +80,14 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
   const closeFile = useCloseFile({
     prePath,
     autoSave,
-    saveFile,
+    filesRef,
     curPathRef,
     setCurPath,
+    openedFiles,
     restoreModel,
     setOpenedFiles,
+    // Pass the onSaveFile callback so we can pass the path and content directly
+    onSaveFile,
   })
   
   const closeOtherFiles = useCloseOtherFiles({

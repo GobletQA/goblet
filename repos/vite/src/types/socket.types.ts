@@ -40,7 +40,7 @@ export type TSocketEventCallback = (
   event:string,
 ) => any
 
-export type TSocketEvents = {
+export type TSocketEvtsFE = {
   [key:string]: TSocketEventCallback
 } 
 
@@ -48,7 +48,7 @@ export type TSocketEvents = {
 export type TSocketService = TEndpointConf & {
   path:string
   transports: string[]
-  events:TSocketEvents
+  events:TSocketEvtsFE
   query: Record<string, string>
   extraHeaders: Record<string, string>
 }

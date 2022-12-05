@@ -159,9 +159,7 @@ export class SocketService {
 
     this.logData(`Sending Socket Event: ${event}`, data)
 
-    const toSend = isObj(data)
-      ? { ...data, token: this.token }
-      : { data, token: this.token }
+    const toSend = isObj(data) ? data : { data }
 
     // Send a message to the server
     this.socket.emit(event, toSend)

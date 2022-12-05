@@ -10,6 +10,8 @@ import type {
 import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 import { useCallback } from 'react'
+import { exists } from '@keg-hub/jsutils'
+import { saveFile } from '../../utils/file/saveFile'
 import { getModelFromPath } from '../../utils/editor/getModelFromPath'
 
 export type TUseCloseOtherFiles = {
@@ -44,11 +46,8 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
       const unSavedFiles = openedFiles.filter(file => file.status === 'editing')
       const saveAllFiles = () => {
         unSavedFiles.forEach((file:any) => {
-          const model = getModelFromPath(file.path)
-          const curVal = model?.getValue() || ''
-          filesRef.current[file.path] = curVal
           // This could cause some issue if a lot of files are opened
-          onSaveFile?.(file.path, curVal)
+          saveFile(file, filesRef, onSaveFile)
         })
         setOpenedFiles(pre => pre.filter(p => p.path === path))
         restoreModel(path)

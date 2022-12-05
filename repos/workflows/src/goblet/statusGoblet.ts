@@ -68,9 +68,11 @@ const statusForLocal = async (config:TWFGobletConfig) => {
         message: `Repo volume mount does not exist`,
       } as TWFResp
     : {
+        setup: true,
         mode: 'local',
         mounted: true,
         status: 'mounted',
+        message: 'Repo mounted',
         repo: {
           git: { local: gobletConfig.paths.repoRoot },
           name: path.basename(gobletConfig.paths.repoRoot),
@@ -131,12 +133,14 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
         setup: true,
         mounted: true,
         status: 'mounted',
+        message: 'Repo mounted',
         repo: {
           git: omitKeys(opts, [`token`]),
           ...gobletConfig,
           name: getRepoName(remote),
         },
       } as TWFResp
+
 }
 
 /**

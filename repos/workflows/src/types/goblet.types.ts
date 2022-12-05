@@ -11,7 +11,6 @@ export type TResArgs = {
   status?: string
   repo?: TRepoConf
   mounted?: boolean
-  [key:string]: any
 }
 
 export type TWFResp = TResArgs & {
