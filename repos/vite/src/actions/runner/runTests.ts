@@ -27,7 +27,10 @@ const buildOptions = ({ params, cmd, file, appUrl }:TBuildOpts, repo:TGitData) =
         {
           cmd,
           params,
-          file: pickKeys(file, [`fileType`, `location`, `uuid`, `name`])
+          file: pickKeys<Partial<TFileModel>>(
+            file,
+            [`fileType`, `location`, `uuid`, `name`, `content`]
+          )
           
         },
         appUrl
@@ -36,7 +39,6 @@ const buildOptions = ({ params, cmd, file, appUrl }:TBuildOpts, repo:TGitData) =
     }
   }
 }
-
 
 /**
  * Uses a web-socket to run tests on a file from the backend
@@ -60,12 +62,18 @@ export const runTests = async (
   const params = buildCmdParams({ file, cmd })
   const appUrl = getWorldVal({ loc: `url`, fb: `app.url`})
 
-  const options = buildOptions({
-    file,
-    appUrl,
-    params,
-    cmd,
-  }, pickKeys(repo?.git, [`local`, `remote`, `username`, `branch`, `name`]))
+  const options = buildOptions(
+    {
+      file,
+      appUrl,
+      params,
+      cmd,
+    },
+    pickKeys<TGitData>(
+      repo?.git,
+      [`local`, `remote`, `username`, `branch`, `name`]
+    )
+  )
 
   WSService.emit(SocketMsgTypes.BROWSER_RUN_TESTS, options)
 }

@@ -73,15 +73,15 @@ class Player {
    * @type {function}
    * @param {Object} config - Recorder config object
    */
-  setupPlayer = config => {
+  setupPlayer = (config) => {
     const {
       page,
       repo,
       context,
       browser,
       options,
-      onEvent=noOp,
-      onCleanup=noOp,
+      onEvent,
+      onCleanup,
       onCreateNewPage,
     } = config
 
@@ -138,26 +138,34 @@ class Player {
         throw new Error(`A Playwright page instance is required, but does not exist.`)
 
       await this.addInitScripts()
-      const codeRunner = new CodeRunner(this)
-      await codeRunner.run(this.options.activeFile.content)
 
       this.fireEvent({
         message: 'Playing started',
         name: constants.playStarted,
       })
+
+      const codeRunner = new CodeRunner(this)
+      const results = await codeRunner.run(this.options.file.content)
+      this.fireEvent({
+        results,
+        message: 'Player results',
+        name: constants.playResults,
+      })
+
+      return await this.stop()
     }
     catch(err){
-      console.error(err.stack)
-      
-      await this.cleanUp(true)
 
+      console.error(err.stack)
       this.fireEvent({
         name: constants.playError,
         message: err.message,
       })
+
+      await this.stop()
+
     }
 
-    return this
   }
 
   /**
@@ -165,43 +173,25 @@ class Player {
    * @member {Recorder}
    * @type {function}
    */
-  stop = async (closeBrowser) => {
+  stop = async () => {
     try {
-  
+
       if(!this.context || !this.playing)
         this.fireEvent({
           name: constants.playError,
           message: 'Playing context does not exist'
         })
 
-      // Turn off recording
       // Must be done before a new page is created
       // Ensure the injected scripts don't run
       this.playing = false
-
-      // If there's a page
-      // Get it's current url
-      // Then close and reopen the page as a fresh instance
-      // To simulate ending the recording process
-      if(!closeBrowser && this.page){
-        const url = this.page.url()
-        this.page.close()
-        this.page = undefined
-
-        // Create a new page
-        this.page = await this.context.newPage()
-        await this.onCreateNewPage(this.page, this)
-
-        // Then  goto that page
-        url && await this.page.goto(url)
-      }
 
       this.fireEvent({
         name: constants.playEnded,
         message: 'Playing stopped',
       })
 
-      await this.cleanUp(closeBrowser)
+      await this.cleanUp()
     }
     catch(err){
       console.error(err.stack)
@@ -227,20 +217,18 @@ class Player {
    * Helper method to clean up when recording is stopped
    * Attempts to avoid memory leaks by un setting Recorder instance properties
    */
-  cleanUp = async (includeBrowser) => {
-    await this.onCleanup(includeBrowser, this)
+  cleanUp = async () => {
+    await this.onCleanup(this)
 
-    includeBrowser &&
-      this.browser &&
-      await this.browser.close()
-
+    this.page = undefined
+    this.context = undefined
+    this.browser = undefined
     delete this.page
     delete this.context
     delete this.browser
     this.playing = false
     this.options = {}
     this.onEvents = []
-
   }
 }
 

@@ -11,7 +11,7 @@ import { isFunc, get, set } from '@keg-hub/jsutils'
 let PW_BROWSERS = {}
 
 /**
- * Returns the cached playwrite page
+ * Returns the cached playwright page
  * @function
  */
 export const getPage = (type:string = defaultBrowser) => {
@@ -95,7 +95,7 @@ export const setContext = (context:TBrowserContext, type:string = defaultBrowser
 }
 
 /**
- * Returns the cached playwrite browser
+ * Returns the cached playwright browser
  * @function
  */
 export const getBrowser = (type:string = defaultBrowser) => {
@@ -103,7 +103,7 @@ export const getBrowser = (type:string = defaultBrowser) => {
 }
 
 /**
- * Sets the cached playwrite server
+ * Sets the cached playwright server
  * @function
  */
 export const setBrowser = (browser:TBrowser, type:string = defaultBrowser) => {
@@ -120,7 +120,7 @@ export const setBrowser = (browser:TBrowser, type:string = defaultBrowser) => {
     return PW_BROWSERS
   }
 
-  const bType = type || browser.name() || defaultBrowser
+  const bType = type || browser.browserType().name() || defaultBrowser
 
   // Set the new browser
   PW_BROWSERS[bType] = { browser }

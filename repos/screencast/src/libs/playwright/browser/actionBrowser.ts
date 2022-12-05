@@ -1,17 +1,14 @@
 import type {
   TBrowserConf,
   TPWComponent,
-  TStartPlaying,
   TPWComponents,
   TBrowserAction,
   TActionCallback,
-  TStartRecording,
   TBrowserActionArgs,
 } from '@GSC/types'
 
-import { Player }  from '../player/player'
 import { startBrowser } from './startBrowser'
-import { Recorder }  from '../recorder/recorder'
+import { recordBrowser } from './recordBrowser'
 import { isArr, isStr, isFunc, noPropArr } from '@keg-hub/jsutils'
 
 /**
@@ -72,63 +69,6 @@ const callAction = async (
 
 /**
  * Execute an action on a browser
- */
-export const startRecording = async (data:TStartRecording) => {
-  const {
-    id,
-    action,
-    onCleanup,
-    browserConf,
-    pwComponents,
-    onRecordEvent,
-    onCreateNewPage,
-  } = data
-
-  const { props, action:method } = action
-
-  const [recordOpts, url] = props
-  const browserItems = pwComponents || await startBrowser(browserConf)
-
-  const recorder = Recorder.getInstance(id, {
-    onCleanup,
-    onCreateNewPage,
-    ...browserItems,
-    options: recordOpts,
-    onEvent: onRecordEvent,
-  })
-
-  return await recorder.start({ url })
-}
-
-
-export const startPlaying = async (data:TStartPlaying) => {
-  const {
-    id,
-    repo,
-    action,
-    onCleanup,
-    browserConf,
-    onPlayEvent,
-    pwComponents,
-    onCreateNewPage,
-  } = data
-
-  const { props, action:method } = action
-  const [playerOpts, url] = props
-  const browserItems = pwComponents || await startBrowser(browserConf)
-
-  const player = Player.getInstance(id, {
-    onCleanup,
-    onCreateNewPage,
-    ...browserItems,
-    onEvent: onPlayEvent,
-  })
-
-  return await player.start({ options: playerOpts, repo })
-}
-
-/**
- * Execute an action on a browser
  * @param {Object} args
  * @param {string} [args.ref='browser'] - Reference to a playwright component (browser, context, or page)
  * @param {array} [args.actions=[]] - List of actions to execute on the ref
@@ -171,7 +111,7 @@ export const actionBrowser = async (
           id
         )
       : action.action === 'record'
-        ? await startRecording({
+        ? await recordBrowser({
             id,
             action,
             browserConf,

@@ -76,10 +76,10 @@ export type TStartPlaying = {
   id:string,
   repo:TRepo,
   action:TBrowserAction,
+  onEvent:TActionCallback
   onCleanup:TActionCallback
   browserConf: TBrowserConf
   pwComponents?:TPWComponents
-  onPlayEvent:TActionCallback
   onCreateNewPage:TActionCallback
 }
 

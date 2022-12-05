@@ -1,6 +1,7 @@
 // TODO( IMPORTANT ):  @lancetipton - Setup mv2
 // const { NodeVM } = require('vm2')
 const expect = require('expect')
+const { constants } = require('./constants')
 const { Parkin } = require('@ltipton/parkin')
 const { ParkinTest } = require('@ltipton/parkin/test')
 const { getWorld } = require('@gobletqa/shared/repo/world')
@@ -8,11 +9,10 @@ const { setParkinInstance } = require('@gobletqa/shared/libs/parkin')
 const { getDefinitions } = require('@gobletqa/shared/repo/getDefinitions')
 
 /**
- * Tiny-Jest allows calling the test methods directly
- * But it does not include a timeout / describe method
- * May need to replace, or extend it's functionality
+ * Use custom test runner from parkin
+ * Jest does not allow calling from the Node directly
+ * So we use Parkin's test runner instead
  */
-
 const setTestGlobals = (Runner) => {
 
   const PTE = new ParkinTest({
@@ -69,7 +69,7 @@ class CodeRunner {
     this.player = player
     this.PTE = setupGlobals(this)
   }
-  
+
   /**
    * Runs the code passed to it via the player
    */
@@ -82,28 +82,44 @@ class CodeRunner {
     return results
   }
 
-  onSpecDone = (...args) => {
-    console.log(`------- onSpecDone -------`)
-    console.log(...args)
-    
+  onSpecDone = (result) => {
+    this.player.fireEvent({
+      data: result,
+      message: 'Player - Spec Done',
+      name: constants.playSuiteDone,
+    })
+
+    // TODO: probably don't want to throw here
+    // Need to capture the spec, and skip to the next suite
+    // Should be based on some config value
+    if(result.failed)
+      throw new Error(
+        result?.failedExpectations?.[0]?.message || `Spec Failed`
+      )
   }
-  
-  onSuiteDone = (...args) => {
-    console.log(`------- onSuiteDone -------`)
-    console.log(...args)
-    
+
+  onSuiteDone = (result) => {
+    this.player.fireEvent({
+      data: result,
+      message: 'Player - Suite Done',
+      name: constants.playSuiteDone,
+    })
   }
-  
-  onSpecStarted = (...args) => {
-    console.log(`------- onSpecStarted -------`)
-    console.log(...args)
-    
+
+  onSpecStarted = (result) => {
+    this.player.fireEvent({
+      data: result,
+      message: 'Player - Spec Start',
+      name: constants.playSpecStart,
+    })
   }
-  
+
   onSuiteStarted = (...args) => {
-    console.log(`------- onSuiteStarted -------`)
-    console.log(...args)
-    
+    this.player.fireEvent({
+      data: result,
+      message: 'Player - Suite Start',
+      name: constants.playSuiteStart,
+    })
   }
 
 }

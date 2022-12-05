@@ -4,10 +4,10 @@ import type { SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
 import { noOpObj } from '@keg-hub/jsutils'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { recordBrowser } from '@GSC/libs/playwright/browser/recordBrowser'
 import {
   setPage,
   stopBrowser,
-  startRecording,
 } from '@GSC/libs/playwright'
 
 /**
@@ -32,7 +32,7 @@ const handleStart = async (
   const { token, ref, action, repo, ...browser } = data
   const browserConf = joinBrowserConf(browser, app)
 
-  const recorder = await startRecording({
+  const recorder = await recordBrowser({
     action,
     browserConf,
     id: socket.id,
