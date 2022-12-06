@@ -1,8 +1,21 @@
-const { constants } = require('./constants')
-const { CodeRunner } = require('./codeRunner')
-const {noOp, checkCall, deepMerge, noOpObj} = require('@keg-hub/jsutils')
+import type {
+  TRepo,
+  TBrowser,
+  TPlayerOpts,
+  TBrowserPage,
+  TPlayerEvent,
+  TPlayerConfig,
+  TPlayerEventCB,
+  TBrowserContext,
+  TPlayerCleanupCB,
+  TPlayerStartConfig,
+} from '@GSC/types'
 
-const PlayerInstances = {}
+import { constants } from './constants'
+import { CodeRunner } from './codeRunner'
+import {noOp, checkCall, deepMerge, noOpObj} from '@keg-hub/jsutils'
+
+const PlayerInstances:Record<`id`, Player> = {} as Record<`id`, Player>
 
 /**
  * @type Player
@@ -12,21 +25,20 @@ const PlayerInstances = {}
  * @property {Object} context - Playwright context instance
  * @property {Object} browser - Playwright browser instance
  * @property {function} onCleanup - Called when the cleanup / stop methods are called
- * @property {function} onCreateNewPage - Called when a new playwright page is created
  * @property {Object} options - Custom options used while recording
  * @property {Object} options.highlightStyles - Custom styles for the highlighter
  */
-class Player {
+export class Player {
 
-  playing = false
-  id = null
-  onEvents = []
-  page = undefined
-  context = undefined
-  browser = undefined
-  onCleanup = noOp
-  onCreateNewPage = undefined
-  options = {}
+  repo:TRepo
+  id:string = null
+  browser:TBrowser
+  page:TBrowserPage
+  playing:boolean = false
+  context:TBrowserContext
+  onEvents:TPlayerEventCB[] = []
+  onCleanup:TPlayerCleanupCB = noOp
+  options:TPlayerOpts = {} as TPlayerOpts
 
 
   /**
@@ -35,17 +47,15 @@ class Player {
    * If the instance does not exist it will be created
    * @static
    * @type {function}
-   * @param {string} id - Id to use when creating the recorder instance
-   * @param {Object} config - Recorder config object
    */
-  static getInstance = (id, config) => {
+  static getInstance = (id:string, config:TPlayerConfig) => {
     PlayerInstances[id] = PlayerInstances[id] || new Player(config, id)
 
     return PlayerInstances[id]
   }
 
 
-  constructor(config, id) {
+  constructor(config:TPlayerConfig, id:string) {
     this.id = id
     this.setupPlayer(config)
   }
@@ -54,10 +64,8 @@ class Player {
    * Loops the registered event methods and calls each one passing in the event object
    * Ensures the current recording state is added and upto date
    * @member {Recorder}
-   * @type {function}
-   * @param {Object} event - Data to be passed to the registered onEvent methods
    */
-  fireEvent = (event) => {
+  fireEvent = (event:Omit<TPlayerEvent, 'isPlaying'>) => {
     this.onEvents.map(func => checkCall(
       func,
       {...event, isPlaying: this.playing}
@@ -70,10 +78,8 @@ class Player {
    * Initializes the recorder
    * Ensures only the properties that are passed in are added to the Recorder 
    * @member {Recorder}
-   * @type {function}
-   * @param {Object} config - Recorder config object
    */
-  setupPlayer = (config) => {
+  setupPlayer = (config:TPlayerConfig) => {
     const {
       page,
       repo,
@@ -82,7 +88,6 @@ class Player {
       options,
       onEvent,
       onCleanup,
-      onCreateNewPage,
     } = config
 
     if(page) this.page = page
@@ -93,7 +98,6 @@ class Player {
 
     if(onEvent) this.onEvents.push(onEvent)
     if(onCleanup) this.onCleanup = onCleanup
-    if(onCreateNewPage) this.onCreateNewPage = onCreateNewPage
 
     return this
   }
@@ -120,7 +124,7 @@ class Player {
    * @member {Recorder}
    * @type {function}
    */
-  start = async (startCof) => {
+  start = async (startCof:TPlayerStartConfig) => {
     const { url, ...config } = startCof
 
     try {
@@ -145,7 +149,7 @@ class Player {
       })
 
       const codeRunner = new CodeRunner(this)
-      const results = await codeRunner.run(this.options.file.content)
+      const results = await codeRunner.run(this.options?.file?.content)
       this.fireEvent({
         results,
         message: 'Player results',
@@ -158,8 +162,8 @@ class Player {
 
       console.error(err.stack)
       this.fireEvent({
-        name: constants.playError,
         message: err.message,
+        name: constants.playError,
       })
 
       await this.stop()
@@ -230,8 +234,4 @@ class Player {
     this.options = {}
     this.onEvents = []
   }
-}
-
-module.exports = {
-  Player
 }

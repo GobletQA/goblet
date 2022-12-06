@@ -1,19 +1,20 @@
+import type { Player } from './player'
+
 // TODO( IMPORTANT ):  @lancetipton - Setup mv2
 // const { NodeVM } = require('vm2')
-const expect = require('expect')
-const { constants } = require('./constants')
-const { Parkin } = require('@ltipton/parkin')
-const { ParkinTest } = require('@ltipton/parkin/test')
-const { getWorld } = require('@gobletqa/shared/repo/world')
-const { setParkinInstance } = require('@gobletqa/shared/libs/parkin')
-const { getDefinitions } = require('@gobletqa/shared/repo/getDefinitions')
+import expect from 'expect'
+import { constants } from './constants'
+import { Parkin } from '@ltipton/parkin'
+import { ParkinTest } from '@ltipton/parkin/test'
+import { getDefinitions } from '@gobletqa/shared/repo/getDefinitions'
+
 
 /**
  * Use custom test runner from parkin
  * Jest does not allow calling from the Node directly
  * So we use Parkin's test runner instead
  */
-const setTestGlobals = (Runner) => {
+const setTestGlobals = (Runner:CodeRunner) => {
 
   const PTE = new ParkinTest({
     specDone: Runner.onSpecDone,
@@ -36,36 +37,37 @@ const setTestGlobals = (Runner) => {
   return PTE
 }
 
-const setupGlobals = (Runner) => {
-  global.expect = expect.expect
+const setupGlobals = (Runner:CodeRunner) => {
+  ;(global as any).expect = expect
   global.context = Runner.player.context
   return setTestGlobals(Runner)
 }
 
-const setupParkin = async (Runner) => {
-  PK = Runner?.player?.repo?.parkin
+const setupParkin = async (Runner:CodeRunner) => {
+  const PK = Runner?.player?.repo?.parkin
   if(!PK) throw new Error(`Repo is missing a parkin instance`)
 
-  await getDefinitions(Runner?.player?.repo)
+  await getDefinitions(Runner?.player?.repo, {})
   return PK
 }
-
 
 /**
  * CodeRunner
  * Sets up the test environment to allow running tests in a secure context
  * Ensures the test methods exist on the global scope
  */
-class CodeRunner {
+export class CodeRunner {
 
   /**
    * Player Class instance
    */
-  player = undefined
-  
   exec = undefined
+  player:Player
+  PK:Parkin
+  PTE:ParkinTest
+  
 
-  constructor(player) {
+  constructor(player:Player) {
     this.player = player
     this.PTE = setupGlobals(this)
   }
@@ -114,7 +116,7 @@ class CodeRunner {
     })
   }
 
-  onSuiteStarted = (...args) => {
+  onSuiteStarted = (result) => {
     this.player.fireEvent({
       data: result,
       message: 'Player - Suite Start',
@@ -122,8 +124,4 @@ class CodeRunner {
     })
   }
 
-}
-
-module.exports = {
-  CodeRunner
 }
