@@ -1,4 +1,5 @@
 import type { Repo } from './repo'
+import type { TDefGobletConfig, TGobletConfig } from '../types'
 
 import { definitionsByType } from '@GSH/utils/definitionsByType'
 import { loadDefinitions } from '@GSH/libs/definitions/definitions'
@@ -6,8 +7,8 @@ import { loadDefinitions } from '@GSH/libs/definitions/definitions'
 /**
  * Loads the definitions, then splits them based on their type
  */
-export const getDefinitions = async (repo:Repo, config) => {
-  const definitions = await loadDefinitions(repo, config)
+export const getDefinitions = async (repo:Repo, config?:TGobletConfig) => {
+  const definitions = await loadDefinitions(repo, config as TDefGobletConfig)
   const definitionTypes = definitionsByType(definitions)
 
   return {

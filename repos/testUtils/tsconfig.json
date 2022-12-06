@@ -9,6 +9,8 @@
       "../../node_modules/@types"
     ],
     "paths": {
+      "@GTU/Constants": ["src/constants"],
+      "@GTU/Constants/*": ["src/constants/*"],
       "@GTU/Jest": ["src/jest"],
       "@GTU/Jest/*": ["src/jest/*"],
       "@GTU/Utils": ["src/utils"],

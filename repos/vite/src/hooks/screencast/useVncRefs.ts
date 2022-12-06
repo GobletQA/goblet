@@ -26,10 +26,11 @@ export const useVncRefs = (props:TBrowserProps) => {
   const connected = useRef<boolean>(props.autoConnect ?? true)
 
   // Wraps the screen ref, to allow watching when it gets set
-  // Every type react resets the ref, it calls this callback instead
+  // Every time react resets the ref, it calls this callback instead
   // This way we can track the dom node, and check if rfd needs reset as well
   const onScreenNode = useCallback((node:HTMLDivElement) => {
     screen.current = node
+
     if(firstLoad.current) return (firstLoad.current = false)
 
     // If the rfb target is on the dom, then no need to reset it

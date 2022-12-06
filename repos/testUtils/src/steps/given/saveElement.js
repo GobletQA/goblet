@@ -11,12 +11,23 @@ const { cleanWorldPath } = require('@GTU/Support/helpers')
  * @param {Object} world
  */
 const saveElement = async (selector, worldPath, world) => {
-  const element = getLocator(selector)
+  const element = await getLocator(selector)
   const cleaned = cleanWorldPath(worldPath)
-
   set(world, cleaned, { selector, element })
 
   return element
+}
+
+/**
+ * Saves the element and focuses it for future steps to reuse
+ */
+const selectSaveEl = async (selector, worldPath, world) => {
+  const element = await saveElement(selector, worldPath, world)
+  await element.focus()
+}
+
+const saveElToWorld = async (selector, worldPath, world) => {
+  await saveElement(selector, worldPath, world)
 }
 
 const meta = {
@@ -45,11 +56,12 @@ const metaExp = {
   }])
 }
 
-Given('{string} is saved', (selector, world) => saveElement(selector, `__meta.savedElement`, world), meta)
+Given('{string} is saved', (selector, world) => saveElToWorld(selector, `__meta.savedElement`, world), meta)
+Given('I select {string}', (selector, world) => selectSaveEl(selector, `__meta.savedElement`, world), meta)
 
 
-Given('{string} is saved as {string}', saveElement, metaExp)
-Given('I save {string} as {string}', saveElement, metaExp)
-Given('I save the element {string} as {string}', saveElement, metaExp)
+Given('{string} is saved as {string}', saveElToWorld, metaExp)
+Given('I save {string} as {string}', saveElToWorld, metaExp)
+Given('I save the element {string} as {string}', saveElToWorld, metaExp)
 
 module.exports = { saveElement }

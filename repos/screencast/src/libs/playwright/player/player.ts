@@ -15,8 +15,6 @@ import { constants } from './constants'
 import { CodeRunner } from './codeRunner'
 import {noOp, checkCall, deepMerge, noOpObj} from '@keg-hub/jsutils'
 
-const PlayerInstances:Record<`id`, Player> = {} as Record<`id`, Player>
-
 /**
  * @type Player
  * @property {string} id - Id of the recorder instants
@@ -40,20 +38,7 @@ export class Player {
   onCleanup:TPlayerCleanupCB = noOp
   options:TPlayerOpts = {} as TPlayerOpts
 
-
-  /**
-   * Helper to keep track of all Recorder instances
-   * Cached created instances based on Id
-   * If the instance does not exist it will be created
-   * @static
-   * @type {function}
-   */
-  static getInstance = (id:string, config:TPlayerConfig) => {
-    PlayerInstances[id] = PlayerInstances[id] || new Player(config, id)
-
-    return PlayerInstances[id]
-  }
-
+  static isPlaying:boolean = false
 
   constructor(config:TPlayerConfig, id:string) {
     this.id = id
@@ -68,7 +53,7 @@ export class Player {
   fireEvent = (event:Omit<TPlayerEvent, 'isPlaying'>) => {
     this.onEvents.map(func => checkCall(
       func,
-      {...event, isPlaying: this.playing}
+      {...event, isPlaying: Player.isPlaying}
     ))
 
     return this
@@ -129,13 +114,13 @@ export class Player {
 
     try {
   
-      if(this.playing){
+      if(Player.isPlaying){
         this.fireEvent({ name: constants.playError, message: 'Playing already inprogress' })
-        console.warn('Playing already in progress, end it first')
+        console.warn('Browser playing already in progress')
         return this
       }
 
-      this.playing = true
+      Player.isPlaying = true
       this.setupPlayer(config)
 
       if(!this.page)
@@ -151,7 +136,7 @@ export class Player {
       const codeRunner = new CodeRunner(this)
       const results = await codeRunner.run(this.options?.file?.content)
       this.fireEvent({
-        results,
+        data: results,
         message: 'Player results',
         name: constants.playResults,
       })
@@ -180,15 +165,13 @@ export class Player {
   stop = async () => {
     try {
 
-      if(!this.context || !this.playing)
+      if(!this.context || !Player.isPlaying)
         this.fireEvent({
           name: constants.playError,
           message: 'Playing context does not exist'
         })
 
-      // Must be done before a new page is created
-      // Ensure the injected scripts don't run
-      this.playing = false
+      Player.isPlaying = false
 
       this.fireEvent({
         name: constants.playEnded,
@@ -214,7 +197,7 @@ export class Player {
    * Is called from within the browser context
    */
   onIsPlaying = () => {
-    return this.playing
+    return Player.isPlaying
   }
 
   /**
@@ -230,8 +213,9 @@ export class Player {
     delete this.page
     delete this.context
     delete this.browser
-    this.playing = false
     this.options = {}
     this.onEvents = []
+    Player.isPlaying = false
+
   }
 }

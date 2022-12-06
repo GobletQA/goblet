@@ -1,3 +1,6 @@
+import type { MutableRefObject } from 'react'
+import type RFB from '@novnc/novnc/core/rfb'
+
 import { gutter } from '@theme'
 import Box from '@mui/material/Box'
 import { BrowserButton } from './BrowserButton'
@@ -17,6 +20,7 @@ import { useBrowserNav } from '@hooks/screencast/useBrowserNav'
 export type TBrowserNav = {
   loading: boolean
   initialUrl: string
+  rfbRef:MutableRefObject<RFB | null>
 }
 
 const styles = {

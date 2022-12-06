@@ -12,19 +12,18 @@ export const playBrowser = async (data:TStartPlaying) => {
     onCleanup,
     browserConf,
     pwComponents,
-    onCreateNewPage,
   } = data
 
   const { props, action:method } = action
   const [playerOpts, url] = props
   const browserItems = pwComponents || await startBrowser(browserConf)
 
-  const player = Player.getInstance(id, {
+
+  const player =  new Player({
     onEvent,
     onCleanup,
-    onCreateNewPage,
     ...browserItems,
-  })
+  }, id)
 
-  return await player.start({ options: playerOpts, repo })
+  return await player.start({ url, options: playerOpts, repo })
 }

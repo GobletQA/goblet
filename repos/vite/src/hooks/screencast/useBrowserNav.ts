@@ -1,4 +1,6 @@
-import type { TBrowserProps } from '@types'
+import type RFB from '@novnc/novnc/core/rfb'
+import type { MutableRefObject } from 'react'
+
 import { pageService } from '@services/pageService'
 
 import {
@@ -11,10 +13,11 @@ import {
 export type THBrowserNav = {
   loading:boolean
   initialUrl:string
+  rfbRef:MutableRefObject<RFB | null>
 }
 
 export const useBrowserNav = (props:THBrowserNav) => {
-  const { loading, initialUrl } = props
+  const { rfbRef, loading, initialUrl } = props
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -110,7 +113,18 @@ export const useBrowserNav = (props:THBrowserNav) => {
   }, [])
 
   const onReconnect = useCallback(async () => {
-    console.log(`------- TODO: reconnect the browser -------`)
+    if(!rfbRef?.current) return
+
+    /**
+     * RFB._connect is an internal method, so it does not exist on the RFB type
+     * Technically we only need this in dev, so using is should not be an issue
+     */
+    // @ts-ignore
+    rfbRef.current?._connect
+      // @ts-ignore
+      ? rfbRef.current?._connect?.()
+      : console.warn(`NoVNC RFB._connect method does not exist. Can not reconnect`)
+
   }, [])
 
   return {

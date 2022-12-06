@@ -39,8 +39,10 @@ const getTimeStamp = () => new Date().getTime()
  * @function
  * @private
  */
-const logError = (err:Error = noOpObj as Error, method:string) => {
-  Logger.info(`[ Socket Error ] --- SocketManager.${method}`)
+const logError = (err:Error = noOpObj as Error, method:string, data?:Record<any, any>) => {
+  data && console.log(`[ Socket Error ] - SocketManager.${method} Data`, data)
+
+  Logger.info(`[ Socket Error ] - SocketManager.${method}`)
   err.stack && Logger.error(err.stack)
 }
 
@@ -191,7 +193,7 @@ export class SocketManager {
       )
     }
     catch (err) {
-      logError(err, 'emit')
+      logError(err, `emit`, data)
     }
   }
 
@@ -221,7 +223,7 @@ export class SocketManager {
         )
     }
     catch (err) {
-      logError(err, 'broadCastAll')
+      logError(err, `broadCastAll`, data)
     }
   }
 
@@ -258,7 +260,7 @@ export class SocketManager {
       )
     }
     catch (err) {
-      logError(err, 'emitAll')
+      logError(err, `emitAll`, data)
     }
   }
 
@@ -288,7 +290,7 @@ export class SocketManager {
       })
     }
     catch (err) {
-      logError(err, 'setupSocket')
+      logError(err, `setupSocket`)
     }
   }
 

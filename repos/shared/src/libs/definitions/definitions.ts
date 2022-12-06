@@ -1,5 +1,5 @@
 import type { Repo } from '../../repo/repo'
-import type { TGobletConfig } from '../../types'
+import type { TDefGobletConfig } from '../../types'
 
 import path from 'path'
 import glob from 'glob'
@@ -50,7 +50,7 @@ const parseDefinitions = async (
  */
 export const loadDefinitions = async (
   repo:Repo,
-  gobletConfig:TGobletConfig
+  gobletConfig?:TDefGobletConfig
 ) => {
   // Clear out any steps that were already loaded
   DefinitionsParser.clear(repo)

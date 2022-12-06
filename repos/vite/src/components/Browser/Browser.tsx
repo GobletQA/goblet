@@ -123,6 +123,7 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
   return (
     <BrowserContainer className='browser-container'>
       <BrowserNav
+        rfbRef={rfb}
         loading={loading}
         initialUrl={displayUrl}
       />

@@ -3,7 +3,6 @@
  * This simulates the mouse movement when tests are running
  */
 
-
 /**
  * Init script that checks if the script should run based on recording state
  */
@@ -16,8 +15,11 @@ async function initGobletMouseTracking(){
   // Install mouse helper only for top-level frame.
   window === window.parent &&
   window.addEventListener('DOMContentLoaded', () => {
+    const hasBox = document.querySelector('#goblet-mouse-pointer')
+    if(hasBox) return
 
     const box = document.createElement('goblet-mouse-pointer')
+    box.id = `goblet-mouse-pointer`
     const styleElement = document.createElement('style')
 
     styleElement.innerHTML = `
