@@ -27,8 +27,7 @@ const handleStartPlaying = async (
       Manager.emit(socket, event.name, { ...event, group: socket.id })
     },
     onCleanup: async (closeBrowser:boolean) => {
-      console.log(`------- run-tests clean-up -------`)
-      // closeBrowser && await stopBrowser(browserConf)
+      Manager.cache[socket.id].player = undefined
     },
     onCreateNewPage: async (page:any) => {
       page && await setPage(page)

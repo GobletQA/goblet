@@ -24,8 +24,10 @@ export const events = {
 
     // Get the name of the action from sockr's Event Types
     // And convert into an action name for the taps sockr actions
-    const actionName = camelCase((event.split(':')[1] || '').toLowerCase())
-    checkCall(socketActions[actionName as keyof typeof socketActions], message)
+    const actionName = camelCase((event.split(':')[1] || '').toLowerCase()) as string
+
+    !events[actionName as keyof typeof events]
+      && checkCall(socketActions[actionName as keyof typeof socketActions], message)
   },
   init: function (message:TSocketEvt){
     // console.log(`------- init event -------`)
@@ -49,6 +51,12 @@ export const events = {
   },
   recordGeneral: function(message:TSocketEvt){
     console.log(`------- recordGeneral -------`)
+    console.log(message)
+  },
+  pwUrlChange: function(message:TSocketEvt){
+    // TODO: dispatch this to the browser nav to update the url
+    // Should not cause a reload, just update the url if it doesn't match
+    console.log(`------- pageNavigated -------`)
     console.log(message)
   },
 }

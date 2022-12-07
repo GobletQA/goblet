@@ -8,10 +8,8 @@ import { noOpObj } from '@keg-hub/jsutils'
 
 const {
   authToken,
-  repoStatus,
   connection,
   disconnect,
-  browserStatus,
   browserRunTests,
   browserRecorder,
   ...customEvents
@@ -38,8 +36,6 @@ export const initSocket = (
         authToken: authToken(app),
         disconnect: disconnect(app),
         connection: connection(app),
-        repoStatus: repoStatus(app),
-        browserStatus: browserStatus(app),
         browserRunTests: browserRunTests(app),
         browserRecorder: browserRecorder(app),
       },

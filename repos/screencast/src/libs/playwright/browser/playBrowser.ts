@@ -18,7 +18,6 @@ export const playBrowser = async (data:TStartPlaying) => {
   const [playerOpts, url] = props
   const browserItems = pwComponents || await startBrowser(browserConf)
 
-
   const player =  new Player({
     onEvent,
     onCleanup,

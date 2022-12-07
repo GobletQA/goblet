@@ -63,7 +63,16 @@ export class TailLogger {
     if(this.started) return
 
     this.started = true
+    console.log(`Starting Playwright log-tail...`)
     this.tail.start()
+  }
+
+  stop = async () => {
+    this.started = false
+    console.log(`Stopping Playwright log-tail...`)
+
+    await this.tail.stop()
+    this.callbacks = undefined
   }
 
 }

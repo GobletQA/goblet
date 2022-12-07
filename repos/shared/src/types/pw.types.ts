@@ -1,6 +1,7 @@
 import type { TRepo } from './repo.types'
 import type {
   Page,
+  Frame,
   Browser,
   Geolocation,
   ViewportSize,
@@ -106,4 +107,37 @@ export type TBrowserMetaData = {
   webkit?:TBrowserMetaDataContext
   firefox?:TBrowserMetaDataContext
   chromium?:TBrowserMetaDataContext
+}
+
+export enum EBrowserEvent {
+  close='close',
+  console='console',
+  crash='crash',
+  dialog='dialog',
+  domcontentloaded='domcontentloaded',
+  download='download',
+  filechooser='filechooser',
+  frameattached='frameattached',
+  framedetached='framedetached',
+  framenavigated='framenavigated',
+  load='load',
+  pageerror='pageerror',
+  popup='popup',
+  request='request',
+  requestfailed='requestfailed',
+  requestfinished='requestfinished',
+  response='response',
+  websocket='websocket',
+  worker='worker',
+} 
+export type TBrowserEventCB = (...args:any[]) => void
+
+export type TBrowserEvents = {
+  [key in EBrowserEvent]?: TBrowserEventCB[]
+}
+
+export type TOnBrowserEvents = {
+  events:TBrowserEvents
+  browserConf?: TBrowserConf
+  pwComponents?: TPWComponents
 }

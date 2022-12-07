@@ -14,7 +14,7 @@ export const setupCmds = (
   config:TSocketConfig
 ) => {
   // Setup the socket, and update connected peers
-  Manager.setupSocket(socket, config.commands)
+  Manager.setupSocket(socket)
 
   // Setup the socket to listen for commands to run
   Proc.bindSocket(socket)

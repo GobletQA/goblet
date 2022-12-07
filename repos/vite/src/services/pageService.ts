@@ -2,6 +2,8 @@ import { ensureArr, noPropArr, isUrl } from '@keg-hub/jsutils'
 import { getWorldVal } from '@utils/repo/getWorldVal'
 import { actionBrowser } from '@actions/screencast/api/actionBrowser'
 
+export type TUrlChangeCb = (url:string) => any
+
 export class PageService {
 
   action = async (act:string, props:string|string[], log?:boolean) => {
@@ -29,7 +31,6 @@ export class PageService {
 
     return await this.action(`goto`, new URL(withProto).toString(), log)
   }
-  
 }
 
 

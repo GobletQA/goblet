@@ -37,6 +37,7 @@ export const PWLogFilter = [
   // Need to figure out how to pipe pw:channel events?
   `SEND ► {`,
   `◀ RECV {`,
+  `pw:channel:`,
   `dri3 extension not supported`,
   `Failed to connect to the bus`,
   `Failed to adjust OOM score of renderer`,

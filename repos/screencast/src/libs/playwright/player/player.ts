@@ -13,7 +13,7 @@ import type {
 
 import { constants } from './constants'
 import { CodeRunner } from './codeRunner'
-import {noOp, checkCall, deepMerge, noOpObj} from '@keg-hub/jsutils'
+import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
 
 /**
  * @type Player
