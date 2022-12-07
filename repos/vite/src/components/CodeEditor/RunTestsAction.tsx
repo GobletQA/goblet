@@ -4,7 +4,6 @@ import Box from '@mui/material/Box'
 
 import { IconButton } from '@components/Buttons'
 import { runTests } from '@actions/runner/runTests'
-import { addRootToLoc } from '@utils/repo/addRootToLoc'
 import { getFileModel } from '@utils/files/getFileModel'
 
 import { PlayCircleOutlineIcon } from '@components/Icons'

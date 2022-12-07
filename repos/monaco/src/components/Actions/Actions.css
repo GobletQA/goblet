@@ -47,7 +47,6 @@
   opacity: 1;
 }
 
-
 .goblet-monaco-actions-main .goblet-monaco-actions-list {
   height: auto;
   overflow: hidden;
@@ -68,3 +67,10 @@
   background-color: var(--monaco-editor-background);
 }
 
+.goblet-monaco-action-main * button {
+  color: var(--monaco-editor-foreground);
+}
+
+.goblet-monaco-action-main * button:hover {
+  color: var(--monaco-list-hoverForeground);
+}
