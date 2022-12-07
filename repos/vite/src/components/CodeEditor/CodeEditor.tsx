@@ -19,10 +19,6 @@ const Actions = [
 const PrePanels = [
   ConnectPanel
 ]
-const Panels = [
-  ArtifactsPanel,
-  EnvironmentsPanel
-]
 
 export type TCodeEditorProps = {}
 export const CodeEditor = (props:TCodeEditorProps) => {
@@ -49,7 +45,6 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     ? (
         <MonacoEditor
           ref={editorRef}
-          Panels={Panels}
           config={config}
           actions={Actions}
           Divider={Divider}

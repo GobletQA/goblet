@@ -9,10 +9,6 @@ import { settingsDispatch } from '@store'
  * Both the data object and the value param do the same thing
  * If data prop has a value key, it will override the value prop
  *
- * @param {string} props.setting - Name of the setting being updated
- * @param {Object} props.data - A partial of the full setting meta data
- * @param {any} props.value - only the value key of the setting meta data
- *
  */
 export const updateSettingValue = (props:TSettingAct) => {
   const {

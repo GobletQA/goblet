@@ -1,4 +1,3 @@
-import type { SelectChangeEvent } from '@mui/material/Select'
 import type { TSetting, TSettingsConfig, CSSObj } from '@types'
 import type { ChangeEvent, FocusEvent, ChangeEventHandler, FocusEventHandler } from 'react'
 
@@ -60,7 +59,7 @@ const RenderByType = (props:TSettingsListItem) => {
     }
 
     item.value !== value
-      && updateSettingValue({ value, setting: `${item.group}.${item.key}` })
+      && updateSettingValue({ value, setting: `${item.group}.${item.key.replace(`.`, `-`)}` })
 
   }, [value, item, disabled])
 
@@ -69,9 +68,8 @@ const RenderByType = (props:TSettingsListItem) => {
     
     const value = evt?.target?.checked
     item.active !== value
-      && toggleSettingActive({ setting: `${item.group}.${item.key}` })
+      && toggleSettingActive({ setting: `${item.group}.${item.key.replace(`.`, `-`)}` })
   }, [value, item])
-
 
   // Handel all headers keys and non-editable fields
   if(header || !config.editKeys.includes(colKey))

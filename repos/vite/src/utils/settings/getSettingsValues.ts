@@ -11,12 +11,16 @@ export const getSettingsValues = <T extends TValueGroup>(loc:string, settings?:T
   settings = settings || getStore().getState().settings
   const group = get(settings, loc, noOpObj)
 
-  return Object.entries(group)
+  const mapped = Object.entries(group)
     .reduce((acc, [key, settingObj]:[string, TSetting]) => {
+      const ref = settingObj?.key || key
+
       settingObj.active
-        ? set(acc, key, settingObj?.value)
-        : exists(settingObj.default) && set(acc, key, settingObj?.default)
+        ? set(acc, ref, settingObj?.value)
+        : exists(settingObj.default) && set(acc, ref, settingObj?.default)
 
       return acc
     }, {} as T)
+
+  return mapped
 }

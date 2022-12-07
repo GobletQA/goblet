@@ -1,5 +1,6 @@
-import type { EThemeType, TGobletTheme } from '@types'
+import type { TGobletTheme } from '@types'
 
+import{ EThemeType } from '@types'
 import { palette } from './palette'
 import { typography } from './typography'
 import { components } from './components'
@@ -20,10 +21,10 @@ export const createTheme = (type:EThemeType) => {
   return __GobletTheme
 }
 
-export const getTheme = (type:EThemeType) => {
+export const getTheme = (type?:EThemeType) => {
   const mode =__GobletTheme && __GobletTheme?.palette?.mode
 
   return __GobletTheme && (!mode || !type || mode === type)
     ? __GobletTheme
-    : createTheme(type)
+    : createTheme(type || EThemeType.light)
 }

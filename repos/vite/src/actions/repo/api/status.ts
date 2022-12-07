@@ -32,7 +32,10 @@ type TStatusRepo = Omit<TRouteMeta, "routes" | "meta"> & {
  * @returns {Object} - Passed in status object
  */
 const setNoLocalMountState = async (status:TRepoStatus) => {
-  if(AuthActive && status.mode === StatusTypes.VNC) return connectModal()
+  if(AuthActive && status.mode === StatusTypes.VNC){
+    connectModal()
+    return status
+  }
 
   addToast({
     type: 'warn',
@@ -71,7 +74,7 @@ const setNoRepoStatus = (status:TRepoStatus) => {
  
 export const statusRepo = async ({
   routes=noOpObj as TStatusRoutes,
-}:TStatusRepo=noOpObj as TStatusRepo) => {
+}:TStatusRepo=noOpObj as TStatusRepo):Promise<TRepoStatus|Error> => {
 
   addToast({
     type: 'info',
@@ -100,5 +103,5 @@ export const statusRepo = async ({
         : checkCall(() => {
             setRepo(data)
             return data?.status
-          })
+          }) as TRepoStatus
 }

@@ -1,9 +1,10 @@
 export type TSetting = {
   value: any
-  key?: string
+  key: string
   group?: string
   default?: any
   prefix?: string
+  parent?: string
   active?: boolean
   postfix?: string
   enabled?: boolean

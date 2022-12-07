@@ -1,7 +1,6 @@
-import type { TPaletteOpts } from '@types'
 import type { Theme } from '@mui/material/styles'
-import { backdropClasses } from '@mui/material'
-
+import type { TGobletTheme, TPaletteOpts } from '@types'
+import { getColor } from '@utils/theme/getColor'
 
 export const components = (
   muiTheme:Theme,
@@ -29,7 +28,7 @@ export const components = (
         },
         paper: {
           backgroundImage: `initial`,
-          backgroundColor: palette.colors.black02
+          backgroundColor: getColor(palette.colors.white00, palette.colors.black02, { palette } as TGobletTheme)
         }
       }
     },
