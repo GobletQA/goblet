@@ -3,15 +3,21 @@ import { BlockIcon } from '@components/Icons'
 import { ConnectPanel } from './ConnectPanel'
 import { EditorSidebarWidth } from '@constants'
 import { MonacoEditor } from '@gobletqa/monaco'
-import { RunTestsAction } from './RunTestsAction'
+import { DrawAction } from './Actions/DrawAction'
 import { Divider } from '@components/Layout/Divider'
 import { RepoNotConnected } from './RepoNotConnected'
-import { RecordBrowserAction } from './RecordBrowserAction'
+import { SquareAction } from './Actions/SquareAction'
+import { PictureAction } from './Actions/PictureAction'
+import { RunTestsAction } from './Actions/RunTestsAction'
+import { RecordBrowserAction } from './Actions/RecordBrowserAction'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
 
 const Actions = [
   RunTestsAction,
-  RecordBrowserAction
+  RecordBrowserAction,
+  DrawAction,
+  SquareAction,
+  PictureAction
 ]
 
 const PrePanels = [

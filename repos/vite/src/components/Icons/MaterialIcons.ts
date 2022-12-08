@@ -39,7 +39,10 @@ import RestartIcon from '@mui/icons-material/SettingsBackupRestoreOutlined'
 import ChevronUpIcon from '@mui/icons-material/ExpandLess'
 import ChevronDownIcon from '@mui/icons-material/ExpandMore'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
-import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
+import ModeEditIcon from '@mui/icons-material/ModeEdit'
+import CropSquareIcon from '@mui/icons-material/CropSquare'
+import CameraAltIcon from '@mui/icons-material/CameraAlt'
 
 export {
   Globe,
@@ -83,5 +86,8 @@ export {
   ChevronUpIcon,
   ChevronDownIcon,
   PlayCircleOutlineIcon,
-  RadioButtonCheckedIcon
+  RadioButtonCheckedIcon,
+  ModeEditIcon,
+  CropSquareIcon,
+  CameraAltIcon,
 }
