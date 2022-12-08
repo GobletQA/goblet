@@ -11,7 +11,7 @@ export class EventEmitter {
   listeners:Record<string, Set<TEventCB>> = {}
   refKey: Record<string, TEventCB> = {}
 
-  on = <T=Record<any, any>>(event:string, cb:TEventCB<T>, key?:string) => {
+  on = <T=Record<any, any>>(event:string, cb:TEventCB<T>, key:string=event) => {
     if (!this.listeners[event]) this.listeners[event] = new Set<TEventCB<T>>()
 
     if (this.listeners[event].has(cb))
@@ -23,7 +23,7 @@ export class EventEmitter {
     this.listeners[event].add(cb)
     key && !this.refKey[key] && (this.refKey[key] = cb)
 
-    return this
+    return () => this.off(event, cb)
   }
 
   emit = <T=Record<any, any>>(event:string, evtObj:T, ...data:any[]) => {
@@ -37,7 +37,7 @@ export class EventEmitter {
 
   off = <T=Record<any, any>>(event:string, ref:string|TEventCB<T>=event) => {
     const cb = typeof ref === 'string' ? this.refKey[ref] : ref
-    if(!cb) return
+    if(!cb) return console.warn(`Missing callback from ref ${ref}`)
     
     this.listeners[event].delete(cb)
     

@@ -1,11 +1,13 @@
 import type { TSocketEvt } from '@types'
 import type { SocketService } from './socketService'
 
+import { BrowserNavEvt } from '@constants'
+import { pageService } from '../pageService'
 import * as socketActions from '@actions/socket/local'
 import { camelCase, checkCall } from '@keg-hub/jsutils'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { recordAction } from '@actions/socket/local/recordAction'
 import { setBrowserRecording } from '@actions/socket/local/setBrowserRecording'
-
 
 /**
  * Callback event functions bound to the SocketService
@@ -54,9 +56,6 @@ export const events = {
     console.log(message)
   },
   pwUrlChange: function(message:TSocketEvt){
-    // TODO: dispatch this to the browser nav to update the url
-    // Should not cause a reload, just update the url if it doesn't match
-    console.log(`------- pageNavigated -------`)
-    console.log(message)
+    EE.emit(BrowserNavEvt, message.data)
   },
 }

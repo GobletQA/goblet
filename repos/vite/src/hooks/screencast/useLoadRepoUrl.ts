@@ -10,14 +10,15 @@ import { getWorldVal } from '@utils/repo/getWorldVal'
 export const useLoadRepoUrl = (repo?:any) => {
 
   const repoUrl = useMemo(() => {
-    return `http://www.gobletqa.com`
-    // return `http://www.google.com`
+    const url = `https://www.gobletqa.com`
+    // const url = `https://www.google.com`
     
-    // return getWorldVal({
+    // const url = getWorldVal({
     //   location: `url`,
     //   fallback: `app.url`,
     //   repo
     // })
+    return pageService.normalize(url)
   }, [repo])
 
   const loadRepoUrl = useCallback(async () => {

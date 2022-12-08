@@ -1,8 +1,5 @@
-import { ensureArr, noPropArr, isUrl } from '@keg-hub/jsutils'
-import { getWorldVal } from '@utils/repo/getWorldVal'
+import { ensureArr, noPropArr } from '@keg-hub/jsutils'
 import { actionBrowser } from '@actions/screencast/api/actionBrowser'
-
-export type TUrlChangeCb = (url:string) => any
 
 export class PageService {
 
@@ -20,16 +17,44 @@ export class PageService {
     return await this.action(`reload`, noPropArr, log)
   }
 
-  goto = async (url:string, log?:boolean) => {
-    // Playwright force the protocol to exist on the url
-    // This validates the url has a protocol on it
-    // But doesn't care what that is
-    // If none exist, it adds the current window.location.protocol
-    const withProto = /^\w+:\/\//.test(url)
+  /**
+   * Normalizes a url string to ensure it's consistent
+   */
+  normalize = (url:string) => {
+    return new URL(this.ensureProtocol(url)).toString()
+  }
+
+  /**
+   * Playwright requires the protocol to exist on the url
+   * This validates the url has a protocol on it
+   * But doesn't care what that is
+   * If none exist, it adds the current window.location.protocol
+   */
+  ensureProtocol = (url:string) => {
+    return /^\w+:\/\//.test(url)
       ? url
       : `${window.location.protocol}//${url}`
+  }
 
-    return await this.action(`goto`, new URL(withProto).toString(), log)
+  /**
+   * Tell the page to go backward
+   */
+  goBack = async (log?:boolean) => {
+    return await this.action(`goBack`, noPropArr, log)
+  }
+
+  /**
+   * Tell the page to go forward
+   */
+  goForward = async (log?:boolean) => {
+    return await this.action(`goForward`, noPropArr, log)
+  }
+
+  /**
+   * Tell playwright to navigate to a specific page
+   */
+  goto = async (url:string, log?:boolean) => {
+    return await this.action(`goto`, this.normalize(url), log)
   }
 }
 

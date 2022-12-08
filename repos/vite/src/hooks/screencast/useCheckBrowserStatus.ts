@@ -1,5 +1,3 @@
-import type { MutableRefObject } from 'react'
-
 import { useCallback, useRef } from 'react'
 import { statusBrowser } from '@actions/screencast/api'
 import { useLoadRepoUrl } from '@hooks/screencast/useLoadRepoUrl'
