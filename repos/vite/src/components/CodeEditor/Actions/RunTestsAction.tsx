@@ -1,22 +1,19 @@
 import type { TEditorAction, TEditorActionProps } from '@gobletqa/monaco'
 
-import Box from '@mui/material/Box'
-
-import { IconButton } from '@components/Buttons'
+import { EditorAction } from './EditorAction'
 import { runTests } from '@actions/runner/runTests'
 import { getFileModel } from '@utils/files/getFileModel'
-
 import { PlayCircleOutlineIcon } from '@components/Icons'
 
 
 const RunTests = (props:TEditorActionProps) => {
   return (
-    <Box className='goblet-run-tests-btn-main'>
-      <IconButton
-        onClick={props.onClick}
-        Icon={PlayCircleOutlineIcon}
-      />
-    </Box>
+    <EditorAction
+      onClick={props.onClick}
+      Icon={PlayCircleOutlineIcon}
+      className='goblet-browser-run-tests'
+      tooltip='Run a test or script in the browser'
+    />
   )
 }
 

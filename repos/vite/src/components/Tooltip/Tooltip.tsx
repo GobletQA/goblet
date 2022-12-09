@@ -1,20 +1,10 @@
 import type { ComponentProps } from 'react'
 import { MuiTooltip } from './Tooltip.styled'
+import type { TooltipProps } from '@mui/material/Tooltip'
 
 
 export type TTooltip = ComponentProps<typeof MuiTooltip> & {
-  loc?: 'bottom-end'
-    | 'bottom-start'
-    | 'bottom'
-    | 'left-end'
-    | 'left-start'
-    | 'left'
-    | 'right-end'
-    | 'right-start'
-    | 'right'
-    | 'top-end'
-    | 'top-start'
-    | 'top'
+  loc?: TooltipProps['placement']
 }
 
 export const Tooltip = (props:TTooltip) => {
@@ -28,7 +18,7 @@ export const Tooltip = (props:TTooltip) => {
   return (
     <MuiTooltip
       {...rest}
-      placement={placement}
+      placement={placement || `bottom`}
     >
       {children}
     </MuiTooltip>

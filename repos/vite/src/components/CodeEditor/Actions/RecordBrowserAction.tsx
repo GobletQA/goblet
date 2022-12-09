@@ -1,20 +1,17 @@
 import type { TEditorAction, TEditorActionProps } from '@gobletqa/monaco'
 
-import Box from '@mui/material/Box'
-
-import { IconButton } from '@components/Buttons'
+import { EditorAction } from './EditorAction'
 import { getFileModel } from '@utils/files/getFileModel'
 import { RadioButtonCheckedIcon } from '@components/Icons'
 
-
 const RecordBrowser = (props:TEditorActionProps) => {
   return (
-    <Box className='goblet-run-tests-btn-main'>
-      <IconButton
-        onClick={props.onClick}
-        Icon={RadioButtonCheckedIcon}
-      />
-    </Box>
+    <EditorAction
+      onClick={props.onClick}
+      Icon={RadioButtonCheckedIcon}
+      className='goblet-browser-record'
+      tooltip='Record actions from the browser'
+    />
   )
 }
 

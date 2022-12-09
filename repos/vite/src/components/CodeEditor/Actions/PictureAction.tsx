@@ -1,18 +1,17 @@
 import type { TEditorAction, TEditorActionProps } from '@gobletqa/monaco'
 
-import Box from '@mui/material/Box'
-import { IconButton } from '@components/Buttons'
+import { EditorAction } from './EditorAction'
 import { CameraAltIcon } from '@components/Icons'
 
 
 const PictureComp = (props:TEditorActionProps) => {
   return (
-    <Box className='goblet-run-tests-btn-main'>
-      <IconButton
-        onClick={props.onClick}
-        Icon={CameraAltIcon}
-      />
-    </Box>
+    <EditorAction
+      Icon={CameraAltIcon}
+      onClick={props.onClick}
+      className='goblet-browser-picture'
+      tooltip='Take a picture of the browser'
+    />
   )
 }
 

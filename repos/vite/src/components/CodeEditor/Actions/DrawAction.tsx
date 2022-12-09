@@ -1,17 +1,16 @@
 import type { TEditorAction, TEditorActionProps } from '@gobletqa/monaco'
 
-import Box from '@mui/material/Box'
-import { IconButton } from '@components/Buttons'
+import { EditorAction } from './EditorAction'
 import { ModeEditIcon } from '@components/Icons'
 
 const DrawComp = (props:TEditorActionProps) => {
   return (
-    <Box className='goblet-run-tests-btn-main'>
-      <IconButton
-        onClick={props.onClick}
-        Icon={ModeEditIcon}
-      />
-    </Box>
+    <EditorAction
+      Icon={ModeEditIcon}
+      onClick={props.onClick}
+      className='goblet-browser-free-draw'
+      tooltip='Free draw on top of the browser'
+    />
   )
 }
 
