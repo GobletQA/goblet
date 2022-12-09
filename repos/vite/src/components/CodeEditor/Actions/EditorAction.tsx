@@ -3,9 +3,10 @@ import type { ComponentType } from 'react'
 
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
-import { cls, isStr } from '@keg-hub/jsutils'
 import { Tooltip } from '@components/Tooltip'
+import { useTheme } from '@hooks/theme/useTheme'
 import { IconButton } from '@components/Buttons'
+import { cls, isStr, noOpObj } from '@keg-hub/jsutils'
 
 export type TEditorActionProps = {
   loc?:TooltipProps['placement']
@@ -41,6 +42,20 @@ const useToolTipText = (props:TEditorActionProps) => {
   ])
 }
 
+const useDisabledStyle = (disabled?:boolean) => {
+  const theme = useTheme()
+  return useMemo(() => {
+    return disabled
+      ? {
+          box: { cursor: disabled ? `not-allowed` : `auto` },
+          // TODO: Not really a fan of needing !important
+          // This is the easiest quick-fix / work-around
+          btn: { color: `${theme?.palette?.colors?.fadeLight30} !important` }
+        }
+      : noOpObj as Record<string, any>
+  }, [disabled, theme])
+}
+
 export const EditorAction = (props:TEditorActionProps) => {
   const {
     Icon,
@@ -53,7 +68,7 @@ export const EditorAction = (props:TEditorActionProps) => {
   } = props
 
   const title = useToolTipText(props)
-  const sx = useMemo(() => ({ cursor: disabled ? `not-allowed` : `auto` }), [disabled])
+  const style = useDisabledStyle(disabled)
 
   return (
     <Tooltip
@@ -64,12 +79,13 @@ export const EditorAction = (props:TEditorActionProps) => {
       enterDelay={enterDelay}
     >
       <Box
-        sx={sx}
+        sx={style?.box}
         className={cls('goblet-editor-action', className)}
       >
         <IconButton
           Icon={Icon}
           onClick={onClick}
+          sx={style?.btn}
           disabled={disabled}
         />
       </Box>
