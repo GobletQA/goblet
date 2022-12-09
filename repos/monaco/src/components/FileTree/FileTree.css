@@ -63,5 +63,5 @@
 }
 
 .goblet-monaco-file-item-row:hover .goblet-editor-actions-container {
-  background-color: var(--monaco-list-hoverBackground);
+  /* background-color: var(--monaco-list-hoverBackground); */
 }

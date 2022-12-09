@@ -14,13 +14,10 @@
   width: calc( 100% + 5px );
   position: relative;
   background: var(--monaco-list-activeSelectionBackground);
-  transition: border-bottom 300ms ease;
-  border-bottom: 2px solid transparent;
+  border-bottom: 2px solid var(--monaco-editor-background);
 }
 
-.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-header.closed {
-  border-bottom: 2px solid var(--monaco-sideBar-border);
-}
+.goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-header.closed {}
 
 .goblet-monaco-sidebar-panel-header .goblet-monaco-panel-header-icon {
   font-size: 16px;

@@ -27,7 +27,7 @@ const formFields = {
       onClick: signOutAuthUser,
       variant: `text`  as const,
       color: `secondary` as const,
-      StartIcon: `$component.CloudDownIcon`,
+      StartIcon: `$component.LogoutIcon`,
     },
     connectRepo: {
       color: `primary`  as const,
