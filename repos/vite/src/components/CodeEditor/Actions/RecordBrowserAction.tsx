@@ -10,7 +10,7 @@ const RecordBrowser = (props:TEditorActionProps) => {
       onClick={props.onClick}
       Icon={RadioButtonCheckedIcon}
       className='goblet-browser-record'
-      tooltip='Record actions from the browser'
+      tooltip='Record browser actions'
     />
   )
 }

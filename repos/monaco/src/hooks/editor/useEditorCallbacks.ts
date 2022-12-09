@@ -1,9 +1,10 @@
 import type { TLinter } from './useLintWorker'
 import type { TTypes } from './useTypesWorker'
-import type { editor, IDisposable } from 'monaco-editor'
+import type { IDisposable } from 'monaco-editor'
 import type { SetStateAction, RefObject, MutableRefObject } from 'react'
 import type {
   TFilelist,
+  TEditorOpts,
   TCodeEditorRef,
   TEditorFileCBRef,
   TEditorOpenFiles,
@@ -20,27 +21,27 @@ export type TUseFileCallbacks = {
   filesRef: MutableRefObject<TFilelist>
   curValueRef: MutableRefObject<string>
   editorNodeRef: RefObject<HTMLDivElement>
-  prePath: MutableRefObject<string | null>
   typesWorkerRef: MutableRefObject<TTypes>
   lintWorkerRef: MutableRefObject<TLinter>
+  optionsRef: MutableRefObject<TEditorOpts>
+  openedPathRef: MutableRefObject<string | null>
   editorStatesRef:MutableRefObject<Map<any, any>>
   setCurPath: (data: SetStateAction<string>) => void
   contentListenerRef: MutableRefObject<IDisposable | undefined>
   onValueChangeRef: MutableRefObject<((v: string) => void) | undefined>
   onLoadFileRef:MutableRefObject<((path: string) => Promise<string|null>) | undefined>
-  optionsRef: MutableRefObject<editor.IStandaloneEditorConstructionOptions>
 }
 
 export const useEditorCallbacks = (props:TUseFileCallbacks) => {
 
   const {
-    prePath,
     filesRef,
     editorRef,
     optionsRef,
     setCurPath,
     curValueRef,
     defaultPath,
+    openedPathRef,
     onLoadFileRef,
     lintWorkerRef,
     typesWorkerRef,
@@ -57,10 +58,10 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
   )
 
   const restoreModel = useRestoreModel({
-    prePath,
     filesRef,
     editorRef,
     curValueRef,
+    openedPathRef,
     onLoadFileRef,
     lintWorkerRef,
     typesWorkerRef,

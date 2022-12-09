@@ -14,6 +14,16 @@ export const components = (
         }
       }
     },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          "&.Mui-disabled": {
+            cursor: `not-allowed`,
+            color: getColor(palette.colors.fadeLight50, palette.colors.fadeDark50, { palette } as TGobletTheme)
+          }
+        }
+      }
+    },
     MuiDrawer: {
       styleOverrides: {
         paper: {

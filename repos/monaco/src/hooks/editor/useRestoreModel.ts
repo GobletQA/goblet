@@ -12,7 +12,7 @@ export type TUseRestoreModel = {
   editorRef: TCodeEditorRef
   curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
-  prePath: MutableRefObject<string | null>
+  openedPathRef: MutableRefObject<string | null>
   lintWorkerRef: MutableRefObject<TLinter>
   typesWorkerRef: MutableRefObject<TTypes>
   editorStatesRef:MutableRefObject<Map<any, any>>
@@ -134,7 +134,7 @@ const modelRestore = (
   props:TUseRestoreModel
 ) => {
   const {
-    prePath,
+    openedPathRef,
     filesRef,
     editorRef,
     lintWorkerRef,
@@ -145,19 +145,19 @@ const modelRestore = (
 
   editorRef?.current?.setModel(model)
 
-  path !== prePath.current
+  path !== openedPathRef.current
     && pathRestore(path, model, props)
 
   updateLinter(path, model, lintWorkerRef)
 
-  prePath.current = path
+  openedPathRef.current = path
   return model
 }
 
 export const useRestoreModel = (props:TUseRestoreModel) => {
   const {
-    prePath,
     editorRef,
+    openedPathRef,
     editorStatesRef,
     contentListenerRef,
   } = props
@@ -166,8 +166,8 @@ export const useRestoreModel = (props:TUseRestoreModel) => {
     const editorStates = editorStatesRef.current
     const model = getModelFromPath(path)
 
-    if (path !== prePath.current && prePath.current)
-      editorStates.set(prePath.current, editorRef.current?.saveViewState())
+    if (path !== openedPathRef.current && openedPathRef.current)
+      editorStates.set(openedPathRef.current, editorRef.current?.saveViewState())
 
     if (contentListenerRef.current && contentListenerRef.current.dispose)
       contentListenerRef.current.dispose()

@@ -72,6 +72,19 @@
         "off"
       ]
     },
+    "openMode": {
+      "key": "openMode",
+      "value": "keep",
+      "active": true,
+      "default": "keep",
+      "type": "select",
+      "group": "editor",
+      "emptyOption": "keep",
+      "options": [
+        "keep",
+        "preview"
+      ]
+    },
     "fontSize": {
       "key": "fontSize",
       "value": 14,
@@ -229,6 +242,14 @@
         "indent"
       ]
     },
+    "lineNumbersMinChars": {
+      "key": "lineNumbersMinChars",
+      "value": 3,
+      "active": true,
+      "default": 3,
+      "type": "number",
+      "group": "editor"
+    },
     "folding": {
       "key": "folding",
       "value": true,
@@ -263,6 +284,14 @@
         "never",
         "mouseover"
       ]
+    },
+    "glyphMargin": {
+      "key": "glyphMargin",
+      "value": false,
+      "active": true,
+      "default": false,
+      "type": "boolean",
+      "group": "editor"
     },
     "matchBrackets": {
       "key": "matchBrackets",

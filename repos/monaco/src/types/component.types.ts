@@ -44,6 +44,9 @@ export type TEditorAction = {
 
 export type TEditorActionProps = {
   id?:string
+  name?:string
+  className?:string
+  activeFile?:string
   onClick?: (...args:any[]) => void
 }
 

@@ -10,7 +10,7 @@ export type TUseCloseFile = {
   openedFiles: TEditorOpenFiles
   curPathRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
-  prePath: MutableRefObject<string | null>
+  openedPathRef: MutableRefObject<string | null>
   setCurPath: (data: SetStateAction<string>) => void
   onSaveFile?: (path: string, content: string) => void
   restoreModel: (path: string) => false | editor.ITextModel
@@ -18,13 +18,13 @@ export type TUseCloseFile = {
 }
 
 const clearPath = (
-  prePath:MutableRefObject<string | null>,
+  openedPathRef:MutableRefObject<string | null>,
   restoreModel:(path: string) => false | editor.ITextModel,
   setCurPath:(data: SetStateAction<string>) => void
 ) => {
   restoreModel?.('')
   setCurPath?.('')
-  prePath.current = ''
+  openedPathRef.current = ''
 }
 
 const updateTargetPath = (
@@ -36,16 +36,16 @@ const updateTargetPath = (
   setCurPath?.(targetPath)
 }
 
-const resolvePreOpened = (
-  pre:TEditorOpenFiles,
+const resolveFileOpened = (
+  openedFiles:TEditorOpenFiles,
   path:string,
   targetPath:string
 ) => {
-  return pre.filter((loc, index) => {
+  return openedFiles.filter((loc, index) => {
     if (loc.path === path){}
       index === 0
-        ? pre[index + 1] && (targetPath = pre[index + 1].path)
-        : targetPath = pre[index - 1].path
+        ? openedFiles[index + 1] && (targetPath = openedFiles[index + 1].path)
+        : targetPath = openedFiles[index - 1].path
 
     return loc.path !== path
   })
@@ -53,7 +53,6 @@ const resolvePreOpened = (
 
 export const useCloseFile = (props:TUseCloseFile) => {
   const {
-    prePath,
     autoSave,
     filesRef,
     onSaveFile,
@@ -61,6 +60,7 @@ export const useCloseFile = (props:TUseCloseFile) => {
     setCurPath,
     openedFiles,
     restoreModel,
+    openedPathRef,
     setOpenedFiles
   } = props
 
@@ -76,18 +76,18 @@ export const useCloseFile = (props:TUseCloseFile) => {
             && saveFile(file, filesRef, onSaveFile)
         })
 
-      setOpenedFiles(pre => {
-        if(!pre?.length) return pre
+      setOpenedFiles(openedFiles => {
+        if(!openedFiles?.length) return openedFiles
 
         let targetPath = ''
-        const res = resolvePreOpened(pre, path, targetPath)
+        const res = resolveFileOpened(openedFiles, path, targetPath)
 
         targetPath
           && curPathRef.current === path
           && updateTargetPath(targetPath, restoreModel, setCurPath)
 
         res.length === 0
-          && clearPath(prePath, restoreModel, setCurPath)
+          && clearPath(openedPathRef, restoreModel, setCurPath)
 
         return res
 

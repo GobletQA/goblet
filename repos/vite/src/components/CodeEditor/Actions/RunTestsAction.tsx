@@ -12,7 +12,9 @@ const RunTests = (props:TEditorActionProps) => {
       onClick={props.onClick}
       Icon={PlayCircleOutlineIcon}
       className='goblet-browser-run-tests'
-      tooltip='Run a test or script in the browser'
+      disabled={!Boolean(props.activeFile)}
+      tooltip={`Run the active file in the browser`}
+      disabledTooltip='DISABLED - Open a test or script to use this action'
     />
   )
 }
@@ -24,7 +26,7 @@ export const RunTestsAction:TEditorAction = {
     if(!loc) return console.warn(`Can not run tests, no active file.`)
 
     const fileModel = getFileModel(loc)
-    
+
     if(!fileModel)
       return console.warn(`Can not run tests, File model could not be found.`, loc)
 

@@ -56,11 +56,11 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
 
   const {
     rootRef,
-    prePath,
     filesRef,
     autoSave,
     editorRef,
     optionsRef,
+    openedPathRef,
     editorNodeRef,
     onLoadFileRef,
     onPathChangeRef,
@@ -99,13 +99,13 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     restoreModel,
     setOpenedFiles,
   } = useEditorCallbacks({
-    prePath,
     filesRef,
     editorRef,
     optionsRef,
     setCurPath,
     curValueRef,
     defaultPath,
+    openedPathRef,
     lintWorkerRef,
     onLoadFileRef,
     typesWorkerRef,
@@ -140,7 +140,6 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
   } = useEditorFileCallbacks({
     Modal,
     rootRef,
-    prePath,
     autoSave,
     filesRef,
     editorRef,
@@ -155,6 +154,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onRenameFile,
     onDeleteFile,
     restoreModel,
+    openedPathRef,
     setOpenedFiles,
   })
 
@@ -167,8 +167,10 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     filesRef,
     setTheme,
     saveFile,
+    closeFile,
     editorRef,
     curPathRef,
+    openedFiles,
     curValueRef,
     resizeSidebar,
     onEditorLoaded,

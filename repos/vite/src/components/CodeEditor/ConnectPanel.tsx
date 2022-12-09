@@ -1,19 +1,25 @@
 import type { TRepoState } from '@types'
 import type { TSidebarPanel } from '@gobletqa/monaco'
+import type { ComponentProps } from 'react'
 
 import { useRepo } from '@store'
 import Box from '@mui/material/Box'
-import { noOp } from '@keg-hub/jsutils'
 import { Text } from '@components/Text'
-import { Git, CloudOffIcon } from '@components/Icons'
+import { asCallback } from '@utils/helpers'
+import { Tooltip } from '@components/Tooltip'
 import { Button } from '@components/Buttons/Button'
+import { Git, CloudOffIcon } from '@components/Icons'
+import { connectModal } from '@actions/modals/modals'
+import { disconnectRepo } from '@actions/repo/api/disconnect'
+
+const onConnect = asCallback(connectModal, false)
 
 export type TConnectContent = {}
+export type TDisconnectRepo = ComponentProps<typeof CloudOffIcon>
 
 export type TRepoMeta = {
   repo:TRepoState
 }
-
 
 export type TRepoEmpty = {
 }
@@ -46,7 +52,7 @@ const RepoMeta = (props:TRepoMeta) => {
           fontSize: `12px`,
         }}
       >
-        <b>Name:</b> <a href={remote}>{name}</a>
+        <b>Name:</b> <a href={remote} target='_blank' >{name}</a>
       </Text>
       <Text
         noWrap
@@ -74,14 +80,13 @@ const RepoEmpty = (props:TRepoEmpty) => {
         justifyContent: `center`,
       }}
     >
-      <Button>
+      <Button onClick={onConnect}>
         <Git sx={{ paddingRight: `5px` }} />
         Connect Repository
       </Button>
     </Box>
   )
 }
-
 
 export const ConnectContent = (props:TConnectContent) => {
   const repo = useRepo()
@@ -91,17 +96,35 @@ export const ConnectContent = (props:TConnectContent) => {
     : (<RepoMeta repo={repo} />)
 }
 
+const DisconnectRepo = (props:TDisconnectRepo) => {
+  return (
+    <Tooltip
+      loc='bottom'
+      describeChild
+      title={`Unmount repository`}
+      enterDelay={500}
+      fontSize={`10px`}
+    >
+      <CloudOffIcon {...props} />
+    </Tooltip>
+  )
+}
+
 export const ConnectPanel:TSidebarPanel = {
   actions: [
     {
-      action:noOp,
       id:`connect-repo`,
-      Component: CloudOffIcon,
+      Component: DisconnectRepo,
       className:`goblet-connect-repo`,
+      action:(e:Event) => {
+        e?.stopPropagation?.()
+        e?.preventDefault?.()
+        disconnectRepo()
+      },
     },
   ],
   header: true,
-  startOpen: true,
+  startOpen: false,
   title: `Repository`,
   children:(<ConnectContent />),
   className:`goblet-monaco-connect-panel`

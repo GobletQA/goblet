@@ -1,15 +1,15 @@
 import type { SetStateAction, RefObject, MutableRefObject } from 'react'
 import type { editor } from 'monaco-editor'
-import { TCodeEditorRef,TEditorOpenFiles } from '../../types'
+import { TEditorOpts, TCodeEditorRef, TEditorOpenFiles } from '../../types'
 
 import { useEffect, useCallback } from 'react'
 
 export type TUseOpenOrFocus = {
   editorRef: TCodeEditorRef
   editorNodeRef: RefObject<HTMLDivElement>
+  optionsRef: MutableRefObject<TEditorOpts>
   setCurPath: (content: SetStateAction<string>) => void
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
-  optionsRef: MutableRefObject<editor.IStandaloneEditorConstructionOptions>
 }
 
 export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
@@ -33,8 +33,15 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
 
 
   useEffect(() => {
+
+    // OpenMode is a custom setting handled in the onEditorBlur callback
+    const { openMode, ...opts } = optionsRef.current
+
+    /**
+     * Where options / settings are applied to the editor
+     */
     editorRef.current = window.monaco.editor.create(editorNodeRef.current!, {
-      ...optionsRef.current,
+      ...opts,
       model: null,
     })
 

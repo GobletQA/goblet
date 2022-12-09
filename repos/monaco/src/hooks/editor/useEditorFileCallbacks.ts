@@ -31,7 +31,7 @@ export type TUseEditorFileCallbacks = {
   deleteModel: (path: string) => void
   curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
-  prePath: MutableRefObject<string | null>
+  openedPathRef: MutableRefObject<string | null>
   onSaveFile?: (path: string, content: string) => void
   setCurPath: (content: SetStateAction<string>) => void
   restoreModel: (path: string) => false | editor.ITextModel
@@ -42,7 +42,6 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
   const {
     Modal,
     rootRef,
-    prePath,
     autoSave,
     filesRef,
     editorRef,
@@ -57,6 +56,7 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
     restoreModel,
     onDeleteFile,
     onRenameFile,
+    openedPathRef,
     setOpenedFiles,
   } = props
 
@@ -78,13 +78,13 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
   }, [onSaveFile, handleFormat])
 
   const closeFile = useCloseFile({
-    prePath,
     autoSave,
     filesRef,
     curPathRef,
     setCurPath,
     openedFiles,
     restoreModel,
+    openedPathRef,
     setOpenedFiles,
     // Pass the onSaveFile callback so we can pass the path and content directly
     onSaveFile,
@@ -92,13 +92,13 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
   
   const closeOtherFiles = useCloseOtherFiles({
     Modal,
-    prePath,
     rootRef,
     autoSave,
     filesRef,
     setCurPath,
     openedFiles,
     restoreModel,
+    openedPathRef,
     setOpenedFiles,
     // Pass the onSaveFile callback so we can pass the path and content directly
     onSaveFile,

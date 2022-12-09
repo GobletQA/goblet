@@ -3,13 +3,15 @@ import type { editor } from 'monaco-editor'
 import type {
   TAutoSave,
   TFilelist,
+  TEditorOpts,
   TCodeEditor,
   TEditorTheme,
   IMultiRefType,
   TEditorConfig,
   TCodeEditorRef,
   TOnEditorLoaded,
-  TEditorFileCBRef
+  TEditorFileCBRef,
+  TEditorOpenFiles,
 } from '../../types'
 
 import { THEMES } from '../../constants'
@@ -20,17 +22,19 @@ export type TUseEditorSetup = {
   curPath: string
   autoSave: TAutoSave
   saveFile: () => void
+  options: TEditorOpts
   config: TEditorConfig
   editorRef:TCodeEditorRef
+  openedFiles: TEditorOpenFiles
   onEditorLoaded?:TOnEditorLoaded
   ref: ForwardedRef<IMultiRefType>
+  closeFile:(path: string) => void
   onEditorBlurRef: TEditorFileCBRef
   onEditorFocusRef: TEditorFileCBRef
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   resizeSidebar: (width:number) => void
-  options: editor.IStandaloneEditorConstructionOptions
   onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
   setTheme: (name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
 }
@@ -47,7 +51,9 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     saveFile,
     setTheme,
     editorRef,
+    closeFile,
     curPathRef,
+    openedFiles,
     curValueRef,
     resizeSidebar,
     onEditorLoaded,
@@ -56,19 +62,42 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     onEditorFocusRef,
   } = props
 
-    const lastSavedRef = useRef<string>()
     const onEditorFocus = useCallback(() => {
       onEditorFocusRef.current?.(curPathRef.current, curValueRef.current)
     }, [])
 
     const onEditorBlur = useCallback(() => {
-      if(autoSave === `blur` && lastSavedRef.current !== curValueRef.current){
-        lastSavedRef.current = curValueRef.current
+      if(!curValueRef.current) return
+
+      const file = openedFiles.find(file => file.path === curPathRef.current)
+      const isEditing = file?.status === `editing`
+
+      // Check if save on blur and the file was changed
+      if(autoSave === `blur` && isEditing){
         saveFile()
       }
 
+      // TODO: find way to know if the event that called this was an action within the editor
+      // If a close file action is called for a diff file that is also open
+      // Then this event is called as well
+      // see onCloseTab in useOnTabClose hook
+
+      // Check if we should auto close the file when not edited
+      if(options.openMode === `preview` && file && file?.mode !== `keep`){
+        if(!isEditing) closeFile(curPathRef.current)
+        else file.mode = `keep`
+      }
+
+      // Call passed in callbacks
       onEditorBlurRef?.current?.(curPathRef.current, curValueRef.current)
-    }, [autoSave, saveFile])
+
+    }, [
+      autoSave,
+      saveFile,
+      closeFile,
+      openedFiles,
+      options.openMode,
+    ])
 
   // Sets up callbacks for focus and blur of the editor
   useEffect(() => {

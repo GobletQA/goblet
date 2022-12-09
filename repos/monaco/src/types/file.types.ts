@@ -1,11 +1,13 @@
+import type { TOpenMode } from './helpers.types'
 
 export interface TFilelist {
   [key: string]: string | null
 }
 
 export type TFileMeta = {
-  status?: string
   path: string
+  status?: string
+  mode?: TOpenMode
 }
 
 export type TMFile = {

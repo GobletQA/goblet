@@ -53,7 +53,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           actions={Actions}
           Divider={Divider}
           options={options}
-          actionsOpen={true}
+          actionsOpen={false}
           sidebarStatus={true}
           Modal={modalActions}
           defaultFiles={files}

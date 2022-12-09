@@ -20,7 +20,7 @@ export type TUseCloseOtherFiles = {
   openedFiles: TEditorOpenFiles
   rootRef: MutableRefObject<any>
   filesRef: MutableRefObject<TFilelist>
-  prePath: MutableRefObject<string | null>
+  openedPathRef: MutableRefObject<string | null>
   setCurPath: (data: SetStateAction<string>) => void
   onSaveFile?: (path: string, content: string) => void
   restoreModel: (path: string) => false | editor.ITextModel
@@ -30,13 +30,13 @@ export type TUseCloseOtherFiles = {
 export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
   const {
     Modal,
-    prePath,
     autoSave,
     filesRef,
     setCurPath,
     onSaveFile,
     openedFiles,
     restoreModel,
+    openedPathRef,
     setOpenedFiles,
   } = props
 
@@ -49,10 +49,10 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
           // This could cause some issue if a lot of files are opened
           saveFile(file, filesRef, onSaveFile)
         })
-        setOpenedFiles(pre => pre.filter(p => p.path === path))
+        setOpenedFiles(openedFiles => openedFiles.filter(file => file.path === path))
         restoreModel(path)
         setCurPath(path)
-        prePath.current = path
+        openedPathRef.current = path
       }
 
       if (unSavedFiles.length) {
@@ -71,7 +71,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
               const content = filesRef.current[file.path] || ''
               createOrUpdateModel(file.path, content)
             })
-            prePath.current = path
+            openedPathRef.current = path
           },
           content: (
             <>
@@ -90,7 +90,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
         setOpenedFiles(pre => pre.filter(p => p.path === path))
         restoreModel(path)
         setCurPath(path)
-        prePath.current = path
+        openedPathRef.current = path
       }
     },
     [autoSave, onSaveFile, restoreModel, openedFiles]

@@ -3,6 +3,7 @@ import type Monaco from 'monaco-editor'
 import type { editor } from 'monaco-editor'
 import type { MutableRefObject } from 'react'
 
+export type TOpenMode = `keep` | `preview`
 export type TAutoSave = `blur` | `change` | `off`
 export type TEditorCB = (data: string) => void
 export type TFileCallback = (...args: any[]) => void
@@ -17,4 +18,5 @@ export type TOnEditorLoaded = (editor:TCodeEditor, monaco:typeof Monaco) => void
 export type TEditorFileCBRef = MutableRefObject<TEditorFileCB | undefined>
 export type TEditorOpts = editor.IStandaloneEditorConstructionOptions & {
   autoSave?: TAutoSave
+  openMode?: TOpenMode
 }

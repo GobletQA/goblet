@@ -36,9 +36,7 @@ export const useEditorRefs = (props:THEditorRefs) => {
     onEditorFocus,
   } = props
 
-  const { autoSave=`off`, ...opts } = options
-
-  const optionsRef = useRef(opts)
+  const optionsRef = useRef(options)
   optionsRef.current = options
 
   const onLoadFileRef = useRef(onLoadFile)
@@ -65,15 +63,14 @@ export const useEditorRefs = (props:THEditorRefs) => {
   const editorRef = useRef<TCodeEditor>(null)
   const contentListenerRef = useRef<IDisposable>()
   const editorNodeRef = useRef<HTMLDivElement>(null)
-  const prePath = useRef<string | null>(defaultPath || '')
+  const openedPathRef = useRef<string | null>(defaultPath || '')
 
   return {
     rootRef,
-    prePath,
     filesRef,
-    autoSave,
     editorRef,
     optionsRef,
+    openedPathRef,
     editorNodeRef,
     onLoadFileRef,
     onPathChangeRef,
@@ -83,5 +80,6 @@ export const useEditorRefs = (props:THEditorRefs) => {
     onEditorFocusRef,
     onValueChangeRef,
     contentListenerRef,
+    autoSave: optionsRef?.current?.autoSave ?? `off`,
   }
 }

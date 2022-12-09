@@ -9,7 +9,7 @@ const DrawComp = (props:TEditorActionProps) => {
       Icon={ModeEditIcon}
       onClick={props.onClick}
       className='goblet-browser-free-draw'
-      tooltip='Free draw on top of the browser'
+      tooltip='Free draw in the browser'
     />
   )
 }
