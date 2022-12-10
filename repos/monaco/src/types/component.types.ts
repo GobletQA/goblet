@@ -53,6 +53,7 @@ export type TEditorActionProps = {
 export interface IMonacoEditorProps {
   title?: string
   Modal: TModalOpts
+  
   rootPrefix?: string
   emptyText?: string
   defaultPath?: string
@@ -77,6 +78,7 @@ export interface IMonacoEditorProps {
   onLoadFile?: TEditorPromiseCB
   onEditorLoaded?:TOnEditorLoaded
   onRenameFile?: TEditorRenameFile
+  style?: Record<string, string|number>
   onSidebarResize?: (width:number) => void
 }
 

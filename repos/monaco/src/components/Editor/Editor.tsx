@@ -27,6 +27,7 @@ const editorStyles = { flex: 1, width: '100%' }
 export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props, ref) => {
 
   const {
+    style,
     emptyText,
     onLoadFile,
     onAddFile,
@@ -200,6 +201,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
   return (
     <div
       tabIndex={1}
+      style={style}
       ref={rootRef}
       onKeyDown={keyDown}
       onMouseMove={onMove}

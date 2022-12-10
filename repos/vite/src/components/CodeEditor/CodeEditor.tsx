@@ -24,7 +24,9 @@ const PrePanels = [
   ConnectPanel
 ]
 
-export type TCodeEditorProps = {}
+export type TCodeEditorProps = {
+  style?: Record<string, string|number>
+}
 export const CodeEditor = (props:TCodeEditorProps) => {
 
   const editorRef = useRef<any>(null)
@@ -48,6 +50,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
   return connected
     ? (
         <MonacoEditor
+          {...props}
           ref={editorRef}
           config={config}
           actions={Actions}

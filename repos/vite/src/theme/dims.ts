@@ -4,6 +4,7 @@ const bNavH = 35
 const bUrlH = 30
 const headerH = 40
 const divider = 1
+const defHeaderH = 40
 
 export const dims = {
   panel: {
@@ -52,7 +53,11 @@ export const dims = {
     }
   },
   defs: {
+    header: {
+      height: defHeaderH,
+      hpx: `${defHeaderH}px`,
+    },
     openedHeight: `50%`,
-    closedHeight: `45px`,
+    closedHeight: `${defHeaderH}px`,
   }
 }

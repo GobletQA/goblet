@@ -58,3 +58,17 @@ export const SideNav = deepFreeze({
     }
   ]
 }) as TSideNav
+
+
+export const DefinitionTabs = [
+  {
+    id: 0,
+    key: 0,
+    name: `Default Steps`,
+  },
+  {
+    id: 1,
+    key: 1,
+    name: `Custom Steps`,
+  },
+]

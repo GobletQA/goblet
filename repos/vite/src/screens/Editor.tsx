@@ -1,22 +1,8 @@
 import { useState, useCallback } from 'react'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import { Layout } from '@components/Layout'
-import { colors } from '@theme'
 import { Builder } from '@components/Builder'
 import { CodeEditor } from '@components/CodeEditor'
-import { Definitions } from '@components/Definitions'
-
-
-/**
-  <Definitions
-    sx={{
-      minHeight: `40px`,
-      position: `absolute`,
-      bottom: dims.footer.height,
-    }}
-  />
- */
+import { DefinitionsSlider } from '@components/Definitions/DefinitionsSlider'
 
 enum EEditorTypes {
   code='code',
@@ -24,37 +10,19 @@ enum EEditorTypes {
 }
 
 const EditorComps = {
-  [EEditorTypes.builder]: Builder,
-  [EEditorTypes.code]: CodeEditor
+  [EEditorTypes.builder]: {
+    Component: Builder,
+    style: {}
+  },
+  [EEditorTypes.code]: {
+    Component: CodeEditor,
+    style: {
+      maxHeight: `calc( 100% - 40px )`
+    }
+  }
 }
 
-
-type TToggle = {
-  editorType: EEditorTypes
-  onToggle: (...args:any[])=> void
-}
-
-const RenderToggle = ({ onToggle, editorType }:TToggle) => {
-  return (
-    <Box sx={{ position: `relative`, zIndex: 1 }} >
-      <Button
-        sx={{
-          top: 0,
-          right: 0,
-          position: `absolute`,
-          backgroundColor: colors.white00
-        }}
-        onClick={onToggle}
-      >
-        {editorType === EEditorTypes.code ? `Builder` : `Code`}
-      </Button>
-    </Box>
-  )
-}
-
-export type TEditorProps = {
-  
-}
+export type TEditorProps = {}
 
 export default function Editor(props:TEditorProps){
   const [editorType, setEditorType] = useState<EEditorTypes>(EEditorTypes.code)
@@ -67,11 +35,12 @@ export default function Editor(props:TEditorProps){
     setEditorType(updatedType)
   }, [editorType])
 
-  const EditorComp = EditorComps[editorType]
-  
+  const { Component, style } = EditorComps[editorType]
+
   return (
     <Layout>
-      <EditorComp />
+      <Component style={style} />
+      <DefinitionsSlider />
     </Layout>
   )
 }

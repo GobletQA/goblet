@@ -8,7 +8,6 @@ import { Terminal } from '@components/Terminal'
 import { LayoutContainer } from './Divider.styled'
 import { Screencast } from '@components/Screencast'
 import { useLayoutResize } from '@hooks/components/useLayoutResize'
-import { DefinitionsSlider } from '@components/Definitions/DefinitionsSlider'
 import {
   Proportional,
   VerticalPageSplit,
@@ -61,7 +60,6 @@ export const Layout = (props:TLayout) => {
           sx={noOverflow}
         >
           {props.children}
-          <DefinitionsSlider />
         </Container>
         <Container disableGutters sx={fullHeight}>
           <VerticalPageSplit

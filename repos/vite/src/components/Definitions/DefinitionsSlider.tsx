@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import type { DrawerProps } from '@mui/material/Drawer'
 
 import { useRef, useState, useCallback } from 'react'
 
@@ -9,15 +10,25 @@ import { PanelDimsSetEvt } from '@constants'
 import { useTheme } from '@hooks/theme/useTheme'
 import { useEffectOnce } from '@hooks/useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { Drawer, DefsExpandBtn } from './Definitions.styled'
 import { ChevronUpIcon, ChevronDownIcon } from '@components/Icons'
+import {
+  Drawer,
+  DefsContainer,
+  DefsExpandBtn,
+} from './Definitions.styled'
 
-export type TDefinitionSlider = {
-  sx?: CSSProperties
+export type TDefinitionSlider = {}
+
+const drawerProps:Partial<DrawerProps> = {
+  elevation: 0,
+  anchor: `bottom`,
+  hideBackdrop: true,
+  variant: `permanent`,
+  sx: { left: `50px` },
+  className: `goblet-defs-drawer`,
 }
 
 export const DefinitionsSlider = (props:TDefinitionSlider) => {
-  const { sx } = props
 
   const [open, setOpen] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
@@ -45,7 +56,6 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
 
   return (
     <Box
-      sx={sx}
       width='100%'
       height='100%'
       ref={parentRef}
@@ -54,15 +64,10 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
       bgcolor={theme.palette.mode === 'light' ? grey[100] : theme.palette.background.default}
     >
       <Drawer
+        {...drawerProps}
         open={open}
-        hideBackdrop
-        elevation={0}
         ref={drawerRef}
-        anchor="bottom"
-        variant="permanent"
-        sx={{ left: `50px` }}
         onClose={toggleDrawer}
-        className='goblet-defs-drawer'
         PaperProps={{
           elevation: 0,
           sx:{
@@ -70,14 +75,9 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
           }
         }}
       >
-        <Box
-          sx={{
-            height: '100%',
-            backgroundColor: theme.palette.mode === 'light' ? '#fff' : grey[800],
-          }}
-        >
+        <DefsContainer>
           <Definitions />
-        </Box>
+        </DefsContainer>
         <DefsExpandBtn onClick={toggleDrawer} >
           {open ? <ChevronDownIcon /> : <ChevronUpIcon /> }
         </DefsExpandBtn>
