@@ -33,6 +33,8 @@ export const SettingsListBody = (props:TSettingBody) => {
     >
       {
         items.map((item) => {
+          const resetDisabled = !item?.active || item.value === item.default
+
           return (
             <Fragment key={item.key} >
               <SettingsListRow>
@@ -55,6 +57,22 @@ export const SettingsListBody = (props:TSettingBody) => {
                         className='settings-list-body-item'
                       />
                     )
+                    
+                    if(idx === keys.length - 1)
+                      acc.push(
+                        <SettingsListItem
+                          item={item}
+                          key={`reset`}
+                          width={width}
+                          align={align}
+                          value={`Reset`}
+                          config={config}
+                          colKey={`reset`}
+                          className='settings-list-header-item'
+                          disabled={resetDisabled}
+                        />
+                      )
+
                     return acc
                   }, [] as ReactNode[])
                 }

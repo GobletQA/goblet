@@ -7,7 +7,7 @@ import { noOp, isFunc, eitherObj, isBool } from '@keg-hub/jsutils'
  * When object, will be passed as the first argument of the callback
  *   * Checks the `allowArgs` property to know if it should forward arguments to the callback
  */
-export const asCallback = (callback:(...args:any[]) => any, defs:boolean|Record<any, any>) => {
+export const asCallback = (callback:(...args:any[]) => any, defs:boolean|Record<any, any>, allowArgs?:boolean) => {
   if(!isFunc(callback)) return noOp
   
   const defArgs = isBool(defs)
@@ -15,6 +15,6 @@ export const asCallback = (callback:(...args:any[]) => any, defs:boolean|Record<
     : eitherObj(defs, { allowArgs: true }) as Record<any, any>
 
   return (...args:any[]) => {
-    return defArgs.allowArgs ? callback(defs, ...args) : callback()
+    return allowArgs || defArgs.allowArgs ? callback(defs, ...args) : callback()
   }
 }

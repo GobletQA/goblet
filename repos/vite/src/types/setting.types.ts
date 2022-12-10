@@ -10,6 +10,7 @@ export type TSetting = {
   enabled?: boolean
   options?: string[]
   emptyOption?: string
+  onReset?: (event:any) => void
   type?: `string` | `number` | `select` | `boolean`
 }
 

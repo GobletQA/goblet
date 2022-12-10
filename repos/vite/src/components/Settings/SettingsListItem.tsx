@@ -4,11 +4,12 @@ import type { ChangeEvent, FocusEvent, ChangeEventHandler, FocusEventHandler } f
 import { useCallback } from 'react'
 import Grid from '@mui/material/Unstable_Grid2'
 
+import { Button } from '@components/Buttons'
+import { RestartIcon } from '@components/Icons'
 import { noOpObj, exists } from '@keg-hub/jsutils'
 import { Input, Switch, Text, Select } from './SettingsInputs'
 import { updateSettingValue } from '@actions/settings/updateSettingValue'
 import { toggleSettingActive } from '@actions/settings/toggleSettingActive'
-
 
 type SelectRecord = Record<'value', any>
 type TInputChangeEvt = ChangeEvent<HTMLInputElement>
@@ -23,9 +24,16 @@ export type TSettingsListItem = {
   item?: TSetting
   header?: boolean
   className?:string
+  disabled?:boolean
   width: number|boolean
   align: `left`|`right`
   config: TSettingsConfig
+}
+
+const styles = {
+  bold: { fontWeight: `bold` },
+  button: { paddingTop: `0px`, paddingBottom: `0px` },
+  icon: { height: `22px`, width: `22px`, paddingRight: `5px` }
 }
 
 const RenderByType = (props:TSettingsListItem) => {
@@ -39,7 +47,7 @@ const RenderByType = (props:TSettingsListItem) => {
     item=noOpObj as TSetting,
   } = props
 
-  const disabled = item?.enabled === false
+  const disabled = props.disabled || item?.enabled === false
 
   const onChangeValue = useCallback((event:TInputChangeEvt) => {
     if(disabled) return
@@ -72,15 +80,30 @@ const RenderByType = (props:TSettingsListItem) => {
   }, [value, item])
 
   // Handel all headers keys and non-editable fields
-  if(header || !config.editKeys.includes(colKey))
-    return (
-      <Text
-        align={align}
-        value={value}
-        sx={sx as CSSObj}
-        disabled={disabled}
-      />
-    )
+  if(header || !config.editKeys.includes(colKey)){
+    return colKey === `reset`
+      ? (
+          <Button
+            disabled={disabled}
+            onClick={item?.onReset}
+            sx={[
+              styles.button,
+              header && styles.bold as any
+            ]}
+          >
+            <RestartIcon sx={styles.icon} />
+            {value}
+          </Button>
+        )
+      : (
+          <Text
+            align={align}
+            value={value}
+            sx={sx as CSSObj}
+            disabled={disabled}
+          />
+        )
+  }
 
   // Handel the active column, always a boolean
   if(colKey === `active`)

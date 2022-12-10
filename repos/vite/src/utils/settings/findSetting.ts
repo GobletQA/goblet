@@ -4,20 +4,25 @@ import { getStore } from '@store'
 import { isSetting } from '@utils/settings/isSetting'
 import { get, noOpObj } from '@keg-hub/jsutils'
 
+export type TFoundSetting = {
+  found?:TSetting
+  setting:string
+}
+
 const missingSetting = (setting:string) => {
   console.warn(`Tried to update a non-existing setting at path: ${setting}`)
-  return noOpObj as any
+  return { setting } as TFoundSetting
 }
 
 const noSetting = (setting:string) => {
   console.warn(`A setting key name or path string is required. Instead got ${setting}`)
-  return noOpObj as any
+  return { setting } as TFoundSetting
 }
 
 export const findSetting = (
   setting:string,
   settings?:TSettings
-) => {
+):TFoundSetting => {
 
   if(!setting) return noSetting(setting)
 

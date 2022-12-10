@@ -29,3 +29,5 @@ export const WSPlayActions = {
   stop:`stop`,
   start:`start`,
 }
+
+export const ResetAllGroupSetting = `reset-all-group-setting`

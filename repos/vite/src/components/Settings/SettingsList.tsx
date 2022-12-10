@@ -2,8 +2,10 @@ import type { TSettingGroupMeta, TSetting, TSettingsConfig } from '@types'
 
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
+import { asCallback } from '@utils/helpers'
 import { SettingsListBody } from './SettingsListBody'
 import { SettingsListHeader } from './SettingsListHeader'
+import { resetSetting } from '@actions/settings/resetSetting'
 
 export type TSettingsList = {
   group: TSettingGroupMeta
@@ -25,10 +27,10 @@ export const SettingsList = (props:TSettingsList) => {
       .reduce((acc, [key, value]) => {
         if(!acc.keys?.length){
           acc.keys = Object.keys(value).filter(key => !config.hiddenKeys.includes(key))
-          acc.width = Math.round(12 / acc.keys.length)
+          acc.width = Math.round(12 / acc.keys.length) - 1
         }
 
-        acc.items.push(value)
+        acc.items.push({ ...value, onReset: asCallback(resetSetting, value, true) })
 
         return acc
       }, {
@@ -44,6 +46,7 @@ export const SettingsList = (props:TSettingsList) => {
         keys={keys}
         width={width}
         config={config}
+        group={group.name}
       />
       <SettingsListBody
         keys={keys}

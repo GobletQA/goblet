@@ -1,19 +1,34 @@
 import type { ReactNode } from 'react'
-import type { TSettingsConfig } from '@types'
+import type { TSettingsConfig, TSetting } from '@types'
 
+import { useMemo } from 'react'
 import { wordCaps } from '@keg-hub/jsutils'
 import Grid from '@mui/material/Unstable_Grid2'
+import { ResetAllGroupSetting } from '@constants'
 import { SettingsListRow } from './SettingsListRow'
 import { SettingsListItem } from './SettingsListItem'
+import { resetSetting } from '@actions/settings/resetSetting'
 
 export type TSettingListHeader = {
+  group:string
   keys: string[]
   width: number|boolean
   config: TSettingsConfig
 }
 
 export const SettingsListHeader = (props:TSettingListHeader) => {
-  const { config, keys, width } = props
+  const { config, keys, width, group } = props
+
+  const resetItem = useMemo(() => {
+    const item:TSetting = {
+      group,
+      value: undefined,
+      key: ResetAllGroupSetting,
+    }
+    item.onReset = () => resetSetting(item)
+
+    return item
+  }, [group])
 
   return (
     <Grid
@@ -48,6 +63,21 @@ export const SettingsListHeader = (props:TSettingListHeader) => {
                 value={key === `key` ? `Name` : wordCaps(key)}
               />
             )
+            
+            if(idx === keys.length - 1)
+              acc.push(
+                <SettingsListItem
+                  header
+                  key={`reset`}
+                  colKey={`reset`}
+                  width={width}
+                  align={align}
+                  config={config}
+                  item={resetItem}
+                  className='settings-list-header-item'
+                  value={`Reset All`}
+                />
+              )
 
             return acc
           }, [] as ReactNode[])

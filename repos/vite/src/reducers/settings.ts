@@ -10,7 +10,7 @@ import settingsJson from './settings.json'
 import { localStorage } from '@services/localStorage'
 import { findSetting } from '@utils/settings/findSetting'
 import { ScreencastWidth, ScreencastHeight } from '@constants'
-import { deepMerge, set, noOpObj, exists, pickKeys } from '@keg-hub/jsutils'
+import { deepMerge, set, get, noOpObj, exists, pickKeys } from '@keg-hub/jsutils'
 
 const defSettings = deepMerge(settingsJson, {
   browser: {
@@ -49,21 +49,34 @@ export const settingsActions = {
   resetAll: (
     state:TSettingsState,
     action:TAction<any>
-  ) => deepMerge(defSettings),
+  ) => {
+    localStorage.removeSettings()
+    return deepMerge(defSettings)
+  },
   mergeAll: (
     state:TSettingsState,
     action:TAction<TSettingsState>
   ) => deepMerge<TSettingsState>(state, action?.payload),
+  resetGroup: (
+    state:TSettingsState,
+    action:TAction<string>
+  ) => {
+    const group = action.payload
+    if(!group) return state
+    
+    localStorage.removeSettingGroup(group)
+    set(state, group, get(defSettings, group))
+    
+    return state
+  },
   reset: (
     state:TSettingsState,
     action:TAction<TSettingAct>
   ) => {
     
-    const { found, setting } = findSetting(action.payload?.setting, state)
-    if(!found) return state
-
-    // Use deepMerge to ensure the setting object gets recreated
-    set(state, setting, deepMerge<TSetting>(found))
+    const { found, setting } = findSetting(action.payload?.setting, defSettings)
+    localStorage.removeSetting(setting)
+    found && set(state, setting, deepMerge<TSetting>(found))
 
     return state
   },

@@ -220,6 +220,19 @@ class Storage {
     return await this.set(StorageKeys.SETTINGS, settings)
   }
 
+  removeSettingGroup = async (group:string, settings?:TStorageSettings) => {
+    settings = settings || await this.getSettings()
+
+    const removed = Object.entries(settings)
+      .reduce((acc, [key, value]) => {
+        !key.startsWith(`${group}.`) && (acc[key] = value)
+        
+        return acc
+      }, {} as TStorageSettings)
+
+    return await this.set(StorageKeys.SETTINGS, removed)
+  }
+
 }
 
 export const localStorage = new Storage()
