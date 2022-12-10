@@ -50,5 +50,9 @@ export const dims = {
       hpx: `${tTabH}px`,
       maxWpx: `125px`
     }
+  },
+  defs: {
+    openedHeight: `50%`,
+    closedHeight: `45px`,
   }
 }

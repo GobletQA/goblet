@@ -125,6 +125,8 @@ export const parentDimsFromCanvas = (args:TParentPanels) => {
     lPPanel.style.flexBasis = `${lPWidth + adjust}px`
   }
 
+  EE.emit(PanelDimsSetEvt, {})
+
 }
 
 export const panelDimsFromCanvas = (args:TChildPanels) => {

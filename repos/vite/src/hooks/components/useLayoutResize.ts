@@ -3,7 +3,7 @@ import type { MutableRefObject } from 'react'
 import type { ResizeMoveEvent } from 'react-page-split'
 
 import { useCallback, useRef } from 'react'
-import { get, noOpArr } from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils'
 import { useEffectOnce } from '../useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import {

@@ -1,13 +1,14 @@
 import type { ComponentProps, ReactNode } from 'react'
 
 import 'react-page-split/style.css'
-import { dims, colors } from '@theme'
 import { Divider } from './Divider'
+import { dims, colors } from '@theme'
 import Container from '@mui/material/Container'
 import { Terminal } from '@components/Terminal'
 import { LayoutContainer } from './Divider.styled'
 import { Screencast } from '@components/Screencast'
 import { useLayoutResize } from '@hooks/components/useLayoutResize'
+import { DefinitionsSlider } from '@components/Definitions/DefinitionsSlider'
 import {
   Proportional,
   VerticalPageSplit,
@@ -54,8 +55,13 @@ export const Layout = (props:TLayout) => {
         resize={Proportional}
         onResizeMove={onHorResizeMove}
       >
-        <Container disableGutters sx={noOverflow}>
+        <Container
+          component='div'
+          disableGutters
+          sx={noOverflow}
+        >
           {props.children}
+          <DefinitionsSlider />
         </Container>
         <Container disableGutters sx={fullHeight}>
           <VerticalPageSplit
