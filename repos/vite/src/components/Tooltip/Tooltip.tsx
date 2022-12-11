@@ -11,6 +11,8 @@ export const Tooltip = (props:TTooltip) => {
   const {
     loc,
     placement=loc,
+    enterDelay=500,
+    fontSize=`12px`,
     children,
     ...rest
   } = props
@@ -18,6 +20,8 @@ export const Tooltip = (props:TTooltip) => {
   return (
     <MuiTooltip
       {...rest}
+      fontSize={fontSize}
+      enterDelay={enterDelay}
       placement={placement || `bottom`}
     >
       {children}

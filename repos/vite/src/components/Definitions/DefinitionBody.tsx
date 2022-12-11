@@ -1,12 +1,15 @@
-import type { CSSProperties, SyntheticEvent } from 'react'
+import type { TDefGroups } from '@types'
 import type { DefinitionTabs } from '@constants'
+import type { TDefsList } from './List/DefaultDefsList'
+import type { ElementType, CSSProperties, SyntheticEvent } from 'react'
 
+
+import { useMemo } from 'react'
 import { useDefGroups } from '@hooks/defs'
+import { DefsBody } from './Definitions.styled'
+import { AllDefsList } from './List/AllDefsList'
 import { CustomDefsList } from './List/CustomDefsList'
 import { DefaultDefsList } from './List/DefaultDefsList'
-import { DefsBody } from './Definitions.styled'
-
-const TabComps = [DefaultDefsList, CustomDefsList]
 
 export type TDefinitionsBody = {
   sx?:CSSProperties
@@ -23,9 +26,15 @@ export const DefinitionBody = (props:TDefinitionsBody) => {
   } = props
 
   const idx = active | 0
-  const Component = TabComps[idx]
+  const { allDefs, defaultDefs, customDefs } = useDefGroups()
 
-  const definitions = useDefGroups()
+  const [Component, definitions] = useMemo(() => {
+    return ([
+      [DefaultDefsList, defaultDefs],
+      [CustomDefsList, customDefs],
+      [AllDefsList, allDefs]
+    ])[idx] as [ElementType<TDefsList>, TDefGroups]
+  }, [idx, defaultDefs, customDefs, allDefs])
 
   return (
     <DefsBody className='goblet-defs-body' sx={sx} >

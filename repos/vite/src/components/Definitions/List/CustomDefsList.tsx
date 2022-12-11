@@ -1,14 +1,9 @@
-import type { TDefGroups } from '@types'
-import type { DefinitionTabs } from '@constants'
+import type { TDefsList } from './DefaultDefsList'
 
 import { DefinitionList } from './DefinitionList'
 import { DefTabPanel } from './DefinitionList.styled'
 
-export type TCustomDefsList = {
-  index:number
-  definitions:TDefGroups
-  tab:typeof DefinitionTabs[0]
-}
+export type TCustomDefsList = TDefsList
 
 export const CustomDefsList = (props:TCustomDefsList) => {
   const { tab, index, definitions, ...other } = props
@@ -16,8 +11,8 @@ export const CustomDefsList = (props:TCustomDefsList) => {
   return (
     <DefTabPanel
       role="tabpanel"
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
+      id={`goblet-defs-tabpanel-${index}`}
+      aria-labelledby={`goblet-defs-tab-${index}`}
       {...other}
     >
       <DefinitionList definitions={definitions} />

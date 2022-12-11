@@ -1,21 +1,23 @@
+import type { ReactNode, ElementType } from 'react'
 import type { EStepKey, TDefGroup } from '@types'
 
 import { Fragment } from 'react'
 import Divider from '@mui/material/Divider'
+import { isValidFuncComp } from '@utils/components'
 import { DefListSubheader } from './DefinitionList.styled'
 import { DefinitionListItem } from './DefinitionListItem'
 
 export type TDefinitionListGroup = {
   type:EStepKey
   group:TDefGroup
+  Header?:ElementType<any> | ReactNode
 }
-
-const keys = {} as any
 
 export const DefinitionListGroup = (props:TDefinitionListGroup) => {
   const {
     type,
-    group
+    group,
+    Header
   } = props
 
   const section = `section-${type}`
@@ -23,9 +25,17 @@ export const DefinitionListGroup = (props:TDefinitionListGroup) => {
   return (
     <li className={section} >
       <ul className={`${section}-list-items`} >
+
         <DefListSubheader>
-          {group.group}
+          {
+            !Header
+              ? group.group
+              : isValidFuncComp(Header)
+                ? (<Header type={type} group={group} />)
+                : Header
+          }
         </DefListSubheader>
+
         <Divider />
 
         {group.items.map((item) => {

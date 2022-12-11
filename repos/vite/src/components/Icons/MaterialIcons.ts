@@ -49,6 +49,10 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import FileOpenIcon from '@mui/icons-material/FileOpen'
+import LockIcon from '@mui/icons-material/Lock'
+import LockOpenIcon from '@mui/icons-material/LockOpen'
+import AppsIcon from '@mui/icons-material/Apps'
+import SearchIcon from '@mui/icons-material/Search'
 
 export {
   Globe,
@@ -101,5 +105,9 @@ export {
   ContentCopyIcon,
   ArrowRightIcon,
   AddCircleIcon,
-  FileOpenIcon
+  FileOpenIcon,
+  LockIcon,
+  LockOpenIcon,
+  AppsIcon,
+  SearchIcon
 }

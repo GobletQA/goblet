@@ -77,13 +77,28 @@ export type TDefGroup = {
 
 export type TDefGroupType = EStepKey.when | EStepKey.then | EStepKey.given
 
-export type TDefStepTypeGroups = {
+export type TDefTypeGroup = {
   [EStepKey.when]: TDefGroup
   [EStepKey.then]: TDefGroup
   [EStepKey.given]: TDefGroup
 }
 
-export type TDefGroups = TDefStepTypeGroups & {
+export type TAllDefGroup = {
   all: TDefGroup
-  lookup: Record<string, TDefinitionAst>,
+}
+
+export type TDefLookupMap = Record<string, TDefinitionAst>
+
+export type TDefGroupTypes = {
+  allDefs: TDefGroups
+  lookup: TDefLookupMap
+  customDefs: TDefGroups
+  defaultDefs: TDefGroups
+}
+
+export type TDefGroups = {
+  all?: TDefGroup
+  [EStepKey.when]?: TDefGroup
+  [EStepKey.then]?: TDefGroup
+  [EStepKey.given]?: TDefGroup
 }

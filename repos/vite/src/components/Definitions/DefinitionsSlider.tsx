@@ -1,20 +1,22 @@
-import type { CSSProperties } from 'react'
 import type { DrawerProps } from '@mui/material/Drawer'
 
 import { useRef, useState, useCallback } from 'react'
 
 import Box from '@mui/material/Box'
 import { Definitions } from './Definitions'
-import { grey } from '@mui/material/colors'
 import { PanelDimsSetEvt } from '@constants'
+import { Tooltip } from '@components/Tooltip'
 import { useTheme } from '@hooks/theme/useTheme'
 import { useEffectOnce } from '@hooks/useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { gray, black, gobletColors } from '@theme/colors'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
-import { ChevronUpIcon, ChevronDownIcon } from '@components/Icons'
+import { ChevronUpIcon, ChevronDownIcon, LockIcon, LockOpenIcon } from '@components/Icons'
+  
 import {
   Drawer,
-  DefsExpandBtn,
+  DefsSliderAction,
+  DefsSliderActions,
 } from './Definitions.styled'
 
 export type TDefinitionSlider = {}
@@ -28,9 +30,20 @@ const drawerProps:Partial<DrawerProps> = {
   className: `goblet-defs-drawer`,
 }
 
+const styles = {
+  lock: {
+    open: { color: gobletColors.shinyShamrock, fontSize: `16px` },
+    closed: { color: gobletColors.cardinal, fontSize: `16px` }
+  },
+  toggle: {
+    fontSize: `22px`
+  }
+}
+
 export const DefinitionsSlider = (props:TDefinitionSlider) => {
 
   const [open, setOpen] = useState(false)
+  const [locked, setLocked] = useState(false)
   const drawerRef = useRef<HTMLDivElement>(null)
   const parentRef = useRef<HTMLDivElement>(null)
 
@@ -39,6 +52,10 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
   const toggleDrawer = useCallback(() => {
     setOpen(!open)
   }, [open])
+
+  const toggleLock = useCallback(() => {
+    setLocked(!locked)
+  }, [locked])
 
   const onTabClick = useCallback(() => {
     !open && toggleDrawer()
@@ -59,8 +76,8 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
   })
 
   const onClickAway = useCallback((event: MouseEvent | TouchEvent) => {
-    open && setOpen(false)
-  }, [open])
+    !locked && open && setOpen(false)
+  }, [open, locked])
 
   return (
     <Box
@@ -69,7 +86,7 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
       ref={parentRef}
       position='relative'
       className='goblet-definitions-slider'
-      bgcolor={theme.palette.mode === 'light' ? grey[100] : theme.palette.background.default}
+      bgcolor={theme.palette.mode === 'light' ? gray.gray00 : black.black05}
     >
       <ClickAwayListener onClickAway={onClickAway} >
         <Drawer
@@ -85,9 +102,30 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
           }}
         >
           <Definitions onTabClick={onTabClick} />
-          <DefsExpandBtn onClick={toggleDrawer} >
-            {open ? <ChevronDownIcon /> : <ChevronUpIcon /> }
-          </DefsExpandBtn>
+
+          <DefsSliderActions>
+            <Tooltip title='Lock the drawer open state. Must be manually closed.'>
+              <DefsSliderAction onClick={toggleLock} >
+                {
+                  locked
+                    ? <LockIcon sx={styles.lock.closed} />
+                    : <LockOpenIcon sx={styles.lock.open} />
+                }
+              </DefsSliderAction>
+            </Tooltip>
+
+            <Tooltip title='Manually toggle the drawer open or closed.'>
+              <DefsSliderAction onClick={toggleDrawer} >
+                {
+                  open
+                    ? <ChevronDownIcon sx={styles.toggle} />
+                    : <ChevronUpIcon sx={styles.toggle} />
+                }
+              </DefsSliderAction>
+            </Tooltip>
+
+          </DefsSliderActions>
+
         </Drawer>
       </ClickAwayListener>
     </Box>

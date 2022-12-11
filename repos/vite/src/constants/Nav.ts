@@ -73,4 +73,10 @@ export const DefinitionTabs = [
     icon: `custom`,
     name: `Custom Steps`,
   },
+  {
+    id: 2,
+    key: 2,
+    icon: `all`,
+    name: `All Steps`,
+  },
 ]

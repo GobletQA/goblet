@@ -1,15 +1,59 @@
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
-import { colors } from '@theme'
+import { colors, dims, gutter } from '@theme'
 import { styled } from '@mui/material/styles'
 import ListItem from '@mui/material/ListItem'
+import { Text, Span } from '@components/Text'
 import { getColor } from '@utils/theme/getColor'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListSubheader from '@mui/material/ListSubheader'
-import { Text, Paragraph, Span } from '@components/Text'
 import ListItemButton from '@mui/material/ListItemButton'
+import { IconButton } from '@components/Buttons/IconButton'
 
+
+export const DefSearchHeader = styled(Box)(({ theme }) => `
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: ${dims.defs.header.height - 5}px;
+`)
+
+export const DefSearchWrap = styled(Box)(({ theme }) => `
+  display: flex;
+  position: relative;
+  align-items: center;
+`)
+
+export const DefSearchIcon = styled(IconButton)(({ theme }) => `
+  left: 11px;
+  padding: 3px;
+  position: absolute;
+  height: ${dims.defs.header.height - 8}px,
+`)
+
+export const DefSearchInput = styled('input')(({ theme }) => `
+  min-width: 50%;
+  border: none;
+  font-size: 14px;
+  line-height: 22px;
+  border-radius: 18px;
+  font-family: inherit;
+  letter-spacing: 0.2px;
+  padding: 0 14px 0 33px;
+  margin: 0 0 0 ${gutter.margin.hpx};
+  height: ${dims.defs.header.height - 8}px;
+  color: ${getColor(colors.black06, colors.white00, theme)};
+  background-color: ${getColor(colors.gray03, colors.black01, theme)};
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: 2px solid ${colors.royalPurple};
+  }
+`)
 
 export const DefTabPanel = styled(Box)(({ theme }) => `
   width: 100%;
@@ -115,7 +159,7 @@ export const DefMetaTitle = styled(Text)(({ theme }) => `
   margin-bottom: 5px;
 `)
 
-export const DefMetaItemPair = styled(Paragraph)(({ theme }) => `
+export const DefMetaItemPair = styled(Box)(({ theme }) => `
 `)
 
 export const DefMetaItemTitle = styled(Span)(({ theme }) => `

@@ -2,11 +2,12 @@ import type { DefinitionTabs } from '@constants'
 import type { SyntheticEvent, MouseEvent } from 'react'
 
 import { DefsHeaderTabs, DefsHeaderTab } from './Definitions.styled'
-import { LabelImportantIcon, FunctionsIcon } from '@components/Icons'
+import { AppsIcon, LabelImportantIcon, FunctionsIcon } from '@components/Icons'
 
 const tabIcons = {
   default: LabelImportantIcon,
-  custom: FunctionsIcon
+  custom: FunctionsIcon,
+  all: AppsIcon,
 }
 
 export type TDefinitionsProps = {
@@ -26,6 +27,10 @@ const a11yProps = (index: number) => {
     id: `full-width-tab-${index}`,
     [`aria-controls`]: `full-width-tabpanel-${index}`,
   };
+}
+
+const styles = {
+  icon: { marginBottom: `0px !important`, marginRight: `5px` }
 }
 
 export const DefinitionHeader = (props:TDefinitionsProps) => {
@@ -51,7 +56,7 @@ export const DefinitionHeader = (props:TDefinitionsProps) => {
         
         return (
           <DefsHeaderTab
-            icon={<Icon sx={{ marginBottom: `0px !important`, marginRight: `5px` }} />}
+            icon={<Icon sx={styles.icon} />}
             label={tab.name}
             onClick={onTabClick}
             {...a11yProps(tab.id)}
