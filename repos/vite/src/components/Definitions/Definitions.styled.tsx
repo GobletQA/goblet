@@ -10,8 +10,11 @@ import { styled } from '@mui/material/styles'
 import ListItem from '@mui/material/ListItem'
 import { getColor } from '@utils/theme/getColor'
 import ListItemText from '@mui/material/ListItemText'
+import ListItemIcon from '@mui/material/ListItemIcon'
 import ListSubheader from '@mui/material/ListSubheader'
+import ListItemButton from '@mui/material/ListItemButton'
 import { IconButton } from '@components/Buttons/IconButton'
+
 
 
 const shared:CSSObject = {
@@ -151,14 +154,36 @@ export const DefsList = styled(List)(({ theme }) => `
   }
 `)
 
-export const DefsListItem = styled(ListItem)(({ theme }) => `
+export const DefListSubheader = styled(ListSubheader)(({ theme }) => `
+  height: 40px;
+  padding: 5px 10px;
+  line-height: 30px;
+`)
 
+export const DefItem = styled(ListItem)(({ theme }) => `
+  height: 35px;
+  padding: 5px;
+  
+  & .goblet-def-item-meta-toggle {
+    padding-right: 0px;
+  }
+  
 `)
 
 export const DefText = styled(ListItemText)(({ theme }) => `
-
+  flex-grow: 1;
+  margin-left: 5px;
 `)
 
-export const DefListSubheader = styled(ListSubheader)(({ theme }) => `
 
+export const DefIcon = styled(ListItemIcon)(({ theme }) => `
+  min-width: initial;
 `)
+
+
+export const DefButton = styled(ListItemButton)(({ theme }) => `
+  padding: 0;
+  flex-grow: 0;
+  padding-right: 0px;
+`)
+

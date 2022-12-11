@@ -46,6 +46,8 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt'
 import FunctionsIcon from '@mui/icons-material/Functions'
 import LabelImportantIcon from '@mui/icons-material/LabelImportant'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import ArrowRightIcon from '@mui/icons-material/ArrowRight'
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export {
   Globe,
@@ -95,5 +97,7 @@ export {
   CameraAltIcon,
   FunctionsIcon,
   LabelImportantIcon,
-  ContentCopyIcon
+  ContentCopyIcon,
+  ArrowRightIcon,
+  AddCircleIcon
 }

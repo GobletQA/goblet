@@ -10,6 +10,7 @@ import { PanelDimsSetEvt } from '@constants'
 import { useTheme } from '@hooks/theme/useTheme'
 import { useEffectOnce } from '@hooks/useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import ClickAwayListener from '@mui/base/ClickAwayListener'
 import { ChevronUpIcon, ChevronDownIcon } from '@components/Icons'
 import {
   Drawer,
@@ -57,6 +58,10 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
     }
   })
 
+  const onClickAway = useCallback((event: MouseEvent | TouchEvent) => {
+    open && setOpen(false)
+  }, [open])
+
   return (
     <Box
       width='100%'
@@ -66,23 +71,25 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
       className='goblet-definitions-slider'
       bgcolor={theme.palette.mode === 'light' ? grey[100] : theme.palette.background.default}
     >
-      <Drawer
-        {...drawerProps}
-        open={open}
-        ref={drawerRef}
-        onClose={toggleDrawer}
-        PaperProps={{
-          elevation: 0,
-          sx:{
-            width: parentRef?.current?.clientWidth || 0
-          }
-        }}
-      >
-        <Definitions onTabClick={onTabClick} />
-        <DefsExpandBtn onClick={toggleDrawer} >
-          {open ? <ChevronDownIcon /> : <ChevronUpIcon /> }
-        </DefsExpandBtn>
-      </Drawer>
+      <ClickAwayListener onClickAway={onClickAway} >
+        <Drawer
+          {...drawerProps}
+          open={open}
+          ref={drawerRef}
+          onClose={toggleDrawer}
+          PaperProps={{
+            elevation: 0,
+            sx:{
+              width: parentRef?.current?.clientWidth || 0
+            }
+          }}
+        >
+          <Definitions onTabClick={onTabClick} />
+          <DefsExpandBtn onClick={toggleDrawer} >
+            {open ? <ChevronDownIcon /> : <ChevronUpIcon /> }
+          </DefsExpandBtn>
+        </Drawer>
+      </ClickAwayListener>
     </Box>
   )
 }

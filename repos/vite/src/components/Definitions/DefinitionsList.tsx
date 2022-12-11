@@ -1,10 +1,7 @@
-import type { TDefGroups } from '@types'
-import {
-  DefText,
-  DefsList,
-  DefsListItem,
-  DefListSubheader,
-} from './Definitions.styled'
+import type { EStepKey, TDefGroups } from '@types'
+
+import { DefsList } from './Definitions.styled'
+import { DefinitionListGroup } from './DefinitionListGroup'
 
 export type TDefinitionsList = {
   definitions: TDefGroups
@@ -13,37 +10,18 @@ export type TDefinitionsList = {
 export const DefinitionsList = (props:TDefinitionsList) => {
   const { definitions } = props
   const { lookup, all, ...defTypes } = definitions
-  
-  console.log(`------- defTypes -------`)
-  console.log(defTypes)
-  
+
   return (
     <DefsList subheader={<li />}>
-
       {Object.entries(defTypes).map(([type, group]) => {
-
         return (
-          <li key={`section-${type}`}>
-
-            <ul>
-              <DefListSubheader>
-                {group.group}
-              </DefListSubheader>
-
-              {group.items.map((item) => (
-                <DefsListItem key={`item-${type}-${item.uuid}`}>
-                  <DefText primary={item.title} />
-                </DefsListItem>
-              ))}
-
-            </ul>
-
-          </li>
+          <DefinitionListGroup
+            group={group}
+            type={type as EStepKey}
+            key={`section-${type}`}
+          />
         )
-
       })}
-
-
     </DefsList>
   )
 }
