@@ -42,21 +42,6 @@ export const gray = {
   gray10: `#21252c`
 }
 
-// export const black = {
-//   black00: `#000000`,
-//   black01: `#08090b`,
-//   black02: `#0b0c0e`,
-//   black03: `#1c1e24`,
-//   black04: `#21252b`,
-//   black05: `#272A32`,
-//   black06: `#323842`,
-//   black07: `#4d5666`,
-//   black08: `#636f83`,
-//   black09: `#7c889c`,
-//   black10: `#99a3b2`,
-// }
-
-
 export const black = {
   black00: `#000000`,
   black01: `#040506`,
@@ -101,26 +86,26 @@ export const fade = {
  * TODO: Autogenerate these values
  */
 export const fadeDark = {
-  fadeDark00: `rgba(1,1,1, 0)`,
-  fadeDark05: `rgba(1,1,1, 0.05)`,
-  fadeDark10: `rgba(1,1,1, 0.10)`,
-  fadeDark15: `rgba(1,1,1, 0.15)`,
-  fadeDark20: `rgba(1,1,1, 0.20)`,
-  fadeDark25: `rgba(1,1,1, 0.25)`,
-  fadeDark30: `rgba(1,1,1, 0.30)`,
-  fadeDark35: `rgba(1,1,1, 0.35)`,
-  fadeDark40: `rgba(1,1,1, 0.40)`,
-  fadeDark45: `rgba(1,1,1, 0.45)`,
-  fadeDark50: `rgba(1,1,1, 0.50)`,
-  fadeDark55: `rgba(1,1,1, 0.55)`,
-  fadeDark60: `rgba(1,1,1, 0.60)`,
-  fadeDark65: `rgba(1,1,1, 0.65)`,
-  fadeDark70: `rgba(1,1,1, 0.70)`,
-  fadeDark75: `rgba(1,1,1, 0.75)`,
-  fadeDark80: `rgba(1,1,1, 0.80)`,
-  fadeDark85: `rgba(1,1,1, 0.85)`,
-  fadeDark90: `rgba(1,1,1, 0.90)`,
-  fadeDark95: `rgba(1,1,1, 0.95)`,
+  fadeDark00: `rgba(0,0,0, 0)`,
+  fadeDark05: `rgba(0,0,0, 0.05)`,
+  fadeDark10: `rgba(0,0,0, 0.10)`,
+  fadeDark15: `rgba(0,0,0, 0.15)`,
+  fadeDark20: `rgba(0,0,0, 0.20)`,
+  fadeDark25: `rgba(0,0,0, 0.25)`,
+  fadeDark30: `rgba(0,0,0, 0.30)`,
+  fadeDark35: `rgba(0,0,0, 0.35)`,
+  fadeDark40: `rgba(0,0,0, 0.40)`,
+  fadeDark45: `rgba(0,0,0, 0.45)`,
+  fadeDark50: `rgba(0,0,0, 0.50)`,
+  fadeDark55: `rgba(0,0,0, 0.55)`,
+  fadeDark60: `rgba(0,0,0, 0.60)`,
+  fadeDark65: `rgba(0,0,0, 0.65)`,
+  fadeDark70: `rgba(0,0,0, 0.70)`,
+  fadeDark75: `rgba(0,0,0, 0.75)`,
+  fadeDark80: `rgba(0,0,0, 0.80)`,
+  fadeDark85: `rgba(0,0,0, 0.85)`,
+  fadeDark90: `rgba(0,0,0, 0.90)`,
+  fadeDark95: `rgba(0,0,0, 0.95)`,
 }
 
 

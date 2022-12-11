@@ -64,11 +64,13 @@ export const DefinitionTabs = [
   {
     id: 0,
     key: 0,
+    icon: `default`,
     name: `Default Steps`,
   },
   {
     id: 1,
     key: 1,
+    icon: `custom`,
     name: `Custom Steps`,
   },
 ]

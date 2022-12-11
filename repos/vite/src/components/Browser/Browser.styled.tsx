@@ -29,11 +29,11 @@ export const BrowserNav = styled('nav')(({ theme }) => `
 export const BrowserInput = styled('input')(({ theme }) => `
   width: 100%;
   border: none;
-  height: 26px;
+  height: ${dims.browser.url.hpx};
   margin: 0 6px;
   font-size: 14px;
   padding: 0 14px;
-  line-height: 26px;
+  line-height: 22px;
   border-radius: 18px;
   font-family: inherit;
   letter-spacing: 0.2px;

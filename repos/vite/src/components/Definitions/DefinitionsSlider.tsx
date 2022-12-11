@@ -13,7 +13,6 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { ChevronUpIcon, ChevronDownIcon } from '@components/Icons'
 import {
   Drawer,
-  DefsContainer,
   DefsExpandBtn,
 } from './Definitions.styled'
 
@@ -39,6 +38,10 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
   const toggleDrawer = useCallback(() => {
     setOpen(!open)
   }, [open])
+
+  const onTabClick = useCallback(() => {
+    !open && toggleDrawer()
+  }, [open, toggleDrawer])
 
   useEffectOnce(() => {
     const off = EE.on(PanelDimsSetEvt, () => {
@@ -75,9 +78,7 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
           }
         }}
       >
-        <DefsContainer>
-          <Definitions />
-        </DefsContainer>
+        <Definitions onTabClick={onTabClick} />
         <DefsExpandBtn onClick={toggleDrawer} >
           {open ? <ChevronDownIcon /> : <ChevronUpIcon /> }
         </DefsExpandBtn>

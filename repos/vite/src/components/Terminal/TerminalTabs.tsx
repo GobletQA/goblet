@@ -3,6 +3,7 @@ import type { ComponentProps } from 'react'
 import type Tabs from '@mui/material/Tabs'
 
 import Box from '@mui/material/Box'
+import { Tooltip } from '@components/Tooltip'
 import { useTheme } from '@hooks/theme/useTheme'
 import { TabsHeaderList, HeaderTab, TabCloseIcon, TabAddIcon } from './Terminal.styled'
 
@@ -46,23 +47,41 @@ export const TerminalTabs = (props:TerminalTabs) => {
               key={tab.id}
               label={tab.name || `terminal-${idx}`}
               icon={(
-                <TabCloseIcon
-                  className='terminal-tab-close-icon'
-                  onClick={event => onTabClose(event, tab.id)}
-                />
+                <Tooltip
+                  loc='top'
+                  describeChild
+                  enterDelay={500}
+                  fontSize={`10px`}
+                  title={`Close terminal`}
+                >
+                  <TabCloseIcon
+                    className='terminal-tab-close-icon'
+                    onClick={event => onTabClose(event, tab.id)}
+                  />
+                </Tooltip>
               )}
             />
           )
         })}
-        <HeaderTab
-          value={`+`}
-          className='terminal-add-tab'
-          icon={<TabAddIcon className='terminal-tab-add-icon' />}
-          sx={{
-            minWidth: `20px`,
-            color: addColor,
-          }}
-        />
+
+
+        <Tooltip
+          loc='top'
+          describeChild
+          enterDelay={500}
+          fontSize={`10px`}
+          title='Create a new terminal'
+        >
+          <HeaderTab
+            value={`+`}
+            className='terminal-add-tab'
+            icon={<TabAddIcon className='terminal-tab-add-icon' />}
+            sx={{
+              minWidth: `20px`,
+              color: addColor,
+            }}
+          />
+        </Tooltip>
       </TabsHeaderList>
     </Box>
   )

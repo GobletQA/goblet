@@ -1,9 +1,11 @@
-import type { ReactNode, CSSProperties, SyntheticEvent } from 'react'
+import type { CSSProperties, SyntheticEvent } from 'react'
 import type { DefinitionTabs } from '@constants'
 
 import Box from '@mui/material/Box'
 import { CustomDefs } from './CustomDefs'
 import { DefaultDefs } from './DefaultDefs'
+import { DefsBody } from './Definitions.styled'
+
 
 const TabComps = [DefaultDefs, CustomDefs]
 
@@ -26,9 +28,9 @@ export const DefinitionBody = (props:TDefinitionsBody) => {
   const Component = TabComps[idx]
 
   return (
-    <Box className='goblet-defs-body' sx={sx} >
+    <DefsBody className='goblet-defs-body' sx={sx} >
       <Component tab={tabs[active]} index={idx} />
-    </Box>
+    </DefsBody>
   )
 
 }

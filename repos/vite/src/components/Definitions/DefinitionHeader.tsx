@@ -1,12 +1,24 @@
 import type { DefinitionTabs } from '@constants'
-import type { SyntheticEvent } from 'react'
+import type { SyntheticEvent, MouseEvent } from 'react'
 
 import { DefsHeaderTabs, DefsHeaderTab } from './Definitions.styled'
+import { LabelImportantIcon, FunctionsIcon } from '@components/Icons'
+
+const tabIcons = {
+  default: LabelImportantIcon,
+  custom: FunctionsIcon
+}
 
 export type TDefinitionsProps = {
   active: number
   tabs: typeof DefinitionTabs
   onChange:(event: SyntheticEvent, value: number) => any
+  onTabClick:(event:MouseEvent<HTMLDivElement>) => void
+}
+
+export type TDefHeaderTab = {
+  tab: typeof DefinitionTabs[0]
+  onTabClick:(event:MouseEvent<HTMLDivElement>) => void
 }
 
 const a11yProps = (index: number) => {
@@ -18,9 +30,10 @@ const a11yProps = (index: number) => {
 
 export const DefinitionHeader = (props:TDefinitionsProps) => {
   const {
-    active,
     tabs,
-    onChange
+    active,
+    onChange,
+    onTabClick
   } = props
 
   return (
@@ -34,11 +47,16 @@ export const DefinitionHeader = (props:TDefinitionsProps) => {
       aria-label="Feature Definition Tabs"
     >
       {tabs.map(tab => {
+        const Icon = tabIcons[tab.icon as keyof typeof tabIcons]
+        
         return (
           <DefsHeaderTab
+            icon={<Icon sx={{ marginBottom: `0px !important`, marginRight: `5px` }} />}
             label={tab.name}
+            onClick={onTabClick}
             {...a11yProps(tab.id)}
-            key={tab.key || tab.id}
+            key={tab.id || tab.name}
+            className={`goblet-defs-tab-${tab.name}`}
           />
         )
       })}

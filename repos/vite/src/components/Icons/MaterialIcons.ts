@@ -43,6 +43,8 @@ import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked'
 import ModeEditIcon from '@mui/icons-material/ModeEdit'
 import CropSquareIcon from '@mui/icons-material/CropSquare'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
+import FunctionsIcon from '@mui/icons-material/Functions'
+import LabelImportantIcon from '@mui/icons-material/LabelImportant'
 
 export {
   Globe,
@@ -90,4 +92,6 @@ export {
   ModeEditIcon,
   CropSquareIcon,
   CameraAltIcon,
+  FunctionsIcon,
+  LabelImportantIcon
 }

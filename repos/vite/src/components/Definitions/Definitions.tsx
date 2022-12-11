@@ -1,34 +1,40 @@
-import type { SyntheticEvent } from 'react'
+import type { SyntheticEvent, MouseEvent } from 'react'
 
 import Box from '@mui/material/Box'
 import { DefinitionTabs } from '@constants'
 import { useCallback, useState } from 'react'
 import { DefinitionBody } from './DefinitionBody'
 import { DefinitionHeader } from './DefinitionHeader'
+import { DefsContainer } from './Definitions.styled'
 
-export type TDefinitions = {}
+
+export type TDefinitions = {
+  onTabClick:(event:MouseEvent<HTMLDivElement>) => void
+}
 
 export const Definitions = (props:TDefinitions) => {
+  const { onTabClick } = props
 
-  const [tab, setTab] = useState(0)
+  const [active, setActive] = useState(0)
 
   const onChange = useCallback((event: SyntheticEvent, newValue: number) => {
-    setTab(newValue)
+    setActive(newValue)
   }, [])
 
   return (
-    <Box className='goblet-definitions' >
+    <DefsContainer className='goblet-definitions' >
       <DefinitionHeader
-        active={tab}
+        active={active}
         onChange={onChange}
         tabs={DefinitionTabs}
+        onTabClick={onTabClick}
       />
       <DefinitionBody
-        active={tab}
+        active={active}
         onChange={onChange}
         tabs={DefinitionTabs}
       />
-    </Box>
+    </DefsContainer>
   )
   
 }

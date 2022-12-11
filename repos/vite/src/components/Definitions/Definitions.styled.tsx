@@ -52,23 +52,23 @@ export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
   }),
 )
 
+const tabHeight = `
+  max-height: ${dims.defs.header.hpx};
+  min-height: ${dims.defs.header.hpx};
+`
+
 export const DefsContainer = styled(Box)(({ theme }) => `
   height: 100%;
   background-color: ${getColor(colors.white00, colors.black01, theme)};
 `)
 
 export const DefsHeaderTabs = styled(Tabs)(({ theme }) => `
-  max-height: ${dims.defs.header.hpx};
-  min-height: ${dims.defs.header.hpx};
-  color: ${getColor(colors.gray05, colors.black05, theme)};
-  background-color: ${getColor(colors.gray00, colors.black05, theme)};
-  border-bottom: 1px solid ${getColor(colors.gray01, colors.black02, theme)};
+  ${tabHeight}
 
   & button {
-    max-height: ${dims.defs.header.hpx};
-    min-height: ${dims.defs.header.hpx};
-    font-weight: bold;
+    opacity: 1;
     text-transform: none;
+    ${tabHeight}
   }
 
   & .MuiTabs-indicator {
@@ -78,20 +78,27 @@ export const DefsHeaderTabs = styled(Tabs)(({ theme }) => `
 `)
 
 export const DefsHeaderTab = styled(Tab)(({ theme }) => `
+  ${tabHeight}
+  flex-direction: row;
   letter-spacing: 0.2px;
-  max-height: ${dims.defs.header.hpx};
-  min-height: ${dims.defs.header.hpx};
-  transition: background-color 200ms ease, color 200ms ease;
+  max-width: calc( 50% - ${(dims.defs.header.height / 2) + 8}px );
+  min-width: calc( 50% - ${(dims.defs.header.height / 2) + 8}px );
+  font-weight: ${theme.typography.fontWeightBold};
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+
+  color: ${getColor(colors.fadeLight30, colors.fadeLight55, theme)};
+  background-color: ${getColor(colors.gray09, colors.black03, theme)};
 
   &.Mui-selected {
-    color: ${getColor(colors.black06, colors.white00, theme)};
-    background-color: ${getColor(colors.gray03, colors.black02, theme)};
+    color: ${getColor(colors.fadeDark70, colors.fadeLight90, theme)};
+    background-color: ${getColor(colors.gray01, colors.black05, theme)};
   }
 
-  &:hover {
-    color: ${getColor(colors.black06, colors.white00, theme)};
-    background-color: ${getColor(colors.gray03, colors.black02, theme)};
+  &:hover:not(.Mui-selected) {
+    color: ${getColor(colors.fadeDark65, colors.fadeLight75, theme)};
+    background-color: ${getColor(colors.gray04, colors.black04, theme)};
   }
+
 `)
 
 export const DefsExpandBtn = styled(IconButton)(({ theme }) => `
@@ -103,11 +110,25 @@ export const DefsExpandBtn = styled(IconButton)(({ theme }) => `
   font-family: inherit;
   place-content: center;
   background-color: transparent;
-  width: ${dims.defs.header.hpx};
+  width: ${dims.defs.header.height + 16}px;
   height: ${dims.defs.header.hpx};
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  background-color: ${getColor(colors.gray01, colors.black05, theme)};
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+  border-left: 1px solid ${getColor(colors.gray02, colors.black05, theme)};
+  
+  &:hover {
+    background-color: ${getColor(colors.gray03, colors.fadeLight10, theme)};
+  }
+  
 `)
 
 export const DefTabPanel = styled(Box)(({ theme }) => `
 
+`)
+
+export const DefsBody = styled(Box)(({ theme }) => `
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: ${getColor(colors.gray01, colors.black05, theme)};
 `)

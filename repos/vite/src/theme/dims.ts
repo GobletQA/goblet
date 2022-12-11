@@ -1,10 +1,13 @@
-const tTabH = 26
-const tHeaderH = 30
 const bNavH = 35
-const bUrlH = 30
-const headerH = 40
+const bUrlH = 28
+
+const tTabH = 30
+const tHeaderH = 30
+
 const divider = 1
-const defHeaderH = 40
+const headerH = 40
+
+const defHeaderH = 35
 
 export const dims = {
   panel: {
