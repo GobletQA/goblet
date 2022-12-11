@@ -3,11 +3,16 @@ import type { Theme, CSSObject } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
-import { colors, dims } from '@theme'
+import List from '@mui/material/List'
 import MuiDrawer from '@mui/material/Drawer'
+import { colors, dims, gutter } from '@theme'
 import { styled } from '@mui/material/styles'
+import ListItem from '@mui/material/ListItem'
 import { getColor } from '@utils/theme/getColor'
+import ListItemText from '@mui/material/ListItemText'
+import ListSubheader from '@mui/material/ListSubheader'
 import { IconButton } from '@components/Buttons/IconButton'
+
 
 const shared:CSSObject = {
   padding: `0px`,
@@ -86,8 +91,8 @@ export const DefsHeaderTab = styled(Tab)(({ theme }) => `
   font-weight: ${theme.typography.fontWeightBold};
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
 
-  color: ${getColor(colors.fadeLight30, colors.fadeLight55, theme)};
-  background-color: ${getColor(colors.gray09, colors.black03, theme)};
+  color: ${getColor(colors.fadeDark30, colors.fadeLight55, theme)};
+  background-color: ${getColor(colors.gray04, colors.black03, theme)};
 
   &.Mui-selected {
     color: ${getColor(colors.fadeDark70, colors.fadeLight90, theme)};
@@ -95,8 +100,8 @@ export const DefsHeaderTab = styled(Tab)(({ theme }) => `
   }
 
   &:hover:not(.Mui-selected) {
-    color: ${getColor(colors.fadeDark65, colors.fadeLight75, theme)};
-    background-color: ${getColor(colors.gray04, colors.black04, theme)};
+    color: ${getColor(colors.fadeDark50, colors.fadeLight75, theme)};
+    background-color: ${getColor(colors.gray02, colors.black04, theme)};
   }
 
 `)
@@ -119,11 +124,11 @@ export const DefsExpandBtn = styled(IconButton)(({ theme }) => `
   &:hover {
     background-color: ${getColor(colors.gray03, colors.fadeLight10, theme)};
   }
-  
 `)
 
 export const DefTabPanel = styled(Box)(({ theme }) => `
-
+  width: 100%;
+  height: 100%;
 `)
 
 export const DefsBody = styled(Box)(({ theme }) => `
@@ -131,4 +136,29 @@ export const DefsBody = styled(Box)(({ theme }) => `
   height: 100%;
   display: flex;
   background-color: ${getColor(colors.gray01, colors.black05, theme)};
+`)
+
+
+export const DefsList = styled(List)(({ theme }) => `
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  position: relative;
+  padding-bottom: 285px;
+
+  & ul {
+    padding: 0px;
+  }
+`)
+
+export const DefsListItem = styled(ListItem)(({ theme }) => `
+
+`)
+
+export const DefText = styled(ListItemText)(({ theme }) => `
+
+`)
+
+export const DefListSubheader = styled(ListSubheader)(({ theme }) => `
+
 `)

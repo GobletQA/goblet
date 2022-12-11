@@ -1,5 +1,5 @@
 import type { Repo } from '../../repo/repo'
-import type { TFileModel } from '../../types'
+import type { TDefinitionFileModel, TDefinitionAst } from '../../types'
 
 import fs from 'fs'
 import { Logger } from '@keg-hub/cli-utils'
@@ -7,6 +7,11 @@ import { checkCall } from '@keg-hub/jsutils'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { parkinCheck } from '@GSH/libs/overrides/parkinOverride'
 import { requireOverride } from '@GSH/libs/overrides/requireOverride'
+
+export type TDefinitionAstLoaded = TDefinitionAst & {
+  location:string
+  __isLoaded?:boolean
+}
 
 class DefinitionsParser {
 
@@ -21,10 +26,6 @@ class DefinitionsParser {
   /**
    * Loads and parses a step definition and based on the passed in filePath
    * Then creates a fileModel from it's content
-   * @param {string} filePath - Path to the step definition file
-   * @param {Object} repo - Repo Class instance for the currently active repo
-   *
-   * @returns {Array} - Loaded Definition file model
    */
   getDefinitions = async (
     filePath:string,
@@ -37,19 +38,34 @@ class DefinitionsParser {
 
       // The definitions get auto-loaded into the parkin instance
       // from the require call in the parseDefinition method below
-      const definitions = repo.parkin.steps.list()
+      const definitions = repo.parkin.steps.list() as TDefinitionAstLoaded[]
 
-      definitions.map(def => {
+      definitions.forEach(def => {
+        // Check if the __isLoaded is set
+        // If so, skip loading the definitions 
+        if(def.__isLoaded) return
+
+        // Validate if the step match string exists in the file
+        // This is required because the parkin instance is reused
+        // Which means all definitions already loaded exist in this list
+        // const hasDef = fileModel.content.includes(`'${def.match.toString()}'`)
+        //   || fileModel.content.includes(`"${def.match.toString()}"`)
+        //   || fileModel.content.includes(`\`${def.match.toString()}\``)
+
         // If the file model contains the step def
         // And it's a valid match string
         // Then add the def to the fileModels ast.definitions array
-        fileModel.content.includes(def.match.toString()) &&
-          this.validateMatch(def.match, def.type) &&
-          fileModel.ast.definitions.push({
-            ...def,
-            // Add a reference back to the parent
-            location: filePath,
-          })
+          this.validateMatch(def.match, def.type)
+          && fileModel.ast.definitions.push({
+              ...def,
+              // Add a reference back to the parent
+              location: filePath,
+            })
+
+        // Tell the definitions it's already loaded
+        // This is a hack to ensure it's not loaded more then once
+        def.__isLoaded = true
+
       })
 
       return fileModel
@@ -68,7 +84,7 @@ class DefinitionsParser {
     filePath:string,
     repo:Repo,
     overrideMethod:(...args:any[]) => any
-  ):Promise<Record<'fileModel', TFileModel>> => {
+  ):Promise<Record<'fileModel', TDefinitionFileModel>> => {
     return new Promise((res, rej) => {
       let requireError
       const requireReset = overrideMethod &&
@@ -113,7 +129,7 @@ class DefinitionsParser {
             ast: { definitions: [] },
           },
           repo
-        )
+        ) as TDefinitionFileModel
 
         return res({ fileModel })
       })

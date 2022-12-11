@@ -84,7 +84,7 @@ export class Repo {
     const name = url.pathname.split('/').pop().replace('.git', '')
     const provider = url.host.split('.').slice(0).join('.')
 
-    const resp = await initializeGoblet({
+    const { repo, ...status } = await initializeGoblet({
       repo: {
         name,
         token,
@@ -97,14 +97,12 @@ export class Repo {
       user: { gitUser: username },
     })
 
-    if (!resp || !resp.mounted)
+    if (!status || !status.mounted)
       throw new Error(
-        `[ERROR] Could not mount repo ${repoUrl}.\n${resp ? resp.message : ''}`
+        `[ERROR] Could not mount repo ${repoUrl}.\n${status ? status.message : ''}`
       )
 
-    return new Repo({
-      ...resp.repo,
-    })
+    return { repo: new Repo(repo), status }
   }
 
   /**

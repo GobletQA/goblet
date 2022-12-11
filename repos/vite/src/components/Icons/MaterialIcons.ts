@@ -45,6 +45,7 @@ import CropSquareIcon from '@mui/icons-material/CropSquare'
 import CameraAltIcon from '@mui/icons-material/CameraAlt'
 import FunctionsIcon from '@mui/icons-material/Functions'
 import LabelImportantIcon from '@mui/icons-material/LabelImportant'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 
 export {
   Globe,
@@ -93,5 +94,6 @@ export {
   CropSquareIcon,
   CameraAltIcon,
   FunctionsIcon,
-  LabelImportantIcon
+  LabelImportantIcon,
+  ContentCopyIcon
 }

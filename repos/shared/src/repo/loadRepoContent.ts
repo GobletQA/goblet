@@ -1,4 +1,4 @@
-import type { TGobletConfig } from '@GSH/types'
+import type { TDefGobletConfig } from '@GSH/types'
 import type { Repo } from '@GSH/repo/repo'
 
 import { Logger } from '@keg-hub/cli-utils'
@@ -20,7 +20,7 @@ import { fileModelArrayToObj } from '@GSH/utils/fileModelArrayToObj'
  */
 export const loadRepoContent = async (
   repo:Repo,
-  config:TGobletConfig,
+  config:TDefGobletConfig,
   status:Record<string, any>
 ) => {
   try {

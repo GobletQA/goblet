@@ -2,7 +2,7 @@ const Module = require('module')
 const sharedPaths = require('@GSH/utils/paths')
 const { GobletRoot } = sharedPaths
 
-const overrideNoOp = () => true
+const overrideNoOp = (request) => true
 const resolveNoOp = () => ({})
 
 /**

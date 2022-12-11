@@ -1,8 +1,9 @@
+import { TRepo } from '@GSH/types'
 
 /**
  * Helper method to validate the require request is for Parkin
  */
-const parkinCheck = (request) => (
+export const parkinCheck = (request?:string) => (
   request.startsWith(`@gobletqa/test-utils/parkin`) ||
   request.startsWith(`GobletParkin`) ||
   request.startsWith(`@GTU/Parkin`)
@@ -11,7 +12,7 @@ const parkinCheck = (request) => (
 /**
  * Override module for Parkin to allow loading the repo specific parkin instance
  */
-const parkinOverride = (repo) => {
+export const parkinOverride = (repo:TRepo) => {
   return () => ({
     And: repo.parkin.And.bind(repo.parkin),
     But: repo.parkin.But.bind(repo.parkin),
@@ -23,10 +24,4 @@ const parkinOverride = (repo) => {
     Before: repo.parkin.hooks.beforeEach.bind(repo.parkin.hooks),
     BeforeAll: repo.parkin.hooks.beforeAll.bind(repo.parkin.hooks),
   })
-}
-
-
-module.exports = {
-  parkinCheck,
-  parkinOverride
 }

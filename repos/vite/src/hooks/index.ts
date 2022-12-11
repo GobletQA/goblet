@@ -1,4 +1,5 @@
 export * from './api'
 export * from './dom'
+export * from './defs'
 export * from './forms'
 export * from './useReset'

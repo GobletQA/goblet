@@ -1,8 +1,8 @@
 import type { CSSProperties, SyntheticEvent } from 'react'
 import type { DefinitionTabs } from '@constants'
 
-import Box from '@mui/material/Box'
 import { CustomDefs } from './CustomDefs'
+import { useDefGroups } from '@hooks/defs'
 import { DefaultDefs } from './DefaultDefs'
 import { DefsBody } from './Definitions.styled'
 
@@ -16,7 +16,6 @@ export type TDefinitionsBody = {
   onChange:(event: SyntheticEvent, value: number) => any
 }
 
-
 export const DefinitionBody = (props:TDefinitionsBody) => {
   const {
     sx,
@@ -27,9 +26,15 @@ export const DefinitionBody = (props:TDefinitionsBody) => {
   const idx = active | 0
   const Component = TabComps[idx]
 
+  const definitions = useDefGroups()
+
   return (
     <DefsBody className='goblet-defs-body' sx={sx} >
-      <Component tab={tabs[active]} index={idx} />
+      <Component
+        index={idx}
+        tab={tabs[active]}
+        definitions={definitions}
+      />
     </DefsBody>
   )
 

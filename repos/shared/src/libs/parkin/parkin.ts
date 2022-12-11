@@ -2,14 +2,14 @@
 // This is needed when loading definitions from the backend API
 // The Repo instance holds an instance of Parkin that needs to be used here instead of creating one
 // Need to figure out a way to override the instance here, and use the Repos Parkin instance
-const { Parkin } = require('@ltipton/parkin')
-const { getWorld } = require('@GSH/repo/world')
+import { Parkin } from '@ltipton/parkin'
+import { getWorld } from '@GSH/repo/world'
 
 let __ParkinInstance
 
 // Sets a new instance of the Parkin Class to the __ParkinInstance variable
 // Currently not called anywhere
-const setParkinInstance = (instance) => {
+export const setParkinInstance = (instance) => {
   if(instance && instance !== __ParkinInstance) __ParkinInstance = instance
 
   __ParkinInstance = __ParkinInstance || new Parkin(getWorld())
@@ -17,18 +17,9 @@ const setParkinInstance = (instance) => {
   return __ParkinInstance
 }
 
-const getParkinInstance = (repo) => {
+export const getParkinInstance = (repo) => {
   __ParkinInstance = __ParkinInstance || new Parkin(getWorld(repo))
 
   return __ParkinInstance
 }
 
-/**
- * Parkin singleton instance, accepting the
- * goblet world: a merge of goblet defaults with
- * the client's world object
- */
-module.exports = {
-  getParkinInstance,
-  setParkinInstance,
-}

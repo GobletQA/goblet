@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react'
 import type { EStepKey } from './features.types'
 import type { TFileModel } from './models.types'
 
@@ -11,7 +12,9 @@ export type TDefinitionToken = {
 }
 
 export type TDefinitionMeta = {
-  [key:string]: any
+  module:string
+  description:string
+  expressions:string[]
 }
 
 export type TDefinitionParent = {
@@ -24,6 +27,7 @@ export type TDefinitionAst = {
   name: string
   uuid: string
   content: string
+  location?: string,
   meta: TDefinitionMeta
   match: string | RegExp
   parent?: TDefinitionParent
@@ -39,5 +43,41 @@ export type TDefinitionsAstTypeMap = {
 }
 
 export type TDefinitionFileModel = Omit<TFileModel, 'ast'> & {
-  ast: TDefinitionAst
+  ast: Record<`definitions`, TDefinitionAst[]>
+}
+
+export type TDefItemAction = {
+  key:string
+  name:string
+  iconProps: {
+    size:number,
+    Component: ComponentType<any>,
+  },
+}
+
+export type TDefGroupItem = {
+  title:string
+  uuid:string
+  meta: TDefinitionMeta
+  actions: TDefItemAction[]
+}
+
+export type TDefGroup = {
+  type: string
+  group: string
+  toggled: boolean,
+  items: TDefGroupItem[]
+}
+
+export type TDefGroupType = EStepKey.when | EStepKey.then | EStepKey.given
+
+export type TDefStepTypeGroups = {
+  [EStepKey.when]: TDefGroup
+  [EStepKey.then]: TDefGroup
+  [EStepKey.given]: TDefGroup
+}
+
+export type TDefGroups = TDefStepTypeGroups & {
+  all: TDefGroup
+  lookup: Record<string, TDefinitionAst>,
 }

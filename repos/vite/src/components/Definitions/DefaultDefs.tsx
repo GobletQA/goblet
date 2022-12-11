@@ -1,16 +1,17 @@
+import type { TDefGroups } from '@types'
 import type { DefinitionTabs } from '@constants'
 
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
 import { DefTabPanel } from './Definitions.styled'
+import { DefinitionsList } from './DefinitionsList'
 
 export type TDefaultDefs = {
   index:number
+  definitions:TDefGroups
   tab:typeof DefinitionTabs[0]
 }
 
 export const DefaultDefs = (props:TDefaultDefs) => {
-  const { tab, index, ...other } = props
+  const { tab, index, definitions, ...other } = props
 
   return (
     <DefTabPanel
@@ -19,11 +20,7 @@ export const DefaultDefs = (props:TDefaultDefs) => {
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
-      <Box sx={{ p: 2 }}>
-        <Typography>
-          List Default Defs Here
-        </Typography>
-      </Box>
+      <DefinitionsList definitions={definitions} />
     </DefTabPanel>
   );
 }

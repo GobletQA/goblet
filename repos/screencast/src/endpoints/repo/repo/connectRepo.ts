@@ -13,13 +13,13 @@ export const connectRepo = asyncWrap(async (req:Request, res:Response) => {
   const { iat, exp, ...user } = req.user
 
   // TODO: Add req.body / req.user validation before running
-  const repo = await Repo.fromWorkflow({
+  const { repo, status } = await Repo.fromWorkflow({
     ...user,
     ...req.body,
   })
 
   const { config } = req.app.locals
-  const content = await loadRepoContent(repo, config)
+  const content = await loadRepoContent(repo, config, status)
 
   // TODO: update to not include repo.parkin to the frontend  
   return apiRes(res, content, 200)

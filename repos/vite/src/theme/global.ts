@@ -16,15 +16,10 @@ export const globalStyles = ({ theme }:TGlobalStyles) => {
 
     :root {
       color-scheme: light dark;
-      // font-synthesis: none;
-      // -webkit-text-size-adjust: 100%;
-      // -moz-osx-font-smoothing: grayscale;
-      // text-rendering: optimizeLegibility;
-      // -webkit-font-smoothing: antialiased;
     }
 
     body {
-      overflow-x: hidden;
+      overflow: hidden;
       font-family: ${typography.fontFamily};
       background: ${mode === 'light' ? colors.white00 : colors.black01};
     }
