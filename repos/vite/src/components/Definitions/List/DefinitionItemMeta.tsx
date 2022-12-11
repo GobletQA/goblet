@@ -1,6 +1,5 @@
 import type { TDefinitionMetaExpression, TDefGroupItem } from '@types'
-import Box from '@mui/material/Box'
-import { Text } from '@components/Text'
+
 import {
   DefItemMeta,
   DefMetaTitle,
@@ -10,7 +9,7 @@ import {
   DefMetaItemTitle,
   DefMetaItemExpWrap,
   DefMetaExpItemWrap,
-} from './Definitions.styled'
+} from './DefinitionList.styled'
 
 export type TDefinitionItemMeta = {
   item:TDefGroupItem

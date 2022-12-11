@@ -1,16 +1,7 @@
-import type { SyntheticEvent } from 'react'
 import type { TDefGroupItem } from '@types'
 
-import { useCallback, useState } from 'react'
-
-import { EStepKey } from '@types'
 import Box from '@mui/material/Box'
-import { Text } from '@components/Text'
-import { noOpArr } from '@keg-hub/jsutils'
-import Divider from '@mui/material/Divider'
-import Collapse from '@mui/material/Collapse'
-import { AddCircleIcon } from '@components/Icons'
-import { DefButton } from './Definitions.styled'
+import { DefButton } from './DefinitionList.styled'
 
 
 const styles = {

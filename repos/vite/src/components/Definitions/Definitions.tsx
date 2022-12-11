@@ -1,6 +1,5 @@
 import type { SyntheticEvent, MouseEvent } from 'react'
 
-import Box from '@mui/material/Box'
 import { DefinitionTabs } from '@constants'
 import { useCallback, useState } from 'react'
 import { DefinitionBody } from './DefinitionBody'

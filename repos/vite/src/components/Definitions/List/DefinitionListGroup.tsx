@@ -2,7 +2,7 @@ import type { EStepKey, TDefGroup } from '@types'
 
 import { Fragment } from 'react'
 import Divider from '@mui/material/Divider'
-import { DefListSubheader } from './Definitions.styled'
+import { DefListSubheader } from './DefinitionList.styled'
 import { DefinitionListItem } from './DefinitionListItem'
 
 export type TDefinitionListGroup = {

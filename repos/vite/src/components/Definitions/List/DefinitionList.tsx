@@ -1,13 +1,13 @@
 import type { EStepKey, TDefGroups } from '@types'
 
-import { DefsList } from './Definitions.styled'
+import { DefsList } from './DefinitionList.styled'
 import { DefinitionListGroup } from './DefinitionListGroup'
 
 export type TDefinitionsList = {
   definitions: TDefGroups
 }
 
-export const DefinitionsList = (props:TDefinitionsList) => {
+export const DefinitionList = (props:TDefinitionsList) => {
   const { definitions } = props
   const { lookup, all, ...defTypes } = definitions
 

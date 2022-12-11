@@ -15,7 +15,7 @@ import {
   DefButton,
   DefItemRow,
   DefItemMeta,
-} from './Definitions.styled'
+} from './DefinitionList.styled'
 
 export type TDefinitionListItem = {
   type:EStepKey

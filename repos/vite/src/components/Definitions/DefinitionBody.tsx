@@ -1,13 +1,12 @@
 import type { CSSProperties, SyntheticEvent } from 'react'
 import type { DefinitionTabs } from '@constants'
 
-import { CustomDefs } from './CustomDefs'
 import { useDefGroups } from '@hooks/defs'
-import { DefaultDefs } from './DefaultDefs'
+import { CustomDefsList } from './List/CustomDefsList'
+import { DefaultDefsList } from './List/DefaultDefsList'
 import { DefsBody } from './Definitions.styled'
 
-
-const TabComps = [DefaultDefs, CustomDefs]
+const TabComps = [DefaultDefsList, CustomDefsList]
 
 export type TDefinitionsBody = {
   sx?:CSSProperties
