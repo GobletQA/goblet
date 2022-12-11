@@ -34,9 +34,8 @@ const getAttribute = async (selector, attribute, value) => {
 }
 
 Then('the element {string} attribute {string} is {string}', getAttribute, {
-  description: `Locates element by selector and verifies the expected attribute value.
-  
-Module : getAttribute`,
+  module: `getAttribute`,
+  description: `Locates element by selector and verifies the expected attribute value.`,
   expressions: [
     {
       type: 'string',

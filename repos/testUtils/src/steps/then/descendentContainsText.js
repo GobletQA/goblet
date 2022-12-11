@@ -17,10 +17,8 @@ Then(
   'the descendent element {string} contains the text {string}',
   descendentContainsText,
   {
-    description: `Locates an element by selector and verifies element contains text.
-There must be a preceding step that establishes an ancestor.
-
-Module : descendentContainsText`,
+    module: `descendentContainsText`,
+    description: `Locates an element by selector and verifies element contains text.\nThere must be a preceding step that establishes an ancestor.`,
     expressions: [
       {
         type: 'string',

@@ -21,22 +21,20 @@ const fileUpload = async (selector, filePath, world) => {
 }
 
 When('the file input {string} uploads the file {string}', fileUpload, {
-  description: `Uploads a file to an input[type=file] field.
-
-Module : fileUpload`,
+  module: `fileUpload`,
+  description: `Uploads a file to an input[type=file] field.`,
+  examples: [
+    `When the file input "input[type=file]" uploads the file "/assets/app_builds/apk/my_android_test_app.apk"`,
+  ],
   expressions: [
     {
       type: 'string',
-      description: `File input selector.\nIf there is only one file input in the DOM, simply pass "input[type=file]".
-If there are multiple file inputs, add a more targeted selector.`,
+      description: `File input selector.\nIf there is only one file input in the DOM, simply pass "input[type=file]".\nIf there are multiple file inputs, add a more targeted selector.`,
       example: 'input[type=file]',
     },
     {
       type: 'string',
-      description: `Path to the file inside the docker container\'s mounted /support/ folder.  Include a leading forward-slash in the path.
-
-Example :
-  When the file input "input[type=file]" uploads the file "/assets/app_builds/apk/my_android_test_app.apk"`,
+      description: `Path to the file inside the docker container\'s mounted /support/ folder.  Include a leading forward-slash in the path.`,
       example: '/assets/app_builds/apk/my_android_test_app.apk',
     },
   ],

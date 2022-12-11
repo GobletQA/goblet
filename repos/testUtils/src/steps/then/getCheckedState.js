@@ -31,9 +31,8 @@ Then(
   `the element {string} checked state is {string}`,
   (selector, state) => getCheckedState(selector, state),
   {
-    description: `Locates a checkbox element by selector and verifies its checked state, checked or unchecked.
-  
-Module : getCheckedState`,
+    module: `getCheckedState`,
+    description: `Locates a checkbox element by selector and verifies its checked state, checked or unchecked.`,
     expressions: [
       {
         type: 'string',

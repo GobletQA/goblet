@@ -14,10 +14,8 @@ const descendentExactText = async (selector, data, world) => {
 }
 
 Then('the descendent element {string} text is {string}', descendentExactText, {
-  description: `Locates an element by selector and verifies element text matches exactly.
-There must be a preceding step that establishes an ancestor.
-
-Module : descendentExactText`,
+  module: `descendentExactText`,
+  description: `Locates an element by selector and verifies element text matches exactly.\nThere must be a preceding step that establishes an ancestor.`,
   expressions: [
     {
       type: 'string',

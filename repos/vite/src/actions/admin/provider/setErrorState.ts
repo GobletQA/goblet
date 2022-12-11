@@ -9,11 +9,14 @@ import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
  */
 export const setErrorState = async (error:any) => {
 
+  console.log(`------- admin - setError State -------`)
+
   if(!AuthActive) return new Error(error)
 
-  await removeRepo()
-  await signOutAuthUser()
-  signInModal()
+  console.log(`------- remove repo and sign out user -------`)
+  // await removeRepo()
+  // await signOutAuthUser()
+  // signInModal()
 
   return new Error(error)
 }

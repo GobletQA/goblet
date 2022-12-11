@@ -34,9 +34,8 @@ Then(
   'the select {string} selected option(s) is/are {string} by {string}',
   getSelectedOption,
   {
-    description: `Locates a select element by selector and verifies its selected options.  Can verify options by option label or option value.
-  
-Module : getSelectedOption`,
+    module: `getSelectedOption`,
+    description: `Locates a select element by selector and verifies its selected options.  Can verify options by option label or option value.`,
     expressions: [
       {
         type: 'string',

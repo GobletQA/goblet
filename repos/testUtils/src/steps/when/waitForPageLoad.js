@@ -12,11 +12,11 @@ const waitForPageLoad = async () => {
 }
 
 When('I wait for the page to load', waitForPageLoad, {
-  description: `Waits for load event to fire.
-Preceding step should be something that causes a page load such as a refresh, submitting a form, clicking a link, etc.
-If the page load event has already fired before reaching this step the step resolves immediately.
-
-Module : waitForPageLoad`,
+  module: `waitForPageLoad`,
+  description: `Waits for load event to fire.\nPreceding step should be something that causes a page load such as a refresh, submitting a form, clicking a link, etc.\nIf the page load event has already fired before reaching this step the step resolves immediately.`,
+  examples: [
+    `And I wait for the page to load`
+  ]
 })
 
 module.exports = { waitForPageLoad }

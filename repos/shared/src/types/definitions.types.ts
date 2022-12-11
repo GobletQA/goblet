@@ -11,10 +11,17 @@ export type TDefinitionToken = {
   [key:string]: any
 }
 
+export type TDefinitionMetaExpression = {
+  type: string,
+  example: string,
+  description: string,
+}
+
 export type TDefinitionMeta = {
-  module:string
-  description:string
-  expressions:string[]
+  module?:string
+  examples?: string[]
+  description?:string
+  expressions?:TDefinitionMetaExpression[]
 }
 
 export type TDefinitionParent = {
@@ -49,10 +56,9 @@ export type TDefinitionFileModel = Omit<TFileModel, 'ast'> & {
 export type TDefItemAction = {
   key:string
   name:string
-  iconProps: {
-    size:number,
-    Component: ComponentType<any>,
-  },
+  Component?: ComponentType<any>,
+  sx?: Record<string, string|number>
+  action?: (item:TDefItemAction|TDefinitionAst, ...args:any[]) => void
 }
 
 export type TDefGroupItem = {

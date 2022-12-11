@@ -1,12 +1,14 @@
 import type {
   TDefGroups,
+  TDefinitionAst,
   TDefGroupItem,
   TDefGroupType,
 } from '@types'
 
 import { useDefs } from '@store'
 import { useMemo } from 'react'
-import { CodeIcon, ContentCopyIcon } from '@components/Icons'
+import { capitalize } from '@keg-hub/jsutils'
+import { FileOpenIcon, AddCircleIcon } from '@components/Icons'
 
 // TODO: investigate moving this to an action, when the definitions are loaded
 // Also need to sort be default vs custom. Can use the file path vs repo path to figure it out
@@ -61,6 +63,17 @@ const sortDefinitions = (grouped:TDefGroups) => {
   return grouped
 }
 
+
+function onAdd(item:TDefGroupItem|TDefinitionAst) {
+  console.log(`------- onAdd item -------`)
+  console.log(item)
+}
+
+function onOpen(item:TDefGroupItem|TDefinitionAst) {
+  console.log(`------- onOpen item -------`)
+  console.log(item)
+}
+
 /**
  * Maps the definitions to a format that can be loaded by the SimpleList Component
  * Separates them by type, and creates a lookup map
@@ -75,25 +88,21 @@ export const useDefGroups = () => {
       ? Object.entries(definitionTypes).reduce((grouped, [key, defs]) => {
             defs.map(def => {
               const itemProps:TDefGroupItem = {
-                title: `${def.type} ${def.name}`,
+                title: `${capitalize(def.type)} ${def.name}`,
                 uuid: def.uuid,
                 meta: def.meta,
                 actions: [
                   {
-                    name: `Copy`,
-                    key: `action-copy`,
-                    iconProps: {
-                      size: 12,
-                      Component: ContentCopyIcon,
-                    },
+                    name: `Add`,
+                    key: `def-add-to-feature`,
+                    action: onAdd.bind(null, def),
+                    Component: AddCircleIcon,
                   },
                   {
-                    name: `Edit`,
-                    key: `action-edit`,
-                    iconProps: {
-                      size: 12,
-                      Component: CodeIcon,
-                    },
+                    name: `Open`,
+                    key: `def-open-file`,
+                    action: onOpen.bind(null, def),
+                    Component: FileOpenIcon,
                   },
                 ],
               }

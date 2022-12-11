@@ -47,7 +47,8 @@ import FunctionsIcon from '@mui/icons-material/Functions'
 import LabelImportantIcon from '@mui/icons-material/LabelImportant'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AddCircleIcon from '@mui/icons-material/AddCircle'
+import FileOpenIcon from '@mui/icons-material/FileOpen'
 
 export {
   Globe,
@@ -99,5 +100,6 @@ export {
   LabelImportantIcon,
   ContentCopyIcon,
   ArrowRightIcon,
-  AddCircleIcon
+  AddCircleIcon,
+  FileOpenIcon
 }

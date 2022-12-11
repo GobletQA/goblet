@@ -14,10 +14,11 @@ const checkDescendent = async (action, selector, world) => {
 }
 
 When(`I {string} the descendent element {string}`, checkDescendent, {
-  description: `Locates a checkbox element by selector and checks the checkbox.
-There must be a preceding step that establishes an ancestor.
-
-Module : checkDescendent`,
+  module: `checkDescendent`,
+  description: `Locates a checkbox element by selector and checks the checkbox.\nThere must be a preceding step that establishes an ancestor.`,
+  examples: [
+    `I "uncheck" the element "input[name=\'unique_name\']"`
+  ],
   expressions: [
     {
       type: 'string',
@@ -26,9 +27,7 @@ Module : checkDescendent`,
     },
     {
       type: 'string',
-      description: `The element selector.  Selector must be specific enough to locate a single element.  Valid for checkbox and radio inputs.
-
-Example : I "uncheck" the element "input[name=\'unique_name\']"`,
+      description: `The element selector.  Selector must be specific enough to locate a single element.  Valid for checkbox and radio inputs.`,
       example: "input[name='unique_name']",
     },
   ],

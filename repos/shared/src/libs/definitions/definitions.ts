@@ -86,10 +86,5 @@ export const loadDefinitions = async (
   // all the definition file models
   const defs = clientDefinitions.concat(gobletDefinitions)
 
-
-  defs.map(def => {
-    console.log(def.ast.definitions)
-  })
-
   return defs
 }

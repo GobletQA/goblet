@@ -1,5 +1,6 @@
 import type { EStepKey, TDefGroup } from '@types'
 
+import { Fragment } from 'react'
 import Divider from '@mui/material/Divider'
 import { DefListSubheader } from './Definitions.styled'
 import { DefinitionListItem } from './DefinitionListItem'
@@ -8,6 +9,8 @@ export type TDefinitionListGroup = {
   type:EStepKey
   group:TDefGroup
 }
+
+const keys = {} as any
 
 export const DefinitionListGroup = (props:TDefinitionListGroup) => {
   const {
@@ -23,17 +26,19 @@ export const DefinitionListGroup = (props:TDefinitionListGroup) => {
         <DefListSubheader>
           {group.group}
         </DefListSubheader>
+        <Divider />
 
-        {group.items.map((item) => (
-          <>
-            <DefinitionListItem
-              item={item}
-              type={type as EStepKey}
-              key={`item-${type}-${item.uuid}`}
-            />
-            <Divider />
-          </>
-        ))}
+        {group.items.map((item) => {
+          return (
+            <Fragment key={`item-${type}-${item.uuid}`} >
+              <DefinitionListItem
+                item={item}
+                type={type as EStepKey}
+              />
+              <Divider />
+            </Fragment>
+          )
+        })}
       </ul>
     </li>
   )

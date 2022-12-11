@@ -1,18 +1,29 @@
 import type { TDefGroupItem } from '@types'
 
+import { useCallback, useState } from 'react'
 
 import { EStepKey } from '@types'
+import Divider from '@mui/material/Divider'
+import Collapse from '@mui/material/Collapse'
+import { ArrowRightIcon } from '@components/Icons'
+import { DefinitionItemMeta } from './DefinitionItemMeta'
+import { DefinitionItemActions } from './DefinitionItemActions'
 import {
+  DefItem,
   DefText,
   DefIcon,
   DefButton,
-  DefItem
+  DefItemRow,
+  DefItemMeta,
 } from './Definitions.styled'
-import { ArrowRightIcon, AddCircleIcon } from '@components/Icons'
 
 export type TDefinitionListItem = {
   type:EStepKey
   item:TDefGroupItem
+}
+
+const styles = {
+  collapse: { width: `100%` },
 }
 
 export const DefinitionListItem = (props:TDefinitionListItem) => {
@@ -20,28 +31,42 @@ export const DefinitionListItem = (props:TDefinitionListItem) => {
     type,
     item,
   } = props
-  
+
+  const [open, setOpen] = useState<boolean>(false)
+
+  const onToggleMeta = useCallback(() => {
+    setOpen(!open)
+  }, [open])
+
   return (
     <DefItem
       className='goblet-def-item'
       key={`item-${type}-${item.uuid}`}
-      secondaryAction={
-        <DefButton
-          aria-label="goblet-add-def-to-feature"
-          sx={{ padding: `4px 10px` }}
-        >
-          <AddCircleIcon sx={{ fontSize: `16px`, marginRight: `5px` }} />
-          Add
-        </DefButton>
-      }
     >
-      <DefButton className='goblet-def-item-meta-toggle' >
-        <DefIcon className='goblet-def-item-meta-toggle-icon' >
-          <ArrowRightIcon />
-        </DefIcon>
-      </DefButton>
-    
-      <DefText className='goblet-def-item-text' primary={item.title} />
+      <DefItemRow className='goblet-def-item-row' >
+
+        <DefButton
+          onClick={onToggleMeta}
+          className='goblet-def-item-meta-toggle'
+        >
+          <DefIcon className='goblet-def-item-meta-toggle-icon' >
+            <ArrowRightIcon />
+          </DefIcon>
+        </DefButton>
+
+        <DefText className='goblet-def-item-text' primary={item.title} />
+        <DefinitionItemActions item={item} />
+      </DefItemRow>
+
+      <Collapse
+        in={open}
+        timeout="auto"
+        unmountOnExit
+        sx={styles.collapse}
+      >
+        <Divider />
+        <DefinitionItemMeta item={item} />
+      </Collapse>
     </DefItem>
   )
 }
