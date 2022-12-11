@@ -19,7 +19,10 @@ export const DefinitionItemActions = (props:TDefinitionItemActions) => {
 
   return item?.actions?.length
     ? (
-        <Box display='flex' >
+        <Box
+          display='flex'
+          className='goblet-defs-item-actions-wrapper'
+        >
           {item?.actions.map((action, idx) => {
             const strRef = `goblet-${action.key}`
 
@@ -27,9 +30,9 @@ export const DefinitionItemActions = (props:TDefinitionItemActions) => {
               <DefButton
                 key={action.key}
                 sx={styles.button}
-                onClick={action.action as any}
                 className={strRef}
                 aria-label={strRef}
+                onClick={action.action as any}
               >
                 {action.Component && (<action.Component sx={styles.icon} />)}
                 {action.name}

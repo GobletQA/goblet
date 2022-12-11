@@ -63,7 +63,7 @@ const MetaExpressions = (props:TMetaData) => {
             className='goblet-def-meta-expression'
           >
             {type && (
-              <DefMetaItemPair>
+              <DefMetaItemPair className='goblet-defs-expression-type' >
                 <DefMetaItemTitle>
                   type:
                 </DefMetaItemTitle>
@@ -73,7 +73,7 @@ const MetaExpressions = (props:TMetaData) => {
               </DefMetaItemPair>
             ) || null}
             {example && (
-              <DefMetaItemPair>
+              <DefMetaItemPair className='goblet-defs-expression-example' >
                 <DefMetaItemTitle>
                   example:
                 </DefMetaItemTitle>
@@ -83,7 +83,7 @@ const MetaExpressions = (props:TMetaData) => {
               </DefMetaItemPair>
             ) || null}
             {description && (
-              <DefMetaItemPair>
+              <DefMetaItemPair className='goblet-defs-expression-description' >
                 <DefMetaItemTitle>
                   description:
                 </DefMetaItemTitle>

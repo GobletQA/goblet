@@ -14,6 +14,7 @@ import { useDefs, useRepo } from '@store'
 import { useMemo } from 'react'
 import { capitalize } from '@keg-hub/jsutils'
 import { FileOpenIcon, AddCircleIcon } from '@components/Icons'
+import { addStepFromDefinition } from '@actions/features/local'
 
 // TODO: investigate moving this to an action, when the definitions are loaded
 // Also need to sort be default vs custom. Can use the file path vs repo path to figure it out
@@ -86,13 +87,11 @@ const sortDefinitions = (grouped:TDefTypeGroup) => {
 
 
 function onAdd(item:TDefGroupItem|TDefinitionAst) {
-  console.log(`------- onAdd item -------`)
-  console.log(item)
+  addStepFromDefinition({ clipboard: true, definition: item as TDefinitionAst})
 }
 
 function onOpen(item:TDefGroupItem|TDefinitionAst) {
-  console.log(`------- onOpen item -------`)
-  console.log(item)
+
 }
 
 const buildItem = (def:TDefinitionAst) => {

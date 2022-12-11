@@ -30,9 +30,9 @@ export const DefinitionBody = (props:TDefinitionsBody) => {
 
   const [Component, definitions] = useMemo(() => {
     return ([
+      [AllDefsList, allDefs],
       [DefaultDefsList, defaultDefs],
       [CustomDefsList, customDefs],
-      [AllDefsList, allDefs]
     ])[idx] as [ElementType<TDefsList>, TDefGroups]
   }, [idx, defaultDefs, customDefs, allDefs])
 

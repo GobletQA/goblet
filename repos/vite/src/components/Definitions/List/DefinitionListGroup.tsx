@@ -26,7 +26,7 @@ export const DefinitionListGroup = (props:TDefinitionListGroup) => {
     <li className={section} >
       <ul className={`${section}-list-items`} >
 
-        <DefListSubheader>
+        <DefListSubheader className={`goblet-defs-${section}-sub-header`} >
           {
             !Header
               ? group.group

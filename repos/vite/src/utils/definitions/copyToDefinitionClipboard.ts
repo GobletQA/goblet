@@ -1,11 +1,8 @@
 import type { TDefinitionAst } from '@types'
 import { capitalize } from '@keg-hub/jsutils'
+import { Clipboard } from '@gobletqa/shared/frontend/dom/clipBoard'
 
-const Clipboard = {
-  setString: (data:string) => {
-    console.log(`TODO: implement copy to clipboard`)
-  }
-}
+
 
 /**
  * Copies a definitions matcher text to the users clipboard
@@ -18,7 +15,7 @@ export const copyToDefinitionClipboard = (definition:TDefinitionAst) => {
     )
 
   const copyText = `${capitalize(definition.type)} ${definition.name}`.trim()
-  Clipboard.setString(copyText)
+  Clipboard.copyText(copyText)
 
   // TODO: Add toast notifications and remove this log
   // Add notifications that definition was copied to the users clipboard
