@@ -8,8 +8,6 @@ import type {
 } from '../../types'
 
 import { useMemo, memo } from 'react'
-
-
 import { Panel } from '../Sidebar/Panel'
 import { FileTreeActions } from './FileTreeActions'
 import { useFileTree } from '../../hooks/fileTree/useFileTree'
@@ -37,7 +35,6 @@ export type TFileTree = {
 
 export const FileTree = memo((props: TFileTree) => {
   const {
-    style,
     Modal,
     filesRef,
     onPathChange,

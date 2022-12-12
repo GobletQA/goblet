@@ -66,13 +66,7 @@ export const saveApiFile = async ({
   return resp
 }
 
-/**
- * Helper to make file load requests to the Backend API
- * @function
- * @export
- * @public
- */
-export const loadApiFile = async ({ location }:TFileApi) => {
+const loadFile = async (route:string, location:string) => {
   if(!location)
     return addToast({
       type: 'error',
@@ -82,7 +76,7 @@ export const loadApiFile = async ({ location }:TFileApi) => {
       ].join(`\n`)
     })
   
-  const resp = await apiRepoRequest<Record<'file', TFileModel>>(`/files/load?path=${location}`)
+  const resp = await apiRepoRequest<Record<'file', TFileModel>>(route)
 
   if(!resp?.success || resp?.error)
     addToast({
@@ -91,6 +85,20 @@ export const loadApiFile = async ({ location }:TFileApi) => {
     })
 
   return resp
+}
+
+/**
+ * Helper to make file load requests to the Backend API
+ * @function
+ * @export
+ * @public
+ */
+export const loadApiFile = async ({ location }:TFileApi) => {
+  return await loadFile(`/files/load?path=${location}`, location)
+}
+
+export const loadGobletApiFile = async (location:string) => {
+  return await loadFile(`/goblet/files/definition?path=${location}`, location)
 }
 
 /**

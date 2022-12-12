@@ -4,3 +4,5 @@ export * from './createFile'
 export * from './removeFile'
 export * from './renameFile'
 export * from './getFileTree'
+
+export * from './loadGobletFile'

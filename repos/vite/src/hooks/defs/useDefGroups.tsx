@@ -1,5 +1,4 @@
 import type {
-  TDefGroups,
   TDefGroup,
   TDefLookupMap,
   TDefTypeGroup,
@@ -10,11 +9,14 @@ import type {
   TDefGroupTypes,
 } from '@types'
 
-import { useDefs, useRepo } from '@store'
 import { useMemo } from 'react'
+import { useDefs, useRepo } from '@store'
 import { capitalize } from '@keg-hub/jsutils'
+import { OpenEditorFileEvt } from '@constants'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { FileOpenIcon, AddCircleIcon } from '@components/Icons'
 import { addStepFromDefinition } from '@actions/features/local'
+
 
 // TODO: investigate moving this to an action, when the definitions are loaded
 // Also need to sort be default vs custom. Can use the file path vs repo path to figure it out
@@ -90,8 +92,8 @@ function onAdd(item:TDefGroupItem|TDefinitionAst) {
   addStepFromDefinition({ clipboard: true, definition: item as TDefinitionAst})
 }
 
-function onOpen(item:TDefGroupItem|TDefinitionAst) {
-
+function onOpen(item:TDefinitionAst) {
+  EE.emit(OpenEditorFileEvt, item)
 }
 
 const buildItem = (def:TDefinitionAst) => {

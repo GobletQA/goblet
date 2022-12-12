@@ -28,6 +28,10 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
 
   const {
     style,
+    Panels,
+    options,
+    actions,
+    PrePanels,
     emptyText,
     onLoadFile,
     onAddFile,
@@ -40,6 +44,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onFileChange,
     onValueChange,
     rootPrefix=``,
+    Divider=`div`,
     sidebarWidth,
     sidebarStatus,
     onEditorLoaded,
@@ -48,11 +53,6 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     defaultFiles = {},
     title='Goblet Editor',
     config={} as TEditorConfig,
-    options,
-    Panels,
-    actions,
-    PrePanels,
-    Divider=`div`,
   } = props
 
   const {
@@ -171,6 +171,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     closeFile,
     editorRef,
     curPathRef,
+    pathChange,
     openedFiles,
     curValueRef,
     resizeSidebar,

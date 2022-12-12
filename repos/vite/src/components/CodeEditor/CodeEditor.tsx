@@ -1,3 +1,5 @@
+import type { TEditorRefHandle } from '@gobletqa/monaco'
+
 import { useRef } from 'react'
 import { BlockIcon } from '@components/Icons'
 import { ConnectPanel } from './ConnectPanel'
@@ -9,8 +11,8 @@ import { RepoNotConnected } from './RepoNotConnected'
 import { SquareAction } from './Actions/SquareAction'
 import { PictureAction } from './Actions/PictureAction'
 import { RunTestsAction } from './Actions/RunTestsAction'
-import { RecordBrowserAction } from './Actions/RecordBrowserAction'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
+import { RecordBrowserAction } from './Actions/RecordBrowserAction'
 
 const Actions = [
   RunTestsAction,
@@ -29,7 +31,7 @@ export type TCodeEditorProps = {
 }
 export const CodeEditor = (props:TCodeEditorProps) => {
 
-  const editorRef = useRef<any>(null)
+  const editorRef = useRef<TEditorRefHandle>(null)
 
   const {
     files,

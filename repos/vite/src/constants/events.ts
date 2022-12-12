@@ -8,3 +8,4 @@ export const WindowResizeEvt = `window-resize-event`
 export const OpenFileTreeEvt = `open-file-tree-event`
 export const PanelDimsSetEvt = `panel-dims-set-event`
 export const TerminalExpandEvt = `terminal-expand-event`
+export const OpenEditorFileEvt = `open-editor-file-event`

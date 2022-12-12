@@ -1,4 +1,4 @@
-import type { TEditorConfig } from '@gobletqa/monaco'
+import type {  TEditorConfig } from '@gobletqa/monaco'
 
 import { useMemo } from 'react'
 import { deepMerge } from '@keg-hub/jsutils'

@@ -1,5 +1,6 @@
 import type { editor } from 'monaco-editor'
-import type { TFileMeta } from './file.types'
+import type { TEditorCB } from './helpers.types'
+import type { TFilelist, TFileMeta } from './file.types'
 
 export type TEditorOpenFiles = TFileMeta[]
 
@@ -47,4 +48,15 @@ export type TEditorTheme = editor.IStandaloneThemeData & {
 
 export type TEditorThemes = {
   [key: string]: TEditorTheme
+}
+
+
+export type TEditorRefHandle = {
+  closeFile:TEditorCB
+  getAllValue:() => TFilelist
+  getSupportThemes:() => string[],
+  resizeSidebar:(width:number) => void
+  getValue:(path:string) => string | null,
+  openFile: (loc:string, content?:string|null) => void,
+  setTheme:(name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
 }

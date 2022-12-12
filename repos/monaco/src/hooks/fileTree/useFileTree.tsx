@@ -106,11 +106,11 @@ export const useFileTree = (props:TFileTree) => {
   })
 
   return {
-    filetree,
-    setFiletree,
     addFile,
+    filetree,
     addFolder,
     deleteFile,
+    setFiletree,
     editFileName,
     deleteFolder,
     abortAddFile,

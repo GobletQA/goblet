@@ -11,5 +11,6 @@ module.exports = {
     always: `always`,
     failed: `failed`,
     never: `never`,
-  }
+  },
+  DefinitionOverrideFolder: `override`
 }

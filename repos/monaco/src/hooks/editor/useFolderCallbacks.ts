@@ -8,9 +8,8 @@ import type {
   TEditorRenameFile
 } from '../../types'
 
-import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
-
 import { useCallback } from 'react'
+import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 
 export type TUseFolderCallbacks = {
@@ -26,10 +25,32 @@ export type TUseFolderCallbacks = {
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
 }
 
+const updateFilesRef = (
+  filesRef: MutableRefObject<TFilelist>,
+  deleteModel: (path: string) => void,
+  path:string,
+  newPath:string
+) => {
+  Object.keys(filesRef.current).forEach(loc => {
+    if(!loc.startsWith(path + '/')) return
+
+    const content = filesRef.current[loc]
+
+    typeof content === 'string'
+      && setTimeout(() => {
+          deleteModel(loc)
+          const finalPath = loc.replace(path + '/', newPath + '/')
+          createOrUpdateModel(finalPath, content)
+          filesRef.current[finalPath] = content
+        }, 50)
+
+    delete filesRef.current[loc]
+  })
+}
+
 export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
 
   const {
-    autoSave,
     filesRef,
     onAddFile,
     onDeleteFile,
@@ -54,12 +75,14 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
     const deleteFolder = useCallback(
       (path: string, isRename?:boolean) => {
         delete filesRef.current[path]
-        Object.keys(filesRef.current).forEach(p => {
-          if (p.startsWith(path + '/')) {
-            const content = filesRef.current[p]
-            if (typeof content === 'string') deleteFile(p)
-          }
-        })
+
+        Object.keys(filesRef.current)
+          .forEach(loc => {
+            if (loc.startsWith(path + '/')) {
+              const content = filesRef.current[loc]
+              if (typeof content === 'string') deleteFile(loc)
+            }
+          })
 
         !isRename && onDeleteFile?.(path, true)
       },
@@ -73,36 +96,19 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
 
         delete filesRef.current[path]
         addFolder(newPath, true)
+        updateFilesRef(filesRef, deleteModel, path, newPath)
 
-        Object.keys(filesRef.current).forEach(p => {
-          if (p.startsWith(path + '/')) {
-            const content = filesRef.current[p]
-            if (typeof content === 'string') {
-              setTimeout(() => {
-                deleteModel(p)
-                const finalPath = p.replace(path + '/', newPath + '/')
-                createOrUpdateModel(finalPath, content || '')
-                filesRef.current[finalPath] = content || ''
-              }, 50)
-            }
-            delete filesRef.current[p]
-          }
-        })
+        setOpenedFiles(openedFiles =>
+          openedFiles.map(file => {
+            file.path.startsWith(path + '/')
+              && (file.path = file.path.replace(path + '/', newPath + '/'))
 
-        setOpenedFiles(pre =>
-          pre.map(v => {
-            if (v.path.startsWith(path + '/')) {
-              v.path = v.path.replace(path + '/', newPath + '/')
-            }
-            return v
+            return file
           })
         )
 
-        if (curPathRef.current.startsWith(path + '/')) {
-          setTimeout(() => {
-            pathChange(curPathRef.current.replace(path + '/', newPath + '/'))
-          }, 50)
-        }
+        curPathRef.current.startsWith(path + '/')
+          && setTimeout(() => pathChange(curPathRef.current.replace(path + '/', newPath + '/')), 50)
 
         onRenameFile?.(path, newPath)
       },

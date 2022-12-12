@@ -10,6 +10,7 @@ import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
 import { noOpObj } from '@keg-hub/jsutils'
 import { VNCConnectedEvt } from '@constants'
+
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 export const useConnectCB = (props:TBrowserProps, ext:TConnectExt) => {
@@ -139,6 +140,7 @@ export const useVncHooks = (props:TBrowserProps, ext:TBrowserExt) => {
     connectRef,
     setLoading,
   } = ext
+
 
   const _onConnect = useCallback((...args:any[]) => {
     connected.current = true

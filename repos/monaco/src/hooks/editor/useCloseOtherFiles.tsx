@@ -64,7 +64,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
           title: 'Close other files',
           onOk: saveAllFiles,
           onCancel: () => {
-            setOpenedFiles(pre => pre.filter(p => p.path === path))
+            setOpenedFiles(openedFiles => openedFiles.filter(file => file.path === path))
             restoreModel(path)
             setCurPath(path)
             unSavedFiles.forEach((file) => {
@@ -87,7 +87,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
         })
       }
       else {
-        setOpenedFiles(pre => pre.filter(p => p.path === path))
+        setOpenedFiles(openedFiles => openedFiles.filter(file => file.path === path))
         restoreModel(path)
         setCurPath(path)
         openedPathRef.current = path

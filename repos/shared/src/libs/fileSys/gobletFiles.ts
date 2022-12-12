@@ -1,4 +1,5 @@
 import type { Repo } from '@GSH/repo/repo'
+import type { TDefGobletConfig } from '../../types'
 
 import path from 'path'
 import fs from 'fs-extra'
@@ -12,6 +13,7 @@ import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { loadTemplate } from '@GSH/templates/loadTemplate'
 import { resolveFileType } from '@GSH/utils/resolveFileType'
 import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
+import { DefinitionOverrideFolder } from '@GSH/constants'
 
 const {
   readFile,
@@ -101,8 +103,8 @@ export const getGobletFile = async (
   const baseDir = getRepoGobletDir(repo)
 
   const fullPath = location.startsWith(baseDir)
-  ? location
-  : path.join(baseDir, location)
+    ? location
+    : path.join(baseDir, location)
 
   await checkPathExists(fullPath)
 
@@ -124,7 +126,6 @@ export const getGobletFile = async (
   }, repo)
 }
 
-
 /**
  * Save a definition file in the mounted repo when it's a modified version of the default definitions
  * @param repo - Repo Class instance for the currently active repo
@@ -133,9 +134,10 @@ export const getGobletFile = async (
  *
  * @returns - Contains boolean if save was successful and its fileModel
  */
-const saveDefinitionToRepo = async (
+const convertDefaultDefToCustomDef = (
   repo:Repo,
-  location:string
+  location:string,
+  overrideFolder:string=DefinitionOverrideFolder
 ) => {
   const definitionType = get(repo, `fileTypes.definition`)
   if(!definitionType || !definitionType.location)
@@ -144,7 +146,40 @@ const saveDefinitionToRepo = async (
       404
     )
 
-  return path.join(definitionType.location, path.basename(location))
+  return path.join(definitionType.location, `override`, path.basename(location))
+}
+
+
+/**
+ * Loads a definition from the included default goblet step definitions
+ * If found, converts the path to the repos sept dir
+ * Treats the file like it exists in the repo directly
+ *
+ */
+export const getGobletDefaultFile = async (
+  config:TDefGobletConfig,
+  repo:Repo,
+  location:string
+) => {
+  const { internalPaths } = config
+  const defaultStepsDir = internalPaths.defaultStepsDir
+
+  if(!location.startsWith(defaultStepsDir))
+    throw new Exception(
+      `You do not have permission to preform this action!`,
+      403
+    )
+
+  const repoLoc = convertDefaultDefToCustomDef(repo, location)
+  const [_, content] = await readFile(location)
+
+  // Build the file model for the file
+  return await buildFileModel({
+    content,
+    location: repoLoc,
+    fileType: `definition`,
+  }, repo)
+
 }
 
 /**
@@ -177,7 +212,7 @@ export const saveGobletFile = async (
       )
 
     // Overwrite the save location with the update path to the file location within the repo
-    saveLocation = await saveDefinitionToRepo(repo, location)
+    saveLocation = convertDefaultDefToCustomDef(repo, location)
   }
 
   const [err, success] = await writeFile(saveLocation, content)

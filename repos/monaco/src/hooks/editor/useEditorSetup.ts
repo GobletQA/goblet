@@ -1,5 +1,4 @@
 import type { ForwardedRef, MutableRefObject } from 'react'
-import type { editor } from 'monaco-editor'
 import type {
   TAutoSave,
   TFilelist,
@@ -10,12 +9,14 @@ import type {
   TEditorConfig,
   TCodeEditorRef,
   TOnEditorLoaded,
+  TEditorRefHandle,
   TEditorFileCBRef,
   TEditorOpenFiles,
 } from '../../types'
 
+import { isStr } from '@keg-hub/jsutils'
 import { THEMES } from '../../constants'
-import { useRef, useCallback, useEffect, useImperativeHandle } from 'react'
+import { useCallback, useEffect, useImperativeHandle } from 'react'
 import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 export type TUseEditorSetup = {
@@ -35,6 +36,7 @@ export type TUseEditorSetup = {
   curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   resizeSidebar: (width:number) => void
+  pathChange:(key: string, content?:string) => void
   onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
   setTheme: (name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
 }
@@ -52,6 +54,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     setTheme,
     editorRef,
     closeFile,
+    pathChange,
     curPathRef,
     openedFiles,
     curValueRef,
@@ -62,42 +65,53 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     onEditorFocusRef,
   } = props
 
-    const onEditorFocus = useCallback(() => {
-      onEditorFocusRef.current?.(curPathRef.current, curValueRef.current)
-    }, [])
+  const onEditorFocus = useCallback(() => {
+    onEditorFocusRef.current?.(curPathRef.current, curValueRef.current)
+  }, [])
 
-    const onEditorBlur = useCallback(() => {
-      if(!curValueRef.current) return
+  const onEditorBlur = useCallback(() => {
+    if(!curValueRef.current) return
 
-      const file = openedFiles.find(file => file.path === curPathRef.current)
-      const isEditing = file?.status === `editing`
+    const file = openedFiles.find(file => file.path === curPathRef.current)
+    const isEditing = file?.status === `editing`
 
-      // Check if save on blur and the file was changed
-      if(autoSave === `blur` && isEditing){
-        saveFile()
-      }
+    // Check if save on blur and the file was changed
+    if(autoSave === `blur` && isEditing){
+      saveFile()
+    }
 
-      // TODO: find way to know if the event that called this was an action within the editor
-      // If a close file action is called for a diff file that is also open
-      // Then this event is called as well
-      // see onCloseTab in useOnTabClose hook
+    // TODO: find way to know if the event that called this was an action within the editor
+    // If a close file action is called for a diff file that is also open
+    // Then this event is called as well
+    // see onCloseTab in useOnTabClose hook
 
-      // Check if we should auto close the file when not edited
-      if(options.openMode === `preview` && file && file?.mode !== `keep`){
-        if(!isEditing) closeFile(curPathRef.current)
-        else file.mode = `keep`
-      }
+    // Check if we should auto close the file when not edited
+    if(options.openMode === `preview` && file && file?.mode !== `keep`){
+      if(!isEditing) closeFile(curPathRef.current)
+      else file.mode = `keep`
+    }
 
-      // Call passed in callbacks
-      onEditorBlurRef?.current?.(curPathRef.current, curValueRef.current)
+    // Call passed in callbacks
+    onEditorBlurRef?.current?.(curPathRef.current, curValueRef.current)
 
-    }, [
-      autoSave,
-      saveFile,
-      closeFile,
-      openedFiles,
-      options.openMode,
-    ])
+  }, [
+    autoSave,
+    saveFile,
+    closeFile,
+    openedFiles,
+    options.openMode,
+  ])
+
+  // Function exposed to the host application
+  // Allows opening files externally to the editor
+  const openFile = useCallback((path:string, content?:string) => {
+    if(isStr(content)){
+      createOrUpdateModel(path, content)
+      filesRef.current[path] = content
+    }
+
+    pathChange(path)
+  }, [])
 
   // Sets up callbacks for focus and blur of the editor
   useEffect(() => {
@@ -113,20 +127,20 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
 
   }, [onEditorFocus, onEditorBlur])
 
-    // Hook that runs on load of the editor component
-    // Creates monaco models for each of the defaultFiles
-    // that get set to the filesRef in the editor component
-    // Finally calls the onEditorLoaded callback if it exists
-    useEffect(() => {
-      Object.keys(filesRef.current).forEach(key => {
-        const content = filesRef.current[key]
-        typeof content === 'string' || content === null
-          && createOrUpdateModel(key, content)
-      })
+  // Hook that runs on load of the editor component
+  // Creates monaco models for each of the defaultFiles
+  // that get set to the filesRef in the editor component
+  // Finally calls the onEditorLoaded callback if it exists
+  useEffect(() => {
+    Object.keys(filesRef.current).forEach(key => {
+      const content = filesRef.current[key]
+      typeof content === 'string' || content === null
+        && createOrUpdateModel(key, content)
+    })
 
-      editorRef.current
-        && onEditorLoaded?.(editorRef.current as TCodeEditor, window.monaco)
-    }, [])
+    editorRef.current
+      && onEditorLoaded?.(editorRef.current as TCodeEditor, window.monaco)
+  }, [])
 
   useEffect(() => {
     if (editorRef.current) {
@@ -141,11 +155,13 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
   }, [curPath])
 
   useImperativeHandle(ref, () => ({
+    openFile,
     setTheme,
+    closeFile,
     resizeSidebar,
     getSupportThemes: () => THEMES,
     getAllValue: () => filesRef.current,
     getValue: (path: string) => filesRef.current[path],
-  }))
+  } as TEditorRefHandle))
 
 }

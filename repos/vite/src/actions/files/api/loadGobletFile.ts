@@ -1,14 +1,12 @@
-
-import { loadApiFile } from '@utils/api'
 import { setFile } from '../local/setFile'
 import { addToast } from '../../toasts/addToast'
+import { loadGobletApiFile } from '@utils/api/fileApi'
 
 
 /**
- * Sets a test file as the activeFile, after loading it's fileModel from the backend
- * Then calls setActiveFileFromType to set the file Active
+ * Loads a goblet default file ( step definition ) from the backend
  */
-export const loadFile = async (
+export const loadGobletFile = async (
   location:string,
   cache:boolean=true
 ) => {
@@ -19,7 +17,7 @@ export const loadFile = async (
       message: `A File location is required to load a file`,
     })
 
-  const resp = await loadApiFile({ location })
+  const resp = await loadGobletApiFile(location)
 
   if(!resp)
     return addToast({

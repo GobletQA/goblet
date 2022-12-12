@@ -147,6 +147,11 @@ module.exports = {
     pwMetaDataDir: GOBLET_PW_METADATA_DIR,
     testUtilsDir: SUB_REPOS.TEST_UTILS_PATH,
     screencastDir: SUB_REPOS.SCREENCAST_PATH,
+
+    // TODO: move default step defs to their own repo
+    // then update this based on the environment and repo location
+    defaultStepsDir: `${SUB_REPOS.TEST_UTILS_PATH}/src/steps`,
+
     // Temp directories for saving test artifacts
     // These paths should not be saved with the repo
     // They are only used when running tests, then discarded

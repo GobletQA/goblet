@@ -1,12 +1,17 @@
 import type { MutableRefObject } from 'react'
+import type { TEditorRefHandle } from '@gobletqa/monaco'
 import type {
   TMonaco,
   IEditor,
+  TDefinitionAst,
   OpenFileTreeEvent,
   TEditorSettingValues,
 } from '@types'
 
-import { useEffect, useMemo, useCallback } from 'react'
+import { loadGobletFile } from '@actions/files/api/loadGobletFile'
+
+import { useEventListen } from '../useEvent'
+import { useMemo, useCallback } from 'react'
 import { useFiles, useRepo, useDefs } from '@store'
 import { exists, set, noOp } from '@keg-hub/jsutils'
 import { useMonacoConfig } from './useMonacoConfig'
@@ -15,8 +20,12 @@ import { useGherkinSyntax } from './useGherkinSyntax'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { toggleModal } from '@actions/modals/toggleModal'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
-import { OpenFileTreeEvt, UpdateModalEvt } from '@constants'
+import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
+import { isCustomDef } from '@utils/definitions/isCustomDef'
+
 import { useSettingValues } from '@hooks/store/useSettingValues'
+import { OpenEditorFileEvt, OpenFileTreeEvt, UpdateModalEvt } from '@constants'
+
 
 import {
   useOnAddFile,
@@ -35,9 +44,8 @@ const modalActions = {
   },
 }
 
-
 export const useMonacoHooks = (
-  editorRef:MutableRefObject<any>
+  editorRef:MutableRefObject<TEditorRefHandle|null>
 ) => {
 
   const repo = useRepo()
@@ -72,17 +80,32 @@ export const useMonacoHooks = (
 
   exists(theme) && set(config, `theme.name`, theme)
 
-  useEffect(() => {
-    EE.on<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
-      exists(size) && editorRef?.current?.resizeFileTree?.(size)
-    }, `${OpenFileTreeEvt}-code-editor`)
+  useEventListen<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
+    exists(size) && editorRef?.current?.resizeSidebar?.(size)
+  })
 
-    return () => {
-      EE.off<OpenFileTreeEvent>(OpenFileTreeEvt, `${OpenFileTreeEvt}-code-editor`)
+  useEventListen<TDefinitionAst>(OpenEditorFileEvt, async (defAst) => {
+    const { location } = defAst
+
+    // If it's a custom file then it should already be loaded
+    if(isCustomDef(location)){
+      const relative = rmRootFromLoc(location, rootPrefix)
+      editorRef?.current?.openFile?.(relative)
+      return
     }
-  }, [])
-  
-  
+
+    // If it's a goblet file, then load it
+    // And then make call to open it in the editor
+    const loaded = await loadGobletFile(location)
+    if(!loaded) return
+
+    setTimeout(() => {
+      const relative = rmRootFromLoc(loaded.location, rootPrefix)
+      editorRef?.current?.openFile?.(relative, loaded.content)
+    }, 50)
+
+  })
+
   const addGherkinSyntax = useGherkinSyntax(defs.definitionTypes)
   const onEditorLoaded = useCallback(
     (editor:IEditor, monaco:TMonaco) => addGherkinSyntax(editor, monaco),

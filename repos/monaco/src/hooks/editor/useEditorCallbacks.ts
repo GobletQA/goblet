@@ -82,11 +82,6 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
 
   const pathChange = useCallback(
     (path: string) => {
-      /**
-       * TODO: Figure out way to call this function externally with the path to the file
-       * This should allow opening files externally to the editor
-       */
-      
       const model = restoreModel(path)
       model && openOrFocusPath(path)
     },

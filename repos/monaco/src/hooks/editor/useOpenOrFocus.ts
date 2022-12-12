@@ -22,11 +22,11 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
   } = props
 
   const openOrFocusPath = useCallback((path: string) => {
-    setOpenedFiles(pre => {
+    setOpenedFiles(openedFiles => {
       let exist = false
-      pre.forEach(loc => loc.path === path && (exist = true))
+      openedFiles.forEach(file => file.path === path && (exist = true))
 
-      return exist ? pre : [...pre, { path: path }]
+      return exist ? openedFiles : [...openedFiles, { path: path }]
     })
     setCurPath(path)
   }, [])

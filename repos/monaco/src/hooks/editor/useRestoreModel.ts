@@ -71,8 +71,8 @@ const restoreContentListener = (
   contentListenerRef.current = model.onDidChangeContent(() => {
     const content = model.getValue()
 
-    setOpenedFiles(pre => {
-      return pre.map(file => {
+    setOpenedFiles(openedFiles => {
+      return openedFiles.map(file => {
         if (file.path === path && filesRef.current[path] !== content)
           file.status = 'editing'
 
