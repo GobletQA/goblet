@@ -5,7 +5,7 @@ import type {
   TFilelist,
   TFileCallback
 } from '../../types'
-import type { Dispatch, RefObject, SetStateAction, MutableRefObject } from 'react'
+import type { SyntheticEvent, Dispatch, RefObject, SetStateAction, MutableRefObject } from 'react'
 
 import { useCallback, useState } from 'react'
 import { isStr } from '@keg-hub/jsutils'
@@ -63,7 +63,7 @@ export const useFileCallbacks = (props:THFileCallbacks) => {
   const [nameConflict, setNameConflict] = useState(false)
 
   const filePathChange = useCallback(
-    (e:any) => {
+    (e:SyntheticEvent<HTMLDivElement>) => {
       const key = e.currentTarget.dataset.src!
       onPathChange?.(key)
     },

@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react'
 import { useRef, useMemo, useCallback, useState } from 'react'
 
 export type TDragObj = {
@@ -30,7 +31,7 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
   })
 
   const onMoveStart = useCallback(
-    (e:any) => {
+    (e:MouseEvent) => {
       dragStartRef.current = {
         pageX: e.pageX,
         width: sidebarWidth,
@@ -40,7 +41,7 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
     [sidebarWidth]
   )
 
-  const onMove = useCallback((e:any) => {
+  const onMove = useCallback((e:MouseEvent) => {
     if (dragStartRef.current.start) {
       setSidebarWidth(
         dragStartRef.current.width + (e.pageX - dragStartRef.current.pageX)
@@ -48,7 +49,7 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
     }
   }, [])
 
-  const onMoveEnd = useCallback((e:any) => {
+  const onMoveEnd = useCallback((e:MouseEvent) => {
     dragStartRef.current = {
       pageX: e.pageX,
       width: 0,

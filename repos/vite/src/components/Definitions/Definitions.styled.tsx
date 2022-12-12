@@ -4,12 +4,11 @@ import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import { colors, dims } from '@theme'
-import MuiDrawer from '@mui/material/Drawer'
 import { DefinitionTabs } from '@constants'
+import MuiDrawer from '@mui/material/Drawer'
 import { styled } from '@mui/material/styles'
 import { getColor } from '@utils/theme/getColor'
 import { IconButton } from '@components/Buttons/IconButton'
-
 
 const actionsWidth = (dims.defs.header.height + 8) * 2
 const actionsWidthSplit = Math.round((actionsWidth / DefinitionTabs.length + Number.EPSILON) * 100) / 100
@@ -43,22 +42,34 @@ const closedStyles = (theme: Theme): CSSObject => ({
   }),
 })
 
-export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexShrink: 0,
-    whiteSpace: `nowrap`,
-    boxSizing: `border-box`,
-    height: dims.defs.openedHeight,
-    ...(open && {
-      ...openedStyles(theme),
-      '& .MuiDrawer-paper': openedStyles(theme),
-    }),
-    ...(!open && {
-      ...closedStyles(theme),
-      '& .MuiDrawer-paper': closedStyles(theme),
-    }),
+export const Drawer = styled(
+  MuiDrawer,
+  { shouldForwardProp: (prop) => prop !== 'open' }
+)(({ theme, open }) => ({
+  flexShrink: 0,
+  whiteSpace: `nowrap`,
+  boxSizing: `border-box`,
+  height: dims.defs.openedHeight,
+  ...(open && {
+    ...openedStyles(theme),
+    '& .MuiDrawer-paper': openedStyles(theme),
   }),
-)
+  ...(!open && {
+    ...closedStyles(theme),
+    '& .MuiDrawer-paper': closedStyles(theme),
+  }),
+  ...(!open && {
+    [`& .goblet-defs-header-tabs button.MuiTab-root.Mui-selected`]: {
+      color: getColor(colors.fadeDark30, colors.fadeLight55, theme),
+      backgroundColor: getColor(colors.gray04, colors.black03, theme),
+
+      [`&:hover`]: {
+        color: getColor(colors.fadeDark50, colors.fadeLight75, theme),
+        backgroundColor: getColor(colors.gray02, colors.black04, theme)
+      }
+    }
+  }),
+}))
 
 const tabHeight = `
   max-height: ${dims.defs.header.hpx};

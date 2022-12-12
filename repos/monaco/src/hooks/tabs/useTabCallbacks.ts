@@ -1,5 +1,5 @@
 import type { TFileMeta, TAutoSave, TModal } from '../../types'
-
+import type { SyntheticEvent } from 'react'
 
 import { useOnTabDown } from './useOnTabDown'
 import { useOnTabClose } from './useOnTabClose'
@@ -68,7 +68,7 @@ export const useTabCallbacks = (props:THTabCallbacks, active:boolean) => {
   const fileType = useFileType(file.path)
 
   const pathChange = useCallback(
-    (e:any) => {
+    (e:SyntheticEvent<HTMLDivElement>) => {
       const key = e.currentTarget.dataset.src!
       onPathChange && onPathChange(key)
     },

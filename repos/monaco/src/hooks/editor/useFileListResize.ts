@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react'
 import { useRef, useMemo, useCallback, useState } from 'react'
 
 export type TDragObj = {
@@ -30,7 +31,7 @@ export const useFileListResize = (props:TUseFileListResize) => {
   })
 
   const onMoveStart = useCallback(
-    (e:any) => {
+    (e:MouseEvent) => {
       dragStartRef.current = {
         pageX: e.pageX,
         width: fileListWidth,
@@ -40,7 +41,7 @@ export const useFileListResize = (props:TUseFileListResize) => {
     [fileListWidth]
   )
 
-  const onMove = useCallback((e:any) => {
+  const onMove = useCallback((e:MouseEvent) => {
     if (dragStartRef.current.start) {
       setFileListWidth(
         dragStartRef.current.width + (e.pageX - dragStartRef.current.pageX)
@@ -48,7 +49,7 @@ export const useFileListResize = (props:TUseFileListResize) => {
     }
   }, [])
 
-  const onMoveEnd = useCallback((e:any) => {
+  const onMoveEnd = useCallback((e:MouseEvent) => {
     dragStartRef.current = {
       pageX: e.pageX,
       width: 0,

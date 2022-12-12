@@ -12,14 +12,7 @@ For step-definitions
   * When hover over an expression in match text
     * Highlight the matching expression meta-data
 
-* Add Definition Search
-
-* Add Split between custom and default
-  * May need new prop on Definition AST
-
 * Connect actions to real functions
   * Need to add method to open a file in monaco from outside editor
-
-* Add lock function to lock the Definitions slider open
 
 * Add Up Toggle Arrow, to allow Definitions slider to be full height

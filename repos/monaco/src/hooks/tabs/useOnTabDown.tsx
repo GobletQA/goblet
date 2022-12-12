@@ -20,7 +20,7 @@ export const useOnTabDown = (props:THOnTabDown) => {
   } = props
 
   return useCallback(
-    (e:any) => {
+    (e:MouseEvent) => {
       if (e.button !== 2) return
 
       const position = {

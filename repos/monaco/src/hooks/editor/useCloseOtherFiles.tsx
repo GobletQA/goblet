@@ -45,7 +45,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
 
       const unSavedFiles = openedFiles.filter(file => file.status === 'editing')
       const saveAllFiles = () => {
-        unSavedFiles.forEach((file:any) => {
+        unSavedFiles.forEach((file) => {
           // This could cause some issue if a lot of files are opened
           saveFile(file, filesRef, onSaveFile)
         })
@@ -67,7 +67,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
             setOpenedFiles(pre => pre.filter(p => p.path === path))
             restoreModel(path)
             setCurPath(path)
-            unSavedFiles.forEach((file:any) => {
+            unSavedFiles.forEach((file) => {
               const content = filesRef.current[file.path] || ''
               createOrUpdateModel(file.path, content)
             })
@@ -77,7 +77,7 @@ export const useCloseOtherFiles = (props:TUseCloseOtherFiles) => {
             <>
               <div>The following files have unsaved changes</div>
               <br/>
-              {unSavedFiles.map((file:any) => (
+              {unSavedFiles.map((file) => (
                 <div key={file.path}>{file.path}</div>
               ))}
               <br/>
