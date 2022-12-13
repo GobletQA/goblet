@@ -1,6 +1,6 @@
 import type {Socket, Server} from 'socket.io'
-import type { SocketManager } from '@gobletqa/screencast'
 import type { TTokenUser } from './user.types'
+import type { SocketManager } from '@gobletqa/screencast'
 
 export enum ESocketEnvironment {
   local = 'local',

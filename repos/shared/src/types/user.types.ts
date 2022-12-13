@@ -1,4 +1,4 @@
-import { TRouteMeta } from './conductor.types'
+import { TRouteMeta } from './routes.types'
 
 export type TTokenUser = {
   userId:string

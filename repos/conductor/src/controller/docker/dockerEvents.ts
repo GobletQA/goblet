@@ -1,8 +1,9 @@
 import Dockerode from 'dockerode'
 import DockerEvents from 'docker-events'
+import { Logger } from '../../utils/logger'
 import { checkCall, noOpObj } from '@keg-hub/jsutils'
-import { Logger } from '@gobletqa/shared/libs/logger'
-import { TControllerEvts, TDockerEvent } from '@gobletqa/conductor/types'
+
+import { TControllerEvts, TDockerEvent } from '@gobletqa/shared/types'
 
 const eventTypes = [
   `die`,

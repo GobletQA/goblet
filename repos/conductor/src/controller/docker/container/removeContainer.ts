@@ -1,5 +1,5 @@
 import type { Container } from 'dockerode'
-import { Logger } from '@gobletqa/shared/libs/logger'
+import { Logger } from '../../../utils/logger'
 
 /**
  * Removes a docker container

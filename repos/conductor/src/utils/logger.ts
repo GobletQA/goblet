@@ -1,5 +1,5 @@
 import { Logger, setupLogger } from '@gobletqa/shared/libs/logger'
-setupLogger({ tag: `Goblet BE` })
+setupLogger({ tag: `Goblet CD` })
 
 export {
   Logger

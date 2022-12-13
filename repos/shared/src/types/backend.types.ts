@@ -1,10 +1,10 @@
-import { TSocketConfig } from './socket.types'
-import { TConductorOpts } from './conductor.types'
-import { TScreencastServer } from './screencast.types'
-import { TJwtConfig, TProxyOpts } from './helpers.types'
+import type { TProxyOpts } from './proxy.types'
+import type { TJwtConfig, } from './helpers.types'
+import type { TSocketConfig } from './socket.types'
+import type { TConductorOpts } from './conductor.types'
+import type { TScreencastServer } from './screencast.types'
 
 export type TReqHeaders = Record<string, string>
-
 
 export type TCookieConfig = {
   key: string

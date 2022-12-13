@@ -1,5 +1,5 @@
 import type { Docker } from '../docker'
-import { Logger } from '@gobletqa/shared/libs/logger'
+import { Logger } from '../../../utils/logger'
 import { TImgConfig } from '@gobletqa/conductor/types'
 import { wait, isFunc, checkCall } from '@keg-hub/jsutils'
 import { ContainerCreateOptions, Container, ContainerInspectInfo } from 'dockerode'

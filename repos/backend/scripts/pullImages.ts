@@ -1,10 +1,11 @@
 require('source-map-support').install({ environment: 'node' })
 import { docker } from '@keg-hub/cli-utils'
-import { Logger } from '@gobletqa/shared/libs/logger'
 import { conductorConfig } from '@GBE/Configs/conductor.config'
+import { Logger, setupLogger } from '@gobletqa/shared/libs/logger'
 import { buildImgUri } from '@gobletqa/conductor/controller/docker/image/buildImgUri'
 const { GB_CD_CONTROLLER_TYPE }  = process.env
 
+setupLogger({ tag: `Goblet BE` })
 
 ;(async () => {
   if((GB_CD_CONTROLLER_TYPE || ``).toLowerCase() !== `docker`) return

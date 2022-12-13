@@ -1,7 +1,8 @@
 import type { ClientRequest, IncomingMessage } from 'http'
 import type { Request, Response } from 'express'
-import { ForwardHostHeader } from '@GCD/constants'
 
+import { Logger } from '../utils/logger'
+import { ForwardHostHeader } from '@GCD/constants'
 
 /**
  * Called when the proxy request throws an error
@@ -106,8 +107,8 @@ export const withCORS = (headers:Record<string, string>, request:Request) => {
 
 const shouldRewrite = (req:Request, res:Response) => {
 
-  console.log(`Request Content-Type`, req.get(`Content-Type`))
-  console.log(
+  Logger.verbose(`Request Content-Type`, req.get(`Content-Type`))
+  Logger.verbose(
     `any`, req.is(`*/*`),
     `text`, req.is(`text/*`),
     `html`, req.is(`*/html`),
@@ -116,7 +117,7 @@ const shouldRewrite = (req:Request, res:Response) => {
   )
 
   const contentType = res.get(`Content-Type`)
-  console.log(`Response Content-Type`, contentType)
+  Logger.verbose(`Response Content-Type`, contentType)
 
   return
 }

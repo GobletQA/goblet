@@ -23,7 +23,6 @@ import {
   validateUser,
 } from '@gobletqa/shared/middleware'
 
-
 const ignoreError = [
   `connect ECONNREFUSED`,
   `(HTTP code 404) no such container`,

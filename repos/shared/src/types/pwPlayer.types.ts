@@ -1,11 +1,10 @@
+// TODO: this file should probably be moved to screencast repo
+// It is screencast specific
+
+import type { TRepo } from './repo.types'
+import type { TFileModel } from './models.types'
 import type { Player } from '@gobletqa/screencast'
-import type {
-  TRepo,
-  TBrowser,
-  TFileModel,
-  TBrowserPage,
-  TBrowserContext,
-} from './index'
+import type { TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 
 export type TRunnerResult = {
   [key:string]:any

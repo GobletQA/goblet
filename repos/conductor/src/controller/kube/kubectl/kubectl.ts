@@ -10,6 +10,7 @@ import type {
 } from '../../../types'
 
 import { limbo } from '@keg-hub/jsutils'
+import { Logger } from '../../../utils/logger'
 import * as k8s from '@kubernetes/client-node'
 
 const throwError = (err:TKubeError) => {
@@ -136,7 +137,7 @@ export class Kubectl {
         return this.config?.events?.error?.(pod, watchObj)
 
       default:
-        console.log('unknown type: ' + type)
+        Logger.warn('unknown type: ' + type)
     }
 
   }
@@ -146,7 +147,7 @@ export class Kubectl {
    */
   onListenError = (err:Error) => {
     if(!err)
-      return console.log(`The onListenError event was called without an error object`)
+      return Logger.error(`The onListenError event was called without an error object`)
 
     throwError({ statusCode: 1000, ...err })
   }

@@ -1,8 +1,8 @@
 import type { TBrowserConf } from '@GSC/types'
 
 import './resolveRoot'
-import { get, wait, setLogs } from '@keg-hub/jsutils'
-import { Logger } from '@keg-hub/cli-utils'
+import { get, wait } from '@keg-hub/jsutils'
+import { Logger, setupLogger } from '@gobletqa/shared/libs/logger'
 import {
   stopServer,
   statusServer,
@@ -17,7 +17,7 @@ import {
   statusSockify,
 } from '@GSC/libs/vnc'
 
-setLogs(true, `log`, `[ Goblet Screencast ]`)
+setupLogger({ tag: `Goblet Screencast` })
 
 const resolveContext = (context:string) => {
   if(!context || context === `all` || context === `a`) return { sock:true, vnc:true, browser:true }
@@ -52,7 +52,7 @@ export const runSCTask = async (type:string, params:Record<any, any>) => {
         const { chromium } = await statusServer()
         status.browser = chromium
       }
-      Logger.log(status)
+      Logger.info(status)
       break
     }
     case 'stop': {

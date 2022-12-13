@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 import '../resolveRoot'
 import { initApi } from './server'
+import { Logger } from '@GBE/utils/logger'
 
 const start = () => {
   process.on('SIGINT', () => {
-    console.log(`[Backend API] Force Killing api server...`)
+    Logger.info(`[Backend API] Force Killing api server...`)
     process.exit()
   })
 

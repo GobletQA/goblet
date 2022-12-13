@@ -1,4 +1,4 @@
-import { Logger } from '@gobletqa/shared/libs/logger'
+import { Logger } from '../../../utils/logger'
 
 export const shouldHydrate = (
   state:string,

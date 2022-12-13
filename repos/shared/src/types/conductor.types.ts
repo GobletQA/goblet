@@ -1,8 +1,55 @@
-import type { TPorts } from './ports.types'
+
+import type { TRouteMeta } from './routes.types'
 import type { TProxyConfig } from './proxy.types'
-import type { TControllerConfig } from './controller.types'
+import type { TPort, TPorts } from './ports.types'
+import type { Options } from 'http-proxy-middleware'
 import type { TLogLevel, TRestartPolicy } from './helpers.types'
 import type { ContainerCreateOptions, Container } from 'dockerode'
+import type { TControllerType, TControllerConfig } from './controller.types'
+
+export type TContainerOpts = TContainerConfig & {
+}
+
+export type TImgOpts = TImgConfig & {
+  tag: string
+  name: string
+  user: string
+  provider: string
+  container?: TContainerOpts
+}
+
+export type TImagesOpts = Record<string, TImgOpts>
+
+
+export type TControllerConnectOpts = {
+  port?:string
+  host?:string
+  protocol?:string
+}
+
+export type TControllerOpts = {
+  pidsLimit?: number
+  type: TControllerType
+  connect?: Record<any, any>
+  devRouter?: TRouteMeta
+  options: TControllerConnectOpts
+}
+
+type TConductorProxyOpts = {
+  port?: TPort
+  proxy?: Options
+  target?: string
+  headers?: Record<string, string>
+}
+
+export type TConductorOpts = {
+  domain?: string
+  hashKey?: string
+  subdomain?: string
+  images: TImagesOpts
+  proxy?: TConductorProxyOpts
+  controller?:TControllerOpts
+}
 
 export type TContainerConfig = {
   mem: number

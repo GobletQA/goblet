@@ -1,4 +1,3 @@
-import type { ComponentType } from 'react'
 import type { EStepKey } from './features.types'
 import type { TFileModel } from './models.types'
 
@@ -53,10 +52,11 @@ export type TDefinitionFileModel = Omit<TFileModel, 'ast'> & {
   ast: Record<`definitions`, TDefinitionAst[]>
 }
 
-export type TDefItemAction = {
+type ComponentType<T=any, C=any> = (props?:T) => C
+export type TDefItemAction<T=any, C=any> = {
   key:string
   name:string
-  Component?: ComponentType<any>,
+  Component?: ComponentType<T, C>,
   sx?: Record<string, string|number>
   action?: (item:TDefItemAction|TDefinitionAst, ...args:any[]) => void
 }

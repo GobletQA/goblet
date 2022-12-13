@@ -3,8 +3,7 @@ TPod,
  TImgConfig,
  TContainerMap
 } from '@gobletqa/conductor/types'
-
-import { Logger } from '@gobletqa/shared/libs/logger'
+import { Logger } from '../../../utils/logger'
 
 export const shouldRemove = (
   pod:TPod,

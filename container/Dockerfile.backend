@@ -109,6 +109,7 @@ ENV HOME=/root \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
     DEBUG=pw:* \
+    GB_SUB_REPO=backend \
     GB_BE_PORT=$GB_BE_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
     DEBIAN_FRONTEND=noninteractive \

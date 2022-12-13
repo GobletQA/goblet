@@ -14,11 +14,11 @@ import type {
 
 import { Kubectl } from './kubectl'
 import { Controller } from '../controller'
+import { Logger } from '../../utils/logger'
 import { buildPorts } from './pod/buildPorts'
 import { buildPortMap } from './pod/buildPortMap'
 import { shouldRemove } from './pod/shouldRemove'
 import { shouldHydrate } from './pod/shouldHydrate'
-import { Logger } from '@gobletqa/shared/libs/logger'
 import { isObj, isEmptyColl } from '@keg-hub/jsutils'
 import { buildPodManifest } from './pod/buildPodManifest'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
