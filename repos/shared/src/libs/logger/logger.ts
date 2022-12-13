@@ -1,18 +1,18 @@
-import { setLogs } from '@keg-hub/jsutils'
-import { capitalize, isStr } from '@keg-hub/jsutils'
+import type { TLogOpts } from '@GSH/utils/buildLogger'
+
 import { buildLogger } from '@GSH/utils/buildLogger'
 import { Logger as CliLogger } from '@keg-hub/cli-utils'
+import { setLogs, capitalize, isStr, isColl, exists } from '@keg-hub/jsutils'
 
-const { GB_SUB_REPO, NODE_ENV } = process.env
+const { GB_SUB_REPO } = process.env
 
 export type TWLogger = typeof Logger & {
   colors: typeof CliLogger.colors
 }
 
-export type TSetupLogger = {
+export type TSetupLogger = TLogOpts & {
   tag?:string
   label?:string
-  // Add other log options here 
 }
 
 let __logger:TWLogger
@@ -20,10 +20,6 @@ let __logLabel:string= GB_SUB_REPO ? `Goblet ${capitalize(GB_SUB_REPO)}` : `Gobl
 
 export const setupLogger = ({ tag, label=tag, ...opts }) => {
   if(label) __logLabel = label
-
-  // __logger = NODE_ENV === `production`
-  //   ?  buildLogger({ label: __logLabel, ...opts }) as TWLogger
-  //   : CliLogger
 
   __logger = buildLogger({ label: __logLabel, ...opts }) as TWLogger
 
@@ -37,43 +33,42 @@ const autoInit = () => {
   setLogs(true, `log`, __logLabel)
 }
 
-
-const loggerWrap = (
-  method:string,
-  tagColor:string=method,
-  inTag?:boolean,
-  logColor?:string
-) => {
-  const extra = inTag ? ` ${capitalize(method)}` : ''
-
+const loggerWrap = (method:string=`info`) => {
   return (...args:any[]) => {
     autoInit()
+    
+    const toLog = args.length <= 1 && isStr(args[0])
+      ? {
+          message: args[0],
+          label: __logLabel
+        }
+      : args.reduce((obj, arg) => {
+          if(!exists(arg)) return obj
+        
+          isColl(arg)
+            ? !obj.data ? (obj.data = arg) : (obj.data = [...obj.data, arg])
+            : (obj.message = `${obj.message} ${arg}`)
 
-    const tag = `[${__logLabel}${extra}]`
+          return obj
+        }, { message: ``, label: __logLabel })
 
-    Logger?.setTag?.(tag, tagColor)
-    __logger[method](
-      ...(
-          logColor
-            ? args.map((arg:any) => isStr(arg) ? __logger.colors[logColor](arg) : arg)
-            : args
-        )
-    )
-    Logger?.removeTag?.()
+    __logger?.[method]?.(toLog)
   }
 }
 
 
 export const Logger = {
   ...CliLogger,
-  error: loggerWrap(`error`, `red`, true, `white`),
-  warn: loggerWrap(`warn`, `yellow`, true, `white`),
-  data: loggerWrap(`data`, `yellow`, true, `white`),
-  log: loggerWrap(`info`, `cyan`, false, `white`),
-  info: loggerWrap(`info`, `cyan`, false, `white`),
-  debug: loggerWrap(`info`, `while`, false, `white`),
-  verbose: loggerWrap(`info`, `while`, true, `white`),
-  silly: loggerWrap(`info`, `while`, true, `white`),
-  success: loggerWrap(`success`, `green`, true, `white`),
+  pair: loggerWrap(`info`),
+  highlight: loggerWrap(`info`),
+  error: loggerWrap(`error`),
+  warn: loggerWrap(`warn`),
+  data: loggerWrap(`data`),
+  log: loggerWrap(`info`),
+  info: loggerWrap(`info`),
+  debug: loggerWrap(`info`),
+  verbose: loggerWrap(`info`),
+  silly: loggerWrap(`info`),
+  success: loggerWrap(`info`),
 }
 

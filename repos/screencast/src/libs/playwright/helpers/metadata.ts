@@ -2,7 +2,8 @@ import type { TBrowserMetaDataContext, TBrowserMetaData, TBrowserConf } from '@G
 
 import os from 'os'
 import path from 'path'
-import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSC/utils/logger'
+import { fileSys } from '@keg-hub/cli-utils'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
 import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
 import { isStr, isObj, exists, noOpObj, validate } from '@keg-hub/jsutils'

@@ -1,5 +1,5 @@
 import { toBool } from '@keg-hub/jsutils'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSC/utils/logger'
 
 /**
  * Gets the values for the vnc env and socket env

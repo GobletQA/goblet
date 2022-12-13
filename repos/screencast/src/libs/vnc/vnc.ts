@@ -1,6 +1,6 @@
 import type { TChildProcArgs } from '@GSC/types'
 
-import { Logger }from '@keg-hub/cli-utils'
+import { Logger } from '@GSC/utils/logger'
 import { findProc, killProc }from '@GSC/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { getGobletConfig }from '@gobletqa/shared/utils/getGobletConfig'
@@ -44,7 +44,7 @@ export const startVNC = async ({
   const status = await statusVNC()
 
   if (status.pid) {
-    Logger.pair(`- Tigervnc already running with pid:`, status.pid)
+    Logger.log(`- Tigervnc already running with pid:`, status.pid)
     return status
   }
 

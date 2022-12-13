@@ -1,3 +1,5 @@
+import type { TBrowserProcs } from '@GSC/types'
+
 import { browserNames } from '@GSC/constants'
 import { findProc } from '../../proc/findProc'
 import { limbo, exists } from '@keg-hub/jsutils'
@@ -5,7 +7,7 @@ import { limbo, exists } from '@keg-hub/jsutils'
 /**
  * Gets the current running status of browser server the process
  */
-export const statusServer = async (browser?:string) => {
+export const statusServer = async (browser?:string):Promise<TBrowserProcs> => {
   const hasBrowser = exists(browser)
   if (hasBrowser && !browserNames.includes(browser))
     throw new Error(
@@ -24,5 +26,5 @@ export const statusServer = async (browser?:string) => {
     )
 
     return err ? acc : { ...acc, [type]: status }
-  }, Promise.resolve({}))
+  }, Promise.resolve({} as TBrowserProcs))
 }

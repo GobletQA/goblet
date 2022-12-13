@@ -1,3 +1,5 @@
+import type { TProc } from '@GSC/types'
+
 import { exec } from 'child_process'
 
 /**
@@ -20,7 +22,7 @@ const parseOutput = (procName:string, output:string) => {
     running,
     name: name.replace('\n', ''),
     pid: parseInt(pid, 10),
-  }
+  } as TProc
 }
 
 

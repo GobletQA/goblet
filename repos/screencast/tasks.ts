@@ -1,8 +1,8 @@
 import type { TBrowserConf } from '@GSC/types'
 
 import './resolveRoot'
+import { Logger } from '@GSC/utils/logger'
 import { get, wait } from '@keg-hub/jsutils'
-import { Logger, setupLogger } from '@gobletqa/shared/libs/logger'
 import {
   stopServer,
   statusServer,
@@ -17,7 +17,6 @@ import {
   statusSockify,
 } from '@GSC/libs/vnc'
 
-setupLogger({ tag: `Goblet Screencast` })
 
 const resolveContext = (context:string) => {
   if(!context || context === `all` || context === `a`) return { sock:true, vnc:true, browser:true }
@@ -70,7 +69,11 @@ export const runSCTask = async (type:string, params:Record<any, any>) => {
         browser && delayStartBrowser(params.browser)
       ])
 
-      ;[`vnc`, `sock`, `browser`].forEach((item, idx) => procs[item] = proms[idx])
+      ;[`vnc`, `sock`, `browser`].forEach((item, idx) => {
+        const proc = proms[idx]
+        proc?.unref?.()
+        procs[item] = proc
+      })
       break
     }
     case 'restart': {
@@ -84,13 +87,13 @@ export const runSCTask = async (type:string, params:Record<any, any>) => {
 
       if(vnc){
         const vncProc = await startVNC(params.vnc)
-        procs.vnc = vncProc
         vncProc?.unref?.()
+        procs.vnc = vncProc
       }
       if(sock){
         const sockProc = await startSockify(params.sock)
-        procs.sock = sockProc
         sockProc?.unref?.()
+        procs.sock = sockProc
       }
       if(browser){
         const browserProc = await startServerAsWorker(params.browser)

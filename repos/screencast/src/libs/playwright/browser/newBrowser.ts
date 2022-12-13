@@ -2,28 +2,17 @@ import type { TBrowserConf } from '@GSC/types'
 
 import playwright from 'playwright'
 import { noOpObj } from '@keg-hub/jsutils'
+import { Logger } from '@GSC/utils/logger'
+import { inDocker } from '@keg-hub/cli-utils'
 import { getMetadata } from '../server/server'
 import { getBrowser, setBrowser } from './browser'
 import { startServer } from '../server/startServer'
-import { statusServer } from '../server/statusServer'
-import { Logger, inDocker } from '@keg-hub/cli-utils'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
 import { checkServerPid } from '../server/checkServerPid'
 import { getBrowserOpts } from '../helpers/getBrowserOpts'
 import { getBrowserType } from '../helpers/getBrowserType'
 
-/**
- * Checks for the pid of an already running browser
- */
-const getBrowserPid = async (type:string, checkStatus:boolean) => {
-  // If no status check, return true which is the same as having a pid for the browser
-  if (!checkStatus) return true
 
-  const allStatus = await statusServer(type)
-  const status = allStatus && allStatus[type]
-
-  return status & status.pid
-}
 
 /**
  * Starts new browser by connecting to an existing browser server websocket
@@ -36,7 +25,7 @@ export const newBrowserWS = async (
   const statusPid = await checkServerPid(type)
 
   if (!statusPid) {
-    Logger.log(`- Browser server not found. Starting new server...`)
+    Logger.info(`- Browser server not found. Starting new server...`)
     await startServer({ ...browserConf, type })
   }
 
@@ -72,7 +61,7 @@ export const newBrowser = async (
 
     const pwBrowser = getBrowser(type)
     if (pwBrowser) {
-      Logger.stdout(`- Found already running Browser\n`)
+      Logger.info(`- Found already running Browser`)
       return { browser: pwBrowser }
     }
 
@@ -88,7 +77,7 @@ export const newBrowser = async (
 
     newBrowser.creatingBrowser = true
 
-    Logger.stdout(`- Starting Browser ${type}...\n`)
+    Logger.info(`- Starting Browser ${type}...`)
     const browser = await playwright[type].launch(getBrowserOpts(browserConf))
     setBrowser(browser, type)
 

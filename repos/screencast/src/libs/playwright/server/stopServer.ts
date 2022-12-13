@@ -1,8 +1,8 @@
 import metadata from '../helpers/metadata'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSC/utils/logger'
 import { findProc, killProc } from '../../proc'
-import { setServer, getServer } from './server'
 import { limbo, checkCall, wait } from '@keg-hub/jsutils'
+import { setServer, getServer, getServerProc, setServerProc } from './server'
 
 /**
  * Looks for a process by name and try's to kill it
@@ -25,10 +25,13 @@ export const stopServer = async () => {
   // We still want to reset the browser reference and meta data
   try {
     const pwServer = getServer()
-    if (pwServer) {
-      pwServer.pid && killProc(pwServer)
-      pwServer.close && (await pwServer.close())
-    } else {
+    const pwServerProc = getServerProc()
+  
+    if (pwServer || pwServerProc) {
+      pwServer?.close && (await pwServer?.close())
+      Object.values(pwServerProc).forEach(proc => proc?.pid && killProc(proc))
+    }
+    else {
       await checkCall(async () => {
         // Kill both chrome, firefox and webkit
         await loopKill('chrome')
@@ -37,10 +40,12 @@ export const stopServer = async () => {
         await loopKill('webkit')
       })
     }
-  } catch (err) {
+  }
+  catch (err) {
     Logger.error(err.message)
   }
 
   await metadata.remove()
   setServer(undefined)
+  setServerProc(undefined)
 }

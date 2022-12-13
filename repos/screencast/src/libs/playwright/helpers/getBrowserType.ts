@@ -1,5 +1,5 @@
 import { browserMap, defaultBrowser } from '@GSC/constants'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSC/utils/logger'
 import { exists, isEmpty } from '@keg-hub/jsutils'
 
 /**

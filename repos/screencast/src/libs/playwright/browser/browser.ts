@@ -1,6 +1,6 @@
 import type { TBrowser, TBrowserContext, TBrowserPage } from '@GSC/types'
 
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSC/utils/logger'
 import { defaultBrowser } from '@GSC/constants'
 import { isFunc, get, set } from '@keg-hub/jsutils'
 
@@ -149,7 +149,7 @@ export const closeBrowser = async (browser?:TBrowser) => {
     browser && await browser?.close()
   }
   catch (err) {
-    Logger.warn(err.message)
+    Logger.warn(err.stack)
   }
 
   return PW_BROWSERS

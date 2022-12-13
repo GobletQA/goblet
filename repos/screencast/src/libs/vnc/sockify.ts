@@ -1,6 +1,6 @@
 import type { TSSLCreds, TChildProcArgs } from '@GSC/types'
 import fs from 'fs'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSC/utils/logger'
 import { findProc, killProc } from '@GSC/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
@@ -41,7 +41,7 @@ export const startSockify = async ({
   const status = await statusSockify()
 
   if (status.pid) {
-    Logger.pair(`- Websockify already running with pid:`, status.pid)
+    Logger.info(`- Websockify already running with pid:`, status.pid)
     return status
   }
 

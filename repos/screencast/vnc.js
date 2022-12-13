@@ -8,21 +8,29 @@ const { startServerAsWorker } = require('@GSC/libs/playwright')
   const type = process.argv.slice(2).shift()
   switch(type){
     case `sock`: {
-      startSockify(noOpObj)
+      const proc = await startSockify(noOpObj)
+      proc?.unref?.()
       break
     }
     case `vnc`: {
-      startVNC(noOpObj)
+      const proc = await startVNC(noOpObj)
+      proc?.unref?.()
       break
     }
     case `browser`: {
-      startServerAsWorker(noOpObj)
+      const proc = await startServerAsWorker(noOpObj)
+      proc?.unref?.()
       break
     }
     case `all`: {
-      startSockify(noOpObj)
-      startVNC(noOpObj)
-      startServerAsWorker(noOpObj)
+      const sockProc = await startSockify(noOpObj)
+      sockProc?.unref?.()
+
+      const vncProc = await startVNC(noOpObj)
+      vncProc?.unref?.()
+
+      const browserProc = await startServerAsWorker(noOpObj)
+      browserProc?.unref?.()
       break
     }
     default: {

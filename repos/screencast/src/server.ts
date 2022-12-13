@@ -1,7 +1,7 @@
+import '@GSC/utils/logger'
 import { initSocket } from '@GSC/libs/websocket'
 import { AUTH_BYPASS_ROUTES } from '@GSC/constants'
 import { getApp } from '@gobletqa/shared/express/app'
-import { setupLogger } from '@gobletqa/shared/libs/logger'
 import { setupEndpoints, setupTail } from '@GSC/middleware'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import {
@@ -23,8 +23,7 @@ import { setupRepo } from '@gobletqa/shared/middleware/setupRepo'
  * @returns {Object} - Express app, server and socket.io socket
  */
 const initApi = async () => {
-  setupLogger({ tag: `Goblet Screencast` })
-  
+ 
   const app = getApp(screencastConfig)
 
   setupTail(app)

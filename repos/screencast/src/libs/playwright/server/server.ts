@@ -1,4 +1,4 @@
-import type { TBrowserServer } from '@GSC/types'
+import type { TBrowserProcs, TBrowserServer } from '@GSC/types'
 
 import metadata from '../helpers/metadata'
 
@@ -7,6 +7,7 @@ import metadata from '../helpers/metadata'
  * @type {Object|undefined}
  */
 let PW_SERVER:TBrowserServer
+let PW_SERVER_PROC:TBrowserProcs
 
 /**
  * Returns the cached playwright server
@@ -23,6 +24,18 @@ export const setServer = (server:TBrowserServer) => {
 
   return PW_SERVER
 }
+
+export const getServerProc = () => {
+  return PW_SERVER_PROC
+}
+
+
+export const setServerProc = (proc:TBrowserProcs) => {
+  PW_SERVER_PROC = proc
+
+  return PW_SERVER_PROC
+}
+
 
 /**
  * Gets the cached browser server metadata

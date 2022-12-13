@@ -1,7 +1,7 @@
 import type { Express } from 'express'
 import type { TBrowserConf, SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSC/utils/logger'
 import { get, noOpObj } from '@keg-hub/jsutils'
 import { statusBrowser } from '@GSC/libs/playwright/browser/statusBrowser'
 

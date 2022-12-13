@@ -1,5 +1,7 @@
-import { buildLogger } from '@gobletqa/shared/utils/buildLogger'
+import { Logger, setupLogger } from '@gobletqa/shared/libs/logger'
 
-export const Logger = buildLogger({
-  label: `Goblet SC`
-})
+setupLogger({ tag: `Goblet SC` })
+
+export {
+  Logger
+}

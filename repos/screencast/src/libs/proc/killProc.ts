@@ -1,4 +1,5 @@
 import { exec } from 'child_process'
+import type { TProc } from '@GSC/types'
 import { isObj, exists } from '@keg-hub/jsutils'
 
 /**
@@ -10,7 +11,7 @@ import { isObj, exists } from '@keg-hub/jsutils'
  * @public
  */
 export const killProc = (
-  proc:Record<`pid`, string|number>|string|number,
+  proc:TProc|string|number,
   platform:string = process.platform
 ) => {
   const procPid = isObj(proc) ? proc.pid : proc
