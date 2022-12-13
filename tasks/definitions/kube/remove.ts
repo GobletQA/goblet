@@ -38,7 +38,7 @@ const findPods = async (params:TTaskParams, lgCtx?:string) => {
   }) as Record<any, any>[]
 }
 
-const removeAction = async (args:TTaskActionArgs) => {
+export const removeAction = async (args:TTaskActionArgs) => {
   const { params } = args
   const { log, context } = params
   const lgCtx = getLongContext(context, context)

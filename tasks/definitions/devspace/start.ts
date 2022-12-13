@@ -7,7 +7,6 @@ import { getLongContext } from '../../utils/helpers/contexts'
 import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
 import { getDeployments } from '../../utils/devspace/getDeployments'
 
-
 const setStartEnvs = (params:TTaskParams) => {
   const { install, pull, build } = params
 
@@ -47,6 +46,7 @@ const startAct = async (args:TTaskActionArgs) => {
     daemon,
     install,
     context,
+    screencast,
     devspace:ds,
     ...altParams
   } = params
@@ -59,6 +59,7 @@ const startAct = async (args:TTaskActionArgs) => {
       images,
       daemon,
       context,
+      screencast,
       devspace:ds,
       env: altParams.env
     }
@@ -81,72 +82,72 @@ const startAct = async (args:TTaskActionArgs) => {
 }
 
 export const start = {
-  name: 'start',
+  name: `start`,
   action: startAct,
-  example: 'yarn task devspace start <options>',
-  description: 'Calls the devspace dev command',
+  example: `yarn task devspace start <options>`,
+  description: `Calls the devspace dev command`,
   options: {
     context: {
-      type: 'array',
+      type: `array`,
       example: `--context app1,app2`,
-      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+      alias: [`ctx`, `name`, `type`, `deployment`, `deploy`, `selector`],
       description: `Contexts or names of apps to be started`,
     },
     skip: {
-      type: 'array',
-      alias: ['bypass'],
+      type: `array`,
+      alias: [`bypass`],
       example: `--skip proxy`,
       description: `Contexts or names of apps NOT to be started`,
     },
     build: {
       default: false,
-      type: 'boolean',
-      description: 'Build docker image before running',
+      type: `boolean`,
+      description: `Build docker image before running`,
     },
     log: {
       default: false,
-      type: 'boolean',
-      description: 'Log the devspace command to be run',
+      type: `boolean`,
+      description: `Log the devspace command to be run`,
     },
     daemon: {
       default: false,
-      type: 'boolean',
-      alias: ['d', `background`, `bg`, `detach`],
-      description: 'Runs the devspace command in the background',
+      type: `boolean`,
+      alias: [`d`, `background`, `bg`, `detach`],
+      description: `Runs the devspace command in the background`,
     },
     watch: {
       default: true,
-      type: 'boolean',
+      type: `boolean`,
       description: `Watch the logs after starting the application as a daemon. Only used when "--daemon" option is "true"`,
     },
     tag: {
       env: `IMAGE_TAG`,
       example: `--tag package`,
       allowed: [`package`, `branch`, `commit`, `values`],
-      description: 'Name of the tag to use when pulling the docker image',
+      description: `Name of the tag to use when pulling the docker image`,
     },
     image: {
       env: `IMAGE`,
-      description: 'Name of the docker image to use when starting the application',
+      description: `Name of the docker image to use when starting the application`,
     },
     debug: {
       default: false,
-      type: 'boolean',
-      description: 'Runs the devspace command in debug mode',
+      type: `boolean`,
+      description: `Runs the devspace command in debug mode`,
     },
     profile: {
-      description: 'Devspace profile to use defined in the container/devspace.yml',
+      description: `Devspace profile to use defined in the container/devspace.yml`,
     },
     install: {
-      type: 'string',
+      type: `string`,
       example: `--install proxy`,
-      alias: [`in`, 'yarn', 'nm'],
+      alias: [`in`, `yarn`, `nm`],
       description: `Name of the app that should run yarn install prior to starting.`,
     },
     pull: {
       example: `--pull never`,
       alias: [`pull_policy`, `pullpolicy`, `pp`],
-      allowed: [`IfNotPresent`, `Always`, `Never`, 'present', 'exists'],
+      allowed: [`IfNotPresent`, `Always`, `Never`, `present`, `exists`],
       description: `Set the image pull policy when starting the docker container, based on kubernetes pull policy`,
     },
     clean: {
@@ -163,10 +164,16 @@ export const start = {
       example: `--images`,
       description: `Remove all images while cleaning. Only valid when clean option is true`
     },
+    screencast: {
+      alias: [`sc`],
+      type: `boolean`,
+      default: true,
+      description: `Removes screencast pods while cleaning. Only valid when clean option is true`,
+    },
     cache: {
       default: true,
-      type: 'boolean',
-      description: 'Remove devspace cache. Only valid when clean option is true',
+      type: `boolean`,
+      description: `Remove devspace cache. Only valid when clean option is true`,
     },
   },
 }
