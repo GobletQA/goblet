@@ -1,4 +1,4 @@
-import type { SyntheticEvent, MouseEvent } from 'react'
+import type { SyntheticEvent, MouseEvent as RMouseEvent } from 'react'
 
 import { DefinitionTabs } from '@constants'
 import { useCallback, useState } from 'react'
@@ -8,11 +8,12 @@ import { DefsContainer } from './Definitions.styled'
 
 
 export type TDefinitions = {
-  onTabClick:(event:MouseEvent<HTMLDivElement>) => void
+  onClose?:(event:MouseEvent | TouchEvent) => void
+  onTabClick:(event:RMouseEvent<HTMLDivElement>) => void
 }
 
 export const Definitions = (props:TDefinitions) => {
-  const { onTabClick } = props
+  const { onClose, onTabClick } = props
 
   const [active, setActive] = useState(0)
 
@@ -30,6 +31,7 @@ export const Definitions = (props:TDefinitions) => {
       />
       <DefinitionBody
         active={active}
+        onClose={onClose}
         onChange={onChange}
         tabs={DefinitionTabs}
       />

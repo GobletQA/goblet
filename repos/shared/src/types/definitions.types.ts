@@ -53,12 +53,13 @@ export type TDefinitionFileModel = Omit<TFileModel, 'ast'> & {
 }
 
 type ComponentType<T=any, C=any> = (props?:T) => C
+export type TItemActionMethod = (item:TDefinitionAst, ...args:any[]) => void
 export type TDefItemAction<T=any, C=any> = {
   key:string
   name:string
   Component?: ComponentType<T, C>,
   sx?: Record<string, string|number>
-  action?: (item:TDefItemAction|TDefinitionAst, ...args:any[]) => void
+  action?: TItemActionMethod
 }
 
 export type TDefGroupItem = {

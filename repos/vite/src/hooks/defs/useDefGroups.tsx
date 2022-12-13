@@ -10,6 +10,7 @@ import type {
 } from '@types'
 
 import { useMemo } from 'react'
+import { useInline } from '../useInline'
 import { useDefs, useRepo } from '@store'
 import { capitalize } from '@keg-hub/jsutils'
 import { OpenEditorFileEvt } from '@constants'
@@ -17,6 +18,10 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { FileOpenIcon, AddCircleIcon } from '@components/Icons'
 import { addStepFromDefinition } from '@actions/features/local'
 
+type TOnClose = (event:MouseEvent | TouchEvent) => void
+export type THDefGroups = {
+  onClose?:TOnClose
+}
 
 // TODO: investigate moving this to an action, when the definitions are loaded
 // Also need to sort be default vs custom. Can use the file path vs repo path to figure it out
@@ -88,15 +93,21 @@ const sortDefinitions = (grouped:TDefTypeGroup) => {
 }
 
 
-function onAdd(item:TDefGroupItem|TDefinitionAst) {
+function onAdd(item:TDefinitionAst, event?:any) {
+  event?.stopPropagation?.()
+  event?.preventDefault?.()
   addStepFromDefinition({ clipboard: true, definition: item as TDefinitionAst})
 }
 
-function onOpen(item:TDefinitionAst) {
+function onOpen(item:TDefinitionAst, onClose:TOnClose, event?:any) {
+  event?.stopPropagation?.()
+  event?.preventDefault?.()
   EE.emit(OpenEditorFileEvt, item)
+
+  onClose?.(event)
 }
 
-const buildItem = (def:TDefinitionAst) => {
+const buildItem = (def:TDefinitionAst, onClose:TOnClose) => {
   return {
     title: `${capitalize(def.type)} ${def.name}`,
     uuid: def.uuid,
@@ -111,7 +122,7 @@ const buildItem = (def:TDefinitionAst) => {
       {
         name: `Open`,
         key: `def-open-file`,
-        action: onOpen.bind(null, def),
+        action: onOpen.bind(null, def, onClose),
         Component: FileOpenIcon,
       },
     ],
@@ -122,7 +133,9 @@ const buildItem = (def:TDefinitionAst) => {
  * Maps the definitions to a format that can be loaded by the SimpleList Component
  * Separates them by type, and creates a lookup map
  */
-export const useDefGroups = () => {
+export const useDefGroups = (props:THDefGroups) => {
+
+  const onClose = useInline(props.onClose)
   const { definitionTypes } = useDefs()
   const repo = useRepo()
   const repoRoot = repo?.paths?.repoRoot
@@ -141,7 +154,7 @@ export const useDefGroups = () => {
             defs.map(def => {
               const grouped = def?.location?.startsWith(repoRoot) ? customDefs : defaultDefs
 
-              const itemProps = buildItem(def)
+              const itemProps = buildItem(def, onClose)
 
               allDefs?.all?.items?.push(itemProps)
               grouped?.[key as TDefGroupType]?.items?.push(itemProps)

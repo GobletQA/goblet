@@ -14,7 +14,7 @@ import {
   DefIcon,
   DefButton,
   DefItemRow,
-  DefItemMeta,
+  DefMetaCollapse,
 } from './DefinitionList.styled'
 
 export type TDefinitionListItem = {
@@ -23,7 +23,14 @@ export type TDefinitionListItem = {
 }
 
 const styles = {
-  collapse: { width: `100%` },
+  arrow: {
+    open: {
+      transform: `rotate(90deg)`,
+    },
+    closed: {
+      transform: `rotate(0)`,
+    }
+  }
 }
 
 export const DefinitionListItem = (props:TDefinitionListItem) => {
@@ -43,14 +50,15 @@ export const DefinitionListItem = (props:TDefinitionListItem) => {
       className='goblet-def-item'
       key={`item-${type}-${item.uuid}`}
     >
-      <DefItemRow className='goblet-def-item-row' >
+      <DefItemRow onClick={onToggleMeta} className='goblet-def-item-row' >
 
         <DefButton
-          onClick={onToggleMeta}
           className='goblet-def-item-meta-toggle'
         >
           <DefIcon className='goblet-def-item-meta-toggle-icon' >
-            <ArrowRightIcon />
+            <ArrowRightIcon 
+              sx={open ? styles.arrow.open : styles.arrow.closed}
+            />
           </DefIcon>
         </DefButton>
 
@@ -58,15 +66,14 @@ export const DefinitionListItem = (props:TDefinitionListItem) => {
         <DefinitionItemActions item={item} />
       </DefItemRow>
 
-      <Collapse
+      <DefMetaCollapse
         in={open}
         timeout="auto"
         unmountOnExit
-        sx={styles.collapse}
       >
         <Divider />
         <DefinitionItemMeta item={item} />
-      </Collapse>
+      </DefMetaCollapse>
     </DefItem>
   )
 }

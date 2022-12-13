@@ -2,8 +2,6 @@ import type { TDefGroups } from '@types'
 import type { DefinitionTabs } from '@constants'
 import type { TDefsList } from './List/DefaultDefsList'
 import type { ElementType, CSSProperties, SyntheticEvent } from 'react'
-
-
 import { useMemo } from 'react'
 import { useDefGroups } from '@hooks/defs'
 import { DefsBody } from './Definitions.styled'
@@ -15,6 +13,7 @@ export type TDefinitionsBody = {
   sx?:CSSProperties
   active:number
   tabs: typeof DefinitionTabs
+  onClose?:(event:MouseEvent | TouchEvent) => void
   onChange:(event: SyntheticEvent, value: number) => any
 }
 
@@ -23,10 +22,11 @@ export const DefinitionBody = (props:TDefinitionsBody) => {
     sx,
     tabs,
     active,
+    onClose
   } = props
 
   const idx = active | 0
-  const { allDefs, defaultDefs, customDefs } = useDefGroups()
+  const { allDefs, defaultDefs, customDefs } = useDefGroups(props)
 
   const [Component, definitions] = useMemo(() => {
     return ([

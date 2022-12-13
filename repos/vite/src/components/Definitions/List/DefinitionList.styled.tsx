@@ -4,6 +4,7 @@ import { colors, dims, gutter } from '@theme'
 import { styled } from '@mui/material/styles'
 import ListItem from '@mui/material/ListItem'
 import { Text, Span } from '@components/Text'
+import Collapse from '@mui/material/Collapse'
 import { getColor } from '@utils/theme/getColor'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
@@ -80,7 +81,7 @@ export const DefListSubheader = styled(ListSubheader)(({ theme }) => `
 `)
 
 export const DefItem = styled(ListItem)(({ theme }) => `
-  padding: 5px;
+  padding: 5px 0px 0px;
   min-height: 35px;
   flex-direction: column;
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
@@ -100,11 +101,11 @@ export const DefItemRow = styled(Box)(({ theme }) => `
   height: 100%;
   display: flex;
   cursor: pointer;
+  padding: 0px 5px 5px;
 `)
 
 export const DefText = styled(ListItemText)(({ theme }) => `
   flex-grow: 1;
-  margin-left: 5px;
   color: ${getColor(colors.black06, colors.white00, theme)};
 `)
 
@@ -113,6 +114,10 @@ export const DefIcon = styled(ListItemIcon)(({ theme }) => `
   min-width: initial;
 `)
 
+export const DefMetaCollapse = styled(Collapse)(({ theme }) => `
+  width: 100%;
+  border-left: 5px solid ${getColor(colors.gray06, colors.black03, theme)};
+`)
 
 export const DefButton = styled(ListItemButton)(({ theme }) => `
   padding: 0;
@@ -135,7 +140,7 @@ export const DefItemMeta = styled(Box)(({ theme }) => `
   width: 100%;
   height: 100%;
   display: flex;
-  min-height: 100px;
+  min-height: 40px;
   padding: 10px 20px;
   padding-left: 25px;
   flex-direction: column;
@@ -169,5 +174,6 @@ export const DefMetaItemTitle = styled(Span)(({ theme }) => `
 `)
 export const DefMetaItemText = styled(Span)(({ theme }) => `
   font-size: 12px;
+  white-space: normal;
 `)
 

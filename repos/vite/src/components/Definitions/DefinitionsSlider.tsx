@@ -69,7 +69,7 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
 
       drawerChild.style.width = `${parentRef?.current?.clientWidth}px`
     })
-    
+
     return () => {
       off?.()
     }
@@ -101,7 +101,7 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
             }
           }}
         >
-          <Definitions onTabClick={onTabClick} />
+          <Definitions onTabClick={onTabClick} onClose={onClickAway} />
 
           <DefsSliderActions>
             <Tooltip title='Lock the drawer open state. Must be manually closed.'>
