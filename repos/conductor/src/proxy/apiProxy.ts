@@ -2,7 +2,7 @@ import type { IncomingMessage } from 'http'
 import type { Request, Response, Router } from 'express'
 import type { TProxyConfig } from '@gobletqa/conductor/types'
 
-import { checkCall, exists } from '@keg-hub/jsutils'
+import { checkCall, exists, isFunc } from '@keg-hub/jsutils'
 import { getOrigin } from '@gobletqa/shared/utils/getOrigin'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 
@@ -64,10 +64,10 @@ export const createApiProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
     headers: addHeaders,
     router: (req:Request) => {
       const route = proxyRouter(req)
-      return typeof proxy?.router === 'function'
-        // @ts-ignore
-        ? proxy?.router(req, route) || route
-        : route
+      // @ts-ignore
+      const found = !isFunc(proxy?.router) ? proxy?.router(req, route) || route : route
+
+      return found
     },
     onProxyReq: (proxyReq, req:Request, res:Response) => {
       mapRequestHeaders(proxyReq, req, addHeaders)

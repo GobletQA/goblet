@@ -172,11 +172,7 @@ export class Kube extends Controller {
     !image && this.notFoundErr({ type: `image`, ref: imageRef as string })
 
     const { deployment, container } = image
-    const {
-      envs,
-      ports,
-      restartPolicy
-    } = container
+    const { envs, restartPolicy } = container
 
     const nameRef = `${userHash}-${deployment}`
     const builtPorts = buildPorts(container as unknown as TPodContainer)

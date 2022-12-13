@@ -8,7 +8,7 @@ import { getLongContext } from '../../utils/helpers/contexts'
  * Finds any existing pods matching the passed in context
  * Converts the context to a long-context allowing context aliases
  */
-const findPods = async (params:TTaskParams) => {
+const findPods = async (params:TTaskParams, lgCtx?:string) => {
   const {
     context,
     label,
@@ -17,9 +17,9 @@ const findPods = async (params:TTaskParams) => {
     log
   } = params
 
-  log && Logger.pair(`Finding pods matching context`, context)
+  lgCtx = lgCtx || getLongContext(context, context)
+  log && Logger.pair(`Finding pods matching context`, lgCtx)
 
-  const lgCtx = getLongContext(context, context)
   const pods = await kubectl.getPods()
   return pods.items.filter(pod => {
     if(name){
@@ -40,12 +40,17 @@ const findPods = async (params:TTaskParams) => {
 
 const removeAction = async (args:TTaskActionArgs) => {
   const { params } = args
-  const pods = await findPods(params)
+  const { log, context } = params
+  const lgCtx = getLongContext(context, context)
+  
+  const pods = await findPods(params, lgCtx)
   if(!pods.length)
-    return params.log
-      && Logger.warn(`Could not find pod(s) matching context ${params.context}`)
+    return log
+      && Logger.warn(`Could not find pod(s) matching context ${
+        Logger.colors.brightWhite('"' + lgCtx + '"')
+      }\n`)
 
-  params.log && Logger.highlight(`Found`, pods.length, `matching pod(s), removing...`)
+  log && Logger.highlight(`Found`, pods.length, `matching pod(s), removing...`)
 
   const proms = await Promise.all(
     pods.map(async (pod) => {
@@ -54,8 +59,7 @@ const removeAction = async (args:TTaskActionArgs) => {
     })
   )
 
-  params.log
-    && Logger.success(`Successfully removed pods\n${Logger.colors.white(`  ` + proms.join(`  `))}`)
+  log && Logger.success(`Successfully removed pods\n${Logger.colors.white(`  ` + proms.join(`  `))}`)
 
   return true
 }

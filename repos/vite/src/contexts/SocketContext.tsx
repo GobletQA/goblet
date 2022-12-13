@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type { TRepoState, TContainerState, TUserState } from '@types'
 import { EContainerState } from '@types'
 import {
   memo,
@@ -11,9 +12,10 @@ import {
 
 import { AuthActive } from '@constants'
 import { noOpObj } from '@keg-hub/jsutils'
+import { Loading } from '@components/Loading'
 import { Fadeout } from '@components/Fadeout'
-import { useContainer, useUser } from '@store'
 import { localStorage } from '@services/localStorage'
+import { useContainer, useUser, useRepo } from '@store'
 import { SocketService, WSService } from '@services/socketService'
 import { getWebsocketConfig } from '@utils/api/getWebsocketConfig'
 
@@ -34,38 +36,58 @@ export const useSocket = () => {
   return useContext(SocketContext)
 }
 
+const isValidState = (
+  user?:TUserState,
+  container?:TContainerState,
+  repo?:TRepoState,
+) => {
+  return (!user || user && user?.id)
+    && (!repo || repo?.name && repo?.git?.remote)
+    && (!container || container?.api && container?.meta?.state === EContainerState.Running)
+}
+
 const useWSHooks = () => {
 
   const user = useUser()
+  const repo = useRepo()
   const container = useContainer()
   const [fade, setFade] = useState(false)
-  const [wsService, setWSService] = useState<SocketService|null>(null)
+  const [wsService, setWSService] = useState<SocketService>()
 
   useEffect(() => {
     !fade
-      && user?.id
-      && container?.meta?.state !== EContainerState.Running
+      && isValidState(user, container, repo)
       && setFade(true)
-  }, [fade, user?.id, container?.meta?.state])
+  }, [
+    fade,
+    user?.id,
+    repo?.name,
+    container?.api,
+    repo?.git?.remote,
+    container?.meta?.state
+  ])
 
 
   const fadeContent = useMemo(() => {
     if(!user?.id) return `User not authorized. Please login`
-    
-    const cState = container?.meta?.state
-    return cState !== EContainerState.Running || !wsService?.socket || !container?.api
-      ? `Waiting for Backend service to initialize...`
+
+    // Check for invalid state, or missing web socket
+    return !isValidState(user, container, repo) || !wsService?.socket
+      ? `Waiting for session to initialize...`
       : ``
   }, [
     user?.id,
+    repo?.name,
     container?.api,
+    repo?.git?.remote,
     wsService?.socket,
     container?.meta?.state
   ])
 
 
   useEffect(() => {
-    if(wsService?.socket || !container?.api) return
+    // Check if the web socket has been set, or for invalid state
+    if(wsService?.socket || !isValidState(user, container, repo)) return
 
     (async () => {
       const jwt = await localStorage.getJwt()
@@ -79,10 +101,13 @@ const useWSHooks = () => {
 
     })()
 
-
   }, [
+    user?.id,
+    repo?.name,
     container.api,
-    wsService?.socket
+    repo?.git?.remote,
+    wsService?.socket,
+    container?.meta?.state
   ])
 
   return {
@@ -97,17 +122,31 @@ const SocketChildren = memo((props:TSocketChildren) => {
   const {
     wsActive,
     children,
+    content,
     ...rest
   } = props
-  
-      // {AuthActive && (<Fadeout {...rest} />)}
-  
+
   return (
     <>
       {wsActive && props.children}
+      {AuthActive && (
+        <Fadeout
+          {...rest}
+          content={
+            <Loading
+              size={30}
+              message={content}
+              color={`secondary`}
+              containerSx={{
+                width: `100%`,
+                alignSelf: `center`,
+              }}
+            />
+          }
+        />
+      )}
     </>
   )
-  
 })
 
 export const SocketProvider = (props:TSocketProvider) => {

@@ -7,12 +7,11 @@ export type TWorld = {
 
 export type TRepoState = {
   name: string
-  url: string
   world: TWorld
   git: TGitData
+  environment: string
   fileTypes: TFileTypes
   paths: Record<string, string>
-  [key:string]: any
 }
 
 export const repoState = {} as TRepoState

@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react'
+import type { ReactNode, ComponentProps } from 'react'
 import type { CSSObj } from '@types'
 import { gutter } from '@theme'
 import Box from '@mui/material/Box'
@@ -6,7 +6,7 @@ import { Text } from '@components/Text'
 import CircularProgress from '@mui/material/CircularProgress'
 
 export type TLoading = ComponentProps<typeof CircularProgress> & {
-  message?:string
+  message?:ReactNode
   messageSx?: CSSObj
   containerSx?:CSSObj
   hideSpinner?:boolean

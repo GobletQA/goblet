@@ -68,6 +68,10 @@ const addExitListener = (
     
     process.on(type, (err:Error) => {
       const exitCode = type === `uncaughtException` ? 1 : 0
+      
+      if(type === `uncaughtException`){
+        return console.log(`TODO: fix error when process throws uncaughtException`, err)
+      }
 
       if(uncaughtExpCB(exitCode, err)) return
 
