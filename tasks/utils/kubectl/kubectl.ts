@@ -13,10 +13,15 @@ type TTaskParams = {
 
 type TCallback<T> = (args?:string|string[]|TTaskParams, params?:TTaskParams) => Promise<T>
 
+type TPodDelete<T> = (args:T[], ...rest:any[]) => Promise<string>
+type TKubeDelete<T> = TCallback<T> & {
+  pod: TPodDelete<T>
+}
+
 type TKubeCtl = {
   (cmd:string|string[], params:TTaskParams, validExitCode?:string|number[]): Promise<string>
   create: TCallback<string>
-  delete: TCallback<string>
+  delete: TKubeDelete<string>
   useContext: TCallback<string>
   getContexts: TCallback<string[]>
   ensureContext: TCallback<string>
@@ -75,7 +80,13 @@ kubectl.delete = resolveArgs<string>(async (
 ) => {
   await kubectl.ensureContext(args, params)
   return await kubectl([`delete`, ...args], params)
-})
+}) as TKubeDelete<string>
+
+
+kubectl.delete.pod = (async (
+  args:string[],
+  ...rest:any[]
+) => await kubectl.delete([`pod`, ...args], ...rest)) as TPodDelete<string>
 
 
 /**

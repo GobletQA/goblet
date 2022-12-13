@@ -12,7 +12,7 @@ const {
   label:logLabel,
 } = format
 
-let __LOGGER
+let __LOGGER:winston.Logger
 
 
 export type TLogOpts = winston.LoggerOptions & {

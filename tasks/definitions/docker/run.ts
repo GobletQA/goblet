@@ -1,6 +1,6 @@
 import { appRoot } from '../../paths'
-import { Logger } from '@keg-hub/cli-utils'
 import { noOpArr } from '@keg-hub/jsutils'
+import { Logger } from '@keg-hub/cli-utils'
 import { docker } from '../../utils/docker/docker'
 import { loadEnvs } from '../../utils/envs/loadEnvs'
 import { getRunImg } from '../../utils/docker/getRunImg'

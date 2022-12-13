@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import '../resolveRoot'
 import type { Express } from 'express'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GBE/utils/logger'
 import { AUTH_BYPASS_ROUTES } from '@GBE/constants'
 import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
@@ -37,7 +37,7 @@ const ignoreError = [
 const handleUncaughtExp = (exitCode:number=0, err:Error) => {
   const shouldIgnore = ignoreError.find(text => err?.message?.includes(text))
   if(exitCode && shouldIgnore) {
-      Logger.log([
+      Logger.error([
         `\n`,
         Logger.colors.red(`------ [Server Error] ------`),
         `Docker API server is not responding properly`,
@@ -94,7 +94,6 @@ export const initApi = async () => {
     req.url.includes(vncProxy?.path)
       ? vncProxy?.upgrade(req, socket, head)
       : wsProxy?.upgrade(req, socket, head)
-    
   })
 
   return { app, server }

@@ -9,9 +9,8 @@ env:
 
 # --- Should only used for development --- #
 
-  # --- Custom screencast devspace config --- #
-  GB_SC_DEVSPACE_CONFIG: container/devspace.screencast.yaml
-
+  # --- Custom backend devspace config --- #
+  GB_BE_DEVSPACE_CONFIG: container/devspace.backend.yaml
 
   # --- Run the conductor in local dev mode --- #
-  GB_LOCAL_DEV_MODE: true
+  GB_LOCAL_DEV_MODE: false
