@@ -1,8 +1,6 @@
-import type { TPort, TPortsMap } from './ports.types'
-import type { Conductor } from '../conductor'
-import type { TUserHash, EContainerState } from './helpers.types'
-import type { ProxyTarget, ServerOptions } from 'http-proxy'
-
+import type { TPort } from './ports.types'
+import type { ProxyTarget } from 'http-proxy'
+import type { EContainerState, TUserHash } from './helpers.types'
 
 type TPublicUrl = string
 type TContainerId = string
@@ -57,19 +55,4 @@ export type TPublicUrls = {
 
 export type TControllerRoutes = {
   [key:TUserHash]: TRouteMeta
-}
-
-export type TGenRoute = {
-  hostPort:TPort,
-  userHash:TUserHash,
-  containerPort:TPort,
-  conductor:Conductor,
-  meta: TContainerMeta
-}
-
-export type TGenRoutes = {
-  ports:TPortsMap,
-  userHash:TUserHash,
-  conductor:Conductor,
-  meta: TContainerMeta
 }

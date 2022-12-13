@@ -1,8 +1,8 @@
 import { TContainerMap } from './helpers.types'
 import { TContainerConfig } from './conductor.types'
+
 import {
   Image,
-  Container,
   ContainerInfo,
   ContainerInspectInfo,
 } from 'dockerode'

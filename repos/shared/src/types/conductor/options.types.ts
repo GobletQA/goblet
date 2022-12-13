@@ -1,8 +1,9 @@
-import type { Options } from 'http-proxy-middleware'
 import type { TPort } from './ports.types'
 import type { TRouteMeta } from './routes.types'
+import type { Options } from 'http-proxy-middleware'
 import type { TControllerType } from './controller.types'
-import type { TImgConfig, TContainerConfig } from './conductor.types'
+import { TImgConfig, TContainerConfig } from './conductor.types'
+
 
 export type TContainerOpts = TContainerConfig & {
 }

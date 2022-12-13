@@ -1,5 +1,3 @@
-import { TContainerMap } from './helpers.types'
-import { V1Pod, V1ObjectMeta } from '@kubernetes/client-node'
 
 export enum EImgPullPolicy {
   Always=`Always`,
@@ -16,19 +14,11 @@ export enum ERestartPolicy {
   onFailure=`OnFailure`,
 }
 
-export type TPod = V1Pod
-export type TPodRef = TContainerMap | TPod | string
-
 export type TPodMetaOpts = {
   name?: string
   namespace: string
   labels?: Record<string, string>
   annotations?: Record<string, string>
-}
-
-export type TPodMeta = Omit<V1ObjectMeta, `name` | `namespace`> & {
-  name: string
-  namespace: string
 }
 
 export type TContainerEnvs = Record<string, any>
@@ -75,11 +65,6 @@ export type TPodContainer = {
   readinessProbe?: any,
   terminationMessagePath?: string
   terminationMessagePolicy?: string
-}
-
-
-export type TPodManifest = V1Pod & {
-  metadata: TPodMeta
 }
 
 export type TEnvRefConfig = {
