@@ -1,19 +1,18 @@
-const { loadEnvs } = require('../envs/loadEnvs')
-const { updateVersion } = require('./updateVersion')
-const { get, deepMerge } = require('@keg-hub/jsutils')
-const { Logger, runCmd, yarn } = require('@keg-hub/cli-utils')
-const { appRoot, distDir, containerDir } = require('../../paths')
-const { getFirebaseToken } = require('../firebase/getFirebaseToken')
-const { copyFromContainer } = require('../docker/copyFromContainer')
-const { getFirebaseProject } = require('../firebase/getFirebaseProject')
+import type { TTaskActionArgs, TEnvObject } from '../../types'
+
+import { loadEnvs } from '../envs/loadEnvs'
+import { updateVersion } from './updateVersion'
+import { get, deepMerge } from '@keg-hub/jsutils'
+import { Logger, runCmd, yarn } from '@keg-hub/cli-utils'
+import { appRoot, distDir, containerDir } from '../../paths'
+import { getFirebaseToken } from '../firebase/getFirebaseToken'
+import { copyFromContainer } from '../docker/copyFromContainer'
+import { getFirebaseProject } from '../firebase/getFirebaseProject'
 
 /**
  * Loads ENVs from config files for the current env
- * @param {string} env - Current env ( local | staging | production | etc... )
- * 
- * @returns {Object} - Loaded EVNs Object
  */
- const getConfigEnvs = env => {
+ const getConfigEnvs = (env:string) => {
   return loadEnvs({
     env,
     noEnv: true,
@@ -33,7 +32,7 @@ const { getFirebaseProject } = require('../firebase/getFirebaseProject')
  * 
  * @returns {*} - Response from the Keg-CLI tap.action task
  */
- const runBundleActions = async args => {
+ const runBundleActions = async (args:TTaskActionArgs) => {
   const { params, tasks }= args
   const { version, confirm, log } = params
   process.env.GB_ACTION_PARAMS = [
@@ -65,7 +64,7 @@ const { getFirebaseProject } = require('../firebase/getFirebaseProject')
  * 
  * @returns {Void}
  */
- const copyBundleToLocal = async (envs, log) => {
+ const copyBundleToLocal = async (envs:TEnvObject, log:boolean) => {
   log && Logger.log(`Copying bundle from docker container ${envs.CONTAINER_NAME}...`)
 
   await copyFromContainer({
@@ -85,7 +84,7 @@ const { getFirebaseProject } = require('../firebase/getFirebaseProject')
  * 
  * @returns {string} - Found firebase project name
  */
-const deployToFirebase = async (args, envs) => {
+const deployToFirebase = async (args:TTaskActionArgs, envs:TEnvObject) => {
   const { log } = args.params
   const cmdOpts = {cwd: appRoot, envs}
 
@@ -118,11 +117,8 @@ const deployToFirebase = async (args, envs) => {
  * Builds the frontend bundle in the running docker container
  * Copies the bundle to the host machine
  * Then uploads the bundle to firebase
- * @param {Object} args - All arguments passed to the frontendDeploy task
- * 
- * @returns {number} Firebase deploy exit code
  */
-const deployFrontend = async args => {
+export const deployFrontend = async (args:TTaskActionArgs) => {
   const { params } = args
   const { confirm, env, log, version } = params
 
@@ -134,8 +130,4 @@ const deployFrontend = async args => {
   await copyBundleToLocal(envs, log)
 
   return await deployToFirebase(args, envs)
-}
-
-module.exports = {
-  deployFrontend
 }

@@ -20,7 +20,7 @@ const getProviderToken = async (
   fileLoc = fileLoc || path.resolve(envs.GB_CR_SECRET_VALUE_PATH)
 
   return tokenEnv
-    ? [tokenName, tokenKey, token]
+    ? [tokenName, tokenKey, tokenEnv]
     : [tokenName, tokenKey, readFileSync(fileLoc).toString()]
 }
 

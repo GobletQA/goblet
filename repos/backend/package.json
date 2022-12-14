@@ -19,6 +19,7 @@
   "scripts": {
     "build": "yarn build:docker",
     "build:docker": "node configs/build.config.js",
+    "build:goblet": "node configs/build.goblet.config.js",
     "build:script": "GB_BUILD_PULL_SCRIPT=1 node configs/build.config.js",
     "clean": "yarn clean:dist; yarn clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",

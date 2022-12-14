@@ -75,13 +75,15 @@ WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app/repos/backend
-RUN yarn build:script && \
+RUN yarn build:goblet && \
+    yarn build:script && \
     yarn build:docker && \
     yarn install --frozen-lockfile --production
 
 WORKDIR /goblet/app
 RUN <<EOF
   mkdir -p /goblet-runner/repos/backend/scripts
+  mkdir -p /goblet-runner/configs
   cp -R /goblet/app/node_modules /goblet-runner/node_modules
   cp -R /goblet/app/repos/backend/dist /goblet-runner/repos/backend/dist
   cp -R /goblet/app/repos/shared/src/templates /goblet-runner/repos/backend/templates
@@ -89,6 +91,7 @@ RUN <<EOF
   cp -R /goblet/app/repos/backend/package.json /goblet-runner/repos/backend/package.json
   cp -R /goblet/app/repos/backend/tsconfig.json /goblet-runner/repos/backend/tsconfig.json
   cp -R /goblet/app/repos/backend/dist/pullImages.ts /goblet-runner/repos/backend/scripts/pullImages.ts
+  cp -R /goblet/app/repos/backend/dist/goblet.default.config.js /goblet-runner/configs/goblet.default.config.js
 EOF
 # ---- End Stage ---- #
 

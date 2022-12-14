@@ -1,8 +1,17 @@
-const { setupBuild } = require('./setupBuild')
-const { appRoot, distDir, coreBuildDir } = require('../../paths')
-const { Logger, yarn, runCmd, fileSys } = require('@keg-hub/cli-utils')
+import type { TTaskParams, TEnvObject } from '../../types'
+
+import { setupBuild } from './setupBuild'
+import { appRoot, distDir, coreBuildDir } from '../../paths'
+import { Logger, yarn, runCmd, fileSys } from '@keg-hub/cli-utils'
 
 const bundleCmd = `web:bundle`
+
+export type TBuildFE = {
+  tags: string[]
+  buildType:string
+  envs: TEnvObject
+  params:TTaskParams
+}
 
 /**
  * **IMPORTANT** - Called from within the docker container when using the deploy task
@@ -16,7 +25,7 @@ const bundleCmd = `web:bundle`
  * 
  * @returns {string} - Found firebase project name
  */
-const buildFrontend = async args => {
+const buildFE = async (args:TBuildFE) => {
   const { envs, params } = args
   const { log } = params
 
@@ -37,6 +46,4 @@ const buildFrontend = async args => {
   log && Logger.success(`\n[Success] ${Logger.colors.white('Frontend build completed successfully')}\n`)
 }
 
-module.exports = {
-  buildFrontend: setupBuild(buildFrontend)
-}
+export const buildFrontend = setupBuild(buildFE)

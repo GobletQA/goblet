@@ -1,8 +1,10 @@
-const { isArr } = require('@keg-hub/jsutils')
-const { loadEnvs } = require('../envs/loadEnvs')
-const { containerDir } = require('../../paths')
-const { formatParamEnvs }  = require('../envs/formatParamEnvs')
+import type { TBuildFE } from './buildFrontend'
+import type { TTaskActionArgs } from '../../types'
 
+import { isArr } from '@keg-hub/jsutils'
+import { loadEnvs } from '../envs/loadEnvs'
+import { containerDir } from '../../paths'
+import { formatParamEnvs }  from '../envs/formatParamEnvs'
 
 /**
  * Loads all the meta data needed to run the build function
@@ -10,8 +12,8 @@ const { formatParamEnvs }  = require('../envs/formatParamEnvs')
  * 
  * @returns {function} - Method to call when building a part of the goblet app
  */
-const setupBuild = (buildFunc) => {
-  return async (args, buildType) => {
+export const setupBuild = (buildFunc:(args:TBuildFE) => void) => {
+  return async (args:TTaskActionArgs, buildType:string) => {
     const {params} = args
     const {tags, envs, env} = params
 
@@ -37,8 +39,4 @@ const setupBuild = (buildFunc) => {
       },
     })
   }
-}
-
-module.exports = {
-  setupBuild
 }

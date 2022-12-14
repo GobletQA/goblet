@@ -22,8 +22,10 @@
 
 
 ## Steps
+
+### From Scratch
 * Set the namespace and context
-  * `yarn kube set prod --log`
+  * `yarn kube set prod --env prod --log`
 * Add the docker image pull secrets
   * `yarn kube secret docker --env prod --log`
 * Add the cloud provider API Token secrets
@@ -31,10 +33,15 @@
 * Deploy the Nginx Ingress Controller
   * `yarn kube ingress --env prod --log`
 * Deploy the Backend Apps
-  * `yarn dev deploy --env prod --log --skip fe`
+  * `yarn dev deploy --env prod --ds backend --log`
 * Deploy KCert
   * `kubectl apply -f scripts/deploy/kube/cert.yaml`
 
+### Re-Deploy
+* Set the namespace and context
+  * `yarn kube set prod --env prod --log`
+* Deploy the Backend Apps
+  * `yarn dev deploy --env prod --ds backend --log`
 
 
 ### TODO: add task to create linode token, to ensure goblet-certs can create ssl certs

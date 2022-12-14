@@ -7,8 +7,6 @@ env:
   GB_KUBE_CONTEXT: docker-desktop
   GB_HOST_DOMAIN: local.gobletqa.app
 
-# --- Should only used for development --- #
-
   # --- Custom backend devspace config --- #
   GB_BE_DEVSPACE_CONFIG: container/devspace.backend.yaml
 

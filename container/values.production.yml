@@ -9,6 +9,9 @@ env:
   GB_LOCAL_DEV_MODE: false
   DEVSPACE_INJECT_LOCAL: false
 
+  # --- Custom backend devspace config --- #
+  GB_BE_DEVSPACE_CONFIG: container/devspace.backend.yaml
+
 # ---- Backend ENVs ---- #
   # Use ssl in production, so port is always 443
   # The ingress will terminate and proxy to backend as 7005
