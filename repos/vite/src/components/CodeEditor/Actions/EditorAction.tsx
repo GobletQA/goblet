@@ -80,7 +80,7 @@ export const EditorAction = (props:TEditorActionProps) => {
     >
       <Box
         sx={style?.box}
-        className={cls('goblet-editor-action', className)}
+        className={cls('goblet-editor-action', className as any)}
       >
         <IconButton
           Icon={Icon}

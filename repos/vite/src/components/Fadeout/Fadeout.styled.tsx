@@ -2,6 +2,7 @@ import type { TStyle } from '@types'
 import type { Theme } from '@mui/material/styles'
 
 import { styled } from '@mui/system'
+import { getColor } from '@utils/theme/getColor'
 import Box, { BoxProps } from '@mui/material/Box'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 
@@ -21,8 +22,8 @@ export const Fade = styled(Box)<TFade>(
     height: `100vh`,
     position: `fixed`,
     transitionProperty: `opacity`,
-    backgroundColor: theme.palette.colors.white00,
     transitionDuration: `${(speed || 2000) * 0.001}s`,
+    backgroundColor: getColor(theme.palette.colors.white00, theme.palette.colors.black03, theme),
   })
 )
 
@@ -31,7 +32,7 @@ export const FadeSection = styled(Box)<BoxProps>({
   height: `100%`,
   display: `flex`,
   alignItems: `center`,
-  justifyContents: `center`,
+  justifyContent: `center`,
 })
 
 export const FadeView = styled(Box)<BoxProps>({
@@ -41,15 +42,15 @@ export const FadeView = styled(Box)<BoxProps>({
   alignItems: `center`,
   position: `relative`,
   flexDirection: `column`,
-  justifyContents: `center`,
+  justifyContent: `center`,
 })
 
 export const FadeText = styled(
   ((props:TypographyProps) => <Typography variant='h6' {...props} />))<TypographyProps>
-  (({ color=`#111111` }:Record<string, any>) => ({
-    color,
+  (({ theme, color }:Record<string, any>) => ({
     marginTop: 30,
     textAlign: `center`,
+    color: color || getColor(theme.palette.colors.black03, theme.palette.colors.white00, theme),
   })
 )
 

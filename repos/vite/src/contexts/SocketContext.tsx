@@ -10,6 +10,7 @@ import {
   createContext,
 } from 'react'
 
+import { gutter } from '@theme'
 import { AuthActive } from '@constants'
 import { noOpObj } from '@keg-hub/jsutils'
 import { Loading } from '@components/Loading'
@@ -140,6 +141,7 @@ const SocketChildren = memo((props:TSocketChildren) => {
               containerSx={{
                 width: `100%`,
                 alignSelf: `center`,
+                marginTop: gutter.margin.dpx
               }}
             />
           }

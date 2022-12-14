@@ -1,8 +1,11 @@
 import type { TRouteMeta } from '@types'
 
+import { getStore } from '@store'
 import { EContainerState } from '@types'
 import { addToast } from '@actions/toasts'
+import { isEmptyColl } from '@keg-hub/jsutils'
 import { apiRequest } from '@utils/api/apiRequest'
+import { connectModal } from '@actions/modals/modals'
 import { setErrorState } from '@actions/admin/provider/setErrorState'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
@@ -12,7 +15,7 @@ import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
  */
 export const statusContainer = async (
   params?:Record<any, any>
-):Promise<TRouteMeta | string | void> => {
+):Promise<TRouteMeta | Error | string | void> => {
   addToast({
     type: 'info',
     message: `Getting Session status...`,
@@ -32,7 +35,14 @@ export const statusContainer = async (
 
   await setContainerRoutes(data)
 
-  return data?.meta?.state !== EContainerState.RUNNING
+  const { repo } = getStore().getState()
+  const containerState = data?.meta?.state
+
+  containerState === EContainerState.Creating
+    && isEmptyColl(repo)
+    && connectModal()
+
+  return containerState !== EContainerState.RUNNING
     ? await waitForRunning()
     : data
 }

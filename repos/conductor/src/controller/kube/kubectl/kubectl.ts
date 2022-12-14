@@ -6,15 +6,28 @@ import type {
   TKubeConfig,
   TPodManifest,
   TEventWatchObj,
+  TKubeErrorBody,
   TKubeWatchEvents,
 } from '../../../types'
 
+import { KubeError } from '../kubeError'
 import { limbo } from '@keg-hub/jsutils'
 import { Logger } from '../../../utils/logger'
 import * as k8s from '@kubernetes/client-node'
 
-const throwError = (err:TKubeError) => {
-  throw new Error(`${err.statusCode} - ${err.message}`)
+const throwError = (
+  err:TKubeError,
+  body?:TKubeErrorBody,
+  statusCode?:number
+) => {
+  const code = statusCode || err?.statusCode || body?.code || err?.body?.code
+  throw new KubeError(
+    `${code} - ${err.message}`,
+    { 
+      statusCode: code,
+      body: body || err.body,
+    }
+  )
 }
 
 /**
