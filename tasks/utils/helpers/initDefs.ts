@@ -1,5 +1,6 @@
-const { isObj, isFunc, mapObj } = require('@keg-hub/jsutils')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
+import { TTaskActionArgs, TTasks, TTask } from '../../types'
+import { isObj, isFunc } from '@keg-hub/jsutils'
+import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
 
 /**
  * Injects the goblet.config into a tasks arguments
@@ -8,7 +9,7 @@ const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
  * @return {function} - Function to inject the goblet config
  */
 const injectGobletConfig = taskAction => {
-  return args => {
+  return (args:TTaskActionArgs) => {
     args?.params?.env !== process.env.NODE_ENV
       && (process.env.NODE_ENV = args?.params?.env)
 
@@ -25,16 +26,12 @@ const injectGobletConfig = taskAction => {
  *
  * @return {Object} - tasks with the goblet.config injected
  */
-const initialize = tasks => {
-  mapObj(tasks, (key, task) => {
-    task.action = isFunc(task.action) && injectGobletConfig(task.action)
-    task.tasks = isObj(task.tasks) && initialize(task.tasks)
-  })
+export const initialize = (tasks:TTasks) => {
+  Object.entries(tasks)
+    .forEach(([key, task]:[string, TTask]) => {
+      task.action = isFunc(task.action) && injectGobletConfig(task.action)
+      task.tasks = isObj(task.tasks) && initialize(task.tasks)
+    })
 
   return tasks
-}
-
-module.exports = {
-  initialize,
-  injectGobletConfig
 }

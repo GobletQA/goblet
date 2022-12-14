@@ -1,6 +1,6 @@
+import { error } from '@keg-hub/cli-utils'
 import { noOpObj } from '@keg-hub/jsutils'
 import { loadEnvs } from '../envs/loadEnvs'
-import { error } from '@keg-hub/cli-utils'
 
 type TParams = {
   env?: string
@@ -11,12 +11,10 @@ type TParams = {
   [key:string]: any
 }
 
-type TDSArr = string[]
-type TDSObj = {
+type TDSContext = [`--namespace`, string, `--kube-context`, string] & {
   context?: string
   namespace?: string
 }
-type TDSContext = TDSArr & TDSObj
 
 
 /**
@@ -27,8 +25,8 @@ export const getDevspaceContext = (
   throwErr:boolean=true
 ) => {
   const { namespace, kubeContext, env, force, override } = params
-
-  const { GB_KUBE_NAMESPACE = `gb-local`, GB_KUBE_CONTEXT } = loadEnvs({ env, force, override })
+  const envs = loadEnvs({ env, force, override })
+  const { GB_KUBE_NAMESPACE = `gb-local`, GB_KUBE_CONTEXT } = envs
 
   const { GB_KUBE_NAMESPACE:ENV_GB_KUBE_NAMESPACE, GB_KUBE_CONTEXT:ENV_GB_KUBE_CONTEXT } = process.env
 

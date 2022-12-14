@@ -1,3 +1,4 @@
+import { TTaskActionArgs, TTaskParams } from '../../types'
 import path from 'path'
 import { appRoot } from '../../paths'
 import { devspace } from '../../utils/devspace/devspace'
@@ -19,8 +20,9 @@ import { getDevspaceContext } from '../../utils/devspace/getDevspaceContext'
  * @example
  *
  */
-const setAct = async (args:Record<any, any>) => {
+const setAct = async (args:TTaskActionArgs) => {
   const { params } = args
+
   const {default:config} = await import(path.join(appRoot, `configs/tasks.config.js`))
   const { environment } = config
 
@@ -29,7 +31,7 @@ const setAct = async (args:Record<any, any>) => {
   const ctxFromEnv = Object.entries(environment.map)
     .reduce((acc, [name, opts]:[string, string[]]) => {
       return opts.includes(params.context) ? name : acc
-    }, false)
+    }, ``)
 
   ctxFromEnv && (process.env.NODE_ENV = ctxFromEnv as string)
 
@@ -42,7 +44,7 @@ const setAct = async (args:Record<any, any>) => {
     kubeContext: !ctxFromEnv ? params.context : undefined
   })
 
-  return await devspace.use({ namespace, context })
+  return await devspace.use({ namespace, context, env: ctxFromEnv } as TTaskParams)
 
 }
 

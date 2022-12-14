@@ -126,7 +126,7 @@ devspace.run = async (params:TTaskParams=emptyParams) => (await devspace([`run`,
  * Checks if devspace is already running, by checking in the pod already exists and is in a Running phase
  */
 devspace.running = async (params:TTaskParams=emptyParams) => {
-  const [__, namespace, ___, context] = getDevspaceContext(params)
+  const { namespace, context } = getDevspaceContext(params)
   await devspace.use({ ...params, namespace, context })
 
   const pod = await kubectl.getPod({ ...params, context: 'app' })

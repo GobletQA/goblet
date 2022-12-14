@@ -1,3 +1,6 @@
+// Call this first to ensure the NODE_ENV is set to the passed in --env arg if set
+require('./utils/envs/parseArgEnv').parseArgEnv()
+
 process.env.PARSE_CONFIG_PATH = `configs/tasks.config.js`
 const { apps } = require('../configs/tasks.config')
 
