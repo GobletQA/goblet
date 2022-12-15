@@ -27,13 +27,15 @@ WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 RUN <<EOF
   set -eux;
-  yarn global add json turbo
+  yarn global add dot-json turbo
   yarn json:rm
   yarn json:repo-rm
   yarn config set network-timeout 300000
   yarn install --frozen-lockfile
 EOF
 # ---- End Stage ---- #
+
+FROM bitnami/kubectl:latest as kubectl
 
 # ---- Build Stage ---- #
 FROM $GB_IMAGE_FROM as goblet-build
@@ -99,12 +101,6 @@ RUN <<EOF
   echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf
   sysctl -p
   /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
-  curl -fsSL https://get.docker.com | sh
-
-  # Download kubectl
-  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-  chmod +x kubectl
-  mv ./kubectl /usr/bin/kubectl
 
   apt-get clean
   apt-get autoclean
@@ -118,10 +114,10 @@ COPY --from=goblet-build /goblet/app/ .
 RUN <<EOF
   ln -s /goblet/app/node_modules $HOME/.node_modules
   ln -s /goblet/app/node_modules /goblet/node_modules
-  mv /goblet/app/container/scripts/docker/be.entrypoint.sh /entrypoint.sh
-  chmod a+x /entrypoint.sh
   chmod a+x /goblet/app/container/initialize.sh
 EOF
+
+COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
 
 EXPOSE $GB_FE_PORT
 EXPOSE $GB_BE_PORT
@@ -129,5 +125,4 @@ EXPOSE $GB_SC_PORT
 EXPOSE $GB_NO_VNC_PORT
 EXPOSE $GB_VNC_SERVER_PORT
 
-ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "container/initialize.sh" ]

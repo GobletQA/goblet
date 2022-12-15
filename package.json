@@ -5,7 +5,8 @@
   "description": "Web application testing framework",
   "main": "index.js",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "repository": {
     "url": "git+https://github.com/GobletQA/goblet.git",
@@ -41,7 +42,7 @@
     "format:pretty": "yarn pretty .",
     "imgs": "node tasks/entry.js docker images",
     "kube": "node tasks/entry.js kube",
-    "json:rm": "json -f package.json -I -e \"delete this.devDependencies\"",
+    "json:rm": "dot-json package.json devDependencies -d",
     "json:repo-rm": "turbo run json:rm",
     "lint": "eslint --color --cache --fix --ignore-path .root.ignore --config ./configs/eslintrc.config.js",
     "make": "GB_ROOT_DIR=$(pwd) ./scripts/shell/init/init.sh",
@@ -91,21 +92,20 @@
   },
   "dependencies": {
     "@keg-hub/args-parse": "*",
-    "@keg-hub/ask-it": "*",
     "@keg-hub/cli-utils": "*",
     "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "*",
-    "@keg-hub/spawn-cmd": "*",
     "@ltipton/parkin": "*",
     "esbuild": "*",
     "esbuild-plugin-path-alias": "*",
     "esbuild-register": "*",
     "module-alias": "*",
     "nodemon": "*",
-    "playwright": "*",
     "turbo": "1.4.5"
   },
   "devDependencies": {
+    "@keg-hub/ask-it": "*",
+    "@keg-hub/spawn-cmd": "*",
     "@commitlint/cli": "16.1.0",
     "@commitlint/config-conventional": "16.0.0",
     "@types/node": "17.0.13",
@@ -113,10 +113,11 @@
     "@typescript-eslint/parser": "5.28.0",
     "commitizen": "4.2.4",
     "cz-conventional-changelog": "3.3.0",
+    "dot-json": "1.2.2",
     "eslint": "8.7.0",
     "husky": "7.0.4",
-    "json": "11.0.0",
     "lint-staged": "12.3.4",
+    "playwright": "*",
     "prettier": "2.5.1",
     "semver": "7.3.7",
     "typescript": "*"

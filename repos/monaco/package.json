@@ -12,7 +12,7 @@
     "format": "yarn format:pretty && yarn format:lint",
     "format:lint": "yarn lint .",
     "format:pretty": "yarn pretty .",
-    "json:rm": "json -f package.json -I -e \"delete this.devDependencies\"",
+    "json:rm": "dot-json package.json devDependencies -d",
     "lint": "eslint --color --cache --fix --ignore-path .eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path .prettierignore --config ./configs/prettier.config.js --write",
     "preversion": "yarn run build",

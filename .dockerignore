@@ -1,4 +1,5 @@
 Dockerfile
+Dockerfile*
 .git
 .cache
 *.md
@@ -36,6 +37,7 @@ temp
 !container/scripts/replace-tokens.sh
 !container/initialize.sh
 container/chart
+container/templates
 container/.helmignore
 devspace.yaml
 node_modules/

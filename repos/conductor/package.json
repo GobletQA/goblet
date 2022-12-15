@@ -7,7 +7,8 @@
   "license": "MIT",
   "private": true,
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "repository": {
     "url": "git+https://github.com/GobletQA/goblet.git",
@@ -25,7 +26,7 @@
     "clean:full": "yarn clean; yarn install",
     "clean:nm": "rm -rf node_modules",
     "format": "yarn lint && yarn pretty",
-    "json:rm": "json -f package.json -I -e \"delete this.devDependencies\"",
+    "json:rm": "dot-json package.json devDependencies -d",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "types": "tsc --emitDeclarationOnly --outDir dist",

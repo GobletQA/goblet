@@ -19,15 +19,7 @@ const ePreFix = getEnvPrefix()
   const envs = resolveValues()
   dsEnvs+= filterEnvsAsArgs(repo)
 
-
-  if(repo === `backend`){
-    /**
-    * Uses the kubernetes env syntax to generate the docker host from runtime envs
-    * [See more here](https://kubernetes.io/docs/tasks/inject-data-application/define-interdependent-environment-variables/)
-    */
-    dsEnvs += addArg(`DOCKER_HOST`, `tcp://$(${ePreFix}DD_DEPLOYMENT):$(GOBLET_DIND_SERVICE_PORT)`)
-  }
-  else if(repo === 'dind'){
+  if(repo === 'dind'){
     /**
     * Caddy uses the XDG_DATA_HOME env to save files and data
     * So we set it to the remote folder synced via devspace
