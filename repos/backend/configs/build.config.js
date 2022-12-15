@@ -10,21 +10,13 @@ const { build } = require('esbuild')
 const aliasPlugin = require('esbuild-plugin-path-alias')
 
 let __server
-const isScript = toBool(process.env.GB_BUILD_PULL_SCRIPT)
-const isDev = !isScript && process.env.DEV_BUILD === `1`
-
+const isDev = process.env.DEV_BUILD === `1`
 const nodeEnv = process.env.NODE_ENV || `local`
+
 const rootDir = path.join(__dirname, `../`)
 const distDir = path.join(rootDir, `dist`)
-const outFile = isScript
-  // We keep the ts extension because it reference in the package.json
-  // This allows us to call the script in both dev and prod environments
-  ? path.join(distDir, `pullImages.ts`)
-  : path.join(distDir, `index.js`)
-
-const entryFile = isScript
-  ? path.join(rootDir, `scripts/pullImages.ts`)
-  : path.join(rootDir, `index.ts`)
+const outFile = path.join(distDir, `index.js`)
+const entryFile = path.join(rootDir, `index.ts`)
 
 /**
  * Load the ENVs from <node-env>.env ( local.env || prod.env )

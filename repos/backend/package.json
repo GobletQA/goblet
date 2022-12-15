@@ -21,7 +21,6 @@
     "build": "yarn build:docker",
     "build:docker": "node configs/build.config.js",
     "build:goblet": "node configs/build.goblet.config.js",
-    "build:script": "GB_BUILD_PULL_SCRIPT=1 node configs/build.config.js",
     "clean": "yarn clean:dist; yarn clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "yarn clean; yarn install",
@@ -30,7 +29,6 @@
     "json:rm": "dot-json package.json devDependencies -d",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
-    "pull": "node -r esbuild-register scripts/pullImages.ts",
     "start": "DEBUG=\"http-proxy-middleware*\" DEV_BUILD=1 node --max-http-header-size=262144 configs/build.config.js",
     "serve": "DEBUG=\"http-proxy-middleware*\" node dist/index.js",
     "validate": "tsc --noEmit"
