@@ -45,9 +45,7 @@
     "jest-jasmine2": "*",
     "module-alias": "*",
     "playwright": "*",
-    "ts-jest": "*",
-    "ts-node": "*",
-    "typescript": "*"
+    "ts-jest": "*"
   },
   "devDependencies": {
     "@types/debug": "4.1.5",

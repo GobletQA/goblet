@@ -58,9 +58,6 @@
     "esbuild": "*",
     "esbuild-plugin-path-alias": "*",
     "jest": "*",
-    "nodemon": "*",
-    "ts-jest": "*",
-    "ts-node": "*",
-    "typescript": "*"
+    "nodemon": "*"
   }
 }
