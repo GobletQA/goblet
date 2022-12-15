@@ -13,7 +13,7 @@ export const upsertUser = async (user:any) => {
       message: `Can not add user to store. User does not exist`,
     })
 
-  userDispatch.upsert({
+  userDispatch.upsertUser({
     id: user.id,
     email: user.email,
     username: user.username,

@@ -3,5 +3,5 @@ import { loadSettings } from '@utils/settings/loadSettings'
 
 export const loadFromStorage = async () => {
   const settings = await loadSettings()
-  settingsDispatch.setAll(settings)
+  settingsDispatch.setAllSettings(settings)
 }

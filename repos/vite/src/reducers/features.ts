@@ -7,8 +7,8 @@ export type TFeaturesState = {
 export const featuresState = {} as TFeaturesState
 
 export const featuresActions = {
-  clear: (state:TFeaturesState, action:TAction<TFeaturesState>) => (featuresState),
-  setActive: (
+  clearFeatures: (state:TFeaturesState, action:TAction<TFeaturesState>) => (featuresState),
+  setActiveFeature: (
     state:TFeaturesState,
     action:TAction<TFeatureFileModel>
   ) => {
@@ -32,7 +32,6 @@ export const featuresActions = {
       }
     }
   },
-
   setFeatures: (
     state:TFeaturesState,
     action:TAction<TFeatureFileModelList>

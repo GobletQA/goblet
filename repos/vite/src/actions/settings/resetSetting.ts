@@ -6,7 +6,7 @@ export const resetSetting = async (setting:TSetting) => {
   const { group, key } = setting
 
   key === ResetAllGroupSetting
-    ? settingsDispatch.resetGroup(group)
-    : settingsDispatch.reset({ setting: `${group}.${key.replace('.', '-')}`, data: setting })
+    ? settingsDispatch.resetSettingGroup(group)
+    : settingsDispatch.resetSetting({ setting: `${group}.${key.replace('.', '-')}`, data: setting })
 
 }

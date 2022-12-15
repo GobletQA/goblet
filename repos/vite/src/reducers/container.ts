@@ -12,7 +12,7 @@ export type TContainerState = {
 export const containerState = {} as TContainerState
 
 export const containerActions = {
-  clear: (state:TContainerState, action:TAction<TContainerState>) => (containerState),
+  clearContainer: (state:TContainerState, action:TAction<TContainerState>) => (containerState),
   setContainer: (state:TContainerState, action:TAction<TContainerState>) => action?.payload,
   upsertContainer: (state:TContainerState, action:TAction<TContainerState>) => deepMerge<TContainerState>(state, action?.payload),
 }

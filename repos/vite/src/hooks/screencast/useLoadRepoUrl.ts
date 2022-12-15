@@ -26,6 +26,6 @@ export const useLoadRepoUrl = (repo?:any) => {
       && await pageService.goto(repoUrl)
   }, [repoUrl])
   
-  return [loadRepoUrl, repoUrl] as [(...args:any[]) => any, string]
+  return [loadRepoUrl, repoUrl] as [() => any, string]
   
 }

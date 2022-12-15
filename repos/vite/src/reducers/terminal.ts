@@ -30,7 +30,7 @@ export const terminalState = {
 
 
 export const terminalActions = {
-  clear: (state:TTerminalState, action:TAction<any>) => {
+  clearTerminal: (state:TTerminalState, action:TAction<any>) => {
     const tab = Object.values(state.tabs).find(tab => tab.name === BrowserLogTerminal)
       || buildTab({ name: BrowserLogTerminal, disabled: true })
 
@@ -39,14 +39,14 @@ export const terminalActions = {
       tabs: [tab],
     }
   },
-  setActive: (
+  setActiveTerminal: (
     state:TTerminalState,
     action:TAction<number>
   ) => ({
     ...state,
     active: action.payload
   }),
-  appendHistory: (
+  appendTerminalHistory: (
     state:TTerminalState,
     action:TAction<TTerminalLog|TTerminalLog[]>
   ) => {
@@ -58,7 +58,7 @@ export const terminalActions = {
       history: [...tab.history, ...ensureArr(action.payload)]
     }
   },
-  appendHistoryByRef: (
+  appendTerminalHistoryByRef: (
     state:TTerminalState,
     action:TAction<THistoryPayload>
   ) => {
@@ -71,7 +71,7 @@ export const terminalActions = {
       history: [...tab.history, ...ensureArr(history)]
     }
   },
-  create: (
+  createTerminal: (
     state:TTerminalState,
     action:TAction<Partial<TTerminalTab>>
   ) => {
@@ -81,13 +81,13 @@ export const terminalActions = {
       tabs: [ ...state.tabs, buildTab(action.payload)]
     }
   },
-  add: (state:TTerminalState, action:TAction<TTerminalTab>) => {
+  addTerminal: (state:TTerminalState, action:TAction<TTerminalTab>) => {
     return {
       ...state,
       tabs: [ ...state.tabs, buildTab(action.payload) ]
     }
   },
-  remove: (state:TTerminalState, action:TAction<TTerminalTab|string|number>) => {
+  removeTerminal: (state:TTerminalState, action:TAction<TTerminalTab|string|number>) => {
     const { payload } = action
     const id = isStr(payload)
       ? payload

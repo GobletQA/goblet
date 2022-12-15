@@ -125,9 +125,9 @@ const filterExistingEnvs = (repo, existingEnvs) => {
  *
  * @returns {string} - Filtered and formatted yaml string of the Envs
  */
-const filterEnvsAsYaml = (repo) => {
+const filterEnvsAsYaml = (repo, envs) => {
   const { pickList, omitList } = buildLists(repo)
-  const envs = resolveValues()
+  envs = envs || resolveValues()
   const built = buildEnvs(envs, pickList, omitList)
 
   return convertToYaml(built)

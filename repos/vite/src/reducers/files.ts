@@ -19,8 +19,8 @@ export const filesState = {
 } as TFilesState
 
 export const filesActions = {
-  clear: (state:TFilesState, action:TAction<TFilesState>) => (filesState),
-  setActive: (
+  clearFiles: (state:TFilesState, action:TAction<TFilesState>) => (filesState),
+  setActiveFile: (
     state:TFilesState,
     action:TAction<TFileModel>
   ) => {
@@ -29,7 +29,7 @@ export const filesActions = {
       activeFile: action?.payload,
     }
   },
-  clearActive: (
+  clearActiveFile: (
     state:TFilesState,
     action:TAction<TFileModel>
   ) => {

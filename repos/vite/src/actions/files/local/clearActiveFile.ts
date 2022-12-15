@@ -13,5 +13,5 @@ export const clearActiveFile = (fileId?:string) => {
 
   if(!files.activeFile || !files.activeFile.uuid) return
 
-  filesDispatch.clearActive()
+  filesDispatch.clearActiveFile()
 }

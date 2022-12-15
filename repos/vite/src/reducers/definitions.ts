@@ -13,8 +13,8 @@ export type TDefinitionsState = {
 export const definitionsState = {} as TDefinitionsState
 
 export const definitionsActions = {
-  clear: (state:TDefinitionsState, action:TAction<TDefinitionsState>) => (definitionsState),
-  setActive: (
+  resetDefs: (state:TDefinitionsState, action:TAction<TDefinitionsState>) => (definitionsState),
+  setActiveDef: (
     state:TDefinitionsState,
     action:TAction<TDefinitionAst>
   ) => {

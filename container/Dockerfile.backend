@@ -76,7 +76,6 @@ COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app/repos/backend
 RUN yarn build:goblet && \
-    yarn build:script && \
     yarn build:docker && \
     yarn install --frozen-lockfile --production
 

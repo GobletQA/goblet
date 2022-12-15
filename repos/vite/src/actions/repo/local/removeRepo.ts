@@ -23,7 +23,7 @@ const tryAction = (action:TActionFunc, name:string, ...args:any[]) => {
  */
 export const removeRepo = async () => {
 
-  tryAction(repoDispatch.clear, 'repoDispatch.clear')
+  tryAction(repoDispatch.clearRepo, 'repoDispatch.clearRepo')
   tryAction(clearFeatures, `clearFeatures`)
   tryAction(clearDefinitions, `clearDefinitions`)
   tryAction(clearFileTree, `clearFileTree`)

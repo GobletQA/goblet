@@ -62,6 +62,13 @@ const settings = [
     divider: true,
     label: `Logout`,
     Icon: Icons.LogoutIcon,
-    onClick: signOutAuthUser,
+    onClick: async () => {
+      await signOutAuthUser()
+
+      // Reload the page to force reset the app state
+      // Would be better to reset the components
+      // But this is the quick and dirty fix
+      window.location.reload()
+    },
   }
 ]

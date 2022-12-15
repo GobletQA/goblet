@@ -33,14 +33,13 @@ jobs:
         include:
           - service: app
             dockerfile: container/Dockerfile
-          # Disable other docker images for now
-          # Not needed until deployment, and backend image is failing for some reason
+          - service: backend
+            dockerfile: container/Dockerfile.backend
+          - service: screencast
+            dockerfile: container/Dockerfile.screencast
+          # Disable action docker image for now
           # - service: action
           #   dockerfile: container/Dockerfile.action
-          # - service: backend
-          #   dockerfile: container/Dockerfile.backend
-          # - service: screencast
-          #   dockerfile: container/Dockerfile.screencast
 
     steps:
       - name: Checkout source

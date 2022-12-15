@@ -8,5 +8,5 @@ import { noOpObj } from '@keg-hub/jsutils'
  *
  */
 export const clearUser = () => {
-  userDispatch.clear(noOpObj as TUserState)
+  userDispatch.clearUser(noOpObj as TUserState)
 }

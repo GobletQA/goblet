@@ -16,7 +16,6 @@ export const disconnectRepo = async (username?:string) => {
 
   username = username || GitUser.getUser()?.username
 
-  // Log-out the github user
   // Then call the backend api to unmount the repo
   const {data, error} = await apiRequest({
     method: 'POST',

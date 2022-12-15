@@ -60,7 +60,6 @@ module.exports = {
           `IMAGE`,
           `GIT_CLI_*`,
           `GIT_HUB_*`,
-          `GB_KUBE_*`,
           `IMAGE_TAG`,
           `FIRE_BASE_*`,
           `GB_BE_IMAGE`,
@@ -69,9 +68,11 @@ module.exports = {
           `*_DOC_VOLUMES`,
           `GITHUB_CLIENT_*`,
           `GB_BE_IMAGE_TAG`,
+          `FIREBASE_TOKEN_*`,
+          `GB_KUBE_CONTEXT`,
+          `GB_KUBE_NAMESPACE`,
           `*_DEVSPACE_CONFIG`,
           `GB_IMAGE_BUILD_TAGS`,
-          `FIREBASE_TOKEN_*`
         ]
       },
       sync: {
@@ -127,7 +128,23 @@ module.exports = {
         // Any keys specifically set will get picked
         // Wildcards can be overwritten by omit list
         pick: [
+          `NODE_ENV`,
+          `GOBLET_*`,
+          `GB_BE_*`,
+          `GB_SC_*`,
+          `GB_KD_*`,
+          `GB_DD_*`,
+          `GB_CD_*`,
+          `GB_NO_*`,
+          `GB_VNC_*`,
+          `DISPLAY`,
+          `PLAYWRIGHT_*`,
+          `GOBLET_KIND_*`,
+          `GB_LOG_LEVEL`,
+          `GB_KUBE_CONTEXT`,
           `GB_KUBE_NAMESPACE`,
+          `GB_SERVER_ORIGINS`,
+          `GB_LOCAL_DEV_MODE`,
         ],
         /**
         * ENVs to not include in the backend

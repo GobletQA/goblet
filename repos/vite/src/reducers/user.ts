@@ -12,7 +12,7 @@ export type TUserState = {
 export const userState = {} as TUserState
 
 export const userActions = {
-  clear: (state:TUserState, action:TAction<TUserState>) => (userState),
-  upsert: (state:TUserState, action:TAction<TUserState>) => deepMerge<TUserState>(state, action?.payload),
+  clearUser: (state:TUserState, action:TAction<TUserState>) => (userState),
+  upsertUser: (state:TUserState, action:TAction<TUserState>) => deepMerge<TUserState>(state, action?.payload),
 }
 

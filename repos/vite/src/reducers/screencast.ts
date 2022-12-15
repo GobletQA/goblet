@@ -19,7 +19,7 @@ export type TScreencastState = {
 export const screencastState = {} as TScreencastState
 
 export const screencastActions = {
-  clear: (state:TScreencastState, action:TAction<TScreencastState>) => (screencastState),
+  clearScreencast: (state:TScreencastState, action:TAction<TScreencastState>) => (screencastState),
   setScreencast: (state:TScreencastState, action:TAction<TScreencastState>) => action?.payload,
   upsertScreencast: (state:TScreencastState, action:TAction<TScreencastState>) => deepMerge<TScreencastState>(state, action?.payload),
 }

@@ -18,7 +18,7 @@ const ePreFix = getEnvPrefix()
   ].join(``)
 
   const envs = resolveValues()
-  dsEnvs+= filterEnvsAsYaml(repo)
+  dsEnvs+= filterEnvsAsYaml(repo, envs)
 
   /**
   * If Kubernetes secrets are passed

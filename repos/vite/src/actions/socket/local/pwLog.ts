@@ -42,7 +42,7 @@ export const pwLog = (event:TSocketEvt) => {
   const cleaned = message.slice(message.indexOf(`pw:`)).trim().replace(/\r/g, '\n\r')
   const log = `[${time}] ❯ ${cleaned}\r\n`
 
-  terminalDispatch.appendHistoryByRef({
+  terminalDispatch.appendTerminalHistoryByRef({
     name: BrowserLogTerminal,
     history: {
       id,

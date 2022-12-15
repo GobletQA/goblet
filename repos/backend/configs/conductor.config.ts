@@ -48,9 +48,8 @@ const whiteList = [
   `GB_NO_VNC`,
   `DISPLAY`,
   `PLAYWRIGHT_`,
-  `GB_VALIDATION`,
+  `GB_CD_VALIDATION`,
   `GB_SERVER_ORIGINS`,
-
   `GB_BE_WS_PATH`,
   `GB_BE_SECURE_PORT`,
   `GB_BE_JWT_EXP`,

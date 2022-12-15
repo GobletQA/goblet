@@ -42,22 +42,22 @@ const updateStorage = (setting:string, settingObj:TSetting) => {
 }
 
 export const settingsActions = {
-  setAll: (
+  setAllSettings: (
     state:TSettingsState,
     action:TAction<TSettingsState>
   ) => action.payload,
-  resetAll: (
+  resetAllSettings: (
     state:TSettingsState,
     action:TAction<any>
   ) => {
     localStorage.removeSettings()
     return deepMerge(defSettings)
   },
-  mergeAll: (
+  mergeAllSettings: (
     state:TSettingsState,
     action:TAction<TSettingsState>
   ) => deepMerge<TSettingsState>(state, action?.payload),
-  resetGroup: (
+  resetSettingGroup: (
     state:TSettingsState,
     action:TAction<string>
   ) => {
@@ -69,7 +69,7 @@ export const settingsActions = {
     
     return state
   },
-  reset: (
+  resetSetting: (
     state:TSettingsState,
     action:TAction<TSettingAct>
   ) => {
@@ -80,7 +80,7 @@ export const settingsActions = {
 
     return state
   },
-  toggleActive: (
+  toggleSettingActive: (
     state:TSettingsState,
     action:TAction<TSettingAct>
   ) => {
@@ -99,7 +99,7 @@ export const settingsActions = {
 
     return state
   },
-  update: (
+  updateSetting: (
     state:TSettingsState,
     action:TAction<TSettingAct>
   ) => {

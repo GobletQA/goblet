@@ -24,10 +24,16 @@ const formFields = {
   $actions: {
     signOut: {
       label: `Sign Out`,
-      onClick: signOutAuthUser,
       variant: `text`  as const,
       color: `secondary` as const,
       StartIcon: `$component.LogoutIcon`,
+      onClick: async () => {
+        await signOutAuthUser()
+        // Reload the page to force reset the app state
+        // Would be better to reset the components
+        // But this is the quick and dirty fix
+        window.location.reload()
+      },
     },
     connectRepo: {
       color: `primary`  as const,

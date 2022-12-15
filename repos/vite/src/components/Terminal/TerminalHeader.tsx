@@ -23,8 +23,8 @@ export const TerminalHeader = (props:TerminalHeader) => {
 
   const onChange = useCallback((evt:SyntheticEvent, value:`+`|number) => {
     value === `+`
-      ? terminalDispatch.create({})
-      : terminalDispatch.setActive(value)
+      ? terminalDispatch.createTerminal({})
+      : terminalDispatch.setActiveTerminal(value)
 
   }, [active, tabs])
 
@@ -38,7 +38,7 @@ export const TerminalHeader = (props:TerminalHeader) => {
     evt?.stopPropagation()
 
     terminals?.current?.[tabId]?.remove?.()
-    terminalDispatch.remove(tabId)
+    terminalDispatch.removeTerminal(tabId)
 
   }, [active, tabs, terminals])
 

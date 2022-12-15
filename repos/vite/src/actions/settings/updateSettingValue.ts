@@ -21,6 +21,6 @@ export const updateSettingValue = (props:TSettingAct) => {
   exists(value) && (payload.value = value)
   ;data && (payload.data = data)
 
-  settingsDispatch.update(payload)
+  settingsDispatch.updateSetting(payload)
 }
 

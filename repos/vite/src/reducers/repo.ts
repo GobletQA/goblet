@@ -17,7 +17,7 @@ export type TRepoState = {
 export const repoState = {} as TRepoState
 
 export const repoActions = {
-  clear: (state:TRepoState, action:TAction<TRepoState>) => (repoState),
+  clearRepo: (state:TRepoState, action:TAction<TRepoState>) => (repoState),
   setRepo: (state:TRepoState, action:TAction<TRepoState>) => action?.payload,
   upsertRepo: (state:TRepoState, action:TAction<TRepoState>) => deepMerge<TRepoState>(state, action?.payload),
 }

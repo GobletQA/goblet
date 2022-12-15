@@ -17,7 +17,7 @@ export const setActiveFile = (
   updateUrlQuery({ file: fileModel.name }, Boolean(mergeQuery))
   const updatedFile = { ...fileModel }
 
-  filesDispatch.setActive(updatedFile)
+  filesDispatch.setActiveFile(updatedFile)
 
   return updatedFile
 }

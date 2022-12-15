@@ -1,6 +1,6 @@
-import { useCallback, useRef } from 'react'
-import { statusBrowser } from '@actions/screencast/api'
+import { useCallback, useRef, useEffect, useState } from 'react'
 import { useLoadRepoUrl } from '@hooks/screencast/useLoadRepoUrl'
+import { statusBrowser } from '@actions/screencast/api/statusBrowser'
 
 
 export const useCheckBrowserStatus = (
@@ -8,10 +8,11 @@ export const useCheckBrowserStatus = (
 ) => {
   const [loadRepoUrl, repoUrl] = useLoadRepoUrl()
   const checkingStatusRef = useRef<boolean>(false)
+  const [statusFailed, setStatusFailed] = useState<boolean>(false)
 
   const checkStatus = useCallback(async () => {
     if(checkingStatusRef.current) return
-    
+
     checkingStatusRef.current = true
     const resp = await statusBrowser()
 
@@ -19,8 +20,25 @@ export const useCheckBrowserStatus = (
       onRunningCB?.(true)
       await loadRepoUrl?.()
     }
+    else setStatusFailed(true)
+
     checkingStatusRef.current = false
   }, [onRunningCB, loadRepoUrl])
-  
+
+  useEffect(() => {
+    if(!statusFailed) return
+
+    console.log(`Browser status failed; trying again in 1 second...`)
+
+    setTimeout(() => {
+      setStatusFailed(false)
+      checkStatus()
+    }, 1000)
+    
+  }, [
+    statusFailed,
+    checkingStatusRef.current
+  ])
+
   return [checkStatus, repoUrl] as [(...args:any[]) => any, string]
 }

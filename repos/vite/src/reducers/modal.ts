@@ -12,10 +12,10 @@ export type TModalState = {
 export const modalState = {} as TModalState
 
 export const modalActions = {
-  clear: (state:TModalState, action:TAction<TModalState>) => (modalState),
+  clearModal: (state:TModalState, action:TAction<TModalState>) => (modalState),
   setModal: (state:TModalState, action:TAction<TModalState>) => action?.payload,
   upsertModal: (state:TModalState, action:TAction<TModalState>) => deepMerge<TModalState>(state, action?.payload),
-  setVisible: (state:TModalState, action:TAction<boolean>) => {
+  setModalVisible: (state:TModalState, action:TAction<boolean>) => {
     return {
       ...state,
       visible: action?.payload

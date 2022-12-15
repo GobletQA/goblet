@@ -6,5 +6,4 @@ import { defsDispatch } from '@store'
 export const clearDefinitions = () => {
   defsDispatch.clearDefs()
   defsDispatch.clearDefTypes()
-
 }
