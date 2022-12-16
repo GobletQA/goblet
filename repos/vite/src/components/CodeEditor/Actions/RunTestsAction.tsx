@@ -1,9 +1,9 @@
 import type { TEditorAction, TEditorActionProps } from '@gobletqa/monaco'
 
 import { EditorAction } from './EditorAction'
-import { runTests } from '@actions/runner/runTests'
 import { getFileModel } from '@utils/files/getFileModel'
 import { PlayCircleOutlineIcon } from '@components/Icons'
+import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 
 
 const RunTests = (props:TEditorActionProps) => {
@@ -30,6 +30,6 @@ export const RunTestsAction:TEditorAction = {
     if(!fileModel)
       return console.warn(`Can not run tests, File model could not be found.`, loc)
 
-    await runTests(fileModel, `feature`)
+    await startBrowserPlay(fileModel, `feature`)
   }
 }

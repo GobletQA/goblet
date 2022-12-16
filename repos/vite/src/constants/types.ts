@@ -55,9 +55,9 @@ export const SocketMsgTypes = {
   CMD_END: `cmdEnd`,
   CMD_FAIL: `cmdFail`,
   AUTH_TOKEN: `authToken`,
+  BROWSER_PLAY: `browserPlay`,
   BROWSER_STATUS: `browserStatus`,
-  BROWSER_RECORDER: `browserRecorder`,
-  BROWSER_RUN_TESTS: `browserRunTests`
+  BROWSER_RECORD: `browserRecord`,
 }
 
 export const BrowserLogTerminal = `browser-log`

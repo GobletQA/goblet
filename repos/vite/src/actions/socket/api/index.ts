@@ -1,1 +1,1 @@
-export * from './setRecorderStatus'
+export * from './startBrowserRecord'

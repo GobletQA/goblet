@@ -37,7 +37,7 @@ const handleStartPlaying = async (
   Manager.cache[socket.id].player = player
 }
 
-export const browserRunTests = (app:Express) => {
+export const browserPlay = (app:Express) => {
   return async ({ data, socket, Manager, user }:TSocketEvtCBProps) => {
 
     const { repo } = await Repo.status(app.locals.config, { ...data.repo, ...user })

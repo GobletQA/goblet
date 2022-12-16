@@ -1,5 +1,5 @@
 export * from './authToken'
 export * from './connection'
 export * from './disconnect'
-export * from './browserRunTests'
-export * from './browserRecorder'
+export * from './browserPlay'
+export * from './browserRecord'

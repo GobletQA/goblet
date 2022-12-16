@@ -1,6 +1,6 @@
 import type { Server } from 'http'
-import * as SkrEvents from './events'
 import type { Express } from 'express'
+import * as SocketEvents from './events'
 import type { TSocketConfig } from '@gobletqa/shared/types'
 
 import { socketInit } from './setup'
@@ -10,10 +10,9 @@ const {
   authToken,
   connection,
   disconnect,
-  browserRunTests,
-  browserRecorder,
-  ...customEvents
-} = SkrEvents
+  browserPlay,
+  browserRecord,
+} = SocketEvents
 
 const defConfig = noOpObj as TSocketConfig
 
@@ -31,13 +30,11 @@ export const initSocket = (
     {
       ...config,
       events: {
-        ...config?.events,
-        ...customEvents,
         authToken: authToken(app),
         disconnect: disconnect(app),
         connection: connection(app),
-        browserRunTests: browserRunTests(app),
-        browserRecorder: browserRecorder(app),
+        browserPlay: browserPlay(app),
+        browserRecord: browserRecord(app),
       },
     },
     cmdType

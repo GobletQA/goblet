@@ -51,7 +51,8 @@ env:
 
   GB_TOKEN: a-10K3n-g0bLe1
   GB_SH_LOCAL_MOUNT: goblet-local/current
-  GB_SERVER_ORIGINS: 'localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app'
+  GB_SERVER_ORIGINS: 'http://localhost:19006,localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app'
+
   # TODO: @lance-tipton - Make this more dynamic - value comes from firebase?
   GB_GITHUB_AUTH_USERS: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lance.tipton@workboard.com
   GB_WS_TRANSPORTS: websocket

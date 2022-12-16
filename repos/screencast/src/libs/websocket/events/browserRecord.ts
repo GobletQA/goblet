@@ -88,7 +88,7 @@ const handleStop = async (
  *
  * @returns {function} - Custom Event Method passed to Socket to be called from the frontend
  */
-export const browserRecorder = (app:Express) => {
+export const browserRecord = (app:Express) => {
   return async ({ data, socket, Manager }:TSocketEvtCBProps) => {
     // TODO: add token validation
     const { action } = data

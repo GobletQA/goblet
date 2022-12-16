@@ -6,9 +6,9 @@ export const defaultBrowser = 'chromium'
 export const canRecordVideo = ['chromium']
 export const browserStatus = keyMap([`stopped`, `running`, `starting`, `unknown`])
 export const browserNames = deepFreeze<string[]>([
-  'chromium',
-  'firefox',
-  'webkit'
+  `chromium`,
+  `firefox`,
+  `webkit`
 ])
 
 export const browserMap = {
@@ -38,6 +38,7 @@ export const PWLogFilter = [
   `SEND ► {`,
   `◀ RECV {`,
   `pw:channel:`,
+  `[err] ALSA lib`,
   `dri3 extension not supported`,
   `Failed to connect to the bus`,
   `Failed to adjust OOM score of renderer`,

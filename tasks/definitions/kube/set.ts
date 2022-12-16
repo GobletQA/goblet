@@ -60,7 +60,9 @@ export const set = {
       description: `Kubernetes context to use when creating the secret`,
     },
     namespace: {
-      env: `GB_KUBE_NAMESPACE`,
+      // Don't use the GB_KUBE_NAMESPACE env because all envs are loaded before task action is called
+      // So it will load the namespace relative to the current NODE_ENV, not the context param
+      env: `GB_KUBE_NS`,
       alias: [`nsp`, `ns`],
       example: `--namespace custom-namespace`,
       description: `Custom namespace to use`,

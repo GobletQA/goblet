@@ -43,7 +43,6 @@ export const parseArgEnv = () => {
 
   }, ``)
 
-
   if(__FOUND_ENV) process.env.NODE_ENV = __FOUND_ENV
 
   return __FOUND_ENV

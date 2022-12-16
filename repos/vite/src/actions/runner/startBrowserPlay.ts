@@ -46,7 +46,7 @@ const buildOptions = ({ params, cmd, file, appUrl }:TBuildOpts, repo:TGitData) =
  * @function
  *
  */
-export const runTests = async (
+export const startBrowserPlay = async (
   file:TFileModel,
   cmd:string,
 ) => {
@@ -75,5 +75,5 @@ export const runTests = async (
     )
   )
 
-  WSService.emit(SocketMsgTypes.BROWSER_RUN_TESTS, options)
+  WSService.emit(SocketMsgTypes.BROWSER_PLAY, options)
 }

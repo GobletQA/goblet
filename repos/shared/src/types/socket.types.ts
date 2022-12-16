@@ -1,6 +1,8 @@
 import type {Socket, Server} from 'socket.io'
 import type { TTokenUser } from './user.types'
-import type { SocketManager } from '@gobletqa/screencast'
+import type { TWebSocketEvents, TWebSocketEvent, SocketManager } from '@gobletqa/screencast'
+
+export type TSocketEvent = TWebSocketEvent
 
 export enum ESocketEnvironment {
   local = 'local',
@@ -141,7 +143,7 @@ export type TSocketMessage = TSocketMessageStr | TSocketMessageObj
 export type TSocketEventCB = (props:TSocketEvtCBProps) => any
 
 export type TSocketEvents = {
-  [key:string]: TSocketEventCB
+  [key in keyof TWebSocketEvents]?: TSocketEventCB
 }
 
 export type TSocketAuthConfig = {

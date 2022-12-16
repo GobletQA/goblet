@@ -129,7 +129,8 @@ export enum EBrowserEvent {
   response='response',
   websocket='websocket',
   worker='worker',
-} 
+}
+
 export type TBrowserEventCB = (...args:any[]) => void
 
 export type TBrowserEvents = {
