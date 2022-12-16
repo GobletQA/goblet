@@ -1,23 +1,28 @@
-const { loadEnvs } = require('../envs/loadEnvs')
-const { noOpObj, exists, deepMerge, get, styleCase } = require('@keg-hub/jsutils')
+import type { TContainerEnvs } from '../../types'
+import { loadEnvs } from '../envs/loadEnvs'
+import { noOpObj, exists, deepMerge, get, styleCase } from '@keg-hub/jsutils'
+
+type TContexts = Record<string, any>
+type TContextKey = keyof TContexts
 
 /**
  * Cache holder for the app contexts, prefix and deployments
  */
 let __PRE = ``
-let __CONTEXTS = {}
+let __CONTEXTS:TContexts = {} as TContexts
 let __DEPLOYMENT_OPTS
 
 
 /**
  * Builds the short and long context from app config
- * @param {Object} acc - Cache object that holds the app contexts and configs
- * @param {Object} contexts - Contexts object with defined app contexts
- * @param {Object} contexts - Context config object with the configs of each app
  */
-const buildContexts = (acc, contexts, data) => {
+const buildContexts = (
+  acc:Record<any, any>,
+  contexts:TContextKey[],
+  data:Record<string, any>
+) => {
   const sorted = contexts.sort((a, b) => (b.length - a.length))
-  
+
   const long = sorted[0]
   const short = sorted[sorted.length - 1]
   // Both short and log ref the same object
@@ -31,17 +36,18 @@ const buildContexts = (acc, contexts, data) => {
 
 /**
  * Sets the contexts that can be used durning task execution
- * @param {Object} contexts - Contexts object with defined app contexts
- * @param {string} prefix - Prefix to append in front of each env
  */
-const setContexts = (apps, prefix) => {
+const setContexts = (
+  apps:Record<any, any>,
+  prefix:string
+) => {
   const { default:defApp, ...appConfigs } = apps
   prefix = prefix || defApp.prefix || `DS`
 
   if(prefix) __PRE = prefix.endsWith(`_`) ? prefix : `${prefix}_`
 
   __CONTEXTS = Object.entries(appConfigs)
-    .reduce((acc, [key, data]) => {
+    .reduce((acc, [key, data]:[string, Record<any, any>]) => {
       data = deepMerge(defApp, data || noOpObj)
       const name = data?.name || key
       const contexts = data?.contexts || []
@@ -55,26 +61,23 @@ const setContexts = (apps, prefix) => {
 
 /**
  * Returns a context based on the passed in name
- * @returns {Object} context - Found context object
  */
-const getContext = (name) => __CONTEXTS[name]
+const getContext = (name:TContextKey) => __CONTEXTS[name]
 
 /**
  * Returns the contexts previously set by the setContexts helper
- * @returns {Object} contexts - Contexts object with defined app contexts
  */
 const getContexts = () => __CONTEXTS
 
 /**
  * Resolves the context used to reference a kubernetes resource
  * Also checks if the context is an alias of the app or db, and returns the corresponding selector
- * @param {string} context - Passed in context option from params object
- * @param {Object} selectors - Key Value pair of selectors for each resource
- * @param {*} fallback - Fallback value to use is no context match is found
- *
- * @return {string} - Selector for referencing a kubernetes resource
  */
-const resolveContext = (context = ``, selectors = noOpObj, fallback) => {
+const resolveContext = (
+  context:TContextKey = ``,
+  selectors:Record<string, any> = noOpObj,
+  fallback?:any
+) => {
   const lowercaseContext = context.toLowerCase()
   const allContexts = getContexts()
 
@@ -94,7 +97,10 @@ const resolveContext = (context = ``, selectors = noOpObj, fallback) => {
 /**
  * Gets the all deployment options
  */
-const getDeploymentOpts = (env, envs) => {
+const getDeploymentOpts = (
+  env:string,
+  envs?:TContainerEnvs
+) => {
   if (__DEPLOYMENT_OPTS) return __DEPLOYMENT_OPTS
 
   envs = envs || loadEnvs(env)
@@ -130,7 +136,8 @@ const getDeploymentOpts = (env, envs) => {
       activeMap: {},
       deployments: {},
       labelSelectors: {},
-      volumes: {}
+      volumes: {},
+      deployArr: []
     }
   )
 
@@ -142,12 +149,8 @@ const getDeploymentOpts = (env, envs) => {
 
 /**
  * Returns the long context relative to the passed in context
- * @param {string} context - Context reference
- * @param {string} [fallback] - Context value to use if not found
- *
- * @returns {Object} Long context name or fallback
  */
-const getLongContext = (context, fallback) => {
+const getLongContext = (context:TContextKey, fallback:string) => {
   const contextObj = resolveContext(context, getContexts())
   return contextObj?.long || fallback
 }
@@ -155,7 +158,12 @@ const getLongContext = (context, fallback) => {
 /**
  * Gets an env value based on the passed in context
  */
-const getContextValue = (context, envs, postFix, fallback) => {
+const getContextValue = (
+  context:TContextKey,
+  envs:TContainerEnvs,
+  postFix:string,
+  fallback:any
+) => {
   if(!context) return fallback
 
   const upperCtx = context.toUpperCase()
@@ -193,13 +201,12 @@ const getContextValue = (context, envs, postFix, fallback) => {
 
 /**
  * Returns the deploy context relative to the passed in context
- * @param {string} context - Context reference
- * @param {string} env - Context value to use if not found
- * @param {string} [fallback] - Context value to use if not found
- *
- * @returns {Object} deploy context or fallback
  */
-const getDeployContext = (context, env, fallback) => {
+const getDeployContext = (
+  context:TContextKey,
+  env:string,
+  fallback:any
+) => {
   const { deployments } = getDeploymentOpts(env)
   return resolveContext(context, deployments, fallback)
 }
@@ -207,19 +214,23 @@ const getDeployContext = (context, env, fallback) => {
 /**
  * Returns the selector label context relative to the passed in context
  */
-const getLabelContext = (context, env, fallback) => {
+const getLabelContext = (
+  context:TContextKey,
+  env:string,
+  fallback:any
+) => {
   const { labelSelectors } = getDeploymentOpts(env)
   return resolveContext(context, labelSelectors, fallback)
 }
 
 /**
  * Returns the volumes context relative to the passed in context
- * @param {string} context - Context reference
- * @param {string} fallback - Context value to use if not found
- *
- * @returns {Object} volumes context or fallback
  */
-const getVolumeContext = (context, env, fallback) => {
+const getVolumeContext = (
+  context:TContextKey,
+  env:string,
+  fallback:any
+) => {
   const { volumes } = getDeploymentOpts(env)
   const volCtx = resolveContext(context, volumes, fallback)
 
