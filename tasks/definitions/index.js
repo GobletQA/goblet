@@ -6,6 +6,7 @@ const definitions = () => {
   return !inDocker() && !GOBLET_RUN_FROM_CI && !GOBLET_RUN_FROM_UI && !KEG_CLI_TASK_RUNNING
     ? {
         ...initialize(require('./kube')),
+        ...initialize(require('./deploy')),
         ...initialize(require('./docker')),
         ...initialize(require('./devspace')),
       }

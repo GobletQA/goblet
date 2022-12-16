@@ -1,44 +1,25 @@
-import { appRoot } from '../../paths'
-import { Logger } from '@keg-hub/cli-utils'
-import { docker } from '../../utils/docker/docker'
 import { loadEnvs } from '../../utils/envs/loadEnvs'
-import { getRunImg } from '../../utils/docker/getRunImg'
 import { getNpmToken } from '../../utils/envs/getNpmToken'
-import { addRunEnvs } from '../../utils/docker/addRunEnvs'
-import { getRunArgs } from '../../utils/docker/getRunArgs'
-import { addRunPorts } from '../../utils/docker/addRunPorts'
 import { getParamEnvs } from '../../utils/envs/getParamEnvs'
-import { addRunVolumes } from '../../utils/docker/addRunVolumes'
 import { getFirebaseToken } from '../../utils/firebase/getFirebaseToken'
 
 
 const deployFe = async (args:Record<any, any>) => {
   const { params } = args
-  const docFileCtx = `frontend`
-  const { env, log } = params
+  const { env } = params
   const envs = loadEnvs({ env })
   const token = getNpmToken()
 
   const allEnvs = { ...envs, NPM_TOKEN: token, ...getParamEnvs(params) }
-
-  const imgToRun = await getRunImg(params, docFileCtx, envs)
-  const runEnvs = await addRunEnvs(docFileCtx, allEnvs)
+  const fbToken = await getFirebaseToken(params, envs)
   
-  getFirebaseToken(params, envs)
+  console.log(`------- allEnvs -------`)
+  console.log(allEnvs)
+  console.log(`------- fbToken -------`)
+  console.log(fbToken)
   
-  const cmdArgs = [
-    ...getRunArgs(params),
-    ...runEnvs,
-    ...addRunPorts(params, allEnvs, docFileCtx),
-    ...addRunVolumes(params, docFileCtx),
-    imgToRun,
-    `/deploy.sh`,
-  ].filter((arg) => arg)
-
-  log && Logger.pair(`Running Cmd:`, `docker ${cmdArgs.join(' ')}\n`)
-
-  const output = await docker.run(cmdArgs, { cwd: appRoot, env: allEnvs })
-  log && Logger.log(output)
+  
+  // log && Logger.log(output)
 
 }
 

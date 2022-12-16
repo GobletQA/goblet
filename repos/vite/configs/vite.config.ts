@@ -5,7 +5,6 @@ import mkcert from'vite-plugin-mkcert'
 import react from '@vitejs/plugin-react'
 import { loadConfig } from './frontend.config'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import EnvironmentPlugin from 'vite-plugin-environment'
 import { svgrComponent } from 'vite-plugin-svgr-component'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
@@ -17,10 +16,16 @@ const isHttps = Boolean(
 )
 
 export default defineConfig(async () => {
+
   const { envs, port} = loadConfig()
 
   return {
     root: rootDir,
+    build: {
+      // minify: false,
+      emptyOutDir: true,
+    },
+    define: envs,
     server: {
       port,
       https: isHttps,
@@ -41,10 +46,10 @@ export default defineConfig(async () => {
         globalAPI: true,
         languageWorkers: ['editorWorkerService', 'html', 'json', 'typescript']
       }),
+
       react(),
       isHttps && mkcert(),
       tsconfigPaths(),
-      EnvironmentPlugin(envs),
       svgrComponent({
         svgrOptions: {
           ref: true,

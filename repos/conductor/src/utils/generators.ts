@@ -25,7 +25,7 @@ const getProtocol = (port:TPort) => {
 }
 
 /**
- * Generates a host url for accessing an exposed container on the dind pod
+ * Generates a host url for accessing an exposed container on the  pod
  */
 export const generateExternalUrl = (
   hostPort:TPort,

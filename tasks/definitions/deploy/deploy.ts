@@ -4,7 +4,7 @@ import * as frontend from './frontend'
 
 export const deploy = {
   name: 'deploy',
-  alias: ['ds', 'dev'],
+  alias: ['dpl', 'dp'],
   tasks: {
     ...backend,
     ...frontend

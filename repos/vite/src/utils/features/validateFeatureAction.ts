@@ -39,7 +39,8 @@ export const validateFeatureAction = (
   if (!features || !features.files)
     return emptyResponse(`No features exist in the store!`, features.files)
 
-  const index = features.files.findIndex(
+  // Validate Object.values is needed here. This type my be incorrect
+  const index = Object.values(features.files).findIndex(
     feat => feat?.ast?.feature
       && feature?.ast?.feature
       && feat?.ast?.feature === feature?.ast?.feature

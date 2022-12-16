@@ -3,9 +3,9 @@ import type { TEditorConfig } from '../types'
 import './services'
 import { setTheme } from './setTheme'
 import { initLangs } from './initLangs'
-import { initPrettier } from './initPrettier'
-import { initGrammars } from './initGrammars'
-import { wireTmGrammars } from 'monaco-editor-textmate'
+// import { initPrettier } from './initPrettier'
+// import { initGrammars } from './initGrammars'
+// import { wireTmGrammars } from 'monaco-editor-textmate'
 
 declare type monacoType = typeof import('monaco-editor')
 
@@ -31,6 +31,7 @@ const initTheme = (config:TEditorConfig) => {
 const setupMonaco = (config:TEditorConfig) => {
   initLangs(config)
   initTheme(config)
+  // TODO: add grammar workers - used by linter
   // const { grammars, registry } = initGrammars(config)
   // setTimeout(() => wireTmGrammars(window.monaco, registry, grammars) , 3000)
 }

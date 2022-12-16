@@ -4,7 +4,7 @@
  * Run command below to test
  * `node container/scripts/ds/resolveDSEnvs.js certs provider-auth:api-key:LINODE_V4_API_KEY`
  */
-const { resolveValues, getEnvPrefix } = require('./resolveValues')
+const { getEnvPrefix } = require('./resolveValues')
 const { filterEnvsAsYaml, addEnv } = require('./filterEnvs')
 const { buildEnvSecrets } = require('./buildEnvSecrets')
 const ePreFix = getEnvPrefix()
@@ -17,7 +17,7 @@ const ePreFix = getEnvPrefix()
     addEnv(`${ePreFix}VNC_ACTIVE`, `"true"`),
   ].join(``)
 
-  dsEnvs+= filterEnvsAsYaml(repo, envs)
+  dsEnvs+= filterEnvsAsYaml(repo)
 
   /**
   * If Kubernetes secrets are passed

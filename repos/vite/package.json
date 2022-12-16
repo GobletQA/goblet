@@ -4,14 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite -c configs/vite.config.ts",
+    "dev": "vite --clearScreen false -c configs/vite.config.ts",
     "clean": "yarn clean:dist; yarn clean:nm",
     "clean:dist": "rm -rf dist",
     "clean:full": "yarn clean; yarn install",
     "clean:nm": "rm -rf node_modules",
-    "build": "vite build -c configs/vite.config.ts",
-    "preview": "vite preview -c configs/vite.config.ts",
-    "start": "vite -c configs/vite.config.ts"
+    "build": "GOBLET_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
+    "preview": "GOBLET_ENV=production vite preview --clearScreen false -c configs/vite.config.ts",
+    "prod": "GOBLET_ENV=production vite --clearScreen false -c configs/vite.config.ts",
+    "start": "vite -c configs/vite.config.ts --force"
   },
   "dependencies": {
     "@cucumber/language-service": "0.11.0",
@@ -53,7 +54,6 @@
     "esbuild-register": "3.3.3",
     "local-echo": "wavesoft/local-echo",
     "vite": "3.1.4",
-    "vite-plugin-environment": "1.1.2",
     "vite-plugin-mkcert": "1.9.0",
     "vite-plugin-monaco-editor": "1.1.0",
     "vite-plugin-svgr": "2.2.1",

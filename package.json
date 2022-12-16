@@ -36,6 +36,7 @@
     "compile": "node scripts/compile.js",
     "dev": "node tasks/entry.js devspace",
     "doc": "node tasks/entry.js docker",
+    "deploy": "node tasks/entry.js deploy",
     "format": "yarn format:pretty && yarn format:lint",
     "format:all": "yarn format && turbo run format",
     "format:lint": "yarn lint .",

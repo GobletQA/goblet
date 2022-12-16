@@ -1,5 +1,3 @@
-
-
 import ESLint from '../vendor/eslint.bundle';
 
 const baseRuleChange = {
