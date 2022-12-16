@@ -24,26 +24,6 @@ ${config.excludePaths}
 ${config.sharedIgnore}
 `)
 
-
-// TODO: Move this to configs/task.config.js
-const syncDDConfig = (deployment, { remoteDir=`/goblet/remote` }) => (`
-- labelSelector:
-    app.kubernetes.io/component: ${deployment}
-  disableDownload: true
-  initialSync: preferLocal
-  localSubPath: ../repos/dind/src/etc
-  containerPath: /etc
-- labelSelector:
-    app.kubernetes.io/component: ${deployment}
-  disableUpload: true
-  initialSync: preferNewest
-  downloadExcludePaths:
-    - README.md
-  localSubPath: ../repos/dind/remote
-  containerPath: ${remoteDir}
-`)
-
-
 /**
  * Check if the app is being deploy
  * If it is, build the sync config based off the deployment
@@ -51,9 +31,7 @@ const syncDDConfig = (deployment, { remoteDir=`/goblet/remote` }) => (`
 const generateSync = (deployment, config) => {
   return (!deployment)
     ? ``
-    : config.prefix === `DD`
-      ? syncDDConfig(deployment, config)
-      : syncAppConfig(deployment, config)
+    : syncAppConfig(deployment, config)
 }
 
 ;(() => {

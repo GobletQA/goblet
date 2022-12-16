@@ -69,6 +69,7 @@ export const frontend = {
       description: `Auto mounts the root directory into the container`,
     },
     log: {
+      default: true,
       type: `boolean`,
       description: `Log command before they are build`,
     },

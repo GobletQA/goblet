@@ -51,7 +51,6 @@ COPY . .
 RUN <<EOF
   set -eux;
 
-  rm -rf /goblet/app/repos/dind
   rm -rf /goblet/app/repos/screencast
   rm -rf /goblet/app/repos/testUtils
 

@@ -45,6 +45,5 @@ goblet_run_setup_tasks() {
   yarn kube ingress
 
   # Setup kuberenetes secrets for docker user and password
-  # Used for downloading images in the dind container
   yarn kube auth
 }

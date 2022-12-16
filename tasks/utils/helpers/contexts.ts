@@ -37,7 +37,7 @@ const buildContexts = (
 /**
  * Sets the contexts that can be used durning task execution
  */
-const setContexts = (
+export const setContexts = (
   apps:Record<any, any>,
   prefix:string
 ) => {
@@ -62,18 +62,18 @@ const setContexts = (
 /**
  * Returns a context based on the passed in name
  */
-const getContext = (name:TContextKey) => __CONTEXTS[name]
+export const getContext = (name:TContextKey) => __CONTEXTS[name]
 
 /**
  * Returns the contexts previously set by the setContexts helper
  */
-const getContexts = () => __CONTEXTS
+export const getContexts = () => __CONTEXTS
 
 /**
  * Resolves the context used to reference a kubernetes resource
  * Also checks if the context is an alias of the app or db, and returns the corresponding selector
  */
-const resolveContext = (
+export const resolveContext = (
   context:TContextKey = ``,
   selectors:Record<string, any> = noOpObj,
   fallback?:any
@@ -97,7 +97,7 @@ const resolveContext = (
 /**
  * Gets the all deployment options
  */
-const getDeploymentOpts = (
+export const getDeploymentOpts = (
   env:string,
   envs?:TContainerEnvs
 ) => {
@@ -150,7 +150,7 @@ const getDeploymentOpts = (
 /**
  * Returns the long context relative to the passed in context
  */
-const getLongContext = (context:TContextKey, fallback:string) => {
+export const getLongContext = (context:TContextKey, fallback?:string) => {
   const contextObj = resolveContext(context, getContexts())
   return contextObj?.long || fallback
 }
@@ -158,11 +158,11 @@ const getLongContext = (context:TContextKey, fallback:string) => {
 /**
  * Gets an env value based on the passed in context
  */
-const getContextValue = (
+export const getContextValue = (
   context:TContextKey,
   envs:TContainerEnvs,
   postFix:string,
-  fallback:any
+  fallback?:any
 ) => {
   if(!context) return fallback
 
@@ -202,7 +202,7 @@ const getContextValue = (
 /**
  * Returns the deploy context relative to the passed in context
  */
-const getDeployContext = (
+export const getDeployContext = (
   context:TContextKey,
   env:string,
   fallback:any
@@ -214,7 +214,7 @@ const getDeployContext = (
 /**
  * Returns the selector label context relative to the passed in context
  */
-const getLabelContext = (
+export const getLabelContext = (
   context:TContextKey,
   env:string,
   fallback:any
@@ -226,7 +226,7 @@ const getLabelContext = (
 /**
  * Returns the volumes context relative to the passed in context
  */
-const getVolumeContext = (
+export const getVolumeContext = (
   context:TContextKey,
   env:string,
   fallback:any
@@ -237,15 +237,3 @@ const getVolumeContext = (
   return volCtx
 }
 
-module.exports = {
-  getContext,
-  getContexts,
-  setContexts,
-  getLongContext,
-  resolveContext,
-  getLabelContext,
-  getContextValue,
-  getDeployContext,
-  getVolumeContext,
-  getDeploymentOpts,
-}

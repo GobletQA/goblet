@@ -161,20 +161,6 @@ module.exports = {
         ],
       }
     },
-    dind: {
-      contexts: [`dind`, `dd`],
-      envs: {
-        /**
-        * ENVs to not include in the backend
-        */
-        omit: [
-          `GB_BE_*`,
-          `GB_CR_*`,
-          `GB_FE_*`,
-          `FIRE_BASE_*`
-        ]
-      }
-    },
     frontend: {
       contexts: [`frontend`, `fe`],
       portForward: {
@@ -189,7 +175,6 @@ module.exports = {
           'tasks',
           'certs',
           'goblet',
-          'repos/dind',
           'repos/scripts',
           'repos/backend',
           'repos/conductor',

@@ -2,30 +2,9 @@
 const { resolveValues, getEnvPrefix } = require('./resolveValues')
 const ePreFix = getEnvPrefix()
 
-const getDinDMounts = () => (`
-- containerPath: /etc/docker/certs.d
-  volume:
-    name: docker-server
-    readOnly: false
-`)
-
-const getDinDVols = () => (`
-- name: docker-server
-  secret:
-    secretName: docker-server
-    items:
-    - key: certificate
-      path: certificate.pem
-    - key: server-key
-      path: server-key.pem
-    - key: ca-public
-      path: ca-public.pem
-`)
 
 const getVolumeMounts = (repo, volumeMounts) => {
   switch(repo){
-    case 'dind': 
-      return volumeMounts ? getDinDMounts() : getDinDVols()
     default:
       return ``
   }

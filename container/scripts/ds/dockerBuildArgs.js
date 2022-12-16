@@ -16,19 +16,7 @@ const ePreFix = getEnvPrefix()
     addArg(`${ePreFix}VNC_ACTIVE`, `true`),
   ].join(``)
 
-  const envs = resolveValues()
   dsEnvs+= filterEnvsAsArgs(repo)
-
-  if(repo === 'dind'){
-    /**
-    * Caddy uses the XDG_DATA_HOME env to save files and data
-    * So we set it to the remote folder synced via devspace
-    * The same /goblet/remote can be found in the container/scripts/ds/resolveSync.js file
-    * The sync is setup to copy files from the dind container to the local repos/dind/goblet/remote path
-    */
-    
-    addArg(`XDG_DATA_HOME`, envs[`${ePreFix}DD_CADDY_REMOTE_DIR`] || `/goblet/remote`)
-  }
 
   process.stdout.write(`::set-output name=list::${dsEnvs}`)
 

@@ -38,7 +38,7 @@ export const deploy = {
     skip: {
       type: `array`,
       alias: [`bypass`],
-      example: `--skip proxy`,
+      example: `--skip app`,
       description: `Contexts or names of apps NOT to be started`,
     },
     force: {
@@ -46,6 +46,7 @@ export const deploy = {
       description: `Force deployments`,
     },
     log: {
+      default: true,
       type: `boolean`,
       description: `Log the devspace command to be run`,
     },

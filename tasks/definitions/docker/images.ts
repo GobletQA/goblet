@@ -29,7 +29,7 @@ const buildPush = async (args) => {
   const { context, local } = params
 
   const contexts = local
-    ? [`app`,`dind`,`screencast`]
+    ? [`app`, `screencast`]
     : context && context?.length && !context.includes(`all`)
       ? context
       : getContexts()?.CONTEXT_LIST
