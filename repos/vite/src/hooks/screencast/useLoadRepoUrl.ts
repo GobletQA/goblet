@@ -1,5 +1,7 @@
 
 import { useCallback, useMemo } from 'react'
+
+import { GobletQAUrl } from '@constants'
 import { pageService } from '@services/pageService'
 import { getWorldVal } from '@utils/repo/getWorldVal'
 
@@ -10,14 +12,13 @@ import { getWorldVal } from '@utils/repo/getWorldVal'
 export const useLoadRepoUrl = (repo?:any) => {
 
   const repoUrl = useMemo(() => {
-    const url = `https://www.gobletqa.com`
-    // const url = `https://www.google.com`
-    
-    // const url = getWorldVal({
-    //   location: `url`,
-    //   fallback: `app.url`,
-    //   repo
-    // })
+    const url = getWorldVal({
+      repo,
+      location: `url`,
+      fallback: `app.url`,
+      def: GobletQAUrl
+    })
+
     return pageService.normalize(url)
   }, [repo])
 

@@ -18,13 +18,13 @@ export type TGetWorldVal = {
  */
 export const getWorldVal = ({
   fb,
-  def,
   loc,
   repo,
   fallback=fb,
   location=loc,
+  def=undefined,
 }:TGetWorldVal) => {
-  if(!location && !fallback) return undefined
+  if(!location && !fallback) return def
 
   repo = repo || getStore()?.getState()?.repo
   const locationVal = location ? get(repo?.world, location) : undefined
@@ -33,5 +33,5 @@ export const getWorldVal = ({
     ? locationVal
     : fallback && get(repo?.world, fallback)
 
-  return exists(found) ? found : def || undefined
+  return exists(found) ? found : def
 }

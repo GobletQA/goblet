@@ -60,7 +60,7 @@ export const runTests = async (
 
   const repo = getRepoData()
   const params = buildCmdParams({ file, cmd })
-  const appUrl = getWorldVal({ loc: `url`, fb: `app.url`})
+  const appUrl = getWorldVal({loc: `url`, fb: `app.url`})
 
   const options = buildOptions(
     {
