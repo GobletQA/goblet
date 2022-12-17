@@ -7,7 +7,6 @@ import { loadConfig } from './frontend.config'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { svgrComponent } from 'vite-plugin-svgr-component'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
-import { viteCommonjs } from '@originjs/vite-plugin-commonjs'
 
 const rootDir = path.join(__dirname, '..')
 process.env.PLUGIN_DATA_DIR = path.join(rootDir, `../../certs`)
@@ -39,8 +38,6 @@ export default defineConfig(async () => {
       logOverride: { 'this-is-undefined-in-esm': 'silent' }
     },
     plugins: [
-      viteCommonjs(),
-
       // @ts-ignore
       monacoEditorPlugin.default({
         globalAPI: true,

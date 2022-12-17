@@ -1,3 +1,4 @@
+import { Environment } from '@constants'
 let __BASE_API_URL:string
 
 /**
@@ -12,9 +13,12 @@ export const getBaseApiUrl = () => {
   // They should always match
   // Deployed environments will be https, local is http
   const { protocol } = new URL(window.location.origin)
+  // const protocol = `https:`
   const isHttps = Boolean(protocol.includes(`https`))
 
-  const bePort = !isHttps && process.env.GB_BE_PORT
+  const bePort = !isHttps
+    && Environment !== `production`
+    && process.env.GB_BE_PORT
 
   // Use the hostname for the base on dev
   // Otherwise cookies will not be set, due to being served via http

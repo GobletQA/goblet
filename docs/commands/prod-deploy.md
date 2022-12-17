@@ -15,6 +15,7 @@
   * **IMPORTANT** - Don't forget to add `--env prod` to ensure you are using the correct environment
 * Curl cmds to test Backend API
   * `curl -kivL -H 'Host: backend.dev.gobletqa.app' -H 'Origin: http://localhost:19006' 'http://45.79.62.67'`
+  * `curl -kivL -H 'Origin: http://localhost:19006' 'https://backend.dev.gobletqa.app'`
 * See the ingress-nginx, and get the IP address of it
   * `kubectl --namespace gb-production get services -o wide -w ingress-nginx-controller`
 * Watch ingress deployment status

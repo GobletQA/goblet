@@ -110,14 +110,12 @@ export const setBrowser = (browser:TBrowser, type:string = defaultBrowser) => {
   const oldBrowser = getBrowser(type)
 
   if(oldBrowser){
-    if(browser && oldBrowser){
+    if(browser && oldBrowser && browser !== oldBrowser){
 
-      const browserExists = new Error(`Browser Already Set`)
-      console.log(`---------- Browser Already Set ----------`)
-      console.log(`typeof oldBrowser`, typeof oldBrowser)
-      console.log(`typeof browser`, typeof browser)
-      console.log(`browsers are equal`, browser === oldBrowser)
-      console.log(`STACK TRACE:`, browserExists.stack)
+        console.log(`---------- Browser Already Set ----------`)
+        console.log(`Old Browser`, oldBrowser)
+        console.log(`New Browser`, browser)
+
     }
 
     return PW_BROWSERS
