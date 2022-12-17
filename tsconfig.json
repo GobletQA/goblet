@@ -36,8 +36,13 @@
     "bundle",
     ".yarn",
     ".git",
+    ".husky",
     ".firebase",
+    "certs",
+    "dist",
+    "docs",
     "logs",
+    "scripts",
     "temp",
   ]
 }
