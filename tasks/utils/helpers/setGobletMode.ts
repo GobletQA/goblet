@@ -1,7 +1,6 @@
-const path = require('path')
+import type { TTaskParams } from '../../types'
+
 const { exists } = require('@keg-hub/jsutils')
-const { containerDir } = require('../../paths')
-const { addToProcess } = require('@keg-hub/cli-utils')
 const { setVncENV } = require('@gobletqa/screencast/libs/utils/vncActiveEnv')
 
 // TODO: Setup custom ENVs to pull from the values files
@@ -16,13 +15,9 @@ const mountEnvs = {
 /**
  * Sets the mode that goblet will be run in
  * Then calls methods to set the proper envs
- * @param {Object} params - Task options converted into an object
- * @param {Object} params.launch - Option to run the local browser
- * @param {Object} params.mode - Mode goblet should be run in
- *
  * @returns {string} - Mode that goblet is running in
  */
-const setGobletMode = params => {
+export const setGobletMode = (params:TTaskParams) => {
   const { launch, local, vnc } = params
   const mode = params.mode || (vnc && 'vnc') || (local && 'local') || undefined
 
@@ -36,8 +31,4 @@ const setGobletMode = params => {
   setVncENV(vncActive)
 
   return gobletMode
-}
-
-module.exports = {
-  setGobletMode,
 }

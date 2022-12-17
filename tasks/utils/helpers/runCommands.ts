@@ -1,4 +1,7 @@
-const { runSeq } = require('@keg-hub/jsutils')
+import type { TTaskParams } from '../../types'
+import { runSeq } from '@keg-hub/jsutils'
+
+type TCmdFunc = (...args:any[]) => any
 
 /**
  * Run each command in sequence or all at the same time
@@ -6,13 +9,12 @@ const { runSeq } = require('@keg-hub/jsutils')
  * 
  * @returns {Array<number>} - Exit code of each command run
  */
-const runCommands = async (commands, params) => {
+export const runCommands = async (
+  commands:TCmdFunc[],
+  params:TTaskParams
+) => {
   const { concurrent } = params
   return concurrent
     ? await Promise.all(commands.map(async cmd => cmd())) 
     : await runSeq(commands)
-}
-
-module.exports = {
-  runCommands
 }

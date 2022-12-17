@@ -1,15 +1,12 @@
-const path = require('path')
-const { existsSync } = require('fs')
-const { execSync } = require('child_process')
-const { camelCase } = require('@keg-hub/jsutils')
+import path from 'path'
+import { existsSync } from 'fs'
+import { execSync } from 'child_process'
+import { camelCase } from '@keg-hub/jsutils'
 
 /**
  * Finds all sub-repo paths from the <root>/repos directory
- * @type {function}
- *
- * @return {Object} - Found repo paths by camel-case name
  */
-const getRepoPaths = (reposDir) => {
+export const getRepoPaths = (reposDir:string) => {
   // list of the repo names located at `<root>/repos`
   return execSync('ls', { cwd: reposDir })
     .toString()
@@ -23,6 +20,3 @@ const getRepoPaths = (reposDir) => {
     }, {})
 }
 
-module.exports = {
-  getRepoPaths,
-}

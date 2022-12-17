@@ -1,5 +1,5 @@
-const path = require('path')
-const { homeDir, appRoot } = require('../../paths')
+import path from 'path'
+import { homeDir, appRoot } from '../../paths'
 
 /**
  * Converts the local part of a volume string to an absolute path when needed
@@ -7,7 +7,7 @@ const { homeDir, appRoot } = require('../../paths')
  *
  * @returns {string} - Updated volume string
  */
-const resolveLocalPath = (location) => {
+export const resolveLocalPath = (location:string) => {
   return location.startsWith(`~`)
     ? path.resolve(path.join(homeDir, location.replace(`~`, '')))
     : location === `.`
@@ -15,9 +15,4 @@ const resolveLocalPath = (location) => {
       : location.startsWith(`./`)
         ? path.resolve(path.join(`${appRoot}/`, location.replace(`./`, ``)))
         : path.resolve(path.join(appRoot, location))
-}
-
-
-module.exports = {
-  resolveLocalPath
 }
