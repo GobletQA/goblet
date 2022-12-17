@@ -1,4 +1,4 @@
-require('./resolveRoot')
+import './resolveRoot'
 
 import { ChildBrowserServerKey } from './src/constants'
 import { newServer } from './src/libs/playwright/server/newServer'

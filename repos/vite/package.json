@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --clearScreen false -c configs/vite.config.ts",
     "clean": "yarn clean:dist; yarn clean:nm",
     "clean:dist": "rm -rf dist",
     "clean:full": "yarn clean; yarn install",
@@ -12,7 +11,7 @@
     "build": "GOBLET_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
     "prod": "GOBLET_ENV=production vite --clearScreen false -c configs/vite.config.ts",
     "serve": "serve -p 19006 dist",
-    "start": "vite -c configs/vite.config.ts --force"
+    "start": "vite --clearScreen false -c configs/vite.config.ts --force"
   },
   "dependencies": {
     "@cucumber/language-service": "0.11.0",

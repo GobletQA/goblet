@@ -1,5 +1,5 @@
 {
-  "exec": "node dist/index.js",
+  "exec": "node -r esbuild-register dist/index.js",
   "ext": "none",
   "verbose": true,
   "watch": [""],
