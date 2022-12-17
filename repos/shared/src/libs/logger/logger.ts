@@ -10,7 +10,7 @@ export type TWLogger = typeof Logger & {
   colors: typeof CliLogger.colors
 }
 
-export type TSetupLogger = TLogOpts & {
+export type TSetupLogger = Omit<TLogOpts, `label`> & {
   tag?:string
   label?:string
 }
@@ -18,7 +18,11 @@ export type TSetupLogger = TLogOpts & {
 let __logger:TWLogger
 let __logLabel:string= GB_SUB_REPO ? `Goblet ${capitalize(GB_SUB_REPO)}` : `Goblet Logger`
 
-export const setupLogger = ({ tag, label=tag, ...opts }) => {
+export const setupLogger = ({
+  tag,
+  label=tag,
+  ...opts
+}:TSetupLogger) => {
   if(label) __logLabel = label
 
   __logger = buildLogger({ label: __logLabel, ...opts }) as TWLogger

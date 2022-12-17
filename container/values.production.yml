@@ -8,6 +8,8 @@ env:
   NODE_ENV: production
   GB_LOCAL_DEV_MODE: false
   DEVSPACE_INJECT_LOCAL: false
+  GB_LOG_LEVEL: silly
+
 
   # --- Custom backend devspace config --- #
   GB_BE_DEVSPACE_CONFIG: container/devspace.backend.yaml

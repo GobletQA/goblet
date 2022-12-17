@@ -58,7 +58,7 @@ export const buildLogger = (
 
   const {
     silent=false,
-    level=`info`,
+    level=`silly`,
     label=`Goblet`,
     exitOnError=false,
     handleExceptions=true,
@@ -69,7 +69,7 @@ export const buildLogger = (
     exitOnError: exitOnError,
     transports: [
       new transports.Console({
-        level: level,
+        level,
         format: getFormatter(label),
         handleExceptions: handleExceptions,
       }),
