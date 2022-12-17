@@ -32,6 +32,8 @@
     "sc:serve": "node -r esbuild-register dist/index.js",
     "serve": "yarn vnc:serve && yarn sc:serve",
     "start": "DEV_BUILD=1 node -r esbuild-register configs/build.config.js",
+    "ts": "node -r esbuild-register tasks/entry.ts",
+    "task": "node -r esbuild-register tasks/entry.ts",
     "vnc": "node -r esbuild-register dist/vnc.js",
     "vnc:dev": "node -r esbuild-register src/vnc.ts",
     "vnc:build": "node -r esbuild-register configs/vnc.build.config.js",

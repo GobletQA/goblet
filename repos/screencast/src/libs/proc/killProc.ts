@@ -1,6 +1,26 @@
+import util from 'util'
 import { exec } from 'child_process'
 import type { TProc } from '@GSC/types'
 import { isObj, exists } from '@keg-hub/jsutils'
+
+const execAsync = util.promisify(exec)
+
+
+export const killProcAsync = async (
+  proc:TProc|string|number,
+  platform:string = process.platform
+) => {
+  const procPid = isObj(proc) ? proc.pid : proc
+
+  return (
+    exists(procPid) &&
+    await execAsync(
+      platform === 'win32'
+        ? `taskKill /pid ${procPid} /t`
+        : `kill -9 ${procPid}`
+    )
+  )
+}
 
 /**
  * Helper method to kill the running process based on passed in pid

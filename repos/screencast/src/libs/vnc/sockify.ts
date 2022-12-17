@@ -1,7 +1,7 @@
 import type { TSSLCreds, TChildProcArgs } from '@GSC/types'
 import fs from 'fs'
 import { Logger } from '@GSC/utils/logger'
-import { findProc, killProc } from '@GSC/libs/proc'
+import { findProc, killProcAsync } from '@GSC/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
 import { create as childProc } from '@keg-hub/spawn-cmd/src/childProcess'
@@ -104,7 +104,13 @@ export const startSockify = async ({
  */
 export const stopSockify = async () => {
   const status = await statusSockify()
-  status && status.pid && killProc(status)
+
+  if(!status || !status?.pid)
+    return Logger.info(`Can not stop Websockify server, process not found`)
+  
+  Logger.info({ message: `Stopping Websockify server...`, ...status })
+
+  return await killProcAsync(status)
 }
 
 /**

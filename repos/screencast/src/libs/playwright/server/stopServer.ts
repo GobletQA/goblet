@@ -1,7 +1,7 @@
 import metadata from '../helpers/metadata'
 import { Logger } from '@GSC/utils/logger'
-import { findProc, killProc } from '../../proc'
-import { limbo, checkCall, wait } from '@keg-hub/jsutils'
+import { findProc, killProcAsync } from '../../proc'
+import { limbo, wait } from '@keg-hub/jsutils'
 import { setServer, getServer, getServerProc, setServerProc } from './server'
 
 /**
@@ -12,7 +12,8 @@ const loopKill = async (name:string) => {
   const [_, statusBrowser] = await limbo(findProc(name))
   if(!statusBrowser?.pid) return
 
-  killProc(statusBrowser)
+  Logger.info({ message: `Stopping Browser ${name} server...`, ...statusBrowser })
+  await killProcAsync(statusBrowser)
   await wait(1000)
   loopKill(name)
 } 
@@ -26,19 +27,24 @@ export const stopServer = async () => {
   try {
     const pwServer = getServer()
     const pwServerProc = getServerProc()
-  
+
     if (pwServer || pwServerProc) {
+      Logger.info({ message: `Stopping Browser server...`, ...pwServerProc })
+
       pwServer?.close && (await pwServer?.close())
-      Object.values(pwServerProc).forEach(proc => proc?.pid && killProc(proc))
+      await Promise.all(
+        Object.values(pwServerProc)
+          .map(async (proc) => proc?.pid && await killProcAsync(proc))
+      )
     }
     else {
-      await checkCall(async () => {
-        // Kill both chrome, firefox and webkit
-        await loopKill('chrome')
-        await loopKill('chromium')
-        await loopKill('firefox')
+      // Kill both chrome, firefox and webkit
+      await Promise.all([
+        await loopKill('chrome'),
+        await loopKill('chromium'),
+        await loopKill('firefox'),
         await loopKill('webkit')
-      })
+      ])
     }
   }
   catch (err) {

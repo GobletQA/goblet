@@ -55,10 +55,12 @@ export const runSCTask = async (type:string, params:Record<any, any>) => {
       break
     }
     case 'stop': {
+      Logger.info(`Stopping all screencast services...`)
+      
       await Promise.all([
-        vnc && stopVNC(),
-        sock && stopSockify(),
-        browser && stopServer(),
+        vnc && await stopVNC(),
+        sock && await stopSockify(),
+        browser && await stopServer(),
       ])
       break
     }

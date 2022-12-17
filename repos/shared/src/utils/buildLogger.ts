@@ -24,7 +24,7 @@ export type TLogOpts = winston.LoggerOptions & {
  */
 const filterOptionsReq = () => {
   return format((info) => {
-    return info.message.startsWith(`OPTIONS `)
+    return info?.message?.startsWith?.(`OPTIONS `)
       ? null
       : info
   })()

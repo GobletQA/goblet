@@ -3,19 +3,24 @@ import type { TBrowserMetaDataContext, TBrowserMetaData, TBrowserConf } from '@G
 import os from 'os'
 import path from 'path'
 import { Logger } from '@GSC/utils/logger'
-import { fileSys } from '@keg-hub/cli-utils'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
 import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
-import { isStr, isObj, exists, noOpObj, validate } from '@keg-hub/jsutils'
+import { existsSync, promises as fs } from 'fs'
+import { limboify, limbo, isStr, isObj, exists, noOpObj, validate } from '@keg-hub/jsutils'
 
 const {
-  mkDir,
+  mkdir,
   readFile,
   writeFile,
-  pathExists,
-  removeFile,
-  pathExistsSync
-} = fileSys
+  // @ts-ignore
+  constants,
+  rm:removeFile,
+} = fs
+
+const pathExists = async (checkPath:string) => {
+  const [err] = await limbo(fs.access(checkPath, constants.R_OK | constants.W_OK))
+  return !Boolean(err)
+}
 
 /**
  * Finds the path to metadata folder and browser-meta.json file
@@ -30,7 +35,7 @@ const getMetaDataPaths = () => {
   const { gobletRoot, pwMetaDataDir } = config.internalPaths
 
   const metadataDir =
-    exists(pwMetaDataDir) && pathExistsSync(pwMetaDataDir)
+    exists(pwMetaDataDir) && existsSync(pwMetaDataDir)
       ? pwMetaDataDir
       : checkVncEnv().vncActive
         ? path.resolve(os.tmpdir(), 'goblet')
@@ -47,9 +52,9 @@ const getMetaDataPaths = () => {
  */
 const tryReadMeta = async () => {
   const { metadataPath } = getMetaDataPaths()
+  const [err, content] = await limbo(readFile(metadataPath, 'utf8'))
 
-  const [err, content] = await readFile(metadataPath, 'utf8')
-  return err ? null : content
+  return err ? null : content.toString()
 }
 
 /**
@@ -57,14 +62,18 @@ const tryReadMeta = async () => {
  */
 export const create = async (content:TBrowserMetaData = noOpObj as TBrowserMetaData) => {
   const { metadataPath, metadataDir } = getMetaDataPaths()
-  const [existsErr, exists] = await pathExists(metadataDir)
 
-  !exists && (await mkDir(metadataDir))
-  const [err, _] = await writeFile(
+  const exists = await pathExists(metadataPath)
+  !exists && (await mkdir(metadataDir, { recursive: true }))
+
+  const [err, _] = await limbo(writeFile(
     metadataPath,
     JSON.stringify(content, null, 2)
-  )
+  ))
+
   err && Logger.error(err)
+
+  return content
 }
 
 /**
@@ -75,7 +84,7 @@ export const read = async (type:string):Promise<TBrowserMetaDataContext> => {
     const data = await tryReadMeta()
     const parsed = data ? JSON.parse(data) : {}
 
-    return (isObj(parsed) ? parsed[type] : {}) as TBrowserMetaDataContext
+    return (isObj(parsed) && parsed?.[type] ? parsed[type] : {}) as TBrowserMetaDataContext
   }
   catch (err) {
     Logger.error(`[PW-META ERROR]: ${err.stack}`)
@@ -123,14 +132,16 @@ export const save = async (
     },
   }
 
-  const [err, _] = await writeFile(
+  const [err, _] = await limbo(writeFile(
     metadataPath,
     JSON.stringify(nextMetadata, null, 2)
-  )
+  ))
 
-  err && err.code === 'ENOENT'
+  err && (err as any).code === 'ENOENT'
     ? await create(nextMetadata)
     : err && Logger.error(`[PW-META ERROR]: ${err.stack}`)
+
+  return nextMetadata
 }
 
 /**
@@ -138,7 +149,7 @@ export const save = async (
  */
 export const remove = async () => {
   const { metadataPath } = getMetaDataPaths()
-  return await removeFile(metadataPath)
+  return await limbo(removeFile(metadataPath, { force: true, recursive: true }))
 }
 
 /**
@@ -146,7 +157,6 @@ export const remove = async () => {
  */
 export const location = () => {
   const { metadataPath } = getMetaDataPaths()
-
   return metadataPath
 }
 
