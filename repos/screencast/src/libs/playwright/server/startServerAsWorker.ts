@@ -1,6 +1,7 @@
 import type { TBrowserConf } from '@GSC/types'
 
 import path from 'path'
+import { stopServer } from './stopServer'
 import { noOpObj } from '@keg-hub/jsutils'
 import { checkServerPid } from './checkServerPid'
 import { ChildBrowserServerKey } from '@GSC/constants'
@@ -14,14 +15,16 @@ export const startServerAsWorker = async (
   const browser = getBrowserType(browserConf.type)
   const found = await checkServerPid(browser)
 
-  if(found) return found
+  found && await stopServer()
 
   const config = getGobletConfig()
 
   const child = await childProc({
     cmd: 'node',
     args: [
-      path.join(config.internalPaths.screencastDir, `./startChildServer.js`),
+      `-r`,
+      `esbuild-register`,
+      path.join(config.internalPaths.screencastDir, `./browserServer.ts`),
       ChildBrowserServerKey,
       browser,
       JSON.stringify(browserConf)

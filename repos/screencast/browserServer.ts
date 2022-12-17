@@ -1,7 +1,7 @@
 require('./resolveRoot')
 
-const { ChildBrowserServerKey } = require('./src/constants')
-const { newServer } = require('./src/libs/playwright/server/newServer')
+import { ChildBrowserServerKey } from './src/constants'
+import { newServer } from './src/libs/playwright/server/newServer'
 
 /**
  * Runs the browser server via a forked sub-process

@@ -1,6 +1,6 @@
 import type { TBrowserConf } from '@GSC/types'
 
-import './resolveRoot'
+import '../resolveRoot'
 import { Logger } from '@GSC/utils/logger'
 import { get, wait } from '@keg-hub/jsutils'
 import {

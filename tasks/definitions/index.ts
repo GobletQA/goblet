@@ -4,8 +4,8 @@ import { kube } from './kube'
 import { deploy } from './deploy'
 import { docker } from './docker'
 import { devspace } from './devspace'
-// import { metadata } from './metadata'
-// import { waypoint } from './waypoint'
+import { metadata } from './metadata'
+import { waypoint } from './waypoint'
 import { screencast } from './screencast'
 import { inDocker } from '@keg-hub/cli-utils'
 import { initialize } from '../utils/helpers/initDefs'
@@ -28,8 +28,8 @@ const tasks = {
   ...definitions(),
   ...initialize({ bdd }),
   ...initialize({ unit }),
-  // ...initialize({ waypoint }),
-  // ...initialize({ metadata }),
+  ...initialize({ waypoint }),
+  ...initialize({ metadata }),
   ...initialize({ screencast }),
 }
 

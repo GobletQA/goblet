@@ -1,5 +1,6 @@
 {
   "extends": "../../tsconfig.json",
+  "target": "es2017",
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist",
@@ -16,6 +17,8 @@
       "@GSC/Scripts/*": ["scripts/*"],
       "@GSC/Templates": ["templates"],
       "@GSC/Templates/*": ["templates/*"],
+      "@GSC/libs": ["src/libs"],
+      "@GSC/libs/*": ["src/libs/*"],
       "@GSC": ["src"],
       "@GSC/*": ["src/*"],
       "@GSCRoot": ["./"],
@@ -39,10 +42,12 @@
     "src",
     "configs",
     "scripts",
-    "./tasks.ts",
+    "tasks/tasks.ts",
+    "src/vnc.ts",
     "../shared",
     "../testUtils",
-    "../workflows"
+    "../workflows",
+    "./browserServer.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

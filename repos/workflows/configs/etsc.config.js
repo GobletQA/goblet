@@ -7,7 +7,7 @@ module.exports = {
     bundle: true,
     outdir: 'dist',
     minify: false,
-    target: "es2015",
+    target: "esnext",
     plugins: [
       aliasPlugin(aliases),
     ],

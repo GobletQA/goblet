@@ -9,15 +9,15 @@ let __BASE_API_URL:string
 export const getBaseApiUrl = () => {
   if(__BASE_API_URL) return __BASE_API_URL
 
-  // Use the windows current protocol to set the servers protocol
-  // They should always match
+  const isLocal = Environment !== `production`
+
   // Deployed environments will be https, local is http
-  const { protocol } = new URL(window.location.origin)
-  // const protocol = `https:`
+  const { protocol } = isLocal ? new URL(window.location.origin) : { protocol: `https:` }
+
   const isHttps = Boolean(protocol.includes(`https`))
 
   const bePort = !isHttps
-    && Environment !== `production`
+    && isLocal
     && process.env.GB_BE_PORT
 
   // Use the hostname for the base on dev
