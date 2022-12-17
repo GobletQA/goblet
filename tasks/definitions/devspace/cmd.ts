@@ -1,3 +1,5 @@
+import type { TTask } from '../../types'
+
 import { error } from '@keg-hub/cli-utils'
 import { getNpmToken } from '../../utils/envs'
 import { devspace } from '../../utils/devspace/devspace'
@@ -31,7 +33,7 @@ const commandAct = async ({ task, params }) => {
   return await devspace([cmd, `--debug`], params)
 }
 
-export const cmd = {
+export const cmd:TTask = {
   name: 'cmd',
   alias: ['analyze', 'print', 'ui'],
   action: commandAct,

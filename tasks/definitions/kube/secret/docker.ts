@@ -1,3 +1,5 @@
+import type { TTask } from '../../../types'
+
 import path from 'path'
 import { scriptsDir } from '../../../paths'
 import { Logger, error } from'@keg-hub/cli-utils'
@@ -47,7 +49,7 @@ const docAuthAct = async (args) => {
   })
 }
 
-export const docker = {
+export const docker:TTask = {
   name: `docker`,
   action: docAuthAct,
   alias: [ `doc`, `docauth`, `docAuth`, `da`],

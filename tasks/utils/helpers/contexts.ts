@@ -39,7 +39,7 @@ const buildContexts = (
  */
 export const setContexts = (
   apps:Record<any, any>,
-  prefix:string
+  prefix?:string
 ) => {
   const { default:defApp, ...appConfigs } = apps
   prefix = prefix || defApp.prefix || `DS`

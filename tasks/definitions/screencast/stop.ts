@@ -1,15 +1,15 @@
-import type { TTaskParams } from '../../types'
+import type { TTask, TTaskActionArgs } from '../../types'
 
 import path from 'path'
 import { repos } from '../../paths'
 
-const stopAction = async (args:TTaskParams) => {
+const stopAction = async (args:TTaskActionArgs) => {
   const { runSCTask } = require(path.join(repos.screencast, `tasks`))
   await runSCTask(`stop`, args.params)
   process.exit(0)
 }
 
-export const stop = {
+export const stop:TTask = {
   name: `stop`,
   alias: [`rs`],
   action: stopAction,

@@ -1,3 +1,5 @@
+import type { TTask } from '../../types'
+
 import { containerDir } from'../../paths'
 import { devspace } from '../../utils/devspace/devspace'
 
@@ -21,7 +23,7 @@ const runAct = async ({ params }) => {
   return await devspace.run({ ...params, cwd: containerDir })
 }
 
-export const run = {
+export const run:TTask = {
   name: 'run',
   alias: ['run', 'cmd'],
   action: runAct,

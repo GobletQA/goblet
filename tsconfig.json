@@ -39,7 +39,7 @@
     ".husky",
     ".firebase",
     "certs",
-    "dist",
+    "repos/**/dist",
     "docs",
     "logs",
     "scripts",

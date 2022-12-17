@@ -21,10 +21,12 @@ export type TTaskOptionType = 'string'
 export type TTaskOption = {
   env?: string
   alias?: string[]
+  allowed?:string[]
   example?: string
+  required?:boolean
   description?: string
-  default: TParamValue
-  type: TTaskOptionType
+  default?: TParamValue
+  type?: TTaskOptionType
 }
 
 export type TTaskOptions = Record<string, TTaskOption>
@@ -44,8 +46,8 @@ export type TTask = {
   name: string,
   alias?: string[]
   action?: TTaskAction
-  options?: TTaskOption
   tasks?: TTasks
+  options?: TTaskOptions
   [key: string]: any
 }
 

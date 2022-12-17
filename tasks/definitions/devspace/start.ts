@@ -1,4 +1,4 @@
-import type { TTaskActionArgs, TTaskParams } from '../../types'
+import type { TTask, TTaskActionArgs, TTaskParams } from '../../types'
 
 import { clean as cleanTask } from './clean'
 import { getNpmToken } from '../../utils/envs'
@@ -81,7 +81,7 @@ const startAct = async (args:TTaskActionArgs) => {
   }, { daemon, watch })
 }
 
-export const start = {
+export const start:TTask = {
   name: `start`,
   action: startAct,
   example: `yarn task devspace start <options>`,

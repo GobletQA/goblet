@@ -1,4 +1,5 @@
-import { error } from '@keg-hub/cli-utils'
+import type { TTask, TTaskActionArgs } from '../../types'
+
 import { getNpmToken } from '../../utils/envs'
 import { devspace } from '../../utils/devspace/devspace'
 import { setDeploymentEnvs } from '../../utils/envs/setDeploymentEnvs'
@@ -16,7 +17,7 @@ import { getDeployments } from '../../utils/devspace/getDeployments'
  *
  * @returns {void}
  */
-const renderAct = async ({ task, params }) => {
+const renderAct = async ({ task, params }:TTaskActionArgs) => {
   setDeploymentEnvs(params.env)
     /**
    * Check the context and skip arrays for which apps to deploy
@@ -32,7 +33,7 @@ const renderAct = async ({ task, params }) => {
   return await devspace(cmdArgs, params)
 }
 
-export const render = {
+export const render:TTask = {
   name: 'render',
   alias: ['ren', 'rdr'],
   action: renderAct,

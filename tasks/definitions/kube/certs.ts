@@ -1,3 +1,5 @@
+import type { TTask } from '../../types'
+
 import path from 'path'
 import { uuid } from'@keg-hub/jsutils'
 import { writeFileSync, rmSync } from 'fs'
@@ -30,7 +32,7 @@ const certAct = async (args:Record<any, any>) => {
   process.exit(0)
 }
 
-export const certs = {
+export const certs:TTask = {
   name: `certs`,
   action: certAct,
   alias: [ `cert-manager`, `cert`, `cm`],

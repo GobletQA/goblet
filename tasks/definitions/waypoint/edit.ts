@@ -1,6 +1,8 @@
-const { dockerCmd } = require('@keg-hub/cli-utils')
-const { launchBrowser } = require('@GTasks/utils/playwright/launchBrowser')
-const { timedRun } = require('@keg-hub/jsutils')
+import type { TTask, TTaskActionArgs } from '../../types'
+
+import { timedRun } from '@keg-hub/jsutils'
+import { dockerCmd } from '@keg-hub/cli-utils'
+import { launchBrowser } from '@GTasks/utils/playwright/launchBrowser'
 
 /**
  * Runs the edit command, and logs out a warning if
@@ -23,7 +25,7 @@ const runEditCmd = async (containerName, testName, expectedMinTime = 10000) => {
   // return exitCode
 }
 
-const editTest = async args => {
+const editTest = async (args:TTaskActionArgs) => {
   const { params } = args
   const { context, launch } = params
 
@@ -33,30 +35,28 @@ const editTest = async args => {
   // runEditCmd(params.container, context)
 }
 
-module.exports = {
-  edit: {
-    name: 'edit',
-    action: editTest,
-    example: 'yarn test:edit',
-    description: 'Edit an existing test based on the passed in context',
-    options: {
-      context: {
-        alias: ['name'],
-        description: 'Context or name of the test to be edit',
-        required: true,
-      },
-      container: {
-        description: 'Name of container within which to run create command',
-        example: '--container goblet',
-        required: true,
-        default: 'goblet',
-      },
-      launch: {
-        description:
-          'Launch a playwright websocket to allow remote connections to the browser.\nNot valid in headless mode.',
-        example: 'start --launch',
-        default: false,
-      },
+export const edit:TTask = {
+  name: 'edit',
+  action: editTest,
+  example: 'yarn test:edit',
+  description: 'Edit an existing test based on the passed in context',
+  options: {
+    context: {
+      alias: ['name'],
+      description: 'Context or name of the test to be edit',
+      required: true,
+    },
+    container: {
+      description: 'Name of container within which to run create command',
+      example: '--container goblet',
+      required: true,
+      default: 'goblet',
+    },
+    launch: {
+      description:
+        'Launch a playwright websocket to allow remote connections to the browser.\nNot valid in headless mode.',
+      example: 'start --launch',
+      default: false,
     },
   },
 }

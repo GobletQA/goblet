@@ -1,3 +1,5 @@
+import type { TTask } from '../../../types'
+
 import path from 'path'
 import { docker } from './docker'
 import { provider } from './provider'
@@ -168,7 +170,7 @@ const secretAct = async ({ params }) => {
 
 }
 
-export const secret = {
+export const secret:TTask = {
   name: `secret`,
   alias: [ `secrets`, `scrt`, `sct`, `sec`],
   action: secretAct,

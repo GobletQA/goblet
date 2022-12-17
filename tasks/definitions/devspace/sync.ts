@@ -1,3 +1,5 @@
+import type { TTask, TTaskActionArgs } from '../../types'
+
 import { devspace } from '../../utils/devspace/devspace'
 
 /**
@@ -12,11 +14,11 @@ import { devspace } from '../../utils/devspace/devspace'
  *
  * @returns {void}
  */
-const syncAct = async (args) => {
+const syncAct = async (args:TTaskActionArgs) => {
   return await devspace.sync(args.params)
 }
 
-export const sync = {
+export const sync:TTask = {
   name: 'sync',
   action: syncAct,
   example: 'yarn task sync <options>',

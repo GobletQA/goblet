@@ -1,4 +1,5 @@
 import { TTaskActionArgs, TTasks, TTask } from '../../types'
+
 import { isObj, isFunc } from '@keg-hub/jsutils'
 import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
 
@@ -26,11 +27,11 @@ const injectGobletConfig = taskAction => {
  *
  * @return {Object} - tasks with the goblet.config injected
  */
-export const initialize = (tasks:TTasks) => {
+export const initialize = (tasks:TTasks):TTasks => {
   Object.entries(tasks)
     .forEach(([key, task]:[string, TTask]) => {
-      task.action = isFunc(task.action) && injectGobletConfig(task.action)
-      task.tasks = isObj(task.tasks) && initialize(task.tasks)
+      task.action = isFunc(task.action) ? injectGobletConfig(task.action) : undefined
+      task.tasks = isObj(task.tasks) ? initialize(task.tasks) : undefined
     })
 
   return tasks

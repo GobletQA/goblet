@@ -1,3 +1,5 @@
+import type { TTask } from '../../../types'
+
 import path from 'path'
 import { readFileSync } from 'fs'
 import { appRoot } from '../../../paths'
@@ -74,7 +76,7 @@ const providerAct = async (args) => {
   })
 }
 
-export const provider = {
+export const provider:TTask = {
   name: `provider`,
   action: providerAct,
   alias: [ `pro`, `cp`, `cloud`, `clp`],

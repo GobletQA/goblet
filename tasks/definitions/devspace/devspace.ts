@@ -1,27 +1,29 @@
-import * as attach from './attach'
-import * as clean from './clean'
-import * as cmd from './cmd'
-import * as deploy from './deploy'
-import * as log from './log'
-import * as render from './render'
-import * as run from './run'
-import * as start from './start'
-import * as status from './status'
-import * as sync from './sync'
+import type { TTask } from '../../types'
 
-export const devspace = {
+import { attach } from './attach'
+import { clean } from './clean'
+import { cmd } from './cmd'
+import { deploy } from './deploy'
+import { log } from './log'
+import { render } from './render'
+import { run } from './run'
+import { start } from './start'
+import { status } from './status'
+import { sync } from './sync'
+
+export const devspace:TTask = {
   name: 'devspace',
   alias: ['ds', 'dev'],
   tasks: {
-    ...attach,
-    ...clean,
-    ...cmd,
-    ...deploy,
-    ...log,
-    ...run,
-    ...render,
-    ...start,
-    ...status,
-    ...sync,
+    attach,
+    clean,
+    cmd,
+    deploy,
+    log,
+    render,
+    run,
+    start,
+    status,
+    sync,
   },
 }

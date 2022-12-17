@@ -1,10 +1,10 @@
-import type { TTaskActionArgs, TTaskParams } from '../../types'
+import type { TTask, TTaskActionArgs, TTaskParams } from '../../types'
 
 export const deployBe = async (args:TTaskActionArgs) => {
   
 }
 
-export const backend = {
+export const backend:TTask = {
   name: `backend`,
   alias: [`be`],
   action: deployBe,

@@ -1,12 +1,12 @@
+import type { TTask } from '../../types'
+import { backend } from './backend'
+import { frontend } from './frontend'
 
-import * as backend from './backend'
-import * as frontend from './frontend'
-
-export const deploy = {
+export const deploy:TTask = {
   name: 'deploy',
   alias: ['dpl', 'dp'],
   tasks: {
-    ...backend,
-    ...frontend
+    backend,
+    frontend
   },
 }

@@ -1,3 +1,4 @@
+import type { TTask } from '../../types'
 import { devspace } from '../../utils/devspace/devspace'
 
 /**
@@ -16,7 +17,7 @@ const attachAct = async ({ params }) => {
   return await devspace.enter(params)
 }
 
-export const attach = {
+export const attach:TTask = {
   name: 'attach',
   action: attachAct,
   alias: ['enter', 'att'],

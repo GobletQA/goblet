@@ -1,3 +1,5 @@
+import { TTask } from '../../types'
+
 import { loadEnvs } from '../../utils/envs/loadEnvs'
 import { getNpmToken } from '../../utils/envs/getNpmToken'
 import { getParamEnvs } from '../../utils/envs/getParamEnvs'
@@ -23,7 +25,7 @@ const deployFe = async (args:Record<any, any>) => {
 
 }
 
-export const frontend = {
+export const frontend:TTask = {
   name: `frontend`,
   alias: [`fe`],
   action: deployFe,

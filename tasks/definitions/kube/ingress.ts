@@ -1,3 +1,5 @@
+import type { TTask } from '../../types'
+
 import { helm } from '../../utils/helm/helm'
 import { Logger } from '@keg-hub/cli-utils'
 
@@ -59,7 +61,7 @@ const ingressAct = async (args:Record<any, any>) => {
   log && Logger.success(`Successfully deployed Nginx Ingress-Controller`)
 }
 
-export const ingress = {
+export const ingress:TTask = {
   name: 'ingress',
   action: ingressAct,
   alias: [ `ing`, `in`],

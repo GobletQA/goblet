@@ -1,4 +1,4 @@
-import type { TTaskActionArgs, TTaskParams } from '../../types'
+import type { TTask, TTaskActionArgs, TTaskParams } from '../../types'
 
 import { Logger } from '@keg-hub/cli-utils'
 import { removeAction } from '../kube/remove'
@@ -47,7 +47,7 @@ const cleanAct = async (args:TTaskActionArgs) => {
   params.log && Logger.success(`\nFinished cleaning Dev Environment\n`)
 }
 
-export const clean = {
+export const clean:TTask = {
   name: `clean`,
   action: cleanAct,
   alias: [`purge`, `stop`, `kill`],

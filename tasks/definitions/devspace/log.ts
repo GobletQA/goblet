@@ -1,3 +1,5 @@
+import type { TTask } from '../../types'
+
 import { devspace } from '../../utils/devspace/devspace'
 
 /**
@@ -16,7 +18,7 @@ const logOutput = async ({ params }) => {
   return await devspace.logs(params)
 }
 
-export const log = {
+export const log:TTask = {
   name: 'log',
   alias: ['logs', 'lg'],
   action: logOutput,

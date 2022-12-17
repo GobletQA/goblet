@@ -1,4 +1,6 @@
-import { Logger, error } from'@keg-hub/cli-utils'
+import type { TTask } from '../../types'
+
+import { Logger, error } from '@keg-hub/cli-utils'
 import { loadEnvs } from '../../utils/envs/loadEnvs'
 import { kubectl } from '../../utils/kubectl/kubectl'
 
@@ -49,7 +51,7 @@ const namespaceAct = async ({ params }:{params:Record<any, any>}) => {
   return resp
 }
 
-export const namespace = {
+export const namespace:TTask = {
   name: 'namespace',
   action: namespaceAct,
   alias: [ `nsp`, `ns`],

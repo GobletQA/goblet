@@ -1,3 +1,5 @@
+import type { TTask } from '../../types'
+
 import { getNpmToken } from '../../utils/envs'
 import { devspace } from '../../utils/devspace/devspace'
 import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
@@ -23,7 +25,7 @@ const deployAct = async ({ params }) => {
   return await devspace.deploy(params)
 }
 
-export const deploy = {
+export const deploy:TTask = {
   name: 'deploy',
   action: deployAct,
   example: 'yarn task deploy <options>',
