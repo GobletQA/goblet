@@ -1,5 +1,6 @@
-import type { TTask } from '../../types'
+import type { TTaskActionArgs, TTask } from '../../types'
 
+import { clean as cleanTask } from './clean'
 import { getNpmToken } from '../../utils/envs'
 import { devspace } from '../../utils/devspace/devspace'
 import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
@@ -16,8 +17,34 @@ import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
  *
  * @returns {void}
  */
-const deployAct = async ({ params }) => {
-  const { pull } = params
+export const deployAct = async (args:TTaskActionArgs) => {
+  const { params } = args
+
+  const {
+    env,
+    skip,
+    pull,
+    clean,
+    cache,
+    images,
+    context,
+    screencast,
+    devspace:ds,
+  } = params
+
+
+  clean && await cleanTask.action({
+    ...args,
+    params: {
+      env,
+      skip,
+      cache,
+      images,
+      context,
+      screencast,
+      devspace:ds,
+    }
+  })
 
   setPullPolicy(pull)
 
@@ -26,10 +53,10 @@ const deployAct = async ({ params }) => {
 }
 
 export const deploy:TTask = {
-  name: 'deploy',
+  name: `deploy`,
   action: deployAct,
-  example: 'yarn task deploy <options>',
-  description: 'Calls the yarn devspace deploy command',
+  example: `yarn task dev deploy <options>`,
+  description: `Calls the yarn devspace deploy command`,
   options: {
     context: {
       type: `array`,
@@ -37,15 +64,53 @@ export const deploy:TTask = {
       alias: [`ctx`, `name`],
       description: `Contexts or names of apps to be deployed`,
     },
+    devspace: {
+      alias: [`dsp`, `ds`, `dev`],
+      example: `--devspace staging`,
+      default: `container/devspace.backend.yaml`,
+      description: `Optional filepath for devspace.yaml file`,
+    },
     skip: {
       type: `array`,
       alias: [`bypass`],
       example: `--skip app`,
       description: `Contexts or names of apps NOT to be started`,
     },
+    pull: {
+      example: `--pull never`,
+      alias: [`pull_policy`, `pullpolicy`, `pp`],
+      allowed: [`IfNotPresent`, `Always`, `Never`, `present`, `exists`],
+      description: `Set the image pull policy when starting the docker container, based on kubernetes pull policy`,
+    },
     force: {
+      default: true,
       type: `boolean`,
       description: `Force deployments`,
+    },
+    clean: {
+      default: false,
+      type: `boolean`,
+      alias: [`cln`],
+      example: `--clean`,
+      description: `Cleans the deployment before deploying. Same as running the "clean" task`
+    },
+    images: {
+      default: false,
+      type: `boolean`,
+      alias: [`imgs`],
+      example: `--images`,
+      description: `Remove all images while cleaning. Only valid when clean option is true`
+    },
+    cache: {
+      default: true,
+      type: `boolean`,
+      description: `Remove devspace cache. Only valid when clean option is true`,
+    },
+    screencast: {
+      alias: [`sc`],
+      type: `boolean`,
+      default: true,
+      description: `Removes screencast pods while cleaning. Only valid when clean option is true`,
     },
     log: {
       default: true,

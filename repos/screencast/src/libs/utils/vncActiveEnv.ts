@@ -1,10 +1,16 @@
-import { toBool } from '@keg-hub/jsutils'
 import { Logger } from '@GSC/utils/logger'
+import { inDocker } from '@keg-hub/cli-utils'
+import { exists, toBool } from '@keg-hub/jsutils'
+
+const isDocker = inDocker()
+const isKube = isDocker && exists(process.env.KUBERNETES_SERVICE_HOST)
 
 /**
  * Gets the values for the vnc env and socket env
  */
 export const checkVncEnv = () => ({
+  isKube,
+  isDocker: !isKube && isDocker,
   vncActive: toBool(process.env.GB_VNC_ACTIVE),
   socketActive: toBool(process.env.GB_PW_SOCKET_ACTIVE),
 })

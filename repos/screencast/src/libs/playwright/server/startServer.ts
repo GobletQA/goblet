@@ -1,8 +1,9 @@
 import type { TBrowserConf } from '@GSC/types'
 
+
+import { getServer } from './server'
 import { newServer } from './newServer'
 import { noOpObj, wait } from '@keg-hub/jsutils'
-import { Logger } from '@GSC/utils/logger'
 import { checkServerPid } from './checkServerPid'
 import { getBrowserType } from '../helpers/getBrowserType'
 
@@ -14,8 +15,13 @@ import { getBrowserType } from '../helpers/getBrowserType'
 export const startServer = async (
   browserConf:TBrowserConf = noOpObj as TBrowserConf,
 ) => {
+  const server = getServer()
+  if(server) return server
+  
   const browser = getBrowserType(browserConf.type)
   const found = await checkServerPid(browser)
 
-  !found && await newServer(browser, browserConf)
+  return found
+    ? getServer()
+    : await newServer(browser, browserConf)
 }

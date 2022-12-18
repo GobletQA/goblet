@@ -33,7 +33,8 @@ export const connection = (app:Express) => {
     cache.groupId = 'goblet'
 
     tailBrowserLogs(app, props)
-    watchBrowser(app, props)
+    setTimeout(() => watchBrowser(app, props), 1000)
+    
   }
 }
 

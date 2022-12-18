@@ -34,7 +34,8 @@ export const newServer = async (
   const wsEndpoint = pwServer.wsEndpoint()
 
   Logger.empty()
-  Logger.info(`Browser Server websocket endpoint: ${wsEndpoint}`)
+  // Logger.info(`Browser Server websocket endpoint: ${wsEndpoint}`)
+  Logger.info(`Browser Server websocket configured`)
   Logger.empty()
 
   // Save the playwright browser metadata to the <os-temp>/browser-meta.json, to be used for future connections

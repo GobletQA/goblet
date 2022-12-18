@@ -32,13 +32,15 @@ export const setPage = (page:TBrowserPage, type:string = defaultBrowser) => {
       console.log(`typeof oldPage`, typeof oldPage)
       console.log(`typeof page`, typeof page)
       console.log(`page are equal`, page === oldPage)
+      console.log(`------- closing new page -------`)
+      page.close()
     }
 
     return oldPage
   }
 
   set(PW_BROWSERS, [type, `page`], page)
-  
+
   // // Add listener to delete the context when closed
   page &&
     isFunc(page.on) &&

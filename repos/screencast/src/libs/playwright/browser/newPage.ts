@@ -37,9 +37,8 @@ const ensurePage = async (context:TBrowserContext, browserConf:TBrowserConf) => 
   if (pwPage) return pwPage
 
   const page = await context.newPage()
-  setPage(page, browserConf.type)
 
-  return page
+  return setPage(page, browserConf.type)
 }
 
 /**

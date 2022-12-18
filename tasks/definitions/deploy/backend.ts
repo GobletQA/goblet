@@ -1,23 +1,12 @@
-import type { TTask, TTaskActionArgs, TTaskParams } from '../../types'
+import type { TTask } from '../../types'
 
-export const deployBe = async (args:TTaskActionArgs) => {
-  
-}
+import { deploy } from '../devspace/deploy'
 
 export const backend:TTask = {
   name: `backend`,
   alias: [`be`],
-  action: deployBe,
-  options: {
-    build: {
-      example: `--build`,
-      alias: [`bld`, `bl`],
-      description: `Rebuilds the backend docker image before deploying it`,
-    },
-    log: {
-      default: true,
-      type: `boolean`,
-      description: `Log command before they are build`,
-    },
-  }
+  action: deploy.action,
+  options: deploy.options,
+  description: deploy.description,
+  example: `yarn task deploy backend <options>`,
 }
