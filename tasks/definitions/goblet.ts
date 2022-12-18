@@ -8,8 +8,10 @@ import { unit } from './unit'
 import { waypoint } from './waypoint'
 import { initialize } from '../utils/helpers/initDefs'
 
-module.exports = {
+const tasks = {
   ...initialize({ bdd }),
   ...initialize({ unit }),
   ...initialize({ waypoint }),
 }
+
+export default tasks

@@ -32,6 +32,7 @@
     }
   },
   "exclude": [
+    "tasks/goblet.ts",
     "node_modules",
     "bundle",
     ".yarn",

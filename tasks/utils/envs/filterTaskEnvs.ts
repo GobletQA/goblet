@@ -1,5 +1,9 @@
-const { exists } = require('@keg-hub/jsutils')
-const { envFilter } = require('../../constants')
+import type { TTask, TTaskParams, TTaskOption } from '../../types'
+
+import constants from '../../constants'
+import { exists } from '@keg-hub/jsutils'
+
+const { envFilter } = constants
 
 /**
  * Removes an ENV from the currently running process
@@ -7,7 +11,7 @@ const { envFilter } = require('../../constants')
  * 
  * @returns {void}
  */
-const removeEnv = key => {
+const removeEnv = (key:string) => {
   process.env[key] = undefined
   delete process.env[key]
 }
@@ -19,8 +23,8 @@ const removeEnv = key => {
  * 
  * @returns {void}
  */
-const addEnv = (key, val) => {
-  !exists(process.env[key]) && exists(val) && (process.env[key] = val)
+const addEnv = (key:string, val:string|number|boolean) => {
+  !exists(process.env[key]) && exists(val) && (process.env[key] = val as string)
 }
 
 /**
@@ -34,9 +38,9 @@ const filterRemove = () => {
   Object.keys(process.env).map(key => {
     if(exclude.includes(key)) return
 
-    starts.map(start => key.startsWith(start) && removeEnv(key))
-    contains.map(contain => key.includes(contain) && removeEnv(key))
-    ends.map(ends => key.endsWith(ends) && removeEnv(key))
+    starts.map((start) => key.startsWith(start) && removeEnv(key))
+    contains.map((contain) => key.includes(contain) && removeEnv(key))
+    ends.map((ends) => key.endsWith(ends) && removeEnv(key))
   })
 }
 
@@ -48,12 +52,12 @@ const filterRemove = () => {
  *
  * @returns {void}
  */
-const filterAdd = (params, task) => {
+const filterAdd = (params:TTaskParams, task:TTask) => {
   if(!params || !task || !task.options) return
 
   const { add } = envFilter
 
-  Object.entries(task.options).map(([name, meta]) => {
+  Object.entries(task.options).map(([name, meta]:[string, TTaskOption]) => {
     meta &&
       meta.env &&
       add.includes(meta.env) &&
@@ -66,11 +70,7 @@ const filterAdd = (params, task) => {
  * Filters ENVs by both adding and remove them based on defined constants
  * @returns {void}
  */
-const filterTaskEnvs = (params, task) => {
+export const filterTaskEnvs = (params:TTaskParams, task:TTask) => {
   filterRemove()
   filterAdd(params, task)
-}
-
-module.exports = {
-  filterTaskEnvs
 }

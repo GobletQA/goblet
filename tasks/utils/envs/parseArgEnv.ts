@@ -1,5 +1,7 @@
 import tskConf from '../../../configs/tasks.config.js'
 
+process.env.PARSE_CONFIG_PATH = `configs/tasks.config.js`
+
 type TEnvironment = {
   options: string[]
   map: Record<string, string[]>
