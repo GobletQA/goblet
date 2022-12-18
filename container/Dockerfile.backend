@@ -73,7 +73,6 @@ RUN <<EOF
   dot-json package.json resolutions.@jest/transform -d
   dot-json package.json resolutions.@jest/create-cache-key-function -d
   dot-json package.json resolutions.@keg-hub/args-parse -d
-  dot-json package.json resolutions.@keg-hub/ask-it -d
   dot-json package.json resolutions.@keg-hub/spawn-cmd -d
   dot-json package.json resolutions.@monaco-editor/react -d
   dot-json package.json resolutions.expect -d

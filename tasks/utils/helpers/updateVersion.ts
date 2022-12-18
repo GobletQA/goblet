@@ -1,6 +1,5 @@
 import path from 'path'
 import { writeFileSync } from 'fs'
-import { ask } from '@keg-hub/ask-it'
 import { appRoot } from '../../paths'
 import { toBool } from '@keg-hub/jsutils'
 import semverLt from 'semver/functions/lt'
@@ -12,15 +11,14 @@ const packagePath = path.join(appRoot, `package.json`)
 
 type TPackageJson = Record<any, any>
 
-
 /**
  * TODO: Replace this to use cli-utils constants once new version is pushed
  */
 const SEMVER_TYPES = [
-  'major',
-  'minor',
-  'patch',
-  'meta',
+  `major`,
+  `minor`,
+  `patch`,
+  `meta`,
   `premajor`,
   `preminor`,
   `prepatch`,
@@ -76,7 +74,6 @@ const logCurrent = (pack:TPackageJson) => {
  */
 export const updateVersion = async (
   version:string,
-  confirm:boolean,
   log:boolean
 ) => {
 
@@ -84,23 +81,10 @@ export const updateVersion = async (
 
   log && logCurrent(pack)
 
-  const inputVer = version
-    ? version
-    : await ask.input(`Please enter the new version for ${pack.name}?`)
-
-  const updateTo = await isValidSemver(pack, inputVer)
-
-  const isConfirmed = confirm
-    ? await ask.confirm(`Update ${pack.name} version to ${updateTo}?`)
-    : true
-  
-  if(!isConfirmed){
-    log && Logger.info(`  User cancelled version update\n`)
-    process.exit(0)
-  }
+  const updateTo = await isValidSemver(pack, version)
 
   writePackageVersion(pack, updateTo)
-  log && Logger.success(`\n${pack.name} was successfully updated to vesion "${pack.version}"\n`)
+  log && Logger.success(`\n${pack.name} was successfully updated to version "${pack.version}"\n`)
   
   return updateTo
 }

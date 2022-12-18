@@ -1,28 +1,43 @@
-import { TTask } from '../../types'
+import { TTaskActionArgs, TTask, TEnvObject } from '../../types'
 
+import { frontendDir } from '../../paths'
+import { Logger, yarn } from '@keg-hub/cli-utils'
 import { loadEnvs } from '../../utils/envs/loadEnvs'
+import { firebase } from '../../utils/firebase/firebase'
 import { getNpmToken } from '../../utils/envs/getNpmToken'
 import { getParamEnvs } from '../../utils/envs/getParamEnvs'
-import { getFirebaseToken } from '../../utils/firebase/getFirebaseToken'
+import { updateVersion } from '../../utils/helpers/updateVersion'
+
+const bundleFrontend = async (args:TTaskActionArgs, envs:TEnvObject) => {
+  const log = args?.params?.log
+
+  // Build the goblet frontend application
+  log && Logger.pair(`Running frontend build command`, `yarn build`)
+
+  await yarn([`build`], {
+    envs,
+    cwd: frontendDir,
+  })
+
+  log && Logger.success(`\n[Success] ${Logger.colors.white('Frontend built successfully')}\n`)
+}
 
 
-const deployFe = async (args:Record<any, any>) => {
+const deployFe = async (args:TTaskActionArgs) => {
   const { params } = args
-  const { env } = params
+  const { env, log, version } = params
+
   const envs = loadEnvs({ env })
   const token = getNpmToken()
-
   const allEnvs = { ...envs, NPM_TOKEN: token, ...getParamEnvs(params) }
-  const fbToken = await getFirebaseToken(params, envs)
-  
-  console.log(`------- allEnvs -------`)
-  console.log(allEnvs)
-  console.log(`------- fbToken -------`)
-  console.log(fbToken)
-  
-  
-  // log && Logger.log(output)
 
+  version && await updateVersion(version, log)
+
+  await bundleFrontend(args, allEnvs)
+
+  const resp = await firebase.deploy.hosting(args.params, allEnvs)
+
+  log && Logger.log(resp)
 }
 
 export const frontend:TTask = {
@@ -31,8 +46,10 @@ export const frontend:TTask = {
   action: deployFe,
   options: {
     build: {
+      default: true,
+      type: `boolean`,
       example: `--build`,
-      alias: [`bld`, `bl`],
+      alias: [`bld`, `bl`, `bundle`, `bun`],
       description: `Rebuilds the frontend docker image before running it`,
     },
     token: {
@@ -40,16 +57,10 @@ export const frontend:TTask = {
       example: `--token <my-firebase-token>`,
       description: `Set the firebase token to use when deploying`,
     },
-    envs: {
-      type: `array`,
-      example: `--envs key1:value1,key2:value2`,
-      description: `Custom envs to pass to the image. Override the default from values file`,
-    },
-    mount: {
-      alias: [`mt`],
-      type: `boolean`,
-      example: `--mount `,
-      description: `Auto mounts the root directory into the container`,
+    version: {
+      alias: [`ver`],
+      example: `--version`,
+      description: `Updates the version of the frontend app before bundling and deploying`,
     },
     log: {
       default: true,

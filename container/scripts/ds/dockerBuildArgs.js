@@ -4,7 +4,7 @@
  * Run command below to test
  * `node container/scripts/ds/resolveDSEnvs.js certs provider-auth:api-key:LINODE_V4_API_KEY`
  */
-const { resolveValues, getEnvPrefix } = require('./resolveValues')
+const { getEnvPrefix } = require('./resolveValues')
 const { filterEnvsAsArgs, addArg } = require('./filterEnvs')
 const ePreFix = getEnvPrefix()
 
