@@ -6,7 +6,7 @@ import { Logger } from '@GSC/utils/logger'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
 import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
 import { existsSync, promises as fs } from 'fs'
-import { limboify, limbo, isStr, isObj, exists, noOpObj, validate } from '@keg-hub/jsutils'
+import { limbo, isStr, isObj, exists, noOpObj, validate } from '@keg-hub/jsutils'
 
 const {
   mkdir,

@@ -1,34 +1,32 @@
-import type { TChildProcArgs, TBrowserConf } from '@GSC/types'
+import type { TChildProcArgs } from '@GSC/types'
 
 import '../resolveRoot'
-import { noOpObj } from '@keg-hub/jsutils'
-import { startVNC } from '@GSC/libs/vnc/vnc'
-import { startSockify } from '@GSC/libs/vnc/sockify'
+import { startVNC, stopVNC } from '@GSC/libs/vnc/vnc'
+import { noOpObj, parseJSON } from '@keg-hub/jsutils'
 
+/**
+ * Runs tiger-vnc server
+ */
 ;(async () => {
-  const type = process.argv.slice(2).shift()
-  switch(type){
-    case `sock`: {
-      const proc = await startSockify(noOpObj as TChildProcArgs)
-      proc?.unref?.()
-      break
-    }
-    case `vnc`: {
-      const proc = await startVNC(noOpObj as TChildProcArgs)
-      proc?.unref?.()
-      break
-    }
-    case `all`: {
-      const sockProc = await startSockify(noOpObj as TChildProcArgs)
-      sockProc?.unref?.()
+  const [ vncOpts ] = process.argv.slice(2)
+  const opts = (parseJSON(vncOpts, false) || noOpObj) as TChildProcArgs
+  await startVNC(opts)
 
-      const vncProc = await startVNC(noOpObj as TChildProcArgs)
-      vncProc?.unref?.()
+  let exitCalled:boolean=false
+  Array.from([
+    'exit',
+    'SIGINT',
+    'SIGUSR1',
+    'SIGUSR2',
+    'uncaughtException',
+    'TERM',
+    'SIGTERM'
+  ])
+    .map(event => process.on(event, async (exitCode) => {
+      if(exitCalled) return
+      exitCalled = true
 
-      break
-    }
-    default: {
-      throw new Error(`Invalid type ${type} passed. Type must be one of "vnc", "sock", "browser", or "all"`)
-    }
-  }
+      stopVNC()
+    }))
+
 })()

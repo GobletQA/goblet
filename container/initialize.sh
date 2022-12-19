@@ -29,8 +29,11 @@ goblet_screencast(){
   LOG_DIR=$( dirname "$DEBUG_FILE" )
   mkdir -p $LOG_DIR
   touch $DEBUG_FILE
+
   cd /goblet/app/repos/screencast
   yarn vnc:start >> /proc/1/fd/1 &
+  yarn sock:start >> /proc/1/fd/1 &
+  yarn bs:start >> /proc/1/fd/1 &
 }
 
 # Check if we should install new packages

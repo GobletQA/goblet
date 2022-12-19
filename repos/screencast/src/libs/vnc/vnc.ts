@@ -1,10 +1,11 @@
 import type { TProc, TChildProcArgs } from '@GSC/types'
 
-import { findProc }from '@GSC/libs/proc'
+import spawn from 'cross-spawn'
+import { exec } from 'node:child_process'
+import { findProc, killProc }from '@GSC/libs/proc'
 import { Logger } from '@GSC/utils/logger'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { getGobletConfig }from '@gobletqa/shared/utils/getGobletConfig'
-import { create as childProc }from '@keg-hub/spawn-cmd/src/childProcess'
 import {
   limbo,
   noOpObj,
@@ -48,58 +49,46 @@ export const startVNC = async ({
     return status
   }
 
-  Logger.log(`- Starting tigervnc server...`)
   const config = getGobletConfig()
   const { vnc } = screencastConfig.screencast
 
+  const cmdArgs = flatUnion(
+    [
+      `ttyxx`,
+      `-verbose`,
+      `-SecurityTypes`,
+      `None`,
+      `-geometry`,
+      `${vnc.width}x${vnc.height}x24`,
+      `-rfbport`,
+      vnc.port,
+      `-alwaysshared`,
+      vnc.display,
+    ],
+    args
+  )
 
-  const child =await childProc({
-    log: true,
-    cmd: `Xtigervnc`,
-    args: flatUnion(
-      [
-        `-verbose`,
-        `-SecurityTypes`,
-        `None`,
-        `-geometry`,
-        `${vnc.width}x${vnc.height}x24`,
-        `-rfbport`,
-        vnc.port,
-        `-alwaysshared`,
-        vnc.display,
-      ],
-      args
-    ),
-    options: deepMerge(
-      {
-        detached: true,
-        // stdio: 'ignore',
-        cwd: cwd || config.internalPaths.gobletRoot,
-        env: {
-          ...process.env,
-          DISPLAY: vnc.display,
-          // Hack for arm64 machines to tigerVNC doesn't crash on client disconnect
-          // This only happens on new Mac M1 machines using arm64
-          // Ubuntu 20.10 should have a fix included, but playwright uses version 20.04
-          // If the playwright docker image ever updates to +Ubuntu 20.10, this should be removed
-          ...(process.arch === 'arm64' && {
-            LD_PRELOAD: `/lib/aarch64-linux-gnu/libgcc_s.so.1`,
-          }),
-        },
-      },
-      options,
-      { env }
-    ),
-  })
+  const cmdOpts = deepMerge({
+    stdio: 'inherit',
+    cwd: cwd || config.internalPaths.gobletRoot,
+    env: {
+      ...process.env,
+      DISPLAY: vnc.display,
+      // Hack for arm64 machines to tigerVNC doesn't crash on client disconnect
+      // This only happens on new Mac M1 machines using arm64
+      // Ubuntu 20.10 should have a fix included, but playwright uses version 20.04
+      // If the playwright docker image ever updates to +Ubuntu 20.10, this should be removed
+      ...(process.arch === 'arm64' && {
+        LD_PRELOAD: `/lib/aarch64-linux-gnu/libgcc_s.so.1`,
+      }),
+    },
+  }, options, { env })
 
-  Logger.log(`\nTigerVnc server settings:`)
-  Logger.log(`  - Listen on ${vnc.host}:${vnc.port}`)
-  Logger.log(`  - Display ${vnc.display}`)
-  Logger.log(`  - Dimensions ${vnc.width}x${vnc.height}x24`)
+  const cmd = `Xtigervnc ${cmdArgs.join(' ')}`
+  Logger.info(`Starting TigerVnc server`, { cmd })
 
-  // Tell spawn-cmd not to close the process on exit of parent process
-  child.__spOnExitCalled = true
-  return child
+  return exec(cmd, cmdOpts)
+
 }
 
 /**
@@ -110,4 +99,15 @@ export const startVNC = async ({
 export const statusVNC = async () => {
   const [_, status] = await limbo<TProc>(findProc('Xtigervnc'))
   return status
+}
+
+/**
+ * Stops the websockify server if it's running
+ * If no reference exists, calls findProc to get a reference to the PID
+ *
+ * @return {Void}
+ */
+export const stopVNC = async () => {
+  const status = await statusVNC()
+  status && status.pid && killProc(status)
 }

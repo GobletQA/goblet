@@ -7,11 +7,12 @@ import { aliases } from '@GConfigs/aliases.config'
 
 // @ts-ignore
 const dirname = path.dirname(fileURLToPath(import.meta.url))
-const dev = process.env.npm_lifecycle_event === `bs:start`
+const dev = process.env.npm_lifecycle_event === `vnc:start`
+
 const rootDir = path.join(dirname, `../`)
 const distDir = path.join(rootDir, `dist`)
-const outFile = path.join(distDir, `bs.js`)
-const entryFile = path.join(rootDir, `src/bs.ts`)
+const outFile = path.join(distDir, `vnc.js`)
+const entryFile = path.join(rootDir, `src/vnc.ts`)
 
 esbuild({
   dev,

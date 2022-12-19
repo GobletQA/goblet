@@ -102,8 +102,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     mkdir -p /etc/supervisor
 
 COPY --from=goblet-builder /goblet/app/. .
-COPY /goblet/app/repos/screencast/scripts/supervisord.conf /etc/supervisor/supervisord.conf
-
 
 WORKDIR /goblet/app/repos/screencast
 ARG GB_SC_PORT=7006
@@ -130,4 +128,4 @@ EXPOSE $GB_SC_PORT
 EXPOSE $GB_NO_VNC_PORT
 EXPOSE $GB_VNC_SERVER_PORT
 
-CMD [ "yarn", "serve" ]
+CMD [ "/bin/bash", "scripts/initialize.sh" ]

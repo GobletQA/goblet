@@ -1,10 +1,11 @@
 import type { TProc, TSSLCreds, TChildProcArgs } from '@GSC/types'
+
 import fs from 'fs'
+import { exec } from 'node:child_process'
 import { Logger } from '@GSC/utils/logger'
-import { findProc } from '@GSC/libs/proc'
+import { findProc, killProc } from '@GSC/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
-import { create as childProc } from '@keg-hub/spawn-cmd/src/childProcess'
 import {
   limbo,
   noOpObj,
@@ -61,39 +62,43 @@ export const startSockify = async ({
     ? [`--cert=${credentials.cert}`, `--key=${credentials.key}`]
     : []
 
-  Logger.log(`- Starting websockify server...`)
-  const child = await childProc({
-    cmd: 'websockify',
-    args: flatUnion(
-      [
-        '-v',
-        ...wssArgs,
-        '--web',
-        '/usr/share/novnc',
-        `${novnc.host}:${novnc.port}`,
-        `${vnc.host}:${vnc.port}`,
-      ],
-      args
-    ),
-    options: deepMerge(
-      {
-        detached: true,
-        // stdio: 'ignore',
-        cwd: cwd || config.internalPaths.gobletRoot,
-        env: { ...process.env },
-      },
-      options,
-      { env }
-    ),
-    log: true,
-  })
+  const cmdArgs = flatUnion(
+    [
+      '-v',
+      ...wssArgs,
+      '--web',
+      '/usr/share/novnc',
+      `${novnc.host}:${novnc.port}`,
+      `${vnc.host}:${vnc.port}`,
+    ],
+    args
+  )
 
-  // Tell spawn-cmd not to close the process on exit of parent process
-  child.__spOnExitCalled = true
-  
-  return child
+  const cmdOpts = deepMerge({
+    stdio: 'inherit',
+    env: { ...process.env },
+    cwd: cwd || config.internalPaths.gobletRoot,
+  }, options, { env })
+
+  const cmd = `websockify ${cmdArgs.join(' ')}`
+  Logger.info(`Starting Websockify server`, { cmd })
+
+  return exec(cmd, cmdOpts)
+
 }
 
+/**
+ * Stops the websockify server if it's running
+ * If no reference exists, calls findProc to get a reference to the PID
+ * @function
+ * @public
+ *
+ * @return {Void}
+ */
+export const stopSockify = async () => {
+  const status = await statusSockify()
+  status && status.pid && killProc(status)
+}
 
 /**
  * Gets the status of the tiger vnc server

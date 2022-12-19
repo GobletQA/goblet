@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -ex
 
-exec supervisord -c ./scripts/supervisord.conf
+exec supervisord -n -c configs/supervisord.conf
