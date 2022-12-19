@@ -1,7 +1,7 @@
-import type { TChildProcArgs } from '@GSC/types'
+import type { TProc, TChildProcArgs } from '@GSC/types'
 
+import { findProc }from '@GSC/libs/proc'
 import { Logger } from '@GSC/utils/logger'
-import { findProc, killProcAsync }from '@GSC/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { getGobletConfig }from '@gobletqa/shared/utils/getGobletConfig'
 import { create as childProc }from '@keg-hub/spawn-cmd/src/childProcess'
@@ -103,27 +103,11 @@ export const startVNC = async ({
 }
 
 /**
- * Stops the websockify server if it's running
- * If no reference exists, calls findProc to get a reference to the PID
- *
- * @return {Void}
- */
-export const stopVNC = async () => {
-  const status = await statusVNC()
-  if(!status || !status?.pid)
-    return Logger.info(`Can not stop tigervnc server, process not found`)
-
-  Logger.info({ message: `Stopping tigervnc server...`, ...status })
-
-  return await killProcAsync(status)
-}
-
-/**
  * Gets the status of the tiger vnc server
  *
  * @returns {Object} - Status of the tiger vnc process
  */
 export const statusVNC = async () => {
-  const [_, status] = await limbo(findProc('Xtigervnc'))
+  const [_, status] = await limbo<TProc>(findProc('Xtigervnc'))
   return status
 }

@@ -4,7 +4,6 @@ import '../resolveRoot'
 import { noOpObj } from '@keg-hub/jsutils'
 import { startVNC } from '@GSC/libs/vnc/vnc'
 import { startSockify } from '@GSC/libs/vnc/sockify'
-import { startServerAsWorker } from '@GSC/libs/playwright'
 
 ;(async () => {
   const type = process.argv.slice(2).shift()
@@ -19,11 +18,6 @@ import { startServerAsWorker } from '@GSC/libs/playwright'
       proc?.unref?.()
       break
     }
-    case `browser`: {
-      const proc = await startServerAsWorker(noOpObj as TBrowserConf)
-      proc?.unref?.()
-      break
-    }
     case `all`: {
       const sockProc = await startSockify(noOpObj as TChildProcArgs)
       sockProc?.unref?.()
@@ -31,8 +25,6 @@ import { startServerAsWorker } from '@GSC/libs/playwright'
       const vncProc = await startVNC(noOpObj as TChildProcArgs)
       vncProc?.unref?.()
 
-      const browserProc = await startServerAsWorker(noOpObj as TBrowserConf)
-      browserProc?.unref?.()
       break
     }
     default: {

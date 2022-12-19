@@ -18,8 +18,10 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
+    "bs:build": "node -r esbuild-register configs/bs.build.config.ts",
+    "bs:start": "node -r esbuild-register configs/bs.build.config.ts",
     "build": "yarn build:docker",
-    "build:docker": "yarn sc:build && yarn vnc:build",
+    "build:docker": "yarn sc:build && yarn vnc:build  && yarn vs:build",
     "clean": "yarn clean:dist; yarn clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "yarn clean; yarn install",
@@ -29,21 +31,14 @@
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "sc:build": "node -r esbuild-register configs/build.config.js",
-    "sc:serve": "node -r esbuild-register dist/index.js",
-    "serve": "yarn vnc:serve && yarn sc:serve",
+    "serve": "/bin/bash scripts/initialize.sh",
     "start": "DEV_BUILD=1 node -r esbuild-register configs/build.config.js",
-    "ts": "node -r esbuild-register tasks/entry.ts",
-    "task": "node -r esbuild-register tasks/entry.ts",
     "vnc": "node -r esbuild-register dist/vnc.js",
-    "vnc:dev": "node -r esbuild-register src/vnc.ts",
     "vnc:build": "node -r esbuild-register configs/vnc.build.config.js",
-    "vnc:start": "DEV_BUILD=1 node -r esbuild-register configs/vnc.build.config.js",
-    "vnc:serve": "pm2 start configs/vnc.pm2.config.js"
+    "vnc:start": "DEV_BUILD=1 node -r esbuild-register configs/vnc.build.config.js"
   },
   "dependencies": {
     "@gobletqa/shared": "*",
-    "@jest/expect-utils": "28.1.3",
-    "@keg-hub/cli-utils": "*",
     "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "*",
     "@keg-hub/spawn-cmd": "*",
@@ -51,14 +46,10 @@
     "expect": "*",
     "express": "*",
     "fs-extra": "10.1.0",
-    "glob": "8.0.3",
-    "jest": "*",
-    "module-alias": "*",
     "playwright": "*",
     "socket.io": "*",
     "source-map-support": "*",
-    "tail-file": "1.4.15",
-    "vm2": "3.9.9"
+    "tail-file": "1.4.15"
   },
   "devDependencies": {
     "@types/debug": "4.1.5",

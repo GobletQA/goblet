@@ -196,6 +196,9 @@ env:
   # In seconds (x * 1000)
   GB_SC_DISCONNECT_TIMEOUT: 20
 
+  # Mount the app directory in the screencast repo
+  # GB_SC_MOUNT_PATH: .:/goblet/app
+
 # --- DIND ENVs --- #
   GB_DD_DOCKER_PORT: 2375
   GB_DD_DOCKER_HOST: 0.0.0.0

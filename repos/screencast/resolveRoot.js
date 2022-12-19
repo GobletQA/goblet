@@ -1,6 +1,11 @@
 require('source-map-support').install({ environment: 'node' })
 require('../../configs/aliases.config').registerAliases()
 
+// import path from 'path'
+// import { fileURLToPath } from 'url'
+// // @ts-ignore
+// const dirname = path.dirname(fileURLToPath(import.meta.url))
+
 /**
  * Will be needed when the package is bundled
  * Still needs to be figured out

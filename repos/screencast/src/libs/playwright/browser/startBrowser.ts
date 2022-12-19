@@ -11,7 +11,9 @@ import { getPage, getContext, getBrowser } from './browser'
  * @function
  * @public
  */
-export const startBrowser = async (browserConf:TBrowserConf = noOpObj as TBrowserConf) => {
+export const startBrowser = async (
+  browserConf:TBrowserConf = noOpObj as TBrowserConf
+) => {
   await newPage(browserConf)
 
   const pwComponents = {

@@ -3,28 +3,75 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 # ---- Turbo Stage ---- #
 FROM $IMAGE_FROM as goblet-turbo
-RUN yarn global add turbo
+RUN yarn global add turbo dot-json
 # ---- End Stage ---- #
 
 # ---- Prune Stage ---- #
 FROM goblet-turbo as goblet-pruner
 WORKDIR /goblet/app
 COPY . .
+RUN <<EOF
+  set -eux;
+
+  rm -rf /goblet/app/repos/backend
+  rm -rf /goblet/app/repos/conductor
+
+  cd /goblet/app/repos/screencast
+  yarn json:rm
+
+  cd /goblet/app/repos/testUtils
+  yarn json:rm
+
+  cd /goblet/app/repos/workflows
+  yarn json:rm
+
+  cd /goblet/app/repos/shared
+  yarn json:rm
+
+  cd /goblet/app/repos/workflows
+  yarn json:rm
+
+  cd /goblet/app
+  yarn json:rm
+EOF
 # The test-utils repo has a dependecy on the screencast repo
 # So by pruning the test-utils repo, we get the screencast repo
 # Plus all other code needed to execute tests
 RUN turbo prune --docker --scope=@gobletqa/test-utils
-COPY ./configs ./out/full/configs
-COPY ./tasks ./out/full/tasks
-COPY ./gobletRoot.js ./out/full/gobletRoot.js
-COPY ./tsconfig.json ./out/full/tsconfig.json
+RUN <<EOF
+  set -eux;
+  cp .nvmrc out/json/.nvmrc
+  cp .yarnrc out/json/.yarnrc
+  cp yarn.lock out/json/yarn.lock
+
+  cp -r tasks out/full/tasks
+  cp -r configs out/full/configs
+  cp gobletRoot.js out/full/gobletRoot.js
+  cp tsconfig.json out/full/tsconfig.json
+  mkdir -p out/full/logs
+  mkdir -p out/full/.tmp
+  mkdir -p out/full/temp
+
+  rm -rf out/full/.turbo
+  rm -rf out/full/yarn.lock
+  rm -rf out/full/.turbo.json
+
+  # Remove unused tasks in the container
+  # Then replace the default tasks with the sc-entry tasks
+  rm -rf out/full/tasks/definitions/index.ts
+  rm -rf out/full/tasks/definitions/kube
+  rm -rf out/full/tasks/definitions/deploy
+  rm -rf out/full/tasks/definitions/docker
+  rm -rf out/full/tasks/definitions/devspace
+  mv out/full/tasks/definitions/sc-entry.ts out/full/tasks/definitions/index.ts
+
+EOF
 # ---- End Stage ---- #
 
 # ---- Install Stage ---- #
 FROM goblet-turbo as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
-COPY --from=goblet-pruner /goblet/app/out/yarn.lock ./yarn.lock
 RUN yarn install
 # ---- End Stage ---- #
 
@@ -38,37 +85,25 @@ RUN yarn build:docker && \
     yarn install --frozen-lockfile --production
 # ---- End Stage ---- #
 
-# ---- Run Stage ---- #
+# # ---- Run Stage ---- #
 FROM $IMAGE_FROM as goblet-runner
 WORKDIR /goblet/app
-ENV HOME=/root \
-    DISPLAY=:0.0 \
-    DEBUG=pw:* \
-    LC_ALL=C.UTF-8 \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
-    DEBIAN_FRONTEND=noninteractive \
-    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     novnc \
+    supervisor \
     tigervnc-standalone-server; \
     apt-get clean && \
     apt-get autoclean && \
     apt-get autoremove && \
-    rm -rf /var/cache/apk/*; \
-    yarn global add pm2; \
-    pm2 install pm2-logrotate && \
-    pm2 set pm2-logrotate:retain '7' && \
-    pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'; \
-    echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf; \
-    sysctl -p; \
-    /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
+    rm -rf /var/cache/apk/* && \
+    ln -s /goblet/app/node_modules $HOME/.node_modules && \
+    ln -s /goblet/app/node_modules /goblet/node_modules && \
+    mkdir -p /etc/supervisor
 
 COPY --from=goblet-builder /goblet/app/. .
+COPY /goblet/app/repos/screencast/scripts/supervisord.conf /etc/supervisor/supervisord.conf
 
-RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
-    ln -s /goblet/app/node_modules /goblet/node_modules
 
 WORKDIR /goblet/app/repos/screencast
 ARG GB_SC_PORT=7006
@@ -81,7 +116,15 @@ ENV DEBUG_FILE=$DEBUG_FILE \
     GB_SC_PORT=$GB_SC_PORT \
     GB_SUB_REPO=screencast \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
-    GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT
+    GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT \
+    HOME=/root \
+    DISPLAY=:0.0 \
+    DEBUG=pw:* \
+    LC_ALL=C.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive \
+    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
 
 EXPOSE $GB_SC_PORT
 EXPOSE $GB_NO_VNC_PORT

@@ -6,7 +6,6 @@ import { docker } from './docker'
 import { devspace } from './devspace'
 import { metadata } from './metadata'
 import { waypoint } from './waypoint'
-import { screencast } from './screencast'
 import { inDocker } from '@keg-hub/cli-utils'
 import { initialize } from '../utils/helpers/initDefs'
 
@@ -30,7 +29,6 @@ const tasks = {
   ...initialize({ unit }),
   ...initialize({ waypoint }),
   ...initialize({ metadata }),
-  ...initialize({ screencast }),
 }
 
 export default tasks

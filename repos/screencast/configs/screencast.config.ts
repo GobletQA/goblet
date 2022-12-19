@@ -1,4 +1,5 @@
 import type { TCmdGroups, TBrowserConf } from '@GSC/types'
+
 import '../resolveRoot'
 import path from 'path'
 import fs from 'fs-extra'

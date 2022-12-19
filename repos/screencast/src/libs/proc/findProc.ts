@@ -68,7 +68,7 @@ export const findProc = (procName:string) => {
           ? {
               running: stdout.toLowerCase().includes(procName.toLowerCase()),
               name: procName,
-            }
+            } as TProc
           : parseOutput(procName, stdout)
 
       res(status)

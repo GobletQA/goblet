@@ -4,12 +4,12 @@ import playwright from 'playwright'
 import { noOpObj } from '@keg-hub/jsutils'
 import { Logger } from '@GSC/utils/logger'
 import { getServer } from '../server/server'
-import { inDocker } from '@keg-hub/cli-utils'
 import { getBrowser, setBrowser } from './browser'
 import { startServer } from '../server/startServer'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
 import { getBrowserOpts } from '../helpers/getBrowserOpts'
 import { getBrowserType } from '../helpers/getBrowserType'
+import { inDocker } from '@keg-hub/jsutils/src/node/inDocker'
 
 /**
  * Starts new browser by connecting to an existing browser server websocket

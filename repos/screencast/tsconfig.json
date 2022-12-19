@@ -47,7 +47,7 @@
     "../shared",
     "../testUtils",
     "../workflows",
-    "./browserServer.ts"
+    "src/browserServer.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

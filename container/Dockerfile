@@ -15,6 +15,8 @@ RUN <<EOF
   find . -name 'package.json' -print0 -exec cp -fprv --parents '{}' '../out/json/repos' ';'
   cd /goblet/app/out/json/repos
   rm -rf ./**/node_modules
+  cp /goblet/app/.nvmrc /goblet/app/out/json/.nvmrc
+  cp /goblet/app/.yarnrc /goblet/app/out/json/.yarnrc
   cp /goblet/app/yarn.lock /goblet/app/out/json/yarn.lock
   cp /goblet/app/turbo.json /goblet/app/out/json/turbo.json
   cp /goblet/app/package.json /goblet/app/out/json/package.json

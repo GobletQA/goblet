@@ -1,6 +1,6 @@
 import type { Response, Request } from 'express'
 import { parseJSON } from '@keg-hub/jsutils'
-import { statusScreencast } from '@GSC/screencast'
+import { statusScreencast } from '@GSC/utils/statusScreencast'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'

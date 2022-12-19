@@ -1,8 +1,14 @@
 import type { Player } from './player'
 
-// TODO( IMPORTANT ):  @lancetipton - Setup mv2
+/** --------- TODO --------- */
+// IMPORTANT: Investigate setting up NodeVM
+// Remember to add it to the package.json => "vm2": "3.9.9"
 // const { NodeVM } = require('vm2')
+
+// Investigate if this expect import is needed
 import expect from 'expect'
+ /** ------------------ */
+
 import { constants } from './constants'
 import { Parkin } from '@ltipton/parkin'
 import { ParkinTest } from '@ltipton/parkin/test'

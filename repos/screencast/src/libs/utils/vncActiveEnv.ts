@@ -1,6 +1,6 @@
 import { Logger } from '@GSC/utils/logger'
-import { inDocker } from '@keg-hub/cli-utils'
-import { exists, toBool } from '@keg-hub/jsutils'
+import { exists, toBool } from '@keg-hub/jsutils/node'
+import { inDocker } from '@keg-hub/jsutils/src/node/inDocker'
 
 const isDocker = inDocker()
 const isKube = isDocker && exists(process.env.KUBERNETES_SERVICE_HOST)
