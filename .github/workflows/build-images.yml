@@ -107,7 +107,7 @@ jobs:
       - name: Generate Builds Args
         id: args
         if: ${{ github.event_name == 'push' || inputs.image == matrix.service || inputs.image == 'all' }}
-        run: node container/scripts/ds/dockerBuildArgs.js ${{ matrix.service }}
+        run: node -r esbuild-register container/scripts/ds/dockerBuildArgs.js ${{ matrix.service }}
 
       - name: Build and push Docker image ${{ matrix.service }}
         if: ${{ github.event_name == 'push' || inputs.image == matrix.service || inputs.image == 'all' }}
