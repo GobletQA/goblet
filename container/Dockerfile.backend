@@ -83,6 +83,8 @@ RUN <<EOF
   dot-json package.json resolutions.ts-jest -d
   dot-json package.json resolutions.typescript -d
 
+  yarn config set network-timeout 600000
+
 EOF
 
 RUN turbo prune --docker --scope=@gobletqa/backend

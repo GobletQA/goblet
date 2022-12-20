@@ -31,9 +31,8 @@ goblet_screencast(){
   touch $DEBUG_FILE
 
   cd /goblet/app/repos/screencast
-  yarn vnc:start >> /proc/1/fd/1 &
-  yarn sock:start >> /proc/1/fd/1 &
-  yarn bs:start >> /proc/1/fd/1 &
+  exec supervisord -c configs/supervisord.dev.conf >> /proc/1/fd/1 &
+
 }
 
 # Check if we should install new packages

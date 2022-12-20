@@ -32,7 +32,7 @@ RUN <<EOF
   yarn global add dot-json turbo
   yarn json:rm
   yarn json:repo-rm
-  yarn config set network-timeout 300000
+  yarn config set network-timeout 600000
   yarn install --frozen-lockfile
 EOF
 # ---- End Stage ---- #
@@ -92,6 +92,7 @@ RUN <<EOF
   apt-get update && apt-get install --yes --no-install-recommends \
     curl \
     novnc \
+    supervisor \
     openssh-client \
     ca-certificates \
     tigervnc-standalone-server
