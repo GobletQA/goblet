@@ -1,4 +1,5 @@
 export * from './backend.types'
+export * from './browser.types'
 export * from './conductor.types'
 export * from './configs.types'
 export * from './controller.types'

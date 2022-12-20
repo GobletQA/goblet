@@ -1,17 +1,20 @@
-const { launchBrowser } = require('./launchBrowser')
-const { runSeq, noOpObj } = require('@keg-hub/jsutils')
-const { getBrowsers } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowsers')
+import type { TBrowserLaunchParams } from '../../types'
+import { EGobletMode } from '../../types'
+import { launchBrowser } from './launchBrowser'
+import { runSeq, noOpObj } from '@keg-hub/jsutils'
+import { getBrowsers } from '@gobletqa/screencast/libs/playwright/helpers/getBrowsers'
+
+
 
 /**
  *
  * @param {Object} launchParams - params for launching, including sharedOptions.js values
- * @return {Object} - {
- *   output: an array of the result of each browser launch,
- *   browsers: the browsers that were launched
- * }
  */
-const launchBrowsers = (launchParams, gobletMode) => {
-  if (gobletMode === 'vnc') return noOpObj
+export const launchBrowsers = (
+  launchParams:TBrowserLaunchParams,
+  gobletMode:EGobletMode
+) => {
+  if (gobletMode === EGobletMode.vnc) return noOpObj
 
   const { headless, log, ...browserParams } = launchParams
   const browsers = getBrowsers(browserParams)
@@ -35,4 +38,4 @@ const launchBrowsers = (launchParams, gobletMode) => {
   }
 }
 
-module.exports = { launchBrowsers }
+

@@ -1,7 +1,6 @@
 import type { TBrowserProcs } from '@GSC/types'
 
 import { get } from '@keg-hub/jsutils'
-import { setServerProc } from './server'
 import { Logger } from '@GSC/utils/logger'
 import { statusServer } from './statusServer'
 
@@ -12,7 +11,6 @@ export const checkServerPid = async (browser:string) => {
   if(!sPid) return
 
   Logger.info(`- ${browser} browser server already running with pid: ${sPid}`)
-  setServerProc(status)
 
   // Get the most up-to-date server processes after setting it
   // Should be the same as the status variable

@@ -1,27 +1,32 @@
+import { EBrowserName } from '@GSC/types'
+
 import { deepFreeze, keyMap } from '@keg-hub/jsutils'
 export * from '@gobletqa/shared/constants/websocket'
 
+export const defaultBrowser = EBrowserName.chromium
 export const ChildBrowserServerKey = `child-playwright-server`
-export const defaultBrowser = 'chromium'
-export const canRecordVideo = ['chromium']
+export const canRecordVideo = [EBrowserName.chromium]
+
 export const browserStatus = keyMap([`stopped`, `running`, `starting`, `unknown`])
-export const browserNames = deepFreeze<string[]>([
-  `chromium`,
-  `firefox`,
-  `webkit`
+export const browserNames = deepFreeze<EBrowserName[]>([
+  EBrowserName.chromium,
+  EBrowserName.firefox,
+  EBrowserName.webkit,
 ])
 
+// Browser names and shortcuts to the the real browser names
 export const browserMap = {
-  ...keyMap(browserNames),
-  // Shortcuts to browser names
-  ff: `firefox`,
-  fox: `firefox`,
-  wk: `webkit`,
-  sa: `webkit`,
-  safari: `webkit`,
-  ch: `chromium`,
-  chrome: `chromium`,
-}
+  ff: EBrowserName.firefox,
+  fox: EBrowserName.firefox,
+  firefox: EBrowserName.firefox,
+  wk: EBrowserName.webkit,
+  webkit: EBrowserName.webkit,
+  sa: EBrowserName.webkit,
+  safari: EBrowserName.webkit,
+  ch: EBrowserName.chromium,
+  chrome: EBrowserName.chromium,
+  chromium: EBrowserName.chromium,
+} as Record<string, EBrowserName>
 
 export const AUTH_BYPASS_ROUTES = [
   `/`,

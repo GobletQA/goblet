@@ -1,4 +1,5 @@
 import type { TRepo } from './repo.types'
+import type { EBrowserType } from './browser.types'
 import type {
   Page,
   Frame,
@@ -32,7 +33,7 @@ export type TPageOpts = {
 }
 
 export type TBrowserConf = TBrowserLaunchOpts & {
-  type: TBrowserType
+  type: EBrowserType
   ws?: boolean
   url?:string
   page: TPageOpts

@@ -1,4 +1,9 @@
-import type { TBrowserMetaDataContext, TBrowserMetaData, TBrowserConf } from '@GSC/types'
+import type {
+  EBrowserName,
+  TBrowserConf,
+  TBrowserMetaData,
+  TBrowserMetaDataContext,
+} from '@GSC/types'
 
 import os from 'os'
 import path from 'path'
@@ -79,7 +84,7 @@ export const create = async (content:TBrowserMetaData = noOpObj as TBrowserMetaD
 /**
  * Reads browser metadata from file of a specific browser type
  */
-export const read = async (type:string):Promise<TBrowserMetaDataContext> => {
+export const read = async (type:EBrowserName):Promise<TBrowserMetaDataContext> => {
   try {
     const data = await tryReadMeta()
     const parsed = data ? JSON.parse(data) : {}
@@ -111,14 +116,19 @@ export const readAll = async () => {
  * Saves browser metadata to file
  */
 export const save = async (
-  type:string,
+  type:EBrowserName,
   endpoint:string,
-  // TODO: fix this name to be browserConf so it's consistent
   browserConf:TBrowserConf
 ) => {
   const { metadataPath } = getMetaDataPaths()
   const [valid] = validate({ type, endpoint }, { $default: isStr }, {})
-  if (!valid) return
+  if (!valid)
+    throw new Error([
+      `Can not save browser meta-data, missing type or endpoint.`,
+      `  Type: ${type}`,
+      `  Endpoint: ${endpoint}`
+    ].join(`\n`))
+
 
   const content = await readAll()
 

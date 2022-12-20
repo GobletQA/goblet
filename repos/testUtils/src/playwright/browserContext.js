@@ -2,7 +2,7 @@ const os = require('os')
 const path = require('path')
 const { startTracing } = require('./tracing')
 const { get, noOpObj } = require('@keg-hub/jsutils')
-const { getMetadata } = require('@gobletqa/screencast/libs/playwright/server/server')
+const { metadata } = require('@gobletqa/screencast/libs/playwright')
 const { newBrowser } = require('@gobletqa/screencast/libs/playwright/browser/newBrowser')
 const {
   browserCookieLoc,
@@ -22,7 +22,7 @@ const defaultStateFile = 'browser-context-state'
 const setupBrowser = async () => {
   /** GOBLET_BROWSER is set by the task `keg goblet bdd run` */
   const { GOBLET_BROWSER='chromium' } = process.env
-  const { type, browserConf } = await getMetadata(GOBLET_BROWSER)
+  const { type, browserConf } = await metadata.read(GOBLET_BROWSER)
 
   // TODO: Should update to check if in docker container
   // Then pass false based on that
@@ -31,7 +31,7 @@ const setupBrowser = async () => {
     ...browserConf,
     type,
     ...get(global, `__goblet.browser.options`, noOpObj),
-  }, false)
+  })
 
   if (!browser)
     throw new Error(`Could not create browser. Please ensure the browser server is running.`)

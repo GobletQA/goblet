@@ -1,13 +1,7 @@
+import type { TGetBrowsers } from '@GSC/types'
+import { EBrowserType } from '@GSC/types'
 import { browserNames, browserMap } from '@GSC/constants'
 import {eitherArr, noPropArr, isStr} from '@keg-hub/jsutils'
-
-export type TGetBrowsers = {
-  webkit:boolean
-  firefox:boolean
-  chromium:boolean
-  allBrowsers:boolean,
-  browsers:string|string[]
-}
 
 /**
  * Creates an array of browsers relative the passed params object properties
@@ -30,11 +24,11 @@ export const getBrowsers = (params:TGetBrowsers) => {
   const found = Array.from(
     new Set([
       ...browsersArr,
-      (allBrowsers || firefox) && 'firefox',
-      (allBrowsers || chromium) && 'chromium',
-      (allBrowsers || webkit) && 'webkit',
+      (allBrowsers || firefox) && EBrowserType.firefox,
+      (allBrowsers || chromium) && EBrowserType.chromium,
+      (allBrowsers || webkit) && EBrowserType.webkit,
     ])
   ).filter(Boolean)
 
-  return found.length ? found : [browserMap.chromium]
+  return found.length ? found : [EBrowserType.chromium]
 }

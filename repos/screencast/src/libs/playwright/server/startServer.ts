@@ -1,12 +1,10 @@
-import type { TBrowserConf } from '@GSC/types'
-
+import type { EBrowserName, EBrowserType, TBrowserConf } from '@GSC/types'
 
 import { getServer } from './server'
 import { newServer } from './newServer'
-import { noOpObj, wait } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils'
 import { checkServerPid } from './checkServerPid'
 import { getBrowserType } from '../helpers/getBrowserType'
-
 
 /**
  * Starts browser-server using playwright
@@ -14,14 +12,16 @@ import { getBrowserType } from '../helpers/getBrowserType'
  */
 export const startServer = async (
   browserConf:TBrowserConf = noOpObj as TBrowserConf,
+  type?: EBrowserType|EBrowserName
 ) => {
-  const server = getServer()
+  const browserType = getBrowserType(type || browserConf.type)
+  const server = getServer(browserType)
+
   if(server) return server
   
-  const browser = getBrowserType(browserConf.type)
-  const found = await checkServerPid(browser)
+  const found = await checkServerPid(browserType)
 
   return found
-    ? getServer()
-    : await newServer(browser, browserConf)
+    ? getServer(browserType)
+    : await newServer(browserType, browserConf)
 }

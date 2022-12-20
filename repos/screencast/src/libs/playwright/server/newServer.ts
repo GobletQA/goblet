@@ -1,4 +1,4 @@
-import type { TBrowserConf } from '@GSC/types'
+import type { TBrowserConf, EBrowserName } from '@GSC/types'
 
 import playwright from 'playwright'
 import { setServer } from './server'
@@ -10,14 +10,9 @@ import { getBrowserOpts } from '../helpers/getBrowserOpts'
 /**
  * Starts new browser server using the Playwright API
  * @function
- * @private
- * @param {string} browser - Name of the browser to launch
- * @param {Object} browserConf - Browser server config
- *
- * @returns {Object} - Browser server reference
  */
 export const newServer = async (
-  browser:string,
+  browser:EBrowserName,
   browserConf:TBrowserConf=noOpObj as TBrowserConf
 ) => {
 
@@ -41,5 +36,5 @@ export const newServer = async (
   // Save the playwright browser metadata to the <os-temp>/browser-meta.json, to be used for future connections
   await metadata.save(browser, wsEndpoint, browserConf)
 
-  return setServer(pwServer)
+  return setServer(browser, pwServer)
 }

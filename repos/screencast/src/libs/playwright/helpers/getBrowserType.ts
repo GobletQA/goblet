@@ -1,3 +1,5 @@
+import type { EBrowserType, EBrowserName } from '@GSC/types'
+
 import { browserMap, defaultBrowser } from '@GSC/constants'
 import { Logger } from '@GSC/utils/logger'
 import { exists, isEmpty } from '@keg-hub/jsutils'
@@ -7,13 +9,13 @@ import { exists, isEmpty } from '@keg-hub/jsutils'
  * If no type is passed, then uses the defaultBrowser ( chromium )
  * @function
  */
-export const getBrowserType = (type:string, log?:boolean):string => {
+export const getBrowserType = (type:EBrowserType|EBrowserName, log?:boolean) => {
   if (!exists(type) || isEmpty(type)) {
     log &&
       Logger.warn(
         `Browser type not defined, using default browser => ${defaultBrowser}`
       )
-    return defaultBrowser
+    return defaultBrowser as EBrowserName
   }
 
   if (!browserMap[type]) {
@@ -23,8 +25,8 @@ export const getBrowserType = (type:string, log?:boolean):string => {
           browserMap
         ).join(' | ')}`
       )
-    return defaultBrowser
+    return defaultBrowser as EBrowserName
   }
 
-  return browserMap[type]
+  return browserMap[type] as EBrowserName
 }
