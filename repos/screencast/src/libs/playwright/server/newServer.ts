@@ -1,4 +1,4 @@
-import type { TBrowserConf, EBrowserName } from '@GSC/types'
+import type { EBrowserType, TBrowserConf, EBrowserName } from '@GSC/types'
 
 import playwright from 'playwright'
 import { setServer } from './server'
@@ -29,12 +29,17 @@ export const newServer = async (
   const wsEndpoint = pwServer.wsEndpoint()
 
   Logger.empty()
-  // Logger.info(`Browser Server websocket endpoint: ${wsEndpoint}`)
-  Logger.info(`Browser Server websocket configured`)
+  Logger.info(`Browser Server websocket endpoint: ${wsEndpoint}`)
+  // Logger.info(`Browser Server websocket configured`)
   Logger.empty()
 
   // Save the playwright browser metadata to the <os-temp>/browser-meta.json, to be used for future connections
-  await metadata.save(browser, wsEndpoint, browserConf)
+  await metadata.save(browser, wsEndpoint, {
+    ...browserConf,
+    ...launchOpts,
+    ws: true,
+    type: browser as unknown as EBrowserType,
+  })
 
   return setServer(browser, pwServer)
 }

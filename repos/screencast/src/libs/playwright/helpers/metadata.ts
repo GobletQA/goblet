@@ -137,14 +137,17 @@ export const save = async (
     [type]: {
       type,
       endpoint,
-      browserConf,
       launchTime: new Date().getTime(),
+      browserConf: { ...browserConf, type },
     },
   }
 
+  const nextMetaStr = JSON.stringify(nextMetadata, null, 2)
+  Logger.verbose(`Saving browser metadata`, nextMetadata)
+
   const [err, _] = await limbo(writeFile(
     metadataPath,
-    JSON.stringify(nextMetadata, null, 2)
+    nextMetaStr
   ))
 
   err && (err as any).code === 'ENOENT'

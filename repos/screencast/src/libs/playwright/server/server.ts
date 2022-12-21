@@ -4,7 +4,7 @@ import type { EBrowserName, TBrowserServer } from '@GSC/types'
  * Cache holder for the launched playwright browser
  * @type {Object|undefined}
  */
-let PW_SERVER:Record<EBrowserName, TBrowserServer>
+let PW_SERVER:Record<EBrowserName, TBrowserServer>={} as Record<EBrowserName, TBrowserServer>
 
 /**
  * Returns the cached playwright server
@@ -35,4 +35,5 @@ export const setServer = (type:EBrowserName, server:TBrowserServer) => {
 
 export const clearAllServers = () => {
   PW_SERVER = undefined
+  PW_SERVER = {} as Record<EBrowserName, TBrowserServer>
 }

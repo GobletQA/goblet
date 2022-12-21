@@ -1,4 +1,5 @@
 import type { TCmdGroups, TBrowserConf } from '@GSC/types'
+import type { TScreenDims, TGScreencastConfig } from '@gobletqa/screencast/types'
 
 import '../resolveRoot'
 import path from 'path'
@@ -8,7 +9,6 @@ import { socketCmds } from './socketCmds.config'
 import { aliases } from '@GConfigs/aliases.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
-import { TScreenDims, TGScreencastConfig } from '@gobletqa/screencast/src/types'
 
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({

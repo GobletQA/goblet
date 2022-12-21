@@ -34,6 +34,10 @@ const options = {
       `--no-first-run`,
       `--start-fullscreen`,
       `--unsafely-treat-insecure-origin-as-secure`,
+
+      // TODO - Investigate this - may be needed in some context
+      // `--deny-permission-prompts`
+
       // `--dark-mode-settings`,
       // `--kiosk`,
       // `--suppress-message-center-popups`

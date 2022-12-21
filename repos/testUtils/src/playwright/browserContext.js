@@ -3,7 +3,7 @@ const path = require('path')
 const { startTracing } = require('./tracing')
 const { get, noOpObj } = require('@keg-hub/jsutils')
 const { metadata } = require('@gobletqa/screencast/libs/playwright')
-const { getBrowser } = require('@gobletqa/screencast/src/libs/playwright/browser/browser')
+const { getBrowser } = require('@gobletqa/screencast/libs/playwright/browser/browser')
 const {
   browserCookieLoc,
   setContextCookie,

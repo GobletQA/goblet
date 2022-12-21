@@ -16,7 +16,7 @@ export const getServerEndpoint = async (type:EBrowserType|EBrowserName) => {
 
   const meta = await metadata.read(browserType)
   if(meta?.endpoint) return meta.endpoint
-  
+
   throw new Error(`Could not find browser websocket endpoint for browser ${browserType}`)
 
 }

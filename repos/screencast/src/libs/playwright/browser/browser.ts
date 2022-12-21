@@ -12,12 +12,14 @@ import { Logger } from '@GSC/utils/logger'
 import { defaultBrowser } from '@GSC/constants'
 import { buildStatus } from '../helpers/buildStatus'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
-import { getBrowserOpts } from '../helpers/getBrowserOpts'
 import { toBool, noOpObj, isFunc } from '@keg-hub/jsutils'
+import { getBrowserOpts } from '../helpers/getBrowserOpts'
 import { getBrowserType } from '../helpers/getBrowserType'
 import { getContextOpts } from '../helpers/getContextOpts'
 import { inDocker } from '@keg-hub/jsutils/src/node/inDocker'
+import { buildBrowserConf } from '../helpers/buildBrowserConf'
 import { getServerEndpoint } from '../server/getServerEndpoint'
+import { checkInternalPWContext } from './checkInternalPWContext'
 
 /**
  * Cache holder for all launched playwright browsers by type
@@ -37,7 +39,7 @@ const setBrowser = (
   const bType = type || browser.browserType().name() || defaultBrowser
 
   // Set the new browser
-  PW_BROWSERS[bType] = { browser }
+  PW_BROWSERS[bType] = browser
 
   // // Add listener to delete the browser when closed
   browser &&
@@ -75,9 +77,7 @@ const fromWebsocket = (
  * Starts new browser by connecting to an existing browser server websocket
  * @function
  */
-const createWSBrowser = async (type:EBrowserName) => {
-
-  Logger.info(`Getting endpoint from server...`)
+const createWSBrowser = async (type:EBrowserName):Promise<TPWBrowser> => {
   const endpoint = await getServerEndpoint(type)
 
   // Check if the websocket is active
@@ -87,13 +87,14 @@ const createWSBrowser = async (type:EBrowserName) => {
       ? endpoint.replace('127.0.0.1', 'host.docker.internal')
       : endpoint
 
-  Logger.info(`- Creating browser ${type} from server...`)
   const browser = await playwright[type].connect(browserEndpoint)
+  Logger.info(`createWSBrowser - Browser ${type} was started from server websocket`)
 
   setBrowser(browser, type)
 
   return { browser } as TPWBrowser
 }
+
 
 /**
  * Creates a regular browser NOT connected to a browser server over websocket
@@ -105,8 +106,8 @@ const createBrowser = async (
   type:EBrowserName
 ) => {
 
-  Logger.info(`- Launching Browser ${type}...`)
   const browser = await playwright[type].launch(getBrowserOpts(browserConf))
+  Logger.info(`createBrowser - Browser ${type} was started`)
   setBrowser(browser, type)
 
   return { browser } as TPWBrowser
@@ -119,13 +120,15 @@ const createBrowser = async (
 export const getPage = async (
   browserConf:TBrowserConf
 ) => {
+
   const { context, browser } = await getContext(browserConf)
   const pages = context.pages()
 
-  const page = pages.length
-    ? pages[0]
-    : await context.newPage()
-  
+  const page = (pages.length && pages[0])
+    || await context.newPage()
+
+  Logger.verbose(`getPage - Found page for browser ${browserConf.type}`)
+
   return { context, browser, page } as TPWComponents
 }
 
@@ -137,12 +140,13 @@ export const getPage = async (
 export const getContext = async (
   browserConf:TBrowserConf
 ) => {
+
   const { browser } = await getBrowser(browserConf)
   const contexts = browser.contexts()
+  const context = (contexts.length && contexts[0])
+    || await browser.newContext(getContextOpts(browserConf.context))
 
-  const context = contexts.length
-    ? contexts[0]
-    : await browser.newContext(getContextOpts(browserConf.context))
+  Logger.verbose(`getContext - Found context for browser ${browserConf.type}`)
 
   return { context, browser }
 }
@@ -178,7 +182,7 @@ export const getBrowser = async (
     const pwBrowser = PW_BROWSERS[type]
 
     if (pwBrowser) {
-      Logger.info(`Found existing browser`)
+      Logger.verbose(`getBrowser - Found existing browser ${type}`)
       return { browser: pwBrowser } as TPWBrowser
     }
 
@@ -189,18 +193,20 @@ export const getBrowser = async (
     // To allow consecutive calls on start up
     if(getBrowser.creatingBrowser)
       return new Promise((res, rej) => {
-        setTimeout(() => res(getBrowser(browserConf, browserServer)), 250)
+        Logger.verbose(`getBrowser - Browser ${type} is creating, try agin in 100ms`)
+        setTimeout(() => res(getBrowser(browserConf, browserServer)), 100)
       })
 
     getBrowser.creatingBrowser = true
-
       // If the websocket is active, then start a websocket browser
-    const builtBrowser = fromWebsocket(browserConf, browserServer)
+    const browserResp = fromWebsocket(browserConf, browserServer)
       ? await createWSBrowser(type)
       : await createBrowser(browserConf, type)
 
+    Logger.verbose(`getBrowser - Found browser ${type}`)
+
     getBrowser.creatingBrowser = false
-    return builtBrowser
+    return browserResp
 
   }
   catch(err){
@@ -220,16 +226,57 @@ getBrowser.creatingBrowser = false
  * @public
  */
 export const startBrowser = async (
-  browserConf:TBrowserConf = noOpObj as TBrowserConf
-) => {
+  config:TBrowserConf = noOpObj as TBrowserConf
+):Promise<TPWComponents> => {
 
-  const pwComponents = await getPage(browserConf)
+  try {
+    const browserConf = buildBrowserConf(config)
+    const type = getBrowserType(browserConf.type as EBrowserType)
 
-  // Build the status object for the newly started browser
-  const status = buildStatus(
-    browserConf.type,
-    Boolean(pwComponents.browser && pwComponents.context && pwComponents.page),
-  )
+    let pwComponents = checkInternalPWContext(type)
+  
+    if(!pwComponents){
+      Logger.info(`startBrowser - Getting browser type ${type}`)
 
-  return { status, ...pwComponents } as TPWComponents
+      const pwBrowser = PW_BROWSERS[type]
+
+      // Hack due to multiple calls on frontend startup
+      // If more then one calls, and the browser is not create
+      // then it will create two browsers
+      // So this re-calls the same method when creatingBrowser is set
+      // To allow consecutive calls on start up
+      if(!pwBrowser && startBrowser.creatingBrowser)
+        return new Promise((res, rej) => {
+          Logger.info(`startBrowser - Browser ${type} is creating, try agin in 100ms`)
+          setTimeout(() => res(startBrowser(browserConf)), 100)
+        })
+
+
+      startBrowser.creatingBrowser = true
+      pwComponents = await getPage(browserConf)
+      startBrowser.creatingBrowser = false
+
+      Logger.info(`startBrowser - Browser ${type} and child components found`)
+    }
+    // else Logger.verbose(`startBrowser - Found playwright components from internal reference`)
+
+    // Build the status object for the newly started browser
+    const status = buildStatus(
+      browserConf.type,
+      Boolean(
+        pwComponents.browser
+          && pwComponents.context
+          && pwComponents.page
+      ),
+    )
+
+    return { status, ...pwComponents } as TPWComponents
+  }
+  catch(err){
+    startBrowser.creatingBrowser = false
+    throw err
+  }
+
 }
+
+startBrowser.creatingBrowser = false
