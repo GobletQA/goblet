@@ -5,7 +5,7 @@ import '../../resolveRoot'
 import { noOpObj } from '@keg-hub/jsutils'
 import {
   statusServer,
-  statusBrowser,
+  startBrowser,
 } from '@GSC/libs/playwright'
 import {
   statusVNC,
@@ -38,7 +38,7 @@ export const statusScreencast = async (
   status.server = await statusServer()
 
   if (params.browser){
-    const { status:browserStatus } = await statusBrowser(params.browser)
+    const { status:browserStatus } = await startBrowser(params.browser)
     status.browser = browserStatus
   }
 

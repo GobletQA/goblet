@@ -5,10 +5,6 @@ import type { SocketManager, TSocketEvtCBProps } from '@GSC/types'
 import { noOpObj } from '@keg-hub/jsutils'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 import { recordBrowser } from '@GSC/libs/playwright/browser/recordBrowser'
-import {
-  setPage,
-  stopBrowser,
-} from '@GSC/libs/playwright'
 
 /**
  * Stats a the browser recorder from a socket.io event
@@ -41,10 +37,12 @@ const handleStart = async (
       Manager.emit(socket, event.name, { ...event, group: socket.id })
     },
     onCleanup: async closeBrowser => {
-      closeBrowser && await stopBrowser(browserConf)
+      // TODO: Figure out what to do here
+      // Now using the same browser instance, so we don't need to close it
     },
     onCreateNewPage: async page => {
-      page && await setPage(page)
+      // TODO: Figure out what to do here
+      // For now, limiting the amount of pages to 1
     },
   })
 

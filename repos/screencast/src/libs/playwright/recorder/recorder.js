@@ -240,6 +240,9 @@ class Recorder {
       // Ensure the injected scripts don't run
       this.recording = false
 
+
+      // --- TODO - Probably don't want to do this any more
+
       // If there's a page
       // Get it's current url
       // Then close and reopen the page as a fresh instance
@@ -256,6 +259,8 @@ class Recorder {
         // Then  goto that page
         url && await this.page.goto(url)
       }
+
+      // --- TODO - Probably don't want to do this any more
 
       this.fireEvent({
         name: constants.recordEnded,

@@ -7,7 +7,7 @@ import type {
   TBrowserActionArgs,
 } from '@GSC/types'
 
-import { startBrowser } from './startBrowser'
+import { startBrowser } from './browser'
 import { recordBrowser } from './recordBrowser'
 import { isArr, isStr, isFunc, noPropArr } from '@keg-hub/jsutils'
 

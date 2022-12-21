@@ -3,7 +3,7 @@ const path = require('path')
 const { startTracing } = require('./tracing')
 const { get, noOpObj } = require('@keg-hub/jsutils')
 const { metadata } = require('@gobletqa/screencast/libs/playwright')
-const { newBrowser } = require('@gobletqa/screencast/libs/playwright/browser/newBrowser')
+const { getBrowser } = require('@gobletqa/screencast/src/libs/playwright/browser/browser')
 const {
   browserCookieLoc,
   setContextCookie,
@@ -27,7 +27,7 @@ const setupBrowser = async () => {
   // TODO: Should update to check if in docker container
   // Then pass false based on that
   // Pass false to bypass checking the browser status
-  const { browser } = await newBrowser({
+  const { browser } = await getBrowser({
     ...browserConf,
     type,
     ...get(global, `__goblet.browser.options`, noOpObj),
@@ -77,6 +77,7 @@ const saveContextState = async (context, location) => {
  * @return {Object} - Playwright browser page object
  */
 const getContext = async (contextOpts, location) => {
+  // TODO: migrate this to use the getContext from screencast/libs/playwright
   contextOpts = contextOpts || get(global, `__goblet.context.options`, noOpObj)
 
   if(!global.browser) throw new Error('Browser type not initialized')

@@ -51,8 +51,12 @@ export type TBrowserStatus = {
 
 export type TPWComponentRef = `browser` | `context` | `page` | string
 export type TPWComponent = TBrowser | TBrowserContext | TBrowserPage
-export type TPWComponents = {
+
+export type TPWBrowser = {
   browser: TBrowser
+}
+
+export type TPWComponents = TPWBrowser & {
   page: TBrowserPage
   context: TBrowserContext
   status?: TBrowserStatus

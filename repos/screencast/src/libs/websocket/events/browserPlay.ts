@@ -2,7 +2,6 @@ import type { Express } from 'express'
 import type { Socket } from 'socket.io'
 import type { SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
-import { setPage } from '@GSC/libs/playwright'
 import { Repo } from '@gobletqa/shared/repo/repo'
 import { playBrowser } from '@GSC/libs/playwright/browser/playBrowser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
@@ -30,7 +29,8 @@ const handleStartPlaying = async (
       Manager.cache[socket.id].player = undefined
     },
     onCreateNewPage: async (page:any) => {
-      page && await setPage(page)
+      // TODO: Figure out what to do here
+      // For now, limiting the amount of pages to 1
     },
   })
 

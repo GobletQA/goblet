@@ -4,8 +4,8 @@ import type {
   TOnBrowserEvents
 } from '@GSC/types'
 
+import { startBrowser } from './browser'
 import { EBrowserEvent } from '@GSC/types'
-import { startBrowser } from './startBrowser'
 
 class BrowserEventListener {
   name:EBrowserEvent

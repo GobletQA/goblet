@@ -3,7 +3,7 @@ import type { TBrowserConf, SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
 import { get, noOpObj } from '@keg-hub/jsutils'
-import { statusBrowser } from '@GSC/libs/playwright/browser/statusBrowser'
+import { startBrowser } from '@GSC/libs/playwright/browser/browser'
 
 let prevStatus
 let watchInterval:ReturnType<typeof setTimeout>
@@ -14,7 +14,7 @@ type TWatchOpts = Partial<TBrowserConf> & { interval?:number }
 const defMessage = noOpObj as TWatchOpts
 
 /**
- * Calls the statusBrowser to get the status of the browser
+ * Calls the startBrowser to get the status of the browser
  * @function
  * @param {Object} browserConf - Config options for checking the browser status
  * @param {Object} Manager - Socket Manager Instance
@@ -26,7 +26,7 @@ const getStatusUpdate = async (
   Mgr:SocketManager
 ) => {
   
-  const status = await statusBrowser(browserConf)
+  const status = await startBrowser(browserConf)
   // If no status chance, don't update the backend
   if (prevStatus === status?.status) return
 

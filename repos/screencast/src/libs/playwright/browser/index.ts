@@ -1,7 +1,2 @@
-export { setPage } from './browser'
-export * from './newBrowser'
-export * from './restartBrowser'
-export * from './startBrowser'
-export * from './stopBrowser'
-export * from './statusBrowser'
+export * from './browser'
 export * from './actionBrowser'

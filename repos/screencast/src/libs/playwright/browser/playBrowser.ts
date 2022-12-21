@@ -1,7 +1,7 @@
 import type { TStartPlaying } from '@GSC/types'
 
+import { startBrowser } from './browser'
 import { Player }  from '../player/player'
-import { startBrowser } from './startBrowser'
 
 export const playBrowser = async (data:TStartPlaying) => {
   const {
