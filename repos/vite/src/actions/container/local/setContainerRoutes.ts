@@ -1,9 +1,9 @@
 import type { TRouteMeta, TProxyRoute, TContainerMeta } from '@types'
 
-import { ScreencastPort } from '@constants'
 import { containerDispatch } from '@store'
 import { noOpObj, toStr } from '@keg-hub/jsutils'
 import { localStorage } from '@services/localStorage'
+import { ScreencastPort } from '@constants/screencast'
 
 type SplitRoutes = {
   api: TProxyRoute

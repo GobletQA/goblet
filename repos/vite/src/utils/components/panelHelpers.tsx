@@ -1,13 +1,8 @@
-
 import { dims } from '@theme'
-import { toNum, noOpArr } from '@keg-hub/jsutils'
+import { toNum } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import {
-  PanelDimsSetEvt,
-  ScreencastRatio,
-  ResizePanelClass,
-} from '@constants'
-
+import { ScreencastRatio } from '@constants/screencast'
+import { PanelDimsSetEvt, ResizePanelClass } from '@constants'
 
 export type TSetPanelFull = {
   expanded:boolean

@@ -9,7 +9,7 @@ import type {
 import settingsJson from './settings.json'
 import { localStorage } from '@services/localStorage'
 import { findSetting } from '@utils/settings/findSetting'
-import { ScreencastWidth, ScreencastHeight } from '@constants'
+import { ScreencastWidth, ScreencastHeight } from '@constants/screencast'
 import { deepMerge, set, get, noOpObj, exists, pickKeys } from '@keg-hub/jsutils'
 
 const defSettings = deepMerge(settingsJson, {

@@ -1,7 +1,7 @@
 import type { TAction, TTerminalTabs, TTerminalTab, TTerminalLog } from '@types'
 
-import { BrowserLogTerminal } from '@constants'
 import { randomName } from '@services/randomName'
+import { BrowserLogTerminal } from '@constants/types'
 import { isStr, isNum, uuid, ensureArr } from '@keg-hub/jsutils'
 
 export type TTerminalState = {

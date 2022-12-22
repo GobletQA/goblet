@@ -1,6 +1,6 @@
 import type { TSocketEvt } from '@types'
 import { terminalDispatch } from '@store'
-import { BrowserLogTerminal } from '@constants'
+import { BrowserLogTerminal } from '@constants/types'
 
 const jsonPrefix = [
   `SEND ► {`,

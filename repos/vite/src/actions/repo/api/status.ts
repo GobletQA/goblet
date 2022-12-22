@@ -10,9 +10,10 @@ import { addToast } from '@actions/toasts'
 import { connectModal } from '@actions/modals'
 import { removeRepo } from '../local/removeRepo'
 import { apiRequest } from '@utils/api/apiRequest'
+import { StatusTypes, AuthActive } from '@constants'
 import { localStorage } from '@services/localStorage'
 import { checkCall, noOpObj } from '@keg-hub/jsutils'
-import { StatusTypes, ScreencastPort, AuthActive } from '@constants'
+import { ScreencastPort } from '@constants/screencast'
 import { setErrorState } from '@actions/admin/provider/setErrorState'
 
 
