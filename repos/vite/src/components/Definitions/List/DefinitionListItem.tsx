@@ -3,6 +3,7 @@ import type { TDefGroupItem } from '@types'
 import { useCallback, useState } from 'react'
 
 import { EStepKey } from '@types'
+import { cls } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
 import Collapse from '@mui/material/Collapse'
 import { ArrowRightIcon } from '@components/Icons'
@@ -47,7 +48,7 @@ export const DefinitionListItem = (props:TDefinitionListItem) => {
 
   return (
     <DefItem
-      className='goblet-def-item'
+      className={cls(`goblet-def-item`, open ? `item-open` : ``)}
       key={`item-${type}-${item.uuid}`}
     >
       <DefItemRow onClick={onToggleMeta} className='goblet-def-item-row' >

@@ -3,7 +3,6 @@ import type { TDefsList } from './DefaultDefsList'
 
 import { useCallback, useRef, useState, useEffect } from 'react'
 
-import { Span } from '@components/Text'
 import { noOpObj } from '@keg-hub/jsutils'
 import { SearchIcon } from '@components/Icons'
 import { DefinitionList } from './DefinitionList'
@@ -12,6 +11,7 @@ import {
   DefSearchWrap,
   DefSearchIcon,
   DefSearchInput,
+  DefSearchTitle,
   DefSearchHeader,
 } from './DefinitionList.styled'
 
@@ -44,7 +44,7 @@ const SearchHeader = (props:TSearchHeader) => {
   return (
     <DefSearchHeader className='goblet-defs-search' >
 
-      <Span>{group.group}</Span>
+      <DefSearchTitle>{group.group}</DefSearchTitle>
 
       <DefSearchWrap className='goblet-defs-search-wrap' >
         <DefSearchIcon

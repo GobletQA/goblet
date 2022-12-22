@@ -13,6 +13,11 @@ import ListItemButton from '@mui/material/ListItemButton'
 import { IconButton } from '@components/Buttons/IconButton'
 
 
+export const DefSearchTitle = styled(Span)(({ theme }) => `
+  font-weight: bold;
+  color: ${getColor(colors.fadeDark70, colors.white00, theme)};
+`)
+
 export const DefSearchHeader = styled(Box)(({ theme }) => `
   display: flex;
   align-items: center;
@@ -77,6 +82,8 @@ export const DefListSubheader = styled(ListSubheader)(({ theme }) => `
   height: 40px;
   padding: 5px 10px;
   line-height: 30px;
+  font-weight: bold;
+  color: ${getColor(colors.fadeDark70, colors.white00, theme)};
   background-color: ${getColor(colors.white00, colors.black02, theme)};
 `)
 
@@ -86,8 +93,12 @@ export const DefItem = styled(ListItem)(({ theme }) => `
   flex-direction: column;
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
 
+  &.item-open {
+    background-color: ${getColor(colors.white00, colors.black03, theme)};
+  }
+
   &:hover {
-    background-color: ${getColor(colors.white00, colors.black04, theme)};
+    background-color: ${getColor(colors.white00, colors.black03, theme)};
   }
 
   & .goblet-def-item-meta-toggle {

@@ -107,15 +107,16 @@ export const DefsHeaderTab = styled(Tab)(({ theme }) => `
 
   color: ${getColor(colors.fadeDark30, colors.fadeLight55, theme)};
   background-color: ${getColor(colors.gray04, colors.black03, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray00, 'transparent', theme)};
 
   &.Mui-selected {
-    color: ${getColor(colors.fadeDark70, colors.fadeLight90, theme)};
-    background-color: ${getColor(colors.gray01, colors.black05, theme)};
+    color: ${getColor(colors.fadeDark80, colors.fadeLight90, theme)};
+    background-color: ${getColor(colors.white00, colors.black05, theme)};
   }
 
   &:hover:not(.Mui-selected) {
-    color: ${getColor(colors.fadeDark50, colors.fadeLight75, theme)};
-    background-color: ${getColor(colors.gray02, colors.black04, theme)};
+    color: ${getColor(colors.fadeDark80, colors.fadeLight75, theme)};
+    background-color: ${getColor(colors.white00, colors.black04, theme)};
   }
 `)
 
@@ -124,7 +125,7 @@ export const DefsBody = styled(Box)(({ theme }) => `
   width: 100%;
   height: 100%;
   display: flex;
-  background-color: ${getColor(colors.gray01, colors.black05, theme)};
+  background-color: ${getColor(colors.gray02, colors.black04, theme)};
 `)
 
 export const DefsSliderActions = styled(Box)(({ theme }) => `
@@ -139,11 +140,12 @@ export const DefsSliderAction = styled(IconButton)(({ theme }) => `
   font-family: inherit;
   place-content: center;
   background-color: transparent;
-  width: ${dims.defs.header.height + 8}px;
   height: ${dims.defs.header.hpx};
+  width: ${dims.defs.header.height + 8}px;
   background-color: ${getColor(colors.gray01, colors.black05, theme)};
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
   border-left: 1px solid ${getColor(colors.gray02, colors.black05, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray01, 'transparent', theme)};
   
   &:hover {
     background-color: ${getColor(colors.gray03, colors.fadeLight10, theme)};
