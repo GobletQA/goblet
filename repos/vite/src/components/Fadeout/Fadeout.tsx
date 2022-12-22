@@ -15,10 +15,7 @@ type TFadeoutProps = {
 }
 
 /**
- * Hook to get the boolean tigger that starts the fade out
- * @param {boolean} start - Trigger the fadeout from outside the component
- *
- * @param {Boolean} - Trigger that starts the fade out
+ * Hook to get the boolean trigger that starts the fade out
  */
 const useFadeStart = (start?:boolean) => {
   return useMemo(

@@ -5,7 +5,7 @@ import { useState, useCallback } from 'react'
 import { getRepos } from '@actions/repo/api/getRepos'
 import { useBuildForm } from '@hooks/form/useBuildForm'
 import { evtFnNoOp } from '@hooks/form/useBuildFormValues'
-import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
+import { signOutReload } from '@actions/admin/user/signOutReload'
 
 const formFields = {
   form: {
@@ -24,16 +24,10 @@ const formFields = {
   $actions: {
     signOut: {
       label: `Sign Out`,
+      onClick: signOutReload,
       variant: `text`  as const,
       color: `secondary` as const,
       StartIcon: `$component.LogoutIcon`,
-      onClick: async () => {
-        await signOutAuthUser()
-        // Reload the page to force reset the app state
-        // Would be better to reset the components
-        // But this is the quick and dirty fix
-        window.location.reload()
-      },
     },
     connectRepo: {
       color: `primary`  as const,

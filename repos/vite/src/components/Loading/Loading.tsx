@@ -1,15 +1,17 @@
 import type { ReactNode, ComponentProps } from 'react'
 import type { CSSObj } from '@types'
+
 import { gutter } from '@theme'
 import Box from '@mui/material/Box'
 import { Text } from '@components/Text'
+import { ensureArr } from '@keg-hub/jsutils'
 import CircularProgress from '@mui/material/CircularProgress'
 
 export type TLoading = ComponentProps<typeof CircularProgress> & {
   message?:ReactNode
-  messageSx?: CSSObj
-  containerSx?:CSSObj
   hideSpinner?:boolean
+  messageSx?: CSSObj|CSSObj[]
+  containerSx?:CSSObj|CSSObj[]
   pos?: `before` | `after`
 }
 
@@ -29,7 +31,7 @@ export const Loading = (props:TLoading) => {
       fontSize: `18px`,
       marginTop: gutter.margin.px,
     },
-    messageSx as CSSObj
+    ...ensureArr<CSSObj>(messageSx)
   ]
 
   return (

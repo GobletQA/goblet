@@ -11,7 +11,7 @@ import { SideNav } from '@components/SideNav'
 import { settingsModal } from '@actions/modals'
 import { Outlet, useLocation } from "react-router-dom"
 import { disconnectRepo } from '@actions/repo/api/disconnect'
-import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
+import { signOutReload } from '@actions/admin/user/signOutReload'
 
 type THomeProps = {
   [key:string]: any
@@ -38,7 +38,7 @@ export default function Home(props:THomeProps) {
 }
 
 const navActions = {
-  Logout: signOutAuthUser,
+  Logout: signOutReload,
   Settings: asCallback(settingsModal, false),
   UnmountRepo: asCallback(disconnectRepo, false),
 }
@@ -60,15 +60,8 @@ const settings = [
   ...Home.children,
   {
     divider: true,
-    label: `Logout`,
+    label: `Sign Out`,
     Icon: Icons.LogoutIcon,
-    onClick: async () => {
-      await signOutAuthUser()
-
-      // Reload the page to force reset the app state
-      // Would be better to reset the components
-      // But this is the quick and dirty fix
-      window.location.reload()
-    },
+    onClick: signOutReload,
   }
 ]

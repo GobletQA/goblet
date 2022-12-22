@@ -1,8 +1,15 @@
 import type { TRequest, TResponse } from '@services/axios.types'
 
 import { networkRequest } from '@services/axios'
-import { isObj, get, noOpObj } from '@keg-hub/jsutils'
+import { isObj, get, isBool } from '@keg-hub/jsutils'
 import { buildUrl, isValidSession, buildHeaders } from './apiHelpers'
+import {
+  getApiCache,
+  setApiRequest,
+  setApiResponse,
+  addCacheMethod,
+} from './apiCache'
+
 
 const buildRequest = async (request:TRequest|string) => {
   const builtRequest = isObj<TRequest>(request) ? { ...request } : { url: request } as TRequest
@@ -29,6 +36,13 @@ export const apiRequest = async <T=Record<any, any>>(
 ):Promise<TResponse<T>> => {
   const builtRequest = await buildRequest(request)
 
+  const cache = getApiCache(builtRequest?.url)
+  if(!isBool(cache)) return cache as TResponse<T>
+  else if(cache === true)
+    return new Promise(res => addCacheMethod(builtRequest?.url, (data:TResponse<T>) => res(data)))
+
+  setApiRequest(builtRequest?.url)
+
   const {
     data,
     success,
@@ -36,14 +50,7 @@ export const apiRequest = async <T=Record<any, any>>(
     errorMessage
   } = await networkRequest(builtRequest)
 
-  await isValidSession(
-    success,
-    statusCode,
-    get(data, 'message', errorMessage),
-    !builtRequest.url.endsWith(`/repo/status`)
-  )
-
-  return success
+  const response = success
     ? { 
         data,
         success,
@@ -55,4 +62,15 @@ export const apiRequest = async <T=Record<any, any>>(
         statusCode,
         error: data?.message || errorMessage,
       }
+
+  setApiResponse<TResponse<T>>(builtRequest?.url, response)
+
+  await isValidSession(
+    success,
+    statusCode,
+    get(data, 'message', errorMessage),
+    !builtRequest.url.endsWith(`/repo/status`)
+  )
+
+  return response as TResponse<T>
 }

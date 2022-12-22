@@ -10,15 +10,15 @@ import {
   createContext,
 } from 'react'
 
-import { gutter } from '@theme'
-import { AuthActive } from '@constants'
+import { useModal } from '@store'
 import { noOpObj } from '@keg-hub/jsutils'
-import { Loading } from '@components/Loading'
 import { Fadeout } from '@components/Fadeout'
+import { ModalTypes, AuthActive } from '@constants'
 import { localStorage } from '@services/localStorage'
 import { useContainer, useUser, useRepo } from '@store'
 import { SocketService, WSService } from '@services/socketService'
 import { getWebsocketConfig } from '@utils/api/getWebsocketConfig'
+import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
 
 export type TSocketProvider = {
   children: ReactNode
@@ -120,6 +120,8 @@ const useWSHooks = () => {
 }
 
 const SocketChildren = memo((props:TSocketChildren) => {
+  const modal = useModal()
+
   const {
     wsActive,
     children,
@@ -127,24 +129,22 @@ const SocketChildren = memo((props:TSocketChildren) => {
     ...rest
   } = props
 
+  const disable = modal.visible
+    && (modal?.type === ModalTypes.connect || modal?.type === ModalTypes.signIn)
+
   return (
     <>
       {wsActive && props.children}
       {AuthActive && (
         <Fadeout
           {...rest}
-          content={
-            <Loading
-              size={30}
-              message={content}
-              color={`secondary`}
-              containerSx={{
-                width: `100%`,
-                alignSelf: `center`,
-                marginTop: gutter.margin.dpx
-              }}
+          content={(
+            <WaitOnContainer
+              timeout={1000}
+              disable={disable}
+              timeoutMessage={content}
             />
-          }
+          )}
         />
       )}
     </>
