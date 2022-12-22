@@ -138,13 +138,9 @@ const SocketChildren = memo((props:TSocketChildren) => {
       {AuthActive && (
         <Fadeout
           {...rest}
-          content={(
-            <WaitOnContainer
-              timeout={1000}
-              disable={disable}
-              timeoutMessage={content}
-            />
-          )}
+          content={
+            disable ? null : (<WaitOnContainer timeoutMessage={content} />)
+          }
         />
       )}
     </>

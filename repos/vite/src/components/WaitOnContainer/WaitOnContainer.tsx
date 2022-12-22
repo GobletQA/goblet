@@ -28,10 +28,11 @@ export const WaitOnContainer = (props:TWaitOnContainer) => {
   const [timedOut, setTimedOut] = useState<boolean>(false)
 
   useSetTimeout({
+    disable,
     // Give the session 20 seconds to start
     // Otherwise show reload warning
     condition: !timedOut,
-    delay: timeout || 5000,
+    delay: timeout || 15000,
     callback: () => setTimedOut(true),
   })
 
