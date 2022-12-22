@@ -6,18 +6,18 @@ import { OpenFileTreeEvt, EditorSidebarWidth } from '@constants'
 
 
 export const onFiles = ({
-  navItem,
+  name,
   setOpen,
-  activeNav,
-  setActiveNav,
+  active,
+  setActive,
 }:TNavItemClick) => {
-  if(activeNav === ESideNav.Files){
+  if(active === ESideNav.Files){
     EE.emit<OpenFileTreeEvent>(OpenFileTreeEvt, { size: 0 })
-    setActiveNav(undefined)
+    setActive(undefined)
   }
   else {
     EE.emit<OpenFileTreeEvent>(OpenFileTreeEvt, { size: EditorSidebarWidth })
-    setActiveNav(navItem)
+    setActive(name)
   }
 
   setOpen(false)

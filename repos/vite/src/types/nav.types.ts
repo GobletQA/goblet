@@ -29,10 +29,10 @@ export enum ESideNav {
 }
 
 export type TNavItemClick = {
-  navItem:ESideNav,
-  activeNav:ESideNav|undefined,
+  name:ESideNav,
+  active:ESideNav|undefined,
   setOpen:Dispatch<SetStateAction<boolean>>,
-  setActiveNav:Dispatch<SetStateAction<ESideNav | undefined>>,
+  setActive:Dispatch<SetStateAction<ESideNav | undefined>>,
 }
 
 export type TNavItem = {

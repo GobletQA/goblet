@@ -18,3 +18,8 @@ export const asCallback = (callback:(...args:any[]) => any, defs:boolean|Record<
     return allowArgs || defArgs.allowArgs ? callback(defs, ...args) : callback()
   }
 }
+
+
+export const navItemNameToTitle = (name?:string, title?:string) => {
+  return (name || title || ``).replace(/\s_-\//gim, ``).toLowerCase()
+}

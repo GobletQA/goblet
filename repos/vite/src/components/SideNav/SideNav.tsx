@@ -1,15 +1,16 @@
 import type { TNavItemProps } from '../Nav/NavItem'
 
-import { ESideNav } from '@types'
 import { useState, useCallback } from 'react'
-import { HeaderSpacer, Drawer } from './SideNav.styled'
+import { ESideNav } from '@types'
 import * as Icons from '@components/Icons'
+import { navItemNameToTitle } from '@utils'
 import { NavGroups, TGroupItem } from '../Nav'
-import { SideNav as SideNavConst } from '@constants/nav'
+import { HeaderSpacer, Drawer } from './SideNav.styled'
+import { SideNav as SideNavItems } from '@constants/nav'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
 import { useSideNavToggle } from '@hooks/nav/useSideNavToggle'
 
-const groups = SideNavConst.groups.map(group => {
+const groups = SideNavItems.groups.map(group => {
   const builtGrp = { ...group, items: [] } as TGroupItem
   // @ts-ignore
   group.items.map(({ icon, title, name, ...item}) => {
@@ -19,7 +20,7 @@ const groups = SideNavConst.groups.map(group => {
       ...item,
       Icon,
       title,
-      name: (name || title || ``).replace(/\s_-\//gim, ``).toLowerCase()
+      name: navItemNameToTitle(name, title)
     } as TNavItemProps)
   })
 
@@ -56,7 +57,7 @@ export const SideNav = (props:TSideNavProps) => {
           groups={groups}
           activeNav={activeNav}
           toggleDrawer={toggleDrawer}
-          className={SideNavConst.groupClassName}
+          className={SideNavItems.groupClassName}
         />
       </Drawer>
     </ClickAwayListener>
