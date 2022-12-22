@@ -40,7 +40,7 @@ export const SideNav = deepFreeze({
           icon: `FileTreeIcon`,
         },
         {
-          icon: `Picture`,
+          icon: `InsertChartIcon`,
           title: `Artifacts`,
           action: onArtifacts,
         },

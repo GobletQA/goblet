@@ -1,21 +1,25 @@
 import Box from '@mui/material/Box'
+import { Button } from '@components/Buttons/Button'
 
-export type TArtifacts = {
+export type TEnvironments = {
   
 }
 
-export const Artifacts = (props:TArtifacts) => {
+export const Environments = (props:TEnvironments) => {
+
   return (
     <Box
       sx={{
         marginTop: `10px`,
-        marginBottom: `10px`,
         display: `flex`,
         alignContent: `center`,
         justifyContent: `center`,
       }}
     >
-      N/A
+      <Button>
+        Add Environment
+      </Button>
     </Box>
   )
+
 }

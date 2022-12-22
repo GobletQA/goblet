@@ -8,6 +8,9 @@ import type { TransitionProps } from '@mui/material/transitions'
 import type { ModalRoot } from '@components/ModalManager/ModalRoot'
 
 export enum EModalTypes {
+  Artifacts = `artifacts`,
+  ARTIFACTS = `artifacts`,
+  artifacts = `artifacts`,
   Confirm = `confirm`,
   CONFIRM = `confirm`,
   confirm = `confirm`,

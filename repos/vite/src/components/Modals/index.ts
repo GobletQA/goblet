@@ -1,3 +1,4 @@
+export * from './ArtifactsModal'
 export * from './ConfirmModal'
 export * from './ConnectModal'
 export * from './EnvironmentsModal'

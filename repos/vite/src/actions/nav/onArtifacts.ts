@@ -1,5 +1,5 @@
-
+import { artifactsModal } from '@actions/modals'
 
 export const onArtifacts = () => {
-  console.log(`------- onArtifacts -------`)
+  artifactsModal()
 }

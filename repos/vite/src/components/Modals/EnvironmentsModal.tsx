@@ -11,7 +11,6 @@ export const EnvironmentsModal:TModalRef = (props:TModalComponent) => {
 
 EnvironmentsModal.modalType = EModalTypes.Environments
 EnvironmentsModal.modalProps = {
-  maxWidth: `xs`,
   title: `Environments`,
   titleProps: {
     Icon: (<SettingsEthernetIcon />)

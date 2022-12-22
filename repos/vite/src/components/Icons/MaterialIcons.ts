@@ -1,8 +1,4 @@
-import RuleCheck from '@mui/icons-material/RuleOutlined'
-import MapPoint from '@mui/icons-material/PlaceOutlined'
-import Globe from '@mui/icons-material/LanguageOutlined'
 import Settings from '@mui/icons-material/SettingsOutlined'
-import Picture from '@mui/icons-material/InsertPhotoOutlined'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import SettingsIcon from '@mui/icons-material/Settings'
 import ProfileIcon from '@mui/icons-material/ManageAccounts'
@@ -17,7 +13,6 @@ import OpenFileIcon from '@mui/icons-material/FileOpen'
 import PlugIcon from '@mui/icons-material/ElectricalServices'
 import CloudDownIcon from '@mui/icons-material/CloudDownload'
 import SubArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight'
-import CodeIcon from '@mui/icons-material/Code'
 import SourceIcon from '@mui/icons-material/Source'
 import CloudOffIcon from '@mui/icons-material/CloudOff'
 import BlockIcon from '@mui/icons-material/Block'
@@ -34,7 +29,6 @@ import CloseIcon from '@mui/icons-material/Close'
 import DarkModeIcon from '@mui/icons-material/DarkModeOutlined'
 import LightModeIcon from '@mui/icons-material/LightModeOutlined'
 import FileTreeIcon from '@mui/icons-material/AccountTreeOutlined'
-import FeaturesIcon from '@mui/icons-material/OutlinedFlagRounded'
 import RestartIcon from '@mui/icons-material/SettingsBackupRestoreOutlined'
 import ChevronUpIcon from '@mui/icons-material/ExpandLess'
 import ChevronDownIcon from '@mui/icons-material/ExpandMore'
@@ -53,12 +47,9 @@ import LockIcon from '@mui/icons-material/Lock'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
 import AppsIcon from '@mui/icons-material/Apps'
 import SearchIcon from '@mui/icons-material/Search'
+import InsertChartIcon from '@mui/icons-material/InsertChartOutlinedRounded'
 
 export {
-  Globe,
-  Picture,
-  MapPoint,
-  RuleCheck,
   Settings,
   PlugIcon,
   GitHubIcon,
@@ -71,7 +62,6 @@ export {
   ErrorIcon,
   PendingIcon,
   InfoIcon,
-  CodeIcon,
   SourceIcon,
   OpenFileIcon,
   CloudDownIcon,
@@ -92,7 +82,6 @@ export {
   LightModeIcon,
   FileTreeIcon,
   RestartIcon,
-  FeaturesIcon,
   ChevronUpIcon,
   ChevronDownIcon,
   PlayCircleOutlineIcon,
@@ -109,5 +98,6 @@ export {
   LockIcon,
   LockOpenIcon,
   AppsIcon,
-  SearchIcon
+  SearchIcon,
+  InsertChartIcon
 }
