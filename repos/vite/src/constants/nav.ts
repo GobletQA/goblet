@@ -1,5 +1,13 @@
 import type { TSideNav } from '@types'
+
 import { deepFreeze } from '@keg-hub/jsutils'
+import {
+  onFiles,
+  onSettings,
+  onArtifacts,
+  onEnvironments,
+} from '@actions/nav'
+
 
 export const HeaderNav = [
   {
@@ -28,16 +36,17 @@ export const SideNav = deepFreeze({
       items: [
         {
           title: `Files`,
-          tooltip: ``,
-          icon: `FileTreeIcon`
+          action: onFiles,
+          icon: `FileTreeIcon`,
         },
         {
+          icon: `Picture`,
           title: `Artifacts`,
-          tooltip: ``,
-          icon: `Picture`
+          action: onArtifacts,
         },
         {
           title: `Envs`,
+          action: onEnvironments,
           tooltip: `Environments`,
           icon: `SettingsEthernetIcon`
         },
@@ -53,6 +62,7 @@ export const SideNav = deepFreeze({
         {
           icon: `Settings`,
           title: `Settings`,
+          action: onSettings
         }
       ]
     }

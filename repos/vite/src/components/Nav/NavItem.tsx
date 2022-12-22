@@ -1,4 +1,4 @@
-import type { ElementType } from 'react'
+import type { TNavItem } from '@types'
 
 import { dims } from '@theme'
 import { useMemo } from 'react'
@@ -10,9 +10,7 @@ import { getColor } from '@utils/theme/getColor'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
 
-export type TNavItemProps = {
-  title: string
-  tooltip: string
+export type TNavItemProps = TNavItem & {
   open?: boolean
   index?: number
   group?: string
@@ -22,21 +20,19 @@ export type TNavItemProps = {
   activeNav?: string
   isActive?: boolean
   divider?: boolean | 'bottom' | 'top'
-  Icon?: ElementType
 }
 
 export const NavItem = (props:TNavItemProps) => {
   const {
-    title,
     Icon,
     open,
+    name,
+    title,
     tooltip,
     activeNav
   } = props
 
   const theme = useTheme()
-
-  const cleaned = useMemo(() => (title || ``).replace(/\s_-\//gim, ``).toLowerCase(), [title])
 
   const {
     color,
@@ -45,7 +41,7 @@ export const NavItem = (props:TNavItemProps) => {
     backgroundColor
   } = useMemo(() => {
 
-    const isActive = cleaned === activeNav
+    const isActive = name === activeNav
     const activeColor = getColor(`colors.fadeDark60`, `colors.fadeDark60`, theme)
     const inactiveColor = getColor(`colors.fadeDark50`, `colors.fadeDark50`, theme)
     const backgroundActiveColor = getColor(`colors.fadeDark15`, `colors.fadeDark15`, theme)
@@ -56,13 +52,13 @@ export const NavItem = (props:TNavItemProps) => {
       color: isActive ? activeColor : inactiveColor,
       backgroundColor: isActive ? backgroundActiveColor : `transparent`,
     }
-  }, [cleaned, activeNav, theme])
+  }, [name, activeNav, theme])
 
 
   return (
     <ListItem
-      data-nav-item={cleaned}
-      className={`nav-list-item nav-item-${cleaned}`}
+      data-nav-item={name}
+      className={`nav-list-item nav-item-${name}`}
       disablePadding
       sx={{
         bgcolor: backgroundColor,
@@ -78,8 +74,8 @@ export const NavItem = (props:TNavItemProps) => {
     >
       <Tooltip title={tooltip || title} loc='right' >
         <ListItemButton
-          data-nav-item={cleaned}
-          className={`nav-item-button nav-item-button-${cleaned}`}
+          data-nav-item={name}
+          className={`nav-item-button nav-item-button-${name}`}
           sx={{
             px: 2.5,
             minHeight: 48,
@@ -91,7 +87,7 @@ export const NavItem = (props:TNavItemProps) => {
           : (
               <ListItemText
                 primary={title}
-                data-nav-item={cleaned}
+                data-nav-item={name}
                 sx={{ color, opacity: open ? 1 : 0 }}
               />
             )

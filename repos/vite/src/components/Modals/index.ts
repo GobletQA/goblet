@@ -1,5 +1,6 @@
 export * from './ConfirmModal'
 export * from './ConnectModal'
+export * from './EnvironmentsModal'
 export * from './RepoModal'
 export * from './SettingsModal'
 export * from './SignInModal'

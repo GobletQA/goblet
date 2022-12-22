@@ -1,5 +1,11 @@
 import { TAnyCB } from './shared.types'
-import type { ReactNode, CSSProperties } from 'react'
+import type {
+  Dispatch,
+  ReactNode,
+  ElementType,
+  CSSProperties,
+  SetStateAction,
+} from 'react'
 import type {
   LinkProps,
   SvgIconProps,
@@ -7,12 +13,36 @@ import type {
   TypographyProps,
 } from '@mui/material'
 
+export enum ESideNav {
+  Artifacts = `artifacts`,
+  artifacts = `artifacts`,
+  ARTIFACTS = `artifacts`,
+  Environments = `environments`,
+  ENVIRONMENTS = `environments`,
+  environments = `environments`,
+  Files = `files`,
+  files = `files`,
+  FILES = `files`,
+  Settings = `settings`,
+  settings = `settings`,
+  SETTINGS = `settings`,
+}
+
+export type TNavItemClick = {
+  navItem:ESideNav,
+  activeNav:ESideNav|undefined,
+  setOpen:Dispatch<SetStateAction<boolean>>,
+  setActiveNav:Dispatch<SetStateAction<ESideNav | undefined>>,
+}
+
 export type TNavItem = {
   title: string,
-  tooltip: string,
-  icon?: string | ReactNode
+  action?:TAnyCB
+  name?: ESideNav
+  tooltip?: string
+  Icon?: ElementType
   style?: CSSProperties
-  [key:string]: any
+  icon?: string | ReactNode
 }
 
 export type TNavGroup = {

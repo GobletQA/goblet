@@ -1,22 +1,25 @@
 import type { TNavItemProps } from '../Nav/NavItem'
 
+import { ESideNav } from '@types'
 import { useState, useCallback } from 'react'
 import { HeaderSpacer, Drawer } from './SideNav.styled'
 import * as Icons from '@components/Icons'
 import { NavGroups, TGroupItem } from '../Nav'
 import { SideNav as SideNavConst } from '@constants/nav'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
-import { useSideNavToggle } from '@hooks/components/useSideNavToggle'
+import { useSideNavToggle } from '@hooks/nav/useSideNavToggle'
 
 const groups = SideNavConst.groups.map(group => {
   const builtGrp = { ...group, items: [] } as TGroupItem
   // @ts-ignore
-  group.items.map(({ icon, ...item}) => {
+  group.items.map(({ icon, title, name, ...item}) => {
     // @ts-ignore
     const Icon = Icons[icon]
     builtGrp.items.push({
       ...item,
       Icon,
+      title,
+      name: (name || title || ``).replace(/\s_-\//gim, ``).toLowerCase()
     } as TNavItemProps)
   })
 
@@ -30,7 +33,7 @@ type TSideNavProps = {
 
 export const SideNav = (props:TSideNavProps) => {
   const [open, setOpen] = useState(false)
-  const [activeNav, setActiveNav] = useState<string|undefined>()
+  const [activeNav, setActiveNav] = useState<ESideNav|undefined>()
 
   const toggleDrawer = useSideNavToggle(
     open,
