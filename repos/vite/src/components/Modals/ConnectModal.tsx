@@ -3,10 +3,9 @@ import type { TModalComponent, TModalRef } from '@types'
 import { useMemo } from 'react'
 import { gutter } from '@theme'
 import { useContainer } from '@store'
-import { ModalTypes } from '@constants'
-import { EContainerState } from '@types'
 import Divider from '@mui/material/Divider'
 import { PlugIcon } from '@components/Icons'
+import { EModalTypes, EContainerState } from '@types'
 import { ConnectForm } from '@components/Forms/ConnectForm'
 import { ModalFooter } from '@components/ModalManager/ModalFooter'
 import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
@@ -43,7 +42,7 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
       )
 }
 
-ConnectModal.modalType = ModalTypes.connect
+ConnectModal.modalType = EModalTypes.connect
 ConnectModal.modalProps = {
   Footer: false,
   manualClose: false,

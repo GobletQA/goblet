@@ -1,6 +1,6 @@
 import type { TModalRef, TModalComponent } from '@types'
 
-import { ModalTypes } from '@constants'
+import { EModalTypes } from '@types'
 import { Settings } from '@components/Settings'
 import { Settings as SettingsIcn } from '@components/Icons'
 
@@ -10,7 +10,7 @@ export const SettingsModal:TModalRef = (props:TModalComponent) => {
   )
 }
 
-SettingsModal.modalType = ModalTypes.settings
+SettingsModal.modalType = EModalTypes.settings
 SettingsModal.modalProps = {
   maxWidth: `lg`,
   title: `Settings`,

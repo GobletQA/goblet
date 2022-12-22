@@ -1,6 +1,6 @@
 import type { TModalRef, TModalComponent } from '@types'
 
-import { ModalTypes } from '@constants'
+import { EModalTypes } from '@types'
 import { WarningIcon } from '@components/Icons'
 
 export const ConfirmModal:TModalRef = (props:TModalComponent) => {
@@ -13,7 +13,7 @@ export const ConfirmModal:TModalRef = (props:TModalComponent) => {
   )
 }
 
-ConfirmModal.modalType = ModalTypes.confirm
+ConfirmModal.modalType = EModalTypes.confirm
 ConfirmModal.modalProps = {
   maxWidth: `xs`,
   title: `Confirm`,

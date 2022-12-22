@@ -11,9 +11,10 @@ import {
 } from 'react'
 
 import { useModal } from '@store'
+import { EModalTypes } from '@types'
+import { AuthActive } from '@constants'
 import { noOpObj } from '@keg-hub/jsutils'
 import { Fadeout } from '@components/Fadeout'
-import { ModalTypes, AuthActive } from '@constants'
 import { localStorage } from '@services/localStorage'
 import { useContainer, useUser, useRepo } from '@store'
 import { SocketService, WSService } from '@services/socketService'
@@ -130,7 +131,7 @@ const SocketChildren = memo((props:TSocketChildren) => {
   } = props
 
   const disable = modal.visible
-    && (modal?.type === ModalTypes.connect || modal?.type === ModalTypes.signIn)
+    && (modal?.type === EModalTypes.connect || modal?.type === EModalTypes.signIn)
 
   return (
     <>

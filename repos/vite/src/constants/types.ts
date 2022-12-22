@@ -25,27 +25,6 @@ export {
   setFileTypeConstants
 }
 
-export enum ModalTypes {
-  Confirm = `confirm`,
-  CONFIRM = `confirm`,
-  confirm = `confirm`,
-  Connect = `connect`,
-  CONNECT = `connect`,
-  connect = `connect`,
-  Repo = `repo`,
-  REPO = `repo`,
-  repo = `repo`,
-  Settings = `settings`,
-  SETTINGS = `settings`,
-  settings = `settings`,
-  SignIn = `signIn`,
-  SIGN_IN = `signIn`,
-  signIn = `signIn`,
-  Environments = `environments`,
-  environments = `environments`,
-  ENVIRONMENTS = `environments`,
-} 
-
 export enum StatusTypes {
   VNC = 'vnc',
   LOCAL = 'local',

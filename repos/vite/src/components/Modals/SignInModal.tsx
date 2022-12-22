@@ -1,7 +1,8 @@
 import type { TModalRef, TModalComponent } from '@types'
 import { lazy, Suspense, useEffect } from 'react'
 
-import { ModalTypes, AuthActive } from '@constants'
+import { EModalTypes } from '@types'
+import { AuthActive } from '@constants'
 import { useUser, useRepo } from '@store'
 import { Git } from '@components/Icons/Git'
 import { Loading } from '@components/Loading'
@@ -34,7 +35,7 @@ export const SignInModal:TModalRef = (props:TModalComponent) => {
   )
 }
 
-SignInModal.modalType = ModalTypes.signIn
+SignInModal.modalType = EModalTypes.signIn
 SignInModal.modalProps = {
   maxWidth: `sm`,
   title: `Sign In`,

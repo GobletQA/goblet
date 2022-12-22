@@ -1,7 +1,7 @@
 import type { TModalComponent, TModalRef } from '@types'
 
 import { gutter } from '@theme'
-import { ModalTypes } from '@constants'
+import { EModalTypes } from '@types'
 import Divider from '@mui/material/Divider'
 import { SourceIcon } from '@components/Icons'
 import { RepoForm } from '@components/Forms/RepoForm'
@@ -31,7 +31,7 @@ export const RepoModal:TModalRef = (props:TModalComponent) => {
   )
 }
 
-RepoModal.modalType = ModalTypes.repo
+RepoModal.modalType = EModalTypes.repo
 RepoModal.modalProps = {
   title: `Repo`,
   Footer: false,

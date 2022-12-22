@@ -1,5 +1,5 @@
 
-import { ModalTypes } from '@constants'
+import { EModalTypes } from '@types'
 import { useInline } from '@hooks/useInline'
 import { connectRepo } from '@actions/repo/api/connect'
 import { toggleModal } from '@actions/modals/toggleModal'

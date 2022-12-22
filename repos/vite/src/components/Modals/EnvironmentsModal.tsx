@@ -1,6 +1,6 @@
 import type { TModalRef, TModalComponent } from '@types'
 
-import { ModalTypes } from '@constants'
+import { EModalTypes } from '@types'
 import { Environments } from '@components/Environments'
 import { SettingsEthernetIcon } from '@components/Icons'
 
@@ -9,7 +9,7 @@ export const EnvironmentsModal:TModalRef = (props:TModalComponent) => {
   return (<Environments />)
 }
 
-EnvironmentsModal.modalType = ModalTypes.Environments
+EnvironmentsModal.modalType = EModalTypes.Environments
 EnvironmentsModal.modalProps = {
   maxWidth: `xs`,
   title: `Environments`,

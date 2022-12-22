@@ -1,10 +1,11 @@
 import type { TAction } from '@types'
-import { ModalTypes } from '@constants'
+
+import { EModalTypes } from '@types'
 import { deepMerge } from '@keg-hub/jsutils'
 
 
 export type TModalState = {
-  type?: ModalTypes
+  type?: EModalTypes
   visible: boolean
   modalProps?: Record<any, any>
 }

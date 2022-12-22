@@ -7,6 +7,27 @@ import type DialogContent from '@mui/material/DialogContent'
 import type { TransitionProps } from '@mui/material/transitions'
 import type { ModalRoot } from '@components/ModalManager/ModalRoot'
 
+export enum EModalTypes {
+  Confirm = `confirm`,
+  CONFIRM = `confirm`,
+  confirm = `confirm`,
+  Connect = `connect`,
+  CONNECT = `connect`,
+  connect = `connect`,
+  Repo = `repo`,
+  REPO = `repo`,
+  repo = `repo`,
+  Settings = `settings`,
+  SETTINGS = `settings`,
+  settings = `settings`,
+  SignIn = `signIn`,
+  SIGN_IN = `signIn`,
+  signIn = `signIn`,
+  Environments = `environments`,
+  environments = `environments`,
+  ENVIRONMENTS = `environments`,
+} 
+
 export type TModalRef = typeof ModalRoot & {
   modalType: string
   modalProps: Partial<TModalComponent>

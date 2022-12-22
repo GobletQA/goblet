@@ -1,5 +1,5 @@
-
+import { environmentsModal } from '@actions/modals'
 
 export const onEnvironments = () => {
-  console.log(`------- onEnvironments -------`)
+  environmentsModal()
 }
