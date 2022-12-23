@@ -28,6 +28,7 @@ esbuild({
   entryFile,
   cwd: GBERoot,
   mergeEnvs:true,
+  sourcemap: 'inline',
   envs: {
     ...envs,
     GOBLET_ROOT_DIR: aliases.GobletRoot

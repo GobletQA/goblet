@@ -19,6 +19,7 @@ esbuild({
   outFile,
   entryFile,
   cwd: rootDir,
+  sourcemap: 'inline',
   envOpts: {
     noYml: true,
     name: `goblet`,
