@@ -1,4 +1,3 @@
-require('source-map-support').install({ environment: 'node' })
 require('../../configs/aliases.config').registerAliases()
 
 // import path from 'path'

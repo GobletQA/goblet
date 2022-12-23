@@ -119,8 +119,8 @@ const getArgs = (
 const buildDevServer = (config:TESBuildConf, noDevServer:boolean) => {
   const { cwd, envOpts, args, nodemonOpts } = config
 
-  const envs = getEnvs(eitherObj<TEnvOpts>(envOpts, noOpObj))
-  const nmArgs = getArgs(cwd, eitherObj<TNMOpts>(nodemonOpts, noOpObj), args)
+  const envs = getEnvs(eitherObj<TEnvOpts,TEnvOpts>(envOpts, noOpObj))
+  const nmArgs = getArgs(cwd, eitherObj<TNMOpts,TNMOpts>(nodemonOpts, noOpObj), args)
 
   const devServer = (async () => {
     if (noDevServer) return
@@ -181,7 +181,7 @@ export const esbuild = async (config:TESBuildConf) => {
     bundle: true,
     minify: false,
     sourcemap: true,
-    target: 'es2017',
+    target: 'es2020',
     platform: 'node',
     assetNames: '[name]',
     allowOverwrite: true,

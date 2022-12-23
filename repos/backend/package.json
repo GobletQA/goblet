@@ -19,8 +19,8 @@
   },
   "scripts": {
     "build": "yarn build:docker && yarn build:goblet",
-    "build:docker": "node -r esbuild-register configs/build.config.ts",
-    "build:goblet": "node -r esbuild-register configs/build.goblet.config.ts",
+    "build:docker": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
+    "build:goblet": "node --enable-source-maps -r esbuild-register configs/build.goblet.config.ts",
     "clean": "yarn clean:dist; yarn clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "yarn clean; yarn install",
@@ -29,8 +29,8 @@
     "json:rm": "dot-json package.json devDependencies -d",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
-    "start": "DEBUG=\"http-proxy-middleware*\" DEV_BUILD=1 node -r esbuild-register --max-http-header-size=262144 configs/build.config.ts",
-    "serve": "DEBUG=\"http-proxy-middleware*\" node -r esbuild-register dist/index.js >> /proc/1/fd/1",
+    "start": "DEBUG=\"http-proxy-middleware*\" DEV_BUILD=1 node --enable-source-maps -r esbuild-register --max-http-header-size=262144 configs/build.config.ts",
+    "serve": "DEBUG=\"http-proxy-middleware*\" node --enable-source-maps -r esbuild-register dist/index.js >> /proc/1/fd/1",
     "validate": "tsc --noEmit"
   },
   "dependencies": {

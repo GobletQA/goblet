@@ -30,6 +30,7 @@ esbuild({
     `configs/nm.config.json`,
     `--exec`,
     `node`,
+    `--enable-source-maps`,
     `-r`,
     `esbuild-register`,
     outFile

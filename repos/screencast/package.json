@@ -32,21 +32,21 @@
     "start": "yarn sc:start",
     "serve": "/bin/bash scripts/initialize.sh",
 
-    "bs": "node -r esbuild-register dist/bs.js",
-    "bs:build": "node -r esbuild-register configs/bs.build.config.ts",
-    "bs:start": "node -r esbuild-register configs/bs.build.config.ts",
+    "bs": "node --enable-source-maps -r esbuild-register dist/bs.js",
+    "bs:build": "node --enable-source-maps -r esbuild-register configs/bs.build.config.ts",
+    "bs:start": "node --enable-source-maps -r esbuild-register configs/bs.build.config.ts",
 
-    "sc": "node -r esbuild-register dist/sc.js",
-    "sc:build": "node -r esbuild-register configs/sc.build.config.ts",
-    "sc:start": "node -r esbuild-register configs/sc.build.config.ts",
+    "sc": "node --enable-source-maps -r esbuild-register dist/sc.js",
+    "sc:build": "node --enable-source-maps -r esbuild-register configs/sc.build.config.ts",
+    "sc:start": "node --enable-source-maps -r esbuild-register configs/sc.build.config.ts",
 
-    "sock": "node -r esbuild-register dist/sock.js",
-    "sock:build": "node -r esbuild-register configs/sock.build.config.ts",
-    "sock:start": "node -r esbuild-register configs/sock.build.config.ts",
+    "sock": "node --enable-source-maps -r esbuild-register dist/sock.js",
+    "sock:build": "node --enable-source-maps -r esbuild-register configs/sock.build.config.ts",
+    "sock:start": "node --enable-source-maps -r esbuild-register configs/sock.build.config.ts",
 
-    "vnc": "node -r esbuild-register dist/vnc.js",
-    "vnc:build": "node -r esbuild-register configs/vnc.build.config.ts",
-    "vnc:start": "node -r esbuild-register configs/vnc.build.config.ts"
+    "vnc": "node --enable-source-maps -r esbuild-register dist/vnc.js",
+    "vnc:build": "node --enable-source-maps -r esbuild-register configs/vnc.build.config.ts",
+    "vnc:start": "node --enable-source-maps -r esbuild-register configs/vnc.build.config.ts"
   },
   "dependencies": {
     "@gobletqa/shared": "*",
@@ -60,7 +60,6 @@
     "fs-extra": "10.1.0",
     "playwright": "*",
     "socket.io": "*",
-    "source-map-support": "*",
     "tail-file": "1.4.15"
   },
   "devDependencies": {

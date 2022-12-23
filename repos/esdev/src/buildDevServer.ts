@@ -34,6 +34,7 @@ const nodemonDefArgs = (outFile:string, configPath:string) => ([
   `**/*`,
   `--exec`,
   `node`,
+  `--enable-source-maps`,
   `-r`,
   `esbuild-register`,
   outFile

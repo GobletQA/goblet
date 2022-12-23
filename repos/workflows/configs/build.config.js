@@ -53,7 +53,7 @@ build({
   bundle: true,
   minify: false,
   sourcemap: true,
-  target: 'es2017',
+  target: 'es2020',
   platform: 'node',
   assetNames: '[name]',
   allowOverwrite: true,
