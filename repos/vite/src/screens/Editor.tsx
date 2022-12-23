@@ -1,45 +1,33 @@
-import { useState, useCallback } from 'react'
+import { dims } from '@theme'
+import { useApp } from '@store'
+import { EEditorType } from '@types'
 import { Layout } from '@components/Layout'
-import { Builder } from '@components/Builder'
 import { CodeEditor } from '@components/CodeEditor'
+import { VisualEditor } from '@components/VisualEditor'
 import { DefinitionsSlider } from '@components/Definitions/DefinitionsSlider'
 
-enum EEditorTypes {
-  code='code',
-  builder='builder'
+const style = {
+  maxHeight: `calc( 100% - ${dims.defs.header.hpx} )`
 }
 
 const EditorComps = {
-  [EEditorTypes.builder]: {
-    Component: Builder,
-    style: {}
+  [EEditorType.visual]: {
+    Component: VisualEditor,
   },
-  [EEditorTypes.code]: {
+  [EEditorType.code]: {
     Component: CodeEditor,
-    style: {
-      maxHeight: `calc( 100% - 40px )`
-    }
   }
 }
 
 export type TEditorProps = {}
 
 export default function Editor(props:TEditorProps){
-  const [editorType, setEditorType] = useState<EEditorTypes>(EEditorTypes.builder)
-
-  const toggleType = useCallback(() => {
-    const updatedType = editorType === EEditorTypes.code
-      ? EEditorTypes.builder
-      : EEditorTypes.code
-    
-    setEditorType(updatedType)
-  }, [editorType])
-
-  const { Component, style } = EditorComps[editorType]
+  const { editor } = useApp()
+  const { Component, ...rest } = EditorComps[editor]
 
   return (
     <Layout>
-      <Component style={style} />
+      <Component style={style} {...rest} />
       <DefinitionsSlider />
     </Layout>
   )

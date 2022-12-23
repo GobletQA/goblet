@@ -48,6 +48,8 @@ import LockOpenIcon from '@mui/icons-material/LockOpen'
 import AppsIcon from '@mui/icons-material/Apps'
 import SearchIcon from '@mui/icons-material/Search'
 import InsertChartIcon from '@mui/icons-material/InsertChartOutlinedRounded'
+import DesignIcon from '@mui/icons-material/DesignServicesOutlined'
+
 
 export {
   Settings,
@@ -99,5 +101,6 @@ export {
   LockOpenIcon,
   AppsIcon,
   SearchIcon,
-  InsertChartIcon
+  InsertChartIcon,
+  DesignIcon
 }

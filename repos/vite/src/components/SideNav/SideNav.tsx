@@ -2,7 +2,6 @@ import type { TNavItemProps } from '../Nav/NavItem'
 
 import { useState, useCallback } from 'react'
 import { ESideNav } from '@types'
-import * as Icons from '@components/Icons'
 import { navItemNameToTitle } from '@utils'
 import { NavGroups, TGroupItem } from '../Nav'
 import { HeaderSpacer, Drawer } from './SideNav.styled'
@@ -13,15 +12,13 @@ import { useSideNavToggle } from '@hooks/nav/useSideNavToggle'
 const groups = SideNavItems.groups.map(group => {
   const builtGrp = { ...group, items: [] } as TGroupItem
   // @ts-ignore
-  group.items.map(({ icon, title, name, ...item}) => {
-    // @ts-ignore
-    const Icon = Icons[icon]
-    builtGrp.items.push({
-      ...item,
-      Icon,
-      title,
-      name: navItemNameToTitle(name, title)
-    } as TNavItemProps)
+  group.items.map(({ icon, hidden, title, name, ...item }) => {
+    !hidden &&
+      builtGrp.items.push({
+        ...item,
+        title,
+        name: name || navItemNameToTitle(title)
+      } as TNavItemProps)
   })
 
   return builtGrp

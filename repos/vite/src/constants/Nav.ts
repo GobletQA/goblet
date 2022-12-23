@@ -1,12 +1,22 @@
 import type { TSideNav } from '@types'
 
+import { EEditorType, ESideNav } from '@types'
 import { deepFreeze } from '@keg-hub/jsutils'
 import {
   onFiles,
+  onEditor,
   onSettings,
   onArtifacts,
   onEnvironments,
 } from '@actions/nav'
+import {
+  Settings,
+  DesignIcon,
+  EditorSwitch,
+  FileTreeIcon,
+  InsertChartIcon,
+  SettingsEthernetIcon,
+} from '@components/Icons'
 
 
 export const HeaderNav = [
@@ -28,19 +38,39 @@ export const HeaderNav = [
   },
 ]
 
+export const EditorNavItems = {
+  [EEditorType.visual]: {
+    title: `Visual Editor`,
+    action: onEditor,
+    Icon: DesignIcon,
+    name: ESideNav.editor,
+    tooltip: `Switch to Code Editor`,
+  },
+  [EEditorType.code]: {
+    title: `Code Editor`,
+    hidden: true,
+    action: onEditor,
+    Icon: DesignIcon,
+    name: ESideNav.editor,
+    tooltip: `Switch to Visual Editor`,
+  },
+}
+
 export const SideNav = deepFreeze({
   groupClassName: `group-nav-list`,
   groups: [
     {
       name: `core-navigation`,
       items: [
+        EditorNavItems[EEditorType.code],
+        EditorNavItems[EEditorType.visual],
         {
           title: `Files`,
           action: onFiles,
-          icon: `FileTreeIcon`,
+          Icon: FileTreeIcon,
         },
         {
-          icon: `InsertChartIcon`,
+          Icon: InsertChartIcon,
           title: `Artifacts`,
           action: onArtifacts,
         },
@@ -48,7 +78,7 @@ export const SideNav = deepFreeze({
           title: `Envs`,
           action: onEnvironments,
           tooltip: `Environments`,
-          icon: `SettingsEthernetIcon`
+          Icon: SettingsEthernetIcon
         },
       ]
     },
@@ -60,7 +90,7 @@ export const SideNav = deepFreeze({
       },
       items: [
         {
-          icon: `Settings`,
+          Icon: Settings,
           title: `Settings`,
           action: onSettings
         }

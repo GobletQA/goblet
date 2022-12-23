@@ -1,4 +1,5 @@
 import { CombinedState } from 'redux'
+import { TAppState } from '@reducers/app'
 import { TRepoState } from '@reducers/repo'
 import { TUserState } from '@reducers/user'
 import { TFilesState } from '@reducers/files'
@@ -11,6 +12,7 @@ import { TContainerState } from '@reducers/container'
 import { TDefinitionsState } from '@reducers/definitions'
 
 export type {
+  TAppState,
   TContainerState,
   TDefinitionsState,
   TFeaturesState,
@@ -24,6 +26,7 @@ export type {
 }
 
 export type TCombinedState = {
+  app: TAppState
   container: TContainerState
   definitions: TDefinitionsState
   features: TFeaturesState

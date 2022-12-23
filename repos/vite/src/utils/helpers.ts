@@ -20,6 +20,6 @@ export const asCallback = (callback:(...args:any[]) => any, defs:boolean|Record<
 }
 
 
-export const navItemNameToTitle = (name?:string, title?:string) => {
-  return (name || title || ``).replace(/\s_-\//gim, ``).toLowerCase()
+export const navItemNameToTitle = (title?:string) => {
+  return (title || ``).replace(/\s_-\//gim, ``).toLowerCase()
 }

@@ -14,6 +14,9 @@ import type {
 } from '@mui/material'
 
 export enum ESideNav {
+  Editor = `editor`,
+  editor = `editor`,
+  EDITOR = `editor`,
   Artifacts = `artifacts`,
   artifacts = `artifacts`,
   ARTIFACTS = `artifacts`,
@@ -39,10 +42,11 @@ export type TNavItem = {
   title: string,
   action?:TAnyCB
   name?: ESideNav
+  hidden?:boolean
   tooltip?: string
+  context?: string
   Icon?: ElementType
   style?: CSSProperties
-  icon?: string | ReactNode
 }
 
 export type TNavGroup = {

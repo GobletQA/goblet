@@ -2,6 +2,7 @@ import type { TState } from '@types'
 
 import { combineReducers } from 'redux'
 import { createReducer } from '@reduxjs/toolkit'
+import { appState, appActions } from './app'
 import { userState, userActions } from './user'
 import { repoState, repoActions } from './repo'
 import { modalState, modalActions } from './modal'
@@ -14,6 +15,7 @@ import { containerState, containerActions } from './container'
 import { definitionsState, definitionsActions } from './definitions'
 
 export const preloadedState = {
+  app: appState,
   container: containerState,
   definitions: definitionsState,
   features: featuresState,
@@ -26,6 +28,7 @@ export const preloadedState = {
 }
 
 export const reducer = combineReducers<TState>({
+  app: createReducer(appState, appActions),
   container: createReducer(containerState, containerActions),
   definitions: createReducer(definitionsState, definitionsActions),
   features: createReducer(featuresState, featuresActions),

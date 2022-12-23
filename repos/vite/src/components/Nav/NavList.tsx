@@ -1,10 +1,13 @@
 import type { CSSProperties } from 'react'
-
-import { Fragment } from 'react'
 import type { TNavItemProps } from './NavItem'
+
+import { useMemo } from 'react'
+import { useApp } from '@store'
 import { NavItem } from './NavItem'
+import { ESideNav, EEditorType } from '@types'
 import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
+import { EditorNavItems } from '@constants/nav'
 
 
 export type TNavListProps = {
@@ -17,26 +20,62 @@ export type TNavListProps = {
   groupStyle?: CSSProperties
 }
 
+export type TNavListItem = {
+  idx:number
+  last:boolean
+  first:boolean
+  group: string
+  open?: boolean
+  editor:EEditorType
+  activeNav?: string
+  item:TNavItemProps
+}
+
+const useEditorItem = (props:TNavListItem) => {
+  const { editor, item } = props
+
+  return useMemo(() => {
+    return item.name === ESideNav.editor
+      ? EditorNavItems[editor] as TNavItemProps
+      : item
+  }, [item.name, editor])
+} 
+
+
+const NavListItem = (props:TNavListItem) => {
+  const { editor, item, ...rest } = props
+
+  const navItem = useEditorItem(props)
+
+  return (
+    <>
+      {(navItem.divider === 'top' || navItem.divider === true) && (<Divider />)}
+      <NavItem {...navItem} {...rest} />
+      {(navItem.divider === 'bottom' || navItem.divider === true) && (<Divider />)}
+    </>
+  )
+}
+
 export const NavList = (props:TNavListProps) => {
   const { items, groupStyle, group, open, className, activeNav } = props
+  const { editor } = useApp()
+  
   const itemLength = items.length - 1
   return (
     <List sx={groupStyle} className={`${group}-group-nav-list ${className || ``}`.trim()}  >
       {items.map((item:TNavItemProps, idx:number) => {
         return (
-          <Fragment key={`${group}-${item.title}`} >
-            {(item.divider === 'top' || item.divider === true) && (<Divider />)}
-            <NavItem
-              {...item}
-              open={open}
-              group={group}
-              index={idx}
-              first={idx === 0}
-              activeNav={activeNav}
-              last={idx === itemLength}
-            />
-            {(item.divider === 'bottom' || item.divider === true) && (<Divider />)}
-          </Fragment>
+          <NavListItem
+            idx={idx}
+            item={item}
+            open={open}
+            group={group}
+            editor={editor}
+            first={idx === 0}
+            activeNav={activeNav}
+            last={idx === itemLength}
+            key={`${group}-${item.title}`}
+          />
         )
       })}
     </List>
