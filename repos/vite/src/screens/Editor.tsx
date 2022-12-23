@@ -25,7 +25,7 @@ const EditorComps = {
 export type TEditorProps = {}
 
 export default function Editor(props:TEditorProps){
-  const [editorType, setEditorType] = useState<EEditorTypes>(EEditorTypes.code)
+  const [editorType, setEditorType] = useState<EEditorTypes>(EEditorTypes.builder)
 
   const toggleType = useCallback(() => {
     const updatedType = editorType === EEditorTypes.code

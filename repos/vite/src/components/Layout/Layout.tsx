@@ -37,7 +37,6 @@ const fullHeight = {
 const noOverflow = {
   ...fullHeight,
   overflow: `hidden`,
-  borderRight: `5px solid ${colors.black03}`
 }
 
 export type TLayout = {

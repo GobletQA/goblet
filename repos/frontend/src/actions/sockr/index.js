@@ -1,5 +1,0 @@
-export * from './cmdEnd'
-export * from './cmdErr'
-export * from './cmdFail'
-export * from './cmdOut'
-export * from './cmdRunning'
