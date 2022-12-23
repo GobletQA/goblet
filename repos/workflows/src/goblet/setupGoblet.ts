@@ -12,7 +12,8 @@ import { configureGitArgs } from '../utils/configureGitArgs'
 // @ts-ignore
 import { getConfigAtPath } from '@gobletqa/shared/utils/getGobletConfig'
 
-import { TWFArgs, TRepoConf, TGitOpts } from '@gobletqa/workflows/types'
+import { TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
+import { TGitData, TRepoOpts } from '@gobletqa/workflows/types/shared.types'
 
 /**
  * Workflow that creates the folder structure for goblet (templates/repo/default-template)
@@ -25,7 +26,7 @@ export const setupGoblet = async (args:TWFArgs, gitArgs:TGitOpts, mounted?:boole
 
   const token = (gitArgs && gitArgs.token) || (await git.loadToken(args))
   gitArgs = gitArgs || (await configureGitArgs({ ...args, token }))
-  const gitOpts = omitKeys(gitArgs, ['email', 'token'])
+  const gitOpts = omitKeys(gitArgs, ['email', 'token']) as TGitData
 
   const isMounted = mounted || (await git.exists(args))
   if (!isMounted)
@@ -56,7 +57,7 @@ export const setupGoblet = async (args:TWFArgs, gitArgs:TGitOpts, mounted?:boole
             ...gobletConfig,
             git:gitOpts,
             name: getRepoName(gitArgs.remote),
-          } as TRepoConf,
+          } as TRepoOpts,
         },
         `Finished running Setup Goblet Workflow`
       )

@@ -1,14 +1,15 @@
-
+import path from 'path'
+import { createRequire } from 'module'
 import { exists } from '@keg-hub/jsutils'
 import { addToProcess } from '@keg-hub/cli-utils'
 import { loadConfigs } from '@keg-hub/parse-config'
 
-  // @ts-ignore
-import { getGobletConfig } from '../../shared/src/utils/getGobletConfig.js'
-
 const { GOBLET_ENV, NODE_ENV } = process.env
 if(GOBLET_ENV && NODE_ENV !== GOBLET_ENV) process.env.NODE_ENV = GOBLET_ENV
 else if(!process.env.GOBLET_ENV && NODE_ENV) process.env.GOBLET_ENV = NODE_ENV
+
+const requireGoblet = createRequire(path.join(__dirname, '../../shared/src/utils'))
+const { getGobletConfig } = requireGoblet('./utils/getGobletConfig.ts')
 
 /**
  * Is called form the tap.js config in the root

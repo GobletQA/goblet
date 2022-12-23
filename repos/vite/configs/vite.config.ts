@@ -1,7 +1,6 @@
 import 'esbuild-register'
 import path from 'path'
 import { defineConfig } from 'vite'
-import mkcert from'vite-plugin-mkcert'
 import react from '@vitejs/plugin-react'
 import { loadConfig } from './frontend.config'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -9,14 +8,10 @@ import { svgrComponent } from 'vite-plugin-svgr-component'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
 
 const rootDir = path.join(__dirname, '..')
-process.env.PLUGIN_DATA_DIR = path.join(rootDir, `../../certs`)
-const isHttps = Boolean(
-  process.env.VITE_HTTPS && (process.env.VITE_HTTPS === 'true' || process.env.VITE_HTTPS === '1')
-)
 
 export default defineConfig(async () => {
 
-  const { envs, port} = loadConfig()
+  const { envs, port } = loadConfig()
 
   return {
     root: rootDir,
@@ -27,7 +22,6 @@ export default defineConfig(async () => {
     define: envs,
     server: {
       port,
-      https: isHttps,
     },
     optimizeDeps: {
       esbuildOptions: {
@@ -45,7 +39,6 @@ export default defineConfig(async () => {
       }),
 
       react(),
-      isHttps && mkcert(),
       tsconfigPaths(),
       svgrComponent({
         svgrOptions: {

@@ -1,16 +1,10 @@
+import type  { TGitData } from './shared.types'
 import type { RepoWatcher } from '../git/repoWatcher'
 
-export type TGitOpts = {
+export type TGitOpts = TGitData & {
   log?:boolean
-  local:string
-  name?: string
   token: string
-  remote:string
   email?: string
-  branch?: string
-  username: string
-  newBranch?: string
-  createBranch?: boolean
 }
 
 export type TGitUser = {
@@ -30,12 +24,6 @@ export type TGitRepo = {
 export type TGitMeta = {
   user?: TGitUser
   repo?: TGitRepo
-}
-
-export type TRepoConf = {
-  name: string
-  git: Record<string, any>
-  [key:string]: any
 }
 
 export type TRepoWatchCb = (event:string, path:string, repoWatcher:RepoWatcher) => void

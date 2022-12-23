@@ -1,4 +1,5 @@
-import { TGitMeta, TRepoConf } from './git.types'
+import { TGitMeta } from './git.types'
+import { TRepoOpts } from './shared.types'
 
 export type TWFArgs = TGitMeta & {
   repoTemplate?: string
@@ -9,7 +10,7 @@ export type TResArgs = {
   mode?: string
   setup: boolean
   status?: string
-  repo?: TRepoConf
+  repo?: TRepoOpts
   mounted?: boolean
 }
 
