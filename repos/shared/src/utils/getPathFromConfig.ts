@@ -14,7 +14,3 @@ export const getPathFromConfig = (key:string, config:TGobletConfig) => {
 
   return path.join(baseDir, config.paths[key])
 }
-
-module.exports = {
-  getPathFromConfig,
-}

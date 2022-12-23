@@ -1,4 +1,4 @@
-const isSecret = require('is-secret')
+import isSecret from 'is-secret'
 
 const unsafeValues = [
   /token/i,
@@ -15,9 +15,9 @@ const unsafeKeyValuePair = [
 const possibleArrayKeys = ['stack', 'message']
 const HIDDEN = '[HIDDEN]'
 
-const safeReplacer = (key, value) => {
+export const safeReplacer = (key:string|number, value:any) => {
   if (value instanceof Buffer) return value.toString('base64')
-  if (value instanceof Date) return formatISO(value)
+  if (value instanceof Date) return value.toString()
 
   if (typeof key === 'string' && isSecret.key(key)) return HIDDEN
   if (typeof value !== 'string') return value
@@ -36,9 +36,4 @@ const safeReplacer = (key, value) => {
     return value.split('\n').map((x) => x.trim())
 
   return value
-}
-
-
-module.exports = {
-  safeReplacer
 }
