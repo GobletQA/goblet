@@ -2,10 +2,9 @@ import type { ReactNode, ElementType } from 'react'
 import type { EStepKey, TDefGroup } from '@types'
 
 import { Fragment } from 'react'
-import Divider from '@mui/material/Divider'
 import { isValidFuncComp } from '@utils/components'
-import { DefListSubheader } from './DefinitionList.styled'
 import { DefinitionListItem } from './DefinitionListItem'
+import { DefItemDivider, DefListSubheader } from './DefinitionList.styled'
 
 export type TDefinitionListGroup = {
   type:EStepKey
@@ -36,7 +35,7 @@ export const DefinitionListGroup = (props:TDefinitionListGroup) => {
           }
         </DefListSubheader>
 
-        <Divider />
+        <DefItemDivider className='goblet-def-sub-header-divider' />
 
         {group.items.map((item) => {
           return (
@@ -45,7 +44,7 @@ export const DefinitionListGroup = (props:TDefinitionListGroup) => {
                 item={item}
                 type={type as EStepKey}
               />
-              <Divider />
+              <DefItemDivider className='goblet-def-list-item-divider' />
             </Fragment>
           )
         })}

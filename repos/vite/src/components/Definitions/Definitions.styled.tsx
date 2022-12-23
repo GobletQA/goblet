@@ -106,16 +106,16 @@ export const DefsHeaderTab = styled(Tab)(({ theme }) => `
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
 
   color: ${getColor(colors.fadeDark30, colors.fadeLight55, theme)};
-  background-color: ${getColor(colors.gray04, colors.black03, theme)};
+  background-color: ${getColor(colors.gray03, colors.black03, theme)};
   border-bottom: 1px solid ${getColor(colors.gray00, 'transparent', theme)};
 
   &.Mui-selected {
-    color: ${getColor(colors.fadeDark80, colors.fadeLight90, theme)};
+    color: ${getColor(colors.gray07, colors.fadeLight90, theme)};
     background-color: ${getColor(colors.white00, colors.black05, theme)};
   }
 
   &:hover:not(.Mui-selected) {
-    color: ${getColor(colors.fadeDark80, colors.fadeLight75, theme)};
+    color: ${getColor(colors.gray07, colors.fadeLight75, theme)};
     background-color: ${getColor(colors.white00, colors.black04, theme)};
   }
 `)

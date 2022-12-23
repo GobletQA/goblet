@@ -1,6 +1,7 @@
 import type { TDefGroupItem } from '@types'
 
 import Box from '@mui/material/Box'
+import { cls } from '@keg-hub/jsutils'
 import { DefButton } from './DefinitionList.styled'
 
 
@@ -30,7 +31,7 @@ export const DefinitionItemActions = (props:TDefinitionItemActions) => {
               <DefButton
                 key={action.key}
                 sx={styles.button}
-                className={strRef}
+                className={cls(`goblet-def-item-action`, strRef)}
                 aria-label={strRef}
                 onClick={action.action as any}
               >

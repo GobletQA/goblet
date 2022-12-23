@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
+import Divider from '@mui/material/Divider'
 import { colors, dims, gutter } from '@theme'
 import { styled } from '@mui/material/styles'
 import ListItem from '@mui/material/ListItem'
@@ -87,18 +88,36 @@ export const DefListSubheader = styled(ListSubheader)(({ theme }) => `
   background-color: ${getColor(colors.white00, colors.black02, theme)};
 `)
 
+export const DefItemDivider = styled(Divider)(({ theme }) => `
+  border-bottom: 1px solid ${getColor(colors.gray02, colors.black03, theme)};
+`)
+
 export const DefItem = styled(ListItem)(({ theme }) => `
   padding: 5px 0px 0px;
   min-height: 35px;
   flex-direction: column;
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+  background-color: ${getColor(colors.gray01, colors.black05, theme)};
+  color: ${getColor(colors.black09, colors.gray04, theme)};
 
   &.item-open {
-    background-color: ${getColor(colors.white00, colors.black03, theme)};
+    background-color: ${getColor(colors.white00, colors.black04, theme)};
+    color: ${getColor(colors.black04, colors.white00, theme)};
+    
+    & .goblet-def-item-action {
+      color: ${getColor(colors.gray07, colors.fadeLight50, theme)};
+    }
+
   }
 
   &:hover {
-    background-color: ${getColor(colors.white00, colors.black03, theme)};
+    background-color: ${getColor(colors.white00, colors.black04, theme)};
+    color: ${getColor(colors.black04, colors.white00, theme)};
+    
+    & .goblet-def-item-action {
+      color: ${getColor(colors.gray07, colors.fadeLight50, theme)};
+    }
+    
   }
 
   & .goblet-def-item-meta-toggle {
@@ -117,7 +136,6 @@ export const DefItemRow = styled(Box)(({ theme }) => `
 
 export const DefText = styled(ListItemText)(({ theme }) => `
   flex-grow: 1;
-  color: ${getColor(colors.black06, colors.white00, theme)};
 `)
 
 
@@ -127,7 +145,7 @@ export const DefIcon = styled(ListItemIcon)(({ theme }) => `
 
 export const DefMetaCollapse = styled(Collapse)(({ theme }) => `
   width: 100%;
-  border-left: 5px solid ${getColor(colors.gray06, colors.black03, theme)};
+  border-left: 5px solid ${getColor(colors.gray07, colors.black03, theme)};
 `)
 
 export const DefButton = styled(ListItemButton)(({ theme }) => `
@@ -135,15 +153,15 @@ export const DefButton = styled(ListItemButton)(({ theme }) => `
   flex-grow: 0;
   padding-right: 0px;
   font-weight: bold;
-  color: ${getColor(colors.fadeDark50, colors.fadeLight50, theme)};
+  color: ${getColor(colors.gray05, colors.fadeLight50, theme)};
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
 
   &:hover {
-    color: ${colors.royalPurple};
+    color: ${colors.royalPurple} !important;
   }
 
   &.goblet-def-open-file:hover {
-    color: ${colors.shinyShamrock};
+    color: ${colors.shinyShamrock} !important;
   }
 `)
 
@@ -183,6 +201,7 @@ export const DefMetaItemTitle = styled(Span)(({ theme }) => `
   font-weight: bold;
   padding-right: 5px;
 `)
+
 export const DefMetaItemText = styled(Span)(({ theme }) => `
   font-size: 12px;
   white-space: normal;

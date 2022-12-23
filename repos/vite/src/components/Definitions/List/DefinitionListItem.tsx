@@ -4,8 +4,6 @@ import { useCallback, useState } from 'react'
 
 import { EStepKey } from '@types'
 import { cls } from '@keg-hub/jsutils'
-import Divider from '@mui/material/Divider'
-import Collapse from '@mui/material/Collapse'
 import { ArrowRightIcon } from '@components/Icons'
 import { DefinitionItemMeta } from './DefinitionItemMeta'
 import { DefinitionItemActions } from './DefinitionItemActions'
@@ -15,6 +13,7 @@ import {
   DefIcon,
   DefButton,
   DefItemRow,
+  DefItemDivider,
   DefMetaCollapse,
 } from './DefinitionList.styled'
 
@@ -72,7 +71,7 @@ export const DefinitionListItem = (props:TDefinitionListItem) => {
         timeout="auto"
         unmountOnExit
       >
-        <Divider />
+        <DefItemDivider className='goblet-def-item-divider' />
         <DefinitionItemMeta item={item} />
       </DefMetaCollapse>
     </DefItem>
