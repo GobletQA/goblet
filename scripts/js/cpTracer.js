@@ -65,6 +65,7 @@ const copyTraceViewerDir = async () => {
 
 
 ;(async () => {
-  await copyTraceViewerDir()
-  await replacePWHeader()
+  // Disable for now, until it's needed
+  // await copyTraceViewerDir()
+  // await replacePWHeader()
 })()
