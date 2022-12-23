@@ -1,6 +1,4 @@
-import constants from '@GSH/constants'
-
-const { ARTIFACT_SAVE_OPTS } = constants
+import { ARTIFACT_SAVE_OPTS } from '@GSH/constants'
 
 /**
  * Checks the value of the passed in option to define when an artifact should be saved
