@@ -122,6 +122,7 @@ module.exports = {
           '!/repos/conductor',
           '!/repos/screencast',
           '!/repos/shared',
+          '!/repos/esdev',
         ]
       },
       envs: {

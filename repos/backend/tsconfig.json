@@ -20,6 +20,8 @@
       "@GBE/Root": ["./"],
       "@gobletqa/backend": ["src"],
       "@gobletqa/backend/*": ["src/*"],
+      "@gobletqa/esdev": ["../esdev/src"],
+      "@gobletqa/esdev/*": ["../esdev/src/*"],
       "@gobletqa/conductor": ["../conductor/src"],
       "@gobletqa/conductor/*": ["../conductor/src/*"],
       "@gobletqa/shared/*": ["../shared/src/*"],

@@ -18,9 +18,9 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "yarn build:docker",
-    "build:docker": "node configs/build.config.js",
-    "build:goblet": "node configs/build.goblet.config.js",
+    "build": "yarn build:docker && yarn build:goblet",
+    "build:docker": "node -r esbuild-register configs/build.config.ts",
+    "build:goblet": "node -r esbuild-register configs/build.goblet.config.ts",
     "clean": "yarn clean:dist; yarn clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "yarn clean; yarn install",
@@ -29,8 +29,8 @@
     "json:rm": "dot-json package.json devDependencies -d",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
-    "start": "DEBUG=\"http-proxy-middleware*\" DEV_BUILD=1 node --max-http-header-size=262144 configs/build.config.js",
-    "serve": "DEBUG=\"http-proxy-middleware*\" node dist/index.js >> /proc/1/fd/1",
+    "start": "DEBUG=\"http-proxy-middleware*\" DEV_BUILD=1 node -r esbuild-register --max-http-header-size=262144 configs/build.config.ts",
+    "serve": "DEBUG=\"http-proxy-middleware*\" node -r esbuild-register dist/index.js >> /proc/1/fd/1",
     "validate": "tsc --noEmit"
   },
   "dependencies": {
@@ -42,13 +42,15 @@
     "@keg-hub/parse-config": "*",
     "@kubernetes/client-node": "*",
     "axios": "*",
+    "esbuild": "*",
+    "esbuild-plugin-path-alias": "*",
+    "esbuild-register": "*",
     "express": "*",
     "get-port-please": "2.5.0",
     "http-proxy-middleware": "*",
     "jsonwebtoken": "*",
     "kube-watch": "*",
-    "module-alias": "*",
-    "source-map-support": "*"
+    "module-alias": "*"
   },
   "devDependencies": {
     "@types/debug": "4.1.5",
@@ -57,9 +59,6 @@
     "@types/node": "16.11.0",
     "docker-events": "0.0.2",
     "dockerode": "3.3.2",
-    "esbuild": "*",
-    "esbuild-plugin-path-alias": "*",
-    "esbuild-register": "*",
     "jest": "*",
     "nodemon": "*"
   }
