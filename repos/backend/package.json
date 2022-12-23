@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@gobletqa/conductor": "*",
+    "@gobletqa/esdev": "*",
     "@gobletqa/shared": "*",
     "@gobletqa/workflows": "*",
     "@keg-hub/cli-utils": "*",
