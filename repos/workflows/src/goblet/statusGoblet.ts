@@ -1,4 +1,6 @@
-import type { TWFGobletConfig, TWFResp, TGitOpts } from '@gobletqa/workflows/types'
+import type { TRepoOpts } from '@gobletqa/workflows/types/shared.types'
+import type { TWFGobletConfig, TWFResp, TGitOpts, } from '@gobletqa/workflows/types'
+
 
 import path from 'path'
 import { git, RepoWatcher } from '../git'
@@ -10,8 +12,7 @@ import { createRepoWatcher } from '../repo/mountRepo'
 
 // TODO: Figure out how to load this from shared repo. May need to more to diff location
 // Maybe create a gobletConfig repo - Dedicating to loading the config
-// @ts-ignore
-import { getConfigAtPath } from '@gobletqa/shared/utils/getGobletConfig'
+import { configAtPath } from '@gobletqa/shared/goblet'
 
 
 const { pathExists } = fileSys
@@ -52,15 +53,17 @@ const statusForLocal = async (config:TWFGobletConfig) => {
 
   // Check if the local mount folder exists
   // If not then it's empty
-  const gobletConfig = isValidPath && (await getConfigAtPath(LOCAL_MOUNT))
+  const gobletConfig = isValidPath && (await configAtPath(LOCAL_MOUNT))
 
   return !isValidPath || !gobletConfig
     ? {
         repo: {
           name: ``,
-          git: { local: config.paths.repoRoot },
-          ...config,
-        },
+          git: { local: config?.paths?.repoRoot },
+          world: {},
+          environment: ``,
+          fileTypes: {},
+        } as TRepoOpts,
         setup: false,
         mode: `local`,
         mounted: false,
@@ -124,7 +127,7 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
 
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = await getConfigAtPath(local)
+  const gobletConfig = await configAtPath(local)
 
   return !gobletConfig
     ? unknownStatus

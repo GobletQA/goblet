@@ -1,12 +1,11 @@
-const { ARTIFACT_SAVE_OPTS } = require('@GSH/constants')
+import constants from '@GSH/constants'
+
+const { ARTIFACT_SAVE_OPTS } = constants
 
 /**
  * Checks the value of the passed in option to define when an artifact should be saved
- * @param {string|boolean} option - value check
- *
- * @returns {string} - Save option value
  */
-const artifactSaveOption = (option) => {
+export const artifactSaveOption = (option:string|boolean) => {
   return !option || option === ARTIFACT_SAVE_OPTS.never
     ? false
     : option === ARTIFACT_SAVE_OPTS.always
@@ -16,12 +15,11 @@ const artifactSaveOption = (option) => {
 
 /**
  * Checks if the passed in option should be saved or not
- * @param {string} testStatus - passed || failed
- * @param {string|boolean} saveVideo - one of `never` | `always` | `on-fail` | true | false
- *
- * @returns {boolean} - True if the report should be saved
  */
-const shouldSaveArtifact = (option, testStatus) => {
+export const shouldSaveArtifact = (
+  option:string|boolean,
+  testStatus:string|boolean
+) => {
   const status = artifactSaveOption(option)
 
   if(!status || status === ARTIFACT_SAVE_OPTS.never) return false
@@ -30,19 +28,9 @@ const shouldSaveArtifact = (option, testStatus) => {
       (testStatus === ARTIFACT_SAVE_OPTS.failed && status === ARTIFACT_SAVE_OPTS.failed)
 }
 
-
 /**
  * Checks the value of the passed in option to define when an artifact should be saved
- * @param {string|boolean} option - value check
- *
- * @returns {boolean} - True if an artifact could be saved. Either `always` || `failed`
  */
-const artifactSaveActive = (option) => {
+export const artifactSaveActive = (option:string|boolean) => {
   return Boolean(artifactSaveOption(option))
-}
-
-module.exports = {
-  shouldSaveArtifact,
-  artifactSaveActive,
-  artifactSaveOption,
 }

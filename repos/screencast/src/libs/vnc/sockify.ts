@@ -5,7 +5,7 @@ import { exec } from 'node:child_process'
 import { Logger } from '@GSC/utils/logger'
 import { findProc, killProc } from '@GSC/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
-import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
+import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import {
   limbo,
   noOpObj,

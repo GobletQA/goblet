@@ -9,7 +9,7 @@ import os from 'os'
 import path from 'path'
 import { Logger } from '@GSC/utils/logger'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
-import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
+import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { existsSync, promises as fs } from 'fs'
 import { limbo, isStr, isObj, exists, noOpObj, validate } from '@keg-hub/jsutils'
 

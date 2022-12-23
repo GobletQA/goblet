@@ -1,4 +1,4 @@
-const { noPropArr, isStr } = require('@keg-hub/jsutils')
+import { noPropArr, isStr } from '@keg-hub/jsutils'
 
 
 /**
@@ -33,19 +33,22 @@ const buildCustomExt = (prefix, ext) => {
   return ext ? [`${prefix}/*.${ext}`] : noPropArr
 }
 
+type TTestMatch = {
+  ext?:string
+  type:string
+  shortcut:string
+}
+
 /**
  * Builds the paths to where test files can be found and their name
  * See here for info https://jestjs.io/docs/next/configuration#testmatch-arraystring
  * @function
  * @public
- * @param {string} testDir - Base directory to search for files
- * @param {string} opts.type - Type of files to search for (waypoint | unit | etc...)
- * @param {string} opts.shortcut - Type shortcut of files to search for (wp | un | etc...)
- * @param {string} [opts.ext] - Extension of the test files to find
- *
- * @returns {Array<string>} - Paths matching Jests testMatch config property
  */
-const buildTestMatchFiles = (testDir, {type, shortcut, ext}) => {
+export const buildTestMatchFiles = (
+  testDir:string,
+  {type, shortcut, ext}:TTestMatch
+) => {
   if(!isStr(testDir) || (!isStr(type) && !isStr(ext)) ) return noPropArr
 
   const prefix = testDir ? `${testDir}/**` : `**`
@@ -57,8 +60,4 @@ const buildTestMatchFiles = (testDir, {type, shortcut, ext}) => {
     ...buildFilePaths(prefix, `test`),
     ...buildFilePaths(prefix, `spec`),
   ]
-}
-
-module.exports = {
-  buildTestMatchFiles
 }

@@ -9,8 +9,7 @@ import { configureGitArgs } from '../utils/configureGitArgs'
 
 // TODO: Figure out how to load this from shared repo. May need to more to diff location
 // Maybe create a gobletConfig repo - Dedicating to loading the config
-// @ts-ignore
-import { getConfigAtPath } from '@gobletqa/shared/utils/getGobletConfig'
+import { configAtPath } from '@gobletqa/shared/goblet'
 
 import { TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
 import { TGitData, TRepoOpts } from '@gobletqa/workflows/types/shared.types'
@@ -21,7 +20,11 @@ import { TGitData, TRepoOpts } from '@gobletqa/workflows/types/shared.types'
  * @public
  * @throws
  */
-export const setupGoblet = async (args:TWFArgs, gitArgs:TGitOpts, mounted?:boolean) => {
+export const setupGoblet = async (
+  args:TWFArgs,
+  gitArgs:TGitOpts,
+  mounted?:boolean
+) => {
   Logger.subHeader(`Running Setup Goblet Workflow`)
 
   const token = (gitArgs && gitArgs.token) || (await git.loadToken(args))
@@ -47,7 +50,7 @@ export const setupGoblet = async (args:TWFArgs, gitArgs:TGitOpts, mounted?:boole
     )
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = await getConfigAtPath(gitArgs.local)
+  const gobletConfig = await configAtPath(gitArgs.local)
 
   return gobletConfig
     ? successResp(

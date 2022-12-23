@@ -1,6 +1,6 @@
-import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
 import { fileSys, Logger } from '@keg-hub/cli-utils'
 import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
+import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { deepMerge, deepClone, set, isArr, noOpObj, toBool, isObj } from '@keg-hub/jsutils'
 
 const isCIEnv = toBool(process.env.GOBLET_RUN_FROM_CI)

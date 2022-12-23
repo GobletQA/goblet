@@ -1,7 +1,7 @@
 import { TTaskActionArgs, TTasks, TTask } from '../../types'
 
 import { isObj, isFunc } from '@keg-hub/jsutils'
-import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
+import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 
 /**
  * Injects the goblet.config into a tasks arguments

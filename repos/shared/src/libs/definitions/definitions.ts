@@ -5,7 +5,7 @@ import glob from 'glob'
 import { noOpObj } from '@keg-hub/jsutils'
 import { DefinitionsParser } from './definitionsParser'
 import { getPathFromBase } from '@GSH/utils/getPathFromBase'
-import { getDefaultGobletConfig } from '@GSH/utils/getGobletConfig'
+import { getDefaultGobletConfig } from '@GSH/goblet/getGobletConfig'
 import { parkinOverride } from '@GSH/libs/overrides/parkinOverride'
 
 /**

@@ -24,7 +24,7 @@ export type TGitData = {
   branch: string
   remote: string
   username:string
-  newBranch?:boolean
+  newBranch?:string
   createBranch?:boolean
 }
 

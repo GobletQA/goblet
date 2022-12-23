@@ -20,9 +20,6 @@ import { TWFArgs } from '@gobletqa/workflows/types'
  * @function
  * @public
  * @throws
- * @param {Object} args - Data needed to execute the workflow
- * @param {Object} args.user - User metadata of the user currently logged in
- * @param {Object} args.repo - Repo metadata for setting up goblet
  */
 export const initializeGoblet = async (args:TWFArgs) => {
   Logger.subHeader(`Running Initialize Goblet Workflow`)

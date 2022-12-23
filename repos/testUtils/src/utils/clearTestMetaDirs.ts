@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { noOp } from '@keg-hub/jsutils'
 import { Logger } from '@keg-hub/cli-utils'
-import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
+import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 
 /**
  * Clears out the temp folder that contains test artifacts

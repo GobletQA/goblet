@@ -5,8 +5,7 @@ import { aliases } from '@GConfigs/aliases.config'
 
 // TODO: Figure out how to load this from shared repo. May need to more to diff location
 // Maybe create a gobletConfig repo - Dedicating to loading the config
-// @ts-ignore
-import { loadConfigFromFolder } from '@gobletqa/shared/utils/getGobletConfig'
+import { configFromFolder } from '@gobletqa/shared/goblet'
 
 /**
  * Copies the goblet template files into the mounted repo
@@ -16,7 +15,7 @@ import { loadConfigFromFolder } from '@gobletqa/shared/utils/getGobletConfig'
  */
 export const copyTemplate = async (local:string, template:string) => {
   Logger.info(`Searching for goblet config...`)
-  const configLoc = await loadConfigFromFolder(local)
+  const configLoc = await configFromFolder(local)
   if (configLoc) return true
 
   Logger.info(`Creating goblet setup from template...`)

@@ -3,7 +3,7 @@ const { jestConfig } = require('./jest.default.config')
 
 const path = require('path')
 const glob = require('glob')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
+const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
 const { uniqArr, noOpObj } = require('@keg-hub/jsutils')
 const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
 const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')

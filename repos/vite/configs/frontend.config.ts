@@ -9,7 +9,7 @@ if(GOBLET_ENV && NODE_ENV !== GOBLET_ENV) process.env.NODE_ENV = GOBLET_ENV
 else if(!process.env.GOBLET_ENV && NODE_ENV) process.env.GOBLET_ENV = NODE_ENV
 
 const requireGoblet = createRequire(path.join(__dirname, '../../shared/src/utils'))
-const { getGobletConfig } = requireGoblet('./utils/getGobletConfig.ts')
+const { getGobletConfig } = requireGoblet('./goblet/getGobletConfig.ts')
 
 /**
  * Is called form the tap.js config in the root

@@ -3,7 +3,7 @@ import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GSC/types
 import path from 'path'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
 import { taskEnvToBrowserOpts } from '../../utils/taskEnvToBrowserOpts'
-import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
+import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 import {
   exists,

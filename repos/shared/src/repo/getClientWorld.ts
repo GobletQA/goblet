@@ -4,7 +4,7 @@ import type { TGobletConfig } from '../types'
 import path from 'path'
 import glob from 'glob'
 import { noOpObj } from '@keg-hub/jsutils'
-import { getGobletConfig } from '@GSH/utils/getGobletConfig'
+import { getGobletConfig } from '@GSH/goblet/getGobletConfig'
 import { getPathFromConfig } from '@GSH/utils/getPathFromConfig'
 import { tryRequireSync, deepMerge } from '@keg-hub/jsutils/src/node'
 
@@ -61,7 +61,7 @@ const searchWorld = (config?:Record<string, any>) => {
  * Should be cleaned up as some point
  */
 const loadClientWorld = (
-  config?:TGobletConfig|Repo|Record<string, any>,
+  config?:TGobletConfig,
   repo?:Repo,
 ) => {
   config = config || getGobletConfig()
@@ -88,7 +88,7 @@ const loadClientWorld = (
  * @return {Object?} - the client's world object, or undefined if it does not exist
  */
 export const getClientWorld = (
-  config?:TGobletConfig|Repo|Record<string, any>,
+  config?:TGobletConfig,
   repo?:Repo
 ) => {
   const clientExport = loadClientWorld(config, repo)

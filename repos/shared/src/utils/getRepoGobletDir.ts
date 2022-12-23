@@ -1,7 +1,7 @@
 import type { TGobletConfig } from '@GSH/types'
 
 import path from 'path'
-import { getGobletConfig } from './getGobletConfig'
+import { getGobletConfig } from '../goblet/getGobletConfig'
 
 /**
  * Helper to find the base directory all the other repo paths are relative to
@@ -10,7 +10,7 @@ import { getGobletConfig } from './getGobletConfig'
 
  */
 export const getRepoGobletDir = (config?:TGobletConfig) => {
-  config = config || getGobletConfig(config)
+  config = config || getGobletConfig()
   const { repoRoot, workDir } = config.paths
 
   return workDir ? path.join(repoRoot, workDir) : repoRoot

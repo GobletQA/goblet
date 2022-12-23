@@ -1,5 +1,11 @@
-import type { TFileTypes, TRepoOpts } from '../types'
 import type { TWFGobletConfig, TGitOpts } from '@gobletqa/workflows/types'
+import type {
+  TRepoOpts,
+  TFileTypes,
+  TRepoPaths,
+  TRecorderOpts,
+  TInternalPaths,
+} from '../types'
 
 import { Parkin } from '@ltipton/parkin'
 import { getWorld } from '@GSH/repo/world'
@@ -119,7 +125,7 @@ export class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  paths:Record<string, string>
+  paths:TRepoPaths
 
   /**
    * Git metadata for the repo
@@ -138,9 +144,14 @@ export class Repo {
    */
   parkin = undefined
 
+
   name:string
   environment:string
   fileTypes:TFileTypes
+  recorder: TRecorderOpts
+
+  // Temporary - this should be remove
+  internalPaths:TInternalPaths
 
   constructor(config:TRepoOpts = noOpObj as TRepoOpts) {
     const { environment, paths, git, name } = config

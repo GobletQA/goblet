@@ -9,7 +9,7 @@ const { jestAliases, registerAliases } = require('../../../../configs/aliases.co
 registerAliases()
 
 const { Logger } = require('@keg-hub/cli-utils')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
+const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
 const { noOpObj, noPropArr, capitalize } = require('@keg-hub/jsutils')
 const { buildTestMatchFiles } = require('@gobletqa/shared/utils/buildTestMatchFiles')
 const testUtilsDir = path.join(__dirname, '../../')
