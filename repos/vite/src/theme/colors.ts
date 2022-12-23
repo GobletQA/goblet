@@ -45,7 +45,7 @@ export const gray = {
 export const black = {
   black00: `#000000`,
   black01: `#040506`,
-  black02: `#0d0e11`,
+  black02: `#111215`,
   black03: `#16181d`,
   black04: `#1f2228`,
   black05: `#282b34`,

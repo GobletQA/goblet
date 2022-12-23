@@ -1,6 +1,7 @@
 import type { DefinitionTabs } from '@constants'
 import type { SyntheticEvent, MouseEvent } from 'react'
 
+import { Tooltip } from '@components/Tooltip'
 import { DefsHeaderTabs, DefsHeaderTab } from './Definitions.styled'
 import { AppsIcon, LabelImportantIcon, FunctionsIcon } from '@components/Icons'
 
@@ -55,14 +56,16 @@ export const DefinitionHeader = (props:TDefinitionsProps) => {
         const Icon = tabIcons[tab.icon as keyof typeof tabIcons]
         
         return (
-          <DefsHeaderTab
-            icon={<Icon sx={styles.icon} />}
-            label={tab.name}
-            onClick={onTabClick}
-            {...a11yProps(tab.id)}
-            key={tab.id || tab.name}
-            className={`goblet-defs-tab-${tab.name}`}
-          />
+          <Tooltip title={`Show list of ${tab.name.toLowerCase()}`} >
+            <DefsHeaderTab
+              icon={<Icon sx={styles.icon} />}
+              label={tab.name}
+              onClick={onTabClick}
+              {...a11yProps(tab.id)}
+              key={tab.id || tab.name}
+              className={`goblet-defs-tab-${tab.name}`}
+            />
+          </Tooltip>
         )
       })}
     </DefsHeaderTabs>

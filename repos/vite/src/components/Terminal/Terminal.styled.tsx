@@ -54,7 +54,7 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
     min-width: ${dims.terminal.tab.maxWpx};
     font-size: ${theme.typography.pxToRem(12)};
     font-weight: ${theme.typography.fontWeightRegular};
-    transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+    transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
     color: ${getColor(colors.fadeDark30, colors.fadeLight55, theme)};
     background-color: ${getColor(colors.gray03, colors.black03, theme)};
 

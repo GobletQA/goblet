@@ -61,11 +61,11 @@ export const Drawer = styled(
   ...(!open && {
     [`& .goblet-defs-header-tabs button.MuiTab-root.Mui-selected`]: {
       color: getColor(colors.fadeDark30, colors.fadeLight55, theme),
-      backgroundColor: getColor(colors.gray04, colors.black03, theme),
+      backgroundColor: getColor(colors.gray01, colors.black05, theme),
 
       [`&:hover`]: {
-        color: getColor(colors.fadeDark50, colors.fadeLight75, theme),
-        backgroundColor: getColor(colors.gray02, colors.black04, theme)
+        color: getColor(colors.gray07, colors.fadeLight75, theme),
+        backgroundColor: getColor(colors.white00, colors.black03, theme)
       }
     }
   }),
@@ -103,20 +103,22 @@ export const DefsHeaderTab = styled(Tab)(({ theme }) => `
   max-width: ${tabWidthStr};
   min-width: ${tabWidthStr};
   font-weight: ${theme.typography.fontWeightBold};
-  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+  transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
 
   color: ${getColor(colors.fadeDark30, colors.fadeLight55, theme)};
-  background-color: ${getColor(colors.gray03, colors.black03, theme)};
-  border-bottom: 1px solid ${getColor(colors.gray00, 'transparent', theme)};
+  background-color: ${getColor(colors.gray01, colors.black05, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray00, colors.black02, theme)};
+  border-left: 1px solid ${getColor(colors.gray02, colors.black05, theme)};
+
 
   &.Mui-selected {
     color: ${getColor(colors.gray07, colors.fadeLight90, theme)};
-    background-color: ${getColor(colors.white00, colors.black05, theme)};
+    background-color: ${getColor(colors.white00, colors.black03, theme)};
   }
 
   &:hover:not(.Mui-selected) {
     color: ${getColor(colors.gray07, colors.fadeLight75, theme)};
-    background-color: ${getColor(colors.white00, colors.black04, theme)};
+    background-color: ${getColor(colors.white00, colors.black03, theme)};
   }
 `)
 
@@ -143,9 +145,9 @@ export const DefsSliderAction = styled(IconButton)(({ theme }) => `
   height: ${dims.defs.header.hpx};
   width: ${dims.defs.header.height + 8}px;
   background-color: ${getColor(colors.gray01, colors.black05, theme)};
-  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+  transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
   border-left: 1px solid ${getColor(colors.gray02, colors.black05, theme)};
-  border-bottom: 1px solid ${getColor(colors.gray01, 'transparent', theme)};
+  border-bottom: 1px solid ${getColor(colors.gray01, colors.black02, theme)};
   
   &:hover {
     background-color: ${getColor(colors.gray03, colors.fadeLight10, theme)};

@@ -16,7 +16,7 @@ import { IconButton } from '@components/Buttons/IconButton'
 
 export const DefSearchTitle = styled(Span)(({ theme }) => `
   font-weight: bold;
-  color: ${getColor(colors.fadeDark70, colors.white00, theme)};
+  color: ${getColor(colors.gray08, colors.white00, theme)};
 `)
 
 export const DefSearchHeader = styled(Box)(({ theme }) => `
@@ -50,8 +50,8 @@ export const DefSearchInput = styled('input')(({ theme }) => `
   padding: 0 14px 0 33px;
   margin: 0 0 0 ${gutter.margin.hpx};
   height: ${dims.defs.header.height - 8}px;
-  color: ${getColor(colors.black06, colors.white00, theme)};
-  background-color: ${getColor(colors.gray03, colors.black01, theme)};
+  color: ${getColor(colors.black04, colors.white00, theme)};
+  background-color: ${getColor(colors.gray01, colors.black01, theme)};
 
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -84,24 +84,24 @@ export const DefListSubheader = styled(ListSubheader)(({ theme }) => `
   padding: 5px 10px;
   line-height: 30px;
   font-weight: bold;
-  color: ${getColor(colors.fadeDark70, colors.white00, theme)};
-  background-color: ${getColor(colors.white00, colors.black02, theme)};
+  color: ${getColor(colors.gray08, colors.white00, theme)};
+  background-color: ${getColor(colors.white00, colors.black03, theme)};
 `)
 
 export const DefItemDivider = styled(Divider)(({ theme }) => `
-  border-bottom: 1px solid ${getColor(colors.gray02, colors.black03, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray02, colors.black02, theme)};
 `)
 
 export const DefItem = styled(ListItem)(({ theme }) => `
   padding: 5px 0px 0px;
   min-height: 35px;
   flex-direction: column;
-  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
-  background-color: ${getColor(colors.gray01, colors.black05, theme)};
+  transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
+  background-color: ${getColor(colors.gray01, colors.black04, theme)};
   color: ${getColor(colors.black09, colors.gray04, theme)};
 
   &.item-open {
-    background-color: ${getColor(colors.white00, colors.black04, theme)};
+    background-color: ${getColor(colors.white00, colors.black03, theme)};
     color: ${getColor(colors.black04, colors.white00, theme)};
     
     & .goblet-def-item-action {
@@ -111,7 +111,7 @@ export const DefItem = styled(ListItem)(({ theme }) => `
   }
 
   &:hover {
-    background-color: ${getColor(colors.white00, colors.black04, theme)};
+    background-color: ${getColor(colors.white00, colors.black03, theme)};
     color: ${getColor(colors.black04, colors.white00, theme)};
     
     & .goblet-def-item-action {
@@ -145,7 +145,7 @@ export const DefIcon = styled(ListItemIcon)(({ theme }) => `
 
 export const DefMetaCollapse = styled(Collapse)(({ theme }) => `
   width: 100%;
-  border-left: 5px solid ${getColor(colors.gray07, colors.black03, theme)};
+  border-left: 10px solid ${getColor(colors.gray07, colors.black01, theme)};
 `)
 
 export const DefButton = styled(ListItemButton)(({ theme }) => `
@@ -154,7 +154,7 @@ export const DefButton = styled(ListItemButton)(({ theme }) => `
   padding-right: 0px;
   font-weight: bold;
   color: ${getColor(colors.gray05, colors.fadeLight50, theme)};
-  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+  transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
 
   &:hover {
     color: ${colors.royalPurple} !important;
