@@ -1,21 +1,18 @@
-const path = require('path')
-const { getGobletConfig } = require('./getGobletConfig')
+import type { TGobletConfig } from '@GSH/types'
+
+import path from 'path'
+import { getGobletConfig } from './getGobletConfig'
 
 /**
  * Helper to find the base directory all the other repo paths are relative to
  * Joins the repoRoot and workDir together is workDir exists
  * Otherwise returns repoRoot
- * @param {Object} config - A valid goblet config object or Repo Class instance
- *
- * @returns {string} - Path to the goblet directory in a repo
+
  */
-const getRepoGobletDir = config => {
+export const getRepoGobletDir = (config?:TGobletConfig) => {
   config = config || getGobletConfig(config)
   const { repoRoot, workDir } = config.paths
 
   return workDir ? path.join(repoRoot, workDir) : repoRoot
 }
 
-module.exports = {
-  getRepoGobletDir,
-}

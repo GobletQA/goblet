@@ -1,7 +1,7 @@
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
-const { fileSys, Logger } = require('@keg-hub/cli-utils')
-const { getPathFromBase } = require('@gobletqa/shared/utils/getPathFromBase')
-const { deepMerge, deepClone, set, isArr, noOpObj, toBool, isObj } = require('@keg-hub/jsutils')
+import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
+import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
+import { deepMerge, deepClone, set, isArr, noOpObj, toBool, isObj } from '@keg-hub/jsutils'
 
 const isCIEnv = toBool(process.env.GOBLET_RUN_FROM_CI)
 const debugActive = toBool(process.env.GOBLET_ARTIFACTS_DEBUG)
@@ -13,7 +13,7 @@ let __TEST_META
   * Debug Logger to debugging the testMeta data file by logging to stdout
  */
 const debugTag = Logger.colors.blue(`[Goblet - TestMeta]`)
-const debugLog = (...args) => {
+const debugLog = (...args:any[]) => {
   const toLog = args.map(item => 
     isObj(item) || isArr(item) ? `\n${JSON.stringify(item, null, 2)}\n` : item
   ).join(` `)
@@ -25,30 +25,27 @@ const debugLog = (...args) => {
  *
  * @return {string} - Path to the testMeta file
  */
- const getTestMetaPath = () => {
+export const getTestMetaPath = () => {
    return !isCIEnv ? `` : getGobletConfig()?.internalPaths?.testMetaFile
 }
 
 /**
  * Gets the artifacts dir for the active repo
- *
- * @return {string} - Path to the artifacts dir
  */
 const getArtifactsDir = () => {
   if(!isCIEnv) return ``
 
-  const { artifactsDir } = (global?.__goblet?.paths ?? getGobletConfig()?.paths)
+  const config = getGobletConfig()
 
-  return getPathFromBase(artifactsDir)
+  const { artifactsDir } = (global?.__goblet?.paths ?? config?.paths)
+
+  return getPathFromBase(artifactsDir, config)
 }
 
 /**
  * Saves testMeta to file
- * @param {Object} testMeta - TestMeta data object to be saved
- *
- * @return {Object} - Passed in testMeta data object
  */
-const saveTestMeta = async (testMeta) => {
+const saveTestMeta = async (testMeta:Record<string, any>) => {
   if(!isCIEnv) return noOpObj
 
   const testMetaLoc = getTestMetaPath()
@@ -71,10 +68,11 @@ const saveTestMeta = async (testMeta) => {
  *
  * @return {Object} - json of the testMeta data
  */
-const readTestMeta = async () => {
+export const readTestMeta = async () => {
   if(!isCIEnv) return noOpObj
 
   debugLog(`Reading TestMeta file`)
+  let content:string
 
   try {
     const testMetaLoc = getTestMetaPath()
@@ -82,7 +80,8 @@ const readTestMeta = async () => {
 
     if((errExists && errExists.code === 'ENOENT') || !exists) return {}
 
-    const [err, content] = await readFile(testMetaLoc, 'utf8')
+    const [err, data] = await readFile(testMetaLoc, 'utf8')
+    content = data
 
     if(err) throw err
     return JSON.parse(content)
@@ -101,12 +100,12 @@ const readTestMeta = async () => {
 
 /**
  * Appends content to the latest test meta
- * @param {string} loc - Location where the data should be added
- * @param {*} data - Data to be saved at location
- *
- * @return {Object} - json of the testMeta data
  */
-const appendToLatest = async (loc, data, commit) => {
+export const appendToLatest = async (
+  loc:string,
+  data:Record<string, any>,
+  commit:boolean
+) => {
   if(!isCIEnv) return noOpObj
 
   debugLog(`Appending to TestMeta`)
@@ -124,12 +123,11 @@ const appendToLatest = async (loc, data, commit) => {
 
 /**
  * Updates the __TEST_META object with data passed in
- * @param {string} loc - Location where the data should be added
- * @param {*} data - Data to be saved at location
- *
- * @return {Object} - json of the testMeta data
  */
-const upsertTestMeta = async (loc, data) => {
+export const upsertTestMeta = async (
+  loc:string,
+  data:Record<string, any>
+) => {
   if(!isCIEnv) return noOpObj
 
   const saveLoc = isArr(loc) ? loc.join(`.`) : loc
@@ -146,7 +144,7 @@ const upsertTestMeta = async (loc, data) => {
  *
  * @return {Void}
  */
-const initTestMeta = async () => {
+export const initTestMeta = async () => {
   if(!isCIEnv) return noOpObj
 
   debugLog(`Initializing TestMeta...`)
@@ -173,7 +171,7 @@ const initTestMeta = async () => {
  *
  * @return {Object} - json of the testMeta data
  */
-const commitTestMeta = async () => {
+export const commitTestMeta = async () => {
   debugLog(`Committing TestMeta content to file`, __TEST_META?.latest)
   
   return isCIEnv
@@ -186,17 +184,7 @@ const commitTestMeta = async () => {
  *
  * @return {Void}
  */
-const removeTestMeta = async () => {
+export const removeTestMeta = async () => {
   const testMetaLoc = getTestMetaPath()
   return await removeFile(testMetaLoc)
-}
-
-module.exports = {
-  initTestMeta,
-  readTestMeta,
-  removeTestMeta,
-  commitTestMeta,
-  upsertTestMeta,
-  appendToLatest,
-  getTestMetaPath,
 }

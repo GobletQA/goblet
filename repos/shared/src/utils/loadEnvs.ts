@@ -1,7 +1,27 @@
-const path = require('path')
+import path from 'path'
 
-const { noPropArr } = require('@keg-hub/jsutils')
-const { addToProcess } = require('@keg-hub/cli-utils')
+import { noPropArr } from '@keg-hub/jsutils'
+import { addToProcess } from '@keg-hub/cli-utils'
+
+export type TLoadConfigs = {
+  env?:string,
+  name?:string,
+  error?:boolean
+  pattern?:RegExp
+  fill?:boolean
+  noEnv?:boolean
+  noYml?:boolean
+  ymlName?:string
+  ymlPath?:string
+  locations?:string[],
+  data?:Record<any, any>
+  format?:'string'|'object'
+}
+
+export type TLoadEnvs = TLoadConfigs & {
+  force?:boolean
+  override?:boolean
+}
 
 const appRoot = path.join(__dirname, '../../../')
 
@@ -22,7 +42,7 @@ const testRemoveIncludes = [
  * Cache holder for the loaded envs
  * @type {Object}
  */
-let __LOADED_ENVS__
+let __LOADED_ENVS__:Record<string, string|boolean|number>
 
 /**
  * Loads the goblet envs from .env and yaml values files 
@@ -31,14 +51,14 @@ let __LOADED_ENVS__
  * 
  * @returns {Object} - Loaded Envs object
  */
-const loadEnvs = ({
+export const loadEnvs = ({
   env,
   force,
   override,
   name=`goblet`,
   locations=noPropArr,
   ...envOpts
-}) => {
+}:TLoadEnvs) => {
   const nodeEnv = process.env.NODE_ENV || env || `local`
 
   // When running in test environment
@@ -67,7 +87,7 @@ const loadEnvs = ({
   })
 
   // Ensure node ENV is set is it doesn't exist
-  if(!process.env.NODE_ENV) process.env.NODE_ENV = __LOADED_ENVS__.NODE_ENV || env || `local`
+  if(!process.env.NODE_ENV) process.env.NODE_ENV = (__LOADED_ENVS__.NODE_ENV || env || `local`) as string
 
   // Add the loaded envs to process.env if override is set
   // Or env if local, and override is not explicitly set to false
@@ -76,6 +96,3 @@ const loadEnvs = ({
   return __LOADED_ENVS__
 }
 
-module.exports = {
-  loadEnvs,
-}

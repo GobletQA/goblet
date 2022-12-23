@@ -1,8 +1,9 @@
-const path = require('path')
-const { noOpObj } = require('@keg-hub/jsutils')
-const { buildFileModel } = require('@GSH/utils/buildFileModel')
-const { getMountRootDir } = require('@GSH/utils/getMountRootDir')
-const { getRepoGobletDir } = require('@GSH/utils/getRepoGobletDir')
+import type { TRepo } from '@GSH/types'
+import path from 'path'
+import { noOpObj } from '@keg-hub/jsutils'
+import { buildFileModel } from '@GSH/utils/buildFileModel'
+import { getMountRootDir } from '@GSH/utils/getMountRootDir'
+import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
 
 /**
  * Checks if a path is in the reports folder
@@ -13,7 +14,11 @@ const { getRepoGobletDir } = require('@GSH/utils/getRepoGobletDir')
  *
  * @returns {Object} - Reports ast || empty object
  */
-const resolveReportAst = (repo, fullPath, baseDir) => {
+const resolveReportAst = (
+  repo:TRepo,
+  fullPath:string,
+  baseDir:string
+) => {
   const { reportsDir=`artifacts/reports` } = repo.paths
   return fullPath.startsWith(path.join(baseDir, reportsDir))
     ? {
@@ -36,7 +41,11 @@ const resolveReportAst = (repo, fullPath, baseDir) => {
  *
  * @returns {Object} - fileModel for the file at the passed in location
  */
-const loadReport = async (repo, location, baseDir) => {
+const loadReport = async (
+  repo:TRepo,
+  location:string,
+  baseDir:string
+) => {
   baseDir = baseDir || getRepoGobletDir(repo)
   const reportContent = resolveReportAst(repo, location, baseDir)
 

@@ -28,6 +28,8 @@
       "@GTU/Playwright/*": ["src/playwright/*"],
       "@GTU/TestMeta": ["src/testMeta"],
       "@GTU/TestMeta/*": ["src/testMeta/testMeta"],
+      "@GTU/Types": ["src/types"],
+      "@GTU/Types/*": ["src/types/*"],
       "@GTU": ["src"],
       "@GTURoot": ["./"],
       "@gobletqa/shared": ["../shared/src"],

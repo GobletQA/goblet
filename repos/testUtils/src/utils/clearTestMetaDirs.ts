@@ -1,24 +1,24 @@
-const fs = require('fs')
-const path = require('path')
-const { noOp } = require('@keg-hub/jsutils')
-const { Logger } = require('@keg-hub/cli-utils')
-const { getGobletConfig } = require('@gobletqa/shared/utils/getGobletConfig')
+import fs from 'fs'
+import path from 'path'
+import { noOp } from '@keg-hub/jsutils'
+import { Logger } from '@keg-hub/cli-utils'
+import { getGobletConfig } from '@gobletqa/shared/utils/getGobletConfig'
 
 /**
  * Clears out the temp folder that contains test artifacts
  */
-const clearTestMetaDirs = () => {
+export const clearTestMetaDirs = () => {
   Logger.log(`Clearing temp folder...`)
   
-  const { internalPaths, } = getGobletConfig()
+  const { internalPaths } = getGobletConfig()
   const tempDir = path.join(internalPaths.gobletRoot, `temp`)
 
   Object.entries(internalPaths)
-    .map(([name, loc]) => {
+    .map(([name, loc]:[string, string]) => {
       if(!loc) return
 
       try {
-        if(name === `testMetaFile`) return fs.unlinkSync(loc, noOp)
+        if(name === `testMetaFile`) return fs.unlinkSync(loc)
 
         name.endsWith(`TempDir`) &&
           loc.startsWith(tempDir) &&
@@ -30,9 +30,4 @@ const clearTestMetaDirs = () => {
       }
 
     })
-}
-
-
-module.exports = {
-  clearTestMetaDirs
 }

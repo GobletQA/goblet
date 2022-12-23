@@ -1,17 +1,27 @@
-const path = require('path')
-const { toBool } = require('@keg-hub/jsutils')
-const { ARTIFACT_TYPES } = require('@gobletqa/shared/constants')
-const { canRecordVideo } = require('@gobletqa/screencast/constants')
-const { getPathFromBase } = require('@gobletqa/shared/utils/getPathFromBase')
-const {
+import type {
+  TBrowserConf,
+  TGobletConfig,
+  TJestGobletOpts,
+  TBrowserContextOpts
+} from '@GTU/Types'
+
+import path from 'path'
+import { toBool } from '@keg-hub/jsutils'
+import { ARTIFACT_TYPES } from '@gobletqa/shared/constants'
+import { canRecordVideo } from '@gobletqa/screencast/constants'
+import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
+import {
   artifactSaveActive,
   artifactSaveOption,
-} = require('@gobletqa/shared/utils/artifactSaveOption')
+} from '@gobletqa/shared/utils/artifactSaveOption'
 
 /**
  * Builds the repo paths to artifacts generated at test run
  */
-const buildArtifactsPaths = (config, options) => {
+const buildArtifactsPaths = (
+  config:TGobletConfig,
+  options
+) => {
   const { artifactsDir } = config.paths
   ARTIFACT_TYPES.map(type => {
     // Check for a custom location set as an ENV
@@ -30,7 +40,11 @@ const buildArtifactsPaths = (config, options) => {
  *
  * @returns {Object} - goblet options for executing tests
  */
-const buildJestGobletOpts = (config, browserOpts, contextOpts) => {
+export const buildJestGobletOpts = (
+  config:TGobletConfig,
+  browserOpts:TBrowserConf,
+  contextOpts:TBrowserContextOpts
+) => {
   const {
     GOBLET_TEST_TYPE,
     GOBLET_TEST_REPORT,
@@ -42,7 +56,7 @@ const buildJestGobletOpts = (config, browserOpts, contextOpts) => {
     GOBLET_TEST_TRACING_SCREENSHOTS=true
   } = process.env
 
-  const options = {
+  const options:TJestGobletOpts = {
     saveTrace: artifactSaveOption(GOBLET_TEST_TRACING),
     saveReport: artifactSaveOption(GOBLET_TEST_REPORT),
     // Only chromium can record video so only turn it on for that browser
@@ -64,7 +78,3 @@ const buildJestGobletOpts = (config, browserOpts, contextOpts) => {
   return options
 }
 
-
-module.exports = {
-  buildJestGobletOpts
-}
