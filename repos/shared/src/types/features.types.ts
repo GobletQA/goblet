@@ -72,7 +72,7 @@ export type TFeatureAst = {
 export type TAstType = TFeatureAst | TRuleAst | TBackgroundAst | TScenarioAst | TStepAst
 
 export type TFeatureFileModel = Omit<TFileModel, 'ast'> & {
-  ast: TFeatureAst
+  ast: TFeatureAst|TFeatureAst[]
 }
 
 export type TFeatureFileModelList = Record<string, TFeatureFileModel>

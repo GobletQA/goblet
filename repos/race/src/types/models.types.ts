@@ -53,6 +53,11 @@ export type TAstBlock = {
   index: number
 }
 
+export type TModelParent = {
+  uuid: string
+  location: string
+}
+
 
 export type TRaceModel = {
   index?: number
@@ -63,6 +68,7 @@ export type TRaceModel = {
   reason?: TAstBlock
   desire?: TAstBlock
   rules?: TRuleAst[]
+  parent: TModelParent
   comments: TAstBlock[]
   perspective?: TAstBlock
   scenarios: TScenarioAst[]

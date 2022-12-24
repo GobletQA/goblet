@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import 'react-page-split/style.css'
 import { Divider } from './Divider'
-import { dims, colors } from '@theme'
+import { dims } from '@theme'
 import Container from '@mui/material/Container'
 import { Terminal } from '@components/Terminal'
 import { LayoutContainer } from './Divider.styled'

@@ -1,21 +1,39 @@
 import type { TRaceEditorProps } from '@GBR/types'
 
 import { Sidebar } from '../Sidebar'
-import { Container } from './RaceEditor.styled'
+import { Builder } from '../Builder'
+import { Container, Divider } from './RaceEditor.styled'
+import { useRaceEditor } from '../../hooks/useRaceEditor'
+import { ModelProvider } from '../../contexts/ModelContext'
 
 export const RaceEditor = (props:TRaceEditorProps) => {
   const {
-    steps,
-    models
-  } = props
-
+    stepsRef,
+    modelsRef,
+    onModelChangeRef,
+    onModelUpdateRef,
+    onModelBeforeChangeRef
+  } = useRaceEditor(props)
 
   return (
-    <Container>
-      <Sidebar
-        models={models}
-      />
-    </Container>
+    <ModelProvider
+      model={props.model}
+      onModelChangeRef={onModelChangeRef}
+      onModelUpdateRef={onModelUpdateRef}
+      onModelBeforeChangeRef={onModelBeforeChangeRef}
+    >
+      <Container className='goblet-race-editor'>
+        <Sidebar
+          stepsRef={stepsRef}
+          modelsRef={modelsRef}
+        />
+        <Divider className='goblet-race-divider' />
+        <Builder
+          stepsRef={stepsRef}
+          modelsRef={modelsRef}
+        />
+      </Container>
+    </ModelProvider>
   )
 }
 
