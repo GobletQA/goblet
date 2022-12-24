@@ -7,9 +7,9 @@ import { EditorSidebarWidth } from '@constants'
 import { MonacoEditor } from '@gobletqa/monaco'
 import { DrawAction } from './Actions/DrawAction'
 import { Divider } from '@components/Layout/Divider'
-import { RepoNotConnected } from './RepoNotConnected'
 import { SquareAction } from './Actions/SquareAction'
 import { PictureAction } from './Actions/PictureAction'
+import { NotConnected } from '@components/NotConnected'
 import { RunTestsAction } from './Actions/RunTestsAction'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
 import { RecordBrowserAction } from './Actions/RecordBrowserAction'
@@ -75,7 +75,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
         />
       )
     : (
-        <RepoNotConnected
+        <NotConnected
           Icon={BlockIcon}
           message='Repository not connected'
         />

@@ -10,11 +10,17 @@ import {
   onEnvironments,
 } from '@actions/nav'
 import {
+  AppsIcon,
   Settings,
+  TeamIcon,
   DesignIcon,
-  EditorSwitch,
+  ProfileIcon,
   FileTreeIcon,
+  SettingsIcon,
+  CloudOffIcon,
+  FunctionsIcon,
   InsertChartIcon,
+  LabelImportantIcon,
   SettingsEthernetIcon,
 } from '@components/Icons'
 
@@ -22,19 +28,19 @@ import {
 export const HeaderNav = [
   {
     label: `Profile`,
-    Icon: `ProfileIcon`,
+    Icon: ProfileIcon,
   },
   {
     label: `Settings`,
-    Icon: `SettingsIcon`,
+    Icon: SettingsIcon,
   },
   {
     label: `Team`,
-    Icon: `TeamIcon`,
+    Icon: TeamIcon,
   },
   {
     label: `Unmount Repo`,
-    Icon: `CloudOffIcon`,
+    Icon: CloudOffIcon,
   },
 ]
 
@@ -104,19 +110,19 @@ export const DefinitionTabs = [
   {
     id: 0,
     key: 0,
-    icon: `all`,
+    Icon: AppsIcon,
     name: `All Steps`,
   },
   {
     id: 1,
     key: 1,
-    icon: `default`,
     name: `Default Steps`,
+    Icon: LabelImportantIcon,
   },
   {
     id: 2,
     key: 2,
-    icon: `custom`,
+    Icon: FunctionsIcon,
     name: `Custom Steps`,
   },
 ]

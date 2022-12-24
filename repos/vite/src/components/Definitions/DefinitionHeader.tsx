@@ -3,13 +3,7 @@ import type { SyntheticEvent, MouseEvent } from 'react'
 
 import { Tooltip } from '@components/Tooltip'
 import { DefsHeaderTabs, DefsHeaderTab } from './Definitions.styled'
-import { AppsIcon, LabelImportantIcon, FunctionsIcon } from '@components/Icons'
 
-const tabIcons = {
-  default: LabelImportantIcon,
-  custom: FunctionsIcon,
-  all: AppsIcon,
-}
 
 export type TDefinitionsProps = {
   active: number
@@ -53,17 +47,19 @@ export const DefinitionHeader = (props:TDefinitionsProps) => {
       aria-label="Feature Definition Tabs"
     >
       {tabs.map(tab => {
-        const Icon = tabIcons[tab.icon as keyof typeof tabIcons]
-        
+        const { Icon, id, name } = tab
+
         return (
-          <Tooltip title={`Show list of ${tab.name.toLowerCase()}`} >
+          <Tooltip
+            key={id || name}
+            title={`Show list of ${name.toLowerCase()}`}
+          >
             <DefsHeaderTab
               icon={<Icon sx={styles.icon} />}
-              label={tab.name}
+              label={name}
               onClick={onTabClick}
-              {...a11yProps(tab.id)}
-              key={tab.id || tab.name}
-              className={`goblet-defs-tab-${tab.name}`}
+              {...a11yProps(id)}
+              className={`goblet-defs-tab-${name}`}
             />
           </Tooltip>
         )

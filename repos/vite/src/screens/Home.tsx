@@ -2,7 +2,7 @@
 import Editor from './Editor'
 import Box from '@mui/material/Box'
 import { HeaderNav } from '@constants'
-import * as Icons from '@components/Icons'
+import { LogoutIcon } from '@components/Icons'
 import { ScreenWrap } from './Root.styled'
 import { SocketProvider } from '@contexts'
 import { Header } from '@components/Header'
@@ -51,7 +51,6 @@ Home.children = HeaderNav.map((item) => {
   const action = navActions[navKey]
   return {
     ...item,
-    Icon: Icons[item.Icon as keyof typeof Icons],
     ...(action ? { onClick: action } : {})
   }
 })
@@ -61,7 +60,7 @@ const settings = [
   {
     divider: true,
     label: `Sign Out`,
-    Icon: Icons.LogoutIcon,
+    Icon: LogoutIcon,
     onClick: signOutReload,
   }
 ]

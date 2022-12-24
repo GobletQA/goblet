@@ -108,6 +108,12 @@ export const fadeDark = {
   fadeDark95: `rgba(0,0,0, 0.95)`,
 }
 
+export const alerts = {
+  error: gobletColors.cardinal,
+  info: gobletColors.monacoGray,
+  warn: gobletColors.honeyYellow,
+  success: gobletColors.shinyShamrock,
+}
 
 export const colors:TColors = {
   ...gobletColors,
@@ -116,4 +122,5 @@ export const colors:TColors = {
   ...black,
   ...fade,
   ...fadeDark,
+  ...alerts,
 }

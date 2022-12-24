@@ -1,7 +1,9 @@
 import type { ComponentType } from 'react'
+import type { TUColors } from '@hooks/theme'
 
 import Box from '@mui/material/Box'
 import { Text } from '@components/Text'
+import { useColors } from '@hooks/theme'
 import { gutter, monaco, colors } from '@theme'
 
 export type TNotConnected = {
@@ -9,11 +11,19 @@ export type TNotConnected = {
   Icon: ComponentType<any>
 }
 
-export const RepoNotConnected = (props:TNotConnected) => {
+const colorMap:TUColors = {
+  icon: [colors.error, colors.error],
+  text: [colors.black04, colors.white00],
+  container: [colors.white00,  monaco.editorBackground],
+}
+
+export const NotConnected = (props:TNotConnected) => {
   const {
     Icon,
     message,
   } = props
+
+  const mapped = useColors(colorMap)
 
   return (
     <Box
@@ -23,19 +33,19 @@ export const RepoNotConnected = (props:TNotConnected) => {
       alignItems='center'
       flexDirection='column'
       justifyContent='center'
-      bgcolor={monaco.editorBackground}
+      bgcolor={mapped.container}
     >
       <Icon
         sx={{
           fontSize: `40px`,
-          color: colors.error,
+          color: mapped.icon,
         }}
       />
       <Text
         type='h6'
         sx={{
           fontSize: `20px`,
-          color: colors.white00,
+          color: mapped.text,
           marginTop: gutter.margin.hpx
         }}
       >
