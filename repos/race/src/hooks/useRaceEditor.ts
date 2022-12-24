@@ -17,6 +17,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     modelsRef,
     onModelChangeRef,
     onModelUpdateRef,
-    onModelBeforeChangeRef
+    onModelBeforeChangeRef,
   }
 }

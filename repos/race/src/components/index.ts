@@ -1,1 +1,6 @@
+export * from './Text'
+export * from './Model'
+export * from './Steps'
+export * from './Builder'
+export * from './Sidebar'
 export * from './RaceEditor'

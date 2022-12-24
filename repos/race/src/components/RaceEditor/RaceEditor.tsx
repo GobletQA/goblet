@@ -7,6 +7,7 @@ import { useRaceEditor } from '../../hooks/useRaceEditor'
 import { ModelProvider } from '../../contexts/ModelContext'
 
 export const RaceEditor = (props:TRaceEditorProps) => {
+  const { model, firstModelActive } = props
   const {
     stepsRef,
     modelsRef,
@@ -17,10 +18,10 @@ export const RaceEditor = (props:TRaceEditorProps) => {
 
   return (
     <ModelProvider
-      model={props.model}
       onModelChangeRef={onModelChangeRef}
       onModelUpdateRef={onModelUpdateRef}
       onModelBeforeChangeRef={onModelBeforeChangeRef}
+      initialModel={model || firstModelActive ? Object.values(modelsRef?.current)?.[0] : undefined}
     >
       <Container className='goblet-race-editor'>
         <Sidebar

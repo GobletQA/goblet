@@ -1,8 +1,7 @@
 import type { TEditorRefs } from '@GBR/types'
 
-import Box from '@mui/material/Box'
+import { Text } from '../Text'
 import { ModelsList } from './ModelsList'
-import { useModel } from '../../contexts'
 import { SidebarContainer } from './Sidebar.styled'
 
 export type TSidebar = TEditorRefs & {
@@ -14,7 +13,7 @@ export const Sidebar = (props:TSidebar) => {
 
   return (
     <SidebarContainer className='goblet-race-sidebar' >
-      <span>Sidebar</span>
+      <Text>Features</Text>
       <ModelsList
         modelsRef={modelsRef}
       />

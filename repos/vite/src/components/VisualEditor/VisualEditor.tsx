@@ -20,6 +20,7 @@ export const VisualEditor = (props:TVisualEditor) => {
         <RaceEditor
           steps={steps}
           models={models}
+          firstModelActive
         />
       )
     : (

@@ -17,6 +17,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
+      "@gobletqa/race": ["src"],
+      "@gobletqa/race/*": ["src/*"],
       "@GBR/actions": [ "src/actions" ],
       "@GBR/actions/*": [ "src/actions/*" ],
       "@GBR/components": [ "src/components" ],

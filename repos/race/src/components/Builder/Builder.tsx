@@ -10,10 +10,7 @@ export type TBuilder = TEditorRefs & {
 export const Builder = (props:TBuilder) => {
   return (
     <BuilderContainer>
-      Builder
-      
-      <Model
-      />
+      <Model />
     </BuilderContainer>
   )
 }

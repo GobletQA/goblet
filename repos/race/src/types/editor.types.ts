@@ -19,6 +19,7 @@ export type TRaceEditorProps = {
   model?:TRaceModel
   steps:TRaceSteps
   models:TRaceModels
+  firstModelActive?:boolean
   onModelChange?:TOnModelCB
   onModelUpdate?:TOnModelCB
   onBeforeModelChange?:TOnReturnModelCB
