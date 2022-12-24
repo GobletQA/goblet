@@ -5,19 +5,19 @@ import {
 } from '@store'
 
 import { useRaceSteps } from './useRaceSteps'
-import { useRaceModels } from './useRaceModels'
+import { useRaceFeatures } from './useRaceFeatures'
 
 export const useRaceHooks = () => {
   const repo = useRepo()
   const defs = useDefs()
-  const features = useFeatures()
-
-  const models = useRaceModels(features)
   const steps = useRaceSteps(defs)
+
+  const localFeatures = useFeatures()
+  const features = useRaceFeatures(localFeatures)
 
   return {
     steps,
-    models,
+    features,
     connected: Boolean(repo?.paths && repo?.name)
   }
 }

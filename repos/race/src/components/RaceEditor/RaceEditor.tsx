@@ -4,37 +4,37 @@ import { Sidebar } from '../Sidebar'
 import { Builder } from '../Builder'
 import { Container, Divider } from './RaceEditor.styled'
 import { useRaceEditor } from '../../hooks/useRaceEditor'
-import { ModelProvider } from '../../contexts/ModelContext'
+import { FeatureProvider } from '../../contexts/FeatureContext'
 
 export const RaceEditor = (props:TRaceEditorProps) => {
-  const { model, firstModelActive } = props
+  const { feature, firstFeatureActive } = props
   const {
     stepsRef,
-    modelsRef,
-    onModelChangeRef,
-    onModelUpdateRef,
-    onModelBeforeChangeRef
+    featuresRef,
+    onFeatureChangeRef,
+    onFeatureUpdateRef,
+    onFeatureBeforeChangeRef
   } = useRaceEditor(props)
 
   return (
-    <ModelProvider
-      onModelChangeRef={onModelChangeRef}
-      onModelUpdateRef={onModelUpdateRef}
-      onModelBeforeChangeRef={onModelBeforeChangeRef}
-      initialModel={model || firstModelActive ? Object.values(modelsRef?.current)?.[0] : undefined}
+    <FeatureProvider
+      onFeatureChangeRef={onFeatureChangeRef}
+      onFeatureUpdateRef={onFeatureUpdateRef}
+      onFeatureBeforeChangeRef={onFeatureBeforeChangeRef}
+      initialFeature={feature || firstFeatureActive ? Object.values(featuresRef?.current)?.[0] : undefined}
     >
       <Container className='goblet-race-editor'>
         <Sidebar
           stepsRef={stepsRef}
-          modelsRef={modelsRef}
+          featuresRef={featuresRef}
         />
         <Divider className='goblet-race-divider' />
         <Builder
           stepsRef={stepsRef}
-          modelsRef={modelsRef}
+          featuresRef={featuresRef}
         />
       </Container>
-    </ModelProvider>
+    </FeatureProvider>
   )
 }
 

@@ -11,7 +11,7 @@ export const VisualEditor = (props:TVisualEditor) => {
 
   const {
     steps,
-    models,
+    features,
     connected
   } = useRaceHooks()
 
@@ -19,8 +19,8 @@ export const VisualEditor = (props:TVisualEditor) => {
     ? (
         <RaceEditor
           steps={steps}
-          models={models}
-          firstModelActive
+          features={features}
+          firstFeatureActive
         />
       )
     : (

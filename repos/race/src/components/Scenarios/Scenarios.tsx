@@ -2,16 +2,16 @@
 import { Text } from '../Text'
 import Box from '@mui/material/Box'
 import { Scenario } from './Scenario'
-import { useModel } from '../../contexts'
+import { useFeature } from '../../contexts'
 
 export type TScenarios = {
   
 } 
 
 export const Scenarios = (props:TScenarios) => {
-  const { model } = useModel()
+  const { feature } = useFeature()
 
-  const { scenarios } = model
+  const { scenarios } = feature
 
   return (
     <Box>
@@ -22,7 +22,7 @@ export const Scenarios = (props:TScenarios) => {
         return (
           <Scenario
             scenario={scenario}
-            key={`${model.uuid}-${scenario.uuid}`}
+            key={`${feature.uuid}-${scenario.uuid}`}
           />
         )
       })}

@@ -1,9 +1,9 @@
 import type {
-  TOnModelCB,
+  TOnFeatureCB,
   TRaceSteps,
-  TRaceModels,
+  TRaceFeatures,
   TRaceEditorProps,
-  TOnReturnModelCB,
+  TOnReturnFeatureCB,
 } from '../types'
 
 import { useRef } from 'react'
@@ -13,33 +13,33 @@ import { noOp } from '@keg-hub/jsutils'
 export const useRaceRefs = (props:TRaceEditorProps) => {
   const {
     steps,
-    models,
-    onModelChange=noOp,
-    onModelUpdate=noOp,
-    onBeforeModelChange=noOp as TOnReturnModelCB
+    features,
+    onFeatureChange=noOp,
+    onFeatureUpdate=noOp,
+    onBeforeFeatureChange=noOp as TOnReturnFeatureCB
   } = props
 
   const stepsRef = useRef<TRaceSteps>(steps)
   stepsRef.current = steps
   
-  const modelsRef = useRef<TRaceModels>(models)
-  modelsRef.current = models
+  const featuresRef = useRef<TRaceFeatures>(features)
+  featuresRef.current = features
 
-  const onModelChangeRef = useRef<TOnModelCB>(onModelChange)
-  onModelChangeRef.current = onModelChange
+  const onFeatureChangeRef = useRef<TOnFeatureCB>(onFeatureChange)
+  onFeatureChangeRef.current = onFeatureChange
 
-  const onModelUpdateRef = useRef<TOnModelCB>(onModelUpdate)
-  onModelUpdateRef.current = onModelUpdate
+  const onFeatureUpdateRef = useRef<TOnFeatureCB>(onFeatureUpdate)
+  onFeatureUpdateRef.current = onFeatureUpdate
 
-  const onModelBeforeChangeRef = useRef<TOnReturnModelCB>(onBeforeModelChange)
-  onModelBeforeChangeRef.current = onBeforeModelChange
+  const onFeatureBeforeChangeRef = useRef<TOnReturnFeatureCB>(onBeforeFeatureChange)
+  onFeatureBeforeChangeRef.current = onBeforeFeatureChange
 
   return {
     stepsRef,
-    modelsRef,
-    onModelChangeRef,
-    onModelUpdateRef,
-    onModelBeforeChangeRef
+    featuresRef,
+    onFeatureChangeRef,
+    onFeatureUpdateRef,
+    onFeatureBeforeChangeRef
   }
 
 }

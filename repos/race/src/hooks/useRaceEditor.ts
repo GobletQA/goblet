@@ -6,17 +6,17 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
 
   const {
     stepsRef,
-    modelsRef,
-    onModelChangeRef,
-    onModelUpdateRef,
-    onModelBeforeChangeRef
+    featuresRef,
+    onFeatureChangeRef,
+    onFeatureUpdateRef,
+    onFeatureBeforeChangeRef
   } = useRaceRefs(props)
 
   return {
     stepsRef,
-    modelsRef,
-    onModelChangeRef,
-    onModelUpdateRef,
-    onModelBeforeChangeRef,
+    featuresRef,
+    onFeatureChangeRef,
+    onFeatureUpdateRef,
+    onFeatureBeforeChangeRef,
   }
 }

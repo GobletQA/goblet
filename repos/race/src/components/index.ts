@@ -1,5 +1,5 @@
 export * from './Text'
-export * from './Model'
+export * from './Feature'
 export * from './Steps'
 export * from './Builder'
 export * from './Sidebar'

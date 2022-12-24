@@ -1,26 +1,26 @@
-import type { TRaceModels, TRaceModel } from './models.types'
 import type { TRaceSteps } from './steps.types'
-import type {MutableRefObject } from 'react'
+import type { TRaceFeatures, TRaceFeature } from './features.types'
+
 import type {
   TStepsRef,
-  TModelsRef,
-  TOnModelCB,
-  TOnReturnModelCB
+  TFeaturesRef,
+  TOnFeatureCB,
+  TOnReturnFeatureCB
 } from './helpers.types'
 
 
 export type TEditorRefs = {
   stepsRef: TStepsRef
-  modelsRef: TModelsRef
+  featuresRef: TFeaturesRef
 }
 
 
 export type TRaceEditorProps = {
-  model?:TRaceModel
   steps:TRaceSteps
-  models:TRaceModels
-  firstModelActive?:boolean
-  onModelChange?:TOnModelCB
-  onModelUpdate?:TOnModelCB
-  onBeforeModelChange?:TOnReturnModelCB
+  feature?:TRaceFeature
+  features:TRaceFeatures
+  firstFeatureActive?:boolean
+  onFeatureChange?:TOnFeatureCB
+  onFeatureUpdate?:TOnFeatureCB
+  onBeforeFeatureChange?:TOnReturnFeatureCB
 }

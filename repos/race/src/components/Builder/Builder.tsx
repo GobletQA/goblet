@@ -1,6 +1,6 @@
 import type { TEditorRefs } from '../../types'
 
-import { Model } from '../Model'
+import { Feature } from '../Feature'
 import { BuilderContainer } from './Builder.styled'
 
 export type TBuilder = TEditorRefs & {
@@ -10,7 +10,7 @@ export type TBuilder = TEditorRefs & {
 export const Builder = (props:TBuilder) => {
   return (
     <BuilderContainer>
-      <Model />
+      <Feature />
     </BuilderContainer>
   )
 }

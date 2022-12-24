@@ -2,7 +2,7 @@ import List from '@mui/material/List'
 import { styled } from '@mui/material/styles'
 
 
-export const ListModels = styled(List)`
+export const ListFeatures = styled(List)`
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -14,6 +14,6 @@ export const ListModels = styled(List)`
   }
 `
 
-export const ModelsItem = styled('li')`
+export const FeaturesItem = styled('li')`
   
 `

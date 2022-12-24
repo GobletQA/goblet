@@ -1,7 +1,7 @@
 import type { TEditorRefs } from '@GBR/types'
 
 import { Text } from '../Text'
-import { ModelsList } from './ModelsList'
+import { FeaturesList } from './FeaturesList'
 import { SidebarContainer } from './Sidebar.styled'
 
 export type TSidebar = TEditorRefs & {
@@ -9,13 +9,13 @@ export type TSidebar = TEditorRefs & {
 }
 
 export const Sidebar = (props:TSidebar) => {
-  const { modelsRef } = props
+  const { featuresRef } = props
 
   return (
     <SidebarContainer className='goblet-race-sidebar' >
       <Text>Features</Text>
-      <ModelsList
-        modelsRef={modelsRef}
+      <FeaturesList
+        featuresRef={featuresRef}
       />
     </SidebarContainer>
   )
