@@ -1,9 +1,12 @@
 import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 
-import Box from '@mui/material/Box'
 import { useCallback } from 'react'
 import { useFeature } from '../../contexts'
-import { ListFeatures, FeaturesItem } from './FeaturesList.styled'
+import {
+  Features,
+  FeatureText,
+  FeatureItem,
+} from './FeaturesList.styled'
 
 export type TFeaturesList = {
   featuresRef:TFeaturesRef
@@ -21,13 +24,13 @@ const ListItem = (props:TListItem) => {
   const onClick = useCallback(() => setFeature(feature), [feature, setFeature])
 
   return (
-    <FeaturesItem
+    <FeatureItem
       onClick={onClick}
     >
-      <Box>
+      <FeatureText>
         {feature.feature}
-      </Box>
-    </FeaturesItem>
+      </FeatureText>
+    </FeatureItem>
   )
 }
 
@@ -37,9 +40,10 @@ export const FeaturesList = (props:TFeaturesList) => {
   } = props
 
   return (
-    <ListFeatures
+    <Features
+      component='nav'
       className='goblet-race-features-list'
-      subheader={<li />}
+      aria-labelledby='nested-list-subheader'
     >
       {Object.entries(featuresRef.current).map(([key, feature]) => {
         return (
@@ -49,7 +53,7 @@ export const FeaturesList = (props:TFeaturesList) => {
           />
         )
       })}
-    </ListFeatures>
+    </Features>
   )
 
 }
