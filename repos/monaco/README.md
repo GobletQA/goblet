@@ -9,8 +9,8 @@ yarn add @gobletqa/monaco
 ### Use
 
 ```js
+import { Editor } from '@gobletqa/monaco'
 import { useState, useCallback, useRef } from 'react'
-import { MultiEditor } from '@gobletqa/monaco'
 
 const fileList: Record<string, string> = {
   '/file1.js': `console.log('file 1')`,
@@ -35,7 +35,7 @@ export const EditorComponent = (props: Record<any, any>) => {
   }, [])
 
   return (
-    <MultiEditor
+    <Editor
       ref={editorRef}
       defaultFiles={files}
       onPathChange={onPathChange}

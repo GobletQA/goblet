@@ -51,6 +51,8 @@
       "@utils/*": [ "src/utils/*" ],
       "@gobletqa/monaco": [ "../monaco/src" ],
       "@gobletqa/monaco/*": [ "../monaco/src/*" ],
+      "@gobletqa/race": [ "../race/src" ],
+      "@gobletqa/race/*": [ "../race/src/*" ],
       "@gobletqa/shared": [ "../shared/src" ],
       "@gobletqa/shared/*": [ "../shared/src/*" ],
       "@gobletqa/workflows": [ "../workflows/src" ],
