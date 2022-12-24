@@ -25,7 +25,7 @@ When('I click the descendent element {string}', clickDescendent, {
     {
       type: 'string',
       description: `The selector for the element. Selector must be specific enough to locate a single element.`,
-      example: "button[name='unique_name']",
+      example: "button[name='button-name']",
     },
   ],
 })

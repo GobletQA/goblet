@@ -2,12 +2,14 @@ import type {
   TAction,
   TDefinitionAst,
   TDefinitionsAstList,
-  TDefinitionsAstTypeMap
+  TDefinitionFileModel,
+  TDefinitionsAstTypeMap,
+  TDefinitionFileModelList,
 } from '@types'
 
 export type TDefinitionsState = {
   activeDefinition?: TDefinitionAst
-  definitions: TDefinitionsAstList
+  definitions: TDefinitionFileModelList
   definitionTypes: TDefinitionsAstTypeMap
 }
 export const definitionsState = {} as TDefinitionsState
@@ -25,14 +27,14 @@ export const definitionsActions = {
   },
   clearDefs: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionsAstList>
+    action:TAction<TDefinitionFileModelList>
   ) => ({
     ...state,
-    definitions: {} as TDefinitionsAstList
+    definitions: {} as TDefinitionFileModelList
   }),
   setDef: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionAst>
+    action:TAction<TDefinitionFileModel>
   ) => {
     return {
       ...state,
@@ -45,12 +47,12 @@ export const definitionsActions = {
           : model
 
         return acc
-      }, {} as TDefinitionsAstList),
+      }, {} as TDefinitionFileModelList),
     }
   },
   setDefs: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionsAstList>
+    action:TAction<TDefinitionFileModelList>
   ) => {
     return {
       ...state,
@@ -59,7 +61,7 @@ export const definitionsActions = {
   },
   upsertDefs: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionsAstList>
+    action:TAction<TDefinitionFileModelList>
   ) => {
     return {
       ...state,

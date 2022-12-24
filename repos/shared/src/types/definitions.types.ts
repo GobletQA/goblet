@@ -52,6 +52,8 @@ export type TDefinitionFileModel = Omit<TFileModel, 'ast'> & {
   ast: Record<`definitions`, TDefinitionAst[]>
 }
 
+export type TDefinitionFileModelList = Record<string, TDefinitionFileModel>
+
 type ComponentType<T=any, C=any> = (props?:T) => C
 export type TItemActionMethod = (item:TDefinitionAst, ...args:any[]) => void
 export type TDefItemAction<T=any, C=any> = {

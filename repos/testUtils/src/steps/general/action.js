@@ -11,7 +11,7 @@ const generalAction = async (action, selector) => {
   return page[action](selector, { force: true })
 }
 
-const meta = {
+const meta = (exp1='word', exp2='string') => ({
   module: `general-action`,
   examples: [
     `Given I click "button[name='submit']"`,
@@ -21,22 +21,22 @@ const meta = {
   description: `Locates an element by selector and preforms an action on it.`,
   expressions: [
     {
-      type: 'word',
+      type: exp1,
       description: `The action to perform on the element`,
       example: "click",
     },
     {
-      type: 'string',
-      description: `The element selector.  Selector must be specific enough to locate a single element.`,
+      type: exp2,
+      description: `The element selector. Selector must be specific enough to locate a single element.`,
       example: "button[name='unique_name']",
     },
   ],
-}
+})
 
-Then('I {word} {word}', generalAction, meta)
-Then('I {word} {string}', generalAction, meta)
-Then('I {word} the {word}', generalAction, meta)
-Then('I {word} the {string}', generalAction, meta)
+Then('I {word} {string}', generalAction, meta())
+Then('I {word} the {string}', generalAction, meta())
+Then('I {word} {word}', generalAction, meta(`word`, `word`))
+Then('I {word} the {word}', generalAction, meta(`word`, `word`))
 
 
 module.exports = {

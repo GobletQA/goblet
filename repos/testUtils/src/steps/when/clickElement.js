@@ -28,8 +28,8 @@ const meta = {
   expressions: [
     {
       type: 'string',
-      description: `The element selector.  Selector must be specific enough to locate a single element.`,
-      example: "button[name='unique_name']",
+      description: `The element selector. Selector must be specific enough to locate a single element.`,
+      example: "button[name='btn-name']",
     },
   ],
 }

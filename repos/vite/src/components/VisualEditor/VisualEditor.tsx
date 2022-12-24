@@ -1,9 +1,7 @@
-import type { TFeatureFileModel } from '@types'
-import Box from '@mui/material/Box'
-import { useSelector } from '@store'
-import { Features } from './Features'
+import { RaceEditor } from '@gobletqa/race' 
 import { BlockIcon } from '@components/Icons'
 import { NotConnected } from '@components/NotConnected'
+import { useRaceHooks } from '@hooks/race/useRaceHooks'
 
 export type TVisualEditor = {
   
@@ -11,17 +9,23 @@ export type TVisualEditor = {
 
 export const VisualEditor = (props:TVisualEditor) => {
 
-  return (
-    <Box
-      sx={{
-        margin: `20px`
-      }}
-    >
-      VisualEditor Form goes here :)
-    <NotConnected
-      Icon={BlockIcon}
-      message='Repository not connected'
-    />
-    </Box>
-  )
+  const {
+    steps,
+    models,
+    connected
+  } = useRaceHooks()
+
+  return connected
+    ? (
+        <RaceEditor
+          steps={steps}
+          models={models}
+        />
+      )
+    : (
+        <NotConnected
+          Icon={BlockIcon}
+          message='Repository not connected'
+        />
+      )
 }
