@@ -1,7 +1,9 @@
 import type { TAPIReposResp } from '@types'
+import { repoApi } from '@services/repoApi'
+import { noOpObj } from '@keg-hub/jsutils'
 import { setRepos } from '../local/setRepos'
 import { addToast } from '@actions/toasts/addToast'
-import { apiRepoRequest } from '@utils/api/apiRepoRequest'
+
 
 /**
  * Gets all repos for the logged in user from the authorized provider
@@ -17,7 +19,7 @@ export const getRepos = async () => {
     data,
     error,
     success
-  } = await apiRepoRequest<TAPIReposResp>(`/repo/all`)
+  } = await repoApi.getRepos<TAPIReposResp>(noOpObj)
 
   if(!success || error)
     addToast({

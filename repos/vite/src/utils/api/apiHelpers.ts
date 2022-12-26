@@ -27,7 +27,7 @@ export const buildUrl = (builtRequest:TRequest) => {
  * @returns {string} - Url with the /repo/repoName prepended to it
  */
 export const formatRepoUrl = (repoName:string, url:string) => {
-  return url.indexOf('/repo') === 0
+  return url.indexOf(`/repo`) === 0
     ? url
     : url[0] === '/'
     ? `/repo/${repoName}${url}`

@@ -11,7 +11,7 @@ const buildRequest = (request:TRequest|string) => {
   const repoData = getRepoData()
   req.url = formatRepoUrl(repoData.name, req.url)
   
-  return deepMerge(
+  return deepMerge<TRequest>(
     {
       params: {
         local: repoData?.git?.local,
@@ -25,6 +25,36 @@ const buildRequest = (request:TRequest|string) => {
 
 class RepoApi {
 
+  connect = async <T=Record<any, any>>(params:Partial<TRequest>) => {
+    const req = buildRequest({
+      ...params,
+      method: `POST`,
+      url: `/repo/connect`,
+    })
+
+    return await apiRequest<T>(req)
+  }
+
+  disconnect = async <T=Record<any, any>>(params:Partial<TRequest>) => {
+    const req = buildRequest({
+      ...params,
+      method: `POST`,
+      url: `/repo/disconnect`,
+    })
+
+    return await apiRequest<T>(req)
+  }
+
+  getRepos = async <T=Record<any, any>>(params:Partial<TRequest>) => {
+    const req = buildRequest({
+      ...params,
+      method: `GET`,
+      url: `/repo/all`,
+    })
+
+    return await apiRequest<T>(req)
+  }
+
   definitions = async () => {
     const req = buildRequest(`/definitions`)
     return await apiRequest(req)
@@ -37,4 +67,4 @@ class RepoApi {
 
 }
 
-export const screencastApi = new RepoApi()
+export const repoApi = new RepoApi()

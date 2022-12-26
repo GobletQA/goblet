@@ -1,7 +1,8 @@
 import type { TApiRepoResp } from '@types'
 import { setRepo } from '../local/setRepo'
 import { addToast } from '@actions/toasts'
-import { apiRequest } from '@utils/api/apiRequest'
+import { repoApi } from '@services/repoApi'
+
 
 export type TConnectRepo = {
   [key:string]: any
@@ -22,11 +23,7 @@ export const connectRepo = async (params:TConnectRepo) => {
     data,
     error,
     success
-  } = await apiRequest<TApiRepoResp>({
-    params,
-    method: 'POST',
-    url: `/repo/connect`,
-  })
+  } = await repoApi.connect<TApiRepoResp>({ params })
 
   if (!success || error)
     return addToast({

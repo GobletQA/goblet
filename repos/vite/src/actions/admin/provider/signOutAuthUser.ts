@@ -32,16 +32,14 @@ export const signOutAuthUser = async () => {
   try { await WSService.disconnect() }
   catch(err:any){ console.error(`Error disconnecting from websocket.\n${err.message}`) }
 
-  try { await disconnectRepo() }
-  catch(err:any){ console.error(`Error disconnecting mounted repo.\n${err.message}`) }
-
   // Log-out the github user
   const currentUser = GitUser.getUser()
 
-  try {
-    // Remove local user data here
-    GitUser.signOut()
-  }
+  try { await disconnectRepo(currentUser?.username) }
+  catch(err:any){ console.error(`Error disconnecting mounted repo.\n${err.message}`) }
+
+  // Remove local user data here
+  try { GitUser.signOut() }
   catch(err:any){ console.error(`Error logging out github user.\n${err.message}`) }
 
   currentUser &&
