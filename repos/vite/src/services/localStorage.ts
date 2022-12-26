@@ -153,7 +153,7 @@ class Storage {
     }
   }
 
-  cleanup = async () => {
+  cleanupSession = async () => {
     try {
       await this.removeJwt()
       await this.removeHeaders()
@@ -181,6 +181,7 @@ class Storage {
 
   getThemeType = async () => await this.get(StorageKeys.THEME_TYPE, false)
   setThemeType = async (data:any) => await this.set(StorageKeys.THEME_TYPE, data, false)
+  removeThemeType = async () => await this.remove(StorageKeys.THEME_TYPE)
 
   getSettings = async ():Promise<TStorageSettings> => await this.get(StorageKeys.SETTINGS) || {}
   setSettings = async (data:TStorageSettings) => await this.set(StorageKeys.SETTINGS, data)

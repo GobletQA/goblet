@@ -3,7 +3,7 @@ import { addToast } from '@actions/toasts'
 import { GitUser } from '@services/gitUser'
 import { removeRepo } from '../local/removeRepo'
 import { apiRequest } from '@utils/api/apiRequest'
-import { connectModal } from '@actions/modals/modals'
+import { signInModal, connectModal } from '@actions/modals/modals'
 
 export const disconnectRepo = async (username?:string) => {
   addToast({
@@ -15,6 +15,8 @@ export const disconnectRepo = async (username?:string) => {
   await removeRepo()
 
   username = username || GitUser.getUser()?.username
+
+  if(!username) return signInModal()
 
   // Then call the backend api to unmount the repo
   const {data, error} = await apiRequest({

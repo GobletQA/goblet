@@ -3,6 +3,7 @@ import { GitUser } from '@services/gitUser'
 import { signInModal } from '@actions/modals/modals'
 import { localStorage } from '@services/localStorage'
 import { getProviderMetadata } from '@services/providers'
+import { disconnectRepo } from '@actions/repo/api/disconnect'
 import { WSService } from '@services/socketService/socketService'
 import { clearContainerRoutes } from '@actions/container/local/clearContainerRoutes'
 
@@ -20,7 +21,7 @@ export const signOutAuthUser = async () => {
   if(!AuthActive) return
 
   // Remove the local cache
-  try { await localStorage.cleanup() }
+  try { await localStorage.cleanupSession() }
   catch(err:any){ console.error(`Error clearing local storage.\n${err.message}`) }
 
   // Remove the container routes from redux store
@@ -30,6 +31,9 @@ export const signOutAuthUser = async () => {
   // Disconnect from the web-socket server
   try { await WSService.disconnect() }
   catch(err:any){ console.error(`Error disconnecting from websocket.\n${err.message}`) }
+
+  try { await disconnectRepo() }
+  catch(err:any){ console.error(`Error disconnecting mounted repo.\n${err.message}`) }
 
   // Log-out the github user
   const currentUser = GitUser.getUser()

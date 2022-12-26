@@ -10,7 +10,7 @@ import { HeaderLogo } from './HeaderLogo'
 import Toolbar from '@mui/material/Toolbar'
 import { AppHeader } from './Header.styled'
 import { useStateReset } from '@hooks/useReset'
-import { useThemeType } from '@contexts/ThemeTypeContext'
+import { useThemeType } from '@contexts/ThemeContext'
 import { IconButton } from '@components/Buttons/IconButton'
 import { DarkModeIcon, LightModeIcon } from '@components/Icons'
 
