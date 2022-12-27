@@ -30,8 +30,8 @@ RUN <<EOF
   rm -rf turbo.json
   rm -rf scripts
   rm -rf repos/backend
+  rm -rf repos/components
   rm -rf repos/conductor
-  rm -rf repos/frontend
   rm -rf repos/monaco
   rm -rf repos/resizer
   rm -rf repos/traceViewer

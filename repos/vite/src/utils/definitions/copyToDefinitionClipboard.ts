@@ -1,8 +1,6 @@
 import type { TDefinitionAst } from '@types'
 import { capitalize } from '@keg-hub/jsutils'
-import { Clipboard } from '@gobletqa/shared/frontend/dom/clipBoard'
-
-
+import { Clipboard } from '@gobletqa/components'
 
 /**
  * Copies a definitions matcher text to the users clipboard

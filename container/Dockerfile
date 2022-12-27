@@ -6,9 +6,11 @@ WORKDIR /goblet/app
 COPY . .
 RUN <<EOF
   set -eux;
-  rm -rf repos/frontend
+  rm -rf repos/components
   rm -rf repos/monaco
   rm -rf repos/resizer
+  rm -rf repos/race
+  rm -rf repos/traceViewer
   rm -rf repos/vite
   cd /goblet/app/repos
   mkdir -p ../out/json/repos

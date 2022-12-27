@@ -14,6 +14,6 @@ export const SidebarContainer = styled(Box)`
   width: 100%;
   max-width: 225px;
 
-  // color: var(--monaco-editor-foreground);
-  // background: var(--monaco-editor-background);
+  color: var(--goblet-theme-foreground);
+  background: var(--goblet-theme-background);
 `

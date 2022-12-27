@@ -14,27 +14,27 @@
     "start": "vite --clearScreen false -c configs/vite.config.ts --force"
   },
   "dependencies": {
-    "@emotion/react": "11.10.4",
-    "@emotion/styled": "11.10.4",
+    "@emotion/react": "*",
+    "@emotion/styled": "*",
     "@gobletqa/shared": "*",
+    "@gobletqa/components": "*",
     "@keg-hub/cli-utils": "*",
     "@keg-hub/jsutils": "*",
-    "@mui/icons-material": "5.10.3",
-    "@mui/material": "5.10.5",
+    "@mui/icons-material": "*",
+    "@mui/material": "*",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@mui/x-date-pickers": "5.0.4",
+    "@mui/x-date-pickers": "*",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
-    "@vitejs/plugin-react": "2.1.0",
-    "esbuild-register": "3.3.3",
-    "serve": "14.1.2",
-    "vite": "3.1.4",
-    "vite-plugin-monaco-editor": "1.1.0",
-    "vite-plugin-svgr": "2.2.1",
-    "vite-plugin-svgr-component": "1.0.1",
-    "vite-tsconfig-paths": "3.5.0"
+    "@vitejs/plugin-react": "*",
+    "esbuild-register": "*",
+    "serve": "*",
+    "vite": "*",
+    "vite-plugin-svgr": "*",
+    "vite-plugin-svgr-component": "*",
+    "vite-tsconfig-paths": "*"
   }
 }

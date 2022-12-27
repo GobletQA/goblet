@@ -35,6 +35,8 @@
       "@GBR/types/*": [ "src/types/*" ],
       "@GBR/utils": [ "src/utils" ],
       "@GBR/utils/*": [ "src/utils/*" ],
+      "@gobletqa/components": [ "../components/src" ],
+      "@gobletqa/components/*": [ "../components/src/*" ]
     }
   },
   "include": ["src"],

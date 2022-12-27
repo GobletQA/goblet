@@ -12,7 +12,7 @@ const styles = {
   icon: {
     fontSize: 16,
     marginRight: 4,
-    // color: 'var(--monaco-editor-foreground)',
+    color: 'var(--goblet-theme-foreground)',
   }
 }
 

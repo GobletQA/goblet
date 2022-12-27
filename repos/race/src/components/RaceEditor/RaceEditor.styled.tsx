@@ -12,7 +12,7 @@ export const Container = styled(Box)`
   justify-content: flex-start;
   border-right: 1px solid #E4E6EB;
 
-  // color: var(--monaco-editor-foreground);
+  color: var(--goblet-theme-foreground);
 `
 
 export const Divider = styled(Box)`
@@ -21,12 +21,12 @@ export const Divider = styled(Box)`
   flex-shrink: 0;
   background: #E4E6EB;
   
-  // cursor: col-resize;
-  // background: var(--monaco-editorCursor-foreground);
-  // background: var(--monaco-editor-background);
+  cursor: col-resize;
+  background: var(--goblet-theme-Cursor-foreground);
+  background: var(--goblet-theme-background);
 
-  // &:hover {
-  //   background: var(--monaco-editorCursor-foreground);
-  // }
+  &:hover {
+    background: var(--goblet-theme-Cursor-foreground);
+  }
 
 `

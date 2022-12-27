@@ -4,7 +4,7 @@ node_modules
 dist
 build
 coverage
-repos/frontend/tsconfig.json
+repos/components/tsconfig.json
 .eslintignore
 repos/backend/migrations/seedData.cql
 *.png
@@ -23,5 +23,4 @@ repos/backend/migrations/seedData.cql
 !/configs
 !/repos
 !/src
-!/tap.js
 !/tasks
