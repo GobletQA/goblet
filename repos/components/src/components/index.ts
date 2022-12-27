@@ -1,3 +1,4 @@
+export * from './EditorActions'
 export * from './Text'
 export * from './Panel'
 export * from './Icons'

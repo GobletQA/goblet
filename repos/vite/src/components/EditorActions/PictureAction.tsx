@@ -1,10 +1,10 @@
-import type { TEditorAction, TEditorActionProps } from '@gobletqa/monaco'
+import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
 import { EditorAction } from './EditorAction'
 import { CameraAltIcon } from '@components/Icons'
 
 
-const PictureComp = (props:TEditorActionProps) => {
+const PictureComp = (props:TSidebarActionProps) => {
   return (
     <EditorAction
       Icon={CameraAltIcon}
@@ -15,7 +15,7 @@ const PictureComp = (props:TEditorActionProps) => {
   )
 }
 
-export const PictureAction:TEditorAction = {
+export const PictureAction:TSidebarAction = {
   Component: PictureComp,
   name: `picture-browser-action`,
   onClick: async (event, editor, loc, content) => {

@@ -1,21 +1,29 @@
-import type { TCodeEditorRef, TEditorAction } from '../../types'
+import type { TAction } from '../../types'
 import type { MutableRefObject } from 'react'
 
-import './Actions.css'
 import { Action } from './Action'
 import { Arrow } from '../Icons/Arrow'
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { cls } from '@keg-hub/jsutils'
+import {
+  ActionsList,
+  ActionsToggle,
+  ActionsContainer,
+  ActionsToggleWrap,
+} from './Actions.styled'
 
-export type TActions = {
+export type TActions<TEditor, TEditorRef extends MutableRefObject<any>=MutableRefObject<any>> = {
   open?:boolean
-  actions: TEditorAction[]
-  editorRef:TCodeEditorRef
+  actions: TAction<TEditor, TEditorRef>[]
+  editorRef:TEditorRef
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
 }
 
-export const Actions = (props:TActions) => {
+export const Actions = <
+  TEditor=Record<any, any>,
+  TEditorRef extends MutableRefObject<any>=MutableRefObject<any>
+>(props:TActions<TEditor, TEditorRef>) => {
   const {
     actions,
     editorRef,
@@ -61,18 +69,18 @@ export const Actions = (props:TActions) => {
   }, [props.open])
 
   return (
-    <div className='goblet-editor-actions-main' >
-      <div
+    <ActionsContainer className='goblet-editor-actions-main' >
+      <ActionsToggle
         onClick={onToggle}
         className={cls('goblet-editor-actions-toggle', { open, closed: !open })}
       >
-        <div className='goblet-editor-actions-toggle-icon'>
+        <ActionsToggleWrap className='goblet-editor-actions-toggle-icon'>
           <div className='goblet-editor-icon-rotate' >
             <Arrow collapse={false} svgStyle={{ height:`20px`, width:`20px` }} />
           </div>
-        </div>
-      </div>
-      <div
+        </ActionsToggleWrap>
+      </ActionsToggle>
+      <ActionsList
         style={style}
         ref={actionsRef}
         className='goblet-editor-actions-list'
@@ -81,14 +89,14 @@ export const Actions = (props:TActions) => {
           return (
             <Action
               key={action.id || action.name}
+              {...action}
               editorRef={editorRef}
               curPathRef={curPathRef}
               curValueRef={curValueRef}
-              {...action}
             />
           )
         }))}
-      </div>
-    </div>
+      </ActionsList>
+    </ActionsContainer>
   )
 }

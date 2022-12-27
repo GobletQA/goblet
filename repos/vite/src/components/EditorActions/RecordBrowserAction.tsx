@@ -1,10 +1,10 @@
-import type { TEditorAction, TEditorActionProps } from '@gobletqa/monaco'
+import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
 import { EditorAction } from './EditorAction'
 import { getFileModel } from '@utils/files/getFileModel'
 import { RadioButtonCheckedIcon } from '@components/Icons'
 
-const RecordBrowser = (props:TEditorActionProps) => {
+const RecordBrowser = (props:TSidebarActionProps) => {
   return (
     <EditorAction
       onClick={props.onClick}
@@ -15,7 +15,7 @@ const RecordBrowser = (props:TEditorActionProps) => {
   )
 }
 
-export const RecordBrowserAction:TEditorAction = {
+export const RecordBrowserAction:TSidebarAction = {
   Component: RecordBrowser,
   name: `record-browser-action`,
   onClick: async (event, editor, loc, content) => {

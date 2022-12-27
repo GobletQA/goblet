@@ -1,4 +1,5 @@
 import type {
+  TEditorAction,
   IMultiRefType,
   TEditorConfig,
   IMonacoEditorProps,
@@ -8,10 +9,8 @@ import { useRef, useState, forwardRef } from 'react'
 
 import { Empty } from '../Empty'
 import { Sidebar } from '../Sidebar'
-import { Actions } from '../Actions'
 import { OpenedTabs } from '../OpenedTabs'
 import { setTheme } from '../../init/setTheme'
-import { useSidebarResize } from '../../goblet'
 import { deleteModel } from '../../utils/editor/deleteModel'
 import { useLintWorker } from '../../hooks/editor/useLintWorker'
 import { useEditorRefs } from '../../hooks/editor/useEditorRefs'
@@ -21,6 +20,8 @@ import { useModalActions } from '../../hooks/editor/useModalActions'
 import { useFolderCallbacks } from '../../hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
 import { useEditorFileCallbacks } from '../../hooks/editor/useEditorFileCallbacks'
+
+import { useSidebarResize, Actions } from '../../goblet'
 
 const editorStyles = { flex: 1, width: '100%' }
 
@@ -247,11 +248,11 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         {openedFiles.length === 0 && (<Empty text={emptyText} />)}
         {actions?.length && (
           <Actions
-            actions={actions}
             open={actionsOpen}
             editorRef={editorRef}
             curPathRef={curPathRef}
             curValueRef={curValueRef}
+            actions={actions as TEditorAction[]}
           />
         )}
       </div>

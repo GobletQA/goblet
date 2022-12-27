@@ -1,4 +1,4 @@
-import type { TEditorAction, TEditorActionProps } from '@gobletqa/monaco'
+import type { TAction, TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
 import { EditorAction } from './EditorAction'
 import { getFileModel } from '@utils/files/getFileModel'
@@ -6,7 +6,7 @@ import { PlayCircleOutlineIcon } from '@components/Icons'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 
 
-const RunTests = (props:TEditorActionProps) => {
+const RunTests = (props:TSidebarActionProps) => {
   return (
     <EditorAction
       onClick={props.onClick}
@@ -19,7 +19,7 @@ const RunTests = (props:TEditorActionProps) => {
   )
 }
 
-export const RunTestsAction:TEditorAction = {
+export const RunTestsAction:TSidebarAction = {
   Component: RunTests,
   name: `run-tests-action`,
   onClick: async (event, editor, loc, content) => {

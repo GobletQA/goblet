@@ -1,4 +1,4 @@
-import type { TEditorAction, TEditorActionProps } from '@gobletqa/monaco'
+import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
 import Box from '@mui/material/Box'
 import { EditorAction } from './EditorAction'
@@ -6,7 +6,7 @@ import { IconButton } from '@components/Buttons'
 import { CropSquareIcon } from '@components/Icons'
 
 
-const SquareComp = (props:TEditorActionProps) => {
+const SquareComp = (props:TSidebarActionProps) => {
   return (
     <EditorAction
       onClick={props.onClick}
@@ -17,7 +17,7 @@ const SquareComp = (props:TEditorActionProps) => {
   )
 }
 
-export const SquareAction:TEditorAction = {
+export const SquareAction:TSidebarAction = {
   Component: SquareComp,
   name: `square-browser-action`,
   onClick: async (event, editor, loc, content) => {

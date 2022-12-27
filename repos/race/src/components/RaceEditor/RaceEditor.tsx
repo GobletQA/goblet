@@ -1,16 +1,22 @@
 import type { TRaceEditorProps } from '@GBR/types'
 
+import { useRef } from 'react'
 import { Builder } from '../Builder'
 import { Sidebar } from '../../goblet'
 import { FeaturesPanel } from '../Features'
-import { useSidebarResize } from '../../goblet'
+import { useSidebarResize, Actions } from '../../goblet'
 import { useRaceEditor } from '../../hooks/useRaceEditor'
 import { FeatureProvider } from '../../contexts/FeatureContext'
 import { Container, Divider as REDivider } from './RaceEditor.styled'
 
 export const RaceEditor = (props:TRaceEditorProps) => {
   const {
+    Panels,
     feature,
+    actions,
+    PrePanels,
+    defaultPath,
+    actionsOpen,
     sidebarWidth,
     sidebarStatus,
     onSidebarResize,
@@ -41,6 +47,11 @@ export const RaceEditor = (props:TRaceEditorProps) => {
   })
 
 
+  // TODO: add real values for these
+  const editorRef = useRef(null)
+  const curPathRef = useRef(defaultPath || '')
+  const curValueRef = useRef('')
+
   return (
     <FeatureProvider
       onFeatureChangeRef={onFeatureChangeRef}
@@ -55,7 +66,11 @@ export const RaceEditor = (props:TRaceEditorProps) => {
         onMouseUp={onMoveEnd}
         className='goblet-race-editor'
       >
-        <Sidebar style={styles} >
+        <Sidebar
+          style={styles}
+          Panels={Panels}
+          PrePanels={PrePanels}
+        >
           <FeaturesPanel
             stepsRef={stepsRef}
             featuresRef={featuresRef}
@@ -66,6 +81,15 @@ export const RaceEditor = (props:TRaceEditorProps) => {
           stepsRef={stepsRef}
           featuresRef={featuresRef}
         />
+        {actions?.length && (
+          <Actions
+            actions={actions}
+            open={actionsOpen}
+            editorRef={editorRef}
+            curPathRef={curPathRef}
+            curValueRef={curValueRef}
+          />
+        )}
       </Container>
     </FeatureProvider>
   )

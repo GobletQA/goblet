@@ -2,29 +2,13 @@ import type { TEditorRefHandle } from '@gobletqa/monaco'
 
 import { useRef } from 'react'
 import { BlockIcon } from '@components/Icons'
-import { ConnectPanel } from './ConnectPanel'
 import { EditorSidebarWidth } from '@constants'
 import { MonacoEditor } from '@gobletqa/monaco'
-import { DrawAction } from './Actions/DrawAction'
+import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Layout/Divider'
-import { SquareAction } from './Actions/SquareAction'
-import { PictureAction } from './Actions/PictureAction'
 import { NotConnected } from '@components/NotConnected'
-import { RunTestsAction } from './Actions/RunTestsAction'
+import { PrePanels } from '@components/Panels/PrePanels'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
-import { RecordBrowserAction } from './Actions/RecordBrowserAction'
-
-const Actions = [
-  RunTestsAction,
-  RecordBrowserAction,
-  DrawAction,
-  SquareAction,
-  PictureAction
-]
-
-const PrePanels = [
-  ConnectPanel
-]
 
 export type TCodeEditorProps = {
   style?: Record<string, string|number>

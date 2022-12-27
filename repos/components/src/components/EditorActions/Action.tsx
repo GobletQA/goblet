@@ -1,5 +1,8 @@
-import type { TEditorActionExt, TEditorAction } from '../../types'
+import type { TAction } from '../../types'
+import type { MutableRefObject } from 'react'
+
 import { cls } from '@keg-hub/jsutils'
+import { ActionItem } from './Actions.styled'
 import {
   useMemo,
   useCallback,
@@ -8,7 +11,13 @@ import {
   isValidElement,
 } from 'react'
 
-const useActionComp = (props:TEditorAction & TEditorActionExt) => {
+
+
+
+const useActionComp = <
+  TEditor=Record<any, any>,
+  TEditorRef extends MutableRefObject<any>=MutableRefObject<any>
+>(props:TAction<TEditor, TEditorRef>) => {
   const {
     name,
     id=name,
@@ -52,15 +61,18 @@ const useActionComp = (props:TEditorAction & TEditorActionExt) => {
 
 }
 
-export const Action = (props:TEditorAction & TEditorActionExt) => {
+export const Action = <
+  TEditor=any,
+  TEditorRef extends MutableRefObject<any>=MutableRefObject<any>
+>(props:TAction<TEditor, TEditorRef>) => {
   if(!props.Component) return null
 
   const { id, name, className } = props
   const Comp = useActionComp(props)
 
   return (
-    <div className={cls(`goblet-editor-action-main`, className || `goblet-editor-${id || name}`)} >
+    <ActionItem className={cls(`goblet-editor-action-main`, className || `goblet-editor-${id || name}`)} >
       {Comp}
-    </div>
+    </ActionItem>
   )
 }

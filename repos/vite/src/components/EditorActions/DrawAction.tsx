@@ -1,9 +1,9 @@
-import type { TEditorAction, TEditorActionProps } from '@gobletqa/monaco'
+import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
 import { EditorAction } from './EditorAction'
 import { ModeEditIcon } from '@components/Icons'
 
-const DrawComp = (props:TEditorActionProps) => {
+const DrawComp = (props:TSidebarActionProps) => {
   return (
     <EditorAction
       Icon={ModeEditIcon}
@@ -14,7 +14,7 @@ const DrawComp = (props:TEditorActionProps) => {
   )
 }
 
-export const DrawAction:TEditorAction = {
+export const DrawAction:TSidebarAction = {
   Component: DrawComp,
   name: `draw-browser-action`,
   onClick: async (event, editor, loc, content) => {
