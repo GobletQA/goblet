@@ -2,11 +2,11 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
 
-export const SidebarContainer = styled(Box)`
+export const SidebarContainerBefore = styled(Box)`
   width: 100%;
+  max-width: 225px;
   display: flex;
   flex-shrink: 0;
-  max-width: 225px;
   overflow-y: auto;
   overflow-x: hidden;
   align-self: stretch;
@@ -14,4 +14,47 @@ export const SidebarContainer = styled(Box)`
 
   color: var(--goblet-editor-foreground);
   background: var(--goblet-editor-background);
+`
+
+export const SidebarContainer = styled(Box)`
+
+  width: 100%;
+  max-width: 225px;
+
+  flex-shrink: 0;
+  font-size: 14px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-left: 5px;
+  line-height: 25px;
+  align-self: stretch;
+  color: var(--goblet-editor-foreground);
+  background: var(--goblet-editor-background);
+
+
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--goblet-editor-background);
+    box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
+    -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: var(--goblet-scrollbarSlider-background);
+    box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
+    -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
+  }
+
+  &::-webkit-scrollbar-corner,
+  &::-webkit-resizer {
+    border-radius: 3px;
+    background: var(--goblet-scrollbarSlider-background);
+    box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
+    -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
+  }
+
 `

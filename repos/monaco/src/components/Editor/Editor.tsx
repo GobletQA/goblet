@@ -11,13 +11,13 @@ import { Sidebar } from '../Sidebar'
 import { Actions } from '../Actions'
 import { OpenedTabs } from '../OpenedTabs'
 import { setTheme } from '../../init/setTheme'
+import { useSidebarResize } from '../../goblet'
 import { deleteModel } from '../../utils/editor/deleteModel'
 import { useLintWorker } from '../../hooks/editor/useLintWorker'
 import { useEditorRefs } from '../../hooks/editor/useEditorRefs'
 import { useTypesWorker } from '../../hooks/editor/useTypesWorker'
 import { useEditorSetup } from '../../hooks/editor/useEditorSetup'
 import { useModalActions } from '../../hooks/editor/useModalActions'
-import { useSidebarResize } from '../../hooks/sidebar/useSidebarResize'
 import { useFolderCallbacks } from '../../hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
 import { useEditorFileCallbacks } from '../../hooks/editor/useEditorFileCallbacks'
@@ -125,8 +125,8 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     resizeSidebar,
   } = useSidebarResize({
     onSidebarResize,
-    initialWidth: sidebarWidth,
-    initialStatus: sidebarStatus ?? config?.editor?.sidebar?.width ?? 200,
+    initialStatus: sidebarStatus,
+    initialWidth: sidebarWidth ?? config?.editor?.sidebar?.width,
   })
 
   const {

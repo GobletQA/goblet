@@ -66,11 +66,11 @@ export const PanelHeader = (props:TPanelHeader) => {
   return (
     <Container
       onClick={onCollapse}
-      className={cls(`goblet-sidebar-panel-header`, closed ? `closed` : ``)}
+      className={cls(`goblet-editor-sidebar-panel-header`, closed ? `closed` : ``)}
     >
       <Arrow
         collapse={closed}
-        className={`goblet-panel-toggle-icon`}
+        className={`goblet-editor-panel-toggle-icon`}
       />
       <PanelHeaderText>{title}</PanelHeaderText>
       {actions?.length ? (<PanelHeaderActions {...props} />) : null}

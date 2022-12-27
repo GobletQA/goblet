@@ -14,12 +14,34 @@ export const PanelSidebar = styled(Box)`
 `
 
 export const PanelHeader = styled(ListItemButton)<THeaderItem>`
-  padding: 8px 4px;
-  cursor: pointer;
+    left: -5px;
+    height: 30px;
+    display: flex;
+    cursor: pointer;
+    font-size: 14px;
+    user-select: none;
+    line-height: 28px;
+    padding-left: 5px;
+    font-weight: bold;
+    flex-direction: row;
+    align-items: center;
+    width: calc( 100% + 5px );
+    position: relative;
+    background: var(--goblet-list-activeSelectionBackground);
+    border-bottom: 2px solid var(--goblet-editor-background);
 
-  & .goblet-panel-header-icon:hover {
-    color: var(--goblet-list-hoverForeground);
+  
+
+  & .goblet-editor-panel-toggle-icon {
+    font-size: 16px;
+    margin-right: 4px;
+    color: var(--goblet-editor-foreground);
+
+    &:hover {
+      color: var(--goblet-list-hoverForeground);
+    }
   }
+
 `
 
 
@@ -28,17 +50,18 @@ export const PanelHeaderText = styled(Span)`
   padding-left: 5px;
 `
 
-
 export const PanelContent = styled(Box)`
   height: auto;
   overflow:hidden;
   position: relative;
   padding-bottom: 0px;
-  border-bottom: 1px solid #D3D7DE;
   transition: max-height 300ms ease, padding-bottom 300ms ease;
 
   &.show {
     padding-bottom: 5px;
   }
   
+`
+
+export const PanelSidebarMonaco = styled(Box)`
 `

@@ -8,8 +8,6 @@ export const BuilderContainer = styled(Box)`
   height: 100%;
   display: flex;
   position: relative;
-  padding-left: 10px;
-  padding-right: 10px;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;

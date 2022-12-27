@@ -1,5 +1,8 @@
-import { RaceEditor } from '@gobletqa/race' 
+import { RaceEditor } from '@gobletqa/race'
 import { BlockIcon } from '@components/Icons'
+import { EditorSidebarWidth } from '@constants'
+import { Divider } from '@components/Layout/Divider'
+
 import { NotConnected } from '@components/NotConnected'
 import { useRaceHooks } from '@hooks/race/useRaceHooks'
 
@@ -19,8 +22,11 @@ export const VisualEditor = (props:TVisualEditor) => {
     ? (
         <RaceEditor
           steps={steps}
-          features={features}
+          Divider={Divider}
           firstFeatureActive
+          features={features}
+          sidebarStatus={true}
+          sidebarWidth={EditorSidebarWidth}
         />
       )
     : (

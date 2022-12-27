@@ -1,4 +1,5 @@
 import '@utils/components/globalOnCopy'
+import '@gobletqa/components/styles/editor.styles.css'
 
 import { RootScreen } from 'src/screens/Root'
 import { useAppInit } from '@hooks/useAppInit'

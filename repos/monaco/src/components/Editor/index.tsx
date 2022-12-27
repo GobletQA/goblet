@@ -1,6 +1,5 @@
 import type { TEditorConfig, IMultiRefType, TMonacoEditor } from '../../types'
 
-import './index.css'
 import Editor from './Editor'
 import { Loading } from '../Icons/Loading'
 import { forwardRef, useEffect, useState } from 'react'

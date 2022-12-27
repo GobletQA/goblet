@@ -8,9 +8,8 @@ import type {
   TFileCallback,
 } from '../../types'
 
-import './Sidebar.css'
-import { Panel } from './Panel'
 import { FileTree } from '../FileTree'
+import { Sidebar as GBSidebar } from '../../goblet'
 
 export type TSidebar = {
   Modal: Modal
@@ -44,11 +43,14 @@ export const Sidebar = (props:TSidebar) => {
   } = props
 
   return (
-    <div style={style} className='goblet-editor-sidebar-main' >
-      {PrePanels?.length && PrePanels.map(panel => <Panel key={panel.title || panel.id} {...panel} />)}
+    <GBSidebar
+      style={style}
+      Panels={Panels}
+      PrePanels={PrePanels}
+      className='goblet-editor-sidebar-main'
+    >
       <FileTree {...props} />
-      {Panels?.length && Panels.map(panel => <Panel key={panel.title || panel.id} {...panel} />)}
-    </div>
+    </GBSidebar>
   )
   
 }

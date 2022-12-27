@@ -13,8 +13,8 @@ export type TIconProps = {
 }
 
 const iconDefs = {
-  fill: `#1f2228`,
-  color: `#1f2228`,
+  fill: `#ffffff`,
+  color: `#ffffff`,
 }
 
 export const useIcon = (props:TIcon) => {
@@ -23,7 +23,7 @@ export const useIcon = (props:TIcon) => {
 
   return useMemo(() => {
     const iconProps = {
-      className: `goblet-icons ${props.className || ''}`.trim(),
+      className: `goblet-editor-icons ${props.className || ''}`.trim(),
       color: props.color || styleRef?.current?.color || props.fill || styleRef?.current?.fill || iconDefs.fill,
       fill: props.fill || styleRef?.current?.fill || props.color || styleRef?.current?.color || iconDefs.color,
       svgStyle: {

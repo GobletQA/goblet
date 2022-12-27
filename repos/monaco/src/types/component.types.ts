@@ -4,7 +4,7 @@ import type { TSidebarPanel } from './panel.types'
 import type { Modal, TModalOpts } from '../components/Modal/Modal'
 import type { TFolder, TFileItem, TFilelist } from './file.types'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
-import type { MutableRefObject, CSSProperties, ReactNode, ComponentType } from 'react'
+import type { MutableRefObject, ReactNode, ComponentType } from 'react'
 import type {
   TEditorCB,
   TCodeEditor,
@@ -92,18 +92,6 @@ export interface IMultiRefType {
 export type TMonacoEditor = IMonacoEditorProps & {
   Loading?: ReactNode
   onMonacoLoaded?: (monaco:typeof Monaco) => any
-}
-
-export type TIcon = {
-  title?: string
-  size?: string
-  height?: string
-  width?: string
-  color?:string
-  fill?:string
-  className?:string
-  style?: CSSProperties
-  svgStyle?: CSSProperties
 }
 
 export type TFileProps = {

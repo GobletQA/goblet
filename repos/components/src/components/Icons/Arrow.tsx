@@ -6,12 +6,12 @@ type TArrowIcon = TIcon & {
 }
 
 export const Arrow = ({ collapse = true, ...props }:TArrowIcon) => {
-
   const {
     style,
     svgStyle,
     className,
   } = useIcon(props)
+
 
   return collapse ? (
     <svg
