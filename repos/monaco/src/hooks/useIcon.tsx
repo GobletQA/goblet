@@ -23,7 +23,7 @@ export const useIcon = (props:TIcon) => {
 
   return useMemo(() => {
     const iconProps = {
-      className: `goblet-monaco-icons ${props.className || ''}`.trim(),
+      className: `goblet-editor-icons ${props.className || ''}`.trim(),
       color: props.color || styleRef?.current?.color || props.fill || styleRef?.current?.fill || iconDefs.fill,
       fill: props.fill || styleRef?.current?.fill || props.color || styleRef?.current?.color || iconDefs.color,
       svgStyle: {

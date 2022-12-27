@@ -29,8 +29,8 @@ export const OpenedTabs = ({
   onCloseOtherFiles,
 }:OpenedTabs) => {
   return (
-    <div className='goblet-monaco-editor-opened-tab-wrapper'>
-      <div className='goblet-monaco-editor-opened-tab'>
+    <div className='goblet-editor-opened-tab-wrapper'>
+      <div className='goblet-editor-opened-tab'>
         {openedFiles.map(file => (
           <Tab
             file={file}

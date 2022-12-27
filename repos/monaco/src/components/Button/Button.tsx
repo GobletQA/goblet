@@ -14,7 +14,7 @@ export const Button = (props:Button) => {
     <div
       style={style}
       onClick={onClick}
-      className={`goblet-monaco-editor-button goblet-monaco-editor-button-${type} ${className}`}
+      className={`goblet-editor-button goblet-editor-button-${type} ${className}`}
     >
       {children}
     </div>

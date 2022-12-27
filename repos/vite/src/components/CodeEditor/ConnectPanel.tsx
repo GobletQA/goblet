@@ -127,5 +127,5 @@ export const ConnectPanel:TSidebarPanel = {
   startOpen: false,
   title: `Repository`,
   children:(<ConnectContent />),
-  className:`goblet-monaco-connect-panel`
+  className:`goblet-editor-connect-panel`
 }

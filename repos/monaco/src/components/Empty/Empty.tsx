@@ -8,7 +8,7 @@ export const Empty = (props:Empty) => {
   const { text=`Goblet Editor` } = props
   
   return (
-    <div className='goblet-monaco-editor-area-empty'>
+    <div className='goblet-editor-area-empty'>
       <div>{text}</div>
     </div>
   )

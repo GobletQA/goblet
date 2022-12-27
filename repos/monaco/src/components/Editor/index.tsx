@@ -43,7 +43,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, TMonacoEditor>((props, ref
 
     return window.monaco
       ? (<Editor {...editorProps} config={config} ref={ref} />)
-      : (<div className='goblet-monaco-editor-loading'>{LoadingComp}</div>)
+      : (<div className='goblet-editor-loading'>{LoadingComp}</div>)
   }
 )
 

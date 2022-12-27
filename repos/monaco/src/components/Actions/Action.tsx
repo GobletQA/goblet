@@ -17,7 +17,7 @@ const useActionComp = (props:TEditorAction & TEditorActionExt) => {
     curPathRef,
     curValueRef,
     onClick:onClickCb,
-    className=`goblet-monaco-${id}`,
+    className=`goblet-editor-${id}`,
   } = props
 
   const onClick = useCallback((evt:Event) => {
@@ -59,7 +59,7 @@ export const Action = (props:TEditorAction & TEditorActionExt) => {
   const Comp = useActionComp(props)
 
   return (
-    <div className={cls(`goblet-monaco-action-main`, className || `goblet-monaco-${id || name}`)} >
+    <div className={cls(`goblet-editor-action-main`, className || `goblet-editor-${id || name}`)} >
       {Comp}
     </div>
   )

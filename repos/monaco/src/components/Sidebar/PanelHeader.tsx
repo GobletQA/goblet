@@ -38,7 +38,7 @@ export const PanelHeaderActions = (props:TPanelHeader) => {
               onClick={action}
               children={children}
               key={`${title}-${id ?? name}`}
-              className={`goblet-monaco-panel-header-icon ${className}`.trim()}
+              className={`goblet-editor-panel-header-icon ${className}`.trim()}
               {...iconProps}
             />
           )
@@ -59,7 +59,7 @@ export const PanelHeader = (props:TPanelHeader) => {
   return (
     <div
       onClick={onCollapse}
-      className={`goblet-monaco-sidebar-panel-header ${closed ? 'closed' : '' }`}
+      className={`goblet-editor-sidebar-panel-header ${closed ? 'closed' : '' }`}
     >
       <Arrow collapse={closed} />
       <span style={styles.header}>{title}</span>

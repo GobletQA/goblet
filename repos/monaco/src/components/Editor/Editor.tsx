@@ -207,8 +207,8 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
       onKeyDown={keyDown}
       onMouseMove={onMove}
       onMouseUp={onMoveEnd}
-      id='goblet-monaco-editor-root'
-      className='goblet-monaco-editor'
+      id='goblet-editor-root'
+      className='goblet-editor'
     >
       <Sidebar
         Modal={Modal}
@@ -229,8 +229,8 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         onDeleteFolder={deleteFolder}
         onEditFolderName={editFolderName}
       />
-      <Divider onMouseDown={onMoveStart} className='goblet-monaco-editor-drag' />
-      <div className='goblet-monaco-editor-area'>
+      <Divider onMouseDown={onMoveStart} className='goblet-editor-drag' />
+      <div className='goblet-editor-area'>
         <OpenedTabs
           Modal={Modal}
           autoSave={autoSave}

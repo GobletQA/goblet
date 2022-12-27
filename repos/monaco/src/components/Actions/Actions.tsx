@@ -61,13 +61,13 @@ export const Actions = (props:TActions) => {
   }, [props.open])
 
   return (
-    <div className='goblet-monaco-actions-main' >
+    <div className='goblet-editor-actions-main' >
       <div
         onClick={onToggle}
-        className={cls('goblet-monaco-actions-toggle', { open, closed: !open })}
+        className={cls('goblet-editor-actions-toggle', { open, closed: !open })}
       >
-        <div className='goblet-monaco-actions-toggle-icon'>
-          <div className='goblet-monaco-icon-rotate' >
+        <div className='goblet-editor-actions-toggle-icon'>
+          <div className='goblet-editor-icon-rotate' >
             <Arrow collapse={false} svgStyle={{ height:`20px`, width:`20px` }} />
           </div>
         </div>
@@ -75,7 +75,7 @@ export const Actions = (props:TActions) => {
       <div
         style={style}
         ref={actionsRef}
-        className='goblet-monaco-actions-list'
+        className='goblet-editor-actions-list'
       >
         {actions.map((action => {
           return (

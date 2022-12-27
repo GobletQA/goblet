@@ -1,4 +1,4 @@
-.goblet-monaco-editor-area-empty {
+.goblet-editor-area-empty {
   position: absolute;
   left: 0;
   right: 0;
@@ -11,7 +11,7 @@
   justify-content: center;
   user-select: none;
 }
-.goblet-monaco-editor-area-empty-icon {
+.goblet-editor-area-empty-icon {
   user-select: none;
   width: 100px;
   height: 100px;

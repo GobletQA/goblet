@@ -28,5 +28,5 @@ export const Loading = (props:TLoading) => {
   }, [props.size, props.heigh, props.width, props.color, props.alpha])
 
 
-  return <div id="gb-monaco-loading-icon" style={style} />
+  return <div id="gb-editor-loading-icon" style={style} />
 }

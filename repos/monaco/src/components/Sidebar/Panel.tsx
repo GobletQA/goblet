@@ -53,7 +53,7 @@ export const Panel = (props:TPanel) => {
   }, [startOpen])
 
   return (
-    <div className={cls(`goblet-monaco-sidebar-panel`, className)}>
+    <div className={cls(`goblet-editor-sidebar-panel`, className)}>
       {header && (
         <PanelHeader
           title={title}
@@ -65,7 +65,7 @@ export const Panel = (props:TPanel) => {
       <div
         style={style}
         ref={panelRef}
-        className={cls(`goblet-monaco-sidebar-panel-content`, { hide: closed, show: !closed })}
+        className={cls(`goblet-editor-sidebar-panel-content`, { hide: closed, show: !closed })}
       >
         {children}
       </div>

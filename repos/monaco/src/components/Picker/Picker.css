@@ -1,4 +1,4 @@
-.goblet-monaco-editor-picker {
+.goblet-editor-picker {
   width: 140px;
   height: 19px;
   position: relative;
@@ -11,16 +11,16 @@
   border: 1px solid var(--goblet-checkbox-border);
   cursor: pointer;
 }
-.goblet-monaco-editor-picker-content {
+.goblet-editor-picker-content {
   padding-left: 10px;
   position: relative;
 }
-.goblet-monaco-editor-picker-content-arrow {
+.goblet-editor-picker-content-arrow {
   position: absolute;
   top: 1px;
   right: 5px;
 }
-.goblet-monaco-editor-picker-items {
+.goblet-editor-picker-items {
   font-size: 12px;
   color: var(--goblet-list-activeSelectionForeground);
   line-height: 19px;
@@ -35,31 +35,31 @@
   overflow-y: scroll;
   overflow-x: hidden;
 }
-.goblet-monaco-editor-picker-items::-webkit-scrollbar {
+.goblet-editor-picker-items::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-.goblet-monaco-editor-picker-items::-webkit-scrollbar-track {
+.goblet-editor-picker-items::-webkit-scrollbar-track {
   background: var(--goblet-editor-background);
   box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
   -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
 }
-.goblet-monaco-editor-picker-items::-webkit-scrollbar-thumb {
+.goblet-editor-picker-items::-webkit-scrollbar-thumb {
   border-radius: 3px;
   background: var(--goblet-scrollbarSlider-background);
   box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
   -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
 }
-.goblet-monaco-editor-picker-item {
+.goblet-editor-picker-item {
   cursor: pointer;
   padding-left: 10px;
 }
-.goblet-monaco-editor-picker-item-selected {
+.goblet-editor-picker-item-selected {
   background: var(--goblet-list-activeSelectionBackground);
   color: var(--goblet-list-activeSelectionForeground);
   opacity: 0.8;
 }
-.goblet-monaco-editor-picker-item:hover {
+.goblet-editor-picker-item:hover {
   background: var(--goblet-list-activeSelectionBackground);
   color: var(--goblet-list-activeSelectionForeground);
 }

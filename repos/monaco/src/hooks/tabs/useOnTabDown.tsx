@@ -31,21 +31,21 @@ export const useOnTabDown = (props:THOnTabDown) => {
         Modal.create({
           floatContent: true,
           title: 'Actions',
-          className: 'goblet-monaco-editor-modal-rightclick',
+          className: 'goblet-editor-modal-rightclick',
           content: (
             <div
               style={{
                 top: `${position.y}px`,
                 left: `${position.x}px`,
               }}
-              className='goblet-monaco-editor-rightclick-panel'
+              className='goblet-editor-rightclick-panel'
             >
               <div
                 onClick={() => {
                   Modal.close()
                   onTabClose?.(event)
                 }}
-                className='goblet-monaco-editor-rightclick-panel-item'
+                className='goblet-editor-rightclick-panel-item'
               >
                 Close
               </div>
@@ -54,7 +54,7 @@ export const useOnTabDown = (props:THOnTabDown) => {
                   Modal.close()
                   onCloseOtherFiles(file.path)
                 }}
-                className='goblet-monaco-editor-rightclick-panel-item'
+                className='goblet-editor-rightclick-panel-item'
               >
                 Close others
               </div>
@@ -63,7 +63,7 @@ export const useOnTabDown = (props:THOnTabDown) => {
                   Modal.close()
                   onCloseOtherFiles('')
                 }}
-                className='goblet-monaco-editor-rightclick-panel-item'
+                className='goblet-editor-rightclick-panel-item'
               >
                 Close all
               </div>

@@ -56,8 +56,8 @@ const useTabStyle = ({
 
   const classNames = useMemo(() => {
     return [
-      `goblet-monaco-editor-opened-tab-item`,
-      active && `goblet-monaco-editor-opened-tab-item-focused`
+      `goblet-editor-opened-tab-item`,
+      active && `goblet-editor-opened-tab-item-focused`
     ].filter(Boolean).join(' ')
   }, [active])
 
@@ -116,13 +116,13 @@ export const Tab = (props:Tab) => {
       <span
         data-name='editing'
         style={styles.edit}
-        className='goblet-monaco-editor-opened-tab-item-editing'
+        className='goblet-editor-opened-tab-item-editing'
       />
       <span
         data-name='editing'
         onClick={onTabClose}
         style={styles.close}
-        className='goblet-monaco-editor-opened-tab-item-close'
+        className='goblet-editor-opened-tab-item-close'
       >
         ×
       </span>

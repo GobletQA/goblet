@@ -1,5 +1,5 @@
 
-.goblet-monaco-editor .goblet-monaco-actions-main {
+.goblet-editor .goblet-editor-actions-main {
   top: 0px;
   right: 0px;
   width: 35px;
@@ -12,7 +12,7 @@
   background-color: var(--goblet-editor-background);
 }
 
-.goblet-monaco-editor .goblet-monaco-actions-main .goblet-monaco-actions-toggle {
+.goblet-editor .goblet-editor-actions-main .goblet-editor-actions-toggle {
   width: 35px;
   height: 30px;
   opacity: 0.5;
@@ -25,29 +25,29 @@
   transition: opacity 300ms ease;
   background: var(--goblet-list-activeSelectionBackground);
 }
-.goblet-monaco-editor .goblet-monaco-actions-main .goblet-monaco-actions-toggle:hover {
+.goblet-editor .goblet-editor-actions-main .goblet-editor-actions-toggle:hover {
   opacity: 1;
 }
 
-.goblet-monaco-actions-main .goblet-monaco-actions-toggle .goblet-monaco-icon-rotate {
+.goblet-editor-actions-main .goblet-editor-actions-toggle .goblet-editor-icon-rotate {
   transition: transform 300ms, top 300ms;
   position: relative;
 }
 
-.goblet-monaco-actions-main .goblet-monaco-actions-toggle.closed .goblet-monaco-icon-rotate {
+.goblet-editor-actions-main .goblet-editor-actions-toggle.closed .goblet-editor-icon-rotate {
   top: 3px;
 }
 
-.goblet-monaco-actions-main .goblet-monaco-actions-toggle.open .goblet-monaco-icon-rotate {
+.goblet-editor-actions-main .goblet-editor-actions-toggle.open .goblet-editor-icon-rotate {
   top: -1px;
   transform: rotate(-180deg);
 }
 
-.goblet-monaco-actions-main .goblet-monaco-actions-toggle.open {
+.goblet-editor-actions-main .goblet-editor-actions-toggle.open {
   opacity: 1;
 }
 
-.goblet-monaco-actions-main .goblet-monaco-actions-list {
+.goblet-editor-actions-main .goblet-editor-actions-list {
   height: auto;
   overflow: hidden;
   position: relative;
@@ -55,11 +55,11 @@
   color: var(--goblet-editor-foreground);
 }
 
-.goblet-monaco-actions-main .goblet-monaco-actions-list .goblet-monaco-action-main:first-child {
+.goblet-editor-actions-main .goblet-editor-actions-list .goblet-editor-action-main:first-child {
   padding-top: 5px;
 }
 
-.goblet-monaco-action-main {
+.goblet-editor-action-main {
   padding-top: 2.5px;
   padding-bottom: 2.5px;
   pointer-events: auto;
@@ -67,10 +67,10 @@
   background-color: var(--goblet-editor-background);
 }
 
-.goblet-monaco-action-main * button {
+.goblet-editor-action-main * button {
   color: var(--goblet-editor-foreground);
 }
 
-.goblet-monaco-action-main * button:hover {
+.goblet-editor-action-main * button:hover {
   color: var(--goblet-list-hoverForeground);
 }

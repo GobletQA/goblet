@@ -1,38 +1,38 @@
 
-.goblet-monaco-sidebar-panel .goblet-monaco-panel-header-icon {
+.goblet-editor-sidebar-panel .goblet-editor-panel-header-icon {
   visibility: hidden;
 }
 
-.goblet-monaco-sidebar-panel:hover .goblet-monaco-panel-header-icon {
+.goblet-editor-sidebar-panel:hover .goblet-editor-panel-header-icon {
   visibility: visible;
 }
 
-.goblet-monaco-file-item-icon {
+.goblet-editor-file-item-icon {
   visibility: hidden;
   font-size: 16px;
   color: var(--goblet-editor-foreground);
   margin-right: 4px;
 }
 
-.goblet-monaco-file-item-icon:hover {
+.goblet-editor-file-item-icon:hover {
   color: var(--goblet-list-hoverForeground);
 }
 
-.goblet-monaco-file-item {
+.goblet-editor-file-item {
   user-select: none;
 }
 
-.goblet-monaco-file-item-new {
+.goblet-editor-file-item-new {
   flex: 1;
   outline: none;
   border: 1px solid var(--goblet-editor-wordHighlightBorder);
 }
 
-.goblet-monaco-file-item-new:focus {
+.goblet-editor-file-item-new:focus {
   cursor: text;
 }
 
-.goblet-monaco-file-item-row {
+.goblet-editor-file-item-row {
   display: flex;
   cursor: pointer;
   user-select: none;
@@ -40,21 +40,21 @@
   align-items: center;
 }
 
-.goblet-monaco-file-item-row:hover {
+.goblet-editor-file-item-row:hover {
   background-color: var(--goblet-list-hoverBackground);
   color: var(--goblet-list-hoverForeground);
 }
 
-.goblet-monaco-file-item-row:hover .goblet-monaco-file-item-icon {
+.goblet-editor-file-item-row:hover .goblet-editor-file-item-icon {
   visibility: visible;
 }
 
-.goblet-monaco-file-item-row-focused {
+.goblet-editor-file-item-row-focused {
   background-color: var(--goblet-list-focusBackground);
   color: var(--goblet-list-focusForeground);
 }
 
-.goblet-monaco-file-item-row .goblet-editor-actions-container {
+.goblet-editor-file-item-row .goblet-editor-actions-container {
   right: 0px;
   height: 25px;
   padding-top: 3px;
@@ -62,6 +62,6 @@
   position: absolute;
 }
 
-.goblet-monaco-file-item-row:hover .goblet-editor-actions-container {
+.goblet-editor-file-item-row:hover .goblet-editor-actions-container {
   /* background-color: var(--goblet-list-hoverBackground); */
 }

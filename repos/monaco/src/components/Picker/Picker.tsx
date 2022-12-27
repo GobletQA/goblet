@@ -5,7 +5,7 @@ import { Arrow } from '../Icons/Arrow'
 import './index.css'
 
 const instance = document.createElement('div')
-instance.className = 'goblet-monaco-editor-picker-items'
+instance.className = 'goblet-editor-picker-items'
 
 export type TPicker = {
   defaultValue?: any
@@ -64,16 +64,16 @@ export const Picker = ({
 
   return (
     <React.Fragment>
-      <div ref={targetRef} className='goblet-monaco-editor-picker'>
+      <div ref={targetRef} className='goblet-editor-picker'>
         <div
-          className='goblet-monaco-editor-picker-content'
+          className='goblet-editor-picker-content'
           onClick={e => {
             e.stopPropagation()
             setVisible(pre => !pre)
           }}
         >
           {data.label}
-          <div className='goblet-monaco-editor-picker-content-arrow'>
+          <div className='goblet-editor-picker-content-arrow'>
             <Arrow collapse={!visible} />
           </div>
         </div>

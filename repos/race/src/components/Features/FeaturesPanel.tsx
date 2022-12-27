@@ -1,6 +1,6 @@
 import type { TEditorRefs } from '@GBR/types'
 
-import { Panel } from './Panel'
+import { Panel } from '../../goblet'
 import { FeaturesList } from './FeaturesList'
 
 export type TFeaturesPanel = TEditorRefs & {

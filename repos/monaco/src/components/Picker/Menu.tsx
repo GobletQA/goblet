@@ -27,8 +27,8 @@ export const Menu = (props:Menu) => {
 
   const classNames = useMemo(() => {
     return [
-      `goblet-monaco-editor-picker-item`,
-      selected && `goblet-monaco-editor-picker-item-selected`,
+      `goblet-editor-picker-item`,
+      selected && `goblet-editor-picker-item-selected`,
       className
     ].filter(Boolean).join(` `).trim()
   }, [selected, className])

@@ -44,7 +44,7 @@ export const Sidebar = (props:TSidebar) => {
   } = props
 
   return (
-    <div style={style} className='goblet-monaco-sidebar-main' >
+    <div style={style} className='goblet-editor-sidebar-main' >
       {PrePanels?.length && PrePanels.map(panel => <Panel key={panel.title || panel.id} {...panel} />)}
       <FileTree {...props} />
       {Panels?.length && Panels.map(panel => <Panel key={panel.title || panel.id} {...panel} />)}

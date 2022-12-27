@@ -1,13 +1,13 @@
-.goblet-monaco-editor-button {
+.goblet-editor-button {
   padding: 5px 15px;
   border-radius: 20px;
   font-size: 14px;
   background: var(--goblet-button-background);
   cursor: pointer;
 }
-.goblet-monaco-editor-button:hover {
+.goblet-editor-button:hover {
   opacity: 0.8;
 }
-.goblet-monaco-editor-button-primary {
+.goblet-editor-button-primary {
   background: var(--goblet-editorCursor-foreground);
 }

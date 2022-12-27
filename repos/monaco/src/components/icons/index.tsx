@@ -29,7 +29,7 @@ const Icon: React.FC<{
       onError={handleError}
       style={style}
       src={src}
-      className={`goblet-monaco-icons ${className}`}
+      className={`goblet-editor-icons ${className}`}
     />
   )
 }
