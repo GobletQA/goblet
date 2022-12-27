@@ -1,6 +1,6 @@
 .goblet-monaco-editor-prettier-icon {
-  color: var(--monaco-editor-foreground);
+  color: var(--goblet-editor-foreground);
 }
 .goblet-monaco-editor-prettier-icon:hover {
-  color: var(--monaco-list-hoverForeground);
+  color: var(--goblet-list-hoverForeground);
 }

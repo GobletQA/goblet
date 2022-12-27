@@ -12,7 +12,7 @@ export const Container = styled(Box)`
   justify-content: flex-start;
   border-right: 1px solid #E4E6EB;
 
-  color: var(--goblet-theme-foreground);
+  color: var(--goblet-editor-foreground);
 `
 
 export const Divider = styled(Box)`
@@ -22,11 +22,11 @@ export const Divider = styled(Box)`
   background: #E4E6EB;
   
   cursor: col-resize;
-  background: var(--goblet-theme-Cursor-foreground);
-  background: var(--goblet-theme-background);
+  background: var(--goblet-editorCursor-foreground);
+  background: var(--goblet-editor-background);
 
   &:hover {
-    background: var(--goblet-theme-Cursor-foreground);
+    background: var(--goblet-editorCursor-foreground);
   }
 
 `

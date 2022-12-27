@@ -9,7 +9,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  background-color: var(--monaco-editor-background);
+  background-color: var(--goblet-editor-background);
 }
 
 .goblet-monaco-editor .goblet-monaco-actions-main .goblet-monaco-actions-toggle {
@@ -21,9 +21,9 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  color: var(--monaco-editor-foreground);
+  color: var(--goblet-editor-foreground);
   transition: opacity 300ms ease;
-  background: var(--monaco-list-activeSelectionBackground);
+  background: var(--goblet-list-activeSelectionBackground);
 }
 .goblet-monaco-editor .goblet-monaco-actions-main .goblet-monaco-actions-toggle:hover {
   opacity: 1;
@@ -52,7 +52,7 @@
   overflow: hidden;
   position: relative;
   transition: max-height 300ms ease;
-  color: var(--monaco-editor-foreground);
+  color: var(--goblet-editor-foreground);
 }
 
 .goblet-monaco-actions-main .goblet-monaco-actions-list .goblet-monaco-action-main:first-child {
@@ -63,14 +63,14 @@
   padding-top: 2.5px;
   padding-bottom: 2.5px;
   pointer-events: auto;
-  color: var(--monaco-editor-foreground);
-  background-color: var(--monaco-editor-background);
+  color: var(--goblet-editor-foreground);
+  background-color: var(--goblet-editor-background);
 }
 
 .goblet-monaco-action-main * button {
-  color: var(--monaco-editor-foreground);
+  color: var(--goblet-editor-foreground);
 }
 
 .goblet-monaco-action-main * button:hover {
-  color: var(--monaco-list-hoverForeground);
+  color: var(--goblet-list-hoverForeground);
 }

@@ -7,13 +7,11 @@ export const SidebarContainer = styled(Box)`
   flex-shrink: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  // padding-left: 5px;
-  // padding-right: 5px;
   align-self: stretch;
   flex-direction: column;
   width: 100%;
   max-width: 225px;
 
-  color: var(--goblet-theme-foreground);
-  background: var(--goblet-theme-background);
+  color: var(--goblet-editor-foreground);
+  background: var(--goblet-editor-background);
 `

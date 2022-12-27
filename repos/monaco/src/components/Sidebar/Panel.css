@@ -13,8 +13,8 @@
   align-items: center;
   width: calc( 100% + 5px );
   position: relative;
-  background: var(--monaco-list-activeSelectionBackground);
-  border-bottom: 2px solid var(--monaco-editor-background);
+  background: var(--goblet-list-activeSelectionBackground);
+  border-bottom: 2px solid var(--goblet-editor-background);
 }
 
 .goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-header.closed {}
@@ -22,11 +22,11 @@
 .goblet-monaco-sidebar-panel-header .goblet-monaco-panel-header-icon {
   font-size: 16px;
   margin-right: 4px;
-  color: var(--monaco-editor-foreground);
+  color: var(--goblet-editor-foreground);
 }
 
 .goblet-monaco-sidebar-panel-header .goblet-monaco-panel-header-icon:hover {
-  color: var(--monaco-list-hoverForeground);
+  color: var(--goblet-list-hoverForeground);
 }
 
 .goblet-monaco-sidebar-panel .goblet-monaco-sidebar-panel-content {

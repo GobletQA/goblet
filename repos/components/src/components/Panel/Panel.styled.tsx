@@ -18,7 +18,7 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
   cursor: pointer;
 
   & .goblet-panel-header-icon:hover {
-    // color: var(--monaco-list-hoverForeground);
+    color: var(--goblet-list-hoverForeground);
   }
 `
 

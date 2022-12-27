@@ -14,6 +14,6 @@ export const BuilderContainer = styled(Box)`
   align-items: flex-start;
   justify-content: flex-start;
 
-  color: var(--goblet-theme-foreground);
-  background-color: var(--goblet-theme-background);
+  color: var(--goblet-editor-foreground);
+  background-color: var(--goblet-editor-background);
 `

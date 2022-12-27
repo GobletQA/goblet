@@ -10,12 +10,12 @@
 .goblet-monaco-file-item-icon {
   visibility: hidden;
   font-size: 16px;
-  color: var(--monaco-editor-foreground);
+  color: var(--goblet-editor-foreground);
   margin-right: 4px;
 }
 
 .goblet-monaco-file-item-icon:hover {
-  color: var(--monaco-list-hoverForeground);
+  color: var(--goblet-list-hoverForeground);
 }
 
 .goblet-monaco-file-item {
@@ -25,7 +25,7 @@
 .goblet-monaco-file-item-new {
   flex: 1;
   outline: none;
-  border: 1px solid var(--monaco-editor-wordHighlightBorder);
+  border: 1px solid var(--goblet-editor-wordHighlightBorder);
 }
 
 .goblet-monaco-file-item-new:focus {
@@ -41,8 +41,8 @@
 }
 
 .goblet-monaco-file-item-row:hover {
-  background-color: var(--monaco-list-hoverBackground);
-  color: var(--monaco-list-hoverForeground);
+  background-color: var(--goblet-list-hoverBackground);
+  color: var(--goblet-list-hoverForeground);
 }
 
 .goblet-monaco-file-item-row:hover .goblet-monaco-file-item-icon {
@@ -50,8 +50,8 @@
 }
 
 .goblet-monaco-file-item-row-focused {
-  background-color: var(--monaco-list-focusBackground);
-  color: var(--monaco-list-focusForeground);
+  background-color: var(--goblet-list-focusBackground);
+  color: var(--goblet-list-focusForeground);
 }
 
 .goblet-monaco-file-item-row .goblet-editor-actions-container {
@@ -63,5 +63,5 @@
 }
 
 .goblet-monaco-file-item-row:hover .goblet-editor-actions-container {
-  /* background-color: var(--monaco-list-hoverBackground); */
+  /* background-color: var(--goblet-list-hoverBackground); */
 }

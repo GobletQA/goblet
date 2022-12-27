@@ -12,6 +12,6 @@ export const SidebarContainer = styled(Box)`
   align-self: stretch;
   flex-direction: column;
 
-  color: var(--goblet-theme-foreground);
-  background: var(--goblet-theme-background);
+  color: var(--goblet-editor-foreground);
+  background: var(--goblet-editor-background);
 `

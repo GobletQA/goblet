@@ -27,7 +27,7 @@ export const  setTheme = async (name: string, themeObj?:TEditorTheme) => {
     window.monaco.editor.defineTheme(name, theme)
   }
 
-  const prefix = '--monaco-'
+  const prefix = '--goblet-'
 
   Object.keys(theme.colors).forEach(v => {
     document.documentElement.style.setProperty(
