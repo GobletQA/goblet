@@ -17,6 +17,7 @@ import { TGitMeta } from '@gobletqa/workflows/types'
  * @returns {Object} - Mount state of the repo
  */
 export const disconnectGoblet = async (args:TGitMeta) => {
+
   const mounted = await git.exists(args)
 
   mounted

@@ -157,6 +157,7 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
  * @return {RepoStatus} - Status object for the checked repo
  */
 export const statusGoblet = async (config:TWFGobletConfig, opts:TGitOpts, log=true) => {
+
   log && Logger.subHeader(`Running Status Goblet Workflow`)
 
   if (!config)

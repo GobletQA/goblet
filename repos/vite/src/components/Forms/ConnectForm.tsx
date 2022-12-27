@@ -34,7 +34,6 @@ const useSetupForm = ({
   options,
   formHelpers,
 }:TSetupFormProps) => {
-  
   const { onConnect, values, setForm } = options
   const connectRepo = useConnectRepo({
     form,
@@ -78,7 +77,7 @@ const ConnectInputs = (props:TConnectFormProps) => {
 
   useEffect(() => {
     let obj = values
-    
+
     if(values?.repo !== repo){
       obj = { ...obj, repo, branch: `` }
       // Reset the branch when the repo changes

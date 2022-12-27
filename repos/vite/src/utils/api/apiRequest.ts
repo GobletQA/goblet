@@ -4,6 +4,7 @@ import { networkRequest } from '@services/axios'
 import { isObj, get, isBool } from '@keg-hub/jsutils'
 import { buildUrl, isValidSession, buildHeaders } from './apiHelpers'
 import {
+  getCacheKey,
   getApiCache,
   setApiRequest,
   setApiResponse,
@@ -25,23 +26,20 @@ const buildRequest = async (request:TRequest|string) => {
 /**
  * Helper to make api requests to the Backend API
  * @function
- * @export
- * @public
- * @param {Object} request - Arguments that define the request type to make
- *
- * @returns {Object|Boolean} - Data returned from the Backend API or false
  */
 export const apiRequest = async <T=Record<any, any>>(
   request:TRequest|string
 ):Promise<TResponse<T>> => {
   const builtRequest = await buildRequest(request)
 
-  const cache = getApiCache(builtRequest?.url)
+  const cacheKey = getCacheKey(builtRequest)
+  const cache = getApiCache(cacheKey)
+
   if(!isBool(cache)) return cache as TResponse<T>
   else if(cache === true)
-    return new Promise(res => addCacheMethod(builtRequest?.url, (data:TResponse<T>) => res(data)))
+    return new Promise(res => addCacheMethod(cacheKey, (data:TResponse<T>) => res(data)))
 
-  setApiRequest(builtRequest?.url)
+  setApiRequest(cacheKey)
 
   const {
     data,
@@ -63,7 +61,7 @@ export const apiRequest = async <T=Record<any, any>>(
         error: data?.message || errorMessage,
       }
 
-  setApiResponse<TResponse<T>>(builtRequest?.url, response)
+  setApiResponse<TResponse<T>>(cacheKey, response)
 
   await isValidSession(
     success,

@@ -16,7 +16,6 @@ export const useBuildForm = (
   const { setupForm } = options
 
   const originalForm = getCacheForm(formObj)
-
   const valuesForm:TBuiltForm = useBuildFormValues(formObj, options)
   const pathForm:TBuiltForm = useHardReplace(valuesForm, options)
   const actionsForm:TBuiltForm = useDynReplace(pathForm, options, originalForm.$actions, `$actions`)

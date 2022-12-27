@@ -22,6 +22,7 @@ import { TWFArgs } from '@gobletqa/workflows/types'
  * @throws
  */
 export const initializeGoblet = async (args:TWFArgs) => {
+
   Logger.subHeader(`Running Initialize Goblet Workflow`)
   const token = git.loadToken(args)
   const gitArgs = await configureGitArgs({ ...args, token })

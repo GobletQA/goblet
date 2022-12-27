@@ -74,6 +74,33 @@ const loopReplace = (
     }, parent)
 }
 
+export const useDynReplace = (
+  parent:TBuiltForm,
+  options:TBuildFormOpts,
+  original?:Record<any, any>,
+  key?: string
+):TBuiltForm => {
+
+  const { values } = options
+  
+  return useMemo(() => {
+    if(!exists(original)) return parent
+
+    const loopFrom = key ? parent[key] : parent
+    // @ts-ignore
+    const looped = loopReplace(original, loopFrom, values)
+
+    return key ? {...parent, [key]: looped} : looped
+  }, [
+    key,
+    values,
+    parent,
+    original,
+  ])
+
+}
+
+
 export const useHardReplace = (
   parent:Record<any, any>,
   options:TBuildFormOpts
@@ -89,26 +116,10 @@ export const useHardReplace = (
 
         return acc
       }, parent)
-  }, [parent, pathValues, values])
-
-}
-
-export const useDynReplace = (
-  parent:TBuiltForm,
-  options:TBuildFormOpts,
-  original?:Record<any, any>,
-  key?: string
-):TBuiltForm => {
-
-  const { values } = options
-  
-  return useMemo(() => {
-    if(!original) return parent
-
-    const loopFrom = key ? parent[key] : parent
-    const looped = loopReplace(original, loopFrom, values)
-
-    return key ? {...parent, [key]: looped} : looped
-  }, [original, parent, values, key])
+  }, [
+    values,
+    parent,
+    pathValues,
+  ])
 
 }

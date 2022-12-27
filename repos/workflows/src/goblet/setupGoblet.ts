@@ -25,6 +25,7 @@ export const setupGoblet = async (
   gitArgs:TGitOpts,
   mounted?:boolean
 ) => {
+
   Logger.subHeader(`Running Setup Goblet Workflow`)
 
   const token = (gitArgs && gitArgs.token) || (await git.loadToken(args))

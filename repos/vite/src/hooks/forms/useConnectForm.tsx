@@ -7,7 +7,7 @@ import { useBuildForm } from '@hooks/form/useBuildForm'
 import { evtFnNoOp } from '@hooks/form/useBuildFormValues'
 import { signOutReload } from '@actions/admin/user/signOutReload'
 
-const formFields = {
+export const connectForm = {
   form: {
     name: `connect-form`,
     values: {
@@ -132,13 +132,16 @@ export const useConnectForm = (props:TConnectForm=noOpObj as TConnectForm) => {
     formError,
     setLoading,
     setFormError,
-  } = useBuildForm(formFields, {
+  } = useBuildForm(connectForm, {
     ...props,
     values,
     setForm,
     pathValues: {
       [`newBranch.decor.onClick`]: useCallback((evt:any) => {
-        setForm({ ...values, createBranch: evt.target.checked })
+        setForm({
+          ...values,
+          createBranch: evt.target.checked
+        })
       }, [values])
     }
   })
@@ -151,6 +154,6 @@ export const useConnectForm = (props:TConnectForm=noOpObj as TConnectForm) => {
     formError,
     onSuccess,
     setLoading,
-    setFormError,
+    setFormError
   }
 }

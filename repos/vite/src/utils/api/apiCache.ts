@@ -1,4 +1,6 @@
-import { noOpObj } from '@keg-hub/jsutils'
+import type { TRequest } from '@services/axios.types'
+
+import { noOpObj, hashObj } from '@keg-hub/jsutils'
 
 export type TCacheMethod = (...args:any[]) => any
 
@@ -13,7 +15,9 @@ export type TApiCache = {
 
 const API_CACHE = {} as TApiCache
 
-export const getCacheExpireTime = (time = 60) => {
+export const getCacheKey = (request:TRequest) => hashObj(request)
+
+export const getCacheExpireTime = (time = 10) => {
   const date = new Date()
   date.setSeconds(date.getSeconds() + time)
   return date

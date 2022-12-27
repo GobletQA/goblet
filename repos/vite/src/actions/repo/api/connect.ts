@@ -2,6 +2,7 @@ import type { TApiRepoResp } from '@types'
 import { setRepo } from '../local/setRepo'
 import { addToast } from '@actions/toasts'
 import { repoApi } from '@services/repoApi'
+import { deepMerge } from '@keg-hub/jsutils'
 
 
 export type TConnectRepo = {
@@ -23,7 +24,9 @@ export const connectRepo = async (params:TConnectRepo) => {
     data,
     error,
     success
-  } = await repoApi.connect<TApiRepoResp>({ params })
+  } = await repoApi.connect<TApiRepoResp>({
+    params: deepMerge({ createBranch: false }, params)
+  })
 
   if (!success || error)
     return addToast({
