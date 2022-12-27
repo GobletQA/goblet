@@ -4,10 +4,10 @@ import { useRef } from 'react'
 import { Builder } from '../Builder'
 import { Sidebar } from '../../goblet'
 import { FeaturesPanel } from '../Features'
-import { useSidebarResize, Actions } from '../../goblet'
 import { useRaceEditor } from '../../hooks/useRaceEditor'
 import { FeatureProvider } from '../../contexts/FeatureContext'
 import { Container, Divider as REDivider } from './RaceEditor.styled'
+import { useSidebarResize, Actions, OpenedTabs } from '../../goblet'
 
 export const RaceEditor = (props:TRaceEditorProps) => {
   const {

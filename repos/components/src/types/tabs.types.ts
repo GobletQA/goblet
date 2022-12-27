@@ -1,4 +1,5 @@
-import type { SyntheticEvent, ReactNode, ComponentType } from 'react'
+import type { Tab } from '../components/OpenedTabs/Tab'
+import type { SyntheticEvent, ComponentType } from 'react'
 
 export type TTabAction = (event:SyntheticEvent, tab:TTab, key?: number|string) => void
 
@@ -12,26 +13,22 @@ export type TTab = {
   active?:boolean
 }
 
-export type TTabItem = {
-  tab:TTab
-  activeTab:number
-  Icon:ComponentType<any>
+export type TTabActions = {
   onTabClick?: TTabAction
   onTabHover?: TTabAction
   onTabLeave?: TTabAction
   onTabDown?: TTabAction
   onTabClose?: TTabAction
-  rootEl: HTMLElement | null
 }
 
-export type TOpenedTabs = {
-  rootEl: HTMLElement | null
-  activeTab:number
-  openedTabs: TTabItem[],
-  onTabDown?: TTabAction
-  onTabHover?: TTabAction
-  onTabLeave?: TTabAction
-  onTabClose?: TTabAction
-  onTabClick?: TTabAction
-  onTabInactive?: TTabAction
+export type TTabItem = TTabActions & {
+  tab:TTab
+  activeTab?:number
+  Icon:ComponentType<any>
+}
+
+export type TOpenedTabs = TTabActions & {
+  activeTab?:number
+  openedTabs: TTabItem[]
+  Tab?:ComponentType<typeof Tab>
 }
