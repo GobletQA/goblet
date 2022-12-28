@@ -1,7 +1,8 @@
 import type {
-  TRaceEditor,
   TRaceSteps,
+  TRaceEditor,
   TOnFeatureCB,
+  TRaceFeature,
   TRaceFeatures,
   TRaceEditorProps,
   TOnReturnFeatureCB,
@@ -9,19 +10,21 @@ import type {
 
 import { useRef } from 'react'
 import { noOp } from '@keg-hub/jsutils'
-import { useInitialFeature } from './useInitialFeature'
 
+export type THRaceEditorExt = {
+  initialFeature?:TRaceFeature
+}
 
-export const useRaceRefs = (props:TRaceEditorProps) => {
+export const useRaceRefs = (props:TRaceEditorProps, { initialFeature }:THRaceEditorExt) => {
   const {
     steps,
     features,
+    onFeatureClose=noOp,
     onFeatureChange=noOp,
-    onFeatureUpdate=noOp,
+    onFeatureActive=noOp,
+    onFeatureInactive=noOp,
     onBeforeFeatureChange=noOp as TOnReturnFeatureCB
   } = props
-
-  const initialFeature = useInitialFeature(props)
 
   const stepsRef = useRef<TRaceSteps>(steps)
   stepsRef.current = steps
@@ -29,11 +32,17 @@ export const useRaceRefs = (props:TRaceEditorProps) => {
   const featuresRef = useRef<TRaceFeatures>(features)
   featuresRef.current = features
 
+  const onFeatureCloseRef = useRef<TOnFeatureCB>(onFeatureClose)
+  onFeatureCloseRef.current = onFeatureClose
+
   const onFeatureChangeRef = useRef<TOnFeatureCB>(onFeatureChange)
   onFeatureChangeRef.current = onFeatureChange
 
-  const onFeatureUpdateRef = useRef<TOnFeatureCB>(onFeatureUpdate)
-  onFeatureUpdateRef.current = onFeatureUpdate
+  const onFeatureActiveRef = useRef<TOnFeatureCB>(onFeatureActive)
+  onFeatureActiveRef.current = onFeatureActive
+
+  const onFeatureInactiveRef = useRef<TOnFeatureCB>(onFeatureActive)
+  onFeatureInactiveRef.current = onFeatureInactive
 
   const onFeatureBeforeChangeRef = useRef<TOnReturnFeatureCB>(onBeforeFeatureChange)
   onFeatureBeforeChangeRef.current = onBeforeFeatureChange
@@ -48,9 +57,10 @@ export const useRaceRefs = (props:TRaceEditorProps) => {
     curPathRef,
     curValueRef,
     featuresRef,
-    initialFeature,
+    onFeatureCloseRef,
     onFeatureChangeRef,
-    onFeatureUpdateRef,
+    onFeatureActiveRef,
+    onFeatureInactiveRef,
     onFeatureBeforeChangeRef
   }
 

@@ -1,3 +1,4 @@
+import type { TTabAction } from '../goblet'
 import type {
   TRaceFeature,
   TOnFeatureCB,
@@ -13,14 +14,18 @@ import {
   createContext,
 } from 'react'
 
+
+
 import { noOpObj } from '@keg-hub/jsutils'
 import { useFeatureCallbacks } from '../hooks/useFeatureCallbacks'
 
 export type TFeatureProvider = {
   children: any
   initialFeature?:TRaceFeature
+  onFeatureCloseRef:TOnFeatureCBRef
+  onFeatureActiveRef:TOnFeatureCBRef
   onFeatureChangeRef:TOnFeatureCBRef
-  onFeatureUpdateRef:TOnFeatureCBRef
+  onFeatureInactiveRef:TOnFeatureCBRef
   onFeatureBeforeChangeRef:TOnReturnFeatureCBRef
 }
 
@@ -48,8 +53,10 @@ export const FeatureProvider = (props:TFeatureProvider) => {
   const {
     children,
     initialFeature,
+    onFeatureCloseRef,
     onFeatureChangeRef,
-    onFeatureUpdateRef,
+    onFeatureActiveRef,
+    onFeatureInactiveRef,
     onFeatureBeforeChangeRef,
   } = props
 
@@ -59,8 +66,11 @@ export const FeatureProvider = (props:TFeatureProvider) => {
     setFeature,
     updateFeature,
   } = useFeatureCallbacks({
+    feature,
+    onFeatureCloseRef,
+    onFeatureActiveRef,
     onFeatureChangeRef,
-    onFeatureUpdateRef,
+    onFeatureInactiveRef,
     setFeature:_setFeature,
     onFeatureBeforeChangeRef
   })

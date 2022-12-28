@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
-import type { TRaceFeature } from '../types'
 import type { TTabItem, TTab } from '../goblet'
+import type { TRaceFeature, TRaceFeatures } from '../types'
 
 import BoltIcon from '@mui/icons-material/Bolt'
 import { noOpObj, omitKeys } from '@keg-hub/jsutils'
@@ -21,7 +21,16 @@ const updateTabProps = (tabItem:TTabItem, update: Partial<TTab>) => ({
  * Check if a tabItems matches a tab object
  */
 const isTabMatch = (tabItem:TTabItem, tab:TTab) => {
-  return TabRefs.reduce((found, ref) => found || tabItem.tab[ref] === tab[ref], false)
+  return TabRefs.reduce((found, ref) => {
+    return found || tabItem.tab[ref] === tab[ref]
+  }, false)
+}
+
+const ensureTabOpened = (tabs:TTabItem[], tab:TTab) => {
+  const found = tabs.find(tabItem => isTabMatch(tabItem, tab))
+  return found
+    ? tabs
+    : [...tabs, featureToTab(tab as TRaceFeature)]
 }
 
 /**
@@ -29,7 +38,7 @@ const isTabMatch = (tabItem:TTabItem, tab:TTab) => {
  * Switches any existing active tabs to false
  */
 export const setTabActive = (tabs:TTabItem[], tab:TTab) => {
-  return tabs.reduce((tabs, tabItem) => {
+  return ensureTabOpened(tabs, tab).reduce((tabs, tabItem) => {
 
     const makeActive = isTabMatch(tabItem, tab)
 
@@ -39,7 +48,7 @@ export const setTabActive = (tabs:TTabItem[], tab:TTab) => {
         ? updateTabProps(tabItem, {active: false})
         : tabItem
 
-    tabs.push(tabItem)
+    tabs.push(addTab)
 
     return tabs
   }, [] as TTabItem[])
@@ -75,4 +84,11 @@ export const featureToTab = (
 /**
  * Converts a tab object into a feature object
  */
-export const tabToFeature = (tab:TTab) => omitKeys<TRaceFeature>(tab, [`active`, `editing`])
+export const featureFromTab = (tab:TTab, features:TRaceFeatures) => {
+  // This seems to break tab switching, doesn't make a lot of sense?
+  // const feat = features[tab?.uuid as keyof typeof features]
+  // return feat
+
+  const omitFeat = omitKeys<TRaceFeature>(tab, [`active`, `editing`])
+  return omitFeat
+}

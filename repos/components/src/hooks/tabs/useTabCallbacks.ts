@@ -10,7 +10,7 @@ const useWrapCallback = (tab:TTab, callback:TTabAction=noOp) => {
   const inlineCB = useInline(callback)
   
   return useCallback((event:SyntheticEvent) =>
-    inlineCB?.(event, tab, tab?.uuid || tab?.path),
+    inlineCB?.(tab, event, tab?.uuid || tab?.path),
     [tab]
   )
 }

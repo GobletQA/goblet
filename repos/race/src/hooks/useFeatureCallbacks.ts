@@ -1,6 +1,8 @@
+import type { TTabAction, TTab } from '../goblet'
 import type {
   TSetFeature,
   TRaceFeature,
+  TOnFeatureCB,
   TOnFeatureCBRef,
   TOnReturnFeatureCBRef,
 } from '../types'
@@ -12,8 +14,10 @@ import { deepMerge } from '@keg-hub/jsutils'
 export type THFeatureCallbacks = {
   feature?:TRaceFeature
   setFeature:TSetFeature
+  onFeatureCloseRef:TOnFeatureCBRef
+  onFeatureActiveRef:TOnFeatureCBRef
   onFeatureChangeRef:TOnFeatureCBRef
-  onFeatureUpdateRef:TOnFeatureCBRef
+  onFeatureInactiveRef:TOnFeatureCBRef
   onFeatureBeforeChangeRef:TOnReturnFeatureCBRef
 }
 
@@ -23,20 +27,17 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     feature,
     setFeature,
     onFeatureChangeRef,
-    onFeatureUpdateRef,
+    onFeatureInactiveRef,
     onFeatureBeforeChangeRef
   } = props
 
   const _setFeature = useCallback(async (feat?:TRaceFeature) => {
     if(feat?.uuid === feature?.uuid) return
 
-    const beforeMdl = await onFeatureBeforeChangeRef.current?.(feat, feature)
-    const updated = beforeMdl || feat
-    
-    setFeature(updated)
-    onFeatureChangeRef.current?.(updated)
+    setFeature(feat)
+    onFeatureInactiveRef?.current?.(feature)
 
-  }, [feature?.uuid])
+  }, [feature])
 
   const updateFeature = useCallback(async (feat?:TRaceFeature) => {
     if(feat?.uuid === feature?.uuid) return
@@ -46,7 +47,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
     const updated = beforeMdl || merged
 
-    onFeatureUpdateRef.current?.(updated, feat, feature)
+    onFeatureChangeRef.current?.(updated, feat, feature)
     setFeature(updated)
   }, [feature])
 

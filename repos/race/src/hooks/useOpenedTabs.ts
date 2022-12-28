@@ -1,72 +1,90 @@
-import type { TRaceFeature, TFeaturesRef, TStepsRef, TRaceEditorProps } from '../types'
 import type { TTabAction, TTabItem } from '../goblet'
+import type {
+  TOnFeatureCBRef,
+  TEditorContainer,
+} from '../types'
 
-import { setTabActive } from '../utils/setTabActive'
+import { useFeature } from '../contexts'
+import { setTabActive } from '../utils/featureTabs'
 import { useMemo, useState, useCallback } from 'react'
 import {
   removeTab,
   featureToTab,
-  tabToFeature,
+  featureFromTab,
 } from '../utils/featureTabs'
 
 export type THOpenedTabs = {
-  stepsRef: TStepsRef
-  featuresRef:TFeaturesRef
-  initialFeature?:TRaceFeature
+  onFeatureCloseRef:TOnFeatureCBRef
+  onFeatureActiveRef:TOnFeatureCBRef
 }
 
-export const useOpenedTabs = (props:TRaceEditorProps, ext:THOpenedTabs) => {
+export const useOpenedTabs = (props:TEditorContainer, ext:THOpenedTabs) => {
 
   const {
-    onFeatureClose,
-    onFeatureActive,
+    featuresRef,
     onTabDown:onTabDownCB,
     onTabLeave:onTabLeaveCB,
     onTabHover:onTabHoverCB,
   } = props
 
   const {
-    initialFeature
+    onFeatureCloseRef,
+    onFeatureActiveRef,
   } = ext
 
+  const { feature, setFeature } = useFeature()
+
   const initialTabs = useMemo(() => {
-    return initialFeature ? [featureToTab(initialFeature, { active: true })] : []
-  }, [initialFeature])
+    return feature ? [featureToTab(feature, { active: true })] : []
+  }, [feature])
 
   const [openedTabs, setOpenedTabs] = useState<TTabItem[]>(initialTabs)
 
-  const onTabClick = useCallback<TTabAction>((evt, tab) => {
+  const onActiveFeature = useCallback<TTabAction>((tab, ...rest) => {
+    if(tab.uuid === feature.uuid) return
+
+    const feat = featureFromTab(tab, featuresRef.current)
+
     const updatedTabs = setTabActive(openedTabs, tab)
+    onFeatureActiveRef.current?.(feat, ...rest)
 
-    onFeatureActive?.(tabToFeature(tab))
     setOpenedTabs(updatedTabs)
-  }, [openedTabs])
+    setFeature(feat)
 
-  const onTabClose = useCallback<TTabAction>((evt, tab) => {
+  }, [feature, openedTabs, setFeature])
+
+  const onCloseFeature = useCallback<TTabAction>((tab, ...rest) => {
+
+    const feat = featureFromTab(tab, featuresRef.current)
     const updatedTabs = removeTab(openedTabs, tab)
-    onFeatureClose?.(tabToFeature(tab))
+    onFeatureCloseRef.current?.(feat, ...rest)
+
     setOpenedTabs(updatedTabs)
+
+    // TODO: find the closest opened feature from the openedTabs array
+    setFeature(undefined)
+    
+  }, [feature, openedTabs, setFeature])
+
+  const onTabHover = useCallback<TTabAction>((tab, ...rest) => {
+    onTabHoverCB?.(tab, ...rest)
   }, [openedTabs])
 
-  const onTabHover = useCallback<TTabAction>((evt, tab, key) => {
-    onTabHoverCB?.(evt, tab , key)
+  const onTabLeave = useCallback<TTabAction>((tab, ...rest) => {
+    onTabLeaveCB?.(tab, ...rest)
   }, [openedTabs])
 
-  const onTabLeave = useCallback<TTabAction>((evt, tab, key) => {
-    onTabLeaveCB?.(evt, tab, key)
-  }, [openedTabs])
-
-  const onTabDown = useCallback<TTabAction>((evt, tab, key) => {
-    onTabDownCB?.(evt, tab, key)
+  const onTabDown = useCallback<TTabAction>((tab, ...rest) => {
+    onTabDownCB?.(tab, ...rest)
   }, [openedTabs])
 
   return {
-    onTabDown,
-    onTabClose,
     openedTabs,
-    onTabClick,
+    onTabDown,
     onTabHover,
     onTabLeave,
     setOpenedTabs,
+    onCloseFeature,
+    onActiveFeature,
   }
 }

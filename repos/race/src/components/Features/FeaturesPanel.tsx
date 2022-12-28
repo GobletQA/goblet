@@ -1,14 +1,15 @@
-import type { TEditorRefs } from '@GBR/types'
+import type { TTabAction } from '../../goblet'
+import type { TFeaturesRefs } from '@GBR/types'
 
 import { Panel } from '../../goblet'
 import { FeaturesList } from './FeaturesList'
 
-export type TFeaturesPanel = TEditorRefs & {
-
+export type TFeaturesPanel = TFeaturesRefs & {
+  onActiveFeature: TTabAction
 }
 
 export const FeaturesPanel = (props:TFeaturesPanel) => {
-  const { featuresRef } = props
+  const { featuresRef, onActiveFeature } = props
 
   return (
     <Panel
@@ -19,6 +20,7 @@ export const FeaturesPanel = (props:TFeaturesPanel) => {
     >
       <FeaturesList
         featuresRef={featuresRef}
+        onActiveFeature={onActiveFeature}
       />
     </Panel>
   )

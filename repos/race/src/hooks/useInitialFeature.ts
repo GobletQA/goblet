@@ -1,8 +1,6 @@
 import type { TRaceEditorProps } from '../types'
 
-import { useRef, useMemo } from 'react'
-import { noOp } from '@keg-hub/jsutils'
-
+import { useMemo } from 'react'
 
 export const useInitialFeature = ({
   feature,

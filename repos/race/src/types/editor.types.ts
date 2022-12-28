@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react'
+import type { RefObject, MutableRefObject, ComponentType } from 'react'
 import type { TRaceSteps } from './steps.types'
 import type { TRaceFeatures, TRaceFeature } from './features.types'
 import type {
@@ -10,17 +10,25 @@ import type {
   TStepsRef,
   TFeaturesRef,
   TOnFeatureCB,
+  TOnFeatureCBRef,
   TOnReturnFeatureCB
 } from './helpers.types'
-
 
 export type TRaceEditor = {
   [key:string]: any
 }
 
-export type TEditorRefs = {
+export type TFeaturesRefs = {
   stepsRef: TStepsRef
   featuresRef: TFeaturesRef
+}
+
+export type TEditorRef = RefObject<TRaceEditor>
+
+export type TEditorRefs = {
+  editorRef: TEditorRef
+  curPathRef: MutableRefObject<string>
+  curValueRef: MutableRefObject<string>
 }
 
 export type TRaceEditorProps = {
@@ -35,13 +43,18 @@ export type TRaceEditorProps = {
   Divider?:ComponentType<any>
   Panels?:TSidebarPanel[]
   PrePanels?:TSidebarPanel[]
-  onFeatureChange?:TOnFeatureCB
-  onFeatureUpdate?:TOnFeatureCB
-  onSidebarResize?: (width:number) => void
-  onBeforeFeatureChange?:TOnReturnFeatureCB
   onFeatureClose?:TOnFeatureCB
+  onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
+  onFeatureInactive?:TOnFeatureCB
+  onBeforeFeatureChange?:TOnReturnFeatureCB
+  onSidebarResize?: (width:number) => void
   onTabHover?:TTabAction
   onTabLeave?:TTabAction
   onTabDown?:TTabAction
+}
+
+export type TEditorContainer = TRaceEditorProps & TFeaturesRefs & TEditorRefs & {
+  onFeatureCloseRef:TOnFeatureCBRef
+  onFeatureActiveRef:TOnFeatureCBRef
 }
