@@ -4,6 +4,7 @@ import type {
   TEditorContainer,
 } from '../types'
 
+import { stopEvent } from '../goblet'
 import { useFeature } from '../contexts'
 import { setTabActive } from '../utils/featureTabs'
 import { useMemo, useState, useCallback } from 'react'
@@ -53,17 +54,17 @@ export const useOpenedTabs = (props:TEditorContainer, ext:THOpenedTabs) => {
 
   }, [feature, openedTabs, setFeature])
 
-  const onCloseFeature = useCallback<TTabAction>((tab, ...rest) => {
+  const onCloseFeature = useCallback<TTabAction>((tab, evt, ...rest) => {
+    stopEvent(evt)
 
     const feat = featureFromTab(tab, featuresRef.current)
-    const updatedTabs = removeTab(openedTabs, tab)
     onFeatureCloseRef.current?.(feat, ...rest)
 
-    setOpenedTabs(updatedTabs)
+    const { tabs: updated, active } = removeTab(openedTabs, tab)
+    setOpenedTabs(updated)
+    const nextFeat = active ? featureFromTab(active?.tab, featuresRef.current) : active
 
-    // TODO: find the closest opened feature from the openedTabs array
-    setFeature(undefined)
-    
+    setFeature(nextFeat)
   }, [feature, openedTabs, setFeature])
 
   const onTabHover = useCallback<TTabAction>((tab, ...rest) => {

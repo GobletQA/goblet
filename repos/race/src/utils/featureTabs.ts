@@ -55,14 +55,34 @@ export const setTabActive = (tabs:TTabItem[], tab:TTab) => {
 }
 
 /**
+ * Finds the next active tab when a different tab is closed
+ * When more then on feature is open, or undefined
+ */
+const setNextActive = (tabs:TTabItem[], idx:number) => {
+  const nextActiveIdx = idx > 0 ? idx - 1 : 0
+  if(!tabs[nextActiveIdx]) return
+
+  tabs[nextActiveIdx] = updateTabProps(tabs[nextActiveIdx], {active: true})
+
+  return tabs[nextActiveIdx]
+}
+
+/**
  * Removes a from from the passed in array of tabItems
  */
 export const removeTab = (tabs:TTabItem[], tab:TTab) => {
-  return tabs.reduce((tabs, tabItem) => {
-    !isTabMatch(tabItem, tab) && tabs.push(tabItem)
 
-    return tabs
+  let nextActive:TTabItem | undefined
+
+  const updated = tabs.reduce((updated, tabItem, idx) => {
+    isTabMatch(tabItem, tab)
+      ? (nextActive = setNextActive(updated, idx))
+      : updated.push(tabItem)
+
+    return updated
   }, [] as TTabItem[])
+
+  return { tabs: updated, active: nextActive || updated[0] }
 }
 
 /**
@@ -74,11 +94,7 @@ export const featureToTab = (
 ):TTabItem => ({
   Icon,
   styles: TabStyles,
-  tab: {
-    ...feature,
-    ...tab,
-    uuid: `${feature?.parent?.uuid}-${feature.uuid}`,
-  },
+  tab: {...feature, ...tab}
 })
 
 /**

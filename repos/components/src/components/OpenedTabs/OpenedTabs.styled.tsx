@@ -42,9 +42,10 @@ export const OpenTabsMain = styled(Box)`
 `
 
 export const OpenTab = styled(Box)`
-  height: 35px;
+  height: 30px;
   display: flex;
-  padding: 0 5px;
+  padding: 0px;
+  padding-left: 5px;
   cursor: pointer;
   margin-right: 1px;
   position: relative;
@@ -73,7 +74,11 @@ export const OpenTab = styled(Box)`
 
 `
 
-export const OpenTabName = styled(Span)`
+export const OpenTabTitle = styled(Span)`
+  flex: 1;
+  font-size: 13px;
+  line-height: 30px;
+  paddingRight: 5px;
 `
 
 export const OpenTabEditing = styled(Span)`
@@ -87,11 +92,14 @@ export const OpenTabEditing = styled(Span)`
 `
 
 export const OpenTabClose = styled(Span)`
+  font-size: 20px;
+  padding: 5px 10px;
+  line-height: 20px;
+  margin-left: 5px;
   position: relative;
-  padding: 5px 5px;
-  line-height: 10px;
 
   &:hover {
+    color: var(--goblet-errorForeground);
     background-color: var(--goblet-list-focusBackground);
   }
 

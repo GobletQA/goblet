@@ -17,6 +17,7 @@
   --goblet-scrollbarSlider-hoverBackground: #565b6699;
   --goblet-editorCursor-foreground: #e6b450;
   --goblet-sideBar-border: #0b0e14;
+  --goblet-errorForeground: #d95757;
 }
 
 .goblet-editor {

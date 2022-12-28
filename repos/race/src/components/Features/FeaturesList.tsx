@@ -22,7 +22,6 @@ type TListItem = {
 }
 
 const ListItem = (props:TListItem) => {
-  
 
   const { active, feature, onActiveFeature } = props
 

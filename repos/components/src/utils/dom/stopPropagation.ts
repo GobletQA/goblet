@@ -1,5 +1,4 @@
-
-export type TEvtCallback = (event:any) => any
+import type { TEvtCallback } from '../../types'
 
 export const stopPropagation = (event?:any, cb?:TEvtCallback) => {
   event?.stopPropagation?.()

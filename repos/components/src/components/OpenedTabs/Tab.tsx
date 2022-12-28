@@ -6,7 +6,7 @@ import { preventDefault } from '../../utils/dom/preventDefault'
 import { useTabCallbacks } from '../../hooks/tabs/useTabCallbacks'
 import {
   OpenTab,
-  OpenTabName,
+  OpenTabTitle,
   OpenTabClose,
   OpenTabEditing,
 } from './OpenedTabs.styled'
@@ -14,7 +14,7 @@ import {
 
 const defStyles:TTabStyles = {
   icon: { marginRight: '2px' },
-  title: { flex: 1, paddingRight: '5px' }
+  title: {}
 }
 
 const useTabStyle = (
@@ -81,7 +81,7 @@ export const Tab = (props:TTabItem) => {
       data-src={tab?.uuid || tab?.path}
     >
       {Icon && (<Icon style={styles.icon} />)}
-      <OpenTabName style={styles.title}>{title}</OpenTabName>
+      <OpenTabTitle style={styles.title}>{title}</OpenTabTitle>
       <OpenTabEditing
         data-name='editing'
         className='goblet-editor-opened-tab-item-edit'
