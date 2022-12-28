@@ -24,6 +24,36 @@ export type TRepoMeta = {
 export type TRepoEmpty = {
 }
 
+const style = {
+  empty: {
+    display: `flex`,
+    marginTop: `5px`,
+    paddingLeft: `5px`,
+    paddingRight: `5px`,
+    marginBottom: `5px`,
+    alignContent: `center`,
+    justifyContent: `center`,
+  },
+  git: {
+    paddingRight: `5px`
+  },
+  container: {
+    padding: `5px`,
+    display: `flex`,
+    marginTop: `5px`,
+    paddingLeft: `10px`,
+    marginBottom: `5px`,
+    alignContent: `center`,
+    flexDirection: `column`,
+    justifyContent: `center`,
+  },
+  text: {
+    fontSize: `14px`,
+    lineHeight: `16px`,
+    marginBottom: `2px`,
+  }
+}
+
 
 const RepoMeta = (props:TRepoMeta) => {
   const {
@@ -34,32 +64,18 @@ const RepoMeta = (props:TRepoMeta) => {
   const { branch, remote } = git
   
   return (
-    <Box
-      sx={{
-        display: `flex`,
-        marginTop: `5px`,
-        paddingLeft: `5px`,
-        marginBottom: `5px`,
-        flexDirection: `column`,
-        alignContent: `center`,
-        justifyContent: `center`,
-      }}
-    >
+    <Box sx={style.container} >
       <Text
         noWrap
         type='label'
-        sx={{
-          fontSize: `12px`,
-        }}
+        sx={style.text}
       >
         <b>Name:</b> <a href={remote} target='_blank' >{name}</a>
       </Text>
       <Text
         noWrap
         type='label'
-        sx={{
-          fontSize: `12px`,
-        }}
+        sx={style.text}
       >
         <b>Branch:</b> {branch}
       </Text>
@@ -69,19 +85,9 @@ const RepoMeta = (props:TRepoMeta) => {
 
 const RepoEmpty = (props:TRepoEmpty) => {
   return (
-    <Box
-      sx={{
-        marginTop: `5px`,
-        paddingLeft: `5px`,
-        paddingRight: `5px`,
-        marginBottom: `5px`,
-        display: `flex`,
-        alignContent: `center`,
-        justifyContent: `center`,
-      }}
-    >
+    <Box sx={style.empty} >
       <Button onClick={onConnect}>
-        <Git sx={{ paddingRight: `5px` }} />
+        <Git sx={style.git} />
         Connect Repository
       </Button>
     </Box>

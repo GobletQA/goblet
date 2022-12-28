@@ -25,8 +25,7 @@ export const SidebarContainer = styled(Box)`
   font-size: 14px;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding-left: 5px;
-  line-height: 25px;
+  line-height: 24px;
   align-self: stretch;
   color: var(--goblet-editor-foreground);
   background: var(--goblet-editor-background);

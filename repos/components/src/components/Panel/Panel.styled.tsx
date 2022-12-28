@@ -14,26 +14,29 @@ export const PanelSidebar = styled(Box)`
 `
 
 export const PanelHeader = styled(ListItemButton)<THeaderItem>`
-    left: -5px;
-    height: 30px;
-    display: flex;
-    cursor: pointer;
-    font-size: 14px;
-    user-select: none;
-    line-height: 28px;
-    padding-left: 5px;
-    font-weight: bold;
-    flex-direction: row;
-    align-items: center;
-    width: calc( 100% + 5px );
-    position: relative;
-    background: var(--goblet-list-activeSelectionBackground);
-    border-bottom: 2px solid var(--goblet-editor-background);
+  height: 30px;
+  display: flex;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  line-height: 28px;
+  font-weight: bold;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  background: var(--goblet-list-inactiveSelectionBackground);
+  border-bottom: 1px solid var(--goblet-editor-background);
+  padding-left: 5px;
+  padding-right: 5px;
 
-  
+  &:hover {
+    background: var(--goblet-list-activeSelectionBackground);
+  }
 
   & .goblet-editor-panel-toggle-icon {
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: bold;
     margin-right: 4px;
     color: var(--goblet-editor-foreground);
 
@@ -47,7 +50,8 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
 
 export const PanelHeaderText = styled(Span)`
   flex: 1;
-  padding-left: 5px;
+  font-size: 15px;
+  font-weight: bold;
 `
 
 export const PanelContent = styled(Box)`
@@ -56,11 +60,6 @@ export const PanelContent = styled(Box)`
   position: relative;
   padding-bottom: 0px;
   transition: max-height 300ms ease, padding-bottom 300ms ease;
-
-  &.show {
-    padding-bottom: 5px;
-  }
-  
 `
 
 export const PanelSidebarMonaco = styled(Box)`

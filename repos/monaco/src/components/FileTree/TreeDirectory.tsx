@@ -87,6 +87,7 @@ export const TreeDirectory = ({
       onClick={fileClick}
       className='goblet-editor-file-item-row'
       style={{
+        paddingLeft: `5px`,
         position: `relative`,
       }}
     >

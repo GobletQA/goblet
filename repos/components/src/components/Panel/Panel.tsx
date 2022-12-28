@@ -28,7 +28,10 @@ export const Panel = (props:TPanel) => {
 
     // Panel currently closed - Switch the panel from closed to open
     if(closed === true){
-      panel.style.maxHeight = `${lastHeightRef.current || '100vh'}px`
+      panel.style.maxHeight = lastHeightRef.current
+        ? `${lastHeightRef.current}px`
+        : `100vh`
+
       // IMPORTANT - timeout delay should match the transition time see ./Panel.css
       setTimeout(() => panel.style.maxHeight = ``, 300)
     }
@@ -47,6 +50,7 @@ export const Panel = (props:TPanel) => {
 
   useEffect(() => {
     const panel = panelRef.current as HTMLDivElement
+
     if(!panel) return
     lastHeightRef.current = panel.offsetHeight
   }, [])

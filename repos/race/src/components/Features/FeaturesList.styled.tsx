@@ -24,15 +24,27 @@ export const Features = styled(List)<TListFeatures>`
 
 
 export const FeatureItem = styled(ListItemButton)<TFeatureItem>`
-  padding: 4px;
-  padding-left: 12px;
+  padding: 0px;
+  padding-left: 10px;
+  
+  &:hover {
+    background-color: var(--goblet-list-hoverBackground);
+    color: var(--goblet-list-hoverForeground);
+  }
+  
+  &.active {
+    background-color: var(--goblet-list-hoverBackground);
+    color: var(--goblet-list-hoverForeground);
+  }
+  
 `
 
 export const FeatureText = styled(ListItemText)`
   margin: 0px;
 
   & span {
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 24px;
   }
 `
 

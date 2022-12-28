@@ -2,6 +2,7 @@ import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 import type { TTabAction } from '../../goblet'
 
 import { useCallback } from 'react'
+import { cls } from '@keg-hub/jsutils'
 import { useFeature } from '../../contexts'
 import {
   Features,
@@ -15,19 +16,25 @@ export type TFeaturesList = {
 }
 
 type TListItem = {
+  active:TRaceFeature
   feature:TRaceFeature
   onActiveFeature: TTabAction
 }
 
 const ListItem = (props:TListItem) => {
-  const { feature:active, setFeature } = useFeature()
+  
 
-  const { feature, onActiveFeature } = props
+  const { active, feature, onActiveFeature } = props
 
   const onClick = useCallback(() => onActiveFeature(feature), [feature, onActiveFeature])
 
+  const isActive = feature?.uuid === active?.uuid
+
   return (
-    <FeatureItem onClick={onClick} >
+    <FeatureItem
+      onClick={onClick}
+      className={cls(`goblet-race-features-list-item`, isActive && `active`)}
+    >
       <FeatureText>
         {feature.feature}
       </FeatureText>
@@ -40,6 +47,8 @@ export const FeaturesList = (props:TFeaturesList) => {
     featuresRef,
     onActiveFeature
   } = props
+  
+  const { feature:active, setFeature } = useFeature()
 
   return (
     <Features
@@ -50,6 +59,7 @@ export const FeaturesList = (props:TFeaturesList) => {
       {Object.entries(featuresRef.current).map(([key, feature]) => {
         return (
           <ListItem
+            active={active}
             feature={feature}
             key={`${key}-${feature.uuid}`}
             onActiveFeature={onActiveFeature}

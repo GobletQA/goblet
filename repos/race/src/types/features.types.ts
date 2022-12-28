@@ -60,7 +60,6 @@ export type TFeatureParent = {
 
 
 export type TRaceFeature = {
-  index?: number
   uuid: string
   path:string
   title:string
