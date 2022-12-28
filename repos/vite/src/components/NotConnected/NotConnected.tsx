@@ -2,9 +2,9 @@ import type { ComponentType } from 'react'
 import type { TUColors } from '@hooks/theme'
 
 import Box from '@mui/material/Box'
+import { gutter, colors } from '@theme'
 import { Text } from '@components/Text'
 import { useColors } from '@hooks/theme'
-import { gutter, monaco, colors } from '@theme'
 
 export type TNotConnected = {
   message: string
@@ -13,8 +13,8 @@ export type TNotConnected = {
 
 const colorMap:TUColors = {
   icon: [colors.error, colors.error],
-  text: [colors.black04, colors.white00],
-  container: [colors.white00,  monaco.editorBackground],
+  text: [colors.black09, colors.white],
+  container: [colors.white,  colors.black12],
 }
 
 export const NotConnected = (props:TNotConnected) => {

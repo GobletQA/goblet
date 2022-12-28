@@ -8,9 +8,9 @@ export const lightTerminal = {
   cyan: `#66781E`,
   brightCyan: `#829429`,
 
-  cursor: colors.black02,
+  cursor: colors.black12,
   background: colors.gray03,
-  foreground: colors.black02,
+  foreground: colors.black12,
 
   red: colors.cardinal,
   brightRed: colors.cardinal,
@@ -24,8 +24,8 @@ export const lightTerminal = {
   magenta: colors.royalPurple,
   brightMagenta: colors.royalPurple,
 
-  white: colors.white00,
-  brightWhite: colors.white00
+  white: colors.white,
+  brightWhite: colors.white
 }
 
 export const darkTerminal = {
@@ -34,12 +34,12 @@ export const darkTerminal = {
   cyan: `#2488FF`,
   brightCyan: `#2488FF`,
 
-  cursor: colors.white00,
-  foreground: colors.white00,
-  background: colors.black00,
+  cursor: colors.white,
+  foreground: colors.white,
+  background: colors.black,
 
-  black: colors.black02,
-  brightBlack: colors.black06,
+  black: colors.black12,
+  brightBlack: colors.black09,
 
   red: colors.cardinal,
   brightRed: colors.cardinal,
@@ -54,6 +54,6 @@ export const darkTerminal = {
   brightMagenta: colors.royalPurple,
 
 
-  white: colors.white00,
-  brightWhite: colors.white00
+  white: colors.white,
+  brightWhite: colors.white
 }

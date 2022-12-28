@@ -86,7 +86,7 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
       ref={parentRef}
       position='relative'
       className='goblet-definitions-slider'
-      bgcolor={theme.palette.mode === 'light' ? gray.gray00 : black.black05}
+      bgcolor={theme.palette.mode === 'light' ? gray.gray00 : black.black12}
     >
       <ClickAwayListener onClickAway={onClickAway} >
         <Drawer

@@ -4,18 +4,6 @@ import type { TPalette, TPaletteOpts } from '@types'
 import { colors } from './colors'
 import { deepMerge } from '@keg-hub/jsutils'
 
-// const gray = {
-//   50: colors.gray00,
-//   100:colors.gray01,
-//   200:colors.gray02,
-//   300:colors.gray03,
-//   400:colors.gray04,
-//   500:colors.gray05,
-//   600:colors.gray06,
-//   700:colors.gray07,
-//   800:colors.gray08,
-//   900:colors.gray09,
-// }
 
 const commonPalette:TPaletteOpts = {
   colors,
@@ -30,7 +18,7 @@ const commonPalette:TPaletteOpts = {
   },
   success: {
     main: colors.shamrock,
-    contrastText: colors.white00,
+    contrastText: colors.white,
   },
   info: {
     main: colors.shamrock,
@@ -41,15 +29,15 @@ const lightPalette = (muiTheme:Theme) => {
   return deepMerge<TPaletteOpts>(commonPalette, {
     mode: `light`,
     secondary: {
-      main: colors.black06,
-      contrastText: colors.white00,
+      main: colors.black07,
+      contrastText: colors.white,
     },
     background: {
-      default: colors.white00,
-      paper: colors.white00,
+      default: colors.white,
+      paper: colors.white,
     },
     text: {
-      primary: colors.black01
+      primary: colors.black19
     }
   })
 }
@@ -58,15 +46,15 @@ const darkPalette = (muiTheme:Theme) => {
   return deepMerge<TPaletteOpts>(commonPalette, {
     mode: `dark`,
     secondary: {
-      main: colors.monacoGray,
-      contrastText: colors.black01,
+      main: colors.black03,
+      contrastText: colors.black19,
     },
     background: {
-      default: colors.black01,
-      paper: colors.black01,
+      default: colors.black19,
+      paper: colors.black19,
     },
     text: {
-      primary: colors.white00
+      primary: colors.white
     }
   })
 }

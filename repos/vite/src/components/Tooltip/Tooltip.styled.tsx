@@ -17,6 +17,6 @@ export const MuiTooltip = styled(({ className, fontSize, ...props }: TTooltipPro
   [`& .${tooltipClasses.tooltip}`]: {
     fontSize,
     boxShadow: theme.shadows[3],
-    backgroundColor: colors.black06,
+    backgroundColor: colors.black09,
   },
 }))

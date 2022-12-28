@@ -3,58 +3,91 @@ import type { TColors } from '@types'
 export const gobletColors = {
   cardinal: `#B53541`,
   shamrock: `#61AB82`,
-  monacoGray: `#ABB2BF`,
   royalPurple: `#785B9C`,
   honeyYellow: `#FFB601`,
   shinyShamrock: `#148F4B`,
-  terminalBlack: `#1f1d27`,
+  terminalBlack: `#16181D`,
+  white: `#FFFFFF`,
+  black: `#000000`,
 }
 
 export const purple = {
-  purple00: `#f2eff6`,
-  purple01: `#d8cfe3`,
-  purple02: `#bdaed0`,
-  purple03: `#a38ebd`,
-  purple04: `#896eaa`,
-  purple05: `#785B9C`,
-  purple06: `#6f5591`,
-  purple07: `#574271`,
-  purple08: `#3e2f51`,
-  purple09: `#251c30`,
-  purple10: `#0c0910`,
-}
-
-export const white = {
-  white00: `#FFFFFF`,
-}
-
-export const gray = {
-  gray00: `#F5F6F7`,
-  gray01: `#E4E6EB`,
-  gray02: `#D3D7DE`,
-  gray03: `#CBD0D8`,
-  gray04: `#B6BDC8`,
-  gray05: `#99a3b2`,
-  gray06: `#7c889c`,
-  gray07: `#636f83`,
-  gray08: `#4d5666`,
-  gray09: `#373e49`,
-  gray10: `#21252c`
+  purple00: `#f9f8fb`,
+  purple01: `#f2eff5`,
+  purple02: `#e4deeb`,
+  purple03: `#d7cee1`,
+  purple04: `#c9bdd7`,
+  purple05: `#bcadce`,
+  purple06: `#ae9dc4`,
+  purple07: `#a18cba`,
+  purple08: `#937cb0`,
+  purple09: `#866ba6`,
+  purple10: `#785b9c`,
+  purple11: `#6c528c`,
+  purple12: `#60497d`,
+  purple13: `#54406d`,
+  purple14: `#48375e`,
+  purple15: `#3c2e4e`,
+  purple16: `#30243e`,
+  purple17: `#241b2f`,
+  purple18: `#18121f`,
+  purple19: `#0c0910`,
+  purple20: `#060407`,
 }
 
 export const black = {
-  black00: `#000000`,
-  black01: `#040506`,
-  black02: `#111215`,
-  black03: `#16181d`,
-  black04: `#1f2228`,
-  black05: `#282b34`,
-  black06: `#31353f`,
-  black07: `#3a3f4a`,
-  black08: `#434856`,
-  black09: `#4c5261`,
-  black10: `#555b6d`,
+  black00: `#d0d1d2`,
+  black01: `#b9babb`,
+  black02: `#a2a3a5`,
+  black03: `#8b8c8e`,
+  black04: `#737477`,
+  black05: `#505256`,
+  black06: `#45464a`,
+  black07: `#393B3F`,
+  black08: `#2d313b`,
+  black09: `#1f2229`,
+  black10: `#191b21`,
+  black11: `#16181d`,
+  black12: `#14161a`,
+  black13: `#111216`,
+  black14: `#0E1013`,
+  black15: `#0d0e11`,
+  black16: `#0b0c0f`,
+  black17: `#090a0c`,
+  black18: `#070709`,
+  black19: `#040506`,
+  black20: `#030404`,
 }
+
+
+export const white = {
+  white00: `#f9fafb`,
+}
+
+export const gray = {
+  gray00: `#EFF1F3`,
+  gray01: `#E8E9EC`,
+  gray02: `#D0D4DA`,
+  gray03: `#C1C5CD`,
+  gray04: `#B1B7C1`,
+  gray05: `#A1A9B5`,
+  gray06: `#929AA8`,
+  gray07: `#828C9C`,
+  gray08: `#7A8596`,
+  gray09: `#737D8F`,
+  gray10: `#6B7689`,
+  gray11: `#636f83`,
+  gray12: `#5E697C`,
+  gray13: `#596476`,
+  gray14: `#545E6F`,
+  gray15: `#4F5969`,
+  gray16: `#4A5362`,
+  gray17: `#454E5C`,
+  gray18: `#3B434F`,
+  gray19: `#323842`,
+  gray20: `#2D323B`,
+}
+
 
 /**
  * TODO: Autogenerate these values
@@ -109,18 +142,19 @@ export const fadeDark = {
 }
 
 export const alerts = {
+  info: black.black03,
   error: gobletColors.cardinal,
-  info: gobletColors.monacoGray,
   warn: gobletColors.honeyYellow,
   success: gobletColors.shinyShamrock,
 }
 
 export const colors:TColors = {
-  ...gobletColors,
   ...white,
   ...gray,
-  ...black,
   ...fade,
-  ...fadeDark,
+  ...black,
+  ...purple,
   ...alerts,
+  ...fadeDark,
+  ...gobletColors,
 }

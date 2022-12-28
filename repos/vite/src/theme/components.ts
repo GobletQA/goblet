@@ -37,7 +37,7 @@ export const components = (
         },
         paper: {
           backgroundImage: `initial`,
-          backgroundColor: getColor(palette.colors.white00, palette.colors.black02, { palette } as TGobletTheme)
+          backgroundColor: getColor(palette.colors.white, palette.colors.black12, { palette } as TGobletTheme)
         }
       }
     },

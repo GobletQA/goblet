@@ -23,7 +23,7 @@ export const Fade = styled(Box)<TFade>(
     position: `fixed`,
     transitionProperty: `opacity`,
     transitionDuration: `${(speed || 2000) * 0.001}s`,
-    backgroundColor: getColor(theme.palette.colors.white00, theme.palette.colors.black03, theme),
+    backgroundColor: getColor(theme.palette.colors.white, theme.palette.colors.black03, theme),
   })
 )
 
@@ -50,7 +50,7 @@ export const FadeText = styled(
   (({ theme, color }:Record<string, any>) => ({
     marginTop: 30,
     textAlign: `center`,
-    color: color || getColor(theme.palette.colors.black03, theme.palette.colors.white00, theme),
+    color: color || getColor(theme.palette.colors.black03, theme.palette.colors.white, theme),
   })
 )
 

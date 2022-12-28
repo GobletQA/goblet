@@ -60,12 +60,12 @@ export const Drawer = styled(
   }),
   ...(!open && {
     [`& .goblet-defs-header-tabs button.MuiTab-root.Mui-selected`]: {
-      color: getColor(colors.fadeDark30, colors.fadeLight55, theme),
-      backgroundColor: getColor(colors.gray01, colors.black05, theme),
+      color: getColor(colors.gray05, colors.fadeLight30, theme),
+      backgroundColor: getColor(colors.gray00, colors.black11, theme),
 
       [`&:hover`]: {
-        color: getColor(colors.gray07, colors.fadeLight75, theme),
-        backgroundColor: getColor(colors.white00, colors.black03, theme)
+        color: getColor(colors.royalPurple, colors.fadeLight90, theme),
+        backgroundColor: getColor(colors.white, colors.black14, theme)
       }
     }
   }),
@@ -78,7 +78,7 @@ const tabHeight = `
 
 export const DefsContainer = styled(Box)(({ theme }) => `
   height: 100%;
-  background-color: ${getColor(colors.white00, colors.black01, theme)};
+  background-color: ${getColor(colors.white, colors.black19, theme)};
 `)
 
 export const DefsHeaderTabs = styled(Tabs)(({ theme }) => `
@@ -105,20 +105,20 @@ export const DefsHeaderTab = styled(Tab)(({ theme }) => `
   font-weight: ${theme.typography.fontWeightBold};
   transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
 
-  color: ${getColor(colors.fadeDark30, colors.fadeLight55, theme)};
-  background-color: ${getColor(colors.gray01, colors.black05, theme)};
-  border-bottom: 1px solid ${getColor(colors.gray00, colors.black02, theme)};
-  border-left: 1px solid ${getColor(colors.gray02, colors.black05, theme)};
+  color: ${getColor(colors.gray05, colors.fadeLight30, theme)};
+  background-color: ${getColor(colors.gray00, colors.black11, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray00, colors.black13, theme)};
+  border-left: 1px solid ${getColor(colors.gray01, colors.black13, theme)};
 
 
   &.Mui-selected {
-    color: ${getColor(colors.gray07, colors.fadeLight90, theme)};
-    background-color: ${getColor(colors.white00, colors.black03, theme)};
+    color: ${getColor(colors.royalPurple, colors.fadeLight90, theme)};
+    background-color: ${getColor(colors.white, colors.black14, theme)};
   }
 
   &:hover:not(.Mui-selected) {
-    color: ${getColor(colors.gray07, colors.fadeLight75, theme)};
-    background-color: ${getColor(colors.white00, colors.black03, theme)};
+    color: ${getColor(colors.royalPurple, colors.fadeLight75, theme)};
+    background-color: ${getColor(colors.white, colors.black14, theme)};
   }
 `)
 
@@ -127,7 +127,7 @@ export const DefsBody = styled(Box)(({ theme }) => `
   width: 100%;
   height: 100%;
   display: flex;
-  background-color: ${getColor(colors.gray02, colors.black04, theme)};
+  background-color: ${getColor(colors.gray02, colors.black10, theme)};
 `)
 
 export const DefsSliderActions = styled(Box)(({ theme }) => `
@@ -144,12 +144,12 @@ export const DefsSliderAction = styled(IconButton)(({ theme }) => `
   background-color: transparent;
   height: ${dims.defs.header.hpx};
   width: ${dims.defs.header.height + 8}px;
-  background-color: ${getColor(colors.gray01, colors.black05, theme)};
+  background-color: ${getColor(colors.gray01, colors.black11, theme)};
   transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
-  border-left: 1px solid ${getColor(colors.gray02, colors.black05, theme)};
-  border-bottom: 1px solid ${getColor(colors.gray01, colors.black02, theme)};
+  border-left: 1px solid ${getColor(colors.gray01, colors.black13, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray00, colors.black14, theme)};
   
   &:hover {
-    background-color: ${getColor(colors.gray03, colors.fadeLight10, theme)};
+    background-color: ${getColor(colors.white, colors.black14, theme)};
   }
 `)

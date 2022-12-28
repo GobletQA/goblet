@@ -24,9 +24,8 @@ export const Container = styled(Box)`
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
-  border-right: 1px solid #E4E6EB;
-
   color: var(--goblet-editor-foreground);
+  border-right: 1px solid var(--goblet-sideBar-border);
 `
 
 export const Divider = styled(Box)`

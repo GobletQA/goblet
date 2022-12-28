@@ -15,8 +15,8 @@ export const TerminalContainer = styled(Container)(({ theme }) => `
   position: relative;
   align-items: stretch;
   flex-direction: column;
-  background-color: ${getColor(colors.gray01, colors.black05, theme)};
-  border-top: 1px solid ${getColor(colors.gray02, colors.black02, theme)};
+  background-color: ${getColor(colors.gray01, colors.black10, theme)};
+  border-top: 1px solid ${getColor(colors.gray00, colors.black12, theme)};
 `)
 
 export const TabsHeaderList = styled(Tabs)(`
@@ -31,14 +31,14 @@ export const TabsHeaderList = styled(Tabs)(`
 
 export const HeaderTab = styled(Tab)(({ theme }) => {
   const shared = `
-    color: ${getColor(colors.fadeLight90, colors.fadeLight90, theme)};
+    color: ${getColor(colors.royalPurple, colors.fadeLight90, theme)};
 
     & .terminal-tab-add-icon,
     & .terminal-tab-close-icon {
       color: ${getColor(colors.fadeLight90, colors.fadeLight90, theme)};
     }
 
-    & .terminal-tab-close-icon {
+    &:hover .terminal-tab-close-icon {
       color: ${colors.cardinal};
     }
   `
@@ -46,6 +46,7 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
   return `
     display: flex;
     padding: 0px 10px;
+    margin-right: 1px;
     text-transform: none;
     flex-direction: row-reverse;
     justify-content: space-between;
@@ -55,18 +56,21 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
     font-size: ${theme.typography.pxToRem(12)};
     font-weight: ${theme.typography.fontWeightRegular};
     transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
-    color: ${getColor(colors.fadeDark30, colors.fadeLight55, theme)};
-    background-color: ${getColor(colors.gray03, colors.black03, theme)};
+    color: ${getColor(colors.gray07, colors.fadeLight55, theme)};
+    background-color: ${getColor(colors.gray02, colors.black15, theme)};
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    font-size: 14px;
 
     &.Mui-selected {
       font-weight: ${theme.typography.fontWeightBold};
-      background-color: ${getColor(colors.black00, colors.black00, theme)};
+      background-color: ${getColor(colors.black, colors.black, theme)};
       ${shared}
     }
 
     &:hover:not(.Mui-selected) {
       ${shared}
-      background-color: ${getColor(colors.black04, colors.black02, theme)};
+      background-color: ${getColor(colors.gray01, colors.black19, theme)};
       & .terminal-tab-add-icon {
         color: ${colors.shamrock};
       }
@@ -89,7 +93,7 @@ export const TabCloseIcon = styled(CloseIcon)(({ theme }) => `
   color: ${getColor(colors.fadeDark45, colors.fadeLight55, theme)};
 `)
 
-export const TerminalExpandBtn = styled(IconButton)`
+export const TerminalExpandBtn = styled(IconButton)(({ theme }) => `
   width: 48px;
   display: flex;
   border-radius: 0px;
@@ -98,11 +102,12 @@ export const TerminalExpandBtn = styled(IconButton)`
   place-content: center;
   background-color: transparent;
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
-`
+  border-left: 1px solid ${getColor(colors.gray02, colors.black15, theme)};
+`)
 
 export const TerminalInput = styled(Box)(({ theme }) => `
   width: 100%;
   flex-grow: 1;
   overflow: hidden;
-  background-color: ${getColor(colors.black00, colors.black00, theme)};
+  background-color: ${getColor(colors.black, colors.black, theme)};
 `)

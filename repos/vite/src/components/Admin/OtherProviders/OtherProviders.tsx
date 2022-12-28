@@ -1,6 +1,6 @@
+import { colors } from '@theme'
 import Button from '@mui/material/Button'
 import ListItem from '@mui/material/ListItem'
-import { useColor } from '@hooks/theme/useColor'
 import LoginIcon from '@mui/icons-material/Login'
 
 export type TOtherProviders = {
@@ -8,9 +8,7 @@ export type TOtherProviders = {
 }
 
 export const OtherProviders = (props:TOtherProviders) => {
-  
-  const bgColor = useColor(`colors.gray10`, `colors.black05`)
-  
+
   return (
     <ListItem sx={{ minWidth: 120 }} >
       <Button
@@ -19,12 +17,12 @@ export const OtherProviders = (props:TOtherProviders) => {
         startIcon={<LoginIcon />}
         sx={{
           width: `100%`,
-          color: `colors.white00`,
-          backgroundColor: bgColor,
+          color: `colors.white`,
+          backgroundColor: colors.black09,
           [`&.Mui-disabled`]: {
-            opacity: 0.5,
-            color: `colors.gray04`,
-            backgroundColor: bgColor,
+            opacity: 0.4,
+            color: colors.white,
+            backgroundColor: colors.black09,
           }
         }}
       >

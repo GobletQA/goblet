@@ -6,7 +6,7 @@ import type {
 
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
-import { gutter } from '@theme/gutter'
+import { gutter, colors } from '@theme'
 import { noOpObj } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
 import { getColor } from '@utils/theme/getColor'
@@ -26,8 +26,8 @@ export const ModalHeader = (props:TModal) => {
   const theme = useTheme()
   const styles = useMemo(() => {
     return {
-      color: getColor(`common.white`, `colors.white00`, theme),
-      bgcolor: getColor(`colors.gray10`, `colors.black01`, theme)
+      color: colors.white,
+      bgcolor: colors.black19,
     }
     
   }, [theme])

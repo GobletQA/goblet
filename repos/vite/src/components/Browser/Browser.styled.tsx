@@ -11,8 +11,7 @@ export const BrowserNav = styled('nav')(({ theme }) => `
   place-items: center;
   place-content: center;
   height: ${dims.browser.nav.hpx};
-  border-bottom: 1px solid ${getColor(colors.gray02, colors.black04, theme)};
-  background-color: ${getColor(colors.gray01, colors.black05, theme)};
+  background-color: ${getColor(colors.gray01, colors.black09, theme)};
 
   div:not(:first-of-type) {
     padding: 0 4px;
@@ -37,8 +36,8 @@ export const BrowserInput = styled('input')(({ theme }) => `
   border-radius: 18px;
   font-family: inherit;
   letter-spacing: 0.2px;
-  color: ${getColor(colors.black06, colors.white00, theme)};
-  background-color: ${getColor(colors.gray03, colors.black02, theme)};
+  color: ${getColor(colors.black07, colors.white, theme)};
+  background-color: ${getColor(colors.gray02, colors.black12, theme)};
 
   &:focus {
     outline: 2px solid ${colors.royalPurple};
@@ -55,7 +54,7 @@ export const BrowserContainer = styled(Box)(({ theme }) => `
   flex-basis: auto;
   position: relative;
   box-sizing: border-box;
-  background-color: ${getColor(colors.gray02, colors.black05, theme)};
+  background-color: ${getColor(colors.gray00, colors.black15, theme)};
 `)
 
 export const BrowserViewContainer = styled(Box)`
@@ -89,7 +88,7 @@ export const BrowserBtn = styled(IconButton)(({ theme }) => `
   place-content: center;
   background-color: transparent;
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-  color: ${getColor(colors.gray07, colors.white00, theme)};
+  color: ${getColor(colors.gray12, colors.white, theme)};
 
   &:disabled: {
     color: ${colors.fadeLight25};

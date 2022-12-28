@@ -14,7 +14,7 @@ export const AppHeader = styled(AppBar)(({ theme }) => {
     zIndex: 1200,
     padding: `0 ${gutter.padding.px}`,
     paddingLeft: 0,
-    backgroundColor: getColor(`colors.white00`, `colors.black06`, theme),
+    backgroundColor: getColor(`colors.white`, `colors.black14`, theme),
     '& .MuiToolbar-root': {
       minHeight: dims.header.height,
     }
@@ -48,5 +48,5 @@ export const LogoText = styled(Typography)(({ theme }) => `
   font-size: 20px;
   position: absolute;
   left: 100%;
-  color: ${getColor(`colors.royalPurple`, `colors.white00`, theme)}
+  color: ${getColor(`colors.royalPurple`, `colors.white`, theme)}
 `) as typeof Typography

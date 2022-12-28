@@ -21,7 +21,7 @@ export const globalStyles = ({ theme }:TGlobalStyles) => {
     body {
       overflow: hidden;
       font-family: ${typography.fontFamily};
-      background: ${mode === 'light' ? colors.white00 : colors.black01};
+      background: ${mode === 'light' ? colors.white : colors.black19};
     }
 
     *:focus-visible { outline: 1px solid ${primary.main} }

@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react'
 
-import { colors } from '@theme'
 import { Browser } from '@components/Browser'
+import { useColor } from '@hooks/theme/useColor'
 import { ScreencastBrowserSelector } from '@constants'
 import { useScreencastHooks } from '@hooks/screencast/useScreencastHooks'
 
@@ -22,6 +22,8 @@ export const ScreencastView = (props:TScreencastViewProps) => {
     screencastUrl,
   } = useScreencastHooks()
 
+  const background = useColor(`colors.white`, `colors.black15`)
+
   return (
     <Browser
       ref={vncRef}
@@ -32,9 +34,9 @@ export const ScreencastView = (props:TScreencastViewProps) => {
       onConnect={onConnect}
       onKeyDown={onKeyDown}
       forceShowLoading={true}
+      background={background}
       onClipboard={onClipboard}
       loadingFadeout={fadeStart}
-      background={colors.black03}
       onDisconnect={onDisconnect}
       className={ScreencastBrowserSelector}
     />

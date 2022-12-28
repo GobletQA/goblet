@@ -26,8 +26,8 @@ export const TerminalTabs = (props:TerminalTabs) => {
   const { palette } = useTheme()
 
   const addColor = palette.mode === `light`
-    ? palette.colors.white00
-    : palette.colors.black01
+    ? palette.colors.white
+    : palette.colors.black19
 
   return (
     <Box
