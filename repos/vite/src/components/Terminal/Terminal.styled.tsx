@@ -31,7 +31,7 @@ export const TabsHeaderList = styled(Tabs)(`
 
 export const HeaderTab = styled(Tab)(({ theme }) => {
   const shared = `
-    color: ${getColor(colors.royalPurple, colors.fadeLight90, theme)};
+    color: ${getColor(colors.royalPurple, colors.royalPurple, theme)};
 
     & .terminal-tab-add-icon,
     & .terminal-tab-close-icon {
@@ -71,6 +71,7 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
     &:hover:not(.Mui-selected) {
       ${shared}
       background-color: ${getColor(colors.gray01, colors.black19, theme)};
+      color: ${getColor(colors.black09, colors.fadeLight90, theme)};
       & .terminal-tab-add-icon {
         color: ${colors.shamrock};
       }
@@ -102,7 +103,7 @@ export const TerminalExpandBtn = styled(IconButton)(({ theme }) => `
   place-content: center;
   background-color: transparent;
   transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
-  border-left: 1px solid ${getColor(colors.gray02, colors.black15, theme)};
+  border-left: 1px solid ${getColor(colors.gray02, colors.black12, theme)};
 `)
 
 export const TerminalInput = styled(Box)(({ theme }) => `
