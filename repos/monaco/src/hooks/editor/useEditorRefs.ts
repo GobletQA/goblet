@@ -12,7 +12,6 @@ import { useRef } from 'react'
 
 export type THEditorRefs = {
   options: TEditorOpts
-  defaultPath?: string
   defaultFiles: TFilelist
   onPathChange?: TEditorCB
   onValueChange?: TEditorCB
@@ -27,7 +26,6 @@ export const useEditorRefs = (props:THEditorRefs) => {
   const {
     options,
     onLoadFile,
-    defaultPath,
     defaultFiles,
     onPathChange,
     onFileChange,
@@ -63,7 +61,7 @@ export const useEditorRefs = (props:THEditorRefs) => {
   const editorRef = useRef<TCodeEditor>(null)
   const contentListenerRef = useRef<IDisposable>()
   const editorNodeRef = useRef<HTMLDivElement>(null)
-  const openedPathRef = useRef<string | null>(defaultPath || '')
+  const openedPathRef = useRef<string | null>('')
 
   return {
     rootRef,

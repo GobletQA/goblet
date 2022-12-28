@@ -28,7 +28,6 @@ export interface IMonacoEditorProps {
   
   rootPrefix?: string
   emptyText?: string
-  defaultPath?: string
   options: TEditorOpts
   sidebarWidth?: number
   actionsOpen?:boolean

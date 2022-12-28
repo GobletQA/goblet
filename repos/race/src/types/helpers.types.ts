@@ -2,7 +2,6 @@ import type { TRaceSteps } from './steps.types'
 import type { TRaceFeatures, TRaceFeature } from './features.types'
 import type { Dispatch, SetStateAction, MutableRefObject, CSSProperties } from 'react'
 
-
 export type TStepsRef = MutableRefObject<TRaceSteps>
 export type TFeaturesRef = MutableRefObject<TRaceFeatures>
 

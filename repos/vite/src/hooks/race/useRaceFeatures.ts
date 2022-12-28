@@ -3,7 +3,8 @@ import type { TRaceFeature, TRaceFeatures } from '@gobletqa/race'
 
 import { useMemo } from 'react'
 import { ensureArr, noOpObj } from '@keg-hub/jsutils'
-
+import { addRootToLoc } from '@utils/repo/addRootToLoc'
+import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 
 export const useRaceFeatures = (features:TFeaturesState) => {
   return useMemo(() => {
@@ -13,13 +14,19 @@ export const useRaceFeatures = (features:TFeaturesState) => {
         .reduce((models, [key, fileModel]) => {
 
           ensureArr<TRaceFeature>(fileModel?.ast)
-            .forEach((model) => model?.uuid && (models[model?.uuid] = {
-              ...model,
-              parent: {
-                uuid: key,
-                location: key,
-              },
-            }))
+            .forEach((model) => {
+              if(!model?.uuid) return
+
+              const uuidRef = `${key}-${model.uuid}`
+              models[uuidRef] = {
+                ...model,
+                uuid: uuidRef,
+                title: model?.feature,
+                path: rmRootFromLoc(key),
+                parent: { uuid: key, location: key },
+              }
+
+            })
 
           return models
         }, {} as TRaceFeatures)

@@ -1,13 +1,16 @@
 import type { TRaceEditorProps } from '@GBR/types'
 
-import { useRef } from 'react'
-import { Builder } from '../Builder'
 import { Sidebar } from '../../goblet'
+import { Feature } from '../Feature'
 import { FeaturesPanel } from '../Features'
 import { useRaceEditor } from '../../hooks/useRaceEditor'
 import { FeatureProvider } from '../../contexts/FeatureContext'
-import { Container, Divider as REDivider } from './RaceEditor.styled'
 import { useSidebarResize, Actions, OpenedTabs } from '../../goblet'
+import {
+  Container,
+  BuilderContainer,
+  Divider as REDivider
+} from './RaceEditor.styled'
 
 export const RaceEditor = (props:TRaceEditorProps) => {
   const {
@@ -15,7 +18,6 @@ export const RaceEditor = (props:TRaceEditorProps) => {
     feature,
     actions,
     PrePanels,
-    defaultPath,
     actionsOpen,
     sidebarWidth,
     sidebarStatus,
@@ -38,19 +40,23 @@ export const RaceEditor = (props:TRaceEditorProps) => {
 
   const {
     stepsRef,
+    editorRef,
+    curPathRef,
+    curValueRef,
     featuresRef,
     onFeatureChangeRef,
     onFeatureUpdateRef,
-    onFeatureBeforeChangeRef
+    onFeatureBeforeChangeRef,
+    onTabClick,
+    onTabHover,
+    onTabLeave,
+    onTabDown,
+    onTabClose,
+    openedTabs,
   } = useRaceEditor(props, {
     resizeSidebar
   })
 
-
-  // TODO: add real values for these
-  const editorRef = useRef(null)
-  const curPathRef = useRef(defaultPath || '')
-  const curValueRef = useRef('')
 
   return (
     <FeatureProvider
@@ -77,10 +83,17 @@ export const RaceEditor = (props:TRaceEditorProps) => {
           />
         </Sidebar>
         <Divider onMouseDown={onMoveStart} className='goblet-editor-drag' />
-        <Builder
-          stepsRef={stepsRef}
-          featuresRef={featuresRef}
-        />
+        <BuilderContainer>
+          <OpenedTabs
+            onTabDown={onTabDown}
+            onTabClick={onTabClick}
+            onTabHover={onTabHover}
+            onTabLeave={onTabLeave}
+            onTabClose={onTabClose}
+            openedTabs={openedTabs}
+          />
+          <Feature />
+        </BuilderContainer>
         {actions?.length && (
           <Actions
             actions={actions}

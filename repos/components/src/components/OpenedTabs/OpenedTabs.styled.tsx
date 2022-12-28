@@ -44,13 +44,13 @@ export const OpenTabsMain = styled(Box)`
 export const OpenTab = styled(Box)`
   height: 35px;
   display: flex;
+  padding: 0 5px;
   cursor: pointer;
   margin-right: 1px;
   position: relative;
   flex-direction: row;
   align-items: center;
   box-sizing: border-box;
-  padding: 0 5px 0 10px;
   background-color: var(--goblet-editor-background);
 
   &.focused {

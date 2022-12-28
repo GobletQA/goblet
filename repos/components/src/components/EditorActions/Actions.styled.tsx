@@ -67,7 +67,7 @@ export const ActionItem = styled(Box)`
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-editor-background);
 
-  &:first-child {
+  &:first-of-type {
     padding-top: 5px;
   }
 

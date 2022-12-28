@@ -1,5 +1,6 @@
 import type { TRaceEditorProps } from '../types'
 import { useRaceRefs } from './useRaceRefs'
+import { useOpenedTabs } from './useOpenedTabs'
 
 export type TEditorExt = {
   resizeSidebar: (width:number) => void
@@ -7,19 +8,11 @@ export type TEditorExt = {
 
 export const useRaceEditor = (props:TRaceEditorProps, ext:TEditorExt) => {
 
-  const {
-    stepsRef,
-    featuresRef,
-    onFeatureChangeRef,
-    onFeatureUpdateRef,
-    onFeatureBeforeChangeRef
-  } = useRaceRefs(props)
+  const raceRefs = useRaceRefs(props)
+  const openedTabs = useOpenedTabs(props, raceRefs)
 
   return {
-    stepsRef,
-    featuresRef,
-    onFeatureChangeRef,
-    onFeatureUpdateRef,
-    onFeatureBeforeChangeRef,
+    ...raceRefs,
+    ...openedTabs
   }
 }

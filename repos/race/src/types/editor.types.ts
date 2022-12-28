@@ -3,6 +3,7 @@ import type { TRaceSteps } from './steps.types'
 import type { TRaceFeatures, TRaceFeature } from './features.types'
 import type {
   TAction,
+  TTabAction,
   TSidebarPanel
 } from '../goblet'
 import type {
@@ -13,6 +14,10 @@ import type {
 } from './helpers.types'
 
 
+export type TRaceEditor = {
+  [key:string]: any
+}
+
 export type TEditorRefs = {
   stepsRef: TStepsRef
   featuresRef: TFeaturesRef
@@ -22,7 +27,6 @@ export type TRaceEditorProps = {
   steps:TRaceSteps
   actions?:TAction[]
   actionsOpen?:boolean
-  defaultPath?: string
   feature?:TRaceFeature
   features:TRaceFeatures
   sidebarWidth?: number
@@ -35,4 +39,9 @@ export type TRaceEditorProps = {
   onFeatureUpdate?:TOnFeatureCB
   onSidebarResize?: (width:number) => void
   onBeforeFeatureChange?:TOnReturnFeatureCB
+  onFeatureClose?:TOnFeatureCB
+  onFeatureActive?:TOnFeatureCB
+  onTabHover?:TTabAction
+  onTabLeave?:TTabAction
+  onTabDown?:TTabAction
 }

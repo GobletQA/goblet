@@ -16,7 +16,6 @@ import { useRestoreModel } from './useRestoreModel'
 
 export type TUseFileCallbacks = {
   editorRef: TCodeEditorRef
-  defaultPath: string | undefined
   onFileChangeRef: TEditorFileCBRef
   filesRef: MutableRefObject<TFilelist>
   curValueRef: MutableRefObject<string>
@@ -40,7 +39,6 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
     optionsRef,
     setCurPath,
     curValueRef,
-    defaultPath,
     openedPathRef,
     onLoadFileRef,
     lintWorkerRef,
@@ -53,9 +51,7 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
   } = props
 
 
-  const [openedFiles, setOpenedFiles] = useState<TEditorOpenFiles>(
-    defaultPath ? [{ path: defaultPath }] : []
-  )
+  const [openedFiles, setOpenedFiles] = useState<TEditorOpenFiles>([])
 
   const restoreModel = useRestoreModel({
     filesRef,

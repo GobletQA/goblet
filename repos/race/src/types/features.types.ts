@@ -61,8 +61,10 @@ export type TFeatureParent = {
 
 export type TRaceFeature = {
   index?: number
-  tags: string[]
-  uuid?: string
+  uuid: string
+  path:string
+  title:string
+  tags?: string[]
   feature: string
   content: string
   reason?: TAstBlock

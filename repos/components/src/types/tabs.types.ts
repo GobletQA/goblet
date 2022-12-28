@@ -1,16 +1,20 @@
 import type { Tab } from '../components/OpenedTabs/Tab'
-import type { SyntheticEvent, ComponentType } from 'react'
+import type { CSSProperties, SyntheticEvent, ComponentType } from 'react'
 
 export type TTabAction = (event:SyntheticEvent, tab:TTab, key?: number|string) => void
 
+export type TTabStyles = {
+  icon?: CSSProperties
+  title?: CSSProperties
+}
+
 export type TTab = {
+  uuid?:string
   title?:string
-  name?:string
   path?:string
-  id?:number
-  key?:number
-  editing?:boolean
   active?:boolean
+  editing?:boolean
+  [key:string]: any
 }
 
 export type TTabActions = {
@@ -23,12 +27,13 @@ export type TTabActions = {
 
 export type TTabItem = TTabActions & {
   tab:TTab
-  activeTab?:number
-  Icon:ComponentType<any>
+  active?:boolean
+  styles?:TTabStyles
+  Icon?:ComponentType<any>
 }
 
 export type TOpenedTabs = TTabActions & {
-  activeTab?:number
-  openedTabs: TTabItem[]
+  openedTabs?: TTabItem[]
+  activeTab?:string|number
   Tab?:ComponentType<typeof Tab>
 }

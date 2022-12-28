@@ -48,7 +48,7 @@
     "vite-tsconfig-paths": "*"
   },
   "peerDependencies": {
-    "@keg-hub/jsutils": ">=9.5.0",
+    "@keg-hub/jsutils": ">=9.5.1",
     "idb-keyval": ">=6.2.0",
     "monaco-editor": ">=0.34.0",
     "monaco-editor-textmate": "3.0.0",

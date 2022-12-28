@@ -67,7 +67,7 @@
     "@jest/create-cache-key-function": "29.2.0",
     "@keg-hub/args-parse": "9.0.0",
     "@keg-hub/cli-utils": "0.7.0",
-    "@keg-hub/jsutils": "9.5.0",
+    "@keg-hub/jsutils": "9.5.1",
     "@keg-hub/parse-config": "2.1.0",
     "@keg-hub/spawn-cmd": "0.3.2",
     "@kubernetes/client-node": "0.17.1",
