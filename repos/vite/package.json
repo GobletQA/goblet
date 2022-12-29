@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@gobletqa/components": "*",
+    "@mui/lab": "*",
     "@mui/x-date-pickers": "*",
     "@types/js-search": "1.4.0",
     "@types/node": "18.7.18",

@@ -16,8 +16,8 @@
   "dependencies": {
     "@emotion/react": "*",
     "@emotion/styled": "*",
-    "@gobletqa/shared": "*",
     "@gobletqa/components": "*",
+    "@gobletqa/shared": "*",
     "@keg-hub/cli-utils": "*",
     "@keg-hub/jsutils": "*",
     "@mui/icons-material": "*",
@@ -26,6 +26,7 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@mui/lab": "*",
     "@mui/x-date-pickers": "*",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
