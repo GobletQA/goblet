@@ -1,5 +1,5 @@
+import type { TTabAction } from '@gobletqa/components'
 import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
-import type { TTabAction } from '../../goblet'
 
 import { useCallback } from 'react'
 import { cls } from '@keg-hub/jsutils'

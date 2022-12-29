@@ -1,4 +1,3 @@
-export * from '../goblet'
 export * from './component.types'
 export * from './editor.types'
 export * from './file.types'

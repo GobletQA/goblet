@@ -3,6 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/gobletComponents.js",
+      "require": "./dist/gobletComponents.umd.cjs"
+    }
+  },
+  "main": "dist/gobletComponents.umd.cjs",
+  "module": "dist/gobletComponents.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "clean": "yarn clean:dist; yarn clean:nm",
     "clean:dist": "rm -rf dist",

@@ -11,7 +11,7 @@ const rootDir = path.join(__dirname, '..')
 
 export default defineConfig(async () => {
 
-  const { envs, port } = loadConfig()
+  const { aliases, envs, port } = loadConfig()
 
   return {
     root: rootDir,
@@ -30,6 +30,9 @@ export default defineConfig(async () => {
     },
     esbuild: {
       logOverride: { 'this-is-undefined-in-esm': 'silent' }
+    },
+    resolve:{
+      alias: aliases,
     },
     plugins: [
       // @ts-ignore

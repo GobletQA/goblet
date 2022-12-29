@@ -1,10 +1,10 @@
-import type { TTabAction, TTabItem } from '../goblet'
+import type { TTabAction, TTabItem } from '@gobletqa/components'
 import type {
   TOnFeatureCBRef,
   TEditorContainer,
 } from '../types'
 
-import { stopEvent } from '../goblet'
+import { stopEvent } from '@gobletqa/components'
 import { useFeature } from '../contexts'
 import { setTabActive } from '../utils/featureTabs'
 import { useMemo, useState, useCallback } from 'react'

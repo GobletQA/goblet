@@ -1,15 +1,15 @@
 import type { Modal } from '../Modal/Modal'
+import type { TSidebarPanel } from '@gobletqa/components'
 import type { MutableRefObject, CSSProperties } from 'react'
 import type {
   TFilelist,
   TEditorCB,
-  TSidebarPanel,
   TEditorConfig,
   TFileCallback,
 } from '../../types'
 
 import { FileTree } from '../FileTree'
-import { Sidebar as GBSidebar } from '../../goblet'
+import { Sidebar as GBSidebar } from '@gobletqa/components'
 
 export type TSidebar = {
   Modal: Modal

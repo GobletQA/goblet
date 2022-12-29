@@ -1,4 +1,4 @@
-import type { TTabAction, TTab } from '../goblet'
+import type { TTabAction, TTab } from '@gobletqa/components'
 import type {
   TSetFeature,
   TRaceFeature,

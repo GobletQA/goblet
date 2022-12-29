@@ -7,8 +7,8 @@ import type {
   TFileCallback,
 } from '../../types'
 
-import { Panel } from '../../goblet'
 import { useMemo, memo } from 'react'
+import { Panel } from '@gobletqa/components'
 import { FileTreeActions } from './FileTreeActions'
 import { useFileTree } from '../../hooks/fileTree/useFileTree'
 

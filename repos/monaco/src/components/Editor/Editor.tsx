@@ -21,7 +21,7 @@ import { useFolderCallbacks } from '../../hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
 import { useEditorFileCallbacks } from '../../hooks/editor/useEditorFileCallbacks'
 
-import { useSidebarResize, Actions } from '../../goblet'
+import { useSidebarResize, Actions } from '@gobletqa/components'
 
 const editorStyles = { flex: 1, width: '100%' }
 

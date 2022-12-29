@@ -1,7 +1,7 @@
-import type { TTabAction } from '../../goblet'
+import type { TTabAction } from '@gobletqa/components'
 import type { TFeaturesRefs } from '@GBR/types'
 
-import { Panel } from '../../goblet'
+import { Panel } from '@gobletqa/components'
 import { FeaturesList } from './FeaturesList'
 
 export type TFeaturesPanel = TFeaturesRefs & {

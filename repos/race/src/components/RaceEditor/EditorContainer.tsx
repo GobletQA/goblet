@@ -6,11 +6,10 @@ import type {
   TRaceEditorProps
 } from '@GBR/types'
 
-import { Sidebar } from '../../goblet'
 import { Feature } from '../Feature'
 import { FeaturesPanel } from '../Features'
 import { useOpenedTabs } from '../../hooks/useOpenedTabs'
-import { useSidebarResize, Actions, OpenedTabs } from '../../goblet'
+import { useSidebarResize, Actions, OpenedTabs, Sidebar } from '@gobletqa/components'
 import {
   Container,
   BuilderContainer,

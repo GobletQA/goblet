@@ -21,8 +21,8 @@
     "paths": {
       "@gobletqa/monaco": [ "../monaco/src" ],
       "@gobletqa/monaco/*": [ "../monaco/src/*" ],
-      "@gobletqa/components": [ "../components/src" ],
-      "@gobletqa/components/*": [ "../components/src/*" ],
+      "@gobletqa/components": ["../components/src"],
+      "@gobletqa/components/*": ["../components/src/*"],
       "GobletRoot": ["../../"]
     }
   },

@@ -17,8 +17,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@gobletqa/components": ["src"],
-      "@gobletqa/components/*": ["src/*"],
       "@GBC/actions": [ "src/actions" ],
       "@GBC/actions/*": [ "src/actions/*" ],
       "@GBC/components": [ "src/components" ],
@@ -35,6 +33,10 @@
       "@GBC/types/*": [ "src/types/*" ],
       "@GBC/utils": [ "src/utils" ],
       "@GBC/utils/*": [ "src/utils/*" ],
+      "@GBC": [ "src" ],
+      "@GBC/*": [ "src/*" ],
+      "@gobletqa/components": ["src"],
+      "@gobletqa/components/*": ["src/*"]
     }
   },
   "include": ["src"],

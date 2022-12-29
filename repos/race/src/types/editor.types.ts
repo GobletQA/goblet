@@ -5,7 +5,7 @@ import type {
   TAction,
   TTabAction,
   TSidebarPanel
-} from '../goblet'
+} from '@gobletqa/components'
 import type {
   TStepsRef,
   TFeaturesRef,

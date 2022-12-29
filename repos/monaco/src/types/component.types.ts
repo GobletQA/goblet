@@ -1,10 +1,10 @@
 import type Monaco from 'monaco-editor'
 
-import type { TSidebarAction, TSidebarPanel, TAction } from '../goblet'
 import type { Modal, TModalOpts } from '../components/Modal/Modal'
 import type { TFolder, TFileItem, TFilelist } from './file.types'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
 import type { MutableRefObject, ReactNode, ComponentType } from 'react'
+import type { TSidebarAction, TSidebarPanel, TAction } from '@gobletqa/components'
 import type {
   TEditorCB,
   TCodeEditor,

@@ -11,6 +11,9 @@ else if(!process.env.GOBLET_ENV && NODE_ENV) process.env.GOBLET_ENV = NODE_ENV
 const requireGoblet = createRequire(path.join(__dirname, '../../shared/src/utils'))
 const { getGobletConfig } = requireGoblet('./goblet/getGobletConfig.ts')
 
+const requireAliases = createRequire(path.join(__dirname, '../../../configs'))
+const { aliases } = requireAliases('./configs/aliases.config')
+
 /**
  * Is called form the tap.js config in the root
  * Eventually that will be removed and this will be called directly
@@ -85,6 +88,7 @@ export const loadConfig = () => {
   }, {} as Record<string, string>)
 
   return {
+    aliases,
     envs: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       ...envs

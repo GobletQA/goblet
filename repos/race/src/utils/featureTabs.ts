@@ -1,5 +1,5 @@
 import type { ComponentType } from 'react'
-import type { TTabItem, TTab } from '../goblet'
+import type { TTabItem, TTab } from '@gobletqa/components'
 import type { TRaceFeature, TRaceFeatures } from '../types'
 
 import BoltIcon from '@mui/icons-material/Bolt'

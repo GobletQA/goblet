@@ -1,5 +1,4 @@
-import Box from '@mui/material/Box'
-import { Text } from '../Text'
+import { Section } from '../Section'
 import { Scenarios } from '../Scenarios'
 import { EmptyFeature } from './EmptyFeature'
 import { useFeature } from '../../contexts'
@@ -15,11 +14,10 @@ export const Feature = (props:TFeature) => {
   return !feature || !feature?.uuid
     ? (<EmptyFeature />)
     : (
-        <Box>
-          <Text>
-            <b>{name}</b>
-          </Text>
+        <Section
+          title={name}
+        >
           <Scenarios />
-        </Box>
+        </Section>
       )
 }
