@@ -35,6 +35,8 @@ export const PATHS = {
 }
 
 export const LANGS = [
-  'JavascriptReact',
-  'TypescriptReact'
+  'javascript',
+  'typescript',
+  'markdown',
+  'json',
 ]

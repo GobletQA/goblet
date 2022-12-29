@@ -37,9 +37,14 @@ const setLangDefaults = (config:TEditorConfig) => {
   window.monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true)
   window.monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
   window.monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
-    noSemanticValidation: true,
-    noSyntaxValidation: true,
+    noSemanticValidation: false,
+    noSyntaxValidation: false,
   })
+  
+  window.monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+    validate: true,
+  })
+  
 }
 
 export const initLangs = async (config:TEditorConfig) => {
@@ -48,3 +53,4 @@ export const initLangs = async (config:TEditorConfig) => {
   addExtraLib(config)
   registerLangs(config)
 }
+
