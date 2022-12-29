@@ -1,5 +1,2 @@
-export * from './dims'
-export * from './gutter'
-export * from './colors'
-export * from './palette'
-export * from './theme'
+export * from './global'
+export * from './terminal'

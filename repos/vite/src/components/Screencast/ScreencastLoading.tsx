@@ -1,11 +1,11 @@
 import type { CSSObj } from '@types'
 import type { ComponentProps } from 'react'
 
-import { gutter, colors } from '@theme'
 import Box from '@mui/material/Box'
 import { Text } from '@components/Text'
 import { BlockIcon } from '@components/Icons'
 import { Fadeout } from '@components/Fadeout'
+import { gutter, colors } from '@gobletqa/components/theme'
 
 export type TScreencastLoading = ComponentProps<typeof Fadeout> & {
   sx?: CSSObj

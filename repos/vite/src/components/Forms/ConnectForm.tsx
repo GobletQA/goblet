@@ -1,9 +1,9 @@
 import type { TBuiltForm, TSetupFormProps } from '@types'
 import type { ComponentType, MutableRefObject } from 'react'
 
-import { gutter } from '@theme'
 import Box from '@mui/material/Box'
 import { useEffect, useMemo } from 'react'
+import { gutter } from '@gobletqa/components/theme'
 import { useGetRepos } from '@hooks/api/useGetRepos'
 import { noPropArr, noOpObj } from '@keg-hub/jsutils'
 import { Form, RenderInputs } from '@components/Form'

@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import Divider from '@mui/material/Divider'
-import { colors, dims, gutter } from '@theme'
 import { styled } from '@mui/material/styles'
 import ListItem from '@mui/material/ListItem'
 import { Text, Span } from '@components/Text'
@@ -12,6 +11,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListSubheader from '@mui/material/ListSubheader'
 import ListItemButton from '@mui/material/ListItemButton'
 import { IconButton } from '@components/Buttons/IconButton'
+import { colors, dims, gutter } from '@gobletqa/components/theme'
 
 
 export const DefSearchTitle = styled(Span)(({ theme }) => `

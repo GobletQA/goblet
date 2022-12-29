@@ -1,4 +1,4 @@
-import { colors } from './colors'
+import { colors } from '@gobletqa/components/theme'
 
 export const lightTerminal = {
   black: `#414141`,

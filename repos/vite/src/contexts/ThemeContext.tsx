@@ -1,17 +1,16 @@
 import type { ReactNode } from 'react'
-import type { TThemeType, TThemeProvider, TGobletTheme } from '@types'
+import type { TThemeType, TThemeProvider, TGobletTheme } from '@gobletqa/components'
 
 import { createContext, useContext, useMemo, useState } from 'react'
 
-import { EThemeType } from '@types'
-import { getTheme } from '@theme/theme'
 import { noOpObj } from '@keg-hub/jsutils'
-import { ThemeType } from '@theme/initThemeType'
 import { AppStyles } from '@components/AppStyles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { useEffectOnce } from '@hooks/useEffectOnce'
 import { localStorage } from '@services/localStorage'
 import { MemoChildren } from '@components/MemoChildren'
+import { EThemeType, getTheme } from '@gobletqa/components'
+import { ThemeType } from '@gobletqa/components/theme/initThemeType'
 import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles'
 
 export type TTheme = {

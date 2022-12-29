@@ -1,8 +1,8 @@
 import type { Theme } from '@mui/material/styles'
-import type { TPalette, TPaletteOpts } from '@types'
+import type { TPalette, TPaletteOpts } from '../types'
 
-import { colors } from './colors'
 import { deepMerge } from '@keg-hub/jsutils'
+import { colors } from '@gobletqa/components/theme'
 
 
 const commonPalette:TPaletteOpts = {

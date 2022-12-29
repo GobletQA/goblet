@@ -9,8 +9,8 @@ import { Tooltip } from '@components/Tooltip'
 import { useTheme } from '@hooks/theme/useTheme'
 import { useEffectOnce } from '@hooks/useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { gray, black, gobletColors } from '@theme/colors'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
+import { gray, black, gobletColors } from '@gobletqa/components/theme'
 import { ChevronUpIcon, ChevronDownIcon, LockIcon, LockOpenIcon } from '@components/Icons'
   
 import {

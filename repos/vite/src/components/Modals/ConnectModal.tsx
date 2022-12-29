@@ -1,10 +1,10 @@
 import type { TModalComponent, TModalRef } from '@types'
 
 import { useMemo } from 'react'
-import { gutter } from '@theme'
 import { useContainer } from '@store'
 import Divider from '@mui/material/Divider'
 import { PlugIcon } from '@components/Icons'
+import { gutter } from '@gobletqa/components/theme'
 import { EModalTypes, EContainerState } from '@types'
 import { ConnectForm } from '@components/Forms/ConnectForm'
 import { ModalFooter } from '@components/ModalManager/ModalFooter'

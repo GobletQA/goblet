@@ -1,9 +1,9 @@
-import type { TGobletTheme } from '@types'
+import type { TGobletTheme } from '../types'
 
-import{ EThemeType } from '@types'
 import { palette } from './palette'
-import { typography } from './typography'
+import { EThemeType } from '../types'
 import { components } from './components'
+import { typography } from './typography'
 import { createTheme as createThemeMui } from '@mui/material/styles'
 
 const muiTheme = createThemeMui()

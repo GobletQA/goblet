@@ -17,6 +17,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
+      "@theme": ["src/theme"],
+      "@theme/*": ["src/theme/*"],
       "@GBC/actions": [ "src/actions" ],
       "@GBC/actions/*": [ "src/actions/*" ],
       "@GBC/components": [ "src/components" ],

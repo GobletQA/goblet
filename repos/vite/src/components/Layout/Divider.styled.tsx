@@ -1,5 +1,5 @@
-import { colors, dims } from '@theme'
 import { styled } from '@mui/material/styles'
+import { colors, dims } from '@gobletqa/components/theme'
 import { VerticalDivider, HorizontalDivider } from 'react-page-split'
 const { divider } = dims.panel
 

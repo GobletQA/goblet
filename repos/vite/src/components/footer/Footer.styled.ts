@@ -1,6 +1,6 @@
-import AppBar, { AppBarProps } from '@mui/material/AppBar'
 import { styled } from '@mui/material/styles'
-import { dims } from '@theme'
+import { dims } from '@gobletqa/components/theme'
+import AppBar, { AppBarProps } from '@mui/material/AppBar'
 
 export const AppFooter = styled(AppBar)<AppBarProps>({
   bottom: 0,

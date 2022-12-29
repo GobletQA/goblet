@@ -1,10 +1,10 @@
 import type { ReactNode, ComponentProps } from 'react'
 import type { CSSObj } from '@types'
 
-import { gutter } from '@theme'
 import Box from '@mui/material/Box'
 import { Text } from '@components/Text'
 import { ensureArr } from '@keg-hub/jsutils'
+import { gutter } from '@gobletqa/components/theme'
 import CircularProgress from '@mui/material/CircularProgress'
 
 export type TLoading = ComponentProps<typeof CircularProgress> & {

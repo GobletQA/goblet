@@ -2,9 +2,9 @@ import type { ComponentType } from 'react'
 import type { TUColors } from '@hooks/theme'
 
 import Box from '@mui/material/Box'
-import { gutter, colors } from '@theme'
 import { Text } from '@components/Text'
 import { useColors } from '@hooks/theme'
+import { gutter, colors } from '@gobletqa/components/theme'
 
 export type TNotConnected = {
   message: string

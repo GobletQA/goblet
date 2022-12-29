@@ -3,11 +3,11 @@ import type { Theme, CSSObject } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
-import { colors, dims } from '@theme'
 import { DefinitionTabs } from '@constants'
 import MuiDrawer from '@mui/material/Drawer'
 import { styled } from '@mui/material/styles'
 import { getColor } from '@utils/theme/getColor'
+import { colors, dims } from '@gobletqa/components/theme'
 import { IconButton } from '@components/Buttons/IconButton'
 
 const actionsWidth = (dims.defs.header.height + 8) * 2

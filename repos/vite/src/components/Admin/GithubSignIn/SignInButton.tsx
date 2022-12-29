@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 
-import { colors } from '@theme'
 import { useCallback } from 'react'
 import Button from '@mui/material/Button'
 import ListItem from '@mui/material/ListItem'
+import { colors } from '@gobletqa/components/theme'
 import { signInWithPopup, GithubAuthProvider } from 'firebase/auth'
 
 const defPrefix = 'goblet-github-button'

@@ -1,7 +1,7 @@
 import type { TooltipProps } from '@mui/material/Tooltip'
 
-import { colors } from '@theme'
 import { styled } from '@mui/material/styles'
+import { colors } from '@gobletqa/components/theme'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 
 

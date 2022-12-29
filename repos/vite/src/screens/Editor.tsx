@@ -1,7 +1,7 @@
-import { dims } from '@theme'
 import { useApp } from '@store'
 import { EEditorType } from '@types'
 import { Layout } from '@components/Layout'
+import { dims } from '@gobletqa/components/theme'
 import { CodeEditor } from '@components/CodeEditor'
 import { VisualEditor } from '@components/VisualEditor'
 import { DefinitionsSlider } from '@components/Definitions/DefinitionsSlider'

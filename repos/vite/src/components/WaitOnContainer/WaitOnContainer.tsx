@@ -1,11 +1,11 @@
 import type { CSSObj } from '@types'
 import type { ReactNode } from 'react'
 
-import { gutter } from '@theme'
 import { useState } from 'react'
 import Box from '@mui/material/Box'
 import { Loading } from '@components/Loading'
 import { useSetTimeout } from '@hooks/useSetTimeout'
+import { gutter } from '@gobletqa/components/theme'
 import { LogoutButton } from '@components/Buttons/LogoutButton'
 
 export type TWaitOnContainer = {

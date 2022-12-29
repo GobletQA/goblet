@@ -1,12 +1,12 @@
 import type { TNavItem } from '@types'
 
-import { dims } from '@theme'
 import { useMemo } from 'react'
 import { NavIcon } from './NavIcon'
 import { Tooltip } from '@components/Tooltip'
 import ListItem from '@mui/material/ListItem'
 import { useTheme } from '@hooks/theme/useTheme'
 import { getColor } from '@utils/theme/getColor'
+import { dims } from '@gobletqa/components/theme'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
 

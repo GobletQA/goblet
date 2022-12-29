@@ -1,11 +1,11 @@
 import type { TBuiltForm } from '@types'
 import type { ComponentType, MutableRefObject } from 'react'
 
-import { gutter } from '@theme'
 import { useEffect } from 'react'
 import Box from '@mui/material/Box'
 import { Form } from '@components/Form'
 import { noOpObj } from '@keg-hub/jsutils'
+import { gutter } from '@gobletqa/components/theme'
 import { useRepoForm } from '@hooks/forms/useRepoForm'
 import { ModalMessage } from '@components/ModalManager/ModalMessage'
 

@@ -1,6 +1,8 @@
+import type { TPaletteOpts } from '../types'
 import type { Theme } from '@mui/material/styles'
-import type { TGobletTheme, TPaletteOpts } from '@types'
-import { getColor } from '@utils/theme/getColor'
+
+import { EThemeType } from '../types'
+
 
 export const components = (
   muiTheme:Theme,
@@ -37,7 +39,9 @@ export const components = (
         },
         paper: {
           backgroundImage: `initial`,
-          backgroundColor: getColor(palette.colors.white, palette.colors.black12, { palette } as TGobletTheme)
+          backgroundColor: palette.mode === EThemeType.light
+            ? palette.colors.white
+            : palette.colors.black12
         }
       }
     },

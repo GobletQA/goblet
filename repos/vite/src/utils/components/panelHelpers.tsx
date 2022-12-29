@@ -1,5 +1,5 @@
-import { dims } from '@theme'
 import { toNum } from '@keg-hub/jsutils'
+import { dims } from '@gobletqa/components/theme'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { ScreencastRatio } from '@constants/screencast'
 import { PanelDimsSetEvt, ResizePanelClass } from '@constants'

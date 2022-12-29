@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box'
-import { dims } from '@theme'
 import Typography from '@mui/material/Typography'
+import { dims } from '@gobletqa/components/theme'
 
 export type TSubNavProps = {
   open?: boolean

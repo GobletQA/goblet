@@ -1,4 +1,4 @@
-import { StrictMode, useState } from 'react'
+import { StrictMode } from 'react'
 
 import App from './App'
 import { Store } from '@store'

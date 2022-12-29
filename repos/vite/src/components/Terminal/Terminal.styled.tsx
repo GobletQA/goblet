@@ -1,12 +1,12 @@
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import Tabs from '@mui/material/Tabs'
-import { colors, dims } from '@theme'
 import { AddIcon } from '@components/Icons'
 import { styled } from '@mui/material/styles'
 import { CloseIcon } from '@components/Icons'
 import Container from '@mui/material/Container'
 import { getColor } from '@utils/theme/getColor'
+import { colors, dims } from '@gobletqa/components/theme'
 import { IconButton } from '@components/Buttons/IconButton'
 
 export const TerminalContainer = styled(Container)(({ theme }) => `

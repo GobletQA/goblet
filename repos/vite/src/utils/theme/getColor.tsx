@@ -1,9 +1,8 @@
-import type { TGobletTheme } from '@types'
 import type { Theme } from '@mui/material/styles'
+import type { TGobletTheme } from '@gobletqa/components'
 
-import { getTheme } from '@theme'
-import { EThemeType } from '@types'
 import { get } from '@keg-hub/jsutils'
+import { EThemeType, getTheme } from '@gobletqa/components'
 
 export const getColor = <T=string>(
   light:string|number,

@@ -1,7 +1,7 @@
 import type { LogLevel, ITheme } from 'xterm'
 import type { MutableRefObject } from 'react'
 import type { XTerminal } from '@services/xterm'
-import type { EThemeType } from './theme.types'
+import type { EThemeType } from '@gobletqa/components'
 
 export type TTerminalLog = {
   id: string

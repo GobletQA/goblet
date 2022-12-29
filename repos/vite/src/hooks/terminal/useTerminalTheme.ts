@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
-import { EThemeType } from '@types'
 import { useTheme } from '@hooks/theme/useTheme'
+import { EThemeType } from '@gobletqa/components'
 import { lightTerminal, darkTerminal } from '@theme/terminal'
 
 

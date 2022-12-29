@@ -1,7 +1,8 @@
-import type { TGobletTheme } from '@types'
+import type { TGobletTheme } from '@gobletqa/components'
 
-import { gutter } from './gutter'
-import { colors } from './colors'
+
+import { EThemeType, colors } from '@gobletqa/components'
+
 
 export type TGlobalStyles = {
   theme:TGobletTheme
@@ -9,7 +10,7 @@ export type TGlobalStyles = {
 
 export const globalStyles = ({ theme }:TGlobalStyles) => {
   const { palette, typography } = theme
-  const { mode, common, primary } = palette
+  const { mode, primary } = palette
 
   return `
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap');
@@ -21,7 +22,7 @@ export const globalStyles = ({ theme }:TGlobalStyles) => {
     body {
       overflow: hidden;
       font-family: ${typography.fontFamily};
-      background: ${mode === 'light' ? colors.white : colors.black19};
+      background: ${mode === EThemeType.light ? colors.white : colors.black19};
     }
 
     *:focus-visible { outline: 1px solid ${primary.main} }

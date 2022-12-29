@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
-import { colors, dims } from '@theme'
 import { styled } from '@mui/material/styles'
 import { getColor } from '@utils/theme/getColor'
+import { colors, dims } from '@gobletqa/components/theme'
 import { IconButton } from '@components/Buttons/IconButton'
 
 export const BrowserNav = styled('nav')(({ theme }) => `

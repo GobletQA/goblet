@@ -1,6 +1,6 @@
 import { Theme, Palette, PaletteOptions } from '@mui/material/styles'
+import type { colors } from '../theme/colors'
 
-import type { colors } from '@theme'
 
 export type TExtPalette = {
   colors: typeof colors

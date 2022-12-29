@@ -1,7 +1,7 @@
 
-import { dims } from '@theme'
 import { styled } from '@mui/material/styles'
 import Box, { BoxProps } from '@mui/material/Box'
+import { dims } from '@gobletqa/components/theme'
 
 export const ScreenWrap = styled(Box)<BoxProps>({
   zIndex: 0,

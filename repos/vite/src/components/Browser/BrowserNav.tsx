@@ -1,9 +1,9 @@
 import type { MutableRefObject } from 'react'
 import type RFB from '@novnc/novnc/core/rfb'
 
-import { gutter } from '@theme'
 import Box from '@mui/material/Box'
 import { BrowserButton } from './BrowserButton'
+import { gutter } from '@gobletqa/components/theme'
 import {
   CachedIcon,
   RestartIcon,

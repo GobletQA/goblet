@@ -1,3 +1,5 @@
+import type {} from '@mui/lab/themeAugmentation'
+
 export * from './api.types'
 export * from './app.types'
 export * from './auth.types'
@@ -15,7 +17,6 @@ export * from './setting.types'
 export * from './shared.types'
 export * from './socket.types'
 export * from './storage.types'
-export * from './theme.types'
 export * from './terminal.types'
 export * from './websocket.types'
 

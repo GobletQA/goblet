@@ -1,10 +1,10 @@
 import type { MutableRefObject } from 'react'
 import type { TXTermIdMap, TXTerminal, TXTermRef } from '@types'
 
-import { gutter } from '@theme'
 import { useEffect, useRef } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
 import { XTerminal } from '@services/xterm'
+import { gutter } from '@gobletqa/components/theme'
 import { useEffectOnce } from '@hooks/useEffectOnce'
 import { useTerminalTheme } from './useTerminalTheme'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'

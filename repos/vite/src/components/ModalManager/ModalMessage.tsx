@@ -1,6 +1,6 @@
 import type { ReactNode, ComponentProps } from 'react'
-import { gutter } from '@theme'
 import Box from '@mui/material/Box'
+import { gutter } from '@gobletqa/components/theme'
 import { ErrorIcon, InfoIcon } from '@components/Icons'
 import CircularProgress from '@mui/material/CircularProgress'
 

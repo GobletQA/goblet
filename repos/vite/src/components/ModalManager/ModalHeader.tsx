@@ -6,11 +6,11 @@ import type {
 
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
-import { gutter, colors } from '@theme'
 import { noOpObj } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
 import { useTheme } from '@hooks/theme/useTheme'
 import Typography from '@mui/material/Typography'
+import { gutter, colors } from '@gobletqa/components/theme'
 
 export const ModalHeader = (props:TModal) => {
   const {

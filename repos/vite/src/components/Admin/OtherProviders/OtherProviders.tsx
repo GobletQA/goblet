@@ -1,7 +1,7 @@
-import { colors } from '@theme'
 import Button from '@mui/material/Button'
 import ListItem from '@mui/material/ListItem'
 import LoginIcon from '@mui/icons-material/Login'
+import { colors } from '@gobletqa/components/theme'
 
 export type TOtherProviders = {
   [key:string]: any

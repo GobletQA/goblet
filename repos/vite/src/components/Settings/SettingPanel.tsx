@@ -1,7 +1,7 @@
 import type { TSettingGroupMeta, TSettingsConfig } from '@types'
 
-import { gutter } from '@theme'
 import Box from '@mui/material/Box'
+import { gutter } from '@gobletqa/components/theme'
 import { SettingsList } from '@components/Settings/SettingsList'
 
 export type TSettingPanel = {

@@ -1,4 +1,4 @@
-import { EThemeType } from '@types'
+import { EThemeType } from '@gobletqa/components'
 
 let ThemeType:EThemeType
 try {

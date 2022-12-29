@@ -1,4 +1,3 @@
-import type { TColors } from '@types'
 
 export const gobletColors = {
   cardinal: `#B53541`,
@@ -175,7 +174,7 @@ export const alerts = {
   success: gobletColors.shinyShamrock,
 }
 
-export const colors:TColors = {
+export const colors = {
   ...white,
   ...gray,
   ...fade,
