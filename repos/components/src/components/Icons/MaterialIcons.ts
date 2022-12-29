@@ -49,6 +49,8 @@ import AppsIcon from '@mui/icons-material/Apps'
 import SearchIcon from '@mui/icons-material/Search'
 import InsertChartIcon from '@mui/icons-material/InsertChartOutlinedRounded'
 import DesignIcon from '@mui/icons-material/DesignServicesOutlined'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 
 export {
@@ -102,5 +104,7 @@ export {
   AppsIcon,
   SearchIcon,
   InsertChartIcon,
-  DesignIcon
+  DesignIcon,
+  ExpandMoreIcon,
+  ChevronRightIcon
 }

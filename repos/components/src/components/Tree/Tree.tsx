@@ -1,32 +1,100 @@
-import * as React from 'react'
-import TreeView from '@mui/lab/TreeView'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import TreeItem from '@mui/lab/TreeItem'
+import type { CSSProperties } from 'react'
+import type { TTreeGroup } from './TreeGroup'
+import type { TTreeToggle, TTreeSelect } from '@GBC/types'
 
+import { useInline } from '@GBC/hooks'
+import { TreeGroup } from './TreeGroup'
+import TreeView from '@mui/lab/TreeView'
+import { useState, useCallback } from 'react'
+import { emptyArr, ensureArr } from '@keg-hub/jsutils'
+import { ExpandMoreIcon, ChevronRightIcon } from '@GBC/components/Icons'
 
 
 export type TTree = {
-  
+  title?:string
+  name?:string
+  label?:string
+  sx?:CSSProperties
+  expanded?:string[]
+  selected?:string[]
+  multiSelect?:boolean
+  onNodeToggle?:TTreeToggle
+  onNodeSelect?:TTreeSelect
+  groups:Record<string, TTreeGroup>
+}
+
+const styles = {
+  tree: {
+    flexGrow: 1,
+    height: 240,
+    maxWidth: 400,
+    overflowY: 'auto'
+  }
+}
+
+
+export type TTreeGroups = {
+  groups:Record<string, TTreeGroup>
+}
+
+export const TreeGroups = (props:TTreeGroups) => {
+  const {
+    groups
+  } = props
+  return (
+    <>
+      {Object.entries(groups).map(([key, group]) => {
+        return (
+          <TreeGroup
+            {...group}
+            nodeId={group.nodeId || key}
+            key={group.nodeId || key}
+          />
+        )
+      })}
+    </>
+  )
 }
 
 export const Tree = (props:TTree) => {
+  const {
+    sx,
+    title,
+    groups,
+    name=title,
+    multiSelect,
+    expanded=emptyArr,
+    selected=emptyArr,
+    label=name || `Goblet Components Tree`,
+  } = props
+  
+  const onNodeToggleIn = useInline(props.onNodeToggle)
+  const onNodeSelectIn = useInline(props.onNodeSelect)
+  
+  const [selItems, setSelItems] = useState<string[]>(selected)
+  const [expdItems, setExpdItems] = useState<string[]>(expanded)
+  
+  const onNodeToggle = useCallback<TTreeToggle>((evt, nodeIds) => {
+    onNodeToggleIn?.(evt, nodeIds)
+    // setExpdItems(nodeIds)
+  }, [expdItems])
+  
+  const onNodeSelect = useCallback<TTreeSelect>((evt, nodeIds) => {
+    onNodeSelectIn?.(evt, nodeIds)
+    // setSelItems(ensureArr(nodeIds))
+  }, [selItems])
+  
   return (
     <TreeView
-      aria-label="file system navigator"
+      aria-label={label}
+      multiSelect={multiSelect}
+      onNodeToggle={onNodeToggle}
+      onNodeSelect={onNodeSelect}
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
-      sx={{ height: 240, flexGrow: 1, maxWidth: 400, overflowY: 'auto' }}
+      sx={[styles.tree, sx as CSSProperties]}
     >
-      <TreeItem nodeId="1" label="Applications">
-        <TreeItem nodeId="2" label="Calendar" />
-      </TreeItem>
-      <TreeItem nodeId="5" label="Documents">
-        <TreeItem nodeId="10" label="OSS" />
-        <TreeItem nodeId="6" label="MUI">
-          <TreeItem nodeId="8" label="index.js" />
-        </TreeItem>
-      </TreeItem>
+      <TreeGroups groups={groups} />
     </TreeView>
   )
 }

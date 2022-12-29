@@ -2,12 +2,18 @@ import type { TFeaturesState } from '@types'
 import type { TRaceFeature, TRaceFeatures } from '@gobletqa/race'
 
 import { useMemo } from 'react'
+import { useRepo } from '@store'
 import { ensureArr, noOpObj } from '@keg-hub/jsutils'
-import { addRootToLoc } from '@utils/repo/addRootToLoc'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
+import { getRootPrefix } from '@utils/repo/getRootPrefix'
+
 
 export const useRaceFeatures = (features:TFeaturesState) => {
+  const repo = useRepo()
+
   return useMemo(() => {
+    const rootPrefix = getRootPrefix(repo, repo?.paths?.featuresDir)
+
     return !features?.files
       ? noOpObj
       : Object.entries(features?.files)
@@ -22,6 +28,8 @@ export const useRaceFeatures = (features:TFeaturesState) => {
                 ...model,
                 uuid: uuidRef,
                 title: model?.feature,
+                // Use this when the Tree Component is completed
+                // path: rmRootFromLoc(key, rootPrefix),
                 path: rmRootFromLoc(key),
                 parent: { uuid: key, location: key },
               }
@@ -30,5 +38,5 @@ export const useRaceFeatures = (features:TFeaturesState) => {
 
           return models
         }, {} as TRaceFeatures)
-  }, [features?.files])
+  }, [features?.files, repo])
 }

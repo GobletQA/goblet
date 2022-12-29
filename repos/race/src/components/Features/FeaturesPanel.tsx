@@ -3,6 +3,7 @@ import type { TFeaturesRefs } from '@GBR/types'
 
 import { Panel } from '@gobletqa/components'
 import { FeaturesList } from './FeaturesList'
+import { Features } from './Features'
 
 export type TFeaturesPanel = TFeaturesRefs & {
   onActiveFeature: TTabAction
@@ -18,10 +19,15 @@ export const FeaturesPanel = (props:TFeaturesPanel) => {
       actions={[]}
       title='Features'
     >
-      <FeaturesList
-        featuresRef={featuresRef}
-        onActiveFeature={onActiveFeature}
-      />
+    <FeaturesList
+      featuresRef={featuresRef}
+      onActiveFeature={onActiveFeature}
+    />
+
+    {/* <Features
+      featuresRef={featuresRef}
+    /> */}
+
     </Panel>
   )
   

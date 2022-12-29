@@ -23,22 +23,28 @@
   "keywords": [],
   "author": "Lance Tipton <lancetipton04@gmail.com>",
   "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
+    "@emotion/react": "*",
+    "@emotion/styled": "*",
     "@gobletqa/components": "*",
     "@keg-hub/jsutils": "*",
     "@monaco-editor/react": "4.3.1",
+    "@mui/icons-material": "*",
     "@mui/lab": "*",
+    "@mui/material": "*",
+    "idb-keyval": "6.2.0",
+    "monaco-editor": "0.34.0",
+    "monaco-editor-textmate": "3.0.0",
+    "monaco-textmate": "3.0.0",
+    "onigasm": "2.2.5"
+  },
+  "devDependencies": {
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
     "@vitejs/plugin-react": "2.1.0",
     "esbuild": "*",
     "esbuild-plugin-path-alias": "*",
     "esbuild-register": "*",
-    "idb-keyval": "6.2.0",
-    "monaco-editor": "0.34.0",
-    "monaco-textmate": "3.0.0",
-    "onigasm": "2.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "serve": "*",
@@ -47,16 +53,5 @@
     "vite-plugin-svgr": "*",
     "vite-plugin-svgr-component": "*",
     "vite-tsconfig-paths": "*"
-  },
-  "peerDependencies": {
-    "@keg-hub/jsutils": ">=9.5.1",
-    "@monaco-editor/react": "4.3.1",
-    "idb-keyval": ">=6.2.0",
-    "monaco-editor": ">=0.34.0",
-    "monaco-editor-textmate": "3.0.0",
-    "monaco-textmate": "3.0.0",
-    "onigasm": "2.2.5",
-    "react": ">18.0.0",
-    "react-dom": ">18.0.0"
   }
 }

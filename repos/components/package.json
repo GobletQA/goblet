@@ -22,17 +22,18 @@
     "serve": "serve -p 19006 dist",
     "start": "vite --clearScreen false -c configs/vite.config.ts --force"
   },
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "@emotion/react": "*",
     "@emotion/styled": "*",
-    "@gobletqa/shared": "*",
-    "@keg-hub/cli-utils": "*",
     "@keg-hub/jsutils": "*",
     "@mui/icons-material": "*",
     "@mui/lab": "*",
     "@mui/material": "*",
-    "@mui/x-date-pickers": "*",
+    "@mui/x-date-pickers": "*"
+  },
+  "devDependencies": {
+    "@gobletqa/shared": "*",
+    "@keg-hub/cli-utils": "*",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@vitejs/plugin-react": "*",
@@ -46,16 +47,5 @@
     "vite-plugin-svgr": "*",
     "vite-plugin-svgr-component": "*",
     "vite-tsconfig-paths": "*"
-  },
-  "peerDependencies": {
-    "@emotion/react": ">=11.10.4",
-    "@emotion/styled": ">=11.10.4",
-    "@gobletqa/shared": "*",
-    "@keg-hub/cli-utils": "*",
-    "@keg-hub/jsutils": "*",
-    "@mui/icons-material": ">=5.10.3",
-    "@mui/material": ">=5.10.5",
-    "react": ">18.0.0",
-    "react-dom": ">18.0.0"
   }
 }
