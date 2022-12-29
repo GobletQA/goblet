@@ -1,7 +1,8 @@
 import { Section } from '../Section'
 import { Scenarios } from '../Scenarios'
-import { EmptyFeature } from './EmptyFeature'
+import { TSectionType } from '../../types'
 import { useFeature } from '../../contexts'
+import { EmptyFeature } from './EmptyFeature'
 
 export type TFeature = {
   
@@ -16,6 +17,7 @@ export const Feature = (props:TFeature) => {
     : (
         <Section
           title={name}
+          type={TSectionType.feature}
         >
           <Scenarios />
         </Section>

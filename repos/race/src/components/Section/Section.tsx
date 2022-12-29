@@ -6,16 +6,30 @@ import { SectionBody } from './SectionBody'
 import { SectionHeader } from './SectionHeader'
 
 export type TSection = TSectionBody & TSectionHeader & {
-  
+
 }
 
 export const Section = (props:TSection) => {
 
+  const {
+    type,
+    Icon,
+    title,
+    actions,
+    children,
+  } = props
+
   return (
-    <Container>
+    <Container className='goblet-race-section' >
       <SectionHeader
+        type={type}
+        Icon={Icon}
+        title={title}
+        actions={actions}
       />
       <SectionBody
+        type={type}
+        children={children}
       />
     </Container>
   )
