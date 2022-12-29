@@ -32,7 +32,7 @@ const ListItem = (props:TListItem) => {
   return (
     <FeatureItem
       onClick={onClick}
-      className={cls(`goblet-race-features-list-item`, isActive && `active`)}
+      className={cls(`gr-features-list-item`, isActive && `active`)}
     >
       <FeatureText>
         {feature.feature}
@@ -52,7 +52,7 @@ export const FeaturesList = (props:TFeaturesList) => {
   return (
     <Features
       component='nav'
-      className='goblet-race-features-list'
+      className='gr-features-list'
       aria-labelledby='nested-list-subheader'
     >
       {Object.entries(featuresRef.current).map(([key, feature]) => {

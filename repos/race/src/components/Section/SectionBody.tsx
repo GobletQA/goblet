@@ -12,7 +12,7 @@ export const SectionBody = (props:TSectionBody) => {
   const { children } = props
   
   return (
-    <Body className='goblet-race-section-body' >
+    <Body className='gr-section-body' >
       {children}
     </Body>
   )

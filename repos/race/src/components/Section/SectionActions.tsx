@@ -15,7 +15,7 @@ const HeaderAction = (props:THeaderAction) => {
   const { action, type } = props
 
   return (
-    <Action className='goblet-race-section-header-action' >
+    <Action className='gr-section-header-action' >
       Action
     </Action>
   )
@@ -25,7 +25,7 @@ export const SectionActions = (props:TSectionActions) => {
   const { actions, type }  = props
   
   return (
-    <Actions className='goblet-race-section-header-actions' >
+    <Actions className='gr-section-header-actions' >
       {actions?.map(action => {
         return (<HeaderAction action={action} type={type} />)
       })}

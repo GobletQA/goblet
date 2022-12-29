@@ -1,8 +1,9 @@
 import { TScenarioAst } from '@GBR/types'
+import { TSectionType } from '../../types'
 
-import { Text } from '../Text'
+import { Section } from '../Section'
 import { Steps } from '../Steps'
-import Box from '@mui/material/Box'
+
 
 export type TScenario = {
   scenario:TScenarioAst
@@ -12,11 +13,11 @@ export const Scenario = (props:TScenario) => {
   const { scenario } = props
 
   return (
-    <Box>
-      <Text>
-        {scenario?.scenario}
-      </Text>
+    <Section
+      type={TSectionType.scenario}
+      title={scenario?.scenario}
+    >
       <Steps scenario={scenario} />
-    </Box>
+    </Section>
   )
 }

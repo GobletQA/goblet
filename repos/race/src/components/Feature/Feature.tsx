@@ -1,6 +1,6 @@
 import { Section } from '../Section'
 import { Scenarios } from '../Scenarios'
-import { TSectionType } from '../../types'
+import { TSectionType } from '@GBR/types'
 import { useFeature } from '../../contexts'
 import { EmptyFeature } from './EmptyFeature'
 

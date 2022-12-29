@@ -20,7 +20,7 @@ export const Section = (props:TSection) => {
   } = props
 
   return (
-    <Container className='goblet-race-section' >
+    <Container className='gr-section' >
       <SectionHeader
         type={type}
         Icon={Icon}

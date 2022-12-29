@@ -64,7 +64,7 @@ export const EditorContainer = (props:TEditorContainer) => {
       <Container
         onMouseMove={onMove}
         onMouseUp={onMoveEnd}
-        className='goblet-race-editor'
+        className='gr-editor'
       >
         <Sidebar
           style={styles}
@@ -77,7 +77,7 @@ export const EditorContainer = (props:TEditorContainer) => {
             onActiveFeature={onActiveFeature}
           />
         </Sidebar>
-        <Divider onMouseDown={onMoveStart} className='goblet-editor-drag' />
+        <Divider onMouseDown={onMoveStart} className='gr-editor-drag' />
         <BuilderContainer>
           <OpenedTabs
             onTabDown={onTabDown}

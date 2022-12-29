@@ -15,9 +15,6 @@ export const Scenarios = (props:TScenarios) => {
 
   return (
     <Box>
-      <Text>
-        <b>Scenarios</b>
-      </Text>
       {scenarios.map(scenario => {
         return (
           <Scenario
