@@ -2,24 +2,12 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
 
-export const SidebarContainerBefore = styled(Box)`
-  width: 100%;
-  max-width: 225px;
-  display: flex;
-  flex-shrink: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  align-self: stretch;
-  flex-direction: column;
-
-  color: var(--goblet-editor-foreground);
-  background: var(--goblet-editor-background);
-`
-
-export const SidebarContainer = styled(Box)`
+export const SidebarContainer = styled(Box, {
+  shouldForwardProp: (prop:string) => prop !== 'maxWidth'
+})(({ maxWidth=230 }) => `
 
   width: 100%;
-  max-width: 225px;
+  max-width: ${maxWidth}px;
 
   flex-shrink: 0;
   font-size: 14px;
@@ -56,4 +44,4 @@ export const SidebarContainer = styled(Box)`
     -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
   }
 
-`
+`)

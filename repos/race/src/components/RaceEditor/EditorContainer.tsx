@@ -30,6 +30,7 @@ export const EditorContainer = (props:TEditorContainer) => {
     actionsOpen,
     sidebarWidth,
     sidebarStatus,
+    sidebarMaxWidth,
     onSidebarResize,
     Divider=REDivider,
     onFeatureCloseRef,
@@ -39,10 +40,12 @@ export const EditorContainer = (props:TEditorContainer) => {
   const {
     styles,
     onMove,
+    maxWidth,
     onMoveEnd,
     onMoveStart,
   } = useSidebarResize({
     onSidebarResize,
+    maxWidth: sidebarMaxWidth,
     initialWidth: sidebarWidth,
     initialStatus: sidebarStatus,
   })
@@ -69,6 +72,7 @@ export const EditorContainer = (props:TEditorContainer) => {
         <Sidebar
           style={styles}
           Panels={Panels}
+          maxWidth={maxWidth}
           PrePanels={PrePanels}
         >
           <FeaturesPanel

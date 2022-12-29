@@ -17,10 +17,9 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
 
   const {
     onSidebarResize,
-    initialWidth=200,
+    initialWidth=230,
     initialStatus=false
   } = props
-
 
   const [sidebarWidth, setSidebarWidth] = useState<number>(initialStatus ? initialWidth : 0)
 

@@ -8,6 +8,7 @@ export type TDragObj = {
 }
 
 export type TUseSidebarResize = {
+  maxWidth?:number
   initialWidth?: number
   initialStatus?:boolean
   onSidebarResize?: (width:number) => void
@@ -16,11 +17,11 @@ export type TUseSidebarResize = {
 export const useSidebarResize = (props:TUseSidebarResize) => {
 
   const {
+    maxWidth=230,
     onSidebarResize,
-    initialWidth=200,
-    initialStatus=false
+    initialStatus=false,
+    initialWidth=maxWidth,
   } = props
-
 
   const [sidebarWidth, setSidebarWidth] = useState<number>(initialStatus ? initialWidth : 0)
 
@@ -59,9 +60,11 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
 
   const styles = useMemo(
     () => ({
-      width: `${sidebarWidth}px`,
+      width: maxWidth > sidebarWidth
+        ? `${sidebarWidth}px`
+        : `${maxWidth}px`,
     }),
-    [sidebarWidth]
+    [maxWidth, sidebarWidth]
   )
 
   const resizeSidebar = useCallback((width:number) => {
@@ -72,6 +75,7 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
   return {
     styles,
     onMove,
+    maxWidth,
     onMoveEnd,
     onMoveStart,
     dragStartRef,

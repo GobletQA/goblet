@@ -39,6 +39,7 @@ export type TRaceEditorProps = {
   features:TRaceFeatures
   sidebarWidth?: number
   sidebarStatus?: boolean
+  sidebarMaxWidth?: number
   firstFeatureActive?:boolean
   Divider?:ComponentType<any>
   Panels?:TSidebarPanel[]
