@@ -52,6 +52,7 @@ export const OpenTab = styled(Box)`
   flex-direction: row;
   align-items: center;
   box-sizing: border-box;
+  color: var(--goblet-list-inactiveSelectionForeground);
   background-color: var(--goblet-editor-background);
 
   &.focused {

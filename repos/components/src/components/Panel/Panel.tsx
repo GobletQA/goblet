@@ -60,7 +60,7 @@ export const Panel = (props:TPanel) => {
   }, [startOpen])
 
   return (
-    <PanelSidebar className={cls(`goblet-sidebar-panel`, className)}>
+    <PanelSidebar className={cls(`goblet-sidebar-panel`, className, closed ? `closed` : `open`)}>
       {header && (
         <PanelHeader
           title={title}

@@ -8,9 +8,17 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import ListItemButton from '@mui/material/ListItemButton'
 
-export const PanelSidebar = styled(Box)`
-  // padding-left: 5px;
-  // padding-right: 5px;
+export const PanelSidebar = styled(Box)``
+
+const sharedPanelHeader = `
+  background: var(--goblet-list-activeSelectionBackground);
+  color: var(--goblet-list-activeSelectionForeground);
+  
+  & .goblet-editor-panel-toggle-icon {
+    path {
+      color: var(--goblet-list-activeSelectionForeground);
+    }
+  }
 `
 
 export const PanelHeader = styled(ListItemButton)<THeaderItem>`
@@ -25,24 +33,30 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
   align-items: center;
   width: 100%;
   position: relative;
+  color: var(--goblet-list-inactiveSelectionForeground);
   background: var(--goblet-list-inactiveSelectionBackground);
   border-bottom: 1px solid var(--goblet-editor-background);
   padding-left: 5px;
   padding-right: 5px;
 
   &:hover {
-    background: var(--goblet-list-activeSelectionBackground);
+    ${sharedPanelHeader}
   }
+
+  &.open {
+    ${sharedPanelHeader}
+  }
+
 
   & .goblet-editor-panel-toggle-icon {
     font-size: 18px;
     font-weight: bold;
     margin-right: 4px;
-    color: var(--goblet-editor-foreground);
-
-    &:hover {
-      color: var(--goblet-list-hoverForeground);
+    
+    & path {
+      color: var(--goblet-list-inactiveSelectionForeground);
     }
+
   }
 
 `

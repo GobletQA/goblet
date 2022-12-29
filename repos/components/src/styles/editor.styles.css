@@ -1,23 +1,33 @@
 :root {
-  --goblet-list-activeSelectionBackground: #47526640;
-  --goblet-list-activeSelectionForeground: #bfbdb6;
-  --goblet-list-focusBackground: #47526640;
-  --goblet-list-focusForeground: #bfbdb6;
-  --goblet-list-highlightForeground: #e6b450;
-  --goblet-list-hoverBackground: #47526640;
-  --goblet-list-hoverForeground: #bfbdb6;
-  --goblet-list-inactiveSelectionBackground: #409fff21;
-  --goblet-list-inactiveSelectionForeground: #565b66;
-  --goblet-list-warningForeground: #e6b450;
-  --goblet-editor-background: #0b0e14;
-  --goblet-editor-foreground: #bfbdb6;
-  --goblet-scrollbar-shadow: #1e232b00;
-  --goblet-scrollbarSlider-activeBackground: #565b66b3;
-  --goblet-scrollbarSlider-background: #565b6666;
-  --goblet-scrollbarSlider-hoverBackground: #565b6699;
-  --goblet-editorCursor-foreground: #e6b450;
-  --goblet-sideBar-border: #0b0e14;
-  --goblet-errorForeground: #d95757;
+
+  --goblet-editor-background: #060407;
+  --goblet-editor-foreground: #F9F8FB;
+
+  --goblet-list-focusBackground: #241b2f;
+  --goblet-list-focusForeground: #E4DEEB;
+
+  --goblet-list-hoverBackground: #241b2f;
+  --goblet-list-hoverForeground: #E4DEEB;
+
+  --goblet-list-activeSelectionBackground: #2A2037;
+  --goblet-list-activeSelectionForeground: #E4DEEB;
+  --goblet-list-inactiveSelectionBackground: #1E1727;
+  --goblet-list-inactiveSelectionForeground: #828C9C;
+
+  --goblet-list-highlightForeground: #785B9C;
+  --goblet-list-warningForeground: #FFB601;
+
+  --goblet-errorForeground: #B53541;
+
+  --goblet-editorCursor-foreground: #d7cee1;
+  
+  --goblet-sideBar-border: #0b0c0f;
+
+  --goblet-scrollbar-shadow: #1E172700;
+  --goblet-scrollbarSlider-background: #54406d66;
+  --goblet-scrollbarSlider-activeBackground: #54406db3;
+  --goblet-scrollbarSlider-hoverBackground: #54406d99;
+
 }
 
 .goblet-editor {

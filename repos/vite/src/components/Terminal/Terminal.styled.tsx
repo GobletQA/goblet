@@ -31,7 +31,7 @@ export const TabsHeaderList = styled(Tabs)(`
 
 export const HeaderTab = styled(Tab)(({ theme }) => {
   const shared = `
-    color: ${getColor(colors.royalPurple, colors.royalPurple, theme)};
+    color: ${getColor(colors.white, colors.white, theme)};
 
     & .terminal-tab-add-icon,
     & .terminal-tab-close-icon {

@@ -26,6 +26,7 @@ export const Features = styled(List)<TListFeatures>`
 export const FeatureItem = styled(ListItemButton)<TFeatureItem>`
   padding: 0px;
   padding-left: 10px;
+  color: var(--goblet-list-inactiveSelectionForeground);
 
   &:hover {
     background-color: var(--goblet-list-hoverBackground);

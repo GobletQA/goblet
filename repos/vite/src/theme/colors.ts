@@ -29,10 +29,13 @@ export const purple = {
   purple14: `#48375e`,
   purple15: `#3c2e4e`,
   purple16: `#30243e`,
-  purple17: `#241b2f`,
-  purple18: `#18121f`,
-  purple19: `#0c0910`,
-  purple20: `#060407`,
+  purple17: `#2A2037`,
+  purple18: `#241b2f`,
+  purple19: `#1E1727`,
+  purple20: `#18121f`,
+  purple21: `#120E17`,
+  purple22: `#0c0910`,
+  purple23: `#060407`,
 }
 
 export const black = {

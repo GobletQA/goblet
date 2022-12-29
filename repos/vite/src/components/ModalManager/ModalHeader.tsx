@@ -9,7 +9,6 @@ import Box from '@mui/material/Box'
 import { gutter, colors } from '@theme'
 import { noOpObj } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
-import { getColor } from '@utils/theme/getColor'
 import { useTheme } from '@hooks/theme/useTheme'
 import Typography from '@mui/material/Typography'
 
@@ -27,7 +26,7 @@ export const ModalHeader = (props:TModal) => {
   const styles = useMemo(() => {
     return {
       color: colors.white,
-      bgcolor: colors.black19,
+      bgcolor: colors.black15,
     }
     
   }, [theme])

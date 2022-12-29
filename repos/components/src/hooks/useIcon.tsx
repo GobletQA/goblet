@@ -12,10 +12,6 @@ export type TIconProps = {
   svgStyle?: CSSProperties
 }
 
-const iconDefs = {
-  fill: `#ffffff`,
-  color: `#ffffff`,
-}
 
 export const useIcon = (props:TIcon) => {
   const styleRef = useRef(props.style)
@@ -24,8 +20,8 @@ export const useIcon = (props:TIcon) => {
   return useMemo(() => {
     const iconProps = {
       className: `goblet-editor-icons ${props.className || ''}`.trim(),
-      color: props.color || styleRef?.current?.color || props.fill || styleRef?.current?.fill || iconDefs.fill,
-      fill: props.fill || styleRef?.current?.fill || props.color || styleRef?.current?.color || iconDefs.color,
+      color: props.color || styleRef?.current?.color || props.fill || styleRef?.current?.fill,
+      fill: props.fill || styleRef?.current?.fill || props.color || styleRef?.current?.color,
       svgStyle: {
         ...props.svgStyle,
         ...omitKeys(styleRef.current || {}, [`fill`, `color`, `width`, `height`]),
