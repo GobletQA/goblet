@@ -10,7 +10,7 @@ import {
   DangerousIcon,
   ArrowBackIcon,
   ArrowForwardIcon
-} from '@components/Icons'
+} from '@gobletqa/components'
 import {
   BrowserInput,
   BrowserNav as BrowserNavComp,

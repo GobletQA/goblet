@@ -38,3 +38,6 @@ export type TThemeChildren = {
 }
 
 export type TThemeProvider = TThemeType & TThemeChildren
+
+export type TStyle = Record<string, string|number>
+export type TStyles = Record<string, TStyle>

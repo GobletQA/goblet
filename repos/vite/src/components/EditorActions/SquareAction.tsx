@@ -1,9 +1,7 @@
 import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
-import Box from '@mui/material/Box'
 import { EditorAction } from './EditorAction'
-import { IconButton } from '@components/Buttons'
-import { CropSquareIcon } from '@components/Icons'
+import { CropSquareIcon } from '@gobletqa/components'
 
 
 const SquareComp = (props:TSidebarActionProps) => {

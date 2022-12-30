@@ -2,7 +2,7 @@
 import Editor from './Editor'
 import Box from '@mui/material/Box'
 import { HeaderNav } from '@constants'
-import { LogoutIcon } from '@components/Icons'
+import { LogoutIcon } from '@gobletqa/components'
 import { ScreenWrap } from './Root.styled'
 import { SocketProvider } from '@contexts'
 import { Header } from '@components/Header'

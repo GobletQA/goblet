@@ -4,7 +4,7 @@ import type { TDefsList } from './DefaultDefsList'
 import { useCallback, useRef, useState, useEffect } from 'react'
 
 import { noOpObj } from '@keg-hub/jsutils'
-import { SearchIcon } from '@components/Icons'
+import { SearchIcon } from '@gobletqa/components'
 import { DefinitionList } from './DefinitionList'
 import {
   DefTabPanel,

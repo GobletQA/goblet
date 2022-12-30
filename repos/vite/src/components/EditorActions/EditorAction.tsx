@@ -3,10 +3,8 @@ import type { ComponentType } from 'react'
 
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
-import { Tooltip } from '@components/Tooltip'
-import { useTheme } from '@hooks/theme/useTheme'
-import { IconButton } from '@components/Buttons'
 import { cls, isStr, noOpObj } from '@keg-hub/jsutils'
+import { IconButton, Tooltip, useTheme } from '@gobletqa/components'
 
 export type TEditorActionProps = {
   loc?:TooltipProps['placement']

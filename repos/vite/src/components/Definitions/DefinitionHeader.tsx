@@ -1,7 +1,7 @@
 import type { DefinitionTabs } from '@constants'
 import type { SyntheticEvent, MouseEvent } from 'react'
 
-import { Tooltip } from '@components/Tooltip'
+import { Tooltip } from '@gobletqa/components'
 import { DefsHeaderTabs, DefsHeaderTab } from './Definitions.styled'
 
 

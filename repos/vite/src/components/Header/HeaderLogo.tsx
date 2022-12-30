@@ -1,5 +1,5 @@
 
-import { Goblet } from '@components/Icons/Goblet'
+import { GobletIcon } from '@gobletqa/components'
 import { LogoContainer, LogoBtn, LogoText } from './Header.styled'
 
 const gotoHome = () => {
@@ -10,7 +10,7 @@ export const HeaderLogo = () => {
   return (
     <LogoContainer className="header-icon-container" >
       <LogoBtn className="header-icon-button" onClick={gotoHome} >
-        <Goblet />
+        <GobletIcon />
         <LogoText
           noWrap
           variant="h6"

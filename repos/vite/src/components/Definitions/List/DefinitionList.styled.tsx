@@ -4,14 +4,19 @@ import Divider from '@mui/material/Divider'
 import { styled } from '@mui/material/styles'
 import ListItem from '@mui/material/ListItem'
 import Collapse from '@mui/material/Collapse'
-import { getColor } from '@utils/theme/getColor'
-import { Text, Span } from '@gobletqa/components'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListSubheader from '@mui/material/ListSubheader'
 import ListItemButton from '@mui/material/ListItemButton'
-import { IconButton } from '@components/Buttons/IconButton'
-import { colors, dims, gutter } from '@gobletqa/components/theme'
+import {
+  dims,
+  Span,
+  Text,
+  gutter,
+  colors,
+  getColor,
+  IconButton,
+} from '@gobletqa/components'
 
 
 export const DefSearchTitle = styled(Span)(({ theme }) => `

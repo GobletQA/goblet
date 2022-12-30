@@ -2,7 +2,7 @@ import type { TAction, TSidebarAction, TSidebarActionProps } from '@gobletqa/com
 
 import { EditorAction } from './EditorAction'
 import { getFileModel } from '@utils/files/getFileModel'
-import { PlayCircleOutlineIcon } from '@components/Icons'
+import { PlayCircleOutlineIcon } from '@gobletqa/components'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 
 

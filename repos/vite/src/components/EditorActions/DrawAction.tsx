@@ -1,7 +1,7 @@
 import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
 import { EditorAction } from './EditorAction'
-import { ModeEditIcon } from '@components/Icons'
+import { ModeEditIcon } from '@gobletqa/components'
 
 const DrawComp = (props:TSidebarActionProps) => {
   return (

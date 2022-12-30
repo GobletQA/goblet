@@ -1,9 +1,9 @@
 import type { TEditorRefHandle } from '@gobletqa/monaco'
 
 import { useRef } from 'react'
-import { BlockIcon } from '@components/Icons'
 import { EditorSidebarWidth } from '@constants'
 import { MonacoEditor } from '@gobletqa/monaco'
+import { BlockIcon } from '@gobletqa/components'
 import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Layout/Divider'
 import { NotConnected } from '@components/NotConnected'

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
-import { GitHubIcon } from '@components/Icons'
+import { GitHubIcon } from '@gobletqa/components'
 import { OtherProviders } from '../OtherProviders'
 import { checkCall, isArr, noOp } from '@keg-hub/jsutils'
 import { loadUser } from '@actions/admin/user/loadUser'

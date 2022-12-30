@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { Loading } from '@components/Loading'
-import { Fadeout } from '@components/Fadeout'
+import { Fadeout, Loading } from '@gobletqa/components'
 
 export type TBrowserLoading = ComponentProps<typeof Fadeout> & {
   loading:boolean

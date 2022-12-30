@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-import { useTheme } from './useTheme'
-import { getColor } from '@utils/theme/getColor'
+import { getColor, useTheme } from '@gobletqa/components'
 
 export type TUColors = {
   [key:string]: [string|number, string|number]

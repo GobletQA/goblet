@@ -1,31 +1,57 @@
-import { useMemo } from 'react'
-import { emptyArr, exists } from '@keg-hub/jsutils'
+import type { CSSProperties, ReactNode, ComponentProps } from 'react'
 
-type TLoading = {
-  size?: string | number
-  heigh?: string | number
-  width?: string | number
-  alpha?: string | number
-  color?: string
-}
+import Box from '@mui/material/Box'
+import { gutter } from '@GBC/theme'
+import { Text } from '@GBC/components/Text'
+import { ensureArr } from '@keg-hub/jsutils'
+import CircularProgress from '@mui/material/CircularProgress'
 
-const hex2rgba = (hex:string=``, alpha:string|number = .3) => {
-  const [r, g, b] = hex.match(/\w\w/g)?.map(x => parseInt(x, 16)) || emptyArr
-  return exists(r) ? `rgba(${r},${g},${b},${alpha})` : ``
+export type TLoading = ComponentProps<typeof CircularProgress> & {
+  message?:ReactNode
+  hideSpinner?:boolean
+  messageSx?: CSSProperties|CSSProperties[]
+  containerSx?:CSSProperties|CSSProperties[]
+  pos?: `before` | `after`
 }
 
 export const Loading = (props:TLoading) => {
-  const style = useMemo(() => {
-    const color = props.color || `#ffffff`
+  const {
+    message,
+    messageSx,
+    hideSpinner,
+    containerSx,
+    pos=`after`,
+    ...progProps
+  } = props
+  
+  const styleArr = [
+    {
+      width: '100%',
+      fontSize: `18px`,
+      marginTop: gutter.margin.px,
+    },
+    ...ensureArr<CSSProperties>(messageSx)
+  ]
 
-    return {
-      borderTopColor: color,
-      height: props.heigh || props.size || `22px`,
-      width: props.width || props.size || `22px`,
-      border: `3px solid ${hex2rgba(color, props.alpha)}`,
-    }
-  }, [props.size, props.heigh, props.width, props.color, props.alpha])
-
-
-  return <div className="gb-loading-icon" style={style} />
+  return (
+    <Box 
+      width='100%'
+      textAlign='center'
+      className="loading-container"
+      sx={containerSx}
+    >
+      {message && pos !== `after` && (
+        <Text variant="h6" sx={styleArr} >
+          {message}
+        </Text>
+      )}
+      {!hideSpinner && (<CircularProgress {...progProps} />)}
+      {message && pos === `after` && (
+        <Text variant="h6" sx={styleArr} >
+          {message}
+        </Text>
+      )}
+    </Box>
+  )
 }
+

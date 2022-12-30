@@ -1,7 +1,7 @@
 import type { ReactNode, ComponentProps } from 'react'
 import Box from '@mui/material/Box'
 import { gutter } from '@gobletqa/components/theme'
-import { ErrorIcon, InfoIcon } from '@components/Icons'
+import { ErrorIcon, InfoIcon } from '@gobletqa/components'
 import CircularProgress from '@mui/material/CircularProgress'
 
 export type TModalMessage = {

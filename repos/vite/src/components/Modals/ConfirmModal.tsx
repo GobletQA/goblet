@@ -1,7 +1,7 @@
 import type { TModalRef, TModalComponent } from '@types'
 
 import { EModalTypes } from '@types'
-import { WarningIcon } from '@components/Icons'
+import { WarningIcon } from '@gobletqa/components'
 
 export const ConfirmModal:TModalRef = (props:TModalComponent) => {
   const { children } = props

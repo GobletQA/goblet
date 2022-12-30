@@ -2,7 +2,7 @@ import type { TModalComponent, TModalRef } from '@types'
 
 import { EModalTypes } from '@types'
 import Divider from '@mui/material/Divider'
-import { SourceIcon } from '@components/Icons'
+import { SourceIcon } from '@gobletqa/components'
 import { gutter } from '@gobletqa/components/theme'
 import { RepoForm } from '@components/Forms/RepoForm'
 import { ModalFooter } from '@components/ModalManager/ModalFooter'

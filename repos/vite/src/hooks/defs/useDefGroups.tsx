@@ -15,7 +15,7 @@ import { useDefs, useRepo } from '@store'
 import { capitalize } from '@keg-hub/jsutils'
 import { OpenEditorFileEvt } from '@constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { FileOpenIcon, AddCircleIcon } from '@components/Icons'
+import { FileOpenIcon, AddCircleIcon } from '@gobletqa/components'
 import { addStepFromDefinition } from '@actions/features/local'
 
 type TOnClose = (event:MouseEvent | TouchEvent) => void

@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 
 import { EStepKey } from '@types'
 import { cls } from '@keg-hub/jsutils'
-import { ArrowRightIcon } from '@components/Icons'
+import { ArrowRightIcon } from '@gobletqa/components'
 import { DefinitionItemMeta } from './DefinitionItemMeta'
 import { DefinitionItemActions } from './DefinitionItemActions'
 import {

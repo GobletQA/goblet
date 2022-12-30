@@ -1,5 +1,5 @@
 import { RaceEditor } from '@gobletqa/race'
-import { BlockIcon } from '@components/Icons'
+import { BlockIcon } from '@gobletqa/components'
 import { EditorSidebarWidth } from '@constants'
 import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Layout/Divider'

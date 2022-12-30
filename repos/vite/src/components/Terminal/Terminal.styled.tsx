@@ -1,13 +1,16 @@
 import Tab from '@mui/material/Tab'
 import Box from '@mui/material/Box'
 import Tabs from '@mui/material/Tabs'
-import { AddIcon } from '@components/Icons'
+import { AddIcon } from '@gobletqa/components'
 import { styled } from '@mui/material/styles'
-import { CloseIcon } from '@components/Icons'
+import { CloseIcon } from '@gobletqa/components'
 import Container from '@mui/material/Container'
-import { getColor } from '@utils/theme/getColor'
-import { colors, dims } from '@gobletqa/components/theme'
-import { IconButton } from '@components/Buttons/IconButton'
+import {
+  dims,
+  colors,
+  getColor,
+  IconButton
+} from '@gobletqa/components'
 
 export const TerminalContainer = styled(Container)(({ theme }) => `
   display: flex;

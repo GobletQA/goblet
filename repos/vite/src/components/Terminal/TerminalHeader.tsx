@@ -8,7 +8,7 @@ import { TerminalTabs } from './TerminalTabs'
 import { TerminalExpandEvt } from '@constants'
 import { TerminalExpandBtn } from './Terminal.styled'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { ChevronUpIcon, ChevronDownIcon } from '@components/Icons'
+import { ChevronUpIcon, ChevronDownIcon } from '@gobletqa/components'
 
 export type TerminalHeader = {
   active:number

@@ -2,13 +2,6 @@ import type { ComponentType, ReactNode } from 'react'
 import type { Theme } from '@mui/material'
 import type { SxProps, SystemStyleObject } from '@mui/system'
 
-// SystemStyleObject<Theme>
-// ((theme: Theme) => SystemStyleObject<Theme>)
-// ReadonlyArray<boolean | SystemStyleObject<Theme> | ((theme: Theme) => SystemStyleObject<Theme>)>;
-
-export type TStyle = Record<string, string|number>
-export type TStyles = Record<string, TStyle>
-
 export type CSSProps = SxProps<Theme>
 export type CSSObj = SystemStyleObject<Theme>
 

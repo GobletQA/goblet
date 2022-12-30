@@ -2,7 +2,7 @@ import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
 import { EditorAction } from './EditorAction'
 import { getFileModel } from '@utils/files/getFileModel'
-import { RadioButtonCheckedIcon } from '@components/Icons'
+import { RadioButtonCheckedIcon } from '@gobletqa/components'
 
 const RecordBrowser = (props:TSidebarActionProps) => {
   return (

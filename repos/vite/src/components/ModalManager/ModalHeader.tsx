@@ -8,7 +8,7 @@ import { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import { noOpObj } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
-import { useTheme } from '@hooks/theme/useTheme'
+import { useTheme } from '@gobletqa/components'
 import Typography from '@mui/material/Typography'
 import { gutter, colors } from '@gobletqa/components/theme'
 

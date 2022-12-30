@@ -2,7 +2,7 @@ import type { TModalRef, TModalComponent } from '@types'
 
 import { EModalTypes } from '@types'
 import { Environments } from '@components/Environments'
-import { SettingsEthernetIcon } from '@components/Icons'
+import { SettingsEthernetIcon } from '@gobletqa/components'
 
 
 export const EnvironmentsModal:TModalRef = (props:TModalComponent) => {

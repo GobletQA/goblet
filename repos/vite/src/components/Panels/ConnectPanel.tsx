@@ -1,16 +1,19 @@
 import type { TRepoState } from '@types'
-import type { TSidebarPanel } from '@gobletqa/monaco'
 import type { ComponentProps } from 'react'
+import type { TSidebarPanel } from '@gobletqa/components'
 
 import { useRepo } from '@store'
 import Box from '@mui/material/Box'
-import { Text } from '@gobletqa/components'
 import { asCallback } from '@utils/helpers'
-import { Tooltip } from '@components/Tooltip'
-import { Button } from '@components/Buttons/Button'
-import { Git, CloudOffIcon } from '@components/Icons'
 import { connectModal } from '@actions/modals/modals'
 import { disconnectRepo } from '@actions/repo/api/disconnect'
+import {
+  Git,
+  Text,
+  Button,
+  Tooltip,
+  CloudOffIcon
+} from '@gobletqa/components'
 
 const onConnect = asCallback(connectModal, false)
 
@@ -67,15 +70,15 @@ const RepoMeta = (props:TRepoMeta) => {
     <Box sx={style.container} >
       <Text
         noWrap
-        type='label'
         sx={style.text}
+        component='label'
       >
         <b>Name:</b> <a href={remote} target='_blank' >{name}</a>
       </Text>
       <Text
         noWrap
-        type='label'
         sx={style.text}
+        component='label'
       >
         <b>Branch:</b> {branch}
       </Text>

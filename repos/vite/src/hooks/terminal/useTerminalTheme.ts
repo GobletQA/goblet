@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-import { useTheme } from '@hooks/theme/useTheme'
-import { EThemeType, colors } from '@gobletqa/components'
+import { EThemeType, colors, useTheme } from '@gobletqa/components'
 
 const lightTerminal = {
   black: `#414141`,

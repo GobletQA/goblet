@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
-import { useTheme } from './useTheme'
-import { getColor } from '@utils/theme/getColor'
+import { getColor, useTheme } from '@gobletqa/components'
 
 export const useColor = (light:string|number, dark:string|number) => {
   const theme = useTheme()

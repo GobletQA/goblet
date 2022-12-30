@@ -1,8 +1,8 @@
-import { TStyles, TStyle } from '@types'
+import { TStyles, TStyle } from '@GBC/types'
 
 import { exists } from '@keg-hub/jsutils'
 import { useEffect, useState, useMemo } from 'react'
-import { useSetTimeout } from '@hooks/useSetTimeout'
+import { useSetTimeout } from '@GBC/hooks/useSetTimeout'
 import { Fade, FadeSection, FadeView } from './Fadeout.styled'
 
 type TFadeoutProps = {

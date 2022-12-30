@@ -5,13 +5,18 @@ import { useRef, useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import { Definitions } from './Definitions'
 import { PanelDimsSetEvt } from '@constants'
-import { Tooltip } from '@components/Tooltip'
-import { useTheme } from '@hooks/theme/useTheme'
 import { useEffectOnce } from '@hooks/useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
 import { gray, black, gobletColors } from '@gobletqa/components/theme'
-import { ChevronUpIcon, ChevronDownIcon, LockIcon, LockOpenIcon } from '@components/Icons'
+import {
+  Tooltip,
+  useTheme,
+  LockIcon,
+  LockOpenIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
+} from '@gobletqa/components'
   
 import {
   Drawer,

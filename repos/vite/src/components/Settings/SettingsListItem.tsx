@@ -4,9 +4,8 @@ import type { ChangeEvent, FocusEvent, ChangeEventHandler, FocusEventHandler } f
 import { useCallback } from 'react'
 import Grid from '@mui/material/Unstable_Grid2'
 
-import { Button } from '@components/Buttons'
-import { RestartIcon } from '@components/Icons'
 import { noOpObj, exists } from '@keg-hub/jsutils'
+import { RestartIcon, Button } from '@gobletqa/components'
 import { Input, Switch, Text, Select } from './SettingsInputs'
 import { updateSettingValue } from '@actions/settings/updateSettingValue'
 import { toggleSettingActive } from '@actions/settings/toggleSettingActive'

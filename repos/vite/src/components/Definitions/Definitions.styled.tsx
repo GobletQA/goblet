@@ -6,9 +6,12 @@ import Tabs from '@mui/material/Tabs'
 import { DefinitionTabs } from '@constants'
 import MuiDrawer from '@mui/material/Drawer'
 import { styled } from '@mui/material/styles'
-import { getColor } from '@utils/theme/getColor'
-import { colors, dims } from '@gobletqa/components/theme'
-import { IconButton } from '@components/Buttons/IconButton'
+import {
+  dims,
+  colors,
+  getColor,
+  IconButton
+} from '@gobletqa/components'
 
 const actionsWidth = (dims.defs.header.height + 8) * 2
 const actionsWidthSplit = Math.round((actionsWidth / DefinitionTabs.length + Number.EPSILON) * 100) / 100

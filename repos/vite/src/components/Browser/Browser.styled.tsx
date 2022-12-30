@@ -1,8 +1,12 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import { getColor } from '@utils/theme/getColor'
-import { colors, dims } from '@gobletqa/components/theme'
-import { IconButton } from '@components/Buttons/IconButton'
+import {
+  dims,
+  colors,
+  getColor,
+  IconButton
+} from '@gobletqa/components'
+
 
 export const BrowserNav = styled('nav')(({ theme }) => `
   width: 100%;

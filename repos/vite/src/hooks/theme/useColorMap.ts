@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useTheme } from '@hooks/theme/useTheme'
+import { useTheme } from '@gobletqa/components'
 
 
 export const useColorMap = () => {

@@ -8,10 +8,15 @@ import { HeaderLogo } from './HeaderLogo'
 import Toolbar from '@mui/material/Toolbar'
 import { AppHeader } from './Header.styled'
 import { useStateReset } from '@hooks/useReset'
-import { gutter } from '@gobletqa/components/theme'
-import { IconButton } from '@components/Buttons/IconButton'
-import { EThemeType, useThemeType } from '@gobletqa/components'
-import { DarkModeIcon, LightModeIcon } from '@components/Icons'
+import {
+  gutter,
+  IconButton,
+  EThemeType,
+  useThemeType,
+  DarkModeIcon,
+  LightModeIcon,
+} from '@gobletqa/components'
+
 
 type THeaderProps = {
   settings?: TSettingNavItem[]

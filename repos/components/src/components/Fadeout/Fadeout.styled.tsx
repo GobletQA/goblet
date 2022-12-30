@@ -1,9 +1,9 @@
-import type { TStyle } from '@types'
+import type { TStyle } from '@GBC/types'
 import type { Theme } from '@mui/material/styles'
 
 import { styled } from '@mui/system'
-import { getColor } from '@utils/theme/getColor'
 import Box, { BoxProps } from '@mui/material/Box'
+import { getColor } from '@GBC/utils/theme/getColor'
 import Typography, { TypographyProps } from '@mui/material/Typography'
 
 export type TFade = BoxProps & {

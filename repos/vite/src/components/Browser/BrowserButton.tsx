@@ -2,8 +2,7 @@ import type { ComponentProps } from 'react'
 
 import { useCallback } from "react"
 import { BrowserBtn } from './Browser.styled'
-import { Tooltip } from '@components/Tooltip'
-import { IconButton } from '@components/Buttons/IconButton'
+import { Tooltip, IconButton } from '@gobletqa/components'
 
 export type TBrowserButton = ComponentProps<typeof IconButton> & {
   tooltip: string

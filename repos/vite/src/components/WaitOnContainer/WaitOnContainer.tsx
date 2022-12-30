@@ -3,10 +3,8 @@ import type { ReactNode } from 'react'
 
 import { useState } from 'react'
 import Box from '@mui/material/Box'
-import { Loading } from '@components/Loading'
-import { useSetTimeout } from '@hooks/useSetTimeout'
-import { gutter } from '@gobletqa/components/theme'
 import { LogoutButton } from '@components/Buttons/LogoutButton'
+import { useSetTimeout, gutter, Loading } from '@gobletqa/components'
 
 export type TWaitOnContainer = {
   disable?:boolean

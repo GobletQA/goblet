@@ -22,7 +22,7 @@ import {
   InsertChartIcon,
   LabelImportantIcon,
   SettingsEthernetIcon,
-} from '@components/Icons'
+} from '@gobletqa/components'
 
 
 export const HeaderNav = [

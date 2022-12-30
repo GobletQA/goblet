@@ -2,10 +2,9 @@ import Box from '@mui/material/Box'
 import MuiMenu from '@mui/material/Menu'
 import AppBar from '@mui/material/AppBar'
 import { styled } from '@mui/material/styles'
-import { getColor } from '@utils/theme/getColor'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
-import { dims, gutter } from '@gobletqa/components/theme'
+import { getColor, dims, gutter } from '@gobletqa/components'
 
 export const AppHeader = styled(AppBar)(({ theme }) => {
   return {

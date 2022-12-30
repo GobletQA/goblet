@@ -2,7 +2,7 @@ import type { ReactNode, ComponentType } from 'react'
 
 import { useMemo } from 'react'
 import { isStr } from '@keg-hub/jsutils'
-import * as IconComponents from '@components/Icons'
+import * as IconComponents from '@gobletqa/components'
 
 export const useIcon = (
   Icon?:ComponentType<any>,

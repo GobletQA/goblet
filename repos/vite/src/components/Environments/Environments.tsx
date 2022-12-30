@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box'
-import { Button } from '@components/Buttons/Button'
+import { Button } from '@gobletqa/components'
 
 export type TEnvironments = {
   

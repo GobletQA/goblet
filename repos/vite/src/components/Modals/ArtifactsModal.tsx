@@ -1,7 +1,7 @@
 import type { TModalRef, TModalComponent } from '@types'
 
 import { EModalTypes } from '@types'
-import { InsertChartIcon } from '@components/Icons'
+import { InsertChartIcon } from '@gobletqa/components'
 import { Artifacts } from '@components/Artifacts'
 
 export const ArtifactsModal:TModalRef = (props:TModalComponent) => {

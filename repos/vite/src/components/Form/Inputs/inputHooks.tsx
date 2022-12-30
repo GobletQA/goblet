@@ -3,7 +3,7 @@ import type { ReactNode, CSSProperties } from 'react'
 
 import { useMemo } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
-import { useTheme } from '@hooks/theme/useTheme'
+import { useTheme } from '@gobletqa/components'
 import { useColorMap } from '@hooks/theme/useColorMap'
 
 export type TExtLabelProps = {

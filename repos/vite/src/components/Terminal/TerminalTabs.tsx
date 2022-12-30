@@ -3,8 +3,7 @@ import type { ComponentProps } from 'react'
 import type Tabs from '@mui/material/Tabs'
 
 import Box from '@mui/material/Box'
-import { Tooltip } from '@components/Tooltip'
-import { useTheme } from '@hooks/theme/useTheme'
+import { Tooltip, useTheme } from '@gobletqa/components'
 import { TabsHeaderList, HeaderTab, TabCloseIcon, TabAddIcon } from './Terminal.styled'
 
 export type TerminalTabs = ComponentProps<typeof Tabs> & {

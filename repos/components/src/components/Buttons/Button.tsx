@@ -2,9 +2,7 @@ import type { ComponentProps } from 'react'
 
 import MuiButton from '@mui/material/Button'
 
-export type TButton = ComponentProps<typeof MuiButton> & {
-
-}
+export type TButton = ComponentProps<typeof MuiButton> & {}
 
 export const Button = (props:TButton) => {
   const {
