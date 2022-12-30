@@ -1,8 +1,5 @@
 import type { TGobletTheme } from '@gobletqa/components'
-
-
 import { EThemeType, colors } from '@gobletqa/components'
-
 
 export type TGlobalStyles = {
   theme:TGobletTheme

@@ -2,7 +2,7 @@ import type { ReactNode, ComponentProps } from 'react'
 import type { CSSObj } from '@types'
 
 import Box from '@mui/material/Box'
-import { Text } from '@components/Text'
+import { Text } from '@gobletqa/components'
 import { ensureArr } from '@keg-hub/jsutils'
 import { gutter } from '@gobletqa/components/theme'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -42,13 +42,13 @@ export const Loading = (props:TLoading) => {
       sx={containerSx}
     >
       {message && pos !== `after` && (
-        <Text type="h6" sx={styleArr} >
+        <Text variant="h6" sx={styleArr} >
           {message}
         </Text>
       )}
       {!hideSpinner && (<CircularProgress {...progProps} />)}
       {message && pos === `after` && (
-        <Text type="h6" sx={styleArr} >
+        <Text variant="h6" sx={styleArr} >
           {message}
         </Text>
       )}

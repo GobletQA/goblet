@@ -35,10 +35,6 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 export const Container = styled(Box)(({ theme }) => `
   width: 100%;
   height: 100%;
-
-  // Remove this once theme is setup properly
-  background-color: #ffffff;
-  color: #111111 !important;
 `)
 
 

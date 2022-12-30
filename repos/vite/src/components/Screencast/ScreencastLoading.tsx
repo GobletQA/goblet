@@ -2,7 +2,7 @@ import type { CSSObj } from '@types'
 import type { ComponentProps } from 'react'
 
 import Box from '@mui/material/Box'
-import { Text } from '@components/Text'
+import { Text } from '@gobletqa/components'
 import { BlockIcon } from '@components/Icons'
 import { Fadeout } from '@components/Fadeout'
 import { gutter, colors } from '@gobletqa/components/theme'
@@ -47,7 +47,7 @@ const MissingRepo = () => {
       className="missing-repo"
     >
       <BlockIcon fontSize='large' sx={styles.icon} />
-      <Text type="h6" sx={styles.text} >
+      <Text variant="h6" sx={styles.text} >
         Repository not connected
       </Text>
     </Box>

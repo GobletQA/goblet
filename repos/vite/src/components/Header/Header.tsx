@@ -8,10 +8,9 @@ import { HeaderLogo } from './HeaderLogo'
 import Toolbar from '@mui/material/Toolbar'
 import { AppHeader } from './Header.styled'
 import { useStateReset } from '@hooks/useReset'
-import { EThemeType } from '@gobletqa/components'
 import { gutter } from '@gobletqa/components/theme'
-import { useThemeType } from '@contexts/ThemeContext'
 import { IconButton } from '@components/Buttons/IconButton'
+import { EThemeType, useThemeType } from '@gobletqa/components'
 import { DarkModeIcon, LightModeIcon } from '@components/Icons'
 
 type THeaderProps = {

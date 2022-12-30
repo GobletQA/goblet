@@ -1,20 +1,21 @@
 import type { ReactNode } from 'react'
-import type { TThemeType, TThemeProvider, TGobletTheme } from '@gobletqa/components'
+import type { EThemeType, TThemeType, TThemeProvider, TGobletTheme } from '@GBC/types'
 
 import { createContext, useContext, useMemo, useState } from 'react'
-
+import { getTheme } from '@GBC/theme'
 import { noOpObj } from '@keg-hub/jsutils'
-import { AppStyles } from '@components/AppStyles'
+import { StorageKeys  } from '@GBC/constants'
 import CssBaseline from '@mui/material/CssBaseline'
-import { useEffectOnce } from '@hooks/useEffectOnce'
-import { localStorage } from '@services/localStorage'
-import { MemoChildren } from '@components/MemoChildren'
-import { EThemeType, getTheme } from '@gobletqa/components'
+import { AppStyles } from '@GBC/components/AppStyles'
+import { useEffectOnce } from '@GBC/hooks/useEffectOnce'
+import { localStorage } from '@GBC/services/localStorage'
+import { MemoChildren } from '@GBC/components/MemoChildren'
 import { ThemeType } from '@gobletqa/components/theme/initThemeType'
 import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles'
 
 export type TTheme = {
   children:ReactNode
+  globalStyles?:(props:Record<`theme`, TGobletTheme>) => string
 }
 
 export const ThemeTypeContext = createContext<TThemeType>(noOpObj as TThemeType)
@@ -25,7 +26,7 @@ export const useThemeType = () => {
   return {
     type,
     setType: async (type:EThemeType) => {
-      await localStorage.setThemeType(type)
+      await localStorage.set(StorageKeys.THEME_TYPE, type, false)
       setType(type)
     }
   }
@@ -37,8 +38,8 @@ export const useThemeType = () => {
  * and then be used this component
  */
 const GobletTheme = (props:TTheme) => {
-
   const { type } = useThemeType()
+  const { globalStyles } = props
 
   const theme = useMemo(
     () => getTheme(type || ThemeType) as TGobletTheme,
@@ -47,7 +48,10 @@ const GobletTheme = (props:TTheme) => {
 
   return (
     <>
-      <AppStyles theme={theme} />
+      <AppStyles
+        theme={theme}
+        globalStyles={globalStyles}
+      />
       <MUIThemeProvider theme={theme}>
         <CssBaseline />
         <MemoChildren {...props} />
@@ -61,7 +65,7 @@ const ThemeTypeProvider = (props:TThemeProvider) => {
 
   useEffectOnce(() => {
     (async () => {
-      const type = await localStorage.getThemeType()
+      const type = await localStorage.get(StorageKeys.THEME_TYPE, false)
       rest.type !== type && rest.setType(type)
     })()
   })
@@ -75,11 +79,12 @@ const ThemeTypeProvider = (props:TThemeProvider) => {
 
 export const ThemeProvider = (props:TTheme) => {
   const [themeType, setThemeType] = useState<EThemeType>(ThemeType as EThemeType)
+  const { globalStyles, ...rest } = props
 
   return (
     <ThemeTypeProvider type={themeType} setType={setThemeType}>
-      <GobletTheme>
-        <MemoChildren {...props} />
+      <GobletTheme globalStyles={globalStyles} >
+        <MemoChildren {...rest} />
       </GobletTheme>
     </ThemeTypeProvider>
   )

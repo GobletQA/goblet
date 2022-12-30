@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react'
 
 import { useRepo } from '@store'
 import Box from '@mui/material/Box'
-import { Text } from '@components/Text'
+import { Text } from '@gobletqa/components'
 import { asCallback } from '@utils/helpers'
 import { Tooltip } from '@components/Tooltip'
 import { Button } from '@components/Buttons/Button'
