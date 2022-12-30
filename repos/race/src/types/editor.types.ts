@@ -4,6 +4,7 @@ import type { TRaceFeatures, TRaceFeature } from './features.types'
 import type {
   TAction,
   TTabAction,
+  EThemeType,
   TSidebarPanel
 } from '@gobletqa/components'
 import type {
@@ -37,6 +38,7 @@ export type TRaceEditorProps = {
   actionsOpen?:boolean
   feature?:TRaceFeature
   features:TRaceFeatures
+  themeType?: EThemeType
   sidebarWidth?: number
   sidebarStatus?: boolean
   sidebarMaxWidth?: number

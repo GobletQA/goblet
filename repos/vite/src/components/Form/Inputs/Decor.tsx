@@ -5,7 +5,10 @@ import type { ComponentType, ReactNode } from 'react'
 export const Decor = (props:TInputDecor) => {
   const {
     active,
+    labelPos,
     pos=`start`,
+    iconProps,
+    buttonProps,
     adornmentProps,
     Component:DecorComp,
     ...decorProps

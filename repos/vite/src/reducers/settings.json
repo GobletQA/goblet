@@ -104,13 +104,14 @@
     },
     "theme": {
       "key": "theme",
-      "value": "Goblet",
+      "value": "",
       "active": true,
-      "default": "Goblet",
+      "default": "",
       "group": "editor",
-      "emptyOption": "Goblet",
+      "emptyOption": "Goblet-dark",
       "options": [
-        "Goblet",
+        "Goblet-dark",
+        "Goblet-light",
         "AtlanticNight",
         "AtomOneDark",
         "AuroraX",

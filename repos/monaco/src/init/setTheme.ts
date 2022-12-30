@@ -1,40 +1,52 @@
 import type { TEditorThemes, TEditorTheme } from '../types'
 
+import {
+  getTheme,
+  EThemeType,
+  setThemeVars,
+  loadGobletTheme
+} from '@gobletqa/components'
+
 export const themes: TEditorThemes = {}
 
-const importTheme = async (themeName:string) => {
+const importTheme = async (themeName:string, mode:string) => {
+  let importedTheme
   try {
     const resp = await import(`../themes/${themeName}.json`)
     const { __esModule, ...theme } = resp
-    return theme
+    importedTheme = theme
   }
   catch(err:any){
     console.error(err.message)
-    return false
   }
+
+  return importedTheme || await loadGobletTheme(mode, `monaco`, false)
 }
 
+const resolveTheme = async (name:string, mode:string) => {
+  const theme = (name === `Goblet-light` || name === `Goblet-dark`)
+    ? await loadGobletTheme(mode, `monaco`, false) as TEditorTheme
+    : await importTheme(name, mode) as TEditorTheme
 
-export const  setTheme = async (name: string, themeObj?:TEditorTheme) => {
-  let theme = themes[name] || themeObj
-  if (!theme) {
-    if(!name) return
+  if(!theme) return
 
-    theme = await importTheme(name) as TEditorTheme
-    if(!theme) return
+  themes[name] = theme
+  window.monaco.editor.defineTheme(name, theme)
 
-    themes[name] = theme
-    window.monaco.editor.defineTheme(name, theme)
-  }
+  return theme
+}
 
-  const prefix = '--goblet-'
+export const  setTheme = async (name?: string, themeObj?:TEditorTheme) => {
 
-  Object.keys(theme.colors).forEach(v => {
-    document.documentElement.style.setProperty(
-      `${prefix}${v.replace('.', '-')}`,
-      theme.colors[v] || themes.OneDarkPro.colors[v] || 'rgba(0, 0, 0, 0)'
-    )
-  })
+  const mode = getTheme()?.palette?.mode || EThemeType.light
+  name = name || `Goblet-${mode}`
 
-  window.monaco.editor.setTheme(name)
+  const theme = themes[name as string]
+    || themeObj
+    || await resolveTheme(name, mode)
+
+  if(!theme) return
+
+  theme && setThemeVars(theme, `monaco`)
+  name && window.monaco.editor.setTheme(name)
 }

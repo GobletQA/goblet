@@ -25,7 +25,7 @@ let __INIT_CALLED = false
 const initTheme = (config:TEditorConfig) => {
   config?.theme?.name
     ? setTheme(config?.theme?.name, config?.theme?.theme)
-    : setTheme('OneDarkPro')
+    : setTheme()
 }
 
 const setupMonaco = (config:TEditorConfig) => {

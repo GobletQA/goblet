@@ -1,10 +1,4 @@
-import type {
-  TEditorRefs,
-  TFeaturesRefs,
-  TEditorContainer,
-  TOnFeatureCBRef,
-  TRaceEditorProps
-} from '@GBR/types'
+import type { TEditorContainer } from '@GBR/types'
 
 import { Feature } from '../Feature'
 import { FeaturesPanel } from '../Features'

@@ -1,5 +1,5 @@
-import type { TGobletTheme } from '../types'
 import type { ThemeOptions } from '@mui/material/styles'
+import type { TGobletTheme, TEditorTheme } from '@GBC/types'
 
 import { dims } from './dims'
 import { gutter } from './gutter'
@@ -31,4 +31,29 @@ export const getTheme = (type?:EThemeType) => {
   return __GobletTheme && (!mode || !type || mode === type)
     ? __GobletTheme
     : createTheme(type || EThemeType.light)
+}
+
+
+const defaultTheme = {
+  colors: {},
+}
+
+export const  setThemeVars = async (
+  theme:Record<`colors`, Record<string, string>>=defaultTheme,
+  context?:String
+) => {
+
+  // TODO: decide if context should be added to the prefix
+  // Would allow separating the themes for monaco and race editors
+  const prefix = '--goblet-'
+
+  Object.keys(theme.colors).forEach(v => {
+    document.documentElement.style.setProperty(
+      `${prefix}${v.replace('.', '-')}`,
+      theme.colors[v]
+        || (defaultTheme.colors as Record<string, string> )[v] as string
+        || 'rgba(0, 0, 0, 0)'
+    )
+  })
+
 }

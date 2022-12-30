@@ -20,8 +20,8 @@ export const AutoInput = (props:TAutoInput) => {
     decor=noOpObj as TInputDecor,
     ...rest
   } = props
-  const { Component, pos } = decor
-  const decorKey = pos === `end` ? `endAdornment` : `startAdornment`
+  const { Component, labelPos } = decor
+  const decorKey = labelPos === `end` ? `endAdornment` : `startAdornment`
 
   return (
     <AutocompleteElement

@@ -39,5 +39,13 @@ export type TThemeChildren = {
 
 export type TThemeProvider = TThemeType & TThemeChildren
 
+export type TEditorTheme = {
+  base: string
+  inherit: boolean;
+  encodedTokensColors?: string[]
+  colors: Record<string, string>
+  rules: Record<string, string|boolean|number>[]
+}
+
 export type TStyle = Record<string, string|number>
 export type TStyles = Record<string, TStyle>

@@ -2,11 +2,14 @@ import type { TRaceEditorProps } from '@GBR/types'
 
 import { EditorContainer } from './EditorContainer'
 import { useRaceRefs } from '../../hooks/useRaceRefs'
+import { useRaceTheme } from '../../hooks/useRaceTheme'
 import { FeatureProvider } from '../../contexts/FeatureContext'
 import { useInitialFeature } from '../../hooks/useInitialFeature'
 
+
 export const RaceEditor = (props:TRaceEditorProps) => {
 
+  useRaceTheme(props)
   const initialFeature = useInitialFeature(props)
 
   const {

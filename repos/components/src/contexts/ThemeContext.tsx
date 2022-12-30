@@ -20,11 +20,6 @@ export type TTheme = {
 
 export const ThemeTypeContext = createContext<TThemeType>(noOpObj as TThemeType)
 
-let __loadedThemeType:EThemeType
-localStorage.get(StorageKeys.THEME_TYPE, false)
-  .then((type:EThemeType) => __loadedThemeType = type)
-
-
 export const useThemeType = () => {
   const { type, setType } = useContext(ThemeTypeContext)
 
@@ -70,8 +65,8 @@ const ThemeTypeProvider = (props:TThemeProvider) => {
 
   useEffectOnce(() => {
     (async () => {
-      const type = __loadedThemeType || await localStorage.get(StorageKeys.THEME_TYPE, false)
-      rest.type !== type && rest.setType(type)
+      rest.type !== ThemeType
+        && rest.setType(ThemeType)
     })()
   })
 
