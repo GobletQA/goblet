@@ -94,7 +94,7 @@ export const DefListSubheader = styled(ListSubheader)(({ theme }) => `
 `)
 
 export const DefItemDivider = styled(Divider)(({ theme }) => `
-  border-bottom: 1px solid ${getColor(colors.gray02, colors.black14, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray02, colors.black15, theme)};
 `)
 
 export const DefItem = styled(ListItem)(({ theme }) => `
@@ -102,8 +102,8 @@ export const DefItem = styled(ListItem)(({ theme }) => `
   min-height: 35px;
   flex-direction: column;
   transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
-  background-color: ${getColor(colors.gray00, colors.black10, theme)};
   color: ${getColor(colors.black09, colors.gray04, theme)};
+  background-color: ${getColor(colors.gray00, colors.black10, theme)};
 
   &.item-open {
     background-color: ${getColor(colors.white, colors.black13, theme)};
@@ -158,7 +158,7 @@ export const DefButton = styled(ListItemButton)(({ theme }) => `
   flex-grow: 0;
   padding-right: 0px;
   font-weight: bold;
-  color: ${getColor(colors.gray05, colors.fadeLight50, theme)};
+  color: ${getColor(colors.gray05, colors.black08, theme)};
   transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
 
   &:hover {

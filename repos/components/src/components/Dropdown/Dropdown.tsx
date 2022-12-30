@@ -4,6 +4,7 @@ import type { TransitionProps } from '@mui/material/transitions'
 
 import { forwardRef } from 'react'
 import Slide from '@mui/material/Slide'
+import { H5 } from '@GBC/components/Text'
 import { emptyObj } from '@keg-hub/jsutils'
 import { ExpandMoreIcon } from '@GBC/components/Icons'
 import { Body, Container, Header } from './Dropdown.styled'
@@ -55,7 +56,9 @@ export const Dropdown = (props:TDropdown) => {
         className='gc-dropdown-header'
         aria-controls={`${id}-content`}
       >
-        {header}
+        <H5>
+          {header}
+        </H5>
       </Header>
       <Body className='gc-dropdown-body' >
         {children}

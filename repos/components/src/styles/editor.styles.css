@@ -1,5 +1,4 @@
 :root {
-
   --goblet-editor-background: #060407;
   --goblet-editor-foreground: #F9F8FB;
 
@@ -27,7 +26,6 @@
   --goblet-scrollbarSlider-background: #54406d66;
   --goblet-scrollbarSlider-activeBackground: #54406db3;
   --goblet-scrollbarSlider-hoverBackground: #54406d99;
-
 }
 
 .goblet-editor {

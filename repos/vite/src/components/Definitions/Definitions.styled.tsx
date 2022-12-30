@@ -63,12 +63,12 @@ export const Drawer = styled(
   }),
   ...(!open && {
     [`& .goblet-defs-header-tabs button.MuiTab-root.Mui-selected`]: {
-      color: getColor(colors.gray05, colors.fadeLight30, theme),
-      backgroundColor: getColor(colors.gray00, colors.black11, theme),
+      color: getColor(colors.gray05, colors.purple02, theme),
+      backgroundColor: getColor(colors.gray00, colors.purple17, theme),
 
       [`&:hover`]: {
-        color: getColor(colors.royalPurple, colors.fadeLight90, theme),
-        backgroundColor: getColor(colors.white, colors.black14, theme)
+        color: getColor(colors.royalPurple, colors.purple02, theme),
+        backgroundColor: getColor(colors.white, colors.purple17, theme)
       }
     }
   }),
@@ -108,20 +108,20 @@ export const DefsHeaderTab = styled(Tab)(({ theme }) => `
   font-weight: ${theme.typography.fontWeightBold};
   transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
 
-  color: ${getColor(colors.gray05, colors.fadeLight30, theme)};
+  color: ${getColor(colors.gray05, colors.black06, theme)};
   background-color: ${getColor(colors.gray00, colors.black11, theme)};
   border-bottom: 1px solid ${getColor(colors.gray00, colors.black13, theme)};
   border-left: 1px solid ${getColor(colors.gray01, colors.black13, theme)};
 
 
   &.Mui-selected {
-    color: ${getColor(colors.royalPurple, colors.fadeLight90, theme)};
-    background-color: ${getColor(colors.white, colors.black14, theme)};
+    color: ${getColor(colors.royalPurple, colors.purple02, theme)};
+    background-color: ${getColor(colors.white, colors.purple17, theme)};
   }
 
   &:hover:not(.Mui-selected) {
-    color: ${getColor(colors.royalPurple, colors.fadeLight75, theme)};
-    background-color: ${getColor(colors.white, colors.black14, theme)};
+    color: ${getColor(colors.royalPurple, colors.purple02, theme)};
+    background-color: ${getColor(colors.white, colors.purple17, theme)};
   }
 `)
 

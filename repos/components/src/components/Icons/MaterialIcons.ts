@@ -52,7 +52,6 @@ import DesignIcon from '@mui/icons-material/DesignServicesOutlined'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
-
 export {
   Settings,
   PlugIcon,
@@ -106,5 +105,5 @@ export {
   InsertChartIcon,
   DesignIcon,
   ExpandMoreIcon,
-  ChevronRightIcon
+  ChevronRightIcon,
 }

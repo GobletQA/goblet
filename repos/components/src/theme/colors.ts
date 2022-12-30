@@ -37,7 +37,7 @@ export const yellow = {
 export const purple = {
   purple00: `#F9F8FB`,
   purple01: `#F2EFF5`,
-  purple02: `#E4DEEB`,
+  purple02: `#E4DEEB`, // black active foreground
   purple03: `#D7CEE1`,
   purple04: `#C9BDD7`,
   purple05: `#BCADCE`,
@@ -52,9 +52,9 @@ export const purple = {
   purple14: `#48375E`,
   purple15: `#3C2E4E`,
   purple16: `#30243E`,
-  purple17: `#2A2037`,
+  purple17: `#2A2037`, // black active - background
   purple18: `#241B2F`,
-  purple19: `#1E1727`,
+  purple19: `#1E1727`, // black inactive - background
   purple20: `#18121F`,
   purple21: `#120E17`,
   purple22: `#0C0910`,
@@ -98,7 +98,7 @@ export const gray = {
   gray04: `#B1B7C1`,
   gray05: `#A1A9B5`,
   gray06: `#929AA8`,
-  gray07: `#828C9C`,
+  gray07: `#828C9C`, // black inactive foreground
   gray08: `#7A8596`,
   gray09: `#737D8F`,
   gray10: `#6B7689`,

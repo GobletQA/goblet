@@ -45,5 +45,34 @@ export const components = (
         }
       }
     },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          marginTop: `0px`,
+          backgroundColor: palette.mode === EThemeType.light
+            ? palette.colors.white
+            : palette.colors.black12,
+          [`&::before`]: {
+            height: 0,
+            transition: `none`,
+            backgroundColor: `initial`,
+          }
+        },
+      }
+    },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: {
+          padding: `0px`,
+        },
+      }
+    },
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: {
+          padding: `0px`,
+        },
+      }
+    }
   }
 }

@@ -14,7 +14,6 @@ let __GobletTheme:TGobletTheme
 
 export const createTheme = (type:EThemeType) => {
   const builtPalette = palette[type](muiTheme)
-
   __GobletTheme = createThemeMui({
     dims,
     gutter,
