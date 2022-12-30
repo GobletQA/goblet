@@ -1,4 +1,6 @@
 import { Theme, Palette, PaletteOptions } from '@mui/material/styles'
+import type { dims } from '../theme/dims'
+import type { gutter } from '../theme/gutter'
 import type { colors } from '../theme/colors'
 
 
@@ -21,6 +23,8 @@ export type TPalette = {
 }
 
 export type TGobletTheme = Omit<Theme, `palette`> & {
+  dims: typeof dims
+  gutter: typeof gutter
   palette: Palette & TExtPalette
 }
 

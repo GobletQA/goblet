@@ -1,23 +1,23 @@
-import type { TStepAst, TScenarioAst } from '@GBR/types'
+import type { TStepAst, TParentAst } from '@GBR/types'
 
 import { Text } from '../Text'
 import Box from '@mui/material/Box'
 
 export type TStep = {
   step:TStepAst
-  scenario:TScenarioAst
+  parent:TParentAst
 }
 
 export const Step = (props:TStep) => {
   const {
     step,
-    scenario
+    parent
   } = props
 
   return (
-    <Box>
-      <Text>
-        { step.step }
+    <Box className='gr-step' >
+      <Text className='gr-step-text' >
+        { step?.step }
       </Text>
     </Box>
   )

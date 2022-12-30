@@ -91,7 +91,10 @@ export const EditorContainer = (props:TEditorContainer) => {
             onTabClose={onCloseFeature}
             onTabClick={onActiveFeature}
           />
-          <Feature />
+          <Feature
+            stepsRef={stepsRef}
+            featuresRef={featuresRef}
+          />
         </BuilderContainer>
         {actions?.length && (
           <Actions

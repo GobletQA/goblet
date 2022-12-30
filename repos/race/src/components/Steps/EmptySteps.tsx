@@ -1,9 +1,9 @@
-import type { TScenarioAst } from '@GBR/types'
+import type { TParentAst } from '@GBR/types'
 
 import Box from '@mui/material/Box'
 
 export type TEmptySteps = {
-  scenario:TScenarioAst
+  parent:TParentAst
 }
 
 export const EmptySteps = (props:TEmptySteps) => {

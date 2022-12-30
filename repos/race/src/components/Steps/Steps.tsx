@@ -1,38 +1,49 @@
-import type { TScenarioAst } from '@GBR/types'
+import type { TParentAst } from '@GBR/types'
 
 import { Step } from './Step'
-import { Text } from '../Text'
-import Box from '@mui/material/Box'
+import { AddItem } from '../AddItem'
+import { ESectionType } from '@GBR/types'
 import { EmptySteps } from './EmptySteps'
-
+import { Section } from '../Section'
 
 export type TSteps = {
-  scenario:TScenarioAst
+  parent:TParentAst
 }
 
 export const Steps = (props:TSteps) => {
   const {
-    scenario
+    parent
   } = props
 
   return (
-    <Box>
-      <Text>
-        <b>Steps</b>
-      </Text>
-      {
-        !scenario?.steps?.length
-          ? (<EmptySteps scenario={scenario} />)
-          : scenario?.steps.map(step => {
-              return (
-                <Step
-                  step={step}
-                  scenario={scenario}
-                  key={`${scenario.uuid}-${step.uuid}`}
-                />
-              )
-            })
-      }
-    </Box>
+    <>
+      <Section
+        stack={0}
+        gutter={true}
+        header={true}
+        variant={`h5`}
+        title={`Steps`}
+        type={ESectionType.steps}
+        className='gr-steps-section'
+      >
+        {
+          !parent?.steps?.length
+            ? (<EmptySteps parent={parent} />)
+            : parent?.steps?.map((step) => {
+                return (
+                  <Step
+                    step={step}
+                    parent={parent}
+                    key={`${parent.uuid}-${step.index}-${step.uuid}`}
+                  />
+                )
+              })
+        }
+      </Section>
+      <AddItem
+        parentId={parent?.uuid}
+        type={ESectionType.step}
+      />
+    </>
   )
 }

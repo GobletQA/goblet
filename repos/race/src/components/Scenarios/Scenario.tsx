@@ -1,9 +1,9 @@
 import { TScenarioAst } from '@GBR/types'
-import { TSectionType } from '../../types'
+import { ESectionType } from '../../types'
 
-import { Section } from '../Section'
 import { Steps } from '../Steps'
-
+import { capitalize } from '@keg-hub/jsutils'
+import { Section, SectionHeader } from '../Section'
 
 export type TScenario = {
   scenario:TScenarioAst
@@ -14,10 +14,15 @@ export const Scenario = (props:TScenario) => {
 
   return (
     <Section
-      type={TSectionType.scenario}
-      title={scenario?.scenario}
+      stack={1}
+      type={ESectionType.scenario}
     >
-      <Steps scenario={scenario} />
+      <SectionHeader
+        underline={true}
+        type={ESectionType.scenario}
+        title={scenario?.scenario.trim() ||capitalize(ESectionType.scenario)}
+      />
+      <Steps parent={scenario} />
     </Section>
   )
 }

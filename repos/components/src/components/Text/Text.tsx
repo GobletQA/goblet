@@ -1,19 +1,13 @@
-import type { ComponentProps } from 'react'
+import type { ReactNode, ComponentProps } from 'react'
+
 import Typography from '@mui/material/Typography'
 
 export type TText = ComponentProps<typeof Typography> & {
-  type?:string
-  element?:string
-  component?:string
+  component?:ReactNode
 }
 
 export const Text = (props:TText) => {
-  const {
-    type,
-    element=type,
-    component=element,
-    ...rest
-  } = props
+  const { component, ...rest } = props
 
   return (
     <Typography

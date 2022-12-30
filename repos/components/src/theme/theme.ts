@@ -1,5 +1,8 @@
 import type { TGobletTheme } from '../types'
+import type { ThemeOptions } from '@mui/material/styles'
 
+import { dims } from './dims'
+import { gutter } from './gutter'
 import { palette } from './palette'
 import { EThemeType } from '../types'
 import { components } from './components'
@@ -13,10 +16,12 @@ export const createTheme = (type:EThemeType) => {
   const builtPalette = palette[type](muiTheme)
 
   __GobletTheme = createThemeMui({
+    dims,
+    gutter,
     palette: builtPalette,
     typography: typography(muiTheme, builtPalette),
     components: components(muiTheme, builtPalette)
-  }) as TGobletTheme
+  } as ThemeOptions) as TGobletTheme
 
   return __GobletTheme
 }

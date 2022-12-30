@@ -1,7 +1,6 @@
-
-import { Text } from '../Text'
-import Box from '@mui/material/Box'
 import { Scenario } from './Scenario'
+import { AddItem } from '../AddItem'
+import { ESectionType } from '../../types'
 import { useFeature } from '../../contexts'
 
 export type TScenarios = {
@@ -14,7 +13,7 @@ export const Scenarios = (props:TScenarios) => {
   const { scenarios } = feature
 
   return (
-    <Box>
+    <>
       {scenarios.map(scenario => {
         return (
           <Scenario
@@ -23,6 +22,10 @@ export const Scenarios = (props:TScenarios) => {
           />
         )
       })}
-    </Box>
+      <AddItem
+        parentId={feature.uuid}
+        type={ESectionType.scenario}
+      />
+    </>
   )
 }

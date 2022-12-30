@@ -1,15 +1,21 @@
-import type { ComponentType } from 'react'
-import type { TSectionType } from '../../types'
+import type { ESectionType } from '../../types'
+import type { ComponentType, CSSProperties } from 'react'
+import type { TTextType } from '@gobletqa/components'
 
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
-import { capitalize } from '@keg-hub/jsutils'
+import { capitalize, cls } from '@keg-hub/jsutils'
 import { SectionActions } from './SectionActions'
 import { Header, HeaderTitle } from './Section.styled'
 
 export type TSectionHeader = {
   title?:string
-  type:TSectionType
+  gutter?:boolean
+  className?:string
+  sx?:CSSProperties
+  type:ESectionType
+  variant?:TTextType
+  underline?:boolean
   Icon?: ComponentType<any>
   actions?: Record<string, any>[]
 }
@@ -17,9 +23,14 @@ export type TSectionHeader = {
 
 export const SectionHeader = (props:TSectionHeader) => {
   const {
+    sx,
     type,
     Icon,
-    actions
+    gutter,
+    actions,
+    variant,
+    underline,
+    className,
   } = props
 
   const title = useMemo(() => {
@@ -28,16 +39,35 @@ export const SectionHeader = (props:TSectionHeader) => {
   }, [props.title])
 
   return (
-    <Header>
-      <Box className='gr-section-header-icon-wrap' >
-      {Icon && (<Icon className='gr-section-header-icon' />) || null}
-      </Box>
+    <Header
+      sx={sx}
+      gutter={gutter}
+      className={cls('gr-section-header', className)}
+    >
+
+      {Icon && (
+        <Box className='gr-section-header-icon-wrap' >
+          <Icon className='gr-section-header-icon' />
+        </Box>
+      ) || null }
+
       {title && (
-        <HeaderTitle className='gr-section-header-title' >
+        <HeaderTitle
+          variant={variant || `h4`}
+          sx={(underline && {
+            paddingBottom: `5px`,
+            borderBottom: `1px solid #ddd`
+          }) as CSSProperties}
+          className='gr-section-header-title'
+        >
           {title}
         </HeaderTitle>
       ) || null}
-      { actions && (<SectionActions actions={actions} type={type} />) || null}
+
+      { actions && (
+        <SectionActions actions={actions} type={type} />
+      ) || null}
+
     </Header>
   )
   

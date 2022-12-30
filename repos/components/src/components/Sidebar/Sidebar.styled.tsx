@@ -7,7 +7,7 @@ export const SidebarContainer = styled(Box, {
 })(({ maxWidth=230 }) => `
 
   width: 100%;
-  max-width: ${maxWidth}px;
+  // max-width: ${maxWidth}px;
 
   flex-shrink: 0;
   font-size: 14px;

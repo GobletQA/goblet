@@ -13,19 +13,19 @@ export enum EStepKey {
   then='then',
   and='and',
   but='but',
-} 
+}
 
 export type TBackgroundAst = {
   index: number
-  uuid?: string
+  uuid: string
   tags: string[]
   background: string
-  scenarios: TScenarioAst[]
+  steps: TStepAst[]
 }
 
 export type TRuleAst = {
   index: number
-  uuid?: string
+  uuid: string
   tags: string[]
   rule: string
   background?: TBackgroundAst
@@ -33,7 +33,7 @@ export type TRuleAst = {
 }
 
 export type TStepAst = {
-  uuid?: string
+  uuid: string
   index: number
   step: string
   type: EStepKey
@@ -41,12 +41,13 @@ export type TStepAst = {
 
 export type TScenarioAst = {
   index: number
-  uuid?: string
+  uuid: string
   tags: string[]
   scenario: string
   steps: TStepAst[]
 }
 
+export type TParentAst = TBackgroundAst | TScenarioAst
 
 export type TAstBlock = {
   content: string

@@ -1,18 +1,28 @@
-import type { ReactNode } from 'react'
-import type { TSectionType } from '../../types'
+import type { ESectionType } from '../../types'
+import type { ReactNode, CSSProperties } from 'react'
 
 import { Body } from './Section.styled'
 
 export type TSectionBody = {
-  type:TSectionType
+  type:ESectionType
+  gutter?:boolean
+  sx?:CSSProperties
   children?: ReactNode
 }
 
 export const SectionBody = (props:TSectionBody) => {
-  const { children } = props
+  const {
+    sx,
+    gutter,
+    children,
+  } = props
   
   return (
-    <Body className='gr-section-body' >
+    <Body
+      sx={sx}
+      gutter={gutter}
+      className='gr-section-body'
+    >
       {children}
     </Body>
   )
