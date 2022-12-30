@@ -1,1 +1,30 @@
-export {}
+export const PerspectiveOpts = [
+  `As a user`,
+  `As a customer`,
+  `As a guest`,
+  `As a manager`,
+  `As a member`,
+  `As a product manager`,
+  `As a product owner`,
+  `As a recruiter`,
+  `As a student`,
+  `As a teacher`,
+  `As a visitor`,
+  `As an editor`,
+  `As an employee`,
+  `As an employer`,
+  `As an engineer`,
+  `As an operator`,
+]
+
+export const TextInputProps = [
+  `id`,
+  `size`,
+  `value`,
+  `variant`,
+  `disabled`,
+  `fullWidth`,
+  `inputProp`,
+  `InputProps`,
+  `InputLabelProps`,
+]

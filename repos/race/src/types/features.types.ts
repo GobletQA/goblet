@@ -8,11 +8,20 @@ export enum EAstObjects {
 }
 
 export enum EStepKey {
-  given='given',
-  when='when',
-  then='then',
-  and='and',
-  but='but',
+  given=`given`,
+  when=`when`,
+  then=`then`,
+  and=`and`,
+  but=`but`,
+}
+
+export enum EMetaType {
+  tags=`tags`,
+  role=`role`,
+  persona=`persona`,
+  reason=`reason`,
+  desire=`desire`,
+  perspective=`perspective`,
 }
 
 export type TBackgroundAst = {
@@ -49,7 +58,7 @@ export type TScenarioAst = {
 
 export type TStepParentAst = TBackgroundAst | TScenarioAst
 export type TScenarioParentAst = TRuleAst | TRaceFeature
-
+export type TTagsParentAst = TScenarioParentAst | TStepParentAst
 
 export type TAstBlock = {
   content: string
@@ -60,7 +69,6 @@ export type TFeatureParent = {
   uuid: string
   location: string
 }
-
 
 export type TRaceFeature = {
   uuid: string

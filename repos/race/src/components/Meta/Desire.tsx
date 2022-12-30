@@ -1,13 +1,28 @@
+import type { TMeta } from './Meta'
+
+import { EMetaType } from '@GBR/types'
+import { MetaInput } from './MetaInput'
 import { MetaContainer } from './Meta.styled'
 
-export type TDesire = {
-  
-}
+export type TDesire = TMeta & {}
 
 export const Desire = (props:TDesire) => {
+  const { parent, type } = props
+  const { desire } = parent
+
   return (
-    <MetaContainer>
-      Desire
+    <MetaContainer className='gr-feature-desire' >
+
+      <MetaInput
+        inputType='text'
+        multiline={true}
+        type={EMetaType.desire}
+        value={desire?.content}
+        placeholder='I want to ...'
+        id={`${parent.uuid}-desire`}
+        className='gr-feature-desire'
+      />
+
     </MetaContainer>
   )
 }

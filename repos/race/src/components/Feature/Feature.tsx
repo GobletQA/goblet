@@ -38,7 +38,10 @@ export const Feature = (props:TFeature) => {
             underline={true}
             type={ESectionType.feature}
           />
-          <FeatureMeta featuresRef={featuresRef} />
+          <FeatureMeta
+            parent={feature}
+            featuresRef={featuresRef}
+          />
           <Background
             parent={feature}
             background={feature.background}
