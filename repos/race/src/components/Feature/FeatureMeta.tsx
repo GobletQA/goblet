@@ -1,8 +1,9 @@
 import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 
 import { Meta } from '../Meta'
-import { Section } from '../Section'
 import { ESectionType } from '@GBR/types'
+import { Dropdown } from '@gobletqa/components'
+import { Section, SectionHeader } from '../Section'
 
 export type TFeatureMeta = {
   parent:TRaceFeature
@@ -13,16 +14,21 @@ export const FeatureMeta = (props:TFeatureMeta) => {
   const { parent, featuresRef } = props
 
   return (
-    <Section
-      stack={2}
-      type={ESectionType.feature}
+    <Dropdown
+      id={parent.uuid}
+      header={`Meta Data`}
     >
-      <Meta
-        parent={parent}
-        featuresRef={featuresRef}
+      <Section
+        stack={2}
         type={ESectionType.feature}
-      />
-    </Section>
+      >
+        <Meta
+          parent={parent}
+          featuresRef={featuresRef}
+          type={ESectionType.feature}
+        />
+      </Section>
+    </Dropdown>
   )
   
 }
