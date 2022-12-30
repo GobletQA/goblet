@@ -1,29 +1,30 @@
+import type { TScenarioParentAst, TScenarioAst } from '@GBR/types'
 import { Scenario } from './Scenario'
 import { AddItem } from '../AddItem'
-import { ESectionType } from '../../types'
-import { useFeature } from '../../contexts'
+import { ESectionType } from '@GBR/types'
+
 
 export type TScenarios = {
-  
+  scenarios?:TScenarioAst[]
+  parent:TScenarioParentAst
 } 
 
 export const Scenarios = (props:TScenarios) => {
-  const { feature } = useFeature()
 
-  const { scenarios } = feature
+  const { scenarios, parent } = props
 
   return (
     <>
-      {scenarios.map(scenario => {
+      {scenarios?.map(scenario => {
         return (
           <Scenario
             scenario={scenario}
-            key={`${feature.uuid}-${scenario.uuid}`}
+            key={`${parent.uuid}-${scenario.uuid}`}
           />
         )
       })}
       <AddItem
-        parentId={feature.uuid}
+        parentId={parent.uuid}
         type={ESectionType.scenario}
       />
     </>

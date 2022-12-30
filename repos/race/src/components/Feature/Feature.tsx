@@ -1,10 +1,10 @@
 import type { TFeaturesRefs } from '@GBR/types'
 
-
-import { FeatureMeta } from './FeatureMeta'
+import { Rules } from '../Rules'
 import { Scenarios } from '../Scenarios'
-import { Background } from '../Background'
 import { ESectionType } from '@GBR/types'
+import { Background } from '../Background'
+import { FeatureMeta } from './FeatureMeta'
 import { useFeature } from '../../contexts'
 import { EmptyFeature } from './EmptyFeature'
 import { Section, SectionHeader } from '../Section'
@@ -39,8 +39,18 @@ export const Feature = (props:TFeature) => {
             type={ESectionType.feature}
           />
           <FeatureMeta featuresRef={featuresRef} />
-          <Background />
-          <Scenarios />
+          <Background
+            parent={feature}
+            background={feature.background}
+          />
+          <Rules
+            parent={feature}
+            rules={feature.rules}
+          />
+          <Scenarios
+            parent={feature}
+            scenarios={feature.scenarios}
+          />
         </Section>
       )
 }

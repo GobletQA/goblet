@@ -1,4 +1,4 @@
-import type { TParentAst } from '@GBR/types'
+import type { TStepParentAst } from '@GBR/types'
 
 import { Step } from './Step'
 import { AddItem } from '../AddItem'
@@ -7,7 +7,7 @@ import { EmptySteps } from './EmptySteps'
 import { Section } from '../Section'
 
 export type TSteps = {
-  parent:TParentAst
+  parent:TStepParentAst
 }
 
 export const Steps = (props:TSteps) => {

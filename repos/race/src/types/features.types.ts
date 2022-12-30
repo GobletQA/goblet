@@ -47,7 +47,9 @@ export type TScenarioAst = {
   steps: TStepAst[]
 }
 
-export type TParentAst = TBackgroundAst | TScenarioAst
+export type TStepParentAst = TBackgroundAst | TScenarioAst
+export type TScenarioParentAst = TRuleAst | TRaceFeature
+
 
 export type TAstBlock = {
   content: string

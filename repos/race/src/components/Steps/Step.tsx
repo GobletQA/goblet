@@ -1,11 +1,11 @@
-import type { TStepAst, TParentAst } from '@GBR/types'
+import type { TStepAst, TStepParentAst } from '@GBR/types'
 
 import { Text } from '../Text'
 import Box from '@mui/material/Box'
 
 export type TStep = {
   step:TStepAst
-  parent:TParentAst
+  parent:TStepParentAst
 }
 
 export const Step = (props:TStep) => {

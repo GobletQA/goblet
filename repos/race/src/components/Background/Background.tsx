@@ -1,33 +1,38 @@
+import type { TBackgroundAst, TRaceFeature } from '@GBR/types'
 
 import { Steps } from '../Steps'
 import { AddItem } from '../AddItem'
 import { ESectionType } from '../../types'
-import { useFeature } from '../../contexts'
 import { capitalize } from '@keg-hub/jsutils'
 import { Section, SectionHeader } from '../Section'
 
 
-export type TBackground = {}
+export type TBackground = {
+  parent:TRaceFeature
+  background?:TBackgroundAst
+}
 
 export const Background = (props:TBackground) => {
-  const { feature } = useFeature()
-  const { background } = feature
+
+  const { background, parent } = props
+
+  return background
+    ? (
+        <Section type={ESectionType.background} >
+          <SectionHeader
+            underline={true}
+            type={ESectionType.scenario}
+            title={background?.background?.trim() ||capitalize(ESectionType.background)}
+          />
+          <Steps parent={background} />
+        </Section>
+      )
+    : (
+        <AddItem
+          parentId={parent.uuid}
+          type={ESectionType.background}
+        />
+      )
   
-  return (
-    <Section
-      type={ESectionType.background}
-      title={background?.background}
-    >
-      <SectionHeader
-        underline={true}
-        type={ESectionType.scenario}
-        title={background?.background.trim() ||capitalize(ESectionType.background)}
-      />
-      {
-        background
-          ? (<Steps parent={background} />)
-          : (<AddItem parentId={feature.uuid} type={ESectionType.background} />)
-      }
-    </Section>
-  )
+  
 }
