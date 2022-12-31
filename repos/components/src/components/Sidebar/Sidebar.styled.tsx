@@ -9,6 +9,8 @@ export const SidebarContainer = styled(Box, {
   width: 100%;
   // max-width: ${maxWidth}px;
 
+  display: flex;
+  flex-direction: column;
   flex-shrink: 0;
   font-size: 14px;
   overflow-y: scroll;
@@ -16,16 +18,17 @@ export const SidebarContainer = styled(Box, {
   line-height: 24px;
   align-self: stretch;
   color: var(--goblet-editor-foreground);
-  background: var(--goblet-editor-background);
+  background: var(--goblet-sideBar-background);
+  transition: color 300ms ease, background-color 300ms ease;
 
 
   &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 0px;
+    height: 0px;
   }
 
   &::-webkit-scrollbar-track {
-    background: var(--goblet-editor-background);
+    background: var(--goblet-sideBar-border);
     box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
     -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
   }

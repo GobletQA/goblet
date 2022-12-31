@@ -5,6 +5,7 @@ export type TPanel = {
   header?:boolean
   className?:string
   startOpen?:boolean
+  fillHeight?:boolean
   actions?:TPanelHeaderAction[]
 }
 

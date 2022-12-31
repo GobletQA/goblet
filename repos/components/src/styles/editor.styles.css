@@ -1,32 +1,4 @@
-:root {
-  --goblet-editor-background: #060407;
-  --goblet-editor-foreground: #F9F8FB;
 
-  --goblet-list-focusBackground: #241b2f;
-  --goblet-list-focusForeground: #E4DEEB;
-
-  --goblet-list-hoverBackground: #241b2f;
-  --goblet-list-hoverForeground: #E4DEEB;
-
-  --goblet-list-activeSelectionBackground: #2A2037;
-  --goblet-list-activeSelectionForeground: #E4DEEB;
-  --goblet-list-inactiveSelectionBackground: #1E1727;
-  --goblet-list-inactiveSelectionForeground: #828C9C;
-
-  --goblet-list-highlightForeground: #785B9C;
-  --goblet-list-warningForeground: #FFB601;
-
-  --goblet-errorForeground: #B53541;
-
-  --goblet-editorCursor-foreground: #d7cee1;
-  
-  --goblet-sideBar-border: #0b0c0f;
-
-  --goblet-scrollbar-shadow: #1E172700;
-  --goblet-scrollbarSlider-background: #54406d66;
-  --goblet-scrollbarSlider-activeBackground: #54406db3;
-  --goblet-scrollbarSlider-hoverBackground: #54406d99;
-}
 
 .goblet-editor {
   display: flex;

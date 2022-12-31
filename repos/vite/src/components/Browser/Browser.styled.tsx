@@ -15,7 +15,7 @@ export const BrowserNav = styled('nav')(({ theme }) => `
   place-items: center;
   place-content: center;
   height: ${dims.browser.nav.hpx};
-  background-color: ${getColor(colors.gray01, colors.black09, theme)};
+  background-color: ${getColor(colors.gray00, colors.black09, theme)};
 
   div:not(:first-of-type) {
     padding: 0 4px;
@@ -41,7 +41,7 @@ export const BrowserInput = styled('input')(({ theme }) => `
   font-family: inherit;
   letter-spacing: 0.2px;
   color: ${getColor(colors.black07, colors.white, theme)};
-  background-color: ${getColor(colors.gray02, colors.black12, theme)};
+  background-color: ${getColor(colors.white00, colors.black12, theme)};
 
   &:focus {
     outline: 2px solid ${colors.royalPurple};

@@ -8,7 +8,10 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import ListItemButton from '@mui/material/ListItemButton'
 
-export const PanelSidebar = styled(Box)``
+export const PanelSidebar = styled(Box)`
+  background: var(--goblet-sideBarSectionHeader-background);
+  border-bottom: 1px solid var(--goblet-sideBarSectionHeader-border);
+`
 
 const sharedPanelHeader = `
   background: var(--goblet-list-activeSelectionBackground);
@@ -30,12 +33,14 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
   line-height: 28px;
   font-weight: bold;
   flex-direction: row;
+  flex-grow: initial;
   align-items: center;
   width: 100%;
   position: relative;
-  color: var(--goblet-list-inactiveSelectionForeground);
-  background: var(--goblet-list-inactiveSelectionBackground);
-  border-bottom: 1px solid var(--goblet-editor-background);
+  transition: color 300ms ease, background-color 300ms ease, border 300ms ease;
+  color: var(--goblet-sideBarSectionHeader-foreground);
+  background: var(--goblet-sideBarSectionHeader-background);
+  border-bottom: 1px solid transparent;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -45,6 +50,7 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
 
   &.open {
     ${sharedPanelHeader}
+    border-bottom: 1px solid var(--goblet-sideBarSectionHeader-border);
   }
 
 

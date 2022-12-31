@@ -10,14 +10,39 @@ export const gobletColors = {
   black: `#000000`,
 }
 
+export const red = {
+  red00: `#F8EBEC`,
+  red01: `#F4E1E3`,
+  red02: `#EDCDD0`,
+  red03: `#E5B8BD`,
+  red04: `#DEA4AA`,
+  red05: `#D69097`,
+  red06: `#CF7C84`,
+  red07: `#C86871`,
+  red08: `#C0535E`,
+  red09: `#B93F4B`,
+  red10: `#B53541`,
+  red11: `#AC323E`,
+  red12: `#A3303B`,
+  red13: `#912A34`,
+  red14: `#7F252E`,
+  red15: `#6D2027`,
+  red16: `#5B1B21`,
+  red17: `#48151A`,
+  red18: `#361014`,
+  red19: `#240B0D`,
+  red20: `#120506`,
+}
+
+
 export const yellow = {
   yellow00: `#FFF4D9`,
   yellow01: `#FFEDC0`,
   yellow02: `#FFE5A6`,
-  yellow03: `#FFE299`,
+  yellow03: `#FFE299`, // Dark Theme String
   yellow04: `#FFDB80`,
   yellow05: `#FFD367`,
-  yellow06: `#FFCC4D`,
+  yellow06: `#FFCC4D`, // light theme warning
   yellow07: `#FFC534`,
   yellow08: `#FFBD1A`,
   yellow09: `#FFBA0E`,
@@ -27,7 +52,7 @@ export const yellow = {
   yellow13: `#BF8901`,
   yellow14: `#A67601`,
   yellow15: `#8C6401`,
-  yellow16: `#735200`,
+  yellow16: `#735200`, // Light Theme String
   yellow17: `#594000`,
   yellow18: `#402E00`,
   yellow19: `#332400`,
@@ -46,15 +71,15 @@ export const purple = {
   purple08: `#937CB0`,
   purple09: `#866BA6`,
   purple10: `#785B9C`,
-  purple11: `#6C528C`,
+  purple11: `#6C528C`, // light selection background
   purple12: `#60497D`,
   purple13: `#54406D`,
   purple14: `#48375E`,
   purple15: `#3C2E4E`,
   purple16: `#30243E`,
-  purple17: `#2A2037`, // black active - background
-  purple18: `#241B2F`,
-  purple19: `#1E1727`, // black inactive - background
+  purple17: `#2A2037`, // dark active - background
+  purple18: `#241B2F`, // light prominent foreground
+  purple19: `#1E1727`, // dark inactive - background
   purple20: `#18121F`,
   purple21: `#120E17`,
   purple22: `#0C0910`,
@@ -62,24 +87,24 @@ export const purple = {
 }
 
 export const black = {
-  black00: `#d0d1d2`,
-  black01: `#b9babb`,
-  black02: `#a2a3a5`,
-  black03: `#8b8c8e`,
+  black00: `#D0D1D2`,
+  black01: `#B9BABB`,
+  black02: `#A2A3A5`,
+  black03: `#8B8C8E`,
   black04: `#737477`,
   black05: `#505256`,
-  black06: `#45464a`,
+  black06: `#45464A`,
   black07: `#393B3F`,
-  black08: `#2d313b`,
-  black09: `#1f2229`,
-  black10: `#191b21`,
-  black11: `#16181d`,
-  black12: `#14161a`,
+  black08: `#2D313B`,
+  black09: `#1F2229`,
+  black10: `#191B21`,
+  black11: `#16181D`,
+  black12: `#14161A`,
   black13: `#111216`,
   black14: `#0E1013`,
-  black15: `#0d0e11`,
-  black16: `#0b0c0f`,
-  black17: `#090a0c`,
+  black15: `#0D0E11`,
+  black16: `#0B0C0F`,
+  black17: `#090A0C`,
   black18: `#070709`,
   black19: `#040506`,
   black20: `#030404`,
@@ -87,7 +112,8 @@ export const black = {
 
 
 export const white = {
-  white00: `#f9fafb`,
+  white00: `#F9FAFB`,
+  white01: `#F6F6F8`
 }
 
 export const gray = {

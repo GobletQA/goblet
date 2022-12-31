@@ -1,35 +1,39 @@
 import Box from '@mui/material/Box'
+import { TGobletTheme } from '@GBC/types'
+import { getColor } from '@GBC/utils/theme'
+
 import { styled } from '@mui/material/styles'
 
 
 export const ActionsContainer = styled(Box)`
   top: 0px;
   right: 0px;
-  width: 35px;
-  max-width: 35px;
+  width: 37px;
+  max-width: 37px;
   display: flex;
   position: absolute;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  background-color: var(--goblet-editor-background);
+  background-color: var(--goblet-editorGroupHeader-tabsBackground);
 `
 
-export const ActionsToggle = styled(Box)`
-  width: 35px;
-  height: 30px;
-  opacity: 0.5;
+export const ActionsToggle = styled(Box)(({ theme }) => `
+  width: 37px;
+  height: 37px;
+
   display: flex;
   cursor: pointer;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  color: var(--goblet-editor-foreground);
-  transition: opacity 300ms ease;
-  background: var(--goblet-list-activeSelectionBackground);
-  
+  color: var(--goblet-tab-inactiveForeground);
+  background-color: var(--goblet-editorGroupHeader-tabsBackground);
+  transition: color 300ms ease, background-color 300ms ease;
+  border-left: 1px solid ${getColor(`colors.gray02`, `colors.purple23`, theme as TGobletTheme)};
+
   &:hover {
-    opacity: 1;
+    background-color: ${getColor(`colors.gray02`, `colors.purple23`, theme as TGobletTheme)};
   }
 
   & .goblet-editor-icon-rotate {
@@ -38,16 +42,16 @@ export const ActionsToggle = styled(Box)`
   }
 
   &.closed .goblet-editor-icon-rotate {
-    top: 3px;
+    top: 4px;
   }
 
-  &.open .goblet-editor-icon-rotate {
-    top: -1px;
-    opacity: 1;
-    transform: rotate(-180deg);
+  &.open {
+    .goblet-editor-icon-rotate {
+      top: 0px;
+      transform: rotate(-180deg);
+    }
   }
-
-`
+`)
 
 export const ActionsToggleWrap = styled(Box)``
 
@@ -56,27 +60,52 @@ export const ActionsList = styled(Box)`
   overflow: hidden;
   position: relative;
   transition: max-height 300ms ease;
-  color: var(--goblet-editor-foreground);
+  background-color: var(--goblet-tab-inactiveBackground);
 `
 
-export const ActionItem = styled(Box)`
+export const ActionItem = styled(Box)(({ theme }) => `
 
-  padding-top: 2.5px;
-  padding-bottom: 2.5px;
+  display: flex;
+  margin-top: 2.5px;
   pointer-events: auto;
-  color: var(--goblet-editor-foreground);
-  background-color: var(--goblet-editor-background);
+  justify-content: center;
+  color: var(--goblet-tab-inactiveForeground);
+  background-color: var(--goblet-tab-inactiveBackground);
+  transition: color 300ms ease, background-color 300ms ease;
 
   &:first-of-type {
-    padding-top: 5px;
+    margin-top: 0px;
+  }
+
+  & > div:first-child {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   & * button {
-    color: var(--goblet-editor-foreground);
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+    transition: color 300ms ease, background-color 300ms ease;
+    background-color: transparent;
+    
+    & svg {
+      width: 22px;
+      height: 22px;
+    }
+    
+  }
+
+  &:hover {
+    background-color: var(--goblet-editorGroupHeader-tabsBackground);
   }
 
   & * button:hover {
-    color: var(--goblet-list-hoverForeground);
+    color: ${(theme as TGobletTheme)?.palette?.colors?.purple10};
+    background-color: transparent;
   }
 
-`
+`)

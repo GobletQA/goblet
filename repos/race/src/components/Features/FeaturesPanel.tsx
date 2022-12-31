@@ -17,6 +17,7 @@ export const FeaturesPanel = (props:TFeaturesPanel) => {
       header
       startOpen
       actions={[]}
+      fillHeight
       title='Features'
     >
     <FeaturesList

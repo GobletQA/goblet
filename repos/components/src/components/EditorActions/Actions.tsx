@@ -2,7 +2,7 @@ import type { TAction } from '../../types'
 import type { MutableRefObject } from 'react'
 
 import { Action } from './Action'
-import { Arrow } from '../Icons/Arrow'
+import { ChevronDownIcon } from '../Icons'
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { cls } from '@keg-hub/jsutils'
 import {
@@ -76,7 +76,7 @@ export const Actions = <
       >
         <ActionsToggleWrap className='goblet-editor-actions-toggle-icon'>
           <div className='goblet-editor-icon-rotate' >
-            <Arrow collapse={false} svgStyle={{ height:`20px`, width:`20px` }} />
+            <ChevronDownIcon />
           </div>
         </ActionsToggleWrap>
       </ActionsToggle>

@@ -15,6 +15,7 @@ export const Panel = (props:TPanel) => {
     actions,
     children,
     startOpen,
+    fillHeight,
     header=true,
     className=``
   } = props
@@ -60,7 +61,12 @@ export const Panel = (props:TPanel) => {
   }, [startOpen])
 
   return (
-    <PanelSidebar className={cls(`goblet-sidebar-panel`, className, closed ? `closed` : `open`)}>
+    <PanelSidebar
+      className={cls(`goblet-sidebar-panel`, className, closed ? `closed` : `open`)}
+      sx={{
+        flexGrow: fillHeight ? 1 : 0
+      }}
+    >
       {header && (
         <PanelHeader
           title={title}

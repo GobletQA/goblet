@@ -22,20 +22,26 @@ export const Features = styled(List)<TListFeatures>`
   }
 `
 
+const shared = `
+  color: var(--goblet-list-hoverForeground);
+  background-color: var(--goblet-list-hoverBackground);
+  border-top: 1px solid var(--goblet-sideBarSectionHeader-border);
+  border-bottom: 1px solid var(--goblet-sideBarSectionHeader-border);
+`
 
 export const FeatureItem = styled(ListItemButton)<TFeatureItem>`
-  padding: 0px;
+  padding: 1px 0px;
   padding-left: 10px;
   color: var(--goblet-list-inactiveSelectionForeground);
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
 
   &:hover {
-    background-color: var(--goblet-list-hoverBackground);
-    color: var(--goblet-list-hoverForeground);
+    ${shared}
   }
 
   &.active {
-    background-color: var(--goblet-list-hoverBackground);
-    color: var(--goblet-list-hoverForeground);
+    ${shared}
   }
 `
 

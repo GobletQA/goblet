@@ -6798,6 +6798,11 @@ map-obj@^4.0.0:
   resolved "https://registry.npmjs.org/map-obj/-/map-obj-4.3.0.tgz#9304f906e93faae70880da102a9f1df0ea8bb05a"
   integrity sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==
 
+markerjs2@2.28.1:
+  version "2.28.1"
+  resolved "https://registry.npmjs.org/markerjs2/-/markerjs2-2.28.1.tgz#0e2ee897ff3bfefa49dcf22424080495cf5e4b8b"
+  integrity sha512-Hx1JixKfkP0hCKhl1qfNuP90Z9MVjHKAjMRo2xyU3fZVQuwaHO2qx1u8NqCeRqA/QuZqBlsU+FLdNkoazgsiSQ==
+
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.npmjs.org/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"

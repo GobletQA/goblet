@@ -38,6 +38,9 @@ const defaultTheme = {
   colors: {},
 }
 
+/**
+ * Sets css var(--goblet-some-color-value) from the selected editor theme
+ */
 export const  setThemeVars = async (
   theme:Record<`colors`, Record<string, string>>=defaultTheme,
   context?:String
