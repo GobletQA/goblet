@@ -1,5 +1,5 @@
 import type { TPanel } from '../../types'
-import type { MutableRefObject } from 'react'
+import type { SyntheticEvent, MutableRefObject } from 'react'
 
 import { cls } from '@keg-hub/jsutils'
 import { PanelHeader } from './PanelHeader'
@@ -23,7 +23,7 @@ export const Panel = (props:TPanel) => {
   const panelRef = useRef<HTMLDivElement>(null)
   const lastHeightRef = useRef<number>(0) as MutableRefObject<number>
   const [closed, setCollapse] = useState(!startOpen)
-  const onCollapse = useCallback(() => {
+  const onCollapse = useCallback((event:SyntheticEvent) => {
     const panel = panelRef.current as HTMLDivElement
     if(!panel) return
 
@@ -46,8 +46,6 @@ export const Panel = (props:TPanel) => {
 
     setCollapse(!closed)
   }, [closed])
-
-  
 
   useEffect(() => {
     const panel = panelRef.current as HTMLDivElement

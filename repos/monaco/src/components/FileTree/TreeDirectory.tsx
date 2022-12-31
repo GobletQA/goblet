@@ -1,17 +1,20 @@
 import type { TFolder, TFileCallback } from '../../types'
-import type { RefObject, Dispatch, SetStateAction } from 'react'
+import type { CSSProperties, RefObject, Dispatch, SetStateAction } from 'react'
 
 import { useCallback } from 'react'
-import { noOpObj } from '@keg-hub/jsutils'
-
-import EditIcon from '../Icons/Edit'
 import { Arrow } from '../Icons/Arrow'
-import DeleteIcon from '../Icons/Delete'
-import AddFileIcon from '../Icons/AddFile'
-import { FolderIcon } from '../Icons/Folder'
-import AddFolderIcon from '../Icons/AddFolder'
-import { FolderOpenedIcon } from '../Icons/FolderOpened'
-import { stopPropagation } from '../../utils/dom/stopPropagation'
+import { noOpObj } from '@keg-hub/jsutils'
+import { toolTipProps, styles } from '@GBM/utils/file/fileHelpers'
+import { stopPropagation } from '@GBM/utils/dom/stopPropagation'
+import {
+  Tooltip,
+  TrashIcon,
+  FolderIcon,
+  PencilIcon,
+  NewFileIcon,
+  NewFolderIcon,
+  FolderOpenIcon,
+} from '@gobletqa/components'
 
 export type TTreeDirectory = {
   file: TFolder
@@ -28,18 +31,6 @@ export type TTreeDirectory = {
   nameRef:RefObject<HTMLDivElement>
   setEditing:Dispatch<SetStateAction<boolean>>
   setShowChild:Dispatch<SetStateAction<boolean>>
-}
-
-const styles = {
-  name: {
-    flex: 1
-  },
-  folderIcon: {
-    marginRight: '5px'
-  },
-  nameConflict: {
-    color: `#E83333`,
-  }
 }
 
 export const TreeDirectory = ({
@@ -70,7 +61,6 @@ export const TreeDirectory = ({
 
   const onAddFolder = useCallback((e: Event) => {
     e.stopPropagation()
-    e.stopPropagation()
     setShowChild(true)
     addFolder(file.path + '/')
 
@@ -86,36 +76,57 @@ export const TreeDirectory = ({
     <div
       onClick={fileClick}
       className='goblet-editor-file-item-row'
-      style={{
-        paddingLeft: `5px`,
-        position: `relative`,
-      }}
+      style={styles.row as CSSProperties}
     >
       <Arrow collapse={!showChild} />
       {showChild
-        ? <FolderOpenedIcon style={styles.folderIcon} />
-        : <FolderIcon style={styles.folderIcon} />
+        ? <FolderOpenIcon styles={styles.iconFolder} />
+        : <FolderIcon styles={styles.iconFolder} />
       }
       {file.name && !editing ? (
         <>
           <span style={styles.name}>{file.name}</span>
           <span className='goblet-editor-actions-container' >
-            <EditIcon
-              onClick={onEdit}
-              className='goblet-editor-file-item-icon'
-            />
-            <DeleteIcon
-              onClick={onDelete}
-              className='goblet-editor-file-item-icon'
-            />
-            <AddFileIcon
-              onClick={onAddFile}
-              className='goblet-editor-file-item-icon'
-            />
-            <AddFolderIcon
-              onClick={onAddFolder}
-              className='goblet-editor-file-item-icon'
-            />
+            <Tooltip
+              {...toolTipProps}
+              title={`Edit the folder name`}
+            >
+              <PencilIcon
+                onClick={onEdit}
+                styles={styles.altIcon}
+                className='goblet-editor-file-item-icon'
+              />
+            </Tooltip>
+            <Tooltip
+              {...toolTipProps}
+              title={`Delete the folder and content`}
+            >
+              <TrashIcon
+                onClick={onDelete}
+                styles={styles.altIcon}
+                className='goblet-editor-file-item-icon'
+              />
+            </Tooltip>
+            <Tooltip
+              {...toolTipProps}
+              title={`Create a new file in the folder`}
+            >
+              <NewFileIcon
+                onClick={onAddFile}
+                styles={styles.altIcon}
+                className='goblet-editor-file-item-icon'
+              />
+            </Tooltip>
+            <Tooltip
+              {...toolTipProps}
+              title={`Create a new sub-folder`}
+            >
+              <NewFolderIcon
+                onClick={onAddFolder}
+                styles={styles.altIconLast}
+                className='goblet-editor-file-item-icon'
+              />
+            </Tooltip>
           </span>
         </>
       ) : (
@@ -127,7 +138,7 @@ export const TreeDirectory = ({
           onKeyDown={fileKeyDown}
           onClick={stopPropagation}
           className='goblet-editor-file-item-new'
-          style={nameConflict ? styles.nameConflict : noOpObj}
+          style={nameConflict ? styles.conflictFolder : noOpObj}
         />
       )}
     </div>

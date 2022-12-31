@@ -1,5 +1,6 @@
 import type { ElementType } from 'react'
 import type { ListItemButtonProps } from '@mui/material'
+import { colors } from '@GBC/theme'
 
 type THeaderItem = ListItemButtonProps & { component?: ElementType }
 
@@ -10,11 +11,10 @@ import ListItemButton from '@mui/material/ListItemButton'
 
 export const PanelSidebar = styled(Box)`
   background: var(--goblet-sideBarSectionHeader-background);
-  border-bottom: 1px solid var(--goblet-sideBarSectionHeader-border);
+  border-bottom: 2px solid var(--goblet-sideBarSectionHeader-border);
 `
 
 const sharedPanelHeader = `
-  background: var(--goblet-list-activeSelectionBackground);
   color: var(--goblet-list-activeSelectionForeground);
   
   & .goblet-editor-panel-toggle-icon {
@@ -22,6 +22,7 @@ const sharedPanelHeader = `
       color: var(--goblet-list-activeSelectionForeground);
     }
   }
+
 `
 
 export const PanelHeader = styled(ListItemButton)<THeaderItem>`
@@ -40,7 +41,7 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
   transition: color 300ms ease, background-color 300ms ease, border 300ms ease;
   color: var(--goblet-sideBarSectionHeader-foreground);
   background: var(--goblet-sideBarSectionHeader-background);
-  border-bottom: 1px solid transparent;
+  border-bottom: 2px solid transparent;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -50,7 +51,7 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
 
   &.open {
     ${sharedPanelHeader}
-    border-bottom: 1px solid var(--goblet-sideBarSectionHeader-border);
+    border-bottom: 2px solid var(--goblet-sideBarSectionHeader-border);
   }
 
 
@@ -58,15 +59,25 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
     font-size: 18px;
     font-weight: bold;
     margin-right: 4px;
-    
+
     & path {
       color: var(--goblet-list-inactiveSelectionForeground);
     }
-
+  }
+  
+  & .goblet-panel-header-icon {
+    font-size: 16px;
+    margin-right: 5px;
+    transition: color 300ms ease;
+    color: var(--goblet-list-inactiveSelectionForeground);
+    
+    &:hover {
+      color: ${colors.royalPurple} !important;
+    }
+    
   }
 
 `
-
 
 export const PanelHeaderText = styled(Span)`
   flex: 1;
@@ -78,8 +89,14 @@ export const PanelContent = styled(Box)`
   height: auto;
   overflow:hidden;
   position: relative;
-  padding-bottom: 0px;
-  transition: max-height 300ms ease, padding-bottom 300ms ease;
+  transition: max-height 300ms ease;
+  background-color: var(--goblet-statusBarItem-activeBackground);
+  
+  &.show {
+    padding-bottom: 5px;
+    padding-bottom: 5px;
+  }
+  
 `
 
 export const PanelSidebarMonaco = styled(Box)`

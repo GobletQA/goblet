@@ -15,7 +15,7 @@
 }
 
 .goblet-editor-file-item-icon:hover {
-  color: var(--goblet-list-hoverForeground);
+  color: var(--goblet-list-highlightForeground);
 }
 
 .goblet-editor-file-item {

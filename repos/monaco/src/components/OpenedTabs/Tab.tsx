@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 import type { TFileMeta, TAutoSave, TModal } from '../../types'
 
 import { useEffect, useRef, useMemo } from 'react'
-import { FileIcon } from '../Icons/File'
+import { colors, FileIcon } from '@gobletqa/components'
 import { preventDefault } from '../../utils/dom/preventDefault'
 import { useTabCallbacks } from '../../hooks/tabs/useTabCallbacks'
 
@@ -28,7 +28,11 @@ export type THTabStyle = {
 }
 
 const tabStyles = {
-  icon: { marginRight: '2px' },
+  icon: {
+    fontSize: `16px`,
+    marginRight: `2px`,
+    color: colors.purple10
+  },
   name: { flex: 1, paddingRight: '5px' }
 }
 
@@ -111,7 +115,7 @@ export const Tab = (props:Tab) => {
       className={styles.classNames}
       onContextMenu={preventDefault}
     >
-      <FileIcon style={styles.icon} />
+      <FileIcon styles={styles.icon} />
       <span style={styles.name}>{name}</span>
       <span
         data-name='editing'

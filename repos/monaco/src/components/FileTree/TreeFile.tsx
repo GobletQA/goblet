@@ -2,14 +2,17 @@ import type { TFolder, TFile, TFileCallback } from '../../types'
 import type { RefObject, Dispatch, SetStateAction } from 'react'
 
 
-import { useCallback, useMemo } from 'react'
-
-import EditIcon from '../Icons/Edit'
-import { FileIcon } from '../Icons/File'
-import DeleteIcon from '../Icons/Delete'
 import { noOpObj } from '@keg-hub/jsutils'
+import { useCallback, useMemo } from 'react'
+import { stopPropagation } from '@GBM/utils/dom/stopPropagation'
+import { toolTipProps, styles } from '@GBM/utils/file/fileHelpers'
+import {
+  Tooltip,
+  FileIcon,
+  TrashIcon,
+  PencilIcon,
+} from '@gobletqa/components'
 
-import { stopPropagation } from '../../utils/dom/stopPropagation'
 
 export type TTreeFile = {
   file: TFile
@@ -24,18 +27,6 @@ export type TTreeFile = {
   nameRef:RefObject<HTMLDivElement>
   setEditing: Dispatch<SetStateAction<boolean>>
 }
-
-const styles = {
-  fileIcon: {
-    marginLeft: '14px',
-    marginRight: '5px',
-  },
-  nameConflict: {
-    color: `#E83333`,
-    border: `1px solid #E83333`,
-  }
-}
-
 
 export const TreeFile = ({
   file,
@@ -82,19 +73,31 @@ export const TreeFile = ({
     >
       {/* fileType is used here for different file type icons */}
       {/* For now, just default to basic file type */}
-      <FileIcon style={styles.fileIcon} />
+      <FileIcon styles={styles.iconFile} />
       {file.name && !editing ? (
         <>
           <span style={{ flex: 1 }}>{file.name}</span>
           <span className='goblet-editor-actions-container'>
-            <EditIcon
-              onClick={onEdit}
-              className='goblet-editor-file-item-icon'
-            />
-            <DeleteIcon
-              onClick={onDelete}
-              className='goblet-editor-file-item-icon'
-            />
+            <Tooltip
+              {...toolTipProps}
+              title={`Edit the file name`}
+            >
+              <PencilIcon
+                onClick={onEdit}
+                styles={styles.altIcon}
+                className='goblet-editor-file-item-icon'
+              />
+            </Tooltip>
+            <Tooltip
+              {...toolTipProps}
+              title={`Delete the file`}
+            >
+              <TrashIcon
+                onClick={onDelete}
+                styles={styles.altIconLast}
+                className='goblet-editor-file-item-icon'
+              />
+            </Tooltip>
           </span>
         </>
       ) : (
@@ -106,7 +109,7 @@ export const TreeFile = ({
           onKeyDown={fileKeyDown}
           onClick={stopPropagation}
           className='goblet-editor-file-item-new'
-          style={nameConflict ? styles.nameConflict : noOpObj}
+          style={nameConflict ? styles.conflictFile : noOpObj}
         />
       )}
     </div>

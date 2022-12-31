@@ -10,6 +10,31 @@ export const gobletColors = {
   black: `#000000`,
 }
 
+export const green = {
+  green00: `#EFF7F3`,
+  green01: `#DFEEE6`,
+  green02: `#D0E6DA`,
+  green03: `#C0DDCD`,
+  green04: `#B0D5C1`,
+  green05: `#A0CDB4`,
+  green06: `#90C4A8`,
+  green07: `#89C0A1`,
+  green08: `#79B895`,
+  green09: `#69AF88`,
+  green10: `#61AB82`,
+  green11: `#5CA27C`,
+  green12: `#52916F`,
+  green13: `#498062`,
+  green14: `#3F6F55`,
+  green15: `#355E48`,
+  green16: `#2C4D3A`,
+  green17: `#223C2E`,
+  green18: `#182B21`,
+  green19: `#13221A`,
+  green20: `#0F1A14`,
+  green21: `#0A110D`,
+}
+
 export const red = {
   red00: `#F8EBEC`,
   red01: `#F4E1E3`,
@@ -33,7 +58,6 @@ export const red = {
   red19: `#240B0D`,
   red20: `#120506`,
 }
-
 
 export const yellow = {
   yellow00: `#FFF4D9`,

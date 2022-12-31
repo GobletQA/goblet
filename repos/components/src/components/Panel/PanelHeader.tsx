@@ -8,14 +8,6 @@ import {
 
 import type { TPanelHeader } from '../../types'
 
-const styles = {
-  icon: {
-    fontSize: 16,
-    marginRight: 4,
-    color: `var(--goblet-editor-foreground)`,
-  }
-}
-
 export const PanelHeaderActions = (props:TPanelHeader) => {
   const { title, actions } = props
 
@@ -42,7 +34,6 @@ export const PanelHeaderActions = (props:TPanelHeader) => {
           return (
             <ActionComp
               onClick={action}
-              style={styles.icon}
               children={children}
               key={`${title}-${id ?? name}`}
               className={`goblet-panel-header-icon ${className}`.trim()}

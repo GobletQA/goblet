@@ -1,7 +1,7 @@
-import type { ElementType, ReactNode } from 'react'
-import { useMemo } from 'react'
+import type { CSSProperties, ElementType, ReactNode } from 'react'
+import { forwardRef, useMemo } from 'react'
 import SvgIcon from '@mui/material/SvgIcon'
-import { exists }  from '@keg-hub/jsutils'
+import { exists, cls }  from '@keg-hub/jsutils'
 
 export type TIconProps = {
   Icon?: any
@@ -12,34 +12,48 @@ export type TIconProps = {
   stroke?: string
   viewBox?: string
   delta?: string
+  className?:string
   RootEl?: ElementType
   children?: ReactNode
   inheritViewBox?: boolean
-  sx?: Record<string, string>
-  styles?: Record<string, string>
+  sx?: CSSProperties
+  style?: CSSProperties
+  styles?: CSSProperties
+  onClick?: (event:Event) => void
 }
 
-export const Icon = (props:TIconProps) => {
+export const Icon = forwardRef((props:TIconProps, ref) => {
   const {
     sx,
     delta,
+    style,
     styles,
     viewBox,
     children,
+    className,
     RootEl=SvgIcon,
     Icon:IconComp,
     inheritViewBox,
-    ...iconProps
+    ...rootProps
   } = props
+
+
 
   const withViewBox = useMemo(() => {
     return exists(inheritViewBox) ? inheritViewBox : !Boolean(viewBox)
   }, [inheritViewBox, viewBox])
 
   return (
-    <RootEl inheritViewBox={withViewBox} viewBox={viewBox} sx={[sx, styles]}>
+    <RootEl
+      ref={ref}
+      viewBox={viewBox}
+      className={className}
+      sx={[sx, styles, style]}
+      inheritViewBox={withViewBox}
+      {...rootProps}
+    >
       {delta && (<path d={delta}></path>)}
-      {children || IconComp && (<IconComp {...iconProps} />)}
+      {children || IconComp && (<IconComp className={className} />)}
     </RootEl>
   )
-}
+})

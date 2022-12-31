@@ -19,6 +19,8 @@
     "outDir": "build",
     "baseUrl": "./",
     "paths": {
+      "@GBM/utils": [ "./src/utils" ],
+      "@GBM/utils/*": [ "./src/utils/*" ],
       "@gobletqa/monaco": [ "../monaco/src" ],
       "@gobletqa/monaco/*": [ "../monaco/src/*" ],
       "@gobletqa/components": ["../components/src"],

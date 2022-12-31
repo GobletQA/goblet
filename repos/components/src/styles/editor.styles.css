@@ -9,6 +9,7 @@
   height: 100%;
   position: relative;
   color: var(--goblet-editor-foreground);
+  border-right: 1px solid var(--goblet-editor-border);
 }
 
 .goblet-editor-drag {

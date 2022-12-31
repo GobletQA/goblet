@@ -44,12 +44,7 @@ const useDisabledStyle = (disabled?:boolean) => {
   const theme = useTheme()
   return useMemo(() => {
     return disabled
-      ? {
-          box: { cursor: disabled ? `not-allowed` : `auto` },
-          // TODO: Not really a fan of needing !important
-          // This is the easiest quick-fix / work-around
-          btn: { color: `${theme?.palette?.colors?.fadeLight30} !important` }
-        }
+      ? {box: { cursor: disabled ? `not-allowed` : `auto` }}
       : noOpObj as Record<string, any>
   }, [disabled, theme])
 }
@@ -83,7 +78,6 @@ export const EditorAction = (props:TEditorActionProps) => {
         <IconButton
           Icon={Icon}
           onClick={onClick}
-          sx={style?.btn}
           disabled={disabled}
         />
       </Box>
