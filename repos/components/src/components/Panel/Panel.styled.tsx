@@ -60,12 +60,12 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
 
 
   & .goblet-editor-panel-toggle-icon {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     margin-right: 4px;
 
     & path {
-      color: var(--goblet-list-inactiveSelectionForeground);
+      color: var(--goblet-sideBarSectionHeader-foreground);
     }
   }
   
@@ -73,7 +73,7 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
     font-size: 16px;
     margin-right: 5px;
     transition: color 300ms ease;
-    color: var(--goblet-list-inactiveSelectionForeground);
+    color: var(--goblet-sideBarSectionHeader-foreground);
     
     &:hover {
       color: ${colors.royalPurple} !important;
@@ -93,13 +93,14 @@ export const PanelContent = styled(Box)`
   height: auto;
   overflow:hidden;
   position: relative;
-  transition: max-height 300ms ease;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  transition: max-height 300ms ease, padding-top 300ms ease, padding-bottom 300ms ease;
 
   &.show {
     padding-top: 5px;
     padding-bottom: 5px;
   }
-  
 `
 
 export const PanelSidebarMonaco = styled(Box)`

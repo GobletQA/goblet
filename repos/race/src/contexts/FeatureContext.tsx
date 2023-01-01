@@ -3,6 +3,7 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TOnFeatureCBRef,
+  TSetFeatureGroups,
   TOnReturnFeatureCBRef,
 } from '../types'
 
@@ -26,6 +27,7 @@ export type TFeatureProvider = {
   onFeatureActiveRef:TOnFeatureCBRef
   onFeatureChangeRef:TOnFeatureCBRef
   onFeatureInactiveRef:TOnFeatureCBRef
+  setFeatureGroups:TSetFeatureGroups
   onFeatureBeforeChangeRef:TOnReturnFeatureCBRef
 }
 
@@ -53,6 +55,7 @@ export const FeatureProvider = (props:TFeatureProvider) => {
   const {
     children,
     initialFeature,
+    setFeatureGroups,
     onFeatureCloseRef,
     onFeatureChangeRef,
     onFeatureActiveRef,
@@ -67,6 +70,7 @@ export const FeatureProvider = (props:TFeatureProvider) => {
     updateFeature,
   } = useFeatureCallbacks({
     feature,
+    setFeatureGroups,
     onFeatureCloseRef,
     onFeatureActiveRef,
     onFeatureChangeRef,

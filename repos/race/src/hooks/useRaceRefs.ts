@@ -10,6 +10,7 @@ import type {
 
 import { useRef } from 'react'
 import { noOp } from '@keg-hub/jsutils'
+import { useFeatureGroups } from './useFeatureGroups'
 
 export type THRaceEditorExt = {
   initialFeature?:TRaceFeature
@@ -28,9 +29,11 @@ export const useRaceRefs = (props:TRaceEditorProps, { initialFeature }:THRaceEdi
 
   const stepsRef = useRef<TRaceSteps>(steps)
   stepsRef.current = steps
-  
+
   const featuresRef = useRef<TRaceFeatures>(features)
   featuresRef.current = features
+
+  const [featureGroups, setFeatureGroups] = useFeatureGroups({ featuresRef })
 
   const onFeatureCloseRef = useRef<TOnFeatureCB>(onFeatureClose)
   onFeatureCloseRef.current = onFeatureClose
@@ -57,6 +60,8 @@ export const useRaceRefs = (props:TRaceEditorProps, { initialFeature }:THRaceEdi
     curPathRef,
     curValueRef,
     featuresRef,
+    featureGroups,
+    setFeatureGroups,
     onFeatureCloseRef,
     onFeatureChangeRef,
     onFeatureActiveRef,

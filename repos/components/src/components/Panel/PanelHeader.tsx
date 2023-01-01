@@ -1,6 +1,7 @@
 
 import { Arrow } from '../Icons/Arrow'
 import { noOpObj, cls } from '@keg-hub/jsutils'
+import { ExpandIcon } from '@GBC/components/Icons'
 import {
   PanelHeaderText,
   PanelHeader as Container
@@ -59,8 +60,9 @@ export const PanelHeader = (props:TPanelHeader) => {
       onClick={onCollapse}
       className={cls(`goblet-editor-sidebar-panel-header`, closed ? `closed` : `open`)}
     >
-      <Arrow
-        collapse={closed}
+      <ExpandIcon
+        expand={!closed}
+        noIconTransform={true}
         className={`goblet-editor-panel-toggle-icon`}
       />
       <PanelHeaderText>{title}</PanelHeaderText>

@@ -114,5 +114,9 @@ export const OpenTabClose = styled(Span)`
   color: transparent;
   background: transparent;
   transition: color 300ms ease, background-color 300ms ease;
+  
+  & svg {
+    font-size: 12px;
+  }
 
 `

@@ -27,6 +27,8 @@
       "@GBR/configs/*": [ "configs/*" ],
       "@GBR/constants": [ "src/constants" ],
       "@GBR/constants/*": [ "src/constants/*" ],
+      "@GBR/contexts": [ "src/contexts" ],
+      "@GBR/contexts/*": [ "src/contexts/*" ],
       "@GBR/hooks": [ "src/hooks" ],
       "@GBR/hooks/*": [ "src/hooks/*" ],
       "@GBR/services": [ "src/services" ],

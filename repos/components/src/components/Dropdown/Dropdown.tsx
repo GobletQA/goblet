@@ -1,12 +1,14 @@
-import type { ReactNode } from 'react'
 import type { AccordionProps } from '@mui/material'
+import type { CSSProperties, ReactNode, ComponentType } from 'react'
 import type { TransitionProps } from '@mui/material/transitions'
 
-import { forwardRef } from 'react'
+import { forwardRef, useState, useCallback } from 'react'
+
+import { useInline } from '@GBC/hooks'
 import Slide from '@mui/material/Slide'
 import { H5 } from '@GBC/components/Text'
-import { emptyObj } from '@keg-hub/jsutils'
-import { ExpandMoreIcon } from '@GBC/components/Icons'
+import { emptyObj, cls } from '@keg-hub/jsutils'
+import { ExpandIcon as ExpandIconComp } from '@GBC/components/Icons'
 import { Body, Container, Header } from './Dropdown.styled'
 
 export type TDropdown = AccordionProps & {
@@ -14,7 +16,13 @@ export type TDropdown = AccordionProps & {
   body?:ReactNode
   header?:ReactNode
   children?:ReactNode
-  expandIcon?:ReactNode
+  headerText?:ReactNode
+  initialExpand?:boolean
+  bodySx?:CSSProperties
+  headerSx?:CSSProperties
+  noIconTransform?: boolean
+  onChange?:(expanded: boolean) => void
+  ExpandIcon?:ComponentType<typeof ExpandIconComp>
 }
 
 type TTransition = TransitionProps & { children: React.ReactElement<any, any> }
@@ -31,19 +39,38 @@ export const Dropdown = (props:TDropdown) => {
   const {
     id,
     body,
-    header,
+    bodySx,
+    headerSx,
+    headerText,
     children=body,
+    noIconTransform,
+    header:headerComp,
+    onChange:onChangeCB,
+    initialExpand=false,
     TransitionProps=emptyObj,
-    expandIcon=(<ExpandMoreIcon />),
+    ExpandIcon=ExpandIconComp,
     ...rest
   } = props
-  
+
+  const [expanded, setExpanded] = useState<boolean>(initialExpand)
+
+  const inlineCB = useInline(onChangeCB)
+
+  const onChange = useCallback((event: React.SyntheticEvent, newExpanded: boolean) => {
+    const updated = !expanded
+    inlineCB?.(updated)
+    setExpanded(updated)
+  }, [expanded])
+
+
   return (
     <Container
       elevation={0}
       square={true}
+      onChange={onChange}
+      expanded={expanded}
       disableGutters={true}
-      className='gc-dropdown'
+      className={cls(`gc-dropdown`, expanded && `expanded`)}
       {...rest}
       TransitionProps={{
         ...TransitionProps,
@@ -51,16 +78,26 @@ export const Dropdown = (props:TDropdown) => {
       }}
     >
       <Header
+        sx={headerSx}
         id={`${id}-header`}
-        expandIcon={expandIcon}
         className='gc-dropdown-header'
         aria-controls={`${id}-content`}
+        noIconTransform={noIconTransform}
+        expandIcon={(
+          // @ts-ignore
+          <ExpandIcon
+            expand={expanded}
+            noIconTransform={noIconTransform}
+            className={cls(`gr-dropdown-expand-icon`, expanded && `expanded`)}
+          />
+        )}
       >
-        <H5>
-          {header}
-        </H5>
+        {headerComp || (<H5>{headerText}</H5>)}
       </Header>
-      <Body className='gc-dropdown-body' >
+      <Body
+        sx={bodySx}
+        className='gc-dropdown-body'
+      >
         {children}
       </Body>
     </Container>

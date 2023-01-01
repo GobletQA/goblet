@@ -2,8 +2,8 @@ import type { TTabAction, TTab } from '@gobletqa/components'
 import type {
   TSetFeature,
   TRaceFeature,
-  TOnFeatureCB,
   TOnFeatureCBRef,
+  TSetFeatureGroups,
   TOnReturnFeatureCBRef,
 } from '../types'
 
@@ -18,6 +18,7 @@ export type THFeatureCallbacks = {
   onFeatureActiveRef:TOnFeatureCBRef
   onFeatureChangeRef:TOnFeatureCBRef
   onFeatureInactiveRef:TOnFeatureCBRef
+  setFeatureGroups:TSetFeatureGroups
   onFeatureBeforeChangeRef:TOnReturnFeatureCBRef
 }
 
@@ -26,6 +27,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   const {
     feature,
     setFeature,
+    setFeatureGroups,
     onFeatureChangeRef,
     onFeatureInactiveRef,
     onFeatureBeforeChangeRef
@@ -47,9 +49,10 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
     const updated = beforeMdl || merged
 
+    // TODO: update feature groups here if needed?
     onFeatureChangeRef.current?.(updated, feat, feature)
     setFeature(updated)
-  }, [feature])
+  }, [feature, setFeatureGroups])
 
   return {
     updateFeature,

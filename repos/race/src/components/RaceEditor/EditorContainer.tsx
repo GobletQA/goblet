@@ -24,6 +24,7 @@ export const EditorContainer = (props:TEditorContainer) => {
     actionsOpen,
     sidebarWidth,
     sidebarStatus,
+    featureGroups,
     sidebarMaxWidth,
     onSidebarResize,
     Divider=REDivider,
@@ -72,6 +73,7 @@ export const EditorContainer = (props:TEditorContainer) => {
           <FeaturesPanel
             stepsRef={stepsRef}
             featuresRef={featuresRef}
+            featureGroups={featureGroups}
             onActiveFeature={onActiveFeature}
           />
         </Sidebar>

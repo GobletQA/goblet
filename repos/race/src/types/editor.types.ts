@@ -1,6 +1,6 @@
 import type { RefObject, MutableRefObject, ComponentType } from 'react'
 import type { TRaceSteps } from './steps.types'
-import type { TRaceFeatures, TRaceFeature } from './features.types'
+import type { TRaceFeatureAsts, TRaceFeatures, TRaceFeature } from './features.types'
 import type {
   TAction,
   TTabAction,
@@ -37,27 +37,28 @@ export type TRaceEditorProps = {
   actions?:TAction[]
   actionsOpen?:boolean
   feature?:TRaceFeature
-  features:TRaceFeatures
-  themeType?: EThemeType
-  sidebarWidth?: number
-  sidebarStatus?: boolean
-  sidebarMaxWidth?: number
-  firstFeatureActive?:boolean
-  Divider?:ComponentType<any>
+  sidebarWidth?:number
+  themeType?:EThemeType
+  sidebarStatus?:boolean
+  sidebarMaxWidth?:number
   Panels?:TSidebarPanel[]
   PrePanels?:TSidebarPanel[]
+  features:TRaceFeatureAsts
+  firstFeatureActive?:boolean
+  Divider?:ComponentType<any>
   onFeatureClose?:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
   onFeatureInactive?:TOnFeatureCB
-  onBeforeFeatureChange?:TOnReturnFeatureCB
-  onSidebarResize?: (width:number) => void
-  onTabHover?:TTabAction
-  onTabLeave?:TTabAction
   onTabDown?:TTabAction
+  onTabLeave?:TTabAction
+  onTabHover?:TTabAction
+  onSidebarResize?:(width:number) => void
+  onBeforeFeatureChange?:TOnReturnFeatureCB
 }
 
 export type TEditorContainer = TRaceEditorProps & TFeaturesRefs & TEditorRefs & {
+  featureGroups:TRaceFeatures
   onFeatureCloseRef:TOnFeatureCBRef
   onFeatureActiveRef:TOnFeatureCBRef
 }

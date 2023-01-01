@@ -70,6 +70,13 @@ export type TFeatureParent = {
   location: string
 }
 
+export type TRaceFeatureGroup = {
+  uuid: string
+  path:string
+  title:string
+  items: TRaceFeatures
+}
+
 export type TRaceFeature = {
   uuid: string
   path:string
@@ -80,13 +87,19 @@ export type TRaceFeature = {
   reason?: TAstBlock
   desire?: TAstBlock
   rules?: TRuleAst[]
-  parent: TFeatureParent
   comments: TAstBlock[]
+  parent: TFeatureParent
   perspective?: TAstBlock
   scenarios: TScenarioAst[]
   background?: TBackgroundAst
 }
 
+export type TRaceFeatureItem = TRaceFeature | TRaceFeatureGroup
+
 export type TRaceFeatures = {
+  [key:string]: TRaceFeatureItem
+}
+
+export type TRaceFeatureAsts = {
   [key:string]: TRaceFeature
 }

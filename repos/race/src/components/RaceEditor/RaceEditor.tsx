@@ -18,6 +18,8 @@ export const RaceEditor = (props:TRaceEditorProps) => {
     curPathRef,
     curValueRef,
     featuresRef,
+    featureGroups,
+    setFeatureGroups,
     onFeatureCloseRef,
     onFeatureChangeRef,
     onFeatureActiveRef,
@@ -28,6 +30,7 @@ export const RaceEditor = (props:TRaceEditorProps) => {
   return (
     <FeatureProvider
       initialFeature={initialFeature}
+      setFeatureGroups={setFeatureGroups}
       onFeatureCloseRef={onFeatureCloseRef}
       onFeatureChangeRef={onFeatureChangeRef}
       onFeatureActiveRef={onFeatureActiveRef}
@@ -41,6 +44,7 @@ export const RaceEditor = (props:TRaceEditorProps) => {
         curPathRef={curPathRef}
         curValueRef={curValueRef}
         featuresRef={featuresRef}
+        featureGroups={featureGroups}
         onFeatureCloseRef={onFeatureCloseRef}
         onFeatureActiveRef={onFeatureActiveRef}
       />

@@ -16,7 +16,7 @@ export const FeatureMeta = (props:TFeatureMeta) => {
   return (
     <Dropdown
       id={parent.uuid}
-      header={`Meta Data`}
+      headerText={`Meta Data`}
     >
       <Section
         stack={2}
