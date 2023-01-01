@@ -1,3 +1,4 @@
+import { colors } from '../colors'
 
 export const lightTheme = {
   base: `vs`,
@@ -11,7 +12,7 @@ export const lightTheme = {
     {
       token: ``,
       foreground: `000000`,
-      background: `#FFFFFF`
+      background: colors.white
     },
     {
       token: `invalid`,
@@ -195,57 +196,59 @@ export const lightTheme = {
     }
   ],
   colors: {
-    [`editor.border`]: `#E8E9EC`,
-    [`editor.background`]: `#FFFFFF`,
-    [`editor.foreground`]: `#2D313B`,
-    [`tab.border`]: `#FFFFFF`,
-    [`tab.activeBorder`]: `#FFFFFF`,
-    [`tab.activeBackground`]: `#FFFFFF`,
-    [`tab.activeForeground`]: `#1F2229`,
-    [`tab.inactiveBackground`]: `#F6F6F8`,
-    [`tab.inactiveForeground`]: `#6B7689`,
-    [`tab.unfocusedActiveBorder`]: `#A1A9B5`,
-    [`tab.unfocusedActiveForeground`]: `#A1A9B5`,
-    [`tab.unfocusedInactiveForeground`]: `#A1A9B5`,
-    [`editorGroupHeader.noTabsBackground`]: `#EFF1F3`,
-    [`editorGroupHeader.tabsBackground`]: `#EFF1F3`,
-    [`editorGroupHeader.tabsBorder`]: `#EFF1F3`,
+    [`editor.border`]: colors.gray01,
+    [`editor.background`]: colors.white,
+    [`editor.foreground`]: colors.black08,
+    [`tab.border`]: colors.white,
+    [`tab.activeBorder`]: colors.white,
+    [`tab.activeBackground`]: colors.white,
+    [`tab.activeForeground`]: colors.black09,
+    [`tab.inactiveBackground`]: colors.white01,
+    [`tab.inactiveForeground`]: colors.gray11,
+    [`tab.unfocusedActiveBorder`]: colors.gray06,
+    [`tab.unfocusedActiveForeground`]: colors.gray06,
+    [`tab.unfocusedInactiveForeground`]: colors.gray06,
+    [`editorGroupHeader.noTabsBackground`]: colors.gray00,
+    [`editorGroupHeader.tabsBackground`]: colors.gray00,
+    [`editorGroupHeader.tabsBorder`]: colors.gray00,
     
-    [`sideBar.border`]: `#F9FAFB`,
-    [`sideBar.background`]: `#EFF1F3`,
-    [`sideBarSectionHeader.border`]: `#E8E9EC`,
-    [`sideBarSectionHeader.foreground`]: `#A1A9B5`,
-    [`sideBarSectionHeader.background`]: `#EFF1F3`,
-    [`statusBarItem.activeBackground`]: `#FFFFFF`,
+    [`sideBar.border`]: colors.gray00,
+    [`sideBar.background`]: colors.gray00,
+    [`sideBarSectionHeader.border`]: colors.gray01,
+    [`sideBarSectionHeader.foreground`]: colors.gray06,
+    [`sideBarSectionHeader.background`]: colors.gray00,
+    [`statusBarItem.activeBackground`]: colors.gray01,
 
-    [`list.focusBackground`]: `#EFF1F3`,
-    [`list.focusForeground`]: `#2D323B`,
 
-    [`list.hoverBackground`]: `#EFF1F3`,
-    [`list.hoverForeground`]: `#2D323B`,
+    [`list.focusBackground`]: colors.gray00,
+    [`list.focusForeground`]: colors.gray21,
 
-    [`list.inactiveSelectionBackground`]: `#FFFFFF`,
-    [`list.inactiveSelectionForeground`]: `#A1A9B5`,
+    [`list.hoverBackground`]: colors.gray00,
+    [`list.hoverForeground`]: colors.gray21,
 
-    [`list.activeSelectionBackground`]: `#E8E9EC`,
-    [`list.activeSelectionForeground`]: `#3C2E4E`,
+    [`list.inactiveSelectionBackground`]: colors.white,
+    [`list.inactiveSelectionForeground`]: colors.gray06,
 
-    [`list.highlightForeground`]: `#785B9C`,
-    [`list.warningForeground`]: `#FFB601`,
+    [`list.activeSelectionBackground`]: colors.gray01,
+    [`list.activeSelectionForeground`]: colors.purple15,
 
-    [`list.deemphasizedForeground`]: `#929AA8`,
-    [`list.errorForeground`]: `#B53541`,
-    [`list.filterMatchBackground`]: `#54406D66`,
-    [`list.filterMatchBorder`]: `#60497D66`,
-    [`list.focusOutline`]: `#EFF1F3`,
-    [`list.invalidItemForeground`]: `#B535414d`,
+    [`list.highlightForeground`]: colors.purple10,
+    [`list.warningForeground`]: colors.yellow10,
 
-    [`errorForeground`]: `#B53541`,
-    [`editorCursor.foreground`]: `#48375E`,
-    [`scrollbar.shadow`]: `#929AA800`,
-    [`scrollbarSlider.activeBackground`]: `#54406db3`,
-    [`scrollbarSlider.background`]: `#54406d66`,
-    [`scrollbarSlider.hoverBackground`]: `#54406d99`
+    [`list.deemphasizedForeground`]: colors.gray07,
+    [`list.errorForeground`]: colors.red10,
+    [`list.filterMatchBackground`]: `${colors.purple13}66`,
+    [`list.filterMatchBorder`]: `${colors.purple12}66`,
+    [`list.focusOutline`]: colors.gray00,
+    [`list.invalidItemForeground`]: `${colors.red10}4d`,
+
+    [`errorForeground`]: colors.red10,
+    [`editorCursor.foreground`]: colors.purple14,
+
+    [`scrollbar.shadow`]: `${colors.gray07}00`,
+    [`scrollbarSlider.background`]: colors.gray03,
+    [`scrollbarSlider.hoverBackground`]: colors.gray04,
+    [`scrollbarSlider.activeBackground`]: colors.gray05,
   }
 }
 

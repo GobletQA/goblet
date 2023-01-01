@@ -11,7 +11,7 @@ import ListItemButton from '@mui/material/ListItemButton'
 
 export const PanelSidebar = styled(Box)`
   background: var(--goblet-sideBarSectionHeader-background);
-  border-bottom: 2px solid var(--goblet-sideBarSectionHeader-border);
+  border-bottom: 1px solid var(--goblet-sideBarSectionHeader-border);
 `
 
 const sharedPanelHeader = `
@@ -41,7 +41,7 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
   transition: color 300ms ease, background-color 300ms ease, border 300ms ease;
   color: var(--goblet-sideBarSectionHeader-foreground);
   background: var(--goblet-sideBarSectionHeader-background);
-  border-bottom: 2px solid transparent;
+  border-bottom: 1px solid transparent;
   padding-left: 5px;
   padding-right: 5px;
 
@@ -51,7 +51,7 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
 
   &.open {
     ${sharedPanelHeader}
-    border-bottom: 2px solid var(--goblet-sideBarSectionHeader-border);
+    border-bottom: 1px solid var(--goblet-sideBarSectionHeader-border);
   }
 
 
@@ -90,8 +90,7 @@ export const PanelContent = styled(Box)`
   overflow:hidden;
   position: relative;
   transition: max-height 300ms ease;
-  background-color: var(--goblet-statusBarItem-activeBackground);
-  
+
   &.show {
     padding-top: 5px;
     padding-bottom: 5px;

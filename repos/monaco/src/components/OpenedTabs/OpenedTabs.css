@@ -60,15 +60,21 @@
   color: var(--goblet-tab-activeForeground);
   background-color: var(--goblet-tab-activeBackground);
 }
+
 .goblet-editor-opened-tab-item-close {
   position: relative;
   padding: 5px 5px;
   line-height: 10px;
+  color: transparent;
+  background: transparent;
+  transition: color 300ms ease, background-color 300ms ease;
 }
-.goblet-editor-opened-tab-item-close:hover {
+
+.goblet-editor-opened-tab-item:hover .goblet-editor-opened-tab-item-close {
   color: var(--goblet-errorForeground);
   background-color: var(--goblet-tab-activeBackground);
 }
+
 .goblet-editor-opened-tab-item-editing {
   right: 10px;
   top: 15px;

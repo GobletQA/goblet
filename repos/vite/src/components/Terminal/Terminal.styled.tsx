@@ -18,7 +18,7 @@ export const TerminalContainer = styled(Container)(({ theme }) => `
   position: relative;
   align-items: stretch;
   flex-direction: column;
-  background-color: ${getColor(colors.gray01, colors.black10, theme)};
+  background-color: ${getColor(colors.gray00, colors.black10, theme)};
   border-top: 1px solid ${getColor(colors.gray00, colors.black12, theme)};
 `)
 
@@ -36,9 +36,14 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
   const shared = `
     color: ${getColor(colors.white, colors.white, theme)};
 
-    & .terminal-tab-add-icon,
-    & .terminal-tab-close-icon {
+    & .terminal-tab-add-icon {
+      transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
       color: ${getColor(colors.fadeLight90, colors.fadeLight90, theme)};
+    }
+    
+    & .terminal-tab-close-icon {
+      transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
+      color: transparent;
     }
 
     &:hover .terminal-tab-close-icon {
@@ -60,7 +65,7 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
     font-weight: ${theme.typography.fontWeightRegular};
     transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
     color: ${getColor(colors.gray07, colors.fadeLight55, theme)};
-    background-color: ${getColor(colors.gray02, colors.black15, theme)};
+    background-color: ${getColor(colors.gray00, colors.black15, theme)};
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     font-size: 14px;
@@ -73,8 +78,9 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
 
     &:hover:not(.Mui-selected) {
       ${shared}
-      background-color: ${getColor(colors.gray01, colors.black19, theme)};
+      background-color: ${getColor(colors.white, colors.black19, theme)};
       color: ${getColor(colors.black09, colors.fadeLight90, theme)};
+
       & .terminal-tab-add-icon {
         color: ${colors.shamrock};
       }
@@ -86,6 +92,7 @@ export const TabAddIcon = styled(AddIcon)(({ theme }) => `
   width: 15px;
   height: 15px;
   font-size: 12px;
+  transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
   color: ${getColor(colors.fadeDark45, colors.fadeLight55, theme)};
 `)
 
@@ -94,11 +101,12 @@ export const TabCloseIcon = styled(CloseIcon)(({ theme }) => `
   font-size: 12px;
   margin-left: 10px;
   position: relative;
-  color: ${getColor(colors.fadeDark45, colors.fadeLight55, theme)};
+  transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
+  color: transparent;
 `)
 
 export const TerminalExpandBtn = styled(IconButton)(({ theme }) => `
-  width: 48px;
+  width: 37px;
   display: flex;
   border-radius: 0px;
   place-items: center;

@@ -70,6 +70,12 @@ export const OpenTab = styled(Box)`
   &:hover {
     color: var(--goblet-tab-activeForeground);
     background-color: var(--goblet-tab-activeBackground);
+
+    & .goblet-editor-opened-tab-item-close {
+      color: var(--goblet-errorForeground);
+      background-color: var(--goblet-tab-activeBackground);
+    }
+
   }
 
   & .goblet-editor-opened-tab-item-edit {
@@ -105,10 +111,8 @@ export const OpenTabClose = styled(Span)`
   line-height: 20px;
   margin-left: 5px;
   position: relative;
-
-  &:hover {
-    color: var(--goblet-errorForeground);
-    background-color: var(--goblet-tab-activeBackground);
-  }
+  color: transparent;
+  background: transparent;
+  transition: color 300ms ease, background-color 300ms ease;
 
 `

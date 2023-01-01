@@ -1,14 +1,14 @@
-import type { ComponentProps } from 'react'
-import type { TInputDecor, CSSProps } from '@types'
-import type { InputProps, InputLabelProps } from '@mui/material'
+import type { TInputDecor } from '@types'
+import type { ComponentProps, CSSProperties } from 'react'
+import type { InputLabelProps, InputProps } from '@mui/material'
 
 import { Decor } from './Decor'
 import { noOpObj } from '@keg-hub/jsutils'
 import { TextFieldElement } from 'react-hook-form-mui'
 
 export type TInput =  ComponentProps<typeof TextFieldElement> & {
-  sx?: CSSProps
   active?:boolean
+  sx?: CSSProperties
   decor?: TInputDecor
   gridProps?:Record<any, any>
 }
@@ -18,10 +18,9 @@ export const Input = (props:TInput) => {
     sx,
     active,
     gridProps,
-    Component:__,
     decor=noOpObj as TInputDecor,
     InputProps=noOpObj as InputProps,
-    InputLabelProps=noOpObj as InputProps,
+    InputLabelProps=noOpObj as InputLabelProps,
     ...rest
   } = props
   const { Component, pos } = decor
@@ -44,7 +43,7 @@ export const Input = (props:TInput) => {
       InputLabelProps={{
         shrink: true,
         ...InputLabelProps,
-      }}
+      } as InputLabelProps}
       {...rest}
     />
   )

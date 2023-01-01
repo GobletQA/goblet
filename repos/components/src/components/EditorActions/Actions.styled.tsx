@@ -30,10 +30,10 @@ export const ActionsToggle = styled(Box)(({ theme }) => `
   color: var(--goblet-tab-inactiveForeground);
   background-color: var(--goblet-editorGroupHeader-tabsBackground);
   transition: color 300ms ease, background-color 300ms ease;
-  border-left: 1px solid ${getColor(`colors.gray01`, `colors.purple23`, theme as TGobletTheme)};
+  border-left: 1px solid ${getColor(`colors.gray02`, `colors.purple23`, theme as TGobletTheme)};
 
   &:hover {
-    background-color: ${getColor(`colors.gray01`, `colors.purple23`, theme as TGobletTheme)};
+    background-color: ${getColor(`colors.gray02`, `colors.purple23`, theme as TGobletTheme)};
   }
 
   & .goblet-editor-icon-rotate {

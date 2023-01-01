@@ -1,6 +1,7 @@
 import type { TTabStyles, TTab, TTabItem } from '../../types'
 
 import { noOpObj } from '@keg-hub/jsutils'
+import { CloseIcon } from '@GBC/components/Icons'
 import { useEffect, useRef, useMemo } from 'react'
 import { preventDefault } from '../../utils/dom/preventDefault'
 import { useTabCallbacks } from '../../hooks/tabs/useTabCallbacks'
@@ -91,7 +92,9 @@ export const Tab = (props:TTabItem) => {
         onClick={onTabClose}
         className='goblet-editor-opened-tab-item-close'
       >
-        ×
+        <CloseIcon
+          className='goblet-editor-opened-tab-close-icon'
+        />
       </OpenTabClose>
     </OpenTab>
   )

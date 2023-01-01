@@ -2,9 +2,13 @@ import type { CSSProperties } from 'react'
 import type { TFileMeta, TAutoSave, TModal } from '../../types'
 
 import { useEffect, useRef, useMemo } from 'react'
-import { colors, FileIcon } from '@gobletqa/components'
 import { preventDefault } from '../../utils/dom/preventDefault'
 import { useTabCallbacks } from '../../hooks/tabs/useTabCallbacks'
+import {
+  colors,
+  FileIcon,
+  CloseIcon
+} from '@gobletqa/components'
 
 
 export type Tab = {
@@ -33,7 +37,10 @@ const tabStyles = {
     marginRight: `2px`,
     color: colors.purple10
   },
-  name: { flex: 1, paddingRight: '5px' }
+  closeIcon: {
+    fontSize: `12px`,
+  },
+  name: { flex: 1, paddingRight: '5px' },
 }
 
 const useTabStyle = ({
@@ -128,7 +135,10 @@ export const Tab = (props:Tab) => {
         style={styles.close}
         className='goblet-editor-opened-tab-item-close'
       >
-        ×
+        <CloseIcon
+          style={styles.closeIcon}
+          className='goblet-editor-opened-tab-close-icon'
+        />
       </span>
     </div>
   )

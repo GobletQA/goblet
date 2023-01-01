@@ -66,7 +66,7 @@ export const TerminalHeader = (props:TerminalHeader) => {
         position='absolute'
         justifyContent='end'
       >
-        <TerminalExpandBtn onClick={onExpand} >
+        <TerminalExpandBtn onClick={onExpand} className='goblet-terminal-expand-button' >
           {expanded ? <ChevronDownIcon /> : <ChevronUpIcon /> }
         </TerminalExpandBtn>
       </Box>
