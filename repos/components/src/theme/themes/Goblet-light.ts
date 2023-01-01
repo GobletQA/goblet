@@ -120,7 +120,7 @@ export const lightTheme = {
     },
     {
       token: `string.value.json`,
-      foreground: `0451A5`
+      foreground: `#2E879A`
     },
     {
       token: `attribute.name`,
@@ -148,7 +148,7 @@ export const lightTheme = {
     },
     {
       token: `string`,
-      foreground: `A31515`
+      foreground: `#2E879A`
     },
     {
       token: `string.html`,
@@ -160,7 +160,7 @@ export const lightTheme = {
     },
     {
       token: `string.yaml`,
-      foreground: `0451A5`
+      foreground: `#2E879A`
     },
     {
       token: `keyword`,
@@ -196,9 +196,10 @@ export const lightTheme = {
     }
   ],
   colors: {
-    [`editor.border`]: colors.gray01,
+    [`editor.border`]: colors.gray00,
     [`editor.background`]: colors.white,
     [`editor.foreground`]: colors.black08,
+
     [`tab.border`]: colors.white,
     [`tab.activeBorder`]: colors.white,
     [`tab.activeBackground`]: colors.white,
@@ -208,17 +209,18 @@ export const lightTheme = {
     [`tab.unfocusedActiveBorder`]: colors.gray06,
     [`tab.unfocusedActiveForeground`]: colors.gray06,
     [`tab.unfocusedInactiveForeground`]: colors.gray06,
-    [`editorGroupHeader.noTabsBackground`]: colors.gray00,
+
+    [`editorGroupHeader.tabsBorder`]: colors.gray02,
     [`editorGroupHeader.tabsBackground`]: colors.gray00,
-    [`editorGroupHeader.tabsBorder`]: colors.gray00,
+    [`editorGroupHeader.noTabsBackground`]: colors.gray00,
     
     [`sideBar.border`]: colors.gray00,
-    [`sideBar.background`]: colors.gray00,
+    [`sideBar.background`]: colors.white,
     [`sideBarSectionHeader.border`]: colors.gray01,
     [`sideBarSectionHeader.foreground`]: colors.gray06,
-    [`sideBarSectionHeader.background`]: colors.gray00,
-    [`statusBarItem.activeBackground`]: colors.gray01,
-
+    [`sideBarSectionHeader.background`]: colors.white,
+    [`statusBarItem.activeBackground`]: colors.white,
+    [`statusBarItem.hoverBackground`]: colors.gray00,
 
     [`list.focusBackground`]: colors.gray00,
     [`list.focusForeground`]: colors.gray21,
@@ -249,6 +251,8 @@ export const lightTheme = {
     [`scrollbarSlider.background`]: colors.gray03,
     [`scrollbarSlider.hoverBackground`]: colors.gray04,
     [`scrollbarSlider.activeBackground`]: colors.gray05,
+
+    [`selection.background`]: colors.purple12,
   }
 }
 

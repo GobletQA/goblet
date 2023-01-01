@@ -86,7 +86,7 @@ export const yellow = {
 export const purple = {
   purple00: `#F9F8FB`,
   purple01: `#F2EFF5`,
-  purple02: `#E4DEEB`, // black active foreground
+  purple02: `#E4DEEB`,
   purple03: `#D7CEE1`,
   purple04: `#C9BDD7`,
   purple05: `#BCADCE`,
@@ -95,15 +95,15 @@ export const purple = {
   purple08: `#937CB0`,
   purple09: `#866BA6`,
   purple10: `#785B9C`,
-  purple11: `#6C528C`, // light selection background
+  purple11: `#6C528C`,
   purple12: `#60497D`,
   purple13: `#54406D`,
   purple14: `#48375E`,
   purple15: `#3C2E4E`,
   purple16: `#30243E`,
-  purple17: `#2A2037`, // dark active - background
-  purple18: `#241B2F`, // light prominent foreground
-  purple19: `#1E1727`, // dark inactive - background
+  purple17: `#2A2037`,
+  purple18: `#241B2F`,
+  purple19: `#1E1727`,
   purple20: `#18121F`,
   purple21: `#120E17`,
   purple22: `#0C0910`,
@@ -230,6 +230,7 @@ export const colors = {
   ...gray,
   ...fade,
   ...white,
+  ...green,
   ...black,
   ...purple,
   ...yellow,

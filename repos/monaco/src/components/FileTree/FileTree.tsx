@@ -79,6 +79,7 @@ export const FileTree = memo((props: TFileTree) => {
 
   return (
     <Panel
+      fillHeight
       title='Files'
       header={true}
       startOpen={true}

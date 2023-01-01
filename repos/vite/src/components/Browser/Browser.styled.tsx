@@ -49,7 +49,6 @@ export const BrowserInput = styled('input')(({ theme }) => `
 `)
 
 export const BrowserContainer = styled(Box)(({ theme }) => `
-  padding-top: 2px;
   width: 100%;
   height: 100%;
   flex-grow: 1;
