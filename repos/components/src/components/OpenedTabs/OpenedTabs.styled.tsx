@@ -15,7 +15,7 @@ export const OpenTabsContainer = styled(Box)`
  */
 export const OpenTabsMain = styled(Box)`
   width: 100%;
-  height: 39px;
+  height: 37px;
   display: flex;
   font-size: 14px;
   overflow-x: auto;
