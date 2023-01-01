@@ -36,4 +36,5 @@ export type TOpenedTabs = TTabActions & {
   openedTabs?: TTabItem[]
   activeTab?:string|number
   Tab?:ComponentType<typeof Tab>
+  [key:string]:any
 }

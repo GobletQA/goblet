@@ -89,6 +89,7 @@ export const ActionItem = styled(Box)(({ theme }) => `
     width: 100%;
     height: 100%;
     border-radius: 0px;
+    color: ${getColor(`colors.gray07`, `colors.gray07`, theme as TGobletTheme)};
     transition: color 300ms ease, background-color 300ms ease;
     background-color: transparent;
     

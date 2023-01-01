@@ -211,7 +211,7 @@ export const lightTheme = {
     [`editorGroupHeader.tabsBackground`]: `#EFF1F3`,
     [`editorGroupHeader.tabsBorder`]: `#EFF1F3`,
     
-    [`sideBar.border`]: `#D0D4DA`,
+    [`sideBar.border`]: `#F9FAFB`,
     [`sideBar.background`]: `#EFF1F3`,
     [`sideBarSectionHeader.border`]: `#E8E9EC`,
     [`sideBarSectionHeader.foreground`]: `#A1A9B5`,

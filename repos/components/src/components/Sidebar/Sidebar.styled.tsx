@@ -23,8 +23,8 @@ export const SidebarContainer = styled(Box, {
 
 
   &::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
+    width: 1px;
+    height: 1px;
   }
 
   &::-webkit-scrollbar-track {

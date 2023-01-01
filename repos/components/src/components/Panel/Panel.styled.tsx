@@ -93,7 +93,7 @@ export const PanelContent = styled(Box)`
   background-color: var(--goblet-statusBarItem-activeBackground);
   
   &.show {
-    padding-bottom: 5px;
+    padding-top: 5px;
     padding-bottom: 5px;
   }
   
