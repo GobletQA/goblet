@@ -1,11 +1,10 @@
 import type { TMeta } from './Meta'
-import type { TEditingProps } from '@GBR/types'
 
 import { EMetaType } from '@GBR/types'
 import { MetaInput } from './MetaInput'
 import { MetaContainer } from './Meta.styled'
 
-export type TDesire = TMeta & TEditingProps & {}
+export type TDesire = TMeta & {}
 
 export const Desire = (props:TDesire) => {
   const { parent, type } = props

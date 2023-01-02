@@ -1,4 +1,4 @@
-import type { TEditingProps, TRaceFeature, TFeaturesRef } from '@GBR/types'
+import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 
 import { Tags } from './Tags'
 import { Desire } from './Desire'
@@ -6,7 +6,7 @@ import { Reason } from './Reason'
 import { ESectionType } from '@GBR/types'
 import { Perspective } from './Perspective'
 
-export type TMeta = TEditingProps & {
+export type TMeta = {
   type:ESectionType
   parent:TRaceFeature
   featuresRef:TFeaturesRef

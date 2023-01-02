@@ -1,8 +1,7 @@
-import type { TEditingProps } from '@GBR/types'
-import type { TSectionBody } from './SectionBody'
-import type { TSectionHeader } from './SectionHeader'
 import type { TTextType } from '@gobletqa/components'
 import type { ComponentProps, CSSProperties } from 'react'
+import type { TSectionBody } from './SectionBody'
+import type { TSectionHeader } from './SectionHeader'
 
 import { exists } from '@keg-hub/jsutils'
 import { SectionBody } from './SectionBody'
@@ -10,20 +9,20 @@ import { SectionHeader } from './SectionHeader'
 import { Container, Stack } from './Section.styled'
 
 type TSectionStyles = {
-  body?: CSSProperties
-  stack?: CSSProperties
   section?: CSSProperties
   header?: CSSProperties
+  body?: CSSProperties
+  stack?: CSSProperties
 }
 
-export type TSection = TSectionBody & TSectionHeader & TEditingProps & {
+export type TSection = TSectionBody & TSectionHeader & {
   body?:boolean
   gutter?:boolean
   header?:boolean
   sx?:CSSProperties
   variant?:TTextType
-  underline?:boolean
   stack?:number|boolean
+  underline?:boolean
   styles?:TSectionStyles
   stackProps?:ComponentProps<typeof Stack>
 }
@@ -42,10 +41,8 @@ export const Section = (props:TSection) => {
     header,
     variant,
     actions,
-    editing,
     children,
     underline,
-    setEditing,
     stackProps,
   } = props
 
@@ -64,12 +61,10 @@ export const Section = (props:TSection) => {
           Icon={Icon}
           title={title}
           gutter={gutter}
-          editing={editing}
           variant={variant}
           actions={actions}
           sx={styles?.header}
           underline={underline}
-          setEditing={setEditing}
         />
       )) || null}
 
@@ -79,10 +74,8 @@ export const Section = (props:TSection) => {
               <SectionBody
                 type={type}
                 gutter={gutter}
-                editing={editing}
                 sx={styles?.body}
                 children={children}
-                setEditing={setEditing}
               />
             )
           : exists(stack) || stackProps

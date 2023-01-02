@@ -1,4 +1,4 @@
-import type { ESectionType, TEditingProps } from '@GBR/types'
+import type { ESectionType } from '../../types'
 import type { ComponentType, CSSProperties } from 'react'
 import type { TTextType } from '@gobletqa/components'
 
@@ -8,7 +8,7 @@ import { capitalize, cls } from '@keg-hub/jsutils'
 import { SectionActions } from './SectionActions'
 import { Header, HeaderTitle } from './Section.styled'
 
-export type TSectionHeader = TEditingProps & {
+export type TSectionHeader = {
   title?:string
   gutter?:boolean
   className?:string
@@ -19,6 +19,7 @@ export type TSectionHeader = TEditingProps & {
   Icon?: ComponentType<any>
   actions?: Record<string, any>[]
 }
+
 
 export const SectionHeader = (props:TSectionHeader) => {
   const {

@@ -1,6 +1,6 @@
 import type { TEmptyFeature, TRaceFeature } from '@GBR/types'
 
-import { toObj } from '@GBR/utils/toObj'
+import { toObj } from '@gobletqa/race/utils/toObj'
 import { titleFromPath } from '@GBR/utils/titleFromPath'
 
 import { deepMerge, uuid } from '@keg-hub/jsutils'

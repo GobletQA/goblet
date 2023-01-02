@@ -33,8 +33,6 @@ export const Feature = (props:TFeature) => {
         <Section
           stack={2}
           gutter={true}
-          editing={editing}
-          setEditing={setEditing}
           sx={{ paddingTop: `12px` }}
           type={ESectionType.feature}
         >
@@ -42,32 +40,22 @@ export const Feature = (props:TFeature) => {
             title={feature?.feature}
             variant={`h3`}
             underline={true}
-            editing={editing}
-            setEditing={setEditing}
             type={ESectionType.feature}
           />
           <FeatureMeta
             parent={feature}
-            editing={editing}
-            setEditing={setEditing}
             featuresRef={featuresRef}
           />
           <Background
             parent={feature}
-            editing={editing}
-            setEditing={setEditing}
             background={feature.background}
           />
           <Rules
             parent={feature}
-            editing={editing}
-            setEditing={setEditing}
             rules={feature.rules}
           />
           <Scenarios
             parent={feature}
-            editing={editing}
-            setEditing={setEditing}
             scenarios={feature.scenarios}
           />
         </Section>

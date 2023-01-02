@@ -1,6 +1,6 @@
 import type { TRuleAst } from '@GBR/types'
 
-import { toObj } from '@GBR/utils/toObj'
+import { toObj } from '@gobletqa/race/utils/toObj'
 import { scenariosFactory } from './scenarioFactory'
 import { backgroundFactory } from './backgroundFactory'
 import { deepMerge, uuid } from '@keg-hub/jsutils'
