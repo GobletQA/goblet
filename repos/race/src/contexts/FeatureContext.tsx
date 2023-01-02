@@ -18,7 +18,8 @@ import { noOpObj } from '@keg-hub/jsutils'
 import { useFeatureCallbacks } from '../hooks/useFeatureCallbacks'
 
 export type TFeatureProvider = {
-  children: any
+  children:any
+  rootPrefix:string
   initialFeature?:TRaceFeature
   onFeatureCloseRef:TOnFeatureCBRef
   onFeatureActiveRef:TOnFeatureCBRef
@@ -29,7 +30,8 @@ export type TFeatureProvider = {
 }
 
 export type TFeatureCtx = {
-  feature: TRaceFeature
+  rootPrefix:string
+  feature:TRaceFeature
   setFeature:TOnFeatureCB
   updateFeature:TOnFeatureCB
 }
@@ -51,6 +53,7 @@ const FeatureChild = memo((props:TFeatureChild) => {
 export const FeatureProvider = (props:TFeatureProvider) => {
   const {
     children,
+    rootPrefix,
     initialFeature,
     setFeatureGroups,
     onFeatureCloseRef,
@@ -67,6 +70,7 @@ export const FeatureProvider = (props:TFeatureProvider) => {
     updateFeature,
   } = useFeatureCallbacks({
     feature,
+    rootPrefix,
     setFeatureGroups,
     onFeatureCloseRef,
     onFeatureActiveRef,
@@ -79,10 +83,16 @@ export const FeatureProvider = (props:TFeatureProvider) => {
   const featureCtx:TFeatureCtx = useMemo(() => {
     return {
       setFeature,
+      rootPrefix,
       updateFeature,
       feature: (feature || noOpObj) as TRaceFeature,
     }
-  }, [feature, setFeature, updateFeature])
+  }, [
+    feature,
+    setFeature,
+    rootPrefix,
+    updateFeature,
+  ])
 
   return (
     <FeatureContext.Provider value={featureCtx}>

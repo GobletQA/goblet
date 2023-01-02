@@ -25,7 +25,6 @@ export type TEditorAction = TAction<TCodeEditor, TCodeEditorRef>
 export interface IMonacoEditorProps {
   title?: string
   Modal: TModalOpts
-  
   rootPrefix?: string
   emptyText?: string
   options: TEditorOpts

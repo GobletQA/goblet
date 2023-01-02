@@ -35,6 +35,7 @@ export type TEditorRefs = {
 export type TRaceEditorProps = {
   steps:TRaceSteps
   actions?:TAction[]
+  rootPrefix: string
   actionsOpen?:boolean
   feature?:TRaceFeature
   sidebarWidth?:number

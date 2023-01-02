@@ -9,6 +9,7 @@ import { Features } from './FeaturesList.styled'
 import { FeatureItemRender } from './FeatureItemRender'
 
 export type TFeaturesList = {
+  rootPrefix:string
   active:TRaceFeature
   featureGroups:TRaceFeatures
   onActiveFeature: TTabAction
@@ -17,6 +18,7 @@ export type TFeaturesList = {
 export const FeaturesList = (props:TFeaturesList) => {
   const {
     active,
+    rootPrefix,
     featureGroups,
     onActiveFeature
   } = props

@@ -16,7 +16,8 @@ export const VisualEditor = (props:TVisualEditor) => {
   const {
     steps,
     features,
-    connected
+    connected,
+    rootPrefix
   } = useRaceHooks()
 
   return connected
@@ -25,10 +26,10 @@ export const VisualEditor = (props:TVisualEditor) => {
           steps={steps}
           actions={Actions}
           Divider={Divider}
-          firstFeatureActive
           features={features}
           sidebarStatus={true}
           PrePanels={PrePanels}
+          rootPrefix={rootPrefix}
           sidebarWidth={EditorSidebarWidth}
         />
       )

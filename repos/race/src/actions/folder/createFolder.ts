@@ -1,5 +1,5 @@
 
 
-export const createFolder = () => {
+export const createFolder = (rootPrefix:string) => {
   
 }

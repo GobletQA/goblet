@@ -1,4 +1,4 @@
-import type { TRaceFeature } from '@GBR/types'
+import type { TEmptyFeature, TRaceFeature } from '@GBR/types'
 
 import { toObj } from '@GBR/utils/toObj'
 import { titleFromPath } from '@GBR/utils/titleFromPath'
@@ -10,7 +10,7 @@ import { scenariosFactory } from './scenarioFactory'
 import { backgroundFactory } from './backgroundFactory'
 import { blockFactory, blocksFactory } from './blockFactory'
 
-export const featureFactory = (feat:Partial<TRaceFeature>) => {
+export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
   const {
     path,
     rules,
@@ -46,6 +46,7 @@ export const featureFactory = (feat:Partial<TRaceFeature>) => {
       ...toObj(`perspective`, blockFactory(perspective)),
       ...toObj(`background`, backgroundFactory(background)),
       ...toObj(`title`, feat.title || titleFromPath(path)),
+      ...toObj(`empty`, empty)
     }
   )
 }

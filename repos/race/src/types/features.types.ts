@@ -84,6 +84,7 @@ export type TRaceFeature = {
   tags?: string[]
   feature: string
   content: string
+  empty?: boolean
   reason?: TAstBlock
   desire?: TAstBlock
   rules?: TRuleAst[]
@@ -92,6 +93,7 @@ export type TRaceFeature = {
   perspective?: TAstBlock
   scenarios: TScenarioAst[]
   background?: TBackgroundAst
+  
 }
 
 export type TRaceFeatureItem = TRaceFeature | TRaceFeatureGroup
@@ -102,4 +104,22 @@ export type TRaceFeatures = {
 
 export type TRaceFeatureAsts = {
   [key:string]: TRaceFeature
+}
+
+
+export type TEmptyFeature = {
+  uuid?: string
+  path?:string
+  title?:string
+  tags?: string[]
+  feature?: string
+  content?: string
+  reason?: TAstBlock
+  desire?: TAstBlock
+  rules?: TRuleAst[]
+  comments?: TAstBlock[]
+  parent?: TFeatureParent
+  perspective?: TAstBlock
+  scenarios?: TScenarioAst[]
+  background?: TBackgroundAst
 }

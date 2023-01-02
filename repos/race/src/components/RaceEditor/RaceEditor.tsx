@@ -29,6 +29,7 @@ export const RaceEditor = (props:TRaceEditorProps) => {
 
   return (
     <FeatureProvider
+      rootPrefix={props.rootPrefix}
       initialFeature={initialFeature}
       setFeatureGroups={setFeatureGroups}
       onFeatureCloseRef={onFeatureCloseRef}

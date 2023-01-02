@@ -14,6 +14,7 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { SetFeatureContextEvt, UpdateFeatureContextEvt } from '@GBR/constants'
 
 export type THFeatureCallbacks = {
+  rootPrefix:string
   feature?:TRaceFeature
   setFeature:TSetFeature
   onFeatureCloseRef:TOnFeatureCBRef

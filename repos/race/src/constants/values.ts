@@ -1,3 +1,5 @@
+export const EmptyFeatureUUID = `EMPTY-FEATURE`
+
 export const PerspectiveOpts = [
   `As a user`,
   `As a customer`,
@@ -28,3 +30,4 @@ export const TextInputProps = [
   `InputProps`,
   `InputLabelProps`,
 ]
+

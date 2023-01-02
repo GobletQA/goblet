@@ -17,7 +17,7 @@ export const FeaturesPanel = (props:TFeaturesPanel) => {
     onActiveFeature,
   } = props
 
-  const { feature:active } = useFeature()
+  const { feature:active, rootPrefix } = useFeature()
 
   return (
     <Panel
@@ -29,6 +29,7 @@ export const FeaturesPanel = (props:TFeaturesPanel) => {
     >
       <FeaturesList
         active={active}
+        rootPrefix={rootPrefix}
         featureGroups={featureGroups}
         onActiveFeature={onActiveFeature}
       />

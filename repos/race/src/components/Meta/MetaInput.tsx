@@ -1,4 +1,6 @@
 import type { ComponentProps } from 'react'
+import type { TEditingProps } from '@GBR/types'
+
 import { EMetaType } from '@GBR/types'
 import { TextFieldProps } from '@mui/material'
 import { TextInputProps } from '@GBR/constants'
@@ -15,7 +17,7 @@ import {
 export type TMetasInput = Omit<
   ComponentProps<typeof MetaAutoComp>,
   `renderInput`|`options`
-> & {
+> & TEditingProps & {
   inputType?:`auto`|`text`
   label?:string
   type:EMetaType
@@ -32,9 +34,11 @@ export const MetaInput = (props:TMetasInput) => {
     label,
     value,
     isError,
+    editing,
     multiline,
     inputType,
     className,
+    setEditing,
     helperText,
     placeholder,
     options=emptyArr,

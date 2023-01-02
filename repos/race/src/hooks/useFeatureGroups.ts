@@ -41,11 +41,7 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
   const [featureGroups, setFeatureGroups] = useState<TRaceFeatures>(groups)
 
   // TODO: figure out way to update feature groups when featuresRef changes
-  // useEffect(() => {
-    
-    
-    
-  // }, [featureGroups])
+  // useEffect(() => {}, [featureGroups])
   
   return [featureGroups, setFeatureGroups] as [TRaceFeatures, TSetFeatureGroups]
 }
