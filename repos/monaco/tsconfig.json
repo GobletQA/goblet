@@ -35,6 +35,8 @@
       "@gobletqa/monaco/*": [ "../monaco/src/*" ],
       "@gobletqa/components": ["../components/src"],
       "@gobletqa/components/*": ["../components/src/*"],
+      "@gobletqa/shared": [ "../shared/src" ],
+      "@gobletqa/shared/*": [ "../shared/src/*" ],
       "GobletRoot": ["../../"]
     }
   },

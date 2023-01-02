@@ -2,7 +2,7 @@ import type { ComponentType } from 'react'
 import type { TTabItem, TTab } from '@gobletqa/components'
 import type { TRaceFeature, TRaceFeatures } from '../types'
 
-import BoltIcon from '@mui/icons-material/Bolt'
+import { BoltIcon } from '@gobletqa/components'
 import { noOpObj, omitKeys } from '@keg-hub/jsutils'
 import { TabStyles, TabRefs } from '../constants/tabs'
 

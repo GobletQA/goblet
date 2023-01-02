@@ -67,11 +67,11 @@ export type TAstBlock = {
 
 export type TFeatureParent = {
   uuid: string
-  location: string
+  location:string
 }
 
 export type TRaceFeatureGroup = {
-  uuid: string
+  uuid:string
   path:string
   title:string
   items: TRaceFeatures

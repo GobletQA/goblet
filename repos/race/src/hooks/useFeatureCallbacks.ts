@@ -1,4 +1,4 @@
-import type { TTabAction, TTab } from '@gobletqa/components'
+
 import type {
   TSetFeature,
   TRaceFeature,
@@ -8,8 +8,10 @@ import type {
 } from '../types'
 
 import { useCallback } from 'react'
-
 import { deepMerge } from '@keg-hub/jsutils'
+import { useEffectOnce } from '@gobletqa/components'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { SetFeatureContextEvt, UpdateFeatureContextEvt } from '@GBR/constants'
 
 export type THFeatureCallbacks = {
   feature?:TRaceFeature
@@ -34,15 +36,16 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   } = props
 
   const _setFeature = useCallback(async (feat?:TRaceFeature) => {
-    if(feat?.uuid === feature?.uuid) return
-
     setFeature(feat)
-    onFeatureInactiveRef?.current?.(feature)
+
+    feat?.uuid !== feature?.uuid
+      && onFeatureInactiveRef?.current?.(feature)
 
   }, [feature])
 
   const updateFeature = useCallback(async (feat?:TRaceFeature) => {
-    if(feat?.uuid === feature?.uuid) return
+    if(!feat?.uuid)
+      return console.warn(`Can not update feature. The feature.uuid property is required.`)
 
     const merged = deepMerge<TRaceFeature>(feature, feat)
     const beforeMdl = await onFeatureBeforeChangeRef.current?.(merged, feat, feature)
@@ -53,6 +56,29 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     onFeatureChangeRef.current?.(updated, feat, feature)
     setFeature(updated)
   }, [feature, setFeatureGroups])
+
+
+  // Listen to external events to update the feature context
+  // Allows dispatching update outside of the react context
+  useEffectOnce(() => {
+
+    const updateOff = EE.on<TRaceFeature>(
+      UpdateFeatureContextEvt,
+      updateFeature
+    )
+
+    const setOff = EE.on<TRaceFeature>(
+      SetFeatureContextEvt,
+      _setFeature
+    )
+
+    return () => {
+      updateOff?.()
+      setOff?.()
+    }
+  })
+
+
 
   return {
     updateFeature,

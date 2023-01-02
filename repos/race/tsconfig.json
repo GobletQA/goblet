@@ -29,6 +29,8 @@
       "@GBR/constants/*": [ "src/constants/*" ],
       "@GBR/contexts": [ "src/contexts" ],
       "@GBR/contexts/*": [ "src/contexts/*" ],
+      "@GBR/factories": [ "src/factories" ],
+      "@GBR/factories/*": [ "src/factories/*" ],
       "@GBR/hooks": [ "src/hooks" ],
       "@GBR/hooks/*": [ "src/hooks/*" ],
       "@GBR/services": [ "src/services" ],
@@ -39,6 +41,8 @@
       "@GBR/utils/*": [ "src/utils/*" ],
       "@gobletqa/components": ["../components/src"],
       "@gobletqa/components/*": ["../components/src/*"],
+      "@gobletqa/shared": [ "../shared/src" ],
+      "@gobletqa/shared/*": [ "../shared/src/*" ],
       "GobletRoot": ["../../"]
     }
   },

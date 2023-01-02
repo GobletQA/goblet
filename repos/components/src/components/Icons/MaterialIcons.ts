@@ -51,6 +51,7 @@ import InsertChartIcon from '@mui/icons-material/InsertChartOutlinedRounded'
 import DesignIcon from '@mui/icons-material/DesignServicesOutlined'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import BoltIcon from '@mui/icons-material/Bolt'
 
 export {
   Settings,
@@ -106,4 +107,5 @@ export {
   DesignIcon,
   ExpandMoreIcon,
   ChevronRightIcon,
+  BoltIcon
 }

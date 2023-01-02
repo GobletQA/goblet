@@ -1,4 +1,3 @@
-import type { TTabAction } from '@gobletqa/components'
 import type {
   TRaceFeature,
   TOnFeatureCB,
@@ -14,8 +13,6 @@ import {
   useContext,
   createContext,
 } from 'react'
-
-
 
 import { noOpObj } from '@keg-hub/jsutils'
 import { useFeatureCallbacks } from '../hooks/useFeatureCallbacks'
