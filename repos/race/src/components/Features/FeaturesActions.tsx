@@ -1,8 +1,7 @@
-import type { ComponentProps } from 'react'
+import type { ComponentProps, MouseEvent } from 'react'
 import type { TPanelHeaderAction } from '@gobletqa/components'
-import type { MouseEvent } from 'react'
 
-import { noOp } from '@keg-hub/jsutils'
+import { createFeature, updateFeature, createFolder } from '@GBR/actions'
 import {
   Tooltip,
   NewFileIcon,
@@ -13,11 +12,6 @@ import {
 type TClickHandler = { onClick: (event:MouseEvent) => void }
 export type TAddRootFile = ComponentProps<typeof NewFileIcon> & TClickHandler
 export type TAddRootFolder = ComponentProps<typeof NewFolderIcon> & TClickHandler
-
-const styles = {
-  div: { display: `flex` }
-}
-
 
 const AddRootFile = (props:TAddRootFile) => {
   const {onClick, ...rest} =props
@@ -52,13 +46,19 @@ const AddRootFolder = (props:TAddRootFolder) => {
 
 export const FeaturesActions:TPanelHeaderAction[] = [
   {
-    action:noOp,
+    action:(e: Event) => {
+      e.stopPropagation()
+      createFeature({})
+    },
     id:`add-root-feature`,
     Component: AddRootFile,
     className:`goblet-editor-feature-root-icon`,
   },
   {
-    action:noOp,
+    action:(e: Event) => {
+      e.stopPropagation()
+      createFolder()
+    },
     Component: AddRootFolder,
     id: `add-root-feature-folder`,
     className:`goblet-editor-feature-root-icon`,

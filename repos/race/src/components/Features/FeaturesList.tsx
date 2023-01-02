@@ -2,7 +2,6 @@ import type { TTabAction } from '@gobletqa/components'
 import type {
   TRaceFeature,
   TRaceFeatures,
-  TRaceFeatureGroup,
 } from '@GBR/types'
 
 

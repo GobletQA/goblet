@@ -6,9 +6,8 @@ import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { FeatureMeta } from './FeatureMeta'
 import { useFeature } from '../../contexts'
-import { EmptyFeature } from './EmptyFeature'
 import { Section, SectionHeader } from '../Section'
-
+import { Empty } from '@GBR/components/Empty'
 
 export type TFeature = TFeaturesRefs & {
   
@@ -21,10 +20,9 @@ export const Feature = (props:TFeature) => {
   } = props
 
   const { feature } = useFeature()
-  const name = feature?.feature || `Select a feature from the right`
 
   return !feature || !feature?.uuid
-    ? (<EmptyFeature />)
+    ? (<Empty />)
     : (
         <Section
           stack={2}
@@ -33,7 +31,7 @@ export const Feature = (props:TFeature) => {
           type={ESectionType.feature}
         >
           <SectionHeader
-            title={name}
+            title={feature?.feature}
             variant={`h3`}
             underline={true}
             type={ESectionType.feature}

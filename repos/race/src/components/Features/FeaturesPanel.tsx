@@ -1,7 +1,6 @@
 import type { TTabAction } from '@gobletqa/components'
 import type { TFeaturesRefs, TRaceFeatures } from '@GBR/types'
 
-import { useMemo } from 'react'
 import { Panel } from '@gobletqa/components'
 import { useFeature } from '@GBR/contexts'
 import { FeaturesList } from './FeaturesList'
@@ -18,26 +17,7 @@ export const FeaturesPanel = (props:TFeaturesPanel) => {
     onActiveFeature,
   } = props
 
-  const { feature:active, setFeature } = useFeature()
-
-  const actions = useMemo(() => {
-    return [
-      {
-        ...FeaturesActions[0],
-        action: (e: Event) => {
-          e.stopPropagation()
-          
-        },
-      },
-      {
-        ...FeaturesActions[1],
-        action: (e: Event) => {
-          e.stopPropagation()
-          
-        }
-      },
-    ]
-  }, [])
+  const { feature:active } = useFeature()
 
   return (
     <Panel
@@ -45,7 +25,7 @@ export const FeaturesPanel = (props:TFeaturesPanel) => {
       startOpen
       fillHeight
       title='Features'
-      actions={actions}
+      actions={FeaturesActions}
     >
       <FeaturesList
         active={active}
