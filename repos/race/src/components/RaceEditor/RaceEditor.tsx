@@ -3,7 +3,7 @@ import type { TRaceEditorProps } from '@GBR/types'
 import { EditorContainer } from './EditorContainer'
 import { useRaceRefs } from '../../hooks/useRaceRefs'
 import { useRaceTheme } from '../../hooks/useRaceTheme'
-import { FeatureProvider } from '../../contexts/FeatureContext'
+import { FeatureProvider, EditingProvider } from '@GBR/contexts'
 import { useInitialFeature } from '../../hooks/useInitialFeature'
 
 
@@ -38,17 +38,19 @@ export const RaceEditor = (props:TRaceEditorProps) => {
       onFeatureInactiveRef={onFeatureInactiveRef}
       onFeatureBeforeChangeRef={onFeatureBeforeChangeRef}
     >
-      <EditorContainer
-        {...props}
-        stepsRef={stepsRef}
-        editorRef={editorRef}
-        curPathRef={curPathRef}
-        curValueRef={curValueRef}
-        featuresRef={featuresRef}
-        featureGroups={featureGroups}
-        onFeatureCloseRef={onFeatureCloseRef}
-        onFeatureActiveRef={onFeatureActiveRef}
-      />
+    <EditingProvider>
+        <EditorContainer
+          {...props}
+          stepsRef={stepsRef}
+          editorRef={editorRef}
+          curPathRef={curPathRef}
+          curValueRef={curValueRef}
+          featuresRef={featuresRef}
+          featureGroups={featureGroups}
+          onFeatureCloseRef={onFeatureCloseRef}
+          onFeatureActiveRef={onFeatureActiveRef}
+        />
+      </EditingProvider>
     </FeatureProvider>
   )
 }

@@ -22,8 +22,8 @@ export const Rule = (props:TRule) => {
     >
       <SectionHeader
         underline={true}
+        title={rule?.rule}
         type={ESectionType.rule}
-        title={rule?.rule.trim() ||capitalize(ESectionType.rule)}
       />
       <Scenarios
         parent={rule}

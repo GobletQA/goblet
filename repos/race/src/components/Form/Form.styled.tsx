@@ -3,19 +3,8 @@ import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
-import Autocomplete from '@mui/material/Autocomplete'
 
-export const MetaLabel = styled(InputLabel)`
-  padding: 0px;
-`
-
-export const MetaContainer = styled(Box)``
-
-export const MetaInputComp = styled(TextField)`
-  width: 100%;
-`
-
-export const MetaFormControl = styled(FormControl)`
+export const TextInputControl = styled(FormControl)`
   width: 100%;
 
   & .MuiFormLabel-root {
@@ -30,21 +19,21 @@ export const MetaFormControl = styled(FormControl)`
   }
 `
 
-export const MetaAutoComp = styled(Autocomplete)`
-  width: 100%;
+export const TextInputLabel = styled(InputLabel)`
   padding: 0px;
-  & .MuiAutocomplete-input::placeholder {
-    font-style: italic;
-  }
 `
 
-export const MetaInputContainer = styled(Box)`
+export const TextInput = styled(TextField)`
+  width: 100%;
+`
+
+export const TextInputContainer = styled(Box)`
   width: 100%;
   display: flex;
   align-items: center;
 `
 
-export const MetaLabelWrap = styled(Box)`
+export const TextLabelWrap = styled(Box)`
   min-width: 80px;
   margin-right: 20px;
 `

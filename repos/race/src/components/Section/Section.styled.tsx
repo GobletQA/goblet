@@ -43,7 +43,9 @@ export const Stack = gutterComp(MuiStack)
 
 export const Action = styled(Box)``
 export const Actions = styled(Box)``
-export const HeaderTitle = styled(Text)``
+export const HeaderTitle = styled(Text)`
+  height: 30px;
+`
 export const Header = gutterComp(Box)
 
 

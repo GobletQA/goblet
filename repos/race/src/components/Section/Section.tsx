@@ -3,6 +3,7 @@ import type { ComponentProps, CSSProperties } from 'react'
 import type { TSectionBody } from './SectionBody'
 import type { TSectionHeader } from './SectionHeader'
 
+import { EEditKey } from '@GBR/types'
 import { exists } from '@keg-hub/jsutils'
 import { SectionBody } from './SectionBody'
 import { SectionHeader } from './SectionHeader'
@@ -15,11 +16,13 @@ type TSectionStyles = {
   stack?: CSSProperties
 }
 
-export type TSection = TSectionBody & TSectionHeader & {
+export type TSection = TSectionBody & Omit<TSectionHeader, `editKey`|`title`> & {
   body?:boolean
+  title?:string
   gutter?:boolean
   header?:boolean
   sx?:CSSProperties
+  editKey?:EEditKey
   variant?:TTextType
   stack?:number|boolean
   underline?:boolean
@@ -41,6 +44,7 @@ export const Section = (props:TSection) => {
     header,
     variant,
     actions,
+    editKey,
     children,
     underline,
     stackProps,
@@ -55,14 +59,15 @@ export const Section = (props:TSection) => {
       ]}
     >
 
-      {(header && (title || Icon || actions) && (
+      {(header && editKey && (title || Icon || actions) && (
         <SectionHeader
           type={type}
           Icon={Icon}
-          title={title}
           gutter={gutter}
+          editKey={editKey}
           variant={variant}
           actions={actions}
+          title={title || ``}
           sx={styles?.header}
           underline={underline}
         />

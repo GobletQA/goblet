@@ -2,8 +2,8 @@ import type { TBackgroundAst, TRaceFeature } from '@GBR/types'
 
 import { Steps } from '../Steps'
 import { AddItem } from '../AddItem'
+import { EEditKey } from '@GBR/types'
 import { ESectionType } from '../../types'
-import { capitalize } from '@keg-hub/jsutils'
 import { Section, SectionHeader } from '../Section'
 
 
@@ -21,8 +21,9 @@ export const Background = (props:TBackground) => {
         <Section type={ESectionType.background} >
           <SectionHeader
             underline={true}
-            type={ESectionType.scenario}
-            title={background?.background?.trim() ||capitalize(ESectionType.background)}
+            type={ESectionType.background}
+            title={background?.background}
+            editKey={EEditKey.backgroundTitle}
           />
           <Steps parent={background} />
         </Section>

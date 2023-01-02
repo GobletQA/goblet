@@ -1,12 +1,8 @@
-import type {
-  TEditing,
-  TFeaturesRefs
-} from '@GBR/types'
+import type { TFeaturesRefs } from '@GBR/types'
 
-import { useState } from 'react'
 import { Rules } from '../Rules'
 import { Scenarios } from '../Scenarios'
-import { ESectionType } from '@GBR/types'
+import { EEditKey, ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { FeatureMeta } from './FeatureMeta'
 import { useFeature } from '../../contexts'
@@ -25,7 +21,6 @@ export const Feature = (props:TFeature) => {
   } = props
 
   const { feature } = useFeature()
-  const [editing, setEditing] = useState<TEditing>({} as TEditing)
 
   return !feature || !feature?.uuid
     ? (<Empty />)
@@ -37,10 +32,11 @@ export const Feature = (props:TFeature) => {
           type={ESectionType.feature}
         >
           <SectionHeader
-            title={feature?.feature}
             variant={`h3`}
             underline={true}
+            title={feature?.feature}
             type={ESectionType.feature}
+            editKey={EEditKey.featureTitle}
           />
           <FeatureMeta
             parent={feature}

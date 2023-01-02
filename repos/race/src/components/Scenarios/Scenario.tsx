@@ -1,9 +1,8 @@
 import { TScenarioAst } from '@GBR/types'
-import { ESectionType } from '../../types'
 
 import { Steps } from '../Steps'
-import { capitalize } from '@keg-hub/jsutils'
 import { Section, SectionHeader } from '../Section'
+import { EEditKey, ESectionType } from '@GBR/types'
 
 export type TScenario = {
   scenario:TScenarioAst
@@ -19,8 +18,9 @@ export const Scenario = (props:TScenario) => {
     >
       <SectionHeader
         underline={true}
+        title={scenario?.scenario}
+        editKey={EEditKey.scenario}
         type={ESectionType.scenario}
-        title={scenario?.scenario.trim() ||capitalize(ESectionType.scenario)}
       />
       <Steps parent={scenario} />
     </Section>
