@@ -1,13 +1,17 @@
 import type { TFeaturesRefs } from '@GBR/types'
 
+import { useEffect } from 'react'
+
 import { Rules } from '../Rules'
 import { Scenarios } from '../Scenarios'
-import { EEditKey, ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { FeatureMeta } from './FeatureMeta'
 import { useFeature } from '../../contexts'
-import { Section, SectionHeader } from '../Section'
+import { wordCaps } from '@keg-hub/jsutils'
 import { Empty } from '@GBR/components/Empty'
+import { Section, SectionHeader } from '../Section'
+import { EEditKey, ESectionType } from '@GBR/types'
+import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
 
 export type TFeature = TFeaturesRefs & {
   
@@ -20,7 +24,13 @@ export const Feature = (props:TFeature) => {
     featuresRef,
   } = props
 
-  const { feature } = useFeature()
+  const { feature, rootPrefix } = useFeature()
+
+  // TODO: remove this once form components are done
+  useEffect(() => {
+    ;(!feature || !feature?.uuid) && createFeature({}, rootPrefix)
+  }, [])
+
 
   return !feature || !feature?.uuid
     ? (<Empty />)
@@ -33,10 +43,11 @@ export const Feature = (props:TFeature) => {
         >
           <SectionHeader
             variant={`h3`}
+            required={true}
             underline={true}
             title={feature?.feature}
             type={ESectionType.feature}
-            editKey={EEditKey.featureTitle}
+            label={wordCaps(`${ESectionType.feature} Title`)}
           />
           <FeatureMeta
             parent={feature}
