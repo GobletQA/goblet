@@ -46,7 +46,7 @@ export const Feature = (props:TFeature) => {
   const onToggleEdit = useCallback(((__, featureTitle, editing) => {
     !editing
       && isStr(featureTitle)
-      && updateFeature({ ...feature, feature: featureTitle}, featuresRef)
+      && updateFeature({ ...feature, feature: featureTitle})
   }) as TToggleEditCB, [feature])
 
   return !feature || !feature?.uuid

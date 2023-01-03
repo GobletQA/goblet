@@ -14,6 +14,7 @@ import { deepMerge } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { useEffectOnce, useInline } from '@gobletqa/components'
+import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 import {
   SetFeatureContextEvt,
   UpdateFeatureContextEvt,
@@ -73,7 +74,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
      && EE.emit<TRaceFeature>(UpdateEmptyFeatureTabEvt, updated)
 
     setFeature(updated)
-    
+
   })
 
 
@@ -83,7 +84,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
     const updateOff = EE.on<TRaceFeature>(
       UpdateFeatureContextEvt,
-      updateFeature
+      (feat) => updateFeature(updateEmptyFeature(feat, featuresRef))
     )
 
     const setOff = EE.on<TRaceFeature>(

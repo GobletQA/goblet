@@ -16,13 +16,12 @@ type TSectionStyles = {
   stack?: CSSProperties
 }
 
-export type TSection = TSectionBody & Omit<TSectionHeader, `editKey`|`title`> & {
+export type TSection = TSectionBody & Omit<TSectionHeader, `title`> & {
   body?:boolean
   title?:string
   gutter?:boolean
   header?:boolean
   sx?:CSSProperties
-  editKey?:EEditKey
   stack?:number|boolean
   styles?:TSectionStyles
   variant?:`outlined`|`filled`|`standard`
@@ -42,7 +41,6 @@ export const Section = (props:TSection) => {
     header,
     variant,
     actions,
-    editKey,
     children,
     stackProps,
   } = props
@@ -56,11 +54,10 @@ export const Section = (props:TSection) => {
       ]}
     >
 
-      {(header && editKey && (title || actions) && (
+      {(header && (title || actions) && (
         <SectionHeader
           type={type}
           gutter={gutter}
-          editKey={editKey}
           variant={variant}
           actions={actions}
           title={title || ``}

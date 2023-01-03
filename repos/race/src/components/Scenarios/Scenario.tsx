@@ -1,8 +1,8 @@
 import { TScenarioAst } from '@GBR/types'
 
 import { Steps } from '../Steps'
+import { ESectionType } from '@GBR/types'
 import { Section, SectionHeader } from '../Section'
-import { EEditKey, ESectionType } from '@GBR/types'
 
 export type TScenario = {
   scenario:TScenarioAst
@@ -18,7 +18,6 @@ export const Scenario = (props:TScenario) => {
     >
       <SectionHeader
         title={scenario?.scenario}
-        editKey={EEditKey.scenario}
         type={ESectionType.scenario}
       />
       <Steps parent={scenario} />

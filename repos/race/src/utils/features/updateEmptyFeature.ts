@@ -1,4 +1,4 @@
-import type { TRaceFeature, TRaceFeatures } from '@GBR/types'
+import type { TRaceFeatures, TRaceFeature, TFeaturesRef } from '@GBR/types'
 
 import { omitKeys } from '@keg-hub/jsutils'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
@@ -33,7 +33,7 @@ const buildFeatureUuid = (name:string, location:string, fileName:string) => {
  */
 const generateFeatureProps = (
   feat:TRaceFeature,
-  featuresRef:TRaceFeatures,
+  features:TRaceFeatures,
   call:number=0
 ):Partial<TRaceFeature> => {
  
@@ -49,8 +49,8 @@ const generateFeatureProps = (
    * If the generated uuid already exists
    * Then add 1 to the call amount and regenerate the uuid
    */
-  return featuresRef[uuid as keyof typeof featuresRef]
-    ? generateFeatureProps(feat, featuresRef, call + 1)
+  return features[uuid as keyof typeof features]
+    ? generateFeatureProps(feat, features, call + 1)
     : {
         uuid,
         path: relative,
@@ -71,12 +71,12 @@ const generateFeatureProps = (
     6. Add `Feature: <name>\n` to content
     7. Update the uuid
 */
-export const updateEmptyFeature = (feat:TRaceFeature, features:TRaceFeatures) => {
+export const updateEmptyFeature = (feat:TRaceFeature, featuresRef:TFeaturesRef) => {
   return feat.uuid !== EmptyFeatureUUID
     ? feat
     : {
         ...omitKeys(feat, [`empty`]),
-        ...generateFeatureProps(feat, features, 0)
+        ...generateFeatureProps(feat, featuresRef.current, 0)
       } as TRaceFeature
 
 }

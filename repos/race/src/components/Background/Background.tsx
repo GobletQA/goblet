@@ -2,8 +2,7 @@ import type { TBackgroundAst, TRaceFeature } from '@GBR/types'
 
 import { Steps } from '../Steps'
 import { AddItem } from '../AddItem'
-import { EEditKey } from '@GBR/types'
-import { ESectionType } from '../../types'
+import { ESectionType } from '@GBR/types'
 import { Section, SectionHeader } from '../Section'
 
 
@@ -22,7 +21,6 @@ export const Background = (props:TBackground) => {
           <SectionHeader
             type={ESectionType.background}
             title={background?.background}
-            editKey={EEditKey.backgroundTitle}
           />
           <Steps parent={background} />
         </Section>

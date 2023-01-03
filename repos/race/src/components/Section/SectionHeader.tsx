@@ -25,7 +25,6 @@ export type TSectionHeader = {
   onChange?:TChangeCB
   initialEditing?:boolean
   onToggleEdit?:TToggleEditCB
-  editKey?:EEditKey|EEditKey[]
   actions?:Record<string, any>[]
   variant?:`outlined`|`filled`|`standard`
 }
