@@ -17,7 +17,6 @@ export const Scenario = (props:TScenario) => {
       type={ESectionType.scenario}
     >
       <SectionHeader
-        underline={true}
         title={scenario?.scenario}
         editKey={EEditKey.scenario}
         type={ESectionType.scenario}

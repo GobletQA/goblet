@@ -1,4 +1,8 @@
-import type { CSSProperties, ComponentType, ReactNode } from 'react'
+import type {
+  ReactNode,
+  ComponentType,
+  CSSProperties,
+} from 'react'
 
 export type TInputDecor = {
   name: string
@@ -18,5 +22,6 @@ export type TInputDecor = {
 }
 
 
-
+export type TToggleEditCB = (evt?:any, value?:string|boolean|number, editing?:boolean) => void
+export type TChangeCB = (evt?:any, value?:string|boolean|number) => void
 

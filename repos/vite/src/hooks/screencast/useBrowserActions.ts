@@ -26,7 +26,7 @@ export const useBrowserActions = (props:THBrowserActions) => {
   const [forwardAmount, setForwardAmount] = useState<number>(0)
 
   const onKeyDown = useCallback(async ({ key }:Record<'key', string>) => {
-    if(!inputRef?.current || key !== "Enter") return
+    if(!inputRef?.current || key !== `Enter`) return
 
     const newUrl = pageService.normalize(inputRef?.current?.value)
     window.getSelection()?.removeAllRanges()

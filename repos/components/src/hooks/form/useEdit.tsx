@@ -1,4 +1,6 @@
-import type { RefObject, ChangeEvent } from 'react'
+import type { TToggleEditCB, TChangeCB } from '@GBC/types'
+import type { KeyboardEvent, RefObject, ChangeEvent } from 'react'
+
 
 import { exists, isStr } from '@keg-hub/jsutils'
 import { useInline } from '@GBC/hooks/useInline'
@@ -9,8 +11,8 @@ export type THEdit<T> = {
   valueProp?:keyof T
   initialEditing?:boolean
   value:string|boolean|number
-  onToggleEdit?:(evt:ChangeEvent<T>, value:boolean) => void
-  onChange?:(evt:ChangeEvent<T>, value:string|boolean|number) => void
+  onChange?:TChangeCB
+  onToggleEdit?:TToggleEditCB
 }
 
 const getValue = <T=any>(inputRef:RefObject<T>, valueProp:keyof T) => {
@@ -43,16 +45,25 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
   const [error, setError] = useState(``)
   const [value, setValue] = useState(props.value)
 
-  const onToggleEdit = useCallback((evt:ChangeEvent<T>) => {
-    const update = !editing
+  const onToggleEdit = useCallback((evt?:ChangeEvent<T>|KeyboardEvent<T>) => {
 
+    const update = !editing
     const requiredVal = isRequired(getValue(inputRef, valueProp), editing, required)
     if(requiredVal) return setError(`Field is required`)
 
-    onToggleEditCB?.(evt, update)
+    onToggleEditCB?.(evt, value, update)
     setEditing(update)
 
+    // Must be called after the setEditing call, so the input is no longer disabled
+    update
+      && setTimeout(() => {
+        const input = inputRef?.current as HTMLInputElement
+        input?.focus?.()
+        input?.select?.()
+      }, 100)
+
   }, [
+    value,
     editing,
     required,
     valueProp,
@@ -74,6 +85,10 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
     onChangeCB,
   ])
 
+  const onKeyDown = useCallback((evt:KeyboardEvent<T>) => {
+    ;(evt as any).key === `Enter` && onToggleEdit(evt)
+  }, [onToggleEdit])
+
   return {
     value,
     error,
@@ -81,6 +96,7 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
     setError,
     inputRef,
     onChange,
+    onKeyDown,
     onToggleEdit,
   }
   

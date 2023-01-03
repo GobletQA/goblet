@@ -60,6 +60,6 @@ export type TRaceEditorProps = {
 
 export type TEditorContainer = TRaceEditorProps & TFeaturesRefs & TEditorRefs & {
   featureGroups:TRaceFeatures
-  onFeatureCloseRef:TOnFeatureCBRef
-  onFeatureActiveRef:TOnFeatureCBRef
+  onFeatureClose:TOnFeatureCB
+  onFeatureActive:TOnFeatureCB
 }

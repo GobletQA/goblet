@@ -15,7 +15,6 @@ export const createFeature = (feat:TEmptyFeature, rootPrefix:string) => {
     ...feat,
   }, true)
 
-
   EE.emit<TRaceFeature>(SetFeatureContextEvt, feature)
 
 }

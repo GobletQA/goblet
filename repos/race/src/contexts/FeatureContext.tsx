@@ -1,9 +1,10 @@
 import type {
   TRaceFeature,
   TOnFeatureCB,
-  TOnFeatureCBRef,
+  TFeaturesRef,
+  TSetFeatureRefs,
   TSetFeatureGroups,
-  TOnReturnFeatureCBRef,
+  TOnReturnFeatureCB,
 } from '../types'
 
 import {
@@ -20,13 +21,15 @@ import { useFeatureCallbacks } from '../hooks/useFeatureCallbacks'
 export type TFeatureProvider = {
   children:any
   rootPrefix:string
+  featuresRef: TFeaturesRef
   initialFeature?:TRaceFeature
-  onFeatureCloseRef:TOnFeatureCBRef
-  onFeatureActiveRef:TOnFeatureCBRef
-  onFeatureChangeRef:TOnFeatureCBRef
-  onFeatureInactiveRef:TOnFeatureCBRef
+  onFeatureClose:TOnFeatureCB
+  onFeatureChange:TOnFeatureCB
+  onFeatureActive:TOnFeatureCB
+  onFeatureInactive:TOnFeatureCB
+  setFeatureRefs:TSetFeatureRefs
   setFeatureGroups:TSetFeatureGroups
-  onFeatureBeforeChangeRef:TOnReturnFeatureCBRef
+  onBeforeFeatureChange:TOnReturnFeatureCB
 }
 
 export type TFeatureCtx = {
@@ -54,13 +57,15 @@ export const FeatureProvider = (props:TFeatureProvider) => {
   const {
     children,
     rootPrefix,
+    featuresRef,
+    setFeatureRefs,
     initialFeature,
+    onFeatureClose,
     setFeatureGroups,
-    onFeatureCloseRef,
-    onFeatureChangeRef,
-    onFeatureActiveRef,
-    onFeatureInactiveRef,
-    onFeatureBeforeChangeRef,
+    onFeatureChange,
+    onFeatureActive,
+    onFeatureInactive,
+    onBeforeFeatureChange,
   } = props
 
   const [feature, _setFeature] = useState<TRaceFeature|undefined>(initialFeature)
@@ -71,13 +76,15 @@ export const FeatureProvider = (props:TFeatureProvider) => {
   } = useFeatureCallbacks({
     feature,
     rootPrefix,
+    featuresRef,
+    setFeatureRefs,
+    onFeatureClose,
+    onFeatureChange,
     setFeatureGroups,
-    onFeatureCloseRef,
-    onFeatureActiveRef,
-    onFeatureChangeRef,
-    onFeatureInactiveRef,
+    onFeatureActive,
+    onFeatureInactive,
     setFeature:_setFeature,
-    onFeatureBeforeChangeRef
+    onBeforeFeatureChange
   })
 
   const featureCtx:TFeatureCtx = useMemo(() => {

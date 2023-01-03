@@ -3,7 +3,7 @@ import type { TRuleAst } from '@GBR/types'
 import { toObj } from '@gobletqa/race/utils/toObj'
 import { scenariosFactory } from './scenarioFactory'
 import { backgroundFactory } from './backgroundFactory'
-import { deepMerge, uuid } from '@keg-hub/jsutils'
+import { deepMerge, uuid, emptyArr } from '@keg-hub/jsutils'
 
 export const ruleFactory = (rule?:Partial<TRuleAst>) => {
   return rule
@@ -25,6 +25,6 @@ export const ruleFactory = (rule?:Partial<TRuleAst>) => {
 export const rulesFactory = (rules?:Partial<TRuleAst>[]) => {
   return rules?.length
   ? rules.map(rule => rule && ruleFactory(rule)).filter(Boolean) as TRuleAst[]
-  : undefined
+  : emptyArr
 
 }

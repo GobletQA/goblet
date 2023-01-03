@@ -2,27 +2,36 @@
 import type {
   TSetFeature,
   TRaceFeature,
-  TOnFeatureCBRef,
+  TOnFeatureCB,
+  TFeaturesRef,
+  TSetFeatureRefs,
   TSetFeatureGroups,
-  TOnReturnFeatureCBRef,
+  TOnReturnFeatureCB,
 } from '../types'
 
-import { useCallback } from 'react'
+
 import { deepMerge } from '@keg-hub/jsutils'
-import { useEffectOnce } from '@gobletqa/components'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { SetFeatureContextEvt, UpdateFeatureContextEvt } from '@GBR/constants'
+import { EmptyFeatureUUID } from '@GBR/constants/values'
+import { useEffectOnce, useInline } from '@gobletqa/components'
+import {
+  SetFeatureContextEvt,
+  UpdateFeatureContextEvt,
+  UpdateEmptyFeatureTabEvt
+} from '@GBR/constants'
 
 export type THFeatureCallbacks = {
   rootPrefix:string
   feature?:TRaceFeature
   setFeature:TSetFeature
-  onFeatureCloseRef:TOnFeatureCBRef
-  onFeatureActiveRef:TOnFeatureCBRef
-  onFeatureChangeRef:TOnFeatureCBRef
-  onFeatureInactiveRef:TOnFeatureCBRef
+  featuresRef: TFeaturesRef
+  onFeatureClose:TOnFeatureCB
+  onFeatureChange:TOnFeatureCB
+  onFeatureActive:TOnFeatureCB
+  onFeatureInactive:TOnFeatureCB
+  setFeatureRefs:TSetFeatureRefs
   setFeatureGroups:TSetFeatureGroups
-  onFeatureBeforeChangeRef:TOnReturnFeatureCBRef
+  onBeforeFeatureChange:TOnReturnFeatureCB
 }
 
 export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
@@ -30,33 +39,42 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   const {
     feature,
     setFeature,
-    setFeatureGroups,
-    onFeatureChangeRef,
-    onFeatureInactiveRef,
-    onFeatureBeforeChangeRef
+    featuresRef,
+    setFeatureRefs,
+    onFeatureChange,
+    onFeatureInactive,
+    onBeforeFeatureChange
   } = props
 
-  const _setFeature = useCallback(async (feat?:TRaceFeature) => {
+  const _setFeature = useInline(async (feat?:TRaceFeature) => {
     setFeature(feat)
-
     feat?.uuid !== feature?.uuid
-      && onFeatureInactiveRef?.current?.(feature)
+      && onFeatureInactive?.(feature)
 
-  }, [feature])
+  })
 
-  const updateFeature = useCallback(async (feat?:TRaceFeature) => {
+  const updateFeature = useInline(async (feat?:TRaceFeature) => {
     if(!feat?.uuid)
       return console.warn(`Can not update feature. The feature.uuid property is required.`)
 
     const merged = deepMerge<TRaceFeature>(feature, feat)
-    const beforeMdl = await onFeatureBeforeChangeRef.current?.(merged, feat, feature)
+    const beforeMdl = await onBeforeFeatureChange?.(merged, feat, feature)
 
     const updated = beforeMdl || merged
+    featuresRef.current[updated.uuid] = updated
 
-    // TODO: update feature groups here if needed?
-    onFeatureChangeRef.current?.(updated, feat, feature)
+    setFeatureRefs(featuresRef.current)
+
+    onFeatureChange?.(updated, feat, feature)
+
+    // Update the opened empty feature tab, with the updated feature data
+    // Ensure the tab name is correct
+    feature?.uuid === EmptyFeatureUUID
+     && EE.emit<TRaceFeature>(UpdateEmptyFeatureTabEvt, updated)
+
     setFeature(updated)
-  }, [feature, setFeatureGroups])
+    
+  })
 
 
   // Listen to external events to update the feature context

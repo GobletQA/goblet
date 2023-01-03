@@ -21,7 +21,6 @@ export const Rule = (props:TRule) => {
       type={ESectionType.scenario}
     >
       <SectionHeader
-        underline={true}
         title={rule?.rule}
         type={ESectionType.rule}
       />

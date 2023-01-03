@@ -55,6 +55,10 @@ export const useXTerminal = (props:Partial<TXTerminal>=noOpObj, id?:string) => {
     if(existing || !termId || termRefs?.current?.[termId] || !termElRef?.current)
       return undefined
 
+    
+    if(!termElRef.current)
+      return console.warn(`Terminal Dom element ref not set`)
+    
     termRefs.current[termId] = {
       element: termElRef,
       themeMode: terminalTheme.mode,

@@ -29,22 +29,22 @@ export const FeatureItemRender = (props:TFeatureItemRender) => {
       items,
       groups
     } = Object.entries(featureGroup)
-      .reduce((acc, [key, feature]) => {
+      .reduce((acc, [key, item]) => {
 
-        ;(feature  as TRaceFeatureGroup)?.items
+        ;(item as TRaceFeatureGroup)?.items
           ? acc.groups.push(
               <FeatureListGroup
                 active={active}
-                key={`${feature?.title || key}-${feature.uuid}`}
+                key={`${(item as TRaceFeatureGroup)?.title || key}-${item.uuid}`}
                 onActiveFeature={onActiveFeature}
-                featureGroup={feature as TRaceFeatureGroup}
+                featureGroup={item as TRaceFeatureGroup}
               />
             )
           : acc.items.push(
               <FeatureListItem
                 active={active}
-                key={`${feature?.title || key}-${feature.uuid}`}
-                feature={feature as TRaceFeature}
+                key={`${(item as TRaceFeature)?.feature || key}-${item.uuid}`}
+                feature={item as TRaceFeature}
                 onActiveFeature={onActiveFeature}
               />
             )

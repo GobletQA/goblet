@@ -80,7 +80,6 @@ export type TRaceFeatureGroup = {
 export type TRaceFeature = {
   uuid: string
   path:string
-  title:string
   tags?: string[]
   feature: string
   content: string

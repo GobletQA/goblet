@@ -19,24 +19,27 @@ export const RaceEditor = (props:TRaceEditorProps) => {
     curValueRef,
     featuresRef,
     featureGroups,
+    onFeatureClose,
+    setFeatureRefs,
+    onFeatureChange,
     setFeatureGroups,
-    onFeatureCloseRef,
-    onFeatureChangeRef,
-    onFeatureActiveRef,
-    onFeatureInactiveRef,
-    onFeatureBeforeChangeRef,
+    onFeatureActive,
+    onFeatureInactive,
+    onBeforeFeatureChange,
   } = useRaceRefs(props, { initialFeature })
 
   return (
     <FeatureProvider
+      featuresRef={featuresRef}
       rootPrefix={props.rootPrefix}
+      onFeatureClose={onFeatureClose}
       initialFeature={initialFeature}
+      setFeatureRefs={setFeatureRefs}
+      onFeatureChange={onFeatureChange}
+      onFeatureActive={onFeatureActive}
       setFeatureGroups={setFeatureGroups}
-      onFeatureCloseRef={onFeatureCloseRef}
-      onFeatureChangeRef={onFeatureChangeRef}
-      onFeatureActiveRef={onFeatureActiveRef}
-      onFeatureInactiveRef={onFeatureInactiveRef}
-      onFeatureBeforeChangeRef={onFeatureBeforeChangeRef}
+      onFeatureInactive={onFeatureInactive}
+      onBeforeFeatureChange={onBeforeFeatureChange}
     >
     <EditingProvider>
         <EditorContainer
@@ -47,8 +50,8 @@ export const RaceEditor = (props:TRaceEditorProps) => {
           curValueRef={curValueRef}
           featuresRef={featuresRef}
           featureGroups={featureGroups}
-          onFeatureCloseRef={onFeatureCloseRef}
-          onFeatureActiveRef={onFeatureActiveRef}
+          onFeatureClose={onFeatureClose}
+          onFeatureActive={onFeatureActive}
         />
       </EditingProvider>
     </FeatureProvider>

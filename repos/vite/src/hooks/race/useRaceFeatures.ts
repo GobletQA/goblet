@@ -24,7 +24,6 @@ export const useRaceFeatures = (features:TFeaturesState) => {
               models[uuidRef] = {
                 ...model,
                 uuid: uuidRef,
-                title: model?.feature,
                 path: rmFeaturePrefix(key, repo),
                 parent: { uuid: key, location: key },
               }

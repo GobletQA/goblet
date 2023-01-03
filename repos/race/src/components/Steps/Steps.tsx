@@ -21,7 +21,6 @@ export const Steps = (props:TSteps) => {
         stack={0}
         gutter={true}
         header={true}
-        variant={`h5`}
         title={`Steps`}
         type={ESectionType.steps}
         className='gr-steps-section'

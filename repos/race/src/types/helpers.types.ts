@@ -4,6 +4,7 @@ import type { Dispatch, SetStateAction, MutableRefObject } from 'react'
 
 export type TStepsRef = MutableRefObject<TRaceSteps>
 export type TFeaturesRef = MutableRefObject<TRaceFeatures>
+export type TSetFeatureRefs = (features:TRaceFeatures) => void
 export type TSetFeatureGroups = Dispatch<SetStateAction<TRaceFeatures | undefined>>
 
 

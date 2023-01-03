@@ -1,13 +1,17 @@
 import type { TTabAction, TTabItem } from '@gobletqa/components'
 import type {
-  TOnFeatureCBRef,
+  TRaceFeature,
+  TOnFeatureCB,
   TEditorContainer,
 } from '../types'
 
-import { stopEvent } from '@gobletqa/components'
 import { useFeature } from '../contexts'
+import { stopEvent } from '@gobletqa/components'
 import { setTabActive } from '../utils/featureTabs'
-import { useMemo, useState, useCallback } from 'react'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { UpdateEmptyFeatureTabEvt } from '@GBR/constants/events'
+
+import { useMemo, useState, useCallback, useEffect } from 'react'
 import {
   removeTab,
   featureToTab,
@@ -15,8 +19,8 @@ import {
 } from '../utils/featureTabs'
 
 export type THOpenedTabs = {
-  onFeatureCloseRef:TOnFeatureCBRef
-  onFeatureActiveRef:TOnFeatureCBRef
+  onFeatureClose:TOnFeatureCB
+  onFeatureActive:TOnFeatureCB
 }
 
 export const useOpenedTabs = (props:TEditorContainer, ext:THOpenedTabs) => {
@@ -29,8 +33,8 @@ export const useOpenedTabs = (props:TEditorContainer, ext:THOpenedTabs) => {
   } = props
 
   const {
-    onFeatureCloseRef,
-    onFeatureActiveRef,
+    onFeatureClose,
+    onFeatureActive,
   } = ext
 
   const { feature, setFeature } = useFeature()
@@ -47,7 +51,7 @@ export const useOpenedTabs = (props:TEditorContainer, ext:THOpenedTabs) => {
     const feat = featureFromTab(tab, featuresRef.current)
 
     const updatedTabs = setTabActive(openedTabs, tab)
-    onFeatureActiveRef.current?.(feat, ...rest)
+    onFeatureActive?.(feat, ...rest)
 
     setOpenedTabs(updatedTabs)
     setFeature(feat)
@@ -58,7 +62,7 @@ export const useOpenedTabs = (props:TEditorContainer, ext:THOpenedTabs) => {
     stopEvent(evt)
 
     const feat = featureFromTab(tab, featuresRef.current)
-    onFeatureCloseRef.current?.(feat, ...rest)
+    onFeatureClose?.(feat, ...rest)
 
     const { tabs: updated, active } = removeTab(openedTabs, tab)
     setOpenedTabs(updated)
@@ -78,6 +82,23 @@ export const useOpenedTabs = (props:TEditorContainer, ext:THOpenedTabs) => {
   const onTabDown = useCallback<TTabAction>((tab, ...rest) => {
     onTabDownCB?.(tab, ...rest)
   }, [openedTabs])
+
+  useEffect(() => {
+
+    const updateOff = EE.on<TRaceFeature>(
+      UpdateEmptyFeatureTabEvt,
+      (updated) => {
+        const cleaned = openedTabs.filter(tab => Boolean(tab.tab.uuid))
+        const updatedTabs = setTabActive(cleaned, updated)
+        setOpenedTabs(updatedTabs)
+      }
+    )
+
+    return () => {
+      updateOff?.()
+    }
+  }, [openedTabs])
+
 
   return {
     openedTabs,

@@ -25,11 +25,11 @@ export const EditorContainer = (props:TEditorContainer) => {
     sidebarWidth,
     sidebarStatus,
     featureGroups,
+    onFeatureClose,
+    onFeatureActive,
     sidebarMaxWidth,
     onSidebarResize,
     Divider=REDivider,
-    onFeatureCloseRef,
-    onFeatureActiveRef,
   } = props
 
   const {
@@ -53,8 +53,8 @@ export const EditorContainer = (props:TEditorContainer) => {
     onCloseFeature,
     onActiveFeature,
   } = useOpenedTabs(props, {
-    onFeatureCloseRef,
-    onFeatureActiveRef,
+    onFeatureClose,
+    onFeatureActive,
   })
 
   return (

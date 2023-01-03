@@ -20,7 +20,6 @@ export const Background = (props:TBackground) => {
     ? (
         <Section type={ESectionType.background} >
           <SectionHeader
-            underline={true}
             type={ESectionType.background}
             title={background?.background}
             editKey={EEditKey.backgroundTitle}

@@ -1,9 +1,8 @@
 import type { TEmptyFeature, TRaceFeature } from '@GBR/types'
 
+import { deepMerge } from '@keg-hub/jsutils'
 import { toObj } from '@gobletqa/race/utils/toObj'
-import { titleFromPath } from '@GBR/utils/titleFromPath'
-
-import { deepMerge, uuid } from '@keg-hub/jsutils'
+import { EmptyFeatureUUID } from '@GBR/constants/values'
 
 import { rulesFactory } from './ruleFactory'
 import { scenariosFactory } from './scenarioFactory'
@@ -22,12 +21,12 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
     perspective,
   } = feat
 
-  const fUuid = feat?.uuid || uuid()
+  const fUuid = feat?.uuid || EmptyFeatureUUID
 
   return deepMerge<TRaceFeature>(
     {
-      uuid: fUuid,
       tags: [],
+      uuid: fUuid,
       feature: ``,
       content: ``,
     },
@@ -45,7 +44,6 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
       ...toObj(`scenarios`, scenariosFactory(scenarios)),
       ...toObj(`perspective`, blockFactory(perspective)),
       ...toObj(`background`, backgroundFactory(background)),
-      ...toObj(`title`, feat.title || titleFromPath(path)),
       ...toObj(`empty`, empty)
     }
   )

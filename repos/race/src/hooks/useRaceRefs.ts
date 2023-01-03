@@ -10,6 +10,7 @@ import type {
 
 import { useRef } from 'react'
 import { noOp } from '@keg-hub/jsutils'
+import { useInline } from '@gobletqa/components'
 import { useFeatureGroups } from './useFeatureGroups'
 
 export type THRaceEditorExt = {
@@ -20,11 +21,6 @@ export const useRaceRefs = (props:TRaceEditorProps, { initialFeature }:THRaceEdi
   const {
     steps,
     features,
-    onFeatureClose=noOp,
-    onFeatureChange=noOp,
-    onFeatureActive=noOp,
-    onFeatureInactive=noOp,
-    onBeforeFeatureChange=noOp as TOnReturnFeatureCB
   } = props
 
   const stepsRef = useRef<TRaceSteps>(steps)
@@ -33,22 +29,17 @@ export const useRaceRefs = (props:TRaceEditorProps, { initialFeature }:THRaceEdi
   const featuresRef = useRef<TRaceFeatures>(features)
   featuresRef.current = features
 
-  const [featureGroups, setFeatureGroups] = useFeatureGroups({ featuresRef })
+  const [
+    featureGroups,
+    setFeatureGroups,
+    setFeatureRefs
+  ] = useFeatureGroups({ featuresRef })
 
-  const onFeatureCloseRef = useRef<TOnFeatureCB>(onFeatureClose)
-  onFeatureCloseRef.current = onFeatureClose
-
-  const onFeatureChangeRef = useRef<TOnFeatureCB>(onFeatureChange)
-  onFeatureChangeRef.current = onFeatureChange
-
-  const onFeatureActiveRef = useRef<TOnFeatureCB>(onFeatureActive)
-  onFeatureActiveRef.current = onFeatureActive
-
-  const onFeatureInactiveRef = useRef<TOnFeatureCB>(onFeatureActive)
-  onFeatureInactiveRef.current = onFeatureInactive
-
-  const onFeatureBeforeChangeRef = useRef<TOnReturnFeatureCB>(onBeforeFeatureChange)
-  onFeatureBeforeChangeRef.current = onBeforeFeatureChange
+  const onFeatureClose = useInline(props.onFeatureClose || noOp)
+  const onFeatureChange = useInline(props.onFeatureChange || noOp)
+  const onFeatureActive = useInline(props.onFeatureActive || noOp)
+  const onFeatureInactive = useInline(props.onFeatureInactive || noOp)
+  const onBeforeFeatureChange = useInline(props.onBeforeFeatureChange || noOp as TOnReturnFeatureCB)
 
   const editorRef = useRef<TRaceEditor>(null)
   const curValueRef = useRef<string>(initialFeature?.content || ``)
@@ -61,12 +52,13 @@ export const useRaceRefs = (props:TRaceEditorProps, { initialFeature }:THRaceEdi
     curValueRef,
     featuresRef,
     featureGroups,
+    setFeatureRefs,
     setFeatureGroups,
-    onFeatureCloseRef,
-    onFeatureChangeRef,
-    onFeatureActiveRef,
-    onFeatureInactiveRef,
-    onFeatureBeforeChangeRef
+    onFeatureClose,
+    onFeatureChange,
+    onFeatureActive,
+    onFeatureInactive,
+    onBeforeFeatureChange
   }
 
 }

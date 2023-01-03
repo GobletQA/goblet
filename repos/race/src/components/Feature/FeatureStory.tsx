@@ -10,12 +10,13 @@ export type TFeatureMeta = {
   featuresRef: TFeaturesRef
 }
 
-export const FeatureMeta = (props:TFeatureMeta) => {
+export const FeatureStory = (props:TFeatureMeta) => {
   const { parent, featuresRef } = props
 
   return (
     <Dropdown
       id={parent.uuid}
+      sx={{ marginTop: `20px !important` }}
       headerText={`Meta Data`}
     >
       <Section

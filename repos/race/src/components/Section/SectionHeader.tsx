@@ -1,16 +1,13 @@
+import type { CSSProperties } from 'react'
 import type { ESectionType, EEditKey } from '@GBR/types'
-import type { ComponentType, CSSProperties } from 'react'
-import type { TTextType } from '@gobletqa/components'
+import type { TToggleEditCB, TChangeCB } from '@gobletqa/components'
 
 
-
-import { useMemo } from 'react'
 import { Input } from '@gobletqa/components'
 
-import Box from '@mui/material/Box'
-import { capitalize, cls } from '@keg-hub/jsutils'
+import { cls } from '@keg-hub/jsutils'
+import { Header } from './Section.styled'
 import { SectionActions } from './SectionActions'
-import { Header, HeaderTitle } from './Section.styled'
 
 export type TSectionHeader = {
   id?:string
@@ -21,15 +18,16 @@ export type TSectionHeader = {
   className?:string
   sx?:CSSProperties
   type:ESectionType
-  variant?:TTextType
   required?:boolean
-  underline?:boolean
   multiline?:boolean
   helperText?:string
   placeholder?:string
-  Icon?:ComponentType<any>
+  onChange?:TChangeCB
+  initialEditing?:boolean
+  onToggleEdit?:TToggleEditCB
   editKey?:EEditKey|EEditKey[]
-  actions?: Record<string, any>[]
+  actions?:Record<string, any>[]
+  variant?:`outlined`|`filled`|`standard`
 }
 
 
@@ -38,18 +36,19 @@ export const SectionHeader = (props:TSectionHeader) => {
     id,
     sx,
     type,
-    Icon,
     name,
     title,
     gutter,
-    actions,
     variant,
+    actions,
     required,
-    underline,
+    onChange,
     className,
     multiline,
     helperText,
     placeholder,
+    onToggleEdit,
+    initialEditing,
     label=type,
   } = props
 
@@ -64,30 +63,17 @@ export const SectionHeader = (props:TSectionHeader) => {
         name={name}
         label={label}
         value={title}
+        variant={variant}
         required={required}
+        onChange={onChange}
         multiline={multiline}
         helperText={helperText}
         placeholder={placeholder}
+        onToggleEdit={onToggleEdit}
+        initialEditing={initialEditing}
         className='gr-section-header-title'
         id={`${type}-${id || name || title}`}
       >
-
-        {Icon && (
-          <Box className='gr-section-header-icon-wrap' >
-            <Icon className='gr-section-header-icon' />
-          </Box>
-        ) || null }
-      
-        <HeaderTitle
-          variant={variant || `h4`}
-          sx={(underline && {
-            paddingBottom: `5px`,
-            borderBottom: `1px solid #ddd`
-          }) as CSSProperties}
-          className='gr-section-header-title'
-        >
-          {title}
-        </HeaderTitle>
 
         { actions && (
           <SectionActions actions={actions} type={type} />
