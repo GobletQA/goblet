@@ -1,10 +1,10 @@
 import type { ComponentType } from 'react'
 import type { TTabItem, TTab } from '@gobletqa/components'
-import type { TRaceFeature, TRaceFeatures } from '../types'
+import type { TRaceFeature, TRaceFeatures } from '@GBR/types'
 
 import { BoltIcon } from '@gobletqa/components'
 import { noOpObj, omitKeys } from '@keg-hub/jsutils'
-import { TabStyles, TabRefs } from '../constants/tabs'
+import { TabStyles, TabRefs } from '@GBR/constants/tabs'
 
 /**
  * Updates a tab with the passed in update object

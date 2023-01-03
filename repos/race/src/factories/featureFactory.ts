@@ -1,7 +1,7 @@
 import type { TEmptyFeature, TRaceFeature } from '@GBR/types'
 
 import { deepMerge } from '@keg-hub/jsutils'
-import { toObj } from '@gobletqa/race/utils/toObj'
+import { toObj } from '@gobletqa/race/utils/helpers/toObj'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 
 import { rulesFactory } from './ruleFactory'

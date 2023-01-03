@@ -3,20 +3,20 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TEditorContainer,
-} from '../types'
+} from '@GBR/types'
 
-import { useFeature } from '../contexts'
+import { useFeature } from '@GBR/contexts'
 import { stopEvent } from '@gobletqa/components'
-import { setTabActive } from '../utils/featureTabs'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { UpdateEmptyFeatureTabEvt } from '@GBR/constants/events'
 
 import { useMemo, useState, useCallback, useEffect } from 'react'
 import {
   removeTab,
+  setTabActive,
   featureToTab,
   featureFromTab,
-} from '../utils/featureTabs'
+} from '@GBR/utils/features/featureTabs'
 
 export type THOpenedTabs = {
   onFeatureClose:TOnFeatureCB
