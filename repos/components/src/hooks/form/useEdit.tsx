@@ -1,10 +1,10 @@
 import type { TToggleEditCB, TChangeCB } from '@GBC/types'
-import type { KeyboardEvent, RefObject, ChangeEvent } from 'react'
+import type { KeyboardEvent, RefObject, ChangeEvent, MouseEvent } from 'react'
 
 
 import { exists, isStr } from '@keg-hub/jsutils'
 import { useInline } from '@GBC/hooks/useInline'
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 
 export type THEdit<T> = {
   required?:boolean
@@ -32,6 +32,7 @@ const isRequired = (
 export const useEdit = <T=any>(props:THEdit<T>) => {
 
   const {
+    value,
     required,
     initialEditing=false,
     valueProp=`value` as keyof T,
@@ -43,11 +44,13 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
   const [editing, setEditing] = useState<boolean>(initialEditing)
 
   const [error, setError] = useState(``)
-  const [value, setValue] = useState(props.value)
 
-  const onToggleEdit = useCallback((evt?:ChangeEvent<T>|KeyboardEvent<T>) => {
+  const onToggleEdit = useCallback((
+    evt?:ChangeEvent<T>|KeyboardEvent<T>|MouseEvent<HTMLDivElement>
+  ) => {
 
     const update = !editing
+    const value = getValue(inputRef, valueProp)
     const requiredVal = isRequired(getValue(inputRef, valueProp), editing, required)
     if(requiredVal) return setError(`Field is required`)
 
@@ -63,7 +66,6 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
       }, 100)
 
   }, [
-    value,
     editing,
     required,
     valueProp,
@@ -77,22 +79,36 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
       && setError(``)
 
     onChangeCB?.(evt, val)
-    setValue(val)
   }, [
     error,
-    setValue,
+    value,
     valueProp,
     onChangeCB,
   ])
 
   const onKeyDown = useCallback((evt:KeyboardEvent<T>) => {
-    ;(evt as any).key === `Enter` && onToggleEdit(evt)
-  }, [onToggleEdit])
+    editing && (evt as any).key === `Enter` && onToggleEdit(evt)
+  }, [editing, onToggleEdit])
+
+  const onClick = useCallback((evt:MouseEvent<HTMLDivElement>) => {
+    !editing && evt.detail == 2 && onToggleEdit(evt)
+  }, [editing, onToggleEdit])
+  
+
+  useEffect(() => {
+    // Update the input value if the prop value has changed
+    // This happens when the parent switches the initial prop.value
+    // without doing a dom rerender
+    inputRef.current
+    && props.value !== inputRef.current[valueProp]
+      && (inputRef.current[valueProp as keyof T] = props.value as any)
+
+  }, [props.value])
 
   return {
-    value,
     error,
     editing,
+    onClick,
     setError,
     inputRef,
     onChange,

@@ -1,38 +1,11 @@
 import type { TFeaturesRef, TRaceFeatures, TSetFeatureGroups, TSetFeatureRefs } from '@GBR/types'
 
 import { useMemo, useState, useCallback } from 'react'
+import { buildGroups } from '@GBR/utils/features/buildGroups'
 
 export type THFeatureGroups = {
   featuresRef: TFeaturesRef
 }
-
-const buildGroups = (featuresRef: TFeaturesRef) => {
-  return Object.entries(featuresRef?.current)
-    .reduce((groups, [key, feature]) => {
-        const { path } = feature
-
-        let curr = groups as Record<string, any>
-        let curPath:string = ``
-        path.split(`/`)
-          .filter(Boolean)
-          .forEach((loc) => {
-            
-            curPath = `${curPath}/${loc}`
-
-            if(path.endsWith(loc)) return (curr[loc] = feature)
-
-            curr[loc] = curr[loc] || { uuid: loc, path: curPath }
-            
-            curr[loc].title = loc
-            curr[loc].items = curr[loc].items || {}
-            curr = curr[loc].items
-
-          })
-
-        return groups
-    }, {} as TRaceFeatures)
-}
-
 
 export const useFeatureGroups = (props:THFeatureGroups) => {
   const { featuresRef } = props

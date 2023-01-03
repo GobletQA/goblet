@@ -1,12 +1,13 @@
 
 import type { InputProps } from '@mui/material'
 import type { TInputAction } from './InputActions'
+import type { CSSProperties, ReactNode } from 'react'
 import type { TToggleEditCB, TChangeCB } from '@GBC/types'
-import type { CSSProperties, ReactNode, ChangeEvent, KeyboardEvent } from 'react'
 
+import { cls, uuid } from '@keg-hub/jsutils'
 import { InputActions } from './InputActions'
 import { useEdit } from '@GBC/hooks/form/useEdit'
-import { cls, uuid } from '@keg-hub/jsutils'
+
 import {
   TextInput,
   TextLabelWrap,
@@ -68,10 +69,10 @@ export const Input = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
   } = props
 
   const {
-    value,
     error,
     editing,
     inputRef,
+    onClick,
     onChange,
     onKeyDown,
     onToggleEdit,
@@ -84,7 +85,13 @@ export const Input = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
   })
 
   return (
-    <InputContainer className='gc-input-root gc-input-container' >
+    <InputContainer
+      onClick={onClick}
+      className={cls(
+        `gc-input-root gc-input-container`,
+        editing ? `editing-input` : `disabled-input`
+      )}
+    >
       <TextInputControl>
         <TextInputContainer className='gc-text-input-container' >
           {label && (
@@ -105,7 +112,6 @@ export const Input = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
             size={size}
             name={name}
             sx={inputSx}
-            value={value}
             required={required}
             inputRef={inputRef}
             onChange={onChange}
@@ -121,6 +127,7 @@ export const Input = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
             variant={variant || `standard`}
             disabled={!editing || disabled}
             helperText={error || helperText}
+            defaultValue={props.value || ``}
             placeholder={placeholder || "Enter some text..."}
             className={cls('gc-text-input', className && `${className}-input`)}
           />

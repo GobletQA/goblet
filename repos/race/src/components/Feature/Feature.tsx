@@ -38,10 +38,10 @@ export const Feature = (props:TFeature) => {
 
   const { feature, rootPrefix } = useFeature()
 
-  // // TODO: remove this once form components are done
-  // useEffect(() => {
-  //   ;(!feature || !feature?.uuid) && createFeature({}, rootPrefix)
-  // }, [])
+  // TODO: remove this once form components are done
+  useEffect(() => {
+    ;(!feature || !feature?.uuid) && createFeature({}, rootPrefix)
+  }, [])
 
   const onToggleEdit = useCallback(((__, featureTitle, editing) => {
     !editing

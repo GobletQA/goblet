@@ -5,12 +5,14 @@ import type {
   TEditorContainer,
 } from '@GBR/types'
 
-import { useFeature } from '@GBR/contexts'
-import { stopEvent } from '@gobletqa/components'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { UpdateEmptyFeatureTabEvt } from '@GBR/constants/events'
 
-import { useMemo, useState, useCallback, useEffect } from 'react'
+import { useFeature } from '@GBR/contexts'
+import { useMemo, useState, useCallback } from 'react'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { EmptyFeatureUUID } from '@GBR/constants/values'
+import { UpdateEmptyFeatureTabEvt } from '@GBR/constants/events'
+import { useInline, useEffectOnce, stopEvent } from '@gobletqa/components'
+
 import {
   removeTab,
   setTabActive,
@@ -40,8 +42,8 @@ export const useOpenedTabs = (props:TEditorContainer, ext:THOpenedTabs) => {
   const { feature, setFeature } = useFeature()
 
   const initialTabs = useMemo(() => {
-    return feature ? [featureToTab(feature, { active: true })] : []
-  }, [feature])
+    return feature?.uuid ? [featureToTab(feature, { active: true })] : []
+  }, [])
 
   const [openedTabs, setOpenedTabs] = useState<TTabItem[]>(initialTabs)
 
@@ -83,21 +85,28 @@ export const useOpenedTabs = (props:TEditorContainer, ext:THOpenedTabs) => {
     onTabDownCB?.(tab, ...rest)
   }, [openedTabs])
 
-  useEffect(() => {
+  const updateEmptyTab = useInline((updated:TRaceFeature) => {
+    // There should only be one tab with an empty uuid
+    // always filter out any existing tags with that uuid
+    // The first call here, adds the tab with an empty uuid
+    // The second call removes it and replaces it
+    // With the updated feature that should now have a valid uuid
+    const cleaned = openedTabs.filter(tab => tab.tab.uuid !== EmptyFeatureUUID)
+    const updatedTabs = setTabActive(cleaned, updated)
 
+    setOpenedTabs(updatedTabs)
+  })
+
+  useEffectOnce(() => {
     const updateOff = EE.on<TRaceFeature>(
       UpdateEmptyFeatureTabEvt,
-      (updated) => {
-        const cleaned = openedTabs.filter(tab => Boolean(tab.tab.uuid))
-        const updatedTabs = setTabActive(cleaned, updated)
-        setOpenedTabs(updatedTabs)
-      }
+      updateEmptyTab
     )
 
     return () => {
       updateOff?.()
     }
-  }, [openedTabs])
+  })
 
 
   return {

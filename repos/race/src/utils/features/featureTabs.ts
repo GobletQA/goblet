@@ -5,6 +5,7 @@ import type { TRaceFeature, TRaceFeatures } from '@GBR/types'
 import { BoltIcon } from '@gobletqa/components'
 import { noOpObj, omitKeys } from '@keg-hub/jsutils'
 import { TabStyles, TabRefs } from '@GBR/constants/tabs'
+import { EmptyFeatureUUID } from '@GBR/constants/values'
 
 /**
  * Updates a tab with the passed in update object
@@ -94,7 +95,11 @@ export const featureToTab = (
 ):TTabItem => ({
   Icon,
   styles: TabStyles,
-  tab: {...feature, ...tab}
+  tab: {
+    ...feature,
+    ...tab,
+    title: feature.uuid === EmptyFeatureUUID ? `New Feature` : feature.feature
+  }
 })
 
 /**
@@ -104,7 +109,6 @@ export const featureFromTab = (tab:TTab, features:TRaceFeatures) => {
   // This seems to break tab switching, doesn't make a lot of sense?
   // const feat = features[tab?.uuid as keyof typeof features]
   // return feat
-
-  const omitFeat = omitKeys<TRaceFeature>(tab, [`active`, `editing`])
+  const omitFeat = omitKeys<TRaceFeature>(tab, [`active`, `editing`, `title`])
   return omitFeat
 }

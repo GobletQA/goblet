@@ -15,6 +15,15 @@ export const FromContainer = styled(Box)``
 // ----- Input Component ---- //
 export const InputContainer = styled(Box)`
   position: relative;
+  
+  &.disabled-input {
+    cursor: pointer;
+  }
+
+  &.disabled-input input {
+    cursor: text;
+  }
+
 `
 
 export const TextInputControl = styled(FormControl)`

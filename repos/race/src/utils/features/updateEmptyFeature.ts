@@ -1,4 +1,9 @@
-import type { TRaceFeatures, TRaceFeature, TFeaturesRef } from '@GBR/types'
+import type {
+  TFeaturesRef,
+  TRaceFeature,
+  TRaceFeatures,
+  TRaceFeatureAsts,
+} from '@GBR/types'
 
 import { omitKeys } from '@keg-hub/jsutils'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
@@ -45,11 +50,18 @@ const generateFeatureProps = (
   
   const uuid = buildFeatureUuid(feat.feature, fullLoc, fileName)
 
+  // Check if the path of full path match and existing feature
+  const invalid = Object.entries(features as TRaceFeatureAsts)
+    .reduce((invalid, [key, feature]) => {
+      return invalid
+        || (relative === feature?.path || fullLoc === feature?.parent?.location)
+    }, false)
+
   /**
-   * If the generated uuid already exists
+   * If the generated uuid or file path already exists
    * Then add 1 to the call amount and regenerate the uuid
    */
-  return features[uuid as keyof typeof features]
+  return invalid || features[uuid as keyof typeof features]
     ? generateFeatureProps(feat, features, call + 1)
     : {
         uuid,
