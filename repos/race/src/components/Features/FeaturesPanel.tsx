@@ -1,8 +1,8 @@
 import type { TTabAction } from '@gobletqa/components'
 import type { TFeaturesRefs, TRaceFeatures } from '@GBR/types'
 
+import { useEditor } from '@GBR/contexts'
 import { Panel } from '@gobletqa/components'
-import { useFeature } from '@GBR/contexts'
 import { FeaturesList } from './FeaturesList'
 import { FeaturesActions } from './FeaturesActions'
 
@@ -17,7 +17,7 @@ export const FeaturesPanel = (props:TFeaturesPanel) => {
     onActiveFeature,
   } = props
 
-  const { feature:active, rootPrefix } = useFeature()
+  const { feature:active, rootPrefix } = useEditor()
 
   return (
     <Panel

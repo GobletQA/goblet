@@ -10,7 +10,7 @@ import { isStr } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
-import { useFeature } from '../../contexts'
+import { useEditor } from '../../contexts'
 import { FeatureStory } from './FeatureStory'
 import { Empty } from '@GBR/components/Empty'
 import { Section, SectionHeader } from '../Section'
@@ -36,7 +36,7 @@ export const Feature = (props:TFeature) => {
     featuresRef,
   } = props
 
-  const { feature, rootPrefix } = useFeature()
+  const { feature, rootPrefix } = useEditor()
 
   // TODO: remove this once form components are done
   useEffect(() => {

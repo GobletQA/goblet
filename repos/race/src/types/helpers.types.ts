@@ -10,6 +10,7 @@ export type TSetFeatureGroups = Dispatch<SetStateAction<TRaceFeatures | undefine
 
 export type TOnFeatureCBRef = MutableRefObject<TOnFeatureCB>
 export type TOnReturnFeatureCBRef = MutableRefObject<TOnReturnFeatureCB>
+export type TFeatureCB = (feature: TRaceFeature) => void
 export type TOnFeatureCB = (feature?:TRaceFeature, ...rest:any[]) => void
 export type TOnReturnFeatureCB = (feature?:TRaceFeature, ...rest:any[]) => TRaceFeature|undefined
 export type TSetFeature = Dispatch<SetStateAction<TRaceFeature | undefined>>

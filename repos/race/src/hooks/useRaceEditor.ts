@@ -1,8 +1,6 @@
 import type {
   TRaceSteps,
   TRaceEditor,
-  TOnFeatureCB,
-  TRaceFeature,
   TRaceFeatures,
   TRaceEditorProps,
   TOnReturnFeatureCB,
@@ -14,14 +12,11 @@ import { useInline } from '@gobletqa/components'
 import { useFeatureGroups } from './useFeatureGroups'
 import { useOpenedTabs } from '@GBR/hooks/useOpenedTabs'
 
-export type THRaceEditorExt = {
-  initialFeature?:TRaceFeature
-}
-
-export const useRaceRefs = (props:TRaceEditorProps, { initialFeature }:THRaceEditorExt) => {
+export const useRaceEditor = (props:TRaceEditorProps) => {
   const {
     steps,
     features,
+    initialFeature
   } = props
 
   const stepsRef = useRef<TRaceSteps>(steps)
@@ -51,6 +46,7 @@ export const useRaceRefs = (props:TRaceEditorProps, { initialFeature }:THRaceEdi
     openedTabs,
     onTabHover,
     onTabLeave,
+    updateEmptyTab,
     onCloseFeature,
     onActiveFeature,
   } = useOpenedTabs({
@@ -74,6 +70,7 @@ export const useRaceRefs = (props:TRaceEditorProps, { initialFeature }:THRaceEdi
     curValueRef,
     featuresRef,
     featureGroups,
+    updateEmptyTab,
     onCloseFeature,
     setFeatureRefs,
     onActiveFeature,

@@ -2,7 +2,7 @@ import type { MouseEvent } from 'react'
 
 import Box from '@mui/material/Box'
 import { useCallback } from 'react'
-import { useFeature } from '@GBR/contexts'
+import { useEditor } from '@GBR/contexts'
 import { EmptyContainer, EmptyContent } from './Empty.styled'
 import { BoltIcon, H4, Button, Span } from '@gobletqa/components'
 import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
@@ -18,7 +18,7 @@ const styles = {
 
 export const Empty = (props:Empty) => {
   const { text=`Goblet Feature Editor` } = props
-  const { rootPrefix } = useFeature()
+  const { rootPrefix } = useEditor()
 
   const onClick = useCallback((e:MouseEvent<HTMLButtonElement>) => {
     createFeature({}, rootPrefix)

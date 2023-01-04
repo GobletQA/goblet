@@ -2,15 +2,14 @@ import type { TEditorContainer } from '@GBR/types'
 
 import { Feature } from '../Feature'
 import { FeaturesPanel } from '../Features'
-import { useOpenedTabs } from '../../hooks/useOpenedTabs'
 import { useSidebarResize, Actions, OpenedTabs, Sidebar } from '@gobletqa/components'
 import {
-  Container,
   BuilderContainer,
-  Divider as REDivider
+  Divider as REDivider,
+  Container as ContainerComp,
 } from './RaceEditor.styled'
 
-export const EditorContainer = (props:TEditorContainer) => {
+export const Container = (props:TEditorContainer) => {
 
   const {
     Panels,
@@ -51,7 +50,7 @@ export const EditorContainer = (props:TEditorContainer) => {
 
   return (
 
-      <Container
+      <ContainerComp
         onMouseMove={onMove}
         onMouseUp={onMoveEnd}
         className='gr-editor'
@@ -93,7 +92,7 @@ export const EditorContainer = (props:TEditorContainer) => {
             curValueRef={curValueRef}
           />
         )}
-      </Container>
+      </ContainerComp>
   )
 }
 

@@ -39,6 +39,7 @@ export type TRaceEditorProps = TEditorContainer & {
   themeType?:EThemeType
   features:TRaceFeatureAsts
   firstFeatureActive?:boolean
+  initialFeature?:TRaceFeature
   onFeatureClose?:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB

@@ -1,5 +1,6 @@
 
 import type {
+  TFeatureCB,
   TSetFeature,
   TRaceFeature,
   TOnFeatureCB,
@@ -17,7 +18,6 @@ import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 import {
   SetFeatureContextEvt,
   UpdateFeatureContextEvt,
-  UpdateEmptyFeatureTabEvt
 } from '@GBR/constants'
 
 export type THFeatureCallbacks = {
@@ -25,6 +25,7 @@ export type THFeatureCallbacks = {
   feature?:TRaceFeature
   setFeature:TSetFeature
   featuresRef: TFeaturesRef
+  updateEmptyTab:TFeatureCB
   onFeatureClose:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
@@ -34,27 +35,6 @@ export type THFeatureCallbacks = {
   onBeforeFeatureChange?:TOnReturnFeatureCB
 }
 
-const updateFeaturesRef = (
-  updated:TRaceFeature,
-  featuresRef:TFeaturesRef,
-  setFeatureRefs:TSetFeatureRefs,
-  feature?:TRaceFeature,
-) => {
-
-  featuresRef.current[updated.uuid] = updated
-
-  const wasEmpty = feature?.uuid === EmptyFeatureUUID
-  // Remove the empty feature from the feature refs
-  // It's now replaced with the updated feature
-  if(wasEmpty) delete featuresRef.current[EmptyFeatureUUID]
-
-  setFeatureRefs(featuresRef.current)
-
-  // This is the second call to the opened tabs
-  // Update the opened empty feature tab, with the updated feature data
-  // Ensure the tab name is correct
-  wasEmpty && EE.emit<TRaceFeature>(UpdateEmptyFeatureTabEvt, updated)
-}
 
 const mergeFeatureChanges = async (
   feat?:TRaceFeature,
@@ -83,6 +63,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     feature,
     setFeature,
     featuresRef,
+    updateEmptyTab,
     setFeatureRefs,
     onFeatureChange,
     onFeatureInactive,
@@ -103,8 +84,16 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     const updated = await mergeFeatureChanges(feat, feature, onBeforeFeatureChange)
 
     onFeatureChange?.(updated, feat, feature)
-    updateFeaturesRef(updated, featuresRef, setFeatureRefs, feature)
 
+    featuresRef.current[updated.uuid] = updated
+
+
+    if(feature?.uuid === EmptyFeatureUUID){
+      delete featuresRef.current[EmptyFeatureUUID]
+      updateEmptyTab?.(updated)
+    }
+
+    setFeatureRefs(featuresRef.current)
     setFeature(updated)
 
   })
@@ -112,9 +101,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   const setEmptyFeature = useInline(((feat:TRaceFeature) => {
     if(feat?.uuid === EmptyFeatureUUID){
       setFeatureRefs({ ...featuresRef.current, [EmptyFeatureUUID]: feat })
-      // This should be the first call to update the opened tabs
-      // Adding the empty feature tab
-      EE.emit<TRaceFeature>(UpdateEmptyFeatureTabEvt, feat)
+      updateEmptyTab?.(feat)
     }
 
     _setFeature(feat)

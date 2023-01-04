@@ -3,8 +3,7 @@ import type { TRuleAst } from '@GBR/types'
 import { AddItem } from '../AddItem'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
-import { useFeature } from '../../contexts'
-import { capitalize } from '@keg-hub/jsutils'
+import { useEditor } from '../../contexts'
 import { Section, SectionHeader } from '../Section'
 
 export type TRule = {
@@ -13,7 +12,7 @@ export type TRule = {
 
 export const Rule = (props:TRule) => {
   const { rule } = props
-  const { feature } = useFeature()
+  const { feature } = useEditor()
 
   return (
     <Section

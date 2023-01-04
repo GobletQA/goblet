@@ -3,7 +3,7 @@ import type { TPanelHeaderAction } from '@gobletqa/components'
 
 import { useCallback } from 'react'
 import { noOp } from '@keg-hub/jsutils'
-import { useFeature } from '@GBR/contexts'
+import { useEditor } from '@GBR/contexts'
 import { createFeature, createFolder } from '@GBR/actions'
 import {
   Tooltip,
@@ -17,7 +17,7 @@ export type TAddRootFile = ComponentProps<typeof NewFileIcon> & TClickHandler
 export type TAddRootFolder = ComponentProps<typeof NewFolderIcon> & TClickHandler
 
 const AddRootFile = (props:TAddRootFile) => {
-  const { rootPrefix } = useFeature()
+  const { rootPrefix } = useEditor()
 
   const onClick = useCallback((e:Event) => {
     e.stopPropagation()
@@ -41,7 +41,7 @@ const AddRootFile = (props:TAddRootFile) => {
 }
 
 const AddRootFolder = (props:TAddRootFolder) => {
-  const { rootPrefix } = useFeature()
+  const { rootPrefix } = useEditor()
 
   const onClick = useCallback((e:Event) => {
     e.stopPropagation()

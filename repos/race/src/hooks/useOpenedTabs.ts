@@ -5,21 +5,17 @@ import type {
   TOnFeatureCB,
 } from '@GBR/types'
 
-
 import { useFeature } from '@GBR/contexts'
+import { useTabHooks } from './useTabHooks'
 import { useMemo, useState, useCallback } from 'react'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
-import { UpdateEmptyFeatureTabEvt } from '@GBR/constants/events'
-import { useInline, useEffectOnce, stopEvent } from '@gobletqa/components'
-
+import { useInline, stopEvent } from '@gobletqa/components'
 import {
   removeTab,
   setTabActive,
   featureToTab,
   featureFromTab,
 } from '@GBR/utils/features/featureTabs'
-
 
 
 export type THOpenedTabs = {
@@ -34,12 +30,12 @@ export type THOpenedTabs = {
 export const useOpenedTabs = (props:THOpenedTabs) => {
 
   const {
+    onTabDown,
+    onTabLeave,
+    onTabHover,
     featuresRef,
     onFeatureClose,
     onFeatureActive,
-    onTabDown:onTabDownCB,
-    onTabLeave:onTabLeaveCB,
-    onTabHover:onTabHoverCB,
   } = props
 
   const { feature, setFeature } = useFeature()
@@ -51,7 +47,7 @@ export const useOpenedTabs = (props:THOpenedTabs) => {
   const [openedTabs, setOpenedTabs] = useState<TTabItem[]>(initialTabs)
 
   const onActiveFeature = useCallback<TTabAction>((tab, ...rest) => {
-    if(tab.uuid === feature.uuid) return
+    if(tab.uuid === feature?.uuid) return
 
     const feat = featureFromTab(tab, featuresRef.current)
 
@@ -61,7 +57,7 @@ export const useOpenedTabs = (props:THOpenedTabs) => {
     setOpenedTabs(updatedTabs)
     setFeature(feat)
 
-  }, [feature, openedTabs, setFeature])
+  }, [feature, openedTabs])
 
   const onCloseFeature = useCallback<TTabAction>((tab, evt, ...rest) => {
     stopEvent(evt)
@@ -74,51 +70,33 @@ export const useOpenedTabs = (props:THOpenedTabs) => {
     const nextFeat = active ? featureFromTab(active?.tab, featuresRef.current) : active
 
     setFeature(nextFeat)
-  }, [feature, openedTabs, setFeature])
+  }, [feature, openedTabs])
 
-  const onTabHover = useCallback<TTabAction>((tab, ...rest) => {
-    onTabHoverCB?.(tab, ...rest)
-  }, [openedTabs])
-
-  const onTabLeave = useCallback<TTabAction>((tab, ...rest) => {
-    onTabLeaveCB?.(tab, ...rest)
-  }, [openedTabs])
-
-  const onTabDown = useCallback<TTabAction>((tab, ...rest) => {
-    onTabDownCB?.(tab, ...rest)
-  }, [openedTabs])
-
+  // There should only be one tab with an empty uuid
+  // always filter out any existing tags with that uuid
+  // The first call here, adds the tab with an empty uuid
+  // The second call removes it and replaces it
+  // With the updated feature that should now have a valid uuid
   const updateEmptyTab = useInline((updated:TRaceFeature) => {
-    // There should only be one tab with an empty uuid
-    // always filter out any existing tags with that uuid
-    // The first call here, adds the tab with an empty uuid
-    // The second call removes it and replaces it
-    // With the updated feature that should now have a valid uuid
     const cleaned = openedTabs.filter(tab => tab.tab.uuid !== EmptyFeatureUUID)
     const updatedTabs = setTabActive(cleaned, updated)
 
     setOpenedTabs(updatedTabs)
   })
 
-  useEffectOnce(() => {
-    const updateOff = EE.on<TRaceFeature>(
-      UpdateEmptyFeatureTabEvt,
-      updateEmptyTab
-    )
-
-    return () => {
-      updateOff?.()
-    }
-  })
-
-
-  return {
+  const tabHooks = useTabHooks({
     openedTabs,
     onTabDown,
-    onTabHover,
     onTabLeave,
+    onTabHover,
+  })
+
+  return {
+    ...tabHooks,
+    openedTabs,
     setOpenedTabs,
     onCloseFeature,
+    updateEmptyTab,
     onActiveFeature,
   }
 }
