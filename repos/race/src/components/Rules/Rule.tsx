@@ -17,7 +17,7 @@ export const Rule = (props:TRule) => {
   return (
     <Section
       stack={1}
-      type={ESectionType.scenario}
+      type={ESectionType.rule}
     >
       <SectionHeader
         title={rule?.rule}

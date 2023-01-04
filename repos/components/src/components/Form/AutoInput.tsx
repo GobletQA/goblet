@@ -1,12 +1,14 @@
 import type { InputProps } from '@mui/material'
 import type { TInputAction } from './InputActions'
 import type { CSSProperties, ComponentProps } from 'react'
-import type { TToggleEditCB, TChangeCB, TInputValue } from '@GBC/types'
+import type { TToggleEditCB, TChangeCB, TInputValue, TOptionLabelCB } from '@GBC/types'
 
 import { InputActions } from './InputActions'
 import { useEdit } from '@GBC/hooks/form/useEdit'
 import { useControlValue } from '@GBC/hooks/form/useControlValue'
-import { cls, uuid, emptyArr } from '@keg-hub/jsutils'
+import { useGetOptionLabel } from '@GBC/hooks/form/useGetOptionLabel'
+import { cls, uuid, emptyArr, isStr } from '@keg-hub/jsutils'
+
 import {
   TextInput,
   TextAutoComp,
@@ -32,6 +34,7 @@ export type TAutoInput = Omit<
   disabled?:boolean
   required?:boolean
   isError?: boolean
+  multiple?:boolean
   value:TInputValue
   multiline?:boolean
   placeholder?:string
@@ -43,8 +46,9 @@ export type TAutoInput = Omit<
   inputSx?:CSSProperties
   actions?:TInputAction[]
   initialEditing?:boolean
-  inputProps?:Record<string, any>
   onToggleEdit?:TToggleEditCB
+  getOptionLabel?:TOptionLabelCB
+  inputProps?:Record<string, any>
   variant?:`outlined`|`filled`|`standard`
   color?: `primary`|`secondary`|`error`|`info`|`success`|`warning`
 }
@@ -62,6 +66,7 @@ export const AutoInput = (props:TAutoInput) => {
     labelSx,
     isError,
     variant,
+    multiple,
     disabled,
     required,
     multiline,
@@ -72,13 +77,18 @@ export const AutoInput = (props:TAutoInput) => {
     inputProps,
     InputProps,
     initialEditing,
+    getOptionLabel,
+    openOnFocus=true,
     options=emptyArr,
     id=uuid(),
     size=`small`,
     ...rest
   } = props
 
-  const [value, setValue] = useControlValue(props)
+  const [
+    value,
+    setValue
+  ] = useControlValue(props)
 
   const {
     error,
@@ -91,12 +101,19 @@ export const AutoInput = (props:TAutoInput) => {
   } = useEdit<HTMLInputElement | HTMLTextAreaElement>({
     required,
     setValue,
+    multiple,
     controlled: true,
     value:props.value,
     onChange: props.onChange,
     initialEditing: initialEditing,
     onToggleEdit: props.onToggleEdit,
   })
+
+  const getOption = useGetOptionLabel({ getOptionLabel })
+
+
+  console.log(value)
+  console.log(options)
 
   return (
     <InputContainer
@@ -122,12 +139,16 @@ export const AutoInput = (props:TAutoInput) => {
           ) || null}
 
           <TextAutoComp
-            freeSolo
             size='small'
             options={options}
+            freeSolo={!multiple}
+            getOptionLabel={getOption}
             className={cls('gc-auto-input', className)}
             {...rest}
-            renderInput={({ inputProps, ...params}) => {
+            openOnFocus={openOnFocus}
+            renderInput={(params) => {
+              const isDisabled = editing !== true || (disabled || params.disabled)
+
               return (
                 <TextInput
                   {...params}
@@ -136,10 +157,11 @@ export const AutoInput = (props:TAutoInput) => {
                   required={required}
                   inputRef={inputRef}
                   onChange={onChange}
+                  value={value || ``}
                   color={color as any}
                   id={params.id || id}
                   multiline={multiline}
-                  value={value || ``}
+                  disabled={isDisabled}
                   size={params.size || size}
                   error={Boolean(error.length)}
                   variant={variant || `standard`}
@@ -147,13 +169,13 @@ export const AutoInput = (props:TAutoInput) => {
                   InputLabelProps={params.InputLabelProps}
                   fullWidth={params.fullWidth || fullWidth}
                   placeholder={placeholder || "Select an option..."}
-                  disabled={!editing || disabled || params.disabled}
                   InputProps={{ ...InputProps, ...params.InputProps }}
                   className={cls('gc-text-input', className && `${className}-auto-input`)}
                   inputProps={{
                     ...inputProps,
-                    ...inputProps,
-                    onKeyDown: onKeyDown
+                    ...params.inputProps,
+                    onKeyDown: onKeyDown,
+                    disabled: isDisabled,
                   }}
                 />
               )

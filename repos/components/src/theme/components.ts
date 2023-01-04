@@ -8,6 +8,8 @@ export const components = (
   muiTheme:Theme,
   palette:TPaletteOpts
 ):Theme[`components`] => {
+  const isLightTheme = palette.mode === EThemeType.light
+  
   return {
     MuiButton: {
       styleOverrides: {
@@ -49,7 +51,7 @@ export const components = (
       styleOverrides: {
         root: {
           marginTop: `0px`,
-          backgroundColor: palette.mode === EThemeType.light
+          backgroundColor: isLightTheme
             ? palette.colors.white
             : palette.colors.black12,
           [`&::before`]: {
@@ -72,6 +74,34 @@ export const components = (
         root: {
           padding: `0px`,
         },
+      }
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        input: {
+          [`&::placeholder`]: {
+            fontStyle: `italic`,
+            fontFamily: `Manrope, sans-serif`,
+          },
+        },
+        tag: {
+          fontWeight: `bold`,
+          textAlign: `center`,
+          fontFamily: `Manrope, sans-serif`,
+          color: isLightTheme ? palette.colors.black19 : palette.colors.gray02,
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: ({ ownerState, theme }) => ({
+          [`& .MuiInputBase-input`]: {
+            [`::placeholder`]: {
+              fontStyle: `italic`,
+              fontFamily: `Manrope, sans-serif`,
+            },
+          },
+        }),
       }
     }
   }

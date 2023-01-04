@@ -1,5 +1,6 @@
 import type { TInputValue } from '@GBC/types'
 import { useState, useRef, useEffect } from 'react'
+import { isStr, ensureArr } from '@keg-hub/jsutils'
 
 export type THControlValue = {
   value: TInputValue

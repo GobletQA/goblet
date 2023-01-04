@@ -4,12 +4,14 @@ import type { KeyboardEvent, RefObject, ChangeEvent, MouseEvent } from 'react'
 
 import { exists, isStr } from '@keg-hub/jsutils'
 import { useInline } from '@GBC/hooks/useInline'
+import { useEffectOnce } from '@GBC/hooks/useEffectOnce'
 import { useState, useCallback, useRef, useEffect } from 'react'
 
 export type THEdit<T> = {
   required?:boolean
   value:TInputValue
   valueProp?:keyof T
+  multiple?:boolean
   controlled?:boolean
   onChange?:TChangeCB
   initialEditing?:boolean
@@ -37,6 +39,7 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
     value,
     setValue,
     required,
+    multiple,
     controlled,
     initialEditing=false,
     valueProp=`value` as keyof T,
@@ -93,11 +96,28 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
   ])
 
   const onKeyDown = useCallback((evt:KeyboardEvent<T>) => {
-    editing && (evt as any).key === `Enter` && onToggleEdit(evt)
-  }, [editing, onToggleEdit])
+    if(!editing) return
+    
+    const evtKey = evt as Record<`key`, string> 
+    evtKey.key === `Enter` && onToggleEdit(evt)
+    if(multiple && evtKey.key === ` `){
+      const val = getValue(inputRef, valueProp)
+      isStr(val) && setValue?.(val.split(` `))
+
+      console.log(`------- val -------`)
+      console.log(val)
+    }
+    
+  }, [
+    editing,
+    multiple,
+    setValue,
+    valueProp,
+    onToggleEdit
+  ])
 
   const onClick = useCallback((evt:MouseEvent<HTMLDivElement>) => {
-    !editing && evt.detail == 2 && onToggleEdit(evt)
+    !editing && evt.detail == 1 && onToggleEdit(evt)
   }, [editing, onToggleEdit])
   
 
@@ -114,6 +134,15 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
   }, [props.value, controlled])
 
 
+  // Auto select the input if the initial load is set to editing
+  useEffectOnce(() => {
+    editing
+      && setTimeout(() => {
+          const input = inputRef?.current as HTMLInputElement
+          input?.focus?.()
+          input?.select?.()
+        }, 100)
+  })
 
 
   return {

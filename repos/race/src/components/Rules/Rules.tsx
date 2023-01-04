@@ -2,8 +2,8 @@ import type { TRuleAst, TRaceFeature } from '@GBR/types'
 
 import { Rule } from './Rule'
 import { AddItem } from '../AddItem'
+import { Section } from '../Section'
 import { ESectionType } from '@GBR/types'
-
 
 export type TRules = {
   rules?:TRuleAst[]
@@ -24,10 +24,16 @@ export const Rules = (props:TRules) => {
           />
         )
       })}
-      <AddItem
-        parentId={parent.uuid}
+      <Section
         type={ESectionType.rule}
-      />
+        sx={{ marginTop: `20px` }}
+      >
+        <AddItem
+          parentId={parent.uuid}
+          type={ESectionType.rule}
+          sx={{ marginLeft: `-10px` }}
+        />
+      </Section>
     </>
   )
 }

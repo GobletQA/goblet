@@ -1,7 +1,9 @@
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
+import { Button } from '@gobletqa/components'
 
 export const Container = styled(Box)``
 
-export const AddBtn = styled(Button)``
+export const AddBtn = styled(Button)`
+  padding: 4px 12px;
+`

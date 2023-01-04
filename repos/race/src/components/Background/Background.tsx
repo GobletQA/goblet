@@ -15,22 +15,29 @@ export const Background = (props:TBackground) => {
 
   const { background, parent } = props
 
-  return background
-    ? (
-        <Section type={ESectionType.background} >
-          <SectionHeader
-            type={ESectionType.background}
-            title={background?.background}
-          />
-          <Steps parent={background} />
-        </Section>
-      )
-    : (
-        <AddItem
-          parentId={parent.uuid}
-          type={ESectionType.background}
-        />
-      )
-  
-  
+  return (
+    <Section
+      sx={{ marginTop: `30px` }}
+      type={ESectionType.background}
+    >
+      { background 
+          ? (
+            <>
+              <SectionHeader
+                type={ESectionType.background}
+                title={background?.background}
+              />
+              <Steps parent={background} />
+            </>
+          )
+          : (
+              <AddItem
+                parentId={parent.uuid}
+                sx={{ marginLeft: `-10px` }}
+                type={ESectionType.background}
+              />
+            )
+      }
+    </Section>
+  )
 }

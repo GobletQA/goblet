@@ -253,6 +253,17 @@ export const lightTheme = {
     [`scrollbarSlider.activeBackground`]: colors.gray05,
 
     [`selection.background`]: colors.purple12,
+    
+    [`input.border`]: colors.gray03,
+    // [`input.background`]: colors.white00,
+    [`input.background`]: `#fffbff`,
+    [`input.foreground`]: colors.black19,
+    [`input.placeholderForeground`]: colors.white,
+    // [`inputOption.activeBorder`]: `#8be0fd`,
+    // [`inputValidation.errorBorder`]: `#f92672`,
+    // [`inputValidation.infoBorder`]: `#ca94ff`,
+    
+    
   }
 }
 

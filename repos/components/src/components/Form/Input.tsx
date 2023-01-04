@@ -116,7 +116,8 @@ export const Input = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
             onChange={onChange}
             inputProps={{
               ...inputProps,
-              onKeyDown: onKeyDown
+              onKeyDown: onKeyDown,
+              disabled: !editing || disabled,
             }}
             color={color as any}
             fullWidth={fullWidth}

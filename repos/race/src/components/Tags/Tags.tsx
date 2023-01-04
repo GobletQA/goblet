@@ -23,12 +23,12 @@ export const Tags = (props:TTags) => {
   return (
     <TagsContainer className={cls(`gr-tags`, `gr-${type}-tags`)} >
       <AutoInput
-        value={tags}
+        value={tags?.join(` `) || ``}
         multiple={true}
         id={`${parent.uuid}-tags`}
-        options={Object.keys(options)}
         label={capitalize(EMetaType.tags)}
         className={`gr-${type}-tags-input`}
+        options={[ ``, ...Object.keys(options)]}
         placeholder={`${capitalize(type)} tags ...`}
       />
     </TagsContainer>

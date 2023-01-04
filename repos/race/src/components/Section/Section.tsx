@@ -3,7 +3,6 @@ import type { ComponentProps, CSSProperties } from 'react'
 import type { TSectionBody } from './SectionBody'
 import type { TSectionHeader } from './SectionHeader'
 
-import { EEditKey } from '@GBR/types'
 import { exists } from '@keg-hub/jsutils'
 import { SectionBody } from './SectionBody'
 import { SectionHeader } from './SectionHeader'

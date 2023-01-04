@@ -46,10 +46,29 @@ export const TextInputLabel = styled(InputLabel)`
   padding: 0px;
 `
 
+const sharedInputStyle = `
+  color: var(--goblet-input-foreground);
+  background-color: var(--goblet-input-background);
+  -webkit-text-fill-color: var(--goblet-input-foreground);
+`
+
 export const TextInput = styled(TextField)(({ theme }) => {
   const inputColor = getColor(`colors.black19`, `colors.white`, theme)
+  const colors = (theme as TGobletTheme)?.palette?.colors
   return `
     width: 100%;
+
+    & .MuiInput-root:hover:before {
+      border-bottom: 1px solid ${colors.purple10} !important;
+    }
+
+    & .MuiInput-root:before {
+      border-bottom: 1px solid var(--goblet-input-border);
+    }
+
+    & .MuiInput-root.Mui-disabled:before {
+      border-bottom: 1px solid var(--goblet-input-border);
+    }
     
     & .MuiFormHelperText-root {
       right: 0px;
@@ -59,13 +78,33 @@ export const TextInput = styled(TextField)(({ theme }) => {
     }
     
     & input {
-      color: ${inputColor};
-      -webkit-text-fill-color: ${inputColor};
+      height: 30px;
+      min-height: 30px;
+      padding: 5px 10px !important;
+      ${sharedInputStyle}
     }
 
     & input:disabled {
-      color: ${inputColor};
-      -webkit-text-fill-color: ${inputColor};
+      ${sharedInputStyle}
+    }
+
+    & .MuiInput-root.MuiInputBase-multiline {
+      padding-right: 30px;
+      padding-bottom: 0px;
+    }
+
+    & textarea {
+      height: 30px;
+      min-height: 30px;
+      padding-top: 8px;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-bottom: 2px;
+      ${sharedInputStyle}
+    }
+
+    & textarea:disabled {
+      ${sharedInputStyle}
     }
 
   `
@@ -121,8 +160,14 @@ export const InputActionsContainer = styled(Box)`
 export const TextAutoComp = styled(Autocomplete)`
   width: 100%;
   padding: 0px;
+
   & .MuiAutocomplete-input::placeholder {
     font-style: italic;
+  }
+  
+  & .MuiAutocomplete-endAdornment {
+    opacity: 0 !important;
+    display: none !important;
   }
 `
 

@@ -1,4 +1,4 @@
-import type { TFeaturesRef } from '@GBR/types'
+import type { TRaceFeatureAsts, TFeaturesRef } from '@GBR/types'
 
 import { useMemo } from 'react'
 
@@ -10,7 +10,7 @@ export const useFeatureTags = (props:THFeatureTags) => {
   const { featuresRef } = props
 
   return useMemo(() => {
-    return Object.entries(featuresRef.current)
+    return Object.entries(featuresRef.current as TRaceFeatureAsts)
       .reduce((tags, [key, feature]) => {
         feature?.tags?.forEach((tag) => {
           tags[tag] = tags[tag] || []
