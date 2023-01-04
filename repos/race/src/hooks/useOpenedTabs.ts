@@ -1,8 +1,8 @@
 import type { TTabAction, TTabItem } from '@gobletqa/components'
 import type {
+  TFeaturesRef,
   TRaceFeature,
   TOnFeatureCB,
-  TEditorContainer,
 } from '@GBR/types'
 
 
@@ -20,24 +20,27 @@ import {
   featureFromTab,
 } from '@GBR/utils/features/featureTabs'
 
+
+
 export type THOpenedTabs = {
+  onTabDown?:TTabAction
+  onTabLeave?:TTabAction
+  onTabHover?:TTabAction
+  featuresRef:TFeaturesRef
   onFeatureClose:TOnFeatureCB
   onFeatureActive:TOnFeatureCB
 }
 
-export const useOpenedTabs = (props:TEditorContainer, ext:THOpenedTabs) => {
+export const useOpenedTabs = (props:THOpenedTabs) => {
 
   const {
     featuresRef,
+    onFeatureClose,
+    onFeatureActive,
     onTabDown:onTabDownCB,
     onTabLeave:onTabLeaveCB,
     onTabHover:onTabHoverCB,
   } = props
-
-  const {
-    onFeatureClose,
-    onFeatureActive,
-  } = ext
 
   const { feature, setFeature } = useFeature()
 

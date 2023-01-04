@@ -12,6 +12,7 @@ import { useRef } from 'react'
 import { noOp } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components'
 import { useFeatureGroups } from './useFeatureGroups'
+import { useOpenedTabs } from '@GBR/hooks/useOpenedTabs'
 
 export type THRaceEditorExt = {
   initialFeature?:TRaceFeature
@@ -45,20 +46,43 @@ export const useRaceRefs = (props:TRaceEditorProps, { initialFeature }:THRaceEdi
   const curValueRef = useRef<string>(initialFeature?.content || ``)
   const curPathRef = useRef<string>(initialFeature?.path || ``)
 
+  const {
+    onTabDown,
+    openedTabs,
+    onTabHover,
+    onTabLeave,
+    onCloseFeature,
+    onActiveFeature,
+  } = useOpenedTabs({
+    featuresRef,
+    onFeatureClose,
+    onFeatureActive,
+    onTabDown: props.onTabDown,
+    onTabLeave: props.onTabLeave,
+    onTabHover: props.onTabHover,
+  })
+
+
   return {
     stepsRef,
     editorRef,
+    onTabDown,
+    openedTabs,
+    onTabHover,
+    onTabLeave,
     curPathRef,
     curValueRef,
     featuresRef,
     featureGroups,
+    onCloseFeature,
     setFeatureRefs,
-    setFeatureGroups,
+    onActiveFeature,
     onFeatureClose,
     onFeatureChange,
     onFeatureActive,
+    setFeatureGroups,
     onFeatureInactive,
-    onBeforeFeatureChange
+    onBeforeFeatureChange,
   }
 
 }

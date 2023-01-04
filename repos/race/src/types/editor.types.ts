@@ -3,6 +3,7 @@ import type { TRaceSteps } from './steps.types'
 import type { TRaceFeatureAsts, TRaceFeatures, TRaceFeature } from './features.types'
 import type {
   TAction,
+  TTabItem,
   TTabAction,
   EThemeType,
   TSidebarPanel
@@ -11,7 +12,6 @@ import type {
   TStepsRef,
   TFeaturesRef,
   TOnFeatureCB,
-  TOnFeatureCBRef,
   TOnReturnFeatureCB
 } from './helpers.types'
 
@@ -32,34 +32,35 @@ export type TEditorRefs = {
   curValueRef: MutableRefObject<string>
 }
 
-export type TRaceEditorProps = {
+export type TRaceEditorProps = TEditorContainer & {
   steps:TRaceSteps
-  actions?:TAction[]
   rootPrefix: string
-  actionsOpen?:boolean
   feature?:TRaceFeature
-  sidebarWidth?:number
   themeType?:EThemeType
-  sidebarStatus?:boolean
-  sidebarMaxWidth?:number
-  Panels?:TSidebarPanel[]
-  PrePanels?:TSidebarPanel[]
   features:TRaceFeatureAsts
   firstFeatureActive?:boolean
-  Divider?:ComponentType<any>
   onFeatureClose?:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
   onFeatureInactive?:TOnFeatureCB
-  onTabDown?:TTabAction
-  onTabLeave?:TTabAction
-  onTabHover?:TTabAction
-  onSidebarResize?:(width:number) => void
   onBeforeFeatureChange?:TOnReturnFeatureCB
 }
 
-export type TEditorContainer = TRaceEditorProps & TFeaturesRefs & TEditorRefs & {
+export type TEditorContainer = TFeaturesRefs & TEditorRefs & {
+  actions?:TAction[]
+  actionsOpen?:boolean
+  sidebarWidth?:number
+  sidebarStatus?:boolean
+  sidebarMaxWidth?:number
+  openedTabs:TTabItem[]
+  onTabDown?:TTabAction
+  onTabLeave?:TTabAction
+  onTabHover?:TTabAction
+  Panels?:TSidebarPanel[]
+  onCloseFeature:TTabAction
+  onActiveFeature:TTabAction
+  PrePanels?:TSidebarPanel[]
+  Divider?:ComponentType<any>
   featureGroups:TRaceFeatures
-  onFeatureClose:TOnFeatureCB
-  onFeatureActive:TOnFeatureCB
+  onSidebarResize?:(width:number) => void
 }

@@ -14,13 +14,19 @@ export const RaceEditor = (props:TRaceEditorProps) => {
 
   const {
     stepsRef,
+    onTabDown,
     editorRef,
+    openedTabs,
+    onTabHover,
+    onTabLeave,
     curPathRef,
     curValueRef,
     featuresRef,
     featureGroups,
     onFeatureClose,
     setFeatureRefs,
+    onCloseFeature,
+    onActiveFeature,
     onFeatureChange,
     setFeatureGroups,
     onFeatureActive,
@@ -42,17 +48,31 @@ export const RaceEditor = (props:TRaceEditorProps) => {
       onBeforeFeatureChange={onBeforeFeatureChange}
     >
       <EditorContainer
-        {...props}
         stepsRef={stepsRef}
+        onTabDown={onTabDown}
         editorRef={editorRef}
+        openedTabs={openedTabs}
+        onTabHover={onTabHover}
+        onTabLeave={onTabLeave}
         curPathRef={curPathRef}
         curValueRef={curValueRef}
         featuresRef={featuresRef}
         featureGroups={featureGroups}
-        onFeatureClose={onFeatureClose}
-        onFeatureActive={onFeatureActive}
+        onCloseFeature={onCloseFeature}
+        onActiveFeature={onActiveFeature}
+        Panels={props.Panels}
+        Divider={props.Divider}
+        actions={props.actions}
+        PrePanels={props.PrePanels}
+        actionsOpen={props.actionsOpen}
+        sidebarWidth={props.sidebarWidth}
+        sidebarStatus={props.sidebarStatus}
+        sidebarMaxWidth={props.sidebarMaxWidth}
+        onSidebarResize={props.onSidebarResize}
       />
     </FeatureProvider>
   )
 }
+
+
 

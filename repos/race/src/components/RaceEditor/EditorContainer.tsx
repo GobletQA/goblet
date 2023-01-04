@@ -18,6 +18,10 @@ export const EditorContainer = (props:TEditorContainer) => {
     PrePanels,
     stepsRef,
     editorRef,
+    onTabDown,
+    openedTabs,
+    onTabLeave,
+    onTabHover,
     curPathRef,
     curValueRef,
     featuresRef,
@@ -25,8 +29,8 @@ export const EditorContainer = (props:TEditorContainer) => {
     sidebarWidth,
     sidebarStatus,
     featureGroups,
-    onFeatureClose,
-    onFeatureActive,
+    onCloseFeature,
+    onActiveFeature,
     sidebarMaxWidth,
     onSidebarResize,
     Divider=REDivider,
@@ -44,19 +48,6 @@ export const EditorContainer = (props:TEditorContainer) => {
     initialWidth: sidebarWidth,
     initialStatus: sidebarStatus,
   })
-
-  const {
-    onTabHover,
-    onTabLeave,
-    onTabDown,
-    openedTabs,
-    onCloseFeature,
-    onActiveFeature,
-  } = useOpenedTabs(props, {
-    onFeatureClose,
-    onFeatureActive,
-  })
-
 
   return (
 

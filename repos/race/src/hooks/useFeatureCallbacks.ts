@@ -89,7 +89,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     onBeforeFeatureChange
   } = props
 
-  const _setFeature = useInline(async (feat?:TRaceFeature) => {
+  const _setFeature = useInline((feat?:TRaceFeature) => {
     // If a different feature is being set,
     // then call inactive callback on previous feature
     feat?.uuid !== feature?.uuid && onFeatureInactive?.(feature)
@@ -109,7 +109,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
   })
 
-  const setEmptyFeature = useInline(async (feat:TRaceFeature) => {
+  const setEmptyFeature = useInline(((feat:TRaceFeature) => {
     if(feat?.uuid === EmptyFeatureUUID){
       setFeatureRefs({ ...featuresRef.current, [EmptyFeatureUUID]: feat })
       // This should be the first call to update the opened tabs
@@ -118,7 +118,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     }
 
     _setFeature(feat)
-  })
+  }) as TOnFeatureCB)
 
   // Listen to external events to update the feature context
   // Allows dispatching update outside of the react context
