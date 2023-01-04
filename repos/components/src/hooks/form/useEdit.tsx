@@ -1,4 +1,4 @@
-import type { TToggleEditCB, TChangeCB } from '@GBC/types'
+import type { TToggleEditCB, TChangeCB, TInputValue } from '@GBC/types'
 import type { KeyboardEvent, RefObject, ChangeEvent, MouseEvent } from 'react'
 
 
@@ -8,11 +8,13 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 
 export type THEdit<T> = {
   required?:boolean
+  value:TInputValue
   valueProp?:keyof T
-  initialEditing?:boolean
-  value:string|boolean|number
+  controlled?:boolean
   onChange?:TChangeCB
+  initialEditing?:boolean
   onToggleEdit?:TToggleEditCB
+  setValue?:(value:TInputValue) => any
 }
 
 const getValue = <T=any>(inputRef:RefObject<T>, valueProp:keyof T) => {
@@ -33,7 +35,9 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
 
   const {
     value,
+    setValue,
     required,
+    controlled,
     initialEditing=false,
     valueProp=`value` as keyof T,
   } = props
@@ -79,9 +83,11 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
       && setError(``)
 
     onChangeCB?.(evt, val)
+    setValue?.(val)
   }, [
     error,
     value,
+    setValue,
     valueProp,
     onChangeCB,
   ])
@@ -96,6 +102,8 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
   
 
   useEffect(() => {
+    if(controlled) return
+
     // Update the input value if the prop value has changed
     // This happens when the parent switches the initial prop.value
     // without doing a dom rerender
@@ -103,7 +111,10 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
     && props.value !== inputRef.current[valueProp]
       && (inputRef.current[valueProp as keyof T] = props.value as any)
 
-  }, [props.value])
+  }, [props.value, controlled])
+
+
+
 
   return {
     error,

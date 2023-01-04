@@ -3,6 +3,7 @@ import type { TToggleEditCB } from '@gobletqa/components'
 
 import { useEffect, useCallback } from 'react'
 
+import { Tags } from '../Tags'
 import { Rules } from '../Rules'
 import Box from '@mui/material/Box'
 import { H3 } from '@gobletqa/components'
@@ -14,6 +15,7 @@ import { useEditor } from '../../contexts'
 import { FeatureStory } from './FeatureStory'
 import { Empty } from '@GBR/components/Empty'
 import { Section, SectionHeader } from '../Section'
+import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
 
@@ -49,6 +51,7 @@ export const Feature = (props:TFeature) => {
       && updateFeature({ ...feature, feature: featureTitle})
   }) as TToggleEditCB, [feature])
 
+
   return !feature || !feature?.uuid
     ? (<Empty />)
     : (
@@ -71,22 +74,35 @@ export const Feature = (props:TFeature) => {
               initialEditing={!Boolean(feature?.feature)}
               placeholder={`Feature title or name...`}
             />
-            <FeatureStory
-              parent={feature}
-              featuresRef={featuresRef}
-            />
-            <Background
-              parent={feature}
-              background={feature.background}
-            />
-            <Rules
-              parent={feature}
-              rules={feature.rules}
-            />
-            <Scenarios
-              parent={feature}
-              scenarios={feature.scenarios}
-            />
+
+            { feature.uuid // !== EmptyFeatureUUID
+                ? (
+                    <>
+                      <Tags
+                        parent={feature}
+                        featuresRef={featuresRef}
+                        type={ESectionType.feature}
+                      />
+                      <FeatureStory
+                        parent={feature}
+                        featuresRef={featuresRef}
+                      />
+                      <Background
+                        parent={feature}
+                        background={feature.background}
+                      />
+                      <Rules
+                        parent={feature}
+                        rules={feature.rules}
+                      />
+                      <Scenarios
+                        parent={feature}
+                        scenarios={feature.scenarios}
+                      />
+                    </>
+                  )
+                : null
+            }
           </Box>
         </Section>
       )

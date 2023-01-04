@@ -1,6 +1,5 @@
 import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 
-import { Tags } from './Tags'
 import { Desire } from './Desire'
 import { Reason } from './Reason'
 import { ESectionType } from '@GBR/types'
@@ -12,12 +11,9 @@ export type TMeta = {
   featuresRef:TFeaturesRef
 }
 
-export const Meta = (props:TMeta) => {
-  const { parent, type } = props
-  
+export const Story = (props:TMeta) => {
   return (
     <>
-      <Tags {...props} />
       <Perspective {...props} />
       <Desire {...props} />
       <Reason {...props} />

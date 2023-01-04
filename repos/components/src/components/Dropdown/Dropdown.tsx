@@ -20,6 +20,7 @@ export type TDropdown = AccordionProps & {
   initialExpand?:boolean
   bodySx?:CSSProperties
   headerSx?:CSSProperties
+  headerTextSx?:CSSProperties
   noIconTransform?: boolean
   onChange?:(expanded: boolean) => void
   ExpandIcon?:ComponentType<typeof ExpandIconComp>
@@ -42,6 +43,7 @@ export const Dropdown = (props:TDropdown) => {
     bodySx,
     headerSx,
     headerText,
+    headerTextSx,
     children=body,
     noIconTransform,
     header:headerComp,
@@ -92,7 +94,7 @@ export const Dropdown = (props:TDropdown) => {
           />
         )}
       >
-        {headerComp || (<H5>{headerText}</H5>)}
+        {headerComp || (<H5 sx={headerTextSx} >{headerText}</H5>)}
       </Header>
       <Body
         sx={bodySx}

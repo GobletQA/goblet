@@ -6,14 +6,16 @@ import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
 import FormLabel from '@mui/material/FormLabel'
 import InputLabel from '@mui/material/InputLabel'
-import FormControl from '@mui/material/FormControl'
 import MuiIconBtn from '@mui/material/IconButton'
+import FormControl from '@mui/material/FormControl'
 import { getColor } from '@GBC/utils/theme/getColor'
+import Autocomplete from '@mui/material/Autocomplete'
 
 export const FromContainer = styled(Box)``
 
 // ----- Input Component ---- //
 export const InputContainer = styled(Box)`
+  margin-top: 10px;
   position: relative;
   
   &.disabled-input {
@@ -23,7 +25,6 @@ export const InputContainer = styled(Box)`
   &.disabled-input input {
     cursor: text;
   }
-
 `
 
 export const TextInputControl = styled(FormControl)`
@@ -73,6 +74,7 @@ export const TextInput = styled(TextField)(({ theme }) => {
 export const TextInputContainer = styled(Box)`
   width: 100%;
   display: flex;
+  min-height: 40px;
   align-items: center;
 `
 
@@ -111,3 +113,17 @@ export const InputActionsContainer = styled(Box)`
 
 
 // ----- Input Actions Component ---- //
+// ----- Input Actions Component ---- //
+
+
+// ----- Auto-Input Component ---- //
+
+export const TextAutoComp = styled(Autocomplete)`
+  width: 100%;
+  padding: 0px;
+  & .MuiAutocomplete-input::placeholder {
+    font-style: italic;
+  }
+`
+
+// ----- Auto-Input Component ---- //

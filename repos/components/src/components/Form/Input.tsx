@@ -1,7 +1,7 @@
 
 import type { InputProps } from '@mui/material'
 import type { TInputAction } from './InputActions'
-import type { CSSProperties, ReactNode } from 'react'
+import type { CSSProperties } from 'react'
 import type { TToggleEditCB, TChangeCB } from '@GBC/types'
 
 import { cls, uuid } from '@keg-hub/jsutils'
@@ -22,11 +22,10 @@ export type TInput<T> = {
   label:string
   name?:string
   type?:string
+  className?:string
   disabled?:boolean
   required?:boolean
   fullWidth?:boolean
-  className?:string
-  children:ReactNode
   multiline?:boolean
   placeholder?:string
   helperText?: string

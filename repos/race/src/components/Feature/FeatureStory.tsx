@@ -1,9 +1,10 @@
 import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 
-import { Meta } from '../Meta'
+import { Container, Dropdown } from './Feature.styled'
+import { Story } from '../Story'
+import { Section } from '../Section'
 import { ESectionType } from '@GBR/types'
-import { Dropdown } from '@gobletqa/components'
-import { Section, SectionHeader } from '../Section'
+
 
 export type TFeatureMeta = {
   parent:TRaceFeature
@@ -14,22 +15,25 @@ export const FeatureStory = (props:TFeatureMeta) => {
   const { parent, featuresRef } = props
 
   return (
-    <Dropdown
-      id={parent.uuid}
-      sx={{ marginTop: `20px !important` }}
-      headerText={`Meta Data`}
-    >
-      <Section
-        stack={2}
-        type={ESectionType.feature}
+    <Container className='gr-user-story-container' >
+      <Dropdown
+        id={parent.uuid}
+        initialExpand={true}
+        headerText={`User Stroy`}
+        className='gr-user-story-dropdown'
       >
-        <Meta
-          parent={parent}
-          featuresRef={featuresRef}
+        <Section
+          stack={2}
           type={ESectionType.feature}
-        />
-      </Section>
-    </Dropdown>
+        >
+          <Story
+            parent={parent}
+            featuresRef={featuresRef}
+            type={ESectionType.feature}
+          />
+        </Section>
+      </Dropdown>
+    </Container>
   )
   
 }
