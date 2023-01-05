@@ -48,12 +48,12 @@ const defStyles = {
     justifyContent: `center`
   },
   labelTop: {
-    bottom: `28px`,
+    bottom: `35px`,
     fontSize: `10px`,
     position: `absolute`
   },
   labelBottom: {
-    top: `28px`,
+    top: `35px`,
     fontSize: `10px`,
     position: `absolute`
   }
@@ -124,11 +124,13 @@ export const IconButton = (props:TIconButton) => {
 
   return (
     <Box
+      className='goblet-form-icon-button-container'
       sx={[
         ((label ? defStyles.container : noOpObj) as CSSObj),
       ]}
     >
       <MuiIconBtn
+        className='goblet-form-icon-button'
         {...mergedProps}
         {...rest}
         onBlur={onBlur}
@@ -141,6 +143,7 @@ export const IconButton = (props:TIconButton) => {
       >
         {label && labelPlacement === `top` && (
           <ButtonLabel
+          className='goblet-form-icon-button-label goblet-form-icon-button-label-top'
           {...mergedProps}
           {...rest}
           sx={topSx}
@@ -148,9 +151,10 @@ export const IconButton = (props:TIconButton) => {
             {label}
           </ButtonLabel>
         )}
-        {Icon ? <Icon {...iconProps} /> : children}
+        {Icon ? <Icon className='goblet-form-icon-button-icon' {...iconProps} /> : children}
         {label && labelPlacement !== `top` && (
           <ButtonLabel
+            className='goblet-form-icon-button-label goblet-form-icon-button-label-bottom'
             {...mergedProps}
             {...rest}
             sx={bottomSx}

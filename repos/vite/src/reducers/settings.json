@@ -108,8 +108,9 @@
       "active": true,
       "default": "",
       "group": "editor",
-      "emptyOption": "Goblet-dark",
+      "emptyOption": "",
       "options": [
+        "",
         "Goblet-dark",
         "Goblet-light",
         "AtlanticNight",

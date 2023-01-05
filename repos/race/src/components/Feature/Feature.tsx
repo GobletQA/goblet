@@ -75,7 +75,8 @@ export const Feature = (props:TFeature) => {
               placeholder={`Feature title or name...`}
             />
 
-            { feature.uuid // !== EmptyFeatureUUID
+            
+            { feature.uuid // !== EmptyFeatureUUID // @TODO - uncomment when race-editor is complete
                 ? (
                     <>
                       <Tags
