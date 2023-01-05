@@ -26,6 +26,12 @@ import {
 export class Repo {
 
   /**
+   * Extra code paths loaded with the goblet config JSON file
+   * Allows extending it with logic at runtime 
+   */
+  merge?:string[]=[]
+
+  /**
    * Gets all repos for a user, including each repos branches
    * The filters them out based on exists
    * @param {Object} opts - Options for make API query to Provider

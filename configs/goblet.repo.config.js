@@ -1,6 +1,7 @@
 const {
   GOBLET_ROOT,
   GOBLET_UNIT_DIR,
+  GOBLET_WORLD_FILE,
   GOBLET_WORK_DIR,
   GOBLET_STEPS_DIR,
   GOBLET_REPORTS_DIR,
@@ -120,5 +121,14 @@ module.exports = {
      * @example - "/waypoint"
      */
     waypointDir: GOBLET_WAYPOINT_DIR,
+
+    /**
+     * Path to the world file
+     * Should include the file extension
+     * Relative to the `<repoRoot>/<workDir>/`
+     * @type {string} - Relative Path
+     * @example - "/world.js"
+     */
+    world: GOBLET_WORLD_FILE
   },
 }

@@ -19,6 +19,7 @@ export type TInternalPaths = {
 }
 
 export type TDefGobletConfig = {
+  merge?: string[],
   paths: TRepoPaths
   fileTypes: TGFileTypes
   recorder: TRecorderOpts

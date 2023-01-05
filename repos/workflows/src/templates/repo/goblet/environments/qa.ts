@@ -1,9 +1,5 @@
 
 // Custom environment values for the qa environment
-const environment = {
+export const environment = {
   environment: `qa`,
-}
-
-module.exports = {
-  environment
 }

@@ -42,6 +42,7 @@ const {
   GOBLET_SUPPORT_DIR = `bdd/support`,
   GOBLET_UNIT_DIR = `unit`,
   GOBLET_WAYPOINT_DIR = `waypoint`,
+  GOBLET_WORLD_FILE=`world.js`,
   GOBLET_PW_METADATA_DIR,
 } = process.env
 
@@ -68,5 +69,6 @@ module.exports = deepFreeze({
   SUB_REPOS: repoPaths,
   GOBLET_PW_METADATA_DIR,
   GOBLET_ROOT: GobletRoot,
+  GOBLET_WORLD_FILE,
   ...dirsFromEnvs,
 })
