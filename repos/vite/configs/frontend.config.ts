@@ -8,11 +8,15 @@ const { GOBLET_ENV, NODE_ENV } = process.env
 if(GOBLET_ENV && NODE_ENV !== GOBLET_ENV) process.env.NODE_ENV = GOBLET_ENV
 else if(!process.env.GOBLET_ENV && NODE_ENV) process.env.GOBLET_ENV = NODE_ENV
 
+// Loading the gobletConfig requires the alias exists,
+// so registering the aliases must come first
+const requireAliases = createRequire(path.join(__dirname, '../../../configs'))
+const { aliases, registerAliases } = requireAliases('./configs/aliases.config')
+registerAliases()
+
 const requireGoblet = createRequire(path.join(__dirname, '../../shared/src/utils'))
 const { getGobletConfig } = requireGoblet('./goblet/getGobletConfig.ts')
 
-const requireAliases = createRequire(path.join(__dirname, '../../../configs'))
-const { aliases } = requireAliases('./configs/aliases.config')
 
 /**
  * Is called form the tap.js config in the root

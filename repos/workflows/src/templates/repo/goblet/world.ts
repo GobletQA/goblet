@@ -1,7 +1,9 @@
-export const world = {
+const world = {
   app: {},
   data: {},
   context: {},
   $alias: {},
 }
+
+export default world
 

@@ -199,7 +199,7 @@ export class Repo {
   refreshWorld = async (opts:Record<string, any>=noOpObj) => {
     const { environment } = opts
     this.setEnvironment(environment)
-    
+
     this.world = getWorld(this)
     this.parkin.world = this.world
 

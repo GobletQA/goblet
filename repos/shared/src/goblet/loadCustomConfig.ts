@@ -1,7 +1,7 @@
 import path from 'path'
 import { findConfig } from './helpers'
 import { isStr } from '@keg-hub/jsutils'
-import { loaFromType } from '@GSH/libs/loader'
+import { loadFromType } from '@GSH/libs/loader'
 
 /**
  * Loads a custom config from an ENV, or passed in option
@@ -24,7 +24,7 @@ export const loadCustomConfig = (
       ? require(path.resolve(configPath))
       : search && findConfig()
 
-    return customConfig && loaFromType(customConfig)
+    return customConfig && loadFromType(customConfig)
   }
   catch (err) {
     if (configPath) throw err

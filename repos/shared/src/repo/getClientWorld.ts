@@ -10,7 +10,7 @@ import { noOpObj, deepMerge } from '@keg-hub/jsutils/src/node'
 /**
  * Makes a clone of the default world object
  */
-const closeDefWorld = () => {
+const cloneDefWorld = () => {
   return deepMerge<TWorldConfig>(DefWorld)
 }
 
@@ -48,11 +48,11 @@ const loadClientWorld = (
   config:TGobletConfig,
 ) => {
   const worldPath = config?.paths?.world
-  if(!worldPath) return closeDefWorld()
+  if(!worldPath) return cloneDefWorld()
 
   const resetEnvs = setGobletEnv(config)
 
-  let worldJson:TWorldConfig=closeDefWorld()
+  let worldJson:TWorldConfig
   try {
 
     const basePath = getRepoGobletDir(config)
@@ -70,7 +70,7 @@ const loadClientWorld = (
     resetEnvs()
   }
 
-  return worldJson
+  return deepMerge(DefWorld, worldJson)
 }
 
 /**

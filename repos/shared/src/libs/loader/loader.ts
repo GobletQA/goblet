@@ -12,18 +12,21 @@ type TLoopLoad<T extends TMerge> = TLoader & {
   requireFunc?:TLoadedFunc<T>,
 }
 
-type TSearchFile = {
-  file:string
+type TLoadShared = {
+  key?:string
+  type?:string
   first?: boolean
   basePath:string
+}
+
+type TSearchFile = TLoadShared & {
+  file:string
   location?:string
 }
 
 
-export type TLoader = {
-  basePath:string
+export type TLoader = TLoadShared & {
   loadArr:string[]
-  first?: boolean
 }
 
 /**
@@ -40,10 +43,12 @@ const tryRequire = <T>(requireFunc:TLoadedFunc<T>, location:string) => {
 /**
  * Checks if the passed in config is a function and calls it if it is
  */
-export const loaFromType = <T extends TMerge>(data:T, ...args:any[]) => {
-  return typeof data === 'function'
+export const loadFromType = <T extends TMerge>(data:T, key:string=`default`, ...args:any[]) => {
+  const loaded = typeof data === 'function'
     ?  (data as TLoadedFunc<T>)(...args) as T
     : data
+
+  return loaded?.[key] ? loaded[key] : loaded
 }
 
 /**
@@ -94,8 +99,10 @@ const loadWithMerge = <T extends TMerge>(data:T, {
  */
 const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
   const {
-    loadArr,
+    key,
+    type,
     first,
+    loadArr,
     basePath,
     requireFunc,
   } = params
@@ -110,30 +117,29 @@ const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
     try {
 
       // Check if the path exists and try to load the file
-      const loaded = fs.existsSync(path.join(basePath, loc))
+      const loadedData = fs.existsSync(path.join(basePath, loc))
         ? requireData(loc)
         : null
 
-      if(!loaded) continue;
+      if(!loadedData) continue;
 
-      const worldByType = loaFromType(loaded)
-      if(!worldByType) continue;
+      const dataByType = loadFromType(loadedData, key)
+      if(!dataByType) continue;
 
-      const loadedMerge = loadWithMerge(loaded, params)
+      const loadedMerge = loadWithMerge(dataByType, params)
 
-      if(loaded && first) return [loadedMerge] as T[]
+      if(loadedMerge && first) return [loadedMerge] as T[]
 
       loadedArr.push(loadedMerge)
     }
     catch(err){
-      console.log(`Error loading repo world...`)
+      console.log(`Error loading data ${type || 'in loopLoadArray'}...`)
       console.error(err.stack)
     }
   }
 
   return loadedArr
 }
-
 
 /**
  * Searches for a file based on the passed in basePath and fileName
@@ -145,9 +151,9 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 
   const {
     file,
-    first,
     location,
     basePath,
+    ...rest
   } = params
 
   let data:T
@@ -172,7 +178,7 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 
   // If there is a merge array, try to load the them
   const loadedData = loopLoadArray<T>({
-    first,
+    ...rest,
     basePath,
     requireFunc,
     loadArr: data.merge,
@@ -184,22 +190,14 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 }
 
 
-
 /**
  * @description - Loads config files based on the passed in basePath and loadArr
  */
 export const loader = <T extends TMerge>(params:TLoader) => {
-  const {
-    loadArr,
-    first,
-    basePath,
-  } = params
 
   const loadedData = loopLoadArray<T>({
-    first,
-    loadArr,
-    basePath,
-    requireFunc: buildRequire(basePath),
+    ...params,
+    requireFunc: buildRequire(params.basePath),
   })
 
   // Merge all loaded configs into a single config file
