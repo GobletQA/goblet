@@ -8,11 +8,18 @@ import { GobletConfigFileNames, GobletConfigFileLocations } from '@GSH/constants
  * @description - Tries to find the goblet.config.json file from the passed in basePath
  */
 export const configAtPath = (basePath:string) => {
-  return loader<TGobletConfig>({
+  const config = loader<TGobletConfig>({
     basePath,
     first: true,
     loadArr: GobletConfigFileNames,
   })
+
+  // Ensure the repoRoot path gets set
+  config?.paths
+    && !config?.paths?.repoRoot
+    && (config.paths.repoRoot = basePath)
+
+  return config
 }
 
 /**

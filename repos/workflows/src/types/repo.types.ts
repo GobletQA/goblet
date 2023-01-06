@@ -29,7 +29,8 @@ export type TGraphPageInfo = {
 }
 
 export type TGraphApiResp = {
-  nodes: any[],
+  nodes: any[]
+  totalCount: number
   pageInfo: TGraphPageInfo
 }
 

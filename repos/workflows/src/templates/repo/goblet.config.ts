@@ -13,7 +13,7 @@ const config = {
     stepsDir: "bdd/steps",
     unitDir: "unit",
     waypointDir: "waypoint",
-    world: "world.js"
+    world: "world.json"
   }
 }
 

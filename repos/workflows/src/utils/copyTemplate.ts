@@ -16,6 +16,7 @@ import { configFromFolder } from '@gobletqa/shared/goblet'
 export const copyTemplate = async (local:string, template:string) => {
   Logger.info(`Searching for goblet config...`)
   const configLoc = await configFromFolder(local)
+
   if (configLoc) return true
 
   Logger.info(`Creating goblet setup from template...`)

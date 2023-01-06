@@ -171,7 +171,8 @@ export class Repo {
 
     this.git = git
     this.name = name
-    this.paths = paths
+    this.paths = { ...paths, repoRoot: paths?.repoRoot || git?.local }
+
     this.world = getWorld(this)
     this.parkin = new Parkin(this.world)
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)

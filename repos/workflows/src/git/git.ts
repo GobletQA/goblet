@@ -265,7 +265,7 @@ git.remove = async (args:TGitMeta) => {
     })
   )
 
-  err && throwErr(err)
+  err ? throwErr(err) : Logger.log(`Repo directory at ${repoPath} has been removed.`)
 }
 
 /**

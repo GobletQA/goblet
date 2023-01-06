@@ -45,7 +45,7 @@ const getParkinSupport = config => {
   // **IMPORTANT** - Must be loaded after the parkinEnvironment 
   const configHooks = `${testUtilsDir}/src/support/hooks`
 
-  // Don't include the world here because it gets loaded in config/support/world.js
+  // Don't include the world here because it gets loaded in config/support/world.json
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
   const pattern = path.join(baseDir, supportDir, '**/+(hooks.js|hook.js|setup.js)')
   const matches = glob.sync(pattern)

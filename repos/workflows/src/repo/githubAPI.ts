@@ -159,7 +159,7 @@ const graphApiCall = async (args:TGraphApiVars) => {
   const headers = graphCache.buildHeaders(customHeaders)
   const variables = graphCache.buildVars(args, endpointKey)
 
-  const [ err, resp ] = await limbo(axios({
+  const opts = {
     headers,
     method: 'post',
     url: graphCache.url,
@@ -167,7 +167,9 @@ const graphApiCall = async (args:TGraphApiVars) => {
       query,
       variables,
     },
-  }))
+  }
+
+  const [ err, resp ] = await limbo(axios(opts))
 
   if(err) throw new Error(err.stack)
 
@@ -176,7 +178,7 @@ const graphApiCall = async (args:TGraphApiVars) => {
   if(errors && errors.length)
     throw new Error(errors[0].message || `Could not complete github.listRepos API call. Please try again later`)
 
-  const { nodes=noPropArr, pageInfo=defPageInfo } = get(data, dataPath, noOpObj) as TGraphApiResp
+  const { totalCount, nodes=noPropArr, pageInfo=defPageInfo } = get(data, dataPath, noOpObj) as TGraphApiResp
 
   if(pageInfo.hasNextPage && pageInfo.endCursor){
     graphCache.set(endpointKey, { after: pageInfo.endCursor })

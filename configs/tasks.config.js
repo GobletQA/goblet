@@ -123,6 +123,7 @@ module.exports = {
           '!/repos/screencast',
           '!/repos/shared',
           '!/repos/esdev',
+          '!/repos/workflows',
         ]
       },
       envs: {

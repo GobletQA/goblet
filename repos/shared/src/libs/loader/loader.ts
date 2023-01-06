@@ -201,6 +201,6 @@ export const loader = <T extends TMerge>(params:TLoader) => {
   })
 
   // Merge all loaded configs into a single config file
-  return deepMerge<T>(...loadedData)
+  return loadedData?.length ? deepMerge<T>(...loadedData) : undefined
 
 }

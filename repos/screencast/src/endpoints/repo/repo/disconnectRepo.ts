@@ -5,7 +5,7 @@ import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 
 /**
- * Disconnects a connected repo ( VNC mode only )
+ * Disconnects a connected repo
  */
 export const disconnectRepo = asyncWrap(async (req:Request, res:Response) => {
   const repo = await Repo.disconnect(req.body)

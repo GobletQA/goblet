@@ -142,7 +142,7 @@ module.exports = {
      * Should include the file extension
      * Relative to the `<repoRoot>/<workDir>/`
      * @type {string} - Relative Path
-     * @example - "/world.js"
+     * @example - "/world.json"
      */
     world: GOBLET_WORLD_FILE
   },
