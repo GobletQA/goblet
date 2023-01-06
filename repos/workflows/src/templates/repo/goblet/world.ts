@@ -1,10 +1,7 @@
-import environment from './environments'
-import { deepMerge } from '@keg-hub/jsutils'
-
-export const world = deepMerge({
+export const world = {
   app: {},
   data: {},
   context: {},
   $alias: {},
-}, environment)
+}
 

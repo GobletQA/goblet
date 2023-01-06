@@ -160,14 +160,19 @@ export class Repo {
   internalPaths:TInternalPaths
 
   constructor(config:TRepoOpts = noOpObj as TRepoOpts) {
-    const { environment, paths, git, name } = config
+    const {
+      git,
+      name,
+      environment,
+      paths=noOpObj as TRepoPaths,
+    } = config
 
     this.setEnvironment(environment)
 
     this.git = git
     this.name = name
     this.paths = paths
-    this.world = getWorld(config, this)
+    this.world = getWorld(this)
     this.parkin = new Parkin(this.world)
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)
 

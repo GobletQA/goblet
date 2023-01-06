@@ -1,3 +1,5 @@
+import type { TRepo } from '../../types'
+
 // TODO: Figure out a way to load a parkin instance relative to a repo
 // This is needed when loading definitions from the backend API
 // The Repo instance holds an instance of Parkin that needs to be used here instead of creating one
@@ -7,17 +9,8 @@ import { getWorld } from '@GSH/repo/world'
 
 let __ParkinInstance
 
-// Sets a new instance of the Parkin Class to the __ParkinInstance variable
-// Currently not called anywhere
-export const setParkinInstance = (instance) => {
-  if(instance && instance !== __ParkinInstance) __ParkinInstance = instance
 
-  __ParkinInstance = __ParkinInstance || new Parkin(getWorld())
-
-  return __ParkinInstance
-}
-
-export const getParkinInstance = (repo) => {
+export const getParkinInstance = (repo:TRepo) => {
   __ParkinInstance = __ParkinInstance || new Parkin(getWorld(repo))
 
   return __ParkinInstance

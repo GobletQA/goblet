@@ -1,0 +1,11 @@
+{
+  "merge": [
+    "world.ts",
+    "@GEnvironment"
+  ],
+  "app": {},
+  "data": {},
+  "context": {},
+  "$alias": {}
+}
+

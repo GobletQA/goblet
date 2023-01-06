@@ -1,12 +1,18 @@
-import type { Repo } from '../repo'
-import type { TGobletConfig } from '../types'
+import type { Repo } from '@GSH/repo'
+import type { TGobletConfig, TWorldConfig } from '@GSH/types'
 
-import path from 'path'
-import glob from 'glob'
-import { noOpObj } from '@keg-hub/jsutils'
+import { DefWorld } from '@GSH/constants'
+import { loaderSearch } from '@GSH/libs/loader'
 import { getGobletConfig } from '@GSH/goblet/getGobletConfig'
-import { getPathFromConfig } from '@GSH/utils/getPathFromConfig'
-import { tryRequireSync, deepMerge } from '@keg-hub/jsutils/src/node'
+import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
+import { noOpObj, deepMerge } from '@keg-hub/jsutils/src/node'
+
+/**
+ * Makes a clone of the default world object
+ */
+const closeDefWorld = () => {
+  return deepMerge<TWorldConfig>(DefWorld)
+}
 
 /**
  * Gets a ref to current values of GOBLET envs
@@ -14,17 +20,16 @@ import { tryRequireSync, deepMerge } from '@keg-hub/jsutils/src/node'
  * Returns a method to allow resetting the envs to their original value
  */
 const setGobletEnv = (
-  config?:TGobletConfig|Repo|Record<string, any>,
-  repo?:Repo,
+  config:TGobletConfig,
 ) => {
   const orgGobletEnv = process.env.GOBLET_ENV
   const orgGobletBase = process.env.GOBLET_CONFIG_BASE
 
-  const environment = (config as Repo)?.environment || repo?.environment
+  const environment = (config as Repo)?.environment
   if(environment && process.env.GOBLET_ENV !== environment)
-    process.env.GOBLET_ENV = repo.environment
-  
-  const { repoRoot } = (config as Repo)?.paths || repo?.paths || noOpObj as Record<string, string>
+    process.env.GOBLET_ENV = environment
+
+  const { repoRoot } = (config as Repo)?.paths || noOpObj as Record<string, string>
   if(repoRoot)
     process.env.GOBLET_CONFIG_BASE = repoRoot
 
@@ -32,54 +37,40 @@ const setGobletEnv = (
     process.env.GOBLET_ENV = orgGobletEnv
     process.env.GOBLET_CONFIG_BASE = orgGobletBase
   }
-  
+
 }
 
 /**
- * Searches the client's support directory for a world export
- *
- * @return {Object?} - the client's world object, or undefined if it does not exist
- */
-const searchWorld = (config?:Record<string, any>) => {
-  config = config || getGobletConfig()
-  const { repoRoot, workDir } = config.paths
-  const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
-
-  // TODO: update this to allow world.json | world.ts | world.js | world/index.*
-  // Should use the world path from the config
-  const worldPattern = path.join(baseDir, '**/world.js')
-
-  return glob
-    .sync(worldPattern)
-    .reduce((found, file) => found || tryRequireSync(file), false)
-}
-
-/**
- * Not a great solution for loading repos by setting global ENVs, then resetting them after load
- * Uses a try / catch / finally to ensure the ENVs are always reset
- * I'm sure there's a better option but this works for now
- * Should be cleaned up as some point
+ * Loads the mounted repos world file based on the passed in config
+ * If config.paths.world is not defined, search's for the world file in the config.paths.workDir
  */
 const loadClientWorld = (
-  config?:TGobletConfig,
-  repo?:Repo,
+  config:TGobletConfig,
 ) => {
-  config = config || getGobletConfig()
-  const worldPath = getPathFromConfig(`world`, config)
+  const worldPath = config?.paths?.world
+  if(!worldPath) return closeDefWorld()
 
-  const resetEnvs = setGobletEnv(config, repo)
-  let clientExport
+  const resetEnvs = setGobletEnv(config)
+
+  let worldJson:TWorldConfig=closeDefWorld()
   try {
-    clientExport = tryRequireSync(worldPath) || searchWorld(config)
+
+    const basePath = getRepoGobletDir(config)
+    worldJson = loaderSearch({
+      basePath,
+      file: `world.json`,
+      location: worldPath
+    })
+
   }
   catch(err){
-    console.error(err)
+    console.log(err)
   }
   finally {
     resetEnvs()
   }
 
-  return clientExport
+  return worldJson
 }
 
 /**
@@ -88,13 +79,8 @@ const loadClientWorld = (
  * @return {Object?} - the client's world object, or undefined if it does not exist
  */
 export const getClientWorld = (
-  config?:TGobletConfig,
-  repo?:Repo
+  repo?:TGobletConfig,
 ) => {
-  const clientExport = loadClientWorld(config, repo)
-  return deepMerge(
-    (config as Repo).world,
-    clientExport && clientExport.world || clientExport
-  )
+  return loadClientWorld(repo || getGobletConfig())
 }
 

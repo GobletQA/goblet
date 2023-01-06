@@ -2,6 +2,7 @@ import { TFileTypes } from './files.types'
 export type { Repo as TRepo } from '../repo/repo'
 
 export type TRepoPaths = {
+  world:string
   workDir:string
   unitDir:string
   stepsDir:string
