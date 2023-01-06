@@ -43,6 +43,7 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
     editorRef.current = window.monaco.editor.create(editorNodeRef.current!, {
       ...opts,
       model: null,
+      'semanticHighlighting.enabled': true,
     })
 
     const editorService = (editorRef.current as any)._codeEditorService

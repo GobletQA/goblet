@@ -24,6 +24,7 @@
   "author": "Lance Tipton <lancetipton04@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@cucumber/language-service": "0.11.0",
     "@emotion/react": "*",
     "@emotion/styled": "*",
     "@gobletqa/components": "*",

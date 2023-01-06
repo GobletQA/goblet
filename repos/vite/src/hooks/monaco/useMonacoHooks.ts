@@ -16,7 +16,6 @@ import { useFiles, useRepo, useDefs } from '@store'
 import { exists, set, noOp } from '@keg-hub/jsutils'
 import { useMonacoConfig } from './useMonacoConfig'
 import { confirmModal } from '@actions/modals/modals'
-import { useGherkinSyntax } from './useGherkinSyntax'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { toggleModal } from '@actions/modals/toggleModal'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
@@ -106,11 +105,8 @@ export const useMonacoHooks = (
 
   })
 
-  const addGherkinSyntax = useGherkinSyntax(defs.definitionTypes)
-  const onEditorLoaded = useCallback(
-    (editor:IEditor, monaco:TMonaco) => addGherkinSyntax(editor, monaco),
-    [addGherkinSyntax]
-  )
+  // TODO: remove this if it's not needed
+  const onEditorLoaded = useCallback((editor:IEditor, monaco:TMonaco) => {}, [])
 
   return {
     config,

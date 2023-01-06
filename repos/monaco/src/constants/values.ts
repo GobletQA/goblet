@@ -1,11 +1,11 @@
 import type { TAllowedFileTypes } from '../types'
 
 export const ALLOWED_FILE_TYPES:TAllowedFileTypes = {
-  js: 'javascript',
-  ts: 'typescript',
-  less: 'less',
-  jsx: 'javascript',
-  tsx: 'typescript',
+  js: `javascript`,
+  ts: `typescript`,
+  jsx: `javascript`,
+  tsx: `typescript`,
+  feature: `gherkin`
 }
 
 export const MONACO_URLS = {
@@ -40,3 +40,5 @@ export const LANGS = [
   'markdown',
   'json',
 ]
+
+export const GherkinLangID = `gherkin`

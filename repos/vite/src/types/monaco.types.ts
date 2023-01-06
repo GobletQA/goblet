@@ -10,5 +10,4 @@ export {
   Editor as NEditor,
   TextEdit as TTextEdit,
   Languages as NLanguages
-  
 }

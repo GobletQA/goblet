@@ -41,14 +41,15 @@ const doFetch = url => {
   return promise
 }
 
-const fetchFromDefinitelyTyped = (dependency, version, fetchedPaths) =>
-  doFetch(
+const fetchFromDefinitelyTyped = (dependency, version, fetchedPaths) => {
+  return doFetch(
     `${ROOT_URL}npm/@types/${dependency
       .replace('@', '')
       .replace(/\//g, '__')}/index.d.ts`
   ).then(typings => {
     fetchedPaths[`node_modules/${dependency}/index.d.ts`] = typings
   })
+}
 
 const getRequireStatements = (title, code) => {
   const requires = []
@@ -93,8 +94,8 @@ const tempTransformFiles = files => {
   return finalObj
 }
 
-const transformFiles = dir =>
-  dir.files
+const transformFiles = dir => {
+  return dir.files
     ? dir.files.reduce((prev, next) => {
         if (next.type === 'file') {
           return { ...prev, [next.path]: next }
@@ -103,6 +104,8 @@ const transformFiles = dir =>
         return { ...prev, ...transformFiles(next) }
       }, {})
     : {}
+  
+}
 
 const getFileMetaData = (dependency, version, depPath) =>
   doFetch(

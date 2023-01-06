@@ -1,11 +1,16 @@
 import type { TAction, TRepoMeta } from '@types'
 
+import reposJson from './repos.test.json'
 import { deepMerge } from '@keg-hub/jsutils'
-// import reposJson from './repos.test.json'
+
+
+export const Environment = process.env.NODE_ENV || `local`
 
 export type TReposState = TRepoMeta[]
 
-export const reposState = {} as TReposState
+// export const reposState = {} as TReposState
+export const reposState = Environment === `production` ? {} : reposJson as TReposState
+
 
 export const reposActions = {
   clearRepos: (state:TReposState, action:TAction<TReposState>) => (reposState),

@@ -33,10 +33,10 @@ const meta = (exp1='word', exp2='string') => ({
   ],
 })
 
-Then('I {word} {string}', generalAction, meta())
-Then('I {word} the {string}', generalAction, meta())
-Then('I {word} {word}', generalAction, meta(`word`, `word`))
-Then('I {word} the {word}', generalAction, meta(`word`, `word`))
+// Then('I {word} {string}', generalAction, meta())
+// Then('I {word} the {string}', generalAction, meta())
+// Then('I {word} {word}', generalAction, meta(`word`, `word`))
+// Then('I {word} the {word}', generalAction, meta(`word`, `word`))
 
 
 module.exports = {

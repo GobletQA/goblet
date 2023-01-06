@@ -28,7 +28,15 @@ const initTheme = (config:TEditorConfig) => {
     : setTheme()
 }
 
-const setupMonaco = (config:TEditorConfig) => {
+const initGherkin = async (config:TEditorConfig) => {
+  if(!config?.gherkin) return
+
+  const { setGherkin } = await import('./setGherkin')
+  setGherkin(config, window.monaco)
+}
+
+const setupMonaco = async (config:TEditorConfig) => {
+  await initGherkin(config)
   initLangs(config)
   initTheme(config)
   // TODO: add grammar workers - used by linter

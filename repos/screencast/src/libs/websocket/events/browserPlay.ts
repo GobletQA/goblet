@@ -26,7 +26,9 @@ const handleStartPlaying = async (
       Manager.emit(socket, event.name, { ...event, group: socket.id })
     },
     onCleanup: async (closeBrowser:boolean) => {
-      Manager.cache[socket.id].player = undefined
+      socket?.id
+        && Manager?.cache[socket.id]?.player
+        && (Manager.cache[socket.id].player = undefined)
     },
     onCreateNewPage: async (page:any) => {
       // TODO: Figure out what to do here

@@ -5,7 +5,7 @@ const addExtraLib = async (config:TEditorConfig) => {
   
 }
 
-const registerLangs = (config:TEditorConfig) => {
+const registerLangs = async (config:TEditorConfig) => {
   const langs = [ ...LANGS, ...(config?.monaco?.languages || []) ] as string[]
   langs.forEach(lang => window.monaco.languages.register({ id: lang }))
 }
@@ -44,7 +44,7 @@ const setLangDefaults = (config:TEditorConfig) => {
   window.monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
     validate: true,
   })
-  
+
 }
 
 export const initLangs = async (config:TEditorConfig) => {

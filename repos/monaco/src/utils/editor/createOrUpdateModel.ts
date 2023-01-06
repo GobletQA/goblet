@@ -23,6 +23,7 @@ export const updateModel = (model:editor.ITextModel, content:string|null) => {
 }
 
 const createModel = (path:string, content:string | null) => {
+
   const type = path.indexOf('.') !== -1
     ? path.split('.').slice(-1)[0]
     : ALLOWED_FILE_TYPES.js

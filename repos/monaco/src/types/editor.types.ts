@@ -1,16 +1,21 @@
 import type { editor } from 'monaco-editor'
 import type { TEditorCB } from './helpers.types'
 import type { TFilelist, TFileMeta } from './file.types'
+import type { TMonacoDefinition } from './gherkin.types'
 
 export type TEditorOpenFiles = TFileMeta[]
 
 export type TAllowedFileTypes = {
-  less: 'less',
-  js: 'javascript',
-  ts: 'typescript',
-  jsx: 'javascript',
-  tsx: 'typescript',
+  js: `javascript`,
+  ts: `typescript`,
+  jsx: `javascript`,
+  tsx: `typescript`,
+  feature: `gherkin`
   [key:string]: string
+}
+
+export type TGherkinConfig = {
+  definitions: TMonacoDefinition[]
 }
 
 export type TTSCompileOpts = {
@@ -38,6 +43,7 @@ export type TMonacoConfig = {
 export type TEditorConfig = {
   extraLibs?: any
   monaco?: TMonacoConfig
+  gherkin?:TGherkinConfig
   theme?: TEditorThemeConfig
   [key: string]: any
 }

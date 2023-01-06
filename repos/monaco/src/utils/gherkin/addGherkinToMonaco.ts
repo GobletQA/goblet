@@ -1,32 +1,54 @@
-import type { IEditor, TTextEdit, TRange, TMonaco, NLanguages } from '@types'
-
-import type { Index } from '@cucumber/language-service'
-import type { Expression } from '@cucumber/cucumber-expressions'
+import type {
+  TIndex,
+  TRange,
+  IEditor,
+  TMonaco,
+  TTextEdit,
+  NLanguages,
+  TExpression,
+} from '@GBM/types'
 
 import { noOp } from '@keg-hub/jsutils'
+import { monarch } from './monarch'
+import { GherkinLangID } from '@GBM/constants'
+import { autoCompleteShortcuts } from './autoCompleteShortcuts'
 import {
-  semanticTokenTypes,
   getGherkinDiagnostics,
   getGherkinSemanticTokens,
   getGherkinCompletionItems,
 } from '@cucumber/language-service'
+
+
+const registerGherkin = (monaco:TMonaco) => {
+  monaco.languages.register({
+    loader: noOp,
+    id: GherkinLangID,
+    extensions: [`.feature`],
+    aliases: [`Feature`, `feature`]
+  } as any)
+}
+
+const addGherkinMonarch = (monaco:TMonaco) => {
+  monaco.languages.setLanguageConfiguration(GherkinLangID, monarch.conf as any)
+  monaco.languages.setMonarchTokensProvider(GherkinLangID, monarch.language as any)
+}
 
 /**
  * Setup syntax highlighting for the gherkin language
  */
 const addGherkinSyntax = (
   monaco:TMonaco,
-  expressions:Expression[]
+  expressions:TExpression[]
 ) => {
   monaco.languages.registerDocumentSemanticTokensProvider('gherkin', {
     getLegend: () => ({
-      tokenTypes: semanticTokenTypes,
+      tokenTypes: ['keyword', 'parameter', 'string', 'type', 'variable', 'property'],
       tokenModifiers: [],
     }),
     releaseDocumentSemanticTokens: () => {},
     provideDocumentSemanticTokens: model => {
       const content = model.getValue()
-      const tokens = getGherkinSemanticTokens(content, expressions)
+      const tokens = getGherkinSemanticTokens(content, expressions as any)
       const data = new Uint32Array(tokens.data)
       return { data }
     },
@@ -38,10 +60,10 @@ const addGherkinSyntax = (
  */
 const addAutoComplete = (
   monaco:TMonaco,
-  index:Index
+  index:TIndex
 ) => {
   // Setup Auto-Complete when writing a feature file
-  monaco.languages.registerCompletionItemProvider('gherkin', {
+  monaco.languages.registerCompletionItemProvider(GherkinLangID, {
     provideCompletionItems: function (
       model,
       position,
@@ -52,16 +74,19 @@ const addAutoComplete = (
       const completionItems = getGherkinCompletionItems(
         content,
         position.lineNumber - 1,
-        index
+        index as any
       )
       return {
-        suggestions: completionItems.map((completionItem) => ({
-          label: completionItem.label,
-          insertText: completionItem?.textEdit?.newText,
-          kind: monaco.languages.CompletionItemKind.Text,
-          range: convertRange((completionItem?.textEdit as TTextEdit)?.range),
-          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-        })),
+        suggestions: [
+          ...autoCompleteShortcuts(monaco),
+          ...completionItems.map((completionItem) => ({
+            label: completionItem.label,
+            insertText: completionItem?.textEdit?.newText,
+            kind: monaco.languages.CompletionItemKind.Text,
+            range: convertRange((completionItem?.textEdit as TTextEdit)?.range),
+            insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          })),
+        ]
       } as NLanguages.ProviderResult<NLanguages.CompletionList>
     },
   })
@@ -73,15 +98,15 @@ const addAutoComplete = (
  */
 const addDefinitionValidation = (
   monaco:TMonaco,
-  expressions:Expression[],
+  expressions:TExpression[],
   editor:IEditor
 ) => {
   // Diagnostics (Syntax validation)
   const runDefinitionValidation = () => {
-    const model = editor.getModel()
+    const model = editor?.getModel()
     if (model) {
       const content = model.getValue()
-      const diagnostics = getGherkinDiagnostics(content, expressions)
+      const diagnostics = getGherkinDiagnostics(content, expressions as any)
       const markers = diagnostics.map((diagnostic) => {
         return Object.assign(
           Object.assign({}, convertRange(diagnostic.range)),
@@ -120,17 +145,13 @@ const convertRange = (range:TRange) => {
  */
 export const addGherkinToMonaco = (
   monaco:TMonaco,
-  index:Index,
-  expressions:Expression[]
+  index:TIndex,
+  expressions:TExpression[]
 ) => {
 
-  monaco.languages.register({
-    id: 'gherkin',
-    loader: noOp,
-    extensions: [`.feature`],
-    aliases: [`Feature`, `feature`]
-  } as any)
 
+  registerGherkin(monaco)
+  addGherkinMonarch(monaco)
   addGherkinSyntax(monaco, expressions)
   addAutoComplete(monaco, index)
 
@@ -139,7 +160,7 @@ export const addGherkinToMonaco = (
     let validationTimeout:ReturnType<typeof setTimeout>
 
     // Add handler to check validation when the file content changes
-    editor.onDidChangeModelContent(() => {
+    editor?.onDidChangeModelContent(() => {
       clearTimeout(validationTimeout)
       validationTimeout = setTimeout(requestValidation, 500)
     })
