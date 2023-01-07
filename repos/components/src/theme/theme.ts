@@ -4,7 +4,7 @@ import type { TGobletTheme, TEditorTheme } from '@GBC/types'
 import { dims } from './dims'
 import { gutter } from './gutter'
 import { palette } from './palette'
-import { EThemeType } from '../types'
+import { EThemeMode } from '../types'
 import { components } from './components'
 import { typography } from './typography'
 import { createTheme as createThemeMui } from '@mui/material/styles'
@@ -12,7 +12,7 @@ import { createTheme as createThemeMui } from '@mui/material/styles'
 const muiTheme = createThemeMui()
 let __GobletTheme:TGobletTheme
 
-export const createTheme = (type:EThemeType) => {
+export const createTheme = (type:EThemeMode) => {
   const builtPalette = palette[type](muiTheme)
   __GobletTheme = createThemeMui({
     dims,
@@ -25,12 +25,12 @@ export const createTheme = (type:EThemeType) => {
   return __GobletTheme
 }
 
-export const getTheme = (type?:EThemeType) => {
+export const getTheme = (type?:EThemeMode) => {
   const mode =__GobletTheme && __GobletTheme?.palette?.mode
 
   return __GobletTheme && (!mode || !type || mode === type)
     ? __GobletTheme
-    : createTheme(type || EThemeType.light)
+    : createTheme(type || EThemeMode.light)
 }
 
 

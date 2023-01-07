@@ -1,5 +1,5 @@
 import type { TGobletTheme } from '@gobletqa/components'
-import { EThemeType, colors } from '@gobletqa/components'
+import { EThemeMode, colors } from '@gobletqa/components'
 
 export type TGlobalStyles = {
   theme:TGobletTheme
@@ -19,7 +19,7 @@ export const globalStyles = ({ theme }:TGlobalStyles) => {
     body {
       overflow: hidden;
       font-family: ${typography.fontFamily};
-      background: ${mode === EThemeType.light ? colors.white : colors.black19};
+      background: ${mode === EThemeMode.light ? colors.white : colors.black19};
     }
 
     *:focus-visible { outline: 1px solid ${primary.main} }

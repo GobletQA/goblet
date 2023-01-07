@@ -58,4 +58,44 @@ export const events = {
   pwUrlChange: function(message:TSocketEvt){
     EE.emit(BrowserNavEvt, message.data)
   },
+  playStarted: function(message:TSocketEvt){
+    console.log(`------- playStarted message -------`)
+    console.log(message)
+  },
+  playEnded: function(message:TSocketEvt){
+    console.log(`------- playEnded message -------`)
+    console.log(message)
+  },
+  playResults: function(message:TSocketEvt){
+    console.log(`------- playResults message -------`)
+    console.log(message)
+  },
+  playError: function(message:TSocketEvt){
+    console.log(`------- playError message -------`)
+    console.log(message)
+  },
+  playAction: function(message:TSocketEvt){
+    console.log(`------- playAction message -------`)
+    console.log(message)
+  },
+  playGeneral: function(message:TSocketEvt){
+    console.log(`------- playGeneral message -------`)
+    console.log(message)
+  },
+  playSpecStart: function(message:TSocketEvt){
+    console.log(`------- playSpecStart message -------`)
+    console.log(message)
+  },
+  playSpecDone: function(message:TSocketEvt){
+    console.log(`------- playSpecDone message -------`)
+    console.log(message)
+  },
+  playSuiteStart: function(message:TSocketEvt){
+    console.log(`------- PlaySuiteStart message -------`)
+    console.log(message)
+  },
+  playSuiteDone: function(message:TSocketEvt){
+    console.log(`------- playSuiteDone message -------`)
+    console.log(message)
+  },
 }

@@ -2,18 +2,18 @@
 import { useMemo, useState } from 'react'
 import {
   getTheme,
-  EThemeType,
+  EThemeMode,
   TEditorTheme,
   loadGobletTheme
 } from '@gobletqa/components'
 
 export type THRaceTheme = {
-  themeType?: EThemeType
+  themeType?: EThemeMode
 }
 
-const hasCorrectTheme = (themeType:EThemeType, theme?:TEditorTheme) => {
-  const isDark = theme?.base === `vs-dark` && themeType === EThemeType.dark
-  const isLight = theme?.base === `vs` && themeType === EThemeType.light
+const hasCorrectTheme = (themeType:EThemeMode, theme?:TEditorTheme) => {
+  const isDark = theme?.base === `vs-dark` && themeType === EThemeMode.dark
+  const isLight = theme?.base === `vs` && themeType === EThemeMode.light
 
   return theme && (isDark || isLight)
 }
@@ -25,12 +25,12 @@ export const useRaceTheme = (props?:THRaceTheme) => {
 
   const type = props?.themeType
     || getTheme()?.palette?.mode
-    || EThemeType.light
+    || EThemeMode.light
 
   useMemo(() => {
     !hasCorrectTheme(type, theme)
       && (async () => {
-          const theme = await loadGobletTheme(type, `race`)
+          const theme = await loadGobletTheme({ type, context: `race` })
           theme && setTheme(theme)
         })()
 

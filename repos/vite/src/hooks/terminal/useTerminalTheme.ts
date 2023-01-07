@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { EThemeType, colors, useTheme } from '@gobletqa/components'
+import { EThemeMode, colors, useTheme } from '@gobletqa/components'
 
 const lightTerminal = {
   black: `#414141`,
@@ -37,7 +37,7 @@ const darkTerminal = {
 
   cursor: colors.white,
   foreground: colors.white,
-  background: colors.black,
+  background: colors.purple23,
 
   black: colors.black12,
   brightBlack: colors.black09,
@@ -61,12 +61,12 @@ const darkTerminal = {
 
 
 export const useTerminalTheme = () => {
-  const mode = useTheme()?.palette?.mode as EThemeType
+  const mode = useTheme()?.palette?.mode as EThemeMode
   return useMemo(() => {
     return {
       mode,
       theme: darkTerminal,
-      // theme: mode === EThemeType.light ? lightTerminal : darkTerminal
+      // theme: mode === EThemeMode.light ? lightTerminal : darkTerminal
     }
   }, [mode])
 }

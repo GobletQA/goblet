@@ -2,14 +2,15 @@ import type { TMonaco, TEditorThemes, TEditorTheme } from '../types'
 
 import {
   getTheme,
-  EThemeType,
+  EThemeMode,
   setThemeVars,
-  loadGobletTheme
+  loadGobletTheme,
+  EGobletThemeName,
 } from '@gobletqa/components'
 
 export const themes: TEditorThemes = {}
 
-const importTheme = async (themeName:string, mode:string) => {
+const importTheme = async (themeName:string, mode:string):Promise<TEditorTheme> => {
   let importedTheme
   try {
     const resp = await import(`../themes/${themeName}.json`)
@@ -20,13 +21,13 @@ const importTheme = async (themeName:string, mode:string) => {
     console.error(err.message)
   }
 
-  return importedTheme || await loadGobletTheme(mode, `monaco`, false)
+  return importedTheme || await loadGobletTheme({ mode, context: `monaco`, loadVars: false })
 }
 
 const resolveTheme = async (name:string, mode:string) => {
-  const theme = (name === `Goblet-light` || name === `Goblet-dark`)
-    ? await loadGobletTheme(mode, `monaco`, false) as TEditorTheme
-    : await importTheme(name, mode) as TEditorTheme
+  const theme = (name === EGobletThemeName.light || name === EGobletThemeName.dark)
+    ? await loadGobletTheme({ mode, name, loadVars: false, context: `monaco` })
+    : await importTheme(name, mode)
 
   if(!theme) return
 
@@ -42,7 +43,7 @@ export const  setTheme = async (
   monaco?:TMonaco,
 ) => {
 
-  const mode = getTheme()?.palette?.mode || EThemeType.light
+  const mode = getTheme()?.palette?.mode || EThemeMode.light
   name = name || `Goblet-${mode}`
 
   const theme = themes[name as string]

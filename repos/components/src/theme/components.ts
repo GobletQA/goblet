@@ -1,14 +1,14 @@
 import type { TPaletteOpts } from '../types'
 import type { Theme } from '@mui/material/styles'
 
-import { EThemeType } from '../types'
+import { EThemeMode } from '../types'
 
 
 export const components = (
   muiTheme:Theme,
   palette:TPaletteOpts
 ):Theme[`components`] => {
-  const isLightTheme = palette.mode === EThemeType.light
+  const isLightTheme = palette.mode === EThemeMode.light
   
   return {
     MuiButton: {
@@ -41,7 +41,7 @@ export const components = (
         },
         paper: {
           backgroundImage: `initial`,
-          backgroundColor: palette.mode === EThemeType.light
+          backgroundColor: palette.mode === EThemeMode.light
             ? palette.colors.white
             : palette.colors.black12
         }

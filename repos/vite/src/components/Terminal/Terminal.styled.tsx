@@ -72,7 +72,7 @@ export const HeaderTab = styled(Tab)(({ theme }) => {
 
     &.Mui-selected {
       font-weight: ${theme.typography.fontWeightBold};
-      background-color: ${getColor(colors.black, colors.black, theme)};
+      background-color: ${getColor(colors.purple23, colors.purple23, theme)};
       ${shared}
     }
 
@@ -121,5 +121,5 @@ export const TerminalInput = styled(Box)(({ theme }) => `
   width: 100%;
   flex-grow: 1;
   overflow: hidden;
-  background-color: ${getColor(colors.black, colors.black, theme)};
+  background-color: ${getColor(colors.purple23, colors.purple23, theme)};
 `)

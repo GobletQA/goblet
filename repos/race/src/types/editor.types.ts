@@ -5,7 +5,7 @@ import type {
   TAction,
   TTabItem,
   TTabAction,
-  EThemeType,
+  EThemeMode,
   TSidebarPanel
 } from '@gobletqa/components'
 import type {
@@ -36,7 +36,7 @@ export type TRaceEditorProps = TEditorContainer & {
   steps:TRaceSteps
   rootPrefix: string
   feature?:TRaceFeature
-  themeType?:EThemeType
+  themeType?:EThemeMode
   features:TRaceFeatureAsts
   firstFeatureActive?:boolean
   initialFeature?:TRaceFeature

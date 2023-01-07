@@ -11,7 +11,7 @@ import { useStateReset } from '@hooks/useReset'
 import {
   gutter,
   IconButton,
-  EThemeType,
+  EThemeMode,
   useThemeType,
   DarkModeIcon,
   LightModeIcon,
@@ -32,9 +32,9 @@ export const Header = (props:THeaderProps) => {
   const { type, setType } = useThemeType()
   
   const onChangeTheme = useCallback(() => {
-    const updated = type === EThemeType.light
-      ? EThemeType.dark
-      : EThemeType.light
+    const updated = type === EThemeMode.light
+      ? EThemeMode.dark
+      : EThemeMode.light
 
     setType(updated)
   }, [type, setType])
@@ -56,7 +56,7 @@ export const Header = (props:THeaderProps) => {
           onClick={onChangeTheme}
         >
         {
-          type === EThemeType.light
+          type === EThemeMode.light
             ? (<LightModeIcon style={styles.icon} />)
             : (<DarkModeIcon style={styles.icon} />)
         }

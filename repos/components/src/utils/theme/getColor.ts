@@ -3,7 +3,7 @@ import type { Theme } from '@mui/material/styles'
 
 import { getTheme } from '@GBC/theme'
 import { get } from '@keg-hub/jsutils'
-import { EThemeType } from '@GBC/types'
+import { EThemeMode } from '@GBC/types'
 
 export const getColor = <T=string>(
   light:string|number,
@@ -14,5 +14,5 @@ export const getColor = <T=string>(
   const lColor = get(palette, `${light}`, light)
   const dColor = get(palette, `${dark}`, dark)
 
-  return (palette.mode === EThemeType.light ? lColor || dColor : dColor || lColor) as T
+  return (palette.mode === EThemeMode.light ? lColor || dColor : dColor || lColor) as T
 }

@@ -1,7 +1,7 @@
 import type { LogLevel, ITheme } from 'xterm'
 import type { MutableRefObject } from 'react'
 import type { XTerminal } from '@services/xterm'
-import type { EThemeType } from '@gobletqa/components'
+import type { EThemeMode } from '@gobletqa/components'
 
 export type TTerminalLog = {
   id: string
@@ -41,7 +41,7 @@ export type TEventData = {
 export type TXTermRef = {
   term: XTerminal
   remove?: () => void
-  themeMode: EThemeType
+  themeMode: EThemeMode
   element: MutableRefObject<HTMLDivElement|null>
 }
 

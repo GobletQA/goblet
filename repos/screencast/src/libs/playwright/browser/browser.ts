@@ -123,11 +123,21 @@ export const getPage = async (
 
   const { context, browser } = await getContext(browserConf)
   const pages = context.pages()
+  
+  Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
+  const hasMultiplePages = pages.length > 1
+
+  if(hasMultiplePages){
+    Logger.verbose(`getPage - Closing extra pages on the context`)
+    await Promise.all(pages.map(async (page, idx) => idx && await page.close()))
+  }
 
   const page = (pages.length && pages[0])
     || await context.newPage()
 
-  Logger.verbose(`getPage - Found page for browser ${browserConf.type}`)
+  pages.length
+    ? Logger.verbose(`getPage - Found page on context for browser ${browserConf.type}`)
+    : Logger.verbose(`getPage - New page created on context for browser ${browserConf.type}`)
 
   return { context, browser, page } as TPWComponents
 }

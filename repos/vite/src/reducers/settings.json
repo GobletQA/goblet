@@ -104,9 +104,9 @@
     },
     "theme": {
       "key": "theme",
-      "value": "",
+      "value": "Goblet-dark",
       "active": true,
-      "default": "",
+      "default": "Goblet-dark",
       "group": "editor",
       "emptyOption": "",
       "options": [

@@ -10,9 +10,14 @@ export type TExtPalette = {
 
 export type TPaletteOpts = PaletteOptions & TExtPalette
 
-export enum EThemeType {
+export enum EThemeMode {
   dark = 'dark',
   light = 'light'
+}
+
+export enum EGobletThemeName {
+  dark = `Goblet-dark`,
+  light = `Goblet-light`,
 }
 
 export type TColors = Record<string, string>
@@ -29,8 +34,8 @@ export type TGobletTheme = Omit<Theme, `palette`> & {
 }
 
 export type TThemeType = {
-  type:EThemeType
-  setType: (type:EThemeType) => any
+  type:EThemeMode
+  setType: (type:EThemeMode) => any
 }
 
 export type TThemeChildren = {
@@ -44,7 +49,7 @@ export type TEditorTheme = {
   inherit: boolean;
   encodedTokensColors?: string[]
   colors: Record<string, string>
-  rules: Record<string, string|boolean|number>[]
+  rules: Record<string, string|boolean|number|undefined|null>[]
 }
 
 export type TStyle = Record<string, string|number>

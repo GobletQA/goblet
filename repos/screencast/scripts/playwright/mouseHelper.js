@@ -29,9 +29,9 @@ async function initGobletMouseTracking(){
         top: 0;
         z-index: 10000;
         left: 0;
-        width: 100px;
-        height: 100px;
-        background: rgba(0,0,0,1);
+        width: 20px;
+        height: 20px;
+        background: rgba(0,0,0,0.4);
         border: 1px solid white;
         border-radius: 10px;
         margin: -10px 0 0 -10px;
@@ -40,11 +40,11 @@ async function initGobletMouseTracking(){
       }
       goblet-mouse-pointer.button-1 {
         transition: none;
-        background: rgba(0,0,0,1);
+        background: rgba(0,0,0,0.9);
       }
       goblet-mouse-pointer.button-2 {
         transition: none;
-        border-color: rgba(0,0,255,1);
+        border-color: rgba(0,0,255,0.9);
       }
       goblet-mouse-pointer.button-3 {
         transition: none;
@@ -52,11 +52,11 @@ async function initGobletMouseTracking(){
       }
       goblet-mouse-pointer.button-4 {
         transition: none;
-        border-color: rgba(255,0,0,1);
+        border-color: rgba(255,0,0,0.9);
       }
       goblet-mouse-pointer.button-5 {
         transition: none;
-        border-color: rgba(0,255,0,1);
+        border-color: rgba(0,255,0,0.9);
       }
     `
 

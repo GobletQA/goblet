@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { EThemeType, TThemeType, TThemeProvider, TGobletTheme } from '@GBC/types'
+import type { EThemeMode, TThemeType, TThemeProvider, TGobletTheme } from '@GBC/types'
 
 import { createContext, useContext, useMemo, useState } from 'react'
 import { getTheme } from '@GBC/theme'
@@ -25,7 +25,7 @@ export const useThemeType = () => {
 
   return {
     type,
-    setType: async (type:EThemeType) => {
+    setType: async (type:EThemeMode) => {
       await localStorage.set(StorageKeys.THEME_TYPE, type, false)
       setType(type)
     }
@@ -78,7 +78,7 @@ const ThemeTypeProvider = (props:TThemeProvider) => {
 }
 
 export const ThemeProvider = (props:TTheme) => {
-  const [themeType, setThemeType] = useState<EThemeType>(ThemeType as EThemeType)
+  const [themeType, setThemeType] = useState<EThemeMode>(ThemeType as EThemeMode)
   const { globalStyles, ...rest } = props
 
   return (
