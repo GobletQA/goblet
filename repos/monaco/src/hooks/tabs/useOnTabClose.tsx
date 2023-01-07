@@ -1,10 +1,11 @@
-import type { TFileMeta, TAutoSave, TModal } from '../../types'
+import type { TTab } from '@gobletqa/components'
+import type { TFileMeta, TAutoSave, TModal } from '@GBM/types'
 
 import { useCallback } from 'react'
+import { fileFromTab } from '@GBM/utils/file/fileTabs'
 
 export type THOnTabClose = {
   Modal: TModal
-  file: TFileMeta
   autoSave: TAutoSave
   rootEl: HTMLElement | null
   onCloseFile: (key: string) => void
@@ -14,16 +15,17 @@ export type THOnTabClose = {
 
 export const useOnTabClose = (props:THOnTabClose) => {
   const {
-  file,
-  Modal,
-  rootEl,
-  autoSave,
-  onSaveFile,
-  onCloseFile,
-  onAbortSave,
+    Modal,
+    rootEl,
+    autoSave,
+    onSaveFile,
+    onCloseFile,
+    onAbortSave,
   } = props
 
-  return useCallback((event:any) => {
+  return useCallback((tab:TTab, event:any) => {
+    const file = fileFromTab(tab)
+
     event.stopPropagation()
     event.preventDefault()
 
@@ -57,7 +59,6 @@ export const useOnTabClose = (props:THOnTabClose) => {
       })
     })
   }, [
-    file,
     Modal,
     rootEl,
     autoSave,

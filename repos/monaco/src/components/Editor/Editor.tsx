@@ -5,14 +5,11 @@ import type {
   IMonacoEditorProps,
 } from '@GBM/types'
 
-import { useRef, useState, forwardRef } from 'react'
-
 import { setTheme } from '@GBM/init/setTheme'
 import { Sidebar } from '@GBM/components/Sidebar'
-import { OpenedTabs } from '@GBM/components/OpenedTabs'
+import { useTabs } from '@GBM/hooks/tabs/useTabs'
+import { useRef, useState, forwardRef } from 'react'
 import { deleteModel } from '@GBM/utils/editor/deleteModel'
-import { useAddFile } from '@GBM/hooks/fileTree/useAddFile'
-import { generateFileTree } from '@GBM/utils/generateFileTree'
 import { useLintWorker } from '@GBM/hooks/editor/useLintWorker'
 import { useEditorRefs } from '@GBM/hooks/editor/useEditorRefs'
 import { useTypesWorker } from '@GBM/hooks/editor/useTypesWorker'
@@ -23,7 +20,8 @@ import { useFolderCallbacks } from '@GBM/hooks/editor/useFolderCallbacks'
 import { useEditorCallbacks } from '@GBM/hooks/editor/useEditorCallbacks'
 import { useEditorFileCallbacks } from '@GBM/hooks/editor/useEditorFileCallbacks'
 
-import { useSidebarResize, FileIcon, Actions, EmptyEditor } from '@gobletqa/components'
+import { EditorContainer, Container, Divider as REDivider, Editor } from './Editor.styled'
+import { useSidebarResize, FileIcon, Actions, EmptyEditor, OpenedTabs } from '@gobletqa/components'
 
 const editorStyles = { flex: 1, width: '100%' }
 
@@ -46,12 +44,12 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onFileChange,
     onValueChange,
     rootPrefix=``,
-    Divider=`div`,
     sidebarWidth,
     sidebarStatus,
     onEditorLoaded,
     Modal:ModalComp,
     onSidebarResize,
+    Divider=REDivider,
     defaultFiles = {},
     title='Goblet Editor',
     config={} as TEditorConfig,
@@ -204,8 +202,24 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     defaultFiles,
   })
 
+  const {
+    openedTabs,
+    onTabClose,
+    onTabClick
+  } = useTabs({
+    Modal,
+    autoSave,
+    openedFiles,
+    onSaveFile: saveFile,
+    currentPath: curPath,
+    onCloseFile: closeFile,
+    rootEl: rootRef.current,
+    onPathChange: pathChange,
+    onAbortSave: abortFileChange,
+  })
+
   return (
-    <div
+    <Container
       tabIndex={1}
       style={style}
       ref={rootRef}
@@ -234,21 +248,14 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         onDeleteFolder={deleteFolder}
         onEditFolderName={editFolderName}
       />
-      <Divider onMouseDown={onMoveStart} className='goblet-editor-drag' />
-      <div className='goblet-editor-area'>
+      <Divider onMouseDown={onMoveStart} className='gr-editor-drag' />
+      <EditorContainer className='goblet-editor-area'>
         <OpenedTabs
-          Modal={Modal}
-          autoSave={autoSave}
-          onSaveFile={saveFile}
-          currentPath={curPath}
-          onCloseFile={closeFile}
-          rootEl={rootRef.current}
-          openedFiles={openedFiles}
-          onPathChange={pathChange}
-          onAbortSave={abortFileChange}
-          onCloseOtherFiles={closeOtherFiles}
+          openedTabs={openedTabs}
+          onTabClose={onTabClose}
+          onTabClick={onTabClick}
         />
-        <div ref={editorNodeRef} style={editorStyles} />
+        <Editor ref={editorNodeRef} sx={editorStyles} />
         {openedFiles.length === 0 && (
           <EmptyEditor
             Icon={FileIcon}
@@ -268,8 +275,8 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
             actions={actions as TEditorAction[]}
           />
         ) || null}
-      </div>
-    </div>
+      </EditorContainer>
+    </Container>
   )
 })
 

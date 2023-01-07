@@ -4,7 +4,7 @@ import { Feature } from '../Feature'
 import { FeaturesPanel } from '../Features'
 import { useSidebarResize, Actions, OpenedTabs, Sidebar } from '@gobletqa/components'
 import {
-  BuilderContainer,
+  EditorContainer,
   Divider as REDivider,
   Container as ContainerComp,
 } from './RaceEditor.styled'
@@ -69,7 +69,7 @@ export const Container = (props:TEditorContainer) => {
           />
         </Sidebar>
         <Divider onMouseDown={onMoveStart} className='gr-editor-drag' />
-        <BuilderContainer>
+        <EditorContainer className='goblet-editor-area'>
           <OpenedTabs
             onTabDown={onTabDown}
             onTabHover={onTabHover}
@@ -82,7 +82,7 @@ export const Container = (props:TEditorContainer) => {
             stepsRef={stepsRef}
             featuresRef={featuresRef}
           />
-        </BuilderContainer>
+        </EditorContainer>
         {actions?.length && (
           <Actions
             actions={actions}

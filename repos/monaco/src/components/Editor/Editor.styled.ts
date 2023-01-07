@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
-
 export const EditorContainer = styled(Box)`
   flex: 1;
   min-width: 0;
@@ -14,18 +13,6 @@ export const EditorContainer = styled(Box)`
 
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-editor-background);
-`
-
-export const Container = styled(Box)`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  position: relative;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  color: var(--goblet-editor-foreground);
-  border-right: 1px solid var(--goblet-editor-border);
 `
 
 export const Divider = styled(Box)`
@@ -41,5 +28,18 @@ export const Divider = styled(Box)`
   &:hover {
     background: var(--goblet-editorCursor-foreground);
   }
-
 `
+
+export const Container = styled(Box)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: var(--goblet-editor-foreground);
+  border-right: 1px solid var(--goblet-editor-border);
+`
+
+export const Editor = styled(Box)``

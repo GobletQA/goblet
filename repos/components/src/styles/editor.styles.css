@@ -1,42 +1,4 @@
 
-
-.goblet-editor {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
-  height: 100%;
-  position: relative;
-  color: var(--goblet-editor-foreground);
-  border-right: 1px solid var(--goblet-editor-border);
-}
-
-.goblet-editor-drag {
-  width: 5px;
-  background: var(--goblet-editor-background);
-  height: 100%;
-  cursor: col-resize;
-  flex-shrink: 0;
-}
-
-.goblet-editor-drag:hover {
-  background: var(--goblet-editorCursor-foreground);
-}
-
-.goblet-editor-area {
-  color: var(--goblet-editor-foreground);
-  background-color: var(--goblet-editor-background);
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  position: relative;
-}
-
 .goblet-editor-setting {
   width: 400px;
   height: 200px;

@@ -134,7 +134,6 @@ export const black = {
   black20: `#030404`,
 }
 
-
 export const white = {
   white00: `#F9FAFB`,
   white01: `#F6F6F8`

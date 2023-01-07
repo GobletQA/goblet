@@ -10,6 +10,8 @@ export type TFileMeta = {
   mode?: TOpenMode
 }
 
+export type TFileMetas = TFileMeta[]
+
 export type TMFile = {
   ext: string
   uuid: string

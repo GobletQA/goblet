@@ -2,11 +2,11 @@ import type { TFolder, TFileCallback } from '../../types'
 import type { CSSProperties, RefObject, Dispatch, SetStateAction } from 'react'
 
 import { useCallback } from 'react'
-import { Arrow } from '../Icons/Arrow'
 import { noOpObj } from '@keg-hub/jsutils'
-import { toolTipProps, styles } from '@GBM/utils/file/fileHelpers'
 import { stopPropagation } from '@GBM/utils/dom/stopPropagation'
+import { toolTipProps, styles } from '@GBM/utils/file/fileHelpers'
 import {
+  Arrow,
   Tooltip,
   TrashIcon,
   FolderIcon,

@@ -51,6 +51,10 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
     editorRef.current = window.monaco.editor.create(editorNodeRef.current!, {
       ...opts,
       model: null,
+      scrollbar: {
+        useShadows: false,
+      },
+      padding: { top: 10 },
       'semanticHighlighting.enabled': true,
     })
 

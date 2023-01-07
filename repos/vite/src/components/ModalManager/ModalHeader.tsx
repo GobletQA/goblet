@@ -26,7 +26,7 @@ export const ModalHeader = (props:TModal) => {
   const styles = useMemo(() => {
     return {
       color: colors.white,
-      bgcolor: colors.black15,
+      bgcolor: colors.purple23,
     }
     
   }, [theme])

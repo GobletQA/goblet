@@ -50,9 +50,10 @@ export const OpenTab = styled(Box)`
   height: 35px;
   display: flex;
   padding: 0px;
-  padding-left: 5px;
   cursor: pointer;
+  margin-top: 1px;
   margin-right: 1px;
+  padding-left: 10px;
   position: relative;
   flex-direction: row;
   align-items: center;

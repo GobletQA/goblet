@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+
+import './index.css'
 import { Menu } from './Menu'
 import { Position } from './Position'
-import { Arrow } from '../Icons/Arrow'
-import './index.css'
+import { Arrow } from '@gobletqa/components'
 
 const instance = document.createElement('div')
 instance.className = 'goblet-editor-picker-items'
@@ -63,7 +64,7 @@ export const Picker = ({
   )
 
   return (
-    <React.Fragment>
+    <>
       <div ref={targetRef} className='goblet-editor-picker'>
         <div
           className='goblet-editor-picker-content'
@@ -91,7 +92,7 @@ export const Picker = ({
           )}
         </Position>
       )}
-    </React.Fragment>
+    </>
   )
 }
 
