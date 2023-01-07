@@ -11,4 +11,5 @@ module.exports = {
   ...require('./wait'),
   ...require('./waitForPageLoad'),
   ...require('./waitForSelectorState'),
+  ...require('./waitForUrl'),
 }

@@ -37,6 +37,11 @@ const meta = {
 When('I click {string}', clickElementHandler, meta)
 When('I click the {string}', clickElementHandler, meta)
 When('I click the element {string}', clickElementHandler, meta)
+When('I click the page', async () => await clickElementHandler(`body`), {
+  ...meta,
+  expressions: [],
+  examples: [`When I click the page`],
+})
 
 module.exports = {
   clickElementHandler,

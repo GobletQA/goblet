@@ -187,10 +187,10 @@ export class SocketManager {
       toSend.socketId = socket.id
       toSend.groupId = get(this.cache, [ socket.id, `groupId` ])
 
-      socket.emit(
-        this.formatTag(tag),
-        this.toJsonStr(this.buildMessage(toSend, socket))
-      )
+      const formattedTag = this.formatTag(tag)
+      const message = this.toJsonStr(this.buildMessage(toSend, socket))
+
+      socket.emit(formattedTag, message)
     }
     catch (err) {
       logError(err, `emit`, data)

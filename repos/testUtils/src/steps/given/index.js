@@ -5,4 +5,5 @@ module.exports = {
   ...require('./usePageCookie'),
   ...require('./saveElementCount'),
   ...require('./greaterThanLessThan'),
+  ...require('./moveMouse'),
 }
