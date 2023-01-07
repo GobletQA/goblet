@@ -12,4 +12,5 @@ module.exports = {
   ...require('./waitForPageLoad'),
   ...require('./waitForSelectorState'),
   ...require('./waitForUrl'),
+  ...require('./mouseLeavePage'),
 }

@@ -1,5 +1,6 @@
 import type { ForwardedRef, MutableRefObject } from 'react'
 import type {
+  TMonaco,
   TAutoSave,
   TFilelist,
   TEditorOpts,
@@ -12,12 +13,12 @@ import type {
   TEditorRefHandle,
   TEditorFileCBRef,
   TEditorOpenFiles,
-} from '../../types'
+} from '@GBM/types'
 
+import { THEMES } from '@GBM/constants'
 import { isStr } from '@keg-hub/jsutils'
-import { THEMES } from '../../constants'
 import { useCallback, useEffect, useImperativeHandle } from 'react'
-import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
+import { createOrUpdateModel } from '@GBM/utils/editor/createOrUpdateModel'
 
 export type TUseEditorSetup = {
   curPath: string
@@ -38,7 +39,7 @@ export type TUseEditorSetup = {
   resizeSidebar: (width:number) => void
   pathChange:(key: string, content?:string) => void
   onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
-  setTheme: (name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
+  setTheme: (name: string, themeObj?: TEditorTheme | undefined, monaco?:TMonaco) => Promise<void>
 }
 
 export const useEditorSetup = (props:TUseEditorSetup) => {
@@ -144,7 +145,9 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
 
   useEffect(() => {
     if (editorRef.current) {
-      if(config.theme) setTheme(config.theme.name, config.theme.theme)
+      config.theme
+        && setTheme(config.theme.name, config.theme.theme, window.monaco)
+
       editorRef.current.updateOptions(options)
     }
   }, [options, config])

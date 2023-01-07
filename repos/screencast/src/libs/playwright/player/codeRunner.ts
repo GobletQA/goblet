@@ -9,7 +9,7 @@ import type { Player } from './player'
 import expect from 'expect'
  /** ------------------ */
 
-import { constants } from './constants'
+import { PWPlay } from '@GSC/constants'
 import { Parkin } from '@ltipton/parkin'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { getDefinitions } from '@gobletqa/shared/repo/getDefinitions'
@@ -94,7 +94,7 @@ export class CodeRunner {
     this.player.fireEvent({
       data: result,
       message: 'Player - Spec Done',
-      name: constants.playSuiteDone,
+      name: PWPlay.playSuiteDone,
     })
 
     // TODO: probably don't want to throw here
@@ -110,7 +110,7 @@ export class CodeRunner {
     this.player.fireEvent({
       data: result,
       message: 'Player - Suite Done',
-      name: constants.playSuiteDone,
+      name: PWPlay.playSuiteDone,
     })
   }
 
@@ -118,7 +118,7 @@ export class CodeRunner {
     this.player.fireEvent({
       data: result,
       message: 'Player - Spec Start',
-      name: constants.playSpecStart,
+      name: PWPlay.playSpecStart,
     })
   }
 
@@ -126,7 +126,7 @@ export class CodeRunner {
     this.player.fireEvent({
       data: result,
       message: 'Player - Suite Start',
-      name: constants.playSuiteStart,
+      name: PWPlay.playSuiteStart,
     })
   }
 

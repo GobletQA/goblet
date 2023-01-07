@@ -2,6 +2,7 @@ import { EBrowserName } from '@GSC/types'
 
 import { deepFreeze, keyMap } from '@keg-hub/jsutils'
 export * from '@gobletqa/shared/constants/websocket'
+export * from '@gobletqa/shared/constants/browser'
 
 export const defaultBrowser = EBrowserName.chromium
 export const ChildBrowserServerKey = `child-playwright-server`

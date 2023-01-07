@@ -1,6 +1,10 @@
 import type { SetStateAction, RefObject, MutableRefObject } from 'react'
-import type { editor } from 'monaco-editor'
-import { TEditorOpts, TCodeEditorRef, TEditorOpenFiles } from '../../types'
+import type {
+  TEditorOpts,
+  TCodeEditorRef,
+  TEditorOpenFiles
+} from '../../types'
+import { handleCommentCmd } from '@GBM/utils/gherkin/commentCmd'
 
 import { useEffect, useCallback } from 'react'
 
@@ -29,6 +33,10 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
       return exist ? openedFiles : [...openedFiles, { path: path }]
     })
     setCurPath(path)
+    
+    setTimeout(() => {
+      handleCommentCmd(window.monaco, editorRef?.current)
+    }, 0)
   }, [])
 
 

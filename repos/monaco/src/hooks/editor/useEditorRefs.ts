@@ -58,7 +58,7 @@ export const useEditorRefs = (props:THEditorRefs) => {
   const rootRef = useRef(null)
   const filesRef = useRef(defaultFiles)
   const editorStatesRef = useRef(new Map())
-  const editorRef = useRef<TCodeEditor>(null)
+  const editorRef = useRef<TCodeEditor>()
   const contentListenerRef = useRef<IDisposable>()
   const editorNodeRef = useRef<HTMLDivElement>(null)
   const openedPathRef = useRef<string | null>('')

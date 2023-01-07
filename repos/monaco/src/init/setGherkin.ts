@@ -16,6 +16,10 @@ export const setGherkin = async (config:TEditorConfig, monaco:TMonaco) => {
     ))
   }
 
-  addGherkinToMonaco(monaco, findStepDefMatch, noPropArr)
+  addGherkinToMonaco(
+    monaco,
+    findStepDefMatch,
+    noPropArr
+  )
 
 }

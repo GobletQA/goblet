@@ -10,7 +10,9 @@ interface Constructor<T> extends Function {
 type Factory<T> = (...args: unknown[]) => T
 type TRegexps = RegExp[] | string[] | RegExp | string
 
+export type ICodeEditor = Editor.ICodeEditor
 export type IEditor = Editor.IStandaloneCodeEditor | null
+
 
 export type TMonaco = typeof Monaco
 
@@ -98,10 +100,11 @@ export type TMonacoDefinition = {
 
 export type TIndex = (text: string) => TMonacoDefinition[]
 
-
 export {
   Range as TRange,
   Editor as NEditor,
   TextEdit as TTextEdit,
   Languages as NLanguages
 }
+
+export type TOnEditor = ((editor: IEditor) => void) | undefined

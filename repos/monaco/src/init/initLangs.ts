@@ -1,13 +1,13 @@
 import { LANGS } from '../constants'
-import type { TEditorConfig } from '../types'
+import type { TMonaco, TEditorConfig } from '../types'
 
-const addExtraLib = async (config:TEditorConfig) => {
+const addExtraLib = async (config:TEditorConfig, monaco:TMonaco) => {
   
 }
 
-const registerLangs = async (config:TEditorConfig) => {
+const registerLangs = async (config:TEditorConfig, monaco:TMonaco) => {
   const langs = [ ...LANGS, ...(config?.monaco?.languages || []) ] as string[]
-  langs.forEach(lang => window.monaco.languages.register({ id: lang }))
+  langs.forEach(lang => monaco.languages.register({ id: lang }))
 }
 
 const compilerOptions = {
@@ -17,40 +17,40 @@ const compilerOptions = {
   allowSyntheticDefaultImports: true,
 }
 
-const setCompileOpts = (config:TEditorConfig) => {
-  window.monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+const setCompileOpts = (config:TEditorConfig, monaco:TMonaco) => {
+  monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
     ...compilerOptions,
     ...config?.tsconfig?.compilerOptions
   })
 
-  window.monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+  monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
     ...compilerOptions,
     ...config?.tsconfig?.compilerOptions
   })
 }
 
-const setLangDefaults = (config:TEditorConfig) => {
+const setLangDefaults = (config:TEditorConfig, monaco:TMonaco) => {
 /**
  * Sync all the models to the worker eagerly.
  * This enables intelliSense for all files without needing an `addExtraLib` call.
  */
-  window.monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true)
-  window.monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
-  window.monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+  monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true)
+  monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
+  monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
     noSemanticValidation: false,
     noSyntaxValidation: false,
   })
   
-  window.monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+  monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
     validate: true,
   })
 
 }
 
-export const initLangs = async (config:TEditorConfig) => {
-  setLangDefaults(config)
-  setCompileOpts(config)
-  addExtraLib(config)
-  registerLangs(config)
+export const initLangs = async (config:TEditorConfig, monaco:TMonaco) => {
+  setLangDefaults(config, monaco)
+  setCompileOpts(config, monaco)
+  addExtraLib(config, monaco)
+  registerLangs(config, monaco)
 }
 

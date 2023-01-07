@@ -1,4 +1,4 @@
-import type { TEditorThemes, TEditorTheme } from '../types'
+import type { TMonaco, TEditorThemes, TEditorTheme } from '../types'
 
 import {
   getTheme,
@@ -36,7 +36,11 @@ const resolveTheme = async (name:string, mode:string) => {
   return theme
 }
 
-export const  setTheme = async (name?: string, themeObj?:TEditorTheme) => {
+export const  setTheme = async (
+  name?: string,
+  themeObj?:TEditorTheme,
+  monaco?:TMonaco,
+) => {
 
   const mode = getTheme()?.palette?.mode || EThemeType.light
   name = name || `Goblet-${mode}`
@@ -48,5 +52,6 @@ export const  setTheme = async (name?: string, themeObj?:TEditorTheme) => {
   if(!theme) return
 
   theme && setThemeVars(theme, `monaco`)
-  name && window.monaco.editor.setTheme(name)
+  monaco = monaco || window.monaco
+  name && monaco.editor.setTheme(name)
 }

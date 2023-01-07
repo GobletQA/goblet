@@ -9,7 +9,7 @@ export const PlayGeneral = `PLAY-GENERAL`
 export const PlayResults = `PLAY-RESULTS`
 export const PlayStarted = `PLAY-STARTED`
 
-export const constants = {
+export const PWPlay = {
   playSpecDone: `PLAY-SPEC-DONE`,
   playSpecStart: `PLAY-SPEC-START`,
   playSuiteDone: `PLAY-SUITE-DONE`,

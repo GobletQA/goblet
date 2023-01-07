@@ -1,9 +1,11 @@
 import type { editor } from 'monaco-editor'
 import type { TEditorCB } from './helpers.types'
 import type { TFilelist, TFileMeta } from './file.types'
-import type { TMonacoDefinition } from './gherkin.types'
+import type { IEditor, TMonacoDefinition, TMonaco } from './gherkin.types'
 
 export type TEditorOpenFiles = TFileMeta[]
+
+export type TOnEditor = ((editor: IEditor) => void) | undefined
 
 export type TAllowedFileTypes = {
   js: `javascript`,
@@ -64,5 +66,5 @@ export type TEditorRefHandle = {
   resizeSidebar:(width:number) => void
   getValue:(path:string) => string | null,
   openFile: (loc:string, content?:string|null) => void,
-  setTheme:(name: string, themeObj?: TEditorTheme | undefined) => Promise<void>
+  setTheme:(name: string, themeObj?: TEditorTheme | undefined, monaco?:TMonaco) => Promise<void>
 }

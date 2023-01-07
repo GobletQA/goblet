@@ -7,8 +7,8 @@ export type TOpenMode = `keep` | `preview`
 export type TAutoSave = `blur` | `change` | `off`
 export type TEditorCB = (data: string) => void
 export type TFileCallback = (...args: any[]) => void
-export type TCodeEditor = editor.IStandaloneCodeEditor | null
-export type TCodeEditorRef = MutableRefObject<TCodeEditor>
+export type TCodeEditor = editor.IStandaloneCodeEditor
+export type TCodeEditorRef = MutableRefObject<TCodeEditor|undefined>
 export type TEditorFileCB = (path:string, content: string) => void
 export type TEditorPromiseCB = (data: string) => Promise<string|null>
 export type TEditorAddFile = (path:string, isFolder?: boolean) => void

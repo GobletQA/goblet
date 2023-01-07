@@ -11,9 +11,11 @@ import type {
   TPlayerStartConfig,
 } from '@GSC/types'
 
-import { constants } from './constants'
+import { PWPlay } from '@GSC/constants'
 import { CodeRunner } from './codeRunner'
 import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
+import { getInjectScript } from '../helpers/getInjectScript'
+
 
 /**
  * @type Player
@@ -97,6 +99,10 @@ export class Player {
   addInitScripts = async () => {
     try {
       await this.page.exposeFunction(`isGobletPlaying`, this.onIsPlaying)
+      
+      await this.page.addInitScript({
+        content: getInjectScript([`mouseHelper`])
+      })
     }
     catch(err){
       // console.log(`------- Playing addInitScripts Error -------`)
@@ -115,7 +121,7 @@ export class Player {
     try {
   
       if(Player.isPlaying){
-        this.fireEvent({ name: constants.playError, message: 'Playing already inprogress' })
+        this.fireEvent({ name: PWPlay.playError, message: 'Playing already inprogress' })
         console.warn('Browser playing already in progress')
         return this
       }
@@ -130,7 +136,7 @@ export class Player {
 
       this.fireEvent({
         message: 'Playing started',
-        name: constants.playStarted,
+        name: PWPlay.playStarted,
       })
 
       const codeRunner = new CodeRunner(this)
@@ -138,7 +144,7 @@ export class Player {
       this.fireEvent({
         data: results,
         message: 'Player results',
-        name: constants.playResults,
+        name: PWPlay.playResults,
       })
 
       return await this.stop()
@@ -148,7 +154,7 @@ export class Player {
       console.error(err.stack)
       this.fireEvent({
         message: err.message,
-        name: constants.playError,
+        name: PWPlay.playError,
       })
 
       await this.stop()
@@ -167,14 +173,14 @@ export class Player {
 
       if(!this.context || !Player.isPlaying)
         this.fireEvent({
-          name: constants.playError,
+          name: PWPlay.playError,
           message: 'Playing context does not exist'
         })
 
       Player.isPlaying = false
 
       this.fireEvent({
-        name: constants.playEnded,
+        name: PWPlay.playEnded,
         message: 'Playing stopped',
       })
 
@@ -184,7 +190,7 @@ export class Player {
       console.error(err.stack)
 
       this.fireEvent({
-        name: constants.playError,
+        name: PWPlay.playError,
         message: err.message,
       })
     }
