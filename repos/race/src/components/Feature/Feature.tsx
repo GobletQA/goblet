@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react'
 import type { TFeaturesRefs } from '@GBR/types'
 import type { TToggleEditCB } from '@gobletqa/components'
 
@@ -6,16 +7,14 @@ import { useEffect, useCallback } from 'react'
 import { Tags } from '../Tags'
 import { Rules } from '../Rules'
 import Box from '@mui/material/Box'
-import { H3 } from '@gobletqa/components'
 import { isStr } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { useEditor } from '../../contexts'
 import { FeatureStory } from './FeatureStory'
-import { Empty } from '@GBR/components/Empty'
 import { Section, SectionHeader } from '../Section'
-import { EmptyFeatureUUID } from '@GBR/constants/values'
+import { BoltIcon, H3, EmptyEditor } from '@gobletqa/components'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
 
@@ -51,9 +50,20 @@ export const Feature = (props:TFeature) => {
       && updateFeature({ ...feature, feature: featureTitle})
   }) as TToggleEditCB, [feature])
 
+  const onClick = useCallback((e:MouseEvent<HTMLButtonElement>) => {
+    createFeature({}, rootPrefix)
+  }, [rootPrefix])
 
   return !feature || !feature?.uuid
-    ? (<Empty />)
+    ? (
+        <EmptyEditor
+          Icon={BoltIcon}
+          onClick={onClick}
+          btnText='Create Feature'
+          headerText='Goblet Feature Editor'
+          subText='Create a new feature, or select an existing feature from the panel on the right.'
+        />
+      )
     : (
         <Section
           stack={2}

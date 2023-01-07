@@ -1,19 +1,20 @@
-import type { MutableRefObject, CSSProperties } from 'react'
+import type { MutableRefObject, CSSProperties, Dispatch } from 'react'
 import type { Modal } from '../Modal/Modal'
 import type {
+  TRootDir,
   TFolder,
   TFilelist,
   TEditorCB,
   TFileCallback,
-} from '../../types'
+} from '@GBM/types'
 
-import { useMemo, memo } from 'react'
 import { Panel } from '@gobletqa/components'
+import { useMemo, memo, useState } from 'react'
 import { FileTreeActions } from './FileTreeActions'
-import { useFileTree } from '../../hooks/fileTree/useFileTree'
 
 import './FileTree.css'
 import { File } from './File'
+import { useFileTree } from '@GBM/hooks/fileTree/useFileTree'
 
 export type TFileTree = {
   Modal: Modal
@@ -21,31 +22,30 @@ export type TFileTree = {
   rootPrefix?: string
   currentPath?: string
   style?: CSSProperties
-  defaultFiles: TFilelist
   onPathChange: TEditorCB
   onDeleteFile: TEditorCB
   onAddFile: TFileCallback
   onDeleteFolder: TEditorCB
   onAddFolder: TFileCallback
   rootEl: HTMLElement | null
+  filetree: TFolder | TRootDir
   onEditFileName: TFileCallback
   onEditFolderName: TFileCallback
   filesRef: MutableRefObject<TFilelist>
+  setFiletree: Dispatch<React.SetStateAction<TRootDir | TFolder>>
 }
 
 export const FileTree = memo((props: TFileTree) => {
   const {
     Modal,
     filesRef,
+    filetree,
     onPathChange,
     rootPrefix=``,
     currentPath = '',
-    title = 'goblet-base-editor',
   } = props
 
-
   const {
-    filetree,
     addFile,
     addFolder,
     deleteFile,

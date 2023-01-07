@@ -1,9 +1,5 @@
 import type { TFileTree } from '../../components/FileTree/FileTree'
 
-import { useState } from 'react'
-import { generateFileTree } from '../../utils/generateFileTree'
-
-import { useAddFile } from './useAddFile'
 import { useAddFolder } from './useAddFolder'
 import { useAbortAddFile } from './useAbortAddFile'
 import { useDeleteFile } from './useDeleteFile'
@@ -14,12 +10,24 @@ import { useConfirmAddFile } from './useConfirmAddFile'
 import { useEditFolderName } from './useEditFolderName'
 import { useConfirmAddFolder } from './useConfirmAddFolder'
 
+/**
+ * TODO - This should be called from the useEditorFileTree hook
+ * Right now its called in the FileTree component
+ * But the useAddFile hooks in called from the useEditorFileTree
+ * Because we need access to to it in the EmptyEditor Component
+ *
+ * The problem is it separates that method from all the other similar methods
+ * So if we call this hook from the useEditorFileTree
+ * Then they could all be in the same place
+ * But then we'll have to pass all these props down to the FileTree Component
+ */
 export const useFileTree = (props:TFileTree) => {
   const {
     Modal,
     rootEl,
+    filetree,
     rootPrefix,
-    defaultFiles,
+    setFiletree,
     onAddFile,
     onAddFolder,
     onDeleteFile,
@@ -27,15 +35,6 @@ export const useFileTree = (props:TFileTree) => {
     onEditFileName,
     onEditFolderName,
   } = props
-
-  const [filetree, setFiletree] = useState(() => generateFileTree(defaultFiles))
-
-  const addFile = useAddFile({
-    filetree,
-    onAddFile,
-    rootPrefix,
-    updateFiletree: setFiletree,
-  })
 
   const abortAddFile = useAbortAddFile({
     filetree,
@@ -106,7 +105,6 @@ export const useFileTree = (props:TFileTree) => {
   })
 
   return {
-    addFile,
     filetree,
     addFolder,
     deleteFile,
@@ -117,6 +115,7 @@ export const useFileTree = (props:TFileTree) => {
     abortAddFolder,
     editFolderName,
     onConfirmAddFile,
+    addFile: onAddFile,
     onConfirmAddFolder,
     updateFiletree: setFiletree,
   }

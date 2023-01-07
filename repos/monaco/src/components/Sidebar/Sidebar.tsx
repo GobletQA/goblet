@@ -1,7 +1,9 @@
 import type { Modal } from '../Modal/Modal'
 import type { TSidebarPanel } from '@gobletqa/components'
-import type { MutableRefObject, CSSProperties } from 'react'
+import type { Dispatch, SetStateAction, MutableRefObject, CSSProperties } from 'react'
 import type {
+  TFolder,
+  TRootDir,
   TFilelist,
   TEditorCB,
   TEditorConfig,
@@ -29,9 +31,11 @@ export type TSidebar = {
   onDeleteFolder: TEditorCB
   onAddFolder: TFileCallback
   rootEl: HTMLElement | null
+  filetree: TFolder | TRootDir
   onEditFileName: TFileCallback
   onEditFolderName: TFileCallback
   filesRef: MutableRefObject<TFilelist>
+  setFiletree: Dispatch<SetStateAction<TRootDir | TFolder>>
 }
 
 export const Sidebar = (props:TSidebar) => {

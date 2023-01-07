@@ -1,23 +1,31 @@
-import './Button.css'
+import { cls, noOp } from '@keg-hub/jsutils'
+import { EditorButton } from './Button.styled'
 
 export type Button = {
-  type?: string
-  className?: string
-  children?: any
-  onClick?: (...args: any[]) => void
-  style?: any
+  style?:any
+  type?:string
+  children?:any
+  className?:string
+  onClick?:(...args: any[]) => void
 }
 
 export const Button = (props:Button) => {
-  const { type = 'default', className = '', children, onClick = () => {}, style } = props
+  const {
+    style,
+    children,
+    className,
+    type=`default`,
+    onClick=noOp,
+  } = props
+  
   return (
-    <div
-      style={style}
+    <EditorButton
+      sx={style}
       onClick={onClick}
-      className={`goblet-editor-button goblet-editor-button-${type} ${className}`}
+      className={cls(`goblet-editor-button`, `goblet-editor-button-${type}`, className)}
     >
       {children}
-    </div>
+    </EditorButton>
   )
 }
 

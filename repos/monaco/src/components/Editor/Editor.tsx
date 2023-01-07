@@ -3,25 +3,27 @@ import type {
   IMultiRefType,
   TEditorConfig,
   IMonacoEditorProps,
-} from '../../types'
+} from '@GBM/types'
 
 import { useRef, useState, forwardRef } from 'react'
 
-import { Empty } from '../Empty'
-import { Sidebar } from '../Sidebar'
-import { OpenedTabs } from '../OpenedTabs'
-import { setTheme } from '../../init/setTheme'
-import { deleteModel } from '../../utils/editor/deleteModel'
-import { useLintWorker } from '../../hooks/editor/useLintWorker'
-import { useEditorRefs } from '../../hooks/editor/useEditorRefs'
-import { useTypesWorker } from '../../hooks/editor/useTypesWorker'
-import { useEditorSetup } from '../../hooks/editor/useEditorSetup'
-import { useModalActions } from '../../hooks/editor/useModalActions'
-import { useFolderCallbacks } from '../../hooks/editor/useFolderCallbacks'
-import { useEditorCallbacks } from '../../hooks/editor/useEditorCallbacks'
-import { useEditorFileCallbacks } from '../../hooks/editor/useEditorFileCallbacks'
+import { setTheme } from '@GBM/init/setTheme'
+import { Sidebar } from '@GBM/components/Sidebar'
+import { OpenedTabs } from '@GBM/components/OpenedTabs'
+import { deleteModel } from '@GBM/utils/editor/deleteModel'
+import { useAddFile } from '@GBM/hooks/fileTree/useAddFile'
+import { generateFileTree } from '@GBM/utils/generateFileTree'
+import { useLintWorker } from '@GBM/hooks/editor/useLintWorker'
+import { useEditorRefs } from '@GBM/hooks/editor/useEditorRefs'
+import { useTypesWorker } from '@GBM/hooks/editor/useTypesWorker'
+import { useEditorSetup } from '@GBM/hooks/editor/useEditorSetup'
+import { useModalActions } from '@GBM/hooks/editor/useModalActions'
+import { useEditorFileTree } from '@GBM/hooks/editor/useEditorFileTree'
+import { useFolderCallbacks } from '@GBM/hooks/editor/useFolderCallbacks'
+import { useEditorCallbacks } from '@GBM/hooks/editor/useEditorCallbacks'
+import { useEditorFileCallbacks } from '@GBM/hooks/editor/useEditorFileCallbacks'
 
-import { useSidebarResize, Actions } from '@gobletqa/components'
+import { useSidebarResize, FileIcon, Actions, EmptyEditor } from '@gobletqa/components'
 
 const editorStyles = { flex: 1, width: '100%' }
 
@@ -196,6 +198,11 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     setOpenedFiles,
   })
 
+  const { onAddEmptyFile, ...sideBar } = useEditorFileTree({
+    addFile,
+    rootPrefix,
+    defaultFiles,
+  })
 
   return (
     <div
@@ -209,12 +216,12 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
       className='goblet-editor'
     >
       <Sidebar
+        {...sideBar}
         Modal={Modal}
         title={title}
         style={styles}
         Panels={Panels}
         filesRef={filesRef}
-        onAddFile={addFile}
         PrePanels={PrePanels}
         currentPath={curPath}
         rootPrefix={rootPrefix}
@@ -234,15 +241,24 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
           autoSave={autoSave}
           onSaveFile={saveFile}
           currentPath={curPath}
+          onCloseFile={closeFile}
           rootEl={rootRef.current}
           openedFiles={openedFiles}
-          onCloseFile={closeFile}
           onPathChange={pathChange}
           onAbortSave={abortFileChange}
           onCloseOtherFiles={closeOtherFiles}
         />
         <div ref={editorNodeRef} style={editorStyles} />
-        {openedFiles.length === 0 && (<Empty text={emptyText} />)}
+        {openedFiles.length === 0 && (
+          <EmptyEditor
+            Icon={FileIcon}
+            text={emptyText}
+            btnText='Create File'
+            onClick={onAddEmptyFile}
+            headerText='Goblet Code Editor'
+            subText='Create a new file, or select an existing file from the panel on the right.'
+          />
+        ) || null}
         {actions?.length && (
           <Actions
             open={actionsOpen}
@@ -251,7 +267,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
             curValueRef={curValueRef}
             actions={actions as TEditorAction[]}
           />
-        )}
+        ) || null}
       </div>
     </div>
   )

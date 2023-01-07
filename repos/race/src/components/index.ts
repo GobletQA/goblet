@@ -1,4 +1,3 @@
-export * from './Empty'
 export * from './Text'
 export * from './Feature'
 export * from './Steps'

@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
-export const EmptyContainer = styled(Box)`
+export const EmptyEditorContainer = styled(Box)`
   z-index: 1;
   left: 0;
   right: 0;
@@ -16,7 +16,7 @@ export const EmptyContainer = styled(Box)`
   background: var(--goblet-editor-background);
 `
 
-export const EmptyContent = styled(Box)`
+export const EmptyEditorContent = styled(Box)`
   top: -20px;
   display: flex;
   position: relative;

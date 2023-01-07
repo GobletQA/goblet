@@ -1,6 +1,7 @@
 export * from './AppStyles'
 export * from './Buttons'
 export * from './Dropdown'
+export * from './EmptyEditor'
 export * from './EditorActions'
 export * from './Fadeout'
 export * from './Form'
