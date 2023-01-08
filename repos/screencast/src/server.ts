@@ -4,6 +4,7 @@ import { AUTH_BYPASS_ROUTES } from '@GSC/constants'
 import { getApp } from '@gobletqa/shared/express/app'
 import { setupEndpoints, setupTail } from '@GSC/middleware'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
+import { closeBrowser } from '@GSC/libs/playwright/browser/browser'
 import {
   setupJWT,
   setupCors,
@@ -15,6 +16,12 @@ import {
   validateUser,
 } from '@gobletqa/shared/middleware'
 import { setupRepo } from '@gobletqa/shared/middleware/setupRepo'
+
+// Ensure the browser is closed when the server exists
+const handleUncaughtExp = (exitCode:number=0, err:Error) => {
+  closeBrowser()
+  return false
+}
 
 /**
  * Starts a express API server for screencast
@@ -42,6 +49,7 @@ const initApi = async () => {
     insecureServer,
   } = setupServerListen({
     app,
+    // uncaughtExpCB: handleUncaughtExp,
     config: {name: `Screencast`, ...app.locals.config.server}
   })
 

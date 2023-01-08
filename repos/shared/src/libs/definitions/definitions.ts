@@ -9,6 +9,11 @@ import { getDefaultGobletConfig } from '@GSH/goblet/getGobletConfig'
 import { parkinOverride } from '@GSH/libs/overrides/parkinOverride'
 
 /**
+ * Cache holder for internal goblet definitions, so they don't have to be reloaded each time
+ */
+let __CachedGobletDefs:TDefinitionFileModel[]
+
+/**
  * Searches the step definition directory for step definitions
  */
 export const loadDefinitionsFiles = (stepsDir:string, opts:Record<string, any>=noOpObj):Promise<string[]> => {
@@ -32,13 +37,16 @@ export const loadDefinitionsFiles = (stepsDir:string, opts:Record<string, any>=n
 const parseDefinitions = async (
   repo:TRepo,
   definitionFiles:string[],
-  overrideParkin:(...args:any) => any
+  overrideParkin:(...args:any) => any,
+  gobletDefs?:boolean
 ) => {
   return definitionFiles.reduce(async (toResolve, file) => {
     const loaded = await toResolve
     if (!file) return loaded
 
     const fileModel = await DefinitionsParser.getDefinitions(file, repo, overrideParkin)
+    if(fileModel && gobletDefs) fileModel.content = ``
+    
     fileModel && loaded.push(fileModel)
 
     // Clear out the definitions after they have been loaded
@@ -54,6 +62,46 @@ const parseDefinitions = async (
 }
 
 /**
+ * Caches the internal goblet step definitions so they don't have to be reloaded each time
+ */
+const getGobletDefs = async (
+  repo:TRepo,
+  overrideParkin:(...args:any) => any,
+  gobletConfig:TDefGobletConfig,
+) => {
+  if(__CachedGobletDefs?.length) return __CachedGobletDefs 
+
+  const definitionFiles = await loadDefinitionsFiles(
+    `${gobletConfig.internalPaths.testUtilsDir}/src/steps`,
+    { ignore: [ '**/index.js' ] }
+  )
+
+  const loadedDefs = await parseDefinitions(repo, definitionFiles, overrideParkin, true)
+  __CachedGobletDefs = loadedDefs
+
+  return __CachedGobletDefs
+}
+
+/**
+ * Loads repo specific step definitions
+ * **IMPORTANT** - These should be loaded from the `repo.paths.stepsDir`
+ * The `gobletConfig.paths.stepsDir` should **NOT** be used
+ * Because tt is not the path mounted repos step definitions
+ *
+ */
+const getRepoDefinitions = async (
+  repo:TRepo,
+  overrideParkin:(...args:any) => any,
+) => {
+
+  const { stepsDir } = repo.paths
+  const pathToSteps = getPathFromBase(stepsDir, repo)
+  const definitionFiles = stepsDir && (await loadDefinitionsFiles(pathToSteps))
+
+  return await parseDefinitions(repo, definitionFiles, overrideParkin) || []
+}
+
+/**
  * Loads the definitions file from the passed in repo instance
  */
 export const loadDefinitions = async (
@@ -64,24 +112,13 @@ export const loadDefinitions = async (
   DefinitionsParser.clear(repo)
   gobletConfig = gobletConfig || getDefaultGobletConfig()
 
-  const { stepsDir } = repo.paths
-  const pathToSteps = getPathFromBase(stepsDir, repo)
-  const definitionFiles = stepsDir && (await loadDefinitionsFiles(pathToSteps))
-
-  const gobletDefinitionFiles = await loadDefinitionsFiles(
-    `${gobletConfig.internalPaths.testUtilsDir}/src/steps`,
-    { ignore: [ '**/index.js' ] }
-  )
-
   // The repo world may have been updated since the last time load definitions was called
   // Call refreshWorld to ensure repo and parkin have an updated world
   await repo.refreshWorld()
   const overrideParkin = parkinOverride(repo)
-
-  const clientDefinitions =
-    (await parseDefinitions(repo, definitionFiles, overrideParkin)) || []
-  const gobletDefinitions =
-    (await parseDefinitions(repo, gobletDefinitionFiles, overrideParkin)) || []
+  
+  const clientDefinitions = await getRepoDefinitions(repo, overrideParkin)
+  const gobletDefinitions = await getGobletDefs(repo, overrideParkin, gobletConfig)
 
   // all the definition file models
   const defs = clientDefinitions.concat(gobletDefinitions)

@@ -4,9 +4,9 @@ import type {
   TFileTree,
   TRouteMeta,
   TProxyRoute,
-  TDefinitionsAstList,
   TFeatureFileModelList,
-  TDefinitionsAstTypeMap
+  TDefinitionsAstTypeMap,
+  TDefinitionFileModelList,
 } from './shared.types'
 
 export type TStatusRoutes = Record<string, TProxyRoute>
@@ -32,7 +32,7 @@ export type TApiRepoResp = {
   fileTree: TFileTree,
   status?: TRepoStatus
   features: TFeatureFileModelList,
-  definitions: TDefinitionsAstList,
+  definitions: TDefinitionFileModelList,
   definitionTypes: TDefinitionsAstTypeMap
 }
 
@@ -41,6 +41,6 @@ export type TAPIReposResp = {
 }
 
 export type TApiDefinitionsResp = {
-  definitions: TDefinitionsAstList,
+  definitions: TDefinitionFileModelList,
   definitionTypes: TDefinitionsAstTypeMap
 }

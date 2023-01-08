@@ -17,14 +17,16 @@ export const definitionsByType = (defFileModels:TDefinitionFileModel[]) => {
             if (!definition || !definition.type) return
 
             const type = definition.type.toLowerCase()
-            // Store a reference to the parent fileModel to allow finding it later
-            definition.parent = {
-              uuid: fileModel.uuid,
-              location: fileModel.location,
-            }
 
             organized[type] = organized[type] || []
-            organized[type].push(definition)
+            organized[type].push({
+              ...definition,
+              // Store a reference to the parent fileModel to allow finding it later
+              parent: {
+                uuid: fileModel.uuid,
+                location: fileModel.location
+              }
+            })
           })
 
         return organized

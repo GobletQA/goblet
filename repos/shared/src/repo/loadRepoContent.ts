@@ -4,7 +4,6 @@ import type { Repo } from '@GSH/repo/repo'
 import { Logger } from '@keg-hub/cli-utils'
 import { loadFeatures } from '@GSH/libs/features/features'
 import { buildFileTree } from '@GSH/libs/fileSys/fileTree'
-import { definitionsByType } from '@GSH/utils/definitionsByType'
 import { loadDefinitions } from '@GSH/libs/definitions/definitions'
 import { fileModelArrayToObj } from '@GSH/utils/fileModelArrayToObj'
 
@@ -31,7 +30,6 @@ export const loadRepoContent = async (
     } as any
     content.fileTree = await buildFileTree(repo)
     const definitions = await loadDefinitions(repo, config)
-    content.definitionTypes = definitionsByType(definitions)
 
     const features = await loadFeatures(repo)
     content.features = fileModelArrayToObj(features)

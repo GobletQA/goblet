@@ -1,4 +1,4 @@
-import type { TDefinitionsAstList, TDefinitionsAstTypeMap } from '@types'
+import type { TDefinitionFileModelList, TDefinitionsAstTypeMap } from '@types'
 
 import { defsDispatch } from '@dispatchers'
 import { noOpObj } from '@keg-hub/jsutils'
@@ -12,9 +12,9 @@ import { definitionsByType } from '@utils/shared'
  * @returns {void}
  */
 export const upsertDefinitions = (
-  definitions:TDefinitionsAstList = noOpObj as TDefinitionsAstList,
-  definitionTypes:TDefinitionsAstTypeMap
+  definitions:TDefinitionFileModelList = noOpObj as TDefinitionFileModelList,
 ) => {
+
   defsDispatch.upsertDefs(definitions)
-  defsDispatch.upsertDefTypes(definitionTypes || definitionsByType(definitions))
+  defsDispatch.upsertDefTypes(definitionsByType(Object.values(definitions)))
 }

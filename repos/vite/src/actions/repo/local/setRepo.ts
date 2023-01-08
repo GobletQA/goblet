@@ -36,16 +36,10 @@ export const setRepo = (params:TApiRepoResp) => {
     fileTree,
     features,
     definitions,
-    definitionTypes
   } = params
 
   repo && setRepoData(repo)
-
   features && upsertFeatures(features)
-
-  definitions &&
-    definitionTypes &&
-    upsertDefinitions(definitions, definitionTypes)
-
+  definitions && upsertDefinitions(definitions)
   fileTree && setFileTree(fileTree)
 }

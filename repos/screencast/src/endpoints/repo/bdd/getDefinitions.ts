@@ -11,16 +11,8 @@ export const getDefinitions = asyncWrap(async (req:Request, res:Response) => {
     res.locals.repo,
     req.app.locals.config
   )
-  const definitionTypes = definitionsByType(definitions)
 
-  return apiRes(
-    res,
-    {
-      definitionTypes,
-      definitions: fileModelArrayToObj(definitions),
-    },
-    200
-  )
+  return apiRes(res, { definitions: fileModelArrayToObj(definitions) }, 200)
 })
 
 AppRouter.get('/repo/:repo/definitions', getDefinitions)

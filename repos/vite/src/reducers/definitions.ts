@@ -1,7 +1,6 @@
 import type {
   TAction,
   TDefinitionAst,
-  TDefinitionsAstList,
   TDefinitionFileModel,
   TDefinitionsAstTypeMap,
   TDefinitionFileModelList,

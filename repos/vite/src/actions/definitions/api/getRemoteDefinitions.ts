@@ -25,13 +25,9 @@ export const getRemoteDefinitions = async () => {
       message: error || `Error loading Step Definitions, please try again later.`,
     })
   
-  const {definitions, definitionTypes} = data
+  const { definitions } = data
 
-  ;(definitions || definitionTypes)
-    && setDefinitions(definitions, definitionTypes)
+  definitions && setDefinitions(definitions)
 
-  return {
-    definitions,
-    definitionTypes
-  }
+  return { definitions }
 }
