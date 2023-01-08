@@ -75,7 +75,7 @@ export const startSockify = async ({
   )
 
   const cmdOpts = deepMerge({
-    stdio: 'inherit',
+    stdio:'inherit',
     env: { ...process.env },
     cwd: cwd || config.internalPaths.gobletRoot,
   }, options, { env })

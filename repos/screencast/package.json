@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "yarn build:docker",
-    "build:docker": "yarn sc:build && yarn vnc:build && yarn sock:build && yarn bs:build",
+    "build:docker": "yarn sc:build && yarn bs:build && yarn vnc:build && yarn sock:build",
     "clean": "yarn clean:dist; yarn clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "yarn clean; yarn install",
