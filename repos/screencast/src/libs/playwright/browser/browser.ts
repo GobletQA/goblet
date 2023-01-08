@@ -88,7 +88,7 @@ const createWSBrowser = async (type:EBrowserName):Promise<TPWBrowser> => {
       : endpoint
 
   const browser = await playwright[type].connect(browserEndpoint)
-  Logger.info(`createWSBrowser - Browser ${type} was started from server websocket`)
+  Logger.info(`createWSBrowser - Browser ${type} was started from server websocket ${browserEndpoint}`)
 
   setBrowser(browser, type)
 
@@ -201,7 +201,7 @@ export const getBrowser = async (
     const pwBrowser = PW_BROWSERS[type]
 
     if (pwBrowser) {
-      Logger.verbose(`getBrowser - Found existing browser ${type}`)
+      Logger.verbose(`getBrowser - Using existing browser ${type}`)
       return { browser: pwBrowser } as TPWBrowser
     }
 
@@ -218,11 +218,15 @@ export const getBrowser = async (
 
     getBrowser.creatingBrowser = true
       // If the websocket is active, then start a websocket browser
-    const browserResp = fromWebsocket(browserConf, browserServer)
+    const fromWs = fromWebsocket(browserConf, browserServer)
+
+    const browserResp = fromWs
       ? await createWSBrowser(type)
       : await createBrowser(browserConf, type)
 
-    Logger.verbose(`getBrowser - Found browser ${type}`)
+    fromWs
+      ? Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
+      : Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
 
     getBrowser.creatingBrowser = false
     return browserResp
