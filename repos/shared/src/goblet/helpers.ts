@@ -10,7 +10,9 @@ import { GobletConfigFileNames, GobletConfigFileLocations } from '@GSH/constants
 export const configAtPath = (basePath:string) => {
   const config = loader<TGobletConfig>({
     basePath,
+    safe: true,
     first: true,
+    merge: false,
     loadArr: GobletConfigFileNames,
   })
 

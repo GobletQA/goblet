@@ -4,6 +4,22 @@ echo "Starting goblet application..."
 
 set -Eeo pipefail
 
+# Runs all apps together with PM2
+# Used for running goblet in a single docker container
+goblet_run_pm2(){
+  # Ensure PM2 is installed
+  yarn global add pm2
+  pm2 install pm2-logrotate
+  pm2 set pm2-logrotate:retain '7'
+  pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'
+
+  # Start each of the services via pm2
+  yarn pm2
+  # Tail the logs dir to keep the container running
+  tail -f /goblet/app/logs/*.log && exit 0;
+}
+
+
 # When running in dev, sometimes we need to add new packages
 # Only needed in development
 goblet_run_dev_yarn_install(){
@@ -50,8 +66,6 @@ if [ "$GB_SUB_REPO" ]; then
   # Tail /dev/null to keep the container running
   tail -f /dev/null && exit 0;
 else
-  # Start each of the services via pm2
-  yarn pm2
-  # Tail the logs dir to keep the container running
-  tail -f /goblet/app/logs/*.log && exit 0;
+  # Otherwise run all apps together with PM2
+  goblet_run_pm2
 fi

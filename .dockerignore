@@ -49,6 +49,8 @@ pids
 *.seed*
 *.pid.lock*
 **/dist
+repos/**/dist
+dist
 certs
 bundle
 repos/components

@@ -1,11 +1,10 @@
 
-import fs  from 'fs'
 import path from 'path'
 import glob from 'glob'
 import { createRequire } from 'module'
 import { isStr, deepMerge } from '@keg-hub/jsutils/src/node'
 
-type TMerge = { merge?: string[] }
+type TMerge = { merge?: string[] | false | null | undefined }
 type TLoadedFunc<T extends TMerge> = (...args:any[]) => T
 
 type TLoopLoad<T extends TMerge> = TLoader & {
@@ -15,8 +14,10 @@ type TLoopLoad<T extends TMerge> = TLoader & {
 type TLoadShared = {
   key?:string
   type?:string
+  safe?: boolean
   first?: boolean
   basePath:string
+  merge?: string[] | false | null | undefined
 }
 
 type TSearchFile = TLoadShared & {
@@ -34,12 +35,6 @@ export type TLoader = TLoadShared & {
  */
 const noBasePath = [`.`, `/`, `@`, `~`]
 
-
-const tryRequire = <T>(requireFunc:TLoadedFunc<T>, location:string) => {
-  try { return requireFunc(location) }
-  catch(err){}
-}
-
 /**
  * Checks if the passed in config is a function and calls it if it is
  */
@@ -54,14 +49,21 @@ export const loadFromType = <T extends TMerge>(data:T, key:string=`default`, ...
 /**
  * Builds a require function for loading goblet configs dynamically
  */
-export const buildRequire = <T extends TMerge>(basePath:string) => {
+export const buildRequire = <T extends TMerge>(basePath:string, safe:boolean=false) => {
   const relativeRequire = createRequire(basePath)
-  return (location:string) => {
-    const fullLoc =  noBasePath.find(start => location.startsWith(start))
-      ? location
-      : path.join(basePath, location)
+  return (location:string, inlineSafe:boolean=false) => {
+    try {
+      const fullLoc =  noBasePath.find(start => location.startsWith(start))
+        ? location
+        : path.join(basePath, location)
 
-    return relativeRequire(fullLoc) as T
+      return relativeRequire(fullLoc) as T
+    }
+    catch(err){
+      if(safe || inlineSafe) return undefined
+
+      throw err
+    }
   }
 }
 
@@ -73,11 +75,12 @@ export const buildRequire = <T extends TMerge>(basePath:string) => {
  * @recursive
  */
 const loadWithMerge = <T extends TMerge>(data:T, {
+  merge,
   basePath,
   requireFunc
 }:Omit<TLoopLoad<T>, `loadArr`>) => {
 
-  if(!data?.merge?.length) return data
+  if(merge === false || !data?.merge || !data?.merge?.length) return data
 
   const loadedArr = loopLoadArray({
     basePath,
@@ -101,13 +104,14 @@ const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
   const {
     key,
     type,
+    safe,
     first,
     loadArr,
     basePath,
     requireFunc,
   } = params
 
-  const requireData = requireFunc || buildRequire(basePath)
+  const requireData = requireFunc || buildRequire(basePath, safe)
   
   const loadedArr:T[] = [] as T[]
 
@@ -117,9 +121,7 @@ const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
     try {
 
       // Check if the path exists and try to load the file
-      const loadedData = fs.existsSync(path.join(basePath, loc))
-        ? requireData(loc)
-        : null
+      const loadedData = requireData(loc)
 
       if(!loadedData) continue;
 
@@ -151,6 +153,7 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 
   const {
     file,
+    safe,
     location,
     basePath,
     ...rest
@@ -158,7 +161,7 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 
   let data:T
 
-  const requireFunc = buildRequire<T>(basePath)
+  const requireFunc = buildRequire<T>(basePath, safe)
 
   // If a location is passed, try to load it
   if(location) data = requireFunc(location)
@@ -168,17 +171,18 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
     data = glob
       .sync(path.join(basePath, `**/${file}`))
       .reduce(
-        (found:T, file:string) => found || tryRequire<T>(requireFunc, file),
+        (found:T, file:string) => found || requireFunc(file, true),
         undefined
       ) as T
   }
 
   // If no data or, no merge array, then return data
-  if(!data?.merge?.length) return data as T
+  if(!data?.merge || !data?.merge?.length) return data as T
 
   // If there is a merge array, try to load the them
   const loadedData = loopLoadArray<T>({
     ...rest,
+    safe,
     basePath,
     requireFunc,
     loadArr: data.merge,
@@ -194,13 +198,13 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
  * @description - Loads config files based on the passed in basePath and loadArr
  */
 export const loader = <T extends TMerge>(params:TLoader) => {
-
+  const { safe, ...loadArgs } = params
   const loadedData = loopLoadArray<T>({
-    ...params,
-    requireFunc: buildRequire(params.basePath),
+    safe,
+    ...loadArgs,
+    requireFunc: buildRequire(params.basePath, safe),
   })
 
   // Merge all loaded configs into a single config file
   return loadedData?.length ? deepMerge<T>(...loadedData) : undefined
-
 }

@@ -120,10 +120,17 @@ module.exports = {
           '**',
           '!/repos/backend',
           '!/repos/conductor',
+          '!/repos/esdev',
           '!/repos/screencast',
           '!/repos/shared',
-          '!/repos/esdev',
           '!/repos/workflows',
+          // Ignore the dist folders so local bundles are not synced
+          '/repos/backend/dist',
+          '/repos/conductor/dist',
+          '/repos/esdev/dist',
+          '/repos/screencast/dist',
+          '/repos/shared/dist',
+          '/repos/workflows/dist',
         ]
       },
       envs: {
@@ -222,6 +229,11 @@ module.exports = {
           '!/repos/testUtils',
           '!/repos/workflows',
           '!/tasks',
+          // Ignore the dist folders so local bundles are not synced
+          '/repos/screencast/dist',
+          '/repos/shared/dist',
+          '/repos/testUtils/dist',
+          '/repos/workflows/dist',
         ]
       },
       envs: {

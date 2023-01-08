@@ -99,10 +99,6 @@ RUN <<EOF
     ca-certificates \
     tigervnc-standalone-server
 
-  yarn global add pm2
-  pm2 install pm2-logrotate
-  pm2 set pm2-logrotate:retain '7'
-  pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'
   echo fs.inotify.max_user_watches=1048576 | tee -a /etc/sysctl.conf
   sysctl -p
   /bin/sed -i '1s|.*|root:x:0:0:root:/root:/bin/bash|g' /etc/passwd
