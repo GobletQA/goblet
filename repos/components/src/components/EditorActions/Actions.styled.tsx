@@ -15,7 +15,6 @@ export const ActionsContainer = styled(Box)`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  background-color: var(--goblet-editorGroupHeader-tabsBackground);
 `
 
 export const ActionsToggle = styled(Box)(({ theme }) => `
@@ -61,17 +60,26 @@ export const ActionsList = styled(Box)`
   overflow: hidden;
   position: relative;
   transition: max-height 300ms ease;
+`
+export const ActionsBack = styled(Box)`
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.75;
+  position: absolute;
   background-color: var(--goblet-tab-inactiveBackground);
 `
 
 export const ActionItem = styled(Box)(({ theme }) => `
-
+  z-index: 1;
   display: flex;
   margin-top: 2.5px;
+  position: relative;
   pointer-events: auto;
   justify-content: center;
   color: var(--goblet-tab-inactiveForeground);
-  background-color: var(--goblet-tab-inactiveBackground);
   transition: color 300ms ease, background-color 300ms ease;
 
   &:first-of-type {
@@ -90,9 +98,13 @@ export const ActionItem = styled(Box)(({ theme }) => `
     width: 100%;
     height: 100%;
     border-radius: 0px;
-    color: ${getColor(`colors.gray07`, `colors.gray07`, theme as TGobletTheme)};
-    transition: color 300ms ease, background-color 300ms ease;
     background-color: transparent;
+    color: var(--goblet-tab-inactiveForeground);
+    transition: color 300ms ease, background-color 300ms ease;
+    
+    &.Mui-disabled {
+      color: var(--goblet-statusBarItem-activeBackground);
+    }
     
     & svg {
       width: 22px;

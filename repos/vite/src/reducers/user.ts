@@ -1,13 +1,22 @@
 import type { TAction } from '@types'
 import { deepMerge } from '@keg-hub/jsutils'
 
-export type TUserState = {
+export type TUserEmptyState = {
   id?:string
   username?: string
   provider?: string
-  email?: string | null
-  displayName?: string | null
+  email?: string
+  reposUrl?: string
+  photoUrl?: string
+  displayName?: string
 }
+export type TUser = Omit<TUserEmptyState, `id`|`username`|`provider`> & {
+  id:string
+  username: string
+  provider: string
+}
+
+export type TUserState = TUserEmptyState | TUser
 
 export const userState = {} as TUserState
 

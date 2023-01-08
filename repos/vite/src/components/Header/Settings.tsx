@@ -1,6 +1,7 @@
 import type { TSettingNavItem, TAnyCB } from '@types'
 
-import { useCallback } from 'react'
+import { useUser } from '@store'
+import { useCallback, useMemo } from 'react'
 import Box from '@mui/material/Box'
 import Link from '@mui/material/Link'
 import { Menu } from './Header.styled'
@@ -109,22 +110,52 @@ const SettingMenu = (props:TSettings) => {
   )
 }
 
+const style = {
+  width: `${dims.header.avatar.size}px`,
+  height: `${dims.header.avatar.size}px`,
+}
+
+const getUserInitials = (displayName?:string, username?:string) => {
+  if(!displayName && !username) return {}
+  
+  if(displayName){
+    const split = displayName.split(` `)
+    const first = split.shift() || ``
+    const last = split.pop() || ``
+    return { children: `${first[0] || ''}${last[0] || ''}`.trim().toUpperCase() }
+  }
+  if(username)
+    return { children: `${username[0]}${username[1]}`.trim().toUpperCase()}
+}
+
+const useAvatar = () => {
+  const user = useUser()
+  return useMemo(() => {
+    return user.photoUrl
+      ? {
+          sx: style,
+          src: user.photoUrl,
+          alt: user.displayName || user.username || `User Name`,
+        }
+      : {
+          sx: style,
+          alt: user.displayName || user.username || `User Name`,
+          ...getUserInitials(user.displayName, user.username),
+        }
+  }, [user.photoUrl, user.displayName, user.username])
+  
+}
 
 export const Settings = (props:TSettings) => {
   const { onOpenSettings } = props
+  const avatarProps = useAvatar()
 
   return (
     <>
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Admin Settings">
           <IconButton onClick={onOpenSettings} sx={{ p: 0 }}>
-            <Avatar
-              alt="User Name"
-              sx={{
-                width: `${dims.header.avatar.size}px`,
-                height: `${dims.header.avatar.size}px`,
-              }}
-            />
+            <Avatar {...avatarProps} />
           </IconButton>
         </Tooltip>
         <SettingMenu {...props} />

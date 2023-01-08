@@ -16,6 +16,8 @@ export const upsertUser = async (user:any) => {
   userDispatch.upsertUser({
     id: user.id,
     email: user.email,
+    reposUrl: user.reposUrl,
+    photoUrl: user.photoUrl,
     username: user.username,
     provider: user.provider,
     displayName: user.displayName,

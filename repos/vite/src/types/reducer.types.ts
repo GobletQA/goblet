@@ -1,7 +1,6 @@
 import { CombinedState } from 'redux'
 import { TAppState } from '@reducers/app'
 import { TRepoState } from '@reducers/repo'
-import { TUserState } from '@reducers/user'
 import { TFilesState } from '@reducers/files'
 import { TReposState } from '@reducers/repos'
 import { TModalState } from '@reducers/modal'
@@ -10,6 +9,7 @@ import { TTerminalState } from '@reducers/terminal'
 import { TFeaturesState } from '@reducers/features'
 import { TContainerState } from '@reducers/container'
 import { TDefinitionsState } from '@reducers/definitions'
+import { TUserState, TUser, TUserEmptyState } from '@reducers/user'
 
 export type {
   TAppState,
@@ -22,7 +22,9 @@ export type {
   TReposState,
   TSettingsState,
   TTerminalState,
+  TUser,
   TUserState,
+  TUserEmptyState
 }
 
 export type TCombinedState = {

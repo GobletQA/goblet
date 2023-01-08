@@ -18,6 +18,12 @@ import { localStorage } from '@services/localStorage'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
 
+const fineUserAvatarUrl = (data:TAuthData) => {
+  return data.user?.photoUrl
+    || data?.additionalUserInfo?.photoUrl
+    || data?.additionalUserInfo?.profile?.avatar_url
+}
+
 /**
  * Formats the response from the git provider sign in
  * Builds a user object from the provided data
@@ -39,9 +45,12 @@ const formatUser = (data:TAuthData):TFormattedUser => {
     'accessToken',
     'providerId',
   ])
+  
+  const photoUrl = fineUserAvatarUrl(data)
 
   return {
     id: uid,
+    photoUrl,
     displayName,
     email: email,
     username: username,
@@ -76,7 +85,7 @@ const validateResp = (resp:TValidateResp) => {
  */
 export const onSuccessAuth = async (authData:TAuthData) => {
   let statusCodeNum
-  
+
   try {
     const userData = formatUser(authData)
     await isAllowedUser(userData.email)
@@ -103,6 +112,8 @@ export const onSuccessAuth = async (authData:TAuthData) => {
 
     const {status, user, jwt} = validateResp(data)
     await localStorage.setJwt(jwt)
+
+    // TODO: remove user token, pull it from encrypted JWT when needed
     await localStorage.setUser(userData)
     new GitUser(user as TUserState)
     

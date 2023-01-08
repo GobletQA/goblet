@@ -11,7 +11,7 @@ export const AUTH_BYPASS_ROUTES = [
   `/goblet-socket`,
   `/goblet-socket/`,
   `/iframe`,
-  `/iframe/`,
+  `/repo/disconnect`,
   // For DEV Only -- remember to remove this
   // /\/container\/.*/,
 ]

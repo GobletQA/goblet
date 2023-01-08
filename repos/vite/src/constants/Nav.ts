@@ -26,18 +26,18 @@ import {
 
 
 export const HeaderNav = [
-  {
-    label: `Profile`,
-    Icon: ProfileIcon,
-  },
+  // {
+  //   label: `Profile`,
+  //   Icon: ProfileIcon,
+  // },
   {
     label: `Settings`,
     Icon: SettingsIcon,
   },
-  {
-    label: `Team`,
-    Icon: TeamIcon,
-  },
+  // {
+  //   label: `Team`,
+  //   Icon: TeamIcon,
+  // },
   {
     label: `Unmount Repo`,
     Icon: CloudOffIcon,

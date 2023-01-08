@@ -7,10 +7,12 @@ import { CameraAltIcon } from '@gobletqa/components'
 const PictureComp = (props:TSidebarActionProps) => {
   return (
     <EditorAction
+      disabled
       Icon={CameraAltIcon}
       onClick={props.onClick}
       className='goblet-browser-picture'
-      tooltip='Take a picture of the browser'
+      tooltip=''
+      disabledTooltip='COMING SOON - Take a picture of the browser'
     />
   )
 }

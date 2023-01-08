@@ -7,10 +7,12 @@ import { RadioButtonCheckedIcon } from '@gobletqa/components'
 const RecordBrowser = (props:TSidebarActionProps) => {
   return (
     <EditorAction
+      disabled
       onClick={props.onClick}
       Icon={RadioButtonCheckedIcon}
       className='goblet-browser-record'
-      tooltip='Record browser actions'
+      tooltip=''
+      disabledTooltip='COMING SOON - Record browser actions'
     />
   )
 }

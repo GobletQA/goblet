@@ -6,6 +6,7 @@ import { ChevronDownIcon } from '../Icons'
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { cls } from '@keg-hub/jsutils'
 import {
+  ActionsBack,
   ActionsList,
   ActionsToggle,
   ActionsContainer,
@@ -85,6 +86,7 @@ export const Actions = <
         ref={actionsRef}
         className='goblet-editor-actions-list'
       >
+        <ActionsBack />
         {actions.map((action => {
           return (
             <Action

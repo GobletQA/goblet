@@ -7,10 +7,12 @@ import { CropSquareIcon } from '@gobletqa/components'
 const SquareComp = (props:TSidebarActionProps) => {
   return (
     <EditorAction
-      onClick={props.onClick}
+      disabled
       Icon={CropSquareIcon}
+      onClick={props.onClick}
       className='goblet-browser-square-draw'
-      tooltip='Draw a square in the browser'
+      tooltip=''
+      disabledTooltip='COMING SOON - Draw a square in the browser'
     />
   )
 }
