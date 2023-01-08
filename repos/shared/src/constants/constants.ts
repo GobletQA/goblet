@@ -37,9 +37,6 @@ export const GobletConfigFileLocations = deepFreeze([
 
 export const GobletConfigFileNames = deepFreeze([
   `.gobletrc`,
-  `.gobletrc.json`,
-  `goblet.json`,
-  `goblet.config.json`,
   `goblet.js`,
   `goblet.config.js`,
   `goblet.ts`,

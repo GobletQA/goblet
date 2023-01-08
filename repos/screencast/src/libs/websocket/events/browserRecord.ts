@@ -39,11 +39,7 @@ const handleStart = async (
     onCleanup: async closeBrowser => {
       // TODO: Figure out what to do here
       // Now using the same browser instance, so we don't need to close it
-    },
-    onCreateNewPage: async page => {
-      // TODO: Figure out what to do here
-      // For now, limiting the amount of pages to 1
-    },
+    }
   })
 
   Manager.cache[socket.id].recorder = recorder

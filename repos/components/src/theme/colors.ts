@@ -224,6 +224,10 @@ export const alerts = {
   success: gobletColors.shinyShamrock,
 }
 
+const editorThemePurple = `#c491ff`
+const editorThemeGreen = `#6fe1f7`
+const editorThemeOrange = `#ffdfc9`
+
 export const colors = {
   ...red,
   ...gray,
@@ -236,4 +240,7 @@ export const colors = {
   ...alerts,
   ...fadeDark,
   ...gobletColors,
+  editorThemePurple,
+  editorThemeGreen,
+  editorThemeOrange
 }

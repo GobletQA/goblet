@@ -86,7 +86,6 @@ export type TStartPlaying = {
   onCleanup:TActionCallback
   browserConf: TBrowserConf
   pwComponents?:TPWComponents
-  onCreateNewPage:TActionCallback
 }
 
 export type TStartRecording = {
@@ -97,7 +96,6 @@ export type TStartRecording = {
   browserConf: TBrowserConf
   pwComponents?: TPWComponents
   onRecordEvent:TActionCallback
-  onCreateNewPage?:TActionCallback
 }
 
 export type TBrowserMetaDataContext = {

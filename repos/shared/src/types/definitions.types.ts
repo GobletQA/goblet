@@ -33,7 +33,7 @@ export type TDefinitionAst = {
   name: string
   uuid: string
   content: string
-  location?: string,
+  location: string,
   meta: TDefinitionMeta
   match: string | RegExp
   parent?: TDefinitionParent

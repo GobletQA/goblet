@@ -58,9 +58,17 @@ export type TEditorThemes = {
   [key: string]: TEditorTheme
 }
 
+export type TDecorationCB = (...args:any[]) => void
+
+export type TDecoration = {
+  add:TDecorationCB
+  remove:TDecorationCB
+  clear:TDecorationCB
+}
 
 export type TEditorRefHandle = {
   closeFile:TEditorCB
+  decoration: TDecoration
   getAllValue:() => TFilelist
   getSupportThemes:() => string[],
   resizeSidebar:(width:number) => void

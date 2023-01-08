@@ -1,4 +1,4 @@
-import type { TNavItemClick, OpenFileTreeEvent } from '@types'
+import type { TNavItemClick, TOpenFileTreeEvent } from '@types'
 
 import { ESideNav } from '@types'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
@@ -12,11 +12,11 @@ export const onFiles = ({
   setActive,
 }:TNavItemClick) => {
   if(active === ESideNav.Files){
-    EE.emit<OpenFileTreeEvent>(OpenFileTreeEvt, { size: 0 })
+    EE.emit<TOpenFileTreeEvent>(OpenFileTreeEvt, { size: 0 })
     setActive(undefined)
   }
   else {
-    EE.emit<OpenFileTreeEvent>(OpenFileTreeEvt, { size: EditorSidebarWidth })
+    EE.emit<TOpenFileTreeEvent>(OpenFileTreeEvt, { size: EditorSidebarWidth })
     setActive(name)
   }
 

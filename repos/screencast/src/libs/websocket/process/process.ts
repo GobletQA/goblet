@@ -289,44 +289,42 @@ export class Process {
    */
   bindSocket = (socket:Socket) => {
     socket.on(WS_RUN_CMD, (message:TSocketMessageObj) => {
-      this.manager.checkAuth(socket, WS_RUN_CMD, message, () => {
-        const socketId = socket.id
+      const socketId = socket.id
 
-        this.debugEvent(WS_RUN_CMD, message)
+      this.debugEvent(WS_RUN_CMD, message)
 
-        const { name, group } = message
+      const { name, group } = message
 
-        try {
-          // Validate the cmd to ensure it is allowed to run
-          const command = validateCmd(
-            message,
-            this.commands,
-            this.manager
-          )
+      try {
+        // Validate the cmd to ensure it is allowed to run
+        const command = validateCmd(
+          message,
+          this.commands,
+          this.manager
+        )
 
-          // Set the params to be the passed in params
-          command.params = message.params
+        // Set the params to be the passed in params
+        command.params = message.params
 
-          // If a cmd and id is returned, then run the exec method
-          return command.cmd && this.exec({ ...command, socketId })
+        // If a cmd and id is returned, then run the exec method
+        return command.cmd && this.exec({ ...command, socketId })
+      }
+      catch (err) {
+        this.debugError(err, message)
+        this.manager.isRunning = false
+
+        const emitMessage = {
+          name,
+          group,
+          socketId,
+          error: true,
+          message: `Error running command:\n${err.message}`,
         }
-        catch (err) {
-          this.debugError(err, message)
-          this.manager.isRunning = false
 
-          const emitMessage = {
-            name,
-            group,
-            socketId,
-            error: true,
-            message: `Error running command:\n${err.message}`,
-          }
+        this.debugEvent(WS_RUN_CMD, emitMessage)
 
-          this.debugEvent(WS_RUN_CMD, emitMessage)
-
-          this.manager.emitAll(WS_CMD_RUNNING, emitMessage)
-        }
-      })
+        this.manager.emitAll(WS_CMD_RUNNING, emitMessage)
+      }
     })
   }
 }

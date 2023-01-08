@@ -125,6 +125,7 @@ export const getPage = async (
   const pages = context.pages()
   
   Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
+  const hasPages = Boolean(pages.length)
   const hasMultiplePages = pages.length > 1
 
   if(hasMultiplePages){
@@ -132,10 +133,9 @@ export const getPage = async (
     await Promise.all(pages.map(async (page, idx) => idx && await page.close()))
   }
 
-  const page = (pages.length && pages[0])
-    || await context.newPage()
+  const page = hasPages ? pages[0] : await context.newPage()
 
-  pages.length
+  hasPages
     ? Logger.verbose(`getPage - Found page on context for browser ${browserConf.type}`)
     : Logger.verbose(`getPage - New page created on context for browser ${browserConf.type}`)
 
@@ -153,10 +153,19 @@ export const getContext = async (
 
   const { browser } = await getBrowser(browserConf)
   const contexts = browser.contexts()
-  const context = (contexts.length && contexts[0])
-    || await browser.newContext(getContextOpts(browserConf.context))
+  const hasContexts = Boolean(contexts.length)
+  const hasMultipleContexts = contexts.length > 1
 
-  Logger.verbose(`getContext - Found context for browser ${browserConf.type}`)
+  if(hasMultipleContexts){
+    Logger.verbose(`getContext - Closing extra contexts on the browser`)
+    await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
+  }
+
+  const context = hasContexts ? contexts[0] : await browser.newContext(getContextOpts(browserConf.context))
+
+  hasContexts
+    ? Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
+    : Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
 
   return { context, browser }
 }

@@ -94,12 +94,11 @@ export class CodeRunner {
     this.player.fireEvent({
       data: result,
       message: 'Player - Spec Done',
-      name: PWPlay.playSuiteDone,
+      name: PWPlay.playSpecDone,
     })
 
-    // TODO: probably don't want to throw here
-    // Need to capture the spec, and skip to the next suite
-    // Should be based on some config value
+    // TODO: Update parkin to accept a failed event
+    // Which will tell it to stop running tests
     if(result.failed)
       throw new Error(
         result?.failedExpectations?.[0]?.message || `Spec Failed`

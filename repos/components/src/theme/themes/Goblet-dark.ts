@@ -8,7 +8,7 @@ export const darkTheme = {
     {
       token: ``,
       foreground: colors.white00,
-      background: colors.black15,
+      background: colors.black19,
     },
     {
       token: `invalid`,
@@ -32,7 +32,7 @@ export const darkTheme = {
     },
     {
       token: `variable.parameter`,
-      foreground: `9CDCFE`
+      foreground: colors.editorThemeGreen
     },
     {
       token: `constant`,
@@ -101,7 +101,7 @@ export const darkTheme = {
     },
     {
       token: `metatag.content.html`,
-      foreground: `9CDCFE`
+      foreground: colors.editorThemeGreen
     },
     {
       token: `metatag.html`,
@@ -117,24 +117,23 @@ export const darkTheme = {
     },
     {
       token: `key`,
-      foreground: `9CDCFE`
+      foreground: colors.editorThemeGreen
     },
     {
       token: `string.key.json`,
-      foreground: `9CDCFE`
+      foreground: colors.editorThemeGreen
     },
     {
       token: `string.value.json`,
-      foreground: colors.purple08
+      foreground: colors.editorThemePurple
     },
     {
-      foreground: colors.purple08,
-      token: `string.js`
+      token: `string.js`,
+      foreground: colors.editorThemePurple,
     },
-
     {
       token: `attribute.name`,
-      foreground: `9CDCFE`
+      foreground: colors.editorThemeGreen
     },
     {
       token: `attribute.value`,
@@ -154,7 +153,11 @@ export const darkTheme = {
     },
     {
       token: `string`,
-      foreground: colors.purple08
+      foreground: colors.editorThemePurple
+    },
+    {
+      token: `string.quote`,
+      foreground: colors.editorThemeOrange,
     },
     {
       token: `string.sql`,

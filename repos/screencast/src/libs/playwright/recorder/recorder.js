@@ -34,7 +34,6 @@ const RecorderInstances = {}
  * @property {Object} context - Playwright context instance
  * @property {Object} browser - Playwright browser instance
  * @property {function} onCleanup - Called when the cleanup / stop methods are called
- * @property {function} onCreateNewPage - Called when a new playwright page is created
  * @property {Object} options - Custom options used while recording
  * @property {Object} options.highlightStyles - Custom styles for the highlighter
  */
@@ -47,7 +46,6 @@ class Recorder {
   browser = undefined
   onCleanup = noOp
   initialPageLoaded = false
-  onCreateNewPage = undefined
   options = {
     highlightStyles,
     disableClick: true
@@ -107,7 +105,6 @@ class Recorder {
       options,
       onEvent=noOp,
       onCleanup=noOp,
-      onCreateNewPage,
     } = config
 
     if(page) this.page = page
@@ -117,7 +114,6 @@ class Recorder {
 
     if(onEvent) this.onEvents.push(onEvent)
     if(onCleanup) this.onCleanup = onCleanup
-    if(onCreateNewPage) this.onCreateNewPage = onCreateNewPage
 
     return this
   }
@@ -240,25 +236,6 @@ class Recorder {
       // Ensure the injected scripts don't run
       this.recording = false
 
-
-      // --- TODO - Probably don't want to do this any more
-
-      // If there's a page
-      // Get it's current url
-      // Then close and reopen the page as a fresh instance
-      // To simulate ending the recording process
-      if(!closeBrowser && this.page){
-        const url = this.page.url()
-        this.page.close()
-        this.page = undefined
-
-        // Create a new page
-        this.page = await this.context.newPage()
-        await this.onCreateNewPage(this.page, this)
-
-        // Then  goto that page
-        url && await this.page.goto(url)
-      }
 
       // --- TODO - Probably don't want to do this any more
 

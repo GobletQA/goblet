@@ -17,6 +17,7 @@ import type {
 
 import { THEMES } from '@GBM/constants'
 import { isStr } from '@keg-hub/jsutils'
+import { useDecorations } from './useDecorations'
 import { useCallback, useEffect, useImperativeHandle } from 'react'
 import { createOrUpdateModel } from '@GBM/utils/editor/createOrUpdateModel'
 
@@ -114,6 +115,12 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     pathChange(path)
   }, [])
 
+  const decoration = useDecorations({
+    editorRef,
+    curPathRef
+  })
+
+
   // Sets up callbacks for focus and blur of the editor
   useEffect(() => {
     if(!editorRef.current) return
@@ -161,6 +168,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     openFile,
     setTheme,
     closeFile,
+    decoration,
     resizeSidebar,
     getSupportThemes: () => THEMES,
     getAllValue: () => filesRef.current,

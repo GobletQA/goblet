@@ -1,6 +1,6 @@
 
 
-export type OpenFileTreeEvent = {
+export type TOpenFileTreeEvent = {
   size: number
 }
 

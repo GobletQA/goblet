@@ -14,7 +14,6 @@ export const recordBrowser = async (data:TStartRecording) => {
     browserConf,
     pwComponents,
     onRecordEvent,
-    onCreateNewPage,
   } = data
 
   const { props, action:method } = action
@@ -24,7 +23,6 @@ export const recordBrowser = async (data:TStartRecording) => {
 
   const recorder = Recorder.getInstance(id, {
     onCleanup,
-    onCreateNewPage,
     ...browserItems,
     options: recordOpts,
     onEvent: onRecordEvent,

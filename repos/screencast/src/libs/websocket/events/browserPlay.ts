@@ -1,10 +1,26 @@
 import type { Express } from 'express'
 import type { Socket } from 'socket.io'
-import type { SocketManager, TSocketEvtCBProps } from '@GSC/types'
+import type { SocketManager, TSocketEvtCBProps, TPlayerEvent } from '@GSC/types'
 
+import { exists } from '@keg-hub/jsutils'
+import { EPlayerTestType } from '@GSC/types'
 import { Repo } from '@gobletqa/shared/repo/repo'
+import { PlaySuiteDone, PlayResults } from '@GSC/constants'
 import { playBrowser } from '@GSC/libs/playwright/browser/playBrowser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+
+const skipEvents = [
+  PlayResults,
+]
+
+const shouldSkipEvt = (event:TPlayerEvent) => {
+  let shouldSkip = skipEvents.includes(event.name)
+  return shouldSkip || Boolean(
+    event.name === PlaySuiteDone
+      && event?.data?.type === EPlayerTestType.describe
+      && exists(event?.data?.describes)
+  )
+}
 
 const handleStartPlaying = async (
   data:Record<any, any>,
@@ -21,7 +37,9 @@ const handleStartPlaying = async (
     action,
     browserConf,
     id: socket.id,
-    onEvent:(event) => {
+    onEvent:(event:TPlayerEvent) => {
+      if(shouldSkipEvt(event)) return
+
       console.log(`Emit ${event.name} event`, event)
       Manager.emit(socket, event.name, { ...event, group: socket.id })
     },
@@ -29,14 +47,12 @@ const handleStartPlaying = async (
       socket?.id
         && Manager?.cache[socket.id]?.player
         && (Manager.cache[socket.id].player = undefined)
-    },
-    onCreateNewPage: async (page:any) => {
-      // TODO: Figure out what to do here
-      // For now, limiting the amount of pages to 1
-    },
+    }
   })
 
-  Manager.cache[socket.id].player = player
+  Manager?.cache?.[socket.id]
+    && (Manager.cache[socket.id].player = player)
+
 }
 
 export const browserPlay = (app:Express) => {

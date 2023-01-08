@@ -2,10 +2,10 @@ import type { TSocketEvt } from '@types'
 import type { SocketService } from './socketService'
 
 import { BrowserNavEvt } from '@constants'
-import { pageService } from '../pageService'
 import * as socketActions from '@actions/socket/local'
 import { camelCase, checkCall } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { playEvent } from '@actions/socket/local/playEvent'
 import { recordAction } from '@actions/socket/local/recordAction'
 import { setBrowserRecording } from '@actions/socket/local/setBrowserRecording'
 
@@ -27,9 +27,9 @@ export const events = {
     // Get the name of the action from sockr's Event Types
     // And convert into an action name for the taps sockr actions
     const actionName = camelCase((event.split(':')[1] || '').toLowerCase()) as string
+    if(events[actionName as keyof typeof events]) return
 
-    !events[actionName as keyof typeof events]
-      && checkCall(socketActions[actionName as keyof typeof socketActions], message)
+    checkCall(socketActions[actionName as keyof typeof socketActions], message)
   },
   init: function (message:TSocketEvt){
     // console.log(`------- init event -------`)
@@ -58,44 +58,14 @@ export const events = {
   pwUrlChange: function(message:TSocketEvt){
     EE.emit(BrowserNavEvt, message.data)
   },
-  playStarted: function(message:TSocketEvt){
-    console.log(`------- playStarted message -------`)
-    console.log(message)
-  },
-  playEnded: function(message:TSocketEvt){
-    console.log(`------- playEnded message -------`)
-    console.log(message)
-  },
-  playResults: function(message:TSocketEvt){
-    console.log(`------- playResults message -------`)
-    console.log(message)
-  },
-  playError: function(message:TSocketEvt){
-    console.log(`------- playError message -------`)
-    console.log(message)
-  },
-  playAction: function(message:TSocketEvt){
-    console.log(`------- playAction message -------`)
-    console.log(message)
-  },
-  playGeneral: function(message:TSocketEvt){
-    console.log(`------- playGeneral message -------`)
-    console.log(message)
-  },
-  playSpecStart: function(message:TSocketEvt){
-    console.log(`------- playSpecStart message -------`)
-    console.log(message)
-  },
-  playSpecDone: function(message:TSocketEvt){
-    console.log(`------- playSpecDone message -------`)
-    console.log(message)
-  },
-  playSuiteStart: function(message:TSocketEvt){
-    console.log(`------- PlaySuiteStart message -------`)
-    console.log(message)
-  },
-  playSuiteDone: function(message:TSocketEvt){
-    console.log(`------- playSuiteDone message -------`)
-    console.log(message)
-  },
+  playEnded: playEvent,
+  playError: playEvent,
+  playAction: playEvent,
+  playGeneral: playEvent,
+  playResults: playEvent,
+  playStarted: playEvent,
+  playSpecDone: playEvent,
+  playSuiteDone: playEvent,
+  playSpecStart: playEvent,
+  playSuiteStart: playEvent,
 }
