@@ -289,9 +289,9 @@
     },
     "glyphMargin": {
       "key": "glyphMargin",
-      "value": false,
+      "value": true,
       "active": true,
-      "default": false,
+      "default": true,
       "type": "boolean",
       "group": "editor"
     },

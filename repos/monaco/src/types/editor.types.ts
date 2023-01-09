@@ -1,4 +1,4 @@
-import type { editor } from 'monaco-editor'
+import type { editor, Range } from 'monaco-editor'
 import type { TEditorCB } from './helpers.types'
 import type { TFilelist, TFileMeta } from './file.types'
 import type { IEditor, TMonacoDefinition, TMonaco } from './gherkin.types'
@@ -59,16 +59,25 @@ export type TEditorThemes = {
 }
 
 export type TDecorationCB = (...args:any[]) => void
+export type TDecorationAdd = (location:string, decoration:TDecoration) => void
+export type TDecorationUpdate = (location:string, decoration:TDecoration) => void
 
 export type TDecoration = {
-  add:TDecorationCB
-  remove:TDecorationCB
+  range?: Range
+  search?: string
+  options: editor.IModelDecorationOptions
+}
+
+export type TDecorationFns = {
+  add:TDecorationAdd
   clear:TDecorationCB
+  remove:TDecorationCB
+  update:TDecorationUpdate
 }
 
 export type TEditorRefHandle = {
   closeFile:TEditorCB
-  decoration: TDecoration
+  decoration: TDecorationFns
   getAllValue:() => TFilelist
   getSupportThemes:() => string[],
   resizeSidebar:(width:number) => void

@@ -69,14 +69,15 @@ const useWSHooks = () => {
     container?.meta?.state
   ])
 
-
-  const fadeContent = useMemo(() => {
-    if(!user?.id) return `User not authorized. Please login`
+  // TODO: use valid flag to know if we should try reconnecting
+  // If valid is false make call to reconnect, or maybe just reload the page?
+  const {valid, fadeContent} = useMemo(() => {
+    if(!user?.id) return {valid: false, fadeContent: `User not authorized. Please login`}
 
     // Check for invalid state, or missing web socket
     return !isValidState(user, container, repo) || !wsService?.socket
-      ? `Waiting for session to initialize...`
-      : ``
+      ? {valid: false, fadeContent: `Waiting for session to initialize...`}
+      : {valid: true,  fadeContent: ``}
   }, [
     user?.id,
     repo?.name,
@@ -86,12 +87,11 @@ const useWSHooks = () => {
     container?.meta?.state
   ])
 
-
   useEffect(() => {
     // Check if the web socket has been set, or for invalid state
     if(wsService?.socket || !isValidState(user, container, repo)) return
 
-    (async () => {
+    ;(async () => {
       const jwt = await localStorage.getJwt()
       // Once the container?.api is loaded, then init the websocket
       const wsConfig = getWebsocketConfig(container.api)

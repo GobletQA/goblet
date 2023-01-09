@@ -1,13 +1,17 @@
-import type { ForwardedRef, MutableRefObject } from 'react'
-import type { editor } from 'monaco-editor'
+import type { MutableRefObject } from 'react'
+import type { editor, Range } from 'monaco-editor'
 import type {
   TMonaco,
-  
+  TDecoration,
   TCodeEditor,
+  TDecorationCB,
   TCodeEditorRef,
+  TDecorationAdd,
+  TDecorationUpdate,
 } from '@GBM/types'
 
 import { useEffect, useCallback, useRef, useState } from 'react'
+import { getModelFromPath } from '@GBM/utils/editor/getModelFromPath'
 import { useInline } from '@gobletqa/components'
 
 export type THDecoration = {
@@ -15,30 +19,68 @@ export type THDecoration = {
   curPathRef: MutableRefObject<string>
 }
 
+type TDecorationList = {
+  [key:string]: editor.IModelDeltaDecoration
+}
 
+const getRangeByFeature = (model:editor.ITextModel) => {
+    
+  const fullRange = model.getFullModelRange()
+  const featureMatches = model.findMatches(`Feature: `, fullRange, false, true, null, false)
+
+  console.log(`------- featureMatches -------`)
+  console.log(featureMatches)
+}
+
+
+const createDecoration = (
+  decorationsRef:MutableRefObject<TDecorationList>,
+  match:editor.FindMatch,
+  decoration:TDecoration
+) => {
+  const range = match.range
+  const { search, options } = decoration
+  const decoId = `${range.startLineNumber}${search}`
+  decorationsRef.current[decoId] = { options, range }
+}
+ 
 export const useDecorations = (props:THDecoration) => {
   const {
     editorRef
   } = props
 
-  const decorationsRef = useRef<editor.IModelDeltaDecoration[]>([])
+  // TODO: clear decorations on file change
+  // Otherwise they will be added to the other file when you switch
+
+  const decorationsRef = useRef<TDecorationList>({} as TDecorationList)
   const collectionRef = useRef<editor.IEditorDecorationsCollection>()
 
-  const addDecoration = useInline((decoration:editor.IModelDeltaDecoration) => {
-    if(!editorRef?.current || !decoration) return
+  const addDecoration = useInline<TDecorationAdd>((location, decoration) => {
+    const editor = editorRef.current
+    if(!editor) return console.warn(`Could not find editor`, editorRef.current, location, decoration)
+
+    const model = getModelFromPath(location)
+    if(!model) return console.warn(`Could not find editor model for location ${location}`)
     
-    const collection = collectionRef.current
-    const decorations = decorationsRef.current
-    if(collection) return collection?.set([...decorations, decoration])
+    const { search } = decoration
+    if(!search) return
 
-    const updatedDecs = [...decorations, decoration]
-    decorationsRef.current = updatedDecs
+    const [match] = model.findMatches(search, true, false, false, null, false, 1)
+    if(!match) return console.warn(`Could not find match to search text`, search, location, match)
 
-    const newCollection = editorRef.current?.createDecorationsCollection(updatedDecs)
-    collectionRef.current = newCollection
+    createDecoration(decorationsRef, match, decoration)
+
+    if(collectionRef.current)
+      collectionRef.current.set(Object.values(decorationsRef.current))
+    else {
+      collectionRef.current = editor.createDecorationsCollection([
+        ...Object.values(decorationsRef.current)
+      ])
+    }
+
   })
 
-  const removeDecoration = useInline(() => {
+  const removeDecoration = useInline<TDecorationCB>(() => {
     if(!editorRef?.current) return
     // TODO: make a copy of the decorations array
     // Then loop over it and remove the correct decoration
@@ -47,18 +89,20 @@ export const useDecorations = (props:THDecoration) => {
     // decorations?.set?.(decorationsCopy)
   })
 
-  const clearDecorations = useInline(() => {
-    const collection = collectionRef.current
-    collection?.clear()
+  const clearDecorations = useInline<TDecorationCB>(() => {
+    collectionRef.current?.clear()
+    decorationsRef.current = {} as TDecorationList
+  })
 
-    const decorations = decorationsRef.current
-    decorationsRef.current = []
+  const updateDecorations = useInline<TDecorationUpdate>((location, decoration) => {
+    addDecoration(location, decoration)
   })
 
   return {
     add: addDecoration,
-    remove: removeDecoration,
     clear: clearDecorations,
+    remove: removeDecoration,
+    update: updateDecorations,
   }
 
 }

@@ -55,7 +55,12 @@ export class Player {
   fireEvent = (event:Omit<TPlayerEvent, 'isPlaying'>) => {
     this.onEvents.map(func => checkCall(
       func,
-      {...event, isPlaying: Player.isPlaying}
+      {
+        ...event,
+        isPlaying: Player.isPlaying,
+        location: this.options?.file?.location,
+        fileType: this.options?.file?.fileType,
+      }
     ))
 
     return this

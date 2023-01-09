@@ -4,7 +4,9 @@ import type {
   TMonaco,
   IEditor,
   TDefinitionAst,
-  OpenFileTreeEvent,
+  TPlayerResEvent,
+  TPlayerTestEvent,
+  TOpenFileTreeEvent,
   TEditorSettingValues,
 } from '@types'
 
@@ -13,8 +15,8 @@ import { loadGobletFile } from '@actions/files/api/loadGobletFile'
 import { useEventListen } from '../useEvent'
 import { useMemo, useCallback } from 'react'
 import { useFiles, useRepo, useDefs } from '@store'
-import { exists, set, noOp } from '@keg-hub/jsutils'
 import { useMonacoConfig } from './useMonacoConfig'
+import { exists, set, noOp } from '@keg-hub/jsutils'
 import { confirmModal } from '@actions/modals/modals'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { toggleModal } from '@actions/modals/toggleModal'
@@ -22,8 +24,15 @@ import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { isCustomDef } from '@utils/definitions/isCustomDef'
 
+import { buildDecoration } from '@utils/editor/buildDecoration'
 import { useSettingValues } from '@hooks/store/useSettingValues'
-import { OpenEditorFileEvt, OpenFileTreeEvt, UpdateModalEvt } from '@constants'
+import {
+  PlayerTestEvt,
+  UpdateModalEvt,
+  OpenFileTreeEvt,
+  OpenEditorFileEvt,
+  PlayerClearDecorationEvt
+} from '@constants'
 
 
 import {
@@ -79,11 +88,28 @@ export const useMonacoHooks = (
 
   exists(theme) && set(config, `theme.name`, theme)
 
-  useEventListen<OpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
+  useEventListen<TPlayerTestEvent>(PlayerClearDecorationEvt, (event:TPlayerResEvent) => {
+    const decoration = editorRef?.current?.decoration
+    decoration?.clear()
+  })
+
+  useEventListen<TPlayerTestEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
+    const decoration = editorRef?.current?.decoration
+    if(!decoration) return
+
+    const { data, location } = event
+    const dec = buildDecoration(data)
+    const relative = rmRootFromLoc(location, rootPrefix)
+
+    decoration?.update(relative, dec)
+
+  })
+
+  useEventListen<TOpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
     exists(size) && editorRef?.current?.resizeSidebar?.(size)
   })
 
-  useEventListen<TDefinitionAst>(OpenEditorFileEvt, async (defAst) => {
+  useEventListen<TDefinitionAst>(OpenEditorFileEvt, async (defAst:TDefinitionAst) => {
     const { location } = defAst
 
     // If it's a custom file then it should already be loaded

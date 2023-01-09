@@ -7,6 +7,10 @@ const jsonPrefix = [
   `◀ RECV {`
 ] 
 const filterLogs = (event:TSocketEvt) => {
+  
+  // TODO: do better filtering on the backend
+  if(event.message.includes(`navigated to "about:blank"`)) return true
+
   if(!event?.message || !event?.message?.includes(`pw:`)) return false
   
   const { message } = event

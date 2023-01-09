@@ -29,12 +29,13 @@ export type TPlayerStartConfig = TPlayerConfig & {
   url:string
 }
 
-
 export type TPlayerOpts = {
   file?: TFileModel
 }
 
-export type TPlayerResEvent<T=Record<string, any>> = Omit<TSocketMessageObj, `data`> & {
+export type TPlayerResEvent<T=TPlayerTestEvent> = Omit<TSocketMessageObj, `data`> & {
+  location: string,
+  fileType: string,
   data:T
 }
 
@@ -62,6 +63,10 @@ export type TPlayerTestMeta = {
   passed:boolean
   timestamp:number
   description:string
+  // Defaulting these to empty arrays
+  // They contain a lot of test data that's not needed by the UI
+  tests?: any[]
+  describes?: any[]
   // These exist, but are not being used by parkin
   // So ignoring them for now
   // failedExpectations:[]
@@ -101,8 +106,8 @@ export type TPlayerTestSuiteFinished<T=TPlayerTestEvent> = TPlayerTestEvent & {
   describes: T[]
 }
 
-export type TPlayerEnded = TPlayerResEvent<{}>
-export type TPlayerStarted = TPlayerResEvent<{}>
+export type TPlayerEnded = TPlayerResEvent<Record<string, any>>
+export type TPlayerStarted = TPlayerResEvent<Record<string, any>>
 export type TPlayerResult = TPlayerResEvent<TPlayerSuiteResult[]>
 
 export type TPlayerSpecDone = TPlayerResEvent<TPlayerTestDone>

@@ -1,26 +1,18 @@
 import type { Express } from 'express'
 import type { Socket } from 'socket.io'
-import type { SocketManager, TSocketEvtCBProps, TPlayerEvent, TPlayerTestSuiteFinished } from '@GSC/types'
+import type {
+  TPlayerEvent,
+  SocketManager,
+  TPlayerTestEvent,
+  TSocketEvtCBProps,
+  TPlayerTestEventMeta
+} from '@GSC/types'
 
-import { exists } from '@keg-hub/jsutils'
-import { EPlayerTestType } from '@GSC/types'
+import { emptyArr, isArr } from '@keg-hub/jsutils'
 import { Repo } from '@gobletqa/shared/repo/repo'
-import { PlaySuiteDone, PlayResults } from '@GSC/constants'
 import { playBrowser } from '@GSC/libs/playwright/browser/playBrowser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
-const skipEvents = [
-  PlayResults,
-]
-
-const shouldSkipEvt = (event:TPlayerEvent) => {
-  let shouldSkip = skipEvents.includes(event.name)
-  return shouldSkip || Boolean(
-    event.name === PlaySuiteDone
-      && event?.data?.type === EPlayerTestType.describe
-      && exists((event?.data as TPlayerTestSuiteFinished)?.describes)
-  )
-}
 
 const handleStartPlaying = async (
   data:Record<any, any>,
@@ -37,8 +29,13 @@ const handleStartPlaying = async (
     action,
     browserConf,
     id: socket.id,
-    onEvent:(event:TPlayerEvent) => {
-      if(shouldSkipEvt(event)) return
+    onEvent:(event:TPlayerTestEventMeta) => {
+      // Clean up the event data, we don't need the tests and describes content
+      // And it can be pretty large. No point in sending it over the wire
+      event.data = event.data || {} as TPlayerTestEvent
+      if(isArr(event.data)) event.data = {} as TPlayerTestEvent
+      if(event.data.tests) event.data.tests = emptyArr
+      if(event.data.describes) event.data.describes = emptyArr
 
       console.log(`Emit ${event.name} event`, event)
       Manager.emit(socket, event.name, { ...event, group: socket.id })
