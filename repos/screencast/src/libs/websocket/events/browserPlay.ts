@@ -1,6 +1,6 @@
 import type { Express } from 'express'
 import type { Socket } from 'socket.io'
-import type { SocketManager, TSocketEvtCBProps, TPlayerEvent } from '@GSC/types'
+import type { SocketManager, TSocketEvtCBProps, TPlayerEvent, TPlayerTestSuiteFinished } from '@GSC/types'
 
 import { exists } from '@keg-hub/jsutils'
 import { EPlayerTestType } from '@GSC/types'
@@ -18,7 +18,7 @@ const shouldSkipEvt = (event:TPlayerEvent) => {
   return shouldSkip || Boolean(
     event.name === PlaySuiteDone
       && event?.data?.type === EPlayerTestType.describe
-      && exists(event?.data?.describes)
+      && exists((event?.data as TPlayerTestSuiteFinished)?.describes)
   )
 }
 

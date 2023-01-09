@@ -38,15 +38,12 @@ const parseDefinitions = async (
   repo:TRepo,
   definitionFiles:string[],
   overrideParkin:(...args:any) => any,
-  gobletDefs?:boolean
 ) => {
   return definitionFiles.reduce(async (toResolve, file) => {
     const loaded = await toResolve
     if (!file) return loaded
 
     const fileModel = await DefinitionsParser.getDefinitions(file, repo, overrideParkin)
-    if(fileModel && gobletDefs) fileModel.content = ``
-    
     fileModel && loaded.push(fileModel)
 
     // Clear out the definitions after they have been loaded
@@ -68,15 +65,16 @@ const getGobletDefs = async (
   repo:TRepo,
   overrideParkin:(...args:any) => any,
   gobletConfig:TDefGobletConfig,
+  cache:boolean=true
 ) => {
-  if(__CachedGobletDefs?.length) return __CachedGobletDefs 
+  if(cache && __CachedGobletDefs?.length) return __CachedGobletDefs 
 
   const definitionFiles = await loadDefinitionsFiles(
     `${gobletConfig.internalPaths.testUtilsDir}/src/steps`,
     { ignore: [ '**/index.js' ] }
   )
 
-  const loadedDefs = await parseDefinitions(repo, definitionFiles, overrideParkin, true)
+  const loadedDefs = await parseDefinitions(repo, definitionFiles, overrideParkin)
   __CachedGobletDefs = loadedDefs
 
   return __CachedGobletDefs
@@ -101,12 +99,29 @@ const getRepoDefinitions = async (
   return await parseDefinitions(repo, definitionFiles, overrideParkin) || []
 }
 
+
+/**
+ * Not currently used, needs some work
+ */
+const loadDefinition = async (
+  location:string,
+  repo:TRepo,
+) => {
+  await repo.refreshWorld()
+  const overrideParkin = parkinOverride(repo)
+  const fileModel = await DefinitionsParser.getDefinitions(location, repo, overrideParkin)
+  // TODO: need methods for pulling the definitions from park by name
+  // Until then we can't parse a single definition by it's self
+  return fileModel
+}
+
 /**
  * Loads the definitions file from the passed in repo instance
  */
 export const loadDefinitions = async (
   repo:TRepo,
-  gobletConfig?:TDefGobletConfig
+  gobletConfig?:TDefGobletConfig,
+  cache:boolean=true
 ) => {
   // Clear out any steps that were already loaded
   DefinitionsParser.clear(repo)
@@ -118,7 +133,7 @@ export const loadDefinitions = async (
   const overrideParkin = parkinOverride(repo)
   
   const clientDefinitions = await getRepoDefinitions(repo, overrideParkin)
-  const gobletDefinitions = await getGobletDefs(repo, overrideParkin, gobletConfig)
+  const gobletDefinitions = await getGobletDefs(repo, overrideParkin, gobletConfig, cache)
 
   // all the definition file models
   const defs = clientDefinitions.concat(gobletDefinitions)

@@ -36,15 +36,11 @@ const resolveReportAst = (
 
 /**
  * Checks the files path and if it exists creates a fileModel from the meta data
- * @param {Object} repo - Repo Class instance for the currently active repo
- * @param {string} location - Location within the test root path the file should exist
- *
- * @returns {Object} - fileModel for the file at the passed in location
  */
-const loadReport = async (
+export const loadReport = async (
   repo:TRepo,
   location:string,
-  baseDir:string
+  baseDir?:string
 ) => {
   baseDir = baseDir || getRepoGobletDir(repo)
   const reportContent = resolveReportAst(repo, location, baseDir)
@@ -55,9 +51,4 @@ const loadReport = async (
     fileType: 'report',
     ...reportContent,
   }, repo)
-}
-
-
-module.exports = {
-  loadReport
 }

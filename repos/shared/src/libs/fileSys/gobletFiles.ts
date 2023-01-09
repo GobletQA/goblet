@@ -1,5 +1,5 @@
 import type { Repo } from '@GSH/repo/repo'
-import type { TDefGobletConfig } from '../../types'
+import type { TDefGobletConfig, TFileModel } from '../../types'
 
 import path from 'path'
 import fs from 'fs-extra'
@@ -224,12 +224,30 @@ export const saveGobletFile = async (
       msg: `Save failed: ${saveLocation} - ${err.message}`,
     })
 
+  // Check the fileType, and handle some files with their own method
+  const fileType = type || resolveFileType(repo, saveLocation)
+
+  let fileModel:TFileModel
+  if(fileType === get(repo, `fileTypes.feature.type`))
+    fileModel = await loadFeature(repo, saveLocation)
+
+  // TODO: need to update parkin to allow loading a single definition
+  // else if(fileType === get(repo, `fileTypes.definition.type`))
+  //   fileModel = await loadDefinition(repo, saveLocation)
+
+  else if(fileType === get(repo, `fileTypes.report.type`))
+    fileModel = await loadReport(repo, saveLocation)
+
+  else fileModel = await buildFileModel({
+    content,
+    fileType: type,
+    location: saveLocation,
+  }, repo)
+
+
   return {
-    success: Boolean(success),
-    file: await buildFileModel({
-      content,
-      location: saveLocation,
-    }, repo)
+    success: Boolean(success && fileModel),
+    file: fileModel
   }
 }
 

@@ -53,7 +53,7 @@ const setupParkin = async (Runner:CodeRunner) => {
   const PK = Runner?.player?.repo?.parkin
   if(!PK) throw new Error(`Repo is missing a parkin instance`)
 
-  await getDefinitions(Runner?.player?.repo)
+  await getDefinitions(Runner?.player?.repo, undefined, false)
   return PK
 }
 

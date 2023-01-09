@@ -6,7 +6,7 @@ import { getFeatures } from '@gobletqa/shared/repo/getFeatures'
 import { fileModelArrayToObj } from '@gobletqa/shared/utils/fileModelArrayToObj'
 
 export const loadBddFiles = asyncWrap(async (req:Request, res:Response) => {
-  const { definitionTypes, definitions, features } = await getFeatures(
+  const { definitions, features } = await getFeatures(
     res.locals.repo,
     req.app.locals.config
   )
@@ -14,7 +14,6 @@ export const loadBddFiles = asyncWrap(async (req:Request, res:Response) => {
   return apiRes(
     res,
     {
-      definitionTypes,
       repo: res.locals.repo,
       features: fileModelArrayToObj(features),
       definitions: fileModelArrayToObj(definitions),
