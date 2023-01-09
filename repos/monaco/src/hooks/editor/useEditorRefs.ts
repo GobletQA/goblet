@@ -1,3 +1,4 @@
+import type { MutableRefObject } from 'react'
 import type { IDisposable } from 'monaco-editor'
 import type {
   TFilelist,
@@ -8,9 +9,12 @@ import type {
   TEditorPromiseCB,
 } from '../../types'
 
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
+import { useLintWorker } from '@GBM/hooks/editor/useLintWorker'
+import { useTypesWorker } from '@GBM/hooks/editor/useTypesWorker'
 
 export type THEditorRefs = {
+  curPath:string
   options: TEditorOpts
   defaultFiles: TFilelist
   onPathChange?: TEditorCB
@@ -24,6 +28,7 @@ export type THEditorRefs = {
 
 export const useEditorRefs = (props:THEditorRefs) => {
   const {
+    curPath,
     options,
     onLoadFile,
     defaultFiles,
@@ -61,7 +66,18 @@ export const useEditorRefs = (props:THEditorRefs) => {
   const editorRef = useRef<TCodeEditor>()
   const contentListenerRef = useRef<IDisposable>()
   const editorNodeRef = useRef<HTMLDivElement>(null)
+  const [lintWorkerRef] = useLintWorker({ editorRef })
+  const [typesWorkerRef] = useTypesWorker({ editorRef })
+
+  // TODO: investigate removing this, pretty sure it's not needed
+  // Or at least can be handled differently
   const openedPathRef = useRef<string | null>('')
+
+  useEffect(() => {
+    onPathChangeRef.current
+      && curPath
+      && onPathChangeRef.current(curPath)
+  }, [curPath])
 
   return {
     rootRef,
@@ -71,6 +87,8 @@ export const useEditorRefs = (props:THEditorRefs) => {
     openedPathRef,
     editorNodeRef,
     onLoadFileRef,
+    lintWorkerRef,
+    typesWorkerRef,
     onPathChangeRef,
     editorStatesRef,
     onFileChangeRef,

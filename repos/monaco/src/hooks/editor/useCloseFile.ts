@@ -8,9 +8,9 @@ import { exists } from '@keg-hub/jsutils'
 import { saveFile } from '../../utils/file/saveFile'
 
 export type TUseCloseFile = {
+  curPath:string
   autoSave: TAutoSave
   openedFiles: TEditorOpenFiles
-  curPathRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   openedPathRef: MutableRefObject<string | null>
   setCurPath: (data: SetStateAction<string>) => void
@@ -35,7 +35,7 @@ const clearPath = (
 
 /**
  * Updates the current active file to be the file from the passed in targetPath
- * Sets the curPathRef.current value
+ * Sets the curPath value
  */
 const updateTargetPath = (
   targetPath:string,
@@ -101,10 +101,10 @@ const resolveFileOpened = (
  */
 export const useCloseFile = (props:TUseCloseFile) => {
   const {
+    curPath,
     autoSave,
     filesRef,
     onSaveFile,
-    curPathRef,
     setCurPath,
     openedFiles,
     restoreModel,
@@ -142,7 +142,7 @@ export const useCloseFile = (props:TUseCloseFile) => {
          */
         targetPath
           ? targetPath !== path
-              && curPathRef.current === path
+              && curPath === path
               && updateTargetPath(targetPath, restoreModel, setCurPath)
           : filesOpened.length === 0
               && clearPath(openedPathRef, restoreModel, setCurPath)
@@ -151,6 +151,12 @@ export const useCloseFile = (props:TUseCloseFile) => {
 
       })
     },
-    [autoSave, onSaveFile, restoreModel, openedFiles]
+    [
+      curPath,
+      autoSave,
+      onSaveFile,
+      openedFiles,
+      restoreModel,
+    ]
   )
 }

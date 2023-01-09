@@ -58,9 +58,21 @@ export type TEditorThemes = {
   [key: string]: TEditorTheme
 }
 
+export type TDecorationMeta = {
+  action: `start`|`end`|`test`
+}
+
 export type TDecorationCB = (...args:any[]) => void
-export type TDecorationAdd = (location:string, decoration:TDecoration) => void
-export type TDecorationUpdate = (location:string, decoration:TDecoration) => void
+export type TDecorationAdd = (
+  location:string,
+  decoration:TDecoration,
+  meta:TDecorationMeta
+) => void
+export type TDecorationUpdate = (
+  location:string,
+  decoration:TDecoration,
+  meta:TDecorationMeta
+) => void
 
 export type TDecoration = {
   range?: Range

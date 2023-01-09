@@ -10,9 +10,7 @@ import { Sidebar } from '@GBM/components/Sidebar'
 import { useTabs } from '@GBM/hooks/tabs/useTabs'
 import { useRef, useState, forwardRef } from 'react'
 import { deleteModel } from '@GBM/utils/editor/deleteModel'
-import { useLintWorker } from '@GBM/hooks/editor/useLintWorker'
 import { useEditorRefs } from '@GBM/hooks/editor/useEditorRefs'
-import { useTypesWorker } from '@GBM/hooks/editor/useTypesWorker'
 import { useEditorSetup } from '@GBM/hooks/editor/useEditorSetup'
 import { useModalActions } from '@GBM/hooks/editor/useModalActions'
 import { useEditorFileTree } from '@GBM/hooks/editor/useEditorFileTree'
@@ -55,23 +53,31 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     config={} as TEditorConfig,
   } = props
 
+  const [curPath, setCurPath] = useState('')
+  // TODO: figure out way to remove this
+  // Gets set the the useRestoreModel via a change listener on model.onDidChangeContent
+  // Is then passed down to the editor actions so they have access to it
+  const curValueRef = useRef('')
+
   const {
     rootRef,
     filesRef,
     autoSave,
     editorRef,
     optionsRef,
+    lintWorkerRef,
     openedPathRef,
     editorNodeRef,
     onLoadFileRef,
-    onPathChangeRef,
+    typesWorkerRef,
     onEditorBlurRef,
-    onEditorFocusRef,
     editorStatesRef,
     onFileChangeRef,
+    onEditorFocusRef,
     onValueChangeRef,
     contentListenerRef,
   } = useEditorRefs({
+    curPath,
     options,
     onLoadFile,
     defaultFiles,
@@ -80,18 +86,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onValueChange
   })
 
-  const [lintWorkerRef] = useLintWorker({ editorRef })
-  const [typesWorkerRef] = useTypesWorker({ editorRef })
-
-  const [curPath, setCurPath] = useState('')
-  const curPathRef = useRef('')
-  const curValueRef = useRef('')
-
-  const {
-    Modal,
-  } = useModalActions({
-    Modal: ModalComp
-  })
+  const { Modal } = useModalActions({ Modal: ModalComp })
 
   const {
     pathChange,
@@ -135,19 +130,15 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     deleteFile,
     editFileName,
     abortFileChange,
-    closeOtherFiles,
   } = useEditorFileCallbacks({
-    Modal,
-    rootRef,
+    curPath,
     autoSave,
     filesRef,
     editorRef,
     onAddFile,
     onSaveFile,
-    curPathRef,
     pathChange,
     setCurPath,
-    curValueRef,
     deleteModel,
     openedFiles,
     onRenameFile,
@@ -168,13 +159,10 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     saveFile,
     closeFile,
     editorRef,
-    curPathRef,
     pathChange,
     openedFiles,
-    curValueRef,
     resizeSidebar,
     onEditorLoaded,
-    onPathChangeRef,
     onEditorBlurRef,
     onEditorFocusRef,
   })
@@ -184,10 +172,10 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     deleteFolder,
     editFolderName
   } = useFolderCallbacks({
+    curPath,
     filesRef,
     autoSave,
     onAddFile,
-    curPathRef,
     pathChange,
     deleteFile,
     deleteModel,
@@ -268,9 +256,9 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         ) || null}
         {actions?.length && (
           <Actions
+            curPath={curPath}
             open={actionsOpen}
             editorRef={editorRef}
-            curPathRef={curPathRef}
             curValueRef={curValueRef}
             actions={actions as TEditorAction[]}
           />

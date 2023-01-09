@@ -12,8 +12,6 @@ import {
 } from 'react'
 
 
-
-
 const useActionComp = <
   TEditor=Record<any, any>,
   TEditorRef extends MutableRefObject<any>=MutableRefObject<any>
@@ -21,9 +19,9 @@ const useActionComp = <
   const {
     name,
     id=name,
+    curPath,
     Component,
     editorRef,
-    curPathRef,
     curValueRef,
     onClick:onClickCb,
     className=`goblet-editor-${id}`,
@@ -33,10 +31,10 @@ const useActionComp = <
     onClickCb?.(
       evt,
       editorRef.current,
-      curPathRef.current,
+      curPath,
       curValueRef.current,
     )
-  }, [onClickCb])
+  }, [curPath, onClickCb])
 
   return useMemo(() => {
     const compProps = {
@@ -44,7 +42,7 @@ const useActionComp = <
       name,
       onClick,
       className,
-      activeFile: curPathRef.current,
+      activeFile: curPath,
     }
 
     return isValidElement(Component)
@@ -53,10 +51,10 @@ const useActionComp = <
   }, [
     id,
     name,
+    curPath,
     onClick,
     className,
     Component,
-    curPathRef.current,
   ])
 
 }

@@ -25,7 +25,7 @@ export type TSidebarActionProps = {
 }
 
 export type TSidebarActionExt<TEditorRef=MutableRefObject<unknown>> = {
+  curPath:string
   editorRef: TEditorRef
-  curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
 }

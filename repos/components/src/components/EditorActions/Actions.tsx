@@ -15,10 +15,10 @@ import {
 
 export type TActions<TEditor, TEditorRef extends MutableRefObject<any>=MutableRefObject<any>> = {
   open?:boolean
-  actions: TAction<TEditor, TEditorRef>[]
+  curPath:string
   editorRef:TEditorRef
-  curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
+  actions: TAction<TEditor, TEditorRef>[]
 }
 
 export const Actions = <
@@ -26,9 +26,9 @@ export const Actions = <
   TEditorRef extends MutableRefObject<any>=MutableRefObject<any>
 >(props:TActions<TEditor, TEditorRef>) => {
   const {
+    curPath,
     actions,
     editorRef,
-    curPathRef,
     curValueRef,
   } = props
 
@@ -92,8 +92,8 @@ export const Actions = <
             <Action
               key={action.id || action.name}
               {...action}
+              curPath={curPath}
               editorRef={editorRef}
-              curPathRef={curPathRef}
               curValueRef={curValueRef}
             />
           )

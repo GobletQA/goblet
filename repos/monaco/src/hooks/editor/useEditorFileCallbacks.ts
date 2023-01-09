@@ -1,7 +1,6 @@
 import type { editor } from 'monaco-editor'
 import type { SetStateAction, MutableRefObject } from 'react'
 import type {
-  TModal,
   TFilelist,
   TAutoSave,
   TCodeEditorRef,
@@ -13,23 +12,20 @@ import type {
 
 import { useCallback } from 'react'
 import { useCloseFile } from './useCloseFile'
-import { useCloseOtherFiles } from './useCloseOtherFiles'
-import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
+import { getContentFromPath } from '@GBM/utils/editor/getContentFromPath'
+import { createOrUpdateModel } from '@GBM/utils/editor/createOrUpdateModel'
 
 
 export type TUseEditorFileCallbacks = {
-  Modal: TModal
+  curPath:string
   autoSave: TAutoSave
   editorRef:TCodeEditorRef
   onAddFile?: TEditorAddFile
+  openedFiles: TEditorOpenFiles
   onDeleteFile?: TEditorDeleteFile
   onRenameFile?: TEditorRenameFile
-  openedFiles: TEditorOpenFiles
-  rootRef: MutableRefObject<any>
   pathChange: (path: string) => void
-  curPathRef: MutableRefObject<string>
   deleteModel: (path: string) => void
-  curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   openedPathRef: MutableRefObject<string | null>
   onSaveFile?: (path: string, content: string) => void
@@ -40,15 +36,12 @@ export type TUseEditorFileCallbacks = {
 
 export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
   const {
-    Modal,
-    rootRef,
+    curPath,
     autoSave,
     filesRef,
     editorRef,
-    curPathRef,
     setCurPath,
     pathChange,
-    curValueRef,
     deleteModel,
     onAddFile,
     onSaveFile,
@@ -66,33 +59,22 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
   )
 
   const saveFile = useCallback(() => {
-    filesRef.current[curPathRef.current] = curValueRef.current
-    onSaveFile?.(curPathRef.current, curValueRef.current)
+    const content = getContentFromPath(curPath) || filesRef.current[curPath]
+    if(!content) return console.error(`Could not find content for file`, curPath)
+
+    filesRef.current[curPath] = content
+    onSaveFile?.(curPath, content)
     setOpenedFiles(openedFiles => {
       return openedFiles.map(file => {
-        file.path === curPathRef.current && (file.status = undefined)
+        file.path === curPath && (file.status = undefined)
         return file
       })
     })
 
-  }, [onSaveFile, handleFormat])
+  }, [curPath, onSaveFile, handleFormat])
 
   const closeFile = useCloseFile({
-    autoSave,
-    filesRef,
-    curPathRef,
-    setCurPath,
-    openedFiles,
-    restoreModel,
-    openedPathRef,
-    setOpenedFiles,
-    // Pass the onSaveFile callback so we can pass the path and content directly
-    onSaveFile,
-  })
-  
-  const closeOtherFiles = useCloseOtherFiles({
-    Modal,
-    rootRef,
+    curPath,
     autoSave,
     filesRef,
     setCurPath,
@@ -176,7 +158,6 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
     closeFile,
     editFileName,
     handleFormat,
-    closeOtherFiles,
     abortFileChange,
   }
 }

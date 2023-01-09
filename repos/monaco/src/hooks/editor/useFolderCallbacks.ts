@@ -13,6 +13,7 @@ import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 
 
 export type TUseFolderCallbacks = {
+  curPath:string
   autoSave: TAutoSave
   onAddFile?: TEditorAddFile
   onDeleteFile?: TEditorDeleteFile
@@ -20,7 +21,6 @@ export type TUseFolderCallbacks = {
   deleteFile: (path: string) => void
   deleteModel: (path: string) => void
   pathChange: (path: string) => void
-  curPathRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   setOpenedFiles: (content: SetStateAction<TEditorOpenFiles>) => void
 }
@@ -51,14 +51,14 @@ const updateFilesRef = (
 export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
 
   const {
+    curPath,
     filesRef,
     onAddFile,
-    onDeleteFile,
-    onRenameFile,
-    curPathRef,
     pathChange,
     deleteFile,
     deleteModel,
+    onDeleteFile,
+    onRenameFile,
     setOpenedFiles,
   } = props
 
@@ -107,12 +107,17 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
           })
         )
 
-        curPathRef.current.startsWith(path + '/')
-          && setTimeout(() => pathChange(curPathRef.current.replace(path + '/', newPath + '/')), 50)
+        curPath.startsWith(path + '/')
+          && setTimeout(() => pathChange(curPath.replace(path + '/', newPath + '/')), 50)
 
         onRenameFile?.(path, newPath)
       },
-      [pathChange, addFolder, onRenameFile]
+      [
+        curPath,
+        addFolder,
+        pathChange,
+        onRenameFile
+      ]
     )
 
   

@@ -19,6 +19,7 @@ import { THEMES } from '@GBM/constants'
 import { isStr } from '@keg-hub/jsutils'
 import { useDecorations } from './useDecorations'
 import { useCallback, useEffect, useImperativeHandle } from 'react'
+import { getContentFromPath } from '@GBM/utils/editor/getContentFromPath'
 import { createOrUpdateModel } from '@GBM/utils/editor/createOrUpdateModel'
 
 export type TUseEditorSetup = {
@@ -34,12 +35,9 @@ export type TUseEditorSetup = {
   closeFile:(path: string) => void
   onEditorBlurRef: TEditorFileCBRef
   onEditorFocusRef: TEditorFileCBRef
-  curPathRef: MutableRefObject<string>
-  curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   resizeSidebar: (width:number) => void
   pathChange:(key: string, content?:string) => void
-  onPathChangeRef: MutableRefObject<((key: string) => void) | undefined>
   setTheme: (name: string, themeObj?: TEditorTheme | undefined, monaco?:TMonaco) => Promise<void>
 }
 
@@ -57,30 +55,27 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     editorRef,
     closeFile,
     pathChange,
-    curPathRef,
     openedFiles,
-    curValueRef,
     resizeSidebar,
     onEditorLoaded,
-    onPathChangeRef,
     onEditorBlurRef,
     onEditorFocusRef,
   } = props
 
   const onEditorFocus = useCallback(() => {
-    onEditorFocusRef.current?.(curPathRef.current, curValueRef.current)
-  }, [])
+    const content = getContentFromPath(curPath) || filesRef.current[curPath]
+    onEditorFocusRef.current?.(curPath, content)
+  }, [curPath])
 
   const onEditorBlur = useCallback(() => {
-    if(!curValueRef.current) return
+    const content = getContentFromPath(curPath) || filesRef.current[curPath]
+    if(!content) return
 
-    const file = openedFiles.find(file => file.path === curPathRef.current)
+    const file = openedFiles.find(file => file.path === curPath)
     const isEditing = file?.status === `editing`
 
     // Check if save on blur and the file was changed
-    if(autoSave === `blur` && isEditing){
-      saveFile()
-    }
+    if(autoSave === `blur` && isEditing) saveFile()
 
     // TODO: find way to know if the event that called this was an action within the editor
     // If a close file action is called for a diff file that is also open
@@ -89,14 +84,15 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
 
     // Check if we should auto close the file when not edited
     if(options.openMode === `preview` && file && file?.mode !== `keep`){
-      if(!isEditing) closeFile(curPathRef.current)
+      if(!isEditing) closeFile(curPath)
       else file.mode = `keep`
     }
 
     // Call passed in callbacks
-    onEditorBlurRef?.current?.(curPathRef.current, curValueRef.current)
+    onEditorBlurRef?.current?.(curPath, content)
 
   }, [
+    curPath,
     autoSave,
     saveFile,
     closeFile,
@@ -116,10 +112,9 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
   }, [])
 
   const decoration = useDecorations({
+    curPath,
     editorRef,
-    curPathRef
   })
-
 
   // Sets up callbacks for focus and blur of the editor
   useEffect(() => {
@@ -159,10 +154,6 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     }
   }, [options, config])
 
-  useEffect(() => {
-    if (onPathChangeRef.current && curPath) onPathChangeRef.current(curPath)
-    curPathRef.current = curPath
-  }, [curPath])
 
   useImperativeHandle(ref, () => ({
     openFile,

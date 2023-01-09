@@ -9,7 +9,7 @@ export type TEditorCB = (data: string) => void
 export type TFileCallback = (...args: any[]) => void
 export type TCodeEditor = editor.IStandaloneCodeEditor
 export type TCodeEditorRef = MutableRefObject<TCodeEditor|undefined>
-export type TEditorFileCB = (path:string, content: string) => void
+export type TEditorFileCB = (path:string, content: string|null) => void
 export type TEditorPromiseCB = (data: string) => Promise<string|null>
 export type TEditorAddFile = (path:string, isFolder?: boolean) => void
 export type TEditorDeleteFile = (path:string, isFolder?: boolean) => void

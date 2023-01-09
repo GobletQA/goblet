@@ -29,7 +29,6 @@ export const useOpenOrFocus = (props:TUseOpenOrFocus) => {
     setOpenedFiles(openedFiles => {
       let exist = false
       openedFiles.forEach(file => file.path === path && (exist = true))
-
       return exist ? openedFiles : [...openedFiles, { path: path }]
     })
     setCurPath(path)

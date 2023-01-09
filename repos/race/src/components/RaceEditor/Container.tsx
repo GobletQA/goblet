@@ -88,8 +88,8 @@ export const Container = (props:TEditorContainer) => {
             actions={actions}
             open={actionsOpen}
             editorRef={editorRef}
-            curPathRef={curPathRef}
             curValueRef={curValueRef}
+            curPath={curPathRef.current}
           />
         )}
       </ContainerComp>

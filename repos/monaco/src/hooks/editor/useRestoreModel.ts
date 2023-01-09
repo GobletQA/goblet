@@ -68,6 +68,7 @@ const restoreContentListener = (
 
   let timer: any = null
 
+  // On change listener, that updates the content of the active model
   contentListenerRef.current = model.onDidChangeContent(() => {
     const content = model.getValue()
 

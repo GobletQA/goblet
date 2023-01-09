@@ -89,8 +89,9 @@ export const useMonacoHooks = (
   exists(theme) && set(config, `theme.name`, theme)
 
   useEventListen<TPlayerTestEvent>(PlayerClearDecorationEvt, (event:TPlayerResEvent) => {
+    const { location } = event
     const decoration = editorRef?.current?.decoration
-    decoration?.clear()
+    location && decoration?.clear(location)
   })
 
   useEventListen<TPlayerTestEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
@@ -101,7 +102,7 @@ export const useMonacoHooks = (
     const dec = buildDecoration(data)
     const relative = rmRootFromLoc(location, rootPrefix)
 
-    decoration?.update(relative, dec)
+    decoration?.add(relative, dec, { action: data.action })
 
   })
 
