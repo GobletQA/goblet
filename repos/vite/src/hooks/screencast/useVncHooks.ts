@@ -76,7 +76,7 @@ export const useConnectCB = (props:TBrowserProps, ext:TConnectExt) => {
       _rfb.scaleViewport = scaleViewport ?? false
       _rfb.showDotCursor = showDotCursor ?? false
       _rfb.background = background ?? ''
-      _rfb.qualityLevel = qualityLevel ?? 2
+      _rfb.qualityLevel = qualityLevel ?? 0
       _rfb.compressionLevel = compressionLevel ?? 9
       rfb.current = _rfb
 
