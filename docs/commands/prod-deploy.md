@@ -22,7 +22,7 @@
   * `kubectl --namespace gb-production get services -o wide -w ingress-nginx-controller`
 
 
-## Steps
+## Backend - Steps
 
 ### From Scratch
 * Set the namespace and context
@@ -39,10 +39,28 @@
   * `kubectl apply -f scripts/deploy/kube/cert.yaml`
 
 ### Re-Deploy
+
 * Set the namespace and context
   * `yarn kube set prod --env prod --log`
 * Deploy the Backend Apps
   * `yarn dev deploy --env prod --ds backend --log`
 
+### Clean Prod
+
+* Set the namespace and context
+  * `yarn kube set prod --env prod --log`
+* Clean Prod
+  * `yarn dev clean --env prod --ds backend --log`
+
 
 ### TODO: add task to create linode token, to ensure goblet-certs can create ssl certs
+
+
+## Frontend - Steps
+
+### Re-Deploy
+
+* Set the namespace and context
+  * `yarn kube set prod --env prod --log`
+* Deploy the Frontend Apps
+  * `yarn deploy fe --env prod --log`

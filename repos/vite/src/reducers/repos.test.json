@@ -8,34 +8,11 @@
     ]
   },
   {
-    "url": "https://github.com/lancetipton/Iframe-Postmessage",
-    "name": "Iframe-Postmessage",
-    "branches": [
-      "master"
-    ]
-  },
-  {
-    "url": "https://github.com/lancetipton/parkin",
-    "name": "parkin",
-    "branches": [
-      "gh-pages",
-      "master",
-      "parkin-1.4.0-dcc9118"
-    ]
-  },
-  {
     "url": "https://github.com/lancetipton/strategy-e2e-tests",
     "name": "strategy-e2e-tests",
     "branches": [
       "branch-from-main",
       "main"
-    ]
-  },
-  {
-    "url": "https://github.com/lancetipton/symplasm",
-    "name": "symplasm",
-    "branches": [
-      "master"
     ]
   }
 ]
