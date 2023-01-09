@@ -68,7 +68,7 @@ export class Controller {
     // There's an odd bug where dockerode is adding / before a named container
     // So we have to compare the name include a / on the ref
     // first remove it if it exists, then added back to it works with or without it
-    const strRef = isRefStr ? containerRef.replace(/^\//, ``) : ``
+    const strRef = isRefStr ? containerRef?.replace?.(/^\//, ``) : ``
 
     if(strRef && this.containerMaps[strRef])
       return this.containerMaps[strRef]
@@ -77,8 +77,8 @@ export class Controller {
       .find((cont) => {
         const container = cont as TContainerMap
         if(isRefStr)
-          return container?.id.startsWith(containerRef)
-            || container?.name.startsWith(strRef)
+          return container?.id?.startsWith?.(containerRef)
+            || container?.name?.startsWith?.(strRef)
         
         // Convert to any to fix issue with checking type on TContainerMap and TContainerRef
         // We check for both uppercase and lowercase 
@@ -89,8 +89,8 @@ export class Controller {
           Name
         } = containerRef as any
 
-        return container?.id.startsWith(id || Id)
-          || container?.name.startsWith(`/${(name || Name).replace(`/`, ``)}`)
+        return container?.id?.startsWith?.(id || Id)
+          || container?.name?.startsWith?.(`/${(name || Name)?.replace?.(`/`, ``)}`)
 
       })
   }
