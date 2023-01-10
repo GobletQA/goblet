@@ -26,8 +26,9 @@ export const setupServer = (
 ) => {
   app = app || getApp()
 
-  trustProxy !== false && app.set('trust proxy', 1)
-  app.disable('x-powered-by')
+  trustProxy !== false && app.set(`trust proxy`, 1)
+  app.disable(`etag`)
+  app.disable(`x-powered-by`)
 
   parseJson && jsonParsing(app)
 
