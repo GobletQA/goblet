@@ -27,3 +27,24 @@ export type TGitMeta = {
 }
 
 export type TRepoWatchCb = (event:string, path:string, repoWatcher:RepoWatcher) => void
+
+type TGitCreateUserRepo = {
+  name: string
+  homepage?:string
+  private?:boolean
+  has_wiki?:boolean
+  has_issues?:boolean
+  description?: string
+  has_projects?:boolean
+  allow_squash_merge?:boolean
+  allow_merge_commit?:boolean
+  delete_branch_on_merge?:boolean
+  // Will all ways default this to true
+  // auto_init?:boolean
+}
+
+export type TGitCreateOrgRepo = TGitCreateUserRepo &  {
+  org: string
+}
+
+export type TGitCreateRepo = TGitCreateOrgRepo | TGitCreateUserRepo

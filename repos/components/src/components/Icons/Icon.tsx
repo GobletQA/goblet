@@ -19,6 +19,7 @@ export type TIconProps = {
   sx?: CSSProperties
   style?: CSSProperties
   styles?: CSSProperties
+  svgStyle?: CSSProperties
   onClick?: (event:Event) => void
 }
 

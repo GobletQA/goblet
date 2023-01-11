@@ -123,7 +123,7 @@ export type TFilterArgs = {
 
 export type TSocketMessageStr = string
 export type TSocketMessageObj = {
-  id?: string
+  id: string
   name?: string
   cmd?: string
   group?: string
@@ -131,9 +131,9 @@ export type TSocketMessageObj = {
   message?: string
   groupId?: string
   params?:string[]
+  timestamp: string
   socketId?: string
   isRunning?: boolean
-  timestamp?: string
   stopWatching?:boolean
   data?: Record<string, any>
 }

@@ -4,16 +4,13 @@ import type {
   TMonaco,
   IEditor,
   TDefinitionAst,
-  TPlayerResEvent,
-  TPlayerTestEvent,
   TOpenFileTreeEvent,
   TEditorSettingValues,
 } from '@types'
 
-import { loadGobletFile } from '@actions/files/api/loadGobletFile'
-
 import { useEventListen } from '../useEvent'
 import { useMemo, useCallback } from 'react'
+import { useDecorations } from './useDecorations'
 import { useFiles, useRepo, useDefs } from '@store'
 import { useMonacoConfig } from './useMonacoConfig'
 import { exists, set, noOp } from '@keg-hub/jsutils'
@@ -23,15 +20,12 @@ import { toggleModal } from '@actions/modals/toggleModal'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { isCustomDef } from '@utils/definitions/isCustomDef'
-
-import { buildDecoration } from '@utils/editor/buildDecoration'
 import { useSettingValues } from '@hooks/store/useSettingValues'
+import { loadGobletFile } from '@actions/files/api/loadGobletFile'
 import {
-  PlayerTestEvt,
   UpdateModalEvt,
   OpenFileTreeEvt,
   OpenEditorFileEvt,
-  PlayerClearDecorationEvt
 } from '@constants'
 
 
@@ -58,7 +52,6 @@ export const useMonacoHooks = (
 
   const repo = useRepo()
   const repoFiles = useFiles()
-  const defs = useDefs()
 
   const rootPrefix = useMemo(
     () => getRootPrefix(repo),
@@ -88,24 +81,6 @@ export const useMonacoHooks = (
 
   exists(theme) && set(config, `theme.name`, theme)
 
-  useEventListen<TPlayerTestEvent>(PlayerClearDecorationEvt, (event:TPlayerResEvent) => {
-    const { location } = event
-    const decoration = editorRef?.current?.decoration
-    location && decoration?.clear(location)
-  })
-
-  useEventListen<TPlayerTestEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
-    const decoration = editorRef?.current?.decoration
-    if(!decoration) return
-
-    const { data, location } = event
-    const dec = buildDecoration(data)
-    const relative = rmRootFromLoc(location, rootPrefix)
-
-    decoration?.add(relative, dec, { action: data.action })
-
-  })
-
   useEventListen<TOpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
     exists(size) && editorRef?.current?.resizeSidebar?.(size)
   })
@@ -134,6 +109,8 @@ export const useMonacoHooks = (
 
   // TODO: remove this if it's not needed
   const onEditorLoaded = useCallback((editor:IEditor, monaco:TMonaco) => {}, [])
+
+  useDecorations({ editorRef, repo, rootPrefix })
 
   return {
     config,

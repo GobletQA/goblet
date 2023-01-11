@@ -6,7 +6,6 @@ import { PlayCircleOutlineIcon } from '@gobletqa/components'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
-
 const RunTests = (props:TSidebarActionProps) => {
   return (
     <EditorAction
@@ -24,7 +23,7 @@ export const RunTestsAction:TSidebarAction = {
   Component: RunTests,
   name: `run-tests-action`,
   onClick: async (event, editor, loc, content) => {
-    if(!loc) return console.warn(`Can not run tests, no active file.`)
+    if(!loc) return console.warn(`Can not run tests, a file must be active in the editor.`)
 
     // Clear out the decorations for the new test run
     clearEditorDecorations(loc)

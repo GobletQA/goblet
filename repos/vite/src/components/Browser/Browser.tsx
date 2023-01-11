@@ -4,6 +4,7 @@ import React, { forwardRef, useImperativeHandle } from 'react'
 
 import { cls } from '@keg-hub/jsutils'
 import { BrowserNav } from './BrowserNav'
+import { BrowserCover } from './BrowserCover'
 import { BrowserLoading } from './BrowserLoading'
 import { ScreencastBrowserSelector } from '@constants'
 import { useVncRefs } from '@hooks/screencast/useVncRefs'
@@ -149,6 +150,7 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
             />
           )}
       </BrowserViewContainer>
+      <BrowserCover />
     </BrowserContainer>
   )
 }

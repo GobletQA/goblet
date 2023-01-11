@@ -22,8 +22,14 @@ const getBranchHash = async ({ branch, remote, token, log }:TGitOpts) => {
     headers: buildHeaders(token),
   } as AxiosRequestConfig
 
+  console.log(`------- params -------`)
+  console.log(params)
+
   log !== false && Logger.log(`Get Repo SHA Request Params:\n`, params)
   const [err, resp] = await limbo(axios(params))
+
+  console.log(`------- resp -------`)
+  console.log(resp?.data)
 
   err &&
     throwGitError(

@@ -1,3 +1,4 @@
+import type { TGitOpts, TGitCreateRepo } from '@gobletqa/workflows/types'
 
 
 /**
@@ -9,29 +10,48 @@
  *
  * @example - Organization
  * curl -H "Authorization: token ACCESS_TOKEN" \
- * --data '{"name":"NEW_REPO_NAME"}' \
+ * --data '{"name":"NEW_REPO_NAME", "description": "", "private": true, "auto_init": true }' \
  * https://api.github.com/orgs/ORGANIZATION_NAME/repos
+
 */
 
-import { limbo } from '@keg-hub/jsutils'
+import { limbo, deepMerge } from '@keg-hub/jsutils'
 import { Logger } from '@keg-hub/cli-utils'
 import axios, { AxiosRequestConfig } from 'axios'
 import { throwGitError, buildHeaders, buildAPIUrl } from './gitUtils'
 
-import { TGitOpts } from '@gobletqa/workflows/types'
+
+const createOpts = {
+  override: {
+    private: true,
+    has_wiki: true,
+    has_issues: true,
+    has_projects: true,
+    allow_merge_commit: false,
+    delete_branch_on_merge: false,
+  },
+  force: {
+    auto_init: true,
+  },
+}
+
 
 /**
- * TODO - Creates a new repo by calling github's API via axios
- * Figure out how to set the default branch or call the create branch right after this method
+ * Creates a new repo by calling github's API via axios
+ * Force auth_init: true which create a commit that can be used to create branches from
  */
-export const createRepo = async ({ remote, token, log, branch }:TGitOpts, repoName:string) => {
+export const createRepo = async ({ remote, token, log, branch }:TGitOpts, opts:TGitCreateRepo) => {
   const remoteUrl = buildAPIUrl(remote)
 
   const params = {
     method: 'POST',
     url: remoteUrl,
-    data: { repoName },
     headers: buildHeaders(token),
+    data: deepMerge(
+      createOpts,
+      opts,
+      { auto_init: true }
+    ),
   } as AxiosRequestConfig
 
   log && Logger.log(`Create Repo Request Params:\n`, params)

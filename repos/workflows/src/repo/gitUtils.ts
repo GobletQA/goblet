@@ -34,7 +34,7 @@ export const throwGitError = (
  */
 export const buildHeaders = (token:string) => ({
   ...(token && { Authorization: `token ${token}` }),
-  'Content-Type': `application/json`,
+  [`Content-Type`]: `application/json`,
   Accept: `application/vnd.github+json`,
 })
 
@@ -43,7 +43,7 @@ export const buildHeaders = (token:string) => ({
  */
 export const buildAPIUrl = (remote:string, pathExt:string[]=[]) => {
   const repoUrl = new url.URL(remote)
-  repoUrl.host = process.env.GIT_REPO_HOST || 'api.github.com'
+  repoUrl.host = process.env.GIT_REPO_HOST || `api.github.com`
   repoUrl.pathname = path.join(`repos`, repoUrl.pathname, ...pathExt)
 
   return repoUrl.toString()

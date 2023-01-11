@@ -35,15 +35,17 @@ export const LogoBtn = styled(IconButton)`
   position: relative;
   border-radius: 0px;
   align-items: center;
+  padding: 2px;
+  margin: 0px 6px;
   
   & svg {
-    margin: 0px 6px;
   }
 `
 
 export const LogoText = styled(Typography)(({ theme }) => `
-  font-size: 20px;
-  position: absolute;
   left: 100%;
+  font-size: 20px;
+  margin-left: 6px;
+  margin-right: 6px;
   color: ${getColor(`colors.royalPurple`, `colors.white`, theme)}
 `) as typeof Typography

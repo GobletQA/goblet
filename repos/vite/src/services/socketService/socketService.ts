@@ -3,7 +3,7 @@ import type { TSockCmds, TSocketService, TSockCmd } from '@types'
 
 import io from 'socket.io-client'
 import { events } from './events'
-import { TagPrefix } from '@constants/websocket'
+import { TagPrefix } from '@constants'
 import * as EventTypes from '@constants/websocket'
 import {
   getCommand,
