@@ -7,6 +7,7 @@ import {
   IconButton
 } from '@gobletqa/components'
 
+export const BrowserStateIcon = styled(Box)``
 
 export const BrowserNav = styled('nav')(({ theme }) => `
   width: 100%;

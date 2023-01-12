@@ -1,6 +1,6 @@
 import { EBrowserState } from '@types'
-import { capitalize } from '@keg-hub/jsutils'
 import { BrowserButton } from './BrowserButton'
+import { BrowserStateIcon } from './Browser.styled'
 import { RecordIcon, AlertIcon, colors, gutter } from '@gobletqa/components'
 
 const styles = {
@@ -9,8 +9,16 @@ const styles = {
     height: `28px`,
   },
   alert: {
-    width: `18px`,
-    height: `18px`,
+    inactive: {
+      animation: `unset`,
+      width: `16px !important`,
+      height: `16px !important`,
+      borderLeftColor: `rgba(0, 0, 0, 0.26)`,
+    },
+    active: {
+      width: `16px !important`,
+      height: `16px !important`,
+    }
   },
   button: {
     color: colors.recordRed,
@@ -27,19 +35,26 @@ export type TBrowserState = {
 export const BrowserState = (props:TBrowserState) => {
 
   const { browserState } = props
+  const stateStyle = browserState === EBrowserState.playing
+    ? styles?.alert?.active
+    : styles?.alert?.inactive
 
   return (
     <BrowserButton
       sx={styles.button}
+      tooltip={`Browser is ${browserState}`}
       className='goblet-browser-state override-color'
-      tooltip={`Browser ${capitalize(browserState)}`}
       disabled={Boolean(browserState === EBrowserState.idle)}
     >
       {browserState === EBrowserState.recording
         ? (<RecordIcon sx={styles.record} />)
-        : (<AlertIcon sx={styles.alert} />)
+        : (
+            <BrowserStateIcon
+              style={stateStyle}
+              className='gb-player-glyph gb-player-running'
+            />
+          )
       }
     </BrowserButton>
   )
-  
 }

@@ -3,14 +3,11 @@ import type RFB from '@novnc/novnc/core/rfb'
 
 import { EBrowserState } from '@types'
 import { BrowserState } from './BrowserState'
-import { capitalize } from '@keg-hub/jsutils'
 import { BrowserButton } from './BrowserButton'
 import {
-  Text,
   colors,
   gutter,
   CachedIcon,
-  AlertIcon,
   RestartIcon,
   DangerousIcon,
   ArrowBackIcon,
@@ -32,7 +29,10 @@ export type TBrowserNav = {
 }
 
 const styles = {
-  icon: { height: `18px`, width: `18px` },
+  icon: {
+    width: `18px`,
+    height: `18px`,
+  },
   reconnect: {
     marginLeft: gutter.margin.qpx,
     marginRight: gutter.margin.hpx
@@ -41,18 +41,20 @@ const styles = {
     color: colors.red10,
     marginLeft: gutter.margin.qpx,
     marginRight: gutter.margin.qpx
+  },
+  action: {
+    minWidth: `initial`
   }
-  
 }
 
 export const BrowserNav = (props:TBrowserNav) => {
-  
+
   const {
     loading,
     initialUrl,
     browserState,
-    setBrowserState
   } = props
+
   const {
     inputRef,
     onGoBack,
@@ -67,7 +69,9 @@ export const BrowserNav = (props:TBrowserNav) => {
 
   return (
       <BrowserNavComp className='goblet-browser-nav'>
+
         <BrowserNavActions className='goblet-browser-left-nav-actions' >
+
           <BrowserButton
             onClick={onGoBack}
             tooltip='Click to go back'
@@ -90,9 +94,15 @@ export const BrowserNav = (props:TBrowserNav) => {
             disabled={loading || navLoading}
             className='goblet-browser-reload-action'
           >
-            {loading || navLoading ? <DangerousIcon sx={styles.icon} /> : <CachedIcon sx={styles.icon} />}
+            {
+              (loading || navLoading)
+                ? (<DangerousIcon sx={styles.icon} />)
+                : (<CachedIcon sx={styles.icon} />)
+            }
           </BrowserButton>
+
         </BrowserNavActions>
+
         <BrowserInput
           type="text"
           ref={inputRef}
@@ -102,20 +112,22 @@ export const BrowserNav = (props:TBrowserNav) => {
           className='browser-nav-input'
           onFocusCapture={() => inputRef.current?.select()}
         />
+
         <BrowserNavActions
-          sx={{ minWidth: `initial` }}
+          sx={styles.action}
           className='goblet-browser-right-nav-actions'
         >
           <BrowserState browserState={browserState} />
           <BrowserButton
             sx={styles.reconnect}
             onClick={onReconnect}
-            tooltip='Click to reconnect'
+            tooltip='Force browser restart'
             className='goblet-browser-reconnect-action'
           >
             <RestartIcon sx={styles.icon} />
           </BrowserButton>
         </BrowserNavActions>
+
       </BrowserNavComp>
   )
   
