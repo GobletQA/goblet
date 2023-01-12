@@ -1,6 +1,7 @@
 
 export const gobletColors = {
   cardinal: `#B53541`,
+  recordRed: `#DE0D0D`,
   shamrock: `#61AB82`,
   royalPurple: `#785B9C`,
   honeyYellow: `#FFB601`,

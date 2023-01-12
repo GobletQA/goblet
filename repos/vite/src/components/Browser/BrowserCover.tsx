@@ -1,9 +1,6 @@
-import type { TPlayerResEvent } from '@types'
 
-import { useState } from 'react'
 import Box from '@mui/material/Box'
-import { useEventListen } from '@hooks/useEvent'
-import { PlayerStartedEvent, PlayerEndedEvent } from '@constants'
+import { EBrowserState } from '@types'
 
 const styles = {
   running: {
@@ -13,18 +10,24 @@ const styles = {
     bottom: 0,
     position: `absolute`,
   },
-  stopped: {
+  idle: {
     display: `none`
   }
 }
 
-export const BrowserCover = () => {
-  const [running, setRunning] = useState<boolean>(false)
+export type TBrowserCover = {
+  browserState:EBrowserState
+  setBrowserState?:(state:EBrowserState) => void
+}
 
-  useEventListen(PlayerStartedEvent, (event:TPlayerResEvent) => setRunning(true))
-  useEventListen(PlayerEndedEvent, (event:TPlayerResEvent) => setRunning(false))
+export const BrowserCover = (props:TBrowserCover) => {
+  const {
+    browserState
+  } = props
 
-  const style = running ? styles.running : styles.stopped
+  const style = browserState !== EBrowserState.idle
+    ? styles.running
+    : styles.idle
 
   return (
     <Box

@@ -109,9 +109,9 @@ export const DefsHeaderTab = styled(Tab)(({ theme }) => `
   transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
 
   color: ${getColor(colors.gray05, colors.black06, theme)};
-  background-color: ${getColor(colors.gray00, colors.black11, theme)};
-  border-bottom: 1px solid ${getColor(colors.gray00, colors.black13, theme)};
-  border-left: 1px solid ${getColor(colors.gray01, colors.black13, theme)};
+  background-color: ${getColor(colors.gray01, colors.black11, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray02, colors.black13, theme)};
+  border-left: 1px solid ${getColor(colors.gray02, colors.black13, theme)};
 
 
   &.Mui-selected {
@@ -149,8 +149,8 @@ export const DefsSliderAction = styled(IconButton)(({ theme }) => `
   width: ${dims.defs.header.height + 8}px;
   background-color: ${getColor(colors.gray01, colors.black11, theme)};
   transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
-  border-left: 1px solid ${getColor(colors.gray01, colors.black13, theme)};
-  border-bottom: 1px solid ${getColor(colors.gray00, colors.black14, theme)};
+  border-left: 1px solid ${getColor(colors.gray02, colors.black13, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray02, colors.black14, theme)};
   
   &:hover {
     background-color: ${getColor(colors.white, colors.black14, theme)};

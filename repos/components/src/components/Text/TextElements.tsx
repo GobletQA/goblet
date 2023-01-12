@@ -11,6 +11,7 @@ export const H5 = (props:TTextEl) => <Text variant='h5' {...props} />
 export const H6 = (props:TTextEl) => <Text variant='h6' {...props} />
 export const Paragraph = (props:TTextEl) => <Text component='p' {...props} />
 export const Span = (props:TTextEl) => <Text component='span' {...props} />
+export const Label = (props:TTextEl) => <Text component='label' {...props} />
 
 export {
   Paragraph as P

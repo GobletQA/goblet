@@ -18,7 +18,7 @@ export const TerminalContainer = styled(Container)(({ theme }) => `
   position: relative;
   align-items: stretch;
   flex-direction: column;
-  background-color: ${getColor(colors.gray00, colors.black10, theme)};
+  background-color: ${getColor(colors.gray01, colors.black10, theme)};
   border-top: 1px solid ${getColor(colors.gray00, colors.black12, theme)};
 `)
 

@@ -1,5 +1,7 @@
 import type { TBrowserProps, TBrowserHandle } from '@types'
 
+import { EBrowserState } from '@types'
+
 import React, { forwardRef, useImperativeHandle } from 'react'
 
 import { cls } from '@keg-hub/jsutils'
@@ -11,11 +13,15 @@ import { useVncRefs } from '@hooks/screencast/useVncRefs'
 import { useRFBHooks } from '@hooks/screencast/useRFBHooks'
 import { useVncHooks } from '@hooks/screencast/useVncHooks'
 import { useVncHandlers } from '@hooks/screencast/useVncHandlers'
+import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import {
   BrowserView,
   BrowserContainer,
+  BrowserShadowTop,
+  BrowserShadowBottom,
   BrowserViewContainer
 } from './Browser.styled'
+
 
 const loadingStyles = {
   main: {
@@ -121,14 +127,21 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
     eventListeners: eventListeners.current,
   }))
 
+  const {
+    browserState,
+    setBrowserState
+  } = useBrowserState()
+
   return (
-    <BrowserContainer className='browser-container'>
+    <BrowserContainer className={cls('gb-browser-container', browserState)}>
       <BrowserNav
         rfbRef={rfb}
         loading={loading}
         initialUrl={displayUrl}
+        browserState={browserState}
+        setBrowserState={setBrowserState}
       />
-      <BrowserViewContainer className='browser-view-container'>
+      <BrowserViewContainer className='gb-browser-view-container'>
         <BrowserView
           style={style}
           {...elementAttrs}
@@ -150,7 +163,12 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
             />
           )}
       </BrowserViewContainer>
-      <BrowserCover />
+      <BrowserCover
+        browserState={browserState}
+        setBrowserState={setBrowserState}
+      />
+      <BrowserShadowTop className={cls('gb-browser-top-shadow', browserState)} />
+      <BrowserShadowBottom className={cls('gb-browser-top-shadow', browserState)} />
     </BrowserContainer>
   )
 }

@@ -9,6 +9,7 @@ export const PlayerEndedEvent = `player-ended-event`
 export const PlayerErrorEvent = `player-error-event`
 export const OpenFileTreeEvt = `open-file-tree-event`
 export const PanelDimsSetEvt = `panel-dims-set-event`
+export const BrowserStateEvt = `browser-state-event`
 export const TerminalExpandEvt = `terminal-expand-event`
 export const PlayerStartedEvent = `player-started-event`
 export const OpenEditorFileEvt = `open-editor-file-event`

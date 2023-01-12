@@ -2,6 +2,12 @@ import type RFB from '@novnc/novnc/core/rfb'
 import type { RefObject, Dispatch, MutableRefObject } from 'react'
 import type { NoVncOptions, NoVncCredentials } from '@novnc/novnc/core/rfb'
 
+export enum EBrowserState {
+  idle=`idle`,
+  playing=`playing`,
+  recording=`recording`,
+}
+
 export type TBrowserExt = {
   logger:TBrowserLogger,
   screen:RefObject<HTMLDivElement>
