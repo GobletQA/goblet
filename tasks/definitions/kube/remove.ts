@@ -72,8 +72,8 @@ export const remove = {
   options: {
     context: {
       alias: [ `ctx`],
-      example: `--name my-ingress`,
-      default: `ingress-nginx`,
+      example: `--name pod`,
+      default: `screencast`,
       description: `Name or context of the pod to remove`,
     },
     label: {
