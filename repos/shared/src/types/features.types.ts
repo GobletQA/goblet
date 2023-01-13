@@ -1,19 +1,19 @@
 import type { TFileModel } from './models.types'
 
 export enum EAstObjects {
-  feature = 'feature',
-  rule = 'rule',
-  background = 'background',
-  scenario = 'scenario',
-  step = 'step'
+  feature = `feature`,
+  rule = `rule`,
+  background = `background`,
+  scenario = `scenario`,
+  step = `step`
 }
 
 export enum EStepKey {
-  given='given',
-  when='when',
-  then='then',
-  and='and',
-  but='but',
+  given=`given`,
+  when=`when`,
+  then=`then`,
+  and=`and`,
+  but=`but`,
 } 
 
 export type TBackgroundAst = {

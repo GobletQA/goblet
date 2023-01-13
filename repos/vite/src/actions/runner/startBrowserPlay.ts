@@ -1,4 +1,4 @@
-import type { TGitData, TFileModel } from '@types'
+import type { TGitData, TFileModel, TStartPlaying, TBrowserActionOptions } from '@types'
 
 import { addToast } from '@actions/toasts'
 import { pickKeys } from '@keg-hub/jsutils'
@@ -14,19 +14,23 @@ type TBuildOpts = {
   cmd:string,
   params:string[],
   file:TFileModel,
+  options:Record<string, any>
 }
 
-const buildOptions = ({ params, cmd, file, appUrl }:TBuildOpts, repo:TGitData) => {
+type TBrowserPlay = Omit<TStartPlaying, `repo`|`id`|`onEvent`|`browserConf`|`onCleanup`> & {
+  repo:TGitData
+}
+
+const buildOptions = ({ options, params, cmd, file, appUrl }:TBuildOpts, repo:TGitData) => {
   return {
     repo,
-    // Add extra browser config if needed
-    // browser: {},
     ref: 'page',
     action: {
       props: [
         {
           cmd,
           params,
+          playOptions: options,
           file: pickKeys<Partial<TFileModel>>(
             file,
             [`fileType`, `location`, `uuid`, `name`, `content`]
@@ -37,7 +41,7 @@ const buildOptions = ({ params, cmd, file, appUrl }:TBuildOpts, repo:TGitData) =
       ],
       action: WSRecordActions.start
     }
-  }
+  } as TBrowserPlay
 }
 
 /**
@@ -59,15 +63,16 @@ export const startBrowserPlay = async (
   clearSpecs()
 
   const repo = getRepoData()
-  const params = buildCmdParams({ file, cmd })
+  const { params, options } = buildCmdParams({ file, cmd })
   const appUrl = getWorldVal({loc: `url`, fb: `app.url`})
 
-  const options = buildOptions(
+  const opts = buildOptions(
     {
+      cmd,
       file,
       appUrl,
       params,
-      cmd,
+      options
     },
     pickKeys<TGitData>(
       repo?.git,
@@ -75,5 +80,5 @@ export const startBrowserPlay = async (
     )
   )
 
-  WSService.emit(SocketMsgTypes.BROWSER_PLAY, options)
+  WSService.emit(SocketMsgTypes.BROWSER_PLAY, opts)
 }

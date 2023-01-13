@@ -2,9 +2,11 @@ import { TFileModel } from '@types'
 
 import {
   exists,
+  emptyObj,
+  emptyArr,
   checkCall,
   deepMerge,
-  noPropArr,
+  flatUnion,
 } from '@keg-hub/jsutils'
 import { getStore } from '@store'
 
@@ -13,14 +15,12 @@ export type TBuiltCmdParams = {
   file:TFileModel
 }
 
-const conditionalAdd = (key:string, value:string) => {
-  return exists(value) ? (key ? `${key}=${value}` : `--value`) : ''
+const conditionalAddParam = (key:string, value:string|number) => {
+  return exists(value) ? (key ? `${key}=${value}` : `--${value}`) : ''
 }
 
-const defSettings = {
-  browser: {
-    slowMo: 100,
-  },
+const conditionalAddOpt = (key:string, value:string|number) => {
+  return exists(value) ? ({[key]: value}) : emptyObj
 }
 
 /**
@@ -30,15 +30,20 @@ const defSettings = {
 const resolveFromSettings = (args:TBuiltCmdParams) => {
   const { repo, settings } = getStore()?.getState()
 
-  // TODO: add stetting.browser values here
-  // Should only add if they have been modified from the default state
-  const mergedSettings = deepMerge(defSettings, repo?.world?.settings)
+  const mergedSettings = deepMerge(settings, repo?.world?.settings)
 
-  return [
-    conditionalAdd(`slowMo`, mergedSettings?.browser?.slowMo),
-    conditionalAdd(`testTimeout`, mergedSettings?.tests?.timeout),
-    // TODO: Add other customizable settings here
-  ]
+  return {
+    options: {
+      ...conditionalAddOpt(`debug`, mergedSettings?.browser?.debug),
+      ...conditionalAddOpt(`slowMo`, mergedSettings?.browser?.slowMo),
+      ...conditionalAddOpt(`testTimeout`, mergedSettings?.browser?.timeout),
+    },
+    params: [
+      conditionalAddParam(`debug`, mergedSettings?.browser?.debug),
+      conditionalAddParam(`slowMo`, mergedSettings?.browser?.slowMo),
+      conditionalAddParam(`testTimeout`, mergedSettings?.browser?.timeout),
+    ]
+  }
 }
 
 /**
@@ -48,13 +53,22 @@ const resolveFromSettings = (args:TBuiltCmdParams) => {
 const buildDefaultParams = (args:TBuiltCmdParams) => {
   const { file } = args
   const repo = getStore()?.getState().repo
-  
-  return [
-    conditionalAdd(`context`, file?.location),
-    conditionalAdd(`base`, repo?.paths?.repoRoot),
-    // Add user run settings here via state.settings and world.settings
-    ...resolveFromSettings(args),
-  ]
+  // Add user run settings here via state.settings and world.settings
+  const { options, params } = resolveFromSettings(args)
+  const location = file?.location
+  const base = repo?.paths?.repoRoot
+
+  return {
+    options: {
+      ...conditionalAddOpt(`context`, location),
+      ...conditionalAddOpt(`base`, base),
+      ...options,
+    },
+    params: flatUnion([
+      conditionalAddParam(`context`, location),
+      conditionalAddParam(`base`, base),
+    ], params).filter(Boolean)
+  }
 }
 
 /**
@@ -62,12 +76,15 @@ const buildDefaultParams = (args:TBuiltCmdParams) => {
  * @function
  */
 const buildFeatureParams = (args:TBuiltCmdParams) => {
+  const { params, options } = buildDefaultParams(args)
 
-  return [
-    // Build the default params for all text exec types
-    ...buildDefaultParams(args),
-    // Add Feature file specific params here
-  ].filter(Boolean)
+  return {
+    options,
+    params: [
+      ...params,
+      // Add Feature file specific params here
+    ].filter(Boolean)
+  }
 }
 
 /**
@@ -75,11 +92,15 @@ const buildFeatureParams = (args:TBuiltCmdParams) => {
  * @function
  */
 const buildWaypointParams = (args:TBuiltCmdParams) => {
-  return [
-    // Build the default params for all text exec types
-    ...buildDefaultParams(args),
-    // Add Waypoint file specific params here
-  ].filter(Boolean)
+  const { params, options } = buildDefaultParams(args)
+
+  return {
+    options,
+    params: [
+      ...params,
+      // Add Waypoint file specific params here
+    ].filter(Boolean)
+  }
 }
 
 /**
@@ -87,11 +108,15 @@ const buildWaypointParams = (args:TBuiltCmdParams) => {
  * @function
  */
 const buildUnitParams = (args:TBuiltCmdParams) => {
-  return [
-    // Build the default params for all text exec types
-    ...buildDefaultParams(args),
-    // Add Unit file specific params here
-  ].filter(Boolean)
+  const { params, options } = buildDefaultParams(args)
+
+  return {
+    options,
+    params: [
+      ...params,
+      // Add Unit file specific params here
+    ].filter(Boolean)
+  }
 }
 
 /**
@@ -112,6 +137,6 @@ export const buildCmdParams = (args:TBuiltCmdParams) => {
   const { file } = args
 
   const typeKey = file?.fileType as keyof typeof parmBuildMap
+  return checkCall(parmBuildMap[typeKey], args) || { params: emptyArr, options: emptyObj  }
 
-  return (checkCall(parmBuildMap[typeKey], args) || noPropArr) as string[]
 }

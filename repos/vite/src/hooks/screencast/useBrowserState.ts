@@ -5,7 +5,6 @@ import { EBrowserState } from '@types'
 import { useEventListen } from '@hooks/useEvent'
 import { BrowserStateEvt, PlayerStartedEvent, PlayerEndedEvent } from '@constants'
 
-
 export const useBrowserState = () => {
 
   const [browserState, setBrowserState] = useState<EBrowserState>(EBrowserState.idle)

@@ -35,7 +35,10 @@ export const connection = (app:Express) => {
     cache.username = user.username
     cache.subdomain = user.subdomain
 
-    tailBrowserLogs(app, props)
+    // TODO: Add logs setting, and tie it to this
+    // Only tail logs is setting it set to verbose
+    // tailBrowserLogs(app, props)
+
     setTimeout(() => watchBrowser(app, props), 1000)
     
   }

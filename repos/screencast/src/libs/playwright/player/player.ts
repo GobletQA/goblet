@@ -8,6 +8,7 @@ import type {
   TPlayerEventCB,
   TBrowserContext,
   TPlayerCleanupCB,
+  TPlayerTestEvent,
   TPlayerStartConfig,
 } from '@GSC/types'
 
@@ -142,6 +143,7 @@ export class Player {
       this.fireEvent({
         message: 'Playing started',
         name: PWPlay.playStarted,
+        data: { options: this.options.playOptions } as TPlayerTestEvent
       })
 
       const codeRunner = new CodeRunner(this)

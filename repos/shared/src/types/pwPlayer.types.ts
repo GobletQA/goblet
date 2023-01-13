@@ -1,8 +1,7 @@
 import type { TRepo } from './repo.types'
-import type { TFileModel } from './models.types'
 import type { Player } from '@gobletqa/screencast'
 import type { TSocketMessageObj } from './socket.types'
-import type { TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
+import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 
 export type TPlayerEvent = {
   name:string
@@ -19,19 +18,17 @@ export type TPlayerConfig = {
   repo?:TRepo
   browser?:TBrowser
   page?:TBrowserPage
-  options?:TPlayerOpts
   onEvent?:TPlayerEventCB
   context?:TBrowserContext
   onCleanup?:TPlayerCleanupCB
+  options?:TBrowserActionOptions
 }
 
 export type TPlayerStartConfig = TPlayerConfig & {
   url:string
 }
 
-export type TPlayerOpts = {
-  file?: TFileModel
-}
+export type TPlayerOpts = TBrowserActionOptions
 
 export type TPlayerResEvent<T=TPlayerTestEvent> = Omit<TSocketMessageObj, `data`> & {
   location: string,
@@ -55,6 +52,11 @@ export enum EPlayerTestStatus {
   passed=`passed`,
 }
 
+export type TPlayerTestExpectation = {
+  type:string
+  message:string
+}
+
 export type TPlayerTestMeta = {
   id:string
   testPath:string
@@ -63,14 +65,13 @@ export type TPlayerTestMeta = {
   passed:boolean
   timestamp:number
   description:string
+  options?:Record<string, string|number>
+  failedExpectations?:TPlayerTestExpectation[]
+  passedExpectations?:TPlayerTestExpectation[]
   // Defaulting these to empty arrays
   // They contain a lot of test data that's not needed by the UI
   tests?: any[]
   describes?: any[]
-  // These exist, but are not being used by parkin
-  // So ignoring them for now
-  // failedExpectations:[]
-  // passedExpectations:[]
 }
 
 export type TPlayerTestEvent = TPlayerTestMeta & {
@@ -97,7 +98,6 @@ export type TPlayerTestResult = TPlayerTestMeta & {
   action:EPlayerTestAction.test
 }
 
-
 export type TPlayerTestSuiteDone<T=TPlayerTestEvent> = TPlayerTestEvent & {
   tests: T[]
 }
@@ -105,6 +105,14 @@ export type TPlayerTestSuiteDone<T=TPlayerTestEvent> = TPlayerTestEvent & {
 export type TPlayerTestSuiteFinished<T=TPlayerTestEvent> = TPlayerTestEvent & {
   describes: T[]
 }
+
+export type TPlayerEventData = TPlayerTestEvent
+  | TPlayerTestStart
+  | TPlayerTestDone
+  | TPlayerTestResult
+  | TPlayerTestSuiteDone
+  | TPlayerTestSuiteFinished
+
 
 export type TPlayerEnded = TPlayerResEvent<Record<string, any>>
 export type TPlayerStarted = TPlayerResEvent<Record<string, any>>

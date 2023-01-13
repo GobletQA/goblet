@@ -1,5 +1,6 @@
-import type { TRepo } from './repo.types'
+import type { TFileModel } from './models.types'
 import type { EBrowserType } from './browser.types'
+import type { TGitData, TRepo } from './repo.types'
 import type {
   Page,
   Frame,
@@ -71,11 +72,19 @@ export type TBrowserActionArgs = {
   onRecordEvent?:TActionCallback
 }
 
+export type TBrowserActionOptions = {
+  cmd?: string
+  params?:string[]
+  file?: Partial<TFileModel>
+  playOptions?: Record<string, string|number>
+  recordOptions?: Record<string, string|number>
+}
+
 export type TBrowserAction = {
-  props?: any[]
   ref?: TPWComponentRef
   prev?: string | boolean
   action?: string | TActionCallback
+  props?: [TBrowserActionOptions, string]
 }
 
 export type TStartPlaying = {
