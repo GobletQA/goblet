@@ -31,6 +31,7 @@ export type TScreenDimsOpts = {
 
 const fullHeight = {
   overflow: `hidden`,
+  position: `relative`,
   height: `calc( 100vh - ${dims.defs.header.hpx} )`,
 }
 const noOverflow = {

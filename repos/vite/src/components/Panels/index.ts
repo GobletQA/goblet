@@ -1,1 +1,1 @@
-export * from './ConnectPanel'
+export * from './ActionsPanel'

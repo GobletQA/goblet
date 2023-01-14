@@ -1,5 +1,5 @@
-import { ConnectPanel } from './ConnectPanel'
+import { ActionsPanel } from './ActionsPanel'
 
 export const PrePanels = [
-  ConnectPanel
+  ActionsPanel
 ]

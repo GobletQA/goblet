@@ -1,13 +1,9 @@
-
-import { Arrow } from '../Icons/Arrow'
-import { noOpObj, cls } from '@keg-hub/jsutils'
-import { ExpandIcon } from '@GBC/components/Icons'
-import {
-  PanelHeaderText,
-  PanelHeader as Container
-} from './Panel.styled'
-
 import type { TPanelHeader } from '../../types'
+
+import { ExpandIcon } from '@GBC/components/Icons'
+import { noOpObj, cls, isStr, isFunc, isObj } from '@keg-hub/jsutils'
+import { PanelHeaderText, PanelHeader as Container } from './Panel.styled'
+
 
 export const PanelHeaderActions = (props:TPanelHeader) => {
   const { title, actions } = props
@@ -37,7 +33,7 @@ export const PanelHeaderActions = (props:TPanelHeader) => {
               onClick={action}
               children={children}
               key={`${title}-${id ?? name}`}
-              className={`goblet-panel-header-icon ${className}`.trim()}
+              className={`gb-panel-header-action ${className}`.trim()}
               {...iconProps}
             />
           )
@@ -47,25 +43,46 @@ export const PanelHeaderActions = (props:TPanelHeader) => {
   )
 }
 
+const PanelTitle = (props:TPanelHeader):any => {
+  const {title:Title} = props
+
+  return (
+    isStr(Title)
+      ? (<PanelHeaderText>{Title}</PanelHeaderText>)
+      : isFunc(Title)
+        ? (<Title {...props} />)
+        : isObj(Title) ? Title : null
+  )
+}
+
 export const PanelHeader = (props:TPanelHeader) => {
   const {
     title,
     closed,
     actions,
-    onCollapse
+    onCollapse,
+    hasBody=true,
+    headerHover=true,
   } = props
 
   return (
     <Container
       onClick={onCollapse}
-      className={cls(`goblet-editor-sidebar-panel-header`, closed ? `closed` : `open`)}
+      className={cls(
+        !hasBody && `no-click`,
+        !headerHover && `no-hover`,
+        closed ? `closed` : `open`,
+        `gb-sidebar-panel-header`,
+      )}
     >
-      <ExpandIcon
-        expand={!closed}
-        noIconTransform={true}
-        className={`goblet-editor-panel-toggle-icon`}
-      />
-      <PanelHeaderText>{title}</PanelHeaderText>
+      {hasBody && (
+        <ExpandIcon
+          expand={!closed}
+          noIconTransform={true}
+          className={`gb-panel-toggle-icon`}
+        />
+      )}
+      {title && (<PanelTitle {...props} />)}
       {actions?.length ? (<PanelHeaderActions {...props} />) : null}
     </Container>
   )

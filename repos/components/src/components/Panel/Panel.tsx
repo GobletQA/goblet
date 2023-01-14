@@ -1,29 +1,36 @@
 import type { TPanel } from '../../types'
 import type { SyntheticEvent, MutableRefObject } from 'react'
 
+import { useMemo, useCallback, useState, useRef, useEffect } from 'react'
 import { cls } from '@keg-hub/jsutils'
 import { PanelHeader } from './PanelHeader'
-import {
-  PanelSidebar,
-  PanelContent
-} from './Panel.styled'
-import { useMemo, useCallback, useState, useRef, useEffect } from 'react'
+import { useInline } from '@GBC/hooks/useInline'
+import { PanelSidebar, PanelContent } from './Panel.styled'
 
 export const Panel = (props:TPanel) => {
   const {
     title,
+    onClick,
     actions,
     children,
     startOpen,
     fillHeight,
+    headerHover,
     header=true,
-    className=``
+    className=``,
+    body=Boolean(children),
   } = props
 
   const panelRef = useRef<HTMLDivElement>(null)
   const lastHeightRef = useRef<number>(0) as MutableRefObject<number>
   const [closed, setCollapse] = useState(!startOpen)
+  
+  const onToggle = useInline(onClick)
   const onCollapse = useCallback((event:SyntheticEvent) => {
+    const update = !closed
+
+    onToggle?.(event, update)
+
     const panel = panelRef.current as HTMLDivElement
     if(!panel) return
 
@@ -44,7 +51,7 @@ export const Panel = (props:TPanel) => {
       setTimeout(() => panel.style.maxHeight = `0px`, 0)
     }
 
-    setCollapse(!closed)
+    setCollapse(update)
   }, [closed])
 
   useEffect(() => {
@@ -55,31 +62,39 @@ export const Panel = (props:TPanel) => {
   }, [])
 
   const style = useMemo(() => {
-    return startOpen ? { maxHeight: `100vh` } : { maxHeight: `0px` }
-  }, [startOpen])
+    return {
+      container: { flexGrow: fillHeight ? 1 : 0 },
+      content: startOpen ? { maxHeight: `100vh` } : { maxHeight: `0px` }
+    }
+  }, [
+    startOpen,
+    fillHeight
+  ])
 
   return (
     <PanelSidebar
+      sx={style.container}
       className={cls(`goblet-sidebar-panel`, className, closed ? `closed` : `open`)}
-      sx={{
-        flexGrow: fillHeight ? 1 : 0
-      }}
     >
       {header && (
         <PanelHeader
           title={title}
+          hasBody={body}
           closed={closed}
           actions={actions}
           onCollapse={onCollapse}
+          headerHover={headerHover}
         />
       )}
-      <PanelContent
-        style={style}
-        ref={panelRef}
-        className={cls(`goblet-sidebar-panel-content`, { hide: closed, show: !closed })}
-      >
-        {children}
-      </PanelContent>
+      {body && (
+        <PanelContent
+          ref={panelRef}
+          style={style.content}
+          className={cls(`goblet-sidebar-panel-content`, { hide: closed, show: !closed })}
+        >
+          {children}
+        </PanelContent>
+      )}
     </PanelSidebar>
   )
 }

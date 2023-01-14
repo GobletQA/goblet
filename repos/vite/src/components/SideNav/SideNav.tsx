@@ -31,6 +31,7 @@ type TSideNavProps = {
 
 export const SideNav = (props:TSideNavProps) => {
   const [open, setOpen] = useState(false)
+  const [locked, setLocked] = useState(false)
   const [activeNav, setActiveNav] = useState<ESideNav|undefined>()
 
   const toggleDrawer = useSideNavToggle(
@@ -46,12 +47,18 @@ export const SideNav = (props:TSideNavProps) => {
 
   return (
     <ClickAwayListener onClickAway={onClickAway} >
-      <Drawer className="side-nav-drawer" variant="permanent" open={open}>
+      <Drawer
+        open={open}
+        variant="permanent"
+        className="side-nav-drawer"
+      >
         <HeaderSpacer />
         <NavGroups
           {...props}
           open={open}
           groups={groups}
+          locked={locked}
+          setLocked={setLocked}
           activeNav={activeNav}
           toggleDrawer={toggleDrawer}
           className={SideNavItems.groupClassName}
