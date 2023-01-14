@@ -11,10 +11,6 @@ export const styles = {
   name: {
     flex: 1
   },
-  row: {
-    paddingLeft: `5px`,
-    position: `relative`,
-  },
   iconFolder: {
     fontSize: `16px`,
     marginRight: `2.5px`,
@@ -22,8 +18,8 @@ export const styles = {
   },
   iconFile: {
     fontSize: `16px`,
+    marginLeft: `18.5px`,
     marginRight: `2.5px`,
-    marginLeft: `14px`,
     color: colors.purple10
   },
   altIcon: {

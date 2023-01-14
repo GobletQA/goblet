@@ -1,18 +1,14 @@
 import type { TFolder, TFileCallback } from '../../types'
-import type { CSSProperties, RefObject, Dispatch, SetStateAction } from 'react'
+import type { RefObject, Dispatch, SetStateAction } from 'react'
 
-import { useCallback } from 'react'
-import { noOpObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils'
+import { DirectoryItem } from './DirectoryItem'
+import { styles } from '@GBM/utils/file/fileHelpers'
 import { stopPropagation } from '@GBM/utils/dom/stopPropagation'
-import { toolTipProps, styles } from '@GBM/utils/file/fileHelpers'
+import { DirectoryEdit, TreeItemContainer } from './FileTree.styled'
 import {
   Arrow,
-  Tooltip,
-  TrashIcon,
   FolderIcon,
-  PencilIcon,
-  NewFileIcon,
-  NewFolderIcon,
   FolderOpenIcon,
 } from '@gobletqa/components'
 
@@ -33,50 +29,30 @@ export type TTreeDirectory = {
   setShowChild:Dispatch<SetStateAction<boolean>>
 }
 
-export const TreeDirectory = ({
-  file,
-  nameRef,
-  editing,
-  fileBlur,
-  showChild,
-  fileClick,
-  setEditing,
-  fileKeyDown,
-  setShowChild,
-  nameConflict,
-  onDeleteFolder,
-  onAddFile:addFile,
-  onAddFolder:addFolder,
-}:TTreeDirectory) => {
+export const TreeDirectory = (props:TTreeDirectory) => {
 
-  const onEdit = useCallback((e: Event) => {
-    e.stopPropagation()
-    setEditing(true)
-  }, [setEditing])
-
-  const onDelete = useCallback((e: Event) => {
-    e.stopPropagation()
-    onDeleteFolder(file.path)
-  }, [file.path])
-
-  const onAddFolder = useCallback((e: Event) => {
-    e.stopPropagation()
-    setShowChild(true)
-    addFolder(file.path + '/')
-
-  }, [addFolder, file.path])
-
-  const onAddFile = useCallback((e: Event) => {
-    e.stopPropagation()
-    setShowChild(true)
-    addFile(file.path + '/')
-  }, [addFile, file.path])
+  const {
+    file,
+    parent,
+    nameRef,
+    editing,
+    fileBlur,
+    showChild,
+    fileClick,
+    onAddFile,
+    setEditing,
+    onAddFolder,
+    fileKeyDown,
+    setShowChild,
+    nameConflict,
+    onDeleteFolder,
+  } = props
 
   return (
-    <div
+    <TreeItemContainer
       onClick={fileClick}
+      parentPath={parent.path}
       className='goblet-editor-file-item-row'
-      style={styles.row as CSSProperties}
     >
       <Arrow collapse={!showChild} />
       {showChild
@@ -84,53 +60,16 @@ export const TreeDirectory = ({
         : <FolderIcon styles={styles.iconFolder} />
       }
       {file.name && !editing ? (
-        <>
-          <span style={styles.name}>{file.name}</span>
-          <span className='goblet-editor-actions-container' >
-            <Tooltip
-              {...toolTipProps}
-              title={`Edit the folder name`}
-            >
-              <PencilIcon
-                onClick={onEdit}
-                styles={styles.altIcon}
-                className='goblet-editor-file-item-icon'
-              />
-            </Tooltip>
-            <Tooltip
-              {...toolTipProps}
-              title={`Delete the folder and content`}
-            >
-              <TrashIcon
-                onClick={onDelete}
-                styles={styles.altIcon}
-                className='goblet-editor-file-item-icon'
-              />
-            </Tooltip>
-            <Tooltip
-              {...toolTipProps}
-              title={`Create a new file in the folder`}
-            >
-              <NewFileIcon
-                onClick={onAddFile}
-                styles={styles.altIcon}
-                className='goblet-editor-file-item-icon'
-              />
-            </Tooltip>
-            <Tooltip
-              {...toolTipProps}
-              title={`Create a new sub-folder`}
-            >
-              <NewFolderIcon
-                onClick={onAddFolder}
-                styles={styles.altIconLast}
-                className='goblet-editor-file-item-icon'
-              />
-            </Tooltip>
-          </span>
-        </>
+        <DirectoryItem
+          file={file}
+          onAddFile={onAddFile}
+          setEditing={setEditing}
+          onAddFolder={onAddFolder}
+          setShowChild={setShowChild}
+          onDeleteFolder={onDeleteFolder}
+        />
       ) : (
-        <div
+        <DirectoryEdit
           ref={nameRef}
           contentEditable
           onBlur={fileBlur}
@@ -138,10 +77,10 @@ export const TreeDirectory = ({
           onKeyDown={fileKeyDown}
           onClick={stopPropagation}
           className='goblet-editor-file-item-new'
-          style={nameConflict ? styles.conflictFolder : noOpObj}
+          style={nameConflict ? styles.conflictFolder : emptyObj}
         />
       )}
-    </div>
+    </TreeItemContainer>
   )
 
 }

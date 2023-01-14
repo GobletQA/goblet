@@ -1,5 +1,6 @@
 import { useApp } from '@store'
 import { EEditorType } from '@types'
+import { SubNavId } from '@constants'
 import { Layout } from '@components/Layout'
 import { dims } from '@gobletqa/components/theme'
 import { CodeEditor } from '@components/CodeEditor'
@@ -27,7 +28,13 @@ export default function Editor(props:TEditorProps){
 
   return (
     <Layout>
-      <Component style={style} {...rest} />
+      <Component
+        // TODO: toggle this on off to lock the sidebar into the dom
+        // Not the best solution, but may work for now?
+        portal={SubNavId}
+        style={style}
+        {...rest}
+      />
       <DefinitionsSlider />
     </Layout>
   )

@@ -62,7 +62,9 @@ export const useOnRenameFile = (repoFiles:TFilesState, rootPrefix:string) => {
 }
 
 export const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
-  return useCallback(async (loc:string, content:string) => {
+  return useCallback(async (loc:string, content:string|null) => {
+    if(content === null)
+      return console.warn(`Can not save file with null content`)
 
     if(!loc)
       return console.warn(`Can not save file, missing file location`)

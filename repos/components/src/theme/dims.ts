@@ -31,7 +31,7 @@ export const dims = {
     height: 5
   },
   nav: {
-    openWidth: 350,
+    openWidth: 280,
     closedWidth: 50,
   },
   browser: {

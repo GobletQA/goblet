@@ -53,15 +53,3 @@
   background-color: var(--goblet-list-focusBackground);
   color: var(--goblet-list-focusForeground);
 }
-
-.goblet-editor-file-item-row .goblet-editor-actions-container {
-  right: 0px;
-  height: 25px;
-  padding-top: 3px;
-  padding-left: 5px;
-  position: absolute;
-}
-
-.goblet-editor-file-item-row:hover .goblet-editor-actions-container {
-  /* background-color: var(--goblet-list-hoverBackground); */
-}

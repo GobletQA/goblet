@@ -11,6 +11,7 @@ import { PrePanels } from '@components/Panels/PrePanels'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
 
 export type TCodeEditorProps = {
+  portal?:string
   style?: Record<string, string|number>
 }
 export const CodeEditor = (props:TCodeEditorProps) => {

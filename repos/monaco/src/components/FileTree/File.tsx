@@ -97,7 +97,7 @@ export const File = (props:TFileProps) => {
           )}
 
           {(showChild || root) && (
-            <div style={{ paddingLeft: (file as TFolder)._isDirectory ? '5px' : '0' }}>
+            <div className='gb-monaco-filelist-container'>
               {keys.map(item => (
                 <File
                   key={item}

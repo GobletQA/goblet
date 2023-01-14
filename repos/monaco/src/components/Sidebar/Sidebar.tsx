@@ -1,5 +1,5 @@
 import type { Modal } from '../Modal/Modal'
-import type { TSidebarPanel } from '@gobletqa/components'
+import type { TSidebarPanel, TPortal } from '@gobletqa/components'
 import type { Dispatch, SetStateAction, MutableRefObject, CSSProperties } from 'react'
 import type {
   TFolder,
@@ -10,8 +10,10 @@ import type {
   TFileCallback,
 } from '../../types'
 
+import { useMemo } from 'react'
 import { FileTree } from '../FileTree'
-import { Sidebar as GBSidebar } from '@gobletqa/components'
+import { isStr, emptyObj } from '@keg-hub/jsutils'
+import { Sidebar as GBSidebar, SidebarPortal as GBSidebarPortal } from '@gobletqa/components'
 
 export type TSidebar = {
   Modal: Modal
@@ -35,11 +37,11 @@ export type TSidebar = {
   onEditFileName: TFileCallback
   onEditFolderName: TFileCallback
   filesRef: MutableRefObject<TFilelist>
+  portal?:string|MutableRefObject<HTMLElement>
   setFiletree: Dispatch<SetStateAction<TRootDir | TFolder>>
 }
 
-export const Sidebar = (props:TSidebar) => {
-
+const RenderSidebar = (props:TSidebar) => {
   const {
     style,
     Panels,
@@ -56,5 +58,29 @@ export const Sidebar = (props:TSidebar) => {
       <FileTree {...props} />
     </GBSidebar>
   )
+}
+
+export const Sidebar = (props:TSidebar) => {
+
+  const {portal, ...rest} = props
+
+  const portalProps = useMemo(() => {
+    if(!portal) return
+    const portalProps = {} as Partial<TPortal>
+    isStr(portal)
+      ? portalProps.id = portal
+      : portalProps.elementRef = portal
+
+    return portalProps
+  }, [portal])
+
+
+  return portalProps
+    ? (
+        <GBSidebarPortal {...portalProps}>
+          <RenderSidebar {...rest} />
+        </GBSidebarPortal>
+      )
+    : (<RenderSidebar {...rest} />)
   
 }

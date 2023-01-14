@@ -27,6 +27,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
 
   const {
     style,
+    portal,
     Panels,
     options,
     actions,
@@ -217,11 +218,12 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
       id='goblet-editor-root'
       className='goblet-editor'
     >
-      {/* <Sidebar
+      <Sidebar
         {...sideBar}
         Modal={Modal}
         title={title}
         style={styles}
+        portal={portal}
         Panels={Panels}
         filesRef={filesRef}
         PrePanels={PrePanels}
@@ -236,7 +238,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         onDeleteFolder={deleteFolder}
         onEditFolderName={editFolderName}
       />
-      <Divider onMouseDown={onMoveStart} className='gr-editor-drag' /> */}
+      {!portal && (<Divider onMouseDown={onMoveStart} className='gr-editor-drag' />)}
       <EditorContainer className='goblet-editor-area'>
         <OpenedTabs
           openedTabs={openedTabs}

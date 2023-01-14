@@ -49,6 +49,7 @@ export interface IMonacoEditorProps {
   onRenameFile?: TEditorRenameFile
   style?: Record<string, string|number>
   onSidebarResize?: (width:number) => void
+  portal?:string|MutableRefObject<HTMLElement>
   actions?:TEditorAction[] | TSidebarAction<TCodeEditor>[]
 }
 

@@ -24,6 +24,8 @@ import {
   SettingsEthernetIcon,
 } from '@gobletqa/components'
 
+export const SubNavId = `gb-nav-subnav-for-portal`
+
 
 export const HeaderNav = [
   // {

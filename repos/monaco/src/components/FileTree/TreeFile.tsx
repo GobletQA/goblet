@@ -13,6 +13,12 @@ import {
   PencilIcon,
 } from '@gobletqa/components'
 
+import {
+  TreeItemName,
+  TreeItemContainer,
+  TreeItemActionsContainer
+} from './FileTree.styled'
+
 
 export type TTreeFile = {
   file: TFile
@@ -30,6 +36,7 @@ export type TTreeFile = {
 
 export const TreeFile = ({
   file,
+  parent,
   nameRef,
   editing,
   fileBlur,
@@ -62,22 +69,22 @@ export const TreeFile = ({
   }, [currentPath, file.path])
 
   return (
-    <div
+    <TreeItemContainer
       key={file.path}
       data-src={file.path}
-      onClick={filePathChange}
       className={classNames}
-      style={{
-        position: `relative`,
-      }}
+      parentPath={parent.path}
+      onClick={filePathChange}
     >
       {/* fileType is used here for different file type icons */}
       {/* For now, just default to basic file type */}
       <FileIcon styles={styles.iconFile} />
       {file.name && !editing ? (
         <>
-          <span style={{ flex: 1 }}>{file.name}</span>
-          <span className='goblet-editor-actions-container'>
+          <TreeItemName>
+            {file.name}
+          </TreeItemName>
+          <TreeItemActionsContainer className='gb-editor-actions-container'>
             <Tooltip
               {...toolTipProps}
               title={`Edit the file name`}
@@ -98,7 +105,7 @@ export const TreeFile = ({
                 className='goblet-editor-file-item-icon'
               />
             </Tooltip>
-          </span>
+          </TreeItemActionsContainer>
         </>
       ) : (
         <div
@@ -112,7 +119,7 @@ export const TreeFile = ({
           style={nameConflict ? styles.conflictFile : noOpObj}
         />
       )}
-    </div>
+    </TreeItemContainer>
   )
 
 }
