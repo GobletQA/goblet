@@ -72,7 +72,6 @@ export const SideNav = deepFreeze({
         EditorNavItems[EEditorType.visual],
         {
           title: `Files`,
-          action: onFiles,
           Icon: FileTreeIcon,
         },
         {

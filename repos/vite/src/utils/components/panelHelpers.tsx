@@ -1,5 +1,4 @@
 import { toNum } from '@keg-hub/jsutils'
-import { dims } from '@gobletqa/components/theme'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { ScreencastRatio } from '@constants/screencast'
 import { PanelDimsSetEvt, ResizePanelClass } from '@constants'
@@ -15,7 +14,6 @@ export type TSetPanelFull = {
 export type TChildPanels = {
   fromExpand?: boolean
   tPanel: HTMLDivElement
-  bPanel: HTMLDivElement
   canvas: HTMLCanvasElement
 }
 
@@ -41,12 +39,10 @@ const getChildPanels = (parentEl:HTMLDivElement, className:string=ResizePanelCla
 
 const getPanelDims = ({
   tPanel,
-  bPanel,
   canvas,
 }:TChildPanels) => {
   const lWidth = tPanel.offsetWidth
   const lHeight = toNum(tPanel.style.flexBasis || tPanel.offsetHeight)
-  const rHeight = toNum(bPanel.style.flexBasis || bPanel.offsetHeight)
 
   const cWidth = toNum(canvas?.offsetWidth) || lWidth
   const cHeight = toNum(canvas?.offsetHeight) || lHeight
@@ -55,7 +51,6 @@ const getPanelDims = ({
   return {
     lWidth,
     lHeight,
-    rHeight,
     cWidth,
     cHeight,
     wDiff
@@ -63,9 +58,7 @@ const getPanelDims = ({
 }
 
 export const setPanelFull = ({
-  fPanel,
   zPanel,
-  lPPanel,
   expanded,
 }:TSetPanelFull) => {
   expanded
@@ -79,39 +72,18 @@ export const getPanels = (parentEl:HTMLDivElement|null) => {
   const [lPPanel, rPPanel] = getChildPanels(parentEl)
   if(!rPPanel) return console.warn(`Could not find Right Horizontal Panel`)
 
-  const [lPanel, rPanel] = getChildPanels(rPPanel)
-  if(!rPanel) return console.warn(`Could not find Right Vertical Panel`)
-  
-  return { lPPanel, rPPanel, lPanel, rPanel }
+  const [lPanel] = getChildPanels(rPPanel)
+  if(!lPanel) return console.warn(`Could not find Right Top Vertical Panel`)
+
+  return { lPPanel, rPPanel, lPanel }
 }
 
 export const parentDimsFromCanvas = (args:TParentPanels) => {
-  const { lPPanel, bPanel } = args
+  const { lPPanel } = args
 
-  const {
-    wDiff,
-    rHeight,
-    cHeight,
-  } = getPanelDims(args)
+  const { wDiff } = getPanelDims(args)
 
-  if(!wDiff){
-
-    const panelParent = bPanel.parentNode as HTMLDivElement
-    const parentH = panelParent.offsetHeight
-
-    // Get amount of px changed by subtracting the bottom panel From the parent panel
-    // Get the current top panel height by adding the canvas height an browser nav height
-    // Get the difference by subtracting the calculated top panel from the 
-    const hDiff = (parentH - rHeight) - (cHeight + dims.browser.nav.height)
-    // Find the relative width difference based on height difference and the screen ratio
-    const adjust = ScreencastRatio * hDiff
-
-    // Subtract the calculated width from the left side parent panel
-    // This will automatically adjust the right panel content
-    const lPWidth = toNum(lPPanel.style.flexBasis || lPPanel.offsetWidth)
-    lPPanel.style.flexBasis = `${lPWidth - adjust}px`
-  }
-  else {
+  if(wDiff) {
     // Multiply the difference by the screen ration
     const adjust = wDiff * ScreencastRatio
     // Add the calculated width to the left side panel
@@ -121,50 +93,17 @@ export const parentDimsFromCanvas = (args:TParentPanels) => {
   }
 
   EE.emit(PanelDimsSetEvt, {})
-
 }
 
 export const panelDimsFromCanvas = (args:TChildPanels) => {
-  const { tPanel, bPanel, fromExpand } = args
+  const { tPanel } = args
+  const { wDiff, lHeight } = getPanelDims(args)
 
-  const {
-    wDiff,
-    cHeight,
-    lHeight,
-    rHeight,
-  } = getPanelDims(args)
-
-  if(fromExpand){
-    const parentW = (bPanel.parentNode as HTMLDivElement).offsetWidth
-    const parentH = (bPanel.parentNode as HTMLDivElement).offsetHeight
-    const tPHeight = (parentW / ScreencastRatio) + dims.browser.nav.height
-    tPanel.style.flexBasis = `${tPHeight}px`
-
-    const bPHeight = parentH - tPHeight - dims.panel.divider.height
-    bPanel.style.flexBasis = `${bPHeight}px`
-  }
-
-  // If there's no width difference, then adjust the height
-  else if(!wDiff){
-
-    const parentH = (bPanel.parentNode as HTMLDivElement).offsetHeight
-
-    // Left panel height is the canvas height + the browser nav height
-    const tPHeight = cHeight + dims.browser.nav.height + dims.panel.divider.height
-    tPanel.style.flexBasis = `${tPHeight}px`
-
-    // Right panel height is the parent height minus the height of the left panel
-    // Minus the panel divider height
-    const bPHeight = parentH - tPHeight - dims.panel.divider.height
-    bPanel.style.flexBasis = `${bPHeight}px`
-  }
-  else {
+  if(wDiff) {
     // Otherwise adjust the height relative to the width
     const adjust = wDiff / ScreencastRatio
     tPanel.style.flexBasis = `${lHeight + adjust}px`
-    bPanel.style.flexBasis = `${rHeight - adjust}px`
   }
 
-  EE.emit(PanelDimsSetEvt, { tPanel, bPanel })
-
+  EE.emit(PanelDimsSetEvt, { tPanel })
 }

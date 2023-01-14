@@ -2,8 +2,7 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import 'react-page-split/style.css'
 import { Divider } from './Divider'
-import Container from '@mui/material/Container'
-import { Terminal } from '@components/Terminal'
+import { Container } from './Layout.styled'
 import { dims } from '@gobletqa/components/theme'
 import { LayoutContainer } from './Divider.styled'
 import { Screencast } from '@components/Screencast'
@@ -51,10 +50,10 @@ export const Layout = (props:TLayout) => {
       <HorizontalPageSplit
         divider={Divider}
         resize={Proportional}
+        widths={['40%', '60%']}
         onResizeMove={onHorResizeMove}
       >
         <Container
-          component='div'
           disableGutters
           sx={noOverflow}
         >
@@ -66,7 +65,6 @@ export const Layout = (props:TLayout) => {
             divider={(props:ComponentProps<typeof Divider>) => (<Divider {...props} vertical />)}
           >
             <Screencast />
-            <Terminal />
           </VerticalPageSplit>
         </Container>
       </HorizontalPageSplit>
