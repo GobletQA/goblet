@@ -22,4 +22,5 @@ export type TControllerConfig = {
   type: TControllerType
   options:DockerOptions
   devRouter?: TRouteMeta
+  listenerTimeout?:number
 }

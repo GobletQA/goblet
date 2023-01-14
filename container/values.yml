@@ -136,6 +136,11 @@ env:
   GB_CD_HASH_KEY: C0nDuc10R
   GB_CD_CONTROLLER_TYPE: Kube
 
+  # Timeout for the kube listener
+  # Will kill and restart the listener on an interval
+  # Works around issue where listener stops responding after some amount of time
+  GB_CD_LISTENER_TIMEOUT: 250000
+
   # Conductor controller validation
   GB_CD_VALIDATION_KEY: "gb-cd-1234567"
   GB_CD_VALIDATION_HEADER: GB-CD-Validation-Key

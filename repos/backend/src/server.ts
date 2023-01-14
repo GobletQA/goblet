@@ -7,7 +7,6 @@ import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'
 import {
   setupRouters,
-  setupTestUser,
   setupEndpoints,
   setupConductor,
 } from '@GBE/middleware'

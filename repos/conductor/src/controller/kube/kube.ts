@@ -327,7 +327,10 @@ export class Kube extends Controller {
     
     this.kubectl = new Kubectl(this.config)
     const hydrateSingle = this.hydrateSingle.bind(this)
-    this.kubectl.listen({
+
+    const timeout = this.config.listenerTimeout || 25000
+
+    this.kubectl.cycleListen(timeout, {
       start: hydrateSingle,
       modified: hydrateSingle,
       destroy: this.removeFromCache.bind(this),

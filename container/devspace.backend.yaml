@@ -153,8 +153,13 @@ deployments:
 
 dev:
   ports: $(node -r esbuild-register scripts/ds/resolvePortForward.js BE)
+  sync: $(node -r esbuild-register scripts/ds/resolveSync.js BE)
 
 # Use profile to dynamically switch out the app specific docker image for the development image
 profiles:
 - name: local
+  patches:
+  - op: replace
+    path: deployments.name=${GB_BE_DEPLOYMENT}.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}
 - name: production

@@ -42,6 +42,7 @@ export class Kubectl {
   kc: k8s.KubeConfig
   client: k8s.CoreV1Api
   watchAbort: TWatchRes
+  cycleListenInterval:NodeJS.Timeout
   objectClient: k8s.KubernetesObjectApi
   
   constructor(config?:TKubeConfig){
@@ -155,12 +156,30 @@ export class Kubectl {
 
   }
 
+  cycleListen = (time:number, events:TKubeWatchEvents) => {
+    Logger.log(`Starting kubernetes listen cycle...`)
+    this.listen(events)
+
+    this.cycleListenInterval
+      && clearInterval(this.cycleListenInterval)
+
+    this.cycleListenInterval = setInterval(() => {
+      Logger.log(`Restarting kubernetes event listener...`)
+      this.cleanup()
+      this.listen(events)
+    }, time)
+  }
+
   /**
    * Error Handler called when listening throws an error
    */
   onListenError = (err:Error) => {
     if(!err)
       return Logger.error(`The onListenError event was called without an error object`)
+
+    // @ts-ignore
+    if(err.message === `aborted` && err.code === `ECONNRESET`) return
+      // return Logger.log(`Ignoring listen error, listen aborted`)
 
     throwError({ statusCode: 1000, ...err })
   }
@@ -180,12 +199,14 @@ export class Kubectl {
       this.onListenError.bind(this)
     ) as TWatchRes
 
+    Logger.log(`Listening for kubernetes events.`)
   }
 
   /**
    * Cleanup to avoid memory leaks
    */
   cleanup = async () => {
+    Logger.log(`Cleaning up kubernetes listener...`)
     this.watchAbort && this.watchAbort.abort()
     this.watchAbort = undefined
   }

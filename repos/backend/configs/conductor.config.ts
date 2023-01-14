@@ -29,6 +29,7 @@ const {
   GB_SC_DEPLOYMENT,
   GB_NO_VNC_PORT,
   GB_CD_CONTROLLER_TYPE,
+  GB_CD_LISTENER_TIMEOUT,
 
   GB_LOCAL_DEV_MODE,
   
@@ -161,6 +162,7 @@ export const conductorConfig:TConductorOpts = deepMerge({
   controller: {
     devRouter: devRouter as TRouteMeta,
     type: GB_CD_CONTROLLER_TYPE as TControllerType,
+    listenerTimeout: toNum(GB_CD_LISTENER_TIMEOUT || 25000)
   },
   images: {
     [GB_SC_DEPLOYMENT]: {
