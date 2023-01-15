@@ -1,8 +1,9 @@
 import type { RootState } from './store'
 import { TypedUseSelectorHook } from 'react-redux'
+
 import { useSelector as useReduxSelector } from 'react-redux'
 
-const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector
+export const useSelector: TypedUseSelectorHook<RootState> = useReduxSelector
 export const useApp = () => useSelector((state) => state.app)
 export const useContainer = () => useSelector((state) => state.container)
 export const useDefs = () => useSelector((state) => state.definitions)

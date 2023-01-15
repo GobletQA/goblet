@@ -2,11 +2,11 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import 'react-page-split/style.css'
 import { Divider } from './Divider'
-import { Container } from './Layout.styled'
 import { dims } from '@gobletqa/components/theme'
 import { LayoutContainer } from './Divider.styled'
 import { Screencast } from '@components/Screencast'
 import { useLayoutResize } from '@hooks/components/useLayoutResize'
+import { Container, RContainer, RTSection, RBSection, RMSection } from './Layout.styled'
 import {
   Proportional,
   VerticalPageSplit,
@@ -51,6 +51,7 @@ export const Layout = (props:TLayout) => {
       <HorizontalPageSplit
         divider={Divider}
         resize={Proportional}
+        // widths={['40%', '60%']}
         widths={['40%', '60%']}
         onResizeMove={onHorResizeMove}
       >
@@ -60,14 +61,12 @@ export const Layout = (props:TLayout) => {
         >
           {props.children}
         </Container>
-        <Container disableGutters sx={fullHeight}>
-          <VerticalPageSplit
-            onResizeMove={onVerResizeMove}
-            divider={(props:ComponentProps<typeof Divider>) => (<Divider {...props} vertical />)}
-          >
+        <RContainer disableGutters sx={fullHeight}>
+          <RTSection />
+          <RMSection>
             <Screencast />
-          </VerticalPageSplit>
-        </Container>
+          </RMSection>
+        </RContainer>
       </HorizontalPageSplit>
     </LayoutContainer>
   )

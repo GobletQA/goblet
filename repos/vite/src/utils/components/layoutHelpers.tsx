@@ -13,8 +13,8 @@ export type TSetPanelFull = {
 
 export type TChildPanels = {
   fromExpand?: boolean
-  tPanel: HTMLDivElement
   canvas: HTMLCanvasElement
+  canvasPanel: HTMLDivElement
 }
 
 export type TParentPanels = TChildPanels & {
@@ -38,11 +38,11 @@ const getChildPanels = (parentEl:HTMLDivElement, className:string=ResizePanelCla
 }
 
 const getPanelDims = ({
-  tPanel,
+  canvasPanel,
   canvas,
 }:TChildPanels) => {
-  const lWidth = tPanel.offsetWidth
-  const lHeight = toNum(tPanel.style.flexBasis || tPanel.offsetHeight)
+  const lWidth = canvasPanel.offsetWidth
+  const lHeight = toNum(canvasPanel.style.flexBasis || canvasPanel.offsetHeight)
 
   const cWidth = toNum(canvas?.offsetWidth) || lWidth
   const cHeight = toNum(canvas?.offsetHeight) || lHeight
@@ -72,10 +72,10 @@ export const getPanels = (parentEl:HTMLDivElement|null) => {
   const [lPPanel, rPPanel] = getChildPanels(parentEl)
   if(!rPPanel) return console.warn(`Could not find Right Horizontal Panel`)
 
-  const [lPanel] = getChildPanels(rPPanel)
-  if(!lPanel) return console.warn(`Could not find Right Top Vertical Panel`)
+  const [_, canvasPanel, __] = getChildPanels(rPPanel)
+  if(!canvasPanel) return console.warn(`Could not find Right Top Vertical Panel`)
 
-  return { lPPanel, rPPanel, lPanel }
+  return { lPPanel, rPPanel, canvasPanel }
 }
 
 export const parentDimsFromCanvas = (args:TParentPanels) => {
@@ -96,14 +96,14 @@ export const parentDimsFromCanvas = (args:TParentPanels) => {
 }
 
 export const panelDimsFromCanvas = (args:TChildPanels) => {
-  const { tPanel } = args
+  const { canvasPanel } = args
   const { wDiff, lHeight } = getPanelDims(args)
 
   if(wDiff) {
     // Otherwise adjust the height relative to the width
     const adjust = wDiff / ScreencastRatio
-    tPanel.style.flexBasis = `${lHeight + adjust}px`
+    canvasPanel.style.flexBasis = `${lHeight + adjust}px`
   }
 
-  EE.emit(PanelDimsSetEvt, { tPanel })
+  EE.emit(PanelDimsSetEvt, { canvasPanel })
 }

@@ -49,3 +49,6 @@ export const PWLogFilter = [
   `Failed to connect to the bus`,
   `Failed to adjust OOM score of renderer`,
 ]
+
+
+export const CreateBrowserRetry = 300

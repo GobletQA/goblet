@@ -9,7 +9,8 @@ import type {
 
 import playwright from 'playwright'
 import { Logger } from '@GSC/utils/logger'
-import { defaultBrowser } from '@GSC/constants'
+import { deepMerge } from '@keg-hub/jsutils'
+import { EmptyBrowser } from './emptyBrowser'
 import { buildStatus } from '../helpers/buildStatus'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
 import { toBool, noOpObj, isFunc } from '@keg-hub/jsutils'
@@ -20,6 +21,8 @@ import { inDocker } from '@keg-hub/jsutils/src/node/inDocker'
 import { buildBrowserConf } from '../helpers/buildBrowserConf'
 import { getServerEndpoint } from '../server/getServerEndpoint'
 import { checkInternalPWContext } from './checkInternalPWContext'
+import { defaultBrowser, CreateBrowserRetry } from '@GSC/constants'
+import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
 
 /**
  * Cache holder for all launched playwright browsers by type
@@ -95,6 +98,33 @@ const createWSBrowser = async (type:EBrowserName):Promise<TPWBrowser> => {
   return { browser } as TPWBrowser
 }
 
+/**
+ * Creates a browser and context together
+ * The context is always the same, and saves data
+ */
+const createPersistentBrowser = async (
+  browserConf:TBrowserConf = noOpObj as TBrowserConf,
+  type:EBrowserName
+) => {
+
+  const opts = deepMerge(
+    getBrowserOpts(browserConf),
+    getContextOpts(browserConf.context)
+  )
+  Logger.verbose(`Browser-PersistentContext options`, opts)
+  
+  const { internalPaths } = getDefaultGobletConfig()
+  const context = await playwright[type].launchPersistentContext(
+    internalPaths.userDataTempDir,
+    opts
+  )
+
+  const browser = new EmptyBrowser(context, type)
+  Logger.info(`createPersistentBrowser - Browser ${type} was started`)
+  setBrowser(browser, type)
+
+  return { browser, context } as TPWBrowser
+}
 
 /**
  * Creates a regular browser NOT connected to a browser server over websocket
@@ -106,7 +136,8 @@ const createBrowser = async (
   type:EBrowserName
 ) => {
 
-  const browser = await playwright[type].launch(getBrowserOpts(browserConf))
+  const opts = getBrowserOpts(browserConf)
+  const browser = await playwright[type].launch(opts)
   Logger.info(`createBrowser - Browser ${type} was started`)
   setBrowser(browser, type)
 
@@ -151,21 +182,31 @@ export const getContext = async (
   browserConf:TBrowserConf
 ) => {
 
-  const { browser } = await getBrowser(browserConf)
-  const contexts = browser.contexts()
-  const hasContexts = Boolean(contexts.length)
-  const hasMultipleContexts = contexts.length > 1
+  const resp = await getBrowser(browserConf)
 
-  if(hasMultipleContexts){
-    Logger.verbose(`getContext - Closing extra contexts on the browser`)
-    await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
+  let context = resp.context
+  const browser = resp.browser
+  
+  if(!context){
+    const contexts = browser.contexts()
+    const hasContexts = Boolean(contexts.length)
+    const hasMultipleContexts = contexts.length > 1
+
+    if(hasMultipleContexts){
+      Logger.verbose(`getContext - Closing extra contexts on the browser`)
+      await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
+    }
+
+    const opts = getContextOpts(browserConf.context)
+    Logger.verbose(`Context Options`, opts)
+
+    context = hasContexts ? contexts[0] : await browser.newContext(opts)
+    hasContexts
+      ? Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
+      : Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
+
   }
-
-  const context = hasContexts ? contexts[0] : await browser.newContext(getContextOpts(browserConf.context))
-
-  hasContexts
-    ? Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
-    : Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
+  else Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
 
   return { context, browser }
 }
@@ -212,21 +253,41 @@ export const getBrowser = async (
     // To allow consecutive calls on start up
     if(getBrowser.creatingBrowser)
       return new Promise((res, rej) => {
-        Logger.verbose(`getBrowser - Browser ${type} is creating, try agin in 100ms`)
-        setTimeout(() => res(getBrowser(browserConf, browserServer)), 100)
+        Logger.verbose(`getBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`)
+        setTimeout(() => res(getBrowser(browserConf, browserServer)), CreateBrowserRetry)
       })
 
     getBrowser.creatingBrowser = true
+
+    /** ------------------------------------
+
+     * TODO: - At some point will need to rework this to figure out the best option
+     * Need to setup params to toggle the browser type
+     * Will need to enable the browser server running via supervisor
+
       // If the websocket is active, then start a websocket browser
-    const fromWs = fromWebsocket(browserConf, browserServer)
+      const fromWs = fromWebsocket(browserConf, browserServer)
+      const browserResp = fromWs
+        ? await createWSBrowser(type)
+        : await createBrowser(browserConf, type)
+      fromWs
+        ? Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
+        : Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
 
-    const browserResp = fromWs
-      ? await createWSBrowser(type)
-      : await createBrowser(browserConf, type)
+    
+      await createWSBrowser(type)
+      Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
 
-    fromWs
-      ? Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
-      : Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
+      const browserResp = await createPersistentBrowser(browserConf, type)
+      Logger.verbose(`getBrowser - New Persistent Context Browser ${type} created`)
+
+    ------------------------------------ */
+
+
+    // Default to creating a standalone browser
+    // Should be faster then going over a websocket
+    const browserResp = await createBrowser(browserConf, type)
+    Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
 
     getBrowser.creatingBrowser = false
     return browserResp
@@ -257,8 +318,9 @@ export const startBrowser = async (
     const type = getBrowserType(browserConf.type as EBrowserType)
 
     let pwComponents = checkInternalPWContext(type)
-  
-    if(!pwComponents){
+    if(pwComponents?.browser) setBrowser(pwComponents.browser, type)
+
+    if(!pwComponents?.page){
       Logger.info(`startBrowser - Getting browser type ${type}`)
 
       const pwBrowser = PW_BROWSERS[type]
@@ -270,8 +332,8 @@ export const startBrowser = async (
       // To allow consecutive calls on start up
       if(!pwBrowser && startBrowser.creatingBrowser)
         return new Promise((res, rej) => {
-          Logger.info(`startBrowser - Browser ${type} is creating, try agin in 100ms`)
-          setTimeout(() => res(startBrowser(browserConf)), 100)
+          Logger.info(`startBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`)
+          setTimeout(() => res(startBrowser(browserConf)), CreateBrowserRetry)
         })
 
 
@@ -283,15 +345,14 @@ export const startBrowser = async (
     }
     // else Logger.verbose(`startBrowser - Found playwright components from internal reference`)
 
-    // Build the status object for the newly started browser
-    const status = buildStatus(
-      browserConf.type,
-      Boolean(
-        pwComponents.browser
-          && pwComponents.context
-          && pwComponents.page
-      ),
+    const hasComponents = Boolean(
+      pwComponents.browser
+        && pwComponents.context
+        && pwComponents.page
     )
+
+    // Build the status object for the newly started browser
+    const status = buildStatus(browserConf.type, hasComponents)
 
     return { status, ...pwComponents } as TPWComponents
   }

@@ -165,6 +165,7 @@ module.exports = {
     // Temp directories for saving test artifacts
     // These paths should not be saved with the repo
     // They are only used when running tests, then discarded
+    userDataTempDir: `${GOBLET_ROOT}/temp/user`,
     tracesTempDir: `${GOBLET_ROOT}/temp/traces`,
     videosTempDir: `${GOBLET_ROOT}/temp/videos`,
     downloadsTempDir: `${GOBLET_ROOT}/temp/downloads`,

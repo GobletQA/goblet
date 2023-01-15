@@ -11,7 +11,7 @@ import {
   getPanels,
   panelDimsFromCanvas,
   parentDimsFromCanvas
-} from '@utils/components/panelHelpers'
+} from '@utils/components/layoutHelpers'
 import {
   VNCResizeEvt,
   VNCConnectedEvt,
@@ -22,23 +22,25 @@ import {
 export const useLayoutResize = () => {
 
   const parentElRef = useRef<HTMLDivElement|null>(null)
-  const lVPanelRef = useRef<HTMLDivElement|null>(null)
+  const canvasPanelRef = useRef<HTMLDivElement|null>(null)
   const lPPanelRef = useRef<HTMLDivElement|null>(null)
   const canvasRef = useRef<HTMLCanvasElement|null>(null)
 
-  const onHorResizeMove = useInline(() => EE.emit(PanelDimsSetEvt, { tPanel: lVPanelRef.current }))
+  const onHorResizeMove = useInline(() => {
+    EE.emit(PanelDimsSetEvt, { canvasPanel: canvasPanelRef.current })
+  })
 
   const onVerResizeMove = useInline(() => {
-    lPPanelRef.current && lVPanelRef.current && canvasRef.current
+    lPPanelRef.current && canvasPanelRef.current && canvasRef.current
       ? parentDimsFromCanvas({
           canvas: canvasRef.current,
-          tPanel: lVPanelRef.current,
           lPPanel: lPPanelRef.current,
+          canvasPanel: canvasPanelRef.current,
         })
       : console.warn(
           `Layout-Resize - Horizontal Panel Refs not set`,
           canvasRef.current,
-          lVPanelRef.current,
+          canvasPanelRef.current,
           lPPanelRef.current,
         )
   })
@@ -48,7 +50,7 @@ export const useLayoutResize = () => {
   useEffectOnce(() => {
     const off = EE.on<RFB>(
       VNCResizeEvt,
-      () => EE.emit(PanelDimsSetEvt, { tPanel: lVPanelRef.current }),
+      () => EE.emit(PanelDimsSetEvt, { canvasPanel: canvasPanelRef.current }),
     )
 
     return () => {
@@ -62,22 +64,26 @@ export const useLayoutResize = () => {
     // When the VNC service connects, get the browser canvas
     // And use it to resize the panels relative to it
     const off = EE.on<RFB>(VNCConnectedEvt, (rfb) => {
+      
+      console.log(`------- rfb -------`)
+      console.log(rfb)
+      
       canvasRef.current = get<HTMLCanvasElement>(rfb, `_canvas`)
       const panels = getPanels(parentElRef.current)
 
-      if(!canvasRef.current || !panels || !panels.lPanel) return
+      if(!canvasRef.current || !panels || !panels.canvasPanel) return
 
-      panels.lPanel.style.overflow = `hidden`
+      panels.canvasPanel.style.overflow = `hidden`
       canvasRef?.current?.setAttribute(`willReadFrequently`, ``)
 
       // Store the panels for use in the onResizeMove callbacks
-      lVPanelRef.current = panels.lPanel
+      canvasPanelRef.current = panels.canvasPanel
       lPPanelRef.current = panels.lPPanel
       
-      panelDimsFromCanvas({
-        canvas: canvasRef.current,
-        tPanel: lVPanelRef.current,
-      })
+      // panelDimsFromCanvas({
+      //   canvas: canvasRef.current,
+      //   canvasPanel: canvasPanelRef.current,
+      // })
 
     }, VNCConnectedEvt)
 

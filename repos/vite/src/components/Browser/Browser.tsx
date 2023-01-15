@@ -11,7 +11,7 @@ import { BrowserLoading } from './BrowserLoading'
 import { ScreencastBrowserSelector } from '@constants'
 import { useVncRefs } from '@hooks/screencast/useVncRefs'
 import { useRFBHooks } from '@hooks/screencast/useRFBHooks'
-import { useVncHooks } from '@hooks/screencast/useVncHooks'
+import { useVncSetup } from '@hooks/screencast/useVncSetup'
 import { useVncHandlers } from '@hooks/screencast/useVncHandlers'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import {
@@ -63,7 +63,7 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
   const {
     connect,
     _onDisconnect
-  } = useVncHooks(props, {
+  } = useVncSetup(props, {
     rfb,
     screen,
     logger,

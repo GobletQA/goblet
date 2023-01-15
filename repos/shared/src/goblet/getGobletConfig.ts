@@ -14,15 +14,14 @@
  * But it wouldn't take mush to make this a general tool for finding configs
  *
  */
-import type { TDefGobletConfig, TGobletConfig } from '../types'
-import { GSHRoot } from '../../resolveRoot'
+import type { TGobletConfig } from '../types'
 
-import path from 'path'
 import { Logger } from '@keg-hub/cli-utils'
 import { loadCustomConfig } from './loadCustomConfig'
 import { addConfigFileTypes } from './addConfigFileTypes'
 import { loadConfigFromBase } from './loadConfigFromBase'
 import { isStr, noOpObj, deepMerge } from '@keg-hub/jsutils'
+import { getDefaultGobletConfig } from './getDefaultGobletConfig'
 
 type TGetGobletConfigArgs = {
   base?:string
@@ -31,20 +30,6 @@ type TGetGobletConfigArgs = {
   local?: boolean
 }
 
-
-// TODO: figure out how to fix this
-const defConfig:TGobletConfig = require(path.join(
-  path.join(GSHRoot, `../../`),
-  'configs/goblet.default.config.js'
-))
-
-/**
- * **IMPORTANT**
- * Loads the default goblet.config
- * No other file should import the default goblet config
- * **IMPORTANT**
- */
-let __DEF_CONFIG:TDefGobletConfig
 let __GOBLET_CONFIG:TGobletConfig
 
 /**
@@ -77,13 +62,10 @@ export const getGobletConfig = (
     )
   }
 
-  // Load here so it doesn't pull in other files which call loadEnvs
-  // The loadEnvs response is cached, so we only want to call it at the right time
-  __DEF_CONFIG = __DEF_CONFIG || deepMerge(defConfig)
-
+  const defConfig = getDefaultGobletConfig()
   __GOBLET_CONFIG = addConfigFileTypes(
     deepMerge(
-      __DEF_CONFIG,
+      defConfig,
       // Base if a folder path, not a config file path
       baseConfig,
       // Comes after baseConfig because it's more specific
@@ -93,7 +75,7 @@ export const getGobletConfig = (
 
   // The default config.internalPaths should never be overwritten
   // So reset it here just in case it was
-  __GOBLET_CONFIG.internalPaths = __DEF_CONFIG.internalPaths
+  __GOBLET_CONFIG.internalPaths = defConfig.internalPaths
 
   return __GOBLET_CONFIG
 }
@@ -103,13 +85,4 @@ export const getGobletConfig = (
  */
 export const resetGobletConfig = () => {
   __GOBLET_CONFIG = undefined
-}
-
-/**
- * Returns the default goblet config
- * Should not be used for loading repo information
- */
-export const getDefaultGobletConfig = () => {
-  __DEF_CONFIG = __DEF_CONFIG || deepMerge(defConfig)
-  return __DEF_CONFIG
 }

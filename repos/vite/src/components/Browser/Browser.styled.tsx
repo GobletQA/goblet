@@ -73,7 +73,16 @@ export const BrowserViewContainer = styled(Box)`
   position: relative;
   align-items: stretch;
   height: calc( 100% - ${dims.browser.nav.hpx} );
-  max-height: calc( 100% - ${dims.browser.nav.hpx} );
+
+  // @novnc does some automatic re-alignment
+  // That causes the browser to jump on focus
+  // When if it goes out of the screen view
+  // 
+  // The 100% - browser.nav.height should be correct
+  // But for some reason, that still causes it to jump
+  // So we subtract an extra 5px to fix it
+  // Not sure where it get's the 5px from, maybe a rounding error?
+  max-height: calc( 100% - ${dims.browser.nav.height + 5}px );
 `
 
 export const BrowserView = styled('div')`
@@ -82,7 +91,12 @@ export const BrowserView = styled('div')`
   box-sizing: border-box;
   font-smoothing: antialiased;
   
-  canvas {
+  & > div {
+    background-color: ${colors.gray08} !important;
+  }
+
+  
+  & canvas {
     // NoVNC sets the margin style directly on the canvas element
     // So we have to use important to override it
     margin-top: 0px !important;

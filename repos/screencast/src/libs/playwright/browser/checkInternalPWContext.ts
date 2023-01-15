@@ -6,7 +6,7 @@ import type {
 } from '@GSC/types'
 
 import playwright from 'playwright'
-
+import { EmptyBrowser } from './emptyBrowser'
 /**
   This method gets the context from the playwright module directly
   Which then allows getting the browser and pages
@@ -22,15 +22,15 @@ export const checkInternalPWContext = (type:EBrowserName):TPWComponents|undefine
   if(!contexts?.size) return undefined
 
   const context = [...contexts][0]
-  if(!context?._pages?.size) return undefined
+  let browser:TBrowser = context?.browser?.()
+  if(context && browser === null) browser = new EmptyBrowser(context, type)
 
-  const browser:TBrowser = context?.browser?.()
+  const components = { browser, context } as TPWComponents
+
+  if(!context?._pages?.size) return components
+
   const page:TBrowserPage = [...context?._pages][0]
-  if(!page || !browser) return undefined
+  page && (components.page = page)
 
-  return {
-    page,
-    browser,
-    context,
-  } as TPWComponents
+  return components
 }

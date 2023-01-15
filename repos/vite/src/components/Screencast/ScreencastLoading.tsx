@@ -56,7 +56,10 @@ const MissingRepo = () => {
 export const ScreencastLoading = (props:TScreencastLoading) => {
 
   return (
-    <Box sx={[styles.container, props.sx as CSSObj]} >
+    <Box
+      className='gb-screencast-loading'
+      sx={[styles.container, props.sx as CSSObj]}
+    >
       <Fadeout
         {...props}
         styles={styles.fadeout}

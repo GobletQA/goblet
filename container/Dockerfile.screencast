@@ -102,7 +102,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/cache/apk/* && \
     ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules && \
-    mkdir -p /etc/supervisor
+    mkdir -p /etc/supervisor && \
+    dbus-uuidgen > /var/lib/dbus/machine-id && \
+    mkdir -p /var/run/dbus
 
 COPY --from=goblet-builder /goblet/app/. .
 
@@ -125,7 +127,11 @@ ENV DEBUG_FILE=$DEBUG_FILE \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
     DEBIAN_FRONTEND=noninteractive \
-    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
+    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin \
+    DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
+    # See here => https://georgik.rocks/how-to-start-d-bus-in-docker-container/
+    # Explains how to run dbus in docker container
+    # Seems to be needed for Playwright
 
 EXPOSE $GB_SC_PORT
 EXPOSE $GB_NO_VNC_PORT

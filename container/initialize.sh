@@ -46,9 +46,14 @@ goblet_screencast(){
   mkdir -p $LOG_DIR
   touch $DEBUG_FILE
 
+
   cd /goblet/app/repos/screencast
   exec supervisord -c configs/supervisord.dev.conf >> /proc/1/fd/1 &
 
+  # See here => https://georgik.rocks/how-to-start-d-bus-in-docker-container/
+  # Explains how to run dbus in docker container
+  # Seems to be needed for Playwright
+  # dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address
 }
 
 # Check if we should install new packages

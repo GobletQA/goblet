@@ -11,9 +11,6 @@ export type TLockIcon = ComponentProps<TIcon>
 
 
 const LockActionComp = (props:TLockIcon) => {
-  console.log(`------- props -------`)
-  console.log(props)
-  
   return (
     <Tooltip
       loc='bottom'
