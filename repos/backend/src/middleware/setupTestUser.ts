@@ -1,5 +1,5 @@
-// @ts-nocheck
-import type { Express } from 'express'
+import type { Request as JWTRequest } from 'express-jwt'
+import type { Express, Response, NextFunction } from 'express'
 
 import { getApp } from '@gobletqa/shared/express/app'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
@@ -12,11 +12,11 @@ import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 export const setupTestUser = (app?:Express) => {
 
   app = app || getApp() as Express
-  AsyncRouter.use((req:Request, res:Response, next:NextFunction) => {
-    req.user = {}
-    req.user.userId = `21`
-    req.user.token = `123456`
-    req.user.subdomain = `26369`
+  AsyncRouter.use((req:JWTRequest, res:Response, next:NextFunction) => {
+    req.auth = {}
+    req.auth.userId = `21`
+    req.auth.token = `123456`
+    req.auth.subdomain = `26369`
 
     next()
   })

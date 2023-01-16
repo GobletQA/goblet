@@ -36,6 +36,7 @@ export const AUTH_BYPASS_ROUTES = [
   `/favicon.ico`,
   `/goblet-socket`,
   `/goblet-socket/`,
+  `/repo/disconnect`,
 ]
 
 export const PWLogFilter = [

@@ -22,34 +22,6 @@ import {
   validateUser,
 } from '@gobletqa/shared/middleware'
 
-const ignoreError = [
-  `connect ECONNREFUSED`,
-  `(HTTP code 404) no such container`,
-]
-
-/**
- * There are some cases where we don't want to exit when an UncaughtException is thrown
- * In those cases the error is logged instead
- *
- */
-const handleUncaughtExp = (exitCode:number=0, err:Error) => {
-  const shouldIgnore = ignoreError.find(text => err?.message?.includes(text))
-  if(exitCode && shouldIgnore) {
-      Logger.error([
-        `\n`,
-        Logger.colors.red(`------ [Server Error] ------`),
-        `Docker API server is not responding properly`,
-        err.stack,
-        `\n`,
-      ].join(`\n`))
-
-    return true
-  }
-
-  // TODO: update this to exit only on specific errors
-  // With this, uncaught errors will never exit
-  // return true
-}
 
 /**
  * Starts a express API server, and connects the Websocket
@@ -67,9 +39,11 @@ export const initApi = async () => {
   setupServer(app, false, false, false)
   setupRouters(app)
   setupStatic(app)
-  validateUser(app, `/repo\/*`, `async`)
-  // Only for dev
-  // setupTestUser(app)
+  validateUser({
+    route: `/repo\/*`,
+    expressRouter: `async`,
+    bypassRoutes: AUTH_BYPASS_ROUTES
+  })
   await setupEndpoints()
   setupLoggerErr(app)
 
@@ -80,10 +54,10 @@ export const initApi = async () => {
     insecureServer,
   } = setupServerListen({
     app,
-    exitTimeout: 3000,
-    exitListener: true,
-    uncaughtExpCB: handleUncaughtExp,
-    config: { name: `Backend`, ...app?.locals?.config?.server },
+    config: {
+      name: `Backend`,
+      ...app?.locals?.config?.server
+    },
   })
 
   const server = secureServer || insecureServer

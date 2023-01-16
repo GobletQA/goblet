@@ -1,4 +1,4 @@
-import jwt from 'express-jwt'
+import { expressjwt as jwt } from 'express-jwt'
 import { Express } from 'express'
 
 export const setupJWT = (app:Express, bypassRoutes:(string|RegExp)[]) => {

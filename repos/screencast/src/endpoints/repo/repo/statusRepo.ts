@@ -1,4 +1,6 @@
-import { Request, Response } from 'express'
+import type { Response } from 'express'
+import type { Request as JWTRequest } from 'express-jwt'
+
 import { Repo } from '@gobletqa/shared/repo/repo'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
@@ -10,13 +12,12 @@ import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
  * Makes the initial status query take a while, so skipping for now
  * May want to add later, so keeping the code
  */
-const handleUnmounted = async (req:Request, res:Response, status:Record<any, any>) => {
-  // @ts-ignore
-  const { query, session } = req
-  if(!session.token || status.mode !== 'vnc') return apiRes(res, { status })
+const handleUnmounted = async (req:JWTRequest, res:Response, status:Record<any, any>) => {
+  const { query, auth } = req
+  if(!auth.token || status.mode !== 'vnc') return apiRes(res, { status })
 
   const repos = !query.getRepos &&
-    await Repo.getUserRepos(session)
+    await Repo.getUserRepos(auth)
 
   return apiRes(res, {status, repos})
 }
@@ -25,11 +26,10 @@ const handleUnmounted = async (req:Request, res:Response, status:Record<any, any
  * Gets the status of a connected repo
  * Calls the statusGoblet workflow
  */
-export const statusRepo = asyncWrap(async (req:Request, res:Response) => {
-  const { query } = req
+export const statusRepo = asyncWrap(async (req:JWTRequest, res:Response) => {
 
-  // @ts-ignore
-  const { token } = req.user
+  const { query } = req
+  const { token } = req.auth
   const { config } = req.app.locals
   const { repo, status } = await Repo.status(config, { token, ...query })
 

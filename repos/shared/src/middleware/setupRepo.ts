@@ -36,7 +36,7 @@ const findRepo = asyncWrap(async (req:Request, res:Response, next:NextFunction) 
     )
 
   // @ts-ignore
-  const { iat, exp, ...user } = req.user
+  const { iat, exp, ...user } = req.auth
   const { repo } = await Repo.status(config, { ...repoGit, ...user })
 
   if (!repo) throw new Error(`Requested repo does not exist`)
