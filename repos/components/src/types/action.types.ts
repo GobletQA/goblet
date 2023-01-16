@@ -1,4 +1,4 @@
-import type { MutableRefObject, ComponentType } from 'react'
+import type { MutableRefObject, ComponentType, CSSProperties } from 'react'
 import type { TSidebarAction, TSidebarActionExt } from './sidebar.types'
 
 export type TEditorAction<
@@ -15,17 +15,14 @@ export type TBrowserActionCB = (
 
 export type TBrowserAction = {
   id?:string
+  key?:string
   name:string
   className?:string
+  style?:CSSProperties
   onClick?: TBrowserActionCB
   Component:ComponentType<any>
+  sx?:CSSProperties|CSSProperties[]
   [key:string]: any
 }
 
-export type TBrowserActionProps = {
-  id?:string
-  name?:string
-  className?:string
-  activeFile?:string
-  onClick?: (...args:any[]) => void
-}
+export type TBrowserActionProps = Omit<TBrowserAction, `Component`>

@@ -1,9 +1,9 @@
-import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
+import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
 import { getFileModel } from '@utils/files/getFileModel'
 import { BaseAction, RadioButtonCheckedIcon } from '@gobletqa/components'
 
-const RecordBrowser = (props:TSidebarActionProps) => {
+const RecordBrowser = (props:TBrowserActionProps) => {
   return (
     <BaseAction
       disabled
@@ -16,8 +16,9 @@ const RecordBrowser = (props:TSidebarActionProps) => {
   )
 }
 
-export const RecordBrowserAction:TSidebarAction = {
+export const RecordAction:TBrowserAction = {
   Component: RecordBrowser,
+  key: `record-browser-action`,
   name: `record-browser-action`,
   onClick: async (event, editor, loc, content) => {
     if(!loc) return console.warn(`Can not record browser, no active file.`)

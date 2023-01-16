@@ -13,9 +13,16 @@ export const ActionBar = (props:TActionBar) => {
   } = props
   
   return (
-    <ActionBarContainer>
+    <ActionBarContainer
+      className='action-bar-container'
+    >
       {actions.map(action => {
-        return (<BarAction {...action} />)
+        return (
+          <BarAction
+            key={action.key || action.id || action.name}
+            {...action}
+          />
+        )
       })}
     </ActionBarContainer>
   )

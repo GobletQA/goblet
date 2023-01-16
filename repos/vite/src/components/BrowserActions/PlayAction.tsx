@@ -1,11 +1,11 @@
-import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
+import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
 import { getFileModel } from '@utils/files/getFileModel'
 import { BaseAction, PlayCircleOutlineIcon } from '@gobletqa/components'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
-const RunTests = (props:TSidebarActionProps) => {
+const RunTests = (props:TBrowserActionProps) => {
   return (
     <BaseAction
       onClick={props.onClick}
@@ -18,9 +18,10 @@ const RunTests = (props:TSidebarActionProps) => {
   )
 }
 
-export const PlayAction:TSidebarAction = {
+export const PlayAction:TBrowserAction = {
   Component: RunTests,
   name: `play-browser-action`,
+  key: `play-browser-action`,
   onClick: async (event, editor, loc, content) => {
     if(!loc) return console.warn(`Can not run tests, a file must be active in the editor.`)
 

@@ -1,11 +1,11 @@
-import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
+import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
 import { getFileModel } from '@utils/files/getFileModel'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { BaseAction, PlayCircleOutlineIcon } from '@gobletqa/components'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
-const RunTests = (props:TBrowserActionProps) => {
+const RunTests = (props:TSidebarActionProps) => {
   return (
     <BaseAction
       onClick={props.onClick}
@@ -18,7 +18,7 @@ const RunTests = (props:TBrowserActionProps) => {
   )
 }
 
-export const RunTestsAction:TBrowserAction = {
+export const RunTestsAction:TSidebarAction = {
   Component: RunTests,
   name: `run-tests-action`,
   onClick: async (event, editor, loc, content) => {
