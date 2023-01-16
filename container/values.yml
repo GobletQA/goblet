@@ -47,8 +47,10 @@ env:
 # These ENVs should be overwritten by the github action
   GOBLET_MOUNT_ROOT: /goblet/repos
 
-# ---- Goblet Shared ENVs ---- #
+  # Production url for gobletqa
+  GB_GOBLET_URL: https://www.gobletqa.com
 
+# ---- Goblet Shared ENVs ---- #
   GB_TOKEN: a-10K3n-g0bLe1
   GB_SH_LOCAL_MOUNT: goblet-local/current
   GB_SERVER_ORIGINS: 'http://localhost:19006,localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app'

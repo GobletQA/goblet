@@ -1,6 +1,7 @@
 import type {
   TBrowser,
   TPWBrowser,
+  TBrowserPage,
   TBrowserConf,
   EBrowserType,
   EBrowserName,
@@ -21,7 +22,7 @@ import { inDocker } from '@keg-hub/jsutils/src/node/inDocker'
 import { buildBrowserConf } from '../helpers/buildBrowserConf'
 import { getServerEndpoint } from '../server/getServerEndpoint'
 import { checkInternalPWContext } from './checkInternalPWContext'
-import { defaultBrowser, CreateBrowserRetry } from '@GSC/constants'
+import { GobletQAUrl, defaultBrowser, CreateBrowserRetry } from '@GSC/constants'
 import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
 
 /**
@@ -150,29 +151,53 @@ const createBrowser = async (
  */
 export const getPage = async (
   browserConf:TBrowserConf
-) => {
+):Promise<TPWComponents> => {
+  try {
+    const { context, browser } = await getContext(browserConf)
+    const pages = context.pages()
+    
+    Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
+    const hasPages = Boolean(pages.length)
+    const hasMultiplePages = pages.length > 1
 
-  const { context, browser } = await getContext(browserConf)
-  const pages = context.pages()
-  
-  Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
-  const hasPages = Boolean(pages.length)
-  const hasMultiplePages = pages.length > 1
+    if(hasMultiplePages){
+      Logger.verbose(`getPage - Closing extra pages on the context`)
+      await Promise.all(pages.map(async (page, idx) => idx && await page.close()))
+    }
 
-  if(hasMultiplePages){
-    Logger.verbose(`getPage - Closing extra pages on the context`)
-    await Promise.all(pages.map(async (page, idx) => idx && await page.close()))
+    // Hack due to multiple calls on frontend startup
+    // If more then one calls, and the browser is not create
+    // then it will create two browsers
+    // So this re-calls the same method when creatingBrowser is set
+    // To allow consecutive calls on start up
+    if(!hasPages && getPage.creatingPage)
+      return new Promise((res, rej) => {
+        Logger.info(`getPage - Browser Page is creating, try agin in ${CreateBrowserRetry}ms`)
+        setTimeout(() => res(getPage(browserConf)), CreateBrowserRetry)
+      })
+
+    let page:TBrowserPage
+    getPage.creatingPage = true
+    if(hasPages) page = pages[0]
+    else {
+      page = await context.newPage()
+      await page.goto(GobletQAUrl)
+    }
+
+    getPage.creatingPage = false
+
+    hasPages
+      ? Logger.verbose(`getPage - Found page on context for browser ${browserConf.type}`)
+      : Logger.verbose(`getPage - New page created on context for browser ${browserConf.type}`)
+
+    return { context, browser, page } as TPWComponents
   }
-
-  const page = hasPages ? pages[0] : await context.newPage()
-
-  hasPages
-    ? Logger.verbose(`getPage - Found page on context for browser ${browserConf.type}`)
-    : Logger.verbose(`getPage - New page created on context for browser ${browserConf.type}`)
-
-  return { context, browser, page } as TPWComponents
+  catch(err){
+    getPage.creatingPage = false
+    throw err
+  }
 }
-
+getPage.creatingPage = false
 
 /**
  * Returns the cached Playwright context
@@ -357,6 +382,7 @@ export const startBrowser = async (
     return { status, ...pwComponents } as TPWComponents
   }
   catch(err){
+    getPage.creatingPage = false
     startBrowser.creatingBrowser = false
     throw err
   }

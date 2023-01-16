@@ -5,6 +5,9 @@ import { isObj, deepMerge } from '@keg-hub/jsutils'
 import { formatRepoUrl } from '@utils/api/apiHelpers'
 import { getRepoData } from '@utils/store/getStoreData'
 
+type TRParams = Partial<TRequest>
+type TApiRecord = Record<any, any>
+
 const buildRequest = (request:TRequest|string) => {
   const req = isObj<TRequest>(request) ? request : { url: request }
 
@@ -25,17 +28,9 @@ const buildRequest = (request:TRequest|string) => {
 
 class RepoApi {
 
-  connect = async <T=Record<any, any>>(params:Partial<TRequest>) => {
-    const req = buildRequest({
-      ...params,
-      method: `POST`,
-      url: `/repo/connect`,
-    })
+  _req = async <T>(opts:string|TRequest) => await apiRequest<T>(buildRequest(opts))
 
-    return await apiRequest<T>(req)
-  }
-
-  disconnect = async <T=Record<any, any>>(params:Partial<TRequest>) => {
+  disconnect = async <T=Record<any, any>>(params:TRParams) => {
     const req = buildRequest({
       ...params,
       method: `POST`,
@@ -45,25 +40,21 @@ class RepoApi {
     return await apiRequest<T>(req)
   }
 
-  getRepos = async <T=Record<any, any>>(params:Partial<TRequest>) => {
-    const req = buildRequest({
-      ...params,
-      method: `GET`,
-      url: `/repo/all`,
-    })
+  connect = async <T=TApiRecord>(params:TRParams) => this._req<T>({
+    ...params,
+    method: `POST`,
+    url: `/repo/connect`,
+  })
 
-    return await apiRequest<T>(req)
-  }
+  getRepos = async <T=TApiRecord>(params:TRParams) => await this._req<T>({
+    ...params,
+    method: `GET`,
+    url: `/repo/all`,
+  })
 
-  definitions = async () => {
-    const req = buildRequest(`/definitions`)
-    return await apiRequest(req)
-  }
+  features = async () => await this._req(`/features`)
+  definitions = async () => await this._req(`/definitions`)
 
-  features = async () => {
-    const req = buildRequest(`/features`)
-    return await apiRequest(req)
-  }
 
 }
 

@@ -3,7 +3,7 @@ import type { TSidebarPanel } from '@gobletqa/components'
 import { useRepo } from '@store'
 import { LockAction } from './LockAction'
 import { PanelHeaderText } from '@gobletqa/components'
-import { RepoContent, RepoAction } from './RepoAction'
+import { UnmountAction } from './UnmountAction'
 
 
 const ActionsPanelTitle = () => {
@@ -20,7 +20,7 @@ const ActionsPanelTitle = () => {
 
 export const ActionsPanel:TSidebarPanel = {
   actions: [
-    RepoAction,
+    UnmountAction,
     LockAction
   ],
   header: true,

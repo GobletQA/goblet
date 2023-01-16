@@ -70,12 +70,12 @@ export const SideNav = deepFreeze({
     {
       name: `core-navigation`,
       items: [
-        EditorNavItems[EEditorType.code],
-        EditorNavItems[EEditorType.visual],
         {
           title: `Files`,
           Icon: FileTreeIcon,
         },
+        EditorNavItems[EEditorType.code],
+        EditorNavItems[EEditorType.visual],
         {
           Icon: InsertChartIcon,
           title: `Artifacts`,
