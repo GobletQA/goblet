@@ -1,12 +1,11 @@
 import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
-import { EditorAction } from './EditorAction'
-import { CameraAltIcon } from '@gobletqa/components'
+import { BaseAction, CameraAltIcon } from '@gobletqa/components'
 
 
 const PictureComp = (props:TSidebarActionProps) => {
   return (
-    <EditorAction
+    <BaseAction
       disabled
       Icon={CameraAltIcon}
       onClick={props.onClick}

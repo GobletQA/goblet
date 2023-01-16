@@ -1,9 +1,8 @@
 import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
 import { get, deepMerge } from '@keg-hub/jsutils'
-import { EditorAction } from './EditorAction'
-import { TrashIcon } from '@gobletqa/components'
 import { playEvent } from '@actions/socket/local/playEvent'
+import { BaseAction, TrashIcon } from '@gobletqa/components'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 import { passTest, failTest } from './testEventData'
 
@@ -28,7 +27,7 @@ const getStep = () => {
 
 const DecorationComp = (props:TSidebarActionProps) => {
   return (
-    <EditorAction
+    <BaseAction
       Icon={TrashIcon}
       onClick={props.onClick}
       className='goblet-decoration-action'

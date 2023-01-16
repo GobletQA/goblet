@@ -3,7 +3,6 @@ import type { TSideNav } from '@types'
 import { EEditorType, ESideNav } from '@types'
 import { deepFreeze } from '@keg-hub/jsutils'
 import {
-  onFiles,
   onEditor,
   onSettings,
   onArtifacts,
@@ -12,9 +11,8 @@ import {
 import {
   AppsIcon,
   Settings,
-  TeamIcon,
+  FileRootIcon,
   DesignIcon,
-  ProfileIcon,
   FileTreeIcon,
   SettingsIcon,
   CloudOffIcon,

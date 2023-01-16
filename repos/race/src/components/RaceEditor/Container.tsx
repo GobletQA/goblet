@@ -2,7 +2,7 @@ import type { TEditorContainer } from '@GBR/types'
 
 import { Feature } from '../Feature'
 import { FeaturesPanel } from '../Features'
-import { useSidebarResize, Actions, OpenedTabs, Sidebar } from '@gobletqa/components'
+import { useSidebarResize, EditorActions, OpenedTabs, Sidebar } from '@gobletqa/components'
 import {
   EditorContainer,
   Divider as REDivider,
@@ -84,7 +84,7 @@ export const Container = (props:TEditorContainer) => {
           />
         </EditorContainer>
         {actions?.length && (
-          <Actions
+          <EditorActions
             actions={actions}
             open={actionsOpen}
             editorRef={editorRef}

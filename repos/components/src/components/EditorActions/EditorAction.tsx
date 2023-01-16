@@ -1,8 +1,8 @@
-import type { TAction } from '../../types'
+import type { TEditorAction } from '../../types'
 import type { MutableRefObject } from 'react'
 
 import { cls } from '@keg-hub/jsutils'
-import { ActionItem } from './Actions.styled'
+import { ActionItem } from './EditorActions.styled'
 import {
   useMemo,
   useCallback,
@@ -15,7 +15,7 @@ import {
 const useActionComp = <
   TEditor=Record<any, any>,
   TEditorRef extends MutableRefObject<any>=MutableRefObject<any>
->(props:TAction<TEditor, TEditorRef>) => {
+>(props:TEditorAction<TEditor, TEditorRef>) => {
   const {
     name,
     id=name,
@@ -59,10 +59,10 @@ const useActionComp = <
 
 }
 
-export const Action = <
+export const EditorAction = <
   TEditor=any,
   TEditorRef extends MutableRefObject<any>=MutableRefObject<any>
->(props:TAction<TEditor, TEditorRef>) => {
+>(props:TEditorAction<TEditor, TEditorRef>) => {
   if(!props.Component) return null
 
   const { id, name, className } = props

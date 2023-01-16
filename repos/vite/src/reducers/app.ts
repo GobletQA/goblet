@@ -1,4 +1,4 @@
-import type { TAction } from '@types'
+import type { TDspAction } from '@types'
 import { EEditorType } from '@types'
 
 
@@ -12,9 +12,9 @@ export const appState = {
 } as TAppState
 
 export const appActions = {
-  clearApp: (state:TAppState, action:TAction<TAppState>) => (appState),
-  setApp: (state:TAppState, action:TAction<TAppState>) => action?.payload,
-  setEditor: (state:TAppState, action:TAction<EEditorType>) => ({
+  clearApp: (state:TAppState, action:TDspAction<TAppState>) => (appState),
+  setApp: (state:TAppState, action:TDspAction<TAppState>) => action?.payload,
+  setEditor: (state:TAppState, action:TDspAction<EEditorType>) => ({
     ...state,
     editor: action?.payload,
   }),

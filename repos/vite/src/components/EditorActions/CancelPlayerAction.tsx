@@ -1,11 +1,10 @@
 import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
-import { EditorAction } from './EditorAction'
-import { ModeEditIcon } from '@gobletqa/components'
+import { BaseAction, ModeEditIcon } from '@gobletqa/components'
 
 const CancelPlayerComp = (props:TSidebarActionProps) => {
   return (
-    <EditorAction
+    <BaseAction
       disabled
       Icon={ModeEditIcon}
       onClick={props.onClick}

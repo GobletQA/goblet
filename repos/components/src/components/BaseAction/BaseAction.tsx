@@ -2,11 +2,12 @@ import type { TooltipProps } from '@mui/material/Tooltip'
 import type { ComponentType } from 'react'
 
 import { useMemo } from 'react'
-import Box from '@mui/material/Box'
+import { Container } from './BaseAction.styled'
+import { Tooltip } from '@GBC/components/Tooltip'
+import { IconButton } from '@GBC/components/Buttons'
 import { cls, isStr, noOpObj } from '@keg-hub/jsutils'
-import { IconButton, Tooltip, useTheme } from '@gobletqa/components'
 
-export type TEditorActionProps = {
+export type TBaseActionAction = {
   loc?:TooltipProps['placement']
   tooltip:string
   fontSize?:string
@@ -18,7 +19,7 @@ export type TEditorActionProps = {
   onClick?:(...args:any[]) => any
 }
 
-const useToolTipText = (props:TEditorActionProps) => {
+const useToolTipText = (props:TBaseActionAction) => {
   const {
     tooltip,
     disabled,
@@ -41,15 +42,14 @@ const useToolTipText = (props:TEditorActionProps) => {
 }
 
 const useDisabledStyle = (disabled?:boolean) => {
-  const theme = useTheme()
   return useMemo(() => {
     return disabled
       ? {box: { cursor: disabled ? `not-allowed` : `auto` }}
       : noOpObj as Record<string, any>
-  }, [disabled, theme])
+  }, [disabled])
 }
 
-export const EditorAction = (props:TEditorActionProps) => {
+export const BaseAction = (props:TBaseActionAction) => {
   const {
     Icon,
     onClick,
@@ -71,7 +71,7 @@ export const EditorAction = (props:TEditorActionProps) => {
       fontSize={fontSize}
       enterDelay={enterDelay}
     >
-      <Box
+      <Container
         sx={style?.box}
         className={cls('goblet-editor-action', className as any)}
       >
@@ -80,7 +80,7 @@ export const EditorAction = (props:TEditorActionProps) => {
           onClick={onClick}
           disabled={disabled}
         />
-      </Box>
+      </Container>
     </Tooltip>
   )
   

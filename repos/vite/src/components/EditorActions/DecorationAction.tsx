@@ -1,13 +1,12 @@
 import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
-import { EditorAction } from './EditorAction'
-import { BackspaceTagIcon } from '@gobletqa/components'
+import { BaseAction, BackspaceTagIcon } from '@gobletqa/components'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
 
 const DecorationComp = (props:TSidebarActionProps) => {
   return (
-    <EditorAction
+    <BaseAction
       Icon={BackspaceTagIcon}
       onClick={props.onClick}
       className='goblet-decoration-action'

@@ -2,7 +2,8 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import 'react-page-split/style.css'
 import { Divider } from './Divider'
-import { ResizePanelClassTxt } from '@constants'
+
+import { BrowserActions } from '../BrowserActions'
 import { Screencast } from '@components/Screencast'
 import { ActionBar, dims } from '@gobletqa/components'
 import { useLayoutResize } from '@hooks/components/useLayoutResize'
@@ -37,7 +38,6 @@ export type TScreenDimsOpts = {
 
 const fullHeight = {
   overflow: `hidden`,
-  // position: `relative`,
   height: `calc( 100vh - ${dims.defs.header.hpx} )`,
 }
 const noOverflow = {
@@ -79,7 +79,7 @@ export const Layout = (props:TLayout) => {
           >
 
             <RTSection className='gb-layout-right-top-section' >
-              <ActionBar />
+              <ActionBar actions={BrowserActions} />
             </RTSection>
 
             <Screencast />

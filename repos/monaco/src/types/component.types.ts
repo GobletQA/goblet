@@ -4,7 +4,7 @@ import type { Modal, TModalOpts } from '../components/Modal/Modal'
 import type { TFolder, TFileItem, TFilelist } from './file.types'
 import type { TEditorTheme, TEditorConfig } from './editor.types'
 import type { MutableRefObject, ReactNode, ComponentType } from 'react'
-import type { TSidebarAction, TSidebarPanel, TAction } from '@gobletqa/components'
+import type { TSidebarAction, TSidebarPanel, TEditorAction as TEAction } from '@gobletqa/components'
 import type {
   TEditorCB,
   TCodeEditor,
@@ -20,7 +20,7 @@ import type {
 
 export type TModal = Modal
 
-export type TEditorAction = TAction<TCodeEditor, TCodeEditorRef>
+export type TEditorAction = TEAction<TCodeEditor, TCodeEditorRef>
 
 export interface IMonacoEditorProps {
   title?: string

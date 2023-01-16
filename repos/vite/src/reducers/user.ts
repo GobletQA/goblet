@@ -1,4 +1,4 @@
-import type { TAction } from '@types'
+import type { TDspAction } from '@types'
 import { deepMerge } from '@keg-hub/jsutils'
 
 export type TUserEmptyState = {
@@ -21,7 +21,7 @@ export type TUserState = TUserEmptyState | TUser
 export const userState = {} as TUserState
 
 export const userActions = {
-  clearUser: (state:TUserState, action:TAction<TUserState>) => (userState),
-  upsertUser: (state:TUserState, action:TAction<TUserState>) => deepMerge<TUserState>(state, action?.payload),
+  clearUser: (state:TUserState, action:TDspAction<TUserState>) => (userState),
+  upsertUser: (state:TUserState, action:TDspAction<TUserState>) => deepMerge<TUserState>(state, action?.payload),
 }
 

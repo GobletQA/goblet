@@ -19,7 +19,7 @@ import { useEditorCallbacks } from '@GBM/hooks/editor/useEditorCallbacks'
 import { useEditorFileCallbacks } from '@GBM/hooks/editor/useEditorFileCallbacks'
 
 import { EditorContainer, Container, Divider as REDivider, Editor } from './Editor.styled'
-import { useSidebarResize, FileIcon, Actions, EmptyEditor, OpenedTabs } from '@gobletqa/components'
+import { useSidebarResize, FileIcon, EditorActions, EmptyEditor, OpenedTabs } from '@gobletqa/components'
 
 const editorStyles = { flex: 1, width: '100%' }
 
@@ -257,7 +257,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
           />
         ) || null}
         {actions?.length && (
-          <Actions
+          <EditorActions
             curPath={curPath}
             open={actionsOpen}
             editorRef={editorRef}

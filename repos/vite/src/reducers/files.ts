@@ -1,4 +1,4 @@
-import type { TFileTree, TAction, TFileModel } from '@types'
+import type { TFileTree, TDspAction, TFileModel } from '@types'
 
 import { exists, deepMerge } from '@keg-hub/jsutils'
 
@@ -19,10 +19,10 @@ export const filesState = {
 } as TFilesState
 
 export const filesActions = {
-  clearFiles: (state:TFilesState, action:TAction<TFilesState>) => (filesState),
+  clearFiles: (state:TFilesState, action:TDspAction<TFilesState>) => (filesState),
   setActiveFile: (
     state:TFilesState,
-    action:TAction<TFileModel>
+    action:TDspAction<TFileModel>
   ) => {
     return {
       ...state,
@@ -31,7 +31,7 @@ export const filesActions = {
   },
   clearActiveFile: (
     state:TFilesState,
-    action:TAction<TFileModel>
+    action:TDspAction<TFileModel>
   ) => {
     return {
       ...state,
@@ -40,7 +40,7 @@ export const filesActions = {
   },
   setFile: (
     state:TFilesState,
-    action:TAction<TFileModel>
+    action:TDspAction<TFileModel>
   ) => {
     return {
       ...state,
@@ -55,14 +55,14 @@ export const filesActions = {
   },
   removeFile: (
     state:TFilesState,
-    action:TAction<string>
+    action:TDspAction<string>
   ) => {
     if(state.files[action.payload])
       delete state.files[action.payload]
   },
   upsertFile: (
     state:TFilesState,
-    action:TAction<TFileModel>
+    action:TDspAction<TFileModel>
   ) => {
     return {
       ...state,
@@ -80,7 +80,7 @@ export const filesActions = {
   },
   renameFile: (
     state:TFilesState,
-    action:TAction<TRenameFile>
+    action:TDspAction<TRenameFile>
   ) => {
     const { oldLoc, newLoc, file, merge=true } = action.payload
     const model = state.files[oldLoc]
@@ -90,7 +90,7 @@ export const filesActions = {
   },
   setFiles: (
     state:TFilesState,
-    action:TAction<TFileTree>
+    action:TDspAction<TFileTree>
   ) => {
     return {
       ...state,
@@ -99,7 +99,7 @@ export const filesActions = {
   },
   upsertFiles: (
     state:TFilesState,
-    action:TAction<TFileTree>
+    action:TDspAction<TFileTree>
   ) => {
     return {
       ...state,

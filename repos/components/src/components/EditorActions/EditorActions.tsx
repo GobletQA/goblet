@@ -1,7 +1,7 @@
-import type { TAction } from '../../types'
+import type { TEditorAction } from '../../types'
 import type { MutableRefObject } from 'react'
 
-import { Action } from './Action'
+import { EditorAction } from './EditorAction'
 import { ChevronDownIcon } from '../Icons'
 import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import { cls } from '@keg-hub/jsutils'
@@ -11,20 +11,20 @@ import {
   ActionsToggle,
   ActionsContainer,
   ActionsToggleWrap,
-} from './Actions.styled'
+} from './EditorActions.styled'
 
-export type TActions<TEditor, TEditorRef extends MutableRefObject<any>=MutableRefObject<any>> = {
+export type TEditorActions<TEditor, TEditorRef extends MutableRefObject<any>=MutableRefObject<any>> = {
   open?:boolean
   curPath:string
   editorRef:TEditorRef
   curValueRef: MutableRefObject<string>
-  actions: TAction<TEditor, TEditorRef>[]
+  actions: TEditorAction<TEditor, TEditorRef>[]
 }
 
-export const Actions = <
+export const EditorActions = <
   TEditor=Record<any, any>,
   TEditorRef extends MutableRefObject<any>=MutableRefObject<any>
->(props:TActions<TEditor, TEditorRef>) => {
+>(props:TEditorActions<TEditor, TEditorRef>) => {
   const {
     curPath,
     actions,
@@ -89,7 +89,7 @@ export const Actions = <
         <ActionsBack />
         {actions.map((action => {
           return (
-            <Action
+            <EditorAction
               key={action.id || action.name}
               {...action}
               curPath={curPath}

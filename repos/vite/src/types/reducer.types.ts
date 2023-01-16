@@ -71,7 +71,7 @@ export type TActionDispatcher<T extends TAnyReducerFuncs> = {
   [K in keyof T]: TDispatcher<T[K]>
 }
 
-export type TAction<T> = {
+export type TDspAction<T> = {
   type: string
   payload: T
 }
