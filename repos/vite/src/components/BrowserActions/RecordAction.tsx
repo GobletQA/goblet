@@ -8,6 +8,9 @@ const RecordBrowser = (props:TBrowserActionProps) => {
     <BaseAction
       disabled
       tooltip=''
+      as='button'
+      loc='bottom'
+      text='Record'
       onClick={props.onClick}
       Icon={RadioButtonCheckedIcon}
       className='goblet-browser-record'

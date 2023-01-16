@@ -1,6 +1,6 @@
 const bNavH = 37
-const bUrlH = 28
-const bActH = 35
+const bUrlH = 26
+const bActH = 40
 
 const tTabH = 30
 const tHeaderH = 30

@@ -1,21 +1,25 @@
+import type { CSSProperties, ComponentType, ReactNode } from 'react'
 import type { TooltipProps } from '@mui/material/Tooltip'
-import type { ComponentType } from 'react'
-
 import { useMemo } from 'react'
 import { Container } from './BaseAction.styled'
 import { Tooltip } from '@GBC/components/Tooltip'
-import { IconButton } from '@GBC/components/Buttons'
+import { IconButton, Button } from '@GBC/components/Buttons'
 import { cls, isStr, noOpObj } from '@keg-hub/jsutils'
 
 export type TBaseActionAction = {
-  loc?:TooltipProps['placement']
+  text?:ReactNode
   tooltip:string
   fontSize?:string
   disabled?:boolean
   className?:string
   enterDelay?:number
+  as?:`button`|`icon`
+  children?:ReactNode
+  textSx?:CSSProperties
+  iconSx?:CSSProperties
   disabledTooltip?:string
-  Icon:ComponentType<any>
+  Icon?:ComponentType<any>
+  loc?:TooltipProps['placement']
   onClick?:(...args:any[]) => any
 }
 
@@ -52,8 +56,11 @@ const useDisabledStyle = (disabled?:boolean) => {
 export const BaseAction = (props:TBaseActionAction) => {
   const {
     Icon,
+    text,
     onClick,
     disabled,
+    children,
+    as=`icon`,
     className,
     loc=`right`,
     enterDelay=500,
@@ -73,13 +80,28 @@ export const BaseAction = (props:TBaseActionAction) => {
     >
       <Container
         sx={style?.box}
-        className={cls('goblet-editor-action', className as any)}
+        className={cls('goblet-editor-action', className as string)}
       >
-        <IconButton
-          Icon={Icon}
-          onClick={onClick}
-          disabled={disabled}
-        />
+      {as !== `icon`
+        ? (
+            <Button
+              Icon={Icon}
+              text={text}
+              onClick={onClick}
+              disabled={disabled}
+              children={children}
+            />
+          )
+        : (
+            <IconButton
+              Icon={Icon}
+              onClick={onClick}
+              disabled={disabled}
+              children={children}
+            />
+          )
+        }
+      
       </Container>
     </Tooltip>
   )

@@ -1,18 +1,21 @@
 import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
 import { getFileModel } from '@utils/files/getFileModel'
-import { BaseAction, PlayCircleOutlineIcon } from '@gobletqa/components'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
+import { BaseAction, PlayCircleOutlineIcon } from '@gobletqa/components'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
 const RunTests = (props:TBrowserActionProps) => {
   return (
     <BaseAction
+      text='Play'
+      as='button'
+      loc='bottom'
       onClick={props.onClick}
       Icon={PlayCircleOutlineIcon}
       className='goblet-browser-run-tests'
       disabled={!Boolean(props.activeFile)}
-      tooltip={`Run the active file in the browser`}
+      tooltip='Play the steps from active file in the browser'
       disabledTooltip='DISABLED - Open a test or script to use this action'
     />
   )

@@ -1,16 +1,17 @@
 import type { CSSProperties } from 'react'
 
 import { useMemo } from 'react'
-import { noOpObj, ensureArr } from '@keg-hub/jsutils'
+import { useInline } from '@GBC/hooks/useInline'
+import { emptyArr, ensureArr } from '@keg-hub/jsutils'
 
 export const useJoinSx = (
-  original:CSSProperties|CSSProperties[]=noOpObj,
-  add:CSSProperties|CSSProperties[]=noOpObj
+  ...styles:(undefined|null|CSSProperties|CSSProperties[])[]
 ) => {
-  return useMemo(() => {
-    return [ ...ensureArr(original), ...ensureArr(add)]
-  }, [
-    add,
-    original,
-  ])
+  
+  const joinSx = useInline(() => styles.reduce((joined, style) => ([
+    ...ensureArr(joined),
+    ...(style ? ensureArr(style) : emptyArr)
+  ]), [] as CSSProperties[]))
+  
+  return useMemo(() => joinSx(), [joinSx])
 }

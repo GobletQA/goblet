@@ -29,16 +29,18 @@ export const BrowserNavActions = styled(Box)(({ theme }) => `
 `)
 
 export const BrowserInput = styled('input')(({ theme }) => `
+  top: -1px;
   flex-grow: 1;
   border: none;
-  height: ${dims.browser.url.hpx};
   margin: 0 6px;
   font-size: 14px;
   padding: 0 14px;
   line-height: 22px;
+  position: relative;
   border-radius: 18px;
   font-family: inherit;
   letter-spacing: 0.2px;
+  height: ${dims.browser.url.hpx};
   color: ${getColor(colors.black07, colors.white, theme)};
   background-color: ${getColor(colors.white00, colors.black12, theme)};
 
