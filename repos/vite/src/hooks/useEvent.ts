@@ -23,18 +23,14 @@ export const useEventListen = <P=Record<any, any>>(
 
 export const useEventEmit = <P=Record<any, any>>(
   event:string,
-  params:P
+  params?:P
 ) => {
 
-  const inline = useInline(() => params)
-
-  return useCallback((...args:any[]) => {
-    const params = inline()
-
-    EE.emit(
+  return useInline((...args:any[]) => {
+    EE.emit<P>(
       event,
       exists(params) ? params : args.shift(),
       ...args
     )
-  }, [])
+  })
 }

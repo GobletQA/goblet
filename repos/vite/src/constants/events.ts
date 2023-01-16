@@ -13,4 +13,5 @@ export const BrowserStateEvt = `browser-state-event`
 export const TerminalExpandEvt = `terminal-expand-event`
 export const PlayerStartedEvent = `player-started-event`
 export const OpenEditorFileEvt = `open-editor-file-event`
+export const EditorPathChangeEvt = `editor-path-change-event`
 export const PlayerClearDecorationEvt = `player-clear-decoration-event`

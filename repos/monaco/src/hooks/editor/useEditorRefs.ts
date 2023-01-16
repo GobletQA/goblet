@@ -12,14 +12,15 @@ import type {
 import { useRef, useEffect } from 'react'
 import { useLintWorker } from '@GBM/hooks/editor/useLintWorker'
 import { useTypesWorker } from '@GBM/hooks/editor/useTypesWorker'
+import { getContentFromPath } from '@GBM/utils/editor/getContentFromPath'
 
 export type THEditorRefs = {
   curPath:string
   options: TEditorOpts
   defaultFiles: TFilelist
-  onPathChange?: TEditorCB
   onValueChange?: TEditorCB
   onEditorBlur?: TEditorFileCB
+  onPathChange?: TEditorFileCB
   onEditorFocus?: TEditorFileCB
   onFileChange?: TEditorFileCB
   onLoadFile?: TEditorPromiseCB
@@ -64,19 +65,16 @@ export const useEditorRefs = (props:THEditorRefs) => {
   const filesRef = useRef(defaultFiles)
   const editorStatesRef = useRef(new Map())
   const editorRef = useRef<TCodeEditor>()
+  const openedPathRef = useRef<string | null>('')
   const contentListenerRef = useRef<IDisposable>()
   const editorNodeRef = useRef<HTMLDivElement>(null)
   const [lintWorkerRef] = useLintWorker({ editorRef })
   const [typesWorkerRef] = useTypesWorker({ editorRef })
 
-  // TODO: investigate removing this, pretty sure it's not needed
-  // Or at least can be handled differently
-  const openedPathRef = useRef<string | null>('')
-
   useEffect(() => {
-    onPathChangeRef.current
+    onPathChangeRef?.current
       && curPath
-      && onPathChangeRef.current(curPath)
+      && onPathChangeRef.current(curPath, getContentFromPath(curPath) || filesRef.current[curPath])
   }, [curPath])
 
   return {

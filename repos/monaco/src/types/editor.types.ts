@@ -2,12 +2,14 @@ import type { ReactNode, MutableRefObject, ComponentType } from 'react'
 
 import type Monaco from 'monaco-editor'
 import type { editor } from 'monaco-editor'
+import type { TMonacoDefinition } from './gherkin.types'
 import type { TFilelist, TFileMeta } from './file.types'
 import type { TDecorationFns } from './decorations.types'
 import type { TModalOpts } from '../components/Modal/Modal'
-import type { TMonacoDefinition, TMonaco } from './gherkin.types'
+import type {  } from './helpers.types'
 import type { TSidebarAction, TSidebarPanel, TEditorAction } from '@gobletqa/components'
 import type {
+  TMonaco,
   TEditorCB,
   TCodeEditor,
   TEditorOpts,
@@ -87,26 +89,26 @@ export type TEditorRefHandle = {
 export interface IMonacoEditorProps {
   title?: string
   Modal: TModalOpts
-  rootPrefix?: string
   emptyText?: string
+  rootPrefix?: string
   options: TEditorOpts
   sidebarWidth?: number
   actionsOpen?:boolean
   config?: TEditorConfig
   sidebarStatus?: boolean
-  defaultFiles?: TFilelist
-  onPathChange?: TEditorCB
   Panels?:TSidebarPanel[]
   PrePanels?:TSidebarPanel[]
-  onValueChange?: TEditorCB
+  defaultFiles?: TFilelist
   onDeleteFile?: TEditorCB
+  onValueChange?: TEditorCB
   onAddFile?: TEditorAddFile
   onSaveFile?: TEditorFileCB
   Divider?:ComponentType<any>
+  onPathChange?: TEditorFileCB
   onEditorBlur?: TEditorFileCB
-  onEditorFocus?: TEditorFileCB
   onFileChange?: TEditorFileCB
   onLoadFile?: TEditorPromiseCB
+  onEditorFocus?: TEditorFileCB
   onEditorLoaded?:TOnEditorLoaded
   onRenameFile?: TEditorRenameFile
   style?: Record<string, string|number>

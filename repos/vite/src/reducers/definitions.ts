@@ -47,7 +47,7 @@ export const definitionsActions = {
 
         return acc
       }, {} as TDefinitionFileModelList),
-    }
+    } as TDefinitionsState
   },
   setDefs: (
     state:TDefinitionsState,

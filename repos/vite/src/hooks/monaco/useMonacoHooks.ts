@@ -1,31 +1,30 @@
 import type { MutableRefObject } from 'react'
 import type { TEditorRefHandle } from '@gobletqa/monaco'
 import type {
-  TMonaco,
-  IEditor,
   TDefinitionAst,
   TOpenFileTreeEvent,
   TEditorSettingValues,
 } from '@types'
 
-import { useEventListen } from '../useEvent'
-import { useMemo, useCallback } from 'react'
+import { useMemo } from 'react'
+import { useFiles, useRepo } from '@store'
+import { exists, set } from '@keg-hub/jsutils'
 import { useDecorations } from './useDecorations'
-import { useFiles, useRepo, useDefs } from '@store'
 import { useMonacoConfig } from './useMonacoConfig'
-import { exists, set, noOp } from '@keg-hub/jsutils'
 import { confirmModal } from '@actions/modals/modals'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { toggleModal } from '@actions/modals/toggleModal'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { isCustomDef } from '@utils/definitions/isCustomDef'
+import { useEventListen, useEventEmit } from '@hooks/useEvent'
 import { useSettingValues } from '@hooks/store/useSettingValues'
 import { loadGobletFile } from '@actions/files/api/loadGobletFile'
 import {
   UpdateModalEvt,
   OpenFileTreeEvt,
   OpenEditorFileEvt,
+  EditorPathChangeEvt,
 } from '@constants'
 
 
@@ -71,9 +70,10 @@ export const useMonacoHooks = (
     ...editorFiles
   })
 
+  const onPathChange = useEventEmit(EditorPathChangeEvt)
+  const onSaveFile = useOnSaveFile(repoFiles, rootPrefix)
   const onDeleteFile = useOnDeleteFile(repoFiles, rootPrefix)
   const onAddFile = useOnAddFile(repoFiles, rootPrefix, repo)
-  const onSaveFile = useOnSaveFile(repoFiles, rootPrefix)
   const onRenameFile = useOnRenameFile(repoFiles, rootPrefix)
 
   const config = useMonacoConfig()
@@ -107,23 +107,19 @@ export const useMonacoHooks = (
 
   })
 
-  // TODO: remove this if it's not needed
-  const onEditorLoaded = useCallback((editor:IEditor, monaco:TMonaco) => {}, [])
-
   useDecorations({ editorRef, repo, rootPrefix })
 
   return {
     config,
     options,
     rootPrefix,
-    onLoadFile,
-    modalActions,
-    onEditorLoaded,
-    onMonacoLoaded:noOp,
     onAddFile,
     onSaveFile,
+    onLoadFile,
     onRenameFile,
     onDeleteFile,
+    modalActions,
+    onPathChange,
     ...editorFiles,
   }
 }

@@ -26,12 +26,11 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     onSaveFile,
     onRenameFile,
     onDeleteFile,
+    onPathChange,
     connected,
     rootPrefix,
     onLoadFile,
     modalActions,
-    onMonacoLoaded,
-    onEditorLoaded,
   } = useMonacoHooks(editorRef)
 
   return connected
@@ -52,10 +51,9 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onSaveFile={onSaveFile}
           rootPrefix={rootPrefix}
           onLoadFile={onLoadFile}
+          onPathChange={onPathChange}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
-          onMonacoLoaded={onMonacoLoaded}
-          onEditorLoaded={onEditorLoaded}
           sidebarWidth={EditorSidebarWidth}
         />
       )

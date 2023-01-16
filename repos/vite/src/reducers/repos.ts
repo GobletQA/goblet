@@ -9,7 +9,7 @@ export const Environment = process.env.NODE_ENV || `local`
 export type TReposState = TRepoMeta[]
 
 // export const reposState = {} as TReposState
-export const reposState = Environment === `production` ? {} : reposJson as TReposState
+export const reposState = Environment === `production` ? [] : reposJson as TReposState
 
 
 export const reposActions = {

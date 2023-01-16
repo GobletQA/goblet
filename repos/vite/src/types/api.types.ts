@@ -1,6 +1,6 @@
 import type { TRepoState } from './reducer.types'
 import type {
-  TRepo,
+  TRepoMeta,
   TFileTree,
   TFileModel,
   TRouteMeta,
@@ -38,7 +38,7 @@ export type TApiRepoResp = {
 }
 
 export type TAPIReposResp = {
-  repos: TRepo[]
+  repos: TRepoMeta[]
 }
 
 export type TApiDefinitionsResp = {
