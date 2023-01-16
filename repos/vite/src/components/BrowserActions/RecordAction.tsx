@@ -1,7 +1,7 @@
 import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
 import { getFileModel } from '@utils/files/getFileModel'
-import { BaseAction, RadioButtonCheckedIcon } from '@gobletqa/components'
+import { BaseAction, RadioButtonCheckedIcon, gutter } from '@gobletqa/components'
 
 const RecordBrowser = (props:TBrowserActionProps) => {
   return (
@@ -11,6 +11,7 @@ const RecordBrowser = (props:TBrowserActionProps) => {
       as='button'
       loc='bottom'
       text='Record'
+      variant='outlined'
       onClick={props.onClick}
       Icon={RadioButtonCheckedIcon}
       className='goblet-browser-record'
@@ -21,7 +22,9 @@ const RecordBrowser = (props:TBrowserActionProps) => {
 
 export const RecordAction:TBrowserAction = {
   Component: RecordBrowser,
-  key: `record-browser-action`,
+  containerSx: {
+    marginLeft: gutter.margin.hpx,
+  },
   name: `record-browser-action`,
   onClick: async (event, editor, loc, content) => {
     if(!loc) return console.warn(`Can not record browser, no active file.`)

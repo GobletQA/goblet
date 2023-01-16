@@ -1,7 +1,10 @@
-
 import type Monaco from 'monaco-editor'
 import type { editor } from 'monaco-editor'
 import type { MutableRefObject } from 'react'
+
+export type TMonaco = typeof Monaco
+export type ICodeEditor = editor.ICodeEditor
+export type IEditor = editor.IStandaloneCodeEditor | null
 
 export type TOpenMode = `keep` | `preview`
 export type TAutoSave = `blur` | `change` | `off`

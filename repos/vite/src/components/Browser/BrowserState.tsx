@@ -1,7 +1,7 @@
 import { EBrowserState } from '@types'
 import { BrowserButton } from './BrowserButton'
 import { BrowserStateIcon } from './Browser.styled'
-import { RecordIcon, AlertIcon, colors, gutter } from '@gobletqa/components'
+import { RecordIcon, colors, gutter } from '@gobletqa/components'
 
 const styles = {
   record: {

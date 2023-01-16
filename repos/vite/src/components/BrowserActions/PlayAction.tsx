@@ -2,7 +2,7 @@ import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
 import { getFileModel } from '@utils/files/getFileModel'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
-import { BaseAction, PlayCircleOutlineIcon } from '@gobletqa/components'
+import { BaseAction, gutter, PlayCircleOutlineIcon } from '@gobletqa/components'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
 const RunTests = (props:TBrowserActionProps) => {
@@ -11,6 +11,7 @@ const RunTests = (props:TBrowserActionProps) => {
       text='Play'
       as='button'
       loc='bottom'
+      variant='outlined'
       onClick={props.onClick}
       Icon={PlayCircleOutlineIcon}
       className='goblet-browser-run-tests'
@@ -23,8 +24,10 @@ const RunTests = (props:TBrowserActionProps) => {
 
 export const PlayAction:TBrowserAction = {
   Component: RunTests,
+  containerSx: {
+    marginLeft: gutter.margin.hpx,
+  },
   name: `play-browser-action`,
-  key: `play-browser-action`,
   onClick: async (event, editor, loc, content) => {
     if(!loc) return console.warn(`Can not run tests, a file must be active in the editor.`)
 

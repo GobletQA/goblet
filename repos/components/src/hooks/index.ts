@@ -1,3 +1,4 @@
+export * from './actions'
 export * from './theme'
 export * from './useId'
 export * from './sidebar'

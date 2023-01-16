@@ -12,15 +12,18 @@ export type TBaseActionAction = {
   fontSize?:string
   disabled?:boolean
   className?:string
+  sx?:CSSProperties
   enterDelay?:number
   as?:`button`|`icon`
   children?:ReactNode
   textSx?:CSSProperties
   iconSx?:CSSProperties
+  actionClassName?:string
   disabledTooltip?:string
   Icon?:ComponentType<any>
   loc?:TooltipProps['placement']
   onClick?:(...args:any[]) => any
+  variant?:`contained`|`outlined`|`text`
 }
 
 const useToolTipText = (props:TBaseActionAction) => {
@@ -58,6 +61,7 @@ export const BaseAction = (props:TBaseActionAction) => {
     Icon,
     text,
     onClick,
+    tooltip,
     disabled,
     children,
     as=`icon`,
@@ -65,6 +69,9 @@ export const BaseAction = (props:TBaseActionAction) => {
     loc=`right`,
     enterDelay=500,
     fontSize=`12px`,
+    actionClassName,
+    disabledTooltip,
+    ...rest
   } = props
 
   const title = useToolTipText(props)
@@ -80,7 +87,11 @@ export const BaseAction = (props:TBaseActionAction) => {
     >
       <Container
         sx={style?.box}
-        className={cls('goblet-editor-action', className as string)}
+        className={cls(
+          `goblet-editor-action`,
+          className as string
+          
+        )}
       >
       {as !== `icon`
         ? (
@@ -90,6 +101,8 @@ export const BaseAction = (props:TBaseActionAction) => {
               onClick={onClick}
               disabled={disabled}
               children={children}
+              className={actionClassName}
+              {...rest}
             />
           )
         : (
@@ -98,6 +111,8 @@ export const BaseAction = (props:TBaseActionAction) => {
               onClick={onClick}
               disabled={disabled}
               children={children}
+              className={actionClassName}
+              {...rest}
             />
           )
         }
