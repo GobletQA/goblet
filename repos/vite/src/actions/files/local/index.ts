@@ -1,5 +1,4 @@
 export * from './setActiveFile'
-export * from './setActiveFileFromType'
 export * from './clearFileTree'
 export * from './setFileTree'
 export * from './setFiles'

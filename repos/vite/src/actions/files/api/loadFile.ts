@@ -5,7 +5,7 @@ import { addToast } from '../../toasts/addToast'
 
 /**
  * Sets a test file as the activeFile, after loading it's fileModel from the backend
- * Then calls setActiveFileFromType to set the file Active
+ * Then calls setFile to update the reducer store with the file content
  */
 export const loadFile = async (
   location:string,

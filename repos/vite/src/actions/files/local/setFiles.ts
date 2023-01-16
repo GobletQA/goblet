@@ -1,9 +1,14 @@
-import type { TFileModel } from '@types'
+import type { TFileTree, TFileModel } from '@types'
 import { filesDispatch } from '@store'
 
 
 export const setFiles = (files:TFileModel[]) => {
-  console.log(`TODO: Convert array into object ref by file path`)
-  // TODO: Convert array into object ref by file path
-  // filesDispatch.setFiles(files)
+
+  const fileTree = files.reduce((tree, file) => {
+    tree[file.location] = file
+
+    return tree
+  }, {} as TFileTree)
+
+  filesDispatch.setFiles(fileTree)
 }

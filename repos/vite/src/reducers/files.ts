@@ -27,6 +27,10 @@ export const filesActions = {
     return {
       ...state,
       activeFile: action?.payload,
+      files: {
+        ...state.files,
+        [action.payload.uuid]: action.payload
+      },
     }
   },
   clearActiveFile: (
@@ -35,7 +39,7 @@ export const filesActions = {
   ) => {
     return {
       ...state,
-      activeFile: {} as TFileModel,
+      activeFile: undefined,
     }
   },
   setFile: (
@@ -59,22 +63,24 @@ export const filesActions = {
   ) => {
     if(state.files[action.payload])
       delete state.files[action.payload]
+
+    if(state?.activeFile?.uuid === action.payload)
+      state.activeFile = undefined
   },
   upsertFile: (
     state:TFilesState,
     action:TDspAction<TFileModel>
   ) => {
+    const updated = deepMerge(state.files[action.payload.uuid], action.payload)
+
     return {
       ...state,
       activeFile: state?.activeFile?.uuid === action.payload.uuid
-        ? action.payload
+        ? updated
         : state?.activeFile,
       files: {
         ...state.files,
-        [action.payload.uuid]: {
-          ...state.files[action.payload.uuid],
-          ...action.payload
-        }
+        [action.payload.uuid]: updated
       },
     }
   },
@@ -84,9 +90,14 @@ export const filesActions = {
   ) => {
     const { oldLoc, newLoc, file, merge=true } = action.payload
     const model = state.files[oldLoc]
-    state.files[newLoc] = merge ? deepMerge<TFileModel>(model, file) : file as TFileModel
+    const updated = merge ? deepMerge<TFileModel>(model, file) : file as TFileModel
 
+    state.files[newLoc] = updated
     delete state.files[oldLoc]
+
+    if(state?.activeFile?.uuid === oldLoc)
+      state.activeFile = updated
+
   },
   setFiles: (
     state:TFilesState,

@@ -3,7 +3,7 @@ import type { TFileResp } from '@types'
 import { noOpObj } from '@keg-hub/jsutils'
 import { addToast } from '@actions/toasts'
 import { filesApi } from '@services/filesApi'
-import { renameFile as renameFileLoc } from '@actions/files/local/renameFile'
+import { renameFile as renameFileLocal } from '@actions/files/local/renameFile'
 
 
 /**
@@ -34,7 +34,7 @@ export const renameFile = async (
   })
 
   const { file } = resp?.data
-  file && renameFileLoc(oldLoc, newLoc, file)
+  file && renameFileLocal(oldLoc, newLoc, file)
 
   return resp?.data
 }
