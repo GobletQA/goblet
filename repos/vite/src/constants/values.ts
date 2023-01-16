@@ -6,7 +6,8 @@ export const EditorSidebarWidth = 230
 export const GobletQAUrl = `https://www.gobletqa.com`
 export const GoogleSearchUrl = `https://www.google.com/search?igu=1&q=`
 
-export const ResizePanelClass = `.react-page-split`
+export const ResizePanelClassTxt = `react-page-split`
+export const ResizePanelClass = `.${ResizePanelClassTxt}`
 export const ScreencastBrowserSelector = `screencast-browser`
 export const ResizePanelVClass = `.react-page-split--vertical`
 export const ResizePanelSplitClass = `.react-page-split__panel`

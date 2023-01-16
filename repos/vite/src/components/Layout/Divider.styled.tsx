@@ -37,7 +37,3 @@ export const VDivider = styled(VerticalDivider)`
   border-top: ${divider.hvrpx} solid ${colors.royalPurple};
   border-bottom: ${divider.hvrpx} solid ${colors.royalPurple};
 `
-
-export const LayoutContainer = styled(`div`)`
-  width: 100%;
-`

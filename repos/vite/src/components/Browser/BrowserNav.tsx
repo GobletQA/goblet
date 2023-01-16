@@ -24,8 +24,8 @@ export type TBrowserNav = {
   loading: boolean
   initialUrl: string
   browserState:EBrowserState
-  rfbRef:MutableRefObject<RFB | null>
   setBrowserState?:(state:EBrowserState) => void
+  rfbRef:MutableRefObject<RFB | null>
 }
 
 const styles = {

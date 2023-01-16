@@ -1,8 +1,8 @@
+import type { ForwardRefRenderFunction } from 'react'
 import type { TBrowserProps, TBrowserHandle } from '@types'
 
-import { EBrowserState } from '@types'
 
-import React, { forwardRef, useImperativeHandle } from 'react'
+import { forwardRef, useImperativeHandle } from 'react'
 
 import { cls } from '@keg-hub/jsutils'
 import { BrowserNav } from './BrowserNav'
@@ -33,7 +33,7 @@ const loadingStyles = {
   }
 }
 
-const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (props, ref) => {
+const BrowserComp: ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (props, ref) => {
 
   const {
     style,

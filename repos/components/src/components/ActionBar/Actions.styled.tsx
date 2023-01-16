@@ -1,7 +1,5 @@
+import type { TGobletTheme } from '@GBC/types'
 import Box from '@mui/material/Box'
-import { TGobletTheme } from '@GBC/types'
-import { getColor } from '@GBC/utils/theme'
-
 import { styled } from '@mui/material/styles'
 
 

@@ -2,11 +2,17 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import 'react-page-split/style.css'
 import { Divider } from './Divider'
-import { dims } from '@gobletqa/components/theme'
-import { LayoutContainer } from './Divider.styled'
+import { ResizePanelClassTxt } from '@constants'
 import { Screencast } from '@components/Screencast'
+import { ActionBar, dims } from '@gobletqa/components'
 import { useLayoutResize } from '@hooks/components/useLayoutResize'
-import { Container, RContainer, RTSection, RBSection, RMSection } from './Layout.styled'
+import {
+  LContainer,
+  RContainer,
+  RTSection,
+  RMSection,
+  LayoutContainer,
+} from './Layout.styled'
 import {
   Proportional,
   VerticalPageSplit,
@@ -31,7 +37,7 @@ export type TScreenDimsOpts = {
 
 const fullHeight = {
   overflow: `hidden`,
-  position: `relative`,
+  // position: `relative`,
   height: `calc( 100vh - ${dims.defs.header.hpx} )`,
 }
 const noOverflow = {
@@ -44,28 +50,41 @@ export type TLayout = {
 }
 
 export const Layout = (props:TLayout) => { 
-  const [ref, onHorResizeMove, onVerResizeMove] = useLayoutResize()
+  const [ref, onHorResizeMove] = useLayoutResize()
 
   return (
     <LayoutContainer ref={ref} className='layout-container'>
       <HorizontalPageSplit
         divider={Divider}
         resize={Proportional}
-        // widths={['40%', '60%']}
-        widths={['40%', '60%']}
+        widths={['50%', '50%']}
         onResizeMove={onHorResizeMove}
       >
-        <Container
+        <LContainer
           disableGutters
           sx={noOverflow}
         >
           {props.children}
-        </Container>
-        <RContainer disableGutters sx={fullHeight}>
-          <RTSection />
-          <RMSection>
+        </LContainer>
+
+        <RContainer
+          sx={fullHeight}
+          disableGutters
+          className={`gb-layout-right-container`}
+        >
+
+          <VerticalPageSplit
+            heights={[`35px`, `auto`]}
+            divider={() => <span /> as any}
+          >
+
+            <RTSection className='gb-layout-right-top-section' >
+              <ActionBar />
+            </RTSection>
+
             <Screencast />
-          </RMSection>
+          </VerticalPageSplit>
+
         </RContainer>
       </HorizontalPageSplit>
     </LayoutContainer>

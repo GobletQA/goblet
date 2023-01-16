@@ -1,3 +1,9 @@
+import { ActionBarContainer } from './ActionBar.styled'
+
 export const ActionBar  = () => {
-  return null
+  return (
+    <ActionBarContainer>
+      
+    </ActionBarContainer>
+  )
 }
