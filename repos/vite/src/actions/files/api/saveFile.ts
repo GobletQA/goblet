@@ -1,9 +1,9 @@
-import type { TFileModel } from '@types'
+import type { TFileResp, TFileModel } from '@types'
 
-import { saveApiFile } from '@utils/api'
 import { setFile } from '../local/setFile'
 import { addToast } from '@actions/toasts'
 import { noOpObj } from '@keg-hub/jsutils'
+import { filesApi } from '@services/filesApi'
 
 /**
  * Save the content to the given file. if no filePath passed in. it will save it on the currently active file
@@ -22,8 +22,8 @@ export const saveFile = async (fileToSave:TFileModel = noOpObj as TFileModel) =>
     message: `Saving file ${fileToSave.name}!`,
   })
 
-  const resp = await saveApiFile({ location, content, type: fileType })
-  if(!resp?.success) return noOpObj as Record<"file", TFileModel>
+  const resp = await filesApi.saveFile<TFileResp>({ location, content, type: fileType })
+  if(!resp?.success) return noOpObj as TFileResp
   
   // After saving the file, update the local store with the saved model
   const savedFile = resp?.data?.file

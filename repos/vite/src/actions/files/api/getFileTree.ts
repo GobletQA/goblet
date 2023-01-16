@@ -1,7 +1,7 @@
 import type { TFileTree } from '@types'
+import { repoApi } from '@services/repoApi'
 import { setFileTree } from '../local/setFileTree'
 import { addToast } from '@actions/toasts/addToast'
-import { apiRepoRequest } from '@utils/api/apiRepoRequest'
 
 /**
  * Makes call to the backend API to load the fileTree
@@ -14,7 +14,8 @@ export const getFileTree = async () => {
     data,
     error,
     success
-  } = await apiRepoRequest<TFileTree>(`/files/tree`)
+  } = await repoApi.fileTree<TFileTree>()
+
 
   if (!success || error)
     return addToast({

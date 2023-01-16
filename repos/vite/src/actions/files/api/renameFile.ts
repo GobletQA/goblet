@@ -1,9 +1,8 @@
-import type { TFileModel } from '@types'
+import type { TFileResp } from '@types'
 
 import { noOpObj } from '@keg-hub/jsutils'
-import { renameApiFile } from '@utils/api'
 import { addToast } from '@actions/toasts'
-import { setFile } from '@actions/files/local/setFile'
+import { filesApi } from '@services/filesApi'
 import { renameFile as renameFileLoc } from '@actions/files/local/renameFile'
 
 
@@ -23,11 +22,11 @@ export const renameFile = async (
     message: `Renaming file to ${newLoc}!`,
   })
 
-  const resp = await renameApiFile({
+  const resp = await filesApi.renameFile({
     oldLoc,
     newLoc
   })
-  if(!resp?.success) return noOpObj as Record<"file", TFileModel>
+  if(!resp?.success) return noOpObj as TFileResp
 
   addToast({
     type: `success`,

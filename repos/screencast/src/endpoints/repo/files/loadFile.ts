@@ -10,7 +10,7 @@ import { getGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  * @returns {Object} - response object model containing the loaded fileModel
  */
 export const loadFile = asyncWrap(async (req:Request, res:Response) => {
-  const filePath = req.query.path
+  const filePath = req.query.location
   const file = await getGobletFile(res.locals.repo, filePath as string)
 
   return apiRes(res, (file ? {file} : {}), 200)

@@ -1,10 +1,10 @@
-import type { TFileType } from '@types'
+import type { TFileResp, TFileType } from '@types'
 
 import { getStore } from '@store'
 import { addToast } from '@actions/toasts'
+import { filesApi } from '@services/filesApi'
 import { noOpObj, isObj } from '@keg-hub/jsutils'
 import { setFile } from '@actions/files/local/setFile'
-import { createApiFile } from '@utils/api/fileApi'
 
 /**
  * Checks the file extension based on fileType, and adds it if needed
@@ -90,7 +90,7 @@ export const createFile = async (
     message: `Creating new file ${file}!`,
   })
 
-  const resp = await createApiFile({
+  const resp = await filesApi.createFile<TFileResp>({
     location: file,
     type: typeMeta.type,
   })

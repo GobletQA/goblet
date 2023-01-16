@@ -3,7 +3,7 @@ import type { TFileModel } from '@types'
 import { noOpObj } from '@keg-hub/jsutils'
 import { getFileTree } from './getFileTree'
 import { addToast } from '@actions/toasts'
-import { deleteApiFile } from '@utils/api/deleteApiFile'
+import { filesApi } from '@services/filesApi'
 
 export type TRemoveFileLoc = {
   name:string
@@ -26,7 +26,8 @@ export const removeFile = async (fileModel:TFileModel|TRemoveFileLoc) => {
     message: `Removing file ${fileModel.name}!`,
   })
 
-  const resp = await deleteApiFile(fileModel)
+  const resp = await filesApi.deleteFile(fileModel.location)
+
   if(!resp?.success) return noOpObj
 
   if(!resp.data || !resp.data.location)

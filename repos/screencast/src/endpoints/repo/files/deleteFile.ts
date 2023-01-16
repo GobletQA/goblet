@@ -10,8 +10,8 @@ import { deleteGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  * @returns {Object} - response object model
  */
 export const deleteFile = asyncWrap(async (req:Request, res:Response) => {
-  const { file } = req.query
-  const meta = await deleteGobletFile(res.locals.repo, file as string)
+  const { location } = req.body
+  const meta = await deleteGobletFile(res.locals.repo, location as string)
 
   return apiRes(res, meta || {}, 200)
 })

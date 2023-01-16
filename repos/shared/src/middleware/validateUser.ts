@@ -1,11 +1,14 @@
+import type { Request as JWTRequest } from 'express-jwt'
+import type { Response, NextFunction, Router } from 'express'
+
+import { emptyArr } from '@keg-hub/jsutils'
 import { resError } from '../express/resError'
 import { getRouter } from '../express/appRouter'
 import { asyncWrap } from '../express/asyncWrap'
-import type { Express, Request, Response, NextFunction, Router } from 'express'
 
 export type TMValidateUser = {
   route:string,
-  bypassRoutes: string[]
+  bypassRoutes?: string[]
   expressRouter?:Router|boolean|string
 }
 
@@ -14,10 +17,9 @@ export type TMValidateUser = {
  * If not, then throws an error
  */
 const checkUserInRequest = (bypassRoutes:string[]) => {
-  return asyncWrap(async (req:Request, res:Response, next:NextFunction) => {
-    // TODO: create a custom user over
-    // @ts-ignore
-    if (req.auth && req.auth.userId && req.auth.token) return next()
+  return asyncWrap(async (req:JWTRequest, res:Response, next:NextFunction) => {
+    if (bypassRoutes.includes(req.originalUrl) || req.auth && req.auth.userId && req.auth.token)
+      return next()
 
     resError(`User session is expired, please sign in`, 401)
   })
@@ -29,8 +31,8 @@ const checkUserInRequest = (bypassRoutes:string[]) => {
  */
 export const validateUser = ({
   route,
-  bypassRoutes,
-  expressRouter
+  expressRouter,
+  bypassRoutes=emptyArr,
 }:TMValidateUser) => {
   const router = getRouter(expressRouter)
   router && router.use(route, checkUserInRequest(bypassRoutes))

@@ -9,6 +9,7 @@ import { signInModal, connectModal } from '@actions/modals/modals'
 
 const callDisconnectApi = async (username?:string) => {
   try {
+
     // Then call the backend api to unmount the repo
     const {data, error} = await repoApi.disconnect({ params: { username } }) as Record<any, any>
 
@@ -27,15 +28,18 @@ const callDisconnectApi = async (username?:string) => {
   }
   catch(err:any){
     console.warn(`API call /repo/disconnect failed`)
-    console.log(err.stack)
+    console.error(err.stack)
   }
 }
 
-export const disconnectRepo = async (username?:string) => {
+export const disconnectRepo = async (username?:string, openModel:boolean=true) => {
   addToast({
     type: 'info',
     message: `Disconnecting repo...`,
   })
+
+  // If no user exists, then disconnect the user
+  username = username || GitUser.getUser()?.username
 
   // First disconnect the repo on the backend
   await callDisconnectApi(username)
@@ -43,12 +47,10 @@ export const disconnectRepo = async (username?:string) => {
   // Then remove the repo locally
   await removeRepo()
 
-  // If no user exists, then disconnect the user
-  username = username || GitUser.getUser()?.username
-  if(!username) return signInModal()
+  if(!openModel) return
 
+  if(!username) return signInModal()
 
   // Open the connect repo modal after disconnecting
   connectModal()
-
 }

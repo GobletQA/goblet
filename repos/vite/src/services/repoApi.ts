@@ -1,48 +1,41 @@
 import type { TRequest } from '@services/axios.types'
+import type {
+  TFileTree,
+  TApiDefinitionsResp,
+  TFeatureFileModelList
+} from '@types'
 
+import { HttpMethods } from '@constants'
 import { apiRequest } from '@utils/api/apiRequest'
-import { isObj, deepMerge } from '@keg-hub/jsutils'
-import { formatRepoUrl } from '@utils/api/apiHelpers'
-import { getRepoData } from '@utils/store/getStoreData'
+import { buildRepoReq } from '@utils/api/apiHelpers'
 
 type TRParams = Partial<TRequest>
 type TApiRecord = Record<any, any>
-
-const buildRequest = (request:TRequest|string) => {
-  const req = isObj<TRequest>(request) ? request : { url: request }
-
-  const repoData = getRepoData()
-  req.url = formatRepoUrl(repoData.name, req.url)
-  
-  return deepMerge<TRequest>(
-    {
-      params: {
-        local: repoData?.git?.local,
-        remote: repoData?.git?.remote,
-        branch: repoData?.git?.branch,
-      },
-    },
-    req
-  )
-}
+export type TFeatureFilesResp = Record<`features`, TFeatureFileModelList>
 
 class RepoApi {
 
-  _req = async <T>(opts:string|TRequest) => await apiRequest<T>(buildRequest(opts))
+  /**
+   * Internal method, that all other methods call to make an API request
+   * @private
+   */
+  _req = async <T>(opts:string|TRequest) => await apiRequest<T>(buildRepoReq(opts))
 
-  disconnect = async <T=Record<any, any>>(params:TRParams) => {
-    const req = buildRequest({
-      ...params,
-      method: `POST`,
-      url: `/repo/disconnect`,
-    })
+  fileTree = async <T=TFileTree>() => this._req<T>(`/files/tree`)
 
-    return await apiRequest<T>(req)
-  }
+  features = async <T=TFeatureFilesResp>() => await this._req<T>(`/features`)
+
+  definitions = async <T=TApiDefinitionsResp>() => await this._req<T>(`/definitions`)
+
+  disconnect = async <T=TApiRecord>(params:TRParams) => this._req<T>({
+    ...params,
+    method: HttpMethods.POST,
+    url: `/repo/disconnect`,
+  })
 
   connect = async <T=TApiRecord>(params:TRParams) => this._req<T>({
     ...params,
-    method: `POST`,
+    method: HttpMethods.POST,
     url: `/repo/connect`,
   })
 
@@ -51,10 +44,6 @@ class RepoApi {
     method: `GET`,
     url: `/repo/all`,
   })
-
-  features = async () => await this._req(`/features`)
-  definitions = async () => await this._req(`/definitions`)
-
 
 }
 

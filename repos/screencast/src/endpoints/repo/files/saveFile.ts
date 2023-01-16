@@ -10,7 +10,7 @@ import { saveGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  * @returns {Object} - response object model containing the saved fileModel
  */
 export const saveFile = asyncWrap(async (req:Request, res:Response) => {
-  const {path:location, content, type} = req.body
+  const { location, content, type} = req.body
   if (!location) throw new Error(`[Backend API] Save failed: location required`)
 
   const meta = await saveGobletFile(res.locals.repo, location, content, type)
