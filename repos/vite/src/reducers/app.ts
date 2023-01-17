@@ -4,11 +4,13 @@ import { EEditorType } from '@types'
 
 export type TAppState = {
   editor:EEditorType
+  sidebarLocked: boolean
 }
 
 export const appState = {
+  sidebarLocked: false,
   // editor: EEditorType.visual
-  editor: EEditorType.code
+  editor: EEditorType.code,
 } as TAppState
 
 export const appActions = {
@@ -18,4 +20,10 @@ export const appActions = {
     ...state,
     editor: action?.payload,
   }),
+  toggleSidebarLocked: (state:TAppState, action:TDspAction<boolean>) => {
+    return {
+      ...state,
+      sidebarLocked: Boolean(action?.payload)
+    }
+  },
 }

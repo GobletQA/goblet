@@ -28,7 +28,6 @@ import {
   OpenFileTreeEvt,
   ToggleSideNavEvt,
   OpenEditorFileEvt,
-  EditorPathChangeEvt,
 } from '@constants'
 
 

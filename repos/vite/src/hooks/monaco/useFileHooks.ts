@@ -4,17 +4,20 @@ import type {
   TFilesState,
 } from '@types'
 
+import { ESideNav } from '@types'
 import { noOpObj } from '@keg-hub/jsutils'
+import { useCallback, useMemo } from 'react'
+import { ToggleSideNavEvt } from '@constants'
 import { loadFile } from '@actions/files/api/loadFile'
 import { saveFile } from '@actions/files/api/saveFile'
 import { addRootToLoc } from '@utils/repo/addRootToLoc'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { createFile } from '@actions/files/api/createFile'
 import { removeFile } from '@actions/files/api/removeFile'
 import { renameFile } from '@actions/files/api/renameFile'
 import { setActiveFile } from '@actions/files/local/setActiveFile'
 
-import { useCallback, useMemo } from 'react'
 
 export type THEditorFiles = {
   repo: TRepoState
@@ -146,6 +149,8 @@ export const useOnPathChange = (repoFiles:TFilesState, rootPrefix:string) => {
 
     const fullLoc = addRootToLoc(loc, rootPrefix)
     setActiveFile(fullLoc)
+
+    EE.emit(ToggleSideNavEvt, { open: false, name: ESideNav.Files })
 
   }, [repoFiles, rootPrefix])
 }

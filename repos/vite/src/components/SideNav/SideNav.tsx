@@ -1,14 +1,16 @@
 import type { TNavItemProps } from '../Nav/NavItem'
 
+import { useApp } from '@store'
 import { useState } from 'react'
 import { ESideNav } from '@types'
 import { navItemNameToTitle } from '@utils'
 import { NavGroups, TGroupItem } from '../Nav'
-import { useClickAway } from '@gobletqa/components'
 import { HeaderSpacer, Drawer } from './SideNav.styled'
 import { SideNav as SideNavItems } from '@constants/nav'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
 import { useSideNavToggle } from '@hooks/nav/useSideNavToggle'
+import { useClickAway, useInline } from '@gobletqa/components'
+import { toggleSidebarLocked } from '@actions/nav/toggleSidebarLocked'
 
 const groups = SideNavItems.groups.map(group => {
   const builtGrp = { ...group, items: [] } as TGroupItem
@@ -31,18 +33,23 @@ type TSideNavProps = {
 }
 
 export const SideNav = (props:TSideNavProps) => {
+  const { sidebarLocked } = useApp()
   const [open, setOpen] = useState(false)
-  const [locked, setLocked] = useState(false)
   const [activeNav, setActiveNav] = useState<ESideNav|undefined>()
+
+  const toggleOpen = useInline((toggle:boolean, force?:boolean) => {
+    if(sidebarLocked && open && !force) return
+    setOpen(toggle)
+  })
 
   const toggleDrawer = useSideNavToggle(
     open,
-    setOpen,
+    toggleOpen,
     activeNav,
     setActiveNav
   )
 
-  const onClickAway = useClickAway((open:boolean) => setOpen(open))
+  const onClickAway = useClickAway((open:boolean) => toggleOpen(open))
 
   return (
     <ClickAwayListener onClickAway={onClickAway} >
@@ -56,10 +63,10 @@ export const SideNav = (props:TSideNavProps) => {
           {...props}
           open={open}
           groups={groups}
-          locked={locked}
-          setLocked={setLocked}
           activeNav={activeNav}
+          locked={sidebarLocked}
           toggleDrawer={toggleDrawer}
+          setLocked={toggleSidebarLocked}
           className={SideNavItems.groupClassName}
         />
       </Drawer>
