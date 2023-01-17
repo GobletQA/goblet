@@ -48,6 +48,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     onEditorLoaded,
     Modal:ModalComp,
     onSidebarResize,
+    onBeforeAddFile,
     Divider=REDivider,
     defaultFiles = {},
     title='Goblet Editor',
@@ -189,6 +190,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     addFile,
     rootPrefix,
     defaultFiles,
+    onBeforeAddFile
   })
 
   const {

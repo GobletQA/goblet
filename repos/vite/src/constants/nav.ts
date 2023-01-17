@@ -11,7 +11,6 @@ import {
 import {
   AppsIcon,
   Settings,
-  FileRootIcon,
   DesignIcon,
   FileTreeIcon,
   SettingsIcon,

@@ -6,7 +6,6 @@ import type { TMonacoDefinition } from './gherkin.types'
 import type { TFilelist, TFileMeta } from './file.types'
 import type { TDecorationFns } from './decorations.types'
 import type { TModalOpts } from '../components/Modal/Modal'
-import type {  } from './helpers.types'
 import type { TSidebarAction, TSidebarPanel, TEditorAction } from '@gobletqa/components'
 import type {
   TMonaco,
@@ -14,6 +13,7 @@ import type {
   TCodeEditor,
   TEditorOpts,
   TEditorFileCB,
+  TFileCallback,
   TEditorAddFile,
   TOnEditorLoaded,
   TEditorPromiseCB,
@@ -109,6 +109,7 @@ export interface IMonacoEditorProps {
   onFileChange?: TEditorFileCB
   onLoadFile?: TEditorPromiseCB
   onEditorFocus?: TEditorFileCB
+  onBeforeAddFile?: TFileCallback
   onEditorLoaded?:TOnEditorLoaded
   onRenameFile?: TEditorRenameFile
   style?: Record<string, string|number>

@@ -12,7 +12,7 @@ import type {
 
 import { useMemo } from 'react'
 import { FileTree } from '../FileTree'
-import { isStr, emptyObj } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils'
 import { Sidebar as GBSidebar, SidebarPortal as GBSidebarPortal } from '@gobletqa/components'
 
 export type TSidebar = {

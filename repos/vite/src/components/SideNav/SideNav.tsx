@@ -1,9 +1,10 @@
 import type { TNavItemProps } from '../Nav/NavItem'
 
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { ESideNav } from '@types'
 import { navItemNameToTitle } from '@utils'
 import { NavGroups, TGroupItem } from '../Nav'
+import { useClickAway } from '@gobletqa/components'
 import { HeaderSpacer, Drawer } from './SideNav.styled'
 import { SideNav as SideNavItems } from '@constants/nav'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
@@ -41,9 +42,7 @@ export const SideNav = (props:TSideNavProps) => {
     setActiveNav
   )
 
-  const onClickAway = useCallback((event: MouseEvent | TouchEvent) => {
-    open && setOpen(false)
-  }, [open])
+  const onClickAway = useClickAway((open:boolean) => setOpen(open))
 
   return (
     <ClickAwayListener onClickAway={onClickAway} >

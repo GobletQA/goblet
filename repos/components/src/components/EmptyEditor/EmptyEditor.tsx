@@ -3,6 +3,7 @@ import type { ComponentType, MouseEvent } from 'react'
 import Box from '@mui/material/Box'
 import { H4 } from '../Text'
 import { Button } from '../Buttons/Button'
+import { SkipClickAwayCls, CreateFileButtonID } from '@GBC/constants'
 import { EmptyEditorContainer, EmptyEditorContent } from './EmptyEditor.styled'
 
 export type EmptyEditor = {
@@ -46,6 +47,8 @@ export const EmptyEditor = (props:EmptyEditor) => {
               sx={styles.button}
               variant='contained'
               iconSx={styles.icon}
+              id={CreateFileButtonID}
+              className={SkipClickAwayCls}
             />
           </Box>
         ) || null}

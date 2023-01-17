@@ -111,8 +111,8 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
 
   const addFile = useCallback(
     (path: string, content?: string, isEdit?:boolean) => {
-      const missingNamed = path.startsWith(`/`) && path.endsWith(`/`)
-      const newNamedFile = !missingNamed && !isEdit
+      const missingName = path.startsWith(`/`) && path.endsWith(`/`)
+      const newNamedFile = !missingName && !isEdit
 
       const cont = content || ''
       createOrUpdateModel(path, cont)

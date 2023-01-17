@@ -3,10 +3,12 @@ import type { TEditorRefHandle } from '@gobletqa/monaco'
 import type {
   TDefinitionAst,
   TOpenFileTreeEvent,
+  TSideNavToggleProps,
   TEditorSettingValues,
 } from '@types'
 
 import { useMemo } from 'react'
+import { ESideNav } from '@types'
 import { useFiles, useRepo } from '@store'
 import { exists, set } from '@keg-hub/jsutils'
 import { useDecorations } from './useDecorations'
@@ -20,9 +22,11 @@ import { isCustomDef } from '@utils/definitions/isCustomDef'
 import { useEventListen, useEventEmit } from '@hooks/useEvent'
 import { useSettingValues } from '@hooks/store/useSettingValues'
 import { loadGobletFile } from '@actions/files/api/loadGobletFile'
+
 import {
   UpdateModalEvt,
   OpenFileTreeEvt,
+  ToggleSideNavEvt,
   OpenEditorFileEvt,
   EditorPathChangeEvt,
 } from '@constants'
@@ -75,6 +79,10 @@ export const useMonacoHooks = (
   const onDeleteFile = useOnDeleteFile(repoFiles, rootPrefix)
   const onAddFile = useOnAddFile(repoFiles, rootPrefix, repo)
   const onRenameFile = useOnRenameFile(repoFiles, rootPrefix)
+  const onBeforeAddFile = useEventEmit<TSideNavToggleProps>(
+    ToggleSideNavEvt,
+    { open: true, name: ESideNav.Files }
+  )
 
   const config = useMonacoConfig()
   const { theme, ...options } = useSettingValues<TEditorSettingValues>(`editor`)
@@ -120,6 +128,7 @@ export const useMonacoHooks = (
     onDeleteFile,
     modalActions,
     onPathChange,
+    onBeforeAddFile,
     ...editorFiles,
   }
 }

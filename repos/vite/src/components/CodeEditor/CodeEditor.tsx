@@ -27,6 +27,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     onRenameFile,
     onDeleteFile,
     onPathChange,
+    onBeforeAddFile,
     connected,
     rootPrefix,
     onLoadFile,
@@ -55,6 +56,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
           sidebarWidth={EditorSidebarWidth}
+          onBeforeAddFile={onBeforeAddFile}
         />
       )
     : (

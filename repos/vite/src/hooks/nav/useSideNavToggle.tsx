@@ -1,12 +1,13 @@
 import type { Dispatch, SetStateAction } from 'react'
-import type { TNavItem } from '@types'
+import type { TNavItem, TSideNavToggleProps } from '@types'
 
 import { ESideNav } from '@types'
 import { useCallback } from 'react'
-import { isFunc } from '@keg-hub/jsutils'
+import { isFunc, exists } from '@keg-hub/jsutils'
 import { navItemNameToTitle } from '@utils'
 import { SideNav as SideNavItems } from '@constants/nav'
-
+import { useEventListen, useEventEmit } from '@hooks/useEvent'
+import { ToggleSideNavEvt, SideNavToggledEvt } from '@constants/events'
 
 export const findNavItemName = (element:HTMLElement):ESideNav|undefined => {
   const navItem = element?.dataset?.navItem as ESideNav
@@ -35,6 +36,18 @@ export const useSideNavToggle = (
   active:ESideNav|undefined,
   setActive:Dispatch<SetStateAction<ESideNav | undefined>>
 ) => {
+  
+  const sideNavToggled = useEventEmit(SideNavToggledEvt)
+
+  useEventListen(ToggleSideNavEvt, ({ open, name }:TSideNavToggleProps) => {
+    const nextOpen = name && exists(open) ? open as boolean : true
+
+    setOpen(nextOpen)
+    exists<ESideNav>(name) && setActive(name)
+
+    sideNavToggled({ open: nextOpen, name })
+  })
+
   return useCallback((event:Record<string, any>) => {
     const nextOpen = !open
     const { item, name } = findNavItem(event?.target as HTMLElement)
@@ -50,10 +63,12 @@ export const useSideNavToggle = (
     if((!name || name === active) && !nextOpen){
       setOpen(nextOpen)
       setActive(undefined)
+      sideNavToggled({ open: nextOpen })
     }
     else {
       setOpen(true)
       setActive(name)
+      sideNavToggled({ open: true, active: name })
     }
 
   }, [open, active])
