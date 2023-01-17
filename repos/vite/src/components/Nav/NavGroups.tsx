@@ -1,4 +1,4 @@
-import type {CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
 import type { TNavItemProps } from './NavItem'
 
 import { Fragment } from 'react'
@@ -13,6 +13,7 @@ type TNavGroupProps = {
   activeNav?: string
   className?: string
   groups: TGroupItem[]
+  subNavSx?:CSSProperties
   setLocked?:(lock:boolean) => void
   toggleDrawer: (...args:any[]) => any
   anchor?: 'top' | 'left' | 'bottom' | 'right'
@@ -32,13 +33,12 @@ export const NavGroups = (props: TNavGroupProps) => {
     groups,
     anchor,
     locked,
+    subNavSx,
     setLocked,
     className,
     activeNav,
     toggleDrawer
   } = props
-  
-  const groupLength = groups.length - 1
 
   return (
     <Box
@@ -65,6 +65,7 @@ export const NavGroups = (props: TNavGroupProps) => {
       ))}
       <SubNav
         open={open}
+        sx={subNavSx}
         locked={locked}
         setLocked={setLocked}
         activeNav={activeNav}

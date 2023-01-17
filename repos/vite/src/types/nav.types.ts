@@ -76,4 +76,5 @@ export type TSettingNavItem = {
 export type TSideNavToggleProps = {
   open?:boolean
   name?:ESideNav
+  force?:boolean
 }

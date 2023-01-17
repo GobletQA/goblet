@@ -23,7 +23,7 @@ const EditorComps = {
 export type TEditorProps = {}
 
 export default function Editor(props:TEditorProps){
-  const { editor } = useApp()
+  const { editor, sidebarLocked } = useApp()
   const { Component, ...rest } = EditorComps[editor]
 
   return (
@@ -31,7 +31,7 @@ export default function Editor(props:TEditorProps){
       <Component
         // TODO: toggle this on off to lock the sidebar into the dom
         // Not the best solution, but may work for now?
-        portal={SubNavId}
+        portal={!sidebarLocked ? SubNavId : ``}
         style={style}
         {...rest}
       />

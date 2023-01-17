@@ -1,7 +1,7 @@
 import type { TNavItemProps } from '../Nav/NavItem'
 
 import { useApp } from '@store'
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { ESideNav } from '@types'
 import { navItemNameToTitle } from '@utils'
 import { NavGroups, TGroupItem } from '../Nav'
@@ -50,6 +50,19 @@ export const SideNav = (props:TSideNavProps) => {
   )
 
   const onClickAway = useClickAway((open:boolean) => toggleOpen(open))
+  
+  const subNavSx = useMemo(() => {
+    return activeNav === ESideNav.files && sidebarLocked
+      ? { display: `none` }
+      : {}
+  }, [sidebarLocked, open, activeNav])
+
+  useEffect(() => {
+    activeNav === ESideNav.files
+      && sidebarLocked
+      && open
+      && setOpen(false)
+  }, [sidebarLocked, open, activeNav])
 
   return (
     <ClickAwayListener onClickAway={onClickAway} >
@@ -63,6 +76,7 @@ export const SideNav = (props:TSideNavProps) => {
           {...props}
           open={open}
           groups={groups}
+          subNavSx={subNavSx}
           activeNav={activeNav}
           locked={sidebarLocked}
           toggleDrawer={toggleDrawer}
