@@ -3,7 +3,6 @@ import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 import { useMemo } from 'react'
 import { EBrowserState } from '@types'
 import { capitalize, cls } from '@keg-hub/jsutils'
-import { getFileModel } from '@utils/files/getFileModel'
 import { BaseAction, StateIcon, colors } from '@gobletqa/components'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 
@@ -65,9 +64,6 @@ const StateBrowser = (props:TBrowserActionProps) => {
 
 export const StateAction:TBrowserAction = {
   Component: StateBrowser,
-  containerSx: {},
   name: `state-browser-action`,
-  onClick: async (event, editor, loc, content) => {
-    console.log(`------- browser status -------`)
-  }
+  containerSx: { minWidth: `150px` },
 }

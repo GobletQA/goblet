@@ -1,5 +1,7 @@
+import type { TColorType } from '@GBC/types'
 import type { CSSProperties, ComponentType, ReactNode } from 'react'
 import type { TooltipProps } from '@mui/material/Tooltip'
+
 import { useMemo } from 'react'
 import { Container } from './BaseAction.styled'
 import { Tooltip } from '@GBC/components/Tooltip'
@@ -13,6 +15,7 @@ export type TBaseActionAction = {
   disabled?:boolean
   className?:string
   sx?:CSSProperties
+  color?:TColorType
   enterDelay?:number
   as?:`button`|`icon`
   children?:ReactNode

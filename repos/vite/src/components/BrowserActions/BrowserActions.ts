@@ -1,8 +1,8 @@
 import type { TActionGroupActions, TBrowserAction } from '@gobletqa/components'
 import { PlayAction } from './PlayAction'
 import { StateAction } from './StateAction'
-import { EmptyAction } from './EmptyAction'
 import { RecordAction } from './RecordAction'
+import { SpinnerAction } from './SpinnerAction'
 
 const centerActions = [
   PlayAction,
@@ -12,7 +12,7 @@ const centerActions = [
 centerActions.name = `browser-center-actions-group`
 
 const rightActions = [
-  EmptyAction,
+  SpinnerAction,
 ] as TActionGroupActions
 
 rightActions.name = `browser-right-actions-group`

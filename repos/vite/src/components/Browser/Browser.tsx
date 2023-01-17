@@ -138,8 +138,6 @@ const BrowserComp: ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (pr
         rfbRef={rfb}
         loading={loading}
         initialUrl={displayUrl}
-        browserState={browserState}
-        setBrowserState={setBrowserState}
       />
       <BrowserViewContainer className='gb-browser-view-container'>
         <BrowserView

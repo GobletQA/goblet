@@ -1,7 +1,10 @@
+import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
+
 import { EBrowserState } from '@types'
-import { BrowserButton } from './BrowserButton'
-import { BrowserStateIcon } from './Browser.styled'
-import { RecordIcon, colors, gutter } from '@gobletqa/components'
+import { colors, gutter } from '@gobletqa/components'
+import { BrowserStateIcon } from './BrowserActions.styled'
+import { BrowserButton } from '@components/Browser/BrowserButton'
+import { useBrowserState } from '@hooks/screencast/useBrowserState'
 
 const styles = {
   record: {
@@ -27,14 +30,10 @@ const styles = {
   }
 }
 
-export type TBrowserState = {
-  browserState:EBrowserState
-  setBrowserState?:(state:EBrowserState) => void
-}
 
-export const BrowserState = (props:TBrowserState) => {
-
-  const { browserState } = props
+export const BrowserSpinner = (props:TBrowserActionProps) => {
+  
+  const { browserState } = useBrowserState()
   const stateStyle = browserState === EBrowserState.playing
     ? styles?.alert?.active
     : styles?.alert?.inactive
@@ -46,15 +45,16 @@ export const BrowserState = (props:TBrowserState) => {
       className='goblet-browser-state override-color'
       disabled={Boolean(browserState === EBrowserState.idle)}
     >
-      {browserState === EBrowserState.recording
-        ? (<RecordIcon sx={styles.record} />)
-        : (
-            <BrowserStateIcon
-              style={stateStyle}
-              className='gb-player-glyph gb-player-running'
-            />
-          )
-      }
+      <BrowserStateIcon
+        style={stateStyle}
+        className='gb-player-glyph gb-player-running'
+      />
     </BrowserButton>
   )
+}
+
+export const SpinnerAction:TBrowserAction = {
+  Component: BrowserSpinner,
+  name: `spinner-browser-action`,
+  containerSx: {},
 }
