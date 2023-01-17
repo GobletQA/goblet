@@ -11,7 +11,7 @@ type TRenameFile = {
 
 export type TFilesState = {
   files: TFileTree
-  activeFile?: TFileModel
+  activeFile?: string
 }
 
 export const filesState = {
@@ -22,15 +22,11 @@ export const filesActions = {
   clearFiles: (state:TFilesState, action:TDspAction<TFilesState>) => (filesState),
   setActiveFile: (
     state:TFilesState,
-    action:TDspAction<TFileModel>
+    action:TDspAction<string>
   ) => {
     return {
       ...state,
       activeFile: action?.payload,
-      files: {
-        ...state.files,
-        [action.payload.uuid]: action.payload
-      },
     }
   },
   clearActiveFile: (
@@ -48,9 +44,6 @@ export const filesActions = {
   ) => {
     return {
       ...state,
-      activeFile: state?.activeFile?.uuid === action.payload.uuid
-        ? action.payload
-        : state?.activeFile,
       files: {
         ...state.files,
         [action.payload.uuid]: action.payload
@@ -64,23 +57,18 @@ export const filesActions = {
     if(state.files[action.payload])
       delete state.files[action.payload]
 
-    if(state?.activeFile?.uuid === action.payload)
+    if(state?.activeFile === action.payload)
       state.activeFile = undefined
   },
   upsertFile: (
     state:TFilesState,
     action:TDspAction<TFileModel>
   ) => {
-    const updated = deepMerge(state.files[action.payload.uuid], action.payload)
-
     return {
       ...state,
-      activeFile: state?.activeFile?.uuid === action.payload.uuid
-        ? updated
-        : state?.activeFile,
       files: {
         ...state.files,
-        [action.payload.uuid]: updated
+        [action.payload.uuid]: deepMerge(state.files[action.payload.uuid], action.payload)
       },
     }
   },
@@ -95,8 +83,8 @@ export const filesActions = {
     state.files[newLoc] = updated
     delete state.files[oldLoc]
 
-    if(state?.activeFile?.uuid === oldLoc)
-      state.activeFile = updated
+    if(state?.activeFile === oldLoc)
+      state.activeFile = newLoc
 
   },
   setFiles: (

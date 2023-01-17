@@ -39,6 +39,7 @@ import {
   useEditorFiles,
   useOnRenameFile,
   useOnDeleteFile,
+  useOnPathChange,
 } from './useFileHooks'
 
 const modalActions = {
@@ -74,8 +75,8 @@ export const useMonacoHooks = (
     ...editorFiles
   })
 
-  const onPathChange = useEventEmit(EditorPathChangeEvt)
   const onSaveFile = useOnSaveFile(repoFiles, rootPrefix)
+  const onPathChange = useOnPathChange(repoFiles, rootPrefix)
   const onDeleteFile = useOnDeleteFile(repoFiles, rootPrefix)
   const onAddFile = useOnAddFile(repoFiles, rootPrefix, repo)
   const onRenameFile = useOnRenameFile(repoFiles, rootPrefix)

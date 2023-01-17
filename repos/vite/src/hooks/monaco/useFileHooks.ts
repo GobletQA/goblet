@@ -12,6 +12,7 @@ import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { createFile } from '@actions/files/api/createFile'
 import { removeFile } from '@actions/files/api/removeFile'
 import { renameFile } from '@actions/files/api/renameFile'
+import { setActiveFile } from '@actions/files/local/setActiveFile'
 
 import { useCallback, useMemo } from 'react'
 
@@ -136,4 +137,15 @@ export const useEditorFiles = (props:THEditorFiles) => {
     files,
     connected: Boolean(repo?.paths && repo?.name)
   }
+}
+
+
+export const useOnPathChange = (repoFiles:TFilesState, rootPrefix:string) => {
+  return useCallback(async (loc:string) => {
+    if(!loc) console.warn(`Can not set active file, missing file location`)
+
+    const fullLoc = addRootToLoc(loc, rootPrefix)
+    setActiveFile(fullLoc)
+
+  }, [repoFiles, rootPrefix])
 }
