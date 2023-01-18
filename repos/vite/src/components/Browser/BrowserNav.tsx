@@ -1,8 +1,6 @@
 import type { MutableRefObject } from 'react'
 import type RFB from '@novnc/novnc/core/rfb'
 
-import { EBrowserState } from '@types'
-import { BrowserState } from './BrowserState'
 import { BrowserButton } from './BrowserButton'
 import {
   colors,
@@ -23,8 +21,6 @@ import { useBrowserNav } from '@hooks/screencast/useBrowserNav'
 export type TBrowserNav = {
   loading: boolean
   initialUrl: string
-  browserState:EBrowserState
-  setBrowserState?:(state:EBrowserState) => void
   rfbRef:MutableRefObject<RFB | null>
 }
 
@@ -52,7 +48,6 @@ export const BrowserNav = (props:TBrowserNav) => {
   const {
     loading,
     initialUrl,
-    browserState,
   } = props
 
   const {
@@ -117,7 +112,6 @@ export const BrowserNav = (props:TBrowserNav) => {
           sx={styles.action}
           className='goblet-browser-right-nav-actions'
         >
-          <BrowserState browserState={browserState} />
           <BrowserButton
             sx={styles.reconnect}
             onClick={onReconnect}

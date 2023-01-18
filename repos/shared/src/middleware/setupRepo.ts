@@ -1,4 +1,6 @@
-import type { Express, Request, Response, NextFunction } from 'express'
+import type { Request as JWTRequest } from 'express-jwt'
+import type { Express, Response, NextFunction } from 'express'
+
 import { Repo } from '@GSH/repo/repo'
 import { asyncWrap } from '@GSH/express'
 import { AppRouter } from '@GSH/express/appRouter'
@@ -7,7 +9,7 @@ import { pickKeys, deepMerge } from '@keg-hub/jsutils'
 /**
  * Gets the git keys off the request for all request types
  */
-export const getRepoGit = ({ query, params, body }:Request) => {
+export const getRepoGit = ({ query, params, body }:JWTRequest) => {
   return pickKeys(deepMerge(params, query, body), [
     'path',
     'local',
@@ -21,7 +23,7 @@ export const getRepoGit = ({ query, params, body }:Request) => {
  * Then ensures it's loaded on the res.locals.repo property
  *
  */
-const findRepo = asyncWrap(async (req:Request, res:Response, next:NextFunction) => {
+const findRepo = asyncWrap(async (req:JWTRequest, res:Response, next:NextFunction) => {
   // If loading a report, we don't need to check repo status
   // Just try to load the report if it exists, so skip loading the repo
   if (req.originalUrl.startsWith(`/repo/${req.params.repo}/reports/`))
@@ -36,7 +38,7 @@ const findRepo = asyncWrap(async (req:Request, res:Response, next:NextFunction) 
     )
 
   // @ts-ignore
-  const { iat, exp, ...user } = req.user
+  const { iat, exp, ...user } = req.auth
   const { repo } = await Repo.status(config, { ...repoGit, ...user })
 
   if (!repo) throw new Error(`Requested repo does not exist`)

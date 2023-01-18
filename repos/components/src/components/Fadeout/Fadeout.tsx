@@ -1,4 +1,5 @@
-import { TStyles, TStyle } from '@GBC/types'
+import type { TStyles } from '@GBC/types'
+import type { CSSProperties } from 'react'
 
 import { exists } from '@keg-hub/jsutils'
 import { useEffect, useState, useMemo } from 'react'
@@ -12,6 +13,7 @@ type TFadeoutProps = {
   start?: boolean
   styles?: TStyles
   initOpacity?: number
+  onFadeOut?:() => void
 }
 
 /**
@@ -35,7 +37,7 @@ const useFadeEffect = (
   initOpacity:number=1
 ) => {
 
-  const [style, setStyle] = useState<TStyle>({ ...(styles?.main || {}), opacity: initOpacity })
+  const [style, setStyle] = useState<CSSProperties>({ ...(styles?.main || {}), opacity: initOpacity })
 
   useEffect(() => {
     start && !style.display && style.opacity === initOpacity
@@ -51,7 +53,7 @@ const useFadeEffect = (
     callback: () => setStyle({ ...style, display: 'none' }),
   })
 
-  return [style, setStyle]
+  return [style, setStyle] as [CSSProperties, (css:CSSProperties) => void]
 }
 
 export const Fadeout = (props:TFadeoutProps) => {
@@ -60,6 +62,7 @@ export const Fadeout = (props:TFadeoutProps) => {
     color,
     styles,
     content,
+    onFadeOut,
     speed=2000,
     initOpacity=1,
   } = props
@@ -67,11 +70,15 @@ export const Fadeout = (props:TFadeoutProps) => {
   const fadeStart = useFadeStart(start)
   const [fadeStyle] = useFadeEffect(fadeStart, speed, styles, initOpacity)
 
+  useEffect(() => {
+    fadeStyle?.display === `none` && onFadeOut?.()
+  }, [onFadeOut, fadeStyle?.display])
+
   return (
     <Fade
       speed={speed}
       className='gb-fade-out'
-      sx={fadeStyle as TStyle}
+      sx={fadeStyle}
     >
       <FadeSection sx={styles?.section} >
         <FadeView color={color} sx={styles?.view} >

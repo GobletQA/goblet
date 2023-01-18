@@ -1,12 +1,17 @@
+import type { SyntheticEvent, ComponentType, ReactNode } from 'react'
+
 export type TPanel = {
   id?:string
-  title:string
   children?:any
+  body?:boolean
   header?:boolean
   className?:string
   startOpen?:boolean
   fillHeight?:boolean
+  headerHover?:boolean
   actions?:TPanelHeaderAction[]
+  title?:string|ReactNode|ComponentType<any>
+  onClick?:(event:SyntheticEvent, ...args:any[]) => void
 }
 
 export type TPanelHeaderAction = {
@@ -21,10 +26,12 @@ export type TPanelHeaderAction = {
 }
 
 export type TPanelHeader = {
-  title: string
   closed: boolean
+  hasBody?:boolean
+  headerHover?:boolean
   actions?:TPanelHeaderAction[]
   onCollapse: (...args:any[]) => void
+  title?:string|ReactNode|ComponentType<any>
 }
 
 export type TSidebarPanel = TPanel & {

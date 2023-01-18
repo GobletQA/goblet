@@ -24,6 +24,24 @@ export type TBrowserContextOpts = BrowserContextOptions
 export type TColorSchema = null | `light` | `dark` | `no-preference`
 export type TBrowserType = `chromium` | `firefox` | `webkit` | string
 
+ 
+export type TBrowserTraceStartOpts = {
+  path?: string;
+  categories?: string[]
+  screenshots?: boolean;
+}
+export type TStartTraceOpts = {
+  name?: string
+  screenshots?: boolean
+  snapshots?: boolean
+  sources?: boolean
+  title?: string
+}
+
+export type TStopTraceOpts = {
+  path?: string
+}
+
 export type TBrowserContextVideo = {
   dir: string;
   size?: TScreenDims
@@ -55,6 +73,7 @@ export type TPWComponent = TBrowser | TBrowserContext | TBrowserPage
 
 export type TPWBrowser = {
   browser: TBrowser
+  context?: TBrowserContext
 }
 
 export type TPWComponents = TPWBrowser & {

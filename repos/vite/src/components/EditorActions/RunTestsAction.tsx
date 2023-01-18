@@ -1,14 +1,13 @@
-import type { TAction, TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
+import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
-import { EditorAction } from './EditorAction'
 import { getFileModel } from '@utils/files/getFileModel'
-import { PlayCircleOutlineIcon } from '@gobletqa/components'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
+import { BaseAction, PlayCircleOutlineIcon } from '@gobletqa/components'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
 const RunTests = (props:TSidebarActionProps) => {
   return (
-    <EditorAction
+    <BaseAction
       onClick={props.onClick}
       Icon={PlayCircleOutlineIcon}
       className='goblet-browser-run-tests'

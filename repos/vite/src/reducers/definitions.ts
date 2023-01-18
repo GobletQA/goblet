@@ -1,5 +1,5 @@
 import type {
-  TAction,
+  TDspAction,
   TDefinitionAst,
   TDefinitionFileModel,
   TDefinitionsAstTypeMap,
@@ -14,10 +14,10 @@ export type TDefinitionsState = {
 export const definitionsState = {} as TDefinitionsState
 
 export const definitionsActions = {
-  resetDefs: (state:TDefinitionsState, action:TAction<TDefinitionsState>) => (definitionsState),
+  resetDefs: (state:TDefinitionsState, action:TDspAction<TDefinitionsState>) => (definitionsState),
   setActiveDef: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionAst>
+    action:TDspAction<TDefinitionAst>
   ) => {
     return {
       ...state,
@@ -26,14 +26,14 @@ export const definitionsActions = {
   },
   clearDefs: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionFileModelList>
+    action:TDspAction<TDefinitionFileModelList>
   ) => ({
     ...state,
     definitions: {} as TDefinitionFileModelList
   }),
   setDef: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionFileModel>
+    action:TDspAction<TDefinitionFileModel>
   ) => {
     return {
       ...state,
@@ -47,11 +47,11 @@ export const definitionsActions = {
 
         return acc
       }, {} as TDefinitionFileModelList),
-    }
+    } as TDefinitionsState
   },
   setDefs: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionFileModelList>
+    action:TDspAction<TDefinitionFileModelList>
   ) => {
     return {
       ...state,
@@ -60,7 +60,7 @@ export const definitionsActions = {
   },
   upsertDefs: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionFileModelList>
+    action:TDspAction<TDefinitionFileModelList>
   ) => {
     return {
       ...state,
@@ -72,14 +72,14 @@ export const definitionsActions = {
   },
   clearDefTypes: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionsAstTypeMap>
+    action:TDspAction<TDefinitionsAstTypeMap>
   ) => ({
     ...state,
     definitionTypes: {} as TDefinitionsAstTypeMap
   }),
   setDefTypes: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionsAstTypeMap>
+    action:TDspAction<TDefinitionsAstTypeMap>
   ) => {
     return {
       ...state,
@@ -88,7 +88,7 @@ export const definitionsActions = {
   },
   upsertDefTypes: (
     state:TDefinitionsState,
-    action:TAction<TDefinitionsAstTypeMap>
+    action:TDspAction<TDefinitionsAstTypeMap>
   ) => {
     return {
       ...state,

@@ -8,11 +8,9 @@ import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
  * Then opens the sign in modal and opens a toast warning about the error
  */
 export const setErrorState = async (error:any) => {
-
-  console.log(`------- admin - setError State -------`)
-
   if(!AuthActive) return new Error(error)
 
+  console.log(`------- admin - setError State -------`)
   console.log(`------- remove repo and sign out user -------`)
   // await removeRepo()
   // await signOutAuthUser()

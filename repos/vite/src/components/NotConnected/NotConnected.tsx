@@ -42,7 +42,7 @@ export const NotConnected = (props:TNotConnected) => {
         }}
       />
       <Text
-        type='h6'
+        component='h6'
         sx={{
           fontSize: `20px`,
           color: mapped.text,

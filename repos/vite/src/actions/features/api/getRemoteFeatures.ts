@@ -1,7 +1,7 @@
-import type { TFeatureFileModelList } from '@types'
+import { repoApi } from '@services/repoApi'
 import { addToast } from '@actions/toasts/addToast'
 import { upsertFeatures } from '../local/upsertFeatures'
-import { apiRepoRequest } from '@utils/api/apiRepoRequest'
+
 
 /**
  * Calls the API backend to load the parsed feature definitions
@@ -12,7 +12,7 @@ export const getRemoteFeatures = async () => {
     data,
     error,
     success
-  } = await apiRepoRequest<Record<'features', TFeatureFileModelList>>(`/features`)
+  } = await repoApi.features()
 
   if (!success || error)
     return addToast({

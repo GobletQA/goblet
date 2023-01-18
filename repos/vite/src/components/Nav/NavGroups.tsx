@@ -1,4 +1,4 @@
-import type {CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
 import type { TNavItemProps } from './NavItem'
 
 import { Fragment } from 'react'
@@ -9,9 +9,12 @@ import Divider from '@mui/material/Divider'
 
 type TNavGroupProps = {
   open?: boolean
-  groups: TGroupItem[]
+  locked?:boolean
   activeNav?: string
   className?: string
+  groups: TGroupItem[]
+  subNavSx?:CSSProperties
+  setLocked?:(lock:boolean) => void
   toggleDrawer: (...args:any[]) => any
   anchor?: 'top' | 'left' | 'bottom' | 'right'
 }
@@ -29,12 +32,13 @@ export const NavGroups = (props: TNavGroupProps) => {
     open,
     groups,
     anchor,
+    locked,
+    subNavSx,
+    setLocked,
     className,
     activeNav,
     toggleDrawer
   } = props
-  
-  const groupLength = groups.length - 1
 
   return (
     <Box
@@ -59,7 +63,13 @@ export const NavGroups = (props: TNavGroupProps) => {
           {(group.divider === 'bottom' || group.divider === true) && (<Divider />)}
         </Fragment>
       ))}
-      <SubNav activeNav={activeNav} open={open} />
+      <SubNav
+        open={open}
+        sx={subNavSx}
+        locked={locked}
+        setLocked={setLocked}
+        activeNav={activeNav}
+      />
     </Box>
   )
 }

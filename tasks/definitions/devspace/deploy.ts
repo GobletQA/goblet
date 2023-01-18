@@ -20,6 +20,9 @@ import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
 export const deployAct = async (args:TTaskActionArgs) => {
   const { params } = args
 
+  // For production default to using the backend devspace config if not set
+  if(params.env === `production` && !params.devspace) params.devspace = `be`
+
   const {
     env,
     skip,
@@ -67,6 +70,7 @@ export const deploy:TTask = {
     devspace: {
       alias: [`dsp`, `ds`, `dev`],
       example: `--devspace staging`,
+      // Deployments should always default to using the backend devspace config
       default: `container/devspace.backend.yaml`,
       description: `Optional filepath for devspace.yaml file`,
     },
@@ -113,9 +117,10 @@ export const deploy:TTask = {
       description: `Removes screencast pods while cleaning. Only valid when clean option is true`,
     },
     log: {
+      alias: [`lg`],
       default: true,
-      type: `boolean`,
-      description: `Log the devspace command to be run`,
-    },
+      example: `--no-log`,
+      description: `Verbose logging of task actions`
+    }
   },
 }

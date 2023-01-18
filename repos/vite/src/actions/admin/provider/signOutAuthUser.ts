@@ -20,6 +20,12 @@ const { auth } = getProviderMetadata()
 export const signOutAuthUser = async () => {
   if(!AuthActive) return
 
+  // Log-out the github user
+  const currentUser = GitUser.getUser()
+
+  try { await disconnectRepo(currentUser?.username, false) }
+  catch(err:any){ console.error(`Error disconnecting mounted repo.\n${err.message}`) }
+
   // Remove the local cache
   try { await localStorage.cleanupSession() }
   catch(err:any){ console.error(`Error clearing local storage.\n${err.message}`) }
@@ -31,12 +37,6 @@ export const signOutAuthUser = async () => {
   // Disconnect from the web-socket server
   try { await WSService.disconnect() }
   catch(err:any){ console.error(`Error disconnecting from websocket.\n${err.message}`) }
-
-  // Log-out the github user
-  const currentUser = GitUser.getUser()
-
-  try { await disconnectRepo(currentUser?.username) }
-  catch(err:any){ console.error(`Error disconnecting mounted repo.\n${err.message}`) }
 
   // Remove local user data here
   try { GitUser.signOut() }

@@ -1,12 +1,11 @@
 
-import { loadApiFile } from '@utils/api'
 import { setFile } from '../local/setFile'
+import { filesApi } from '@services/filesApi'
 import { addToast } from '../../toasts/addToast'
-
 
 /**
  * Sets a test file as the activeFile, after loading it's fileModel from the backend
- * Then calls setActiveFileFromType to set the file Active
+ * Then calls setFile to update the reducer store with the file content
  */
 export const loadFile = async (
   location:string,
@@ -19,7 +18,7 @@ export const loadFile = async (
       message: `A File location is required to load a file`,
     })
 
-  const resp = await loadApiFile({ location })
+  const resp = await filesApi.loadFile(location)
 
   if(!resp)
     return addToast({

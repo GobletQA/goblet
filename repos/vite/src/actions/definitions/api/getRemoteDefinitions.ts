@@ -1,7 +1,7 @@
-import type { TApiDefinitionsResp } from '@types'
+import { repoApi } from '@services/repoApi'
 import { addToast } from '@actions/toasts/addToast'
 import { setDefinitions } from '../local/setDefinitions'
-import { apiRepoRequest } from '@utils/api/apiRepoRequest'
+
 
 /**
  * Calls the API backend to load the parsed step definitions
@@ -17,7 +17,8 @@ export const getRemoteDefinitions = async () => {
     data,
     error,
     success
-  } = await apiRepoRequest<TApiDefinitionsResp>(`/definitions`)
+  } = await repoApi.definitions()
+  
 
   if (!success || error)
     return addToast({

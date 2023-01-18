@@ -1,5 +1,6 @@
 import { configFromFolder, configAtPath } from './helpers'
-import { getGobletConfig, resetGobletConfig, getDefaultGobletConfig } from './getGobletConfig'
+import { getDefaultGobletConfig } from './getDefaultGobletConfig'
+import { getGobletConfig, resetGobletConfig } from './getGobletConfig'
 
 export {
   configAtPath,

@@ -1,8 +1,8 @@
+import type { ForwardRefRenderFunction } from 'react'
 import type { TBrowserProps, TBrowserHandle } from '@types'
 
-import { EBrowserState } from '@types'
 
-import React, { forwardRef, useImperativeHandle } from 'react'
+import { forwardRef, useImperativeHandle } from 'react'
 
 import { cls } from '@keg-hub/jsutils'
 import { BrowserNav } from './BrowserNav'
@@ -11,7 +11,7 @@ import { BrowserLoading } from './BrowserLoading'
 import { ScreencastBrowserSelector } from '@constants'
 import { useVncRefs } from '@hooks/screencast/useVncRefs'
 import { useRFBHooks } from '@hooks/screencast/useRFBHooks'
-import { useVncHooks } from '@hooks/screencast/useVncHooks'
+import { useVncSetup } from '@hooks/screencast/useVncSetup'
 import { useVncHandlers } from '@hooks/screencast/useVncHandlers'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import {
@@ -33,7 +33,7 @@ const loadingStyles = {
   }
 }
 
-const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (props, ref) => {
+const BrowserComp: ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (props, ref) => {
 
   const {
     style,
@@ -63,7 +63,7 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
   const {
     connect,
     _onDisconnect
-  } = useVncHooks(props, {
+  } = useVncSetup(props, {
     rfb,
     screen,
     logger,
@@ -138,8 +138,6 @@ const BrowserComp: React.ForwardRefRenderFunction<TBrowserHandle, TBrowserProps>
         rfbRef={rfb}
         loading={loading}
         initialUrl={displayUrl}
-        browserState={browserState}
-        setBrowserState={setBrowserState}
       />
       <BrowserViewContainer className='gb-browser-view-container'>
         <BrowserView

@@ -1,7 +1,8 @@
 import type { TRepoState } from './reducer.types'
 import type {
-  TRepo,
+  TRepoMeta,
   TFileTree,
+  TFileModel,
   TRouteMeta,
   TProxyRoute,
   TFeatureFileModelList,
@@ -37,10 +38,12 @@ export type TApiRepoResp = {
 }
 
 export type TAPIReposResp = {
-  repos: TRepo[]
+  repos: TRepoMeta[]
 }
 
 export type TApiDefinitionsResp = {
   definitions: TDefinitionFileModelList,
   definitionTypes: TDefinitionsAstTypeMap
 }
+
+export type TFileResp = Record<"file", TFileModel>

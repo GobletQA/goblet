@@ -1,69 +1,49 @@
 import type { TRequest } from '@services/axios.types'
+import type {
+  TFileTree,
+  TApiDefinitionsResp,
+  TFeatureFileModelList
+} from '@types'
 
+import { HttpMethods } from '@constants'
 import { apiRequest } from '@utils/api/apiRequest'
-import { isObj, deepMerge } from '@keg-hub/jsutils'
-import { formatRepoUrl } from '@utils/api/apiHelpers'
-import { getRepoData } from '@utils/store/getStoreData'
+import { buildRepoReq } from '@utils/api/apiHelpers'
 
-const buildRequest = (request:TRequest|string) => {
-  const req = isObj<TRequest>(request) ? request : { url: request }
-
-  const repoData = getRepoData()
-  req.url = formatRepoUrl(repoData.name, req.url)
-  
-  return deepMerge<TRequest>(
-    {
-      params: {
-        local: repoData?.git?.local,
-        remote: repoData?.git?.remote,
-        branch: repoData?.git?.branch,
-      },
-    },
-    req
-  )
-}
+type TRParams = Partial<TRequest>
+type TApiRecord = Record<any, any>
+export type TFeatureFilesResp = Record<`features`, TFeatureFileModelList>
 
 class RepoApi {
 
-  connect = async <T=Record<any, any>>(params:Partial<TRequest>) => {
-    const req = buildRequest({
-      ...params,
-      method: `POST`,
-      url: `/repo/connect`,
-    })
+  /**
+   * Internal method, that all other methods call to make an API request
+   * @private
+   */
+  _req = async <T>(opts:string|TRequest) => await apiRequest<T>(buildRepoReq(opts))
 
-    return await apiRequest<T>(req)
-  }
+  fileTree = async <T=TFileTree>() => this._req<T>(`/files/tree`)
 
-  disconnect = async <T=Record<any, any>>(params:Partial<TRequest>) => {
-    const req = buildRequest({
-      ...params,
-      method: `POST`,
-      url: `/repo/disconnect`,
-    })
+  features = async <T=TFeatureFilesResp>() => await this._req<T>(`/features`)
 
-    return await apiRequest<T>(req)
-  }
+  definitions = async <T=TApiDefinitionsResp>() => await this._req<T>(`/definitions`)
 
-  getRepos = async <T=Record<any, any>>(params:Partial<TRequest>) => {
-    const req = buildRequest({
-      ...params,
-      method: `GET`,
-      url: `/repo/all`,
-    })
+  disconnect = async <T=TApiRecord>(params:TRParams) => this._req<T>({
+    ...params,
+    method: HttpMethods.POST,
+    url: `/repo/disconnect`,
+  })
 
-    return await apiRequest<T>(req)
-  }
+  connect = async <T=TApiRecord>(params:TRParams) => this._req<T>({
+    ...params,
+    method: HttpMethods.POST,
+    url: `/repo/connect`,
+  })
 
-  definitions = async () => {
-    const req = buildRequest(`/definitions`)
-    return await apiRequest(req)
-  }
-
-  features = async () => {
-    const req = buildRequest(`/features`)
-    return await apiRequest(req)
-  }
+  getRepos = async <T=TApiRecord>(params:TRParams) => await this._req<T>({
+    ...params,
+    method: `GET`,
+    url: `/repo/all`,
+  })
 
 }
 

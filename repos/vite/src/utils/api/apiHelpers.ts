@@ -3,9 +3,10 @@ import type { TRequest, THeaders } from '@services/axios.types'
 
 import { getBaseApiUrl } from './getBaseApiUrl'
 import { addToast } from '@actions/toasts/addToast'
+import { isObj, deepMerge } from '@keg-hub/jsutils'
 import { localStorage } from '@services/localStorage'
-import { getContainerData } from '@utils/store/getStoreData'
 import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
+import { getRepoData, getContainerData } from '@utils/store/getStoreData'
 
 /**
  * Helper to ensure the baseAPI url is added
@@ -29,7 +30,7 @@ export const buildUrl = (builtRequest:TRequest) => {
 export const formatRepoUrl = (repoName:string, url:string) => {
   return url.indexOf(`/repo`) === 0
     ? url
-    : url[0] === '/'
+    : url[0] === `/`
     ? `/repo/${repoName}${url}`
     : `/repo/${repoName}/${url}`
 }
@@ -83,4 +84,23 @@ export const buildHeaders = async (
     ...builtRequest.headers,
    ...(jwt && { Authorization: `Bearer ${jwt}` }),
   }
+}
+
+
+export const buildRepoReq = (request:TRequest|string) => {
+  const req = isObj<TRequest>(request) ? request : { url: request }
+
+  const repoData = getRepoData()
+  req.url = formatRepoUrl(repoData.name, req.url)
+  
+  return deepMerge<TRequest>(
+    {
+      params: {
+        local: repoData?.git?.local,
+        remote: repoData?.git?.remote,
+        branch: repoData?.git?.branch,
+      },
+    },
+    req
+  )
 }

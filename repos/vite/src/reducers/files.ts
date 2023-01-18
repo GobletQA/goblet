@@ -1,4 +1,4 @@
-import type { TFileTree, TAction, TFileModel } from '@types'
+import type { TFileTree, TDspAction, TFileModel } from '@types'
 
 import { exists, deepMerge } from '@keg-hub/jsutils'
 
@@ -11,7 +11,7 @@ type TRenameFile = {
 
 export type TFilesState = {
   files: TFileTree
-  activeFile?: TFileModel
+  activeFile?: string
 }
 
 export const filesState = {
@@ -19,10 +19,10 @@ export const filesState = {
 } as TFilesState
 
 export const filesActions = {
-  clearFiles: (state:TFilesState, action:TAction<TFilesState>) => (filesState),
+  clearFiles: (state:TFilesState, action:TDspAction<TFilesState>) => (filesState),
   setActiveFile: (
     state:TFilesState,
-    action:TAction<TFileModel>
+    action:TDspAction<string>
   ) => {
     return {
       ...state,
@@ -31,22 +31,19 @@ export const filesActions = {
   },
   clearActiveFile: (
     state:TFilesState,
-    action:TAction<TFileModel>
+    action:TDspAction<TFileModel>
   ) => {
     return {
       ...state,
-      activeFile: {} as TFileModel,
+      activeFile: undefined,
     }
   },
   setFile: (
     state:TFilesState,
-    action:TAction<TFileModel>
+    action:TDspAction<TFileModel>
   ) => {
     return {
       ...state,
-      activeFile: state?.activeFile?.uuid === action.payload.uuid
-        ? action.payload
-        : state?.activeFile,
       files: {
         ...state.files,
         [action.payload.uuid]: action.payload
@@ -55,42 +52,44 @@ export const filesActions = {
   },
   removeFile: (
     state:TFilesState,
-    action:TAction<string>
+    action:TDspAction<string>
   ) => {
     if(state.files[action.payload])
       delete state.files[action.payload]
+
+    if(state?.activeFile === action.payload)
+      state.activeFile = undefined
   },
   upsertFile: (
     state:TFilesState,
-    action:TAction<TFileModel>
+    action:TDspAction<TFileModel>
   ) => {
     return {
       ...state,
-      activeFile: state?.activeFile?.uuid === action.payload.uuid
-        ? action.payload
-        : state?.activeFile,
       files: {
         ...state.files,
-        [action.payload.uuid]: {
-          ...state.files[action.payload.uuid],
-          ...action.payload
-        }
+        [action.payload.uuid]: deepMerge(state.files[action.payload.uuid], action.payload)
       },
     }
   },
   renameFile: (
     state:TFilesState,
-    action:TAction<TRenameFile>
+    action:TDspAction<TRenameFile>
   ) => {
     const { oldLoc, newLoc, file, merge=true } = action.payload
     const model = state.files[oldLoc]
-    state.files[newLoc] = merge ? deepMerge<TFileModel>(model, file) : file as TFileModel
+    const updated = merge ? deepMerge<TFileModel>(model, file) : file as TFileModel
 
+    state.files[newLoc] = updated
     delete state.files[oldLoc]
+
+    if(state?.activeFile === oldLoc)
+      state.activeFile = newLoc
+
   },
   setFiles: (
     state:TFilesState,
-    action:TAction<TFileTree>
+    action:TDspAction<TFileTree>
   ) => {
     return {
       ...state,
@@ -99,7 +98,7 @@ export const filesActions = {
   },
   upsertFiles: (
     state:TFilesState,
-    action:TAction<TFileTree>
+    action:TDspAction<TFileTree>
   ) => {
     return {
       ...state,

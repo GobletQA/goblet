@@ -14,10 +14,10 @@ export const useVncResize = (props:THScreenResize) => {
 
   useEffect(() => {
     // On a window resize event, emit a VNC connected event to reset the browser
-    EE.on(WindowResizeEvt, () => EE.emit(VNCResizeEvt, rfb.current), `vnc-resize`)
+    const off = EE.on(WindowResizeEvt, () => EE.emit(VNCResizeEvt, rfb.current))
 
     return () => {
-      EE.off(WindowResizeEvt, `vnc-resize`)
+      off?.()
     }
   }, [])
 }

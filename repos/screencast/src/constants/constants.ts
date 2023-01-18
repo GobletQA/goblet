@@ -7,6 +7,7 @@ export * from '@gobletqa/shared/constants/browser'
 export const defaultBrowser = EBrowserName.chromium
 export const ChildBrowserServerKey = `child-playwright-server`
 export const canRecordVideo = [EBrowserName.chromium]
+export const GobletQAUrl = process.env.GB_GOBLET_URL || `https://www.gobletqa.com`
 
 export const browserStatus = keyMap([`stopped`, `running`, `starting`, `unknown`])
 export const browserNames = deepFreeze<EBrowserName[]>([
@@ -36,6 +37,7 @@ export const AUTH_BYPASS_ROUTES = [
   `/favicon.ico`,
   `/goblet-socket`,
   `/goblet-socket/`,
+  `/repo/disconnect`,
 ]
 
 export const PWLogFilter = [
@@ -49,3 +51,6 @@ export const PWLogFilter = [
   `Failed to connect to the bus`,
   `Failed to adjust OOM score of renderer`,
 ]
+
+
+export const CreateBrowserRetry = 300

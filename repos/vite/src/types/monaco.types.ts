@@ -7,7 +7,6 @@ export type IEditor = Editor.IStandaloneCodeEditor | null
 export type TMonaco = typeof Monaco
 export {
   Range as TRange,
-  Editor as NEditor,
   TextEdit as TTextEdit,
   Languages as NLanguages
 }

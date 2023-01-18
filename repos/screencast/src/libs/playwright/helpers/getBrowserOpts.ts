@@ -23,24 +23,21 @@ const options = {
   vnc: {
     slowMo: 100,
     headless: false,
+    ignoreDefaultArgs: [
+      `--enable-automation`
+    ],
     args: [
+      `--app`,
       `--disable-gpu`,
-      `--disable-dev-shm-usage`,
+      `--start-maximized`,
+      `--start-fullscreen`,
       // Hides the top-bar header. Should validate this this is what we want
       `--window-position=0,-74`,
-      `--start-maximized`,
       `--allow-insecure-localhost`,
-      `--app`,
-      `--no-first-run`,
-      `--start-fullscreen`,
       `--unsafely-treat-insecure-origin-as-secure`,
 
       // TODO - Investigate this - may be needed in some context
       // `--deny-permission-prompts`
-
-      // `--dark-mode-settings`,
-      // `--kiosk`,
-      // `--suppress-message-center-popups`
       // Investigate this - May allow keeping the browser alive in goblet UI app
       // Don't want this when running in CI or other environments
       // `--keep-alive-for-test`
@@ -108,7 +105,7 @@ export const getBrowserOpts = (
       args: flatUnion(configModeArgs, args),
       ...(exists(headless) && { headless }),
       ...(exists(channel) && { channel }),
-      colorScheme: colorScheme || `dark`,
+      colorScheme: colorScheme || `no-preference`,
     },
     /**
      * Options passed to this function as the first argument
@@ -122,5 +119,21 @@ export const getBrowserOpts = (
      * Also, excludes the devices list from the returned Object
      */
      omitKeys(taskEnvToBrowserOpts(config), ['devices']),
+     
+    {
+      /**
+       * By default envs from process.env are passed to the browser
+       * We pass an empty object to disable that
+       * If envs are needed, then they can be added here
+       *
+       */
+      env: {
+        DISPLAY: process.env.DISPLAY
+      },
+      /**
+       * Need to investigate, most likely do NOT want this enabled
+       */
+      // bypassCSP: true
+    }
   )
 }

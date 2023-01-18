@@ -1,5 +1,5 @@
 import type {
-  TAction,
+  TDspAction,
   TSetting,
   TSettings,
   TSettingAct,
@@ -44,22 +44,22 @@ const updateStorage = (setting:string, settingObj:TSetting) => {
 export const settingsActions = {
   setAllSettings: (
     state:TSettingsState,
-    action:TAction<TSettingsState>
+    action:TDspAction<TSettingsState>
   ) => action.payload,
   resetAllSettings: (
     state:TSettingsState,
-    action:TAction<any>
+    action:TDspAction<any>
   ) => {
     localStorage.removeSettings()
     return deepMerge(defSettings)
   },
   mergeAllSettings: (
     state:TSettingsState,
-    action:TAction<TSettingsState>
+    action:TDspAction<TSettingsState>
   ) => deepMerge<TSettingsState>(state, action?.payload),
   resetSettingGroup: (
     state:TSettingsState,
-    action:TAction<string>
+    action:TDspAction<string>
   ) => {
     const group = action.payload
     if(!group) return state
@@ -71,7 +71,7 @@ export const settingsActions = {
   },
   resetSetting: (
     state:TSettingsState,
-    action:TAction<TSettingAct>
+    action:TDspAction<TSettingAct>
   ) => {
     
     const { found, setting } = findSetting(action.payload?.setting, defSettings)
@@ -82,7 +82,7 @@ export const settingsActions = {
   },
   toggleSettingActive: (
     state:TSettingsState,
-    action:TAction<TSettingAct>
+    action:TDspAction<TSettingAct>
   ) => {
     
     const { data } = action.payload
@@ -101,7 +101,7 @@ export const settingsActions = {
   },
   updateSetting: (
     state:TSettingsState,
-    action:TAction<TSettingAct>
+    action:TDspAction<TSettingAct>
   ) => {
     const { found, setting } = findSetting(action.payload?.setting, state)
     if(!found) return state

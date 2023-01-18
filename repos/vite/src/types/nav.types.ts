@@ -72,3 +72,9 @@ export type TSettingNavItem = {
   itemProps?: MenuItemProps
   textProps?:TypographyProps
 }
+
+export type TSideNavToggleProps = {
+  open?:boolean
+  name?:ESideNav
+  force?:boolean
+}

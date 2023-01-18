@@ -13,7 +13,7 @@ import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 const options = {
   host: {} as Partial<TBrowserContextOpts>,
   vnc: {
-    colorScheme: `dark`
+    colorScheme: `no-preference`
   } as Partial<TBrowserContextOpts>,
 }
 
@@ -30,7 +30,7 @@ export const getContextOpts = (
     : options.host
   
   config = config || getGobletConfig()
-  return deepMerge(
+  return deepMerge<TBrowserContextOpts>(
     defContextOpts,
     
     /**

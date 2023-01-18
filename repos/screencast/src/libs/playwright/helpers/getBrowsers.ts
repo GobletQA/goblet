@@ -1,4 +1,4 @@
-import type { TGetBrowsers } from '@GSC/types'
+import type { EBrowserName, TGetBrowsers } from '@GSC/types'
 import { EBrowserType } from '@GSC/types'
 import { browserNames, browserMap } from '@GSC/constants'
 import {eitherArr, noPropArr, isStr} from '@keg-hub/jsutils'
@@ -19,7 +19,7 @@ export const getBrowsers = (params:TGetBrowsers) => {
   // get an array of browsers from the browsers string, comma or space delimited
   const browsersArr = eitherArr(browsers, isStr(browsers) ? browsers.split(/\s|,/gi) : noPropArr)
     .map((type:string) => browserMap[type] || type)
-    .filter((type:string) => browserNames.includes(type))
+    .filter((type:string) => browserNames.includes(type as EBrowserName))
 
   const found = Array.from(
     new Set([

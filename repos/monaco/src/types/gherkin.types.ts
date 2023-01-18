@@ -1,7 +1,6 @@
-import type Monaco from 'monaco-editor'
 import type { EDefinitionVariant } from './shared.types'
+import type { languages as Languages } from 'monaco-editor'
 import type { Range, TextEdit } from 'vscode-languageserver-types'
-import type { editor as Editor, languages as Languages } from 'monaco-editor'
 
 interface Constructor<T> extends Function {
     new (...args: unknown[]): T
@@ -9,12 +8,6 @@ interface Constructor<T> extends Function {
 }
 type Factory<T> = (...args: unknown[]) => T
 type TRegexps = RegExp[] | string[] | RegExp | string
-
-export type ICodeEditor = Editor.ICodeEditor
-export type IEditor = Editor.IStandaloneCodeEditor | null
-
-
-export type TMonaco = typeof Monaco
 
 
 export class ParameterType<T> {
@@ -91,7 +84,6 @@ export type TExpression = {
   match: (text: string) => Argument[] | null
 }
 
-
 export type TMonacoDefinition = {
   suggestion: string
   segments: string[] | RegExp[]
@@ -102,9 +94,6 @@ export type TIndex = (text: string) => TMonacoDefinition[]
 
 export {
   Range as TRange,
-  Editor as NEditor,
   TextEdit as TTextEdit,
   Languages as NLanguages
 }
-
-export type TOnEditor = ((editor: IEditor) => void) | undefined

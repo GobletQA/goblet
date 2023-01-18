@@ -1,6 +1,7 @@
 import type { CSSObj } from '@types'
 import type { ComponentProps } from 'react'
 
+import { useCallback, useState } from 'react'
 import Box from '@mui/material/Box'
 import { BlockIcon } from '@gobletqa/components'
 import { Fadeout, Text } from '@gobletqa/components'
@@ -55,10 +56,21 @@ const MissingRepo = () => {
 
 export const ScreencastLoading = (props:TScreencastLoading) => {
 
+  const [fadedOut, setFadedOut] = useState(false)
+  const onFadeOut = useCallback(() => setFadedOut(true), [fadedOut])
+
   return (
-    <Box sx={[styles.container, props.sx as CSSObj]} >
+    <Box
+      className='gb-screencast-loading'
+      sx={[
+        styles.container,
+        props.sx as CSSObj,
+        fadedOut && { display: `none` }
+      ]}
+    >
       <Fadeout
         {...props}
+        onFadeOut={onFadeOut}
         styles={styles.fadeout}
         content={<MissingRepo />}
       />

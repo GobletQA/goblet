@@ -1,4 +1,4 @@
-import type { TAction, TTerminalTabs, TTerminalTab, TTerminalLog } from '@types'
+import type { TDspAction, TTerminalTabs, TTerminalTab, TTerminalLog } from '@types'
 
 import { randomName } from '@services/randomName'
 import { BrowserLogTerminal } from '@constants/types'
@@ -30,7 +30,7 @@ export const terminalState = {
 
 
 export const terminalActions = {
-  clearTerminal: (state:TTerminalState, action:TAction<any>) => {
+  clearTerminal: (state:TTerminalState, action:TDspAction<any>) => {
     const tab = Object.values(state.tabs).find(tab => tab.name === BrowserLogTerminal)
       || buildTab({ name: BrowserLogTerminal, disabled: true })
 
@@ -41,14 +41,14 @@ export const terminalActions = {
   },
   setActiveTerminal: (
     state:TTerminalState,
-    action:TAction<number>
+    action:TDspAction<number>
   ) => ({
     ...state,
     active: action.payload
   }),
   appendTerminalHistory: (
     state:TTerminalState,
-    action:TAction<TTerminalLog|TTerminalLog[]>
+    action:TDspAction<TTerminalLog|TTerminalLog[]>
   ) => {
     const tab = state.tabs[state.active]
     if(!tab) return state
@@ -60,7 +60,7 @@ export const terminalActions = {
   },
   appendTerminalHistoryByRef: (
     state:TTerminalState,
-    action:TAction<THistoryPayload>
+    action:TDspAction<THistoryPayload>
   ) => {
     const { name, id, history } = action.payload
     const tab = Object.values(state.tabs).find(tab => tab.name === name || tab.id === id)
@@ -73,7 +73,7 @@ export const terminalActions = {
   },
   createTerminal: (
     state:TTerminalState,
-    action:TAction<Partial<TTerminalTab>>
+    action:TDspAction<Partial<TTerminalTab>>
   ) => {
     return {
       ...state,
@@ -81,13 +81,13 @@ export const terminalActions = {
       tabs: [ ...state.tabs, buildTab(action.payload)]
     }
   },
-  addTerminal: (state:TTerminalState, action:TAction<TTerminalTab>) => {
+  addTerminal: (state:TTerminalState, action:TDspAction<TTerminalTab>) => {
     return {
       ...state,
       tabs: [ ...state.tabs, buildTab(action.payload) ]
     }
   },
-  removeTerminal: (state:TTerminalState, action:TAction<TTerminalTab|string|number>) => {
+  removeTerminal: (state:TTerminalState, action:TDspAction<TTerminalTab|string|number>) => {
     const { payload } = action
     const id = isStr(payload)
       ? payload

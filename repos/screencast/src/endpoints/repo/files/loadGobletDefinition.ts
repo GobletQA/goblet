@@ -12,7 +12,7 @@ import { getGobletDefaultFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  * @returns {Object} - response object model containing the loaded fileModel
  */
 export const loadGobletDefinition = asyncWrap(async (req:Request, res:Response) => {
-  const filePath = req.query.path
+  const filePath = req.query.location
   const config:TDefGobletConfig = req.app.locals.config
   
   const file = await getGobletDefaultFile(config, res.locals.repo, filePath as string)

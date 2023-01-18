@@ -84,7 +84,8 @@ ENV HOME=/root \
     GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION \
-    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
+    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin \
+    DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
 
 RUN <<EOF
   set -eux;
@@ -108,6 +109,12 @@ RUN <<EOF
   apt-get autoremove
   rm -rf /var/lib/apt/lists/*
   rm -rf /var/lib/apt/lists.d/*
+
+  # See here => https://georgik.rocks/how-to-start-d-bus-in-docker-container/
+  # Explains how to run dbus in docker container
+  # Seems to be needed for Playwright
+  dbus-uuidgen > /var/lib/dbus/machine-id
+  mkdir -p /var/run/dbus
 EOF
 
 COPY --from=goblet-build /goblet/app/ .

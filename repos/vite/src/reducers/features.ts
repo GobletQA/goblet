@@ -1,4 +1,4 @@
-import type { TAction, TFeatureFileModelList, TFeatureFileModel } from '@types'
+import type { TDspAction, TFeatureFileModelList, TFeatureFileModel } from '@types'
 
 export type TFeaturesState = {
   activeFeature?: TFeatureFileModel
@@ -7,10 +7,10 @@ export type TFeaturesState = {
 export const featuresState = {} as TFeaturesState
 
 export const featuresActions = {
-  clearFeatures: (state:TFeaturesState, action:TAction<TFeaturesState>) => (featuresState),
+  clearFeatures: (state:TFeaturesState, action:TDspAction<TFeaturesState>) => (featuresState),
   setActiveFeature: (
     state:TFeaturesState,
-    action:TAction<TFeatureFileModel>
+    action:TDspAction<TFeatureFileModel>
   ) => {
     return {
       ...state,
@@ -19,7 +19,7 @@ export const featuresActions = {
   },
   setFeature: (
     state:TFeaturesState,
-    action:TAction<TFeatureFileModel>
+    action:TDspAction<TFeatureFileModel>
   ) => {
     return {
       ...state,
@@ -34,7 +34,7 @@ export const featuresActions = {
   },
   setFeatures: (
     state:TFeaturesState,
-    action:TAction<TFeatureFileModelList>
+    action:TDspAction<TFeatureFileModelList>
   ) => {
     return {
       ...state,
@@ -43,7 +43,7 @@ export const featuresActions = {
   },
   upsertFeatures: (
     state:TFeaturesState,
-    action:TAction<TFeatureFileModelList>
+    action:TDspAction<TFeatureFileModelList>
   ) => {
     return {
       ...state,

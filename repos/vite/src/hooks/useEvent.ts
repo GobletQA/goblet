@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { useInline } from './useInline'
+import { exists } from '@keg-hub/jsutils'
 import { useEffectOnce } from './useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
@@ -20,12 +21,16 @@ export const useEventListen = <P=Record<any, any>>(
   })
 }
 
-
 export const useEventEmit = <P=Record<any, any>>(
   event:string,
-  params:P
+  params?:P
 ) => {
 
-  const inline = useInline(() => params)
-  return useCallback(() => EE.emit(event, inline()), [])
+  return useInline((...args:any[]) => {
+    EE.emit<P>(
+      event,
+      exists(params) ? params : args.shift(),
+      ...args
+    )
+  })
 }

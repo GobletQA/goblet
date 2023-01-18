@@ -1,5 +1,7 @@
 import type { TGobletTheme } from '@gobletqa/components'
 
+import { utility } from '@GBC/theme/utility'
+import { MemoChildren } from '@GBC/components/MemoChildren'
 export type TAppStyles = {
   theme:TGobletTheme
   globalStyles?:(props:Record<`theme`, TGobletTheme>) => string
@@ -7,5 +9,12 @@ export type TAppStyles = {
 
 export const AppStyles = (props:TAppStyles) => {
   const { theme, globalStyles } = props
-  return (<style>{globalStyles?.({ theme }) || ``}</style>)
+  return (
+    <MemoChildren>
+      <style>
+        {utility}
+        {globalStyles?.({ theme }) || ``}
+      </style>
+    </MemoChildren>
+  )
 }

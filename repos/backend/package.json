@@ -50,7 +50,6 @@
     "get-port-please": "2.5.0",
     "http-proxy-middleware": "*",
     "jsonwebtoken": "*",
-    "kube-watch": "*",
     "module-alias": "*"
   },
   "devDependencies": {

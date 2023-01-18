@@ -1,9 +1,9 @@
 import type { TSideNav } from '@types'
 
+import { Environment } from './environment'
 import { EEditorType, ESideNav } from '@types'
 import { deepFreeze } from '@keg-hub/jsutils'
 import {
-  onFiles,
   onEditor,
   onSettings,
   onArtifacts,
@@ -12,9 +12,7 @@ import {
 import {
   AppsIcon,
   Settings,
-  TeamIcon,
   DesignIcon,
-  ProfileIcon,
   FileTreeIcon,
   SettingsIcon,
   CloudOffIcon,
@@ -24,6 +22,7 @@ import {
   SettingsEthernetIcon,
 } from '@gobletqa/components'
 
+export const SubNavId = `gb-nav-subnav-for-portal`
 
 export const HeaderNav = [
   // {
@@ -68,13 +67,12 @@ export const SideNav = deepFreeze({
     {
       name: `core-navigation`,
       items: [
-        EditorNavItems[EEditorType.code],
-        EditorNavItems[EEditorType.visual],
         {
           title: `Files`,
-          action: onFiles,
           Icon: FileTreeIcon,
         },
+        Environment !== `production` && EditorNavItems[EEditorType.code],
+        Environment !== `production` && EditorNavItems[EEditorType.visual],
         {
           Icon: InsertChartIcon,
           title: `Artifacts`,
@@ -86,7 +84,7 @@ export const SideNav = deepFreeze({
           tooltip: `Environments`,
           Icon: SettingsEthernetIcon
         },
-      ]
+      ].filter(Boolean)
     },
     {
       name: `settings`,

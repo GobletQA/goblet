@@ -96,8 +96,10 @@ export const clean:TTask = {
       description: `Manually remove screencast pods if they exists`,
     },
     log: {
-      type: `boolean`,
-      description: `Log the devspace command to be run`,
-    },
+      alias: [`lg`],
+      default: true,
+      example: `--no-log`,
+      description: `Verbose logging of task actions`
+    }
   },
 }

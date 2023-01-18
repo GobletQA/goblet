@@ -1,4 +1,4 @@
-import type { TAction, TContainerMeta, TProxyRoute } from '@types'
+import type { TDspAction, TContainerMeta, TProxyRoute } from '@types'
 
 import { deepMerge } from '@keg-hub/jsutils'
 
@@ -12,7 +12,7 @@ export type TContainerState = {
 export const containerState = {} as TContainerState
 
 export const containerActions = {
-  clearContainer: (state:TContainerState, action:TAction<TContainerState>) => (containerState),
-  setContainer: (state:TContainerState, action:TAction<TContainerState>) => action?.payload,
-  upsertContainer: (state:TContainerState, action:TAction<TContainerState>) => deepMerge<TContainerState>(state, action?.payload),
+  clearContainer: (state:TContainerState, action:TDspAction<TContainerState>) => (containerState),
+  setContainer: (state:TContainerState, action:TDspAction<TContainerState>) => action?.payload,
+  upsertContainer: (state:TContainerState, action:TDspAction<TContainerState>) => deepMerge<TContainerState>(state, action?.payload),
 }

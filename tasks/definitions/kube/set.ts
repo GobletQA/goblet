@@ -66,6 +66,12 @@ export const set = {
       alias: [`nsp`, `ns`],
       example: `--namespace custom-namespace`,
       description: `Custom namespace to use`,
+    },
+    log: {
+      alias: [`lg`],
+      default: true,
+      example: `--no-log`,
+      description: `Verbose logging of task actions`
     }
   }
 }

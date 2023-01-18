@@ -23,7 +23,7 @@ const sharedPanelHeader = `
   color: var(--goblet-list-activeSelectionForeground);
   background: var(--goblet-statusBarItem-hoverBackground);
 
-  & .goblet-editor-panel-toggle-icon {
+  & .gb-panel-toggle-icon {
     path {
       color: var(--goblet-list-activeSelectionForeground);
     }
@@ -50,16 +50,20 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
   padding-left: 5px;
   padding-right: 5px;
 
-  &:hover {
+  &:hover:not(.no-hover) {
     ${sharedPanelHeader}
   }
 
-  &.open {
+  &.open:not(.no-hover) {
     ${sharedPanelHeader}
   }
 
+  &.no-click {
+    pointer-events: none;
+  }
 
-  & .goblet-editor-panel-toggle-icon {
+
+  & .gb-panel-toggle-icon {
     font-size: 20px;
     font-weight: bold;
     margin-right: 4px;
@@ -69,9 +73,10 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
     }
   }
   
-  & .goblet-panel-header-icon {
+  & .gb-panel-header-action {
     font-size: 16px;
     margin-right: 5px;
+    pointer-events: initial;
     transition: color 300ms ease;
     color: var(--goblet-sideBarSectionHeader-foreground);
     

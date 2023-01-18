@@ -11,6 +11,7 @@ import { PrePanels } from '@components/Panels/PrePanels'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
 
 export type TCodeEditorProps = {
+  portal?:string
   style?: Record<string, string|number>
 }
 export const CodeEditor = (props:TCodeEditorProps) => {
@@ -25,12 +26,12 @@ export const CodeEditor = (props:TCodeEditorProps) => {
     onSaveFile,
     onRenameFile,
     onDeleteFile,
+    onPathChange,
+    onBeforeAddFile,
     connected,
     rootPrefix,
     onLoadFile,
     modalActions,
-    onMonacoLoaded,
-    onEditorLoaded,
   } = useMonacoHooks(editorRef)
 
   return connected
@@ -51,11 +52,11 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onSaveFile={onSaveFile}
           rootPrefix={rootPrefix}
           onLoadFile={onLoadFile}
+          onPathChange={onPathChange}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
-          onMonacoLoaded={onMonacoLoaded}
-          onEditorLoaded={onEditorLoaded}
           sidebarWidth={EditorSidebarWidth}
+          onBeforeAddFile={onBeforeAddFile}
         />
       )
     : (

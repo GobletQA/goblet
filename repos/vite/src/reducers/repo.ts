@@ -1,4 +1,4 @@
-import type { TGitData, TAction, TFileTypes } from '@types'
+import type { TGitData, TDspAction, TFileTypes } from '@types'
 import { deepMerge } from '@keg-hub/jsutils'
 
 export type TWorld = {
@@ -17,8 +17,8 @@ export type TRepoState = {
 export const repoState = {} as TRepoState
 
 export const repoActions = {
-  clearRepo: (state:TRepoState, action:TAction<TRepoState>) => (repoState),
-  setRepo: (state:TRepoState, action:TAction<TRepoState>) => action?.payload,
-  upsertRepo: (state:TRepoState, action:TAction<TRepoState>) => deepMerge<TRepoState>(state, action?.payload),
+  clearRepo: (state:TRepoState, action:TDspAction<TRepoState>) => (repoState),
+  setRepo: (state:TRepoState, action:TDspAction<TRepoState>) => action?.payload,
+  upsertRepo: (state:TRepoState, action:TDspAction<TRepoState>) => deepMerge<TRepoState>(state, action?.payload),
 }
 

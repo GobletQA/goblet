@@ -10,6 +10,7 @@ export type TInternalPaths = {
   screencastDir: string
   defaultStepsDir: string
   tracesTempDir: string
+  userDataTempDir: string
   videosTempDir: string
   downloadsTempDir: string
   testMetaFile: string

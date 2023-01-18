@@ -63,9 +63,10 @@ export const frontend:TTask = {
       description: `Updates the version of the frontend app before bundling and deploying`,
     },
     log: {
+      alias: [`lg`],
       default: true,
-      type: `boolean`,
-      description: `Log command before they are build`,
-    },
+      example: `--no-log`,
+      description: `Verbose logging of task actions`
+    }
   }
 }

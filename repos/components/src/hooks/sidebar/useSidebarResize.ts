@@ -59,12 +59,7 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
   }, [])
 
   const styles = useMemo(
-    () => ({
-      // width: maxWidth > sidebarWidth
-      //   ? `${sidebarWidth}px`
-      //   : `${maxWidth}px`,
-      width: `${sidebarWidth}px`,
-    }),
+    () => ({width: `${sidebarWidth}px`}),
     [maxWidth, sidebarWidth]
   )
 

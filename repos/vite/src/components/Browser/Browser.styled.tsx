@@ -7,8 +7,6 @@ import {
   IconButton
 } from '@gobletqa/components'
 
-export const BrowserStateIcon = styled(Box)``
-
 export const BrowserNav = styled('nav')(({ theme }) => `
   width: 100%;
   display: flex;
@@ -29,16 +27,18 @@ export const BrowserNavActions = styled(Box)(({ theme }) => `
 `)
 
 export const BrowserInput = styled('input')(({ theme }) => `
+  top: -1px;
   flex-grow: 1;
   border: none;
-  height: ${dims.browser.url.hpx};
   margin: 0 6px;
   font-size: 14px;
   padding: 0 14px;
   line-height: 22px;
+  position: relative;
   border-radius: 18px;
   font-family: inherit;
   letter-spacing: 0.2px;
+  height: ${dims.browser.url.hpx};
   color: ${getColor(colors.black07, colors.white, theme)};
   background-color: ${getColor(colors.white00, colors.black12, theme)};
 
@@ -73,7 +73,16 @@ export const BrowserViewContainer = styled(Box)`
   position: relative;
   align-items: stretch;
   height: calc( 100% - ${dims.browser.nav.hpx} );
-  max-height: calc( 100% - ${dims.browser.nav.hpx} );
+
+  // @novnc does some automatic re-alignment
+  // That causes the browser to jump on focus
+  // When if it goes out of the screen view
+  // 
+  // The 100% - browser.nav.height should be correct
+  // But for some reason, that still causes it to jump
+  // So we subtract an extra 5px to fix it
+  // Not sure where it get's the 5px from, maybe a rounding error?
+  max-height: calc( 100% - ${dims.browser.nav.height + 5}px );
 `
 
 export const BrowserView = styled('div')`
@@ -82,7 +91,12 @@ export const BrowserView = styled('div')`
   box-sizing: border-box;
   font-smoothing: antialiased;
   
-  canvas {
+  & > div {
+    background-color: ${colors.gray08} !important;
+  }
+
+  
+  & canvas {
     // NoVNC sets the margin style directly on the canvas element
     // So we have to use important to override it
     margin-top: 0px !important;

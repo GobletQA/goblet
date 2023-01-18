@@ -160,13 +160,19 @@ const serverListen = (
       Logger.empty()
     })
 
-  ;(serverConf.exitListener || exitListener) &&
-    addExitListener(
-      insecureServer,
-      secureServer,
-      exitTimeout || serverConf.exitTimeout,
-      uncaughtExpCB
-    )
+
+  /**
+    * Disabling for now. Seem to cause lots of issues
+    * The Logger should capture the exceptions
+    * Don't look like this is needed any longer
+   */
+  // ;(serverConf.exitListener || exitListener) &&
+  //   addExitListener(
+  //     insecureServer,
+  //     secureServer,
+  //     exitTimeout || serverConf.exitTimeout,
+  //     uncaughtExpCB
+  //   )
 
   return { insecureServer, secureServer, app }
 }

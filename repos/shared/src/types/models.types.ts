@@ -13,14 +13,6 @@ export type TFileModel = {
   uuid: string
 }
 
-export type TScreenModel = {
-  id: string
-  title: string
-  View?: (...args:any[]) => any,
-  activeFile?: TFileModel,
-  active: boolean,
-  fileTypes: string[],
-}
 
 export type TTestsModel = {
   features: TFileModel[],

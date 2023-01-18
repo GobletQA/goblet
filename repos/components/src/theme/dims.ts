@@ -1,5 +1,6 @@
 const bNavH = 37
-const bUrlH = 28
+const bUrlH = 26
+const bActH = 40
 
 const tTabH = 30
 const tHeaderH = 30
@@ -31,10 +32,14 @@ export const dims = {
     height: 5
   },
   nav: {
-    openWidth: 350,
+    openWidth: 280,
     closedWidth: 50,
   },
   browser: {
+    actions: {
+      height: bActH,
+      hpx: `${bActH}px`,
+    },
     nav: {
       height: bNavH,
       hpx: `${bNavH}px`,

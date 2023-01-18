@@ -2,12 +2,18 @@ import type { ComponentProps, ReactNode } from 'react'
 
 import 'react-page-split/style.css'
 import { Divider } from './Divider'
-import Container from '@mui/material/Container'
-import { Terminal } from '@components/Terminal'
-import { dims } from '@gobletqa/components/theme'
-import { LayoutContainer } from './Divider.styled'
+
+import { BrowserActions } from '../BrowserActions'
 import { Screencast } from '@components/Screencast'
+import { ActionBar, dims } from '@gobletqa/components'
 import { useLayoutResize } from '@hooks/components/useLayoutResize'
+import {
+  LContainer,
+  RContainer,
+  RTSection,
+  RMSection,
+  LayoutContainer,
+} from './Layout.styled'
 import {
   Proportional,
   VerticalPageSplit,
@@ -44,31 +50,42 @@ export type TLayout = {
 }
 
 export const Layout = (props:TLayout) => { 
-  const [ref, onHorResizeMove, onVerResizeMove] = useLayoutResize()
+  const [ref, onHorResizeMove] = useLayoutResize()
 
   return (
     <LayoutContainer ref={ref} className='layout-container'>
       <HorizontalPageSplit
         divider={Divider}
         resize={Proportional}
+        widths={['50%', '50%']}
         onResizeMove={onHorResizeMove}
       >
-        <Container
-          component='div'
+        <LContainer
           disableGutters
           sx={noOverflow}
         >
           {props.children}
-        </Container>
-        <Container disableGutters sx={fullHeight}>
+        </LContainer>
+
+        <RContainer
+          sx={fullHeight}
+          disableGutters
+          className={`gb-layout-right-container`}
+        >
+
           <VerticalPageSplit
-            onResizeMove={onVerResizeMove}
-            divider={(props:ComponentProps<typeof Divider>) => (<Divider {...props} vertical />)}
+            heights={[`35px`, `auto`]}
+            divider={() => <span /> as any}
           >
+
+            <RTSection className='gb-layout-right-top-section' >
+              <ActionBar actions={BrowserActions} />
+            </RTSection>
+
             <Screencast />
-            <Terminal />
           </VerticalPageSplit>
-        </Container>
+
+        </RContainer>
       </HorizontalPageSplit>
     </LayoutContainer>
   )

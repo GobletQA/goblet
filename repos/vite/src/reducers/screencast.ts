@@ -1,5 +1,5 @@
 import type {
-  TAction,
+  TDspAction,
   TBrowserOpts,
   TScreencastStatus,
   TRecordingActions,
@@ -19,9 +19,9 @@ export type TScreencastState = {
 export const screencastState = {} as TScreencastState
 
 export const screencastActions = {
-  clearScreencast: (state:TScreencastState, action:TAction<TScreencastState>) => (screencastState),
-  setScreencast: (state:TScreencastState, action:TAction<TScreencastState>) => action?.payload,
-  upsertScreencast: (state:TScreencastState, action:TAction<TScreencastState>) => deepMerge<TScreencastState>(state, action?.payload),
+  clearScreencast: (state:TScreencastState, action:TDspAction<TScreencastState>) => (screencastState),
+  setScreencast: (state:TScreencastState, action:TDspAction<TScreencastState>) => action?.payload,
+  upsertScreencast: (state:TScreencastState, action:TDspAction<TScreencastState>) => deepMerge<TScreencastState>(state, action?.payload),
 }
 
 export const screencastDispatch = createDispatcher(screencastActions)

@@ -7,7 +7,7 @@ import {
   useCallback,
 } from 'react'
 
-import { useSelector } from '@store'
+import { useModal } from '@store'
 import Slide from '@mui/material/Slide'
 import Dialog from '@mui/material/Dialog'
 import { ModalFooter } from './ModalFooter'
@@ -25,7 +25,6 @@ const Transition = forwardRef((props: TModalTransition, ref: React.Ref<unknown>)
     {...props}
   />
 ))
-
 
 const useModalSlots = (props:TModal) => {
   const {
@@ -116,7 +115,7 @@ export const ModalRoot = (props:TModal) => {
 
   // Not sure why, but visible prop is not updating
   // So we have to re-pull the open state from the store
-  const open = useSelector(state => state.modal.visible)
+  const { visible:open } = useModal()
 
   return (
     <Dialog

@@ -1,6 +1,7 @@
 import type { TFilelist, TFileCallback } from '@GBM/types'
 
 import { useState, useCallback } from 'react'
+import { useInline } from '@gobletqa/components'
 import { useAddFile } from '@GBM/hooks/fileTree/useAddFile'
 import { generateFileTree } from '@GBM/utils/generateFileTree'
 
@@ -8,6 +9,7 @@ export type THEditorFileTree = {
   rootPrefix:string
   addFile:TFileCallback
   defaultFiles:TFilelist
+  onBeforeAddFile?: TFileCallback
 }
 
 /**
@@ -23,9 +25,11 @@ export const useEditorFileTree = (props:THEditorFileTree) => {
   const {
     addFile,
     rootPrefix,
-    defaultFiles
+    defaultFiles,
+    onBeforeAddFile
   } = props
   
+  const onBeforeAddFileCB = useInline(onBeforeAddFile)
   const [filetree, setFiletree] = useState(() => generateFileTree(defaultFiles))
   const onAddFile = useAddFile({
     filetree,
@@ -34,7 +38,11 @@ export const useEditorFileTree = (props:THEditorFileTree) => {
     updateFiletree: setFiletree,
   })
 
-  const onAddEmptyFile = useCallback(() => onAddFile?.(`/`), [onAddFile])
+  const onAddEmptyFile = useCallback(() => {
+    onBeforeAddFileCB?.(`/`)
+    // TODO: fix this, so we don't need a timeout
+    setTimeout(() => onAddFile?.(`/`), 250)
+  }, [onAddFile])
 
   return {
     filetree,

@@ -1,8 +1,9 @@
 import type { ComponentType, MouseEvent } from 'react'
 
 import Box from '@mui/material/Box'
-import { H4, Span } from '../Text'
+import { H4 } from '../Text'
 import { Button } from '../Buttons/Button'
+import { SkipClickAwayCls, CreateFileButtonID } from '@GBC/constants'
 import { EmptyEditorContainer, EmptyEditorContent } from './EmptyEditor.styled'
 
 export type EmptyEditor = {
@@ -40,17 +41,15 @@ export const EmptyEditor = (props:EmptyEditor) => {
         {(Icon || btnText) && (
           <Box marginTop='20px'>
             <Button
+              Icon={Icon}
+              text={btnText}
               onClick={onClick}
               sx={styles.button}
               variant='contained'
-            >
-              {Icon && (<Icon sx={styles.icon} />) || null}
-              {btnText && (
-                <Span>
-                  {btnText}
-                </Span>
-              ) || null}
-            </Button>
+              iconSx={styles.icon}
+              id={CreateFileButtonID}
+              className={SkipClickAwayCls}
+            />
           </Box>
         ) || null}
       </EmptyEditorContent>

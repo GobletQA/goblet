@@ -1,12 +1,11 @@
 import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
 
-import { EditorAction } from './EditorAction'
-import { CropSquareIcon } from '@gobletqa/components'
+import { BaseAction, CropSquareIcon } from '@gobletqa/components'
 
 
 const SquareComp = (props:TSidebarActionProps) => {
   return (
-    <EditorAction
+    <BaseAction
       disabled
       Icon={CropSquareIcon}
       onClick={props.onClick}

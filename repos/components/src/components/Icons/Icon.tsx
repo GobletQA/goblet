@@ -2,6 +2,7 @@ import type { CSSProperties, ElementType, ReactNode } from 'react'
 import { forwardRef, useMemo } from 'react'
 import SvgIcon from '@mui/material/SvgIcon'
 import { exists, cls }  from '@keg-hub/jsutils'
+import { useJoinSx } from '@GBC/hooks/theme/useJoinSx'
 
 export type TIconProps = {
   Icon?: any
@@ -38,7 +39,7 @@ export const Icon = forwardRef((props:TIconProps, ref) => {
     ...rootProps
   } = props
 
-
+  const joinedSx = useJoinSx(sx, styles, style)
 
   const withViewBox = useMemo(() => {
     return exists(inheritViewBox) ? inheritViewBox : !Boolean(viewBox)
@@ -47,9 +48,9 @@ export const Icon = forwardRef((props:TIconProps, ref) => {
   return (
     <RootEl
       ref={ref}
+      sx={joinedSx}
       viewBox={viewBox}
       className={className}
-      sx={[sx, styles, style]}
       inheritViewBox={withViewBox}
       {...rootProps}
     >
