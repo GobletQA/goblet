@@ -1,5 +1,19 @@
 # Production Deploy
 
+## Deploy Backend Only
+```sh
+  yarn kube set prod --env prod && yarn dev clean --images --env prod --ds backend && yarn dev deploy --env prod --ds backend
+```
+
+## Deploy Frontend Only
+```sh
+  yarn kube set prod --env prod && yarn deploy fe --env prod
+```
+
+## Full Deploy
+```sh
+  yarn kube set prod --env prod && yarn dev clean --images --env prod --ds backend && yarn dev deploy --env prod --ds backend && yarn deploy fe --env prod
+```
 
 ## Helpful Command
 * Set both context and namespace for an environment
@@ -11,7 +25,7 @@
   * `devspace use context lke70246-ctx` - should be done automatically via devspace
   * `kubectl config set-context lke70246-ctx`
 * Deploy to production kubernetes
-  * `yarn dev deploy --env prod --log --skip fe`
+  * `yarn dev deploy --env prod --skip fe`
   * **IMPORTANT** - Don't forget to add `--env prod` to ensure you are using the correct environment
 * Curl cmds to test Backend API
   * `curl -kivL -H 'Host: backend.dev.gobletqa.app' -H 'Origin: http://localhost:19006' 'http://45.79.62.67'`
@@ -26,7 +40,7 @@
 
 ### From Scratch
 * Set the namespace and context
-  * `yarn kube set prod --env prod --log`
+  * `yarn kube set prod --env prod`
 * Add the docker image pull secrets
   * `yarn kube secret docker --env prod --log`
 * Add the cloud provider API Token secrets
@@ -34,26 +48,26 @@
 * Deploy the Nginx Ingress Controller
   * `yarn kube ingress --env prod --log`
 * Deploy the Backend Apps
-  * `yarn dev deploy --env prod --ds backend --log`
+  * `yarn dev deploy --env prod --ds backend`
 * Deploy KCert
   * `kubectl apply -f scripts/deploy/kube/cert.yaml`
 
 ### Re-Deploy
 
 * Set the namespace and context
-  * `yarn kube set prod --env prod --log`
+  * `yarn kube set prod --env prod`
+* Clean existing pods and images
+  * `yarn dev clean --env prod --images --ds backend`
 * Deploy the Backend Apps
-  * `yarn dev deploy --env prod --ds backend --log`
+  * `yarn dev deploy --env prod --ds backend`
 
 ### Clean Prod
 
 * Set the namespace and context
-  * `yarn kube set prod --env prod --log`
+  * `yarn kube set prod --env prod`
 * Clean Prod
-  * `yarn dev clean --env prod --ds backend --log`
-
-
-### TODO: add task to create linode token, to ensure goblet-certs can create ssl certs
+  * `yarn dev clean --env prod --ds backend`
+  * Add `--images` to also delete existing docker images
 
 
 ## Frontend - Steps
@@ -61,12 +75,10 @@
 ### Re-Deploy
 
 * Set the namespace and context
-  * `yarn kube set prod --env prod --log`
+  * `yarn kube set prod --env prod`
 * Deploy the Frontend Apps
-  * `yarn deploy fe --env prod --log`
+  * `yarn deploy fe --env prod`
 
 
-## Full Deploy Command
-```sh
-  yarn kube set prod --env prod --log && yarn dev clean --images --env prod --ds backend --log && yarn dev deploy --env prod --ds backend --log && yarn deploy fe --env prod --log
-```
+
+### TODO: add task to create linode token, to ensure goblet-certs can create ssl certs
