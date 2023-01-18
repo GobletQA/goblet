@@ -15,28 +15,28 @@ export const connectForm = {
       branch: ``,
     },
   },
-  $root: {
-    rowSpacing: 2,
-    container: true,
-    columnSpacing: 1,
-    disableEqualOverflow: true
-  },
-  $actions: {
-    signOut: {
-      label: `Sign Out`,
-      onClick: signOutReload,
-      variant: `text`  as const,
-      color: `secondary` as const,
-      StartIcon: `$component.LogoutIcon`,
-    },
-    connectRepo: {
-      color: `primary`  as const,
-      variant: `contained`  as const,
-      label: `Connect Repo`,
-      disabled: `$values.no.branch`,
-      StartIcon: `$component.CloudDownIcon`,
-    }
-  },
+  // $root: {
+  //   rowSpacing: 2,
+  //   container: true,
+  //   columnSpacing: 1,
+  //   disableEqualOverflow: true
+  // },
+  // $actions: {
+  //   signOut: {
+  //     label: `Sign Out`,
+  //     onClick: signOutReload,
+  //     variant: `text`  as const,
+  //     color: `secondary` as const,
+  //     StartIcon: `$component.LogoutIcon`,
+  //   },
+  //   connectRepo: {
+  //     color: `primary`  as const,
+  //     variant: `contained`  as const,
+  //     label: `Connect Repo`,
+  //     disabled: `$values.no.branch`,
+  //     StartIcon: `$component.CloudDownIcon`,
+  //   }
+  // },
   fields: {
     repo: {
       Component: `AutoInput`,

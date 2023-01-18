@@ -1,140 +1,139 @@
-import type { TBuiltForm, TSetupFormProps } from '@types'
-import type { ComponentType, MutableRefObject } from 'react'
+import type { FormEvent, ReactNode, ComponentType, MutableRefObject } from 'react'
+import type { TFormFooter } from '@types'
 
 import Box from '@mui/material/Box'
-import { useEffect, useMemo } from 'react'
-import { gutter } from '@gobletqa/components/theme'
-import { useGetRepos } from '@hooks/api/useGetRepos'
-import { noPropArr, noOpObj } from '@keg-hub/jsutils'
-import { Form, RenderInputs } from '@components/Form'
-import { useConnectRepo } from '@hooks/api/useConnectRepo'
-import { useConnectForm } from '@hooks/forms/useConnectForm'
-import { useWatch, useController } from 'react-hook-form-mui'
+import { Form } from '@components/Form'
+import Grid from '@mui/material/Unstable_Grid2'
+import { useCallback, useState, useMemo } from 'react'
+
+import { AutoInput } from '@components/Form/Inputs/AutoInput'
+import { signOutReload } from '@actions/admin/user/signOutReload'
 import { ModalMessage } from '@components/ModalManager/ModalMessage'
+import { useInline, CloudDownIcon, LogoutIcon, gutter } from '@gobletqa/components'
 
-export type TBuiltConnectForm = ReturnType<typeof useConnectForm>
+import { noPropArr, noOpObj } from '@keg-hub/jsutils'
+import { useGetRepos } from '@hooks/api/useGetRepos'
+import { useConnectRepo } from '@hooks/api/useConnectRepo'
 
-export type TConnectFormProps = {
-  form: TBuiltForm
-  loading: boolean
-  values:Record<any, any>
-  setForm: (...args:any[]) => void
-}
 
 export type TConnectForm = {
+  Footer?:ComponentType<any>
+  Header?:ComponentType<any>
   FormMessage?: ComponentType<any>
-  FormActions?: ComponentType<any>
-  formActionProps?: Record<any, any>
   onConnect?: (...args:any[]) => void
-  formRef?: MutableRefObject<TBuiltConnectForm|undefined>
+  formRef?: MutableRefObject<HTMLFormElement>
 }
 
-const useSetupForm = ({
-  form,
-  options,
-  formHelpers,
-}:TSetupFormProps) => {
-  const { onConnect, values, setForm } = options
-  const connectRepo = useConnectRepo({
-    form,
-    values,
-    setForm,
-    onConnect,
-    ...formHelpers,
-  })
+const ConnectFormActions = {
+  signOut: {
+    label: `Sign Out`,
+    StartIcon: LogoutIcon,
+    onClick: signOutReload,
+    variant: `text`  as const,
+    color: `secondary` as const,
+  },
+  connectRepo: {
+    StartIcon: CloudDownIcon,
+    color: `primary`  as const,
+    variant: `contained`  as const,
+    label: `Connect Repo`,
+  }
+}
 
-  const { loading } = formHelpers
+type THFooterProps = {
+  onSubmit?: (event:FormEvent<HTMLFormElement>) => void
+  submitDisabled?:boolean
+}
 
+const useFooterProps = ({
+  onSubmit,
+  submitDisabled
+}:THFooterProps) => {
   return useMemo(() => {
-    form.$actions.signOut.loading = loading
-    form.$actions.connectRepo.loading = loading
-    form.$actions.connectRepo.onClick = connectRepo
-
-    return form
-  }, [form, connectRepo, loading])
+    return {
+      actionProps: {
+        sx: {
+          paddingTop: `10px`,
+          paddingBottom: `20px`,
+          justifyContent: `space-around`
+        }
+      },
+      actions: {
+        ...ConnectFormActions,
+        connectRepo: {
+          ...ConnectFormActions.connectRepo,
+          onClick: onSubmit,
+          disabled: submitDisabled
+        }
+      }
+    } as TFormFooter
+  }, [
+    onSubmit,
+    submitDisabled
+  ])
+ 
 }
 
-const ConnectInputs = (props:TConnectFormProps) => {
-  const {
-    form,
-    values,
-    loading,
-    setForm
-  } = props
-
-  const [
-    repo,
-    branch,
-    newBranch,
-    createBranch,
-  ] = useWatch({
-    name: [`repo`, `branch`, `newBranch`, `createBranch`]
-  })
+type TRepoProps = {
   
-  const { field:{ onChange:onChangeBranch } } = useController({ name: `branch` })
+}
 
-  const { repos } = useGetRepos({ repo, branch })
-
-  useEffect(() => {
-    let obj = values
-
-    if(values?.repo !== repo){
-      obj = { ...obj, repo, branch: `` }
-      // Reset the branch when the repo changes
-      onChangeBranch(``)
-    }
-    else if(values?.branch !== branch)
-      obj = { ...obj, branch }
-    if(values?.newBranch !== newBranch)
-      obj = { ...obj, newBranch }
-    if(values?.createBranch !== createBranch)
-      obj = { ...obj, createBranch }
-
-    values !== obj && setForm({ ...values, ...obj })
-
-  }, [
-    repo,
-    branch,
-    values,
-    newBranch,
-    createBranch,
-    onChangeBranch,
-  ])
-
+const RepoSelect = (props:TRepoProps) => {
+/**
+      Component: `AutoInput`,
+      required: true,
+      name: `repo`,
+      label: `Select Repo`,
+      decor: {
+        name: `syncRepos`,
+        color: `secondary`,
+        labelPos: `bottom`,
+        onClick: getRepos,
+        label: `Sync Repos`,
+        Icon: `$component.SyncIcon`,
+        buttonProps: { size: `small` },
+        iconProps:{ fontSize: `small` },
+        Component: `$component.IconButton`,
+      },
+      textFieldProps: {
+        placeholder: `Select a repo to connect to...`,
+      },
+      rules: {
+        required: `Please select a repository`
+      }
+ */
+  
   return (
-    <RenderInputs
-      form={form}
-      disableAll={loading}
-      repo={{ options: repos }}
-      branch={{ options: repo?.branches || noPropArr, disabled: !repo }}
-    />
+    <span>
+      Repo Select
+    </span>
   )
+  
 }
 
 export const ConnectForm = (props:TConnectForm) => {
   const {
     formRef,
+    Footer,
+    Header,
     onConnect,
-    FormActions,
-    formActionProps=noOpObj,
     FormMessage=ModalMessage,
   } = props
 
-  const connectForm = useConnectForm({
-    onConnect,
-    setupForm: useSetupForm
-  })
-  const {
-    form,
-    values,
-    setForm,
-    loading,
-    formError,
-  } = connectForm
+  const [formError, setFormError] = useState<string>()
+  const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
-    formRef && (formRef.current = connectForm)
-  }, [connectForm])
+  const onSubmit = useInline((event:FormEvent<HTMLFormElement>) => {
+    event.stopPropagation()
+    event.preventDefault()
+    console.log(`------- On Form Submit -------`)
+  })
+  
+  
+  const footerProps = useFooterProps({
+    onSubmit,
+    submitDisabled: Boolean(formError || loading),
+  })
 
   return (
     <>
@@ -143,23 +142,28 @@ export const ConnectForm = (props:TConnectForm) => {
           error={formError}
           loading={loading && 'Connecting Repo'}
         />
-        <Form {...form.form} >
+        <Form
+          ref={formRef}
+          Header={Header}
+          Footer={Footer}
+          footerProps={footerProps}
+          onSubmit={onSubmit}
+        >
           <Box marginBottom={gutter.margin.px} >
-            <ConnectInputs
-              form={form}
-              values={values}
-              loading={loading}
-              setForm={setForm}
-            />
+            <Grid
+              rowSpacing={2}
+              container={true}
+              columnSpacing={1}
+              disableEqualOverflow={true}
+            >
+              <Grid xs={12} >
+                <RepoSelect
+                />
+              </Grid>
+            </Grid>
           </Box>
         </Form>
       </Box>
-      {FormActions && (
-        <FormActions
-          {...formActionProps}
-          actions={form.$actions}
-        />
-      )}
     </>
   )
   

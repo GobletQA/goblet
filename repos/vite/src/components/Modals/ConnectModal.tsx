@@ -1,4 +1,4 @@
-import type { TModalComponent, TModalRef } from '@types'
+import type { TModalFooter, TModalComponent, TModalRef } from '@types'
 
 import { useMemo } from 'react'
 import { useContainer } from '@store'
@@ -9,7 +9,6 @@ import { EModalTypes, EContainerState } from '@types'
 import { ConnectForm } from '@components/Forms/ConnectForm'
 import { ModalFooter } from '@components/ModalManager/ModalFooter'
 import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
-
 
 export const ConnectModal:TModalRef = (props:TModalComponent) => {
   const { ModalMessage } = props
@@ -24,20 +23,18 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
     : (
         <ConnectForm
           FormMessage={ModalMessage}
-          FormActions={(props:any) => {
-            return (
-              <>
-                <Divider />
-                <ModalFooter
-                  {...props}
-                  sx={{
-                    padding: `${gutter.padding.px} ${gutter.padding.dpx}`,
-                    justifyContent: `space-between`,
-                  }}
-                />
-              </>
-            )
-          }}
+          Footer={(footerProps:TModalFooter) => (
+            <>
+              <Divider />
+              <ModalFooter
+                {...footerProps}
+                sx={{
+                  padding: `${gutter.padding.px} ${gutter.padding.dpx}`,
+                  justifyContent: `space-between`,
+                }}
+              />
+            </>
+          )}
         />
       )
 }

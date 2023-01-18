@@ -1,14 +1,9 @@
 import type { ComponentProps } from 'react'
-import type { TModalAction } from '@types'
+import type { TModalFooter, TModalAction } from '@types'
 
 import Button from '@mui/material/Button'
 import { useIcon } from '@hooks/components/useIcon'
 import DialogActions from '@mui/material/DialogActions'
-
-export type TModalFooter = ComponentProps<typeof DialogActions> & {
-  actionProps?: ComponentProps<typeof DialogActions>
-  actions?: TModalAction[] | Record<string, TModalAction>
-}
 
 const FooterAction = (props:TModalAction) => {
   const {

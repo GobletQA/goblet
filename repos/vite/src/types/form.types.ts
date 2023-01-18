@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react'
 import type { ComponentType } from 'react'
 import type { TInputDecor } from '@types'
+import type { TModalFooter } from './modal.types'
 import type { TextFieldProps, GridProps } from '@mui/material'
 import type { FormComponents } from '@components/Form'
 
@@ -85,3 +86,10 @@ export type TBuiltForm = Record<'form', Omit<TFormRef, 'name'>>
   & Record<string, TBuildFormField>
 
 export type TOptFunc = (val:any) => any
+
+
+
+// ----- NOT BUILDER
+export type TFormFooter = TModalFooter & {
+  
+}
