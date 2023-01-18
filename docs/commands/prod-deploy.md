@@ -2,7 +2,7 @@
 
 ## Deploy Backend Only
 ```sh
-  yarn kube set prod --env prod && yarn dev clean --images --env prod --ds backend && yarn dev deploy --env prod --ds backend
+  yarn kube set prod --env prod && yarn dev clean --images --env prod && yarn deploy be --env prod
 ```
 
 ## Deploy Frontend Only
@@ -12,7 +12,7 @@
 
 ## Full Deploy
 ```sh
-  yarn kube set prod --env prod && yarn dev clean --images --env prod --ds backend && yarn dev deploy --env prod --ds backend && yarn deploy fe --env prod
+  yarn kube set prod --env prod && yarn dev clean --images --env prod && yarn deploy be --env prod && yarn deploy fe --env prod
 ```
 
 ## Helpful Command
@@ -48,7 +48,7 @@
 * Deploy the Nginx Ingress Controller
   * `yarn kube ingress --env prod --log`
 * Deploy the Backend Apps
-  * `yarn dev deploy --env prod --ds backend`
+  * `yarn dev deploy --env prod`
 * Deploy KCert
   * `kubectl apply -f scripts/deploy/kube/cert.yaml`
 
@@ -57,16 +57,16 @@
 * Set the namespace and context
   * `yarn kube set prod --env prod`
 * Clean existing pods and images
-  * `yarn dev clean --env prod --images --ds backend`
+  * `yarn dev clean --env prod --images`
 * Deploy the Backend Apps
-  * `yarn dev deploy --env prod --ds backend`
+  * `yarn dev deploy --env prod`
 
 ### Clean Prod
 
 * Set the namespace and context
   * `yarn kube set prod --env prod`
 * Clean Prod
-  * `yarn dev clean --env prod --ds backend`
+  * `yarn dev clean --env prod`
   * Add `--images` to also delete existing docker images
 
 
