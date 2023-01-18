@@ -42,7 +42,7 @@ export const disconnectRepo = async (username?:string, openModel:boolean=true) =
   username = username || GitUser.getUser()?.username
 
   // First disconnect the repo on the backend
-  await callDisconnectApi(username)
+  username && await callDisconnectApi(username)
 
   // Then remove the repo locally
   await removeRepo()

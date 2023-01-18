@@ -1,4 +1,5 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
+import type { Request as JWTRequest } from 'express-jwt'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 
@@ -6,15 +7,17 @@ import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
  * Gets the status of a connected repo
  * Calls the statusGoblet workflow
  */
-export const statusContainer = async (req:Request, res:Response) => {
+export const statusContainer = async (req:JWTRequest, res:Response) => {
   const conductor = req.app.locals.conductor
-  const imageRef = req?.params?.imageRef || Object.keys(conductor.config.images).shift()
+  const imageRef = req?.params?.imageRef || Object.keys(conductor.config.images)[0]
+
+  if(!imageRef) throw new Error(`Conductor config missing Image Reference`)
 
   const status = await conductor.status({
     query: { ...req?.query },
     body: { ...req?.body, ensure: true },
     params: { ...req?.params, imageRef },
-  }, req?.user?.subdomain || res?.locals?.subdomain)
+  }, req?.auth?.subdomain || res?.locals?.subdomain)
 
   return apiRes(res, status)
 }

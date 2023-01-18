@@ -5,14 +5,15 @@ import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { generateTokens } from '@GBE/utils/generateTokens'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 
-
 /**
  * Validates the required authentication information exists
  */
 export const validate = async (req:Request, res:Response) => {
   const { conductor } = req.app.locals
   const { id, username, token, provider } = req.body
-  const imageRef = Object.keys(conductor.config.images).shift()
+  const imageRef = Object.keys(conductor.config.images)[0]
+
+  if(!imageRef) throw new Error(`Conductor config missing Image Reference`)
 
   if (!id || !username || !token || !provider)
     throw new Error(`Provider metadata is unknown. Please sign in again`)

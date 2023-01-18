@@ -108,9 +108,11 @@ export class Conductor {
    * Gets the status of a user based on the userHash
    * Route is derived from the user and a hash so it's always the same
    */
-  async status(req:Partial<Request>, userHash?:string){
+  async status(req:Partial<Request>, userHash:string){
+
     const { ensure, ...spawnOpts } = Object.assign({}, req?.query, req?.body)
     const { imageRef } = (req?.params || {})
+
     const route = this.controller.routes?.[userHash]
 
     if(route) return route

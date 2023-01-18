@@ -64,3 +64,9 @@
   * `yarn kube set prod --env prod --log`
 * Deploy the Frontend Apps
   * `yarn deploy fe --env prod --log`
+
+
+## Full Deploy Command
+```sh
+  yarn kube set prod --env prod --log && yarn dev clean --images --env prod --ds backend --log && yarn dev deploy --env prod --ds backend --log && yarn deploy fe --env prod --log
+```
