@@ -29,3 +29,12 @@ export type TDecorationFns = {
   remove:TDecorationCB
   update:TDecorationUpdate
 }
+
+
+export type TDecorationList = {
+  [key:string]: editor.IModelDeltaDecoration
+}
+
+export type TDecorationFiles = {
+  [key:string]: TDecorationList
+}

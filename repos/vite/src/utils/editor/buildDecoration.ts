@@ -72,6 +72,7 @@ export const buildDecoration = (
       isWholeLine: true,
       showIfCollapsed: true,
       className: `gb-player-line ${classes}`,
+      marginClassName: event.testPath.replace(`/`, `_`),
       glyphMarginClassName: `gb-player-glyph ${classes}`,
       glyphMarginHoverMessage: getHoverMessage(event, type),
     }

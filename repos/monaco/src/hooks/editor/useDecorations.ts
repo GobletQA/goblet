@@ -5,29 +5,18 @@ import type {
   TDecorationCB,
   TCodeEditorRef,
   TDecorationAdd,
-  TDecorationMeta,
+  TDecorationList,
+  TDecorationFiles,
   TDecorationUpdate,
 } from '@GBM/types'
 
 import { useRef, useEffect } from 'react'
-
-import { rangesEqual } from '@GBM/utils/editor/rangesEqual'
-import { findTextMatch } from '@GBM/utils/editor/findTextMatch'
-import { getModelFromPath } from '@GBM/utils/editor/getModelFromPath'
-
 import { useInline } from '@gobletqa/components'
+import { validateMatch } from '@GBM/utils/editor/validateMatch'
 
 export type THDecoration = {
   curPath: string
   editorRef:TCodeEditorRef
-}
-
-type TDecorationList = {
-  [key:string]: editor.IModelDeltaDecoration
-}
-
-type TDecorationFiles = {
-  [key:string]: TDecorationList
 }
 
 type TCollectionFiles = {
@@ -48,43 +37,6 @@ const createDecoration = (
   return decorationsList
 }
 
-
-const validate = (
-  editorRef:TCodeEditorRef,
-  decorationList:TDecorationList,
-  location:string,
-  decoration:TDecoration,
-  meta:TDecorationMeta
-) => {
-  const editor = editorRef.current
-  if(!editor) return console.warn(`Could not find editor`, editorRef.current, location, decoration, meta)
-
-  if(!meta.action)
-    return console.warn(`Can not add decoration, missing action type`, location, decoration, meta)
-
-  const model = getModelFromPath(location)
-  if(!model) return console.warn(`Could not find editor model for location`, location, decoration, meta)
-
-  const { search } = decoration
-  if(!search) return console.warn(`Can not add decoration, missing search text`, decoration, meta)
-  
-  const match = findTextMatch({
-    meta,
-    model,
-    search,
-    compare: (match) => {
-      const id = `${match.range.startLineNumber}-${search}`
-      // When action is start
-      // Return the first match found that does not exist
-      return meta.action === `start`
-        ? !decorationList[id] ? match : false
-        : rangesEqual(decorationList[id].range, match.range) ? match : false
-    }
-  })
-
-  return match || console.warn(`Could not find match to search text`, search, location, meta)
-}
-
 export const useDecorations = (props:THDecoration) => {
   const {
     curPath,
@@ -97,7 +49,13 @@ export const useDecorations = (props:THDecoration) => {
 
   const addDecoration = useInline<TDecorationAdd>((location, decoration, meta) => {
     const decorationList = decorationsRef.current[location] || {} as TDecorationList
-    const match = validate(editorRef, decorationList, location, decoration, meta)
+    const match = validateMatch({
+      meta,
+      location,
+      editorRef,
+      decoration,
+      decorationList,
+    })
     if(!match) return
 
     const editor = editorRef.current as editor.IStandaloneCodeEditor

@@ -1,11 +1,13 @@
 import type { editor } from 'monaco-editor'
-import type { TDecorationMeta } from '@GBM/types'
+import type { TDecoration, TDecorationList, TDecorationMeta } from '@GBM/types'
 
 
 type TFindTextMatch = {
-  model:editor.ITextModel
   search:string
   meta:TDecorationMeta
+  decoration:TDecoration
+  model:editor.ITextModel
+  decorationList:TDecorationList,
   compare:(match:editor.FindMatch) => false|undefined|null|editor.FindMatch
 }
 
@@ -18,8 +20,22 @@ export const findTextMatch = ({
   meta,
   model,
   search,
-  compare
+  compare,
+  decoration,
+  decorationList
 }:TFindTextMatch) => {
+
+  // We store the decorationId on the marginClassName field so we can find it later
+  // It's not used for styles, but technically it could be
+  // The start action sets it
+  // And future actions can use it to look up existing matching decorations
+  // This allows not having to search for matching text, and is prone to duplicates and bugs
+  if(meta.action !== `start`){
+    const decorationId = decoration.options.marginClassName
+    const existing = Object.values(decorationList).find(({ options }) => options.marginClassName === decorationId)
+
+    if(existing?.range) return { range: existing.range, matches: null } as editor.FindMatch
+  }
 
   const matches = model.findMatches(search, true, false, false, null, false)
   // If no matches found, log and return false 
