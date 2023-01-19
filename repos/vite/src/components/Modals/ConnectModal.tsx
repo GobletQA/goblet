@@ -29,8 +29,8 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
               <ModalFooter
                 {...footerProps}
                 sx={{
-                  padding: `${gutter.padding.px} ${gutter.padding.dpx}`,
                   justifyContent: `space-between`,
+                  padding: `${gutter.padding.px} 0px 0px`,
                 }}
               />
             </>

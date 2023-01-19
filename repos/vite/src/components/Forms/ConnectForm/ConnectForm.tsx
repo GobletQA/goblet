@@ -1,20 +1,25 @@
-import type { FormEvent, ReactNode, ComponentType, MutableRefObject } from 'react'
 import type { TFormFooter } from '@types'
+import type { TRepoProps } from './RepoSelect'
+import type { FormEvent, ComponentType, MutableRefObject } from 'react'
+
+import { SyncRepos } from './SyncRepos'
+import { RepoSelect } from './RepoSelect'
 
 import Box from '@mui/material/Box'
 import { Form } from '@components/Form'
 import Grid from '@mui/material/Unstable_Grid2'
-import { useCallback, useState, useMemo } from 'react'
-
-import { AutoInput } from '@components/Form/Inputs/AutoInput'
+import { useState, useMemo, useCallback } from 'react'
 import { signOutReload } from '@actions/admin/user/signOutReload'
 import { ModalMessage } from '@components/ModalManager/ModalMessage'
-import { useInline, CloudDownIcon, LogoutIcon, gutter } from '@gobletqa/components'
+import {
+  gutter,
+  useInline,
+  LogoutIcon,
+  CloudDownIcon,
+} from '@gobletqa/components'
 
-import { noPropArr, noOpObj } from '@keg-hub/jsutils'
 import { useGetRepos } from '@hooks/api/useGetRepos'
 import { useConnectRepo } from '@hooks/api/useConnectRepo'
-
 
 export type TConnectForm = {
   Footer?:ComponentType<any>
@@ -39,6 +44,16 @@ const ConnectFormActions = {
     label: `Connect Repo`,
   }
 }
+
+const styles = {
+  form: {
+    paddingBottom: gutter.padding.px
+  },
+  grid: {
+    alignItems: `center`
+  }
+}
+
 
 type THFooterProps = {
   onSubmit?: (event:FormEvent<HTMLFormElement>) => void
@@ -74,48 +89,11 @@ const useFooterProps = ({
  
 }
 
-type TRepoProps = {
-  
-}
-
-const RepoSelect = (props:TRepoProps) => {
-/**
-      Component: `AutoInput`,
-      required: true,
-      name: `repo`,
-      label: `Select Repo`,
-      decor: {
-        name: `syncRepos`,
-        color: `secondary`,
-        labelPos: `bottom`,
-        onClick: getRepos,
-        label: `Sync Repos`,
-        Icon: `$component.SyncIcon`,
-        buttonProps: { size: `small` },
-        iconProps:{ fontSize: `small` },
-        Component: `$component.IconButton`,
-      },
-      textFieldProps: {
-        placeholder: `Select a repo to connect to...`,
-      },
-      rules: {
-        required: `Please select a repository`
-      }
- */
-  
-  return (
-    <span>
-      Repo Select
-    </span>
-  )
-  
-}
-
 export const ConnectForm = (props:TConnectForm) => {
   const {
-    formRef,
     Footer,
     Header,
+    formRef,
     onConnect,
     FormMessage=ModalMessage,
   } = props
@@ -128,16 +106,24 @@ export const ConnectForm = (props:TConnectForm) => {
     event.preventDefault()
     console.log(`------- On Form Submit -------`)
   })
-  
-  
+
   const footerProps = useFooterProps({
     onSubmit,
     submitDisabled: Boolean(formError || loading),
   })
 
+  const {
+    repo,
+    repos,
+    setRepo,
+    branch,
+    branches,
+    setBranch,
+  } = useGetRepos()
+
   return (
     <>
-      <Box padding={`${gutter.padding.px} ${gutter.padding.dpx}`}>
+      <Box className='connect-form-container' padding={`${gutter.padding.px} ${gutter.padding.px}`}>
         <FormMessage
           error={formError}
           loading={loading && 'Connecting Repo'}
@@ -146,19 +132,27 @@ export const ConnectForm = (props:TConnectForm) => {
           ref={formRef}
           Header={Header}
           Footer={Footer}
-          footerProps={footerProps}
+          sx={styles.form}
           onSubmit={onSubmit}
+          footerProps={footerProps}
         >
           <Box marginBottom={gutter.margin.px} >
             <Grid
               rowSpacing={2}
+              sx={styles.grid}
               container={true}
               columnSpacing={1}
               disableEqualOverflow={true}
             >
-              <Grid xs={12} >
+              <Grid xs={9} md={10} >
                 <RepoSelect
+                  repo={repo}
+                  repos={repos}
+                  onChange={setRepo as TRepoProps[`onChange`]}
                 />
+              </Grid>
+              <Grid xs={3} md={2} >
+                <SyncRepos />
               </Grid>
             </Grid>
           </Box>

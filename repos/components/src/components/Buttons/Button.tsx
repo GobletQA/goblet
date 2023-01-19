@@ -1,4 +1,5 @@
 import type { ReactNode, CSSProperties, ComponentType, ComponentProps } from 'react'
+import type { SvgIconProps } from '@mui/material'
 
 import { Span } from '@GBC/components/Text'
 import MuiButton from '@mui/material/Button'
@@ -8,6 +9,7 @@ export type TButton = ComponentProps<typeof MuiButton> & {
   text?:ReactNode
   textSx?:CSSProperties
   iconSx?:CSSProperties
+  iconProps?:SvgIconProps
   Icon?:ComponentType<any>
 }
 
@@ -24,6 +26,7 @@ export const Button = (props:TButton) => {
     Icon,
     textSx,
     iconSx,
+    iconProps,
      children,
      ...rest
   } = props
@@ -33,8 +36,9 @@ export const Button = (props:TButton) => {
 
       {Icon && (
         <Icon
+          {...iconProps}
           className='gb-button-icon'
-          sx={[styles.icon, iconSx]}
+          sx={[styles.icon, iconProps?.sx, iconSx]}
         />
       ) || null}
       {text && (

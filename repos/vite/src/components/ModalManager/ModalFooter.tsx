@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react'
+import type { CSSProperties, ComponentProps } from 'react'
 import type { TModalFooter, TModalAction } from '@types'
 
 import Button from '@mui/material/Button'
@@ -45,7 +45,14 @@ export const ModalFooter = (props:TModalFooter) => {
 
   return actions
     ? (
-        <DialogActions {...rest} {...actionProps} >
+        <DialogActions
+          {...actionProps}
+          {...rest}
+          sx={[
+            actionProps?.sx as CSSProperties,
+            rest?.sx as CSSProperties
+          ]}
+        >
           {Object.values(actions)?.map((action) => (
             <FooterAction
               key={action?.label || action?.text}

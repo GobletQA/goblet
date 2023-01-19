@@ -6,9 +6,10 @@ import { getRepos } from '@actions/repo/api/getRepos'
 import { noOpObj, noPropArr } from '@keg-hub/jsutils'
 
 export type TBuiltRepo = {
-  value: number,
+  id: string
   key: string
   label: string
+  value: number,
   branches: string[]
 }
 export type TBuiltRepos = TBuiltRepo[]
@@ -20,9 +21,10 @@ const useBuildRepos = (repos:TReposState):TBuiltRepos => {
       ? noPropArr
       : repos.map((repo, idx) => ({
           value: idx,
+          branches: repo.branches,
+          id: repo.url || repo.name,
           key: repo.url || repo.name,
           label: repo.url || repo.name,
-          branches: repo.branches
         }))
   }, [repos])
 }
