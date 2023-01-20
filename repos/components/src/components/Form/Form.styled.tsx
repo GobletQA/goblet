@@ -54,7 +54,7 @@ const sharedInputStyle = `
 
 export const TextInput = styled(TextField)(({ theme }) => {
   const inputColor = getColor(`colors.black19`, `colors.white`, theme)
-  const colors = (theme as TGobletTheme)?.palette?.colors
+  const colors = theme?.palette?.colors
   return `
     width: 100%;
 

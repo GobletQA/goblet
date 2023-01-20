@@ -1,5 +1,5 @@
-import type { TInputDecor } from '@types'
 import type { CSSProperties, SyntheticEvent, ComponentProps } from 'react'
+import type { AutoOptVal, AutoOpt, TOnAutoChange, TInputDecor } from '@types'
 import type {
   AutocompleteChangeReason,
   AutocompleteChangeDetails
@@ -16,19 +16,6 @@ import {
   TextFieldProps,
 } from '@mui/material'
 
-export type AutoOpt = {
-  label: string
-  id: string | number
-}
-export type OptVal = string | AutoOpt
-
-type TOnChange = (
-  event:SyntheticEvent,
-  value:OptVal|OptVal[],
-  reason:AutocompleteChangeReason,
-  details:AutocompleteChangeDetails
-) => void
-
 export type TAutoInput = {
   name: string
   error?:string
@@ -36,13 +23,13 @@ export type TAutoInput = {
   sx?:CSSProperties
   decor?: TInputDecor
   disabled?: boolean
-  options: OptVal[]
+  options: AutoOptVal[]
   loading?: boolean
   matchId?: boolean
   required?: boolean
   multiple?: boolean
-  currentValue?:OptVal
-  onChange?: TOnChange
+  currentValue?:AutoOptVal
+  onChange?: TOnAutoChange
   showCheckbox?: boolean
   rules?: Record<string, string>
   label?: TextFieldProps['label']
@@ -58,17 +45,17 @@ const useOnChangeVal = ({
 }:TAutoInput) => {
   return useCallback((
     event:any,
-    value:OptVal,
+    value:AutoOptVal,
     reason:AutocompleteChangeReason,
     details:AutocompleteChangeDetails
   ) => {
     
-    let changedVal:OptVal|OptVal[] = value
+    let changedVal:AutoOptVal|AutoOptVal[] = value
 
     if (matchId)
       changedVal = Array.isArray(value)
-        ? value.map((i: any) => i?.id || i) as OptVal[]
-        : ((value as AutoOpt)?.id || value) as OptVal
+        ? value.map((i: any) => i?.id || i) as AutoOptVal[]
+        : ((value as AutoOpt)?.id || value) as AutoOptVal
 
     onChange?.(event, changedVal, reason, details)
     if (autocompleteProps?.onChange)
@@ -125,7 +112,7 @@ export const AutoInput = (props:TAutoInput) => {
       isOptionEqualToValue={
         autocompleteProps?.isOptionEqualToValue
           ? autocompleteProps.isOptionEqualToValue
-          : ((option:OptVal, value:OptVal) => {
+          : ((option:AutoOptVal, value:AutoOptVal) => {
               const opVal = isStr(option) ? option : option.id
               const val = value && (isStr(value) ? value : value.id)
 
@@ -135,13 +122,13 @@ export const AutoInput = (props:TAutoInput) => {
       getOptionLabel={
         autocompleteProps?.getOptionLabel
           ? autocompleteProps.getOptionLabel
-          : ((option:OptVal) => isStr(option) ? option : option?.label) as any
+          : ((option:AutoOptVal) => isStr(option) ? option : option?.label) as any
       }
       
       renderOption={(
         autocompleteProps?.renderOption ?? (
           showCheckbox
-            ? (props:ComponentProps<`li`>, option:OptVal, { selected }:Record<`selected`, boolean>) => (
+            ? (props:ComponentProps<`li`>, option:AutoOptVal, { selected }:Record<`selected`, boolean>) => (
                 <li {...props}>
                   <>
                     <Checkbox

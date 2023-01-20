@@ -21,6 +21,7 @@ export type TDropdown = AccordionProps & {
   bodySx?:CSSProperties
   headerSx?:CSSProperties
   headerTextSx?:CSSProperties
+  expandIconSx?:CSSProperties
   noIconTransform?: boolean
   onChange?:(expanded: boolean) => void
   ExpandIcon?:ComponentType<typeof ExpandIconComp>
@@ -44,6 +45,7 @@ export const Dropdown = (props:TDropdown) => {
     headerSx,
     headerText,
     headerTextSx,
+    expandIconSx,
     children=body,
     noIconTransform,
     header:headerComp,
@@ -88,6 +90,7 @@ export const Dropdown = (props:TDropdown) => {
         expandIcon={(
           // @ts-ignore
           <ExpandIcon
+            sx={expandIconSx}
             expand={expanded}
             noIconTransform={noIconTransform}
             className={cls(`gr-dropdown-expand-icon`, expanded && `expanded`)}

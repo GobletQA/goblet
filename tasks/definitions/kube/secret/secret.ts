@@ -1,7 +1,7 @@
 import type { TTask } from '../../../types'
 
 import path from 'path'
-import { docker } from './docker'
+import { auth } from './auth'
 import { provider } from './provider'
 import { uuid } from '@keg-hub/jsutils'
 import { tempDir } from '../../../paths'
@@ -175,10 +175,10 @@ export const secret:TTask = {
   alias: [ `secrets`, `scrt`, `sct`, `sec`],
   action: secretAct,
   tasks: {
-    docker,
+    auth,
     provider,
   },
-  example: `yarn task devspace secret <options>`,
+  example: `yarn kube secret <options>`,
   description: `Calls the kubectl create secret command`,
   options: {
     name: {

@@ -116,7 +116,7 @@ export const ActionItem = styled(Box)(({ theme }) => `
   }
 
   & * button:hover {
-    color: ${(theme as TGobletTheme)?.palette?.colors?.purple10};
+    color: ${theme?.palette?.colors?.purple10};
     background-color: transparent;
   }
 

@@ -2,6 +2,7 @@ import type { TFormFooter } from '@types'
 import type { TRepoProps } from './RepoSelect'
 import type { FormEvent, ComponentType, MutableRefObject } from 'react'
 
+import { Advanced } from './Advanced'
 import { SyncRepos } from './SyncRepos'
 import { RepoSelect } from './RepoSelect'
 
@@ -115,10 +116,9 @@ export const ConnectForm = (props:TConnectForm) => {
   const {
     repo,
     repos,
-    setRepo,
     branch,
-    branches,
-    setBranch,
+    onChangeRepo,
+    onChangeBranch
   } = useGetRepos()
 
   return (
@@ -135,26 +135,45 @@ export const ConnectForm = (props:TConnectForm) => {
           sx={styles.form}
           onSubmit={onSubmit}
           footerProps={footerProps}
+          className='gb-grid-connect-form'
         >
-          <Box marginBottom={gutter.margin.px} >
+          <Box
+            className='gb-grid-connect-inputs-container'
+          >
             <Grid
               rowSpacing={2}
               sx={styles.grid}
               container={true}
               columnSpacing={1}
               disableEqualOverflow={true}
+              className='gb-grid-connect-inputs'
             >
-              <Grid xs={9} md={10} >
+              <Grid className='gb-grid-repo-select' xs={9} md={11} >
                 <RepoSelect
                   repo={repo}
                   repos={repos}
-                  onChange={setRepo as TRepoProps[`onChange`]}
+                  onChange={onChangeRepo}
                 />
               </Grid>
-              <Grid xs={3} md={2} >
+              <Grid className='gb-grid-sync-repos' xs={3} md={1} >
                 <SyncRepos />
               </Grid>
+              <Grid
+                xs={12}
+                sx={{ paddingLeft: `5px` }}
+                className='gb-grid-advanced'
+              >
+                <Advanced
+                  repo={repo}
+                  branch={branch}
+                  onChange={onChangeBranch}
+                />
+              </Grid>
             </Grid>
+
+            
+
+            
           </Box>
         </Form>
       </Box>

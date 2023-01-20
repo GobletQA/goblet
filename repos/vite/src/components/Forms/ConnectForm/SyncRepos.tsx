@@ -1,13 +1,22 @@
 
 
 import Box from '@mui/material/Box'
-import { gutter, Button, SyncIcon } from '@gobletqa/components'
+import { Tooltip, gutter, Button, SyncIcon } from '@gobletqa/components'
 import { getRepos } from '@actions/repo/api/getRepos'
 
 const styles = {
   button: {
     width: `100%`,
     height: `40px`,
+    opacity: `0.9`,
+    transition: `opacity 300ms ease`,
+    [`:hover`]: {
+      opacity: `1`,
+    }
+  },
+  icon: {
+    fontSize: `20px`,
+    marginRight: `2px`,
   }
 }
 
@@ -15,18 +24,24 @@ type TSyncRepos = {}
 
 export const SyncRepos = (props:TSyncRepos) => {
   return (
-    <Box className='sync-repos-container' paddingLeft={gutter.padding.hpx}>
-      <Button
-        sx={styles.button}
-        Icon={SyncIcon}
-        onClick={getRepos}
-        name='syncRepos'
-        color='secondary'
-        variant='contained'
-        className='sync-repos-button'
-      >
-        Sync
-      </Button>
-    </Box>
+    <Tooltip
+      loc='bottom'
+      describeChild
+      title='Sync repositories from your Git Provider'
+    >
+      <Box className='sync-repos-container' paddingLeft={gutter.padding.hpx}>
+        <Button
+          sx={styles.button}
+          Icon={SyncIcon}
+          iconSx={styles.icon}
+          onClick={getRepos}
+          name='syncRepos'
+          // @ts-ignore
+          color='light'
+          variant='outlined'
+          className='sync-repos-button'
+        />
+      </Box>
+    </Tooltip>
   )
 }

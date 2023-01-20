@@ -8,3 +8,13 @@ export type TGitData = {
   newBranch?:boolean
   createBranch?:boolean
 }
+
+export type TBuiltRepo = {
+  id: string
+  key: string
+  label: string
+  value: number,
+  branches: string[]
+}
+
+export type TBuiltRepos = TBuiltRepo[]

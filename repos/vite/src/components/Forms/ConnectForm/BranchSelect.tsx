@@ -1,16 +1,16 @@
-import type { TOnAutoChange, TBuiltRepo, TBuiltRepos } from '@types'
+import type { TOnAutoChange } from '@types'
 
 import { AutoInput } from '@components/Form/Inputs/AutoInput'
 
-const repoProps = {
-  name: `repo`,
+const branchProps = {
+  name: `branch`,
   required: true,
-  label: `Repository`,
+  label: `Branch`,
   textFieldProps: {
-    placeholder: `Select repository...`,
+    placeholder: `Select branch...`,
   },
   rules: {
-    required: `Please select a repository`
+    required: `Please select a branch`
   },
   sx: {
     height: `40px`,
@@ -29,27 +29,27 @@ const repoProps = {
     }
   }
 }
-export type TRepoProps = Partial<typeof repoProps> & {
-  repo?:TBuiltRepo
-  repos?:TBuiltRepos
+export type TBranchProps = Partial<typeof branchProps> & {
+  branch?:string
+  branches?:string[]
   onChange?:TOnAutoChange
 }
 
-export const RepoSelect = (props:TRepoProps) => {
+export const BranchSelect = (props:TBranchProps) => {
   const {
-    repo,
-    repos,
+    branch,
+    branches,
     onChange,
     ...rest
   } = props
 
   return (
     <AutoInput
-      {...repoProps}
+      {...branchProps}
       {...rest}
       onChange={onChange}
-      options={repos || []}
-      className='repo-select-dropdown'
+      options={branches || []}
+      className='branch-select-dropdown'
     />
   )
   

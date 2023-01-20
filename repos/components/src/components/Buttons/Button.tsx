@@ -3,7 +3,6 @@ import type { SvgIconProps } from '@mui/material'
 
 import { Span } from '@GBC/components/Text'
 import MuiButton from '@mui/material/Button'
-import { useJoinSx } from '@GBC/hooks/theme/useJoinSx'
 
 export type TButton = ComponentProps<typeof MuiButton> & {
   text?:ReactNode

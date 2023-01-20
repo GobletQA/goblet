@@ -49,11 +49,11 @@ const docAuthAct = async (args) => {
   })
 }
 
-export const docker:TTask = {
-  name: `docker`,
+export const auth:TTask = {
+  name: `auth`,
   action: docAuthAct,
-  alias: [ `doc`, `docauth`, `docAuth`, `da`],
-  example: `yarn task kube secrets auth <options>`,
+  alias: [ `auth`, `doc`, `docauth`, `docAuth`, `da`],
+  example: `yarn kube secrets auth <options>`,
   description: `Calls the kubectl create secrets command with the docker-authentication`,
   options: {
     token: {

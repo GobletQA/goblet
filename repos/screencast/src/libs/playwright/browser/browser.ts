@@ -181,7 +181,12 @@ export const getPage = async (
     if(hasPages) page = pages[0]
     else {
       page = await context.newPage()
-      await page.goto(GobletQAUrl)
+      try {
+        await page.goto(GobletQAUrl)
+      }
+      catch(err){
+        console.error(err)
+      }
     }
 
     getPage.creatingPage = false

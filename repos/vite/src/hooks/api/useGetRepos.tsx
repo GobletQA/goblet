@@ -1,31 +1,29 @@
-import type { TReposState } from '@types'
-import { useEffect, useState, useMemo } from 'react'
+import type { TOnAutoChange, TBuiltRepos, TBuiltRepo, TReposState } from '@types'
 
-import { useRepos, } from '@store'
+import { useRepos, useUser } from '@store'
+import { emptyArr } from '@keg-hub/jsutils'
+import { useInline } from '@gobletqa/components'
+import { useEffect, useState, useMemo } from 'react'
 import { getRepos } from '@actions/repo/api/getRepos'
 import { noOpObj, noPropArr } from '@keg-hub/jsutils'
 
-export type TBuiltRepo = {
-  id: string
-  key: string
-  label: string
-  value: number,
-  branches: string[]
-}
-export type TBuiltRepos = TBuiltRepo[]
 
 
-const useBuildRepos = (repos:TReposState):TBuiltRepos => {
+const useBuildRepos = (repos:TReposState, userBranch:string):TBuiltRepos => {
   return useMemo(() => {
     return !repos || !repos.length
       ? noPropArr
-      : repos.map((repo, idx) => ({
-          value: idx,
-          branches: repo.branches,
-          id: repo.url || repo.name,
-          key: repo.url || repo.name,
-          label: repo.url || repo.name,
-        }))
+      : repos.map((repo, idx) => {
+          return {
+            value: idx,
+            id: repo.url || repo.name,
+            key: repo.url || repo.name,
+            label: repo.url || repo.name,
+            branches: repo.branches.includes(userBranch)
+              ? repo.branches
+              : [userBranch, ...repo.branches],
+          }
+      })
   }, [repos])
 }
 
@@ -40,17 +38,27 @@ export const useGetRepos = ({
   branch:initBranch
 }:THGetRepos=noOpObj) => {
 
+  const user = useUser()
+  const userBranch = `goblet-${user?.username}`
+
   const [loading, setLoading] = useState(true)
   const [repo, setRepo] = useState(initRepo)
-  const [branch, setBranch] = useState(initBranch)
+  const [branch, setBranch] = useState(initBranch || userBranch)
   
   const apiRepos = useRepos()
-  const repos = useBuildRepos(apiRepos)
+  const repos = useBuildRepos(apiRepos, userBranch)
 
-  const branches = useMemo(
-    () => (repo && repo?.branches) || noPropArr,
-    [repo]
-  )
+  const onChangeRepo = useInline<TOnAutoChange>((evt, value) => {
+    if(repo && repo.id === value) return
+
+    setRepo(value as TBuiltRepo)
+    setBranch(userBranch)
+  })
+
+  const onChangeBranch = useInline<TOnAutoChange>((evt, value) => {
+    ;(!branch || branch !== value)
+      && setBranch(value as string)
+  })
 
   // On initial load of the component, load the users repos
   useEffect(() => {
@@ -65,13 +73,16 @@ export const useGetRepos = ({
     if(initBranch && !branch) setBranch(initBranch)
   }, [initRepo, repo, initBranch, branch])
 
+
   return {
     repo,
     repos,
-    setRepo,
     branch,
-    branches,
+    setRepo,
     setBranch,
+    userBranch,
+    onChangeRepo,
+    onChangeBranch
   }
 
 }
