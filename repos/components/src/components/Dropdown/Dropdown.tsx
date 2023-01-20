@@ -17,6 +17,7 @@ export type TDropdown = AccordionProps & {
   header?:ReactNode
   children?:ReactNode
   headerText?:ReactNode
+  disabled?:boolean
   initialExpand?:boolean
   bodySx?:CSSProperties
   headerSx?:CSSProperties
@@ -43,6 +44,7 @@ export const Dropdown = (props:TDropdown) => {
     body,
     bodySx,
     headerSx,
+    disabled,
     headerText,
     headerTextSx,
     expandIconSx,
@@ -61,11 +63,12 @@ export const Dropdown = (props:TDropdown) => {
   const inlineCB = useInline(onChangeCB)
 
   const onChange = useCallback((event: React.SyntheticEvent, newExpanded: boolean) => {
+    if(disabled) return
+
     const updated = !expanded
     inlineCB?.(updated)
     setExpanded(updated)
-  }, [expanded])
-
+  }, [expanded, disabled])
 
   return (
     <Container
@@ -74,8 +77,13 @@ export const Dropdown = (props:TDropdown) => {
       onChange={onChange}
       expanded={expanded}
       disableGutters={true}
-      className={cls(`gc-dropdown`, expanded && `expanded`)}
       {...rest}
+      className={cls(
+        `gc-dropdown`,
+        expanded && `expanded`,
+        disabled && `disabled`,
+        rest.className,
+      )}
       TransitionProps={{
         ...TransitionProps,
         unmountOnExit: true,

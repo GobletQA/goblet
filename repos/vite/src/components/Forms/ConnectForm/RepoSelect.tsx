@@ -7,29 +7,11 @@ const repoProps = {
   required: true,
   label: `Repository`,
   textFieldProps: {
-    placeholder: `Select repository...`,
+    placeholder: `Select from list...`,
   },
-  rules: {
-    required: `Please select a repository`
-  },
-  sx: {
-    height: `40px`,
-    paddingTop: `0px`,
-    paddingBottom: `0px`,
-    [`& .MuiTextField-root`]: {
-      height: `40px`,
-    },
-    [`& .MuiInputBase-root`]: {
-      height: `40px`,
-      paddingTop: `0px`,
-      paddingBottom: `0px`,
-      [`input::placeholder `]: {
-        fontSize: `14px`,
-      }
-    }
-  }
 }
 export type TRepoProps = Partial<typeof repoProps> & {
+  error?:string
   repo?:TBuiltRepo
   repos?:TBuiltRepos
   onChange?:TOnAutoChange

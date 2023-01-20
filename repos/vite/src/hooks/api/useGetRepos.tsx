@@ -1,13 +1,10 @@
 import type { TOnAutoChange, TBuiltRepos, TBuiltRepo, TReposState } from '@types'
 
 import { useRepos, useUser } from '@store'
-import { emptyArr } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components'
 import { useEffect, useState, useMemo } from 'react'
 import { getRepos } from '@actions/repo/api/getRepos'
 import { noOpObj, noPropArr } from '@keg-hub/jsutils'
-
-
 
 const useBuildRepos = (repos:TReposState, userBranch:string):TBuiltRepos => {
   return useMemo(() => {
@@ -28,12 +25,19 @@ const useBuildRepos = (repos:TReposState, userBranch:string):TBuiltRepos => {
 }
 
 export type THGetRepos = {
-  repo?:TBuiltRepo
   branch?:string
+  repo?:TBuiltRepo
+  onInputError?: (key:string, value:string) => void
 }
 
 
+const formatBranchName = (branch:string) => {
+  return branch.trim()
+    .replace(/[`~!@#$%^&*()|+=?;:'",.<>\{\}\[\]\\\/\s]/gi, `-`)
+}
+
 export const useGetRepos = ({
+  onInputError,
   repo:initRepo,
   branch:initBranch
 }:THGetRepos=noOpObj) => {
@@ -43,10 +47,20 @@ export const useGetRepos = ({
 
   const [loading, setLoading] = useState(true)
   const [repo, setRepo] = useState(initRepo)
+  const [newBranch, setNewBranch] = useState(``)
   const [branch, setBranch] = useState(initBranch || userBranch)
   
   const apiRepos = useRepos()
   const repos = useBuildRepos(apiRepos, userBranch)
+
+  const onChangeNewBranch = useInline<(branch:string) =>void>((value) => {
+    const formatted = formatBranchName(value)
+    if(repo?.branches?.includes(formatted))
+      return onInputError?.(`newBranch`, `Branch name already exists. Name must be unique.`)
+
+    value !== newBranch
+      && setNewBranch(formatBranchName(value))
+  })
 
   const onChangeRepo = useInline<TOnAutoChange>((evt, value) => {
     if(repo && repo.id === value) return
@@ -79,10 +93,12 @@ export const useGetRepos = ({
     repos,
     branch,
     setRepo,
+    newBranch,
     setBranch,
     userBranch,
     onChangeRepo,
-    onChangeBranch
+    onChangeBranch,
+    onChangeNewBranch
   }
 
 }

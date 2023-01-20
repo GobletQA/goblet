@@ -1,6 +1,6 @@
-import type { TFormFooter } from '@types'
-import type { TRepoProps } from './RepoSelect'
-import type { FormEvent, ComponentType, MutableRefObject } from 'react'
+import type { TBuiltRepo, TFormFooter } from '@types'
+import type { FormEvent, ComponentType, MutableRefObject, KeyboardEvent } from 'react'
+import type { TConnectParams } from '@hooks/api/useConnectRepo'
 
 import { Advanced } from './Advanced'
 import { SyncRepos } from './SyncRepos'
@@ -61,6 +61,12 @@ type THFooterProps = {
   submitDisabled?:boolean
 }
 
+export type TInputError = {
+  repo?:string
+  branch?:string
+  newBranch?:string
+}
+
 const useFooterProps = ({
   onSubmit,
   submitDisabled
@@ -90,6 +96,27 @@ const useFooterProps = ({
  
 }
 
+const useInputError = () => {
+  const [inputError, setInputError] = useState<TInputError>({})
+  
+  const onInputError = useCallback((
+    key:string,
+    value?:string
+  ) => {
+    const ref = key as keyof typeof inputError
+    const copy = { ...inputError }
+    value ? (copy[ref] = value) : (delete copy[ref])
+
+    ;setInputError(copy)
+  }, [inputError])
+  
+  return {
+    inputError,
+    onInputError,
+    setInputError
+  }
+}
+
 export const ConnectForm = (props:TConnectForm) => {
   const {
     Footer,
@@ -101,25 +128,62 @@ export const ConnectForm = (props:TConnectForm) => {
 
   const [formError, setFormError] = useState<string>()
   const [loading, setLoading] = useState<boolean>(false)
-
-  const onSubmit = useInline((event:FormEvent<HTMLFormElement>) => {
-    event.stopPropagation()
-    event.preventDefault()
-    console.log(`------- On Form Submit -------`)
-  })
-
-  const footerProps = useFooterProps({
-    onSubmit,
-    submitDisabled: Boolean(formError || loading),
-  })
+  const [branchFrom, setBranchFrom] = useState<boolean>(false)
+  
+  const {
+    inputError,
+    onInputError,
+    setInputError
+  } = useInputError()
 
   const {
     repo,
     repos,
     branch,
+    newBranch,
     onChangeRepo,
-    onChangeBranch
-  } = useGetRepos()
+    onChangeBranch,
+    onChangeNewBranch,
+  } = useGetRepos({ onInputError })
+
+  const onConnectRepo = useConnectRepo({
+    loading,
+    setLoading,
+    setFormError,
+  })
+
+  const onSubmit = useInline(async (event:FormEvent<HTMLFormElement>) => {
+    event.stopPropagation()
+    event.preventDefault()
+
+    if(!repo || !branch || (branchFrom && !newBranch))
+      return setInputError({
+        repo: !repo ? `A repository is required` : undefined,
+        branch: !branch ? `A branch is required` : undefined,
+        newBranch: branchFrom && !newBranch ? `A branch name is require` : undefined
+      })
+
+    const params = {
+      repo,
+      branch,
+      newBranch,
+      branchFrom
+    }
+    await onConnectRepo(params)
+
+    onConnect?.(params)
+  })
+
+  const footerProps = useFooterProps({
+    onSubmit,
+    submitDisabled: Boolean(
+      formError
+        || loading
+        || !repo
+        || !branch
+        || (branchFrom && !newBranch)
+    ),
+  })
 
   return (
     <>
@@ -153,6 +217,7 @@ export const ConnectForm = (props:TConnectForm) => {
                   repo={repo}
                   repos={repos}
                   onChange={onChangeRepo}
+                  error={inputError.repo}
                 />
               </Grid>
               <Grid className='gb-grid-sync-repos' xs={3} md={1} >
@@ -166,14 +231,17 @@ export const ConnectForm = (props:TConnectForm) => {
                 <Advanced
                   repo={repo}
                   branch={branch}
+                  disabled={!repo}
+                  newBranch={newBranch}
+                  inputError={inputError}
+                  branchFrom={branchFrom}
                   onChange={onChangeBranch}
+                  onInputError={onInputError}
+                  onChangeBranchFrom={setBranchFrom}
+                  onChangeNewBranch={onChangeNewBranch}
                 />
               </Grid>
             </Grid>
-
-            
-
-            
           </Box>
         </Form>
       </Box>

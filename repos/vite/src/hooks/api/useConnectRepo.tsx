@@ -1,48 +1,53 @@
+import { TBuiltRepo } from '@types'
 
 import { useInline } from '@hooks/useInline'
-import { clearFormCache } from '../form/FormCache'
-import { connectForm } from '../forms/useConnectForm'
 import { connectRepo } from '@actions/repo/api/connect'
 import { toggleModal } from '@actions/modals/toggleModal'
-import { useConnectForm } from '@hooks/forms/useConnectForm'
 
-export type THConnectRepo = ReturnType<typeof useConnectForm> & {
-  values:Record<any, any>
-  onConnect: (...args:any[]) => void
+export type TConnectParams = {
+  branch:string,
+  repo:TBuiltRepo,
+  newBranch?:string,
+  branchFrom?:boolean
+}
+
+export type THConnectRepo = {
+  loading?:boolean
+  onConnect?: (...args:any[]) => void
+  setFormError?:(error:string) => void
+  setLoading?:(loading:boolean) => void
 }
 
 export const useConnectRepo = (props:THConnectRepo) => {
   const {
-    values,
     loading,
-    setForm,
     onConnect,
     setLoading,
     setFormError,
   } = props
 
-  return useInline(async () => {
-
+  return useInline(async ({ repo, ...params}:TConnectParams) => {
     if(loading) return
 
-    const { repo, ...params } = values
-    setLoading(true)
+    setLoading?.(true)
 
-    const resp = await connectRepo({
-      ...params,
-      repoUrl: repo.key
-    })
+    console.log(`------- repo -------`)
+    console.log(repo)
+    console.log(`------- connect repo params -------`)
+    console.log(params)
 
-    setLoading(false)
-    onConnect?.(resp)
+    // const resp = await connectRepo({
+    //   ...params,
+    //   repoUrl: repo.key
+    // })
 
-    if (!resp)
-      return setFormError(`Failed to mount repo. Please try again later.`)
+    setLoading?.(false)
+    // onConnect?.(resp)
 
-    // Reset form and close the modal, ensure the form cache is removed
-    clearFormCache(connectForm?.form?.name)
-    setForm({})
-    toggleModal(false)
+    // if (!resp)
+    //   return setFormError?.(`Failed to mount repo. Please try again later.`)
+
+    // toggleModal(false)
 
   })
 }

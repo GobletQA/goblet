@@ -7,14 +7,20 @@ import type {
 
 import { Decor } from './Decor'
 import { useCallback } from 'react'
+
 import { noOpObj, isStr, cls } from '@keg-hub/jsutils'
-import Autocomplete from '@mui/material/Autocomplete'
 import CircularProgress from '@mui/material/CircularProgress'
 import {
   Checkbox,
   TextField,
   TextFieldProps,
 } from '@mui/material'
+import {
+  Auto,
+  AutoLabel,
+  AutoLabelWrap,
+  AutoContainer,
+} from './Inputs.styled'
 
 export type TAutoInput = {
   name: string
@@ -28,13 +34,14 @@ export type TAutoInput = {
   matchId?: boolean
   required?: boolean
   multiple?: boolean
+  labelInline?:boolean
   currentValue?:AutoOptVal
   onChange?: TOnAutoChange
   showCheckbox?: boolean
   rules?: Record<string, string>
   label?: TextFieldProps['label']
   onBlur?: (event:SyntheticEvent) => void
-  autocompleteProps?: ComponentProps<typeof Autocomplete>
+  autocompleteProps?: ComponentProps<typeof Auto>
   textFieldProps?: Omit<TextFieldProps, 'name' | 'required' | 'label'>
 }
 
@@ -81,6 +88,7 @@ export const AutoInput = (props:TAutoInput) => {
     required,
     disabled,
     className,
+    labelInline,
     showCheckbox,
     currentValue,
     textFieldProps,
@@ -94,99 +102,107 @@ export const AutoInput = (props:TAutoInput) => {
   const decorKey = labelPos === `end` ? `endAdornment` : `startAdornment`
 
   return (
-    <Autocomplete
-      {...autocompleteProps}
-      sx={sx}
-      loading={loading}
-      options={options}
-      disabled={disabled}
-      multiple={multiple}
-      value={currentValue}
-      onChange={onChangeVal as any}
-      className={cls(`gb-auto-complete`, className)}
-      disableCloseOnSelect={
-        typeof autocompleteProps?.disableCloseOnSelect === 'boolean'
-          ? autocompleteProps.disableCloseOnSelect
-          : !!multiple
-      }
-      isOptionEqualToValue={
-        autocompleteProps?.isOptionEqualToValue
-          ? autocompleteProps.isOptionEqualToValue
-          : ((option:AutoOptVal, value:AutoOptVal) => {
-              const opVal = isStr(option) ? option : option.id
-              const val = value && (isStr(value) ? value : value.id)
+    <AutoContainer>
+      {!labelInline && label && (
+        <AutoLabelWrap>
+          <AutoLabel>
+            {label}
+          </AutoLabel>
+        </AutoLabelWrap>
+      ) || null}
+      <Auto
+        {...autocompleteProps}
+        sx={sx}
+        loading={loading}
+        options={options}
+        disabled={disabled}
+        multiple={multiple}
+        value={currentValue}
+        onChange={onChangeVal as any}
+        className={cls(`gb-auto-complete`, className)}
+        disableCloseOnSelect={
+          typeof autocompleteProps?.disableCloseOnSelect === 'boolean'
+            ? autocompleteProps.disableCloseOnSelect
+            : !!multiple
+        }
+        isOptionEqualToValue={
+          autocompleteProps?.isOptionEqualToValue
+            ? autocompleteProps.isOptionEqualToValue
+            : ((option:AutoOptVal, value:AutoOptVal) => {
+                const opVal = isStr(option) ? option : option.id
+                const val = value && (isStr(value) ? value : value.id)
 
-              return value ? opVal === val : false
-            }) as any
-      }
-      getOptionLabel={
-        autocompleteProps?.getOptionLabel
-          ? autocompleteProps.getOptionLabel
-          : ((option:AutoOptVal) => isStr(option) ? option : option?.label) as any
-      }
-      
-      renderOption={(
-        autocompleteProps?.renderOption ?? (
-          showCheckbox
-            ? (props:ComponentProps<`li`>, option:AutoOptVal, { selected }:Record<`selected`, boolean>) => (
-                <li {...props}>
-                  <>
-                    <Checkbox
-                      sx={{marginRight: 1}}
-                      checked={selected}
-                    />
-                    {autocompleteProps?.getOptionLabel?.(option) || (option as AutoOpt)?.label || option}
-                  </>
-                </li>
-              )
-            : undefined
-      )) as any}
-      onBlur={(event) => {
-        onBlur?.(event)
-        autocompleteProps?.onBlur?.(event)
-      }}
-      renderInput={(params) => {
-        return (
-          <TextField
-            name={name}
-            label={label}
-            required={rules?.required ? true : required}
-            {...textFieldProps}
-            {...params}
-            error={!!error}
-            helperText={error ? error : textFieldProps?.helperText}
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <>
-                  {loading ? <CircularProgress color="inherit" size={20}/> : null}
-                  {params.InputProps.endAdornment}
-                </>
-              ),
-              ...(DecorComponent && {
-                [decorKey]: (
-                  <Decor
-                    {...decor}
-                    Component={DecorComponent}
-                  />
+                return value ? opVal === val : false
+              }) as any
+        }
+        getOptionLabel={
+          autocompleteProps?.getOptionLabel
+            ? autocompleteProps.getOptionLabel
+            : ((option:AutoOptVal) => isStr(option) ? option : option?.label) as any
+        }
+        
+        renderOption={(
+          autocompleteProps?.renderOption ?? (
+            showCheckbox
+              ? (props:ComponentProps<`li`>, option:AutoOptVal, { selected }:Record<`selected`, boolean>) => (
+                  <li {...props}>
+                    <>
+                      <Checkbox
+                        sx={{marginRight: 1}}
+                        checked={selected}
+                      />
+                      {autocompleteProps?.getOptionLabel?.(option) || (option as AutoOpt)?.label || option}
+                    </>
+                  </li>
                 )
-              }),
-              ...textFieldProps?.InputProps,
-            }}
-            inputProps={{
-              ...params.inputProps,
-              ...textFieldProps?.inputProps,
-            }}
-            InputLabelProps={{
-              shrink: true,
-              ...textFieldProps?.InputLabelProps,
-              ...params.InputLabelProps,
-            }}
-          />
-        )
-      }}
-      {...rest}
-    />
-
+              : undefined
+        )) as any}
+        onBlur={(event) => {
+          onBlur?.(event)
+          autocompleteProps?.onBlur?.(event)
+        }}
+        renderInput={(params) => {
+          return (
+            <TextField
+              name={name}
+              required={rules?.required ? true : required}
+              label={labelInline && label ? label : undefined}
+              {...textFieldProps}
+              {...params}
+              error={!!error}
+              helperText={error ? error : textFieldProps?.helperText || ` `}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {loading ? <CircularProgress color="inherit" size={20}/> : null}
+                    {params.InputProps.endAdornment}
+                  </>
+                ),
+                ...(DecorComponent && {
+                  [decorKey]: (
+                    <Decor
+                      {...decor}
+                      Component={DecorComponent}
+                    />
+                  )
+                }),
+                ...textFieldProps?.InputProps,
+              }}
+              inputProps={{
+                ...params.inputProps,
+                ...textFieldProps?.inputProps,
+              }}
+              InputLabelProps={{
+                shrink: true,
+                ...textFieldProps?.InputLabelProps,
+                ...params.InputLabelProps,
+              }}
+            />
+          )
+        }}
+        {...rest}
+      />
+    </AutoContainer>
   )
 }

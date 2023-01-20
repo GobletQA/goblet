@@ -29,7 +29,11 @@ export const SyncRepos = (props:TSyncRepos) => {
       describeChild
       title='Sync repositories from your Git Provider'
     >
-      <Box className='sync-repos-container' paddingLeft={gutter.padding.hpx}>
+      <Box
+        paddingTop='15px'
+        className='sync-repos-container'
+        paddingLeft={gutter.padding.hpx}
+      >
         <Button
           sx={styles.button}
           Icon={SyncIcon}

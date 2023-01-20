@@ -1,6 +1,7 @@
-import { ComponentProps } from 'react'
-import { styled } from '@mui/material/styles'
+import type { ComponentProps } from 'react'
 
+import { colors } from '@GBC/theme'
+import { styled } from '@mui/material/styles'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -9,7 +10,17 @@ type THeaderProps = ComponentProps<typeof AccordionSummary> & {
   noIconTransform?: boolean
 }
 
-export const Container = styled(Accordion)``
+export const Container = styled(Accordion)`
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    
+    & h5 {
+      color: ${colors.gray10}
+    }
+    
+  }
+`
 
 
 const noTransformStyle = `

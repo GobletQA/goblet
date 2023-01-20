@@ -1,6 +1,7 @@
+import type { TInputError } from './ConnectForm'
 import type { TOnAutoChange, TBuiltRepo } from '@types'
 
-import { useState } from 'react'
+import { BranchFrom } from './BranchFrom'
 import { emptyArr } from '@keg-hub/jsutils'
 import { BranchSelect } from './BranchSelect'
 import { colors } from '@gobletqa/components'
@@ -8,10 +9,18 @@ import { BranchToggle } from './BranchToggle'
 import Grid from '@mui/material/Unstable_Grid2'
 import { Container, Dropdown } from './Connect.styled'
 
+
 export type TAdvanced = {
   branch?: string
+  newBranch?:string
   repo?: TBuiltRepo
+  disabled?:boolean
+  branchFrom?:boolean
+  inputError:TInputError
   onChange: TOnAutoChange
+  onChangeNewBranch?:(branch:string) => void
+  onChangeBranchFrom?:(change:boolean) => void
+  onInputError?:(key:string, value?:string) => void
 }
 
 const styles = {
@@ -36,20 +45,27 @@ export const Advanced = (props:TAdvanced) => {
   const {
     repo,
     branch,
-    onChange
+    disabled,
+    onChange,
+    newBranch,
+    inputError,
+    branchFrom,
+    onInputError,
+    onChangeNewBranch,
+    onChangeBranchFrom,
   } = props
   
-  const [branchFrom, setBranchFrom] = useState<boolean>(false)
 
   return (
-    <Container className='gr-user-story-container' >
+    <Container className='gb-advanced-connect-container' >
       <Dropdown
+        disabled={disabled}
         initialExpand={false}
         headerText={`Advanced`}
-        id='connect-advanced-form'
-        className='gr-advanced-connect-dropdown'
         headerSx={styles.header}
         expandIconSx={styles.expand}
+        id='gb-connect-advanced-form'
+        className='gb-advanced-connect-dropdown'
       >
         <Grid
           rowSpacing={2}
@@ -63,16 +79,33 @@ export const Advanced = (props:TAdvanced) => {
           <Grid className='gb-grid-repo-select' xs={12} >
             <BranchToggle
               branchFrom={branchFrom}
-              setBranchFrom={setBranchFrom}
+              setBranchFrom={onChangeBranchFrom}
             />
           </Grid>
-          <Grid className='gb-grid-repo-select' xs={12} >
-            <BranchSelect
-              branch={branch}
-              onChange={onChange}
-              branches={repo?.branches || emptyArr}
-            />
-          </Grid>
+          {branchFrom ? (
+            <Grid className='gb-grid-branch-from' xs={12} >
+              <BranchFrom
+                branch={branch}
+                disabled={disabled}
+                onChange={onChange}
+                newBranch={newBranch}
+                inputError={inputError}
+                onInputError={onInputError}
+                onChangeNewBranch={onChangeNewBranch}
+                branches={repo?.branches || emptyArr}
+              />
+            </Grid>
+          ) : (
+            <Grid className='gb-grid-repo-select' xs={12} >
+              <BranchSelect
+                branch={branch}
+                disabled={disabled}
+                onChange={onChange}
+                error={inputError.branch}
+                branches={repo?.branches || emptyArr}
+              />
+            </Grid>
+          )}
         </Grid>
       </Dropdown>
     </Container>

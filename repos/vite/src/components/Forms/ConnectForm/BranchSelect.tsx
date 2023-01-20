@@ -11,26 +11,12 @@ const branchProps = {
   },
   rules: {
     required: `Please select a branch`
-  },
-  sx: {
-    height: `40px`,
-    paddingTop: `0px`,
-    paddingBottom: `0px`,
-    [`& .MuiTextField-root`]: {
-      height: `40px`,
-    },
-    [`& .MuiInputBase-root`]: {
-      height: `40px`,
-      paddingTop: `0px`,
-      paddingBottom: `0px`,
-      [`input::placeholder `]: {
-        fontSize: `14px`,
-      }
-    }
   }
 }
 export type TBranchProps = Partial<typeof branchProps> & {
   branch?:string
+  error?:string
+  disabled?:boolean
   branches?:string[]
   onChange?:TOnAutoChange
 }
@@ -48,6 +34,7 @@ export const BranchSelect = (props:TBranchProps) => {
       {...branchProps}
       {...rest}
       onChange={onChange}
+      currentValue={branch}
       options={branches || []}
       className='branch-select-dropdown'
     />
