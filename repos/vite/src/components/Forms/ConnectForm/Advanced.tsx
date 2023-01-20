@@ -1,8 +1,10 @@
 import type { TOnAutoChange, TBuiltRepo } from '@types'
 
+import { useState } from 'react'
 import { emptyArr } from '@keg-hub/jsutils'
 import { BranchSelect } from './BranchSelect'
 import { colors } from '@gobletqa/components'
+import { BranchToggle } from './BranchToggle'
 import Grid from '@mui/material/Unstable_Grid2'
 import { Container, Dropdown } from './Connect.styled'
 
@@ -36,6 +38,8 @@ export const Advanced = (props:TAdvanced) => {
     branch,
     onChange
   } = props
+  
+  const [branchFrom, setBranchFrom] = useState<boolean>(false)
 
   return (
     <Container className='gr-user-story-container' >
@@ -55,6 +59,13 @@ export const Advanced = (props:TAdvanced) => {
           disableEqualOverflow={true}
           className='gb-grid-select-branch'
         >
+        
+          <Grid className='gb-grid-repo-select' xs={12} >
+            <BranchToggle
+              branchFrom={branchFrom}
+              setBranchFrom={setBranchFrom}
+            />
+          </Grid>
           <Grid className='gb-grid-repo-select' xs={12} >
             <BranchSelect
               branch={branch}

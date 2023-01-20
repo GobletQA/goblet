@@ -19,3 +19,10 @@ export const Dropdown = styled(DropdownComp)`
   }
   
 `
+
+export const BranchToggleContainer = styled(Box)`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+`
