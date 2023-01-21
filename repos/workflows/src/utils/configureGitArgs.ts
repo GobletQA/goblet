@@ -1,7 +1,7 @@
 import path from 'path'
 import { throwErr } from './throwErr'
 import { getRepoPath } from './getRepoPath'
-import { isObj, exists, isStr } from '@keg-hub/jsutils'
+import { isObj, isStr } from '@keg-hub/jsutils'
 
 import { TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
 
@@ -22,20 +22,19 @@ export const configureGitArgs = async (args:TWFArgs) => {
   !isObj(repo) && throwErr(`Missing repo object model`)
   !isObj(user) && throwErr(`Missing user object model`)
 
-  const repoPath = getRepoPath(args)
-
-  const branchCreate = repo?.createBranch
-  const createBranch = exists(branchCreate) ? branchCreate : true
+  const local = getRepoPath(args)
+  const { branch, url:remote, newBranch, branchFrom } = repo
+  const { email, gitUser, token:userToken } = user
 
   return {
-    createBranch,
-    local: repoPath,
-    remote: repo.url,
-    email: user.email,
-    branch: repo.branch,
-    username: user.gitUser,
-    name: path.basename(repoPath),
-    newBranch: isStr(repo.newBranch) && repo.newBranch,
-    token: token || repo.token || user.token || process.env.GOBLET_GIT_TOKEN,
+    local,
+    email,
+    branch,
+    remote,
+    username: gitUser,
+    name: path.basename(local),
+    branchFrom: Boolean(branchFrom),
+    newBranch: isStr(newBranch) ? newBranch : ``,
+    token: token || userToken || process.env.GOBLET_GIT_TOKEN,
   } as TGitOpts
 }

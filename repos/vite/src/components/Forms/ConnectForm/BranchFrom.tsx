@@ -1,6 +1,5 @@
-import type { TOnAutoChange } from '@types'
-import type { TInputError } from './ConnectForm'
 import type { FocusEvent, KeyboardEvent } from 'react'
+import type { TConnectRepoError, TOnAutoChange } from '@types'
 
 import { useCallback, useEffect, useRef } from 'react'
 import { SubGridParent, SubGrid } from './Connect.styled'
@@ -12,7 +11,7 @@ export type TBranchFrom = {
   newBranch?:string
   disabled?:boolean
   branches?:string[]
-  inputError:TInputError
+  inputError:TConnectRepoError
   onChange?:TOnAutoChange
   onChangeNewBranch?:(branch:string) => void
   onInputError?:(key:string, value?:string) => void
@@ -54,10 +53,6 @@ export const BranchFrom = (props:TBranchFrom) => {
 
   const onInputBlur = useCallback((evt:FocusEvent<HTMLInputElement>) => {
     const value = evt.target.value as string
-    
-    console.log(`------- value -------`)
-    console.log(value)
-    
     newBranch !== value && onChangeNewBranch?.(value)
   }, [newBranch])
 

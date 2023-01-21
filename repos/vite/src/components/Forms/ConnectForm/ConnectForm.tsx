@@ -4,10 +4,11 @@ import type { FormEvent, ComponentType, MutableRefObject } from 'react'
 import { Advanced } from './Advanced'
 import { SyncRepos } from './SyncRepos'
 import { RepoSelect } from './RepoSelect'
+import { useInputError } from '@hooks/form/useInputError'
 
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Unstable_Grid2'
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo } from 'react'
 import { signOutReload } from '@actions/admin/user/signOutReload'
 import { ModalMessage } from '@components/ModalManager/ModalMessage'
 import {
@@ -41,7 +42,7 @@ const ConnectFormActions = {
     StartIcon: CloudDownIcon,
     color: `primary`  as const,
     variant: `contained`  as const,
-    label: `Connect Repo`,
+    label: `Connect`,
   }
 }
 
@@ -60,11 +61,6 @@ type THFooterProps = {
   submitDisabled?:boolean
 }
 
-export type TInputError = {
-  repo?:string
-  branch?:string
-  newBranch?:string
-}
 
 const useFooterProps = ({
   onSubmit,
@@ -93,27 +89,6 @@ const useFooterProps = ({
     submitDisabled
   ])
  
-}
-
-const useInputError = () => {
-  const [inputError, setInputError] = useState<TInputError>({})
-  
-  const onInputError = useCallback((
-    key:string,
-    value?:string
-  ) => {
-    const ref = key as keyof typeof inputError
-    const copy = { ...inputError }
-    value ? (copy[ref] = value) : (delete copy[ref])
-
-    ;setInputError(copy)
-  }, [inputError])
-  
-  return {
-    inputError,
-    onInputError,
-    setInputError
-  }
 }
 
 export const ConnectForm = (props:TConnectForm) => {

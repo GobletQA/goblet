@@ -47,3 +47,13 @@ export type TApiDefinitionsResp = {
 }
 
 export type TFileResp = Record<"file", TFileModel>
+
+
+export type TApiRepoReq = Record<string, any>
+
+export type TApiConnectReq = {
+  branch:string
+  repoUrl:string
+  newBranch:string
+  branchFrom:boolean
+}

@@ -7,9 +7,11 @@ import { toggleModal } from '@actions/modals/toggleModal'
 export type TConnectParams = {
   branch:string,
   repo:TBuiltRepo,
-  newBranch?:string,
-  branchFrom?:boolean
+  newBranch:string,
+  branchFrom:boolean
 }
+
+type TConnectCB = (props:TConnectParams) => Promise<void>
 
 export type THConnectRepo = {
   loading?:boolean
@@ -26,22 +28,17 @@ export const useConnectRepo = (props:THConnectRepo) => {
     setFormError,
   } = props
 
-  return useInline(async ({ repo, ...params}:TConnectParams) => {
+  return useInline<TConnectCB>(async ({repo, ...params}) => {
     if(loading) return
 
-    setLoading?.(true)
+    // setLoading?.(true)
 
-    console.log(`------- repo -------`)
-    console.log(repo)
-    console.log(`------- connect repo params -------`)
-    console.log(params)
+    const resp = await connectRepo({
+      ...params,
+      repoUrl: repo.key
+    })
 
-    // const resp = await connectRepo({
-    //   ...params,
-    //   repoUrl: repo.key
-    // })
-
-    setLoading?.(false)
+    // setLoading?.(false)
     // onConnect?.(resp)
 
     // if (!resp)

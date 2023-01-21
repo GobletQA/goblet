@@ -89,7 +89,7 @@ export class Repo {
       repoUrl,
       username,
       newBranch,
-      createBranch,
+      branchFrom,
     } = args
 
     const url = new URL(repoUrl)
@@ -103,7 +103,7 @@ export class Repo {
         branch,
         provider,
         newBranch,
-        createBranch,
+        branchFrom,
         url: repoUrl,
       },
       user: { gitUser: username },

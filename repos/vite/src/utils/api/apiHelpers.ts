@@ -1,4 +1,4 @@
-import type { TRequest, THeaders } from '@services/axios.types'
+import type { TBuiltRequest, TRequest, THeaders } from '@services/axios.types'
 
 
 import { getBaseApiUrl } from './getBaseApiUrl'
@@ -12,7 +12,7 @@ import { getRepoData, getContainerData } from '@utils/store/getStoreData'
  * Helper to ensure the baseAPI url is added
  *
  */
-export const buildUrl = (builtRequest:TRequest) => {
+export const buildUrl = <T=Record<string, any>>(builtRequest:TBuiltRequest<T>) => {
   return builtRequest.url.indexOf('/') !== 0
     ? builtRequest.url
     : `${getBaseApiUrl()}${builtRequest.url}`
@@ -21,11 +21,6 @@ export const buildUrl = (builtRequest:TRequest) => {
 /**
  * Helper to add the /repo/repoName to the request url
  * @function
- * @private
- * @param {string} repoName - Name of the repo
- * @param {string} url - Request url to add the path to
- *
- * @returns {string} - Url with the /repo/repoName prepended to it
  */
 export const formatRepoUrl = (repoName:string, url:string) => {
   return url.indexOf(`/repo`) === 0
@@ -38,10 +33,6 @@ export const formatRepoUrl = (repoName:string, url:string) => {
 /**
  * Check the response from the API for an expired session
  * If expired, sign out and open the sign in modal by calling signOutAuthUser
- * @param {boolean} success - True if the request was successful
- * @param {number} statusCode - Response code returned from the Backend API
- * @param {string} message - Response message returned from the Backend API
- * @param {boolean} showAlert - Should show failed alert message
  */
 export const isValidSession = async (
   success:boolean,
@@ -60,12 +51,9 @@ export const isValidSession = async (
 /**
  * Pull the JWT from local storage and add it as a Bearer token
  * Is only added if it exists
- * @param {Object} headers - Existing headers to add to the request
- *
- * @return {Object} - Built headers object, with the JWT added if it exists
  */
-export const buildHeaders = async (
-  builtRequest:TRequest,
+export const buildHeaders = async <T=Record<string, any>>(
+  builtRequest:TBuiltRequest<T>,
   type?: `api` | `screencast`
 ):Promise<THeaders> => {
 
@@ -87,13 +75,13 @@ export const buildHeaders = async (
 }
 
 
-export const buildRepoReq = (request:TRequest|string) => {
-  const req = isObj<TRequest>(request) ? request : { url: request }
+export const buildRepoReq = <T=Record<string, any>>(request:TRequest<T>|string) => {
+  const req = isObj<TRequest<T>>(request) ? request : { url: request }
 
   const repoData = getRepoData()
   req.url = formatRepoUrl(repoData.name, req.url)
   
-  return deepMerge<TRequest>(
+  return deepMerge<TBuiltRequest<T>>(
     {
       params: {
         local: repoData?.git?.local,

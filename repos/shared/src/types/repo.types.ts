@@ -22,11 +22,11 @@ export type TWorld = {
 export type TGitData = {
   name: string
   local: string
-  branch: string
-  remote: string
   username:string
+  remote: string
+  branch: string
   newBranch?:string
-  createBranch?:boolean
+  branchFrom?:boolean
 }
 
 export type TRepoOpts = {

@@ -1,20 +1,16 @@
-import type { TApiRepoResp } from '@types'
+import type { TApiConnectReq, TApiRepoResp } from '@types'
 import { setRepo } from '../local/setRepo'
 import { addToast } from '@actions/toasts'
 import { repoApi } from '@services/repoApi'
 import { deepMerge } from '@keg-hub/jsutils'
 
 
-export type TConnectRepo = {
-  [key:string]: any
-}
-
 /**
  * Calls Backend API to connect a git repo
  * If successful, makes calls to other actions to setup the UI
  *
  */
-export const connectRepo = async (params:TConnectRepo) => {
+export const connectRepo = async (params:TApiConnectReq) => {
   addToast({
     type: 'info',
     message: `Connecting to repo ...`,
@@ -24,8 +20,8 @@ export const connectRepo = async (params:TConnectRepo) => {
     data,
     error,
     success
-  } = await repoApi.connect<TApiRepoResp>({
-    params: deepMerge({ createBranch: false }, params)
+  } = await repoApi.connect<TApiRepoResp, TApiConnectReq>({
+    params
   })
 
   if (!success || error)

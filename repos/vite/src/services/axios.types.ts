@@ -11,20 +11,20 @@ export type TRequestError = Error & {
   response: TAXResponse
 }
 
-export type TRequest = Omit<AxiosRequestConfig, 'method' | 'responseType' | 'headers' > & {
+export type TRequest<T=Record<string, any>> = Omit<AxiosRequestConfig<T>, 'method' | 'responseType' | 'headers' > & {
   url: string
   method?: string
   headers?: THeaders
   responseType?: ResponseType
 }
 
-export type TBuiltRequest = Omit<AxiosRequestConfig, 'method' | 'responseType' | 'headers' > & {
+export type TBuiltRequest<T=Record<string, any>> = Omit<AxiosRequestConfig, 'method' | 'responseType' | 'headers' > & {
+  data?: T
+  params?: T
   url: string
   method: string
   headers: THeaders
   responseType: ResponseType
-  data?: Record<string, any>
-  params?: Record<string, any>
 }
 
 export type TResponse<T=Record<any, any>> = {

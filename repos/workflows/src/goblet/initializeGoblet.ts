@@ -33,12 +33,12 @@ export const initializeGoblet = async (args:TWFArgs) => {
       'Failed repo mount. Improper git validation'
     )
 
-  gitArgs.createBranch
+  gitArgs.branchFrom
     ? Logger.log(`Creating new branch...`)
     : Logger.log(`Reusing existing branch...`)
 
   // Check if we should create a new branch
-  const branch = gitArgs.createBranch && gitArgs.newBranch
+  const branch = gitArgs.branchFrom && gitArgs.newBranch
     ? await branchRepo(gitArgs)
     : gitArgs.branch
 

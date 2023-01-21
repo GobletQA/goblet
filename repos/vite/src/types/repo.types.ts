@@ -2,11 +2,11 @@
 export type TGitData = {
   name: string
   local: string
-  branch: string
   remote: string
   username:string
-  newBranch?:boolean
-  createBranch?:boolean
+  branch: string
+  newBranch:string
+  branchFrom?:boolean
 }
 
 export type TBuiltRepo = {
@@ -18,3 +18,11 @@ export type TBuiltRepo = {
 }
 
 export type TBuiltRepos = TBuiltRepo[]
+
+
+export type TConnectRepoError = {
+  repo?:string
+  branch?:string
+  newBranch?:string
+  branchFrom?:boolean
+}
