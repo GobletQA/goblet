@@ -1,5 +1,5 @@
 import type { CSSProperties, SyntheticEvent, ComponentProps } from 'react'
-import type { AutoOptVal, AutoOpt, TOnAutoChange, TInputDecor } from '@types'
+import type { AutoOptVal, AutoOpt, TOnAutoChange, TInputDecor } from '@GBC/types'
 import type {
   AutocompleteChangeReason,
   AutocompleteChangeDetails

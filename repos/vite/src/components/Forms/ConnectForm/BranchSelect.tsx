@@ -1,6 +1,6 @@
 import type { TOnAutoChange } from '@types'
 
-import { AutoInput } from '@components/Form/Inputs/AutoInput'
+import { AutoInput } from '@gobletqa/components/components/Form/Inputs'
 
 const branchProps = {
   name: `branch`,

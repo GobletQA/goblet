@@ -1,8 +1,6 @@
-
-
 import Box from '@mui/material/Box'
-import { Tooltip, gutter, Button, SyncIcon } from '@gobletqa/components'
 import { getRepos } from '@actions/repo/api/getRepos'
+import { Tooltip, gutter, Button, SyncIcon } from '@gobletqa/components'
 
 const styles = {
   button: {

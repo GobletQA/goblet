@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import FormLabel from '@mui/material/FormLabel'
 import Grid from '@mui/material/Unstable_Grid2'
 import { Dropdown as DropdownComp } from '@gobletqa/components'
 

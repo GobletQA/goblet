@@ -1,7 +1,7 @@
-import type { TOnToggle } from '@components/Form/Inputs/Toggle'
+import type { TOnToggle } from '@gobletqa/components'
 
 import { useInline } from '@gobletqa/components'
-import { Toggle } from '@components/Form/Inputs/Toggle'
+import { Toggle } from '@gobletqa/components/components/Form/Inputs'
 
 export type TBranchToggle = {
   branchFrom?:boolean

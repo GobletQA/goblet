@@ -1,11 +1,10 @@
 import type { TOnAutoChange } from '@types'
 import type { TInputError } from './ConnectForm'
-import type { FocusEvent, KeyboardEvent, ChangeEvent } from 'react'
+import type { FocusEvent, KeyboardEvent } from 'react'
 
 import { useCallback, useEffect, useRef } from 'react'
-import { Input } from '@components/Form/Inputs/Input'
 import { SubGridParent, SubGrid } from './Connect.styled'
-import { AutoInput } from '@components/Form/Inputs/AutoInput'
+import { AutoInput, Input } from '@gobletqa/components/components/Form/Inputs'
 
 
 export type TBranchFrom = {

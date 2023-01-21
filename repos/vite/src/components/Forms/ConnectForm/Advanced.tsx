@@ -1,5 +1,6 @@
+import type { TBuiltRepo } from '@types'
 import type { TInputError } from './ConnectForm'
-import type { TOnAutoChange, TBuiltRepo } from '@types'
+import type { TOnAutoChange } from '@gobletqa/components'
 
 import { BranchFrom } from './BranchFrom'
 import { emptyArr } from '@keg-hub/jsutils'

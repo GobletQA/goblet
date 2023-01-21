@@ -1,18 +1,17 @@
-import type { TBuiltRepo, TFormFooter } from '@types'
-import type { FormEvent, ComponentType, MutableRefObject, KeyboardEvent } from 'react'
-import type { TConnectParams } from '@hooks/api/useConnectRepo'
+import type { TFormFooter } from '@gobletqa/components'
+import type { FormEvent, ComponentType, MutableRefObject } from 'react'
 
 import { Advanced } from './Advanced'
 import { SyncRepos } from './SyncRepos'
 import { RepoSelect } from './RepoSelect'
 
 import Box from '@mui/material/Box'
-import { Form } from '@components/Form'
 import Grid from '@mui/material/Unstable_Grid2'
 import { useState, useMemo, useCallback } from 'react'
 import { signOutReload } from '@actions/admin/user/signOutReload'
 import { ModalMessage } from '@components/ModalManager/ModalMessage'
 import {
+  Form,
   gutter,
   useInline,
   LogoutIcon,

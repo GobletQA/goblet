@@ -1,15 +1,14 @@
-import type { CSSProps, CSSObj } from '@types'
-import type { ReactNode, CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
 
 import { useMemo } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
 import { useTheme } from '@gobletqa/components'
-import { useColorMap } from '@hooks/theme/useColorMap'
+import { useColorMap } from '@GBC/hooks/theme/useColorMap'
 
 export type TExtLabelProps = {
   label?:string
+  labelSx?: CSSProperties
   labelProps?: Record<any, any>
-  labelSx?: CSSObj | CSSProperties
   labelPos?:`top`|`bottom`|`start`|`end`
   labelPlacement?:`top`|`bottom`|`start`|`end`
 }
@@ -19,8 +18,8 @@ export type THLabelProps = TExtLabelProps & {
   onColor?:string
   offColor?:string
   disabled?:boolean
+  buttonSx?: CSSProperties
   buttonProps?: Record<any, any>
-  buttonSx?: CSSObj | CSSProperties
 }
 
 export const useLabelProps = <T=Record<any, any>>(props:THLabelProps) => {
@@ -57,7 +56,7 @@ export const useLabelProps = <T=Record<any, any>>(props:THLabelProps) => {
       ...rest,
       ...buttonProps,
       label: label || labelProps?.label,
-      sx: [labelProps?.sx, buttonProps?.sx, labelSx, buttonSx, { color }] as CSSProps,
+      sx: [labelProps?.sx, buttonProps?.sx, labelSx, buttonSx, { color }] as CSSProperties[],
       labelPlacement: labelPlacement || labelPos || labelProps?.labelPlacement || labelProps.labelPos
     } as T
   }, [

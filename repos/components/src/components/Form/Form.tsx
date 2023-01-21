@@ -1,19 +1,47 @@
-import type { ReactNode } from 'react'
-import { FromContainer } from './Form.styled'
+import type { TFormFooter } from '@GBC/types'
+import type { ReactNode, ComponentType, ComponentProps } from 'react'
 
-export type TForm = {
-  children:ReactNode
+import { forwardRef } from 'react'
+import {
+  FormMain,
+  FormContainer,
+  FormFooterContainer,
+  FormHeaderContainer,
+} from './Form.styled'
+
+export type TForm = ComponentProps<typeof FormContainer> & {
+  Footer?:ComponentType<any>
+  Header?:ComponentType<any>
+  children?: ReactNode
+  headerProps?:Record<any, any>
+  footerProps?:TFormFooter
 }
 
-export const Form = (props:TForm) => {
-  
+export const Form = forwardRef<HTMLFormElement, TForm>((props:TForm, ref) => {
   const {
-    children
+    Header,
+    footerProps,
+    headerProps,
+    Footer,
+    children,
+    ...rest
   } = props
-  
+
   return (
-    <FromContainer>
-      {children}
-    </FromContainer>
+    <FormMain>
+      {Header && (
+        <FormHeaderContainer>
+          {<Header {...headerProps } />}
+        </FormHeaderContainer>
+      )}
+      <FormContainer {...rest} ref={ref}>
+        {children}
+      </FormContainer>
+      {Footer && (
+        <FormFooterContainer>
+          {<Footer {...footerProps } />}
+        </FormFooterContainer>
+      )}
+    </FormMain>
   )
-}
+})

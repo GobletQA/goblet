@@ -1,4 +1,4 @@
-import { TInputDecor } from '@types'
+import { TInputDecor } from '@GBC/types'
 import InputAdornment from '@mui/material/InputAdornment'
 
 export const Decor = (props:TInputDecor) => {

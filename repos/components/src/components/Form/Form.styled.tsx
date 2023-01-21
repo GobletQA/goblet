@@ -1,6 +1,5 @@
 
 import Box from '@mui/material/Box'
-import { TGobletTheme } from '@GBC/types'
 import MuiButton from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import TextField from '@mui/material/TextField'
@@ -8,10 +7,13 @@ import FormLabel from '@mui/material/FormLabel'
 import InputLabel from '@mui/material/InputLabel'
 import MuiIconBtn from '@mui/material/IconButton'
 import FormControl from '@mui/material/FormControl'
-import { getColor } from '@GBC/utils/theme/getColor'
 import Autocomplete from '@mui/material/Autocomplete'
 
-export const FromContainer = styled(Box)``
+
+export const FormMain = styled(Box)``
+export const FormContainer = styled(`form`)``
+export const FormHeaderContainer = styled(Box)``
+export const FormFooterContainer = styled(Box)``
 
 // ----- Input Component ---- //
 export const InputContainer = styled(Box)`
@@ -53,7 +55,6 @@ const sharedInputStyle = `
 `
 
 export const TextInput = styled(TextField)(({ theme }) => {
-  const inputColor = getColor(`colors.black19`, `colors.white`, theme)
   const colors = theme?.palette?.colors
   return `
     width: 100%;

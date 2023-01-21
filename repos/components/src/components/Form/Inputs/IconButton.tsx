@@ -1,14 +1,13 @@
-import type { CSSObj } from '@types'
 import type { IconButtonProps } from '@mui/material'
-import type { ElementType, ComponentType } from 'react'
 import type { SvgIconProps } from '@mui/material/SvgIcon'
+import type { CSSProperties, ElementType, ComponentType } from 'react'
 
 import Box from '@mui/material/Box'
 import { noOpObj } from '@keg-hub/jsutils'
 import { useLabelProps } from './inputHooks'
 import FormLabel from '@mui/material/FormLabel'
 import MuiIconBtn from '@mui/material/IconButton'
-import { useJoinSx } from '@hooks/theme/useJoinSx'
+import { useJoinSx } from '@GBC/hooks/theme/useJoinSx'
 
 export type TIconButton = IconButtonProps & {
   error?:boolean
@@ -20,9 +19,9 @@ export type TIconButton = IconButtonProps & {
   onProps?: SvgIconProps
   offProps?: SvgIconProps
   iconProps?: SvgIconProps
-  onSx?: CSSObj
-  offSx?: CSSObj
-  labelSx?: CSSObj
+  onSx?: CSSProperties
+  offSx?: CSSProperties
+  labelSx?: CSSProperties
   Icon?: ComponentType<any>
   OnIcon?: ComponentType<any>
   OffIcon?: ComponentType<any>
@@ -57,7 +56,7 @@ const defStyles = {
     fontSize: `10px`,
     position: `absolute`
   }
-}
+} as Record<string, CSSProperties>
 
 const ButtonLabel = (props:TBtnLabelProps) => {
   const {
@@ -119,14 +118,14 @@ export const IconButton = (props:TIconButton) => {
     ...mergedProps
   } = useLabelProps<TBtnLabelProps>(props)
 
-  const topSx = useJoinSx(defStyles.labelTop, mergedProps.sx as CSSObj)
-  const bottomSx = useJoinSx(defStyles.labelBottom, mergedProps.sx as CSSObj)
+  const topSx = useJoinSx(defStyles.labelTop, mergedProps.sx as CSSProperties)
+  const bottomSx = useJoinSx(defStyles.labelBottom, mergedProps.sx as CSSProperties)
 
   return (
     <Box
       className='goblet-form-icon-button-container'
       sx={[
-        ((label ? defStyles.container : noOpObj) as CSSObj),
+        ((label ? defStyles.container : noOpObj) as CSSProperties),
       ]}
     >
       <MuiIconBtn
