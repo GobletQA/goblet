@@ -1,4 +1,5 @@
 import type { TRepoState } from './reducer.types'
+import type { TConnectRepo } from './repo.types'
 import type {
   TRepoMeta,
   TFileTree,
@@ -51,9 +52,6 @@ export type TFileResp = Record<"file", TFileModel>
 
 export type TApiRepoReq = Record<string, any>
 
-export type TApiConnectReq = {
-  branch:string
+export type TApiConnectReq = Omit<TConnectRepo, `repo`> & {
   repoUrl:string
-  newBranch:string
-  branchFrom:boolean
 }

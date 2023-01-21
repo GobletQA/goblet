@@ -1,5 +1,5 @@
 import type { FocusEvent, KeyboardEvent } from 'react'
-import type { TConnectRepoError, TOnAutoChange } from '@types'
+import type { TConnectRepo, TOnAutoChange } from '@types'
 
 import { useCallback, useEffect, useRef } from 'react'
 import { SubGridParent, SubGrid } from './Connect.styled'
@@ -11,7 +11,7 @@ export type TBranchFrom = {
   newBranch?:string
   disabled?:boolean
   branches?:string[]
-  inputError:TConnectRepoError
+  inputError:TConnectRepo
   onChange?:TOnAutoChange
   onChangeNewBranch?:(branch:string) => void
   onInputError?:(key:string, value?:string) => void

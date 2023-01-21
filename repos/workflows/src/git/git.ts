@@ -1,5 +1,6 @@
 
 import fs from 'node:fs'
+import path from 'node:path'
 import { URL } from 'node:url'
 import { loadToken } from './loadToken'
 import { RepoWatcher } from './repoWatcher'
@@ -50,9 +51,10 @@ const validateGitOpts = (gitOpts:TGitOpts):TGitOpts => {
   return {
     local: gitOpts.local,
     remote: gitOpts.remote,
+    branch: gitOpts.branch,
     username: gitOpts.username,
-    branch: gitOpts.branch || `main`,
     name: gitOpts.name || gitOpts.username,
+    repoName: path.basename(gitOpts.remote),
     token: gitOpts.token || process.env.GOBLET_GIT_TOKEN,
     email: gitOpts.email || `${gitOpts.username}@goblet.io`,
   }

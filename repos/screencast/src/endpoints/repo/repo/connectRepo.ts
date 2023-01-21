@@ -1,5 +1,6 @@
 import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
+import type { TRepoContent } from '@gobletqa/shared/types'
 
 import { Repo } from '@gobletqa/shared/repo/repo'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
@@ -7,18 +8,30 @@ import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
 
+
+export type TConnectBody = {
+  repoUrl:string
+  branch:string
+  newBranch:string
+  branchFrom?:boolean
+}
+
 /**
  * Runs the initializeGoblet workflow to setup a new repository
  */
-export const connectRepo = asyncWrap(async (req:JWTRequest, res:Response) => {
-  let content
+export const connectRepo = asyncWrap(async (
+  req:JWTRequest,
+  res:Response
+) => {
+  let content:TRepoContent
   try {
 
-    const { iat, exp, ...user } = req.auth
-    // TODO: Add req.body / req.auth validation before running
+    const body = req.body as TConnectBody
+    const { token, username } = req.auth
     const { repo, status } = await Repo.fromWorkflow({
-      ...user,
-      ...req.body,
+      token,
+      username,
+      ...body,
     })
 
     const { config } = req.app.locals

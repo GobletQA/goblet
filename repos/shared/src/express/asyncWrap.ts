@@ -15,7 +15,11 @@ export const asyncWrap = (
   errHandler:(...args:any) => any=apiErr
 ) => (async (req:Request, res:Response, ...args:any[]) => {
   try {
-    await handler(req, res, ...args)
+    await handler(
+      req,
+      res,
+      ...args
+    )
   }
   catch (err) {
     // @ts-ignore

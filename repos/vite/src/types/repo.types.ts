@@ -20,9 +20,9 @@ export type TBuiltRepo = {
 export type TBuiltRepos = TBuiltRepo[]
 
 
-export type TConnectRepoError = {
-  repo?:string
-  branch?:string
-  newBranch?:string
+export type TConnectRepo = {
+  repo:string
+  branch:string
+  newBranch:string
   branchFrom?:boolean
 }

@@ -13,13 +13,15 @@ import {
   deepClone,
   deepMerge,
 } from '@keg-hub/jsutils'
-import {
+import type {
   TRepoMeta,
   TGCacheOpts,
   TGraphApiVars,
   TGraphApiResp,
-  TGraphPageInfo
+  TGraphPageInfo,
 } from '@gobletqa/workflows/types'
+import type { TRepoUserRepos } from '@gobletqa/workflows/types/shared.types'
+
 
 const defOpts:TGCacheOpts = noOpObj as TGCacheOpts
 const defVarOpts:TGraphApiVars = noOpObj as TGraphApiVars
@@ -137,15 +139,6 @@ export class GraphCache {
 
 /**
  * Calls Github's GraphQL API endpoint to get a list of a users repos
- * @param {string} query - GraphQL query string
- * @param {Object} endpoint - Contains cache key and path to the data in the response obj
- * @param {string} token - Github Auth Token for authentication
- * @param {boolean} all - Use paging to get all items from the endpoint via multiple calls
- * @param {number} first - Starting item when paging through multiple API call results
- * @param {string} after - Used when paging through multiple API call results
- * @param {Array} [ownerAffiliations] - Github defined array of affiliations
- * @param {Array} [affiliations] - Github defined array of affiliations
- * @param {Object} headers - Extra headers to add the API call
  */
 const graphApiCall = async (args:TGraphApiVars) => {
   const { headers:customHeaders, endpoint } = args
@@ -209,7 +202,7 @@ const graphApiCall = async (args:TGraphApiVars) => {
  * })
  *
 */
-export const getUserRepos = async (opts):Promise<TRepoMeta[]> => {
+export const getUserRepos = async (opts:TRepoUserRepos):Promise<TRepoMeta[]> => {
   const repos = await graphApiCall({
     ...opts,
     endpoint: GRAPH.ENDPOINTS.REPO.LIST_ALL,

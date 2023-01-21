@@ -5,7 +5,7 @@ import { getRepoName } from '../utils/getRepoName'
 import { failResp, successResp } from './response'
 import { copyTemplate } from '../utils/copyTemplate'
 import { createRepoWatcher } from '../repo/mountRepo'
-import { configureGitArgs } from '../utils/configureGitArgs'
+import { configureGitOpts } from '../utils/configureGitOpts'
 
 // TODO: Figure out how to load this from shared repo. May need to more to diff location
 // Maybe create a gobletConfig repo - Dedicating to loading the config
@@ -29,7 +29,7 @@ export const setupGoblet = async (
   Logger.subHeader(`Running Setup Goblet Workflow`)
 
   const token = (gitArgs && gitArgs.token) || (await git.loadToken(args))
-  gitArgs = gitArgs || (await configureGitArgs({ ...args, token }))
+  gitArgs = gitArgs || (await configureGitOpts({ ...args, token }))
   const gitOpts = omitKeys(gitArgs, ['email', 'token']) as TGitData
 
   const isMounted = mounted || (await git.exists(args))

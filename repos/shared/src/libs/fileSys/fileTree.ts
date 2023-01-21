@@ -1,4 +1,5 @@
 import type { Repo } from '../../repo/repo'
+import type { TRootPaths } from '../../types'
 
 import fs from 'fs'
 import path from 'path'
@@ -7,7 +8,6 @@ import { fileSys } from '@keg-hub/cli-utils'
 import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
 
 const { getFolderContent } = fileSys
-
 
 /**
  * Gets the metadata of a path from the local filesystem
@@ -43,7 +43,7 @@ export const getFilesObj = async (
     acc[final] = null
 
     return acc
-  }, Promise.resolve({}))
+  }, Promise.resolve({} as TRootPaths))
 }
 
 /**
@@ -60,7 +60,7 @@ export const getRootPaths = (
   return fullPaths.filter(fullPath => path.dirname(fullPath) === repoRoot)
 }
 
-export const buildFileTree = async (repo:Repo) => {
+export const buildFileTree = async (repo:Repo):Promise<TRootPaths> => {
   const searchOpts = {
     full: true,
     recursive: true,

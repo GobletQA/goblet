@@ -5,6 +5,9 @@ import type {
   TRepoPaths,
   TRecorderOpts,
   TInternalPaths,
+  TRepoUserRepos,
+  TRepoMountStatus,
+  TRepoFromWorkflow,
 } from '../types'
 
 import { Parkin } from '@ltipton/parkin'
@@ -39,16 +42,12 @@ export class Repo {
    * 
    * @returns {Array} - Found repos and their branches
    */
-  static getUserRepos = async (opts:Record<string, any>) => {
+  static getUserRepos = async (opts:TRepoUserRepos) => {
     return await getUserRepos(opts)
   }
 
   /**
    * Gathers metadata and creates a Repo Model object of a mounted / connected
-   * @param {Object} config - Goblet global App Config, NOT A REPO CONFIG
-   * @param {Object} [repoData] - Past metadata stored about the repo on the frontend
-   *
-   * @returns {Object} - Repo Model object built by the response of the statusGoblet workflow
    */
   static status = async (
     config:TWFGobletConfig,
@@ -63,12 +62,8 @@ export class Repo {
 
   /**
    * Disconnects a previously connected repo
-   * @param {Object} args - Arguments for disconnecting a repo
-   * @param {string} args.username - Name of the user that mounted the repo
-   *
-   * @returns {Object} - Response from the disconnectGoblet workflow
    */
-  static disconnect = async ({ username }) => {
+  static disconnect = async ({ username }:Record<`username`, string>) => {
     return await disconnectGoblet({
       user: {
         gitUser: username,
@@ -78,11 +73,8 @@ export class Repo {
 
   /**
    * Creates a Repo Class instance by connecting to an external git repo
-   * @param {Object} args - Arguments for connecting a repo
-   *
-   * @returns {Object} - Response from the initializeGoblet workflow
    */
-  static fromWorkflow = async (args) => {
+  static fromWorkflow = async (args:TRepoFromWorkflow) => {
     const {
       token,
       branch,
@@ -97,16 +89,18 @@ export class Repo {
     const provider = url.host.split('.').slice(0).join('.')
 
     const { repo, ...status } = await initializeGoblet({
+      token,
+      user: {
+        gitUser: username
+      },
       repo: {
         name,
-        token,
         branch,
         provider,
         newBranch,
         branchFrom,
         url: repoUrl,
       },
-      user: { gitUser: username },
     })
 
     if (!status || !status.mounted)
@@ -114,7 +108,10 @@ export class Repo {
         `[ERROR] Could not mount repo ${repoUrl}.\n${status ? status.message : ''}`
       )
 
-    return { repo: new Repo(repo), status }
+    return {
+      repo: new Repo(repo),
+      status: status as TRepoMountStatus,
+    }
   }
 
   /**
@@ -148,7 +145,7 @@ export class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  parkin = undefined
+  parkin:Parkin = undefined
 
 
   name:string
@@ -197,7 +194,9 @@ export class Repo {
    *
    * @return {Object} - The reloaded repo.world object
    */
-  refreshWorld = async (opts:Record<string, any>=noOpObj) => {
+  refreshWorld = async (
+    opts:Record<`environment`, string>=noOpObj as Record<`environment`, string>
+  ) => {
     const { environment } = opts
     this.setEnvironment(environment)
 

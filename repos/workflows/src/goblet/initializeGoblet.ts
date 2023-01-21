@@ -1,12 +1,31 @@
-import { git } from '../git'
-import { failResp } from './response'
-import { Logger } from '@keg-hub/cli-utils'
-import { setupGoblet } from './setupGoblet'
-import { mountRepo } from '../repo/mountRepo'
-import { branchRepo } from '../repo/branchRepo'
-import { configureGitArgs } from '../utils/configureGitArgs'
+import type { TGitOpts, TWFArgs } from '@gobletqa/workflows/types'
 
-import { TWFArgs } from '@gobletqa/workflows/types'
+import { Logger } from '@keg-hub/cli-utils'
+import { git } from '@gobletqa/workflows/git'
+import { GitApi } from '@gobletqa/workflows/repo/gitApi'
+import { mountRepo } from '@gobletqa/workflows/repo/mountRepo'
+import { setupGoblet } from '@gobletqa/workflows/goblet/setupGoblet'
+import { validateInitArgs } from '@gobletqa/workflows/utils/validateInitArgs'
+import { configureGitOpts } from '@gobletqa/workflows/utils/configureGitOpts'
+import { ensureBranchExists } from '@gobletqa/workflows/repo/ensureBranchExists'
+
+const ensureRepoBranchMounted = async (
+  args:TWFArgs,
+  gitOpts:TGitOpts
+) => {
+
+  // Ensure the repo is not already mounted before trying to mount it
+  const mounted = await git.exists(args)
+
+    // Mount the repo if it's not mounted already
+  if (!mounted) {
+    Logger.log(`Mounting remote repo...`)
+    await mountRepo(gitOpts)
+  }
+
+  Logger.log(`Setting up Goblet...`)
+  return await setupGoblet(args, gitOpts, !mounted)
+}
 
 
 /**
@@ -24,38 +43,16 @@ import { TWFArgs } from '@gobletqa/workflows/types'
 export const initializeGoblet = async (args:TWFArgs) => {
 
   Logger.subHeader(`Running Initialize Goblet Workflow`)
+
   const token = git.loadToken(args)
-  const gitArgs = await configureGitArgs({ ...args, token })
+  const gitOpts = await configureGitOpts({ ...args, token })
+  const gitApi = new GitApi(gitOpts)
 
-  if (token === false)
-    return failResp(
-      { setup: false, mounted: false, status: 'unknown' },
-      'Failed repo mount. Improper git validation'
-    )
+  const notValid = validateInitArgs(token, gitOpts)
+  if(notValid) return notValid
 
-  gitArgs.branchFrom
-    ? Logger.log(`Creating new branch...`)
-    : Logger.log(`Reusing existing branch...`)
-
-  // Check if we should create a new branch
-  const branch = gitArgs.branchFrom && gitArgs.newBranch
-    ? await branchRepo(gitArgs)
-    : gitArgs.branch
-
-  // Ensure the repo is not already mounted before trying to mount it
-  const mounted = await git.exists(args)
-  if (mounted) {
-    Logger.log(`Repo is already mounted at ${gitArgs.local}`)
-
-    return await setupGoblet(args, gitArgs, true)
-  }
-
-  Logger.log(`Mounting remote repo...`)
-  // Mount the git repo, passing in the branch to be used
-  await mountRepo({ ...gitArgs, branch })
-
-  Logger.log(`Setting up Goblet...`)
-  const setupResp = await setupGoblet(args, gitArgs)
+  const branch = await ensureBranchExists(gitApi, gitOpts)
+  const setupResp = await ensureRepoBranchMounted(args, {...gitOpts, branch })
 
   setupResp.mounted && setupResp.setup
     ? Logger.success(`Finished running Initialize Goblet Workflow`)

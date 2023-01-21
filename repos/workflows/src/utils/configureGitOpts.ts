@@ -2,8 +2,12 @@ import path from 'path'
 import { throwErr } from './throwErr'
 import { getRepoPath } from './getRepoPath'
 import { isObj, isStr } from '@keg-hub/jsutils'
-
 import { TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
+
+const formatBranch = (branch:string) => {
+  return branch.trim()
+    .replace(/[`~!@#$%^&*()|+=?;:'",.<>\{\}\[\]\\\/\s]/gi, `-`)
+}
 
 /**
  * Builds the arguments required for syncing a git repo
@@ -15,7 +19,7 @@ import { TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
  *
  * @returns {Object} - Built git args
  */
-export const configureGitArgs = async (args:TWFArgs) => {
+export const configureGitOpts = async (args:TWFArgs) => {
   const { repo, user, token } = args
 
   // Ensure the models were passed in
@@ -25,16 +29,18 @@ export const configureGitArgs = async (args:TWFArgs) => {
   const local = getRepoPath(args)
   const { branch, url:remote, newBranch, branchFrom } = repo
   const { email, gitUser, token:userToken } = user
+  
 
   return {
     local,
     email,
-    branch,
     remote,
     username: gitUser,
     name: path.basename(local),
+    branch: formatBranch(branch),
     branchFrom: Boolean(branchFrom),
-    newBranch: isStr(newBranch) ? newBranch : ``,
+    repoName: path.basename(remote),
     token: token || userToken || process.env.GOBLET_GIT_TOKEN,
+    newBranch: isStr(newBranch) ? formatBranch(newBranch) : ``,
   } as TGitOpts
 }

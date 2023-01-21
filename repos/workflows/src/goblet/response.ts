@@ -1,7 +1,7 @@
 import { Logger } from '@keg-hub/cli-utils'
 import {
+  TWFResp,
   TResArgs,
-  TWFResp
 } from '@gobletqa/workflows/types'
 
 /**
