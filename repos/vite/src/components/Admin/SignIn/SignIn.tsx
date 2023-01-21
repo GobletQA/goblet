@@ -1,18 +1,23 @@
+import type { CSSProperties, ComponentType } from 'react'
+
 import { useEffect, useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
+import { Container } from './SignIn.style'
 import { GitHubIcon } from '@gobletqa/components'
 import { OtherProviders } from '../OtherProviders'
-import { checkCall, isArr, noOp } from '@keg-hub/jsutils'
 import { loadUser } from '@actions/admin/user/loadUser'
 import { getProviderMetadata } from '@services/providers'
+import { checkCall, isArr, noOp } from '@keg-hub/jsutils'
 import { SignInButton } from '../GithubSignIn/SignInButton'
 import { onSuccessAuth, onFailedAuth } from '@actions/admin/provider'
+
 
 const { auth, config } = getProviderMetadata()
 
 export type TSignIn = {
-  MessageComponent?: any
+  messageSx?: CSSProperties
+  MessageComponent?: ComponentType<any>
   onNoAuthConfig?: (...args:any) => any
 }
 
@@ -23,7 +28,7 @@ const authConfig = config && config.ui
 
 const SignIn = (props:TSignIn) => {
 
-  const {onNoAuthConfig=noOp, MessageComponent} = props
+  const { onNoAuthConfig=noOp, MessageComponent, messageSx } = props
 
   useEffect(() => {
     !authConfig ? checkCall(onNoAuthConfig) : loadUser()
@@ -41,22 +46,7 @@ const SignIn = (props:TSignIn) => {
   return !authConfig || !isArr(authConfig?.signInOptions)
     ? null
     : (
-      <Box
-        display="flex"
-        alignItems="center"
-        alignContent="center"
-        flexDirection="column"
-        justifyContent="center"
-      >
-        <Box
-        >
-          {MessageComponent && (
-            <MessageComponent
-              error={signInError}
-              loading={signingIn && 'Signing in ...'}
-            />
-          )}
-        </Box>
+      <Container>
         <List>
           {/* TODO: update this when more providers are added */}
           {authConfig.signInOptions.map((option:any) => 
@@ -75,7 +65,16 @@ const SignIn = (props:TSignIn) => {
           )}
           <OtherProviders />
         </List>
-      </Box>
+        <Box>
+          {MessageComponent && (
+            <MessageComponent
+              sx={messageSx}
+              error={signInError}
+              loading={signingIn && 'Signing in ...'}
+            />
+          )}
+        </Box>
+      </Container>
     )
 }
 

@@ -141,7 +141,7 @@ export const Input = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
         actions={actions}
         onToggleEdit={onToggleEdit}
       />
-    )|| null}
+    ) ||null}
     </InputContainer>
   )
 
