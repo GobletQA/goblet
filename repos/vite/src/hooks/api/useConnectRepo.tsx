@@ -31,20 +31,19 @@ export const useConnectRepo = (props:THConnectRepo) => {
   return useInline<TConnectCB>(async ({repo, ...params}) => {
     if(loading) return
 
-    // setLoading?.(true)
+    setLoading?.(true)
 
     const resp = await connectRepo({
       ...params,
       repoUrl: repo.key
     })
 
-    // setLoading?.(false)
-    // onConnect?.(resp)
+    setLoading?.(false)
+    onConnect?.(resp)
 
-    // if (!resp)
-    //   return setFormError?.(`Failed to mount repo. Please try again later.`)
-
-    // toggleModal(false)
+    !resp
+      ? setFormError?.(`Failed to mount repo. Please try again later.`)
+      : toggleModal(false)
 
   })
 }

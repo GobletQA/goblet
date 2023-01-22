@@ -1,5 +1,13 @@
 [
   {
+    "url": "https://github.com/GobletQA/demos",
+    "name": "demos",
+    "branches": [
+      "goblet-lancetipton",
+      "main"
+    ]
+  },
+  {
     "url": "https://github.com/GobletQA/gobletqa",
     "name": "gobletqa",
     "branches": [

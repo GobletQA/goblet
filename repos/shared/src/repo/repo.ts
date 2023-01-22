@@ -14,6 +14,7 @@ import { Parkin } from '@ltipton/parkin'
 import { getWorld } from '@GSH/repo/world'
 import { noOpObj, } from '@keg-hub/jsutils'
 import { getFileTypes } from '@GSH/utils/getFileTypes'
+import { resetGobletConfig } from '@GSH/goblet/getGobletConfig'
 import {
   getUserRepos,
   statusGoblet,
@@ -64,6 +65,9 @@ export class Repo {
    * Disconnects a previously connected repo
    */
   static disconnect = async ({ username }:Record<`username`, string>) => {
+    // Clear the existing loaded goblet config
+    resetGobletConfig()
+
     return await disconnectGoblet({
       user: {
         gitUser: username,

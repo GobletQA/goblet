@@ -36,7 +36,7 @@ export const setupGoblet = async (
   if (!isMounted)
     return failResp({ setup: false }, `Repo ${gitArgs.remote} is not connected`)
 
-  Logger.log(`Checking for repo watcher as path ${gitArgs.local}...`)
+  Logger.log(`Checking for repo watcher at path ${gitArgs.local}...`)
   const watcher = RepoWatcher.getWatcher(gitArgs.local)
   watcher
     ? Logger.log(`Found existing watcher at path ${gitArgs.local}`)

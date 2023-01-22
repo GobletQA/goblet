@@ -29,7 +29,7 @@ export const configAtPath = (basePath:string) => {
  * and calls configAtPath for each one
  */
 export const configFromFolder = (baseDir:string) => {
-  return GobletConfigFileLocations.reduce((found:false|TGobletConfig, loc) => (
+  return GobletConfigFileLocations.reduce((found:false|TGobletConfig, loc:string) => (
     found || configAtPath(path.join(baseDir, loc)) || found
   ), false)
 }

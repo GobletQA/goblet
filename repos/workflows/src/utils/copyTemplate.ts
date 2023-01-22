@@ -15,9 +15,17 @@ import { configFromFolder } from '@gobletqa/shared/goblet'
  */
 export const copyTemplate = async (local:string, template:string) => {
   Logger.info(`Searching for goblet config...`)
-  const configLoc = await configFromFolder(local)
+  
+  // TODO: This is the first time a goblet config would be loaded
+  // May want to set it to the GOBLET_CONFIG cache in getGobletConfig
+  // To ensure it loads this config, loaded from the mounted repo
+  const gobletConfig = await configFromFolder(local)
 
-  if (configLoc) return true
+  if (gobletConfig){
+    Logger.info(`Found existing goblet config at ${local}`)
+    console.log(gobletConfig)
+    return true
+  }
 
   Logger.info(`Creating goblet setup from template...`)
   const src = template || path.join(aliases[`@GWF`], `templates/repo/*`)
