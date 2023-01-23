@@ -1,5 +1,5 @@
 import type { FocusEvent, KeyboardEvent } from 'react'
-import type { TConnectRepo, TOnAutoChange } from '@types'
+import type { TRepoInputError, TOnAutoChange } from '@types'
 
 import { useCallback, useEffect, useRef } from 'react'
 import { SubGridParent, SubGrid } from './Connect.styled'
@@ -11,8 +11,8 @@ export type TBranchFrom = {
   newBranch?:string
   disabled?:boolean
   branches?:string[]
-  inputError:TConnectRepo
   onChange?:TOnAutoChange
+  inputError:TRepoInputError
   onChangeNewBranch?:(branch:string) => void
   onInputError?:(key:string, value?:string) => void
 }
@@ -36,9 +36,8 @@ const childProps = {
   placeholder: `Enter a branch name;  exp: my-new-branch`,
 }
 
-
 export const BranchFrom = (props:TBranchFrom) => {
-  
+
   const {
     branch,
     disabled,
@@ -60,6 +59,9 @@ export const BranchFrom = (props:TBranchFrom) => {
   const onKeyDown = useCallback((evt:KeyboardEvent<HTMLInputElement>) => {
     inputError.newBranch
       && onInputError?.(`newBranch`, undefined)
+
+    evt.keyCode === 13
+      && inputRef.current?.blur?.()
   }, [inputError.newBranch, newBranch])
 
   const inputRef = useRef<HTMLInputElement>()
@@ -107,5 +109,5 @@ export const BranchFrom = (props:TBranchFrom) => {
       </SubGrid>
     </SubGridParent>
   )
-  
+
 }

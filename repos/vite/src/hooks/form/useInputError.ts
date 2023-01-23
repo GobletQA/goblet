@@ -1,9 +1,7 @@
 import { useState, useCallback } from 'react'
+import { TRepoInputError } from '@types'
 
-
-export type TInputError = Record<string, any>
-
-export const useInputError = <T extends TInputError>() => {
+export const useInputError = <T extends TRepoInputError>() => {
   const [inputError, setInputError] = useState<T>({} as T)
   
   const onInputError = useCallback((

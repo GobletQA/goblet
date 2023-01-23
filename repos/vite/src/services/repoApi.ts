@@ -39,6 +39,12 @@ class RepoApi {
     url: `/repo/connect`,
   } as TRequest<R>)
 
+  create = async <T=TApiRecord,R=TApiRecord>(params:TRParams<R>) => this._req<T,R>({
+    ...params,
+    method: HttpMethods.POST,
+    url: `/repo/create`,
+  } as TRequest<R>)
+
   getRepos = async <T=TApiRecord,R=TApiRecord>(params:TRParams<R>) => await this._req<T, R>({
     ...params,
     method: `GET`,

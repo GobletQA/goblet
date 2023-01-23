@@ -6,6 +6,7 @@ import type {
   TRecorderOpts,
   TInternalPaths,
   TRepoUserRepos,
+  TRepoFromCreate,
   TRepoMountStatus,
   TRepoFromWorkflow,
 } from '../types'
@@ -16,6 +17,7 @@ import { noOpObj, } from '@keg-hub/jsutils'
 import { getFileTypes } from '@GSH/utils/getFileTypes'
 import { resetGobletConfig } from '@GSH/goblet/getGobletConfig'
 import {
+  createGoblet,
   getUserRepos,
   statusGoblet,
   initializeGoblet,
@@ -73,6 +75,42 @@ export class Repo {
         gitUser: username,
       },
     })
+  }
+
+  static create = async (args:TRepoFromCreate) => {
+    const {
+      name,
+      token,
+      branch,
+      provider,
+      username,
+      newBranch,
+      branchFrom,
+    } = args
+    
+    const { repo, ...status } = await createGoblet({
+      token,
+      user: {
+        gitUser: username
+      },
+      create: {
+        name,
+        branch,
+        provider,
+        newBranch,
+        branchFrom,
+      },
+    })
+
+    if (!status || !status.mounted)
+      throw new Error(
+        `[ERROR] Could not create new repo ${name}.\n${status ? status.message : ''}`
+      )
+
+    return {
+      repo: new Repo(repo),
+      status: status as TRepoMountStatus,
+    }
   }
 
   /**

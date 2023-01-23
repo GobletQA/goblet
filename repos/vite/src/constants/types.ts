@@ -43,3 +43,11 @@ export const SocketMsgTypes = {
 }
 
 export const BrowserLogTerminal = `browser-log`
+
+export const CreateNewRepo = {
+  value: 0,
+  branches: [],
+  id: `create-new-repo`,
+  key:`create-new-repo`,
+  label: `Create New Repo`,
+}

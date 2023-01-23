@@ -54,17 +54,17 @@ export const InputLabelWrap = styled(Box)`
 `
 
 export const InputText = styled(TextField)`
-  height: 40px;
+  min-height: 40px;
   padding-top: 0px;
   margin-bottom: 0px;
   padding-bottom: 0px;
 
   & .MuiTextField-root {
-    height: 40px;
+    min-height: 40px;
   }
 
   & .MuiInputBase-root {
-    height: 40px;
+    min-height: 40px;
     padding-top: 0px;
     padding-bottom: 0px;
 
@@ -75,6 +75,10 @@ export const InputText = styled(TextField)`
     }
 
     & input::placeholder {
+      font-size: 14px;
+    }
+
+    & textarea::placeholder {
       font-size: 14px;
     }
   }
@@ -97,6 +101,7 @@ export const ToggleWrap = styled(Box)`
 
 export const ToggleBtn = styled(ToggleButton)`
   height: 40px;
+  font-size: 12px;
   padding: 5px 10px;
   text-transform: none;
 `

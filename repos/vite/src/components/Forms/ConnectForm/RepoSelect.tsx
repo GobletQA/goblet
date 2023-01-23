@@ -35,6 +35,6 @@ export const RepoSelect = (props:TRepoProps) => {
       className='repo-select-dropdown'
     />
   )
-  
+
 }
 

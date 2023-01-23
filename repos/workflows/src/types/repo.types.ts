@@ -41,3 +41,12 @@ export type TRepoMeta = {
   name:string
   branches:string[]
 }
+
+
+export type TCreateRepo = {
+  name:string
+  branch:string
+  provider:string
+  newBranch?:string
+  branchFrom?:boolean
+}

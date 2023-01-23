@@ -1,26 +1,24 @@
-import type { TApiConnectReq, TApiRepoResp } from '@types'
+import type { TApiCreateReq, TApiRepoResp } from '@types'
 import { setRepo } from '../local/setRepo'
 import { addToast } from '@actions/toasts'
 import { repoApi } from '@services/repoApi'
 
-
-
 /**
- * Calls Backend API to connect a git repo
+ * Calls Backend API to create a new git repo
  * If successful, makes calls to other actions to setup the UI
  *
  */
-export const connectRepo = async (params:TApiConnectReq) => {
+export const createRepo = async (params:TApiCreateReq) => {
   addToast({
     type: 'info',
-    message: `Connecting to repo ...`,
+    message: `Creating new repo ...`,
   })
 
   const {
     data,
     error,
     success
-  } = await repoApi.connect<TApiRepoResp, TApiConnectReq>({
+  } = await repoApi.create<TApiRepoResp, TApiCreateReq>({
     params
   })
 

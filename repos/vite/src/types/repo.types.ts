@@ -19,10 +19,32 @@ export type TBuiltRepo = {
 
 export type TBuiltRepos = TBuiltRepo[]
 
-
-export type TConnectRepo = {
-  repo:string
+type TSharedRepo = {
   branch:string
-  newBranch:string
+  newBranch?:string
   branchFrom?:boolean
 }
+
+export type TCreateRepo = TSharedRepo & {
+  repo:never,
+  newRepo:string
+  description?:string
+  createRepo?:boolean
+}
+
+export type TConnectRepo = TSharedRepo & {
+  repo:string
+  newRepo:never
+  description?:never
+  createRepo?:boolean
+}
+
+export type TRepoInputError = {
+  repo?:string
+  branch?:string
+  newBranch?:string
+  branchFrom?:string
+  [key: string]: string | undefined
+}
+
+export type TRepoValueCB = (value:string) => void

@@ -1,14 +1,13 @@
 import type { TFormFooter } from '@gobletqa/components'
 import type { FormEvent, ComponentType, MutableRefObject } from 'react'
 
-import { Advanced } from './Advanced'
-import { SyncRepos } from './SyncRepos'
-import { RepoSelect } from './RepoSelect'
+import { RepoConnect } from './RepoConnect'
+import { BranchConnect } from './BranchConnect'
 import { useInputError } from '@hooks/form/useInputError'
 
 import Box from '@mui/material/Box'
-import Grid from '@mui/material/Unstable_Grid2'
 import { useState, useMemo } from 'react'
+import Grid from '@mui/material/Unstable_Grid2'
 import { signOutReload } from '@actions/admin/user/signOutReload'
 import { ModalMessage } from '@components/ModalManager/ModalMessage'
 import {
@@ -114,10 +113,15 @@ export const ConnectForm = (props:TConnectForm) => {
     repo,
     repos,
     branch,
+    newRepo,
     newBranch,
+    createRepo,
+    description,
     onChangeRepo,
     onChangeBranch,
+    onChangeNewRepo,
     onChangeNewBranch,
+    onChangeDescription,
   } = useGetRepos({ onInputError })
 
   const onConnectRepo = useConnectRepo({
@@ -130,19 +134,24 @@ export const ConnectForm = (props:TConnectForm) => {
     event.stopPropagation()
     event.preventDefault()
 
-    if(!repo || !branch || (branchFrom && !newBranch))
+    if(!repo || !branch || (branchFrom && !newBranch) || (createRepo && !newRepo))
       return setInputError({
         repo: !repo ? `A repository is required` : undefined,
         branch: !branch ? `A branch is required` : undefined,
-        newBranch: branchFrom && !newBranch ? `A branch name is require` : undefined
+        newBranch: branchFrom && !newBranch ? `A branch name is require` : undefined,
+        newRepo: createRepo && !newRepo ? `A repository name is required` : undefined,
       })
 
     const params = {
       repo,
       branch,
+      newRepo,
       newBranch,
-      branchFrom
+      createRepo,
+      branchFrom,
+      description
     }
+
     await onConnectRepo(params)
 
     onConnect?.(params)
@@ -155,6 +164,7 @@ export const ConnectForm = (props:TConnectForm) => {
         || loading
         || !repo
         || !branch
+        || (createRepo && !newRepo)
         || (branchFrom && !newBranch)
     ),
   })
@@ -179,30 +189,33 @@ export const ConnectForm = (props:TConnectForm) => {
             className='gb-grid-connect-inputs-container'
           >
             <Grid
+              container
               rowSpacing={2}
               sx={styles.grid}
-              container={true}
               columnSpacing={1}
               disableEqualOverflow={true}
               className='gb-grid-connect-inputs'
             >
-              <Grid className='gb-grid-repo-select' xs={9} md={11} >
-                <RepoSelect
-                  repo={repo}
-                  repos={repos}
-                  onChange={onChangeRepo}
-                  error={inputError.repo}
-                />
-              </Grid>
-              <Grid className='gb-grid-sync-repos' xs={3} md={1} >
-                <SyncRepos />
-              </Grid>
+
+              <RepoConnect
+                repo={repo}
+                repos={repos}
+                newRepo={newRepo}
+                onChange={onChangeRepo}
+                inputError={inputError}
+                createRepo={createRepo}
+                description={description}
+                onInputError={onInputError}
+                onChangeNewRepo={onChangeNewRepo}
+                onChangeDescription={onChangeDescription}
+              />
+
               <Grid
                 xs={12}
                 sx={{ paddingLeft: `5px` }}
                 className='gb-grid-advanced'
               >
-                <Advanced
+                <BranchConnect
                   repo={repo}
                   branch={branch}
                   disabled={!repo}
@@ -215,6 +228,7 @@ export const ConnectForm = (props:TConnectForm) => {
                   onChangeNewBranch={onChangeNewBranch}
                 />
               </Grid>
+
             </Grid>
           </Box>
         </Form>

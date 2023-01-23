@@ -1,13 +1,16 @@
 import Box from '@mui/material/Box'
 import { getRepos } from '@actions/repo/api/getRepos'
-import { Tooltip, gutter, Button, SyncIcon } from '@gobletqa/components'
+import { Tooltip, Button, SyncIcon } from '@gobletqa/components'
 
 const styles = {
   button: {
     width: `100%`,
+    minWidth: `100%`,
     height: `40px`,
     opacity: `0.9`,
     transition: `opacity 300ms ease`,
+    paddingLeft: `0`,
+    paddingRight: `0`,
     [`:hover`]: {
       opacity: `1`,
     }
@@ -30,7 +33,6 @@ export const SyncRepos = (props:TSyncRepos) => {
       <Box
         paddingTop='15px'
         className='sync-repos-container'
-        paddingLeft={gutter.padding.hpx}
       >
         <Button
           sx={styles.button}

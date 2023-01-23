@@ -52,6 +52,17 @@ export type TRepoOpts = {
   fileTypes: TFileTypes
 }
 
+export type TRepoFromCreate = {
+  name:string
+  token:string
+  branch:string
+  username:string
+  provider:string
+  newBranch?:string
+  branchFrom?:boolean
+  description?:string
+}
+
 export type TRepoFromWorkflow = {
   token:string
   username:string

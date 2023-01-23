@@ -1,6 +1,6 @@
-import type { TBuiltRepo } from '@types'
-import type { TInputError } from './ConnectForm'
+import type { TRepoInputError, TBuiltRepo } from '@types'
 import type { TOnAutoChange } from '@gobletqa/components'
+
 
 import { BranchFrom } from './BranchFrom'
 import { emptyArr } from '@keg-hub/jsutils'
@@ -17,8 +17,8 @@ export type TAdvanced = {
   repo?: TBuiltRepo
   disabled?:boolean
   branchFrom?:boolean
-  inputError:TInputError
   onChange: TOnAutoChange
+  inputError:TRepoInputError
   onChangeNewBranch?:(branch:string) => void
   onChangeBranchFrom?:(change:boolean) => void
   onInputError?:(key:string, value?:string) => void
@@ -41,7 +41,7 @@ const styles = {
   }
 }
 
-export const Advanced = (props:TAdvanced) => {
+export const BranchConnect = (props:TAdvanced) => {
 
   const {
     repo,

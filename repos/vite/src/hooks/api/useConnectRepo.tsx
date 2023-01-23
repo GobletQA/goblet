@@ -1,17 +1,15 @@
-import { TBuiltRepo } from '@types'
+import { TConnectRepo, TCreateRepo, TBuiltRepo } from '@types'
 
 import { useInline } from '@hooks/useInline'
 import { connectRepo } from '@actions/repo/api/connect'
 import { toggleModal } from '@actions/modals/toggleModal'
+import { createRepo as createNewRepo } from '@actions/repo/api/create'
 
-export type TConnectParams = {
-  branch:string,
+export type TConnectParams = Omit<TConnectRepo, `repo`> & {
   repo:TBuiltRepo,
-  newBranch:string,
-  branchFrom:boolean
 }
 
-type TConnectCB = (props:TConnectParams) => Promise<void>
+type TConnectCB = (props:TConnectParams|TCreateRepo) => Promise<void>
 
 export type THConnectRepo = {
   loading?:boolean
@@ -28,15 +26,22 @@ export const useConnectRepo = (props:THConnectRepo) => {
     setFormError,
   } = props
 
-  return useInline<TConnectCB>(async ({repo, ...params}) => {
+  return useInline<TConnectCB>(async (params) => {
     if(loading) return
 
     setLoading?.(true)
 
-    const resp = await connectRepo({
-      ...params,
-      repoUrl: repo.key
-    })
+    const {
+      repo,
+      newRepo,
+      createRepo,
+      description,
+      ...rest
+    } = params
+
+    const resp = createRepo
+      ? await createNewRepo({ ...rest, name: newRepo, description })
+      : await connectRepo({ ...rest, repoUrl: repo?.id })
 
     setLoading?.(false)
     onConnect?.(resp)
