@@ -1,7 +1,7 @@
 import type { MutableRefObject, ReactNode } from 'react'
 
 import { createPortal } from 'react-dom'
-import { useEffect, useRef, useMemo } from 'react'
+import { useEffect, useRef } from 'react'
 import { useForceUpdate } from '@GBC/hooks/useForceUpdate'
 
 export type TPortal = {

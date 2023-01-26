@@ -1,12 +1,10 @@
-const { loadScript } = require('../helpers/loadScript')
+import type { TEnvObject } from '../../types'
+import { loadScript } from '../helpers/loadScript'
 
 /**
  * Converts all the envs to docker cli format so they are passed on to the docker container
- * @param {Object} envs - All envs loaded from the `container/values.yml` file
- *
- * @returns {Array<string>} - Array of envs converted to build-args for the docker build command
  */
-const addRunEnvs = async (docFileCtx, currentEnvs) => {
+export const addRunEnvs = async (docFileCtx:string, currentEnvs:TEnvObject) => {
   const { filterExistingEnvs } = await loadScript(`filterEnvs`)
   const filteredEnvs = filterExistingEnvs(docFileCtx, currentEnvs)
 
@@ -16,8 +14,4 @@ const addRunEnvs = async (docFileCtx, currentEnvs) => {
 
       return buildArgs
     }, [])
-}
-
-module.exports = {
-  addRunEnvs,
 }

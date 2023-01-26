@@ -1,5 +1,8 @@
-const { error } = require('@keg-hub/cli-utils')
-const { getContextValue } = require('../helpers/contexts')
+import type { TTaskParams, TEnvObject } from '../../types'
+
+import path from 'node:path'
+import { error } from '@keg-hub/cli-utils'
+import { getContextValue } from '../helpers/contexts'
 
 /**
  * Finds the correct image name to use based on the params and docFileCtx
@@ -9,10 +12,14 @@ const { getContextValue } = require('../helpers/contexts')
  
  * @return {string} - Resolved name of the docker image
  */
-const resolveImgName = (params, docFileCtx, envs) => {
+export const resolveImgName = (
+  params:TTaskParams,
+  docFileCtx:string,
+  envs:TEnvObject
+) => {
 
   // Get the name of the image that will be built
-  let imgName = params.image || getContextValue(docFileCtx, envs, `IMAGE`, envs.IMAGE)
+  let imgName = params?.image || getContextValue(docFileCtx, envs, `IMAGE`, envs.IMAGE)
 
   !imgName &&
     error.throwError(`Could not find image or IMAGE env for context "${docFileCtx}"`)
@@ -24,17 +31,13 @@ const resolveImgName = (params, docFileCtx, envs) => {
   if (imgName.includes(`/`)) return imgName
 
   // Try to find the image registry to use
-  const registry = params.registry
-    || envs.DOCKER_REGISTRY
-    || envs.IMAGE.split('/').shift()
+  const registry = params?.registry
+    || envs.DOCKER_REGISTRY as string
+    || (envs?.IMAGE as string)?.split('/').shift()
 
   // If there's a registry, add it to the image name
   // Otherwise just return the image name
   return registry
     ? path.join(registry, imgName)
     : imgName
-}
-
-module.exports = {
-  resolveImgName,
 }

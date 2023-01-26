@@ -1,7 +1,5 @@
 import type { TTask } from '../../../types'
 
-import path from 'path'
-import { scriptsDir } from '../../../paths'
 import { Logger, error } from'@keg-hub/cli-utils'
 import { loadEnvs } from '../../../utils/envs/loadEnvs'
 import { getNpmToken } from '../../../utils/envs/getNpmToken'

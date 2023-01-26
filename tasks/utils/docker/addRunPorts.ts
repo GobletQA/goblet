@@ -1,15 +1,11 @@
-const { getContextValue } = require('../../utils/helpers/contexts')
-const { ensureArr, toBool, isStr, isNum, toStr, noPropArr } = require('@keg-hub/jsutils')
+import type { TTaskParams, TEnvObject } from '../../types'
+import { getContextValue } from '../../utils/helpers/contexts'
+import { ensureArr, toBool, isStr, isNum, toStr, noPropArr } from '@keg-hub/jsutils'
 
 /**
  * Finds the ports to bind from the localhost to a docker container
- * @param {Object} params - Parsed options passed to the run task
- * @param {Object} envs - ENV values loaded from the container/value.yml files
- * @param {string} docFileCtx - Current context of the docker image to run
- *
- * @returns {Array} - Ports to be bound
  */
-const resolveAllPorts = (params, envs, docFileCtx) => {
+const resolveAllPorts = (params:TTaskParams, envs:TEnvObject, docFileCtx:string) => {
   const paramPorts = ensureArr(params.ports || [])
 
   // Get the ports for the docker image being run
@@ -27,23 +23,15 @@ const resolveAllPorts = (params, envs, docFileCtx) => {
 
 /**
  * Checks if binding a local port to the container should be skipped
- * @param {Array} ports - Array of ports that should be bound
- *
- * @returns {Boolean} - True if ports should be bound
  */
-const skipPortBind = (ports=noPropArr) => {
+const skipPortBind = (ports:string[]|number[]=noPropArr) => {
   return ports.map(toBool).includes(false)
 }
 
 /**
  * Gets the local ports that should be bound to the running container
- * @param {Object} params - Parsed options passed to the run task
- * @param {Object} envs - ENV values loaded from the container/value.yml files
- * @param {string} docFileCtx - Current context of the docker image to run
- *
- * @returns {Array} - Formatted port arguments to pass to the docker run cli
  */
-const addRunPorts = (params, envs, docFileCtx) => {
+export const addRunPorts = (params:TTaskParams, envs:TEnvObject, docFileCtx:string) => {
   if(skipPortBind(params.ports)) return noPropArr
 
   return resolveAllPorts(params, envs, docFileCtx)
@@ -57,8 +45,4 @@ const addRunPorts = (params, envs, docFileCtx) => {
 
       return acc
     }, [])
-}
-
-module.exports = {
-  addRunPorts,
 }

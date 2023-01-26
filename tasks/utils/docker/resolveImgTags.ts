@@ -1,21 +1,26 @@
-const { loadEnvs } = require('../envs/loadEnvs')
-const { getTagOptions } = require('./getTagOptions')
-const { getContext } = require('../helpers/contexts')
-const { resolveImgName } = require('./resolveImgName')
-const { ensureArr, noOpObj, flatUnion, noPropArr } = require('@keg-hub/jsutils')
+import type { TTagOpts } from './getTagOptions'
+import type { TTaskParams, TEnvObject } from '../../types'
 
-const convertTags = (check, envs) => {
-  return check ? (envs[`GB_${check.toUpperCase()}_BUILD_TAGS`] || ``).split(`,`) : noPropArr
+import { loadEnvs } from '../envs/loadEnvs'
+import { getTagOptions } from './getTagOptions'
+import { getContext } from '../helpers/contexts'
+import { resolveImgName } from './resolveImgName'
+import { ensureArr, noOpObj, flatUnion, noPropArr } from '@keg-hub/jsutils'
+
+const convertTags = (check:string, envs:TEnvObject) => {
+  return check ? ((envs[`GB_${check.toUpperCase()}_BUILD_TAGS`] || ``) as string).split(`,`) : noPropArr
 }
 
 /**
  * Parses the tagMatch argument and checks if there is a branch match
  * If there is then is adds the tag types to the tags array
- * @param {Object} params - Passed in task options, converted into an object
- 
- * @return {Array} All tags types to be added to the docker image
  */
-const generateTagMatches = (params, docFileCtx = ``, envs, tagOptions) => {
+const generateTagMatches = (
+  params:TTaskParams = noOpObj as TTaskParams,
+  docFileCtx:string = ``,
+  envs:TEnvObject,
+  tagOptions:TTagOpts
+) => {
   const sContext = getContext(docFileCtx)?.short
   
   const contextTags = flatUnion(convertTags(docFileCtx, envs), convertTags(sContext, envs))
@@ -32,12 +37,12 @@ const generateTagMatches = (params, docFileCtx = ``, envs, tagOptions) => {
 
 /**
  * Generates the docker build image tags based on passed in params
- * @export
- * @param {Object} params - Passed in task options, converted into an object
- *
- * @returns {Array} - Generated tags to be passed to the docker build command
  */
-const resolveImgTags = async (params = noOpObj, docFileCtx = ``, envs) => {
+export const resolveImgTags = async (
+  params:TTaskParams = noOpObj as TTaskParams,
+  docFileCtx:string = ``,
+  envs?:TEnvObject
+) => {
   const { env } = params
 
   envs = envs || loadEnvs({ env })
@@ -46,7 +51,7 @@ const resolveImgTags = async (params = noOpObj, docFileCtx = ``, envs) => {
 
   if (!tagArr.length) tagArr.push(`package`)
 
-  const imageName = resolveImgName((params = noOpObj), docFileCtx, envs)
+  const imageName = resolveImgName((params = noOpObj as TTaskParams), docFileCtx, envs)
 
   return tagArr.reduce((imgTags, tag) => {
     const value = (tagOptions[tag] || tag).replace(/\s\n\t:\/\\/g, '.')
@@ -55,8 +60,4 @@ const resolveImgTags = async (params = noOpObj, docFileCtx = ``, envs) => {
 
     return imgTags
   }, [])
-}
-
-module.exports = {
-  resolveImgTags,
 }

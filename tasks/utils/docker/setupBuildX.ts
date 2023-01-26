@@ -1,14 +1,15 @@
-const { docker, error } = require('@keg-hub/cli-utils')
+import type { TEnvObject } from '../../types'
+
+import { docker, error } from '@keg-hub/cli-utils'
 
 /**
  * Sets the docker buildx builder instance
- * @param {string} builder - Name of the docker buildx builder instance to use
- * @param {string} appRoot - All envs loaded from the `container/values.yml` file
- * @param {Object} allEnvs - All envs loaded from the `container/values.yml` file
- *
- * @returns {Void}
  */
-const setupBuildX = async (builder, appRoot, allEnvs) => {
+export const setupBuildX = async (
+  builder:string,
+  appRoot:string,
+  allEnvs:TEnvObject
+) => {
   // Create the buildx goblet context if it does not exist
   await docker([`buildx`, `create`, `--name`, builder], {
     cwd: appRoot,
@@ -29,6 +30,3 @@ const setupBuildX = async (builder, appRoot, allEnvs) => {
     )
 }
 
-module.exports = {
-  setupBuildX,
-}
