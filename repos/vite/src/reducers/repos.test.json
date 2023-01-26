@@ -1,5 +1,13 @@
 [
   {
+    "url": "https://github.com/lancetipton/asteroids-remake",
+    "name": "asteroids-remake",
+    "branches": [
+      "master",
+      "add_items"
+    ]
+  },
+  {
     "url": "https://github.com/GobletQA/demos",
     "name": "demos",
     "branches": [

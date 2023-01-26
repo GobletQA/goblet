@@ -8,6 +8,23 @@ export type TGlobalStyles = {
   theme:TGobletTheme
 }
 
+
+const resetSelection = `
+  *::-webkit-selection {
+    color: highlighttext !important;
+    background-color: highlight !important;
+  }
+  *::-moz-selection {
+    color: highlighttext !important;
+    background-color: highlight !important;
+  }
+  *::selection {
+    color: highlighttext !important;
+    background-color: highlight !important;
+  }
+`
+
+
 export const globalStyles = ({ theme }:TGlobalStyles) => {
   const { palette, typography } = theme
   const { mode, primary } = palette
@@ -26,6 +43,9 @@ export const globalStyles = ({ theme }:TGlobalStyles) => {
     }
 
     *:focus-visible { outline: 1px solid ${primary.main} }
+    *::selection {
+      background: ${mode === EThemeMode.light ? colors.yellow10 : colors.purple10 } !important;
+    }
 
     input:-webkit-autofill,
     input:-webkit-autofill:hover,

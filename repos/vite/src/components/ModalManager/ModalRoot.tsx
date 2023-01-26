@@ -119,6 +119,7 @@ export const ModalRoot = (props:TModal) => {
 
   return (
     <Dialog
+      className='gb-modal-root'
       aria-labelledby={titleProps?.id || "gb-modal-title"}
       aria-describedby={contentProps?.id || "gb-modal-description"}
       {...transitionProps}

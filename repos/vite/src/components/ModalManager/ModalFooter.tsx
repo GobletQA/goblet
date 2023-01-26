@@ -25,6 +25,7 @@ const FooterAction = (props:TModalAction) => {
   return (
     <Button
       key={text}
+      className='modal-footer-action'
       disabled={disabled || loading}
       endIcon={EIcon && (<EIcon {...iconProps} />)}
       startIcon={SIcon && (<SIcon {...iconProps} />)}
@@ -46,6 +47,7 @@ export const ModalFooter = (props:TModalFooter) => {
   return actions
     ? (
         <DialogActions
+          className='modal-footer-actions'
           {...actionProps}
           {...rest}
           sx={[

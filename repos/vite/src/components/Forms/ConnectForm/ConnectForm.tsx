@@ -1,5 +1,6 @@
 import type { TFormFooter } from '@gobletqa/components'
-import type { FormEvent, ComponentType, MutableRefObject } from 'react'
+import type { TCreateParams, TConnectParams } from '@hooks/api/useConnectRepo'
+import type { CSSProperties, FormEvent, ComponentType, MutableRefObject } from 'react'
 
 import { RepoConnect } from './RepoConnect'
 import { BranchConnect } from './BranchConnect'
@@ -8,13 +9,12 @@ import { useInputError } from '@hooks/form/useInputError'
 import Box from '@mui/material/Box'
 import { useState, useMemo } from 'react'
 import Grid from '@mui/material/Unstable_Grid2'
-import { signOutReload } from '@actions/admin/user/signOutReload'
+
 import { ModalMessage } from '@components/ModalManager/ModalMessage'
 import {
   Form,
   gutter,
   useInline,
-  LogoutIcon,
   CloudDownIcon,
 } from '@gobletqa/components'
 
@@ -30,13 +30,6 @@ export type TConnectForm = {
 }
 
 const ConnectFormActions = {
-  signOut: {
-    label: `Sign Out`,
-    StartIcon: LogoutIcon,
-    onClick: signOutReload,
-    variant: `text`  as const,
-    color: `secondary` as const,
-  },
   connectRepo: {
     StartIcon: CloudDownIcon,
     color: `primary`  as const,
@@ -46,12 +39,31 @@ const ConnectFormActions = {
 }
 
 const styles = {
+  container: {
+    flexGrow: 2,
+    display: `flex`,
+    flexDirection: `column`,
+    padding: `${gutter.padding.hpx} ${gutter.padding.hpx}`,
+  } as CSSProperties,
   form: {
-    paddingBottom: gutter.padding.px
-  },
+    sx: {
+      paddingBottom: gutter.padding.px
+    },
+    containerSx: {
+      height: `100%`,
+      display: `grid`,
+      flexDirection: `column`,
+    },
+    footerSx: {
+      alignSelf: `end`
+    }
+  } as Record<string, CSSProperties>,
   grid: {
     alignItems: `center`
-  }
+  } as CSSProperties,
+  branch: {
+    paddingLeft: gutter.padding.qpx,
+  } as CSSProperties,
 }
 
 
@@ -71,7 +83,7 @@ const useFooterProps = ({
         sx: {
           paddingTop: `10px`,
           paddingBottom: `20px`,
-          justifyContent: `space-around`
+          justifyContent: `flex-end`
         }
       },
       actions: {
@@ -142,7 +154,7 @@ export const ConnectForm = (props:TConnectForm) => {
         newRepo: createRepo && !newRepo ? `A repository name is required` : undefined,
       })
 
-    const params = {
+    const params:TConnectParams|TCreateParams = {
       repo,
       branch,
       newRepo,
@@ -171,30 +183,31 @@ export const ConnectForm = (props:TConnectForm) => {
 
   return (
     <>
-      <Box className='connect-form-container' padding={`${gutter.padding.px} ${gutter.padding.px}`}>
+      <Box
+        sx={styles.container}
+        className='connect-form-container'
+      >
         <FormMessage
           error={formError}
           loading={loading && 'Connecting Repo'}
         />
         <Form
+          {...styles.form}
           ref={formRef}
           Header={Header}
           Footer={Footer}
-          sx={styles.form}
           onSubmit={onSubmit}
           footerProps={footerProps}
           className='gb-grid-connect-form'
         >
-          <Box
-            className='gb-grid-connect-inputs-container'
-          >
+          <Box className='gb-grid-connect-inputs-container'>
             <Grid
               container
               rowSpacing={2}
               sx={styles.grid}
               columnSpacing={1}
               disableEqualOverflow={true}
-              className='gb-grid-connect-inputs'
+              className='gb-grid-repo-connect'
             >
 
               <RepoConnect
@@ -212,8 +225,8 @@ export const ConnectForm = (props:TConnectForm) => {
 
               <Grid
                 xs={12}
-                sx={{ paddingLeft: `5px` }}
-                className='gb-grid-advanced'
+                sx={styles.branch}
+                className='gb-grid-branch-connect'
               >
                 <BranchConnect
                   repo={repo}

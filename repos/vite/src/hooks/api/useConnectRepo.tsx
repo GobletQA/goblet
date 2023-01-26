@@ -9,7 +9,11 @@ export type TConnectParams = Omit<TConnectRepo, `repo`> & {
   repo:TBuiltRepo,
 }
 
-type TConnectCB = (props:TConnectParams|TCreateRepo) => Promise<void>
+export type TCreateParams = Omit<TCreateRepo, `repo`> & {
+  repo:TBuiltRepo,
+}
+
+type TConnectCB = (props:TConnectParams|TCreateParams) => Promise<void>
 
 export type THConnectRepo = {
   loading?:boolean

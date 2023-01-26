@@ -19,7 +19,7 @@ export const FormFooterContainer = styled(Box)``
 export const InputContainer = styled(Box)`
   margin-top: 10px;
   position: relative;
-  
+
   &.disabled-input {
     cursor: pointer;
   }

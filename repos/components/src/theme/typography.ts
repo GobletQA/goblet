@@ -50,17 +50,17 @@ export const typography = (
     subtitle1: {
       fontWeight: 500,
       fontSize: '0.875rem',
-      color: palette.colors.gray04
+      color: palette.colors.gray15
     },
     subtitle2: {
       fontWeight: 400,
       fontSize: '0.75rem',
-      color: palette.colors.gray04
+      color: palette.colors.gray15
     },
     caption: {
       fontWeight: 400,
       fontSize: '0.75rem',
-      color: palette.colors.gray03,
+      color: palette.colors.gray15,
     },
   }
 }

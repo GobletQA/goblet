@@ -5,6 +5,14 @@ import { colors } from '@gobletqa/components'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 
+const styles = {
+  content: {
+    padding: `10px 10px`,
+    borderTop: `2px solid ${colors.green10}`,
+    borderBottom: `2px solid ${colors.green10}`,
+  }
+}
+
 export const ModalContent = (props:TModal) => {
   const {
     text,
@@ -15,11 +23,9 @@ export const ModalContent = (props:TModal) => {
 
   return (
     <DialogContent
+      sx={styles.content}
       id="gb-modal-description"
-      sx={{
-        borderTop: `2px solid ${colors.green10}`,
-        borderBottom: `2px solid ${colors.green10}`,
-      }}
+      className='gb-modal-content'
       {...contentProps}
     >
       {children}
