@@ -86,8 +86,9 @@ export class Repo {
       username,
       newBranch,
       branchFrom,
+      description,
     } = args
-    
+
     const { repo, ...status } = await createGoblet({
       token,
       user: {
@@ -99,6 +100,7 @@ export class Repo {
         provider,
         newBranch,
         branchFrom,
+        description
       },
     })
 

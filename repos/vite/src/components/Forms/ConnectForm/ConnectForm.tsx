@@ -105,8 +105,7 @@ export const ConnectForm = (props:TConnectForm) => {
   const footerProps = useConnectActions({
     onSubmit,
     submitDisabled: Boolean(
-      formError
-        || loading
+      loading
         || !repo
         || !branch
         || (createRepo && !newRepo)

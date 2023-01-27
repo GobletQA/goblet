@@ -3,6 +3,7 @@ import type {
   TGitOpts,
   TRepoResp,
   TBranchResp,
+  TGitCreateRepoOpts,
 } from '@gobletqa/workflows/types'
 
 import axios, { AxiosError } from 'axios'
@@ -31,6 +32,20 @@ type TCreateBranchCof = {
   from?:string
 }
 
+const createOpts = {
+  override: {
+    private: true,
+    has_wiki: true,
+    has_issues: true,
+    has_projects: true,
+    allow_merge_commit: false,
+    delete_branch_on_merge: false,
+  },
+  force: {
+    auto_init: true,
+  },
+}
+
 export class GitApi {
   baseUrl:string
   headers:Record<string, string>
@@ -44,8 +59,22 @@ export class GitApi {
   
   // TODO: Add ability to create a new repo from UI
   // Then add work flow to create the repo and setup the default user branch
-  static createRepo = () => {
+  static createRepo = (args:TGitCreateRepoOpts, gitOpts:TGitOpts) => {
+
+  // name: string
+  // homepage?:string
+  // private?:boolean
+  // has_wiki?:boolean
+  // has_issues?:boolean
+  // description?: string
+  // has_projects?:boolean
+  // allow_squash_merge?:boolean
+  // allow_merge_commit?:boolean
+  // delete_branch_on_merge?:boolean
     
+    const createParams = deepMerge(createOpts.override, args, createOpts.force)
+    Logger.log(`Creating repo ${args.name} with params`, createParams)
+
   }
   
   constructor(gitOpts:TGitOpts){

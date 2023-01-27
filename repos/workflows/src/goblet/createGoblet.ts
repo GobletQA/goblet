@@ -12,9 +12,25 @@ import { ensureBranchExists } from '@gobletqa/workflows/repo/ensureBranchExists'
 export const createGoblet = async (args:TWFCreateArgs) => {
   
   Logger.subHeader(`Running Create Repo Goblet Workflow`)
+  const { create, user } = args
 
   const token = git.loadToken(args)
-  const gitOpts = await configureGitOpts({ ...args, token })
+  const gitOpts = await configureGitOpts({
+    user,
+    token,
+    repo: {
+      branchFrom: false,
+      branch: create.branch,
+      newBranch: create.newBranch,
+      url: `https://github.com/${user.gitUser}/${create.name}`,
+    },
+  })
+
+  GitApi.createRepo({
+    name: create.name,
+    description: create.description
+  }, gitOpts)
+  
   const gitApi = new GitApi(gitOpts)
 
   const notValid = validateCreateArgs(token, gitOpts)

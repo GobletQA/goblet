@@ -48,3 +48,8 @@ export type TGitCreateOrgRepo = TGitCreateUserRepo &  {
 }
 
 export type TGitCreateRepo = TGitCreateOrgRepo | TGitCreateUserRepo
+
+export type TGitCreateRepoOpts = Partial<TGitCreateRepo> & {
+  name: string
+  description?: string
+}
