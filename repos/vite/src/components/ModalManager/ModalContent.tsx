@@ -1,13 +1,13 @@
 import type { TModal } from '@types'
 
 import { exists } from '@keg-hub/jsutils'
-import { colors } from '@gobletqa/components'
+import { colors, gutter } from '@gobletqa/components'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
 
 const styles = {
   content: {
-    padding: `10px 10px`,
+    padding: gutter.padding.px,
     borderTop: `2px solid ${colors.green10}`,
     borderBottom: `2px solid ${colors.green10}`,
   }

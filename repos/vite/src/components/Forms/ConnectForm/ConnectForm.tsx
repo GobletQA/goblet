@@ -1,25 +1,16 @@
-import type { TFormFooter } from '@gobletqa/components'
-import type { TCreateParams, TConnectParams } from '@hooks/api/useConnectRepo'
-import type { CSSProperties, FormEvent, ComponentType, MutableRefObject } from 'react'
-
-import { RepoConnect } from './RepoConnect'
-import { BranchConnect } from './BranchConnect'
-import { useInputError } from '@hooks/form/useInputError'
+import type { CSSProperties, ComponentType, MutableRefObject } from 'react'
 
 import Box from '@mui/material/Box'
-import { useState, useMemo } from 'react'
+import { RepoConnect } from './RepoConnect'
+import { BranchConnect } from './BranchConnect'
 import Grid from '@mui/material/Unstable_Grid2'
-
+import { Form, gutter } from '@gobletqa/components'
+import { useSubmit } from '@hooks/connect/useSubmit'
+import { useConnect } from '@hooks/connect/useConnect'
+import { useInputError } from '@hooks/form/useInputError'
 import { ModalMessage } from '@components/ModalManager/ModalMessage'
-import {
-  Form,
-  gutter,
-  useInline,
-  CloudDownIcon,
-} from '@gobletqa/components'
+import { useConnectActions } from '@hooks/connect/useConnectActions'
 
-import { useGetRepos } from '@hooks/api/useGetRepos'
-import { useConnectRepo } from '@hooks/api/useConnectRepo'
 
 export type TConnectForm = {
   Footer?:ComponentType<any>
@@ -29,25 +20,16 @@ export type TConnectForm = {
   formRef?: MutableRefObject<HTMLFormElement>
 }
 
-const ConnectFormActions = {
-  connectRepo: {
-    StartIcon: CloudDownIcon,
-    color: `primary`  as const,
-    variant: `contained`  as const,
-    label: `Connect`,
-  }
-}
-
 const styles = {
   container: {
     flexGrow: 2,
     display: `flex`,
     flexDirection: `column`,
-    padding: `${gutter.padding.hpx} ${gutter.padding.hpx}`,
+    paddingTop: gutter.padding.hpx,
   } as CSSProperties,
   form: {
     sx: {
-      paddingBottom: gutter.padding.px
+      // paddingBottom: gutter.padding.px
     },
     containerSx: {
       height: `100%`,
@@ -62,45 +44,11 @@ const styles = {
     alignItems: `center`
   } as CSSProperties,
   branch: {
+    paddingTop: `0px`,
     paddingLeft: gutter.padding.qpx,
   } as CSSProperties,
 }
 
-
-type THFooterProps = {
-  onSubmit?: (event:FormEvent<HTMLFormElement>) => void
-  submitDisabled?:boolean
-}
-
-
-const useFooterProps = ({
-  onSubmit,
-  submitDisabled
-}:THFooterProps) => {
-  return useMemo(() => {
-    return {
-      actionProps: {
-        sx: {
-          paddingTop: `10px`,
-          paddingBottom: `20px`,
-          justifyContent: `flex-end`
-        }
-      },
-      actions: {
-        ...ConnectFormActions,
-        connectRepo: {
-          ...ConnectFormActions.connectRepo,
-          onClick: onSubmit,
-          disabled: submitDisabled
-        }
-      }
-    } as TFormFooter
-  }, [
-    onSubmit,
-    submitDisabled
-  ])
- 
-}
 
 export const ConnectForm = (props:TConnectForm) => {
   const {
@@ -111,10 +59,6 @@ export const ConnectForm = (props:TConnectForm) => {
     FormMessage=ModalMessage,
   } = props
 
-  const [formError, setFormError] = useState<string>()
-  const [loading, setLoading] = useState<boolean>(false)
-  const [branchFrom, setBranchFrom] = useState<boolean>(false)
-  
   const {
     inputError,
     onInputError,
@@ -126,50 +70,39 @@ export const ConnectForm = (props:TConnectForm) => {
     repos,
     branch,
     newRepo,
+    loading,
     newBranch,
     createRepo,
+    branchFrom,
+    setLoading,
     description,
     onChangeRepo,
+    setBranchFrom,
     onChangeBranch,
     onChangeNewRepo,
     onChangeNewBranch,
     onChangeDescription,
-  } = useGetRepos({ onInputError })
+  } = useConnect({ onInputError })
 
-  const onConnectRepo = useConnectRepo({
+  const {
+    onSubmit,
+    formError,
+  } = useSubmit({
+    repo,
+    branch,
+    newRepo,
     loading,
+    onConnect,
+    newBranch,
     setLoading,
-    setFormError,
+    branchFrom,
+    createRepo,
+    description,
+    setInputError
   })
 
-  const onSubmit = useInline(async (event:FormEvent<HTMLFormElement>) => {
-    event.stopPropagation()
-    event.preventDefault()
 
-    if(!repo || !branch || (branchFrom && !newBranch) || (createRepo && !newRepo))
-      return setInputError({
-        repo: !repo ? `A repository is required` : undefined,
-        branch: !branch ? `A branch is required` : undefined,
-        newBranch: branchFrom && !newBranch ? `A branch name is require` : undefined,
-        newRepo: createRepo && !newRepo ? `A repository name is required` : undefined,
-      })
-
-    const params:TConnectParams|TCreateParams = {
-      repo,
-      branch,
-      newRepo,
-      newBranch,
-      createRepo,
-      branchFrom,
-      description
-    }
-
-    await onConnectRepo(params)
-
-    onConnect?.(params)
-  })
-
-  const footerProps = useFooterProps({
+  const footerProps = useConnectActions({
     onSubmit,
     submitDisabled: Boolean(
       formError

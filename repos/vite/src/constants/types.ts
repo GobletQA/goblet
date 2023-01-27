@@ -51,3 +51,6 @@ export const CreateNewRepo = {
   key:`create-new-repo`,
   label: `Create New Repo`,
 }
+
+export const CreateNewBranch = `Create new branch`
+export const CreateBranchSelect = `create-branch-select`

@@ -8,7 +8,11 @@ import { EModalTypes, EContainerState } from '@types'
 import { ConnectForm } from '@components/Forms/ConnectForm'
 import { ModalFooter } from '@components/ModalManager/ModalFooter'
 import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
-import { gutter, H3, Text, PlugIcon, GitTreeSvg } from '@gobletqa/components'
+import { gutter, H3, Text, PlugIcon } from '@gobletqa/components'
+import { Loading } from '@gobletqa/components'
+
+import { lazy, Suspense, useEffect } from 'react'
+const VersionCtrl = lazy(() => import('@components/Svgs/VersionCtrl'))
 
 const styles:Record<string, CSSProperties> = {
   container: {
@@ -16,16 +20,27 @@ const styles:Record<string, CSSProperties> = {
     display: `flex`,
     flexDirection: `row`,
   },
+  left: {
+    paddingRight: gutter.padding.hpx
+  },
+  version: {
+    width: `300px`,
+    height: `300px`
+  },
   right: {
     display: `flex`,
     flexDirection: `column`,
+    paddingLeft: gutter.padding.hpx
   },
   rightTop: {
-    padding: gutter.padding.hpx,
     paddingBottom: `0px`,
   },
   header: {
     marginBottom: gutter.margin.qpx
+  },
+  footer: {
+    justifyContent: `end`,
+    padding: `${gutter.padding.px} 0px 0px`,
   }
 }
 
@@ -44,8 +59,13 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
           sx={styles.container}
           className='connect-modal-container'
         >
-          <Box className='connect-modal-left'>
-            <GitTreeSvg />
+          <Box
+            sx={styles.left}
+            className='connect-modal-left'
+          >
+            <Suspense fallback={<Loading />} >
+              <VersionCtrl />
+            </Suspense>
           </Box>
           <Box
             sx={styles.right}
@@ -62,7 +82,7 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
                 Repository
               </H3>
               <Text className='connect-modal-sub-text' variant="subtitle2">
-                Connect an existing repository or create a new one in your git cloud provider. This repository will track changes made to files in your project through GobletQA.
+                Connect or create a repository using your git cloud provider. Once connected, all project files are automatically synced between the repository and GobletQA.
               </Text>
             </Box>
             <ConnectForm
@@ -71,10 +91,7 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
                 <>
                   <ModalFooter
                     {...footerProps}
-                    sx={{
-                      justifyContent: `end`,
-                      padding: `${gutter.padding.px} 0px 0px`,
-                    }}
+                    sx={styles.footer}
                   />
                 </>
               )}

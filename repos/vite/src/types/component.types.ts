@@ -5,6 +5,7 @@ import type {
   AutocompleteChangeReason,
   AutocompleteChangeDetails
 } from '@mui/material/Autocomplete'
+import { CreateBranchSelect } from '@constants'
 
 
 export type CSSProps = SxProps<Theme>
@@ -34,9 +35,3 @@ export type AutoOpt = {
 }
 export type AutoOptVal = string | AutoOpt
 
-export type TOnAutoChange = (
-  event:SyntheticEvent,
-  value:AutoOptVal|AutoOptVal[],
-  reason:AutocompleteChangeReason,
-  details:AutocompleteChangeDetails
-) => void

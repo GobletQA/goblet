@@ -22,8 +22,8 @@ export type AutoOptVal = string | AutoOpt
 export type TOnAutoChange = (
   event:SyntheticEvent,
   value:AutoOptVal|AutoOptVal[],
-  reason:AutocompleteChangeReason,
-  details:AutocompleteChangeDetails
+  reason?:AutocompleteChangeReason|string,
+  details?:AutocompleteChangeDetails
 ) => void
 
 

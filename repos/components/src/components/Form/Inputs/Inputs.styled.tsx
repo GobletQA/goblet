@@ -7,7 +7,6 @@ import Autocomplete from '@mui/material/Autocomplete'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 
 export const AutoContainer = styled(Box)`
-  margin-bottom: 10px;
 `
 
 export const AutoLabel = styled(FormLabel)``
@@ -17,13 +16,13 @@ export const AutoLabelWrap = styled(Box)`
 `
 
 export const Auto = styled(Autocomplete)`
-  height: 40px;
+  
   padding-top: 0px;
   margin-bottom: 0px;
   padding-bottom: 0px;
 
   & .MuiTextField-root {
-    height: 40px;
+  
   }
 
   & .MuiInputBase-root {
@@ -43,9 +42,7 @@ export const Auto = styled(Autocomplete)`
   }
 `
 
-export const InputContainer = styled(Box)`
-  margin-bottom: 10px;
-`
+export const InputContainer = styled(Box)``
 
 export const InputLabel = styled(FormLabel)``
 

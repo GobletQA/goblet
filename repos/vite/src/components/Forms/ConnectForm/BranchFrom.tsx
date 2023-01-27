@@ -1,5 +1,6 @@
+import type { TRepoInputError } from '@types'
 import type { FocusEvent, KeyboardEvent } from 'react'
-import type { TRepoInputError, TOnAutoChange } from '@types'
+import type { TOnAutoChange } from '@gobletqa/components'
 
 import { useCallback, useEffect, useRef } from 'react'
 import { SubGridParent, SubGrid } from './Connect.styled'

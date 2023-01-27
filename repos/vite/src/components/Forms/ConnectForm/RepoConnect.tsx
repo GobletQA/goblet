@@ -4,7 +4,6 @@ import type { TRepoValueCB, TRepoInputError, TBuiltRepo, TBuiltRepos } from '@ty
 import { SyncRepos } from './SyncRepos'
 import { RepoSelect } from './RepoSelect'
 import { RepoCreate } from './RepoCreate'
-import { RepoToggle } from './RepoToggle'
 import Grid from '@mui/material/Unstable_Grid2'
 import { RepoDescription } from './RepoDescription'
 
@@ -30,6 +29,13 @@ const repoProps = {
   },
 }
 
+const styles = {
+  sync: { paddingTop: `3px` },
+  name: { paddingTop: `0px` },
+  description: { paddingTop: `0px` },
+  container: { alignItems: `center` },
+}
+
 export const RepoConnect = (props:TRepoProps) => {
   const {
     repo,
@@ -48,7 +54,7 @@ export const RepoConnect = (props:TRepoProps) => {
     <Grid
       xs={12}
       container
-      sx={{ alignItems: `center` }}
+      sx={styles.container}
       className='gb-grid-repo-select'
     >
 
@@ -60,7 +66,12 @@ export const RepoConnect = (props:TRepoProps) => {
           error={inputError?.repo}
         />
       </Grid>
-      <Grid className='gb-grid-sync-repos' xs={3} md={1} >
+      <Grid 
+        xs={3}
+        md={1}
+        sx={styles.sync}
+        className='gb-grid-sync-repos'
+      >
         <SyncRepos />
       </Grid>
 
@@ -68,6 +79,7 @@ export const RepoConnect = (props:TRepoProps) => {
         <>
           <Grid
             xs={12}
+            sx={styles.name}
             className='gb-grid-repo-name'
           >
             <RepoCreate
@@ -79,7 +91,7 @@ export const RepoConnect = (props:TRepoProps) => {
           </Grid>
           <Grid
             xs={12}
-            sx={{ paddingTop: `0px` }}
+            sx={styles.description}
             className='gb-grid-repo-description'
           >
             <RepoDescription

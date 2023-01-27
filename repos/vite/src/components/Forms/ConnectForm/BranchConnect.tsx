@@ -1,12 +1,11 @@
 import type { TRepoInputError, TBuiltRepo } from '@types'
 import type { TOnAutoChange } from '@gobletqa/components'
 
-
 import { BranchFrom } from './BranchFrom'
 import { emptyArr } from '@keg-hub/jsutils'
 import { BranchSelect } from './BranchSelect'
+import { CreateNewBranch } from '@constants'
 import { colors } from '@gobletqa/components'
-import { BranchToggle } from './BranchToggle'
 import Grid from '@mui/material/Unstable_Grid2'
 import { Container, Dropdown } from './Connect.styled'
 
@@ -52,10 +51,10 @@ export const BranchConnect = (props:TAdvanced) => {
     inputError,
     branchFrom,
     onInputError,
-    onChangeNewBranch,
-    onChangeBranchFrom,
+    onChangeNewBranch
   } = props
   
+  const selected = branchFrom ? CreateNewBranch : branch
 
   return (
     <Container className='gb-advanced-connect-container' >
@@ -76,14 +75,18 @@ export const BranchConnect = (props:TAdvanced) => {
           disableEqualOverflow={true}
           className='gb-grid-select-branch'
         >
-        
+
           <Grid className='gb-grid-repo-select' xs={12} >
-            <BranchToggle
-              branchFrom={branchFrom}
-              setBranchFrom={onChangeBranchFrom}
+            <BranchSelect
+              branch={selected}
+              disabled={disabled}
+              onChange={onChange}
+              error={inputError.branch}
+              branches={repo?.branches || emptyArr}
             />
           </Grid>
-          {branchFrom ? (
+
+          {branchFrom && (
             <Grid className='gb-grid-branch-from' xs={12} >
               <BranchFrom
                 branch={branch}
@@ -96,17 +99,8 @@ export const BranchConnect = (props:TAdvanced) => {
                 branches={repo?.branches || emptyArr}
               />
             </Grid>
-          ) : (
-            <Grid className='gb-grid-repo-select' xs={12} >
-              <BranchSelect
-                branch={branch}
-                disabled={disabled}
-                onChange={onChange}
-                error={inputError.branch}
-                branches={repo?.branches || emptyArr}
-              />
-            </Grid>
-          )}
+          ) || null}
+
         </Grid>
       </Dropdown>
     </Container>

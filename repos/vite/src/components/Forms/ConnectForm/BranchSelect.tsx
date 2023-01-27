@@ -1,5 +1,7 @@
-import type { TOnAutoChange } from '@types'
+import type { TOnAutoChange } from '@gobletqa/components'
 
+import { useCallback } from 'react'
+import { CreateBranchSelect } from '@constants'
 import { AutoInput } from '@gobletqa/components/components/Form/Inputs'
 
 const branchProps = {
@@ -29,11 +31,13 @@ export const BranchSelect = (props:TBranchProps) => {
     ...rest
   } = props
 
+  const onSelect = useCallback<TOnAutoChange>((evt, val) => onChange?.(evt, val, CreateBranchSelect), [onChange])
+
   return (
     <AutoInput
       {...branchProps}
       {...rest}
-      onChange={onChange}
+      onChange={onSelect}
       currentValue={branch}
       options={branches || []}
       className='branch-select-dropdown'
