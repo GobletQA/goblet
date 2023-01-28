@@ -87,6 +87,7 @@ export class Repo {
       newBranch,
       branchFrom,
       description,
+      organization,
     } = args
 
     const { repo, ...status } = await createGoblet({
@@ -100,7 +101,8 @@ export class Repo {
         provider,
         newBranch,
         branchFrom,
-        description
+        description,
+        organization
       },
     })
 

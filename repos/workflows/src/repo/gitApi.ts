@@ -23,6 +23,7 @@ type TApiRes = {
 }
 
 type TApiConf = {
+  url?:string
   error?:boolean
   cache?:boolean
 }
@@ -56,27 +57,58 @@ export class GitApi {
     console.log(...args)
     throw new Error(message)
   }
-  
-  // TODO: Add ability to create a new repo from UI
-  // Then add work flow to create the repo and setup the default user branch
-  static createRepo = (args:TGitCreateRepoOpts, gitOpts:TGitOpts) => {
 
-  // name: string
-  // homepage?:string
-  // private?:boolean
-  // has_wiki?:boolean
-  // has_issues?:boolean
-  // description?: string
-  // has_projects?:boolean
-  // allow_squash_merge?:boolean
-  // allow_merge_commit?:boolean
-  // delete_branch_on_merge?:boolean
-    
-    const createParams = deepMerge(createOpts.override, args, createOpts.force)
+/**
+ * Create a new repo by making a post request to github's API
+ * @example - User
+ * curl -H "Authorization: token ACCESS_TOKEN" \
+ *   --data '{"name":"NEW_REPO_NAME"}' \
+ *   https://api.github.com/user/repos
+ *
+ * @example - Organization
+ * curl -H "Authorization: token ACCESS_TOKEN" \
+ * --data '{"name":"NEW_REPO_NAME", "description": "", "private": true, "auto_init": true }' \
+ * https://api.github.com/orgs/ORGANIZATION_NAME/repos
+ *
+*/
+  static createRepo = async (args:TGitCreateRepoOpts) => {
+    const { url, token, ...params } = args
+
+    const createParams = deepMerge(createOpts.override, params, createOpts.force)
     Logger.log(`Creating repo ${args.name} with params`, createParams)
 
+    const config = deepMerge<AxiosRequestConfig>({
+      url,
+      method: `POST`,
+      data: createParams,
+      headers: buildHeaders(token),
+    })
+
+    const [err, resp] = await limbo<TRepoResp, AxiosError>(axios(config))
+    if(err){
+      const error = err?.response?.data as Error
+      throwGitError(error, url)
+    }
+
+    Logger.success(`Successfully created repo ${args.name}`)
+    return resp?.data
   }
-  
+
+  /**
+   * Dummy data for create a repo and not hitting the github api
+   */
+  // static _createRepo = async (args:TGitCreateRepoOpts) => {
+  //   return {
+  //     id: 594255619,
+  //     private: true,
+  //     name: 'test-repo',
+  //     node_id: 'R_kgDOI2ufAw',
+  //     default_branch: 'master',
+  //     full_name: 'lancetipton/test-repo',
+  //     html_url: 'https://github.com/lancetipton/test-repo',
+  //   }
+  // }
+
   constructor(gitOpts:TGitOpts){
     const { token, remote, ...opts } = gitOpts
 
@@ -104,7 +136,7 @@ export class GitApi {
     const config = deepMerge<AxiosRequestConfig>({
       method: 'GET',
       headers: this.headers,
-    }, params, { url })
+    }, args, { url })
     
     const [err, resp] = await limbo<T, AxiosError>(axios(config))
     const axiosRes = [err, resp] as [AxiosError, T]
@@ -136,7 +168,7 @@ export class GitApi {
   }
 
   getBranch = async (branch:string) => {
-    Logger.log(`Getting branch ${branch} meta data...`)
+    Logger.log(`Getting branch ${branch} meta-data...`)
     const [err, resp] = await this._callApi<TBranchResp>(`branches/${branch}`, { error: false })
 
     if (resp?.data) return resp?.data

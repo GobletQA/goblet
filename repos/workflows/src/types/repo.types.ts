@@ -50,4 +50,5 @@ export type TCreateRepo = {
   newBranch?:string
   branchFrom?:boolean
   description?:string
+  organization?:string
 }

@@ -1,59 +1,65 @@
-import type { TGitOpts, TWFCreateArgs } from '@gobletqa/workflows/types'
+import type { TWFCreateArgs } from '@gobletqa/workflows/types'
 
 import { Logger } from '@keg-hub/cli-utils'
 import { git } from '@gobletqa/workflows/git'
 import { GitApi } from '@gobletqa/workflows/repo/gitApi'
-import { mountRepo } from '@gobletqa/workflows/repo/mountRepo'
-import { setupGoblet } from '@gobletqa/workflows/goblet/setupGoblet'
-import { validateCreateArgs } from '@gobletqa/workflows/utils/validateCreateArgs'
+import { ensureMounted } from '@gobletqa/workflows/repo/ensureMounted'
 import { configureGitOpts } from '@gobletqa/workflows/utils/configureGitOpts'
 import { ensureBranchExists } from '@gobletqa/workflows/repo/ensureBranchExists'
+import { validateCreateArgs } from '@gobletqa/workflows/utils/validateCreateArgs'
+
+const buildCreateUrl = (args:TWFCreateArgs) => {
+  const { create } = args
+  const { organization } = create
+  const createPath = organization
+    ? `orgs/${organization}/repos`
+    : `user/repos`
+
+  return `https://api.github.com/${createPath}`
+}
 
 export const createGoblet = async (args:TWFCreateArgs) => {
-  
-  Logger.subHeader(`Running Create Repo Goblet Workflow`)
-  const { create, user } = args
 
-  const token = git.loadToken(args)
+  Logger.subHeader(`Running Create Goblet Workflow`)
+
+  const { create, user } = args
+  const createUrl = buildCreateUrl(args)
+
+  const token = git.loadToken(args) as string
+
+  const repoMeta = await GitApi.createRepo({
+    token,
+    url: createUrl,
+    name: create.name,
+    description: create.description
+  })
+
   const gitOpts = await configureGitOpts({
     user,
     token,
     repo: {
-      branchFrom: false,
-      branch: create.branch,
-      newBranch: create.newBranch,
-      url: `https://github.com/${user.gitUser}/${create.name}`,
+      branchFrom: true,
+      url: repoMeta.html_url,
+      newBranch: create.branch,
+      branch: repoMeta.default_branch,
     },
   })
-
-  GitApi.createRepo({
-    name: create.name,
-    description: create.description
-  }, gitOpts)
-  
-  const gitApi = new GitApi(gitOpts)
 
   const notValid = validateCreateArgs(token, gitOpts)
   if(notValid) return notValid
 
+  const gitApi = new GitApi(gitOpts)
+  const branch = await ensureBranchExists(gitApi, gitOpts)
+  const setupResp = await ensureMounted(args, {...gitOpts, branch })
 
-  // TODO: implement create repo here
-
-  const createResp = {
-    mounted:  false,
-    setup: false,
-    message: `Create repo not implemented!`,
-    repo: {}
-  }
-
-  createResp.mounted && createResp.setup
-    ? Logger.success(`Finished running Initialize Goblet Workflow`)
+  setupResp.mounted && setupResp.setup
+    ? Logger.success(`Finished running Create Goblet Workflow`)
     : Logger.error(
-        Logger.colors.red(`Failed Initialize Goblet Workflow\n`),
-        Logger.colors.white(`\t- Repo Mount: ${createResp.mounted}\n`),
-        Logger.colors.white(`\t- Repo Setup: ${createResp.setup}\n`)
+        Logger.colors.red(`Failed Create Goblet Workflow\n`),
+        Logger.colors.white(`\t- Repo Mount: ${setupResp.mounted}\n`),
+        Logger.colors.white(`\t- Repo Setup: ${setupResp.setup}\n`)
       )
 
-  return createResp
+  return setupResp
 
 }

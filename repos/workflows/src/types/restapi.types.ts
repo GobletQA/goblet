@@ -69,8 +69,6 @@ export type TBranchMeta = {
 
 export type TBranchResp = Record<`data`, TBranchMeta>
 
-
-
 export type TGitOrg = {
   login: string
   id: number

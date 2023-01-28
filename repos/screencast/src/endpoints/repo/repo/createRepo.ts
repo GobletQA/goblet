@@ -15,6 +15,7 @@ export type TCreateBody = {
   newBranch:string
   branchFrom?:boolean
   description?:string
+  organization?:string
 }
 
 /**

@@ -61,6 +61,7 @@ export type TRepoFromCreate = {
   newBranch?:string
   branchFrom?:boolean
   description?:string
+  organization?:string
 }
 
 export type TRepoFromWorkflow = {
