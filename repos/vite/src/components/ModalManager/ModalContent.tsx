@@ -9,7 +9,6 @@ const styles = {
   content: {
     padding: gutter.padding.px,
     borderTop: `2px solid ${colors.green10}`,
-    borderBottom: `2px solid ${colors.green10}`,
   }
 }
 

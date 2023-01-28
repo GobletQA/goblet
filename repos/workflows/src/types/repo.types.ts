@@ -52,3 +52,9 @@ export type TCreateRepo = {
   description?:string
   organization?:string
 }
+
+export type TRepoGitState = {
+  repo: boolean
+  branch: boolean
+  mounted: boolean
+}

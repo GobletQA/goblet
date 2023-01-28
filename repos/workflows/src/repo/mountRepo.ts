@@ -1,4 +1,5 @@
 import { saveRepo } from './saveRepo'
+import { isObj } from '@keg-hub/jsutils'
 import { git, RepoWatcher } from '../git'
 import { Logger } from '@keg-hub/cli-utils'
 import { TGitOpts, TRepoWatchCb } from '@gobletqa/workflows/types'
@@ -39,10 +40,11 @@ export const mountRepo = async (opts:TGitOpts) => {
   const [err, output] = await git.clone(opts)
 
   if (err) throw err
-  else Logger.log(`[Git Clone Output] ${JSON.stringify(output)}`)
 
   if (output?.exitCode)
     throw new Error(`Could not mount repository\n${output?.error || output?.data || ''}`)
+
+  else Logger.log(`Repo successfully mounted`)
 
   createRepoWatcher(opts)
 }
