@@ -1,6 +1,5 @@
 import type { MutableRefObject } from 'react'
 import type { TEditorRefHandle } from '@gobletqa/monaco'
-import type { TResizeSideBarEvent } from '@gobletqa/components'
 import type {
   TDefinitionAst,
   TSideNavToggleProps,
@@ -24,7 +23,6 @@ import { loadGobletFile } from '@actions/files/api/loadGobletFile'
 import {
   useEventEmit,
   useEventListen,
-  ResizeSideBarEvent,
 } from '@gobletqa/components'
 
 
@@ -92,10 +90,6 @@ export const useMonacoHooks = (
   const { theme, ...options } = useSettingValues<TEditorSettingValues>(`editor`)
 
   exists(theme) && set(config, `theme.name`, theme)
-
-  useEventListen<TResizeSideBarEvent>(ResizeSideBarEvent, ({ size }) => {
-    exists(size) && editorRef?.current?.resizeSidebar?.(size)
-  })
 
   useEventListen<TDefinitionAst>(OpenEditorFileEvt, async (defAst:TDefinitionAst) => {
     const { location } = defAst

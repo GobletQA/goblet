@@ -1,4 +1,5 @@
 
 export type TResizeSideBarEvent = {
-  size: number
+  size?: number
+  toggle?:boolean
 }

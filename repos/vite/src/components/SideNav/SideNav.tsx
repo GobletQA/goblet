@@ -1,16 +1,23 @@
+import type { CSSProperties } from 'react'
 import type { TNavItemProps } from '../Nav/NavItem'
+import type { TResizeSideBarEvent } from '@gobletqa/components'
 
 import { useApp } from '@store'
-import { useState, useEffect, useMemo } from 'react'
 import { ESideNav } from '@types'
 import { navItemNameToTitle } from '@utils'
 import { NavGroups, TGroupItem } from '../Nav'
+import { useState, useEffect, useMemo } from 'react'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { HeaderSpacer, Drawer } from './SideNav.styled'
 import { SideNav as SideNavItems } from '@constants/nav'
 import ClickAwayListener from '@mui/base/ClickAwayListener'
 import { useSideNavToggle } from '@hooks/nav/useSideNavToggle'
-import { useClickAway, useInline } from '@gobletqa/components'
 import { toggleSidebarLocked } from '@actions/nav/toggleSidebarLocked'
+import {
+  useInline,
+  useClickAway,
+  ResizeSideBarEvent,
+} from '@gobletqa/components'
 
 const groups = SideNavItems.groups.map(group => {
   const builtGrp = { ...group, items: [] } as TGroupItem
@@ -39,7 +46,10 @@ export const SideNav = (props:TSideNavProps) => {
 
   const toggleOpen = useInline((toggle:boolean, force?:boolean) => {
     if(sidebarLocked && open && !force) return
-    setOpen(toggle)
+
+    activeNav === ESideNav.files && sidebarLocked && force
+      ? EE.emit<TResizeSideBarEvent>(ResizeSideBarEvent, { toggle:true })
+      : setOpen(toggle)
   })
 
   const toggleDrawer = useSideNavToggle(
@@ -50,11 +60,11 @@ export const SideNav = (props:TSideNavProps) => {
   )
 
   const onClickAway = useClickAway((open:boolean) => toggleOpen(open))
-  
-  const subNavSx = useMemo(() => {
+
+  const subNavSx = useMemo<CSSProperties>(() => {
     return activeNav === ESideNav.files && sidebarLocked
-      ? { display: `none` }
-      : {}
+      ? { opacity: `0`, pointerEvents: `none` }
+      : { opacity: `1` }
   }, [sidebarLocked, open, activeNav])
 
   useEffect(() => {
@@ -67,9 +77,10 @@ export const SideNav = (props:TSideNavProps) => {
   return (
     <ClickAwayListener onClickAway={onClickAway} >
       <Drawer
-        open={open}
         variant="permanent"
         className="side-nav-drawer"
+        open={!sidebarLocked && open}
+        sidebarLocked={sidebarLocked}
       >
         <HeaderSpacer />
         <NavGroups

@@ -1,9 +1,10 @@
 import type { MouseEvent } from 'react'
 import type { TResizeSideBarEvent } from '@GBC/types'
 
-
-import { DefSidebarWidth } from '@gobletqa/components'
 import { useRef, useMemo, useCallback, useState } from 'react'
+import { exists } from '@keg-hub/jsutils'
+import { useEventListen } from '@GBC/hooks/useEvent'
+import { ResizeSideBarEvent, DefSidebarWidth } from '@GBC/constants'
 
 export type TDragObj = {
   pageX: number
@@ -63,7 +64,12 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
   }, [])
 
   const styles = useMemo(
-    () => ({width: `${sidebarWidth}px`}),
+    () => {
+      // Only animate the sidebar widht when not manually resizing
+      return !dragStartRef?.current?.start
+        ? { width: `${sidebarWidth}px` }
+        : { width: `${sidebarWidth}px`, transition: `none` }
+    },
     [maxWidth, sidebarWidth]
   )
 
@@ -72,10 +78,13 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
     onSidebarResize?.(width)
   }, [onSidebarResize, setSidebarWidth])
 
+  useEventListen<TResizeSideBarEvent>(ResizeSideBarEvent, ({ size, toggle }) => {
+    if(exists(size)) return resizeSidebar?.(size)
+    if(!toggle) return
+    
+    sidebarWidth > 0 ? resizeSidebar?.(0) : resizeSidebar?.(DefSidebarWidth)
 
-  // useEventListen<TResizeSideBarEvent>(ResizeSideBarEvent, ({ size }) => {
-  //   exists(size) && editorRef?.current?.resizeSidebar?.(size)
-  // })
+  })
 
 
   return {

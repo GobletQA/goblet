@@ -7,7 +7,6 @@ export const SidebarContainer = styled(Box, {
 })(({ maxWidth=DefSidebarWidth }) => `
 
   width: 100%;
-  // max-width: ${maxWidth}px;
 
   display: flex;
   flex-direction: column;
@@ -19,8 +18,7 @@ export const SidebarContainer = styled(Box, {
   align-self: stretch;
   color: var(--goblet-editor-foreground);
   background: var(--goblet-sideBar-background);
-  transition: color 300ms ease, background-color 300ms ease;
-
+  transition: color 300ms ease, background-color 300ms ease, width 300ms ease;
 
   &::-webkit-scrollbar {
     width: 1px;
