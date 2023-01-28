@@ -4,7 +4,7 @@ import type { ResizeMoveEvent } from 'react-page-split'
 
 import { useRef } from 'react'
 import { get } from '@keg-hub/jsutils'
-import { useEventListen, useEventEmit } from '@hooks/useEvent'
+import { useEventListen, useEventEmit } from '@gobletqa/components'
 import {
   getPanels,
   dimsFromCanvas

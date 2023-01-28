@@ -1,4 +1,8 @@
 import type { MouseEvent } from 'react'
+import type { TResizeSideBarEvent } from '@GBC/types'
+
+
+import { DefSidebarWidth } from '@gobletqa/components'
 import { useRef, useMemo, useCallback, useState } from 'react'
 
 export type TDragObj = {
@@ -17,9 +21,9 @@ export type TUseSidebarResize = {
 export const useSidebarResize = (props:TUseSidebarResize) => {
 
   const {
-    maxWidth=230,
     onSidebarResize,
     initialStatus=false,
+    maxWidth=DefSidebarWidth,
     initialWidth=maxWidth,
   } = props
 
@@ -34,9 +38,9 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
   const onMoveStart = useCallback(
     (e:MouseEvent) => {
       dragStartRef.current = {
+        start: true,
         pageX: e.pageX,
         width: sidebarWidth,
-        start: true,
       }
     },
     [sidebarWidth]
@@ -67,6 +71,12 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
     setSidebarWidth(width)
     onSidebarResize?.(width)
   }, [onSidebarResize, setSidebarWidth])
+
+
+  // useEventListen<TResizeSideBarEvent>(ResizeSideBarEvent, ({ size }) => {
+  //   exists(size) && editorRef?.current?.resizeSidebar?.(size)
+  // })
+
 
   return {
     styles,

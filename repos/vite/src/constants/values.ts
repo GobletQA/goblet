@@ -1,8 +1,6 @@
 // Get all allowed emails from the env
 export const AllowedUsers = (process.env.GB_GITHUB_AUTH_USERS || '').split(',')
 
-export const EditorSidebarWidth = 230
-
 export const GoogleSearchUrl = `https://www.google.com/search?igu=1&q=`
 export const GobletQAUrl = process.env.GB_GOBLET_URL || `https://www.gobletqa.com`
 

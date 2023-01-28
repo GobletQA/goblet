@@ -13,13 +13,14 @@ import type {
 import { useMemo } from 'react'
 import { FileTree } from '../FileTree'
 import { isStr } from '@keg-hub/jsutils'
-import { Sidebar as GBSidebar, SidebarPortal as GBSidebarPortal } from '@gobletqa/components'
+import {
+  Sidebar as GBSidebar,
+  SidebarPortal as GBSidebarPortal
+} from '@gobletqa/components'
 
 export type TSidebar = {
   Modal: Modal
   title?: string
-  PrePanels?:TSidebarPanel[]
-  Panels?:TSidebarPanel[]
   rootPrefix?: string
   currentPath?: string
   sidebarWidth?: number
@@ -30,6 +31,8 @@ export type TSidebar = {
   onPathChange: TEditorCB
   onDeleteFile: TEditorCB
   onAddFile: TFileCallback
+  Panels?:TSidebarPanel[]
+  PrePanels?:TSidebarPanel[]
   onDeleteFolder: TEditorCB
   onAddFolder: TFileCallback
   rootEl: HTMLElement | null

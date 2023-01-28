@@ -38,7 +38,9 @@
       "@GBC": [ "src" ],
       "@GBC/*": [ "src/*" ],
       "@gobletqa/components": ["src"],
-      "@gobletqa/components/*": ["src/*"]
+      "@gobletqa/components/*": ["src/*"],
+      "@gobletqa/shared": [ "../shared/src" ],
+      "@gobletqa/shared/*": [ "../shared/src/*" ]
     }
   },
   "include": ["src"],

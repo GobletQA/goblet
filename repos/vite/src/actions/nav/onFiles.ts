@@ -1,8 +1,9 @@
-import type { TNavItemClick, TOpenFileTreeEvent } from '@types'
+import type { TNavItemClick } from '@types'
+import type { TResizeSideBarEvent } from '@gobletqa/components'
 
 import { ESideNav } from '@types'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { OpenFileTreeEvt, EditorSidebarWidth } from '@constants'
+import { ResizeSideBarEvent, DefSidebarWidth } from '@gobletqa/components'
 
 
 export const onFiles = ({
@@ -12,11 +13,11 @@ export const onFiles = ({
   setActive,
 }:TNavItemClick) => {
   if(active === ESideNav.Files){
-    EE.emit<TOpenFileTreeEvent>(OpenFileTreeEvt, { size: 0 })
+    EE.emit<TResizeSideBarEvent>(ResizeSideBarEvent, { size: 0 })
     setActive(undefined)
   }
   else {
-    EE.emit<TOpenFileTreeEvent>(OpenFileTreeEvt, { size: EditorSidebarWidth })
+    EE.emit<TResizeSideBarEvent>(ResizeSideBarEvent, { size: DefSidebarWidth })
     setActive(name)
   }
 

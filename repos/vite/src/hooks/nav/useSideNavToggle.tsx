@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 import { navItemNameToTitle } from '@utils'
 import { isFunc, exists } from '@keg-hub/jsutils'
 import { SideNav as SideNavItems } from '@constants/nav'
-import { useEventListen, useEventEmit } from '@hooks/useEvent'
+import { useEventListen, useEventEmit } from '@gobletqa/components'
 import { ToggleSideNavEvt, SideNavToggledEvt } from '@constants/events'
 
 export const findNavItemName = (element:HTMLElement):ESideNav|undefined => {
@@ -49,6 +49,7 @@ export const useSideNavToggle = (
   return useCallback((event:Record<string, any>) => {
     const nextOpen = !open
     const { item, name } = findNavItem(event?.target as HTMLElement)
+
 
     if(isFunc(item?.action))
       return item?.action?.({

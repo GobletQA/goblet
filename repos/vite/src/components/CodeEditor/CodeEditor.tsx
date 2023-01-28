@@ -1,14 +1,13 @@
 import type { TEditorRefHandle } from '@gobletqa/monaco'
 
 import { useRef } from 'react'
-import { EditorSidebarWidth } from '@constants'
 import { MonacoEditor } from '@gobletqa/monaco'
-import { BlockIcon } from '@gobletqa/components'
 import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Layout/Divider'
 import { NotConnected } from '@components/NotConnected'
 import { PrePanels } from '@components/Panels/PrePanels'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
+import { BlockIcon, DefSidebarWidth } from '@gobletqa/components'
 
 export type TCodeEditorProps = {
   portal?:string
@@ -55,7 +54,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onPathChange={onPathChange}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
-          sidebarWidth={EditorSidebarWidth}
+          sidebarWidth={DefSidebarWidth}
           onBeforeAddFile={onBeforeAddFile}
         />
       )

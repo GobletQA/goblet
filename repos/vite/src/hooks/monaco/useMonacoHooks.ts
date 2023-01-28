@@ -1,8 +1,8 @@
 import type { MutableRefObject } from 'react'
 import type { TEditorRefHandle } from '@gobletqa/monaco'
+import type { TResizeSideBarEvent } from '@gobletqa/components'
 import type {
   TDefinitionAst,
-  TOpenFileTreeEvent,
   TSideNavToggleProps,
   TEditorSettingValues,
 } from '@types'
@@ -19,13 +19,17 @@ import { toggleModal } from '@actions/modals/toggleModal'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { isCustomDef } from '@utils/definitions/isCustomDef'
-import { useEventListen, useEventEmit } from '@hooks/useEvent'
 import { useSettingValues } from '@hooks/store/useSettingValues'
 import { loadGobletFile } from '@actions/files/api/loadGobletFile'
+import {
+  useEventEmit,
+  useEventListen,
+  ResizeSideBarEvent,
+} from '@gobletqa/components'
+
 
 import {
   UpdateModalEvt,
-  OpenFileTreeEvt,
   ToggleSideNavEvt,
   OpenEditorFileEvt,
 } from '@constants'
@@ -89,7 +93,7 @@ export const useMonacoHooks = (
 
   exists(theme) && set(config, `theme.name`, theme)
 
-  useEventListen<TOpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
+  useEventListen<TResizeSideBarEvent>(ResizeSideBarEvent, ({ size }) => {
     exists(size) && editorRef?.current?.resizeSidebar?.(size)
   })
 

@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import { useInline } from './useInline'
 import { exists } from '@keg-hub/jsutils'
 import { useEffectOnce } from './useEffectOnce'

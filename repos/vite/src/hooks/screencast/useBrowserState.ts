@@ -2,7 +2,7 @@ import type { TPlayerResEvent } from '@types'
 
 import { useState } from 'react'
 import { EBrowserState } from '@types'
-import { useEventListen } from '@hooks/useEvent'
+import { useEventListen } from '@gobletqa/components'
 import { BrowserStateEvt, PlayerStartedEvent, PlayerEndedEvent } from '@constants'
 
 export const useBrowserState = () => {

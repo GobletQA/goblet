@@ -1,11 +1,10 @@
 import { RaceEditor } from '@gobletqa/race'
-import { BlockIcon } from '@gobletqa/components'
-import { EditorSidebarWidth } from '@constants'
 import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Layout/Divider'
 import { NotConnected } from '@components/NotConnected'
 import { useRaceHooks } from '@hooks/race/useRaceHooks'
 import { PrePanels } from '@components/Panels/PrePanels'
+import { BlockIcon, DefSidebarWidth } from '@gobletqa/components'
 
 export type TVisualEditor = {
   
@@ -30,7 +29,7 @@ export const VisualEditor = (props:TVisualEditor) => {
           sidebarStatus={true}
           PrePanels={PrePanels}
           rootPrefix={rootPrefix}
-          sidebarWidth={EditorSidebarWidth}
+          sidebarWidth={DefSidebarWidth}
         />
       )
     : (
