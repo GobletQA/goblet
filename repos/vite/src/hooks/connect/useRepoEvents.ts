@@ -6,18 +6,21 @@ import type {
 import type { Dispatch, SetStateAction } from 'react'
 import type { TOnAutoChange } from '@gobletqa/components'
 
+import { useUser } from '@store'
 import { CreateNewRepo } from '@constants'
 import { useInline } from '@gobletqa/components'
 import { formatName } from '@utils/repo/formatName'
 
 export type THRepoEvts = {
   branch?:string
+  owner:string
   newRepo:string
   userBranch:string
   createRepo:boolean
   description:string
   apiRepos:TReposState
   repo:TBuiltRepo | undefined
+  setOwner:Dispatch<SetStateAction<string>>
   setBranch: Dispatch<SetStateAction<string>>
   setNewRepo:Dispatch<SetStateAction<string>>
   setCreateRepo:Dispatch<SetStateAction<boolean>>
@@ -30,8 +33,10 @@ export const useRepoEvents = (props:THRepoEvts) => {
 
   const {
     repo,
+    owner,
     setRepo,
     newRepo,
+    setOwner,
     apiRepos,
     setBranch,
     setNewRepo,
@@ -43,6 +48,7 @@ export const useRepoEvents = (props:THRepoEvts) => {
     setDescription,
   } = props
 
+  
   const onChangeDescription = useInline<TRepoValueCB>((value) => {
     description !== value && setDescription(value)
   })
@@ -61,6 +67,12 @@ export const useRepoEvents = (props:THRepoEvts) => {
       && setNewRepo(formatted)
   })
 
+  const user = useUser()
+  const onChangeOwner = useInline<TOnAutoChange>((evt, value) => {
+    const update = value as string
+    update !== owner && setOwner(update)
+  })
+
   const onChangeRepo = useInline<TOnAutoChange>((evt, value) => {
     const update = value as TBuiltRepo
     if(repo?.id === update?.id) return
@@ -76,6 +88,7 @@ export const useRepoEvents = (props:THRepoEvts) => {
   return {
     onCreateRepo,
     onChangeRepo,
+    onChangeOwner,
     onChangeNewRepo,
     onChangeDescription
   }

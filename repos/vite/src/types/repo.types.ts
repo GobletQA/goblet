@@ -30,6 +30,7 @@ export type TCreateRepo = TSharedRepo & {
   newRepo:string
   description?:string
   createRepo?:boolean
+  organization?:string
 }
 
 export type TConnectRepo = TSharedRepo & {
@@ -41,6 +42,7 @@ export type TConnectRepo = TSharedRepo & {
 
 export type TRepoInputError = {
   repo?:string
+  owner?:string
   branch?:string
   newBranch?:string
   branchFrom?:string

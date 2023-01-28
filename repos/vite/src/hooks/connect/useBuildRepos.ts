@@ -6,15 +6,23 @@ import type {
 import { useMemo } from 'react'
 import { CreateNewRepo, CreateNewBranch } from '@constants'
 
-export const useBuildRepos = (repos:TReposState, userBranch:string):TBuiltRepos => {
+export const useBuildRepos = (
+  repos:TReposState,
+  userBranch:string,
+  username:string
+) => {
   return useMemo(() => {
+    const parents:string[] = [username]
     const createRepo = {...CreateNewRepo, branches: [CreateNewBranch, userBranch] }
     const emptyRepos = [createRepo]
 
-    return !repos || !repos.length
+    const built = !repos || !repos.length
       ? emptyRepos
       : emptyRepos.concat(
           repos.map((repo, idx) => {
+            const parent = new URL(repo.url).pathname?.split(`/`)[1]
+            parent && !parents.includes(parent) && parents.push(parent)
+
               return {
                 value: idx,
                 id: repo.url || repo.name,
@@ -26,5 +34,10 @@ export const useBuildRepos = (repos:TReposState, userBranch:string):TBuiltRepos 
               }
           })
         )
+    
+    return {
+      parents,
+      repos: built
+    }
   }, [repos])
 }

@@ -18,11 +18,14 @@ export const useConnect = (props:THConnect=noOpObj) => {
 
   const {
     repo,
+    owner,
     repos,
     branch,
     loading,
     setRepo,
     newRepo,
+    parents,
+    setOwner,
     apiRepos,
     newBranch,
     setBranch,
@@ -41,13 +44,16 @@ export const useConnect = (props:THConnect=noOpObj) => {
   const {
     onCreateRepo,
     onChangeRepo,
+    onChangeOwner,
     onChangeNewRepo,
     onChangeDescription
   } = useRepoEvents({
     repo,
+    owner,
     setRepo,
     newRepo,
     apiRepos,
+    setOwner,
     setBranch,
     setNewRepo,
     userBranch,
@@ -74,9 +80,11 @@ export const useConnect = (props:THConnect=noOpObj) => {
 
   return {
     repo,
+    owner,
     repos,
     branch,
     setRepo,
+    parents,
     newRepo,
     loading,
     newBranch,
@@ -89,6 +97,7 @@ export const useConnect = (props:THConnect=noOpObj) => {
     onCreateRepo,
     onChangeRepo,
     setBranchFrom,
+    onChangeOwner,
     onChangeBranch,
     onChangeNewRepo,
     onChangeNewBranch,

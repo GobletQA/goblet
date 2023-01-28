@@ -1,8 +1,8 @@
 import type { CSSProperties, ComponentType, MutableRefObject } from 'react'
 
 import Box from '@mui/material/Box'
+import { Advanced } from './Advanced'
 import { RepoConnect } from './RepoConnect'
-import { BranchConnect } from './BranchConnect'
 import Grid from '@mui/material/Unstable_Grid2'
 import { Form, gutter } from '@gobletqa/components'
 import { useSubmit } from '@hooks/connect/useSubmit'
@@ -10,7 +10,6 @@ import { useConnect } from '@hooks/connect/useConnect'
 import { useInputError } from '@hooks/form/useInputError'
 import { ModalMessage } from '@components/ModalManager/ModalMessage'
 import { useConnectActions } from '@hooks/connect/useConnectActions'
-
 
 export type TConnectForm = {
   Footer?:ComponentType<any>
@@ -49,6 +48,17 @@ const styles = {
   } as CSSProperties,
 }
 
+/**
+ * TODO - When creating a repo
+ * - Should not allow setting parent / child branches
+ *   - Use default goblet-<username> branch
+ *   - Is auto-created on the backend when repo is created
+ * - Add ability to select user or organization
+ * - Loop existing repos, and get list of orgs that can be used
+ * - Move organization select and description input to Advanced section
+ *   - Should only display when creating repo
+ * - Branch connect should only display when using an existing repo
+ */
 
 export const ConnectForm = (props:TConnectForm) => {
   const {
@@ -68,8 +78,10 @@ export const ConnectForm = (props:TConnectForm) => {
   const {
     repo,
     repos,
+    owner,
     branch,
     newRepo,
+    parents,
     loading,
     newBranch,
     createRepo,
@@ -78,6 +90,7 @@ export const ConnectForm = (props:TConnectForm) => {
     description,
     onChangeRepo,
     setBranchFrom,
+    onChangeOwner,
     onChangeBranch,
     onChangeNewRepo,
     onChangeNewBranch,
@@ -89,6 +102,7 @@ export const ConnectForm = (props:TConnectForm) => {
     formError,
   } = useSubmit({
     repo,
+    owner,
     branch,
     newRepo,
     loading,
@@ -149,10 +163,8 @@ export const ConnectForm = (props:TConnectForm) => {
                 onChange={onChangeRepo}
                 inputError={inputError}
                 createRepo={createRepo}
-                description={description}
                 onInputError={onInputError}
                 onChangeNewRepo={onChangeNewRepo}
-                onChangeDescription={onChangeDescription}
               />
 
               <Grid
@@ -160,17 +172,24 @@ export const ConnectForm = (props:TConnectForm) => {
                 sx={styles.branch}
                 className='gb-grid-branch-connect'
               >
-                <BranchConnect
+                <Advanced
                   repo={repo}
+                  repos={repos}
+                  owner={owner}
                   branch={branch}
                   disabled={!repo}
+                  parents={parents}
                   newBranch={newBranch}
                   inputError={inputError}
                   branchFrom={branchFrom}
+                  createRepo={createRepo}
                   onChange={onChangeBranch}
+                  description={description}
                   onInputError={onInputError}
+                  onChangeOwner={onChangeOwner}
                   onChangeBranchFrom={setBranchFrom}
                   onChangeNewBranch={onChangeNewBranch}
+                  onChangeDescription={onChangeDescription}
                 />
               </Grid>
 

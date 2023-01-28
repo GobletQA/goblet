@@ -2,6 +2,7 @@ import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
+import { Logger } from '@GSC/utils/logger'
 import { Repo } from '@gobletqa/shared/repo/repo'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
@@ -41,9 +42,14 @@ export const createRepo = asyncWrap(async (
     content = await loadRepoContent(repo, config, status)
   }
   catch(err){
+    const { config } = req.app.locals
+
     // If the repo mounting fails for some reason
     // Call disconnect incase it throws after the repo was mounted
-    await Repo.disconnect({ username: req.auth.username })
+    config?.server?.environment !== `local`
+      ? await Repo.disconnect({ username: req.auth.username })
+      : Logger.warn(`Skipping repo unmount in local environment`)
+
     throw err
   }
 

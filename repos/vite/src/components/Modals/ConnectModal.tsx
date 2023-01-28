@@ -1,17 +1,17 @@
 import type { CSSProperties } from 'react'
 import type { TModalFooter, TModalComponent, TModalRef } from '@types'
 
-import { useMemo } from 'react'
-import { useContainer } from '@store'
+
 import Box from '@mui/material/Box'
+import { useContainer } from '@store'
+import { Loading } from '@gobletqa/components'
+import { lazy, Suspense, useMemo } from 'react'
 import { EModalTypes, EContainerState } from '@types'
 import { ConnectForm } from '@components/Forms/ConnectForm'
 import { ModalFooter } from '@components/ModalManager/ModalFooter'
 import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
 import { gutter, H3, Text, PlugIcon } from '@gobletqa/components'
-import { Loading } from '@gobletqa/components'
 
-import { lazy, Suspense, useEffect } from 'react'
 const VersionCtrl = lazy(() => import('@components/Svgs/VersionCtrl'))
 
 const styles:Record<string, CSSProperties> = {
@@ -30,7 +30,9 @@ const styles:Record<string, CSSProperties> = {
   right: {
     display: `flex`,
     flexDirection: `column`,
-    paddingLeft: gutter.padding.hpx
+    paddingLeft: gutter.padding.hpx,
+    paddingBottom: gutter.padding.px,
+    paddingRight: `${gutter.padding.size + 10}px`,
   },
   rightTop: {
     paddingBottom: `0px`,

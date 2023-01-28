@@ -1,14 +1,15 @@
 import type { TRepoInputError, TBuiltRepo } from '@types'
-import type { FormEvent, MutableRefObject } from 'react'
+import type { FormEvent } from 'react'
 import type { TCreateParams, TConnectParams } from '@hooks/api/useConnectRepo'
 
 import { useState } from 'react'
+import { useUser } from '@store'
 import { useInline } from '@gobletqa/components'
-import { useInputError } from '@hooks/form/useInputError'
 import { useConnectRepo } from '@hooks/api/useConnectRepo'
 
 
 export type THConnectSubmit = {
+  owner:string
   branch:string
   newRepo:string
   loading:boolean
@@ -25,6 +26,7 @@ export type THConnectSubmit = {
 export const useSubmit = (props:THConnectSubmit) => {
   const {
     repo,
+    owner,
     branch,
     newRepo,
     loading,
@@ -37,6 +39,7 @@ export const useSubmit = (props:THConnectSubmit) => {
     setInputError
   } = props
 
+  const user = useUser()
   const [formError, setFormError] = useState<string>()
 
   const onConnectRepo = useConnectRepo({
@@ -66,6 +69,9 @@ export const useSubmit = (props:THConnectSubmit) => {
       branchFrom,
       description
     }
+
+    if(newRepo && user.username !== owner)
+      params.organization = owner
 
     await onConnectRepo(params)
 

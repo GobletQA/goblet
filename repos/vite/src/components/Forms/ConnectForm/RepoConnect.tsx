@@ -5,18 +5,15 @@ import { SyncRepos } from './SyncRepos'
 import { RepoSelect } from './RepoSelect'
 import { RepoCreate } from './RepoCreate'
 import Grid from '@mui/material/Unstable_Grid2'
-import { RepoDescription } from './RepoDescription'
 
 export type TRepoProps = Partial<typeof repoProps> & {
   repo?:TBuiltRepo
   repos?:TBuiltRepos
   newRepo?:string
   createRepo:boolean
-  description?:string
   onChange?:TOnAutoChange
   inputError:TRepoInputError
   onChangeNewRepo:TRepoValueCB
-  onChangeDescription:TRepoValueCB
   onInputError?:(key:string, value?:string) => void
 }
 
@@ -44,10 +41,8 @@ export const RepoConnect = (props:TRepoProps) => {
     onChange,
     inputError,
     createRepo,
-    description,
     onInputError,
     onChangeNewRepo,
-    onChangeDescription,
   } = props
 
   return (
@@ -87,16 +82,6 @@ export const RepoConnect = (props:TRepoProps) => {
               inputError={inputError}
               onInputError={onInputError}
               onChangeNewRepo={onChangeNewRepo}
-            />
-          </Grid>
-          <Grid
-            xs={12}
-            sx={styles.description}
-            className='gb-grid-repo-description'
-          >
-            <RepoDescription
-              description={description}
-              onChangeDescription={onChangeDescription}
             />
           </Grid>
         </>

@@ -22,11 +22,12 @@ export const useConnectData = ({
   const [repo, setRepo] = useState<TBuiltRepo|undefined>(initRepo)
   const [loading, setLoading] = useState<boolean>(true)
   
+  const [owner, setOwner] = useState<string>(user?.username || ``)
   const [newRepo, setNewRepo] = useState<string>(``)
   const [createRepo, setCreateRepo] = useState<boolean>(false)
 
   const apiRepos = useRepos()
-  const repos = useBuildRepos(apiRepos, userBranch)
+  const { repos, parents } = useBuildRepos(apiRepos, userBranch, user?.username || ``)
   const [description, setDescription] = useState<string>(``)
 
   const [newBranch, setNewBranch] = useState<string>(``)
@@ -48,11 +49,14 @@ export const useConnectData = ({
 
   return {
     repo,
+    owner,
     repos,
     branch,
+    parents,
     loading,
     setRepo,
     newRepo,
+    setOwner,
     apiRepos,
     newBranch,
     setBranch,
