@@ -7,6 +7,7 @@ const tHeaderH = 30
 
 const divider = 1
 const headerH = 40
+const sectionHeaderH = 40
 
 const defHeaderH = 35
 
@@ -67,5 +68,11 @@ export const dims = {
     },
     openedHeight: `50%`,
     closedHeight: `${defHeaderH}px`,
+  },
+  dropdown: {
+    header: {
+      height: sectionHeaderH,
+      px: `${sectionHeaderH}px`,
+    }
   }
 }

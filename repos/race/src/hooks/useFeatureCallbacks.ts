@@ -5,6 +5,7 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TFeaturesRef,
+  TAskForFeature,
   TSetFeatureRefs,
   TSetFeatureGroups,
   TOnReturnFeatureCB,
@@ -13,9 +14,11 @@ import type {
 import { deepMerge } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
-import { useEffectOnce, useInline } from '@gobletqa/components'
+import { useEventListen, useEventEmit, useInline } from '@gobletqa/components'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 import {
+  AnswerFeatureEvt,
+  AskForFeatureEvt,
   SetFeatureContextEvt,
   UpdateFeatureContextEvt,
 } from '@GBR/constants'
@@ -37,7 +40,7 @@ export type THFeatureCallbacks = {
 
 
 const mergeFeatureChanges = async (
-  feat?:TRaceFeature,
+  feat?:Partial<TRaceFeature>,
   feature?:TRaceFeature,
   onBeforeFeatureChange?:TOnReturnFeatureCB
 ) => {
@@ -46,13 +49,14 @@ const mergeFeatureChanges = async (
   return beforeMdl || merged
 }
 
-const isValidUpdate = (feat?:TRaceFeature) => {
+const isValidUpdate = (feat?:Partial<TRaceFeature>) => {
   if(!feat?.uuid)
     return console.error(`Can not update feature. The feature.uuid property is required.`)
 
+  // TODO: @lance-tipton - Add this back when done building RaceEditor
   // This should never happen, but show a error message just incase, so we can fix it
-  if(feat.uuid === EmptyFeatureUUID)
-    return console.error(`Updated features should NOT have an empty uuid`)
+  // if(feat.uuid === EmptyFeatureUUID)
+  //   return console.error(`Updated features should NOT have an empty uuid`)
 
   return true
 }
@@ -78,16 +82,17 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     setFeature(feat)
   })
 
-  const updateFeature = useInline(async (feat?:TRaceFeature) => {
+  const updateFeature = useInline(async (feat?:Partial<TRaceFeature>) => {
     if(!isValidUpdate(feat)) return
 
     const updated = await mergeFeatureChanges(feat, feature, onBeforeFeatureChange)
-
     onFeatureChange?.(updated, feat, feature)
 
     featuresRef.current[updated.uuid] = updated
 
-
+    // If the updated feature was an empty feature
+    // Remove the temp empty feature, and update the tab name
+    // So the tab has the correct feature title
     if(feature?.uuid === EmptyFeatureUUID){
       delete featuresRef.current[EmptyFeatureUUID]
       updateEmptyTab?.(updated)
@@ -109,24 +114,22 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
   // Listen to external events to update the feature context
   // Allows dispatching update outside of the react context
-  useEffectOnce(() => {
+  useEventListen<TRaceFeature>(
+    UpdateFeatureContextEvt,
+    (feat) => updateFeature(updateEmptyFeature(feat, featuresRef))
+  )
 
-    const updateOff = EE.on<TRaceFeature>(
-      UpdateFeatureContextEvt,
-      (feat) => updateFeature(updateEmptyFeature(feat, featuresRef))
-    )
+  useEventListen<TRaceFeature>(
+    SetFeatureContextEvt,
+    setEmptyFeature
+  )
 
-    const setOff = EE.on<TRaceFeature>(
-      SetFeatureContextEvt,
-      setEmptyFeature
-    )
-
-    return () => {
-      updateOff?.()
-      setOff?.()
-    }
-  })
-
+  // Helper to allow external code ask the context for the current feature
+  // Allows external actions to interface with the currently active feature
+  useEventListen<TAskForFeature>(AskForFeatureEvt, ({ cb }) => cb?.({
+    feature,
+    updateFeature,
+  }))
 
   return {
     updateFeature,

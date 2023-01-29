@@ -6,16 +6,18 @@ import { forwardRef, useState, useCallback } from 'react'
 
 import { useInline } from '@GBC/hooks'
 import Slide from '@mui/material/Slide'
-import { H5 } from '@GBC/components/Text'
+import { TrashIcon } from '../Icons/TrashIcon'
+import { IconButton } from '../Buttons/IconButton'
 import { emptyObj, cls } from '@keg-hub/jsutils'
 import { ExpandIcon as ExpandIconComp } from '@GBC/components/Icons'
-import { Body, Container, Header } from './Dropdown.styled'
+import { HeaderText, Body, Container, Header } from './Dropdown.styled'
 
 export type TDropdown = AccordionProps & {
   id:string
   body?:ReactNode
   header?:ReactNode
   children?:ReactNode
+  actions?:ReactNode[]
   headerText?:ReactNode
   disabled?:boolean
   initialExpand?:boolean
@@ -23,6 +25,7 @@ export type TDropdown = AccordionProps & {
   headerSx?:CSSProperties
   headerTextSx?:CSSProperties
   expandIconSx?:CSSProperties
+  headerContentSx?:CSSProperties
   noIconTransform?: boolean
   onChange?:(expanded: boolean) => void
   ExpandIcon?:ComponentType<typeof ExpandIconComp>
@@ -43,12 +46,14 @@ export const Dropdown = (props:TDropdown) => {
     id,
     body,
     bodySx,
+    actions,
     headerSx,
     disabled,
     headerText,
     headerTextSx,
     expandIconSx,
     children=body,
+    headerContentSx,
     noIconTransform,
     header:headerComp,
     onChange:onChangeCB,
@@ -90,11 +95,11 @@ export const Dropdown = (props:TDropdown) => {
       }}
     >
       <Header
-        sx={headerSx}
         id={`${id}-header`}
         className='gc-dropdown-header'
         aria-controls={`${id}-content`}
         noIconTransform={noIconTransform}
+        sx={[headerSx, { [`& .MuiAccordionSummary-content`]: headerContentSx }] as CSSProperties[]}
         expandIcon={(
           // @ts-ignore
           <ExpandIcon
@@ -105,7 +110,8 @@ export const Dropdown = (props:TDropdown) => {
           />
         )}
       >
-        {headerComp || (<H5 sx={headerTextSx} >{headerText}</H5>)}
+        {headerComp || (<HeaderText sx={headerTextSx} >{headerText}</HeaderText>)}
+        {actions}
       </Header>
       <Body
         sx={bodySx}

@@ -17,7 +17,7 @@ export const Background = (props:TBackground) => {
 
   return (
     <Section
-      sx={{ marginTop: `30px` }}
+      sx={{ marginTop: `20px` }}
       type={ESectionType.background}
     >
       { background 

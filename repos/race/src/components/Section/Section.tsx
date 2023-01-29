@@ -1,10 +1,9 @@
-import type { TTextType } from '@gobletqa/components'
 import type { ComponentProps, CSSProperties } from 'react'
 import type { TSectionBody } from './SectionBody'
 import type { TSectionHeader } from './SectionHeader'
 
-import { exists } from '@keg-hub/jsutils'
 import { SectionBody } from './SectionBody'
+import { exists, cls } from '@keg-hub/jsutils'
 import { SectionHeader } from './SectionHeader'
 import { Container, Stack } from './Section.styled'
 
@@ -41,16 +40,14 @@ export const Section = (props:TSection) => {
     variant,
     actions,
     children,
+    className,
     stackProps,
   } = props
 
   return (
     <Container
-      className='gr-section'
-      sx={[
-        sx as CSSProperties,
-        styles?.section as CSSProperties
-      ]}
+      className={cls('gr-section', className)}
+      sx={[sx as CSSProperties, styles?.section as CSSProperties]}
     >
 
       {(header && (title || actions) && (

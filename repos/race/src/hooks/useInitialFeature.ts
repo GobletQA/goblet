@@ -13,5 +13,5 @@ export const useInitialFeature = ({
   features,
   firstFeatureActive
 }:THInitialFeature) => {
-  return useMemo(() => feature || firstFeatureActive ? Object.values(features)?.[0] : undefined, [])
+  return useMemo(() => feature || (firstFeatureActive ? Object.values(features)?.[0] : undefined), [])
 }

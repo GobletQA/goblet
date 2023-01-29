@@ -1,11 +1,11 @@
 import type { TAstBlock } from '@GBR/types'
 
-import { deepMerge, emptyArr, emptyObj } from '@keg-hub/jsutils'
+import { deepMerge } from '@keg-hub/jsutils'
 
-export const blockFactory = (block?:Partial<TAstBlock>) => {
+export const blockFactory = (block?:Partial<TAstBlock>, index:number=0) => {
   return  block
     ? deepMerge<TAstBlock>({
-        index: 0,
+        index,
         content: ``,
       }, block)
     : undefined

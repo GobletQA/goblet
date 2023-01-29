@@ -111,10 +111,6 @@ export const AutoInput = (props:TAutoInput) => {
 
   const getOption = useGetOptionLabel({ getOptionLabel })
 
-
-  console.log(value)
-  console.log(options)
-
   return (
     <InputContainer
       onClick={onClick}

@@ -31,3 +31,8 @@ export const TextInputProps = [
   `InputLabelProps`,
 ]
 
+export const StoryIndexMap = {
+  perspective: 1,
+  desire: 2,
+  reason: 3,
+}

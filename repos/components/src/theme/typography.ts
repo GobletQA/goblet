@@ -34,8 +34,8 @@ export const typography = (
       fontWeight: 600
     },
     h5: {
+      fontWeight: 'bold',
       fontSize: '0.875rem',
-      fontWeight: 500
     },
     h6: {
       fontSize: '0.75rem',

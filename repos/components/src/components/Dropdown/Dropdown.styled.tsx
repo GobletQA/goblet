@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 
-import { colors } from '@GBC/theme'
+import { colors, dims } from '@GBC/theme'
+import { H5 } from '@GBC/components/Text'
 import { styled } from '@mui/material/styles'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
@@ -33,6 +34,20 @@ export const Header = styled(AccordionSummary, {
   shouldForwardProp: (prop) => prop !== `noIconTransform`,
 })(({ noIconTransform }: THeaderProps) => `
   ${noIconTransform ? noTransformStyle : ''}
+
+  border-bottom: 1px solid ${colors.green10};
+  height: ${dims.dropdown.header.px};
+  min-height: ${dims.dropdown.header.px};
+
+  & .MuiAccordionSummary-content: {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
 `)
+
+export const HeaderText = styled(H5)`
+  color: var(--goblet-editor-foreground);
+`
 
 export const Body = styled(AccordionDetails)``

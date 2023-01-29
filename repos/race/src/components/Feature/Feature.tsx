@@ -14,14 +14,24 @@ import { Background } from '../Background'
 import { useEditor } from '../../contexts'
 import { FeatureStory } from './FeatureStory'
 import { Section, SectionHeader } from '../Section'
-import { BoltIcon, H3, EmptyEditor } from '@gobletqa/components'
+import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
 
-export type TFeature = TFeaturesRefs & {
-  
-}
+import { gutter, BoltIcon, H3, EmptyEditor } from '@gobletqa/components'
 
+export type TFeature = TFeaturesRefs & {}
+
+const padding = `${gutter.padding.size + (gutter.padding.size / 2)}px`
+const styles = {
+  section: {
+    paddingTop: padding,
+    paddingRight: gutter.padding.px,
+  },
+  content: {
+    paddingLeft: gutter.padding.hpx
+  }
+}
 
 const FeatureTitle = () => {
   return (
@@ -61,20 +71,21 @@ export const Feature = (props:TFeature) => {
           onClick={onClick}
           btnText='Create Feature'
           headerText='Goblet Feature Editor'
-          subText='Create a new feature, or select an existing feature from the panel on the right.'
+          subText='Create a new feature, or select an existing feature from the sidebar panel.'
         />
       )
     : (
         <Section
           stack={2}
           gutter={true}
-          sx={{ paddingTop: `22px` }}
+          sx={styles.section}
           type={ESectionType.feature}
+          className='gr-feature-editor-section'
         >
+
           <FeatureTitle />
-          <Box
-            paddingLeft='10px'
-          >
+
+          <Box sx={styles.content}>
             <SectionHeader
               label='Title'
               required={true}

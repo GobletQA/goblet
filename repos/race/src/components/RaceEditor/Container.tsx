@@ -1,8 +1,9 @@
 import type { TEditorContainer } from '@GBR/types'
 
+import { Sidebar } from '../Sidebar'
 import { Feature } from '../Feature'
 import { FeaturesPanel } from '../Features'
-import { useSidebarResize, EditorActions, OpenedTabs, Sidebar } from '@gobletqa/components'
+import { useSidebarResize, EditorActions, OpenedTabs } from '@gobletqa/components'
 import {
   EditorContainer,
   Divider as REDivider,
@@ -12,6 +13,7 @@ import {
 export const Container = (props:TEditorContainer) => {
 
   const {
+    portal,
     Panels,
     actions,
     PrePanels,
@@ -55,9 +57,11 @@ export const Container = (props:TEditorContainer) => {
         onMouseUp={onMoveEnd}
         className='gr-editor'
       >
+
         <Sidebar
           style={styles}
           Panels={Panels}
+          portal={portal}
           maxWidth={maxWidth}
           PrePanels={PrePanels}
         >
@@ -68,8 +72,9 @@ export const Container = (props:TEditorContainer) => {
             onActiveFeature={onActiveFeature}
           />
         </Sidebar>
+
         <Divider onMouseDown={onMoveStart} className='gr-editor-drag' />
-        <EditorContainer className='goblet-editor-area'>
+        <EditorContainer className='gr-race-editor-area'>
           <OpenedTabs
             onTabDown={onTabDown}
             onTabHover={onTabHover}

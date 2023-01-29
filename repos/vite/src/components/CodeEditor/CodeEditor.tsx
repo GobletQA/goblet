@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { TEditorRefHandle } from '@gobletqa/monaco'
 
 import { useRef } from 'react'
@@ -12,7 +13,7 @@ import { BlockIcon, DefSidebarWidth } from '@gobletqa/components'
 
 export type TCodeEditorProps = {
   portal?:string
-  style?: Record<string, string|number>
+  style?: CSSProperties
 }
 export const CodeEditor = (props:TCodeEditorProps) => {
   const { sidebarLocked } = useApp()

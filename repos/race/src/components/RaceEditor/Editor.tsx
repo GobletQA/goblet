@@ -58,6 +58,7 @@ export const Editor = (props:TRaceEditorProps) => {
         featureGroups={featureGroups}
         onCloseFeature={onCloseFeature}
         onActiveFeature={onActiveFeature}
+        portal={props.portal}
         Panels={props.Panels}
         Divider={props.Divider}
         actions={props.actions}
