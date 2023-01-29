@@ -47,9 +47,10 @@ export const SideNav = (props:TSideNavProps) => {
   const toggleOpen = useInline((toggle:boolean, force?:boolean) => {
     if(sidebarLocked && open && !force) return
 
-    activeNav === ESideNav.files && sidebarLocked && force
-      ? EE.emit<TResizeSideBarEvent>(ResizeSideBarEvent, { toggle:true })
-      : setOpen(toggle)
+    if(sidebarLocked && force)
+      EE.emit<TResizeSideBarEvent>(ResizeSideBarEvent, { toggle:true })
+
+    setOpen(toggle)
   })
 
   const toggleDrawer = useSideNavToggle(

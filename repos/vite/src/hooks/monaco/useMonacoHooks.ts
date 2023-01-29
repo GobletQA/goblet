@@ -18,7 +18,7 @@ import { toggleModal } from '@actions/modals/toggleModal'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { isCustomDef } from '@utils/definitions/isCustomDef'
-import { useSettingValues } from '@hooks/store/useSettingValues'
+import { useSettingValues } from '@hooks/settings/useSettingValues'
 import { loadGobletFile } from '@actions/files/api/loadGobletFile'
 import {
   useEventEmit,

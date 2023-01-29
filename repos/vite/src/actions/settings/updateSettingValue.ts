@@ -2,6 +2,12 @@ import type { TSettingAct } from '@types'
 
 import { exists } from '@keg-hub/jsutils'
 import { settingsDispatch } from '@store'
+import { toggleSidebarLocked } from '../nav/toggleSidebarLocked'
+
+const settingActions:Record<string, (payload:TSettingAct) => void> = {
+  [`goblet.sidebarLocked`]: (payload:TSettingAct) => toggleSidebarLocked(payload.value)
+  // Add other setting actions here as needed
+}
 
 /**
  * Updates a setting value in the store
@@ -20,6 +26,9 @@ export const updateSettingValue = (props:TSettingAct) => {
   const payload:TSettingAct = { setting }
   exists(value) && (payload.value = value)
   ;data && (payload.data = data)
+
+  // Call the setting action if it exists
+  settingActions?.[setting]?.(payload)
 
   settingsDispatch.updateSetting(payload)
 }

@@ -10,9 +10,9 @@ export const toggleSidebarLocked = (lock?:boolean) => {
   const { sidebarLocked } = app
 
   const locked = exists(lock) ? lock : !sidebarLocked
-  
+
   // Always reset the sidebar width any time it is locked or unlocked
   EE.emit<TResizeSideBarEvent>(ResizeSideBarEvent, { size: DefSidebarWidth })
-  
+
   appDispatch.toggleSidebarLocked(locked)
 }

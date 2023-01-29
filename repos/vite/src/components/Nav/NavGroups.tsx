@@ -1,7 +1,6 @@
 import type { CSSProperties } from 'react'
 import type { TNavItemProps } from './NavItem'
 
-import { useApp } from '@store'
 import { Fragment } from 'react'
 import { SubNav } from './SubNav'
 import { NavList } from './NavList'
@@ -41,8 +40,6 @@ export const NavGroups = (props: TNavGroupProps) => {
     activeNav,
     toggleDrawer
   } = props
-
-  const { sidebarLocked } = useApp()
 
   return (
     <Box

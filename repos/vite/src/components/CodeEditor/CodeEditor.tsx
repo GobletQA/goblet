@@ -1,6 +1,7 @@
 import type { TEditorRefHandle } from '@gobletqa/monaco'
 
 import { useRef } from 'react'
+import { useApp } from '@store'
 import { MonacoEditor } from '@gobletqa/monaco'
 import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Layout/Divider'
@@ -14,7 +15,7 @@ export type TCodeEditorProps = {
   style?: Record<string, string|number>
 }
 export const CodeEditor = (props:TCodeEditorProps) => {
-
+  const { sidebarLocked } = useApp()
   const editorRef = useRef<TEditorRefHandle>(null)
 
   const {
@@ -43,7 +44,6 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           Divider={Divider}
           options={options}
           actionsOpen={false}
-          sidebarStatus={true}
           Modal={modalActions}
           defaultFiles={files}
           PrePanels={PrePanels}
@@ -55,6 +55,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
           sidebarWidth={DefSidebarWidth}
+          sidebarStatus={!sidebarLocked}
           onBeforeAddFile={onBeforeAddFile}
         />
       )

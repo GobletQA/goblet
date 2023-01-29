@@ -1,3 +1,4 @@
+import { useApp } from '@store'
 import { RaceEditor } from '@gobletqa/race'
 import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Layout/Divider'
@@ -11,7 +12,7 @@ export type TVisualEditor = {
 }
 
 export const VisualEditor = (props:TVisualEditor) => {
-
+  const { sidebarLocked } = useApp()
   const {
     steps,
     features,
@@ -26,9 +27,9 @@ export const VisualEditor = (props:TVisualEditor) => {
           actions={Actions}
           Divider={Divider}
           features={features}
-          sidebarStatus={true}
           PrePanels={PrePanels}
           rootPrefix={rootPrefix}
+          sidebarStatus={!sidebarLocked}
           sidebarWidth={DefSidebarWidth}
         />
       )

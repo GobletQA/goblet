@@ -79,13 +79,13 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
   }, [onSidebarResize, setSidebarWidth])
 
   useEventListen<TResizeSideBarEvent>(ResizeSideBarEvent, ({ size, toggle }) => {
+
     if(exists(size)) return resizeSidebar?.(size)
     if(!toggle) return
     
     sidebarWidth > 0 ? resizeSidebar?.(0) : resizeSidebar?.(DefSidebarWidth)
 
   })
-
 
   return {
     styles,

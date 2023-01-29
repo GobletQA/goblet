@@ -50,7 +50,6 @@ export const useSideNavToggle = (
     const nextOpen = !open
     const { item, name } = findNavItem(event?.target as HTMLElement)
 
-
     if(isFunc(item?.action))
       return item?.action?.({
         name,
