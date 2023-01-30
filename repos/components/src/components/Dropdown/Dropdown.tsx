@@ -12,12 +12,12 @@ import { emptyObj, cls } from '@keg-hub/jsutils'
 import { ExpandIcon as ExpandIconComp } from '@GBC/components/Icons'
 import { HeaderText, Body, Container, Header } from './Dropdown.styled'
 
-export type TDropdown = AccordionProps & {
+export type TDropdown = Omit<AccordionProps, `children`> & {
   id:string
   body?:ReactNode
   header?:ReactNode
+  actions?:ReactNode
   children?:ReactNode
-  actions?:ReactNode[]
   headerText?:ReactNode
   disabled?:boolean
   initialExpand?:boolean

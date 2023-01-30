@@ -1,7 +1,7 @@
 import type { TScenarioParentAst, TScenarioAst } from '@GBR/types'
+import { Stack } from '../Shared'
 import { Scenario } from './Scenario'
 import { AddItem } from '../AddItem'
-import { Section } from '../Section'
 import { ESectionType } from '@GBR/types'
 
 export type TScenarios = {
@@ -23,16 +23,15 @@ export const Scenarios = (props:TScenarios) => {
           />
         )
       })}
-      <Section
+      <Stack
         sx={{ marginTop: `20px` }}
         type={ESectionType.scenario}
       >
         <AddItem
           parentId={parent.uuid}
-          sx={{ marginLeft: `-10px` }}
           type={ESectionType.scenario}
         />
-      </Section>
+      </Stack>
     </>
   )
 }

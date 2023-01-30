@@ -1,10 +1,10 @@
 import type { TStepParentAst } from '@GBR/types'
 
 import { Step } from './Step'
+import { Stack } from '../Shared'
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
 import { EmptySteps } from './EmptySteps'
-import { Section } from '../Section'
 
 export type TSteps = {
   parent:TStepParentAst
@@ -17,11 +17,9 @@ export const Steps = (props:TSteps) => {
 
   return (
     <>
-      <Section
+      <Stack
         stack={0}
         gutter={true}
-        header={true}
-        title={`Steps`}
         type={ESectionType.steps}
         className='gr-steps-section'
       >
@@ -38,7 +36,7 @@ export const Steps = (props:TSteps) => {
                 )
               })
         }
-      </Section>
+      </Stack>
       <AddItem
         parentId={parent?.uuid}
         type={ESectionType.step}

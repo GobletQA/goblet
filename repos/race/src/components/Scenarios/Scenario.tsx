@@ -1,8 +1,9 @@
 import { TScenarioAst } from '@GBR/types'
 
+import { Stack } from '../Shared'
 import { Steps } from '../Steps'
 import { ESectionType } from '@GBR/types'
-import { Section, SectionHeader } from '../Section'
+
 
 export type TScenario = {
   scenario:TScenarioAst
@@ -12,15 +13,11 @@ export const Scenario = (props:TScenario) => {
   const { scenario } = props
 
   return (
-    <Section
+    <Stack
       stack={1}
       type={ESectionType.scenario}
     >
-      <SectionHeader
-        title={scenario?.scenario}
-        type={ESectionType.scenario}
-      />
       <Steps parent={scenario} />
-    </Section>
+    </Stack>
   )
 }

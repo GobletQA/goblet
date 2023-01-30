@@ -1,9 +1,10 @@
+import type { TSection } from '../Shared'
 import type { TRuleAst, TRaceFeature } from '@GBR/types'
 
 import { Rule } from './Rule'
-import { AddItem } from '../AddItem'
-import { Section } from '../Section'
+import { Sections } from '../Shared'
 import { ESectionType } from '@GBR/types'
+import { useInline } from '@gobletqa/components'
 
 export type TRules = {
   rules?:TRuleAst[]
@@ -13,27 +14,29 @@ export type TRules = {
 export const Rules = (props:TRules) => {
 
   const { rules, parent } = props
+  const onAdd = useInline(() => {})
+  const onAddScenario = useInline(() => {})
 
   return (
-    <>
-      {rules?.map(rule => {
-        return (
-          <Rule
-            rule={rule}
-            key={`${parent.uuid}-${rule.uuid}`}
-          />
-        )
-      })}
-      <Section
-        type={ESectionType.rule}
-        sx={{ marginTop: `20px` }}
-      >
-        <AddItem
-          parentId={parent.uuid}
-          type={ESectionType.rule}
-          sx={{ marginLeft: `-10px` }}
-        />
-      </Section>
-    </>
+    <Sections
+      onAdd={onAdd}
+      showAdd={true}
+      parent={parent}
+      type={ESectionType.rule}
+      items={
+        rules?.map(rule => {
+          return {
+            parent,
+            show: true,
+            onAdd: onAddScenario,
+            initialExpand: false,
+            type: ESectionType.rule,
+            className: 'gr-rule-section',
+            id:`${parent.uuid}-rule-${rule.uuid}`
+            // children: 
+          } as TSection
+        })
+      }
+    />
   )
 }

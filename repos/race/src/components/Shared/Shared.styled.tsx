@@ -1,8 +1,42 @@
+import type { TGobletTheme } from '@gobletqa/components'
+import type { ComponentProps, ComponentType } from 'react'
+
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
+import MuiStack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
-import { colors, gutter } from '@gobletqa/components'
-import { Dropdown as DropdownComp } from '@gobletqa/components'
+import {
+  gutter,
+  colors,
+  IconButton,
+  Dropdown as DropdownComp
+} from '@gobletqa/components'
+
+type TGutterComp = ComponentProps<typeof Box> & {
+  gutter?:boolean
+  theme?:TGobletTheme
+}
+
+const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
+  return styled(Component, {
+    shouldForwardProp: (prop:string) => prop !== 'gutter'
+  })(({ theme, gutter }:TGutterComp) => {
+      return `
+        width: 100%;
+        ${styles}
+        ${
+          gutter
+            ? [
+                `padding-left: ${theme?.gutter?.padding?.px};`,
+                `padding-right: ${theme?.gutter?.padding?.px};`
+              ].join(`\n`)
+            : ``
+        }
+      `
+  })
+
+}
+
 
 export const Container = styled(Paper)`
   color: var(--goblet-editor-foreground);
@@ -14,6 +48,8 @@ export const InputContainer = styled(Box)`
   min-height: 40px;
 `
 
+export const SectionAct = styled(IconButton)``
+export const SectionActs = styled(Box)``
 
 export const Dropdown = styled(DropdownComp)`
   
@@ -55,3 +91,18 @@ export const Dropdown = styled(DropdownComp)`
   }
 
 `
+
+export const StackContainer = styled(Box)(({ theme }) => `
+  width: 100%;
+  height: 100%;
+`)
+
+
+export const StackContent = gutterComp(MuiStack, `
+  & > .MuiBox-root {
+    margin-top: 0px
+  }
+`)
+
+export const StackBody = gutterComp(Box)
+

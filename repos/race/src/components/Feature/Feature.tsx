@@ -7,8 +7,8 @@ import { useEffect, useCallback } from 'react'
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
 import { Story } from '../Story'
+import { Stack } from '../Shared'
 import Box from '@mui/material/Box'
-import { Section } from '../Section'
 import { isStr } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
@@ -62,7 +62,7 @@ export const Feature = (props:TFeature) => {
         />
       )
     : (
-        <Section
+        <Stack
           stack={2}
           sx={styles.section}
           type={ESectionType.feature}
@@ -98,6 +98,6 @@ export const Feature = (props:TFeature) => {
                 : null
             }
           </Box>
-        </Section>
+        </Stack>
       )
 }
