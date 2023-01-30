@@ -5,11 +5,12 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TFeaturesRef,
+  TUpdateFeature,
   TAskForFeature,
   TSetFeatureRefs,
   TSetFeatureGroups,
   TOnReturnFeatureCB,
-} from '../types'
+} from '@GBR/types'
 
 import { deepMerge } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
@@ -38,13 +39,16 @@ export type THFeatureCallbacks = {
   onBeforeFeatureChange?:TOnReturnFeatureCB
 }
 
-
 const mergeFeatureChanges = async (
   feat?:Partial<TRaceFeature>,
   feature?:TRaceFeature,
-  onBeforeFeatureChange?:TOnReturnFeatureCB
+  onBeforeFeatureChange?:TOnReturnFeatureCB,
+  replace?:boolean
 ) => {
-  const merged = deepMerge<TRaceFeature>(feature, feat)
+  const merged = replace
+    ? feat as TRaceFeature
+    : deepMerge<TRaceFeature>(feature, feat)
+
   const beforeMdl = await onBeforeFeatureChange?.(merged, feat, feature)
   return beforeMdl || merged
 }
@@ -82,10 +86,10 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     setFeature(feat)
   })
 
-  const updateFeature = useInline(async (feat?:Partial<TRaceFeature>) => {
+  const updateFeature = useInline(async (feat?:Partial<TRaceFeature>, replace?:boolean) => {
     if(!isValidUpdate(feat)) return
 
-    const updated = await mergeFeatureChanges(feat, feature, onBeforeFeatureChange)
+    const updated = await mergeFeatureChanges(feat, feature, onBeforeFeatureChange, replace)
     onFeatureChange?.(updated, feat, feature)
 
     featuresRef.current[updated.uuid] = updated
@@ -114,9 +118,12 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
   // Listen to external events to update the feature context
   // Allows dispatching update outside of the react context
-  useEventListen<TRaceFeature>(
+  useEventListen<TUpdateFeature>(
     UpdateFeatureContextEvt,
-    (feat) => updateFeature(updateEmptyFeature(feat, featuresRef))
+    ({ feature, replace }) => updateFeature(
+      updateEmptyFeature(feature, featuresRef),
+      replace
+    )
   )
 
   useEventListen<TRaceFeature>(

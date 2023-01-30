@@ -122,3 +122,8 @@ export type TEmptyFeature = {
   scenarios?: TScenarioAst[]
   background?: TBackgroundAst
 }
+
+export type TUpdateFeature = {
+  replace?:boolean
+  feature: TRaceFeature
+}

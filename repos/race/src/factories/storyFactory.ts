@@ -1,7 +1,7 @@
 import type { TRaceFeature } from '@GBR/types'
 import { emptyObj } from '@keg-hub/jsutils'
 import { blockFactory } from './blockFactory'
-import { StoryIndexMap } from '@GBR/constants'
+import { FeatureIndexMap } from '@GBR/constants'
 
 export type TStoryMeta = {
   reason?: string
@@ -16,7 +16,7 @@ const addToObj = (
   empty:boolean=false
 ) => {
   (empty || value)
-    && (obj[key] = blockFactory({ content: value || ``, index: StoryIndexMap[key] }))
+    && (obj[key] = blockFactory({ content: value || ``, index: FeatureIndexMap[key] }))
 }
 
 export const storyFactory = (

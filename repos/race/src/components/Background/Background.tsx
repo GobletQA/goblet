@@ -20,11 +20,11 @@ export const Background = (props:TBackground) => {
     <Section
       onAdd={onClick}
       parent={parent}
-      initialExpand={false}
+      initialExpand={true}
       show={Boolean(background)}
       type={ESectionType.background}
-      id={`${parent.uuid}-background`}
       className='gr-background-section'
+      id={`${parent.uuid}-background-${background?.uuid || ''}`}
       // actions={[
       //   <IconButton
       //     key='trash-story'

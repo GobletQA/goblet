@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react'
+import type { ReactNode, ComponentProps } from 'react'
 import type { TStepParentAst, TScenarioParentAst } from '@GBR/types'
 
 import { Section } from './Section'
@@ -8,6 +8,7 @@ import { ESectionType } from '@GBR/types'
 export type TSections = {
   type:ESectionType
   showAdd?:boolean
+  children?:ReactNode
   onAdd?:(...args:any[]) => void
   items?:ComponentProps<typeof Section>[]
   parent:TScenarioParentAst | TStepParentAst
@@ -21,11 +22,12 @@ export const Sections = (props:TSections) => {
     onAdd,
     parent,
     showAdd,
+    children,
   } = props
 
   return (
     <>
-      {items?.map(item => {
+      {children || items?.map(item => {
         return (
           <Section
             {...item}

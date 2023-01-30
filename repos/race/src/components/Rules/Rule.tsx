@@ -1,18 +1,17 @@
-import type { TRuleAst } from '@GBR/types'
+import type { TRaceFeature, TRuleAst } from '@GBR/types'
 
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
-import { useEditor } from '../../contexts'
 import { Section, Stack } from '../Shared'
 import { stopEvent, IconButton, TrashIcon, useInline } from '@gobletqa/components'
 
 export type TRule = {
   rule: TRuleAst
+  parent:TRaceFeature
 }
 
 export const Rule = (props:TRule) => {
-  const { rule } = props
-  const { feature } = useEditor()
+  const { rule, parent } = props
 
   const onAddScenario = useInline(() => {})
 
@@ -23,8 +22,8 @@ export const Rule = (props:TRule) => {
       initialExpand={false}
       show={Boolean(rule)}
       type={ESectionType.rule}
-      id={`${feature.uuid}-rule`}
       className='gr-rule-section'
+      id={`${parent.uuid}-rule-${rule.uuid}`}
       // actions={[
       //   <IconButton
       //     key='trash-story'

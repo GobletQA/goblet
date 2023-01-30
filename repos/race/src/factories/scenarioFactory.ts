@@ -4,23 +4,34 @@ import type { TScenarioAst } from '@GBR/types'
 import { stepsFactory } from './stepFactory'
 import { deepMerge, uuid, emptyObj, emptyArr } from '@keg-hub/jsutils'
 
-export const scenarioFactory = (scenario?:Partial<TScenarioAst>) => {
+const emptyScenario = ():TScenarioAst => ({
+  tags: [],
+  index: 0,
+  steps: [],
+  uuid: uuid(),
+  scenario: ` `,
+})
+
+export const scenarioFactory = (
+  scenario?:Partial<TScenarioAst>,
+  empty:boolean=false
+) => {
   return scenario
     ? deepMerge<TScenarioAst>(
-        {
-          tags: [],
-          index: 0,
-          uuid: uuid(),
-          scenario: ` `,
-        },
+        emptyScenario(),
         scenario,
         {steps: stepsFactory(scenario.steps)}
       )
-    : emptyObj as TScenarioAst
+    : empty
+      ? emptyScenario()
+      : emptyObj as TScenarioAst
 }
 
-export const scenariosFactory = (scenarios?:Partial<TScenarioAst>[]) => {
+export const scenariosFactory = (
+  scenarios?:Partial<TScenarioAst>[],
+  empty:boolean=false
+) => {
   return scenarios?.length
-    ? scenarios.map(scenario => scenarioFactory(scenario))
+    ? scenarios.map(scenario => scenarioFactory(scenario, empty))
     : emptyArr as TScenarioAst[]
 }

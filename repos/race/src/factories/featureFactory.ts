@@ -6,7 +6,7 @@ import { scenariosFactory } from './scenarioFactory'
 import { backgroundFactory } from './backgroundFactory'
 import { toObj } from '@gobletqa/race/utils/helpers/toObj'
 import { blockFactory, blocksFactory } from './blockFactory'
-import { StoryIndexMap, EmptyFeatureUUID } from '@GBR/constants/values'
+import { FeatureIndexMap, EmptyFeatureUUID } from '@GBR/constants/values'
 
 export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
   const {
@@ -41,9 +41,9 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
       ...toObj(`comments`, blocksFactory(comments)),
       ...toObj(`scenarios`, scenariosFactory(scenarios)),
       ...toObj(`background`, backgroundFactory(background)),
-      ...toObj(`reason`, blockFactory(reason, StoryIndexMap.reason)),
-      ...toObj(`desire`, blockFactory(desire, StoryIndexMap.desire)),
-      ...toObj(`perspective`, blockFactory(perspective, StoryIndexMap.perspective)),
+      ...toObj(`reason`, blockFactory(reason, FeatureIndexMap.reason)),
+      ...toObj(`desire`, blockFactory(desire, FeatureIndexMap.desire)),
+      ...toObj(`perspective`, blockFactory(perspective, FeatureIndexMap.perspective)),
     }
   )
 }
