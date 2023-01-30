@@ -31,7 +31,7 @@ export const Title = (props:TTitle) => {
   const onToggleEdit = useCallback(((__, featureTitle, editing) => {
     !editing
       && isStr(featureTitle)
-      && updateFeature({ ...parent, feature: featureTitle})
+      && updateFeature({ ...parent, feature: featureTitle}, false)
   }) as TToggleEditCB, [parent])
 
   const onChange = useCallback(((evt, value) => {

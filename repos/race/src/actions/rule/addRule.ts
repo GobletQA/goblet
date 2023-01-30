@@ -10,5 +10,5 @@ export const addRule = async () => {
   const rules = [...(feature.rules || [])]
   rule && rules.push(rule)
 
-  updateFeature({...feature, rules}, true)
+  updateFeature({...feature, rules})
 }

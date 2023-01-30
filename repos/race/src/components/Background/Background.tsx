@@ -3,8 +3,8 @@ import type { TBackgroundAst, TRaceFeature } from '@GBR/types'
 import { Steps } from '../Steps'
 import { Section } from '../Shared'
 import { ESectionType } from '@GBR/types'
-import { addBackground } from '@GBR/actions/background'
-import { stopEvent, IconButton, TrashIcon, useInline } from '@gobletqa/components'
+import { useInline } from '@gobletqa/components'
+import { addBackground, addBackgroundStep } from '@GBR/actions/background'
 
 export type TBackground = {
   parent:TRaceFeature
@@ -25,15 +25,13 @@ export const Background = (props:TBackground) => {
       type={ESectionType.background}
       className='gr-background-section'
       id={`${parent.uuid}-background-${background?.uuid || ''}`}
-      // actions={[
-      //   <IconButton
-      //     key='trash-story'
-      //     Icon={TrashIcon}
-      //     onClick={onTrash}
-      //   />
-      // ]}
     >
-      {background && <Steps parent={background} />}
+      {background && (
+        <Steps
+          parent={background}
+          onAdd={addBackgroundStep}
+        />
+      ) || null}
     </Section>
   )
 }

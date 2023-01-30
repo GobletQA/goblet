@@ -10,5 +10,5 @@ export const addBackground = async () => {
   if(!feature) console.warn(`Can not access feature context from 'addStory' action.`) 
 
   const background = backgroundFactory(undefined, true)
-  updateFeature({...feature, background}, true)
+  updateFeature({...feature, background})
 }

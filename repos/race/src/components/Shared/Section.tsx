@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react'
-import type { TScenarioParentAst } from '@GBR/types'
+import type { TStepParentAst, TScenarioParentAst } from '@GBR/types'
 
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
@@ -37,9 +37,9 @@ export type TSection = {
   sx?:CSSProperties
   children:ReactNode
   initialExpand?:boolean
-  parent:TScenarioParentAst
   actions?:TSectionAction[]
   onAdd?:(...args:any[]) => void
+  parent:TScenarioParentAst|TStepParentAst
 }
 
 export const SectionActions = (props:TSectionActions) => {

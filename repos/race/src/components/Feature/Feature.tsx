@@ -44,7 +44,7 @@ export const Feature = (props:TFeature) => {
   const onToggleEdit = useCallback(((__, featureTitle, editing) => {
     !editing
       && isStr(featureTitle)
-      && updateFeature({ ...feature, feature: featureTitle})
+      && updateFeature({ ...feature, feature: featureTitle}, false)
   }) as TToggleEditCB, [feature])
 
   const onClick = useCallback((e:MouseEvent<HTMLButtonElement>) => {

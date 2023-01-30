@@ -1,46 +1,40 @@
-import type { TStepParentAst } from '@GBR/types'
+import type { TStepParentAst, TStepAst } from '@GBR/types'
 
 import { Step } from './Step'
-import { Stack } from '../Shared'
-import { AddItem } from '../AddItem'
+import { Sections } from '../Shared'
 import { ESectionType } from '@GBR/types'
-import { EmptySteps } from './EmptySteps'
+import { useInline } from '@gobletqa/components'
 
-export type TSteps = {
+
+export type TStep = {
+  steps?:TStepAst[]
   parent:TStepParentAst
-}
+  onAdd?:(parentId:string) => void
+} 
 
-export const Steps = (props:TSteps) => {
-  const {
-    parent
-  } = props
+export const Steps = (props:TStep) => {
+
+  const { parent, onAdd } = props
+  const onAddStep = useInline(() => onAdd?.(parent.uuid))
 
   return (
-    <>
-      <Stack
-        stack={0}
-        gutter={true}
-        type={ESectionType.steps}
-        className='gr-steps-section'
-      >
-        {
-          !parent?.steps?.length
-            ? (<EmptySteps parent={parent} />)
-            : parent?.steps?.map((step) => {
-                return (
-                  <Step
-                    step={step}
-                    parent={parent}
-                    key={`${parent.uuid}-${step.index}-${step.uuid}`}
-                  />
-                )
-              })
-        }
-      </Stack>
-      <AddItem
-        parentId={parent?.uuid}
-        type={ESectionType.step}
-      />
-    </>
+    <Sections
+      showAdd={true}
+      parent={parent}
+      onAdd={onAddStep}
+      type={ESectionType.step}
+    >
+    {
+      parent?.steps?.map(step => {
+        return (
+          <Step
+            step={step}
+            parent={parent}
+            key={`${parent.uuid}-step-${step.uuid}`}
+          />
+        )
+      })
+    }
+    </Sections>
   )
 }

@@ -8,6 +8,6 @@ export const addStory = async () => {
   if(!feature) console.warn(`Can not access feature context from 'addStory' action.`) 
 
   const story = storyFactory(undefined, true)
-  updateFeature({...feature, ...story}, true)
+  updateFeature({...feature, ...story})
 
 }

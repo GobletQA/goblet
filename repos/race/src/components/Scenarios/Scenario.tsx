@@ -5,6 +5,7 @@ import { Section } from '../Shared'
 import { ESectionType } from '@GBR/types'
 import { useEditor } from '../../contexts'
 import { useInline } from '@gobletqa/components'
+import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
 
 export type TScenario = {
   scenario: TScenarioAst
@@ -26,15 +27,8 @@ export const Scenario = (props:TScenario) => {
       type={ESectionType.scenario}
       id={`${feature.uuid}-scenario`}
       className='gr-scenario-section'
-      // actions={[
-      //   <IconButton
-      //     key='trash-story'
-      //     Icon={TrashIcon}
-      //     onClick={onTrash}
-      //   />
-      // ]}
     >
-      <Steps parent={scenario} />
+      <Steps parent={scenario} onAdd={addScenarioStep} />
     </Section>
   )
 }

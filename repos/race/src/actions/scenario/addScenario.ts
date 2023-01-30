@@ -13,5 +13,5 @@ export const addScenario = async () => {
   const scenarios = [...(feature.scenarios || [])]
   scenario && scenarios.push(scenario)
 
-  updateFeature({...feature, scenarios}, true)
+  updateFeature({...feature, scenarios})
 }
