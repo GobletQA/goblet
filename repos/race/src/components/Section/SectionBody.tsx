@@ -4,10 +4,10 @@ import type { ReactNode, CSSProperties } from 'react'
 import { Body } from './Section.styled'
 
 export type TSectionBody = {
-  type:ESectionType
   gutter?:boolean
-  sx?:CSSProperties
+  type:ESectionType
   children?: ReactNode
+  sx?:CSSProperties|CSSProperties[]
 }
 
 export const SectionBody = (props:TSectionBody) => {

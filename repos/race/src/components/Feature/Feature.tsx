@@ -4,17 +4,16 @@ import type { TToggleEditCB } from '@gobletqa/components'
 
 import { useEffect, useCallback } from 'react'
 
-import { Tags } from '../Tags'
+import { Meta } from '../Meta'
 import { Rules } from '../Rules'
+import { Story } from '../Story'
 import Box from '@mui/material/Box'
+import { Section } from '../Section'
 import { isStr } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { useEditor } from '../../contexts'
-import { FeatureStory } from './FeatureStory'
-import { Section, SectionHeader } from '../Section'
-import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
 
@@ -22,23 +21,11 @@ import { gutter, BoltIcon, H3, EmptyEditor } from '@gobletqa/components'
 
 export type TFeature = TFeaturesRefs & {}
 
-const padding = `${gutter.padding.size + (gutter.padding.size / 2)}px`
 const styles = {
   section: {
-    paddingTop: padding,
-    paddingRight: gutter.padding.px,
+    padding: gutter.padding.px,
   },
-  content: {
-    paddingLeft: gutter.padding.hpx
-  }
-}
-
-const FeatureTitle = () => {
-  return (
-    <Box>
-      <H3>Feature</H3>
-    </Box>
-  )
+  content: {}
 }
 
 export const Feature = (props:TFeature) => {
@@ -77,35 +64,20 @@ export const Feature = (props:TFeature) => {
     : (
         <Section
           stack={2}
-          gutter={true}
           sx={styles.section}
           type={ESectionType.feature}
           className='gr-feature-editor-section'
         >
-
-          <FeatureTitle />
-
           <Box sx={styles.content}>
-            <SectionHeader
-              label='Title'
-              required={true}
-              title={feature?.feature}
-              onToggleEdit={onToggleEdit}
-              type={ESectionType.feature}
-              initialEditing={!Boolean(feature?.feature)}
-              placeholder={`Feature title or name...`}
+            <Meta
+              parent={feature}
+              featuresRef={featuresRef}
             />
 
-            
             { feature.uuid // !== EmptyFeatureUUID // @TODO - uncomment when race-editor is complete
                 ? (
                     <>
-                      <Tags
-                        parent={feature}
-                        featuresRef={featuresRef}
-                        type={ESectionType.feature}
-                      />
-                      <FeatureStory
+                      <Story
                         parent={feature}
                         featuresRef={featuresRef}
                       />

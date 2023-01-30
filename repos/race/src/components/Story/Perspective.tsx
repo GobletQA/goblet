@@ -1,12 +1,14 @@
 import type { TMeta } from './Story'
 
-import { EMetaType } from '@GBR/types'
-import { MetaInputContainer } from './Meta.styled'
+import { MetaInputContainer } from './Story.styled'
 import { capitalize } from '@keg-hub/jsutils'
 import { AutoInput } from '@gobletqa/components'
 import { PerspectiveOpts } from '@GBR/constants'
+import { ESectionType, EMetaType } from '@GBR/types'
 
-export type TPerspective = TMeta & {}
+export type TPerspective = TMeta & {
+  type: ESectionType
+}
 
 export const Perspective = (props:TPerspective) => {
   const { parent } = props

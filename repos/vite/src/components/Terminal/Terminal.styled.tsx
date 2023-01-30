@@ -106,7 +106,7 @@ export const TabCloseIcon = styled(CloseIcon)(({ theme }) => `
 `)
 
 export const TerminalExpandBtn = styled(IconButton)(({ theme }) => `
-  width: 37px;
+  width: 40px;
   display: flex;
   border-radius: 0px;
   place-items: center;

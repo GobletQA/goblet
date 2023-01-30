@@ -19,10 +19,8 @@ export const Container = styled(Accordion)`
     & h5 {
       color: ${colors.gray10}
     }
-    
   }
 `
-
 
 const noTransformStyle = `
   & .MuiAccordionSummary-expandIconWrapper {
@@ -35,7 +33,7 @@ export const Header = styled(AccordionSummary, {
 })(({ noIconTransform }: THeaderProps) => `
   ${noIconTransform ? noTransformStyle : ''}
 
-  border-bottom: 1px solid ${colors.green10};
+  // border-bottom: 1px solid ${colors.green10};
   height: ${dims.dropdown.header.px};
   min-height: ${dims.dropdown.header.px};
 

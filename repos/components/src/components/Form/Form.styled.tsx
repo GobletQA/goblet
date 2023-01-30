@@ -9,7 +9,6 @@ import MuiIconBtn from '@mui/material/IconButton'
 import FormControl from '@mui/material/FormControl'
 import Autocomplete from '@mui/material/Autocomplete'
 
-
 export const FormMain = styled(Box)``
 export const FormContainer = styled(`form`)``
 export const FormHeaderContainer = styled(Box)``
@@ -120,7 +119,7 @@ export const TextInputContainer = styled(Box)`
 
 export const TextLabelWrap = styled(Box)`
   min-width: 80px;
-  margin-right: 20px;
+  margin-right: 0px;
 `
 
 // ----- Input Component ---- //

@@ -7,6 +7,7 @@ const tHeaderH = 30
 
 const divider = 1
 const headerH = 40
+const editorTabs = 40
 const sectionHeaderH = 40
 
 const defHeaderH = 35
@@ -73,6 +74,16 @@ export const dims = {
     header: {
       height: sectionHeaderH,
       px: `${sectionHeaderH}px`,
+    }
+  },
+  editor: {
+    tabs: {
+      height: editorTabs,
+      px: `${editorTabs}px`,
+    },
+    openedTab: {
+      height: editorTabs - 5,
+      px: `${editorTabs - 5}px`,
     }
   }
 }

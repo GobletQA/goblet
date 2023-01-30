@@ -11,7 +11,6 @@ type TGutterComp = ComponentProps<typeof Box> & {
   theme?:TGobletTheme
 }
 
-
 const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
   return styled(Component, {
     shouldForwardProp: (prop:string) => prop !== 'gutter'
@@ -38,14 +37,19 @@ export const Container = styled(Box)(({ theme }) => `
 `)
 
 
-export const Body = gutterComp(Box)
-export const Stack = gutterComp(MuiStack)
+export const Stack = gutterComp(MuiStack, `
+  & > .MuiBox-root {
+    margin-top: 0px
+  }
+`)
 
-export const Action = styled(Box)``
-export const Actions = styled(Box)``
+export const Header = gutterComp(Box)
 export const HeaderTitle = styled(Text)`
   height: 30px;
 `
-export const Header = gutterComp(Box)
+
+export const Body = gutterComp(Box)
+export const Action = styled(Box)``
+export const Actions = styled(Box)``
 
 

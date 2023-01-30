@@ -42,6 +42,7 @@ export const AddItem = (props:TAddItem) => {
         {...rest}
         sx={buttonSx}
         onClick={onClick}
+        variant="outlined"
         className={`gr-add-btn-${type}`}
       >
         {children || `Add ${capitalize(type)}`}

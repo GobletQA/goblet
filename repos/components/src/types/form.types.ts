@@ -27,6 +27,8 @@ export type TOnAutoChange = (
 ) => void
 
 
+export type TInputVariants = `outlined`|`filled`|`standard`
+
 export type TInputDecor = {
   name: string
   label?: string

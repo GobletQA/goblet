@@ -1,34 +1,35 @@
-import type { TGobletTheme } from '@GBC/types'
 import Box from '@mui/material/Box'
+import { getColor } from '@GBC/utils'
+import { dims, colors } from '@GBC/theme'
 import { styled } from '@mui/material/styles'
 
-
-export const ActionsContainer = styled(Box)`
+export const ActionsContainer = styled(Box)(({ theme }) => `
   top: 0px;
   right: 0px;
-  width: 37px;
-  max-width: 37px;
   display: flex;
   position: absolute;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-`
+  width: ${dims.editor.tabs.px};
+  max-width: ${dims.editor.tabs.px};
+`)
 
 export const ActionsToggle = styled(Box)(({ theme }) => `
-  width: 37px;
-  height: 37px;
-
   display: flex;
   cursor: pointer;
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  width: ${dims.editor.tabs.px};
+  height: ${dims.editor.tabs.px};
   color: var(--goblet-tab-inactiveForeground);
   background-color: var(--goblet-editorGroupHeader-tabsBackground);
   transition: color 300ms ease, background-color 300ms ease;
 
+  box-sizing: border-box;
   border-left: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+  // border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
 
   &:hover {
     background-color: var(--goblet-editorGroupHeader-tabsBorder);
@@ -85,11 +86,11 @@ export const ActionItem = styled(Box)(({ theme }) => `
   }
 
   & > div:first-of-type {
-    width: 35px;
-    height: 35px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    width: ${dims.editor.tabs.px};
+    height: ${dims.editor.tabs.px};
   }
 
   & * button {

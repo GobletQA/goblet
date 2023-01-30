@@ -7,13 +7,6 @@ import { exists, cls } from '@keg-hub/jsutils'
 import { SectionHeader } from './SectionHeader'
 import { Container, Stack } from './Section.styled'
 
-type TSectionStyles = {
-  section?: CSSProperties
-  header?: CSSProperties
-  body?: CSSProperties
-  stack?: CSSProperties
-}
-
 export type TSection = TSectionBody & Omit<TSectionHeader, `title`> & {
   body?:boolean
   title?:string
@@ -21,9 +14,26 @@ export type TSection = TSectionBody & Omit<TSectionHeader, `title`> & {
   header?:boolean
   sx?:CSSProperties
   stack?:number|boolean
-  styles?:TSectionStyles
+  bodySx?:CSSProperties
+  stackSx?:CSSProperties
+  headerSx?:CSSProperties
   variant?:`outlined`|`filled`|`standard`
   stackProps?:ComponentProps<typeof Stack>
+}
+
+const styles = {
+  section: {
+    padding: '0px',
+  },
+  header: {
+    
+  },
+  body: {
+    
+  },
+  stack: {
+    
+  }
 }
 
 export const Section = (props:TSection) => {
@@ -34,11 +44,13 @@ export const Section = (props:TSection) => {
     body,
     title,
     stack,
-    styles,
     gutter,
+    bodySx,
     header,
     variant,
     actions,
+    stackSx,
+    headerSx,
     children,
     className,
     stackProps,
@@ -47,7 +59,7 @@ export const Section = (props:TSection) => {
   return (
     <Container
       className={cls('gr-section', className)}
-      sx={[sx as CSSProperties, styles?.section as CSSProperties]}
+      sx={[styles?.section, sx] as CSSProperties[]}
     >
 
       {(header && (title || actions) && (
@@ -57,7 +69,7 @@ export const Section = (props:TSection) => {
           variant={variant}
           actions={actions}
           title={title || ``}
-          sx={styles?.header}
+          sx={[styles?.header, headerSx] as CSSProperties[]}
         />
       )) || null}
 
@@ -67,8 +79,8 @@ export const Section = (props:TSection) => {
               <SectionBody
                 type={type}
                 gutter={gutter}
-                sx={styles?.body}
                 children={children}
+                sx={[styles?.body, bodySx] as CSSProperties[]}
               />
             )
           : exists(stack) || stackProps
@@ -77,9 +89,9 @@ export const Section = (props:TSection) => {
                   spacing={stack}
                   {...stackProps}
                   gutter={gutter}
-                  sx={styles?.stack}
                   children={children}
                   className='gr-section-stack'
+                  sx={[stackSx, styles?.stack]}
                 />
               )
             : children

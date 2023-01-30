@@ -31,11 +31,15 @@ const styles = {
     marginTop: `-10px`,
   },
   header: {
-    opacity: `0.7`,
+    opacity: 0.7,
+    borderBottom : `0px`,
     color: colors.purple10,
-    transition: `opacity 300ms ease`,
     [`:hover`]: {
-      opacity: `1`,
+      opacity: 1,
+      transition: `opacity 300ms ease`,
+    },
+    [`& h5`]: {
+      color: colors.purple10,
     }
   },
   expand: {

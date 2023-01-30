@@ -16,7 +16,6 @@ export type TSectionHeader = {
   gutter?:boolean
   name?:string
   className?:string
-  sx?:CSSProperties
   type:ESectionType
   required?:boolean
   multiline?:boolean
@@ -26,6 +25,7 @@ export type TSectionHeader = {
   initialEditing?:boolean
   onToggleEdit?:TToggleEditCB
   actions?:Record<string, any>[]
+  sx?:CSSProperties|CSSProperties[]
   variant?:`outlined`|`filled`|`standard`
 }
 
@@ -72,14 +72,10 @@ export const SectionHeader = (props:TSectionHeader) => {
         initialEditing={initialEditing}
         className='gr-section-header-title'
         id={`${type}-${id || name || title}`}
-      >
-
-        { actions && (
-          <SectionActions actions={actions} type={type} />
-        ) || null}
-
-      </Input>
-
+      />
+      { actions && (
+        <SectionActions actions={actions} type={type} />
+      ) || null}
     </Header>
   )
   

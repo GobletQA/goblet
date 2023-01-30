@@ -114,6 +114,11 @@ export const components = (
           },
         }),
       }
+    },
+    MuiStack: {
+      defaultProps: {
+        style: {}
+      },
     }
   }
 }
