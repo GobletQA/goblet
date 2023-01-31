@@ -31,9 +31,13 @@ export const Sidebar = (props:TSidebar) => {
       maxWidth={maxWidth}
       className={cls('goblet-sidebar', className)}
     >
-      {PrePanels?.length && PrePanels.map(panel => <Panel key={panel.title || panel.id} {...panel} />)}
+      {PrePanels?.length && PrePanels.map(panel => {
+        return (<Panel key={panel?.title?.toString() || panel.id} {...panel} />)
+      })}
       {children}
-      {Panels?.length && Panels.map(panel => <Panel key={panel.title || panel.id} {...panel} />)}
+      {Panels?.length && Panels.map(panel => {
+        return (<Panel key={panel?.title?.toString() || panel.id} {...panel} />)
+      })}
     </SidebarContainer>
   )
 

@@ -17,10 +17,13 @@ import { throwErr } from '../utils/throwErr'
 export const throwGitError = (
   err:Error,
   remoteUrl:string='Unknown',
-  message:string
+  message:string=`[WRK-FL Git API] Error calling Git API`
 ) => {
-  message && Logger.error(message)
-  console.error(err.stack)
+  Logger.error(message)
+  err.stack
+    ? console.error(err.stack)
+    : err.message && Logger.error(message)
+
   Logger.empty()
 
   throwErr(`Error when calling git API - ${remoteUrl}`)

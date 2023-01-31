@@ -1,17 +1,19 @@
 import { TGitMeta } from './git.types'
-import { TRepoOpts } from './shared.types'
+import { TCreateRepo } from './repo.types'
+import { TRepoOpts, TRepoMountStatus } from './shared.types'
 
 export type TWFArgs = TGitMeta & {
+  token: string|boolean
   repoTemplate?: string
-  token?: string|boolean
 }
 
-export type TResArgs = {
-  mode?: string
-  setup: boolean
-  status?: string
+export type TWFCreateArgs = TGitMeta & {
+  token: string|boolean
+  create: TCreateRepo
+}
+
+export type TResArgs = Omit<TRepoMountStatus, `message`> & {
   repo?: TRepoOpts
-  mounted?: boolean
 }
 
 export type TWFResp = TResArgs & {

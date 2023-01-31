@@ -4,13 +4,24 @@ import { lazy, Suspense, useEffect } from 'react'
 import { EModalTypes } from '@types'
 import { AuthActive } from '@constants'
 import { useUser, useRepo } from '@store'
-import { Git } from '@gobletqa/components'
-import { Loading } from '@gobletqa/components'
 import { isEmptyColl } from '@keg-hub/jsutils'
+import { Git, Loading } from '@gobletqa/components'
 import { connectModal } from '@actions/modals/modals'
 import { toggleModal } from '@actions/modals/toggleModal'
+import {
+  LogoIcon,
+  LogoText,
+  Container,
+  LogoContainer,
+} from './SignInModal.styled'
 
 const LazySignIn = lazy(() => import('@components/Admin/SignIn/SignIn'))
+
+const styles = {
+  message: {
+    marginBottom: `0px`,
+  }
+}
 
 export const SignInModal:TModalRef = (props:TModalComponent) => {
 
@@ -29,9 +40,20 @@ export const SignInModal:TModalRef = (props:TModalComponent) => {
   }, [user, repo])
 
   return (
-    <Suspense fallback={<Loading />} >
-      <LazySignIn MessageComponent={props.ModalMessage} />
-    </Suspense>
+    <Container className='gb-sign-in-modal-container' >
+      <LogoContainer>
+        <LogoIcon />
+        <LogoText>
+          GobletQA
+        </LogoText>
+      </LogoContainer>
+      <Suspense fallback={<Loading />} >
+        <LazySignIn
+          messageSx={styles.message}
+          MessageComponent={props.ModalMessage}
+        />
+      </Suspense>
+    </Container>
   )
 }
 

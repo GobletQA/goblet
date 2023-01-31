@@ -2,6 +2,7 @@ import type { CSSProperties, SyntheticEvent, ComponentProps } from 'react'
 
 
 import { useCallback } from 'react'
+import { capitalize } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components/hooks'
 
 import { ESectionType } from '@GBR/types'
@@ -22,6 +23,7 @@ export const AddItem = (props:TAddItem) => {
   const {
     sx,
     type,
+    children,
     buttonSx,
     parentId,
     onClick:onClickCB,
@@ -40,9 +42,10 @@ export const AddItem = (props:TAddItem) => {
         {...rest}
         sx={buttonSx}
         onClick={onClick}
+        variant="outlined"
         className={`gr-add-btn-${type}`}
       >
-        Add {type}
+        {children || `Add ${capitalize(type)}`}
       </AddBtn>
     </Container>
   )

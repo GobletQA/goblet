@@ -1,18 +1,21 @@
+import type { CSSProperties } from 'react'
+
+import { useApp } from '@store'
 import { RaceEditor } from '@gobletqa/race'
-import { BlockIcon } from '@gobletqa/components'
-import { EditorSidebarWidth } from '@constants'
 import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Layout/Divider'
 import { NotConnected } from '@components/NotConnected'
 import { useRaceHooks } from '@hooks/race/useRaceHooks'
 import { PrePanels } from '@components/Panels/PrePanels'
+import { BlockIcon, DefSidebarWidth } from '@gobletqa/components'
 
 export type TVisualEditor = {
-  
+  portal?:string
+  style?: CSSProperties
 }
 
 export const VisualEditor = (props:TVisualEditor) => {
-
+  const { sidebarLocked } = useApp()
   const {
     steps,
     features,
@@ -23,14 +26,15 @@ export const VisualEditor = (props:TVisualEditor) => {
   return connected
     ? (
         <RaceEditor
+          {...props}
           steps={steps}
           actions={Actions}
           Divider={Divider}
           features={features}
-          sidebarStatus={true}
           PrePanels={PrePanels}
           rootPrefix={rootPrefix}
-          sidebarWidth={EditorSidebarWidth}
+          sidebarStatus={!sidebarLocked}
+          sidebarWidth={DefSidebarWidth}
         />
       )
     : (

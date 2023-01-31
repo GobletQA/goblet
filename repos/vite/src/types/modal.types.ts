@@ -1,4 +1,4 @@
-import type { ReactNode, ComponentProps, ComponentType } from 'react'
+import type { CSSProperties, ReactNode, ComponentProps, ComponentType } from 'react'
 import type Button from '@mui/material/Button'
 import type Dialog from '@mui/material/Dialog'
 import type DialogTitle from '@mui/material/DialogTitle'
@@ -17,9 +17,6 @@ export enum EModalTypes {
   Connect = `connect`,
   CONNECT = `connect`,
   connect = `connect`,
-  Repo = `repo`,
-  REPO = `repo`,
-  repo = `repo`,
   Settings = `settings`,
   SETTINGS = `settings`,
   settings = `settings`,
@@ -89,6 +86,8 @@ export type TModal = Omit<ComponentProps<typeof Dialog>, "open"> & {
 }
 
 export type TModalFooter = {
-  actions?: TModalAction[]
-  actionProps: ComponentProps<typeof DialogActions>
+  sx?:CSSProperties
+  children?: ReactNode
+  actionProps?: ComponentProps<typeof DialogActions>
+  actions?: TModalAction[] | Record<string, TModalAction>
 }

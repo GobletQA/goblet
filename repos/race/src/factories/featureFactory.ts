@@ -1,13 +1,12 @@
 import type { TEmptyFeature, TRaceFeature } from '@GBR/types'
 
 import { deepMerge } from '@keg-hub/jsutils'
-import { toObj } from '@gobletqa/race/utils/helpers/toObj'
-import { EmptyFeatureUUID } from '@GBR/constants/values'
-
 import { rulesFactory } from './ruleFactory'
 import { scenariosFactory } from './scenarioFactory'
 import { backgroundFactory } from './backgroundFactory'
+import { toObj } from '@gobletqa/race/utils/helpers/toObj'
 import { blockFactory, blocksFactory } from './blockFactory'
+import { FeatureIndexMap, EmptyFeatureUUID } from '@GBR/constants/values'
 
 export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
   const {
@@ -37,14 +36,14 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
         location: path
       },
       path: feat.path,
+      ...toObj(`empty`, empty),
       ...toObj(`rules`, rulesFactory(rules)),
-      ...toObj(`reason`, blockFactory(reason)),
-      ...toObj(`desire`, blockFactory(desire)),
       ...toObj(`comments`, blocksFactory(comments)),
       ...toObj(`scenarios`, scenariosFactory(scenarios)),
-      ...toObj(`perspective`, blockFactory(perspective)),
       ...toObj(`background`, backgroundFactory(background)),
-      ...toObj(`empty`, empty)
+      ...toObj(`reason`, blockFactory(reason, FeatureIndexMap.reason)),
+      ...toObj(`desire`, blockFactory(desire, FeatureIndexMap.desire)),
+      ...toObj(`perspective`, blockFactory(perspective, FeatureIndexMap.perspective)),
     }
   )
 }

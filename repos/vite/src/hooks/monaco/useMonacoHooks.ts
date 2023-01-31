@@ -2,7 +2,6 @@ import type { MutableRefObject } from 'react'
 import type { TEditorRefHandle } from '@gobletqa/monaco'
 import type {
   TDefinitionAst,
-  TOpenFileTreeEvent,
   TSideNavToggleProps,
   TEditorSettingValues,
 } from '@types'
@@ -19,13 +18,16 @@ import { toggleModal } from '@actions/modals/toggleModal'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { isCustomDef } from '@utils/definitions/isCustomDef'
-import { useEventListen, useEventEmit } from '@hooks/useEvent'
-import { useSettingValues } from '@hooks/store/useSettingValues'
+import { useSettingValues } from '@hooks/settings/useSettingValues'
 import { loadGobletFile } from '@actions/files/api/loadGobletFile'
+import {
+  useEventEmit,
+  useEventListen,
+} from '@gobletqa/components'
+
 
 import {
   UpdateModalEvt,
-  OpenFileTreeEvt,
   ToggleSideNavEvt,
   OpenEditorFileEvt,
 } from '@constants'
@@ -88,10 +90,6 @@ export const useMonacoHooks = (
   const { theme, ...options } = useSettingValues<TEditorSettingValues>(`editor`)
 
   exists(theme) && set(config, `theme.name`, theme)
-
-  useEventListen<TOpenFileTreeEvent>(OpenFileTreeEvt, ({ size }) => {
-    exists(size) && editorRef?.current?.resizeSidebar?.(size)
-  })
 
   useEventListen<TDefinitionAst>(OpenEditorFileEvt, async (defAst:TDefinitionAst) => {
     const { location } = defAst

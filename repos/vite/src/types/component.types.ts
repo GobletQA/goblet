@@ -1,6 +1,12 @@
-import type { ComponentType, ReactNode } from 'react'
+import type { SyntheticEvent, ComponentType, ReactNode } from 'react'
 import type { Theme } from '@mui/material'
 import type { SxProps, SystemStyleObject } from '@mui/system'
+import type {
+  AutocompleteChangeReason,
+  AutocompleteChangeDetails
+} from '@mui/material/Autocomplete'
+import { CreateBranchSelect } from '@constants'
+
 
 export type CSSProps = SxProps<Theme>
 export type CSSObj = SystemStyleObject<Theme>
@@ -21,4 +27,11 @@ export type TInputDecor = {
   Component?: ComponentType<any> | string
   [key: string]: any
 }
+
+
+export type AutoOpt = {
+  label: string
+  id: string | number
+}
+export type AutoOptVal = string | AutoOpt
 

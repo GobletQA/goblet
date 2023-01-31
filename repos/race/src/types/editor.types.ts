@@ -2,12 +2,13 @@ import type { RefObject, MutableRefObject, ComponentType } from 'react'
 import type { TRaceSteps } from './steps.types'
 import type { TRaceFeatureAsts, TRaceFeatures, TRaceFeature } from './features.types'
 import type {
-  TAction,
   TTabItem,
   TTabAction,
   EThemeMode,
-  TSidebarPanel
+  TSidebarPanel,
+  TEditorAction,
 } from '@gobletqa/components'
+
 import type {
   TStepsRef,
   TFeaturesRef,
@@ -48,7 +49,6 @@ export type TRaceEditorProps = TEditorContainer & {
 }
 
 export type TEditorContainer = TFeaturesRefs & TEditorRefs & {
-  actions?:TAction[]
   actionsOpen?:boolean
   sidebarWidth?:number
   sidebarStatus?:boolean
@@ -64,4 +64,6 @@ export type TEditorContainer = TFeaturesRefs & TEditorRefs & {
   Divider?:ComponentType<any>
   featureGroups:TRaceFeatures
   onSidebarResize?:(width:number) => void
+  portal?:string|MutableRefObject<HTMLElement>
+  actions?:TEditorAction<TRaceEditor, TEditorRef>[]
 }

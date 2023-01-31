@@ -1,5 +1,5 @@
-import type { TEditorAction } from '../../types'
 import type { MutableRefObject } from 'react'
+import type { TEditorAction } from '@gobletqa/components/types'
 
 import { EditorAction } from './EditorAction'
 import { ChevronDownIcon } from '../Icons'

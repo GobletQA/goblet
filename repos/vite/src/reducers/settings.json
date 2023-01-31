@@ -55,6 +55,14 @@
       "default": true,
       "type": "boolean",
       "group": "goblet"
+    },
+    "sidebarLocked": {
+      "key": "sidebarLocked",
+      "value": false,
+      "active": true,
+      "default": false,
+      "type": "boolean",
+      "group": "goblet"
     }
   },
   "editor": {

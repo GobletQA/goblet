@@ -1,4 +1,7 @@
-import type { GraphCache } from '../repo/githubAPI'
+import type { GraphCache } from '../repo/getUserRepos'
+import type { TRepoUserRepos }  from './shared.types'
+
+// ----- Graph API ----- //
 
 export type TGCacheOpts = {
   url?: string
@@ -11,16 +14,9 @@ export type TGraphApiEndpoint = {
   DATA_PATH: string
 }
 
-export type TGraphApiVars = {
-  first: number
-  after: string
-  token: string
-  graphCache:GraphCache
-  sortDirection: string
-  affiliations?: string[]
+export type TGraphApiVars = TRepoUserRepos & {
+  graphCache?:GraphCache
   endpoint: TGraphApiEndpoint
-  ownerAffiliations?: string[]
-  headers: Record<string, string>
 }
 
 export type TGraphPageInfo = {
@@ -44,4 +40,21 @@ export type TRepoMeta = {
   url: string
   name:string
   branches:string[]
+}
+
+
+export type TCreateRepo = {
+  name:string
+  branch:string
+  provider:string
+  newBranch?:string
+  branchFrom?:boolean
+  description?:string
+  organization?:string
+}
+
+export type TRepoGitState = {
+  repo: boolean
+  branch: boolean
+  mounted: boolean
 }

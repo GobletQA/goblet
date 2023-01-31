@@ -1,5 +1,14 @@
 #!/bin/bash
 
+gb_remove_local_docker(){
+  rm -rf ~/Library/Group\ Containers/group.com.docker
+  rm -rf ~/Library/Containers/com.docker.docker
+  rm -rf ~/.docker
+  rm -rf ~/Library/Application\ Support/com.docker.docker
+  rm -rf ~/Library/Application\ Support/Docker\ Desktop
+  rm -rf /usr/local/bin/docker
+}
+
 # Download the docker.dmg from the docker site
 gb_mac_download_install_docker(){
   if [[ ! -f "$GB_DOCKER_DMG_PATH" ]]; then

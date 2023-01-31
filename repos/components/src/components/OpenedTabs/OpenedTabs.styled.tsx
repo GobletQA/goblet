@@ -1,12 +1,19 @@
 import { Span } from '../Text'
+import { dims } from '@GBC/theme'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
 export const OpenTabsContainer = styled(Box)`
   width: 100%;
-  overflow: hidden;
+  height: 40px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
   box-sizing: border-box;
-  padding-right: 37px;
+  min-height: ${dims.editor.tabs.px};
+  padding-right: ${dims.editor.tabs.px};
+  background-color: var(--goblet-editorGroupHeader-tabsBackground);
+  // border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
 `
 
 /**
@@ -15,39 +22,38 @@ export const OpenTabsContainer = styled(Box)`
  */
 export const OpenTabsMain = styled(Box)`
   width: 100%;
-  height: 37px;
   display: flex;
   font-size: 14px;
   overflow-x: auto;
   overflow-y: hidden;
+  align-items: start;
   white-space: nowrap;
   flex-direction: row;
-  align-items: center;
   scrollbar-width: none;
   box-sizing: border-box;
   justify-content: flex-start;
-
-  background-color: var(--goblet-editorGroupHeader-tabsBackground);
+  height: ${dims.editor.tabs.px};
+  min-height: ${dims.editor.tabs.px};;
 
   &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
+    opacity: 0.75;
   }
   &::-webkit-scrollbar-track {
     background: var(--goblet-editorGroupHeader-tabsBackground);
-    box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
-    -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
+    box-shadow: inset 0 0 4px var(--goblet-scrollbar-shadow);
+    -webkit-box-shadow: inset 0 0 4px var(--goblet-scrollbar-shadow);
   }
   &::-webkit-scrollbar-thumb {
     border-radius: 3px;
     background: var(--goblet-scrollbarSlider-background);
-    box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
-    -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
+    box-shadow: inset 0 0 4px var(--goblet-scrollbar-shadow);
+    -webkit-box-shadow: inset 0 0 4px var(--goblet-scrollbar-shadow);
   }
 `
 
 export const OpenTab = styled(Box)`
-  height: 35px;
   display: flex;
   padding: 0px;
   cursor: pointer;
@@ -58,6 +64,7 @@ export const OpenTab = styled(Box)`
   flex-direction: row;
   align-items: center;
   box-sizing: border-box;
+  height: ${dims.editor.tabs.px};
   color: var(--goblet-tab-inactiveForeground);
   background-color: var(--goblet-tab-inactiveBackground);
   transition: color 300ms ease, background-color 300ms ease;

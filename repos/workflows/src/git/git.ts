@@ -1,5 +1,15 @@
+import type {
+  TCmdResp,
+  TGitOpts,
+  TGitMeta,
+  TRunCmdOpts,
+  TRepoGitState,
+  TLimboCmdResp,
+  TSaveMetaData,
+} from '@gobletqa/workflows/types'
 
 import fs from 'node:fs'
+import path from 'node:path'
 import { URL } from 'node:url'
 import { loadToken } from './loadToken'
 import { RepoWatcher } from './repoWatcher'
@@ -7,15 +17,33 @@ import { throwErr } from '../utils/throwErr'
 import { ensurePath } from '../utils/ensurePath'
 import { getRepoPath } from '../utils/getRepoPath'
 import { fileSys, runCmd, Logger } from '@keg-hub/cli-utils'
-import { isObj, limbo, deepMerge, exists } from '@keg-hub/jsutils'
-import {
-  TCmdResp,
-  TGitOpts,
-  TGitMeta,
-  TRunCmdOpts,
-  TLimboCmdResp,
-  TSaveMetaData
-} from '@gobletqa/workflows/types'
+import { isObj, limbo, deepMerge, exists, emptyObj } from '@keg-hub/jsutils'
+
+type TGitRemoteOpts = {
+  url?:string
+  origin?:string
+}
+
+type TGitRemote = {
+  (
+    cmdArgs:string[],
+    gitOpts:TGitOpts,
+    cmdOpts?:TRunCmdOpts,
+  ): Promise<TLimboCmdResp>
+  add: (gitOpts:TGitOpts, opts?:TGitRemoteOpts) => Promise<boolean>
+  print: (gitOpts:TGitOpts, opts?:TGitRemoteOpts, cmdOpts?:TRunCmdOpts) => Promise<string>
+}
+
+type TGitBranch = {
+  (
+    cmdArgs:string[],
+    gitOpts:TGitOpts,
+    cmdOpts?:TRunCmdOpts,
+  ): Promise<TLimboCmdResp>
+  current: (gitOpts:TGitOpts, opts?:TGitRemoteOpts, cmdOpts?:TRunCmdOpts) => Promise<string>
+}
+
+const gobletRefRemote = `goblet-ref`
 
 /**
  * Default child process options
@@ -33,7 +61,7 @@ const defCmdOpts:TRunCmdOpts = {
  *
  * @returns {Void}
  */
-const validateGitOpts = (gitOpts:TGitOpts):TGitOpts => {
+export const validateGitOpts = (gitOpts:TGitOpts):TGitOpts => {
   // Ensure an object is passed
   !isObj(gitOpts)
     && throwErr(`Git command requires an options object. Received ${typeof gitOpts}`)
@@ -50,9 +78,10 @@ const validateGitOpts = (gitOpts:TGitOpts):TGitOpts => {
   return {
     local: gitOpts.local,
     remote: gitOpts.remote,
+    branch: gitOpts.branch,
     username: gitOpts.username,
-    branch: gitOpts.branch || `main`,
     name: gitOpts.name || gitOpts.username,
+    repoName: path.basename(gitOpts.remote),
     token: gitOpts.token || process.env.GOBLET_GIT_TOKEN,
     email: gitOpts.email || `${gitOpts.username}@goblet.io`,
   }
@@ -74,7 +103,7 @@ const hasGitError = (err?:Error, resp?:TCmdResp, command:string=``) => {
   if(err) message = err.message
   else if(resp?.exitCode) message = resp.error || `An unknown error occurred`
 
-  if(!message) return
+  if(!message) return false
 
   Logger.error(`Error running git ${command}:\n`)
   Logger.log(message)
@@ -94,6 +123,18 @@ export const git = async (
 ) => {
   return await limbo(runCmd('git', args, opts, ...params)) as TLimboCmdResp
 }
+
+const gitCmd = async (
+  args:string[],
+  gitOpts:TGitOpts,
+  cmdOpts?:TRunCmdOpts,
+) => {
+  const options = validateGitOpts(gitOpts)
+  return await git(args, deepMerge(defCmdOpts, cmdOpts), options.local)
+}
+
+git.cmd = gitCmd
+
 
 git.setUser = async (
   gitOpts:TGitOpts,
@@ -152,12 +193,99 @@ git.clone = async (
 
   const [pullErr, pullResp] = await git.pull(gitOpts, cmdOpts)
 
+  // Add the git remote for reference 
+  await git.remote.add(gitOpts, { url: options.remote })
+
   // Ensure the user is configured for future git operations after pulling
   await git.setUser(gitOpts, cmdOpts)
 
   // Return the pull response so it can be handled by the mountRepo method
   return [pullErr, pullResp]
 }
+
+/**
+ * Calls git remote <method> on the local git repo
+ * @function
+ */
+git.remote = (async (
+  cmdArgs:string[],
+  gitOpts:TGitOpts,
+  cmdOpts?:TRunCmdOpts,
+) => {
+  return await gitCmd([`remote`, ...cmdArgs], gitOpts, cmdOpts)
+}) as TGitRemote
+
+/**
+ * Calls git remote add, to add a remote url to the local git repo
+ * @function
+ */
+git.remote.add = async (
+  gitOpts:TGitOpts,
+  opts:TGitRemoteOpts=emptyObj
+) => {
+  const options = validateGitOpts(gitOpts)
+  const url = opts?.url || options.remote
+  const origin = opts?.origin || gobletRefRemote
+
+  const [err, resp] = await git.remote([`add`, origin, url], options)
+
+  return !hasGitError(err, resp, `remote.add`)
+}
+
+/**
+ * Calls git remote add, to add a remote url to the local git repo
+ * @function
+ * @example
+ * git config --get remote.goblet-ref.url
+ */
+git.remote.print = async (
+  gitOpts:TGitOpts,
+  opts:TGitRemoteOpts=emptyObj,
+  cmdOpts:TRunCmdOpts=emptyObj
+) => {
+  const origin = opts?.origin || gobletRefRemote
+  const [err, resp] = await gitCmd(
+    [`config`, `--get`, `remote.${origin}.url`],
+    gitOpts,
+    cmdOpts
+  )
+
+  return hasGitError(err, resp, `remote.print`) ? `` : resp?.data?.trim()
+}
+
+/**
+ * Calls git branch <method> on the local git repo
+ * @function
+ */
+git.branch = (async (
+  cmdArgs:string[],
+  gitOpts:TGitOpts,
+  cmdOpts?:TRunCmdOpts,
+) => {
+  return await gitCmd([`branch`, ...cmdArgs], gitOpts, cmdOpts)
+}) as TGitBranch
+
+/**
+ * Gets the current checked out branch of a local repo
+ * @function
+ * @example
+ * git rev-parse --abbrev-ref HEAD
+ */
+git.branch.current = async (
+  gitOpts:TGitOpts,
+  opts:TGitRemoteOpts=emptyObj,
+  cmdOpts:TRunCmdOpts=emptyObj
+) => {
+
+  const [err, resp] = await gitCmd(
+    [`rev-parse`, `--abbrev-ref`, `HEAD`],
+    gitOpts,
+    cmdOpts
+  )
+
+  return hasGitError(err, resp, `branch.current`) ? `` : resp?.data?.trim()
+}
+
 
 /**
  * Calls git pull in a subshell after building the options from the passed in args
@@ -280,4 +408,29 @@ git.exists = async (args:TGitMeta, localPath?:string) => {
   err && err.code !== `ENOENT` && throwErr(err)
 
   return Boolean(pathExists)
+}
+
+/**
+ * Checks the remote and current branch of a local repo if it exists
+ * Ensure the current remote matches the expected remote
+ * Ensure the current branch matches the expected branch
+ * @function
+ */
+git.checkRepo = async (gitOpts:TGitOpts):Promise<TRepoGitState> => {
+  const state = { repo: false, branch: false, mounted: false }
+
+  const exists = await git.exists(null, gitOpts.local)
+  if(!exists) return state
+  
+  state.mounted = true
+
+  const { remote, branch, newBranch } = gitOpts
+  const remoteUrl =  await git.remote.print(gitOpts)
+  if(remoteUrl === remote) state.repo = true
+  
+  const checkBranch = newBranch || branch
+  const currentBranch = await git.branch.current(gitOpts)
+  if(checkBranch === currentBranch) state.branch = true
+
+  return state
 }

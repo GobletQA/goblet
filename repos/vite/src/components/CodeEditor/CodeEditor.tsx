@@ -1,21 +1,22 @@
+import type { CSSProperties } from 'react'
 import type { TEditorRefHandle } from '@gobletqa/monaco'
 
 import { useRef } from 'react'
-import { EditorSidebarWidth } from '@constants'
+import { useApp } from '@store'
 import { MonacoEditor } from '@gobletqa/monaco'
-import { BlockIcon } from '@gobletqa/components'
 import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Layout/Divider'
 import { NotConnected } from '@components/NotConnected'
 import { PrePanels } from '@components/Panels/PrePanels'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
+import { BlockIcon, DefSidebarWidth } from '@gobletqa/components'
 
 export type TCodeEditorProps = {
   portal?:string
-  style?: Record<string, string|number>
+  style?: CSSProperties
 }
 export const CodeEditor = (props:TCodeEditorProps) => {
-
+  const { sidebarLocked } = useApp()
   const editorRef = useRef<TEditorRefHandle>(null)
 
   const {
@@ -44,7 +45,6 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           Divider={Divider}
           options={options}
           actionsOpen={false}
-          sidebarStatus={true}
           Modal={modalActions}
           defaultFiles={files}
           PrePanels={PrePanels}
@@ -55,7 +55,8 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onPathChange={onPathChange}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
-          sidebarWidth={EditorSidebarWidth}
+          sidebarWidth={DefSidebarWidth}
+          sidebarStatus={!sidebarLocked}
           onBeforeAddFile={onBeforeAddFile}
         />
       )

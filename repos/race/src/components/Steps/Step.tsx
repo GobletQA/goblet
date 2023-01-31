@@ -1,24 +1,32 @@
-import type { TStepAst, TStepParentAst } from '@GBR/types'
+import type { TStepParentAst, TStepAst } from '@GBR/types'
 
-import { Text } from '../Text'
-import Box from '@mui/material/Box'
+import { Section } from '../Shared'
+import { ESectionType } from '@GBR/types'
+import { useEditor } from '../../contexts'
+import { useInline } from '@gobletqa/components'
 
 export type TStep = {
-  step:TStepAst
-  parent:TStepParentAst
+  step: TStepAst
+  parent: TStepParentAst
 }
 
 export const Step = (props:TStep) => {
-  const {
-    step,
-    parent
-  } = props
+  const { step, parent } = props
+  const { feature } = useEditor()
+
+  const onAddStep = useInline(() => {})
 
   return (
-    <Box className='gr-step' >
-      <Text className='gr-step-text' >
-        { step?.step }
-      </Text>
-    </Box>
+    <Section
+      parent={parent}
+      onAdd={onAddStep}
+      initialExpand={false}
+      show={Boolean(step)}
+      type={ESectionType.step}
+      id={`${feature.uuid}-step`}
+      className='gr-step-section'
+    >
+      {step?.type} - {step?.step}
+    </Section>
   )
 }

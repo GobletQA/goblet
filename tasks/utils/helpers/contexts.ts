@@ -205,7 +205,7 @@ export const getContextValue = (
 export const getDeployContext = (
   context:TContextKey,
   env:string,
-  fallback:any
+  fallback?:any
 ) => {
   const { deployments } = getDeploymentOpts(env)
   return resolveContext(context, deployments, fallback)

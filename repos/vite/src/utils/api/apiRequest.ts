@@ -1,4 +1,4 @@
-import type { TRequest, TResponse } from '@services/axios.types'
+import type { TBuiltRequest, TRequest, TResponse } from '@services/axios.types'
 
 import { networkRequest } from '@services/axios'
 import { isObj, get, isBool } from '@keg-hub/jsutils'
@@ -12,13 +12,15 @@ import {
 } from './apiCache'
 
 
-const buildRequest = async (request:TRequest|string) => {
-  const builtRequest = isObj<TRequest>(request) ? { ...request } : { url: request } as TRequest
+const buildRequest = async <T>(request:TBuiltRequest<T>|string) => {
+  const builtRequest = isObj<TBuiltRequest<T>>(request)
+    ? { ...request }
+    : { url: request } as TBuiltRequest<T>
 
   // Add to ensure cookies get sent with the requests
   builtRequest.withCredentials = true
-  builtRequest.url = buildUrl(builtRequest)
-  builtRequest.headers = await buildHeaders(builtRequest)
+  builtRequest.url = buildUrl<T>(builtRequest)
+  builtRequest.headers = await buildHeaders<T>(builtRequest)
 
   return builtRequest
 }
@@ -27,10 +29,10 @@ const buildRequest = async (request:TRequest|string) => {
  * Helper to make api requests to the Backend API
  * @function
  */
-export const apiRequest = async <T=Record<any, any>>(
-  request:TRequest|string
+export const apiRequest = async <T=Record<any, any>, R=Record<any, any>>(
+  request:TBuiltRequest<R>|string
 ):Promise<TResponse<T>> => {
-  const builtRequest = await buildRequest(request)
+  const builtRequest = await buildRequest<R>(request)
 
   const cacheKey = getCacheKey(builtRequest)
   const cache = getApiCache(cacheKey)

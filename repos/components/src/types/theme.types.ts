@@ -6,6 +6,7 @@ import type { colors } from '../theme/colors'
 
 export type TExtPalette = {
   colors: typeof colors
+  light: Palette['primary']
 }
 
 export type TPaletteOpts = PaletteOptions & TExtPalette

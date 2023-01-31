@@ -20,3 +20,7 @@ export type TFileType = {
 }
 
 export type TFileTypes = Record<string, TFileType>
+
+export type TRootPaths = {
+  [k: string]: null | TRootPaths
+}

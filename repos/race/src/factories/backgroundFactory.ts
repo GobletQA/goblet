@@ -1,20 +1,30 @@
 import type { TBackgroundAst } from '@GBR/types'
 
 import { stepsFactory } from './stepFactory'
+import { FeatureIndexMap } from '@GBR/constants'
 import { deepMerge, uuid } from '@keg-hub/jsutils'
 
-export const backgroundFactory = (background?:Partial<TBackgroundAst>) => {
+const emptyBackground = () => ({
+  tags: [],
+  steps: [],
+  uuid: uuid(),
+  background: ``,
+  index: FeatureIndexMap.background,
+})
+
+export const backgroundFactory = (
+  background?:Partial<TBackgroundAst>,
+  empty:boolean=false
+) => {
+
   return background
     ? deepMerge<TBackgroundAst>(
-        {
-          index: 0,
-          tags: [],
-          uuid: uuid(),
-          background: ``,
-        },
+        emptyBackground(),
         background,
-        {steps: stepsFactory(background.steps)}
+        {steps: stepsFactory(background?.steps)}
       )
-    : undefined
+    : empty
+      ? emptyBackground()
+      : undefined
 }
 

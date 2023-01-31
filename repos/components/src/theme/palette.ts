@@ -22,7 +22,13 @@ const commonPalette:TPaletteOpts = {
   },
   info: {
     main: colors.shamrock,
-  }
+  },
+  light: {
+    dark: colors.gray11,
+    main: colors.gray09,
+    light: colors.gray07,
+    contrastText: colors.gray19,
+  },
 }
 
 const lightPalette = (muiTheme:Theme) => {
@@ -48,6 +54,9 @@ const darkPalette = (muiTheme:Theme) => {
     secondary: {
       main: colors.black03,
       contrastText: colors.black19,
+    },
+    light: {
+      main: colors.gray19,
     },
     background: {
       default: colors.black19,

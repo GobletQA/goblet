@@ -9,8 +9,8 @@ export type TAppState = {
 
 export const appState = {
   sidebarLocked: false,
-  // editor: EEditorType.visual
-  editor: EEditorType.code,
+  editor: EEditorType.visual
+  // editor: EEditorType.code,
 } as TAppState
 
 export const appActions = {

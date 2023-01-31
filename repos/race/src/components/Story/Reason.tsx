@@ -1,11 +1,13 @@
 import type { TMeta } from './Story'
 
-import { EMetaType } from '@GBR/types'
 import { Input } from '@gobletqa/components'
 import { capitalize } from '@keg-hub/jsutils'
-import { MetaInputContainer } from './Meta.styled'
+import { MetaInputContainer } from './Story.styled'
+import { ESectionType, EMetaType } from '@GBR/types'
 
-export type TReason = TMeta & {}
+export type TReason = TMeta & {
+  type: ESectionType
+}
 
 export const Reason = (props:TReason) => {
   const { parent } = props

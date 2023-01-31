@@ -1,14 +1,9 @@
-import type { ComponentProps } from 'react'
-import type { TModalAction } from '@types'
+import type { CSSProperties, ComponentProps } from 'react'
+import type { TModalFooter, TModalAction } from '@types'
 
 import Button from '@mui/material/Button'
 import { useIcon } from '@hooks/components/useIcon'
 import DialogActions from '@mui/material/DialogActions'
-
-export type TModalFooter = ComponentProps<typeof DialogActions> & {
-  actionProps?: ComponentProps<typeof DialogActions>
-  actions?: TModalAction[] | Record<string, TModalAction>
-}
 
 const FooterAction = (props:TModalAction) => {
   const {
@@ -30,6 +25,7 @@ const FooterAction = (props:TModalAction) => {
   return (
     <Button
       key={text}
+      className='modal-footer-action'
       disabled={disabled || loading}
       endIcon={EIcon && (<EIcon {...iconProps} />)}
       startIcon={SIcon && (<SIcon {...iconProps} />)}
@@ -50,7 +46,15 @@ export const ModalFooter = (props:TModalFooter) => {
 
   return actions
     ? (
-        <DialogActions {...rest} {...actionProps} >
+        <DialogActions
+          className='modal-footer-actions'
+          {...actionProps}
+          {...rest}
+          sx={[
+            actionProps?.sx as CSSProperties,
+            rest?.sx as CSSProperties
+          ]}
+        >
           {Object.values(actions)?.map((action) => (
             <FooterAction
               key={action?.label || action?.text}

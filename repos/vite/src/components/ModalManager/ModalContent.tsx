@@ -1,9 +1,16 @@
 import type { TModal } from '@types'
 
 import { exists } from '@keg-hub/jsutils'
-import { useTheme } from '@gobletqa/components'
+import { colors, gutter } from '@gobletqa/components'
 import DialogContent from '@mui/material/DialogContent'
 import DialogContentText from '@mui/material/DialogContentText'
+
+const styles = {
+  content: {
+    padding: gutter.padding.px,
+    borderTop: `2px solid ${colors.green10}`,
+  }
+}
 
 export const ModalContent = (props:TModal) => {
   const {
@@ -13,12 +20,11 @@ export const ModalContent = (props:TModal) => {
     contentProps,
   } = props
 
-  const theme = useTheme()
-
   return (
     <DialogContent
+      sx={styles.content}
       id="gb-modal-description"
-      sx={{ borderTop: `2px solid ${theme.palette.primary.main}` }}
+      className='gb-modal-content'
       {...contentProps}
     >
       {children}

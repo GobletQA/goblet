@@ -4,31 +4,28 @@ import type { TToggleEditCB } from '@gobletqa/components'
 
 import { useEffect, useCallback } from 'react'
 
-import { Tags } from '../Tags'
+import { Meta } from '../Meta'
 import { Rules } from '../Rules'
+import { Story } from '../Story'
+import { Stack } from '../Shared'
 import Box from '@mui/material/Box'
 import { isStr } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { useEditor } from '../../contexts'
-import { FeatureStory } from './FeatureStory'
-import { Section, SectionHeader } from '../Section'
-import { BoltIcon, H3, EmptyEditor } from '@gobletqa/components'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
 
-export type TFeature = TFeaturesRefs & {
-  
-}
+import { gutter, BoltIcon, H3, EmptyEditor } from '@gobletqa/components'
 
+export type TFeature = TFeaturesRefs & {}
 
-const FeatureTitle = () => {
-  return (
-    <Box>
-      <H3>Feature</H3>
-    </Box>
-  )
+const styles = {
+  section: {
+    padding: gutter.padding.px,
+  },
+  content: {}
 }
 
 export const Feature = (props:TFeature) => {
@@ -47,7 +44,7 @@ export const Feature = (props:TFeature) => {
   const onToggleEdit = useCallback(((__, featureTitle, editing) => {
     !editing
       && isStr(featureTitle)
-      && updateFeature({ ...feature, feature: featureTitle})
+      && updateFeature({ ...feature, feature: featureTitle}, false)
   }) as TToggleEditCB, [feature])
 
   const onClick = useCallback((e:MouseEvent<HTMLButtonElement>) => {
@@ -61,40 +58,26 @@ export const Feature = (props:TFeature) => {
           onClick={onClick}
           btnText='Create Feature'
           headerText='Goblet Feature Editor'
-          subText='Create a new feature, or select an existing feature from the panel on the right.'
+          subText='Create a new feature, or select an existing feature from the sidebar panel.'
         />
       )
     : (
-        <Section
+        <Stack
           stack={2}
-          gutter={true}
-          sx={{ paddingTop: `22px` }}
+          sx={styles.section}
           type={ESectionType.feature}
+          className='gr-feature-editor-section'
         >
-          <FeatureTitle />
-          <Box
-            paddingLeft='10px'
-          >
-            <SectionHeader
-              label='Title'
-              required={true}
-              title={feature?.feature}
-              onToggleEdit={onToggleEdit}
-              type={ESectionType.feature}
-              initialEditing={!Boolean(feature?.feature)}
-              placeholder={`Feature title or name...`}
+          <Box sx={styles.content}>
+            <Meta
+              parent={feature}
+              featuresRef={featuresRef}
             />
 
-            
             { feature.uuid // !== EmptyFeatureUUID // @TODO - uncomment when race-editor is complete
                 ? (
                     <>
-                      <Tags
-                        parent={feature}
-                        featuresRef={featuresRef}
-                        type={ESectionType.feature}
-                      />
-                      <FeatureStory
+                      <Story
                         parent={feature}
                         featuresRef={featuresRef}
                       />
@@ -115,6 +98,6 @@ export const Feature = (props:TFeature) => {
                 : null
             }
           </Box>
-        </Section>
+        </Stack>
       )
 }

@@ -7,7 +7,7 @@ import { InputActions } from './InputActions'
 import { useEdit } from '@GBC/hooks/form/useEdit'
 import { useControlValue } from '@GBC/hooks/form/useControlValue'
 import { useGetOptionLabel } from '@GBC/hooks/form/useGetOptionLabel'
-import { cls, uuid, emptyArr, isStr } from '@keg-hub/jsutils'
+import { cls, uuid, emptyArr } from '@keg-hub/jsutils'
 
 import {
   TextInput,
@@ -111,10 +111,6 @@ export const AutoInput = (props:TAutoInput) => {
 
   const getOption = useGetOptionLabel({ getOptionLabel })
 
-
-  console.log(value)
-  console.log(options)
-
   return (
     <InputContainer
       onClick={onClick}
@@ -185,12 +181,15 @@ export const AutoInput = (props:TAutoInput) => {
         </TextInputContainer>
       </TextInputControl>
 
+    {actions?.length && (
       <InputActions
         label={label}
         editing={editing}
         actions={actions}
         onToggleEdit={onToggleEdit}
       />
+    )||null}
+
     </InputContainer>
   )
 }

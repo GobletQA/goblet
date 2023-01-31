@@ -103,9 +103,6 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
     if(multiple && evtKey.key === ` `){
       const val = getValue(inputRef, valueProp)
       isStr(val) && setValue?.(val.split(` `))
-
-      console.log(`------- val -------`)
-      console.log(val)
     }
     
   }, [

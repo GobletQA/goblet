@@ -1,4 +1,5 @@
 import type { TRepoState } from './reducer.types'
+import type { TCreateRepo, TConnectRepo } from './repo.types'
 import type {
   TRepoMeta,
   TFileTree,
@@ -47,3 +48,14 @@ export type TApiDefinitionsResp = {
 }
 
 export type TFileResp = Record<"file", TFileModel>
+
+
+export type TApiRepoReq = Record<string, any>
+
+export type TApiConnectReq = Omit<TConnectRepo, `repo`|`newRepo`|`description`> & {
+  repoUrl:string
+}
+
+export type TApiCreateReq = Omit<TCreateRepo, `repo`|`newRepo`> & {
+  name: string
+}

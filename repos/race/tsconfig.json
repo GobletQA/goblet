@@ -46,6 +46,6 @@
       "GobletRoot": ["../../"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "../components/src/hooks/useEvent.ts"],
   "references": [{ "path": "tsconfig.vite.json" }]
 }

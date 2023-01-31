@@ -1,10 +1,10 @@
 import type { TBackgroundAst, TRaceFeature } from '@GBR/types'
 
 import { Steps } from '../Steps'
-import { AddItem } from '../AddItem'
+import { Section } from '../Shared'
 import { ESectionType } from '@GBR/types'
-import { Section, SectionHeader } from '../Section'
-
+import { useInline } from '@gobletqa/components'
+import { addBackground, addBackgroundStep } from '@GBR/actions/background'
 
 export type TBackground = {
   parent:TRaceFeature
@@ -14,30 +14,24 @@ export type TBackground = {
 export const Background = (props:TBackground) => {
 
   const { background, parent } = props
+  const onClick = useInline(() => addBackground())
 
   return (
     <Section
-      sx={{ marginTop: `30px` }}
+      onAdd={onClick}
+      parent={parent}
+      initialExpand={true}
+      show={Boolean(background)}
       type={ESectionType.background}
+      className='gr-background-section'
+      id={`${parent.uuid}-background-${background?.uuid || ''}`}
     >
-      { background 
-          ? (
-            <>
-              <SectionHeader
-                type={ESectionType.background}
-                title={background?.background}
-              />
-              <Steps parent={background} />
-            </>
-          )
-          : (
-              <AddItem
-                parentId={parent.uuid}
-                sx={{ marginLeft: `-10px` }}
-                type={ESectionType.background}
-              />
-            )
-      }
+      {background && (
+        <Steps
+          parent={background}
+          onAdd={addBackgroundStep}
+        />
+      ) || null}
     </Section>
   )
 }

@@ -1,22 +1,32 @@
-import type { ForwardedRef, ComponentProps, ComponentType } from 'react'
+import type { ReactNode, ForwardedRef, ComponentProps, ComponentType } from 'react'
 
 import { forwardRef } from 'react'
+import { exists } from '@keg-hub/jsutils'
 import MuiIconBtn from '@mui/material/IconButton'
+import { isValidFuncComp } from '@GBC/utils/components/isValidFuncComp'
 
 export type TIconButton = ComponentProps<typeof MuiIconBtn> & {
-  Icon?: ComponentType<any>
+  iconProps?:ComponentProps<any>
+  Icon?: ComponentType<any>|ReactNode
 }
 
 export const IconButton = forwardRef((props:TIconButton, ref:ForwardedRef<HTMLButtonElement>) => {
   const {
     Icon,
-     children,
+    children,
+    iconProps,
      ...rest
   } = props
 
   return (
     <MuiIconBtn ref={ref} {...rest} >
-      {Icon ? <Icon /> : children}
+      {
+        Icon
+          ? isValidFuncComp(Icon)
+            ? <Icon {...iconProps} />
+            : children
+          : children
+      }
     </MuiIconBtn>
   )
 })

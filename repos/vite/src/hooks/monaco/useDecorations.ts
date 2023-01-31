@@ -8,11 +8,12 @@ import type {
 
 import { useRef } from 'react'
 import { PWPlay } from '@constants'
-import { useEventListen } from '../useEvent'
+import { useEventListen } from '@gobletqa/components'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { getTypeFromId } from '@utils/editor/getTypeFromId'
 import { buildDecoration } from '@utils/editor/buildDecoration'
 import { buildDecorationFrom } from '@utils/editor/buildDecorationFrom'
+
 import {
   PlayerTestEvt,
   PlayerErrorEvent,

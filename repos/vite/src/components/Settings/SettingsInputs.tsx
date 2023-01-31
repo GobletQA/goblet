@@ -2,6 +2,7 @@ import type { TSetting, CSSObj } from '@types'
 import type {
   FocusEvent,
   ChangeEvent,
+  KeyboardEvent,
   ComponentProps,
   FocusEventHandler,
   ChangeEventHandler,
@@ -66,7 +67,7 @@ export const Input = (props:TInput) => {
       : props.onBlur?.(evt, val)
   }, [val, props.onChange, props.onBlur])
 
-  const onKeyDown = useCallback((evt:any) => {
+  const onKeyDown = useCallback((evt:KeyboardEvent<HTMLInputElement>) => {
     // Check if the enter key was pressed
     if(evt.keyCode !== 13) return
 

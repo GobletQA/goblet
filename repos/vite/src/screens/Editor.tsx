@@ -29,8 +29,6 @@ export default function Editor(props:TEditorProps){
   return (
     <Layout>
       <Component
-        // TODO: toggle this on off to lock the sidebar into the dom
-        // Not the best solution, but may work for now?
         portal={!sidebarLocked ? SubNavId : ``}
         style={style}
         {...rest}

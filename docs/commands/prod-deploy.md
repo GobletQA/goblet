@@ -42,7 +42,7 @@
 * Set the namespace and context
   * `yarn kube set prod --env prod`
 * Add the docker image pull secrets
-  * `yarn kube secret docker --env prod --log`
+  * `yarn kube secret auth --env prod --log`
 * Add the cloud provider API Token secrets
   * `yarn kube secret provider --env prod --cert --log`
 * Deploy the Nginx Ingress Controller

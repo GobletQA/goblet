@@ -134,12 +134,14 @@ export const Input = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
         </TextInputContainer>
       </TextInputControl>
 
+    {actions?.length && (
       <InputActions
         label={label}
         editing={editing}
         actions={actions}
         onToggleEdit={onToggleEdit}
       />
+    ) ||null}
     </InputContainer>
   )
 

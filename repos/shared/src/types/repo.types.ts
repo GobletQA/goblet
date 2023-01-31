@@ -1,5 +1,18 @@
-import { TFileTypes } from './files.types'
-export type { Repo as TRepo } from '../repo/repo'
+import type { Repo as TRepo } from '../repo/repo'
+import type { TRootPaths, TFileTypes } from './files.types'
+import type { TDefinitionFileModelList } from './definitions.types'
+
+export type {
+  TRepo
+}
+
+export type TRepoContent = {
+  repo:TRepo
+  features:any
+  fileTree:TRootPaths
+  status:TRepoMountStatus
+  definitions:TDefinitionFileModelList
+}
 
 export type TRepoPaths = {
   world:string
@@ -22,11 +35,12 @@ export type TWorld = {
 export type TGitData = {
   name: string
   local: string
-  branch: string
-  remote: string
   username:string
+  remote: string
+  branch: string
   newBranch?:string
-  createBranch?:boolean
+  repoName: string
+  branchFrom?:boolean
 }
 
 export type TRepoOpts = {
@@ -36,4 +50,45 @@ export type TRepoOpts = {
   paths?: TRepoPaths
   environment?: string
   fileTypes: TFileTypes
+}
+
+export type TRepoFromCreate = {
+  name:string
+  token:string
+  branch:string
+  username:string
+  provider:string
+  newBranch?:string
+  branchFrom?:boolean
+  description?:string
+  organization?:string
+}
+
+export type TRepoFromWorkflow = {
+  token:string
+  username:string
+  repoUrl:string
+  branch:string
+  newBranch?:string
+  branchFrom?:boolean
+}
+
+export type TRepoUserRepos = {
+  all?:boolean
+  token: string
+  query?:string
+  first?: number
+  after?: string
+  sortDirection?: string
+  affiliations?: string[]
+  ownerAffiliations?: string[]
+  headers?: Record<string, string>
+}
+
+export type TRepoMountStatus = {
+  mode?: string
+  setup: boolean
+  status?: string
+  message?:string
+  mounted?: boolean
 }

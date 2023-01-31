@@ -1,5 +1,6 @@
 import { TPaletteOpts } from '../types'
 import { Theme } from '@mui/material/styles'
+import { EThemeMode } from '../types'
 
 const fontCommon = {
   fontFamily: `Manrope, sans-serif`,
@@ -11,6 +12,9 @@ export const typography = (
   muiTheme:Theme,
   palette:TPaletteOpts
 ) => {
+  const isLightTheme = palette.mode === EThemeMode.light
+  const textGray = isLightTheme ? palette.colors.gray15 : palette.colors.gray03
+
   return {
     ...fontCommon,
     h1: {
@@ -30,8 +34,8 @@ export const typography = (
       fontWeight: 600
     },
     h5: {
+      fontWeight: 'bold',
       fontSize: '0.875rem',
-      fontWeight: 500
     },
     h6: {
       fontSize: '0.75rem',
@@ -49,18 +53,18 @@ export const typography = (
     },
     subtitle1: {
       fontWeight: 500,
+      color: textGray,
       fontSize: '0.875rem',
-      color: palette.colors.gray04
     },
     subtitle2: {
       fontWeight: 400,
+      color: textGray,
       fontSize: '0.75rem',
-      color: palette.colors.gray04
     },
     caption: {
       fontWeight: 400,
+      color: textGray,
       fontSize: '0.75rem',
-      color: palette.colors.gray03,
     },
   }
 }

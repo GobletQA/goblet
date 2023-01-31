@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 import '../resolveRoot'
 import type { Express } from 'express'
-import { Logger } from '@GBE/utils/logger'
 import { AUTH_BYPASS_ROUTES } from '@GBE/constants'
 import { getApp } from '@gobletqa/shared/express/app'
 import { backendConfig } from '@GBE/Configs/backend.config'

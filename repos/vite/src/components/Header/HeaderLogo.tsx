@@ -21,7 +21,7 @@ export const HeaderLogo = () => {
           variant="h6"
           component="a"
         >
-          Goblet
+          GobletQA
         </LogoText>
       </LogoBtn>
     </LogoContainer>

@@ -29,6 +29,8 @@ export const loadConfigFromBase = (base:string) => {
         Logger.colors.red(
           `The base path does not exist on the host file-system\n`
         ),
+        Logger.colors.white(`  directory => `),
+        Logger.colors.yellow(cleanedDir),
         Logger.colors.white(`  base => `),
         Logger.colors.yellow(base),
         `\n`,

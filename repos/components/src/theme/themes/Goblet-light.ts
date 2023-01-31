@@ -222,7 +222,7 @@ export const lightTheme = {
     [`statusBarItem.activeBackground`]: colors.white,
     [`statusBarItem.hoverBackground`]: colors.gray00,
 
-    [`list.focusBackground`]: colors.gray00,
+    [`list.focusBackground`]: colors.white01,
     [`list.focusForeground`]: colors.gray21,
 
     [`list.hoverBackground`]: colors.gray00,

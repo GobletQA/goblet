@@ -1,4 +1,4 @@
-import type { ReactNode, MutableRefObject, ComponentType } from 'react'
+import type { CSSProperties, ReactNode, MutableRefObject, ComponentType } from 'react'
 
 import type Monaco from 'monaco-editor'
 import type { editor } from 'monaco-editor'
@@ -92,8 +92,9 @@ export interface IMonacoEditorProps {
   emptyText?: string
   rootPrefix?: string
   options: TEditorOpts
-  sidebarWidth?: number
   actionsOpen?:boolean
+  sidebarWidth?: number
+  style?: CSSProperties
   config?: TEditorConfig
   sidebarStatus?: boolean
   Panels?:TSidebarPanel[]
@@ -112,7 +113,6 @@ export interface IMonacoEditorProps {
   onBeforeAddFile?: TFileCallback
   onEditorLoaded?:TOnEditorLoaded
   onRenameFile?: TEditorRenameFile
-  style?: Record<string, string|number>
   onSidebarResize?: (width:number) => void
   portal?:string|MutableRefObject<HTMLElement>
   actions?:TEditorAction[] | TSidebarAction<TCodeEditor>[]

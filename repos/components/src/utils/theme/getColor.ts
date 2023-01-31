@@ -8,9 +8,9 @@ import { EThemeMode } from '@GBC/types'
 export const getColor = <T=string>(
   light:string|number,
   dark:string|number,
-  theme:TGobletTheme|Theme=getTheme()
+  theme:Theme|TGobletTheme=getTheme()
 ) => {
-  const { palette } = (theme as TGobletTheme)
+  const { palette } = theme as TGobletTheme
   const lColor = get(palette, `${light}`, light)
   const dColor = get(palette, `${dark}`, dark)
 

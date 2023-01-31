@@ -1,9 +1,10 @@
 import type { TRuleAst, TRaceFeature } from '@GBR/types'
 
 import { Rule } from './Rule'
-import { AddItem } from '../AddItem'
-import { Section } from '../Section'
+import { Sections } from '../Shared'
 import { ESectionType } from '@GBR/types'
+import { useInline } from '@gobletqa/components'
+import { addRule } from '@GBR/actions/rule/addRule'
 
 export type TRules = {
   rules?:TRuleAst[]
@@ -13,27 +14,26 @@ export type TRules = {
 export const Rules = (props:TRules) => {
 
   const { rules, parent } = props
+  const onAdd = useInline(() => addRule())
 
   return (
-    <>
-      {rules?.map(rule => {
+    <Sections
+      onAdd={onAdd}
+      showAdd={true}
+      parent={parent}
+      type={ESectionType.rule}
+    >
+    {
+      rules?.map(rule => {
         return (
           <Rule
             rule={rule}
-            key={`${parent.uuid}-${rule.uuid}`}
+            parent={parent}
+            key={`${parent.uuid}-rule-${rule.uuid}`}
           />
         )
-      })}
-      <Section
-        type={ESectionType.rule}
-        sx={{ marginTop: `20px` }}
-      >
-        <AddItem
-          parentId={parent.uuid}
-          type={ESectionType.rule}
-          sx={{ marginLeft: `-10px` }}
-        />
-      </Section>
-    </>
+      })
+    }
+    </Sections>
   )
 }

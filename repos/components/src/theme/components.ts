@@ -1,5 +1,6 @@
 import type { TPaletteOpts } from '../types'
 import type { Theme } from '@mui/material/styles'
+import type { AutocompleteClasses } from '@mui/material'
 
 import { EThemeMode } from '../types'
 
@@ -9,6 +10,7 @@ export const components = (
   palette:TPaletteOpts
 ):Theme[`components`] => {
   const isLightTheme = palette.mode === EThemeMode.light
+  const textGray = isLightTheme ? palette.colors.gray15 : palette.colors.gray03
   
   return {
     MuiButton: {
@@ -76,10 +78,18 @@ export const components = (
         },
       }
     },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          color: textGray,
+        }
+      }
+    },
     MuiAutocomplete: {
       styleOverrides: {
         input: {
           [`&::placeholder`]: {
+            color: textGray,
             fontStyle: `italic`,
             fontFamily: `Manrope, sans-serif`,
           },
@@ -97,12 +107,18 @@ export const components = (
         root: ({ ownerState, theme }) => ({
           [`& .MuiInputBase-input`]: {
             [`::placeholder`]: {
+              color: textGray,
               fontStyle: `italic`,
               fontFamily: `Manrope, sans-serif`,
             },
           },
         }),
       }
+    },
+    MuiStack: {
+      defaultProps: {
+        style: {}
+      },
     }
   }
 }

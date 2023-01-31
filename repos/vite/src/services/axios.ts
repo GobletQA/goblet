@@ -32,7 +32,7 @@ export const networkResponseModel = deepFreeze({
  * Builds the axios request model
  *
  */
-const buildRequest = (request:TRequest|string) => {
+const buildRequest = <T=Record<string, any>>(request:TRequest|string) => {
   // ensures that request is an obj if request == str
   request = ((isStr(request) && { url: request }) || request) as TRequest
   const { params, ...requestOpt } = request
@@ -49,7 +49,7 @@ const buildRequest = (request:TRequest|string) => {
       ...networkRequestModel.headers,
       ...requestOpt.headers,
     },
-  } as TBuiltRequest
+  } as TBuiltRequest<T>
 }
 
 /**
@@ -58,7 +58,9 @@ const buildRequest = (request:TRequest|string) => {
  * @param {Obj} [request.params] - querystring obj || body obj
  * @returns {networkResponse}
  */
-export const networkRequest = async <T=Record<any, any>>(request:TRequest|string) => {
+export const networkRequest = async <T=Record<any, any>, R=Record<any, any>>(
+  request:TRequest|string
+) => {
   try {
     // Built the request
     const builtRequest = buildRequest(request)

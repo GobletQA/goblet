@@ -1,10 +1,11 @@
-import type { ReactNode, ComponentProps } from 'react'
+import type { CSSProperties, ReactNode, ComponentProps } from 'react'
 import Box from '@mui/material/Box'
 import { gutter } from '@gobletqa/components/theme'
 import { ErrorIcon, InfoIcon } from '@gobletqa/components'
 import CircularProgress from '@mui/material/CircularProgress'
 
 export type TModalMessage = {
+  sx?: CSSProperties
   error?: ReactNode
   loading?: ReactNode
   message?: ReactNode
@@ -12,15 +13,18 @@ export type TModalMessage = {
 
 const defStyle = {
   fontSize: 14,
-  display: 'flex',
-  fontWeight: 'bold',
-  alignItems: 'start',
-  textAlign: 'center',
-  justifyContent: 'center',
+  display: `flex`,
+  fontWeight: `bold`,
+  alignItems: `start`,
+  textAlign: `center`,
+  justifyContent: `center`,
+  marginTop: gutter.margin.hpx,
+  marginBottom: gutter.margin.hpx,
 } as Partial<ComponentProps<typeof Box>>
 
 export const ModalMessage = (props:TModalMessage) => {
   const {
+    sx,
     error,
     loading,
     message,
@@ -29,7 +33,7 @@ export const ModalMessage = (props:TModalMessage) => {
   return (
     <Box
       width="100%"
-      marginBottom={gutter.margin.px}
+      sx={sx as CSSProperties}
     >
       {error && (
         <Box

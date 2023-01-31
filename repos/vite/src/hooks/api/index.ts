@@ -1,1 +1,1 @@
-export * from './useGetRepos'
+export * from './useConnectRepo'

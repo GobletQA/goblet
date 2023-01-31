@@ -1,4 +1,5 @@
 import type { Repo } from '@GSH/repo/repo'
+import type { TFeatureFileModel } from '@GSH/types'
 
 import path from 'path'
 import glob from 'glob'
@@ -139,7 +140,7 @@ const parseFeatures = (repo:Repo, featureFiles:string[], featuresDir:string) => 
     fileModel && loaded.push(fileModel)
 
     return loaded
-  }, Promise.resolve([]))
+  }, Promise.resolve([] as TFeatureFileModel[]))
 }
 
 /**
