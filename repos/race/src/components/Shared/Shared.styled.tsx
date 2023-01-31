@@ -37,11 +37,9 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 
 }
 
-
 export const Container = styled(Paper)`
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-editor-background);
-  // border-bottom: 1px solid ${colors.gray00};
 `
 
 export const InputContainer = styled(Box)`
@@ -50,21 +48,26 @@ export const InputContainer = styled(Box)`
 
 export const SectionAct = styled(IconButton)``
 export const SectionActs = styled(Box)`
+  opacity: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: opacity 300ms ease;
 `
 
 export const Dropdown = styled(DropdownComp)`
-  
-  // border-bottom: 1px solid ${colors.gray00};
-  
+
   &.Mui-expanded:last-of-type {
     margin-bottom: 20px;
   }
 
   &.Mui-expanded .MuiAccordionSummary-root {
     background-color: var(--goblet-list-focusBackground);
+
+    & .gr-section-actions {
+      opacity: 1;
+    }
+
   }
 
   & .MuiAccordionSummary-root {
@@ -76,6 +79,10 @@ export const Dropdown = styled(DropdownComp)`
 
     &:hover {
       background-color: var(--goblet-list-focusBackground);
+      
+      & .gr-section-actions {
+        opacity: 1;
+      }
     }
 
   }

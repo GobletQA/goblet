@@ -1,10 +1,12 @@
 import type { TMeta } from './Story'
 
-import { MetaInputContainer } from './Story.styled'
 import { capitalize } from '@keg-hub/jsutils'
-import { AutoInput } from '@gobletqa/components'
 import { PerspectiveOpts } from '@GBR/constants'
 import { ESectionType, EMetaType } from '@GBR/types'
+import { MetaInputContainer } from './Story.styled'
+import { updateProperty } from '@GBR/actions/story/updateProperty'
+import { stopEvent, useInline, AutoInput } from '@gobletqa/components'
+
 
 export type TPerspective = TMeta & {
   type: ESectionType
@@ -14,10 +16,16 @@ export const Perspective = (props:TPerspective) => {
   const { parent } = props
   const { perspective } = parent
 
+  const onChange = useInline((evt, value) => {
+    stopEvent(evt)
+    updateProperty(`perspective`, value, parent)
+  })
+
   return (
     <MetaInputContainer className='gr-feature-perspective gr-meta-input-container' >
 
       <AutoInput
+        onChange={onChange}
         options={PerspectiveOpts}
         placeholder='As a user ...'
         id={`${parent.uuid}-perspective`}

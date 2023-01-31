@@ -1,4 +1,4 @@
-import type { TAnswerFeature, TWithFeatureCB } from '@GBR/types'
+import type { TRaceFeature, TWithFeatureCB } from '@GBR/types'
 
 import { AskForFeatureEvt } from '@GBR/constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
@@ -15,6 +15,8 @@ export const withFeature = (cb:TWithFeatureCB) => {
  * Helper to get the currently active feature from the context
  * Returns a promise that resolve to the current feature context
  */
-export const getFeature = ():Promise<TAnswerFeature> => {
-  return new Promise((res) => withFeature(res))
+export const getFeature = (parent?:TRaceFeature):TRaceFeature|Promise<TRaceFeature> => {
+  return parent && `feature` in parent
+    ? parent
+    : new Promise((res) => withFeature(({ feature }) => res(feature)))
 }

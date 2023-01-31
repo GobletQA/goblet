@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { TrashIcon, colors } from '@gobletqa/components'
+import { getColor, TrashIcon, colors } from '@gobletqa/components'
 
 export type TDeleteAct = {
   type:string
@@ -16,7 +16,7 @@ export const Delete = ({ type, onClick }:TDeleteAct) => ({
   sx: {
     width: `24px`,
     height: `24px`,
-    color: colors.gray05,
+    color: getColor(colors.gray05, colors.gray15),
     [`& svg`]: {
       width: `22px`,
       height: `22px`,

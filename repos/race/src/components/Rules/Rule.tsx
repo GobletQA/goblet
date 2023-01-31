@@ -7,6 +7,11 @@ import { ESectionType } from '@GBR/types'
 import { Delete } from '../Actions/Delete'
 import { stopEvent, useInline } from '@gobletqa/components'
 
+import { removeRule } from '@GBR/actions/rule/removeRule'
+import { addRuleScenario } from '@GBR/actions/rule/addRuleScenario'
+import { removeRuleScenario } from '@GBR/actions/rule/removeRuleScenario'
+import { addRuleScenarioStep } from '@GBR/actions/rule/addRuleScenarioStep'
+
 export type TRule = {
   rule: TRuleAst
   parent:TRaceFeature
@@ -17,9 +22,15 @@ export const Rule = (props:TRule) => {
 
   const onTrash = useInline((evt:MouseEvent) => {
     stopEvent(evt)
+    removeRule(rule.uuid)
   })
-  const onAddScenario = useInline(() => {
-    
+
+  const onAddScenario = useInline(() => addRuleScenario(rule.uuid))
+  const onAddStep = useInline((scenarioId:string, ruleId?:string) => {
+    addRuleScenarioStep(scenarioId, ruleId || rule.uuid)
+  })
+  const onRemoveScenario = useInline((scenarioId:string, ruleId?:string) => {
+     removeRuleScenario(scenarioId, ruleId || rule.uuid)
   })
 
   return (
@@ -40,7 +51,10 @@ export const Rule = (props:TRule) => {
     >
       <Scenarios
         parent={rule}
+        onAddStep={onAddStep}
+        onAdd={onAddScenario}
         scenarios={rule.scenarios}
+        onRemove={onRemoveScenario}
       />
     </Section>
   )

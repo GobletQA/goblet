@@ -6,7 +6,11 @@ import { Section } from '../Shared'
 import { ESectionType } from '@GBR/types'
 import { Delete } from '../Actions/Delete'
 import { stopEvent, useInline } from '@gobletqa/components'
-import { addBackground, addBackgroundStep } from '@GBR/actions/background'
+import {
+  addBackground,
+  removeBackground,
+  addBackgroundStep
+} from '@GBR/actions/background'
 
 export type TBackground = {
   parent:TRaceFeature
@@ -19,6 +23,7 @@ export const Background = (props:TBackground) => {
   const onClick = useInline(() => addBackground())
   const onTrash = useInline((evt:MouseEvent) => {
     stopEvent(evt)
+    removeBackground()
   })
 
   return (

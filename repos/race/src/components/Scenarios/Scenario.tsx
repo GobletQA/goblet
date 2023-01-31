@@ -7,30 +7,36 @@ import { ESectionType } from '@GBR/types'
 import { useEditor } from '../../contexts'
 import { Delete } from '../Actions/Delete'
 import { stopEvent, useInline } from '@gobletqa/components'
-import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
+
 
 export type TScenario = {
   scenario: TScenarioAst
   parent: TScenarioParentAst
+  onAdd?: (...args:any[]) => void
+  onRemove: (scenarioId:string, parentId?:string) => void
+  onAddStep: (scenarioId:string, parentId?:string) => void
 }
 
 export const Scenario = (props:TScenario) => {
-  const { scenario, parent } = props
-  const { feature } = useEditor()
+  const { onAddStep, onRemove, scenario, parent } = props
 
   const onTrash = useInline((evt:MouseEvent) => {
     stopEvent(evt)
+    onRemove(scenario.uuid, parent.uuid)
   })
-  const onAddScenario = useInline(() => {})
+
+  const onAddScenarioStep = useInline(() => {
+    onAddStep(scenario.uuid, parent.uuid)
+  })
 
   return (
     <Section
       parent={parent}
-      onAdd={onAddScenario}
       initialExpand={false}
       show={Boolean(scenario)}
+      onAdd={onAddScenarioStep}
       type={ESectionType.scenario}
-      id={`${feature.uuid}-scenario`}
+      id={`${parent.uuid}-scenario`}
       className='gr-scenario-section'
       actions={[
         Delete({
@@ -39,7 +45,7 @@ export const Scenario = (props:TScenario) => {
         })
       ]}
     >
-      <Steps parent={scenario} onAdd={addScenarioStep} />
+      <Steps parent={scenario} onAdd={onAddScenarioStep} />
     </Section>
   )
 }

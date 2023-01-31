@@ -4,23 +4,30 @@ import { Sections } from '../Shared'
 import { Scenario } from './Scenario'
 import { ESectionType } from '@GBR/types'
 import { useInline } from '@gobletqa/components'
-import { addScenario } from '@GBR/actions/scenario/addScenario'
 
 export type TScenarios = {
   scenarios?:TScenarioAst[]
   parent:TScenarioParentAst
+  onAdd: (parentId?:string) => void
+  onRemove: (scenarioId:string, parentId?:string) => void
+  onAddStep: (scenarioId:string, parentId?:string) => void
 } 
 
 export const Scenarios = (props:TScenarios) => {
 
-  const { scenarios, parent } = props
-  const onAdd = useInline(() => addScenario())
+  const {
+    parent,
+    scenarios,
+    onAdd,
+    onRemove,
+    onAddStep,
+  } = props
 
   return (
     <Sections
-      onAdd={onAdd}
       showAdd={true}
       parent={parent}
+      onAdd={onAdd}
       type={ESectionType.scenario}
     >
     {
@@ -28,7 +35,9 @@ export const Scenarios = (props:TScenarios) => {
         return (
           <Scenario
             parent={parent}
+            onRemove={onRemove}
             scenario={scenario}
+            onAddStep={onAddStep}
             key={`${parent.uuid}-scenario-${scenario.uuid}`}
           />
         )

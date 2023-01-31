@@ -14,7 +14,11 @@ import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { useEditor } from '../../contexts'
+
+import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
+import { removeScenario } from '@GBR/actions/scenario/removeScenario'
+import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
 import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
 
 import { gutter, BoltIcon, H3, EmptyEditor } from '@gobletqa/components'
@@ -91,6 +95,9 @@ export const Feature = (props:TFeature) => {
                       />
                       <Scenarios
                         parent={feature}
+                        onAdd={addScenario}
+                        onRemove={removeScenario}
+                        onAddStep={addScenarioStep}
                         scenarios={feature.scenarios}
                       />
                     </>
