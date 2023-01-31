@@ -1,9 +1,11 @@
+import type { MouseEvent } from 'react'
 import type { TRaceFeature, TRuleAst } from '@GBR/types'
 
+import { Section } from '../Shared'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
-import { Section, Stack } from '../Shared'
-import { stopEvent, IconButton, TrashIcon, useInline } from '@gobletqa/components'
+import { Delete } from '../Actions/Delete'
+import { stopEvent, useInline } from '@gobletqa/components'
 
 export type TRule = {
   rule: TRuleAst
@@ -13,7 +15,12 @@ export type TRule = {
 export const Rule = (props:TRule) => {
   const { rule, parent } = props
 
-  const onAddScenario = useInline(() => {})
+  const onTrash = useInline((evt:MouseEvent) => {
+    stopEvent(evt)
+  })
+  const onAddScenario = useInline(() => {
+    
+  })
 
   return (
     <Section
@@ -24,13 +31,12 @@ export const Rule = (props:TRule) => {
       type={ESectionType.rule}
       className='gr-rule-section'
       id={`${parent.uuid}-rule-${rule.uuid}`}
-      // actions={[
-      //   <IconButton
-      //     key='trash-story'
-      //     Icon={TrashIcon}
-      //     onClick={onTrash}
-      //   />
-      // ]}
+      actions={[
+        Delete({
+          onClick: onTrash,
+          type: ESectionType.background,
+        })
+      ]}
     >
       <Scenarios
         parent={rule}

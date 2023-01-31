@@ -44,9 +44,6 @@ const styles = {
   },
   expand: {
     color: colors.purple10
-  },
-  grid: {
-    alignItems: `center`
   }
 }
 

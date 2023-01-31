@@ -2,6 +2,7 @@ import type { TStepParentAst, TStepAst } from '@GBR/types'
 
 import { Section } from '../Shared'
 import { ESectionType } from '@GBR/types'
+import { Delete } from '../Actions/Delete'
 import { useEditor } from '../../contexts'
 import { useInline } from '@gobletqa/components'
 
@@ -15,6 +16,7 @@ export const Step = (props:TStep) => {
   const { feature } = useEditor()
 
   const onAddStep = useInline(() => {})
+  const onTrash = useInline(() => {})
 
   return (
     <Section
@@ -25,6 +27,12 @@ export const Step = (props:TStep) => {
       type={ESectionType.step}
       id={`${feature.uuid}-step`}
       className='gr-step-section'
+      actions={[
+        Delete({
+          onClick: onTrash,
+          type: ESectionType.background,
+        })
+      ]}
     >
       {step?.type} - {step?.step}
     </Section>

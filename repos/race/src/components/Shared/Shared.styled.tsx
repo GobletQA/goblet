@@ -49,7 +49,11 @@ export const InputContainer = styled(Box)`
 `
 
 export const SectionAct = styled(IconButton)``
-export const SectionActs = styled(Box)``
+export const SectionActs = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 export const Dropdown = styled(DropdownComp)`
   

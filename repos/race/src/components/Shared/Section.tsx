@@ -1,5 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react'
 import type { TStepParentAst, TScenarioParentAst } from '@GBR/types'
+import type { ComponentProps, CSSProperties, ReactNode, ComponentType } from 'react'
 
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
@@ -15,11 +15,12 @@ export type TSectionAction = {
   id?:string
   key?:string
   label?:string
-  Icon?:ReactNode
   className?:string
   sx?:CSSProperties
   children?:ReactNode
+  iconProps?:ComponentProps<any>
   onClick?:(...args:any[]) => void
+  Icon?:ReactNode|ComponentType<any>
 }
 
 export type TSectionActions = {
@@ -55,6 +56,7 @@ export const SectionActions = (props:TSectionActions) => {
             Icon={action.Icon}
             onClick={action?.onClick}
             children={action.children}
+            iconProps={action.iconProps}
             key={action.key || action.id || action.label}
             className={cls(`gr-section-action`, action.className)}
           />
@@ -93,6 +95,9 @@ export const Section = (props:TSection) => {
       { show
           ? (
               <Dropdown
+                headerSx={{
+                  flexDirection: `row-reverse`
+                }}
                 initialExpand={initialExpand}
                 id={`${parent.uuid}-${id || uuid}`}
                 headerText={capitalize(label || type)}

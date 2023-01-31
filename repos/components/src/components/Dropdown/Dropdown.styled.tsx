@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { colors, dims } from '@GBC/theme'
+import { colors, dims, gutter } from '@GBC/theme'
 import { H5 } from '@GBC/components/Text'
 import { styled } from '@mui/material/styles'
 import Accordion from '@mui/material/Accordion'
@@ -45,6 +45,11 @@ export const Header = styled(AccordionSummary, {
 `)
 
 export const HeaderText = styled(H5)`
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  margin-left: ${gutter.margin.hpx};
+  height: ${dims.dropdown.header.px};
   color: var(--goblet-editor-foreground);
 `
 

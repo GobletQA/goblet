@@ -6,8 +6,6 @@ import { forwardRef, useState, useCallback } from 'react'
 
 import { useInline } from '@GBC/hooks'
 import Slide from '@mui/material/Slide'
-import { TrashIcon } from '../Icons/TrashIcon'
-import { IconButton } from '../Buttons/IconButton'
 import { emptyObj, cls } from '@keg-hub/jsutils'
 import { ExpandIcon as ExpandIconComp } from '@GBC/components/Icons'
 import { HeaderText, Body, Container, Header } from './Dropdown.styled'
