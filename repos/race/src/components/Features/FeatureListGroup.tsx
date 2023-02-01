@@ -41,7 +41,6 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
     <FeaturesGroup className='gr-features-list-group'>
       <Dropdown
         bodySx={styles.body}
-        noIconTransform={true}
         ExpandIcon={ExpandIcon}
         headerSx={styles.header}
         id={`${featureGroup.title}-dropdown`}

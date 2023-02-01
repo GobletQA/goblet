@@ -8,7 +8,8 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
 
 type THeaderProps = ComponentProps<typeof AccordionSummary> & {
-  noIconTransform?: boolean
+  transformOn?:number
+  transformOff?:number
 }
 
 export const Container = styled(Accordion)`
@@ -22,20 +23,25 @@ export const Container = styled(Accordion)`
   }
 `
 
-const noTransformStyle = `
-  & .MuiAccordionSummary-expandIconWrapper {
-    transform: rotate(0deg) !important;
-  }
-`
+const noProps = [
+  `transformOn`,
+  `transformOff`,
+]
 
 export const Header = styled(AccordionSummary, {
-  shouldForwardProp: (prop) => prop !== `noIconTransform`,
-})(({ noIconTransform }: THeaderProps) => `
-  ${noIconTransform ? noTransformStyle : ''}
+  shouldForwardProp: (prop) => !noProps.includes(prop as any),
+})(({ transformOn=0, transformOff=-90 }: THeaderProps) => `
 
-  // border-bottom: 1px solid ${colors.green10};
   height: ${dims.dropdown.header.px};
   min-height: ${dims.dropdown.header.px};
+
+  & .MuiAccordionSummary-expandIconWrapper {
+    transform: rotate(${transformOff}deg);
+  }
+
+  & .MuiAccordionSummary-expandIconWrapper.Mui-expanded {
+    transform: rotate(${transformOn}deg);
+  }
 
   & .MuiAccordionSummary-content: {
     margin-top: 0px;

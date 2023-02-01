@@ -31,5 +31,15 @@ export const gutter = {
     double: marginSize * 2,
     hor: `0px ${marginSize}px`,
     vert: `${marginSize}px 0px `,
+  },
+  sx: {
+    marginTop: {marginTop: `${marginSize}px`},
+    marginLeft: {marginLeft: `${marginSize}px`},
+    marginBottom: {marginBottom: `${marginSize}px`},
+    marginRight: {marginRight: `${marginSize}px`},
+    paddingTop: {paddingTop: `${paddingSize}px`},
+    paddingLeft: {paddingLeft: `${paddingSize}px`},
+    paddingBottom: {paddingBottom: `${paddingSize}px`},
+    paddingRight: {paddingRight: `${paddingSize}px`},
   }
 }

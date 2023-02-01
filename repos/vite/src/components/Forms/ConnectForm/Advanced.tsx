@@ -58,6 +58,8 @@ export const Advanced = (props:TAdvanced) => {
     >
       <Dropdown
         disabled={disabled}
+        transformIconOff={0}
+        transformIconOn={180}
         initialExpand={false}
         headerText={`Advanced`}
         headerSx={styles.header}

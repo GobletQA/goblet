@@ -78,7 +78,6 @@ export const PanelHeader = (props:TPanelHeader) => {
       {hasBody && (
         <ExpandIcon
           expand={!closed}
-          noIconTransform={true}
           className={`gb-panel-toggle-icon`}
         />
       )}

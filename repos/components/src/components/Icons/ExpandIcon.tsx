@@ -1,4 +1,4 @@
-import type { CSSProperties, ComponentType } from 'react'
+import type { CSSProperties } from 'react'
 
 import { useMemo } from 'react'
 import { emptyObj } from '@keg-hub/jsutils'
@@ -11,7 +11,6 @@ export type TExpandIcon = {
   noIconTransform?:boolean
 }
 
-
 export const ExpandIcon = (props:TExpandIcon) => {
   const {
     sx,
@@ -21,17 +20,18 @@ export const ExpandIcon = (props:TExpandIcon) => {
   } = props
 
   const style = useMemo(() => {
-    return !noIconTransform
+    return noIconTransform
       ? emptyObj
       : expand || className?.split(' ').includes(`expanded`)
-        ? { transform: 'rotate(-1800deg) !important', }
+        ? { transform: 'rotate(0deg) !important', }
         : { transform: 'rotate(-90deg) !important' }
+
   }, [expand, className, noIconTransform])
 
   return (
     <ExpandMoreIcon
       className={className}
-      sx={[sx as CSSProperties, style]}
+      sx={[{transition: `transform 300ms`}, sx as CSSProperties, style]}
     />
   )
 }

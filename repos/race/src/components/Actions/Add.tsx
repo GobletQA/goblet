@@ -1,4 +1,4 @@
-import type { MouseEvent, CSSProperties } from 'react'
+import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
 import {
   colors,
@@ -10,18 +10,19 @@ import {
 
 export type TAddAct = {
   type:string
+  Icon?:ComponentType<any>
   onClick: (...args:any)=> void
 }
 
-export const Add = ({ type, onClick }:TAddAct) => ({
+export const Add = ({ Icon, type, onClick }:TAddAct) => ({
   onClick: useInline((evt:MouseEvent) => {
     stopEvent(evt)
     onClick(evt)
   }),
   label: `Add ${type}`,
-  Icon: PencilAddIcon,
   id: `pencil-add-${type}`,
   key: `pencil-add-${type}`,
+  Icon: Icon || PencilAddIcon,
   className: `pencil-add-${type}`,
   sx: {
     width: `24px`,

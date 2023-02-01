@@ -9,6 +9,7 @@ import { useInline } from '@gobletqa/components'
 
 export type TStep = {
   steps?:TStepAst[]
+  showAdd?:boolean
   parent:TStepParentAst
   onAdd?:(parentId:string) => void
   onRemove?:(stepId:string, parentId?:string) => void
@@ -16,13 +17,13 @@ export type TStep = {
 
 export const Steps = (props:TStep) => {
 
-  const { parent, onAdd, onRemove } = props
+  const { showAdd=true, parent, onAdd, onRemove } = props
   const onAddStep = useInline(() => onAdd?.(parent.uuid))
 
   return (
     <Sections
-      showAdd={true}
       parent={parent}
+      showAdd={showAdd}
       onAdd={onAddStep}
       type={ESectionType.step}
     >

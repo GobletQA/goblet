@@ -7,8 +7,8 @@ import { forwardRef, useState, useCallback } from 'react'
 import { useInline } from '@GBC/hooks'
 import Slide from '@mui/material/Slide'
 import { emptyObj, cls } from '@keg-hub/jsutils'
-import { ExpandIcon as ExpandIconComp } from '@GBC/components/Icons'
 import { HeaderText, Body, Container, Header } from './Dropdown.styled'
+import { ExpandIcon as ExpandIconComp } from '@GBC/components/Icons/ExpandIcon'
 
 export type TDropdown = Omit<AccordionProps, `children`> & {
   id:string
@@ -21,10 +21,11 @@ export type TDropdown = Omit<AccordionProps, `children`> & {
   initialExpand?:boolean
   bodySx?:CSSProperties
   headerSx?:CSSProperties
+  transformIconOn?:number
+  transformIconOff?:number
   headerTextSx?:CSSProperties
   expandIconSx?:CSSProperties
   headerContentSx?:CSSProperties
-  noIconTransform?: boolean
   onChange?:(expanded: boolean) => void
   ExpandIcon?:ComponentType<typeof ExpandIconComp>
 }
@@ -51,8 +52,9 @@ export const Dropdown = (props:TDropdown) => {
     headerTextSx,
     expandIconSx,
     children=body,
+    transformIconOn,
+    transformIconOff,
     headerContentSx,
-    noIconTransform,
     header:headerComp,
     onChange:onChangeCB,
     initialExpand=false,
@@ -94,16 +96,17 @@ export const Dropdown = (props:TDropdown) => {
     >
       <Header
         id={`${id}-header`}
+        transformOn={transformIconOn}
         className='gc-dropdown-header'
+        transformOff={transformIconOff}
         aria-controls={`${id}-content`}
-        noIconTransform={noIconTransform}
         sx={[headerSx, { [`& .MuiAccordionSummary-content`]: headerContentSx }] as CSSProperties[]}
         expandIcon={(
           // @ts-ignore
           <ExpandIcon
             sx={expandIconSx}
             expand={expanded}
-            noIconTransform={noIconTransform}
+            noIconTransform={true}
             className={cls(`gr-dropdown-expand-icon`, expanded && `expanded`)}
           />
         )}

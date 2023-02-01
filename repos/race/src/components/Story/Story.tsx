@@ -8,12 +8,16 @@ import { ESectionType } from '@GBR/types'
 import { Perspective } from './Perspective'
 import { Delete } from '../Actions/Delete'
 import { addStory, removeStory } from '@GBR/actions/story'
-import { stopEvent, useInline } from '@gobletqa/components'
+import { gutter, stopEvent, useInline } from '@gobletqa/components'
 
 
 export type TMeta = {
   parent:TRaceFeature
   featuresRef: TFeaturesRef
+}
+
+const styles = {
+  section: gutter.sx.marginTop
 }
 
 export const Story = (props:TMeta) => {
@@ -38,6 +42,7 @@ export const Story = (props:TMeta) => {
       parent={parent}
       label={`story`}
       show={hasStory}
+      sx={styles.section}
       initialExpand={true}
       type={ESectionType.story}
       id={`${parent.uuid}-story`}
