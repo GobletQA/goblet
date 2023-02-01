@@ -17,11 +17,11 @@ import { useEditor } from '../../contexts'
 
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
+import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
 import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
 
-import { gutter, BoltIcon, H3, EmptyEditor } from '@gobletqa/components'
 
 export type TFeature = TFeaturesRefs & {}
 
@@ -81,10 +81,6 @@ export const Feature = (props:TFeature) => {
             { feature.uuid // !== EmptyFeatureUUID // @TODO - uncomment when race-editor is complete
                 ? (
                     <>
-                      <Story
-                        parent={feature}
-                        featuresRef={featuresRef}
-                      />
                       <Background
                         parent={feature}
                         background={feature.background}

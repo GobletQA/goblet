@@ -1,32 +1,13 @@
+import type { CSSProperties, ReactNode } from 'react'
+import type { TSectionAction } from './SectionActions'
 import type { TStepParentAst, TScenarioParentAst } from '@GBR/types'
-import type { ComponentProps, CSSProperties, ReactNode, ComponentType } from 'react'
 
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
+import { SectionActions } from './SectionActions'
 import { capitalize, cls } from '@keg-hub/jsutils'
-import {
-  Dropdown,
-  Container,
-  SectionAct,
-  SectionActs,
-} from './Shared.styled'
+import { Dropdown, Container } from './Shared.styled'
 
-export type TSectionAction = {
-  id?:string
-  key?:string
-  label?:string
-  className?:string
-  sx?:CSSProperties
-  children?:ReactNode
-  iconProps?:ComponentProps<any>
-  onClick?:(...args:any[]) => void
-  Icon?:ReactNode|ComponentType<any>
-}
-
-export type TSectionActions = {
-  className?:string
-  actions?:TSectionAction[]
-}
 
 export type TSection = {
   id?:string
@@ -39,33 +20,11 @@ export type TSection = {
   children:ReactNode
   initialExpand?:boolean
   actions?:TSectionAction[]
+  dropdownSx?:CSSProperties
   onAdd?:(...args:any[]) => void
   parent:TScenarioParentAst|TStepParentAst
 }
 
-export const SectionActions = (props:TSectionActions) => {
-  const { className, actions }  = props
-  
-  return (
-    <SectionActs className={cls(`gr-section-actions`, className)} >
-      {actions?.map(action => {
-        return (
-          <SectionAct
-            sx={action.sx}
-            id={action.id}
-            Icon={action.Icon}
-            onClick={action?.onClick}
-            children={action.children}
-            iconProps={action.iconProps}
-            key={action.key || action.id || action.label}
-            className={cls(`gr-section-action`, action.className)}
-          />
-        )
-      })}
-    </SectionActs>
-  )
-  
-}
 
 export const Section = (props:TSection) => {
 
@@ -81,6 +40,7 @@ export const Section = (props:TSection) => {
     actions,
     children,
     className,
+    dropdownSx,
     initialExpand
   } = props
 
@@ -95,12 +55,11 @@ export const Section = (props:TSection) => {
       { show
           ? (
               <Dropdown
-                headerSx={{
-                  flexDirection: `row-reverse`
-                }}
+                sx={dropdownSx}
                 initialExpand={initialExpand}
                 id={`${parent.uuid}-${id || uuid}`}
                 headerText={capitalize(label || type)}
+                headerSx={{ flexDirection: `row-reverse` }}
                 actions={<SectionActions actions={actions} />}
                 className={cls(`gr-section-dropdown`, `gr-section-dropdown-${type}`)}
               >

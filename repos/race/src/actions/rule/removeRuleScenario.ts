@@ -1,4 +1,3 @@
-import { scenarioFactory } from '@GBR/factories/scenarioFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
@@ -14,22 +13,13 @@ export const removeRuleScenario = async (
   if(!rule) return console.warn(`Rule with id ${parentId} could not be found`, feature, feature?.rules)
 
   const ruleIdx = feature?.rules?.indexOf(rule)
-
   const rules = [...(feature?.rules || []) ]
 
-  console.log(`------- removeRuleScenario -------`)
-  console.log(rule)
-  console.log(`------- scenarioId -------`)
-  console.log(scenarioId)
+  rules[ruleIdx as number] = {
+    ...rule,
+    scenarios: rule.scenarios.filter(scenario => scenario.uuid !== scenarioId)
+  }
 
-  // rules[ruleIdx] = {
-  //   ...rule,
-  //   scenarios: [
-  //     ...rule.scenarios,
-  //     scenarioFactory(undefined, true)
-  //   ]
-  // }
-
-  // updateFeature({...feature, rules})
+  updateFeature({...feature, rules})
 
 }

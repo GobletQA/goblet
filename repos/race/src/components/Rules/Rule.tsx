@@ -1,11 +1,10 @@
-import type { MouseEvent } from 'react'
 import type { TRaceFeature, TRuleAst } from '@GBR/types'
 
 import { Section } from '../Shared'
+import { Add } from '../Actions/Add'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Delete } from '../Actions/Delete'
-import { stopEvent, useInline } from '@gobletqa/components'
 
 import { removeRule } from '@GBR/actions/rule/removeRule'
 import { addRuleScenario } from '@GBR/actions/rule/addRuleScenario'
@@ -20,33 +19,32 @@ export type TRule = {
 export const Rule = (props:TRule) => {
   const { rule, parent } = props
 
-  const onTrash = useInline((evt:MouseEvent) => {
-    stopEvent(evt)
-    removeRule(rule.uuid)
-  })
-
-  const onAddScenario = useInline(() => addRuleScenario(rule.uuid))
-  const onAddStep = useInline((scenarioId:string, ruleId?:string) => {
+  const onRemove = () => removeRule(rule.uuid)
+  const onAddScenario = () => addRuleScenario(rule.uuid)
+  const onAddStep = (scenarioId:string, ruleId?:string) => {
     addRuleScenarioStep(scenarioId, ruleId || rule.uuid)
-  })
-  const onRemoveScenario = useInline((scenarioId:string, ruleId?:string) => {
+  }
+  const onRemoveScenario = (scenarioId:string, ruleId?:string) => {
      removeRuleScenario(scenarioId, ruleId || rule.uuid)
-  })
+  }
 
   return (
     <Section
       parent={rule}
-      onAdd={onAddScenario}
       initialExpand={false}
       show={Boolean(rule)}
       type={ESectionType.rule}
       className='gr-rule-section'
       id={`${parent.uuid}-rule-${rule.uuid}`}
       actions={[
+        Add({
+          onClick: onAddScenario,
+          type: ESectionType.rule,
+        }),
         Delete({
-          onClick: onTrash,
-          type: ESectionType.background,
-        })
+          onClick: onRemove,
+          type: ESectionType.rule,
+        }),
       ]}
     >
       <Scenarios

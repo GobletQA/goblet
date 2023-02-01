@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react'
 import type { TStepParentAst, TStepAst } from '@GBR/types'
 
 import { Step } from './Step'
@@ -10,11 +11,12 @@ export type TStep = {
   steps?:TStepAst[]
   parent:TStepParentAst
   onAdd?:(parentId:string) => void
+  onRemove?:(stepId:string, parentId?:string) => void
 } 
 
 export const Steps = (props:TStep) => {
 
-  const { parent, onAdd } = props
+  const { parent, onAdd, onRemove } = props
   const onAddStep = useInline(() => onAdd?.(parent.uuid))
 
   return (
@@ -30,6 +32,7 @@ export const Steps = (props:TStep) => {
           <Step
             step={step}
             parent={parent}
+            onRemove={onRemove}
             key={`${parent.uuid}-step-${step.uuid}`}
           />
         )

@@ -61,7 +61,7 @@ export const Dropdown = styled(DropdownComp)`
     margin-bottom: 20px;
   }
 
-  &.Mui-expanded .MuiAccordionSummary-root {
+  &.Mui-expanded > .MuiAccordionSummary-root {
     background-color: var(--goblet-list-focusBackground);
 
     & .gr-section-actions {
@@ -70,7 +70,7 @@ export const Dropdown = styled(DropdownComp)`
 
   }
 
-  & .MuiAccordionSummary-root {
+  & > .MuiAccordionSummary-root {
     height: 40px;
     min-height: 40px;
     transition: background-color 300ms ease;
@@ -98,7 +98,7 @@ export const Dropdown = styled(DropdownComp)`
 
   & .MuiCollapse-root {
     padding-left: ${gutter.padding.hpx};
-    padding-right: ${gutter.padding.hpx};
+    // padding-right: ${gutter.padding.hpx};
   }
 
 `

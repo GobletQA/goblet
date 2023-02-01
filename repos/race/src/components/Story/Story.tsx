@@ -36,7 +36,6 @@ export const Story = (props:TMeta) => {
   return (
     <Section
       parent={parent}
-      onAdd={onClick}
       label={`story`}
       show={hasStory}
       initialExpand={true}

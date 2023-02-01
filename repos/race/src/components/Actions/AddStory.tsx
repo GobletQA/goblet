@@ -1,29 +1,28 @@
-import type { CSSProperties } from 'react'
+import type { MouseEvent, CSSProperties } from 'react'
 
 import {
   colors,
   getColor,
-  TrashIcon,
   stopEvent,
   useInline,
+  TextboxPlusIcon,
 } from '@gobletqa/components'
 
-
-export type TDeleteAct = {
+export type TAddAct = {
   type:string
   onClick: (...args:any)=> void
 }
 
-export const Delete = ({ type, onClick }:TDeleteAct) => ({
+export const AddStory = ({ type, onClick }:TAddAct) => ({
   onClick: useInline((evt:MouseEvent) => {
     stopEvent(evt)
     onClick(evt)
   }),
-  label: `Delete`,
-  Icon: TrashIcon,
-  id: `trash-${type}`,
-  key: `trash-${type}`,
-  className: `trash-${type}`,
+  label: `Add User Story`,
+  Icon: TextboxPlusIcon,
+  id: `story-add-${type}`,
+  key: `story-add-${type}`,
+  className: `story-add-${type}`,
   sx: {
     width: `24px`,
     height: `24px`,
@@ -33,7 +32,7 @@ export const Delete = ({ type, onClick }:TDeleteAct) => ({
       height: `22px`,
     },
     [`&:hover`]: {
-      color: colors.red10,
+      color: colors.green10,
     }
   } as CSSProperties
 })

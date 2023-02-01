@@ -1,15 +1,16 @@
-import type { MouseEvent } from 'react'
 import type { TBackgroundAst, TRaceFeature } from '@GBR/types'
 
 import { Steps } from '../Steps'
 import { Section } from '../Shared'
+import { Add } from '../Actions/Add'
 import { ESectionType } from '@GBR/types'
 import { Delete } from '../Actions/Delete'
-import { stopEvent, useInline } from '@gobletqa/components'
+
 import {
   addBackground,
   removeBackground,
-  addBackgroundStep
+  addBackgroundStep,
+  removeBackgroundStep,
 } from '@GBR/actions/background'
 
 export type TBackground = {
@@ -20,24 +21,23 @@ export type TBackground = {
 export const Background = (props:TBackground) => {
 
   const { background, parent } = props
-  const onClick = useInline(() => addBackground())
-  const onTrash = useInline((evt:MouseEvent) => {
-    stopEvent(evt)
-    removeBackground()
-  })
 
   return (
     <Section
-      onAdd={onClick}
       parent={parent}
       initialExpand={true}
+      onAdd={addBackground}
       show={Boolean(background)}
       type={ESectionType.background}
       className='gr-background-section'
       id={`${parent.uuid}-background-${background?.uuid || ''}`}
       actions={[
+        Add({
+          onClick: addBackgroundStep,
+          type: ESectionType.background,
+        }),
         Delete({
-          onClick: onTrash,
+          onClick: removeBackground,
           type: ESectionType.background,
         })
       ]}
@@ -46,6 +46,7 @@ export const Background = (props:TBackground) => {
         <Steps
           parent={background}
           onAdd={addBackgroundStep}
+          onRemove={removeBackgroundStep}
         />
       ) || null}
     </Section>
