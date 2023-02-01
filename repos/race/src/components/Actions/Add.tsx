@@ -1,6 +1,6 @@
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
-import { capitalize } from '@keg-hub/jsutils'
+import { capitalize, emptyObj } from '@keg-hub/jsutils'
 import {
   colors,
   getColor,
@@ -11,20 +11,21 @@ import {
 
 export type TAddAct = {
   type:string
+  style?:CSSProperties
   Icon?:ComponentType<any>
   onClick: (...args:any)=> void
 }
 
-export const Add = ({ Icon, type, onClick }:TAddAct) => ({
+export const Add = ({ Icon, type, onClick, style=emptyObj }:TAddAct) => ({
   onClick: useInline((evt:MouseEvent) => {
     stopEvent(evt)
     onClick(evt)
   }),
-  id: `pencil-add-${type}`,
-  key: `pencil-add-${type}`,
+  id: `action-add-${type}`,
+  key: `action-add-${type}`,
   Icon: Icon || PencilAddIcon,
   label: `Add ${capitalize(type)}`,
-  className: `pencil-add-${type}`,
+  className: `action-add-${type}`,
   sx: {
     width: `24px`,
     height: `24px`,
@@ -35,6 +36,7 @@ export const Add = ({ Icon, type, onClick }:TAddAct) => ({
     },
     [`&:hover`]: {
       color: colors.green10,
-    }
+    },
+    ...style
   } as CSSProperties
 })

@@ -17,6 +17,7 @@ export type TSection = {
   type:ESectionType
   className?:string
   sx?:CSSProperties
+  noToggle?:boolean
   children:ReactNode
   initialExpand?:boolean
   actions?:TSectionAction[]
@@ -39,6 +40,7 @@ export const Section = (props:TSection) => {
     parent,
     actions,
     children,
+    noToggle,
     className,
     dropdownSx,
     initialExpand
@@ -56,6 +58,7 @@ export const Section = (props:TSection) => {
           ? (
               <Dropdown
                 sx={dropdownSx}
+                noToggle={noToggle}
                 initialExpand={initialExpand}
                 id={`${parent.uuid}-${id || uuid}`}
                 headerText={capitalize(label || type)}

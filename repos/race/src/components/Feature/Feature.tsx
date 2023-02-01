@@ -6,7 +6,6 @@ import { useEffect, useCallback } from 'react'
 
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
-import { Story } from '../Story'
 import { Stack } from '../Shared'
 import Box from '@mui/material/Box'
 import { isStr } from '@keg-hub/jsutils'
@@ -14,6 +13,7 @@ import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { useEditor } from '../../contexts'
+import { FeatureActions } from './FeatureActions'
 
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -81,6 +81,7 @@ export const Feature = (props:TFeature) => {
             { feature.uuid // !== EmptyFeatureUUID // @TODO - uncomment when race-editor is complete
                 ? (
                     <>
+                      <FeatureActions />
                       <Background
                         parent={feature}
                         background={feature.background}

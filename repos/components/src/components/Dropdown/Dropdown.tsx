@@ -14,10 +14,11 @@ export type TDropdown = Omit<AccordionProps, `children`> & {
   id:string
   body?:ReactNode
   header?:ReactNode
+  disabled?:boolean
+  noToggle?:boolean
   actions?:ReactNode
   children?:ReactNode
   headerText?:ReactNode
-  disabled?:boolean
   initialExpand?:boolean
   bodySx?:CSSProperties
   headerSx?:CSSProperties
@@ -47,6 +48,7 @@ export const Dropdown = (props:TDropdown) => {
     bodySx,
     actions,
     headerSx,
+    noToggle,
     disabled,
     headerText,
     headerTextSx,
@@ -68,12 +70,12 @@ export const Dropdown = (props:TDropdown) => {
   const inlineCB = useInline(onChangeCB)
 
   const onChange = useCallback((event: React.SyntheticEvent, newExpanded: boolean) => {
-    if(disabled) return
+    if(disabled || noToggle) return
 
     const updated = !expanded
     inlineCB?.(updated)
     setExpanded(updated)
-  }, [expanded, disabled])
+  }, [expanded, disabled, noToggle])
 
   return (
     <Container
@@ -101,25 +103,31 @@ export const Dropdown = (props:TDropdown) => {
         transformOff={transformIconOff}
         aria-controls={`${id}-content`}
         sx={[headerSx, { [`& .MuiAccordionSummary-content`]: headerContentSx }] as CSSProperties[]}
-        expandIcon={(
-          // @ts-ignore
-          <ExpandIcon
-            sx={expandIconSx}
-            expand={expanded}
-            noIconTransform={true}
-            className={cls(`gr-dropdown-expand-icon`, expanded && `expanded`)}
-          />
-        )}
+        expandIcon={
+          noToggle
+            ? (<></>)
+            : (
+                // @ts-ignore
+                <ExpandIcon
+                  sx={expandIconSx}
+                  expand={expanded}
+                  noIconTransform={true}
+                  className={cls(`gr-dropdown-expand-icon`, expanded && `expanded`)}
+                />
+              )
+        }
       >
-        {headerComp || (<HeaderText sx={headerTextSx} >{headerText}</HeaderText>)}
+        {headerComp ?? (headerText && (<HeaderText sx={headerTextSx} >{headerText}</HeaderText>)) ?? null}
         {actions}
       </Header>
+    {children && (
       <Body
         sx={bodySx}
         className='gc-dropdown-body'
       >
         {children}
       </Body>
+    ) || null}
     </Container>
   )
 }

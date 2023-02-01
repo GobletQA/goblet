@@ -23,6 +23,16 @@ export * from './TextboxPlus'
 export * from './StepAddIcon'
 export * from './FootIcon'
 
+export * from './ShapesPlusIcon'
+export * from './TrayPlusIcon'
+export * from './ListPlusIcon'
+export * from './PlaylistPlusIcon'
+export * from './TabPlusIcon'
+export * from './CardPlusIcon'
+
+
+
+
 // export * from './UserPlus'
 // export * from './FileOutlinePlus'
 // export * from './ShoePrintIcon'

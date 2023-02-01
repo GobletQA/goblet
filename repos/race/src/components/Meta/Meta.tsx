@@ -52,5 +52,5 @@ export const Meta = (props:TFeatureMeta) => {
       />
     </Section>
   )
-  
+
 }
