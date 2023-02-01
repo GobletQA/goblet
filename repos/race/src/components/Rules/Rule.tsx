@@ -39,7 +39,7 @@ export const Rule = (props:TRule) => {
       actions={[
         Add({
           onClick: onAddScenario,
-          type: ESectionType.rule,
+          type: ESectionType.scenario,
         }),
         Delete({
           onClick: onRemove,

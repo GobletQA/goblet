@@ -1,5 +1,6 @@
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
+import { capitalize } from '@keg-hub/jsutils'
 import {
   colors,
   getColor,
@@ -19,10 +20,10 @@ export const Add = ({ Icon, type, onClick }:TAddAct) => ({
     stopEvent(evt)
     onClick(evt)
   }),
-  label: `Add ${type}`,
   id: `pencil-add-${type}`,
   key: `pencil-add-${type}`,
   Icon: Icon || PencilAddIcon,
+  label: `Add ${capitalize(type)}`,
   className: `pencil-add-${type}`,
   sx: {
     width: `24px`,

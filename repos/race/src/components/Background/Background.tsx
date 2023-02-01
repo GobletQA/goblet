@@ -5,7 +5,7 @@ import { Section } from '../Shared'
 import { Add } from '../Actions/Add'
 import { ESectionType } from '@GBR/types'
 import { Delete } from '../Actions/Delete'
-import { capitalize } from '@keg-hub/jsutils'
+import { EmptySteps } from '../Steps/EmptySteps'
 import { StepAddIcon } from '@gobletqa/components'
 
 
@@ -37,7 +37,7 @@ export const Background = (props:TBackground) => {
       actions={[
         Add({
           Icon: StepAddIcon,
-          type: capitalize(ESectionType.step),
+          type: ESectionType.step,
           onClick: addBackgroundStep,
         }),
         Delete({
@@ -52,7 +52,12 @@ export const Background = (props:TBackground) => {
           parent={background}
           onAdd={addBackgroundStep}
           onRemove={removeBackgroundStep}
+        >
+         <EmptySteps
+          parent={background}
+          onAdd={addBackgroundStep}
         />
+        </Steps>
       ) || null}
     </Section>
   )

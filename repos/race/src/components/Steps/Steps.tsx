@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react'
+import type { ReactNode } from 'react'
 import type { TStepParentAst, TStepAst } from '@GBR/types'
 
 import { Step } from './Step'
@@ -10,6 +10,7 @@ import { useInline } from '@gobletqa/components'
 export type TStep = {
   steps?:TStepAst[]
   showAdd?:boolean
+  children?:ReactNode
   parent:TStepParentAst
   onAdd?:(parentId:string) => void
   onRemove?:(stepId:string, parentId?:string) => void
@@ -17,7 +18,13 @@ export type TStep = {
 
 export const Steps = (props:TStep) => {
 
-  const { showAdd=true, parent, onAdd, onRemove } = props
+  const {
+    onAdd,
+    parent,
+    onRemove,
+    children,
+    showAdd=true,
+  } = props
   const onAddStep = useInline(() => onAdd?.(parent.uuid))
 
   return (
@@ -27,18 +34,19 @@ export const Steps = (props:TStep) => {
       onAdd={onAddStep}
       type={ESectionType.step}
     >
-    {
-      parent?.steps?.map(step => {
-        return (
-          <Step
-            step={step}
-            parent={parent}
-            onRemove={onRemove}
-            key={`${parent.uuid}-step-${step.uuid}`}
-          />
-        )
-      })
-    }
+      {
+        parent?.steps?.map(step => {
+          return (
+            <Step
+              step={step}
+              parent={parent}
+              onRemove={onRemove}
+              key={`${parent.uuid}-step-${step.uuid}`}
+            />
+          )
+        })
+      }
+      {children}
     </Sections>
   )
 }

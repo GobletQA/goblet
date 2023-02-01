@@ -46,7 +46,9 @@ export const InputContainer = styled(Box)`
   min-height: 40px;
 `
 
-export const SectionAct = styled(IconButton)``
+export const SectionAct = styled(IconButton)`
+  margin-left: 5px;
+`
 export const SectionActs = styled(Box)`
   opacity: 0;
   display: flex;

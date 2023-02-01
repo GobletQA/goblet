@@ -8,7 +8,7 @@ const styles:Record<string, CSSProperties> = {
     position: `relative`,
   },
   plusWrap: {
-    bottom: `-2px`,
+    bottom: `-3px`,
     right: `0px`,
     position: `absolute`,
   },
