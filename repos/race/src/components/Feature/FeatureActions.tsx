@@ -1,4 +1,4 @@
-import { Section } from '../Shared'
+import { Section } from '../Section'
 import { useEditor } from '../../contexts'
 import { ESectionType } from '@GBR/types'
 import { FeatureAdd } from '../Actions/AddFeature'

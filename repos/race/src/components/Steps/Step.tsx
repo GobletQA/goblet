@@ -1,6 +1,6 @@
 import type { TStepParentAst, TStepAst } from '@GBR/types'
 
-import { Section } from '../Shared'
+import { Section } from '../Section'
 import { ESectionType } from '@GBR/types'
 import { DeleteAct } from '../Actions/Delete'
 

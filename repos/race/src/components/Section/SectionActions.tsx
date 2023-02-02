@@ -6,7 +6,7 @@ import {
   SectionActBtn,
   SectionActIcnBtn,
   SectionActs,
-} from './Shared.styled'
+} from './Section.styled'
 
 export type TSectionActionMeta = {
   id?:string

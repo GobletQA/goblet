@@ -6,7 +6,7 @@ import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
 import { wordCaps, cls } from '@keg-hub/jsutils'
 import { SectionActions } from './SectionActions'
-import { Dropdown, Container } from './Shared.styled'
+import { Dropdown, Container } from './Section.styled'
 
 
 export type TSection = {

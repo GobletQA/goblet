@@ -1,7 +1,7 @@
 import type { TScenarioParentAst, TScenarioAst } from '@GBR/types'
 
 import { Steps } from '../Steps'
-import { Section } from '../Shared'
+import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
 import { ESectionType } from '@GBR/types'
 import { DeleteAct } from '../Actions/Delete'

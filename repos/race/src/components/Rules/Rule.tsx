@@ -1,6 +1,6 @@
 import type { TRaceFeature, TRuleAst } from '@GBR/types'
 
-import { Section } from '../Shared'
+import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'

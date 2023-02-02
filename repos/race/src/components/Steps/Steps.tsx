@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { TStepParentAst, TStepAst } from '@GBR/types'
 
 import { Step } from './Step'
-import { Sections } from '../Shared'
+import { Sections } from '../Section'
 import { ESectionType } from '@GBR/types'
 import { useInline } from '@gobletqa/components'
 

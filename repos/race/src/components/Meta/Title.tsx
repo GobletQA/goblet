@@ -5,7 +5,7 @@ import type { TToggleEditCB, TChangeCB, TInputVariants } from '@gobletqa/compone
 import { useCallback } from 'react'
 
 import { isStr } from '@keg-hub/jsutils'
-import { InputContainer } from '../Shared'
+import { InputContainer } from '../Section'
 import { Input } from '@gobletqa/components'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 

@@ -3,7 +3,7 @@ import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 
 import { Desire } from './Desire'
 import { Reason } from './Reason'
-import { Section } from '../Shared'
+import { Section } from '../Section'
 import { ESectionType } from '@GBR/types'
 import { Perspective } from './Perspective'
 import { DeleteAct } from '../Actions/Delete'

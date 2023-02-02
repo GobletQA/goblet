@@ -1,6 +1,6 @@
 import type { TScenarioParentAst, TScenarioAst } from '@GBR/types'
 
-import { Sections } from '../Shared'
+import { Sections } from '../Section'
 import { Scenario } from './Scenario'
 import { ESectionType } from '@GBR/types'
 import { useInline } from '@gobletqa/components'

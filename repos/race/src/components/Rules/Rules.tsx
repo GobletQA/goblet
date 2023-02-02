@@ -1,7 +1,7 @@
 import type { TRuleAst, TRaceFeature } from '@GBR/types'
 
 import { Rule } from './Rule'
-import { Sections } from '../Shared'
+import { Sections } from '../Section'
 import { ESectionType } from '@GBR/types'
 import { useInline } from '@gobletqa/components'
 import { addRule } from '@GBR/actions/rule/addRule'

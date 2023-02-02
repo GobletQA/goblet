@@ -1,6 +1,6 @@
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
-import { SectionActBtn } from '../Shared'
+import { SectionActBtn } from '../Section'
 import { capitalize } from '@keg-hub/jsutils'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {

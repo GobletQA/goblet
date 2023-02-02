@@ -6,7 +6,7 @@ import { useEffect, useCallback } from 'react'
 
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
-import { Stack } from '../Shared'
+import { Stack } from '../Section'
 import Box from '@mui/material/Box'
 import { isStr } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'

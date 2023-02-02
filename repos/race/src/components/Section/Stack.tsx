@@ -3,7 +3,7 @@ import type { ReactNode, ComponentProps, CSSProperties } from 'react'
 
 import { ESectionType } from '@GBR/types'
 import { exists, cls } from '@keg-hub/jsutils'
-import { StackContainer, StackContent, StackBody } from './Shared.styled'
+import { StackContainer, StackContent, StackBody } from './Section.styled'
 
 export type TStack = {
   body?:boolean
