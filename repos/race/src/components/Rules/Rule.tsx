@@ -1,10 +1,10 @@
 import type { TRaceFeature, TRuleAst } from '@GBR/types'
 
 import { Section } from '../Shared'
-import { Add } from '../Actions/Add'
+import { AddAct } from '../Actions/Add'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
-import { Delete } from '../Actions/Delete'
+import { DeleteAct } from '../Actions/Delete'
 
 import { removeRule } from '@GBR/actions/rule/removeRule'
 import { addRuleScenario } from '@GBR/actions/rule/addRuleScenario'
@@ -31,20 +31,26 @@ export const Rule = (props:TRule) => {
   return (
     <Section
       parent={rule}
-      initialExpand={false}
+      initialExpand={true}
       show={Boolean(rule)}
       type={ESectionType.rule}
       className='gr-rule-section'
       id={`${parent.uuid}-rule-${rule.uuid}`}
       actions={[
-        Add({
-          onClick: onAddScenario,
-          type: ESectionType.scenario,
-        }),
-        Delete({
-          onClick: onRemove,
-          type: ESectionType.rule,
-        }),
+        (
+          <AddAct
+            onClick={onAddScenario}
+            type={ESectionType.scenario}
+            key={`gr-rule-add-scenario-action`}
+          />
+        ),
+        (
+          <DeleteAct
+            onClick={onRemove}
+            type={ESectionType.rule}
+            key={`gr-rule-removed-scenario-action`}
+          />
+        ),
       ]}
     >
       <Scenarios

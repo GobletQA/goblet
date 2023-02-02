@@ -7,7 +7,7 @@ import MuiStack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 import {
   gutter,
-  colors,
+  Button,
   IconButton,
   Dropdown as DropdownComp
 } from '@gobletqa/components'
@@ -46,9 +46,14 @@ export const InputContainer = styled(Box)`
   min-height: 40px;
 `
 
-export const SectionAct = styled(IconButton)`
+export const SectionActBtn = styled(Button)`
   margin-left: 5px;
 `
+
+export const SectionActIcnBtn = styled(IconButton)`
+  margin-left: 5px;
+`
+
 export const SectionActs = styled(Box)`
   opacity: 0;
   display: flex;

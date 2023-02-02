@@ -2,9 +2,9 @@ import type { TScenarioParentAst, TScenarioAst } from '@GBR/types'
 
 import { Steps } from '../Steps'
 import { Section } from '../Shared'
-import { Add } from '../Actions/Add'
+import { AddAct } from '../Actions/Add'
 import { ESectionType } from '@GBR/types'
-import { Delete } from '../Actions/Delete'
+import { DeleteAct } from '../Actions/Delete'
 
 
 export type TScenario = {
@@ -33,14 +33,20 @@ export const Scenario = (props:TScenario) => {
       id={`${parent.uuid}-scenario`}
       className='gr-scenario-section'
       actions={[
-        Add({
-          onClick: onAddScenarioStep,
-          type: ESectionType.scenario,
-        }),
-        Delete({
-          onClick: onRemoveScenario,
-          type: ESectionType.scenario,
-        })
+        (
+          <AddAct
+            onClick={onAddScenarioStep}
+            type={ESectionType.scenario}
+            key={`gr-scenario-add-step-action`}
+          />
+        ),
+        (
+          <DeleteAct
+            onClick={onRemoveScenario}
+            type={ESectionType.scenario}
+            key={`gr-scenario-remove-action`}
+          />
+        )
       ]}
     >
       <Steps

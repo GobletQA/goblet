@@ -1,38 +1,52 @@
-import type { MouseEvent, CSSProperties } from 'react'
+import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
+import { SectionActIcnBtn } from '../Shared'
+import { capitalize } from '@keg-hub/jsutils'
+import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
   colors,
+  Tooltip,
   getColor,
   stopEvent,
   useInline,
   TextboxPlusIcon,
 } from '@gobletqa/components'
 
-export type TAddAct = {
+export type TAddStoryAct = {
   type:string
+  style?:CSSProperties
+  Icon?:ComponentType<any>
   onClick: (...args:any)=> void
 }
 
-export const AddStory = ({ type, onClick }:TAddAct) => ({
-  onClick: useInline((evt:MouseEvent) => {
+export const AddStoryAct = (props:TAddStoryAct) => {
+  const { type, onClick, Icon, style } = props
+
+  const ref = `action-add-${type}`
+  const btnClk = useInline((evt:MouseEvent) => {
     stopEvent(evt)
     onClick(evt)
-  }),
-  label: `Add User Story`,
-  Icon: TextboxPlusIcon,
-  id: `story-add-${type}`,
-  key: `story-add-${type}`,
-  className: `story-add-${type}`,
-  sx: {
-    width: `24px`,
-    height: `24px`,
-    color: getColor(colors.gray05, colors.gray15),
-    [`& svg`]: {
-      width: `22px`,
-      height: `22px`,
-    },
-    [`&:hover`]: {
-      color: colors.green10,
-    }
-  } as CSSProperties
-})
+  })
+
+  const styles = useActionStyles({ style })
+
+  return (
+    <Tooltip
+      key={ref}
+      loc='bottom'
+      describeChild
+      enterDelay={500}
+      fontSize={`10px`}
+      title={`Add ${capitalize(type)}`}
+    >
+      <SectionActIcnBtn
+        id={ref}
+        key={ref}
+        sx={styles}
+        className={ref}
+        onClick={btnClk}
+        Icon={Icon || TextboxPlusIcon}
+      />
+    </Tooltip>
+  )
+}

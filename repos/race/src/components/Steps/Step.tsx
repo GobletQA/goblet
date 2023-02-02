@@ -2,7 +2,7 @@ import type { TStepParentAst, TStepAst } from '@GBR/types'
 
 import { Section } from '../Shared'
 import { ESectionType } from '@GBR/types'
-import { Delete } from '../Actions/Delete'
+import { DeleteAct } from '../Actions/Delete'
 
 export type TStep = {
   step: TStepAst
@@ -24,10 +24,13 @@ export const Step = (props:TStep) => {
       id={`${parent.uuid}-step`}
       className='gr-step-section'
       actions={[
-        Delete({
-          type: ESectionType.step,
-          onClick: () => onRemove?.(step.uuid, parent.uuid),
-        })
+        (
+          <DeleteAct
+            type={ESectionType.step}
+            key={`gr-step-remove-action`}
+            onClick={() => onRemove?.(step.uuid, parent.uuid)}
+          />
+        )
       ]}
     >
       {step?.type} - {step?.step}

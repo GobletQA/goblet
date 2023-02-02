@@ -1,7 +1,6 @@
 import type { ReactNode, ForwardedRef, ComponentProps, ComponentType } from 'react'
 
 import { forwardRef } from 'react'
-import { exists } from '@keg-hub/jsutils'
 import MuiIconBtn from '@mui/material/IconButton'
 import { isValidFuncComp } from '@GBC/utils/components/isValidFuncComp'
 

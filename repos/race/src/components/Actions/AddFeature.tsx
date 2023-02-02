@@ -1,6 +1,6 @@
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
-import { SectionActIcnBtn } from '../Shared'
+import { SectionActBtn } from '../Shared'
 import { capitalize } from '@keg-hub/jsutils'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
@@ -12,24 +12,36 @@ import {
   PencilAddIcon,
 } from '@gobletqa/components'
 
-
 export type TAddAct = {
   type:string
+  disabled?:boolean
   style?:CSSProperties
   Icon?:ComponentType<any>
   onClick: (...args:any)=> void
 }
 
-export const AddAct = (props:TAddAct) => {
-  const { Icon, type, onClick, style } = props
+const defStyles = {
+  width: `unset`,
+  height: `unset`,
+  color: `var(--goblet-list-focusForeground)`,
+}
 
+export const FeatureAdd = (props:TAddAct) => {
+  const {
+    Icon,
+    type,
+    style,
+    onClick,
+    disabled,
+  } = props
+  
   const ref = `action-add-${type}`
-  const btnClk = useInline((evt:MouseEvent) => {
+  const btnClick = useInline((evt:MouseEvent) => {
     stopEvent(evt)
     onClick(evt)
   })
 
-  const styles = useActionStyles({ style })
+  const styles = useActionStyles({ style, styles: defStyles })
 
   return (
     <Tooltip
@@ -38,16 +50,19 @@ export const AddAct = (props:TAddAct) => {
       describeChild
       enterDelay={500}
       fontSize={`10px`}
-      title={`Add ${capitalize(type)}`}
+      title={`Add a ${capitalize(type)} section`}
     >
-      <SectionActIcnBtn
+      <SectionActBtn
         id={ref}
         key={ref}
         sx={styles}
         className={ref}
-        onClick={btnClk}
+        onClick={btnClick}
+        disabled={disabled}
         Icon={Icon || PencilAddIcon}
+        text={`Add ${capitalize(type)}`}
       />
     </Tooltip>
   )
+
 }

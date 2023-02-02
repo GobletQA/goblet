@@ -1,45 +1,32 @@
-import type { TStepParentAst, TScenarioParentAst } from '@GBR/types'
 import type { ComponentProps, CSSProperties, ReactNode, ComponentType } from 'react'
 
-import { ESectionType } from '@GBR/types'
-import { cls } from '@keg-hub/jsutils'
+import { cls, isObj, isFunc } from '@keg-hub/jsutils'
 import { Tooltip } from '@gobletqa/components'
 import {
-  SectionAct,
+  SectionActBtn,
+  SectionActIcnBtn,
   SectionActs,
 } from './Shared.styled'
 
-export type TSectionAction = {
+export type TSectionActionMeta = {
   id?:string
   key?:string
   label?:string
+  asButton?:boolean
   className?:string
   sx?:CSSProperties
+  disabled?:boolean
   children?:ReactNode
   iconProps?:ComponentProps<any>
   onClick?:(...args:any[]) => void
   Icon?:ReactNode|ComponentType<any>
 }
 
+export type TSectionAction = ReactNode | TSectionActionMeta
+
 export type TSectionActions = {
   className?:string
   actions?:TSectionAction[]
-}
-
-export type TSection = {
-  id?:string
-  uuid?:string
-  show?:boolean
-  label?:string
-  type:ESectionType
-  className?:string
-  sx?:CSSProperties
-  children:ReactNode
-  initialExpand?:boolean
-  actions?:TSectionAction[]
-  dropdownSx?:CSSProperties
-  onAdd?:(...args:any[]) => void
-  parent:TScenarioParentAst|TStepParentAst
 }
 
 export const SectionActions = (props:TSectionActions) => {
@@ -47,7 +34,15 @@ export const SectionActions = (props:TSectionActions) => {
   
   return (
     <SectionActs className={cls(`gr-section-actions`, className)} >
-      {actions?.map(action => {
+      {actions?.map(meta => {
+       
+        if(isObj(meta) && (`$$typeof` in meta) && (`type` in meta && isFunc((meta as any)?.type))){
+          return meta
+        }
+
+        const action = meta as TSectionActionMeta
+        const Comp = action?.asButton ? SectionActBtn : SectionActIcnBtn
+
         return (
           <Tooltip
             loc='bottom'
@@ -57,11 +52,12 @@ export const SectionActions = (props:TSectionActions) => {
             title={action.label}
             key={action.key || action.id || action.label}
           >
-            <SectionAct
+            <Comp
               sx={action.sx}
               id={action.id}
               Icon={action.Icon}
               onClick={action?.onClick}
+              disabled={action.disabled}
               children={action.children}
               iconProps={action.iconProps}
               key={action.key || action.id || action.label}

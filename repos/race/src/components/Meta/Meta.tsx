@@ -5,8 +5,8 @@ import { Title } from './Title'
 import { Story } from '../Story'
 import { Section } from '../Shared'
 import { ESectionType } from '@GBR/types'
-import { AddStory } from '../Actions/AddStory'
 import { addStory } from '@GBR/actions/story'
+import { AddStoryAct } from '../Actions/AddStory'
 
 export type TFeatureMeta = {
   parent:TRaceFeature
@@ -14,7 +14,7 @@ export type TFeatureMeta = {
 }
 
 export const Meta = (props:TFeatureMeta) => {
-  
+
   const {
     parent,
     featuresRef,
@@ -31,10 +31,11 @@ export const Meta = (props:TFeatureMeta) => {
       className='gr-feature-meta-container'
       dropdownSx={{ marginBottom: `0px !important` }}
       actions={[
-        AddStory({
-          type: `story`,
-          onClick: addStory,
-        })
+        <AddStoryAct
+          onClick={addStory}
+          type={ESectionType.story}
+          key={`gr-meta-add-story-action`}
+        />
       ]}
     >
       <Title

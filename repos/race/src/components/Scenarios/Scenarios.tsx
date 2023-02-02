@@ -25,9 +25,9 @@ export const Scenarios = (props:TScenarios) => {
 
   return (
     <Sections
-      showAdd={true}
-      parent={parent}
       onAdd={onAdd}
+      showAdd={false}
+      parent={parent}
       type={ESectionType.scenario}
     >
     {

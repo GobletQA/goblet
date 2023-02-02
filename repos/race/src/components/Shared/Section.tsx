@@ -4,8 +4,8 @@ import type { TStepParentAst, TScenarioParentAst } from '@GBR/types'
 
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
+import { wordCaps, cls } from '@keg-hub/jsutils'
 import { SectionActions } from './SectionActions'
-import { capitalize, cls } from '@keg-hub/jsutils'
 import { Dropdown, Container } from './Shared.styled'
 
 
@@ -61,7 +61,7 @@ export const Section = (props:TSection) => {
                 noToggle={noToggle}
                 initialExpand={initialExpand}
                 id={`${parent.uuid}-${id || uuid}`}
-                headerText={capitalize(label || type)}
+                headerText={wordCaps(label || type)}
                 headerSx={{ flexDirection: `row-reverse` }}
                 actions={<SectionActions actions={actions} />}
                 className={cls(`gr-section-dropdown`, `gr-section-dropdown-${type}`)}

@@ -6,7 +6,7 @@ import { Reason } from './Reason'
 import { Section } from '../Shared'
 import { ESectionType } from '@GBR/types'
 import { Perspective } from './Perspective'
-import { Delete } from '../Actions/Delete'
+import { DeleteAct } from '../Actions/Delete'
 import { addStory, removeStory } from '@GBR/actions/story'
 import { gutter, stopEvent, useInline } from '@gobletqa/components'
 
@@ -32,7 +32,7 @@ export const Story = (props:TMeta) => {
   const hasStory = Boolean(desire || reason || perspective)
   const onClick = useInline(() => addStory())
   
-  const onTrash = useInline<MouseEventHandler<HTMLButtonElement>>((evt) => {
+  const onRemove = useInline<MouseEventHandler<HTMLButtonElement>>((evt) => {
     stopEvent(evt)
     removeStory()
   })
@@ -48,10 +48,11 @@ export const Story = (props:TMeta) => {
       id={`${parent.uuid}-story`}
       className='gr-story-section'
       actions={[
-        Delete({
-          onClick: onTrash,
-          type: ESectionType.story,
-        })
+        <DeleteAct
+          onClick={onRemove}
+          type={ESectionType.story}
+          key={`gr-story-remove-action`}
+        />
       ]}
     >
       <Perspective {...props} type={ESectionType.feature} />

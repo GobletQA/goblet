@@ -19,8 +19,8 @@ export const Rules = (props:TRules) => {
   return (
     <Sections
       onAdd={onAdd}
-      showAdd={true}
       parent={parent}
+      showAdd={false}
       type={ESectionType.rule}
     >
     {
