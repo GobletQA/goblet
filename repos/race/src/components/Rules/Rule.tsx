@@ -2,14 +2,16 @@ import type { TRaceFeature, TRuleAst } from '@GBR/types'
 
 import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
-import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { DeleteAct } from '../Actions/Delete'
+import { EmptyScenarios, Scenarios } from '../Scenarios'
 
+import { PlaylistPlusIcon } from '@gobletqa/components'
 import { removeRule } from '@GBR/actions/rule/removeRule'
 import { addRuleScenario } from '@GBR/actions/rule/addRuleScenario'
 import { removeRuleScenario } from '@GBR/actions/rule/removeRuleScenario'
 import { addRuleScenarioStep } from '@GBR/actions/rule/addRuleScenarioStep'
+import { removeRuleScenarioStep } from '@GBR/actions/rule/removeRuleScenarioStep'
 
 export type TRule = {
   rule: TRuleAst
@@ -27,6 +29,9 @@ export const Rule = (props:TRule) => {
   const onRemoveScenario = (scenarioId:string, ruleId?:string) => {
      removeRuleScenario(scenarioId, ruleId || rule.uuid)
   }
+  const onRemoveScenarioStep = (stepId:string, scenarioId?:string, ruleId?:string) => {
+    removeRuleScenarioStep(stepId, scenarioId, ruleId || rule.uuid)
+  }
 
   return (
     <Section
@@ -39,6 +44,7 @@ export const Rule = (props:TRule) => {
       actions={[
         (
           <AddAct
+            Icon={PlaylistPlusIcon}
             onClick={onAddScenario}
             type={ESectionType.scenario}
             key={`gr-rule-add-scenario-action`}
@@ -59,6 +65,11 @@ export const Rule = (props:TRule) => {
         onAdd={onAddScenario}
         scenarios={rule.scenarios}
         onRemove={onRemoveScenario}
+        onRemoveStep={onRemoveScenarioStep}
+      />
+      <EmptyScenarios
+        parent={rule}
+        onAdd={onAddScenario}
       />
     </Section>
   )

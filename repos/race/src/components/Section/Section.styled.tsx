@@ -38,6 +38,7 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 }
 
 export const Container = styled(Paper)`
+  margin-top: 10px;
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-editor-background);
 `
@@ -65,7 +66,7 @@ export const SectionActs = styled(Box)`
 export const Dropdown = styled(DropdownComp)`
 
   &.Mui-expanded:last-of-type {
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
   }
 
   &.Mui-expanded > .MuiAccordionSummary-root {
@@ -100,7 +101,7 @@ export const Dropdown = styled(DropdownComp)`
   }
   
   & .MuiAccordionDetails-root {
-    padding-bottom: ${gutter.padding.hpx};
+    // padding-bottom: ${gutter.padding.hpx};
   }
 
   & .MuiCollapse-root {

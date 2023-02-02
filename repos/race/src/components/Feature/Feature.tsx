@@ -73,6 +73,11 @@ export const Feature = (props:TFeature) => {
           className='gr-feature-editor-section'
         >
           <Box sx={styles.content}>
+            { feature.uuid // !== EmptyFeatureUUID // @TODO - uncomment when race-editor is complete
+               && (<FeatureActions />)
+              || null
+            }
+          
             <Meta
               parent={feature}
               featuresRef={featuresRef}
@@ -81,7 +86,6 @@ export const Feature = (props:TFeature) => {
             { feature.uuid // !== EmptyFeatureUUID // @TODO - uncomment when race-editor is complete
                 ? (
                     <>
-                      <FeatureActions />
                       <Background
                         parent={feature}
                         background={feature.background}

@@ -5,6 +5,8 @@ import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
 import { ESectionType } from '@GBR/types'
 import { DeleteAct } from '../Actions/Delete'
+import { EmptySteps } from '../Steps/EmptySteps'
+import { StepAddIcon } from '@gobletqa/components'
 
 
 export type TScenario = {
@@ -26,15 +28,15 @@ export const Scenario = (props:TScenario) => {
   return (
     <Section
       parent={parent}
-      initialExpand={false}
+      initialExpand={true}
       show={Boolean(scenario)}
-      onAdd={onAddScenarioStep}
       type={ESectionType.scenario}
       id={`${parent.uuid}-scenario`}
       className='gr-scenario-section'
       actions={[
         (
           <AddAct
+            Icon={StepAddIcon}
             onClick={onAddScenarioStep}
             type={ESectionType.scenario}
             key={`gr-scenario-add-step-action`}
@@ -50,9 +52,14 @@ export const Scenario = (props:TScenario) => {
       ]}
     >
       <Steps
+        showAdd={false}
         parent={scenario}
         onAdd={onAddScenarioStep}
         onRemove={onRemoveScenarioStep}
+      />
+      <EmptySteps
+        parent={scenario}
+        onAdd={onAddScenarioStep}
       />
     </Section>
   )

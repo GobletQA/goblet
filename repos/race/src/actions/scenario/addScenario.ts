@@ -1,5 +1,3 @@
-import type { TScenarioParentAst } from '@GBR/types'
-
 import { scenarioFactory } from '@GBR/factories/scenarioFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'

@@ -23,6 +23,7 @@ export const FeatureActions = (props:TFeatureActions) => {
       show={true}
       noToggle={true}
       parent={feature}
+      sx={{ marginTop: `0px` }}
       label={`Feature Sections`}
       initialExpand={true}
       type={ESectionType.feature}
@@ -49,8 +50,8 @@ export const FeatureActions = (props:TFeatureActions) => {
         ),
         (
           <FeatureAdd
-            Icon={PlaylistPlusIcon}
             onClick={addScenario}
+            Icon={PlaylistPlusIcon}
             type={ESectionType.scenario}
             key={`gr-feature-scenario-action`}
           />

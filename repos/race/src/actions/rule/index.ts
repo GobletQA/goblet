@@ -1,1 +1,6 @@
 export * from './addRule'
+export * from './addRuleScenario'
+export * from './addRuleScenarioStep'
+export * from './removeRule'
+export * from './removeRuleScenario'
+export * from './removeRuleScenarioStep'
