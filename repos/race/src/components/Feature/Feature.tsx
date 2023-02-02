@@ -1,8 +1,14 @@
 import type { MouseEvent } from 'react'
-import type { TFeaturesRefs } from '@GBR/types'
+import type { TFeaturesRefs, TEmptyFeature } from '@GBR/types'
 import type { TToggleEditCB } from '@gobletqa/components'
 
 import { useEffect, useCallback } from 'react'
+
+// TODO - Remove this when done with step
+import { Step } from '../Steps/Step'
+import { EStepKey } from '@GBR/types'
+import { featureFactory } from '@GBR/factories/featureFactory'
+import { useEffectOnce } from '@gobletqa/components'
 
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
@@ -35,6 +41,26 @@ const styles = {
   content: {}
 }
 
+// TODO - Remove this when done with step
+const testFeature:TEmptyFeature = {
+  scenarios: [
+    {
+      tags: [],
+      index: 0,
+      steps: [
+          {
+            step: "",
+            index: 0,
+            uuid: "56fe596a-9de4-4f01-b6fe-73ce2d8134fd",
+            type: EStepKey.given
+          }
+      ],
+      uuid: "cd4ae2bc-2f30-4990-aa85-d504aebe36fb",
+      scenario: " "
+    }
+  ]
+}
+
 export const Feature = (props:TFeature) => {
   const {
     stepsRef,
@@ -44,9 +70,18 @@ export const Feature = (props:TFeature) => {
   const { feature, rootPrefix } = useEditor()
 
   // TODO: remove this once form components are done
-  useEffect(() => {
-    ;(!feature || !feature?.uuid) && createFeature({}, rootPrefix)
-  }, [])
+  useEffectOnce(() => {
+    ;(!feature || !feature?.uuid)
+      setTimeout(() => {
+        const feat = featureFactory({
+          path: rootPrefix,
+          uuid: EmptyFeatureUUID
+        })
+
+        updateFeature({ ...feat, ...testFeature }, false)
+      }, 50)
+  })
+
 
   const onToggleEdit = useCallback(((__, featureTitle, editing) => {
     !editing

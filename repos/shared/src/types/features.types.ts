@@ -14,6 +14,11 @@ export enum EStepKey {
   then=`then`,
   and=`and`,
   but=`but`,
+  Given=`given`,
+  When=`when`,
+  Then=`then`,
+  And=`and`,
+  But=`but`,
 } 
 
 export type TBackgroundAst = {
