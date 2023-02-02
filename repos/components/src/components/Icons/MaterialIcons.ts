@@ -52,6 +52,8 @@ import DesignIcon from '@mui/icons-material/DesignServicesOutlined'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import BoltIcon from '@mui/icons-material/Bolt'
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
+
 
 export {
   Settings,
@@ -107,5 +109,6 @@ export {
   DesignIcon,
   ExpandMoreIcon,
   ChevronRightIcon,
-  BoltIcon
+  BoltIcon,
+  DragIndicatorIcon
 }

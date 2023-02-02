@@ -4,10 +4,11 @@ import { Steps } from '../Steps'
 import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
 import { ESectionType } from '@GBR/types'
+import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
 import { EmptySteps } from '../Steps/EmptySteps'
 import { StepAddIcon } from '@gobletqa/components'
-
+import { copyScenario } from '@GBR/actions/scenario/copyScenario'
 
 export type TScenario = {
   scenario: TScenarioAst
@@ -20,6 +21,8 @@ export type TScenario = {
 
 export const Scenario = (props:TScenario) => {
   const { onRemoveStep, onAddStep, onRemove, scenario, parent } = props
+
+  const onCopyScenario = () => copyScenario(scenario)
 
   const onRemoveScenario = () => onRemove(scenario.uuid, parent.uuid)
   const onAddScenarioStep = () => onAddStep(scenario.uuid, parent.uuid)
@@ -40,6 +43,13 @@ export const Scenario = (props:TScenario) => {
             onClick={onAddScenarioStep}
             type={ESectionType.scenario}
             key={`gr-scenario-add-step-action`}
+          />
+        ),
+        (
+          <CopyAct
+            onClick={onCopyScenario}
+            type={ESectionType.scenario}
+            key={`gr-rule-copy-scenario-action`}
           />
         ),
         (

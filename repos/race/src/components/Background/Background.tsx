@@ -4,9 +4,11 @@ import { Steps } from '../Steps'
 import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
 import { ESectionType } from '@GBR/types'
+import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
 import { EmptySteps } from '../Steps/EmptySteps'
 import { StepAddIcon } from '@gobletqa/components'
+import { copyBackground } from '@GBR/actions/background/copyBackground'
 
 import {
   removeBackground,
@@ -22,6 +24,7 @@ export type TBackground = {
 export const Background = (props:TBackground) => {
 
   const { background, parent } = props
+  const onCopyBackground = () => background && copyBackground(background)
 
   return (
     <Section
@@ -40,11 +43,20 @@ export const Background = (props:TBackground) => {
             key={`gr-background-add-step-action`}
           />
         ),
-        <DeleteAct
-          onClick={removeBackground}
-          type={ESectionType.background}
-          key={`gr-background-delete-action`}
-        />
+        (
+          <CopyAct
+            onClick={onCopyBackground}
+            type={ESectionType.background}
+            key={`gr-background-copy-action`}
+          />
+        ),
+        (
+          <DeleteAct
+            onClick={removeBackground}
+            type={ESectionType.background}
+            key={`gr-background-delete-action`}
+          />
+        )
       ]}
     >
       {background && (

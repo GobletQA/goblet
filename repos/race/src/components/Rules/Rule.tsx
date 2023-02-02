@@ -3,7 +3,9 @@ import type { TRaceFeature, TRuleAst } from '@GBR/types'
 import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
 import { ESectionType } from '@GBR/types'
+import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
+import { copyRule } from '@GBR/actions/rule/copyRule'
 import { EmptyScenarios, Scenarios } from '../Scenarios'
 
 import { PlaylistPlusIcon } from '@gobletqa/components'
@@ -21,6 +23,7 @@ export type TRule = {
 export const Rule = (props:TRule) => {
   const { rule, parent } = props
 
+  const onCopyRule = () => copyRule(rule)
   const onRemove = () => removeRule(rule.uuid)
   const onAddScenario = () => addRuleScenario(rule.uuid)
   const onAddStep = (scenarioId:string, ruleId?:string) => {
@@ -48,6 +51,13 @@ export const Rule = (props:TRule) => {
             onClick={onAddScenario}
             type={ESectionType.scenario}
             key={`gr-rule-add-scenario-action`}
+          />
+        ),
+        (
+          <CopyAct
+            onClick={onCopyRule}
+            type={ESectionType.rule}
+            key={`gr-rule-copy-rule-action`}
           />
         ),
         (
