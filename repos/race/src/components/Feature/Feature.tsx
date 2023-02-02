@@ -8,12 +8,14 @@ import { Meta } from '../Meta'
 import { Rules } from '../Rules'
 import { Stack } from '../Section'
 import Box from '@mui/material/Box'
+import { Title } from '../Meta/Title'
 import { isStr } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { useEditor } from '../../contexts'
 import { FeatureActions } from './FeatureActions'
+import { EmptyFeatureUUID } from '@GBR/constants'
 
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -21,6 +23,7 @@ import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
 import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
+import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
 
 
 export type TFeature = TFeaturesRefs & {}
@@ -73,19 +76,15 @@ export const Feature = (props:TFeature) => {
           className='gr-feature-editor-section'
         >
           <Box sx={styles.content}>
-            { feature.uuid // !== EmptyFeatureUUID // @TODO - uncomment when race-editor is complete
-               && (<FeatureActions />)
-              || null
-            }
-          
-            <Meta
-              parent={feature}
-              featuresRef={featuresRef}
-            />
 
-            { feature.uuid // !== EmptyFeatureUUID // @TODO - uncomment when race-editor is complete
+            { feature.uuid // !== EmptyFeatureUUID // TODO - Remove this when finished
                 ? (
                     <>
+                      <FeatureActions />
+                      <Meta
+                        parent={feature}
+                        featuresRef={featuresRef}
+                      />
                       <Background
                         parent={feature}
                         background={feature.background}
@@ -100,10 +99,16 @@ export const Feature = (props:TFeature) => {
                         onRemove={removeScenario}
                         onAddStep={addScenarioStep}
                         scenarios={feature.scenarios}
+                        onRemoveStep={removeScenarioStep}
                       />
                     </>
                   )
-                : null
+                : (
+                    <Title
+                      parent={feature}
+                      featuresRef={featuresRef}
+                    />
+                  )
             }
           </Box>
         </Stack>

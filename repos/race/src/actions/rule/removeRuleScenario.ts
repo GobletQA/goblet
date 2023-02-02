@@ -1,3 +1,4 @@
+import { findRule } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
@@ -9,11 +10,13 @@ export const removeRuleScenario = async (
   const feature = await getFeature()
   if(!feature) console.warn(`Can not access feature context from 'addStory' action.`) 
 
-  const rule = feature?.rules?.find(rule => rule.uuid === parentId)
-  if(!rule) return console.warn(`Rule with id ${parentId} could not be found`, feature, feature?.rules)
+  const {
+    rule,
+    rules,
+    ruleIdx,
+  } = findRule(feature, parentId)
+  if(!rule) return
 
-  const ruleIdx = feature?.rules?.indexOf(rule)
-  const rules = [...(feature?.rules || []) ]
 
   rules[ruleIdx as number] = {
     ...rule,

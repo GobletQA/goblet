@@ -1,3 +1,4 @@
+import { findScenario, findRule } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
@@ -8,20 +9,38 @@ export const removeRuleScenarioStep = async (
 ) => {
 
   const feature = await getFeature()
-  if(!feature) console.warn(`Can not access feature context from 'addStory' action.`) 
+  if(!feature)
+    return console.warn(`Remove Rule#scenario#step - Can not access feature context`)
+  if(!scenarioId)
+    return console.warn(`Remove Rule#scenario#step - Scenario Id is required`,feature,stepId,scenarioId,ruleId)
+  if(!ruleId)
+    return console.warn(`Remove Rule#scenario#step - Rule Id is required`,feature,stepId,scenarioId,ruleId)
 
-  console.log(`------- TOOD - Fix me -------`)
-  // const rule = feature?.rules?.find(rule => rule.uuid === parentId)
-  // if(!rule) return console.warn(`Rule with id ${parentId} could not be found`, feature, feature?.rules)
+  const {
+    rule,
+    rules,
+    ruleIdx,
+  } = findRule(feature, ruleId)
+  if(!rule) return
 
-  // const ruleIdx = feature?.rules?.indexOf(rule)
-  // const rules = [...(feature?.rules || []) ]
+  const {
+    scenario,
+    scenarios,
+    scenarioIdx
+  } = findScenario(rule, scenarioId)
+  if(!scenario) return
 
-  // rules[ruleIdx as number] = {
-  //   ...rule,
-  //   scenarios: rule.scenarios.filter(scenario => scenario.uuid !== scenarioId)
-  // }
 
-  // updateFeature({...feature, rules})
+  scenarios[scenarioIdx as number] = {
+    ...scenario,
+    steps: scenario.steps.filter(step => step.uuid !== stepId)
+  }
+
+  rules[ruleIdx as number] = {
+    ...rule,
+    scenarios
+  }
+
+  updateFeature({...feature, rules})
 
 }
