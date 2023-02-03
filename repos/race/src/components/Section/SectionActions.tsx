@@ -25,15 +25,19 @@ export type TSectionActionMeta = {
 export type TSectionAction = ReactNode | TSectionActionMeta
 
 export type TSectionActions = {
+  sx?:CSSProperties
   className?:string
   actions?:TSectionAction[]
 }
 
 export const SectionActions = (props:TSectionActions) => {
-  const { className, actions }  = props
+  const { sx, className, actions }  = props
   
   return (
-    <SectionActs className={cls(`gr-section-actions`, className)} >
+    <SectionActs
+      sx={sx}
+      className={cls(`gr-section-actions`, className)}
+    >
       {actions?.map(meta => {
        
         if(isObj(meta) && (`$$typeof` in meta) && (`type` in meta && isFunc((meta as any)?.type))){
