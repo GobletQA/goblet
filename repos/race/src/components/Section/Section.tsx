@@ -21,7 +21,9 @@ export type TSection = {
   children:ReactNode
   initialExpand?:boolean
   actions?:TSectionAction[]
+  headerSx?:CSSProperties
   dropdownSx?:CSSProperties
+  headerContentSx?:CSSProperties
   onAdd?:(...args:any[]) => void
   parent:TScenarioParentAst|TStepParentAst
 }
@@ -41,9 +43,11 @@ export const Section = (props:TSection) => {
     actions,
     children,
     noToggle,
+    headerSx,
     className,
     dropdownSx,
-    initialExpand
+    initialExpand,
+    headerContentSx,
   } = props
 
 
@@ -59,10 +63,11 @@ export const Section = (props:TSection) => {
               <Dropdown
                 sx={dropdownSx}
                 noToggle={noToggle}
+                headerSx={headerSx}
                 initialExpand={initialExpand}
+                headerContentSx={headerContentSx}
                 id={`${parent.uuid}-${id || uuid}`}
                 headerText={wordCaps(label || type)}
-                headerSx={{ flexDirection: `row-reverse` }}
                 actions={<SectionActions actions={actions} />}
                 className={cls(`gr-section-dropdown`, `gr-section-dropdown-${type}`)}
               >

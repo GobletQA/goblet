@@ -25,10 +25,10 @@ import { EmptyFeatureUUID } from '@GBR/constants'
 
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
+import { createFeature } from '@GBR/actions/feature/createFeature'
 import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
-import { createFeature } from '@gobletqa/race/actions/feature/createFeature'
 import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
 
 

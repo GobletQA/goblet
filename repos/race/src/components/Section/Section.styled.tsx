@@ -65,6 +65,10 @@ export const SectionActs = styled(Box)`
 
 export const Dropdown = styled(DropdownComp)`
 
+  & .gc-dropdown-header {
+    flex-direction: row-reverse;
+  }
+
   &.Mui-expanded:last-of-type {
     // margin-bottom: 20px;
   }
