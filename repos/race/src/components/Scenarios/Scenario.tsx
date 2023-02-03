@@ -1,4 +1,4 @@
-import type { TScenarioParentAst, TScenarioAst } from '@GBR/types'
+import type { TStepAst, TScenarioParentAst, TScenarioAst } from '@GBR/types'
 
 import { Steps } from '../Steps'
 import { Section } from '../Section'
@@ -16,16 +16,25 @@ export type TScenario = {
   onAdd?: (...args:any[]) => void
   onRemove: (scenarioId:string, parentId?:string) => void
   onAddStep: (scenarioId:string, parentId?:string) => void
+  onChangeStep: (step:TStepAst, scenarioId:string, parentId?:string) => void
   onRemoveStep: (stepId:string, scenarioId?:string, parentId?:string) => void
 }
 
 export const Scenario = (props:TScenario) => {
-  const { onRemoveStep, onAddStep, onRemove, scenario, parent } = props
+  const {
+    parent,
+    scenario,
+    onRemove,
+    onAddStep,
+    onChangeStep,
+    onRemoveStep,
+  } = props
 
   const onCopyScenario = () => copyScenario(scenario)
 
   const onRemoveScenario = () => onRemove(scenario.uuid, parent.uuid)
   const onAddScenarioStep = () => onAddStep(scenario.uuid, parent.uuid)
+  const onChangeScenarioStep = (step:TStepAst) => onChangeStep(step, scenario.uuid, parent.uuid)
   const onRemoveScenarioStep = (stepId:string) => onRemoveStep(stepId, scenario.uuid, parent.uuid)
 
   return (
@@ -65,6 +74,7 @@ export const Scenario = (props:TScenario) => {
         showAdd={false}
         parent={scenario}
         onAdd={onAddScenarioStep}
+        onChange={onChangeScenarioStep}
         onRemove={onRemoveScenarioStep}
       />
       <EmptySteps

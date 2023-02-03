@@ -5,13 +5,12 @@ import { gutter, colors, H3 } from '@gobletqa/components'
 
 export const FeatureActionsContainer = styled(Box)`
   display: flex;
-  padding-top: 2px;
-  padding-bottom: 2px;
   align-items: center;
   justify-content: space-between;
-  margin-top: -${gutter.margin.px};
-  margin-left: -${gutter.margin.size - gutter.margin.size / 2}px;
-  margin-right: -${gutter.margin.size - gutter.margin.size / 2}px;
+  margin-top: -${gutter.margin.hpx};
+  margin-left: -${gutter.margin.hpx};
+  margin-right: -${gutter.margin.hpx};
+  margin-bottom: ${gutter.margin.px};
   border-bottom: 2px solid var(--goblet-list-focusBackground);
 `
 

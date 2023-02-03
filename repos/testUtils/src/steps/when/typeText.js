@@ -48,7 +48,14 @@ const meta = {
 
 When('I write {string}', typeWithSaved, meta)
 When('I type {string}', typeWithSaved, meta)
-When('I type {string} into {string}', typeWithSelector, meta)
+When('I type {string} into {string}', typeWithSelector, {
+  ...meta,
+  race: {
+    name: `Type text`,
+    alias: [`Write text`, `Input text`],
+    description: `Action to simulate typing text into an element on the page`
+  }
+})
 When('I type {string} into the element {string}', typeWithSelector, meta)
 
 module.exports = {

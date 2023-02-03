@@ -9,6 +9,8 @@ import {
 
 export type TSelectSubject = {
   step: TStepAst
+  parent:TStepParentAst
+  onStepChange:(step:TStepAst) => void
 }
 
 export const SelectSubject = (props:TSelectSubject) => {

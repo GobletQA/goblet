@@ -46,6 +46,7 @@ export type TStepAst = {
   index: number
   step: string
   type: EStepKey
+  definition?:string
 }
 
 export type TScenarioAst = {

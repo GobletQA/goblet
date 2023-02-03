@@ -13,10 +13,17 @@ export type TStepMetaExpression = {
   description: string,
 }
 
+export type TRaceStepInfo = {
+  name: string
+  alias?: string[]
+  description?:string
+}
+
 export type TStepMeta = {
   module?:string
   examples?: string[]
   description?:string
+  race: TRaceStepInfo
   expressions?:TStepMetaExpression[]
 }
 
@@ -41,3 +48,5 @@ export type TStep = {
 export type TRaceSteps = {
   [key:string]: TStep
 }
+
+export type TSetSteps = (steps:TRaceSteps) => void

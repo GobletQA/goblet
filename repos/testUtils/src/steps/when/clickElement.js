@@ -34,7 +34,14 @@ const meta = {
   ],
 }
 
-When('I click {string}', clickElementHandler, meta)
+When('I click {string}', clickElementHandler, {
+  ...meta,
+  race: {
+    name: `Click`,
+    alias: [`Touch`, `Press`],
+    description: `Action to simulate clicking, touching, or pressing an element on the page`
+  }
+})
 When('I click the {string}', clickElementHandler, meta)
 When('I click the element {string}', clickElementHandler, meta)
 When('I click the page', async () => await clickElementHandler(`body`), {

@@ -9,21 +9,26 @@ import {
   StepContainer,
 } from './Steps.styled'
 
+
 import { Modifier } from './Modifier'
 import { StepActions } from './StepActions'
 import { SelectAction } from './SelectAction'
 import { SelectSubject } from './SelectSubject'
+import { useInline } from '@gobletqa/components'
 import { copyStep } from '@GBR/actions/step/copyStep'
 
 export type TStep = {
   step: TStepAst
   parent: TStepParentAst
   onRemove?:(stepId:string, parentId?:string) => void
+  onChange?:(updated:TStepAst, old?:TStepAst) => void
 }
 
-export const Step = (props:TStep) => {
-  const { onRemove, step, parent } = props
 
+
+export const Step = (props:TStep) => {
+  const { onChange, onRemove, step, parent } = props
+  const onStepChange = useInline((updated:TStepAst) => onChange?.(updated, step))
 
   return (
     <StepContainer
@@ -35,9 +40,21 @@ export const Step = (props:TStep) => {
           spacing={1}
           disableEqualOverflow
         >
-          <SelectAction step={step} />
-          <SelectSubject step={step} />
-          <Modifier step={step} />
+          <SelectAction
+            step={step}
+            parent={parent}
+            onStepChange={onStepChange}
+          />
+          <SelectSubject
+            step={step}
+            parent={parent}
+            onStepChange={onStepChange}
+          />
+          <Modifier
+            step={step}
+            parent={parent}
+            onStepChange={onStepChange}
+          />
           <StepActions step={step} parent={parent} />
         </StepGrid>
       </StepContent>

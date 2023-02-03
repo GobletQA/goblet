@@ -13,6 +13,7 @@ export type TStep = {
   children?:ReactNode
   parent:TStepParentAst
   onAdd?:(parentId:string) => void
+  onChange?:(updated:TStepAst, old?:TStepAst) => void
   onRemove?:(stepId:string, parentId?:string) => void
 } 
 
@@ -22,6 +23,7 @@ export const Steps = (props:TStep) => {
     onAdd,
     parent,
     onRemove,
+    onChange,
     children,
     showAdd=true,
   } = props
@@ -41,6 +43,7 @@ export const Steps = (props:TStep) => {
               step={step}
               parent={parent}
               onRemove={onRemove}
+              onChange={onChange}
               key={`${parent.uuid}-step-${step.uuid}`}
             />
           )

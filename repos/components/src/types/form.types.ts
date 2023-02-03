@@ -13,15 +13,15 @@ import type {
   SyntheticEvent,
 } from 'react'
 
-export type AutoOpt = {
+export type TAutoOpt = {
   label: string
   id: string | number
 }
-export type AutoOptVal = string | AutoOpt
+export type TAutoOptVal = string | TAutoOpt
 
 export type TOnAutoChange = (
   event:SyntheticEvent,
-  value:AutoOptVal|AutoOptVal[],
+  value:TAutoOptVal|TAutoOptVal[],
   reason?:AutocompleteChangeReason|string,
   details?:AutocompleteChangeDetails
 ) => void

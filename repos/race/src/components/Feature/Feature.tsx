@@ -29,6 +29,7 @@ import { createFeature } from '@GBR/actions/feature/createFeature'
 import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
+import { changeScenarioStep } from '@GBR/actions/scenario/changeScenarioStep'
 import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
 
 
@@ -134,6 +135,7 @@ export const Feature = (props:TFeature) => {
                         onRemove={removeScenario}
                         onAddStep={addScenarioStep}
                         scenarios={feature.scenarios}
+                        onChangeStep={changeScenarioStep}
                         onRemoveStep={removeScenarioStep}
                       />
                     </>

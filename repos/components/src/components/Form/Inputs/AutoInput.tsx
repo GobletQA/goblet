@@ -1,5 +1,5 @@
 import type { CSSProperties, SyntheticEvent, ComponentProps } from 'react'
-import type { AutoOptVal, AutoOpt, TOnAutoChange, TInputDecor } from '@GBC/types'
+import type { TAutoOptVal, TAutoOpt, TOnAutoChange, TInputDecor } from '@GBC/types'
 import type {
   AutocompleteChangeReason,
   AutocompleteChangeDetails
@@ -29,13 +29,13 @@ export type TAutoInput = {
   sx?:CSSProperties
   decor?: TInputDecor
   disabled?: boolean
-  options: AutoOptVal[]
+  options: TAutoOptVal[]
   loading?: boolean
   matchId?: boolean
   required?: boolean
   multiple?: boolean
   labelInline?:boolean
-  currentValue?:AutoOptVal
+  currentValue?:TAutoOptVal
   onChange?: TOnAutoChange
   showCheckbox?: boolean
   rules?: Record<string, string>
@@ -52,17 +52,17 @@ const useOnChangeVal = ({
 }:TAutoInput) => {
   return useCallback((
     event:any,
-    value:AutoOptVal,
+    value:TAutoOptVal,
     reason:AutocompleteChangeReason,
     details:AutocompleteChangeDetails
   ) => {
     
-    let changedVal:AutoOptVal|AutoOptVal[] = value
+    let changedVal:TAutoOptVal|TAutoOptVal[] = value
 
     if (matchId)
       changedVal = Array.isArray(value)
-        ? value.map((i: any) => i?.id || i) as AutoOptVal[]
-        : ((value as AutoOpt)?.id || value) as AutoOptVal
+        ? value.map((i: any) => i?.id || i) as TAutoOptVal[]
+        : ((value as TAutoOpt)?.id || value) as TAutoOptVal
 
     onChange?.(event, changedVal, reason, details)
     if (autocompleteProps?.onChange)
@@ -128,7 +128,7 @@ export const AutoInput = (props:TAutoInput) => {
         isOptionEqualToValue={
           autocompleteProps?.isOptionEqualToValue
             ? autocompleteProps.isOptionEqualToValue
-            : ((option:AutoOptVal, value:AutoOptVal) => {
+            : ((option:TAutoOptVal, value:TAutoOptVal) => {
                 const opVal = isStr(option) ? option : option.id
                 const val = value && (isStr(value) ? value : value.id)
 
@@ -138,20 +138,20 @@ export const AutoInput = (props:TAutoInput) => {
         getOptionLabel={
           autocompleteProps?.getOptionLabel
             ? autocompleteProps.getOptionLabel
-            : ((option:AutoOptVal) => isStr(option) ? option : option?.label) as any
+            : ((option:TAutoOptVal) => isStr(option) ? option : option?.label) as any
         }
         
         renderOption={(
           autocompleteProps?.renderOption ?? (
             showCheckbox
-              ? (props:ComponentProps<`li`>, option:AutoOptVal, { selected }:Record<`selected`, boolean>) => (
+              ? (props:ComponentProps<`li`>, option:TAutoOptVal, { selected }:Record<`selected`, boolean>) => (
                   <li {...props}>
                     <>
                       <Checkbox
                         sx={{marginRight: 1}}
                         checked={selected}
                       />
-                      {autocompleteProps?.getOptionLabel?.(option) || (option as AutoOpt)?.label || option}
+                      {autocompleteProps?.getOptionLabel?.(option) || (option as TAutoOpt)?.label || option}
                     </>
                   </li>
                 )

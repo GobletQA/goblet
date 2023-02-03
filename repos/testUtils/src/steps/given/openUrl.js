@@ -73,6 +73,10 @@ Given('I navigate to {string}', openUrl, {
   `Given I navigate to "$$myURL?testUrlParam=1"`,
   `Given I navigate to "$world.myURL/search?q=cms"`
   ],
+  race: {
+    name: `Navigate to Url`,
+    alias: [`Open Url`],
+  }
 })
 
 module.exports = { openUrl }

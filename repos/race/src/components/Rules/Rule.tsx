@@ -1,4 +1,6 @@
-import type { TRaceFeature, TRuleAst } from '@GBR/types'
+import type { TStepAst, TRaceFeature, TRuleAst } from '@GBR/types'
+
+import { useInline } from '@gobletqa/components'
 
 import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
@@ -11,9 +13,12 @@ import { EmptyScenarios, Scenarios } from '../Scenarios'
 import { PlaylistPlusIcon } from '@gobletqa/components'
 import { removeRule } from '@GBR/actions/rule/removeRule'
 import { addRuleScenario } from '@GBR/actions/rule/addRuleScenario'
+
 import { removeRuleScenario } from '@GBR/actions/rule/removeRuleScenario'
 import { addRuleScenarioStep } from '@GBR/actions/rule/addRuleScenarioStep'
+import { changeRuleScenarioStep } from '@GBR/actions/rule/changeRuleScenarioStep'
 import { removeRuleScenarioStep } from '@GBR/actions/rule/removeRuleScenarioStep'
+
 
 export type TRule = {
   rule: TRuleAst
@@ -32,9 +37,14 @@ export const Rule = (props:TRule) => {
   const onRemoveScenario = (scenarioId:string, ruleId?:string) => {
      removeRuleScenario(scenarioId, ruleId || rule.uuid)
   }
-  const onRemoveScenarioStep = (stepId:string, scenarioId?:string, ruleId?:string) => {
+
+  const onRemoveScenarioStep = useInline((stepId:string, scenarioId?:string, ruleId?:string) => {
     removeRuleScenarioStep(stepId, scenarioId, ruleId || rule.uuid)
-  }
+  })
+
+  const onChangeScenarioStep = useInline((step:TStepAst, scenarioId:string, ruleId?:string) => {
+    changeRuleScenarioStep(step, scenarioId, ruleId || rule.uuid)
+  })
 
   return (
     <Section
@@ -75,6 +85,7 @@ export const Rule = (props:TRule) => {
         onAdd={onAddScenario}
         scenarios={rule.scenarios}
         onRemove={onRemoveScenario}
+        onChangeStep={onChangeScenarioStep}
         onRemoveStep={onRemoveScenarioStep}
       />
       <EmptyScenarios

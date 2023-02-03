@@ -6,6 +6,8 @@ import {
 
 export type TModifier = {
   step: TStepAst
+  parent:TStepParentAst
+  onStepChange:(step:TStepAst) => void
 }
 
 export const Modifier = (props:TModifier) => {

@@ -29,9 +29,9 @@ export type TInputDecor = {
 }
 
 
-export type AutoOpt = {
+export type TAutoOpt = {
   label: string
   id: string | number
 }
-export type AutoOptVal = string | AutoOpt
+export type TAutoOptVal = string | TAutoOpt
 
