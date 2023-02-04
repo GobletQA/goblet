@@ -15,8 +15,10 @@ export const withFeature = (cb:TWithFeatureCB) => {
  * Helper to get the currently active feature from the context
  * Returns a promise that resolve to the current feature context
  */
-export const getFeature = (parent?:TRaceFeature):TRaceFeature|Promise<TRaceFeature> => {
-  return parent && `feature` in parent
-    ? parent
-    : new Promise((res) => withFeature(({ feature }) => res(feature)))
+export const getFeature = async (parent?:TRaceFeature):Promise<TRaceFeature> => {
+  const found = parent && `feature` in parent
+    ? parent as TRaceFeature
+    : await new Promise<TRaceFeature>((res) => withFeature(({ feature }) => res(feature)))
+  
+  return found || console.error(`Can not access feature context from Action call to "getFeature" method.`) 
 }

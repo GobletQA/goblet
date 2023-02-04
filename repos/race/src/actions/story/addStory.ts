@@ -4,7 +4,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const addStory = async () => {
   const feature = await getFeature()
-  if(!feature) console.warn(`Can not access feature context from 'addStory' action.`) 
+  if(!feature) return
 
   const story = storyFactory(undefined, true)
   updateFeature({...feature, ...story})

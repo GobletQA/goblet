@@ -12,7 +12,7 @@ export const changeRuleScenarioStep = async (
   ruleId:string
 ) => {
   const feature = await getFeature()
-  if(!feature) console.warn(`Can not access feature context from 'addStory' action.`) 
+  if(!feature) return
 
   const {
     rule,

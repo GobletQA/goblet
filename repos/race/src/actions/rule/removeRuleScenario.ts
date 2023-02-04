@@ -8,7 +8,7 @@ export const removeRuleScenario = async (
 ) => {
 
   const feature = await getFeature()
-  if(!feature) console.warn(`Can not access feature context from 'addStory' action.`) 
+  if(!feature) return
 
   const {
     rule,

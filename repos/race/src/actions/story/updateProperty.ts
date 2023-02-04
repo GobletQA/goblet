@@ -11,7 +11,7 @@ export const updateProperty = async (
   parent?:TRaceFeature
 ) => {
   const feature = await getFeature(parent)
-  if(!feature) console.warn(`Can not access feature context from 'updateDesire' action.`) 
+  if(!feature) return
   
   content === null
     ? updateFeature(omitKeys(feature, [type]))

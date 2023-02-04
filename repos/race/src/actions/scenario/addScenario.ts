@@ -4,7 +4,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const addScenario = async () => {
   const feature = await getFeature()
-  if(!feature) console.warn(`Can not access feature context from 'addStory' action.`) 
+  if(!feature) return
 
   const scenario = scenarioFactory(undefined, true)
   const scenarios = [...(feature.scenarios || [])]

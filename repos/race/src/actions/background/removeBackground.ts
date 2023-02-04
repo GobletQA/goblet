@@ -4,7 +4,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const removeBackground = async () => {
   const feature = await getFeature()
-  if(!feature) console.warn(`Can not access feature context from 'addStory' action.`) 
+  if(!feature) return
 
   updateFeature(omitKeys(feature, [`background`]))
 }

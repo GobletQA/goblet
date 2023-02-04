@@ -9,8 +9,7 @@ export const removeRuleScenarioStep = async (
 ) => {
 
   const feature = await getFeature()
-  if(!feature)
-    return console.warn(`Remove Rule#scenario#step - Can not access feature context`)
+  if(!feature) return
   if(!scenarioId)
     return console.warn(`Remove Rule#scenario#step - Scenario Id is required`,feature,stepId,scenarioId,ruleId)
   if(!ruleId)
