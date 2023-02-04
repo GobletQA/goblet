@@ -1,3 +1,5 @@
+export * from './definitions'
+
 export const PlaySpecDone = `PLAY-SPEC-DONE`
 export const PlaySpecStart = `PLAY-SPEC-START`
 export const PlaySuiteDone = `PLAY-SUITE-DONE`

@@ -2,7 +2,7 @@ const { When } = require('@GTU/Parkin')
 const { getLocator } = require('@GTU/Playwright')
 const { getWorldData } = require('@GTU/Support/helpers')
 const { SavedLocatorWorldPath } = require('@GTU/Constants')
-
+const { ExpressionKinds, ExpressionTypes } = require('@gobletqa/shared/constants')
 
 const typeText = async (element, data) => {
   //clear value before setting otherwise data is appended to end of existing value
@@ -34,13 +34,15 @@ const meta = {
   description: `Locates input element by selector and replaces existing value, if any, to the desired text.`,
   expressions: [
     {
-      type: 'string',
-      description: `Desired text to be typed into the input.`,
-      example: 'This is some text.',
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
+      description: `Text that will be typed into the input.`,
+      example: 'Enter some text...',
     },
     {
-      type: 'string',
-      description: `The selector for a single element that allows input. One of Input, Textarea, or [content-editable]`,
+      kind: ExpressionKinds.selector,
+      type: ExpressionTypes.string,
+      description: `The selector of an element that allows input. One of Input, Textarea, or [content-editable]`,
       example: '#search-input',
     },
   ],
@@ -50,7 +52,7 @@ When('I write {string}', typeWithSaved, meta)
 When('I type {string}', typeWithSaved, meta)
 When('I type {string} into {string}', typeWithSelector, {
   ...meta,
-  name: `Type text`,
+  name: `Type Text`,
   alias: [`Write text`, `Input text`],
   info: `Action to simulate typing text into an element on the page`,
   race: true

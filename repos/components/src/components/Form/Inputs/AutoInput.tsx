@@ -41,7 +41,7 @@ export type TAutoInput = {
   rules?: Record<string, string>
   label?: TextFieldProps['label']
   onBlur?: (event:SyntheticEvent) => void
-  autocompleteProps?: ComponentProps<typeof Auto>
+  autocompleteProps?: Partial<ComponentProps<typeof Auto>>
   textFieldProps?: Omit<TextFieldProps, 'name' | 'required' | 'label'>
 }
 

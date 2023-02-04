@@ -1,5 +1,6 @@
 const { When } = require('@GTU/Parkin')
 const { getPage, getLocator } = require('@GTU/Playwright')
+const { ExpressionKinds, ExpressionTypes } = require('@gobletqa/shared/constants')
 
 /**
  * Click the element matching `selector`
@@ -27,8 +28,9 @@ const meta = {
   description: `Locates an element by selector and clicks it.`,
   expressions: [
     {
-      type: 'string',
-      description: `The element selector. Selector must be specific enough to locate a single element.`,
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.selector,
+      description: `The selector of an element that exists on the page`,
       example: "button[name='btn-name']",
     },
   ],

@@ -1,5 +1,81 @@
 import type { TFileModel } from './models.types'
 
+export enum EStepVariant {
+  regex = 'regex',
+  expression = 'expression'
+}
+
+export type TStepToken = {
+  [key:string]: any
+}
+
+export enum EExpParmKind {
+  url = `url`,
+  text = `text`,
+  alias = `alias`,
+  pairs = `pairs`,
+  group = `group`,
+  number = `number`,
+  element = `element`,
+  selector = `selector`,
+}
+
+export enum EExpParmType {
+  any = `any`,
+  int = `int`,
+  word = `word`,
+  array = `array`,
+  float = `float`,
+  string = `string`,
+  number = `number`,
+  object = `object`,
+}
+
+export type TStepMetaExpression = {
+  kind: EExpParmKind
+  type: EExpParmType
+  example: string,
+  description: string,
+}
+
+
+export type TStepMeta = {
+  // TO Be Removed once all steps are updated
+  race?: boolean
+  // TO Be Removed once all steps are updated
+
+  module?:string
+  name?:string
+  info?:string
+  alias?: string[]
+  examples?: string[]
+  description?:string
+  expressions?:TStepMetaExpression[]
+}
+
+export type TStepParent = {
+  uuid: string
+  location: string
+}
+
+export type TStepDef = {
+  type: string
+  name: string
+  uuid: string
+  content: string
+  location?: string,
+  meta: TStepMeta
+  match: string | RegExp
+  parent?: TStepParent
+  tokens: TStepToken[]
+  // variant: EStepVariant.expression
+}
+
+export type TStepDefs = {
+  [key:string]: TStepDef
+}
+
+
 export enum EAstObjects {
   feature = `feature`,
   rule = `rule`,
@@ -23,7 +99,7 @@ export enum EStepKey {
 
 export type TBackgroundAst = {
   index: number
-  uuid?: string
+  uuid: string
   tags: string[]
   background: string
   scenarios: TScenarioAst[]
@@ -39,20 +115,20 @@ export type TRuleAst = {
 }
 
 export type TStepAst = {
-  uuid?: string
+  uuid: string
   index: number
   step: string
   type: EStepKey
+  definition?:keyof TStepDefs
 }
 
 export type TScenarioAst = {
   index: number
-  uuid?: string
+  uuid: string
   tags: string[]
   scenario: string
   steps: TStepAst[]
 }
-
 
 export type TAstBlock = {
   content: string
@@ -81,3 +157,6 @@ export type TFeatureFileModel = Omit<TFileModel, 'ast'> & {
 }
 
 export type TFeatureFileModelList = Record<string, TFeatureFileModel>
+
+
+
