@@ -1,19 +1,19 @@
 import type { TAutoOptVal } from '@gobletqa/components'
-import { useSteps }  from '@GBR/contexts/StepsContext'
+import { useStepDefs }  from '@gobletqa/race/contexts/StepDefsContext'
 import { useMemo } from 'react'
 
 export const useStepOptions = () => {
-  const {steps} = useSteps()
+  const {defs} = useStepDefs()
 
   return useMemo(() => {
-    return Object.entries(steps).reduce((acc, [key, step]) => {
-      const { race } = step.meta
-      acc.push({
-        id: key,
-        label: race.name
-      })
+    return Object.entries(defs).reduce((acc, [key, def]) => {
+      const { race, name } = def.meta
+      race
+        && name
+        && acc.push({ id: key, label: name })
+
       return acc
     }, [] as TAutoOptVal[])
-  }, [steps])
+  }, [defs])
 
 }

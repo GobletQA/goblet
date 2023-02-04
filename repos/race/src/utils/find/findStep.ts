@@ -14,7 +14,7 @@ export const findStep = (
 
   const step = parent?.steps?.find(step => step.uuid === stepId)
   if(!step){
-    console.warn(`Step Id ${parent} could not be found`, parent, parent?.steps)
+    console.warn(`Step Id ${stepId} could not be found in parent`, parent, parent?.steps)
     return emptyObj as TFoundStep
   }
 

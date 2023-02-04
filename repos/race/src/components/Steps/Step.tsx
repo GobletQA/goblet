@@ -38,17 +38,18 @@ export const Step = (props:TStep) => {
         <StepGrid
           container
           spacing={1}
+          width='100%'
           disableEqualOverflow
         >
           <SelectAction
             step={step}
             parent={parent}
-            onStepChange={onStepChange}
+            onChange={onStepChange}
           />
           <SelectSubject
             step={step}
             parent={parent}
-            onStepChange={onStepChange}
+            onChange={onStepChange}
           />
           <Modifier
             step={step}

@@ -50,11 +50,10 @@ When('I write {string}', typeWithSaved, meta)
 When('I type {string}', typeWithSaved, meta)
 When('I type {string} into {string}', typeWithSelector, {
   ...meta,
-  race: {
-    name: `Type text`,
-    alias: [`Write text`, `Input text`],
-    description: `Action to simulate typing text into an element on the page`
-  }
+  name: `Type text`,
+  alias: [`Write text`, `Input text`],
+  info: `Action to simulate typing text into an element on the page`,
+  race: true
 })
 When('I type {string} into the element {string}', typeWithSelector, meta)
 

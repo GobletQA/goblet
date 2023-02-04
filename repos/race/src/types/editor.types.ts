@@ -1,5 +1,5 @@
 import type { RefObject, MutableRefObject, ComponentType } from 'react'
-import type { TRaceSteps } from './steps.types'
+import type { TRaceStepDefs } from './steps.types'
 import type { TRaceFeatureAsts, TRaceFeatures, TRaceFeature } from './features.types'
 import type {
   TTabItem,
@@ -10,7 +10,7 @@ import type {
 } from '@gobletqa/components'
 
 import type {
-  TStepsRef,
+  TStepDefsRef,
   TFeaturesRef,
   TOnFeatureCB,
   TOnReturnFeatureCB
@@ -21,7 +21,7 @@ export type TRaceEditor = {
 }
 
 export type TFeaturesRefs = {
-  stepsRef: TStepsRef
+  stepDefsRef: TStepDefsRef
   featuresRef: TFeaturesRef
 }
 
@@ -34,7 +34,7 @@ export type TEditorRefs = {
 }
 
 export type TRaceEditorProps = TEditorContainer & {
-  steps:TRaceSteps
+  steps:TRaceStepDefs
   rootPrefix: string
   feature?:TRaceFeature
   themeType?:EThemeMode

@@ -7,7 +7,7 @@ import { ESectionType } from '@GBR/types'
 import { useInline } from '@gobletqa/components'
 
 
-export type TStep = {
+export type TSteps = {
   steps?:TStepAst[]
   showAdd?:boolean
   children?:ReactNode
@@ -17,7 +17,7 @@ export type TStep = {
   onRemove?:(stepId:string, parentId?:string) => void
 } 
 
-export const Steps = (props:TStep) => {
+export const Steps = (props:TSteps) => {
 
   const {
     onAdd,

@@ -18,7 +18,7 @@ export const findRule = (
     return emptyObj as TFoundRule
   }
 
-  const ruleIdx = feature?.rules?.indexOf(rule)
+  const ruleIdx = feature?.rules?.indexOf(rule) as number
   const rules = [...(feature?.rules || []) ]
 
   return {

@@ -10,7 +10,6 @@ export const Editor = (props:TRaceEditorProps) => {
   useRaceTheme(props)
 
   const {
-    stepsRef,
     onTabDown,
     editorRef,
     openedTabs,
@@ -18,6 +17,7 @@ export const Editor = (props:TRaceEditorProps) => {
     onTabLeave,
     curPathRef,
     curValueRef,
+    stepDefsRef,
     featuresRef,
     featureGroups,
     onFeatureClose,
@@ -46,7 +46,7 @@ export const Editor = (props:TRaceEditorProps) => {
       onBeforeFeatureChange={onBeforeFeatureChange}
     >
       <Container
-        stepsRef={stepsRef}
+        stepDefsRef={stepDefsRef}
         onTabDown={onTabDown}
         editorRef={editorRef}
         openedTabs={openedTabs}

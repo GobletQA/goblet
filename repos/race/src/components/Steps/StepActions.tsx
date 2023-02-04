@@ -16,7 +16,7 @@ export const StepActions = (props:TStepActions) => {
 
   return (
     <StepGridItem>
-      actions
+      
     </StepGridItem>
   )
   

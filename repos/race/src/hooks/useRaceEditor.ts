@@ -1,5 +1,5 @@
 import type {
-  TRaceSteps,
+  TRaceStepDefs,
   TRaceEditor,
   TRaceFeatures,
   TRaceEditorProps,
@@ -19,8 +19,8 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     initialFeature
   } = props
 
-  const stepsRef = useRef<TRaceSteps>(steps)
-  stepsRef.current = steps
+  const stepDefsRef = useRef<TRaceStepDefs>(steps)
+  stepDefsRef.current = steps
 
   const featuresRef = useRef<TRaceFeatures>(features)
   featuresRef.current = features
@@ -60,7 +60,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
 
 
   return {
-    stepsRef,
     editorRef,
     onTabDown,
     openedTabs,
@@ -68,6 +67,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     onTabLeave,
     curPathRef,
     curValueRef,
+    stepDefsRef,
     featuresRef,
     featureGroups,
     updateEmptyTab,

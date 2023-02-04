@@ -36,11 +36,10 @@ const meta = {
 
 When('I click {string}', clickElementHandler, {
   ...meta,
-  race: {
-    name: `Click`,
-    alias: [`Touch`, `Press`],
-    description: `Action to simulate clicking, touching, or pressing an element on the page`
-  }
+  name: `Click`,
+  alias: [`Touch`, `Press`],
+  info: `Action to simulate clicking, touching, or pressing an element on the page`,
+  race: true
 })
 When('I click the {string}', clickElementHandler, meta)
 When('I click the element {string}', clickElementHandler, meta)

@@ -14,6 +14,7 @@ import {
   removeBackground,
   addBackgroundStep,
   removeBackgroundStep,
+  changeBackgroundStep
 } from '@GBR/actions/background'
 
 export type TBackground = {
@@ -64,6 +65,7 @@ export const Background = (props:TBackground) => {
           showAdd={false}
           parent={background}
           onAdd={addBackgroundStep}
+          onChange={changeBackgroundStep}
           onRemove={removeBackgroundStep}
         >
          <EmptySteps

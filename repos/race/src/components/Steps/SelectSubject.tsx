@@ -1,7 +1,10 @@
 
 import type { TStepParentAst, TStepAst } from '@GBR/types'
+import type { TAutoOpt } from '@gobletqa/components'
 
-import { ESectionType } from '@GBR/types'
+import { useOnStepChange }  from '@GBR/hooks/useOnStepChange'
+import { useStepSubjects } from '@gobletqa/race/hooks/useStepSubjects'
+import { AutoInput } from '@gobletqa/components/components/Form/Inputs'
 
 import {
   StepGridItem
@@ -10,21 +13,33 @@ import {
 export type TSelectSubject = {
   step: TStepAst
   parent:TStepParentAst
-  onStepChange:(step:TStepAst) => void
+  onChange:(step:TStepAst) => void
+}
+
+const actSelectProps = {
+  name: `step-subject`,
+  required: true,
+  label: `Subject`,
+  textFieldProps: {
+    placeholder: `Select a subject`,
+  },
 }
 
 export const SelectSubject = (props:TSelectSubject) => {
-  
+  const { step } = props
+
+  const options = useStepSubjects(props)
+  const onChange = useOnStepChange(props)
+
   return (
-    <StepGridItem>
-      <select>
-        <option>
-          Subject 1
-        </option>
-        <option>
-          Subject 2
-        </option>
-      </select>
+    <StepGridItem xs={4} >
+      <AutoInput
+        {...actSelectProps}
+        options={options}
+        onChange={onChange}
+        className='gr-step-subject-select-dropdown'
+        disabled={!Boolean(step.definition) || Boolean(!options.length)}
+      />
     </StepGridItem>
   )
   

@@ -17,7 +17,6 @@ export const Container = (props:TEditorContainer) => {
     Panels,
     actions,
     PrePanels,
-    stepsRef,
     editorRef,
     onTabDown,
     openedTabs,
@@ -25,6 +24,7 @@ export const Container = (props:TEditorContainer) => {
     onTabHover,
     curPathRef,
     curValueRef,
+    stepDefsRef,
     featuresRef,
     actionsOpen,
     sidebarWidth,
@@ -66,7 +66,7 @@ export const Container = (props:TEditorContainer) => {
           PrePanels={PrePanels}
         >
           <FeaturesPanel
-            stepsRef={stepsRef}
+            stepDefsRef={stepDefsRef}
             featuresRef={featuresRef}
             featureGroups={featureGroups}
             onActiveFeature={onActiveFeature}
@@ -84,7 +84,7 @@ export const Container = (props:TEditorContainer) => {
             onTabClick={onActiveFeature}
           />
           <Feature
-            stepsRef={stepsRef}
+            stepDefsRef={stepDefsRef}
             featuresRef={featuresRef}
           />
         </EditorContainer>

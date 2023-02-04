@@ -1,7 +1,7 @@
 
 import type { TStepAst } from '@GBR/types'
 
-import { findScenario, findRule } from '@GBR/utils/find'
+import { findStep, findScenario, findRule } from '@GBR/utils/find'
 import { stepFactory } from '@GBR/factories/stepFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
@@ -28,19 +28,13 @@ export const changeRuleScenarioStep = async (
   } = findScenario(rule, scenarioId)
   if(!scenario) return
 
+  const { step:found, stepIdx, steps } = findStep(scenario, step.uuid)
+  if(!found) return
 
-  console.log(`------- TODO: add updating step here -------`)
+  steps[stepIdx] = step
+  scenarios[scenarioIdx] = {...scenario, steps}
+  rules[ruleIdx] = {...rule, scenarios}
 
-  // scenarios[scenarioIdx as number] = {
-  //   ...scenario,
-  //   steps: [
-  //     ...scenario.steps,
-  //     stepFactory(undefined, true)
-  //   ]
-  // }
-
-  // rules[ruleIdx as number] = {...rule, scenarios}
-
-  // updateFeature({...feature, rules})
+  updateFeature({...feature, rules})
 
 }

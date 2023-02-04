@@ -63,10 +63,7 @@ const testFeature:TEmptyFeature = {
 }
 
 export const Feature = (props:TFeature) => {
-  const {
-    stepsRef,
-    featuresRef,
-  } = props
+  const { featuresRef } = props
 
   const { feature, rootPrefix } = useEditor()
 

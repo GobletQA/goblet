@@ -1,3 +1,5 @@
+import type { TRaceStepDefs } from './steps.types'
+
 
 export enum EAstObjects {
   feature = 'feature',
@@ -46,7 +48,7 @@ export type TStepAst = {
   index: number
   step: string
   type: EStepKey
-  definition?:string
+  definition?:keyof TRaceStepDefs
 }
 
 export type TScenarioAst = {

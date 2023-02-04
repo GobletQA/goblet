@@ -12,7 +12,7 @@ export type TModifier = {
 
 export const Modifier = (props:TModifier) => {
   return (
-    <StepGridItem>
+    <StepGridItem xs={4} >
       Modifier
     </StepGridItem>
   )

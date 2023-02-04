@@ -1,8 +1,8 @@
-import type { TRaceSteps } from './steps.types'
+import type { TRaceStepDefs } from './steps.types'
 import type { TRaceFeatures, TRaceFeature } from './features.types'
 import type { Dispatch, SetStateAction, MutableRefObject } from 'react'
 
-export type TStepsRef = MutableRefObject<TRaceSteps>
+export type TStepDefsRef = MutableRefObject<TRaceStepDefs>
 export type TFeaturesRef = MutableRefObject<TRaceFeatures>
 export type TSetFeatureRefs = (features:TRaceFeatures) => void
 export type TSetFeatureGroups = Dispatch<SetStateAction<TRaceFeatures | undefined>>

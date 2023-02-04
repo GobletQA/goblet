@@ -1,18 +1,21 @@
-import { TBackgroundAst } from '@GBR/types'
+import type { TStepAst, TBackgroundAst } from '@GBR/types'
+
 import { stepFactory } from '@GBR/factories/stepFactory'
 import { backgroundFactory } from '@GBR/factories/backgroundFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
+import { findStep } from '@GBR/utils/find'
 
-export const addBackgroundStep = async (parentId:string) => {
-  if(!parentId) return console.warn(`Can not update background step without background Id`)
-
+export const changeBackgroundStep = async (step:TStepAst) => {
   const feature = await getFeature()
   if(!feature) return
 
   const background = {...(feature.background || backgroundFactory(undefined, true) as TBackgroundAst)}
-  background.steps = [...background.steps, stepFactory(undefined, true)]
 
-  updateFeature({...feature, background})
+  const { step:found, stepIdx, steps } = findStep(background, step.uuid)
+  if(!found) return
+
+  steps[stepIdx] = step
+  updateFeature({...feature, background: {...background, steps}})
 
 }

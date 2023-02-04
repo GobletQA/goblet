@@ -59,10 +59,13 @@ const openUrl = async (url, world) => {
 
 Given('I navigate to {string}', openUrl, {
   module: `openUrl`,
+  alias: [`Open Url`],
+  name: `Navigate to Url`,
   description: `Navigates to the given website within the browser.\nRequires an absolute URL but the URL can be dynamicly constructed. See examples below for usage.\nPages that return a status code, even a 404, will pass.  Pages that don\'t return a status code will fail.`,
   expressions: [
     {
-      type: 'string',
+      type: `string`,
+      kind: `url`,
       example: 'https://my.website.com',
       description: `URL/URI of the website the browser should navigate to.`,
     },
@@ -73,10 +76,7 @@ Given('I navigate to {string}', openUrl, {
   `Given I navigate to "$$myURL?testUrlParam=1"`,
   `Given I navigate to "$world.myURL/search?q=cms"`
   ],
-  race: {
-    name: `Navigate to Url`,
-    alias: [`Open Url`],
-  }
+  race: true
 })
 
 module.exports = { openUrl }

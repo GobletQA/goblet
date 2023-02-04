@@ -13,17 +13,18 @@ export type TStepMetaExpression = {
   description: string,
 }
 
-export type TRaceStepInfo = {
-  name: string
-  alias?: string[]
-  description?:string
-}
 
 export type TStepMeta = {
+  // TO Be Removed once all steps are updated
+  race?: boolean
+  // TO Be Removed once all steps are updated
+
   module?:string
+  name?:string
+  info?:string
+  alias?: string[]
   examples?: string[]
   description?:string
-  race: TRaceStepInfo
   expressions?:TStepMetaExpression[]
 }
 
@@ -32,7 +33,7 @@ export type TStepParent = {
   location: string
 }
 
-export type TStep = {
+export type TStepDef = {
   type: string
   name: string
   uuid: string
@@ -45,8 +46,8 @@ export type TStep = {
   // variant: EStepVariant.expression
 }
 
-export type TRaceSteps = {
-  [key:string]: TStep
+export type TRaceStepDefs = {
+  [key:string]: TStepDef
 }
 
-export type TSetSteps = (steps:TRaceSteps) => void
+export type TSetSteps = (steps:TRaceStepDefs) => void
