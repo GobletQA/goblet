@@ -1,7 +1,7 @@
 import type { TRaceEditorProps } from '@GBR/types'
 
 import { Editor } from './Editor'
-import { FeatureProvider, StepDefsProvider } from '@GBR/contexts'
+import { ParkinProvider, FeatureProvider, StepDefsProvider } from '@GBR/contexts'
 import { useInitialFeature } from '../../hooks/useInitialFeature'
 
 
@@ -15,7 +15,9 @@ export const RaceEditor = (props:TRaceEditorProps) => {
   return (
     <FeatureProvider initialFeature={initialFeature} >
       <StepDefsProvider defs={props.steps} >
-        <Editor {...props} initialFeature={initialFeature} />
+        <ParkinProvider defs={props.steps} world={props.world} >
+          <Editor {...props} initialFeature={initialFeature} />
+        </ParkinProvider>
       </StepDefsProvider>
     </FeatureProvider>
   )

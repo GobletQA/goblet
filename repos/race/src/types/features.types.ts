@@ -1,21 +1,9 @@
-import type { TRaceStepDefs } from './steps.types'
-
-
-export enum EAstObjects {
-  feature = 'feature',
-  rule = 'rule',
-  background = 'background',
-  scenario = 'scenario',
-  step = 'step'
-}
-
-export enum EStepKey {
-  given=`given`,
-  when=`when`,
-  then=`then`,
-  and=`and`,
-  but=`but`,
-}
+import type {
+  TRuleAst,
+  TAstBlock,
+  TScenarioAst,
+  TBackgroundAst,
+} from './shared.types'
 
 export enum EMetaType {
   tags=`tags`,
@@ -26,47 +14,9 @@ export enum EMetaType {
   perspective=`perspective`,
 }
 
-export type TBackgroundAst = {
-  index: number
-  uuid: string
-  tags: string[]
-  background: string
-  steps: TStepAst[]
-}
-
-export type TRuleAst = {
-  index: number
-  uuid: string
-  tags: string[]
-  rule: string
-  background?: TBackgroundAst
-  scenarios: TScenarioAst[]
-}
-
-export type TStepAst = {
-  uuid: string
-  index: number
-  step: string
-  type: EStepKey
-  definition?:keyof TRaceStepDefs
-}
-
-export type TScenarioAst = {
-  index: number
-  uuid: string
-  tags: string[]
-  scenario: string
-  steps: TStepAst[]
-}
-
 export type TStepParentAst = TBackgroundAst | TScenarioAst
 export type TScenarioParentAst = TRuleAst | TRaceFeature
 export type TTagsParentAst = TScenarioParentAst | TStepParentAst
-
-export type TAstBlock = {
-  content: string
-  index: number
-}
 
 export type TFeatureParent = {
   uuid: string

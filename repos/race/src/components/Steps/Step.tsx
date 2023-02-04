@@ -12,9 +12,12 @@ import {
 
 import { Modifier } from './Modifier'
 import { StepActions } from './StepActions'
+import { Expressions } from './Expressions'
 import { SelectAction } from './SelectAction'
 import { SelectSubject } from './SelectSubject'
 import { useInline } from '@gobletqa/components'
+import { NoExpMatch } from './Expressions/NoExpMatch'
+import { useExpressions } from '@GBR/hooks/useExpressions'
 import { copyStep } from '@GBR/actions/step/copyStep'
 
 export type TStep = {
@@ -28,6 +31,7 @@ export type TStep = {
 
 export const Step = (props:TStep) => {
   const { onChange, onRemove, step, parent } = props
+  const { def, expressions } = useExpressions(props)
   const onStepChange = useInline((updated:TStepAst) => onChange?.(updated, step))
 
   return (
@@ -46,16 +50,16 @@ export const Step = (props:TStep) => {
             parent={parent}
             onChange={onStepChange}
           />
-          <SelectSubject
-            step={step}
-            parent={parent}
-            onChange={onStepChange}
-          />
-          <Modifier
-            step={step}
-            parent={parent}
-            onStepChange={onStepChange}
-          />
+          {def && (
+            <Expressions
+              def={def}
+              step={step}
+              parent={parent}
+              onChange={onStepChange}
+              expressions={expressions}
+            />
+          ) || step.step && (<NoExpMatch />)}
+
           <StepActions step={step} parent={parent} />
         </StepGrid>
       </StepContent>

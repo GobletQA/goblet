@@ -3,7 +3,7 @@ import type { TStepParentAst, TStepAst } from '@GBR/types'
 import type { TAutoOpt } from '@gobletqa/components'
 
 import { useOnStepChange }  from '@GBR/hooks/useOnStepChange'
-import { useStepSubjects } from '@gobletqa/race/hooks/useStepSubjects'
+
 import { AutoInput } from '@gobletqa/components/components/Form/Inputs'
 
 import {
@@ -28,8 +28,8 @@ const actSelectProps = {
 export const SelectSubject = (props:TSelectSubject) => {
   const { step } = props
 
-  const options = useStepSubjects(props)
   const onChange = useOnStepChange(props)
+  const options:any[] = []
 
   return (
     <StepGridItem xs={4} >

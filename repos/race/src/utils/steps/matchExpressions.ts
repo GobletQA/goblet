@@ -1,6 +1,22 @@
-import type { TStepDef, TStepAst } from '@GBR/types'
+import type {
+  TExpPart,
+  TStepDef,
+  TPartsMatch,
+} from '@GBR/types'
 
-export const matchExpressions = (step:TStepAst, def:TStepDef) => {
-  // TODO - Match expression in def to inputs that can be used for the step
-  
+import { emptyArr } from '@keg-hub/jsutils'
+
+export const matchExpressions = (
+  def:TStepDef,
+  parts:TPartsMatch[],
+) => {
+  const expressions = def?.meta?.expressions
+  if(!def || !expressions?.length) return emptyArr
+
+  return parts.map((part, idx) => {
+    const exp = expressions[idx]
+    return part?.type === `parameter` && part?.paramType === exp?.type
+      ? {...exp, ...part}
+      : part
+  }) as TExpPart[]
 }
