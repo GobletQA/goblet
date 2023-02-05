@@ -2,7 +2,7 @@ import type { TOnAutoChange } from '@gobletqa/components'
 
 import { useCallback } from 'react'
 import { CreateBranchSelect } from '@constants'
-import { AutoInput } from '@gobletqa/components/components/Form/Inputs'
+import { AutoInput } from '@gobletqa/components'
 
 const branchProps = {
   name: `branch`,

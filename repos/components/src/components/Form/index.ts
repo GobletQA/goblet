@@ -1,5 +1,6 @@
 export * from './InlineInput'
 export * from './Inputs/Decor'
+export * from './Inputs/Input'
 export * from './Inputs/AutoInput'
 
 export * from './Form'

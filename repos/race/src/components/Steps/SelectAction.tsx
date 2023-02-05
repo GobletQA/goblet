@@ -4,9 +4,9 @@ import type { TAutoOpt } from '@gobletqa/components'
 import type { HTMLAttributes } from 'react'
 import type { AutocompleteRenderOptionState } from '@mui/material/Autocomplete'
 
+import { AutoInput } from '@gobletqa/components'
 import { useOnStepChange }  from '@GBR/hooks/useOnStepChange'
 import { useStepOptions } from '@gobletqa/race/hooks/useStepOptions'
-import { AutoInput } from '@gobletqa/components/components/Form/Inputs'
 
 
 import {

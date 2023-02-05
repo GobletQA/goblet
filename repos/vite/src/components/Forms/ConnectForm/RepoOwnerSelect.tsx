@@ -1,7 +1,6 @@
-import type { TBuiltRepo, TBuiltRepos } from '@types'
 import type { TOnAutoChange } from '@gobletqa/components'
 
-import { AutoInput } from '@gobletqa/components/components/Form/Inputs'
+import { AutoInput } from '@gobletqa/components'
 
 const repoProps = {
   name: `owner`,

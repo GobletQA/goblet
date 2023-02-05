@@ -3,8 +3,9 @@ import type { FocusEvent, KeyboardEvent } from 'react'
 import type { TOnAutoChange } from '@gobletqa/components'
 
 import { useCallback, useEffect, useRef } from 'react'
+import { AutoInput, Input } from '@gobletqa/components'
 import { SubGridParent, SubGrid } from './Connect.styled'
-import { AutoInput, Input } from '@gobletqa/components/components/Form/Inputs'
+
 
 
 export type TBranchFrom = {

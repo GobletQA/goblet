@@ -4,9 +4,8 @@ import { capitalize } from '@keg-hub/jsutils'
 import { PerspectiveOpts } from '@GBR/constants'
 import { ESectionType, EMetaType } from '@GBR/types'
 import { MetaInputContainer } from './Story.styled'
-import { stopEvent, useInline } from '@gobletqa/components'
 import { updateProperty } from '@GBR/actions/story/updateProperty'
-import { AutoInput } from '@gobletqa/components/components/Form/Inputs'
+import { AutoInput, stopEvent, useInline } from '@gobletqa/components'
 
 export type TPerspective = TMeta & {
   type: ESectionType

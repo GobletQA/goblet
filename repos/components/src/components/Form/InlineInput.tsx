@@ -15,7 +15,7 @@ import {
   TextInputContainer,
 } from './Form.styled'
 
-export type TInput<T> = {
+export type TInlineInput<T> = {
   id?:string
   label:string
   name?:string
@@ -40,7 +40,7 @@ export type TInput<T> = {
   color?: `primary`|`secondary`|`error`|`info`|`success`|`warning`
 }
 
-export const InlineInput = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
+export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaElement>) => {
   const {
     name,
     type,
