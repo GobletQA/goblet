@@ -67,9 +67,6 @@ export const useExpressions = (props:THStepSubjects) => {
   const tokens = useStepParts(parkin, step, def)
   const expressions = useTokenMap(exps, tokens)
 
-  console.log(`------- expressions -------`)
-  console.log(expressions?.[0])
-
   return def
     ? { def, expressions }
     : emptyObj as ExpResp
