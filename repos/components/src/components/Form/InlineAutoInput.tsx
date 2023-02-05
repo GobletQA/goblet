@@ -20,7 +20,7 @@ import {
 } from './Form.styled'
 
 
-export type TAutoInput = Omit<
+export type TInlineAutoInput = Omit<
   ComponentProps<typeof TextAutoComp>,
   `renderInput`|`options`
 > & {
@@ -55,7 +55,7 @@ export type TAutoInput = Omit<
 
 
 
-export const AutoInput = (props:TAutoInput) => {
+export const InlineAutoInput = (props:TInlineAutoInput) => {
   const {
     name,
     type,

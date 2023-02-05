@@ -13,5 +13,10 @@ export const ExpInput = (props:TExpInput) => {
     ...rest
   } = props
 
-  return (<Input {...rest} defaultValue={value || ``} />)
+  return (
+    <Input
+      {...rest}
+      defaultValue={value || ``}
+    />
+  )
 }

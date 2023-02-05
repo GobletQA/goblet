@@ -1,4 +1,4 @@
-export * from './AutoInput'
+export * from './InlineAutoInput'
 export * from './Decor'
 export * from './Input'
 
