@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react'
-import { Input } from '@gobletqa/components/components/Form/Inputs'
+import { Input } from '@gobletqa/components'
 
 
 export type TExpInput = ComponentProps<typeof Input> & {

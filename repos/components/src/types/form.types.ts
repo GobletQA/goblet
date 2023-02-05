@@ -1,5 +1,6 @@
 import type Button from '@mui/material/Button'
 import type DialogActions from '@mui/material/DialogActions'
+import InputAdornment from '@mui/material/InputAdornment'
 import type {
   AutocompleteChangeReason,
   AutocompleteChangeDetails
@@ -30,19 +31,12 @@ export type TOnAutoChange = (
 export type TInputVariants = `outlined`|`filled`|`standard`
 
 export type TInputDecor = {
-  name: string
-  label?: string
-  labelSx?: CSSProperties
-  labelPos?:string
+  decorPos?:string
+  sx?: CSSProperties
   pos?: `start` | `end`
   children?: ReactNode
-  active?: boolean|string
-  disabled?: boolean|string
-  onClick?:(evt:Event) => void
-  onHover?:(evt:Event) => void
-  iconProps?: Record<any, any>
-  Icon?: ComponentType<any> | string
   Component?: ComponentType<any> | string
+  adornmentProps: Partial<ComponentProps<typeof InputAdornment>>
   [key: string]: any
 }
 

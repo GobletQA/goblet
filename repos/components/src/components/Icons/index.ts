@@ -31,6 +31,8 @@ export * from './TabPlusIcon'
 export * from './CardPlusIcon'
 export * from './NotePlusIcon'
 export * from './NoteMinusIcon'
+export * from './ReflectHorIcon'
+export * from './SelectDragIcon'
 
 
 // export * from './UserPlus'

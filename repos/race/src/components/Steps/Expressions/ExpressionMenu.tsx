@@ -1,36 +1,36 @@
-import type { ComponentType, MouseEvent } from 'react'
+import type { MouseEvent } from 'react'
 import type { TMenuItem } from '@gobletqa/components'
 
 import { useState, useRef } from 'react'
 
 import {
   Menu,
-  MenuIcon,
   useInline,
   IconButton,
+  GobletIcon,
 } from '@gobletqa/components'
 
-
-export type TFeatureItems = {
-  Icon?:ComponentType<any>
-  onClick: (...args:any[]) => any
-}
-
-export type TFeatureMenu = {
+export type TExpressionMenu = {
+  id:string
+  parentId:string
   items: TMenuItem[]
 }
 
-export const FeatureMenu = (props:TFeatureMenu) => {
+export const ExpressionMenu = (props:TExpressionMenu) => {
+
   const {
-    items
-  }  = props
-  
+    items,
+    id="gr-expressions-menu",
+    parentId="gc-expressions-menu-button"
+  } = props
+
   const [open, setOpen] = useState<boolean>(false)
   const anchorRef = useRef<HTMLElement|undefined>(undefined)
   const onOpen = useInline((event: MouseEvent<HTMLElement>) => {
     setOpen(true)
     anchorRef.current = event.currentTarget
   })
+
   const onClose = useInline(() => {
     setOpen(false)
     anchorRef.current = undefined
@@ -39,27 +39,23 @@ export const FeatureMenu = (props:TFeatureMenu) => {
   return (
     <>
       <IconButton
-        Icon={MenuIcon}
+        id={parentId}
         onClick={onOpen}
+        Icon={GobletIcon}
         aria-haspopup="true"
-        id="gc-feature-menu-button"
         aria-expanded={open ? 'true' : undefined}
-        aria-controls={open ? 'gr-feature-menu' : undefined}
+        aria-controls={open ? id : undefined}
       />
       <Menu
-        posTV='top'
-        posTH='right'
-        posAH='right'
-        posAV='bottom'
+        id={id}
         open={open}
         items={items}
         onOpen={onOpen}
         onClose={onClose}
-        id="gr-feature-menu"
         anchorRef={anchorRef}
-        aria-labelledby="gc-feature-menu-button"
+        aria-labelledby={parentId}
       />
     </>
   )
+  
 }
-

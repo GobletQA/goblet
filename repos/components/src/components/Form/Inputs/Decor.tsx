@@ -1,15 +1,16 @@
+import type { CSSProperties } from 'react'
 import { TInputDecor } from '@GBC/types'
 import InputAdornment from '@mui/material/InputAdornment'
 
 export const Decor = (props:TInputDecor) => {
   const {
+    sx,
     active,
-    labelPos,
-    pos=`start`,
-    iconProps,
-    buttonProps,
+    children,
     adornmentProps,
     Component:DecorComp,
+    decorPos=`start` as any,
+    pos=decorPos,
     ...decorProps
   } = props
 
@@ -20,15 +21,18 @@ export const Decor = (props:TInputDecor) => {
       sx={[
         {
           display: `flex`,
-          minWidth: `55px`,
-          maxWidth: `55px`,
           position: `relative`,
           justifyContent: `center`
         },
-        adornmentProps?.sx
+        sx as CSSProperties,
+        adornmentProps?.sx as CSSProperties,
       ]}
     >
-      {DecorComp && (<DecorComp {...decorProps} />)}
+      {
+        DecorComp
+          ? (<DecorComp {...decorProps} children={children} />)
+          : children || null
+      }
     </InputAdornment>
   )
   

@@ -33,11 +33,12 @@ export type TAutoInput = {
   labelSide?:boolean
   decor?: TInputDecor
   disabled?: boolean
-  options: TAutoOptVal[]
+  options?: TAutoOptVal[]
   loading?: boolean
   matchId?: boolean
   required?: boolean
   multiple?: boolean
+  helperText?:string
   placeholder?:string
   labelInline?:boolean
   showCheckbox?: boolean
@@ -142,13 +143,14 @@ const AutoInputComp = (props:TAutoInput) => {
     onBlur,
     variant,
     loading,
-    options,
     labelSX,
     multiple,
     required,
     disabled,
     className,
     labelSide,
+    options=[],
+    helperText,
     labelInline,
     placeholder,
     labelWrapSx,
@@ -161,8 +163,8 @@ const AutoInputComp = (props:TAutoInput) => {
   } = props
 
   const onChangeVal = useOnChangeVal(props)
-  const { Component:DecorComponent, labelPos } = decor
-  const decorKey = labelPos === `end` ? `endAdornment` : `startAdornment`
+  const { Component:DecorComponent, decorPos=`start` } = decor
+  const decorKey = decorPos === `end` ? `endAdornment` : `startAdornment`
 
   return (
       <Auto
@@ -236,7 +238,11 @@ const AutoInputComp = (props:TAutoInput) => {
               variant={variant}
               id={params.id || id}
               placeholder={placeholder || "Select an option..."}
-              helperText={error ? error : textFieldProps?.helperText || ` `}
+              helperText={
+                error
+                  ? error
+                  : helperText || textFieldProps?.helperText || ` `
+              }
               InputProps={{
                 ...params.InputProps,
                 endAdornment: (

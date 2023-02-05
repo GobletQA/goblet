@@ -8,11 +8,11 @@ export const ExpressionKindMap:Record<EExpParmKind|EExpParmType, ComponentType<a
   [EExpParmKind.url]: ExpInput,
   [EExpParmKind.text]: ExpInput,
   [EExpParmKind.number]: ExpInput,
-  [EExpParmKind.element]: ExpInput,
   [EExpParmKind.alias]: ExpInput,
   [EExpParmKind.pairs]: ExpInput,
   [EExpParmKind.group]: ExpInput,
-  [EExpParmKind.selector]: ExpInput,
+  [EExpParmKind.element]: ExpAutoInput,
+  [EExpParmKind.selector]: ExpAutoInput,
 
   [EExpParmType.any]: ExpInput,
   [EExpParmType.int]: ExpInput,
