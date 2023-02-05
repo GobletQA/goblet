@@ -7,6 +7,7 @@ import { capitalize } from '@keg-hub/jsutils'
 import { StepGridItem } from '../Steps.styled'
 import { useInline } from '@gobletqa/components'
 import { ExpressionKindMap } from './ExpressionKindMap'
+import { removeQuotes } from '@GBR/utils/helpers/removeQuotes'
 
 
 export type TExpression = {
@@ -27,7 +28,7 @@ const useExpressionChange = (props:TExpression) => {
   } = props
 
   return useInline((evt:ChangeEvent<HTMLInputElement>) => {
-    const value = evt.target.value
+    const value = removeQuotes(evt.target.value || ``)
     const { input, text, index } = expression
 
     const prefix = input.substring(0, index)

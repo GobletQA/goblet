@@ -9,7 +9,7 @@ import { emptyArr } from '@keg-hub/jsutils'
 export const matchExpressions = (
   def:TStepDef,
   parts:TPartsMatch[],
-) => {
+):TExpPart[] => {
   const expressions = def?.meta?.expressions
   if(!def || !expressions?.length) return emptyArr
 

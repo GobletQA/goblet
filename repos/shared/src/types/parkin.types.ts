@@ -93,12 +93,6 @@ export type TPartsMatch = {
   paramType: EExpParmType
 }
 
-export type TStepExpression = {
-  value:string
-  index:number
-  type:EExpParmType
-}
-
 export type TExpFindResp = {
   escaped:string
   regexAlts:string
@@ -106,12 +100,19 @@ export type TExpFindResp = {
   regexConverted:string
   found:TMatchResp,
   transformers:TParamType[]
-  expressions: TStepExpression
+}
+
+export type TMatchTokens = {
+  type:string
+  match:string
+  index:number
+  defIndex:number
 }
 
 export interface IMatcher {
   types: () => TParamTypeMap
   parts:(match:string) => TPartsMatch[]
+  stepTokens:(step:string, definition:TStepDef) => TMatchTokens[]
   register:(paramType:TParamType) => Record<string, TParamType>
   find: (definitions:TStepDefs, step:string, world:TWorldConfig) => TMatchResp
   regex: (definition:TStepDef, step:string, world:TWorldConfig) => TMatchResp

@@ -4,17 +4,19 @@ import type {
   TExpPart,
   TStepDef,
   TStepAst,
+  TMatchTokens,
   TStepParentAst,
 } from '@GBR/types'
-
 
 import { useMemo } from 'react'
 import { emptyArr, emptyObj } from '@keg-hub/jsutils'
 import { useStepDefs }  from '@GBR/contexts/StepDefsContext'
 import { useParkin } from '@GBR/contexts/ParkinContext'
-import { matchStepParts } from '@GBR/utils/steps/matchStepParts'
-import { matchExpressions } from '@GBR/utils/steps/matchExpressions'
 
+import { stepTokens } from '@GBR/utils/steps/stepTokens'
+import { mapStepTokens } from '@GBR/utils/steps/mapStepTokens'
+import { expressionParts } from '@GBR/utils/steps/expressionParts'
+import { matchExpressions } from '@GBR/utils/steps/matchExpressions'
 
 export type THStepSubjects = {
   step: TStepAst
@@ -27,22 +29,29 @@ type ExpResp = {
   expressions:TExpPart[]
 }
 
-const useStepParts = (parkin:IParkin, step:TStepAst, def:TStepDef) => {
-  return useMemo(() => {
-    return def ? matchStepParts(parkin, step.step, def) : emptyObj
-  }, [def, step.step])
+const useStepParts = (
+  parkin:IParkin,
+  step:TStepAst,
+  def:TStepDef
+) => {
+  return useMemo(() => stepTokens(parkin, step.step, def), [def, step.step])
 }
 
 const useMatchExpressions = (parkin:IParkin, def:TStepDef) => {
   return useMemo(() => {
-    const parts = def?.meta?.expressions?.length
-      ? parkin.matcher.parts(def.match as string)
-      : []
+    const parts = def && expressionParts(parkin, def)
 
-    return def
+    return def && parts
       ? matchExpressions(def, parts)
       : emptyArr as TExpPart[]
   }, [def])
+}
+
+const useTokenMap = (
+  exps:TExpPart[],
+  tokens:TMatchTokens[]
+) => {
+  return useMemo(() => mapStepTokens(exps, tokens), [tokens, exps])
 }
 
 export const useExpressions = (props:THStepSubjects) => {
@@ -52,12 +61,14 @@ export const useExpressions = (props:THStepSubjects) => {
   const def = (step?.definition && defs[step?.definition]) as TStepDef
 
   // Run on every change of step, NOT step input
-  const expressions = useMatchExpressions(parkin, def)
+  const exps = useMatchExpressions(parkin, def)
 
   // Run on every change to step input
-  const meta = useStepParts(parkin, step, def)
+  const tokens = useStepParts(parkin, step, def)
+  const expressions = useTokenMap(exps, tokens)
 
-  // TODO - figure out how to parse the values from the current step.step ???
+  console.log(`------- expressions -------`)
+  console.log(expressions?.[0])
 
   return def
     ? { def, expressions }
