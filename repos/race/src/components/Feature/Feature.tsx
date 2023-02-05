@@ -10,11 +10,11 @@ import { EStepKey } from '@GBR/types'
 import { featureFactory } from '@GBR/factories/featureFactory'
 import { useEffectOnce } from '@gobletqa/components'
 
-import { Meta } from '../Meta'
+import { General } from '../General'
 import { Rules } from '../Rules'
 import { Stack } from '../Section'
 import Box from '@mui/material/Box'
-import { Title } from '../Meta/Title'
+import { Title } from '../General/Title'
 import { isStr } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
@@ -114,7 +114,7 @@ export const Feature = (props:TFeature) => {
                 ? (
                     <>
                       <FeatureActions />
-                      <Meta
+                      <General
                         parent={feature}
                         featuresRef={featuresRef}
                       />

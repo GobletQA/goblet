@@ -78,7 +78,7 @@ export const Section = (props:TSection) => {
               <AddItem
                 type={type}
                 onClick={onAdd}
-                parentId={parent.uuid}
+                parentId={parent.uuid as string}
                 className={`gr-section-add-item gr-section-add-${type}`}
               />
             ) || null

@@ -13,12 +13,10 @@ import type {
 } from '@GBR/types'
 
 import { deepMerge } from '@keg-hub/jsutils'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
-import { useEventListen, useEventEmit, useInline } from '@gobletqa/components'
+import { useEventListen, useInline } from '@gobletqa/components'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 import {
-  AnswerFeatureEvt,
   AskForFeatureEvt,
   SetFeatureContextEvt,
   UpdateFeatureContextEvt,

@@ -1,4 +1,4 @@
-import type { TRaceFeature, TRaceEditorProps } from '@GBR/types'
+import type { TRaceEditorProps } from '@GBR/types'
 
 import { Container } from './Container'
 import { EditorProvider } from '@GBR/contexts'

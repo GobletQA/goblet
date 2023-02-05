@@ -1,7 +1,7 @@
-
-import { useEditor } from '../../contexts'
+import { useMemo } from 'react'
 import { FeatureMenu } from './FeatureMenu'
 import { addRule } from '@GBR/actions/rule/addRule'
+import { useSettings, useEditor } from '@GBR/contexts'
 import { addBackground } from '@GBR/actions/background'
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 import {
@@ -10,8 +10,10 @@ import {
 } from './Feature.styled'
 
 import {
-  TabPlusIcon,
   CardPlusIcon,
+  NotePlusIcon,
+  NoteMinusIcon,
+  TextboxPlusIcon,
   PlaylistPlusIcon,
 } from '@gobletqa/components'
 
@@ -32,7 +34,7 @@ const menuItems = [
   {
     text: `Add Rule`,
     onClick: addRule,
-    Icon: TabPlusIcon,
+    Icon: TextboxPlusIcon,
   },
   {
     text: `Add Scenario`,
@@ -41,15 +43,31 @@ const menuItems = [
   },
 ]
 
+const useMenuItems = () => {
+  const { settings, toggleGeneral } = useSettings()
+  return useMemo(() => {
+    return [
+      {
+        onClick: () => toggleGeneral(),
+        Icon: settings.displayGeneral ? NoteMinusIcon : NotePlusIcon,
+        text: settings.displayGeneral ? `Hide General` : `Show General`
+      },
+      ...menuItems
+    ]
+    
+  }, [settings.displayGeneral])
+}
+
 export const FeatureActions = (props:TFeatureActions) => {
   const { feature } = useEditor()
+  const items = useMenuItems()
 
   return (
     <FeatureActionsContainer>
       <HeaderText>
         Feature
       </HeaderText>
-      <FeatureMenu items={menuItems} />
+      <FeatureMenu items={items} />
     </FeatureActionsContainer>
   )
 

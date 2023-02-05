@@ -37,6 +37,7 @@ export type TEditorCtx = {
   rootPrefix:string
   feature:TRaceFeature
   setFeature:TOnFeatureCB
+  displayGeneral?:boolean
   updateFeature:TOnFeatureCB
 }
 

@@ -1,6 +1,7 @@
 import type { RefObject, MutableRefObject, ComponentType } from 'react'
 import type { TRaceStepDefs } from './steps.types'
 import type { TWorldConfig } from './shared.types'
+import type { TSettingsState } from './settings.types'
 import type { TRaceFeatureAsts, TRaceFeatures, TRaceFeature } from './features.types'
 import type {
   TTabItem,
@@ -34,7 +35,7 @@ export type TEditorRefs = {
   curValueRef: MutableRefObject<string>
 }
 
-export type TRaceEditorProps = TEditorContainer & {
+export type TRaceEditorProps = TSettingsState & TEditorContainer & {
   world?:TWorldConfig
   steps:TRaceStepDefs
   rootPrefix: string

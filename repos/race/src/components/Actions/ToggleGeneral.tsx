@@ -1,32 +1,37 @@
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
 import { SectionActIcnBtn } from '../Section'
-import { capitalize } from '@keg-hub/jsutils'
+import { useSettings } from '@GBR/contexts'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
   Tooltip,
   stopEvent,
   useInline,
-  TabPlusIcon,
+  CloseIcon,
 } from '@gobletqa/components'
 
-export type TAddStoryAct = {
-  type:string
+export type TToggleGeneralAct = {
   style?:CSSProperties
   Icon?:ComponentType<any>
-  onClick: (...args:any)=> void
 }
 
-export const AddStoryAct = (props:TAddStoryAct) => {
-  const { type, onClick, Icon, style } = props
+const defStyles = {
+  [`&:hover`]: {
+    color: `var(--goblet-list-errorForeground)`
+  },
+} as CSSProperties
 
-  const ref = `action-add-${type}`
+export const ToggleGeneralAct = (props:TToggleGeneralAct) => {
+  const { Icon, style } = props
+  const { toggleGeneral } = useSettings()
+  const ref = `action-toggle-general`
+  
   const btnClk = useInline((evt:MouseEvent) => {
     stopEvent(evt)
-    onClick(evt)
+    toggleGeneral()
   })
 
-  const styles = useActionStyles({ style })
+  const styles = useActionStyles({ style, styles: defStyles })
 
   return (
     <Tooltip
@@ -35,7 +40,7 @@ export const AddStoryAct = (props:TAddStoryAct) => {
       describeChild
       enterDelay={500}
       fontSize={`10px`}
-      title={`Add ${capitalize(type)}`}
+      title={`Hide General`}
     >
       <SectionActIcnBtn
         id={ref}
@@ -43,7 +48,7 @@ export const AddStoryAct = (props:TAddStoryAct) => {
         sx={styles}
         className={ref}
         onClick={btnClk}
-        Icon={Icon || TabPlusIcon}
+        Icon={Icon || CloseIcon}
       />
     </Tooltip>
   )

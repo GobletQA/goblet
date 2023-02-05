@@ -49,10 +49,12 @@ export const InputContainer = styled(Box)`
 
 export const SectionActBtn = styled(Button)`
   margin-left: 5px;
+  margin-right: 5px;
 `
 
 export const SectionActIcnBtn = styled(IconButton)`
   margin-left: 5px;
+  margin-right: 5px;
 `
 
 export const SectionActs = styled(Box)`

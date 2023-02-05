@@ -111,5 +111,5 @@ export {
   ChevronRightIcon,
   BoltIcon,
   DragIndicatorIcon,
-  MenuIcon
+  MenuIcon,
 }
