@@ -4,7 +4,7 @@ import { ESectionType, EMetaType } from '@GBR/types'
 import { capitalize } from '@keg-hub/jsutils'
 import { MetaInputContainer } from './Story.styled'
 import { updateProperty } from '@GBR/actions/story/updateProperty'
-import { stopEvent, useInline, Input } from '@gobletqa/components'
+import { stopEvent, useInline, InlineInput } from '@gobletqa/components'
 
 export type TDesire = TMeta & {
   type: ESectionType
@@ -21,7 +21,7 @@ export const Desire = (props:TDesire) => {
 
   return (
     <MetaInputContainer className='gr-feature-desire gr-meta-input-container' >
-      <Input
+      <InlineInput
         multiline={true}
         onChange={onChange}
         value={desire?.content}

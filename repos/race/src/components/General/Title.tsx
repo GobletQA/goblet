@@ -6,7 +6,7 @@ import { useCallback } from 'react'
 
 import { isStr } from '@keg-hub/jsutils'
 import { InputContainer } from '../Section'
-import { Input } from '@gobletqa/components'
+import { InlineInput } from '@gobletqa/components'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 
 export type TTitle = {
@@ -40,7 +40,7 @@ export const Title = (props:TTitle) => {
 
   return (
     <InputContainer className='gr-feature-title gr-feature-input-container' >
-      <Input
+      <InlineInput
         label={`Title`}
         required={true}
         value={feature}
