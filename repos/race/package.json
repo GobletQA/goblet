@@ -21,7 +21,8 @@
     "@ltipton/parkin": "*",
     "@mui/icons-material": "*",
     "@mui/lab": "*",
-    "@mui/material": "*"
+    "@mui/material": "*",
+    "react-selecto": "*"
   },
   "devDependencies": {
     "@gobletqa/shared": "*",

@@ -90,6 +90,7 @@
     "module-alias": "2.2.2",
     "nodemon": "2.0.19",
     "playwright": "1.27.0",
+    "react-selecto": "1.22.0",
     "socket.io": "4.5.4",
     "source-map-support": "0.5.21",
     "serve": "14.1.2",

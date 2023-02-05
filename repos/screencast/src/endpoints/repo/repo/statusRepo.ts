@@ -17,7 +17,7 @@ const handleUnmounted = async (req:JWTRequest, res:Response, status:Record<any, 
   if(!auth.token || status.mode !== 'vnc') return apiRes(res, { status })
 
   const repos = !query.getRepos &&
-    await Repo.getUserRepos(auth)
+    await Repo.getUserRepos({ token: auth.token })
 
   return apiRes(res, {status, repos})
 }

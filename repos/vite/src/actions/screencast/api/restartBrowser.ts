@@ -15,7 +15,11 @@ export const restartBrowser = async (options:Record<any, any> = noOpObj) => {
     data,
     error,
     success
-  } = await screencastApi.restart({ ...browserOpts, ...options})
+  } = await screencastApi.restart({
+    ...browserOpts,
+    ...options,
+    addAutomate: true
+  })
   
   if(!success || error)
     addToast({

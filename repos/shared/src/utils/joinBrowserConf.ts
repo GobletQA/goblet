@@ -7,7 +7,7 @@ import { get, noOpObj } from '@keg-hub/jsutils'
  * Builds a browser config merging the passed in params and global config.browser settings
  */
 export const joinBrowserConf = (
-  options:TBrowserConf=noOpObj as TBrowserConf,
+  options:Partial<TBrowserConf>=noOpObj as TBrowserConf,
   app?:Express
 ) => {
   app = app || getApp()

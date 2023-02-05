@@ -5,6 +5,7 @@ import type {
   TBrowserAction,
   TActionCallback,
   TBrowserActionArgs,
+  TBrowserActionResp
 } from '@GSC/types'
 
 import { startBrowser } from './browser'
@@ -51,7 +52,7 @@ const callAction = async (
   action:TBrowserAction,
   component:TPWComponent,
   pwComponents:TPWComponents,
-  prevResp:any[]
+  prevResp:TBrowserActionResp
 ) => {
   const comp = pwComponents[action.ref] || component
   // Ensure props is an array
@@ -94,7 +95,7 @@ export const actionBrowser = async (
   const component = pwComponents[ref]
   validateArgs(args, component)
 
-  const responses = []
+  const responses:TBrowserActionResp[] = []
   return actions.reduce(async (toResolve, action) => {
     await toResolve
     const prevResp = responses[responses.length - 1]

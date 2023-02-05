@@ -12,17 +12,17 @@ import {
 } from './apiCache'
 
 
-const buildRequest = async <T>(request:TBuiltRequest<T>|string) => {
-  const builtRequest = isObj<TBuiltRequest<T>>(request)
+const buildRequest = async <R>(request:Partial<TBuiltRequest<R>>|string) => {
+  const builtRequest = isObj<TBuiltRequest<R>>(request)
     ? { ...request }
-    : { url: request } as TBuiltRequest<T>
+    : { url: request } as TBuiltRequest<R>
 
   // Add to ensure cookies get sent with the requests
   builtRequest.withCredentials = true
-  builtRequest.url = buildUrl<T>(builtRequest)
-  builtRequest.headers = await buildHeaders<T>(builtRequest)
+  builtRequest.url = buildUrl<R>(builtRequest)
+  builtRequest.headers = await buildHeaders<R>(builtRequest)
 
-  return builtRequest
+  return builtRequest as TBuiltRequest<R>
 }
 
 /**
@@ -30,7 +30,7 @@ const buildRequest = async <T>(request:TBuiltRequest<T>|string) => {
  * @function
  */
 export const apiRequest = async <T=Record<any, any>, R=Record<any, any>>(
-  request:TBuiltRequest<R>|string
+  request:Partial<TBuiltRequest<R>>|string
 ):Promise<TResponse<T>> => {
   const builtRequest = await buildRequest<R>(request)
 

@@ -1,4 +1,6 @@
 import type { Response, Request } from 'express'
+import type { TBrowserConf } from '@gobletqa/shared'
+
 
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
@@ -11,7 +13,7 @@ import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
  *
  */
 export const browserStatus = asyncWrap(async (req:Request, res:Response) => {
-  const { query } = req
+  const query = req.query as Partial<TBrowserConf>
   const { status } = await startBrowser(joinBrowserConf(query))
 
   return apiRes(res, status, 200)

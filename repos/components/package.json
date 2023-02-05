@@ -29,7 +29,8 @@
     "@mui/icons-material": "*",
     "@mui/lab": "*",
     "@mui/material": "*",
-    "@mui/x-date-pickers": "*"
+    "@mui/x-date-pickers": "*",
+    "react-selecto": "*"
   },
   "devDependencies": {
     "@gobletqa/shared": "*",

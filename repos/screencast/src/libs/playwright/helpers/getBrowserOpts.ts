@@ -77,6 +77,8 @@ export const getBrowserOpts = (
     context,
     page,
     args = noPropArr,
+    // Used for adding the Automate class to the page
+    addAutomate,
     // type / url is not used, just pulled out of the config object
     type,
     url,

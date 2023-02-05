@@ -57,6 +57,7 @@ export type TBrowserConf = TBrowserLaunchOpts & {
   url?:string
   page: TPageOpts
   restart?:boolean
+  addAutomate?: boolean
   colorScheme?: TColorSchema
   context?:TBrowserContextOpts
 }
@@ -90,6 +91,8 @@ export type TBrowserActionArgs = {
   actions:TBrowserAction[]
   onRecordEvent?:TActionCallback
 }
+
+export type TBrowserActionResp = unknown
 
 export type TBrowserActionOptions = {
   cmd?: string

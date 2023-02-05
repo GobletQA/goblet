@@ -23,3 +23,6 @@ export const PWPlay = {
   playResults: `PLAY-RESULTS`,
   playStarted: `PLAY-STARTED`,
 }
+
+export const PWAutomateHoverOn = `PW-AUTOMATE-HOVER-ON`
+export const PWAutomateHoverOff = `PW-AUTOMATE-HOVER-OFF`

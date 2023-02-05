@@ -10,7 +10,7 @@ import type { TBrowserType, TBrowserConf, TBrowserMetaDataContext } from '../../
 import { Logger, inDocker } from '@keg-hub/cli-utils'
 import { noOpObj, exists, isEmpty, limbo } from '@keg-hub/jsutils'
 import metadata from '@gobletqa/screencast/libs/playwright/helpers/metadata'
-import { getBrowser } from '@gobletqa/screencast/libs/playwright/browser/browser'
+import { startBrowser } from '@gobletqa/screencast/libs/playwright/browser/browser'
 import { startServer } from '@gobletqa/screencast/libs/playwright/server/startServer'
 import { getBrowserType } from '@gobletqa/screencast/libs/playwright/helpers/getBrowserType'
 import { getServerEndpoint } from '@gobletqa/screencast/libs/playwright/server/getServerEndpoint'
@@ -82,9 +82,11 @@ const testBrowserConnection = async (
 ) => {
   if (!paramsMatch) return
 
-  const [err, browser] = await limbo(
-    getBrowser({ type: browserType, ...browserConf }, true)
+  const [err, resp] = await limbo(
+    startBrowser({ type: browserType, ...browserConf }, true, true)
   )
+
+  const { browser } = resp
 
   if (!err && browser.isConnected()) {
     browser.close()

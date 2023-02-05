@@ -7,7 +7,7 @@ import { Divider } from '@components/Layout/Divider'
 import { NotConnected } from '@components/NotConnected'
 import { useRaceHooks } from '@hooks/race/useRaceHooks'
 import { PrePanels } from '@components/Panels/PrePanels'
-import { BlockIcon, DefSidebarWidth } from '@gobletqa/components'
+import { DragSelect, BlockIcon, DefSidebarWidth } from '@gobletqa/components'
 
 export type TVisualEditor = {
   portal?:string
@@ -25,17 +25,20 @@ export const VisualEditor = (props:TVisualEditor) => {
 
   return connected
     ? (
-        <RaceEditor
-          {...props}
-          steps={steps}
-          actions={Actions}
-          Divider={Divider}
-          features={features}
-          PrePanels={PrePanels}
-          rootPrefix={rootPrefix}
-          sidebarStatus={!sidebarLocked}
-          sidebarWidth={DefSidebarWidth}
-        />
+        <>
+          <DragSelect />
+          <RaceEditor
+            {...props}
+            steps={steps}
+            actions={Actions}
+            Divider={Divider}
+            features={features}
+            PrePanels={PrePanels}
+            rootPrefix={rootPrefix}
+            sidebarStatus={!sidebarLocked}
+            sidebarWidth={DefSidebarWidth}
+          />
+        </>
       )
     : (
         <NotConnected

@@ -3,7 +3,7 @@ const path = require('path')
 const { startTracing } = require('./tracing')
 const { get, noOpObj } = require('@keg-hub/jsutils')
 const { metadata } = require('@gobletqa/screencast/libs/playwright')
-const { getBrowser } = require('@gobletqa/screencast/libs/playwright/browser/browser')
+const { startBrowser } = require('@gobletqa/screencast/libs/playwright/browser/browser')
 const {
   browserCookieLoc,
   setContextCookie,
@@ -27,11 +27,11 @@ const setupBrowser = async () => {
   // TODO: Should update to check if in docker container
   // Then pass false based on that
   // Pass false to bypass checking the browser status
-  const { browser } = await getBrowser({
+  const { browser } = await startBrowser({
     ...browserConf,
     type,
     ...get(global, `__goblet.browser.options`, noOpObj),
-  })
+  }, true)
 
   if (!browser)
     throw new Error(`Could not create browser. Please ensure the browser server is running.`)

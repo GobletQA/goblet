@@ -18,7 +18,11 @@ export const getSCStatus = async (options:Record<any, any> = noOpObj) => {
     error,
     success
   } = await screencastApi.serviceStatus({
-    browser: { ...browserOpts, ...options.browser },
+    browser: {
+      ...browserOpts,
+      ...options.browser,
+      addAutomate: true,
+    },
   })
 
   !success || error

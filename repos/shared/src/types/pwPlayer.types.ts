@@ -1,7 +1,9 @@
 import type { TRepo } from './repo.types'
-import type { Player } from '@gobletqa/screencast'
 import type { TSocketMessageObj } from './socket.types'
 import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
+
+// Exported from screencast/src/types
+import type { Player } from '@gobletqa/screencast'
 
 export type TPlayerEvent = {
   name:string

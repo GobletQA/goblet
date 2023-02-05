@@ -13,7 +13,11 @@ export const stopBrowser = async (options = noOpObj) => {
     data,
     error,
     success
-  } = await screencastApi.stop({ ...browserOpts, ...options })
+  } = await screencastApi.stop({
+    ...browserOpts,
+    ...options,
+    addAutomate: true
+  })
 
 
   if(!success || error)

@@ -9,6 +9,7 @@ import type {
 } from '@GSC/types'
 
 import playwright from 'playwright'
+import { Automate } from '../automate'
 import { Logger } from '@GSC/utils/logger'
 import { deepMerge } from '@keg-hub/jsutils'
 import { EmptyBrowser } from './emptyBrowser'
@@ -147,6 +148,11 @@ const createBrowser = async (
 
 /**
  * Returns the cached playwright page
+ * Only used by testUtils
+ *
+ * @deprecated - Will be removed once testUtils is updated, use getBrowser instead
+ * @DEPRECATED - Will be removed once testUtils is updated, use getBrowser instead
+ *
  * @function
  */
 export const getPage = async (
@@ -206,6 +212,11 @@ getPage.creatingPage = false
 
 /**
  * Returns the cached Playwright context
+ * Only used by testUtils
+ *
+ * @deprecated - Will be removed once testUtils is updated, use getBrowser instead
+ * @DEPRECATED - Will be removed once testUtils is updated, use getBrowser instead
+ *
  * @function
  */
 export const getContext = async (
@@ -241,7 +252,6 @@ export const getContext = async (
   return { context, browser }
 }
 
-
 /**
  * Closes a browser, and removes it from the PW_BROWSERS object
  */
@@ -261,10 +271,11 @@ export const closeBrowser = async (type?:EBrowserType) => {
 
 /**
  * Gets an existing browser, or starts a new one using the Playwright API
+ * @function
  */
-export const getBrowser = async (
+const getBrowser = async (
   browserConf:TBrowserConf = noOpObj as TBrowserConf,
-  browserServer?:boolean
+  browserServer?:boolean,
 ):Promise<TPWBrowser> => {
   try {
 
@@ -340,8 +351,17 @@ getBrowser.creatingBrowser = false
  * @public
  */
 export const startBrowser = async (
-  config:TBrowserConf = noOpObj as TBrowserConf
+  config:TBrowserConf = noOpObj as TBrowserConf,
+  browserOnly?:boolean,
+  browserServer?:boolean,
 ):Promise<TPWComponents> => {
+
+  if(browserOnly){
+    const browserConf = buildBrowserConf(config)
+    const resp = await getBrowser(browserConf, browserServer)
+
+    return resp as TPWComponents
+  }
 
   try {
     const browserConf = buildBrowserConf(config)
@@ -384,7 +404,14 @@ export const startBrowser = async (
     // Build the status object for the newly started browser
     const status = buildStatus(browserConf.type, hasComponents)
 
-    return { status, ...pwComponents } as TPWComponents
+    config.addAutomate
+      && pwComponents?.page
+      && new Automate(pwComponents)
+
+    return {
+      status,
+      ...pwComponents
+    } as TPWComponents
   }
   catch(err){
     getPage.creatingPage = false
