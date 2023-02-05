@@ -7,7 +7,6 @@ import FormLabel from '@mui/material/FormLabel'
 import InputLabel from '@mui/material/InputLabel'
 import MuiIconBtn from '@mui/material/IconButton'
 import FormControl from '@mui/material/FormControl'
-import Autocomplete from '@mui/material/Autocomplete'
 
 export const FormMain = styled(Box)``
 export const FormContainer = styled(`form`)``
@@ -136,39 +135,3 @@ export const IconBtn = styled(MuiIconBtn)``
 
 export const IconBtnLabel = styled(FormLabel)``
 
-
-// ----- Icon Button Component ---- //
-
-
-// ----- Input Actions Component ---- //
-export const InputActionsContainer = styled(Box)`
-  top: 0px;
-  right: 0px;
-  height: 100%;
-  display: flex;
-  position: absolute;
-  align-items: center;
-`
-
-
-// ----- Input Actions Component ---- //
-// ----- Input Actions Component ---- //
-
-
-// ----- Auto-Input Component ---- //
-
-export const TextAutoComp = styled(Autocomplete)`
-  width: 100%;
-  padding: 0px;
-
-  & .MuiAutocomplete-input::placeholder {
-    font-style: italic;
-  }
-  
-  & .MuiAutocomplete-endAdornment {
-    opacity: 0 !important;
-    display: none !important;
-  }
-`
-
-// ----- Auto-Input Component ---- //

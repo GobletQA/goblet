@@ -12,7 +12,6 @@ import { noOpObj, isStr, cls } from '@keg-hub/jsutils'
 import CircularProgress from '@mui/material/CircularProgress'
 import {
   Checkbox,
-  TextField,
   TextFieldProps,
 } from '@mui/material'
 import {
@@ -20,13 +19,18 @@ import {
   AutoLabel,
   AutoLabelWrap,
   AutoContainer,
+  AutoTextInput,
+  AutoInputControl,
+  AutoInputContainer,
 } from './Inputs.styled'
 
 export type TAutoInput = {
+  id?:string
   name: string
   error?:string
   className?:string
   sx?:CSSProperties
+  labelSide?:boolean
   decor?: TInputDecor
   disabled?: boolean
   options: TAutoOptVal[]
@@ -34,14 +38,19 @@ export type TAutoInput = {
   matchId?: boolean
   required?: boolean
   multiple?: boolean
+  placeholder?:string
   labelInline?:boolean
-  currentValue?:TAutoOptVal
-  onChange?: TOnAutoChange
   showCheckbox?: boolean
+  labelSX?: CSSProperties
+  onChange?: TOnAutoChange
+  currentValue?:TAutoOptVal
+  labelWrapSx?: CSSProperties
   rules?: Record<string, string>
   label?: TextFieldProps['label']
   onBlur?: (event:SyntheticEvent) => void
+  variant?:`outlined`|`filled`|`standard`
   autocompleteProps?: Partial<ComponentProps<typeof Auto>>
+  color?: `primary`|`secondary`|`error`|`info`|`success`|`warning`
   textFieldProps?: Omit<TextFieldProps, 'name' | 'required' | 'label'>
 }
 
@@ -74,21 +83,75 @@ const useOnChangeVal = ({
   ])
 }
 
-export const AutoInput = (props:TAutoInput) => {
+type TAutoLabel = {
+  id?:string
+  labelSide?:boolean
+  labelInline?:boolean
+  labelSX?: CSSProperties
+  labelWrapSx?: CSSProperties
+  label?:TextFieldProps['label']
+}
+
+const AutoLabelComp = (props:TAutoLabel) => {
   const {
+    id,
+    label,
+    labelSX,
+    labelSide,
+    labelWrapSx,
+    labelInline
+  } = props
+  
+  if(labelInline || !label) return null
+
+  return (
+    <AutoLabelWrap
+      sx={labelWrapSx}
+      className={cls(
+        !labelSide && `gc-auto-label-wrap`,
+        labelInline && `gc-auto-label-wrap-inline`,
+        labelSide && `gc-auto-label-wrap-side`
+      )}
+    >
+      <AutoLabel
+        htmlFor={id}
+        sx={labelSX}
+        shrink={false}
+        className={cls(
+          !labelSide && `gc-auto-input-label`,
+          labelInline && `gc-auto-label-inline`,
+          labelSide && `gc-auto-label-side`
+        )}
+      >
+        {label}
+      </AutoLabel>
+    </AutoLabelWrap>
+  )
+}
+
+
+const AutoInputComp = (props:TAutoInput) => {
+  const {
+    id,
     sx,
     name,
     label,
     rules,
     error,
+    color,
     onBlur,
+    variant,
     loading,
     options,
+    labelSX,
     multiple,
     required,
     disabled,
     className,
+    labelSide,
     labelInline,
+    placeholder,
+    labelWrapSx,
     showCheckbox,
     currentValue,
     textFieldProps,
@@ -102,14 +165,6 @@ export const AutoInput = (props:TAutoInput) => {
   const decorKey = labelPos === `end` ? `endAdornment` : `startAdornment`
 
   return (
-    <AutoContainer>
-      {!labelInline && label && (
-        <AutoLabelWrap>
-          <AutoLabel>
-            {label}
-          </AutoLabel>
-        </AutoLabelWrap>
-      ) || null}
       <Auto
         {...autocompleteProps}
         sx={sx}
@@ -119,7 +174,11 @@ export const AutoInput = (props:TAutoInput) => {
         multiple={multiple}
         value={currentValue}
         onChange={onChangeVal as any}
-        className={cls(`gb-auto-complete`, className)}
+        className={cls(
+          className,
+          `gb-auto-complete`,
+          labelSide ? `gc-auto-input-side` : `gc-auto-input`
+        )}
         disableCloseOnSelect={
           typeof autocompleteProps?.disableCloseOnSelect === 'boolean'
             ? autocompleteProps.disableCloseOnSelect
@@ -163,13 +222,20 @@ export const AutoInput = (props:TAutoInput) => {
         }}
         renderInput={(params) => {
           return (
-            <TextField
+            <AutoTextInput
               name={name}
               required={rules?.required ? true : required}
               label={labelInline && label ? label : undefined}
               {...textFieldProps}
               {...params}
+              className={cls(
+                `gc-auto-input-text`,
+                labelSide && `gc-auto-input-text-side`
+              )}
               error={!!error}
+              variant={variant}
+              id={params.id || id}
+              placeholder={placeholder || "Select an option..."}
               helperText={error ? error : textFieldProps?.helperText || ` `}
               InputProps={{
                 ...params.InputProps,
@@ -203,6 +269,60 @@ export const AutoInput = (props:TAutoInput) => {
         }}
         {...rest}
       />
+  )
+}
+
+
+export const AutoInput = (props:TAutoInput) => {
+  const {
+    id,
+    label,
+    labelSX,
+    labelSide,
+    labelWrapSx,
+    labelInline,
+  } = props
+
+  return (
+    <AutoContainer
+      className={cls(
+        `gc-auto-input-root`,
+        `gc-auto-input-container`,
+        labelSide && `gc-auto-input-container-side`
+      )}
+    >
+      {
+        !labelSide
+          ? (
+              <>
+                <AutoLabelComp
+                  id={id}
+                  label={label}
+                  labelSX={labelSX}
+                  labelSide={labelSide}
+                  labelWrapSx={labelWrapSx}
+                  labelInline={labelInline}
+                />
+                <AutoInputComp {...props} />
+              </>
+            )
+          : (
+              <AutoInputControl className={cls(labelSide && `gc-auto-input-control-side`)}>
+                <AutoInputContainer>
+                  <AutoLabelComp
+                    id={id}
+                    label={label}
+                    labelSX={labelSX}
+                    labelSide={labelSide}
+                    labelWrapSx={labelWrapSx}
+                    labelInline={labelInline}
+                  />
+                  <AutoInputComp {...props} />
+                </AutoInputContainer>
+              </AutoInputControl>
+            )
+      }
     </AutoContainer>
   )
+  
 }

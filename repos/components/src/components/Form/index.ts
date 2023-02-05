@@ -1,6 +1,6 @@
-export * from './InlineAutoInput'
-export * from './Decor'
-export * from './Input'
+export * from './InlineInput'
+export * from './Inputs/Decor'
+export * from './Inputs/AutoInput'
 
 export * from './Form'
 // export * from './Inputs'

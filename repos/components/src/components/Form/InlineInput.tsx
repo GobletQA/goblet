@@ -1,11 +1,9 @@
 
 import type { InputProps } from '@mui/material'
-import type { TInputAction } from './InputActions'
 import type { CSSProperties } from 'react'
 import type { TToggleEditCB, TChangeCB } from '@GBC/types'
 
 import { cls, uuid } from '@keg-hub/jsutils'
-import { InputActions } from './InputActions'
 import { useEdit } from '@GBC/hooks/form/useEdit'
 
 import {
@@ -34,7 +32,6 @@ export type TInput<T> = {
   InputProps?:InputProps
   labelSx?:CSSProperties
   inputSx?:CSSProperties
-  actions?:TInputAction[]
   initialEditing?:boolean
   onToggleEdit?:TToggleEditCB
   value?:string|boolean|number
@@ -43,14 +40,13 @@ export type TInput<T> = {
   color?: `primary`|`secondary`|`error`|`info`|`success`|`warning`
 }
 
-export const Input = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
+export const InlineInput = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
   const {
     name,
     type,
     color,
     label,
     variant,
-    actions,
     inputSx,
     labelSx,
     disabled,
@@ -134,14 +130,6 @@ export const Input = (props:TInput<HTMLInputElement | HTMLTextAreaElement>) => {
         </TextInputContainer>
       </TextInputControl>
 
-    {actions?.length && (
-      <InputActions
-        label={label}
-        editing={editing}
-        actions={actions}
-        onToggleEdit={onToggleEdit}
-      />
-    ) ||null}
     </InputContainer>
   )
 

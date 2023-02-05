@@ -1,12 +1,10 @@
-
-
 import type { TTagsParentAst, TFeaturesRef } from '@GBR/types'
 
 import { TagsContainer } from './Tags.styled'
 import { capitalize, cls } from '@keg-hub/jsutils'
-import { AutoInput } from '@gobletqa/components'
 import { ESectionType, EMetaType } from '@GBR/types'
 import { useFeatureTags } from '@GBR/hooks/useFeatureTags'
+import { AutoInput } from '@gobletqa/components/components/Form/Inputs'
 
 export type TTags = {
   type:ESectionType
@@ -23,12 +21,15 @@ export const Tags = (props:TTags) => {
   return (
     <TagsContainer className={cls(`gr-tags`, `gr-${type}-tags`)} >
       <AutoInput
-        value={tags?.join(` `) || ``}
         multiple={true}
+        labelSide={true}
+        variant='standard'
         id={`${parent.uuid}-tags`}
+        currentValue={tags || [``]}
+        name='feature-tags-auto-input'
         label={capitalize(EMetaType.tags)}
         className={`gr-${type}-tags-input`}
-        options={[ ``, ...Object.keys(options)]}
+        options={[...Object.keys(options)]}
         placeholder={`${capitalize(type)} tags ...`}
       />
     </TagsContainer>
