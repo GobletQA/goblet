@@ -98,6 +98,7 @@ export const BranchFrom = (props:TBranchFrom) => {
       <SubGrid className='gb-grid-child-branch' xs={12} md={6} >
         <Input
           {...childProps}
+          labelSide={false}
           defaultValue={newBranch}
           inputProps={{
             onBlur: onInputBlur,

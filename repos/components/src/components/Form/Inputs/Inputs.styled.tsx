@@ -45,38 +45,6 @@ export const AutoInputContainer = styled(Box)`
   align-items: center;
 `
 
-export const AutoLabel = styled(MuiInputLabel)`
-  &.gc-auto-input-label {
-    
-  }
-
-  &.gc-auto-label-side {
-    padding: 0px;
-  }
-
-  &.gc-auto-label-inline {
-    
-  }
-
-`
-
-export const AutoLabelWrap = styled(Box)`
-
-  &.gc-auto-label-wrap {
-    margin-bottom: 5px;
-  }
-  
-  &.gc-auto-label-wrap-inline {
-    
-  }
-
-  &.gc-auto-label-wrap-side {
-    min-width: 80px;
-    margin-right: 0px;
-  }
-
-`
-
 export const Auto = styled(Autocomplete)`
 
   &.gc-auto-input-side {
@@ -182,15 +150,15 @@ export const AutoTextInput = styled(TextField)(({ theme }) => {
 })
 
 
-
 // ----- Input Component ---- //
 
-export const InputContainer = styled(Box)``
-
-export const InputLabel = styled(FormLabel)``
-
-export const InputLabelWrap = styled(Box)`
-  margin-bottom: 5px;
+export const InputContainer = styled(Box)`
+  &.gc-input-container-side {
+    width: 100%;
+    display: flex;
+    min-height: 40px;
+    align-items: center;
+  }
 `
 
 export const InputText = styled(TextField)`
@@ -247,3 +215,25 @@ export const ToggleBtn = styled(ToggleButton)`
 `
 export const ToggleGrp = styled(ToggleButtonGroup)``
 
+
+
+// ----- Shared Input Label Component ---- //
+export const InputLabelShared = styled(MuiInputLabel)`
+  &.gc-label-side {
+    padding: 0px;
+  }
+`
+
+export const WrapInputLabel = styled(Box)`
+
+  &.gc-label-wrap {
+    margin-bottom: 5px;
+  }
+  
+
+  &.gc-label-wrap-side {
+    min-width: 80px;
+    margin-right: 0px;
+  }
+
+`

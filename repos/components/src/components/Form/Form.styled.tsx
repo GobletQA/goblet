@@ -52,6 +52,8 @@ const sharedInputStyle = `
   -webkit-text-fill-color: var(--goblet-input-foreground);
 `
 
+
+// TODO - Migrate these types into input.styled InputText component based on class
 export const TextInput = styled(TextField)(({ theme }) => {
   const colors = theme?.palette?.colors
   return `

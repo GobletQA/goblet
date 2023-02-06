@@ -1,4 +1,5 @@
 import type { TMeta } from './Story'
+import type { ChangeEvent } from 'react'
 
 import { capitalize } from '@keg-hub/jsutils'
 import { MetaInputContainer } from './Story.styled'
@@ -14,16 +15,21 @@ export const Reason = (props:TReason) => {
   const { parent } = props
   const { reason } = parent
 
-  const onChange = useInline((evt, value) => {
+  const onChange = useInline((
+    evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    value?:string
+  ) => {
     stopEvent(evt)
-    updateProperty(`reason`, value, parent)
+    updateProperty(`reason`, value || ``, parent)
   })
 
   return (
     <MetaInputContainer className='gr-feature-reason gr-meta-input-container' >
 
       <Input
+        labelSide={true}
         multiline={true}
+        variant='standard'
         onChange={onChange}
         value={reason?.content}
         placeholder='So that ...'

@@ -30,7 +30,7 @@ export const useRaceTheme = (props?:THRaceTheme) => {
   useMemo(() => {
     !hasCorrectTheme(type, theme)
       && (async () => {
-          const theme = await loadGobletTheme({ type, context: `race` })
+          const theme = await loadGobletTheme({ mode: type, context: `race` })
           theme && setTheme(theme)
         })()
 

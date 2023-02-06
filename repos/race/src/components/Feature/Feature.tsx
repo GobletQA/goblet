@@ -9,13 +9,14 @@ import { Step } from '../Steps/Step'
 import { EStepKey } from '@GBR/types'
 import { featureFactory } from '@GBR/factories/featureFactory'
 import { useEffectOnce } from '@gobletqa/components'
+import { isStr } from '@keg-hub/jsutils'
+import { updateFeature } from '@GBR/actions/feature/updateFeature'
 
 import { General } from '../General'
 import { Rules } from '../Rules'
 import { Stack } from '../Section'
 import Box from '@mui/material/Box'
 import { Title } from '../General/Title'
-import { isStr } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
@@ -24,7 +25,6 @@ import { FeatureActions } from './FeatureActions'
 import { EmptyFeatureUUID } from '@GBR/constants'
 
 import { addScenario } from '@GBR/actions/scenario/addScenario'
-import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { createFeature } from '@GBR/actions/feature/createFeature'
 import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
@@ -42,50 +42,10 @@ const styles = {
   content: {}
 }
 
-// TODO - Remove this when done with step
-const testFeature:TEmptyFeature = {
-  scenarios: [
-    {
-      tags: [],
-      index: 0,
-      steps: [
-          {
-            step: "",
-            index: 0,
-            uuid: "56fe596a-9de4-4f01-b6fe-73ce2d8134fd",
-            type: EStepKey.given
-          }
-      ],
-      uuid: "cd4ae2bc-2f30-4990-aa85-d504aebe36fb",
-      scenario: " "
-    }
-  ]
-}
-
 export const Feature = (props:TFeature) => {
   const { featuresRef } = props
 
   const { feature, rootPrefix } = useEditor()
-
-  // TODO: remove this once form components are done
-  useEffectOnce(() => {
-    ;(!feature || !feature?.uuid)
-      setTimeout(() => {
-        const feat = featureFactory({
-          path: rootPrefix,
-          uuid: EmptyFeatureUUID
-        })
-
-        updateFeature({ ...feat, ...testFeature }, false)
-      }, 50)
-  })
-
-
-  const onToggleEdit = useCallback(((__, featureTitle, editing) => {
-    !editing
-      && isStr(featureTitle)
-      && updateFeature({ ...feature, feature: featureTitle}, false)
-  }) as TToggleEditCB, [feature])
 
   const onClick = useCallback((e:MouseEvent<HTMLButtonElement>) => {
     createFeature({}, rootPrefix)
@@ -110,7 +70,7 @@ export const Feature = (props:TFeature) => {
         >
           <Box sx={styles.content}>
 
-            { feature.uuid // !== EmptyFeatureUUID // TODO - Remove this when finished
+            { feature.uuid !== EmptyFeatureUUID
                 ? (
                     <>
                       <FeatureActions />

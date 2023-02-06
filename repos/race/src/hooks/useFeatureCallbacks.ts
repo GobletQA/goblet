@@ -55,10 +55,8 @@ const isValidUpdate = (feat?:Partial<TRaceFeature>) => {
   if(!feat?.uuid)
     return console.error(`Can not update feature. The feature.uuid property is required.`)
 
-  // TODO: @lance-tipton - Add this back when done building RaceEditor
-  // This should never happen, but show a error message just incase, so we can fix it
-  // if(feat.uuid === EmptyFeatureUUID)
-  //   return console.error(`Updated features should NOT have an empty uuid`)
+  if(feat.uuid === EmptyFeatureUUID)
+    return console.error(`Updated features should NOT have an empty uuid`)
 
   return true
 }

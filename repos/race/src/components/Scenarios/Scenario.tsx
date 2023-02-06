@@ -50,7 +50,7 @@ export const Scenario = (props:TScenario) => {
           <AddAct
             Icon={StepAddIcon}
             onClick={onAddScenarioStep}
-            type={ESectionType.scenario}
+            type={ESectionType.step}
             key={`gr-scenario-add-step-action`}
           />
         ),

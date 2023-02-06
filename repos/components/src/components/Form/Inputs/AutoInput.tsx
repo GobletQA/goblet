@@ -8,6 +8,7 @@ import type {
 import { Decor } from './Decor'
 import { useCallback } from 'react'
 
+import { InputLabel } from './InputLabel'
 import { noOpObj, isStr, cls } from '@keg-hub/jsutils'
 import CircularProgress from '@mui/material/CircularProgress'
 import {
@@ -16,8 +17,6 @@ import {
 } from '@mui/material'
 import {
   Auto,
-  AutoLabel,
-  AutoLabelWrap,
   AutoContainer,
   AutoTextInput,
   AutoInputControl,
@@ -42,7 +41,7 @@ export type TAutoInput = {
   placeholder?:string
   labelInline?:boolean
   showCheckbox?: boolean
-  labelSX?: CSSProperties
+  labelSx?: CSSProperties
   onChange?: TOnAutoChange
   currentValue?:TAutoOptVal
   labelWrapSx?: CSSProperties
@@ -84,53 +83,6 @@ const useOnChangeVal = ({
   ])
 }
 
-type TAutoLabel = {
-  id?:string
-  labelSide?:boolean
-  labelInline?:boolean
-  labelSX?: CSSProperties
-  labelWrapSx?: CSSProperties
-  label?:TextFieldProps['label']
-}
-
-const AutoLabelComp = (props:TAutoLabel) => {
-  const {
-    id,
-    label,
-    labelSX,
-    labelSide,
-    labelWrapSx,
-    labelInline
-  } = props
-  
-  if(labelInline || !label) return null
-
-  return (
-    <AutoLabelWrap
-      sx={labelWrapSx}
-      className={cls(
-        !labelSide && `gc-auto-label-wrap`,
-        labelInline && `gc-auto-label-wrap-inline`,
-        labelSide && `gc-auto-label-wrap-side`
-      )}
-    >
-      <AutoLabel
-        htmlFor={id}
-        sx={labelSX}
-        shrink={false}
-        className={cls(
-          !labelSide && `gc-auto-input-label`,
-          labelInline && `gc-auto-label-inline`,
-          labelSide && `gc-auto-label-side`
-        )}
-      >
-        {label}
-      </AutoLabel>
-    </AutoLabelWrap>
-  )
-}
-
-
 const AutoInputComp = (props:TAutoInput) => {
   const {
     id,
@@ -143,7 +95,7 @@ const AutoInputComp = (props:TAutoInput) => {
     onBlur,
     variant,
     loading,
-    labelSX,
+    labelSx,
     multiple,
     required,
     disabled,
@@ -283,7 +235,7 @@ export const AutoInput = (props:TAutoInput) => {
   const {
     id,
     label,
-    labelSX,
+    labelSx,
     labelSide,
     labelWrapSx,
     labelInline,
@@ -301,10 +253,10 @@ export const AutoInput = (props:TAutoInput) => {
         !labelSide
           ? (
               <>
-                <AutoLabelComp
+                <InputLabel
                   id={id}
                   label={label}
-                  labelSX={labelSX}
+                  labelSx={labelSx}
                   labelSide={labelSide}
                   labelWrapSx={labelWrapSx}
                   labelInline={labelInline}
@@ -315,10 +267,10 @@ export const AutoInput = (props:TAutoInput) => {
           : (
               <AutoInputControl className={cls(labelSide && `gc-auto-input-control-side`)}>
                 <AutoInputContainer>
-                  <AutoLabelComp
+                  <InputLabel
                     id={id}
                     label={label}
-                    labelSX={labelSX}
+                    labelSx={labelSx}
                     labelSide={labelSide}
                     labelWrapSx={labelWrapSx}
                     labelInline={labelInline}
