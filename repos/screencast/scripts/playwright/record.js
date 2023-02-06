@@ -121,7 +121,7 @@ const buildEvent = (e, disableClick=true) => {
   const event = {
     key: e.key,
     type: e.type,
-    target: window.findCssSelector(e.target),
+    target: window.__gobletFindCssSelector(e.target),
   }
 
   if(e.type === 'keypress') event.value = e.target.value + (e.key && e.key.length === 1 ? e.key : '')

@@ -406,6 +406,7 @@ export const startBrowser = async (
 
     config.addAutomate
       && pwComponents?.page
+      && pwComponents?.context
       && new Automate(pwComponents)
 
     return {

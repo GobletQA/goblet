@@ -1,30 +1,28 @@
-const fs = require('fs')
-const path = require('path')
-const { constants } = require('./constants')
-const { EventsRecorder } = require('./eventsRecorder')
-const {noOp, checkCall, deepMerge} = require('@keg-hub/jsutils')
+import type {
+  TBrowser,
+  TBrowserPage,
+  TBrowserContext,
+  TPWRecordEvent,
+  TPWRecordConfig,
+  TPWRecordOptions,
+  TPWOnRecordEvent,
+  TPWOnRecordCleanup
+} from '@GSC/types'
 
+import { constants } from './constants'
+import { EventsRecorder } from './eventsRecorder'
+import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
+import { getInjectScript } from '../helpers/getInjectScript'
 
-/**
- * Helper to load the content of the scripts to inject into the webpage
- * @param {Array<string>} files - Names of files to load from the inject folder
- *
- */
-const getInjectScript = files => {
-  return files.reduce((acc, file) => {
-    acc.push(fs.readFileSync(path.join(__dirname, `inject/${file}.js`)).toString())
-    return acc
-  }, []).join(`\n`)
-}
 
 const highlightStyles = {
   position: 'absolute',
   zIndex: '2147483640',
-  background: '#f005',
+  background: '#f00',
   pointerEvents: 'none',
 }
 
-const RecorderInstances = {}
+const RecorderInstances:Record<string, Recorder> = {}
 
 /**
  * @type Recorder
@@ -37,16 +35,18 @@ const RecorderInstances = {}
  * @property {Object} options - Custom options used while recording
  * @property {Object} options.highlightStyles - Custom styles for the highlighter
  */
-class Recorder {
+export class Recorder {
 
-  id = null
-  onEvents = []
-  page = undefined
-  context = undefined
-  browser = undefined
-  onCleanup = noOp
-  initialPageLoaded = false
-  options = {
+  id:string = null
+  browser:TBrowser
+  page:TBrowserPage
+  recording:boolean=false
+  context:TBrowserContext
+  initScriptsAdded:boolean
+  initialPageLoaded:boolean=false
+  onEvents:TPWOnRecordEvent[] = []
+  onCleanup:TPWOnRecordCleanup = noOp as TPWOnRecordCleanup
+  options:TPWRecordOptions = {
     highlightStyles,
     disableClick: true
   }
@@ -60,13 +60,13 @@ class Recorder {
    * @param {string} id - Id to use when creating the recorder instance
    * @param {Object} config - Recorder config object
    */
-  static getInstance = (id, config) => {
+  static getInstance = (id:string, config:TPWRecordConfig) => {
     RecorderInstances[id] = RecorderInstances[id] || new Recorder(config, id)
 
     return RecorderInstances[id]
   }
 
-  constructor(config, id) {
+  constructor(config:TPWRecordConfig, id:string) {
     this.id = id
     this.setupRecorder(config)
     this.fireEvent = this.fireEvent.bind(this)
@@ -79,7 +79,7 @@ class Recorder {
    * @type {function}
    * @param {Object} event - Data to be passed to the registered onEvent methods
    */
-  fireEvent = (event) => {
+  fireEvent = (event:TPWRecordEvent) => {
     if(event && (event.type === constants.recordAction)) EventsRecorder?.recordEvent(event)
   
     this.onEvents.map(func => checkCall(
@@ -97,7 +97,7 @@ class Recorder {
    * @type {function}
    * @param {Object} config - Recorder config object
    */
-  setupRecorder = config => {
+  setupRecorder = (config:TPWRecordConfig) => {
     const {
       page,
       context,
@@ -144,9 +144,9 @@ class Recorder {
 
       await this.page.exposeFunction(`isGobletRecording`, this.onIsRecording)
       await this.page.exposeFunction(`getGobletRecordOption`, this.onGetOption)
-      await this.page.addInitScript({
+      await this.context.addInitScript({
         content: getInjectScript([
-          `selector`,
+          // `selector`,
           `record`,
           `mouseHelper`
         ])
@@ -179,7 +179,7 @@ class Recorder {
    * @member {Recorder}
    * @type {function}
    */
-  start = async ({ url, ...config }) => {
+  start = async ({ url, ...config }:TPWRecordConfig) => {
     try {
   
       if(this.recording){
@@ -206,7 +206,7 @@ class Recorder {
     catch(err){
       console.error(err.stack)
       
-      await this.cleanUp(true)
+      await this.cleanUp()
 
       this.fireEvent({
         name: constants.recordError,
@@ -222,7 +222,7 @@ class Recorder {
    * @member {Recorder}
    * @type {function}
    */
-  stop = async (closeBrowser) => {
+  stop = async () => {
     try {
   
       if(!this.context || !this.recording)
@@ -244,7 +244,7 @@ class Recorder {
         message: 'Recording stopped',
       })
 
-      await this.cleanUp(closeBrowser)
+      await this.cleanUp()
     }
     catch(err){
       console.error(err.stack)
@@ -329,26 +329,24 @@ class Recorder {
    * Helper method to clean up when recording is stopped
    * Attempts to avoid memory leaks by un setting Recorder instance properties
    */
-  cleanUp = async (includeBrowser) => {
-    await this.onCleanup(includeBrowser, this)
+  cleanUp = async () => {
+    await this.onCleanup(this)
 
-    includeBrowser &&
-      this.browser &&
-      await this.browser.close()
+    this.page = undefined
+    this.context = undefined
+    this.browser = undefined
 
     delete this.page
     delete this.context
     delete this.browser
     this.recording = false
     this.options = {
-      highlightStyles
-    }
+      highlightStyles,
+      disableClick: true
+    } as TPWRecordOptions
+
     this.onEvents = []
 
     if(this.id) delete RecorderInstances[this.id]
   }
-}
-
-module.exports = {
-  Recorder
 }

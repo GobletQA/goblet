@@ -12,6 +12,7 @@ const {
   disconnect,
   browserPlay,
   browserRecord,
+  elementSelect,
 } = SocketEvents
 
 const defConfig = noOpObj as TSocketConfig
@@ -35,6 +36,7 @@ export const initSocket = (
         connection: connection(app),
         browserPlay: browserPlay(app),
         browserRecord: browserRecord(app),
+        elementSelect: elementSelect(app),
       },
     },
     cmdType

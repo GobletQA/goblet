@@ -19,7 +19,7 @@ class BrowserEventListener {
     this.name = name
     this.methods = methods
 
-    page.on(this.name as any, (...args:any[]) => Promise.all(this.methods.map(method => method?.(...args))))
+    page.on(this.name as any, (...args:any[]) => Promise.all(this.methods.map(method => method?.(page, ...args))))
     
     page.on(EBrowserEvent.close, () => {
       this.methods = undefined

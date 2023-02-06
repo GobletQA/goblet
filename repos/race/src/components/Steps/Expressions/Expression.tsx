@@ -1,6 +1,5 @@
 import { ChangeEvent } from 'react'
 import type { TExpPart, TStepParentAst, TStepDef, TStepAst } from '@GBR/types'
-import type { TAutoOpt } from '@gobletqa/components'
 
 import { ExpInput } from './ExpInput'
 import { capitalize } from '@keg-hub/jsutils'
@@ -14,8 +13,8 @@ export type TExpression = {
   def:TStepDef
   width:number
   step: TStepAst
-  parent:TStepParentAst
   expression:TExpPart
+  parent:TStepParentAst
   onChange:(step:TStepAst) => void
 }
 
@@ -44,7 +43,9 @@ const useExpressionChange = (props:TExpression) => {
 
 export const Expression = (props:TExpression) => {
   const {
+    step,
     width,
+    parent,
     expression
   } = props
 
@@ -57,6 +58,9 @@ export const Expression = (props:TExpression) => {
       sm={width}
     >
       <Input
+        step={step}
+        parent={parent}
+        expression={expression}
         onChange={onChange}
         value={expression.value}
         type={expression.paramType}

@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import type { TSelectFromBrowserEvent } from '@gobletqa/components'
 
 import { useApp } from '@store'
 import { RaceEditor } from '@gobletqa/race'
@@ -7,7 +8,15 @@ import { Divider } from '@components/Layout/Divider'
 import { NotConnected } from '@components/NotConnected'
 import { useRaceHooks } from '@hooks/race/useRaceHooks'
 import { PrePanels } from '@components/Panels/PrePanels'
-import { DragSelect, BlockIcon, DefSidebarWidth } from '@gobletqa/components'
+import {
+  BlockIcon,
+  DragSelect,
+  useEventListen,
+  DefSidebarWidth,
+  SelectFromBrowserEvt,
+} from '@gobletqa/components'
+
+import { selectElement } from '@actions/socket/api/selectElement'
 
 export type TVisualEditor = {
   portal?:string
@@ -22,6 +31,13 @@ export const VisualEditor = (props:TVisualEditor) => {
     connected,
     rootPrefix
   } = useRaceHooks()
+
+  useEventListen<TSelectFromBrowserEvent>(
+    SelectFromBrowserEvt,
+    ({ parent, step, expression }) => {
+      selectElement()
+    }
+  )
 
   return connected
     ? (

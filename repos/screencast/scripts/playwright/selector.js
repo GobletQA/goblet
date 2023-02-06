@@ -1,12 +1,14 @@
+
+
 /**
- * Finds the position of an element within a list of element
- * Uses shortcuts where possible through the element.id or element tagName
- * Otherwise it will try to generate a selector from the element classList and tagName
- * @type {Function}
- * @param {Object} el - Dom element to generate a selector for
- * @param {Array} nodeList - List of dom nodes that may contain the element
- *
- */
+* Finds the position of an element within a list of element
+* Uses shortcuts where possible through the element.id or element tagName
+* Otherwise it will try to generate a selector from the element classList and tagName
+* @type {Function}
+* @param {Object} el - Dom element to generate a selector for
+* @param {Array} nodeList - List of dom nodes that may contain the element
+*
+*/
 const positionInNodeList = (el, nodeList) => {
   for (let i = 0; i < nodeList.length; i++) {
     if (el === nodeList[i]) return i
@@ -22,7 +24,7 @@ const searchUpDomTree = (el, doc, selector) => {
   if (matches.length === 1) return selector
 
   // Check unique with a tag name and selector
-  const tagSelector = CSS.escape(el.tagName) + selector
+  const tagSelector = CSS.escape(el.tagName.toLowerCase()) + selector
   matches = doc.querySelectorAll(tagSelector)
   if (matches.length === 1) return tagSelector
 
@@ -45,7 +47,7 @@ const searchUpDomTree = (el, doc, selector) => {
 const uniqueByNth = (el, doc) => {
   // Check unique with tag name and nth-child
   const index = positionInNodeList(el, el.parentNode.children) + 1
-  const nChildSelector = CSS.escape(el.tagName) + ":nth-child(" + index + ")"
+  const nChildSelector = CSS.escape(el.tagName.toLowerCase()) + ":nth-child(" + index + ")"
 
   return el.parentNode === doc || doc.querySelectorAll(nChildSelector).length === 1
     ? nChildSelector
@@ -120,7 +122,7 @@ const findCssSelector = (el) => {
 }
 
 if(typeof window !== 'undefined'){
-  window.findCssSelector = findCssSelector
+  window.__gobletFindCssSelector = findCssSelector
 
   window.__gobletTest && (
     window.__gobletTest.selector = {
@@ -132,3 +134,5 @@ if(typeof window !== 'undefined'){
   )
 
 }
+
+

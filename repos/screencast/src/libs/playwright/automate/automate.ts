@@ -10,19 +10,30 @@ import type {
   TBrowserContext,
 } from '@GSC/types'
 
+import { EBrowserEvent } from '@GSC/types'
 import {
   PWAutomateHoverOn,
   PWAutomateHoverOff,
 } from '@GSC/constants'
 
 import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
+
 import { getInjectScript } from '../helpers/getInjectScript'
+import { addPWInitScripts } from '../helpers/addPWInitScripts'
+import { exposePWFunction } from '../helpers/exposePWFunction'
 
-const globalActions = {
-  toggleHove: `__gobletToggleHoveActive`,
-  removeListener: `__gobletRemoveHoverListen`,
+
+export type TElSelectEvent = {
+  key?:string
+  type?:string
+  target?:string
+  elementTag?:string
+  elementType?:string
+  selectedText?:string
+  selectedIndex?:number
+  elementChecked?:boolean
+  elementInnerHtml?:string
 }
-
 
 /**
  * Ties an automate instance class to the browser page
@@ -32,12 +43,11 @@ const globalActions = {
 const addAutomateToPage = (instance:Automate, page:TBrowserPage) => {
   // @ts-ignore
   if(page.__GobletAutomateInstance) return
-
   // @ts-ignore
   page.__GobletAutomateInstance = instance
 
   // Add on page close listener to cleanup the automate instance
-  page.on(`close`, async (page) => {
+  page.on(EBrowserEvent.close, async (page) => {
     // @ts-ignore
     const automate = page.__GobletAutomateInstance as Automate
     await automate?.cleanUp()
@@ -50,7 +60,6 @@ export class Automate {
   browser:TBrowser
   page:TBrowserPage
   context:TBrowserContext
-  initialized:boolean=false
   onEvents:TOnAutomateEvent[] = []
   onCleanup:TAutomateCleanupCB = noOp
   options:TAutomateOpts = {
@@ -59,15 +68,16 @@ export class Automate {
       position: `absolute`,
       zIndex: `2147483640`,
       pointerEvents: `none`,
-      border: `3px solid #785B9C`,
+      border: `5px solid #c491ff`,
       transition: `left 100ms ease 0s, top 100ms ease 0s, height 100ms ease 0s, width 100ms ease 0s`
     }
   } as TAutomateOpts
 
-  constructor(config:TAutomateConfig, id?:string){
+  constructor(config?:TAutomateConfig, id?:string){
     this.id = id
-    this.init(config)
+    config && this.init(config)
   }
+
 
   /**
    * Loops the registered event methods and calls each one passing in the event object
@@ -76,15 +86,10 @@ export class Automate {
    */
   fireEvent = (event:TAutomateEvent) => {
     this.onEvents.map(func => checkCall(func, event))
-
     return this
   }
 
   init = async (config:TAutomateConfig) => {
-    if(this.initialized) return this
-
-    this.initialized = true
-
     const {
       page,
       context,
@@ -109,7 +114,6 @@ export class Automate {
     await this.addInitScripts()
 
     return this
-
   }
 
   /**
@@ -127,37 +131,48 @@ export class Automate {
    * @type {function}
    */
   addInitScripts = async () => {
-    if(!this.initialized)
-      throw new Error(`Automate#init must be called before addInitScripts can be called`)
+    exposePWFunction(
+      this.context,
+      `getGobletHoverOption`,
+      this.getHoverOption
+    )
+    exposePWFunction(
+      this.context,
+      `onGobletSelectAction`,
+      this.gobletSelectAction
+    )
 
-    try {
-      await this.page.exposeFunction(`getGobletHoverOption`, this.getHoverOption)
-      
-      await this.page.addInitScript({
-        content: getInjectScript([`mouseHover`])
-      })
-    }
-    catch(err){}
+    const scriptsAdded = await addPWInitScripts(
+      this.context,
+      [`selector`, `mouseHover`]
+    )
+    // FUCK - script does not load properly
+    // sometimes needs a reset, sometimes its fine WTF!!!
+    // await this.page.reload()
   }
-  
+
+
   getHoverOption = (option:string) => {
-    console.log(`------- GET HOVER OPTIONS -------`)
-    console.log(`------- option -------`)
-    console.log(option)
-    
     const found = option ? this.options[option] : undefined
-    
     return found
   }
-  
-  toggleHoverActive = async () => {
-    if(!this.initialized)
-      throw new Error(`Automate#init must be called before toggleHoverActive can be called`)
-    
-    await this.page.evaluate(() => {
-      // @ts-ignore
-      window.__gobletToggleHoveActive()
-    })
+
+  gobletSelectAction = async (event:TElSelectEvent) => {
+    console.log(`------- event -------`)
+    console.log(event)
+
+    await this.selectPageElementOff()
+  }
+
+
+  selectPageElementOff = async () => {
+    // @ts-ignore
+    await this.page.evaluate(() => window.__gobletElementSelectOff())
+  }
+
+  selectPageElementOn = async () => {
+    // @ts-ignore
+    await this.page.evaluate(() => window.__gobletElementSelectOn())
   }
 
   /**
@@ -177,8 +192,6 @@ export class Automate {
     delete this.browser
     this.onEvents = []
     this.options = {} as TAutomateOpts
-    this.initialized = false
-
   }
 
 }
