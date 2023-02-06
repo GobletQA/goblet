@@ -50,19 +50,19 @@ const useItems = (onClick:() => void) => {
   }, [])
 }
 
-
-
 export const ExpAutoInput = (props:TExpAutoInput) => {
-  
+
   const {
     step,
     parent,
+    onChange,
     expression,
     ...rest
   } = props
 
-  const onClick = useInline(() => {
-    selectFromBrowser(parent, step, expression)
+  const onClick = useInline(async () => {
+    const data = await selectFromBrowser(parent, step, expression)
+    onChange?.({target: { value: data.target }}, )
   })
 
   const items = useItems(onClick)
@@ -71,6 +71,7 @@ export const ExpAutoInput = (props:TExpAutoInput) => {
     <AutoInput
       {...expressionProps}
       {...rest}
+      onChange={onChange}
       decor={{
         items,
         Component: ExpressionMenu

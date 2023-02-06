@@ -26,3 +26,4 @@ export const PWPlay = {
 
 export const PWAutomateHoverOn = `PW-AUTOMATE-HOVER-ON`
 export const PWAutomateHoverOff = `PW-AUTOMATE-HOVER-OFF`
+export const PWAutomateSelectElement = `PW-AUTOMATE-SELECT-ELEMENT`

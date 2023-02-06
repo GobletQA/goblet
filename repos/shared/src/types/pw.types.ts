@@ -1,6 +1,7 @@
 import type { TFileModel } from './models.types'
 import type { EBrowserType } from './browser.types'
 import type { TGitData, TRepo } from './repo.types'
+import type { TAutomateEvent } from './pwAutomate.types'
 import type {
   Page,
   Frame,
@@ -13,17 +14,25 @@ import type {
   BrowserContextOptions,
 } from 'playwright'
 
-export type TBrowser = Browser
-export type TBrowserPage = Page
+/**
+ * This is an internal playwright property
+ * So every time playwright is updated, we need to ensure it still exists on the components
+ */
+export type TWithGuid = {
+  _guid?:string
+}
+
+export type TBrowser = Browser & TWithGuid
+export type TBrowserPage = Page & TWithGuid
+export type TBrowserContext = BrowserContext & TWithGuid
+
 export type TScreenDims = ViewportSize
 export type TBrowserServer = BrowserServer
-export type TBrowserContext = BrowserContext
 export type TBrowserContextGeo = Geolocation
 export type TBrowserLaunchOpts = LaunchOptions
 export type TBrowserContextOpts = BrowserContextOptions
 export type TColorSchema = null | `light` | `dark` | `no-preference`
 export type TBrowserType = `chromium` | `firefox` | `webkit` | string
-
  
 export type TBrowserTraceStartOpts = {
   path?: string;
@@ -175,4 +184,5 @@ export type TOnBrowserEvents = {
   events:TBrowserEvents
   browserConf?: TBrowserConf
   pwComponents?: TPWComponents
+  automateEvent?: (event:TAutomateEvent) => void
 }

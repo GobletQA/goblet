@@ -17,6 +17,6 @@ export const mapStepTokens = (
     const value = token ? removeQuotes(token.match) : exp.text
     return value !== exp.text
       ? {...exp, value}
-      : exp
+      : {...exp, value: ''}
   })
 }

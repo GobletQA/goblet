@@ -241,13 +241,20 @@ export const getContext = async (
     const opts = getContextOpts(browserConf.context)
     Logger.verbose(`Context Options`, opts)
 
-    context = hasContexts ? contexts[0] : await browser.newContext(opts)
-    hasContexts
-      ? Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
-      : Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
+    if(hasContexts){
+      context = contexts[0]
+      Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
+    }
+    else {
+      context = await browser.newContext(opts)
+      Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
+
+      Automate.bind({ parent: context })
+    }
 
   }
   else Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
+
 
   return { context, browser }
 }
@@ -403,11 +410,6 @@ export const startBrowser = async (
 
     // Build the status object for the newly started browser
     const status = buildStatus(browserConf.type, hasComponents)
-
-    config.addAutomate
-      && pwComponents?.page
-      && pwComponents?.context
-      && new Automate(pwComponents)
 
     return {
       status,

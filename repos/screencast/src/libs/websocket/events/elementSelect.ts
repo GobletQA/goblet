@@ -7,7 +7,7 @@ import type {
 
 
 import { startBrowser } from '@GSC/libs/playwright/browser/browser'
-import { turnOnElementSelect } from '@GSC/libs/playwright/automate/helpers'
+import { Automate } from '@GSC/libs/playwright/automate/automate'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 const handleSelectElement = async (
@@ -17,12 +17,12 @@ const handleSelectElement = async (
   app:Express
 ) => {
 
-  // TODO: Add listener to send the selected element back to the FE via websocket
-
   const browserConf = joinBrowserConf({ addAutomate: true }, app)
   const pwComponents = await startBrowser(browserConf)
-  const { page } = pwComponents
-  await turnOnElementSelect(page)
+  await Automate.turnOnElementSelect(pwComponents)
+
+  // Manager.emit(socket, WS_PW_URL_CHANGE, {data: { url }, group: socket.id })
+  // TODO: Add listener to send the selected element back to the FE via websocket
 
 }
 

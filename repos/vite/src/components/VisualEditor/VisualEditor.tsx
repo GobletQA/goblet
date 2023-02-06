@@ -34,9 +34,7 @@ export const VisualEditor = (props:TVisualEditor) => {
 
   useEventListen<TSelectFromBrowserEvent>(
     SelectFromBrowserEvt,
-    ({ parent, step, expression }) => {
-      selectElement()
-    }
+    ({ parent, step, expression }) => selectElement()
   )
 
   return connected

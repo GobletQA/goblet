@@ -22,3 +22,10 @@ export type TSelectFromBrowserEvent = {
     description?: string,
   }
 }
+
+export type TSelectFromBrowserRespEvent = {
+  type: string,
+  target: string,
+  elementTag: string,
+  elementHtml: string
+}

@@ -6,6 +6,7 @@ import type {
 
 import { startBrowser } from './browser'
 import { EBrowserEvent } from '@GSC/types'
+import { Automate } from '@GSC/libs/playwright/automate/automate'
 
 class BrowserEventListener {
   name:EBrowserEvent
@@ -33,11 +34,22 @@ export const browserEvents = async (props:TOnBrowserEvents) => {
   const {
     events,
     browserConf,
-    pwComponents
+    automateEvent,
   } = props
 
-  const { page } = pwComponents || await startBrowser(browserConf)
+  const pwComponents = props.pwComponents || await startBrowser(browserConf)
+
+    // Setup Automate event listener
+  automateEvent
+    && Automate.addEventListener(pwComponents, automateEvent)
+
+  // Setup browser page event listeners
   Object.entries(events).forEach(
-    ([ event, methods ]:[EBrowserEvent, TBrowserEventCB[]]) => new BrowserEventListener(event, methods, page)
+    ([ event, methods ]:[EBrowserEvent, TBrowserEventCB[]]) => new BrowserEventListener(
+      event,
+      methods,
+      pwComponents.page
+    )
   )
+
 }

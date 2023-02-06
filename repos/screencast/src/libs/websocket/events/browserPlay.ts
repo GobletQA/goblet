@@ -8,6 +8,7 @@ import type {
   TPlayerTestEventMeta
 } from '@GSC/types'
 
+import { Logger } from '@GSC/utils/logger'
 import { emptyArr, isArr } from '@keg-hub/jsutils'
 import { Repo } from '@gobletqa/shared/repo/repo'
 import { playBrowser } from '@GSC/libs/playwright/browser/playBrowser'
@@ -37,7 +38,7 @@ const handleStartPlaying = async (
       if(event.data.tests) event.data.tests = emptyArr
       if(event.data.describes) event.data.describes = emptyArr
 
-      console.log(`Emit ${event.name} event`, event)
+      Logger.verbose(`Emit ${event.name} event`, event)
       Manager.emit(socket, event.name, { ...event, group: socket.id })
     },
     onCleanup: async (closeBrowser:boolean) => {

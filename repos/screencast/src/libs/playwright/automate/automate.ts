@@ -2,25 +2,27 @@ import type {
   TAutomateOpts,
   TAutomateEvent,
   TAutomateConfig,
+  TAutomateParent,
   TOnAutomateEvent,
   TAutomateCleanupCB,
 
-  TBrowser,
   TBrowserPage,
+  TPWComponents,
   TBrowserContext,
 } from '@GSC/types'
 
+
+import { Logger } from '@GSC/utils/logger'
 import { EBrowserEvent } from '@GSC/types'
+import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
+import { addPWInitScripts } from '../helpers/addPWInitScripts'
+import { exposePWFunction } from '../helpers/exposePWFunction'
+
 import {
   PWAutomateHoverOn,
   PWAutomateHoverOff,
+  PWAutomateSelectElement,
 } from '@GSC/constants'
-
-import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
-
-import { getInjectScript } from '../helpers/getInjectScript'
-import { addPWInitScripts } from '../helpers/addPWInitScripts'
-import { exposePWFunction } from '../helpers/exposePWFunction'
 
 
 export type TElSelectEvent = {
@@ -35,31 +37,129 @@ export type TElSelectEvent = {
   elementInnerHtml?:string
 }
 
-/**
- * Ties an automate instance class to the browser page
- * When the page closes the automate class is removed as well
- * Sets a single automate instance per page
- */
-const addAutomateToPage = (instance:Automate, page:TBrowserPage) => {
-  // @ts-ignore
-  if(page.__GobletAutomateInstance) return
-  // @ts-ignore
-  page.__GobletAutomateInstance = instance
-
-  // Add on page close listener to cleanup the automate instance
-  page.on(EBrowserEvent.close, async (page) => {
-    // @ts-ignore
-    const automate = page.__GobletAutomateInstance as Automate
-    await automate?.cleanUp()
-  })
-}
 
 export class Automate {
 
+  /**
+   * Creates a new instance of automate and binds it to a playwright context or page
+   */
+  static bind = async (config?:TAutomateConfig, id?:string) => {
+    Logger.info(`Automate - Bind playwright parent to automate instance`)
+
+    const automate = new Automate(config, id || config?.parent?._guid)
+    Automate.addPlaywright(automate.parent, automate)
+    await Automate.addInitScripts(automate.parent, automate)
+  }
+
+  /**
+   * Ties an automate instance class to the browser context or parent
+   * When the parent closes the automate class is removed as well
+   * Sets a single automate instance per parent
+   */
+  static addPlaywright = (parent:TAutomateParent, instance:Automate) => {
+    Logger.info(`Automate - Adding automate instance to playwright`)
+
+    if(parent.__GobletAutomateInstance){
+      Logger.warn(`Automate - An automate instance already exist on playwright parent`)
+      return
+    }
+
+    parent.__GobletAutomateInstance = instance
+
+    // Add on parent close listener to cleanup the automate instance
+    // @ts-ignore
+    parent.on(EBrowserEvent.close, async (parent:TAutomateParent) => {
+      const automate = parent.__GobletAutomateInstance
+      await automate?.cleanUp?.()
+    })
+  }
+
+  /**
+   * Adds the init scripts to the browser context
+   */
+  static addInitScripts = async (parent:TAutomateParent, automate?:Automate) => {
+    Logger.info(`Automate - Adding automate init scripts to playwright parent`)
+    
+    automate = automate || parent.__GobletAutomateInstance
+    if(!automate)
+      throw new Error(`Could not find goblet automate instance on parent object`)
+
+    await exposePWFunction(
+      parent,
+      `getGobletHoverOption`,
+      automate.getHoverOption
+    )
+    await exposePWFunction(
+      parent,
+      `onGobletSelectAction`,
+      automate.gobletSelectAction
+    )
+    await addPWInitScripts(
+      parent,
+      [`selector`, `mouseHover`]
+    )
+  }
+
+  static turnOnElementSelect = async (pwComponents:Partial<TPWComponents>) => {
+    Logger.info(`Automate - Turning on browser element select`)
+
+    const parent = Automate.getParent(pwComponents)
+    const automate = parent.__GobletAutomateInstance
+    const page = Automate.getPage(automate)
+
+    if(!automate)
+      throw new Error(`Could not find goblet automate instance on parent object`)
+
+    await automate?.selectPageElementOn?.(page)
+  }
+
+  static turnOffElementSelect = async (pwComponents:Partial<TPWComponents>) => {
+    Logger.info(`Automate - Turning off browser element select`)
+
+    const parent = Automate.getParent(pwComponents)
+    const automate = parent.__GobletAutomateInstance
+    const page = Automate.getPage(automate)
+
+    if(!automate)
+      throw new Error(`Could not find goblet automate instance on parent object`)
+
+    await automate?.selectPageElementOff?.(page)
+  }
+
+  static addEventListener = (
+    pwComponents:Partial<TPWComponents>,
+    onEvent:TOnAutomateEvent
+  ) => {
+    const parent = Automate.getParent(pwComponents)
+    const automate = parent.__GobletAutomateInstance
+    automate.registerListener(onEvent)
+  }
+
+  /**
+   * Gets a browser page from the parent
+   * Checks for evaluate method to know if parent is a page or context
+   */
+  static getPage = (automate:Automate):TBrowserPage => {
+    Logger.info(`Automate - Getting playwright page for automate instance`)
+
+    const page = automate.parent as TBrowserPage
+    const context = automate.parent as TBrowserContext
+    return typeof page.evaluate === `function` ? page : context.pages()[0]
+  }
+
+  /**
+   * Gets the playwright component that has the instance of automate on it
+   */
+  static getParent = (pwComponents:Partial<TPWComponents>) => {
+    const context = pwComponents.context as TAutomateParent
+    if(context.__GobletAutomateInstance) return context
+
+    const page = pwComponents.page as TAutomateParent
+    if(page.__GobletAutomateInstance) return page
+  }
+
   id?:string = null
-  browser:TBrowser
-  page:TBrowserPage
-  context:TBrowserContext
+  parent: TAutomateParent
   onEvents:TOnAutomateEvent[] = []
   onCleanup:TAutomateCleanupCB = noOp
   options:TAutomateOpts = {
@@ -78,101 +178,72 @@ export class Automate {
     config && this.init(config)
   }
 
-
   /**
    * Loops the registered event methods and calls each one passing in the event object
    * Ensures the current recording state is added and upto date
-   * @member {Recorder}
    */
-  fireEvent = (event:TAutomateEvent) => {
+  fireEvent = (event:TAutomateEvent<TElSelectEvent>) => {
+    Logger.info(`Automate - Fire automate event`, event)
+    
     this.onEvents.map(func => checkCall(func, event))
     return this
   }
 
   init = async (config:TAutomateConfig) => {
+    Logger.info(`Automate - Initializing automate instance`)
+
     const {
-      page,
-      context,
-      browser,
+      parent,
       options,
       onEvent,
       onCleanup,
     } = config
 
-    if(page){
-      this.page = page
-      addAutomateToPage(this, this.page)
-    }
-
-    if(context) this.context = context
-    if(browser) this.browser = browser
+    if(parent) this.parent = parent as TAutomateParent
     if(options) this.options = deepMerge(this.options, options)
 
     if(onEvent) this.onEvents.push(onEvent)
     if(onCleanup) this.onCleanup = onCleanup
-
-    await this.addInitScripts()
 
     return this
   }
 
   /**
    * Adds event callback, called when events are fired
-   * @member {Recorder}
-   * @type {function}
    */
   registerListener = (onEvent:TOnAutomateEvent) => {
-    this.onEvents.push(onEvent)
+    !this.onEvents.includes(onEvent) && this.onEvents.push(onEvent)
   }
-
-  /**
-   * Adds the init scripts to the browser context
-   * @member {Recorder}
-   * @type {function}
-   */
-  addInitScripts = async () => {
-    exposePWFunction(
-      this.context,
-      `getGobletHoverOption`,
-      this.getHoverOption
-    )
-    exposePWFunction(
-      this.context,
-      `onGobletSelectAction`,
-      this.gobletSelectAction
-    )
-
-    const scriptsAdded = await addPWInitScripts(
-      this.context,
-      [`selector`, `mouseHover`]
-    )
-    // FUCK - script does not load properly
-    // sometimes needs a reset, sometimes its fine WTF!!!
-    // await this.page.reload()
-  }
-
 
   getHoverOption = (option:string) => {
+    Logger.info(`Automate - Getting automate option ${option}`)
+    
     const found = option ? this.options[option] : undefined
     return found
   }
 
-  gobletSelectAction = async (event:TElSelectEvent) => {
-    console.log(`------- event -------`)
-    console.log(event)
+  gobletSelectAction = async (data:TElSelectEvent) => {
+    Logger.info(`Automate - Firing automate select-element event`)
 
     await this.selectPageElementOff()
+    this.fireEvent({
+      data,
+      name: PWAutomateSelectElement,
+    })
   }
 
+  selectPageElementOff = async (page?:TBrowserPage) => {
+    page = page || Automate.getPage(this)
 
-  selectPageElementOff = async () => {
     // @ts-ignore
-    await this.page.evaluate(() => window.__gobletElementSelectOff())
+    await page.evaluate(() => window.__gobletElementSelectOff())
   }
 
-  selectPageElementOn = async () => {
+  selectPageElementOn = async (page?:TBrowserPage) => {
+    page = page || Automate.getPage(this)
+
     // @ts-ignore
-    await this.page.evaluate(() => window.__gobletElementSelectOn())
+    await page.evaluate(() => window.__gobletElementSelectOn())
   }
 
   /**
@@ -180,16 +251,18 @@ export class Automate {
    * Attempts to avoid memory leaks by un setting Recorder instance properties
    */
   cleanUp = async () => {
+    Logger.info(`Automate - Cleaning up automate instance`)
+    
     await this.onCleanup(this)
 
-    // @ts-ignore
-    if(this.page) this.page.__GobletAutomateInstance = undefined
-    this.page = undefined
-    this.context = undefined
-    this.browser = undefined
-    delete this.page
-    delete this.context
-    delete this.browser
+    if(this.parent) {
+      this.parent.__GobletAutomateInstance = undefined
+      delete this.parent.__GobletAutomateInstance
+    }
+
+    this.parent = undefined
+    delete this.parent
+
     this.onEvents = []
     this.options = {} as TAutomateOpts
   }
