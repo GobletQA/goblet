@@ -33,8 +33,11 @@ export * from './NotePlusIcon'
 export * from './NoteMinusIcon'
 export * from './ReflectHorIcon'
 export * from './SelectDragIcon'
+export * from './UserDetailsIcon'
 
 
 // export * from './UserPlus'
-// export * from './FileOutlinePlus'
+// export * from './EyeOffIcon'
 // export * from './ShoePrintIcon'
+// export * from './UserAccountIcon'
+// export * from './FileOutlinePlus'

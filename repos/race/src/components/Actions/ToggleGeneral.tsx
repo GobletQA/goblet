@@ -7,7 +7,7 @@ import {
   Tooltip,
   stopEvent,
   useInline,
-  CloseIcon,
+  NoteMinusIcon,
 } from '@gobletqa/components'
 
 export type TToggleGeneralAct = {
@@ -48,7 +48,7 @@ export const ToggleGeneralAct = (props:TToggleGeneralAct) => {
         sx={styles}
         className={ref}
         onClick={btnClk}
-        Icon={Icon || CloseIcon}
+        Icon={Icon || NoteMinusIcon}
       />
     </Tooltip>
   )

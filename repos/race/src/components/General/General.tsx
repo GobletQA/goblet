@@ -43,6 +43,7 @@ export const General = (props:TFeatureGeneral) => {
           <AddStoryAct
             onClick={addStory}
             type={ESectionType.story}
+            title={`Add User Story`}
             key={`gr-general-add-story-action`}
           />
         ),

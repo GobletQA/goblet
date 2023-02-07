@@ -40,7 +40,7 @@ export const VisualEditor = (props:TVisualEditor) => {
   return connected
     ? (
         <>
-          <DragSelect />
+          {/* <DragSelect /> */}
           <RaceEditor
             {...props}
             steps={steps}

@@ -124,6 +124,8 @@ export const StackContainer = styled(Box)(({ theme }) => `
 
 
 export const StackContent = gutterComp(MuiStack, `
+  width: 100%;
+  height: 100%;
   & > .MuiBox-root {
     margin-top: 0px
   }

@@ -7,18 +7,19 @@ import {
   Tooltip,
   stopEvent,
   useInline,
-  TabPlusIcon,
+  UserDetailsIcon,
 } from '@gobletqa/components'
 
 export type TAddStoryAct = {
   type:string
+  title?:string
   style?:CSSProperties
   Icon?:ComponentType<any>
   onClick: (...args:any)=> void
 }
 
 export const AddStoryAct = (props:TAddStoryAct) => {
-  const { type, onClick, Icon, style } = props
+  const { title, type, onClick, Icon, style } = props
 
   const ref = `action-add-${type}`
   const btnClk = useInline((evt:MouseEvent) => {
@@ -35,7 +36,7 @@ export const AddStoryAct = (props:TAddStoryAct) => {
       describeChild
       enterDelay={500}
       fontSize={`10px`}
-      title={`Add ${capitalize(type)}`}
+      title={title || `Add ${capitalize(type)}`}
     >
       <SectionActIcnBtn
         id={ref}
@@ -43,7 +44,7 @@ export const AddStoryAct = (props:TAddStoryAct) => {
         sx={styles}
         className={ref}
         onClick={btnClk}
-        Icon={Icon || TabPlusIcon}
+        Icon={Icon || UserDetailsIcon}
       />
     </Tooltip>
   )

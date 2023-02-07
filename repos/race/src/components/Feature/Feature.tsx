@@ -1,16 +1,8 @@
 import type { MouseEvent } from 'react'
 import type { TFeaturesRefs, TEmptyFeature } from '@GBR/types'
-import type { TToggleEditCB } from '@gobletqa/components'
 
-import { useEffect, useCallback } from 'react'
 
-// TODO - Remove this when done with step
-import { Step } from '../Steps/Step'
-import { EStepKey } from '@GBR/types'
-import { featureFactory } from '@GBR/factories/featureFactory'
-import { useEffectOnce } from '@gobletqa/components'
-import { isStr } from '@keg-hub/jsutils'
-import { updateFeature } from '@GBR/actions/feature/updateFeature'
+import { useMemo, useCallback } from 'react'
 
 import { General } from '../General'
 import { Rules } from '../Rules'
@@ -24,6 +16,7 @@ import { useEditor } from '../../contexts'
 import { FeatureActions } from './FeatureActions'
 import { EmptyFeatureUUID } from '@GBR/constants'
 
+import { EmptyFeature } from './EmptyFeature'
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { createFeature } from '@GBR/actions/feature/createFeature'
 import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
@@ -39,7 +32,15 @@ const styles = {
   section: {
     padding: gutter.padding.px,
   },
-  content: {}
+  content: {
+    width: `100%`,
+    height: `100%`,
+    display: `flex`,
+    flexDirection: `column`,
+  },
+  notEmpty: {
+    marginTop: `auto`
+  }
 }
 
 export const Feature = (props:TFeature) => {
@@ -50,6 +51,10 @@ export const Feature = (props:TFeature) => {
   const onClick = useCallback((e:MouseEvent<HTMLButtonElement>) => {
     createFeature({}, rootPrefix)
   }, [rootPrefix])
+
+  const isEmpty = useMemo(() => {
+    return Boolean(!feature?.background && !feature?.rules?.length && !feature?.scenarios?.length)
+  }, [feature])
 
   return !feature || !feature?.uuid
     ? (
@@ -68,7 +73,10 @@ export const Feature = (props:TFeature) => {
           type={ESectionType.feature}
           className='gr-feature-editor-section'
         >
-          <Box sx={styles.content}>
+          <Box
+            sx={styles.content}
+            className='gr-feature-sections-container'
+          >
 
             { feature.uuid !== EmptyFeatureUUID
                 ? (
@@ -94,6 +102,10 @@ export const Feature = (props:TFeature) => {
                         scenarios={feature.scenarios}
                         onChangeStep={changeScenarioStep}
                         onRemoveStep={removeScenarioStep}
+                      />
+                      <EmptyFeature
+                        parent={feature}
+                        sx={!isEmpty ? styles.notEmpty : undefined}
                       />
                     </>
                   )

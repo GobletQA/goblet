@@ -21,6 +21,8 @@
       "@gobletqa/race/*": ["src/*"],
       "@GBR/actions": [ "src/actions" ],
       "@GBR/actions/*": [ "src/actions/*" ],
+      "@GBR/assets": [ "src/assets" ],
+      "@GBR/assets/*": [ "src/assets/*" ],
       "@GBR/components": [ "src/components" ],
       "@GBR/components/*": [ "src/components/*" ],
       "@GBR/configs": [ "configs" ],

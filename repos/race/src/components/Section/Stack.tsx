@@ -20,7 +20,8 @@ export type TStack = {
 
 const styles = {
   section: {
-    padding: '0px',
+    padding: `0px`,
+    height: `100%`
   },
   body: {
     
@@ -68,8 +69,8 @@ export const Stack = (props:TStack) => {
                   {...stackProps}
                   gutter={gutter}
                   children={children}
-                  className='gr-section-stack'
                   sx={[stackSx, styles?.stack]}
+                  className='gr-section-stack-content'
                 />
               )
             : children
