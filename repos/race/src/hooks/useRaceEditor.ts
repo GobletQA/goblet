@@ -16,6 +16,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   const {
     steps,
     features,
+    menuContext,
     initialFeature
   } = props
 
@@ -69,6 +70,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     curValueRef,
     stepDefsRef,
     featuresRef,
+    menuContext,
     featureGroups,
     updateEmptyTab,
     onCloseFeature,

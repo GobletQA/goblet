@@ -19,6 +19,7 @@ export const Editor = (props:TRaceEditorProps) => {
     curValueRef,
     stepDefsRef,
     featuresRef,
+    menuContext,
     featureGroups,
     onFeatureClose,
     updateEmptyTab,
@@ -35,6 +36,7 @@ export const Editor = (props:TRaceEditorProps) => {
   return (
     <EditorProvider
       featuresRef={featuresRef}
+      menuContext={menuContext}
       rootPrefix={props.rootPrefix}
       updateEmptyTab={updateEmptyTab}
       onFeatureClose={onFeatureClose}

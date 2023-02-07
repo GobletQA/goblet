@@ -4,6 +4,7 @@ import type {
   TOnFeatureCB,
   TFeaturesRef,
   TSetFeatureRefs,
+  TRaceContextMenu,
   TSetFeatureGroups,
   TOnReturnFeatureCB,
 } from '../types'
@@ -27,6 +28,7 @@ export type TEditorProvider = {
   onFeatureClose:TOnFeatureCB
   onFeatureChange:TOnFeatureCB
   onFeatureActive:TOnFeatureCB
+  menuContext:TRaceContextMenu
   onFeatureInactive:TOnFeatureCB
   setFeatureRefs:TSetFeatureRefs
   setFeatureGroups:TSetFeatureGroups
@@ -39,15 +41,22 @@ export type TEditorCtx = {
   setFeature:TOnFeatureCB
   displayGeneral?:boolean
   updateFeature:TOnFeatureCB
+  menuContext:TRaceContextMenu
 }
 
 export const EditorContext = createContext<TEditorCtx>({} as TEditorCtx)
 export const useEditor = () => useContext(EditorContext)
 
+export const useMenuContext = (context:keyof TRaceContextMenu) => {
+  const editor = useEditor()
+  return editor?.menuContext?.[context]
+}
+
 export const EditorProvider = (props:TEditorProvider) => {
   const {
     children,
     rootPrefix,
+    menuContext,
     featuresRef,
     updateEmptyTab,
     setFeatureRefs,
@@ -86,6 +95,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     return {
       setFeature,
       rootPrefix,
+      menuContext,
       updateFeature,
       feature: (feature || noOpObj) as TRaceFeature,
     }

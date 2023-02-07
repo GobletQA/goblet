@@ -2,6 +2,7 @@ import type { RefObject, MutableRefObject, ComponentType } from 'react'
 import type { TRaceStepDefs } from './steps.types'
 import type { TWorldConfig } from './shared.types'
 import type { TSettingsState } from './settings.types'
+import type { TRaceContextMenu } from './menu.types'
 import type { TRaceFeatureAsts, TRaceFeatures, TRaceFeature } from './features.types'
 import type {
   TTabItem,
@@ -66,6 +67,7 @@ export type TEditorContainer = TFeaturesRefs & TEditorRefs & {
   PrePanels?:TSidebarPanel[]
   Divider?:ComponentType<any>
   featureGroups:TRaceFeatures
+  menuContext?:TRaceContextMenu
   onSidebarResize?:(width:number) => void
   portal?:string|MutableRefObject<HTMLElement>
   actions?:TEditorAction<TRaceEditor, TEditorRef>[]

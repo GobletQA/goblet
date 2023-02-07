@@ -10,13 +10,12 @@ import {
 } from './Steps.styled'
 
 
-import { Modifier } from './Modifier'
+
 import { StepActions } from './StepActions'
-import { Expressions } from './Expressions'
+import { Expressions } from '../Expressions'
 import { SelectAction } from './SelectAction'
-import { SelectSubject } from './SelectSubject'
 import { useInline } from '@gobletqa/components'
-import { NoExpMatch } from './Expressions/NoExpMatch'
+import { NoExpMatch } from '../Expressions/NoExpMatch'
 import { useExpressions } from '@GBR/hooks/useExpressions'
 import { copyStep } from '@GBR/actions/step/copyStep'
 
@@ -26,7 +25,6 @@ export type TStep = {
   onRemove?:(stepId:string, parentId?:string) => void
   onChange?:(updated:TStepAst, old?:TStepAst) => void
 }
-
 
 
 export const Step = (props:TStep) => {

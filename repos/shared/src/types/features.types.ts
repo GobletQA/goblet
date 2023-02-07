@@ -107,7 +107,7 @@ export type TBackgroundAst = {
 
 export type TRuleAst = {
   index: number
-  uuid?: string
+  uuid: string
   tags: string[]
   rule: string
   background?: TBackgroundAst

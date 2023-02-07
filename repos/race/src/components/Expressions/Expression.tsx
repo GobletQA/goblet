@@ -3,7 +3,7 @@ import type { TExpPart, TStepParentAst, TStepDef, TStepAst } from '@GBR/types'
 
 import { ExpInput } from './ExpInput'
 import { capitalize } from '@keg-hub/jsutils'
-import { StepGridItem } from '../Steps.styled'
+import { ExpGridItem } from './Expression.styled'
 import { useInline } from '@gobletqa/components'
 import { ExpressionKindMap } from './ExpressionKindMap'
 import { removeQuotes } from '@GBR/utils/helpers/removeQuotes'
@@ -53,7 +53,7 @@ export const Expression = (props:TExpression) => {
   const Input = ExpressionKindMap[expression.kind || expression.paramType] || ExpInput
 
   return (
-    <StepGridItem
+    <ExpGridItem
       xs={12}
       sm={width}
     >
@@ -68,6 +68,6 @@ export const Expression = (props:TExpression) => {
         helperText={expression.description}
         label={capitalize(expression.kind || expression.paramType)}
       />
-    </StepGridItem>
+    </ExpGridItem>
   )
 }
