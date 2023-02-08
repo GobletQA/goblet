@@ -3,6 +3,7 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TFeaturesRef,
+  TRaceMenuItem,
   TSetFeatureRefs,
   TRaceContextMenu,
   TSetFeatureGroups,
@@ -15,7 +16,7 @@ import {
   createContext,
 } from 'react'
 
-import { noOpObj } from '@keg-hub/jsutils'
+import { noOpObj, emptyArr } from '@keg-hub/jsutils'
 import { useFeature } from './FeatureContext'
 import { MemoChildren } from '@gobletqa/components'
 import { useFeatureCallbacks } from '../hooks/useFeatureCallbacks'
@@ -47,9 +48,11 @@ export type TEditorCtx = {
 export const EditorContext = createContext<TEditorCtx>({} as TEditorCtx)
 export const useEditor = () => useContext(EditorContext)
 
-export const useMenuContext = (context:keyof TRaceContextMenu) => {
+export const useMenuContext = (context?:keyof TRaceContextMenu) => {
   const editor = useEditor()
-  return editor?.menuContext?.[context]
+  return context
+    ? editor?.menuContext?.[context] || emptyArr as TRaceMenuItem[]
+    : emptyArr as TRaceMenuItem[]
 }
 
 export const EditorProvider = (props:TEditorProvider) => {

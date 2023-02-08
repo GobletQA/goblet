@@ -1,4 +1,4 @@
-import type { CSSProperties, SyntheticEvent, ComponentProps } from 'react'
+import type { ReactNode, CSSProperties, SyntheticEvent, ComponentProps } from 'react'
 import type { TAutoOptVal, TAutoOpt, TOnAutoChange, TInputDecor } from '@GBC/types'
 import type {
   AutocompleteChangeReason,
@@ -32,15 +32,15 @@ export type TAutoInput = {
   labelSide?:boolean
   decor?: TInputDecor
   disabled?: boolean
-  options?: TAutoOptVal[]
   loading?: boolean
   matchId?: boolean
   required?: boolean
   multiple?: boolean
-  helperText?:string
   placeholder?:string
   labelInline?:boolean
+  helperText?:ReactNode
   showCheckbox?: boolean
+  options?: TAutoOptVal[]
   labelSx?: CSSProperties
   onChange?: TOnAutoChange
   currentValue?:TAutoOptVal

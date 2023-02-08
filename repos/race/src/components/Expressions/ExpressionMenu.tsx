@@ -1,40 +1,34 @@
-import type { MouseEvent } from 'react'
 import type { TMenuItem } from '@gobletqa/components'
-
-import { useState, useRef } from 'react'
+import type { TMenuContextRef } from '@GBR/types'
 
 import {
   Menu,
-  useInline,
   IconButton,
   GobletIcon,
 } from '@gobletqa/components'
+import { useMenuItems } from '@GBR/hooks/menuContext/useMenuItems'
 
-export type TExpressionMenu = {
+export type TExpressionMenu = TMenuContextRef & {
   id:string
   parentId:string
   items: TMenuItem[]
+  onChange:(...args:any[]) => any
 }
 
 export const ExpressionMenu = (props:TExpressionMenu) => {
 
   const {
-    items,
     id="gr-expressions-menu",
     parentId="gc-expressions-menu-button"
   } = props
 
-  const [open, setOpen] = useState<boolean>(false)
-  const anchorRef = useRef<HTMLElement|undefined>(undefined)
-  const onOpen = useInline((event: MouseEvent<HTMLElement>) => {
-    setOpen(true)
-    anchorRef.current = event.currentTarget
-  })
-
-  const onClose = useInline(() => {
-    setOpen(false)
-    anchorRef.current = undefined
-  })
+  const {
+    open,
+    items,
+    onOpen,
+    onClose,
+    anchorRef,
+  } = useMenuItems(props)
 
   return (
     <>
@@ -43,8 +37,8 @@ export const ExpressionMenu = (props:TExpressionMenu) => {
         onClick={onOpen}
         Icon={GobletIcon}
         aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
         aria-controls={open ? id : undefined}
+        aria-expanded={open ? 'true' : undefined}
       />
       <Menu
         id={id}

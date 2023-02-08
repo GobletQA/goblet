@@ -24,4 +24,7 @@ export enum ESectionType {
   action='action',
   Action='action',
   ACTION='action',
+  expression='expression',
+  Expression='expression',
+  EXPRESSION='expression',
 }

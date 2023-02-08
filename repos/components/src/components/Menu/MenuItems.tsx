@@ -7,7 +7,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import MuiMenuItem from '@mui/material/MenuItem'
 import { useInline } from '@GBC/hooks/useInline'
 
-export type TMenuItem = {
+export type TMenuItem<R=Record<any, any>> = {
   key?:string
   id?:string
   text?:string
@@ -15,17 +15,17 @@ export type TMenuItem = {
   children?:ReactNode
   iconProps?:ComponentProps<any>
   Icon?:ComponentType<any>|ReactNode
-  onClick: (event: MouseEvent<HTMLElement>) => any
   onCloseMenu?:(event: MouseEvent<HTMLElement>) => any
+  onClick: <T=R>(ctx:T, event: MouseEvent<HTMLElement>) => any
 }
 
-export type TMenuItems = {
-  items: TMenuItem[]
+export type TMenuItems<T=Record<any, any>> = {
+  items: TMenuItem<T>[]
   autoClose?:boolean
   onCloseMenu?:(event: MouseEvent<HTMLElement>) => any
 }
 
-export const MenuItem = (props:TMenuItem) => {
+export const MenuItem = <T=Record<any, any>>(props:TMenuItem<T>) => {
   const {
     text,
     Icon,
@@ -38,7 +38,7 @@ export const MenuItem = (props:TMenuItem) => {
   
   const onItemClick = useInline((event:MouseEvent<HTMLElement>) => {
     closeMenu && onCloseMenu?.(event)
-    onClick?.(event)
+    onClick?.({}, event)
   })
 
   return (

@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import type { TSelectFromBrowserEvent } from '@gobletqa/components'
+
 
 import { useApp } from '@store'
 import { RaceEditor } from '@gobletqa/race'
@@ -7,13 +7,11 @@ import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Layout/Divider'
 import { NotConnected } from '@components/NotConnected'
 import { useRaceHooks } from '@hooks/race/useRaceHooks'
+import { useContextMenu } from '@hooks/race/useContextMenu'
 import { PrePanels } from '@components/Panels/PrePanels'
 import {
   BlockIcon,
-  DragSelect,
-  useEventListen,
   DefSidebarWidth,
-  SelectFromBrowserEvt,
 } from '@gobletqa/components'
 
 import { selectElement } from '@actions/socket/api/selectElement'
@@ -32,10 +30,7 @@ export const VisualEditor = (props:TVisualEditor) => {
     rootPrefix
   } = useRaceHooks()
 
-  useEventListen<TSelectFromBrowserEvent>(
-    SelectFromBrowserEvt,
-    ({ parent, step, expression }) => selectElement()
-  )
+  const menuContext = useContextMenu()
 
   return connected
     ? (
@@ -49,6 +44,7 @@ export const VisualEditor = (props:TVisualEditor) => {
             features={features}
             PrePanels={PrePanels}
             rootPrefix={rootPrefix}
+            menuContext={menuContext}
             sidebarStatus={!sidebarLocked}
             sidebarWidth={DefSidebarWidth}
           />

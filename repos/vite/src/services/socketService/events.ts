@@ -1,15 +1,12 @@
 import type { TSocketEvt } from '@types'
 import type { SocketService } from './socketService'
-import type { TSelectFromBrowserEvent } from '@gobletqa/components'
 
-
-import { BrowserNavEvt } from '@constants'
 import * as socketActions from '@actions/socket/local'
 import { camelCase, checkCall } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { playEvent } from '@actions/socket/local/playEvent'
-import { SelectFromBrowserRespEvt } from '@gobletqa/components'
 import { recordAction } from '@actions/socket/local/recordAction'
+import { SelectFromBrowserRespEvt, BrowserNavEvt } from '@constants'
 import { setBrowserRecording } from '@actions/socket/local/setBrowserRecording'
 
 /**

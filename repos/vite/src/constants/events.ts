@@ -16,3 +16,4 @@ export const OpenEditorFileEvt = `open-editor-file-event`
 export const SideNavToggledEvt = `side-nav-toggled-event`
 export const EditorPathChangeEvt = `editor-path-change-event`
 export const PlayerClearDecorationEvt = `player-clear-decoration-event`
+export const SelectFromBrowserRespEvt = `select-from-browser-response-event`

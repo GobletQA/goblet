@@ -34,7 +34,7 @@ export const useParkin = () => useContext(ParkinContext)
 export const ParkinProvider = (props:TParkinProvider) => {
   const { children, defs } = props
 
-  const [parkin, setParkin] = useState<IParkin>(new Parkin(props.world || {}, defs))
+  const [parkin, setParkin] = useState<IParkin>(new Parkin(props.world || {}, defs) as unknown as IParkin)
   const [world, setWorld] = useState<TWorldConfig>(parkin.world)
 
   const updateWorld = useInline<TUpdateWorld>((updated:TWorldConfig, replace:boolean) => {
