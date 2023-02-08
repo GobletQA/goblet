@@ -1,4 +1,4 @@
-
+import { ESectionType } from '@GBR/types'
 import { findRule } from '@GBR/utils/find'
 import { scenarioFactory } from '@GBR/factories/scenarioFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -21,7 +21,7 @@ export const addRuleScenario = async (ruleId:string) => {
     ...rule,
     scenarios: [
       ...rule.scenarios,
-      scenarioFactory(undefined, true)
+      scenarioFactory(undefined, true, ESectionType.rule)
     ]
   }
 

@@ -102,7 +102,7 @@ export type TBackgroundAst = {
   uuid: string
   tags: string[]
   background: string
-  scenarios: TScenarioAst[]
+  steps: TStepAst[]
 }
 
 export type TRuleAst = {

@@ -1,8 +1,9 @@
 import type { TRuleAst } from '@GBR/types'
 
-import { toObj } from '@gobletqa/race/utils/helpers/toObj'
+import { ESectionType } from '@GBR/types'
 import { scenariosFactory } from './scenarioFactory'
 import { backgroundFactory } from './backgroundFactory'
+import { toObj } from '@gobletqa/race/utils/helpers/toObj'
 import { deepMerge, uuid, emptyArr } from '@keg-hub/jsutils'
 
 const emptyRule = ():TRuleAst => ({
@@ -23,7 +24,7 @@ export const ruleFactory = (
         rule,
         {
           scenarios: scenariosFactory(rule?.scenarios),
-          ...toObj(`background`, backgroundFactory(rule?.background)),
+          ...toObj(`background`, backgroundFactory(rule?.background, undefined, ESectionType.rule)),
         }
       )
     : empty

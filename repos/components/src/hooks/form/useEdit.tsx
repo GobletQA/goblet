@@ -15,7 +15,6 @@ export type THEdit<T> = {
   controlled?:boolean
   onChange?:TChangeCB
   initialEditing?:boolean
-  onToggleEdit?:TToggleEditCB
   setValue?:(value:TInputValue) => any
 }
 
@@ -23,100 +22,56 @@ const getValue = <T=any>(inputRef:RefObject<T>, valueProp:keyof T) => {
   return (inputRef?.current as T)?.[valueProp as keyof T] as string|boolean|number
 }
 
-const isRequired = (
-  value: string|boolean|number,
-  editing:boolean,
-  required?:boolean,
-) => {
-  return editing &&
-    required &&
-    (!exists(value) || (!isStr(value) || !value?.length))
-}
-
 export const useEdit = <T=any>(props:THEdit<T>) => {
 
   const {
     value,
-    setValue,
     required,
+    setValue,
     multiple,
     controlled,
-    initialEditing=false,
+    initialEditing,
     valueProp=`value` as keyof T,
   } = props
 
   const inputRef = useRef<T>(null)
   const onChangeCB = useInline(props.onChange)
-  const onToggleEditCB = useInline(props.onToggleEdit)
-  const [editing, setEditing] = useState<boolean>(initialEditing)
 
   const [error, setError] = useState(``)
 
-  const onToggleEdit = useCallback((
-    evt?:ChangeEvent<T>|KeyboardEvent<T>|MouseEvent<HTMLDivElement>
-  ) => {
-
-    const update = !editing
-    const value = getValue(inputRef, valueProp)
-    const requiredVal = isRequired(getValue(inputRef, valueProp), editing, required)
-    if(requiredVal) return setError(`Field is required`)
-
-    onToggleEditCB?.(evt, value, update)
-    setEditing(update)
-
-    // Must be called after the setEditing call, so the input is no longer disabled
-    update
-      && setTimeout(() => {
-        const input = inputRef?.current as HTMLInputElement
-        input?.focus?.()
-        input?.select?.()
-      }, 100)
-
-  }, [
-    editing,
-    required,
-    valueProp,
-    onToggleEditCB
-  ])
-
-  const onChange = useCallback((evt:ChangeEvent<T>) => {
+  const onBlur = useCallback((evt:ChangeEvent<T>|KeyboardEvent<T>) => {
     const val = getValue(inputRef, valueProp)
     val !== value
       && error
       && setError(``)
+
+    if(required && !val)
+      return setError(`A value is required for this field`)
 
     onChangeCB?.(evt, val)
     setValue?.(val)
   }, [
     error,
     value,
+    required,
     setValue,
     valueProp,
     onChangeCB,
   ])
 
   const onKeyDown = useCallback((evt:KeyboardEvent<T>) => {
-    if(!editing) return
-    
     const evtKey = evt as Record<`key`, string> 
-    evtKey.key === `Enter` && onToggleEdit(evt)
-    if(multiple && evtKey.key === ` `){
-      const val = getValue(inputRef, valueProp)
-      isStr(val) && setValue?.(val.split(` `))
-    }
-    
+    const target = evt?.target as HTMLInputElement
+    const val = target?.value
+    if(multiple && evtKey.key === ` `)
+      return isStr(val) && setValue?.(val.split(` `))
+
+    evtKey.key === `Enter` && target?.blur?.()
   }, [
-    editing,
     multiple,
     setValue,
     valueProp,
-    onToggleEdit
   ])
-
-  const onClick = useCallback((evt:MouseEvent<HTMLDivElement>) => {
-    !editing && evt.detail == 1 && onToggleEdit(evt)
-  }, [editing, onToggleEdit])
-  
 
   useEffect(() => {
     if(controlled) return
@@ -133,7 +88,7 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
 
   // Auto select the input if the initial load is set to editing
   useEffectOnce(() => {
-    editing
+    initialEditing
       && setTimeout(() => {
           const input = inputRef?.current as HTMLInputElement
           input?.focus?.()
@@ -144,13 +99,11 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
 
   return {
     error,
-    editing,
-    onClick,
+    onBlur,
     setError,
     inputRef,
-    onChange,
+    // onChange,
     onKeyDown,
-    onToggleEdit,
   }
   
 }

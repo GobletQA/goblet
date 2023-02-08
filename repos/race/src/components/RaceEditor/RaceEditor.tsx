@@ -20,13 +20,13 @@ export const RaceEditor = (props:TRaceEditorProps) => {
     <SettingsProvider
       displayGeneral={props.displayGeneral}
     >
-      <FeatureProvider initialFeature={initialFeature} >
-        <StepDefsProvider defs={props.steps} >
-          <ParkinProvider defs={props.steps} world={props.world} >
+      <ParkinProvider defs={props.steps} world={props.world} >
+        <FeatureProvider initialFeature={initialFeature} >
+          <StepDefsProvider defs={props.steps} >
             <Editor {...props} initialFeature={initialFeature} />
-          </ParkinProvider>
-        </StepDefsProvider>
-      </FeatureProvider>
+          </StepDefsProvider>
+        </FeatureProvider>
+      </ParkinProvider>
     </SettingsProvider>
   )
 

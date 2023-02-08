@@ -1,7 +1,7 @@
 
 import type { InputProps } from '@mui/material'
 import type { CSSProperties } from 'react'
-import type { TToggleEditCB, TChangeCB } from '@GBC/types'
+import type { TChangeCB } from '@GBC/types'
 
 import { cls, uuid } from '@keg-hub/jsutils'
 import { useEdit } from '@GBC/hooks/form/useEdit'
@@ -33,7 +33,6 @@ export type TInlineInput<T> = {
   labelSx?:CSSProperties
   inputSx?:CSSProperties
   initialEditing?:boolean
-  onToggleEdit?:TToggleEditCB
   value?:string|boolean|number
   inputProps?:Record<string, any>
   variant?:`outlined`|`filled`|`standard`
@@ -65,26 +64,21 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
 
   const {
     error,
-    editing,
+    onBlur,
     inputRef,
-    onClick,
-    onChange,
     onKeyDown,
-    onToggleEdit,
   } = useEdit<HTMLInputElement | HTMLTextAreaElement>({
     required,
     value: props.value || ``,
     onChange: props.onChange,
     initialEditing: initialEditing,
-    onToggleEdit: props.onToggleEdit,
   })
 
   return (
     <InputContainer
-      onClick={onClick}
       className={cls(
         `gc-input-root gc-input-container`,
-        editing ? `editing-input` : `disabled-input`
+        `editing-input`
       )}
     >
       <TextInputControl>
@@ -109,19 +103,19 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
             sx={inputSx}
             required={required}
             inputRef={inputRef}
-            onChange={onChange}
             inputProps={{
               ...inputProps,
+              disabled,
+              onBlur:onBlur,
               onKeyDown: onKeyDown,
-              disabled: !editing || disabled,
             }}
+            disabled={disabled}
             color={color as any}
             fullWidth={fullWidth}
             multiline={multiline}
             InputProps={InputProps}
             error={Boolean(error.length)}
             variant={variant || `standard`}
-            disabled={!editing || disabled}
             helperText={error || helperText}
             defaultValue={props.value || ``}
             placeholder={placeholder || "Enter some text..."}

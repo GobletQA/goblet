@@ -49,7 +49,7 @@ export type TStepAction = (...args:any[]) => any
 export type TRegisterStepMethod = (step:string, action:TStepAction) => any
 
 export type TAssemble = {
-  feature: (feature:TFeatureAst) => string
+  feature: (feature:TFeatureAst|TFeatureAst[]) => string
 }
 
 export type TParse = {

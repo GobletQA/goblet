@@ -1,10 +1,9 @@
 
 import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
-import type { TToggleEditCB, TChangeCB, TInputVariants } from '@gobletqa/components'
+import type { TChangeCB, TInputVariants } from '@gobletqa/components'
 
 import { useCallback } from 'react'
 
-import { isStr } from '@keg-hub/jsutils'
 import { InputContainer } from '../Section'
 import { InlineInput } from '@gobletqa/components'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -28,15 +27,9 @@ export const Title = (props:TTitle) => {
 
   const { feature, uuid } = parent
 
-  const onToggleEdit = useCallback(((__, featureTitle, editing) => {
-    !editing
-      && isStr(featureTitle)
-      && updateFeature({ ...parent, feature: featureTitle}, false)
-  }) as TToggleEditCB, [parent])
-
   const onChange = useCallback(((evt, value) => {
-    
-  }) as TChangeCB, [parent])
+    updateFeature({ ...parent, feature: value || evt.target.value })
+  }) as TChangeCB, [parent, feature])
 
   return (
     <InputContainer className='gr-feature-title gr-feature-input-container' >
@@ -49,7 +42,6 @@ export const Title = (props:TTitle) => {
         onChange={onChange}
         id={`${uuid}-title`}
         helperText={helperText}
-        onToggleEdit={onToggleEdit}
         className='gr-feature-title'
         name={name || `feature-title`}
         initialEditing={!Boolean(feature)}

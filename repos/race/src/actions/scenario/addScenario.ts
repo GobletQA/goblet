@@ -1,3 +1,4 @@
+import { ESectionType } from '@GBR/types'
 import { scenarioFactory } from '@GBR/factories/scenarioFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
@@ -6,7 +7,7 @@ export const addScenario = async () => {
   const feature = await getFeature()
   if(!feature) return
 
-  const scenario = scenarioFactory(undefined, true)
+  const scenario = scenarioFactory(undefined, true, ESectionType.feature)
   const scenarios = [...(feature.scenarios || [])]
   scenario && scenarios.push(scenario)
 

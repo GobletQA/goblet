@@ -1,4 +1,4 @@
-import type { ReactNode, CSSProperties, SyntheticEvent, ComponentProps } from 'react'
+import type { KeyboardEvent, ReactNode, CSSProperties, SyntheticEvent, ComponentProps } from 'react'
 import type { TAutoOptVal, TAutoOpt, TOnAutoChange, TInputDecor } from '@GBC/types'
 import type {
   AutocompleteChangeReason,
@@ -9,6 +9,7 @@ import { Decor } from './Decor'
 import { useCallback } from 'react'
 
 import { InputLabel } from './InputLabel'
+import { useInline } from '@GBC/hooks/useInline'
 import { noOpObj, isStr, cls } from '@keg-hub/jsutils'
 import CircularProgress from '@mui/material/CircularProgress'
 import {
@@ -27,15 +28,16 @@ export type TAutoInput = {
   id?:string
   name: string
   error?:string
-  className?:string
-  sx?:CSSProperties
-  labelSide?:boolean
-  decor?: TInputDecor
-  disabled?: boolean
-  loading?: boolean
   matchId?: boolean
+  className?:string
+  loading?: boolean
+  sx?:CSSProperties
+  value?:TAutoOptVal
   required?: boolean
   multiple?: boolean
+  labelSide?:boolean
+  disabled?: boolean
+  decor?: TInputDecor
   placeholder?:string
   labelInline?:boolean
   helperText?:ReactNode
@@ -92,6 +94,7 @@ const AutoInputComp = (props:TAutoInput) => {
     rules,
     error,
     color,
+    value,
     onBlur,
     variant,
     loading,
@@ -107,9 +110,9 @@ const AutoInputComp = (props:TAutoInput) => {
     placeholder,
     labelWrapSx,
     showCheckbox,
-    currentValue,
     textFieldProps,
     autocompleteProps,
+    currentValue=value,
     decor=noOpObj as TInputDecor,
     ...rest
   } = props
@@ -117,6 +120,21 @@ const AutoInputComp = (props:TAutoInput) => {
   const onChangeVal = useOnChangeVal(props)
   const { Component:DecorComponent, decorPos=`start` } = decor
   const decorKey = decorPos === `end` ? `endAdornment` : `startAdornment`
+
+  const onKeyDown = useInline((evt:KeyboardEvent) => {
+    const evtKey = evt as Record<`key`, string> 
+    if(evtKey.key !== `Enter`) return
+
+    const target = evt?.target as HTMLInputElement
+    const value = target?.value
+    onChangeVal(
+      evt,
+      value,
+      `selectOption`,
+      { option: value }
+    )
+    target?.blur?.()
+  })
 
   return (
       <Auto
@@ -216,6 +234,7 @@ const AutoInputComp = (props:TAutoInput) => {
               inputProps={{
                 ...params.inputProps,
                 ...textFieldProps?.inputProps,
+                onKeyDown: onKeyDown,
               }}
               InputLabelProps={{
                 shrink: true,

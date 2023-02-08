@@ -28,6 +28,7 @@ const useExpressionChange = (props:TExpression) => {
 
   return useInline((evt:ChangeEvent<HTMLInputElement>) => {
     const value = removeQuotes(evt.target.value || ``)
+
     const { input, text, index } = expression
 
     const prefix = input.substring(0, index)

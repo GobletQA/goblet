@@ -17,6 +17,7 @@ export enum EMetaType {
 export type TStepParentAst = TBackgroundAst | TScenarioAst
 export type TScenarioParentAst = TRuleAst | TRaceFeature
 export type TTagsParentAst = TScenarioParentAst | TStepParentAst
+export type TBackgroundParentAst = TRaceFeature | TRuleAst
 
 export type TFeatureParent = {
   uuid: string
