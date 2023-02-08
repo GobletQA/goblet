@@ -27,6 +27,8 @@ export const useConnectData = ({
   const [createRepo, setCreateRepo] = useState<boolean>(false)
 
   const apiRepos = useRepos()
+  const hasRepos = Boolean(apiRepos.length)
+  
   const { repos, parents } = useBuildRepos(apiRepos, userBranch, user?.username || ``)
   const [description, setDescription] = useState<string>(``)
 
@@ -44,7 +46,10 @@ export const useConnectData = ({
   useEffect(() => {
     if(!loading) return
 
-    ;(!repos || !repos.length) ? getRepos() : setLoading(false)
+    ;(!hasRepos)
+      ? (async () => await getRepos())()
+      : setLoading(false)
+
   }, [repos])
 
   return {
