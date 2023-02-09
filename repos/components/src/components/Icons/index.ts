@@ -34,12 +34,14 @@ export * from './NoteMinusIcon'
 export * from './ReflectHorIcon'
 export * from './UserDetailsIcon'
 export * from './CircleMinusIcon'
-
 export * from './CursorClickIcon'
 
 // -- TODO - Use for dragging on top of the browser
 // export * from './SelectDragIcon'
 
+// export * from './PlayCircleIcon'
+// export * from './PlayOutlineIcon'
+// export * from './PlayIcon'
 // export * from './BorderNoneIcon'
 // export * from './ThreeDotIcon'
 // export * from './BrowserIcon'

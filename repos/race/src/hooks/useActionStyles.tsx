@@ -5,12 +5,14 @@ import { deepMerge } from '@keg-hub/jsutils'
 import { colors, getColor } from '@gobletqa/components'
 
 export type THActionStyles = {
+  sx?:CSSProperties
   style?:CSSProperties
   styles?:CSSProperties
 }
 
 export const useActionStyles = (props:THActionStyles) => {
   const {
+    sx,
     style,
     styles
   } = props
@@ -27,7 +29,7 @@ export const useActionStyles = (props:THActionStyles) => {
       [`&:hover`]: {
         color: colors.green10,
       },
-    }, styles, style)
+    }, styles, style, sx)
   }, [])
 
 }

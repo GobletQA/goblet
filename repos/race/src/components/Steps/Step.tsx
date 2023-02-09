@@ -1,23 +1,17 @@
 import type { TStepParentAst, TStepAst } from '@GBR/types'
 
-import { Section } from '../Section'
-import { ESectionType } from '@GBR/types'
-
-import {
-  StepGrid,
-  StepContent,
-  StepContainer,
-} from './Steps.styled'
-
-
-
+import { StepHeader } from './StepHeader'
 import { StepActions } from './StepActions'
 import { Expressions } from '../Expressions'
 import { SelectAction } from './SelectAction'
 import { useInline } from '@gobletqa/components'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
 import { useExpressions } from '@GBR/hooks/useExpressions'
-import { copyStep } from '@GBR/actions/step/copyStep'
+import {
+  StepGrid,
+  StepContent,
+  StepContainer,
+} from './Steps.styled'
 
 export type TStep = {
   step: TStepAst
@@ -36,6 +30,7 @@ export const Step = (props:TStep) => {
     <StepContainer
       variant="outlined"
     >
+      <StepHeader step={step} />
       <StepContent>
         <StepGrid
           container

@@ -13,13 +13,14 @@ import {
 
 export type TCopyAct = {
   type:string
+  sx?:CSSProperties
   style?:CSSProperties
   Icon?:ComponentType<any>
   onClick: (...args:any)=> void
 }
 
 export const CopyAct = (props:TCopyAct) => {
-  const { Icon, type, onClick, style } = props
+  const { Icon, type, onClick, style, sx } = props
 
   const ref = `action-copy-${type}`
   const btnClk = useInline((evt:MouseEvent) => {
@@ -27,7 +28,7 @@ export const CopyAct = (props:TCopyAct) => {
     onClick(evt)
   })
 
-  const styles = useActionStyles({ style })
+  const styles = useActionStyles({ sx, style })
 
   return (
     <Tooltip
