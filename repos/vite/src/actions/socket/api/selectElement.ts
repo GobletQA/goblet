@@ -1,7 +1,13 @@
 import type { TSelectFromBrowserRespEvent } from '@types'
+
+import { EBrowserState } from '@types'
 import { noOpObj } from '@keg-hub/jsutils'
 import { WSService } from '@services/socketService/socketService'
-import { SelectFromBrowserRespEvt, SocketMsgTypes } from '@constants'
+import {
+  SocketMsgTypes,
+  BrowserStateEvt,
+  SelectFromBrowserRespEvt,
+} from '@constants'
 
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
@@ -14,15 +20,26 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
  * @returns {void}
  */
 export const selectElement = (options:Record<string, any> = noOpObj) => {
+
+  /**
+   * TODO - Need to add some type of cancel / timeout if there's an error
+   * This will ensure the browser doesn't get stuck in an odd state
+   */
+  
   let offEvent:any
   return new Promise<TSelectFromBrowserRespEvent>((res, rej) => {
+    EE.emit(BrowserStateEvt, {browserState: EBrowserState.recording})
+
     WSService.emit(SocketMsgTypes.ELEMENT_SELECT, options)
 
     // Then listen for the response event fired from the websocket service
     offEvent = EE.on<TSelectFromBrowserRespEvent>(
       SelectFromBrowserRespEvt,
       (data) => {
+
+        EE.emit(BrowserStateEvt, {browserState: EBrowserState.idle})
         offEvent?.()
+
         res(data)
       }
     )

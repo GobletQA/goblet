@@ -3,7 +3,10 @@ import type { TRaceMenuItemClickCtx, TRaceMenuItem, TRaceContextMenu } from '@go
 
 import { useMemo } from 'react'
 import { selectElement } from '@actions/socket/api/selectElement'
-import { ReflectHorIcon, SelectDragIcon } from '@gobletqa/components'
+import {
+  ReflectHorIcon,
+  CursorClickIcon,
+} from '@gobletqa/components'
 
 export const useContextMenu = () => {
   return useMemo(() => {
@@ -11,7 +14,7 @@ export const useContextMenu = () => {
       expression: [
         {
           closeMenu: false,
-          Icon: SelectDragIcon,
+          Icon: CursorClickIcon,
           text: `From Browser`,
           onClick: async (ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement>) => {
             const { setInputProps, onChange } = ctx

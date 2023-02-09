@@ -3,54 +3,57 @@ import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 import { useMemo } from 'react'
 import { EBrowserState } from '@types'
 import { capitalize, cls } from '@keg-hub/jsutils'
-import { BaseAction, StateIcon, colors } from '@gobletqa/components'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
+import {
+  colors,
+  BaseAction,
+  CircleMinusIcon,
+  PlayCircleOutlineIcon,
+  RadioButtonCheckedIcon,
+} from '@gobletqa/components'
 
-const useActionProps = () => {
-  const { browserState } = useBrowserState()
+const styles = {
+  text: {
+    lineHeight: `20px`
+  },
+}
 
-  return useMemo(() => {
-    const text = `Browser ${capitalize(browserState)}`
-    const disabledTooltip = `Interaction is disabled while ${browserState}`
-    const className = cls('goblet-browser-state', `browser-state-${browserState}`)
-    
-    switch(browserState){
-      case EBrowserState.playing:
-        return {
-          text,
-          className,
-          disabledTooltip,
-          iconSx: { color: colors.green10 },
-          tooltip:`${text}; running steps in active file`,
-        }
-      case EBrowserState.recording:
-        return {
-          text,
-          className,
-          disabledTooltip,
-          iconSx: { color: colors.red10 },
-          tooltip: `${text}; user actions are being recorded`,
-        }
-      default:
-        return {
-          text,
-          className,
-          iconSx: { color: colors.purple10 },
-          tooltip: `${text}; no automation running`,
-        }
-    }
-  }, [browserState])
-  
+const stateProps = {
+  [EBrowserState.playing]: {
+    text: `Browser ${capitalize(EBrowserState.playing)}`,
+    Icon: PlayCircleOutlineIcon,
+    sx: { color: colors.green10 },
+    iconSx: { color: colors.green10 },
+    disabledTooltip: `Interaction is disabled while ${EBrowserState.playing}`,
+    className: `goblet-browser-state browser-state-${EBrowserState.playing}`,
+    tooltip:`${capitalize(EBrowserState.playing)} Mode - running automation steps`,
+  },
+  [EBrowserState.recording]: {
+    Icon: RadioButtonCheckedIcon,
+    sx: { color: colors.red10 },
+    iconSx: { color: colors.red10 },
+    text: `Browser  ${capitalize(EBrowserState.recording)}`,
+    className: `goblet-browser-state browser-state-${EBrowserState.recording}`,
+    tooltip: `${capitalize(EBrowserState.recording)} Mode - user actions are being recorded`,
+  },
+  [EBrowserState.idle]: {
+    Icon: CircleMinusIcon,
+    text: `Browser ${capitalize(EBrowserState.idle)}`,
+    className: `goblet-browser-state browser-state-${EBrowserState.idle}`,
+    tooltip: `${capitalize(EBrowserState.idle)} Mode - no automation running`,
+    iconSx: { color: colors.purple10 },
+  }
 }
 
 const StateBrowser = (props:TBrowserActionProps) => {
-  const actionProps = useActionProps()
+  const { browserState } = useBrowserState()
+  const actionProps = stateProps[browserState]
 
   return (
     <BaseAction
       as='button'
       loc='bottom'
-      Icon={StateIcon}
+      textSx={styles.text}
       onClick={props.onClick}
       actionClassName={cls(
         `no-click`,
@@ -65,5 +68,7 @@ const StateBrowser = (props:TBrowserActionProps) => {
 export const StateAction:TBrowserAction = {
   Component: StateBrowser,
   name: `state-browser-action`,
-  containerSx: { minWidth: `150px` },
+  containerSx: {
+    justifyContent: `start`,
+  },
 }

@@ -10,7 +10,7 @@ const RecordBrowser = (props:TBrowserActionProps) => {
       as='button'
       loc='bottom'
       text='Record'
-      variant='outlined'
+      variant='text'
       onClick={props.onClick}
       Icon={RadioButtonCheckedIcon}
       className='goblet-browser-record'

@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles'
 import {
   dims,
   colors,
+  gutter,
   getColor,
   IconButton
 } from '@gobletqa/components'
@@ -128,36 +129,38 @@ export const BrowserBtn = styled(IconButton)(({ theme }) => `
 export const BrowserShadowTop = styled(Box)`
   width:100%;
   z-index: 10;
+  opacity: 0.75;
   position: absolute;
   pointer-events: none;
   top: -${dims.browser.nav.hpx};
   height: ${dims.browser.nav.height - 12}px;
   transition: box-shadow 300ms ease;
-  box-shadow: 0px 10px 15px transparent;
+  box-shadow: 0px 10px 14px transparent;
   
   &.playing {
-    box-shadow: 0px 10px 15px ${colors.purple10};
+    box-shadow: 0px 14px 0px ${colors.purple10};
   }
 
   &.recording {
-    box-shadow: 0px 10px 15px ${colors.recordRed};
+    box-shadow: 0px 14px 0px ${colors.recordRed};
   }
 `
 export const BrowserShadowBottom = styled(Box)`
   width:100%;
   z-index: 10;
+  opacity: 0.75;
   position: absolute;
   pointer-events: none;
-  bottom: -${dims.browser.nav.hpx};
+  bottom: -${gutter.margin.px};
   height: ${dims.browser.nav.height - 12}px;
   transition: box-shadow 300ms ease;
-  box-shadow: 0px -10px 15px transparent;
+  box-shadow: 0px -3px 0px transparent;
 
   &.playing {
-    box-shadow: 0px -10px 15px ${colors.purple10};
+    box-shadow: 0px -3px 0px ${colors.purple10};
   }
 
   &.recording {
-    box-shadow: 0px -10px 15px ${colors.recordRed};
+    box-shadow: 0px -3px 0px ${colors.recordRed};
   }
 `

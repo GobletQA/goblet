@@ -43,7 +43,7 @@ const RunTests = (props:TBrowserActionProps) => {
       disabled={disabled}
       Icon={PlayCircleOutlineIcon}
       className='goblet-browser-run-tests'
-      variant={ noActiveFile ? `outlined` : `contained`}
+      variant={ noActiveFile ? `text` : `contained`}
       tooltip='Play the steps from active file in the browser'
       disabledTooltip='DISABLED - Open a test or script to use this action'
     />

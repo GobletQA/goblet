@@ -3,12 +3,15 @@ import Box from '@mui/material/Box'
 import { EBrowserState } from '@types'
 
 const styles = {
-  running: {
+  playing: {
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
     position: `absolute`,
+  },
+  recording: {
+    display: `none`
   },
   idle: {
     display: `none`
@@ -21,17 +24,11 @@ export type TBrowserCover = {
 }
 
 export const BrowserCover = (props:TBrowserCover) => {
-  const {
-    browserState
-  } = props
-
-  const style = browserState !== EBrowserState.idle
-    ? styles.running
-    : styles.idle
+  const { browserState } = props
 
   return (
     <Box
-      sx={style}
+      sx={styles[browserState]}
       className='gb-browser-cover'
     />
   )
