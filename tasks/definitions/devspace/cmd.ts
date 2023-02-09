@@ -34,15 +34,15 @@ const commandAct = async ({ task, params }) => {
 }
 
 export const cmd:TTask = {
-  name: 'cmd',
-  alias: ['analyze', 'print', 'ui'],
+  name: `cmd`,
+  alias: [`analyze`, `print`, `ui`],
   action: commandAct,
-  example: 'yarn dev <cmd> <options>',
-  description: 'Calls the devspace command',
+  example: `yarn dev <cmd> <options>`,
+  description: `Calls the devspace command`,
   options: {
     context: {
       example: `--context app`,
-      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+      alias: [`ctx`, `name`, `type`, `deployment`, `deploy`, `selector`],
       description: `Context or name of devspace app that has a corresponding devspace config`,
     },
   },

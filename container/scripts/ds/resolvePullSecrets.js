@@ -25,9 +25,9 @@ const { getDockerUser, getDockerPassword, getDockerProviderUrl } = require('./do
    * Load the pull secret creds formatted to match yaml syntax
    */
   process.stdout.write([
-    `- registry: ${dockerRegistry}`,
-    `  username: ${dockerAuthUser}`,
-    `  password: ${dockerAuthPassword}`,
+    `registry: ${dockerRegistry}`,
+    `username: ${dockerAuthUser}`,
+    `password: ${dockerAuthPassword}`,
   ].join('\n'))
 
 })()

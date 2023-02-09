@@ -32,9 +32,7 @@ const addDefaultArgs = async (
   })
 
   insertIdx = insertIdx || cmdArr.length
-  const dsConfig = getConfigPath(params)
-  const defArgs = [`--config`, dsConfig]
-  Logger.pair(`Using Devspace config`, dsConfig)
+  const defArgs = []
 
   const profile = params.profile || params.env
   profile && defArgs.push(`--profile`, profile)
@@ -51,13 +49,19 @@ const addDefaultArgs = async (
  *
  * @returns {Void}
  */
-export const devspaceCmd = command('devspace')
+export const devspaceCmd = command(`devspace`)
 
 export const devspace = async (
   cmd:string|string[],
   params:TTaskParams=emptyParams
 ) => {
   const cmdArgs = await addDefaultArgs(cmd, params)
+
+  params.envs ||= {}
+  !params.envs[`DEVSPACE_CONFIG`]
+    && (params.envs[`DEVSPACE_CONFIG`] = getConfigPath(params))
+
+  Logger.pair(`Using Devspace config`, params.envs[`DEVSPACE_CONFIG`])
 
   return await devspaceCmd(cmdArgs, params)
 }
@@ -69,8 +73,7 @@ devspace.deploy = async (params:TTaskParams=emptyParams) => {
   /**
    * Check the context and skip arrays for which apps to deploy
    */
-  const deployments = getDeployments(cmdParams.context, skip, params.env)
-  deployments && cmdArgs.push(`--deployments`, deployments)
+  getDeployments(cmdParams.context, skip, params.env)
   force && cmdArgs.push(`--force-deploy`)
 
   await devspace([`deploy`, ...cmdArgs], cmdParams)
@@ -106,13 +109,11 @@ devspace.purge = async (params:TTaskParams=emptyParams) => {
   const { skip, ...cmdParams } = params
 
   const cmdArgs:string[] = []
-  params.dependencies && cmdArgs.push(`--all`)
 
   /**
    * Check the context and skip arrays for which apps to deploy
    */
-  const deployments = getDeployments(cmdParams.context, skip, params.env)
-  deployments && cmdArgs.push(`--deployments`, deployments)
+  getDeployments(cmdParams.context, skip, params.env)
 
   return await devspace([`purge`, ...cmdArgs], cmdParams)
 }
@@ -142,15 +143,7 @@ devspace.start = async (
   const cmdArgs = getCmdOptions(params, {
     build: '-b',
     debug: `--debug`,
-  }, ['deployments'])
-
-  /**
-   * Check if devspace is already running
-   * If it is, and build is not set, then skip the deploy process
-   * And only setup the port-forwarding and file syncing
-   */
-  const isRunning = await devspace.running(params)
-  isRunning && !params.build && cmdArgs.push(`--skip-pipeline`)
+  }, [])
 
   // Add the daemon back the the params for the devspace dev command
   return await devspace([`dev`, ...cmdArgs], { ...params, ...daemonOpts })

@@ -54,8 +54,6 @@ const resolveFromContext = (params:TTaskParams) => {
 /**
  * Checks if a custom config location is passed in and returns it
  * Otherwise returns the default config location
- *
- * @returns {string} - Path to the resolved devspace config file
  */
 export const getConfigPath = (params:TTaskParams) => {
   return params.devspace

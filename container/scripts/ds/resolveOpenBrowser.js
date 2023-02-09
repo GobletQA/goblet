@@ -1,3 +1,5 @@
+// TODO: Can be deleted ???
+
 /**
  * Used by devspace in the devspace.yml to dynamically open the frontend url
  * Ensures it only opens the url when the frontend is deployed
