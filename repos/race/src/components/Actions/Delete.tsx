@@ -16,7 +16,7 @@ export type TDeleteAct = {
   sx?:CSSProperties
   style?:CSSProperties
   Icon?:ComponentType<any>
-  onClick: (...args:any)=> any
+  onClick?:(...args:any)=> any
 }
 
 
@@ -32,7 +32,7 @@ export const DeleteAct = (props:TDeleteAct) => {
   const ref = `action-remove-${type}`
   const btnClk = useInline((evt:MouseEvent) => {
     stopEvent(evt)
-    onClick(evt)
+    onClick?.(evt)
   })
 
   const styles = useActionStyles({ sx, style, styles: defStyles })

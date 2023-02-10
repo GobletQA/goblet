@@ -8,7 +8,7 @@ import { AutoInput } from '@gobletqa/components'
 import { useOnStepChange }  from '@GBR/hooks/useOnStepChange'
 import { useStepOptions } from '@gobletqa/race/hooks/useStepOptions'
 
-
+import { sharedAutoInputStyles, sharedLabelProps } from '../Shared'
 import {
   StepGridItem
 } from './Steps.styled'
@@ -26,27 +26,8 @@ const actSelectProps = {
   textFieldProps: {
     placeholder: `Select an action`,
   },
-  labelSx: {
-    fontSize: `12px`,
-  },
-  labelWrapSx: {
-    // marginBottom: `5px !important`
-  },
-  sx: {
-    [`&.gc-auto-input`]: {
-      [`& .MuiInputBase-root`]: {
-        height: `35px`,
-
-        [`& input`]: {
-          height: `35px`,
-          fontSize: `12px`,
-        },
-        [`& input::placeholder`]: {
-          fontSize: `12px`
-        }
-      }
-    }
-  } as CSSProperties
+  ...sharedLabelProps,
+  sx: sharedAutoInputStyles
 }
 
 const RenderOption = (

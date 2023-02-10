@@ -12,8 +12,8 @@ import { ExpandIcon as ExpandIconComp } from '@GBC/components/Icons/ExpandIcon'
 
 export type TDropdown = Omit<AccordionProps, `children`> & {
   id:string
-  body?:ReactNode
-  header?:ReactNode
+  Body?:ReactNode
+  Header?:ReactNode
   disabled?:boolean
   noToggle?:boolean
   actions?:ReactNode
@@ -44,7 +44,6 @@ const Transition = forwardRef((props: TTransition, ref: React.Ref<unknown>) => (
 export const Dropdown = (props:TDropdown) => {
   const {
     id,
-    body,
     bodySx,
     actions,
     headerSx,
@@ -53,11 +52,12 @@ export const Dropdown = (props:TDropdown) => {
     headerText,
     headerTextSx,
     expandIconSx,
-    children=body,
+    Body:BodyComp,
     transformIconOn,
     transformIconOff,
     headerContentSx,
-    header:headerComp,
+    children=BodyComp,
+    Header:HeaderComp,
     onChange:onChangeCB,
     initialExpand=false,
     TransitionProps=emptyObj,
@@ -117,7 +117,7 @@ export const Dropdown = (props:TDropdown) => {
               )
         }
       >
-        {headerComp ?? (headerText && (<HeaderText sx={headerTextSx} >{headerText}</HeaderText>)) ?? null}
+        {HeaderComp ?? (headerText && (<HeaderText sx={headerTextSx} >{headerText}</HeaderText>)) ?? null}
         {actions}
       </Header>
     {children && (

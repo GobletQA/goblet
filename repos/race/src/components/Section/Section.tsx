@@ -4,21 +4,23 @@ import type { TStepParentAst, TScenarioParentAst } from '@GBR/types'
 
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
-import { wordCaps, cls } from '@keg-hub/jsutils'
 import { SectionActions } from './SectionActions'
 import { Dropdown, Container } from './Section.styled'
+import { wordCaps, cls, isStr } from '@keg-hub/jsutils'
 
 
 export type TSection = {
   id?:string
   uuid?:string
   show?:boolean
-  label?:string
+  label?:ReactNode
   type:ESectionType
   className?:string
   sx?:CSSProperties
   noToggle?:boolean
+  Header?:ReactNode
   children:ReactNode
+  formatHeader?:boolean
   initialExpand?:boolean
   actions?:TSectionAction[]
   headerSx?:CSSProperties
@@ -37,18 +39,21 @@ export const Section = (props:TSection) => {
     type,
     uuid,
     show,
-    label,
     onAdd,
     parent,
+    Header,
     actions,
     children,
     noToggle,
     headerSx,
     className,
+    label=type,
     dropdownSx,
     initialExpand,
     headerContentSx,
+    formatHeader=true
   } = props
+
 
 
   return (
@@ -62,13 +67,14 @@ export const Section = (props:TSection) => {
           ? (
               <Dropdown
                 sx={dropdownSx}
+                Header={Header}
                 noToggle={noToggle}
                 headerSx={headerSx}
                 initialExpand={initialExpand}
                 headerContentSx={headerContentSx}
                 id={`${parent.uuid}-${id || uuid}`}
-                headerText={wordCaps(label || type)}
                 actions={<SectionActions actions={actions} />}
+                headerText={isStr(label) && formatHeader ? wordCaps(label) : label}
                 className={cls(`gr-section-dropdown`, `gr-section-dropdown-${type}`)}
               >
                 {children}

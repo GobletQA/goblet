@@ -3,8 +3,6 @@ import Grid from '@mui/material/Unstable_Grid2'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 
-import { AddItem } from '../AddItem'
-
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 

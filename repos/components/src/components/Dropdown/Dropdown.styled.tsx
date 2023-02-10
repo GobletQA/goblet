@@ -54,6 +54,7 @@ export const HeaderText = styled(H5)`
   flex-grow: 1;
   display: flex;
   align-items: center;
+  font-size: 14px;
   margin-left: ${gutter.margin.hpx};
   height: ${dims.dropdown.header.px};
   color: var(--goblet-editor-foreground);

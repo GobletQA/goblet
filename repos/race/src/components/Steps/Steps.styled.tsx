@@ -22,24 +22,9 @@ export const StepContent = styled(CardContent)`
     padding-bottom: ${gutter.padding.qpx};
   }
 `
-export const StepCardHeader = styled(Box)`
-  width: 100%;
-  height: 32px;
-  display: flex;
-  position: relative;
-  align-items: center;
-  padding-bottom: ${gutter.padding.qpx};
-  background-color: var(--goblet-list-focusBackground);
-`
-export const StepActionsContainer = styled(Box)`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  padding: 4px;
-`
 
 export const StepHeaderText = styled(Span)`
-  font-size: 12px;
+  font-size: 14px;
   padding: ${gutter.padding.qpx};
   padding-left: ${gutter.padding.hpx};
   color: var(--goblet-editor-foreground);

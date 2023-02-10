@@ -1,4 +1,4 @@
-import type { CSSProperties, ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import type { TMenuItem } from '@gobletqa/components'
 import type { TExpPart, TStepParentAst, TStepAst } from '@GBR/types'
 
@@ -7,6 +7,7 @@ import { ESectionType } from '@GBR/types'
 import { emptyArr } from '@keg-hub/jsutils'
 import { ExpressionMenu } from './ExpressionMenu'
 import { AutoInput } from '@gobletqa/components'
+import { sharedAutoInputStyles, sharedLabelProps } from '../Shared'
 
 const expressionProps = {
   label: `Type`,
@@ -15,27 +16,8 @@ const expressionProps = {
   textFieldProps: {
     placeholder: `Select from list...`,
   },
-  labelSx: {
-    fontSize: `12px`,
-  },
-  labelWrapSx: {
-    // marginBottom: `5px !important`
-  },
-  sx: {
-    [`&.gc-auto-input`]: {
-      [`& .MuiInputBase-root`]: {
-        height: `35px`,
-
-        [`& input`]: {
-          height: `35px`,
-          fontSize: `12px`,
-        },
-        [`& input::placeholder`]: {
-          fontSize: `12px`
-        }
-      }
-    }
-  } as CSSProperties
+  ...sharedLabelProps,
+  sx: sharedAutoInputStyles
 }
 
 export type TExpAutoInput = ComponentProps<typeof AutoInput> & {
