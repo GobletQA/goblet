@@ -151,7 +151,7 @@ deployments:
         serviceAccountName: ${GB_KD_SERVICE_ACCOUNT}
         customServiceAccount:
           name: ${GB_KD_SERVICE_ACCOUNT}
-          imagePullSecret: $(node -r esbuild-register scripts/ds/resolvePullSecretName.js)
+          imagePullSecret: devspace-auth-ghcr-io
           binding:
             name: ${GB_KD_ROLE_BINDING_NAME}
           role:

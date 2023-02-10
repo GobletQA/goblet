@@ -57,8 +57,8 @@ export const Input = (props:TInput) => {
   } = props
 
   const {
+    onBlur,
     inputRef,
-    onChange,
     onKeyDown,
     error: inputErr
   } = useEdit<HTMLInputElement | HTMLTextAreaElement>({
@@ -90,7 +90,6 @@ export const Input = (props:TInput) => {
         inputRef={inputRef}
         required={required}
         disabled={disabled}
-        onChange={onChange}
         color={color as any}
         fullWidth={fullWidth}
         multiline={multiline}
@@ -103,6 +102,7 @@ export const Input = (props:TInput) => {
         helperText={error ? error : inputErr || helperText || ` `}
         inputProps={{
           ...inputProps,
+          onBlur: onBlur,
           disabled: disabled,
           onKeyDown: onKeyDown
         }}

@@ -24,13 +24,20 @@ export type TStep = {
 export const Step = (props:TStep) => {
   const { onChange, onRemove, step, parent } = props
   const { def, expressions } = useExpressions(props)
+
+  const onCopy = useInline(() => {})
   const onStepChange = useInline((updated:TStepAst) => onChange?.(updated, step))
+  const onRemoveStep = useInline(() => onRemove?.(step.uuid, parent.uuid))
 
   return (
     <StepContainer
       variant="outlined"
     >
-      <StepHeader step={step} />
+      <StepHeader
+        step={step}
+        onCopy={onCopy}
+        onRemove={onRemoveStep}
+      />
       <StepContent>
         <StepGrid
           container

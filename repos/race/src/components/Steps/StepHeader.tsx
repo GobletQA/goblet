@@ -14,6 +14,8 @@ import { capitalize } from '@keg-hub/jsutils'
 
 export type TStepHeader = {
   step: TStepAst
+  onCopy?:(stepId:string, parentId?:string) => void
+  onRemove?:(stepId:string, parentId?:string) => void
 }
 
 const styles = {
@@ -30,48 +32,54 @@ const styles = {
   }
 }
 
-const actions = [
-  (
-    <PlayAct
-      sx={styles.action}
-      onClick={() => {}}
-      type={ESectionType.step}
-      key={`gr-step-play-step-action`}
-    />
-  ),
-  (
-    <CopyAct
-      sx={styles.action}
-      onClick={() => {}}
-      type={ESectionType.step}
-      key={`gr-step-copy-step-action`}
-    />
-  ),
-  (
-    <DeleteAct
-      sx={styles.action}
-      onClick={() => {}}
-      type={ESectionType.step}
-      key={`gr-step-remove-step-action`}
-    />
-  ),
-  
-]
+
 
 export const StepHeader = (props:TStepHeader) => {
   const {
-    step
+    step,
+    onCopy,
+    onRemove
   } = props
 
   return (
     <StepCardHeader>
       <StepHeaderText>
-        <b>{capitalize(step.type)}</b> {step.step}
+        { 
+          step.step
+            ? (<span><b>{capitalize(step.type)}</b> {step.step}</span>)
+            : (<b>Step</b>)
+        }
+        
       </StepHeaderText>
       <StepActionsContainer>
         <SectionActions
-          actions={actions}
           sx={styles.actions}
+          actions={[
+            (
+              <PlayAct
+                sx={styles.action}
+                onClick={() => {}}
+                type={ESectionType.step}
+                key={`gr-step-play-step-action`}
+              />
+            ),
+            onCopy && (
+              <CopyAct
+                sx={styles.action}
+                onClick={() => {}}
+                type={ESectionType.step}
+                key={`gr-step-copy-step-action`}
+              />
+            ),
+            onRemove && (
+              <DeleteAct
+                sx={styles.action}
+                onClick={onRemove}
+                type={ESectionType.step}
+                key={`gr-step-remove-step-action`}
+              />
+            ),
+          ].filter(Boolean)}
         />
       </StepActionsContainer>
     </StepCardHeader>

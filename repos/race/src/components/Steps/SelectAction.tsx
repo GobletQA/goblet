@@ -1,4 +1,4 @@
-
+import type { CSSProperties } from 'react'
 import type { TStepParentAst, TStepAst } from '@GBR/types'
 import type { TAutoOpt } from '@gobletqa/components'
 import type { HTMLAttributes } from 'react'
@@ -26,6 +26,27 @@ const actSelectProps = {
   textFieldProps: {
     placeholder: `Select an action`,
   },
+  labelSx: {
+    fontSize: `12px`,
+  },
+  labelWrapSx: {
+    // marginBottom: `5px !important`
+  },
+  sx: {
+    [`&.gc-auto-input`]: {
+      [`& .MuiInputBase-root`]: {
+        height: `35px`,
+
+        [`& input`]: {
+          height: `35px`,
+          fontSize: `12px`,
+        },
+        [`& input::placeholder`]: {
+          fontSize: `12px`
+        }
+      }
+    }
+  } as CSSProperties
 }
 
 const RenderOption = (

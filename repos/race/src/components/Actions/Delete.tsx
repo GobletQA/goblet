@@ -16,7 +16,7 @@ export type TDeleteAct = {
   sx?:CSSProperties
   style?:CSSProperties
   Icon?:ComponentType<any>
-  onClick: (...args:any)=> void
+  onClick: (...args:any)=> any
 }
 
 
