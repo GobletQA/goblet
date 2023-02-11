@@ -27,7 +27,6 @@ const UnmountBtn = (props:TUnmountBtn) => {
       describeChild
       title={`Unmount repository`}
       enterDelay={500}
-      fontSize={`10px`}
     >
       <CloudOffIcon {...props} />
     </Tooltip>

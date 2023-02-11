@@ -4,6 +4,7 @@ import { useInline } from '@gobletqa/components'
 
 import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
+import { PlayAct } from '../Actions/Play'
 import { ESectionType } from '@GBR/types'
 import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
@@ -45,6 +46,8 @@ export const Rule = (props:TRule) => {
   const onChangeScenarioStep = useInline((step:TStepAst, scenarioId:string, ruleId?:string) => {
     changeRuleScenarioStep(step, scenarioId, ruleId || rule.uuid)
   })
+  
+  const onPlay = () => {}
 
   return (
     <Section
@@ -61,6 +64,13 @@ export const Rule = (props:TRule) => {
             onClick={onAddScenario}
             type={ESectionType.scenario}
             key={`gr-rule-add-scenario-action`}
+          />
+        ),
+        (
+          <PlayAct
+            onClick={onPlay}
+            type={ESectionType.background}
+            key={`gr-background-play-action`}
           />
         ),
         (

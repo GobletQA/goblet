@@ -49,7 +49,6 @@ export const FeatureAdd = (props:TAddAct) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      fontSize={`10px`}
       title={`Add a ${capitalize(type)} section`}
     >
       <SectionActBtn

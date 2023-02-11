@@ -43,7 +43,6 @@ export const PlayAct = (props:TPlayAct) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      fontSize={`10px`}
       title={`Play ${capitalize(type)}`}
     >
       <SectionActIcnBtn

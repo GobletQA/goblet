@@ -2,16 +2,17 @@ import type { TPaletteOpts } from '../types'
 import type { Theme } from '@mui/material/styles'
 import type { AutocompleteClasses } from '@mui/material'
 
+import { gutter } from './gutter'
 import { EThemeMode } from '../types'
 
 
 export const components = (
-  muiTheme:Theme,
+  theme:Theme,
   palette:TPaletteOpts
 ):Theme[`components`] => {
   const isLightTheme = palette.mode === EThemeMode.light
   const textGray = isLightTheme ? palette.colors.gray15 : palette.colors.gray03
-  
+
   return {
     MuiButton: {
       styleOverrides: {
@@ -118,6 +119,11 @@ export const components = (
     MuiStack: {
       defaultProps: {
         style: {}
+      },
+    },
+    MuiTooltip: {
+      defaultProps: {
+        sx: {}
       },
     }
   }

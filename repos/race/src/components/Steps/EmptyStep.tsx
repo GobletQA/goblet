@@ -1,14 +1,14 @@
-import type { TStepParentAst } from '@GBR/types'
 import type { CSSProperties, ComponentProps, ReactNode } from 'react'
-
-import Box from '@mui/material/Box'
-import { StepItem } from '../Feature/FeatureItems'
-import { useInline } from '@gobletqa/components'
 
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
 import { EmptyItem } from './Steps.styled'
 import { Tooltip, gutter } from '@gobletqa/components'
+
+export type TEmptyItem = Omit<ComponentProps<typeof AddItem>, `parentId`> & {
+  description?:ReactNode
+  parent:Record<`uuid`, string>
+}
 
 const tooltipProps = {
   PopperProps: {
@@ -42,42 +42,30 @@ const styles:Record<string, CSSProperties> = {
   }
 }
 
-
-export type TEmptySteps = {
-  parent:TStepParentAst
-  onAdd?:(parentId:string) => void
-}
-
-export const EmptySteps = (props:TEmptySteps) => {
-  const { onAdd, parent } = props
-  const onAddStep = useInline(() => onAdd?.(parent.uuid))
-
+export const EmptyStep = (props:TEmptyItem) => {
+  const {
+    parent,
+    description,
+    ...item
+  } = props
+  
   return (
-    <Box
-      display='flex'
-      justifyContent='start'
-      marginTop={gutter.margin.hpx}
-      paddingTop={gutter.padding.qpx}
-      paddingBottom={gutter.padding.qpx}
-    >
     <Tooltip
       {...tooltipProps}
-      title={StepItem.description}
+      title={description}
     >
       <EmptyItem
         sx={styles.item}
-        className={`empty-item empty-item-${StepItem.type}`}
+        className={`empty-item empty-item-${item.type}`}
       >
         <AddItem
-          {...StepItem}
+          {...item}
           variant='text'
           sx={styles.add}
-          onClick={onAddStep}
           parentId={parent.uuid}
           type={ESectionType.background}
         />
       </EmptyItem>
     </Tooltip>
-    </Box>
   )
 }

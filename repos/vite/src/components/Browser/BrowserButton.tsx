@@ -21,8 +21,6 @@ export const BrowserButton = (props:TBrowserButton) => {
       loc='bottom'
       describeChild
       title={tooltip}
-      enterDelay={500}
-      fontSize={`10px`}
     >
       <span>
         <BrowserBtn

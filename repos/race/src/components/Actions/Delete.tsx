@@ -43,7 +43,6 @@ export const DeleteAct = (props:TDeleteAct) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      fontSize={`10px`}
       title={`Remove ${capitalize(type)}`}
     >
       <SectionActIcnBtn

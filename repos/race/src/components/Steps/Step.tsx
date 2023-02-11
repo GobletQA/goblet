@@ -2,7 +2,6 @@ import type { TStepParentAst, TStepAst } from '@GBR/types'
 
 import { Section } from '../Section'
 import { StepHeader } from './StepHeader'
-import { StepActions } from './StepActions'
 import { Expressions } from '../Expressions'
 import { SelectAction } from './SelectAction'
 import { useInline } from '@gobletqa/components'
@@ -12,7 +11,6 @@ import {
   StepGrid,
   StepContent,
   StepContainer,
-  StepHeaderText,
 } from './Steps.styled'
 import { ESectionType } from '@GBR/types'
 import { PlayAct } from '../Actions/Play'
@@ -102,8 +100,6 @@ export const Step = (props:TStep) => {
                 expressions={expressions}
               />
             ) || step.step && (<NoExpMatch />)}
-
-            <StepActions step={step} parent={parent} />
           </StepGrid>
         </StepContent>
       </Section>

@@ -29,7 +29,6 @@ const AddRootFile = (props:TAddRootFile) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      fontSize={`10px`}
       title={`Create a new feature`}
     >
       <NewFileIcon
@@ -53,7 +52,6 @@ const AddRootFolder = (props:TAddRootFolder) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      fontSize={`10px`}
       title={`Create a feature folder in the root directory`}
     >
       <NewFolderIcon

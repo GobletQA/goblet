@@ -52,7 +52,6 @@ export const SectionActions = (props:TSectionActions) => {
             loc='bottom'
             describeChild
             enterDelay={500}
-            fontSize={`10px`}
             title={action.label}
             key={action.key || action.id || action.label}
           >

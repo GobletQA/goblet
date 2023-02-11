@@ -1,10 +1,9 @@
-import type { CSSProperties } from 'react'
-import type { TStepParentAst, TStepAst } from '@GBR/types'
-import type { TAutoOpt } from '@gobletqa/components'
 import type { HTMLAttributes } from 'react'
+import type { TAutoOpt } from '@gobletqa/components'
+import type { TStepParentAst, TStepAst } from '@GBR/types'
 import type { AutocompleteRenderOptionState } from '@mui/material/Autocomplete'
 
-import { AutoInput } from '@gobletqa/components'
+import { Tooltip, AutoInput } from '@gobletqa/components'
 import { useOnStepChange }  from '@GBR/hooks/useOnStepChange'
 import { useStepOptions } from '@gobletqa/race/hooks/useStepOptions'
 
@@ -38,11 +37,18 @@ const RenderOption = (
   const opt = option as TAutoOpt
 
   return (
-    <li {...props} >
-      <div key={opt.id} >
-        {opt.label}
-      </div>
-    </li>
+    <Tooltip 
+      arrow
+      loc='right'
+      title={opt.info}
+      key={(props as Record<`key`, string>).key || opt.id}
+    >
+      <li {...props} >
+        <div key={opt.id} >
+          {opt.label}
+        </div>
+      </li>
+    </Tooltip>
   )
 }
 

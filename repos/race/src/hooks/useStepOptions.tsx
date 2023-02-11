@@ -7,10 +7,24 @@ export const useStepOptions = () => {
 
   return useMemo(() => {
     return Object.entries(defs).reduce((acc, [key, def]) => {
-      const { race, name } = def.meta
+
+      const {
+        info,
+        race,
+        name,
+        alias,
+        description,
+      } = def.meta
+
       race
         && name
-        && acc.push({ id: key, label: name })
+        && acc.push({
+            alias,
+            id: key,
+            label: name,
+            type: def.type,
+            info: info || description,
+          })
 
       return acc
     }, [] as TAutoOptVal[])

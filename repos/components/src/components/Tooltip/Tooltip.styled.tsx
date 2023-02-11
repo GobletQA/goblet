@@ -1,6 +1,6 @@
 import type { TooltipProps } from '@mui/material/Tooltip'
 
-import { colors } from '@GBC/theme'
+import { colors, gutter } from '@GBC/theme'
 import { styled } from '@mui/material/styles'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 
@@ -14,6 +14,7 @@ export const MuiTooltip = styled(({ className, fontSize, ...props }: TTooltipPro
   [`& .${tooltipClasses.tooltip}`]: {
     fontSize,
     boxShadow: theme.shadows[3],
-    backgroundColor: colors.black09,
+    color: `var(--goblet-editor-foreground)`,
+    backgroundColor: `var(--goblet-editor-background)`,
   },
 }))

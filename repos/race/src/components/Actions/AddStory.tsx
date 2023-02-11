@@ -35,7 +35,6 @@ export const AddStoryAct = (props:TAddStoryAct) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      fontSize={`10px`}
       title={title || `Add ${capitalize(type)}`}
     >
       <SectionActIcnBtn

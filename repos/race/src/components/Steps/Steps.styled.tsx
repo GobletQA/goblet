@@ -33,3 +33,15 @@ export const StepHeaderText = styled(Span)`
 
 export const StepGrid = styled(Grid)``
 export const StepGridItem = styled(Grid)``
+
+
+export const EmptyItem = styled(Box)`
+  display: flex;
+  align-items: start;
+  justify-content: start;
+  flex-direction: column;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-bottom: 0px !important;
+`
+

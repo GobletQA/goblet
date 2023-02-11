@@ -17,6 +17,7 @@ import type {
 export type TAutoOpt = {
   label: string
   id: string | number
+  [key:string]:any
 }
 export type TAutoOptVal = string | TAutoOpt
 

@@ -3,6 +3,7 @@ import type { TBackgroundAst, TRaceFeature } from '@GBR/types'
 import { Steps } from '../Steps'
 import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
+import { PlayAct } from '../Actions/Play'
 import { ESectionType } from '@GBR/types'
 import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
@@ -27,6 +28,8 @@ export const Background = (props:TBackground) => {
   const { background, parent } = props
   const onCopyBackground = () => background && copyBackground(background)
 
+  const onPlay = () => {}
+
   return (
     <Section
       parent={parent}
@@ -42,6 +45,13 @@ export const Background = (props:TBackground) => {
             type={ESectionType.step}
             onClick={addBackgroundStep}
             key={`gr-background-add-step-action`}
+          />
+        ),
+        (
+          <PlayAct
+            onClick={onPlay}
+            type={ESectionType.background}
+            key={`gr-background-play-action`}
           />
         ),
         (

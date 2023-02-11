@@ -39,7 +39,6 @@ export const ToggleGeneralAct = (props:TToggleGeneralAct) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      fontSize={`10px`}
       title={`Hide General`}
     >
       <SectionActIcnBtn

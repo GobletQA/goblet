@@ -6,7 +6,7 @@ import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
 import { FeatureItems } from './FeatureItems'
 import { isArr, exists } from '@keg-hub/jsutils'
-import { gutter, colors, Text, If } from '@gobletqa/components'
+import { Tooltip, gutter, colors, Text, If } from '@gobletqa/components'
 
 
 import {
@@ -54,26 +54,31 @@ export const EmptyFeature = (props:TEmptyFeature) => {
           return exists(section) && (!isArr(section) || section.length)
             ? null
             : (
-            <EmptyItem key={item.type||item.text} sx={styles.item} >
+                <Tooltip
+                  describeChild
+                  key={item.type||item.text} title={`Add ${item.type || item.text}`}
+                >
+                  <EmptyItem sx={styles.item} >
 
-              <AddItem
-                {...item}
-                variant='text'
-                sx={styles.add}
-                parentId={parent.uuid}
-                type={ESectionType.background}
-              />
+                    <AddItem
+                      {...item}
+                      variant='text'
+                      sx={styles.add}
+                      parentId={parent.uuid}
+                      type={ESectionType.background}
+                    />
 
-              <EmptyItemTextContainer>
-                <If check={description}>
-                  <Text>
-                    {description}
-                  </Text>
-                </If>
-              </EmptyItemTextContainer>
+                    <EmptyItemTextContainer>
+                      <If check={description}>
+                        <Text>
+                          {description}
+                        </Text>
+                      </If>
+                    </EmptyItemTextContainer>
 
-            </EmptyItem>
-          )
+                  </EmptyItem>
+                </Tooltip>
+              )
           
         })}
       </EmptyList>

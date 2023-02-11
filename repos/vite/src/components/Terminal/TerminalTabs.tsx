@@ -50,7 +50,6 @@ export const TerminalTabs = (props:TerminalTabs) => {
                   loc='top'
                   describeChild
                   enterDelay={500}
-                  fontSize={`10px`}
                   title={`Close terminal`}
                 >
                   <TabCloseIcon

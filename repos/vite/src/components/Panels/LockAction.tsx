@@ -34,7 +34,6 @@ const LockActionComp = (props:TLockIcon) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      fontSize={`10px`}
       title={`Lock the Sidebar open`}
     >
       <IconButton

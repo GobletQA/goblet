@@ -3,6 +3,7 @@ import type { TStepAst, TScenarioParentAst, TScenarioAst } from '@GBR/types'
 import { Steps } from '../Steps'
 import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
+import { PlayAct } from '../Actions/Play'
 import { ESectionType } from '@GBR/types'
 import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
@@ -37,6 +38,8 @@ export const Scenario = (props:TScenario) => {
   const onChangeScenarioStep = (step:TStepAst) => onChangeStep(step, scenario.uuid, parent.uuid)
   const onRemoveScenarioStep = (stepId:string) => onRemoveStep(stepId, scenario.uuid, parent.uuid)
 
+  const onPlay = () => {}
+
   return (
     <Section
       parent={parent}
@@ -52,6 +55,13 @@ export const Scenario = (props:TScenario) => {
             onClick={onAddScenarioStep}
             type={ESectionType.step}
             key={`gr-scenario-add-step-action`}
+          />
+        ),
+        (
+          <PlayAct
+            onClick={onPlay}
+            type={ESectionType.background}
+            key={`gr-background-play-action`}
           />
         ),
         (

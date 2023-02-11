@@ -36,7 +36,6 @@ export const CopyAct = (props:TCopyAct) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      fontSize={`10px`}
       title={`Copy ${capitalize(type)}`}
     >
       <SectionActIcnBtn
