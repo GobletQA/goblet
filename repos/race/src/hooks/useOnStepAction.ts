@@ -12,7 +12,7 @@ export type THOnStepChange = {
   onChange:(step:TStepAst, old?:TStepAst) => void
 }
 
-export const useOnStepChange = (props:THOnStepChange) => {
+export const useOnStepAction = (props:THOnStepChange) => {
   const {
     step,
     onChange

@@ -1,10 +1,8 @@
-
 import type {
   IParkin,
   TExpPart,
   TStepDef,
   TStepAst,
-  TMatchTokens,
   TStepParentAst,
 } from '@GBR/types'
 
@@ -37,7 +35,10 @@ const useStepParts = (
   return useMemo(() => stepTokens(parkin, step.step, def), [def, step.step])
 }
 
-const useMatchExpressions = (parkin:IParkin, def:TStepDef) => {
+const useMatchExpressions = (
+  parkin:IParkin,
+  def:TStepDef
+) => {
   return useMemo(() => {
     const parts = def && expressionParts(parkin, def)
 
@@ -45,13 +46,6 @@ const useMatchExpressions = (parkin:IParkin, def:TStepDef) => {
       ? matchExpressions(def, parts)
       : emptyArr as TExpPart[]
   }, [def])
-}
-
-const useTokenMap = (
-  exps:TExpPart[],
-  tokens:TMatchTokens[]
-) => {
-  return useMemo(() => mapStepTokens(exps, tokens), [tokens, exps])
 }
 
 export const useExpressions = (props:THStepSubjects) => {
@@ -65,7 +59,7 @@ export const useExpressions = (props:THStepSubjects) => {
 
   // Run on every change to step input
   const tokens = useStepParts(parkin, step, def)
-  const expressions = useTokenMap(exps, tokens)
+  const expressions = useMemo(() => mapStepTokens(exps, tokens), [tokens, exps])
 
   return def
     ? { def, expressions }

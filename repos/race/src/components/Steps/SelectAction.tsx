@@ -4,7 +4,7 @@ import type { TStepParentAst, TStepAst } from '@GBR/types'
 import type { AutocompleteRenderOptionState } from '@mui/material/Autocomplete'
 
 import { Tooltip, AutoInput } from '@gobletqa/components'
-import { useOnStepChange }  from '@GBR/hooks/useOnStepChange'
+import { useOnStepAction }  from '@gobletqa/race/hooks/useOnStepAction'
 import { useStepOptions } from '@gobletqa/race/hooks/useStepOptions'
 
 import { sharedAutoInputStyles, sharedLabelProps } from '../Shared'
@@ -55,7 +55,7 @@ const RenderOption = (
 export const SelectAction = (props:TSelectAction) => {
 
   const options = useStepOptions()
-  const onChange = useOnStepChange(props)
+  const onChange = useOnStepAction(props)
 
   return (
     <StepGridItem xs={12} sm={3} >
