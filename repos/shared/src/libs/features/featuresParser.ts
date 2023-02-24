@@ -23,6 +23,7 @@ export const featuresParser = (featureMeta:TFeatureMeta = noOpObj as TFeatureMet
     fs.readFile(location, (err, data) => {
       if (err) return rej(err)
       const content = data.toString()
+
       const ast = parkin.parse.feature(content)
       return res({
         ...featureMeta,

@@ -20,6 +20,7 @@ export type TBranchProps = Partial<typeof branchProps> & {
   error?:string
   disabled?:boolean
   branches?:string[]
+  branchFrom?:boolean
   onChange?:TOnAutoChange
 }
 
@@ -28,10 +29,13 @@ export const BranchSelect = (props:TBranchProps) => {
     branch,
     branches,
     onChange,
+    branchFrom,
     ...rest
   } = props
 
-  const onSelect = useCallback<TOnAutoChange>((evt, val) => onChange?.(evt, val, CreateBranchSelect), [onChange])
+  const onSelect = useCallback<TOnAutoChange>((evt, val) => {
+    onChange?.(evt, val, branchFrom ? CreateBranchSelect : undefined)
+  }, [onChange, branchFrom])
 
   return (
     <AutoInput

@@ -60,9 +60,6 @@ RUN <<EOF
   cd /goblet/app/repos/conductor
   yarn json:rm
 
-  cd /goblet/app/repos/esdev
-  yarn json:rm
-
   cd /goblet/app/repos/shared
   yarn json:rm
 

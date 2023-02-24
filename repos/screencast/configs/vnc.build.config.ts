@@ -1,39 +1,9 @@
-import '../resolveRoot'
-
+import { GSCRoot } from '../resolveRoot'
+import { ESBuild } from './esbuild'
 import path from 'path'
-import { esbuild } from './esbuild'
-import { fileURLToPath } from 'url'
-import { aliases } from '@GConfigs/aliases.config'
 
-// @ts-ignore
-const dirname = path.dirname(fileURLToPath(import.meta.url))
-const dev = process.env.npm_lifecycle_event === `vnc:start`
-
-const rootDir = path.join(dirname, `../`)
-const distDir = path.join(rootDir, `dist`)
-const outFile = path.join(distDir, `vnc.js`)
-const entryFile = path.join(rootDir, `src/vnc.ts`)
-
-esbuild({
-  dev,
-  aliases,
-  outFile,
-  entryFile,
-  cwd: rootDir,
-  envOpts: {
-    noYml: true,
-    name: `goblet`,
-    locations: [aliases.GobletRoot],
-    envs: { GOBLET_ROOT_DIR: aliases.GobletRoot },
-  },
-  args: [
-    `--config`,
-    `configs/nm.config.json`,
-    `--exec`,
-    `node`,
-     `--enable-source-maps`,
-    `-r`,
-    `esbuild-register`,
-    outFile
-  ],
+ESBuild({
+  outFile: path.join(GSCRoot, `dist/vnc.js`),
+  entryFile: path.join(GSCRoot, `src/vnc.ts`),
+  dev: process.env.npm_lifecycle_event === `vnc:start`,
 })

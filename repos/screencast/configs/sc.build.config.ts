@@ -1,39 +1,9 @@
-import '../resolveRoot'
-
+import { GSCRoot } from '../resolveRoot'
+import { ESBuild } from './esbuild'
 import path from 'path'
-import { esbuild } from './esbuild'
-import { fileURLToPath } from 'url'
-import { aliases } from '@GConfigs/aliases.config'
 
-// @ts-ignore
-const dirname = path.dirname(fileURLToPath(import.meta.url))
-const dev = process.env.npm_lifecycle_event === `sc:start`
-const rootDir = path.join(dirname, `../`)
-const distDir = path.join(rootDir, `dist`)
-const outFile = path.join(distDir, `index.js`)
-const entryFile = path.join(rootDir, `index.ts`)
-
-esbuild({
-  dev,
-  aliases,
-  outFile,
-  entryFile,
-  cwd: rootDir,
-  sourcemap: 'inline',
-  envOpts: {
-    noYml: true,
-    name: `goblet`,
-    locations: [aliases.GobletRoot],
-    envs: { GOBLET_ROOT_DIR: aliases.GobletRoot },
-  },
-  args: [
-    `--config`,
-    `configs/nm.config.json`,
-    `--exec`,
-    `node`,
-    `--enable-source-maps`,
-    `-r`,
-    `esbuild-register`,
-    outFile
-  ],
+ESBuild({
+  entryFile: path.join(GSCRoot, `index.ts`),
+  outFile: path.join(GSCRoot, `dist/index.js`),
+  dev: process.env.npm_lifecycle_event === `sc:start`,
 })

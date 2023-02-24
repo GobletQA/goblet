@@ -70,6 +70,7 @@ export const BranchConnect = (props:TAdvanced) => {
           branch={selected}
           disabled={disabled}
           onChange={onChange}
+          branchFrom={branchFrom}
           error={inputError.branch}
           branches={repo?.branches || emptyArr}
         />

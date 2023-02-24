@@ -1,4 +1,5 @@
-import { GBERoot } from '../resolveRoot'
+
+import { GCDRoot } from '../resolveRoot'
 
 import path from 'path'
 import { esbuild } from '@ltipton/esdev'
@@ -6,11 +7,13 @@ import { aliases } from '@GConfigs/aliases.config'
 import { loadConfigs } from '@keg-hub/parse-config'
 
 const dev = process.env.DEV_BUILD === `1`
-const distDir = path.join(GBERoot, `dist`)
-const outFile = path.join(distDir, `goblet.default.config.js`)
-const entryFile = path.join(aliases.GobletRoot, `configs/goblet.default.config.js`)
 const nodeEnv = process.env.NODE_ENV || `local`
+const entryFile = path.join(GCDRoot, `index.js`)
+const outFile = path.join(GCDRoot, `dist/index.js`)
 
+/**
+ * Load the ENVs from <node-env>.env ( local.env || prod.env )
+ */
 const envs = loadConfigs({
   noYml: true,
   env: nodeEnv,
@@ -23,7 +26,7 @@ esbuild({
   aliases,
   outFile,
   entryFile,
-  cwd: GBERoot,
+  cwd: GCDRoot,
   mergeEnvs:true,
   sourcemap: 'inline',
   envs: {
@@ -31,4 +34,3 @@ esbuild({
     GOBLET_ROOT_DIR: aliases.GobletRoot
   }
 })
-
