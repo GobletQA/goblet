@@ -109,6 +109,7 @@
     "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "*",
     "@ltipton/parkin": "*",
+    "@ltipton/esdev": "*",
     "esbuild": "*",
     "esbuild-plugin-path-alias": "*",
     "esbuild-register": "*",
