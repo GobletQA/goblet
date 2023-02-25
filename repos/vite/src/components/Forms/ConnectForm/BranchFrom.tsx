@@ -2,11 +2,11 @@ import type { TRepoInputError } from '@types'
 import type { FocusEvent, KeyboardEvent } from 'react'
 import type { TOnAutoChange } from '@gobletqa/components'
 
-import { useCallback, useEffect, useRef } from 'react'
+import { useMemo, useCallback, useEffect, useRef } from 'react'
+import { CreateNewBranch } from '@constants'
+import { eitherArr, emptyArr } from '@keg-hub/jsutils'
 import { AutoInput, Input } from '@gobletqa/components'
 import { SubGridParent, SubGrid } from './Connect.styled'
-
-
 
 export type TBranchFrom = {
   branch?:string
@@ -57,7 +57,6 @@ export const BranchFrom = (props:TBranchFrom) => {
     newBranch !== value && onChangeNewBranch?.(value)
   }, [newBranch])
 
-
   const onKeyDown = useCallback((evt:KeyboardEvent<HTMLInputElement>) => {
     inputError.newBranch
       && onInputError?.(`newBranch`, undefined)
@@ -75,6 +74,11 @@ export const BranchFrom = (props:TBranchFrom) => {
       && (inputRef.current.value = newBranch)
   }, [newBranch])
 
+  const options = useMemo(
+    () => eitherArr(branches, emptyArr).filter((branch:string) => branch !== CreateNewBranch),
+    [branches]
+  )
+
   return (
     <SubGridParent
       rowSpacing={2}
@@ -87,10 +91,10 @@ export const BranchFrom = (props:TBranchFrom) => {
         <AutoInput
           {...parentProps}
           {...rest}
+          options={options}
           disabled={disabled}
           onChange={onChange}
           currentValue={branch}
-          options={branches || []}
           error={inputError.branch}
           className='branch-parent-dropdown'
         />

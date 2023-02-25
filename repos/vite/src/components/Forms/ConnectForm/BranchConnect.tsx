@@ -52,7 +52,7 @@ export const BranchConnect = (props:TAdvanced) => {
     onInputError,
     onChangeNewBranch
   } = props
-  
+
   const selected = branchFrom ? CreateNewBranch : branch
 
   return (

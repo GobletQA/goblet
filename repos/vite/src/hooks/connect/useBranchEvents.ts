@@ -41,11 +41,13 @@ export const useBranchEvents = (props:THBranchEvts) => {
   })
 
   const onChangeBranch = useInline<TOnAutoChange>((evt, value, reason) => {
+    const isCreateBranch = value === CreateNewBranch
+    const isCreateBranchSelect = reason === CreateBranchSelect
 
-    if(reason === CreateBranchSelect){
-      return value === CreateNewBranch
+    if(isCreateBranch || isCreateBranchSelect){
+      return isCreateBranch
         ? setBranchFrom(true)
-        : setBranchFrom(false)
+        : isCreateBranchSelect && setBranchFrom(false)
     }
 
     branch !== value && setBranch(value as string)

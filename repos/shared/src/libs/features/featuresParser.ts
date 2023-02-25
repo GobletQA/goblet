@@ -2,6 +2,7 @@ import type { Repo } from '@GSH/repo/repo'
 
 import fs from 'fs'
 import { noOpObj } from '@keg-hub/jsutils'
+import { Logger } from '@keg-hub/cli-utils'
 import { getParkinInstance } from '@GSH/libs/parkin'
 
 export type TFeatureMeta = {
@@ -20,16 +21,29 @@ export const featuresParser = (featureMeta:TFeatureMeta = noOpObj as TFeatureMet
   const parkin = repo?.parkin || getParkinInstance(repo)
 
   return new Promise((res, rej) => {
-    fs.readFile(location, (err, data) => {
-      if (err) return rej(err)
-      const content = data.toString()
+    try {
+      fs.readFile(location, (err, data) => {
+        if (err) return rej(err)
+        const content = data.toString()
 
-      const ast = parkin.parse.feature(content)
-      return res({
-        ...featureMeta,
-        content,
-        ast
+        try {
+          // TODO: Add a proper logger for shared / screencast
+          Logger.pair(`Parsing feature at`, location)
+          const ast = parkin.parse.feature(content)
+          return res({
+            ...featureMeta,
+            content,
+            ast
+          })
+        }
+        catch(err:unknown){
+          // TODO: Update Parkin to allow feature parsing with Error handling
+          rej(err)
+        }
       })
-    })
+    }
+    catch(err:unknown){
+      rej(err)
+    }
   })
 }
