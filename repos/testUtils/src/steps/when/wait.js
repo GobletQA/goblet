@@ -26,5 +26,6 @@ const meta = {
   ],
 }
 When('I wait {int} second(s)', wait, meta)
+When('I wait for {int} second(s)', wait, meta)
 
 module.exports = { wait }

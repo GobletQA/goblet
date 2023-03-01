@@ -57,7 +57,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
 
   const [curPath, setCurPath] = useState('')
   // TODO: figure out way to remove this
-  // Gets set the the useRestoreModel via a change listener on model.onDidChangeContent
+  // Gets set in the useRestoreModel via a change listener on model.onDidChangeContent
   // Is then passed down to the editor actions so they have access to it
   const curValueRef = useRef('')
 
@@ -91,11 +91,13 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
   const { Modal } = useModalActions({ Modal: ModalComp })
 
   const {
+    decoration,
     pathChange,
     openedFiles,
     restoreModel,
     setOpenedFiles,
   } = useEditorCallbacks({
+    curPath,
     filesRef,
     editorRef,
     optionsRef,
@@ -162,6 +164,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
     closeFile,
     editorRef,
     pathChange,
+    decoration,
     openedFiles,
     resizeSidebar,
     onEditorLoaded,

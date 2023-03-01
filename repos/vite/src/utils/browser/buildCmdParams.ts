@@ -1,7 +1,11 @@
-import { TFileModel } from '@types'
+import { TFileModel, TSetting } from '@types'
 
 import {
   exists,
+  isNum,
+  toNum,
+  isBool,
+  toBool,
   emptyObj,
   emptyArr,
   checkCall,
@@ -15,12 +19,54 @@ export type TBuiltCmdParams = {
   file:TFileModel
 }
 
+/**
+ 
+ * This is used to fix a bug, really the type should already be correct
+ * Need to investigate why it's not set
+ */
+const ensureType = (setting:TSetting) => {
+  if(!setting || !setting.active || !exists(setting.value)) return undefined
+  if(!setting?.type) return setting?.value
+  
+  return setting.type === `number` && setting?.postfix !== `px`
+    ? isNum(setting.value)
+      ? setting.value
+      : toNum(setting.value)
+    : setting.type === `boolean` && !isBool(setting.value)
+      ? toBool(setting.value)
+      : setting.value
+}
+
 const conditionalAddParam = (key:string, value:string|number) => {
   return exists(value) ? (key ? `${key}=${value}` : `--${value}`) : ''
 }
 
 const conditionalAddOpt = (key:string, value:string|number) => {
   return exists(value) ? ({[key]: value}) : emptyObj
+}
+
+const conditionalAddSettingOpt = (
+  key:string,
+  setting:TSetting
+) => {
+  const value = setting?.active ? ensureType(setting) : undefined
+  
+  return exists(value)
+    ? ({[key]: value})
+    : emptyObj
+}
+
+const conditionalAddSettingParam = (
+  key:string,
+  setting:TSetting
+) => {
+  const value = setting?.active ? ensureType(setting) : undefined
+
+  return exists(value)
+    ? key
+      ? `${key}=${value}`
+      : `--${value}`
+    : ''
 }
 
 /**
@@ -34,14 +80,14 @@ const resolveFromSettings = (args:TBuiltCmdParams) => {
 
   return {
     options: {
-      ...conditionalAddOpt(`debug`, mergedSettings?.browser?.debug),
-      ...conditionalAddOpt(`slowMo`, mergedSettings?.browser?.slowMo),
-      ...conditionalAddOpt(`testTimeout`, mergedSettings?.browser?.timeout),
+      ...conditionalAddSettingOpt(`debug`, mergedSettings?.browser?.debug),
+      ...conditionalAddSettingOpt(`slowMo`, mergedSettings?.browser?.slowMo),
+      ...conditionalAddSettingOpt(`testTimeout`, mergedSettings?.browser?.timeout),
     },
     params: [
-      conditionalAddParam(`debug`, mergedSettings?.browser?.debug),
-      conditionalAddParam(`slowMo`, mergedSettings?.browser?.slowMo),
-      conditionalAddParam(`testTimeout`, mergedSettings?.browser?.timeout),
+      conditionalAddSettingParam(`debug`, mergedSettings?.browser?.debug),
+      conditionalAddSettingParam(`slowMo`, mergedSettings?.browser?.slowMo),
+      conditionalAddSettingParam(`testTimeout`, mergedSettings?.browser?.timeout),
     ]
   }
 }

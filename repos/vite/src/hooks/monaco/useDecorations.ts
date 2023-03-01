@@ -87,6 +87,7 @@ const checkFailedSpec = ({
   if(!event) return
 
   if(PWPlay.playSpecDone === event.name && !event.data.passed){
+    
     const featDeco = featureRef.current && buildDecorationFrom(event.data, featureRef.current)
     featDeco && add(relative, featDeco, { action: event.data.action })
 
@@ -104,7 +105,7 @@ export const useDecorations = ({
   const featureRef = useRef<TPlayerEventData|undefined>(undefined)
   const scenarioRef = useRef<TPlayerEventData|undefined>(undefined)
 
-  useEventListen(PlayerEndedEvent, (event:TPlayerResEvent) => {
+  useEventListen<TPlayerResEvent>(PlayerEndedEvent, (event:TPlayerResEvent) => {
     updateRefs({
       stepRef,
       featureRef,
@@ -141,7 +142,6 @@ export const useDecorations = ({
   })
 
   useEventListen<TPlayerResEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
-
     const id = event?.data?.id
     const decoration = editorRef?.current?.decoration
     if(!decoration || !id) return

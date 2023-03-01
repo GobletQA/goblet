@@ -51,11 +51,8 @@ const formatLog = {
 
 
 let inFeature:string = ``
-/**
- * Emits a PlayerTestEvt event with just the Player test response data
- */
-export const playEvent = (meta:TPlayerResEvent) => {
 
+const handleTerminalLog = (meta:TPlayerResEvent) => {
   try {
     const formatted = formatLog[meta.name as keyof typeof formatLog]?.(meta, inFeature)
     if(PWPlay.playSuiteStart === meta.name && !inFeature) inFeature = meta.id
@@ -82,6 +79,16 @@ export const playEvent = (meta:TPlayerResEvent) => {
   catch(err:any){
     console.error(err.message)
   }
+}
+
+
+/**
+ * Emits a PlayerTestEvt event with just the Player test response data
+ */
+export const playEvent = (meta:TPlayerResEvent) => {
+
+  // Disable logging, not currently using the terminal
+  // handleTerminalLog(meta)
 
   switch(meta.name){
     case PWPlay.playStarted: {

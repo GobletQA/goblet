@@ -8,6 +8,7 @@ import type {
   TEditorTheme,
   IMultiRefType,
   TEditorConfig,
+  TDecorationFns,
   TCodeEditorRef,
   TOnEditorLoaded,
   TEditorRefHandle,
@@ -29,6 +30,7 @@ export type TUseEditorSetup = {
   options: TEditorOpts
   config: TEditorConfig
   editorRef:TCodeEditorRef
+  decoration: TDecorationFns
   openedFiles: TEditorOpenFiles
   onEditorLoaded?:TOnEditorLoaded
   ref: ForwardedRef<IMultiRefType>
@@ -55,6 +57,7 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     editorRef,
     closeFile,
     pathChange,
+    decoration,
     openedFiles,
     resizeSidebar,
     onEditorLoaded,
@@ -110,11 +113,6 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
 
     pathChange(path)
   }, [])
-
-  const decoration = useDecorations({
-    curPath,
-    editorRef,
-  })
 
   // Sets up callbacks for focus and blur of the editor
   useEffect(() => {

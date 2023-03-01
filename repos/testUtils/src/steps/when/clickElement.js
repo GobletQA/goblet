@@ -6,7 +6,7 @@ const { ExpressionKinds, ExpressionTypes } = require('@gobletqa/shared/constants
  * Click the element matching `selector`
  * @param {String} selector - valid playwright selector
  */
-const clickElementHandler = async selector => {
+const clickElementHandler = async (selector, world) => {
   const page = await getPage()
   // Actionability checks (Auto-Waiting) seem to fail in headless mode
   // So we use locator.waitFor to ensure the element exist on the dom
@@ -15,7 +15,6 @@ const clickElementHandler = async selector => {
   return page.click(selector, {
     force: true
   })
-
 }
 
 

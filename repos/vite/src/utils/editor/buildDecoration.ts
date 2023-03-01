@@ -59,7 +59,8 @@ const getSearchText = (description:string, type:string) => {
 export const buildDecoration = (
   event:TPlayerTestEvent,
   type?:string,
-  description?:string
+  description?:string,
+  testPath?:string
 ) => {
   type = type || getTypeFromId(event)
   const classes = getDecoCls(event, type)
@@ -72,9 +73,9 @@ export const buildDecoration = (
       isWholeLine: true,
       showIfCollapsed: true,
       className: `gb-player-line ${classes}`,
-      marginClassName: event.testPath.replace(`/`, `_`),
       glyphMarginClassName: `gb-player-glyph ${classes}`,
       glyphMarginHoverMessage: getHoverMessage(event, type),
+      marginClassName: (testPath || event.testPath).replaceAll(`/`, `_`),
     }
   } as TDecoration
 }

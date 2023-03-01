@@ -37,14 +37,14 @@ export const Steps = (props:TSteps) => {
       type={ESectionType.step}
     >
       {
-        parent?.steps?.map(step => {
+        parent?.steps?.map((step, idx) => {
           return (
             <Step
               step={step}
               parent={parent}
               onRemove={onRemove}
               onChange={onChange}
-              key={`${parent.uuid}-step-${step.uuid}`}
+              key={`${parent.uuid}-step-${step.index || idx}-${step.uuid}`}
             />
           )
         })

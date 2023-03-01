@@ -8,5 +8,5 @@ export const buildDecorationFrom = (
   event:TPlayerTestEvent
 ) => {
   const type = getTypeFromId(event)
-  return buildDecoration(from, type, event.description)
+  return buildDecoration(from, type, event.description, event.testPath)
 }

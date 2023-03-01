@@ -2,7 +2,12 @@ import type { TLinter } from './useLintWorker'
 import type { TTypes } from './useTypesWorker'
 import type { Dispatch, MutableRefObject } from 'react'
 import type { editor, IDisposable } from 'monaco-editor'
-import type { TCodeEditorRef, TEditorOpenFiles, TFilelist } from '../../types'
+import type {
+  TFilelist,
+  TCodeEditorRef,
+  TDecorationFns,
+  TEditorOpenFiles,
+} from '../../types'
 
 import { useCallback } from 'react'
 import { isStr } from '@keg-hub/jsutils'
@@ -10,6 +15,7 @@ import { getModelFromPath } from '../../utils/editor/getModelFromPath'
 
 export type TUseRestoreModel = {
   editorRef: TCodeEditorRef
+  decoration: TDecorationFns
   curValueRef: MutableRefObject<string>
   filesRef: MutableRefObject<TFilelist>
   openedPathRef: MutableRefObject<string | null>
@@ -58,6 +64,7 @@ const restoreContentListener = (
 
   const {
     filesRef,
+    decoration,
     curValueRef,
     lintWorkerRef,
     setOpenedFiles,
@@ -80,7 +87,10 @@ const restoreContentListener = (
         return file
       })
     })
-  
+
+    // Clear any run / test decorations if they exist on file change
+    decoration.clear(path)
+
     onFileChangeRef.current
       && onFileChangeRef.current(path, content)
 

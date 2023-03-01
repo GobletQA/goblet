@@ -7,6 +7,7 @@ module.exports = {
   ...require('./evalElement'),
   ...require('./evalAll'),
   ...require('./getLocator'),
+  ...require('./getLocatorType'),
   ...require('./getLocators'),
   ...require('./testReport'),
   ...require('./videoRecording'),

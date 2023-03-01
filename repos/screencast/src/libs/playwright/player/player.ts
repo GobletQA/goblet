@@ -146,7 +146,13 @@ export class Player {
         data: { options: this.options.playOptions } as TPlayerTestEvent
       })
 
-      const codeRunner = new CodeRunner(this)
+
+      const codeRunner = new CodeRunner(this, {
+        debug: this.options?.playOptions?.debug as boolean,
+        slowMo: this.options?.playOptions?.slowMo as number,
+        timeout: this.options?.playOptions?.testTimeout as number,
+      })
+
       const results = await codeRunner.run(this.options?.file?.content)
       this.fireEvent({
         data: results,

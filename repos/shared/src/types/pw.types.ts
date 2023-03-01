@@ -107,8 +107,8 @@ export type TBrowserActionOptions = {
   cmd?: string
   params?:string[]
   file?: Partial<TFileModel>
-  playOptions?: Record<string, string|number>
-  recordOptions?: Record<string, string|number>
+  playOptions?: Record<string, string|number|boolean>
+  recordOptions?: Record<string, string|number|boolean>
 }
 
 export type TBrowserAction = {

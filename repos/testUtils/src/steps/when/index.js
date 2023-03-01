@@ -3,6 +3,8 @@ module.exports = {
   ...require('./checkElement'),
   ...require('./clickDescendent'),
   ...require('./clickElement'),
+  ...require('./clickElementType'),
+  ...require('./clickText'),
   ...require('./fileUpload'),
   ...require('./setSelectOption'),
   ...require('./setText'),

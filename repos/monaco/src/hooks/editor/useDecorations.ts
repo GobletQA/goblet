@@ -3,6 +3,7 @@ import type { editor } from 'monaco-editor'
 import type {
   TDecoration,
   TDecorationCB,
+  TDecorationFns,
   TCodeEditorRef,
   TDecorationAdd,
   TDecorationList,
@@ -43,7 +44,6 @@ export const useDecorations = (props:THDecoration) => {
     editorRef,
   } = props
 
-
   const decorationsRef = useRef<TDecorationFiles>({})
   const collectionRef = useRef<TCollectionFiles>({})
 
@@ -75,7 +75,8 @@ export const useDecorations = (props:THDecoration) => {
 
   const clearDecorations = useInline<TDecorationCB>((location:string) => {
     if(!location) return console.warn(`Can not clear decorations, missing file location`, location)
-    
+    if(!collectionRef.current[location]) return
+
     collectionRef.current[location]?.clear()
     delete collectionRef.current[location]
     delete decorationsRef.current[location]
@@ -105,6 +106,6 @@ export const useDecorations = (props:THDecoration) => {
     clear: clearDecorations,
     remove: removeDecoration,
     update: updateDecorations,
-  }
+  } as TDecorationFns
 
 }

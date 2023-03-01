@@ -11,10 +11,12 @@ import type {
 } from '../../types'
 
 import { useCallback, useState } from 'react'
+import { useDecorations } from './useDecorations'
 import { useOpenOrFocus } from './useOpenOrFocus'
 import { useRestoreModel } from './useRestoreModel'
 
 export type TUseFileCallbacks = {
+  curPath:string
   editorRef: TCodeEditorRef
   onFileChangeRef: TEditorFileCBRef
   filesRef: MutableRefObject<TFilelist>
@@ -34,6 +36,7 @@ export type TUseFileCallbacks = {
 export const useEditorCallbacks = (props:TUseFileCallbacks) => {
 
   const {
+    curPath,
     filesRef,
     editorRef,
     optionsRef,
@@ -53,9 +56,15 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
 
   const [openedFiles, setOpenedFiles] = useState<TEditorOpenFiles>([])
 
+  const decoration = useDecorations({
+    curPath,
+    editorRef
+  })
+
   const restoreModel = useRestoreModel({
     filesRef,
     editorRef,
+    decoration,
     curValueRef,
     openedPathRef,
     onLoadFileRef,
@@ -85,6 +94,7 @@ export const useEditorCallbacks = (props:TUseFileCallbacks) => {
   )
 
   return {
+    decoration,
     pathChange,
     openedFiles,
     restoreModel,

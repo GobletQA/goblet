@@ -20,9 +20,10 @@ import { getDefinitions } from '@gobletqa/shared/repo/getDefinitions'
  * Jest does not allow calling from the Node directly
  * So we use Parkin's test runner instead
  */
-const setTestGlobals = (Runner:CodeRunner) => {
+const setTestGlobals = (Runner:CodeRunner, timeout=6000) => {
 
   const PTE = new ParkinTest({
+    timeout: timeout,
     specDone: Runner.onSpecDone,
     suiteDone: Runner.onSuiteDone,
     specStarted: Runner.onSpecStarted,
@@ -57,6 +58,12 @@ const setupParkin = async (Runner:CodeRunner) => {
   return PK
 }
 
+export type TCodeRunnerOpts = {
+  debug?: boolean
+  slowMo?: number
+  timeout?: number
+}
+
 /**
  * CodeRunner
  * Sets up the test environment to allow running tests in a secure context
@@ -67,15 +74,28 @@ export class CodeRunner {
   /**
    * Player Class instance
    */
-  exec = undefined
-  player:Player
   PK:Parkin
+  player:Player
   PTE:ParkinTest
-  
+  exec = undefined
 
-  constructor(player:Player) {
+  /**
+   * Custom options for each run of the code
+   */
+  debug?: boolean
+  slowMo?: number
+  timeout?: number
+
+  constructor(player:Player, opts?:TCodeRunnerOpts) {
     this.player = player
     this.PTE = setupGlobals(this)
+    
+    // TODO: update options to impact how code runner executes code
+    // Need way to pass timeout to step definitions
+    if(opts?.debug) this.debug = opts.debug
+    if(opts?.slowMo) this.slowMo = opts.slowMo
+    if(opts?.timeout) this.timeout = opts.timeout
+
   }
 
   /**
