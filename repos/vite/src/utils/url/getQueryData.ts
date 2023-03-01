@@ -1,7 +1,9 @@
+import { EEditorType } from '@types'
 import { queryToObj, noOpObj } from '@keg-hub/jsutils'
 
 type TQueryData = {
-  file: string
+  file?: string
+  editor?:EEditorType
   [Key: string]: any
 }
 
@@ -9,10 +11,9 @@ type TQueryData = {
  * Gets the query params from the current url location
  * @function
  *
- * @returns {Object} query params as an object
  */
 export const getQueryData = () => {
   return typeof document === 'undefined'
-    ? noOpObj
+    ? noOpObj as TQueryData
     : queryToObj(document?.location?.search) as TQueryData
 }

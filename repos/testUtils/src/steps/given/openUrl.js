@@ -72,10 +72,10 @@ Given('I navigate to {string}', openUrl, {
     },
   ],
   examples: [
-  `Given I navigate to "https://www.simpleviewinc.com"`,
-  `Given I navigate to "$world.myURL/nav/assets/images"`,
-  `Given I navigate to "$$myURL?testUrlParam=1"`,
-  `Given I navigate to "$world.myURL/search?q=cms"`
+    `Given I navigate to "https://www.simpleviewinc.com"`,
+    `Given I navigate to "$world.myURL/nav/assets/images"`,
+    `Given I navigate to "$$myURL?testUrlParam=1"`,
+    `Given I navigate to "$world.myURL/search?q=cms"`
   ],
   race: true
 })

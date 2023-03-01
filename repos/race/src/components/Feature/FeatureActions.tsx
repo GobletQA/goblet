@@ -39,7 +39,7 @@ export const FeatureActions = (props:TFeatureActions) => {
   const items = useMenuItems()
 
   return (
-    <FeatureActionsContainer>
+    <FeatureActionsContainer className='feature-actions-container' >
       <HeaderText>
         Feature
       </HeaderText>

@@ -10,18 +10,23 @@ import { styled } from '@mui/material/styles'
 import { Text, gutter, colors, H3 } from '@gobletqa/components'
 
 export const FeatureActionsContainer = styled(Box)`
+  top: 0;
+  z-index: 1;
   display: flex;
+  position: sticky;
   align-items: center;
   justify-content: space-between;
-  margin-top: -${gutter.margin.hpx};
-  margin-left: -${gutter.margin.hpx};
-  margin-right: -${gutter.margin.hpx};
-  margin-bottom: ${gutter.margin.px};
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: -${gutter.margin.px};
+  margin-right: -${gutter.margin.px};
+  background-color: var(--goblet-editor-background);
   border-bottom: 2px solid var(--goblet-list-focusBackground);
 `
 
 export const HeaderText = styled(H3)`
   font-size: 16px;
+  padding-left: 12px;
 `
 
 export const EmptyFeatureGrid = styled(Grid)``

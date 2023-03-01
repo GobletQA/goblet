@@ -1,5 +1,5 @@
-import type { MouseEvent } from 'react'
-import type { TFeaturesRefs, TEmptyFeature } from '@GBR/types'
+import type { CSSProperties, MouseEvent } from 'react'
+import type { TFeaturesRefs } from '@GBR/types'
 
 
 import { useMemo, useCallback } from 'react'
@@ -27,10 +27,28 @@ import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
 
 
 export type TFeature = TFeaturesRefs & {}
+type StyleObj = Record<string, CSSProperties>
 
-const styles = {
+const styles:Record<string, StyleObj|CSSProperties> = {
   section: {
+    overflowY: `auto`,
     padding: gutter.padding.px,
+    paddingTop: `0px`,
+
+    scrollbarWidth: `none`,
+    [`::-webkit-scrollbar-track`]: {
+      backgroundColor: `transparent`,
+    },
+
+    [`::-webkit-scrollbar`]: {
+      width: `3px !important`,
+      backgroundColor: `transparent`,
+    },
+
+    [`::-webkit-scrollbar-thumb`]: {
+      backgroundColor: `transparent`,
+    },
+
   },
   content: {
     width: `100%`,

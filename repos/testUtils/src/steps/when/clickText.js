@@ -36,7 +36,7 @@ const meta = {
 
 When('I click text {string}', clickTextHandler, {
   ...meta,
-  name: `Click`,
+  name: `Click text`,
   alias: [`Touch`, `Press`],
   info: `Action to simulate clicking, touching, or pressing an element on the page`,
   race: true

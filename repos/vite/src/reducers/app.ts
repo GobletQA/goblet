@@ -1,16 +1,17 @@
 import type { TDspAction } from '@types'
 import { EEditorType } from '@types'
-
+import { getQueryData } from '@utils/url/getQueryData'
 
 export type TAppState = {
   editor:EEditorType
   sidebarLocked: boolean
 }
 
+const editor = getQueryData()?.editor || EEditorType.visual || EEditorType.code
+
 export const appState = {
+  editor,
   sidebarLocked: false,
-  editor: EEditorType.visual
-  // editor: EEditorType.code,
 } as TAppState
 
 export const appActions = {
