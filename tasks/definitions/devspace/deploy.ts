@@ -35,7 +35,6 @@ export const deployAct = async (args:TTaskActionArgs) => {
     devspace:ds,
   } = params
 
-
   clean && await cleanTask.action({
     ...args,
     params: {
@@ -71,7 +70,7 @@ export const deploy:TTask = {
       alias: [`dsp`, `ds`, `dev`],
       example: `--devspace staging`,
       // Deployments should always default to using the backend devspace config
-      default: `container/devspace.backend.yaml`,
+      default: `container/devspace.yaml`,
       description: `Optional filepath for devspace.yaml file`,
     },
     skip: {

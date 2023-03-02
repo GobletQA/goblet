@@ -68,7 +68,7 @@ export const devspace = async (
 
 devspace.deploy = async (params:TTaskParams=emptyParams) => {
   const { skip, force, ...cmdParams } = params
-  const cmdArgs:string[] = []
+  const cmdArgs:string[] = [`--skip-build`]
 
   /**
    * Check the context and skip arrays for which apps to deploy

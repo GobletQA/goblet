@@ -5,20 +5,27 @@ require:
   devspace: '>= 6.0'
 
 pipelines:
-  # pipeline order matters here. DB should be started first because BE relies on it. 
-  # Use scripts to populate variables, then if / else to run pipelines. 
+  # Overwrite the default pipelines with custom actions
   dev: |-
-    services=$(node -r esbuild-register scripts/ds/resolvePipeline.js BE SC)
+    services=$(node -r esbuild-register scripts/ds/resolvePipeline.ts BE SC)
     ensure_pull_secrets --all
     if ! is_empty $services; then
       run_pipelines $services
     fi
-  deploy: null
+
+  deployments: |-
+    run_pipelines deploy-be
+
   build: null
+
+  deploy-be: |-
+    ensure_pull_secrets goblet-backend
+    create_deployments goblet-backend
 
   start-be: |-
     create_deployments goblet-backend
     start_dev goblet-backend
+
   start-sc: |-
     create_deployments goblet-screencast
     start_dev goblet-screencast
@@ -39,8 +46,6 @@ vars:
     command: "node -r esbuild-register scripts/ds/getYamlValue.js NPM_TOKEN"
   NODE_ENV:
     command: "node -r esbuild-register scripts/ds/getYamlValue.js NODE_ENV"
-  GB_NM_INSTALL:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_NM_INSTALL"
 
 # ----- Docker Image Values ----- #
   IMAGE:
@@ -146,8 +151,6 @@ deployments:
       valuesFiles:
       - ./values.empty.yaml
       values:
-        # TODO: this is causing the backend to not be able to pull images from github
-        # Need to investigate
         serviceAccountName: ${GB_KD_SERVICE_ACCOUNT}
         customServiceAccount:
           name: ${GB_KD_SERVICE_ACCOUNT}

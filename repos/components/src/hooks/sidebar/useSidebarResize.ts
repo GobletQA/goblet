@@ -4,7 +4,7 @@ import type { TResizeSideBarEvent } from '@GBC/types'
 import { useRef, useMemo, useCallback, useState } from 'react'
 import { exists } from '@keg-hub/jsutils'
 import { useEventListen } from '@GBC/hooks/useEvent'
-import { ResizeSideBarEvent, DefSidebarWidth } from '@GBC/constants'
+import { ResizeSideBarEvent, SidebarOpenWidth } from '@GBC/constants'
 
 export type TDragObj = {
   pageX: number
@@ -24,7 +24,7 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
   const {
     onSidebarResize,
     initialStatus=false,
-    maxWidth=DefSidebarWidth,
+    maxWidth=SidebarOpenWidth,
     initialWidth=maxWidth,
   } = props
 
@@ -83,7 +83,7 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
     if(exists(size)) return resizeSidebar?.(size)
     if(!toggle) return
     
-    sidebarWidth > 0 ? resizeSidebar?.(0) : resizeSidebar?.(DefSidebarWidth)
+    sidebarWidth > 0 ? resizeSidebar?.(0) : resizeSidebar?.(SidebarOpenWidth)
 
   })
 

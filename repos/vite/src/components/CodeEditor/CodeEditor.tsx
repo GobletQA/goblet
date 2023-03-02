@@ -9,7 +9,7 @@ import { Divider } from '@components/Layout/Divider'
 import { NotConnected } from '@components/NotConnected'
 import { PrePanels } from '@components/Panels/PrePanels'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
-import { BlockIcon, DefSidebarWidth } from '@gobletqa/components'
+import { BlockIcon, SidebarOpenWidth } from '@gobletqa/components'
 
 export type TCodeEditorProps = {
   portal?:string
@@ -55,7 +55,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onPathChange={onPathChange}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
-          sidebarWidth={DefSidebarWidth}
+          sidebarWidth={SidebarOpenWidth}
           sidebarStatus={!sidebarLocked}
           onBeforeAddFile={onBeforeAddFile}
         />

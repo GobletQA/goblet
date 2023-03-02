@@ -1,27 +1,28 @@
-const { appRoot } = require('../../paths')
-const { loadEnvs } = require('../envs/loadEnvs')
-const { runCmd, Logger } = require('@keg-hub/cli-utils')
-const { processError } = require('../process/processError')
-const { ensureArr, noOpObj, noPropArr, isObj, parseJSON } = require('@keg-hub/jsutils')
+import type { TProcOpts, TTaskParams } from '../../types'
+
+import { appRoot } from '../../paths'
+import { loadEnvs } from '../envs/loadEnvs'
+import { runCmd, Logger } from '@keg-hub/cli-utils'
+import { processError } from '../process/processError'
+import { ensureArr, noOpObj, noPropArr, isObj, parseJSON } from '@keg-hub/jsutils'
 
 /**
  * Gets a list of current pm2 processes being run
  *
- * @returns {Promise<Array>} - List of current pm2 processes
  */
-const pm2Status = async () => {
+export const pm2Status = async ():Promise<string[]> => {
   const { data } = await runCmd(`pm2`, [`jlist`], { exec: true })
   return parseJSON(data) || noPropArr
 }
 
 /**
  * Removes the a running PM2 daemonized process if it exists
- * @param {string} name - Name used to reference the PM2 process
- * @param {Object} opts - Extra options to pass to the child process
  *
- * @returns {Promise<void>}
  */
-const cleanPm2Daemon = async (name, opts = noOpObj) => {
+export const cleanPm2Daemon = async (
+  name:string,
+  opts:TProcOpts = noOpObj as TProcOpts
+) => {
   try {
     // Remove any existing pm2 daemons that may already be running
     await runCmd(`pm2`, [`delete`, name], opts)
@@ -35,15 +36,15 @@ const cleanPm2Daemon = async (name, opts = noOpObj) => {
 
 /**
  * Starts a command as a daemon using PM2 to daemonize it
- * @param {string} executable - Process to be daemonized
- * @param {Array} args - Arguments to pass to the executable
- * @param {Object} opts - Extra options to pass to the child process
- * @param {string} name - Name used to reference the PM2 process
- * @param {boolean} watch - Attach to the pm2 logs of the process after starting it
  *
- * @returns {Promise<*>} - Response from the PM2 command
  */
-const startPm2Daemon = async (executable, args, opts = noOpObj, name, watch) => {
+export const startPm2Daemon = async (
+  executable:string,
+  args:string[],
+  opts:TProcOpts = noOpObj as TProcOpts,
+  name:string,
+  watch?:boolean
+) => {
   Logger.log(`\nUsing pm2 to run ${executable} as a daemon...\n`)
 
   const daemonResp = await runCmd(
@@ -65,15 +66,14 @@ const startPm2Daemon = async (executable, args, opts = noOpObj, name, watch) => 
 /**
  * Runs a command in a sub-process and returns the output
  * Exits the process if the devspace command throws an error
- * @function
- * @public
- * @param {string|Array<string>} cmd - arguments to pass to the executable when run
- * @param {Object} params - Passed in task options, converted into an object
  *
- * @returns {function} - Method to run the passed executable
  */
-const command = (executable) => {
-  return async (cmd, params = noOpObj, validExitCode) => {
+export const command = (executable:string) => {
+  return async (
+    cmd:string|string[],
+    params:TTaskParams = noOpObj as TTaskParams,
+    validExitCode:number|number[]=[]
+  ) => {
     const {
       env,
       log,
@@ -114,7 +114,7 @@ const command = (executable) => {
     const { data, error, exitCode } = output
 
     exitCode
-      && (throwErr || (validExitCode && !ensureArr(validExitCode).includes(exitCode)))
+      && (throwErr || (validExitCode && !ensureArr<number[]>(validExitCode).includes(exitCode)))
       // TODO: Investigate changing to this, so error are auto-thrown when not validExitCode exists
       // && (!validExitCode || validExitCode && !ensureArr(validExitCode).includes(exitCode)) &&
       && processError(error, exitCode, log)
@@ -123,11 +123,4 @@ const command = (executable) => {
 
     return data
   }
-}
-
-module.exports = {
-  command,
-  pm2Status,
-  cleanPm2Daemon,
-  startPm2Daemon,
 }

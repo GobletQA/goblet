@@ -11,7 +11,7 @@ import { useContextMenu } from '@hooks/race/useContextMenu'
 import { PrePanels } from '@components/Panels/PrePanels'
 import {
   BlockIcon,
-  DefSidebarWidth,
+  SidebarOpenWidth,
 } from '@gobletqa/components'
 
 import { selectElement } from '@actions/socket/api/selectElement'
@@ -48,7 +48,7 @@ export const VisualEditor = (props:TVisualEditor) => {
             menuContext={menuContext}
             firstFeatureActive={true}
             sidebarStatus={!sidebarLocked}
-            sidebarWidth={DefSidebarWidth}
+            sidebarWidth={SidebarOpenWidth}
             onFeatureChange={onFeatureChange}
           />
         </>

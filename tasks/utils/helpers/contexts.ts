@@ -187,7 +187,7 @@ export const getContextValue = (
     // So first check if it exists in the camelCase format
     // Then check for the explicitly defined ENV that matches ENVs in the values.yaml files
     // Then check the envs from the values files - Eventually the two will be merged
-    // And the envs object will container them both
+    // And the envs object will contain them both
     taskEnvs[styleCase(postFix)]
     || taskEnvs[envCtxRef]
     || taskEnvs[envSCtxRef]

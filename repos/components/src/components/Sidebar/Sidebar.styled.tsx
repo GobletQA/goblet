@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import { DefSidebarWidth } from '@GBC/constants' 
+import { SidebarOpenWidth } from '@GBC/constants' 
 
 export const SidebarContainer = styled(Box, {
   shouldForwardProp: (prop:string) => prop !== 'maxWidth'
-})(({ maxWidth=DefSidebarWidth }) => `
+})(({ maxWidth=SidebarOpenWidth }) => `
 
   width: 100%;
 

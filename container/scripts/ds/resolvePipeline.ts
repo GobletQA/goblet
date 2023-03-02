@@ -3,9 +3,8 @@
  * Ensures only deployed apps actually get started
  */
 
-const { getEnvPrefix } = require('./resolveValues')
+import { getEnvPrefix } from './resolveValues'
 const ePreFix = getEnvPrefix()
-
 
 const pipelineMethods = {
   [`goblet-backend`]: ` start-be `,
@@ -13,11 +12,11 @@ const pipelineMethods = {
 }
 
 const pipelines = () => {
-  const slice =  process.argv.slice(2)
+  const slice:string[] = process.argv.slice(2)
   if (!slice.length)
     return ''
 
-  const services = slice.reduce((acc, prefix) => {
+  const services = slice.reduce((acc:string, prefix:string) => {
     const envPrefix = `${ePreFix}${prefix}`
     const deployment = process.env[`${envPrefix}_ACTIVE`]
     acc += deployment ? pipelineMethods[deployment] : ``

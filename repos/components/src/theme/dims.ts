@@ -1,3 +1,5 @@
+import { SidebarCloseWidth, SidebarOpenWidth } from '@GBC/constants/values'
+
 const bNavH = 37
 const bUrlH = 26
 const bActH = 40
@@ -34,8 +36,8 @@ export const dims = {
     height: 5
   },
   nav: {
-    openWidth: 280,
-    closedWidth: 50,
+    closedWidth: SidebarCloseWidth,
+    openWidth: SidebarOpenWidth + SidebarCloseWidth,
   },
   browser: {
     actions: {

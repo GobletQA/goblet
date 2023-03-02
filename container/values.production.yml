@@ -12,7 +12,7 @@ env:
 
 
   # --- Custom backend devspace config --- #
-  GB_BE_DEVSPACE_CONFIG: container/devspace.backend.yaml
+  GB_BE_DEVSPACE_CONFIG: container/devspace.yaml
 
 # ---- Backend ENVs ---- #
   # Use ssl in production, so port is always 443

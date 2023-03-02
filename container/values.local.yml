@@ -8,7 +8,7 @@ env:
   GB_HOST_DOMAIN: local.gobletqa.app
 
   # --- Custom backend devspace config --- #
-  GB_BE_DEVSPACE_CONFIG: container/devspace.backend.yaml
+  GB_BE_DEVSPACE_CONFIG: container/devspace.yaml
 
   # --- Run the conductor in local dev mode --- #
   GB_LOCAL_DEV_MODE: false
