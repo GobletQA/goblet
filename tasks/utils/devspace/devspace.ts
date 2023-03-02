@@ -61,6 +61,12 @@ export const devspace = async (
   !params.envs[`DEVSPACE_CONFIG`]
     && (params.envs[`DEVSPACE_CONFIG`] = getConfigPath(params))
 
+  const nodeOpts = params.envs[`NODE_OPTIONS`] || ``
+
+  // Add esbuild-register so we can transform typescript files inline
+  if(!nodeOpts.includes(`-r esbuild-register`))
+    params.envs[`NODE_OPTIONS`] = `${nodeOpts} -r esbuild-register`.trim()
+
   Logger.pair(`Using Devspace config`, params.envs[`DEVSPACE_CONFIG`])
 
   return await devspaceCmd(cmdArgs, params)

@@ -7,7 +7,7 @@ require:
 pipelines:
   # Overwrite the default pipelines with custom actions
   dev: |-
-    services=$(node -r esbuild-register scripts/ds/resolvePipeline.ts BE SC)
+    services=$(node scripts/ds/resolvePipeline.ts BE SC)
     ensure_pull_secrets --all
     if ! is_empty $services; then
       run_pipelines $services
@@ -41,59 +41,59 @@ vars:
 
 # ----- General Values ----- #
   GB_TOKEN:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_TOKEN"
+    command: "node scripts/ds/getYamlValue.js GB_TOKEN"
   NPM_TOKEN:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js NPM_TOKEN"
+    command: "node scripts/ds/getYamlValue.js NPM_TOKEN"
   NODE_ENV:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js NODE_ENV"
+    command: "node scripts/ds/getYamlValue.js NODE_ENV"
 
 # ----- Docker Image Values ----- #
   IMAGE:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js IMAGE"
+    command: "node scripts/ds/getYamlValue.js IMAGE"
   IMAGE_TAG:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js IMAGE_TAG"
+    command: "node scripts/ds/getYamlValue.js IMAGE_TAG"
 
 # ----- Screencast API Values ----- #
   GB_SC_DEPLOYMENT:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_SC_DEPLOYMENT"
+    command: "node scripts/ds/getYamlValue.js GB_SC_DEPLOYMENT"
   GB_SC_IMG_URI:
-    command: "node -r esbuild-register scripts/ds/resolveImgUri.js SC"
+    command: "node scripts/ds/resolveImgUri.js SC"
   GB_SC_PORT:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_SC_PORT"
+    command: "node scripts/ds/getYamlValue.js GB_SC_PORT"
   GB_NO_VNC_PORT:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_NO_VNC_PORT"
+    command: "node scripts/ds/getYamlValue.js GB_NO_VNC_PORT"
   GB_SC_INGRESS_HOST:
-    command: "node -r esbuild-register scripts/ds/resolveHost.js SC"
+    command: "node scripts/ds/resolveHost.js SC"
   GB_SC_INGRESS_HOST_WILD_CARD:
-    command: "node -r esbuild-register scripts/ds/resolveHost.js SC \"*\""
+    command: "node scripts/ds/resolveHost.js SC \"*\""
 
 # ----- Backend API Values ----- #
   GB_BE_DEPLOYMENT:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_BE_DEPLOYMENT"
+    command: "node scripts/ds/getYamlValue.js GB_BE_DEPLOYMENT"
   GB_BE_IMG_URI:
-    command: "node -r esbuild-register scripts/ds/resolveImgUri.js BE"
+    command: "node scripts/ds/resolveImgUri.js BE"
   GB_BE_PORT:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_BE_PORT"
+    command: "node scripts/ds/getYamlValue.js GB_BE_PORT"
   GB_BE_WS_PATH:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_BE_WS_PATH"
+    command: "node scripts/ds/getYamlValue.js GB_BE_WS_PATH"
   GB_NO_VNC_PATH:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_NO_VNC_PATH"
+    command: "node scripts/ds/getYamlValue.js GB_NO_VNC_PATH"
 
 # ----- KinD Values ----- #
   GB_KD_SERVICE_ACCOUNT:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_KD_SERVICE_ACCOUNT"
+    command: "node scripts/ds/getYamlValue.js GB_KD_SERVICE_ACCOUNT"
   GB_KD_ROLE_NAME:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_KD_ROLE_NAME"
+    command: "node scripts/ds/getYamlValue.js GB_KD_ROLE_NAME"
   GB_KD_ROLE_BINDING_NAME:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_KD_ROLE_BINDING_NAME"
+    command: "node scripts/ds/getYamlValue.js GB_KD_ROLE_BINDING_NAME"
   GB_KD_PORT:
-    command: "node -r esbuild-register scripts/ds/getYamlValue.js GB_KD_PORT"
+    command: "node scripts/ds/getYamlValue.js GB_KD_PORT"
 
 # Load any pull secrets from the environment by calling the resolvePullSecrets.js script
 # The script returns a formatted response as a string
 # See the scripts/ds/resolvePullSecrets.js script for more information
 pullSecrets: 
-  devspace-auth-ghcr-io: $(node -r esbuild-register scripts/ds/resolvePullSecrets.js)
+  devspace-auth-ghcr-io: $(node scripts/ds/resolvePullSecrets.js)
 
 # Defines if and how the docker image will be built before running it as a container
 images:
@@ -122,9 +122,9 @@ deployments:
       values:
         containers:
         - image: ${GB_SC_IMG_URI}
-          imagePullPolicy: $(node -r esbuild-register scripts/ds/resolvePullPolicy.js SC)
-          env: $(node -r esbuild-register scripts/ds/resolveDSEnvs.js screencast)
-        service: $(node -r esbuild-register scripts/ds/resolveService.js SC $GB_SC_PORT $GB_NO_VNC_PORT)
+          imagePullPolicy: $(node scripts/ds/resolvePullPolicy.js SC)
+          env: $(node scripts/ds/resolveDSEnvs.js screencast)
+        service: $(node scripts/ds/resolveService.js SC $GB_SC_PORT $GB_NO_VNC_PORT)
         ingress:
           name: ${GB_SC_DEPLOYMENT}-ingress
           rules:
@@ -170,13 +170,13 @@ deployments:
             - watch
         containers:
         - image: ${GB_BE_IMG_URI}
-          imagePullPolicy: $(node -r esbuild-register scripts/ds/resolvePullPolicy.js BE)
-          env: $(node -r esbuild-register scripts/ds/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
-        service: $(node -r esbuild-register scripts/ds/resolveService.js BE $GB_BE_PORT)
-        ingress: $(node -r esbuild-register scripts/ds/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH" "$GB_NO_VNC_PATH")
+          imagePullPolicy: $(node scripts/ds/resolvePullPolicy.js BE)
+          env: $(node scripts/ds/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
+        service: $(node scripts/ds/resolveService.js BE $GB_BE_PORT)
+        ingress: $(node scripts/ds/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH" "$GB_NO_VNC_PATH")
 
 # Gets the apps that should sync with the host machine
-dev: $(node -r esbuild-register scripts/ds/resolveDev.js BE SC)
+dev: $(node scripts/ds/resolveDev.js BE SC)
 
 # Use profile to dynamically switch out the app specific docker image for the development image
 profiles:
