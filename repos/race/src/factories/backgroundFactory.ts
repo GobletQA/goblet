@@ -1,4 +1,4 @@
-import type { TBackgroundAst } from '@GBR/types'
+import type { TBackgroundAst } from '@ltipton/parkin'
 
 import { ESectionType } from '@GBR/types'
 import { stepsFactory } from './stepFactory'
@@ -9,6 +9,7 @@ const emptyBackground = (parent?:ESectionType) => ({
   tags: [],
   steps: [],
   uuid: uuid(),
+  whitespace: ``,
   background: `${parent} background`,
   index: FeatureIndexMap.background,
 })

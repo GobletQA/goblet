@@ -1,5 +1,10 @@
 import type { TFileModel } from './models.types'
-import type { TStepAst, TRegisterStepsList } from '@ltipton/parkin'
+import type {
+  TRuleAst,
+  TStepAst,
+  TFeatureAst,
+  TBackgroundAst
+} from '@ltipton/parkin'
 
 export enum EStepVariant {
   regex = 'regex',
@@ -32,34 +37,10 @@ export enum EExpParmType {
   object = `object`,
 }
 
-export type TStepMetaExpression = {
-  kind: EExpParmKind
-  type: EExpParmType
-  example: string,
-  description: string,
-}
-
-
-export type TStepMeta = {
-  // TO Be Removed once all steps are updated
-  race?: boolean
-  // TO Be Removed once all steps are updated
-
-  module?:string
-  name?:string
-  info?:string
-  alias?: string[]
-  examples?: string[]
-  description?:string
-  expressions?:TStepMetaExpression[]
-}
-
 export type TStepParent = {
   uuid: string
   location: string
 }
-
-export type TStepDefs = TRegisterStepsList
 
 
 export enum EAstObjects {
@@ -83,49 +64,12 @@ export enum EStepKey {
   But=`but`,
 } 
 
-export type TBackgroundAst = {
-  index: number
-  uuid: string
-  tags: string[]
-  background: string
-  steps: TStepAst[]
-}
-
-export type TRuleAst = {
-  index: number
-  uuid: string
-  tags: string[]
-  rule: string
-  background?: TBackgroundAst
-  scenarios: TScenarioAst[]
-}
-
 export type TScenarioAst = {
   index: number
   uuid: string
   tags: string[]
   scenario: string
   steps: TStepAst[]
-}
-
-export type TAstBlock = {
-  content: string
-  index: number
-}
-
-export type TFeatureAst = {
-  index?: number
-  tags: string[]
-  uuid?: string
-  feature: string
-  content: string
-  reason?: TAstBlock
-  desire?: TAstBlock
-  comments: TAstBlock[]
-  perspective?: TAstBlock
-  background?: TBackgroundAst
-  rules?: TRuleAst[]
-  scenarios: TScenarioAst[]
 }
 
 export type TAstType = TFeatureAst | TRuleAst | TBackgroundAst | TScenarioAst | TStepAst

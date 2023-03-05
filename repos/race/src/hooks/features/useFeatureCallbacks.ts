@@ -1,7 +1,5 @@
-
+import type { Parkin, TFeatureAst } from '@ltipton/parkin'
 import type {
-  IParkin,
-  TFeatureAst,
   TFeatureCB,
   TSetFeature,
   TRaceFeature,
@@ -41,7 +39,7 @@ export type THFeatureCallbacks = {
 }
 
 const mergeFeatureChanges = async (
-  parkin:IParkin,
+  parkin:Parkin,
   feat?:Partial<TRaceFeature>,
   feature?:TRaceFeature,
   onBeforeFeatureChange?:TOnReturnFeatureCB,

@@ -1,5 +1,5 @@
-import type { TBackgroundAst } from '@GBR/types'
-import { ESectionType } from '@GBR/types'
+import type { TBackgroundAst } from '@ltipton/parkin'
+
 import { stepFactory } from '@GBR/factories/stepFactory'
 import { backgroundFactory } from '@GBR/factories/backgroundFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'

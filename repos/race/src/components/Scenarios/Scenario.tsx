@@ -1,5 +1,6 @@
-import type { TStepAst } from '@ltipton/parkin'
-import type { TScenarioParentAst, TScenarioAst } from '@GBR/types'
+import type { TScenarioAst, TStepAst } from '@ltipton/parkin'
+
+import type { TScenarioParentAst } from '@GBR/types'
 
 import { Steps } from '../Steps'
 import { Section } from '../Section'

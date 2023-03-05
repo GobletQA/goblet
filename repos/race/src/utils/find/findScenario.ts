@@ -1,5 +1,8 @@
-import type { TScenarioAst, TScenarioParentAst } from '@GBR/types'
+import type { TScenarioAst } from '@ltipton/parkin'
+import type { TScenarioParentAst } from '@GBR/types'
+
 import { emptyObj } from '@keg-hub/jsutils'
+
 
 export type TFoundScenario = {
   scenarioIdx:number

@@ -1,5 +1,5 @@
 
-import type { TScenarioAst } from '@GBR/types'
+import type { TScenarioAst } from '@ltipton/parkin'
 
 import { ESectionType } from '@GBR/types'
 import { stepsFactory } from './stepFactory'
@@ -10,6 +10,7 @@ const emptyScenario = (parent:ESectionType):TScenarioAst => ({
   index: 0,
   steps: [],
   uuid: uuid(),
+  whitespace: ``,
   scenario: `${parent} scenario`,
 })
 

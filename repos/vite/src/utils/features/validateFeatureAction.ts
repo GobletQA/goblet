@@ -1,6 +1,7 @@
-import type { TFeatureFileModel, TFeatureAst } from '@types'
-
+import type { TFeatureFileModel } from '@types'
+import type { TFeatureAst } from '@ltipton/parkin'
 import { getStore } from '@store'
+import { ensureArr } from '@keg-hub/jsutils'
 
 
 type TValidActResp = {
@@ -28,7 +29,10 @@ export const validateFeatureAction = (
   feature:TFeatureFileModel,
   type:keyof TFeatureAst
 ):TValidActResp => {
-  if (!feature || !feature?.ast[type])
+  
+  const hasType = Boolean(ensureArr(feature?.ast).find(ast => ast[type]))
+  
+  if (!feature || !feature?.ast || !hasType)
     return emptyResponse(
       `The ${type} does not exist on the feature.`,
       feature,
@@ -41,9 +45,15 @@ export const validateFeatureAction = (
 
   // Validate Object.values is needed here. This type my be incorrect
   const index = Object.values(features.files).findIndex(
-    feat => feat?.ast?.feature
-      && feature?.ast?.feature
-      && feat?.ast?.feature === feature?.ast?.feature
+    feat => {
+      return ensureArr(feature?.ast).find(parent => {
+        return ensureArr(feat?.ast).find(ast => {
+          ast?.feature
+            && parent?.feature
+            && ast?.feature === parent?.feature
+        })
+      })
+    }
   )
   if (index === -1)
     return emptyResponse(`Feature does not exist in the store!`, features.files)

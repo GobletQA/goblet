@@ -1,4 +1,5 @@
-import type { TBackgroundAst, TRaceFeature } from '@GBR/types'
+import type { TRaceFeature } from '@GBR/types'
+import type { TBackgroundAst } from '@ltipton/parkin'
 
 import { Steps } from '../Steps'
 import { Section } from '../Section'

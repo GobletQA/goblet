@@ -1,4 +1,4 @@
-import type { TAstBlock } from '@GBR/types'
+import type { TAstBlock } from '@ltipton/parkin'
 
 import { deepMerge } from '@keg-hub/jsutils'
 

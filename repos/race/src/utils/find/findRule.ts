@@ -1,4 +1,6 @@
-import type { TRuleAst, TRaceFeature } from '@GBR/types'
+import type { TRaceFeature } from '@GBR/types'
+import type { TRuleAst } from '@ltipton/parkin'
+
 import { emptyObj } from '@keg-hub/jsutils'
 
 export type TFoundRule = {

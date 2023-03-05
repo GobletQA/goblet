@@ -1,4 +1,4 @@
-import type { TRuleAst } from '@GBR/types'
+import type { TRuleAst } from '@ltipton/parkin'
 
 import { ESectionType } from '@GBR/types'
 import { scenariosFactory } from './scenarioFactory'
@@ -11,7 +11,8 @@ const emptyRule = ():TRuleAst => ({
   rule: ``,
   tags: [],
   uuid: uuid(),
-  scenarios: []
+  scenarios: [],
+  whitespace: ``
 })
 
 export const ruleFactory = (

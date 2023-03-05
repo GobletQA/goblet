@@ -1,4 +1,5 @@
-import type { TRuleAst, TRaceFeature } from '@GBR/types'
+import type { TRaceFeature } from '@GBR/types'
+import type { TRuleAst } from '@ltipton/parkin'
 
 import { Rule } from './Rule'
 import { Sections } from '../Section'
