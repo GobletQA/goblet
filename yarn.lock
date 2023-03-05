@@ -2342,10 +2342,10 @@
   dependencies:
     "@keg-hub/jsutils" ">=9.6.1"
 
-"@ltipton/parkin@*", "@ltipton/parkin@2.1.0-alpha":
-  version "2.1.0-alpha"
-  resolved "https://registry.npmjs.org/@ltipton/parkin/-/parkin-2.1.0-alpha.tgz#4c3d2b93baa5204146c79c74f5555bcf22bc3253"
-  integrity sha512-fNi0sJfd6F1350ZCNR9cTieO4SHE1UnTwz4X0n97fU5+psIf+oJcpMrDg9U9RfuSrgAQuNzM5LVPzozGc2zLrg==
+"@ltipton/parkin@*", "@ltipton/parkin@2.1.1-alpha":
+  version "2.1.1-alpha"
+  resolved "https://registry.npmjs.org/@ltipton/parkin/-/parkin-2.1.1-alpha.tgz#607678c22e8f9ce313906d6351132e0aae79c71f"
+  integrity sha512-GRqRCiNHs23iH1+SylU986F6OWnKqXzsEHprH2puEyHXwcMZ2CI6R8fAsM9lyFtFuWTEwm4dSxLCQ9XUgs9kaQ==
 
 "@monaco-editor/loader@^1.2.0":
   version "1.3.2"
@@ -4669,7 +4669,7 @@ esbuild-register@*, esbuild-register@3.4.2:
   dependencies:
     debug "^4.3.4"
 
-esbuild@*, esbuild@0.17.6, esbuild@^0.15.6:
+esbuild@*, esbuild@0.17.5, esbuild@0.17.6, esbuild@^0.15.6:
   version "0.17.6"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.17.6.tgz#bbccd4433629deb6e0a83860b3b61da120ba4e01"
   integrity sha512-TKFRp9TxrJDdRWfSsSERKEovm6v30iHnrjlcGhLBOtReE28Yp1VSBRfO3GTaOFMoxsNerx4TjrhzSuma9ha83Q==
