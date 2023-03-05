@@ -1,25 +1,21 @@
 import type { TScenarioAst, TStepAst } from '@ltipton/parkin'
 
 import type { TScenarioParentAst } from '@GBR/types'
-import type { ChangeEvent } from 'react'
-import type { TChangeCB, TInputValue } from '@gobletqa/components'
 
-import { useState } from 'react'
 import { Steps } from '../Steps'
 import { AddAct } from '../Actions/Add'
 import { PlayAct } from '../Actions/Play'
 import { CopyAct } from '../Actions/Copy'
-import { exists, isBool } from '@keg-hub/jsutils'
-import { EditTitleAct } from '../Actions/EditTitle'
 import { DeleteAct } from '../Actions/Delete'
 import { EditTitle } from '../General/EditTitle'
 import { EmptySteps } from '../Steps/EmptySteps'
 import { StepAddIcon } from '@gobletqa/components'
+import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { copyScenario } from '@GBR/actions/scenario/copyScenario'
+import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 import { updateScenario } from '@GBR/actions/scenario/updateScenario'
-
 
 export type TScenario = {
   scenario: TScenarioAst
@@ -49,22 +45,21 @@ export const Scenario = (props:TScenario) => {
     onRemoveStep,
   } = props
 
-  const [editingTitle, setEditingTitle] = useState(false)
-  const toggleEditTitle = (val?:boolean) => {
-    const update = isBool(val) ? val : !editingTitle
-    setEditingTitle(update)
-  }
-
-
-  const onEditTitle:TChangeCB = (
-    evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    value?:TInputValue
-  ) => {
-    const update = `${EGherkinKeys.scenario}: ${value || evt.target.value}`
-
-    scenario.scenario !== update
-      && updateScenario(scenario.uuid, { scenario: update })
-  }
+  const {
+    isNamed,
+    showTitle,
+    onEditTitle,
+    sectionTitle,
+    editingTitle,
+    toggleEditTitle,
+  } = useEditSectionTitle({
+    title: scenario.scenario,
+    key: EGherkinKeys.scenario,
+    callback: (update?:string) => {
+      scenario.scenario !== update
+        && updateScenario(scenario.uuid, { scenario: update })
+    },
+  })
 
   const onPlay = () => {}
   
@@ -73,11 +68,6 @@ export const Scenario = (props:TScenario) => {
   const onAddScenarioStep = () => onAddStep(scenario.uuid, parent.uuid)
   const onChangeScenarioStep = (step:TStepAst) => onChangeStep(step, scenario.uuid, parent.uuid)
   const onRemoveScenarioStep = (stepId:string) => onRemoveStep(stepId, scenario.uuid, parent.uuid)
-
-  const isNamed = !Boolean(scenario.scenario.trim() == `${EGherkinKeys.scenario}:`)
-  const showTitle = editingTitle || !isNamed
-  const scenarioName = isNamed ? scenario.scenario.replace(`${EGherkinKeys.scenario}:`, ``) : ``
-
 
   return (
     <Section
@@ -92,7 +82,7 @@ export const Scenario = (props:TScenario) => {
         isNamed
           ? (
               <SectionHeader
-                content={scenarioName}
+                content={sectionTitle}
                 type={ESectionType.scenario}
               />
             )

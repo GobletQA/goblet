@@ -43,7 +43,7 @@ export const Title = (props:TTitle) => {
         className={`gr-${type}-title`}
         name={name || `${type}-title`}
         id={`${uuid || (type + '-' + name)}-title`}
-        placeholder={`${capitalize(type)} title or name...`}
+        placeholder={`${capitalize(type)} ${(label || 'title or name').toLowerCase()} ...`}
       />
     </InputContainer>
   )

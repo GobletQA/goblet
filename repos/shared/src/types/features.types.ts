@@ -3,6 +3,7 @@ import type {
   TRuleAst,
   TStepAst,
   TFeatureAst,
+  TScenarioAst,
   TBackgroundAst
 } from '@ltipton/parkin'
 
@@ -63,14 +64,6 @@ export enum EStepKey {
   And=`and`,
   But=`but`,
 } 
-
-export type TScenarioAst = {
-  index: number
-  uuid: string
-  tags: string[]
-  scenario: string
-  steps: TStepAst[]
-}
 
 export type TAstType = TFeatureAst | TRuleAst | TBackgroundAst | TScenarioAst | TStepAst
 

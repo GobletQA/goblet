@@ -2,15 +2,19 @@ import type { TRaceFeature } from '@GBR/types'
 import type { TBackgroundAst } from '@ltipton/parkin'
 
 import { Steps } from '../Steps'
-import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
 import { PlayAct } from '../Actions/Play'
-import { ESectionType } from '@GBR/types'
 import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
+import { EditTitle } from '../General/EditTitle'
 import { EmptySteps } from '../Steps/EmptySteps'
 import { StepAddIcon } from '@gobletqa/components'
+import { EditTitleAct } from '../Actions/EditTitle'
+import { Section, SectionHeader } from '../Section'
+import { ESectionType, EGherkinKeys } from '@GBR/types'
+import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 import { copyBackground } from '@GBR/actions/background/copyBackground'
+import { updateBackground } from '@GBR/actions/background/updateBackground'
 
 import {
   removeBackground,
@@ -21,13 +25,37 @@ import {
 
 export type TBackground = {
   parent:TRaceFeature
-  background?:TBackgroundAst
+  background:TBackgroundAst
+}
+
+const styles = {
+  title: {
+    marginTop:`10px`,
+    marginBottom:`30px`,
+    padding: `0px 10px`,
+  }
 }
 
 export const Background = (props:TBackground) => {
 
   const { background, parent } = props
   const onCopyBackground = () => background && copyBackground(background)
+
+  const {
+    isNamed,
+    showTitle,
+    onEditTitle,
+    sectionTitle,
+    editingTitle,
+    toggleEditTitle,
+  } = useEditSectionTitle({
+    title: background.background,
+    key: EGherkinKeys.background,
+    callback: (update?:string) => {
+      background.background !== update
+        && updateBackground(background.uuid, { background: update })
+    },
+  })
 
   const onPlay = () => {}
 
@@ -39,7 +67,26 @@ export const Background = (props:TBackground) => {
       type={ESectionType.background}
       className='gr-background-section'
       id={`${parent.uuid}-background-${background?.uuid || ''}`}
+      label={
+        isNamed
+          ? (
+              <SectionHeader
+                content={sectionTitle}
+                type={ESectionType.background}
+              />
+            )
+          : undefined
+      }
       actions={[
+        (
+          <EditTitleAct
+            label={`Description`}
+            editing={editingTitle}
+            onClick={toggleEditTitle}
+            type={ESectionType.background}
+            key={`gr-background-edit-title-action`}
+          />
+        ),
         (
           <AddAct
             Icon={StepAddIcon}
@@ -71,20 +118,30 @@ export const Background = (props:TBackground) => {
         ),
       ]}
     >
-      {background && (
-        <Steps
-          showAdd={false}
-          parent={background}
-          onAdd={addBackgroundStep}
-          onChange={changeBackgroundStep}
-          onRemove={removeBackgroundStep}
-        >
-         <EmptySteps
-          parent={background}
-          onAdd={addBackgroundStep}
+
+      {showTitle && (
+        <EditTitle
+          sx={styles.title}
+          value={sectionTitle}
+          label={`Description`}
+          onChange={onEditTitle}
+          uuid={background.uuid}
+          type={ESectionType.background}
         />
-        </Steps>
-      ) || null}
+      )}
+
+      <Steps
+        showAdd={false}
+        parent={background}
+        onAdd={addBackgroundStep}
+        onChange={changeBackgroundStep}
+        onRemove={removeBackgroundStep}
+      >
+        <EmptySteps
+        parent={background}
+        onAdd={addBackgroundStep}
+      />
+      </Steps>
     </Section>
   )
 }

@@ -107,23 +107,29 @@ export const Feature = (props:TFeature) => {
                         parent={feature}
                         featuresRef={featuresRef}
                       />
-                      <Background
-                        parent={feature}
-                        background={feature.background}
-                      />
-                      <Rules
-                        parent={feature}
-                        rules={feature.rules}
-                      />
-                      <Scenarios
-                        parent={feature}
-                        onAdd={addScenario}
-                        onRemove={removeScenario}
-                        onAddStep={addScenarioStep}
-                        scenarios={feature.scenarios}
-                        onChangeStep={changeScenarioStep}
-                        onRemoveStep={removeScenarioStep}
-                      />
+                      {feature.background && (
+                        <Background
+                          parent={feature}
+                          background={feature.background}
+                        />
+                      )}
+                      {feature.rules?.length && (
+                        <Rules
+                          parent={feature}
+                          rules={feature.rules}
+                        />
+                      )}
+                      {feature.scenarios?.length && (
+                        <Scenarios
+                          parent={feature}
+                          onAdd={addScenario}
+                          onRemove={removeScenario}
+                          onAddStep={addScenarioStep}
+                          scenarios={feature.scenarios}
+                          onChangeStep={changeScenarioStep}
+                          onRemoveStep={removeScenarioStep}
+                        />
+                      )}
                       <EmptyFeature
                         parent={feature}
                         sx={!isEmpty ? styles.notEmpty : undefined}

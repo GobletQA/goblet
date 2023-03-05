@@ -1,4 +1,5 @@
 export * from './addBackground'
+export * from './updateBackground'
 export * from './removeBackground'
 export * from './addBackgroundStep'
 export * from './removeBackgroundStep'
