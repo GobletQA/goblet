@@ -4,12 +4,10 @@ import { SectionActIcnBtn } from '../Section'
 import { capitalize } from '@keg-hub/jsutils'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
-  colors,
   Tooltip,
-  getColor,
   stopEvent,
   useInline,
-  PencilAddIcon,
+  PlusIcon,
 } from '@gobletqa/components'
 
 
@@ -46,7 +44,7 @@ export const AddAct = (props:TAddAct) => {
         sx={styles}
         className={ref}
         onClick={btnClk}
-        Icon={Icon || PencilAddIcon}
+        Icon={Icon || PlusIcon}
       />
     </Tooltip>
   )

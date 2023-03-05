@@ -57,11 +57,11 @@ export const Step = (props:TStep) => {
         id={`gr-${parent.uuid}-step-${step.uuid}`}
         actions={[
           (
-            <PlayAct
+            <DeleteAct
               sx={styles.action}
-              onClick={() => {}}
+              onClick={onRemoveStep}
               type={ESectionType.step}
-              key={`gr-step-play-step-action`}
+              key={`gr-step-remove-step-action`}
             />
           ),
           (
@@ -73,11 +73,11 @@ export const Step = (props:TStep) => {
             />
           ),
           (
-            <DeleteAct
+            <PlayAct
               sx={styles.action}
-              onClick={onRemoveStep}
+              onClick={() => {}}
               type={ESectionType.step}
-              key={`gr-step-remove-step-action`}
+              key={`gr-step-play-step-action`}
             />
           ),
         ].filter(Boolean)}

@@ -79,7 +79,7 @@ const generateFeatureProps = (
     3. build the full path from the feature.parent.location
       * update feature.parent.location to be the new location
       * Update feature.parent.uuid to be the new location
-    5. Remove feature.empty property
+    5. Remove feature.isEmpty property
     6. Add `Feature: <name>\n` to content
     7. Update the uuid
 */
@@ -87,7 +87,7 @@ export const updateEmptyFeature = (feat:TRaceFeature, featuresRef:TFeaturesRef) 
   return feat.uuid !== EmptyFeatureUUID
     ? feat
     : {
-        ...omitKeys(feat, [`empty`]),
+        ...omitKeys(feat, [`isEmpty`]),
         ...generateFeatureProps(feat, featuresRef.current, 0)
       } as TRaceFeature
 

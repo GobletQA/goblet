@@ -1,6 +1,6 @@
 import type { TRuleAst } from '@ltipton/parkin'
 
-import { ESectionType } from '@GBR/types'
+import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { scenariosFactory } from './scenarioFactory'
 import { backgroundFactory } from './backgroundFactory'
 import { toObj } from '@gobletqa/race/utils/helpers/toObj'
@@ -17,12 +17,10 @@ export type TRulesFactory = {
 }
 
 const emptyRule = ():TRuleAst => ({
-  index: 0,
-  rule: ``,
   tags: [],
   uuid: uuid(),
   scenarios: [],
-  whitespace: ``
+  rule: `${EGherkinKeys.Rule}: `,
 })
 
 export const ruleFactory = ({

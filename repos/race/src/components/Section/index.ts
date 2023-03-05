@@ -1,4 +1,5 @@
 export * from './Stack'
 export * from './Section'
 export * from './Sections'
+export * from './SectionHeader'
 export * from './Section.styled'

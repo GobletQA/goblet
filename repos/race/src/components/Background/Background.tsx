@@ -49,10 +49,10 @@ export const Background = (props:TBackground) => {
           />
         ),
         (
-          <PlayAct
-            onClick={onPlay}
+          <DeleteAct
+            onClick={removeBackground}
             type={ESectionType.background}
-            key={`gr-background-play-action`}
+            key={`gr-background-delete-action`}
           />
         ),
         (
@@ -63,12 +63,12 @@ export const Background = (props:TBackground) => {
           />
         ),
         (
-          <DeleteAct
-            onClick={removeBackground}
+          <PlayAct
+            onClick={onPlay}
             type={ESectionType.background}
-            key={`gr-background-delete-action`}
+            key={`gr-background-play-action`}
           />
-        )
+        ),
       ]}
     >
       {background && (

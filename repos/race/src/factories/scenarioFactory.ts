@@ -1,7 +1,7 @@
 
 import type { TScenarioAst } from '@ltipton/parkin'
 
-import { ESectionType } from '@GBR/types'
+import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { stepsFactory } from './stepFactory'
 import { deepMerge, uuid, emptyObj, emptyArr } from '@keg-hub/jsutils'
 
@@ -19,11 +19,9 @@ export type TScenarioFactory = {
 
 const emptyScenario = (parent:ESectionType):TScenarioAst => ({
   tags: [],
-  index: 0,
   steps: [],
   uuid: uuid(),
-  whitespace: ``,
-  scenario: `${parent} scenario`,
+  scenario: `${EGherkinKeys.scenario}: `,
 })
 
 export const scenarioFactory = ({

@@ -1,9 +1,8 @@
 import type { TBackgroundAst } from '@ltipton/parkin'
 
-import { ESectionType } from '@GBR/types'
 import { stepsFactory } from './stepFactory'
-import { FeatureIndexMap } from '@GBR/constants'
 import { deepMerge, uuid } from '@keg-hub/jsutils'
+import { ESectionType, EGherkinKeys } from '@GBR/types'
 
 export type TBackgroundFactory = {
   empty?:boolean
@@ -15,9 +14,7 @@ const emptyBackground = (parent?:ESectionType) => ({
   tags: [],
   steps: [],
   uuid: uuid(),
-  whitespace: ``,
-  background: `${parent} background`,
-  index: FeatureIndexMap.background,
+  background: `${EGherkinKeys.Background}: `,
 })
 
 export const backgroundFactory = ({

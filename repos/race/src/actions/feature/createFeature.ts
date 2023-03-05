@@ -5,7 +5,7 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { featureFactory } from '@GBR/factories/featureFactory'
 
-export const createFeature = (feat:TEmptyFeature, rootPrefix:string) => {
+export const createFeature = (feat:Partial<TEmptyFeature>, rootPrefix:string) => {
   if(!rootPrefix?.length)
     return console.warn(`Root location is required to create a new feature`)
 
@@ -13,7 +13,7 @@ export const createFeature = (feat:TEmptyFeature, rootPrefix:string) => {
     path: rootPrefix,
     uuid: EmptyFeatureUUID,
     ...feat,
-  }, true)
+  } as TEmptyFeature, true)
 
   EE.emit<TRaceFeature>(SetFeatureContextEvt, feature)
 

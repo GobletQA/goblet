@@ -6,6 +6,7 @@ import Paper from '@mui/material/Paper'
 import MuiStack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 import {
+  Span,
   gutter,
   Button,
   IconButton,
@@ -133,3 +134,10 @@ export const StackContent = gutterComp(MuiStack, `
 
 export const StackBody = gutterComp(Box)
 
+
+export const SectionHeaderText = styled(Span)`
+  font-size: 14px;
+  padding: ${gutter.padding.qpx};
+  padding-left: ${gutter.padding.hpx};
+  color: var(--goblet-editor-foreground);
+`

@@ -1,6 +1,6 @@
 import type { TEmptyFeature, TRaceFeature } from '@GBR/types'
 
-import { deepMerge } from '@keg-hub/jsutils'
+import { deepMerge, ensureArr } from '@keg-hub/jsutils'
 import { rulesFactory } from './ruleFactory'
 import { scenariosFactory } from './scenarioFactory'
 import { backgroundFactory } from './backgroundFactory'
@@ -21,6 +21,9 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
   } = feat
 
   const fUuid = feat?.uuid || EmptyFeatureUUID
+  const reasons = reason
+    ? ensureArr(reason).map((rea, idx) => rea.index = rea.index || FeatureIndexMap.reason + idx)
+    : reason
 
   return deepMerge<TRaceFeature>(
     {
@@ -28,6 +31,7 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
       uuid: fUuid,
       feature: ``,
       content: ``,
+      isEmpty: true,
     },
     feat,
     {
@@ -36,13 +40,12 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
         location: path
       },
       path: feat.path,
-      ...toObj(`empty`, empty),
       ...toObj(`rules`, rulesFactory({ rules })),
-      ...toObj(`comments`, blocksFactory({ blocks: comments})),
       ...toObj(`scenarios`, scenariosFactory({scenarios})),
+      ...toObj(`reason`, blocksFactory({ blocks: reasons })),
+      ...toObj(`comments`, blocksFactory({ blocks: comments})),
+      ...toObj(`empty`, blocksFactory({ blocks: feat.empty })),
       ...toObj(`background`, backgroundFactory({ background })),
-
-      ...toObj(`reason`, blockFactory({ block: reason, index: FeatureIndexMap.reason })),
       ...toObj(`desire`, blockFactory({ block: desire, index: FeatureIndexMap.desire })),
       ...toObj(`perspective`, blockFactory({ block: perspective, index: FeatureIndexMap.perspective })),
     }

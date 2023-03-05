@@ -35,6 +35,7 @@ export * from './ReflectHorIcon'
 export * from './UserDetailsIcon'
 export * from './CircleMinusIcon'
 export * from './CursorClickIcon'
+export * from './PencilMinusIcon'
 
 // -- TODO - Use for dragging on top of the browser
 // export * from './SelectDragIcon'

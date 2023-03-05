@@ -1,17 +1,25 @@
 import type { TScenarioAst, TStepAst } from '@ltipton/parkin'
 
 import type { TScenarioParentAst } from '@GBR/types'
+import type { ChangeEvent } from 'react'
+import type { TChangeCB, TInputValue } from '@gobletqa/components'
 
+import { useState } from 'react'
 import { Steps } from '../Steps'
-import { Section } from '../Section'
 import { AddAct } from '../Actions/Add'
 import { PlayAct } from '../Actions/Play'
-import { ESectionType } from '@GBR/types'
 import { CopyAct } from '../Actions/Copy'
+import { exists, isBool } from '@keg-hub/jsutils'
+import { EditTitleAct } from '../Actions/EditTitle'
 import { DeleteAct } from '../Actions/Delete'
+import { EditTitle } from '../General/EditTitle'
 import { EmptySteps } from '../Steps/EmptySteps'
 import { StepAddIcon } from '@gobletqa/components'
+import { Section, SectionHeader } from '../Section'
+import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { copyScenario } from '@GBR/actions/scenario/copyScenario'
+import { updateScenario } from '@GBR/actions/scenario/updateScenario'
+
 
 export type TScenario = {
   scenario: TScenarioAst
@@ -21,6 +29,14 @@ export type TScenario = {
   onAddStep: (scenarioId:string, parentId?:string) => void
   onChangeStep: (step:TStepAst, scenarioId:string, parentId?:string) => void
   onRemoveStep: (stepId:string, scenarioId?:string, parentId?:string) => void
+}
+
+const styles = {
+  title: {
+    marginTop:`10px`,
+    marginBottom:`30px`,
+    padding: `0px 10px`,
+  }
 }
 
 export const Scenario = (props:TScenario) => {
@@ -33,24 +49,65 @@ export const Scenario = (props:TScenario) => {
     onRemoveStep,
   } = props
 
-  const onCopyScenario = () => copyScenario(scenario)
+  const [editingTitle, setEditingTitle] = useState(false)
+  const toggleEditTitle = (val?:boolean) => {
+    const update = isBool(val) ? val : !editingTitle
+    setEditingTitle(update)
+  }
 
+
+  const onEditTitle:TChangeCB = (
+    evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    value?:TInputValue
+  ) => {
+    const update = `${EGherkinKeys.scenario}: ${value || evt.target.value}`
+
+    scenario.scenario !== update
+      && updateScenario(scenario.uuid, { scenario: update })
+  }
+
+  const onPlay = () => {}
+  
+  const onCopyScenario = () => copyScenario(scenario)
   const onRemoveScenario = () => onRemove(scenario.uuid, parent.uuid)
   const onAddScenarioStep = () => onAddStep(scenario.uuid, parent.uuid)
   const onChangeScenarioStep = (step:TStepAst) => onChangeStep(step, scenario.uuid, parent.uuid)
   const onRemoveScenarioStep = (stepId:string) => onRemoveStep(stepId, scenario.uuid, parent.uuid)
 
-  const onPlay = () => {}
+  const isNamed = !Boolean(scenario.scenario.trim() == `${EGherkinKeys.scenario}:`)
+  const showTitle = editingTitle || !isNamed
+  const scenarioName = isNamed ? scenario.scenario.replace(`${EGherkinKeys.scenario}:`, ``) : ``
+
 
   return (
     <Section
       parent={parent}
       initialExpand={true}
+      formatHeader={false}
       show={Boolean(scenario)}
       type={ESectionType.scenario}
       id={`${parent.uuid}-scenario`}
-      className='gr-scenario-section'
+      className={`gr-scenario-section`}
+      label={
+        isNamed
+          ? (
+              <SectionHeader
+                content={scenarioName}
+                type={ESectionType.scenario}
+              />
+            )
+          : undefined
+      }
       actions={[
+        (
+          <EditTitleAct
+            label={`Description`}
+            editing={editingTitle}
+            onClick={toggleEditTitle}
+            type={ESectionType.scenario}
+            key={`gr-scenario-edit-title-action`}
+          />
+        ),
         (
           <AddAct
             Icon={StepAddIcon}
@@ -60,10 +117,10 @@ export const Scenario = (props:TScenario) => {
           />
         ),
         (
-          <PlayAct
-            onClick={onPlay}
-            type={ESectionType.background}
-            key={`gr-background-play-action`}
+          <DeleteAct
+            onClick={onRemoveScenario}
+            type={ESectionType.scenario}
+            key={`gr-scenario-remove-action`}
           />
         ),
         (
@@ -74,14 +131,26 @@ export const Scenario = (props:TScenario) => {
           />
         ),
         (
-          <DeleteAct
-            onClick={onRemoveScenario}
+          <PlayAct
+            onClick={onPlay}
             type={ESectionType.scenario}
-            key={`gr-scenario-remove-action`}
+            key={`gr-background-play-action`}
           />
-        )
+        ),
       ]}
     >
+    
+    {showTitle && (
+      <EditTitle
+        sx={styles.title}
+        uuid={scenario.uuid}
+        onChange={onEditTitle}
+        type={ESectionType.scenario}
+        label={`Description`}
+        value={scenario.scenario.replace(`${EGherkinKeys.scenario}:`, ``)}
+      />
+    )}
+
       <Steps
         showAdd={false}
         parent={scenario}
@@ -89,10 +158,12 @@ export const Scenario = (props:TScenario) => {
         onChange={onChangeScenarioStep}
         onRemove={onRemoveScenarioStep}
       />
-      <EmptySteps
-        parent={scenario}
-        onAdd={onAddScenarioStep}
-      />
+      {isNamed && (
+        <EmptySteps
+          parent={scenario}
+          onAdd={onAddScenarioStep}
+        />
+      )}
     </Section>
   )
 }

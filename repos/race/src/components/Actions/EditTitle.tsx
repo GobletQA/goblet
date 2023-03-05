@@ -4,34 +4,46 @@ import { SectionActIcnBtn } from '../Section'
 import { capitalize } from '@keg-hub/jsutils'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
+  colors,
   Tooltip,
-  TrashIcon,
   stopEvent,
   useInline,
+  PencilAddIcon,
+  PencilMinusIcon,
 } from '@gobletqa/components'
 
-export type TDeleteAct = {
+
+export type TEditTitle = {
   type:string
+  label?:string
+  editing?:boolean
   sx?:CSSProperties
   style?:CSSProperties
   Icon?:ComponentType<any>
-  onClick?:(...args:any)=> any
+  onClick: (...args:any)=> void
 }
 
 const defStyles = {
   [`&:hover`]: {
-    color: `var(--goblet-list-errorForeground)`
+    color: colors.purple10
   },
 } as CSSProperties
 
-export const DeleteAct = (props:TDeleteAct) => {
-  const { Icon, type, onClick, style, sx } = props
+export const EditTitleAct = (props:TEditTitle) => {
+  const {
+    sx,
+    Icon,
+    type,
+    style,
+    editing,
+    onClick,
+    label=`title`
+  } = props
 
-  const ref = `action-remove-${type}`
+  const ref = `action-edit-${type}`
   const btnClk = useInline((evt:MouseEvent) => {
-    // TODO: add alert warning here to validate the delete action
     stopEvent(evt)
-    onClick?.(evt)
+    onClick(evt)
   })
 
   const styles = useActionStyles({ sx, style, styles: defStyles })
@@ -42,7 +54,7 @@ export const DeleteAct = (props:TDeleteAct) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      title={`Remove ${capitalize(type)}`}
+      title={`Edit ${capitalize(type)} ${label}`}
     >
       <SectionActIcnBtn
         id={ref}
@@ -50,7 +62,7 @@ export const DeleteAct = (props:TDeleteAct) => {
         sx={styles}
         className={ref}
         onClick={btnClk}
-        Icon={Icon || TrashIcon}
+        Icon={Icon || (editing ? PencilMinusIcon : PencilAddIcon)}
       />
     </Tooltip>
   )

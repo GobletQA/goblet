@@ -28,3 +28,18 @@ export enum ESectionType {
   Expression='expression',
   EXPRESSION='expression',
 }
+
+export enum EGherkinKeys {
+  rule='Rule',
+  Rule='Rule',
+  RULE='Rule',
+  feature='Feature',
+  Feature='Feature',
+  FEATURE='Feature',
+  background='Background',
+  Background='Background',
+  BACKGROUND='Background',
+  scenario='Scenario',
+  Scenario='Scenario',
+  SCENARIO='Scenario',
+}

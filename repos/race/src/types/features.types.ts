@@ -1,6 +1,6 @@
 import type {
   TRuleAst,
-  TAstBlock,
+  TFeatureAst,
   TScenarioAst,
   TBackgroundAst,
 } from '@ltipton/parkin'
@@ -31,22 +31,10 @@ export type TRaceFeatureGroup = {
   items: TRaceFeatures
 }
 
-export type TRaceFeature = {
-  uuid: string
+export type TRaceFeature = Omit<TFeatureAst, `uuid`> & {
   path:string
-  tags?: string[]
-  feature: string
-  content: string
-  empty?: boolean
-  reason?: TAstBlock
-  desire?: TAstBlock
-  rules?: TRuleAst[]
-  comments: TAstBlock[]
+  uuid: string
   parent: TFeatureParent
-  perspective?: TAstBlock
-  scenarios: TScenarioAst[]
-  background?: TBackgroundAst
-  
 }
 
 export type TRaceFeatureItem = TRaceFeature | TRaceFeatureGroup
@@ -60,21 +48,9 @@ export type TRaceFeatureAsts = {
 }
 
 
-export type TEmptyFeature = {
-  uuid?: string
-  path?:string
+export type TEmptyFeature = TRaceFeature & {
+  isEmpty:true
   title?:string
-  tags?: string[]
-  feature?: string
-  content?: string
-  reason?: TAstBlock
-  desire?: TAstBlock
-  rules?: TRuleAst[]
-  comments?: TAstBlock[]
-  parent?: TFeatureParent
-  perspective?: TAstBlock
-  scenarios?: TScenarioAst[]
-  background?: TBackgroundAst
 }
 
 export type TUpdateFeature = {

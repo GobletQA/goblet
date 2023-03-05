@@ -17,6 +17,7 @@ import { deepMerge } from '@keg-hub/jsutils'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { useEventListen, useInline } from '@gobletqa/components'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
+
 import {
   AskForFeatureEvt,
   SetFeatureContextEvt,
@@ -49,10 +50,16 @@ const mergeFeatureChanges = async (
     ? feat as TRaceFeature
     : deepMerge<TRaceFeature>(feature, feat)
 
-  // const assembled = parkin.assemble.feature([merged as TFeatureAst])
+  const indexed:TRaceFeature = {
+    ...merged,
+    ...parkin.reIndex(merged),
+  }
+  
+  console.log(`------- Update Feature -------`)
+  console.log(indexed)
 
-  const beforeMdl = await onBeforeFeatureChange?.(merged, feat, feature)
-  return beforeMdl || merged
+  const beforeMdl = await onBeforeFeatureChange?.(indexed, feat, feature)
+  return beforeMdl || indexed
 }
 
 const isValidUpdate = (feat?:Partial<TRaceFeature>) => {

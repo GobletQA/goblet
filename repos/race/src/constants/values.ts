@@ -36,7 +36,6 @@ export const FeatureIndexMap = {
   perspective: 1,
   desire: 2,
   reason: 3,
-  background: 4,
 }
 
 export const NoStepActionSelected = `NO-STEP-ACTION-SELECTED`

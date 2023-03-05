@@ -68,10 +68,10 @@ export const Rule = (props:TRule) => {
           />
         ),
         (
-          <PlayAct
-            onClick={onPlay}
-            type={ESectionType.background}
-            key={`gr-background-play-action`}
+          <DeleteAct
+            onClick={onRemove}
+            type={ESectionType.rule}
+            key={`gr-rule-removed-scenario-action`}
           />
         ),
         (
@@ -82,10 +82,10 @@ export const Rule = (props:TRule) => {
           />
         ),
         (
-          <DeleteAct
-            onClick={onRemove}
-            type={ESectionType.rule}
-            key={`gr-rule-removed-scenario-action`}
+          <PlayAct
+            onClick={onPlay}
+            type={ESectionType.background}
+            key={`gr-background-play-action`}
           />
         ),
       ]}

@@ -1,51 +1,49 @@
-
-import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 import type { TChangeCB, TInputVariants } from '@gobletqa/components'
 
-import { useCallback } from 'react'
-
+import { ESectionType } from '@GBR/types'
 import { InputContainer } from '../Section'
+import { capitalize } from '@keg-hub/jsutils'
 import { InlineInput } from '@gobletqa/components'
-import { updateFeature } from '@GBR/actions/feature/updateFeature'
 
 export type TTitle = {
+  id?:string
+  uuid?:string
   name?:string
-  parent:TRaceFeature
+  value?:string
+  label?:string
+  type:ESectionType
   helperText?:string
   variant?:TInputVariants
-  initialEditing?:boolean
-  featuresRef:TFeaturesRef
+  onChange:TChangeCB
 }
 
 export const Title = (props:TTitle) => {
   const {
+    id,
+    uuid=id,
     name,
-    parent,
+    type,
+    label,
     variant,
+    onChange,
+    value=``,
     helperText,
   } = props
 
-  const { feature, uuid } = parent
-
-  const onChange = useCallback(((evt, value) => {
-    updateFeature({ ...parent, feature: value || evt.target.value })
-  }) as TChangeCB, [parent, feature])
-
   return (
-    <InputContainer className='gr-feature-title gr-feature-input-container' >
+    <InputContainer className={`gr-${type}}-title gr-${type}-input-container`} >
       <InlineInput
-        label={`Title`}
+        label={label || `Title`}
         required={true}
-        value={feature}
+        value={value}
         multiline={true}
         variant={variant}
         onChange={onChange}
-        id={`${uuid}-title`}
         helperText={helperText}
-        className='gr-feature-title'
-        name={name || `feature-title`}
-        initialEditing={!Boolean(feature)}
-        placeholder='Feature title or name...'
+        className={`gr-${type}-title`}
+        name={name || `${type}-title`}
+        id={`${uuid || (type + '-' + name)}-title`}
+        placeholder={`${capitalize(type)} title or name...`}
       />
     </InputContainer>
   )

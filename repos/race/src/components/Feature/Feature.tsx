@@ -22,6 +22,7 @@ import { createFeature } from '@GBR/actions/feature/createFeature'
 import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
+import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 import { changeScenarioStep } from '@GBR/actions/scenario/changeScenarioStep'
 import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
 
@@ -65,6 +66,8 @@ export const Feature = (props:TFeature) => {
   const { featuresRef } = props
 
   const { feature, rootPrefix } = useEditor()
+
+  const onEditFeatureTitle = useEditFeatureTitle({ parent: feature })
 
   const onClick = useCallback((e:MouseEvent<HTMLButtonElement>) => {
     createFeature({}, rootPrefix)
@@ -129,8 +132,10 @@ export const Feature = (props:TFeature) => {
                   )
                 : (
                     <Title
-                      parent={feature}
-                      featuresRef={featuresRef}
+                      uuid={feature.uuid}
+                      value={feature.feature}
+                      type={ESectionType.feature}
+                      onChange={onEditFeatureTitle}
                     />
                   )
             }

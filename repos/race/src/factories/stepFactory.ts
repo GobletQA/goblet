@@ -14,8 +14,7 @@ export type TStepFactory = {
 }
 
 const emptyStep = () => ({
-  step: ``,
-  index: 0,
+  step: `  `,
   uuid: uuid(),
   type: EStepKey.given,
 })

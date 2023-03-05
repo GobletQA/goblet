@@ -54,8 +54,6 @@ export const Section = (props:TSection) => {
     formatHeader=true
   } = props
 
-
-
   return (
     <Container
       id={id || uuid}

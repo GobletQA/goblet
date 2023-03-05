@@ -11,6 +11,7 @@ import { AddStoryAct } from '../Actions/AddStory'
 import { EmptyFeatureUUID } from '@GBR/constants'
 import { ToggleGeneralAct } from '../Actions/ToggleGeneral'
 import { useSettings } from '@GBR/contexts/SettingsContext'
+import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 
 export type TFeatureGeneral = {
   parent:TRaceFeature
@@ -24,6 +25,8 @@ export const General = (props:TFeatureGeneral) => {
     parent,
     featuresRef,
   } = props
+
+  const onEditFeatureTitle = useEditFeatureTitle(props)
 
   // Always show if it's an empty feature without a title
   if(parent.uuid !== EmptyFeatureUUID && !settings.displayGeneral) return null
@@ -55,8 +58,10 @@ export const General = (props:TFeatureGeneral) => {
       ]}
     >
       <Title
-        parent={parent}
-        featuresRef={featuresRef}
+        uuid={parent.uuid}
+        value={parent.feature}
+        type={ESectionType.feature}
+        onChange={onEditFeatureTitle}
       />
       <Tags
         parent={parent}
