@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from 'react'
 import type { TAutoOpt } from '@gobletqa/components'
-import type { TStepAst } from '@ltipton/parkin'
 import type { TStepParentAst } from '@GBR/types'
+import type { TStepAst, TStepDef } from '@ltipton/parkin'
 import type { AutocompleteRenderOptionState } from '@mui/material/Autocomplete'
 
 import { Tooltip, AutoInput } from '@gobletqa/components'
@@ -15,6 +15,7 @@ import {
 
 export type TSelectAction = {
   step: TStepAst
+  definition?:TStepDef
   parent:TStepParentAst
   onChange:(step:TStepAst) => void
 }
@@ -54,8 +55,8 @@ const RenderOption = (
 }
 
 export const SelectAction = (props:TSelectAction) => {
-
-  const options = useStepOptions()
+  const { definition } = props
+  const { options, active } = useStepOptions(props)
   const onChange = useOnStepAction(props)
 
   return (
@@ -67,6 +68,7 @@ export const SelectAction = (props:TSelectAction) => {
         autocompleteProps={{
           renderOption: RenderOption
         }}
+        value={active}
         className='gr-step-action-select-dropdown'
       />
     </StepGridItem>

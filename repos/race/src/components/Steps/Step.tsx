@@ -92,6 +92,7 @@ export const Step = (props:TStep) => {
             <SelectAction
               step={step}
               parent={parent}
+              definition={definition}
               onChange={onStepChange}
             />
             {def && (

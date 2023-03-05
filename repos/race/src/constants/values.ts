@@ -38,3 +38,5 @@ export const FeatureIndexMap = {
   reason: 3,
   background: 4,
 }
+
+export const NoStepActionSelected = `NO-STEP-ACTION-SELECTED`

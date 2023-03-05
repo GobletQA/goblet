@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 import type { TStepAst } from '@ltipton/parkin'
 import type { TExpPart, TStepParentAst } from '@GBR/types'
 
+import { exists } from '@keg-hub/jsutils'
 import { Input } from '@gobletqa/components'
 import { sharedInputStyles, sharedLabelProps } from '../Shared'
 
@@ -22,8 +23,9 @@ export const ExpInput = (props:TExpInput) => {
   const {
     step,
     parent,
-    expression,
     value,
+    expression,
+    defaultValue,
     ...rest
   } = props
 
@@ -31,7 +33,7 @@ export const ExpInput = (props:TExpInput) => {
     <Input
       {...inputProps}
       {...rest}
-      defaultValue={value || ``}
+      value={!exists(value) && !exists(defaultValue) ? `` : value}
     />
   )
 }

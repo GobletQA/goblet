@@ -46,6 +46,7 @@ export type TAutoInput = {
   labelSx?: CSSProperties
   onChange?: TOnAutoChange
   currentValue?:TAutoOptVal
+  defaultValue?:TAutoOptVal
   labelWrapSx?: CSSProperties
   rules?: Record<string, string>
   label?: TextFieldProps['label']
@@ -110,6 +111,7 @@ const AutoInputComp = (props:TAutoInput) => {
     placeholder,
     labelWrapSx,
     showCheckbox,
+    defaultValue,
     textFieldProps,
     autocompleteProps,
     currentValue=value,
@@ -145,6 +147,7 @@ const AutoInputComp = (props:TAutoInput) => {
         disabled={disabled}
         multiple={multiple}
         value={currentValue}
+        defaultValue={defaultValue}
         onChange={onChangeVal as any}
         className={cls(
           className,
