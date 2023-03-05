@@ -17,6 +17,6 @@ export const updateProperty = async (
     ? updateFeature(omitKeys(feature, [type]))
     : updateFeature({
         ...feature,
-        [type]: blockFactory({ ...feature[type], content })
+        [type]: blockFactory({ block: { ...feature[type], content }})
       })
 }

@@ -5,6 +5,18 @@ import { ESectionType } from '@GBR/types'
 import { stepsFactory } from './stepFactory'
 import { deepMerge, uuid, emptyObj, emptyArr } from '@keg-hub/jsutils'
 
+export type TScenariosFactory = {
+  empty?:boolean
+  parent?:ESectionType
+  scenarios?:Partial<TScenarioAst>[]|undefined,
+}
+
+export type TScenarioFactory = {
+  empty?:boolean
+  parent?:ESectionType
+  scenario?:Partial<TScenarioAst>
+}
+
 const emptyScenario = (parent:ESectionType):TScenarioAst => ({
   tags: [],
   index: 0,
@@ -14,27 +26,28 @@ const emptyScenario = (parent:ESectionType):TScenarioAst => ({
   scenario: `${parent} scenario`,
 })
 
-export const scenarioFactory = (
-  scenario?:Partial<TScenarioAst>,
-  empty:boolean=false,
-  parent:ESectionType=ESectionType.feature
-) => {
+export const scenarioFactory = ({
+  scenario,
+  empty=false,
+  parent=ESectionType.feature,
+}:TScenarioFactory) => {
   return scenario
     ? deepMerge<TScenarioAst>(
         emptyScenario(parent),
         scenario,
-        {steps: stepsFactory(scenario.steps)}
+        {steps: stepsFactory({ steps: scenario.steps })}
       )
     : empty
       ? emptyScenario(parent)
       : emptyObj as TScenarioAst
 }
 
-export const scenariosFactory = (
-  scenarios?:Partial<TScenarioAst>[],
-  empty:boolean=false
-) => {
+export const scenariosFactory = ({
+  scenarios,
+  empty=false,
+  parent=ESectionType.feature
+}:TScenariosFactory) => {
   return scenarios?.length
-    ? scenarios.map(scenario => scenarioFactory(scenario, empty, ESectionType.feature))
+    ? scenarios.map(scenario => scenarioFactory({scenario, empty, parent}))
     : emptyArr as TScenarioAst[]
 }

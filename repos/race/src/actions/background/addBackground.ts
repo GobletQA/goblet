@@ -7,6 +7,6 @@ export const addBackground = async () => {
   const feature = await getFeature()
   if(!feature) return
 
-  const background = backgroundFactory(undefined, true)
+  const background = backgroundFactory({ empty: true})
   updateFeature({...feature, background})
 }

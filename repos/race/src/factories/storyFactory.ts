@@ -9,6 +9,11 @@ export type TStoryMeta = {
   perspective?: string
 }
 
+export type TStoryFactory = {
+  storyMeta?:TStoryMeta
+  empty?:boolean
+}
+
 const addToObj = (
   obj:Partial<TRaceFeature>,
   key:keyof TStoryMeta,
@@ -16,13 +21,13 @@ const addToObj = (
   empty:boolean=false
 ) => {
   (empty || value)
-    && (obj[key] = blockFactory({ content: value || ``, index: FeatureIndexMap[key] }))
+    && (obj[key] = blockFactory({ block: { content: value || ``, index: FeatureIndexMap[key] }}))
 }
 
-export const storyFactory = (
-  storyMeta:TStoryMeta=emptyObj,
-  empty:boolean=false
-) => {
+export const storyFactory = ({
+  storyMeta=emptyObj,
+  empty=false
+}:TStoryFactory) => {
   const {
     reason,
     desire,

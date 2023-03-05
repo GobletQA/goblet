@@ -12,7 +12,7 @@ export const changeBackgroundStep = async (step:TStepAst) => {
   const background = {
     ...(
       feature.background
-        || backgroundFactory(undefined, true) as TBackgroundAst
+        || backgroundFactory({empty: true}) as TBackgroundAst
     )
   }
 

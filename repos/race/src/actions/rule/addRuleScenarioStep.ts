@@ -29,7 +29,7 @@ export const addRuleScenarioStep = async (
     ...scenario,
     steps: [
       ...scenario.steps,
-      stepFactory(undefined, true)
+      stepFactory({empty: true})
     ]
   }
 

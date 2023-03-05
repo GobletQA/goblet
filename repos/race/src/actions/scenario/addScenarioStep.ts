@@ -20,7 +20,7 @@ export const addScenarioStep = async (parentId:string) => {
     ...scenario,
     steps: [
       ...scenario.steps,
-      stepFactory(undefined, true)
+      stepFactory({ empty: true })
     ]
   }
 

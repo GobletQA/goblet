@@ -6,7 +6,7 @@ export const addStory = async () => {
   const feature = await getFeature()
   if(!feature) return
 
-  const story = storyFactory(undefined, true)
+  const story = storyFactory({ empty: true })
   updateFeature({...feature, ...story})
 
 }

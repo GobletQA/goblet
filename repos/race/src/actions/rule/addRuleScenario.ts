@@ -21,7 +21,7 @@ export const addRuleScenario = async (ruleId:string) => {
     ...rule,
     scenarios: [
       ...rule.scenarios,
-      scenarioFactory(undefined, true, ESectionType.rule)
+      scenarioFactory({empty: true, parent: ESectionType.rule})
     ]
   }
 

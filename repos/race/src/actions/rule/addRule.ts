@@ -6,7 +6,7 @@ export const addRule = async () => {
   const feature = await getFeature()
   if(!feature) return
 
-  const rule = ruleFactory(undefined, true)
+  const rule = ruleFactory({empty: true})
   const rules = [...(feature.rules || [])]
   rule && rules.push(rule)
 

@@ -1,5 +1,5 @@
 import type { TEmptyFeature, TRaceFeature } from '@GBR/types'
-import { ESectionType } from '@GBR/types'
+
 import { deepMerge } from '@keg-hub/jsutils'
 import { rulesFactory } from './ruleFactory'
 import { scenariosFactory } from './scenarioFactory'
@@ -37,13 +37,14 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
       },
       path: feat.path,
       ...toObj(`empty`, empty),
-      ...toObj(`rules`, rulesFactory(rules)),
-      ...toObj(`comments`, blocksFactory(comments)),
-      ...toObj(`scenarios`, scenariosFactory(scenarios)),
-      ...toObj(`reason`, blockFactory(reason, FeatureIndexMap.reason)),
-      ...toObj(`desire`, blockFactory(desire, FeatureIndexMap.desire)),
-      ...toObj(`perspective`, blockFactory(perspective, FeatureIndexMap.perspective)),
-      ...toObj(`background`, backgroundFactory(background, undefined)),
+      ...toObj(`rules`, rulesFactory({ rules })),
+      ...toObj(`comments`, blocksFactory({ blocks: comments})),
+      ...toObj(`scenarios`, scenariosFactory({scenarios})),
+      ...toObj(`background`, backgroundFactory({ background })),
+
+      ...toObj(`reason`, blockFactory({ block: reason, index: FeatureIndexMap.reason })),
+      ...toObj(`desire`, blockFactory({ block: desire, index: FeatureIndexMap.desire })),
+      ...toObj(`perspective`, blockFactory({ block: perspective, index: FeatureIndexMap.perspective })),
     }
   )
 }

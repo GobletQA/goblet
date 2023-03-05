@@ -14,11 +14,11 @@ export const addBackgroundStep = async (parentId:string) => {
   const background = {
     ...(
       feature.background
-        || backgroundFactory(undefined, true) as TBackgroundAst
+        || backgroundFactory({ empty: true}) as TBackgroundAst
     )
   }
 
-  background.steps = [...background.steps, stepFactory(undefined, true)]
+  background.steps = [...background.steps, stepFactory({ empty: true})]
 
   updateFeature({...feature, background})
 

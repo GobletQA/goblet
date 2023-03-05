@@ -5,6 +5,12 @@ import { stepsFactory } from './stepFactory'
 import { FeatureIndexMap } from '@GBR/constants'
 import { deepMerge, uuid } from '@keg-hub/jsutils'
 
+export type TBackgroundFactory = {
+  empty?:boolean
+  parent?:ESectionType
+  background?:Partial<TBackgroundAst>
+}
+
 const emptyBackground = (parent?:ESectionType) => ({
   tags: [],
   steps: [],
@@ -14,17 +20,17 @@ const emptyBackground = (parent?:ESectionType) => ({
   index: FeatureIndexMap.background,
 })
 
-export const backgroundFactory = (
-  background?:Partial<TBackgroundAst>,
-  empty:boolean=false,
-  parent:ESectionType=ESectionType.feature
-) => {
+export const backgroundFactory = ({
+  background,
+  empty=false,
+  parent=ESectionType.feature
+}:TBackgroundFactory) => {
 
   return background
     ? deepMerge<TBackgroundAst>(
         emptyBackground(parent),
         background,
-        {steps: stepsFactory(background?.steps)}
+        {steps: stepsFactory({steps: background?.steps})}
       )
     : empty
       ? emptyBackground(parent)

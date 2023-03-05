@@ -2,7 +2,6 @@
 import type { TStepAst } from '@ltipton/parkin'
 
 import { findStep, findScenario, findRule } from '@GBR/utils/find'
-import { stepFactory } from '@GBR/factories/stepFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 

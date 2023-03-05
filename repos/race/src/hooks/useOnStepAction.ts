@@ -22,7 +22,7 @@ export const useOnStepAction = (props:THOnStepChange) => {
 
   return useInline((evt:Event, opt:TAutoOpt|null) => {
     // If no option, then it was cleared, so reset the step
-    if(!opt) return onChange?.(stepFactory({ uuid: step.uuid }), step)
+    if(!opt) return onChange?.(stepFactory({ step: { uuid: step.uuid} }), step)
 
     const found = defs[opt.id as keyof typeof defs]
 
