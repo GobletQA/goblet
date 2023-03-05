@@ -2342,10 +2342,10 @@
   dependencies:
     "@keg-hub/jsutils" ">=9.6.1"
 
-"@ltipton/parkin@*", "@ltipton/parkin@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/@ltipton/parkin/-/parkin-2.0.0.tgz#4658bda19c0ea7598d8aad33a242e9f99c1c0050"
-  integrity sha512-DxmqZSYhMmb4keakSQwFw89i/TZBWZoVo+dPRTH4ytgGlpzroNRJgMCXbiBkHI/1ErjZUWCTF8nbGoDHRXxqig==
+"@ltipton/parkin@*", "@ltipton/parkin@2.1.0-alpha":
+  version "2.1.0-alpha"
+  resolved "https://registry.npmjs.org/@ltipton/parkin/-/parkin-2.1.0-alpha.tgz#4c3d2b93baa5204146c79c74f5555bcf22bc3253"
+  integrity sha512-fNi0sJfd6F1350ZCNR9cTieO4SHE1UnTwz4X0n97fU5+psIf+oJcpMrDg9U9RfuSrgAQuNzM5LVPzozGc2zLrg==
 
 "@monaco-editor/loader@^1.2.0":
   version "1.3.2"
