@@ -1,5 +1,6 @@
 import type { ReactNode, ElementType } from 'react'
-import type { EStepKey, TDefGroups } from '@types'
+import type { TDefGroups } from '@types'
+import type { EStepKey } from '@ltipton/parkin'
 
 import { DefsList } from './DefinitionList.styled'
 import { DefinitionListGroup } from './DefinitionListGroup'

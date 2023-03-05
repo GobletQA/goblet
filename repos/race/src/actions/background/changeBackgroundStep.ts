@@ -1,6 +1,5 @@
-import type { TStepAst, TBackgroundAst } from '@GBR/types'
+import type { TBackgroundAst, TStepAst } from '@ltipton/parkin'
 
-import { ESectionType } from '@GBR/types'
 import { findStep } from '@GBR/utils/find'
 import { backgroundFactory } from '@GBR/factories/backgroundFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'

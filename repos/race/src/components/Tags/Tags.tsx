@@ -4,7 +4,7 @@ import { TagsContainer } from './Tags.styled'
 import { AutoInput } from '@gobletqa/components'
 import { capitalize, cls } from '@keg-hub/jsutils'
 import { ESectionType, EMetaType } from '@GBR/types'
-import { useFeatureTags } from '@GBR/hooks/useFeatureTags'
+import { useFeatureTags } from '@GBR/hooks/features/useFeatureTags'
 
 export type TTags = {
   type:ESectionType

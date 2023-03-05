@@ -1,4 +1,4 @@
-import type { TRaceFeatureAsts, TRaceFeature, TRaceEditorProps } from '../types'
+import type { TRaceFeatureAsts, TRaceFeature } from '@GBR/types'
 
 import { useMemo } from 'react'
 

@@ -16,10 +16,10 @@ import {
   createContext,
 } from 'react'
 
-import { noOpObj, emptyArr } from '@keg-hub/jsutils'
 import { useFeature } from './FeatureContext'
 import { MemoChildren } from '@gobletqa/components'
-import { useFeatureCallbacks } from '../hooks/useFeatureCallbacks'
+import { noOpObj, emptyArr } from '@keg-hub/jsutils'
+import { useFeatureCallbacks } from '@GBR/hooks/features/useFeatureCallbacks'
 
 export type TEditorProvider = {
   children:any

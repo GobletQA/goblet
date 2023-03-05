@@ -1,7 +1,6 @@
-import type { TExpPart, IParkin, TStepDef, TStepAst } from '@GBR/types'
+import { Parkin, TStepDef, TStepAst } from '@ltipton/parkin'
 
 
-
-export const extractFromStep = (step:TStepAst, def:TStepDef, parkin:IParkin) => {
+export const extractFromStep = (step:TStepAst, def:TStepDef, parkin:Parkin) => {
   
 }

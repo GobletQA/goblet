@@ -1,6 +1,6 @@
-import type { TStepAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
 
-import { EStepKey } from '@GBR/types'
+import { EStepKey } from '@ltipton/parkin'
 import { deepMerge, emptyArr, emptyObj, uuid } from '@keg-hub/jsutils'
 
 const emptyStep = () => ({

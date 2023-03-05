@@ -1,9 +1,8 @@
 import type { TDefGroupItem } from '@types'
 
 import { useCallback, useState } from 'react'
-
-import { EStepKey } from '@types'
 import { cls } from '@keg-hub/jsutils'
+import { EStepKey } from '@ltipton/parkin'
 import { ArrowRightIcon } from '@gobletqa/components'
 import { DefinitionItemMeta } from './DefinitionItemMeta'
 import { DefinitionItemActions } from './DefinitionItemActions'

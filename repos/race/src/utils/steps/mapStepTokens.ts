@@ -29,7 +29,7 @@ export const mapStepTokens = (
      */
     const value = token ? removeQuotes(token.match) : exp.text
     return value !== exp.text
-      ? {...exp, ...token, value}
-      : {...exp, ...token, value: ''}
+      ? {...exp, ...token, value} as TExpPart
+      : {...exp, ...token, value: ''} as TExpPart
   })
 }

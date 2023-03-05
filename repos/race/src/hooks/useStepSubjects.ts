@@ -1,6 +1,6 @@
 
-import type { TStepParentAst, TStepAst } from '@GBR/types'
-import type { TAutoOpt } from '@gobletqa/components'
+import type { TStepParentAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
 
 import { useMemo } from 'react'
 import { useStepDefs }  from '@GBR/contexts/StepDefsContext'

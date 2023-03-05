@@ -1,8 +1,7 @@
-import type { TPartsMatch, EExpParmKind, TStepDefs } from './shared.types'
+import type { TStepDefsList } from '@ltipton/parkin'
+import type { TPartsMatch, EExpParmKind } from './shared.types'
 
-
-export type TRaceStepDefs = TStepDefs
-export type TSetSteps = (steps:TRaceStepDefs) => void
+export type TSetSteps = (steps:TStepDefsList) => void
 
 
 export type TExpPart = TPartsMatch & {

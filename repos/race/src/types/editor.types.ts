@@ -1,8 +1,7 @@
-import type { RefObject, MutableRefObject, ComponentType } from 'react'
-import type { TRaceStepDefs } from './steps.types'
-import type { TWorldConfig } from './shared.types'
 import type { TSettingsState } from './settings.types'
 import type { TRaceContextMenu } from './menu.types'
+import type { TWorldConfig, TStepDefsList } from '@ltipton/parkin'
+import type { RefObject, MutableRefObject, ComponentType } from 'react'
 import type { TRaceFeatureAsts, TRaceFeatures, TRaceFeature } from './features.types'
 import type {
   TTabItem,
@@ -38,7 +37,7 @@ export type TEditorRefs = {
 
 export type TRaceEditorProps = TSettingsState & TEditorContainer & {
   world?:TWorldConfig
-  steps:TRaceStepDefs
+  steps:TStepDefsList
   rootPrefix: string
   feature?:TRaceFeature
   themeType?:EThemeMode

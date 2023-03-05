@@ -11,7 +11,7 @@ import type {
   TAstBlock,
   TScenarioAst,
   TBackgroundAst,
-} from './shared.types'
+} from '@ltipton/parkin'
 
 
 export type TRaceMenuItemClickCtx = Omit<TMenuContextRef, 'context'>

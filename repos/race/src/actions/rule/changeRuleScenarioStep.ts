@@ -1,5 +1,5 @@
 
-import type { TStepAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
 
 import { findStep, findScenario, findRule } from '@GBR/utils/find'
 import { stepFactory } from '@GBR/factories/stepFactory'

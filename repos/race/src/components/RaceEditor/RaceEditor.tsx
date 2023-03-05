@@ -1,7 +1,7 @@
 import type { TRaceEditorProps } from '@GBR/types'
 
 import { Editor } from './Editor'
-import { useInitialFeature } from '../../hooks/useInitialFeature'
+import { useInitialFeature } from '@GBR/hooks/features/useInitialFeature'
 import {
   ParkinProvider,
   FeatureProvider,

@@ -1,10 +1,11 @@
-import type { TStepDefs, TWorldConfig, IParkin } from '../types'
+import type {
+  TWorldConfig,
+  TRegisterStepsList,
+} from '@ltipton/parkin'
 
-// FUCK TYPESCRIPT!!!
-// @ts-ignore
+
 import { Parkin } from '@ltipton/parkin'
-// FUCK TYPESCRIPT!!!
-import { emptyObj, deepMerge } from '@keg-hub/jsutils'
+import { deepMerge } from '@keg-hub/jsutils'
 import { useEffectOnce, MemoChildren, useInline } from '@gobletqa/components'
 import {
   useRef,
@@ -17,13 +18,13 @@ import {
 
 export type TParkinProvider = {
   children:any
-  defs?:TStepDefs
   world?:TWorldConfig
+  defs?:TRegisterStepsList
 }
 
 export type TUpdateWorld = (updated:TWorldConfig, replace:boolean) => void
 export type TParkinCtx = {
-  parkin:IParkin
+  parkin:Parkin
   world:TWorldConfig
   updateWorld: TUpdateWorld
 }
@@ -34,7 +35,10 @@ export const useParkin = () => useContext(ParkinContext)
 export const ParkinProvider = (props:TParkinProvider) => {
   const { children, defs } = props
 
-  const [parkin, setParkin] = useState<IParkin>(new Parkin(props.world || {}, defs) as unknown as IParkin)
+  const [parkin, setParkin] = useState<Parkin>(
+    new Parkin(props.world || {} as TWorldConfig,
+    defs
+  ) as Parkin)
   const [world, setWorld] = useState<TWorldConfig>(parkin.world)
 
   const updateWorld = useInline<TUpdateWorld>((updated:TWorldConfig, replace:boolean) => {

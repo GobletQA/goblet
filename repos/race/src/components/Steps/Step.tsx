@@ -1,4 +1,5 @@
-import type { TStepParentAst, TStepAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
+import type { TStepParentAst } from '@GBR/types'
 
 import { Section } from '../Section'
 import { StepHeader } from './StepHeader'
@@ -7,6 +8,7 @@ import { SelectAction } from './SelectAction'
 import { useInline } from '@gobletqa/components'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
 import { useExpressions } from '@GBR/hooks/useExpressions'
+import { useMatchStepToDef } from '@GBR/hooks/steps/useMatchStepToDef'
 import {
   StepGrid,
   StepContent,
@@ -32,8 +34,9 @@ const styles = {
 }
 
 export const Step = (props:TStep) => {
-  const { onChange, onRemove, step, parent } = props
-  const { def, expressions } = useExpressions(props)
+  const { onChange, onRemove, parent } = props
+  const { step, definition } = useMatchStepToDef(props)
+  const { def, expressions } = useExpressions(props, { definition })
 
   const onCopy = useInline(() => {})
   const onStepChange = useInline((updated:TStepAst) => onChange?.(updated, step))

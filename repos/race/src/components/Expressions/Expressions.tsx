@@ -1,4 +1,5 @@
-import type { TExpPart, TStepParentAst, TStepDef, TStepAst } from '@GBR/types'
+import type { TStepAst, TStepDef } from '@ltipton/parkin'
+import type { TExpPart, TStepParentAst } from '@GBR/types'
 
 import { useMemo } from 'react'
 import { Expression } from './Expression'

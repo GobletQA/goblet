@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
+import type { TStepAst } from '@ltipton/parkin'
 import type { TMenuItem } from '@gobletqa/components'
-import type { TExpPart, TStepParentAst, TStepAst } from '@GBR/types'
+import type { TExpPart, TStepParentAst } from '@GBR/types'
 
 import { useState } from 'react'
 import { ESectionType } from '@GBR/types'

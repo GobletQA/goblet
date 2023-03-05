@@ -1,4 +1,4 @@
-import type { EStepKey } from './features.types'
+import type { EStepKey } from '@ltipton/parkin'
 import type { TFileModel } from './models.types'
 
 export enum EDefinitionVariant {

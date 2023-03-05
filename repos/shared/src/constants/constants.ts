@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@GSH/types'
+import type { TWorldConfig } from '@ltipton/parkin'
 import { deepFreeze } from '@keg-hub/jsutils/src/node'
 
 export const DefinitionOverrideFolder = `override`

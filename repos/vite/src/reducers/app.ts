@@ -7,7 +7,9 @@ export type TAppState = {
   sidebarLocked: boolean
 }
 
-const editor = getQueryData()?.editor || EEditorType.code  || EEditorType.visual
+const editor = getQueryData()?.editor
+  || EEditorType.visual
+  || EEditorType.code 
 
 export const appState = {
   editor,

@@ -1,6 +1,7 @@
 import type { HTMLAttributes } from 'react'
 import type { TAutoOpt } from '@gobletqa/components'
-import type { TStepParentAst, TStepAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
+import type { TStepParentAst } from '@GBR/types'
 import type { AutocompleteRenderOptionState } from '@mui/material/Autocomplete'
 
 import { Tooltip, AutoInput } from '@gobletqa/components'

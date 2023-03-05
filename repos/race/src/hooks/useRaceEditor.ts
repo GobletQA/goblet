@@ -1,5 +1,5 @@
+import type { TStepDefsList } from '@ltipton/parkin'
 import type {
-  TRaceStepDefs,
   TRaceEditor,
   TRaceFeatures,
   TRaceEditorProps,
@@ -9,8 +9,8 @@ import type {
 import { useRef } from 'react'
 import { noOp } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components'
-import { useFeatureGroups } from './useFeatureGroups'
 import { useOpenedTabs } from '@GBR/hooks/useOpenedTabs'
+import { useFeatureGroups } from '@GBR/hooks/features/useFeatureGroups'
 
 export const useRaceEditor = (props:TRaceEditorProps) => {
   const {
@@ -20,7 +20,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     initialFeature
   } = props
 
-  const stepDefsRef = useRef<TRaceStepDefs>(steps)
+  const stepDefsRef = useRef<TStepDefsList>(steps)
   stepDefsRef.current = steps
 
   const featuresRef = useRef<TRaceFeatures>(features)

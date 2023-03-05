@@ -1,4 +1,6 @@
-import type { TStepAst, TStepParentAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
+import type { TStepParentAst } from '@GBR/types'
+
 import { emptyObj } from '@keg-hub/jsutils'
 
 export type TFoundStep = {

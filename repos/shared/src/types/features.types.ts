@@ -1,4 +1,5 @@
 import type { TFileModel } from './models.types'
+import type { TStepAst, TRegisterStepsList } from '@ltipton/parkin'
 
 export enum EStepVariant {
   regex = 'regex',
@@ -58,22 +59,7 @@ export type TStepParent = {
   location: string
 }
 
-export type TStepDef = {
-  type: string
-  name: string
-  uuid: string
-  content: string
-  location?: string,
-  meta: TStepMeta
-  match: string | RegExp
-  parent?: TStepParent
-  tokens: TStepToken[]
-  // variant: EStepVariant.expression
-}
-
-export type TStepDefs = {
-  [key:string]: TStepDef
-}
+export type TStepDefs = TRegisterStepsList
 
 
 export enum EAstObjects {
@@ -112,14 +98,6 @@ export type TRuleAst = {
   rule: string
   background?: TBackgroundAst
   scenarios: TScenarioAst[]
-}
-
-export type TStepAst = {
-  uuid: string
-  index: number
-  step: string
-  type: EStepKey
-  definition?:keyof TStepDefs
 }
 
 export type TScenarioAst = {

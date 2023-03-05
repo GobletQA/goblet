@@ -1,34 +1,21 @@
-import { TWorldConfig } from './world.types'
-import { EExpParmType, TStepDefs, TFeatureAst, TStepDef } from './features.types'
+import { EExpParmType } from './features.types'
+import {
+  Parkin,
+  TStepDef,
+  EHookType,
+  TFeatureAst,
+} from '@ltipton/parkin'
 
-export type TStepDefTypeList = {
-  given:TStepDefs
-  when:TStepDefs
-  then:TStepDefs
-  and:TStepDefs
-  but:TStepDefs
-}
+export type TParse = Parkin["parse"]
+export type TMatcher = Parkin["matcher"]
+export type TParkinSteps = Parkin["steps"]
+export type TAssemble = Parkin["assemble"]
 
-export interface IParkinSteps {
-  world:TWorldConfig
-  clear: () => void
-  list:() => TStepDefs
-  But:TRegisterStepMethod
-  And:TRegisterStepMethod
-  When:TRegisterStepMethod
-  Then:TRegisterStepMethod
-  Given:TRegisterStepMethod
-  typeList: () => TStepDefTypeList
-  resolve:(match:string) => any
-  match: (match:string) => TMatchResp
-  register:(def:string|TStepDef[]|TStepDef, match:string, TStepAction) => void
-}
-
-export type TParkinHookName = `beforeAll`|`afterAll`|`beforeEach`|`afterEach`
+export type TParkinHookName = keyof typeof EHookType
 export type TParkinHookMethod = (method:(...args:any[]) => any) => void
 
 export interface IParkinHooks {
-  instance:IParkin
+  instance:Parkin
   types:TParkinHookName[]
   afterAll:TParkinHookMethod
   beforeAll:TParkinHookMethod
@@ -37,25 +24,6 @@ export interface IParkinHooks {
   getRegistered:(type:TParkinHookName) => () => void
 }
 
-export interface IParkinRunner {
-  run:TParkinRun
-  getFeatures:(
-    data:string|string[]|TFeatureAst|TFeatureAst[],
-    options:TParkinRunOpts
-  ) => TFeatureAst[]
-}
-
-export type TStepAction = (...args:any[]) => any
-export type TRegisterStepMethod = (step:string, action:TStepAction) => any
-
-export type TAssemble = {
-  feature: (feature:TFeatureAst|TFeatureAst[]) => string
-}
-
-export type TParse = {
-  feature: (feature:string) => TFeatureAst
-  definition: (def:string) => TStepDef
-}
 
 export type TParamType = {
   regex: string|RegExp
@@ -109,18 +77,6 @@ export type TMatchTokens = {
   defIndex:number
 }
 
-export interface IMatcher {
-  types: () => TParamTypeMap
-  parts:(match:string) => TPartsMatch[]
-  stepTokens:(step:string, definition:TStepDef) => TMatchTokens[]
-  register:(paramType:TParamType) => Record<string, TParamType>
-  find: (definitions:TStepDefs, step:string, world:TWorldConfig) => TMatchResp
-  regex: (definition:TStepDef, step:string, world:TWorldConfig) => TMatchResp
-  expression: (definition:TStepDef, step:string, world:TWorldConfig) => TMatchResp
-  extract: (text:string, match:string, matchIdx:string[]) => Record<string|number, any>[]
-  expressionFind: (definition:TStepDef, step:string) => TExpFindResp
-}
-
 export type TParkinRunOpts = {
   name?:string
   tags?: string|string[]
@@ -130,25 +86,3 @@ export type TParkinRun = (
   data:string|string[]|TFeatureAst|TFeatureAst[],
   options:TParkinRunOpts
 ) => any
-
-export type TRegisterStepsMethod = (
-  steps: Record<`given`|`when`|`then`|`and`|`but`, Record<string, TRegisterStepMethod>>
-) => void
-
-export interface IParkin {
-  parse:TParse
-  run:TParkinRun
-  matcher:IMatcher
-  world:TWorldConfig
-  assemble:TAssemble
-  steps:IParkinSteps
-  hooks:IParkinHooks
-  runner:IParkinRunner
-  Given:TRegisterStepMethod
-  When:TRegisterStepMethod
-  Then:TRegisterStepMethod
-  And:TRegisterStepMethod
-  But:TRegisterStepMethod
-  paramTypes:TParamTypes
-  registerSteps:TRegisterStepsMethod
-}

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-import type { TStepParentAst, TStepAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
+import type { TStepParentAst } from '@GBR/types'
 
 import { Step } from './Step'
 import { Sections } from '../Section'

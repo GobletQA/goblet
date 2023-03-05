@@ -1,4 +1,4 @@
-import type { TScenarioAst, TStepAst } from '@types'
+import type { TScenarioAst, TStepAst } from '@ltipton/parkin'
 
 /**
  * Replaces a step in a scenario based on matching uuid of the steps

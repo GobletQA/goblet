@@ -1,15 +1,13 @@
+import { Parkin, TStepAst, TStepDef } from '@ltipton/parkin'
 import type {
-  IParkin,
   TExpPart,
-  TStepDef,
-  TStepAst,
   TStepParentAst,
 } from '@GBR/types'
 
 import { useMemo } from 'react'
 import { emptyArr, emptyObj } from '@keg-hub/jsutils'
-import { useStepDefs }  from '@GBR/contexts/StepDefsContext'
 import { useParkin } from '@GBR/contexts/ParkinContext'
+import { useStepDefs }  from '@GBR/contexts/StepDefsContext'
 
 import { stepTokens } from '@GBR/utils/steps/stepTokens'
 import { mapStepTokens } from '@GBR/utils/steps/mapStepTokens'
@@ -28,7 +26,7 @@ type ExpResp = {
 }
 
 const useStepParts = (
-  parkin:IParkin,
+  parkin:Parkin,
   step:TStepAst,
   def:TStepDef
 ) => {
@@ -36,7 +34,7 @@ const useStepParts = (
 }
 
 const useMatchExpressions = (
-  parkin:IParkin,
+  parkin:Parkin,
   def:TStepDef
 ) => {
   return useMemo(() => {
@@ -48,11 +46,17 @@ const useMatchExpressions = (
   }, [def])
 }
 
-export const useExpressions = (props:THStepSubjects) => {
+export type TExpOpts = {
+  definition?:TStepDef
+}
+
+export const useExpressions = (props:THStepSubjects, ext?:TExpOpts) => {
   const { step } = props
   const { defs } = useStepDefs()
   const { parkin } = useParkin()
-  const def = (step?.definition && defs[step?.definition]) as TStepDef
+  
+  const defId = step?.definition || ext?.definition?.uuid
+  const def = (defId && defs[defId]) as TStepDef
 
   // Run on every change of step, NOT step input
   const exps = useMatchExpressions(parkin, def)

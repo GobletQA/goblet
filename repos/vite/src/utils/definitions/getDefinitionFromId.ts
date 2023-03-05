@@ -1,4 +1,5 @@
-import type { TDefinitionsTypeMapAst, TDefinitionsAstArr, EStepKey } from '@types'
+import type { TDefinitionsTypeMapAst, TDefinitionsAstArr } from '@types'
+import type { EStepKey } from '@ltipton/parkin'
 import { isArr } from '@keg-hub/jsutils'
 
 /**

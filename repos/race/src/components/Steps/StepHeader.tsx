@@ -1,4 +1,4 @@
-import type { TStepAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
 
 import { capitalize } from '@keg-hub/jsutils'
 import { StepHeaderText } from './Steps.styled'

@@ -1,5 +1,5 @@
 
-import type { TStepParentAst, TStepAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
 import type { TAutoOpt } from '@gobletqa/components'
 
 import { useInline } from '@gobletqa/components'

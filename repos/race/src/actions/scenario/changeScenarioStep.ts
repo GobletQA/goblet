@@ -1,4 +1,4 @@
-import type { TStepAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
 import { findStep, findScenario } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'

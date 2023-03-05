@@ -1,6 +1,6 @@
+import type { TDefGroup } from '@types'
+import type { EStepKey } from '@ltipton/parkin'
 import type { ReactNode, ElementType } from 'react'
-import type { EStepKey, TDefGroup } from '@types'
-
 import { Fragment } from 'react'
 import { isValidFuncComp } from '@utils/components'
 import { DefinitionListItem } from './DefinitionListItem'

@@ -1,5 +1,6 @@
 import type { Repo } from '@GSH/repo'
-import type { TGobletConfig, TWorldConfig } from '@GSH/types'
+import type { TGobletConfig } from '@GSH/types'
+import type { TWorldConfig } from '@ltipton/parkin'
 
 import { DefWorld } from '@GSH/constants'
 import { loaderSearch } from '@GSH/libs/loader'

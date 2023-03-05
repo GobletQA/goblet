@@ -1,4 +1,5 @@
-import type { TStepAst, TRaceFeature, TRuleAst } from '@GBR/types'
+import type { TStepAst } from '@ltipton/parkin'
+import type { TRaceFeature, TRuleAst } from '@GBR/types'
 
 import { useInline } from '@gobletqa/components'
 
