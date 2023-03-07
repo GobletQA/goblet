@@ -7,7 +7,7 @@ export const addScenario = async () => {
   const feature = await getFeature()
   if(!feature) return
 
-  const scenario = scenarioFactory({empty: true, parent: ESectionType.feature})
+  const scenario = scenarioFactory({empty: true})
   const scenarios = [...(feature.scenarios || [])]
   scenario && scenarios.push(scenario)
 

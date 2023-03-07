@@ -1,11 +1,14 @@
-import { ESectionType } from '@GBR/types'
+
+import type { TBackgroundAst } from '@ltipton/parkin'
+
 import { findRule } from '@GBR/utils/find'
-import { scenarioFactory } from '@GBR/factories/scenarioFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-export const addRuleScenario = async (ruleId:string) => {
-
+export const changeRuleBackground = async (
+  background:TBackgroundAst,
+  ruleId:string
+) => {
   const feature = await getFeature()
   if(!feature) return
 
@@ -16,13 +19,15 @@ export const addRuleScenario = async (ruleId:string) => {
   } = findRule(feature, ruleId)
   if(!rule) return
 
+  if(!rule.background)
+    return console.warn(`Remove Rule#background#step - Rule does not contain a background`, rule)
 
-  rules[ruleIdx as number] = {
+  rules[ruleIdx] = {
     ...rule,
-    scenarios: [
-      ...rule.scenarios,
-      scenarioFactory({empty: true})
-    ]
+    background: {
+      ...rule.background,
+      ...background
+    }
   }
 
   updateFeature({...feature, rules})

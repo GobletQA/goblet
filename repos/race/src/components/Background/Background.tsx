@@ -1,5 +1,5 @@
-import type { TRaceFeature } from '@GBR/types'
-import type { TBackgroundAst } from '@ltipton/parkin'
+import type { TBackgroundParentAst } from '@GBR/types'
+import type { TStepAst, TBackgroundAst } from '@ltipton/parkin'
 
 import { Steps } from '../Steps'
 import { AddAct } from '../Actions/Add'
@@ -14,18 +14,15 @@ import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 import { copyBackground } from '@GBR/actions/background/copyBackground'
-import { updateBackground } from '@GBR/actions/background/updateBackground'
-
-import {
-  removeBackground,
-  addBackgroundStep,
-  removeBackgroundStep,
-  changeBackgroundStep
-} from '@GBR/actions/background'
 
 export type TBackground = {
-  parent:TRaceFeature
   background:TBackgroundAst
+  parent:TBackgroundParentAst
+  onAddStep:(parentId:string) => any
+  onRemove:(parentId:string) => any
+  onRemoveStep:(stepId:string, parentId:string) => any
+  onChangeStep:(step:TStepAst, parentId?:string) => any
+  onChange:(background:TBackgroundAst, parentId:string) => any
 }
 
 const styles = {
@@ -38,8 +35,22 @@ const styles = {
 
 export const Background = (props:TBackground) => {
 
-  const { background, parent } = props
+  const {
+    parent,
+    onChange,
+    onRemove,
+    onAddStep,
+    background,
+    onRemoveStep,
+    onChangeStep
+  } = props
+  
+  const onPlay = () => {}
+  const onRemoveBackground = () => onRemove?.(parent.uuid)
+  const onAddBackgroundStep = () => onAddStep?.(parent.uuid)
   const onCopyBackground = () => background && copyBackground(background)
+  const onStepChange = (updated:TStepAst) => onChangeStep?.(updated, parent.uuid)
+  const onRemoveBackgroundStep = (stepId:string) => onRemoveStep?.(stepId, parent.uuid)
 
   const {
     isNamed,
@@ -53,11 +64,13 @@ export const Background = (props:TBackground) => {
     key: EGherkinKeys.background,
     callback: (update?:string) => {
       background.background !== update
-        && updateBackground(background.uuid, { background: update })
+        && onChange?.(
+            {...background, background: update || background.background },
+            parent.uuid
+          )
     },
   })
 
-  const onPlay = () => {}
 
   return (
     <Section
@@ -86,14 +99,14 @@ export const Background = (props:TBackground) => {
         (
           <AddAct
             Icon={StepAddIcon}
+            onClick={onAddBackgroundStep}
             type={ESectionType.step}
-            onClick={addBackgroundStep}
             key={`gr-background-add-step-action`}
           />
         ),
         (
           <DeleteAct
-            onClick={removeBackground}
+            onClick={onRemoveBackground}
             type={ESectionType.background}
             key={`gr-background-delete-action`}
           />
@@ -128,16 +141,17 @@ export const Background = (props:TBackground) => {
 
       <Steps
         showAdd={false}
+        onAdd={onAddBackgroundStep}
         parent={background}
-        onAdd={addBackgroundStep}
-        onChange={changeBackgroundStep}
-        onRemove={removeBackgroundStep}
+        onChange={onStepChange}
+        onRemove={onRemoveBackgroundStep}
       />
+
       {isNamed && (
         <EmptySteps
+          onAdd={onAddBackgroundStep}
           parent={background}
-          onAdd={addBackgroundStep}
-          type={ESectionType.background}
+          parentType={ESectionType.background}
         />
       ) || null}
     </Section>

@@ -3,16 +3,16 @@ import type { TStepParentAst } from '@GBR/types'
 import { ESectionType } from '@GBR/types'
 import { EmptyItem } from '../General/EmptyItem'
 import { StepItem } from '../Feature/FeatureItems'
-import { useInline } from '@gobletqa/components'
 
 
 export type TEmptySteps = {
   parent:TStepParentAst
+  parentType: ESectionType
   onAdd?:(parentId:string) => void
 }
 
 export const EmptySteps = (props:TEmptySteps) => {
-  const { onAdd, parent } = props
+  const { onAdd, parent, parentType } = props
   const onAddStep = () => onAdd?.(parent.uuid)
 
   return (
@@ -21,7 +21,7 @@ export const EmptySteps = (props:TEmptySteps) => {
       onClick={onAddStep}
       type={StepItem.type}
       parentId={parent.uuid}
-      parentType={ESectionType.background}
+      parentType={parentType}
     />
   )
 }

@@ -148,6 +148,7 @@ export const Scenario = (props:TScenario) => {
         <EmptySteps
           parent={scenario}
           onAdd={onAddScenarioStep}
+          parentType={ESectionType.scenario}
         />
       ) || null}
     </Section>

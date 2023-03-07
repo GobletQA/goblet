@@ -1,10 +1,10 @@
-import { ESectionType } from '@GBR/types'
 import { findRule } from '@GBR/utils/find'
-import { scenarioFactory } from '@GBR/factories/scenarioFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-export const addRuleScenario = async (ruleId:string) => {
+export const removeRuleBackground = async (
+  ruleId:string
+) => {
 
   const feature = await getFeature()
   if(!feature) return
@@ -16,14 +16,8 @@ export const addRuleScenario = async (ruleId:string) => {
   } = findRule(feature, ruleId)
   if(!rule) return
 
-
-  rules[ruleIdx as number] = {
-    ...rule,
-    scenarios: [
-      ...rule.scenarios,
-      scenarioFactory({empty: true})
-    ]
-  }
+  const { background, ...updated } = rule
+  rules[ruleIdx as number] = updated
 
   updateFeature({...feature, rules})
 

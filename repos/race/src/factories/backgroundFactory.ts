@@ -2,15 +2,14 @@ import type { TBackgroundAst } from '@ltipton/parkin'
 
 import { stepsFactory } from './stepFactory'
 import { deepMerge, uuid } from '@keg-hub/jsutils'
-import { ESectionType, EGherkinKeys } from '@GBR/types'
+import { EGherkinKeys } from '@GBR/types'
 
 export type TBackgroundFactory = {
   empty?:boolean
-  parent?:ESectionType
   background?:Partial<TBackgroundAst>
 }
 
-const emptyBackground = (parent?:ESectionType) => ({
+const emptyBackground = () => ({
   tags: [],
   steps: [],
   uuid: uuid(),
@@ -20,17 +19,17 @@ const emptyBackground = (parent?:ESectionType) => ({
 export const backgroundFactory = ({
   background,
   empty=false,
-  parent=ESectionType.feature
 }:TBackgroundFactory) => {
+  if(!parent) throw new Error(`A parent type of feature or rule is required.`)
 
   return background
     ? deepMerge<TBackgroundAst>(
-        emptyBackground(parent),
+        emptyBackground(),
         background,
         {steps: stepsFactory({steps: background?.steps})}
       )
     : empty
-      ? emptyBackground(parent)
+      ? emptyBackground()
       : undefined
 }
 

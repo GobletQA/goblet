@@ -26,6 +26,12 @@ import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 import { changeScenarioStep } from '@GBR/actions/scenario/changeScenarioStep'
 import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
 
+import { addBackground } from '@GBR/actions/background/addBackground'
+import { removeBackground } from '@GBR/actions/background/removeBackground'
+import { updateBackground } from '@GBR/actions/background/updateBackground'
+import { addBackgroundStep } from '@GBR/actions/background/addBackgroundStep'
+import { removeBackgroundStep } from '@GBR/actions/background/removeBackgroundStep'
+import { changeBackgroundStep } from '@GBR/actions/background/changeBackgroundStep'
 
 export type TFeature = TFeaturesRefs & {}
 type StyleObj = Record<string, CSSProperties>
@@ -113,7 +119,12 @@ export const Feature = (props:TFeature) => {
                       {feature.background && (
                         <Background
                           parent={feature}
+                          onChange={updateBackground}
+                          onRemove={removeBackground}
+                          onAddStep={addBackgroundStep}
                           background={feature.background}
+                          onChangeStep={changeBackgroundStep}
+                          onRemoveStep={removeBackgroundStep}
                         />
                       ) || null}
                       {feature.rules?.length && (

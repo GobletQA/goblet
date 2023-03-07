@@ -1,7 +1,5 @@
-import type { TStepAst, TRuleAst } from '@ltipton/parkin'
+import type { TBackgroundAst, TStepAst, TRuleAst } from '@ltipton/parkin'
 import type { TRaceFeature } from '@GBR/types'
-
-import { useInline } from '@gobletqa/components'
 
 import { AddAct } from '../Actions/Add'
 import { PlayAct } from '../Actions/Play'
@@ -20,10 +18,19 @@ import { removeRule } from '@GBR/actions/rule/removeRule'
 import { addRuleScenario } from '@GBR/actions/rule/addRuleScenario'
 
 import { updateRule } from '@GBR/actions/rule/updateRule'
+import { EmptyBackground, Background } from '@GBR/components/Background'
 import { removeRuleScenario } from '@GBR/actions/rule/removeRuleScenario'
 import { addRuleScenarioStep } from '@GBR/actions/rule/addRuleScenarioStep'
 import { changeRuleScenarioStep } from '@GBR/actions/rule/changeRuleScenarioStep'
 import { removeRuleScenarioStep } from '@GBR/actions/rule/removeRuleScenarioStep'
+
+
+import { addRuleBackground } from '@GBR/actions/rule/addRuleBackground'
+import { changeRuleBackground } from '@GBR/actions/rule/changeRuleBackground'
+import { removeRuleBackground } from '@GBR/actions/rule/removeRuleBackground'
+import { addRuleBackgroundStep } from '@GBR/actions/rule/addRuleBackgroundStep'
+import { changeRuleBackgroundStep } from '@GBR/actions/rule/changeRuleBackgroundStep'
+import { removeRuleBackgroundStep } from '@GBR/actions/rule/removeRuleBackgroundStep'
 
 
 export type TRule = {
@@ -59,25 +66,29 @@ export const Rule = (props:TRule) => {
     },
   })
 
+  const onPlay = () => {}
   const onCopyRule = () => copyRule(rule)
   const onRemove = () => removeRule(rule.uuid)
+
+  const onRemoveBackground = () => removeRuleBackground(rule.uuid)
+  const onChangeBackgroundStep = (step:TStepAst) => changeRuleBackgroundStep(step, rule.uuid)
+  const onRemoveBackgroundStep = (stepId:string) => removeRuleBackgroundStep(stepId, rule.uuid)
+  const onChangeBackground = (background:TBackgroundAst) => changeRuleBackground(background, rule.uuid)
+
   const onAddScenario = () => addRuleScenario(rule.uuid)
-  const onAddStep = (scenarioId:string, ruleId?:string) => {
-    addRuleScenarioStep(scenarioId, ruleId || rule.uuid)
-  }
-  const onRemoveScenario = (scenarioId:string, ruleId?:string) => {
-     removeRuleScenario(scenarioId, ruleId || rule.uuid)
-  }
-
-  const onRemoveScenarioStep = useInline((stepId:string, scenarioId?:string, ruleId?:string) => {
-    removeRuleScenarioStep(stepId, scenarioId, ruleId || rule.uuid)
-  })
-
-  const onChangeScenarioStep = useInline((step:TStepAst, scenarioId:string, ruleId?:string) => {
-    changeRuleScenarioStep(step, scenarioId, ruleId || rule.uuid)
-  })
+  const onAddStep = (scenarioId:string) => addRuleScenarioStep(scenarioId, rule.uuid)
+  const onRemoveScenario = (scenarioId:string) => removeRuleScenario(scenarioId, rule.uuid)
+  const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeRuleScenarioStep(
+    stepId,
+    scenarioId,
+    rule.uuid
+  )
+  const onChangeScenarioStep = (step:TStepAst, scenarioId:string) => changeRuleScenarioStep(
+    step,
+    scenarioId,
+    rule.uuid
+  )
   
-  const onPlay = () => {}
 
   return (
     <Section
@@ -135,17 +146,41 @@ export const Rule = (props:TRule) => {
       ]}
     >
     
-    {showTitle && (
-      <EditTitle
-        sx={styles.title}
-        uuid={rule.uuid}
-        value={sectionTitle}
-        label={`Description`}
-        onChange={onEditTitle}
-        type={ESectionType.rule}
-      />
-    ) || null}
-    
+      {showTitle && (
+        <EditTitle
+          sx={styles.title}
+          uuid={rule.uuid}
+          value={sectionTitle}
+          label={`Description`}
+          onChange={onEditTitle}
+          type={ESectionType.rule}
+        />
+      ) || null}
+
+      {rule?.background
+        ? (
+            <Background
+              parent={rule}
+              background={rule.background}
+              onAddStep={addRuleBackgroundStep}
+              onRemove={onRemoveBackground}
+
+              onChange={onChangeBackground}
+              onChangeStep={onChangeBackgroundStep}
+              onRemoveStep={onRemoveBackgroundStep}
+              
+            />
+          )
+        : (
+            <EmptyBackground
+              parent={rule}
+              onAdd={addRuleBackground}
+              parentType={ESectionType.rule}
+            />
+          )
+
+      }
+
       <Scenarios
         parent={rule}
         onAddStep={onAddStep}
