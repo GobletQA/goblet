@@ -21,7 +21,11 @@ export const addRuleBackground = async (ruleId:string) => {
     ...rule,
     background: {
       ...rule?.background,
-      ...backgroundFactory({empty: true})
+      ...backgroundFactory({
+        background: {
+          whitespace: `${rule.whitespace}${rule.whitespace}`
+        }
+      })
     } as TBackgroundAst
   }
 

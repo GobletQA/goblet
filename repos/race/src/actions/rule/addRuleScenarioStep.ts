@@ -24,12 +24,15 @@ export const addRuleScenarioStep = async (
   } = findScenario(rule, scenarioId)
   if(!scenario) return
 
-
   scenarios[scenarioIdx as number] = {
     ...scenario,
     steps: [
       ...scenario.steps,
-      stepFactory({empty: true})
+      stepFactory({
+        step: {
+          whitespace: `${rule.whitespace}${scenario.whitespace}`
+        } 
+      })
     ]
   }
 

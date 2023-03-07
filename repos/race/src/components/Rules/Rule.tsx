@@ -171,14 +171,13 @@ export const Rule = (props:TRule) => {
               
             />
           )
-        : (
+        : isNamed && (
             <EmptyBackground
               parent={rule}
               onAdd={addRuleBackground}
               parentType={ESectionType.rule}
             />
-          )
-
+          ) || null
       }
 
       <Scenarios

@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import type { TChangeCB, TInputVariants } from '@gobletqa/components'
 
+import { useRef, useEffect } from 'react'
 import { ESectionType } from '@GBR/types'
 import { InputContainer } from '../Section'
 import { capitalize } from '@keg-hub/jsutils'
@@ -16,6 +17,7 @@ export type TTitle = {
   type:ESectionType
   helperText?:string
   onChange:TChangeCB
+  autoFocus?:boolean
   variant?:TInputVariants
   containerSx?:CSSProperties
 }
@@ -31,9 +33,16 @@ export const Title = (props:TTitle) => {
     variant,
     onChange,
     value=``,
+    autoFocus,
     helperText,
     containerSx
   } = props
+
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
+  useEffect(() => {
+    autoFocus 
+      && inputRef?.current?.focus?.()
+  }, [])
 
   return (
     <InputContainer
@@ -42,13 +51,14 @@ export const Title = (props:TTitle) => {
     >
       <InlineInput
         inputSx={sx}
-        label={label || `Title`}
-        required={true}
         value={value}
+        required={true}
         multiline={true}
         variant={variant}
+        inputRef={inputRef}
         onChange={onChange}
         helperText={helperText}
+        label={label || `Title`}
         className={`gr-${type}-title`}
         name={name || `${type}-title`}
         id={`${uuid || (type + '-' + name)}-title`}

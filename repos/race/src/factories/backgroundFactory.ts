@@ -13,6 +13,7 @@ const emptyBackground = () => ({
   tags: [],
   steps: [],
   uuid: uuid(),
+  whitespace: `  `,
   background: `${EGherkinKeys.Background}: `,
 })
 

@@ -4,7 +4,7 @@ import type { KeyboardEvent, RefObject, ChangeEvent, MouseEvent } from 'react'
 import { exists, isStr } from '@keg-hub/jsutils'
 import { useInline } from '@GBC/hooks/useInline'
 import { useEffectOnce } from '@GBC/hooks/useEffectOnce'
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 
 export type THEdit<T> = {
   required?:boolean
@@ -13,6 +13,7 @@ export type THEdit<T> = {
   multiple?:boolean
   controlled?:boolean
   onChange?:TChangeCB
+  inputRef?: RefObject<T>
   initialEditing?:boolean
   setValue?:(value:TInputValue) => any
 }
@@ -33,7 +34,10 @@ export const useEdit = <T=any>(props:THEdit<T>) => {
     valueProp=`value` as keyof T,
   } = props
 
-  const inputRef = useRef<T>(null)
+
+  const localInputRef = useRef<T>(null)
+  const inputRef = useMemo(() => props.inputRef || localInputRef, [props.inputRef])
+
   const onChangeCB = useInline(props.onChange)
 
   const [error, setError] = useState(``)

@@ -21,7 +21,11 @@ export const addRuleScenario = async (ruleId:string) => {
     ...rule,
     scenarios: [
       ...rule.scenarios,
-      scenarioFactory({empty: true})
+      scenarioFactory({
+        scenario: {
+          whitespace: `${rule.whitespace}${rule.whitespace}`
+        }
+      })
     ]
   }
 

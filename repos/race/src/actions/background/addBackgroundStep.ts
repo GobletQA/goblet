@@ -18,7 +18,14 @@ export const addBackgroundStep = async (parentId:string) => {
     )
   }
 
-  background.steps = [...background.steps, stepFactory({empty: true})]
+  background.steps = [
+    ...background.steps,
+    stepFactory({
+      step: {
+        whitespace: `${background.whitespace}${background.whitespace}`
+      }
+    })
+  ]
 
   updateFeature({...feature, background})
 

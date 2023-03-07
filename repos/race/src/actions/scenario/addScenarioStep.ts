@@ -20,7 +20,11 @@ export const addScenarioStep = async (parentId:string) => {
     ...scenario,
     steps: [
       ...scenario.steps,
-      stepFactory({ empty: true })
+      stepFactory({
+        step: {
+          whitespace: `${scenario.whitespace}${scenario.whitespace}`
+        }
+      })
     ]
   }
 

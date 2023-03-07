@@ -20,6 +20,7 @@ const emptyRule = ():TRuleAst => ({
   tags: [],
   uuid: uuid(),
   scenarios: [],
+  whitespace: `  `,
   rule: `${EGherkinKeys.Rule}: `,
 })
 

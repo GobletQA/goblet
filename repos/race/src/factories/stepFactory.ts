@@ -1,6 +1,6 @@
 import type { TStepAst } from '@ltipton/parkin'
 
-import { EStepKey } from '@ltipton/parkin'
+import { EStepType } from '@ltipton/parkin'
 import { deepMerge, emptyArr, emptyObj, uuid } from '@keg-hub/jsutils'
 
 export type TStepsFactory = {
@@ -13,10 +13,11 @@ export type TStepFactory = {
   empty?:boolean
 }
 
-const emptyStep = () => ({
+const emptyStep = ():TStepAst => ({
   step: `  `,
   uuid: uuid(),
-  type: EStepKey.given,
+  type: EStepType.given,
+  whitespace: `    `,
 })
 
 export const stepFactory = ({
@@ -25,7 +26,7 @@ export const stepFactory = ({
 }:TStepFactory) => {
   return empty || step
     ? deepMerge<TStepAst>(emptyStep(), step)
-    : emptyObj as TStepAst
+    : emptyStep() as TStepAst
 }
 
 export const stepsFactory = ({

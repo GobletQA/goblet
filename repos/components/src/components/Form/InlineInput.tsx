@@ -1,7 +1,7 @@
 
-import type { InputProps } from '@mui/material'
-import type { CSSProperties } from 'react'
 import type { TChangeCB } from '@GBC/types'
+import type { InputProps } from '@mui/material'
+import type { RefObject, CSSProperties } from 'react'
 
 import { cls, uuid } from '@keg-hub/jsutils'
 import { useEdit } from '@GBC/hooks/form/useEdit'
@@ -36,6 +36,7 @@ export type TInlineInput<T> = {
   value?:string|boolean|number
   inputProps?:Record<string, any>
   variant?:`outlined`|`filled`|`standard`
+  inputRef?: RefObject<HTMLInputElement | HTMLTextAreaElement>
   color?: `primary`|`secondary`|`error`|`info`|`success`|`warning`
 }
 
@@ -71,6 +72,7 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
     required,
     value: props.value || ``,
     onChange: props.onChange,
+    inputRef: props.inputRef,
     initialEditing: initialEditing,
   })
 

@@ -152,6 +152,7 @@ export const Feature = (props:TFeature) => {
                   )
                 : (
                     <Title
+                      autoFocus={true}
                       uuid={feature.uuid}
                       value={feature.feature}
                       containerSx={styles.title}

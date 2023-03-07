@@ -23,7 +23,11 @@ export const addRuleBackgroundStep = async (
     ...rule.background,
     steps: [
       ...rule.background.steps,
-      stepFactory({empty: true})
+      stepFactory({
+        step: {
+          whitespace: `${rule.whitespace}${rule.background.whitespace}`
+        } 
+      })
     ]
   }
 
