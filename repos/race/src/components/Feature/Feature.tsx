@@ -59,6 +59,9 @@ const styles:Record<string, StyleObj|CSSProperties> = {
   },
   notEmpty: {
     marginTop: `auto`
+  },
+  title: {
+    marginTop: `20px`
   }
 }
 
@@ -112,13 +115,13 @@ export const Feature = (props:TFeature) => {
                           parent={feature}
                           background={feature.background}
                         />
-                      )}
+                      ) || null}
                       {feature.rules?.length && (
                         <Rules
                           parent={feature}
                           rules={feature.rules}
                         />
-                      )}
+                      ) || null}
                       {feature.scenarios?.length && (
                         <Scenarios
                           parent={feature}
@@ -129,7 +132,7 @@ export const Feature = (props:TFeature) => {
                           onChangeStep={changeScenarioStep}
                           onRemoveStep={removeScenarioStep}
                         />
-                      )}
+                      ) || null}
                       <EmptyFeature
                         parent={feature}
                         sx={!isEmpty ? styles.notEmpty : undefined}
@@ -140,6 +143,7 @@ export const Feature = (props:TFeature) => {
                     <Title
                       uuid={feature.uuid}
                       value={feature.feature}
+                      containerSx={styles.title}
                       type={ESectionType.feature}
                       onChange={onEditFeatureTitle}
                     />

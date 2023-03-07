@@ -1,7 +1,7 @@
-import type { CSSProperties, SyntheticEvent, ComponentProps } from 'react'
+import type { CSSProperties, SyntheticEvent, ComponentProps, ForwardedRef } from 'react'
 
 
-import { useCallback } from 'react'
+import { forwardRef, useCallback } from 'react'
 import { capitalize } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components/hooks'
 
@@ -13,14 +13,14 @@ type TOnClick = (evt:SyntheticEvent, parentId:string, type:ESectionType) => void
 export type TAddItem = Omit<ComponentProps<typeof AddBtn>, `onClick`|`type`> & {
   text?:string
   parentId:string
-  sx?:CSSProperties
   type:ESectionType
   onClick?: TOnClick
   featureKey?:string
   buttonSx?:CSSProperties
+  sx?:CSSProperties|CSSProperties[]
 }
 
-export const AddItem = (props:TAddItem) => {
+export const AddItem = forwardRef((props:TAddItem, ref:ForwardedRef<HTMLButtonElement>) => {
   
   const {
     sx,
@@ -45,6 +45,7 @@ export const AddItem = (props:TAddItem) => {
     <Container sx={sx}>
       <AddBtn
         {...rest}
+        ref={ref}
         sx={buttonSx}
         onClick={onClick}
         variant={variant || "outlined"}
@@ -54,4 +55,4 @@ export const AddItem = (props:TAddItem) => {
       </AddBtn>
     </Container>
   )
-}
+})

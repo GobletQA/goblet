@@ -67,16 +67,12 @@ export const Background = (props:TBackground) => {
       type={ESectionType.background}
       className='gr-background-section'
       id={`${parent.uuid}-background-${background?.uuid || ''}`}
-      label={
-        isNamed
-          ? (
-              <SectionHeader
-                content={sectionTitle}
-                type={ESectionType.background}
-              />
-            )
-          : undefined
-      }
+      label={(
+        <SectionHeader
+          content={sectionTitle}
+          type={ESectionType.background}
+        />
+      )}
       actions={[
         (
           <EditTitleAct
@@ -128,7 +124,7 @@ export const Background = (props:TBackground) => {
           uuid={background.uuid}
           type={ESectionType.background}
         />
-      )}
+      ) || null}
 
       <Steps
         showAdd={false}
@@ -136,12 +132,14 @@ export const Background = (props:TBackground) => {
         onAdd={addBackgroundStep}
         onChange={changeBackgroundStep}
         onRemove={removeBackgroundStep}
-      >
-        <EmptySteps
-        parent={background}
-        onAdd={addBackgroundStep}
       />
-      </Steps>
+      {isNamed && (
+        <EmptySteps
+          parent={background}
+          onAdd={addBackgroundStep}
+          type={ESectionType.background}
+        />
+      ) || null}
     </Section>
   )
 }

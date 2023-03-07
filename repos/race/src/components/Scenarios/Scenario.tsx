@@ -78,16 +78,12 @@ export const Scenario = (props:TScenario) => {
       type={ESectionType.scenario}
       id={`${parent.uuid}-scenario`}
       className={`gr-scenario-section`}
-      label={
-        isNamed
-          ? (
-              <SectionHeader
-                content={sectionTitle}
-                type={ESectionType.scenario}
-              />
-            )
-          : undefined
-      }
+      label={(
+        <SectionHeader
+          content={sectionTitle}
+          type={ESectionType.scenario}
+        />
+      )}
       actions={[
         (
           <EditTitleAct
@@ -139,7 +135,7 @@ export const Scenario = (props:TScenario) => {
         label={`Description`}
         value={scenario.scenario.replace(`${EGherkinKeys.scenario}:`, ``)}
       />
-    )}
+    ) || null}
 
       <Steps
         showAdd={false}
@@ -153,7 +149,7 @@ export const Scenario = (props:TScenario) => {
           parent={scenario}
           onAdd={onAddScenarioStep}
         />
-      )}
+      ) || null}
     </Section>
   )
 }

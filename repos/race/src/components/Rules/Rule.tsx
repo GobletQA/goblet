@@ -87,16 +87,12 @@ export const Rule = (props:TRule) => {
       type={ESectionType.rule}
       className='gr-rule-section'
       id={`${parent.uuid}-rule-${rule.uuid}`}
-      label={
-        isNamed
-          ? (
-              <SectionHeader
-                content={sectionTitle}
-                type={ESectionType.rule}
-              />
-            )
-          : undefined
-      }
+      label={(
+        <SectionHeader
+          content={sectionTitle}
+          type={ESectionType.rule}
+        />
+      )}
       actions={[
         (
           <EditTitleAct
@@ -148,7 +144,7 @@ export const Rule = (props:TRule) => {
         onChange={onEditTitle}
         type={ESectionType.rule}
       />
-    )}
+    ) || null}
     
       <Scenarios
         parent={rule}
@@ -159,10 +155,13 @@ export const Rule = (props:TRule) => {
         onChangeStep={onChangeScenarioStep}
         onRemoveStep={onRemoveScenarioStep}
       />
-      <EmptyScenarios
-        parent={rule}
-        onAdd={onAddScenario}
-      />
+      {isNamed && (
+        <EmptyScenarios
+          parent={rule}
+          onAdd={onAddScenario}
+          type={ESectionType.rule}
+        />
+      ) || null}
     </Section>
   )
 }

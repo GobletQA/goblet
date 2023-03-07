@@ -39,7 +39,7 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 }
 
 export const Container = styled(Paper)`
-  margin-top: 10px;
+  margin-top: ${gutter.margin.px};
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-editor-background);
 `
@@ -49,13 +49,13 @@ export const InputContainer = styled(Box)`
 `
 
 export const SectionActBtn = styled(Button)`
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: ${gutter.margin.qpx};
+  margin-right: ${gutter.margin.qpx};
 `
 
 export const SectionActIcnBtn = styled(IconButton)`
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: ${gutter.margin.qpx};
+  margin-right: ${gutter.margin.qpx};
 `
 
 export const SectionActs = styled(Box)`

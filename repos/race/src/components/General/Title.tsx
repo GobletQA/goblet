@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { TChangeCB, TInputVariants } from '@gobletqa/components'
 
 import { ESectionType } from '@GBR/types'
@@ -11,15 +12,18 @@ export type TTitle = {
   name?:string
   value?:string
   label?:string
+  sx?:CSSProperties
   type:ESectionType
   helperText?:string
-  variant?:TInputVariants
   onChange:TChangeCB
+  variant?:TInputVariants
+  containerSx?:CSSProperties
 }
 
 export const Title = (props:TTitle) => {
   const {
     id,
+    sx,
     uuid=id,
     name,
     type,
@@ -28,11 +32,16 @@ export const Title = (props:TTitle) => {
     onChange,
     value=``,
     helperText,
+    containerSx
   } = props
 
   return (
-    <InputContainer className={`gr-${type}}-title gr-${type}-input-container`} >
+    <InputContainer
+      sx={containerSx}
+      className={`gr-${type}}-title gr-${type}-input-container`}
+    >
       <InlineInput
+        inputSx={sx}
         label={label || `Title`}
         required={true}
         value={value}
