@@ -159,7 +159,7 @@ export const Rule = (props:TRule) => {
         <EmptyScenarios
           parent={rule}
           onAdd={onAddScenario}
-          type={ESectionType.rule}
+          parentType={ESectionType.rule}
         />
       ) || null}
     </Section>

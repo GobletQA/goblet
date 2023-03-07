@@ -1,31 +1,28 @@
 import type { TScenarioParentAst } from '@GBR/types'
 
-import Box from '@mui/material/Box'
-import { Button, PlaylistPlusIcon, useInline } from '@gobletqa/components'
-
+import { ESectionType } from '@GBR/types'
+import { PlaylistPlusIcon } from '@gobletqa/components'
+import { EmptyItem } from '../General/EmptyItem'
 
 export type TEmptyScenarios = {
+  parentType:ESectionType
   parent:TScenarioParentAst
   onAdd?:(parentId:string) => void
 }
 
 export const EmptyScenarios = (props:TEmptyScenarios) => {
-  const { onAdd, parent } = props
-  const onAddStep = useInline(() => onAdd?.(parent.uuid))
+  const { onAdd, parent, parentType } = props
+  const onAddStep = () => onAdd?.(parent.uuid)
 
   return (
-    <Box
-      display='flex'
-      paddingTop='5px'
-      paddingBottom='5px'
-      justifyContent='start'
-    >
-      <Button
-        text={`Add Scenario`}
-        onClick={onAddStep}
-        Icon={PlaylistPlusIcon}
-        textSx={{ marginLeft: `5px` }}
-      />
-    </Box>
+    <EmptyItem
+      onClick={onAddStep}
+      text={`Add Scenario`}
+      parentId={parent.uuid}
+      parentType={parentType}
+      Icon={PlaylistPlusIcon}
+      featureKey={`scenarios`}
+      type={ESectionType.scenario}
+    />
   )
 }
