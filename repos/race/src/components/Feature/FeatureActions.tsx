@@ -1,11 +1,13 @@
 import { useMemo } from 'react'
 import { FeatureMenu } from './FeatureMenu'
-import { useSettings, useEditor } from '@GBR/contexts'
+import { useSettings } from '@GBR/contexts'
 import {
   HeaderText,
-  FeatureActionsContainer
+  FeatureActionsContainer,
+  FeatureSubActionsContainer,
 } from './Feature.styled'
 import { FeatureItems } from './FeatureItems'
+import { FeatureAction } from './FeatureAction'
 
 import {
   NotePlusIcon,
@@ -43,6 +45,15 @@ export const FeatureActions = (props:TFeatureActions) => {
       <HeaderText>
         Feature
       </HeaderText>
+      
+      <FeatureSubActionsContainer className='feature-sub-actions-container' >
+        {FeatureItems.map(item => {
+          return (
+            <FeatureAction {...item} />
+          )
+        })}
+      </FeatureSubActionsContainer>
+      
       <FeatureMenu items={items} />
     </FeatureActionsContainer>
   )

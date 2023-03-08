@@ -1,13 +1,15 @@
 import Box from '@mui/material/Box'
-import Grid from '@mui/material/Unstable_Grid2'
 import List from '@mui/material/List'
+import Button from '@mui/material/Button'
 import ListItem from '@mui/material/ListItem'
+import Grid from '@mui/material/Unstable_Grid2'
+
 
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 
 import { styled } from '@mui/material/styles'
-import { Text, gutter, colors, H3 } from '@gobletqa/components'
+import { gutter, H3 } from '@gobletqa/components'
 
 export const FeatureActionsContainer = styled(Box)`
   top: 0;
@@ -24,7 +26,19 @@ export const FeatureActionsContainer = styled(Box)`
   border-bottom: 2px solid var(--goblet-list-focusBackground);
 `
 
+export const FeatureSubActionsContainer = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+export const SubActionBtn = styled(Button)`
+  padding: 4px 12px;
+  width: auto;
+`
+
+
 export const HeaderText = styled(H3)`
+  flex-grow: 1;
   font-size: 16px;
   padding-left: 12px;
 `
