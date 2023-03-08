@@ -5,7 +5,7 @@ import { backgroundFactory } from '@GBR/factories/backgroundFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-export const changeBackgroundStep = async (step:TStepAst) => {
+export const updateBackgroundStep = async (step:TStepAst) => {
   const feature = await getFeature()
   if(!feature) return
 

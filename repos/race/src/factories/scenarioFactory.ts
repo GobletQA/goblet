@@ -19,8 +19,8 @@ const emptyScenario = ():TScenarioAst => ({
   tags: [],
   steps: [],
   uuid: uuid(),
+  scenario: ``,
   whitespace: `  `,
-  scenario: `${EGherkinKeys.scenario}: `,
 })
 
 export const scenarioFactory = ({

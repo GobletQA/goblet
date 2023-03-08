@@ -3,7 +3,7 @@ import { findStep, findScenario } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-export const changeScenarioStep = async (step:TStepAst, scenarioId:string) => {
+export const updateScenarioStep = async (step:TStepAst, scenarioId:string) => {
   const feature = await getFeature()
   if(!feature) return
 

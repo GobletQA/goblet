@@ -21,9 +21,10 @@ import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { createFeature } from '@GBR/actions/feature/createFeature'
 import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
+import { updateScenario } from '@GBR/actions/scenario/updateScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
 import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
-import { changeScenarioStep } from '@GBR/actions/scenario/changeScenarioStep'
+import { updateScenarioStep } from '@gobletqa/race/actions/scenario/updateScenarioStep'
 import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
 
 import { addBackground } from '@GBR/actions/background/addBackground'
@@ -31,7 +32,7 @@ import { removeBackground } from '@GBR/actions/background/removeBackground'
 import { updateBackground } from '@GBR/actions/background/updateBackground'
 import { addBackgroundStep } from '@GBR/actions/background/addBackgroundStep'
 import { removeBackgroundStep } from '@GBR/actions/background/removeBackgroundStep'
-import { changeBackgroundStep } from '@GBR/actions/background/changeBackgroundStep'
+import { updateBackgroundStep } from '@gobletqa/race/actions/background/updateBackgroundStep'
 
 export type TFeature = TFeaturesRefs & {}
 type StyleObj = Record<string, CSSProperties>
@@ -123,7 +124,7 @@ export const Feature = (props:TFeature) => {
                           onRemove={removeBackground}
                           onAddStep={addBackgroundStep}
                           background={feature.background}
-                          onChangeStep={changeBackgroundStep}
+                          onChangeStep={updateBackgroundStep}
                           onRemoveStep={removeBackgroundStep}
                         />
                       ) || null}
@@ -137,10 +138,11 @@ export const Feature = (props:TFeature) => {
                         <Scenarios
                           parent={feature}
                           onAdd={addScenario}
+                          onChange={updateScenario}
                           onRemove={removeScenario}
                           onAddStep={addScenarioStep}
                           scenarios={feature.scenarios}
-                          onChangeStep={changeScenarioStep}
+                          onChangeStep={updateScenarioStep}
                           onRemoveStep={removeScenarioStep}
                         />
                       ) || null}

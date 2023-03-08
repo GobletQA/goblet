@@ -18,10 +18,10 @@ export type TRulesFactory = {
 
 const emptyRule = ():TRuleAst => ({
   tags: [],
+  rule: ` `,
   uuid: uuid(),
   scenarios: [],
   whitespace: `  `,
-  rule: `${EGherkinKeys.Rule}: `,
 })
 
 export const ruleFactory = ({

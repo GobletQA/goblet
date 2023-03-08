@@ -5,7 +5,7 @@ import { findStep, findRule } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-export const changeRuleBackgroundStep = async (
+export const updateRuleBackgroundStep = async (
   step:TStepAst,
   ruleId:string
 ) => {

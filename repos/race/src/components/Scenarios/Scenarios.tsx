@@ -12,6 +12,7 @@ export type TScenarios = {
   onAdd: (parentId?:string) => void
   onRemove: (scenarioId:string, parentId?:string) => void
   onAddStep: (scenarioId:string, parentId?:string) => void
+  onChange :(scenarioId:string, update:Partial<TScenarioAst>) => void
   onChangeStep: (step:TStepAst, scenarioId:string, parentId?:string) => void
   onRemoveStep: (stepId:string, scenarioId?:string, parentId?:string) => void
 } 
@@ -20,10 +21,11 @@ export const Scenarios = (props:TScenarios) => {
 
   const {
     parent,
-    scenarios,
     onAdd,
+    onChange,
     onRemove,
     onAddStep,
+    scenarios,
     onChangeStep,
     onRemoveStep
   } = props
@@ -42,6 +44,7 @@ export const Scenarios = (props:TScenarios) => {
             parent={parent}
             onRemove={onRemove}
             scenario={scenario}
+            onChange={onChange}
             onAddStep={onAddStep}
             onChangeStep={onChangeStep}
             onRemoveStep={onRemoveStep}

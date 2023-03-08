@@ -1,13 +1,13 @@
 
-import type { TStepAst } from '@ltipton/parkin'
+import type { TScenarioAst } from '@ltipton/parkin'
 
-import { findStep, findScenario, findRule } from '@GBR/utils/find'
+import { findRule, findScenario } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-export const changeRuleScenarioStep = async (
-  step:TStepAst,
+export const updateRuleScenario = async (
   scenarioId:string,
+  updated:Partial<TScenarioAst>,
   ruleId:string
 ) => {
   const feature = await getFeature()
@@ -20,18 +20,17 @@ export const changeRuleScenarioStep = async (
   } = findRule(feature, ruleId)
   if(!rule) return
 
+  if(!rule?.scenarios?.length)
+    return console.warn(`Change Rule#scenario - Rule does not contain any scenarios`, rule)
+
   const {
     scenario,
     scenarios,
     scenarioIdx
   } = findScenario(rule, scenarioId)
-  if(!scenario) return
+  if(!scenario) return console.warn(`Change Rule#scenario - Scenario could not be found`, rule)
 
-  const { step:found, stepIdx, steps } = findStep(scenario, step.uuid)
-  if(!found) return
-
-  steps[stepIdx] = step
-  scenarios[scenarioIdx] = {...scenario, steps}
+  scenarios[scenarioIdx] = {...scenario, ...updated}
   rules[ruleIdx] = {...rule, scenarios}
 
   updateFeature({...feature, rules})

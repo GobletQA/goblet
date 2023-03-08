@@ -5,7 +5,7 @@ import { findRule } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-export const changeRuleBackground = async (
+export const updateRuleBackground = async (
   background:TBackgroundAst,
   ruleId:string
 ) => {

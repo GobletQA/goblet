@@ -46,17 +46,19 @@ const mergeFeatureChanges = async (
   onBeforeFeatureChange?:TOnReturnFeatureCB,
   replace?:boolean
 ) => {
+
   const merged = replace
     ? feat as TRaceFeature
     : deepMerge<TRaceFeature>(feature, feat)
 
+  const reIndexed = parkin.reIndex(merged, { empty: false, indexes: false })
+
   const indexed:TRaceFeature = {
-    ...merged,
-    ...parkin.reIndex(merged),
+    uuid: merged.uuid,
+    path: merged.path,
+    parent: merged.parent,
+    ...reIndexed,
   }
-  
-  console.log(`------- Update Feature -------`)
-  console.log(indexed)
 
   const beforeMdl = await onBeforeFeatureChange?.(indexed, feat, feature)
   return beforeMdl || indexed

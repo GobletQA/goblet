@@ -17,7 +17,7 @@ export const findScenario = (
 
   const scenario = parent?.scenarios?.find(scenario => scenario.uuid === scenarioId)
   if(!scenario){
-    console.warn(`Scenario Id ${parent} could not be found`, parent, parent?.scenarios)
+    console.warn(`Scenario Id ${scenarioId} could not be found`, parent, parent?.scenarios)
     return emptyObj as TFoundScenario
   }
 

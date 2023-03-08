@@ -23,6 +23,7 @@ export type TScenario = {
   onAdd?: (...args:any[]) => void
   onRemove: (scenarioId:string, parentId?:string) => void
   onAddStep: (scenarioId:string, parentId?:string) => void
+  onChange:(scenarioId:string, update:Partial<TScenarioAst>) => void
   onChangeStep: (step:TStepAst, scenarioId:string, parentId?:string) => void
   onRemoveStep: (stepId:string, scenarioId?:string, parentId?:string) => void
 }
@@ -40,6 +41,7 @@ export const Scenario = (props:TScenario) => {
     parent,
     scenario,
     onRemove,
+    onChange,
     onAddStep,
     onChangeStep,
     onRemoveStep,
@@ -56,8 +58,7 @@ export const Scenario = (props:TScenario) => {
     title: scenario.scenario,
     key: EGherkinKeys.scenario,
     callback: (update?:string) => {
-      scenario.scenario !== update
-        && updateScenario(scenario.uuid, { scenario: update })
+      scenario.scenario !== update && onChange(scenario.uuid, { scenario: update })
     },
   })
 

@@ -33,7 +33,7 @@ export const useEditSectionTitle = (props:THEditSectionTitle) => {
   const onEditTitle:TChangeCB = useCallback((
     evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     value?:TInputValue
-  ) => cb(`${key}: ${value || evt.target.value}`), [
+  ) => cb(`${value || evt.target.value}`.trim()), [
     key,
     cb
   ])
@@ -43,12 +43,12 @@ export const useEditSectionTitle = (props:THEditSectionTitle) => {
     showTitle,
     sectionTitle
   } = useMemo(() => {
-    const isNamed = !Boolean(title.trim() == `${key}:`)
+    const isNamed = !Boolean(title.trim() == ``)
 
     return {
       isNamed,
       showTitle: editingTitle || !isNamed,
-      sectionTitle: isNamed ? title.replace(`${key}:`, ``) : ``
+      sectionTitle: isNamed ? title : ``
     }
   }, [
     key,

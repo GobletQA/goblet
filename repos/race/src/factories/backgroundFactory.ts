@@ -13,8 +13,8 @@ const emptyBackground = () => ({
   tags: [],
   steps: [],
   uuid: uuid(),
+  background: ``,
   whitespace: `  `,
-  background: `${EGherkinKeys.Background}: `,
 })
 
 export const backgroundFactory = ({
