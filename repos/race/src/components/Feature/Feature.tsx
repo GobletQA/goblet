@@ -13,7 +13,7 @@ import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { useEditor } from '../../contexts'
-import { FeatureActions } from './FeatureActions'
+import { FeatureHeader } from './FeatureHeader'
 import { EmptyFeatureUUID } from '@GBR/constants'
 
 import { EmptyFeature } from './EmptyFeature'
@@ -112,7 +112,7 @@ export const Feature = (props:TFeature) => {
             { feature.uuid !== EmptyFeatureUUID
                 ? (
                     <>
-                      <FeatureActions />
+                      <FeatureHeader />
                       <General
                         parent={feature}
                         featuresRef={featuresRef}

@@ -11,7 +11,7 @@ import ListItemText from '@mui/material/ListItemText'
 import { styled } from '@mui/material/styles'
 import { gutter, H3 } from '@gobletqa/components'
 
-export const FeatureActionsContainer = styled(Box)`
+export const FeatureHeaderContainer = styled(Box)`
   top: 0;
   z-index: 1;
   display: flex;
@@ -26,14 +26,21 @@ export const FeatureActionsContainer = styled(Box)`
   border-bottom: 2px solid var(--goblet-list-focusBackground);
 `
 
-export const FeatureSubActionsContainer = styled(Box)`
+export const FeatureActionsContainer = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
 `
-export const SubActionBtn = styled(Button)`
-  padding: 4px 12px;
+export const FeatureActionBtn = styled(Button)`
+  padding: 4px 8px;
   width: auto;
+  min-width: initial;
+  
+  > span {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
 `
 
 

@@ -1,9 +1,9 @@
 import type { ReactNode, ComponentType } from 'react'
 import type { ESectionType } from '@GBR/types'
 import type { TMenuItem } from '@gobletqa/components'
-
 import { capitalize } from '@keg-hub/jsutils'
-import { SubActionBtn } from './Feature.styled'
+import { FeatureActionBtn } from './Feature.styled'
+import { Tooltip } from '@gobletqa/components'
 
 export type TFeatureAction = Omit<TMenuItem, `onCloseMenu`|`closeMenu`|`onClick`|`Icon`> & {
   type: ESectionType,
@@ -25,17 +25,23 @@ export const FeatureAction = (props:TFeatureAction) => {
     children,
   } = props
 
-  // TODO: add tool-tip
   // Clean up buttons to look better without text
   // Remove drop-down menu
 
   return (
-    <SubActionBtn
-      onClick={onClick}
-      variant={variant || 'text'}
-      className={`gr-feature-sub-action-${type}`}
-      startIcon={<Icon />}
-    />
+    <Tooltip
+      loc='bottom'
+      title={text}
+      describeChild
+      enterDelay={500}
+    >
+      <FeatureActionBtn
+        onClick={onClick}
+        startIcon={<Icon />}
+        variant={variant || 'text'}
+        className={`gr-feature-sub-action-${type}`}
+      />
+    </Tooltip>
   )
   
 }

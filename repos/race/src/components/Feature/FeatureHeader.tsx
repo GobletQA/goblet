@@ -1,20 +1,22 @@
 import { useMemo } from 'react'
+import { ESectionType } from '@GBR/types'
 import { FeatureMenu } from './FeatureMenu'
 import { useSettings } from '@GBR/contexts'
 import {
   HeaderText,
+  FeatureHeaderContainer,
   FeatureActionsContainer,
-  FeatureSubActionsContainer,
 } from './Feature.styled'
 import { FeatureItems } from './FeatureItems'
 import { FeatureAction } from './FeatureAction'
+import { FeatureHeaderActions } from './FeatureHeaderActions'
 
 import {
   NotePlusIcon,
   NoteMinusIcon,
 } from '@gobletqa/components'
 
-export type TFeatureActions = {}
+export type TFeatureHeader = {}
 
 const styles = {
   actions: {
@@ -29,7 +31,10 @@ const useMenuItems = () => {
       {
         onClick: () => toggleGeneral(),
         Icon: settings.displayGeneral ? NoteMinusIcon : NotePlusIcon,
-        text: settings.displayGeneral ? `Hide General` : `Show General`
+        text: settings.displayGeneral ? `Hide General` : `Show General`,
+        type: ESectionType.story,
+        featureKey: ESectionType.story,
+        description: ``,
       },
       ...FeatureItems
     ]
@@ -37,25 +42,20 @@ const useMenuItems = () => {
   }, [settings.displayGeneral])
 }
 
-export const FeatureActions = (props:TFeatureActions) => {
+export const FeatureHeader = (props:TFeatureHeader) => {
   const items = useMenuItems()
 
   return (
-    <FeatureActionsContainer className='feature-actions-container' >
+    <FeatureHeaderContainer className='feature-header-container' >
+
       <HeaderText>
         Feature
       </HeaderText>
-      
-      <FeatureSubActionsContainer className='feature-sub-actions-container' >
-        {FeatureItems.map(item => {
-          return (
-            <FeatureAction {...item} />
-          )
-        })}
-      </FeatureSubActionsContainer>
-      
+
+      <FeatureHeaderActions items={items}/>
+
       <FeatureMenu items={items} />
-    </FeatureActionsContainer>
+    </FeatureHeaderContainer>
   )
 
 }
