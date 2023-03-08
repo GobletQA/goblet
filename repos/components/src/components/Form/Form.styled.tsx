@@ -59,15 +59,15 @@ export const TextInput = styled(TextField)(({ theme }) => {
   return `
     width: 100%;
 
-    & .MuiInput-root:hover:before {
+    & .MuiInputBase-root:hover:before, .MuiInput-root:hover:before {
       border-bottom: 1px solid ${colors.purple10} !important;
     }
 
-    & .MuiInput-root:before {
+    & .MuiInputBase-root:before, .MuiInput-root:before {
       border-bottom: 1px solid var(--goblet-input-border);
     }
 
-    & .MuiInput-root.Mui-disabled:before {
+    & .MuiInputBase-root.Mui-disabled:before, .MuiInput-root.Mui-disabled:before {
       border-bottom: 1px solid var(--goblet-input-border);
     }
     

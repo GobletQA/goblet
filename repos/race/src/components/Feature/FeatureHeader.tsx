@@ -5,10 +5,8 @@ import { useSettings } from '@GBR/contexts'
 import {
   HeaderText,
   FeatureHeaderContainer,
-  FeatureActionsContainer,
 } from './Feature.styled'
 import { FeatureItems } from './FeatureItems'
-import { FeatureAction } from './FeatureAction'
 import { FeatureHeaderActions } from './FeatureHeaderActions'
 
 import {
@@ -29,11 +27,12 @@ const useMenuItems = () => {
   return useMemo(() => {
     return [
       {
+        key: ESectionType.story,
+        type: ESectionType.story,
+        featureKey: ESectionType.story,
         onClick: () => toggleGeneral(),
         Icon: settings.displayGeneral ? NoteMinusIcon : NotePlusIcon,
         text: settings.displayGeneral ? `Hide General` : `Show General`,
-        type: ESectionType.story,
-        featureKey: ESectionType.story,
         description: ``,
       },
       ...FeatureItems

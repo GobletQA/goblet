@@ -28,6 +28,7 @@ export type TAutoInput = {
   id?:string
   name: string
   error?:string
+  freeSolo?:boolean
   matchId?: boolean
   className?:string
   loading?: boolean
@@ -102,6 +103,7 @@ const AutoInputComp = (props:TAutoInput) => {
     labelSx,
     multiple,
     required,
+    freeSolo,
     disabled,
     className,
     labelSide,
@@ -144,6 +146,7 @@ const AutoInputComp = (props:TAutoInput) => {
         sx={sx}
         loading={loading}
         options={options}
+        freeSolo={freeSolo}
         disabled={disabled}
         multiple={multiple}
         value={currentValue}

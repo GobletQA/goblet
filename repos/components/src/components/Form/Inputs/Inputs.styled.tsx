@@ -1,3 +1,4 @@
+import { gutter } from '@GBC/theme'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import FormLabel from '@mui/material/FormLabel'
@@ -18,8 +19,8 @@ const sharedInputStyle = `
 
 export const AutoContainer = styled(Box)`
   &.gc-auto-input-container-side {
-    margin-top: 10px;
     position: relative;
+    margin-top: ${gutter.margin.px};
   }
 `
 
@@ -96,15 +97,15 @@ export const AutoTextInput = styled(TextField)(({ theme }) => {
 
       width: 100%;
 
-      & .MuiInput-root:hover:before {
+      & .MuiInputBase-root:hover:before, .MuiInput-root:hover:before {
         border-bottom: 1px solid ${colors.purple10} !important;
       }
 
-      & .MuiInput-root:before {
+      & .MuiInputBase-root:before, .MuiInput-root:before {
         border-bottom: 1px solid var(--goblet-input-border);
       }
 
-      & .MuiInput-root.Mui-disabled:before {
+      & .MuiInputBase-root.Mui-disabled:before, .MuiInput-root.Mui-disabled:before {
         border-bottom: 1px solid var(--goblet-input-border);
       }
       
@@ -152,14 +153,37 @@ export const AutoTextInput = styled(TextField)(({ theme }) => {
 
 // ----- Input Component ---- //
 
-export const InputContainer = styled(Box)`
-  &.gc-input-container-side {
-    width: 100%;
-    display: flex;
-    min-height: 40px;
-    align-items: center;
-  }
-`
+export const InputContainer = styled(Box)(({ theme }) => {
+  const colors = theme?.palette?.colors
+  return `
+
+    &.gc-input-container-side {
+      margin-top: ${gutter.margin.px};
+      width: 100%;
+      display: flex;
+      min-height: 40px;
+      align-items: center;
+
+      & .MuiInputBase-root:hover:before, .MuiInput-root:hover:before {
+        border-bottom: 1px solid ${colors.purple10} !important;
+      }
+
+      & .MuiInputBase-root:before, .MuiInput-root:before {
+        border-bottom: 1px solid var(--goblet-input-border);
+      }
+
+      & .MuiInputBase-root.Mui-disabled:before, .MuiInput-root.Mui-disabled:before {
+        border-bottom: 1px solid var(--goblet-input-border);
+      }
+
+      & .MuiFormHelperText-root {
+        top: 100%;
+        position: absolute;
+      }
+
+    }
+  `
+})
 
 export const InputText = styled(TextField)`
   min-height: 40px;
@@ -190,18 +214,24 @@ export const InputText = styled(TextField)`
       font-size: 14px;
     }
   }
+
+  & .MuiFormHelperText-root {
+    margin-left: ${gutter.margin.qpx};
+    margin-right: ${gutter.margin.qpx};
+  }
+
 `
 
 export const ToggleContainer = styled(Box)`
   display: flex;
   align-items: start;
-  margin-bottom: 10px;
   flex-direction: column;
   justify-content: start;
+  margin-bottom: ${gutter.margin.hpx};
 `
 
 export const ToggleLabel = styled(FormLabel)`
-  margin-bottom: 5px;
+  margin-bottom: ${gutter.margin.qpx};
 `
 
 export const ToggleWrap = styled(Box)`
@@ -210,8 +240,8 @@ export const ToggleWrap = styled(Box)`
 export const ToggleBtn = styled(ToggleButton)`
   height: 40px;
   font-size: 12px;
-  padding: 5px 10px;
   text-transform: none;
+  padding: ${gutter.padding.qpx} ${gutter.padding.hpx};
 `
 export const ToggleGrp = styled(ToggleButtonGroup)``
 
@@ -227,7 +257,7 @@ export const InputLabelShared = styled(MuiInputLabel)`
 export const WrapInputLabel = styled(Box)`
 
   &.gc-label-wrap {
-    margin-bottom: 5px;
+    margin-bottom: ${gutter.margin.qpx};
   }
   
 

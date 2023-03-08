@@ -24,6 +24,7 @@ export const Perspective = (props:TPerspective) => {
     <MetaInputContainer className='gr-feature-perspective gr-meta-input-container' >
 
       <AutoInput
+        freeSolo={true}
         labelSide={true}
         variant='standard'
         onChange={onChange}

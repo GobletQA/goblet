@@ -39,9 +39,26 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 }
 
 export const Container = styled(Paper)`
-  margin-top: ${gutter.margin.px};
+  margin-top: ${gutter.margin.hpx};
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-editor-background);
+
+  & > .gc-dropdown {
+    padding: 20px;
+
+    & > .MuiButtonBase-root.gc-dropdown-header {
+      margin-top: -20px;
+      margin-left: -20px;
+      margin-right: -20px;
+      margin-bottom: -20px;
+      transition: margin-bottom 300ms ease;
+    }
+    
+    & > .MuiButtonBase-root.gc-dropdown-header.Mui-expanded {
+      margin-bottom: 0px;
+    }
+
+  }
 `
 
 export const InputContainer = styled(Box)`

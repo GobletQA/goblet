@@ -1,7 +1,8 @@
 import type { ReactNode, ComponentType, ComponentProps } from 'react'
 
-import { ESectionType, TRaceFeature } from '@GBR/types'
+import { noOp } from '@keg-hub/jsutils'
 import { addRule } from '@GBR/actions/rule/addRule'
+import { ESectionType, TRaceFeature } from '@GBR/types'
 import { addBackground } from '@GBR/actions/background'
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 
@@ -16,11 +17,12 @@ import {
 
 export type TFeatureItem = {
   text:string
+  key:ESectionType
   type:ESectionType
   description?:ReactNode
   Icon: ComponentType<any>
   onClick:(...args:any[]) => any
-  featureKey:keyof TRaceFeature
+  featureKey:keyof TRaceFeature | `steps`
 }
 
 const GreenText = (props:ComponentProps<typeof Span>) => (
@@ -38,6 +40,7 @@ export const ScenarioItem:TFeatureItem = {
   onClick: addScenario,
   Icon: PlaylistPlusIcon,
   featureKey: `scenarios`,
+  key: ESectionType.scenario,
   type: ESectionType.scenario,
   description: (
     <Span>
@@ -54,6 +57,7 @@ export const RuleItem:TFeatureItem = {
   onClick: addRule,
   featureKey: `rules`,
   Icon: TextboxPlusIcon,
+  key: ESectionType.rule,
   type: ESectionType.rule,
   description: (
     <Span>
@@ -67,6 +71,7 @@ export const BackgroundItem:TFeatureItem = {
   onClick:addBackground,
   text: `Add Background`,
   featureKey: `background`,
+  key: ESectionType.background,
   type: ESectionType.background,
   description: (
     <Span>
@@ -75,11 +80,13 @@ export const BackgroundItem:TFeatureItem = {
   )
 }
 
-export const StepItem = {
+export const StepItem:TFeatureItem = {
   text: `Add Step`,
   Icon: StepAddIcon,
   featureKey: `steps`,
+  key: ESectionType.step,
   type: ESectionType.step,
+  onClick: noOp,
   description: (
     <Span>
       <b>Step</b> - a condition to be set, or an action to be performed in order to achieve the desired outcome of a Scenario. Steps are the building blocks of a Scenario and provide a clear, concise description of the behavior being tested.

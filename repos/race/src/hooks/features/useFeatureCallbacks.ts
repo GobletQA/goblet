@@ -51,13 +51,11 @@ const mergeFeatureChanges = async (
     ? feat as TRaceFeature
     : deepMerge<TRaceFeature>(feature, feat)
 
-  const reIndexed = parkin.reIndex(merged, { empty: false, indexes: false })
-
   const indexed:TRaceFeature = {
     uuid: merged.uuid,
     path: merged.path,
     parent: merged.parent,
-    ...reIndexed,
+    ...parkin.reIndex(merged, { empty: false, indexes: false }),
   }
 
   const beforeMdl = await onBeforeFeatureChange?.(indexed, feat, feature)

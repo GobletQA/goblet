@@ -46,7 +46,7 @@ export const VisualEditor = (props:TVisualEditor) => {
             PrePanels={PrePanels}
             rootPrefix={rootPrefix}
             menuContext={menuContext}
-            firstFeatureActive={false}
+            firstFeatureActive={true}
             sidebarStatus={!sidebarLocked}
             sidebarWidth={SidebarOpenWidth}
             onFeatureChange={onFeatureChange}

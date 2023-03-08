@@ -1,10 +1,6 @@
 import type { TFeatureAction } from './FeatureAction'
 
-import {
-  HeaderText,
-  FeatureHeaderContainer,
-  FeatureActionsContainer,
-} from './Feature.styled'
+import { FeatureActionsContainer } from './Feature.styled'
 
 import { FeatureAction } from './FeatureAction'
 
@@ -26,5 +22,4 @@ export const FeatureHeaderActions = (props:TFeatureHeaderActions) => {
       })}
     </FeatureActionsContainer>
   )
-
 }
