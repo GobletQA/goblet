@@ -30,7 +30,6 @@ const useExpressionChange = (props:TExpression) => {
 
   return useInline((evt:ChangeEvent<HTMLInputElement>) => {
     const value = removeQuotes(evt.target.value || ``)
-
     if(value === expression.value) return
 
     const { text, index } = expression
@@ -66,7 +65,7 @@ export const Expression = (props:TExpression) => {
     expression
   } = props
 
-  const onChange = useExpressionChange(props)
+  const onBlur = useExpressionChange(props)
   const Input = ExpressionKindMap[expression.kind || expression.paramType] || ExpInput
 
   return (
@@ -77,8 +76,8 @@ export const Expression = (props:TExpression) => {
       <Input
         step={step}
         parent={parent}
+        onBlur={onBlur}
         expression={expression}
-        onChange={onChange}
         value={expression.value}
         type={expression.paramType}
         placeholder={expression.example}

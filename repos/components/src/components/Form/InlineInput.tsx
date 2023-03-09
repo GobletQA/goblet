@@ -4,7 +4,7 @@ import type { InputProps } from '@mui/material'
 import type { RefObject, CSSProperties } from 'react'
 
 import { cls, uuid } from '@keg-hub/jsutils'
-import { useEdit } from '@GBC/hooks/form/useEdit'
+import { useInputCallbacks } from '@GBC/hooks/form/useInputCallbacks'
 
 import {
   TextInput,
@@ -27,12 +27,14 @@ export type TInlineInput<T> = {
   multiline?:boolean
   placeholder?:string
   helperText?: string
+  onBlur?:TChangeCB
   onChange?:TChangeCB
   size?:`medium`|`small`
   InputProps?:InputProps
   labelSx?:CSSProperties
   inputSx?:CSSProperties
   initialEditing?:boolean
+  changeFromBlur?:boolean
   value?:string|boolean|number
   inputProps?:Record<string, any>
   variant?:`outlined`|`filled`|`standard`
@@ -58,6 +60,7 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
     inputProps,
     InputProps,
     placeholder,
+    changeFromBlur,
     initialEditing,
     id=uuid(),
     size=`small`,
@@ -66,10 +69,13 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
   const {
     error,
     onBlur,
+    onChange,
     inputRef,
     onKeyDown,
-  } = useEdit<HTMLInputElement | HTMLTextAreaElement>({
+  } = useInputCallbacks<HTMLInputElement | HTMLTextAreaElement>({
     required,
+    changeFromBlur,
+    onBlur: props.onBlur,
     value: props.value || ``,
     onChange: props.onChange,
     inputRef: props.inputRef,
@@ -109,6 +115,7 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
               ...inputProps,
               disabled,
               onBlur:onBlur,
+              onChange:onChange,
               onKeyDown: onKeyDown,
             }}
             disabled={disabled}

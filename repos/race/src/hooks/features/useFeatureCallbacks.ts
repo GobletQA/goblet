@@ -1,4 +1,3 @@
-import type { Parkin, TFeatureAst } from '@ltipton/parkin'
 import type {
   TFeatureCB,
   TSetFeature,
@@ -13,10 +12,11 @@ import type {
 } from '@GBR/types'
 
 import { useParkin } from '@GBR/contexts'
-import { deepMerge } from '@keg-hub/jsutils'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { useEventListen, useInline } from '@gobletqa/components'
+import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
+import { mergeFeatureChanges } from '@GBR/utils/features/mergeFeatureChanges'
 
 import {
   AskForFeatureEvt,
@@ -37,39 +37,6 @@ export type THFeatureCallbacks = {
   onFeatureInactive?:TOnFeatureCB
   setFeatureGroups:TSetFeatureGroups
   onBeforeFeatureChange?:TOnReturnFeatureCB
-}
-
-const mergeFeatureChanges = async (
-  parkin:Parkin,
-  feat?:Partial<TRaceFeature>,
-  feature?:TRaceFeature,
-  onBeforeFeatureChange?:TOnReturnFeatureCB,
-  replace?:boolean
-) => {
-
-  const merged = replace
-    ? feat as TRaceFeature
-    : deepMerge<TRaceFeature>(feature, feat)
-
-  const indexed:TRaceFeature = {
-    uuid: merged.uuid,
-    path: merged.path,
-    parent: merged.parent,
-    ...parkin.reIndex(merged, { empty: false, indexes: false }),
-  }
-
-  const beforeMdl = await onBeforeFeatureChange?.(indexed, feat, feature)
-  return beforeMdl || indexed
-}
-
-const isValidUpdate = (feat?:Partial<TRaceFeature>) => {
-  if(!feat?.uuid)
-    return console.error(`Can not update feature. The feature.uuid property is required.`)
-
-  if(feat.uuid === EmptyFeatureUUID)
-    return console.error(`Updated features should NOT have an empty uuid`)
-
-  return true
 }
 
 export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
@@ -97,7 +64,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   const updateFeature = useInline(async (feat?:Partial<TRaceFeature>, replace?:boolean) => {
     if(!isValidUpdate(feat)) return
 
-    const updated = await mergeFeatureChanges(
+    const updated = mergeFeatureChanges(
       parkin,
       feat,
       feature,

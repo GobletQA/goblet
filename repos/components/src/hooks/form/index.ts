@@ -1,1 +1,1 @@
-export * from './useEdit'
+export * from './useInputCallbacks'

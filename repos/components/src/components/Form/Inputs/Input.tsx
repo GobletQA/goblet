@@ -7,7 +7,7 @@ import {
 
 import { InputLabel } from './InputLabel'
 import { cls } from '@keg-hub/jsutils'
-import { useEdit } from '@GBC/hooks/form/useEdit'
+import { useInputCallbacks } from '@GBC/hooks/form/useInputCallbacks'
 
 export type TInput = Omit<ComponentProps<typeof InputText>, `error`> & {
   id?: string
@@ -21,6 +21,7 @@ export type TInput = Omit<ComponentProps<typeof InputText>, `error`> & {
   className?:string
   labelSide?:boolean
   labelInline?:boolean
+  changeFromBlur?:boolean
   inputSx?: CSSProperties
   labelSx?: CSSProperties
   labelWrapSx?: CSSProperties
@@ -53,6 +54,7 @@ export const Input = (props:TInput) => {
     multiline,
     fullWidth=true,
     InputProps,
+    changeFromBlur=true,
     ...rest
   } = props
 
@@ -61,8 +63,9 @@ export const Input = (props:TInput) => {
     inputRef,
     onKeyDown,
     error: inputErr
-  } = useEdit<HTMLInputElement | HTMLTextAreaElement>({
+  } = useInputCallbacks<HTMLInputElement | HTMLTextAreaElement>({
     required,
+    changeFromBlur,
     value: props.value || ``,
     onChange: props.onChange,
   })

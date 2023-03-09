@@ -37,7 +37,7 @@ export const ExpAutoInput = (props:TExpAutoInput) => {
   const {
     step,
     parent,
-    onChange,
+    onBlur,
     expression,
     items=emptyArr,
     ...rest
@@ -50,13 +50,13 @@ export const ExpAutoInput = (props:TExpAutoInput) => {
       {...expressionProps}
       {...rest}
       {...inputProps}
-      onChange={onChange}
+      onBlur={onBlur}
       decor={{
         items,
-        onChange,
         gran: parent,
         parent: step,
         setInputProps,
+        onChange: onBlur,
         active: expression,
         Component: ExpressionMenu,
         type:ESectionType.expression,
