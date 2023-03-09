@@ -5,7 +5,7 @@ import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
 import { gutter } from '@gobletqa/components'
 
-import { EmptyBox, EmptyContainer } from './General.styled'
+import { EmptyBox, EmptyContainer } from './Meta.styled'
 
 
 const styles:Record<string, CSSProperties> = {

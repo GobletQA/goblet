@@ -23,22 +23,22 @@ const styles = {
 }
 
 const useMenuItems = () => {
-  const { settings, toggleGeneral } = useSettings()
+  const { settings, toggleMeta } = useSettings()
   return useMemo(() => {
     return [
       {
         key: ESectionType.story,
         type: ESectionType.story,
         featureKey: ESectionType.story,
-        onClick: () => toggleGeneral(),
-        Icon: settings.displayGeneral ? NoteMinusIcon : NotePlusIcon,
-        text: settings.displayGeneral ? `Hide General` : `Show General`,
+        onClick: () => toggleMeta(),
+        Icon: settings.displayMeta ? NoteMinusIcon : NotePlusIcon,
+        text: settings.displayMeta ? `Hide Meta` : `Show Meta`,
         description: ``,
       },
       ...FeatureItems
     ]
     
-  }, [settings.displayGeneral])
+  }, [settings.displayMeta])
 }
 
 export const FeatureHeader = (props:TFeatureHeader) => {

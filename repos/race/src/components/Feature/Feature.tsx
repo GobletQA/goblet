@@ -4,7 +4,7 @@ import type { TFeaturesRefs } from '@GBR/types'
 
 import { useMemo, useCallback } from 'react'
 
-import { General } from '../Meta'
+import { Meta } from '../Meta'
 import { Rules } from '../Rules'
 import { Stack } from '../Section'
 import Box from '@mui/material/Box'
@@ -87,6 +87,10 @@ export const Feature = (props:TFeature) => {
     return Boolean(!feature?.background && !feature?.rules?.length && !feature?.scenarios?.length)
   }, [feature])
 
+  const onTagsChange = useCallback((...args:any) => {
+    
+  }, [])
+
   return !feature || !feature?.uuid
     ? (
         <EmptyEditor
@@ -113,9 +117,10 @@ export const Feature = (props:TFeature) => {
                 ? (
                     <>
                       <FeatureHeader />
-                      <General
+                      <Meta
                         parent={feature}
                         featuresRef={featuresRef}
+                        onTagsChange={onTagsChange}
                       />
                       {feature.background && (
                         <Background

@@ -18,7 +18,7 @@ export const RaceEditor = (props:TRaceEditorProps) => {
 
   return (
     <SettingsProvider
-      displayGeneral={props.displayGeneral}
+      displayMeta={props.displayMeta}
     >
       <ParkinProvider defs={props.steps} world={props.world} >
         <FeatureProvider initialFeature={initialFeature} >

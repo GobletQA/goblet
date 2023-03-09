@@ -15,12 +15,12 @@ import { useEditorSettings } from '@GBR/hooks/settings/useEditorSettings'
 
 export type TSettingsProvider = {
   children:any
-  displayGeneral?:boolean
+  displayMeta?:boolean
 }
 
 export type TSettingsCtx = {
   settings:TSettingsState
-  toggleGeneral:(toggle?:boolean) => void
+  toggleMeta:(toggle?:boolean) => void
   updateSetting:(settings:TSettingUpdate) => void
   updateSettings:(settings:TSettingUpdate) => void
 }
@@ -37,23 +37,23 @@ export const SettingsProvider = (props:TSettingsProvider) => {
 
   const {
     state,
-    toggleGeneral,
+    toggleMeta,
     updateSetting,
     updateSettings,
   } = useEditorSettings(rest)
 
   const settingsCtx:TSettingsCtx = useMemo(() => {
     return {
-      toggleGeneral,
+      toggleMeta,
       updateSetting,
       updateSettings,
       settings: state,
     }
   }, [
-    toggleGeneral,
+    toggleMeta,
     updateSetting,
     updateSettings,
-    state.displayGeneral
+    state.displayMeta
   ])
 
   return (

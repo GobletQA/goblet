@@ -13,15 +13,15 @@ import { UpdateSettingContextEvt } from '@GBR/constants'
 import { useEventListen, useEventEmit, useInline } from '@gobletqa/components'
 
 export type THEditorSettings = {
-  displayGeneral?:boolean
+  displayMeta?:boolean
 }
 
 
 const SettingActions:Record<string, TActionMethod> = {
-  [ESettingAction.ToggleGeneral]: (state:TSettingsState, action:TSettingAction) => {
+  [ESettingAction.ToggleMeta]: (state:TSettingsState, action:TSettingAction) => {
     const { payload } = action
-    return payload.displayGeneral !== state.displayGeneral
-      ? { ...state, displayGeneral: payload.displayGeneral }
+    return payload.displayMeta !== state.displayMeta
+      ? { ...state, displayMeta: payload.displayMeta }
       : state
   },
   [ESettingAction.Settings]: (state:TSettingsState, action:TSettingAction) => {
@@ -48,17 +48,17 @@ const reducer = (state:THEditorSettings, action:TSettingAction) => {
 
 export const useEditorSettings = (props:THEditorSettings) => {
   const {
-    displayGeneral
+    displayMeta
   } = props
   
-  const [state, dispatch] = useReducer(reducer, { displayGeneral })
+  const [state, dispatch] = useReducer(reducer, { displayMeta })
 
-  const toggleGeneral = useInline((toggle?:boolean) => {
-    const displayGeneral = exists(toggle) ? toggle : !state.displayGeneral
+  const toggleMeta = useInline((toggle?:boolean) => {
+    const displayMeta = exists(toggle) ? toggle : !state.displayMeta
     
     dispatch({
-      type: ESettingAction.ToggleGeneral,
-      payload: { displayGeneral }
+      type: ESettingAction.ToggleMeta,
+      payload: { displayMeta }
     })
   })
   
@@ -84,7 +84,7 @@ export const useEditorSettings = (props:THEditorSettings) => {
   return {
     state,
     dispatch,
-    toggleGeneral,
+    toggleMeta,
     updateSetting,
     updateSettings,
   }

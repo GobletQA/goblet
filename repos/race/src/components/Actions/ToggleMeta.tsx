@@ -10,7 +10,7 @@ import {
   NoteMinusIcon,
 } from '@gobletqa/components'
 
-export type TToggleGeneralAct = {
+export type TToggleMetaAct = {
   style?:CSSProperties
   Icon?:ComponentType<any>
 }
@@ -21,14 +21,14 @@ const defStyles = {
   },
 } as CSSProperties
 
-export const ToggleGeneralAct = (props:TToggleGeneralAct) => {
+export const ToggleMetaAct = (props:TToggleMetaAct) => {
   const { Icon, style } = props
-  const { toggleGeneral } = useSettings()
+  const { toggleMeta } = useSettings()
   const ref = `action-toggle-general`
   
   const btnClk = useInline((evt:MouseEvent) => {
     stopEvent(evt)
-    toggleGeneral()
+    toggleMeta()
   })
 
   const styles = useActionStyles({ style, styles: defStyles })
@@ -39,7 +39,7 @@ export const ToggleGeneralAct = (props:TToggleGeneralAct) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      title={`Hide General`}
+      title={`Hide Meta`}
     >
       <SectionActIcnBtn
         id={ref}

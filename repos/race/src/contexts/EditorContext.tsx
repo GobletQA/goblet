@@ -40,7 +40,7 @@ export type TEditorCtx = {
   rootPrefix:string
   feature:TRaceFeature
   setFeature:TOnFeatureCB
-  displayGeneral?:boolean
+  displayMeta?:boolean
   updateFeature:TOnFeatureCB
   menuContext:TRaceContextMenu
 }

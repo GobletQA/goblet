@@ -1,13 +1,13 @@
 
 
 export type TSettingsState = {
-  displayGeneral?:boolean
+  displayMeta?:boolean
 }
 
 export enum ESettingAction {
   Setting = `Setting`,
   Settings = `Settings`,
-  ToggleGeneral = `ToggleGeneral`,
+  ToggleMeta = `ToggleMeta`,
 }
 
 

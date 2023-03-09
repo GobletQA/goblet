@@ -9,17 +9,17 @@ import { addStory } from '@GBR/actions/story'
 
 import { AddStoryAct } from '../Actions/AddStory'
 import { EmptyFeatureUUID } from '@GBR/constants'
-import { ToggleGeneralAct } from '../Actions/ToggleGeneral'
+import { ToggleMetaAct } from '../Actions/ToggleMeta'
 import { useSettings } from '@GBR/contexts/SettingsContext'
 import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 
-export type TGeneral = {
+export type TMeta = {
   parent:TRaceFeature
   featuresRef: TFeaturesRef
   onTagsChange:(...args:any[]) => void
 }
 
-export const General = (props:TGeneral) => {
+export const Meta = (props:TMeta) => {
   const { settings } = useSettings()
 
   const {
@@ -30,7 +30,7 @@ export const General = (props:TGeneral) => {
   const onEditFeatureTitle = useEditFeatureTitle(props)
 
   // Always show if it's an empty feature without a title
-  if(parent.uuid !== EmptyFeatureUUID && !settings.displayGeneral) return null
+  if(parent.uuid !== EmptyFeatureUUID && !settings.displayMeta) return null
 
   return (
     <Section
@@ -52,7 +52,7 @@ export const General = (props:TGeneral) => {
           />
         ),
         (
-          <ToggleGeneralAct
+          <ToggleMetaAct
             key={`gr-general-toggle-general`}
           />
         )
