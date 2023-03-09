@@ -1,7 +1,7 @@
 import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 
 import { Tags } from '../Tags'
-import { Title } from './Title'
+import { Title } from '../Title'
 import { Story } from '../Story'
 import { Section } from '../Section'
 import { ESectionType } from '@GBR/types'

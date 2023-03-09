@@ -1,7 +1,7 @@
 import type { TBackgroundParentAst } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
-import { EmptyItem } from '../Meta/EmptyItem'
+import { EmptyItem } from '../EmptyItem/EmptyItem'
 import { BackgroundItem } from '../Feature/FeatureItems'
 
 export type TEmptyBackground = {

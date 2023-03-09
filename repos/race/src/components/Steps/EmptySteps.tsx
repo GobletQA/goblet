@@ -1,8 +1,8 @@
 import type { TStepParentAst } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
-import { EmptyItem } from '../Meta/EmptyItem'
 import { StepItem } from '../Feature/FeatureItems'
+import { EmptyItem } from '../EmptyItem/EmptyItem'
 
 
 export type TEmptySteps = {

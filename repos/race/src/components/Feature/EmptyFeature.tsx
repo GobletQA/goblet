@@ -6,8 +6,7 @@ import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
 import { FeatureItems } from './FeatureItems'
 import { isArr, exists } from '@keg-hub/jsutils'
-import { Tooltip, gutter, colors, Text, If } from '@gobletqa/components'
-
+import { Tooltip, gutter, Text, If } from '@gobletqa/components'
 
 import {
   EmptyList,
@@ -49,7 +48,7 @@ export const EmptyFeature = (props:TEmptyFeature) => {
       <EmptyList>
 
         {FeatureItems.map(({ description, ...item}) => {
-          const section = parent[item.featureKey]
+          const section = parent[item.featureKey as keyof TRaceFeature]
 
           return exists(section) && (!isArr(section) || section.length)
             ? null
