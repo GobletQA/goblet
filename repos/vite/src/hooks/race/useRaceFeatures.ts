@@ -1,19 +1,19 @@
-import type { TFeaturesState } from '@types'
+import type { TFeatureFileModelList } from '@types'
 import type { TRaceFeature, TRaceFeatures } from '@gobletqa/race'
 
 import { useMemo } from 'react'
 import { useRepo } from '@store'
-import { ensureArr, noOpObj } from '@keg-hub/jsutils'
+import { ensureArr, emptyObj, isEmptyColl } from '@keg-hub/jsutils'
 import { rmFeaturePrefix } from '@utils/features/rmFeaturePrefix'
 
-export const useRaceFeatures = (features:TFeaturesState) => {
+export const useRaceFeatures = (files:TFeatureFileModelList) => {
   const repo = useRepo()
 
   return useMemo(() => {
 
-    return !features?.files
-      ? noOpObj
-      : Object.entries(features?.files)
+    return isEmptyColl<TFeatureFileModelList>(files)
+      ? emptyObj
+      : Object.entries(files as TFeatureFileModelList)
         .reduce((models, [key, fileModel]) => {
 
           ensureArr<TRaceFeature>(fileModel?.ast)
@@ -32,5 +32,5 @@ export const useRaceFeatures = (features:TFeaturesState) => {
 
           return models
         }, {} as TRaceFeatures)
-  }, [features?.files, repo])
+  }, [files, repo])
 }

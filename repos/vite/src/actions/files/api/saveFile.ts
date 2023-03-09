@@ -7,11 +7,11 @@ import { filesApi } from '@services/filesApi'
 
 /**
  * Save the content to the given file. if no filePath passed in. it will save it on the currently active file
- * @param {Object} fileToSave - fileModel to be saved on the backend
  *
- * @returns {Object} - {success, fileModel}
  */
-export const saveFile = async (fileToSave:TFileModel = noOpObj as TFileModel) => {
+export const saveFile = async (
+  fileToSave:TFileModel = noOpObj as TFileModel
+) => {
   const { location, content, fileType } = fileToSave
 
   if (!content || !location)

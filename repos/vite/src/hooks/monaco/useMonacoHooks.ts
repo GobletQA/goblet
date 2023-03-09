@@ -1,6 +1,7 @@
 import type { MutableRefObject } from 'react'
 import type { TEditorRefHandle } from '@gobletqa/monaco'
 import type {
+  TFileTree,
   TDefinitionAst,
   TSideNavToggleProps,
   TEditorSettingValues,
@@ -9,12 +10,12 @@ import type {
 import { useMemo } from 'react'
 import { ESideNav } from '@types'
 import { useFiles, useRepo } from '@store'
-import { exists, set } from '@keg-hub/jsutils'
 import { useDecorations } from './useDecorations'
 import { useMonacoConfig } from './useMonacoConfig'
 import { confirmModal } from '@actions/modals/modals'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { toggleModal } from '@actions/modals/toggleModal'
+import { exists, set, emptyObj } from '@keg-hub/jsutils'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { isCustomDef } from '@utils/definitions/isCustomDef'
@@ -25,13 +26,11 @@ import {
   useEventListen,
 } from '@gobletqa/components'
 
-
 import {
   UpdateModalEvt,
   ToggleSideNavEvt,
   OpenEditorFileEvt,
 } from '@constants'
-
 
 import {
   useOnAddFile,
@@ -42,6 +41,9 @@ import {
   useOnDeleteFile,
   useOnPathChange,
 } from '../files'
+
+
+const emptyFileTree = emptyObj as TFileTree
 
 const modalActions = {
   close: () => toggleModal(false),
@@ -57,6 +59,7 @@ export const useMonacoHooks = (
 
   const repo = useRepo()
   const repoFiles = useFiles()
+  const files = repoFiles?.files || emptyFileTree 
 
   const rootPrefix = useMemo(
     () => getRootPrefix(repo),
@@ -69,18 +72,12 @@ export const useMonacoHooks = (
     rootPrefix,
   })
 
-  const onLoadFile = useOnLoadFile({
-    repo,
-    repoFiles,
-    rootPrefix,
-    ...editorFiles
-  })
-
-  const onSaveFile = useOnSaveFile(repoFiles, rootPrefix)
-  const onPathChange = useOnPathChange(repoFiles, rootPrefix)
-  const onDeleteFile = useOnDeleteFile(repoFiles, rootPrefix)
-  const onAddFile = useOnAddFile(repoFiles, rootPrefix, repo)
-  const onRenameFile = useOnRenameFile(repoFiles, rootPrefix)
+  const onLoadFile = useOnLoadFile(files, rootPrefix)
+  const onSaveFile = useOnSaveFile(files, rootPrefix)
+  const onPathChange = useOnPathChange(files, rootPrefix)
+  const onDeleteFile = useOnDeleteFile(files, rootPrefix)
+  const onAddFile = useOnAddFile(files, rootPrefix, repo)
+  const onRenameFile = useOnRenameFile(files, rootPrefix)
   const onBeforeAddFile = useEventEmit<TSideNavToggleProps>(
     ToggleSideNavEvt,
     { open: true, name: ESideNav.Files }

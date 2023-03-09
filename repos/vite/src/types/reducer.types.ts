@@ -6,7 +6,6 @@ import { TReposState } from '@reducers/repos'
 import { TModalState } from '@reducers/modal'
 import { TSettingsState } from '@reducers/settings'
 import { TTerminalState } from '@reducers/terminal'
-import { TFeaturesState } from '@reducers/features'
 import { TContainerState } from '@reducers/container'
 import { TDefinitionsState } from '@reducers/definitions'
 import { TUserState, TUser, TUserEmptyState } from '@reducers/user'
@@ -15,7 +14,6 @@ export type {
   TAppState,
   TContainerState,
   TDefinitionsState,
-  TFeaturesState,
   TFilesState,
   TModalState,
   TRepoState,
@@ -31,7 +29,6 @@ export type TCombinedState = {
   app: TAppState
   container: TContainerState
   definitions: TDefinitionsState
-  features: TFeaturesState
   files: TFilesState
   modal: TModalState
   repo: TRepoState

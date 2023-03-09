@@ -1,4 +1,5 @@
 import type {
+  TFileTree,
   TRepoState,
   TFilesState,
 } from '@types'
@@ -7,7 +8,7 @@ import { useCallback } from 'react'
 import { addRootToLoc } from '@utils/repo/addRootToLoc'
 import { createFile } from '@actions/files/api/createFile'
 
-export const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string, repo:TRepoState) => {
+export const useOnAddFile = (files:TFileTree, rootPrefix:string, repo:TRepoState) => {
   return useCallback(async (loc:string, isFolder?:boolean) => {
     if(!loc) console.warn(`Can not add file, missing file location`)
     
@@ -20,5 +21,5 @@ export const useOnAddFile = (repoFiles:TFilesState, rootPrefix:string, repo:TRep
     const fullLoc = addRootToLoc(loc, rootPrefix)
 
     await createFile(fileType, fullLoc, isFolder)
-  }, [repoFiles, rootPrefix, repo.fileTypes])
+  }, [files, rootPrefix, repo.fileTypes])
 }

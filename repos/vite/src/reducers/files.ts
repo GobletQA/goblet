@@ -96,6 +96,15 @@ export const filesActions = {
       files: action?.payload,
     }
   },
+  addFiles: (
+    state:TFilesState,
+    action:TDspAction<TFileTree>
+  ) => {
+    return {
+      ...state,
+      files: {...state.files, ...action?.payload}
+    }
+  },
   upsertFiles: (
     state:TFilesState,
     action:TDspAction<TFileTree>

@@ -1,4 +1,5 @@
 import { TFileModel } from './models.types'
+import { TFeatureFileModel } from './features.types'
 
 export type TGFileType = {
   ext: string
@@ -10,7 +11,7 @@ export type TGFileTypes = {
   [key:string]: TGFileType
 }
 
-export type TFileTree = Record<string, TFileModel|null>
+export type TFileTree = Record<string, TFileModel|TFeatureFileModel|null>
 
 export type TFileType = {
   ext: string

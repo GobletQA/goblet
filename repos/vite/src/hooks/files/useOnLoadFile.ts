@@ -1,31 +1,23 @@
-import type { THEditorFiles } from '@types'
+import type { TFileTree } from '@types'
 
 import { useCallback } from 'react'
 import { loadFile } from '@actions/files/api/loadFile'
 import { addRootToLoc } from '@utils/repo/addRootToLoc'
 
-export type THOnLoadFile = THEditorFiles & {
-  rootPrefix:string
-  files: Record<string, string|null>
-}
-
-export const useOnLoadFile = ({
-  rootPrefix,
-  repoFiles,
-}:THOnLoadFile) => {
+export const useOnLoadFile = (files:TFileTree, rootPrefix:string) => {
 
   return useCallback(async (path:string) => {
     const full = addRootToLoc(path, rootPrefix)
-    const existing = repoFiles?.files?.[full]?.content
+    const existing = files?.[full]?.content
     if(existing) return existing
 
-    // The loadFile action will also update repoFiles.files
+    // The loadFile action will also update files
     // So we don't need to worry about it here
     const loaded = await loadFile(full)
 
     return loaded ? loaded?.content : null
   }, [
     rootPrefix,
-    repoFiles
+    files
   ])
 }

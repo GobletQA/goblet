@@ -1,7 +1,6 @@
 import { repoDispatch } from '@store'
 import { localStorage } from '@services/localStorage'
 import { clearFileTree } from '@actions/files/local/clearFileTree'
-import { clearFeatures } from '@actions/features/local/clearFeatures'
 import { clearActiveFile } from '@actions/files/local/clearActiveFile'
 import { clearDefinitions } from '@actions/definitions/local/clearDefinitions'
 
@@ -23,8 +22,7 @@ const tryAction = (action:TActionFunc, name:string, ...args:any[]) => {
  */
 export const removeRepo = async () => {
 
-  tryAction(repoDispatch.clearRepo, 'repoDispatch.clearRepo')
-  tryAction(clearFeatures, `clearFeatures`)
+  tryAction(repoDispatch.clearRepo, `repoDispatch.clearRepo`)
   tryAction(clearDefinitions, `clearDefinitions`)
   tryAction(clearFileTree, `clearFileTree`)
   tryAction(clearActiveFile, `clearActiveFile`)

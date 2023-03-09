@@ -9,7 +9,6 @@ import { modalState, modalActions } from './modal'
 import { reposState, reposActions } from './repos'
 import { filesState, filesActions } from './files'
 import { settingsState, settingsActions } from './settings'
-import { featuresState, featuresActions } from './features'
 import { terminalState, terminalActions } from './terminal'
 import { containerState, containerActions } from './container'
 import { definitionsState, definitionsActions } from './definitions'
@@ -18,7 +17,6 @@ export const preloadedState = {
   app: appState,
   container: containerState,
   definitions: definitionsState,
-  features: featuresState,
   files: filesState,
   modal: modalState,
   repo: repoState,
@@ -31,7 +29,6 @@ export const reducer = combineReducers<TState>({
   app: createReducer(appState, appActions),
   container: createReducer(containerState, containerActions),
   definitions: createReducer(definitionsState, definitionsActions),
-  features: createReducer(featuresState, featuresActions),
   files: createReducer(filesState, filesActions),
   modal: createReducer(modalState, modalActions),
   repo: createReducer(repoState, repoActions),

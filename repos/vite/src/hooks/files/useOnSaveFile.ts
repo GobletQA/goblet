@@ -1,11 +1,19 @@
-import type { TFileModel, TFilesState } from '@types'
+import type { TFileTree, TFileModel } from '@types'
 
 import { useCallback } from 'react'
+import { emptyObj } from '@keg-hub/jsutils'
 import { saveFile } from '@actions/files/api/saveFile'
 import { addRootToLoc } from '@utils/repo/addRootToLoc'
 
-export const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
-  return useCallback(async (loc:string, content:string|null) => {
+export const useOnSaveFile = (
+  files:TFileTree,
+  rootPrefix:string
+) => {
+  return useCallback(async (
+    loc:string,
+    content:string|null,
+    ext:Partial<TFileModel>= emptyObj as Partial<TFileModel>
+  ) => {
     if(content === null)
       return console.warn(`Can not save file with null content`)
 
@@ -13,12 +21,16 @@ export const useOnSaveFile = (repoFiles:TFilesState, rootPrefix:string) => {
       return console.warn(`Can not save file, missing file location`)
 
     const fullLoc = addRootToLoc(loc, rootPrefix)
-    const fileModel = repoFiles?.files[fullLoc]
+    const fileModel = files[fullLoc]
 
     if(!fileModel)
       return console.warn(`Can not save file. Missing file model at ${fullLoc}`)
 
-    await saveFile({ ...(fileModel as TFileModel), content })
+    await saveFile({
+      ...(fileModel as TFileModel),
+      ...ext,
+      content
+    })
 
-  }, [repoFiles?.files, rootPrefix])
+  }, [files, rootPrefix])
 }

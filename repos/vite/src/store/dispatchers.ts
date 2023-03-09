@@ -14,7 +14,6 @@ import { definitionsActions } from '@reducers/definitions'
 export const appDispatch = createDispatcher(appActions)
 export const containerDispatch = createDispatcher(containerActions)
 export const defsDispatch = createDispatcher(definitionsActions)
-export const featuresDispatch = createDispatcher(featuresActions)
 export const filesDispatch = createDispatcher(filesActions)
 export const modalDispatch = createDispatcher(modalActions)
 export const repoDispatch = createDispatcher(repoActions)
