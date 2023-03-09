@@ -46,6 +46,11 @@ const createModel = (path:string, content:string | null) => {
 }
 
 export const createOrUpdateModel = (path: string, content: string|null) => {
+  // Only create models of files, not directories
+  if(path.startsWith(`/`) && path.endsWith(`/`)) return
+
   const model = getModelFromPath(path)
-  model ? updateModel(model, content) : createModel(path, content)
+  model
+    ? updateModel(model, content)
+    : createModel(path, content)
 }

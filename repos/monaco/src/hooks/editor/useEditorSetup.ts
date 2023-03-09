@@ -18,7 +18,6 @@ import type {
 
 import { THEMES } from '@GBM/constants'
 import { isStr } from '@keg-hub/jsutils'
-import { useDecorations } from './useDecorations'
 import { useCallback, useEffect, useImperativeHandle } from 'react'
 import { getContentFromPath } from '@GBM/utils/editor/getContentFromPath'
 import { createOrUpdateModel } from '@GBM/utils/editor/createOrUpdateModel'
@@ -135,7 +134,8 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
   useEffect(() => {
     Object.keys(filesRef.current).forEach(key => {
       const content = filesRef.current[key]
-      typeof content === 'string' || content === null
+
+      ;(typeof content === 'string' || content === null)
         && createOrUpdateModel(key, content)
     })
 

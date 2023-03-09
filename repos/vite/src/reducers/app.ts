@@ -9,7 +9,7 @@ export type TAppState = {
 
 const editor = getQueryData()?.editor
   || EEditorType.visual
-  || EEditorType.code 
+  || EEditorType.code
 
 export const appState = {
   editor,

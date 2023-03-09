@@ -64,8 +64,7 @@ export const useFileCallbacks = (props:THFileCallbacks) => {
 
   const filePathChange = useCallback(
     (e:SyntheticEvent<HTMLDivElement>) => {
-      const key = e.currentTarget.dataset.src!
-      onPathChange?.(key)
+      onPathChange?.(e.currentTarget.dataset.src!)
     },
     [onPathChange]
   )
