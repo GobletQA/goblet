@@ -41,7 +41,7 @@ import {
   useOnRenameFile,
   useOnDeleteFile,
   useOnPathChange,
-} from './useFileHooks'
+} from '../files'
 
 const modalActions = {
   close: () => toggleModal(false),

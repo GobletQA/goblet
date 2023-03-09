@@ -24,10 +24,9 @@ import { removeScenario } from '@GBR/actions/scenario/removeScenario'
 import { updateScenario } from '@GBR/actions/scenario/updateScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
 import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
-import { updateScenarioStep } from '@gobletqa/race/actions/scenario/updateScenarioStep'
 import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
+import { updateScenarioStep } from '@gobletqa/race/actions/scenario/updateScenarioStep'
 
-import { addBackground } from '@GBR/actions/background/addBackground'
 import { removeBackground } from '@GBR/actions/background/removeBackground'
 import { updateBackground } from '@GBR/actions/background/updateBackground'
 import { addBackgroundStep } from '@GBR/actions/background/addBackgroundStep'
@@ -88,7 +87,7 @@ export const Feature = (props:TFeature) => {
   }, [feature])
 
   const onTagsChange = useCallback((...args:any) => {
-    
+
   }, [])
 
   return !feature || !feature?.uuid
