@@ -2,7 +2,7 @@ import type { TScenarioParentAst } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
 import { PlaylistPlusIcon } from '@gobletqa/components'
-import { EmptyItem } from '../General/EmptyItem'
+import { EmptyItem } from '../Meta/EmptyItem'
 
 export type TEmptyScenarios = {
   parentType:ESectionType

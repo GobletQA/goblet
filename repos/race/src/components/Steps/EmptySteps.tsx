@@ -1,7 +1,7 @@
 import type { TStepParentAst } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
-import { EmptyItem } from '../General/EmptyItem'
+import { EmptyItem } from '../Meta/EmptyItem'
 import { StepItem } from '../Feature/FeatureItems'
 
 

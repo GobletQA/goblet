@@ -10,11 +10,12 @@ export type TTags = {
   type:ESectionType
   parent:TTagsParentAst
   featuresRef:TFeaturesRef
+  onChange?:(...args:any[]) => void
 }
 
 export const Tags = (props:TTags) => {
   
-  const { parent, type } = props
+  const { parent, type, onChange } = props
   const { tags } = parent
   const options = useFeatureTags(props)
 
@@ -24,6 +25,7 @@ export const Tags = (props:TTags) => {
         multiple={true}
         labelSide={true}
         variant='standard'
+        onChange={onChange}
         id={`${parent.uuid}-tags`}
         currentValue={tags || [``]}
         name='feature-tags-auto-input'

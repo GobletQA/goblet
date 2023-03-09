@@ -4,11 +4,11 @@ import type { TFeaturesRefs } from '@GBR/types'
 
 import { useMemo, useCallback } from 'react'
 
-import { General } from '../General'
+import { General } from '../Meta'
 import { Rules } from '../Rules'
 import { Stack } from '../Section'
 import Box from '@mui/material/Box'
-import { Title } from '../General/Title'
+import { Title } from '../Meta/Title'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'

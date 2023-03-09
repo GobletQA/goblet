@@ -13,12 +13,13 @@ import { ToggleGeneralAct } from '../Actions/ToggleGeneral'
 import { useSettings } from '@GBR/contexts/SettingsContext'
 import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 
-export type TFeatureGeneral = {
+export type TGeneral = {
   parent:TRaceFeature
   featuresRef: TFeaturesRef
+  onTagsChange:(...args:any[]) => void
 }
 
-export const General = (props:TFeatureGeneral) => {
+export const General = (props:TGeneral) => {
   const { settings } = useSettings()
 
   const {
