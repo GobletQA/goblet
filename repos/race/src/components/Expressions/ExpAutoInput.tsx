@@ -6,8 +6,8 @@ import type { TExpPart, TStepParentAst } from '@GBR/types'
 import { useState } from 'react'
 import { ESectionType } from '@GBR/types'
 import { emptyArr } from '@keg-hub/jsutils'
-import { ExpressionMenu } from './ExpressionMenu'
 import { AutoInput } from '@gobletqa/components'
+import { ExpressionMenu } from './ExpressionMenu'
 import { sharedAutoInputStyles, sharedLabelProps } from '../Shared'
 
 const expressionProps = {
@@ -43,23 +43,23 @@ export const ExpAutoInput = (props:TExpAutoInput) => {
     ...rest
   } = props
 
-  const [inputProps, setInputProps] = useState<Partial<ComponentProps<typeof AutoInput>>>({})
+  const [decorInputProps, setDecorInputProps] = useState<Partial<ComponentProps<typeof AutoInput>>>({})
 
   return (
     <AutoInput
       {...expressionProps}
       {...rest}
-      {...inputProps}
+      {...decorInputProps}
       onBlur={onBlur}
       decor={{
         items,
         gran: parent,
         parent: step,
-        setInputProps,
         onChange: onBlur,
         active: expression,
         Component: ExpressionMenu,
         type:ESectionType.expression,
+        setInputProps:setDecorInputProps,
         context: ESectionType.expression,
       }}
     />

@@ -10,7 +10,7 @@ import { useCallback } from 'react'
 
 import { InputLabel } from './InputLabel'
 import { useInline } from '@GBC/hooks/useInline'
-import { noOpObj, isStr, cls } from '@keg-hub/jsutils'
+import { emptyObj, isStr, cls } from '@keg-hub/jsutils'
 import CircularProgress from '@mui/material/CircularProgress'
 import {
   Checkbox,
@@ -117,7 +117,7 @@ const AutoInputComp = (props:TAutoInput) => {
     textFieldProps,
     autocompleteProps,
     currentValue=value,
-    decor=noOpObj as TInputDecor,
+    decor=emptyObj as TInputDecor,
     ...rest
   } = props
 

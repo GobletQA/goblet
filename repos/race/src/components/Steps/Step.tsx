@@ -82,7 +82,7 @@ export const Step = (props:TStep) => {
           ),
         ].filter(Boolean)}
       >
-        <StepContent>
+        <StepContent className='gr-step-content' >
           <StepGrid
             container
             spacing={1}

@@ -14,12 +14,11 @@ export const StepContent = styled(CardContent)`
   flex: 1 0 auto;
   align-items: center;
   justify-content: center;
-  padding: ${gutter.padding.px};
-  padding-top: ${gutter.padding.hpx};
-  padding-bottom: ${gutter.padding.qpx};
+  padding: 0px;
+  padding-top: ${gutter.padding.px};
 
   &:last-child {
-    padding-bottom: ${gutter.padding.qpx};
+    padding-bottom: 0px;
   }
 `
 
@@ -30,10 +29,18 @@ export const StepHeaderText = styled(Span)`
   color: var(--goblet-editor-foreground);
 `
 
-
 export const StepGrid = styled(Grid)``
 export const StepGridItem = styled(Grid)``
 
+export const ActionInfoText = styled(Span)`
+  width: 100%;
+  font-size: 12px;
+  padding-top: 2px;
+  white-space: nowrap;
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+`
 
 export const EmptyItem = styled(Box)`
   display: flex;

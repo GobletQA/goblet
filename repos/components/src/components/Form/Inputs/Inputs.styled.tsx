@@ -77,6 +77,10 @@ export const Auto = styled(Autocomplete)`
       padding-top: 0px;
       padding-bottom: 0px;
 
+      &.MuiInputBase-adornedStart {
+        padding-left: 5px;
+      }
+
       & input {
         height: 40px;
         padding-top: 0px !important;
@@ -199,6 +203,10 @@ export const InputText = styled(TextField)`
     min-height: 40px;
     padding-top: 0px;
     padding-bottom: 0px;
+    
+    &.MuiInputBase-adornedStart {
+      padding-left: 5px;
+    }
 
     & input {
       height: 40px;

@@ -5,8 +5,9 @@ import {
   InputContainer,
 } from './Inputs.styled'
 
+import { Decor } from './Decor'
 import { InputLabel } from './InputLabel'
-import { cls } from '@keg-hub/jsutils'
+import { cls, emptyObj } from '@keg-hub/jsutils'
 import { useInputCallbacks } from '@GBC/hooks/form/useInputCallbacks'
 
 export type TInput = Omit<ComponentProps<typeof InputText>, `error`> & {
@@ -35,7 +36,6 @@ export const Input = (props:TInput) => {
     id,
     error,
     value,
-    decor,
     matchId,
     required,
     disabled,
@@ -55,6 +55,7 @@ export const Input = (props:TInput) => {
     fullWidth=true,
     InputProps,
     changeFromBlur=true,
+    decor=emptyObj as TInputDecor,
     ...rest
   } = props
 
@@ -69,6 +70,9 @@ export const Input = (props:TInput) => {
     value: props.value || ``,
     onChange: props.onChange,
   })
+
+  const { Component:DecorComponent, decorPos=`start` } = decor
+  const decorKey = decorPos === `end` ? `endAdornment` : `startAdornment`
 
   return (
     <InputContainer
@@ -96,7 +100,17 @@ export const Input = (props:TInput) => {
         color={color as any}
         fullWidth={fullWidth}
         multiline={multiline}
-        InputProps={InputProps}
+        InputProps={{
+          ...InputProps,
+          ...(DecorComponent && {
+            [decorKey]: (
+              <Decor
+                {...decor}
+                Component={DecorComponent}
+              />
+            )
+          }),
+        }}
         defaultValue={props.value || ``}
         className={cls(`gc-input`, className)}
         error={Boolean(error?.length || inputErr)}

@@ -1,6 +1,7 @@
+// @ts-nocheck
 import type { ComponentType, ReactNode } from 'react'
-import { isValidFuncComp } from '@GBC/utils/components/isValidFuncComp'
-import { exists } from '@keg-hub/jsutils'
+import { isValidFuncComp, isForwardRefComp } from '@GBC/utils/components/isValidFuncComp'
+import { exists, isObj, emptyObj } from '@keg-hub/jsutils'
 
 export type TIf = {
   if?:any
@@ -21,7 +22,12 @@ export const If = ({
   Comp=children||check,
   props
 }:TIf) => {
-  return check
-    && (isValidFuncComp(Comp) ? (<Comp {...props} />) : Comp)
-    || null
+
+  return !check
+    ? null
+    : !isValidFuncComp(Comp)
+      ? Comp
+      : isForwardRefComp(Comp) && Comp?.type?.render
+        ? Comp?.type?.render?.(props || emptyObj, props?.ref)
+        : (<Comp {...props} />)
 }

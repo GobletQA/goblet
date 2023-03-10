@@ -1,9 +1,7 @@
 import type { TStepAst, TStepDef } from '@ltipton/parkin'
 import type { TExpPart, TStepParentAst } from '@GBR/types'
 
-import { useMemo } from 'react'
 import { Expression } from './Expression'
-
 
 export type TExpressions = {
   def:TStepDef
@@ -11,14 +9,6 @@ export type TExpressions = {
   parent:TStepParentAst
   expressions:TExpPart[]
   onChange:(step:TStepAst) => void
-}
-
-const useInputWidth = (expressions:TExpPart[]) => {
-  return useMemo(() => {
-    const width = 9 / expressions.length
-
-    return width > 6 ? 6 : width
-  }, [expressions.length])
 }
 
 export const Expressions = (props:TExpressions) => {
@@ -30,8 +20,6 @@ export const Expressions = (props:TExpressions) => {
     expressions
   } = props
 
-  const width = useInputWidth(expressions)
-
   return (
     <>
       {
@@ -40,7 +28,6 @@ export const Expressions = (props:TExpressions) => {
             <Expression
               def={def}
               step={step}
-              width={width}
               parent={parent}
               expression={exp}
               onChange={onChange}

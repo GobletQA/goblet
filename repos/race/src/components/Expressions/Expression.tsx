@@ -5,14 +5,13 @@ import { ChangeEvent } from 'react'
 
 import { ExpInput } from './ExpInput'
 import { capitalize } from '@keg-hub/jsutils'
-import { ExpGridItem } from './Expression.styled'
-import { useInline } from '@gobletqa/components'
+import { useInline, Tooltip } from '@gobletqa/components'
 import { ExpressionKindMap } from './ExpressionKindMap'
 import { removeQuotes } from '@GBR/utils/helpers/removeQuotes'
+import { ExpGridItem, ExpressionInfoText } from './Expression.styled'
 
 export type TExpression = {
   def:TStepDef
-  width:number
   step: TStepAst
   expression:TExpPart
   parent:TStepParentAst
@@ -57,10 +56,24 @@ const useExpressionChange = (props:TExpression) => {
   })
 }
 
+const ExpressionInfo = (props:TExpression) => {
+  return (
+    <Tooltip
+      loc='bottom'
+      describeChild
+      enterDelay={500}
+      title={props.expression.description}
+    >
+      <ExpressionInfoText>
+        {props.expression.description}
+      </ExpressionInfoText>
+    </Tooltip>
+  )
+}
+
 export const Expression = (props:TExpression) => {
   const {
     step,
-    width,
     parent,
     expression
   } = props
@@ -69,10 +82,7 @@ export const Expression = (props:TExpression) => {
   const Input = ExpressionKindMap[expression.kind || expression.paramType] || ExpInput
 
   return (
-    <ExpGridItem
-      xs={12}
-      sm={width}
-    >
+    <ExpGridItem xs={12} sm >
       <Input
         step={step}
         parent={parent}
@@ -81,7 +91,7 @@ export const Expression = (props:TExpression) => {
         value={expression.value}
         type={expression.paramType}
         placeholder={expression.example}
-        helperText={expression.description}
+        helperText={<ExpressionInfo {...props} />}
         label={capitalize(expression.kind || expression.paramType)}
       />
     </ExpGridItem>

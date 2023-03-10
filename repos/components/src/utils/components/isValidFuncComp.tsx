@@ -13,6 +13,13 @@ export const isValidFuncComp = (Component:any): Component is ElementType<any> =>
     || (isObj(Component) && (`type` in Component) && (`render` in Component.type) && (`$$typeof` in Component.type))
 }
 
+/**
+ * Validates if the passed in Component is wrapped in React.forwardRef
+ */
+export const isForwardRefComp = (Component:any) => {
+  return Component?.$$typeof?.toString?.() === `Symbol(react.element)`
+}
+
 
 /**
  * Validates if the passed in Component is a render-able react function or class component

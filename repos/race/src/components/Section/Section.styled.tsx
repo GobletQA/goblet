@@ -118,19 +118,18 @@ export const Dropdown = styled(DropdownComp)`
     }
 
   }
-  
+
   & .MuiAccordionSummary-content {
     margin-top: 0px;
     margin-bottom: 0px;
   }
-  
-  & .MuiAccordionDetails-root {
-    // padding-bottom: ${gutter.padding.hpx};
-  }
 
   & .MuiCollapse-root {
     padding-left: ${gutter.padding.hpx};
-    // padding-right: ${gutter.padding.hpx};
+  }
+
+  & .gr-section-dropdown-step .MuiCollapse-root {
+    padding-left: 0px;
   }
 
 `

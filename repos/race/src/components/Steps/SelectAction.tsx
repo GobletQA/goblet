@@ -10,7 +10,8 @@ import { useStepOptions } from '@gobletqa/race/hooks/useStepOptions'
 
 import { sharedAutoInputStyles, sharedLabelProps } from '../Shared'
 import {
-  StepGridItem
+  StepGridItem,
+  ActionInfoText
 } from './Steps.styled'
 
 export type TSelectAction = {
@@ -18,6 +19,10 @@ export type TSelectAction = {
   definition?:TStepDef
   parent:TStepParentAst
   onChange:(step:TStepAst) => void
+}
+
+export type TActionInfo = {
+  definition?:TStepDef
 }
 
 const actSelectProps = {
@@ -54,22 +59,39 @@ const RenderOption = (
   )
 }
 
-export const SelectAction = (props:TSelectAction) => {
+const ActionInfo = (props:TActionInfo) => {
   const { definition } = props
+
+  return (
+    <Tooltip 
+      loc='bottom'
+      describeChild
+      enterDelay={500}
+      title={definition?.meta?.info}
+    >
+      <ActionInfoText>
+        {definition?.meta?.info}
+      </ActionInfoText>
+    </Tooltip>
+  )
+}
+
+const autocompleteProps = { renderOption: RenderOption }
+
+export const SelectAction = (props:TSelectAction) => {
   const { options, active } = useStepOptions(props)
   const onChange = useOnStepAction(props)
 
   return (
-    <StepGridItem xs={12} sm={3} >
+    <StepGridItem xs={12} sm >
       <AutoInput
         {...actSelectProps}
+        value={active}
         options={options}
         onChange={onChange}
-        autocompleteProps={{
-          renderOption: RenderOption
-        }}
-        value={active}
+        autocompleteProps={autocompleteProps}
         className='gr-step-action-select-dropdown'
+        helperText={<ActionInfo definition={props?.definition} />}
       />
     </StepGridItem>
   )
