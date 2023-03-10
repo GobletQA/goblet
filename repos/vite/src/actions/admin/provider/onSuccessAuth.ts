@@ -10,7 +10,7 @@ import type {
 
 import { EContainerState } from '@types'
 import { GitUser } from '@services/gitUser'
-import { pickKeys } from '@keg-hub/jsutils'
+import { pickKeys, omitKeys } from '@keg-hub/jsutils'
 import { isAllowedUser } from './isAllowedUser'
 import { apiRequest } from '@utils/api/apiRequest'
 import { signOutAuthUser } from './signOutAuthUser'
@@ -49,10 +49,10 @@ const formatUser = (data:TAuthData):TFormattedUser => {
   const photoUrl = fineUserAvatarUrl(data)
 
   return {
+    email,
     id: uid,
     photoUrl,
     displayName,
-    email: email,
     username: username,
     token: accessToken,
     provider: providerId,
@@ -113,8 +113,8 @@ export const onSuccessAuth = async (authData:TAuthData) => {
     const {status, user, jwt} = validateResp(data)
     await localStorage.setJwt(jwt)
 
-    // TODO: remove user token, pull it from encrypted JWT when needed
-    await localStorage.setUser(userData)
+    // Remove user token when saving to local storage
+    await localStorage.setUser(omitKeys(userData, [`token`]))
     new GitUser(user as TUserState)
     
     status?.meta?.state === EContainerState.CREATING && waitForRunning()

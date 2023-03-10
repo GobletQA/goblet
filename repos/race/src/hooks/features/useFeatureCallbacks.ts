@@ -10,9 +10,9 @@ import type {
   TSetFeatureGroups,
 } from '@GBR/types'
 
-import { ParkinWorker } from '@GBR/workers/parkinWorker'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
-import { useEventListen, useInline } from '@gobletqa/components'
+import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
+import { useEventListen, useInline, useEffectOnce } from '@gobletqa/components'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 
@@ -64,9 +64,6 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
       feature,
       replace,
     )
-    
-    console.log(`------- updated -------`)
-    console.log(updated)
 
     onFeatureChange?.(updated, feat, feature)
 

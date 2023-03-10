@@ -1,3 +1,4 @@
+import type { TWorldConfig } from '@ltipton/parkin'
 import type { TWFGobletConfig, TGitOpts } from '@gobletqa/workflows/types'
 import type {
   TRepoOpts,
@@ -166,7 +167,7 @@ export class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  world:Record<string, any>
+  world:TWorldConfig
 
   /**
    * Paths object for the repo

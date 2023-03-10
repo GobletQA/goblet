@@ -4,14 +4,14 @@ import type {
 } from '@ltipton/parkin'
 
 
+// @ts-ignore
+import { deepMerge, iife } from '@keg-hub/jsutils'
 import { Parkin } from '@ltipton/parkin'
-import { deepMerge } from '@keg-hub/jsutils'
+import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { useEffectOnce, MemoChildren, useInline } from '@gobletqa/components'
 import {
-  useRef,
   useMemo,
   useState,
-  useEffect,
   useContext,
   createContext,
 } from 'react'
@@ -36,18 +36,24 @@ export const ParkinProvider = (props:TParkinProvider) => {
   const { children, defs } = props
 
   const [parkin, setParkin] = useState<Parkin>(
-    new Parkin(props.world || {} as TWorldConfig,
-    defs
+    new Parkin(
+      props.world || {} as TWorldConfig,
+      defs
   ) as Parkin)
-  const [world, setWorld] = useState<TWorldConfig>(parkin.world)
+  const [world, setWorld] = useState<TWorldConfig>(parkin?.world)
 
   const updateWorld = useInline<TUpdateWorld>((updated:TWorldConfig, replace:boolean) => {
-    parkin.world = replace ? updated : deepMerge(parkin.world, updated)
-    setWorld(parkin.world)
+    parkin.world = replace ? updated : deepMerge(parkin?.world, updated)
+    setWorld(parkin?.world)
   })
 
   useEffectOnce(() => {
+    iife(async () => {
+      await ParkinWorker.init(parkin.world, defs)
+    })
+
     return () => {
+      ParkinWorker.clearSteps()
       parkin?.steps?.clear?.()
       setParkin(undefined as any)
     }
@@ -58,8 +64,8 @@ export const ParkinProvider = (props:TParkinProvider) => {
     parkin,
     updateWorld
   }), [
-    parkin,
     world,
+    parkin,
     updateWorld
   ])
 
