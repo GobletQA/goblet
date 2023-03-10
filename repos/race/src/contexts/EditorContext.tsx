@@ -29,11 +29,10 @@ export type TEditorProvider = {
   onFeatureClose:TOnFeatureCB
   onFeatureChange:TOnFeatureCB
   onFeatureActive:TOnFeatureCB
-  menuContext:TRaceContextMenu
+  menuContext?:TRaceContextMenu
   onFeatureInactive:TOnFeatureCB
   setFeatureRefs:TSetFeatureRefs
   setFeatureGroups:TSetFeatureGroups
-  onBeforeFeatureChange:TOnReturnFeatureCB
 }
 
 export type TEditorCtx = {
@@ -42,7 +41,7 @@ export type TEditorCtx = {
   setFeature:TOnFeatureCB
   displayMeta?:boolean
   updateFeature:TOnFeatureCB
-  menuContext:TRaceContextMenu
+  menuContext?:TRaceContextMenu
 }
 
 export const EditorContext = createContext<TEditorCtx>({} as TEditorCtx)
@@ -68,7 +67,6 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureActive,
     setFeatureGroups,
     onFeatureInactive,
-    onBeforeFeatureChange,
   } = props
 
   const {
@@ -90,7 +88,6 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureChange,
     setFeatureGroups,
     onFeatureInactive,
-    onBeforeFeatureChange,
     setFeature:_setFeature,
   })
 

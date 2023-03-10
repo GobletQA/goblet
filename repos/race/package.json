@@ -22,6 +22,7 @@
     "@mui/icons-material": "*",
     "@mui/lab": "*",
     "@mui/material": "*",
+    "comlink": "4.4.1",
     "react-selecto": "*"
   },
   "devDependencies": {
@@ -35,6 +36,7 @@
     "react-dom": "18.2.0",
     "serve": "*",
     "vite": "*",
+    "vite-plugin-comlink": "3.0.5",
     "vite-plugin-svgr": "*",
     "vite-plugin-svgr-component": "*",
     "vite-tsconfig-paths": "*"

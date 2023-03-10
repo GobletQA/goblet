@@ -30,7 +30,6 @@ export const Editor = (props:TRaceEditorProps) => {
     setFeatureGroups,
     onFeatureActive,
     onFeatureInactive,
-    onBeforeFeatureChange,
   } = useRaceEditor(props)
 
   return (
@@ -45,7 +44,6 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureActive={onFeatureActive}
       setFeatureGroups={setFeatureGroups}
       onFeatureInactive={onFeatureInactive}
-      onBeforeFeatureChange={onBeforeFeatureChange}
     >
       <Container
         stepDefsRef={stepDefsRef}

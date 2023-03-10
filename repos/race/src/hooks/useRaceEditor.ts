@@ -36,7 +36,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   const onFeatureChange = useInline(props.onFeatureChange || noOp)
   const onFeatureActive = useInline(props.onFeatureActive || noOp)
   const onFeatureInactive = useInline(props.onFeatureInactive || noOp)
-  const onBeforeFeatureChange = useInline(props.onBeforeFeatureChange || noOp as TOnReturnFeatureCB)
 
   const editorRef = useRef<TRaceEditor>(null)
   const curValueRef = useRef<string>(initialFeature?.content || ``)
@@ -81,7 +80,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     onFeatureActive,
     setFeatureGroups,
     onFeatureInactive,
-    onBeforeFeatureChange,
   }
 
 }

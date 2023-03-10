@@ -48,7 +48,6 @@ export type TRaceEditorProps = TSettingsState & TEditorContainer & {
   onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
   onFeatureInactive?:TOnFeatureCB
-  onBeforeFeatureChange?:TOnReturnFeatureCB
 }
 
 export type TEditorContainer = TFeaturesRefs & TEditorRefs & {

@@ -2,6 +2,7 @@ import 'esbuild-register'
 import path from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { comlink } from 'vite-plugin-comlink'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { svgrComponent } from 'vite-plugin-svgr-component'
 
@@ -37,6 +38,7 @@ export default defineConfig(async () => {
       logOverride: { 'this-is-undefined-in-esm': 'silent' }
     },
     plugins: [
+      comlink(),
       react(),
       tsconfigPaths(),
       svgrComponent({
@@ -47,7 +49,12 @@ export default defineConfig(async () => {
           dimensions: false
         }
       }),
-    ]
+    ],
+    worker: {
+      plugins: [
+        comlink()
+      ]
+    }
   }
 
 })

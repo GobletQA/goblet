@@ -12,7 +12,9 @@ export const useMatchStepToDef = (props:THMatchStepToDef) => {
   const { parkin } = useParkin()
 
   return useMemo(() => {
-    const { definition } = parkin.matcher.find(step.step)
+    if(!parkin)  return { step }
+    
+    const { definition } = parkin?.matcher.find(step.step)
     return {
       definition,
       step: {
@@ -21,6 +23,7 @@ export const useMatchStepToDef = (props:THMatchStepToDef) => {
       },
     }
   }, [
+    parkin,
     step.step,
     step.definition,
   ])

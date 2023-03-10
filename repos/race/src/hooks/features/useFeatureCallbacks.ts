@@ -8,15 +8,13 @@ import type {
   TAskForFeature,
   TSetFeatureRefs,
   TSetFeatureGroups,
-  TOnReturnFeatureCB,
 } from '@GBR/types'
 
-import { useParkin } from '@GBR/contexts'
+import { ParkinWorker } from '@GBR/workers/parkinWorker'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { useEventListen, useInline } from '@gobletqa/components'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
-import { mergeFeatureChanges } from '@GBR/utils/features/mergeFeatureChanges'
 
 import {
   AskForFeatureEvt,
@@ -36,7 +34,6 @@ export type THFeatureCallbacks = {
   setFeatureRefs:TSetFeatureRefs
   onFeatureInactive?:TOnFeatureCB
   setFeatureGroups:TSetFeatureGroups
-  onBeforeFeatureChange?:TOnReturnFeatureCB
 }
 
 export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
@@ -49,10 +46,8 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     setFeatureRefs,
     onFeatureChange,
     onFeatureInactive,
-    onBeforeFeatureChange
   } = props
 
-  const { parkin } = useParkin()
   const _setFeature = useInline((feat?:TRaceFeature) => {
     // If a different feature is being set,
     // then call inactive callback on previous feature
@@ -64,13 +59,15 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   const updateFeature = useInline(async (feat?:Partial<TRaceFeature>, replace?:boolean) => {
     if(!isValidUpdate(feat)) return
 
-    const updated = mergeFeatureChanges(
-      parkin,
+    const updated = await ParkinWorker.updateFeature(
       feat,
       feature,
-      onBeforeFeatureChange,
       replace,
     )
+    
+    console.log(`------- updated -------`)
+    console.log(updated)
+
     onFeatureChange?.(updated, feat, feature)
 
     featuresRef.current[updated.uuid] = updated

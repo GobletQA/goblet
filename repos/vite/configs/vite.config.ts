@@ -2,6 +2,7 @@ import 'esbuild-register'
 import path from 'path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { comlink } from 'vite-plugin-comlink'
 import { loadConfig } from './frontend.config'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { svgrComponent } from 'vite-plugin-svgr-component'
@@ -35,6 +36,7 @@ export default defineConfig(async () => {
       alias: aliases,
     },
     plugins: [
+      comlink(),
       // @ts-ignore
       monacoEditorPlugin.default({
         globalAPI: true,
@@ -51,7 +53,12 @@ export default defineConfig(async () => {
           dimensions: false
         }
       }),
-    ]
+    ],
+    worker: {
+      plugins: [
+        comlink()
+      ]
+    }
   }
 
 })

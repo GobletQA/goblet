@@ -8,7 +8,6 @@ import { useMemo } from 'react'
 import { emptyArr, emptyObj } from '@keg-hub/jsutils'
 import { useParkin } from '@GBR/contexts/ParkinContext'
 import { useStepDefs }  from '@GBR/contexts/StepDefsContext'
-
 import { stepTokens } from '@GBR/utils/steps/stepTokens'
 import { mapStepTokens } from '@GBR/utils/steps/mapStepTokens'
 import { expressionParts } from '@GBR/utils/steps/expressionParts'
@@ -54,6 +53,7 @@ export const useExpressions = (props:THStepSubjects, ext?:TExpOpts) => {
   const { step } = props
   const { defs } = useStepDefs()
   const { parkin } = useParkin()
+  if(!parkin) return emptyObj as ExpResp
   
   const defId = step?.definition || ext?.definition?.uuid
   const def = (defId && defs[defId]) as TStepDef

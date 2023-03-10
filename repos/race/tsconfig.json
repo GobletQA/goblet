@@ -41,11 +41,19 @@
       "@GBR/types/*": [ "src/types/*" ],
       "@GBR/utils": [ "src/utils" ],
       "@GBR/utils/*": [ "src/utils/*" ],
+      "@GBR/workers": [ "src/workers" ],
+      "@GBR/workers/*": [ "src/workers/*" ],
       "@gobletqa/components": ["../components/src"],
       "@gobletqa/components/*": ["../components/src/*"],
       "@gobletqa/shared": [ "../shared/src" ],
       "@gobletqa/shared/*": [ "../shared/src/*" ],
-      "GobletRoot": ["../../"]
+      "GobletRoot": ["../../"],
+      "@ltipton/parkin": [
+        "../../../../../keg-hub/taps/parkin/src"
+      ],
+      "@ltipton/parkin/*": [
+        "../../../../../keg-hub/taps/parkin/src/*"
+      ]
     }
   },
   "include": ["src", "../components/src/hooks/useEvent.ts"],
