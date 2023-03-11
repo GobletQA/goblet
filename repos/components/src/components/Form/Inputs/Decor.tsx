@@ -30,7 +30,7 @@ export const Decor = (props:TInputDecor) => {
     >
       {
         DecorComp
-          ? (<DecorComp {...decorProps} children={children} />)
+          ? (<DecorComp {...decorProps} active={active} children={children} />)
           : children || null
       }
     </InputAdornment>

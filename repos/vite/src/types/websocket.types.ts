@@ -8,4 +8,5 @@ export type TSelectFromBrowserRespEvent = {
   target: string,
   elementTag: string,
   elementHtml: string
+  elementText: string
 }

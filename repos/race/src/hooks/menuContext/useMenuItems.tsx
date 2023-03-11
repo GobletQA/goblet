@@ -13,16 +13,18 @@ export type THMenuItems = TMenuContextRef & {
   items: TMenuItem<TRaceMenuItemClickCtx>[]
 }
 
-export const useMenuItems = ({
-  type,
-  gran,
-  items,
-  parent,
-  active,
-  context,
-  onChange,
-  setInputProps,
-}:THMenuItems) => {
+export const useMenuItems = (props:THMenuItems) => {
+  const {
+    type,
+    gran,
+    items,
+    parent,
+    active,
+    context,
+    onChange,
+    setInputProps,
+  } = props
+
 
   const { defs, setDefs } = useStepDefs()
   const onChangeInline = useInline(onChange)

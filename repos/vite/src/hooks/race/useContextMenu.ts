@@ -17,7 +17,11 @@ export const useContextMenu = () => {
           Icon: CursorClickIcon,
           text: `From Browser`,
           onClick: async (ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement>) => {
-            const { setInputProps, onChange } = ctx
+            const {
+              active,
+              onChange,
+              setInputProps,
+            } = ctx
 
             setInputProps({
               disabled: true,
@@ -25,10 +29,14 @@ export const useContextMenu = () => {
               helperText: `Select an element from the browser`
             })
 
-            const data = await selectElement()
+            const data = await selectElement({
+              selectorType: active.kind
+            })
+
+            const value = active.kind === `text` ? data.elementText : data.target
             setInputProps({})
 
-            onChange?.({target: { value: data.target }})
+            onChange?.({target: { value }})
           },
         },
         {

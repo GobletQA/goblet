@@ -27,7 +27,7 @@ const meta = {
   expressions: [
     {
       type: ExpressionTypes.string,
-      kind: ExpressionKinds.selector,
+      kind: ExpressionKinds.text,
       description: `The text content of an element that should be clicked that exists on the page`,
       example: "Submit Form",
     },

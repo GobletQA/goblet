@@ -17,7 +17,6 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
  * Which allows the user to select an element from the dom
  * Add listener the fires when the user clicks the dom
  *
- * @returns {void}
  */
 export const selectElement = (options:Record<string, any> = noOpObj) => {
 

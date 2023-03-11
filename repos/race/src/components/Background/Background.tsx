@@ -82,7 +82,7 @@ export const Background = (props:TBackground) => {
       id={`${parent.uuid}-background-${background?.uuid || ''}`}
       label={(
         <SectionHeader
-          content={sectionTitle}
+          content={' '}
           type={ESectionType.background}
         />
       )}

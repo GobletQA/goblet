@@ -13,7 +13,7 @@ import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { EmptyScenarios, Scenarios } from '../Scenarios'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 
-import { PlaylistPlusIcon } from '@gobletqa/components'
+import { PlaylistPlusIcon, CardPlusIcon } from '@gobletqa/components'
 import { removeRule } from '@GBR/actions/rule/removeRule'
 import { addRuleScenario } from '@GBR/actions/rule/addRuleScenario'
 
@@ -117,6 +117,14 @@ export const Rule = (props:TRule) => {
             onClick={toggleEditTitle}
             type={ESectionType.rule}
             key={`gr-rule-edit-title-action`}
+          />
+        ),
+        (
+          <AddAct
+            Icon={CardPlusIcon}
+            type={ESectionType.background}
+            key={`gr-rule-add-background-action`}
+            onClick={() => addRuleBackground(rule.uuid)}
           />
         ),
         (

@@ -55,14 +55,20 @@ const addListener = (styles) => {
 }
 
 
-const elementSelectEvent = (e) => {
+const elementSelectEvent = (options, e) => {
+
 
   e.stopPropagation()
   e.preventDefault()
   
+  options = options || {}
+
+  // TODO: use selector type to choose between selecting text or an css selector
+  const selectorType = options.selectorType
+
   const event = {
     type: e.type,
-    target: window.__gobletFindCssSelector(e.target),
+    target: window.__gobletFindCssSelector(e.target, options),
   }
 
   if(exists(e.target.value)) event.value = e.target.value
@@ -78,9 +84,8 @@ const elementSelectEvent = (e) => {
     event.selectedText = e.target[event.selectedIndex].text
   }
 
-  console.log(e.target.outerHTML)
-
   if(exists(e.target.outerHTML)) event.elementHtml = e.target.outerHTML
+  if(exists(e.target.innerText)) event.elementText = e.target.innerText
 
   window.onGobletSelectAction(event)
 }
@@ -90,9 +95,11 @@ const initElementHover = async () => {
   console.log(`------- Start initElementHover -------`)
   
   let removeListener
+  let onSelectElement
 
-  window.__gobletElementSelectOn = async () => {
-    console.log(`------- __gobletElementSelectOn -------`)
+  window.__gobletElementSelectOn = async (options={}) => {
+
+    onSelectElement = elementSelectEvent.bind(window, options)
 
     if(removeListener) removeListener()
 
@@ -101,13 +108,13 @@ const initElementHover = async () => {
 
     if(highlightEl && highlightEl.style) highlightEl.style.display = ``
 
-    window.addEventListener(`click`, elementSelectEvent)
+    window.addEventListener(`click`, onSelectElement)
   }
 
   window.__gobletElementSelectOff = () => {
     console.log(`------- __gobletElementSelectOff -------`)
     highlightEl.style.display = `none`
-    window.removeEventListener(`click`, elementSelectEvent)
+    window.removeEventListener(`click`, onSelectElement)
 
     if(removeListener) removeListener()
     removeListener = undefined

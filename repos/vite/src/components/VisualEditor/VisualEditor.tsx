@@ -14,8 +14,6 @@ import {
   SidebarOpenWidth,
 } from '@gobletqa/components'
 
-import { selectElement } from '@actions/socket/api/selectElement'
-
 export type TVisualEditor = {
   portal?:string
   style?: CSSProperties

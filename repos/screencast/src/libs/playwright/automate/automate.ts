@@ -37,6 +37,10 @@ export type TElSelectEvent = {
   elementInnerHtml?:string
 }
 
+type TSelectElementOpts = {
+  selectorType?: string
+}
+
 
 export class Automate {
 
@@ -100,7 +104,10 @@ export class Automate {
     )
   }
 
-  static turnOnElementSelect = async (pwComponents:Partial<TPWComponents>) => {
+  static turnOnElementSelect = async (
+    pwComponents:Partial<TPWComponents>,
+    options?:TSelectElementOpts
+  ) => {
     Logger.info(`Automate - Turning on browser element select`)
 
     const parent = Automate.getParent(pwComponents)
@@ -110,7 +117,7 @@ export class Automate {
     if(!automate)
       throw new Error(`Could not find goblet automate instance on parent object`)
 
-    await automate?.selectPageElementOn?.(page)
+    await automate?.selectPageElementOn?.(page, options)
   }
 
   static turnOffElementSelect = async (pwComponents:Partial<TPWComponents>) => {
@@ -239,11 +246,14 @@ export class Automate {
     await page.evaluate(() => window.__gobletElementSelectOff())
   }
 
-  selectPageElementOn = async (page?:TBrowserPage) => {
+  selectPageElementOn = async (
+    page?:TBrowserPage,
+    options?:TSelectElementOpts
+  ) => {
     page = page || Automate.getPage(this)
 
     // @ts-ignore
-    await page.evaluate(() => window.__gobletElementSelectOn())
+    await page.evaluate((options) => window.__gobletElementSelectOn(options), options)
   }
 
   /**

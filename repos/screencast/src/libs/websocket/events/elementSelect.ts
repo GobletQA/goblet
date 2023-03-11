@@ -19,7 +19,7 @@ const handleSelectElement = async (
 
   const browserConf = joinBrowserConf({ addAutomate: true }, app)
   const pwComponents = await startBrowser(browserConf)
-  await Automate.turnOnElementSelect(pwComponents)
+  await Automate.turnOnElementSelect(pwComponents, data)
 
   // Manager.emit(socket, WS_PW_URL_CHANGE, {data: { url }, group: socket.id })
   // TODO: Add listener to send the selected element back to the FE via websocket
