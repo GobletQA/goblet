@@ -4,6 +4,7 @@ import type { TRepoValueCB, TRepoInputError, TBuiltRepo, TBuiltRepos } from '@ty
 import { SyncRepos } from './SyncRepos'
 import { RepoSelect } from './RepoSelect'
 import { RepoCreate } from './RepoCreate'
+import { gutter } from '@gobletqa/components'
 import Grid from '@mui/material/Unstable_Grid2'
 
 export type TRepoProps = Partial<typeof repoProps> & {
@@ -30,7 +31,7 @@ const styles = {
   sync: { paddingTop: `3px` },
   name: { paddingTop: `0px` },
   description: { paddingTop: `0px` },
-  container: { alignItems: `center` },
+  container: { alignItems: `center`, paddingBottom: gutter.padding.px },
 }
 
 export const RepoConnect = (props:TRepoProps) => {
@@ -50,10 +51,14 @@ export const RepoConnect = (props:TRepoProps) => {
       xs={12}
       container
       sx={styles.container}
-      className='gb-grid-repo-select'
+      className='gb-grid-repo-select-container'
     >
 
-      <Grid className='gb-grid-repo-select' xs={9} md={11} >
+      <Grid
+        xs={9}
+        md={11}
+        className='gb-grid-repo-select'
+      >
         <RepoSelect
           repo={repo}
           repos={repos}

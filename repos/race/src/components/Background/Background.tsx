@@ -133,7 +133,7 @@ export const Background = (props:TBackground) => {
           sx={styles.title}
           value={sectionTitle}
           label={`Description`}
-          onChange={onEditTitle}
+          onBlur={onEditTitle}
           uuid={background.uuid}
           type={ESectionType.background}
         />

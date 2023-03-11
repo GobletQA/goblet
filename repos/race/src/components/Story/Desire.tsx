@@ -1,4 +1,5 @@
 import type { TMeta } from './Story'
+import type { ChangeEvent } from 'react'
 
 import { ESectionType, EMetaType } from '@GBR/types'
 import { capitalize } from '@keg-hub/jsutils'
@@ -14,16 +15,16 @@ export const Desire = (props:TDesire) => {
   const { parent } = props
   const { desire } = parent
 
-  const onChange = useInline((evt, value) => {
+  const onBlur = useInline((evt:ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
     stopEvent(evt)
-    updateProperty(`desire`, value, parent)
+    updateProperty(`desire`, evt.target.value, parent)
   })
 
   return (
     <MetaInputContainer className='gr-feature-desire gr-meta-input-container' >
       <InlineInput
+        onBlur={onBlur}
         multiline={true}
-        onChange={onChange}
         value={desire?.content}
         placeholder='I want to ...'
         id={`${parent.uuid}-desire`}

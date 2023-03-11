@@ -25,16 +25,17 @@ export type TInlineInput<T> = {
   required?:boolean
   fullWidth?:boolean
   multiline?:boolean
+  autoFocus?:boolean
   placeholder?:string
   helperText?: string
   onBlur?:TChangeCB
   onChange?:TChangeCB
+  onFocus?:TChangeCB
+  onKeyDown?:TChangeCB
   size?:`medium`|`small`
   InputProps?:InputProps
   labelSx?:CSSProperties
   inputSx?:CSSProperties
-  initialEditing?:boolean
-  changeFromBlur?:boolean
   value?:string|boolean|number
   inputProps?:Record<string, any>
   variant?:`outlined`|`filled`|`standard`
@@ -53,6 +54,7 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
     labelSx,
     disabled,
     required,
+    autoFocus,
     className,
     fullWidth,
     multiline,
@@ -60,8 +62,6 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
     inputProps,
     InputProps,
     placeholder,
-    changeFromBlur,
-    initialEditing,
     id=uuid(),
     size=`small`,
   } = props
@@ -69,17 +69,19 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
   const {
     error,
     onBlur,
+    onFocus,
     onChange,
     inputRef,
     onKeyDown,
-  } = useInputCallbacks<HTMLInputElement | HTMLTextAreaElement>({
+  } = useInputCallbacks({
     required,
-    changeFromBlur,
+    autoFocus,
     onBlur: props.onBlur,
+    onFocus: props.onFocus,
     value: props.value || ``,
     onChange: props.onChange,
     inputRef: props.inputRef,
-    initialEditing: initialEditing,
+    onKeyDown: props.onKeyDown,
   })
 
   return (
@@ -115,6 +117,7 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
               ...inputProps,
               disabled,
               onBlur:onBlur,
+              onFocus:onFocus,
               onChange:onChange,
               onKeyDown: onKeyDown,
             }}

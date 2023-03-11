@@ -1,6 +1,13 @@
 
-import type { ReactNode, ComponentProps, CSSProperties } from 'react'
+import type {
+  ReactNode,
+  ComponentProps,
+  CSSProperties,
+  ForwardedRef,
+  MutableRefObject
+} from 'react'
 
+import { forwardRef } from 'react'
 import { ESectionType } from '@GBR/types'
 import { exists, cls } from '@keg-hub/jsutils'
 import { StackContainer, StackContent, StackBody } from './Section.styled'
@@ -16,6 +23,7 @@ export type TStack = {
   bodySx?:CSSProperties
   stackSx?:CSSProperties
   stackProps?:ComponentProps<typeof StackContent>
+  contentRef?:MutableRefObject<HTMLElement|undefined>
 }
 
 const styles = {
@@ -31,7 +39,7 @@ const styles = {
   }
 }
 
-export const Stack = (props:TStack) => {
+export const Stack = forwardRef((props:TStack, ref:ForwardedRef<HTMLElement|undefined>) => {
 
   const {
     sx,
@@ -43,11 +51,13 @@ export const Stack = (props:TStack) => {
     stackSx,
     children,
     className,
+    contentRef,
     stackProps,
   } = props
 
   return (
     <StackContainer
+      ref={ref}
       className={cls('gr-section-stack', className)}
       sx={[styles?.section, sx] as CSSProperties[]}
     >
@@ -55,6 +65,7 @@ export const Stack = (props:TStack) => {
         body
           ? (
               <StackBody
+                ref={contentRef}
                 gutter={gutter}
                 className='gr-stack-body'
                 sx={[styles?.body, bodySx] as CSSProperties[]}
@@ -65,6 +76,7 @@ export const Stack = (props:TStack) => {
           : exists(stack) || stackProps
             ? (
                 <StackContent
+                  ref={contentRef}
                   spacing={stack}
                   {...stackProps}
                   gutter={gutter}
@@ -77,4 +89,4 @@ export const Stack = (props:TStack) => {
       }
     </StackContainer>
   )
-}
+})

@@ -131,7 +131,7 @@ export const Scenario = (props:TScenario) => {
       <EditTitle
         sx={styles.title}
         uuid={scenario.uuid}
-        onChange={onEditTitle}
+        onBlur={onEditTitle}
         type={ESectionType.scenario}
         label={`Description`}
         value={scenario.scenario.replace(`${EGherkinKeys.scenario}:`, ``)}

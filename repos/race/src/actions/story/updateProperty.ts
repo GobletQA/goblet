@@ -1,13 +1,13 @@
 import type { TRaceFeature } from '@GBR/types'
-import { omitKeys } from '@keg-hub/jsutils'
+import { omitKeys, isArr } from '@keg-hub/jsutils'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-import { blockFactory } from '@GBR/factories/blockFactory'
+import { blockFactory, blocksFactory } from '@GBR/factories/blockFactory'
 
 export const updateProperty = async (
   type: `desire`|`perspective`|`reason`,
-  content:string|null,
+  content:string|string[]|null,
   parent?:TRaceFeature
 ) => {
   const feature = await getFeature(parent)
@@ -17,6 +17,8 @@ export const updateProperty = async (
     ? updateFeature(omitKeys(feature, [type]))
     : updateFeature({
         ...feature,
-        [type]: blockFactory({ block: { ...feature[type], content }})
+        [type]: isArr<string[]>(content)
+          ? blocksFactory({ blocks: content.map(line => ({ content: line })) })
+          : blockFactory({ block: { ...feature[type], content }})
       })
 }

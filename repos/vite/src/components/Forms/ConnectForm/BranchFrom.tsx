@@ -33,6 +33,7 @@ const parentProps = {
 
 const childProps = {
   required: true,
+  autoFocus: true,
   name: `child-branch`,
   label: `Child Branch`,
   placeholder: `Enter a branch name;  exp: my-new-branch`,
@@ -52,8 +53,17 @@ export const BranchFrom = (props:TBranchFrom) => {
     ...rest
   } = props
 
+  const inputRef = useRef<HTMLInputElement>()
+
   const onInputBlur = useCallback((evt:FocusEvent<HTMLInputElement>) => {
     const value = evt.target.value as string
+    
+    if(!value?.trim?.()){
+      onInputError?.(`newBranch`, `A branch name is required!`)
+      inputRef?.current?.focus?.()
+      return
+    }
+    
     newBranch !== value && onChangeNewBranch?.(value)
   }, [newBranch])
 
@@ -61,11 +71,7 @@ export const BranchFrom = (props:TBranchFrom) => {
     inputError.newBranch
       && onInputError?.(`newBranch`, undefined)
 
-    evt.keyCode === 13
-      && inputRef.current?.blur?.()
   }, [inputError.newBranch, newBranch])
-
-  const inputRef = useRef<HTMLInputElement>()
 
   useEffect(() => {
     inputRef.current
@@ -103,13 +109,11 @@ export const BranchFrom = (props:TBranchFrom) => {
         <Input
           {...childProps}
           labelSide={false}
-          defaultValue={newBranch}
-          inputProps={{
-            onBlur: onInputBlur,
-            onKeyDown: onKeyDown
-          }}
           disabled={!branch}
           inputRef={inputRef}
+          onBlur={onInputBlur}
+          onKeyDown={onKeyDown}
+          defaultValue={newBranch}
           error={inputError.newBranch}
           className='branch-child-input'
         />

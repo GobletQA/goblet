@@ -1,4 +1,5 @@
 import type { TMeta } from './Story'
+import type { ChangeEvent } from 'react'
 
 import { capitalize } from '@keg-hub/jsutils'
 import { PerspectiveOpts } from '@GBR/constants'
@@ -15,19 +16,19 @@ export const Perspective = (props:TPerspective) => {
   const { parent } = props
   const { perspective } = parent
 
-  const onChange = useInline((evt, value) => {
+  const onBlur = useInline((evt:ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
     stopEvent(evt)
-    updateProperty(`perspective`, value, parent)
+    updateProperty(`perspective`, evt?.target?.value, parent)
   })
 
   return (
     <MetaInputContainer className='gr-feature-perspective gr-meta-input-container' >
 
       <AutoInput
+        onBlur={onBlur}
         freeSolo={true}
         labelSide={true}
         variant='standard'
-        onChange={onChange}
         options={PerspectiveOpts}
         placeholder='As a user ...'
         id={`${parent.uuid}-perspective`}

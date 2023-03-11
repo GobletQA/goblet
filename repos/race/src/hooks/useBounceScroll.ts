@@ -1,15 +1,19 @@
+import type { MutableRefObject } from 'react'
+
 export type THBounceScroll = {
   damping?:number
   maxOffset?:number
-  content:HTMLElement
-  container:HTMLElement
+  content?:HTMLElement
+  container?:HTMLElement
+  contentRef:MutableRefObject<HTMLElement|undefined>
+  containerRef:MutableRefObject<HTMLElement|undefined>
 }
 
 // wheel delta normalizing
 // copied from smooth-scrollbar/src/utils/get-delta.js
 const DELTA_SCALE:Record<string, number> = {
-    STANDARD: 1,
-    OTHERS: -3,
+  STANDARD: 1,
+  OTHERS: -3,
 }
 
 const DELTA_MODE = [1.0, 28.0, 500.0]
@@ -62,11 +66,17 @@ export const useBounceScroll = (props:THBounceScroll) => {
   // const content = document.querySelector('.content') as HTMLElement
 
   const {
-    content,
-    container,
-    damping = 0.8,
-    maxOffset = 100
+    contentRef,
+    containerRef,
+    damping = 0.5,
+    maxOffset = 40
   } = props
+
+  if(!contentRef.current) return null
+  if(!containerRef.current) return null
+
+  const content = contentRef.current
+  const container = containerRef.current
 
   // states
   let offset = 0
@@ -76,36 +86,29 @@ export const useBounceScroll = (props:THBounceScroll) => {
   let timer:NodeJS.Timeout
 
   const resetFlag = () => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        backFlag = false
-      }, 30)
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      backFlag = false
+    }, 30)
   }
 
   const render = () => {
-      if (!offset && !rendered) {
-        lastDis = 0
+    if (!offset && !rendered) {
+      lastDis = 0
+      return requestAnimationFrame(render)
+    }
 
-        return requestAnimationFrame(render)
-      }
+    const dis = offset - rendered
+    if (lastDis * dis < 0) backFlag = true
 
-      const dis = offset - rendered
+    lastDis = dis
+    // throw away float part
+    const next = offset - (dis * damping | 0)
+    content.style.transform = `translate3d(0, ${-next}px, 0)`
+    rendered = next
+    offset = offset * damping | 0
 
-      if (lastDis * dis < 0) {
-        backFlag = true
-      }
-
-      lastDis = dis
-
-      // throw away float part
-      const next = offset - (dis * damping | 0)
-
-      content.style.transform = `translate3d(0, ${-next}px, 0)`
-
-      rendered = next
-      offset = offset * damping | 0
-
-      requestAnimationFrame(render)
+    requestAnimationFrame(render)
   }
 
   render()

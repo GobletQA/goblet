@@ -7,8 +7,7 @@ export const EmptyContainer = styled(Box)`
   display: flex;
   justify-content: start;
   margin-top: ${gutter.margin.hpx};
-  padding-top: ${gutter.padding.qpx};
-  padding-bottom: ${gutter.padding.qpx};
+  padding-top: ${gutter.padding.hpx};
 `
 
 export const EmptyBox = styled(Box)`
@@ -19,6 +18,5 @@ export const EmptyBox = styled(Box)`
   align-items: start;
   justify-content: start;
   flex-direction: column;
-  margin-bottom: ${gutter.margin.px};
   padding-bottom: ${gutter.padding.hpx};
 `

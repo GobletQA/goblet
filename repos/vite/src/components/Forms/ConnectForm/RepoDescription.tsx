@@ -23,7 +23,7 @@ export const RepoDescription = (props:TRepoProps) => {
     onChangeDescription,
   } = props
 
-  const onChange = useCallback((evt:FocusEvent<HTMLInputElement>) => {
+  const onBlur = useCallback((evt:FocusEvent<HTMLInputElement>) => {
     const value = evt.target.value as string
     description !== value && onChangeDescription?.(value)
   }, [description])
@@ -40,8 +40,8 @@ export const RepoDescription = (props:TRepoProps) => {
   return (
     <Input
       {...descriptionProps}
+      onBlur={onBlur}
       inputRef={inputRef}
-      onChange={onChange}
       defaultValue={description}
     />
   )

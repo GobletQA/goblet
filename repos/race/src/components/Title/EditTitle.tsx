@@ -23,11 +23,13 @@ export type TEditTitle = {
   label?:string
   margin?:string
   padding?:string
+  onBlur?:TChangeCB
   sx?:CSSProperties
   className?:string
   type:ESectionType
   helperText?:string
-  onChange:TChangeCB
+  autoFocus?:boolean
+  onChange?:TChangeCB
   variant?:TInputVariants
 }
 
@@ -38,6 +40,7 @@ export const EditTitle = (props:TEditTitle) => {
     margin,
     padding,
     className,
+    autoFocus=true,
     ...rest
   } = props
   
@@ -48,7 +51,7 @@ export const EditTitle = (props:TEditTitle) => {
       sx={[styles.content, sx] as CSSProperties[]}
       className={cls(`gr-${props.type}}-editing-title`, className)}
     >
-      <Title {...rest} />
+      <Title autoFocus={autoFocus} {...rest} />
     </Box>
   )
 }

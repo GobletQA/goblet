@@ -12,7 +12,7 @@ import type {
 
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
-import { useEventListen, useInline, useEffectOnce } from '@gobletqa/components'
+import { useEventListen, useInline } from '@gobletqa/components'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 
@@ -56,16 +56,16 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     setFeature(feat)
   })
 
-  const updateFeature = useInline(async (feat?:Partial<TRaceFeature>, replace?:boolean) => {
-    if(!isValidUpdate(feat)) return
+  const updateFeature = useInline(async (changed?:Partial<TRaceFeature>, replace?:boolean) => {
+    if(!isValidUpdate(changed)) return
 
     const updated = await ParkinWorker.updateFeature(
-      feat,
+      changed,
       feature,
       replace,
     )
 
-    onFeatureChange?.(updated, feat, feature)
+    onFeatureChange?.(updated, changed, feature)
 
     featuresRef.current[updated.uuid] = updated
 

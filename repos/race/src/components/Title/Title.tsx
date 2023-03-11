@@ -15,9 +15,10 @@ export type TTitle = {
   label?:string
   sx?:CSSProperties
   type:ESectionType
+  onBlur?:TChangeCB
   helperText?:string
-  onChange:TChangeCB
   autoFocus?:boolean
+  onChange?:TChangeCB
   variant?:TInputVariants
   containerSx?:CSSProperties
 }
@@ -26,11 +27,12 @@ export const Title = (props:TTitle) => {
   const {
     id,
     sx,
-    uuid=id,
     name,
     type,
     label,
+    onBlur,
     variant,
+    uuid=id,
     onChange,
     value=``,
     autoFocus,
@@ -40,8 +42,10 @@ export const Title = (props:TTitle) => {
 
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
   useEffect(() => {
-    autoFocus 
-      && inputRef?.current?.focus?.()
+    if(!autoFocus || !inputRef?.current) return
+
+    inputRef?.current?.focus?.()
+    inputRef?.current?.select?.()
   }, [])
 
   return (
@@ -53,6 +57,7 @@ export const Title = (props:TTitle) => {
         inputSx={sx}
         value={value}
         required={true}
+        onBlur={onBlur}
         multiline={true}
         variant={variant}
         inputRef={inputRef}

@@ -16,15 +16,17 @@ export type TReason = TMeta & {
 }
 
 const useMergeReason = (reason:TAstBlock|TAstBlock[]|undefined) => {
-  // TODO: fix so new line is only added when length is greater then 1 line
   return useMemo(() => {
-    return !reason
-      ? ``
+    if(!reason) return ``
+    const reasonArr = ensureArr<TAstBlock>(reason)
+    
+    return reasonArr.length <= 1
+      ? reasonArr[0]?.content
       : ensureArr(reason).reduce((acc, item) => {
           acc += `${item?.content}\n`
-
           return acc
         }, ``)
+
   }, [reason])
 }
 
@@ -33,32 +35,27 @@ export const Reason = (props:TReason) => {
   const { parent } = props
   const { reason } = parent
 
-  const onChange = useInline((
-    evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  const onBlur = useInline((
+    evt:ChangeEvent<HTMLInputElement|HTMLTextAreaElement>,
     value?:string,
   ) => {
     stopEvent(evt)
-    const val = value || evt.target.value
-    // Fix to save the reason property as AST block for each line
-    console.log(`------- val -------`)
-    console.log(val)
-
-    // updateProperty(`reason`, value || ``, parent)
+    const val = value || evt.target.value || ``
+    const lines = val.split(`\n`)
+    updateProperty(`reason`, lines || ``, parent)
   })
 
   const merged = useMergeReason(reason)
-
-
 
   return (
     <MetaInputContainer className='gr-feature-reason gr-meta-input-container' >
 
       <Input
         value={merged}
+        onBlur={onBlur}
         labelSide={true}
         multiline={true}
         variant='standard'
-        onChange={onChange}
         placeholder='So that ...'
         id={`${parent.uuid}-reason`}
         className='gr-feature-reason'

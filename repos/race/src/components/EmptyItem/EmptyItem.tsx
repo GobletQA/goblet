@@ -13,7 +13,7 @@ const styles:Record<string, CSSProperties> = {
     width: `100%`,
     minWidth: `205px`,
     paddingBottom: gutter.padding.hpx,
-    borderBottom: `1px solid var(--goblet-list-focusBackground)`,
+    borderBottom: `1px solid var(--goblet-input-border)`,
   }
 }
 
@@ -37,7 +37,7 @@ export const EmptyItem = forwardRef((props:TEmptyItem, ref:ForwardedRef<HTMLButt
 
   return (
     <EmptyContainer
-      className={`${parentType}-empty-steps`}
+      className={`${parentType}-empty-item`}
       sx={containerSx as CSSProperties}
     >
       <EmptyBox

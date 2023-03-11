@@ -157,7 +157,7 @@ export const Rule = (props:TRule) => {
           uuid={rule.uuid}
           value={sectionTitle}
           label={`Description`}
-          onChange={onEditTitle}
+          onBlur={onEditTitle}
           type={ESectionType.rule}
         />
       ) || null}

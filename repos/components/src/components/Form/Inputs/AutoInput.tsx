@@ -1,4 +1,11 @@
-import type { KeyboardEvent, ReactNode, CSSProperties, SyntheticEvent, ComponentProps } from 'react'
+import type {
+  ReactNode,
+  ChangeEvent,
+  KeyboardEvent,
+  CSSProperties,
+  SyntheticEvent,
+  ComponentProps
+} from 'react'
 import type { TAutoOptVal, TAutoOpt, TOnAutoChange, TInputDecor } from '@GBC/types'
 import type {
   AutocompleteChangeReason,
@@ -51,8 +58,8 @@ export type TAutoInput = {
   labelWrapSx?: CSSProperties
   rules?: Record<string, string>
   label?: TextFieldProps['label']
-  onBlur?: (event:SyntheticEvent) => void
   variant?:`outlined`|`filled`|`standard`
+  onBlur?: (event:ChangeEvent<any>) => void
   autocompleteProps?: Partial<ComponentProps<typeof Auto>>
   color?: `primary`|`secondary`|`error`|`info`|`success`|`warning`
   textFieldProps?: Omit<TextFieldProps, 'name' | 'required' | 'label'>

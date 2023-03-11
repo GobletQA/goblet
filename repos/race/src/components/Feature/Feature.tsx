@@ -2,7 +2,7 @@ import type { CSSProperties, MouseEvent } from 'react'
 import type { TFeaturesRefs } from '@GBR/types'
 
 
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useRef } from 'react'
 
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
@@ -17,6 +17,7 @@ import { FeatureHeader } from './FeatureHeader'
 import { EmptyFeatureUUID } from '@GBR/constants'
 
 import { EmptyFeature } from './EmptyFeature'
+import { useBounceScroll } from '@GBR/hooks/useBounceScroll'
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { createFeature } from '@GBR/actions/feature/createFeature'
 import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
@@ -90,6 +91,14 @@ export const Feature = (props:TFeature) => {
 
   }, [])
 
+  const contentRef = useRef<HTMLElement>()
+  const containerRef = useRef<HTMLElement>()
+
+  // useBounceScroll({
+  //   contentRef,
+  //   containerRef,
+  // })
+
   return !feature || !feature?.uuid
     ? (
         <EmptyEditor
@@ -103,7 +112,9 @@ export const Feature = (props:TFeature) => {
     : (
         <Stack
           stack={2}
+          ref={containerRef}
           sx={styles.section}
+          contentRef={contentRef}
           type={ESectionType.feature}
           className='gr-feature-editor-section'
         >

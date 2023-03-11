@@ -22,14 +22,12 @@ export type TInput = Omit<ComponentProps<typeof InputText>, `error`> & {
   className?:string
   labelSide?:boolean
   labelInline?:boolean
-  changeFromBlur?:boolean
   inputSx?: CSSProperties
   labelSx?: CSSProperties
   labelWrapSx?: CSSProperties
   value?:string|boolean|number
   variant?:`outlined`|`filled`|`standard`
 }
-
 
 export const Input = (props:TInput) => {
   const {
@@ -54,21 +52,27 @@ export const Input = (props:TInput) => {
     multiline,
     fullWidth=true,
     InputProps,
-    changeFromBlur=true,
     decor=emptyObj as TInputDecor,
+    onBlur:onBlurIn,
+    onFocus:onFocusIn,
+    onChange:onChangeIn,
+    onKeyDown:onKeyDownIn,
     ...rest
   } = props
 
   const {
     onBlur,
+    onFocus,
     inputRef,
     onKeyDown,
     error: inputErr
-  } = useInputCallbacks<HTMLInputElement | HTMLTextAreaElement>({
+  } = useInputCallbacks({
     required,
-    changeFromBlur,
+    onBlur: onBlurIn,
+    onFocus: onFocusIn,
+    onChange: onChangeIn,
+    onKeyDown: onKeyDownIn,
     value: props.value || ``,
-    onChange: props.onChange,
   })
 
   const { Component:DecorComponent, decorPos=`start` } = decor
@@ -120,6 +124,7 @@ export const Input = (props:TInput) => {
         inputProps={{
           ...inputProps,
           onBlur: onBlur,
+          onFocus: onFocus,
           disabled: disabled,
           onKeyDown: onKeyDown
         }}

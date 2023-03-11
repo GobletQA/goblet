@@ -14,6 +14,7 @@ export type TBranchFrom = {
 
 const repoNameProps = {
   required: true,
+  autoFocus: true,
   label: `Repo Name`,
   name: `new-repo-name`,
   className: `new-repo-input`,
@@ -30,9 +31,19 @@ export const RepoCreate = (props:TBranchFrom) => {
     ...rest
   } = props
 
+  const inputRef = useRef<HTMLInputElement>()
+
   const onInputBlur = useCallback((evt:FocusEvent<HTMLInputElement>) => {
     const value = evt.target.value as string
-    newRepo !== value && onChangeNewRepo?.(value)
+
+    if(!value?.trim?.()){
+      onInputError?.(`newRepo`, `A repository name is required!`)
+      inputRef?.current?.focus?.()
+      return
+    }
+
+    newRepo?.trim?.() !== value?.trim?.()
+      && onChangeNewRepo?.(value)
   }, [newRepo])
 
 
@@ -40,11 +51,7 @@ export const RepoCreate = (props:TBranchFrom) => {
     inputError.newRepo
       && onInputError?.(`newRepo`, undefined)
 
-    evt.keyCode === 13
-      && inputRef.current?.blur?.()
   }, [inputError.newRepo, newRepo])
-
-  const inputRef = useRef<HTMLInputElement>()
 
   useEffect(() => {
     inputRef.current
@@ -57,11 +64,9 @@ export const RepoCreate = (props:TBranchFrom) => {
     <Input
       {...repoNameProps}
       defaultValue={newRepo}
-      inputProps={{
-        onBlur: onInputBlur,
-        onKeyDown: onKeyDown
-      }}
       inputRef={inputRef}
+      onBlur={onInputBlur}
+      onKeyDown={onKeyDown}
       error={inputError.newRepo}
     />
   )
