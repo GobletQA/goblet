@@ -71,7 +71,7 @@ const getGobletDefs = async (
 
   const definitionFiles = await loadDefinitionsFiles(
     `${gobletConfig.internalPaths.testUtilsDir}/src/steps`,
-    { ignore: [ '**/index.js' ] }
+    { ignore: [ '**/index.js', '**/index.ts', ] }
   )
 
   const loadedDefs = await parseDefinitions(repo, definitionFiles, overrideParkin)

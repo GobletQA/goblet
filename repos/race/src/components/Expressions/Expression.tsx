@@ -1,7 +1,7 @@
+import type { ChangeEvent } from 'react'
 import type { TStepAst, TStepDef } from '@ltipton/parkin'
 import type { TExpPart, TStepParentAst } from '@GBR/types'
 
-import { ChangeEvent } from 'react'
 
 import { ExpInput } from './ExpInput'
 import { capitalize } from '@keg-hub/jsutils'
