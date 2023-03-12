@@ -1,5 +1,5 @@
 import type { TOptionLabelCB } from '@GBC/types'
-import { useInline } from '@GBC/hooks/useInline'
+import { useInline } from '@GBC/hooks/components/useInline'
 import { isArr, isStr, isFunc } from '@keg-hub/jsutils'
 
 

@@ -1,7 +1,7 @@
-import { useInline } from './useInline'
 import { exists } from '@keg-hub/jsutils'
-import { useEffectOnce } from './useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { useInline } from '@GBC/hooks/components/useInline'
+import { useEffectOnce } from '@GBC/hooks/components/useEffectOnce'
 
 export type TAnonFunc = (...args:any[]) => any
 

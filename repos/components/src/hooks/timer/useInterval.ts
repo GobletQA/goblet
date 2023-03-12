@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { isNum, emptyObj } from '@keg-hub/jsutils'
-import { useInline } from './useInline'
+import { useInline } from '@GBC/hooks/components/useInline'
 
 type TIntervalOpts = {
   immediate?: boolean

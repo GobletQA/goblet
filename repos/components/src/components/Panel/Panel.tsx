@@ -4,7 +4,7 @@ import type { SyntheticEvent, MutableRefObject } from 'react'
 import { useMemo, useCallback, useState, useRef, useEffect } from 'react'
 import { cls } from '@keg-hub/jsutils'
 import { PanelHeader } from './PanelHeader'
-import { useInline } from '@GBC/hooks/useInline'
+import { useInline } from '@GBC/hooks/components/useInline'
 import { PanelSidebar, PanelContent } from './Panel.styled'
 
 export const Panel = (props:TPanel) => {

@@ -2,7 +2,7 @@ import type { TChangeCB, TInputValue } from '@GBC/types'
 import type { KeyboardEvent, RefObject, ChangeEvent } from 'react'
 
 import { isStr } from '@keg-hub/jsutils'
-import { useInline } from '@GBC/hooks/useInline'
+import { useInline } from '@GBC/hooks/components/useInline'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 
 type TInputType = HTMLInputElement | HTMLTextAreaElement | undefined

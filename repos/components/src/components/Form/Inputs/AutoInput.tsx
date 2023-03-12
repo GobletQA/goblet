@@ -16,7 +16,7 @@ import { Decor } from './Decor'
 import { useCallback } from 'react'
 
 import { InputLabel } from './InputLabel'
-import { useInline } from '@GBC/hooks/useInline'
+import { useInline } from '@GBC/hooks/components/useInline'
 import { emptyObj, isStr, cls } from '@keg-hub/jsutils'
 import CircularProgress from '@mui/material/CircularProgress'
 import {

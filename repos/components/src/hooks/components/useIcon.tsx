@@ -1,5 +1,5 @@
 import { useMemo, useRef, CSSProperties } from 'react'
-import { TIcon } from '../types'
+import { TIcon } from '../../types'
 import { omitKeys } from '@keg-hub/jsutils'
 
 export type TIconProps = {

@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useInline } from '@GBC/hooks/useInline'
+import { useInline } from '@GBC/hooks/components/useInline'
 import { SkipClickAwayCls } from '@GBC/constants'
 
 const checkSkipClickAway = (element:EventTarget|null):boolean => {

@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 import type { OnSelect, OnSelectEnd } from 'react-selecto'
 
 import Selecto from "react-selecto"
-import { useInline } from '@GBC/hooks/useInline'
+import { useInline } from '@GBC/hooks/components/useInline'
 
 export type TDragSelect = Omit<ComponentProps<typeof Selecto>, `container`> & {
   container?:HTMLElement

@@ -3,7 +3,7 @@ import type { TTabAction, TTabItem, TTab } from '../../types'
 
 import { useCallback } from 'react'
 import { noOp } from '@keg-hub/jsutils'
-import { useInline } from '../useInline'
+import { useInline } from '../components/useInline'
 
 
 const useWrapCallback = (tab:TTab, callback:TTabAction=noOp) => {

@@ -10,7 +10,7 @@ import { If } from '../If'
 import { MenuItems } from './MenuItems'
 import { exists } from '@keg-hub/jsutils'
 import { MenuContext } from './MenuContext'
-import { useInline } from '@GBC/hooks/useInline'
+import { useInline } from '@GBC/hooks/components/useInline'
 
 export type TMenu<T=Record<any, any>> = Omit<ComponentProps<typeof MuiMenu>, `open`> & {
   Context?: ReactNode

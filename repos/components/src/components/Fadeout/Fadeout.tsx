@@ -3,7 +3,7 @@ import type { CSSProperties } from 'react'
 
 import { exists } from '@keg-hub/jsutils'
 import { useEffect, useState, useMemo } from 'react'
-import { useSetTimeout } from '@GBC/hooks/useSetTimeout'
+import { useSetTimeout } from '@GBC/hooks/timer/useSetTimeout'
 import { Fade, FadeSection, FadeView } from './Fadeout.styled'
 
 type TFadeoutProps = {

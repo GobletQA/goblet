@@ -5,7 +5,7 @@ import { RenderType } from '../RenderType'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import MuiMenuItem from '@mui/material/MenuItem'
-import { useInline } from '@GBC/hooks/useInline'
+import { useInline } from '@GBC/hooks/components/useInline'
 
 export type TMenuItem<R=Record<any, any>> = {
   key?:string
