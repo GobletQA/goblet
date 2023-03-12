@@ -51,7 +51,7 @@ export const Title = (props:TTitle) => {
   return (
     <InputContainer
       sx={containerSx}
-      className={`gr-${type}}-title gr-${type}-input-container`}
+      className={`gb-${type}}-title gb-${type}-input-container`}
     >
       <InlineInput
         inputSx={sx}
@@ -64,7 +64,7 @@ export const Title = (props:TTitle) => {
         onChange={onChange}
         helperText={helperText}
         label={label || `Title`}
-        className={`gr-${type}-title`}
+        className={`gb-${type}-title`}
         name={name || `${type}-title`}
         id={`${uuid || (type + '-' + name)}-title`}
         placeholder={`${capitalize(type)} ${(label || 'title or name').toLowerCase()} ...`}

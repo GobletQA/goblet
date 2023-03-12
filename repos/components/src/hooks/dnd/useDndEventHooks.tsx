@@ -1,5 +1,5 @@
 import type { TOnDrop } from './useDndHooks'
-import type { RefObject, MutableRefObject, KeyboardEventHandler } from 'react'
+import type { MutableRefObject, KeyboardEventHandler } from 'react'
 
 import { useCallback } from 'react'
 
@@ -8,26 +8,21 @@ export type THDndEventHooks = {
   onDrop: TOnDrop
   onHideDiv: () => void
   onShowDiv: () => void
-  dragButtonRef: RefObject<HTMLDivElement>
   onKeyDown?: KeyboardEventHandler<Element>
+  dragHandleRef: MutableRefObject<HTMLElement>
   shiftTabPressedRef: MutableRefObject<boolean>
 }
 
-export const useDndEventHooks = (props:THDndEventHooks) => {
-  
+const onHandleKeyDown = (props:THDndEventHooks) => {
   const {
     index,
     onDrop,
-    onHideDiv,
-    onShowDiv,
-    onKeyDown,
-    dragButtonRef,
-    shiftTabPressedRef
+    dragHandleRef
   } = props
-
-  const onButtonKeyDown = useCallback(
+  
+  return useCallback(
     (keyE: React.KeyboardEvent) => {
-      if (!dragButtonRef || document.activeElement !== dragButtonRef.current) return
+      if (!dragHandleRef || document.activeElement !== dragHandleRef.current) return
       if (keyE.key !== 'ArrowDown' && keyE.key !== 'ArrowUp') return
 
       keyE.preventDefault()
@@ -40,8 +35,42 @@ export const useDndEventHooks = (props:THDndEventHooks) => {
       else if (keyE.key === 'ArrowDown')
         onDrop(index + 1, index)
     },
-    [dragButtonRef, index, onDrop]
+    [dragHandleRef, index, onDrop]
   )
+}
+
+const onHandleFocus = (props:THDndEventHooks) => {
+  const {
+    onShowDiv,
+    dragHandleRef,
+    shiftTabPressedRef,
+  } = props
+
+  return useCallback(
+    (e: React.FocusEvent) => {
+      if (!dragHandleRef) return
+
+      onShowDiv()
+
+      !shiftTabPressedRef.current
+        && dragHandleRef.current
+        && dragHandleRef.current.focus()
+    },
+    [
+      onShowDiv,
+      dragHandleRef,
+      shiftTabPressedRef,
+    ]
+  )
+}
+
+export const useDndEventHooks = (props:THDndEventHooks) => {
+
+  const {
+    onHideDiv,
+    onKeyDown,
+    shiftTabPressedRef
+  } = props
 
   const onContainerKeyDown = useCallback((keyE: React.KeyboardEvent) => {
     if (keyE.key === 'Enter')
@@ -51,30 +80,14 @@ export const useDndEventHooks = (props:THDndEventHooks) => {
       shiftTabPressedRef.current = true
       onHideDiv()
     }
-
   }, [])
 
-  const onButtonFocus = useCallback(
-    (e: React.FocusEvent) => {
-      if (!dragButtonRef) return
-
-      onShowDiv()
-
-      !shiftTabPressedRef.current
-        && dragButtonRef.current
-        && dragButtonRef.current.focus()
-    },
-    [
-      onShowDiv,
-      dragButtonRef,
-      shiftTabPressedRef,
-    ]
-  )
-
+  const onDragHandleFocus = onHandleFocus(props)
+  const onDragHandleKeyDown = onHandleKeyDown(props)
 
   return {
-    onButtonFocus,
-    onButtonKeyDown,
-    onContainerKeyDown
+    onDragHandleFocus,
+    onContainerKeyDown,
+    onDragHandleKeyDown,
   }
 }

@@ -81,9 +81,9 @@ export const Input = (props:TInput) => {
   return (
     <InputContainer
       className={cls(
-        `gc-input-root`,
-        `gc-input-container`,
-        labelSide && `gc-input-container-side`
+        `gb-input-root`,
+        `gb-input-container`,
+        labelSide && `gb-input-container-side`
       )}
     >
       <InputLabel
@@ -116,7 +116,7 @@ export const Input = (props:TInput) => {
           }),
         }}
         defaultValue={props.value || ``}
-        className={cls(`gc-input`, className)}
+        className={cls(`gb-input`, className)}
         error={Boolean(error?.length || inputErr)}
         label={labelInline && label ? label : undefined}
         placeholder={placeholder || "Enter some text..."}

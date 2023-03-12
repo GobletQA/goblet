@@ -4,7 +4,6 @@ import type { TScenarioAst, TStepAst } from '@ltipton/parkin'
 import { Sections } from '../Section'
 import { Scenario } from './Scenario'
 import { ESectionType } from '@GBR/types'
-import { useInline } from '@gobletqa/components'
 
 export type TScenarios = {
   scenarios?:TScenarioAst[]
@@ -15,7 +14,7 @@ export type TScenarios = {
   onChange :(scenarioId:string, update:Partial<TScenarioAst>) => void
   onChangeStep: (step:TStepAst, scenarioId:string, parentId?:string) => void
   onRemoveStep: (stepId:string, scenarioId?:string, parentId?:string) => void
-} 
+}
 
 export const Scenarios = (props:TScenarios) => {
 
@@ -38,8 +37,9 @@ export const Scenarios = (props:TScenarios) => {
       type={ESectionType.scenario}
     >
     {
-      scenarios?.map(scenario => {
+      scenarios?.map((scenario, idx) => {
         return (
+          
           <Scenario
             parent={parent}
             onRemove={onRemove}

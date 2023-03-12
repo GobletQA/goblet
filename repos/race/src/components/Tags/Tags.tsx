@@ -20,7 +20,7 @@ export const Tags = (props:TTags) => {
   const options = useFeatureTags(props)
 
   return (
-    <TagsContainer className={cls(`gr-tags`, `gr-${type}-tags`)} >
+    <TagsContainer className={cls(`gb-tags`, `gb-${type}-tags`)} >
       <AutoInput
         multiple={true}
         labelSide={true}
@@ -30,7 +30,7 @@ export const Tags = (props:TTags) => {
         currentValue={tags || [``]}
         name='feature-tags-auto-input'
         label={capitalize(EMetaType.tags)}
-        className={`gr-${type}-tags-input`}
+        className={`gb-${type}-tags-input`}
         options={[...Object.keys(options)]}
         placeholder={`${capitalize(type)} tags ...`}
       />

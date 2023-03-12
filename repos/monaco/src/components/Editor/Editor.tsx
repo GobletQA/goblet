@@ -243,7 +243,7 @@ export const MonacoEditor = forwardRef<IMultiRefType, IMonacoEditorProps>((props
         onDeleteFolder={deleteFolder}
         onEditFolderName={editFolderName}
       />
-      {!portal && (<Divider onMouseDown={onMoveStart} className='gr-editor-drag' />)}
+      {!portal && (<Divider onMouseDown={onMoveStart} className='gb-editor-drag' />)}
       <EditorContainer className='goblet-editor-area'>
         <OpenedTabs
           openedTabs={openedTabs}

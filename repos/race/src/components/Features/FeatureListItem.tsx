@@ -24,7 +24,7 @@ export const FeatureListItem = (props:TFeatureListItem) => {
   return (
     <FeatureItem
       onClick={onClick}
-      className={cls(`gr-features-list-item`, isActive && `active`)}
+      className={cls(`gb-features-list-item`, isActive && `active`)}
     >
       <FeatureText>
         {wordCaps(feature.feature)}

@@ -116,11 +116,11 @@ export const Feature = (props:TFeature) => {
           sx={styles.section}
           contentRef={contentRef}
           type={ESectionType.feature}
-          className='gr-feature-editor-section'
+          className='gb-feature-editor-section'
         >
           <Box
             sx={styles.content}
-            className='gr-feature-sections-container'
+            className='gb-feature-sections-container'
           >
 
             { feature.uuid !== EmptyFeatureUUID

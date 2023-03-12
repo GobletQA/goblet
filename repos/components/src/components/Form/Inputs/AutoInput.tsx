@@ -162,7 +162,7 @@ const AutoInputComp = (props:TAutoInput) => {
         className={cls(
           className,
           `gb-auto-complete`,
-          labelSide ? `gc-auto-input-side` : `gc-auto-input`
+          labelSide ? `gb-auto-input-side` : `gb-auto-input`
         )}
         disableCloseOnSelect={
           typeof autocompleteProps?.disableCloseOnSelect === 'boolean'
@@ -214,8 +214,8 @@ const AutoInputComp = (props:TAutoInput) => {
               {...textFieldProps}
               {...params}
               className={cls(
-                `gc-auto-input-text`,
-                labelSide && `gc-auto-input-text-side`
+                `gb-auto-input-text`,
+                labelSide && `gb-auto-input-text-side`
               )}
               error={!!error}
               variant={variant}
@@ -276,9 +276,9 @@ export const AutoInput = (props:TAutoInput) => {
   return (
     <AutoContainer
       className={cls(
-        `gc-auto-input-root`,
-        `gc-auto-input-container`,
-        labelSide && `gc-auto-input-container-side`
+        `gb-auto-input-root`,
+        `gb-auto-input-container`,
+        labelSide && `gb-auto-input-container-side`
       )}
     >
       {
@@ -297,7 +297,7 @@ export const AutoInput = (props:TAutoInput) => {
               </>
             )
           : (
-              <AutoInputControl className={cls(labelSide && `gc-auto-input-control-side`)}>
+              <AutoInputControl className={cls(labelSide && `gb-auto-input-control-side`)}>
                 <AutoInputContainer>
                   <InputLabel
                     id={id}

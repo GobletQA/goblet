@@ -101,7 +101,7 @@ export const Rule = (props:TRule) => {
       initialExpand={true}
       show={Boolean(rule)}
       type={ESectionType.rule}
-      className='gr-rule-section'
+      className='gb-rule-section'
       id={`${parent.uuid}-rule-${rule.uuid}`}
       label={(
         <SectionHeader
@@ -116,14 +116,14 @@ export const Rule = (props:TRule) => {
             editing={editingTitle}
             onClick={toggleEditTitle}
             type={ESectionType.rule}
-            key={`gr-rule-edit-title-action`}
+            key={`gb-rule-edit-title-action`}
           />
         ),
         (
           <AddAct
             Icon={CardPlusIcon}
             type={ESectionType.background}
-            key={`gr-rule-add-background-action`}
+            key={`gb-rule-add-background-action`}
             onClick={() => addRuleBackground(rule.uuid)}
           />
         ),
@@ -132,28 +132,28 @@ export const Rule = (props:TRule) => {
             Icon={PlaylistPlusIcon}
             onClick={onAddScenario}
             type={ESectionType.scenario}
-            key={`gr-rule-add-scenario-action`}
+            key={`gb-rule-add-scenario-action`}
           />
         ),
         (
           <DeleteAct
             onClick={onRemove}
             type={ESectionType.rule}
-            key={`gr-rule-removed-scenario-action`}
+            key={`gb-rule-removed-scenario-action`}
           />
         ),
         (
           <CopyAct
             onClick={onCopyRule}
             type={ESectionType.rule}
-            key={`gr-rule-copy-rule-action`}
+            key={`gb-rule-copy-rule-action`}
           />
         ),
         (
           <PlayAct
             onClick={onPlay}
             type={ESectionType.background}
-            key={`gr-background-play-action`}
+            key={`gb-background-play-action`}
           />
         ),
       ]}

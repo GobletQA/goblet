@@ -58,7 +58,7 @@ export const Stack = forwardRef((props:TStack, ref:ForwardedRef<HTMLElement|unde
   return (
     <StackContainer
       ref={ref}
-      className={cls('gr-section-stack', className)}
+      className={cls('gb-section-stack', className)}
       sx={[styles?.section, sx] as CSSProperties[]}
     >
       {
@@ -67,7 +67,7 @@ export const Stack = forwardRef((props:TStack, ref:ForwardedRef<HTMLElement|unde
               <StackBody
                 ref={contentRef}
                 gutter={gutter}
-                className='gr-stack-body'
+                className='gb-stack-body'
                 sx={[styles?.body, bodySx] as CSSProperties[]}
               >
                 {children}
@@ -82,7 +82,7 @@ export const Stack = forwardRef((props:TStack, ref:ForwardedRef<HTMLElement|unde
                   gutter={gutter}
                   children={children}
                   sx={[stackSx, styles?.stack]}
-                  className='gr-section-stack-content'
+                  className='gb-section-stack-content'
                 />
               )
             : children

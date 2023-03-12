@@ -1,4 +1,4 @@
-import type { RefObject } from 'react'
+import type { RefObject, MutableRefObject } from 'react'
 
 import { useCallback } from 'react'
 import { DndHoverCls } from '@GBC/constants/values'
@@ -7,7 +7,7 @@ import { DndHoverCls } from '@GBC/constants/values'
 export type THShowHide = {
   showHandle:boolean
   dragDivRef: RefObject<HTMLDivElement>
-  dragButtonRef: RefObject<HTMLDivElement>
+  dragHandleRef: MutableRefObject<HTMLElement>
 }
 
 export const useShowHide = (props:THShowHide) => {
@@ -15,7 +15,7 @@ export const useShowHide = (props:THShowHide) => {
   const {
     showHandle,
     dragDivRef,
-    dragButtonRef,
+    dragHandleRef,
   } = props
 
   const onShowDiv = useCallback(() => {
@@ -23,10 +23,10 @@ export const useShowHide = (props:THShowHide) => {
 
     dragDivRef.current.classList.add(DndHoverCls)
     
-    dragButtonRef.current
-      && (dragButtonRef.current.style.display = 'inherit')
+    dragHandleRef.current
+      && (dragHandleRef.current.style.display = 'inherit')
 
-  }, [dragDivRef, dragButtonRef])
+  }, [dragDivRef, dragHandleRef])
 
   const onHideDiv = useCallback(() => {
     if (!dragDivRef.current) return
@@ -34,9 +34,9 @@ export const useShowHide = (props:THShowHide) => {
     dragDivRef.current.classList.remove(DndHoverCls)
     
     !showHandle
-      && dragButtonRef.current
-      && (dragButtonRef.current.style.display = 'none')
-  }, [dragDivRef, dragButtonRef, showHandle])
+      && dragHandleRef.current
+      && (dragHandleRef.current.style.display = 'none')
+  }, [dragDivRef, dragHandleRef, showHandle])
 
   return {
     onHideDiv,

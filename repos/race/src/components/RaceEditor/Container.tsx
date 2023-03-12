@@ -55,7 +55,7 @@ export const Container = (props:TEditorContainer) => {
       <ContainerComp
         onMouseMove={onMove}
         onMouseUp={onMoveEnd}
-        className='gr-editor'
+        className='gb-editor'
       >
 
         <Sidebar
@@ -73,8 +73,8 @@ export const Container = (props:TEditorContainer) => {
           />
         </Sidebar>
 
-        <Divider onMouseDown={onMoveStart} className='gr-editor-drag' />
-        <EditorContainer className='gr-race-editor-area'>
+        <Divider onMouseDown={onMoveStart} className='gb-editor-drag' />
+        <EditorContainer className='gb-race-editor-area'>
           <OpenedTabs
             onTabDown={onTabDown}
             onTabHover={onTabHover}

@@ -42,9 +42,9 @@ export const FeatureMenu = (props:TFeatureMenu) => {
         Icon={MenuIcon}
         onClick={onOpen}
         aria-haspopup="true"
-        id="gc-feature-menu-button"
+        id="gb-feature-menu-button"
         aria-expanded={open ? 'true' : undefined}
-        aria-controls={open ? 'gr-feature-menu' : undefined}
+        aria-controls={open ? 'gb-feature-menu' : undefined}
       />
       <Menu
         posTV='top'
@@ -55,9 +55,9 @@ export const FeatureMenu = (props:TFeatureMenu) => {
         items={items}
         onOpen={onOpen}
         onClose={onClose}
-        id="gr-feature-menu"
+        id="gb-feature-menu"
         anchorRef={anchorRef}
-        aria-labelledby="gc-feature-menu-button"
+        aria-labelledby="gb-feature-menu-button"
       />
     </>
   )

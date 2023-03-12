@@ -86,7 +86,7 @@ export const Dropdown = (props:TDropdown) => {
       disableGutters={true}
       {...rest}
       className={cls(
-        `gc-dropdown`,
+        `gb-dropdown`,
         expanded && `expanded`,
         disabled && `disabled`,
         rest.className,
@@ -99,7 +99,7 @@ export const Dropdown = (props:TDropdown) => {
       <Header
         id={`${id}-header`}
         transformOn={transformIconOn}
-        className='gc-dropdown-header'
+        className='gb-dropdown-header'
         transformOff={transformIconOff}
         aria-controls={`${id}-content`}
         sx={[headerSx, { [`& .MuiAccordionSummary-content`]: headerContentSx }] as CSSProperties[]}
@@ -112,7 +112,7 @@ export const Dropdown = (props:TDropdown) => {
                   sx={expandIconSx}
                   expand={expanded}
                   noIconTransform={true}
-                  className={cls(`gr-dropdown-expand-icon`, expanded && `expanded`)}
+                  className={cls(`gb-dropdown-expand-icon`, expanded && `expanded`)}
                 />
               )
         }
@@ -123,7 +123,7 @@ export const Dropdown = (props:TDropdown) => {
     {children && (
       <Body
         sx={bodySx}
-        className='gc-dropdown-body'
+        className='gb-dropdown-body'
       >
         {children}
       </Body>

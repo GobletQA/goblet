@@ -33,11 +33,11 @@ export const FeaturesGroup = styled(Box)<TListFeatures>`
   padding: 1px 0px;
   padding-left: 2px;
 
-  & .gc-dropdown {
+  & .gb-dropdown {
     background-color: inherit;
   }
   
-  & > .gc-dropdown > .gc-dropdown-header {
+  & > .gb-dropdown > .gb-dropdown-header {
     height: 30px;
     color: var(--goblet-list-inactiveSelectionForeground);
 
@@ -45,7 +45,7 @@ export const FeaturesGroup = styled(Box)<TListFeatures>`
       font-weight: bold;
     }
 
-    & .gr-dropdown-expand-icon {
+    & .gb-dropdown-expand-icon {
       color: var(--goblet-list-inactiveSelectionForeground);
     }
   }
@@ -54,10 +54,10 @@ export const FeaturesGroup = styled(Box)<TListFeatures>`
     margin:  0px;
   }
   
-  & > .gc-dropdown > .gc-dropdown-header:hover {
+  & > .gb-dropdown > .gb-dropdown-header:hover {
     ${shared}
 
-    & .gr-dropdown-expand-icon {
+    & .gb-dropdown-expand-icon {
       color: var(--goblet-list-hoverForeground);
     }
   }

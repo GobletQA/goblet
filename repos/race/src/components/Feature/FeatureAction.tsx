@@ -39,7 +39,7 @@ export const FeatureAction = (props:TFeatureAction) => {
         onClick={onClick}
         startIcon={<Icon />}
         variant={variant || 'text'}
-        className={`gr-feature-sub-action-${type}`}
+        className={`gb-feature-sub-action-${type}`}
       />
     </Tooltip>
   )

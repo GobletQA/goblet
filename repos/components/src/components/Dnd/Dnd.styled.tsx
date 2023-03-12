@@ -2,7 +2,14 @@
 import Box from '@mui/material/Box'
 import { colors } from '@GBC/theme'
 import { styled } from '@mui/material/styles'
-import { DndDraggingCls, DndHoverCls } from '@GBC/constants/values'
+import {
+  DndHoverCls,
+  DndDraggingCls,
+  DndDragHandleCls,
+} from '@GBC/constants/values'
+
+// TODO: cursor: grabbing; not working for some reason
+// Need to investigate
 
 export const DragContainer = styled(Box)`
   display: flex;
@@ -12,13 +19,23 @@ export const DragContainer = styled(Box)`
   margin-left: -40px;
   flex-flow: row nowrap;
   padding: 4px 8px 4px 20px;
-  
+
   &.${DndDraggingCls} {
+
+    cursor: grabbing;
     background-color: ${colors.gray10};
+
+    & .${DndDragHandleCls} {
+      cursor: grab;
+    }
   }
 
   &.${DndHoverCls} {
-    cursor: grabbing !important;
+    cursor: grab;
+
+    & .${DndDragHandleCls} {
+      cursor: grab;
+    }
   }
 `
 export const DropContainer = styled(Box)`

@@ -21,14 +21,14 @@ export const Desire = (props:TDesire) => {
   })
 
   return (
-    <MetaInputContainer className='gr-feature-desire gr-meta-input-container' >
+    <MetaInputContainer className='gb-feature-desire gb-meta-input-container' >
       <InlineInput
         onBlur={onBlur}
         multiline={true}
         value={desire?.content}
         placeholder='I want to ...'
         id={`${parent.uuid}-desire`}
-        className='gr-feature-desire'
+        className='gb-feature-desire'
         label={capitalize(EMetaType.desire)}
       />
     </MetaInputContainer>

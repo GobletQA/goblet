@@ -78,7 +78,7 @@ export const Background = (props:TBackground) => {
       initialExpand={true}
       show={Boolean(background)}
       type={ESectionType.background}
-      className='gr-background-section'
+      className='gb-background-section'
       id={`${parent.uuid}-background-${background?.uuid || ''}`}
       label={(
         <SectionHeader
@@ -93,7 +93,7 @@ export const Background = (props:TBackground) => {
             editing={editingTitle}
             onClick={toggleEditTitle}
             type={ESectionType.background}
-            key={`gr-background-edit-title-action`}
+            key={`gb-background-edit-title-action`}
           />
         ),
         (
@@ -101,28 +101,28 @@ export const Background = (props:TBackground) => {
             Icon={StepAddIcon}
             onClick={onAddBackgroundStep}
             type={ESectionType.step}
-            key={`gr-background-add-step-action`}
+            key={`gb-background-add-step-action`}
           />
         ),
         (
           <DeleteAct
             onClick={onRemoveBackground}
             type={ESectionType.background}
-            key={`gr-background-delete-action`}
+            key={`gb-background-delete-action`}
           />
         ),
         (
           <CopyAct
             onClick={onCopyBackground}
             type={ESectionType.background}
-            key={`gr-background-copy-action`}
+            key={`gb-background-copy-action`}
           />
         ),
         (
           <PlayAct
             onClick={onPlay}
             type={ESectionType.background}
-            key={`gr-background-play-action`}
+            key={`gb-background-play-action`}
           />
         ),
       ]}

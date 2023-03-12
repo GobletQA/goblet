@@ -47,7 +47,7 @@ export const AddItem = forwardRef((props:TAddItem, ref:ForwardedRef<HTMLButtonEl
         sx={buttonSx}
         onClick={onClick}
         variant={variant || "outlined"}
-        className={`gr-add-btn-${type}`}
+        className={`gb-add-btn-${type}`}
       >
         {children || text || `Add ${capitalize(type)}`}
       </AddBtn>

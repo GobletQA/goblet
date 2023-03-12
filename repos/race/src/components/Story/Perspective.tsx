@@ -22,7 +22,7 @@ export const Perspective = (props:TPerspective) => {
   })
 
   return (
-    <MetaInputContainer className='gr-feature-perspective gr-meta-input-container' >
+    <MetaInputContainer className='gb-feature-perspective gb-meta-input-container' >
 
       <AutoInput
         onBlur={onBlur}
@@ -33,7 +33,7 @@ export const Perspective = (props:TPerspective) => {
         placeholder='As a user ...'
         id={`${parent.uuid}-perspective`}
         name={`feature-story-perspective`}
-        className='gr-feature-perspective'
+        className='gb-feature-perspective'
         label={capitalize(EMetaType.persona)}
         currentValue={perspective?.content || PerspectiveOpts[0]}
       />

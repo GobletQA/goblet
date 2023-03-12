@@ -90,7 +90,7 @@ export const SelectAction = (props:TSelectAction) => {
         options={options}
         onChange={onChange}
         autocompleteProps={autocompleteProps}
-        className='gr-step-action-select-dropdown'
+        className='gb-step-action-select-dropdown'
         helperText={<ActionInfo definition={props?.definition} />}
       />
     </StepGridItem>

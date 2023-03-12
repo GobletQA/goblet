@@ -33,9 +33,9 @@ export const InputLabel = (props:TInputLabel) => {
     <WrapInputLabel
       sx={labelWrapSx}
       className={cls(
-        !labelSide && `gc-label-wrap`,
-        labelInline && `gc-label-wrap-inline`,
-        labelSide && `gc-label-wrap-side`
+        !labelSide && `gb-label-wrap`,
+        labelInline && `gb-label-wrap-inline`,
+        labelSide && `gb-label-wrap-side`
       )}
     >
       <InputLabelShared
@@ -43,9 +43,9 @@ export const InputLabel = (props:TInputLabel) => {
         sx={labelSx}
         shrink={false}
         className={cls(
-          !labelSide && `gc-input-label`,
-          labelInline && `gc-label-inline`,
-          labelSide && `gc-label-side`
+          !labelSide && `gb-input-label`,
+          labelInline && `gb-label-inline`,
+          labelSide && `gb-label-side`
         )}
       >
         {label}

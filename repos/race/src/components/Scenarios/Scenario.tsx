@@ -78,7 +78,7 @@ export const Scenario = (props:TScenario) => {
       show={Boolean(scenario)}
       type={ESectionType.scenario}
       id={`${parent.uuid}-scenario`}
-      className={`gr-scenario-section`}
+      className={`gb-scenario-section`}
       label={(
         <SectionHeader
           content={sectionTitle}
@@ -92,7 +92,7 @@ export const Scenario = (props:TScenario) => {
             editing={editingTitle}
             onClick={toggleEditTitle}
             type={ESectionType.scenario}
-            key={`gr-scenario-edit-title-action`}
+            key={`gb-scenario-edit-title-action`}
           />
         ),
         (
@@ -100,28 +100,28 @@ export const Scenario = (props:TScenario) => {
             Icon={StepAddIcon}
             onClick={onAddScenarioStep}
             type={ESectionType.step}
-            key={`gr-scenario-add-step-action`}
+            key={`gb-scenario-add-step-action`}
           />
         ),
         (
           <DeleteAct
             onClick={onRemoveScenario}
             type={ESectionType.scenario}
-            key={`gr-scenario-remove-action`}
+            key={`gb-scenario-remove-action`}
           />
         ),
         (
           <CopyAct
             onClick={onCopyScenario}
             type={ESectionType.scenario}
-            key={`gr-rule-copy-scenario-action`}
+            key={`gb-rule-copy-scenario-action`}
           />
         ),
         (
           <PlayAct
             onClick={onPlay}
             type={ESectionType.scenario}
-            key={`gr-background-play-action`}
+            key={`gb-background-play-action`}
           />
         ),
       ]}

@@ -26,7 +26,7 @@ export const FeaturesList = (props:TFeaturesList) => {
   return (
     <Features
       component='nav'
-      className='gr-features-list'
+      className='gb-features-list'
       aria-labelledby='nested-list-subheader'
     >
       <FeatureItemRender

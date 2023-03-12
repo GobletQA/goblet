@@ -18,8 +18,8 @@ export type TExpressionMenu = TMenuContextRef & {
 export const ExpressionMenu = (props:TExpressionMenu) => {
 
   const {
-    id="gr-expressions-menu",
-    parentId="gc-expressions-menu-button"
+    id="gb-expressions-menu",
+    parentId="gb-expressions-menu-button"
   } = props
 
   const {

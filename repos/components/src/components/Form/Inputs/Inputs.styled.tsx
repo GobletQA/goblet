@@ -18,7 +18,7 @@ const sharedInputStyle = `
 // ----- Auto-Input Component ---- //
 
 export const AutoContainer = styled(Box)`
-  &.gc-auto-input-container-side {
+  &.gb-auto-input-container-side {
     position: relative;
     margin-top: ${gutter.margin.px};
   }
@@ -48,7 +48,7 @@ export const AutoInputContainer = styled(Box)`
 
 export const Auto = styled(Autocomplete)`
 
-  &.gc-auto-input-side {
+  &.gb-auto-input-side {
     width: 100%;
     padding: 0px;
 
@@ -63,7 +63,7 @@ export const Auto = styled(Autocomplete)`
 
   }
   
-  &.gc-auto-input {
+  &.gb-auto-input {
     padding-top: 0px;
     margin-bottom: 0px;
     padding-bottom: 0px;
@@ -97,7 +97,7 @@ export const Auto = styled(Autocomplete)`
 export const AutoTextInput = styled(TextField)(({ theme }) => {
   const colors = theme?.palette?.colors
   return `
-    &.gc-auto-input-text-side {
+    &.gb-auto-input-text-side {
 
       width: 100%;
 
@@ -161,7 +161,7 @@ export const InputContainer = styled(Box)(({ theme }) => {
   const colors = theme?.palette?.colors
   return `
 
-    &.gc-input-container-side {
+    &.gb-input-container-side {
       margin-top: ${gutter.margin.px};
       width: 100%;
       display: flex;
@@ -257,19 +257,19 @@ export const ToggleGrp = styled(ToggleButtonGroup)``
 
 // ----- Shared Input Label Component ---- //
 export const InputLabelShared = styled(MuiInputLabel)`
-  &.gc-label-side {
+  &.gb-label-side {
     padding: 0px;
   }
 `
 
 export const WrapInputLabel = styled(Box)`
 
-  &.gc-label-wrap {
+  &.gb-label-wrap {
     margin-bottom: ${gutter.margin.qpx};
   }
   
 
-  &.gc-label-wrap-side {
+  &.gb-label-wrap-side {
     min-width: 80px;
     margin-right: 0px;
   }

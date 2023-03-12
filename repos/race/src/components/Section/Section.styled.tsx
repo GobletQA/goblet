@@ -7,9 +7,11 @@ import MuiStack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 import {
   Span,
+  dims,
   gutter,
   Button,
   IconButton,
+  DragIndicatorIcon,
   Dropdown as DropdownComp
 } from '@gobletqa/components'
 
@@ -39,14 +41,15 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 }
 
 export const Container = styled(Paper)`
+  cursor: pointer;
   margin-top: ${gutter.margin.hpx};
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-editor-background);
 
-  & > .gc-dropdown {
+  & > .gb-dropdown {
     padding: 20px;
 
-    & > .MuiButtonBase-root.gc-dropdown-header {
+    & > .MuiButtonBase-root.gb-dropdown-header {
       margin-top: -20px;
       margin-left: -20px;
       margin-right: -20px;
@@ -54,7 +57,7 @@ export const Container = styled(Paper)`
       transition: margin-bottom 300ms ease;
     }
     
-    & > .MuiButtonBase-root.gc-dropdown-header.Mui-expanded {
+    & > .MuiButtonBase-root.gb-dropdown-header.Mui-expanded {
       margin-bottom: 0px;
     }
 
@@ -85,7 +88,7 @@ export const SectionActs = styled(Box)`
 
 export const Dropdown = styled(DropdownComp)`
 
-  & .gc-dropdown-header {
+  & .gb-dropdown-header {
     flex-direction: row-reverse;
   }
 
@@ -96,7 +99,7 @@ export const Dropdown = styled(DropdownComp)`
   &.Mui-expanded > .MuiAccordionSummary-root {
     background-color: var(--goblet-list-focusBackground);
 
-    & .gr-section-actions {
+    & .gb-section-actions {
       opacity: 1;
     }
 
@@ -112,7 +115,7 @@ export const Dropdown = styled(DropdownComp)`
     &:hover {
       background-color: var(--goblet-list-focusBackground);
       
-      & .gr-section-actions {
+      & .gb-section-actions {
         opacity: 1;
       }
     }
@@ -128,7 +131,7 @@ export const Dropdown = styled(DropdownComp)`
     padding-left: ${gutter.padding.hpx};
   }
 
-  & .gr-section-dropdown-step .MuiCollapse-root {
+  & .gb-section-dropdown-step .MuiCollapse-root {
     padding-left: 0px;
   }
 
@@ -156,4 +159,17 @@ export const SectionHeaderText = styled(Span)`
   padding: ${gutter.padding.qpx};
   padding-left: ${gutter.padding.hpx};
   color: var(--goblet-editor-foreground);
+`
+
+export const SectionDragHandleContainer = styled(Box)`
+  z-index: 1;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  display: flex !important;
+  height: ${dims.dropdown.header.px};
+  width: 24px;
+`
+
+export const SectionDragHandleIcon = styled(DragIndicatorIcon)`
 `

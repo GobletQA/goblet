@@ -1,4 +1,8 @@
-import type { MouseEventHandler, KeyboardEventHandler } from 'react'
+import type {
+  MutableRefObject,
+  MouseEventHandler,
+  KeyboardEventHandler
+} from 'react'
 
 import { useDndRefs } from './useDndRefs'
 import { useShowHide } from './useShowHide'
@@ -11,8 +15,9 @@ export type THDndHooks = {
   index: number
   onDrop: TOnDrop
   showHandle?: boolean
-  onClick?: MouseEventHandler<HTMLDivElement>
   onKeyDown?: KeyboardEventHandler<Element>
+  onClick?: MouseEventHandler<HTMLDivElement>
+  dragHandleRef?: MutableRefObject<HTMLElement>
 }
 
 export const useDndHooks = (props:THDndHooks) => {
@@ -24,7 +29,7 @@ export const useDndHooks = (props:THDndHooks) => {
     onKeyDown,
   } = props
 
-  const dndRefs = useDndRefs()
+  const dndRefs = useDndRefs(props)
 
   const dragHooks = useDragHooks({
     index,

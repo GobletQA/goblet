@@ -31,7 +31,7 @@ export const sharedInputStyles = {
 } as CSSProperties
 
 export const sharedAutoInputStyles = {
-  [`&.gc-auto-input`]: {
+  [`&.gb-auto-input`]: {
     [`& .MuiInputBase-root`]: {
       height: input.hpx,
 

@@ -41,7 +41,7 @@ export const Sections = (props:TSections) => {
           type={type}
           onClick={onAdd}
           parentId={parent.uuid}
-          className={`gr-section-add-item gr-section-add-${type}`}
+          className={`gb-section-add-item gb-section-add-${type}`}
         />
       ) || null}
     </>

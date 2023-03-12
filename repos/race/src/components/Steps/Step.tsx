@@ -1,3 +1,4 @@
+import type { MutableRefObject } from 'react'
 import type { TStepAst } from '@ltipton/parkin'
 import type { TStepParentAst } from '@GBR/types'
 
@@ -22,6 +23,7 @@ import { DeleteAct } from '../Actions/Delete'
 export type TStep = {
   step: TStepAst
   parent: TStepParentAst
+  dragHandleRef?: MutableRefObject<HTMLDivElement>
   onRemove?:(stepId:string, parentId?:string) => void
   onChange?:(updated:TStepAst, old?:TStepAst) => void
 }
@@ -34,7 +36,12 @@ const styles = {
 }
 
 export const Step = (props:TStep) => {
-  const { onChange, onRemove, parent } = props
+  const {
+    parent,
+    onChange,
+    onRemove,
+    dragHandleRef,
+  } = props
   const { step, definition } = useMatchStepToDef(props)
   const { def, expressions } = useExpressions(props, { definition })
 
@@ -52,16 +59,17 @@ export const Step = (props:TStep) => {
         formatHeader={false}
         initialExpand={true}
         type={ESectionType.step}
-        className={`gr-step-section`}
+        dragHandleRef={dragHandleRef}
+        className={`gb-step-section`}
         label={(<StepHeader step={step} />)}
-        id={`gr-${parent.uuid}-step-${step.uuid}`}
+        id={`gb-${parent.uuid}-step-${step.uuid}`}
         actions={[
           (
             <DeleteAct
               sx={styles.action}
               onClick={onRemoveStep}
               type={ESectionType.step}
-              key={`gr-step-remove-step-action`}
+              key={`gb-step-remove-step-action`}
             />
           ),
           (
@@ -69,7 +77,7 @@ export const Step = (props:TStep) => {
               sx={styles.action}
               onClick={() => {}}
               type={ESectionType.step}
-              key={`gr-step-copy-step-action`}
+              key={`gb-step-copy-step-action`}
             />
           ),
           (
@@ -77,12 +85,12 @@ export const Step = (props:TStep) => {
               sx={styles.action}
               onClick={() => {}}
               type={ESectionType.step}
-              key={`gr-step-play-step-action`}
+              key={`gb-step-play-step-action`}
             />
           ),
         ].filter(Boolean)}
       >
-        <StepContent className='gr-step-content' >
+        <StepContent className='gb-step-content' >
           <StepGrid
             container
             spacing={1}

@@ -1,12 +1,13 @@
-import type { CSSProperties, ReactNode } from 'react'
 import type { TSectionAction } from './SectionActions'
 import type { TStepParentAst, TScenarioParentAst } from '@GBR/types'
+import type { CSSProperties, ReactNode, MutableRefObject } from 'react'
 
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
 import { SectionActions } from './SectionActions'
 import { Dropdown, Container } from './Section.styled'
 import { wordCaps, cls, isStr } from '@keg-hub/jsutils'
+import { SectionDragHandle } from './SectionDragHandle'
 
 
 export type TSection = {
@@ -28,6 +29,7 @@ export type TSection = {
   headerContentSx?:CSSProperties
   onAdd?:(...args:any[]) => void
   parent:TScenarioParentAst|TStepParentAst
+  dragHandleRef?: MutableRefObject<HTMLDivElement>
 }
 
 
@@ -49,6 +51,7 @@ export const Section = (props:TSection) => {
     className,
     label=type,
     dropdownSx,
+    dragHandleRef,
     initialExpand,
     headerContentSx,
     formatHeader=true
@@ -56,11 +59,18 @@ export const Section = (props:TSection) => {
 
   return (
     <Container
-      id={id || uuid}
       sx={sx}
       elevation={0}
-      className={cls(`gr-section-dropdown-container`, className)}
+      id={id || uuid}
+      className={cls(`gb-section-dropdown-container`, className)}
     >
+      {dragHandleRef && (
+        <SectionDragHandle
+          type={type}
+          dragHandleRef={dragHandleRef}
+        />
+      )}
+    
       { show
           ? (
               <Dropdown
@@ -73,7 +83,7 @@ export const Section = (props:TSection) => {
                 id={`${parent.uuid}-${id || uuid}`}
                 actions={<SectionActions actions={actions} />}
                 headerText={isStr(label) && formatHeader ? wordCaps(label) : label}
-                className={cls(`gr-section-dropdown`, `gr-section-dropdown-${type}`)}
+                className={cls(`gb-section-dropdown`, `gb-section-dropdown-${type}`)}
               >
                 {children}
               </Dropdown>
@@ -83,7 +93,7 @@ export const Section = (props:TSection) => {
                 type={type}
                 onClick={onAdd}
                 parentId={parent.uuid as string}
-                className={`gr-section-add-item gr-section-add-${type}`}
+                className={`gb-section-add-item gb-section-add-${type}`}
               />
             ) || null
       }

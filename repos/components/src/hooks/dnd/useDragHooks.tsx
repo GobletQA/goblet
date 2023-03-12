@@ -2,13 +2,13 @@ import type { RefObject } from 'react'
 import type { TOnDrop } from './useDndHooks'
 
 import { useCallback } from 'react'
-import { DndDraggingCls, DndHoverCls } from '@GBC/constants/values'
+import { DndDraggingCls } from '@GBC/constants/values'
 
 export type THDragHooks = {
   index: number
   onDrop: TOnDrop
-  dropIndicator: HTMLHRElement
   dragDivRef: RefObject<HTMLDivElement>
+  dropIndicatorRef:RefObject<HTMLHRElement>
 }
 
 export const useDragHooks = (props:THDragHooks) => {
@@ -17,7 +17,7 @@ export const useDragHooks = (props:THDragHooks) => {
     index,
     onDrop,
     dragDivRef,
-    dropIndicator
+    dropIndicatorRef
   } = props
 
   const onDropBefore = useCallback(
@@ -41,7 +41,8 @@ export const useDragHooks = (props:THDragHooks) => {
 
   const onDragEnter = useCallback((ev: React.DragEvent) => {
     ev.preventDefault()
-    ev.currentTarget.appendChild(dropIndicator)
+    dropIndicatorRef.current && 
+      ev.currentTarget.appendChild(dropIndicatorRef.current)
   }, [])
 
   const onDragOver = useCallback((ev: React.DragEvent) => {
@@ -50,16 +51,17 @@ export const useDragHooks = (props:THDragHooks) => {
 
   const onDragLeave = useCallback((ev: React.DragEvent) => {
     ev.preventDefault()
-    dropIndicator.remove()
+    dropIndicatorRef.current?.remove()
   }, [])
 
   const onDragStart = useCallback(
     (ev: React.DragEvent) => {
-      ev.dataTransfer.setData('text/plain', index.toString())
       ev.dataTransfer.dropEffect = 'move'
       ev.dataTransfer.effectAllowed = 'move'
+      ev.dataTransfer.setData('text/plain', index.toString())
+
       const dimensions = ev.currentTarget.getBoundingClientRect()
-      ev.dataTransfer.setDragImage(ev.currentTarget, dimensions.width / 2, 0)
+      ev.dataTransfer.setDragImage(ev.currentTarget, dimensions.width / 3, 0)
 
       dragDivRef.current?.classList.add(DndDraggingCls)
     },

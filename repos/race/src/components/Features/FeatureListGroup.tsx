@@ -38,7 +38,7 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
   }, [])
 
   return (
-    <FeaturesGroup className='gr-features-list-group'>
+    <FeaturesGroup className='gb-features-list-group'>
       <Dropdown
         bodySx={styles.body}
         ExpandIcon={ExpandIcon}

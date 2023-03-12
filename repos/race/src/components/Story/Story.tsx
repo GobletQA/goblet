@@ -46,12 +46,12 @@ export const Story = (props:TMeta) => {
       initialExpand={true}
       type={ESectionType.story}
       id={`${parent.uuid}-story`}
-      className='gr-story-section'
+      className='gb-story-section'
       actions={[
         <DeleteAct
           onClick={onRemove}
           type={ESectionType.story}
-          key={`gr-story-remove-action`}
+          key={`gb-story-remove-action`}
         />
       ]}
     >

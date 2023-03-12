@@ -36,7 +36,7 @@ export const SectionActions = (props:TSectionActions) => {
   return (
     <SectionActs
       sx={sx}
-      className={cls(`gr-section-actions`, className)}
+      className={cls(`gb-section-actions`, className)}
     >
       {actions?.map(meta => {
        
@@ -64,7 +64,7 @@ export const SectionActions = (props:TSectionActions) => {
               children={action.children}
               iconProps={action.iconProps}
               key={action.key || action.id || action.label}
-              className={cls(`gr-section-action`, action.className)}
+              className={cls(`gb-section-action`, action.className)}
             />
           </Tooltip>
         )

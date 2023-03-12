@@ -40,7 +40,7 @@ export const Meta = (props:TMeta) => {
       label={`general`}
       initialExpand={true}
       type={ESectionType.feature}
-      className='gr-feature-general-container'
+      className='gb-feature-general-container'
       dropdownSx={{ marginBottom: `0px !important` }}
       actions={[
         (
@@ -48,12 +48,12 @@ export const Meta = (props:TMeta) => {
             onClick={addStory}
             type={ESectionType.story}
             title={`Add User Story`}
-            key={`gr-general-add-story-action`}
+            key={`gb-general-add-story-action`}
           />
         ),
         (
           <ToggleMetaAct
-            key={`gr-general-toggle-general`}
+            key={`gb-general-toggle-general`}
           />
         )
       ]}

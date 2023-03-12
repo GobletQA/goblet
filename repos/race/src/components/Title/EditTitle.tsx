@@ -49,7 +49,7 @@ export const EditTitle = (props:TEditTitle) => {
       margin={margin}
       padding={padding}
       sx={[styles.content, sx] as CSSProperties[]}
-      className={cls(`gr-${props.type}}-editing-title`, className)}
+      className={cls(`gb-${props.type}}-editing-title`, className)}
     >
       <Title autoFocus={autoFocus} {...rest} />
     </Box>

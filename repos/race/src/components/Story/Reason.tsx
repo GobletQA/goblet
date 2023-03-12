@@ -48,7 +48,7 @@ export const Reason = (props:TReason) => {
   const merged = useMergeReason(reason)
 
   return (
-    <MetaInputContainer className='gr-feature-reason gr-meta-input-container' >
+    <MetaInputContainer className='gb-feature-reason gb-meta-input-container' >
 
       <Input
         value={merged}
@@ -58,7 +58,7 @@ export const Reason = (props:TReason) => {
         variant='standard'
         placeholder='So that ...'
         id={`${parent.uuid}-reason`}
-        className='gr-feature-reason'
+        className='gb-feature-reason'
         label={capitalize(EMetaType.reason)}
       />
 

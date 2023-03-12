@@ -87,19 +87,19 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
   return (
     <InputContainer
       className={cls(
-        `gc-input-root gc-input-container`,
+        `gb-input-root gb-input-container`,
         `editing-input`
       )}
     >
       <TextInputControl>
-        <TextInputContainer className='gc-text-input-container' >
+        <TextInputContainer className='gb-text-input-container' >
           {label && (
-            <TextLabelWrap className='gc-text-input-label-wrap' >
+            <TextLabelWrap className='gb-text-input-label-wrap' >
               <TextInputLabel
                 htmlFor={id}
                 sx={labelSx}
                 shrink={false}
-                className={cls('gc-text-input-label', className && `${className}-input-label`)}
+                className={cls('gb-text-input-label', className && `${className}-input-label`)}
               >
                 {label}
               </TextInputLabel>
@@ -131,7 +131,7 @@ export const InlineInput = (props:TInlineInput<HTMLInputElement | HTMLTextAreaEl
             helperText={error || helperText}
             defaultValue={props.value || ``}
             placeholder={placeholder || "Enter some text..."}
-            className={cls('gc-text-input', className && `${className}-input`)}
+            className={cls('gb-text-input', className && `${className}-input`)}
           />
         </TextInputContainer>
       </TextInputControl>

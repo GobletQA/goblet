@@ -1,7 +1,11 @@
-import type { CSSProperties, MouseEventHandler, KeyboardEventHandler } from 'react'
+import type {
+  MutableRefObject,
+  MouseEventHandler,
+  KeyboardEventHandler
+} from 'react'
 
 import './Dnd.styled.tsx'
-import {DragIndicatorIcon} from '../Icons'
+import { DragIndicatorIcon } from '../Icons'
 import { useDndHooks } from '@GBC/hooks/dnd/useDndHooks'
 import {
   DragButton,
@@ -10,19 +14,17 @@ import {
 } from './Dnd.styled'
 
 
-type TDnd = {
-  index: number
-  showHandle?: boolean
-  children: React.ReactNode
-  onClick?: MouseEventHandler<HTMLDivElement>
+export type TDndCallbacks = {
   onKeyDown?: KeyboardEventHandler<Element>
+  onClick?: MouseEventHandler<HTMLDivElement>
   onDrop: (droppedIndex: number, index: number) => Promise<void> | void
 }
 
-const dragBtnStyle: CSSProperties = {
-  left: `18px`,
-  display: `none`,
-  position: `absolute`,
+export type TDnd = TDndCallbacks & {
+  index: number
+  showHandle?: boolean
+  children: React.ReactNode
+  dragHandleRef?: MutableRefObject<HTMLElement>
 }
 
 export const Dnd = (props: TDnd) => {
@@ -32,6 +34,7 @@ export const Dnd = (props: TDnd) => {
     onClick,
     children,
     showHandle = false,
+    dragHandleRef:pDragHandleRef
   } = props
 
   const {
@@ -44,14 +47,14 @@ export const Dnd = (props: TDnd) => {
     onDragEnter,
     onDropAfter,
     onDropBefore,
-    onButtonFocus,
-    onButtonKeyDown,
+    onDragHandleFocus,
     onContainerKeyDown,
+    onDragHandleKeyDown,
     dragDivRef,
-    dragButtonRef,
+    dragHandleRef,
   } = useDndHooks(props)
 
-  if (showHandle && dragButtonRef?.current) dragButtonRef.current.style.display = 'inherit'
+  if (showHandle && dragHandleRef?.current) dragHandleRef.current.style.display = 'inherit'
 
   return (
     <>
@@ -61,7 +64,7 @@ export const Dnd = (props: TDnd) => {
           onDragOver={onDragOver}
           onDragEnter={onDragEnter}
           onDragLeave={onDragLeave}
-          className={`gb-drop-container`}
+          className={`gb-dnd-drop-container`}
         />
       )}
       <DragContainer
@@ -70,25 +73,26 @@ export const Dnd = (props: TDnd) => {
         draggable='true'
         onClick={onClick}
         onDragEnd={onDragEnd}
-        onFocus={onButtonFocus}
         onMouseEnter={onShowDiv}
         onMouseLeave={onHideDiv}
         onDragStart={onDragStart}
+        onFocus={onDragHandleFocus}
         onKeyDown={onContainerKeyDown}
-        className={`gb-drag-container`}
+        className={`gb-dnd-drag-container`}
       >
-        <DragButton
-          role='button'
-          tabIndex={0}
-          onBlur={onHideDiv}
-          ref={dragButtonRef}
-          style={dragBtnStyle}
-          aria-label='drag button'
-          onKeyDown={onButtonKeyDown}
-          className={`gb-drag-button`}
-        >
-          <DragIndicatorIcon />
-        </DragButton>
+        {!pDragHandleRef && (
+          <DragButton
+            tabIndex={0}
+            role='button'
+            onBlur={onHideDiv}
+            ref={dragHandleRef}
+            aria-label='drag button'
+            onKeyDown={onDragHandleKeyDown}
+            className={`gb-dnd-drag-handle`}
+          >
+            <DragIndicatorIcon className={`gb-drag-indicator-icon`} />
+          </DragButton>
+        )}
         {children}
       </DragContainer>
       <DropContainer
@@ -96,7 +100,7 @@ export const Dnd = (props: TDnd) => {
         onDragOver={onDragOver}
         onDragEnter={onDragEnter}
         onDragLeave={onDragLeave}
-        className={`gb-drop-container`}
+        className={`gb-dnd-drop-container`}
       />
     </>
   )
