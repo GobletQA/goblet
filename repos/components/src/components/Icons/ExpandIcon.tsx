@@ -1,14 +1,14 @@
 import type { CSSProperties } from 'react'
 
 import { useMemo } from 'react'
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj, flatArr } from '@keg-hub/jsutils'
 import { ExpandMoreIcon } from '@GBC/components/Icons'
 
 export type TExpandIcon = {
   expand?:boolean
   className?:string
-  sx?:CSSProperties
   noIconTransform?:boolean
+  sx?:CSSProperties|CSSProperties[]
 }
 
 export const ExpandIcon = (props:TExpandIcon) => {
@@ -31,7 +31,7 @@ export const ExpandIcon = (props:TExpandIcon) => {
   return (
     <ExpandMoreIcon
       className={className}
-      sx={[{transition: `transform 300ms`}, sx as CSSProperties, style]}
+      sx={flatArr<CSSProperties>([{transition: `transform 300ms`}, sx as CSSProperties, style])}
     />
   )
 }

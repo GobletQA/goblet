@@ -15,6 +15,7 @@ import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { copyScenario } from '@GBR/actions/scenario/copyScenario'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
+import { updateScenarioStepPos } from '@GBR/actions/scenario/updateScenarioStepPos'
 import { updateScenario } from '@GBR/actions/scenario/updateScenario'
 
 export type TScenario = {
@@ -73,8 +74,8 @@ export const Scenario = (props:TScenario) => {
   return (
     <Section
       parent={parent}
-      initialExpand={true}
       formatHeader={false}
+      initialExpand={false}
       show={Boolean(scenario)}
       type={ESectionType.scenario}
       id={`${parent.uuid}-scenario`}
@@ -142,8 +143,10 @@ export const Scenario = (props:TScenario) => {
         showAdd={false}
         parent={scenario}
         onAdd={onAddScenarioStep}
+        onMove={updateScenarioStepPos}
         onChange={onChangeScenarioStep}
         onRemove={onRemoveScenarioStep}
+        parentType={ESectionType.scenario}
       />
       {isNamed && (
         <EmptySteps

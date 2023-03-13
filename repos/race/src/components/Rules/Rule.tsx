@@ -98,7 +98,7 @@ export const Rule = (props:TRule) => {
   return (
     <Section
       parent={rule}
-      initialExpand={true}
+      initialExpand={false}
       show={Boolean(rule)}
       type={ESectionType.rule}
       className='gb-rule-section'

@@ -12,21 +12,17 @@ import {
 // Need to investigate
 
 export const DragContainer = styled(Box)`
-  display: flex;
-  cursor: pointer;
-  border-radius: 8px;
-  position: relative;
-  margin-left: -40px;
-  flex-flow: row nowrap;
-  padding: 4px 8px 4px 20px;
+
+  background-color: transparent;
 
   &.${DndDraggingCls} {
 
-    cursor: grabbing;
-    background-color: ${colors.gray10};
+    opacity: 0.5;
+    cursor: grabbing !important;
+    background-color: ${colors.gray00};
 
     & .${DndDragHandleCls} {
-      cursor: grab;
+      cursor: grabbing !important;
     }
   }
 

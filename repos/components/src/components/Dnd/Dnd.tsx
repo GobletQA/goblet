@@ -3,8 +3,8 @@ import type {
   MouseEventHandler,
   KeyboardEventHandler
 } from 'react'
+import type { TOnDrop } from '@GBC/hooks/dnd/useDndHooks'
 
-import './Dnd.styled.tsx'
 import { DragIndicatorIcon } from '../Icons'
 import { useDndHooks } from '@GBC/hooks/dnd/useDndHooks'
 import {
@@ -15,15 +15,17 @@ import {
 
 
 export type TDndCallbacks = {
+  onDrop: TOnDrop
   onKeyDown?: KeyboardEventHandler<Element>
   onClick?: MouseEventHandler<HTMLDivElement>
-  onDrop: (droppedIndex: number, index: number) => Promise<void> | void
 }
 
 export type TDnd = TDndCallbacks & {
   index: number
+  data?:string
   showHandle?: boolean
   children: React.ReactNode
+  dragImagePos?:[number, number]
   dragHandleRef?: MutableRefObject<HTMLElement>
 }
 

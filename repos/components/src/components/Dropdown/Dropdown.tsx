@@ -4,6 +4,7 @@ import type { TransitionProps } from '@mui/material/transitions'
 
 import { forwardRef, useState, useCallback } from 'react'
 
+import { colors } from '@GBC/theme'
 import { useInline } from '@GBC/hooks'
 import Slide from '@mui/material/Slide'
 import { emptyObj, cls } from '@keg-hub/jsutils'
@@ -32,6 +33,10 @@ export type TDropdown = Omit<AccordionProps, `children`> & {
 }
 
 type TTransition = TransitionProps & { children: React.ReactElement<any, any> }
+
+const styles = {
+  icon: { color: colors.gray08 }
+}
 
 const Transition = forwardRef((props: TTransition, ref: React.Ref<unknown>) => (
   <Slide
@@ -109,9 +114,9 @@ export const Dropdown = (props:TDropdown) => {
             : (
                 // @ts-ignore
                 <ExpandIcon
-                  sx={expandIconSx}
                   expand={expanded}
                   noIconTransform={true}
+                  sx={[expandIconSx, styles.icon] as CSSProperties[]}
                   className={cls(`gb-dropdown-expand-icon`, expanded && `expanded`)}
                 />
               )

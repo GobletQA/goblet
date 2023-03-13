@@ -75,7 +75,7 @@ export const Background = (props:TBackground) => {
   return (
     <Section
       parent={parent}
-      initialExpand={true}
+      initialExpand={false}
       show={Boolean(background)}
       type={ESectionType.background}
       className='gb-background-section'
@@ -145,6 +145,7 @@ export const Background = (props:TBackground) => {
         parent={background}
         onChange={onStepChange}
         onRemove={onRemoveBackgroundStep}
+        parentType={ESectionType.background}
       />
 
       {isNamed && (

@@ -26,8 +26,10 @@ export type TSection = {
   actions?:TSectionAction[]
   headerSx?:CSSProperties
   dropdownSx?:CSSProperties
+  dragHandleSx?:CSSProperties
   headerContentSx?:CSSProperties
   onAdd?:(...args:any[]) => void
+  dragHandleContainerSx?:CSSProperties
   parent:TScenarioParentAst|TStepParentAst
   dragHandleRef?: MutableRefObject<HTMLDivElement>
 }
@@ -51,10 +53,12 @@ export const Section = (props:TSection) => {
     className,
     label=type,
     dropdownSx,
+    dragHandleSx,
     dragHandleRef,
     initialExpand,
     headerContentSx,
-    formatHeader=true
+    formatHeader=true,
+    dragHandleContainerSx,
   } = props
 
   return (
@@ -67,7 +71,9 @@ export const Section = (props:TSection) => {
       {dragHandleRef && (
         <SectionDragHandle
           type={type}
+          sx={dragHandleSx}
           dragHandleRef={dragHandleRef}
+          containerSx={dragHandleContainerSx}
         />
       )}
     

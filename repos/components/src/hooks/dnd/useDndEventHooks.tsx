@@ -4,6 +4,7 @@ import type { MutableRefObject, KeyboardEventHandler } from 'react'
 import { useCallback } from 'react'
 
 export type THDndEventHooks = {
+  data?:string
   index:number
   onDrop: TOnDrop
   onHideDiv: () => void
@@ -16,6 +17,7 @@ export type THDndEventHooks = {
 const onHandleKeyDown = (props:THDndEventHooks) => {
   const {
     index,
+    data,
     onDrop,
     dragHandleRef
   } = props
@@ -30,12 +32,12 @@ const onHandleKeyDown = (props:THDndEventHooks) => {
 
       if (keyE.key === 'ArrowUp') {
         if (index === 0) return
-        onDrop(index - 1, index)
+        onDrop(index, index - 1, data, data)
       }
       else if (keyE.key === 'ArrowDown')
-        onDrop(index + 1, index)
+        onDrop(index, index + 1, data, data)
     },
-    [dragHandleRef, index, onDrop]
+    [data, dragHandleRef, index, onDrop]
   )
 }
 

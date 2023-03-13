@@ -9,12 +9,19 @@ import { useShowHide } from './useShowHide'
 import { useDragHooks } from './useDragHooks'
 import { useDndEventHooks } from './useDndEventHooks'
 
-export type TOnDrop = (droppedIndex: number, index: number) => Promise<void> | void
+export type TOnDrop = (
+  oldIdx: number,
+  newIdx: number,
+  oldData?:string,
+  newData?:string
+) => Promise<void> | void
 
 export type THDndHooks = {
+  data?:string
   index: number
   onDrop: TOnDrop
   showHandle?: boolean
+  dragImagePos?:[number, number]
   onKeyDown?: KeyboardEventHandler<Element>
   onClick?: MouseEventHandler<HTMLDivElement>
   dragHandleRef?: MutableRefObject<HTMLElement>
@@ -23,6 +30,7 @@ export type THDndHooks = {
 export const useDndHooks = (props:THDndHooks) => {
 
   const {
+    data,
     index,
     onDrop,
     showHandle = false,
@@ -32,6 +40,7 @@ export const useDndHooks = (props:THDndHooks) => {
   const dndRefs = useDndRefs(props)
 
   const dragHooks = useDragHooks({
+    data,
     index,
     onDrop,
     ...dndRefs,
@@ -43,6 +52,7 @@ export const useDndHooks = (props:THDndHooks) => {
   })
 
   const keyDownHooks = useDndEventHooks({
+    data,
     index,
     onDrop,
     onKeyDown,

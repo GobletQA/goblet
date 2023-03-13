@@ -6,7 +6,7 @@ import { Section } from '../Section'
 import { StepHeader } from './StepHeader'
 import { Expressions } from '../Expressions'
 import { SelectAction } from './SelectAction'
-import { useInline } from '@gobletqa/components'
+import { colors, useInline } from '@gobletqa/components'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
 import { useExpressions } from '@GBR/hooks/useExpressions'
 import { useMatchStepToDef } from '@GBR/hooks/steps/useMatchStepToDef'
@@ -32,6 +32,14 @@ const styles = {
   section: {
     marginTop: `0px`
   },
+  header: {
+  },
+  dragHandle: {
+    color: colors.gray08,
+    [`&:hover`]: {
+      color: colors.purple10,
+    }
+  },
   action: {}
 }
 
@@ -50,17 +58,19 @@ export const Step = (props:TStep) => {
   const onRemoveStep = useInline(() => onRemove?.(step.uuid, parent.uuid))
 
   return (
-    <StepContainer variant="outlined">
+    <StepContainer className='gb-step-container' variant="outlined">
       <Section
         show={true}
         parent={parent}
         noToggle={false}
         sx={styles.section}
         formatHeader={false}
-        initialExpand={true}
+        initialExpand={false}
+        headerSx={styles.header}
         type={ESectionType.step}
         dragHandleRef={dragHandleRef}
         className={`gb-step-section`}
+        dragHandleSx={styles.dragHandle}
         label={(<StepHeader step={step} />)}
         id={`gb-${parent.uuid}-step-${step.uuid}`}
         actions={[

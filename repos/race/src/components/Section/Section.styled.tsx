@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles'
 import {
   Span,
   dims,
+  colors,
   gutter,
   Button,
   IconButton,
@@ -41,7 +42,6 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 }
 
 export const Container = styled(Paper)`
-  cursor: pointer;
   margin-top: ${gutter.margin.hpx};
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-editor-background);
@@ -90,6 +90,17 @@ export const Dropdown = styled(DropdownComp)`
 
   & .gb-dropdown-header {
     flex-direction: row-reverse;
+  }
+
+  & .gb-dropdown-expand-icon {
+
+    &:hover {
+      color: ${colors.green10};
+    }
+    
+    &.expanded {
+      color: ${colors.green10};
+    }
   }
 
   &.Mui-expanded:last-of-type {
@@ -163,13 +174,16 @@ export const SectionHeaderText = styled(Span)`
 
 export const SectionDragHandleContainer = styled(Box)`
   z-index: 1;
+  left: 5px;
+  width: 24px;
   position: absolute;
   align-items: center;
   justify-content: center;
   display: flex !important;
+  background-color: transparent;
   height: ${dims.dropdown.header.px};
-  width: 24px;
 `
 
 export const SectionDragHandleIcon = styled(DragIndicatorIcon)`
+  background-color: transparent;
 `

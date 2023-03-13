@@ -1,7 +1,7 @@
-import type { MutableRefObject } from 'react'
+import type { MutableRefObject, CSSProperties } from 'react'
 
 import { ESectionType } from '@GBR/types'
-import { DndDragHandleCls } from '@gobletqa/components'
+import { Tooltip, DndDragHandleCls } from '@gobletqa/components'
 
 import {
   SectionDragHandleIcon,
@@ -9,28 +9,41 @@ import {
 } from './Section.styled'
 
 export type TSectionDragHandle = {
+  sx?:CSSProperties
   type:ESectionType
+  containerSx?:CSSProperties
   dragHandleRef?: MutableRefObject<HTMLDivElement>
 }
 
 export const SectionDragHandle = (props:TSectionDragHandle) => {
   const {
+    sx,
     type,
+    containerSx,
     dragHandleRef
   } = props
 
   return (
-    <SectionDragHandleContainer
-      tabIndex={0}
-      role='button'
-      ref={dragHandleRef}
-      aria-label={`${type} section drag button`}
-      className={`${DndDragHandleCls} ${type}-section-drag-handle section-drag-handle`}
+    <Tooltip
+      loc='bottom'
+      describeChild
+      enterDelay={500}
+      title={`Click and drag to rearrange the step position`}
     >
-      <SectionDragHandleIcon
-        className={`${type}-section-drag-icon section-drag-icon`}
-      />
-    </SectionDragHandleContainer>
+      <SectionDragHandleContainer
+        tabIndex={0}
+        role='button'
+        sx={containerSx}
+        ref={dragHandleRef}
+        aria-label={`${type} section drag button`}
+        className={`${DndDragHandleCls} ${type}-section-drag-handle section-drag-handle`}
+      >
+        <SectionDragHandleIcon
+          sx={sx}
+          className={`${type}-section-drag-icon section-drag-icon`}
+        />
+      </SectionDragHandleContainer>
+    </Tooltip>
   )
   
   
