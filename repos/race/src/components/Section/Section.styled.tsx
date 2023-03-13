@@ -45,6 +45,8 @@ export const Container = styled(Paper)`
   margin-top: ${gutter.margin.hpx};
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-editor-background);
+  border: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+  // border: none;
 
   & > .gb-dropdown {
     padding: 20px;
@@ -108,7 +110,9 @@ export const Dropdown = styled(DropdownComp)`
   }
 
   &.Mui-expanded > .MuiAccordionSummary-root {
-    background-color: var(--goblet-list-focusBackground);
+    // background-color: var(--goblet-list-focusBackground);
+    // background-color: var(--goblet-tab-inactiveBackground);
+    background-color: ${colors.white00};
 
     & .gb-section-actions {
       opacity: 1;
@@ -124,7 +128,10 @@ export const Dropdown = styled(DropdownComp)`
     padding: ${gutter.padding.hpx} ${gutter.padding.hpx};
 
     &:hover {
-      background-color: var(--goblet-list-focusBackground);
+      // background-color: var(--goblet-list-focusBackground);
+      // background-color: var(--goblet-tab-inactiveBackground);
+      background-color: ${colors.white00};
+      
       
       & .gb-section-actions {
         opacity: 1;

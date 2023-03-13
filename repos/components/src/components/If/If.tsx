@@ -1,7 +1,8 @@
-// @ts-nocheck
-import type { ComponentType, ReactNode } from 'react'
-import { isValidFuncComp, isForwardRefComp } from '@GBC/utils/components/isValidFuncComp'
-import { exists, isObj, emptyObj } from '@keg-hub/jsutils'
+import type { ComponentType, ReactNode, ReactElement } from 'react'
+
+import { cloneElement } from 'react'
+import { emptyObj, isStr } from '@keg-hub/jsutils'
+import { isReactElement, isValidFuncComp } from '@GBC/utils/components/isValidFuncComp'
 
 export type TIf = {
   if?:any
@@ -10,7 +11,7 @@ export type TIf = {
   exists?:any
   children?:ReactNode
   props?:Record<any, any>
-  Comp?:ComponentType<any>|ReactNode
+  Comp?:ComponentType<any>|ReactNode|ReactElement
 }
 
 export const If = ({
@@ -26,8 +27,8 @@ export const If = ({
   return !check
     ? null
     : !isValidFuncComp(Comp)
-      ? Comp
-      : isForwardRefComp(Comp) && Comp?.type?.render
-        ? Comp?.type?.render?.(props || emptyObj, props?.ref)
-        : (<Comp {...props} />)
+      ? Comp as ReactElement
+      : isReactElement(Comp)
+        ? cloneElement(Comp as ReactElement, props || emptyObj)
+        : (<Comp {...props} />) as ReactElement
 }

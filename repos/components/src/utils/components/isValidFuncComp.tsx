@@ -1,4 +1,4 @@
-import type { ComponentType, ElementType } from 'react'
+import type { ComponentType, ElementType, ReactElement } from 'react'
 
 import { isValidElement } from 'react'
 import { isObj, isFunc } from '@keg-hub/jsutils'
@@ -9,14 +9,35 @@ import { isObj, isFunc } from '@keg-hub/jsutils'
  */
 export const isValidFuncComp = (Component:any): Component is ElementType<any> => {
   return (!isValidElement<any>(Component) && isFunc<ComponentType<any>>(Component))
-    || (isObj(Component) && (`render` in Component) && (`$$typeof` in Component))
-    || (isObj(Component) && (`type` in Component) && (`render` in Component.type) && (`$$typeof` in Component.type))
+    || (
+          isObj(Component)
+            && (`render` in Component)
+            && (`$$typeof` in Component)
+      )
+    || (
+          isObj(Component)
+            && (`type` in Component)
+            && (`render` in Component.type)
+            && (`$$typeof` in Component.type)
+      )
 }
+
+
+export const isReactElement = (Component:any): Component is ReactElement => {
+  return isForwardRefComp(Component)
+    || (
+        isObj(Component)
+          && (`type` in Component)
+          && (`render` in Component.type)
+          && (`$$typeof` in Component.type)
+      )
+}
+
 
 /**
  * Validates if the passed in Component is wrapped in React.forwardRef
  */
-export const isForwardRefComp = (Component:any) => {
+export const isForwardRefComp = (Component:any): Component is ReactElement => {
   return Component?.$$typeof?.toString?.() === `Symbol(react.element)`
 }
 

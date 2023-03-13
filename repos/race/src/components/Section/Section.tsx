@@ -64,8 +64,9 @@ export const Section = (props:TSection) => {
   return (
     <Container
       sx={sx}
-      elevation={0}
+      elevation={1}
       id={id || uuid}
+      variant={`outlined`}
       className={cls(`gb-section-dropdown-container`, className)}
     >
       {dragHandleRef && (

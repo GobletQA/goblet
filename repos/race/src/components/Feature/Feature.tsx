@@ -17,13 +17,16 @@ import { FeatureHeader } from './FeatureHeader'
 import { EmptyFeatureUUID } from '@GBR/constants'
 
 import { EmptyFeature } from './EmptyFeature'
+import { FeatureItems } from './FeatureItems'
+
 import { useBounceScroll } from '@GBR/hooks/useBounceScroll'
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { createFeature } from '@GBR/actions/feature/createFeature'
-import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
+import { useFeatureItems } from '@GBR/hooks/features/useFeatureItems'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
 import { updateScenario } from '@GBR/actions/scenario/updateScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
+import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
 import { updateScenarioStep } from '@gobletqa/race/actions/scenario/updateScenarioStep'
@@ -42,6 +45,7 @@ const styles:Record<string, StyleObj|CSSProperties> = {
     overflowY: `auto`,
     padding: gutter.padding.px,
     paddingTop: `0px`,
+    backgroundColor: `var(--goblet-editor-background)`,
 
     scrollbarWidth: `none`,
     [`::-webkit-scrollbar-track`]: {
@@ -72,6 +76,8 @@ const styles:Record<string, StyleObj|CSSProperties> = {
   }
 }
 
+const featureKeys = FeatureItems.map(item => item.featureKey)
+
 export const Feature = (props:TFeature) => {
   const { featuresRef } = props
 
@@ -93,6 +99,7 @@ export const Feature = (props:TFeature) => {
 
   const contentRef = useRef<HTMLElement>()
   const containerRef = useRef<HTMLElement>()
+  const featureItems = useFeatureItems()
 
   // useBounceScroll({
   //   contentRef,
@@ -126,7 +133,7 @@ export const Feature = (props:TFeature) => {
             { feature.uuid !== EmptyFeatureUUID
                 ? (
                     <>
-                      <FeatureHeader />
+                      <FeatureHeader items={featureItems} />
                       <Meta
                         parent={feature}
                         featuresRef={featuresRef}
@@ -161,10 +168,16 @@ export const Feature = (props:TFeature) => {
                           onRemoveStep={removeScenarioStep}
                         />
                       ) || null}
-                      <EmptyFeature
-                        parent={feature}
-                        sx={!isEmpty ? styles.notEmpty : undefined}
-                      />
+                      {
+                        isEmpty
+                        ? (
+                            <EmptyFeature
+                              parent={feature}
+                              items={featureItems}
+                            />
+                          )
+                        : null
+                      }
                     </>
                   )
                 : (

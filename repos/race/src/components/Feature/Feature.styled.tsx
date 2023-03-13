@@ -9,7 +9,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 
 import { styled } from '@mui/material/styles'
-import { gutter, H3 } from '@gobletqa/components'
+import { gutter, colors, H3 } from '@gobletqa/components'
 
 export const FeatureHeaderContainer = styled(Box)`
   top: 0;
@@ -24,30 +24,43 @@ export const FeatureHeaderContainer = styled(Box)`
   margin-right: -${gutter.margin.px};
   background-color: var(--goblet-editor-background);
   border-bottom: 2px solid var(--goblet-list-focusBackground);
+  min-height: 40px;
+  max-height: 40px;
 `
 
 export const FeatureActionsContainer = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
 `
 export const FeatureActionBtn = styled(Button)`
   padding: 4px 8px;
   width: auto;
   min-width: initial;
+  border-radius: 0px;
+  border-left: 1px solid var(--goblet-sideBar-border);
+  
+  &:first-of-type {
+    border-left: none;
+  }
   
   > span {
     margin-left: auto;
     margin-right: auto;
   }
-  
+
+  & .MuiButton-startIcon {
+    margin-right: ${gutter.margin.qpx};
+  }
 `
 
 
 export const HeaderText = styled(H3)`
   flex-grow: 1;
   font-size: 16px;
-  padding-left: 12px;
+  padding-left: 20px;
 `
 
 export const EmptyFeatureGrid = styled(Grid)``

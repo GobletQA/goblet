@@ -1,9 +1,10 @@
 import type { ReactNode, ComponentType } from 'react'
-import type { ESectionType } from '@GBR/types'
 import type { TMenuItem } from '@gobletqa/components'
+
+import { ESectionType } from '@GBR/types'
 import { capitalize } from '@keg-hub/jsutils'
-import { FeatureActionBtn } from './Feature.styled'
 import { Tooltip } from '@gobletqa/components'
+import { FeatureActionBtn } from './Feature.styled'
 
 export type TFeatureAction = Omit<TMenuItem, `onCloseMenu`|`closeMenu`|`onClick`|`Icon`> & {
   type: ESectionType,
@@ -17,21 +18,22 @@ export type TFeatureAction = Omit<TMenuItem, `onCloseMenu`|`closeMenu`|`onClick`
 export const FeatureAction = (props:TFeatureAction) => {
   
   const {
-    text,
     type,
     Icon,
     variant,
     onClick,
-    children,
   } = props
 
-  // Clean up buttons to look better without text
-  // Remove drop-down menu
+  const typeCap = capitalize(type)
+
+  const title = type === ESectionType.general
+    ? (<>Show the <b>{typeCap}</b> section of the Feature</>)
+    : (<>Add a <b>{typeCap}</b> section to the Feature</>)
 
   return (
     <Tooltip
       loc='bottom'
-      title={text}
+      title={title}
       describeChild
       enterDelay={500}
     >
@@ -40,10 +42,10 @@ export const FeatureAction = (props:TFeatureAction) => {
         startIcon={<Icon />}
         variant={variant || 'text'}
         className={`gb-feature-sub-action-${type}`}
-      />
+      >
+        {typeCap}
+      </FeatureActionBtn>
     </Tooltip>
   )
   
 }
-      // {capitalize(type)}
-      // {children || text || `Add ${capitalize(type)}`}

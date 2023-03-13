@@ -11,6 +11,7 @@ import {
   colors,
   StepAddIcon,
   CardPlusIcon,
+  NotePlusIcon,
   TextboxPlusIcon,
   PlaylistPlusIcon,
 } from '@gobletqa/components'
@@ -22,7 +23,7 @@ export type TFeatureItem = {
   description?:ReactNode
   Icon: ComponentType<any>
   onClick:(...args:any[]) => any
-  featureKey:keyof TRaceFeature | `steps`
+  featureKey:keyof TRaceFeature | `steps` | `general`
 }
 
 const GreenText = (props:ComponentProps<typeof Span>) => (
@@ -35,6 +36,22 @@ const GreenText = (props:ComponentProps<typeof Span>) => (
   />
 )
 
+export const GeneralItem:TFeatureItem = {
+  text: `General`,
+  onClick: noOp,
+  Icon: NotePlusIcon,
+  featureKey: `general`,
+  key: ESectionType.general,
+  type: ESectionType.general,
+  description: (
+    <Span>
+      <b>General</b> - used to define a general information about the Feature and its purpose.
+      <br/>
+      &nbsp;&nbsp;• This section is commonly used to define a <GreenText>User Story</GreenText> which sets direction for the Steps within the Feature.
+    </Span>
+  ),
+}
+
 export const ScenarioItem:TFeatureItem = {
   text: `Add Scenario`,
   onClick: addScenario,
@@ -45,7 +62,6 @@ export const ScenarioItem:TFeatureItem = {
   description: (
     <Span>
       <b>Scenario</b> - a specific example of how the feature should behave in a particular situation. Defined by a list of steps that describe the process to achieve the desired outcome. A Scenario is a key section of a feature file, and is used to ensure it works as expected.
-      <br/>
       <br/>
       &nbsp;&nbsp;• The <GreenText>Scenario</GreenText> keyword is synonymous with the keyword <GreenText>Example</GreenText>.
     </Span>
@@ -61,7 +77,9 @@ export const RuleItem:TFeatureItem = {
   type: ESectionType.rule,
   description: (
     <Span>
-      <b>Rule</b> - an optional section used to group scenarios under a single theme or purpose. It can provide additional context and information about its parent feature and or child scenarios. A rule can be through of as a group of scenarios that illustrate a particular outcome within a feature.
+      <b>Rule</b> - an optional section used to group scenarios under a single theme or purpose. It can provide additional context and information about its parent Feature and or child Scenarios.
+      <br/>
+      &nbsp;&nbsp;• A <GreenText>Rule</GreenText> can be through of as a group of Scenarios that illustrate a particular outcome within a Feature.
     </Span>
   )
 }
@@ -75,7 +93,9 @@ export const BackgroundItem:TFeatureItem = {
   type: ESectionType.background,
   description: (
     <Span>
-      <b>Background</b> - an optional section used to define a list of one or more steps. The steps of a Background are executed prior to each Scenario defined in a Feature. This allows for defining common steps in a single location which helps to reduce duplication between Scenarios.
+      <b>Background</b> - used to define a list of one or more Steps that are executed prior to each Scenario.
+      <br/>
+      &nbsp;&nbsp;• This allows for defining common Steps of Scenarios in a single location and reduce duplication.
     </Span>
   )
 }
@@ -91,14 +111,14 @@ export const StepItem:TFeatureItem = {
     <Span>
       <b>Step</b> - a condition to be set, or an action to be performed in order to achieve the desired outcome of a Scenario. Steps are the building blocks of a Scenario and provide a clear, concise description of the behavior being tested.
       <br/>
-      <br/>
-      A Step starts with a keyword <GreenText>Given</GreenText>, <GreenText>When</GreenText>, or <GreenText>Then</GreenText> and is followed by a natural language description of the action or condition.
+      &nbsp;&nbsp;• A Step starts with a keyword <GreenText>Given</GreenText>, <GreenText>When</GreenText>, or <GreenText>Then</GreenText> and is followed by a natural language description of the action or condition.
     </Span>
   )
 }
 
 
 export const FeatureItems:TFeatureItem[] = [
+  GeneralItem,
   BackgroundItem,
   RuleItem,
   ScenarioItem

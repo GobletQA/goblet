@@ -3,7 +3,6 @@ import type { CSSProperties, ComponentProps, ForwardedRef } from 'react'
 import { forwardRef } from 'react'
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
-import { gutter } from '@gobletqa/components'
 
 import { EmptyBox, EmptyContainer } from './EmptyItem.styled'
 
@@ -12,8 +11,8 @@ const styles:Record<string, CSSProperties> = {
   add: {
     width: `100%`,
     minWidth: `205px`,
-    paddingBottom: gutter.padding.hpx,
-    borderBottom: `1px solid var(--goblet-input-border)`,
+    // paddingBottom: gutter.padding.hpx,
+    // borderBottom: `1px solid var(--goblet-input-border)`,
   }
 }
 

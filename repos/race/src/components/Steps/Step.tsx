@@ -58,7 +58,11 @@ export const Step = (props:TStep) => {
   const onRemoveStep = useInline(() => onRemove?.(step.uuid, parent.uuid))
 
   return (
-    <StepContainer className='gb-step-container' variant="outlined">
+    <StepContainer
+      raised={false}
+      variant="outlined"
+      className='gb-step-container'
+    >
       <Section
         show={true}
         parent={parent}

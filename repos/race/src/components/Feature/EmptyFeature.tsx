@@ -1,10 +1,10 @@
 import type { CSSProperties } from 'react'
 import type { TRaceFeature } from '@GBR/types'
-
+import type { TFeatureItem } from './FeatureItems'
 
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
-import { FeatureItems } from './FeatureItems'
+import { useSettings } from '@GBR/contexts'
 import { isArr, exists } from '@keg-hub/jsutils'
 import { Tooltip, gutter, Text, If } from '@gobletqa/components'
 
@@ -18,6 +18,7 @@ import {
 export type TEmptyFeature = {
   sx?:CSSProperties
   parent:TRaceFeature
+  items:TFeatureItem[]
 }
 
 const styles:Record<string, CSSProperties> = {
@@ -37,7 +38,8 @@ const styles:Record<string, CSSProperties> = {
 }
 
 export const EmptyFeature = (props:TEmptyFeature) => {
-  const { parent, sx } = props
+  const { items, parent, sx } = props
+  const { settings, toggleMeta } = useSettings()
 
   return (
     <EmptyFeatureGrid
@@ -47,27 +49,37 @@ export const EmptyFeature = (props:TEmptyFeature) => {
     >
       <EmptyList>
 
-        {FeatureItems.map(({ description, ...item}) => {
+        {items.map(({ description, ...item}) => {
           const section = parent[item.featureKey as keyof TRaceFeature]
+          
+          const generalActive = item.featureKey === ESectionType.general && settings.displayMeta
+          
+          
 
-          return exists(section) && (!isArr(section) || section.length)
+          return generalActive || exists(section) && (!isArr(section) || section.length)
             ? null
             : (
-                <Tooltip
-                  describeChild
-                  key={item.type||item.text} title={`Add ${item.type || item.text}`}
-                >
-                  <EmptyItem sx={styles.item} >
+                  <EmptyItem
+                    key={item.type||item.text}
+                    sx={styles.item}
+                    className={`feature-${item.type}-empty-item`}
+                  >
+                    <Tooltip
+                      describeChild
+                      title={`Add ${item.type || item.text} section to the current Feature`}
+                    >
+                      <AddItem
+                        {...item}
+                        variant='text'
+                        sx={styles.add}
+                        parentId={parent.uuid}
+                        type={ESectionType.background}
+                      />
+                     </Tooltip>
 
-                    <AddItem
-                      {...item}
-                      variant='text'
-                      sx={styles.add}
-                      parentId={parent.uuid}
-                      type={ESectionType.background}
-                    />
-
-                    <EmptyItemTextContainer>
+                    <EmptyItemTextContainer
+                      className={`feature-${item.type}-empty-text`}
+                    >
                       <If check={description}>
                         <Text>
                           {description}
@@ -76,7 +88,6 @@ export const EmptyFeature = (props:TEmptyFeature) => {
                     </EmptyItemTextContainer>
 
                   </EmptyItem>
-                </Tooltip>
               )
           
         })}
