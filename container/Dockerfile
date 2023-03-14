@@ -35,7 +35,7 @@ RUN <<EOF
   yarn json:rm
   yarn json:repo-rm
   yarn config set network-timeout 600000
-  yarn install --frozen-lockfile
+  yarn install
 EOF
 # ---- End Stage ---- #
 

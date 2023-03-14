@@ -85,7 +85,7 @@ COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app/repos/screencast
 RUN yarn build:docker && \
-    yarn install --frozen-lockfile --production
+    yarn install --production
 # ---- End Stage ---- #
 
 # # ---- Run Stage ---- #

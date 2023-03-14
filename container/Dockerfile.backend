@@ -109,7 +109,7 @@ COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app/repos/backend
 RUN yarn build:goblet && \
     yarn build:docker && \
-    yarn install --frozen-lockfile --production
+    yarn install --production
 
 WORKDIR /goblet/app
 RUN <<EOF
