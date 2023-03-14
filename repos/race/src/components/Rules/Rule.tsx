@@ -13,9 +13,9 @@ import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { EmptyScenarios, Scenarios } from '../Scenarios'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 
-import { PlaylistPlusIcon, CardPlusIcon } from '@gobletqa/components'
 import { removeRule } from '@GBR/actions/rule/removeRule'
 import { addRuleScenario } from '@GBR/actions/rule/addRuleScenario'
+import { PlaylistPlusIcon, CardPlusIcon } from '@gobletqa/components'
 
 import { updateRule } from '@GBR/actions/rule/updateRule'
 import { EmptyBackground, Background } from '@GBR/components/Background'
@@ -34,6 +34,7 @@ import { updateRuleBackground } from '@gobletqa/race/actions/rule/updateRuleBack
 
 
 export type TRule = {
+  ruleId:string
   rule: TRuleAst
   parent:TRaceFeature
 }
@@ -48,7 +49,11 @@ const styles = {
 
 
 export const Rule = (props:TRule) => {
-  const { rule, parent } = props
+  const {
+    rule,
+    parent,
+    ruleId,
+  } = props
 
   const {
     isNamed,
@@ -93,16 +98,14 @@ export const Rule = (props:TRule) => {
     scenarioId,
     rule.uuid
   )
-  
 
   return (
     <Section
       parent={rule}
-      initialExpand={false}
+      id={ruleId}
       show={Boolean(rule)}
       type={ESectionType.rule}
       className='gb-rule-section'
-      id={`${parent.uuid}-rule-${rule.uuid}`}
       label={(
         <SectionHeader
           content={sectionTitle}

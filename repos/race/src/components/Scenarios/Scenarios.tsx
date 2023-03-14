@@ -4,6 +4,7 @@ import type { TScenarioAst, TStepAst } from '@ltipton/parkin'
 import { Sections } from '../Section'
 import { Scenario } from './Scenario'
 import { ESectionType } from '@GBR/types'
+import { generateId } from '@GBR/utils/helpers/generateId'
 
 export type TScenarios = {
   scenarios?:TScenarioAst[]
@@ -38,17 +39,19 @@ export const Scenarios = (props:TScenarios) => {
     >
     {
       scenarios?.map((scenario, idx) => {
+        const scenarioId = generateId(parent, scenario, ESectionType.scenario)
+
         return (
-          
           <Scenario
             parent={parent}
+            key={scenarioId}
             onRemove={onRemove}
             scenario={scenario}
             onChange={onChange}
             onAddStep={onAddStep}
+            scenarioId={scenarioId}
             onChangeStep={onChangeStep}
             onRemoveStep={onRemoveStep}
-            key={`${parent.uuid}-scenario-${scenario.uuid}`}
           />
         )
       })

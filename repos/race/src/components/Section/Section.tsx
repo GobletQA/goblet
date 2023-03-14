@@ -4,14 +4,14 @@ import type { CSSProperties, ReactNode, MutableRefObject } from 'react'
 
 import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
+import { useEditor } from '@GBR/contexts'
 import { SectionActions } from './SectionActions'
 import { Dropdown, Container } from './Section.styled'
 import { wordCaps, cls, isStr } from '@keg-hub/jsutils'
 import { SectionDragHandle } from './SectionDragHandle'
 
-
 export type TSection = {
-  id?:string
+  id:string
   uuid?:string
   show?:boolean
   label?:ReactNode
@@ -22,7 +22,6 @@ export type TSection = {
   Header?:ReactNode
   children:ReactNode
   formatHeader?:boolean
-  initialExpand?:boolean
   actions?:TSectionAction[]
   headerSx?:CSSProperties
   dropdownSx?:CSSProperties
@@ -55,17 +54,21 @@ export const Section = (props:TSection) => {
     dropdownSx,
     dragHandleSx,
     dragHandleRef,
-    initialExpand,
     headerContentSx,
     formatHeader=true,
     dragHandleContainerSx,
   } = props
 
+  const { expanded, updateExpanded } = useEditor()
+  const onChange = (expand:boolean) => {
+    expand !== expanded[id] && updateExpanded(id, expand)
+  }
+
   return (
     <Container
       sx={sx}
-      elevation={1}
-      id={id || uuid}
+      elevation={0}
+      id={id}
       variant={`outlined`}
       className={cls(`gb-section-dropdown-container`, className)}
     >
@@ -83,9 +86,10 @@ export const Section = (props:TSection) => {
               <Dropdown
                 sx={dropdownSx}
                 Header={Header}
+                onChange={onChange}
                 noToggle={noToggle}
                 headerSx={headerSx}
-                initialExpand={initialExpand}
+                expanded={expanded[id]}
                 headerContentSx={headerContentSx}
                 id={`${parent.uuid}-${id || uuid}`}
                 actions={<SectionActions actions={actions} />}

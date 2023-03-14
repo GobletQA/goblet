@@ -30,7 +30,7 @@ export const Meta = (props:TMeta) => {
   const onEditFeatureTitle = useEditFeatureTitle(props)
 
   // Always show if it's an empty feature without a title
-  if(parent.uuid !== EmptyFeatureUUID && !settings.displayMeta) return null
+  if(parent.uuid !== EmptyFeatureUUID && !settings?.displayMeta) return null
 
   return (
     <Section
@@ -38,7 +38,6 @@ export const Meta = (props:TMeta) => {
       parent={parent}
       id={parent.uuid}
       label={`general`}
-      initialExpand={true}
       type={ESectionType.feature}
       className='gb-feature-general-container'
       dropdownSx={{ marginBottom: `0px !important` }}

@@ -57,10 +57,10 @@ export const Advanced = (props:TAdvanced) => {
       className='gb-advanced-connect-container'
     >
       <Dropdown
+        expanded={false}
         disabled={disabled}
         transformIconOff={0}
         transformIconOn={180}
-        initialExpand={false}
         headerText={`Advanced`}
         headerSx={styles.header}
         expandIconSx={styles.expand}

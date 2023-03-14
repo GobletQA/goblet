@@ -12,6 +12,7 @@ import { StepAddIcon } from '@gobletqa/components'
 import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
+import { generateId } from '@GBR/utils/helpers/generateId'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 import { copyBackground } from '@GBR/actions/background/copyBackground'
 
@@ -71,15 +72,15 @@ export const Background = (props:TBackground) => {
     },
   })
 
+  const sectionId = generateId(parent, background, ESectionType.background)
 
   return (
     <Section
+      id={sectionId}
       parent={parent}
-      initialExpand={false}
       show={Boolean(background)}
       type={ESectionType.background}
       className='gb-background-section'
-      id={`${parent.uuid}-background-${background?.uuid || ''}`}
       label={(
         <SectionHeader
           content={' '}

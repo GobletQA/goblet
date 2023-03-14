@@ -71,7 +71,7 @@
     "@keg-hub/parse-config": "2.1.0",
     "@keg-hub/spawn-cmd": "0.3.2",
     "@kubernetes/client-node": "0.17.1",
-    "@ltipton/parkin": "2.1.1-alpha",
+    "@ltipton/parkin": "2.1.1-beta",
     "@monaco-editor/react": "4.3.1",
     "@mui/icons-material": "5.11.0",
     "@mui/material": "5.11.2",

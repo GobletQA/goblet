@@ -1,26 +1,26 @@
 import type { AccordionProps } from '@mui/material'
-import type { CSSProperties, ReactNode, ComponentType } from 'react'
 import type { TransitionProps } from '@mui/material/transitions'
+import type { CSSProperties, ReactNode, ComponentType, MutableRefObject } from 'react'
 
-import { forwardRef, useState, useCallback } from 'react'
+import { forwardRef, useRef, useState, useCallback, useEffect } from 'react'
 
 import { colors } from '@GBC/theme'
 import { useInline } from '@GBC/hooks'
 import Slide from '@mui/material/Slide'
-import { emptyObj, cls } from '@keg-hub/jsutils'
+import { emptyObj, cls, exists } from '@keg-hub/jsutils'
 import { HeaderText, Body, Container, Header } from './Dropdown.styled'
 import { ExpandIcon as ExpandIconComp } from '@GBC/components/Icons/ExpandIcon'
 
-export type TDropdown = Omit<AccordionProps, `children`> & {
+export type TDropdown = Omit<AccordionProps, `children`|`onChange`> & {
   id:string
   Body?:ReactNode
   Header?:ReactNode
   disabled?:boolean
   noToggle?:boolean
+  expanded?:boolean
   actions?:ReactNode
   children?:ReactNode
   headerText?:ReactNode
-  initialExpand?:boolean
   bodySx?:CSSProperties
   headerSx?:CSSProperties
   transformIconOn?:number
@@ -54,6 +54,7 @@ export const Dropdown = (props:TDropdown) => {
     headerSx,
     noToggle,
     disabled,
+    expanded,
     headerText,
     headerTextSx,
     expandIconSx,
@@ -64,30 +65,42 @@ export const Dropdown = (props:TDropdown) => {
     children=BodyComp,
     Header:HeaderComp,
     onChange:onChangeCB,
-    initialExpand=false,
     TransitionProps=emptyObj,
     ExpandIcon=ExpandIconComp,
     ...rest
   } = props
 
-  const [expanded, setExpanded] = useState<boolean>(initialExpand)
+  const inlineCB = useInline<(expanded: boolean) => void>(onChangeCB)
+  const [localExpand, setLocalExpanded] = useState<boolean>(expanded || false)
+  const firstExpandRef = useRef<boolean>(localExpand)
 
-  const inlineCB = useInline(onChangeCB)
-
-  const onChange = useCallback((event: React.SyntheticEvent, newExpanded: boolean) => {
+  const onChange = useCallback((_: any, newExpanded?: boolean) => {
     if(disabled || noToggle) return
 
-    const updated = !expanded
-    inlineCB?.(updated)
-    setExpanded(updated)
+    const updated = exists<boolean>(newExpanded) ? newExpanded : !localExpand
+
+    updated !== localExpand && setLocalExpanded(updated)
+    updated !== expanded && inlineCB?.(updated)
+
   }, [expanded, disabled, noToggle])
+
+  useEffect(() => {
+    const noOutsideUpdate = !exists<boolean>(expanded)
+      || firstExpandRef.current === expanded
+      || expanded === localExpand
+
+    if(noOutsideUpdate) return
+
+    firstExpandRef.current = expanded
+    onChange(emptyObj, expanded)
+  }, [expanded, localExpand])
 
   return (
     <Container
       elevation={0}
       square={true}
       onChange={onChange}
-      expanded={expanded}
+      expanded={localExpand}
       disableGutters={true}
       {...rest}
       className={cls(

@@ -1,5 +1,3 @@
-
-
 export type TSettingsState = {
   displayMeta?:boolean
 }

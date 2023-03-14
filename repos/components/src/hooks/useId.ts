@@ -1,9 +1,7 @@
-import { uuid, hashString } from '@keg-hub/jsutils'
 import { useEffect, useRef, useMemo } from 'react'
+import { shortId } from '@GBC/utils/components/shortId'
 
-const shortId = () => hashString(uuid())
-
-export const useId = () => {
+export const useId = (initId?:string) => {
   const id = useMemo(() => shortId(), [])
   const idRef = useRef<string>(id)
 

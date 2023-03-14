@@ -9,23 +9,24 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 
 import { styled } from '@mui/material/styles'
-import { gutter, colors, H3 } from '@gobletqa/components'
+import { gutter, dims, H3 } from '@gobletqa/components'
+const { race } = dims
 
 export const FeatureHeaderContainer = styled(Box)`
   top: 0;
-  z-index: 1;
   display: flex;
   position: sticky;
   align-items: center;
-  justify-content: space-between;
   margin-top: 0;
-  margin-bottom: 0;
+  z-index: ${race.header.zIdx};
+  justify-content: space-between;
   margin-left: -${gutter.margin.px};
   margin-right: -${gutter.margin.px};
+  margin-bottom: ${gutter.margin.hpx};
+  min-height: ${race.header.height.px};
+  max-height: ${race.header.height.px};
   background-color: var(--goblet-editor-background);
   border-bottom: 2px solid var(--goblet-list-focusBackground);
-  min-height: 40px;
-  max-height: 40px;
 `
 
 export const FeatureActionsContainer = styled(Box)`

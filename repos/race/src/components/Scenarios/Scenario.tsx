@@ -15,10 +15,11 @@ import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { copyScenario } from '@GBR/actions/scenario/copyScenario'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
-import { updateScenarioStepPos } from '@GBR/actions/scenario/updateScenarioStepPos'
 import { updateScenario } from '@GBR/actions/scenario/updateScenario'
+import { updateScenarioStepPos } from '@GBR/actions/scenario/updateScenarioStepPos'
 
 export type TScenario = {
+  scenarioId: string
   scenario: TScenarioAst
   parent: TScenarioParentAst
   onAdd?: (...args:any[]) => void
@@ -44,6 +45,7 @@ export const Scenario = (props:TScenario) => {
     onRemove,
     onChange,
     onAddStep,
+    scenarioId,
     onChangeStep,
     onRemoveStep,
   } = props
@@ -63,8 +65,9 @@ export const Scenario = (props:TScenario) => {
     },
   })
 
+
   const onPlay = () => {}
-  
+
   const onCopyScenario = () => copyScenario(scenario)
   const onRemoveScenario = () => onRemove(scenario.uuid, parent.uuid)
   const onAddScenarioStep = () => onAddStep(scenario.uuid, parent.uuid)
@@ -73,12 +76,11 @@ export const Scenario = (props:TScenario) => {
 
   return (
     <Section
+      id={scenarioId}
       parent={parent}
       formatHeader={false}
-      initialExpand={false}
       show={Boolean(scenario)}
       type={ESectionType.scenario}
-      id={`${parent.uuid}-scenario`}
       className={`gb-scenario-section`}
       label={(
         <SectionHeader

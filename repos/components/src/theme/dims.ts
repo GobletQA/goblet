@@ -11,6 +11,7 @@ const divider = 1
 const headerH = 40
 const editorTabs = 40
 const sectionHeaderH = 40
+const raceEditorHeader = 40
 
 const defHeaderH = 35
 
@@ -86,6 +87,15 @@ export const dims = {
     openedTab: {
       height: editorTabs - 5,
       px: `${editorTabs - 5}px`,
+    }
+  },
+  race: {
+    header: {
+      zIdx: 5,
+      height: {
+        size: raceEditorHeader,
+        px: `${raceEditorHeader}px`
+      }
     }
   }
 }

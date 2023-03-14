@@ -43,7 +43,6 @@ export const Story = (props:TMeta) => {
       label={`story`}
       show={hasStory}
       sx={styles.section}
-      initialExpand={true}
       type={ESectionType.story}
       id={`${parent.uuid}-story`}
       className='gb-story-section'

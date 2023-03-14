@@ -7,7 +7,6 @@ import type { TRaceFeature } from '@GBR/types'
 import type {
   TWorldConfig,
   TRegisterOrAddStep,
-  TRegisterStepsList,
 } from '@ltipton/parkin'
 
 import { Parkin } from '@ltipton/parkin'
@@ -17,7 +16,7 @@ const PK  = new Parkin()
 
 export const init = async (
   world?:TWorldConfig,
-  steps?:TRegisterStepsList
+  steps?:TRegisterOrAddStep
 ) => PK.init(world, steps, false)
 
 export const getWorld = async () => PK.world

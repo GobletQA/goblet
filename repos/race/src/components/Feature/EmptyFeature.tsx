@@ -51,10 +51,7 @@ export const EmptyFeature = (props:TEmptyFeature) => {
 
         {items.map(({ description, ...item}) => {
           const section = parent[item.featureKey as keyof TRaceFeature]
-          
-          const generalActive = item.featureKey === ESectionType.general && settings.displayMeta
-          
-          
+          const generalActive = item.featureKey === ESectionType.general && settings?.displayMeta
 
           return generalActive || exists(section) && (!isArr(section) || section.length)
             ? null

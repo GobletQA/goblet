@@ -6,8 +6,9 @@ import { Section } from '../Section'
 import { StepHeader } from './StepHeader'
 import { Expressions } from '../Expressions'
 import { SelectAction } from './SelectAction'
-import { colors, useInline } from '@gobletqa/components'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
+import { colors, useInline } from '@gobletqa/components'
+import { usePropId } from '@GBR/hooks/features/usePropId'
 import { useExpressions } from '@GBR/hooks/useExpressions'
 import { useMatchStepToDef } from '@GBR/hooks/steps/useMatchStepToDef'
 import {
@@ -57,6 +58,8 @@ export const Step = (props:TStep) => {
   const onStepChange = useInline((updated:TStepAst) => onChange?.(updated, step))
   const onRemoveStep = useInline(() => onRemove?.(step.uuid, parent.uuid))
 
+  const sectionId = usePropId(parent, step, ESectionType.step)
+
   return (
     <StepContainer
       raised={false}
@@ -65,18 +68,17 @@ export const Step = (props:TStep) => {
     >
       <Section
         show={true}
+        id={sectionId}
         parent={parent}
         noToggle={false}
         sx={styles.section}
         formatHeader={false}
-        initialExpand={false}
         headerSx={styles.header}
         type={ESectionType.step}
         dragHandleRef={dragHandleRef}
         className={`gb-step-section`}
         dragHandleSx={styles.dragHandle}
         label={(<StepHeader step={step} />)}
-        id={`gb-${parent.uuid}-step-${step.uuid}`}
         actions={[
           (
             <DeleteAct

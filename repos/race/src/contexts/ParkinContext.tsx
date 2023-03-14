@@ -1,8 +1,7 @@
 import type {
   TWorldConfig,
-  TRegisterStepsList,
+  TRegisterOrAddStep,
 } from '@ltipton/parkin'
-
 
 // @ts-ignore
 import { deepMerge, iife } from '@keg-hub/jsutils'
@@ -19,7 +18,7 @@ import {
 export type TParkinProvider = {
   children:any
   world?:TWorldConfig
-  defs?:TRegisterStepsList
+  defs?:TRegisterOrAddStep
 }
 
 export type TUpdateWorld = (updated:TWorldConfig, replace:boolean) => void

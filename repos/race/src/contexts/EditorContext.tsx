@@ -12,15 +12,19 @@ import type {
 
 import {
   useMemo,
+  useState,
   useContext,
+  useCallback,
   createContext,
 } from 'react'
 
 import { useFeature } from './FeatureContext'
 import { MemoChildren } from '@gobletqa/components'
-import { noOpObj, emptyArr } from '@keg-hub/jsutils'
+import { emptyObj, emptyArr, exists } from '@keg-hub/jsutils'
 import { useFeatureCallbacks } from '@GBR/hooks/features/useFeatureCallbacks'
 
+export type TExpanded = Record<string, boolean>
+export type TOnExpandedCB =  (key:string, value:boolean) => void
 export type TEditorProvider = {
   children:any
   rootPrefix:string
@@ -37,10 +41,12 @@ export type TEditorProvider = {
 
 export type TEditorCtx = {
   rootPrefix:string
+  expanded:TExpanded
+  displayMeta?:boolean
   feature:TRaceFeature
   setFeature:TOnFeatureCB
-  displayMeta?:boolean
   updateFeature:TOnFeatureCB
+  updateExpanded:TOnExpandedCB
   menuContext?:TRaceContextMenu
 }
 
@@ -53,6 +59,27 @@ export const useMenuContext = (context?:keyof TRaceContextMenu) => {
     ? editor?.menuContext?.[context] || emptyArr as TRaceMenuItem[]
     : emptyArr as TRaceMenuItem[]
 }
+
+const useExpanded = () => {
+  const [expanded, setExpanded] = useState<TExpanded>({})
+
+  const updateExpanded = useCallback((key:string, value?:boolean) => {
+    const val = exists<boolean>(value)
+      ? value
+      : exists<boolean>(expanded[key])
+        ? !expanded[key]
+        : true
+
+    setExpanded({...expanded, [key]: val})
+  }, [expanded])
+
+  return {
+    expanded,
+    setExpanded,
+    updateExpanded
+  }
+}
+
 
 export const EditorProvider = (props:TEditorProvider) => {
   const {
@@ -91,19 +118,25 @@ export const EditorProvider = (props:TEditorProvider) => {
     setFeature:_setFeature,
   })
 
+  const {expanded, updateExpanded} = useExpanded()
+
   const editorCtx:TEditorCtx = useMemo(() => {
     return {
+      expanded,
       setFeature,
       rootPrefix,
       menuContext,
       updateFeature,
-      feature: (feature || noOpObj) as TRaceFeature,
+      updateExpanded,
+      feature: (feature || emptyObj) as TRaceFeature,
     }
   }, [
     feature,
+    expanded,
     setFeature,
     rootPrefix,
     updateFeature,
+    updateExpanded,
   ])
 
   return (

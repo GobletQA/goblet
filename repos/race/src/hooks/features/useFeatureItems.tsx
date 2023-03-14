@@ -16,11 +16,11 @@ export const useFeatureItems = () => {
       {
         ...GeneralItem,
         onClick: () => toggleMeta(),
-        Icon: settings.displayMeta ? NoteMinusIcon : NotePlusIcon,
-        text: settings.displayMeta ? `Hide General` : `Show General`,
+        Icon: settings?.displayMeta ? NoteMinusIcon : NotePlusIcon,
+        text: settings?.displayMeta ? `Hide General` : `Show General`,
       },
       ...FeatureItems.filter(item => item.type !== ESectionType.general)
     ] as TFeatureItem[]
     
-  }, [settings.displayMeta])
+  }, [settings?.displayMeta])
 }
