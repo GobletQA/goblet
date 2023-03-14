@@ -28,7 +28,7 @@
     "@emotion/react": "*",
     "@emotion/styled": "*",
     "@gobletqa/components": "*",
-    "@keg-hub/jsutils": "*",
+    "@keg-hub/jsutils": ">=9.6.1",
     "@monaco-editor/react": "4.3.1",
     "@mui/icons-material": "*",
     "@mui/lab": "*",

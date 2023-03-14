@@ -2251,25 +2251,15 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@keg-hub/args-parse@*", "@keg-hub/args-parse@9.0.0":
-  version "9.0.0"
-  resolved "https://registry.npmjs.org/@keg-hub/args-parse/-/args-parse-9.0.0.tgz#4525f33a8ccabb968fd8358bb23c49f4caf24c76"
-  integrity sha512-N7/98lGiZDWGbYAWz1Q/EvknrT4GywjQV9gGtxZco0JP2HJR/9rU3fP4Vl7ciGWLxIXikjt4N5t1j8g4rp6FbQ==
+"@keg-hub/args-parse@9.0.0", "@keg-hub/args-parse@>=10.0.0":
+  version "10.0.0"
+  resolved "https://registry.npmjs.org/@keg-hub/args-parse/-/args-parse-10.0.0.tgz#9a819f0d119b6da36bfd6301d1664b9673a51c48"
+  integrity sha512-/ijarHkbV39TuSTxzFHvPF1SgbZiEx3gm3jyyT0F7gCilEdO2ja0Rv/VzGruFxBhJmn5O8DH1+gN/JwzQNUOEA==
   dependencies:
-    "@keg-hub/ask-it" "*"
-    "@keg-hub/jsutils" "*"
+    "@keg-hub/jsutils" ">=9.6.1"
     app-root-path "3.0.0"
 
-"@keg-hub/ask-it@*":
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/@keg-hub/ask-it/-/ask-it-1.1.2.tgz#36708b17c3149d1693817ca3ba160dcbd999d6bd"
-  integrity sha512-i/KMYeNZGOA++LHRM0tsJ57pa2qaFyRMrDq9Q0zCilu3ET+gFBphrrQuzJB+03jA/HNpNUjNwNFc5XjkgfBbjA==
-  dependencies:
-    "@keg-hub/jsutils" "*"
-    colors "1.4.0"
-    inquirer "7.3.3"
-
-"@keg-hub/cli-utils@*", "@keg-hub/cli-utils@0.8.0-alpha":
+"@keg-hub/cli-utils@*", "@keg-hub/cli-utils@0.8.0-alpha", "@keg-hub/cli-utils@0.8.0-alpha1", "@keg-hub/cli-utils@>=0.8.0-alpha1":
   version "0.8.0-alpha"
   resolved "https://registry.npmjs.org/@keg-hub/cli-utils/-/cli-utils-0.8.0-alpha.tgz#a6d531f5d4dbb4a4626f8783ea0f8282230ed0df"
   integrity sha512-uxQI8WT3AoHMYEjlNHFM0K5pkWVJkiZw2datm0cxNF1ByS4veDXbd+3oayRKGRGzUkkZyufeVMxwdqSlr7Mr1w==
@@ -2283,12 +2273,12 @@
     esbuild "0.17.6"
     esbuild-register "3.4.2"
 
-"@keg-hub/jsutils@*", "@keg-hub/jsutils@9.5.2", "@keg-hub/jsutils@>=9.6.1":
-  version "9.5.2"
-  resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.5.2.tgz#ecfd36dd3b124af965905d53f8de3262ece566a4"
-  integrity sha512-B4b8AEDYjo2Mt/FLdy5P4NITHVP3E2CZYwb3u1UGN0cWUM2PJe7i3mpaKfD9y7STCLBlfuMl9adifnDH9N/pCQ==
+"@keg-hub/jsutils@*", "@keg-hub/jsutils@>=9.6.1":
+  version "9.6.1"
+  resolved "https://registry.npmjs.org/@keg-hub/jsutils/-/jsutils-9.6.1.tgz#ad30d539173d66b2315563995cfd22a4c1dc5197"
+  integrity sha512-/hkXhSRYGrQ76UIpwWO5ed+QRRCDx8zMEwCOnfFzwfCmGv9YijbfnJknUpkgitmhNdNSnfanJEzQdzDzOMOE2g==
 
-"@keg-hub/parse-config@*", "@keg-hub/parse-config@2.1.0":
+"@keg-hub/parse-config@>=2.1.0":
   version "2.1.0"
   resolved "https://registry.npmjs.org/@keg-hub/parse-config/-/parse-config-2.1.0.tgz#23fdcc5fc3d6573629701204cc732660b5b123bb"
   integrity sha512-6AZyINWm8S6oWSbUxwzSTZ1BBcXpne7BiDDreRdN2GJ3kU8dDfwd1cJvQtggo4p0KRMw8fTDgtMv7PjH0bFgVQ==
@@ -2299,7 +2289,7 @@
     js-yaml "3.14.1"
     write-yaml-file "4.2.0"
 
-"@keg-hub/spawn-cmd@*", "@keg-hub/spawn-cmd@0.3.2":
+"@keg-hub/spawn-cmd@*", "@keg-hub/spawn-cmd@0.3.2", "@keg-hub/spawn-cmd@>=0.3.2":
   version "0.3.2"
   resolved "https://registry.npmjs.org/@keg-hub/spawn-cmd/-/spawn-cmd-0.3.2.tgz#22c058ad62223be4cebd3a5f65ff770d64d00cda"
   integrity sha512-j3NgwuE6NYT01FApe+XpthsYh1pOy9zf95kre0Re5nVQboEWjIgk84qAg30ypi75gucll8wWUuVraHNCYT5FeA==
@@ -2342,7 +2332,7 @@
   dependencies:
     "@keg-hub/jsutils" ">=9.6.1"
 
-"@ltipton/parkin@*", "@ltipton/parkin@2.1.1-beta2":
+"@ltipton/parkin@2.1.1-beta2":
   version "2.1.1-beta2"
   resolved "https://registry.npmjs.org/@ltipton/parkin/-/parkin-2.1.1-beta2.tgz#c19473696a9aef9678e0c92efe50bde7bc4372de"
   integrity sha512-w19aWzfhMplg5EOdt0mS9zzedWG2tD5uZSPzpDfd+go6UJqJOisjUTiNoKnk10FAO8OFdSV60akLimaD9t7nBg==
@@ -4043,7 +4033,7 @@ colorette@^2.0.16:
   resolved "https://registry.npmjs.org/colorette/-/colorette-2.0.19.tgz#cdf044f47ad41a0f4b56b3a0d5b4e6e1a2d5a798"
   integrity sha512-3tlv/dIP7FWvj3BsbHrGLJ6l/oKh1O3TcgBqMn+yyCagOxc23fyzDS6HypQbgxWbkpDnf52p1LuR4eWDQ/K9WQ==
 
-colors@1.4.0, colors@^1.1.2:
+colors@^1.1.2:
   version "1.4.0"
   resolved "https://registry.npmjs.org/colors/-/colors-1.4.0.tgz#c50491479d4c1bdaed2c9ced32cf7c7dc2360f78"
   integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==
@@ -5749,25 +5739,6 @@ inquirer@6.5.2:
     rxjs "^6.4.0"
     string-width "^2.1.0"
     strip-ansi "^5.1.0"
-    through "^2.3.6"
-
-inquirer@7.3.3:
-  version "7.3.3"
-  resolved "https://registry.npmjs.org/inquirer/-/inquirer-7.3.3.tgz#04d176b2af04afc157a83fd7c100e98ee0aad003"
-  integrity sha512-JG3eIAj5V9CwcGvuOmoo6LB9kbAYT8HXffUl6memuszlwDC/qvFAJw49XJ5NROSFNPxp3iQg1GqkFhaY/CR0IA==
-  dependencies:
-    ansi-escapes "^4.2.1"
-    chalk "^4.1.0"
-    cli-cursor "^3.1.0"
-    cli-width "^3.0.0"
-    external-editor "^3.0.3"
-    figures "^3.0.0"
-    lodash "^4.17.19"
-    mute-stream "0.0.8"
-    run-async "^2.4.0"
-    rxjs "^6.6.0"
-    string-width "^4.1.0"
-    strip-ansi "^6.0.0"
     through "^2.3.6"
 
 inquirer@8.2.4:
@@ -8090,7 +8061,7 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-rxjs@^6.4.0, rxjs@^6.6.0:
+rxjs@^6.4.0:
   version "6.6.7"
   resolved "https://registry.npmjs.org/rxjs/-/rxjs-6.6.7.tgz#90ac018acabf491bf65044235d5863c4dab804c9"
   integrity sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==

@@ -33,10 +33,10 @@
     "http-proxy-middleware": "*"
   },
   "dependencies": {
-    "@keg-hub/cli-utils": "0.8.0-alpha1",
-    "@keg-hub/jsutils": "*",
-    "@keg-hub/parse-config": "*",
-    "@ltipton/parkin": "*",
+    "@keg-hub/cli-utils": ">=0.8.0-alpha1",
+    "@keg-hub/jsutils": ">=9.6.1",
+    "@keg-hub/parse-config": ">=2.1.0",
+    "@ltipton/parkin": "2.1.1-beta2",
     "@gobletqa/workflows": "*",
     "cookie-session": "2.0.0",
     "cors": "2.8.5",
