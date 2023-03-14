@@ -37,7 +37,7 @@
     "@gobletqa/conductor": "*",
     "@gobletqa/shared": "*",
     "@gobletqa/workflows": "*",
-    "@keg-hub/cli-utils": "*",
+    "@keg-hub/cli-utils": "0.8.0-alpha",
     "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "*",
     "@kubernetes/client-node": "*",
