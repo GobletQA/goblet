@@ -105,7 +105,7 @@
   },
   "dependencies": {
     "@keg-hub/args-parse": "*",
-    "@keg-hub/cli-utils": "0.8.0-alpha",
+    "@keg-hub/cli-utils": "0.8.0-alpha1",
     "@keg-hub/jsutils": "*",
     "@keg-hub/parse-config": "*",
     "@ltipton/parkin": "*",

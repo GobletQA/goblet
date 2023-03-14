@@ -18,7 +18,7 @@
     "@emotion/react": "*",
     "@emotion/styled": "*",
     "@gobletqa/shared": "*",
-    "@keg-hub/cli-utils": "0.8.0-alpha",
+    "@keg-hub/cli-utils": "0.8.0-alpha1",
     "@keg-hub/jsutils": "*",
     "@monaco-editor/react": "4.3.1",
     "@mui/icons-material": "*",
