@@ -101,13 +101,17 @@ export const EditorProvider = (props:TEditorProvider) => {
     setFeature:_setFeature
   } = useFeature()
 
+  const {expanded, updateExpanded} = useExpanded()
+
   const {
     setFeature,
     updateFeature,
   } = useFeatureCallbacks({
     feature,
+    expanded,
     rootPrefix,
     featuresRef,
+    updateExpanded,
     setFeatureRefs,
     onFeatureClose,
     updateEmptyTab,
@@ -118,7 +122,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     setFeature:_setFeature,
   })
 
-  const {expanded, updateExpanded} = useExpanded()
+  
 
   const editorCtx:TEditorCtx = useMemo(() => {
     return {

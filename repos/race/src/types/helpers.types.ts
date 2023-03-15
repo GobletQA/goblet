@@ -8,7 +8,6 @@ export type TFeaturesRef = MutableRefObject<TRaceFeatures>
 export type TSetFeatureRefs = (features:TRaceFeatures) => void
 export type TSetFeatureGroups = Dispatch<SetStateAction<TRaceFeatures | undefined>>
 
-
 export type TOnFeatureCBRef = MutableRefObject<TOnFeatureCB>
 export type TOnReturnFeatureCBRef = MutableRefObject<TOnReturnFeatureCB>
 export type TFeatureCB = (feature: TRaceFeature) => void
@@ -16,3 +15,18 @@ export type TOnFeatureCB = (feature?:TRaceFeature, ...rest:any[]) => void
 export type TOnReturnFeatureCB = (feature?:TRaceFeature, ...rest:any[]) => TRaceFeature|undefined
 export type TSetFeature = Dispatch<SetStateAction<TRaceFeature | undefined>>
 export type TOnAddClick = (evt:SyntheticEvent, parentId?:string, type?:ESectionType) => void
+
+export enum EUpdateType {
+  add = `add`,
+  ADD = `add`,
+  Add = `add`,
+  remove = `remove`,
+  REMOVE = `remove`,
+  Remove = `remove`,
+  update = `update`,
+  UPDATE = `update`,
+  Update = `update`,
+  replace = `replace`,
+  REPLACE = `replace`,
+  Replace = `replace`,
+}

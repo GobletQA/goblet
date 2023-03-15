@@ -127,7 +127,7 @@ export const Step = (props:TStep) => {
                 onChange={onStepChange}
                 expressions={expressions}
               />
-            ) || step.step && (<NoExpMatch />)}
+            ) || step.step.trim() && (<NoExpMatch />)}
           </StepGrid>
         </StepContent>
       </Section>

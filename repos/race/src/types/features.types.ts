@@ -1,9 +1,13 @@
 import type {
+  TStepAst,
   TRuleAst,
   TFeatureAst,
   TScenarioAst,
   TBackgroundAst,
 } from '@ltipton/parkin'
+
+import type { EUpdateType } from './helpers.types'
+import type { ESectionType } from './section.types'
 
 export enum EMetaType {
   tags=`tags`,
@@ -28,13 +32,40 @@ export type TRaceFeatureGroup = {
   uuid:string
   path:string
   title:string
-  items: TRaceFeatures
+  items:TRaceFeatures
 }
 
-export type TRaceFeature = Omit<TFeatureAst, `uuid`> & {
+export type TRaceSteps = Omit<TStepAst, `uuid`|`index`> & {
+  index:number
+  uuid:string
+}
+
+export type TRaceBackground = Omit<TBackgroundAst, `uuid`|`index`|`steps`> & {
+  index:number
+  uuid: string
+  steps:TRaceSteps[]
+}
+
+export type TRaceScenario = Omit<TScenarioAst, `uuid`|`index`|`steps`> & {
+  index:number
+  uuid: string
+  steps: TRaceSteps[]
+}
+
+export type TRaceRule = Omit<TRuleAst, `uuid`|`index`|`scenarios`|`background`> & {
+  index:number
+  uuid: string
+  scenarios: TRaceScenario[]
+  background?:TRaceBackground
+}
+
+export type TRaceFeature = Omit<TFeatureAst, `uuid`|`background`|`rules`|`scenarios`> & {
   path:string
   uuid: string
+  rules?:TRaceRule[]
   parent: TFeatureParent
+  scenarios:TRaceScenario[]
+  background?:TRaceBackground
 }
 
 export type TRaceFeatureItem = TRaceFeature | TRaceFeatureGroup
@@ -47,13 +78,19 @@ export type TRaceFeatureAsts = {
   [key:string]: TRaceFeature
 }
 
-
 export type TEmptyFeature = TRaceFeature & {
   isEmpty:true
   title?:string
 }
 
-export type TUpdateFeature = {
+export type TUpdateFeatureOpts = {
+  op?:EUpdateType
+  path?:string
+  index?:number
   replace?:boolean
+  type?:ESectionType
+}
+
+export type TUpdateFeature = TUpdateFeatureOpts & {
   feature: TRaceFeature
 }

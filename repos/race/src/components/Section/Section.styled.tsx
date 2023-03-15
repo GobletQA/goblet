@@ -89,6 +89,7 @@ export const SectionActs = styled(Box)`
 `
 
 export const Dropdown = styled(DropdownComp)`
+  cursor: default;
 
   & .gb-dropdown-header {
     flex-direction: row-reverse;

@@ -30,15 +30,13 @@ const dataMappers = {
     current?:TBackgroundAst,
     updated?:TBackgroundAst,
   ) => {
-    if(!current || !updated) return updated || emptyObj
+    if(!current || !updated) return updated || emptyObj as TBackgroundAst
 
     return {
-      background: {
-        ...current,
-        ...updated,
-        steps: dataMappers.steps(current?.steps, updated?.steps)
-      }
-    }
+      ...current,
+      ...updated,
+      steps: dataMappers.steps(current?.steps, updated?.steps)
+    } as TBackgroundAst
   },
   scenarios: (
     current?:TScenarioAst[],
@@ -73,6 +71,7 @@ const dataMappers = {
       
       const item = {...found, ...rule} as TRuleAst
       item.scenarios = dataMappers.scenarios(found.scenarios, rule.scenarios)
+      item.background = dataMappers.background(found.background, rule.background)
 
       return item
     })
@@ -85,19 +84,21 @@ const dataMappers = {
  * The benefit would come when rebuilding the UI
  */
 export const mapFeatureUpdate = (
-  updated:TRaceFeature,
-  feature:TRaceFeature,
+  updated:Partial<TRaceFeature>,
+  feature?:TRaceFeature,
   replace?:boolean
 ) => {
-  return {
-    ...updated,
-    uuid: updated.uuid || feature.uuid,
-    path: updated.path || feature.path,
-    index: updated.index || feature.index,
-    parent: updated.parent || feature.parent,
-    tags: dataMappers.tags(feature.tags, updated.tags),
-    rules: dataMappers.rules(feature.rules, updated.rules),
-    scenarios: dataMappers.scenarios(feature.scenarios, updated.scenarios),
-    ...dataMappers.background(feature.background, updated.background),
-  }
+  return replace || !feature
+    ? updated as TRaceFeature
+    : {
+        ...updated,
+        uuid: updated.uuid || feature.uuid,
+        path: updated.path || feature.path,
+        index: updated.index || feature.index,
+        parent: updated.parent || feature.parent,
+        tags: dataMappers.tags(feature.tags, updated.tags),
+        rules: dataMappers.rules(feature.rules, updated.rules),
+        scenarios: dataMappers.scenarios(feature.scenarios, updated.scenarios),
+        background: dataMappers.background(feature.background, updated.background),
+      } as TRaceFeature
 }
