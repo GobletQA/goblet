@@ -1,19 +1,14 @@
-
-import type { TStepParentAst } from '@GBR/types'
-import type { TStepAst } from '@ltipton/parkin'
+import type { TRaceStep, TRaceStepParent } from '@GBR/types'
 
 import { useMemo } from 'react'
 import { useStepDefs }  from '@GBR/contexts/StepDefsContext'
 import { matchExpressions } from '@GBR/utils/steps/matchExpressions'
 
 export type THStepSubjects = {
-  step: TStepAst
-  parent:TStepParentAst
-  onChange:(step:TStepAst) => void
+  step: TRaceStep
+  parent:TRaceStepParent
+  onChange:(step:TRaceStep) => void
 }
-
-
-
 
 export const useStepSubjects = (props:THStepSubjects) => {
   const { step } = props

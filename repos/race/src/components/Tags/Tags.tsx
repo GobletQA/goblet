@@ -1,4 +1,4 @@
-import type { TTagsParentAst, TFeaturesRef } from '@GBR/types'
+import type { TRaceTagsParent, TFeaturesRef } from '@GBR/types'
 
 import { TagsContainer } from './Tags.styled'
 import { AutoInput } from '@gobletqa/components'
@@ -8,7 +8,7 @@ import { useFeatureTags } from '@GBR/hooks/features/useFeatureTags'
 
 export type TTags = {
   type:ESectionType
-  parent:TTagsParentAst
+  parent:TRaceTagsParent
   featuresRef:TFeaturesRef
   onChange?:(...args:any[]) => void
 }

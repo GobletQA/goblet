@@ -1,4 +1,4 @@
-import type { TRuleAst } from '@ltipton/parkin'
+import type { TRaceRule } from '@GBR/types'
 
 import { EGherkinKeys } from '@GBR/types'
 import { scenariosFactory } from './scenarioFactory'
@@ -7,16 +7,16 @@ import { toObj } from '@gobletqa/race/utils/helpers/toObj'
 import { deepMerge, uuid, emptyArr } from '@keg-hub/jsutils'
 
 export type TRuleFactory = {
-  rule?:Partial<TRuleAst>
+  rule?:Partial<TRaceRule>
   empty?:boolean
 }
 
 export type TRulesFactory = {
-  rules?:Partial<TRuleAst>[],
+  rules?:Partial<TRaceRule>[],
   empty?:boolean
 }
 
-const emptyRule = ():TRuleAst => ({
+const emptyRule = ():TRaceRule => ({
   tags: [],
   rule: ` `,
   uuid: uuid(),
@@ -29,7 +29,7 @@ export const ruleFactory = ({
   empty=false
 }:TRuleFactory) => {
   return rule
-    ? deepMerge<TRuleAst>(
+    ? deepMerge<TRaceRule>(
         emptyRule(),
         rule,
         {
@@ -47,7 +47,7 @@ export const rulesFactory = ({
   empty=false
 }:TRulesFactory) => {
   return rules?.length
-  ? rules.map(rule => rule && ruleFactory({rule, empty})).filter(Boolean) as TRuleAst[]
+  ? rules.map(rule => rule && ruleFactory({rule, empty})).filter(Boolean) as TRaceRule[]
   : emptyArr
 
 }

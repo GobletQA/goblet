@@ -1,7 +1,8 @@
-import { Parkin, TStepAst, TStepDef } from '@ltipton/parkin'
+import { Parkin, TStepDef } from '@ltipton/parkin'
 import type {
   TExpPart,
-  TStepParentAst,
+  TRaceStep,
+  TRaceStepParent,
 } from '@GBR/types'
 
 import { useMemo } from 'react'
@@ -14,9 +15,9 @@ import { expressionParts } from '@GBR/utils/steps/expressionParts'
 import { matchExpressions } from '@GBR/utils/steps/matchExpressions'
 
 export type THStepSubjects = {
-  step: TStepAst
-  parent:TStepParentAst
-  onChange?:(updated:TStepAst, old?:TStepAst) => void
+  step: TRaceStep
+  parent:TRaceStepParent
+  onChange?:(updated:TRaceStep, old?:TRaceStep) => void
 }
 
 type ExpResp = {
@@ -26,7 +27,7 @@ type ExpResp = {
 
 const useStepParts = (
   parkin:Parkin,
-  step:TStepAst,
+  step:TRaceStep,
   def:TStepDef
 ) => {
   return useMemo(() => stepTokens(parkin, step.step, def), [def, step.step])

@@ -1,5 +1,5 @@
-import type { TRuleAst } from '@ltipton/parkin'
+import type { TRaceRule } from '@GBR/types'
 
-export const copyRule = async (rule:TRuleAst) => {
+export const copyRule = async (rule:TRaceRule) => {
   console.log(`------- copyRule - TODO -------`)
 }

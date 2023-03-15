@@ -1,5 +1,4 @@
-import type { TScenarioParentAst } from '@GBR/types'
-import type { TScenarioAst, TStepAst } from '@ltipton/parkin'
+import type { TRaceScenarioParent, TRaceScenario, TRaceStep } from '@GBR/types'
 
 import { Sections } from '../Section'
 import { Scenario } from './Scenario'
@@ -7,13 +6,13 @@ import { ESectionType } from '@GBR/types'
 import { generateId } from '@GBR/utils/helpers/generateId'
 
 export type TScenarios = {
-  scenarios?:TScenarioAst[]
-  parent:TScenarioParentAst
+  scenarios?:TRaceScenario[]
+  parent:TRaceScenarioParent
   onAdd: (parentId?:string) => void
   onRemove: (scenarioId:string, parentId?:string) => void
   onAddStep: (scenarioId:string, parentId?:string) => void
-  onChange :(scenarioId:string, update:Partial<TScenarioAst>) => void
-  onChangeStep: (step:TStepAst, scenarioId:string, parentId?:string) => void
+  onChange :(scenarioId:string, update:Partial<TRaceScenario>) => void
+  onChangeStep: (step:TRaceStep, scenarioId:string, parentId?:string) => void
   onRemoveStep: (stepId:string, scenarioId?:string, parentId?:string) => void
 }
 

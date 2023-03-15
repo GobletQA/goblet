@@ -1,4 +1,4 @@
-import type { TStepParentAst } from '@GBR/types'
+import type { TRaceStepParent } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
 import { StepItem } from '../Feature/FeatureItems'
@@ -6,7 +6,7 @@ import { EmptyItem } from '../EmptyItem/EmptyItem'
 
 
 export type TEmptySteps = {
-  parent:TStepParentAst
+  parent:TRaceStepParent
   parentType: ESectionType
   onAdd?:(parentId:string) => void
 }

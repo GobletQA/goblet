@@ -30,3 +30,13 @@ export enum EUpdateType {
   REPLACE = `replace`,
   Replace = `replace`,
 }
+
+
+export enum EMetaType {
+  tags=`tags`,
+  role=`role`,
+  persona=`persona`,
+  reason=`reason`,
+  desire=`desire`,
+  perspective=`perspective`,
+}

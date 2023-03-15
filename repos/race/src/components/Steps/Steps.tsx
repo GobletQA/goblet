@@ -1,14 +1,11 @@
 import type {
   ReactNode,
-  MouseEvent,
-  KeyboardEvent,
   ComponentProps,
   MutableRefObject,
 } from 'react'
 
-import type { TStepAst } from '@ltipton/parkin'
-import type { TStepParentAst } from '@GBR/types'
 import type { TDndCallbacks } from '@gobletqa/components'
+import type { TRaceStep, TRaceStepParent } from '@GBR/types'
 
 import { useRef, useMemo } from 'react'
 import { Step } from './Step'
@@ -18,13 +15,13 @@ import { ESectionType } from '@GBR/types'
 import { Dnd, useInline } from '@gobletqa/components'
 
 export type TSteps = {
-  steps?:TStepAst[]
+  steps?:TRaceStep[]
   showAdd?:boolean
   children?:ReactNode
-  parent:TStepParentAst
+  parent:TRaceStepParent
   parentType: ESectionType
   onAdd?:(parentId:string) => void
-  onChange?:(updated:TStepAst, old?:TStepAst) => void
+  onChange?:(updated:TRaceStep, old?:TRaceStep) => void
   onRemove?:(stepId:string, parentId?:string) => void
   onMove?:(parentId:string, oldPos:number, newPos:number) => void
 } 
@@ -39,8 +36,8 @@ const dragImagePos:[number, number] = [10, -20]
 
 type THStepData = {
   index:number
-  step:TStepAst
-  parent:TStepParentAst
+  step:TRaceStep
+  parent:TRaceStepParent
   parentType: ESectionType
 }
 

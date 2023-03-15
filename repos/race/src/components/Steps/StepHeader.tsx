@@ -1,10 +1,10 @@
-import type { TStepAst } from '@ltipton/parkin'
+import type { TRaceStep } from '@GBR/types'
 
 import { capitalize } from '@keg-hub/jsutils'
 import { StepHeaderText } from './Steps.styled'
 
 export type TStepHeader = {
-  step: TStepAst
+  step: TRaceStep
 }
 
 export const StepHeader = (props:TStepHeader) => {

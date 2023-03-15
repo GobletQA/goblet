@@ -1,16 +1,15 @@
-import type { TStepAst } from '@ltipton/parkin'
-import type { TStepParentAst } from '@GBR/types'
+import type { TRaceStep, TRaceStepParent } from '@GBR/types'
 
 import { emptyObj } from '@keg-hub/jsutils'
 
 export type TFoundStep = {
-  step?:TStepAst
+  step?:TRaceStep
   stepIdx:number
-  steps:TStepAst[]
+  steps:TRaceStep[]
 }
 
 export const findStep = (
-  parent:TStepParentAst,
+  parent:TRaceStepParent,
   stepId:string
 ) => {
 

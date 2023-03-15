@@ -1,5 +1,5 @@
 
-import type { TScenarioAst } from '@ltipton/parkin'
+import type { TRaceScenario } from '@GBR/types'
 
 import { EGherkinKeys } from '@GBR/types'
 import { stepsFactory } from './stepFactory'
@@ -7,15 +7,15 @@ import { deepMerge, uuid, emptyObj, emptyArr } from '@keg-hub/jsutils'
 
 export type TScenariosFactory = {
   empty?:boolean
-  scenarios?:Partial<TScenarioAst>[]|undefined,
+  scenarios?:Partial<TRaceScenario>[]|undefined,
 }
 
 export type TScenarioFactory = {
   empty?:boolean
-  scenario?:Partial<TScenarioAst>
+  scenario?:Partial<TRaceScenario>
 }
 
-const emptyScenario = ():TScenarioAst => ({
+const emptyScenario = ():TRaceScenario => ({
   tags: [],
   steps: [],
   uuid: uuid(),
@@ -28,14 +28,14 @@ export const scenarioFactory = ({
   empty=false,
 }:TScenarioFactory) => {
   return scenario
-    ? deepMerge<TScenarioAst>(
+    ? deepMerge<TRaceScenario>(
         emptyScenario(),
         scenario,
         {steps: stepsFactory({ steps: scenario.steps })}
       )
     : empty
       ? emptyScenario()
-      : emptyObj as TScenarioAst
+      : emptyObj as TRaceScenario
 }
 
 export const scenariosFactory = ({
@@ -44,5 +44,5 @@ export const scenariosFactory = ({
 }:TScenariosFactory) => {
   return scenarios?.length
     ? scenarios.map(scenario => scenarioFactory({scenario, empty}))
-    : emptyArr as TScenarioAst[]
+    : emptyArr as TRaceScenario[]
 }

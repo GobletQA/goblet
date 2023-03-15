@@ -1,5 +1,6 @@
+import type { TRaceStep } from '@GBR/types'
+import type { TStepDef } from '@ltipton/parkin'
 import type { TAutoOptVal } from '@gobletqa/components'
-import type { TStepAst, TStepDef } from '@ltipton/parkin'
 
 import { useMemo, useRef } from 'react'
 import { NoStepActionSelected } from '@GBR/constants/values'
@@ -7,7 +8,7 @@ import { useStepDefs }  from '@gobletqa/race/contexts/StepDefsContext'
 
 
 export type THStepOptions = {
-  step:TStepAst
+  step:TRaceStep
   definition?: TStepDef
 }
 

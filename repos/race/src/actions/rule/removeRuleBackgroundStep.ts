@@ -1,4 +1,4 @@
-import type { TRuleAst } from '@ltipton/parkin'
+import type { TRaceRule } from '@GBR/types'
 
 import { findRule } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -24,7 +24,7 @@ export const removeRuleBackgroundStep = async (
   if(!rule.background)
     return console.warn(`Remove Rule#background#step - Rule does not contain a background`, rule)
 
-  const updated:TRuleAst = {
+  const updated:TRaceRule = {
     ...rule,
     background: {
       ...rule?.background,

@@ -1,4 +1,4 @@
-import type { TBackgroundAst } from '@ltipton/parkin'
+import type { TRaceBackground } from '@GBR/types'
 
 import { stepFactory } from '@GBR/factories/stepFactory'
 import { backgroundFactory } from '@GBR/factories/backgroundFactory'
@@ -14,7 +14,7 @@ export const addBackgroundStep = async (parentId:string) => {
   const background = {
     ...(
       feature.background
-        || backgroundFactory({empty: true}) as TBackgroundAst
+        || backgroundFactory({empty: true}) as TRaceBackground
     )
   }
 

@@ -1,5 +1,4 @@
 import type { ChangeEvent } from 'react'
-import type { TStepAst, TRuleAst } from '@ltipton/parkin'
 import type { TChangeCB, TInputValue } from '@gobletqa/components'
 import { EGherkinKeys } from '@GBR/types'
 

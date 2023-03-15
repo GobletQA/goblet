@@ -1,5 +1,5 @@
 import type { ReactNode, ComponentProps } from 'react'
-import type { TStepParentAst, TScenarioParentAst } from '@GBR/types'
+import type { TRaceStepParent, TRaceScenarioParent } from '@GBR/types'
 
 import { Section } from './Section'
 import { AddItem } from '../AddItem'
@@ -11,7 +11,7 @@ export type TSections = {
   children?:ReactNode
   onAdd?:(...args:any[]) => void
   items?:ComponentProps<typeof Section>[]
-  parent:TScenarioParentAst | TStepParentAst
+  parent:TRaceScenarioParent | TRaceStepParent
 } 
 
 export const Sections = (props:TSections) => {

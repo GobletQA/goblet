@@ -1,5 +1,5 @@
-import type { TScenarioAst } from '@ltipton/parkin'
+import type { TRaceScenario } from '@GBR/types'
 
-export const copyScenario = async (scenario:TScenarioAst) => {
+export const copyScenario = async (scenario:TRaceScenario) => {
   console.log(`------- copyScenario - todo -------`)
 }

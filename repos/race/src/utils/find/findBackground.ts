@@ -1,13 +1,12 @@
-import type { TBackgroundAst } from '@ltipton/parkin'
-import type { TBackgroundParentAst } from '@GBR/types'
+import type { TRaceBackgroundParent, TRaceBackground } from '@GBR/types'
 
 
 export type TFoundBackground = {
-  background?:TBackgroundAst
+  background?:TRaceBackground
 }
 
 export const findBackground = (
-  parent:TBackgroundParentAst,
+  parent:TRaceBackgroundParent,
 ) => {
   // TODO find background from ID looking on features and feature.rules
 

@@ -1,18 +1,17 @@
 import type { MouseEvent } from 'react'
 import type { TExpPart } from './steps.types'
 import type { ESectionType } from './section.types'
-import type { TRaceFeature } from './features.types'
 import type { TFeatureCtx, TParkinCtx, TStepDefsCtx } from '@GBR/contexts'
+import type {
+  TRaceRule,
+  TRaceStep,
+  TRaceBlock,
+  TRaceFeature,
+  TRaceScenario,
+  TRaceBackground,
+} from './features.types'
 
 import type { ComponentProps, ReactNode, ComponentType } from 'react'
-import type {
-  TStepAst,
-  TRuleAst,
-  TAstBlock,
-  TScenarioAst,
-  TBackgroundAst,
-} from '@ltipton/parkin'
-
 
 export type TRaceMenuItemClickCtx = Omit<TMenuContextRef, 'context'>
   & TParkinCtx
@@ -65,7 +64,7 @@ export type TMenuContextRef = {
   type: ESectionType
   context?:keyof TRaceContextMenu
   setInputProps:TMenuContextSetInputProps
-  gran: TRaceFeature | TBackgroundAst | TRuleAst | TScenarioAst
-  parent: TRaceFeature | TBackgroundAst | TRuleAst | TScenarioAst | TStepAst
-  active: TExpPart | TBackgroundAst | TRuleAst | TScenarioAst | TStepAst | TAstBlock
+  gran: TRaceFeature | TRaceBackground | TRaceRule | TRaceScenario
+  parent: TRaceFeature | TRaceBackground | TRaceRule | TRaceScenario | TRaceStep
+  active: TExpPart | TRaceBackground | TRaceRule | TRaceScenario | TRaceStep | TRaceBlock
 }

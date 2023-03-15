@@ -1,5 +1,5 @@
 
-import type { TScenarioAst } from '@ltipton/parkin'
+import type { TRaceScenario } from '@GBR/types'
 
 import { findRule, findScenario } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -7,7 +7,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const updateRuleScenario = async (
   scenarioId:string,
-  updated:Partial<TScenarioAst>,
+  updated:Partial<TRaceScenario>,
   ruleId:string
 ) => {
   const feature = await getFeature()

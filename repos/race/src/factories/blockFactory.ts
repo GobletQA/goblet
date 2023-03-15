@@ -1,13 +1,13 @@
-import type { TAstBlock } from '@ltipton/parkin'
+import type { TRaceBlock } from '@GBR/types'
 
 import { deepMerge } from '@keg-hub/jsutils'
 
 export type TBlocksFactory = {
-  blocks?:Partial<TAstBlock>[]
+  blocks?:Partial<TRaceBlock>[]
 }
 
 export type TBlockFactory = {
-  block?:Partial<TAstBlock>,
+  block?:Partial<TRaceBlock>,
   index?:number
 }
 
@@ -16,7 +16,7 @@ export const blockFactory = ({
   index=0
 }:TBlockFactory) => {
   return  block
-    ? deepMerge<TAstBlock>({
+    ? deepMerge<TRaceBlock>({
         index,
         content: ``,
       }, block)
@@ -27,6 +27,6 @@ export const blocksFactory = ({
   blocks
 }:TBlocksFactory) => {
   return blocks?.length
-    ? blocks.map(block => block && blockFactory({ block })).filter(Boolean) as TAstBlock[]
+    ? blocks.map(block => block && blockFactory({ block })).filter(Boolean) as TRaceBlock[]
     : undefined
 }

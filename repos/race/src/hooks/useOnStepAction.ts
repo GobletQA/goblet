@@ -1,5 +1,5 @@
 
-import type { TStepAst } from '@ltipton/parkin'
+import type { TRaceStep } from '@GBR/types'
 import type { TAutoOpt } from '@gobletqa/components'
 
 import { useInline } from '@gobletqa/components'
@@ -8,8 +8,8 @@ import { useStepDefs }  from '@gobletqa/race/contexts/StepDefsContext'
 
 
 export type THOnStepChange = {
-  step:TStepAst
-  onChange:(step:TStepAst, old?:TStepAst) => void
+  step:TRaceStep
+  onChange:(step:TRaceStep, old?:TRaceStep) => void
 }
 
 export const useOnStepAction = (props:THOnStepChange) => {
@@ -33,6 +33,6 @@ export const useOnStepAction = (props:THOnStepChange) => {
           type: found.type,
           step: found.match,
           definition: found.uuid
-        } as TStepAst, step)
+        } as TRaceStep, step)
   })
 }

@@ -1,12 +1,11 @@
-import type { TBackgroundAst } from '@ltipton/parkin'
+import type { TRaceBackground } from '@GBR/types'
 
 import { stepsFactory } from './stepFactory'
 import { deepMerge, uuid } from '@keg-hub/jsutils'
-import { EGherkinKeys } from '@GBR/types'
 
 export type TBackgroundFactory = {
   empty?:boolean
-  background?:Partial<TBackgroundAst>
+  background?:Partial<TRaceBackground>
 }
 
 const emptyBackground = () => ({
@@ -24,7 +23,7 @@ export const backgroundFactory = ({
   if(!parent) throw new Error(`A parent type of feature or rule is required.`)
 
   return background
-    ? deepMerge<TBackgroundAst>(
+    ? deepMerge<TRaceBackground>(
         emptyBackground(),
         background,
         {steps: stepsFactory({steps: background?.steps})}

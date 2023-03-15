@@ -1,5 +1,4 @@
-import type { TBackgroundParentAst } from '@GBR/types'
-import type { TStepAst, TBackgroundAst } from '@ltipton/parkin'
+import type { TRaceBackgroundParent, TRaceBackground, TRaceStep } from '@GBR/types'
 
 import { Steps } from '../Steps'
 import { AddAct } from '../Actions/Add'
@@ -17,13 +16,13 @@ import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 import { copyBackground } from '@GBR/actions/background/copyBackground'
 
 export type TBackground = {
-  background:TBackgroundAst
-  parent:TBackgroundParentAst
+  background:TRaceBackground
+  parent:TRaceBackgroundParent
   onAddStep:(parentId:string) => any
   onRemove:(parentId:string) => any
   onRemoveStep:(stepId:string, parentId:string) => any
-  onChangeStep:(step:TStepAst, parentId?:string) => any
-  onChange:(background:TBackgroundAst, parentId:string) => any
+  onChangeStep:(step:TRaceStep, parentId?:string) => any
+  onChange:(background:TRaceBackground, parentId:string) => any
 }
 
 const styles = {
@@ -50,7 +49,7 @@ export const Background = (props:TBackground) => {
   const onRemoveBackground = () => onRemove?.(parent.uuid)
   const onAddBackgroundStep = () => onAddStep?.(parent.uuid)
   const onCopyBackground = () => background && copyBackground(background)
-  const onStepChange = (updated:TStepAst) => onChangeStep?.(updated, parent.uuid)
+  const onStepChange = (updated:TRaceStep) => onChangeStep?.(updated, parent.uuid)
   const onRemoveBackgroundStep = (stepId:string) => onRemoveStep?.(stepId, parent.uuid)
 
   const {

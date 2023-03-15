@@ -1,6 +1,6 @@
 import type { ChangeEvent } from 'react'
-import type { TStepAst, TStepDef } from '@ltipton/parkin'
-import type { TExpPart, TStepParentAst } from '@GBR/types'
+import type { TStepDef } from '@ltipton/parkin'
+import type { TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
 
 import { ExpInput } from './ExpInput'
@@ -12,10 +12,10 @@ import { ExpGridItem, ExpressionInfoText } from './Expression.styled'
 
 export type TExpression = {
   def:TStepDef
-  step: TStepAst
+  step: TRaceStep
   expression:TExpPart
-  parent:TStepParentAst
-  onChange:(step:TStepAst, old?:TStepAst) => void
+  parent:TRaceStepParent
+  onChange:(step:TRaceStep, old?:TRaceStep) => void
 }
 
 

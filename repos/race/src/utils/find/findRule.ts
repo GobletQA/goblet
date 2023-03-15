@@ -1,12 +1,11 @@
-import type { TRaceFeature } from '@GBR/types'
-import type { TRuleAst } from '@ltipton/parkin'
+import type { TRaceRule, TRaceFeature } from '@GBR/types'
 
 import { emptyObj } from '@keg-hub/jsutils'
 
 export type TFoundRule = {
-  rule?:TRuleAst
+  rule?:TRaceRule
   ruleIdx:number
-  rules:TRuleAst[]
+  rules:TRaceRule[]
 }
 
 export const findRule = (

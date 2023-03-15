@@ -1,10 +1,10 @@
-import type { TStepAst } from '@ltipton/parkin'
+import type { TRaceStep } from '@GBR/types'
 
 import { useMemo } from 'react'
 import { useParkin } from '@GBR/contexts/ParkinContext'
 
 export type THMatchStepToDef = {
-  step:TStepAst
+  step:TRaceStep
 }
 
 export const useMatchStepToDef = (props:THMatchStepToDef) => {

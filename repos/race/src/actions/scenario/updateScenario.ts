@@ -1,4 +1,4 @@
-import type { TScenarioAst } from '@ltipton/parkin'
+import type { TRaceScenario } from '@GBR/types'
 
 import { findScenario } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -6,7 +6,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const updateScenario = async (
   scenarioId:string,
-  update:Partial<TScenarioAst>
+  update:Partial<TRaceScenario>
 ) => {
   if(!scenarioId) return console.warn(`Can not update scenario step without scenario Id`)
   

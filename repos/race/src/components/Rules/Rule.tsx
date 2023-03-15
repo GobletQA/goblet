@@ -1,5 +1,11 @@
-import type { TScenarioAst, TBackgroundAst, TStepAst, TRuleAst } from '@ltipton/parkin'
-import type { TRaceFeature } from '@GBR/types'
+import type {
+  TRaceRule,
+  TRaceStep,
+  TRaceFeature,
+  TRaceScenario,
+  TRaceBackground,
+} from '@GBR/types'
+
 
 import { AddAct } from '../Actions/Add'
 import { PlayAct } from '../Actions/Play'
@@ -35,7 +41,7 @@ import { updateRuleBackground } from '@gobletqa/race/actions/rule/updateRuleBack
 
 export type TRule = {
   ruleId:string
-  rule: TRuleAst
+  rule: TRaceRule
   parent:TRaceFeature
 }
 
@@ -76,14 +82,14 @@ export const Rule = (props:TRule) => {
   const onRemove = () => removeRule(rule.uuid)
 
   const onRemoveBackground = () => removeRuleBackground(rule.uuid)
-  const onChangeBackgroundStep = (step:TStepAst) => updateRuleBackgroundStep(step, rule.uuid)
+  const onChangeBackgroundStep = (step:TRaceStep) => updateRuleBackgroundStep(step, rule.uuid)
   const onRemoveBackgroundStep = (stepId:string) => removeRuleBackgroundStep(stepId, rule.uuid)
-  const onChangeBackground = (background:TBackgroundAst) => updateRuleBackground(background, rule.uuid)
+  const onChangeBackground = (background:TRaceBackground) => updateRuleBackground(background, rule.uuid)
 
   const onAddScenario = () => addRuleScenario(rule.uuid)
   const onAddStep = (scenarioId:string) => addRuleScenarioStep(scenarioId, rule.uuid)
   const onRemoveScenario = (scenarioId:string) => removeRuleScenario(scenarioId, rule.uuid)
-  const onChangeScenario = (scenarioId:string, update:Partial<TScenarioAst>) => updateRuleScenario(
+  const onChangeScenario = (scenarioId:string, update:Partial<TRaceScenario>) => updateRuleScenario(
     scenarioId,
     update,
     rule.uuid
@@ -93,7 +99,7 @@ export const Rule = (props:TRule) => {
     scenarioId,
     rule.uuid
   )
-  const onChangeScenarioStep = (step:TStepAst, scenarioId:string) => updateRuleScenarioStep(
+  const onChangeScenarioStep = (step:TRaceStep, scenarioId:string) => updateRuleScenarioStep(
     step,
     scenarioId,
     rule.uuid

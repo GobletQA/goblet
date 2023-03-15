@@ -1,4 +1,4 @@
-import type { TBackgroundAst } from '@ltipton/parkin'
+import type { TRaceBackground } from '@GBR/types'
 
 import { findRule } from '@GBR/utils/find'
 import { backgroundFactory } from '@GBR/factories/backgroundFactory'
@@ -26,7 +26,7 @@ export const addRuleBackground = async (ruleId:string) => {
           whitespace: `${rule.whitespace}${rule.whitespace}`
         }
       })
-    } as TBackgroundAst
+    } as TRaceBackground
   }
 
   updateFeature({...feature, rules})

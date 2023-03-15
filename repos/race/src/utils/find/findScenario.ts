@@ -1,17 +1,16 @@
-import type { TScenarioAst } from '@ltipton/parkin'
-import type { TScenarioParentAst } from '@GBR/types'
+import type { TRaceScenario, TRaceScenarioParent } from '@GBR/types'
 
 import { emptyObj } from '@keg-hub/jsutils'
 
 
 export type TFoundScenario = {
   scenarioIdx:number
-  scenario?:TScenarioAst
-  scenarios:TScenarioAst[]
+  scenario?:TRaceScenario
+  scenarios:TRaceScenario[]
 }
 
 export const findScenario = (
-  parent:TScenarioParentAst,
+  parent:TRaceScenarioParent,
   scenarioId:string
 ) => {
 

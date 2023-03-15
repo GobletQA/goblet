@@ -1,4 +1,4 @@
-import type { TScenarioParentAst } from '@GBR/types'
+import type { TRaceScenarioParent } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
 import { EmptyItem } from '../EmptyItem/EmptyItem'
@@ -6,7 +6,7 @@ import { PlaylistPlusIcon } from '@gobletqa/components'
 
 export type TEmptyScenarios = {
   parentType:ESectionType
-  parent:TScenarioParentAst
+  parent:TRaceScenarioParent
   onAdd?:(parentId:string) => void
 }
 

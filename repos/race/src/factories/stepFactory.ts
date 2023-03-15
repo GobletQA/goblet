@@ -1,19 +1,19 @@
-import type { TStepAst } from '@ltipton/parkin'
+import type { TRaceStep } from '@GBR/types'
 
 import { EStepType } from '@ltipton/parkin'
 import { deepMerge, emptyArr, emptyObj, uuid } from '@keg-hub/jsutils'
 
 export type TStepsFactory = {
-  steps?:Partial<TStepAst>[],
+  steps?:Partial<TRaceStep>[],
   empty?:boolean
 }
 
 export type TStepFactory = {
-  step?:Partial<TStepAst>,
+  step?:Partial<TRaceStep>,
   empty?:boolean
 }
 
-const emptyStep = ():TStepAst => ({
+const emptyStep = ():TRaceStep => ({
   step: `  `,
   uuid: uuid(),
   type: EStepType.given,
@@ -25,8 +25,8 @@ export const stepFactory = ({
   empty=false
 }:TStepFactory) => {
   return empty || step
-    ? deepMerge<TStepAst>(emptyStep(), step)
-    : emptyStep() as TStepAst
+    ? deepMerge<TRaceStep>(emptyStep(), step)
+    : emptyStep() as TRaceStep
 }
 
 export const stepsFactory = ({
@@ -35,5 +35,5 @@ export const stepsFactory = ({
 }:TStepsFactory) => {
   return steps?.length
     ? steps.map(step => step && stepFactory({ step, empty })).filter(Boolean)
-    : emptyArr as TStepAst[]
+    : emptyArr as TRaceStep[]
 }

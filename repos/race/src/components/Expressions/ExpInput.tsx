@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
-import type { TStepAst } from '@ltipton/parkin'
 import type { TMenuItem } from '@gobletqa/components'
-import type { TExpPart, TStepParentAst } from '@GBR/types'
+import type { TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
 import { useState } from 'react'
 import { ESectionType } from '@GBR/types'
@@ -11,9 +10,9 @@ import { exists, emptyArr } from '@keg-hub/jsutils'
 import { sharedInputStyles, sharedLabelProps } from '../Shared'
 
 export type TExpInput = ComponentProps<typeof Input> & {
-  step: TStepAst
+  step: TRaceStep
   expression:TExpPart
-  parent:TStepParentAst
+  parent:TRaceStepParent
   disabled:boolean
   value:string|number
   items?:TMenuItem[]

@@ -1,6 +1,4 @@
-import type { TScenarioAst, TStepAst } from '@ltipton/parkin'
-
-import type { TScenarioParentAst } from '@GBR/types'
+import type { TRaceScenarioParent, TRaceStep, TRaceScenario } from '@GBR/types'
 
 import { Steps } from '../Steps'
 import { AddAct } from '../Actions/Add'
@@ -20,13 +18,13 @@ import { updateScenarioStepPos } from '@GBR/actions/scenario/updateScenarioStepP
 
 export type TScenario = {
   scenarioId: string
-  scenario: TScenarioAst
-  parent: TScenarioParentAst
+  scenario: TRaceScenario
+  parent: TRaceScenarioParent
   onAdd?: (...args:any[]) => void
   onRemove: (scenarioId:string, parentId?:string) => void
   onAddStep: (scenarioId:string, parentId?:string) => void
-  onChange:(scenarioId:string, update:Partial<TScenarioAst>) => void
-  onChangeStep: (step:TStepAst, scenarioId:string, parentId?:string) => void
+  onChange:(scenarioId:string, update:Partial<TRaceScenario>) => void
+  onChangeStep: (step:TRaceStep, scenarioId:string, parentId?:string) => void
   onRemoveStep: (stepId:string, scenarioId?:string, parentId?:string) => void
 }
 
@@ -71,7 +69,7 @@ export const Scenario = (props:TScenario) => {
   const onCopyScenario = () => copyScenario(scenario)
   const onRemoveScenario = () => onRemove(scenario.uuid, parent.uuid)
   const onAddScenarioStep = () => onAddStep(scenario.uuid, parent.uuid)
-  const onChangeScenarioStep = (step:TStepAst) => onChangeStep(step, scenario.uuid, parent.uuid)
+  const onChangeScenarioStep = (step:TRaceStep) => onChangeStep(step, scenario.uuid, parent.uuid)
   const onRemoveScenarioStep = (stepId:string) => onRemoveStep(stepId, scenario.uuid, parent.uuid)
 
   return (

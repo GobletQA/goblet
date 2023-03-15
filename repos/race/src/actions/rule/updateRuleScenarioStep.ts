@@ -1,12 +1,12 @@
 
-import type { TStepAst } from '@ltipton/parkin'
+import type { TRaceStep } from '@GBR/types'
 
 import { findStep, findScenario, findRule } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const updateRuleScenarioStep = async (
-  step:TStepAst,
+  step:TRaceStep,
   scenarioId:string,
   ruleId:string
 ) => {

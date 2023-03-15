@@ -1,4 +1,4 @@
-import type { TBackgroundParentAst } from '@GBR/types'
+import type { TRaceBackgroundParent } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
 import { EmptyItem } from '../EmptyItem/EmptyItem'
@@ -6,7 +6,7 @@ import { BackgroundItem } from '../Feature/FeatureItems'
 
 export type TEmptyBackground = {
   parentType: ESectionType
-  parent:TBackgroundParentAst
+  parent:TRaceBackgroundParent
   onAdd: (parentId:string) => void
 }
 

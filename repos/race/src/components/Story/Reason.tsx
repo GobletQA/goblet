@@ -1,8 +1,6 @@
 import type { TMeta } from './Story'
 import type { ChangeEvent } from 'react'
-import type { TRaceFeature } from '@GBR/types'
-import type { TAstBlock } from '@ltipton/parkin'
-
+import type { TRaceBlock } from '@GBR/types'
 
 import { useMemo } from 'react'
 import { capitalize, ensureArr, isArr } from '@keg-hub/jsutils'
@@ -15,10 +13,10 @@ export type TReason = TMeta & {
   type: ESectionType
 }
 
-const useMergeReason = (reason:TAstBlock|TAstBlock[]|undefined) => {
+const useMergeReason = (reason:TRaceBlock|TRaceBlock[]|undefined) => {
   return useMemo(() => {
     if(!reason) return ``
-    const reasonArr = ensureArr<TAstBlock>(reason)
+    const reasonArr = ensureArr<TRaceBlock>(reason)
     
     return reasonArr.length <= 1
       ? reasonArr[0]?.content

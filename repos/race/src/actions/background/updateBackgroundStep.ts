@@ -1,18 +1,18 @@
-import type { TBackgroundAst, TStepAst } from '@ltipton/parkin'
+import type { TRaceBackground, TRaceStep } from '@GBR/types'
 
 import { findStep } from '@GBR/utils/find'
 import { backgroundFactory } from '@GBR/factories/backgroundFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-export const updateBackgroundStep = async (step:TStepAst) => {
+export const updateBackgroundStep = async (step:TRaceStep) => {
   const feature = await getFeature()
   if(!feature) return
 
   const background = {
     ...(
       feature.background
-        || backgroundFactory({empty: true}) as TBackgroundAst
+        || backgroundFactory({empty: true}) as TRaceBackground
     )
   }
 

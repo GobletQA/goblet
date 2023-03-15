@@ -1,10 +1,11 @@
-import type { TRaceFeature } from '@GBR/types'
 import type {
-  TStepAst,
-  TRuleAst,
-  TScenarioAst,
-  TBackgroundAst,
-} from '@ltipton/parkin'
+  TRaceRule,
+  TRaceStep,
+  TRaceBlock,
+  TRaceFeature,
+  TRaceScenario,
+  TRaceBackground
+} from '@GBR/types'
 
 import { deepEqual, emptyObj, flatUnion } from '@keg-hub/jsutils'
 
@@ -14,43 +15,43 @@ const dataMappers = {
     current:string[]=[],
     updated:string[]=[],
   ) => flatUnion(current, updated),
-  steps: (current:TStepAst[], updated:TStepAst[]) => {
+  steps: (current:TRaceStep[], updated:TRaceStep[]) => {
     if(!current?.length || !updated?.length) return updated || []
 
     return updated.map(step => {
-      const found = (current?.find?.(st => st.uuid === step.uuid) || emptyObj) as TStepAst
+      const found = (current?.find?.(st => st.uuid === step.uuid) || emptyObj) as TRaceStep
       if(!found) return step
 
       if(deepEqual(found, step)) return found
 
-      return {...found, ...step} as TStepAst
+      return {...found, ...step} as TRaceStep
     })
   },
   background: (
-    current?:TBackgroundAst,
-    updated?:TBackgroundAst,
+    current?:TRaceBackground,
+    updated?:TRaceBackground,
   ) => {
-    if(!current || !updated) return updated || emptyObj as TBackgroundAst
+    if(!current || !updated) return updated || emptyObj as TRaceBackground
 
     return {
       ...current,
       ...updated,
       steps: dataMappers.steps(current?.steps, updated?.steps)
-    } as TBackgroundAst
+    } as TRaceBackground
   },
   scenarios: (
-    current?:TScenarioAst[],
-    updated?:TScenarioAst[],
+    current?:TRaceScenario[],
+    updated?:TRaceScenario[],
   ) => {
     if(!current?.length || !updated?.length) return updated || []
 
     return updated.map(scenario => {
-      const found = (current?.find?.(sc => sc.uuid === scenario.uuid) || emptyObj) as TScenarioAst
+      const found = (current?.find?.(sc => sc.uuid === scenario.uuid) || emptyObj) as TRaceScenario
       if(!found) return scenario
 
       if(deepEqual(found, scenario)) return found
 
-      const item = {...found, ...scenario} as TScenarioAst
+      const item = {...found, ...scenario} as TRaceScenario
       item.steps = dataMappers.steps(found.steps, scenario.steps)
 
       return item
@@ -58,18 +59,18 @@ const dataMappers = {
     
   },
   rules: (
-    current?:TRuleAst[],
-    updated?:TRuleAst[],
+    current?:TRaceRule[],
+    updated?:TRaceRule[],
   ) => {
     if(!current?.length || !updated?.length) return updated
 
     return updated.map(rule => {
-      const found = (current?.find?.(rl => rl.uuid === rule.uuid) || emptyObj) as TRuleAst
+      const found = (current?.find?.(rl => rl.uuid === rule.uuid) || emptyObj) as TRaceRule
       if(!found) return rule
 
       if(deepEqual(found, rule)) return found
       
-      const item = {...found, ...rule} as TRuleAst
+      const item = {...found, ...rule} as TRaceRule
       item.scenarios = dataMappers.scenarios(found.scenarios, rule.scenarios)
       item.background = dataMappers.background(found.background, rule.background)
 

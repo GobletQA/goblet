@@ -1,6 +1,5 @@
 import type { MutableRefObject } from 'react'
-import type { TStepAst } from '@ltipton/parkin'
-import type { TStepParentAst } from '@GBR/types'
+import type { TRaceStep, TRaceStepParent } from '@GBR/types'
 
 import { Section } from '../Section'
 import { StepHeader } from './StepHeader'
@@ -22,11 +21,11 @@ import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
 
 export type TStep = {
-  step: TStepAst
-  parent: TStepParentAst
+  step: TRaceStep
+  parent: TRaceStepParent
   dragHandleRef?: MutableRefObject<HTMLDivElement>
   onRemove?:(stepId:string, parentId?:string) => void
-  onChange?:(updated:TStepAst, old?:TStepAst) => void
+  onChange?:(updated:TRaceStep, old?:TRaceStep) => void
 }
 
 const styles = {
@@ -55,7 +54,7 @@ export const Step = (props:TStep) => {
   const { def, expressions } = useExpressions(props, { definition })
 
   const onCopy = useInline(() => {})
-  const onStepChange = useInline((updated:TStepAst) => onChange?.(updated, step))
+  const onStepChange = useInline((updated:TRaceStep) => onChange?.(updated, step))
   const onRemoveStep = useInline(() => onRemove?.(step.uuid, parent.uuid))
 
   const sectionId = usePropId(parent, step, ESectionType.step)

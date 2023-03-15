@@ -1,7 +1,6 @@
 import type { ComponentProps } from 'react'
-import type { TStepAst } from '@ltipton/parkin'
 import type { TMenuItem } from '@gobletqa/components'
-import type { TExpPart, TStepParentAst } from '@GBR/types'
+import type { TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
 import { useState } from 'react'
 import { ESectionType } from '@GBR/types'
@@ -24,11 +23,11 @@ const expressionProps = {
 export type TExpAutoInput = ComponentProps<typeof AutoInput> & {
   name?:string
   label?:string
-  step: TStepAst
+  step: TRaceStep
   required?:boolean
   items?:TMenuItem[]
   expression:TExpPart
-  parent:TStepParentAst
+  parent:TRaceStepParent
 }
 
 

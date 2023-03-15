@@ -1,5 +1,4 @@
-import type { TRaceFeature } from '@GBR/types'
-import type { TRuleAst } from '@ltipton/parkin'
+import type { TRaceRule, TRaceFeature } from '@GBR/types'
 
 import { Rule } from './Rule'
 import { Sections } from '../Section'
@@ -9,7 +8,7 @@ import { addRule } from '@GBR/actions/rule/addRule'
 import { generateId } from '@GBR/utils/helpers/generateId'
 
 export type TRules = {
-  rules?:TRuleAst[]
+  rules?:TRaceRule[]
   parent:TRaceFeature
 } 
 

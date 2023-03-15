@@ -1,14 +1,14 @@
-import type { TStepAst, TStepDef } from '@ltipton/parkin'
-import type { TExpPart, TStepParentAst } from '@GBR/types'
+import type { TStepDef } from '@ltipton/parkin'
+import type { TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
 import { Expression } from './Expression'
 
 export type TExpressions = {
   def:TStepDef
-  step: TStepAst
-  parent:TStepParentAst
+  step: TRaceStep
+  parent:TRaceStepParent
   expressions:TExpPart[]
-  onChange:(step:TStepAst) => void
+  onChange:(step:TRaceStep) => void
 }
 
 export const Expressions = (props:TExpressions) => {

@@ -1,5 +1,5 @@
 import type { TSectionAction } from './SectionActions'
-import type { TStepParentAst, TScenarioParentAst } from '@GBR/types'
+import type { TRaceStepParent, TRaceScenarioParent } from '@GBR/types'
 import type { CSSProperties, ReactNode, MutableRefObject } from 'react'
 
 import { AddItem } from '../AddItem'
@@ -29,7 +29,7 @@ export type TSection = {
   headerContentSx?:CSSProperties
   onAdd?:(...args:any[]) => void
   dragHandleContainerSx?:CSSProperties
-  parent:TScenarioParentAst|TStepParentAst
+  parent:TRaceScenarioParent|TRaceStepParent
   dragHandleRef?: MutableRefObject<HTMLDivElement>
 }
 

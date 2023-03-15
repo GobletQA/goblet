@@ -1,6 +1,7 @@
 import type {
   TStepAst,
   TRuleAst,
+  TAstBlock,
   TFeatureAst,
   TScenarioAst,
   TBackgroundAst,
@@ -9,19 +10,17 @@ import type {
 import type { EUpdateType } from './helpers.types'
 import type { ESectionType } from './section.types'
 
-export enum EMetaType {
-  tags=`tags`,
-  role=`role`,
-  persona=`persona`,
-  reason=`reason`,
-  desire=`desire`,
-  perspective=`perspective`,
+export type TUpdateFeatureOpts = {
+  op?:EUpdateType
+  path?:string
+  index?:number
+  replace?:boolean
+  type?:ESectionType
 }
 
-export type TStepParentAst = TBackgroundAst | TScenarioAst
-export type TScenarioParentAst = TRuleAst | TRaceFeature
-export type TTagsParentAst = TScenarioParentAst | TStepParentAst
-export type TBackgroundParentAst = TRaceFeature | TRuleAst
+export type TUpdateFeature = TUpdateFeatureOpts & {
+  feature: TRaceFeature
+}
 
 export type TFeatureParent = {
   uuid: string
@@ -35,7 +34,14 @@ export type TRaceFeatureGroup = {
   items:TRaceFeatures
 }
 
-export type TRaceSteps = Omit<TStepAst, `uuid`|`index`> & {
+export type TEmptyFeature = TRaceFeature & {
+  isEmpty:true
+  title?:string
+}
+
+export type TRaceBlock = TAstBlock
+
+export type TRaceStep = Omit<TStepAst, `uuid`|`index`> & {
   index:number
   uuid:string
 }
@@ -43,13 +49,13 @@ export type TRaceSteps = Omit<TStepAst, `uuid`|`index`> & {
 export type TRaceBackground = Omit<TBackgroundAst, `uuid`|`index`|`steps`> & {
   index:number
   uuid: string
-  steps:TRaceSteps[]
+  steps:TRaceStep[]
 }
 
 export type TRaceScenario = Omit<TScenarioAst, `uuid`|`index`|`steps`> & {
   index:number
   uuid: string
-  steps: TRaceSteps[]
+  steps: TRaceStep[]
 }
 
 export type TRaceRule = Omit<TRuleAst, `uuid`|`index`|`scenarios`|`background`> & {
@@ -78,19 +84,7 @@ export type TRaceFeatureAsts = {
   [key:string]: TRaceFeature
 }
 
-export type TEmptyFeature = TRaceFeature & {
-  isEmpty:true
-  title?:string
-}
-
-export type TUpdateFeatureOpts = {
-  op?:EUpdateType
-  path?:string
-  index?:number
-  replace?:boolean
-  type?:ESectionType
-}
-
-export type TUpdateFeature = TUpdateFeatureOpts & {
-  feature: TRaceFeature
-}
+export type TRaceStepParent = TRaceBackground | TRaceScenario
+export type TRaceScenarioParent = TRaceRule | TRaceFeature
+export type TRaceTagsParent = TRaceScenarioParent | TRaceStepParent
+export type TRaceBackgroundParent = TRaceFeature | TRaceRule
