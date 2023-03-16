@@ -2259,7 +2259,7 @@
     "@keg-hub/jsutils" ">=9.6.1"
     app-root-path "3.0.0"
 
-"@keg-hub/cli-utils@*", "@keg-hub/cli-utils@0.8.0-alpha", "@keg-hub/cli-utils@0.8.0-alpha1", "@keg-hub/cli-utils@>=0.8.0-alpha1":
+"@keg-hub/cli-utils@*", "@keg-hub/cli-utils@0.7.0", "@keg-hub/cli-utils@0.8.0-alpha", "@keg-hub/cli-utils@0.8.0-alpha1", "@keg-hub/cli-utils@>=0.8.0-alpha1":
   version "0.8.0-alpha"
   resolved "https://registry.npmjs.org/@keg-hub/cli-utils/-/cli-utils-0.8.0-alpha.tgz#a6d531f5d4dbb4a4626f8783ea0f8282230ed0df"
   integrity sha512-uxQI8WT3AoHMYEjlNHFM0K5pkWVJkiZw2datm0cxNF1ByS4veDXbd+3oayRKGRGzUkkZyufeVMxwdqSlr7Mr1w==
@@ -2332,10 +2332,10 @@
   dependencies:
     "@keg-hub/jsutils" ">=9.6.1"
 
-"@ltipton/parkin@2.1.1-beta2":
-  version "2.1.1-beta2"
-  resolved "https://registry.npmjs.org/@ltipton/parkin/-/parkin-2.1.1-beta2.tgz#c19473696a9aef9678e0c92efe50bde7bc4372de"
-  integrity sha512-w19aWzfhMplg5EOdt0mS9zzedWG2tD5uZSPzpDfd+go6UJqJOisjUTiNoKnk10FAO8OFdSV60akLimaD9t7nBg==
+"@ltipton/parkin@3.0.0-alpha":
+  version "3.0.0-alpha"
+  resolved "https://registry.npmjs.org/@ltipton/parkin/-/parkin-3.0.0-alpha.tgz#be41b8396fa9540e3cecd908e1378a7e45fa4181"
+  integrity sha512-FNjATnm4zaTVG3ySdBVqPa4hT7572n0+yijAmZ/EeyyNyKNTAnJwlkPbUCURoP2cg79kcstLHu6pPA9NKOfyMw==
 
 "@monaco-editor/loader@^1.2.0":
   version "1.3.2"
@@ -4664,7 +4664,7 @@ esbuild-register@*, esbuild-register@3.4.2:
   dependencies:
     debug "^4.3.4"
 
-esbuild@*, esbuild@0.17.6, esbuild@^0.15.6:
+esbuild@*, esbuild@0.17.5, esbuild@0.17.6, esbuild@^0.15.6:
   version "0.17.6"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.17.6.tgz#bbccd4433629deb6e0a83860b3b61da120ba4e01"
   integrity sha512-TKFRp9TxrJDdRWfSsSERKEovm6v30iHnrjlcGhLBOtReE28Yp1VSBRfO3GTaOFMoxsNerx4TjrhzSuma9ha83Q==
