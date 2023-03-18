@@ -91,14 +91,16 @@ export const removeTab = (tabs:TTabItem[], tab:TTab) => {
  */
 export const featureToTab = (
   feature:TRaceFeature,
-  { Icon=BoltIcon, ...tab }:Partial<TTab> & { Icon?:ComponentType<any> }=noOpObj
+  { Icon=BoltIcon, ...tab }:Partial<TTab> & { Icon?:ComponentType<any> }=noOpObj,
 ):TTabItem => ({
   Icon,
   styles: TabStyles,
   tab: {
     ...feature,
     ...tab,
-    title: feature.uuid === EmptyFeatureUUID ? `New Feature` : feature.feature
+    title: feature.uuid === EmptyFeatureUUID
+      ? `New Feature`
+      : feature.path || feature.feature
   }
 })
 

@@ -35,5 +35,5 @@ export const parseFeature = async (
 ) => PK.parse.feature(text, world)
 
 export const patchFeature = async (options:TPatchFeatureOpts) => {
-  return patchIndexes(options)
+  return patchIndexes(options, PK)
 }

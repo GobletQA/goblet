@@ -2,10 +2,11 @@ import type {
   TPatchFeatureOpts,
 } from '@GBR/types'
 
+import { Parkin, TIndexAst } from '@ltipton/parkin'
 import { indexFromAst } from '@GBR/utils/indexes/indexFromAst'
+import { mapIndexChanges } from '@GBR/utils/indexes/mapIndexChanges'
 import { featureToIndexes } from '@GBR/utils/indexes/featureToIndexes'
 import { indexesToFeature } from '@GBR/utils/indexes/indexesToFeature'
-import { mapFeatureUpdate } from '@GBR/utils/features/mapFeatureUpdate'
 
 
 /**
@@ -26,7 +27,7 @@ import { mapFeatureUpdate } from '@GBR/utils/features/mapFeatureUpdate'
  *  - Will most likely need to merge sub-properties and arrays
  *  - Like steps and rule.scenarios 
  */
-export const patchIndexes = (props:TPatchFeatureOpts) => {
+export const patchIndexes = (props:TPatchFeatureOpts, PK?:Parkin) => {
   const { feature } = props
   const indexes = props.indexes || featureToIndexes(feature)
   const { indexed } = indexFromAst({...props, indexes})
@@ -36,8 +37,16 @@ export const patchIndexes = (props:TPatchFeatureOpts) => {
     feature
   )
 
+  const mapped = mapIndexChanges(
+    feature,
+    updated
+  )
+
+  const parkin  = PK || new Parkin()
+  mapped.content = parkin.assemble.indexed(indexed as unknown as TIndexAst)
+
   return {
-    feature: updated,
+    feature: mapped,
     indexes: indexed
   }
 }

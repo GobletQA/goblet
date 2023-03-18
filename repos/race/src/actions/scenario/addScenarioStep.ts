@@ -1,7 +1,10 @@
+import { ESectionType } from '@GBR/types'
 import { findScenario } from '@GBR/utils/find'
 import { stepFactory } from '@GBR/factories/stepFactory'
-import { updateFeature } from '@GBR/actions/feature/updateFeature'
+import { patchFeature } from '@GBR/actions/feature/patchFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
+
+import { updateFeature } from '@GBR/actions/feature/updateFeature'
 
 export const addScenarioStep = async (parentId:string) => {
   if(!parentId) return console.warn(`Can not update scenario step without scenario Id`)
@@ -17,18 +20,33 @@ export const addScenarioStep = async (parentId:string) => {
   } = findScenario(feature, parentId)
   if(!scenario) return
 
-  scenarios[scenarioIdx] = {
-    ...scenario,
-    steps: [
-      ...scenario.steps,
-      stepFactory({
-        feature,
-        step: {
-          whitespace: `${scenario.whitespace}${scenario.whitespace}`
-        }
-      })
-    ]
-  }
+  const step = stepFactory({
+    feature,
+    step: {
+      whitespace: `${scenario.whitespace}${scenario.whitespace}`
+    }
+  })
 
-  updateFeature({...feature, scenarios})
+  patchFeature({
+    feature,
+    indexes,
+    child: step,
+    parent: scenario,
+    key: ESectionType.steps
+  })
+
+  // scenarios[scenarioIdx] = {
+  //   ...scenario,
+  //   steps: [
+  //     ...scenario.steps,
+  //     stepFactory({
+  //       feature,
+  //       step: {
+  //         whitespace: `${scenario.whitespace}${scenario.whitespace}`
+  //       }
+  //     })
+  //   ]
+  // }
+
+  // updateFeature({...feature, scenarios})
 }

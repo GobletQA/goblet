@@ -139,7 +139,7 @@ export const indexesToFeature = (
     const { ast } = item
     if(ast === feature) return feat
 
-    switch(ast.type){
+    switch(ast.type as ESectionType){
       case ESectionType.desire: {
         const parent = findParent<TRaceFeature>(
           feature,
@@ -149,7 +149,7 @@ export const indexesToFeature = (
         mergeItem<TRaceBlock, TRaceFeature>(
           parent,
           ESectionType.desire,
-          ast
+          ast as TRaceBlock
         )
         break
       }
@@ -162,7 +162,7 @@ export const indexesToFeature = (
         mergeItem<TRaceBlock, TRaceFeature>(
           parent,
           ESectionType.perspective,
-          ast
+          ast as TRaceBlock
         )
         break
       }
@@ -175,7 +175,7 @@ export const indexesToFeature = (
         mergeItem<TRaceTags, TRaceTagsParent>(
           parent,
           ESectionType.tags,
-          ast
+          ast as TRaceTags
         )
         break
       }
@@ -188,10 +188,16 @@ export const indexesToFeature = (
         mergeItem<TRaceBackground, TRaceBackgroundParent>(
           parent,
           ESectionType.background,
-          ast
+          ast as TRaceBackground
         )
         break
       }
+      case ESectionType.given:
+      case ESectionType.when:
+      case ESectionType.then:
+      case ESectionType.and:
+      case ESectionType.but:
+      case ESectionType[`*`]:
       case ESectionType.step: {
         const parent = findParent<TRaceStepParent>(
           feature,
@@ -201,7 +207,7 @@ export const indexesToFeature = (
         astArray<TRaceStep, TRaceStepParent>(
           parent,
           ESectionType.steps,
-          ast
+          ast as TRaceStep
         )
         break
       }
@@ -214,7 +220,7 @@ export const indexesToFeature = (
         astArray<TRaceBlock, TRaceFeature>(
           parent,
           ESectionType.reason,
-          ast
+          ast as TRaceBlock
         )
         break
       }
@@ -227,7 +233,7 @@ export const indexesToFeature = (
         astArray<TRaceBlock, TRaceFeature>(
           parent,
           ESectionType.empty,
-          ast
+          ast as TRaceBlock
         )
         break
       }
@@ -240,7 +246,7 @@ export const indexesToFeature = (
         astArray<TRaceBlock, TRaceFeature>(
           parent,
           ESectionType.comments,
-          ast
+          ast as TRaceBlock
         )
         break
       }
@@ -253,7 +259,7 @@ export const indexesToFeature = (
         astArray<TRaceRule, TRaceFeature>(
           parent,
           ESectionType.rules,
-          ast
+          ast as TRaceRule
         )
         break
       }
@@ -266,12 +272,12 @@ export const indexesToFeature = (
         astArray<TRaceScenario, TRaceScenarioParent>(
           parent,
           ESectionType.scenarios,
-          ast
+          ast as TRaceScenario
         )
         break
       }
     }
 
     return feat
-  }, {...feature} as TRaceFeature)
+  }, {} as TRaceFeature)
 }

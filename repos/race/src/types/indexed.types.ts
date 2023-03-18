@@ -43,8 +43,8 @@ export type TRaceIndex = TRaceIndexItem[]
 
 
 export type TPatchFeatureOpts = {
+  key:string
   child:TRaceAst
-  childKey:string
   indexes?:TRaceIndex
   feature:TRaceFeature
   parent:TRaceIndexParent

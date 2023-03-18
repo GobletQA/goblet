@@ -18,9 +18,9 @@ export type TIndexFromAst = Omit<TPatchFeatureOpts, `indexes`> & {
  */
 const getLastChild = (
   parent:TRaceAst,
-  childKey:string,
+  key:string,
 ) => {
-  const children = ensureArr(parent[childKey as keyof typeof parent])
+  const children = ensureArr(parent[key as keyof typeof parent])
   return children[children.length - 1]
 }
 
@@ -30,9 +30,9 @@ const getLastChild = (
  */
 const getBeforeIndex = (
   parent:TRaceAst,
-  childKey:string,
+  key:string,
 ) => {
-  const lastChild = getLastChild(parent, childKey)
+  const lastChild = getLastChild(parent, key)
   return lastChild?.index || parent.index
 }
 
@@ -52,9 +52,9 @@ const checkBlocks = (blocks:TRaceBlock[], idx:number):number => {
 const findNextIndex = ({
   parent,
   feature,
-  childKey,
+  key,
 }:TIndexFromAst) => {
-  const beforeIdx = getBeforeIndex(parent, childKey)
+  const beforeIdx = getBeforeIndex(parent, key)
   return checkBlocks(
     [
     ...(feature.empty || emptyArr),

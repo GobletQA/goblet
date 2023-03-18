@@ -19,7 +19,7 @@ const emptyStep = ():Partial<TRaceStep> => ({
   step: `  `,
   uuid: uuid(),
   whitespace: `    `,
-  type: EStepType.empty,
+  type: EStepType.step,
 })
 
 export const stepFactory = ({

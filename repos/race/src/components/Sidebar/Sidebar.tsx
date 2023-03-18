@@ -39,7 +39,6 @@ const RenderSidebar = (props:TRaceSidebar) => {
 export const Sidebar = (props:TRaceSidebar) => {
 
   const {portal, ...rest} = props
-
   const portalProps = useMemo(() => {
     if(!portal) return
     const portalProps = {} as Partial<TPortal>

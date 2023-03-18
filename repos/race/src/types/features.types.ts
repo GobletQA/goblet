@@ -3,7 +3,7 @@ import type {
   EStepType,
   TStepAst,
   TRuleAst,
-  TAstBlock,
+  TBlockAst,
   TFeatureAst,
   TScenarioAst,
   TBackgroundAst,
@@ -55,7 +55,7 @@ export type TRaceTags = Omit<TTagsAst, `type`> & {
   type: ESectionType.tags
 }
 
-export type TRaceBlock = Omit<TAstBlock, `type`> & {
+export type TRaceBlock = Omit<TBlockAst, `type`> & {
   type: TBlockType
 }
 

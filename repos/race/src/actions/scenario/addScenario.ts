@@ -1,7 +1,7 @@
-import { ESectionType } from '@GBR/types'
 
-import { scenarioFactory } from '@GBR/factories/scenarioFactory'
+import { ESectionType } from '@GBR/types'
 import { patchFeature } from '@GBR/actions/feature/patchFeature'
+import { scenarioFactory } from '@GBR/factories/scenarioFactory'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const addScenario = async () => {
@@ -14,6 +14,6 @@ export const addScenario = async () => {
     feature,
     indexes,
     child: scenario,
-    childKey: ESectionType.scenarios
+    key: ESectionType.scenarios
   })
 }
