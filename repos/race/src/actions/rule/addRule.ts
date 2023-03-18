@@ -3,10 +3,10 @@ import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const addRule = async () => {
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
-  const rule = ruleFactory({empty: true})
+  const rule = ruleFactory({feature, empty: true})
   const rules = [...(feature.rules || [])]
   rule && rules.push(rule)
 

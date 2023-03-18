@@ -10,7 +10,7 @@ export const updateScenario = async (
 ) => {
   if(!scenarioId) return console.warn(`Can not update scenario step without scenario Id`)
   
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {

@@ -5,7 +5,7 @@ import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const updateScenarioStep = async (step:TRaceStep, scenarioId:string) => {
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {

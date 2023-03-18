@@ -1,4 +1,5 @@
 import type {
+  TRaceIndex,
   TFeatureCB,
   TRaceFeature,
   TOnFeatureCB,
@@ -45,6 +46,7 @@ export type TEditorCtx = {
   displayMeta?:boolean
   feature:TRaceFeature
   setFeature:TOnFeatureCB
+  indexes:TRaceIndex
   updateFeature:TOnFeatureCB
   updateExpanded:TOnExpandedCB
   menuContext?:TRaceContextMenu
@@ -98,6 +100,8 @@ export const EditorProvider = (props:TEditorProvider) => {
 
   const {
     feature,
+    indexes,
+    setIndexes,
     setFeature:_setFeature
   } = useFeature()
 
@@ -108,8 +112,10 @@ export const EditorProvider = (props:TEditorProvider) => {
     updateFeature,
   } = useFeatureCallbacks({
     feature,
+    indexes,
     expanded,
     rootPrefix,
+    setIndexes,
     featuresRef,
     updateExpanded,
     setFeatureRefs,
@@ -122,10 +128,9 @@ export const EditorProvider = (props:TEditorProvider) => {
     setFeature:_setFeature,
   })
 
-  
-
   const editorCtx:TEditorCtx = useMemo(() => {
     return {
+      indexes,
       expanded,
       setFeature,
       rootPrefix,
@@ -136,6 +141,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     }
   }, [
     feature,
+    indexes,
     expanded,
     setFeature,
     rootPrefix,

@@ -9,7 +9,7 @@ export const updateScenarioStepPos = async (
   oldIdx:number,
   newIdx:number,
 ) => {
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {

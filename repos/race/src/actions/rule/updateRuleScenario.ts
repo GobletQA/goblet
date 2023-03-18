@@ -10,7 +10,7 @@ export const updateRuleScenario = async (
   updated:Partial<TRaceScenario>,
   ruleId:string
 ) => {
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {

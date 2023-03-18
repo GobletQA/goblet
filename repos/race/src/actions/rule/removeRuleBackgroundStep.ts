@@ -9,7 +9,7 @@ export const removeRuleBackgroundStep = async (
   ruleId?:string
 ) => {
 
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
   if(!ruleId)
     return console.warn(`Remove Rule#scenario#step - Rule Id is required`,feature,stepId,ruleId)

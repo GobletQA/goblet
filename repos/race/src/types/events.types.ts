@@ -1,6 +1,7 @@
-import { TRaceFeature } from './features.types'
+import { TRaceFeature, TRaceIndex } from './features.types'
 
 export type TAnswerFeature = {
+  indexes:TRaceIndex
   feature:TRaceFeature
 }
 

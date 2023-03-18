@@ -6,13 +6,13 @@ import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const updateBackgroundStep = async (step:TRaceStep) => {
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const background = {
     ...(
       feature.background
-        || backgroundFactory({empty: true}) as TRaceBackground
+        || backgroundFactory({feature, empty: true}) as TRaceBackground
     )
   }
 

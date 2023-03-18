@@ -6,7 +6,7 @@ import { UpdateFeatureContextEvt } from '@GBR/constants'
 
 export const updateFeature = (
   feat:Partial<TRaceFeature>,
-  updateOpts:TUpdateFeatureOpts=emptyObj
+  options:TUpdateFeatureOpts=emptyObj
 ) => {
   !feat.feature
     ? console.warn(`A feature name is required when calling updateFeature action`, feat)
@@ -14,8 +14,10 @@ export const updateFeature = (
         UpdateFeatureContextEvt,
         {
           feature: feat as TRaceFeature,
-          ...updateOpts,
-          replace: exists(updateOpts.replace) ? updateOpts.replace : true 
+          options: {
+            ...options,
+            replace: exists(options.replace) ? options.replace : true 
+          },
         }
       )
 }

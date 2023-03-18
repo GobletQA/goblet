@@ -8,7 +8,7 @@ import { deepMerge } from '@keg-hub/jsutils'
 // Switch backgroundId argument to be parent:TRaceBackgroundParent
 // And ref background directly via parent.background
 export const updateBackground = async (update:Partial<TRaceBackground>) => {
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   // TODO: parkin is not parsing the background title content

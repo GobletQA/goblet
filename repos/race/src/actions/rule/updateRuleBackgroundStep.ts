@@ -8,7 +8,7 @@ export const updateRuleBackgroundStep = async (
   step:TRaceStep,
   ruleId:string
 ) => {
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {

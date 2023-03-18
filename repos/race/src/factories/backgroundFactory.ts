@@ -1,22 +1,30 @@
-import type { TRaceBackground } from '@GBR/types'
+import type { TRaceFeature, TRaceBackgroundParent, TRaceBackground } from '@GBR/types'
 
+import { ESectionType } from '@GBR/types'
 import { stepsFactory } from './stepFactory'
 import { deepMerge, uuid } from '@keg-hub/jsutils'
 
 export type TBackgroundFactory = {
   empty?:boolean
+  feature:TRaceFeature,
+  parent?:TRaceBackgroundParent
   background?:Partial<TRaceBackground>
 }
 
-const emptyBackground = () => ({
-  tags: [],
-  steps: [],
-  uuid: uuid(),
-  background: ``,
-  whitespace: `  `,
-})
+const emptyBackground = (parent:TRaceBackgroundParent) => {
+
+  return {
+    steps: [],
+    uuid: uuid(),
+    background: ``,
+    whitespace: `  `,
+    type: ESectionType.background,
+  } as Partial<TRaceBackground>
+}
 
 export const backgroundFactory = ({
+  parent,
+  feature,
   background,
   empty=false,
 }:TBackgroundFactory) => {
@@ -24,12 +32,12 @@ export const backgroundFactory = ({
 
   return background
     ? deepMerge<TRaceBackground>(
-        emptyBackground(),
+        emptyBackground(parent),
         background,
-        {steps: stepsFactory({steps: background?.steps})}
+        {steps: stepsFactory({steps: background?.steps, feature})}
       )
     : empty
-      ? emptyBackground()
+      ? emptyBackground(parent) as TRaceBackground
       : undefined
 }
 

@@ -4,7 +4,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 export const removeBackgroundStep = async (stepId:string) => {
   if(!stepId) return console.warn(`Can not remove step; a step id is required`)
 
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   if(!feature.background)

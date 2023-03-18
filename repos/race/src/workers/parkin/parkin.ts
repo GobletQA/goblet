@@ -3,7 +3,7 @@
 /// <reference lib="webworker" />
 declare const self: DedicatedWorkerGlobalScope;
 
-import type { TRaceFeature } from '@GBR/types'
+import type { TPatchFeatureOpts, TRaceFeature } from '@GBR/types'
 import type {
   TWorldConfig,
   TRegisterOrAddStep,
@@ -11,6 +11,7 @@ import type {
 
 import { Parkin } from '@ltipton/parkin'
 import { deepMerge } from '@keg-hub/jsutils'
+import { patchIndexes } from '@gobletqa/race/utils/indexes/patchIndexes'
 
 const PK  = new Parkin()
 
@@ -33,20 +34,6 @@ export const parseFeature = async (
   world?:TWorldConfig,
 ) => PK.parse.feature(text, world)
 
-export const updateFeature = async (
-  updates?:Partial<TRaceFeature>,
-  existing?:TRaceFeature,
-  replace?:boolean
-) => {
-
-  const merged = replace
-    ? updates as TRaceFeature
-    : deepMerge<TRaceFeature>(existing, updates)
-
-  return {
-    uuid: merged.uuid,
-    path: merged.path,
-    parent: merged.parent,
-    ...PK.reIndex(merged, { empty: false, indexes: false }),
-  } as TRaceFeature
+export const patchFeature = async (options:TPatchFeatureOpts) => {
+  return patchIndexes(options)
 }

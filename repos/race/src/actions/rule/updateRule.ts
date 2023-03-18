@@ -9,7 +9,7 @@ import { deepMerge } from '@keg-hub/jsutils'
 export const updateRule = async (ruleId:string, update:Partial<TRaceRule>) => {
   if(!ruleId) return console.warn(`Can not update rule step without rule Id`)
   
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {

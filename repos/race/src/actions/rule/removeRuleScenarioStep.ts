@@ -8,7 +8,7 @@ export const removeRuleScenarioStep = async (
   ruleId?:string
 ) => {
 
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
   if(!scenarioId)
     return console.warn(`Remove Rule#scenario#step - Scenario Id is required`,feature,stepId,scenarioId,ruleId)

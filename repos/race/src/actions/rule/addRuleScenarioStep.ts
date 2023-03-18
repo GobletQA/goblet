@@ -7,7 +7,7 @@ export const addRuleScenarioStep = async (
   scenarioId:string,
   ruleId:string
 ) => {
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {
@@ -29,6 +29,7 @@ export const addRuleScenarioStep = async (
     steps: [
       ...scenario.steps,
       stepFactory({
+        feature,
         step: {
           whitespace: `${rule.whitespace}${scenario.whitespace}`
         } 

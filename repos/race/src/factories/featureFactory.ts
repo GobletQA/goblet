@@ -1,5 +1,6 @@
 import type { TEmptyFeature, TRaceFeature } from '@GBR/types'
 
+import { ESectionType } from '@GBR/types'
 import { rulesFactory } from './ruleFactory'
 import { scenariosFactory } from './scenarioFactory'
 import { deepMerge, ensureArr } from '@keg-hub/jsutils'
@@ -27,11 +28,11 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
 
   return deepMerge<TRaceFeature>(
     {
-      tags: [],
       uuid: fUuid,
       feature: ``,
       content: ``,
       isEmpty: true,
+      type: ESectionType.feature,
     },
     feat,
     {
@@ -40,14 +41,28 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
         location: path
       },
       path: feat.path,
-      ...toObj(`rules`, rulesFactory({ rules })),
-      ...toObj(`reason`, blocksFactory({ blocks: reasons })),
-      ...toObj(`comments`, blocksFactory({ blocks: comments})),
-      ...toObj(`empty`, blocksFactory({ blocks: feat.empty })),
-      ...toObj(`desire`, blockFactory({ block: desire, index: FeatureIndexMap.desire })),
-      ...toObj(`scenarios`, scenariosFactory({scenarios})),
-      ...toObj(`background`, backgroundFactory({ background })),
-      ...toObj(`perspective`, blockFactory({ block: perspective, index: FeatureIndexMap.perspective })),
+      ...toObj(`rules`, rulesFactory({ rules, feature: feat })),
+      ...toObj(`reason`, blocksFactory({ blocks: reasons, feature: feat })),
+      ...toObj(`comments`, blocksFactory({ blocks: comments, feature: feat })),
+      ...toObj(`empty`, blocksFactory({ blocks: feat.empty, feature: feat })),
+      ...toObj(`desire`, blockFactory({
+        block: desire,
+        feature: feat,
+        index: FeatureIndexMap.desire,
+      })),
+      ...toObj(`scenarios`, scenariosFactory({
+        scenarios,
+        feature: feat
+      })),
+      ...toObj(`background`, backgroundFactory({
+        background,
+        feature: feat
+      })),
+      ...toObj(`perspective`, blockFactory({
+        feature: feat,
+        block: perspective,
+        index: FeatureIndexMap.perspective
+      })),
     }
   )
 }

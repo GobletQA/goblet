@@ -6,7 +6,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const addRuleScenario = async (ruleId:string) => {
 
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {
@@ -22,6 +22,7 @@ export const addRuleScenario = async (ruleId:string) => {
     scenarios: [
       ...rule.scenarios,
       scenarioFactory({
+        feature,
         scenario: {
           whitespace: `${rule.whitespace}${rule.whitespace}`
         }

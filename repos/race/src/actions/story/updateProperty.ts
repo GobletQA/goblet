@@ -18,7 +18,7 @@ export const updateProperty = async (
     : updateFeature({
         ...feature,
         [type]: isArr<string[]>(content)
-          ? blocksFactory({ blocks: content.map(line => ({ content: line })) })
-          : blockFactory({ block: { ...feature[type], content }})
+          ? blocksFactory({ feature, blocks: content.map(line => ({ content: line })) })
+          : blockFactory({ feature, block: { ...feature[type], content }})
       })
 }

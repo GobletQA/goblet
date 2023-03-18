@@ -1,27 +1,25 @@
 import type {
   TFeatureCB,
   TSetFeature,
+  TSetIndexes,
   TRaceFeature,
   TOnFeatureCB,
   TFeaturesRef,
   TUpdateFeature,
   TAskForFeature,
   TSetFeatureRefs,
+  TRaceIndex,
   TSetFeatureGroups,
-  TUpdateFeatureOpts,
 } from '@GBR/types'
 import type { TExpanded, TOnExpandedCB } from '@GBR/contexts'
 
-import { EUpdateType } from '@GBR/types'
-import { emptyObj, get } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
-import { generateId } from '@GBR/utils/helpers/generateId'
-import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { useEventListen, useInline } from '@gobletqa/components'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
-import { mapFeatureUpdate } from '@GBR/utils/features/mapFeatureUpdate'
-import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 
+import { featureToIndexes } from '@GBR/utils/indexes/featureToIndexes'
+import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 
 import {
   AskForFeatureEvt,
@@ -32,8 +30,10 @@ import {
 export type THFeatureCallbacks = {
   rootPrefix:string
   expanded:TExpanded
+  indexes:TRaceIndex,
   feature?:TRaceFeature
   setFeature:TSetFeature
+  setIndexes:TSetIndexes
   featuresRef: TFeaturesRef
   updateEmptyTab:TFeatureCB
   onFeatureClose:TOnFeatureCB
@@ -45,47 +45,14 @@ export type THFeatureCallbacks = {
   setFeatureGroups:TSetFeatureGroups
 }
 
-export type THandleUpdateType = TUpdateFeatureOpts & {
-  expanded:TExpanded
-  updated: TRaceFeature
-  feature?: TRaceFeature
-  updateExpanded:TOnExpandedCB
-  changed?: Partial<TRaceFeature>
-}
-
-const handleUpdateType = (props:THandleUpdateType) => {
-  const {
-    op,
-    type,
-    path,
-    replace,
-    updated,
-    expanded,
-    updateExpanded
-  } = props
-
-    // Handle different update types
-    if(op === EUpdateType.add){
-      const prop = path ? get(updated, path) : emptyObj
-      prop?.uuid && updateExpanded(generateId(updated, prop, type), true)
-    }
-
-    else if(op === EUpdateType.remove){
-      
-    }
-
-    else if(op === EUpdateType.update){
-      
-    }
-
-}
-
 export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
   const {
+    indexes,
     feature,
     expanded,
     setFeature,
+    setIndexes,
     featuresRef,
     updateEmptyTab,
     setFeatureRefs,
@@ -102,34 +69,13 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     setFeature(feat)
   })
 
-  const updateFeature = useInline(async (
-    changed?:Partial<TRaceFeature>,
-    updateOpts:TUpdateFeatureOpts=emptyObj
-  ) => {
-    if(!changed || !isValidUpdate(changed)) return
+  const updateFeature = useInline(async ({
+    indexes,
+    feature:updated,
+  }:TUpdateFeature) => {
+    if(!updated || !isValidUpdate(updated)) return
 
-    const updated = mapFeatureUpdate(
-      changed,
-      feature,
-      updateOpts.replace,
-    )
-
-    // const updated = await ParkinWorker.updateFeature(
-    //   changed,
-    //   feature,
-    //   replace,
-    // )
-
-    // handleUpdateType({
-    //   updated,
-    //   changed,
-    //   feature,
-    //   expanded,
-    //   updateExpanded,
-    //   ...updateOpts,
-    // })
-
-    onFeatureChange?.(updated, changed, feature)
+    onFeatureChange?.(updated, feature)
 
     featuresRef.current[updated.uuid] = updated
 
@@ -142,8 +88,11 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     }
 
     setFeatureRefs(featuresRef.current)
-    setFeature(updated)
 
+    const idxes = indexes || featureToIndexes(updated)
+    setIndexes(idxes)
+
+    setFeature(updated)
   })
 
   const setEmptyFeature = useInline(((feat:TRaceFeature) => {
@@ -159,10 +108,11 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   // Allows dispatching update outside of the react context
   useEventListen<TUpdateFeature>(
     UpdateFeatureContextEvt,
-    ({ feature, ...updateOpts }) => updateFeature(
-      updateEmptyFeature(feature, featuresRef),
-      updateOpts
-    )
+    ({ feature, indexes, ...options }) => updateFeature({
+      indexes,
+      options,
+      feature: updateEmptyFeature(feature, featuresRef),
+    })
   )
 
   useEventListen<TRaceFeature>(
@@ -173,6 +123,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   // Helper to allow external code ask the context for the current feature
   // Allows external actions to interface with the currently active feature
   useEventListen<TAskForFeature>(AskForFeatureEvt, ({ cb }) => cb?.({
+    indexes,
     feature,
     updateFeature,
   }))

@@ -4,6 +4,7 @@ import type { TAutoOpt } from '@gobletqa/components'
 
 import { useInline } from '@gobletqa/components'
 import { stepFactory } from '@GBR/factories/stepFactory'
+import { useFeature } from '@GBR/contexts/FeatureContext'
 import { useStepDefs }  from '@gobletqa/race/contexts/StepDefsContext'
 
 
@@ -19,10 +20,13 @@ export const useOnStepAction = (props:THOnStepChange) => {
   } = props
 
   const { defs } = useStepDefs()
+  const { feature } = useFeature()
 
   return useInline((evt:Event, opt:TAutoOpt|null) => {
+    if(!feature) return
+
     // If no option, then it was cleared, so reset the step
-    if(!opt) return onChange?.(stepFactory({ step: { uuid: step.uuid} }), step)
+    if(!opt) return onChange?.(stepFactory({ feature, step: { uuid: step.uuid} }), step)
 
     const found = defs[opt.id as keyof typeof defs]
 

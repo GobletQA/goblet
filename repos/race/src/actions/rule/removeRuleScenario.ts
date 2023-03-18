@@ -7,7 +7,7 @@ export const removeRuleScenario = async (
   parentId:string
 ) => {
 
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {

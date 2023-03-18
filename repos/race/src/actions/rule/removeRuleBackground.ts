@@ -6,7 +6,7 @@ export const removeRuleBackground = async (
   ruleId:string
 ) => {
 
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {

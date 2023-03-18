@@ -10,7 +10,7 @@ export const updateRuleScenarioStep = async (
   scenarioId:string,
   ruleId:string
 ) => {
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {

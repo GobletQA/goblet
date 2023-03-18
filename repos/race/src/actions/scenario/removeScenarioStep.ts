@@ -7,7 +7,7 @@ export const removeScenarioStep = async (
   scenarioId?:string,
 ) => {
 
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
   if(!scenarioId)
     return console.warn(`Remove Scenario#step - Scenario Id is required`,feature,stepId,scenarioId)

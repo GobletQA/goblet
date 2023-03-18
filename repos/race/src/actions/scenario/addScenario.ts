@@ -1,25 +1,19 @@
-import { ESectionType, EUpdateType } from '@GBR/types'
+import { ESectionType } from '@GBR/types'
+
 import { scenarioFactory } from '@GBR/factories/scenarioFactory'
-import { updateFeature } from '@GBR/actions/feature/updateFeature'
+import { patchFeature } from '@GBR/actions/feature/patchFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const addScenario = async () => {
-  const feature = await getFeature()
+  const { feature, indexes } = await getFeature()
   if(!feature) return
 
-  const scenario = scenarioFactory({empty: true})
-  const scenarios = [...(feature.scenarios || [])]
-  scenario && scenarios.push(scenario)
-  
-  const index = scenarios.indexOf(scenario)
+  const scenario = scenarioFactory({feature, empty: true})
 
-  updateFeature(
-    {...feature, scenarios},
-    {
-      index,
-      op: EUpdateType.ADD,
-      type: ESectionType.scenario,
-      path: `${ESectionType.scenarios}.${index}`,
-    }
-  )
+  patchFeature({
+    feature,
+    indexes,
+    child: scenario,
+    childKey: ESectionType.scenarios
+  })
 }

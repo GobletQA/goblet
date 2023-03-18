@@ -6,7 +6,8 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 export const addScenarioStep = async (parentId:string) => {
   if(!parentId) return console.warn(`Can not update scenario step without scenario Id`)
   
-  const feature = await getFeature()
+  const { feature, indexes } = await getFeature()
+
   if(!feature) return
 
   const {
@@ -21,6 +22,7 @@ export const addScenarioStep = async (parentId:string) => {
     steps: [
       ...scenario.steps,
       stepFactory({
+        feature,
         step: {
           whitespace: `${scenario.whitespace}${scenario.whitespace}`
         }

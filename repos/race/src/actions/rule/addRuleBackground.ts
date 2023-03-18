@@ -7,7 +7,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export const addRuleBackground = async (ruleId:string) => {
 
-  const feature = await getFeature()
+  const { feature } = await getFeature()
   if(!feature) return
 
   const {
@@ -22,6 +22,7 @@ export const addRuleBackground = async (ruleId:string) => {
     background: {
       ...rule?.background,
       ...backgroundFactory({
+        feature,
         background: {
           whitespace: `${rule.whitespace}${rule.whitespace}`
         }
