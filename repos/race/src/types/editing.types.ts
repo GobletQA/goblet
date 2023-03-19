@@ -1,6 +1,4 @@
 import type { Dispatch, SetStateAction } from 'react'
-import type { TRaceFeature } from './features.types'
-import type { TRaceIndexItem, TRaceIndex } from './indexed.types'
 
 export enum EEditKey {
   step=`step`,

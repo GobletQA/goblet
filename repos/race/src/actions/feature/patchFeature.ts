@@ -49,9 +49,7 @@ export const patchFeature = async (
     parent: parent || feature,
   })
 
-  const patched = {...feature, ...updated}
-
-  console.log(patched)
+  const patched = {...feature, ...updated} as unknown as TRaceFeature
 
   EE.emit<TUpdateFeature>(
     UpdateFeatureContextEvt,

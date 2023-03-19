@@ -1,13 +1,15 @@
 import type {
+  TRaceFeature,
   TPatchFeatureOpts,
 } from '@GBR/types'
+import type {
+  TAstType,
+  TIndexAst,
+  TFeatureAst,
+  TIndexParentAst,
+} from '@ltipton/parkin'
 
-import { Parkin, TIndexAst } from '@ltipton/parkin'
-import { indexFromAst } from '@GBR/utils/indexes/indexFromAst'
-import { mapIndexChanges } from '@GBR/utils/indexes/mapIndexChanges'
-import { featureToIndexes } from '@GBR/utils/indexes/featureToIndexes'
-import { indexesToFeature } from '@GBR/utils/indexes/indexesToFeature'
-
+import { Parkin } from '@ltipton/parkin'
 
 /**
  * TODO: update this to just return the parts of the feature that changed
@@ -28,25 +30,28 @@ import { indexesToFeature } from '@GBR/utils/indexes/indexesToFeature'
  *  - Like steps and rule.scenarios 
  */
 export const patchIndexes = (props:TPatchFeatureOpts, PK?:Parkin) => {
-  const { feature } = props
-  const indexes = props.indexes || featureToIndexes(feature)
-  const { indexed } = indexFromAst({...props, indexes})
-
-  const updated = indexesToFeature(
-    indexed,
-    feature
-  )
-
-  const mapped = mapIndexChanges(
-    feature,
-    updated
-  )
+  const child = props.child as TAstType
+  const feature = props.feature as TFeatureAst
+  const parent = props.parent as TIndexParentAst
 
   const parkin  = PK || new Parkin()
-  mapped.content = parkin.assemble.indexed(indexed as unknown as TIndexAst)
+
+  const indexes = (props.indexes as TIndexAst)
+    || parkin.indexes.toIndexes(feature)
+
+  const { indexed } = parkin.indexes.indexFrom({
+    ...props,
+    feature,
+    child,
+    parent,
+    indexes
+  })
+ 
+  const updated = parkin.indexes.toFeature(indexed, feature)
+  updated.content = parkin.assemble.indexedToString(indexed as unknown as TIndexAst)
 
   return {
-    feature: mapped,
+    feature: updated,
     indexes: indexed
   }
 }

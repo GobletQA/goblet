@@ -5,9 +5,9 @@ import type {
   TRaceFeature,
 } from '../types'
 
+import { useParkin } from './ParkinContext'
 import { emptyArr } from '@keg-hub/jsutils'
-import { MemoChildren, useInline } from '@gobletqa/components'
-import { featureToIndexes } from '@GBR/utils/indexes/featureToIndexes'
+import { MemoChildren } from '@gobletqa/components'
 import {
   useMemo,
   useState,
@@ -36,15 +36,18 @@ export const FeatureProvider = (props:TFeatureProvider) => {
     initialFeature,
   } = props
 
+  const { parkin } = useParkin()
   const initIndexes = useMemo(() => {
-    return initialFeature ? featureToIndexes(initialFeature) : (emptyArr as TRaceIndex)
+    return initialFeature
+    ? parkin?.indexes?.toIndexes(initialFeature as any)
+    : (emptyArr as TRaceIndex)
   }, [initialFeature])
 
   const [indexes, setIndexes] = useState<TRaceIndex>(initIndexes)
   const [feature, setFeature] = useState<TRaceFeature|undefined>(initialFeature)
 
   // const _setFeature:TSetFeature = useInline((feature:TRaceFeature|undefined) => {
-  //   const indexes = feature ? featureToIndexes(feature) : (emptyArr as TRaceIndex)
+  //   const indexes = feature ? parkin?.indexes?.toIndexes(feature) : (emptyArr as TRaceIndex)
   //   setIndexes(indexes)
   //   setFeature(feature)
   // })

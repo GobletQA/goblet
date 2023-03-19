@@ -13,12 +13,10 @@ import type {
 } from '@GBR/types'
 import type { TExpanded, TOnExpandedCB } from '@GBR/contexts'
 
-import { emptyObj } from '@keg-hub/jsutils'
+import { useParkin } from '@GBR/contexts'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { useEventListen, useInline } from '@gobletqa/components'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
-
-import { featureToIndexes } from '@GBR/utils/indexes/featureToIndexes'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 
 import {
@@ -61,6 +59,9 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     onFeatureInactive,
   } = props
 
+
+  const { parkin } = useParkin()
+
   const _setFeature = useInline((feat?:TRaceFeature) => {
     // If a different feature is being set,
     // then call inactive callback on previous feature
@@ -89,9 +90,8 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
     setFeatureRefs(featuresRef.current)
 
-    const idxes = indexes || featureToIndexes(updated)
-    setIndexes(idxes)
-
+    const idxes = indexes || parkin.indexes.toIndexes(updated as any)
+    idxes && setIndexes(idxes)
     setFeature(updated)
   })
 
