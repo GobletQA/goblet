@@ -4,9 +4,9 @@ import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 import { Desire } from './Desire'
 import { Reason } from './Reason'
 import { Section } from '../Section'
-import { ESectionType } from '@GBR/types'
 import { Perspective } from './Perspective'
 import { DeleteAct } from '../Actions/Delete'
+import { ESectionExt, ESectionType } from '@GBR/types'
 import { addStory, removeStory } from '@GBR/actions/story'
 import { gutter, stopEvent, useInline } from '@gobletqa/components'
 
@@ -43,13 +43,13 @@ export const Story = (props:TMeta) => {
       label={`story`}
       show={hasStory}
       sx={styles.section}
-      type={ESectionType.story}
+      type={ESectionExt.story}
       id={`${parent.uuid}-story`}
       className='gb-story-section'
       actions={[
         <DeleteAct
           onClick={onRemove}
-          type={ESectionType.story}
+          type={ESectionExt.story}
           key={`gb-story-remove-action`}
         />
       ]}

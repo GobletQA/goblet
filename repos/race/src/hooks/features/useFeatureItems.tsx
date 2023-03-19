@@ -1,7 +1,7 @@
 import type { TFeatureItem } from '@GBR/components/Feature/FeatureItems'
 
 import { useMemo } from 'react'
-import { ESectionType } from '@GBR/types'
+import { ESectionExt } from '@GBR/types'
 import { useSettings } from '@GBR/contexts'
 import { FeatureItems, GeneralItem } from '@GBR/components/Feature/FeatureItems'
 import {
@@ -19,7 +19,7 @@ export const useFeatureItems = () => {
         Icon: settings?.displayMeta ? NoteMinusIcon : NotePlusIcon,
         text: settings?.displayMeta ? `Hide General` : `Show General`,
       },
-      ...FeatureItems.filter(item => item.type !== ESectionType.general)
+      ...FeatureItems.filter(item => item.type !== ESectionExt.general)
     ] as TFeatureItem[]
     
   }, [settings?.displayMeta])

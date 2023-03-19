@@ -4,7 +4,7 @@ import { Tags } from '../Tags'
 import { Title } from '../Title'
 import { Story } from '../Story'
 import { Section } from '../Section'
-import { ESectionType } from '@GBR/types'
+import { ESectionType, ESectionExt } from '@GBR/types'
 import { addStory } from '@GBR/actions/story'
 
 import { AddStoryAct } from '../Actions/AddStory'
@@ -45,7 +45,7 @@ export const Meta = (props:TMeta) => {
         (
           <AddStoryAct
             onClick={addStory}
-            type={ESectionType.story}
+            type={ESectionExt.story}
             title={`Add User Story`}
             key={`gb-general-add-story-action`}
           />

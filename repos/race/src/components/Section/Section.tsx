@@ -3,7 +3,7 @@ import type { TRaceStepParent, TRaceScenarioParent } from '@GBR/types'
 import type { CSSProperties, ReactNode, MutableRefObject } from 'react'
 
 import { AddItem } from '../AddItem'
-import { ESectionType } from '@GBR/types'
+import { ESectionExt, ESectionType } from '@GBR/types'
 import { useEditor } from '@GBR/contexts'
 import { SectionActions } from './SectionActions'
 import { Dropdown, Container } from './Section.styled'
@@ -15,7 +15,6 @@ export type TSection = {
   uuid?:string
   show?:boolean
   label?:ReactNode
-  type:ESectionType
   className?:string
   sx?:CSSProperties
   noToggle?:boolean
@@ -26,6 +25,7 @@ export type TSection = {
   headerSx?:CSSProperties
   dropdownSx?:CSSProperties
   dragHandleSx?:CSSProperties
+  type:ESectionType|ESectionExt
   headerContentSx?:CSSProperties
   onAdd?:(...args:any[]) => void
   dragHandleContainerSx?:CSSProperties

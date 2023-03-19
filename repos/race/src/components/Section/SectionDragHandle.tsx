@@ -1,6 +1,6 @@
 import type { MutableRefObject, CSSProperties } from 'react'
 
-import { ESectionType } from '@GBR/types'
+import { ESectionExt, ESectionType } from '@GBR/types'
 import { Tooltip, DndDragHandleCls } from '@gobletqa/components'
 
 import {
@@ -10,8 +10,8 @@ import {
 
 export type TSectionDragHandle = {
   sx?:CSSProperties
-  type:ESectionType
   containerSx?:CSSProperties
+  type:ESectionType|ESectionExt
   dragHandleRef?: MutableRefObject<HTMLDivElement>
 }
 

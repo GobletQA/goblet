@@ -1,8 +1,9 @@
+import type { TRaceFeature } from '@GBR/types'
 import type { ReactNode, ComponentType, ComponentProps } from 'react'
 
 import { noOp } from '@keg-hub/jsutils'
 import { addRule } from '@GBR/actions/rule/addRule'
-import { ESectionType, TRaceFeature } from '@GBR/types'
+import { ESectionExt, ESectionType } from '@GBR/types'
 import { addBackground } from '@GBR/actions/background'
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 
@@ -18,10 +19,10 @@ import {
 
 export type TFeatureItem = {
   text:string
-  key:ESectionType
-  type:ESectionType
   description?:ReactNode
   Icon: ComponentType<any>
+  key:ESectionType|ESectionExt
+  type:ESectionType|ESectionExt
   onClick:(...args:any[]) => any
   featureKey:keyof TRaceFeature | `steps` | `general`
 }
@@ -41,8 +42,8 @@ export const GeneralItem:TFeatureItem = {
   onClick: noOp,
   Icon: NotePlusIcon,
   featureKey: `general`,
-  key: ESectionType.general,
-  type: ESectionType.general,
+  key: ESectionExt.general,
+  type: ESectionExt.general,
   description: (
     <Span>
       <b>General</b> - used to define a general information about the Feature and its purpose.

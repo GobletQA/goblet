@@ -1,10 +1,10 @@
 import type { ReactNode, ComponentType } from 'react'
 import type { TMenuItem } from '@gobletqa/components'
 
-import { ESectionType } from '@GBR/types'
 import { capitalize } from '@keg-hub/jsutils'
 import { Tooltip } from '@gobletqa/components'
 import { FeatureActionBtn } from './Feature.styled'
+import { ESectionExt, ESectionType } from '@GBR/types'
 
 export type TFeatureAction = Omit<TMenuItem, `onCloseMenu`|`closeMenu`|`onClick`|`Icon`> & {
   type: ESectionType,
@@ -26,7 +26,7 @@ export const FeatureAction = (props:TFeatureAction) => {
 
   const typeCap = capitalize(type)
 
-  const title = type === ESectionType.general
+  const title = type === ESectionExt.general
     ? (<>Show the <b>{typeCap}</b> section of the Feature</>)
     : (<>Add a <b>{typeCap}</b> section to the Feature</>)
 

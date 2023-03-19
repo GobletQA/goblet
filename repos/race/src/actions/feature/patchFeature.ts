@@ -1,10 +1,10 @@
 import type {
   TRaceIndex,
   TRaceFeature,
+  TPatchParams,
   TUpdateFeature,
   TRaceIndexParent,
   TPatchFeatureOpts,
-  TUpdateFeatureOpts
 } from '@GBR/types'
 
 import { emptyObj } from '@keg-hub/jsutils'
@@ -22,7 +22,7 @@ export type TPatchFeature = Omit<TPatchFeatureOpts, `feature`|`indexes`|`parent`
 
 export const patchFeature = async (
   patch:TPatchFeature,
-  updateOpts:TUpdateFeatureOpts=emptyObj
+  updateOpts:TPatchParams=emptyObj
 ) => {
 
   const {

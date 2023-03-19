@@ -5,16 +5,16 @@ import { forwardRef, useCallback } from 'react'
 import { capitalize } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components/hooks'
 
-import { ESectionType } from '@GBR/types'
+import { ESectionExt, ESectionType } from '@GBR/types'
 import { Container, AddBtn } from './AddItem.styled'
 
 export type TAddItem = Omit<ComponentProps<typeof AddBtn>, `onClick`|`type`> & {
   text?:string
   parentId:string
-  type:ESectionType
   featureKey?:string
   onClick?: TOnAddClick
   buttonSx?:CSSProperties
+  type:ESectionType|ESectionExt
   sx?:CSSProperties|CSSProperties[]
 }
 

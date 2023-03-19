@@ -10,11 +10,11 @@ import type {
 } from '@ltipton/parkin'
 
 import type { TRaceIndex } from './indexed.types'
-import type { EUpdateType } from './helpers.types'
+import type { EPatchType } from './helpers.types'
 import type { ESectionType } from './section.types'
 
-export type TUpdateFeatureOpts = {
-  op?:EUpdateType
+export type TPatchParams = {
+  op?:EPatchType
   path?:string
   index?:number
   replace?:boolean
@@ -24,7 +24,7 @@ export type TUpdateFeatureOpts = {
 export type TUpdateFeature = {
   indexes?: TRaceIndex
   feature: TRaceFeature
-  options?:TUpdateFeatureOpts
+  options?:TPatchParams
 }
 
 export type TFeatureParent = {
