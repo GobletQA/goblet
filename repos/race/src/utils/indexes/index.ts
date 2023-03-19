@@ -1,1 +1,1 @@
-export * from './indexesToFeature'
+export * from './patchIndexes'
