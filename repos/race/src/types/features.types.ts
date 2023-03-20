@@ -1,31 +1,27 @@
 import type {
   TTagsAst,
-  EStepType,
   TStepAst,
   TRuleAst,
   TBlockAst,
+  TIndexAst,
+  EStepType,
   TFeatureAst,
   TScenarioAst,
   TBackgroundAst,
 } from '@ltipton/parkin'
-
-import type { TRaceIndex } from './indexed.types'
-import type { EPatchType } from './helpers.types'
 import type { ESectionType } from './section.types'
 
-export type TPatchParams = {
-  op?:EPatchType
-  path?:string
-  index?:number
+export type TUpdateFeatureOpts = {
   replace?:boolean
-  type?:ESectionType
 }
 
 export type TUpdateFeature = {
-  indexes?: TRaceIndex
+  indexes?: TIndexAst
   feature: TRaceFeature
-  options?:TPatchParams
+  options?:TUpdateFeatureOpts
 }
+
+export type TUpdateFeatureCB = (options:TUpdateFeature) => Promise<void>
 
 export type TFeatureParent = {
   uuid: string

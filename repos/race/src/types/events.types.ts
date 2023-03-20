@@ -1,7 +1,8 @@
-import { TRaceFeature, TRaceIndex } from './features.types'
+import type { TIndexAst } from '@ltipton/parkin'
+import type { TRaceFeature } from './features.types'
 
 export type TAnswerFeature = {
-  indexes:TRaceIndex
+  indexes:TIndexAst
   feature:TRaceFeature
 }
 

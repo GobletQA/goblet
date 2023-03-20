@@ -25,7 +25,6 @@ export enum EPatchType {
   replace = `replace`,
 }
 
-
 export enum EMetaType {
   tags=`tags`,
   role=`role`,

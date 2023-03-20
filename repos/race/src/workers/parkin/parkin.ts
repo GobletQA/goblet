@@ -1,24 +1,19 @@
-// @ts-nocheck
-
 /// <reference lib="webworker" />
 declare const self: DedicatedWorkerGlobalScope;
 
-import type { TPatchFeatureOpts, TRaceFeature } from '@GBR/types'
-import type {
-  TWorldConfig,
-  TRegisterOrAddStep,
-} from '@ltipton/parkin'
+import type { TRaceFeature } from '@GBR/types'
+import type { TWorldConfig, TRegisterOrAddStep, TFeatureAst } from '@ltipton/parkin'
 
 import { Parkin } from '@ltipton/parkin'
 import { deepMerge } from '@keg-hub/jsutils'
-import { patchIndexes } from '@gobletqa/race/utils/indexes/patchIndexes'
+
+export type TReIndexFeature = {
+  feature:TRaceFeature
+}
 
 const PK  = new Parkin()
 
-export const init = async (
-  world?:TWorldConfig,
-  steps?:TRegisterOrAddStep
-) => PK.init(world, steps, false)
+export const init = async (world?:TWorldConfig, steps?:TRegisterOrAddStep) => PK.init(world, steps, false)
 
 export const getWorld = async () => PK.world
 export const setWorld = async (world:TWorldConfig, merge?:boolean) => {
@@ -32,8 +27,15 @@ export const clearSteps = async () => PK?.steps?.clear?.()
 export const parseFeature = async (
   text:string,
   world?:TWorldConfig,
-) => PK.parse.feature(text, world)
+) => PK.parse.feature(text, world || {$alias: {}} as TWorldConfig)
 
-export const patchFeature = async (options:TPatchFeatureOpts) => {
-  return patchIndexes(options, PK)
+
+export const reIndex = async (options:TReIndexFeature) => {
+  const { feature } = options
+  const assembled = PK.assemble.feature([feature as TFeatureAst])[0]
+  // TODO: remove the trim and \n once new version of Parkin is published
+  // Current 3.0.0-beta-3
+  feature.content = `${assembled.trim()} \n`
+
+  return feature
 }

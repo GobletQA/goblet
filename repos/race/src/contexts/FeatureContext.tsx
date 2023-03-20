@@ -1,9 +1,9 @@
 import type {
-  TRaceIndex,
   TSetFeature,
   TSetIndexes,
   TRaceFeature,
 } from '../types'
+import type { TIndexAst } from '@ltipton/parkin'
 
 import { useParkin } from './ParkinContext'
 import { emptyArr } from '@keg-hub/jsutils'
@@ -21,7 +21,7 @@ export type TFeatureProvider = {
 }
 
 export type TFeatureCtx = {
-  indexes:TRaceIndex
+  indexes:TIndexAst
   feature?:TRaceFeature
   setFeature:TSetFeature
   setIndexes:TSetIndexes
@@ -40,14 +40,14 @@ export const FeatureProvider = (props:TFeatureProvider) => {
   const initIndexes = useMemo(() => {
     return initialFeature
     ? parkin?.indexes?.toIndexes(initialFeature as any)
-    : (emptyArr as TRaceIndex)
+    : (emptyArr as TIndexAst)
   }, [initialFeature])
 
-  const [indexes, setIndexes] = useState<TRaceIndex>(initIndexes)
+  const [indexes, setIndexes] = useState<TIndexAst>(initIndexes)
   const [feature, setFeature] = useState<TRaceFeature|undefined>(initialFeature)
 
   // const _setFeature:TSetFeature = useInline((feature:TRaceFeature|undefined) => {
-  //   const indexes = feature ? parkin?.indexes?.toIndexes(feature) : (emptyArr as TRaceIndex)
+  //   const indexes = feature ? parkin?.indexes?.toIndexes(feature) : (emptyArr as TIndexAst)
   //   setIndexes(indexes)
   //   setFeature(feature)
   // })

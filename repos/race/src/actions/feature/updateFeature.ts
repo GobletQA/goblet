@@ -1,4 +1,4 @@
-import type { TUpdateFeature, TRaceFeature, TPatchParams } from '@GBR/types'
+import type { TUpdateFeature, TRaceFeature, TUpdateFeatureOpts } from '@GBR/types'
 
 import { emptyObj, exists } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
@@ -6,7 +6,7 @@ import { UpdateFeatureContextEvt } from '@GBR/constants'
 
 export const updateFeature = (
   feat:Partial<TRaceFeature>,
-  options:TPatchParams=emptyObj
+  options:TUpdateFeatureOpts=emptyObj
 ) => {
   !feat.feature
     ? console.warn(`A feature name is required when calling updateFeature action`, feat)

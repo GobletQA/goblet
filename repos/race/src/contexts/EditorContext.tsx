@@ -1,5 +1,4 @@
 import type {
-  TRaceIndex,
   TFeatureCB,
   TRaceFeature,
   TOnFeatureCB,
@@ -7,9 +6,10 @@ import type {
   TRaceMenuItem,
   TSetFeatureRefs,
   TRaceContextMenu,
+  TUpdateFeatureCB,
   TSetFeatureGroups,
-  TOnReturnFeatureCB,
 } from '../types'
+import type { TIndexAst } from '@ltipton/parkin'
 
 import {
   useMemo,
@@ -42,13 +42,13 @@ export type TEditorProvider = {
 
 export type TEditorCtx = {
   rootPrefix:string
+  indexes:TIndexAst
   expanded:TExpanded
   displayMeta?:boolean
   feature:TRaceFeature
   setFeature:TOnFeatureCB
-  indexes:TRaceIndex
-  updateFeature:TOnFeatureCB
   updateExpanded:TOnExpandedCB
+  updateFeature:TUpdateFeatureCB
   menuContext?:TRaceContextMenu
 }
 

@@ -8,12 +8,13 @@ import type {
   TUpdateFeature,
   TAskForFeature,
   TSetFeatureRefs,
-  TRaceIndex,
   TSetFeatureGroups,
 } from '@GBR/types'
+import type { TIndexAst } from '@ltipton/parkin'
 import type { TExpanded, TOnExpandedCB } from '@GBR/contexts'
 
 import { useParkin } from '@GBR/contexts'
+import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { useEventListen, useInline } from '@gobletqa/components'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
@@ -28,7 +29,7 @@ import {
 export type THFeatureCallbacks = {
   rootPrefix:string
   expanded:TExpanded
-  indexes:TRaceIndex,
+  indexes:TIndexAst,
   feature?:TRaceFeature
   setFeature:TSetFeature
   setIndexes:TSetIndexes
@@ -76,23 +77,25 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   }:TUpdateFeature) => {
     if(!updated || !isValidUpdate(updated)) return
 
-    onFeatureChange?.(updated, feature)
+    const indexed = await ParkinWorker.reIndex({ feature: updated })
 
-    featuresRef.current[updated.uuid] = updated
+    onFeatureChange?.(indexed, feature)
 
-    // If the updated feature was an empty feature
+    featuresRef.current[indexed.uuid] = indexed
+
+    // If the indexed feature was an empty feature
     // Remove the temp empty feature, and update the tab name
     // So the tab has the correct feature title
     if(feature?.uuid === EmptyFeatureUUID){
       delete featuresRef.current[EmptyFeatureUUID]
-      updateEmptyTab?.(updated)
+      updateEmptyTab?.(indexed)
     }
 
     setFeatureRefs(featuresRef.current)
 
-    const idxes = indexes || parkin.indexes.toIndexes(updated as any)
+    const idxes = indexes || parkin.assemble.toIndexes(indexed as any)
     idxes && setIndexes(idxes)
-    setFeature(updated)
+    setFeature(indexed)
   })
 
   const setEmptyFeature = useInline(((feat:TRaceFeature) => {
