@@ -1,13 +1,14 @@
 
-import { ESectionType } from '@GBR/types'
 import { findScenario } from '@GBR/utils/find'
 import { stepFactory } from '@GBR/factories/stepFactory'
-import { findNextIndex } from '@GBR/utils/find/findNextIndex'
-import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
+import { getFeature } from '@gobletqa/race/utils/features/getFeature'
+import { logNotFound, factoryFailed, missingId } from '@GBR/utils/logging'
+
+const prefix = `[Add Scenario#Step]`
 
 export const addScenarioStep = async (parentId:string) => {
-  if(!parentId) return console.warn(`Can not update scenario step without scenario Id`)
+  if(!parentId) return missingId(`scenario`, prefix)
   
   const { feature } = await getFeature()
   if(!feature) return
@@ -17,22 +18,18 @@ export const addScenarioStep = async (parentId:string) => {
     scenarios,
     scenarioIdx
   } = findScenario(feature, parentId)
-  if(!scenario) return
+  if(!scenario) return logNotFound(`scenario`, prefix, parentId)
 
   const step = stepFactory({
     feature,
-    step: {
-      index: findNextIndex({ feature, parent: scenario, type: ESectionType.steps }),
-      whitespace: `${scenario.whitespace}${scenario.whitespace}`
-    }
+    parent: scenario,
   })
+ 
+   if(!step) return factoryFailed(`step`, prefix)
  
   scenarios[scenarioIdx] = {
     ...scenario,
-    steps: [
-      ...scenario.steps,
-      step
-    ]
+    steps: [...scenario.steps, step]
   }
 
   updateFeature({...feature, scenarios})

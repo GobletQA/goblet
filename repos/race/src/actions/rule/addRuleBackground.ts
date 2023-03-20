@@ -1,9 +1,11 @@
-import type { TRaceBackground } from '@GBR/types'
 
 import { findRule } from '@GBR/utils/find'
+import { logNotFound, factoryFailed } from '@GBR/utils/logging'
 import { backgroundFactory } from '@GBR/factories/backgroundFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
+
+const prefix = `[Add Rule#background]`
 
 export const addRuleBackground = async (ruleId:string) => {
 
@@ -15,19 +17,21 @@ export const addRuleBackground = async (ruleId:string) => {
     rules,
     ruleIdx,
   } = findRule(feature, ruleId)
-  if(!rule) return
+  if(!rule)
+    return logNotFound(`Rule ${ruleId}`, prefix)
+
+  const background = backgroundFactory({
+    feature,
+    parent: rule,
+    background: rule?.background
+  })
+
+  if(!background)
+    return factoryFailed(`background`, prefix)
 
   rules[ruleIdx as number] = {
     ...rule,
-    background: {
-      ...rule?.background,
-      ...backgroundFactory({
-        feature,
-        background: {
-          whitespace: `${rule.whitespace}${rule.whitespace}`
-        }
-      })
-    } as TRaceBackground
+    background: background
   }
 
   updateFeature({...feature, rules})

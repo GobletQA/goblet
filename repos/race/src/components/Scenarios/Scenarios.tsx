@@ -3,7 +3,6 @@ import type { TRaceScenarioParent, TRaceScenario, TRaceStep } from '@GBR/types'
 import { Sections } from '../Section'
 import { Scenario } from './Scenario'
 import { ESectionType } from '@GBR/types'
-import { generateId } from '@GBR/utils/helpers/generateId'
 
 export type TScenarios = {
   scenarios?:TRaceScenario[]
@@ -38,17 +37,15 @@ export const Scenarios = (props:TScenarios) => {
     >
     {
       scenarios?.map((scenario, idx) => {
-        const scenarioId = generateId(parent, scenario, ESectionType.scenario)
-
         return (
           <Scenario
             parent={parent}
-            key={scenarioId}
+            key={scenario.uuid}
             onRemove={onRemove}
             scenario={scenario}
             onChange={onChange}
             onAddStep={onAddStep}
-            scenarioId={scenarioId}
+            scenarioId={scenario.uuid}
             onChangeStep={onChangeStep}
             onRemoveStep={onRemoveStep}
           />

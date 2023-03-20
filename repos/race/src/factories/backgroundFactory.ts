@@ -1,8 +1,9 @@
 import type { TRaceFeature, TRaceBackgroundParent, TRaceBackground } from '@GBR/types'
 
-import { ESectionType } from '@GBR/types'
+import { EAstObject } from '@ltipton/parkin'
 import { stepsFactory } from './stepFactory'
 import { deepMerge, uuid } from '@keg-hub/jsutils'
+import { findNextIndex } from '@GBR/utils/find/findNextIndex'
 
 export type TBackgroundFactory = {
   empty?:boolean
@@ -11,33 +12,47 @@ export type TBackgroundFactory = {
   background?:Partial<TRaceBackground>
 }
 
-const emptyBackground = (parent:TRaceBackgroundParent) => {
-
+const emptyBackground = (background:Partial<TRaceBackground>) => {
   return {
     steps: [],
     uuid: uuid(),
     background: ``,
-    whitespace: `  `,
-    type: ESectionType.background,
+    type: EAstObject.background,
+    ...background
   } as Partial<TRaceBackground>
 }
 
 export const backgroundFactory = ({
-  parent,
   feature,
   background,
   empty=false,
+  parent=feature,
 }:TBackgroundFactory) => {
   if(!parent) throw new Error(`A parent type of feature or rule is required.`)
 
-  return background
-    ? deepMerge<TRaceBackground>(
-        emptyBackground(parent),
-        background,
-        {steps: stepsFactory({steps: background?.steps, feature})}
-      )
+  const index = findNextIndex({
+    parent,
+    feature,
+    type: EAstObject.background,
+  })
+
+  const whitespace = parent?.whitespace?.length ? `${parent.whitespace}  ` : `  `
+
+  const built = background
+    ? deepMerge<TRaceBackground>(emptyBackground({ index, whitespace }), background)
     : empty
-      ? emptyBackground(parent) as TRaceBackground
+      ? emptyBackground({ index, whitespace }) as TRaceBackground
       : undefined
+  
+  built && (
+    built.steps = stepsFactory({
+      feature,
+      parent: built,
+      steps: background?.steps,
+    })
+  )
+
+  return built
+  
 }
 

@@ -28,6 +28,7 @@ export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
 
   return deepMerge<TRaceFeature>(
     {
+      index: 0,
       uuid: fUuid,
       feature: ``,
       content: ``,

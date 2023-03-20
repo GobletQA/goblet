@@ -1,8 +1,10 @@
-import { ESectionType } from '@GBR/types'
 import { findRule } from '@GBR/utils/find'
+import { logNotFound, factoryFailed } from '@GBR/utils/logging'
 import { scenarioFactory } from '@GBR/factories/scenarioFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
+
+const prefix = `[Add Rule#Scenario]`
 
 export const addRuleScenario = async (ruleId:string) => {
 
@@ -14,20 +16,18 @@ export const addRuleScenario = async (ruleId:string) => {
     rules,
     ruleIdx,
   } = findRule(feature, ruleId)
-  if(!rule) return
+  if(!rule) return logNotFound(`rule`, prefix, ruleId)
 
+  const scenario = scenarioFactory({
+    feature,
+    parent:rule,
+  })
+
+  if(!scenario) return factoryFailed(`scenario`, prefix)
 
   rules[ruleIdx as number] = {
     ...rule,
-    scenarios: [
-      ...rule.scenarios,
-      scenarioFactory({
-        feature,
-        scenario: {
-          whitespace: `${rule.whitespace}${rule.whitespace}`
-        }
-      })
-    ]
+    scenarios: [...rule.scenarios, scenario]
   }
 
   updateFeature({...feature, rules})

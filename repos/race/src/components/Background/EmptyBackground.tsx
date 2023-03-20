@@ -1,6 +1,7 @@
 import type { TRaceBackgroundParent } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
+import { EAstObject } from '@ltipton/parkin'
 import { EmptyItem } from '../EmptyItem/EmptyItem'
 import { BackgroundItem } from '../Feature/FeatureItems'
 
@@ -23,9 +24,9 @@ export const EmptyBackground = (props:TEmptyBackground) => {
     <EmptyItem
       {...BackgroundItem}
       onClick={onClick}
-      type={BackgroundItem.type}
       parentId={parent.uuid}
       parentType={parentType}
+      type={BackgroundItem.type as EAstObject}
     />
   )
 }

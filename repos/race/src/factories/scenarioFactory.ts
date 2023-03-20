@@ -1,52 +1,75 @@
 
-import type { TRaceFeature, TRaceScenario } from '@GBR/types'
+import type { TRaceFeature, TRaceScenario, TRaceScenarioParent } from '@GBR/types'
 
-import { ESectionType } from '@GBR/types'
+import { EAstObject } from '@ltipton/parkin'
 import { stepsFactory } from './stepFactory'
-import { deepMerge, uuid, emptyObj, emptyArr } from '@keg-hub/jsutils'
+import { findNextIndex } from '@GBR/utils/find/findNextIndex'
+import { deepMerge, uuid, emptyArr } from '@keg-hub/jsutils'
 
 export type TScenariosFactory = {
   empty?:boolean
-  feature: TRaceFeature
+  feature:TRaceFeature
+  parent?:TRaceScenarioParent
   scenarios?:Partial<TRaceScenario>[]|undefined,
 }
 
 export type TScenarioFactory = {
   empty?:boolean
   feature: TRaceFeature
+  parent?:TRaceScenarioParent
   scenario?:Partial<TRaceScenario>
 }
 
-const emptyScenario = () => ({
+const emptyScenario = (scenario:Partial<TRaceScenario>) => ({
   steps: [],
   uuid: uuid(),
   scenario: ``,
-  whitespace: `  `,
-  type: ESectionType.scenario,
+  type: EAstObject.scenario,
+  ...scenario
 } as Partial<TRaceScenario>)
 
 export const scenarioFactory = ({
   scenario,
   feature,
   empty=false,
+  parent=feature,
 }:TScenarioFactory) => {
-  return scenario
+
+  const index = findNextIndex({
+    parent,
+    feature,
+    type:EAstObject.scenarios,
+  })
+
+  const whitespace = parent?.whitespace?.length ? `${parent.whitespace}  ` : `  `
+
+  const built = scenario
     ? deepMerge<TRaceScenario>(
-        emptyScenario(),
+        emptyScenario({ index, whitespace }),
         scenario,
-        {steps: stepsFactory({ steps: scenario.steps, feature })}
       )
     : empty
-      ? emptyScenario() as TRaceScenario
-      : emptyObj as TRaceScenario
+      ? emptyScenario({ index, whitespace }) as TRaceScenario
+      : undefined
+  
+  built && (
+    built.steps = stepsFactory({
+      feature,
+      steps: scenario?.steps,
+      parent: built as TRaceScenario,
+    })
+  )
+  
+  return built
 }
 
 export const scenariosFactory = ({
   feature,
   scenarios,
   empty=false,
+  parent=feature,
 }:TScenariosFactory) => {
   return scenarios?.length
-    ? scenarios.map(scenario => scenarioFactory({scenario, empty, feature}))
+    ? scenarios.map(scenario => scenarioFactory({scenario, parent, empty, feature}))
     : emptyArr as TRaceScenario[]
 }

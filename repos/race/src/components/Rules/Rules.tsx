@@ -5,7 +5,6 @@ import { Sections } from '../Section'
 import { ESectionType } from '@GBR/types'
 import { useInline } from '@gobletqa/components'
 import { addRule } from '@GBR/actions/rule/addRule'
-import { generateId } from '@GBR/utils/helpers/generateId'
 
 export type TRules = {
   rules?:TRaceRule[]
@@ -26,14 +25,13 @@ export const Rules = (props:TRules) => {
     >
     {
       rules?.map(rule => {
-        const ruleId = generateId(parent, rule, ESectionType.rule)
 
         return (
           <Rule
             rule={rule}
-            key={ruleId}
-            ruleId={ruleId}
+            key={rule.uuid}
             parent={parent}
+            ruleId={rule.uuid}
           />
         )
       })

@@ -12,8 +12,8 @@ import type {
 import type { TExpanded, TOnExpandedCB } from '@GBR/contexts'
 
 import { useParkin } from '@GBR/contexts'
-import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
+import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { useEventListen, useInline } from '@gobletqa/components'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'

@@ -1,6 +1,9 @@
 import { findScenario, findRule } from '@GBR/utils/find'
+import { logNotFound, missingId } from '@GBR/utils/logging'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
+
+const prefix = `[Remove Rule#Scenario#Step]`
 
 export const removeRuleScenarioStep = async (
   stepId:string,
@@ -9,26 +12,23 @@ export const removeRuleScenarioStep = async (
 ) => {
 
   const { feature } = await getFeature()
-  if(!feature) return
-  if(!scenarioId)
-    return console.warn(`Remove Rule#scenario#step - Scenario Id is required`,feature,stepId,scenarioId,ruleId)
-  if(!ruleId)
-    return console.warn(`Remove Rule#scenario#step - Rule Id is required`,feature,stepId,scenarioId,ruleId)
+  if(!feature) return logNotFound(`feature`, prefix)
+  if(!scenarioId) return missingId(`Scenario`, prefix, feature,stepId,scenarioId,ruleId)
+  if(!ruleId) return logNotFound(`rule`, prefix, feature,stepId,scenarioId,ruleId)
 
   const {
     rule,
     rules,
     ruleIdx,
   } = findRule(feature, ruleId)
-  if(!rule) return
+  if(!rule) return logNotFound(`rule`, prefix)
 
   const {
     scenario,
     scenarios,
     scenarioIdx
   } = findScenario(rule, scenarioId)
-  if(!scenario) return
-
+  if(!scenario) return logNotFound(`scenario`, prefix)
 
   scenarios[scenarioIdx as number] = {
     ...scenario,

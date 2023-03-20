@@ -1,10 +1,10 @@
-import type { TRaceFeature, TRaceRule } from '@GBR/types'
+import type { TRaceScenario, TRaceFeature, TRaceRule } from '@GBR/types'
 
-import { ESectionType } from '@GBR/types'
+import { EAstObject } from '@ltipton/parkin'
 import { scenariosFactory } from './scenarioFactory'
 import { backgroundFactory } from './backgroundFactory'
-import { toObj } from '@gobletqa/race/utils/helpers/toObj'
 import { deepMerge, uuid, emptyArr } from '@keg-hub/jsutils'
+import { findNextIndex } from '@GBR/utils/find/findNextIndex'
 
 export type TRuleFactory = {
   rule?:Partial<TRaceRule>
@@ -18,12 +18,11 @@ export type TRulesFactory = {
   feature: TRaceFeature
 }
 
-const emptyRule = () => ({
+const emptyRule = (rule:Partial<TRaceRule>) => ({
   rule: ` `,
   uuid: uuid(),
   scenarios: [],
-  whitespace: `  `,
-  type: ESectionType.rule,
+  type: EAstObject.rule,
 } as Partial<TRaceRule>)
 
 export const ruleFactory = ({
@@ -31,24 +30,41 @@ export const ruleFactory = ({
   feature,
   empty=false,
 }:TRuleFactory) => {
-  return rule
+
+  const index = findNextIndex({
+    feature,
+    parent: feature,
+    type:EAstObject.rules,
+  })
+
+  const whitespace = feature?.whitespace?.length ? `${feature.whitespace}  ` : `  `
+
+  const built = rule
     ? deepMerge<TRaceRule>(
-        emptyRule(),
+        emptyRule({ index, whitespace }),
         rule,
-        {
-          scenarios: scenariosFactory({
-            feature,
-            scenarios: rule?.scenarios,
-          }),
-          ...toObj(`background`, backgroundFactory({
-            feature,
-            background: rule?.background,
-          })),
-        }
       )
     : empty
-      ? emptyRule() as TRaceRule
+      ? emptyRule({ index, whitespace }) as TRaceRule
       : undefined
+
+  if(!built) return console.warn(`Error building rule in factory`)
+
+  built.scenarios = (scenariosFactory({
+    feature,
+    parent: built,
+    scenarios: rule?.scenarios,
+  }) || []) as TRaceScenario[]
+  
+  rule?.background && (
+    rule.background = backgroundFactory({
+      feature,
+      parent: rule as TRaceRule,
+      background: rule?.background,
+    })
+  )
+
+  return built
 }
 
 export const rulesFactory = ({
