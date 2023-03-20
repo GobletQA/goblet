@@ -80,7 +80,7 @@ export const Background = (props:TBackground) => {
       className='gb-background-section'
       label={(
         <SectionHeader
-          content={' '}
+          content={sectionTitle}
           type={ESectionType.background}
         />
       )}

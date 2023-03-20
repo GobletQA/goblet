@@ -3,14 +3,12 @@ import type {
   ComponentProps,
   MutableRefObject,
 } from 'react'
-
 import type { TDndCallbacks } from '@gobletqa/components'
 import type { TRaceStep, TRaceStepParent } from '@GBR/types'
 
 import { useRef, useMemo } from 'react'
 import { Step } from './Step'
 import { Sections } from '../Section'
-import { isObj, parseJSON } from '@keg-hub/jsutils'
 import { ESectionType } from '@GBR/types'
 import { Dnd, useInline } from '@gobletqa/components'
 
@@ -38,13 +36,6 @@ type THStepData = {
   index:number
   step:TRaceStep
   parent:TRaceStepParent
-  parentType: ESectionType
-}
-
-type TDropData = {
-  index:number
-  step:string
-  parent:string
   parentType: ESectionType
 }
 
@@ -95,6 +86,7 @@ const DndStep = (props:TDndStep) => {
 
   return (
     <Dnd
+      exact
       data={data}
       index={index}
       onDrop={onDrop}

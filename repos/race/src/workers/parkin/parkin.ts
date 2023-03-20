@@ -33,9 +33,7 @@ export const parseFeature = async (
 export const reIndex = async (options:TReIndexFeature) => {
   const { feature } = options
   const assembled = PK.assemble.feature([feature as TFeatureAst])[0]
-  // TODO: remove the trim and \n once new version of Parkin is published
-  // Current 3.0.0-beta-3
-  feature.content = `${assembled.trim()} \n`
+  feature.content = assembled
 
   return feature
 }

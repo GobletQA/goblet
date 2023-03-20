@@ -21,8 +21,9 @@ export type TDndCallbacks = {
 }
 
 export type TDnd = TDndCallbacks & {
-  index: number
   data?:string
+  index: number
+  exact?:boolean
   showHandle?: boolean
   children: React.ReactNode
   dragImagePos?:[number, number]

@@ -19,6 +19,7 @@ export type TOnDrop = (
 export type THDndHooks = {
   data?:string
   index: number
+  exact?:boolean
   onDrop: TOnDrop
   showHandle?: boolean
   dragImagePos?:[number, number]
@@ -32,6 +33,7 @@ export const useDndHooks = (props:THDndHooks) => {
   const {
     data,
     index,
+    exact,
     onDrop,
     showHandle = false,
     onKeyDown,
@@ -53,6 +55,7 @@ export const useDndHooks = (props:THDndHooks) => {
 
   const keyDownHooks = useDndEventHooks({
     data,
+    exact,
     index,
     onDrop,
     onKeyDown,

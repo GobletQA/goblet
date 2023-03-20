@@ -6,6 +6,7 @@ import { useCallback } from 'react'
 export type THDndEventHooks = {
   data?:string
   index:number
+  exact?:boolean
   onDrop: TOnDrop
   onHideDiv: () => void
   onShowDiv: () => void
@@ -43,14 +44,15 @@ const onHandleKeyDown = (props:THDndEventHooks) => {
 
 const onHandleFocus = (props:THDndEventHooks) => {
   const {
+    exact,
     onShowDiv,
     dragHandleRef,
     shiftTabPressedRef,
   } = props
 
   return useCallback(
-    (e: React.FocusEvent) => {
-      if (!dragHandleRef) return
+    (evt: React.FocusEvent) => {
+      if (!dragHandleRef || (exact && evt.target !== dragHandleRef?.current)) return
 
       onShowDiv()
 
@@ -59,6 +61,7 @@ const onHandleFocus = (props:THDndEventHooks) => {
         && dragHandleRef.current.focus()
     },
     [
+      exact,
       onShowDiv,
       dragHandleRef,
       shiftTabPressedRef,

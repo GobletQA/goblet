@@ -33,7 +33,7 @@ import {
 
 export type TAutoInput = {
   id?:string
-  name: string
+  name?: string
   error?:string
   freeSolo?:boolean
   matchId?: boolean
