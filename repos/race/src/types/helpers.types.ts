@@ -1,5 +1,5 @@
 import type { ESectionType } from './section.types'
-import type { TIndexAst, TStepDefsList } from '@ltipton/parkin'
+import type { TStepDefsList } from '@ltipton/parkin'
 
 import type { TRaceFeatures, TRaceFeature } from './features.types'
 import type { SyntheticEvent, Dispatch, SetStateAction, MutableRefObject } from 'react'
@@ -15,7 +15,6 @@ export type TFeatureCB = (feature: TRaceFeature) => void
 export type TOnFeatureCB = (feature?:TRaceFeature, ...rest:any[]) => void
 export type TOnReturnFeatureCB = (feature?:TRaceFeature, ...rest:any[]) => TRaceFeature|undefined
 export type TSetFeature = (feature?:TRaceFeature) => void
-export type TSetIndexes = (indexes:TIndexAst) => void
 export type TOnAddClick = (evt:SyntheticEvent, parentId?:string, type?:ESectionType) => void
 
 export enum EPatchType {

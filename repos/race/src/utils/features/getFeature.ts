@@ -1,11 +1,9 @@
-import type { TIndexAst } from '@ltipton/parkin'
 import type { TRaceFeature, TWithFeatureCB } from '@GBR/types'
 
 import { AskForFeatureEvt } from '@GBR/constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 export type TGetFeature = {
-  indexes:TIndexAst
   feature:TRaceFeature
 }
 
@@ -23,11 +21,10 @@ export const withFeature = (cb:TWithFeatureCB) => {
  */
 export const getFeature = async (
   parent?:TRaceFeature,
-  indexes?:TIndexAst
 ):Promise<TGetFeature> => {
-  return (parent && `feature` in parent) && indexes
-    ? { feature: parent, indexes }
+  return (parent && `feature` in parent)
+    ? { feature: parent }
     : await new Promise<TGetFeature>((res) => withFeature(
-        ({ feature, indexes }) => res({ feature, indexes }))
+        ({ feature }) => res({ feature }))
       )
 }

@@ -3,7 +3,6 @@ import type {
   TStepAst,
   TRuleAst,
   TBlockAst,
-  TIndexAst,
   EStepType,
   TFeatureAst,
   TScenarioAst,
@@ -16,7 +15,6 @@ export type TUpdateFeatureOpts = {
 }
 
 export type TUpdateFeature = {
-  indexes?: TIndexAst
   feature: TRaceFeature
   options?:TUpdateFeatureOpts
 }

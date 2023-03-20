@@ -1,7 +1,6 @@
 import type {
   TFeatureCB,
   TSetFeature,
-  TSetIndexes,
   TRaceFeature,
   TOnFeatureCB,
   TFeaturesRef,
@@ -10,7 +9,6 @@ import type {
   TSetFeatureRefs,
   TSetFeatureGroups,
 } from '@GBR/types'
-import type { TIndexAst } from '@ltipton/parkin'
 import type { TExpanded, TOnExpandedCB } from '@GBR/contexts'
 
 import { useParkin } from '@GBR/contexts'
@@ -29,10 +27,8 @@ import {
 export type THFeatureCallbacks = {
   rootPrefix:string
   expanded:TExpanded
-  indexes:TIndexAst,
   feature?:TRaceFeature
   setFeature:TSetFeature
-  setIndexes:TSetIndexes
   featuresRef: TFeaturesRef
   updateEmptyTab:TFeatureCB
   onFeatureClose:TOnFeatureCB
@@ -47,11 +43,9 @@ export type THFeatureCallbacks = {
 export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
   const {
-    indexes,
     feature,
     expanded,
     setFeature,
-    setIndexes,
     featuresRef,
     updateEmptyTab,
     setFeatureRefs,
@@ -72,7 +66,6 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   })
 
   const updateFeature = useInline(async ({
-    indexes,
     feature:updated,
   }:TUpdateFeature) => {
     if(!updated || !isValidUpdate(updated)) return
@@ -92,9 +85,6 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     }
 
     setFeatureRefs(featuresRef.current)
-
-    const idxes = indexes || parkin.assemble.toIndexes(indexed as any)
-    idxes && setIndexes(idxes)
     setFeature(indexed)
   })
 
@@ -111,8 +101,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   // Allows dispatching update outside of the react context
   useEventListen<TUpdateFeature>(
     UpdateFeatureContextEvt,
-    ({ feature, indexes, ...options }) => updateFeature({
-      indexes,
+    ({ feature, ...options }) => updateFeature({
       options,
       feature: updateEmptyFeature(feature, featuresRef),
     })
@@ -126,7 +115,6 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   // Helper to allow external code ask the context for the current feature
   // Allows external actions to interface with the currently active feature
   useEventListen<TAskForFeature>(AskForFeatureEvt, ({ cb }) => cb?.({
-    indexes,
     feature,
     updateFeature,
   }))
