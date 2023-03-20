@@ -3,7 +3,7 @@ import type { TRaceFeature, TRaceScenario, TRaceScenarioParent } from '@GBR/type
 
 import { EAstObject } from '@ltipton/parkin'
 import { stepsFactory } from './stepFactory'
-import { findNextIndex } from '@GBR/utils/find/findNextIndex'
+import { findIndex } from '@GBR/utils/find/findIndex'
 import { deepMerge, uuid, emptyArr } from '@keg-hub/jsutils'
 
 export type TScenariosFactory = {
@@ -35,7 +35,7 @@ export const scenarioFactory = ({
   parent=feature,
 }:TScenarioFactory) => {
 
-  const index = findNextIndex({
+  const index = findIndex({
     parent,
     feature,
     type:EAstObject.scenarios,

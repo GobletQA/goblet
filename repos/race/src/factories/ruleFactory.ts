@@ -2,9 +2,9 @@ import type { TRaceScenario, TRaceFeature, TRaceRule } from '@GBR/types'
 
 import { EAstObject } from '@ltipton/parkin'
 import { scenariosFactory } from './scenarioFactory'
+import { findIndex } from '@GBR/utils/find/findIndex'
 import { backgroundFactory } from './backgroundFactory'
 import { deepMerge, uuid, emptyArr } from '@keg-hub/jsutils'
-import { findNextIndex } from '@GBR/utils/find/findNextIndex'
 
 export type TRuleFactory = {
   rule?:Partial<TRaceRule>
@@ -31,7 +31,7 @@ export const ruleFactory = ({
   empty=false,
 }:TRuleFactory) => {
 
-  const index = findNextIndex({
+  const index = findIndex({
     feature,
     parent: feature,
     type:EAstObject.rules,

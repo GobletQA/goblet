@@ -1,8 +1,8 @@
 import type { TRaceFeature, TRaceStep, TRaceStepParent } from '@GBR/types'
 
+import { findIndex } from '@GBR/utils/find/findIndex'
 import { EStepType, EAstObject } from '@ltipton/parkin'
 import { deepMerge, emptyArr, uuid } from '@keg-hub/jsutils'
-import { findNextIndex } from '@GBR/utils/find/findNextIndex'
 
 export type TStepsFactory = {
   empty?:boolean
@@ -31,12 +31,8 @@ export const stepFactory = ({
   feature,
   empty=false
 }:TStepFactory) => {
-  const index = findNextIndex({
-    parent,
-    feature,
-    type: EAstObject.steps
-  })
 
+  const index = findIndex({ parent, feature, type:EAstObject.steps })
   const whitespace = parent?.whitespace?.length ? `${parent.whitespace}  ` : `    `
 
   return empty || step

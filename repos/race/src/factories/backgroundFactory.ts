@@ -3,7 +3,7 @@ import type { TRaceFeature, TRaceBackgroundParent, TRaceBackground } from '@GBR/
 import { EAstObject } from '@ltipton/parkin'
 import { stepsFactory } from './stepFactory'
 import { deepMerge, uuid } from '@keg-hub/jsutils'
-import { findNextIndex } from '@GBR/utils/find/findNextIndex'
+import { findIndex } from '@GBR/utils/find/findIndex'
 
 export type TBackgroundFactory = {
   empty?:boolean
@@ -30,7 +30,7 @@ export const backgroundFactory = ({
 }:TBackgroundFactory) => {
   if(!parent) throw new Error(`A parent type of feature or rule is required.`)
 
-  const index = findNextIndex({
+  const index = findIndex({
     parent,
     feature,
     type: EAstObject.background,

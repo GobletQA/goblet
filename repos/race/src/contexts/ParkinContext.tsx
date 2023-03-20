@@ -28,17 +28,21 @@ export type TParkinCtx = {
   updateWorld: TUpdateWorld
 }
 
+let __Parkin:Parkin
+export const getParkin = () => __Parkin
+
+const initParkin = (world:TWorldConfig={ $alias: {} }, defs?:TRegisterOrAddStep) => {
+  __Parkin = __Parkin || new Parkin(world, defs)
+ return __Parkin
+}
+
 export const ParkinContext = createContext<TParkinCtx>({} as TParkinCtx)
 export const useParkin = () => useContext(ParkinContext)
 
 export const ParkinProvider = (props:TParkinProvider) => {
   const { children, defs } = props
 
-  const [parkin, setParkin] = useState<Parkin>(
-    new Parkin(
-      props.world || {} as TWorldConfig,
-      defs
-  ) as Parkin)
+  const [parkin, setParkin] = useState<Parkin>(initParkin(props.world || {} as TWorldConfig, defs))
   const [world, setWorld] = useState<TWorldConfig>(parkin?.world)
 
   const updateWorld = useInline<TUpdateWorld>((updated:TWorldConfig, replace:boolean) => {

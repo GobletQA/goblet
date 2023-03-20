@@ -1,4 +1,5 @@
 export * from './findRule'
 export * from './findStep'
+export * from './findIndex'
 export * from './findScenario'
 export * from './findBackground'
