@@ -7,6 +7,8 @@ export const addStory = async () => {
   if(!feature) return
 
   const story = storyFactory({ feature, empty: true })
+
+  // TODO: add expand for story section ?? { expand: story.uuid }
   updateFeature({...feature, ...story})
 
 }

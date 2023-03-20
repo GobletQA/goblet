@@ -41,6 +41,6 @@ export const addRuleScenarioStep = async (
 
   rules[ruleIdx as number] = {...rule, scenarios}
 
-  updateFeature({...feature, rules})
+  updateFeature({...feature, rules}, { expand: step.uuid })
 
 }

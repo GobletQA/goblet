@@ -15,5 +15,5 @@ export const addScenario = async () => {
 
   scenario && scenarios.push(scenario)
 
-  updateFeature({...feature, scenarios})
+  updateFeature({...feature, scenarios}, { expand: scenario.uuid })
 }

@@ -35,6 +35,6 @@ export const addRuleBackgroundStep = async (
 
   rules[ruleIdx as number] = {...rule, background}
 
-  updateFeature({...feature, rules})
+  updateFeature({...feature, rules}, { expand: step.uuid })
 
 }

@@ -26,14 +26,14 @@ export const addRuleBackground = async (ruleId:string) => {
     background: rule?.background
   })
 
-  if(!background)
-    return factoryFailed(`background`, prefix)
+  if(!background) return factoryFailed(`background`, prefix)
 
   rules[ruleIdx as number] = {
     ...rule,
     background: background
   }
 
-  updateFeature({...feature, rules})
+  // TODO: scenarios and backgrounds not being saved ???
+  updateFeature({...feature, rules}, { expand: background.uuid })
 
 }

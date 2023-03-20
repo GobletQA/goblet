@@ -30,6 +30,7 @@ export const addRuleScenario = async (ruleId:string) => {
     scenarios: [...rule.scenarios, scenario]
   }
 
-  updateFeature({...feature, rules})
+  // TODO: scenarios and backgrounds not being saved ???
+  updateFeature({...feature, rules}, { expand: scenario.uuid })
 
 }

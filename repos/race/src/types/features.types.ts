@@ -11,6 +11,7 @@ import type {
 import type { ESectionType } from './section.types'
 
 export type TUpdateFeatureOpts = {
+  expand?:string
   replace?:boolean
 }
 

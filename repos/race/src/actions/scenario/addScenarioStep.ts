@@ -32,5 +32,6 @@ export const addScenarioStep = async (parentId:string) => {
     steps: [...scenario.steps, step]
   }
 
-  updateFeature({...feature, scenarios})
+  // TODO: NOT Auto-Expanding when added to the feature
+  updateFeature({...feature, scenarios}, { expand: step.uuid })
 }

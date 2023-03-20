@@ -66,6 +66,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   })
 
   const updateFeature = useInline(async ({
+    options,
     feature:updated,
   }:TUpdateFeature) => {
     if(!updated || !isValidUpdate(updated)) return
@@ -84,6 +85,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
       updateEmptyTab?.(indexed)
     }
 
+    options?.expand && updateExpanded(options?.expand)
     setFeatureRefs(featuresRef.current)
     setFeature(indexed)
   })
@@ -101,7 +103,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   // Allows dispatching update outside of the react context
   useEventListen<TUpdateFeature>(
     UpdateFeatureContextEvt,
-    ({ feature, ...options }) => updateFeature({
+    ({ feature, options }) => updateFeature({
       options,
       feature: updateEmptyFeature(feature, featuresRef),
     })

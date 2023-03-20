@@ -15,5 +15,6 @@ export const addRule = async () => {
   const rules = [...(feature.rules || [])]
   rules.push(rule)
 
-  updateFeature({...feature, rules})
+  // TODO: rule not being saved ???
+  updateFeature({...feature, rules}, { expand: rule.uuid })
 }

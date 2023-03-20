@@ -25,7 +25,7 @@ import { emptyObj, emptyArr, exists } from '@keg-hub/jsutils'
 import { useFeatureCallbacks } from '@GBR/hooks/features/useFeatureCallbacks'
 
 export type TExpanded = Record<string, boolean>
-export type TOnExpandedCB =  (key:string, value:boolean) => void
+export type TOnExpandedCB =  (key:string, value?:boolean) => void
 export type TEditorProvider = {
   children:any
   rootPrefix:string

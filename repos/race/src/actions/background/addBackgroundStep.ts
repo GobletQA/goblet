@@ -4,12 +4,15 @@ import { stepFactory } from '@GBR/factories/stepFactory'
 import { backgroundFactory } from '@GBR/factories/backgroundFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
+import { logNotFound, factoryFailed, missingId } from '@GBR/utils/logging'
+
+const prefix = `[Add Background#Step]`
 
 export const addBackgroundStep = async (parentId:string) => {
-  if(!parentId) return console.warn(`Can not update background step without background Id`)
+  if(!parentId) return missingId(`background`, prefix)
 
   const { feature } = await getFeature()
-  if(!feature) return
+  if(!feature) return logNotFound(`feature`, prefix)
 
   const background = {
     ...(
@@ -18,19 +21,17 @@ export const addBackgroundStep = async (parentId:string) => {
     )
   }
 
-  if(!background)
-    return console.warn(`Failed to add background to feature. Background factory failed to build background`)
+  if(!background) return logNotFound(`background`, prefix)
 
   const step = stepFactory({
     feature,
     parent: background
   })
 
-  if(!step)
-    return console.warn(`Failed to add step to background. Step factory failed to build step`)
+  if(!step) return factoryFailed(`step`, prefix)
 
   background.steps = [...background.steps, step]
 
-  updateFeature({...feature, background})
+  updateFeature({...feature, background}, { expand: step.uuid })
 
 }
