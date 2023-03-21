@@ -71,6 +71,10 @@ const ExpressionInfo = (props:TExpression) => {
   )
 }
 
+/**
+ * **NOTICE** - Menu Item definitions are in the main frontend (vite) app
+ * Look at file `src/hooks/race/ueContentMenu.ts`
+ */
 export const Expression = (props:TExpression) => {
   const {
     step,

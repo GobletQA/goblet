@@ -1,6 +1,6 @@
 import { keyMap, deepFreeze } from '@keg-hub/jsutils'
 
-export const ExpressionTypes = deepFreeze(
+export const ExpressionTypes = deepFreeze<Record<string, string>>(
   keyMap([
     `any`,
     `int`,
@@ -13,7 +13,7 @@ export const ExpressionTypes = deepFreeze(
   ])
 )
 
-export const ExpressionKinds = deepFreeze(
+export const ExpressionKinds = deepFreeze<Record<string, string>>(
   keyMap([
     `url`,
     `text`,

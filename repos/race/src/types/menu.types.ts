@@ -66,5 +66,7 @@ export type TMenuContextRef = {
   setInputProps:TMenuContextSetInputProps
   gran: TRaceFeature | TRaceBackground | TRaceRule | TRaceScenario
   parent: TRaceFeature | TRaceBackground | TRaceRule | TRaceScenario | TRaceStep
-  active: TExpPart | TRaceBackground | TRaceRule | TRaceScenario | TRaceStep | TRaceBlock
+  // TODO: look into adding other types as needed
+  // active: TExpPart | TRaceBackground | TRaceRule | TRaceScenario | TRaceStep | TRaceBlock
+  active: TExpPart
 }

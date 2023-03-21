@@ -1,2 +1,2 @@
-export * from './selectElement'
+export * from './automateBrowser'
 export * from './startBrowserRecord'

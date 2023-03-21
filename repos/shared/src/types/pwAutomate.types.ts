@@ -31,3 +31,21 @@ export type TAutomateConfig = {
   onCleanup?:TAutomateCleanupCB
   parent:TAutomateParent|TPageOrContext
 }
+
+export type TAutomatePageEvent = {
+  url?:string
+}
+
+export type TAutomateElementEvent = TAutomatePageEvent & {
+  key?:string
+  type?:string
+  target?:string
+  elementHtml?:string
+  elementText?:string
+  elementTag?:string
+  elementType?:string
+  selectedText?:string
+  selectedIndex?:number
+  elementChecked?:boolean
+}
+

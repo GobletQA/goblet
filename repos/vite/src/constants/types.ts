@@ -40,7 +40,7 @@ export const SocketMsgTypes = {
   BROWSER_PLAY: `browserPlay`,
   BROWSER_STATUS: `browserStatus`,
   BROWSER_RECORD: `browserRecord`,
-  ELEMENT_SELECT: `elementSelect`,
+  BROWSER_AUTOMATE: `browserAutomate`,
 }
 
 export const BrowserLogTerminal = `browser-log`

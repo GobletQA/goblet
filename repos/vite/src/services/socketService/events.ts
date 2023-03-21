@@ -4,9 +4,9 @@ import type { SocketService } from './socketService'
 import * as socketActions from '@actions/socket/local'
 import { camelCase, checkCall } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { WSAutomateEvent, BrowserNavEvt } from '@constants'
 import { playEvent } from '@actions/socket/local/playEvent'
 import { recordAction } from '@actions/socket/local/recordAction'
-import { SelectFromBrowserRespEvt, BrowserNavEvt } from '@constants'
 import { setBrowserRecording } from '@actions/socket/local/setBrowserRecording'
 
 /**
@@ -58,8 +58,8 @@ export const events = {
   pwUrlChange: function(message:TSocketEvt){
     EE.emit(BrowserNavEvt, message.data)
   },
-  pwAutomateSelectElement: function(message:TSocketEvt){
-    EE.emit(SelectFromBrowserRespEvt, message.data)
+  pwAutomateEvent: function(message:TSocketEvt){
+    EE.emit(WSAutomateEvent, message.data)
   },
   playEnded: playEvent,
   playError: playEvent,

@@ -23,6 +23,10 @@ const inputProps = {
   inputSx: sharedInputStyles
 }
 
+/**
+ * **NOTICE** - Menu Item definitions are in the main frontend (vite) app
+ * Look at file `src/hooks/race/ueContentMenu.ts`
+ */
 export const ExpInput = (props:TExpInput) => {
   const {
     step,

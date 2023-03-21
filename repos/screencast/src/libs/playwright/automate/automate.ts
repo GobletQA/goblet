@@ -5,7 +5,8 @@ import type {
   TAutomateParent,
   TOnAutomateEvent,
   TAutomateCleanupCB,
-
+  TAutomatePageEvent,
+  TAutomateElementEvent,
   TBrowserPage,
   TPWComponents,
   TBrowserContext,
@@ -18,24 +19,7 @@ import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
 import { addPWInitScripts } from '../helpers/addPWInitScripts'
 import { exposePWFunction } from '../helpers/exposePWFunction'
 
-import {
-  PWAutomateHoverOn,
-  PWAutomateHoverOff,
-  PWAutomateSelectElement,
-} from '@GSC/constants'
-
-
-export type TElSelectEvent = {
-  key?:string
-  type?:string
-  target?:string
-  elementTag?:string
-  elementType?:string
-  selectedText?:string
-  selectedIndex?:number
-  elementChecked?:boolean
-  elementInnerHtml?:string
-}
+import { PWAutomateEvent } from '@GSC/constants'
 
 type TSelectElementOpts = {
   selectorType?: string
@@ -112,12 +96,13 @@ export class Automate {
 
     const parent = Automate.getParent(pwComponents)
     const automate = parent.__GobletAutomateInstance
-    const page = Automate.getPage(automate)
 
     if(!automate)
       throw new Error(`Could not find goblet automate instance on parent object`)
 
+    const page = Automate.getPage(automate)
     await automate?.selectPageElementOn?.(page, options)
+
   }
 
   static turnOffElementSelect = async (pwComponents:Partial<TPWComponents>) => {
@@ -125,12 +110,27 @@ export class Automate {
 
     const parent = Automate.getParent(pwComponents)
     const automate = parent.__GobletAutomateInstance
-    const page = Automate.getPage(automate)
 
     if(!automate)
       throw new Error(`Could not find goblet automate instance on parent object`)
 
+    const page = Automate.getPage(automate)
     await automate?.selectPageElementOff?.(page)
+
+  }
+
+  static getPageUrl = async (
+    pwComponents:Partial<TPWComponents>,
+    options?:TSelectElementOpts
+  ) => {
+    Logger.info(`Automate - Getting active page URL`)
+    const parent = Automate.getParent(pwComponents)
+    const automate = parent.__GobletAutomateInstance
+    if(!automate)
+      throw new Error(`Could not find goblet automate instance on parent object`)
+
+    const page = Automate.getPage(automate)
+    await automate?.pageUrl?.(page)
   }
 
   static addEventListener = (
@@ -148,7 +148,7 @@ export class Automate {
    */
   static getPage = (automate:Automate):TBrowserPage => {
     Logger.info(`Automate - Getting playwright page for automate instance`)
-
+ 
     const page = automate.parent as TBrowserPage
     const context = automate.parent as TBrowserContext
     return typeof page.evaluate === `function` ? page : context.pages()[0]
@@ -189,7 +189,7 @@ export class Automate {
    * Loops the registered event methods and calls each one passing in the event object
    * Ensures the current recording state is added and upto date
    */
-  fireEvent = (event:TAutomateEvent<TElSelectEvent>) => {
+  fireEvent = <T=TAutomateElementEvent>(event:TAutomateEvent<T>) => {
     Logger.info(`Automate - Fire automate event`, event)
     
     this.onEvents.map(func => checkCall(func, event))
@@ -229,13 +229,13 @@ export class Automate {
     return found
   }
 
-  gobletSelectAction = async (data:TElSelectEvent) => {
+  gobletSelectAction = async (data:TAutomateElementEvent) => {
     Logger.info(`Automate - Firing automate select-element event`)
 
     await this.selectPageElementOff()
     this.fireEvent({
       data,
-      name: PWAutomateSelectElement,
+      name: PWAutomateEvent,
     })
   }
 
@@ -252,8 +252,23 @@ export class Automate {
   ) => {
     page = page || Automate.getPage(this)
 
+    await page.evaluate((options) => (
     // @ts-ignore
-    await page.evaluate((options) => window.__gobletElementSelectOn(options), options)
+      window.__gobletElementSelectOn(options)
+    ), options)
+  }
+  
+  pageUrl = async (
+    page?:TBrowserPage,
+    options?:TSelectElementOpts
+  ) => {
+    page = page || Automate.getPage(this)
+    const url = page.url()
+
+    this.fireEvent<TAutomatePageEvent>({
+      data: { url },
+      name: PWAutomateEvent,
+    })
   }
 
   /**

@@ -6,7 +6,7 @@ import { WSService } from '@services/socketService/socketService'
 import {
   SocketMsgTypes,
   BrowserStateEvt,
-  SelectFromBrowserRespEvt,
+  WSAutomateEvent,
 } from '@constants'
 
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
@@ -18,7 +18,7 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
  * Add listener the fires when the user clicks the dom
  *
  */
-export const selectElement = (options:Record<string, any> = noOpObj) => {
+export const automateBrowser = (options:Record<string, any> = noOpObj) => {
 
   /**
    * TODO - Need to add some type of cancel / timeout if there's an error
@@ -29,11 +29,11 @@ export const selectElement = (options:Record<string, any> = noOpObj) => {
   return new Promise<TSelectFromBrowserRespEvent>((res, rej) => {
     EE.emit(BrowserStateEvt, {browserState: EBrowserState.recording})
 
-    WSService.emit(SocketMsgTypes.ELEMENT_SELECT, options)
+    WSService.emit(SocketMsgTypes.BROWSER_AUTOMATE, options)
 
     // Then listen for the response event fired from the websocket service
     offEvent = EE.on<TSelectFromBrowserRespEvent>(
-      SelectFromBrowserRespEvt,
+      WSAutomateEvent,
       (data) => {
 
         EE.emit(BrowserStateEvt, {browserState: EBrowserState.idle})
@@ -44,5 +44,3 @@ export const selectElement = (options:Record<string, any> = noOpObj) => {
     )
   })
 }
-
-

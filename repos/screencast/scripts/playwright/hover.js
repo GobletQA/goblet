@@ -1,4 +1,4 @@
-console.log(`------- GOBLET - MOUSE-HOVER INIT -------`)
+console.log(`[Goblet] - Mouse-Hover Init`)
 
 /**
  * Element used to highlight other elements hovered by the mouse
@@ -45,7 +45,7 @@ const addListener = (styles) => {
   const onMouseHover = async (event) => hoverHighlighter(event, styles)
 
   try {
-    console.log(`------- on mouse move list -------`)
+    console.log(`[Goblet] - On mouse move listener`)
     window.addEventListener('mousemove', onMouseHover)
     return () => window.removeEventListener('mousemove', onMouseHover)
   }
@@ -92,7 +92,7 @@ const elementSelectEvent = (options, e) => {
 
 
 const initElementHover = async () => {
-  console.log(`------- Start initElementHover -------`)
+  console.log(`[Goblet] - Start initElementHover`)
   
   let removeListener
   let onSelectElement
@@ -112,7 +112,7 @@ const initElementHover = async () => {
   }
 
   window.__gobletElementSelectOff = () => {
-    console.log(`------- __gobletElementSelectOff -------`)
+    console.log(`[Goblet] - __gobletElementSelectOff`)
     highlightEl.style.display = `none`
     window.removeEventListener(`click`, onSelectElement)
 
@@ -120,7 +120,7 @@ const initElementHover = async () => {
     removeListener = undefined
   }
 
-  console.log(`------- Finish initElementHover -------`)
+  console.log(`[Goblet] - Finish initElementHover`)
 }
 
 initElementHover()
