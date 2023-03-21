@@ -9,7 +9,7 @@ import { setActiveFile } from '@actions/files/local/setActiveFile'
 
 export const useOnPathChange = (files:TFileTree, rootPrefix:string) => {
   return useCallback(async (loc:string) => {
-    if(!loc) console.warn(`Can not set active file, missing file location`)
+    if(!loc) return console.warn(`Can not set active file, missing file location`)
 
     const fullLoc = addRootToLoc(loc, rootPrefix)
     setActiveFile(fullLoc)

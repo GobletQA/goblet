@@ -35,6 +35,7 @@ export const Container = (props:TEditorContainer) => {
     onFeatureActive,
     sidebarMaxWidth,
     onSidebarResize,
+    onFeatureInactive,
     Divider=REDivider,
   } = props
 
@@ -50,6 +51,7 @@ export const Container = (props:TEditorContainer) => {
     setOpenedTabs,
     onFeatureClose,
     onFeatureActive,
+    onFeatureInactive,
     onTabDown: props.onTabDown,
     onTabLeave: props.onTabLeave,
     onTabHover: props.onTabHover,

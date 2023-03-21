@@ -4,7 +4,7 @@ import type {
   TOnFeatureCB,
 } from '@GBR/types'
 
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useEditor } from '@GBR/contexts'
 import { useTabHooks } from './useTabHooks'
 import { stopEvent } from '@gobletqa/components'
@@ -22,6 +22,7 @@ export type THOpenedTabs = {
   featuresRef:TFeaturesRef
   onFeatureClose?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
+  onFeatureInactive?:TOnFeatureCB
   setOpenedTabs:(tabs:TTabItem[]) => void
 }
 
@@ -40,16 +41,20 @@ export const useTabCallbacks = (props:THOpenedTabs) => {
 
   const { feature, setFeature } = useEditor()
 
+  /**
+   * On feature inactive called in the setFeature method when the feature uuid changes
+   */
   const onActiveFeature = useCallback<TTabAction>((tab, ...rest) => {
-    if(tab.uuid === feature?.uuid) return
+    if(tab.uuid === feature?.uuid)
+      return console.log(`Can not set feature active. It is already active`)
 
     const feat = featureFromTab(tab, featuresRef.current)
-
     const updatedTabs = setTabActive(openedTabs, tab)
-    onFeatureActive?.(feat, ...rest)
 
     setOpenedTabs(updatedTabs)
     setFeature(feat)
+
+    feat && onFeatureActive?.(feat, ...rest)
 
   }, [feature, openedTabs])
 
@@ -64,7 +69,10 @@ export const useTabCallbacks = (props:THOpenedTabs) => {
     const nextFeat = active ? featureFromTab(active?.tab, featuresRef.current) : active
 
     setFeature(nextFeat)
-  }, [feature, openedTabs])
+
+    nextFeat && onFeatureActive?.(nextFeat)
+
+  }, [feature, openedTabs, setFeature])
 
 
   const tabHooks = useTabHooks({

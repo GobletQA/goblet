@@ -64,13 +64,10 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     // then call inactive callback on previous feature
     checkInactive
       && feat?.uuid !== feature?.uuid
-      && onFeatureInactive?.(feature)
+      && onFeatureInactive?.(feature, feat)
 
     curValueRef.current = feat?.content || ``
     curPathRef.current = feat?.parent?.location || ``
-    
-    console.log(curPathRef.current)
-    console.log(curValueRef.current)
 
     _setFeature(feat)
   })
@@ -132,8 +129,8 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   }))
 
   return {
+    setFeature,
     updateFeature,
-    setFeature: _setFeature
   }
 
 }

@@ -47,7 +47,6 @@ export type TRaceEditorProps = TSettingsState & TEditorShared & {
   onFeatureClose?:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
-  onFeatureInactive?:TOnFeatureCB
 }
 
 export type TEditorShared = {
@@ -65,6 +64,7 @@ export type TEditorShared = {
   onFeatureClose?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
   menuContext?:TRaceContextMenu
+  onFeatureInactive?:TOnFeatureCB
   onSidebarResize?:(width:number) => void
   portal?:string|MutableRefObject<HTMLElement>
   actions?:TEditorAction<TRaceEditor, TEditorRef>[]

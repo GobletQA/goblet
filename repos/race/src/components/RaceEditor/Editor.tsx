@@ -61,6 +61,8 @@ export const Editor = (props:TRaceEditorProps) => {
         featureGroups={featureGroups}
         setOpenedTabs={setOpenedTabs}
         onFeatureClose={onFeatureClose}
+        onFeatureActive={onFeatureActive}
+        onFeatureInactive={onFeatureInactive}
         portal={props.portal}
         Panels={props.Panels}
         Divider={props.Divider}

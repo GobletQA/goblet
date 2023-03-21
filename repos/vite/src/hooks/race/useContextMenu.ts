@@ -61,6 +61,7 @@ export const useContextMenu = () => {
             })
 
             const value = resolveValue(active, data)
+
             setInputProps({})
 
             onChange?.({target: { value }})

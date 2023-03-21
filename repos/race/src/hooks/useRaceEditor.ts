@@ -5,7 +5,7 @@ import type {
   TRaceEditorProps,
 } from '../types'
 
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { noOp } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components'
 import { useFeatureGroups } from '@GBR/hooks/features/useFeatureGroups'
@@ -54,6 +54,11 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     setOpenedTabs,
     updateEmptyTab,
   } = useInitTabs({ feature:initialFeature })
+
+  useEffect(() => {
+    initialFeature
+      && onFeatureActive?.(initialFeature)
+  }, [])
 
   return {
     editorRef,
