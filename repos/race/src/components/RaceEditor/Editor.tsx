@@ -2,30 +2,31 @@ import type { TRaceEditorProps } from '@GBR/types'
 
 import { Container } from './Container'
 import { EditorProvider } from '@GBR/contexts'
-import { useRaceTheme } from '../../hooks/useRaceTheme'
-import { useRaceEditor } from '../../hooks/useRaceEditor'
+import { useRaceTheme } from '@GBR/hooks/useRaceTheme'
+import { useRaceEditor } from '@GBR/hooks/useRaceEditor'
+import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
 
 export const Editor = (props:TRaceEditorProps) => {
 
   useRaceTheme(props)
 
+
   const {
-    onTabDown,
+    onKeyDown,
     editorRef,
-    openedTabs,
-    onTabHover,
-    onTabLeave,
     curPathRef,
+    openedTabs,
     curValueRef,
     stepDefsRef,
     featuresRef,
+    containerRef,
     menuContext,
+    setOpenedTabs,
     featureGroups,
-    onFeatureClose,
+    onFeatureSave,
     updateEmptyTab,
+    onFeatureClose,
     setFeatureRefs,
-    onCloseFeature,
-    onActiveFeature,
     onFeatureChange,
     setFeatureGroups,
     onFeatureActive,
@@ -34,11 +35,14 @@ export const Editor = (props:TRaceEditorProps) => {
 
   return (
     <EditorProvider
+      curPathRef={curPathRef}
+      curValueRef={curValueRef}
       featuresRef={featuresRef}
       menuContext={menuContext}
       rootPrefix={props.rootPrefix}
-      updateEmptyTab={updateEmptyTab}
+      onFeatureSave={onFeatureSave}
       onFeatureClose={onFeatureClose}
+      updateEmptyTab={updateEmptyTab}
       setFeatureRefs={setFeatureRefs}
       onFeatureChange={onFeatureChange}
       onFeatureActive={onFeatureActive}
@@ -46,23 +50,25 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureInactive={onFeatureInactive}
     >
       <Container
-        stepDefsRef={stepDefsRef}
-        onTabDown={onTabDown}
+        onKeyDown={onKeyDown}
         editorRef={editorRef}
         openedTabs={openedTabs}
-        onTabHover={onTabHover}
-        onTabLeave={onTabLeave}
         curPathRef={curPathRef}
         curValueRef={curValueRef}
         featuresRef={featuresRef}
+        stepDefsRef={stepDefsRef}
+        containerRef={containerRef}
         featureGroups={featureGroups}
-        onCloseFeature={onCloseFeature}
-        onActiveFeature={onActiveFeature}
+        setOpenedTabs={setOpenedTabs}
+        onFeatureClose={onFeatureClose}
         portal={props.portal}
         Panels={props.Panels}
         Divider={props.Divider}
         actions={props.actions}
         PrePanels={props.PrePanels}
+        onTabDown={props.onTabDown}
+        onTabHover={props.onTabHover}
+        onTabLeave={props.onTabLeave}
         actionsOpen={props.actionsOpen}
         sidebarWidth={props.sidebarWidth}
         sidebarStatus={props.sidebarStatus}

@@ -33,9 +33,6 @@ export const useTabs = (props:THTabCallbacks) => {
   } = props
 
   const openedTabs = useMemo<TTabItem[]>(() => {
-    
-    
-    
     return openedFiles?.length
       ? openedFiles.map(file => fileToTab(file, { active: file.path === currentPath }))
       : []

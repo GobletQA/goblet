@@ -3,8 +3,13 @@ import type { TMenuItem } from '@gobletqa/components'
 import type { TRaceMenuItemClickCtx, TMenuContextRef } from '@GBR/types'
 
 import { useMemo, useState, useRef } from 'react'
-import { useStepDefs, useParkin, useEditor, useMenuContext } from '@GBR/contexts'
 import { useInline } from '@gobletqa/components'
+import {
+  useParkin,
+  useEditor,
+  useStepDefs,
+  useMenuContext
+} from '@GBR/contexts'
 
 export type THMenuItems = TMenuContextRef & {
   id:string
@@ -24,7 +29,6 @@ export const useMenuItems = (props:THMenuItems) => {
     onChange,
     setInputProps,
   } = props
-
 
   const { defs, setDefs } = useStepDefs()
   const onChangeInline = useInline(onChange)

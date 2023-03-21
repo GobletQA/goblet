@@ -9,7 +9,7 @@ import type {
   TUpdateFeatureCB,
   TSetFeatureGroups,
 } from '../types'
-import type { TIndexAst } from '@ltipton/parkin'
+import type { MutableRefObject } from 'react'
 
 import {
   useMemo,
@@ -31,6 +31,7 @@ export type TEditorProvider = {
   rootPrefix:string
   updateEmptyTab:TFeatureCB
   featuresRef: TFeaturesRef
+  onFeatureSave:TOnFeatureCB
   onFeatureClose:TOnFeatureCB
   onFeatureChange:TOnFeatureCB
   onFeatureActive:TOnFeatureCB
@@ -38,6 +39,8 @@ export type TEditorProvider = {
   onFeatureInactive:TOnFeatureCB
   setFeatureRefs:TSetFeatureRefs
   setFeatureGroups:TSetFeatureGroups
+  curPathRef: MutableRefObject<string>
+  curValueRef: MutableRefObject<string>
 }
 
 export type TEditorCtx = {
@@ -86,10 +89,13 @@ export const EditorProvider = (props:TEditorProvider) => {
   const {
     children,
     rootPrefix,
-    menuContext,
+    curPathRef,
+    curValueRef,
     featuresRef,
+    menuContext,
     updateEmptyTab,
     setFeatureRefs,
+    onFeatureSave,
     onFeatureClose,
     onFeatureChange,
     onFeatureActive,
@@ -111,9 +117,12 @@ export const EditorProvider = (props:TEditorProvider) => {
     feature,
     expanded,
     rootPrefix,
+    curPathRef,
+    curValueRef,
     featuresRef,
     updateExpanded,
     setFeatureRefs,
+    onFeatureSave,
     onFeatureClose,
     updateEmptyTab,
     onFeatureActive,

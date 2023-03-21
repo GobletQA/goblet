@@ -3,6 +3,7 @@ import type { TEditorContainer } from '@GBR/types'
 import { Sidebar } from '../Sidebar'
 import { Feature } from '../Feature'
 import { FeaturesPanel } from '../Features'
+import { useTabCallbacks } from '@gobletqa/race/hooks/tabs/useTabCallbacks'
 import { useSidebarResize, EditorActions, OpenedTabs } from '@gobletqa/components'
 import {
   EditorContainer,
@@ -18,24 +19,41 @@ export const Container = (props:TEditorContainer) => {
     actions,
     PrePanels,
     editorRef,
-    onTabDown,
-    openedTabs,
-    onTabLeave,
-    onTabHover,
+    onKeyDown,
     curPathRef,
     curValueRef,
     stepDefsRef,
     featuresRef,
+    openedTabs,
+    containerRef,
     actionsOpen,
     sidebarWidth,
     sidebarStatus,
+    setOpenedTabs,
     featureGroups,
-    onCloseFeature,
-    onActiveFeature,
+    onFeatureClose,
+    onFeatureActive,
     sidebarMaxWidth,
     onSidebarResize,
     Divider=REDivider,
   } = props
+
+  const {
+    onTabDown,
+    onTabHover,
+    onTabLeave,
+    onCloseFeature,
+    onActiveFeature,
+  } = useTabCallbacks({
+    openedTabs,
+    featuresRef,
+    setOpenedTabs,
+    onFeatureClose,
+    onFeatureActive,
+    onTabDown: props.onTabDown,
+    onTabLeave: props.onTabLeave,
+    onTabHover: props.onTabHover,
+  })
 
   const {
     styles,
@@ -53,9 +71,12 @@ export const Container = (props:TEditorContainer) => {
   return (
 
       <ContainerComp
+        tabIndex={0}
+        ref={containerRef}
         onMouseMove={onMove}
         onMouseUp={onMoveEnd}
-        className='gb-editor'
+        onKeyDown={onKeyDown}
+        className='gb-race-editor'
       >
 
         <Sidebar

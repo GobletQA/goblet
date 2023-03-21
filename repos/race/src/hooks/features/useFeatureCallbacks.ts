@@ -9,9 +9,9 @@ import type {
   TSetFeatureRefs,
   TSetFeatureGroups,
 } from '@GBR/types'
+import type { MutableRefObject } from 'react'
 import type { TExpanded, TOnExpandedCB } from '@GBR/contexts'
 
-import { useParkin } from '@GBR/contexts'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { useEventListen, useInline } from '@gobletqa/components'
@@ -31,6 +31,7 @@ export type THFeatureCallbacks = {
   setFeature:TSetFeature
   featuresRef: TFeaturesRef
   updateEmptyTab:TFeatureCB
+  onFeatureSave:TOnFeatureCB
   onFeatureClose:TOnFeatureCB
   updateExpanded:TOnExpandedCB
   onFeatureChange?:TOnFeatureCB
@@ -38,6 +39,8 @@ export type THFeatureCallbacks = {
   setFeatureRefs:TSetFeatureRefs
   onFeatureInactive?:TOnFeatureCB
   setFeatureGroups:TSetFeatureGroups
+  curPathRef: MutableRefObject<string>
+  curValueRef: MutableRefObject<string>
 }
 
 export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
@@ -45,49 +48,56 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   const {
     feature,
     expanded,
-    setFeature,
+    curPathRef,
+    curValueRef,
     featuresRef,
     updateEmptyTab,
     setFeatureRefs,
     updateExpanded,
     onFeatureChange,
     onFeatureInactive,
+    setFeature:_setFeature,
   } = props
 
-
-  const { parkin } = useParkin()
-
-  const _setFeature = useInline((feat?:TRaceFeature) => {
+  const setFeature = useInline((feat?:TRaceFeature, checkInactive:boolean=true) => {
     // If a different feature is being set,
     // then call inactive callback on previous feature
-    feat?.uuid !== feature?.uuid && onFeatureInactive?.(feature)
+    checkInactive
+      && feat?.uuid !== feature?.uuid
+      && onFeatureInactive?.(feature)
 
-    setFeature(feat)
+    curValueRef.current = feat?.content || ``
+    curPathRef.current = feat?.parent?.location || ``
+    
+    console.log(curPathRef.current)
+    console.log(curValueRef.current)
+
+    _setFeature(feat)
   })
 
   const updateFeature = useInline(async ({
     options,
-    feature:updated,
+    feature:changed,
   }:TUpdateFeature) => {
-    if(!updated || !isValidUpdate(updated)) return
+    if(!changed || !isValidUpdate(changed)) return
 
-    const indexed = await ParkinWorker.reIndex({ feature: updated })
+    const updated = await ParkinWorker.reIndex({ feature: changed })
 
-    onFeatureChange?.(indexed, feature)
+    onFeatureChange?.(updated, feature)
 
-    featuresRef.current[indexed.uuid] = indexed
+    featuresRef.current[updated.uuid] = updated
 
-    // If the indexed feature was an empty feature
+    // If the updated feature was an empty feature
     // Remove the temp empty feature, and update the tab name
     // So the tab has the correct feature title
     if(feature?.uuid === EmptyFeatureUUID){
       delete featuresRef.current[EmptyFeatureUUID]
-      updateEmptyTab?.(indexed)
+      updateEmptyTab?.(updated)
     }
 
     options?.expand && updateExpanded(options?.expand)
     setFeatureRefs(featuresRef.current)
-    setFeature(indexed)
+    setFeature(updated)
   })
 
   const setEmptyFeature = useInline(((feat:TRaceFeature) => {
@@ -96,7 +106,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
       updateEmptyTab?.(feat)
     }
 
-    _setFeature(feat)
+    setFeature(feat, false)
   }) as TOnFeatureCB)
 
   // Listen to external events to update the feature context
@@ -123,7 +133,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
   return {
     updateFeature,
-    setFeature: setEmptyFeature,
+    setFeature: _setFeature
   }
 
 }

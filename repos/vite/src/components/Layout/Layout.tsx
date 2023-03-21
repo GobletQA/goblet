@@ -53,7 +53,10 @@ export const Layout = (props:TLayout) => {
   const [ref, onHorResizeMove] = useLayoutResize()
 
   return (
-    <LayoutContainer ref={ref} className='layout-container'>
+    <LayoutContainer
+      ref={ref}
+      className='layout-container'
+    >
       <HorizontalPageSplit
         divider={Divider}
         resize={Proportional}
@@ -63,14 +66,15 @@ export const Layout = (props:TLayout) => {
         <LContainer
           disableGutters
           sx={noOverflow}
+          className='gb-layout-left-container gb-container-editor'
         >
           {props.children}
         </LContainer>
 
         <RContainer
-          sx={fullHeight}
           disableGutters
-          className={`gb-layout-right-container`}
+          sx={fullHeight}
+          className='gb-layout-right-container gb-container-browser'
         >
 
           <VerticalPageSplit

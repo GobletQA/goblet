@@ -1,8 +1,8 @@
 import type { TSettingsState } from './settings.types'
 import type { TRaceContextMenu } from './menu.types'
 import type { TWorldConfig, TStepDefsList } from '@ltipton/parkin'
-import type { RefObject, MutableRefObject, ComponentType } from 'react'
 import type { TRaceFeatureAsts, TRaceFeatures, TRaceFeature } from './features.types'
+import type { KeyboardEvent, RefObject, MutableRefObject, ComponentType } from 'react'
 import type {
   TTabItem,
   TTabAction,
@@ -15,7 +15,6 @@ import type {
   TStepDefsRef,
   TFeaturesRef,
   TOnFeatureCB,
-  TOnReturnFeatureCB
 } from './helpers.types'
 
 export type TRaceEditor = {
@@ -35,7 +34,7 @@ export type TEditorRefs = {
   curValueRef: MutableRefObject<string>
 }
 
-export type TRaceEditorProps = TSettingsState & TEditorContainer & {
+export type TRaceEditorProps = TSettingsState & TEditorShared & {
   world?:TWorldConfig
   steps:TStepDefsList
   rootPrefix: string
@@ -44,29 +43,36 @@ export type TRaceEditorProps = TSettingsState & TEditorContainer & {
   features:TRaceFeatureAsts
   firstFeatureActive?:boolean
   initialFeature?:TRaceFeature
+  onFeatureSave?:TOnFeatureCB
   onFeatureClose?:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
   onFeatureInactive?:TOnFeatureCB
 }
 
-export type TEditorContainer = TFeaturesRefs & TEditorRefs & {
+export type TEditorShared = {
+  onTabDown?:TTabAction
+  onTabLeave?:TTabAction
+  onTabHover?:TTabAction
   actionsOpen?:boolean
   sidebarWidth?:number
   sidebarStatus?:boolean
   sidebarMaxWidth?:number
-  openedTabs:TTabItem[]
-  onTabDown?:TTabAction
-  onTabLeave?:TTabAction
-  onTabHover?:TTabAction
   Panels?:TSidebarPanel[]
-  onCloseFeature:TTabAction
-  onActiveFeature:TTabAction
   PrePanels?:TSidebarPanel[]
   Divider?:ComponentType<any>
   featureGroups:TRaceFeatures
+  onFeatureClose?:TOnFeatureCB
+  onFeatureActive?:TOnFeatureCB
   menuContext?:TRaceContextMenu
   onSidebarResize?:(width:number) => void
   portal?:string|MutableRefObject<HTMLElement>
   actions?:TEditorAction<TRaceEditor, TEditorRef>[]
+  containerRef:MutableRefObject<HTMLElement|undefined>
+  onKeyDown?:(event: KeyboardEvent<HTMLElement>) => void
+}
+
+export type TEditorContainer = TFeaturesRefs & TEditorRefs & TEditorShared & {
+  openedTabs:TTabItem[]
+  setOpenedTabs:(tabs:TTabItem[]) => void
 }

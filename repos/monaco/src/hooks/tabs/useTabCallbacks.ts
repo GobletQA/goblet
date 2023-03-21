@@ -1,7 +1,6 @@
 import type { TFileMeta, TAutoSave, TModal } from '../../types'
 import type { SyntheticEvent } from 'react'
 
-import { useOnTabDown } from './useOnTabDown'
 import { useOnTabClose } from './useOnTabClose'
 import { useOnTabHover } from './useOnTabHover'
 import { useFileType } from '../file/useFileType'
@@ -18,7 +17,6 @@ export type THTabCallbacks = {
   onSaveFile: (path: string) => void
   onAbortSave: (path: string) => void
   onPathChange?: (key: string) => void
-  onCloseOtherFiles: (path: string) => void
 }
 
 export type THCloseVisible = {
@@ -62,7 +60,6 @@ export const useTabCallbacks = (props:THTabCallbacks, active:boolean) => {
     onAbortSave,
     onCloseFile,
     onPathChange,
-    onCloseOtherFiles
   } = props
 
   const fileType = useFileType(file.path)
@@ -85,20 +82,12 @@ export const useTabCallbacks = (props:THTabCallbacks, active:boolean) => {
   } = useOnTabHover()
 
   const onTabClose = useOnTabClose({
-    file,
     Modal,
     rootEl,
     autoSave,
     onSaveFile,
     onAbortSave,
     onCloseFile,
-  })
-
-  const onMouseDown = useOnTabDown({
-    file,
-    Modal,
-    onTabClose,
-    onCloseOtherFiles
   })
 
   const closeVisible = useCloseVisible({
@@ -117,7 +106,6 @@ export const useTabCallbacks = (props:THTabCallbacks, active:boolean) => {
     hoverRight,
     onTabClose,
     handleLeave,
-    onMouseDown,
     closeVisible,
     setHoverRight,
     onPathChange: pathChange

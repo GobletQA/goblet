@@ -3,7 +3,6 @@ import type { TTabStyles, TTab, TTabItem } from '../../types'
 import { noOpObj } from '@keg-hub/jsutils'
 import { CloseIcon } from '@GBC/components/Icons'
 import { useEffect, useRef, useMemo } from 'react'
-import { preventDefault } from '../../utils/dom/preventDefault'
 import { useTabCallbacks } from '../../hooks/tabs/useTabCallbacks'
 import {
   OpenTab,
@@ -11,7 +10,6 @@ import {
   OpenTabClose,
   OpenTabEditing,
 } from './OpenedTabs.styled'
-
 
 const defStyles:TTabStyles = {
   icon: { marginRight: '2px' },
@@ -78,7 +76,6 @@ export const Tab = (props:TTabItem) => {
       onMouseOver={onTabHover}
       onMouseLeave={onTabLeave}
       className={styles.classNames}
-      onContextMenu={preventDefault}
       data-src={tab?.uuid || tab?.path}
     >
       {Icon && (<Icon style={styles.icon} />)}

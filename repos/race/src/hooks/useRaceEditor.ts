@@ -3,14 +3,14 @@ import type {
   TRaceEditor,
   TRaceFeatures,
   TRaceEditorProps,
-  TOnReturnFeatureCB,
 } from '../types'
 
 import { useRef } from 'react'
 import { noOp } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components'
-import { useOpenedTabs } from '@GBR/hooks/useOpenedTabs'
 import { useFeatureGroups } from '@GBR/hooks/features/useFeatureGroups'
+import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
+import { useInitTabs } from '@GBR/hooks/tabs/useInitTabs'
 
 export const useRaceEditor = (props:TRaceEditorProps) => {
   const {
@@ -32,50 +32,45 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     setFeatureRefs
   ] = useFeatureGroups({ featuresRef })
 
+  const onFeatureSave = useInline(props.onFeatureSave || noOp)
   const onFeatureClose = useInline(props.onFeatureClose || noOp)
   const onFeatureChange = useInline(props.onFeatureChange || noOp)
   const onFeatureActive = useInline(props.onFeatureActive || noOp)
   const onFeatureInactive = useInline(props.onFeatureInactive || noOp)
 
   const editorRef = useRef<TRaceEditor>(null)
-  const curValueRef = useRef<string>(initialFeature?.content || ``)
-  const curPathRef = useRef<string>(initialFeature?.path || ``)
+  const containerRef = useRef<HTMLDivElement|HTMLElement>()
 
-  const {
-    onTabDown,
-    openedTabs,
-    onTabHover,
-    onTabLeave,
-    updateEmptyTab,
-    onCloseFeature,
-    onActiveFeature,
-  } = useOpenedTabs({
-    featuresRef,
-    onFeatureClose,
-    onFeatureActive,
-    onTabDown: props.onTabDown,
-    onTabLeave: props.onTabLeave,
-    onTabHover: props.onTabHover,
+  const curPathRef = useRef<string>(initialFeature?.path || ``)
+  const curValueRef = useRef<string>(initialFeature?.content || ``)
+
+  const { onKeyDown } = useContainerHooks({
+    containerRef,
+    onFeatureSave
   })
 
+  const {
+    openedTabs,
+    setOpenedTabs,
+    updateEmptyTab,
+  } = useInitTabs({ feature:initialFeature })
 
   return {
     editorRef,
-    onTabDown,
     openedTabs,
-    onTabHover,
-    onTabLeave,
+    onKeyDown,
     curPathRef,
     curValueRef,
     stepDefsRef,
     featuresRef,
+    containerRef,
     menuContext,
+    setOpenedTabs,
     featureGroups,
-    updateEmptyTab,
-    onCloseFeature,
     setFeatureRefs,
-    onActiveFeature,
+    onFeatureSave,
     onFeatureClose,
+    updateEmptyTab,
     onFeatureChange,
     onFeatureActive,
     setFeatureGroups,
