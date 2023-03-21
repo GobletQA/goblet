@@ -1,12 +1,9 @@
 import type { TPanelDims } from './getPanelDims'
 
-import { dims } from '@gobletqa/components'
 import { PanelDimsSetEvt } from '@constants'
 import { getPanelDims } from './getPanelDims'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { ScreencastRatio } from '@constants/screencast'
-
-
 
 export type TParentPanels = TPanelDims & {
   rPPanel: HTMLDivElement

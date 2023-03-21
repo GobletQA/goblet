@@ -11,9 +11,9 @@ export const CustomDefsList = (props:TCustomDefsList) => {
   return (
     <DefTabPanel
       role="tabpanel"
-      id={`goblet-defs-tabpanel-${index}`}
-      className='goblet-defs-custom-tab-panel'
-      aria-labelledby={`goblet-defs-tab-${index}`}
+      id={`gb-defs-tabpanel-${index}`}
+      className='gb-defs-custom-tab-panel'
+      aria-labelledby={`gb-defs-tab-${index}`}
       {...other}
     >
       <DefinitionList definitions={definitions} />

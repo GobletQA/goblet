@@ -16,9 +16,9 @@ export const DefaultDefsList = (props:TDefsList) => {
   return (
     <DefTabPanel
       role="tabpanel"
-      id={`goblet-defs-tabpanel-${index}`}
-      className='goblet-defs-default-tab-panel'
-      aria-labelledby={`goblet-defs-tab-${index}`}
+      id={`gb-defs-tabpanel-${index}`}
+      className='gb-defs-default-tab-panel'
+      aria-labelledby={`gb-defs-tab-${index}`}
       {...other}
     >
       <DefinitionList definitions={definitions} />

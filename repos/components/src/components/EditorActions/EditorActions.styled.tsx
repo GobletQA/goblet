@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles'
 export const ActionsContainer = styled(Box)(({ theme }) => `
   top: 0px;
   right: 0px;
+  z-index: 10;
   display: flex;
   position: absolute;
   align-items: center;

@@ -32,7 +32,7 @@ const drawerProps:Partial<DrawerProps> = {
   hideBackdrop: true,
   variant: `permanent`,
   sx: { left: `50px` },
-  className: `goblet-defs-drawer`,
+  className: `gb-defs-drawer`,
 }
 
 const styles = {
@@ -90,7 +90,7 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
       height='100%'
       ref={parentRef}
       position='relative'
-      className='goblet-definitions-slider'
+      className='gb-definitions-slider'
       bgcolor={theme.palette.mode === 'light' ? gray.gray00 : black.black12}
     >
       <ClickAwayListener onClickAway={onClickAway} >
@@ -102,6 +102,7 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
           PaperProps={{
             elevation: 0,
             sx:{
+              zIndex: `20`,
               width: parentRef?.current?.clientWidth || 0
             }
           }}

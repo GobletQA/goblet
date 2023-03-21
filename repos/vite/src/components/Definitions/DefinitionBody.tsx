@@ -37,7 +37,7 @@ export const DefinitionBody = (props:TDefinitionsBody) => {
   }, [idx, defaultDefs, customDefs, allDefs])
 
   return (
-    <DefsBody className='goblet-defs-body' sx={sx} >
+    <DefsBody className='gb-defs-body' sx={sx} >
       <Component
         index={idx}
         tab={tabs[active]}

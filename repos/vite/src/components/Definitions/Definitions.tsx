@@ -22,7 +22,7 @@ export const Definitions = (props:TDefinitions) => {
   }, [])
 
   return (
-    <DefsContainer className='goblet-definitions' >
+    <DefsContainer className='gb-definitions' >
       <DefinitionHeader
         active={active}
         onChange={onChange}

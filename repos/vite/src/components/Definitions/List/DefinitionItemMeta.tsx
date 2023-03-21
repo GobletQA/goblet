@@ -26,13 +26,13 @@ const MetaDescription = (props:TMetaData) => {
   const { description } = props
 
   return description && (
-    <DefMetaItemWrap className='goblet-def-meta-description' >
+    <DefMetaItemWrap className='gb-def-meta-description' >
       <DefMetaItemPair>
         <DefMetaTitle>
           Description
         </DefMetaTitle>
         <DefMetaExpItemWrap>
-          <DefMetaItemText className='goblet-def-meta-description-text' >
+          <DefMetaItemText className='gb-def-meta-description-text' >
             {description}
           </DefMetaItemText>
         </DefMetaExpItemWrap>
@@ -46,7 +46,7 @@ const MetaExpressions = (props:TMetaData) => {
   const { expressions } = props
 
   return expressions?.length && (
-    <DefMetaItemExpWrap className='goblet-def-meta-expressions' >
+    <DefMetaItemExpWrap className='gb-def-meta-expressions' >
 
       <DefMetaTitle>
         Expressions
@@ -60,10 +60,10 @@ const MetaExpressions = (props:TMetaData) => {
           <DefMetaExpItemWrap
             key={description}
             marginBottom={spacer}
-            className='goblet-def-meta-expression'
+            className='gb-def-meta-expression'
           >
             {type && (
-              <DefMetaItemPair className='goblet-defs-expression-type' >
+              <DefMetaItemPair className='gb-defs-expression-type' >
                 <DefMetaItemTitle>
                   type:
                 </DefMetaItemTitle>
@@ -73,7 +73,7 @@ const MetaExpressions = (props:TMetaData) => {
               </DefMetaItemPair>
             ) || null}
             {example && (
-              <DefMetaItemPair className='goblet-defs-expression-example' >
+              <DefMetaItemPair className='gb-defs-expression-example' >
                 <DefMetaItemTitle>
                   example:
                 </DefMetaItemTitle>
@@ -83,7 +83,7 @@ const MetaExpressions = (props:TMetaData) => {
               </DefMetaItemPair>
             ) || null}
             {description && (
-              <DefMetaItemPair className='goblet-defs-expression-description' >
+              <DefMetaItemPair className='gb-defs-expression-description' >
                 <DefMetaItemTitle>
                   description:
                 </DefMetaItemTitle>
@@ -103,7 +103,7 @@ const MetaExamples = (props:TMetaData) => {
   const { examples } = props
 
   return examples?.length && (
-    <DefMetaItemWrap className='goblet-def-meta-examples' >
+    <DefMetaItemWrap className='gb-def-meta-examples' >
       <DefMetaTitle>
         Examples
       </DefMetaTitle>
@@ -112,7 +112,7 @@ const MetaExamples = (props:TMetaData) => {
         return (
           <DefMetaExpItemWrap
             key={example}
-            className='goblet-def-meta-example'
+            className='gb-def-meta-example'
           >
             <DefMetaItemText>
               {example}
@@ -129,7 +129,7 @@ export const DefinitionItemMeta = (props:TDefinitionItemMeta) => {
   const { description, expressions, examples } = meta
 
   return (
-    <DefItemMeta className='goblet-def-item-meta' >
+    <DefItemMeta className='gb-def-item-meta' >
       <MetaDescription description={description} />
       <MetaExamples examples={examples} />
       <MetaExpressions expressions={expressions} />

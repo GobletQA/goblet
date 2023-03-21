@@ -30,7 +30,7 @@ const DecorationComp = (props:TSidebarActionProps) => {
     <BaseAction
       Icon={TrashIcon}
       onClick={props.onClick}
-      className='goblet-decoration-action'
+      className='gb-decoration-action'
       tooltip='Clear test results from the editor'
     />
   )

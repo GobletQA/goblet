@@ -43,7 +43,7 @@ export const DefinitionHeader = (props:TDefinitionsProps) => {
       variant="fullWidth"
       onChange={onChange}
       indicatorColor="secondary"
-      className='goblet-defs-header-tabs'
+      className='gb-defs-header-tabs'
       aria-label="Feature Definition Tabs"
     >
       {tabs.map(tab => {
@@ -59,7 +59,7 @@ export const DefinitionHeader = (props:TDefinitionsProps) => {
               label={name}
               onClick={onTabClick}
               {...a11yProps(id)}
-              className={`goblet-defs-tab-${name}`}
+              className={`gb-defs-tab-${name}`}
             />
           </Tooltip>
         )

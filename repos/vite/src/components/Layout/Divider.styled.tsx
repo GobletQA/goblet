@@ -4,8 +4,8 @@ import { VerticalDivider, HorizontalDivider } from 'react-page-split'
 const { divider } = dims.panel
 
 const sharedStyle = `
-  z-index: 1;
   opacity: 0;
+  z-index: 100;
   background: #000;
   box-sizing: border-box;
   background-clip: padding-box;

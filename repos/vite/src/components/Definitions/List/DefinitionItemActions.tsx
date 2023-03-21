@@ -22,16 +22,16 @@ export const DefinitionItemActions = (props:TDefinitionItemActions) => {
     ? (
         <Box
           display='flex'
-          className='goblet-defs-item-actions-wrapper'
+          className='gb-defs-item-actions-wrapper'
         >
           {item?.actions.map((action, idx) => {
-            const strRef = `goblet-${action.key}`
+            const strRef = `gb-${action.key}`
 
             return (
               <DefButton
                 key={action.key}
                 sx={styles.button}
-                className={cls(`goblet-def-item-action`, strRef)}
+                className={cls(`gb-def-item-action`, strRef)}
                 aria-label={strRef}
                 onClick={action.action as any}
               >

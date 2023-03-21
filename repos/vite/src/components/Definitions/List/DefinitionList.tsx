@@ -15,7 +15,7 @@ export const DefinitionList = (props:TDefinitionsList) => {
   const { Header, all, definitions } = props
 
   return (
-    <DefsList subheader={<li />}>
+    <DefsList subheader={<li className='gb-defs-list-sub-header' />}>
       {Object.entries(definitions).map(([type, group]) => {
         return type !== `all` || all
           ? (

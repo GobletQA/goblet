@@ -25,7 +25,7 @@ export const DefinitionListGroup = (props:TDefinitionListGroup) => {
     <li className={section} >
       <ul className={`${section}-list-items`} >
 
-        <DefListSubheader className={`goblet-defs-${section}-sub-header`} >
+        <DefListSubheader className={`gb-defs-${section}-sub-header`} >
           {
             !Header
               ? group.group
@@ -35,7 +35,7 @@ export const DefinitionListGroup = (props:TDefinitionListGroup) => {
           }
         </DefListSubheader>
 
-        <DefItemDivider className='goblet-def-sub-header-divider' />
+        <DefItemDivider className='gb-def-sub-header-divider' />
 
         {group.items.map((item) => {
           return (
@@ -44,7 +44,7 @@ export const DefinitionListGroup = (props:TDefinitionListGroup) => {
                 item={item}
                 type={type as EStepKey}
               />
-              <DefItemDivider className='goblet-def-list-item-divider' />
+              <DefItemDivider className='gb-def-list-item-divider' />
             </Fragment>
           )
         })}

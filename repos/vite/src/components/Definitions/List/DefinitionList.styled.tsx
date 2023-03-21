@@ -109,7 +109,7 @@ export const DefItem = styled(ListItem)(({ theme }) => `
     background-color: ${getColor(colors.white, colors.black13, theme)};
     color: ${getColor(colors.black09, colors.white, theme)};
     
-    & .goblet-def-item-action {
+    & .gb-def-item-action {
       color: ${getColor(colors.gray11, colors.fadeLight50, theme)};
     }
 
@@ -119,13 +119,13 @@ export const DefItem = styled(ListItem)(({ theme }) => `
     background-color: ${getColor(colors.white, colors.black13, theme)};
     color: ${getColor(colors.black09, colors.white, theme)};
     
-    & .goblet-def-item-action {
+    & .gb-def-item-action {
       color: ${getColor(colors.gray15, colors.fadeLight50, theme)};
     }
     
   }
 
-  & .goblet-def-item-meta-toggle {
+  & .gb-def-item-meta-toggle {
     padding-right: 0px;
   }
   
@@ -165,7 +165,7 @@ export const DefButton = styled(ListItemButton)(({ theme }) => `
     color: ${colors.royalPurple} !important;
   }
 
-  &.goblet-def-open-file:hover {
+  &.gb-def-open-file:hover {
     color: ${colors.shinyShamrock} !important;
   }
 `)

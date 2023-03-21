@@ -9,7 +9,7 @@ const DecorationComp = (props:TSidebarActionProps) => {
     <BaseAction
       Icon={BackspaceTagIcon}
       onClick={props.onClick}
-      className='goblet-decoration-action'
+      className='gb-decoration-action'
       tooltip='Clear test results from the editor'
     />
   )

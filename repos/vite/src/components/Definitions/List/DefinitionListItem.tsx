@@ -46,22 +46,22 @@ export const DefinitionListItem = (props:TDefinitionListItem) => {
 
   return (
     <DefItem
-      className={cls(`goblet-def-item`, open ? `item-open` : ``)}
+      className={cls(`gb-def-item`, open ? `item-open` : ``)}
       key={`item-${type}-${item.uuid}`}
     >
-      <DefItemRow onClick={onToggleMeta} className='goblet-def-item-row' >
+      <DefItemRow onClick={onToggleMeta} className='gb-def-item-row' >
 
         <DefButton
-          className='goblet-def-item-meta-toggle'
+          className='gb-def-item-meta-toggle'
         >
-          <DefIcon className='goblet-def-item-meta-toggle-icon' >
+          <DefIcon className='gb-def-item-meta-toggle-icon' >
             <ArrowRightIcon 
               sx={open ? styles.arrow.open : styles.arrow.closed}
             />
           </DefIcon>
         </DefButton>
 
-        <DefText className='goblet-def-item-text' primary={item.title} />
+        <DefText className='gb-def-item-text' primary={item.title} />
         <DefinitionItemActions item={item} />
       </DefItemRow>
 
@@ -70,7 +70,7 @@ export const DefinitionListItem = (props:TDefinitionListItem) => {
         timeout="auto"
         unmountOnExit
       >
-        <DefItemDivider className='goblet-def-item-divider' />
+        <DefItemDivider className='gb-def-item-divider' />
         <DefinitionItemMeta item={item} />
       </DefMetaCollapse>
     </DefItem>

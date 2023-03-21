@@ -42,22 +42,22 @@ const SearchHeader = (props:TSearchHeader) => {
   }, [onSearch])
   
   return (
-    <DefSearchHeader className='goblet-defs-search' >
+    <DefSearchHeader className='gb-defs-search' >
 
       <DefSearchTitle>{group.group}</DefSearchTitle>
 
-      <DefSearchWrap className='goblet-defs-search-wrap' >
+      <DefSearchWrap className='gb-defs-search-wrap' >
         <DefSearchIcon
           onClick={onClick}
-          className='goblet-defs-search-icon-button'
+          className='gb-defs-search-icon-button'
         >
-          <SearchIcon className='goblet-defs-search-icon' />
+          <SearchIcon className='gb-defs-search-icon' />
         </DefSearchIcon>
         <DefSearchInput
           ref={inputRef}
           onKeyDown={onKeyDown}
           placeholder='Search ...'
-          className='goblet-defs-search-input'
+          className='gb-defs-search-input'
         />
       </DefSearchWrap>
 
@@ -93,9 +93,9 @@ export const AllDefsList = (props:TAllDefsList) => {
   return (
     <DefTabPanel
       role="tabpanel"
-      id={`goblet-defs-tabpanel-${index}`}
-      className='goblet-defs-all-tab-panel'
-      aria-labelledby={`goblet-defs-tab-${index}`}
+      id={`gb-defs-tabpanel-${index}`}
+      className='gb-defs-all-tab-panel'
+      aria-labelledby={`gb-defs-tab-${index}`}
       {...other}
     >
       <DefinitionList

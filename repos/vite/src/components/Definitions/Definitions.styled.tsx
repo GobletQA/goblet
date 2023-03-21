@@ -62,7 +62,7 @@ export const Drawer = styled(
     '& .MuiDrawer-paper': closedStyles(theme),
   }),
   ...(!open && {
-    [`& .goblet-defs-header-tabs button.MuiTab-root.Mui-selected`]: {
+    [`& .gb-defs-header-tabs button.MuiTab-root.Mui-selected`]: {
       color: getColor(colors.gray05, colors.purple02, theme),
       backgroundColor: getColor(colors.gray00, colors.purple17, theme),
 
