@@ -1,36 +1,40 @@
 import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
-import { useCallback } from 'react'
-import { useFiles } from '@store'
 import { EBrowserState } from '@types'
+import { useCallback, useState } from 'react'
+import { EditorPathChangeEvt } from '@constants'
 import { getFileModel } from '@utils/files/getFileModel'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
-import { BaseAction, gutter, PlayCircleOutlineIcon } from '@gobletqa/components'
-import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
+import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
+import { useEventListen, BaseAction, gutter, PlayCircleOutlineIcon } from '@gobletqa/components'
 
+export type TEditorPathChange = {
+  location: string
+}
 
 const RunTests = (props:TBrowserActionProps) => {
-  
-  const repoFiles = useFiles()
   const { browserState } = useBrowserState()
+  const [location, setLocation] = useState<string>(``)
 
   const onClick = useCallback(async (...args:any[]) => {
-    if(!repoFiles.activeFile)
+    if(!location)
       return console.warn(`Can not run tests, a file must be active in the editor.`)
 
-    const fileModel = getFileModel(repoFiles.activeFile)
+    const fileModel = getFileModel(location)
 
     if(!fileModel)
-      return console.warn(`Can not run tests, File model could not be found.`, repoFiles.activeFile)
+      return console.warn(`Can not run tests, File model could not be found.`, location)
     
-    clearEditorDecorations(rmRootFromLoc(repoFiles.activeFile))
+    clearEditorDecorations(rmRootFromLoc(location))
 
     await startBrowserPlay(fileModel, `feature`)
-  }, [repoFiles.activeFile])
+  }, [location])
 
-  const noActiveFile = !Boolean(repoFiles.activeFile)
+  useEventListen<TEditorPathChange>(EditorPathChangeEvt, ({ location }) => setLocation(location))
+
+  const noActiveFile = !Boolean(location)
   const disabled = (browserState !== EBrowserState.idle) || noActiveFile
 
   return (

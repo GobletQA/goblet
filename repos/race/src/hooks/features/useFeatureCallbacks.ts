@@ -14,7 +14,7 @@ import type { TExpanded, TOnExpandedCB } from '@GBR/contexts'
 
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
-import { useEventListen, useInline } from '@gobletqa/components'
+import { GetActiveFileEvent, useEventListen, useInline } from '@gobletqa/components'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 
@@ -66,8 +66,8 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
       && feat?.uuid !== feature?.uuid
       && onFeatureInactive?.(feature, feat)
 
-    curValueRef.current = feat?.content || ``
     curPathRef.current = feat?.parent?.location || ``
+    curValueRef.current = !curPathRef.current ? `` : feat?.content || ``
 
     _setFeature(feat)
   })
@@ -126,6 +126,13 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   useEventListen<TAskForFeature>(AskForFeatureEvt, ({ cb }) => cb?.({
     feature,
     updateFeature,
+  }))
+
+  // Helper to allow external code ask the context for the current file
+  // Similar to AskForFeature, but used outside of race editor
+  useEventListen(GetActiveFileEvent, ({ cb }) => cb?.({
+    content: curValueRef.current,
+    location: curPathRef.current
   }))
 
   return {

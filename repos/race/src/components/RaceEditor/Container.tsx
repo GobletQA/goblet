@@ -78,7 +78,7 @@ export const Container = (props:TEditorContainer) => {
         onMouseMove={onMove}
         onMouseUp={onMoveEnd}
         onKeyDown={onKeyDown}
-        className='gb-race-editor'
+        className='gb-race-editor-container'
       >
 
         <Sidebar

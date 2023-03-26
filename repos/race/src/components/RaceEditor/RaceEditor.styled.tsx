@@ -2,6 +2,8 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
 
+export const RaceContainer = styled(Box)``
+
 export const EditorContainer = styled(Box)`
   flex: 1;
   min-width: 0;
@@ -11,7 +13,6 @@ export const EditorContainer = styled(Box)`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-editor-background);
 `

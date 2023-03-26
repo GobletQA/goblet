@@ -19,6 +19,7 @@ import type {
 import { THEMES } from '@GBM/constants'
 import { isStr } from '@keg-hub/jsutils'
 import { useCallback, useEffect, useImperativeHandle } from 'react'
+import { GetActiveFileEvent, useEventListen } from '@gobletqa/components'
 import { getContentFromPath } from '@GBM/utils/editor/getContentFromPath'
 import { createOrUpdateModel } from '@GBM/utils/editor/createOrUpdateModel'
 
@@ -152,6 +153,12 @@ export const useEditorSetup = (props:TUseEditorSetup) => {
     }
   }, [options, config])
 
+  // Helper to allow external code ask the content of the current file
+  // Used for accessing the active file outside of editor
+  useEventListen(GetActiveFileEvent, ({ cb }) => cb?.({
+    location: curPath,
+    content: filesRef.current[curPath],
+  }))
 
   useImperativeHandle(ref, () => ({
     openFile,

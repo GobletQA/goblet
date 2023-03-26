@@ -69,7 +69,9 @@ export const EditorAction = <
   const Comp = useActionComp(props)
 
   return (
-    <ActionItem className={cls(`goblet-editor-action-main`, className || `goblet-editor-${id || name}`)} >
+    <ActionItem
+      className={cls(`goblet-editor-action-main`, className || `goblet-editor-${id || name}`)}
+    >
       {Comp}
     </ActionItem>
   )

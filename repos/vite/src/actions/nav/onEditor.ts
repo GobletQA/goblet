@@ -1,5 +1,7 @@
 import { EEditorType } from '@types'
 import { appDispatch, getStore } from '@store'
+import { EditorPathChangeEvt } from '@constants'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 const getType = (type:EEditorType, current:EEditorType) => {
   return EEditorType[type]
@@ -14,6 +16,8 @@ export const onEditor = (type:EEditorType) => {
   const { editor } = app
 
   const editorType = getType(type, editor)
+  if(editorType === editor) return
 
+  EE.emit(EditorPathChangeEvt, { location: `` })
   appDispatch.setEditor(editorType)
 }

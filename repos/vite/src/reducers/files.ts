@@ -11,7 +11,6 @@ type TRenameFile = {
 
 export type TFilesState = {
   files: TFileTree
-  activeFile?: string
 }
 
 export const filesState = {
@@ -20,24 +19,6 @@ export const filesState = {
 
 export const filesActions = {
   clearFiles: (state:TFilesState, action:TDspAction<TFilesState>) => (filesState),
-  setActiveFile: (
-    state:TFilesState,
-    action:TDspAction<string>
-  ) => {
-    return {
-      ...state,
-      activeFile: action?.payload,
-    }
-  },
-  clearActiveFile: (
-    state:TFilesState,
-    action:TDspAction<TFileModel>
-  ) => {
-    return {
-      ...state,
-      activeFile: undefined,
-    }
-  },
   setFile: (
     state:TFilesState,
     action:TDspAction<TFileModel>
@@ -56,9 +37,6 @@ export const filesActions = {
   ) => {
     if(state.files[action.payload])
       delete state.files[action.payload]
-
-    if(state?.activeFile === action.payload)
-      state.activeFile = undefined
   },
   upsertFile: (
     state:TFilesState,
@@ -82,9 +60,6 @@ export const filesActions = {
 
     state.files[newLoc] = updated
     delete state.files[oldLoc]
-
-    if(state?.activeFile === oldLoc)
-      state.activeFile = newLoc
 
   },
   setFiles: (

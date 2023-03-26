@@ -29,7 +29,7 @@ export default function Home(props:THomeProps) {
             : (<Outlet />)
         }
       </ScreenWrap>
-      <Box sx={{ display: 'flex' }}>
+      <Box display='flex'>
         <SideNav />
         <Header settings={settings} />
       </Box>

@@ -72,9 +72,9 @@ export const useMonacoHooks = (
     rootPrefix,
   })
 
+  const onPathChange = useOnPathChange()
   const onLoadFile = useOnLoadFile(files, rootPrefix)
   const onSaveFile = useOnSaveFile(files, rootPrefix)
-  const onPathChange = useOnPathChange(files, rootPrefix)
   const onDeleteFile = useOnDeleteFile(files, rootPrefix)
   const onAddFile = useOnAddFile(files, rootPrefix, repo)
   const onRenameFile = useOnRenameFile(files, rootPrefix)

@@ -1,27 +1,18 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import { colors, dims } from '@gobletqa/components'
-import MuiContainer from '@mui/material/Container'
 
 export const LayoutContainer = styled(Box)`
   width: 100%;
-  .react-page-split.react-page-split--horizontal {
-    & .react-page-split__panel {
-      min-width: 30%
-      max-width: 70%
-    }
-
-    & .react-page-split__panel:first-of-type {}
-    & .react-page-split__panel:last-of-type {}
-  }
-  
+  height: 100%;
 `
 
-export const LContainer = styled(MuiContainer)`
+export const LContainer = styled(Box)`
   max-width: 100% !important;
+  height: 100%;
 `
 
-export const RContainer = styled(MuiContainer)`
+export const RContainer = styled(Box)`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -49,9 +40,4 @@ export const RTSection = styled(Box)`
   flex-basis: ${dims.browser.actions.hpx};
   min-height: ${dims.browser.actions.hpx};
   max-height: ${dims.browser.actions.hpx};
-`
-export const RMSection = styled(Box)`
-  width: 100%;
-  flex-grow: 1;
-  flex-shrink: 0;
 `

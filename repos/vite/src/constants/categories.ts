@@ -29,6 +29,5 @@ export const Categories = deepFreeze({
 
 export const SubCategories = deepFreeze({
   NODES: `nodes`,
-  ACTIVE_FILE: `activeFile`,
   MODIFIED_CONTENT: `modified`,
 })

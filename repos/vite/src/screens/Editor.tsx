@@ -6,7 +6,6 @@ import { dims } from '@gobletqa/components/theme'
 import { CodeEditor } from '@components/CodeEditor'
 import { VisualEditor } from '@components/VisualEditor'
 import { DefinitionsSlider } from '@components/Definitions/DefinitionsSlider'
-
 const style = {
   maxHeight: `calc( 100% - ${dims.defs.header.hpx} )`
 }

@@ -11,7 +11,6 @@ import {
   LContainer,
   RContainer,
   RTSection,
-  RMSection,
   LayoutContainer,
 } from './Layout.styled'
 import {
@@ -36,13 +35,12 @@ export type TScreenDimsOpts = {
   height?: number
 }
 
-const fullHeight = {
-  overflow: `hidden`,
-  height: `calc( 100vh - ${dims.defs.header.hpx} )`,
-}
-const noOverflow = {
-  ...fullHeight,
-  overflow: `hidden`,
+
+const styles = {
+  container: {
+    overflow: `hidden`,
+    height: `calc( 100vh - ${dims.defs.header.hpx} )`,
+  }
 }
 
 export type TLayout = {
@@ -64,16 +62,14 @@ export const Layout = (props:TLayout) => {
         onResizeMove={onHorResizeMove}
       >
         <LContainer
-          disableGutters
-          sx={noOverflow}
+          sx={styles.container}
           className='gb-layout-left-container gb-container-editor'
         >
           {props.children}
         </LContainer>
 
         <RContainer
-          disableGutters
-          sx={fullHeight}
+          sx={styles.container}
           className='gb-layout-right-container gb-container-browser'
         >
 
