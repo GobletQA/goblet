@@ -1,5 +1,7 @@
+
 export const VNCResizeEvt = `vnc-resize-event`
 export const BrowserNavEvt = `browser-nav-event`
+export const VNCRefocusEvent = `vnc-refocus-event`
 export const PlayerTestEvt = `player-test-event`
 export const GlobalCopyEvt = `global-copy-event`
 export const UpdateModalEvt = `update-modal-event`

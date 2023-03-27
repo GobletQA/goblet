@@ -73,12 +73,12 @@ export const Container = (props:TEditorContainer) => {
   return (
 
       <ContainerComp
-        tabIndex={0}
+        tabIndex={1}
         ref={containerRef}
         onMouseMove={onMove}
         onMouseUp={onMoveEnd}
         onKeyDown={onKeyDown}
-        className='gb-race-editor-container'
+        className='goblet-editor gb-race-editor-container'
       >
 
         <Sidebar

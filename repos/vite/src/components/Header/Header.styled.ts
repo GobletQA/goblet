@@ -21,11 +21,11 @@ export const AppHeader = styled(AppBar)(({ theme }) => {
 })
 
 export const Menu  = styled(MuiMenu)(({ theme }) => {
-  return {
-    '& .MuiPaper-root': {
-      minWidth: 200,
+  return `
+    & .MuiPaper-root {
+      min-width: 200px;
     }
-  }
+  `
 })
 
 export const LogoContainer = styled(Box)`

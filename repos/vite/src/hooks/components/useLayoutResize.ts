@@ -2,15 +2,16 @@ import type RFB from '@novnc/novnc/core/rfb'
 import type { MutableRefObject } from 'react'
 import type { ResizeMoveEvent } from 'react-page-split'
 
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { get } from '@keg-hub/jsutils'
-import { useEventListen, useEventEmit } from '@gobletqa/components'
+import { dims, useEventListen, useEventEmit } from '@gobletqa/components'
 import {
   getPanels,
   dimsFromCanvas
 } from '@utils/layout'
 import {
   VNCResizeEvt,
+  VNCRefocusEvent,
   VNCConnectedEvt,
   PanelDimsSetEvt,
 } from '@constants'
@@ -49,7 +50,7 @@ export const useLayoutResize = () => {
 
     canvasRef?.current?.setAttribute(`willReadFrequently`, ``)
 
-    // Store the panels for use in the onResizeMove callbacks
+    // // Store the panels for use in the onResizeMove callbacks
     lPPanelRef.current = panels.lPPanel
     rPPanelRef.current = panels.rPPanel
 
@@ -59,6 +60,23 @@ export const useLayoutResize = () => {
       rPPanel: rPPanelRef.current,
     })
   })
+
+
+  // HACK - work around bug in chrome causing a reflow issue
+  // Works fine in other browsers
+  useEventListen(VNCRefocusEvent, () => {
+    if(!parentElRef.current) return
+
+    parentElRef.current.style.marginTop = `initial`
+    parentElRef.current.style.marginTop = dims.header.hpx
+  })
+
+  useEffect(() => {
+    parentElRef.current
+      &&(parentElRef.current.style.marginTop = dims.header.hpx)
+  })
+
+  // ----- END HACK ----- //
 
   return [
     parentElRef,
