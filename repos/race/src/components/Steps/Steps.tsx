@@ -4,17 +4,19 @@ import type {
   MutableRefObject,
 } from 'react'
 import type { TDndCallbacks } from '@gobletqa/components'
-import type { TRaceStep, TRaceStepParent } from '@GBR/types'
+import type { TStepDndData, TRaceGran, TRaceStep, TRaceStepParent } from '@GBR/types'
 
 import { useRef, useMemo } from 'react'
 import { Step } from './Step'
 import { Sections } from '../Section'
 import { ESectionType } from '@GBR/types'
-import { Dnd, useInline } from '@gobletqa/components'
+import { moveStep } from '@GBR/actions/general/moveStep'
+import { EDndPos, Dnd, useInline } from '@gobletqa/components'
 
 export type TSteps = {
   steps?:TRaceStep[]
   showAdd?:boolean
+  gran: TRaceGran
   children?:ReactNode
   parent:TRaceStepParent
   parentType: ESectionType
@@ -34,6 +36,7 @@ const dragImagePos:[number, number] = [10, -20]
 
 type THStepData = {
   index:number
+  gran:TRaceGran
   step:TRaceStep
   parent:TRaceStepParent
   parentType: ESectionType
@@ -42,6 +45,7 @@ type THStepData = {
 const useStepData = (props:THStepData) => {
   const {
     step,
+    gran,
     index,
     parent,
     parentType,
@@ -50,10 +54,12 @@ const useStepData = (props:THStepData) => {
   return useMemo(() => {
     return JSON.stringify({
       index,
+      gran: gran.uuid,
       step: step.uuid,
+      granType: gran.type,
       parent: parent.uuid,
       parentType: parentType,
-    })
+    } as TStepDndData)
   }, [
     step,
     index,
@@ -66,6 +72,7 @@ const DndStep = (props:TDndStep) => {
   const {
     index,
     step,
+    gran,
     parent,
     onDrop,
     onClick,
@@ -78,6 +85,7 @@ const DndStep = (props:TDndStep) => {
   const dragHandleRef = useRef<HTMLDivElement|HTMLElement>()
 
   const data = useStepData({
+    gran,
     step,
     index,
     parent,
@@ -98,6 +106,7 @@ const DndStep = (props:TDndStep) => {
     >
       <Step
         {...rest}
+        gran={gran}
         step={step}
         parent={parent}
         dragHandleRef={dragHandleRef as MutableRefObject<HTMLDivElement>}
@@ -110,6 +119,7 @@ const DndStep = (props:TDndStep) => {
 export const Steps = (props:TSteps) => {
 
   const {
+    gran,
     onAdd,
     parent,
     onMove,
@@ -121,7 +131,17 @@ export const Steps = (props:TSteps) => {
   } = props
 
   const onAddStep = useInline(() => onAdd?.(parent.uuid))
-  const onDropStep = useInline((oldIdx: number, newIdx: number) => onMove?.(parent.uuid, oldIdx, newIdx))
+  const onDropStep = useInline((
+    oldIdx: number,
+    newIdx: number,
+    pos:EDndPos,
+    oldData:TStepDndData,
+    data:TStepDndData
+  ) => {
+    oldData?.parent && data?.parent && oldData?.parent !== data?.parent
+      ? moveStep(oldData, data, pos)
+      : onMove?.(parent.uuid, oldIdx, newIdx)
+  })
 
   return (
     <Sections
@@ -136,6 +156,7 @@ export const Steps = (props:TSteps) => {
             <DndStep
               index={idx}
               step={step}
+              gran={gran}
               parent={parent}
               showHandle={true}
               onRemove={onRemove}

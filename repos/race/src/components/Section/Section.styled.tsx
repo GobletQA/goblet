@@ -42,14 +42,18 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 }
 
 export const Container = styled(Paper)`
-  overflow: hidden;
+  // overflow: hidden;
+  // border: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
   margin-top: ${gutter.margin.hpx};
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-tab-activeBackground);
-  border: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+  border: none;
 
   & > .gb-dropdown {
     padding: 20px;
+    border: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+    overflow: hidden;
+    border-radius: 4px;
 
     & > .MuiButtonBase-root.gb-dropdown-header {
       margin-top: -20px;

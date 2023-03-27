@@ -23,6 +23,7 @@ const emptyRule = (rule:Partial<TRaceRule>) => ({
   uuid: uuid(),
   scenarios: [],
   type: EAstObject.rule,
+  ...rule
 } as Partial<TRaceRule>)
 
 export const ruleFactory = ({

@@ -17,11 +17,11 @@ export const addRuleBackground = async (ruleId:string) => {
     rules,
     ruleIdx,
   } = findRule(feature, ruleId)
-  if(!rule)
-    return logNotFound(`Rule ${ruleId}`, prefix)
+  if(!rule) return logNotFound(`Rule ${ruleId}`, prefix)
 
   const background = backgroundFactory({
     feature,
+    empty: true,
     parent: rule,
     background: rule?.background
   })

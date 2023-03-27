@@ -21,7 +21,8 @@ import {
 
 import { useFeature } from './FeatureContext'
 import { MemoChildren } from '@gobletqa/components'
-import { emptyObj, emptyArr, exists } from '@keg-hub/jsutils'
+import { emptyObj, emptyArr, exists, ensureArr } from '@keg-hub/jsutils'
+import { useGetEditorContext } from '@GBR/hooks/editor/useGetEditorContext'
 import { useFeatureCallbacks } from '@GBR/hooks/features/useFeatureCallbacks'
 
 export type TExpanded = Record<string, boolean>
@@ -52,6 +53,8 @@ export type TEditorCtx = {
   updateExpanded:TOnExpandedCB
   updateFeature:TUpdateFeatureCB
   menuContext?:TRaceContextMenu
+  collapseAll: () => void
+  collapseAllExcept:(key:string|string[]) => void
 }
 
 export const EditorContext = createContext<TEditorCtx>({} as TEditorCtx)
@@ -77,10 +80,23 @@ const useExpanded = () => {
     setExpanded({...expanded, [key]: val})
   }, [expanded])
 
+  const collapseAllExcept = useCallback((key:string|string[]) => {
+    const keep = ensureArr(key)
+    const updated:TExpanded = {}
+
+    Object.keys(expanded).forEach(key => (updated[key] = keep.includes(key) ? true : false))
+
+    setExpanded(updated)
+  }, [expanded])
+  
+  const collapseAll = useCallback(() => setExpanded({}), [expanded])
+
   return {
     expanded,
     setExpanded,
-    updateExpanded
+    collapseAll,
+    updateExpanded,
+    collapseAllExcept
   }
 }
 
@@ -108,7 +124,12 @@ export const EditorProvider = (props:TEditorProvider) => {
     setFeature:_setFeature
   } = useFeature()
 
-  const {expanded, updateExpanded} = useExpanded()
+  const {
+    expanded,
+    collapseAll,
+    updateExpanded,
+    collapseAllExcept
+  } = useExpanded()
 
   const {
     setFeature,
@@ -120,10 +141,10 @@ export const EditorProvider = (props:TEditorProvider) => {
     curPathRef,
     curValueRef,
     featuresRef,
-    updateExpanded,
-    setFeatureRefs,
     onFeatureSave,
     onFeatureClose,
+    setFeatureRefs,
+    updateExpanded,
     updateEmptyTab,
     onFeatureActive,
     onFeatureChange,
@@ -137,9 +158,11 @@ export const EditorProvider = (props:TEditorProvider) => {
       expanded,
       setFeature,
       rootPrefix,
+      collapseAll,
       menuContext,
       updateFeature,
       updateExpanded,
+      collapseAllExcept,
       feature: (feature || emptyObj) as TRaceFeature,
     }
   }, [
@@ -147,9 +170,13 @@ export const EditorProvider = (props:TEditorProvider) => {
     expanded,
     setFeature,
     rootPrefix,
+    collapseAll,
     updateFeature,
     updateExpanded,
+    collapseAllExcept,
   ])
+
+  useGetEditorContext({ editor: editorCtx })
 
   return (
     <EditorContext.Provider value={editorCtx}>

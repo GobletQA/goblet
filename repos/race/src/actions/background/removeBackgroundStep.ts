@@ -1,23 +1,37 @@
+import { emptyArr } from '@keg-hub/jsutils'
+import { findBackground } from '@GBR/utils/find'
 import { logNotFound, missingId } from '@GBR/utils/logging'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 const prefix = `[Remove Background#Step]`
 
-export const removeBackgroundStep = async (stepId:string) => {
+export const removeBackgroundStep = async (stepId:string, backgroundId:string) => {
   if(!stepId) return missingId(`step`, prefix)
 
   const { feature } = await getFeature()
   if(!feature) return logNotFound(`feature`, prefix)
 
-  if(!feature.background) return logNotFound(`background`, prefix)
+  const { background, rule, index, } = findBackground(backgroundId, feature)
+  if(!background) return logNotFound(`background`, prefix)
 
-  updateFeature({
-    ...feature,
+  if(!rule || !index)
+    return updateFeature({
+      ...feature,
+      background: {
+        ...background,
+        steps: background.steps.filter(step => step.uuid !== stepId)
+      }
+    })
+
+  const rules = [...(feature?.rules || emptyArr)]
+  rules[index] = {
+    ...rule,
     background: {
-      ...feature.background,
-      steps: feature.background.steps.filter(step => step.uuid !== stepId)
+      ...background,
+      steps: background.steps.filter(step => step.uuid !== stepId)
     }
-  })
+  }
 
+  updateFeature({...feature, rules})
 }

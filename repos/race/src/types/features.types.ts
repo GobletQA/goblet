@@ -125,10 +125,11 @@ export type TRaceFeatureAsts = {
   [key:string]: TRaceFeature
 }
 
-export type TRaceStepParent = TRaceBackground | TRaceScenario
-export type TRaceScenarioParent = TRaceRule | TRaceFeature
-export type TRaceTagsParent = TRaceScenarioParent | TRaceStepParent
+export type TRaceGran = TRaceFeature | TRaceRule
+export type TRaceScenarioParent = TRaceFeature | TRaceRule
 export type TRaceBackgroundParent = TRaceFeature | TRaceRule
+export type TRaceStepParent = TRaceBackground | TRaceScenario
+export type TRaceTagsParent = TRaceScenarioParent | TRaceStepParent
 export type TRaceBlockParent = TRaceFeature | TRaceRule | TRaceBackground | TRaceScenario
 export type TRaceParentAst = TRaceFeature | TRaceRule | TRaceBackground | TRaceScenario
 

@@ -1,9 +1,11 @@
 import type { TOnDrop } from './useDndHooks'
 import type { RefObject, DragEvent } from 'react'
 
+
+import { EDndPos } from '@GBC/types'
 import { useCallback } from 'react'
-import { uuid, toInt } from '@keg-hub/jsutils'
 import { DndDraggingCls } from '@GBC/constants/values'
+import { uuid, toInt, parseJSON, emptyObj } from '@keg-hub/jsutils'
 
 const separator = `|>${uuid()}<|`
 
@@ -16,6 +18,21 @@ export type THDragHooks = {
   dropIndicatorRef:RefObject<HTMLHRElement>
 }
 
+const callOnDrop = (
+  onDrop:TOnDrop,
+  oldIndex:string,
+  index:string|number,
+  pos:EDndPos,
+  oldData?:string,
+  data?:string
+) => onDrop?.(
+  toInt(oldIndex),
+  toInt(index),
+  pos,
+  oldData ? parseJSON(oldData) : emptyObj,
+  data ? parseJSON(data) : emptyObj
+)
+
 export const useDragHooks = (props:THDragHooks) => {
 
   const {
@@ -27,12 +44,20 @@ export const useDragHooks = (props:THDragHooks) => {
     dragImagePos=[0,0],
   } = props
 
+
+
   const onDropBefore = useCallback(
     (evt: DragEvent) => {
       evt.preventDefault()
       const [oldData, oldIdxStr] = evt.dataTransfer.getData('text/plain').split(separator)
-      const oldIndex = toInt(oldIdxStr)
-      onDrop(oldIndex, index, oldData, data)
+      callOnDrop(
+        onDrop,
+        oldIdxStr,
+        index,
+        EDndPos.before,
+        oldData,
+        data
+      )
     },
     [onDrop, index, data]
   )
@@ -41,10 +66,14 @@ export const useDragHooks = (props:THDragHooks) => {
     (evt: DragEvent) => {
       evt.preventDefault()
       const [oldData, oldIdxStr] = evt.dataTransfer.getData('text/plain').split(separator)
-      const oldIndex = toInt(oldIdxStr)
-
-      const newIndex = index >= oldIndex ? index : index + 1
-      onDrop(oldIndex, newIndex, oldData, data)
+      callOnDrop(
+        onDrop,
+        oldIdxStr,
+        index,
+        EDndPos.after,
+        oldData,
+        data
+      )
     },
     [onDrop, index, data]
   )

@@ -25,7 +25,6 @@ export const Rules = (props:TRules) => {
     >
     {
       rules?.map(rule => {
-
         return (
           <Rule
             rule={rule}

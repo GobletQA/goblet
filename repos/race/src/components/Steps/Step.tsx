@@ -1,15 +1,15 @@
 import type { MutableRefObject } from 'react'
-import type { TRaceStep, TRaceStepParent } from '@GBR/types'
+import type { TRaceGran, TRaceStep, TRaceStepParent } from '@GBR/types'
 
 import { Section } from '../Section'
 import { StepHeader } from './StepHeader'
 import { Expressions } from '../Expressions'
+import { colors } from '@gobletqa/components'
 import { SelectAction } from './SelectAction'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
-import { colors, useInline } from '@gobletqa/components'
-import { usePropId } from '@GBR/hooks/features/usePropId'
 import { useExpressions } from '@GBR/hooks/useExpressions'
 import { useMatchStepToDef } from '@GBR/hooks/steps/useMatchStepToDef'
+import { collapseAllExcept } from '@GBR/actions/general/collapseAllExcept'
 import {
   StepGrid,
   StepContent,
@@ -19,9 +19,11 @@ import { ESectionType } from '@GBR/types'
 import { PlayAct } from '../Actions/Play'
 import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
+import { CollapseAct } from '../Actions/Collapse'
 
 export type TStep = {
   step: TRaceStep
+  gran: TRaceGran
   parent: TRaceStepParent
   dragHandleRef?: MutableRefObject<HTMLDivElement>
   onRemove?:(stepId:string, parentId?:string) => void
@@ -45,6 +47,7 @@ const styles = {
 
 export const Step = (props:TStep) => {
   const {
+    gran,
     parent,
     onChange,
     onRemove,
@@ -53,11 +56,10 @@ export const Step = (props:TStep) => {
   const { step, definition } = useMatchStepToDef(props)
   const { def, expressions } = useExpressions(props, { definition })
 
-  const onCopy = useInline(() => {})
-  const onStepChange = useInline((updated:TRaceStep) => onChange?.(updated, step))
-  const onRemoveStep = useInline(() => onRemove?.(step.uuid, parent.uuid))
-
-  const sectionId = usePropId(parent, step, ESectionType.step)
+  const onCopy = () => {}
+  const onStepChange = (updated:TRaceStep) => onChange?.(updated, step)
+  const onRemoveStep = () => onRemove?.(step.uuid, parent.uuid)
+  const onCollapseExcept = () => collapseAllExcept(step.uuid, parent?.uuid, gran?.uuid)
 
   return (
     <StepContainer
@@ -67,7 +69,7 @@ export const Step = (props:TStep) => {
     >
       <Section
         show={true}
-        id={sectionId}
+        id={step.uuid}
         parent={parent}
         noToggle={false}
         sx={styles.section}
@@ -85,6 +87,14 @@ export const Step = (props:TStep) => {
               onClick={onRemoveStep}
               type={ESectionType.step}
               key={`gb-step-remove-step-action`}
+            />
+          ),
+          (
+            <CollapseAct
+              sx={styles.action}
+              type={ESectionType.step}
+              onClick={onCollapseExcept}
+              key={`gb-step-collapse-step-action`}
             />
           ),
           (

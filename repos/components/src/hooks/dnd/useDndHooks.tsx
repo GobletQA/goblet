@@ -3,6 +3,7 @@ import type {
   MouseEventHandler,
   KeyboardEventHandler
 } from 'react'
+import { EDndPos } from '@GBC/types'
 
 import { useDndRefs } from './useDndRefs'
 import { useShowHide } from './useShowHide'
@@ -12,8 +13,9 @@ import { useDndEventHooks } from './useDndEventHooks'
 export type TOnDrop = (
   oldIdx: number,
   newIdx: number,
-  oldData?:string,
-  newData?:string
+  pos: EDndPos,
+  oldData?:Record<string, any>,
+  newData?:Record<string, any>,
 ) => Promise<void> | void
 
 export type THDndHooks = {

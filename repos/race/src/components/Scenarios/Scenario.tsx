@@ -140,6 +140,7 @@ export const Scenario = (props:TScenario) => {
     ) || null}
 
       <Steps
+        gran={parent}
         showAdd={false}
         parent={scenario}
         onAdd={onAddScenarioStep}

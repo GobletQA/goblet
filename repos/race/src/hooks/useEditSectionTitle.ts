@@ -20,9 +20,9 @@ export const useEditSectionTitle = (props:THEditSectionTitle) => {
     callback,
     initialEdit=false,
   } =  props
- 
-  const [editingTitle, setEditingTitle] = useState(initialEdit)
-  
+
+  const [editingTitle, setEditingTitle] = useState<boolean>(initialEdit)
+
   const toggleEditTitle = useCallback((val?:boolean) => {
     const update = isBool(val) ? val : !editingTitle
     setEditingTitle(update)
@@ -32,11 +32,11 @@ export const useEditSectionTitle = (props:THEditSectionTitle) => {
   const onEditTitle:TChangeCB = useCallback((
     evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     value?:TInputValue
-  ) => cb(`${value || evt.target.value}`.trim()), [
-    key,
-    cb
-  ])
-  
+  ) => {
+    cb(`${value || evt.target.value}`.trim())
+    setEditingTitle(false)
+  }, [key, cb])
+
   const {
     isNamed,
     showTitle,

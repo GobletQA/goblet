@@ -1,4 +1,3 @@
-export * from './usePropId'
 export * from './useFeatureTags'
 export * from './useFeatureItems'
 export * from './useFeatureGroups'

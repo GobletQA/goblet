@@ -72,7 +72,6 @@ export const Dropdown = (props:TDropdown) => {
 
   const inlineCB = useInline<(expanded: boolean) => void>(onChangeCB)
   const [localExpand, setLocalExpanded] = useState<boolean>(expanded || false)
-  const firstExpandRef = useRef<boolean>(localExpand)
 
   const onChange = useCallback((_: any, newExpanded?: boolean) => {
     if(disabled || noToggle) return
@@ -85,13 +84,10 @@ export const Dropdown = (props:TDropdown) => {
   }, [expanded, disabled, noToggle])
 
   useEffect(() => {
-    const noOutsideUpdate = !exists<boolean>(expanded)
-      || firstExpandRef.current === expanded
-      || expanded === localExpand
 
+    const noOutsideUpdate = !exists<boolean>(expanded) || expanded === localExpand
     if(noOutsideUpdate) return
 
-    firstExpandRef.current = expanded
     onChange(emptyObj, expanded)
   }, [expanded, localExpand])
 

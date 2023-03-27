@@ -13,6 +13,7 @@ import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 import { copyBackground } from '@GBR/actions/background/copyBackground'
+import { updateBackgroundStepPos } from '@GBR/actions/background/updateBackgroundStepPos'
 
 export type TBackground = {
   background:TRaceBackground
@@ -138,10 +139,12 @@ export const Background = (props:TBackground) => {
       ) || null}
 
       <Steps
+        gran={parent}
         showAdd={false}
-        onAdd={onAddBackgroundStep}
         parent={background}
         onChange={onStepChange}
+        onAdd={onAddBackgroundStep}
+        onMove={updateBackgroundStepPos}
         onRemove={onRemoveBackgroundStep}
         parentType={ESectionType.background}
       />

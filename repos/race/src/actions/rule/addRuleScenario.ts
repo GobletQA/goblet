@@ -21,6 +21,7 @@ export const addRuleScenario = async (ruleId:string) => {
   const scenario = scenarioFactory({
     feature,
     parent:rule,
+    empty: true,
   })
 
   if(!scenario) return factoryFailed(`scenario`, prefix)

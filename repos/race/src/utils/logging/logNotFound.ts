@@ -5,5 +5,5 @@ export const logNotFound = (
   prefix:string=`[ Not Found Error ]`,
   ...rest:any[]
 ) => {
-  return console.warn(`${prefix} - ${capitalize(type)} could not be found on feature`, ...rest)
+  return console.warn(`${prefix} - ${capitalize(type)} could not be found`, ...rest)
 }

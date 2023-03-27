@@ -1,27 +1,27 @@
-import type { TRaceStep } from '@GBR/types'
+import { missing, logNotFound } from '@GBR/utils/logging'
 import { findStep, findScenario } from '@GBR/utils/find'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-
+const prefix = `[Update Scenario Step]`
 export const updateScenarioStepPos = async (
   scenarioId:string,
   oldIdx:number,
   newIdx:number,
 ) => {
   const { feature } = await getFeature()
-  if(!feature) return
+  if(!feature) return logNotFound(`feature`, prefix)
 
   const {
     scenario,
     scenarios,
     scenarioIdx
   } = findScenario(feature, scenarioId)
-  if(!scenario) return
+  if(!scenario) return logNotFound(`scenario`, prefix)
 
   const moveStep = scenario.steps[oldIdx]
-  if(!moveStep)
-    return console.warn(`Failed to update step position. Step could not be located`)
+  if(!moveStep) return missing(`Step. Failed to update step position.`, prefix)
+    
 
   const steps = [...scenario.steps]
   steps.splice(oldIdx, 1)

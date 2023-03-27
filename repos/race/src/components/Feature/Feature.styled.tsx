@@ -30,11 +30,16 @@ export const FeatureStack = styled(Stack)`
     ::-webkit-scrollbar-thumb {
       background-color: transparent;
     }
+    
+    & > .gb-section-stack-content {
+      height: auto;
+      padding-bottom: 100px;
+    }
 `
 
 export const FeatureContent = styled(Box)`
   width: 100%;
-  height: 100%;
+  // height: 100%;
   display: flex;
   flex-direction: column;
 `

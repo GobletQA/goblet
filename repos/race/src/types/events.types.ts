@@ -1,11 +1,19 @@
 import type { TRaceFeature } from './features.types'
+import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 
 export type TAnswerFeature = {
   feature:TRaceFeature
 }
-
-export type TWithFeatureCB = (data:TAnswerFeature) => void
-
 export type TAskForFeature = {
   cb: TWithFeatureCB
 }
+export type TWithFeatureCB = (data:TAnswerFeature) => void
+
+
+export type TAnswerEditor = {
+  editor:TEditorCtx
+}
+export type TAskForEditor = {
+  cb: TWithEditorCB
+}
+export type TWithEditorCB = (data:TAnswerEditor) => void

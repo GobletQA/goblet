@@ -63,12 +63,12 @@ export const Section = (props:TSection) => {
   const onChange = (expand:boolean) => {
     expand !== expanded[id] && updateExpanded(id, expand)
   }
-
+  
   return (
     <Container
+      id={id}
       sx={sx}
       elevation={0}
-      id={id}
       variant={`outlined`}
       className={cls(`gb-section-dropdown-container`, className)}
     >

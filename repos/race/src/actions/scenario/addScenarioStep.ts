@@ -1,4 +1,6 @@
+import type { TRaceStep } from '@GBR/types'
 
+import { emptyArr } from '@keg-hub/jsutils'
 import { findScenario } from '@GBR/utils/find'
 import { stepFactory } from '@GBR/factories/stepFactory'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -7,8 +9,12 @@ import { logNotFound, factoryFailed, missingId } from '@GBR/utils/logging'
 
 const prefix = `[Add Scenario#Step]`
 
-export const addScenarioStep = async (parentId:string) => {
-  if(!parentId) return missingId(`scenario`, prefix)
+export const addScenarioStep = async (
+  scenarioId:string,
+  addStep?:TRaceStep,
+  addIdx?:number
+) => {
+  if(!scenarioId) return missingId(`scenario`, prefix)
   
   const { feature } = await getFeature()
   if(!feature) return
@@ -17,21 +23,25 @@ export const addScenarioStep = async (parentId:string) => {
     scenario,
     scenarios,
     scenarioIdx
-  } = findScenario(feature, parentId)
-  if(!scenario) return logNotFound(`scenario`, prefix, parentId)
+  } = findScenario(feature, scenarioId)
+  if(!scenario) return logNotFound(`scenario`, prefix, scenarioId)
 
-  const step = stepFactory({
-    feature,
-    parent: scenario,
-  })
- 
-   if(!step) return factoryFailed(`step`, prefix)
- 
-  scenarios[scenarioIdx] = {
-    ...scenario,
-    steps: [...scenario.steps, step]
+
+  const steps = [...(scenario?.steps || emptyArr)]
+  let step = addStep
+
+  if(step) steps.splice(addIdx || scenario.steps.length - 1, 0, step)
+  else {
+    step = stepFactory({
+      feature,
+      parent: scenario
+    })
+    if(!step) return factoryFailed(`step`, prefix)
+
+    steps.push(step)
   }
 
-  // TODO: NOT Auto-Expanding when added to the feature
+  scenarios[scenarioIdx] = {...scenario, steps}
+
   updateFeature({...feature, scenarios}, { expand: step.uuid })
 }

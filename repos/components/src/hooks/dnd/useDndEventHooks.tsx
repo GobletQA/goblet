@@ -2,6 +2,7 @@ import type { TOnDrop } from './useDndHooks'
 import type { MutableRefObject, KeyboardEventHandler } from 'react'
 
 import { useCallback } from 'react'
+import { parseJSON, emptyObj } from '@keg-hub/jsutils'
 
 export type THDndEventHooks = {
   data?:string
@@ -33,10 +34,13 @@ const onHandleKeyDown = (props:THDndEventHooks) => {
 
       if (keyE.key === 'ArrowUp') {
         if (index === 0) return
-        onDrop(index, index - 1, data, data)
+        const parsed = data ? parseJSON(data) : emptyObj
+        onDrop(index, index - 1, parsed, parsed)
       }
-      else if (keyE.key === 'ArrowDown')
-        onDrop(index, index + 1, data, data)
+      else if (keyE.key === 'ArrowDown'){
+        const parsed = data ? parseJSON(data) : emptyObj
+        onDrop(index, index + 1, parsed, parsed)
+      }
     },
     [data, dragHandleRef, index, onDrop]
   )
