@@ -2,8 +2,6 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 
 
-export const RaceContainer = styled(Box)``
-
 export const EditorContainer = styled(Box)`
   flex: 1;
   min-width: 0;
@@ -19,8 +17,8 @@ export const EditorContainer = styled(Box)`
 
 export const Container = styled(Box)`
   width: 100%;
-  height: 100%;
   display: flex;
+  height: 100%;
   position: relative;
   flex-direction: row;
   align-items: flex-start;

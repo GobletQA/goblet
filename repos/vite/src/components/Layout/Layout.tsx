@@ -62,6 +62,7 @@ export const Layout = (props:TLayout) => {
         onResizeMove={onHorResizeMove}
       >
         <LContainer
+          disableGutters
           sx={styles.container}
           className='gb-layout-left-container gb-container-editor'
         >
@@ -69,6 +70,7 @@ export const Layout = (props:TLayout) => {
         </LContainer>
 
         <RContainer
+          disableGutters
           sx={styles.container}
           className='gb-layout-right-container gb-container-browser'
         >

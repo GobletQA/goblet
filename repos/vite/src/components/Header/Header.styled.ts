@@ -7,15 +7,17 @@ import Typography from '@mui/material/Typography'
 import { getColor, dims, gutter } from '@gobletqa/components'
 
 export const AppHeader = styled(AppBar)(({ theme }) => {
-  return {
-    zIndex: 1200,
-    padding: `0 ${gutter.padding.px}`,
-    paddingLeft: 0,
-    backgroundColor: getColor(`colors.white`, `colors.black14`, theme),
-    '& .MuiToolbar-root': {
-      minHeight: dims.header.height,
+  return `
+    z-index: 1200;
+    height: ${dims.header.hpx};
+    padding: 0 ${gutter.padding.px};
+    padding-left: 0;
+    background-color: ${getColor(`colors.white`, `colors.black14`, theme)};
+
+    & .MuiToolbar-root {
+      min-height: ${dims.header.hpx};
     }
-  }
+  `
 })
 
 export const Menu  = styled(MuiMenu)(({ theme }) => {

@@ -197,7 +197,9 @@ export const lightTheme = {
   ],
   colors: {
     [`editor.border`]: colors.gray01,
-    [`editor.background`]: colors.white,
+    // Fix "colors.wtpr00" to be a real color
+    // Only want this in the race editor, not in the monaco editor
+    [`editor.background`]: colors.wtpr00,
     [`editor.foreground`]: colors.black08,
 
     [`tab.border`]: colors.white,

@@ -11,12 +11,15 @@ import { useContextMenu } from '@hooks/race/useContextMenu'
 import { PrePanels } from '@components/Panels/PrePanels'
 import {
   BlockIcon,
+  EThemeMode,
   SidebarOpenWidth,
 } from '@gobletqa/components'
+
 
 export type TVisualEditor = {
   portal?:string
   style?: CSSProperties
+  // themeType?: EThemeMode
 }
 
 export const VisualEditor = (props:TVisualEditor) => {

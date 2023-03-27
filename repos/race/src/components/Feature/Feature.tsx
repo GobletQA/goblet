@@ -2,81 +2,44 @@ import type { CSSProperties, MouseEvent } from 'react'
 import type { TFeaturesRefs } from '@GBR/types'
 
 
-import { useMemo, useCallback, useRef } from 'react'
+import { useBounceScroll } from '@GBR/hooks/useBounceScroll'
 
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
 import { Title } from '../Title'
-import { Stack } from '../Section'
-import Box from '@mui/material/Box'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { Background } from '../Background'
 import { useEditor } from '../../contexts'
+import { EmptyFeature } from './EmptyFeature'
 import { FeatureHeader } from './FeatureHeader'
 import { EmptyFeatureUUID } from '@GBR/constants'
-
-import { EmptyFeature } from './EmptyFeature'
-import { FeatureItems } from './FeatureItems'
-
-import { useBounceScroll } from '@GBR/hooks/useBounceScroll'
+import { useMemo, useCallback, useRef } from 'react'
+import { BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { addScenario } from '@GBR/actions/scenario/addScenario'
+import { FeatureStack, FeatureContent } from './Feature.styled'
 import { createFeature } from '@GBR/actions/feature/createFeature'
 import { useFeatureItems } from '@GBR/hooks/features/useFeatureItems'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
 import { updateScenario } from '@GBR/actions/scenario/updateScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
-import { gutter, BoltIcon, EmptyEditor } from '@gobletqa/components'
-import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
-import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
-import { updateScenarioStep } from '@gobletqa/race/actions/scenario/updateScenarioStep'
-
 import { removeBackground } from '@GBR/actions/background/removeBackground'
 import { updateBackground } from '@GBR/actions/background/updateBackground'
 import { addBackgroundStep } from '@GBR/actions/background/addBackgroundStep'
+import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
+import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 import { removeBackgroundStep } from '@GBR/actions/background/removeBackgroundStep'
+import { updateScenarioStep } from '@gobletqa/race/actions/scenario/updateScenarioStep'
 import { updateBackgroundStep } from '@gobletqa/race/actions/background/updateBackgroundStep'
 
 export type TFeature = TFeaturesRefs & {}
 type StyleObj = Record<string, CSSProperties>
 
 const styles:Record<string, StyleObj|CSSProperties> = {
-  section: {
-    overflowY: `auto`,
-    padding: gutter.padding.px,
-    paddingTop: `0px`,
-    backgroundColor: `var(--goblet-editor-background)`,
-
-    scrollbarWidth: `none`,
-    [`::-webkit-scrollbar-track`]: {
-      backgroundColor: `transparent`,
-    },
-
-    [`::-webkit-scrollbar`]: {
-      width: `3px !important`,
-      backgroundColor: `transparent`,
-    },
-
-    [`::-webkit-scrollbar-thumb`]: {
-      backgroundColor: `transparent`,
-    },
-
-  },
-  content: {
-    width: `100%`,
-    height: `100%`,
-    display: `flex`,
-    flexDirection: `column`,
-  },
-  notEmpty: {
-    marginTop: `auto`
-  },
   title: {
     marginTop: `20px`
   }
 }
-
-const featureKeys = FeatureItems.map(item => item.featureKey)
 
 export const Feature = (props:TFeature) => {
   const { featuresRef } = props
@@ -117,18 +80,14 @@ export const Feature = (props:TFeature) => {
         />
       )
     : (
-        <Stack
+        <FeatureStack
           stack={2}
           ref={containerRef}
-          sx={styles.section}
           contentRef={contentRef}
           type={ESectionType.feature}
           className='gb-feature-editor-section'
         >
-          <Box
-            sx={styles.content}
-            className='gb-feature-sections-container'
-          >
+          <FeatureContent className='gb-feature-sections-container'>
 
             { feature.uuid !== EmptyFeatureUUID
                 ? (
@@ -191,7 +150,7 @@ export const Feature = (props:TFeature) => {
                     />
                   )
             }
-          </Box>
-        </Stack>
+          </FeatureContent>
+        </FeatureStack>
       )
 }

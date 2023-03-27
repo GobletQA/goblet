@@ -3,7 +3,7 @@ import Editor from './Editor'
 import Box from '@mui/material/Box'
 import { HeaderNav } from '@constants'
 import { LogoutIcon } from '@gobletqa/components'
-import { ScreenWrap } from './Root.styled'
+import { ScreenContainer } from './Root.styled'
 import { SocketProvider } from '@contexts'
 import { Header } from '@components/Header'
 import { asCallback } from '@utils/helpers'
@@ -22,17 +22,15 @@ export default function Home(props:THomeProps) {
 
   return (
     <SocketProvider>
-      <ScreenWrap className="screen-container">
+      <ScreenContainer className="screen-container">
         {
           location.pathname === '/' || location.pathname.startsWith(Editor.path)
             ? (<Editor />)
             : (<Outlet />)
         }
-      </ScreenWrap>
-      <Box display='flex'>
-        <SideNav />
-        <Header settings={settings} />
-      </Box>
+      </ScreenContainer>
+      <SideNav />
+      <Header settings={settings} />
     </SocketProvider>
   )
 }

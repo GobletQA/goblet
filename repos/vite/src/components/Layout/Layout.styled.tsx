@@ -1,18 +1,17 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import { colors, dims } from '@gobletqa/components'
+import MuiContainer from '@mui/material/Container'
 
 export const LayoutContainer = styled(Box)`
   width: 100%;
-  height: 100%;
 `
 
-export const LContainer = styled(Box)`
+export const LContainer = styled(MuiContainer)`
   max-width: 100% !important;
-  height: 100%;
 `
 
-export const RContainer = styled(Box)`
+export const RContainer = styled(MuiContainer)`
   display: flex;
   align-items: center;
   flex-direction: column;

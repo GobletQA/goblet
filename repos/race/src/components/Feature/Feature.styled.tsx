@@ -1,16 +1,43 @@
+import { Stack } from '../Section'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import Button from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
 import ListItem from '@mui/material/ListItem'
 import Grid from '@mui/material/Unstable_Grid2'
-
-
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
+import { colors, gutter, dims, H3 } from '@gobletqa/components'
 
-import { styled } from '@mui/material/styles'
-import { gutter, dims, H3 } from '@gobletqa/components'
 const { race } = dims
+
+export const FeatureStack = styled(Stack)`
+    padding: ${gutter.padding.px};
+    padding-top: 0px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    background-color: var(--goblet-editor-background);
+
+    ::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    ::-webkit-scrollbar {
+      width: 3px !important;
+      background-color: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: transparent;
+    }
+`
+
+export const FeatureContent = styled(Box)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`
 
 export const FeatureHeaderContainer = styled(Box)`
   top: 0;
@@ -25,8 +52,8 @@ export const FeatureHeaderContainer = styled(Box)`
   margin-bottom: ${gutter.margin.hpx};
   min-height: ${race.header.height.px};
   max-height: ${race.header.height.px};
-  background-color: var(--goblet-editor-background);
-  border-bottom: 2px solid var(--goblet-list-focusBackground);
+  background-color: var(--goblet-tab-activeBackground);
+  border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
 `
 
 export const FeatureActionsContainer = styled(Box)`

@@ -42,11 +42,11 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 }
 
 export const Container = styled(Paper)`
+  overflow: hidden;
   margin-top: ${gutter.margin.hpx};
   color: var(--goblet-editor-foreground);
-  background-color: var(--goblet-editor-background);
+  background-color: var(--goblet-tab-activeBackground);
   border: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
-  // border: none;
 
   & > .gb-dropdown {
     padding: 20px;
@@ -56,9 +56,9 @@ export const Container = styled(Paper)`
       margin-left: -20px;
       margin-right: -20px;
       margin-bottom: -20px;
-      transition: margin-bottom 300ms ease;
+      transition: background-color 300ms ease, margin-bottom 300ms ease;
     }
-    
+
     & > .MuiButtonBase-root.gb-dropdown-header.Mui-expanded {
       margin-bottom: 0px;
     }
@@ -90,6 +90,7 @@ export const SectionActs = styled(Box)`
 
 export const Dropdown = styled(DropdownComp)`
   cursor: default;
+  transition: background-color 300ms ease;
 
   & .gb-dropdown-header {
     flex-direction: row-reverse;
@@ -111,9 +112,7 @@ export const Dropdown = styled(DropdownComp)`
   }
 
   &.Mui-expanded > .MuiAccordionSummary-root {
-    // background-color: var(--goblet-list-focusBackground);
-    // background-color: var(--goblet-tab-inactiveBackground);
-    background-color: ${colors.white00};
+    background-color: ${colors.purple00};
 
     & .gb-section-actions {
       opacity: 1;
@@ -125,15 +124,13 @@ export const Dropdown = styled(DropdownComp)`
     height: 40px;
     min-height: 40px;
     transition: background-color 300ms ease;
-    background-color: var(--goblet-editor-background);
     padding: ${gutter.padding.hpx} ${gutter.padding.hpx};
+    background-color: var(--goblet-tab-activeBackground);
 
     &:hover {
-      // background-color: var(--goblet-list-focusBackground);
-      // background-color: var(--goblet-tab-inactiveBackground);
-      background-color: ${colors.white00};
-      
-      
+      // background-color: ${colors.white00};
+      // background-color: var(--goblet-selection-background);
+      background-color: ${colors.purple00};
       & .gb-section-actions {
         opacity: 1;
       }

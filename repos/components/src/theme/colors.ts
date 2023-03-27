@@ -137,7 +137,10 @@ export const black = {
 
 export const white = {
   white00: `#F9FAFB`,
-  white01: `#F6F6F8`
+  white01: `#F6F6F8`,
+  // TODO: figure out what to do with this
+  // Used as the background for light-theme editors
+  wtpr00: `#FDFDFE`,
 }
 
 export const gray = {
