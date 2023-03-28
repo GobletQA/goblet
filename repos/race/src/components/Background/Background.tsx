@@ -48,9 +48,18 @@ export const Background = (props:TBackground) => {
   const onPlay = () => {}
   const onRemoveBackground = () => onRemove?.(parent.uuid)
   const onAddBackgroundStep = () => onAddStep?.(parent.uuid)
-  const onCopyBackground = () => background && copyBackground(background)
+  const onCopyBackground = () => background && copyBackground({
+    background,
+    parentId: parent.uuid
+  })
+
   const onStepChange = (updated:TRaceStep) => onChangeStep?.(updated, parent.uuid)
   const onRemoveBackgroundStep = (stepId:string) => onRemoveStep?.(stepId, parent.uuid)
+  const onStepMove = (parentId:string, oldIdx:number, newIdx:number) => updateBackgroundStepPos({
+    newIdx,
+    oldIdx,
+    backgroundParentId: parentId,
+  })
 
   const {
     isNamed,
@@ -142,9 +151,9 @@ export const Background = (props:TBackground) => {
         gran={parent}
         showAdd={false}
         parent={background}
+        onMove={onStepMove}
         onChange={onStepChange}
         onAdd={onAddBackgroundStep}
-        onMove={updateBackgroundStepPos}
         onRemove={onRemoveBackgroundStep}
         parentType={ESectionType.background}
       />

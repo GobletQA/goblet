@@ -8,23 +8,13 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export type TAddBackground = {
   parentId:string,
+  feature?:TRaceFeature
   background?:TRaceBackground
 }
 
 const prefix = `[Add Background]`
 
-const addToFeature = (
-  feature:TRaceFeature,
-  rBackground?:TRaceBackground
-) => {
-
-  const background = rBackground || backgroundFactory({feature, empty: true})
-  if(!background) return factoryFailed(`background`, prefix)
-
-  return updateFeature({...feature, background}, { expand: background.uuid })
-}
-
-const addToRule = (
+const toRule = (
   feature:TRaceFeature,
   ruleId:string,
   addBackground?:TRaceBackground
@@ -55,15 +45,27 @@ const addToRule = (
   return updateFeature({...feature, rules}, { expand: background.uuid })
 }
 
+const toFeature = (
+  feature:TRaceFeature,
+  rBackground?:TRaceBackground
+) => {
 
-export const addBackground = async ({
-  parentId,
-  background
-}:TAddBackground) => {
-  const { feature } = await getFeature()
+  const background = rBackground || backgroundFactory({feature, empty: true})
+  if(!background) return factoryFailed(`background`, prefix)
+
+  return updateFeature({...feature, background}, { expand: background.uuid })
+}
+
+export const addBackground = async (props:TAddBackground) => {
+  const {
+    parentId,
+    background
+  } = props
+
+  const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
   return feature.uuid === parentId
-    ? addToFeature(feature, background)
-    : addToRule(feature, parentId, background)
+    ? toFeature(feature, background)
+    : toRule(feature, parentId, background)
 }

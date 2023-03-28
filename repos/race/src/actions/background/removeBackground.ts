@@ -5,7 +5,17 @@ import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 const prefix = `[Remove Background]`
-export const removeBackground = async (parentId:string) => {
+
+export type TRemoveBackground = {
+  parentId:string
+}
+
+export const removeBackground = async (props:TRemoveBackground) => {
+  
+  const {
+    parentId
+  } = props
+  
   const { feature } = await getFeature()
   if(!feature) return logNotFound(`feature`, `[Remove Background]`)
 

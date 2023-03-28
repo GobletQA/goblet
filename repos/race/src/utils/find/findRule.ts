@@ -1,6 +1,6 @@
 import type { TRaceRule, TRaceFeature } from '@GBR/types'
 
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj, emptyArr } from '@keg-hub/jsutils'
 
 export type TFoundRule = {
   rule?:TRaceRule
@@ -19,13 +19,10 @@ export const findRule = (
     return emptyObj as TFoundRule
   }
 
-  const ruleIdx = feature?.rules?.indexOf(rule) as number
-  const rules = [...(feature?.rules || []) ]
-
   return {
-    rule,
-    rules,
-    ruleIdx,
+    rule: {...rule},
+    rules:[...(feature?.rules || emptyArr)],
+    ruleIdx: feature?.rules?.indexOf(rule) as number,
   }
 
 }

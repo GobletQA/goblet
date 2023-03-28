@@ -1,15 +1,14 @@
 import type { TRaceFeature, TRaceGran, TStepDndData } from '@GBR/types'
 import { EDndPos } from '@gobletqa/components'
 import { ESectionType } from '@GBR/types'
-import { emptyObj } from '@keg-hub/jsutils'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
 import { addBackgroundStep } from '@GBR/actions/background/addBackgroundStep'
 import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
 import { removeBackgroundStep } from '@GBR/actions/background/removeBackgroundStep'
-import { logNotFound } from '@GBR/utils/logging'
-import { findScenario, findRule, findBackground } from '@GBR/utils/find'
+import { logNotFound, missing } from '@GBR/utils/logging'
+import { findScenario, findRule } from '@GBR/utils/find'
 
 const prefix = `[Move Step]`
 
@@ -76,13 +75,23 @@ export const moveStep = async (oldData:TStepDndData, newData:TStepDndData, pos:E
   
   const moveStep = oldParent.steps[oldData.index]
  
-  const removed = remove(moveStep.uuid, oldParent.uuid, undefined, feature)
-  add(
-    newParent.uuid,
-    moveStep,
-    pos === EDndPos.before
-      ? newData.index
-      : newData.index + 1
-  )
+  const removed = await remove({
+    feature,
+    stepId: moveStep.uuid,
+    stepParentId: oldParent.uuid,
+  })
+  if(!removed) return missing(`Feature. Could not perform operation "Move step from ${oldParent.type}"`, prefix)
+ 
+  const added = await add({
+    step: moveStep,
+    feature: removed,
+    stepParentId: newParent.uuid,
+    index: pos === EDndPos.before ? newData.index : newData.index + 1
+  })
+  
+  if(!added) return missing(`Feature. Could not perform operation "Move step to ${newParent.type}"`, prefix)
+  
+  updateFeature(added, { expand: moveStep.uuid })
+  
 
 }

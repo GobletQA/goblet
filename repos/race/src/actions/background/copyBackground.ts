@@ -1,8 +1,14 @@
 import type { TRaceBackground } from '@GBR/types'
 
-export const copyBackground = async (
+export type TCopyBackground = {
   background:TRaceBackground,
   parentId:string
-) => {
+}
+
+export const copyBackground = async (props:TCopyBackground) => {
+  const {
+    background,
+    parentId
+  } = props
 
 }

@@ -1,8 +1,5 @@
 import type { CSSProperties, MouseEvent } from 'react'
-import type { TFeaturesRefs } from '@GBR/types'
-
-
-import { useBounceScroll } from '@GBR/hooks/useBounceScroll'
+import type { TFeaturesRefs, TRaceBackground, TRaceStep } from '@GBR/types'
 
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
@@ -64,14 +61,33 @@ export const Feature = (props:TFeature) => {
   const contentRef = useRef<HTMLElement>()
   const containerRef = useRef<HTMLElement>()
   const featureItems = useFeatureItems()
-  const onRemoveBackground = () => removeBackground(feature.uuid)
-  const onAddScenarioStep = (scenarioId:string, parentId?:string) => addScenarioStep(scenarioId)
-  const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep(stepId, scenarioId)
 
-  // useBounceScroll({
-  //   contentRef,
-  //   containerRef,
-  // })
+  const onRemoveBackground = () => removeBackground({ parentId: feature.uuid})
+  const onAddBackgroundStep = (parentId:string) => addBackgroundStep({stepParentId: parentId})
+  const onUpdateBackground = (background:TRaceBackground) => updateBackground({
+    background,
+    parentId: feature.uuid
+  })
+  
+  const onRemoveBackgroundStep = (stepId:string, parentId:string) => removeBackgroundStep({
+    stepId,
+    parent:feature,
+    stepParentId:parentId
+  })
+  
+  const onChangeBackgroundStep = (step:TRaceStep, parentId?:string) => updateBackgroundStep({
+    step,
+    feature,
+    backgroundParentId: feature.uuid
+  })
+  
+  const onAddScenarioStep = (parentId:string) => addScenarioStep({ stepParentId: parentId })
+  const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep({
+    stepId,
+    parent: feature,
+    stepParentId: scenarioId
+  })
+
 
   return !feature || !feature?.uuid
     ? (
@@ -108,12 +124,12 @@ export const Feature = (props:TFeature) => {
                       {feature.background && (
                         <Background
                           parent={feature}
-                          onChange={updateBackground}
+                          onChange={onUpdateBackground}
                           onRemove={onRemoveBackground}
-                          onAddStep={addBackgroundStep}
+                          onAddStep={onAddBackgroundStep}
                           background={feature.background}
-                          onChangeStep={updateBackgroundStep}
-                          onRemoveStep={removeBackgroundStep}
+                          onChangeStep={onChangeBackgroundStep}
+                          onRemoveStep={onRemoveBackgroundStep}
                         />
                       ) || null}
                       {feature.rules?.length && (

@@ -31,22 +31,20 @@ import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
 
 import { removeRuleScenario } from '@GBR/actions/rule/removeRuleScenario'
 import { updateRuleScenario } from '@GBR/actions/rule/updateRuleScenario'
-import { addRuleScenarioStep } from '@GBR/actions/rule/addRuleScenarioStep'
 import { updateRuleScenarioStep } from '@GBR/actions/rule/updateRuleScenarioStep'
-
 
 import { addBackground } from '@GBR/actions/background/addBackground'
 import { removeBackground } from '@GBR/actions/background/removeBackground'
+import { updateBackground } from '@GBR/actions/background/updateBackground'
 import { addBackgroundStep } from '@GBR/actions/background/addBackgroundStep'
 import { removeBackgroundStep } from '@GBR/actions/background/removeBackgroundStep'
 import { updateRuleBackgroundStep } from '@GBR/actions/rule/updateRuleBackgroundStep'
-import { updateRuleBackground } from '@gobletqa/race/actions/rule/updateRuleBackground'
 
 
 export type TRule = {
   ruleId:string
   rule: TRaceRule
-  parent:TRaceFeature
+  feature:TRaceFeature
 }
 
 const styles = {
@@ -61,8 +59,8 @@ const styles = {
 export const Rule = (props:TRule) => {
   const {
     rule,
-    parent,
     ruleId,
+    feature,
   } = props
 
   const {
@@ -86,24 +84,38 @@ export const Rule = (props:TRule) => {
   const onRemove = () => removeRule(rule.uuid)
 
   const onAddBackground = () => addBackground({parentId: rule.uuid})
-  const onRemoveBackground = () => removeBackground(rule.uuid)
+  const onRemoveBackground = () => removeBackground({ parentId: rule.uuid})
+  const onAddBackgroundStep = (parentId:string) => addBackgroundStep({stepParentId: parentId})
+  const onRemoveBackgroundStep = (stepId:string, parentId:string) => removeBackgroundStep({
+    stepId,
+    feature,
+    parent: rule,
+    stepParentId: parentId,
+  })
   const onChangeBackgroundStep = (step:TRaceStep) => updateRuleBackgroundStep(step, rule.uuid)
-
-  const onChangeBackground = (background:TRaceBackground) => updateRuleBackground(background, rule.uuid)
+  const onChangeBackground = (background:TRaceBackground) => updateBackground({
+    feature,
+    background,
+    parentId: rule.uuid
+  })
 
   const onAddScenario = () => addRuleScenario(rule.uuid)
-  const onAddScenarioStep = (scenarioId:string) => addScenarioStep(scenarioId)
+  const onAddScenarioStep = (parentId:string) => addScenarioStep({
+    feature,
+    stepParentId: parentId,
+  })
   const onRemoveScenario = (scenarioId:string) => removeRuleScenario(scenarioId, rule.uuid)
   const onChangeScenario = (scenarioId:string, update:Partial<TRaceScenario>) => updateRuleScenario(
     scenarioId,
     update,
     rule.uuid
   )
-  const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep(
+  const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep({
     stepId,
-    scenarioId,
-    rule
-  )
+    parent: rule,
+    stepParentId: scenarioId,
+  })
+
   const onChangeScenarioStep = (step:TRaceStep, scenarioId:string) => updateRuleScenarioStep(
     step,
     scenarioId,
@@ -191,9 +203,9 @@ export const Rule = (props:TRule) => {
               background={rule.background}
               onRemove={onRemoveBackground}
               onChange={onChangeBackground}
-              onAddStep={addBackgroundStep}
+              onAddStep={onAddBackgroundStep}
               onChangeStep={onChangeBackgroundStep}
-              onRemoveStep={removeBackgroundStep}
+              onRemoveStep={onRemoveBackgroundStep}
             />
           )
         : isNamed && (

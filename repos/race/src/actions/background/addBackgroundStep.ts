@@ -1,4 +1,4 @@
-import type { TRaceFeature, TRaceBackground, TRaceStep } from '@GBR/types'
+import type { TRaceFeature, TRaceRule, TRaceBackground, TRaceStep } from '@GBR/types'
 
 import { emptyArr } from '@keg-hub/jsutils'
 import { findBackground } from '@GBR/utils/find'
@@ -9,24 +9,23 @@ import { logNotFound, factoryFailed, missingId } from '@GBR/utils/logging'
 
 const prefix = `[Add Background#Step]`
 
-export const addBackgroundStep = async (
-  backgroundId:string,
-  addStep?:TRaceStep,
-  addIdx?:number,
-  parentFeat?:TRaceFeature
+export type TAddBackgroundStep = {
+  index?:number,
+  stepParentId:string,
+  step?:TRaceStep,
+  feature?:TRaceFeature
+}
+
+const addStep = (
+  props:TAddBackgroundStep,
+  feature:TRaceFeature,
+  background:TRaceBackground,
+  index?:number,
 ) => {
-  if(!backgroundId) return missingId(`background`, prefix)
-
-  const { feature } = await getFeature(parentFeat)
-  if(!feature) return logNotFound(`feature`, prefix)
-
-  const { background, rule, ruleIdx:index } = findBackground(feature, backgroundId)
-  if(!background) return logNotFound(`background`, prefix)
-
-  let step = addStep
+  let step = props.step
   if(step){
     background.steps = [...(background.steps || emptyArr)]
-    background.steps.splice(addIdx || background.steps.length - 1, 0, step)
+    background.steps.splice(index || background.steps.length - 1, 0, step)
   }
   else {
     step = stepFactory({
@@ -38,18 +37,62 @@ export const addBackgroundStep = async (
     background.steps = [...(background.steps || emptyArr), step]
   }
 
-  if(!rule || !index){
-    const updated = {...feature, background}
-    !parentFeat && updateFeature(updated, { expand: step.uuid })
-
-    return updated
+  return {
+    step,
+    background,
   }
+}
 
+const toRule = (
+  props:TAddBackgroundStep,
+  feature:TRaceFeature,
+  rule:TRaceRule,
+  ruleIdx:number,
+  background:TRaceBackground,
+  step:TRaceStep
+) => {
   const rules = [...(feature?.rules || emptyArr)]
-  rules[index] = {...rule, background}
+  rules[ruleIdx] = {...rule, background}
 
   const updated = {...feature, rules}
-  !parentFeat && updateFeature(updated, { expand: step.uuid })
+  !props.feature && updateFeature(updated, { expand: step.uuid })
 
   return updated
+}
+
+const toFeature = (
+  props:TAddBackgroundStep,
+  feature:TRaceFeature,
+  background:TRaceBackground,
+  step:TRaceStep
+) => {
+  const updated = {...feature, background}
+  !props.feature && updateFeature(updated, { expand: step.uuid })
+
+  return updated
+}
+
+export const addBackgroundStep = async (props:TAddBackgroundStep) => {
+  const {
+    index,
+    stepParentId,
+  } = props
+  
+  if(!stepParentId) return missingId(`background`, prefix)
+
+  const { feature } = await getFeature(props.feature)
+  if(!feature) return logNotFound(`feature`, prefix)
+
+  const { rule, ruleIdx, ...found } = findBackground(feature, stepParentId)
+  if(!found.background) return logNotFound(`background`, prefix)
+
+  const added = addStep(props, feature, found.background, index)
+  if(!added) return
+
+  const { background, step } = added
+
+  return !rule || !ruleIdx
+    ? toFeature(props, feature, background, step)
+    : toRule(props, feature, rule, ruleIdx, background, step)
+
 }

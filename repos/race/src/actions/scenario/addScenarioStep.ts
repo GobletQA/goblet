@@ -1,4 +1,9 @@
-import type { TRaceFeature, TRaceStep } from '@GBR/types'
+import type {
+  TRaceStep,
+  TRaceFeature,
+  TRaceScenario,
+  TRaceScenarioParent,
+} from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
 import { emptyArr } from '@keg-hub/jsutils'
@@ -10,30 +15,26 @@ import { logNotFound, factoryFailed, missingId } from '@GBR/utils/logging'
 
 const prefix = `[Add Scenario#Step]`
 
-export const addScenarioStep = async (
-  scenarioId:string,
-  addStep?:TRaceStep,
-  addIdx?:number,
-  parentFeat?:TRaceFeature
+export type TAddScenarioStep = {
+  index?:number,
+  stepParentId:string,
+  step?:TRaceStep,
+  feature?:TRaceFeature
+}
+
+const addStep = (
+  props:TAddScenarioStep,
+  feature:TRaceFeature,
+  scenario:TRaceScenario,
+  index?:number,
 ) => {
-  if(!scenarioId) return missingId(`scenario`, prefix)
   
-  const { feature } = await getFeature(parentFeat)
-  if(!feature) return logNotFound(`feature`, prefix)
-
-  const {
-    parent:sParent,
-    item:scenario,
-    group:scenarios,
-    index:scenarioIdx,
-  } = findScenario(feature, scenarioId)
-  if(!scenario) return logNotFound(`scenario`, prefix, scenarioId)
-
-
   const steps = [...(scenario?.steps || emptyArr)]
-  let step = addStep
+  let step = props.step
 
-  if(step) steps.splice(addIdx || scenario.steps.length - 1, 0, step)
+  if(step){
+    steps.splice(index || scenario.steps.length - 1, 0, step)
+  }
   else {
     step = stepFactory({
       feature,
@@ -44,14 +45,19 @@ export const addScenarioStep = async (
     steps.push(step)
   }
 
-  scenarios[scenarioIdx] = {...scenario, steps}
-
-  if(sParent.type === ESectionType.feature){
-    const update = {...feature, scenarios}
-    !parentFeat && updateFeature(update, { expand: step.uuid })
-
-    return update
+  return {
+    step,
+    steps,
   }
+}
+
+const toRule = (
+  props:TAddScenarioStep,
+  feature:TRaceFeature,
+  sParent: TRaceScenarioParent,
+  scenarios:TRaceScenario[],
+  step:TRaceStep
+) => {
 
   const {
     rule,
@@ -63,7 +69,49 @@ export const addScenarioStep = async (
   rules[ruleIdx as number] = {...rule, scenarios}
 
   const update = {...feature, rules}
-  !parentFeat && updateFeature(update, { expand: step.uuid })
+  !props.feature && updateFeature(update, { expand: step.uuid })
 
   return update
+}
+
+const toFeature = (
+  props:TAddScenarioStep,
+  feature:TRaceFeature,
+  scenarios:TRaceScenario[],
+  step:TRaceStep
+) => {
+  const update = {...feature, scenarios}
+  !props.feature && updateFeature(update, { expand: step.uuid })
+
+  return update
+}
+
+export const addScenarioStep = async (props:TAddScenarioStep) => {
+  const {
+    index,
+    stepParentId,
+  } = props
+  
+  if(!stepParentId) return missingId(`scenario`, prefix)
+  
+  const { feature } = await getFeature(props.feature)
+  if(!feature) return logNotFound(`feature`, prefix)
+
+  const {
+    item:scenario,
+    parent:sParent,
+    group:scenarios,
+    index:scenarioIdx,
+  } = findScenario(feature, stepParentId)
+  if(!scenario) return logNotFound(`scenario`, prefix, stepParentId)
+
+  const added = addStep(props, feature, scenario, index)
+  if(!added) return
+
+  const { steps, step } = added
+  scenarios[scenarioIdx] = {...scenario, steps}
+
+  return sParent.type === ESectionType.feature
+    ? toFeature(props, feature, scenarios, step)
+    : toRule(props, feature, sParent, scenarios, step)
 }
