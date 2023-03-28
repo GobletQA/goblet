@@ -21,10 +21,10 @@ export const updateRuleScenarioStep = async (
   if(!rule) return
 
   const {
-    scenario,
-    scenarios,
-    scenarioIdx
-  } = findScenario(rule, scenarioId)
+    item:scenario,
+    group:scenarios,
+    index:scenarioIdx,
+  } = findScenario(feature, scenarioId, rule)
   if(!scenario) return
 
   const { step:found, stepIdx, steps } = findStep(scenario, step.uuid)

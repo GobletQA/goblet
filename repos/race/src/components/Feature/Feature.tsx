@@ -59,10 +59,14 @@ export const Feature = (props:TFeature) => {
   const onTagsChange = useCallback((...args:any) => {
 
   }, [])
+  
 
   const contentRef = useRef<HTMLElement>()
   const containerRef = useRef<HTMLElement>()
   const featureItems = useFeatureItems()
+  const onRemoveBackground = () => removeBackground(feature.uuid)
+  const onAddScenarioStep = (scenarioId:string, parentId?:string) => addScenarioStep(scenarioId)
+  const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep(stepId, scenarioId)
 
   // useBounceScroll({
   //   contentRef,
@@ -92,7 +96,10 @@ export const Feature = (props:TFeature) => {
             { feature.uuid !== EmptyFeatureUUID
                 ? (
                     <>
-                      <FeatureHeader items={featureItems} />
+                      <FeatureHeader
+                        feature={feature}
+                        items={featureItems}
+                      />
                       <Meta
                         parent={feature}
                         featuresRef={featuresRef}
@@ -102,7 +109,7 @@ export const Feature = (props:TFeature) => {
                         <Background
                           parent={feature}
                           onChange={updateBackground}
-                          onRemove={removeBackground}
+                          onRemove={onRemoveBackground}
                           onAddStep={addBackgroundStep}
                           background={feature.background}
                           onChangeStep={updateBackgroundStep}
@@ -121,10 +128,10 @@ export const Feature = (props:TFeature) => {
                           onAdd={addScenario}
                           onChange={updateScenario}
                           onRemove={removeScenario}
-                          onAddStep={addScenarioStep}
+                          onAddStep={onAddScenarioStep}
                           scenarios={feature.scenarios}
                           onChangeStep={updateScenarioStep}
-                          onRemoveStep={removeScenarioStep}
+                          onRemoveStep={onRemoveScenarioStep}
                         />
                       ) || null}
                       {

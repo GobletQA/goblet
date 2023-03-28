@@ -24,10 +24,10 @@ export const updateRuleScenario = async (
     return console.warn(`Change Rule#scenario - Rule does not contain any scenarios`, rule)
 
   const {
-    scenario,
-    scenarios,
-    scenarioIdx
-  } = findScenario(rule, scenarioId)
+    item:scenario,
+    group:scenarios,
+    index:scenarioIdx,
+  } = findScenario(feature, scenarioId, rule)
   if(!scenario) return console.warn(`Change Rule#scenario - Scenario could not be found`, rule)
 
   scenarios[scenarioIdx] = {...scenario, ...updated}

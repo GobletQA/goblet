@@ -1,4 +1,5 @@
 import type { TRaceFeature } from '@GBR/types'
+import type { TFeatureAction } from './FeatureAction'
 import type { ReactNode, ComponentType, ComponentProps } from 'react'
 
 import { noOp } from '@keg-hub/jsutils'
@@ -17,13 +18,9 @@ import {
   PlaylistPlusIcon,
 } from '@gobletqa/components'
 
-export type TFeatureItem = {
+export type TFeatureItem = Omit<TFeatureAction, `feature`> & {
   text:string
-  description?:ReactNode
-  Icon: ComponentType<any>
   key:ESectionType|ESectionExt
-  type:ESectionType|ESectionExt
-  onClick:(...args:any[]) => any
   featureKey:keyof TRaceFeature | `steps` | `general`
 }
 
@@ -87,11 +84,11 @@ export const RuleItem:TFeatureItem = {
 
 export const BackgroundItem:TFeatureItem = {
   Icon:CardPlusIcon,
-  onClick:addBackground,
   text: `Add Background`,
   featureKey: `background`,
   key: ESectionType.background,
   type: ESectionType.background,
+  onClick:(_:any, parentId:string) => addBackground({ parentId }),
   description: (
     <Span>
       <b>Background</b> - used to define a list of one or more Steps that are executed prior to each Scenario.

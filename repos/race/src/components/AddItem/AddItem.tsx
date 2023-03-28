@@ -1,5 +1,6 @@
 import type { CSSProperties, SyntheticEvent, ComponentProps, ForwardedRef } from 'react'
 import type { TOnAddClick } from '@GBR/types'
+import { EAstObject } from '@ltipton/parkin'
 
 import { forwardRef, useCallback } from 'react'
 import { capitalize } from '@keg-hub/jsutils'
@@ -19,7 +20,7 @@ export type TAddItem = Omit<ComponentProps<typeof AddBtn>, `onClick`|`type`> & {
 }
 
 export const AddItem = forwardRef((props:TAddItem, ref:ForwardedRef<HTMLButtonElement>) => {
-  
+
   const {
     sx,
     type,
@@ -35,7 +36,7 @@ export const AddItem = forwardRef((props:TAddItem, ref:ForwardedRef<HTMLButtonEl
 
   const callback = useInline<TOnAddClick>(onClickCB)
   const onClick = useCallback(
-    (evt:SyntheticEvent) => callback?.(evt, parentId, type),
+    (evt:SyntheticEvent) => callback?.(evt, parentId, type as EAstObject),
     [type, parentId]
   )
 

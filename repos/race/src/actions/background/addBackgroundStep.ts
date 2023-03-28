@@ -1,4 +1,4 @@
-import type { TRaceBackground, TRaceStep } from '@GBR/types'
+import type { TRaceFeature, TRaceBackground, TRaceStep } from '@GBR/types'
 
 import { emptyArr } from '@keg-hub/jsutils'
 import { findBackground } from '@GBR/utils/find'
@@ -12,14 +12,15 @@ const prefix = `[Add Background#Step]`
 export const addBackgroundStep = async (
   backgroundId:string,
   addStep?:TRaceStep,
-  addIdx?:number
+  addIdx?:number,
+  parentFeat?:TRaceFeature
 ) => {
   if(!backgroundId) return missingId(`background`, prefix)
 
-  const { feature } = await getFeature()
+  const { feature } = await getFeature(parentFeat)
   if(!feature) return logNotFound(`feature`, prefix)
 
-  const { background, rule, index } = findBackground(backgroundId, feature)
+  const { background, rule, ruleIdx:index } = findBackground(feature, backgroundId)
   if(!background) return logNotFound(`background`, prefix)
 
   let step = addStep
@@ -37,12 +38,18 @@ export const addBackgroundStep = async (
     background.steps = [...(background.steps || emptyArr), step]
   }
 
-  if(!rule || !index)
-    return updateFeature({...feature, background}, { expand: step.uuid })
+  if(!rule || !index){
+    const updated = {...feature, background}
+    !parentFeat && updateFeature(updated, { expand: step.uuid })
+
+    return updated
+  }
 
   const rules = [...(feature?.rules || emptyArr)]
   rules[index] = {...rule, background}
 
-  updateFeature({...feature, rules})
+  const updated = {...feature, rules}
+  !parentFeat && updateFeature(updated, { expand: step.uuid })
 
+  return updated
 }

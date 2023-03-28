@@ -13,15 +13,14 @@ export const updateScenarioStepPos = async (
   if(!feature) return logNotFound(`feature`, prefix)
 
   const {
-    scenario,
-    scenarios,
-    scenarioIdx
+    item:scenario,
+    group:scenarios,
+    index:scenarioIdx,
   } = findScenario(feature, scenarioId)
   if(!scenario) return logNotFound(`scenario`, prefix)
 
   const moveStep = scenario.steps[oldIdx]
   if(!moveStep) return missing(`Step. Failed to update step position.`, prefix)
-    
 
   const steps = [...scenario.steps]
   steps.splice(oldIdx, 1)

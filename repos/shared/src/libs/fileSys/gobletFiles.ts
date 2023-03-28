@@ -337,12 +337,17 @@ export const createGobletFile = async (
   const [mkDirErr, mkDirSuccess] = await limbo(fs.ensureDir(dirname))
   if (mkDirErr) throw new Exception(mkDirErr, 422)
 
+  // TODO: investigate issues with template system
+  // Currently not working properly
+  // For not just create empty files
+  const content = ``
+
   // Create the new test file using the template for the file type
   // In the future we might want to allow custom templates from the mounted tests folder
   // But that's a lot more work
-  const content = await loadTemplate(fileType, {
-    name: wordCaps(basename.split('.').shift()),
-  })
+  // const content = await loadTemplate(fileType, {
+  //   name: wordCaps(basename.split('.').shift()),
+  // })
 
   const [writeErr, writeSuccess] = await writeFile(location, content)
   if (writeErr) throw new Exception(writeErr, 400)

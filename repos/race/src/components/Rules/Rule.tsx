@@ -20,22 +20,26 @@ import { EmptyScenarios, Scenarios } from '../Scenarios'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 
 import { removeRule } from '@GBR/actions/rule/removeRule'
+import { updateRule } from '@GBR/actions/rule/updateRule'
 import { addRuleScenario } from '@GBR/actions/rule/addRuleScenario'
 import { PlaylistPlusIcon, CardPlusIcon } from '@gobletqa/components'
-
-import { updateRule } from '@GBR/actions/rule/updateRule'
 import { EmptyBackground, Background } from '@GBR/components/Background'
+
+
+import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
+import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
+
 import { removeRuleScenario } from '@GBR/actions/rule/removeRuleScenario'
 import { updateRuleScenario } from '@GBR/actions/rule/updateRuleScenario'
 import { addRuleScenarioStep } from '@GBR/actions/rule/addRuleScenarioStep'
 import { updateRuleScenarioStep } from '@GBR/actions/rule/updateRuleScenarioStep'
-import { removeRuleScenarioStep } from '@GBR/actions/rule/removeRuleScenarioStep'
 
-import { addRuleBackground } from '@GBR/actions/rule/addRuleBackground'
-import { removeRuleBackground } from '@GBR/actions/rule/removeRuleBackground'
-import { addRuleBackgroundStep } from '@GBR/actions/rule/addRuleBackgroundStep'
+
+import { addBackground } from '@GBR/actions/background/addBackground'
+import { removeBackground } from '@GBR/actions/background/removeBackground'
+import { addBackgroundStep } from '@GBR/actions/background/addBackgroundStep'
+import { removeBackgroundStep } from '@GBR/actions/background/removeBackgroundStep'
 import { updateRuleBackgroundStep } from '@GBR/actions/rule/updateRuleBackgroundStep'
-import { removeRuleBackgroundStep } from '@GBR/actions/rule/removeRuleBackgroundStep'
 import { updateRuleBackground } from '@gobletqa/race/actions/rule/updateRuleBackground'
 
 
@@ -81,23 +85,24 @@ export const Rule = (props:TRule) => {
   const onCopyRule = () => copyRule(rule)
   const onRemove = () => removeRule(rule.uuid)
 
-  const onRemoveBackground = () => removeRuleBackground(rule.uuid)
+  const onAddBackground = () => addBackground({parentId: rule.uuid})
+  const onRemoveBackground = () => removeBackground(rule.uuid)
   const onChangeBackgroundStep = (step:TRaceStep) => updateRuleBackgroundStep(step, rule.uuid)
-  const onRemoveBackgroundStep = (stepId:string) => removeRuleBackgroundStep(stepId, rule.uuid)
+
   const onChangeBackground = (background:TRaceBackground) => updateRuleBackground(background, rule.uuid)
 
   const onAddScenario = () => addRuleScenario(rule.uuid)
-  const onAddStep = (scenarioId:string) => addRuleScenarioStep(scenarioId, rule.uuid)
+  const onAddScenarioStep = (scenarioId:string) => addScenarioStep(scenarioId)
   const onRemoveScenario = (scenarioId:string) => removeRuleScenario(scenarioId, rule.uuid)
   const onChangeScenario = (scenarioId:string, update:Partial<TRaceScenario>) => updateRuleScenario(
     scenarioId,
     update,
     rule.uuid
   )
-  const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeRuleScenarioStep(
+  const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep(
     stepId,
     scenarioId,
-    rule.uuid
+    rule
   )
   const onChangeScenarioStep = (step:TRaceStep, scenarioId:string) => updateRuleScenarioStep(
     step,
@@ -131,9 +136,9 @@ export const Rule = (props:TRule) => {
         (
           <AddAct
             Icon={CardPlusIcon}
+            onClick={onAddBackground}
             type={ESectionType.background}
             key={`gb-rule-add-background-action`}
-            onClick={() => addRuleBackground(rule.uuid)}
           />
         ),
         (
@@ -184,17 +189,17 @@ export const Rule = (props:TRule) => {
             <Background
               parent={rule}
               background={rule.background}
-              onAddStep={addRuleBackgroundStep}
               onRemove={onRemoveBackground}
               onChange={onChangeBackground}
+              onAddStep={addBackgroundStep}
               onChangeStep={onChangeBackgroundStep}
-              onRemoveStep={onRemoveBackgroundStep}
+              onRemoveStep={removeBackgroundStep}
             />
           )
         : isNamed && (
             <EmptyBackground
               parent={rule}
-              onAdd={addRuleBackground}
+              onAdd={onAddBackground}
               parentType={ESectionType.rule}
             />
           ) || null
@@ -202,11 +207,11 @@ export const Rule = (props:TRule) => {
 
       <Scenarios
         parent={rule}
-        onAddStep={onAddStep}
         onAdd={onAddScenario}
         scenarios={rule.scenarios}
         onChange={onChangeScenario}
         onRemove={onRemoveScenario}
+        onAddStep={onAddScenarioStep}
         onChangeStep={onChangeScenarioStep}
         onRemoveStep={onRemoveScenarioStep}
       />

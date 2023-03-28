@@ -14,9 +14,9 @@ export const updateScenario = async (
   if(!feature) return
 
   const {
-    scenario,
-    scenarios,
-    scenarioIdx
+    item:scenario,
+    group:scenarios,
+    index:scenarioIdx,
   } = findScenario(feature, scenarioId)
   if(!scenario)
     return console.warn(`Scenario Id ${scenarioId} could not be found on feature`, feature)

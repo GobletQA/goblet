@@ -9,9 +9,9 @@ export const updateScenarioStep = async (step:TRaceStep, scenarioId:string) => {
   if(!feature) return
 
   const {
-    scenario,
-    scenarios,
-    scenarioIdx
+    item:scenario,
+    group:scenarios,
+    index:scenarioIdx,
   } = findScenario(feature, scenarioId)
   if(!scenario) return
   

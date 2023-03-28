@@ -1,6 +1,6 @@
+import type { TRaceFeature } from '@GBR/types'
 import type { TFeatureItem } from './FeatureItems'
 
-import { FeatureMenu } from './FeatureMenu'
 import { FeatureHeaderActions } from './FeatureHeaderActions'
 import {
   HeaderText,
@@ -9,20 +9,22 @@ import {
 
 
 export type TFeatureHeader = {
+  feature:TRaceFeature
   items:TFeatureItem[]
 }
 
 export const FeatureHeader = (props:TFeatureHeader) => {
   const {
-    items
+    items,
+    feature
   } = props
 
   return (
     <FeatureHeaderContainer className='feature-header-container' >
       <HeaderText>
-        Feature
+        Feature: {feature.feature || ``}
       </HeaderText>
-      <FeatureHeaderActions items={items}/>
+      <FeatureHeaderActions feature={feature} items={items} />
     </FeatureHeaderContainer>
   )
 

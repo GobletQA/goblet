@@ -34,13 +34,13 @@ const getParent = (feature:TRaceFeature, data:TStepDndData) => {
 
   switch(data.parentType){
     case ESectionType.scenario: {
-      const found = findScenario(granParent.gran as TRaceGran, data.parent)
-      return found.scenario
+      const found = findScenario(feature, data.parent, granParent.gran as TRaceGran)
+      return found.item
         ? {
             gran: granParent,
-            parent: found.scenario,
-            group: found.scenarios,
-            index: found.scenarioIdx,
+            parent: found.item,
+            group: found.group,
+            index: found.index,
             add: addScenarioStep,
             remove: removeScenarioStep,
           }
@@ -76,7 +76,7 @@ export const moveStep = async (oldData:TStepDndData, newData:TStepDndData, pos:E
   
   const moveStep = oldParent.steps[oldData.index]
  
-  remove(moveStep.uuid, oldParent.uuid)
+  const removed = remove(moveStep.uuid, oldParent.uuid, undefined, feature)
   add(
     newParent.uuid,
     moveStep,

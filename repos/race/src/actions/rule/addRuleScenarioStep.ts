@@ -21,10 +21,10 @@ export const addRuleScenarioStep = async (
   if(!rule) return logNotFound(`rule`, prefix)
 
   const {
-    scenario,
-    scenarios,
-    scenarioIdx
-  } = findScenario(rule, scenarioId)
+    item:scenario,
+    group:scenarios,
+    index:scenarioIdx
+  } = findScenario(feature, scenarioId, rule)
   if(!scenario) return logNotFound(`scenario`, prefix)
 
   const step = stepFactory({

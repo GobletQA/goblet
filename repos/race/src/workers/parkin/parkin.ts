@@ -34,7 +34,8 @@ export const reIndex = async (options:TReIndexFeature) => {
   const { feature } = options
 
   const assembled = PK.assemble.feature([feature as TFeatureAst])[0]
-  feature.content = `${assembled.trim()} \n`
+  feature.content = assembled
+  // `${assembled.trim()} \n`
 
   return feature
 }

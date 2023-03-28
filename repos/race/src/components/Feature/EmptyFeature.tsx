@@ -57,8 +57,8 @@ export const EmptyFeature = (props:TEmptyFeature) => {
             ? null
             : (
                   <EmptyItem
-                    key={item.type||item.text}
                     sx={styles.item}
+                    key={item.type||item.text}
                     className={`feature-${item.type}-empty-item`}
                   >
                     <Tooltip
