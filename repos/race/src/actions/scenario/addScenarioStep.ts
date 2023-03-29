@@ -20,6 +20,7 @@ export type TAddScenarioStep = {
   stepParentId:string,
   step?:TRaceStep,
   feature?:TRaceFeature
+  granParent?:TRaceScenarioParent
 }
 
 const addStep = (
@@ -89,6 +90,7 @@ const toFeature = (
 export const addScenarioStep = async (props:TAddScenarioStep) => {
   const {
     index,
+    granParent,
     stepParentId,
   } = props
 
@@ -102,7 +104,7 @@ export const addScenarioStep = async (props:TAddScenarioStep) => {
     parent:sParent,
     group:scenarios,
     index:scenarioIdx,
-  } = findScenario(feature, stepParentId)
+  } = findScenario(feature, stepParentId, granParent)
   if(!scenario) return logNotFound(`scenario`, prefix, stepParentId)
 
   const added = addStep(props, feature, scenario, index)

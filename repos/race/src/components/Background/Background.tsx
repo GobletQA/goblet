@@ -96,8 +96,8 @@ export const Background = (props:TBackground) => {
         (
           <AddAct
             Icon={StepAddIcon}
-            onClick={onAddBackgroundStep}
             type={ESectionType.step}
+            onClick={onAddBackgroundStep}
             key={`gb-background-add-step-action`}
           />
         ),

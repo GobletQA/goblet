@@ -28,68 +28,60 @@ export const useFeatureActions = (props:THFeatureActions) => {
   } = props
 
   return useMemo(() => {
-    const onRemoveBackground = () => removeBackground({
-      parentId: feature.uuid
-    })
+    
+    const onRemoveBackground = () => removeBackground({parentId: feature.uuid})
 
     const onAddBackgroundStep = (parentId:string) => addBackgroundStep({
-      feature,
+      granParent:feature,
       stepParentId: parentId
     })
 
     const onUpdateBackground = (background:TRaceBackground) => updateBackground({
-      feature,
       background,
       parentId: feature.uuid
     })
 
     const onRemoveBackgroundStep = (stepId:string, parentId:string) => removeBackgroundStep({
       stepId,
-      feature,
-      parent:feature,
+      granParent:feature,
       stepParentId:parentId
     })
 
     const onChangeBackgroundStep = (step:TRaceStep, parentId?:string) => updateBackgroundStep({
       step,
-      feature,
+      granParent: feature,
       backgroundParentId: feature.uuid
     })
 
     const onAddScenario = () => addScenario({
-      feature,
       parentId: feature.uuid,
     })
 
     const onRemoveScenario = (scenarioId:string) => removeScenario({
-      feature,
       scenarioId,
       parent: feature
     })
 
     const onAddScenarioStep = (parentId:string) => addScenarioStep({
-      feature,
+      granParent: feature,
       stepParentId: parentId
     })
 
     const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep({
       stepId,
-      feature,
-      parent: feature,
+      granParent: feature,
       stepParentId: scenarioId
     })
 
     const onChangeScenario = (scenarioId:string, update:Partial<TRaceScenario>) => updateScenario({
       update,
-      feature,
       scenarioId,
       parent: feature
     })
 
     const onChangeScenarioStep = (step:TRaceStep, scenarioId:string) => updateScenarioStep({
       step,
-      feature,
-      parent: feature,
+      granParent: feature,
       stepParentId: scenarioId,
     })
     

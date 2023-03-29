@@ -1,4 +1,4 @@
-import type { TRaceFeature, TRaceStep } from '@GBR/types'
+import type { TRaceFeature, TRaceStep, TRaceBackgroundParent } from '@GBR/types'
 
 import { findStep, findRule } from '@GBR/utils/find'
 import { logNotFound, missing } from '@GBR/utils/logging'
@@ -11,6 +11,7 @@ export type TUpdateBackgroundStep = {
   step:TRaceStep
   feature?:TRaceFeature
   backgroundParentId:string
+  granParent:TRaceBackgroundParent
 }
 
 const fromFeature = (props:TUpdateBackgroundStep, feature:TRaceFeature) => {
@@ -61,7 +62,7 @@ export const updateBackgroundStep = async (props:TUpdateBackgroundStep) => {
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
-  return feature.uuid === props.backgroundParentId
+  return !props.backgroundParentId || props.backgroundParentId === feature.uuid
     ? fromFeature(props, feature)
     : fromRule(props, feature)
 }

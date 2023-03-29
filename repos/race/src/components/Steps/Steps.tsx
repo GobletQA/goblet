@@ -21,8 +21,8 @@ export type TSteps = {
   parent:TRaceStepParent
   parentType: ESectionType
   onAdd?:(parentId:string) => void
-  onChange?:(updated:TRaceStep, old?:TRaceStep) => void
-  onRemove?:(stepId:string, parentId?:string) => void
+  onRemove?:(stepId:string, parentId:string) => void
+  onChange?:(updated:TRaceStep, parentId:string) => void
   onMove?:(parentId:string, oldPos:number, newPos:number) => void
 } 
 

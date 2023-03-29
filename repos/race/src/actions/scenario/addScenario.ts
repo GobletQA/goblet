@@ -61,7 +61,7 @@ export const addScenario = async (props:TAddScenario) => {
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
-  return parentId === feature.uuid
+  return !parentId || parentId === feature.uuid
     ? toFeature(props, feature)
     : toRule(props, feature)
 }

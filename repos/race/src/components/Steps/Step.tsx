@@ -26,8 +26,8 @@ export type TStep = {
   gran: TRaceGran
   parent: TRaceStepParent
   dragHandleRef?: MutableRefObject<HTMLDivElement>
-  onRemove?:(stepId:string, parentId?:string) => void
-  onChange?:(updated:TRaceStep, old?:TRaceStep) => void
+  onRemove?:(stepId:string, parentId:string) => void
+  onChange?:(updated:TRaceStep, parentId:string) => void
 }
 
 const styles = {
@@ -57,7 +57,7 @@ export const Step = (props:TStep) => {
   const { def, expressions } = useExpressions(props, { definition })
 
   const onCopy = () => {}
-  const onStepChange = (updated:TRaceStep) => onChange?.(updated, step)
+  const onStepChange = (updated:TRaceStep) => onChange?.(updated, parent.uuid)
   const onRemoveStep = () => onRemove?.(step.uuid, parent.uuid)
   const onCollapseExcept = () => collapseAllExcept(step.uuid, parent?.uuid, gran?.uuid)
 

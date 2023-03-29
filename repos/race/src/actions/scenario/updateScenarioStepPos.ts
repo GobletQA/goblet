@@ -1,4 +1,4 @@
-import type { TRaceFeature, TRaceScenario, TRaceStep } from '@GBR/types'
+import type { TRaceFeature, TRaceScenario, TRaceScenarioParent } from '@GBR/types'
 
 import { findScenario, findRule } from '@GBR/utils/find'
 import { missing, logNotFound } from '@GBR/utils/logging'
@@ -13,6 +13,7 @@ export type TUpdateScenarioStepPos = {
   scenarioId:string
   feature?:TRaceFeature
   scenarioParentId:string
+  granParent?:TRaceScenarioParent
 }
 
 const fromRule = (
@@ -51,9 +52,10 @@ const fromFeature = (
 
 export const updateScenarioStepPos = async (props:TUpdateScenarioStepPos) => {
   const {
-  scenarioId,
   oldIdx,
   newIdx,
+  granParent,
+  scenarioId,
   } = props
   
   const { feature } = await getFeature()
@@ -64,7 +66,7 @@ export const updateScenarioStepPos = async (props:TUpdateScenarioStepPos) => {
     item:scenario,
     group:scenarios,
     index:scenarioIdx,
-  } = findScenario(feature, scenarioId)
+  } = findScenario(feature, scenarioId, granParent)
   if(!scenario) return logNotFound(`scenario`, prefix)
 
   const moveStep = scenario.steps[oldIdx]

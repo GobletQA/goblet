@@ -24,7 +24,6 @@ const getGran = (feature:TRaceFeature, data:TStepDndData) => {
   return rule
     ? { gran: rule, group: rules, index: ruleIdx }
     : logNotFound(`rule`, prefix)
-
 }
 
 const getParent = (feature:TRaceFeature, data:TStepDndData) => {
@@ -70,14 +69,15 @@ export const moveStep = async (oldData:TStepDndData, newData:TStepDndData, pos:E
   const newParentData = getParent(feature, newData)
   if(!newParentData) return logNotFound(`old parent`, prefix)
   
-  const { parent:oldParent, remove } = oldParentData
-  const { parent:newParent, add } = newParentData
+  const { parent:oldParent, gran:oldGran, remove } = oldParentData
+  const { parent:newParent, gran:newGran, add } = newParentData
   
   const moveStep = oldParent.steps[oldData.index]
  
   const removed = await remove({
     feature,
     stepId: moveStep.uuid,
+    granParent: oldGran.gran,
     stepParentId: oldParent.uuid,
   })
   if(!removed) return missing(`Feature. Could not perform operation "Move step from ${oldParent.type}"`, prefix)
@@ -85,6 +85,7 @@ export const moveStep = async (oldData:TStepDndData, newData:TStepDndData, pos:E
   const added = await add({
     step: moveStep,
     feature: removed,
+    granParent: newGran.gran,
     stepParentId: newParent.uuid,
     index: pos === EDndPos.before ? newData.index : newData.index + 1
   })

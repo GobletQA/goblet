@@ -5,7 +5,7 @@ import type {
   TRaceBackgroundParent,
 } from '@GBR/types'
 
-import { emptyArr } from '@keg-hub/jsutils'
+import { emptyArr, exists } from '@keg-hub/jsutils'
 import { findBackground } from '@GBR/utils/find'
 import { logNotFound, missingId } from '@GBR/utils/logging'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -17,7 +17,7 @@ export type TRemoveBackgroundStep = {
   stepId:string,
   stepParentId:string,
   feature?:TRaceFeature
-  parent?:TRaceBackgroundParent
+  granParent?:TRaceBackgroundParent
 }
 
 const toRule = (
@@ -61,8 +61,8 @@ const toFeature = (
 
 export const removeBackgroundStep = async (props:TRemoveBackgroundStep) => {
   const {
-    parent,
     stepId,
+    granParent,
     stepParentId,
   } = props
   
@@ -71,14 +71,15 @@ export const removeBackgroundStep = async (props:TRemoveBackgroundStep) => {
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
-  const { background, rule, ruleIdx:index, } = findBackground(
+  const { background, rule, ruleIdx:index } = findBackground(
     feature,
     stepParentId,
-    parent
+    granParent
   )
+
   if(!background) return logNotFound(`background`, prefix)
 
-  return !rule || !index
+  return !rule || !exists<number>(index)
     ? toFeature(props, feature, background)
     : toRule(props, feature, rule, index, background)
 }

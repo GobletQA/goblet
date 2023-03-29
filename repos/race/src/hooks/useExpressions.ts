@@ -17,7 +17,6 @@ import { matchExpressions } from '@GBR/utils/steps/matchExpressions'
 export type THStepSubjects = {
   step: TRaceStep
   parent:TRaceStepParent
-  onChange?:(updated:TRaceStep, old?:TRaceStep) => void
 }
 
 type ExpResp = {

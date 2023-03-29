@@ -52,11 +52,11 @@ export const GeneralItem:TFeatureItem = {
 
 export const ScenarioItem:TFeatureItem = {
   text: `Add Scenario`,
-  onClick: addScenario,
   Icon: PlaylistPlusIcon,
   featureKey: `scenarios`,
   key: ESectionType.scenario,
   type: ESectionType.scenario,
+  onClick:(_:any, parentId:string) => addScenario({ parentId }),
   description: (
     <Span>
       <b>Scenario</b> - a specific example of how the feature should behave in a particular situation. Defined by a list of steps that describe the process to achieve the desired outcome. A Scenario is a key section of a feature file, and is used to ensure it works as expected.

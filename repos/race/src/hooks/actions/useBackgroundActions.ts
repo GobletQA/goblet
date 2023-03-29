@@ -27,14 +27,16 @@ export const useBackgroundActions = (props:THBackgroundActions) => {
   return useMemo(() => {
 
     const onPlay = () => {}
+    const onStepChange = onChangeStep
+    const onRemoveBackgroundStep = onRemoveStep
+
     const onRemoveBackground = () => onRemove?.(parent.uuid)
-    const onAddBackgroundStep = () => onAddStep?.(parent.uuid)
+    const onAddBackgroundStep = () => onAddStep?.(background.uuid)
     const onCopyBackground = () => copyBackground({
       background,
       parentId: parent.uuid
     })
-    const onStepChange = (updated:TRaceStep) => onChangeStep?.(updated, parent.uuid)
-    const onRemoveBackgroundStep = (stepId:string) => onRemoveStep?.(stepId, parent.uuid)
+
     const onStepMove = (parentId:string, oldIdx:number, newIdx:number) => updateBackgroundStepPos({
       newIdx,
       oldIdx,
@@ -52,10 +54,10 @@ export const useBackgroundActions = (props:THBackgroundActions) => {
     }
 
   }, [
-    parent,
     onRemove,
     onAddStep,
     background,
+    parent.uuid,
     onRemoveStep,
     onChangeStep,
   ])

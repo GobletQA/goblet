@@ -47,12 +47,13 @@ export const useRuleActions = (props:THRuleActions) => {
     })
 
     const onAddBackgroundStep = (parentId:string) => addBackgroundStep({
+      granParent: rule,
       stepParentId: parentId
     })
 
     const onRemoveBackgroundStep = (stepId:string, parentId:string) => removeBackgroundStep({
       stepId,
-      parent: rule,
+      granParent: rule,
       stepParentId: parentId,
     })
 
@@ -63,6 +64,7 @@ export const useRuleActions = (props:THRuleActions) => {
 
     const onChangeBackgroundStep = (step:TRaceStep) => updateBackgroundStep({
       step,
+      granParent: rule,
       backgroundParentId: rule.uuid
     })
 
@@ -71,6 +73,7 @@ export const useRuleActions = (props:THRuleActions) => {
     })
 
     const onAddScenarioStep = (parentId:string) => addScenarioStep({
+      granParent: rule,
       stepParentId: parentId,
     })
 
@@ -87,13 +90,13 @@ export const useRuleActions = (props:THRuleActions) => {
 
     const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep({
       stepId,
-      parent: rule,
+      granParent: rule,
       stepParentId: scenarioId,
     })
 
     const onChangeScenarioStep = (step:TRaceStep, scenarioId:string) => updateScenarioStep({
       step,
-      parent: rule,
+      granParent: rule,
       stepParentId: scenarioId,
     })
 

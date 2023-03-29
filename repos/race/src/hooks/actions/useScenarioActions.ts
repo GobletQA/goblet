@@ -30,16 +30,17 @@ export const useScenarioActions = (props:THScenarioActions) => {
   return useMemo(() => {
 
     const onPlay = () => {}
+    const onChangeScenarioStep = onChangeStep
+    const onRemoveScenarioStep = onRemoveStep
 
     const onCopyScenario = () => copyScenario(scenario)
     const onRemoveScenario = () => onRemove(scenario.uuid, parent.uuid)
     const onAddScenarioStep = () => onAddStep(scenario.uuid, parent.uuid)
-    const onChangeScenarioStep = (step:TRaceStep) => onChangeStep(step, scenario.uuid, parent.uuid)
-    const onRemoveScenarioStep = (stepId:string) => onRemoveStep(stepId, scenario.uuid, parent.uuid)
     const onMoveStep = (scenarioId:string, oldIdx:number, newIdx:number,) => updateScenarioStepPos({
       oldIdx,
       newIdx,
       scenarioId,
+      granParent: parent,
       scenarioParentId: parent.uuid,
     })
     

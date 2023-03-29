@@ -2,7 +2,7 @@ import type { CSSProperties, ComponentProps, ForwardedRef } from 'react'
 
 import { forwardRef } from 'react'
 import { AddItem } from '../AddItem'
-import { ESectionType } from '@GBR/types'
+import { ESectionType, ESectionExt } from '@GBR/types'
 
 import { EmptyBox, EmptyContainer } from './EmptyItem.styled'
 
@@ -11,17 +11,15 @@ const styles:Record<string, CSSProperties> = {
   add: {
     width: `100%`,
     minWidth: `205px`,
-    // paddingBottom: gutter.padding.hpx,
-    // borderBottom: `1px solid var(--goblet-input-border)`,
   }
 }
 
 export type TEmptyItem = ComponentProps<typeof AddItem> & {
   sx?:CSSProperties
   addSx?:CSSProperties
-  type:ESectionType
   parentType:ESectionType
   containerSx?:CSSProperties
+  type:ESectionType|ESectionExt
 }
 
 export const EmptyItem = forwardRef((props:TEmptyItem, ref:ForwardedRef<HTMLButtonElement>) => {

@@ -88,7 +88,7 @@ export const updateBackgroundStepPos = async (props:TUpdateBackgroundStepPos) =>
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
-  return feature.uuid === props.backgroundParentId
+  return !props.backgroundParentId || props.backgroundParentId === feature.uuid
     ? fromFeature(props, feature)
     : fromRule(props, feature)
 

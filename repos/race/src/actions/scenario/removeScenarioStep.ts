@@ -12,7 +12,7 @@ export type TRemoveScenarioStep = {
   stepId:string
   stepParentId?:string
   feature?:TRaceFeature
-  parent?:TRaceScenarioParent
+  granParent?:TRaceScenarioParent
 }
 
 const toRule = (
@@ -50,6 +50,7 @@ const toFeature = (
 export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
   const {
     stepId,
+    granParent,
     stepParentId,
   } = props
 
@@ -60,14 +61,14 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
   if(!stepId) return missingId(`Step`, prefix,feature,stepParentId,stepId)
 
   const {
-    parent,
     item:scenario,
     group:scenarios,
     index:scenarioIdx,
+    parent:scenarioParent,
   } = findScenario(
     feature,
     stepParentId,
-    props.parent
+    granParent
   )
   if(!scenario) return logNotFound(`scenario`, prefix)
 
@@ -76,8 +77,8 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
     steps: scenario.steps.filter(step => step.uuid !== stepId)
   }
 
-  return parent.type === ESectionType.feature
+  return scenarioParent.type === ESectionType.feature
     ? toFeature(props, feature, scenarios)
-    : toRule(props, feature, parent, scenarios)
+    : toRule(props, feature, scenarioParent, scenarios)
 
 }

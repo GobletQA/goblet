@@ -65,7 +65,7 @@ export const addBackground = async (props:TAddBackground) => {
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
-  return feature.uuid === parentId
+  return !parentId || parentId === feature.uuid
     ? toFeature(feature, background)
     : toRule(feature, parentId, background)
 }
