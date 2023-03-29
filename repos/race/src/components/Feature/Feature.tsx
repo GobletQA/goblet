@@ -1,5 +1,5 @@
 import type { CSSProperties, MouseEvent } from 'react'
-import type { TFeaturesRefs, TRaceBackground, TRaceStep } from '@GBR/types'
+import type { TFeaturesRefs, TRaceBackground, TRaceScenario, TRaceStep } from '@GBR/types'
 
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
@@ -13,21 +13,23 @@ import { FeatureHeader } from './FeatureHeader'
 import { EmptyFeatureUUID } from '@GBR/constants'
 import { useMemo, useCallback, useRef } from 'react'
 import { BoltIcon, EmptyEditor } from '@gobletqa/components'
-import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { FeatureStack, FeatureContent } from './Feature.styled'
 import { createFeature } from '@GBR/actions/feature/createFeature'
 import { useFeatureItems } from '@GBR/hooks/features/useFeatureItems'
+import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
+
+import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
 import { updateScenario } from '@GBR/actions/scenario/updateScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
+import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
+import { updateScenarioStep } from '@GBR/actions/scenario/updateScenarioStep'
+
 import { removeBackground } from '@GBR/actions/background/removeBackground'
 import { updateBackground } from '@GBR/actions/background/updateBackground'
 import { addBackgroundStep } from '@GBR/actions/background/addBackgroundStep'
-import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
-import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 import { removeBackgroundStep } from '@GBR/actions/background/removeBackgroundStep'
-import { updateScenarioStep } from '@gobletqa/race/actions/scenario/updateScenarioStep'
-import { updateBackgroundStep } from '@gobletqa/race/actions/background/updateBackgroundStep'
+import { updateBackgroundStep } from '@GBR/actions/background/updateBackgroundStep'
 
 export type TFeature = TFeaturesRefs & {}
 type StyleObj = Record<string, CSSProperties>
@@ -62,32 +64,70 @@ export const Feature = (props:TFeature) => {
   const containerRef = useRef<HTMLElement>()
   const featureItems = useFeatureItems()
 
-  const onRemoveBackground = () => removeBackground({ parentId: feature.uuid})
-  const onAddBackgroundStep = (parentId:string) => addBackgroundStep({stepParentId: parentId})
+  const onRemoveBackground = () => removeBackground({
+    parentId: feature.uuid
+  })
+
+  const onAddBackgroundStep = (parentId:string) => addBackgroundStep({
+    feature,
+    stepParentId: parentId
+  })
+
   const onUpdateBackground = (background:TRaceBackground) => updateBackground({
+    feature,
     background,
     parentId: feature.uuid
   })
-  
+
   const onRemoveBackgroundStep = (stepId:string, parentId:string) => removeBackgroundStep({
     stepId,
+    feature,
     parent:feature,
     stepParentId:parentId
   })
-  
+
   const onChangeBackgroundStep = (step:TRaceStep, parentId?:string) => updateBackgroundStep({
     step,
     feature,
     backgroundParentId: feature.uuid
   })
-  
-  const onAddScenarioStep = (parentId:string) => addScenarioStep({ stepParentId: parentId })
+
+  const onAddScenario = () => addScenario({
+    feature,
+    parentId: feature.uuid,
+  })
+
+  const onRemoveScenario = (scenarioId:string) => removeScenario({
+    feature,
+    scenarioId,
+    parent: feature
+  })
+
+  const onAddScenarioStep = (parentId:string) => addScenarioStep({
+    feature,
+    stepParentId: parentId
+  })
+
   const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep({
     stepId,
+    feature,
     parent: feature,
     stepParentId: scenarioId
   })
 
+  const onChangeScenario = (scenarioId:string, update:Partial<TRaceScenario>) => updateScenario({
+    update,
+    feature,
+    scenarioId,
+    parent: feature
+  })
+
+  const onChangeScenarioStep = (step:TRaceStep, scenarioId:string) => updateScenarioStep({
+    step,
+    feature,
+    parent: feature,
+    stepParentId: scenarioId,
+  })
 
   return !feature || !feature?.uuid
     ? (
@@ -141,12 +181,12 @@ export const Feature = (props:TFeature) => {
                       {feature.scenarios?.length && (
                         <Scenarios
                           parent={feature}
-                          onAdd={addScenario}
-                          onChange={updateScenario}
-                          onRemove={removeScenario}
+                          onAdd={onAddScenario}
+                          onChange={onChangeScenario}
+                          onRemove={onRemoveScenario}
                           onAddStep={onAddScenarioStep}
                           scenarios={feature.scenarios}
-                          onChangeStep={updateScenarioStep}
+                          onChangeStep={onChangeScenarioStep}
                           onRemoveStep={onRemoveScenarioStep}
                         />
                       ) || null}

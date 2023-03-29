@@ -91,9 +91,9 @@ export const addScenarioStep = async (props:TAddScenarioStep) => {
     index,
     stepParentId,
   } = props
-  
+
   if(!stepParentId) return missingId(`scenario`, prefix)
-  
+
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 

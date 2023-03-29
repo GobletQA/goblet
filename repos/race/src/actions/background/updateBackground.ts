@@ -1,7 +1,6 @@
 import type { TRaceFeature, TRaceBackground } from '@GBR/types'
 
 import { findRule } from '@GBR/utils/find'
-import { deepMerge } from '@keg-hub/jsutils'
 import { logNotFound } from '@GBR/utils/logging'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
@@ -28,7 +27,7 @@ const toRule = (props:TUpdateBackground, feature:TRaceFeature) => {
   } = findRule(feature, parentId)
   if(!rule) return logNotFound(`rule`, prefix)
 
-  rule.background = deepMerge(rule.background, background)
+  rule.background = {...rule.background, ...background}
   rules[ruleIdx as number] = rule
 
   const updated = {...feature, rules}
@@ -40,7 +39,7 @@ const toRule = (props:TUpdateBackground, feature:TRaceFeature) => {
 const toFeature = (props:TUpdateBackground, feature:TRaceFeature) => {
   const { background } = props
   
-  const updated = {...feature, background: deepMerge(feature?.background, background)}
+  const updated = {...feature, background: {...feature?.background, ...background}}
   !props.feature && updateFeature(updated)
 
   return updated

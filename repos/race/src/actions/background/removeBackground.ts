@@ -1,3 +1,5 @@
+import type { TRaceFeature } from '@GBR/types'
+
 import { findRule } from '@GBR/utils/find'
 import { omitKeys } from '@keg-hub/jsutils'
 import { logNotFound } from '@GBR/utils/logging'
@@ -8,15 +10,13 @@ const prefix = `[Remove Background]`
 
 export type TRemoveBackground = {
   parentId:string
+  feature?:TRaceFeature
 }
 
 export const removeBackground = async (props:TRemoveBackground) => {
-  
-  const {
-    parentId
-  } = props
-  
-  const { feature } = await getFeature()
+  const { parentId } = props
+
+  const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, `[Remove Background]`)
 
   if(feature.uuid === parentId)

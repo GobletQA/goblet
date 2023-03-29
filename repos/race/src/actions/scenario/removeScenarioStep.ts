@@ -1,4 +1,4 @@
-import type { TRaceFeature, TRaceScenarioParent } from '@GBR/types'
+import type { TRaceFeature, TRaceScenarioParent, TRaceScenario } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
 import { findScenario, findRule } from '@GBR/utils/find'
@@ -15,10 +15,41 @@ export type TRemoveScenarioStep = {
   parent?:TRaceScenarioParent
 }
 
+const toRule = (
+  props:TRemoveScenarioStep,
+  feature:TRaceFeature,
+  parent:TRaceScenarioParent,
+  scenarios:TRaceScenario[]
+) => {
+  const {
+    rule,
+    rules,
+    ruleIdx,
+  } = findRule(feature, parent.uuid)
+  if(!rule) return logNotFound(`rule`, prefix)
+
+  rules[ruleIdx as number] = {...rule, scenarios}
+
+  const update = {...feature, rules}
+  !props.feature && updateFeature(update)
+  
+  return update
+}
+
+const toFeature = (
+  props:TRemoveScenarioStep,
+  feature:TRaceFeature,
+  scenarios:TRaceScenario[]
+) => {
+  const update = {...feature, scenarios}
+  !props.feature && updateFeature(update)
+
+  return update
+}
+
 export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
   const {
     stepId,
-    parent,
     stepParentId,
   } = props
 
@@ -29,40 +60,24 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
   if(!stepId) return missingId(`Step`, prefix,feature,stepParentId,stepId)
 
   const {
-    parent:sParent,
+    parent,
     item:scenario,
     group:scenarios,
     index:scenarioIdx,
   } = findScenario(
     feature,
     stepParentId,
-    parent
+    props.parent
   )
-  if(!scenario) return
+  if(!scenario) return logNotFound(`scenario`, prefix)
 
   scenarios[scenarioIdx as number] = {
     ...scenario,
     steps: scenario.steps.filter(step => step.uuid !== stepId)
   }
-  
-  if(sParent.type === ESectionType.feature){
-    const update = {...feature, scenarios}
-    !props.feature && updateFeature(update)
 
-    return update
-  }
+  return parent.type === ESectionType.feature
+    ? toFeature(props, feature, scenarios)
+    : toRule(props, feature, parent, scenarios)
 
-  const {
-    rule,
-    rules,
-    ruleIdx,
-  } = findRule(feature, sParent.uuid)
-  if(!rule) return logNotFound(`rule`, prefix)
-
-  rules[ruleIdx as number] = {...rule, scenarios}
-
-  const update = {...feature, rules}
-  !props.feature && updateFeature(update)
-  
-  return update
 }

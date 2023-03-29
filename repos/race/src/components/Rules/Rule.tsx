@@ -21,25 +21,22 @@ import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 
 import { removeRule } from '@GBR/actions/rule/removeRule'
 import { updateRule } from '@GBR/actions/rule/updateRule'
-import { addRuleScenario } from '@GBR/actions/rule/addRuleScenario'
 import { PlaylistPlusIcon, CardPlusIcon } from '@gobletqa/components'
 import { EmptyBackground, Background } from '@GBR/components/Background'
 
-
+import { addScenario } from '@GBR/actions/scenario/addScenario'
+import { removeScenario } from '@GBR/actions/scenario/removeScenario'
+import { updateScenario } from '@GBR/actions/scenario/updateScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
 import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
-
-import { removeRuleScenario } from '@GBR/actions/rule/removeRuleScenario'
-import { updateRuleScenario } from '@GBR/actions/rule/updateRuleScenario'
-import { updateRuleScenarioStep } from '@GBR/actions/rule/updateRuleScenarioStep'
+import { updateScenarioStep } from '@GBR/actions/scenario/updateScenarioStep'
 
 import { addBackground } from '@GBR/actions/background/addBackground'
 import { removeBackground } from '@GBR/actions/background/removeBackground'
 import { updateBackground } from '@GBR/actions/background/updateBackground'
 import { addBackgroundStep } from '@GBR/actions/background/addBackgroundStep'
 import { removeBackgroundStep } from '@GBR/actions/background/removeBackgroundStep'
-import { updateRuleBackgroundStep } from '@GBR/actions/rule/updateRuleBackgroundStep'
-
+import { updateBackgroundStep } from '@GBR/actions/background/updateBackgroundStep'
 
 export type TRule = {
   ruleId:string
@@ -83,44 +80,75 @@ export const Rule = (props:TRule) => {
   const onCopyRule = () => copyRule(rule)
   const onRemove = () => removeRule(rule.uuid)
 
-  const onAddBackground = () => addBackground({parentId: rule.uuid})
-  const onRemoveBackground = () => removeBackground({ parentId: rule.uuid})
-  const onAddBackgroundStep = (parentId:string) => addBackgroundStep({stepParentId: parentId})
+  const onAddBackground = () => addBackground({
+    parentId: rule.uuid
+  })
+
+  const onRemoveBackground = () => removeBackground({
+    feature,
+    parentId: rule.uuid
+  })
+
+  const onAddBackgroundStep = (parentId:string) => addBackgroundStep({
+    feature,
+    stepParentId: parentId
+  })
+
   const onRemoveBackgroundStep = (stepId:string, parentId:string) => removeBackgroundStep({
     stepId,
     feature,
     parent: rule,
     stepParentId: parentId,
   })
-  const onChangeBackgroundStep = (step:TRaceStep) => updateRuleBackgroundStep(step, rule.uuid)
+
   const onChangeBackground = (background:TRaceBackground) => updateBackground({
     feature,
     background,
     parentId: rule.uuid
   })
 
-  const onAddScenario = () => addRuleScenario(rule.uuid)
+  const onChangeBackgroundStep = (step:TRaceStep) => updateBackgroundStep({
+    step,
+    feature,
+    backgroundParentId: rule.uuid
+  })
+
+  const onAddScenario = () => addScenario({
+    feature,
+    parentId: rule.uuid,
+  })
+
   const onAddScenarioStep = (parentId:string) => addScenarioStep({
     feature,
     stepParentId: parentId,
   })
-  const onRemoveScenario = (scenarioId:string) => removeRuleScenario(scenarioId, rule.uuid)
-  const onChangeScenario = (scenarioId:string, update:Partial<TRaceScenario>) => updateRuleScenario(
+
+  const onRemoveScenario = (scenarioId:string) => removeScenario({
+    feature,
     scenarioId,
+    parent: rule
+  })
+
+  const onChangeScenario = (scenarioId:string, update:Partial<TRaceScenario>) => updateScenario({
     update,
-    rule.uuid
-  )
+    feature,
+    scenarioId,
+    parent: rule
+  })
+
   const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep({
     stepId,
+    feature,
     parent: rule,
     stepParentId: scenarioId,
   })
 
-  const onChangeScenarioStep = (step:TRaceStep, scenarioId:string) => updateRuleScenarioStep(
+  const onChangeScenarioStep = (step:TRaceStep, scenarioId:string) => updateScenarioStep({
     step,
-    scenarioId,
-    rule.uuid
-  )
+    feature,
+    parent: rule,
+    stepParentId: scenarioId,
+  })
 
   return (
     <Section
