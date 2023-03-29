@@ -12,8 +12,7 @@ import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
-import { copyBackground } from '@GBR/actions/background/copyBackground'
-import { updateBackgroundStepPos } from '@GBR/actions/background/updateBackgroundStepPos'
+import { useBackgroundActions } from '@GBR/hooks/actions/useBackgroundActions'
 
 export type TBackground = {
   background:TRaceBackground
@@ -38,28 +37,18 @@ export const Background = (props:TBackground) => {
   const {
     parent,
     onChange,
-    onRemove,
-    onAddStep,
     background,
-    onRemoveStep,
-    onChangeStep
   } = props
-  
-  const onPlay = () => {}
-  const onRemoveBackground = () => onRemove?.(parent.uuid)
-  const onAddBackgroundStep = () => onAddStep?.(parent.uuid)
-  const onCopyBackground = () => background && copyBackground({
-    background,
-    parentId: parent.uuid
-  })
 
-  const onStepChange = (updated:TRaceStep) => onChangeStep?.(updated, parent.uuid)
-  const onRemoveBackgroundStep = (stepId:string) => onRemoveStep?.(stepId, parent.uuid)
-  const onStepMove = (parentId:string, oldIdx:number, newIdx:number) => updateBackgroundStepPos({
-    newIdx,
-    oldIdx,
-    backgroundParentId: parentId,
-  })
+  const {
+    onPlay,
+    onStepMove,
+    onStepChange,
+    onCopyBackground,
+    onRemoveBackground,
+    onAddBackgroundStep,
+    onRemoveBackgroundStep,
+  } = useBackgroundActions(props)
 
   const {
     isNamed,

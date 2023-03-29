@@ -11,10 +11,8 @@ import { StepAddIcon } from '@gobletqa/components'
 import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
-import { copyScenario } from '@GBR/actions/scenario/copyScenario'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
-import { updateScenario } from '@GBR/actions/scenario/updateScenario'
-import { updateScenarioStepPos } from '@GBR/actions/scenario/updateScenarioStepPos'
+import { useScenarioActions } from '@GBR/hooks/actions/useScenarioActions'
 
 export type TScenario = {
   scenarioId: string
@@ -40,13 +38,19 @@ export const Scenario = (props:TScenario) => {
   const {
     parent,
     scenario,
-    onRemove,
     onChange,
-    onAddStep,
     scenarioId,
-    onChangeStep,
-    onRemoveStep,
   } = props
+
+  const {
+    onPlay,
+    onMoveStep,
+    onCopyScenario,
+    onRemoveScenario,
+    onAddScenarioStep,
+    onChangeScenarioStep,
+    onRemoveScenarioStep,
+  } = useScenarioActions(props)
 
   const {
     isNamed,
@@ -62,15 +66,6 @@ export const Scenario = (props:TScenario) => {
       scenario.scenario !== update && onChange(scenario.uuid, { scenario: update })
     },
   })
-
-
-  const onPlay = () => {}
-
-  const onCopyScenario = () => copyScenario(scenario)
-  const onRemoveScenario = () => onRemove(scenario.uuid, parent.uuid)
-  const onAddScenarioStep = () => onAddStep(scenario.uuid, parent.uuid)
-  const onChangeScenarioStep = (step:TRaceStep) => onChangeStep(step, scenario.uuid, parent.uuid)
-  const onRemoveScenarioStep = (stepId:string) => onRemoveStep(stepId, scenario.uuid, parent.uuid)
 
   return (
     <Section
@@ -143,8 +138,8 @@ export const Scenario = (props:TScenario) => {
         gran={parent}
         showAdd={false}
         parent={scenario}
+        onMove={onMoveStep}
         onAdd={onAddScenarioStep}
-        onMove={updateScenarioStepPos}
         onChange={onChangeScenarioStep}
         onRemove={onRemoveScenarioStep}
         parentType={ESectionType.scenario}

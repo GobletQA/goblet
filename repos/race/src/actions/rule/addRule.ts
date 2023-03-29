@@ -1,3 +1,5 @@
+import type { TRaceFeature } from '@GBR/types'
+
 import { ruleFactory } from '@GBR/factories/ruleFactory'
 import { logNotFound, factoryFailed } from '@GBR/utils/logging'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -5,8 +7,12 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 const prefix = `[Add Rule]`
 
-export const addRule = async () => {
-  const { feature } = await getFeature()
+export type TAddRule = {
+  feature?:TRaceFeature
+}
+
+export const addRule = async (props?:TAddRule) => {
+  const { feature } = await getFeature(props?.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
   const rule = ruleFactory({feature, empty: true})
@@ -15,6 +21,8 @@ export const addRule = async () => {
   const rules = [...(feature.rules || [])]
   rules.push(rule)
 
-  // TODO: rule not being saved ???
-  updateFeature({...feature, rules}, { expand: rule.uuid })
+  const updated = {...feature, rules}
+  !props?.feature && updateFeature(updated, { expand: rule.uuid })
+
+  return updated
 }

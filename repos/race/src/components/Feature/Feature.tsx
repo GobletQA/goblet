@@ -16,20 +16,8 @@ import { BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { FeatureStack, FeatureContent } from './Feature.styled'
 import { createFeature } from '@GBR/actions/feature/createFeature'
 import { useFeatureItems } from '@GBR/hooks/features/useFeatureItems'
+import { useFeatureActions } from '@GBR/hooks/actions/useFeatureActions'
 import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
-
-import { addScenario } from '@GBR/actions/scenario/addScenario'
-import { removeScenario } from '@GBR/actions/scenario/removeScenario'
-import { updateScenario } from '@GBR/actions/scenario/updateScenario'
-import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
-import { removeScenarioStep } from '@GBR/actions/scenario/removeScenarioStep'
-import { updateScenarioStep } from '@GBR/actions/scenario/updateScenarioStep'
-
-import { removeBackground } from '@GBR/actions/background/removeBackground'
-import { updateBackground } from '@GBR/actions/background/updateBackground'
-import { addBackgroundStep } from '@GBR/actions/background/addBackgroundStep'
-import { removeBackgroundStep } from '@GBR/actions/background/removeBackgroundStep'
-import { updateBackgroundStep } from '@GBR/actions/background/updateBackgroundStep'
 
 export type TFeature = TFeaturesRefs & {}
 type StyleObj = Record<string, CSSProperties>
@@ -58,76 +46,24 @@ export const Feature = (props:TFeature) => {
   const onTagsChange = useCallback((...args:any) => {
 
   }, [])
-  
 
   const contentRef = useRef<HTMLElement>()
   const containerRef = useRef<HTMLElement>()
   const featureItems = useFeatureItems()
 
-  const onRemoveBackground = () => removeBackground({
-    parentId: feature.uuid
-  })
-
-  const onAddBackgroundStep = (parentId:string) => addBackgroundStep({
-    feature,
-    stepParentId: parentId
-  })
-
-  const onUpdateBackground = (background:TRaceBackground) => updateBackground({
-    feature,
-    background,
-    parentId: feature.uuid
-  })
-
-  const onRemoveBackgroundStep = (stepId:string, parentId:string) => removeBackgroundStep({
-    stepId,
-    feature,
-    parent:feature,
-    stepParentId:parentId
-  })
-
-  const onChangeBackgroundStep = (step:TRaceStep, parentId?:string) => updateBackgroundStep({
-    step,
-    feature,
-    backgroundParentId: feature.uuid
-  })
-
-  const onAddScenario = () => addScenario({
-    feature,
-    parentId: feature.uuid,
-  })
-
-  const onRemoveScenario = (scenarioId:string) => removeScenario({
-    feature,
-    scenarioId,
-    parent: feature
-  })
-
-  const onAddScenarioStep = (parentId:string) => addScenarioStep({
-    feature,
-    stepParentId: parentId
-  })
-
-  const onRemoveScenarioStep = (stepId:string, scenarioId?:string) => removeScenarioStep({
-    stepId,
-    feature,
-    parent: feature,
-    stepParentId: scenarioId
-  })
-
-  const onChangeScenario = (scenarioId:string, update:Partial<TRaceScenario>) => updateScenario({
-    update,
-    feature,
-    scenarioId,
-    parent: feature
-  })
-
-  const onChangeScenarioStep = (step:TRaceStep, scenarioId:string) => updateScenarioStep({
-    step,
-    feature,
-    parent: feature,
-    stepParentId: scenarioId,
-  })
+  const {
+    onAddScenario,
+    onRemoveScenario,
+    onChangeScenario,
+    onAddScenarioStep,
+    onRemoveBackground,
+    onUpdateBackground,
+    onAddBackgroundStep,
+    onRemoveScenarioStep,
+    onChangeScenarioStep,
+    onRemoveBackgroundStep,
+    onChangeBackgroundStep,
+  } = useFeatureActions({ feature })
 
   return !feature || !feature?.uuid
     ? (
