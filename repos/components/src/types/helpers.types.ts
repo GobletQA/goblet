@@ -38,9 +38,3 @@ export type TColorType = `inherit`
   | `info`
   | `warning`
   | undefined
-  
-  
-export enum EDndPos {
-  after=`after`,
-  before=`before`,
-}

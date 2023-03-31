@@ -39,7 +39,6 @@ export const FeatureStack = styled(Stack)`
 
 export const FeatureContent = styled(Box)`
   width: 100%;
-  // height: 100%;
   display: flex;
   flex-direction: column;
 `
@@ -54,7 +53,6 @@ export const FeatureHeaderContainer = styled(Box)`
   justify-content: space-between;
   margin-left: -${gutter.margin.px};
   margin-right: -${gutter.margin.px};
-  margin-bottom: ${gutter.margin.hpx};
   min-height: ${race.header.height.px};
   max-height: ${race.header.height.px};
   background-color: var(--goblet-tab-activeBackground);
@@ -74,7 +72,14 @@ export const FeatureActionBtn = styled(Button)`
   min-width: initial;
   border-radius: 0px;
   border-left: 1px solid var(--goblet-sideBar-border);
+
+  color: ${colors.gray08};
+  transition: color 300ms ease;
   
+  &:hover {
+    color: ${colors.purple10};
+  }
+
   &:first-of-type {
     border-left: none;
   }

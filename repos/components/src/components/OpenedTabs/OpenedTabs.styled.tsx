@@ -1,6 +1,6 @@
 import { Span } from '../Text'
-import { dims } from '@GBC/theme'
 import Box from '@mui/material/Box'
+import { dims, colors } from '@GBC/theme'
 import { styled } from '@mui/material/styles'
 
 export const OpenTabsContainer = styled(Box)`
@@ -13,7 +13,15 @@ export const OpenTabsContainer = styled(Box)`
   min-height: ${dims.editor.tabs.px};
   padding-right: ${dims.editor.tabs.px};
   background-color: var(--goblet-editorGroupHeader-tabsBackground);
-  // border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+`
+
+export const OpenTabsBottomBorder = styled(Box)`
+  z-index: 1;
+  width: 100%;
+  height: 1px;
+  bottom: 0px;
+  position: absolute;
+  background-color: var(--goblet-editorGroupHeader-tabsBorder);
 `
 
 /**
@@ -33,7 +41,7 @@ export const OpenTabsMain = styled(Box)`
   box-sizing: border-box;
   justify-content: flex-start;
   height: ${dims.editor.tabs.px};
-  min-height: ${dims.editor.tabs.px};;
+  min-height: ${dims.editor.tabs.px};
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -58,7 +66,7 @@ export const OpenTab = styled(Box)`
   padding: 0px;
   cursor: pointer;
   margin-top: 1px;
-  margin-right: 1px;
+  margin-right: 0px;
   padding-left: 10px;
   position: relative;
   flex-direction: row;
@@ -68,11 +76,13 @@ export const OpenTab = styled(Box)`
   color: var(--goblet-tab-inactiveForeground);
   background-color: var(--goblet-tab-inactiveBackground);
   transition: color 300ms ease, background-color 300ms ease;
+  border-right: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
 
   &.focused {
+    z-index: 2;
     color: var(--goblet-tab-activeForeground);
     background-color: var(--goblet-tab-activeBackground);
-    
+    border-bottom: 1px solid var(--goblet-tab-activeBackground);
   }
 
   &:hover {

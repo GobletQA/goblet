@@ -1,3 +1,4 @@
+import type { MutableRefObject, CSSProperties } from 'react'
 import type { TRaceScenarioParent, TRaceStep, TRaceScenario } from '@GBR/types'
 
 import { Steps } from '../Steps'
@@ -17,8 +18,12 @@ import { useScenarioActions } from '@GBR/hooks/actions/useScenarioActions'
 export type TScenario = {
   scenarioId: string
   scenario: TRaceScenario
+  showDragHandle?:boolean
+  dragTooltipOpen?:boolean
   parent: TRaceScenarioParent
+  dragHandleSx?: CSSProperties
   onAdd?: (...args:any[]) => void
+  dragHandleRef?: MutableRefObject<HTMLDivElement>
   onRemove: (scenarioId:string, parentId?:string) => void
   onAddStep: (scenarioId:string, parentId?:string) => void
   onChange:(scenarioId:string, update:Partial<TRaceScenario>) => void
@@ -27,6 +32,9 @@ export type TScenario = {
 }
 
 const styles = {
+  section: {
+    marginTop: `0px`,
+  },
   title: {
     marginTop:`10px`,
     marginBottom:`30px`,
@@ -40,6 +48,10 @@ export const Scenario = (props:TScenario) => {
     scenario,
     onChange,
     scenarioId,
+    dragHandleSx,
+    dragHandleRef,
+    showDragHandle,
+    dragTooltipOpen,
   } = props
 
   const {
@@ -71,9 +83,14 @@ export const Scenario = (props:TScenario) => {
     <Section
       id={scenarioId}
       parent={parent}
+      sx={styles.section}
       formatHeader={false}
       show={Boolean(scenario)}
       type={ESectionType.scenario}
+      dragHandleSx={dragHandleSx}
+      dragHandleRef={dragHandleRef}
+      showDragHandle={showDragHandle}
+      dragTooltipOpen={dragTooltipOpen}
       className={`gb-scenario-section`}
       label={(
         <SectionHeader

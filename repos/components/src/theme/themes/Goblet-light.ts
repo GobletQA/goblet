@@ -197,9 +197,10 @@ export const lightTheme = {
   ],
   colors: {
     [`editor.border`]: colors.gray01,
-    // Fix "colors.wtpr00" to be a real color
-    // Only want this in the race editor, not in the monaco editor
-    [`editor.background`]: colors.wtpr00,
+
+    // [`editor.background`]: colors.white,
+    // TODO: Fix this - Only want purple00 in the race editor, and white in the monaco editor
+    [`editor.background`]: colors.purple00,
     [`editor.foreground`]: colors.black08,
 
     [`tab.border`]: colors.white,
@@ -212,9 +213,9 @@ export const lightTheme = {
     [`tab.unfocusedActiveForeground`]: colors.gray06,
     [`tab.unfocusedInactiveForeground`]: colors.gray06,
 
-    [`editorGroupHeader.tabsBorder`]: colors.gray02,
-    [`editorGroupHeader.tabsBackground`]: colors.gray00,
-    [`editorGroupHeader.noTabsBackground`]: colors.gray00,
+    [`editorGroupHeader.tabsBorder`]: colors.gray00,
+    [`editorGroupHeader.tabsBackground`]: colors.purple00,
+    [`editorGroupHeader.noTabsBackground`]: colors.purple00,
     
     [`sideBar.border`]: colors.gray00,
     [`sideBar.background`]: colors.white,

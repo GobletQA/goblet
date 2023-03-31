@@ -1,42 +1,66 @@
-import type { RefObject, MutableRefObject } from 'react'
+import type { TDndMouseHover, TDndDragCallback } from '@GBC/types'
+import type { RefObject, MutableRefObject, CSSProperties, MouseEvent } from 'react'
 
-import { useCallback } from 'react'
+import { useRef, useCallback, useEffect } from 'react'
 import { DndHoverCls } from '@GBC/constants/values'
 
 
-export type THShowHide = {
-  showHandle:boolean
-  dragDivRef: RefObject<HTMLDivElement>
-  dragHandleRef: MutableRefObject<HTMLElement>
+export type THShowHide = TDndMouseHover & {
+  showDragHandle:boolean
+  dragHandleSx?:CSSProperties
+  dragDivRef:RefObject<HTMLDivElement>
+  dragHandleRef:MutableRefObject<HTMLElement>
 }
 
 export const useShowHide = (props:THShowHide) => {
 
   const {
-    showHandle,
     dragDivRef,
+    dragHandleSx,
     dragHandleRef,
+    showDragHandle,
+    onMouseEnter,
+    onMouseLeave,
   } = props
 
-  const onShowDiv = useCallback(() => {
-    if (!dragDivRef.current) return
+  const displayStyleRef = useRef<string>('inherit')
+
+  const onShowDiv = useCallback<TDndDragCallback>((evt) => {
+    if (!dragDivRef.current || showDragHandle === false) return
 
     dragDivRef.current.classList.add(DndHoverCls)
-    
+
     dragHandleRef.current
-      && (dragHandleRef.current.style.display = 'inherit')
+      && (dragHandleRef.current.style.display = displayStyleRef.current)
 
-  }, [dragDivRef, dragHandleRef])
+    onMouseEnter?.(evt)
+  }, [dragDivRef, dragHandleRef, showDragHandle])
 
-  const onHideDiv = useCallback(() => {
-    if (!dragDivRef.current) return
+  const onHideDiv = useCallback<TDndDragCallback>((evt) => {
+    if (!dragDivRef.current || showDragHandle === false) return
 
     dragDivRef.current.classList.remove(DndHoverCls)
     
-    !showHandle
+    !showDragHandle
       && dragHandleRef.current
       && (dragHandleRef.current.style.display = 'none')
-  }, [dragDivRef, dragHandleRef, showHandle])
+    
+    onMouseLeave?.(evt)
+  }, [dragDivRef, dragHandleRef, showDragHandle])
+
+  useEffect(() => {
+    if(!dragDivRef.current) return
+
+    else if(showDragHandle === false)
+      dragHandleRef.current
+        && (dragHandleRef.current.style.display = `none`)
+
+    else if(dragHandleSx?.display) displayStyleRef.current = dragHandleSx.display
+
+    else if(dragDivRef?.current?.style?.display)
+      displayStyleRef.current = dragHandleRef.current.style.display
+
+  }, [dragHandleSx, showDragHandle])
 
   return {
     onHideDiv,

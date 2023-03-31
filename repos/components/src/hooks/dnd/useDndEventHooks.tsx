@@ -1,5 +1,5 @@
-import type { TOnDrop } from './useDndHooks'
-import type { MutableRefObject, KeyboardEventHandler } from 'react'
+import type { TOnDrop, TDndDragCallback } from '@GBC/types'
+import type { MutableRefObject, KeyboardEventHandler, KeyboardEvent, MouseEvent } from 'react'
 
 import { useCallback } from 'react'
 import { parseJSON, emptyObj } from '@keg-hub/jsutils'
@@ -9,8 +9,8 @@ export type THDndEventHooks = {
   index:number
   exact?:boolean
   onDrop: TOnDrop
-  onHideDiv: () => void
-  onShowDiv: () => void
+  onHideDiv: TDndDragCallback
+  onShowDiv: TDndDragCallback
   onKeyDown?: KeyboardEventHandler<Element>
   dragHandleRef: MutableRefObject<HTMLElement>
   shiftTabPressedRef: MutableRefObject<boolean>
@@ -58,7 +58,7 @@ const onHandleFocus = (props:THDndEventHooks) => {
     (evt: React.FocusEvent) => {
       if (!dragHandleRef || (exact && evt.target !== dragHandleRef?.current)) return
 
-      onShowDiv()
+      onShowDiv(evt as any)
 
       !shiftTabPressedRef.current
         && dragHandleRef.current
@@ -81,13 +81,13 @@ export const useDndEventHooks = (props:THDndEventHooks) => {
     shiftTabPressedRef
   } = props
 
-  const onContainerKeyDown = useCallback((keyE: React.KeyboardEvent) => {
+  const onContainerKeyDown = useCallback((keyE: KeyboardEvent) => {
     if (keyE.key === 'Enter')
       return onKeyDown?.(keyE)
 
     if (keyE.shiftKey && keyE.key === 'Tab') {
       shiftTabPressedRef.current = true
-      onHideDiv()
+      onHideDiv(keyE as any)
     }
   }, [])
 

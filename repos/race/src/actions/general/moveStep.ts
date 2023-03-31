@@ -1,4 +1,4 @@
-import type { TRaceFeature, TRaceGran, TStepDndData } from '@GBR/types'
+import type { TRaceFeature, TRaceGran, TDndItemData } from '@GBR/types'
 import { EDndPos } from '@gobletqa/components'
 import { ESectionType } from '@GBR/types'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -12,7 +12,7 @@ import { findScenario, findRule } from '@GBR/utils/find'
 
 const prefix = `[Move Step]`
 
-const getGran = (feature:TRaceFeature, data:TStepDndData) => {
+const getGran = (feature:TRaceFeature, data:TDndItemData) => {
   if(!data.gran || !data.granType || data.granType === ESectionType.feature)
     return { gran: feature }
 
@@ -26,7 +26,7 @@ const getGran = (feature:TRaceFeature, data:TStepDndData) => {
     : logNotFound(`rule`, prefix)
 }
 
-const getParent = (feature:TRaceFeature, data:TStepDndData) => {
+const getParent = (feature:TRaceFeature, data:TDndItemData) => {
   const granParent = getGran(feature, data)
   if(!granParent) return
 
@@ -59,7 +59,7 @@ const getParent = (feature:TRaceFeature, data:TStepDndData) => {
   
 }
 
-export const moveStep = async (oldData:TStepDndData, newData:TStepDndData, pos:EDndPos) => {
+export const moveStep = async (oldData:TDndItemData, newData:TDndItemData, pos:EDndPos) => {
   const { feature } = await getFeature()
   if(!feature) return logNotFound(`feature`, prefix)
 
@@ -72,27 +72,26 @@ export const moveStep = async (oldData:TStepDndData, newData:TStepDndData, pos:E
   const { parent:oldParent, gran:oldGran, remove } = oldParentData
   const { parent:newParent, gran:newGran, add } = newParentData
   
-  const moveStep = oldParent.steps[oldData.index]
+  const move = oldParent.steps[oldData.index]
  
   const removed = await remove({
     feature,
-    stepId: moveStep.uuid,
+    stepId: move.uuid,
     granParent: oldGran.gran,
     stepParentId: oldParent.uuid,
   })
   if(!removed) return missing(`Feature. Could not perform operation "Move step from ${oldParent.type}"`, prefix)
  
   const added = await add({
-    step: moveStep,
+    step: move,
     feature: removed,
     granParent: newGran.gran,
     stepParentId: newParent.uuid,
     index: pos === EDndPos.before ? newData.index : newData.index + 1
   })
-  
+
   if(!added) return missing(`Feature. Could not perform operation "Move step to ${newParent.type}"`, prefix)
-  
-  updateFeature(added, { expand: moveStep.uuid })
-  
+
+  updateFeature(added, { expand: move.uuid })
 
 }

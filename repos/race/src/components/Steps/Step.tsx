@@ -1,10 +1,9 @@
-import type { MutableRefObject } from 'react'
+import type { MutableRefObject, CSSProperties } from 'react'
 import type { TRaceGran, TRaceStep, TRaceStepParent } from '@GBR/types'
 
 import { Section } from '../Section'
 import { StepHeader } from './StepHeader'
 import { Expressions } from '../Expressions'
-import { colors } from '@gobletqa/components'
 import { SelectAction } from './SelectAction'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
 import { useExpressions } from '@GBR/hooks/useExpressions'
@@ -25,6 +24,9 @@ export type TStep = {
   step: TRaceStep
   gran: TRaceGran
   parent: TRaceStepParent
+  showDragHandle?:boolean
+  dragTooltipOpen?:boolean
+  dragHandleSx?: CSSProperties
   dragHandleRef?: MutableRefObject<HTMLDivElement>
   onRemove?:(stepId:string, parentId:string) => void
   onChange?:(updated:TRaceStep, parentId:string) => void
@@ -36,12 +38,6 @@ const styles = {
   },
   header: {
   },
-  dragHandle: {
-    color: colors.gray08,
-    [`&:hover`]: {
-      color: colors.purple10,
-    }
-  },
   action: {}
 }
 
@@ -51,7 +47,10 @@ export const Step = (props:TStep) => {
     parent,
     onChange,
     onRemove,
+    dragHandleSx,
     dragHandleRef,
+    showDragHandle,
+    dragTooltipOpen,
   } = props
   const { step, definition } = useMatchStepToDef(props)
   const { def, expressions } = useExpressions(props, { definition })
@@ -76,9 +75,11 @@ export const Step = (props:TStep) => {
         formatHeader={false}
         headerSx={styles.header}
         type={ESectionType.step}
+        dragHandleSx={dragHandleSx}
         dragHandleRef={dragHandleRef}
         className={`gb-step-section`}
-        dragHandleSx={styles.dragHandle}
+        showDragHandle={showDragHandle}
+        dragTooltipOpen={dragTooltipOpen}
         label={(<StepHeader step={step} />)}
         actions={[
           (

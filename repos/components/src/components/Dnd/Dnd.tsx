@@ -1,9 +1,5 @@
-import type {
-  MutableRefObject,
-  MouseEventHandler,
-  KeyboardEventHandler
-} from 'react'
-import type { TOnDrop } from '@GBC/hooks/dnd/useDndHooks'
+import type { TDndCallbacks } from '@GBC/types'
+import type { CSSProperties, MutableRefObject, FocusEventHandler, MouseEventHandler } from 'react'
 
 import { DragIndicatorIcon } from '../Icons'
 import { useDndHooks } from '@GBC/hooks/dnd/useDndHooks'
@@ -13,19 +9,13 @@ import {
   DragContainer,
 } from './Dnd.styled'
 
-
-export type TDndCallbacks = {
-  onDrop: TOnDrop
-  onKeyDown?: KeyboardEventHandler<Element>
-  onClick?: MouseEventHandler<HTMLDivElement>
-}
-
 export type TDnd = TDndCallbacks & {
   data?:string
   index: number
   exact?:boolean
-  showHandle?: boolean
+  showDragHandle?: boolean
   children: React.ReactNode
+  dragHandleSx?: CSSProperties
   dragImagePos?:[number, number]
   dragHandleRef?: MutableRefObject<HTMLElement>
 }
@@ -36,7 +26,8 @@ export const Dnd = (props: TDnd) => {
     index,
     onClick,
     children,
-    showHandle = false,
+    dragHandleSx,
+    showDragHandle = false,
     dragHandleRef:pDragHandleRef
   } = props
 
@@ -50,14 +41,12 @@ export const Dnd = (props: TDnd) => {
     onDragEnter,
     onDropAfter,
     onDropBefore,
+    dragDivRef,
+    dragHandleRef,
     onDragHandleFocus,
     onContainerKeyDown,
     onDragHandleKeyDown,
-    dragDivRef,
-    dragHandleRef,
   } = useDndHooks(props)
-
-  if (showHandle && dragHandleRef?.current) dragHandleRef.current.style.display = 'inherit'
 
   return (
     <>
@@ -76,22 +65,23 @@ export const Dnd = (props: TDnd) => {
         draggable='true'
         onClick={onClick}
         onDragEnd={onDragEnd}
-        onMouseEnter={onShowDiv}
-        onMouseLeave={onHideDiv}
         onDragStart={onDragStart}
         onFocus={onDragHandleFocus}
         onKeyDown={onContainerKeyDown}
         className={`gb-dnd-drag-container`}
+        onMouseEnter={onShowDiv as MouseEventHandler<HTMLDivElement>}
+        onMouseLeave={onHideDiv as MouseEventHandler<HTMLDivElement>}
       >
-        {!pDragHandleRef && (
+        {showDragHandle && !pDragHandleRef && (
           <DragButton
             tabIndex={0}
             role='button'
-            onBlur={onHideDiv}
+            sx={dragHandleSx}
             ref={dragHandleRef}
             aria-label='drag button'
             onKeyDown={onDragHandleKeyDown}
             className={`gb-dnd-drag-handle`}
+            onBlur={onHideDiv as FocusEventHandler<HTMLDivElement>}
           >
             <DragIndicatorIcon className={`gb-drag-indicator-icon`} />
           </DragButton>

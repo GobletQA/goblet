@@ -23,6 +23,8 @@ export type TSection = {
   formatHeader?:boolean
   actions?:TSectionAction[]
   headerSx?:CSSProperties
+  showDragHandle?:boolean
+  dragTooltipOpen?:boolean
   dropdownSx?:CSSProperties
   dragHandleSx?:CSSProperties
   type:ESectionType|ESectionExt
@@ -54,7 +56,9 @@ export const Section = (props:TSection) => {
     dropdownSx,
     dragHandleSx,
     dragHandleRef,
+    showDragHandle,
     headerContentSx,
+    dragTooltipOpen,
     formatHeader=true,
     dragHandleContainerSx,
   } = props
@@ -63,7 +67,7 @@ export const Section = (props:TSection) => {
   const onChange = (expand:boolean) => {
     expand !== expanded[id] && updateExpanded(id, expand)
   }
-  
+
   return (
     <Container
       id={id}
@@ -72,11 +76,12 @@ export const Section = (props:TSection) => {
       variant={`outlined`}
       className={cls(`gb-section-dropdown-container`, className)}
     >
-      {dragHandleRef && (
+      {showDragHandle !== false && dragHandleRef && (
         <SectionDragHandle
           type={type}
           sx={dragHandleSx}
           dragHandleRef={dragHandleRef}
+          tooltipOpen={dragTooltipOpen}
           containerSx={dragHandleContainerSx}
         />
       )}

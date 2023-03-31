@@ -39,7 +39,7 @@ export const FeatureAction = (props:TFeatureAction) => {
       loc='bottom'
       title={title}
       describeChild
-      enterDelay={500}
+      enterDelay={300}
     >
       <FeatureActionBtn
         startIcon={<Icon />}

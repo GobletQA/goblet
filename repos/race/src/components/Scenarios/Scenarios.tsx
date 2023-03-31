@@ -1,8 +1,17 @@
-import type { TRaceScenarioParent, TRaceScenario, TRaceStep } from '@GBR/types'
+import type {
+  TRaceStep,
+  TDndItemData,
+  TRaceScenario,
+  TRaceScenarioParent,
+} from '@GBR/types'
+import type { TOnDrop } from '@gobletqa/components'
 
 import { Sections } from '../Section'
-import { Scenario } from './Scenario'
 import { ESectionType } from '@GBR/types'
+import { useEditor } from '@GBR/contexts'
+import { DndScenario } from './DndScenario'
+import { useInline } from '@gobletqa/components'
+
 
 export type TScenarios = {
   scenarios?:TRaceScenario[]
@@ -28,6 +37,19 @@ export const Scenarios = (props:TScenarios) => {
     onRemoveStep
   } = props
 
+  const { feature } = useEditor()
+  const onDropScenario = useInline<TOnDrop<TDndItemData>>((
+    oldIdx,
+    newIdx,
+    pos,
+    oldData,
+    data
+  ) => {
+    // TODO: add scenario dnd logic here
+  })
+
+  const showDragHandle = Boolean((scenarios?.length || 0) > 1)
+
   return (
     <Sections
       onAdd={onAdd}
@@ -38,16 +60,21 @@ export const Scenarios = (props:TScenarios) => {
     {
       scenarios?.map((scenario, idx) => {
         return (
-          <Scenario
+          <DndScenario
+            index={idx}
             parent={parent}
+            feature={feature}
             key={scenario.uuid}
             onRemove={onRemove}
             scenario={scenario}
             onChange={onChange}
             onAddStep={onAddStep}
+            onDrop={onDropScenario}
+            parentType={parent.type}
             scenarioId={scenario.uuid}
             onChangeStep={onChangeStep}
             onRemoveStep={onRemoveStep}
+            showDragHandle={showDragHandle}
           />
         )
       })

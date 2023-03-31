@@ -10,6 +10,7 @@ import {
 
 export type TSectionDragHandle = {
   sx?:CSSProperties
+  tooltipOpen?:boolean
   containerSx?:CSSProperties
   type:ESectionType|ESectionExt
   dragHandleRef?: MutableRefObject<HTMLDivElement>
@@ -20,7 +21,8 @@ export const SectionDragHandle = (props:TSectionDragHandle) => {
     sx,
     type,
     containerSx,
-    dragHandleRef
+    tooltipOpen,
+    dragHandleRef,
   } = props
 
   return (
@@ -28,7 +30,8 @@ export const SectionDragHandle = (props:TSectionDragHandle) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      title={`Click and drag to rearrange the step position`}
+      open={tooltipOpen}
+      title={`Click and drag to rearrange the items position`}
     >
       <SectionDragHandleContainer
         tabIndex={0}

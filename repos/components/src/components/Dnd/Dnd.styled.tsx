@@ -35,9 +35,7 @@ export const DragContainer = styled(Box)`
   }
 `
 export const DropContainer = styled(Box)`
-  height: 12px;
-  margin-left: -40px;
-  width: calc(100% + 40px);
+  height: 20px;
 `
 export const DragButton = styled(Box)`
   left: 18px;

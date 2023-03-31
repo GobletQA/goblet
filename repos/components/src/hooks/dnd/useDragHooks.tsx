@@ -1,6 +1,5 @@
-import type { TOnDrop } from './useDndHooks'
+import type { TOnDrop, TDndOptionalCallbacks } from '@GBC/types'
 import type { RefObject, DragEvent } from 'react'
-
 
 import { EDndPos } from '@GBC/types'
 import { useCallback } from 'react'
@@ -9,7 +8,7 @@ import { uuid, toInt, parseJSON, emptyObj } from '@keg-hub/jsutils'
 
 const separator = `|>${uuid()}<|`
 
-export type THDragHooks = {
+export type THDragHooks = TDndOptionalCallbacks & {
   index: number
   data?:string
   onDrop: TOnDrop
@@ -42,6 +41,11 @@ export const useDragHooks = (props:THDragHooks) => {
     dragDivRef,
     dropIndicatorRef,
     dragImagePos=[0,0],
+    onDragEnd:dragEndCB,
+    onDragOver:dragOverCB,
+    onDragLeave:dragLeaveCB,
+    onDragEnter:dragEnterCB,
+    onDragStart:dragStartCB,
   } = props
 
 
@@ -82,15 +86,19 @@ export const useDragHooks = (props:THDragHooks) => {
     evt.preventDefault()
     dropIndicatorRef.current && 
       evt.currentTarget.appendChild(dropIndicatorRef.current)
+
+    ;dragEnterCB?.(evt)
   }, [])
 
   const onDragOver = useCallback((evt: DragEvent) => {
     evt.preventDefault()
+    dragOverCB?.(evt)
   }, [])
 
-  const onDragLeave = useCallback((evt: DragEvent) => {
+  const onDragLeave = useCallback((evt: DragEvent, onEnd?:boolean) => {
     evt.preventDefault()
     dropIndicatorRef.current?.remove()
+    !onEnd && dragLeaveCB?.(evt)
   }, [])
 
   const onDragStart = useCallback(
@@ -100,14 +108,16 @@ export const useDragHooks = (props:THDragHooks) => {
       evt.dataTransfer.setData('text/plain', `${data}${separator}${index.toString()}`)
       evt.dataTransfer.setDragImage(evt.currentTarget, ...dragImagePos)
       dragDivRef.current?.classList.add(DndDraggingCls)
+      dragStartCB?.(evt)
     },
     [index, data, dragDivRef]
   )
 
   const onDragEnd = useCallback(
     (evt: DragEvent) => {
-      onDragLeave(evt)
+      onDragLeave(evt, true)
       dragDivRef.current?.classList.remove(DndDraggingCls)
+      dragEndCB?.(evt)
     },
     [dragDivRef]
   )

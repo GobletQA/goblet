@@ -3,7 +3,8 @@ import type { TOpenedTabs  } from '../../types'
 import { Tab as GBTab } from './Tab'
 import {
   OpenTabsMain,
-  OpenTabsContainer
+  OpenTabsContainer,
+  OpenTabsBottomBorder
 } from './OpenedTabs.styled'
 
 
@@ -13,6 +14,8 @@ export const OpenedTabs = ({ openedTabs, Tab, activeTab, ...rest }:TOpenedTabs) 
   return (
     <OpenTabsContainer className='goblet-editor-opened-tab-wrapper'>
       <OpenTabsMain className='goblet-editor-opened-tab'>
+        <OpenTabsBottomBorder />
+
         {openedTabs?.map(tabItem => {
           const ref = tabItem?.tab?.uuid || tabItem?.tab?.path
 
@@ -25,6 +28,7 @@ export const OpenedTabs = ({ openedTabs, Tab, activeTab, ...rest }:TOpenedTabs) 
             />
           )
         })}
+
       </OpenTabsMain>
     </OpenTabsContainer>
   )

@@ -1,32 +1,21 @@
 import type {
+  CSSProperties,
   MutableRefObject,
-  MouseEventHandler,
-  KeyboardEventHandler
 } from 'react'
-import { EDndPos } from '@GBC/types'
+import type { TDndCallbacks } from '@GBC/types'
 
 import { useDndRefs } from './useDndRefs'
 import { useShowHide } from './useShowHide'
 import { useDragHooks } from './useDragHooks'
 import { useDndEventHooks } from './useDndEventHooks'
 
-export type TOnDrop = (
-  oldIdx: number,
-  newIdx: number,
-  pos: EDndPos,
-  oldData?:Record<string, any>,
-  newData?:Record<string, any>,
-) => Promise<void> | void
-
-export type THDndHooks = {
+export type THDndHooks = TDndCallbacks & {
   data?:string
   index: number
   exact?:boolean
-  onDrop: TOnDrop
-  showHandle?: boolean
+  showDragHandle?: boolean
+  dragHandleSx?:CSSProperties
   dragImagePos?:[number, number]
-  onKeyDown?: KeyboardEventHandler<Element>
-  onClick?: MouseEventHandler<HTMLDivElement>
   dragHandleRef?: MutableRefObject<HTMLElement>
 }
 
@@ -37,7 +26,8 @@ export const useDndHooks = (props:THDndHooks) => {
     index,
     exact,
     onDrop,
-    showHandle = false,
+    dragHandleSx,
+    showDragHandle = false,
     onKeyDown,
   } = props
 
@@ -51,7 +41,8 @@ export const useDndHooks = (props:THDndHooks) => {
   })
 
   const showHideHooks = useShowHide({
-    showHandle,
+    dragHandleSx,
+    showDragHandle,
     ...dndRefs,
   })
 
@@ -67,6 +58,9 @@ export const useDndHooks = (props:THDndHooks) => {
 
   return {
     ...dndRefs,
+    // dndRefs and dragHooks both have methods with the same names
+    // But dragHooks wraps the methods in dndRefs
+    // So make sure it comes after dndRefs
     ...dragHooks,
     ...keyDownHooks,
     ...showHideHooks,

@@ -1,10 +1,10 @@
 import { ESectionType } from './section.types'
 
-export type TStepDndData = {
+export type TDndItemData = {
   index:number,
-  step: string,
-  parent: string,
+  item?: string,
   gran?: string,
+  parent: string,
   granType?: ESectionType,
   parentType: ESectionType,
 }

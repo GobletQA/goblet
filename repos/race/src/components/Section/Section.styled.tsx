@@ -41,10 +41,10 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 
 }
 
+const headerActiveColor = colors.purple01
+
 export const Container = styled(Paper)`
-  // overflow: hidden;
-  // border: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
-  margin-top: ${gutter.margin.hpx};
+  margin-top: ${gutter.margin.px};
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-tab-activeBackground);
   border: none;
@@ -111,12 +111,8 @@ export const Dropdown = styled(DropdownComp)`
     }
   }
 
-  &.Mui-expanded:last-of-type {
-    // margin-bottom: 20px;
-  }
-
   &.Mui-expanded > .MuiAccordionSummary-root {
-    background-color: ${colors.purple00};
+    background-color: ${headerActiveColor};
 
     & .gb-section-actions {
       opacity: 1;
@@ -132,9 +128,7 @@ export const Dropdown = styled(DropdownComp)`
     background-color: var(--goblet-tab-activeBackground);
 
     &:hover {
-      // background-color: ${colors.white00};
-      // background-color: var(--goblet-selection-background);
-      background-color: ${colors.purple00};
+      background-color: ${headerActiveColor};
       & .gb-section-actions {
         opacity: 1;
       }
@@ -183,14 +177,18 @@ export const SectionHeaderText = styled(Span)`
 
 export const SectionDragHandleContainer = styled(Box)`
   z-index: 1;
-  left: 5px;
+  left: 8px;
   width: 24px;
+  display: flex;
   position: absolute;
   align-items: center;
   justify-content: center;
-  display: flex !important;
   background-color: transparent;
   height: ${dims.dropdown.header.px};
+  
+  &.scenario-section-drag-handle {
+    left: -2px;
+  }
 `
 
 export const SectionDragHandleIcon = styled(DragIndicatorIcon)`

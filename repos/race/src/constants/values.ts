@@ -39,3 +39,5 @@ export const FeatureIndexMap = {
 }
 
 export const NoStepActionSelected = `NO-STEP-ACTION-SELECTED`
+
+export const DragImagePos:[number, number] = [10, -20]
