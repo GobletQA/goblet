@@ -19,7 +19,6 @@ export type TScenario = {
   scenarioId: string
   scenario: TRaceScenario
   showDragHandle?:boolean
-  dragTooltipOpen?:boolean
   parent: TRaceScenarioParent
   dragHandleSx?: CSSProperties
   onAdd?: (...args:any[]) => void
@@ -39,7 +38,11 @@ const styles = {
     marginTop:`10px`,
     marginBottom:`30px`,
     padding: `0px 10px`,
-  }
+  },
+  empty: {
+    marginTop: `0px`
+  },
+  emptyNoSteps: {}
 }
 
 export const Scenario = (props:TScenario) => {
@@ -51,7 +54,6 @@ export const Scenario = (props:TScenario) => {
     dragHandleSx,
     dragHandleRef,
     showDragHandle,
-    dragTooltipOpen,
   } = props
 
   const {
@@ -90,7 +92,6 @@ export const Scenario = (props:TScenario) => {
       dragHandleSx={dragHandleSx}
       dragHandleRef={dragHandleRef}
       showDragHandle={showDragHandle}
-      dragTooltipOpen={dragTooltipOpen}
       className={`gb-scenario-section`}
       label={(
         <SectionHeader
@@ -166,6 +167,11 @@ export const Scenario = (props:TScenario) => {
           parent={scenario}
           onAdd={onAddScenarioStep}
           parentType={ESectionType.scenario}
+          containerSx={
+            scenario?.steps?.length
+              ? styles.empty
+              : styles.emptyNoSteps
+          }
         />
       ) || null}
     </Section>

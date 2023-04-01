@@ -9,7 +9,6 @@ import { styled } from '@mui/material/styles'
 export const StepContainer = styled(Card)`
   width: 100%;
   border: none;
-  margin-top: ${gutter.margin.px};
 `
 export const StepContent = styled(CardContent)`
   display: flex;

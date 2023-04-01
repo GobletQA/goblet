@@ -33,9 +33,14 @@ export const parseFeature = async (
 export const reIndex = async (options:TReIndexFeature) => {
   const { feature } = options
 
-  const assembled = PK.assemble.feature([feature as TFeatureAst])[0]
+  const [assembled] = PK.assemble.feature(feature as TFeatureAst, {
+    removeEmpty: true,
+    emptyAfterSteps: true,
+    emptyAfterStory: true,
+    backgroundAfterParent: true
+  })
+
   feature.content = assembled
-  // `${assembled.trim()} \n`
 
   return feature
 }

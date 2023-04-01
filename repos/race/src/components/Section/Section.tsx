@@ -24,7 +24,6 @@ export type TSection = {
   actions?:TSectionAction[]
   headerSx?:CSSProperties
   showDragHandle?:boolean
-  dragTooltipOpen?:boolean
   dropdownSx?:CSSProperties
   dragHandleSx?:CSSProperties
   type:ESectionType|ESectionExt
@@ -58,7 +57,6 @@ export const Section = (props:TSection) => {
     dragHandleRef,
     showDragHandle,
     headerContentSx,
-    dragTooltipOpen,
     formatHeader=true,
     dragHandleContainerSx,
   } = props
@@ -81,7 +79,6 @@ export const Section = (props:TSection) => {
           type={type}
           sx={dragHandleSx}
           dragHandleRef={dragHandleRef}
-          tooltipOpen={dragTooltipOpen}
           containerSx={dragHandleContainerSx}
         />
       )}

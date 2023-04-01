@@ -44,10 +44,11 @@ const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
 const headerActiveColor = colors.purple01
 
 export const Container = styled(Paper)`
+  border: none;
+  position: relative;
   margin-top: ${gutter.margin.px};
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-tab-activeBackground);
-  border: none;
 
   & > .gb-dropdown {
     padding: 20px;
@@ -177,7 +178,7 @@ export const SectionHeaderText = styled(Span)`
 
 export const SectionDragHandleContainer = styled(Box)`
   z-index: 1;
-  left: 8px;
+  left: 0px;
   width: 24px;
   display: flex;
   position: absolute;
@@ -185,10 +186,6 @@ export const SectionDragHandleContainer = styled(Box)`
   justify-content: center;
   background-color: transparent;
   height: ${dims.dropdown.header.px};
-  
-  &.scenario-section-drag-handle {
-    left: -2px;
-  }
 `
 
 export const SectionDragHandleIcon = styled(DragIndicatorIcon)`

@@ -25,7 +25,6 @@ export type TStep = {
   gran: TRaceGran
   parent: TRaceStepParent
   showDragHandle?:boolean
-  dragTooltipOpen?:boolean
   dragHandleSx?: CSSProperties
   dragHandleRef?: MutableRefObject<HTMLDivElement>
   onRemove?:(stepId:string, parentId:string) => void
@@ -50,7 +49,6 @@ export const Step = (props:TStep) => {
     dragHandleSx,
     dragHandleRef,
     showDragHandle,
-    dragTooltipOpen,
   } = props
   const { step, definition } = useMatchStepToDef(props)
   const { def, expressions } = useExpressions(props, { definition })
@@ -79,7 +77,6 @@ export const Step = (props:TStep) => {
         dragHandleRef={dragHandleRef}
         className={`gb-step-section`}
         showDragHandle={showDragHandle}
-        dragTooltipOpen={dragTooltipOpen}
         label={(<StepHeader step={step} />)}
         actions={[
           (

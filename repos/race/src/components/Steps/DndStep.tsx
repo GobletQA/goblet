@@ -31,12 +31,9 @@ export const DndStep = (props:TDndStep) => {
 
   const {
     data,
-    onDragOver,
-    onDragStart,
     dragImagePos,
     dragHandleSx,
     dragHandleRef,
-    dragTooltipOpen,
   } = useDnd({
     gran,
     index,
@@ -53,8 +50,6 @@ export const DndStep = (props:TDndStep) => {
       onDrop={onDrop}
       onClick={onClick}
       onKeyDown={onKeyDown}
-      onDragOver={onDragOver}
-      onDragStart={onDragStart}
       dragHandleSx={dragHandleSx}
       dragImagePos={dragImagePos}
       showDragHandle={showDragHandle}
@@ -66,7 +61,6 @@ export const DndStep = (props:TDndStep) => {
         step={step}
         parent={parent}
         dragHandleSx={dragHandleSx}
-        dragTooltipOpen={dragTooltipOpen}
         dragHandleRef={dragHandleRef as MutableRefObject<HTMLDivElement>}
       />
     </Dnd>

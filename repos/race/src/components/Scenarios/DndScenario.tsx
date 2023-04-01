@@ -31,12 +31,9 @@ export const DndScenario = (props:TDndScenario) => {
 
   const {
     data,
-    onDragOver,
-    onDragStart,
     dragImagePos,
     dragHandleSx,
     dragHandleRef,
-    dragTooltipOpen,
   } = useDnd({
     index,
     parent,
@@ -53,8 +50,6 @@ export const DndScenario = (props:TDndScenario) => {
       onDrop={onDrop}
       onClick={onClick}
       onKeyDown={onKeyDown}
-      onDragOver={onDragOver}
-      onDragStart={onDragStart}
       dragHandleSx={dragHandleSx}
       dragImagePos={dragImagePos}
       showDragHandle={showDragHandle}
@@ -68,7 +63,6 @@ export const DndScenario = (props:TDndScenario) => {
         scenarioId={scenario.uuid}
         dragHandleSx={dragHandleSx}
         showDragHandle={showDragHandle}
-        dragTooltipOpen={dragTooltipOpen}
         dragHandleRef={dragHandleRef as MutableRefObject<HTMLDivElement>}
       />
     </Dnd>
