@@ -1,9 +1,5 @@
-import type { TGobletTheme } from '@gobletqa/components'
-import type { ComponentProps, ComponentType } from 'react'
-
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
-import MuiStack from '@mui/material/Stack'
 import { styled } from '@mui/material/styles'
 import {
   Span,
@@ -16,32 +12,45 @@ import {
   Dropdown as DropdownComp
 } from '@gobletqa/components'
 
-type TGutterComp = ComponentProps<typeof Box> & {
-  gutter?:boolean
-  theme?:TGobletTheme
+const action = {
+  button:`
+    margin-left: ${gutter.margin.qpx};
+    margin-right: ${gutter.margin.qpx};
+  `
 }
 
-const gutterComp = (Component:ComponentType<any>, styles:string=``) => {
-  return styled(Component, {
-    shouldForwardProp: (prop:string) => prop !== 'gutter'
-  })(({ theme, gutter }:TGutterComp) => {
-      return `
-        width: 100%;
-        ${styles}
-        ${
-          gutter
-            ? [
-                `padding-left: ${theme?.gutter?.padding?.px};`,
-                `padding-right: ${theme?.gutter?.padding?.px};`
-              ].join(`\n`)
-            : ``
-        }
-      `
-  })
-
+const dnd = {
+  dropdown: `
+    &.gb-section-dropdown-dnd {
+      & .gb-dropdown-header {
+        padding-left: 30px;
+      }
+    }
+  `,
+  dragHandle: `
+    z-index: 1;
+    left: 15px;
+    width: 10px;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    height: ${dims.dropdown.header.px};
+  `,
+  dragIcon: `
+    background-color: transparent;
+  `
 }
 
-const headerActiveColor = colors.purple01
+const dropdown = {
+  headerActive:`
+    background-color: ${colors.purple01};
+    & .gb-section-actions {
+      opacity: 1;
+    }
+  `,
+}
 
 export const Container = styled(Paper)`
   border: none;
@@ -71,19 +80,14 @@ export const Container = styled(Paper)`
   }
 `
 
-export const InputContainer = styled(Box)`
-  min-height: 40px;
+export const SectionHeaderText = styled(Span)`
+  font-size: 14px;
+  padding: ${gutter.padding.qpx};
+  color: var(--goblet-editor-foreground);
 `
 
-export const SectionActBtn = styled(Button)`
-  margin-left: ${gutter.margin.qpx};
-  margin-right: ${gutter.margin.qpx};
-`
-
-export const SectionActIcnBtn = styled(IconButton)`
-  margin-left: ${gutter.margin.qpx};
-  margin-right: ${gutter.margin.qpx};
-`
+export const SectionDragHandleContainer = styled(Box)(dnd.dragHandle)
+export const SectionDragHandleIcon = styled(DragIndicatorIcon)(dnd.dragIcon)
 
 export const SectionActs = styled(Box)`
   opacity: 0;
@@ -92,17 +96,19 @@ export const SectionActs = styled(Box)`
   justify-content: center;
   transition: opacity 300ms ease;
 `
+export const SectionActBtn = styled(Button)(action.button)
+export const SectionActIcnBtn = styled(IconButton)(action.button)
 
 export const Dropdown = styled(DropdownComp)`
   cursor: default;
   transition: background-color 300ms ease;
+  ${dnd.dropdown}
 
   & .gb-dropdown-header {
     flex-direction: row-reverse;
   }
 
   & .gb-dropdown-expand-icon {
-
     &:hover {
       color: ${colors.green10};
     }
@@ -113,12 +119,7 @@ export const Dropdown = styled(DropdownComp)`
   }
 
   &.Mui-expanded > .MuiAccordionSummary-root {
-    background-color: ${headerActiveColor};
-
-    & .gb-section-actions {
-      opacity: 1;
-    }
-
+    ${dropdown.headerActive}
   }
 
   & > .MuiAccordionSummary-root {
@@ -129,12 +130,8 @@ export const Dropdown = styled(DropdownComp)`
     background-color: var(--goblet-tab-activeBackground);
 
     &:hover {
-      background-color: ${headerActiveColor};
-      & .gb-section-actions {
-        opacity: 1;
-      }
+      ${dropdown.headerActive}
     }
-
   }
 
   & .MuiAccordionSummary-content {
@@ -150,44 +147,4 @@ export const Dropdown = styled(DropdownComp)`
     padding-left: 0px;
   }
 
-`
-
-export const StackContainer = styled(Box)(({ theme }) => `
-  width: 100%;
-  height: 100%;
-`)
-
-
-export const StackContent = gutterComp(MuiStack, `
-  width: 100%;
-  height: 100%;
-  & > .MuiBox-root {
-    margin-top: 0px
-  }
-`)
-
-export const StackBody = gutterComp(Box)
-
-
-export const SectionHeaderText = styled(Span)`
-  font-size: 14px;
-  padding: ${gutter.padding.qpx};
-  padding-left: ${gutter.padding.hpx};
-  color: var(--goblet-editor-foreground);
-`
-
-export const SectionDragHandleContainer = styled(Box)`
-  z-index: 1;
-  left: 0px;
-  width: 24px;
-  display: flex;
-  position: absolute;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  height: ${dims.dropdown.header.px};
-`
-
-export const SectionDragHandleIcon = styled(DragIndicatorIcon)`
-  background-color: transparent;
 `

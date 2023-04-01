@@ -10,7 +10,7 @@ import type {
 import { forwardRef } from 'react'
 import { ESectionType } from '@GBR/types'
 import { exists, cls } from '@keg-hub/jsutils'
-import { StackContainer, StackContent, StackBody } from './Section.styled'
+import { StackContainer, StackContent, StackBody } from './Stack.styled'
 
 export type TStack = {
   body?:boolean

@@ -1,4 +1,4 @@
-import type { TRaceFeature } from '@GBR/types'
+import type { TRaceFeature, TDndItemData } from '@GBR/types'
 import type { TDndCallbacks } from '@gobletqa/components'
 import type { ComponentProps, MutableRefObject } from 'react'
 
@@ -8,7 +8,7 @@ import { ESectionType } from '@GBR/types'
 import { Dnd } from '@gobletqa/components'
 import { useDnd } from '@GBR/hooks/editor/useDnd'
 
-export type TDndScenario = TDndCallbacks & ComponentProps<typeof Scenario> & {
+export type TDndScenario = TDndCallbacks<TDndItemData> & ComponentProps<typeof Scenario> & {
   index:number
   feature: TRaceFeature
   showDragHandle:boolean

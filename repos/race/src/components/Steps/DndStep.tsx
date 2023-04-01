@@ -1,15 +1,13 @@
-import type {
-  ComponentProps,
-  MutableRefObject,
-} from 'react'
+import type { TDndItemData } from '@GBR/types'
 import type { TDndCallbacks } from '@gobletqa/components'
+import type { ComponentProps, MutableRefObject } from 'react'
 
 import { Step } from './Step'
 import { ESectionType } from '@GBR/types'
 import { Dnd } from '@gobletqa/components'
 import { useDnd } from '@GBR/hooks/editor/useDnd'
 
-export type TDndStep = TDndCallbacks & ComponentProps<typeof Step> & {
+export type TDndStep = TDndCallbacks<TDndItemData> & ComponentProps<typeof Step> & {
   index:number
   showDragHandle:boolean
   parentType: ESectionType

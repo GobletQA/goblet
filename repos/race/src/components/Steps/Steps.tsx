@@ -1,5 +1,12 @@
 import type { ReactNode } from 'react'
-import type { TDndItemData, TRaceGran, TRaceStep, TRaceStepParent } from '@GBR/types'
+import type { TOnDrop } from '@gobletqa/components'
+import type {
+  TRaceGran,
+  TRaceStep,
+  TDndItemData,
+  TRaceStepParent
+} from '@GBR/types'
+
 
 import { DndStep } from './DndStep'
 import { Sections } from '../Section'
@@ -35,12 +42,12 @@ export const Steps = (props:TSteps) => {
   } = props
 
   const onAddStep = useInline(() => onAdd?.(parent.uuid))
-  const onDropStep = useInline((
-    oldIdx: number,
-    newIdx: number,
+  const onDropStep = useInline<TOnDrop<TDndItemData>>((
+    oldIdx,
+    newIdx,
     pos:EDndPos,
-    oldData:TDndItemData,
-    data:TDndItemData
+    oldData,
+    data
   ) => {
     oldData?.parent && data?.parent && oldData?.parent !== data?.parent
       ? moveStep(oldData, data, pos)

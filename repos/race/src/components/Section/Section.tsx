@@ -21,9 +21,10 @@ export type TSection = {
   Header?:ReactNode
   children:ReactNode
   formatHeader?:boolean
-  actions?:TSectionAction[]
-  headerSx?:CSSProperties
   showDragHandle?:boolean
+  showExpandIcon?:boolean
+  headerSx?:CSSProperties
+  actions?:TSectionAction[]
   dropdownSx?:CSSProperties
   dragHandleSx?:CSSProperties
   type:ESectionType|ESectionExt
@@ -55,6 +56,7 @@ export const Section = (props:TSection) => {
     dropdownSx,
     dragHandleSx,
     dragHandleRef,
+    showExpandIcon,
     showDragHandle,
     headerContentSx,
     formatHeader=true,
@@ -62,9 +64,8 @@ export const Section = (props:TSection) => {
   } = props
 
   const { expanded, updateExpanded } = useEditor()
-  const onChange = (expand:boolean) => {
-    expand !== expanded[id] && updateExpanded(id, expand)
-  }
+  const hasDragHandle = Boolean(showDragHandle !== false && dragHandleRef)
+  const onChange = (expand:boolean) => (expand !== expanded[id] && updateExpanded(id, expand))
 
   return (
     <Container
@@ -72,9 +73,13 @@ export const Section = (props:TSection) => {
       sx={sx}
       elevation={0}
       variant={`outlined`}
-      className={cls(`gb-section-dropdown-container`, className)}
+      className={cls(
+        className,
+        `gb-section-dropdown-container`,
+        hasDragHandle && `gb-section-dnd`
+      )}
     >
-      {showDragHandle !== false && dragHandleRef && (
+      {hasDragHandle && (
         <SectionDragHandle
           type={type}
           sx={dragHandleSx}
@@ -92,11 +97,16 @@ export const Section = (props:TSection) => {
                 noToggle={noToggle}
                 headerSx={headerSx}
                 expanded={expanded[id]}
+                showExpandIcon={showExpandIcon}
                 headerContentSx={headerContentSx}
                 id={`${parent.uuid}-${id || uuid}`}
                 actions={<SectionActions actions={actions} />}
                 headerText={isStr(label) && formatHeader ? wordCaps(label) : label}
-                className={cls(`gb-section-dropdown`, `gb-section-dropdown-${type}`)}
+                className={cls(
+                  `gb-section-dropdown`,
+                  `gb-section-dropdown-${type}`,
+                  hasDragHandle && `gb-section-dropdown-dnd`
+                )}
               >
                 {children}
               </Dropdown>

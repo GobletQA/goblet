@@ -1,8 +1,13 @@
 import type { AccordionProps } from '@mui/material'
 import type { TransitionProps } from '@mui/material/transitions'
-import type { CSSProperties, ReactNode, ComponentType, MutableRefObject } from 'react'
+import type { CSSProperties, ReactNode, ComponentType } from 'react'
 
-import { forwardRef, useRef, useState, useCallback, useEffect } from 'react'
+import {
+  useState,
+  useEffect,
+  forwardRef,
+  useCallback,
+} from 'react'
 
 import { colors } from '@GBC/theme'
 import { useInline } from '@GBC/hooks'
@@ -24,6 +29,7 @@ export type TDropdown = Omit<AccordionProps, `children`|`onChange`> & {
   bodySx?:CSSProperties
   headerSx?:CSSProperties
   transformIconOn?:number
+  showExpandIcon?:boolean
   transformIconOff?:number
   headerTextSx?:CSSProperties
   expandIconSx?:CSSProperties
@@ -59,6 +65,7 @@ export const Dropdown = (props:TDropdown) => {
     headerTextSx,
     expandIconSx,
     Body:BodyComp,
+    showExpandIcon,
     transformIconOn,
     transformIconOff,
     headerContentSx,
@@ -118,7 +125,7 @@ export const Dropdown = (props:TDropdown) => {
         aria-controls={`${id}-content`}
         sx={[headerSx, { [`& .MuiAccordionSummary-content`]: headerContentSx }] as CSSProperties[]}
         expandIcon={
-          noToggle
+          !showExpandIcon || noToggle
             ? (<></>)
             : (
                 // @ts-ignore

@@ -28,14 +28,14 @@ export type TDndOptionalCallbacks = TDndMouseHover & {
   onClick?: MouseEventHandler<HTMLDivElement>
 }
 
-export type TDndCallbacks = TDndOptionalCallbacks & {
-  onDrop: TOnDrop
+export type TDndCallbacks<T=Record<string, any>> = TDndOptionalCallbacks & {
+  onDrop: TOnDrop<T>
 }
 
-export type TOnDrop<T=Record<string, any>> = <D=T>(
+export type TOnDrop<T=Record<string, any>> = (
   oldIdx: number,
   newIdx: number,
   pos: EDndPos,
-  oldData?:D,
-  newData?:D,
+  oldData?:T,
+  newData?:T,
 ) => Promise<void> | void

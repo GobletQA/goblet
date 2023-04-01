@@ -1,9 +1,9 @@
 import type { CSSProperties } from 'react'
 import type { TChangeCB, TInputVariants } from '@gobletqa/components'
 
+import Box from '@mui/material/Box'
 import { useRef, useEffect } from 'react'
 import { ESectionType } from '@GBR/types'
-import { InputContainer } from '../Section'
 import { capitalize } from '@keg-hub/jsutils'
 import { InlineInput } from '@gobletqa/components'
 
@@ -49,8 +49,9 @@ export const Title = (props:TTitle) => {
   }, [])
 
   return (
-    <InputContainer
+    <Box
       sx={containerSx}
+      minHeight={`40px`}
       className={`gb-${type}}-title gb-${type}-input-container`}
     >
       <InlineInput
@@ -69,6 +70,6 @@ export const Title = (props:TTitle) => {
         id={`${uuid || (type + '-' + name)}-title`}
         placeholder={`${capitalize(type)} ${(label || 'title or name').toLowerCase()} ...`}
       />
-    </InputContainer>
+    </Box>
   )
 }
