@@ -196,11 +196,13 @@ export const lightTheme = {
     }
   ],
   colors: {
+    // TODO: This is a custom property for the Race editor only
+    // Not a fan of having a custom property, will need to refactor at some point
+    [`race.featureBackground`]: colors.purple00,
+
     [`editor.border`]: colors.gray01,
 
-    // [`editor.background`]: colors.white,
-    // TODO: Fix this - Only want purple00 in the race editor, and white in the monaco editor
-    [`editor.background`]: colors.purple00,
+    [`editor.background`]: colors.white,
     [`editor.foreground`]: colors.black08,
 
     [`tab.border`]: colors.white,

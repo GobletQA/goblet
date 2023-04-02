@@ -1,8 +1,7 @@
 // CollapseAllIcon
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
-import { SectionActIcnBtn } from '../Section'
-import { capitalize } from '@keg-hub/jsutils'
+import { ActionIconBtn }  from '@GBR/components/Actions'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
   Tooltip,
@@ -44,7 +43,7 @@ export const CollapseAct = (props:TCollapseAct) => {
       enterDelay={500}
       title={`Collapse all other sections`}
     >
-      <SectionActIcnBtn
+      <ActionIconBtn
         id={ref}
         key={ref}
         sx={styles}

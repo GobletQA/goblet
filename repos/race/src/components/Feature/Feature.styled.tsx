@@ -18,7 +18,7 @@ export const FeatureStack = styled(Stack)`
     scrollbar-width: none;
     
     // background - #f9f8fb / dots - gray01
-    background: linear-gradient(90deg, var(--goblet-editor-background) 23px, transparent 1%) center, linear-gradient(var(--goblet-editor-background) 23px, transparent 1%) center, var(--goblet-editor-border);
+    background: linear-gradient(90deg, var(--goblet-race-featureBackground) 23px, transparent 1%) center, linear-gradient(var(--goblet-race-featureBackground) 23px, transparent 1%) center, var(--goblet-editor-border);
     background-size: 25px 25px;
 
 

@@ -1,7 +1,7 @@
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
-import { SectionActIcnBtn } from '../Section'
 import { capitalize } from '@keg-hub/jsutils'
+import { ActionIconBtn }  from '@GBR/components/Actions'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
   Tooltip,
@@ -38,7 +38,7 @@ export const CopyAct = (props:TCopyAct) => {
       enterDelay={500}
       title={`Copy ${capitalize(type)}`}
     >
-      <SectionActIcnBtn
+      <ActionIconBtn
         id={ref}
         key={ref}
         sx={styles}

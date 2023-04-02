@@ -1,12 +1,10 @@
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
-import { SectionActBtn } from '../Section'
 import { capitalize } from '@keg-hub/jsutils'
+import { ActionBtn }  from '@GBR/components/Actions'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
-  colors,
   Tooltip,
-  getColor,
   stopEvent,
   useInline,
   PencilAddIcon,
@@ -51,7 +49,7 @@ export const FeatureAdd = (props:TAddAct) => {
       enterDelay={500}
       title={`Add a ${capitalize(type)} section`}
     >
-      <SectionActBtn
+      <ActionBtn
         id={ref}
         key={ref}
         sx={styles}

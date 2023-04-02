@@ -6,9 +6,13 @@ import { AddItem } from '../AddItem'
 import { ESectionExt, ESectionType } from '@GBR/types'
 import { useEditor } from '@GBR/contexts'
 import { SectionActions } from './SectionActions'
-import { Dropdown, Container } from './Section.styled'
 import { wordCaps, cls, isStr } from '@keg-hub/jsutils'
 import { SectionDragHandle } from './SectionDragHandle'
+import {
+  SectionContent,
+  SectionDropdown,
+  SectionContainer,
+} from './Section.styled'
 
 export type TSection = {
   id:string
@@ -69,7 +73,7 @@ export const Section = (props:TSection) => {
   const isExpanded = expanded[id]
 
   return (
-    <Container
+    <SectionContainer
       id={id}
       sx={sx}
       elevation={0}
@@ -92,7 +96,7 @@ export const Section = (props:TSection) => {
     
       { show
           ? (
-              <Dropdown
+              <SectionDropdown
                 sx={dropdownSx}
                 Header={Header}
                 onChange={onChange}
@@ -110,8 +114,16 @@ export const Section = (props:TSection) => {
                   hasDragHandle && `gb-section-dropdown-dnd`
                 )}
               >
-                {children}
-              </Dropdown>
+                <SectionContent
+                  className={cls(
+                    `gb-section-content`,
+                    `gb-section-content-${type}`,
+                    hasDragHandle && `gb-section-content-dnd`
+                  )}
+                >
+                  {children}
+                </SectionContent>
+              </SectionDropdown>
             )
           : onAdd && (
               <AddItem
@@ -122,6 +134,6 @@ export const Section = (props:TSection) => {
               />
             ) || null
       }
-    </Container>
+    </SectionContainer>
   )
 }

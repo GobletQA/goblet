@@ -1,7 +1,7 @@
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
-import { SectionActIcnBtn } from '../Section'
 import { capitalize } from '@keg-hub/jsutils'
+import { ActionIconBtn }  from '@GBR/components/Actions'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
   Tooltip,
@@ -44,7 +44,7 @@ export const DeleteAct = (props:TDeleteAct) => {
       enterDelay={500}
       title={`Remove ${capitalize(type)}`}
     >
-      <SectionActIcnBtn
+      <ActionIconBtn
         id={ref}
         key={ref}
         sx={styles}

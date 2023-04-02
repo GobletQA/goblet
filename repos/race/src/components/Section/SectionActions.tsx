@@ -1,12 +1,9 @@
 import type { ComponentProps, CSSProperties, ReactNode, ComponentType } from 'react'
 
-import { cls, isObj, isFunc } from '@keg-hub/jsutils'
+import { SectionActs } from './Section.styled'
 import { Tooltip } from '@gobletqa/components'
-import {
-  SectionActBtn,
-  SectionActIcnBtn,
-  SectionActs,
-} from './Section.styled'
+import { cls, isObj, isFunc } from '@keg-hub/jsutils'
+import { ActionBtn, ActionIconBtn }  from '@GBR/components/Actions'
 
 export type TSectionActionMeta = {
   id?:string
@@ -45,7 +42,7 @@ export const SectionActions = (props:TSectionActions) => {
         }
 
         const action = meta as TSectionActionMeta
-        const Comp = action?.asButton ? SectionActBtn : SectionActIcnBtn
+        const Comp = action?.asButton ? ActionBtn : ActionIconBtn
 
         return (
           <Tooltip

@@ -1,7 +1,7 @@
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
-import { SectionActIcnBtn } from '../Section'
 import { useSettings } from '@GBR/contexts'
+import { ActionIconBtn }  from '@GBR/components/Actions'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
   Tooltip,
@@ -41,7 +41,7 @@ export const ToggleMetaAct = (props:TToggleMetaAct) => {
       enterDelay={500}
       title={`Hide Meta`}
     >
-      <SectionActIcnBtn
+      <ActionIconBtn
         id={ref}
         key={ref}
         sx={styles}

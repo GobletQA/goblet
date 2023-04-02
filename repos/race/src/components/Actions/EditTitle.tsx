@@ -1,7 +1,7 @@
 import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 
-import { SectionActIcnBtn } from '../Section'
 import { capitalize } from '@keg-hub/jsutils'
+import { ActionIconBtn }  from '@GBR/components/Actions'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
 import {
   colors,
@@ -56,7 +56,7 @@ export const EditTitleAct = (props:TEditTitle) => {
       enterDelay={500}
       title={`Edit ${capitalize(type)} ${label}`}
     >
-      <SectionActIcnBtn
+      <ActionIconBtn
         id={ref}
         key={ref}
         sx={styles}

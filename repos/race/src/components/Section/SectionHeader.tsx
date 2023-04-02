@@ -4,7 +4,7 @@ import {
   SectionHeaderText,
   SectionHeaderType,
   SectionHeaderContent
-} from './Section.styled'
+} from './SectionHeader.styled'
 
 export type TStepHeader = {
   type: ESectionType

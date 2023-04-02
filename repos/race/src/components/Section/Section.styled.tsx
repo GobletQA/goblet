@@ -1,26 +1,17 @@
 import Box from '@mui/material/Box'
 import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
+import { headerCss } from './SectionHeader.styled'
 import {
-  Span,
   dims,
   colors,
   gutter,
-  Button,
-  IconButton,
   DragIndicatorIcon,
   Dropdown as DropdownComp
 } from '@gobletqa/components'
 
 
-const action = {
-  button:`
-    margin-left: ${gutter.margin.qpx};
-    margin-right: ${gutter.margin.qpx};
-  `
-}
-
-const dnd = {
+const dndCss = {
   dropdown: `
     &.gb-section-dropdown-dnd {
       & .gb-dropdown-header {
@@ -44,7 +35,7 @@ const dnd = {
   `
 }
 
-const dropdown = {
+const dropdownCss = {
   headerActive:`
     & .gb-section-actions {
       opacity: 1;
@@ -52,25 +43,7 @@ const dropdown = {
   `,
 }
 
-const header = {
-  textShared: `
-    font-size: 14.5px;
-    font-weight: bold;
-    transition: color 300ms ease;
-    color: var(--goblet-list-deemphasizedForeground);
-  `,
-  textActive: `
-    & > .gb-section-dropdown > .gb-dropdown-header .section-header-text-type {
-      color: var(--goblet-list-highlightForeground);
-    }
-
-    & > .gb-section-dropdown > .gb-dropdown-header .section-header-text-content {
-      color: var(--goblet-editor-foreground);
-    }
-  `
-}
-
-export const Container = styled(Paper)`
+export const SectionContainer = styled(Paper)`
   border: none;
   position: relative;
   margin-top: ${gutter.margin.px};
@@ -80,7 +53,7 @@ export const Container = styled(Paper)`
   transition: border 300ms ease, box-shadow 300ms ease;
   
   &:hover {
-    ${header.textActive}
+    ${headerCss.textActive}
   }
 
   &:hover:not(.gb-section-dropdown-expanded) { 
@@ -88,19 +61,14 @@ export const Container = styled(Paper)`
   }
 
   &.gb-section-dropdown-expanded {
-    ${header.textActive}
+    ${headerCss.textActive}
   }
 
   & > .gb-dropdown {
-    // padding: 20px;
     overflow: hidden;
     border-radius: 4px;
 
     & > .MuiButtonBase-root.gb-dropdown-header {
-      // margin-top: -20px;
-      // margin-left: -20px;
-      // margin-right: -20px;
-      // margin-bottom: -20px;
       transition: margin-bottom 300ms ease, border 300ms ease, box-shadow 300ms ease;
     }
 
@@ -110,37 +78,10 @@ export const Container = styled(Paper)`
 
   }
 `
-
-export const SectionHeaderText = styled(Span)`
-  font-size: 14.5px;
-  padding: ${gutter.padding.qpx};
-`
-
-export const SectionHeaderType = styled(Span)`
-  ${header.textShared}
-`
-export const SectionHeaderContent = styled(Span)`
-  margin-left: 5px;
-  ${header.textShared}
-`
-
-export const SectionDragHandleContainer = styled(Box)(dnd.dragHandle)
-export const SectionDragHandleIcon = styled(DragIndicatorIcon)(dnd.dragIcon)
-
-export const SectionActs = styled(Box)`
-  opacity: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 300ms ease;
-`
-export const SectionActBtn = styled(Button)(action.button)
-export const SectionActIcnBtn = styled(IconButton)(action.button)
-
-export const Dropdown = styled(DropdownComp)`
+export const SectionDropdown = styled(DropdownComp)`
   cursor: default;
   transition: background-color 300ms ease;
-  ${dnd.dropdown}
+  ${dndCss.dropdown}
 
   & .gb-dropdown-header {
     flex-direction: row-reverse;
@@ -157,7 +98,7 @@ export const Dropdown = styled(DropdownComp)`
   }
 
   &.Mui-expanded > .MuiAccordionSummary-root {
-    ${dropdown.headerActive}
+    ${dropdownCss.headerActive}
   }
 
   & > .MuiAccordionSummary-root {
@@ -170,7 +111,7 @@ export const Dropdown = styled(DropdownComp)`
     transition: border 300ms ease;
 
     &:hover {
-      ${dropdown.headerActive}
+      ${dropdownCss.headerActive}
     }
     
     &.Mui-expanded {
@@ -192,9 +133,7 @@ export const Dropdown = styled(DropdownComp)`
     padding-left: ${gutter.padding.tQpx};
     padding-right: ${gutter.padding.tQpx};
     background-color: var(--goblet-editor-background);
-    // background-color: ${colors.white01};
-
-    border: 5px solid #fff;
+    border: 5px solid var(--goblet-editor-background);;
     border-top: none;
     box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.1);
   }
@@ -203,4 +142,19 @@ export const Dropdown = styled(DropdownComp)`
     padding-left: 0px;
   }
 
+`
+
+export const SectionContent = styled(Box)`
+  
+`
+
+export const SectionDragHandleContainer = styled(Box)(dndCss.dragHandle)
+export const SectionDragHandleIcon = styled(DragIndicatorIcon)(dndCss.dragIcon)
+
+export const SectionActs = styled(Box)`
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 300ms ease;
 `
