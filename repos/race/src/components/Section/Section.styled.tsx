@@ -12,6 +12,7 @@ import {
   Dropdown as DropdownComp
 } from '@gobletqa/components'
 
+
 const action = {
   button:`
     margin-left: ${gutter.margin.qpx};
@@ -36,7 +37,7 @@ const dnd = {
     align-items: center;
     justify-content: center;
     background-color: transparent;
-    height: ${dims.dropdown.header.px};
+    height: ${dims.race.section.header.px};
   `,
   dragIcon: `
     background-color: transparent;
@@ -45,11 +46,28 @@ const dnd = {
 
 const dropdown = {
   headerActive:`
-    background-color: ${colors.purple01};
     & .gb-section-actions {
       opacity: 1;
     }
   `,
+}
+
+const header = {
+  textShared: `
+    font-size: 14.5px;
+    font-weight: bold;
+    transition: color 300ms ease;
+    color: var(--goblet-list-deemphasizedForeground);
+  `,
+  textActive: `
+    & > .gb-section-dropdown > .gb-dropdown-header .section-header-text-type {
+      color: var(--goblet-list-highlightForeground);
+    }
+
+    & > .gb-section-dropdown > .gb-dropdown-header .section-header-text-content {
+      color: var(--goblet-editor-foreground);
+    }
+  `
 }
 
 export const Container = styled(Paper)`
@@ -58,19 +76,32 @@ export const Container = styled(Paper)`
   margin-top: ${gutter.margin.px};
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-tab-activeBackground);
+  border: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+  transition: border 300ms ease, box-shadow 300ms ease;
+  
+  &:hover {
+    ${header.textActive}
+  }
+
+  &:hover:not(.gb-section-dropdown-expanded) { 
+    box-shadow: 0px 4px 0px -2px var(--goblet-list-highlightForeground);
+  }
+
+  &.gb-section-dropdown-expanded {
+    ${header.textActive}
+  }
 
   & > .gb-dropdown {
-    padding: 20px;
-    border: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+    // padding: 20px;
     overflow: hidden;
     border-radius: 4px;
 
     & > .MuiButtonBase-root.gb-dropdown-header {
-      margin-top: -20px;
-      margin-left: -20px;
-      margin-right: -20px;
-      margin-bottom: -20px;
-      transition: background-color 300ms ease, margin-bottom 300ms ease;
+      // margin-top: -20px;
+      // margin-left: -20px;
+      // margin-right: -20px;
+      // margin-bottom: -20px;
+      transition: margin-bottom 300ms ease, border 300ms ease, box-shadow 300ms ease;
     }
 
     & > .MuiButtonBase-root.gb-dropdown-header.Mui-expanded {
@@ -81,9 +112,16 @@ export const Container = styled(Paper)`
 `
 
 export const SectionHeaderText = styled(Span)`
-  font-size: 14px;
+  font-size: 14.5px;
   padding: ${gutter.padding.qpx};
-  color: var(--goblet-editor-foreground);
+`
+
+export const SectionHeaderType = styled(Span)`
+  ${header.textShared}
+`
+export const SectionHeaderContent = styled(Span)`
+  margin-left: 5px;
+  ${header.textShared}
 `
 
 export const SectionDragHandleContainer = styled(Box)(dnd.dragHandle)
@@ -123,15 +161,23 @@ export const Dropdown = styled(DropdownComp)`
   }
 
   & > .MuiAccordionSummary-root {
-    height: 40px;
-    min-height: 40px;
+    height: ${dims.race.section.header.px};
+    min-height: ${dims.race.section.header.px};
     transition: background-color 300ms ease;
     padding: ${gutter.padding.hpx} ${gutter.padding.hpx};
     background-color: var(--goblet-tab-activeBackground);
+    // border-bottom: 1px solid transparent;
+    transition: border 300ms ease;
 
     &:hover {
       ${dropdown.headerActive}
     }
+    
+    &.Mui-expanded {
+      // border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+    }
+    
+    
   }
 
   & .MuiAccordionSummary-content {
@@ -140,7 +186,17 @@ export const Dropdown = styled(DropdownComp)`
   }
 
   & .MuiCollapse-root {
-    padding-left: ${gutter.padding.hpx};
+  }
+  
+  & .gb-dropdown-body {
+    padding-left: ${gutter.padding.tQpx};
+    padding-right: ${gutter.padding.tQpx};
+    background-color: var(--goblet-editor-background);
+    // background-color: ${colors.white01};
+
+    border: 5px solid #fff;
+    border-top: none;
+    box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.1);
   }
 
   & .gb-section-dropdown-step .MuiCollapse-root {

@@ -66,6 +66,7 @@ export const Section = (props:TSection) => {
   const { expanded, updateExpanded } = useEditor()
   const hasDragHandle = Boolean(showDragHandle !== false && dragHandleRef)
   const onChange = (expand:boolean) => (expand !== expanded[id] && updateExpanded(id, expand))
+  const isExpanded = expanded[id]
 
   return (
     <Container
@@ -76,7 +77,8 @@ export const Section = (props:TSection) => {
       className={cls(
         className,
         `gb-section-dropdown-container`,
-        hasDragHandle && `gb-section-dnd`
+        hasDragHandle && `gb-section-dnd`,
+        isExpanded && `gb-section-dropdown-expanded`
       )}
     >
       {hasDragHandle && (
@@ -96,7 +98,7 @@ export const Section = (props:TSection) => {
                 onChange={onChange}
                 noToggle={noToggle}
                 headerSx={headerSx}
-                expanded={expanded[id]}
+                expanded={isExpanded}
                 showExpandIcon={showExpandIcon}
                 headerContentSx={headerContentSx}
                 id={`${parent.uuid}-${id || uuid}`}

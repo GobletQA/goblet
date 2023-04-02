@@ -11,7 +11,8 @@ const divider = 1
 const headerH = 40
 const editorTabs = 40
 const sectionHeaderH = 40
-const raceEditorHeader = 40
+const raceEditorHeader = 45
+const raceSectionHeaderH = 40
 
 const defHeaderH = 35
 
@@ -95,6 +96,12 @@ export const dims = {
       height: {
         size: raceEditorHeader,
         px: `${raceEditorHeader}px`
+      }
+    },
+    section: {
+      header: {
+        height: raceSectionHeaderH,
+        px: `${raceSectionHeaderH}px`,
       }
     }
   }

@@ -16,7 +16,11 @@ export const FeatureStack = styled(Stack)`
     padding-top: 0px;
     overflow-y: auto;
     scrollbar-width: none;
-    background-color: var(--goblet-editor-background);
+    
+    // background - #f9f8fb / dots - gray01
+    background: linear-gradient(90deg, var(--goblet-editor-background) 23px, transparent 1%) center, linear-gradient(var(--goblet-editor-background) 23px, transparent 1%) center, var(--goblet-editor-border);
+    background-size: 25px 25px;
+
 
     ::-webkit-scrollbar-track {
       background-color: transparent;
@@ -94,11 +98,11 @@ export const FeatureActionBtn = styled(Button)`
   }
 `
 
-
 export const HeaderText = styled(H3)`
   flex-grow: 1;
-  font-size: 16px;
+  font-size: 18px;
   padding-left: 20px;
+  color: var(--goblet-editor-foreground);
 `
 
 export const EmptyFeatureGrid = styled(Grid)``
