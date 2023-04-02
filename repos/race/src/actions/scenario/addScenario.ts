@@ -1,4 +1,8 @@
-import type { TRaceFeature } from '@GBR/types'
+import type {
+  TRaceFeature,
+  TRaceScenario,
+  TRaceScenarioParent
+} from '@GBR/types'
 
 import { findRule } from '@GBR/utils/find'
 import { emptyArr } from '@keg-hub/jsutils'
@@ -11,8 +15,38 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 const prefix = `[Add Scenario]`
 
 export type TAddScenario = {
+  index?:number
   parentId:string
+  persist?:Boolean
   feature?:TRaceFeature
+  scenario?:TRaceScenario
+}
+
+const buildScenario = (
+  props:TAddScenario,
+  feature:TRaceFeature,
+  parent:TRaceScenarioParent
+) => {
+  const scenarios = [...(parent?.scenarios || emptyArr)]
+  let scenario = props.scenario
+
+  if(scenario)
+    scenarios.splice(props.index || scenarios.length - 1, 0, scenario)
+  else {
+    scenario = scenarioFactory({
+      parent,
+      feature,
+      empty: true,
+    })
+    if(!scenario) return factoryFailed(`scenario`, prefix)
+
+    scenarios.push(scenario)
+  }
+
+  return {
+    scenario,
+    scenarios,
+  }
 }
 
 const toRule = (
@@ -27,14 +61,15 @@ const toRule = (
   } = findRule(feature, props.parentId)
   if(!rule) return logNotFound(`rule`, prefix)
 
-  const scenario = scenarioFactory({ feature, empty: true, parent:rule})
-  if(!scenario) return factoryFailed(`scenario`, prefix)
+  const built = buildScenario(props, feature, rule)
+  if(!built) return factoryFailed(`scenario`, prefix)
+  const { scenarios, scenario } = built
 
-  const scenarios = [...(rule.scenarios || emptyArr), scenario]
   rules[ruleIdx as number] = {...rule, scenarios}
 
   const update = {...feature, rules}
-  !props.feature && updateFeature(update, { expand: scenario.uuid })
+
+  props.persist !== false && updateFeature(update, { expand: scenario.uuid })
 
   return update
 }
@@ -43,19 +78,20 @@ const toFeature = (
   props:TAddScenario,
   feature:TRaceFeature,
 ) => {
+  const built = buildScenario(props, feature, feature)
+  if(!built) return factoryFailed(`scenario`, prefix)
+  const { scenarios, scenario } = built
 
-  const scenario = scenarioFactory({ feature, empty: true})
-  if(!scenario) return factoryFailed(`scenario`, prefix)
+  const updated = {...feature, scenarios}
 
-  const updated = {...feature, scenarios: [...(feature.scenarios || emptyArr), scenario]}
-  !props.feature && updateFeature(updated, { expand: scenario.uuid })
+  props.persist !== false && updateFeature(updated, { expand: scenario.uuid })
 
   return updated
 }
 
 export const addScenario = async (props:TAddScenario) => {
   const {
-    parentId
+    parentId,
   } = props
   
   const { feature } = await getFeature(props.feature)

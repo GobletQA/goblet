@@ -17,24 +17,24 @@ const prefix = `[Add Scenario#Step]`
 
 export type TAddScenarioStep = {
   index?:number,
-  stepParentId:string,
   step?:TRaceStep,
+  persist?:Boolean
+  stepParentId:string,
   feature?:TRaceFeature
   granParent?:TRaceScenarioParent
 }
 
-const addStep = (
+const buildStep = (
   props:TAddScenarioStep,
   feature:TRaceFeature,
   scenario:TRaceScenario,
   index?:number,
 ) => {
-  
   const steps = [...(scenario?.steps || emptyArr)]
   let step = props.step
 
   if(step){
-    steps.splice(index || scenario.steps.length - 1, 0, step)
+    steps.splice(index || steps.length - 1, 0, step)
   }
   else {
     step = stepFactory({
@@ -70,7 +70,7 @@ const toRule = (
   rules[ruleIdx as number] = {...rule, scenarios}
 
   const update = {...feature, rules}
-  !props.feature && updateFeature(update, { expand: step.uuid })
+  props.persist !== false && updateFeature(update, { expand: step.uuid })
 
   return update
 }
@@ -82,7 +82,7 @@ const toFeature = (
   step:TRaceStep
 ) => {
   const update = {...feature, scenarios}
-  !props.feature && updateFeature(update, { expand: step.uuid })
+  props.persist !== false && updateFeature(update, { expand: step.uuid })
 
   return update
 }
@@ -107,7 +107,7 @@ export const addScenarioStep = async (props:TAddScenarioStep) => {
   } = findScenario(feature, stepParentId, granParent)
   if(!scenario) return logNotFound(`scenario`, prefix, stepParentId)
 
-  const added = addStep(props, feature, scenario, index)
+  const added = buildStep(props, feature, scenario, index)
   if(!added) return
 
   const { steps, step } = added

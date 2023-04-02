@@ -8,6 +8,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 const prefix = `[Remove Scenario]`
 
 export type TRemoveScenario = {
+  persist?:Boolean
   scenarioId:string
   feature?:TRaceFeature
   parent?:TRaceScenarioParent
@@ -29,7 +30,7 @@ const toRule = (
   rules[ruleIdx] = {...rule, scenarios}
   
   const updated = {...feature, rules}
-  !props.feature && updateFeature(updated)
+  props.persist !== false && updateFeature(updated)
 
   return updated
 }
@@ -40,7 +41,7 @@ const toFeature = (
   scenarios:TRaceScenario[]
 ) => {
   const updated = {...feature, scenarios}
-  !props.feature && updateFeature(updated)
+  props.persist !== false && updateFeature(updated)
 
   return updated
 }

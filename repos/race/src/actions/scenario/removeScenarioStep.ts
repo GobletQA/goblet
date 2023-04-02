@@ -10,6 +10,7 @@ const prefix = `[Remove Scenario#Step]`
 
 export type TRemoveScenarioStep = {
   stepId:string
+  persist?:Boolean
   stepParentId?:string
   feature?:TRaceFeature
   granParent?:TRaceScenarioParent
@@ -31,7 +32,7 @@ const toRule = (
   rules[ruleIdx as number] = {...rule, scenarios}
 
   const update = {...feature, rules}
-  !props.feature && updateFeature(update)
+  props.persist !== false && updateFeature(update)
   
   return update
 }
@@ -42,7 +43,7 @@ const toFeature = (
   scenarios:TRaceScenario[]
 ) => {
   const update = {...feature, scenarios}
-  !props.feature && updateFeature(update)
+  props.persist !== false && updateFeature(update)
 
   return update
 }

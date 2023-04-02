@@ -9,6 +9,7 @@ const prefix = `[Update Background#Step]`
 
 export type TUpdateBackgroundStep = {
   step:TRaceStep
+  persist?:Boolean
   feature?:TRaceFeature
   backgroundParentId:string
   granParent:TRaceBackgroundParent
@@ -17,6 +18,7 @@ export type TUpdateBackgroundStep = {
 const fromFeature = (props:TUpdateBackgroundStep, feature:TRaceFeature) => {
   const {
     step,
+    persist,
   } = props
 
   if(!feature.background) return missing(`Background on feature. Can not update step`, prefix, feature)
@@ -26,7 +28,7 @@ const fromFeature = (props:TUpdateBackgroundStep, feature:TRaceFeature) => {
 
   steps[stepIdx] = step
   const updated = {...feature, background: {...feature.background, steps}}
-  !props.feature && updateFeature(updated)
+  persist !== false && updateFeature(updated)
 
   return updated
 }
@@ -34,6 +36,7 @@ const fromFeature = (props:TUpdateBackgroundStep, feature:TRaceFeature) => {
 const fromRule = (props:TUpdateBackgroundStep, feature:TRaceFeature) => {
   const {
     step,
+    persist,
     backgroundParentId,
   } = props
 
@@ -53,7 +56,7 @@ const fromRule = (props:TUpdateBackgroundStep, feature:TRaceFeature) => {
   rules[ruleIdx as number] = rule
 
   const updated = {...feature, rules}
-  !props.feature && updateFeature({...feature, rules})
+  persist !== false && updateFeature({...feature, rules})
   
   return updated
 }

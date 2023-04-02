@@ -14,6 +14,7 @@ const prefix = `[Update Scenario#Step]`
 
 export type TUpdateScenarioStep = {
   step:TRaceStep
+  persist?:Boolean
   stepParentId:string
   feature?:TRaceFeature
   granParent?:TRaceScenarioParent
@@ -36,7 +37,7 @@ const toRule = (
   rules[ruleIdx as number] = {...rule, scenarios}
 
   const updated = {...feature, rules}
-  !props.feature && updateFeature(updated)
+  props.persist !== false && updateFeature(updated)
 
   return updated
 }
@@ -48,7 +49,7 @@ const toFeature = (
   scenarios:TRaceScenario[]
 ) => {
   const updated = {...feature, scenarios}
-  !props.feature && updateFeature(updated)
+  props.persist !== false && updateFeature(updated)
 
   return updated
 }

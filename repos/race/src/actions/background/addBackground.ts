@@ -8,6 +8,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 export type TAddBackground = {
   parentId:string,
+  persist?:Boolean
   feature?:TRaceFeature
   background?:TRaceBackground
 }
@@ -15,6 +16,7 @@ export type TAddBackground = {
 const prefix = `[Add Background]`
 
 const toRule = (
+  props:TAddBackground,
   feature:TRaceFeature,
   ruleId:string,
   addBackground?:TRaceBackground
@@ -37,23 +39,27 @@ const toRule = (
 
   if(!background) return factoryFailed(`background`, prefix)
 
-  rules[ruleIdx as number] = {
-    ...rule,
-    background: background
-  }
+  rules[ruleIdx as number] = {...rule, background: background}
 
-  return updateFeature({...feature, rules}, { expand: background.uuid })
+  const update = {...feature, rules}
+  props.persist !== false && updateFeature(update, { expand: background.uuid })
+
+  return update
 }
 
 const toFeature = (
+  props:TAddBackground,
   feature:TRaceFeature,
-  rBackground?:TRaceBackground
+  addBackground?:TRaceBackground
 ) => {
 
-  const background = rBackground || backgroundFactory({feature, empty: true})
+  const background = addBackground || backgroundFactory({feature, empty: true})
   if(!background) return factoryFailed(`background`, prefix)
 
-  return updateFeature({...feature, background}, { expand: background.uuid })
+  const update = {...feature, background}
+  props.persist !== false && updateFeature(update, { expand: background.uuid })
+
+  return update
 }
 
 export const addBackground = async (props:TAddBackground) => {
@@ -66,6 +72,6 @@ export const addBackground = async (props:TAddBackground) => {
   if(!feature) return logNotFound(`feature`, prefix)
 
   return !parentId || parentId === feature.uuid
-    ? toFeature(feature, background)
-    : toRule(feature, parentId, background)
+    ? toFeature(props, feature, background)
+    : toRule(props, feature, parentId, background)
 }

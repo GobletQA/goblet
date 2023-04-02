@@ -9,6 +9,7 @@ const prefix = `[Update Background]`
 
 export type TUpdateBackground = {
   parentId:string
+  persist?:Boolean
   feature?:TRaceFeature
   background:TRaceBackground
 }
@@ -16,6 +17,7 @@ export type TUpdateBackground = {
 
 const toRule = (props:TUpdateBackground, feature:TRaceFeature) => {
   const {
+    persist,
     parentId,
     background
   } = props
@@ -31,16 +33,16 @@ const toRule = (props:TUpdateBackground, feature:TRaceFeature) => {
   rules[ruleIdx as number] = rule
 
   const updated = {...feature, rules}
-  !props.feature && updateFeature(updated)
+  persist !== false && updateFeature(updated)
   
   return updated
 }
 
 const toFeature = (props:TUpdateBackground, feature:TRaceFeature) => {
-  const { background } = props
+  const { persist, background } = props
   
   const updated = {...feature, background: {...feature?.background, ...background}}
-  !props.feature && updateFeature(updated)
+  persist !== false && updateFeature(updated)
 
   return updated
 }

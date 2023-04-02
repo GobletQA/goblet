@@ -8,6 +8,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 const prefix = `[Update Scenario]`
 
 export type TUpdateScenario = {
+  persist?:Boolean
   scenarioId:string,
   feature?:TRaceFeature
   parent?:TRaceScenarioParent
@@ -23,7 +24,7 @@ const toRule = (
   index:number
 ) => {
 
-  const { update } = props
+  const { update, persist } = props
 
   const {
     rule,
@@ -36,7 +37,7 @@ const toRule = (
   rules[ruleIdx as number] = {...rule, scenarios}
 
   const updated = {...feature, rules}
-  !props.feature && updateFeature(updated)
+  persist !== false && updateFeature(updated)
 
   return updated
 }
@@ -51,6 +52,7 @@ const toFeature = (
 
   const {
     update,
+    persist,
     scenarioId
   } = props
 
@@ -60,7 +62,7 @@ const toFeature = (
   scenarios[index] = {...scenario, ...update}
 
   const updated = {...feature, scenarios}
-  !props.feature && updateFeature(updated)
+  persist !== false && updateFeature(updated)
 
   return updated
 }

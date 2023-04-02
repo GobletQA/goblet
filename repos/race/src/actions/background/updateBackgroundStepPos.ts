@@ -1,6 +1,7 @@
-import type { TRaceFeature, TRaceStep } from '@GBR/types'
+import type { TRaceFeature, TRaceStep, TRaceBackground } from '@GBR/types'
 
 import { findRule } from '@GBR/utils/find'
+import { moveStep } from '@GBR/utils/actions/moveStep'
 import { missing, logNotFound } from '@GBR/utils/logging'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
@@ -8,46 +9,31 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 const prefix = `[Update Background Step]`
 
 export type TUpdateBackgroundStepPos = {
-  oldIdx:number,
-  newIdx:number,
+  oldIdx:number
+  newIdx:number
+  persist?:Boolean
   feature?:TRaceFeature
   backgroundParentId:string
-}
-
-
-const updateStepsPos = (
-  steps:TRaceStep[],
-  step:TRaceStep,
-  oldIdx:number,
-  newIdx:number,
-) => {
-  const updated = [...steps]
-  updated.splice(oldIdx, 1)
-  updated.splice(newIdx, 0, step)
- 
-  return updated
 }
 
 const fromFeature = (props:TUpdateBackgroundStepPos, feature:TRaceFeature) => {
   const {
     oldIdx,
     newIdx,
+    persist,
   } = props
 
   if(!feature.background) return logNotFound(`background`, prefix)
 
-  const moveStep = feature.background.steps[oldIdx]
-  if(!moveStep) return missing(`Step. Failed to update step position.`, prefix)
+  const step = feature.background.steps[oldIdx]
+  if(!step) return missing(`Step. Failed to update step position.`, prefix)
 
   const updated = {
     ...feature,
-    background: {
-      ...feature.background,
-      steps: updateStepsPos(feature.background.steps, moveStep, oldIdx, newIdx)
-    }
+    background: moveStep<TRaceBackground>(feature.background, oldIdx, newIdx)
   } as TRaceFeature
 
-  !props.feature && updateFeature(updated)
+  !persist !== false && updateFeature(updated)
 
   return updated
 }
@@ -56,6 +42,7 @@ const fromRule = (props:TUpdateBackgroundStepPos, feature:TRaceFeature) => {
   const {
     oldIdx,
     newIdx,
+    persist,
     backgroundParentId
   } = props
 
@@ -67,19 +54,13 @@ const fromRule = (props:TUpdateBackgroundStepPos, feature:TRaceFeature) => {
   if(!rule) return logNotFound(`rule`, prefix)
   if(!rule.background) return missing(`Background on rule. Can not update step`, prefix, rule)
 
-  const moveStep = rule.background?.steps?.[oldIdx]
-  if(!moveStep) return missing(`Step. Failed to update step position.`, prefix)
-
   rules[ruleIdx as number] = {
     ...rule,
-    background: {
-      ...rule.background,
-      steps: updateStepsPos(rule.background.steps, moveStep, oldIdx, newIdx,)
-    }
+    background: moveStep<TRaceBackground>(rule.background, oldIdx, newIdx)
   }
 
   const updated = {...feature, rules}
-  !props.feature && updateFeature({...feature, rules})
+  !persist !== false && updateFeature({...feature, rules})
   
   return updated
 }
@@ -91,5 +72,4 @@ export const updateBackgroundStepPos = async (props:TUpdateBackgroundStepPos) =>
   return !props.backgroundParentId || props.backgroundParentId === feature.uuid
     ? fromFeature(props, feature)
     : fromRule(props, feature)
-
 }

@@ -10,11 +10,12 @@ const prefix = `[Remove Background]`
 
 export type TRemoveBackground = {
   parentId:string
+  persist?:Boolean
   feature?:TRaceFeature
 }
 
 export const removeBackground = async (props:TRemoveBackground) => {
-  const { parentId } = props
+  const { parentId, persist } = props
 
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, `[Remove Background]`)
@@ -35,6 +36,8 @@ export const removeBackground = async (props:TRemoveBackground) => {
   const { background, ...updated } = rule
   rules[ruleIdx as number] = updated
 
-  updateFeature({...feature, rules})
+  const update = {...feature, rules}
+  persist !== false &&  updateFeature(update)
 
+  return update
 }

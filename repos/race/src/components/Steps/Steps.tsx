@@ -47,10 +47,10 @@ export const Steps = (props:TSteps) => {
     newIdx,
     pos:EDndPos,
     oldData,
-    data
+    newData
   ) => {
-    oldData?.parent && data?.parent && oldData?.parent !== data?.parent
-      ? moveStep(oldData, data, pos)
+    oldData?.parent && newData?.parent && oldData?.parent !== newData?.parent
+      ? moveStep({ pos, newData, oldData })
       : onMove?.(parent.uuid, oldIdx, newIdx)
   })
 

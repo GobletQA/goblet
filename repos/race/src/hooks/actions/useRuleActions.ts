@@ -36,7 +36,9 @@ export const useRuleActions = (props:THRuleActions) => {
 
     const onPlay = () => {}
     const onCopy = () => copyRule(rule)
-    const onRemove = () => removeRule(rule.uuid)
+    const onRemove = () => removeRule({
+      ruleId: rule.uuid
+    })
 
     const onAddBackground = () => addBackground({
       parentId: rule.uuid

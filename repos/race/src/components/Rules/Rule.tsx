@@ -34,6 +34,7 @@ export const Rule = (props:TRule) => {
   const {
     rule,
     ruleId,
+    feature,
   } = props
 
   const {
@@ -66,7 +67,11 @@ export const Rule = (props:TRule) => {
     key: EGherkinKeys.rule,
     callback: (update?:string) => {
       rule.rule !== update
-        && updateRule(rule.uuid, { rule: update })
+        && updateRule({
+            feature,
+            ruleId: rule.uuid,
+            update: { rule: update }
+          })
     },
   })
 

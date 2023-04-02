@@ -1,16 +1,30 @@
-import type { TRaceRule } from '@GBR/types'
+import type { TRaceFeature, TRaceRule } from '@GBR/types'
 
 import { findRule } from '@GBR/utils/find'
-import { deepMerge } from '@keg-hub/jsutils'
+import { omitKeys } from '@keg-hub/jsutils'
 import { logNotFound, missingId } from '@GBR/utils/logging'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 const prefix = `[Update Rule]`
-export const updateRule = async (ruleId:string, update:Partial<TRaceRule>) => {
+
+export type TUpdateRule = {
+  ruleId:string
+  persist?:Boolean
+  feature?:TRaceFeature
+  update:Partial<TRaceRule>
+}
+
+export const updateRule = async (props:TUpdateRule) => {
+  const {
+    ruleId,
+    update,
+    persist
+  } = props
+  
   if(!ruleId) return missingId(`rule`, prefix)
   
-  const { feature } = await getFeature()
+  const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
   const {
@@ -20,7 +34,11 @@ export const updateRule = async (ruleId:string, update:Partial<TRaceRule>) => {
   } = findRule(feature, ruleId)
   if(!rule) return logNotFound(`rule`, prefix)
 
-  rules[ruleIdx] = deepMerge(rule, update)
+  // Scenarios and background are updated through other actions
+  rules[ruleIdx] = {...rule,...omitKeys(update, [`scenarios`, `background`])}
 
-  updateFeature({...feature, rules})
+  const updated = {...feature, rules}
+  persist !== false && updateFeature(updated)
+
+  return updated
 }

@@ -18,6 +18,7 @@ const prefix = `[Add Background#Step]`
 export type TAddBackgroundStep = {
   index?:number,
   step?:TRaceStep,
+  persist?:Boolean
   stepParentId:string,
   feature?:TRaceFeature
   granParent?:TRaceBackgroundParent
@@ -62,7 +63,7 @@ const toRule = (
   rules[ruleIdx] = {...rule, background}
 
   const updated = {...feature, rules}
-  !props.feature && updateFeature(updated, { expand: step.uuid })
+  props.persist !== false && updateFeature(updated, { expand: step.uuid })
 
   return updated
 }
@@ -74,7 +75,7 @@ const toFeature = (
   step:TRaceStep
 ) => {
   const updated = {...feature, background}
-  !props.feature && updateFeature(updated, { expand: step.uuid })
+  props.persist !== false && updateFeature(updated, { expand: step.uuid })
 
   return updated
 }

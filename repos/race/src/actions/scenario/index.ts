@@ -1,6 +1,7 @@
 export * from './addScenario'
 export * from './addScenarioStep'
 export * from './removeScenario'
+export * from './updateScenarioPos'
 export * from './removeScenarioStep'
 export * from './updateScenarioStep'
 export * from './updateScenarioTags'

@@ -15,6 +15,7 @@ const prefix = `[Remove Background#Step]`
 
 export type TRemoveBackgroundStep = {
   stepId:string,
+  persist?:Boolean
   stepParentId:string,
   feature?:TRaceFeature
   granParent?:TRaceBackgroundParent
@@ -37,7 +38,7 @@ const toRule = (
   }
 
   const updated = {...feature, rules}
-  !props.feature && updateFeature(updated)
+  props.persist !== false && updateFeature(updated)
 
   return updated
 }
@@ -54,7 +55,7 @@ const toFeature = (
       steps: background.steps.filter(step => step.uuid !== props.stepId)
     }
   }
-  !props.feature && updateFeature(updated)
+  props.persist !== false && updateFeature(updated)
 
   return updated
 }

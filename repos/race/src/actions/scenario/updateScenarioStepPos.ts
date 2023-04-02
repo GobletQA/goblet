@@ -1,15 +1,17 @@
 import type { TRaceFeature, TRaceScenario, TRaceScenarioParent } from '@GBR/types'
 
+import { moveStep } from '@GBR/utils/actions/moveStep'
 import { findScenario, findRule } from '@GBR/utils/find'
 import { missing, logNotFound } from '@GBR/utils/logging'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
-const prefix = `[Update Scenario Step]`
+const prefix = `[Update Scenario Step Pos]`
 
 export type TUpdateScenarioStepPos = {
-  oldIdx:number,
-  newIdx:number,
+  oldIdx:number
+  newIdx:number
+  persist?:Boolean
   scenarioId:string
   feature?:TRaceFeature
   scenarioParentId:string
@@ -33,7 +35,7 @@ const fromRule = (
   rules[ruleIdx] = {...rule, scenarios}
 
   const updated = {...feature, rules}
-  !props.feature && updateFeature(updated)
+  props.persist !== false && updateFeature(updated)
 
   return updated
 }
@@ -45,7 +47,7 @@ const fromFeature = (
 ) => {
 
   const updated = {...feature, scenarios}
-  !props.feature && updateFeature(updated)
+  props.persist !== false && updateFeature(updated)
 
   return updated
 }
@@ -57,7 +59,7 @@ export const updateScenarioStepPos = async (props:TUpdateScenarioStepPos) => {
   granParent,
   scenarioId,
   } = props
-  
+
   const { feature } = await getFeature()
   if(!feature) return logNotFound(`feature`, prefix)
 
@@ -68,15 +70,12 @@ export const updateScenarioStepPos = async (props:TUpdateScenarioStepPos) => {
     index:scenarioIdx,
   } = findScenario(feature, scenarioId, granParent)
   if(!scenario) return logNotFound(`scenario`, prefix)
+  if(!scenario.steps) return missing(`Steps on Scenario. Can not update step`, prefix, scenario)
 
-  const moveStep = scenario.steps[oldIdx]
-  if(!moveStep) return missing(`Step. Failed to update step position.`, prefix)
+  const moved = moveStep<TRaceScenario>(scenario, oldIdx, newIdx)
+  if(!moved) return
 
-  const steps = [...scenario.steps]
-  steps.splice(oldIdx, 1)
-  steps.splice(newIdx, 0, moveStep)
-
-  scenarios[scenarioIdx] = {...scenario, steps}
+  scenarios[scenarioIdx] = moved
 
   return parent.uuid === feature.uuid
     ? fromFeature(props, feature, scenarios)

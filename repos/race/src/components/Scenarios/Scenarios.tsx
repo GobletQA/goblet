@@ -11,7 +11,8 @@ import { ESectionType } from '@GBR/types'
 import { useEditor } from '@GBR/contexts'
 import { DndScenario } from './DndScenario'
 import { useInline } from '@gobletqa/components'
-
+import { moveScenario } from '@GBR/actions/general/moveScenario'
+import { updateScenarioPos } from '@GBR/actions/scenario/updateScenarioPos'
 
 export type TScenarios = {
   scenarios?:TRaceScenario[]
@@ -43,9 +44,16 @@ export const Scenarios = (props:TScenarios) => {
     newIdx,
     pos,
     oldData,
-    data
+    newData
   ) => {
-    // TODO: add scenario dnd logic here
+    oldData?.parent && newData?.parent && oldData?.parent !== newData?.parent
+      ? moveScenario({ oldData, newData, pos })
+      : updateScenarioPos({
+          newIdx,
+          oldIdx,
+          parentId: parent.uuid,
+          parentType: parent.type,
+        })
   })
 
   const showDragHandle = Boolean((scenarios?.length || 0) > 1)
