@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 
-export type TEvtCallback = (event:any) => any
+export type TEvtCallback = (event:any, ...args:any[]) => any
 
 export type TIcon = {
   title?: string

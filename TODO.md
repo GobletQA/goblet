@@ -6,12 +6,10 @@
 ## Bugs
 
 ### Race
-* Step Dnd between parent types, not being added to correct location
+* Step dnd between parent types, not being added to correct location
 * Browser play button not active when more then one feature open
 * Issues with General section
 * Issues with Tabs, when switching between multiple files
-* Remove toggle arrow and replace with Dnd Icon
-* Step Dnd no longer works when it's parent scenario can also Dnd
 * Background Step Dnd not working within it's self
 
 ### Monaco

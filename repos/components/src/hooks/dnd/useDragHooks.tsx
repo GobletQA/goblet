@@ -4,6 +4,8 @@ import type { RefObject, DragEvent } from 'react'
 import { EDndPos } from '@GBC/types'
 import { useCallback } from 'react'
 import { DndDraggingCls } from '@GBC/constants/values'
+import { preDef } from '@GBC/utils/dom/preventDefault'
+import { stopProp } from '@GBC/utils/dom/stopPropagation'
 import { uuid, toInt, parseJSON, emptyObj } from '@keg-hub/jsutils'
 
 const separator = `|>${uuid()}<|`
@@ -17,7 +19,7 @@ export type THDragHooks = TDndOptionalCallbacks & {
   dropIndicatorRef:RefObject<HTMLHRElement>
 }
 
-const callOnDrop = (
+const onDragDrop = (
   onDrop:TOnDrop,
   oldIndex:string,
   index:string|number,
@@ -51,10 +53,9 @@ export const useDragHooks = (props:THDragHooks) => {
 
 
   const onDropBefore = useCallback(
-    (evt: DragEvent) => {
-      evt.preventDefault()
+    preDef((evt: DragEvent) => {
       const [oldData, oldIdxStr] = evt.dataTransfer.getData('text/plain').split(separator)
-      callOnDrop(
+      onDragDrop(
         onDrop,
         oldIdxStr,
         index,
@@ -62,15 +63,14 @@ export const useDragHooks = (props:THDragHooks) => {
         oldData,
         data
       )
-    },
+    }),
     [onDrop, index, data]
   )
 
   const onDropAfter = useCallback(
-    (evt: DragEvent) => {
-      evt.preventDefault()
+    preDef((evt: DragEvent) => {
       const [oldData, oldIdxStr] = evt.dataTransfer.getData('text/plain').split(separator)
-      callOnDrop(
+      onDragDrop(
         onDrop,
         oldIdxStr,
         index,
@@ -78,38 +78,35 @@ export const useDragHooks = (props:THDragHooks) => {
         oldData,
         data
       )
-    },
+    }),
     [onDrop, index, data]
   )
 
-  const onDragEnter = useCallback((evt: DragEvent) => {
-    evt.preventDefault()
+  const onDragEnter = useCallback(preDef((evt: DragEvent) => {
     dropIndicatorRef.current && 
       evt.currentTarget.appendChild(dropIndicatorRef.current)
 
     ;dragEnterCB?.(evt)
-  }, [])
+  }), [])
 
-  const onDragOver = useCallback((evt: DragEvent) => {
-    evt.preventDefault()
+  const onDragOver = useCallback(preDef((evt: DragEvent) => {
     dragOverCB?.(evt)
-  }, [])
+  }), [])
 
-  const onDragLeave = useCallback((evt: DragEvent, onEnd?:boolean) => {
-    evt.preventDefault()
+  const onDragLeave = useCallback(preDef((evt: DragEvent, onEnd?:boolean) => {
     dropIndicatorRef.current?.remove()
     !onEnd && dragLeaveCB?.(evt)
-  }, [])
+  }), [])
 
   const onDragStart = useCallback(
-    (evt: DragEvent) => {
+    stopProp((evt: DragEvent) => {
       evt.dataTransfer.dropEffect = 'move'
       evt.dataTransfer.effectAllowed = 'move'
       evt.dataTransfer.setData('text/plain', `${data}${separator}${index.toString()}`)
       evt.dataTransfer.setDragImage(evt.currentTarget, ...dragImagePos)
       dragDivRef.current?.classList.add(DndDraggingCls)
       dragStartCB?.(evt)
-    },
+    }),
     [index, data, dragDivRef]
   )
 
