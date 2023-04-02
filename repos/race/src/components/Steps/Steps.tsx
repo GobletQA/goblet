@@ -24,7 +24,7 @@ export type TSteps = {
   onAdd?:(parentId:string) => void
   onRemove?:(stepId:string, parentId:string) => void
   onChange?:(updated:TRaceStep, parentId:string) => void
-  onMove?:(parentId:string, oldPos:number, newPos:number) => void
+  onMove?:(parentId:string, oldPos:number, newPos:number, pos:EDndPos) => void
 }
 
 export const Steps = (props:TSteps) => {
@@ -50,8 +50,19 @@ export const Steps = (props:TSteps) => {
     newData
   ) => {
     oldData?.parent && newData?.parent && oldData?.parent !== newData?.parent
-      ? moveStep({ pos, newData, oldData })
-      : onMove?.(parent.uuid, oldIdx, newIdx)
+      ? moveStep({
+          pos,
+          oldIdx,
+          newIdx,
+          newData,
+          oldData,
+        })
+      : onMove?.(
+          parent.uuid,
+          oldIdx,
+          newIdx,
+          pos
+        )
   })
 
   return (

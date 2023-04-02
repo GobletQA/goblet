@@ -1,6 +1,7 @@
 import type { TRaceScenarioParent, TRaceScenario, TRaceStep } from '@GBR/types'
 
 import { useMemo } from 'react'
+import { EDndPos } from '@gobletqa/components'
 import { copyScenario } from '@GBR/actions/scenario/copyScenario'
 import { updateScenarioStepPos } from '@GBR/actions/scenario/updateScenarioStepPos'
 
@@ -36,7 +37,13 @@ export const useScenarioActions = (props:THScenarioActions) => {
     const onCopyScenario = () => copyScenario(scenario)
     const onRemoveScenario = () => onRemove(scenario.uuid, parent.uuid)
     const onAddScenarioStep = () => onAddStep(scenario.uuid, parent.uuid)
-    const onMoveStep = (scenarioId:string, oldIdx:number, newIdx:number,) => updateScenarioStepPos({
+    const onMoveStep = (
+      scenarioId:string,
+      oldIdx:number,
+      newIdx:number,
+      pos:EDndPos
+    ) => updateScenarioStepPos({
+      pos,
       oldIdx,
       newIdx,
       scenarioId,

@@ -50,8 +50,6 @@ export const useDragHooks = (props:THDragHooks) => {
     onDragStart:dragStartCB,
   } = props
 
-
-
   const onDropBefore = useCallback(
     preDef((evt: DragEvent) => {
       const [oldData, oldIdxStr] = evt.dataTransfer.getData('text/plain').split(separator)

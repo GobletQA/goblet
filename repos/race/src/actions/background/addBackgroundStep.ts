@@ -6,9 +6,10 @@ import type {
   TRaceBackgroundParent,
 } from '@GBR/types'
 
-import { emptyArr, exists } from '@keg-hub/jsutils'
 import { findBackground } from '@GBR/utils/find'
+import { emptyArr, exists } from '@keg-hub/jsutils'
 import { stepFactory } from '@GBR/factories/stepFactory'
+import { buildStep } from '@GBR/utils/actions/buildStep'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 import { logNotFound, factoryFailed, missingId } from '@GBR/utils/logging'
@@ -22,33 +23,6 @@ export type TAddBackgroundStep = {
   stepParentId:string,
   feature?:TRaceFeature
   granParent?:TRaceBackgroundParent
-}
-
-const addStep = (
-  props:TAddBackgroundStep,
-  feature:TRaceFeature,
-  background:TRaceBackground,
-  index?:number,
-) => {
-  let step = props.step
-  if(step){
-    background.steps = [...(background.steps || emptyArr)]
-    background.steps.splice(index || background.steps.length - 1, 0, step)
-  }
-  else {
-    step = stepFactory({
-      feature,
-      parent: background
-    })
-    if(!step) return factoryFailed(`step`, prefix)
-
-    background.steps = [...(background.steps || emptyArr), step]
-  }
-
-  return {
-    step,
-    background,
-  }
 }
 
 const toRule = (
@@ -92,15 +66,18 @@ export const addBackgroundStep = async (props:TAddBackgroundStep) => {
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
-  const { rule, ruleIdx, ...found } = findBackground(feature, stepParentId, granParent)
+  const {
+    rule,
+    ruleIdx,
+    background,
+  } = findBackground(feature, stepParentId, granParent)
+  if(!background) return logNotFound(`background`, prefix)
 
-  if(!found.background) return logNotFound(`background`, prefix)
-
-  const added = addStep(props, feature, found.background, index)
-
+  const added = buildStep<TRaceBackground>(feature, background, props.step, index)
   if(!added) return
 
-  const { background, step } = added
+  const { steps, step } = added
+  background.steps = steps
 
   return !rule || !exists<number>(ruleIdx)
     ? toFeature(props, feature, background, step)

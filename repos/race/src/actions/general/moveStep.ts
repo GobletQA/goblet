@@ -16,6 +16,8 @@ const prefix = `[Move Step]`
 
 export type TMoveStep = {
   pos:EDndPos
+  newIdx:number
+  oldIdx:number
   persist?:Boolean
   oldData:TDndItemData
   newData:TDndItemData
@@ -108,9 +110,7 @@ export const moveStep = async (props:TMoveStep) => {
     feature: removed,
     granParent: newGran.gran,
     stepParentId: newParent.uuid,
-    index: pos !== EDndPos.before
-      ? newData.index + 1
-      : newData.index > 0 ? newData.index - 1 : 0
+    index: pos === EDndPos.before ? newData.index : newData.index + 1
   })
 
   if(!added)

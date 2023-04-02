@@ -72,13 +72,11 @@ export const moveScenario = async (props:TMoveScenario) => {
     return missing(`Feature. Could not perform "Move scenario from ${oldParent.type}"`, prefix)
 
   const added = await addScenario({
-    feature,
     persist: false,
     scenario: move,
+    feature: removed,
     parentId: newParent.uuid,
-    index: pos !== EDndPos.before
-      ? newData.index + 1
-      : newData.index > 0 ? newData.index - 1 : 0
+    index: pos === EDndPos.before ? newData.index : newData.index + 1
   })
 
   if(!added)

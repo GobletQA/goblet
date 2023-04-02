@@ -1,6 +1,7 @@
 import type { TRaceBackgroundParent, TRaceBackground, TRaceStep } from '@GBR/types'
 
 import { useMemo } from 'react'
+import { EDndPos } from '@gobletqa/components'
 import { copyBackground } from '@GBR/actions/background/copyBackground'
 import { updateBackgroundStepPos } from '@GBR/actions/background/updateBackgroundStepPos'
 
@@ -37,10 +38,16 @@ export const useBackgroundActions = (props:THBackgroundActions) => {
       parentId: parent.uuid
     })
 
-    const onStepMove = (parentId:string, oldIdx:number, newIdx:number) => updateBackgroundStepPos({
+    const onStepMove = (
+      parentId:string,
+      oldIdx:number,
+      newIdx:number,
+      pos:EDndPos
+    ) => updateBackgroundStepPos({
+      pos,
       newIdx,
       oldIdx,
-      backgroundParentId: parentId,
+      backgroundParentId: parent.uuid,
     })
 
     return {

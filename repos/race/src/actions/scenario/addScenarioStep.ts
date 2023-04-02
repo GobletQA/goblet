@@ -6,12 +6,11 @@ import type {
 } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
-import { emptyArr } from '@keg-hub/jsutils'
 import { findScenario, findRule } from '@GBR/utils/find'
-import { stepFactory } from '@GBR/factories/stepFactory'
+import { buildStep } from '@GBR/utils/actions/buildStep'
+import { logNotFound, missingId } from '@GBR/utils/logging'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
-import { logNotFound, factoryFailed, missingId } from '@GBR/utils/logging'
 
 const prefix = `[Add Scenario#Step]`
 
@@ -22,34 +21,6 @@ export type TAddScenarioStep = {
   stepParentId:string,
   feature?:TRaceFeature
   granParent?:TRaceScenarioParent
-}
-
-const buildStep = (
-  props:TAddScenarioStep,
-  feature:TRaceFeature,
-  scenario:TRaceScenario,
-  index?:number,
-) => {
-  const steps = [...(scenario?.steps || emptyArr)]
-  let step = props.step
-
-  if(step){
-    steps.splice(index || steps.length - 1, 0, step)
-  }
-  else {
-    step = stepFactory({
-      feature,
-      parent: scenario
-    })
-    if(!step) return factoryFailed(`step`, prefix)
-
-    steps.push(step)
-  }
-
-  return {
-    step,
-    steps,
-  }
 }
 
 const toRule = (
@@ -107,7 +78,7 @@ export const addScenarioStep = async (props:TAddScenarioStep) => {
   } = findScenario(feature, stepParentId, granParent)
   if(!scenario) return logNotFound(`scenario`, prefix, stepParentId)
 
-  const added = buildStep(props, feature, scenario, index)
+  const added = buildStep<TRaceScenario>(feature, scenario, props.step, index)
   if(!added) return
 
   const { steps, step } = added

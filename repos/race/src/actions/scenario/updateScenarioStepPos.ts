@@ -1,5 +1,6 @@
 import type { TRaceFeature, TRaceScenario, TRaceScenarioParent } from '@GBR/types'
 
+import { EDndPos } from '@gobletqa/components'
 import { moveStep } from '@GBR/utils/actions/moveStep'
 import { findScenario, findRule } from '@GBR/utils/find'
 import { missing, logNotFound } from '@GBR/utils/logging'
@@ -9,6 +10,7 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 const prefix = `[Update Scenario Step Pos]`
 
 export type TUpdateScenarioStepPos = {
+  pos:EDndPos
   oldIdx:number
   newIdx:number
   persist?:Boolean
@@ -54,10 +56,11 @@ const fromFeature = (
 
 export const updateScenarioStepPos = async (props:TUpdateScenarioStepPos) => {
   const {
-  oldIdx,
-  newIdx,
-  granParent,
-  scenarioId,
+    pos,
+    oldIdx,
+    newIdx,
+    granParent,
+    scenarioId,
   } = props
 
   const { feature } = await getFeature()
@@ -72,7 +75,7 @@ export const updateScenarioStepPos = async (props:TUpdateScenarioStepPos) => {
   if(!scenario) return logNotFound(`scenario`, prefix)
   if(!scenario.steps) return missing(`Steps on Scenario. Can not update step`, prefix, scenario)
 
-  const moved = moveStep<TRaceScenario>(scenario, oldIdx, newIdx)
+  const moved = moveStep<TRaceScenario>(scenario, oldIdx, newIdx, pos)
   if(!moved) return
 
   scenarios[scenarioIdx] = moved

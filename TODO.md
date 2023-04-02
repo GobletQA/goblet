@@ -1,16 +1,14 @@
 ## Feat
-* Finish Scenario Dnd
 * Add play back functionality for Race
-
 
 ## Bugs
 
 ### Race
-* Step dnd between parent types, not being added to correct location
 * Browser play button not active when more then one feature open
 * Issues with General section
 * Issues with Tabs, when switching between multiple files
-* Background Step Dnd not working within it's self
+* Scenarios can be dragged to Steps drop location and visa-versa
+  * Need to disable when the type does not match
 
 ### Monaco
 * `Background:` is not the correct color in monaco editor 
