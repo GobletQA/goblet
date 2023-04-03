@@ -17,7 +17,7 @@ export const Expressions = (props:TExpressions) => {
     step,
     parent,
     onChange,
-    expressions
+    expressions,
   } = props
 
   return (

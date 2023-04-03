@@ -6,7 +6,7 @@ export const headerCss = {
   textShared: `
     font-size: 14.5px;
     font-weight: bold;
-    transition: color 300ms ease;
+    transition: color 300ms ease, opacity 300ms ease;
     color: var(--goblet-list-deemphasizedForeground);
   `,
   textActive: `
@@ -16,13 +16,11 @@ export const headerCss = {
           color: var(--goblet-list-highlightForeground);
           opacity: 1;
         }
-      }
-    }
-
-    & > .gb-section-dropdown {
-      & > .gb-dropdown-header {
         & .gb-section-header-text-content {
           color: var(--goblet-editor-foreground);
+          opacity: 1;
+        }
+        & .gb-section-header-text-exp {
           opacity: 1;
         }
       }
@@ -38,8 +36,9 @@ export const SectionHeaderText = styled(Span)`
 export const SectionHeaderType = styled(Span)`
   ${headerCss.textShared}
   opacity: 0.8;
+  margin-right: 5px;
 `
+
 export const SectionHeaderContent = styled(Span)`
-  margin-left: 5px;
   ${headerCss.textShared}
 `

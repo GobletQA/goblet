@@ -64,7 +64,6 @@ export const useExpressions = (props:THStepSubjects, ext?:TExpOpts) => {
   // Run on every change to step input
   const tokens = useStepParts(parkin, step, def)
   const expressions = useMemo(() => mapStepTokens(exps, tokens), [tokens, exps])
-
   return def
     ? { def, expressions }
     : emptyObj as ExpResp

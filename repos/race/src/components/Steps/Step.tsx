@@ -6,7 +6,7 @@ import { StepHeader } from './StepHeader'
 import { Expressions } from '../Expressions'
 import { SelectAction } from './SelectAction'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
-import { useExpressions } from '@GBR/hooks/useExpressions'
+import { useExpressions } from '@GBR/hooks/steps/useExpressions'
 import { useMatchStepToDef } from '@GBR/hooks/steps/useMatchStepToDef'
 import { collapseAllExcept } from '@GBR/actions/general/collapseAllExcept'
 import {
@@ -78,7 +78,13 @@ export const Step = (props:TStep) => {
         dragHandleRef={dragHandleRef}
         className={`gb-step-section`}
         showDragHandle={showDragHandle}
-        label={(<StepHeader step={step} />)}
+        label={(
+          <StepHeader
+            def={def}
+            step={step}
+            expressions={expressions}
+          />
+        )}
         actions={[
           (
             <DeleteAct

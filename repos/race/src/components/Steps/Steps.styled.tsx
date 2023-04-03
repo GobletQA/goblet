@@ -2,7 +2,8 @@ import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Unstable_Grid2'
 import CardContent from '@mui/material/CardContent'
-import { colors, Span, gutter } from '@gobletqa/components'
+import { Span, gutter, colors } from '@gobletqa/components'
+import { headerCss } from '@GBR/components/Section/SectionHeader.styled'
 
 import { styled } from '@mui/material/styles'
 
@@ -27,6 +28,27 @@ export const StepHeaderText = styled(Span)`
   font-size: 13.5px;
   padding: ${gutter.padding.qpx};
   padding-left: ${gutter.padding.hpx};
+`
+
+export const StepHeaderTextType = styled(Span)`
+  ${headerCss.textShared}
+  opacity: 0.8;
+  font-size: 13.5px;
+  margin-right: 5px;
+`
+
+export const StepHeaderTextPart = styled(Span)`
+  ${headerCss.textShared}
+  font-size: 13.5px;
+`
+
+export const StepHeaderTextExp = styled(Span)`
+  ${headerCss.textShared}
+  opacity: 0.5;
+  font-size: 13.5px;
+  margin-left: 3px;
+  margin-right: 3px;
+  color: ${colors.green10};
 `
 
 export const StepGrid = styled(Grid)``
