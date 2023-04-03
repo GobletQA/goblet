@@ -35,9 +35,10 @@ const styles = {
   section: {
     marginTop: `0px`
   },
-  header: {
+  content: {
+    boxShadow: `none`,
+    backgroundColor: `var(--goblet-editor-background);`
   },
-  action: {}
 }
 
 export const Step = (props:TStep) => {
@@ -71,8 +72,8 @@ export const Step = (props:TStep) => {
         noToggle={false}
         sx={styles.section}
         formatHeader={false}
-        headerSx={styles.header}
         type={ESectionType.step}
+        contentSx={styles.content}
         dragHandleSx={dragHandleSx}
         dragHandleRef={dragHandleRef}
         className={`gb-step-section`}
@@ -81,7 +82,6 @@ export const Step = (props:TStep) => {
         actions={[
           (
             <DeleteAct
-              sx={styles.action}
               onClick={onRemoveStep}
               type={ESectionType.step}
               key={`gb-step-remove-step-action`}
@@ -89,7 +89,6 @@ export const Step = (props:TStep) => {
           ),
           (
             <CollapseAct
-              sx={styles.action}
               type={ESectionType.step}
               onClick={onCollapseExcept}
               key={`gb-step-collapse-step-action`}
@@ -97,7 +96,6 @@ export const Step = (props:TStep) => {
           ),
           (
             <CopyAct
-              sx={styles.action}
               onClick={() => {}}
               type={ESectionType.step}
               key={`gb-step-copy-step-action`}
@@ -105,7 +103,6 @@ export const Step = (props:TStep) => {
           ),
           (
             <PlayAct
-              sx={styles.action}
               onClick={() => {}}
               type={ESectionType.step}
               key={`gb-step-play-step-action`}

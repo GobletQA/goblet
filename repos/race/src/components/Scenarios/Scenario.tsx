@@ -40,9 +40,22 @@ const styles = {
     padding: `0px 10px`,
   },
   empty: {
-    marginTop: `0px`
+    containerSx: {
+      marginTop: `0px`,
+      paddingTop: `0px`,
+      justifyContent: `flex-end`
+    },
+    sx: {
+      width: `initial`,
+      paddingBottom: `0px`,
+    },
+    addSx: {
+      minWidth: `initial`,
+    },
+    buttonSx: {
+      
+    }
   },
-  emptyNoSteps: {}
 }
 
 export const Scenario = (props:TScenario) => {
@@ -93,6 +106,14 @@ export const Scenario = (props:TScenario) => {
       dragHandleRef={dragHandleRef}
       showDragHandle={showDragHandle}
       className={`gb-scenario-section`}
+      Footer={(isNamed && (
+        <EmptySteps
+          {...styles.empty}
+          parent={scenario}
+          onAdd={onAddScenarioStep}
+          parentType={ESectionType.scenario}
+        />
+      ) || null)}
       label={(
         <SectionHeader
           content={sectionTitle}
@@ -162,18 +183,6 @@ export const Scenario = (props:TScenario) => {
         onRemove={onRemoveScenarioStep}
         parentType={ESectionType.scenario}
       />
-      {isNamed && (
-        <EmptySteps
-          parent={scenario}
-          onAdd={onAddScenarioStep}
-          parentType={ESectionType.scenario}
-          containerSx={
-            scenario?.steps?.length
-              ? styles.empty
-              : styles.emptyNoSteps
-          }
-        />
-      ) || null}
     </Section>
   )
 }

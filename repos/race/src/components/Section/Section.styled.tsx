@@ -10,7 +10,6 @@ import {
   Dropdown as DropdownComp
 } from '@gobletqa/components'
 
-
 const dndCss = {
   dropdown: `
     &.gb-section-dropdown-dnd {
@@ -107,18 +106,11 @@ export const SectionDropdown = styled(DropdownComp)`
     transition: background-color 300ms ease;
     padding: ${gutter.padding.hpx} ${gutter.padding.hpx};
     background-color: var(--goblet-tab-activeBackground);
-    // border-bottom: 1px solid transparent;
     transition: border 300ms ease;
 
     &:hover {
       ${dropdownCss.headerActive}
     }
-    
-    &.Mui-expanded {
-      // border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
-    }
-    
-    
   }
 
   & .MuiAccordionSummary-content {
@@ -126,26 +118,22 @@ export const SectionDropdown = styled(DropdownComp)`
     margin-bottom: 0px;
   }
 
-  & .MuiCollapse-root {
-  }
-  
-  & .gb-dropdown-body {
-    padding-left: ${gutter.padding.tQpx};
-    padding-right: ${gutter.padding.tQpx};
-    background-color: var(--goblet-editor-background);
-    border: 5px solid var(--goblet-editor-background);;
-    border-top: none;
-    box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,0.1);
-  }
-
   & .gb-section-dropdown-step .MuiCollapse-root {
     padding-left: 0px;
   }
-
 `
 
 export const SectionContent = styled(Box)`
-  
+  padding-left: ${gutter.padding.tQpx};
+  padding-right: ${gutter.padding.tQpx};
+  background-color: var(--goblet-race-featureBackground);
+  border-left: 5px solid var(--goblet-editor-background);
+  border-right: 5px solid var(--goblet-editor-background);
+  box-shadow: inset 0px 0px 2px 0px ${colors.fadeDark10};
+`
+
+export const SectionFooter = styled(Box)`
+  padding: ${gutter.padding.hpx} ${gutter.padding.qpx} ${gutter.padding.hpx};
 `
 
 export const SectionDragHandleContainer = styled(Box)(dndCss.dragHandle)

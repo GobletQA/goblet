@@ -67,7 +67,6 @@ export const EmptyFeature = (props:TEmptyFeature) => {
                     >
                       <AddItem
                         {...item}
-                        variant='text'
                         sx={styles.add}
                         parentId={parent.uuid}
                         type={ESectionType.background}

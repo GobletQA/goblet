@@ -27,16 +27,16 @@ export const SectionHeader = (props:TStepHeader) => {
               <>
                 <SectionHeaderType
                   className={cls(
-                    `section-header-text-type`,
-                    type && `section-header-text-${type}`
+                    `gb-section-header-text-type`,
+                    type && `gb-section-header-text-${type}`
                   )}
                 >
                   {capType}:
                 </SectionHeaderType>
                 <SectionHeaderContent
                   className={cls(
-                    `section-header-text-content`,
-                    type && `section-header-text-${type}-content`
+                    `gb-section-header-text-content`,
+                    type && `gb-section-header-text-${type}-content`
                   )}
                 >
                   {content}
@@ -46,8 +46,8 @@ export const SectionHeader = (props:TStepHeader) => {
           : (
               <SectionHeaderType
                 className={cls(
-                  'section-header-text-type',
-                  type && `section-header-text-${type}`
+                  `gb-section-header-text-type`,
+                  type && `gb-section-header-text-${type}`
                 )}
               >
                 {capType}

@@ -9,6 +9,7 @@ import { SectionActions } from './SectionActions'
 import { wordCaps, cls, isStr } from '@keg-hub/jsutils'
 import { SectionDragHandle } from './SectionDragHandle'
 import {
+  SectionFooter,
   SectionContent,
   SectionDropdown,
   SectionContainer,
@@ -23,11 +24,14 @@ export type TSection = {
   sx?:CSSProperties
   noToggle?:boolean
   Header?:ReactNode
+  Footer?:ReactNode
   children:ReactNode
   formatHeader?:boolean
+  footerSx?:CSSProperties
   showDragHandle?:boolean
   showExpandIcon?:boolean
   headerSx?:CSSProperties
+  contentSx?:CSSProperties
   actions?:TSectionAction[]
   dropdownSx?:CSSProperties
   dragHandleSx?:CSSProperties
@@ -51,10 +55,13 @@ export const Section = (props:TSection) => {
     onAdd,
     parent,
     Header,
+    Footer,
     actions,
     children,
     noToggle,
     headerSx,
+    footerSx,
+    contentSx,
     className,
     label=type,
     dropdownSx,
@@ -93,7 +100,7 @@ export const Section = (props:TSection) => {
           containerSx={dragHandleContainerSx}
         />
       )}
-    
+
       { show
           ? (
               <SectionDropdown
@@ -115,6 +122,7 @@ export const Section = (props:TSection) => {
                 )}
               >
                 <SectionContent
+                  sx={contentSx}
                   className={cls(
                     `gb-section-content`,
                     `gb-section-content-${type}`,
@@ -123,6 +131,15 @@ export const Section = (props:TSection) => {
                 >
                   {children}
                 </SectionContent>
+                <SectionFooter
+                  sx={footerSx}
+                  children={Footer}
+                  className={cls(
+                    `gb-section-footer`,
+                    `gb-section-footer-${type}`,
+                    hasDragHandle && `gb-section-footer-dnd`
+                  )}
+                />
               </SectionDropdown>
             )
           : onAdd && (

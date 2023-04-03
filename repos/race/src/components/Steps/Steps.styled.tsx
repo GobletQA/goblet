@@ -29,17 +29,6 @@ export const StepHeaderText = styled(Span)`
   padding-left: ${gutter.padding.hpx};
 `
 
-export const SectionHeaderType = styled(Span)`
-  font-size: 13.5px;
-  font-weight: bold;
-  color: var(--goblet-tab-unfocusedActiveForeground);
-`
-export const SectionHeaderContent = styled(Span)`
-  font-size: 13.5px;
-  margin-left: 5px;
-  color: var(--goblet-editor-foreground);
-`
-
 export const StepGrid = styled(Grid)``
 export const StepGridItem = styled(Grid)``
 

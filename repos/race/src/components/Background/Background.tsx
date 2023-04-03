@@ -69,7 +69,6 @@ export const Background = (props:TBackground) => {
     },
   })
 
-
   return (
     <Section
       parent={parent}
@@ -77,6 +76,13 @@ export const Background = (props:TBackground) => {
       show={Boolean(background)}
       type={ESectionType.background}
       className='gb-background-section'
+      Footer={(isNamed && (
+        <EmptySteps
+          onAdd={onAddBackgroundStep}
+          parent={background}
+          parentType={ESectionType.background}
+        />
+      ) || null)}
       label={(
         <SectionHeader
           content={sectionTitle}
@@ -146,14 +152,6 @@ export const Background = (props:TBackground) => {
         onRemove={onRemoveBackgroundStep}
         parentType={ESectionType.background}
       />
-
-      {isNamed && (
-        <EmptySteps
-          onAdd={onAddBackgroundStep}
-          parent={background}
-          parentType={ESectionType.background}
-        />
-      ) || null}
     </Section>
   )
 }

@@ -10,12 +10,22 @@ export const headerCss = {
     color: var(--goblet-list-deemphasizedForeground);
   `,
   textActive: `
-    & > .gb-section-dropdown > .gb-dropdown-header .section-header-text-type {
-      color: var(--goblet-list-highlightForeground);
+    & > .gb-section-dropdown {
+      & > .gb-dropdown-header {
+        & .gb-section-header-text-type {
+          color: var(--goblet-list-highlightForeground);
+          opacity: 1;
+        }
+      }
     }
 
-    & > .gb-section-dropdown > .gb-dropdown-header .section-header-text-content {
-      color: var(--goblet-editor-foreground);
+    & > .gb-section-dropdown {
+      & > .gb-dropdown-header {
+        & .gb-section-header-text-content {
+          color: var(--goblet-editor-foreground);
+          opacity: 1;
+        }
+      }
     }
   `
 }
@@ -27,6 +37,7 @@ export const SectionHeaderText = styled(Span)`
 
 export const SectionHeaderType = styled(Span)`
   ${headerCss.textShared}
+  opacity: 0.8;
 `
 export const SectionHeaderContent = styled(Span)`
   margin-left: 5px;

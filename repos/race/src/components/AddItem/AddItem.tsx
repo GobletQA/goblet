@@ -2,12 +2,12 @@ import type { CSSProperties, SyntheticEvent, ComponentProps, ForwardedRef } from
 import type { TOnAddClick } from '@GBR/types'
 import { EAstObject } from '@ltipton/parkin'
 
-import { forwardRef, useCallback } from 'react'
 import { capitalize } from '@keg-hub/jsutils'
+import { forwardRef, useCallback } from 'react'
 import { useInline } from '@gobletqa/components/hooks'
 
+import { AddContainer, AddBtn, AddBtnText } from './AddItem.styled'
 import { ESectionExt, ESectionType } from '@GBR/types'
-import { Container, AddBtn } from './AddItem.styled'
 
 export type TAddItem = Omit<ComponentProps<typeof AddBtn>, `onClick`|`type`> & {
   text?:string
@@ -41,17 +41,28 @@ export const AddItem = forwardRef((props:TAddItem, ref:ForwardedRef<HTMLButtonEl
   )
 
   return (
-    <Container sx={sx}>
+    <AddContainer
+      sx={sx}
+      className={`gb-add-btn-container gb-add-btn-container-${type}`}
+    >
       <AddBtn
         {...rest}
         ref={ref}
         sx={buttonSx}
         onClick={onClick}
         variant={variant || "outlined"}
-        className={`gb-add-btn-${type}`}
+        className={`gb-add-btn gb-add-btn-${type}`}
       >
-        {children || text || `Add ${capitalize(type)}`}
+      {
+        children
+          ? children
+          : (
+              <AddBtnText>
+                {text || `Add ${capitalize(type)}`}
+              </AddBtnText>
+            )
+      }
       </AddBtn>
-    </Container>
+    </AddContainer>
   )
 })

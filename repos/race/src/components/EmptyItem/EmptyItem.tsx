@@ -10,6 +10,7 @@ import { EmptyBox, EmptyContainer } from './EmptyItem.styled'
 const styles:Record<string, CSSProperties> = {
   add: {
     width: `100%`,
+    // TODO: fix this hard coded value. Where does it come from?
     minWidth: `205px`,
   }
 }
@@ -27,25 +28,27 @@ export const EmptyItem = forwardRef((props:TEmptyItem, ref:ForwardedRef<HTMLButt
     sx,
     type,
     addSx,
+    variant,
     parentType,
     containerSx,
     ...rest
   } = props
 
+
   return (
     <EmptyContainer
-      className={`${parentType}-empty-item`}
+      className={`gb-empty-item-container gb-empty-item-container-${parentType}`}
       sx={containerSx as CSSProperties}
     >
       <EmptyBox
         sx={sx}
-        className={`empty-item empty-item-${type}`}
+        className={`gb-empty-item gb-empty-item-${type}`}
       >
         <AddItem
-          variant='text'
           {...rest}
           ref={ref}
-          type={parentType}
+          type={type}
+          variant={variant || `text`}
           sx={[styles.add, addSx] as CSSProperties[]}
         />
       </EmptyBox>
