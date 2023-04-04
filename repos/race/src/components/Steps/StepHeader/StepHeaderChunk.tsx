@@ -2,11 +2,14 @@ import { cls } from '@keg-hub/jsutils'
 import {
   StepHeaderExp,
   StepHeaderPart,
+  StepHeaderType,
   StepHeaderPlaceholder,
-} from './Steps.styled'
+} from './StepHeader.styled'
 
 export enum ESplitType {
   text=`text`,
+  type=`type`,
+  empty=`empty`,
   expression=`expression`,
   placeholder=`placeholder`
 }
@@ -19,6 +22,8 @@ type TStepSplit = {
 
 const StepHeaderComponents = {
   [ESplitType.text]: StepHeaderPart,
+  [ESplitType.type]: StepHeaderType,
+  [ESplitType.empty]: StepHeaderType,
   [ESplitType.expression]: StepHeaderExp,
   [ESplitType.placeholder]: StepHeaderPlaceholder,
 }
