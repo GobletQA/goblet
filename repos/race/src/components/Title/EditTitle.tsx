@@ -1,10 +1,11 @@
 import type { CSSProperties } from 'react'
 import type { TChangeCB, TInputVariants } from '@gobletqa/components'
-import { ESectionType } from '@GBR/types'
-import { Title } from './Title'
 
-import { cls } from '@keg-hub/jsutils'
+import { Title } from './Title'
 import Box from '@mui/material/Box'
+import { cls } from '@keg-hub/jsutils'
+import { ESectionType } from '@GBR/types'
+import { gutter } from '@gobletqa/components'
 
 const styles = {
   content: {
@@ -12,6 +13,9 @@ const styles = {
     height: `100%`,
     display: `flex`,
     flexDirection: `column`,
+    marginTop: `0px`,
+    marginBottom: gutter.margin.px,
+    padding: `0px ${gutter.padding.hpx}`,
   },
 }
 
@@ -49,7 +53,7 @@ export const EditTitle = (props:TEditTitle) => {
       margin={margin}
       padding={padding}
       sx={[styles.content, sx] as CSSProperties[]}
-      className={cls(`gb-${props.type}}-editing-title`, className)}
+      className={cls(`gb-${props.type}-editing-title`, className)}
     >
       <Title autoFocus={autoFocus} {...rest} />
     </Box>

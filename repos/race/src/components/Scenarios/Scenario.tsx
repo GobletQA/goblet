@@ -8,10 +8,10 @@ import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
 import { EditTitle } from '../Title/EditTitle'
 import { EmptySteps } from '../Steps/EmptySteps'
+import { StepAddIcon } from '@gobletqa/components'
 import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
-import { DropContainer, StepAddIcon, gutter } from '@gobletqa/components'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 import { useScenarioActions } from '@GBR/hooks/actions/useScenarioActions'
 
@@ -34,11 +34,6 @@ const styles = {
   section: {
     marginTop: `0px`,
   },
-  title: {
-    marginTop: gutter.margin.hpx,
-    marginBottom: gutter.margin.tQpx,
-    padding: `0px ${gutter.padding.hpx}`,
-  }
 }
 
 export const Scenario = (props:TScenario) => {
@@ -139,11 +134,9 @@ export const Scenario = (props:TScenario) => {
     
     {showTitle && (
       <EditTitle
-        sx={styles.title}
         uuid={scenario.uuid}
         onBlur={onEditTitle}
         type={ESectionType.scenario}
-        label={`Description`}
         value={scenario.scenario.replace(`${EGherkinKeys.scenario}:`, ``)}
       />
     ) || null}

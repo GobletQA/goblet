@@ -7,10 +7,10 @@ import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
 import { EditTitle } from '../Title/EditTitle'
 import { EmptySteps } from '../Steps/EmptySteps'
+import { StepAddIcon } from '@gobletqa/components'
 import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
-import { StepAddIcon, gutter } from '@gobletqa/components'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 import { useBackgroundActions } from '@GBR/hooks/actions/useBackgroundActions'
 
@@ -22,14 +22,6 @@ export type TBackground = {
   onRemoveStep:(stepId:string, parentId:string) => any
   onChangeStep:(step:TRaceStep, parentId?:string) => any
   onChange:(background:TRaceBackground, parentId:string) => any
-}
-
-const styles = {
-  title: {
-    marginTop: gutter.margin.hpx,
-    marginBottom: gutter.margin.tQpx,
-    padding: `0px ${gutter.padding.hpx}`,
-  },
 }
 
 export const Background = (props:TBackground) => {
@@ -126,9 +118,7 @@ export const Background = (props:TBackground) => {
 
       {showTitle && (
         <EditTitle
-          sx={styles.title}
           value={sectionTitle}
-          label={`Description`}
           onBlur={onEditTitle}
           uuid={background.uuid}
           type={ESectionType.background}

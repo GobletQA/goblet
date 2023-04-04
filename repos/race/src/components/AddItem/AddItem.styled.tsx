@@ -6,6 +6,7 @@ export const AddContainer = styled(Box)``
 
 export const AddBtn = styled(Button)`
   padding: 4px 12px;
+  height: 40px;
 `
 
 export const AddBtnText = styled(Span)`

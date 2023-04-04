@@ -21,15 +21,6 @@ export type TRule = {
   feature:TRaceFeature
 }
 
-const styles = {
-  title: {
-    marginTop:`10px`,
-    marginBottom:`30px`,
-    padding: `0px 10px`,
-  }
-}
-
-
 export const Rule = (props:TRule) => {
   const {
     rule,
@@ -141,10 +132,8 @@ export const Rule = (props:TRule) => {
     
       {showTitle && (
         <EditTitle
-          sx={styles.title}
           uuid={rule.uuid}
           value={sectionTitle}
-          label={`Description`}
           onBlur={onEditTitle}
           type={ESectionType.rule}
         />

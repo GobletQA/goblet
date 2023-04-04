@@ -52,7 +52,7 @@ export const Title = (props:TTitle) => {
     <Box
       sx={containerSx}
       minHeight={`40px`}
-      className={`gb-${type}}-title gb-${type}-input-container`}
+      className={`gb-${type}-title gb-${type}-input-container`}
     >
       <InlineInput
         inputSx={sx}

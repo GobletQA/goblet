@@ -121,13 +121,8 @@ export const SectionDropdown = styled(DropdownComp)`
 `
 
 export const SectionContent = styled(Box)`
-
-  &.gb-section-content-rule {
-    // Dumb hack to fix issues with background inside of a rule
-    // Without it, makes Rule section header go to 2 rows instead of 1
-    padding-top: 0.5px;
-  }
-
+  padding-top: ${gutter.padding.px};
+  padding-bottom: ${gutter.padding.px};
   padding-left: ${gutter.padding.tQpx};
   padding-right: ${gutter.padding.tQpx};
   box-shadow: inset 0px 0px 2px 0px ${colors.fadeDark10};
