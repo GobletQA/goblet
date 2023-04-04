@@ -18,10 +18,7 @@ export const StepContainer = styled(Card)`
   & .gb-dropdown-header.Mui-expanded {
     border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
   }
-  
-  & .gb-step-section {
-    margin-bottom: 2px;
-  }
+
 `
 export const StepContent = styled(CardContent)`
   display: flex;

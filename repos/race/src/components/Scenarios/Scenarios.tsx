@@ -56,8 +56,6 @@ export const Scenarios = (props:TScenarios) => {
         })
   })
 
-  const showDragHandle = Boolean((scenarios?.length || 0) > 1)
-
   return (
     <Sections
       onAdd={onAdd}
@@ -76,13 +74,13 @@ export const Scenarios = (props:TScenarios) => {
             onRemove={onRemove}
             scenario={scenario}
             onChange={onChange}
+            showDragHandle={true}
             onAddStep={onAddStep}
             onDrop={onDropScenario}
             parentType={parent.type}
             scenarioId={scenario.uuid}
             onChangeStep={onChangeStep}
             onRemoveStep={onRemoveStep}
-            showDragHandle={showDragHandle}
           />
         )
       })

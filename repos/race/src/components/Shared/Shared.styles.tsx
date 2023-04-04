@@ -1,6 +1,5 @@
 import { CSSProperties } from 'react'
 
-
 const inFtSz = 14
 const inHeight = 40
 const input = {
@@ -58,4 +57,3 @@ export const sharedLabelProps = {
     // marginBottom: `5px !important`
   } as CSSProperties,
 }
-

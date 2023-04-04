@@ -1,9 +1,7 @@
 import type { CSSProperties } from 'react'
 import type { TRaceStepParent } from '@GBR/types'
 
-
 import { ESectionType } from '@GBR/types'
-import { gutter } from '@gobletqa/components'
 import { StepItem } from '../Feature/FeatureItems'
 import { EmptyItem } from '../EmptyItem/EmptyItem'
 
@@ -19,23 +17,6 @@ export type TEmptySteps = {
   onAdd?:(parentId:string) => void
 }
 
-const styles = {
-  containerSx: {
-    marginTop: `0px`,
-    justifyContent: `flex-start`,
-    paddingTop: gutter.padding.px,
-    paddingBottom: gutter.padding.px,
-  },
-  sx: {
-    width: `initial`,
-    paddingBottom: `0px`,
-  },
-  addSx: {
-    minWidth: `initial`,
-  },
-  buttonSx: {}
-}
-
 export const EmptySteps = (props:TEmptySteps) => {
   const {
     sx,
@@ -48,21 +29,22 @@ export const EmptySteps = (props:TEmptySteps) => {
     parentType,
     containerSx,
   } = props
+
   const onAddStep = () => onAdd?.(parent.uuid)
 
   return (
     <EmptyItem
       {...StepItem}
+      sx={sx}
       text={text}
+      addSx={addSx}
       variant={variant}
+      buttonSx={buttonSx}
       onClick={onAddStep}
-      sx={sx || styles.sx}
       type={StepItem.type}
       parentId={parent.uuid}
       parentType={parentType}
-      addSx={addSx || styles.addSx}
-      buttonSx={buttonSx || styles.buttonSx}
-      containerSx={containerSx || styles.containerSx}
+      containerSx={containerSx}
     />
   )
 }

@@ -39,7 +39,7 @@ const styles:Record<string, CSSProperties> = {
 
 export const EmptyFeature = (props:TEmptyFeature) => {
   const { items, parent, sx } = props
-  const { settings, toggleMeta } = useSettings()
+  const { settings } = useSettings()
 
   return (
     <EmptyFeatureGrid
@@ -67,6 +67,7 @@ export const EmptyFeature = (props:TEmptyFeature) => {
                     >
                       <AddItem
                         {...item}
+                        variant='text'
                         sx={styles.add}
                         parentId={parent.uuid}
                         type={ESectionType.background}
