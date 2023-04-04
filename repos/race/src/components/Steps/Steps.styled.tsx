@@ -17,8 +17,12 @@ const header = {
 export const StepContainer = styled(Card)`
   width: 100%;
   border: none;
-  border-bottom: 1px solid transparent;
   background-color: var(--goblet-editorGroup-background);
+
+  & .gb-dropdown-header {
+    transition: border 300ms ease;
+    border-bottom: 1px solid transparent;
+  }
 
   & .gb-dropdown-header.Mui-expanded {
     border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
@@ -27,10 +31,7 @@ export const StepContainer = styled(Card)`
   & .gb-step-section {
     margin-bottom: 2px;
   }
-  
-  & .gb-step-section:hover:not(.gb-section-dropdown-expanded) {
-    box-shadow: 0px 4px 0px -2px var(--goblet-list-highlightForeground);
-  }
+
   
 `
 export const StepContent = styled(CardContent)`

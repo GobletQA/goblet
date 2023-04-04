@@ -55,9 +55,6 @@ export const SectionContainer = styled(Paper)`
     ${headerCss.textActive}
   }
 
-  &:hover:not(.gb-section-dropdown-expanded) { 
-    box-shadow: 0px 4px 0px -2px var(--goblet-list-highlightForeground);
-  }
 
   &.gb-section-dropdown-expanded {
     ${headerCss.textActive}
@@ -124,6 +121,13 @@ export const SectionDropdown = styled(DropdownComp)`
 `
 
 export const SectionContent = styled(Box)`
+
+  &.gb-section-content-rule {
+    // Dumb hack to fix issues with background inside of a rule
+    // Without it, makes Rule section header go to 2 rows instead of 1
+    padding-top: 0.5px;
+  }
+
   padding-left: ${gutter.padding.tQpx};
   padding-right: ${gutter.padding.tQpx};
   box-shadow: inset 0px 0px 2px 0px ${colors.fadeDark10};
