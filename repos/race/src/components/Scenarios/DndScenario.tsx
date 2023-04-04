@@ -53,6 +53,7 @@ export const DndScenario = (props:TDndScenario) => {
       dragHandleSx={dragHandleSx}
       dragImagePos={dragImagePos}
       showDragHandle={showDragHandle}
+      parentTypes={[ESectionType.feature, ESectionType.rule]}
       dragHandleRef={dragHandleRef as MutableRefObject<HTMLElement>}
     >
       <Scenario

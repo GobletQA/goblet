@@ -9,6 +9,7 @@ export type THDndEventHooks = {
   index:number
   exact?:boolean
   onDrop: TOnDrop
+  parentTypes?:string[]
   onHideDiv: TDndDragCallback
   onShowDiv: TDndDragCallback
   onKeyDown?: KeyboardEventHandler<Element>

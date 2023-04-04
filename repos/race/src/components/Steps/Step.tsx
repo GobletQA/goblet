@@ -80,6 +80,7 @@ export const Step = (props:TStep) => {
         dragHandleRef={dragHandleRef}
         className={`gb-step-section`}
         showDragHandle={showDragHandle}
+        parentTypes={[ESectionType.scenario, ESectionType.background]}
         label={(
           <StepHeader
             def={def}

@@ -6,6 +6,7 @@ import { DndHoverCls } from '@GBC/constants/values'
 
 
 export type THShowHide = TDndMouseHover & {
+  parentTypes?:string[]
   showDragHandle:boolean
   dragHandleSx?:CSSProperties
   dragDivRef:RefObject<HTMLDivElement>

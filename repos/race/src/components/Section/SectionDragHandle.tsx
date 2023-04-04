@@ -1,7 +1,9 @@
 import type { MutableRefObject, CSSProperties } from 'react'
 
+import { emptyArr } from '@keg-hub/jsutils'
 import { ESectionExt, ESectionType } from '@GBR/types'
-import { Tooltip, DndDragHandleCls } from '@gobletqa/components'
+import { DndDragHandleCls } from '@gobletqa/components'
+
 
 import {
   SectionDragHandleIcon,
@@ -10,6 +12,7 @@ import {
 
 export type TSectionDragHandle = {
   sx?:CSSProperties
+  parentTypes?:string[]
   containerSx?:CSSProperties
   type:ESectionType|ESectionExt
   dragHandleRef?: MutableRefObject<HTMLDivElement>
@@ -21,6 +24,7 @@ export const SectionDragHandle = (props:TSectionDragHandle) => {
     type,
     containerSx,
     dragHandleRef,
+    parentTypes=emptyArr,
   } = props
 
   return (
@@ -29,6 +33,7 @@ export const SectionDragHandle = (props:TSectionDragHandle) => {
       role='button'
       sx={containerSx}
       ref={dragHandleRef}
+      data-parent-types={parentTypes.join(',')}
       aria-label={`${type} section drag button`}
       className={`${DndDragHandleCls} ${type}-section-drag-handle section-drag-handle`}
     >

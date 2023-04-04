@@ -26,6 +26,7 @@ export type TSection = {
   Header?:ReactNode
   Footer?:ReactNode
   children:ReactNode
+  parentTypes?:string[]
   formatHeader?:boolean
   footerSx?:CSSProperties
   showDragHandle?:boolean
@@ -65,6 +66,7 @@ export const Section = (props:TSection) => {
     className,
     label=type,
     dropdownSx,
+    parentTypes,
     dragHandleSx,
     dragHandleRef,
     showExpandIcon,
@@ -96,6 +98,7 @@ export const Section = (props:TSection) => {
         <SectionDragHandle
           type={type}
           sx={dragHandleSx}
+          parentTypes={parentTypes}
           dragHandleRef={dragHandleRef}
           containerSx={dragHandleContainerSx}
         />

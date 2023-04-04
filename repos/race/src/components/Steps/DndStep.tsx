@@ -51,6 +51,7 @@ export const DndStep = (props:TDndStep) => {
       dragHandleSx={dragHandleSx}
       dragImagePos={dragImagePos}
       showDragHandle={showDragHandle}
+      parentTypes={[ESectionType.scenario, ESectionType.background]}
       dragHandleRef={dragHandleRef as MutableRefObject<HTMLElement>}
     >
       <Step

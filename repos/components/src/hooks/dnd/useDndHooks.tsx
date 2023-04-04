@@ -13,6 +13,7 @@ export type THDndHooks = TDndCallbacks & {
   data?:string
   index: number
   exact?:boolean
+  parentTypes?:string[]
   showDragHandle?: boolean
   dragHandleSx?:CSSProperties
   dragImagePos?:[number, number]
@@ -25,7 +26,7 @@ export const useDndHooks = (props:THDndHooks) => {
     data,
     index,
     exact,
-    onDrop,
+    parentTypes,
     dragHandleSx,
     showDragHandle = false,
     onKeyDown,
@@ -36,11 +37,12 @@ export const useDndHooks = (props:THDndHooks) => {
   const dragHooks = useDragHooks({
     data,
     index,
-    onDrop,
+    parentTypes,
     ...dndRefs,
   })
 
   const showHideHooks = useShowHide({
+    parentTypes,
     dragHandleSx,
     showDragHandle,
     ...dndRefs,
@@ -50,7 +52,7 @@ export const useDndHooks = (props:THDndHooks) => {
     data,
     exact,
     index,
-    onDrop,
+    parentTypes,
     onKeyDown,
     ...dndRefs,
     ...showHideHooks,

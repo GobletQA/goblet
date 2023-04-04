@@ -84,6 +84,7 @@ export const Scenario = (props:TScenario) => {
       dragHandleRef={dragHandleRef}
       showDragHandle={showDragHandle}
       className={`gb-scenario-section`}
+      parentTypes={[ESectionType.feature, ESectionType.rule]}
       label={(
         <SectionHeader
           content={sectionTitle}

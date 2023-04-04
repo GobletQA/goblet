@@ -1,5 +1,5 @@
 import type { TOnDrop, TDndOptionalCallbacks } from '@GBC/types'
-import type { RefObject, DragEvent } from 'react'
+import type { RefObject, DragEvent, MutableRefObject } from 'react'
 
 import { EDndPos } from '@GBC/types'
 import { useCallback } from 'react'
@@ -14,9 +14,11 @@ export type THDragHooks = TDndOptionalCallbacks & {
   index: number
   data?:string
   onDrop: TOnDrop
+  parentTypes?:string[]
   dragImagePos?:[number, number]
   dragDivRef: RefObject<HTMLDivElement>
   dropIndicatorRef:RefObject<HTMLHRElement>
+  dragHandleRef?: MutableRefObject<HTMLElement>
 }
 
 const onDragDrop = (
@@ -34,6 +36,17 @@ const onDragDrop = (
   data ? parseJSON(data) : emptyObj
 )
 
+const checkParentTypes = (
+  evt: DragEvent
+) => {
+  const parentTypes = (evt.dataTransfer?.types?.[1] || ``).split(`,`)
+  const toParentTypes = ((evt.currentTarget as HTMLElement)?.dataset?.parentTypes || ``).split(`,`)
+
+  return parentTypes.length && toParentTypes.length
+    ? Boolean(parentTypes.find(type => toParentTypes.includes(type)))
+    : true
+}
+
 export const useDragHooks = (props:THDragHooks) => {
 
   const {
@@ -41,6 +54,7 @@ export const useDragHooks = (props:THDragHooks) => {
     index,
     onDrop,
     dragDivRef,
+    parentTypes,
     dropIndicatorRef,
     dragImagePos=[0,0],
     onDragEnd:dragEndCB,
@@ -81,11 +95,14 @@ export const useDragHooks = (props:THDragHooks) => {
   )
 
   const onDragEnter = useCallback(preDef((evt: DragEvent) => {
-    dropIndicatorRef.current && 
-      evt.currentTarget.appendChild(dropIndicatorRef.current)
+    const allowed = checkParentTypes(evt)
+
+    allowed
+      && dropIndicatorRef.current
+      && evt.currentTarget.appendChild(dropIndicatorRef.current)
 
     ;dragEnterCB?.(evt)
-  }), [])
+  }), [parentTypes])
 
   const onDragOver = useCallback(preDef((evt: DragEvent) => {
     dragOverCB?.(evt)
@@ -101,11 +118,15 @@ export const useDragHooks = (props:THDragHooks) => {
       evt.dataTransfer.dropEffect = 'move'
       evt.dataTransfer.effectAllowed = 'move'
       evt.dataTransfer.setData('text/plain', `${data}${separator}${index.toString()}`)
+
+      // TODO: validate this works across browsers, it's technically a hack
+      parentTypes && evt.dataTransfer.setData(parentTypes.join(`,`), ``)
+
       evt.dataTransfer.setDragImage(evt.currentTarget, ...dragImagePos)
       dragDivRef.current?.classList.add(DndDraggingCls)
       dragStartCB?.(evt)
     }),
-    [index, data, dragDivRef]
+    [parentTypes, index, data, dragDivRef]
   )
 
   const onDragEnd = useCallback(

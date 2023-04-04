@@ -1,6 +1,7 @@
 import type { TDndCallbacks } from '@GBC/types'
 import type { CSSProperties, MutableRefObject, FocusEventHandler, MouseEventHandler } from 'react'
 
+import { emptyArr } from '@keg-hub/jsutils'
 import { DragIndicatorIcon } from '../Icons'
 import { useDndHooks } from '@GBC/hooks/dnd/useDndHooks'
 import {
@@ -13,6 +14,7 @@ export type TDnd = TDndCallbacks & {
   data?:string
   index: number
   exact?:boolean
+  parentTypes?:string[]
   showDragHandle?: boolean
   children: React.ReactNode
   dragHandleSx?: CSSProperties
@@ -27,6 +29,7 @@ export const Dnd = (props: TDnd) => {
     onClick,
     children,
     dragHandleSx,
+    parentTypes=emptyArr,
     showDragHandle = false,
     dragHandleRef:pDragHandleRef
   } = props
@@ -57,6 +60,7 @@ export const Dnd = (props: TDnd) => {
           onDragEnter={onDragEnter}
           onDragLeave={onDragLeave}
           className={`gb-dnd-drop-container`}
+          data-parent-types={parentTypes.join(',')}
         />
       )}
       <DragContainer
@@ -81,6 +85,7 @@ export const Dnd = (props: TDnd) => {
             aria-label='drag button'
             onKeyDown={onDragHandleKeyDown}
             className={`gb-dnd-drag-handle`}
+            data-parent-types={parentTypes.join(',')}
             onBlur={onHideDiv as FocusEventHandler<HTMLDivElement>}
           >
             <DragIndicatorIcon className={`gb-drag-indicator-icon`} />
@@ -94,6 +99,7 @@ export const Dnd = (props: TDnd) => {
         onDragEnter={onDragEnter}
         onDragLeave={onDragLeave}
         className={`gb-dnd-drop-container`}
+        data-parent-types={parentTypes.join(',')}
       />
     </>
   )
