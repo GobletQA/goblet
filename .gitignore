@@ -182,3 +182,5 @@ container/values.certs.yaml
 vite.config.ts.timestamp*
 
 noAuthData.json
+
+.cicada
