@@ -8,10 +8,10 @@ import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
 import { EditTitle } from '../Title/EditTitle'
 import { EmptySteps } from '../Steps/EmptySteps'
-import { StepAddIcon } from '@gobletqa/components'
 import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
+import { DropContainer, StepAddIcon, gutter } from '@gobletqa/components'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 import { useScenarioActions } from '@GBR/hooks/actions/useScenarioActions'
 
@@ -35,27 +35,10 @@ const styles = {
     marginTop: `0px`,
   },
   title: {
-    marginTop:`10px`,
-    marginBottom:`30px`,
-    padding: `0px 10px`,
-  },
-  empty: {
-    containerSx: {
-      marginTop: `0px`,
-      paddingTop: `0px`,
-      justifyContent: `flex-end`
-    },
-    sx: {
-      width: `initial`,
-      paddingBottom: `0px`,
-    },
-    addSx: {
-      minWidth: `initial`,
-    },
-    buttonSx: {
-      
-    }
-  },
+    marginTop: gutter.margin.hpx,
+    marginBottom: gutter.margin.tQpx,
+    padding: `0px ${gutter.padding.hpx}`,
+  }
 }
 
 export const Scenario = (props:TScenario) => {
@@ -106,14 +89,6 @@ export const Scenario = (props:TScenario) => {
       dragHandleRef={dragHandleRef}
       showDragHandle={showDragHandle}
       className={`gb-scenario-section`}
-      Footer={(isNamed && (
-        <EmptySteps
-          {...styles.empty}
-          parent={scenario}
-          onAdd={onAddScenarioStep}
-          parentType={ESectionType.scenario}
-        />
-      ) || null)}
       label={(
         <SectionHeader
           content={sectionTitle}
@@ -182,7 +157,15 @@ export const Scenario = (props:TScenario) => {
         onChange={onChangeScenarioStep}
         onRemove={onRemoveScenarioStep}
         parentType={ESectionType.scenario}
-      />
+      >
+        {isNamed && (
+          <EmptySteps
+            parent={scenario}
+            onAdd={onAddScenarioStep}
+            parentType={ESectionType.scenario}
+          />
+        ) || null}
+      </Steps>
     </Section>
   )
 }

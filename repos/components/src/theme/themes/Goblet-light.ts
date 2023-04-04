@@ -6,17 +6,17 @@ export const lightTheme = {
   encodedTokensColors: [],
   rules: [
     {
-      foreground: `#2E879A`,
+      foreground: colors.lightEditor.blueGreen,
       token: `string.js`
     },
     {
       token: ``,
-      foreground: `000000`,
-      background: colors.white
+      background: colors.white,
+      foreground: colors.black13,
     },
     {
       token: `invalid`,
-      foreground: `cd3131`
+      foreground: colors.lightEditor.redLight
     },
     {
       token: `emphasis`,
@@ -28,83 +28,83 @@ export const lightTheme = {
     },
     {
       token: `variable`,
-      foreground: `001188`
+      foreground: colors.lightEditor.darkBlue,
     },
     {
       token: `variable.predefined`,
-      foreground: `4864AA`
+      foreground: colors.lightEditor.bluePastel
     },
     {
       token: `constant`,
-      foreground: `dd0000`
+      foreground: colors.lightEditor.red
     },
     {
       token: `comment`,
-      foreground: `008000`
+      foreground: colors.lightEditor.green
     },
     {
       token: `number`,
-      foreground: `098658`
+      foreground: colors.lightEditor.greenPastel
     },
     {
       token: `number.hex`,
-      foreground: `3030c0`
+      foreground: colors.lightEditor.persianBlue
     },
     {
       token: `regexp`,
-      foreground: `800000`
+      foreground: colors.lightEditor.redMaroon
     },
     {
       token: `annotation`,
-      foreground: `808080`
+      foreground: colors.lightEditor.gray
     },
     {
       token: `type`,
-      foreground: `008080`
+      foreground: colors.lightEditor.blueTeal
     },
     {
       token: `delimiter`,
-      foreground: `000000`
+      foreground: colors.black13
     },
     {
       token: `delimiter.html`,
-      foreground: `383838`
+      foreground: colors.lightEditor.grayJet
     },
     {
       token: `delimiter.xml`,
-      foreground: `0000FF`
+      foreground: colors.lightEditor.blue
     },
     {
       token: `tag`,
-      foreground: `800000`
+      foreground: colors.lightEditor.redMaroon
     },
     {
       token: `tag.id.pug`,
-      foreground: `4F76AC`
+      foreground: colors.lightEditor.blueGray
     },
     {
       token: `tag.class.pug`,
-      foreground: `4F76AC`
+      foreground: colors.lightEditor.blueGray
     },
     {
       token: `meta.scss`,
-      foreground: `800000`
+      foreground: colors.lightEditor.redMaroon
     },
     {
       token: `metatag`,
-      foreground: `e00000`
+      foreground: colors.lightEditor.red
     },
     {
       token: `metatag.content.html`,
-      foreground: `FF0000`
+      foreground: colors.lightEditor.red
     },
     {
       token: `metatag.html`,
-      foreground: `808080`
+      foreground: colors.lightEditor.gray
     },
     {
       token: `metatag.xml`,
-      foreground: `808080`
+      foreground: colors.lightEditor.gray
     },
     {
       token: `metatag.php`,
@@ -112,87 +112,87 @@ export const lightTheme = {
     },
     {
       token: `key`,
-      foreground: `863B00`
+      foreground: colors.lightEditor.chocolate
     },
     {
       token: `string.key.json`,
-      foreground: `A31515`
+      foreground: colors.lightEditor.redPastel
     },
     {
       token: `string.value.json`,
-      foreground: `#2E879A`
+      foreground: colors.lightEditor.blueGreen
     },
     {
       token: `attribute.name`,
-      foreground: `FF0000`
+      foreground: colors.lightEditor.red
     },
     {
       token: `attribute.value`,
-      foreground: `0451A5`
+      foreground: colors.lightEditor.bluePoly
     },
     {
       token: `attribute.value.number`,
-      foreground: `098658`
+      foreground: colors.lightEditor.greenPastel
     },
     {
       token: `attribute.value.unit`,
-      foreground: `098658`
+      foreground: colors.lightEditor.greenPastel
     },
     {
       token: `attribute.value.html`,
-      foreground: `0000FF`
+      foreground: colors.lightEditor.blue
     },
     {
       token: `attribute.value.xml`,
-      foreground: `0000FF`
+      foreground: colors.lightEditor.blue
     },
     {
       token: `string`,
-      foreground: `#2E879A`
+      foreground: colors.lightEditor.blueGreen
     },
     {
       token: `string.html`,
-      foreground: `0000FF`
+      foreground: colors.lightEditor.blue
     },
     {
       token: `string.sql`,
-      foreground: `FF0000`
+      foreground: colors.lightEditor.red
     },
     {
       token: `string.yaml`,
-      foreground: `#2E879A`
+      foreground: colors.lightEditor.blueGreen
     },
     {
       token: `keyword`,
-      foreground: `0000FF`
+      foreground: colors.lightEditor.blue
     },
     {
       token: `keyword.json`,
-      foreground: `0451A5`
+      foreground: colors.lightEditor.bluePoly
     },
     {
       token: `keyword.flow`,
-      foreground: `AF00DB`
+      foreground: colors.lightEditor.pinkPurple
     },
     {
       token: `keyword.flow.scss`,
-      foreground: `0000FF`
+      foreground: colors.lightEditor.blue
     },
     {
       token: `operator.scss`,
-      foreground: `666666`
+      foreground: colors.lightEditor.grayDim
     },
     {
       token: `operator.sql`,
-      foreground: `778899`
+      foreground: colors.lightEditor.graySlate
     },
     {
       token: `operator.swift`,
-      foreground: `666666`
+      foreground: colors.lightEditor.grayDim
     },
     {
       token: `predefined.sql`,
-      foreground: `C700C7`
+      foreground: colors.lightEditor.pinkSteel
     }
   ],
   colors: {
@@ -215,6 +215,7 @@ export const lightTheme = {
     [`tab.unfocusedActiveForeground`]: colors.gray07,
     [`tab.unfocusedInactiveForeground`]: colors.gray07,
 
+    [`editorGroup.background`]: colors.purple00,
     [`editorGroupHeader.tabsBorder`]: colors.gray00,
     [`editorGroupHeader.tabsBackground`]: colors.purple00,
     [`editorGroupHeader.noTabsBackground`]: colors.purple00,
@@ -261,9 +262,9 @@ export const lightTheme = {
     
     [`input.border`]: colors.gray03,
     // [`input.background`]: colors.white00,
-    [`input.background`]: `#fffbff`,
     [`input.foreground`]: colors.black19,
     [`input.placeholderForeground`]: colors.white,
+    [`input.background`]: colors.lightEditor.whiteBackground,
     // [`inputOption.activeBorder`]: `#8be0fd`,
     // [`inputValidation.errorBorder`]: `#f92672`,
     // [`inputValidation.infoBorder`]: `#ca94ff`,

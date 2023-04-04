@@ -50,7 +50,7 @@ export const SectionContainer = styled(Paper)`
   background-color: var(--goblet-tab-activeBackground);
   border: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
   transition: border 300ms ease, box-shadow 300ms ease;
-  
+
   &:hover {
     ${headerCss.textActive}
   }
@@ -126,10 +126,10 @@ export const SectionDropdown = styled(DropdownComp)`
 export const SectionContent = styled(Box)`
   padding-left: ${gutter.padding.tQpx};
   padding-right: ${gutter.padding.tQpx};
-  background-color: var(--goblet-race-featureBackground);
+  box-shadow: inset 0px 0px 2px 0px ${colors.fadeDark10};
   border-left: 5px solid var(--goblet-editor-background);
   border-right: 5px solid var(--goblet-editor-background);
-  box-shadow: inset 0px 0px 2px 0px ${colors.fadeDark10};
+  background-color: var(--goblet-editorGroup-background);
 `
 
 export const SectionFooter = styled(Box)`

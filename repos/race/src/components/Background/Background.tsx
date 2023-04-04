@@ -7,10 +7,10 @@ import { CopyAct } from '../Actions/Copy'
 import { DeleteAct } from '../Actions/Delete'
 import { EditTitle } from '../Title/EditTitle'
 import { EmptySteps } from '../Steps/EmptySteps'
-import { StepAddIcon } from '@gobletqa/components'
 import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
+import { StepAddIcon, gutter } from '@gobletqa/components'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
 import { useBackgroundActions } from '@GBR/hooks/actions/useBackgroundActions'
 
@@ -26,10 +26,10 @@ export type TBackground = {
 
 const styles = {
   title: {
-    marginTop:`10px`,
-    marginBottom:`30px`,
-    padding: `0px 10px`,
-  }
+    marginTop: gutter.margin.hpx,
+    marginBottom: gutter.margin.tQpx,
+    padding: `0px ${gutter.padding.hpx}`,
+  },
 }
 
 export const Background = (props:TBackground) => {
@@ -76,13 +76,6 @@ export const Background = (props:TBackground) => {
       show={Boolean(background)}
       type={ESectionType.background}
       className='gb-background-section'
-      Footer={(isNamed && (
-        <EmptySteps
-          onAdd={onAddBackgroundStep}
-          parent={background}
-          parentType={ESectionType.background}
-        />
-      ) || null)}
       label={(
         <SectionHeader
           content={sectionTitle}
@@ -151,7 +144,15 @@ export const Background = (props:TBackground) => {
         onAdd={onAddBackgroundStep}
         onRemove={onRemoveBackgroundStep}
         parentType={ESectionType.background}
-      />
+      >
+        {isNamed && (
+          <EmptySteps
+            parent={background}
+            onAdd={onAddBackgroundStep}
+            parentType={ESectionType.background}
+          />
+        ) || null}
+      </Steps>
     </Section>
   )
 }

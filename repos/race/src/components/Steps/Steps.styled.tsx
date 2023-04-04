@@ -1,15 +1,37 @@
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
+import { styled } from '@mui/material/styles'
 import Grid from '@mui/material/Unstable_Grid2'
 import CardContent from '@mui/material/CardContent'
 import { Span, gutter, colors } from '@gobletqa/components'
-import { headerCss } from '@GBR/components/Section/SectionHeader.styled'
 
-import { styled } from '@mui/material/styles'
+const header = {
+  shared: `
+    opacity: 0.5;
+    font-size: 13.5px;
+    font-weight: bold;
+    transition: color 300ms ease, opacity 300ms ease;
+  `
+}
 
 export const StepContainer = styled(Card)`
   width: 100%;
   border: none;
+  border-bottom: 1px solid transparent;
+  background-color: var(--goblet-editorGroup-background);
+
+  & .gb-dropdown-header.Mui-expanded {
+    border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+  }
+  
+  & .gb-step-section {
+    margin-bottom: 2px;
+  }
+  
+  & .gb-step-section:hover:not(.gb-section-dropdown-expanded) {
+    box-shadow: 0px 4px 0px -2px var(--goblet-list-highlightForeground);
+  }
+  
 `
 export const StepContent = styled(CardContent)`
   display: flex;
@@ -30,25 +52,29 @@ export const StepHeaderText = styled(Span)`
   padding-left: ${gutter.padding.hpx};
 `
 
-export const StepHeaderTextType = styled(Span)`
-  ${headerCss.textShared}
-  opacity: 0.8;
-  font-size: 13.5px;
+export const StepHeaderType = styled(Span)`
+  ${header.shared}
   margin-right: 5px;
+  color: var(--goblet-list-highlightForeground);
 `
 
-export const StepHeaderTextPart = styled(Span)`
-  ${headerCss.textShared}
-  font-size: 13.5px;
+export const StepHeaderPart = styled(Span)`
+  ${header.shared}
+  color: var(--goblet-editor-foreground);
 `
 
-export const StepHeaderTextExp = styled(Span)`
-  ${headerCss.textShared}
-  opacity: 0.5;
-  font-size: 13.5px;
+export const StepHeaderExp = styled(Span)`
+  ${header.shared}
   margin-left: 3px;
   margin-right: 3px;
   color: ${colors.green10};
+`
+
+export const StepHeaderPlaceholder = styled(Span)`
+  ${header.shared}
+  margin-left: 3px;
+  margin-right: 3px;
+  color: ${colors.red10};
 `
 
 export const StepGrid = styled(Grid)``

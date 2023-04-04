@@ -225,9 +225,41 @@ export const alerts = {
   success: gobletColors.shinyShamrock,
 }
 
-const editorThemePurple = `#c491ff`
-const editorThemeGreen = `#6fe1f7`
-const editorThemeOrange = `#ffdfc9`
+
+/**
+ * Custom Editor theme colors
+ */
+ export const editor = {
+  lightEditor: {
+    red: `#DD0000`,
+    redLight: `#CD3131`,
+    redPastel: `A31515`,
+    redMaroon: `#800000`,
+    chocolate: `#863B00`,
+    blue: `#0000FF`,
+    bluePoly: `#0451A5`,
+    darkBlue: `#001188`,
+    blueGray: `#4F76AC`,
+    blueTeal: `#008080`,
+    blueGreen: `#2E869A`,
+    bluePastel: `#4864AA`,
+    persianBlue: `#3030C0`,
+    gray: `#808080`,
+    grayJet: `383838`,
+    grayDim: `#666666`,
+    graySlate: `778899`,
+    green: `#008000`,
+    greenPastel: `#098658`,
+    pinkSteel: `#C700C7`,
+    pinkPurple: `#AF00DB`,
+    whiteBackground: `#FFFBFF`,
+  },
+  darkEditor: {
+    green: `#6FE1F7`,
+    purple: `#C491FF`,
+    orange: `#FFDFC9`,
+  }
+ }
 
 export const colors = {
   ...red,
@@ -241,7 +273,5 @@ export const colors = {
   ...alerts,
   ...fadeDark,
   ...gobletColors,
-  editorThemePurple,
-  editorThemeGreen,
-  editorThemeOrange
+  ...editor,
 }

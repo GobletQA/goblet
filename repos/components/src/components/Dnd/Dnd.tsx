@@ -17,7 +17,7 @@ export type TDnd = TDndCallbacks & {
   children: React.ReactNode
   dragHandleSx?: CSSProperties
   dragImagePos?:[number, number]
-  dragHandleRef?: MutableRefObject<HTMLElement>
+  dragHandleRef?:MutableRefObject<HTMLElement>
 }
 
 export const Dnd = (props: TDnd) => {

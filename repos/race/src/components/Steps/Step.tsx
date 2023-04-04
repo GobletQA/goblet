@@ -2,6 +2,8 @@ import type { MutableRefObject, CSSProperties } from 'react'
 import type { TRaceGran, TRaceStep, TRaceStepParent } from '@GBR/types'
 
 import { Section } from '../Section'
+import { cls } from '@keg-hub/jsutils'
+import { useEditor } from '@GBR/contexts'
 import { StepHeader } from './StepHeader'
 import { Expressions } from '../Expressions'
 import { SelectAction } from './SelectAction'
@@ -51,6 +53,8 @@ export const Step = (props:TStep) => {
     dragHandleRef,
     showDragHandle,
   } = props
+  
+  const { expanded, updateExpanded } = useEditor()
   const { step, definition } = useMatchStepToDef(props)
   const { def, expressions } = useExpressions(props, { definition })
 
@@ -58,12 +62,16 @@ export const Step = (props:TStep) => {
   const onStepChange = (updated:TRaceStep) => onChange?.(updated, parent.uuid)
   const onRemoveStep = () => onRemove?.(step.uuid, parent.uuid)
   const onCollapseExcept = () => collapseAllExcept(step.uuid, parent?.uuid, gran?.uuid)
+  const isExpanded = expanded[step.uuid]
 
   return (
     <StepContainer
       raised={false}
       variant="outlined"
-      className='gb-step-container'
+      className={cls(
+        `gb-step-container`,
+        isExpanded && `gb-step-expanded`
+      )}
     >
       <Section
         show={true}

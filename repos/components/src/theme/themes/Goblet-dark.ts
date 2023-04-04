@@ -32,7 +32,7 @@ export const darkTheme = {
     },
     {
       token: `variable.parameter`,
-      foreground: colors.editorThemeGreen
+      foreground: colors.darkEditor.green
     },
     {
       token: `constant`,
@@ -101,7 +101,7 @@ export const darkTheme = {
     },
     {
       token: `metatag.content.html`,
-      foreground: colors.editorThemeGreen
+      foreground: colors.darkEditor.green
     },
     {
       token: `metatag.html`,
@@ -117,23 +117,23 @@ export const darkTheme = {
     },
     {
       token: `key`,
-      foreground: colors.editorThemeGreen
+      foreground: colors.darkEditor.green
     },
     {
       token: `string.key.json`,
-      foreground: colors.editorThemeGreen
+      foreground: colors.darkEditor.green
     },
     {
       token: `string.value.json`,
-      foreground: colors.editorThemePurple
+      foreground: colors.darkEditor.purple
     },
     {
       token: `string.js`,
-      foreground: colors.editorThemePurple,
+      foreground: colors.darkEditor.purple,
     },
     {
       token: `attribute.name`,
-      foreground: colors.editorThemeGreen
+      foreground: colors.darkEditor.green
     },
     {
       token: `attribute.value`,
@@ -153,11 +153,11 @@ export const darkTheme = {
     },
     {
       token: `string`,
-      foreground: colors.editorThemePurple
+      foreground: colors.darkEditor.purple
     },
     {
       token: `string.quote`,
-      foreground: colors.editorThemeOrange,
+      foreground: colors.darkEditor.orange,
     },
     {
       token: `string.sql`,
@@ -227,6 +227,7 @@ export const darkTheme = {
     [`tab.unfocusedActiveForeground`]: colors.purple02,
     [`tab.unfocusedInactiveForeground`]: colors.purple02,
 
+    [`editorGroup.background`]: colors.black09,
     [`editorGroupHeader.tabsBorder`]: colors.black10,
     [`editorGroupHeader.tabsBackground`]: colors.black09,
     [`editorGroupHeader.noTabsBackground`]: colors.black09,
