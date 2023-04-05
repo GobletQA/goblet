@@ -26,16 +26,17 @@ export type TLoadEnvs = TLoadConfigs & {
 const appRoot = path.join(__dirname, '../../../')
 
 const testRemovePrefix = [
-  'KEG_',
-  'DOC_',
-  'GB_BE_JWT_',
-  'GITHUB_'
+  `KEG_`,
+  `DOC_`,
+  `GB_BE_JWT_`,
+  `GITHUB_`,
+  `GITLAB_`
 ]
 
 const testRemoveIncludes = [
-  'SECRET',
-  'TOKEN',
-  'PASSWORD'
+  `SECRET`,
+  `TOKEN`,
+  `PASSWORD`
 ]
 
 /**

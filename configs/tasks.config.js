@@ -67,6 +67,7 @@ module.exports = {
           `GB_IMAGE_FROM`,
           `*_DOC_VOLUMES`,
           `GITHUB_CLIENT_*`,
+          `GITLAB_CLIENT_*`,
           `GB_BE_IMAGE_TAG`,
           `FIREBASE_TOKEN_*`,
           `GB_KUBE_CONTEXT`,

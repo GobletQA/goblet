@@ -1,8 +1,12 @@
 # Reference file to know which envs should be injected into the backend from an external values file
 envs:
-  # Github Cert config
-  GB_GITHUB_CLIENT_SECRET: ''
-  GB_GITHUB_CLIENT_ID: ''
+  # Github Auth config
+  GITHUB_CLIENT_SECRET: ''
+  GITHUB_CLIENT_ID: ''
+
+  # Gitlab Auth config
+  GITLAB_CLIENT_ID: ``
+  GITLAB_CLIENT_SECRET: ``
 
   # SSL Cert config
   GB_SSL_KEY: ''

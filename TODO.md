@@ -1,5 +1,6 @@
 ## Feat
 * Add play back functionality for Race
+* Add gitlab authentication
 
 ## Bugs
 
@@ -17,3 +18,4 @@
 
 ### Github
 * Docker images are not building on push
+

@@ -56,7 +56,7 @@ env:
   GB_SERVER_ORIGINS: 'http://localhost:19006,localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app'
 
   # TODO: @lance-tipton - Make this more dynamic - value comes from firebase?
-  GB_GITHUB_AUTH_USERS: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lance.tipton@workboard.com,lancetipton04+abstrakt@gmail.com
+  GB_GITHUB_AUTH_USERS: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lancetipton04+abstrakt@gmail.com
   GB_WS_TRANSPORTS: websocket
 
   # ---- Docker Images ---- #
@@ -260,3 +260,5 @@ env:
   GB_KD_WS_PATH: /goblet-socket
 
 
+  GITLAB_OAUTH_ID: ""
+  GITLAB_OAUTH_SECRET: ""
