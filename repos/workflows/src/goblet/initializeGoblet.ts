@@ -2,7 +2,7 @@ import type { TGitOpts, TWFArgs } from '@gobletqa/workflows/types'
 
 import { Logger } from '@keg-hub/cli-utils'
 import { git } from '@gobletqa/workflows/git'
-import { GitHubApi } from '@gobletqa/workflows/repo/githubApi'
+import { GitHubApi } from '@gobletqa/workflows/providers/githubApi'
 import { ensureMounted } from '@gobletqa/workflows/repo/ensureMounted'
 import { validateInitArgs } from '@gobletqa/workflows/utils/validateInitArgs'
 import { configureGitOpts } from '@gobletqa/workflows/utils/configureGitOpts'

@@ -1,6 +1,6 @@
 import type { TBranchMeta, TGitOpts } from '../types'
 
-import { GitHubApi } from './githubApi'
+import { GitHubApi } from '../providers/githubApi'
 import { Logger } from '@keg-hub/cli-utils'
 
 const getActiveBranch = (opts:TGitOpts) => {

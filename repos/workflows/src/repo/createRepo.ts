@@ -15,11 +15,11 @@ import type { TGitOpts, TGitCreateRepo } from '@gobletqa/workflows/types'
 
 */
 
-import { limbo, deepMerge } from '@keg-hub/jsutils'
+import { GitHubApi } from '../providers'
 import { Logger } from '@keg-hub/cli-utils'
 import axios, { AxiosRequestConfig } from 'axios'
-import { throwGitError, buildHeaders, buildAPIUrl } from './gitUtils'
-
+import { limbo, deepMerge } from '@keg-hub/jsutils'
+import { throwGitError } from '../utils/throwGitError'
 
 const createOpts = {
   override: {
@@ -41,12 +41,12 @@ const createOpts = {
  * Force auth_init: true which create a commit that can be used to create branches from
  */
 export const createRepo = async ({ remote, token, log, branch }:TGitOpts, opts:TGitCreateRepo) => {
-  const remoteUrl = buildAPIUrl(remote)
+  const remoteUrl = GitHubApi.buildAPIUrl(remote)
 
   const params = {
     method: 'POST',
     url: remoteUrl,
-    headers: buildHeaders(token),
+    headers: GitHubApi.buildHeaders(token),
     data: deepMerge(
       createOpts,
       opts,

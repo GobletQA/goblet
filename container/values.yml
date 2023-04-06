@@ -262,4 +262,6 @@ env:
 
   GITLAB_CLIENT_ID: ""
   GITLAB_CLIENT_SECRET: ""
+  GITLAB_API_URL: gitlab.com
   GITLAB_AUTH_URL: https://gitlab.com
+  GITHUB_API_URL: api.github.com

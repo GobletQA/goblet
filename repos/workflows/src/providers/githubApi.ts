@@ -6,9 +6,11 @@ import type {
   TGitCreateRepoOpts,
 } from '@gobletqa/workflows/types'
 
+import url from 'url'
+import path from 'path'
 import axios, { AxiosError } from 'axios'
 import { Logger } from '@keg-hub/cli-utils'
-import { throwGitError, buildHeaders, buildAPIUrl } from './gitUtils'
+import { throwGitError } from '../utils/throwGitError'
 import {
   isArr,
   isStr,
@@ -81,7 +83,7 @@ export class GitHubApi {
       url,
       method: `POST`,
       data: createParams,
-      headers: buildHeaders(token),
+      headers: GitHubApi.buildHeaders(token),
     })
 
     const [err, resp] = await limbo<TRepoResp, AxiosError>(axios(config))
@@ -92,6 +94,20 @@ export class GitHubApi {
 
     Logger.success(`Successfully created repo ${args.name}`)
     return resp?.data
+  }
+
+  static buildHeaders = (token:string) => ({
+    ...(token && { Authorization: `token ${token}` }),
+    [`Content-Type`]: `application/json`,
+    Accept: `application/vnd.github+json`,
+  })
+
+  static buildAPIUrl = (remote:string, pathExt:string[]=[]) => {
+    const repoUrl = new url.URL(remote)
+    repoUrl.host = process.env.GITHUB_API_URL || `api.github.com`
+    repoUrl.pathname = path.join(`repos`, repoUrl.pathname, ...pathExt)
+
+    return repoUrl.toString()
   }
 
   /**
@@ -114,7 +130,7 @@ export class GitHubApi {
 
     this.options = opts
     this.baseUrl = remote
-    this.headers = buildHeaders(token)
+    this.headers = GitHubApi.buildHeaders(token)
   }
 
   _callApi = async <T=TApiRes>(
@@ -127,7 +143,7 @@ export class GitHubApi {
       : params
 
 
-    const url = buildAPIUrl(this.baseUrl, ensureArr(args.url))
+    const url = GitHubApi.buildAPIUrl(this.baseUrl, ensureArr(args.url))
 
     const { cache, error:throwErr } = conf
 

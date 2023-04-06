@@ -2,7 +2,7 @@ import type { TWFCreateArgs } from '@gobletqa/workflows/types'
 
 import { Logger } from '@keg-hub/cli-utils'
 import { git } from '@gobletqa/workflows/git'
-import { GitHubApi } from '@gobletqa/workflows/repo/githubApi'
+import { GitHubApi } from '@gobletqa/workflows/providers/githubApi'
 import { ensureMounted } from '@gobletqa/workflows/repo/ensureMounted'
 import { configureGitOpts } from '@gobletqa/workflows/utils/configureGitOpts'
 import { ensureBranchExists } from '@gobletqa/workflows/repo/ensureBranchExists'
