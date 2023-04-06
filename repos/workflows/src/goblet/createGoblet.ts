@@ -2,7 +2,7 @@ import type { TWFCreateArgs } from '@gobletqa/workflows/types'
 
 import { Logger } from '@keg-hub/cli-utils'
 import { git } from '@gobletqa/workflows/git'
-import { GitApi } from '@gobletqa/workflows/repo/gitApi'
+import { GitHubApi } from '@gobletqa/workflows/repo/githubApi'
 import { ensureMounted } from '@gobletqa/workflows/repo/ensureMounted'
 import { configureGitOpts } from '@gobletqa/workflows/utils/configureGitOpts'
 import { ensureBranchExists } from '@gobletqa/workflows/repo/ensureBranchExists'
@@ -27,7 +27,7 @@ export const createGoblet = async (args:TWFCreateArgs) => {
 
   const token = git.loadToken(args) as string
 
-  const repoMeta = await GitApi.createRepo({
+  const repoMeta = await GitHubApi.createRepo({
     token,
     url: createUrl,
     name: create.name,
@@ -48,7 +48,7 @@ export const createGoblet = async (args:TWFCreateArgs) => {
   const notValid = validateCreateArgs(token, gitOpts)
   if(notValid) return notValid
 
-  const gitApi = new GitApi(gitOpts)
+  const gitApi = new GitHubApi(gitOpts)
   const branch = await ensureBranchExists(gitApi, gitOpts)
   const setupResp = await ensureMounted(args, {...gitOpts, branch })
 

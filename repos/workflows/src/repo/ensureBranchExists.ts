@@ -1,6 +1,6 @@
 import type { TBranchMeta, TGitOpts } from '../types'
 
-import { GitApi } from './gitApi'
+import { GitHubApi } from './githubApi'
 import { Logger } from '@keg-hub/cli-utils'
 
 const getActiveBranch = (opts:TGitOpts) => {
@@ -12,7 +12,7 @@ const getActiveBranch = (opts:TGitOpts) => {
  * Uses branch as the base branch, to branch from
  * - Or calls gitApi.defaultBranch if branch does not exist
  */
-const createBranchFrom = async (gitApi:GitApi, opts:TGitOpts) => {
+const createBranchFrom = async (gitApi:GitHubApi, opts:TGitOpts) => {
   const { newBranch, branch, repoName } = opts
   
   let baseBranchMeta = branch && await gitApi.getBranch(branch)
@@ -24,11 +24,11 @@ const createBranchFrom = async (gitApi:GitApi, opts:TGitOpts) => {
   }
 
   !baseBranchMeta
-    && GitApi.error(`Base branch ${branch} sha does not exist`, repoName, branch, newBranch)
+    && GitHubApi.error(`Base branch ${branch} sha does not exist`, repoName, branch, newBranch)
 
   const hash = (baseBranchMeta as TBranchMeta)?.commit.sha
   !hash
-    && GitApi.error(`Base branch ${branch} sha does not exist`, baseBranchMeta)
+    && GitHubApi.error(`Base branch ${branch} sha does not exist`, baseBranchMeta)
 
   const createdBranch = await gitApi.createBranch(newBranch, { hash })
 
@@ -40,7 +40,7 @@ const createBranchFrom = async (gitApi:GitApi, opts:TGitOpts) => {
  * If exists - returns it's name
  * If does not exists - creates it from default branch by calling createBranchFrom
  */
-const gitExistingBranch = async (gitApi:GitApi, opts:TGitOpts) => {
+const gitExistingBranch = async (gitApi:GitHubApi, opts:TGitOpts) => {
 
   const { branch } = opts
   Logger.log(`Using existing or default branch ${branch}...`)
@@ -61,7 +61,7 @@ const gitExistingBranch = async (gitApi:GitApi, opts:TGitOpts) => {
  * - If it does exist, then returns the branches name
  * - If it does NOT exit, then calls createBranchFrom 
  */
-export const ensureBranchExists = async (gitApi:GitApi, opts:TGitOpts) => {
+export const ensureBranchExists = async (gitApi:GitHubApi, opts:TGitOpts) => {
   const {
     newBranch,
     branchFrom,

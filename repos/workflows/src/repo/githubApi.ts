@@ -47,7 +47,7 @@ const createOpts = {
   },
 }
 
-export class GitApi {
+export class GitHubApi {
   baseUrl:string
   headers:Record<string, string>
   options:Omit<TGitOpts, `token`|`remote`>

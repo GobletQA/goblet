@@ -25,7 +25,7 @@ const callGit = async <T=TCmdResp>(method:string, options:TGitOpts, ...args:any[
 
 /**
  * Helper class to eventually replace git.ts
- * This better matches the gitApi.ts class so they are consistent
+ * This better matches the Git Api classes so they are consistent
  */
 export class GitFs {
   options:TGitOpts
