@@ -1,64 +1,19 @@
 import type {
-  TAuthData,
   TUserState,
-  TAuthUserRaw,
+  TRawAuthUser,
   TValidateResp,
-  TFormattedUser,
-  TAuthCredential,
-  TAuthAdditionalUserInfo,
 } from '@types'
 
-import { EContainerState } from '@types'
+import { omitKeys } from '@keg-hub/jsutils'
 import { GitUser } from '@services/gitUser'
-import { pickKeys, omitKeys } from '@keg-hub/jsutils'
-import { isAllowedUser } from './isAllowedUser'
 import { apiRequest } from '@utils/api/apiRequest'
+import { EAuthType, EContainerState } from '@types'
 import { signOutAuthUser } from './signOutAuthUser'
+import { formatUser } from '@utils/admin/formatUser'
 import { localStorage } from '@services/localStorage'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
 
-const fineUserAvatarUrl = (data:TAuthData) => {
-  return data.user?.photoUrl
-    || data?.additionalUserInfo?.photoUrl
-    || data?.additionalUserInfo?.profile?.avatar_url
-}
-
-/**
- * Formats the response from the git provider sign in
- * Builds a user object from the provided data
- */
-const formatUser = (data:TAuthData):TFormattedUser => {
-  const { uid, email, displayName } = pickKeys<TAuthUserRaw>(data.user, [
-    'uid',
-    'email',
-    'displayName',
-  ])
-
-  const { screenName:username, profile } = pickKeys<TAuthAdditionalUserInfo>(data.additionalUserInfo, [
-    'profile',
-    'screenName',
-  ])
-
-
-  const { providerId, accessToken } = pickKeys<TAuthCredential>(data.credential, [
-    'accessToken',
-    'providerId',
-  ])
-  
-  const photoUrl = fineUserAvatarUrl(data)
-
-  return {
-    email,
-    id: uid,
-    photoUrl,
-    displayName,
-    username: username,
-    token: accessToken,
-    provider: providerId,
-    reposUrl: profile.repos_url,
-  }
-}
 
 /**
  * Validate the response from the Backend API
@@ -83,12 +38,12 @@ const validateResp = (resp:TValidateResp) => {
  * On each sign in, it also saves the users auth token, which can be used for accessing the git provider
  * Then loads the Dashboard root
  */
-export const onSuccessAuth = async (authData:TAuthData) => {
+export const onSuccessAuth = async (authData:TRawAuthUser, type:EAuthType) => {
   let statusCodeNum
 
   try {
-    const userData = formatUser(authData)
-    await isAllowedUser(userData.email)
+    const userData = await formatUser(authData, type)
+    if(!userData) return
 
     // TODO: update this so show a message
     // The user has logged in, and now we spin up a container for them

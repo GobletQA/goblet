@@ -1,16 +1,18 @@
 import type { CSSProperties, ComponentType } from 'react'
 
 import { useEffect, useState, useCallback } from 'react'
+import { EAuthType } from '@types'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import { Container } from './SignIn.style'
-import { GitHubIcon } from '@gobletqa/components'
+import { GitHubIcon, GitlabIcon } from '@gobletqa/components'
 import { OtherProviders } from '../OtherProviders'
 import { loadUser } from '@actions/admin/user/loadUser'
 import { getProviderMetadata } from '@services/providers'
-import { checkCall, isArr, noOp } from '@keg-hub/jsutils'
-import { SignInButton } from '../GithubSignIn/SignInButton'
+import { GithubSignIn } from '../GithubSignIn/GithubSignIn'
+import { GitlabSignIn } from '../GitlabSignIn/GitlabSignIn'
 import { onSuccessAuth, onFailedAuth } from '@actions/admin/provider'
+import { checkCall, isArr, noOp, capitalize } from '@keg-hub/jsutils'
 
 
 const { auth, config } = getProviderMetadata()
@@ -34,13 +36,17 @@ const SignIn = (props:TSignIn) => {
     !authConfig ? checkCall(onNoAuthConfig) : loadUser()
   })
 
-  const [signingIn, setSigningIn] = useState(false)
-  const [signInError, setSignInError] = useState()
+  const [signingIn, setSigningIn] = useState<boolean>(false)
+  const [signInError, setSignInError] = useState<string|undefined>()
 
-  const onFailedSignIn = useCallback((err:any) => {
+  const onFailedSignIn = useCallback((err?:Error, type?:EAuthType) => {
     setSigningIn(false)
-    setSignInError(err.message)
-    onFailedAuth(err)
+
+    const message = err?.message
+      || `[Auth State Error] ${type ? capitalize(type) : ''} Authentication failed.`
+
+    setSignInError(message)
+    onFailedAuth(err, message)
   }, [])
 
   return !authConfig || !isArr(authConfig?.signInOptions)
@@ -50,19 +56,28 @@ const SignIn = (props:TSignIn) => {
         <List>
           {/* TODO: update this when more providers are added */}
           {authConfig.signInOptions.map((option:any) => 
-            <SignInButton
+            <GithubSignIn
               auth={auth}
               Icon={GitHubIcon}
               provider={option}
-              prefix='keg-github'
               disabled={signingIn}
               onFail={onFailedSignIn}
+              key={option.providerId}
               onSigningIn={setSigningIn}
               onSuccess={onSuccessAuth}
-              key={option.providerId}
               children='Sign in with GitHub'
             />
           )}
+          {
+            <GitlabSignIn
+              Icon={GitlabIcon}
+              disabled={signingIn}
+              onFail={onFailedSignIn}
+              onSuccess={onSuccessAuth}
+              onSigningIn={setSigningIn}
+              children='Sign in with GitLab'
+            />
+          }
           <OtherProviders />
         </List>
         <Box>

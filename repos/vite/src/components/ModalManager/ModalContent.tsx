@@ -8,7 +8,6 @@ import DialogContentText from '@mui/material/DialogContentText'
 const styles = {
   content: {
     padding: gutter.padding.px,
-    borderTop: `2px solid ${colors.green10}`,
   }
 }
 

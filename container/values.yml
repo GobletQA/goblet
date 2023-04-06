@@ -260,5 +260,6 @@ env:
   GB_KD_WS_PATH: /goblet-socket
 
 
-  GITLAB_OAUTH_ID: ""
-  GITLAB_OAUTH_SECRET: ""
+  GITLAB_CLIENT_ID: ""
+  GITLAB_CLIENT_SECRET: ""
+  GITLAB_AUTH_URL: https://gitlab.com

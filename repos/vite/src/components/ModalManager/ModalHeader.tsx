@@ -25,8 +25,9 @@ export const ModalHeader = (props:TModal) => {
   const theme = useTheme()
   const styles = useMemo(() => {
     return {
-      color: colors.white,
-      bgcolor: colors.purple23,
+      color: colors.black10,
+      bgcolor: colors.white,
+      borderBottom: `1px solid ${colors.white01}`
     }
     
   }, [theme])
@@ -37,7 +38,8 @@ export const ModalHeader = (props:TModal) => {
       flexDirection="row"
       alignItems="center"
       alignContent="center"
-      justifyContent="center"
+      justifyContent="start"
+      margin={`0 ${gutter.margin.px}`}
       padding={`${gutter.padding.tQpx} ${gutter.padding.px}`}
       {...styles}
     >

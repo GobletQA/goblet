@@ -1,36 +1,28 @@
-import type { ReactNode } from 'react'
+import type { ReactNode, Dispatch, SetStateAction } from 'react'
+import type { TRawAuthUser } from '@types'
 
+import { EAuthType } from '@types'
 import { useCallback } from 'react'
 import Button from '@mui/material/Button'
 import ListItem from '@mui/material/ListItem'
 import { colors } from '@gobletqa/components/theme'
 import { signInWithPopup, GithubAuthProvider } from 'firebase/auth'
 
-const defPrefix = 'goblet-github-button'
-const defClasses = {
-  main: 'main',
-  button: 'button',
-  content: 'content',
-  text: 'text',
-  icon: 'icon',
-}
 
 export type TSignInButton = {
-    Icon?: any,
-    text?: ReactNode,
-    children?: ReactNode,
     auth: any,
+    Icon?: any,
     styles?: any,
     provider?:any,
-    prefix?:string
+    text?: ReactNode,
     disabled?:boolean
-    classes?:Record<string, string>
-    onFail?: (...args:any[]) => void,
-    onSuccess?: (...args:any[]) => void,
-    onSigningIn: (...args:any[]) => void,
+    children?: ReactNode,
+    onSigningIn?: Dispatch<SetStateAction<boolean>>,
+    onFail?: (error?:Error, type?:EAuthType) => void,
+    onSuccess?: (rawUser:TRawAuthUser, type:EAuthType) => void,
 }
 
-export const SignInButton = (props:TSignInButton) => {
+export const GithubSignIn = (props:TSignInButton) => {
   const {
     Icon,
     text,
@@ -40,8 +32,6 @@ export const SignInButton = (props:TSignInButton) => {
     children,
     onSuccess,
     onSigningIn,
-    prefix=defPrefix,
-    classes=defClasses,
     ...btnProps
   } = props
 
@@ -51,6 +41,8 @@ export const SignInButton = (props:TSignInButton) => {
     signInWithPopup(auth, provider)
       .then((result:any) => {
         const credential = GithubAuthProvider.credentialFromResult(result)
+        if(!credential) throw new Error(`Could not parse GitHub credential from response`)
+
         const user = result.user
         const additionalUserInfo = result._tokenResponse
         try {
@@ -64,27 +56,28 @@ export const SignInButton = (props:TSignInButton) => {
           user,
           credential,
           additionalUserInfo
-        })
+        }, EAuthType.github)
       })
-      .catch(err => onFail?.(err))
+      .catch(err => onFail?.(err, EAuthType.github))
 
   }, [auth, provider, onSuccess, onFail])
 
   return (
     <ListItem
       sx={{ minWidth: 120 }}
-      className={`${prefix}-${classes?.main}`}
+      className='gb-github-main gb-github-list-item'
     >
       <Button
         variant="contained"
-        startIcon={Icon && (<Icon className={`${prefix}-${classes?.icon}`} />)}
+        startIcon={Icon && (<Icon className='gb-github-icon' />)}
         {...btnProps}
         onClick={onBtnPress}
-        className={`${prefix}-${classes?.button}`}
+        className='gb-github-button'
         sx={{
           width: `100%`,
           color: colors.white,
-          backgroundColor: colors.black09,
+          // Github Black, only place it's used
+          backgroundColor: `#161b22`,
         }}
       >
         {children || text}

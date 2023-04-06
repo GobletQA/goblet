@@ -9,6 +9,7 @@ import { Git, Loading } from '@gobletqa/components'
 import { connectModal } from '@actions/modals/modals'
 import { toggleModal } from '@actions/modals/toggleModal'
 import {
+  SubText,
   LogoIcon,
   LogoText,
   Container,
@@ -41,18 +42,21 @@ export const SignInModal:TModalRef = (props:TModalComponent) => {
 
   return (
     <Container className='gb-sign-in-modal-container' >
-      <LogoContainer>
-        <LogoIcon />
-        <LogoText>
-          GobletQA
-        </LogoText>
-      </LogoContainer>
       <Suspense fallback={<Loading />} >
         <LazySignIn
           messageSx={styles.message}
           MessageComponent={props.ModalMessage}
         />
       </Suspense>
+      <LogoContainer>
+        <LogoIcon />
+        <LogoText>
+          GobletQA
+        </LogoText>
+        <SubText>
+          Deploy with confidence
+        </SubText>
+      </LogoContainer>
     </Container>
   )
 }

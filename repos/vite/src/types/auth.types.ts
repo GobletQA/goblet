@@ -1,9 +1,8 @@
-export type TAuthUserRaw = {
-  uid: string
-  email: string
-  photoUrl?:string
-  displayName: string
-}
+import type { User as TGitlabUserRaw } from "oidc-react"
+import type {
+  User as TGithubAuthUser,
+  OAuthCredential as TGithubAuthCredential,
+  } from 'firebase/auth'
 
 export type TAuthProfile = {
   repos_url: string
@@ -16,14 +15,9 @@ export type TAuthAdditionalUserInfo = {
   photoUrl?:string
 }
 
-export type TAuthCredential = {
-  accessToken: string
-  providerId: string
-}
-
-export type TAuthData = {
-  user: TAuthUserRaw
-  credential: TAuthCredential
+export type TGithubUserRaw = {
+  user: TGithubAuthUser
+  credential: TGithubAuthCredential
   additionalUserInfo: TAuthAdditionalUserInfo
 }
 
@@ -36,4 +30,17 @@ export type TFormattedUser = {
   provider: string
   reposUrl: string
   displayName:string
+}
+
+export type TRawAuthUser = TGithubUserRaw | TGitlabUserRaw
+
+export enum EAuthType {
+  github=`github`,
+  gitlab=`gitlab`
+}
+
+export {
+  TGitlabUserRaw,
+  TGithubAuthUser,
+  TGithubAuthCredential
 }

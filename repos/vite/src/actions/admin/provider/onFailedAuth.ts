@@ -8,7 +8,7 @@ import { signOutAuthUser } from './signOutAuthUser'
  *
  * @return {Void}
  */
-export const onFailedAuth = (err:Error) => {
-  console.error(`[Auth State Error] Authentication failed. ${err.message}`)
+export const onFailedAuth = (err?:Error, message?:string) => {
+  console.error(`[Auth State Error] Authentication failed. ${err?.message || message || ``}`)
   signOutAuthUser()
 }

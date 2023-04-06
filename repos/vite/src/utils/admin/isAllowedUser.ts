@@ -1,5 +1,5 @@
 import { Environment, AllowedUsers } from '@constants'
-import { signOutAuthUser } from './signOutAuthUser'
+import { signOutAuthUser } from '@actions/admin/provider/signOutAuthUser'
 
 
 // If in a non-dev env, then we should check for user emails
@@ -17,10 +17,10 @@ const shouldCheckUser =
  * @throws
  *
  */
-export const isAllowedUser = async (email:string) => {
+export const isAllowedUser = async (email:string, forceFail?:boolean) => {
   // TODO: Make this an API call to get the allowed users from the backend
   // That will make it easier to update when deployed
-  if (!shouldCheckUser || !AllowedUsers.length || AllowedUsers.includes(email))
+  if (!forceFail && (!shouldCheckUser || !AllowedUsers.length || AllowedUsers.includes(email)))
     return
 
   await signOutAuthUser()
