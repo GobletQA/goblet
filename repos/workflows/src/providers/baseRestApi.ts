@@ -15,8 +15,21 @@ import type {
 
 import url from 'url'
 import path from 'path'
-import { AxiosError } from 'axios'
-import { emptyObj, emptyArr } from '@keg-hub/jsutils'
+import { Rest } from '../constants'
+import axios, { AxiosError, } from 'axios'
+import { buildHeaders } from '../utils/buildHeaders'
+import { throwGitError } from '../utils/throwGitError'
+import {
+  isArr,
+  isStr,
+  limbo,
+  emptyArr,
+  emptyObj,
+  deepMerge,
+  ensureArr,
+} from '@keg-hub/jsutils'
+
+type Provider = typeof Rest[`Github`] | typeof Rest[`Gitlab`]
 
 const throwOverrideErr = (message?:string) => {
   throw new Error(message || `Git Provider method must be overridden by an extending Class`)
@@ -25,11 +38,8 @@ const throwOverrideErr = (message?:string) => {
 export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseRestApi> {
   baseUrl:string
   headers:Record<string, string>
-  options:Omit<TGitOpts, `token`|`remote`>
   _cache: Record<string, [AxiosError, Record<any, any>]>={}
 
-  static host:string
-  static globalHeaders:TGitReqHeaders
 
   /**
    * Logs a Git Provider API error message
@@ -39,26 +49,24 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
     throw new Error(message)
   }
 
+  static throwError = (
+    err:Error,
+    remoteUrl:string=`Unknown`,
+    message:string=`[WRK-FL Git API] Error calling Git API`
+  ) => throwGitError(err, remoteUrl, message)
+
+
   static createRepo = async (args:TGitCreateRepoOpts):Promise<TRepoApiMeta> => {
     throwOverrideErr()
     return undefined
   }
 
-  static buildHeaders = (token:string, headers?:TGitReqHeaders) => {
-    return {
-      [`Content-Type`]: `application/json`,
-      ...this.globalHeaders,
-      ...(token && { Authorization: `token ${token}` }),
-      ...headers,
-    }
-  }
-
   static buildAPIUrl = (args:TBuildApiUrl) => {
     const {
+      host,
       remote,
       prePath=``,
       postPath=``,
-      host=this.host,
       pathExt=emptyArr,
     } = args
 
@@ -69,13 +77,18 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
     return repoUrl.toString()
   }
 
-  constructor(gitOpts:TGitOpts){
+  constructor(gitOpts:TGitOpts, provider:Provider){
     const { token, remote, headers, ...opts } = gitOpts
-
-    this.options = opts
     this.baseUrl = remote
-    this.headers = BaseRestApi.buildHeaders(token, headers)
+    this.headers = buildHeaders({
+      token,
+      headers,
+      provider
+    })
   }
+
+  throwError = BaseRestApi.throwError
+  buildAPIUrl = BaseRestApi.buildAPIUrl
 
   _callApi = async <T=TGitApiRes>(
     params:string|string[]|Partial<AxiosRequestConfig>,

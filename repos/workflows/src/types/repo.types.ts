@@ -1,7 +1,6 @@
 
-import type { TRepoGraphRepos }  from './shared.types'
-import type { BaseGraphCache } from '../providers/baseGraphCache'
 import type { Graph } from '../constants'
+import type { TRepoGraphRepos }  from './shared.types'
 
 // ----- Graph API ----- //
 
@@ -21,7 +20,6 @@ export type TGetData = <T>(data:any) => TGraphApiResp<T>
 
 export type TGraphApiVars = TRepoGraphRepos & {
   getData?:TGetData
-  graphCache?:BaseGraphCache
   endpoint: TGraphApiEndpoint
 }
 

@@ -12,6 +12,10 @@ import {
   deepMerge,
 } from '@keg-hub/jsutils'
 
+/**
+ * Only use this is testing
+ */
+import { projects, branches } from '../../__mocks__/gitlab'
 
 const defOpts:TGCacheOpts = emptyObj as TGCacheOpts
 const defVarOpts:TGraphApiVars = emptyObj as TGraphApiVars
@@ -21,14 +25,62 @@ const defVarOpts:TGraphApiVars = emptyObj as TGraphApiVars
  * Allows for paging by caching past requests via this.variables object
  * @type Class
  */
-export class BaseGraphCache {
+export class ApiCache {
 
   variables:Record<any, any> = {}
+  #responses: Record<any, any> = {}
   #defaultVars:Record<any, any> = {}
+
+  static instance:ApiCache
+  static getInstance = (opts:TGCacheOpts=defOpts) => {
+    if(this.instance){
+      this.instance.#defaultVars = {
+        ...this.instance.#defaultVars,
+        ...opts.variables
+      }
+
+      this.instance.variables = deepClone(this.instance.#defaultVars)
+    }
+    else this.instance = new ApiCache(opts)
+
+    return this.instance
+  }
 
   constructor(opts:TGCacheOpts=defOpts){
     this.#defaultVars = deepMerge(this.#defaultVars, opts.variables)
     this.variables = deepClone(this.#defaultVars)
+  }
+
+  cacheResponse = (key:string, value:any) => {
+    this.#responses[key] = {
+      value,
+      // Default timeout is 10 min
+      time: Date.now() + 60000 * 10
+    }
+  }
+
+  checkResponse = <T>(key:string) => {
+
+    // --- Only use for testing --- //
+
+    if(key.includes(`repos.listAll`))
+      return projects.data.projects.nodes as T[]
+
+    else if(key.includes(`repos.branches`))
+      return branches.data.project.repository.branchNames as T[]
+
+    // --- Only use for testing --- //
+
+
+    const res = this.#responses[key]
+    if(!res) return undefined
+    const current = Date.now()
+    const { value, time } = res
+
+    if(current < time) return value as T[]
+
+    this.#responses[key] = undefined
+    return undefined
   }
 
   /**
@@ -83,9 +135,6 @@ export class BaseGraphCache {
               isStr(data) && (acc[key] = data)
             break
             case `fullPath`:
-              isStr(data) && (acc[key] = data)
-            break
-            case `username`:
               isStr(data) && (acc[key] = data)
             break
             case `offset`: 

@@ -54,7 +54,6 @@ export const Graph = deepFreeze({
           }`
         },
         Branches: {},
-        UserRepos: {},
       },
     },
   },
@@ -92,38 +91,6 @@ export const Graph = deepFreeze({
               repository {
                 branchNames(searchPattern:$searchPattern, offset:$offset, limit:$first)
                 rootRef
-              }
-            }
-          }`
-        },
-        UserRepos: {
-          Key: `repos.userRepos`,
-          DataPath: ``,
-          Query: `query($first: Int!, $after: String, $username: String) {
-            user(username: $username) {
-              groups {
-                nodes {
-                  descendantGroups {
-                    nodes {
-                      projects {
-                        nodes {
-                          name
-                          repository {
-                            rootRef
-                          }
-                        }
-                      }
-                    }
-                  }
-                  projects {
-                    nodes {
-                      name
-                      repository {
-                        rootRef
-                      }
-                    }
-                  }
-                }
               }
             }
           }`

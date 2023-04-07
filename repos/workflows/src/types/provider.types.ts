@@ -8,6 +8,18 @@ import type {
 
 import { AxiosError } from 'axios'
 
+export type TApiConf = {
+  url?:string
+  error?:boolean
+  cache?:boolean
+  params?:string|string[]|Partial<AxiosRequestConfig>,
+}
+
+export type TCreateBranchCof = {
+  hash?:string
+  from?:string
+}
+
 export type TGitReqHeaders = Record<string, string>
 
 export type TGitApiRes = {
@@ -28,7 +40,7 @@ export type TGitCreateBranchCof = {
 export type StaticImplements<I extends new (...args: any[]) => any, C extends I> = InstanceType<I>
 
 export type TBuildApiUrl = {
-  host?:string
+  host:string
   remote:string
   prePath?:string
   postPath?:string
@@ -37,8 +49,7 @@ export type TBuildApiUrl = {
 
 export interface IGitApi {
   baseUrl:string
-  headers:Record<string, string>
-  options:Omit<TGitOpts, `token`|`remote`>
+  headers:TGitReqHeaders
   _cache: Record<string, [AxiosError, Record<any, any>]>
  
  _callApi:<T=TGitApiRes>(
@@ -55,10 +66,7 @@ export interface IGitApi {
 
 export interface IGitApiStatic {
   new (...args: any[]): IGitApi
-  host:string
-  globalHeaders:Record<string, string>
   buildAPIUrl: (args:TBuildApiUrl) => string
   createRepo:(args:TGitCreateRepoOpts) => void
   error:(message:string, ...args:any[]) => void
-  buildHeaders:(token:string, headers?:Record<string, string>) => Record<string, string>
 }

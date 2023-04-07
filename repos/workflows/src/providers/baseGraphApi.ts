@@ -8,12 +8,14 @@ import type {
 } from '@gobletqa/workflows/types'
 
 import axios from 'axios'
-import { BaseGraphCache } from './baseGraphCache'
+import { ApiCache } from './apiCache'
+import { buildHeaders } from '../utils/buildHeaders'
 import {
   get,
   limbo,
   isArr,
   isFunc,
+  hashObj,
   emptyObj,
   emptyArr,
   deepMerge,
@@ -23,12 +25,12 @@ const defPageInfo:TGraphPageInfo = emptyObj as TGraphPageInfo
 
 export class BaseGraphApi {
 
-  cache: BaseGraphCache
+  cache: ApiCache
   provider: TGraphProvider
 
   constructor(args:TBaseGraphApi){
     this.provider = args.provider 
-    this.cache = new BaseGraphCache({
+    this.cache = ApiCache.getInstance({
       variables: args.variables
     })
   }
@@ -47,12 +49,11 @@ export class BaseGraphApi {
   }
 
   buildHeaders = (token:string, headers:Record<string, string>) => {
-    const { Ref, Key } = this.provider.AuthHeader
-
-    return deepMerge({
-      [`Content-Type`]: `application/json`,
-      [Key]: `${Ref} ${token}`
-    }, headers)
+    return buildHeaders({
+      token,
+      headers,
+      provider: this.provider
+    })
   }
 
   /**
@@ -66,6 +67,10 @@ export class BaseGraphApi {
     } = endpoint
 
     const variables = this.cache.buildVars(args, endpointKey)
+
+    const cacheKey = `${endpointKey}-${hashObj(variables)}`
+    const res = this.cache.checkResponse(cacheKey)
+    if(res) return res as T[]
 
     const opts = {
       method: `post`,
@@ -94,6 +99,7 @@ export class BaseGraphApi {
     }
 
     this.cache.reset(endpointKey)
+    this.cache.cacheResponse(cacheKey, nodes)
 
     return nodes as T[]
   }

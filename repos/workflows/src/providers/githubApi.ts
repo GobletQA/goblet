@@ -1,18 +1,20 @@
 import type { AxiosRequestConfig } from 'axios'
 import type {
+  TApiConf,
   TGitOpts,
   TRepoResp,
   TGitApiRes,
   TBranchResp,
   TBuildApiUrl,
   TGitReqHeaders,
+  TCreateBranchCof,
   TGitCreateRepoOpts,
 } from '@gobletqa/workflows/types'
 
 import { Rest } from '../constants'
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, } from 'axios'
 import { Logger } from '@keg-hub/cli-utils'
-import { throwGitError } from '../utils/throwGitError'
+import { buildHeaders } from '../utils/buildHeaders'
 import {
   isArr,
   isStr,
@@ -22,17 +24,6 @@ import {
   ensureArr,
 } from '@keg-hub/jsutils'
 import { BaseRestApi } from './baseRestApi'
-
-type TApiConf = {
-  url?:string
-  error?:boolean
-  cache?:boolean
-}
-
-type TCreateBranchCof = {
-  hash?:string
-  from?:string
-}
 
 const createOpts = {
   override: {
@@ -49,19 +40,6 @@ const createOpts = {
 }
 
 export class GithubApi extends BaseRestApi {
-
-  static host:string = Rest.Github.Url
-  static globalHeaders:Record<string, string> = {
-    Accept: `application/vnd.github+json`,
-  }
-
-  static buildAPIUrl = (args:TBuildApiUrl) => {
-    return super.buildAPIUrl({...args, host: args.host || this.host})
-  }
-
-  static buildHeaders = (token:string, headers:TGitReqHeaders=emptyObj as TGitReqHeaders) => {
-    return super.buildHeaders(token, {...this.globalHeaders, ...headers})
-  }
 
 /**
  * Create a new repo by making a post request to github's API
@@ -86,38 +64,24 @@ export class GithubApi extends BaseRestApi {
       url,
       method: `POST`,
       data: createParams,
-      headers: GithubApi.buildHeaders(token),
+      headers: buildHeaders({
+        token,
+        provider: Rest.Github
+      }),
     })
 
     const [err, resp] = await limbo<TRepoResp, AxiosError>(axios(config))
     if(err){
       const error = err?.response?.data as Error
-      throwGitError(error, url)
+      this.throwError(error, url)
     }
 
     Logger.success(`Successfully created repo ${args.name}`)
     return resp?.data
   }
 
-
-  /**
-   * Dummy data for create a repo and not hitting the github api
-   */
-  // static _createRepo = async (args:TGitCreateRepoOpts) => {
-  //   return {
-  //     id: 594255619,
-  //     private: true,
-  //     name: 'test-repo',
-  //     node_id: 'R_kgDOI2ufAw',
-  //     default_branch: 'master',
-  //     full_name: 'lancetipton/test-repo',
-  //     html_url: 'https://github.com/lancetipton/test-repo',
-  //   }
-  // }
-
-
   constructor(gitOpts:TGitOpts){
-    super(gitOpts)
+    super(gitOpts, Rest.Github)
   }
 
   _callApi = async <T=TGitApiRes>(
@@ -133,6 +97,7 @@ export class GithubApi extends BaseRestApi {
     const url = GithubApi.buildAPIUrl({
       prePath: `repos`,
       remote: this.baseUrl,
+      host: Rest.Github.Url,
       pathExt: ensureArr(args.url)
     })
 
@@ -153,7 +118,7 @@ export class GithubApi extends BaseRestApi {
     if(resp || !err || !throwErr) return axiosRes as [AxiosError, T]
     
     const error = err?.response?.data as Error
-    throwGitError(error, url)
+    this.throwError(error, url)
 
     return axiosRes as [AxiosError, T]
   }
@@ -183,7 +148,7 @@ export class GithubApi extends BaseRestApi {
     const error = err?.response?.data as Error
     return err.code === AxiosError.ERR_BAD_REQUEST && err?.response?.status === 404
       ? false
-      : throwGitError(error, `branches/${branch}`)
+      : this.throwError(error, `branches/${branch}`)
   }
 
   createBranch = async (newBranch:string, { from, hash }:TCreateBranchCof) => {
@@ -209,7 +174,7 @@ export class GithubApi extends BaseRestApi {
     const [err, resp] = await this._callApi<any>([`git/refs`, `/heads/${branch}`])
     const sha = resp?.data?.object?.sha as string
 
-    return sha || throwGitError(new Error(resp?.data))
+    return sha || this.throwError(new Error(resp?.data))
   }
 
 }

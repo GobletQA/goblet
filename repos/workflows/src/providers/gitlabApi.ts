@@ -1,8 +1,9 @@
 import type { AxiosRequestConfig } from 'axios'
 import type {
+  TApiConf,
   TGitOpts,
+  TRepoResp,
   TGitApiRes,
-  TGitApiConf,
   TBranchMeta,
   TRepoApiMeta,
   TBuildApiUrl,
@@ -12,46 +13,73 @@ import type {
 } from '@gobletqa/workflows/types'
 
 import { Rest } from '../constants'
-import { emptyObj } from '@keg-hub/jsutils'
+import axios, { AxiosError, } from 'axios'
 import { BaseRestApi } from './baseRestApi'
+import {
+  isArr,
+  isStr,
+  limbo,
+  emptyObj,
+  deepMerge,
+  ensureArr,
+} from '@keg-hub/jsutils'
 
 // curl --header "Authorization: Bearer <token>" "https://gitlab.com/api/v4/projects"
 export class GitlabApi extends BaseRestApi {
-
-  static host:string = Rest.Gitlab.Url
-  static globalHeaders:Record<string, string> = {
-  }
-
-  static buildAPIUrl = (args:TBuildApiUrl) => {
-    return super.buildAPIUrl({...args, host: args.host || this.host})
-  }
-
-  static buildHeaders = (token:string, headers:TGitReqHeaders=emptyObj as TGitReqHeaders) => {
-    return super.buildHeaders(token, {
-      ...this.globalHeaders,
-      ...headers,
-      ...(token && { Authorization: `Bearer ${token}` }),
-    })
-  }
-
 
   static createRepo = async (args:TGitCreateRepoOpts):Promise<TRepoApiMeta> => {
     return undefined
   }
 
   constructor(gitOpts:TGitOpts){
-    super(gitOpts)
+    super(gitOpts, Rest.Gitlab)
   }
 
   _callApi = async <T=TGitApiRes>(
     params:string|string[]|Partial<AxiosRequestConfig>,
-    conf:TGitApiConf=emptyObj
+    conf:TApiConf=emptyObj
   ) => {
-    return undefined
+
+    const args = isStr(params) || isArr(params)
+      ? { url: params }
+      : params
+
+    const url = GitlabApi.buildAPIUrl({
+      prePath: `repos`,
+      remote: this.baseUrl,
+      host: Rest.Gitlab.Url,
+      pathExt: ensureArr(args.url)
+    })
+
+    const { cache, error:throwErr } = conf
+
+    if(cache !== false && this._cache[url]) return this._cache[url] as [AxiosError, T]
+
+    const config = deepMerge<AxiosRequestConfig>({
+      method: 'GET',
+      headers: this.headers,
+    }, args, { url })
+    
+    const [err, resp] = await limbo<T, AxiosError>(axios(config))
+    const axiosRes = [err, resp] as [AxiosError, T]
+
+    if(cache !== false) this._cache[url] = axiosRes as [AxiosError, T]
+
+    if(resp || !err || !throwErr) return axiosRes as [AxiosError, T]
+    
+    const error = err?.response?.data as Error
+    this.throwError(error, url)
+
+    return axiosRes as [AxiosError, T]
   }
 
   getRepo = async (repo:string):Promise<TRepoApiMeta> => {
-    return undefined
+    // TODO: the repo name is already part of the base URL
+    // If we ever need to get the repo meta for a different repo
+    // Then we need to override the base url and build it with the passed in repo name
+    // For now, just pass an empty string
+    const [err, resp] = await this._callApi<TRepoResp>('')
+    return resp.data
   }
   
   defaultBranch = async (repoName:string) => {
