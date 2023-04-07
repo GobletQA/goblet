@@ -1,6 +1,6 @@
 import type { TBuiltRepo } from '@types'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRepos, useUser } from '@store'
 import { noOpObj } from '@keg-hub/jsutils'
 import { useBuildRepos } from './useBuildRepos'
@@ -19,6 +19,7 @@ export const useConnectData = ({
   const user = useUser()
   const userBranch = `goblet-${user?.username}`
 
+  const [reposError, setReposError] = useState<string|undefined>()
   const [repo, setRepo] = useState<TBuiltRepo|undefined>(initRepo)
   const [loading, setLoading] = useState<boolean>(true)
   
@@ -36,6 +37,18 @@ export const useConnectData = ({
   const [branchFrom, setBranchFrom] = useState<boolean>(false)
   const [branch, setBranch] = useState(initBranch || userBranch)
 
+  const onSyncRepos = useCallback(async () => {
+    setLoading(true)
+    setReposError(undefined)
+
+    await getRepos((errorMsg:string) => {
+      setLoading(false)
+      setReposError(errorMsg)
+    })
+
+    setLoading(false)
+  }, [])
+
   // On initial load of the component, load the users repos
   useEffect(() => {
     if(initRepo && !repo) setRepo(initRepo)
@@ -47,8 +60,14 @@ export const useConnectData = ({
     if(!loading) return
 
     ;(!hasRepos)
-      ? (async () => await getRepos())()
-      : setLoading(false)
+      ? (async () => await getRepos((errorMsg:string) => {
+          setLoading(false)
+          setReposError(errorMsg)
+        }))()
+      : (() => {
+          setLoading(false)
+          setReposError(undefined)
+        })()
 
   }, [repos])
 
@@ -65,13 +84,16 @@ export const useConnectData = ({
     apiRepos,
     newBranch,
     setBranch,
+    reposError,
     branchFrom,
     setLoading,
     setNewRepo,
     userBranch,
     createRepo,
+    onSyncRepos,
     description,
     setNewBranch,
+    setReposError,
     setBranchFrom,
     setCreateRepo,
     setDescription,

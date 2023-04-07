@@ -5,7 +5,6 @@ import { useRepoEvents } from './useRepoEvents'
 import { useConnectData } from './useConnectData'
 import { useBranchEvents } from './useBranchEvents'
 
-
 export type THConnect = {
   branch?:string
   repo?:TBuiltRepo
@@ -29,13 +28,16 @@ export const useConnect = (props:THConnect=noOpObj) => {
     apiRepos,
     newBranch,
     setBranch,
+    reposError,
     setLoading,
     setNewRepo,
     userBranch,
     createRepo,
     branchFrom,
     description,
+    onSyncRepos,
     setNewBranch,
+    setReposError,
     setBranchFrom,
     setCreateRepo,
     setDescription,
@@ -89,13 +91,16 @@ export const useConnect = (props:THConnect=noOpObj) => {
     loading,
     newBranch,
     setBranch,
+    reposError,
     createRepo,
     setLoading,
     branchFrom,
     userBranch,
     description,
+    onSyncRepos,
     onCreateRepo,
     onChangeRepo,
+    setReposError,
     setBranchFrom,
     onChangeOwner,
     onChangeBranch,

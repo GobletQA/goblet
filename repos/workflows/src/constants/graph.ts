@@ -30,7 +30,7 @@ export const Graph = deepFreeze({
       Repo: {
         ListAll: {
           Key: `repos.listAll`,
-          DataPath: `viewer.repositories`,
+          DataPath: `data.viewer.repositories`,
           Query: `query($first: Int!, $after: String, $affiliations: [RepositoryAffiliation], $ownerAffiliations: [RepositoryAffiliation], $sortDirection: OrderDirection!)
           {
             viewer {
@@ -65,9 +65,9 @@ export const Graph = deepFreeze({
       Repo: {
         ListAll: {
           Key: `repos.listAll`,
-          DataPath: `projects`,
+          DataPath: `data.projects`,
           Query: `query($first: Int!, $after: String) {
-            projects(membership: true) {
+            projects(membership: true, first: $first, after: $after) {
               nodes {
                 name
                 fullPath
@@ -85,8 +85,8 @@ export const Graph = deepFreeze({
         },
         Branches: {
           Key: `repos.branches`,
-          DataPath: `project.repository.branchNames`,
-          Query: `query($first: Int!, $offset: Int!, $fullPath: String!, $searchPattern: String!) {
+          DataPath: `data.project.repository.branchNames`,
+          Query: `query($first: Int!, $offset: Int!, $fullPath: ID!, $searchPattern: String!) {
             project(fullPath: $fullPath) {
               name
               repository {

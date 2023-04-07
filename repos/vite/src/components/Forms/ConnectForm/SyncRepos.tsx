@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box'
-import { getRepos } from '@actions/repo/api/getRepos'
 import { Tooltip, Button, SyncIcon } from '@gobletqa/components'
 
 const styles = {
@@ -21,9 +20,15 @@ const styles = {
   }
 }
 
-type TSyncRepos = {}
+type TSyncRepos = {
+  onClick:(...args:any[]) => void
+}
 
 export const SyncRepos = (props:TSyncRepos) => {
+  const {
+    onClick
+  } = props
+  
   return (
     <Tooltip
       loc='bottom'
@@ -35,10 +40,10 @@ export const SyncRepos = (props:TSyncRepos) => {
         className='sync-repos-container'
       >
         <Button
-          sx={styles.button}
           Icon={SyncIcon}
+          onClick={onClick}
+          sx={styles.button}
           iconSx={styles.icon}
-          onClick={getRepos}
           name='syncRepos'
           // @ts-ignore
           color='light'

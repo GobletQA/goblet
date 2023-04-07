@@ -19,9 +19,11 @@ export const formatUser = async (
   switch(type){
     case EAuthType.github: {
       user = githubUser(authData as TGithubUserRaw)
+      break
     }
     case EAuthType.gitlab: {
       user = gitlabUser(authData as TGitlabUserRaw)
+      break
     }
   }
 

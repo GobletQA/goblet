@@ -26,10 +26,16 @@ export class GitlabGraphApi extends BaseGraphApi {
     [Graph.Gitlab.Endpoints.Repo.ListAll.Key]: {
       first: 100,
       after: null,
+    },
+    [Graph.Gitlab.Endpoints.Repo.Branches.Key]: {
+      offset: 0,
+      first: 100,
+      after: null,
+      searchPattern: `*`,
     }
   }
 
-  constructor(opts:TGraphApiOpts){
+  constructor(opts?:TGraphApiOpts){
     super({
       provider: Graph.Gitlab,
       variables: GitlabGraphApi.defaultVars,
@@ -84,8 +90,6 @@ export class GitlabGraphApi extends BaseGraphApi {
       const branches = await this.repoBranches({
         ...opts,
         fullPath,
-        offset: 0,
-        searchPattern: `*`,
       })
 
       acc.push({

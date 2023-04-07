@@ -84,9 +84,11 @@ export const ConnectForm = (props:TConnectForm) => {
     parents,
     loading,
     newBranch,
+    reposError,
     createRepo,
     branchFrom,
     setLoading,
+    onSyncRepos,
     description,
     onChangeRepo,
     setBranchFrom,
@@ -122,6 +124,7 @@ export const ConnectForm = (props:TConnectForm) => {
       loading
         || !repo
         || !branch
+        || reposError
         || (createRepo && !newRepo)
         || (branchFrom && !newBranch)
     ),
@@ -134,8 +137,8 @@ export const ConnectForm = (props:TConnectForm) => {
         className='connect-form-container'
       >
         <FormMessage
-          error={formError}
-          loading={loading && 'Connecting Repo'}
+          error={reposError || formError}
+          loading={!reposError && !formError && loading && 'Connecting Repo'}
         />
         <Form
           {...styles.form}
@@ -163,6 +166,7 @@ export const ConnectForm = (props:TConnectForm) => {
                 onChange={onChangeRepo}
                 inputError={inputError}
                 createRepo={createRepo}
+                onSyncRepos={onSyncRepos}
                 onInputError={onInputError}
                 onChangeNewRepo={onChangeNewRepo}
               />

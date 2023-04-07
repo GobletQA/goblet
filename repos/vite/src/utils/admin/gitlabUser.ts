@@ -22,9 +22,9 @@ export const gitlabUser = (rawUser:TGitlabUserRaw) => {
   return {
     email,
     id: id_token,
-    provider: iss,
     photoUrl: picture,
     token: access_token,
+    provider: `gitlab.com`,
     reposUrl: `${iss}/projects`,
     refresh_token: refresh_token,
     username: preferred_username || name,

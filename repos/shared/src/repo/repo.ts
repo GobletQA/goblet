@@ -20,6 +20,7 @@ import { resetGobletConfig } from '@GSH/goblet/getGobletConfig'
 import {
   createGoblet,
   statusGoblet,
+  GitlabGraphApi,
   GithubGraphApi,
   initializeGoblet,
   disconnectGoblet,
@@ -47,7 +48,10 @@ export class Repo {
    * @returns {Array} - Found repos and their branches
    */
   static getUserRepos = async (opts:TRepoGraphRepos) => {
-    const graphApi = new GithubGraphApi()
+    const graphApi = opts?.provider?.toLowerCase().includes(`gitlab`)
+      ? new GitlabGraphApi()
+      : new GithubGraphApi()
+
     return await graphApi.userRepos(opts)
   }
 

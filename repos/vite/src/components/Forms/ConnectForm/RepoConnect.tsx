@@ -15,6 +15,7 @@ export type TRepoProps = Partial<typeof repoProps> & {
   onChange?:TOnAutoChange
   inputError:TRepoInputError
   onChangeNewRepo:TRepoValueCB
+  onSyncRepos:(...args:any[]) => void
   onInputError?:(key:string, value?:string) => void
 }
 
@@ -42,6 +43,7 @@ export const RepoConnect = (props:TRepoProps) => {
     onChange,
     inputError,
     createRepo,
+    onSyncRepos,
     onInputError,
     onChangeNewRepo,
   } = props
@@ -72,7 +74,7 @@ export const RepoConnect = (props:TRepoProps) => {
         sx={styles.sync}
         className='gb-grid-sync-repos'
       >
-        <SyncRepos />
+        <SyncRepos onClick={onSyncRepos} />
       </Grid>
 
       {createRepo ? (

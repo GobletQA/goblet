@@ -37,6 +37,9 @@ export const loadConfigFromBase = (base:string) => {
       ].join('')
     )
 
+    // Print the stack trace so we can see how this happened?
+    console.trace()
+
     return null
   }
   

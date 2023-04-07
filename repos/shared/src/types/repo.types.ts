@@ -82,6 +82,7 @@ export type TRepoGraphRepos = {
   offset?:number
   username?:string
   fullPath?:string
+  provider?:string
   searchPattern?:string
   sortDirection?: string
   affiliations?: string[]
