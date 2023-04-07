@@ -1,5 +1,9 @@
-import { GRAPH } from '../constants/graph'
+import type {
+  TGCacheOpts,
+  TGraphApiVars,
+} from '@gobletqa/workflows/types'
 
+import { Graph } from '../constants/graph'
 import {
   isArr,
   isStr,
@@ -8,10 +12,6 @@ import {
   deepClone,
   deepMerge,
 } from '@keg-hub/jsutils'
-import type {
-  TGCacheOpts,
-  TGraphApiVars,
-} from '@gobletqa/workflows/types'
 
 
 const defOpts:TGCacheOpts = noOpObj as TGCacheOpts
@@ -29,12 +29,12 @@ export class GithubGraphCache {
    * @type {Object}
    */
   #defaultVars = {
-    [GRAPH.ENDPOINTS.REPO.LIST_ALL.KEY]: {
+    [Graph.Github.Endpoints.Repo.LIST_ALL.KEY]: {
       first: 50,
       after: null,
-      affiliations: GRAPH.OPTS.AFFILIATIONS,
-      ownerAffiliations: GRAPH.OPTS.AFFILIATIONS,
-      sortDirection: GRAPH.OPTS.SORT_DIRECTION.ASC,
+      affiliations: Graph.Github.Opts.AFFILIATIONS,
+      ownerAffiliations: Graph.Github.Opts.AFFILIATIONS,
+      sortDirection: Graph.Github.Opts.SORT_DIRECTION.ASC,
     }
   }
 

@@ -1,3 +1,5 @@
+import type { TRepoUserRepos } from '@gobletqa/workflows/types/shared.types'
+
 import axios from 'axios'
 import { Graph } from '../constants/graph'
 
@@ -14,13 +16,10 @@ import type {
   TGraphApiResp,
   TGraphPageInfo,
 } from '@gobletqa/workflows/types'
-import type { TRepoUserRepos } from '@gobletqa/workflows/types/shared.types'
-
-import { GithubGraphCache } from './githubGraphCache'
 
 const defPageInfo:TGraphPageInfo = noOpObj as TGraphPageInfo
 
-export class GithubGraphApi {
+export class GitlabGraphApi {
 
   /**
    * Calls Github's GraphQL API endpoint to get a list of a users repos
@@ -33,7 +32,7 @@ export class GithubGraphApi {
       DATA_PATH:dataPath,
     } = endpoint
 
-    const graphCache = args.graphCache || new GithubGraphCache(args)
+    const graphCache = args.graphCache
     const headers = graphCache.buildHeaders(customHeaders)
     const variables = graphCache.buildVars(args, endpointKey)
 
@@ -91,7 +90,7 @@ export class GithubGraphApi {
   userRepos = async (opts:TRepoUserRepos):Promise<TRepoMeta[]> => {
     const repos = await this._callApi({
       ...opts,
-      endpoint: Graph.Github.Endpoints.Repo.LIST_ALL,
+      endpoint: Graph.gitlab.Endpoints.Repo.LIST_ALL,
     })
 
     return repos.filter(repo => isObj(repo))
