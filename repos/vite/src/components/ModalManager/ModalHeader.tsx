@@ -8,9 +8,8 @@ import { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import { noOpObj } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
-import { useTheme } from '@gobletqa/components'
 import Typography from '@mui/material/Typography'
-import { gutter, colors } from '@gobletqa/components/theme'
+import { gutter, colors, getColor, useTheme } from '@gobletqa/components'
 
 export const ModalHeader = (props:TModal) => {
   const {
@@ -25,9 +24,9 @@ export const ModalHeader = (props:TModal) => {
   const theme = useTheme()
   const styles = useMemo(() => {
     return {
-      color: colors.black10,
-      bgcolor: colors.white,
-      borderBottom: `1px solid ${colors.white01}`
+      color: getColor(colors.black10, colors.white),
+      bgcolor: getColor(colors.white, colors.black12),
+      borderBottom: `1px solid ${getColor(colors.white01, colors.black14)}`
     }
     
   }, [theme])

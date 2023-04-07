@@ -129,6 +129,7 @@ export class Repo {
   static fromWorkflow = async (args:TRepoFromWorkflow) => {
     const {
       token,
+      repoId,
       branch,
       repoUrl,
       username,
@@ -148,6 +149,7 @@ export class Repo {
       repo: {
         name,
         branch,
+        repoId,
         provider,
         newBranch,
         branchFrom,

@@ -63,10 +63,10 @@ export class ApiCache {
 
     // --- Only use for testing --- //
 
-    if(key.includes(`repos.listAll`))
+    if(key.includes(`Gitlab.repos.listAll`))
       return projects.data.projects.nodes as T[]
 
-    else if(key.includes(`repos.branches`))
+    else if(key.includes(`Gitlab.repos.branches`))
       return branches.data.project.repository.branchNames as T[]
 
     // --- Only use for testing --- //

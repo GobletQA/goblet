@@ -10,6 +10,7 @@ import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
 
 
 export type TConnectBody = {
+  repoId:string
   repoUrl:string
   branch:string
   newBranch:string

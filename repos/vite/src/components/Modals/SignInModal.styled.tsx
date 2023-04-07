@@ -21,7 +21,7 @@ export const LogoContainer = styled(Box)`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  border-left: 1px solid ${colors.white01};
+  border-left: 1px solid ${getColor(colors.white01, colors.black14)};
 `
 export const LogoIcon = styled(GobletIcon)`
   height: 100px;

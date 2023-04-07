@@ -5,8 +5,7 @@ import type {
   TRepoResp,
   TGitApiRes,
   TBranchResp,
-  TBuildApiUrl,
-  TGitReqHeaders,
+  TBranchMeta,
   TCreateBranchCof,
   TGitCreateRepoOpts,
 } from '@gobletqa/workflows/types'
@@ -40,6 +39,8 @@ const createOpts = {
 }
 
 export class GithubApi extends BaseRestApi {
+
+  options:Omit<TGitOpts, `token`|`remote`>
 
 /**
  * Create a new repo by making a post request to github's API
@@ -124,11 +125,9 @@ export class GithubApi extends BaseRestApi {
   }
 
   getRepo = async (repo:string) => {
-    // TODO: the repo name is already part of the base URL
-    // If we ever need to get the repo meta for a different repo
-    // Then we need to override the base url and build it with the passed in repo name
-    // For now, just pass an empty string
-    const [err, resp] = await this._callApi<TRepoResp>('')
+    // The repo name is not passed because it already exists in this.baseUrl
+    // So it's not needed here
+    const [err, resp] = await this._callApi<TRepoResp>(``)
     return resp.data
   }
 
@@ -143,7 +142,7 @@ export class GithubApi extends BaseRestApi {
     Logger.log(`Getting branch ${branch} meta-data...`)
     const [err, resp] = await this._callApi<TBranchResp>(`branches/${branch}`, { error: false })
 
-    if (resp?.data) return resp?.data
+    if (resp?.data) return resp?.data as TBranchMeta
 
     const error = err?.response?.data as Error
     return err.code === AxiosError.ERR_BAD_REQUEST && err?.response?.status === 404

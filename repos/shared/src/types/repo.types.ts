@@ -41,6 +41,8 @@ export type TGitData = {
   newBranch?:string
   repoName: string
   branchFrom?:boolean
+  // For gitlab, not needed in github
+  repoId?:string
 }
 
 export type TRepoOpts = {
@@ -66,9 +68,10 @@ export type TRepoFromCreate = {
 
 export type TRepoFromWorkflow = {
   token:string
-  username:string
-  repoUrl:string
   branch:string
+  repoId:string
+  repoUrl:string
+  username:string
   newBranch?:string
   branchFrom?:boolean
 }

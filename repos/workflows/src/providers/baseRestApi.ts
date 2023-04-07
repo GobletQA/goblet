@@ -36,7 +36,12 @@ const throwOverrideErr = (message?:string) => {
 }
 
 export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseRestApi> {
+  
+  // This is the URL of the active repo, Which is NOT the same as the Provider URL (url)
+  // The Provider URL (url) is used for making API calls
+  // It is generated from the baseUrl in the buildAPIUrl method
   baseUrl:string
+
   headers:Record<string, string>
   _cache: Record<string, [AxiosError, Record<any, any>]>={}
 
