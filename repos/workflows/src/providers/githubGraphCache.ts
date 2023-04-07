@@ -1,38 +1,28 @@
-import axios from 'axios'
 import { GRAPH } from '../constants/graph'
 
 import {
-  get,
   isArr,
   isStr,
   isNum,
-  limbo,
-  isObj,
   noOpObj,
-  noPropArr,
   deepClone,
   deepMerge,
 } from '@keg-hub/jsutils'
 import type {
-  TRepoMeta,
   TGCacheOpts,
   TGraphApiVars,
-  TGraphApiResp,
-  TGraphPageInfo,
 } from '@gobletqa/workflows/types'
-import type { TRepoUserRepos } from '@gobletqa/workflows/types/shared.types'
 
 
 const defOpts:TGCacheOpts = noOpObj as TGCacheOpts
 const defVarOpts:TGraphApiVars = noOpObj as TGraphApiVars
-const defPageInfo:TGraphPageInfo = noOpObj as TGraphPageInfo
 
 /**
  * Class to with methods for accessing the graphQL cached variables
  * Allows for paging by caching past requests via this.variables object
  * @type Class
  */
-export class GraphCache {
+export class GithubGraphCache {
 
   /**
    * Holds the default variables for making requests to github API
@@ -98,8 +88,6 @@ export class GraphCache {
     }, headers)
   }
 
-
-
   /**
    * Builds the variables for making a Github GraphQL request
    * @param {Object} opts - Data to override the cached variables
@@ -133,100 +121,5 @@ export class GraphCache {
         }, {}),
     }
   }
-}
-
-
-
-/**
- * Calls Github's GraphQL API endpoint to get a list of a users repos
- */
-const graphApiCall = async (args:TGraphApiVars) => {
-  const { headers:customHeaders, endpoint } = args
-  const {
-    QUERY: query,
-    KEY:endpointKey,
-    DATA_PATH:dataPath,
-  } = endpoint
-
-  const graphCache = args.graphCache || new GraphCache(args)
-  const headers = graphCache.buildHeaders(customHeaders)
-  const variables = graphCache.buildVars(args, endpointKey)
-
-  const opts = {
-    headers,
-    method: 'post',
-    url: graphCache.url,
-    data: {
-      query,
-      variables,
-    },
-  }
-
-  const [ err, resp ] = await limbo(axios(opts))
-
-  if(err) throw new Error(err.stack)
-
-  const { errors, data } = resp.data
-
-  if(errors && errors.length)
-    throw new Error(errors[0].message || `Could not complete github.listRepos API call. Please try again later`)
-
-  const { totalCount, nodes=noPropArr, pageInfo=defPageInfo } = get(data, dataPath, noOpObj) as TGraphApiResp
-
-  if(pageInfo.hasNextPage && pageInfo.endCursor){
-    graphCache.set(endpointKey, { after: pageInfo.endCursor })
-    const moreNodes = await graphApiCall({
-      ...args,
-      graphCache
-    })
-
-    return nodes.concat(moreNodes)
-  }
-
-  graphCache.reset(endpointKey)
-  return nodes
-}
-
-/**
- * Gets all repos relative to the passed in token for a user
- * @param {Object} opts - Options for making the query
- * @example
- * getUserRepos({
- *   token: '12345',
- *   all: true,
- *   first: 100,
- *   after: '',
- *   ownerAffiliations: [],
- *   affiliations: []
- *   headers: {},
- * })
- *
-*/
-export const getUserRepos = async (opts:TRepoUserRepos):Promise<TRepoMeta[]> => {
-  const repos = await graphApiCall({
-    ...opts,
-    endpoint: GRAPH.ENDPOINTS.REPO.LIST_ALL,
-  })
-
-  return repos.filter(repo => isObj(repo))
-    .map(repo => {
-      const { refs, url, name } = repo
-      return !refs || !refs.nodes || !refs.nodes.length
-        ? {url, name, branches: noPropArr}
-        : {
-            url,
-            name,
-            branches: refs.nodes.map(branch => branch.name).filter(name => name)
-          }
-    })
-}
-
-export const getRepoBranches = async opts => {
-  console.warn(`Not implemented`)
-  return []
-  // return await graphApiCall({
-  //   ...opts,
-  //   endpoint: GRAPH.ENDPOINTS.REPO.BRANCHES,
-  // })
 }
 

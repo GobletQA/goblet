@@ -9,7 +9,7 @@ import type {
 import { pickKeys } from '@keg-hub/jsutils'
 
 const fineUserAvatarUrl = (data:TGithubUserRaw) => {
-  return data.user?.photoUrl
+  return data.user?.photoURL
     || data?.additionalUserInfo?.photoUrl
     || data?.additionalUserInfo?.profile?.avatar_url
 }

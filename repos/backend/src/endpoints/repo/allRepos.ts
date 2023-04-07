@@ -1,7 +1,7 @@
 import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 
-import { getUserRepos } from '@gobletqa/workflows'
+import { GithubGraphApi } from '@gobletqa/workflows'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 
@@ -11,11 +11,12 @@ import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
  */
 
 export const allRepos = async (req:JWTRequest, res:Response) => {
+  const graphApi = new GithubGraphApi()
   // While the container is spinning up
   // Get the users repos from the git provider
   // Does not need to be from the container
   const { iat, exp, ...user } = req.auth
-  const repos = await getUserRepos(user)
+  const repos = await graphApi.userRepos(user)
 
   return apiRes(res, {repos}, 200)
 }

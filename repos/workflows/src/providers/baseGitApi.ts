@@ -1,73 +1,25 @@
 import type { AxiosRequestConfig } from 'axios'
 import type {
   TGitOpts,
-  TRepoResp,
-  TBranchResp,
+  TGitApiRes,
+  TGitApiConf,
   TBranchMeta,
   TRepoApiMeta,
+  TBuildApiUrl,
+  IGitApiStatic,
+  TGitReqHeaders,
+  StaticImplements,
   TGitCreateRepoOpts,
+  TGitCreateBranchCof,
 } from '@gobletqa/workflows/types'
 
 import url from 'url'
 import path from 'path'
 import { AxiosError } from 'axios'
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj, emptyArr } from '@keg-hub/jsutils'
 
-type TApiRes = {
-  data: Record<any, any>
-}
-
-type TApiConf = {
-  url?:string
-  error?:boolean
-  cache?:boolean
-}
-
-type TCreateBranchCof = {
-  hash?:string
-  from?:string
-}
-
-const createOpts = {
-  override: {
-    private: true,
-    has_wiki: true,
-    has_issues: true,
-    has_projects: true,
-    allow_merge_commit: false,
-    delete_branch_on_merge: false,
-  },
-  force: {
-    auto_init: true,
-  },
-}
-
-type StaticImplements<I extends new (...args: any[]) => any, C extends I> = InstanceType<I>
-
-interface IGitApi {
-  baseUrl:string
-  headers:Record<string, string>
-  options:Omit<TGitOpts, `token`|`remote`>
-  _cache: Record<string, [AxiosError, Record<any, any>]>
- 
- _callApi:<T=TApiRes>(
-    params:string|string[]|Partial<AxiosRequestConfig>,
-    conf:TApiConf
-  ) => Promise<[AxiosError|null, T|null]>
-
-  branchHash: (branch:string) => Promise<string>
-  getRepo: (repo:string) => Promise<TRepoApiMeta>
-  defaultBranch: (repoName:string) => Promise<string>
-  getBranch: (branch:string) => Promise<TBranchMeta>
-  createBranch: (newBranch:string, { from, hash }:TCreateBranchCof) => Promise<string>
-}
-
-interface IGitApiStatic {
-  new (...args: any[]): IGitApi
-  createRepo:(args:TGitCreateRepoOpts) => void
-  error:(message:string, ...args:any[]) => void
-  buildHeaders:(token:string) => Record<string, string>
-  buildAPIUrl: (remote:string, pathExt:string[], host?:string) => string
+const throwOverrideErr = (message?:string) => {
+  throw new Error(message || `Git Provider method must be overridden by an extending Class`)
 }
 
 export class BaseGitApi implements StaticImplements<IGitApiStatic, typeof BaseGitApi> {
@@ -76,63 +28,86 @@ export class BaseGitApi implements StaticImplements<IGitApiStatic, typeof BaseGi
   options:Omit<TGitOpts, `token`|`remote`>
   _cache: Record<string, [AxiosError, Record<any, any>]>={}
 
+  static host:string
+  static globalHeaders:TGitReqHeaders
+
+  /**
+   * Logs a Git Provider API error message
+   */
   static error = (message:string, ...args:any[]) => {
     console.log(...args)
     throw new Error(message)
   }
 
-  static createRepo = async (args:TGitCreateRepoOpts) => {
-
+  static createRepo = async (args:TGitCreateRepoOpts):Promise<TRepoApiMeta> => {
+    throwOverrideErr()
+    return undefined
   }
 
-  static buildHeaders = (token:string) => {
+  static buildHeaders = (token:string, headers?:TGitReqHeaders) => {
     return {
       [`Content-Type`]: `application/json`,
+      ...this.globalHeaders,
       ...(token && { Authorization: `token ${token}` }),
+      ...headers,
     }
   }
 
-  static buildAPIUrl = (remote:string, pathExt:string[]=[], host?:string) => {
+  static buildAPIUrl = (args:TBuildApiUrl) => {
+    const {
+      remote,
+      prePath=``,
+      postPath=``,
+      host=this.host,
+      pathExt=emptyArr,
+    } = args
+
     const repoUrl = new url.URL(remote)
     repoUrl.host = host
-    repoUrl.pathname = path.join(`repos`, repoUrl.pathname, ...pathExt)
+    repoUrl.pathname = path.join(prePath, repoUrl.pathname, postPath, ...pathExt)
 
     return repoUrl.toString()
   }
 
   constructor(gitOpts:TGitOpts){
-    const { token, remote, ...opts } = gitOpts
+    const { token, remote, headers, ...opts } = gitOpts
 
     this.options = opts
     this.baseUrl = remote
-    this.headers = BaseGitApi.buildHeaders(token)
+    this.headers = BaseGitApi.buildHeaders(token, headers)
   }
 
-  _callApi = async <T=TApiRes>(
+  _callApi = async <T=TGitApiRes>(
     params:string|string[]|Partial<AxiosRequestConfig>,
-    conf:TApiConf=emptyObj
+    conf:TGitApiConf=emptyObj
   ) => {
-    return [null, null] as any
+    throwOverrideErr()
+    return undefined
   }
 
-  getRepo = async (repo:string) => {
-    return {} as TRepoApiMeta
+  getRepo = async (repo:string):Promise<TRepoApiMeta> => {
+    throwOverrideErr()
+    return undefined
   }
   
   defaultBranch = async (repoName:string) => {
-    return ``
+    throwOverrideErr()
+    return undefined
   }
 
-  getBranch = async (branch:string) => {
-    return {} as TBranchMeta
+  getBranch = async (branch:string):Promise<false | void | TBranchMeta> => {
+    throwOverrideErr()
+    return undefined
   }
 
-  createBranch = async (newBranch:string, { from, hash }:TCreateBranchCof) => {
-    return ``
+  createBranch = async (newBranch:string, { from, hash }:TGitCreateBranchCof):Promise<string> => {
+    throwOverrideErr()
+    return undefined
   }
 
-  branchHash = async (branch:string) => {
-    return ``
+  branchHash = async (branch:string):Promise<string | void> => {
+    throwOverrideErr()
+    return undefined
   }
 
 }

@@ -1,6 +1,5 @@
 // @ts-nocheck
-// TODO: Implement Gitlab / BitBucket providers via OAuth Provider
-// import { GithubAuthProvider, OAuthProvider } from "firebase/auth";
+// TODO: BitBucket providers via OAuth Provider
 import { initializeApp } from 'firebase/app'
 // import { getAnalytics } from "firebase/analytics"
 import { getFirestore } from 'firebase/firestore'
@@ -10,7 +9,7 @@ import {
   setPersistence,
   GithubAuthProvider,
   browserLocalPersistence,
-  browserSessionPersistence
+  browserSessionPersistence,
 } from 'firebase/auth'
 
 const FBProviders = {

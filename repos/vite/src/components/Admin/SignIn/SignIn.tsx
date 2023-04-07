@@ -5,7 +5,7 @@ import { EAuthType } from '@types'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import { Container } from './SignIn.style'
-import { GitHubIcon, GitlabIcon } from '@gobletqa/components'
+import { GithubIcon, GitlabIcon } from '@gobletqa/components'
 import { OtherProviders } from '../OtherProviders'
 import { loadUser } from '@actions/admin/user/loadUser'
 import { getProviderMetadata } from '@services/providers'
@@ -58,14 +58,14 @@ const SignIn = (props:TSignIn) => {
           {authConfig.signInOptions.map((option:any) => 
             <GithubSignIn
               auth={auth}
-              Icon={GitHubIcon}
+              Icon={GithubIcon}
               provider={option}
               disabled={signingIn}
               onFail={onFailedSignIn}
               key={option.providerId}
               onSigningIn={setSigningIn}
               onSuccess={onSuccessAuth}
-              children='Sign in with GitHub'
+              children='Sign in with Github'
             />
           )}
           {
@@ -75,7 +75,7 @@ const SignIn = (props:TSignIn) => {
               onFail={onFailedSignIn}
               onSuccess={onSuccessAuth}
               onSigningIn={setSigningIn}
-              children='Sign in with GitLab'
+              children='Sign in with Gitlab'
             />
           }
           <OtherProviders />

@@ -18,7 +18,7 @@ export type TGitlabAuth = {
   onSignIn?:(user:User|null) => void
 }
 
-const GitLabManager = new UserManager({
+const GitlabManager = new UserManager({
   loadUserInfo: false,
   authority: GitlabUrl,
   response_type: `code`,
@@ -65,14 +65,14 @@ const GitlabChildren = (props:TGitlabAuth) => {
      * If in the browser pop-up, and we have the code, then call the signinPopupCallback
      */
     ;(async () => {
-      await GitLabManager.signinPopupCallback(window.location.href, false)
+      await GitlabManager.signinPopupCallback(window.location.href, false)
     })()
   }, [])
 
   return (<>{children}</>)
 }
 
-export const GitLabAuthProvider = (props:TGitlabAuth) => {
+export const GitlabAuthProvider = (props:TGitlabAuth) => {
   const { signIn=false } = props
   const onSignInCB = useInline(props.onSignIn)
 
@@ -80,7 +80,7 @@ export const GitLabAuthProvider = (props:TGitlabAuth) => {
     <AuthProvider
       autoSignIn={signIn}
       onSignIn={onSignInCB}
-      userManager={GitLabManager}
+      userManager={GitlabManager}
     >
       <GitlabChildren {...props} />
     </AuthProvider>

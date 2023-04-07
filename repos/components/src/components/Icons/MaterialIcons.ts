@@ -1,5 +1,5 @@
 import Settings from '@mui/icons-material/SettingsOutlined'
-import GitHubIcon from '@mui/icons-material/GitHub'
+import GithubIcon from '@mui/icons-material/GitHub'
 import SettingsIcon from '@mui/icons-material/Settings'
 import ProfileIcon from '@mui/icons-material/ManageAccounts'
 import TeamIcon from '@mui/icons-material/Groups'
@@ -58,7 +58,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 export {
   Settings,
   PlugIcon,
-  GitHubIcon,
+  GithubIcon,
   ProfileIcon,
   SettingsIcon,
   TeamIcon,

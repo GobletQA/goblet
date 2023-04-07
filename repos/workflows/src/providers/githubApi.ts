@@ -2,12 +2,14 @@ import type { AxiosRequestConfig } from 'axios'
 import type {
   TGitOpts,
   TRepoResp,
+  TGitApiRes,
   TBranchResp,
+  TBuildApiUrl,
+  TGitCreateRepo,
+  TGitReqHeaders,
   TGitCreateRepoOpts,
 } from '@gobletqa/workflows/types'
 
-import url from 'url'
-import path from 'path'
 import axios, { AxiosError } from 'axios'
 import { Logger } from '@keg-hub/cli-utils'
 import { throwGitError } from '../utils/throwGitError'
@@ -19,10 +21,7 @@ import {
   deepMerge,
   ensureArr,
 } from '@keg-hub/jsutils'
-
-type TApiRes = {
-  data: Record<any, any>
-}
+import { BaseGitApi } from './baseGitApi'
 
 type TApiConf = {
   url?:string
@@ -49,15 +48,22 @@ const createOpts = {
   },
 }
 
-export class GitHubApi {
-  baseUrl:string
-  headers:Record<string, string>
-  options:Omit<TGitOpts, `token`|`remote`>
-  _cache: Record<string, [AxiosError, Record<any, any>]>={}
 
-  static error = (message:string, ...args:any[]) => {
-    console.log(...args)
-    throw new Error(message)
+const { GITHUB_API_URL=`api.github.com` } = process.env
+
+export class GithubApi extends BaseGitApi {
+
+  static host:string = GITHUB_API_URL
+  static globalHeaders:Record<string, string> = {
+    Accept: `application/vnd.github+json`,
+  }
+
+  static buildAPIUrl = (args:TBuildApiUrl) => {
+    return super.buildAPIUrl({...args, host: args.host || this.host})
+  }
+
+  static buildHeaders = (token:string, headers:TGitReqHeaders=emptyObj as TGitReqHeaders) => {
+    return super.buildHeaders(token, {...this.globalHeaders, ...headers})
   }
 
 /**
@@ -83,7 +89,7 @@ export class GitHubApi {
       url,
       method: `POST`,
       data: createParams,
-      headers: GitHubApi.buildHeaders(token),
+      headers: GithubApi.buildHeaders(token),
     })
 
     const [err, resp] = await limbo<TRepoResp, AxiosError>(axios(config))
@@ -96,19 +102,6 @@ export class GitHubApi {
     return resp?.data
   }
 
-  static buildHeaders = (token:string) => ({
-    ...(token && { Authorization: `token ${token}` }),
-    [`Content-Type`]: `application/json`,
-    Accept: `application/vnd.github+json`,
-  })
-
-  static buildAPIUrl = (remote:string, pathExt:string[]=[]) => {
-    const repoUrl = new url.URL(remote)
-    repoUrl.host = process.env.GITHUB_API_URL || `api.github.com`
-    repoUrl.pathname = path.join(`repos`, repoUrl.pathname, ...pathExt)
-
-    return repoUrl.toString()
-  }
 
   /**
    * Dummy data for create a repo and not hitting the github api
@@ -125,15 +118,12 @@ export class GitHubApi {
   //   }
   // }
 
-  constructor(gitOpts:TGitOpts){
-    const { token, remote, ...opts } = gitOpts
 
-    this.options = opts
-    this.baseUrl = remote
-    this.headers = GitHubApi.buildHeaders(token)
+  constructor(gitOpts:TGitOpts){
+    super(gitOpts)
   }
 
-  _callApi = async <T=TApiRes>(
+  _callApi = async <T=TGitApiRes>(
     params:string|string[]|Partial<AxiosRequestConfig>,
     conf:TApiConf=emptyObj
   ) => {
@@ -143,7 +133,11 @@ export class GitHubApi {
       : params
 
 
-    const url = GitHubApi.buildAPIUrl(this.baseUrl, ensureArr(args.url))
+    const url = GithubApi.buildAPIUrl({
+      prePath: `repos`,
+      remote: this.baseUrl,
+      pathExt: ensureArr(args.url)
+    })
 
     const { cache, error:throwErr } = conf
 
@@ -175,7 +169,7 @@ export class GitHubApi {
     const [err, resp] = await this._callApi<TRepoResp>('')
     return resp.data
   }
-  
+
   defaultBranch = async (repoName:string) => {
     Logger.log(`Getting repo ${repoName} default branch...`)
     const repo = await this.getRepo(repoName)

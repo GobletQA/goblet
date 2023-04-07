@@ -5,7 +5,7 @@
 ## Workflows
 
 ### Provider Authentication / Token
-* When a user logs into Goblet-Admin, they must authenticate with a Git Provider (GitHub)
+* When a user logs into Goblet-Admin, they must authenticate with a Git Provider (Github)
 * Once authenticated, the required scopes are requested for interacting with the Provider
   * Scopes include repo access (Read/Write)
 * The Provider returns a **token** used to authenticate as the user when a request is made to the provider

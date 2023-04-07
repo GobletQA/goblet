@@ -19,8 +19,8 @@ import { getFileTypes } from '@GSH/utils/getFileTypes'
 import { resetGobletConfig } from '@GSH/goblet/getGobletConfig'
 import {
   createGoblet,
-  getUserRepos,
   statusGoblet,
+  GithubGraphApi,
   initializeGoblet,
   disconnectGoblet,
 } from '@gobletqa/workflows'
@@ -47,7 +47,8 @@ export class Repo {
    * @returns {Array} - Found repos and their branches
    */
   static getUserRepos = async (opts:TRepoUserRepos) => {
-    return await getUserRepos(opts)
+    const graphApi = new GithubGraphApi()
+    return await graphApi.userRepos(opts)
   }
 
   /**

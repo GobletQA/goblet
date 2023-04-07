@@ -9,7 +9,7 @@ import ListItem from '@mui/material/ListItem'
 import { useInline } from '@gobletqa/components'
 import { useAuth } from "oidc-react"
 import { colors } from '@gobletqa/components/theme'
-import { GitLabAuthProvider } from '@services/gitlabService/gitlabService'
+import { GitlabAuthProvider } from '@services/gitlabService/gitlabService'
 
 
 export type TGitlabSignIn = {
@@ -87,11 +87,11 @@ export const GitlabSignIn = (props:TGitlabSignIn) => {
   })
 
   return (
-    <GitLabAuthProvider
+    <GitlabAuthProvider
       onFail={onFail}
       onSignIn={onSignIn}
     >
       <GitlabSignInButton {...props} />
-    </GitLabAuthProvider>
+    </GitlabAuthProvider>
   )
 }

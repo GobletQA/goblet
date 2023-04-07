@@ -6,7 +6,10 @@ import { useCallback } from 'react'
 import Button from '@mui/material/Button'
 import ListItem from '@mui/material/ListItem'
 import { colors } from '@gobletqa/components/theme'
-import { signInWithPopup, GithubAuthProvider } from 'firebase/auth'
+import {
+  signInWithPopup,
+  GithubAuthProvider
+} from 'firebase/auth'
 
 
 export type TSignInButton = {
@@ -41,7 +44,7 @@ export const GithubSignIn = (props:TSignInButton) => {
     signInWithPopup(auth, provider)
       .then((result:any) => {
         const credential = GithubAuthProvider.credentialFromResult(result)
-        if(!credential) throw new Error(`Could not parse GitHub credential from response`)
+        if(!credential) throw new Error(`Could not parse Github credential from response`)
 
         const user = result.user
         const additionalUserInfo = result._tokenResponse
@@ -50,7 +53,7 @@ export const GithubSignIn = (props:TSignInButton) => {
         }
         catch(err:any){
           console.error(err.message)
-          throw new Error(`Could not parse GitHub User profile information`)
+          throw new Error(`Could not parse Github User profile information`)
         }
         onSuccess?.({
           user,

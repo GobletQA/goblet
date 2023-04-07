@@ -5,6 +5,7 @@ export type TGitOpts = TGitData & {
   log?:boolean
   token: string
   email?: string
+  headers?:Record<string, string>
 }
 
 export type TGitUser = {

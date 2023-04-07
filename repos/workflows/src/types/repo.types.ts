@@ -1,5 +1,6 @@
-import type { GraphCache } from '../repo/getUserRepos'
+
 import type { TRepoUserRepos }  from './shared.types'
+import type { GithubGraphCache } from '../providers/githubGraphCache'
 
 // ----- Graph API ----- //
 
@@ -15,7 +16,7 @@ export type TGraphApiEndpoint = {
 }
 
 export type TGraphApiVars = TRepoUserRepos & {
-  graphCache?:GraphCache
+  graphCache?:GithubGraphCache
   endpoint: TGraphApiEndpoint
 }
 
