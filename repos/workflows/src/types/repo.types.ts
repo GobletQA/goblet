@@ -1,22 +1,27 @@
 
-import type { TRepoUserRepos }  from './shared.types'
-import type { GithubGraphCache } from '../providers/githubGraphCache'
+import type { TRepoGraphRepos }  from './shared.types'
+import type { BaseGraphCache } from '../providers/baseGraphCache'
+import type { Graph } from '../constants'
 
 // ----- Graph API ----- //
 
+export type TGraphProvider = typeof Graph[`Github`] | typeof Graph[`Gitlab`]
+
 export type TGCacheOpts = {
-  url?: string
-  token: string
+  variables?: Record<any, any>
 }
 
 export type TGraphApiEndpoint = {
-  QUERY:string
-  KEY: string
-  DATA_PATH: string
+  Query:string
+  Key: string
+  DataPath: string
 }
 
-export type TGraphApiVars = TRepoUserRepos & {
-  graphCache?:GithubGraphCache
+export type TGetData = <T>(data:any) => TGraphApiResp<T>
+
+export type TGraphApiVars = TRepoGraphRepos & {
+  getData?:TGetData
+  graphCache?:BaseGraphCache
   endpoint: TGraphApiEndpoint
 }
 
@@ -25,10 +30,10 @@ export type TGraphPageInfo = {
   endCursor: string|number
 }
 
-export type TGraphApiResp = {
-  nodes: any[]
+export type TGraphApiResp<T> = {
+  nodes: T[]
   totalCount: number
-  pageInfo: TGraphPageInfo
+  pageInfo?: TGraphPageInfo
 }
 
 
@@ -38,9 +43,11 @@ export type TSaveMetaData = {
 }
 
 export type TRepoMeta = {
+  id:string
   url: string
   name:string
   branches:string[]
+  defaultBranch?: string
 }
 
 
@@ -58,4 +65,19 @@ export type TRepoGitState = {
   repo: boolean
   branch: boolean
   mounted: boolean
+}
+
+
+export type TBaseGraphApi = {
+  provider: TGraphProvider
+  variables: Record<any, any>
+}
+
+export type TGraphApiOpts = {
+  provider?: TGraphProvider
+  variables?: Record<any, any>
+}
+
+export {
+  TRepoGraphRepos
 }

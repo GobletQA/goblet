@@ -264,4 +264,8 @@ env:
   GITLAB_CLIENT_SECRET: ""
   GITLAB_API_URL: gitlab.com
   GITLAB_AUTH_URL: https://gitlab.com
+  GITLAB_GRAPH_URL: https://gitlab.com/api/graphql
+
   GITHUB_API_URL: api.github.com
+  GITHUB_GRAPH_URL: https://api.github.com/graphql
+  

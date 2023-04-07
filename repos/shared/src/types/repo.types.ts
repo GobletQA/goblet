@@ -73,12 +73,16 @@ export type TRepoFromWorkflow = {
   branchFrom?:boolean
 }
 
-export type TRepoUserRepos = {
+export type TRepoGraphRepos = {
   all?:boolean
   token: string
   query?:string
   first?: number
   after?: string
+  offset?:number
+  username?:string
+  fullPath?:string
+  searchPattern?:string
   sortDirection?: string
   affiliations?: string[]
   ownerAffiliations?: string[]

@@ -11,17 +11,14 @@ import type {
   TGitCreateBranchCof,
 } from '@gobletqa/workflows/types'
 
+import { Rest } from '../constants'
 import { emptyObj } from '@keg-hub/jsutils'
+import { BaseRestApi } from './baseRestApi'
 
-import { BaseGitApi } from './baseGitApi'
+// curl --header "Authorization: Bearer <token>" "https://gitlab.com/api/v4/projects"
+export class GitlabApi extends BaseRestApi {
 
-const { GITLAB_API_URL=`gitlab.com` } = process.env
-
-// curl --header "Authorization: Bearer OAUTH-TOKEN" "https://gitlab.example.com/api/v4/projects"
-
-export class GitlabApi extends BaseGitApi {
-
-  static host:string = GITLAB_API_URL
+  static host:string = Rest.Gitlab.Url
   static globalHeaders:Record<string, string> = {
   }
 

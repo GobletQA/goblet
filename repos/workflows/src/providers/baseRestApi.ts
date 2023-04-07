@@ -22,7 +22,7 @@ const throwOverrideErr = (message?:string) => {
   throw new Error(message || `Git Provider method must be overridden by an extending Class`)
 }
 
-export class BaseGitApi implements StaticImplements<IGitApiStatic, typeof BaseGitApi> {
+export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseRestApi> {
   baseUrl:string
   headers:Record<string, string>
   options:Omit<TGitOpts, `token`|`remote`>
@@ -74,7 +74,7 @@ export class BaseGitApi implements StaticImplements<IGitApiStatic, typeof BaseGi
 
     this.options = opts
     this.baseUrl = remote
-    this.headers = BaseGitApi.buildHeaders(token, headers)
+    this.headers = BaseRestApi.buildHeaders(token, headers)
   }
 
   _callApi = async <T=TGitApiRes>(

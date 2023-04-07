@@ -6,7 +6,7 @@ import type {
   TRepoPaths,
   TRecorderOpts,
   TInternalPaths,
-  TRepoUserRepos,
+  TRepoGraphRepos,
   TRepoFromCreate,
   TRepoMountStatus,
   TRepoFromWorkflow,
@@ -46,7 +46,7 @@ export class Repo {
    * 
    * @returns {Array} - Found repos and their branches
    */
-  static getUserRepos = async (opts:TRepoUserRepos) => {
+  static getUserRepos = async (opts:TRepoGraphRepos) => {
     const graphApi = new GithubGraphApi()
     return await graphApi.userRepos(opts)
   }

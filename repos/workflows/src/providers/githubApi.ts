@@ -5,11 +5,11 @@ import type {
   TGitApiRes,
   TBranchResp,
   TBuildApiUrl,
-  TGitCreateRepo,
   TGitReqHeaders,
   TGitCreateRepoOpts,
 } from '@gobletqa/workflows/types'
 
+import { Rest } from '../constants'
 import axios, { AxiosError } from 'axios'
 import { Logger } from '@keg-hub/cli-utils'
 import { throwGitError } from '../utils/throwGitError'
@@ -21,7 +21,7 @@ import {
   deepMerge,
   ensureArr,
 } from '@keg-hub/jsutils'
-import { BaseGitApi } from './baseGitApi'
+import { BaseRestApi } from './baseRestApi'
 
 type TApiConf = {
   url?:string
@@ -48,12 +48,9 @@ const createOpts = {
   },
 }
 
+export class GithubApi extends BaseRestApi {
 
-const { GITHUB_API_URL=`api.github.com` } = process.env
-
-export class GithubApi extends BaseGitApi {
-
-  static host:string = GITHUB_API_URL
+  static host:string = Rest.Github.Url
   static globalHeaders:Record<string, string> = {
     Accept: `application/vnd.github+json`,
   }

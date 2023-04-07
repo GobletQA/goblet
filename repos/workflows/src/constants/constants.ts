@@ -1,5 +1,4 @@
 import path from 'path'
-export { GRAPH } from './graph'
 const { GOBLET_MOUNT_ROOT=`/goblet/repos` } = process.env
 const { GB_SH_LOCAL_MOUNT=`goblet-local` } = process.env
 

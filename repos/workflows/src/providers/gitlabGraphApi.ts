@@ -1,109 +1,103 @@
-import type { TRepoUserRepos } from '@gobletqa/workflows/types/shared.types'
-
-import axios from 'axios'
-import { Graph } from '../constants/graph'
-
-import {
-  get,
-  limbo,
-  isObj,
-  noOpObj,
-  noPropArr,
-} from '@keg-hub/jsutils'
+import type { TRepoGraphRepos } from '@gobletqa/workflows/types/shared.types'
 import type {
   TRepoMeta,
-  TGraphApiVars,
-  TGraphApiResp,
-  TGraphPageInfo,
+  TGraphApiOpts,
 } from '@gobletqa/workflows/types'
 
-const defPageInfo:TGraphPageInfo = noOpObj as TGraphPageInfo
+import { get, isObj, emptyArr } from '@keg-hub/jsutils'
+import { Graph } from '../constants/graph'
+import { BaseGraphApi } from './baseGraphApi'
 
-export class GitlabGraphApi {
+
+type TUserRepoResp = {
+  name: string
+  fullPath: string
+  httpUrlToRepo: string
+  repository: { rootRef: string }
+}
+
+export class GitlabGraphApi extends BaseGraphApi {
 
   /**
-   * Calls Github's GraphQL API endpoint to get a list of a users repos
+   * Holds the default variables for making requests to gitlab API
+   * @type {Object}
    */
-  _callApi = async (args:TGraphApiVars) => {
-    const { headers:customHeaders, endpoint } = args
-    const {
-      QUERY: query,
-      KEY:endpointKey,
-      DATA_PATH:dataPath,
-    } = endpoint
-
-    const graphCache = args.graphCache
-    const headers = graphCache.buildHeaders(customHeaders)
-    const variables = graphCache.buildVars(args, endpointKey)
-
-    const opts = {
-      headers,
-      method: 'post',
-      url: graphCache.url,
-      data: {
-        query,
-        variables,
-      },
+  static defaultVars = {
+    [Graph.Gitlab.Endpoints.Repo.ListAll.Key]: {
+      first: 100,
+      after: null,
     }
-
-    const [ err, resp ] = await limbo(axios(opts))
-
-    if(err) throw new Error(err.stack)
-
-    const { errors, data } = resp.data
-
-    if(errors && errors.length)
-      throw new Error(errors[0].message || `Could not complete github.listRepos API call. Please try again later`)
-
-    const { totalCount, nodes=noPropArr, pageInfo=defPageInfo } = get(data, dataPath, noOpObj) as TGraphApiResp
-
-    if(pageInfo.hasNextPage && pageInfo.endCursor){
-      graphCache.set(endpointKey, { after: pageInfo.endCursor })
-      const moreNodes = await this._callApi({
-        ...args,
-        graphCache
-      })
-
-      return nodes.concat(moreNodes)
-    }
-
-    graphCache.reset(endpointKey)
-    return nodes
   }
 
-  
+  constructor(opts:TGraphApiOpts){
+    super({
+      provider: Graph.Gitlab,
+      variables: GitlabGraphApi.defaultVars,
+      ...opts
+    })
+  }
+
+  repoBranches = async (opts:TRepoGraphRepos) => {
+    const endpoint = this.provider.Endpoints.Repo.Branches
+    return this.callApi<string>({
+      ...opts,
+      endpoint,
+      getData: <T>(data:any) => {
+        const branches = get(data, endpoint.DataPath, emptyArr) as T[]
+        return {
+          nodes: branches,
+          totalCount: branches.length
+        }
+      }
+    })
+  }
+
   /**
   * Gets all repos relative to the passed in token for a user
   * @param {Object} opts - Options for making the query
   * @example
   * graphApi.userRepos({
   *   token: '12345',
-  *   all: true,
   *   first: 100,
   *   after: '',
-  *   ownerAffiliations: [],
-  *   affiliations: []
+  *   offset: 0,
   *   headers: {},
   * })
   *
   */
-  userRepos = async (opts:TRepoUserRepos):Promise<TRepoMeta[]> => {
-    const repos = await this._callApi({
-      ...opts,
-      endpoint: Graph.gitlab.Endpoints.Repo.LIST_ALL,
-    })
+  userRepos = async (opts:TRepoGraphRepos):Promise<TRepoMeta[]> => {
+    const repos = await this.repos<TUserRepoResp>(opts)
+    const filtered = repos.filter(repo => isObj(repo))
 
-    return repos.filter(repo => isObj(repo))
-      .map(repo => {
-        const { refs, url, name } = repo
-        return !refs || !refs.nodes || !refs.nodes.length
-          ? {url, name, branches: noPropArr}
-          : {
-              url,
-              name,
-              branches: refs.nodes.map(branch => branch.name).filter(name => name)
-            }
+    return filtered.reduce(async (resolve, repo) => {
+      const acc = await resolve as TRepoMeta[]
+
+      const {
+        name,
+        fullPath,
+        repository,
+        httpUrlToRepo:url,
+      } = repo
+      
+      // Branches don't come with the response
+      // So we have to make a separate call to get them
+      const branches = await this.repoBranches({
+        ...opts,
+        fullPath,
+        offset: 0,
+        searchPattern: `*`,
       })
+
+      acc.push({
+        url,
+        name,
+        id: fullPath,
+        defaultBranch: repository.rootRef,
+        branches: branches?.length ? branches : [repository.rootRef]
+      } as TRepoMeta)
+
+      return acc
+    }, Promise.resolve([]))
   }
 
 }
