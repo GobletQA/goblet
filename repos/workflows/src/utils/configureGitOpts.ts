@@ -27,14 +27,22 @@ export const configureGitOpts = async (args:TWFArgs) => {
   !isObj(user) && throwErr(`Missing user object model`)
 
   const local = getRepoPath(args)
-  const { branch, url:remote, newBranch, branchFrom } = repo
+  const {
+    repoId,
+    branch,
+    provider,
+    newBranch,
+    url:remote,
+    branchFrom
+  } = repo
   const { email, gitUser, token:userToken } = user
-  
 
   return {
     local,
     email,
     remote,
+    repoId,
+    provider,
     username: gitUser,
     name: path.basename(local),
     branch: formatBranch(branch),

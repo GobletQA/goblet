@@ -11,18 +11,20 @@ export const Container = styled(Box)`
   padding-top: ${gutter.padding.dpx};
   padding-bottom: ${gutter.padding.dpx};
 ` 
-export const LogoContainer = styled(Box)`
-  padding-top: ${gutter.padding.px};
-  padding-bottom: ${gutter.padding.px};
+export const LogoContainer = styled(Box)(({ theme }) => {
+  return `
+    padding-top: ${gutter.padding.px};
+    padding-bottom: ${gutter.padding.px};
 
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  border-left: 1px solid ${getColor(colors.white01, colors.black14)};
-`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid ${theme?.palette?.mode !== `dark` ? colors.white01 : colors.black14};
+  `
+})
 export const LogoIcon = styled(GobletIcon)`
   height: 100px;
   width: 100px;

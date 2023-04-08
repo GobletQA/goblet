@@ -129,7 +129,6 @@ export class Repo {
   static fromWorkflow = async (args:TRepoFromWorkflow) => {
     const {
       token,
-      repoId,
       branch,
       repoUrl,
       username,
@@ -138,7 +137,9 @@ export class Repo {
     } = args
 
     const url = new URL(repoUrl)
-    const name = url.pathname.split('/').pop().replace('.git', '')
+
+    const repoId = (args.repoId || url.pathname.replace(/\.git$/, ``)).replace(/^\//, ``)
+    const name = repoId.split('/').pop()
     const provider = url.host.split('.').slice(0).join('.')
 
     const { repo, ...status } = await initializeGoblet({

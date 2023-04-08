@@ -1,10 +1,8 @@
 import type { AxiosRequestConfig } from 'axios'
-import type {
-  TGitOpts,
-  TBranchMeta,
-  TRepoApiMeta,
-  TGitCreateRepoOpts,
-} from '.'
+import type { TGitCreateRepoOpts } from './git.types'
+import type { TRepoData, TBranchData } from './restapi.types'
+import { GitlabApi } from '@gobletqa/workflows/providers/gitlabApi'
+import { GithubApi } from '@gobletqa/workflows/providers/githubApi'
 
 import { AxiosError } from 'axios'
 
@@ -15,10 +13,6 @@ export type TApiConf = {
   params?:string|string[]|Partial<AxiosRequestConfig>,
 }
 
-export type TCreateBranchCof = {
-  hash?:string
-  from?:string
-}
 
 export type TGitReqHeaders = Record<string, string>
 
@@ -30,11 +24,6 @@ export type TGitApiConf = {
   url?:string
   error?:boolean
   cache?:boolean
-}
-
-export type TGitCreateBranchCof = {
-  hash?:string
-  from?:string
 }
 
 export type StaticImplements<I extends new (...args: any[]) => any, C extends I> = InstanceType<I>
@@ -58,15 +47,17 @@ export interface IGitApi {
   ) => Promise<[AxiosError|null, T|null]>
 
   branchHash: (branch:string) => Promise<string | void>
-  getRepo: (repo:string) => Promise<TRepoApiMeta>
+  getRepo: (repo:string) => Promise<TRepoData>
   defaultBranch: (repoName:string) => Promise<string>
-  getBranch: (branch:string) => Promise<false | void | TBranchMeta>
-  createBranch: (newBranch:string, { from, hash }:TGitCreateBranchCof) => Promise<string>
+  getBranch: (branch:string) => Promise<false | void | TBranchData>
+  createBranch: (newBranch:string, conf:TBranchData) => Promise<string>
 }
 
 export interface IGitApiStatic {
   new (...args: any[]): IGitApi
   buildAPIUrl: (args:TBuildApiUrl) => string
-  createRepo:(args:TGitCreateRepoOpts) => void
   error:(message:string, ...args:any[]) => void
+  createRepo:(args:TGitCreateRepoOpts) => Promise<TRepoData>
 }
+
+export type GitApi = GithubApi | GitlabApi

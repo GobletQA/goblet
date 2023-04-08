@@ -2,11 +2,12 @@ import type { AxiosRequestConfig } from 'axios'
 import type {
   TApiConf,
   TGitOpts,
+  TRepoData,
   TRepoResp,
   TGitApiRes,
+  TBranchData,
   TBranchResp,
-  TBranchMeta,
-  TCreateBranchCof,
+  TGHBranchMeta,
   TGitCreateRepoOpts,
 } from '@gobletqa/workflows/types'
 
@@ -78,7 +79,7 @@ export class GithubApi extends BaseRestApi {
     }
 
     Logger.success(`Successfully created repo ${args.name}`)
-    return resp?.data
+    return resp?.data as TRepoData
   }
 
   constructor(gitOpts:TGitOpts){
@@ -118,8 +119,8 @@ export class GithubApi extends BaseRestApi {
 
     if(resp || !err || !throwErr) return axiosRes as [AxiosError, T]
     
-    const error = err?.response?.data as Error
-    this.throwError(error, url)
+    const error = err?.response?.data as any
+    this.throwError(new Error(`${error}`), url)
 
     return axiosRes as [AxiosError, T]
   }
@@ -128,7 +129,7 @@ export class GithubApi extends BaseRestApi {
     // The repo name is not passed because it already exists in this.baseUrl
     // So it's not needed here
     const [err, resp] = await this._callApi<TRepoResp>(``)
-    return resp.data
+    return resp.data as TRepoData
   }
 
   defaultBranch = async (repoName:string) => {
@@ -142,7 +143,10 @@ export class GithubApi extends BaseRestApi {
     Logger.log(`Getting branch ${branch} meta-data...`)
     const [err, resp] = await this._callApi<TBranchResp>(`branches/${branch}`, { error: false })
 
-    if (resp?.data) return resp?.data as TBranchMeta
+    if (resp?.data){
+      const data = resp.data as TGHBranchMeta
+      return { name: data?.name, sha: data?.commit.sha }
+    }
 
     const error = err?.response?.data as Error
     return err.code === AxiosError.ERR_BAD_REQUEST && err?.response?.status === 404
@@ -150,7 +154,7 @@ export class GithubApi extends BaseRestApi {
       : this.throwError(error, `branches/${branch}`)
   }
 
-  createBranch = async (newBranch:string, { from, hash }:TCreateBranchCof) => {
+  createBranch = async (newBranch:string, { name:from, sha:hash }:TBranchData) => {
     const sha = hash || await this.branchHash(from)
 
     Logger.log(`Using branch sha ${sha} to create branch ${newBranch}...`)
@@ -162,7 +166,7 @@ export class GithubApi extends BaseRestApi {
         sha,
         ref: `refs/heads/${newBranch}`,
       },
-    } as AxiosRequestConfig)
+    } as AxiosRequestConfig, { error: true })
 
     return newBranch
   }

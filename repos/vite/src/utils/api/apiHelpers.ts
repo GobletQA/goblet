@@ -80,7 +80,7 @@ export const buildRepoReq = <T=Record<string, any>>(request:TRequest<T>|string) 
 
   const repoData = getRepoData()
   req.url = formatRepoUrl(repoData.name, req.url)
-  
+
   return deepMerge<TBuiltRequest<T>>(
     {
       params: {

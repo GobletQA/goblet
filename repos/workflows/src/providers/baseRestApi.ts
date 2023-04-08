@@ -1,32 +1,27 @@
 import type { AxiosRequestConfig } from 'axios'
 import type {
   TGitOpts,
+  TRepoData,
   TGitApiRes,
   TGitApiConf,
-  TBranchMeta,
+  TBranchData,
   TRepoApiMeta,
   TBuildApiUrl,
   IGitApiStatic,
-  TGitReqHeaders,
   StaticImplements,
   TGitCreateRepoOpts,
-  TGitCreateBranchCof,
 } from '@gobletqa/workflows/types'
 
 import url from 'url'
 import path from 'path'
 import { Rest } from '../constants'
-import axios, { AxiosError, } from 'axios'
+import { AxiosError, } from 'axios'
+import { gitBaseUrl } from '../utils/gitBaseUrl'
 import { buildHeaders } from '../utils/buildHeaders'
 import { throwGitError } from '../utils/throwGitError'
 import {
-  isArr,
-  isStr,
-  limbo,
   emptyArr,
   emptyObj,
-  deepMerge,
-  ensureArr,
 } from '@keg-hub/jsutils'
 
 type Provider = typeof Rest[`Github`] | typeof Rest[`Gitlab`]
@@ -50,7 +45,7 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
    * Logs a Git Provider API error message
    */
   static error = (message:string, ...args:any[]) => {
-    console.log(...args)
+    args.length && console.error(...args)
     throw new Error(message)
   }
 
@@ -60,8 +55,7 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
     message:string=`[WRK-FL Git API] Error calling Git API`
   ) => throwGitError(err, remoteUrl, message)
 
-
-  static createRepo = async (args:TGitCreateRepoOpts):Promise<TRepoApiMeta> => {
+  static createRepo = async (args:TGitCreateRepoOpts):Promise<TRepoData> => {
     throwOverrideErr()
     return undefined
   }
@@ -84,7 +78,7 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
 
   constructor(gitOpts:TGitOpts, provider:Provider){
     const { token, remote, headers, ...opts } = gitOpts
-    this.baseUrl = remote
+    this.baseUrl = gitBaseUrl(remote)
     this.headers = buildHeaders({
       token,
       headers,
@@ -92,7 +86,13 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
     })
   }
 
-  throwError = BaseRestApi.throwError
+  throwError = (
+    error:Error|AxiosError,
+    url:string=this.baseUrl,
+    message?:string
+  ) => BaseRestApi.throwError(error, url, message)
+
+  error = BaseRestApi.error
   buildAPIUrl = BaseRestApi.buildAPIUrl
 
   _callApi = async <T=TGitApiRes>(
@@ -103,7 +103,7 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
     return undefined
   }
 
-  getRepo = async (repo:string):Promise<TRepoApiMeta> => {
+  getRepo = async (repo:string):Promise<TRepoData> => {
     throwOverrideErr()
     return undefined
   }
@@ -113,12 +113,12 @@ export class BaseRestApi implements StaticImplements<IGitApiStatic, typeof BaseR
     return undefined
   }
 
-  getBranch = async (branch:string):Promise<false | void | TBranchMeta> => {
+  getBranch = async (branch:string):Promise<false | void | TBranchData> => {
     throwOverrideErr()
     return undefined
   }
 
-  createBranch = async (newBranch:string, { from, hash }:TGitCreateBranchCof):Promise<string> => {
+  createBranch = async (newBranch:string, data:TBranchData):Promise<string> => {
     throwOverrideErr()
     return undefined
   }

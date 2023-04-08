@@ -2,7 +2,8 @@ import type { TGitOpts, TWFArgs } from '@gobletqa/workflows/types'
 
 import { Logger } from '@keg-hub/cli-utils'
 import { git } from '@gobletqa/workflows/git'
-import { GithubApi } from '@gobletqa/workflows/providers/githubApi'
+import { EProvider } from '@gobletqa/workflows/types'
+import { getGitApi } from '@gobletqa/workflows/providers/getGitApi'
 import { ensureMounted } from '@gobletqa/workflows/repo/ensureMounted'
 import { validateInitArgs } from '@gobletqa/workflows/utils/validateInitArgs'
 import { configureGitOpts } from '@gobletqa/workflows/utils/configureGitOpts'
@@ -26,7 +27,9 @@ export const initializeGoblet = async (args:TWFArgs) => {
 
   const token = git.loadToken(args)
   const gitOpts = await configureGitOpts({ ...args, token })
-  const gitApi = new GithubApi(gitOpts)
+  const GitApi = getGitApi(gitOpts)
+
+  const gitApi = new GitApi(gitOpts)
 
   const notValid = validateInitArgs(token, gitOpts)
   if(notValid) return notValid

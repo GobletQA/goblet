@@ -1,8 +1,8 @@
 import {
+  EProvider,
   TGitlabUserRaw,
   TFormattedUser
 } from '@types'
-
 
 export const gitlabUser = (rawUser:TGitlabUserRaw) => {
   const {
@@ -18,13 +18,13 @@ export const gitlabUser = (rawUser:TGitlabUserRaw) => {
     picture,
     preferred_username,
   } = profile
-  
+
   return {
     email,
     id: id_token,
     photoUrl: picture,
     token: access_token,
-    provider: `gitlab.com`,
+    provider: EProvider.Gitlab,
     reposUrl: `${iss}/projects`,
     refresh_token: refresh_token,
     username: preferred_username || name,

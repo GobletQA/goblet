@@ -1,4 +1,5 @@
 import type { Repo as TRepo } from '../repo/repo'
+import type  { EProvider } from './provider.types'
 import type { TRootPaths, TFileTypes } from './files.types'
 import type { TDefinitionFileModelList } from './definitions.types'
 
@@ -35,14 +36,14 @@ export type TWorld = {
 export type TGitData = {
   name: string
   local: string
-  username:string
+  repoId:string
   remote: string
   branch: string
-  newBranch?:string
+  username:string
   repoName: string
+  newBranch?:string
   branchFrom?:boolean
-  // For gitlab, not needed in github
-  repoId?:string
+  provider:EProvider
 }
 
 export type TRepoOpts = {

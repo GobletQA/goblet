@@ -1,5 +1,4 @@
 import { saveRepo } from './saveRepo'
-import { isObj } from '@keg-hub/jsutils'
 import { git, RepoWatcher } from '../git'
 import { Logger } from '@keg-hub/cli-utils'
 import { TGitOpts, TRepoWatchCb } from '@gobletqa/workflows/types'

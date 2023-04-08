@@ -6,6 +6,7 @@ import type {
   TAuthAdditionalUserInfo,
 } from '@types'
 
+import { EProvider } from '@types'
 import { pickKeys } from '@keg-hub/jsutils'
 
 const fineUserAvatarUrl = (data:TGithubUserRaw) => {
@@ -45,7 +46,7 @@ export const githubUser = (data:TGithubUserRaw):TFormattedUser => {
     displayName,
     username: username,
     token: accessToken,
-    provider: providerId,
+    provider: EProvider.Github,
     reposUrl: profile.repos_url,
   } as TFormattedUser
 }

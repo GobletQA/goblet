@@ -7,7 +7,7 @@ declare module '@mui/material/styles' {
   interface Theme {
     dims: typeof dims
     gutter: typeof gutter
-    palette: {
+    palette: Palette & {
       colors: typeof colors
     }
   }

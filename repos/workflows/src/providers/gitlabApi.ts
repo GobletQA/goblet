@@ -3,17 +3,18 @@ import type {
   TApiConf,
   TGitOpts,
   TRepoResp,
+  TRepoData,
   TGitApiRes,
-  TBranchMeta,
-  TRepoApiMeta,
-  TBuildApiUrl,
-  TGitReqHeaders,
+  TBranchData,
+  TBranchResp,
+  TGLRepoApiMeta,
+  TGLBranchMeta,
   TGitCreateRepoOpts,
-  TGitCreateBranchCof,
 } from '@gobletqa/workflows/types'
 
 import { Rest } from '../constants'
 import axios, { AxiosError, } from 'axios'
+import { Logger } from '@keg-hub/cli-utils'
 import { BaseRestApi } from './baseRestApi'
 import {
   isArr,
@@ -24,10 +25,38 @@ import {
   ensureArr,
 } from '@keg-hub/jsutils'
 
+const API_DEBUG = true
+
+type TApiError = {
+  error:string
+  scope:string
+  error_description: string
+}
+
+const logDebug = (...args:any[]) => {
+  if(!API_DEBUG) return
+
+  console.log(`---API-DEBUG:\n`, ...args)
+  console.log(`\n`)
+}
+
 // curl --header "Authorization: Bearer <token>" "https://gitlab.com/api/v4/projects"
 export class GitlabApi extends BaseRestApi {
 
-  static createRepo = async (args:TGitCreateRepoOpts):Promise<TRepoApiMeta> => {
+  /**
+   * @example - User
+   * curl --request POST --header "PRIVATE-TOKEN: <your-token>" \
+   * --header "Content-Type: application/json"
+   * --data '{ "name": "new_project", "description": "New Project", "path": "new_project", "namespace_id": "42", "initialize_with_readme": "true"}' \
+   * --url /projects/user/:user_id
+   *
+   * @example - Organization
+   * curl --request POST --header "PRIVATE-TOKEN: <your-token>" \
+   * --header "Content-Type: application/json"
+   * --data '{ "name": "new_project", "description": "New Project", "path": "new_project", "namespace_id": "42", "initialize_with_readme": "true"}' \
+   * --url 'https://gitlab.example.com/api/v4/projects/'
+   */
+  static createRepo = async (args:TGitCreateRepoOpts):Promise<TRepoData> => {
     return undefined
   }
 
@@ -45,9 +74,9 @@ export class GitlabApi extends BaseRestApi {
       : params
 
     const url = GitlabApi.buildAPIUrl({
-      prePath: `repos`,
       remote: this.baseUrl,
       host: Rest.Gitlab.Url,
+      prePath: `api/v4/projects`,
       pathExt: ensureArr(args.url)
     })
 
@@ -59,43 +88,86 @@ export class GitlabApi extends BaseRestApi {
       method: 'GET',
       headers: this.headers,
     }, args, { url })
-    
+
+    logDebug(`AXIOS url:`, url)
+
     const [err, resp] = await limbo<T, AxiosError>(axios(config))
     const axiosRes = [err, resp] as [AxiosError, T]
 
-    if(cache !== false) this._cache[url] = axiosRes as [AxiosError, T]
+    if(cache !== false && !err) this._cache[url] = axiosRes as [AxiosError, T]
 
     if(resp || !err || !throwErr) return axiosRes as [AxiosError, T]
-    
-    const error = err?.response?.data as Error
-    this.throwError(error, url)
+
+    const error = err?.response?.data as TApiError
+    const apiErr = new Error(`[${error.error}] - ${error.error_description} | (Scope: ${error.scope})`)
+
+    this.throwError(apiErr, url)
 
     return axiosRes as [AxiosError, T]
   }
 
-  getRepo = async (repo:string):Promise<TRepoApiMeta> => {
-    // TODO: the repo name is already part of the base URL
-    // If we ever need to get the repo meta for a different repo
-    // Then we need to override the base url and build it with the passed in repo name
-    // For now, just pass an empty string
-    const [err, resp] = await this._callApi<TRepoResp>('')
-    return resp.data
+  getRepo = async (repoId:string):Promise<TRepoData> => {
+    // this.baseUrl already includes the repoId, so we don't have to include it here
+    const [err, resp] = await this._callApi<TRepoResp>(``, { error: true })
+    const data = resp.data as TGLRepoApiMeta
+
+    return {
+      id: data.id,
+      name: data.name,
+      url: data.web_url,
+      description: data.description,
+      git_url: data.http_url_to_repo,
+      default_branch: data.default_branch,
+      full_name: data.path_with_namespace,
+      private: data.visibility === `private`,
+    }
   }
   
   defaultBranch = async (repoName:string) => {
-    return undefined
+    Logger.log(`Getting repo ${repoName} default branch...`)
+    const repo = await this.getRepo(repoName)
+
+    return repo.default_branch
   }
 
-  getBranch = async (branch:string):Promise<false | void | TBranchMeta> => {
-    return undefined
+  getBranch = async (branch:string, conf?:TApiConf):Promise<false | void | TBranchData> => {
+    const [err, resp] = await this._callApi<TBranchResp>(
+      `repository/branches/${encodeURIComponent(branch)}`,
+      conf
+    )
+   
+    if (resp?.data){
+      const data = resp.data as TGLBranchMeta
+      return { name: data?.name, sha: data?.commit.id }
+    }
+
+    const error = err?.response?.data as Error
+    return err.code === AxiosError.ERR_BAD_REQUEST && err?.response?.status === 404
+      ? false
+      : this.throwError(error, `branches/${branch}`)
   }
 
-  createBranch = async (newBranch:string, { from, hash }:TGitCreateBranchCof):Promise<string> => {
-    return undefined
+  /**
+    * curl --request POST --header "PRIVATE-TOKEN: <your_access_token>" "https://gitlab.com/api/v4/projects/5/repository/branches?branch=newbranch&ref=main"
+   */
+  createBranch = async (newBranch:string, { name:from, sha:hash }:TBranchData):Promise<string> => {
+    // const sha = hash || await this.branchHash(from)
+    Logger.log(`Using branch ${from} to create branch ${newBranch}...`)
+
+    const [err, resp] = await this._callApi<any>({
+      method: `POST`,
+      url: `repository/branches`,
+      data: { branch: newBranch, ref: from },
+    } as AxiosRequestConfig)
+
+    err && logDebug(`AXIOS ERROR:`, err)
+
+    return newBranch
   }
 
   branchHash = async (branch:string):Promise<string | void> => {
-    return undefined
+    const meta = await this.getBranch(branch, { error: true })
+    return meta ? meta?.sha : undefined
   }
 
 }

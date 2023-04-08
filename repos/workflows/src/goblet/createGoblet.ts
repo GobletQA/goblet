@@ -39,7 +39,7 @@ export const createGoblet = async (args:TWFCreateArgs) => {
     token,
     repo: {
       branchFrom: true,
-      url: repoMeta.html_url,
+      url: repoMeta.url,
       newBranch: create.branch,
       branch: repoMeta.default_branch,
     },

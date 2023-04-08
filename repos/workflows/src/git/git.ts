@@ -78,8 +78,10 @@ export const validateGitOpts = (gitOpts:TGitOpts):TGitOpts => {
   return {
     local: gitOpts.local,
     remote: gitOpts.remote,
+    repoId: gitOpts.repoId,
     branch: gitOpts.branch,
     username: gitOpts.username,
+    provider: gitOpts.provider,
     name: gitOpts.name || gitOpts.username,
     repoName: path.basename(gitOpts.remote),
     token: gitOpts.token || process.env.GOBLET_GIT_TOKEN,
