@@ -1,8 +1,7 @@
-import type { TGitOpts, TWFArgs } from '@gobletqa/workflows/types'
+import type { TGitOpts, TWFArgs, TWFResp } from '@gobletqa/workflows/types'
 
 import { Logger } from '@keg-hub/cli-utils'
 import { git } from '@gobletqa/workflows/git'
-import { EProvider } from '@gobletqa/workflows/types'
 import { getGitApi } from '@gobletqa/workflows/providers/getGitApi'
 import { ensureMounted } from '@gobletqa/workflows/repo/ensureMounted'
 import { validateInitArgs } from '@gobletqa/workflows/utils/validateInitArgs'
@@ -35,7 +34,15 @@ export const initializeGoblet = async (args:TWFArgs) => {
   if(notValid) return notValid
 
   const branch = await ensureBranchExists(gitApi, gitOpts)
-  const setupResp = await ensureMounted(args, {...gitOpts, branch })
+
+  const setupResp = branch
+    ? await ensureMounted(args, {...gitOpts, branch })
+    : {
+        setup: false,
+        mounted: false,
+        status: `failed`,
+        message: `Could not resolve git branch name. Git Provider API failed to communicate.`
+      } as TWFResp
 
   setupResp.mounted && setupResp.setup
     ? Logger.success(`Finished running Initialize Goblet Workflow`)

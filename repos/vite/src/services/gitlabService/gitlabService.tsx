@@ -19,7 +19,7 @@ export type TGitlabAuth = {
 }
 
 const GitlabManager = new UserManager({
-  loadUserInfo: false,
+  loadUserInfo: true,
   authority: GitlabUrl,
   response_type: `code`,
   client_id: GitlabClientId,
@@ -27,12 +27,8 @@ const GitlabManager = new UserManager({
   client_secret: GitlabClientSecret,
   redirect_uri: window.location.href,
   scope: [
-    `read_api`,
-    `read_user`,
-    `read_registry`,
-    `write_registry`,
+    `api`,
     `openid`,
-    `profile`,
     `email`,
   ].join(` `),
   metadata: {

@@ -13,17 +13,19 @@ export const ensureMounted = async (
   // Ensure the repo is not already mounted before trying to mount it
   const { mounted, repo, branch } = await git.checkRepo(gitOpts)
 
-  console.log({ mounted, repo, branch })
-
-  // Mount the repo if it's not mounted already
+  /**
+   * Mount the repo if it's not mounted already
+   */
   if (!mounted) {
     Logger.log(`Mounting remote repo...`)
     await mountRepo(gitOpts)
   }
 
-  // If a repo is mounted, but it's the wrong one, or branch if wrong
-  // Then remove it, and mount the correct repo
-  if(!repo || !branch){
+  /**
+   * If a repo is mounted, but it's the wrong one, or branch if wrong
+   * Then remove it, and mount the correct repo
+   */
+  else if(!repo || !branch){
     Logger.log(`Incorrect repo mounted. Removing and mounting correct repo...`)
     await git.remove(args)
     await mountRepo(gitOpts)

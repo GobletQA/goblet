@@ -20,7 +20,6 @@ export type TWFResp = TResArgs & {
   message: string
 }
 
-
 type TRecorderOpts = {
   locator: string
 }

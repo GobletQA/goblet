@@ -25,19 +25,11 @@ import {
   ensureArr,
 } from '@keg-hub/jsutils'
 
-const API_DEBUG = true
 
 type TApiError = {
   error:string
   scope:string
   error_description: string
-}
-
-const logDebug = (...args:any[]) => {
-  if(!API_DEBUG) return
-
-  console.log(`---API-DEBUG:\n`, ...args)
-  console.log(`\n`)
 }
 
 // curl --header "Authorization: Bearer <token>" "https://gitlab.com/api/v4/projects"
@@ -88,8 +80,6 @@ export class GitlabApi extends BaseRestApi {
       method: 'GET',
       headers: this.headers,
     }, args, { url })
-
-    logDebug(`AXIOS url:`, url)
 
     const [err, resp] = await limbo<T, AxiosError>(axios(config))
     const axiosRes = [err, resp] as [AxiosError, T]
@@ -151,7 +141,6 @@ export class GitlabApi extends BaseRestApi {
     * curl --request POST --header "PRIVATE-TOKEN: <your_access_token>" "https://gitlab.com/api/v4/projects/5/repository/branches?branch=newbranch&ref=main"
    */
   createBranch = async (newBranch:string, { name:from, sha:hash }:TBranchData):Promise<string> => {
-    // const sha = hash || await this.branchHash(from)
     Logger.log(`Using branch ${from} to create branch ${newBranch}...`)
 
     const [err, resp] = await this._callApi<any>({
@@ -160,9 +149,9 @@ export class GitlabApi extends BaseRestApi {
       data: { branch: newBranch, ref: from },
     } as AxiosRequestConfig)
 
-    err && logDebug(`AXIOS ERROR:`, err)
+    Logger.success(`Repo branch ${newBranch} created successfully.`)
 
-    return newBranch
+    return err ? undefined : newBranch
   }
 
   branchHash = async (branch:string):Promise<string | void> => {

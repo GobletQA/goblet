@@ -8,15 +8,16 @@ import type {
   TSaveMetaData,
 } from '@gobletqa/workflows/types'
 
-import fs from 'node:fs'
-import path from 'node:path'
-import { URL } from 'node:url'
+import fs from 'fs'
+import path from 'path'
+import { URL } from 'url'
 import { loadToken } from './loadToken'
 import { RepoWatcher } from './repoWatcher'
-import { throwErr } from '../utils/throwErr'
-import { ensurePath } from '../utils/ensurePath'
-import { getRepoPath } from '../utils/getRepoPath'
+import { EProvider } from '@gobletqa/workflows/types'
 import { fileSys, runCmd, Logger } from '@keg-hub/cli-utils'
+import { throwErr } from '@gobletqa/workflows/utils/throwErr'
+import { ensurePath } from '@gobletqa/workflows/utils/ensurePath'
+import { getRepoPath } from '@gobletqa/workflows/utils/getRepoPath'
 import { isObj, limbo, deepMerge, exists, emptyObj } from '@keg-hub/jsutils'
 
 type TGitRemoteOpts = {
@@ -89,12 +90,35 @@ export const validateGitOpts = (gitOpts:TGitOpts):TGitOpts => {
   }
 }
 
+const providerRemoteUrl = {
+  [EProvider.Github]: (gitOpts:TGitOpts) => {
+    const {remote, token} = gitOpts
+    const url = new URL(remote)
+
+    return `${url.protocol}//${token}@${url.host}${url.pathname}`
+  },
+  [EProvider.Gitlab]: (gitOpts:TGitOpts) => {
+    const {remote, token} = gitOpts
+    const url = new URL(remote)
+
+    // https://oauth2:<token>@gitlab.com/project_path/project_name.git
+    return `${url.protocol}//oauth2:${token}@${url.host}${url.pathname}`
+  }
+}
+
 /**
- * Helper to generate the repos remote url to clone / push / pull from 
+ * Helper to generate the repos remote url to clone / push / pull from based on the provider
  */
-const generateRemoteUrl = ({remote, token}:TGitOpts) => {
-  const url = new URL(remote)
-  return `${url.protocol}//${token}@${url.host}${url.pathname}`
+const generateRemoteUrl = (gitOpts:TGitOpts) => {
+  /**
+   * Default to using the github method
+   * Gitlab uses an odd `oauth2:` prefix which most provider won't use
+   */
+  const {provider=EProvider.Github} = gitOpts
+
+  return providerRemoteUrl[provider]
+    ? providerRemoteUrl[provider](gitOpts)
+    : throwErr(`Unknown Git Provider "${provider}"; repo could not be initialized`)
 }
 
 /**
@@ -200,6 +224,19 @@ git.clone = async (
 
   // Ensure the user is configured for future git operations after pulling
   await git.setUser(gitOpts, cmdOpts)
+  
+  /**
+   * TODO - May need to do this in some cases, need to investigate
+   * `git remote prune origin`
+   * Get the following error
+   * ```
+      remote: error: cannot lock ref 'refs/heads/goblet-lancetipton': is at a623b18f626481aa04a467b50062f541c926d3b5 but expected a39fb6395a7aea29168cb0df9667fd35e78b66f5
+      To https://gitlab.com/tiptondigital/simple-who.git
+      ! [remote rejected] goblet-lancetipton -> goblet-lancetipton (failed to update ref)
+      error: failed to push some refs to 'https://@gitlab.com/...'
+   * ```
+   * Need to investigate
+ */
 
   // Return the pull response so it can be handled by the mountRepo method
   return [pullErr, pullResp]
