@@ -21,10 +21,10 @@ const getStepDefinitions = config => {
   const { testUtilsDir } = config.internalPaths
   const { repoRoot, workDir, stepsDir } = config.paths
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
-  const clientPattern = path.join(baseDir, stepsDir, '**/*.js')
+  const clientPattern = path.join(baseDir, stepsDir, `**/*.(js|cjs|mjs|ts|cts|mts)`)
   const clientMatches = glob.sync(clientPattern)
 
-  const configPattern = path.join(testUtilsDir, 'src/steps/**/*.js')
+  const configPattern = path.join(testUtilsDir, `src/steps/**/*.(js|cjs|mjs|ts|cts|mts)`)
   const configMatches = glob.sync(configPattern)
 
   return uniqArr([...clientMatches, ...configMatches])
@@ -40,14 +40,14 @@ const getParkinSupport = config => {
   const { testUtilsDir } = config.internalPaths
   const { repoRoot, workDir, supportDir } = config.paths
 
-  const parkinEnvironment = `${testUtilsDir}/src/parkin/parkinTestInit.js`
+  const parkinEnvironment = `${testUtilsDir}/src/parkin/parkinTestInit.ts`
 
   // **IMPORTANT** - Must be loaded after the parkinEnvironment 
   const configHooks = `${testUtilsDir}/src/support/hooks`
 
   // Don't include the world here because it gets loaded in config/support/world.json
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
-  const pattern = path.join(baseDir, supportDir, '**/+(hooks.js|hook.js|setup.js)')
+  const pattern = path.join(baseDir, supportDir, `**/+(hooks.js|hook.js|setup.js|hooks.ts|hook.ts|setup.ts)`)
   const matches = glob.sync(pattern)
 
   // Add the default config hooks for setting up the tests
@@ -109,7 +109,7 @@ module.exports = async () => {
     transform: {
       ...defConf.transform,
       // Add the custom parkin transformer for feature files
-      '^.*\\.feature': `${testUtilsDir}/src/parkin/transformer.js`,
+      '^.*\\.feature': `${testUtilsDir}/src/parkin/transformer.ts`,
     },
   }
 }

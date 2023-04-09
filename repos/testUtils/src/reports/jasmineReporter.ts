@@ -1,5 +1,18 @@
-const { Logger } = require('@keg-hub/cli-utils')
-const { noOp, get, noPropArr, isFunc, isStr } = require('@keg-hub/jsutils')
+import type { TGobletConfig } from '@GTU/Types'
+
+import { Logger } from '@keg-hub/cli-utils'
+import { noOp, get, noPropArr, isFunc, isStr } from '@keg-hub/jsutils'
+
+type TEvtCB = { name?:string } & ((...args:any[]) => void)
+type TContext = Record<any, any>
+type TSuite = Record<any, any>
+
+type TJasmine = {
+  getEnv: (...args:any[]) => Record<any, any>
+  testPath: string
+}
+
+
 
 const spaceMap = {
   feature: `  `,
@@ -30,16 +43,16 @@ const failedSpecMap = {}
 /**
  * Resolves jasmine from the global context in a safe way
  */
-const resolveJasmine = () => {
+const resolveJasmine = ():TJasmine => {
   return typeof global.jasmine !== 'undefined'
-    ? global.jasmine
-    : { getEnv: noOp }
+    ? global.jasmine as unknown as TJasmine
+    : { getEnv: noOp } as TJasmine
 }
 
 /**
  * Helper to log test execution status as it happends
  */
-const logResult = (context) => {
+const logResult = (context:TContext) => {
   if(!context.action) return
 
   switch(context.action){
@@ -82,23 +95,31 @@ const getSuiteData = suite => {
   }
 }
 
-const dispatchEvent = async (event, data) => {
+export const dispatchEvent = async (
+  event:string,
+  data:Record<string, any>
+) => {
   const callbacks = eventMap[event] || noPropArr
   return await Promise.all(callbacks.map(cb => cb(data)))
 }
 
-const addListener = (event, callback, key) => {
+export const addListener = (
+  event:string,
+  callback:TEvtCB,
+  key:string
+) => {
   if(!isFunc(callback))
     throw new Error(`Cannot register ${event} event, callback is not a function`)
 
   if(!eventMap[event])
     throw new Error(`Cannot register ${event} event, ${event} is not an event type`)
 
+  // @ts-ignore
   callback.name = callback.name || key
   eventMap[event].push(callback)
 }
 
-const removeListener = (event, callback, key) => {
+export const removeListener = (event, callback, key) => {
   if(!eventMap[event])
     throw new Error(`Cannot register ${event} event, ${event} is not an event type`)
 
@@ -109,7 +130,7 @@ const removeListener = (event, callback, key) => {
 /**
  * Gets the status of the currently active test
  */
-const getTestResult = (testPath) => {
+export const getTestResult = (testPath) => {
   return failedSpecMap[testPath]
 }
 
@@ -118,11 +139,9 @@ const getTestResult = (testPath) => {
  * Checks failed specs and sets all all specs in a suite to disable when found
  * @function
  * @private
- * @param {Object} jasmineEnv - The current jasmine environment
  *
- * @returns {Object} - Custom jasmine reporter
  */
-const buildReporter = jasmineEnv => {
+const buildReporter = () => {
 
   return {
     suiteStarted: suite => {
@@ -131,6 +150,7 @@ const buildReporter = jasmineEnv => {
         ...suite,
         ...data,
         action: `start`,
+        // @ts-ignore
         testPath: global?.jasmine?.testPath,
       })
     },
@@ -139,6 +159,7 @@ const buildReporter = jasmineEnv => {
         ...result,
         type: `step`,
         action: `start`,
+        // @ts-ignore
         testPath: global?.jasmine?.testPath,
       })
     },
@@ -149,6 +170,7 @@ const buildReporter = jasmineEnv => {
         ...result,
         type: 'step',
         action: 'end',
+        // @ts-ignore
         testPath: global?.jasmine?.testPath,
       })
     },
@@ -158,6 +180,7 @@ const buildReporter = jasmineEnv => {
         ...suite,
         ...data,
         action: `end`,
+        // @ts-ignore
         testPath: global?.jasmine?.testPath,
       })
     }
@@ -167,17 +190,9 @@ const buildReporter = jasmineEnv => {
 /**
  * Creates a custom Jasmine reporter when the jasmine global exists
  */
-const jasmineReporter = () => {
+export const jasmineReporter = () => {
   const jasmineEnv = resolveJasmine().getEnv()
   jasmineEnv &&
     jasmineEnv.describe &&
-    jasmineEnv.addReporter(buildReporter(jasmineEnv))
-}
-
-module.exports = {
-  addListener,
-  dispatchEvent,
-  getTestResult,
-  removeListener,
-  jasmineReporter,
+    jasmineEnv.addReporter(buildReporter())
 }

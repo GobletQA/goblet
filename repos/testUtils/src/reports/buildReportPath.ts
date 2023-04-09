@@ -1,6 +1,14 @@
-const path = require('path')
-const { getPathFromBase } = require('@gobletqa/shared/utils/getPathFromBase')
-const { getGeneratedName } = require('@GTU/Playwright/generatedArtifacts')
+import type { TGobletConfig } from '@GTU/Types'
+
+import path from 'path'
+import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
+import { getGeneratedName } from '@GTU/Playwright/generatedArtifacts'
+
+type TBuildReportPathOpts = {
+  context:string
+  testReportName:string
+}
+
 
 /**
  * Gets the name for the report based on the name of the test being run
@@ -11,7 +19,11 @@ const { getGeneratedName } = require('@GTU/Playwright/generatedArtifacts')
  *
  * @return {string} - Name to use for the report
  */
-const getReportName = (reportName, context, type) => {
+const getReportName = (
+  reportName:string,
+  context:string,
+  type:string
+) => {
   return `/${path.basename(reportName || context || (type + 's'))}`
 }
 
@@ -24,7 +36,12 @@ const getReportName = (reportName, context, type) => {
  *
  * @returns {string} - Path where the report should be created
  */
-const buildReportPath = (type, { context, testReportName }, config, browser) => {
+export const buildReportPath = (
+  type:string,
+  { context, testReportName }:TBuildReportPathOpts,
+  config:TGobletConfig,
+  browser:string
+) => {
   if (!type)
     throw new Error(`Test type is required to build the test report path!`)
 
@@ -41,6 +58,3 @@ const buildReportPath = (type, { context, testReportName }, config, browser) => 
   return path.join(reportsDir, `${full}.html`)
 }
 
-module.exports = {
-  buildReportPath,
-}

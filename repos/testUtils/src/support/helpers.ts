@@ -1,6 +1,21 @@
-const { get } = require('@keg-hub/jsutils')
-const { Logger } = require('@keg-hub/cli-utils')
-const { getPage, getLocator } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+import type { TBrowserPage } from '@GTU/Types'
+
+import { get } from '@keg-hub/jsutils'
+import { Logger } from '@keg-hub/cli-utils'
+import { getPage, getLocator } from '@GTU/Playwright'
+
+type TLocator = Record<string, any>
+
+type TClickEl = {
+  selector:string
+  locator:TLocator
+  page:TBrowserPage
+}
+
+type TFillInput = TClickEl & {
+  text:string
+}
 
 const checkTypes = {
   less: {
@@ -47,10 +62,15 @@ const compareTypes = [
 
 /**
  * Expects the number of dom elements matching `selector` to match `count` based on the comparison screen
- * @param {string} selector - valid playwright selector
- * @param {number} count - expected number of selectors in the DOM
+ * @param {number} count1 - original count amount
+ * @param {number} count2 - next count amount
+ * @param {string} type - The type being counted
  */
-const greaterLessEqual = (count1, count2, type) => {
+export const greaterLessEqual = (
+  count1:number,
+  count2:number,
+  type:string
+) => {
   const foundType = Object.entries(checkTypes)
     .find(([key, def]) => def.match.includes(type))
   
@@ -75,9 +95,8 @@ greaterLessEqual.matchTypes = Object.entries(checkTypes)
  * Cleans the passed in world path to ensure world || $world is not the start of the string
  * @param {string} worldPath - Path on the world object
  *
- * @return {string} - Cleaned world path
  */
-const cleanWorldPath = (worldPath) => {
+export const cleanWorldPath = (worldPath:string) => {
 
   const pathArr = worldPath.trim().split(`.`).filter(part => Boolean(part.trim()))
   const noWorld = pathArr[0] === '$world' || pathArr[0] === 'world' ? pathArr.slice(1) : pathArr
@@ -90,11 +109,14 @@ const cleanWorldPath = (worldPath) => {
  * Gets the data from the passed in world path and world object 
  * @param {string} worldPath - Path on the world object
  * @param {object} world - Global world object
- * @param {*} fallback - Value to use if world value does not exit
+ * @param {*} [fallback] - Value to use if world value does not exit
  *
- * @return {*} - Data that exist on the world object at the passed in worldPath
  */
-const getWorldData = (worldPath, world, fallback) => {
+export const getWorldData = (
+  worldPath:string,
+  world:TWorldConfig,
+  fallback?:any
+) => {
   const cleaned = cleanWorldPath(worldPath)
   if(!cleaned) throw new Error(`World Path "$world.${worldPath}" is invalid.`)
 
@@ -110,9 +132,12 @@ const getWorldData = (worldPath, world, fallback) => {
  * @param {*} val2 - Value to compare against
  * @param {string} type - Type of comparison to do
  *
- * @return {void}
  */
-const compareValues = (val1, val2, type) => {
+export const compareValues = (
+  val1:any,
+  val2:any,
+  type:string
+) => {
   if(!compareTypes.includes(type))
     throw new Error(`Compare type "${type}" is invalid. Must be one of "${compareTypes.join(', ')}".`)
 
@@ -122,14 +147,17 @@ const compareValues = (val1, val2, type) => {
 }
 
 /**
- * Finds the locator by selecotr
- * @param {*} val1 - First value to compare
- * @param {*} val2 - Value to compare against
- * @param {string} type - Type of comparison to do
+ * Calls a method on a found locator
+ * @param {string} selector - CSS selector of Dom Element
+ * @param {string} prop - Method name to call
+ * @param {Object} locator - Playwright location object 
  *
- * @return {void}
  */
-const callLocatorMethod = async (selector, prop, locator) => {
+export const callLocatorMethod = async (
+  selector:string,
+  prop:string,
+  locator?:TLocator
+) => {
   const element = locator || await getLocator(selector)
   if(!element[prop])
     throw new Error(`Selected Element ${selector} missing prop method "${prop}".`)
@@ -137,14 +165,19 @@ const callLocatorMethod = async (selector, prop, locator) => {
   return await element[prop]()
 }
 
-const getLocatorAttribute = async (selector, attr, locator) => {
+export const getLocatorAttribute = async (
+  selector:string,
+  attr:string,
+  locator?:Record<string, any>
+) => {
   const element = locator || await getLocator(selector)
-
-
   return await element.getAttribute(attr)
 }
 
-const getLocatorProps = async (selector, locator) => {
+export const getLocatorProps = async (
+  selector:string,
+  locator?:TLocator
+) => {
   const element = locator || await getLocator(selector)
 
   // TODO: Add more properties to the returned object
@@ -156,12 +189,18 @@ const getLocatorProps = async (selector, locator) => {
   }))
 }
 
-const getLocatorTagName = async (selector, locator) => {
+export const getLocatorTagName = async (
+  selector:string,
+  locator?:TLocator
+) => {
   const element = locator || await getLocator(selector)
-  return await element.evaluate(el => el.tagName)
+  return await element.evaluate((el:HTMLElement) => el.tagName)
 }
 
-const getLocatorContent = async (selector, locator) => {
+export const getLocatorContent = async (
+  selector:string,
+  locator?:TLocator
+) => {
   const element = locator || await getLocator(selector)
   const tagName = await getLocatorTagName(selector, element)
 
@@ -172,11 +211,14 @@ const getLocatorContent = async (selector, locator) => {
 
 /**
  * Finds an element from selector or locator, and clicks it
- * @param {Object} params
+ * @param {TClickEl} params
  *
- * @return {void}
  */
-const clickElement = async ({ page, selector, locator }) => {
+export const clickElement = async ({
+  page,
+  selector,
+  locator
+}:TClickEl) => {
   page = page || getPage()
   !locator && await getLocator(selector)
   await page.click(selector, {
@@ -188,27 +230,16 @@ const clickElement = async ({ page, selector, locator }) => {
  * Finds an input from selector or locator, then fills it with text
  * @param {Object} params
  *
- * @return {void}
  */
-const fillInput = async ({ page, selector, locator, text}) => {
+export const fillInput = async ({
+  page,
+  text,
+  locator,
+  selector,
+}:TFillInput) => {
   page = page || getPage()
   await clickElement({ page, selector, locator })
   //clear value before setting otherwise data is appended to end of existing value
   await page.fill(selector, '')
   await page.type(selector, text)
-}
-
-
-module.exports = {
-  fillInput,
-  getWorldData,
-  clickElement,
-  compareValues,
-  cleanWorldPath,
-  greaterLessEqual,
-  getLocatorProps,
-  getLocatorTagName,
-  getLocatorContent,
-  callLocatorMethod,
-  getLocatorAttribute,
 }

@@ -4,9 +4,9 @@
  * Allows setting up parkin after Jest has been configured
  */
 
-const { toInt, exists } = require('@keg-hub/jsutils')
-const { jasmineReporter } = require('@GTU/Reports/jasmineReporter')
-const { getParkinInstance } = require('@gobletqa/shared/libs/parkin')
+import { toInt, exists } from '@keg-hub/jsutils'
+import { jasmineReporter } from '@GTU/Reports/jasmineReporter'
+import { getParkinInstance } from '@gobletqa/shared/libs/parkin'
 
 /**
  * Global helper to allow re-using the same parking instance for each test

@@ -6,7 +6,7 @@
  */
 
 const getHook = (hookName) => {
-  return (...args) => {
+  return (...args:any[]) => {
     const parkin = global.getParkinInstance()
     return parkin.hooks[hookName].apply(parkin.hooks, args)
   }
@@ -19,11 +19,9 @@ const getHook = (hookName) => {
  * BeforeAll(() => setupMyTestEnv())
  * AfterAll(() => cleanupMyEnv())
  */
-module.exports = {
-  BeforeAll: getHook('beforeAll'),
-  AfterAll: getHook('afterAll'),
-  BeforeEach: getHook('beforeEach'),
-  AfterEach: getHook('afterEach'),
-  Before: getHook('beforeEach'),
-  After: getHook('afterEach'),
-}
+export const BeforeAll = getHook('beforeAll')
+export const AfterAll = getHook('afterAll')
+export const BeforeEach = getHook('beforeEach')
+export const AfterEach = getHook('afterEach')
+export const Before = getHook('beforeEach')
+export const After = getHook('afterEach')

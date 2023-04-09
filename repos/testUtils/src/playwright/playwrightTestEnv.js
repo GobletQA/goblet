@@ -50,9 +50,8 @@ const initialize = async () => {
 /**
  * Cleans up for testing tear down by releasing all resources, including
  * the browser window and any globals set in `initialize`.
- * @param {Function} done - jest function called when all asynchronous ops are complete
+ * @param {Function} [fromError] - Boolean if cleanup was called from an error
  *
- * @return {boolean} - true if cleanup was successful
  */
 const cleanup = async (fromError) => {
   if (!global.browser){

@@ -108,7 +108,7 @@ module.exports = async () => {
       },
     },
     setupFilesAfterEnv: [
-      `${testUtilsDir}/src/waypoint/mockEnv.js`
+      `${testUtilsDir}/src/waypoint/mockEnv.ts`
     ],
     /** Add the custom waypoint transformer for all found .feature files */
     transform: {

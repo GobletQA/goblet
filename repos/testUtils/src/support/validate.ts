@@ -1,10 +1,12 @@
-const { isObj } = require('@keg-hub/jsutils')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { isObj } from '@keg-hub/jsutils'
 
 /**
  * Validates that the world input is a valid world object
  * @param {Object?} world
  */
-const validateWorld = world => {
+const validateWorld = (world:TWorldConfig) => {
   if (!isObj(world)) throw new Error(`World must be an object. Found ${world}`)
 }
 
@@ -12,7 +14,7 @@ const validateWorld = world => {
  * Validates that the world object has a registered ancestor
  * @param {Object} world
  */
-const checkForAncestor = world => {
+export const checkForAncestor = (world:TWorldConfig) => {
   validateWorld(world)
 
   if (!isObj(world.meta) || !isObj(world.meta.ancestor))
@@ -21,4 +23,3 @@ const checkForAncestor = world => {
     )
 }
 
-module.exports = { checkForAncestor }

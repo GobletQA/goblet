@@ -3,12 +3,12 @@ const { jestConfig } = require('./jest.default.config')
 const path = require('path')
 const { noOpObj } = require('@keg-hub/jsutils')
 const { inDocker } = require('@keg-hub/cli-utils')
+const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')
 const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
 const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
-const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')
-const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
 const { checkVncEnv } = require('@gobletqa/screencast/libs/utils/vncActiveEnv')
 const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
+const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
 const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
 const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowserOpts')
 
@@ -99,16 +99,16 @@ module.exports = async () => {
       },
     },
     setupFilesAfterEnv: [
-      `${testUtilsDir}/src/waypoint/hooks.js`,
-      `${testUtilsDir}/src/waypoint/mockEnv.js`,
+      `${testUtilsDir}/src/waypoint/hooks.ts`,
+      `${testUtilsDir}/src/waypoint/mockEnv.ts`,
     ],
     /** Add the custom waypoint transformer for all found .feature files */
     transform: {
       // Add the custom waypoint transformer for waypoint files
-      '^.*\\.(waypoint.js|wp.js|test.js|spec.js)$': `${testUtilsDir}/src/waypoint/transformer.js`,
-      '^.*\\.(waypoint.ts|wp.ts|test.ts|spec.ts)$': `${testUtilsDir}/src/waypoint/transformer.js`,
-      '^(waypoint|wp|test|spec)\\..*\\.(js)$': `${testUtilsDir}/src/waypoint/transformer.js`,
-      '^(waypoint|wp|test|spec)\\..*\\.(ts)$': `${testUtilsDir}/src/waypoint/transformer.js`,
+      '^.*\\.(waypoint.js|wp.js|test.js|spec.js)$': `${testUtilsDir}/src/waypoint/transformer.ts`,
+      '^.*\\.(waypoint.ts|wp.ts|test.ts|spec.ts)$': `${testUtilsDir}/src/waypoint/transformer.ts`,
+      '^(waypoint|wp|test|spec)\\..*\\.(ts)$': `${testUtilsDir}/src/waypoint/transformer.ts`,
+      '^(waypoint|wp|test|spec)\\..*\\.(ts)$': `${testUtilsDir}/src/waypoint/transformer.ts`,
       ...defConf.transform,
     },
   }

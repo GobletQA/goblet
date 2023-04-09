@@ -1,5 +1,6 @@
-if(process.env.GOBLET_MOCK_TEST_ENV){
+// @ts-nocheck
 
+if(process.env.GOBLET_MOCK_TEST_ENV){
   /**
   * This mocks out the default node packages, and the global process
   */
@@ -42,7 +43,6 @@ if(process.env.GOBLET_MOCK_TEST_ENV){
 
 
   // To polyfill with save versions
-
   jest.setMock('path', {})
   jest.setMock('async_hooks', {})
   jest.setMock('buffer', {})

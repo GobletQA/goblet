@@ -4,9 +4,11 @@
  * @param {string} text - Text to be cleaned and used as the name
  * @param {string} ext - Extension to use for saving the screenshot
  *
- * @returns {string} - Cleaned name to use for the screenshot
  */
-const buildScreenShotName = (text, ext=`png`) => {
+export const buildScreenShotName = (
+  text:string,
+  ext:string=`png`
+) => {
   const timeStamp = new Date().getTime()
   const cleaned = text
     .replace(/[!@#$%^&*()_\\=+?:;"'<>,.{}|\/\[\]]/g, ` `)
@@ -15,9 +17,4 @@ const buildScreenShotName = (text, ext=`png`) => {
     .toLowerCase()
 
   return `${cleaned}-${timeStamp}.${ext}`
-}
-
-
-module.exports = {
-  buildScreenShotName
 }
