@@ -12,7 +12,7 @@ import { colors, gutter, dims, H3 } from '@gobletqa/components'
 const { race } = dims
 
 export const FeatureStack = styled(Stack)`
-    padding: 0px ${gutter.padding.qpx};
+    padding: 0px ${gutter.padding.hpx};
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: none;

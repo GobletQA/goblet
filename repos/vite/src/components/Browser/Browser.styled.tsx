@@ -94,7 +94,7 @@ export const BrowserView = styled('div')(({ theme }) => {
     font-smoothing: antialiased;
     
     & > div {
-      background-color: ${colors.gray08} !important;
+      background-color: ${colors.gray05} !important;
     }
 
     
