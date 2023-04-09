@@ -1,4 +1,6 @@
 const { default:createCacheKeyFunction } = require('@jest/create-cache-key-function')
+// Hack for typescript no understanding module.exports
+let exports = module.exports
 
 /**
  * Custom jest transformer for parsing feature files
@@ -6,7 +8,7 @@ const { default:createCacheKeyFunction } = require('@jest/create-cache-key-funct
  *
  * @return {Object} - Jest custom transformer model object
  */
-module.exports = {
+exports = {
   getCacheKey: createCacheKeyFunction([], []),
   process(src) {
     return {
@@ -18,3 +20,5 @@ module.exports = {
     }
   },
 }
+
+module.exports = exports

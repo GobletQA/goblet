@@ -1,17 +1,10 @@
 require('../resolveRoot')
 const path = require('path')
 const glob = require("glob")
-const { spawn } = require('child_process')
-const { loadConfigs } = require('@keg-hub/parse-config')
-const { aliases } = require('@GConfigs/aliases.config')
-// eslint-disable-next-line import/no-extraneous-dependencies
 const { build } = require('esbuild')
-// eslint-disable-next-line import/no-extraneous-dependencies
+const { aliases } = require('@GConfigs/aliases.config')
 const aliasPlugin = require('esbuild-plugin-path-alias')
 
-let __server
-const isDev = process.env.DEV_BUILD === `1`
-const nodeEnv = process.env.NODE_ENV || `local`
 const rootDir = path.join(__dirname, `../`)
 const distDir = path.join(rootDir, `dist`)
 const entryFiles = glob.sync(
@@ -20,34 +13,7 @@ const entryFiles = glob.sync(
 )
 
 /**
- * Load the ENVs from <node-env>.env ( local.env || prod.env )
- */
-const envs = loadConfigs({
-  noYml: true,
-  env: nodeEnv,
-  name: 'goblet',
-  locations: [aliases.GobletRoot],
-})
-
-/**
- * Helper to start the dev server after bundling the app
- */
-const devServer = async () => {
-  if (!isDev) return
-
-  __server = spawn('nodemon', [`--config`, `configs/nodemon.config.json`], {
-    cwd: rootDir,
-    env: { ...envs, ...process.env },
-    stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
-  })
-
-  __server.stdout.on('data', (data) => process.stdout.write(data))
-  __server.stderr.on('data', (data) => process.stderr.write(data))
-  process.on(`exit`, () => __server && __server.pid && process.kill(__server.pid))
-}
-
-/**
- * Build the code, then run the devServer
+ * Build the code
  * ESBuild config object
  * [See here for more info](https://esbuild.github.io/api/#build-api)
  */
@@ -61,13 +27,6 @@ build({
   assetNames: '[name]',
   allowOverwrite: true,
   entryPoints: entryFiles,
-  watch: isDev && {
-    onRebuild(error, result) {
-      if (error) console.error(`Error rebuilding app`, error)
-      else console.log(`Rebuilt app successfully`, result)
-      __server && __server.send('restart')
-    },
-  },
   plugins: [
     aliasPlugin(aliases),
     /**
@@ -87,4 +46,4 @@ build({
       },
     },
   ],
-}).then(devServer)
+})
