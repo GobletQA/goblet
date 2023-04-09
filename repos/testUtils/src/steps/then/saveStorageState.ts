@@ -1,14 +1,23 @@
-const { Then } = require('@GTU/Parkin')
-const { defaultStateFile, saveContextState, getContext } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import {
+  getContext,
+  defaultStateFile,
+  saveContextState,
+} from '@GTU/Playwright'
 
 /**
  * Checks that the page title is `title`
- * @param {*} title - text to compare to page title
+ * @param {string} title - text to compare to page title
  */
-const savePageState = async (name) => {
+export const savePageState = async (
+  title:boolean|string,
+  world:TWorldConfig
+) => {
   const context = await getContext()
 
-  return await saveContextState(context, name)
+  return await saveContextState(context, title)
 }
 
 const meta = {
@@ -21,7 +30,7 @@ const meta = {
   expressions: [],
 }
 
-Then('I save the page state', () => savePageState(false, world), meta)
+Then('I save the page state', (world:TWorldConfig) => savePageState(false, world), meta)
 Then('I save the page state as {string}', savePageState, {
   ...meta,
   expressions: [
@@ -32,5 +41,3 @@ Then('I save the page state as {string}', savePageState, {
     }
   ]
 })
-
-module.exports = { savePageState }

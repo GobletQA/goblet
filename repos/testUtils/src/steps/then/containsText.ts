@@ -1,12 +1,18 @@
-const { Then } = require('@GTU/Parkin')
-const { getLocatorContent } = require('@GTU/Support/helpers')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { getLocatorContent } from '@GTU/Support/helpers'
 
 /**
  * Checks that element, matching `selector`, value (input & textarea elements) or textContent, contains `data`
  * @param {string} selector - valid playwright selector
  * @param {string} data - text to compare to selector value/textContent
  */
-const containsText = async (selector, data) => {
+export const containsText = async (
+  selector:string,
+  data:string,
+  world:TWorldConfig
+) => {
   const content = await getLocatorContent(selector)
   expect(content).toEqual(expect.stringContaining(data))
 }
@@ -34,5 +40,3 @@ const meta = {
 Then('{string} contains {string}', containsText, meta)
 Then('{string} contains the text {string}', containsText, meta)
 Then('the element {string} contains the text {string}', containsText, meta)
-
-module.exports = { containsText }

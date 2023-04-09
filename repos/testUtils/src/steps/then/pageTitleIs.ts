@@ -1,11 +1,13 @@
-const { Then } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
 
 /**
  * Checks that the page title is `title`
  * @param {*} title - text to compare to page title
  */
-const pageTitleIs = async title => {
+export const pageTitleIs = async (title:string, world:TWorldConfig) => {
   const page = await getPage()
   const actualTitle = await page.title()
   expect(title).toBe(actualTitle)
@@ -23,4 +25,4 @@ Then('the page title is {string}', pageTitleIs, {
   module: `pageTitleIs`
 })
 
-module.exports = { pageTitleIs }
+

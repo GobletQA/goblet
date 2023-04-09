@@ -1,12 +1,18 @@
-const { Then } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
 
 /**
  * Expects the number of dom elements matching `selector` to equal `count`
  * @param {string} selector - valid playwright selector
  * @param {number} count - expected number of selectors in the DOM
  */
-const elementCount = async (selector, count) => {
+export const elementCount = async (
+  selector:string,
+  count:number,
+  world:TWorldConfig
+) => {
   const page = await getPage()
   const elements = await page.$$(selector)
   expect(elements.length).toEqual(count)
@@ -28,5 +34,3 @@ Then('the count of {string} is/equals {int}', elementCount, {
     },
   ],
 })
-
-module.exports = { elementCount }

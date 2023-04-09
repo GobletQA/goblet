@@ -1,15 +1,17 @@
-const { Then } = require('@GTU/Parkin')
-const {
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import {
   getContext,
   defaultCookieFile,
   saveContextCookie
-} = require('@GTU/Playwright')
+} from '@GTU/Playwright'
 
 /**
  * Checks that the page title is `title`
- * @param {*} title - text to compare to page title
+ * @param {string} name - text to compare to page title
  */
-const savePageCookie = async (name) => {
+export const savePageCookie = async (name:boolean|string, world:TWorldConfig) => {
   const context = await getContext()
 
   return await saveContextCookie(context, name)
@@ -25,7 +27,7 @@ const meta = {
   expressions: [],
 }
 
-Then('I save the page cookie', (world) => savePageCookie(false, world), meta)
+Then('I save the page cookie', (world:TWorldConfig) => savePageCookie(false, world), meta)
 Then('I save the page cookie as {string}', savePageCookie, {
   ...meta,
   expressions: [
@@ -37,4 +39,3 @@ Then('I save the page cookie as {string}', savePageCookie, {
   ]
 })
 
-module.exports = { savePageCookie }

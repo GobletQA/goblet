@@ -1,6 +1,8 @@
-const { Then } = require('@GTU/Parkin')
-const { deepMerge } = require('@keg-hub/jsutils')
-const { compareValues, getLocatorAttribute, getWorldData } = require('@GTU/Support/helpers')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { deepMerge } from '@keg-hub/jsutils'
+import { compareValues, getLocatorAttribute, getWorldData } from '@GTU/Support/helpers'
 
 /**
  * Compares an elements property with a saved elements property
@@ -11,7 +13,14 @@ const { compareValues, getLocatorAttribute, getWorldData } = require('@GTU/Suppo
  * @param {string} worldProp - property of a playwright locator
  * @param {Object} world - Global world object
  */
-const compareElements = async (selector, prop, typeJoin, worldPath, worldProp, world) => {
+export const compareElements = async (
+  selector:string,
+  prop:string,
+  typeJoin:string,
+  worldPath:string,
+  worldProp:string,
+  world:TWorldConfig
+) => {
   const { element:saved } = getWorldData(worldPath, world)
   if(!saved[worldProp]) throw new Error(`Saved Element property "${worldProp}" does not exist.`)
 
@@ -32,7 +41,13 @@ const compareElements = async (selector, prop, typeJoin, worldPath, worldProp, w
  * @param {string} worldPath - Path on the world object
  * @param {Object} world - Global world object
  */
-const compareToWorldValue = async (selector, prop, typeJoin, worldPath, world) => {
+export const compareToWorldValue = async (
+  selector:string,
+  prop:string,
+  typeJoin:string,
+  worldPath:string,
+  world:TWorldConfig
+) => {
   const savedVal = getWorldData(worldPath, world)
   const elementVal = await getLocatorAttribute(selector, prop)
 
@@ -82,12 +97,34 @@ const elToVal = {
 }
 Then(
   '{string} {word} matches {string}',
-  (sel, prop, wPath, world) => compareToWorldValue(sel, prop, `matches-world`, wPath, world),
+  (
+    sel:string,
+    prop:string,
+    wPath:string,
+    world:TWorldConfig
+  ) => compareToWorldValue(
+    sel,
+    prop,
+    `matches-world`,
+    wPath,
+    world
+  ),
   elToVal
 )
 Then(
   '{string} {word} contains {string}',
-  (sel, prop, wPath, world) => compareToWorldValue(sel, prop, `contains-world`, wPath, world),
+  (
+    sel:string,
+    prop:string,
+    wPath:string,
+    world:TWorldConfig
+  ) => compareToWorldValue(
+    sel,
+    prop,
+    `contains-world`,
+    wPath,
+    world
+  ),
   elToVal
 )
 
@@ -111,12 +148,36 @@ const valToElMeta = {
 }
 Then(
   '{string} matches element {string} {word}',
-  (wPath, type, sel, prop, world) => compareToWorldValue(sel, prop, `matches-el`, wPath, world),
+  (
+    wPath:string,
+    type:string,
+    sel:string,
+    prop:string,
+    world:TWorldConfig
+  ) => compareToWorldValue(
+    sel,
+    prop,
+    `matches-el`,
+    wPath,
+    world
+  ),
   valToElMeta
 )
 Then(
   '{string} contains element {string} {word}',
-  (wPath, type, sel, prop, world) => compareToWorldValue(sel, prop, `contains-el`, wPath, world),
+  (
+    wPath:string,
+    type:string,
+    sel:string,
+    prop:string,
+    world:TWorldConfig
+  ) => compareToWorldValue(
+    sel,
+    prop,
+    `contains-el`,
+    wPath,
+    world
+  ),
   valToElMeta
 )
 
@@ -131,12 +192,34 @@ const elToSaved = deepMerge(metaBase, {
 })
 Then(
   '{string} {word} matches saved',
-  (sel, prop, world) => compareElements(sel, prop, `matches-world`, `__meta.savedElement`, prop, world),
+  (
+    sel:string,
+    prop:string,
+    world:TWorldConfig
+  ) => compareElements(
+    sel,
+    prop,
+    `matches-world`,
+    `__meta.savedElement`,
+    prop,
+    world
+  ),
   elToSaved
 )
 Then(
   '{string} {word} contains saved',
-  (sel, prop, world) => compareElements(sel, prop, `contains-world`, `__meta.savedElement`, prop, world),
+  (
+    sel:string,
+    prop:string,
+    world:TWorldConfig
+  ) => compareElements(
+    sel,
+    prop,
+    `contains-world`,
+    `__meta.savedElement`,
+    prop,
+    world
+  ),
   elToSaved
 )
 
@@ -150,12 +233,34 @@ const savedToEl = deepMerge(metaBase, {
 })
 Then(
   'saved matches {string} {word}',
-  (sel, prop, world) => compareElements(sel, prop, `matches-el`, `__meta.savedElement`, prop, world),
+  (
+    sel:string,
+    prop:string,
+    world:TWorldConfig
+  ) => compareElements(
+    sel,
+    prop,
+    `matches-el`,
+    `__meta.savedElement`,
+    prop,
+    world
+  ),
   savedToEl
 )
 Then(
   'saved contains {string} {word}',
-  (sel, prop, world) => compareElements(sel, prop, `contains-el`, `__meta.savedElement`, prop, world),
+  (
+    sel:string,
+    prop:string,
+    world:TWorldConfig
+  ) => compareElements(
+    sel,
+    prop,
+    `contains-el`,
+    `__meta.savedElement`,
+    prop,
+    world
+  ),
   savedToEl
 )
 
@@ -176,12 +281,36 @@ const elToWorldNoProp = deepMerge(metaBase, {
 
 Then(
   'element {string} {word} matches {string}',
-  (sel, prop, wPath, world) =>  compareElements(sel, prop, `matches-world`, wPath, prop, world),
+  (
+    sel:string,
+    prop:string,
+    wPath:string,
+    world:TWorldConfig
+  ) =>  compareElements(
+    sel,
+    prop,
+    `matches-world`,
+    wPath,
+    prop,
+    world
+  ),
   elToWorldNoProp
 )
 Then(
   'element {string} {word} contains {string}',
-  (sel, prop, wPath, world) =>  compareElements(sel, prop, `contains-world`, wPath, prop, world),
+  (
+    sel:string,
+    prop:string,
+    wPath:string,
+    world:TWorldConfig
+  ) =>  compareElements(
+    sel,
+    prop,
+    `contains-world`,
+    wPath,
+    prop,
+    world
+  ),
   elToWorldNoProp
 )
 
@@ -204,12 +333,36 @@ const worldToElNoProp = {
 }
 Then(
   '{string} matches {string} {word}',
-  (wPath, sel, prop, world) =>  compareElements(sel, prop, `matches-el`, wPath, prop, world),
+  (
+    wPath:string,
+    sel:string,
+    prop:string,
+    world:TWorldConfig
+  ) =>  compareElements(
+    sel,
+    prop,
+    `matches-el`,
+    wPath,
+    prop,
+    world
+  ),
   worldToElNoProp
 )
 Then(
   '{string} contains {string} {word}',
-  (wPath, sel, prop, world) =>  compareElements(sel, prop, `contains-el`, wPath, prop, world),
+  (
+    wPath:string,
+    sel:string,
+    prop:string,
+    world:TWorldConfig
+  ) =>  compareElements(
+    sel,
+    prop,
+    `contains-el`,
+    wPath,
+    prop,
+    world
+  ),
   worldToElNoProp
 )
 
@@ -238,12 +391,32 @@ const elToWorldWProps = {
 
 Then(
   '{string} {word} matches {string} {word}',
-  (sel, prop, ...args) =>  compareElements(sel, prop, `matches-world`, ...args),
+  (
+    sel:string,
+    prop:string,
+    ...args
+  ) =>  compareElements(
+    sel,
+    prop,
+    `matches-world`,
+    // @ts-ignore
+    ...args
+  ),
   elToWorldWProps
 )
 Then(
   '{string} {word} contains {string} {word}',
-  (sel, prop, ...args) =>  compareElements(sel, prop, `contains-world`, ...args),
+  (
+    sel:string,
+    prop:string,
+    ...args
+  ) =>  compareElements(
+    sel,
+    prop,
+    `contains-world`,
+    // @ts-ignore
+    ...args
+  ),
   elToWorldWProps
 )
 
@@ -272,18 +445,37 @@ const worldToElWProps = {
 
 Then(
   '{string} {word} matches element {string} {word}',
-  (wPath, wProp, sel, prop, world) =>  compareElements(sel, prop, `matches-el`, wPath, wProp, world),
+  (
+    wPath:string,
+    wProp:string,
+    sel:string,
+    prop:string,
+    world:TWorldConfig
+  ) =>  compareElements(
+    sel,
+    prop,
+    `matches-el`,
+    wPath,
+    wProp,
+    world
+  ),
   worldToElWProps
 )
 Then(
   '{string} {word} contains element {string} {word}',
-  (wPath, wProp, sel, prop, world) =>  compareElements(sel, prop, `contains-el`, wPath, wProp, world),
+  (
+    wPath:string,
+    wProp:string,
+    sel:string,
+    prop:string,
+    world:TWorldConfig
+  ) =>  compareElements(
+    sel,
+    prop,
+    `contains-el`,
+    wPath,
+    wProp,
+    world
+  ),
   worldToElWProps
 )
-
-
-module.exports = {
-  compareElements,
-  compareToWorldValue
-}
-

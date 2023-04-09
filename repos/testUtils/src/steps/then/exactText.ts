@@ -1,5 +1,7 @@
-const { Then } = require('@GTU/Parkin')
-const { getLocatorContent } = require('@GTU/Support/helpers')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { getLocatorContent } from '@GTU/Support/helpers'
 
 
 /**
@@ -7,7 +9,11 @@ const { getLocatorContent } = require('@GTU/Support/helpers')
  * @param {string} selector - valid playwright selector
  * @param {string} data - text to compare to selector value/textContent
  */
-const exactText = async (selector, data) => {
+export const exactText = async (
+  selector:string,
+  data:string,
+  world:TWorldConfig
+) => {
   const content = await getLocatorContent(selector)
   expect(content).toEqual(data)
 }
@@ -34,5 +40,3 @@ const meta = {
 
 Then('{string} text is {string}', exactText, meta)
 Then('the element {string} text is {string}', exactText, meta)
-
-module.exports = { exactText }

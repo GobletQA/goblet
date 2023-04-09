@@ -1,19 +1,26 @@
-const { Then } = require('@GTU/Parkin')
-const { get } = require('@keg-hub/jsutils')
-const { getLocators } = require('@GTU/Playwright')
-const { cleanWorldPath, greaterLessEqual } = require('@GTU/Support/helpers')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { get } from '@keg-hub/jsutils'
+import { getLocators } from '@GTU/Playwright'
+import { cleanWorldPath, greaterLessEqual } from '@GTU/Support/helpers'
 
 /**
  * Expects the number of dom elements matching `selector` to equal `count`
  * @param {string} selector - valid playwright selector
  * @param {string} worldPath - Path on the world object
  */
-const compareSavedElementCount = async (selector, type, worldPath, world) => {
+export const compareSavedElementCount = async (
+  selector:string,
+  type:string,
+  worldPath:string,
+  world:TWorldConfig
+) => {
 
   const cleaned = cleanWorldPath(worldPath)
   if(!cleaned) throw new Error(`World Path "${worldPath}" is invalid.`)
 
-  const { count } = get(world, cleaned, {})
+  const { count } = get(world, cleaned, {} as any)
   if(!count) throw new Error(`World Path "${worldPath}" does not contain a saved count.`)
 
   const elements = await getLocators(selector)
@@ -50,4 +57,3 @@ const meta = {
 
 Then('the {string} count is {string} to {string}', compareSavedElementCount, meta)
 
-module.exports = { compareSavedElementCount }

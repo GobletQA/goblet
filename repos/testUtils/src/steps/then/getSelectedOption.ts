@@ -1,21 +1,27 @@
-const { Then } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
 
 /**
  * Expects the element matching `selector` and verifies selected options === `data`
  * @param {string} selector - valid playwright selector
  * @param {string} data - selector's option label or value
+ * @param {string} key - key to validate
  */
-const getSelectedOption = async (selector, data, key) => {
+export const getSelectedOption = async (
+  selector:string,
+  data:string,
+  key:string,
+  world:TWorldConfig
+) => {
   const page = await getPage()
 
   const selectedLabels = await page.$eval(
     selector,
-    (el, key) => {
+    (el:HTMLSelectElement, key:string) => {
       const options = Array.from(el.selectedOptions)
-      return options.map(option => {
-        return option[key]
-      })
+      return options.map(option => option[key])
     },
     key
   )
@@ -55,5 +61,3 @@ Then(
     ],
   }
 )
-
-module.exports = { getSelectedOption }

@@ -1,5 +1,7 @@
-const { Then } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
 
 /**
  * Checks that element, matching `selector`, has an attribute matching `attribute`, and that the value of the attribute matches `value`
@@ -7,7 +9,12 @@ const { getPage } = require('@GTU/Playwright')
  * @param {string} attribute - the selector's attribute
  * @param {string} value - the expected value of the selector's attribute
  */
-const getAttribute = async (selector, attribute, value) => {
+export const getAttribute = async (
+  selector:string,
+  attribute:string,
+  value:string,
+  world:TWorldConfig
+) => {
   const page = await getPage()
 
   let attVal = await page.getAttribute(selector, attribute).then(val => {
@@ -55,4 +62,3 @@ Then('the element {string} attribute {string} is {string}', getAttribute, {
   ],
 })
 
-module.exports = { getAttribute }

@@ -1,5 +1,7 @@
-const { Then } = require('@GTU/Parkin')
-const { getLocator } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { getLocator } from '@GTU/Playwright'
 
 const checkedStates = ['checked', 'unchecked']
 
@@ -8,7 +10,11 @@ const checkedStates = ['checked', 'unchecked']
  * @param {String} selector - valid playwright selector
  * @param {string} state - valid state options are `checked` or `unchecked`
  */
-const getCheckedState = async (selector, state) => {
+export const getCheckedState = async (
+  selector:string,
+  state:string,
+  world:TWorldConfig
+) => {
   if (!checkedStates.includes(state))
     throw new Error('Invalid Check State: ' + state)
 
@@ -29,7 +35,7 @@ const getCheckedState = async (selector, state) => {
 
 Then(
   `the element {string} checked state is {string}`,
-  (selector, state) => getCheckedState(selector, state),
+    getCheckedState,
   {
     module: `getCheckedState`,
     description: `Locates a checkbox element by selector and verifies its checked state, checked or unchecked.`,
@@ -47,7 +53,3 @@ Then(
     ],
   }
 )
-
-module.exports = {
-  getCheckedState,
-}

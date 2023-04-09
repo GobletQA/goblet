@@ -1,6 +1,8 @@
-const { Then } = require('@GTU/Parkin')
-const { containsText } = require('./containsText')
-const { checkForAncestor } = require('@GTU/Support/validate')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { containsText } from './containsText'
+import { checkForAncestor } from '@GTU/Support/validate'
 
 /**
  * For the element matching `selector`, descendent of the registered ancestor, expects its text content to equal `data`
@@ -8,9 +10,13 @@ const { checkForAncestor } = require('@GTU/Support/validate')
  * @param {string} data - text to compare to descendent selector value/textContent
  * @param {Object} world
  */
-const descendentContainsText = async (selector, data, world) => {
+export const descendentContainsText = async (
+  selector:string,
+  data:string,
+  world:TWorldConfig
+) => {
   checkForAncestor(world)
-  return containsText(`${world.meta.ancestorSelector} ${selector}`, data)
+  return containsText(`${world.meta.ancestorSelector} ${selector}`, data, world)
 }
 
 Then(
@@ -33,7 +39,3 @@ Then(
     ],
   }
 )
-
-module.exports = {
-  descendentContainsText,
-}

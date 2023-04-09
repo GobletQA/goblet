@@ -1,12 +1,14 @@
-const expect = require('expect')
-const { Then } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import expect from 'expect'
+import { Then } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
 
 /**
  * Checks that the page title is not `title`
  * @param {string} title - text to compare to page title
  */
-const pageTitleIsNot = async title => {
+export const pageTitleIsNot = async (title:string, world:TWorldConfig) => {
   const page = await getPage()
   expect(await page.title()).not.toBe(title)
 }
@@ -23,4 +25,3 @@ Then('the page title is not {string}', pageTitleIsNot, {
   module: `pageTitleIsNot`
 })
 
-module.exports = { pageTitleIsNot }

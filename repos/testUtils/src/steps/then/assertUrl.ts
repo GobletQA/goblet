@@ -1,11 +1,13 @@
-const { Then } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
 
 /**
  * Checks that the page url matches the passed in url
  * @param {string} url - text to compare to page url
  */
-const assertUrl = async (url) => {
+export const assertUrl = async (url:string) => {
   const page = await getPage()
   const currentUrl = page.url()
 
@@ -31,4 +33,3 @@ const meta = {
 Then('the page url is {string}', assertUrl, meta)
 Then('the url should be {string}', assertUrl, meta)
 
-module.exports = { assertUrl }
