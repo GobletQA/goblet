@@ -1,13 +1,18 @@
-const { When } = require('@GTU/Parkin')
-const keyboardMap = require('./keyboardMap')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
+import keyboardMap from './keyboardMap.json'
 
 /**
  * Simulates a key press
  * @param {string} key - key name
  * @see possible `key` values here: https://playwright.dev/docs/api/class-page?_highlight=press#pagepressselector-key-options
  */
-const pressKey = async (key) => {
+export const pressKey = async (
+  key:string,
+  world:TWorldConfig
+) => {
   const page = await getPage()
   const pressedKey = keyboardMap.capitalize[key] || key
   await page.keyboard.press(pressedKey)
@@ -22,14 +27,12 @@ const meta = {
   description: `Triggers a keyboard event simulating pressing a key on the keyboard.\nSee https://playwright.dev/docs/api/class-page?_highlight=press#pagepressselector-key-options for more info.`,
   expressions: [
     {
-      type: 'string',
+      type: `string`,
       description: `The keyboard key.`,
-      example: 'Control+a',
+      example: `Control+a`,
     },
   ],
 }
 
-When('I press {string}', pressKey, meta)
-When('I press the key {string}', pressKey, meta)
-
-module.exports = { pressKey }
+When(`I press {string}`, pressKey, meta)
+When(`I press the key {string}`, pressKey, meta)

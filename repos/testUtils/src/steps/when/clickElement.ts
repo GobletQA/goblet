@@ -1,12 +1,17 @@
-const { When } = require('@GTU/Parkin')
-const { getPage, getLocator } = require('@GTU/Playwright')
-const { ExpressionKinds, ExpressionTypes } = require('@gobletqa/shared/constants')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { getPage, getLocator } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Click the element matching `selector`
  * @param {String} selector - valid playwright selector
  */
-const clickElementHandler = async (selector, world) => {
+export const clickElementHandler = async (
+  selector:string,
+  world:TWorldConfig
+) => {
   const page = await getPage()
   // Actionability checks (Auto-Waiting) seem to fail in headless mode
   // So we use locator.waitFor to ensure the element exist on the dom
@@ -44,12 +49,8 @@ When('I click {string}', clickElementHandler, {
 })
 When('I click the {string}', clickElementHandler, meta)
 When('I click the element {string}', clickElementHandler, meta)
-When('I click the page', async () => await clickElementHandler(`body`), {
+When('I click the page', async (world:TWorldConfig) => await clickElementHandler(`body`, world), {
   ...meta,
   expressions: [],
   examples: [`When I click the page`],
 })
-
-module.exports = {
-  clickElementHandler,
-}

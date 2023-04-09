@@ -1,11 +1,16 @@
-const { When } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
 
 /**
  * Click the element matching `selector`
  * @param {String} selector - valid playwright selector
  */
-const contextClick = async selector => {
+export const contextClick = async (
+  selector:string,
+  world:TWorldConfig
+) => {
   const page = await getPage()
   /**
    * Based on the element we are interacting with
@@ -34,9 +39,6 @@ const meta = {
   ],
 }
 
-When('I click {string} in context', contextClick, meta)
-When('I click the {string} in context', contextClick, meta)
+When(`I click {string} in context`, contextClick, meta)
+When(`I click the {string} in context`, contextClick, meta)
 
-module.exports = {
-  contextClick,
-}

@@ -52,7 +52,7 @@ const parseUrl = (url:string, world:TWorldConfig) => {
  * @param {string} url - url to load in the browser
  * @param {object} world
  */
-const openUrl = async (url:string, world:TWorldConfig) => {
+export const openUrl = async (url:string, world:TWorldConfig) => {
   const site = parseUrl(url, world)
   if (!isStr(site)) throw new Error(`Site must be a valid URL. Found: ${site}`)
 
@@ -81,5 +81,3 @@ Given('I navigate to {string}', openUrl, {
   ],
   race: true
 })
-
-module.exports = { openUrl }

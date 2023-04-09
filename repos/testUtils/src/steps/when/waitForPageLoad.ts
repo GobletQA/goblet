@@ -1,12 +1,14 @@
-const { When } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
 
 /**
  * Returns when the required load state has been reached.
  * Without specifying any arguments, it by default waits for the load event to fire.
  * Read more here: https://playwright.dev/docs/api/class-page#pagewaitforloadstatestate-options
  */
-const waitForPageLoad = async () => {
+export const waitForPageLoad = async (world:TWorldConfig) => {
   const page = await getPage()
   await page.waitForLoadState()
 }
@@ -19,4 +21,3 @@ When('I wait for the page to load', waitForPageLoad, {
   ]
 })
 
-module.exports = { waitForPageLoad }

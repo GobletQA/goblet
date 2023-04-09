@@ -7,7 +7,7 @@ import { getLocator, getPage } from '@GTU/Playwright'
  * Click the element matching `selector`
  * @param {String} selector - valid playwright selector
  */
-const generalAction = async (action:string, selector:string, world:TWorldConfig) => {
+export const generalAction = async (action:string, selector:string, world:TWorldConfig) => {
   const page = await getPage()
   await getLocator(selector)
   return page[action](selector, { force: true })
@@ -40,7 +40,3 @@ const meta = (exp1='word', exp2='string') => ({
 // Then('I {word} {word}', generalAction, meta(`word`, `word`))
 // Then('I {word} the {word}', generalAction, meta(`word`, `word`))
 
-
-module.exports = {
-  generalAction,
-}

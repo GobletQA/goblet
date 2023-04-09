@@ -1,5 +1,7 @@
-const { When } = require('@GTU/Parkin')
-const { getLocator } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { getLocator } from '@GTU/Playwright'
 
 /**
  * Sets the input text of selector to data
@@ -7,7 +9,7 @@ const { getLocator } = require('@GTU/Playwright')
  * @param {string} data - set selector text to `data`
  * @param {Object} world
  */
-const focusElement = async (selector) => {
+export const focusElement = async (selector:string, world:TWorldConfig) => {
   const element = await getLocator(selector)
   return await element.focus()
 }
@@ -20,14 +22,12 @@ const meta = {
   description: `Locates element and focuses on a specific element.`,
   expressions: [
     {
-      type: 'string',
+      type: `string`,
       description: `The selector for a single input element.`,
-      example: 'input[name=email]',
+      example: `input[name=email]`,
     },
   ],
 }
 
-When('I focus on {string}', focusElement, meta)
-When('I focus on the element {string}', focusElement, meta)
-
-module.exports = { focusElement }
+When(`I focus on {string}`, focusElement, meta)
+When(`I focus on the element {string}`, focusElement, meta)

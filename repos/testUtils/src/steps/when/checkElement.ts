@@ -1,12 +1,18 @@
-const { When } = require('@GTU/Parkin')
-const { getLocator } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { getLocator } from '@GTU/Playwright'
 
 /**
  * Checks/unchecks the element matching the selector
  * @param {String} action - check action
  * @param {String} selector - playwright selector string
  */
-const checkElement = async (action, selector) => {
+export const checkElement = async (
+  action:string,
+  selector:string,
+  world:TWorldConfig
+) => {
   const box = await getLocator(selector)
   const boxAction = action === 'check' ? await box.check() : await box.uncheck()
 }
@@ -33,6 +39,3 @@ const meta = {
 
 When(`I {string} the element {string}`, checkElement, meta)
 
-module.exports = {
-  checkElement,
-}

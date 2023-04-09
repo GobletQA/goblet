@@ -1,11 +1,13 @@
-const { When } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
 
 /**
  * Simply waits `num` seconds before continuing to next step
  * @param {number} num - number of seconds
  */
-const wait = async num => {
+export const wait = async (num:number, world:TWorldConfig) => {
   const page = await getPage()
   const seconds = num * 1000
   await page.waitForTimeout(seconds)
@@ -20,12 +22,11 @@ const meta = {
   expressions: [
     {
       example: 5,
-      type: 'int',
+      type: `int`,
       description: `Amount of time to wait in seconds.`,
     },
   ],
 }
-When('I wait {int} second(s)', wait, meta)
-When('I wait for {int} second(s)', wait, meta)
+When(`I wait {int} second(s)`, wait, meta)
+When(`I wait for {int} second(s)`, wait, meta)
 
-module.exports = { wait }

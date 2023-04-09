@@ -40,7 +40,7 @@ const getDescendentElement = async (
  * @param {string} world
  */
 
-const isAncestorTo = async (
+export const isAncestorTo = async (
   ancestorSelector:string,
   descendentType:string,
   descendentSelector:string,
@@ -100,4 +100,3 @@ const isAncestorTo = async (
 //   }
 // )
 
-// module.exports = { isAncestorTo }

@@ -1,7 +1,9 @@
-const { When } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
 
-const mouseLeavePage = async (data, world) => {
+import { When } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
+
+export const mouseLeavePage = async (world:TWorldConfig) => {
   const page = await getPage()
   await page.locator('html').dispatchEvent('mouseleave')
 }
@@ -18,6 +20,3 @@ const meta = {
 
 When('I move the mouse off the page', mouseLeavePage, meta)
 
-module.exports = {
-  mouseLeavePage,
-}

@@ -7,7 +7,7 @@ import { getPage } from '@GTU/Playwright'
  * Checks that the page url matches the passed in url
  * @param {string} url - text to compare to page url
  */
-export const assertUrl = async (url:string) => {
+export const assertUrl = async (url:string, world:TWorldConfig) => {
   const page = await getPage()
   const currentUrl = page.url()
 

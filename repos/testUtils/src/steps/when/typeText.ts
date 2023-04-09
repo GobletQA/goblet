@@ -1,16 +1,26 @@
-const { When } = require('@GTU/Parkin')
-const { getLocator } = require('@GTU/Playwright')
-const { getWorldData } = require('@GTU/Support/helpers')
-const { SavedLocatorWorldPath } = require('@GTU/Constants')
-const { ExpressionKinds, ExpressionTypes } = require('@gobletqa/shared/constants')
+import type { TWorldConfig } from '@ltipton/parkin'
 
-const typeText = async (element, data) => {
+import { When } from '@GTU/Parkin'
+import { getLocator } from '@GTU/Playwright'
+import { getWorldData } from '@GTU/Support/helpers'
+import { SavedLocatorWorldPath } from '@GTU/Constants'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+
+type TLocator = Record<string, any>
+
+const typeText = async (
+  element:TLocator,
+  data:string
+) => {
   //clear value before setting otherwise data is appended to end of existing value
   await element.fill('')
   await element.type(data)
 }
 
-const typeWithSaved = async (data, world) => {
+export const typeWithSaved = async (
+  data:string,
+  world:TWorldConfig
+) => {
   const { element } = getWorldData(SavedLocatorWorldPath, world)
   const el = element || await getLocator(`:focus`)
 
@@ -20,7 +30,11 @@ const typeWithSaved = async (data, world) => {
 /**
  * Sets the input text of selector to data
  */
-const typeWithSelector = async (data, selector=`:focus`) => {
+export const typeWithSelector = async (
+  data:string,
+  selector:string=`:focus`,
+  world:TWorldConfig
+) => {
   const element = await getLocator(selector)
   await typeText(element, data)
 }
@@ -37,29 +51,25 @@ const meta = {
       kind: ExpressionKinds.text,
       type: ExpressionTypes.string,
       description: `Text that will be typed into the input.`,
-      example: 'Enter some text...',
+      example: `Enter some text...`,
     },
     {
       kind: ExpressionKinds.selector,
       type: ExpressionTypes.string,
       description: `The selector of an element that allows input. One of Input, Textarea, or [content-editable]`,
-      example: '#search-input',
+      example: `#search-input`,
     },
   ],
 }
 
-When('I write {string}', typeWithSaved, meta)
-When('I type {string}', typeWithSaved, meta)
-When('I type {string} into {string}', typeWithSelector, {
+When(`I write {string}`, typeWithSaved, meta)
+When(`I type {string}`, typeWithSaved, meta)
+When(`I type {string} into {string}`, typeWithSelector, {
   ...meta,
   name: `Type Text`,
   alias: [`Write text`, `Input text`],
   info: `Action to simulate typing text into an element on the page`,
   race: true
 })
-When('I type {string} into the element {string}', typeWithSelector, meta)
+When(`I type {string} into the element {string}`, typeWithSelector, meta)
 
-module.exports = {
-  typeWithSaved,
-  typeWithSelector
-}

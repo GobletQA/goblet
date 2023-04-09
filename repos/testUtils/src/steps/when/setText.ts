@@ -1,6 +1,8 @@
-const { When } = require('@GTU/Parkin')
-const { get } = require('@keg-hub/jsutils')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { get } from '@keg-hub/jsutils'
+import { getPage } from '@GTU/Playwright'
 
 /**
  * Sets the input text of selector to data
@@ -8,7 +10,11 @@ const { getPage } = require('@GTU/Playwright')
  * @param {string} data - set selector text to `data`
  * @param {Object} world
  */
-const setText = async (selector, data, world) => {
+export const setText = async (
+  selector:string,
+  data:string,
+  world:TWorldConfig
+) => {
   const page = await getPage()
   // Actionability checks (Auto-Waiting) seem to fail in headless mode
   // So we use locator.waitFor to ensure the element exist on the dom
@@ -37,19 +43,18 @@ const meta = {
   description: `Locates input element by selector and replaces existing value, if any, to the desired text.`,
   expressions: [
     {
-      type: 'string',
+      type: `string`,
       description: `The selector for a single input element.`,
-      example: '#search',
+      example: `#search`,
     },
     {
-      type: 'string',
+      type: `string`,
       description: `Desired text of the element.`,
-      example: 'I desire to type this text.',
+      example: `I desire to type this text.`,
     },
   ],
 }
 
-When('I set {string} to {string}', setText, meta)
-When('I set the element {string} text to {string}', setText, meta)
+When(`I set {string} to {string}`, setText, meta)
+When(`I set the element {string} text to {string}`, setText, meta)
 
-module.exports = { setText }

@@ -1,6 +1,8 @@
-const { When } = require('@GTU/Parkin')
-const { checkElement } = require('./checkElement')
-const { checkForAncestor } = require('@GTU/Support/validate')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { checkElement } from './checkElement'
+import { checkForAncestor } from '@GTU/Support/validate'
 
 /**
  * Checks/unchecks the element matching the selector, that is also a descendent of the registered ancestor.
@@ -8,9 +10,17 @@ const { checkForAncestor } = require('@GTU/Support/validate')
  * @param {string} selector - valid playwright selector
  * @param {Object} world
  */
-const checkDescendent = async (action, selector, world) => {
+export const checkDescendent = async (
+  action:string,
+  selector:string,
+  world:TWorldConfig
+) => {
   checkForAncestor(world)
-  return checkElement(action, `${world.meta.ancestorSelector} ${selector}`)
+  return checkElement(
+    action,
+    `${world.meta.ancestorSelector} ${selector}`,
+    world
+  )
 }
 
 When(`I {string} the descendent element {string}`, checkDescendent, {
@@ -33,6 +43,3 @@ When(`I {string} the descendent element {string}`, checkDescendent, {
   ],
 })
 
-module.exports = {
-  checkDescendent,
-}

@@ -1,13 +1,18 @@
-const { When } = require('@GTU/Parkin')
-const { getLocator } = require('@GTU/Playwright')
-const { checkForAncestor } = require('@GTU/Support/validate')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { getLocator } from '@GTU/Playwright'
+import { checkForAncestor } from '@GTU/Support/validate'
 
 /**
  * Clicks the element `selector` that is a descendant of the registered ancestor.
  * @param {String} selector - valid playwright selector
  * @param {Object} world - world object, containing the ancestor metadata
  */
-const clickDescendent = async (selector, world) => {
+export const clickDescendent = async (
+  selector:string,
+  world:TWorldConfig
+) => {
   checkForAncestor(world)
   const descendent = await getLocator(
     `${world.meta.ancestorSelector} ${selector}`
@@ -30,4 +35,3 @@ When('I click the descendent element {string}', clickDescendent, {
   ],
 })
 
-module.exports = { clickDescendent }

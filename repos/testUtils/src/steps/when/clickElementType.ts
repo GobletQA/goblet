@@ -1,18 +1,24 @@
-const { When } = require('@GTU/Parkin')
-const { clickElementHandler } = require('./clickElement')
-const { ExpressionKinds, ExpressionTypes } = require('@gobletqa/shared/constants')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { When } from '@GTU/Parkin'
+import { clickElementHandler } from './clickElement'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 const attrTypes = [`.`, `#`, `$`, `#`, `:`, `(`, `>`]
 
-const checkSelectorType = (selector) => {
+export const checkSelectorType = (selector:string, world:TWorldConfig) => {
   const check = selector.trim()
   return attrTypes.find(attr => check.startsWith(attr))
     ? selector
     : ` :text("${check}")`
 }
 
-const clickElementTypeHandler = async (type, selector, world) => {
-  const formatted = checkSelectorType(selector)
+export const clickElementTypeHandler = async (
+  type:string,
+  selector:string,
+  world:TWorldConfig
+) => {
+  const formatted = checkSelectorType(selector, world)
   const joined = `${type}${formatted}`
 
   return await clickElementHandler(joined, world)
@@ -31,19 +37,21 @@ const meta = {
   ],
 }
 
-When('I click the link {string}', (...args) => clickElementTypeHandler(`a`, ...args), {
+When('I click the link {string}', (
+  link:string,
+  world:TWorldConfig
+) => clickElementTypeHandler(`a`, link, world), {
   ...meta,
   module: `clickElements - Link`,
   examples: [`When I click the link "my-link"`],
   
 })
 
-When('I click the button {string}', (...args) => clickElementTypeHandler(`button`, ...args), {
+When('I click the button {string}', (
+  button:string,
+  world:TWorldConfig
+) => clickElementTypeHandler(`button`, button, world), {
   ...meta,
   module: `clickElements - Button`,
   examples: [`When I click the button "Submit"`],
 })
-
-module.exports = {
-  clickElementHandler,
-}
