@@ -217,6 +217,11 @@ git.clone = async (
   const [chErr, chResp] = await git([`checkout`, `-b`, branch], joinedOpts, local)
   if(hasGitError(chErr, chResp, `checkout`)) return [chErr, chResp]
 
+  // TODO: maybe try one of these to clean things up?
+  // Might fix the mount / remount issue
+  // git gc --prune=now
+  // git remote prune origin
+
   const [pullErr, pullResp] = await git.pull(gitOpts, cmdOpts)
 
   // Add the git remote for reference 

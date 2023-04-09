@@ -86,23 +86,26 @@ export const BrowserViewContainer = styled(Box)`
   max-height: calc( 100% - ${dims.browser.nav.height + 5}px );
 `
 
-export const BrowserView = styled('div')`
-  min-width: 100%;
-  text-size-adjust: 100%;
-  box-sizing: border-box;
-  font-smoothing: antialiased;
-  
-  & > div {
-    background-color: ${colors.gray08} !important;
-  }
+export const BrowserView = styled('div')(({ theme }) => {
+  return `
+    min-width: 100%;
+    text-size-adjust: 100%;
+    box-sizing: border-box;
+    font-smoothing: antialiased;
+    
+    & > div {
+      background-color: ${colors.gray08} !important;
+    }
 
-  
-  & canvas {
-    // NoVNC sets the margin style directly on the canvas element
-    // So we have to use important to override it
-    margin-top: 0px !important;
-  }
-`
+    
+    & canvas {
+      // NoVNC sets the margin style directly on the canvas element
+      // So we have to use important to override it
+      margin-top: 0px !important;
+      box-shadow: ${theme.shadows[4]};
+    }
+  `
+})
 
 export const BrowserBtn = styled(IconButton)(({ theme }) => `
   width: 20px;
