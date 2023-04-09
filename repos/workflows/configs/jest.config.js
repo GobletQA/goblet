@@ -1,7 +1,6 @@
 const path = require('path')
 const rootDir = path.join(__dirname, `..`)
 
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   ...require('../../../configs/jest.base.config.js'),
 
@@ -10,9 +9,6 @@ module.exports = {
   setupFilesAfterEnv: [`${rootDir}/scripts/jest.setup.ts`],
   collectCoverageFrom: ['**/*.ts', '!**/*.types.ts', '!**/*.d.ts'],
   transformIgnorePatterns: ['node_modules/(?!@gobletqa|!@keg-hub)/'],
-  transform: {
-    '\\.[jt]sx?$': ['esbuild-jest', { sourcemap: true }],
-  },
   moduleNameMapper: {
     "^@GWF/git$": path.join(__dirname, "../src/git"),
     "^@GWF$": path.join(__dirname, "../src"),

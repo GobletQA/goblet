@@ -60,7 +60,6 @@ const buildReporters = (opts=noOpObj, gobletRoot, config) => {
  * 
  * @returns {Object} - Jest config object
  */
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 const jestConfig = (config, opts=noOpObj) => {
   const { GOBLET_CONFIG_BASE, GOBLET_MOUNT_ROOT, GOBLET_TEST_DEBUG } = process.env
   GOBLET_TEST_DEBUG &&
@@ -77,7 +76,6 @@ const jestConfig = (config, opts=noOpObj) => {
     testMatch,
     // TODO: investigate using jest-circus at some point
     testRunner: 'jest-jasmine2',
-    preset: 'ts-jest/presets/js-with-ts',
     reporters: buildReporters(opts, gobletRoot, config),
     moduleFileExtensions: [
       'js',
@@ -97,17 +95,16 @@ const jestConfig = (config, opts=noOpObj) => {
       path.join(os.homedir(), `.node_modules`)
     ],
     moduleNameMapper: jestAliases,
+    globals: {
+      __DEV__: true,
+    },
     // Jest no loading tests outside of the rootDir
     // So set the root to be the parent of keg-config and the repos dir
     // If no rootDir override is set
     rootDir: opts.rootDir || GOBLET_MOUNT_ROOT || '/goblet',
-    globals: {
-      'ts-jest': {
-        tsconfig: path.join(testUtilsDir, `tsconfig.json`),
-      },
-    },
     transform: {
-      '\\.(js|jsx|mjs|cjs|ts|tsx)?$': path.resolve(__dirname, 'transformer.js'),
+      '\\.[jt]sx?$': ['esbuild-jest', { sourcemap: true }],
+      '\\.(js|jsx|mjs|cjs|ts|tsx)?$': ['esbuild-jest', { sourcemap: true }],
     },
   }
 }

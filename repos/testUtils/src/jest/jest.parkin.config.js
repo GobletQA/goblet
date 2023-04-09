@@ -63,7 +63,6 @@ const getParkinSupport = config => {
   return matches
 }
 
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = async () => {
   const config = getGobletConfig()
   const baseDir = getRepoGobletDir(config)

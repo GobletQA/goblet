@@ -1,4 +1,3 @@
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   verbose: false,
   clearMocks: true,
@@ -7,17 +6,17 @@ module.exports = {
   coverageProvider: 'v8',
   roots: ['<rootDir>/src'],
   globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.json',
-    },
     __DEV__: true,
   },
-  preset: 'ts-jest/presets/js-with-ts',
   testMatch: [
     '<rootDir>/**/*.spec.{js,jsx,ts,tsx}',
     '<rootDir>/**/*.test.{js,jsx,ts,tsx}',
     '<rootDir>/**/__tests__/*.{js,jsx,ts,tsx}',
   ],
+  transform: {
+    '\\.[jt]sx?$': ['esbuild-jest', { sourcemap: true }],
+    '\\.(js|jsx|mjs|cjs|ts|tsx)?$': ['esbuild-jest', { sourcemap: true }],
+  },
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: ['lcov', 'text-summary', 'text', 'html'],
   collectCoverageFrom: [

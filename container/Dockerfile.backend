@@ -80,7 +80,6 @@ RUN <<EOF
   dot-json package.json resolutions.jest-jasmine2 -d
   dot-json package.json resolutions.playwright -d
   dot-json package.json resolutions.nodemon -d
-  dot-json package.json resolutions.ts-jest -d
   dot-json package.json resolutions.typescript -d
 
   yarn config set network-timeout 900000
