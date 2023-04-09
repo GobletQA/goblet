@@ -225,6 +225,11 @@ export class Repo {
     this.name = name
     this.paths = { ...paths, repoRoot: paths?.repoRoot || git?.local }
 
+    /**
+     * Sets the GOBLET_CONFIG_BASE env
+     * So should be used before any calls to it are made for a loaded repo
+     * Specifically calls to load the goblet config for the repo from the base path
+     */
     this.world = getWorld(this)
     this.parkin = new Parkin(this.world)
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)

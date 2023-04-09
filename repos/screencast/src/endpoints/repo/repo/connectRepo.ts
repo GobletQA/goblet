@@ -8,7 +8,6 @@ import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
 
-
 export type TConnectBody = {
   repoId:string
   repoUrl:string
@@ -44,6 +43,7 @@ export const connectRepo = asyncWrap(async (
     await Repo.disconnect({ username: req.auth.username })
     throw err
   }
+
 
   return apiRes(res, content, 200)
 })

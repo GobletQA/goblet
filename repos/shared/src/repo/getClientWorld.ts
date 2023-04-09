@@ -9,13 +9,6 @@ import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
 import { noOpObj, deepMerge } from '@keg-hub/jsutils/src/node'
 
 /**
- * Makes a clone of the default world object
- */
-const cloneDefWorld = () => {
-  return deepMerge<TWorldConfig>(DefWorld)
-}
-
-/**
  * Gets a ref to current values of GOBLET envs
  * Then overwrites them with the passed in config || repos version
  * Returns a method to allow resetting the envs to their original value
@@ -35,8 +28,8 @@ const setGobletEnv = (
     process.env.GOBLET_CONFIG_BASE = repoRoot
 
   return () => {
-    process.env.GOBLET_ENV = orgGobletEnv
-    process.env.GOBLET_CONFIG_BASE = orgGobletBase
+    if(orgGobletEnv) process.env.GOBLET_ENV = orgGobletEnv
+    if(orgGobletBase) process.env.GOBLET_CONFIG_BASE = orgGobletBase
   }
 
 }
@@ -49,7 +42,7 @@ const loadClientWorld = (
   config:TGobletConfig,
 ) => {
   const worldPath = config?.paths?.world
-  if(!worldPath) return cloneDefWorld()
+  if(!worldPath) return deepMerge<TWorldConfig>(DefWorld)
 
   const resetEnvs = setGobletEnv(config)
 

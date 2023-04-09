@@ -13,9 +13,16 @@ import {
 } from '@keg-hub/jsutils'
 
 /**
- * Only use this is testing
+ *  --- Only use when in dev or testing ---  *
  */
+import { repos } from '../../__mocks__/github'
 import { projects, branches } from '../../__mocks__/gitlab'
+/**
+ *  --- Only use when in dev or testing ---  *
+ */
+const mockCacheActive = process.env.NODE_ENV === `production`
+  ? false
+  : true
 
 const defOpts:TGCacheOpts = emptyObj as TGCacheOpts
 const defVarOpts:TGraphApiVars = emptyObj as TGraphApiVars
@@ -61,16 +68,22 @@ export class ApiCache {
 
   checkResponse = <T>(key:string) => {
 
-    // --- Only use for testing --- //
+    if(mockCacheActive){
+      /**
+       *  --- Only use above is testing ---  *
+       */
+      if(key.includes(`Github.repos.listAll`))
+        return repos.data.viewer.repositories as T[]
 
-    if(key.includes(`Gitlab.repos.listAll`))
-      return projects.data.projects.nodes as T[]
+      if(key.includes(`Gitlab.repos.listAll`))
+        return projects.data.projects.nodes as T[]
 
-    else if(key.includes(`Gitlab.repos.branches`))
-      return branches.data.project.repository.branchNames as T[]
-
-    // --- Only use for testing --- //
-
+      else if(key.includes(`Gitlab.repos.branches`))
+        return branches.data.project.repository.branchNames as T[]
+      /**
+       *  --- Only use above is testing ---  *
+       */
+    }
 
     const res = this.#responses[key]
     if(!res) return undefined

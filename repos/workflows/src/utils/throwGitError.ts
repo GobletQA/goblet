@@ -13,6 +13,9 @@ export const throwGitError = (
   remoteUrl:string='Unknown',
   message:string=`[WRK-FL Git API] Error calling Git API`
 ) => {
+
+  if(!err) err = new Error(`[DEV-WARNING] - throwGitError called without error object`)
+
   Logger.error(message)
   err.stack
     ? console.error(err.stack)

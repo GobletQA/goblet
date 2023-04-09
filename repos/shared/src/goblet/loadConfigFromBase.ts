@@ -21,7 +21,12 @@ export const loadConfigFromBase = (base:string) => {
   const cleanedDir = path.normalize(base)
 
   if (!fs.existsSync(cleanedDir)) {
-
+    /**
+     * This issue is most likely a race condition 
+     * Seems to happen when a repo is amounted 
+     * While at the same time something is trying to load the goblet config
+     * Can most likely ignore it, but need to investigate further
+     */
     Logger.warn(
       [
         `\n`,
