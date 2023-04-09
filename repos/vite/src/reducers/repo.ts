@@ -1,18 +1,7 @@
-import type { TGitData, TDspAction, TFileTypes } from '@types'
+import type { TRepoOpts, TDspAction } from '@types'
 import { deepMerge } from '@keg-hub/jsutils'
 
-export type TWorld = {
-  [key:string]: any
-}
-
-export type TRepoState = {
-  name: string
-  world: TWorld
-  git: TGitData
-  environment: string
-  fileTypes: TFileTypes
-  paths: Record<string, string>
-}
+export type TRepoState = TRepoOpts
 
 export const repoState = {} as TRepoState
 

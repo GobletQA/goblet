@@ -1,11 +1,13 @@
-const { Then } = require('@GTU/Parkin')
-const { getLocator, getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Then } from '@GTU/Parkin'
+import { getLocator, getPage } from '@GTU/Playwright'
 
 /**
  * Click the element matching `selector`
  * @param {String} selector - valid playwright selector
  */
-const generalAction = async (action, selector) => {
+const generalAction = async (action:string, selector:string, world:TWorldConfig) => {
   const page = await getPage()
   await getLocator(selector)
   return page[action](selector, { force: true })

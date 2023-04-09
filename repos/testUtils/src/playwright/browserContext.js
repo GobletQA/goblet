@@ -71,8 +71,9 @@ const saveContextState = async (context, location) => {
 }
 
 /**
- * Gets the browser page instance, or else creates a new one
- * @param {number} num - The page number to get if multiple exist
+ * Gets the browser context instance, or else creates a new one
+ * @param {Object} [contextOpts] - Options for creating a new context
+ * @param {string} [location] - path the browser will use for storage
  *
  * @return {Object} - Playwright browser page object
  */

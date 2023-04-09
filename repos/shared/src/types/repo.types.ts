@@ -1,5 +1,6 @@
 import type { Repo as TRepo } from '../repo/repo'
 import type  { EProvider } from './provider.types'
+import type { TWorldConfig } from '@ltipton/parkin'
 import type { TRootPaths, TFileTypes } from './files.types'
 import type { TDefinitionFileModelList } from './definitions.types'
 
@@ -29,10 +30,6 @@ export type TRepoPaths = {
   environmentsDir:string
 }
 
-export type TWorld = {
-  [key:string]: any
-}
-
 export type TGitData = {
   name: string
   local: string
@@ -48,9 +45,9 @@ export type TGitData = {
 
 export type TRepoOpts = {
   name:string
-  world: TWorld
   git: TGitData
   paths?: TRepoPaths
+  world: TWorldConfig
   environment?: string
   fileTypes: TFileTypes
 }
