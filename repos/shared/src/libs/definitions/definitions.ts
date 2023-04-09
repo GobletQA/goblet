@@ -23,7 +23,7 @@ export const loadDefinitionsFiles = (stepsDir:string, opts:Record<string, any>=n
     // Would mean users can't use index files
     // Would look like this { ignore: [ '**/index.js' ] }
     // For the section argument passed to the glob pattern
-    glob(path.join(stepsDir, '**/*.js'), opts, async (err, files = []) => {
+    glob(path.join(stepsDir, '**/*.{js,ts}'), opts, async (err, files = []) => {
       err || !files
         ? rej('No step definition files found in ' + stepsDir)
         : res(files)

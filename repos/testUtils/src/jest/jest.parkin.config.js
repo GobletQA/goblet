@@ -10,6 +10,15 @@ const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')
 const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
 const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
 
+const exts = [
+  `js`,
+  `cjs`,
+  `mjs`,
+  `ts`,
+  `cts`,
+  `mts`
+]
+
 /**
  * Finds all step definition files in client's step directory and
  * also in the config testUtilsDir repo
@@ -21,10 +30,10 @@ const getStepDefinitions = config => {
   const { testUtilsDir } = config.internalPaths
   const { repoRoot, workDir, stepsDir } = config.paths
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
-  const clientPattern = path.join(baseDir, stepsDir, `**/*.(js|cjs|mjs|ts|cts|mts)`)
+  const clientPattern = path.join(baseDir, stepsDir, `**/*.{${exts.join(',')}}`)
   const clientMatches = glob.sync(clientPattern)
 
-  const configPattern = path.join(testUtilsDir, `src/steps/**/*.(js|cjs|mjs|ts|cts|mts)`)
+  const configPattern = path.join(testUtilsDir, `src/steps/**/*.{${exts.join(',')}}`)
   const configMatches = glob.sync(configPattern)
 
   return uniqArr([...clientMatches, ...configMatches])
@@ -45,9 +54,14 @@ const getParkinSupport = config => {
   // **IMPORTANT** - Must be loaded after the parkinEnvironment 
   const configHooks = `${testUtilsDir}/src/support/hooks`
 
+  const ignore = [`hook`, `hooks`, `setup`].reduce((acc, type) => {
+    const built = exts.map(ext => `${type}.${ext}`)
+    return acc.concat(built)
+  }, []).join(`|`)
+  
   // Don't include the world here because it gets loaded in config/support/world.json
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
-  const pattern = path.join(baseDir, supportDir, `**/+(hooks.js|hook.js|setup.js|hooks.ts|hook.ts|setup.ts)`)
+  const pattern = path.join(baseDir, supportDir, `**/+(${ignore})`)
   const matches = glob.sync(pattern)
 
   // Add the default config hooks for setting up the tests
