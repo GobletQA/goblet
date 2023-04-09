@@ -1,13 +1,12 @@
 import type { TRaceFeature } from '@GBR/types'
-import type { TFeatureAction } from './FeatureAction'
+import type { TFeatureItem } from './FeatureItems'
 
-import { FeatureActionsContainer } from './Feature.styled'
-
-import { FeatureAction } from './FeatureAction'
+import { FeatureMenu } from './FeatureMenu'
+import { FeatureMenuContainer } from './Feature.styled'
 
 export type TFeatureHeaderActions = {
   feature:TRaceFeature
-  items:TFeatureAction[]
+  items:TFeatureItem[]
 }
 
 export const FeatureHeaderActions = (props:TFeatureHeaderActions) => {
@@ -17,12 +16,11 @@ export const FeatureHeaderActions = (props:TFeatureHeaderActions) => {
   } = props
 
   return (
-    <FeatureActionsContainer className='feature-actions-container' >
-      {items.map(item => {
-        return (
-          <FeatureAction {...item} feature={feature} />
-        )
-      })}
-    </FeatureActionsContainer>
+    <FeatureMenuContainer className='gb-feature-menu-container' >
+      <FeatureMenu
+        items={items}
+        feature={feature}
+      />
+    </FeatureMenuContainer>
   )
 }

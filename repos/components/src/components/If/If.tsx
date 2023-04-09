@@ -1,7 +1,7 @@
 import type { ComponentType, ReactNode, ReactElement } from 'react'
 
 import { cloneElement } from 'react'
-import { emptyObj, isStr } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils'
 import { isReactElement, isValidFuncComp } from '@GBC/utils/components/isValidFuncComp'
 
 export type TIf = {

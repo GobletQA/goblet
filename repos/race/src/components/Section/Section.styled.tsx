@@ -121,14 +121,10 @@ export const SectionDropdown = styled(DropdownComp)`
 `
 
 export const SectionContent = styled(Box)`
-  padding-top: ${gutter.padding.px};
-  padding-bottom: ${gutter.padding.px};
-  padding-left: ${gutter.padding.tQpx};
-  padding-right: ${gutter.padding.tQpx};
-  box-shadow: inset 0px 0px 2px 0px ${colors.fadeDark10};
-  border-left: 5px solid var(--goblet-editor-background);
-  border-right: 5px solid var(--goblet-editor-background);
-  background-color: var(--goblet-editorGroup-background);
+  padding-left: ${gutter.padding.hpx};
+  padding-right: ${gutter.padding.hpx};
+  border-top: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+  // box-shadow: inset 0px 0px 2px 0px ${colors.fadeDark10};
 `
 
 export const SectionFooter = styled(Box)`

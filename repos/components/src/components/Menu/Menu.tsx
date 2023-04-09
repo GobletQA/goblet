@@ -2,19 +2,16 @@
 import type { MutableRefObject, ComponentProps, ReactNode, MouseEvent } from 'react'
 import type { TMenuItem } from './MenuItems'
 
-
 import { useMemo } from 'react'
-import MuiMenu from '@mui/material/Menu'
-
-import { If } from '../If'
 import { MenuItems } from './MenuItems'
+import MuiMenu from '@mui/material/Menu'
 import { exists } from '@keg-hub/jsutils'
 import { MenuContext } from './MenuContext'
 import { useInline } from '@GBC/hooks/components/useInline'
 
-export type TMenu<T=Record<any, any>> = Omit<ComponentProps<typeof MuiMenu>, `open`> & {
+export type TMenu = Omit<ComponentProps<typeof MuiMenu>, `open`> & {
   Context?: ReactNode
-  items: TMenuItem<T>[]
+  items: TMenuItem[]
   anchorRef:MutableRefObject<HTMLElement|null|undefined>
   open?:boolean
   autoClose?: boolean
@@ -26,7 +23,7 @@ export type TMenu<T=Record<any, any>> = Omit<ComponentProps<typeof MuiMenu>, `op
   onClose?:(event: MouseEvent<HTMLElement>) => any
 }
 
-const usePos = <T=Record<any, any>>(props:TMenu<T>) => {
+const usePos = (props:TMenu) => {
   const {
     posAV,
     posAH,
@@ -69,7 +66,7 @@ const usePos = <T=Record<any, any>>(props:TMenu<T>) => {
   
 }
 
-export const Menu = <T=Record<any, any>>(props:TMenu<T>) => {
+export const Menu = (props:TMenu) => {
   const {
     open,
     items,
@@ -112,16 +109,18 @@ export const Menu = <T=Record<any, any>>(props:TMenu<T>) => {
       }
     >
 
-    <If check={Context}>
-      <MenuContext>
-        {Context}
-      </MenuContext>
-    </If>
+      {Context && (
+        <MenuContext>
+          {Context}
+        </MenuContext>
+      )||null}
+
       <MenuItems
         items={items}
         autoClose={autoClose}
         onCloseMenu={onClose}
       />
+
     </MuiMenu>
   )
 }

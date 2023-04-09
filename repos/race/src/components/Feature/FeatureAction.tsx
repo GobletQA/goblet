@@ -1,6 +1,6 @@
 import type { TRaceFeature } from '@GBR/types'
-import type { ReactNode, ComponentType, MouseEvent } from 'react'
 import type { TMenuItem } from '@gobletqa/components'
+import type { ReactNode, ComponentType, MouseEvent } from 'react'
 
 import { capitalize } from '@keg-hub/jsutils'
 import { Tooltip } from '@gobletqa/components'
@@ -8,12 +8,12 @@ import { FeatureActionBtn } from './Feature.styled'
 import { ESectionExt, ESectionType } from '@GBR/types'
 
 export type TFeatureAction = Omit<TMenuItem, `onCloseMenu`|`closeMenu`|`onClick`|`Icon`> & {
-  feature?:TRaceFeature
+  feature:TRaceFeature
   description?:ReactNode
   Icon:ComponentType<any>
   type: ESectionType|ESectionExt,
-  onClick?: (...args:any[]) => void
   variant?:"text" | "outlined" | "contained" | undefined
+  onClick: (evt:MouseEvent<HTMLElement>, featureId:string, featureType:string) => void
 }
 
 export const FeatureAction = (props:TFeatureAction) => {
@@ -32,7 +32,11 @@ export const FeatureAction = (props:TFeatureAction) => {
     ? (<>Show the <b>{typeCap}</b> section of the Feature</>)
     : (<>Add a <b>{typeCap}</b> section to the Feature</>)
 
-  const onActionClick = (evt:MouseEvent) => onClick?.(evt, feature?.uuid, feature?.type)
+  const onActionClick = (evt:MouseEvent<HTMLElement>) => onClick?.(
+    evt,
+    feature?.uuid,
+    feature?.type
+  )
 
   return (
     <Tooltip

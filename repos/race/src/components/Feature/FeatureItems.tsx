@@ -1,6 +1,6 @@
 import type { TRaceFeature } from '@GBR/types'
 import type { TFeatureAction } from './FeatureAction'
-import type { ReactNode, ComponentType, ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 import { noOp } from '@keg-hub/jsutils'
 import { addRule } from '@GBR/actions/rule/addRule'
@@ -68,7 +68,7 @@ export const ScenarioItem:TFeatureItem = {
 
 export const RuleItem:TFeatureItem = {
   text: `Add Rule`,
-  onClick: addRule,
+  onClick: () => addRule(),
   featureKey: `rules`,
   Icon: TextboxPlusIcon,
   key: ESectionType.rule,
@@ -116,8 +116,8 @@ export const StepItem:TFeatureItem = {
 
 
 export const FeatureItems:TFeatureItem[] = [
-  GeneralItem,
-  BackgroundItem,
   RuleItem,
-  ScenarioItem
+  GeneralItem,
+  ScenarioItem,
+  BackgroundItem,
 ]

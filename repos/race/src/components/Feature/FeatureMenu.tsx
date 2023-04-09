@@ -1,8 +1,8 @@
-import type { ComponentType, MouseEvent } from 'react'
-import type { TMenuItem } from '@gobletqa/components'
+import type { MouseEvent } from 'react'
+import type { TRaceFeature } from '@GBR/types'
+import type { TFeatureItem } from './FeatureItems'
 
 import { useState, useRef } from 'react'
-
 import {
   Menu,
   MenuIcon,
@@ -10,20 +10,15 @@ import {
   IconButton,
 } from '@gobletqa/components'
 
-
-export type TFeatureItems = {
-  Icon?:ComponentType<any>
-  onClick: (...args:any[]) => any
-}
-
 export type TFeatureMenu = {
-  items: TMenuItem[]
+  feature:TRaceFeature
+  items: TFeatureItem[]
 }
 
 export const FeatureMenu = (props:TFeatureMenu) => {
   const {
     items
-  }  = props
+  } = props
   
   const [open, setOpen] = useState<boolean>(false)
   const anchorRef = useRef<HTMLElement|undefined>(undefined)

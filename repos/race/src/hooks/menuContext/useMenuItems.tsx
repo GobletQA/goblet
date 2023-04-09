@@ -11,11 +11,15 @@ import {
   useMenuContext
 } from '@GBR/contexts'
 
+export type TMenuContentItem = Omit<TMenuItem, `onClick`> & {
+  onClick: (ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement>) => void
+}
+
 export type THMenuItems = TMenuContextRef & {
   id:string
   parentId:string
+  items: TMenuContentItem[]
   onChange:(...args:any[]) => any
-  items: TMenuItem<TRaceMenuItemClickCtx>[]
 }
 
 export const useMenuItems = (props:THMenuItems) => {
@@ -50,15 +54,15 @@ export const useMenuItems = (props:THMenuItems) => {
   const contextItems = useMenuContext(context)
 
   const menuItems = useMemo(() => {
-    return (contextItems as TMenuItem<TRaceMenuItemClickCtx>[])
-      .concat(items as TMenuItem<TRaceMenuItemClickCtx>[])
+    return (contextItems as TMenuContentItem[]).concat(items)
       .map(item => {
+
         return {
           ...item,
           // Wrap the onclick handler, so we can pass in the current context
           // Ignore the empty ctx used to fix type issues
           // The rebuild the true ctx and pass that as the first argument
-          onClick: (__:any, evt: MouseEvent<HTMLElement>) => item?.onClick({
+          onClick: (evt: MouseEvent<HTMLElement>) => item?.onClick({
             open,
             type,
             defs,
@@ -77,7 +81,7 @@ export const useMenuItems = (props:THMenuItems) => {
             setInputProps,
             onChange: onChangeInline
           } as TRaceMenuItemClickCtx, evt)
-        }
+        } as TMenuItem
       })
   }, [
     defs,

@@ -12,14 +12,15 @@ import { colors, gutter, dims, H3 } from '@gobletqa/components'
 const { race } = dims
 
 export const FeatureStack = styled(Stack)`
-    padding: ${gutter.padding.px};
-    padding-top: 0px;
+    padding: 0px ${gutter.padding.qpx};
     overflow-y: auto;
+    overflow-x: hidden;
     scrollbar-width: none;
     
     // background - #f9f8fb / dots - gray01
     background: linear-gradient(90deg, var(--goblet-editorGroup-background) 23px, transparent 1%) center, linear-gradient(var(--goblet-editorGroup-background) 23px, transparent 1%) center, var(--goblet-editor-border);
     background-size: 25px 25px;
+    scrollbar-gutter: stable both-edges;
 
 
     ::-webkit-scrollbar-track {
@@ -27,7 +28,7 @@ export const FeatureStack = styled(Stack)`
     }
 
     ::-webkit-scrollbar {
-      width: 3px !important;
+      width: 0px !important;
       background-color: transparent;
     }
 
@@ -63,7 +64,7 @@ export const FeatureHeaderContainer = styled(Box)`
   border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
 `
 
-export const FeatureActionsContainer = styled(Box)`
+export const FeatureMenuContainer = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;

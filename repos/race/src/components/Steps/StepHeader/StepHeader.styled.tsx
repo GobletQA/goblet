@@ -3,7 +3,7 @@ import { Span, gutter, colors } from '@gobletqa/components'
 
 const header = {
   shared: `
-    opacity: 0.5;
+    opacity: 0.8;
     font-size: 13.5px;
     font-weight: bold;
     transition: color 300ms ease, opacity 300ms ease;

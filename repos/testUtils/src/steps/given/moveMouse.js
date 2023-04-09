@@ -1,12 +1,12 @@
-const { Given } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import { Given } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
 
 const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
 /**
  * Moves the mouse on the page to some X,Y coordinates
  */
-const moveMouse = async (XPos, YPos, world) => {
+export const moveMouse = async (XPos, YPos, world) => {
   const page = await getPage()
   await page.mouse.move(XPos, YPos);
 }
@@ -45,5 +45,3 @@ Given('I move the mouse to {int}, {int}', moveMouse, {
   ],
   module: `moveMouse`
 })
-
-module.exports = { moveMouse }
