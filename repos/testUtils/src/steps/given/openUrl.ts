@@ -1,7 +1,9 @@
-const { Given } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
-const { get, isStr } = require('@keg-hub/jsutils')
-const { ExpressionKinds, ExpressionTypes } = require('@gobletqa/shared/constants')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Given } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
+import { get, isStr } from '@keg-hub/jsutils'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Parses the url, replacing any dynamic variables
@@ -10,7 +12,7 @@ const { ExpressionKinds, ExpressionTypes } = require('@gobletqa/shared/constants
  * @return {string} - updated url
  */
 
-const parseUrl = (url, world) => {
+const parseUrl = (url:string, world:TWorldConfig) => {
   if (!url.startsWith(`$world`)) return url
 
   //isolate query string
@@ -50,7 +52,7 @@ const parseUrl = (url, world) => {
  * @param {string} url - url to load in the browser
  * @param {object} world
  */
-const openUrl = async (url, world) => {
+const openUrl = async (url:string, world:TWorldConfig) => {
   const site = parseUrl(url, world)
   if (!isStr(site)) throw new Error(`Site must be a valid URL. Found: ${site}`)
 

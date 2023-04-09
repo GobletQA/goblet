@@ -1,3 +1,5 @@
+import type { TWorldConfig } from '@ltipton/parkin'
+
 import { Given } from '@GTU/Parkin'
 import { getLocators } from '@GTU/Playwright'
 import { greaterLessEqual } from '@GTU/Support/helpers'
@@ -7,7 +9,12 @@ import { greaterLessEqual } from '@GTU/Support/helpers'
  * @param {string} selector - valid playwright selector
  * @param {number} count - expected number of selectors in the DOM
  */
-export const greaterThanLessThan = async (selector, type, count) => {
+export const greaterThanLessThan = async (
+  selector:string,
+  type:string,
+  count:number,
+  world:TWorldConfig
+) => {
   const elements = await getLocators(selector)
   const current = await elements.count()
 

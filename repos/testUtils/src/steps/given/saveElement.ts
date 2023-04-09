@@ -1,7 +1,9 @@
-const { Given } = require('@GTU/Parkin')
-const { set } = require('@keg-hub/jsutils')
-const { getLocator } = require('@GTU/Playwright')
-const { cleanWorldPath } = require('@GTU/Support/helpers')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Given } from '@GTU/Parkin'
+import { set } from '@keg-hub/jsutils'
+import { getLocator } from '@GTU/Playwright'
+import { cleanWorldPath } from '@GTU/Support/helpers'
 
 /**
  * Finds the element matching selector returned from selectorAlias, and registers it as the current ancestor
@@ -10,7 +12,11 @@ const { cleanWorldPath } = require('@GTU/Support/helpers')
  * @param {string} data - if mapped alias exists then this is the on-screen text of the selector.  if no mapped alias exists then this is the selector + on-screen text of the element
  * @param {Object} world
  */
-const saveElement = async (selector, worldPath, world) => {
+export const saveElement = async (
+  selector:string,
+  worldPath:string,
+  world:TWorldConfig
+) => {
   const element = await getLocator(selector)
   const cleaned = cleanWorldPath(worldPath)
   set(world, cleaned, { selector, element })
@@ -21,12 +27,20 @@ const saveElement = async (selector, worldPath, world) => {
 /**
  * Saves the element and focuses it for future steps to reuse
  */
-const selectSaveEl = async (selector, worldPath, world) => {
+const selectSaveEl = async (
+  selector:string,
+  worldPath:string,
+  world:TWorldConfig
+) => {
   const element = await saveElement(selector, worldPath, world)
   await element.focus()
 }
 
-const saveElToWorld = async (selector, worldPath, world) => {
+const saveElToWorld = async (
+  selector:string,
+  worldPath:string,
+  world:TWorldConfig
+) => {
   await saveElement(selector, worldPath, world)
 }
 
@@ -50,9 +64,9 @@ const meta = {
 const metaExp = {
   ...meta,
   expressions: meta.expressions.concat([{
-    type: 'string',
+    type: `string`,
+    examples: [`page.elements.parent`],
     description: `Path on the world where the element should be saved`,
-    example: 'page.elements.parent',
   }])
 }
 
@@ -64,4 +78,3 @@ Given('{string} is saved as {string}', saveElToWorld, metaExp)
 Given('I save {string} as {string}', saveElToWorld, metaExp)
 Given('I save the element {string} as {string}', saveElToWorld, metaExp)
 
-module.exports = { saveElement }

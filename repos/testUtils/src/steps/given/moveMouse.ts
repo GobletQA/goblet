@@ -1,17 +1,23 @@
+import type { TWorldConfig } from '@ltipton/parkin'
+
 import { Given } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
 
-const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+const randomInt = (min:number, max:number) => Math.floor(Math.random() * (max - min + 1) + min)
 
 /**
  * Moves the mouse on the page to some X,Y coordinates
  */
-export const moveMouse = async (XPos, YPos, world) => {
+export const moveMouse = async (
+  XPos:number,
+  YPos:number,
+  world:TWorldConfig
+) => {
   const page = await getPage()
   await page.mouse.move(XPos, YPos);
 }
 
-const moveMouseRandom = async (world) => {
+const moveMouseRandom = async (world:TWorldConfig) => {
   const page = await getPage()
   const { width, height } = page.viewportSize()
   await moveMouse(randomInt(1, width), randomInt(1, height), world)

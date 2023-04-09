@@ -1,11 +1,19 @@
-const { Given } = require('@GTU/Parkin')
-const { defaultCookieFile, getContext, setContextCookie } = require('@GTU/Playwright/browserContext')
+import type { TWorldConfig } from '@ltipton/parkin'
+import { Given } from '@GTU/Parkin'
+import {
+  getContext,
+  setContextCookie,
+  defaultCookieFile,
+} from '@GTU/Playwright/browserContext'
 
 /**
  * Checks that the page title is `title`
  * @param {*} title - text to compare to page title
  */
-const usePageCookie = async (name) => {
+export const usePageCookie = async (
+  name:boolean|string,
+  world:TWorldConfig
+) => {
   const context = await getContext()
   await setContextCookie(context, name)
 }
@@ -20,7 +28,7 @@ const meta = {
   expressions: [],
 }
 
-Given('I use the saved page cookie', (world) => usePageCookie(false, world), meta)
+Given('I use the saved page cookie', (world:TWorldConfig) => usePageCookie(false, world), meta)
 Given('I use the saved {string} page cookie', usePageCookie, {
   ...meta,
   expressions: [
@@ -31,5 +39,3 @@ Given('I use the saved {string} page cookie', usePageCookie, {
     }
   ]
 })
-
-module.exports = { usePageCookie }

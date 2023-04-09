@@ -1,7 +1,9 @@
-const { Given } = require('@GTU/Parkin')
-const { set } = require('@keg-hub/jsutils')
-const { getLocators } = require('@GTU/Playwright')
-const { cleanWorldPath } = require('@GTU/Support/helpers')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Given } from '@GTU/Parkin'
+import { set } from '@keg-hub/jsutils'
+import { getLocators } from '@GTU/Playwright'
+import { cleanWorldPath } from '@GTU/Support/helpers'
 
 
 /**
@@ -9,7 +11,11 @@ const { cleanWorldPath } = require('@GTU/Support/helpers')
  * @param {string} selector - valid playwright selector
  * @param {string} worldPath - Path on the world object
  */
-const saveElementCount = async (selector, worldPath, world) => {
+export const saveElementCount = async (
+  selector:string,
+  worldPath:string,
+  world:TWorldConfig
+) => {
 
   const cleaned = cleanWorldPath(worldPath)
   if(!cleaned) throw new Error(`World Path to save the element count "${worldPath}", is invalid.`)
@@ -36,5 +42,3 @@ Given('I save the count of {string} as {string}', saveElementCount, {
     },
   ],
 })
-
-module.exports = { saveElementCount }

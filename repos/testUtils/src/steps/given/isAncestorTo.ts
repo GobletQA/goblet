@@ -1,5 +1,11 @@
-const { Given } = require('@GTU/Parkin')
-const { getPage } = require('@GTU/Playwright')
+import type { TWorldConfig } from '@ltipton/parkin'
+
+import { Given } from '@GTU/Parkin'
+import { getPage } from '@GTU/Playwright'
+
+type TDescendentElementOpts = {
+  deep?:boolean
+}
 
 /**
  * @param {string} ancestorSelector - ancestor of descendent
@@ -10,9 +16,9 @@ const { getPage } = require('@GTU/Playwright')
  * @throws {Error} if no element is found
  */
 const getDescendentElement = async (
-  ancestorSelector,
-  descendentSelector,
-  { deep = true } = {}
+  ancestorSelector:string,
+  descendentSelector:string,
+  { deep = true } = {} as TDescendentElementOpts
 ) => {
   const page = await getPage()
   const descendent = await page.$(
@@ -35,10 +41,10 @@ const getDescendentElement = async (
  */
 
 const isAncestorTo = async (
-  ancestorSelector,
-  descendentType,
-  descendentSelector,
-  world
+  ancestorSelector:string,
+  descendentType:string,
+  descendentSelector:string,
+  world:TWorldConfig
 ) => {
   const page = await getPage()
 
@@ -60,8 +66,8 @@ const isAncestorTo = async (
     ancestor,
     descendent,
     descendentType,
-    descendentSelector,
     ancestorSelector,
+    descendentSelector,
   }
 }
 
