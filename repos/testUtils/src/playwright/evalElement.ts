@@ -1,11 +1,13 @@
-const { getPage } = require('@GTU/Playwright/browserContext')
+import { getPage } from '@GTU/Playwright/browserContext'
+
+type TEvalMethod = <T=any>(...args:any[]) => T
 
 /**
  * Evaluates the element that matches selector
  * @param {string} selector
  * @param {Function} fn - evaluation function
  */
-const evalElement = async (selector, fn) => {
+export const evalElement = async (selector:string, fn:TEvalMethod) => {
   const page = await getPage()
   const data = page.$eval(selector, fn)
 
@@ -15,4 +17,3 @@ const evalElement = async (selector, fn) => {
   return data
 }
 
-module.exports = { evalElement }

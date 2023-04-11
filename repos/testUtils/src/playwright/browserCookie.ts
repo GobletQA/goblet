@@ -1,13 +1,13 @@
-const os = require('os')
-const path = require('path')
-const { promises } = require('fs')
+import os from 'os'
+import path from 'path'
+import { promises } from 'fs'
 
-const defaultCookieFile = 'browser-cookie-state'
+export const defaultCookieFile = 'browser-cookie-state'
 
 /**
  * Gets the storage location from the temp-directory
  */
-const browserCookieLoc = (saveLocation) => {
+export const browserCookieLoc = (saveLocation) => {
   const tempDir = os.tmpdir()
   const location = `${(saveLocation || defaultCookieFile).split(`.json`).shift()}.json`
 
@@ -17,7 +17,7 @@ const browserCookieLoc = (saveLocation) => {
 /**
  * Save storage state into the file.
  */
-const saveContextCookie = async (context, location) => {
+export const saveContextCookie = async (context, location) => {
   const cookies = await context.cookies()
   const saveLoc = browserCookieLoc(location)
   await promises.writeFile(saveLoc, JSON.stringify(cookies))
@@ -25,7 +25,7 @@ const saveContextCookie = async (context, location) => {
   return true
 }
 
-const setContextCookie = async (context, location) => {
+export const setContextCookie = async (context, location) => {
   const loadLoc = browserCookieLoc(location)
   // TODO: Investigate if this should throw or not
   // If instead we want to return false because the cookie could not be set
@@ -38,11 +38,4 @@ const setContextCookie = async (context, location) => {
   context.__goblet.cookie = loadLoc
 
   return true
-}
-
-module.exports = {
-  browserCookieLoc,
-  setContextCookie,
-  defaultCookieFile,
-  saveContextCookie,
 }

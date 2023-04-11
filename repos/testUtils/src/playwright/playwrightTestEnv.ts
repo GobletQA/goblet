@@ -1,19 +1,19 @@
-const { Logger } = require('@keg-hub/cli-utils')
-const { copyTestReports } = require('@GTU/Playwright/testReport')
-const { saveRecordingPath } = require('@GTU/Playwright/videoRecording')
-const { initTestMeta, commitTestMeta } = require('@GTU/TestMeta/testMeta')
-const { stopTracingChunk, startTracingChunk } = require('@GTU/Playwright/tracing')
-const {
+import { Logger } from '@keg-hub/cli-utils'
+import { copyTestReports } from '@GTU/Playwright/testReport'
+import { saveRecordingPath } from '@GTU/Playwright/videoRecording'
+import { initTestMeta, commitTestMeta } from '@GTU/TestMeta/testMeta'
+import { stopTracingChunk, startTracingChunk } from '@GTU/Playwright/tracing'
+import {
   setupContext,
   setupBrowser,
   setLastActivePage,
   getLastActivePage,
-} = require('@GTU/Playwright/browserContext')
+} from '@GTU/Playwright/browserContext'
 
 /**
  * Helper to force exit the process after 1/2 second
  */
-const forceExit = (err) => {
+const forceExit = (err?:Error) => {
   Logger.stderr(`\n[Goblet] Playwright Initialize Error\n`)
   err && Logger.stderr(`\n${err.stack}\n`)
   setTimeout(() => process.exit(1), 500)
@@ -25,11 +25,11 @@ const forceExit = (err) => {
  * Adds both browser and context to the global scope
  * @param {Function} done - jest function called when all asynchronous ops are complete
  *
- * @return {boolean} - true if init was successful
+ * @return <boolean> - true if init was successful
  */
-const initialize = async () => {
+export const initialize = async () => {
 
-  let startError
+  let startError:boolean
 
   try {
     await initTestMeta()
@@ -53,7 +53,7 @@ const initialize = async () => {
  * @param {Function} [fromError] - Boolean if cleanup was called from an error
  *
  */
-const cleanup = async (fromError) => {
+export const cleanup = async (fromError?:boolean) => {
   if (!global.browser){
     await commitTestMeta()
     return false
@@ -84,10 +84,4 @@ const cleanup = async (fromError) => {
   catch(err){
     forceExit(err)
   }
-}
-
-
-module.exports = {
-  initialize,
-  cleanup,
 }

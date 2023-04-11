@@ -1,1 +1,2 @@
-export * from './shared'
+export * from './shared.types'
+export * from './goblet.types'

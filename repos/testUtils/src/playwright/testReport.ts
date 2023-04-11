@@ -1,16 +1,16 @@
-const { get } = require('@keg-hub/jsutils')
-const { getTestResult } = require('@GTU/Reports/jasmineReporter')
-const { shouldSaveArtifact } = require('@gobletqa/shared/utils/artifactSaveOption')
-const { getGeneratedName, ensureRepoArtifactDir } = require('@GTU/Playwright/generatedArtifacts')
+import { get } from '@keg-hub/jsutils'
+import { getTestResult } from '@GTU/Reports/jasmineReporter'
+import { shouldSaveArtifact } from '@gobletqa/shared/utils/artifactSaveOption'
+import { getGeneratedName, ensureRepoArtifactDir } from '@GTU/Playwright/generatedArtifacts'
 
 
 /**
  * Checks if a test report should be saved
  * If so copies it from the temp dir to the configured reports path
  *
- * @returns {boolean} - True if the report should be saved
+ * @returns <boolean - True if the report should be saved
  */
-const copyTestReports = async () => {
+export const copyTestReports = async () => {
   const { GOBLET_HTML_REPORTER_OUTPUT_PATH } = process.env
   if(!GOBLET_HTML_REPORTER_OUTPUT_PATH) return
 
@@ -32,8 +32,4 @@ const copyTestReports = async () => {
   reportTempPath !== GOBLET_HTML_REPORTER_OUTPUT_PATH
     && await ensureRepoArtifactDir(reportLoc)
 
-}
-
-module.exports = {
-  copyTestReports
 }

@@ -1,13 +1,27 @@
-const path = require('path')
-const { noOpObj, get } = require('@keg-hub/jsutils')
-const { appendToLatest } = require('@GTU/TestMeta/testMeta')
-const { getTestResult } = require('@GTU/Reports/jasmineReporter')
-const { ARTIFACT_SAVE_OPTS } = require('@gobletqa/shared/constants')
-const {
+import {
+  TGobletTestOpts,
+  TBrowserContext,
+  TGobletGlobalBrowserOpts
+} from '@GTU/Types'
+
+import path from 'path'
+import { noOpObj, get } from '@keg-hub/jsutils'
+import { appendToLatest } from '@GTU/TestMeta/testMeta'
+import { getTestResult } from '@GTU/Reports/jasmineReporter'
+import { ARTIFACT_SAVE_OPTS } from '@gobletqa/shared/constants'
+import {
   getGeneratedName,
   copyArtifactToRepo,
   ensureRepoArtifactDir,
-} = require('@GTU/Playwright/generatedArtifacts')
+} from '@GTU/Playwright/generatedArtifacts'
+
+type TWithGobletTracing = {
+  __goblet?: {
+    tracing?: boolean
+  }
+}
+
+export type TBrowserContextTracing = TBrowserContext & TWithGobletTracing
 
 /**
  * Helper to check is tracing is disabled
@@ -21,11 +35,11 @@ const tracingDisabled = () => {
 
 /**
  * Starts tracing on the browser context
- * @param {Object} context - Browser context to start tracing on
+ * @param {Object} [context] - Browser context to start tracing on
  *
- * @returns {Void}
+ * @returns <boolean|void>
  */
-const startTracing = async (context) => {
+export const startTracing = async (context?:TBrowserContextTracing) => {
   if(!context || tracingDisabled()) return
 
   await context.tracing.start(get(global, `__goblet.options.tracing`, noOpObj))
@@ -35,16 +49,18 @@ const startTracing = async (context) => {
 
 /**
  * Starts tracing on the browser context
- * @param {Object} context - Browser context to start a tracing chunk
+ * @param {Object} [context] - Browser context to start a tracing chunk
  *
- * @returns {Void}
+ * @returns <boolean|void>
  */
-const startTracingChunk = async (context) => {
-  if(!context || context.__goblet.tracing || tracingDisabled()) return
+export const startTracingChunk = async (context?:TBrowserContextTracing) => {
+  if(!context || context?.__goblet?.tracing || tracingDisabled()) return
 
   await context.tracing.startChunk()
 
+  context.__goblet = context.__goblet || {}
   context.__goblet.tracing = true
+
   return true
 }
 
@@ -69,11 +85,27 @@ const shouldSaveTrace = (testStatus, saveTrace) => {
  *
  * @returns {Void}
  */
-const stopTracingChunk = async (context) => {
-  if(!context || !context.__goblet.tracing || tracingDisabled()) return
+export const stopTracingChunk = async (context) => {
+  if(!context || !context?.__goblet?.tracing || tracingDisabled()) return
 
-  const { saveTrace, tracesDir:repoTracesDir, testType } = get(global, `__goblet.options`, noOpObj)
-  const { name, full, dir, nameTimestamp, testPath } = getGeneratedName()
+  const {
+    testType,
+    saveTrace,
+    // Path to the mounted repo where traces should be saved
+    tracesDir:repoTracesDir,
+  } = get<TGobletTestOpts>(
+    global,
+    `__goblet.options`,
+    noOpObj as TGobletTestOpts
+  )
+
+  const {
+    name,
+    full,
+    dir,
+    nameTimestamp,
+    testPath
+  } = getGeneratedName()
 
   // Get the test result, which contains the passed/failed status of the test
   // If failed, then copy over trace from temp traces dir, to repoTracesDir
@@ -81,8 +113,16 @@ const stopTracingChunk = async (context) => {
   const testResult = getTestResult(testPath)
   if(!shouldSaveTrace(testResult?.status, saveTrace)) return
 
-  const { tracesDir, type:browser=`browser` } = get(global, `__goblet.browser.options`, noOpObj)
-  
+  const {
+    // Path to the temp directory where traces are saved by the browser
+    tracesDir,
+    type:browser=`browser`
+  } = get<TGobletGlobalBrowserOpts>(
+    global,
+    `__goblet.browser.options`,
+    noOpObj as TGobletGlobalBrowserOpts
+  )
+
   const traceLoc = path.join(tracesDir, `${full}.zip`)
   await context.tracing.stopChunk({ path: traceLoc })
 
@@ -91,14 +131,9 @@ const stopTracingChunk = async (context) => {
 
   testType &&
     await appendToLatest(`${testType}.traces.${browser}.${name}`, {path: savePath}, true)
-  
+
+  context.__goblet = context.__goblet || {}
   context.__goblet.tracing = false
+
   return true
-}
-
-
-module.exports = {
-  startTracing,
-  stopTracingChunk,
-  startTracingChunk,
 }

@@ -1,14 +1,25 @@
-const fs = require('fs')
-const { fileSys, Logger } = require('@keg-hub/cli-utils')
-const { noOpObj, get, wait } = require('@keg-hub/jsutils')
-const { appendToLatest } = require('@GTU/TestMeta/testMeta')
-const { getTestResult } = require('@GTU/Reports/jasmineReporter')
-const { ARTIFACT_SAVE_OPTS } = require('@gobletqa/shared/constants')
-const {
+
+import {
+  TBrowserPage,
+  TGobletTestOpts,
+  TGobletGlobalRecordVideo,
+  TGobletGlobalBrowserOpts,
+  TGobletTestArtifactOption,
+} from '@GTU/Types'
+
+import fs from 'fs'
+import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { noOpObj, get, wait } from '@keg-hub/jsutils'
+import { appendToLatest } from '@GTU/TestMeta/testMeta'
+import { getTestResult } from '@GTU/Reports/jasmineReporter'
+import { ARTIFACT_SAVE_OPTS } from '@gobletqa/shared/constants'
+import {
   getGeneratedName,
   copyArtifactToRepo,
   ensureRepoArtifactDir,
-} = require('@GTU/Playwright/generatedArtifacts')
+} from '@GTU/Playwright/generatedArtifacts'
+
+type TTestStatus = `passed` | `failed`
 
 const { getFolderContent, pathExists } = fileSys
 
@@ -17,7 +28,11 @@ const { getFolderContent, pathExists } = fileSys
  * Then check if the path exists, and returns
  * If no file found, then calls its self recursively 3 until it does
  */
-const pathFromPageVideo = async (page, videoPath, checks=0) => {
+const pathFromPageVideo = async (
+  page:TBrowserPage,
+  videoPath?:string,
+  checks:number=0
+) => {
 
   // If no video path, this is the first call to the method
   if(!videoPath){
@@ -41,6 +56,7 @@ const pathFromPageVideo = async (page, videoPath, checks=0) => {
 
   // Wait for half a second and try again
   await wait(500)
+
   return pathFromPageVideo(page, videoPath, checks++)
 }
 
@@ -52,7 +68,10 @@ const pathFromPageVideo = async (page, videoPath, checks=0) => {
  *
  * @returns {string} - Location of the most recently saved video recording
  */
-const getRecordingPath = async (page, recordDir) => {
+const getRecordingPath = async (
+  page:TBrowserPage,
+  recordDir:string
+) => {
   if(page){
     const videoPath = await pathFromPageVideo(page)
     if(videoPath) return videoPath
@@ -83,7 +102,11 @@ const getRecordingPath = async (page, recordDir) => {
  *
  * @returns {boolean} - True if the video should be saved
  */
-const shouldSaveVideo = (testStatus, saveVideo, recordDir) => {
+const shouldSaveVideo = (
+  testStatus:TTestStatus,
+  saveVideo:TGobletTestArtifactOption,
+  recordDir:string
+) => {
   if(!saveVideo || saveVideo === ARTIFACT_SAVE_OPTS.never || !recordDir) return false
 
   return (saveVideo === ARTIFACT_SAVE_OPTS.always) ||
@@ -96,18 +119,46 @@ const shouldSaveVideo = (testStatus, saveVideo, recordDir) => {
  * @param {Object} page - Playwright page to get the video path from
  *
  */
-const saveRecordingPath = async (page) => {
+export const saveRecordingPath = async (page:TBrowserPage) => {
 
-  const recordVideo = get(global, `__goblet.context.options.recordVideo`, noOpObj)
-  const { type:browser=`browser` } = get(global, `__goblet.browser.options`, noOpObj)
-  const { saveVideo, testType, videosDir:repoVideoDir } = get(global, `__goblet.options`, noOpObj)
-  const { name, dir, nameTimestamp, testPath } = getGeneratedName()
+  const recordVideo = get<TGobletGlobalRecordVideo>(
+    global,
+    `__goblet.context.options.recordVideo`,
+    noOpObj as TGobletGlobalRecordVideo
+  )
+ 
+  const { type:browser=`browser` } = get<TGobletGlobalBrowserOpts>(
+    global,
+    `__goblet.browser.options`,
+    noOpObj as TGobletGlobalBrowserOpts
+  )
+
+  const {
+    saveVideo,
+    testType,
+    videosDir:repoVideoDir
+  } = get<TGobletTestOpts>(
+    global,
+    `__goblet.options`,
+    noOpObj as TGobletTestOpts
+  )
+
+  const {
+    name,
+    dir,
+    nameTimestamp,
+    testPath
+  } = getGeneratedName()
 
   // Get the test result, which contains the passed/failed status of the test
   // If failed, then copy over video from temp video dir, to repoVideoDir
   // By default video will not be saved
   const testResult = getTestResult(testPath)
-  const saveTestVideo = shouldSaveVideo(testResult?.status, saveVideo, recordVideo.dir)
+  const saveTestVideo = shouldSaveVideo(
+    testResult?.status,
+    saveVideo,
+    recordVideo.dir
+  )
 
   if(!saveTestVideo) return
 
@@ -128,6 +179,3 @@ const saveRecordingPath = async (page) => {
     }, true)
 }
 
-module.exports = {
-  saveRecordingPath
-}

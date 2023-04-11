@@ -1,7 +1,7 @@
 import type {
   TBrowserConf,
   TGobletConfig,
-  TJestGobletOpts,
+  TGobletTestOpts,
   TBrowserContextOpts
 } from '@GTU/Types'
 
@@ -56,7 +56,7 @@ export const buildJestGobletOpts = (
     GOBLET_TEST_TRACING_SCREENSHOTS=true
   } = process.env
 
-  const options:TJestGobletOpts = {
+  const options:TGobletTestOpts = {
     saveTrace: artifactSaveOption(GOBLET_TEST_TRACING),
     saveReport: artifactSaveOption(GOBLET_TEST_REPORT),
     // Only chromium can record video so only turn it on for that browser

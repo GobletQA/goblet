@@ -1,10 +1,10 @@
 import type { TFileModel } from './models.types'
 import type { EBrowserType } from './browser.types'
-import type { TGitData, TRepo } from './repo.types'
+import type { TRepo } from './repo.types'
 import type { TAutomateEvent } from './pwAutomate.types'
 import type {
   Page,
-  Frame,
+  Locator,
   Browser,
   Geolocation,
   ViewportSize,
@@ -22,6 +22,7 @@ export type TWithGuid = {
   _guid?:string
 }
 
+export type TLocator = Locator
 export type TBrowser = Browser & TWithGuid
 export type TBrowserPage = Page & TWithGuid
 export type TBrowserContext = BrowserContext & TWithGuid

@@ -1,25 +1,27 @@
-const os = require('os')
-const path = require('path')
-const { startTracing } = require('./tracing')
-const { get, noOpObj } = require('@keg-hub/jsutils')
-const { metadata } = require('@gobletqa/screencast/libs/playwright')
-const { startBrowser } = require('@gobletqa/screencast/libs/playwright/browser/browser')
-const {
+import type { TBrowserContextOpts } from '@GTU/Types'
+
+import os from 'os'
+import path from 'path'
+import { startTracing } from './tracing'
+import { get, noOpObj } from '@keg-hub/jsutils'
+import { metadata } from '@gobletqa/screencast/libs/playwright'
+import { startBrowser } from '@gobletqa/screencast/libs/playwright/browser/browser'
+import {
   browserCookieLoc,
   setContextCookie,
   defaultCookieFile,
   saveContextCookie
-} = require('@GTU/Playwright/browserCookie')
+} from '@GTU/Playwright/browserCookie'
 
 let LAST_ACTIVE_PAGE
-const defaultStateFile = 'browser-context-state'
+export const defaultStateFile = 'browser-context-state'
 
 /**
  * Sets up the global browser for the test environment
  *
  * @returns {Object} - Playwright Browser object
  */
-const setupBrowser = async () => {
+export const setupBrowser = async () => {
   /** GOBLET_BROWSER is set by the task `keg goblet bdd run` */
   const { GOBLET_BROWSER='chromium' } = process.env
   const { type, browserConf } = await metadata.read(GOBLET_BROWSER)
@@ -46,8 +48,10 @@ const setupBrowser = async () => {
  *
  * @returns {Object} - Playwright Context object
  */
-const setupContext = async () => {
-  global.context = await getContext(get(global, `__goblet.context.options`))
+export const setupContext = async () => {
+  global.context = await getContext(
+    get<TBrowserContextOpts>(global, `__goblet.context.options`)
+  )
   await startTracing(global.context)
 
   return global.context
@@ -56,7 +60,7 @@ const setupContext = async () => {
 /**
  * Gets the storage location from the temp-directory
  */
-const contextStateLoc = (saveLocation) => {
+export const contextStateLoc = (saveLocation) => {
   const tempDir = os.tmpdir()
   const location = `${(saveLocation || defaultStateFile).split(`.json`).shift()}.json`
 
@@ -66,7 +70,7 @@ const contextStateLoc = (saveLocation) => {
 /**
  * Save storage state into the file.
  */
-const saveContextState = async (context, location) => {
+export const saveContextState = async (context, location) => {
   return await context.storageState({ path: contextStateLoc(location) })
 }
 
@@ -75,17 +79,19 @@ const saveContextState = async (context, location) => {
  * @param {Object} [contextOpts] - Options for creating a new context
  * @param {string} [location] - path the browser will use for storage
  *
- * @return {Object} - Playwright browser page object
  */
-const getContext = async (contextOpts, location) => {
+export const getContext = async (
+  contextOpts?:TBrowserContextOpts,
+  location?:string
+) => {
   // TODO: migrate this to use the getContext from screencast/libs/playwright
-  contextOpts = contextOpts || get(global, `__goblet.context.options`, noOpObj)
+  contextOpts = contextOpts || get<TBrowserContextOpts>(global, `__goblet.context.options`, noOpObj)
 
   if(!global.browser) throw new Error('Browser type not initialized')
   if(!global.context){
     try {
       // TODO: figure out how to pull the saved context state 
-      global.context = await browser.newContext({
+      global.context = await global.browser.newContext({
         ...contextOpts,
         // TODO: Need to add this dynamically based on some env or tag?
         // storageState: contextStateLoc(location)
@@ -110,7 +116,7 @@ const getContext = async (contextOpts, location) => {
  *
  * @return {Object} - Playwright browser page object
  */
-const getPage = async (num = 0) => {
+export const getPage = async (num = 0) => {
   if (!global.context) throw new Error('No browser context initialized')
 
   const pages = global.context.pages() || []
@@ -119,23 +125,14 @@ const getPage = async (num = 0) => {
   return LAST_ACTIVE_PAGE
 }
 
-const getLastActivePage = () => LAST_ACTIVE_PAGE
-const setLastActivePage = (page) => {
+export const getLastActivePage = () => LAST_ACTIVE_PAGE
+export const setLastActivePage = (page) => {
   LAST_ACTIVE_PAGE = page
 }
 
-module.exports = {
-  getPage,
-  getContext,
-  setupBrowser,
-  setupContext,
-  contextStateLoc,
-  saveContextState,
-  defaultStateFile,
+export {
   browserCookieLoc,
   setContextCookie,
-  getLastActivePage,
-  setLastActivePage,
-  saveContextCookie,
   defaultCookieFile,
+  saveContextCookie,
 }

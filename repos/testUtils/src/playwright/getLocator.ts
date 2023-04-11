@@ -1,4 +1,6 @@
-const { getPage } = require('@GTU/Playwright/browserContext')
+import type { TLocator } from '@GTU/Types'
+
+import { getPage } from '@GTU/Playwright/browserContext'
 
 /**
  * TODO: figure out how to set global timeout from the browser or cli
@@ -22,9 +24,12 @@ const getLocationWaitOpts = (waitFor) => {
 /**
  * Finds an element on the current page as a locator
  * @param {string} selector
- * @return {locator?} - the Playwright.Locator object found with `selector`, or null if it does not exist
+ * @return <Locator?> - the Playwright.Locator object found with `selector`, or null if it does not exist
  */
-const getLocator = async (selector, waitFor=true) => {
+export const getLocator = async (
+  selector:string,
+  waitFor:boolean=true
+) => {
   const page = await getPage()
   const locator = await page.locator(selector)
   if (!locator) throw new Error(`The element with selector "${selector}" could not be found.`)
@@ -32,7 +37,5 @@ const getLocator = async (selector, waitFor=true) => {
   const opts = getLocationWaitOpts(waitFor)
   opts ? await locator.waitFor(opts) : await locator.waitFor()
 
-  return locator
+  return locator as TLocator
 }
-
-module.exports = { getLocator }

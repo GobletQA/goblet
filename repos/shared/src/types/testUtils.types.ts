@@ -1,13 +1,20 @@
+export type TGobletTestArtifactOption = `never` | `always` | `on-fail` | true | false | 1 | 0
 
-export type TJestTracingOpts = {
+export type TGobletTestStatus = `passed` | `failed`
+
+export type TGobletTestTracingOpts = {
   snapshots?:boolean
   screenshots?:boolean
 }
 
-export type TJestGobletOpts = {
+export type TGobletTestOpts = {
+  tracesDir?:string
+  videosDir?:string
+  downloads?:string
+  snapshotsDir?:string
   testType?:string|false
-  saveTrace?:string|false
-  saveVideo?:string|false
-  saveReport?:string|false
-  tracing?:TJestTracingOpts
+  tracing?:TGobletTestTracingOpts
+  saveVideo?:TGobletTestArtifactOption
+  saveTrace?:TGobletTestArtifactOption
+  saveReport?:TGobletTestArtifactOption
 }
