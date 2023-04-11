@@ -47,13 +47,7 @@
       "@gobletqa/components/*": ["../components/src/*"],
       "@gobletqa/shared": [ "../shared/src" ],
       "@gobletqa/shared/*": [ "../shared/src/*" ],
-      "GobletRoot": ["../../"],
-      "@ltipton/parkin": [
-        "../../../../../keg-hub/taps/parkin/src"
-      ],
-      "@ltipton/parkin/*": [
-        "../../../../../keg-hub/taps/parkin/src/*"
-      ]
+      "GobletRoot": ["../../"]
     }
   },
   "include": ["src", "../components/src/hooks/useEvent.ts"],

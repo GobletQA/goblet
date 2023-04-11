@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@ltipton/parkin": [
+        "../../../../../keg-hub/taps/parkin/src"
+      ],
+      "@ltipton/parkin/*": [
+        "../../../../../keg-hub/taps/parkin/src/*"
+      ]
+    }
+  }
+}
+
