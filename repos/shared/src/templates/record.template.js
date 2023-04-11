@@ -1,13 +1,10 @@
-const { chromium } = require('playwright')
+import { getPage } from '@GTU/Playwright'
 
 ;(async() => {
-  const browser = await chromium.launch({ headless: false })
-  const context = await browser.newContext()
-  const page = await context.newPage()
+  const page = await getPage()
   await page.goto('{{appUrl}}')
 
   // -- 🍷 GOBLET
 
-  await context.close()
-  await browser.close()
+
 })()

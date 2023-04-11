@@ -1,10 +1,16 @@
-import type { TBrowserContextOpts } from '@GTU/Types'
+import type {
+  TBrowser,
+  TBrowserPage,
+  TBrowserContext,
+  TBrowserContextOpts,
+  TContextStorageState
+} from '@GTU/Types'
 
 import os from 'os'
 import path from 'path'
 import { startTracing } from './tracing'
 import { get, noOpObj } from '@keg-hub/jsutils'
-import { metadata } from '@gobletqa/screencast/libs/playwright'
+import { metadata, ghostMouse } from '@gobletqa/screencast/libs/playwright'
 import { startBrowser } from '@gobletqa/screencast/libs/playwright/browser/browser'
 import {
   browserCookieLoc,
@@ -13,7 +19,7 @@ import {
   saveContextCookie
 } from '@GTU/Playwright/browserCookie'
 
-let LAST_ACTIVE_PAGE
+let LAST_ACTIVE_PAGE:TBrowserPage
 export const defaultStateFile = 'browser-context-state'
 
 /**
@@ -40,7 +46,7 @@ export const setupBrowser = async () => {
 
   global.browser = browser
   
-  return global.browser
+  return global.browser as TBrowser
 }
 
 /**
@@ -54,13 +60,13 @@ export const setupContext = async () => {
   )
   await startTracing(global.context)
 
-  return global.context
+  return global.context as TBrowserContext
 }
 
 /**
  * Gets the storage location from the temp-directory
  */
-export const contextStateLoc = (saveLocation) => {
+export const contextStateLoc = (saveLocation:string) => {
   const tempDir = os.tmpdir()
   const location = `${(saveLocation || defaultStateFile).split(`.json`).shift()}.json`
 
@@ -70,7 +76,10 @@ export const contextStateLoc = (saveLocation) => {
 /**
  * Save storage state into the file.
  */
-export const saveContextState = async (context, location) => {
+export const saveContextState = async (
+  context:TBrowserContext,
+  location?:string
+):TContextStorageState => {
   return await context.storageState({ path: contextStateLoc(location) })
 }
 
@@ -95,19 +104,21 @@ export const getContext = async (
         ...contextOpts,
         // TODO: Need to add this dynamically based on some env or tag?
         // storageState: contextStateLoc(location)
-      })
+      }) as TBrowserContext
     }
     catch(err){
       if(err.code === `ENOENT` && err.message.includes(`Error reading storage state`))
         console.warn(`[Goblet] Saved Context State ${location} does not exist.`)
-      else global.context = await global.browser.newContext(contextOpts)
+      else global.context = await global.browser.newContext(contextOpts) as TBrowserContext
     }
   }
+
   // Goblet options that are context specific
   // Not great, and there's better way to store this,
   // because we don't own the context object, but this works now
   global.context.__goblet = global.context.__goblet || {}
-  return global.context
+
+  return global.context as TBrowserContext
 }
 
 /**
@@ -120,15 +131,43 @@ export const getPage = async (num = 0) => {
   if (!global.context) throw new Error('No browser context initialized')
 
   const pages = global.context.pages() || []
-  LAST_ACTIVE_PAGE = pages.length ? pages[num] : await global.context.newPage()
+  const page = pages.length ? pages[num] : await global.context.newPage()
+  LAST_ACTIVE_PAGE = ghostMouse(page)
 
-  return LAST_ACTIVE_PAGE
+  return LAST_ACTIVE_PAGE as TBrowserPage
 }
 
-export const getLastActivePage = () => LAST_ACTIVE_PAGE
-export const setLastActivePage = (page) => {
+export const getLastActivePage = () => LAST_ACTIVE_PAGE as TBrowserPage
+export const setLastActivePage = (page:TBrowserPage) => {
   LAST_ACTIVE_PAGE = page
 }
+
+export const closePage = async (page:TBrowserPage) => {
+  const pg = page || await getPage()
+  
+  if (!pg) return console.warn(`Could not close browser page, because it does not exist.`)
+
+  await pg.close()
+  LAST_ACTIVE_PAGE = undefined
+
+}
+
+export const closeContext = async () => {
+  if (!global.context)
+    return console.warn(`Could not close browser context, because it does not exist.`)
+
+  await global.context.close()
+  global.context = undefined
+}
+
+export const closeBrowser = async () => {
+  if (!global.browser)
+    return console.warn(`Could not close browser, because it does not exist.`)
+
+  await global.browser.close()
+  global.browser = undefined
+}
+
 
 export {
   browserCookieLoc,

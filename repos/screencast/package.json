@@ -58,6 +58,7 @@
     "expect": "*",
     "express": "*",
     "fs-extra": "10.1.0",
+    "ghost-cursor-pw": "1.1.18",
     "playwright": "*",
     "socket.io": "*",
     "tail-file": "1.4.15"

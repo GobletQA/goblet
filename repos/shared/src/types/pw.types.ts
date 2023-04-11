@@ -13,6 +13,7 @@ import type {
   BrowserContext,
   BrowserContextOptions,
 } from 'playwright'
+import type { ComponentProps } from 'react'
 
 /**
  * This is an internal playwright property
@@ -21,6 +22,13 @@ import type {
 export type TWithGuid = {
   _guid?:string
 }
+
+export type TLocatorOpts = {
+  has?: TLocator
+  hasText?: string|RegExp
+}
+
+export type TLocatorClickOpts = Parameters<Locator[`click`]>[`0`]
 
 export type TLocator = Locator
 export type TBrowser = Browser & TWithGuid
@@ -34,6 +42,8 @@ export type TBrowserLaunchOpts = LaunchOptions
 export type TBrowserContextOpts = BrowserContextOptions
 export type TColorSchema = null | `light` | `dark` | `no-preference`
 export type TBrowserType = `chromium` | `firefox` | `webkit` | string
+ 
+ export type TContextStorageState = ReturnType<TBrowserContext[`storageState`]>
  
 export type TBrowserTraceStartOpts = {
   path?: string;

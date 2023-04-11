@@ -10,6 +10,7 @@ import type {
 
 import playwright from 'playwright'
 import { Automate } from '../automate'
+import { ghostMouse } from './ghostMouse'
 import { Logger } from '@GSC/utils/logger'
 import { deepMerge } from '@keg-hub/jsutils'
 import { EmptyBrowser } from './emptyBrowser'
@@ -186,7 +187,10 @@ export const getPage = async (
     getPage.creatingPage = true
     if(hasPages) page = pages[0]
     else {
-      page = await context.newPage()
+
+      const pg = await context.newPage()
+      const page = ghostMouse(pg)
+
       try {
         await page.goto(GobletQAUrl)
       }

@@ -7,7 +7,7 @@ import type {
   TBrowserContext,
 } from '@GSC/types'
 
-
+import { ghostMouse } from './ghostMouse'
 import { EventEmitter } from 'node:events'
 
 export class EmptyBrowser extends EventEmitter implements Browser {
@@ -34,7 +34,12 @@ export class EmptyBrowser extends EventEmitter implements Browser {
   version = () => `empty-browser@v1`
   newContext = async () => this.#context
   isConnected = () => Boolean(this.#context)
-  newPage = async () => this.#context?.newPage()
+  newPage = async () => {
+    const pg = await this.#context?.newPage()
+    const page = ghostMouse(pg)
+
+    return page
+  }
   stopTracing = async (opts?:TStopTraceOpts) => {
     await this.#context.tracing.stop(opts)
     return Buffer.from('goblet-empty-browser')
