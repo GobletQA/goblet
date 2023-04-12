@@ -1,45 +1,60 @@
 import type { MouseEvent } from 'react'
-import type { TRaceFeature } from '@GBR/types'
-import type { TFeatureItem } from './FeatureItems'
+import type { TMenuItem } from '@gobletqa/components'
 
 import { useState, useRef } from 'react'
-import { ESectionType }  from '@GBR/types'
+import { ESectionType, ESectionExt }  from '@GBR/types'
 import {
   Menu,
-  useInline,
+  MenuIcon,
   MenuToggle,
+  useInline,
+  IconButton,
 } from '@gobletqa/components'
 
-export type TFeatureMenu = {
-  feature:TRaceFeature
-  items: TFeatureItem[]
+
+export type TSectionActionsMenu = {
+  id:string
+  items: TMenuItem[]
+  type: ESectionType|ESectionExt
 }
 
-export const FeatureMenu = (props:TFeatureMenu) => {
+const styles = {
+  button: {
+    padding: `5px`
+  }
+}
+
+export const SectionActionsMenu = (props:TSectionActionsMenu) => {
   const {
+    id,
+    type,
     items
   } = props
   
   const [open, setOpen] = useState<boolean>(false)
   const anchorRef = useRef<HTMLElement|undefined>(undefined)
+
   const onOpen = useInline((event: MouseEvent<HTMLElement>) => {
+    event?.stopPropagation?.()
     setOpen(true)
     anchorRef.current = event.currentTarget
   })
-  const onClose = useInline(() => {
+
+  const onClose = useInline((event:any) => {
+    event?.stopPropagation?.()
     setOpen(false)
     anchorRef.current = undefined
   })
-  
-  const controlId = `gb-${ESectionType.feature}-menu`
+
+  const controlId = `gb-${type}-menu`
 
   return (
     <>
       <MenuToggle
-        open={open}
         onOpen={onOpen}
+        sx={styles.button}
         controlId={controlId}
-        id="gb-feature-menu-button"
+        id={`gb-${id}-menu-button`}
       />
       <Menu
         open={open}
@@ -52,7 +67,7 @@ export const FeatureMenu = (props:TFeatureMenu) => {
         onOpen={onOpen}
         onClose={onClose}
         anchorRef={anchorRef}
-        aria-labelledby="gb-feature-menu-button"
+        aria-labelledby={`gb-section-menu-button gb-section-${type}-menu-button`}
       />
     </>
   )

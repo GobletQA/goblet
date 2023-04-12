@@ -133,11 +133,3 @@ export const SectionFooter = styled(Box)`
 
 export const SectionDragHandleContainer = styled(Box)(dndCss.dragHandle)
 export const SectionDragHandleIcon = styled(DragIndicatorIcon)(dndCss.dragIcon)
-
-export const SectionActs = styled(Box)`
-  opacity: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 300ms ease;
-`

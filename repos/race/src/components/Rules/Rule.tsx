@@ -1,18 +1,13 @@
 import type { TRaceRule, TRaceFeature } from '@GBR/types'
 
-import { AddAct } from '../Actions/Add'
-import { PlayAct } from '../Actions/Play'
-import { CopyAct } from '../Actions/Copy'
-import { DeleteAct } from '../Actions/Delete'
 import { EditTitle } from '../Title/EditTitle'
-import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { EmptyScenarios, Scenarios } from '../Scenarios'
 import { updateRule } from '@GBR/actions/rule/updateRule'
 import { useRuleActions } from '@GBR/hooks/actions/useRuleActions'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
-import { PlaylistPlusIcon, CardPlusIcon } from '@gobletqa/components'
+import { useSectionActions } from '@GBR/hooks/editor/useSectionActions'
 import { EmptyBackground, Background } from '@GBR/components/Background'
 
 export type TRule = {
@@ -65,12 +60,23 @@ export const Rule = (props:TRule) => {
           })
     },
   })
-
+  
+  const actions = useSectionActions({
+    onPlay,
+    onCopy,
+    onRemove,
+    onAddScenario,
+    onAddBackground,
+    editingTitle,
+    toggleEditTitle,
+    type: ESectionType.rule,
+  })
 
   return (
     <Section
-      parent={rule}
       id={ruleId}
+      parent={rule}
+      actions={actions}
       show={Boolean(rule)}
       type={ESectionType.rule}
       className='gb-rule-section'
@@ -80,56 +86,7 @@ export const Rule = (props:TRule) => {
           type={ESectionType.rule}
         />
       )}
-      actions={[
-        (
-          <EditTitleAct
-            label={`Description`}
-            editing={editingTitle}
-            onClick={toggleEditTitle}
-            type={ESectionType.rule}
-            key={`gb-rule-edit-title-action`}
-          />
-        ),
-        (
-          <AddAct
-            Icon={CardPlusIcon}
-            onClick={onAddBackground}
-            type={ESectionType.background}
-            key={`gb-rule-add-background-action`}
-          />
-        ),
-        (
-          <AddAct
-            Icon={PlaylistPlusIcon}
-            onClick={onAddScenario}
-            type={ESectionType.scenario}
-            key={`gb-rule-add-scenario-action`}
-          />
-        ),
-        (
-          <DeleteAct
-            onClick={onRemove}
-            type={ESectionType.rule}
-            key={`gb-rule-removed-scenario-action`}
-          />
-        ),
-        (
-          <CopyAct
-            onClick={onCopy}
-            type={ESectionType.rule}
-            key={`gb-rule-copy-rule-action`}
-          />
-        ),
-        (
-          <PlayAct
-            onClick={onPlay}
-            type={ESectionType.background}
-            key={`gb-background-play-action`}
-          />
-        ),
-      ]}
     >
-    
       {showTitle && (
         <EditTitle
           uuid={rule.uuid}

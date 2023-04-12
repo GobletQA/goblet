@@ -6,12 +6,12 @@ import {
   SectionHeaderContent
 } from './SectionHeader.styled'
 
-export type TStepHeader = {
+export type TSectionHeader = {
   type: ESectionType
   content?:string
 }
 
-export const SectionHeader = (props:TStepHeader) => {
+export const SectionHeader = (props:TSectionHeader) => {
   const {
     type,
     content,

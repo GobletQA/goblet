@@ -1,17 +1,12 @@
 import type { TRaceBackgroundParent, TRaceBackground, TRaceStep } from '@GBR/types'
 
 import { Steps } from '../Steps'
-import { AddAct } from '../Actions/Add'
-import { PlayAct } from '../Actions/Play'
-import { CopyAct } from '../Actions/Copy'
-import { DeleteAct } from '../Actions/Delete'
 import { EditTitle } from '../Title/EditTitle'
 import { EmptySteps } from '../Steps/EmptySteps'
-import { StepAddIcon } from '@gobletqa/components'
-import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
+import { useSectionActions } from '@GBR/hooks/editor/useSectionActions'
 import { useBackgroundActions } from '@GBR/hooks/actions/useBackgroundActions'
 
 export type TBackground = {
@@ -61,9 +56,20 @@ export const Background = (props:TBackground) => {
     },
   })
 
+  const actions = useSectionActions({
+    onPlay,
+    editingTitle,
+    toggleEditTitle,
+    onCopy: onCopyBackground,
+    onRemove: onRemoveBackground,
+    onAddStep: onAddBackgroundStep,
+    type: ESectionType.background,
+  })
+
   return (
     <Section
       parent={parent}
+      actions={actions}
       id={background.uuid}
       show={Boolean(background)}
       type={ESectionType.background}
@@ -74,46 +80,6 @@ export const Background = (props:TBackground) => {
           type={ESectionType.background}
         />
       )}
-      actions={[
-        (
-          <EditTitleAct
-            label={`Description`}
-            editing={editingTitle}
-            onClick={toggleEditTitle}
-            type={ESectionType.background}
-            key={`gb-background-edit-title-action`}
-          />
-        ),
-        (
-          <AddAct
-            Icon={StepAddIcon}
-            type={ESectionType.step}
-            onClick={onAddBackgroundStep}
-            key={`gb-background-add-step-action`}
-          />
-        ),
-        (
-          <DeleteAct
-            onClick={onRemoveBackground}
-            type={ESectionType.background}
-            key={`gb-background-delete-action`}
-          />
-        ),
-        (
-          <CopyAct
-            onClick={onCopyBackground}
-            type={ESectionType.background}
-            key={`gb-background-copy-action`}
-          />
-        ),
-        (
-          <PlayAct
-            onClick={onPlay}
-            type={ESectionType.background}
-            key={`gb-background-play-action`}
-          />
-        ),
-      ]}
     >
 
       {showTitle && (

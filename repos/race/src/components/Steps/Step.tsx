@@ -9,6 +9,7 @@ import { SelectAction } from './SelectAction'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
 import { useExpressions } from '@GBR/hooks/steps/useExpressions'
 import { useMatchStepToDef } from '@GBR/hooks/steps/useMatchStepToDef'
+import { useSectionActions } from '@GBR/hooks/editor/useSectionActions'
 import { collapseAllExcept } from '@GBR/actions/general/collapseAllExcept'
 import {
   StepGrid,
@@ -56,10 +57,19 @@ export const Step = (props:TStep) => {
   const { step, definition } = useMatchStepToDef(props)
   const { def, expressions } = useExpressions(props, { definition })
 
+  const onPlay = () => {}
   const onCopy = () => {}
   const onStepChange = (updated:TRaceStep) => onChange?.(updated, parent.uuid)
   const onRemoveStep = () => onRemove?.(step.uuid, parent.uuid)
   const onCollapseExcept = () => collapseAllExcept(step.uuid, parent?.uuid, gran?.uuid)
+
+  const actions = useSectionActions({
+    onPlay,
+    onCopy,
+    onRemove: onRemoveStep,
+    type: ESectionType.step,
+    onCollapse: onCollapseExcept,
+  })
 
   return (
     <StepContainer
@@ -72,6 +82,7 @@ export const Step = (props:TStep) => {
         id={step.uuid}
         parent={parent}
         noToggle={false}
+        actions={actions}
         sx={styles.section}
         formatHeader={false}
         type={ESectionType.step}
@@ -88,36 +99,6 @@ export const Step = (props:TStep) => {
             expressions={expressions}
           />
         )}
-        actions={[
-          (
-            <DeleteAct
-              onClick={onRemoveStep}
-              type={ESectionType.step}
-              key={`gb-step-remove-step-action`}
-            />
-          ),
-          (
-            <CollapseAct
-              type={ESectionType.step}
-              onClick={onCollapseExcept}
-              key={`gb-step-collapse-step-action`}
-            />
-          ),
-          (
-            <CopyAct
-              onClick={() => {}}
-              type={ESectionType.step}
-              key={`gb-step-copy-step-action`}
-            />
-          ),
-          (
-            <PlayAct
-              onClick={() => {}}
-              type={ESectionType.step}
-              key={`gb-step-play-step-action`}
-            />
-          ),
-        ].filter(Boolean)}
       >
         <StepContent className='gb-step-content' >
           <StepGrid

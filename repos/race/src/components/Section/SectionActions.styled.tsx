@@ -15,7 +15,6 @@ const actionCss = {
 }
 
 export const SectionActs = styled(Box)`
-  opacity: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,3 +22,9 @@ export const SectionActs = styled(Box)`
 `
 export const SectionActBtn = styled(Button)(actionCss.button)
 export const SectionActIcnBtn = styled(IconButton)(actionCss.button)
+
+export const SectionMenuContainer = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`

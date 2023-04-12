@@ -116,7 +116,13 @@ export const Section = (props:TSection) => {
                 showExpandIcon={showExpandIcon}
                 headerContentSx={headerContentSx}
                 id={`${parent.uuid}-${id || uuid}`}
-                actions={<SectionActions actions={actions} />}
+                actions={(
+                  <SectionActions
+                    id={id}
+                    type={type}
+                    actions={actions}
+                  />
+                )}
                 headerText={isStr(label) && formatHeader ? wordCaps(label) : label}
                 className={cls(
                   `gb-section-dropdown`,

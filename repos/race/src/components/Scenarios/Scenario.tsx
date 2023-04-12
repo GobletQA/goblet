@@ -2,17 +2,12 @@ import type { MutableRefObject, CSSProperties } from 'react'
 import type { TRaceScenarioParent, TRaceStep, TRaceScenario } from '@GBR/types'
 
 import { Steps } from '../Steps'
-import { AddAct } from '../Actions/Add'
-import { PlayAct } from '../Actions/Play'
-import { CopyAct } from '../Actions/Copy'
-import { DeleteAct } from '../Actions/Delete'
 import { EditTitle } from '../Title/EditTitle'
 import { EmptySteps } from '../Steps/EmptySteps'
-import { StepAddIcon } from '@gobletqa/components'
-import { EditTitleAct } from '../Actions/EditTitle'
 import { Section, SectionHeader } from '../Section'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { useEditSectionTitle } from '@GBR/hooks/useEditSectionTitle'
+import { useSectionActions } from '@GBR/hooks/editor/useSectionActions'
 import { useScenarioActions } from '@GBR/hooks/actions/useScenarioActions'
 
 export type TScenario = {
@@ -72,10 +67,21 @@ export const Scenario = (props:TScenario) => {
     },
   })
 
+  const actions = useSectionActions({
+    onPlay,
+    editingTitle,
+    toggleEditTitle,
+    onCopy: onCopyScenario,
+    onRemove: onRemoveScenario,
+    onAddStep: onAddScenarioStep,
+    type: ESectionType.scenario,
+  })
+
   return (
     <Section
       id={scenarioId}
       parent={parent}
+      actions={actions}
       sx={styles.section}
       formatHeader={false}
       show={Boolean(scenario)}
@@ -91,46 +97,6 @@ export const Scenario = (props:TScenario) => {
           type={ESectionType.scenario}
         />
       )}
-      actions={[
-        (
-          <EditTitleAct
-            label={`Description`}
-            editing={editingTitle}
-            onClick={toggleEditTitle}
-            type={ESectionType.scenario}
-            key={`gb-scenario-edit-title-action`}
-          />
-        ),
-        (
-          <AddAct
-            Icon={StepAddIcon}
-            onClick={onAddScenarioStep}
-            type={ESectionType.step}
-            key={`gb-scenario-add-step-action`}
-          />
-        ),
-        (
-          <DeleteAct
-            onClick={onRemoveScenario}
-            type={ESectionType.scenario}
-            key={`gb-scenario-remove-action`}
-          />
-        ),
-        (
-          <CopyAct
-            onClick={onCopyScenario}
-            type={ESectionType.scenario}
-            key={`gb-rule-copy-scenario-action`}
-          />
-        ),
-        (
-          <PlayAct
-            onClick={onPlay}
-            type={ESectionType.scenario}
-            key={`gb-background-play-action`}
-          />
-        ),
-      ]}
     >
     
     {showTitle && (

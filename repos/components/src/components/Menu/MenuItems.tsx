@@ -7,10 +7,18 @@ import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import { useInline } from '@GBC/hooks/components/useInline'
 
+const defIconProps = {
+  sx: {
+    heigh: `20px`,
+    width: `20px`,
+  }
+}
+
 export type TMenuItem = {
   key?:string
   id?:string
   text?:string
+  label?:string
   closeMenu?:boolean
   children?:ReactNode
   iconProps?:ComponentProps<any>
@@ -27,13 +35,14 @@ export type TMenuItems = {
 
 export const MenuItem = (props:TMenuItem) => {
   const {
-    text,
+    label,
     Icon,
     onClick,
     children,
-    iconProps,
+    text=label,
     onCloseMenu,
     closeMenu=true,
+    iconProps=defIconProps,
   } = props
   
   const onItemClick = useInline((event:MouseEvent<HTMLElement>) => {
@@ -46,7 +55,10 @@ export const MenuItem = (props:TMenuItem) => {
 
       {Icon && (
         <ListItemIcon>
-          <RenderType Component={Icon} props={iconProps} />
+          <RenderType
+            Component={Icon}
+            props={iconProps}
+          />
         </ListItemIcon>
       ) || null}
 
