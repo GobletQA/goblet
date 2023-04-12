@@ -127,7 +127,7 @@ export const Rule = (props:TRule) => {
         onChangeStep={onChangeScenarioStep}
         onRemoveStep={onRemoveScenarioStep}
       />
-      {isNamed && (
+      {isNamed && !rule?.scenarios?.length && (
         <EmptyScenarios
           parent={rule}
           onAdd={onAddScenario}

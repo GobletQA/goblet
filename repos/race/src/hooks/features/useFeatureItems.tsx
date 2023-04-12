@@ -46,6 +46,7 @@ export const useFeatureItems = (props:THFeatureItems) => {
       },
       {
         ...GeneralItem,
+        dividerTop: true,
         onClick: () => toggleMeta(),
         Icon: settings?.displayMeta ? NoteMinusIcon : NotePlusIcon,
         text: settings?.displayMeta ? `Hide General` : `Show General`,

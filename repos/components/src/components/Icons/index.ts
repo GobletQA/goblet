@@ -40,6 +40,7 @@ export * from './PencilMinusIcon'
 export * from './GitlabIcon'
 export * from './CollapseAllIcon'
 
+// export * from './TextboxOutlineIcon'
 // export * from './CancelIcon'
 
 // -- TODO - Use for dragging on top of the browser

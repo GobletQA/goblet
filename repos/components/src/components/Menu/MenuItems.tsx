@@ -1,7 +1,9 @@
 
 import type { ComponentProps, ReactNode, ComponentType, MouseEvent } from 'react'
 
+import { Fragment } from 'react'
 import { RenderType } from '../RenderType'
+import Divider from '@mui/material/Divider'
 import MuiMenuItem from '@mui/material/MenuItem'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
@@ -19,6 +21,8 @@ export type TMenuItem = {
   id?:string
   text?:string
   label?:string
+  dividerTop?:boolean
+  dividerBottom?:boolean
   closeMenu?:boolean
   children?:ReactNode
   iconProps?:ComponentProps<any>
@@ -85,12 +89,15 @@ export const MenuItems = (props:TMenuItems) => {
       {
         items.map((item) => {
           return (
-            <MenuItem
-              key={item.key || item.id || item.text}
-              {...item}
-              onCloseMenu={onCloseMenu}
-              closeMenu={autoClose || item.closeMenu}
-            />
+            <Fragment key={item.key || item.id || item.text} >
+              {item.dividerTop && <Divider />}
+              <MenuItem
+                {...item}
+                onCloseMenu={onCloseMenu}
+                closeMenu={autoClose || item.closeMenu}
+              />
+              {item.dividerBottom && <Divider />}
+            </Fragment>
           )
         })
       }

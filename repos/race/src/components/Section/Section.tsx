@@ -94,15 +94,17 @@ export const Section = (props:TSection) => {
         isExpanded && `gb-section-dropdown-expanded`
       )}
     >
+
       {hasDragHandle && (
         <SectionDragHandle
           type={type}
           sx={dragHandleSx}
+          disabled={!hasDragHandle}
           parentTypes={parentTypes}
           dragHandleRef={dragHandleRef}
           containerSx={dragHandleContainerSx}
         />
-      )}
+      ) || null}
 
       { show
           ? (

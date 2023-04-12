@@ -106,6 +106,7 @@ export const useSectionActions = (props:THSectionActions) => {
       && actions.push({
           type,
           onClick: onPlay,
+          dividerTop: true,
           label: `Play ${typeCaps}`,
           Icon: PlayCircleOutlineIcon,
           key: `gb-${type}-play-action`,
@@ -127,6 +128,7 @@ export const useSectionActions = (props:THSectionActions) => {
     return exists(editingTitle) && exists(toggleEditTitle)
       ? ([{
           type,
+          dividerBottom: true,
           label: `Edit Description`,
           onClick: toggleEditTitle,
           key: `gb-${type}-edit-title-action`,

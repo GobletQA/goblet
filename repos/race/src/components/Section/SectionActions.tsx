@@ -27,6 +27,8 @@ export type TSectionActionMeta = {
   disabled?:boolean
   closeMenu?:boolean
   children?:ReactNode
+  dividerTop?:boolean
+  dividerBottom?:boolean
   iconProps?:ComponentProps<any>
   onClick?:(...args:any[]) => void
   Icon?:ReactNode|ComponentType<any>
