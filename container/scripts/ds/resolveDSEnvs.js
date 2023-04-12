@@ -13,6 +13,7 @@ const ePreFix = getEnvPrefix()
   const [repo, ...fromSecrets] = process.argv.slice(2)
 
   let dsEnvs = [
+    addEnv(`PWDEBUG`, `console`),
     addEnv(`${ePreFix}SUB_REPO`, repo).trimStart(),
     addEnv(`${ePreFix}VNC_ACTIVE`, `"true"`),
   ].join(``)

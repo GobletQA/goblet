@@ -123,6 +123,7 @@ ENV DEBUG_FILE=$DEBUG_FILE \
     HOME=/root \
     DISPLAY=:0.0 \
     DEBUG=pw:* \
+    PWDEBUG=console \
     LC_ALL=C.UTF-8 \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \

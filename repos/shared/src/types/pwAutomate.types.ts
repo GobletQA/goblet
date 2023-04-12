@@ -15,6 +15,11 @@ export type TAutomateOpts = {
   highlightStyles: Record<string, string|number>
 }
 
+export type TUserAutomateOpts = {
+  selectorType?: string
+  disabledEvents?:boolean
+}
+
 export type TAutomateCleanupCB = (automate:Automate) => void
 
 export type TOnAutomateEvent = <T>(event:TAutomateEvent<T>) => void
@@ -48,4 +53,3 @@ export type TAutomateElementEvent = TAutomatePageEvent & {
   selectedIndex?:number
   elementChecked?:boolean
 }
-

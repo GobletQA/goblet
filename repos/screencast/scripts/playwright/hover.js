@@ -57,14 +57,16 @@ const addListener = (styles) => {
 
 const elementSelectEvent = (options, e) => {
 
-
-  e.stopPropagation()
-  e.preventDefault()
-  
   options = options || {}
 
   // TODO: use selector type to choose between selecting text or an css selector
   const selectorType = options.selectorType
+
+  if(options.disabledEvents !== false){
+    e.stopPropagation()
+    e.preventDefault()
+    e.stopImmediatePropagation()
+  }
 
   const event = {
     type: e.type,

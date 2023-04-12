@@ -57,7 +57,8 @@ export const useContextMenu = () => {
             })
 
             const data = await automateBrowser({
-              selectorType: active.kind
+              disabledEvents: true,
+              selectorType: active.kind,
             })
 
             const value = resolveValue(active, data)

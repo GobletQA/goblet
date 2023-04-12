@@ -116,6 +116,7 @@ const buildEvent = (e, disableClick=true) => {
     // TODO: @lance-tipton - Add options to enable/disable when recording
     e.stopPropagation()
     e.preventDefault()
+    e.stopImmediatePropagation()
   }
 
   const event = {

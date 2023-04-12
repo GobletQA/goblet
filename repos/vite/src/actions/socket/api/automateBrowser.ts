@@ -1,4 +1,4 @@
-import type { TSelectFromBrowserRespEvent } from '@types'
+import type { TUserAutomateOpts, TSelectFromBrowserRespEvent } from '@types'
 
 import { EBrowserState } from '@types'
 import { noOpObj } from '@keg-hub/jsutils'
@@ -18,7 +18,7 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
  * Add listener the fires when the user clicks the dom
  *
  */
-export const automateBrowser = (options:Record<string, any> = noOpObj) => {
+export const automateBrowser = (options:TUserAutomateOpts = noOpObj) => {
 
   /**
    * TODO - Need to add some type of cancel / timeout if there's an error

@@ -17,6 +17,14 @@ const positionInNodeList = (el, nodeList) => {
   return -1
 }
 
+/**
+ * Checks if the window.playwright object exists
+ */
+const hasPlaywright = () => {
+  return typeof window.playwright !== undefined
+    && typeof window.playwright.selector === `function`
+}
+
 const searchUpDomTree = (el, doc, selector) => {
 
   // Check unique with just the selector
@@ -92,7 +100,6 @@ const uniqueByClassName = (el, doc) => {
   }
 }
 
-
 /**
  * Tries to generate a unique selector for the passed in element
  * Uses shortcuts where possible through the element.id or element tagName
@@ -102,6 +109,10 @@ const uniqueByClassName = (el, doc) => {
  *
  */
 const findCssSelector = (el) => {
+
+  // If we have access to the playwright object, use that instead
+  if(window.__hasPlaywright) return window.playwright.selector(el)
+
   const doc = el.ownerDocument
 
   const idSelector = uniqueById(el, doc)
@@ -122,6 +133,7 @@ const findCssSelector = (el) => {
 }
 
 if(typeof window !== 'undefined'){
+  window.__hasPlaywright = hasPlaywright()
   window.__gobletFindCssSelector = findCssSelector
 
   window.__gobletTest && (

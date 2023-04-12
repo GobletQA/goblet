@@ -2,6 +2,7 @@ import type { Express } from 'express'
 import type { Socket } from 'socket.io'
 import type {
   SocketManager,
+  TUserAutomateOpts,
   TSocketEvtCBProps,
 } from '@GSC/types'
 
@@ -11,7 +12,7 @@ import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 const onBrowserAutomate = async (
-  data:Record<any, any>,
+  data:TUserAutomateOpts,
   socket:Socket,
   Manager:SocketManager,
   app:Express

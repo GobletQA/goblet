@@ -72,6 +72,7 @@ ENV HOME=/root \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
     DEBUG=pw:* \
+    PWDEBUG=console \
     DEBUG_FILE=$DEBUG_FILE \
     DEBIAN_FRONTEND=noninteractive \
     GB_FE_PORT=$GB_FE_PORT \

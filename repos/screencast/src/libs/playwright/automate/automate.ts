@@ -4,6 +4,7 @@ import type {
   TAutomateConfig,
   TAutomateParent,
   TOnAutomateEvent,
+  TUserAutomateOpts,
   TAutomateCleanupCB,
   TAutomatePageEvent,
   TAutomateElementEvent,
@@ -20,11 +21,6 @@ import { addPWInitScripts } from '../helpers/addPWInitScripts'
 import { exposePWFunction } from '../helpers/exposePWFunction'
 
 import { PWAutomateEvent } from '@GSC/constants'
-
-type TSelectElementOpts = {
-  selectorType?: string
-}
-
 
 export class Automate {
 
@@ -90,7 +86,7 @@ export class Automate {
 
   static turnOnElementSelect = async (
     pwComponents:Partial<TPWComponents>,
-    options?:TSelectElementOpts
+    options?:TUserAutomateOpts
   ) => {
     Logger.info(`Automate - Turning on browser element select`)
 
@@ -121,7 +117,7 @@ export class Automate {
 
   static getPageUrl = async (
     pwComponents:Partial<TPWComponents>,
-    options?:TSelectElementOpts
+    options?:TUserAutomateOpts
   ) => {
     Logger.info(`Automate - Getting active page URL`)
     const parent = Automate.getParent(pwComponents)
@@ -248,7 +244,7 @@ export class Automate {
 
   selectPageElementOn = async (
     page?:TBrowserPage,
-    options?:TSelectElementOpts
+    options?:TUserAutomateOpts
   ) => {
     page = page || Automate.getPage(this)
 
@@ -260,7 +256,7 @@ export class Automate {
   
   pageUrl = async (
     page?:TBrowserPage,
-    options?:TSelectElementOpts
+    options?:TUserAutomateOpts
   ) => {
     page = page || Automate.getPage(this)
     const url = page.url()
