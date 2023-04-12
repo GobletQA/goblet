@@ -3,6 +3,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 import { When } from '@GTU/Parkin'
 import { get } from '@keg-hub/jsutils'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Sets the input text of selector to data
@@ -36,6 +37,8 @@ export const setText = async (
 }
 
 const meta = {
+  name: `Set text`,
+  alias: [],
   module: `setText`,
   examples: [
     `When I set the element "input[name=email]" text to "my.name@company.com"`
@@ -43,18 +46,24 @@ const meta = {
   description: `Locates input element by selector and replaces existing value, if any, to the desired text.`,
   expressions: [
     {
-      type: `string`,
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.element,
       description: `The selector for a single input element.`,
       example: `#search`,
     },
     {
-      type: `string`,
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.text,
       description: `Desired text of the element.`,
       example: `I desire to type this text.`,
     },
   ],
+  race: true
 }
 
 When(`I set {string} to {string}`, setText, meta)
-When(`I set the element {string} text to {string}`, setText, meta)
+When(`I set the element {string} text to {string}`, setText, {
+  ...meta,
+  race: false
+})
 

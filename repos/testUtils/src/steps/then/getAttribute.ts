@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Checks that element, matching `selector`, has an attribute matching `attribute`, and that the value of the attribute matches `value`
@@ -41,24 +42,33 @@ export const getAttribute = async (
 }
 
 Then('the element {string} attribute {string} is {string}', getAttribute, {
+  name: `Check Attribute`,
+  alias: [
+    `Validate Attribute`,
+    `Get Attribute`
+  ],
   module: `getAttribute`,
   description: `Locates element by selector and verifies the expected attribute value.`,
   expressions: [
     {
-      type: 'string',
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.element,
       description: `The element selector.`,
       example: 'button.pageBackward',
     },
     {
-      type: 'string',
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.attribute,
       description: `The element attribute.`,
-      example: 'disabled',
+      example: `disabled`,
     },
     {
-      type: 'string',
-      description: 'The expected attribute value.',
-      example: 'true',
+      kind: ExpressionKinds.boolean,
+      type: ExpressionTypes.boolean,
+      description: `The expected attribute value.`,
+      example: `true`,
     },
   ],
+  race: true
 })
 

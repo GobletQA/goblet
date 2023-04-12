@@ -11,7 +11,7 @@ import { ModalFooter } from '@components/ModalManager/ModalFooter'
 import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
 import { gutter, H3, Text, PlugIcon, Loading } from '@gobletqa/components'
 
-const VersionCtrl = lazy(() => import('@gobletqa/components/svgs/VersionCtrl'))
+const VersionCtrl = lazy(() => import('@gobletqa/components/components/Svgs/VersionCtrl'))
 
 const styles:Record<string, CSSProperties> = {
   container: {

@@ -2,7 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Then } from '@GTU/Parkin'
 import { getLocatorContent } from '@GTU/Support/helpers'
-
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Checks that element, matching `selector`, value (input & textarea elements) or textContent, is equal to `data`
@@ -19,6 +19,8 @@ export const exactText = async (
 }
 
 const meta = {
+  name: `Exact Text`,
+  alias: [`Text`],
   module: `exactText`,
   description: `Locates an element by selector and verifies element text matches exactly.`,
   examples: [
@@ -26,17 +28,23 @@ const meta = {
   ],
   expressions: [
     {
-      type: 'string',
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.element,
       description: `The selector for a single element.`,
       example: '#search',
     },
     {
-      type: 'string',
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
       description: `The text of the element to verify.`,
       example: 'cucumber',
     },
   ],
+  race: true
 }
 
 Then('{string} text is {string}', exactText, meta)
-Then('the element {string} text is {string}', exactText, meta)
+Then('the element {string} text is {string}', exactText, {
+  ...meta,
+  race: false
+})

@@ -14,10 +14,13 @@ export const waitForPageLoad = async (world:TWorldConfig) => {
 }
 
 When('I wait for the page to load', waitForPageLoad, {
+  name: `Wait for page load`,
+  alias: [`Page loaded`],
   module: `waitForPageLoad`,
   description: `Waits for load event to fire.\nPreceding step should be something that causes a page load such as a refresh, submitting a form, clicking a link, etc.\nIf the page load event has already fired before reaching this step the step resolves immediately.`,
   examples: [
     `And I wait for the page to load`
-  ]
+  ],
+  race: true
 })
 

@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Then } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 const checkedStates = ['checked', 'unchecked']
 
@@ -37,19 +38,24 @@ Then(
   `the element {string} checked state is {string}`,
     getCheckedState,
   {
+    name: `Is Checked`,
+    alias: [`Checked`, `Clicked`, `Unchecked`],
     module: `getCheckedState`,
     description: `Locates a checkbox element by selector and verifies its checked state, checked or unchecked.`,
     expressions: [
       {
-        type: 'string',
+        type: ExpressionTypes.string,
+        kind: ExpressionKinds.element,
         description: `The selector for the checkbox.  Selector must be specific enough to locate a single element.`,
-        example: "input[name='unique_name']",
+        example: `input[name='unique_name']`,
       },
       {
-        type: 'string',
+        type: ExpressionTypes.string,
+        kind: ExpressionKinds.checkbox,
         description: `Valid options are \'checked\' or \'unchecked\' only.`,
-        example: 'checked',
+        example: `checked`,
       },
     ],
+    race: true
   }
 )

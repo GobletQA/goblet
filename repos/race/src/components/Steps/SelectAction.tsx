@@ -47,11 +47,11 @@ const RenderOption = (
     <Tooltip 
       arrow
       loc='right'
+      key={opt.id}
       title={opt.info}
-      key={(props as Record<`key`, string>).key || opt.id}
     >
       <li {...props} >
-        <div key={opt.id} >
+        <div>
           {opt.label}
         </div>
       </li>

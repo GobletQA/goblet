@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Checks that the page url matches the passed in url
@@ -15,7 +16,12 @@ export const assertUrl = async (url:string, world:TWorldConfig) => {
 }
 
 const meta = {
+  name: `Assert Url`,
   module: `assertUrl`,
+  alias: [
+    `Assert Url`,
+    `Validate Url`,
+  ],
   examples: [
     `Then the url should be "http://www.goblet.com"`,
     `Then the page url is "http://www.goblet.com"`,
@@ -23,13 +29,18 @@ const meta = {
   description: `Asserts the active page url matches the passed in value`,
   expressions: [
     {
-      type: 'string',
+      kind: ExpressionKinds.url,
+      type: ExpressionTypes.string,
+      example: `http://www.gobletqa.com`,
       description: `Url that the active page should match`,
-      example: `http://www.goblet.com`,
     }
-  ]
+  ],
+  race: true
 }
 
-Then('the page url is {string}', assertUrl, meta)
+Then('the page url is {string}', assertUrl, {
+  ...meta,
+  race: false
+})
 Then('the url should be {string}', assertUrl, meta)
 

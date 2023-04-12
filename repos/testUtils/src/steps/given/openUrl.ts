@@ -67,14 +67,14 @@ Given('I navigate to {string}', openUrl, {
   description: `Navigates to the given website within the browser.\nRequires an absolute URL but the URL can be dynamicly constructed. See examples below for usage.\nPages that return a status code, even a 404, will pass.  Pages that don\'t return a status code will fail.`,
   expressions: [
     {
-      type: ExpressionTypes.string,
       kind: ExpressionKinds.url,
-      example: 'https://my.website.com',
+      type: ExpressionTypes.string,
+      example: `http://www.gobletqa.com`,
       description: `URL/URI of the website the browser should navigate to.`,
     },
   ],
   examples: [
-    `Given I navigate to "https://www.simpleviewinc.com"`,
+    `Given I navigate to "https://www.gobletqa.com"`,
     `Given I navigate to "$world.myURL/nav/assets/images"`,
     `Given I navigate to "$$myURL?testUrlParam=1"`,
     `Given I navigate to "$world.myURL/search?q=cms"`

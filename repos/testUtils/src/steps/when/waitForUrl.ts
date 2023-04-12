@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Returns when the required load state has been reached.
@@ -14,13 +15,27 @@ export const waitForUrl = async (url:string, world:TWorldConfig) => {
 }
 
 const meta = {
+  name: `Wait for url`,
+  alias: [`Url loaded`],
   module: `waitForUrl`,
   description: `Waits for the browser url to match the passed in expression.\nNote that if the expression does not contain wildcard characters (i.e. *); the page will wait for a URL that is exactly equal to the expression.`,
   examples: [
     `And I wait for the url https://www.gobletqa.com`,
     `And I wait for the url to match **/gobletqa.com/**`,
-  ]
+  ],
+  expressions: [
+    {
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
+      example: `https://www.gobletqa.com`,
+      description: `The url that of the page once it has loaded`,
+    },
+  ],
+  race: true
 }
 
 When(`I wait for the url {word}`, waitForUrl, meta)
-When(`I wait for the url to match {word}`, waitForUrl, meta)
+When(`I wait for the url to match {word}`, waitForUrl, {
+  ...meta,
+  race: false
+})

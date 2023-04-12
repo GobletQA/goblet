@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Expects the number of dom elements matching `selector` to equal `count`
@@ -19,18 +20,26 @@ export const elementCount = async (
 }
 
 Then('the count of {string} is/equals {int}', elementCount, {
+  name: `Element Count`,
+  alias: [
+    `Number of Element`,
+    `Total Elements`
+  ],
   module: `elementCount`,
   description: `Locates elements by selector and verifies count.`,
   expressions: [
     {
-      type: 'string',
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
       description: `The selector for the elements.`,
       example: 'div.listing',
     },
     {
-      type: 'int',
+      type: ExpressionTypes.int,
+      kind: ExpressionKinds.number,
       description: `Integer.  The count to verify.`,
       example: '5',
     },
   ],
+  race: true
 })

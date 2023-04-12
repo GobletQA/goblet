@@ -227,7 +227,7 @@ export const darkTheme = {
     [`tab.unfocusedActiveForeground`]: colors.purple02,
     [`tab.unfocusedInactiveForeground`]: colors.purple02,
 
-    [`editorGroup.background`]: colors.black09,
+    // [`editorGroup.background`]: colors.black09,
     [`editorGroupHeader.tabsBorder`]: colors.black10,
     [`editorGroupHeader.tabsBackground`]: colors.black09,
     [`editorGroupHeader.noTabsBackground`]: colors.black09,

@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Expects the element matching `selector` and verifies selected options === `data`
@@ -37,27 +38,35 @@ export const getSelectedOption = async (
 // })
 
 Then(
-  'the select {string} selected option(s) is/are {string} by {string}',
+  `the select {string} selected option(s) is/are {string} by {string}`,
   getSelectedOption,
   {
+    name: `Selected Options`,
+    alias: [`Selected`, `Options`],
     module: `getSelectedOption`,
     description: `Locates a select element by selector and verifies its selected options.  Can verify options by option label or option value.`,
     expressions: [
       {
-        type: 'string',
+        // TODO: Add ability to only select <select> elements from the dom
+        // kind: ExpressionKinds.select,
+        kind: ExpressionKinds.element,
+        type: ExpressionTypes.string,
         description: `The selector for the select element.  Selector must be specific enough to locate a single element.`,
-        example: "select[name='unique_name']",
+        example: `select[name='unique_name']`,
       },
       {
-        type: 'string',
+        kind: ExpressionKinds.text,
+        type: ExpressionTypes.string,
         description: `Comma delimited list of expected selected option(s).  Can be option labels or values.`,
-        example: 'California, Oregon, Washington',
+        example: `California, Oregon, Washington`,
       },
       {
-        type: 'string',
+        kind: ExpressionKinds.text,
+        type: ExpressionTypes.string,
         description: `Valid options are \'label\' or \'value\' only.`,
-        example: 'value',
+        example: `value`,
       },
     ],
+    race: true
   }
 )

@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Simply waits `num` seconds before continuing to next step
@@ -14,6 +15,8 @@ export const wait = async (num:number, world:TWorldConfig) => {
 }
 
 const meta = {
+  name: `Wait`,
+  alias: [`wait seconds`, `wait time`, `timeout`],
   module: `wait`,
   description: `Wait for given amount of time, in seconds, before proceeding to the next step.\nCannot exceed 5 seconds.`,
   examples: [
@@ -22,11 +25,16 @@ const meta = {
   expressions: [
     {
       example: 5,
-      type: `int`,
+      type: ExpressionTypes.int,
+      kind: ExpressionKinds.number,
       description: `Amount of time to wait in seconds.`,
     },
   ],
+  race: true
 }
 When(`I wait {int} second(s)`, wait, meta)
-When(`I wait for {int} second(s)`, wait, meta)
+When(`I wait for {int} second(s)`, wait, {
+  ...meta,
+  race: false
+})
 
