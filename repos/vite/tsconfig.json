@@ -57,6 +57,8 @@
       "@gobletqa/shared/*": [ "../shared/src/*" ],
       "@gobletqa/workflows": [ "../workflows/src" ],
       "@gobletqa/workflows/*": [ "../workflows/src/*" ],
+      "@gobletqa/components/svgs": ["../components/src/components/Svgs"],
+      "@gobletqa/components/svgs/*": ["../components/src/components/Svgs/*"],
       "@gobletqa/components": ["../components/src"],
       "@gobletqa/components/*": ["../components/src/*"],
       "GobletRoot": ["../../"]

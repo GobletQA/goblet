@@ -4,15 +4,14 @@ import type { TModalFooter, TModalComponent, TModalRef } from '@types'
 
 import Box from '@mui/material/Box'
 import { useContainer } from '@store'
-import { Loading } from '@gobletqa/components'
 import { lazy, Suspense, useMemo } from 'react'
 import { EModalTypes, EContainerState } from '@types'
 import { ConnectForm } from '@components/Forms/ConnectForm'
 import { ModalFooter } from '@components/ModalManager/ModalFooter'
 import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
-import { gutter, H3, Text, PlugIcon } from '@gobletqa/components'
+import { gutter, H3, Text, PlugIcon, Loading } from '@gobletqa/components'
 
-const VersionCtrl = lazy(() => import('@components/Svgs/VersionCtrl'))
+const VersionCtrl = lazy(() => import('@gobletqa/components/svgs/VersionCtrl'))
 
 const styles:Record<string, CSSProperties> = {
   container: {

@@ -43,6 +43,8 @@
       "@GBR/utils/*": [ "src/utils/*" ],
       "@GBR/workers": [ "src/workers" ],
       "@GBR/workers/*": [ "src/workers/*" ],
+      "@gobletqa/components/svgs": ["../components/src/components/Svgs"],
+      "@gobletqa/components/svgs/*": ["../components/src/components/Svgs/*"],
       "@gobletqa/components": ["../components/src"],
       "@gobletqa/components/*": ["../components/src/*"],
       "@gobletqa/shared": [ "../shared/src" ],

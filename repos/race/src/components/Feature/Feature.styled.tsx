@@ -1,13 +1,9 @@
 import { Stack } from '../Section'
 import Box from '@mui/material/Box'
-import List from '@mui/material/List'
 import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
-import ListItem from '@mui/material/ListItem'
-import Grid from '@mui/material/Unstable_Grid2'
-import ListItemIcon from '@mui/material/ListItemIcon'
-import ListItemText from '@mui/material/ListItemText'
-import { colors, gutter, dims, H3 } from '@gobletqa/components'
+import { colors, gutter, BlockIcon, dims, H3, H4, Text } from '@gobletqa/components'
 
 const { race } = dims
 
@@ -16,12 +12,11 @@ export const FeatureStack = styled(Stack)`
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: none;
-    
-    // background - #f9f8fb / dots - gray01
+
     background: linear-gradient(90deg, var(--goblet-editorGroup-background) 23px, transparent 1%) center, linear-gradient(var(--goblet-editorGroup-background) 23px, transparent 1%) center, var(--goblet-editor-border);
+
     background-size: 25px 25px;
     scrollbar-gutter: stable both-edges;
-
 
     ::-webkit-scrollbar-track {
       background-color: transparent;
@@ -37,13 +32,14 @@ export const FeatureStack = styled(Stack)`
     }
     
     & > .gb-section-stack-content {
-      height: auto;
+      height: 100%;
       padding-bottom: 100px;
     }
 `
 
 export const FeatureContent = styled(Box)`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
 `
@@ -106,31 +102,44 @@ export const HeaderText = styled(H3)`
   color: var(--goblet-editor-foreground);
 `
 
-export const EmptyFeatureGrid = styled(Grid)``
-
-export const EmptyList = styled(List)`
-  padding-left: 0px;
-  padding-right: 0px;
-`
-export const EmptyItem = styled(ListItem)`
+export const EmptyFeatureContent = styled(Box)`
+  flex: 1;
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: start;
-  justify-content: start;
-  flex-direction: column;
-
-  padding-left: 0px;
-  padding-right: 0px;
+  align-items: center;
+  justify-content: center;
+}
 `
 
-
-export const EmptyItemIcon = styled(ListItemIcon)``
-export const EmptyItemText = styled(ListItemText)``
-export const EmptyItemTextContainer = styled(Box)`
-  padding-left: 20px;
-  padding-right: 20px;
+export const EmptyFeatureTextContainer = styled(Box)`
+  width: 100%;
+  margin-left: ${gutter.margin.dpx};
+  margin-right: ${gutter.margin.dpx};
+  padding: ${gutter.padding.dpx};
+  padding-bottom: ${gutter.padding.dpx};
+  padding-top: ${gutter.padding.size * 3}px;
 `
 
-export const FeatureInfoTextContainer = styled(Box)``
-export const FeatureInfoGrid = styled(Grid)``
-export const FeatureInfoGridLeft = styled(Grid)``
-export const FeatureInfoGridRight = styled(Grid)``
+export const EmptyFeatureHeaderText = styled(H4)`
+  display: flex;
+  font-size: 20px;
+  text-align: center;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: ${gutter.padding.hpx};
+  color: var(--goblet-tab-inactiveForeground);
+`
+
+export const EmptyFeatureText = styled(Text)`
+  width: 100%;
+  font-size: 16px;
+  text-align: center;
+  color: var(--goblet-editor-foreground);
+`
+
+export const EmptyFeatureIcon = styled(BlockIcon)`
+  margin-right: 5px;
+  // color: ${colors.cardinal};
+`

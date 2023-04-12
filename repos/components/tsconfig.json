@@ -19,6 +19,8 @@
     "paths": {
       "@theme": ["src/theme"],
       "@theme/*": ["src/theme/*"],
+      "@GBC/assets": [ "src/assets" ],
+      "@GBC/assets/*": [ "src/assets/*" ],
       "@GBC/actions": [ "src/actions" ],
       "@GBC/actions/*": [ "src/actions/*" ],
       "@GBC/components": [ "src/components" ],

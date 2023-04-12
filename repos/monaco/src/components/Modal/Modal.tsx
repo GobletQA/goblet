@@ -83,7 +83,7 @@ const wrapActions = (
     onCancel && ({
       color: `error`,
       variant: `contained`,
-      startIcon: `CancelIcon`,
+      startIcon: `CloseIcon`,
       text: cancelText || `CANCEL`,
       sx: { marginRight: `12px`, minWidth: `100px` },
       onClick: async (...args:any) => {
