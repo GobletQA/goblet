@@ -21,8 +21,8 @@ const positionInNodeList = (el, nodeList) => {
  * Checks if the window.playwright object exists
  */
 const hasPlaywright = () => {
-  return typeof window.playwright !== undefined
-    && typeof window.playwright.selector === `function`
+  return typeof playwright !== undefined
+    && typeof playwright.selector === `function`
 }
 
 const searchUpDomTree = (el, doc, selector) => {
@@ -111,7 +111,7 @@ const uniqueByClassName = (el, doc) => {
 const findCssSelector = (el) => {
 
   // If we have access to the playwright object, use that instead
-  if(window.__hasPlaywright) return window.playwright.selector(el)
+  if(hasPlaywright()) return window.playwright.selector(el)
 
   const doc = el.ownerDocument
 
@@ -133,7 +133,6 @@ const findCssSelector = (el) => {
 }
 
 if(typeof window !== 'undefined'){
-  window.__hasPlaywright = hasPlaywright()
   window.__gobletFindCssSelector = findCssSelector
 
   window.__gobletTest && (

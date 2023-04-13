@@ -35,22 +35,24 @@ const meta = {
       type: ExpressionTypes.string,
       kind: ExpressionKinds.selector,
       description: `The selector of an element that exists on the page`,
-      example: "button[name='btn-name']",
+      example: `button[name='btn-name']`,
     },
   ],
 }
 
-When('I click {string}', clickElementHandler, {
+When(`I click {string}`, clickElementHandler, {
   ...meta,
   name: `Click page element`,
   alias: [`Touch`, `Press`],
   info: `Action to simulate clicking, touching, or pressing an element on the page`,
   race: true
 })
-When('I click the {string}', clickElementHandler, meta)
-When('I click the element {string}', clickElementHandler, meta)
-When('I click the page', async (world:TWorldConfig) => await clickElementHandler(`body`, world), {
+When(`I click the {string}`, clickElementHandler, meta)
+When(`I click the element {string}`, clickElementHandler, meta)
+When(`I click the page`, async (world:TWorldConfig) => await clickElementHandler(`body`, world), {
   ...meta,
+  name: `Click page`,
   expressions: [],
   examples: [`When I click the page`],
+  race: true
 })

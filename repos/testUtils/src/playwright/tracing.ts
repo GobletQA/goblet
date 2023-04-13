@@ -15,13 +15,6 @@ import {
   ensureRepoArtifactDir,
 } from '@GTU/Playwright/generatedArtifacts'
 
-type TWithGobletTracing = {
-  __goblet?: {
-    tracing?: boolean
-  }
-}
-
-export type TBrowserContextTracing = TBrowserContext & TWithGobletTracing
 
 /**
  * Helper to check is tracing is disabled
@@ -39,7 +32,7 @@ const tracingDisabled = () => {
  *
  * @returns <boolean|void>
  */
-export const startTracing = async (context?:TBrowserContextTracing) => {
+export const startTracing = async (context?:TBrowserContext) => {
   if(!context || tracingDisabled()) return
 
   await context.tracing.start(get(global, `__goblet.options.tracing`, noOpObj))
@@ -53,7 +46,7 @@ export const startTracing = async (context?:TBrowserContextTracing) => {
  *
  * @returns <boolean|void>
  */
-export const startTracingChunk = async (context?:TBrowserContextTracing) => {
+export const startTracingChunk = async (context?:TBrowserContext) => {
   if(!context || context?.__goblet?.tracing || tracingDisabled()) return
 
   await context.tracing.startChunk()

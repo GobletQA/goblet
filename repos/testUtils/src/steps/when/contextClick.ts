@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Click the element matching `selector`
@@ -33,13 +34,18 @@ const meta = {
   description: `Gets the page context, locate an element by selector and click it within the context of the page.\nThere are times finding an element in not consistent due to its dynamic nature. For example a dynamically created drop-down menu, with items that only exist when the menu is active. This common in component libraries such as Material UI.\nIf the test is having issues with clicking an element, using this step could help.`,
   expressions: [
     {
-      type: 'string',
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.element,
       description: `The element selector.  Selector must be specific enough to locate a single element.`,
       example: "button[name='unique_name']",
     },
   ],
+  race: true
 }
 
 When(`I click {string} in context`, contextClick, meta)
-When(`I click the {string} in context`, contextClick, meta)
+When(`I click the {string} in context`, contextClick, {
+  ...meta,
+  race: false
+})
 

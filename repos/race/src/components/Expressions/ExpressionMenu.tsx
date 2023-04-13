@@ -1,5 +1,5 @@
-import type { TMenuItem } from '@gobletqa/components'
 import type { TMenuContextRef } from '@GBR/types'
+import type { THMenuItems } from '@GBR/hooks/menuContext/useMenuItems'
 
 import {
   Menu,
@@ -11,7 +11,7 @@ import { useMenuItems } from '@GBR/hooks/menuContext/useMenuItems'
 export type TExpressionMenu = TMenuContextRef & {
   id:string
   parentId:string
-  items: TMenuItem[]
+  items: THMenuItems[`items`]
   onChange:(...args:any[]) => any
 }
 

@@ -1,4 +1,4 @@
-import type { TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
+import type { TBrowserContext, TBrowserPage } from './pw.types'
 
 // Exported from screencast/src/types
 import type { Automate } from '@gobletqa/screencast'

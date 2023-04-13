@@ -84,7 +84,7 @@ const docPull = async (args) => {
 
   log && Logger.pair(`Running Cmd:`, `docker pull ${imgName}\n`)
 
-  const output = await docker.pull(imgName)
+  const output = await docker.pull(imgName, undefined, undefined)
   if(!log) return
 
   output

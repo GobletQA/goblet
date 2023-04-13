@@ -10,6 +10,7 @@ export const ExpressionTypes = deepFreeze<Record<string, string>>(
     `number`,
     `object`,
     `array`,
+    `boolean`
   ])
 )
 
@@ -21,7 +22,11 @@ export const ExpressionKinds = deepFreeze<Record<string, string>>(
     `group`,
     `alias`,
     `number`,
-    `element`,
+    `boolean`,
     `selector`,
+    `element`,
+    `select`,
+    `attribute`, // - Any element attribute
+    `checkbox`, // - checked || unchecked/ 
   ])
 )

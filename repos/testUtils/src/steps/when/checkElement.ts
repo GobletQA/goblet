@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Checks/unchecks the element matching the selector
@@ -18,6 +19,8 @@ export const checkElement = async (
 }
 
 const meta = {
+  name: `Select the input`,
+  alias: [`radio`, `check`, `checkbox`],
   module: `checkElement`,
   description: `Locates a checkbox or radio element by selector and either checks or unchecks it.`,
   examples: [
@@ -25,16 +28,23 @@ const meta = {
   ],
   expressions: [
     {
-      type: 'string',
+      // TODO: allow setting an enum of check of uncheck
+      // type: ExpressionTypes.check
+      kind: ExpressionKinds.check,
+      type: ExpressionTypes.string,
       description: `Valid options are \'check\' or \'uncheck\' only.`,
       example: 'check',
     },
     {
-      type: 'string',
+      // TODO: allow setting enum for check only input elements
+      // kind: ExpressionKinds.check,
+      kind: ExpressionKinds.element,
+      type: ExpressionTypes.string,
       description: `The element selector.  Selector must be specific enough to locate a single element.  Valid for checkbox and radio inputs.`,
       example: "input[name='unique_name']",
     },
   ],
+  race: true
 }
 
 When(`I {string} the element {string}`, checkElement, meta)

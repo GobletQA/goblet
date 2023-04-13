@@ -22,7 +22,7 @@ const meta = {
   name: `Contains Text`,
   alias: [`Has Text`],
   module: `containsText`,
-  description: `Locates an element by selector and verifies element contains text.`,
+  description: `Locates an element by selector and verifies element contains text. If the value is an input element such as an Input, Textarea, or Select, the value of the input is used.`,
   examples: [
     `Then the element "div.temp" contains the text "85°"`,
   ],
@@ -37,7 +37,7 @@ const meta = {
       kind: ExpressionKinds.text,
       type: ExpressionTypes.string,
       description: `The text of the element to verify.`,
-      example: `85°`,
+      example: `the temperature is 85°`,
     },
   ],
   race: true

@@ -1,4 +1,7 @@
 import type { Player } from './player'
+import type { TFeatureAst } from '@ltipton/parkin'
+
+type RunContent = string | string[] | TFeatureAst | TFeatureAst[]
 
 /** --------- TODO --------- */
 // IMPORTANT: Investigate setting up NodeVM
@@ -101,10 +104,10 @@ export class CodeRunner {
   /**
    * Runs the code passed to it via the player
    */
-  run = async (content) => {
+  run = async (content:RunContent) => {
     this.PK = await setupParkin(this)
 
-    await this.PK.run(content)
+    await this.PK.run(content, {})
     const results = await this.PTE.run()
 
     return results

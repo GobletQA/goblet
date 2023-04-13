@@ -35,23 +35,25 @@ const meta = {
       example: `"> [name='my-element']", ".my-button", or "My link text"`,
     },
   ],
+  race: true,
 }
 
-When('I click the link {string}', (
+When(`I click the link {string}`, (
   link:string,
   world:TWorldConfig
 ) => clickElementTypeHandler(`a`, link, world), {
   ...meta,
+  name: `Click link`,
   module: `clickElements - Link`,
   examples: [`When I click the link "my-link"`],
-  
 })
 
-When('I click the button {string}', (
+When(`I click the button {string}`, (
   button:string,
   world:TWorldConfig
 ) => clickElementTypeHandler(`button`, button, world), {
   ...meta,
+  name: `Click button`,
   module: `clickElements - Button`,
   examples: [`When I click the button "Submit"`],
 })

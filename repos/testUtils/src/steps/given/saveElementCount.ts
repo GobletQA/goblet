@@ -1,10 +1,9 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Given } from '@GTU/Parkin'
-import { set } from '@keg-hub/jsutils'
 import { getLocators } from '@GTU/Playwright'
-import { cleanWorldPath } from '@GTU/Support/helpers'
-
+import { saveWorldData } from '@GTU/Support/helpers'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Expects the number of dom elements matching `selector` to equal `count`
@@ -17,28 +16,30 @@ export const saveElementCount = async (
   world:TWorldConfig
 ) => {
 
-  const cleaned = cleanWorldPath(worldPath)
-  if(!cleaned) throw new Error(`World Path to save the element count "${worldPath}", is invalid.`)
-
   const elements = await getLocators(selector)
   const count = await elements.count()
   
-  set(world, cleaned, { selector, count })
+  await saveWorldData({ selector, elements, count }, worldPath, world)
+  
 }
 
-Given('I save the count of {string} as {string}', saveElementCount, {
+Given(`I save the count of {string} as {string}`, saveElementCount, {
+  name: `Save element count`,
   module : `saveElementCount`,
   description: `Locates elements by selector and stores the amount that exist`,
   expressions: [
     {
-      type: 'string',
+      type: ExpressionTypes.string,
+      kind: ExpressionKinds.element,
       description: `The selector for the elements.`,
-      example: 'li.list-item',
+      example: `li.list-item`,
     },
     {
-      type: 'string',
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
       description: `Path on the world where the count should be saved`,
-      example: 'page.items.count',
+      example: `page.items.count`,
     },
   ],
+  race: true
 })

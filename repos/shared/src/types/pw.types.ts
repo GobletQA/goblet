@@ -2,6 +2,8 @@ import type { TFileModel } from './models.types'
 import type { EBrowserType } from './browser.types'
 import type { TRepo } from './repo.types'
 import type { TAutomateEvent } from './pwAutomate.types'
+// Exported from screencast/src/types
+import type { Automate } from '@gobletqa/screencast'
 import type {
   Page,
   Locator,
@@ -13,7 +15,6 @@ import type {
   BrowserContext,
   BrowserContextOptions,
 } from 'playwright'
-import type { ComponentProps } from 'react'
 
 /**
  * This is an internal playwright property
@@ -28,12 +29,35 @@ export type TLocatorOpts = {
   hasText?: string|RegExp
 }
 
-export type TLocatorClickOpts = Parameters<Locator[`click`]>[`0`]
+export type TLocatorClickOpts = Parameters<Locator[`click`]>[`0`] & {
+  maxTries?:number
+  moveDelay?:number
+  moveSpeed?:number
+}
 
-export type TLocator = Locator
-export type TBrowser = Browser & TWithGuid
-export type TBrowserPage = Page & TWithGuid
-export type TBrowserContext = BrowserContext & TWithGuid
+export type TLocator = Omit<Locator, `click`> & {
+  click: (options:TLocatorClickOpts) => Promise<void>
+}
+
+export type TBrowser = Omit<Browser, `newContext`> & TWithGuid & {
+  newContext:(options?: TBrowserContextOpts) => Promise<TBrowserContext>
+}
+
+export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & TWithGuid & {
+  pages: () => Array<TBrowserPage>
+  newPage: () => Promise<TBrowserPage>
+  __GobletAutomateInstance?: Automate
+  __goblet?: {
+    cookie?:string
+    tracing?:Boolean
+    [key:string]: any
+  }
+}
+
+export type TBrowserPage = Omit<Page, `locator`> & TWithGuid & {
+  locator:(selector: string, options?: TLocatorOpts) => TLocator
+  __GobletAutomateInstance?: Automate
+}
 
 export type TScreenDims = ViewportSize
 export type TBrowserServer = BrowserServer

@@ -1,11 +1,10 @@
 import type { TWorldConfig } from '@ltipton/parkin'
-import type { TBrowserPage } from '@GTU/Types'
+import type { TLocator, TBrowserPage } from '@GTU/Types'
 
-import { get } from '@keg-hub/jsutils'
 import { Logger } from '@keg-hub/cli-utils'
+import { get, set, emptyObj } from '@keg-hub/jsutils'
 import { getPage, getLocator } from '@GTU/Playwright'
 
-type TLocator = Record<string, any>
 
 type TClickEl = {
   selector:string
@@ -97,11 +96,51 @@ greaterLessEqual.matchTypes = Object.entries(checkTypes)
  *
  */
 export const cleanWorldPath = (worldPath:string) => {
-
   const pathArr = worldPath.trim().split(`.`).filter(part => Boolean(part.trim()))
   const noWorld = pathArr[0] === '$world' || pathArr[0] === 'world' ? pathArr.slice(1) : pathArr
 
-  return noWorld.filter(Boolean).join('.').trim()
+  const cleaned = noWorld.filter(Boolean).join('.').trim()
+  if(!cleaned) throw new Error(`World Path to save the element count "${worldPath}", is invalid.`)
+  
+  return cleaned
+}
+
+
+/**
+ * Finds the element matching selector returned from selectorAlias, and registers it as the current ancestor
+ * @param {string|TLocator} selector - valid playwright selector
+ * @param {string} alias - mapped selector alias if there is one otherwise the word `selector`
+ * @param {string} data - if mapped alias exists then this is the on-screen text of the selector.  if no mapped alias exists then this is the selector + on-screen text of the element
+ * @param {Object} world
+ */
+export const saveWorldData = async (
+  data:Record<string, any>=emptyObj,
+  worldPath:string,
+  world:TWorldConfig,
+) => {
+  const cleaned = cleanWorldPath(worldPath)
+  set(world, cleaned, data)
+
+  return data
+}
+
+/**
+ * Finds the element matching selector returned from selectorAlias, and registers it as the current ancestor
+ * @param {string|TLocator} selector - valid playwright selector
+ * @param {string} alias - mapped selector alias if there is one otherwise the word `selector`
+ * @param {string} data - if mapped alias exists then this is the on-screen text of the selector.  if no mapped alias exists then this is the selector + on-screen text of the element
+ * @param {Object} world
+ */
+export const saveWorldLocator = async (
+  selector:string,
+  worldPath:string,
+  world:TWorldConfig,
+) => {
+  const element = await getLocator(selector)
+  const cleaned = cleanWorldPath(worldPath)
+  set(world, cleaned, { selector, element })
+
+  return element
 }
 
 
@@ -118,7 +157,6 @@ export const getWorldData = (
   fallback?:any
 ) => {
   const cleaned = cleanWorldPath(worldPath)
-  if(!cleaned) throw new Error(`World Path "$world.${worldPath}" is invalid.`)
 
   const saved = get(world, cleaned, fallback)
   if(saved === undefined) throw new Error(`Saved value "$world.${worldPath}" does not exist.`)
@@ -181,12 +219,48 @@ export const getLocatorProps = async (
   const element = locator || await getLocator(selector)
 
   // TODO: Add more properties to the returned object
-  return await element.evaluate(el => ({
-    value: el.value,
-    tagName: el.tagName,
-    className: el.className,
-    textContent: el.textContent,
-  }))
+  return await element.evaluate(elm => {
+    // Hack so typescript doesn't lose it's mind
+    const el = elm as any
+
+    return {
+      id: el.id,
+      role: el.role,
+      value: el.value,
+      title: el.title,
+      hidden: el.hidden,
+      tagName: el.tagName,
+      tabIndex: el.tabIndex,
+      nodeName: el.nodeName,
+      className: el.className,
+      scrollTop: el.scrollTop,
+      clientTop: el.clientTop,
+      localName: el.localName,
+      innerHTML: el.innerHTML,
+      innerText: el.innerText,
+      outerHTML: el.outerHTML,
+      outerText: el.outerText,
+      draggable: el.draggable,
+      offsetTop: el.offsetTop,
+      offsetLeft: el.offsetLeft,
+      clientLeft: el.clientLeft,
+      scrollLeft: el.scrollLeft,
+      scrollWidth: el.scrollWidth,
+      offsetWidth: el.offsetWidth,
+      clientWidth: el.clientWidth,
+      isConnected: el.isConnected,
+      textContent: el.textContent,
+      clientHeight: el.clientHeight,
+      scrollHeight: el.scrollHeight,
+      offsetHeight: el.offsetHeight,
+      namespaceURI: el.namespaceURI,
+      contentEditable: el.contentEditable,
+      childElementCount: el.childElementCount,
+      isContentEditable: el.isContentEditable,
+      style: Object.assign({}, el.style),
+      dataset: Object.assign({}, el.dataset)
+    }
+  })
 }
 
 export const getLocatorTagName = async (
@@ -219,7 +293,7 @@ export const clickElement = async ({
   selector,
   locator
 }:TClickEl) => {
-  page = page || getPage()
+  page = page || await getPage()
   !locator && await getLocator(selector)
   await page.click(selector, {
     force: true
@@ -237,7 +311,7 @@ export const fillInput = async ({
   locator,
   selector,
 }:TFillInput) => {
-  page = page || getPage()
+  page = page || await getPage()
   await clickElement({ page, selector, locator })
   //clear value before setting otherwise data is appended to end of existing value
   await page.fill(selector, '')
