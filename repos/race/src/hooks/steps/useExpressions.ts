@@ -38,9 +38,10 @@ const useMatchExpressions = (
 ) => {
   return useMemo(() => {
     const parts = def && expressionParts(parkin, def)
+    const filtered = parts && parts.filter((part) => part && part.type !== `optional`)
 
-    return def && parts
-      ? matchExpressions(def, parts)
+    return def && filtered
+      ? matchExpressions(def, filtered)
       : emptyArr as TExpPart[]
   }, [def])
 }

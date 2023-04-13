@@ -1,8 +1,5 @@
-import type {
-  TExpPart,
-  TStepDef,
-  TPartsMatch,
-} from '@GBR/types'
+import type { TStepDef } from '@ltipton/parkin'
+import type { TExpPart, TPartsMatch } from '@GBR/types'
 
 import { emptyArr } from '@keg-hub/jsutils'
 

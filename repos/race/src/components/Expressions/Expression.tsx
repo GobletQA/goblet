@@ -84,6 +84,7 @@ export const Expression = (props:TExpression) => {
 
   const onBlur = useExpressionChange(props)
   const Input = ExpressionKindMap[expression.kind || expression.paramType] || ExpInput
+  const inputType = expression.paramType === `int` || `float` ? `number` : expression.paramType
 
   return (
     <ExpGridItem xs={12} sm >
@@ -91,10 +92,10 @@ export const Expression = (props:TExpression) => {
         step={step}
         parent={parent}
         onBlur={onBlur}
+        type={inputType}
         expression={expression}
         value={expression.value}
-        type={expression.paramType}
-        placeholder={expression.example}
+        placeholder={`${expression.example}`}
         helperText={<ExpressionInfo {...props} />}
         label={capitalize(expression.kind || expression.paramType)}
       />
