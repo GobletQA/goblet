@@ -1,9 +1,9 @@
 import type { TWorldConfig } from '@ltipton/parkin'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
-
+import { saveWorldData } from '@GTU/Support/helpers'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Sets the input text of selector to data
@@ -13,7 +13,10 @@ import { getLocator } from '@GTU/Playwright'
  */
 export const focusElement = async (selector:string, world:TWorldConfig) => {
   const element = await getLocator(selector)
-  return await element.focus()
+  const resp = await element.focus()
+  saveWorldData({ selector, element }, world)
+
+  return resp
 }
 
 const meta = {

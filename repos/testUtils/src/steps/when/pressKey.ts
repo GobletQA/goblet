@@ -3,6 +3,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
 import keyboardMap from './keyboardMap.json'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Simulates a key press
@@ -19,6 +20,8 @@ export const pressKey = async (
 }
 
 const meta = {
+  name: `Press key`,
+  alias: [`keyboard`],
   module: `typeText`,
   examples: [
     `When I press "PageDown"`,
@@ -27,12 +30,16 @@ const meta = {
   description: `Triggers a keyboard event simulating pressing a key on the keyboard.\nSee https://playwright.dev/docs/api/class-page?_highlight=press#pagepressselector-key-options for more info.`,
   expressions: [
     {
-      type: `string`,
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
       description: `The keyboard key.`,
-      example: `Control+a`,
+      example: `a`,
     },
   ],
+  race: true
 }
 
 When(`I press {string}`, pressKey, meta)
-When(`I press the key {string}`, pressKey, meta)
+When(`I press the key {string}`, pressKey, {...meta, race: false})
+
+// TODO - Add step for pressing multiple keys at once

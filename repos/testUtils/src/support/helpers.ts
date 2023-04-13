@@ -2,14 +2,23 @@ import type { TWorldConfig } from '@ltipton/parkin'
 import type { TLocator, TBrowserPage } from '@GTU/Types'
 
 import { Logger } from '@keg-hub/cli-utils'
-import { get, set, emptyObj } from '@keg-hub/jsutils'
+import { get, set, unset, emptyObj } from '@keg-hub/jsutils'
 import { getPage, getLocator } from '@GTU/Playwright'
+import {
+  SavedDataWorldPath,
+  SavedLocatorWorldPath,
+  AutoSavedDataWorldPath,
+  AutoSavedLocatorWorldPath
+} from '@GTU/Constants'
 
 
 type TClickEl = {
-  selector:string
-  locator:TLocator
-  page:TBrowserPage
+  save?:boolean
+  selector?:string
+  locator?:TLocator
+  page?:TBrowserPage
+  world: TWorldConfig
+  worldPath?:string
 }
 
 type TFillInput = TClickEl & {
@@ -100,75 +109,104 @@ export const cleanWorldPath = (worldPath:string) => {
   const noWorld = pathArr[0] === '$world' || pathArr[0] === 'world' ? pathArr.slice(1) : pathArr
 
   const cleaned = noWorld.filter(Boolean).join('.').trim()
-  if(!cleaned) throw new Error(`World Path to save the element count "${worldPath}", is invalid.`)
+  if(!cleaned) throw new Error(`Can not use world path "${worldPath}". It is not a valid path.`)
   
   return cleaned
 }
 
+/**
+ * Removes the value on the world object at the passed in path
+ *
+ */
+export const clearWorldPath = (worldPath:string, world:TWorldConfig) => {
+  const cleaned = cleanWorldPath(worldPath)
+  unset(world, cleaned)
+}
 
 /**
- * Finds the element matching selector returned from selectorAlias, and registers it as the current ancestor
- * @param {string|TLocator} selector - valid playwright selector
- * @param {string} alias - mapped selector alias if there is one otherwise the word `selector`
- * @param {string} data - if mapped alias exists then this is the on-screen text of the selector.  if no mapped alias exists then this is the selector + on-screen text of the element
- * @param {Object} world
+ * Finds the element matching selector returned from selectorAlias
+ * And registers it as the current ancestor
+ *
  */
-export const saveWorldData = async (
+export const saveWorldData = (
   data:Record<string, any>=emptyObj,
-  worldPath:string,
   world:TWorldConfig,
+  worldPath?:string,
 ) => {
-  const cleaned = cleanWorldPath(worldPath)
+  const cleaned = worldPath
+    ? cleanWorldPath(worldPath)
+    : AutoSavedDataWorldPath
+
   set(world, cleaned, data)
 
   return data
 }
 
 /**
- * Finds the element matching selector returned from selectorAlias, and registers it as the current ancestor
- * @param {string|TLocator} selector - valid playwright selector
- * @param {string} alias - mapped selector alias if there is one otherwise the word `selector`
- * @param {string} data - if mapped alias exists then this is the on-screen text of the selector.  if no mapped alias exists then this is the selector + on-screen text of the element
- * @param {Object} world
+ * Finds the element matching selector returned from selectorAlias
+ * And registers it as the current ancestor
+ *
  */
 export const saveWorldLocator = async (
   selector:string,
-  worldPath:string,
   world:TWorldConfig,
+  worldPath?:string,
 ) => {
   const element = await getLocator(selector)
-  const cleaned = cleanWorldPath(worldPath)
+  const cleaned = worldPath
+    ? cleanWorldPath(worldPath)
+    : AutoSavedLocatorWorldPath
+
   set(world, cleaned, { selector, element })
 
   return element
 }
 
-
 /**
  * Gets the data from the passed in world path and world object 
- * @param {string} worldPath - Path on the world object
- * @param {object} world - Global world object
- * @param {*} [fallback] - Value to use if world value does not exit
  *
  */
-export const getWorldData = (
+export const getFromWorldPath = (
   worldPath:string,
   world:TWorldConfig,
   fallback?:any
 ) => {
   const cleaned = cleanWorldPath(worldPath)
+  return get(world, cleaned, fallback)
+}
 
-  const saved = get(world, cleaned, fallback)
-  if(saved === undefined) throw new Error(`Saved value "$world.${worldPath}" does not exist.`)
+export const getWorldData = (
+  world:TWorldConfig,
+  worldPath?:string,
+  fallback?:any
+) => {
+  const saved = worldPath
+    ? getFromWorldPath(worldPath, world, fallback)
+    : get(world, SavedDataWorldPath, get(world, AutoSavedDataWorldPath, fallback))
+
+  if(saved === undefined)
+    throw new Error(`Saved value "$world.${worldPath}" does not exist.`)
+
+  return saved
+}
+
+export const getWorldLocator = (
+  world:TWorldConfig,
+  worldPath?:string,
+  fallback?:any
+) => {
+  const saved = worldPath
+    ? getFromWorldPath(worldPath, world, fallback)
+    : get(world, SavedLocatorWorldPath, get(world, AutoSavedLocatorWorldPath, fallback))
+
+  if(saved === undefined)
+    throw new Error(`Saved value "$world.${worldPath}" does not exist.`)
 
   return saved
 }
 
 /**
  * Compares the content of two values, either contains or exact matching 
- * @param {*} val1 - First value to compare
- * @param {*} val2 - Value to compare against
- * @param {string} type - Type of comparison to do
  *
  */
 export const compareValues = (
@@ -186,9 +224,6 @@ export const compareValues = (
 
 /**
  * Calls a method on a found locator
- * @param {string} selector - CSS selector of Dom Element
- * @param {string} prop - Method name to call
- * @param {Object} locator - Playwright location object 
  *
  */
 export const callLocatorMethod = async (
@@ -290,30 +325,59 @@ export const getLocatorContent = async (
  */
 export const clickElement = async ({
   page,
+  world,
+  locator,
   selector,
-  locator
+  // Default to the auto-save locator path
+  // We call saveWorldData, but we save to the auto-save location path
+  // This way we can reuse the locator we already have
+  worldPath=AutoSavedLocatorWorldPath,
+  save=true,
 }:TClickEl) => {
   page = page || await getPage()
-  !locator && await getLocator(selector)
+  // Actionability checks (Auto-Waiting) seem to fail in headless mode
+  // So we use locator.waitFor to ensure the element exist on the dom
+  locator = locator || await getLocator(selector)
+
+  // Then pass {force: true} options to locator.click because we know it exists
   await page.click(selector, {
     force: true
   }) 
+
+  // Save the most recent world data
+  save && saveWorldData({ selector, element:locator }, world, worldPath)
+
+  return { locator, page }
 }
 
+
 /**
- * Finds an input from selector or locator, then fills it with text
- * @param {Object} params
+ * Finds an input from selector or locator, then fills it with the text
  *
  */
-export const fillInput = async ({
-  page,
-  text,
-  locator,
-  selector,
-}:TFillInput) => {
-  page = page || await getPage()
-  await clickElement({ page, selector, locator })
+export const fillInput = async (props:TFillInput) => {
+  const { text } = props
+  const { page, locator } = await clickElement(props)
+
   //clear value before setting otherwise data is appended to end of existing value
-  await page.fill(selector, '')
-  await page.type(selector, text)
+  await locator.fill('')
+  await locator.fill(text)
+
+  return { page, locator }
+}
+
+
+/**
+ * Finds an input from selector or locator, then types in the text
+ *
+ */
+export const typeInput = async (props:TFillInput) => {
+  const { text } = props
+  const { page, locator } = await clickElement(props)
+
+  //clear value before setting otherwise data is appended to end of existing value
+  await locator.type('')
+  await locator.type(text)
+
+  return { page, locator }
 }

@@ -5,6 +5,9 @@ import { get } from '@keg-hub/jsutils'
 import { getLocators } from '@GTU/Playwright'
 import { cleanWorldPath, greaterLessEqual } from '@GTU/Support/helpers'
 
+// -- TODO: Needs updated to use the saveWorldData helpers
+//  -- And to use race
+
 /**
  * Expects the number of dom elements matching `selector` to equal `count`
  * @param {string} selector - valid playwright selector

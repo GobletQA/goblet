@@ -31,13 +31,13 @@ const meta = {
       type: ExpressionTypes.string,
       kind: ExpressionKinds.element,
       description: `The selector for a single element.`,
-      example: '#search',
+      example: `#search`,
     },
     {
       kind: ExpressionKinds.text,
       type: ExpressionTypes.string,
       description: `The text of the element to verify.`,
-      example: 'cucumber',
+      example: `goblet`,
     },
   ],
   race: true

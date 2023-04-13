@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Given } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 const randomInt = (min:number, max:number) => Math.floor(Math.random() * (max - min + 1) + min)
 
@@ -23,31 +24,30 @@ const moveMouseRandom = async (world:TWorldConfig) => {
   await moveMouse(randomInt(1, width), randomInt(1, height), world)
 }
 
-Given('I move the mouse', moveMouseRandom, {
+Given(`I move the mouse`, moveMouseRandom, {
+  name: `Move the mouse`,
+  module: `moveMouse`,
   description: `Moves the mouse on the page some arbitrary amount.`,
-  expressions: [
-    {
-      type: 'int',
-      description: `String expected to match the page title.`,
-      example: 'Goblet Blog',
-    },
-  ],
-  module: `moveMouse`
+  race: true
 })
 
-Given('I move the mouse to {int}, {int}', moveMouse, {
+Given(`I move the mouse to {int}, {int}`, moveMouse, {
+  name: `Move the mouse to position`,
   description: `Moves the mouse to a specific X,Y coordinates of the page.`,
   expressions: [
     {
-      type: 'int',
-      description: `X coordinate`,
       example: 100,
+      description: `X coordinate`,
+      type: ExpressionTypes.int,
+      kind: ExpressionKinds.number,
     },
     {
-      type: 'int',
-      description: `Y coordinate`,
       example: 100,
+      description: `Y coordinate`,
+      type: ExpressionTypes.int,
+      kind: ExpressionKinds.number,
     },
   ],
-  module: `moveMouse`
+  module: `moveMouse`,
+  race: true
 })

@@ -19,7 +19,7 @@ export const elementCount = async (
   expect(elements.length).toEqual(count)
 }
 
-Then('the count of {string} is/equals {int}', elementCount, {
+const meta = {
   name: `Element Count`,
   alias: [
     `Number of Element`,
@@ -42,4 +42,6 @@ Then('the count of {string} is/equals {int}', elementCount, {
     },
   ],
   race: true
-})
+}
+
+Then(`the count of {string} is/equals {int}`, elementCount, meta)

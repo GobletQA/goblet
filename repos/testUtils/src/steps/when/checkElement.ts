@@ -28,20 +28,20 @@ const meta = {
   ],
   expressions: [
     {
-      // TODO: allow setting an enum of check of uncheck
-      // type: ExpressionTypes.check
+      // TODO: check kind should be `check` || `uncheck`
       kind: ExpressionKinds.check,
       type: ExpressionTypes.string,
       description: `Valid options are \'check\' or \'uncheck\' only.`,
       example: 'check',
     },
     {
-      // TODO: allow setting enum for check only input elements
-      // kind: ExpressionKinds.check,
+      // TODO: Should set different element types that can be selected
+      // In this case only radio and checkboxes
+      // kind: ExpressionKinds.checkbox,
       kind: ExpressionKinds.element,
       type: ExpressionTypes.string,
-      description: `The element selector.  Selector must be specific enough to locate a single element.  Valid for checkbox and radio inputs.`,
-      example: "input[name='unique_name']",
+      description: `The element selector. Selector must be specific enough to locate a single element.  Valid for checkbox and radio inputs.`,
+      example: `input[name='unique_name']`,
     },
   ],
   race: true

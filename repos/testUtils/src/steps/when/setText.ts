@@ -1,69 +1,71 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 
 import { When } from '@GTU/Parkin'
-import { get } from '@keg-hub/jsutils'
-import { getPage } from '@GTU/Playwright'
+import { getLocator } from '@GTU/Playwright'
+import { fillInput, getWorldLocator } from '@GTU/Support/helpers'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+
+export const setTextWithSaved = async (
+  text:string,
+  world:TWorldConfig
+) => {
+  const { selector, element } = getWorldLocator(world)
+  const locator = element || await getLocator(`:focus`)
+ 
+  return await fillInput({
+    text,
+    world,
+    locator,
+    selector,
+  })
+}
 
 /**
  * Sets the input text of selector to data
- * @param {string} selector - valid playwright selector
- * @param {string} data - set selector text to `data`
- * @param {Object} world
  */
-export const setText = async (
+export const setTextWithSelector = async (
+  text:string,
   selector:string,
-  data:string,
   world:TWorldConfig
 ) => {
-  const page = await getPage()
-  // Actionability checks (Auto-Waiting) seem to fail in headless mode
-  // So we use locator.waitFor to ensure the element exist on the dom
-  // Then pass {force: true} options to page.click because we know it exists
-  const element = await page.locator(selector)
-  await element.waitFor()
-  await page.click(selector, {
-    force: true
+  return await fillInput({
+    text,
+    world,
+    selector,
   })
-
-  //clear value before setting otherwise data is appended to end of existing value
-  await page.fill(selector, '')
-
-  const [_, ...worldVar] = data.split('.')
-  const parsed = get(world, worldVar)
-  const rtnData = !data.startsWith(`$world`) ? data : parsed
-
-  await page.type(selector, rtnData)
 }
 
 const meta = {
   name: `Set text`,
-  alias: [],
+  alias: [`fill`],
   module: `setText`,
   examples: [
-    `When I set the element "input[name=email]" text to "my.name@company.com"`
+    `When I set the text "my.name@company.com" to element "input[name=email]" `
   ],
   description: `Locates input element by selector and replaces existing value, if any, to the desired text.`,
   expressions: [
     {
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
+      example: `Some text in the element`,
+      description: `Desired text to set in the input element.`,
+    },
+    {
+      example: `#search`,
       type: ExpressionTypes.string,
       kind: ExpressionKinds.element,
       description: `The selector for a single input element.`,
-      example: `#search`,
-    },
-    {
-      type: ExpressionTypes.string,
-      kind: ExpressionKinds.text,
-      description: `Desired text of the element.`,
-      example: `I desire to type this text.`,
     },
   ],
   race: true
 }
 
-When(`I set {string} to {string}`, setText, meta)
-When(`I set the element {string} text to {string}`, setText, {
+When(`I set the text to {string}`, setTextWithSaved, {
   ...meta,
-  race: false
+  name: `Set input value`,
+  expressions: [meta.expressions[0]],
+  examples: [`I set the text to "some text"`],
 })
+
+When(`I set the text {string} to the element {string}`, setTextWithSelector, meta)
 

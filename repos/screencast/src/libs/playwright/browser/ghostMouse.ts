@@ -18,24 +18,27 @@ const pageProxyMethod = [
   // `frameLocator`
 ]
 
+const defClickOpts = {
+  maxTries: 1,
+  moveSpeed: 1
+}
+
 const mapClickOpts = (opts:TLocatorClickOpts):ClickOptions => {
   const {
     delay,
     force,
     timeout,
-    // button,
-    // position,
-    // modifiers,
-    // noWaitAfter,
+    maxTries,
+    moveDelay,
+    moveSpeed=defClickOpts.moveSpeed,
   } = opts
   
   return {
-    // maxTries,
-    // moveSpeed,
-    // moveDelay,
+    moveDelay,
+    moveSpeed,
     waitForClick:delay,
     waitForSelector:timeout,
-    maxTries: force ? 1 : 10,
+    maxTries: maxTries || (force ? 1 : defClickOpts.maxTries),
   }
 }
 
@@ -56,7 +59,7 @@ const createLocatorProxy = (
       }
 
       const clickMethod = async function(opts:TLocatorClickOpts){
-        const clickOpts = opts ? mapClickOpts(opts) : undefined
+        const clickOpts = opts ? mapClickOpts(opts) : defClickOpts
         return async (...args:any[]) => await cursor.click(selector, clickOpts)
       }
 

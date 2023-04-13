@@ -2,41 +2,38 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
-import { getWorldData } from '@GTU/Support/helpers'
-import { SavedLocatorWorldPath } from '@GTU/Constants'
+import { typeInput, getWorldLocator } from '@GTU/Support/helpers'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
-type TLocator = Record<string, any>
-
-const typeText = async (
-  element:TLocator,
-  data:string
-) => {
-  //clear value before setting otherwise data is appended to end of existing value
-  await element.fill('')
-  await element.type(data)
-}
 
 export const typeWithSaved = async (
-  data:string,
+  text:string,
   world:TWorldConfig
 ) => {
-  const { element } = getWorldData(SavedLocatorWorldPath, world)
-  const el = element || await getLocator(`:focus`)
-
-  await typeText(el, data)
+  const { selector, element } = getWorldLocator(world)
+  const locator = element || await getLocator(`:focus`)
+ 
+  return await typeInput({
+    text,
+    world,
+    locator,
+    selector,
+  })
 }
 
 /**
  * Sets the input text of selector to data
  */
 export const typeWithSelector = async (
-  data:string,
+  text:string,
   selector:string=`:focus`,
   world:TWorldConfig
 ) => {
-  const element = await getLocator(selector)
-  await typeText(element, data)
+  return await typeInput({
+    text,
+    world,
+    selector,
+  })
 }
 
 const meta = {
@@ -54,19 +51,24 @@ const meta = {
       example: `Enter some text...`,
     },
     {
-      kind: ExpressionKinds.selector,
       type: ExpressionTypes.string,
+      kind: ExpressionKinds.element,
       description: `The selector of an element that allows input. One of Input, Textarea, or [content-editable]`,
       example: `#search-input`,
     },
   ],
 }
 
+When(`I type {string}`, typeWithSaved, {
+  ...meta,
+  race: true,
+  name: `Type text`,
+  expressions: [meta.expressions[0]]
+})
 When(`I write {string}`, typeWithSaved, meta)
-When(`I type {string}`, typeWithSaved, meta)
 When(`I type {string} into {string}`, typeWithSelector, {
   ...meta,
-  name: `Type Text`,
+  name: `Type text in input`,
   alias: [`Write text`, `Input text`],
   info: `Action to simulate typing text into an element on the page`,
   race: true

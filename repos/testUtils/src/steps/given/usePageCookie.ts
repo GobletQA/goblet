@@ -5,6 +5,7 @@ import {
   setContextCookie,
   defaultCookieFile,
 } from '@GTU/Playwright/browserContext'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Checks that the page title is `title`
@@ -19,6 +20,7 @@ export const usePageCookie = async (
 }
 
 const meta = {
+  name: `Save page cookie`,
   module: `usePageCookie`,
   examples: [
     `Given I use the saved page cookie`,
@@ -26,14 +28,17 @@ const meta = {
   ],
   description: `Saves the cookie of the browser context to be reused at a later time.`,
   expressions: [],
+  race: true
 }
 
-Given('I use the saved page cookie', (world:TWorldConfig) => usePageCookie(false, world), meta)
-Given('I use the saved {string} page cookie', usePageCookie, {
+Given(`I use the saved page cookie`, (world:TWorldConfig) => usePageCookie(false, world), meta)
+Given(`I use the saved {string} page cookie`, usePageCookie, {
+  name: `Save page cookie as`,
   ...meta,
   expressions: [
     {
-      type: 'string',
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
       description: `Name of the context cookie file that is being saved`,
       example: defaultCookieFile,
     }

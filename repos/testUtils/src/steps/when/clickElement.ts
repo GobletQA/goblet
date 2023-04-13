@@ -1,7 +1,7 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 
 import { When } from '@GTU/Parkin'
-import { getPage, getLocator } from '@GTU/Playwright'
+import { clickElement } from '@GTU/Support/helpers'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
@@ -12,14 +12,7 @@ export const clickElementHandler = async (
   selector:string,
   world:TWorldConfig
 ) => {
-  const page = await getPage()
-  // Actionability checks (Auto-Waiting) seem to fail in headless mode
-  // So we use locator.waitFor to ensure the element exist on the dom
-  // Then pass {force: true} options to page.click because we know it exists
-  await getLocator(selector)
-  return page.click(selector, {
-    force: true
-  })
+  return await clickElement({ world, selector })
 }
 
 
@@ -33,7 +26,7 @@ const meta = {
   expressions: [
     {
       type: ExpressionTypes.string,
-      kind: ExpressionKinds.selector,
+      kind: ExpressionKinds.element,
       description: `The selector of an element that exists on the page`,
       example: `button[name='btn-name']`,
     },

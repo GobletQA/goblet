@@ -25,7 +25,7 @@ const meta = {
   ],
   expressions: [
     {
-      kind: ExpressionKinds.text,
+      kind: ExpressionKinds.url,
       type: ExpressionTypes.string,
       example: `https://www.gobletqa.com`,
       description: `The url that of the page once it has loaded`,

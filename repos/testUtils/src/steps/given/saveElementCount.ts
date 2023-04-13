@@ -18,8 +18,8 @@ export const saveElementCount = async (
 
   const elements = await getLocators(selector)
   const count = await elements.count()
-  
-  await saveWorldData({ selector, elements, count }, worldPath, world)
+
+  await saveWorldData({ selector, elements, count }, world, worldPath)
   
 }
 

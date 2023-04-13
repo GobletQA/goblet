@@ -2,7 +2,12 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Then } from '@GTU/Parkin'
 import { deepMerge } from '@keg-hub/jsutils'
-import { compareValues, getLocatorAttribute, getWorldData } from '@GTU/Support/helpers'
+import {
+  getWorldData,
+  compareValues,
+  getWorldLocator,
+  getLocatorAttribute,
+} from '@GTU/Support/helpers'
 
 /**
  * Compares an elements property with a saved elements property
@@ -21,14 +26,14 @@ export const compareElements = async (
   worldProp:string,
   world:TWorldConfig
 ) => {
-  const { element:saved } = getWorldData(worldPath, world)
+  const { element:saved } = getWorldLocator(world, worldPath)
   if(!saved[worldProp]) throw new Error(`Saved Element property "${worldProp}" does not exist.`)
 
   const savedVal = await saved[worldProp]()
   const elementVal = await getLocatorAttribute(selector, prop)
 
   const [type, order] = typeJoin.split('-')
-  order === 'world'
+  order === `world`
     ? compareValues(elementVal, savedVal, type)
     : compareValues(savedVal, elementVal, type)
 }
@@ -48,12 +53,12 @@ export const compareToWorldValue = async (
   worldPath:string,
   world:TWorldConfig
 ) => {
-  const savedVal = getWorldData(worldPath, world)
+  const savedVal = getWorldData(world, worldPath)
   const elementVal = await getLocatorAttribute(selector, prop)
 
   const [type, order] = typeJoin.split('-')
 
-  order === 'world'
+  order === `world`
     ? compareValues(elementVal, savedVal, type)
     : compareValues(savedVal, elementVal, type)
 }
@@ -96,7 +101,7 @@ const elToVal = {
   ]
 }
 Then(
-  '{string} {word} matches {string}',
+  `{string} {word} matches {string}`,
   (
     sel:string,
     prop:string,
@@ -112,7 +117,7 @@ Then(
   elToVal
 )
 Then(
-  '{string} {word} contains {string}',
+  `{string} {word} contains {string}`,
   (
     sel:string,
     prop:string,

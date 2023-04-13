@@ -51,8 +51,9 @@ Then(
       },
       {
         type: ExpressionTypes.string,
-        kind: ExpressionKinds.checkbox,
-        description: `Valid options are \'checked\' or \'unchecked\' only.`,
+        // TODO: check kind should be `check` || `uncheck`
+        kind: ExpressionKinds.check,
+        description: `Valid options are \'checked\' or \'uncheck\' only.`,
         example: `checked`,
       },
     ],

@@ -1,7 +1,7 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 
 import { When } from '@GTU/Parkin'
-import { clickElementHandler } from './clickElement'
+import { clickElement } from '@GTU/Support/helpers'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 const attrTypes = [`.`, `#`, `$`, `#`, `:`, `(`, `>`]
@@ -21,7 +21,7 @@ export const clickElementTypeHandler = async (
   const formatted = checkSelectorType(selector, world)
   const joined = `${type}${formatted}`
 
-  return await clickElementHandler(joined, world)
+  return await clickElement({ selector: joined, world })
 }
 
 const meta = {
@@ -30,7 +30,7 @@ const meta = {
   expressions: [
     {
       type: ExpressionTypes.string,
-      kind: ExpressionKinds.selector,
+      kind: ExpressionKinds.element,
       description: `The selector of an element that exists on the page`,
       example: `"> [name='my-element']", ".my-button", or "My link text"`,
     },

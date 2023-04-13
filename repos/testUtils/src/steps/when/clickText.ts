@@ -1,7 +1,7 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 
 import { When } from '@GTU/Parkin'
-import { getPage, getLocatorByText } from '@GTU/Playwright'
+import { clickElement } from '@GTU/Support/helpers'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
@@ -9,13 +9,10 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  * @param {String} selector - valid playwright selector
  */
 export const clickTextHandler = async (selector:string, world:TWorldConfig) => {
-  const page = await getPage()
-  // Actionability checks (Auto-Waiting) seem to fail in headless mode
-  // So we use locator.waitFor to ensure the element exist on the dom
-  const locator = await getLocatorByText(selector, { page, waitFor: true })
-
-  // Then pass {force: true} options to locator.click because we know it exists
-  return locator.click({ force: true })
+  return await clickElement({
+    world,
+    selector
+  })
 }
 
 const meta = {

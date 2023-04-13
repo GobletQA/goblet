@@ -1,27 +1,29 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Given } from '@GTU/Parkin'
+import { SavedLocatorWorldPath } from '@GTU/Constants'
 import { saveWorldLocator } from '@GTU/Support/helpers'
 
-/**
- * Saves the element and focuses it for future steps to reuse
- */
-export const selectSaveEl = async (
+const saveElToWorld = async (
   selector:string,
   worldPath:string,
   world:TWorldConfig
 ) => {
-  const element = await saveWorldLocator(selector, worldPath, world)
+  if(!worldPath)
+    throw new Error(`A path on the $world object is required`)
+  
+  return await saveWorldLocator(selector, world, worldPath)
+}
+
+const autoSaveElToWorld = async (selector:string, world:TWorldConfig) => {
+  const element = await saveElToWorld(
+    selector,
+    SavedLocatorWorldPath,
+    world
+  )
   await element.focus()
 }
 
-export const saveElToWorld = async (
-  selector:string,
-  worldPath:string,
-  world:TWorldConfig
-) => {
-  await saveWorldLocator(selector, worldPath, world)
-}
 
 const meta = {
   description: `Locates and saves an element for use in subsequent steps.`,
@@ -31,10 +33,10 @@ const meta = {
   ],
   expressions: [
     {
-      type: 'string',
+      type: `string`,
       description: `The selector or alias of the element to be saved`,
       examples: [
-        'li.hotel-items',
+        `li.hotel-items`,
       ],
     },
   ],
@@ -49,17 +51,17 @@ const metaExp = {
   }])
 }
 
-Given('{string} is saved', (
-  selector,
-  world
-) => saveElToWorld(selector, `__meta.savedElement`, world), meta)
-Given('I select {string}', (
-  selector,
-  world
-) => selectSaveEl(selector, `__meta.savedElement`, world), meta)
+Given(`{string} is saved`, (
+  selector:string,
+  world:TWorldConfig
+) => autoSaveElToWorld(selector, world), meta)
+Given(`I select {string}`, (
+  selector:string,
+  world:TWorldConfig
+) => autoSaveElToWorld(selector, world), meta)
 
 
-Given('{string} is saved as {string}', saveElToWorld, metaExp)
-Given('I save {string} as {string}', saveElToWorld, metaExp)
-Given('I save the element {string} as {string}', saveElToWorld, metaExp)
+Given(`{string} is saved as {string}`, saveElToWorld, metaExp)
+Given(`I save {string} as {string}`, saveElToWorld, metaExp)
+Given(`I save the element {string} as {string}`, saveElToWorld, metaExp)
 
