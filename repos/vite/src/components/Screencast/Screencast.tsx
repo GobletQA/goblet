@@ -3,8 +3,10 @@ import type { CSSProperties } from 'react'
 import { useMemo } from 'react'
 import { useUser, useRepo } from '@store'
 import { ScreencastView } from './ScreencastView'
-import { ScreencastLoading } from './ScreencastLoading'
 
+// import { ScreencastLoading } from './ScreencastLoading'
+// <ScreencastLoading start={showBrowser} />
+      
 export type TScreencastProps = {
   sx?: CSSProperties
   sSx?: CSSProperties
@@ -18,7 +20,6 @@ export const Screencast = (props:TScreencastProps) => {
   return (
     <>
       {showBrowser && (<ScreencastView {...props} />)}
-      <ScreencastLoading start={showBrowser} />
     </>
   )
 }

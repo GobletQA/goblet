@@ -5,6 +5,10 @@ import MuiContainer from '@mui/material/Container'
 
 export const LayoutContainer = styled(Box)`
   width: 100%;
+
+  & .react-page-split__panel {
+    overflow: hidden;
+  }
 `
 
 export const LContainer = styled(MuiContainer)`

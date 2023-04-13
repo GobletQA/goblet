@@ -10,7 +10,9 @@ export const ScreenContainer = styled(Box)`
   margin-left: ${dims.nav.closedWidth}px;
   max-width: calc( 100vw - ${dims.nav.closedWidth}px );
 
-  // min-height: 100%;
-  // margin-top: ${dims.header.hpx};
-  // min-height: calc( 100vh - ${dims.header.hpx} );
+  margin-top: ${dims.header.hpx} !important;
+  max-height: calc( 100vh - ${dims.header.hpx} ) !important;
 `
+// overflow: hidden;
+// position: relative;
+// top: ${dims.header.hpx} !important;

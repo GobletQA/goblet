@@ -1,6 +1,5 @@
 
 import Editor from './Editor'
-import Box from '@mui/material/Box'
 import { HeaderNav } from '@constants'
 import { LogoutIcon } from '@gobletqa/components'
 import { ScreenContainer } from './Root.styled'

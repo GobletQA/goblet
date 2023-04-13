@@ -3,6 +3,8 @@ import type { ComponentProps, ReactNode } from 'react'
 import 'react-page-split/style.css'
 import { Divider } from './Divider'
 
+import Box from '@mui/material/Box'
+
 import { BrowserActions } from '../BrowserActions'
 import { Screencast } from '@components/Screencast'
 import { ActionBar, dims } from '@gobletqa/components'
@@ -75,18 +77,16 @@ export const Layout = (props:TLayout) => {
           className='gb-layout-right-container gb-container-browser'
         >
 
-          <VerticalPageSplit
-            heights={[`35px`, `auto`]}
-            divider={() => <span /> as any}
+          <Box
+            flexDirection='column'
+            className='react-page-split'
           >
-
             <RTSection className='gb-layout-right-top-section' >
               <ActionBar actions={BrowserActions} />
             </RTSection>
 
             <Screencast />
-          </VerticalPageSplit>
-
+          </Box>
         </RContainer>
       </HorizontalPageSplit>
     </LayoutContainer>

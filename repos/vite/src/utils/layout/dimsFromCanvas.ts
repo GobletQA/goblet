@@ -19,7 +19,7 @@ export const dimsFromCanvas = (args:TParentPanels) => {
   if(hDiff > wDiff){
     const adjust = hDiff * ScreencastRatio
 
-    const lWidth = lPPanel.offsetWidth - adjust + 6
+    const lWidth = lPPanel.offsetWidth - adjust
     lPPanel.style.flexBasis = `${lWidth}px`
 
     // @ts-ignore
@@ -28,7 +28,7 @@ export const dimsFromCanvas = (args:TParentPanels) => {
   }
 
   else if(wDiff) {
-    const lWidth = lPPanel.offsetWidth + wDiff - 6
+    const lWidth = lPPanel.offsetWidth + wDiff
     lPPanel.style.flexBasis = `${lWidth}px`
 
     // @ts-ignore
