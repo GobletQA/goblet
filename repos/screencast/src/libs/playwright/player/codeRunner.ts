@@ -1,5 +1,13 @@
 import type { Player } from './player'
 import type { TFeatureAst } from '@ltipton/parkin'
+import type { TPlayerTestEvent, TPlayerTestMeta } from '@gobletqa/shared/types'
+
+import {
+  SavedDataWorldPath,
+  AutoSavedDataWorldPath,
+  SavedLocatorWorldPath,
+  AutoSavedLocatorWorldPath,
+} from '@gobletqa/shared/constants'
 
 type RunContent = string | string[] | TFeatureAst | TFeatureAst[]
 
@@ -14,9 +22,9 @@ import expect from 'expect'
 
 import { PWPlay } from '@GSC/constants'
 import { Parkin } from '@ltipton/parkin'
+import { unset, omitKeys } from '@keg-hub/jsutils'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { getDefinitions } from '@gobletqa/shared/repo/getDefinitions'
-
 
 /**
  * Use custom test runner from parkin
@@ -60,6 +68,48 @@ const setupParkin = async (Runner:CodeRunner) => {
   await getDefinitions(Runner?.player?.repo, undefined, false)
   return PK
 }
+
+
+/**
+ * ------ TODO: Move this to parkin ------ *
+ * It should auto-clean up the world object after each spec
+ */
+const worldSavePaths = [
+  SavedDataWorldPath,
+  AutoSavedDataWorldPath,
+  SavedLocatorWorldPath,
+  AutoSavedLocatorWorldPath,
+]
+
+const cleanupWorld = (PK:Parkin) => {
+  worldSavePaths.forEach(loc => unset(PK.world, loc))
+}
+/**
+ * ------ END - TODO: Move this to parkin ------ *
+ */
+
+/**
+ * ------ TODO: FIX ME ------ *
+ * There's some world issue where some meta-data is being added to the passedExpectations object
+ * Need to investigate why, this is a work around until it's fixed
+ * But will most likely leave this, because the frontend does not need it
+ */
+const clearTestResults = (result:TPlayerTestMeta) => {
+  // TODO: fix the 'TPlayerTestEvent' type, it's wrong
+  return omitKeys<TPlayerTestEvent>(
+    result,
+    [
+      `tests`,
+      `describes`,
+      `passedExpectations`,
+      `failedExpectations`,
+    ]
+  )
+}
+/**
+ * ------ END - TODO: FIX ME ------ *
+ */
+
 
 export type TCodeRunnerOpts = {
   debug?: boolean
@@ -113,9 +163,10 @@ export class CodeRunner {
     return results
   }
 
-  onSpecDone = (result) => {
+  onSpecDone = (result:TPlayerTestMeta) => {
+
     this.player.fireEvent({
-      data: result,
+      data: clearTestResults(result),
       message: 'Player - Spec Done',
       name: PWPlay.playSpecDone,
     })
@@ -128,25 +179,27 @@ export class CodeRunner {
       )
   }
 
-  onSuiteDone = (result) => {
+  onSuiteDone = (result:TPlayerTestMeta) => {
+    cleanupWorld(this.PK)
+
     this.player.fireEvent({
-      data: result,
+      data: clearTestResults(result),
       message: 'Player - Suite Done',
       name: PWPlay.playSuiteDone,
     })
   }
 
-  onSpecStarted = (result) => {
+  onSpecStarted = (result:TPlayerTestMeta) => {
     this.player.fireEvent({
-      data: result,
+      data: clearTestResults(result),
       message: 'Player - Spec Start',
       name: PWPlay.playSpecStart,
     })
   }
 
-  onSuiteStarted = (result) => {
+  onSuiteStarted = (result:TPlayerTestMeta) => {
     this.player.fireEvent({
-      data: result,
+      data: clearTestResults(result),
       message: 'Player - Suite Start',
       name: PWPlay.playSuiteStart,
     })

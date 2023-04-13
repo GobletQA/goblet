@@ -124,7 +124,11 @@ const createPageProxy = (page:TBrowserPage) => {
   * - The proxy method for `locator.click` then calls `cursor.click` passing in the locator
  */
 export const ghostMouse = (page:TBrowserPage) => {
-  const pageProxy = createPageProxy(page)
+  return page
+  
+  // TODO - This needs a lot more work
+  // Mouse movement is way too slow
 
-  return pageProxy as TBrowserPage
+  // const pageProxy = createPageProxy(page)
+  // return pageProxy as TBrowserPage
 }

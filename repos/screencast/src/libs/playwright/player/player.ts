@@ -160,18 +160,16 @@ export class Player {
         name: PWPlay.playResults,
       })
 
-      return await this.stop()
     }
     catch(err){
-
       console.error(err.stack)
       this.fireEvent({
         message: err.message,
         name: PWPlay.playError,
       })
-
-      await this.stop()
-
+    }
+    finally {
+      return await this.stop()
     }
 
   }

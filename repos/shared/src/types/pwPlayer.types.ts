@@ -70,10 +70,8 @@ export type TPlayerTestMeta = {
   options?:Record<string, string|number>
   failedExpectations?:TPlayerTestExpectation[]
   passedExpectations?:TPlayerTestExpectation[]
-  // Defaulting these to empty arrays
-  // They contain a lot of test data that's not needed by the UI
-  tests?: any[]
   describes?: any[]
+  tests?: TPlayerTestMeta[]
 }
 
 export type TPlayerTestEvent = TPlayerTestMeta & {
