@@ -13,6 +13,7 @@ import { ExpressionKinds, ExpressionTypes } from '@constants'
 import { useMemo } from 'react'
 import { automateBrowser } from '@actions/socket/api/automateBrowser'
 import {
+  FootIcon,
   ReflectHorIcon,
   CursorClickIcon,
 } from '@gobletqa/components'
@@ -35,39 +36,47 @@ const resolveValue = (
   }
 }
 
+const fromBrowser = async (ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement>) => {
+  const {
+    active,
+    onChange,
+    setInputProps,
+  } = ctx
+
+  // Update the inputs to be disabled until we get a response from the browser
+  // TODO: Add ability to cancel 
+  setInputProps({
+    disabled: true,
+    className: `gb-select-element-active`,
+    helperText: `Select an element from the browser`
+  })
+
+  const data = await automateBrowser({
+    disabledEvents: true,
+    selectorType: active.kind,
+  })
+
+  const value = resolveValue(active, data)
+
+  setInputProps({})
+
+  onChange?.({target: { value }})
+}
+
+const options = [
+  {
+    closeMenu: false,
+    text: `From Browser`,
+    onClick: fromBrowser,
+    Icon: CursorClickIcon,
+  }
+]
+
 export const useContextMenu = () => {
   return useMemo(() => {
     return {
       expression: [
-        {
-          closeMenu: false,
-          Icon: CursorClickIcon,
-          text: `From Browser`,
-          onClick: async (ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement>) => {
-            const {
-              active,
-              onChange,
-              setInputProps,
-            } = ctx
-
-            setInputProps({
-              disabled: true,
-              className: `gb-select-element-active`,
-              helperText: `Select an element from the browser`
-            })
-
-            const data = await automateBrowser({
-              disabledEvents: true,
-              selectorType: active.kind,
-            })
-
-            const value = resolveValue(active, data)
-
-            setInputProps({})
-
-            onChange?.({target: { value }})
-          },
-        },
+        ...options,
         {
           Icon: ReflectHorIcon,
           onClick:(ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement>) => {
@@ -76,6 +85,14 @@ export const useContextMenu = () => {
           },
           text: `From Alias`,
         },
+        {
+          Icon: FootIcon,
+          text: `From Step`,
+          onClick: (ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement>) => {
+
+            
+          }
+        }
       ]
     }
   }, [])
