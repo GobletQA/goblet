@@ -2,11 +2,11 @@ import type { ChangeEvent } from 'react'
 import type { TStepDef } from '@ltipton/parkin'
 import type { TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
-
 import { ExpInput } from './ExpInput'
 import { capitalize } from '@keg-hub/jsutils'
-import { useInline, Tooltip } from '@gobletqa/components'
 import { ExpressionKindMap } from './ExpressionKindMap'
+import { ExpressionNoQuoteTypes } from '@GBR/constants'
+import { useInline, Tooltip } from '@gobletqa/components'
 import { removeQuotes } from '@GBR/utils/helpers/removeQuotes'
 import { ExpGridItem, ExpressionInfoText } from './Expression.styled'
 
@@ -18,10 +18,35 @@ export type TExpression = {
   onChange:(step:TRaceStep, old?:TRaceStep) => void
 }
 
+const numberTypes = Object.values(ExpressionNoQuoteTypes)
+
+const getFixes = (
+  step:string,
+  expression:TExpPart,
+  noQuotes:boolean
+) => {
+  const { index } = expression
+  /**
+   * If a value already exists for the expression
+   * The use it to calculate the end of the string
+   * If no value exists, then use the match text from the expression
+   * In cases where we wrap the expression in quotes, we add 2 to the length
+   * Only wrap for non-numbers
+   */
+  const postLength = expression?.value
+    ? noQuotes
+      ? expression.value.length
+      : `${expression.value}`.length + 2
+    : expression.text.length
+
+  return {
+    prefix:step.substring(0, index),
+    postfix: step.substring(index + postLength)
+  }
+}
 
 const useExpressionChange = (props:TExpression) => {
   const {
-    def,
     step,
     onChange,
     expression,
@@ -31,27 +56,16 @@ const useExpressionChange = (props:TExpression) => {
     const value = removeQuotes(evt.target.value || ``)
     if(value === expression.value) return
 
-    const { text, index } = expression
-    
-    // TODO - Check the value type, and only add 2 when the type is a string
-    // For numbers, we don't want to add quotes to it
+    const { text } = expression
+    // Check if quotes should be added
+    const noQuotes = Boolean(numberTypes.find(type => type === expression.type))
 
-    // If a value already exists for the expression
-    // The use it to calculate the end of the string
-    // If no value exists, then use the match text from the expression
-    // Because we also wrap the expression in quotes, we add 2 to the length
-    const postLength = expression?.value
-      ? `${expression.value}`.length + 2
-      : text.length
+    const { postfix, prefix } = getFixes(step.step, expression, noQuotes)
 
-    const prefix = step.step.substring(0, index)
-    const postfix = step.step.substring(index + postLength)
-
-    const replace = value ? `"${value}"` : text
+    const replace = value ? noQuotes ? value : `"${value}"` : text
     const result = `${prefix}${replace}${postfix}`
 
-    const updated = {...step, step: result}
-    onChange?.(updated, step)
+    onChange?.({...step, step: result}, step)
 
   })
 }

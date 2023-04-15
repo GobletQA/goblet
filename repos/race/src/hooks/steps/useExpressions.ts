@@ -59,12 +59,24 @@ export const useExpressions = (props:THStepSubjects, ext?:TExpOpts) => {
   const defId = step?.definition || ext?.definition?.uuid
   const def = (defId && defs[defId]) as TStepDef
 
-  // Run on every change of step, NOT step input
+
+  /**
+   * This hook should only run on step change, **NOT** step input change
+   * It's expensive, so try to use only when needed
+   */
   const exps = useMatchExpressions(parkin, def)
 
-  // Run on every change to step input
+
+  /**
+   * These hooks should run on every change to step input
+   */
   const tokens = useStepParts(parkin, step, def)
+  /**
+   * Maps expressions to Parkin parameters, with parameters overriding expression meta-data
+   * They are matched by type, so expression.type **MUST** match parameter.type
+   */
   const expressions = useMemo(() => mapStepTokens(exps, tokens), [tokens, exps])
+
   return def
     ? { def, expressions }
     : emptyObj as ExpResp
