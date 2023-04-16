@@ -62,7 +62,7 @@ export const useMonacoHooks = (
   const files = repoFiles?.files || emptyFileTree 
 
   const rootPrefix = useMemo(
-    () => getRootPrefix(repo),
+    () => getRootPrefix(repo) || ``,
     [repo?.paths?.repoRoot, repo?.paths?.workDir]
   )
 
