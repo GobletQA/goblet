@@ -11,6 +11,7 @@ import { useMenuItems } from '@GBR/hooks/menuContext/useMenuItems'
 export type TExpressionMenu = TMenuContextRef & {
   id:string
   parentId:string
+  submenuId?:string
   items: THMenuItems[`items`]
   onChange:(...args:any[]) => any
 }
@@ -18,8 +19,9 @@ export type TExpressionMenu = TMenuContextRef & {
 export const ExpressionMenu = (props:TExpressionMenu) => {
 
   const {
-    id="gb-expressions-menu",
-    parentId="gb-expressions-menu-button"
+    id=`gb-expressions-menu`,
+    submenuId=`gb-expressions-submenu`,
+    parentId=`gb-expressions-menu-button`,
   } = props
 
   const {
@@ -28,6 +30,7 @@ export const ExpressionMenu = (props:TExpressionMenu) => {
     onOpen,
     onClose,
     anchorRef,
+    submenuProps,
   } = useMenuItems(props)
 
   return (
@@ -48,6 +51,13 @@ export const ExpressionMenu = (props:TExpressionMenu) => {
         onClose={onClose}
         anchorRef={anchorRef}
         aria-labelledby={parentId}
+        SubMenu={submenuProps?.open && (
+          <Menu
+            id={submenuId}
+            aria-labelledby={id}
+            {...submenuProps}
+          />
+        ) || null}
       />
     </>
   )

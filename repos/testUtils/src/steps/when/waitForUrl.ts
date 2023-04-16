@@ -34,8 +34,8 @@ const meta = {
   race: true
 }
 
-When(`I wait for the url {word}`, waitForUrl, meta)
-When(`I wait for the url to match {word}`, waitForUrl, {
+When(`I wait for the url {string}`, waitForUrl, meta)
+When(`I wait for the url to match {string}`, waitForUrl, {
   ...meta,
   race: false
 })

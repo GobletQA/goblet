@@ -41,6 +41,7 @@ export type TAutoInput = {
   loading?: boolean
   sx?:CSSProperties
   value?:TAutoOptVal
+  autoFocus?:boolean
   required?: boolean
   multiple?: boolean
   labelSide?:boolean
@@ -112,6 +113,7 @@ const AutoInputComp = (props:TAutoInput) => {
     required,
     freeSolo,
     disabled,
+    autoFocus,
     className,
     labelSide,
     options=[],

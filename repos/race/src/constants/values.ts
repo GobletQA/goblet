@@ -1,3 +1,5 @@
+import { keyMap, deepFreeze } from '@keg-hub/jsutils'
+
 export const EmptyFeatureUUID = `EMPTY-FEATURE`
 
 export const PerspectiveOpts = [
@@ -41,3 +43,19 @@ export const FeatureIndexMap = {
 export const NoStepActionSelected = `NO-STEP-ACTION-SELECTED`
 
 export const DragImagePos:[number, number] = [10, -20]
+
+export const ExpInputTypes = deepFreeze(keyMap([
+  `text`,
+  `password`,
+  `radio`,
+  `checkbox`,
+  `file`,
+  `color`,
+  `date`,
+  `email`,
+  `month`,
+  `week`,
+  `number`,
+  `url`,
+  `tel`
+]))

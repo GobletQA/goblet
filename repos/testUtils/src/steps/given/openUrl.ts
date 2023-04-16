@@ -60,7 +60,7 @@ export const openUrl = async (url:string, world:TWorldConfig) => {
   await page.goto(site)
 }
 
-Given('I navigate to {string}', openUrl, {
+Given(`I navigate to {string}`, openUrl, {
   module: `openUrl`,
   alias: [`Open Url`],
   name: `Navigate to Url`,

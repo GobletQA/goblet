@@ -1,9 +1,10 @@
 import type { MouseEvent } from 'react'
-import type { TMenuItem } from '@gobletqa/components'
+import type { TOnMenuClose, TMenuItem } from '@gobletqa/components'
 import type { TRaceMenuItemClickCtx, TMenuContextRef } from '@GBR/types'
 
-import { useMemo, useState, useRef } from 'react'
+import { useSubMenu } from './useSubMenu'
 import { useInline } from '@gobletqa/components'
+import { useMemo, useState, useRef } from 'react'
 import {
   useParkin,
   useEditor,
@@ -19,6 +20,7 @@ export type THMenuItems = TMenuContextRef & {
   id:string
   parentId:string
   items: TMenuContentItem[]
+  // TODO: figure out the props for this method
   onChange:(...args:any[]) => any
 }
 
@@ -26,16 +28,15 @@ export const useMenuItems = (props:THMenuItems) => {
   const {
     type,
     gran,
-    items,
     parent,
     active,
     context,
-    onChange,
     setInputProps,
+    items:menuItems,
   } = props
 
   const { defs, setDefs } = useStepDefs()
-  const onChangeInline = useInline(onChange)
+  const onChange = useInline(props.onChange)
   const { feature, updateFeature } = useEditor()
   const { parkin, world, updateWorld } = useParkin()
   
@@ -46,15 +47,34 @@ export const useMenuItems = (props:THMenuItems) => {
     anchorRef.current = event.currentTarget
   })
 
-  const onClose = useInline(() => {
+  const onClose = useInline<TOnMenuClose>((event) => {
     setOpen(false)
     anchorRef.current = undefined
   })
 
   const contextItems = useMenuContext(context)
+  const {
+    onSubmenu,
+    submenuProps,
+  } = useSubMenu({
+    defs,
+    type,
+    gran,
+    world,
+    parent,
+    active,
+    parkin,
+    onClose,
+    feature,
+    onChange,
+    updateWorld,
+    contextItems,
+    updateFeature,
+    setInputProps,
+  })
 
-  const menuItems = useMemo(() => {
-    return (contextItems as TMenuContentItem[]).concat(items)
+  const items = useMemo(() => {
+    return (contextItems as TMenuContentItem[]).concat(menuItems)
       .map(item => {
 
         return {
@@ -76,10 +96,11 @@ export const useMenuItems = (props:THMenuItems) => {
             setOpen,
             setDefs,
             feature,
+            onChange,
+            onSubmenu,
             updateWorld,
             updateFeature,
             setInputProps,
-            onChange: onChangeInline
           } as TRaceMenuItemClickCtx, evt)
         } as TMenuItem
       })
@@ -88,13 +109,13 @@ export const useMenuItems = (props:THMenuItems) => {
     open,
     type,
     gran,
-    items,
     world,
     parent,
     active,
     parkin,
     feature,
     setDefs,
+    menuItems,
     updateWorld,
     contextItems,
     setInputProps,
@@ -103,12 +124,11 @@ export const useMenuItems = (props:THMenuItems) => {
 
   return {
     open,
+    items,
     onOpen,
     setOpen,
     onClose,
     anchorRef,
-    items: menuItems
+    submenuProps,
   }
-  
-  
 }

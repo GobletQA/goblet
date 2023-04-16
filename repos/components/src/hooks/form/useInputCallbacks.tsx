@@ -36,20 +36,20 @@ export const useInputCallbacks = (props:THInputCallbacks) => {
   const localInputRef = useRef<TInputType>(null)
   const inputRef = useMemo(() => (props.inputRef || localInputRef) as RefObject<TInputType>, [props.inputRef])
 
+  const [error, setError] = useState(``)
   const onBlurIn = useInline(props.onBlur)
   const onFocusIn = useInline(props.onFocus)
   const onChangeIn = useInline(props.onChange)
   const onKeyDownIn = useInline(props.onKeyDown)
-  
-
-  const [error, setError] = useState(``)
 
   const onFocus = useCallback((evt:TInputEvt) => {
-    if(!autoFocus || !inputRef.current) return
+    if(!inputRef.current) return
 
-    inputRef.current?.focus?.()
-    inputRef.current?.select?.()
-    
+    if(autoFocus){
+      inputRef.current?.focus?.()
+      inputRef.current?.select?.()
+    }
+
     onFocusIn?.(evt)
   }, [
     autoFocus,

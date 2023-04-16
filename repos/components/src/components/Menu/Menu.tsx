@@ -1,6 +1,5 @@
-
-import type { MutableRefObject, ComponentProps, ReactNode, MouseEvent } from 'react'
-import type { TMenuItem } from './MenuItems'
+import type { MouseEvent, ComponentProps } from 'react'
+import type { TMenu, TOnMuiClose, TOnMenuOpen } from '@GBC/types'
 
 import { useMemo } from 'react'
 import { MenuItems } from './MenuItems'
@@ -9,19 +8,7 @@ import { exists } from '@keg-hub/jsutils'
 import { MenuContext } from './MenuContext'
 import { useInline } from '@GBC/hooks/components/useInline'
 
-export type TMenu = Omit<ComponentProps<typeof MuiMenu>, `open`> & {
-  Context?: ReactNode
-  items: TMenuItem[]
-  anchorRef:MutableRefObject<HTMLElement|null|undefined>
-  open?:boolean
-  autoClose?: boolean
-  posAV?:`top`|`center`|`bottom`
-  posAH?:`left`|`center`|`right`
-  posTV?:`top`|`center`|`bottom`
-  posTH?:`left`|`center`|`right`
-  onOpen?:(event: MouseEvent<HTMLElement>) => any
-  onClose?:(event: MouseEvent<HTMLElement>) => any
-}
+type TMuiMenuProps = ComponentProps<typeof MuiMenu>
 
 const usePos = (props:TMenu) => {
   const {
@@ -48,12 +35,12 @@ const usePos = (props:TMenu) => {
         vertical: posAV || posAH,
         horizontal: posAH || posAV,
         ...anchorOrigin
-      }  as any,
+      }  as TMuiMenuProps[`anchorOrigin`],
       transformOrigin: {
         vertical: posTV || posTH,
         horizontal: posTH || posTV,
         ...transformOrigin
-      } as any
+      } as TMuiMenuProps[`transformOrigin`]
     }
   }, [
     posAV,
@@ -75,8 +62,9 @@ export const Menu = (props:TMenu) => {
     posTV,
     posTH,
     Context,
+    SubMenu,
     anchorRef,
-    autoClose=true,
+    autoClose,
     onOpen:onMenuOpen,
     onClose:onMenuClose,
     ...rest
@@ -84,44 +72,55 @@ export const Menu = (props:TMenu) => {
 
   const pos = usePos(props)
 
-  const onOpen = useInline((event: MouseEvent<HTMLElement>) => {
+  const hasRef = Boolean(anchorRef.current)
+  const onOpen = useInline<TOnMenuOpen>((event) => {
     anchorRef.current = event.currentTarget
     onMenuOpen?.(event)
   })
 
-  const onClose = useInline((event) => {
+  const onClose = useInline((
+    event:MouseEvent<HTMLElement>,
+    closeParent?:boolean,
+    ...args:any[]
+  ) => {
     anchorRef.current = null
-    onMenuClose?.(event)
+    onMenuClose?.(event, closeParent, ...args)
   })
 
-  const hasRef = Boolean(anchorRef.current)
+  const onMuiClose = useInline<TOnMuiClose>((
+    event,
+    reason
+  ) => onClose(event, false, reason))
 
   return (
-    <MuiMenu
-      {...rest}
-      {...pos}
-      onClose={onClose}
-      anchorEl={anchorRef.current}
-      open={
-        exists(open)
-          ? Boolean(open && hasRef)
-          : Boolean(anchorRef.current)
-      }
-    >
+    <>
+      <MuiMenu
+        {...rest}
+        {...pos}
+        onClose={onMuiClose}
+        anchorEl={anchorRef.current}
+        open={
+          exists(open)
+            ? Boolean(open && hasRef)
+            : Boolean(anchorRef.current)
+        }
+      >
 
-      {Context && (
-        <MenuContext>
-          {Context}
-        </MenuContext>
-      )||null}
+        {Context && (
+          <MenuContext>
+            {Context}
+          </MenuContext>
+        )||null}
 
-      <MenuItems
-        items={items}
-        autoClose={autoClose}
-        onCloseMenu={onClose}
-      />
+        <MenuItems
+          items={items}
+          autoClose={autoClose}
+          onCloseMenu={onClose}
+        />
+      </MuiMenu>
 
-    </MuiMenu>
+      {SubMenu}
+    </>
   )
 }
 

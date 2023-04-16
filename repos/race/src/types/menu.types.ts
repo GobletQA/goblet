@@ -1,11 +1,11 @@
 import type { MouseEvent } from 'react'
 import type { TExpPart } from './steps.types'
-import type { ESectionType } from './section.types'
+import type { EAstObject } from '@ltipton/parkin'
+import type { TOnMenuClose, TOnMenuOpen, TMenuItem } from '@gobletqa/components'
 import type { TFeatureCtx, TParkinCtx, TStepDefsCtx } from '@GBR/contexts'
 import type {
   TRaceRule,
   TRaceStep,
-  TRaceBlock,
   TRaceFeature,
   TRaceScenario,
   TRaceBackground,
@@ -13,16 +13,23 @@ import type {
 
 import type { ComponentProps, ReactNode, ComponentType } from 'react'
 
+export type TOnSubMenu = {
+  open?:boolean
+  items:TMenuItem[],
+  closeParent?:boolean
+}
+
 export type TRaceMenuItemClickCtx = Omit<TMenuContextRef, 'context'>
   & TParkinCtx
   & TStepDefsCtx
   & Omit<TFeatureCtx, `setFeature`>
   & {
     open:boolean
+    onOpen:TOnMenuOpen
+    onClose:TOnMenuClose
     setOpen:(open:boolean) => void
     onChange:(...args:any[]) => any
-    onClose:(...args:any[]) => void
-    onOpen:(evt: MouseEvent<HTMLElement>) => void
+    onSubmenu:(event:MouseEvent<HTMLElement>, data:TOnSubMenu) => void
   }
 
 export type TRaceMenuItemClick = (
@@ -31,11 +38,11 @@ export type TRaceMenuItemClick = (
 ) => any
 
 export type TRaceMenuItem = {
-  key?:string
   id?:string
+  key?:string
+  type:EAstObject
   text?:ReactNode
   label?:ReactNode
-  type:ESectionType
   closeMenu?:boolean
   tooltip?:ReactNode
   children?:ReactNode
@@ -61,7 +68,7 @@ export type TRaceContextMenu = {
 export type TMenuContextSetInputProps = (props:Partial<ComponentProps<any>>) => void
 
 export type TMenuContextRef = {
-  type: ESectionType
+  type: EAstObject
   context?:keyof TRaceContextMenu
   setInputProps:TMenuContextSetInputProps
   gran: TRaceFeature | TRaceBackground | TRaceRule | TRaceScenario

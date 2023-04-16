@@ -1,5 +1,6 @@
 
-import type { ComponentProps, ReactNode, ComponentType, MouseEvent } from 'react'
+import type { MouseEvent } from 'react'
+import type { TMenuItems, TMenuItem } from '@GBC/types'
 
 import { Fragment } from 'react'
 import { RenderType } from '../RenderType'
@@ -16,27 +17,6 @@ const defIconProps = {
   }
 }
 
-export type TMenuItem = {
-  key?:string
-  id?:string
-  text?:string
-  label?:string
-  dividerTop?:boolean
-  dividerBottom?:boolean
-  closeMenu?:boolean
-  children?:ReactNode
-  iconProps?:ComponentProps<any>
-  Icon?:ComponentType<any>|ReactNode
-  onCloseMenu?:(event: MouseEvent<HTMLElement>) => any
-  onClick: (event: MouseEvent<HTMLElement>, ...args:any[]) => any
-}
-
-export type TMenuItems = {
-  items: TMenuItem[]
-  autoClose?:boolean
-  onCloseMenu?:(event: MouseEvent<HTMLElement>) => any
-}
-
 export const MenuItem = (props:TMenuItem) => {
   const {
     label,
@@ -45,13 +25,14 @@ export const MenuItem = (props:TMenuItem) => {
     children,
     text=label,
     onCloseMenu,
+    closeParent,
     closeMenu=true,
     iconProps=defIconProps,
   } = props
-  
-  const onItemClick = useInline((event:MouseEvent<HTMLElement>) => {
-    closeMenu && onCloseMenu?.(event)
-    onClick?.(event)
+
+  const onItemClick = useInline((event:MouseEvent<HTMLElement>, ...args:any[]) => {
+    closeMenu && onCloseMenu?.(event, closeParent)
+    onClick?.(event, ...args)
   })
 
   return (
@@ -80,8 +61,8 @@ export const MenuItem = (props:TMenuItem) => {
 export const MenuItems = (props:TMenuItems) => {
   const {
     items,
+    autoClose,
     onCloseMenu,
-    autoClose=true
   } = props
 
   return (
