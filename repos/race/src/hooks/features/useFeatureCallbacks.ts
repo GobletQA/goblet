@@ -30,6 +30,7 @@ export type THFeatureCallbacks = {
   feature?:TRaceFeature
   setFeature:TSetFeature
   featuresRef: TFeaturesRef
+  onAuditFeature:TFeatureCB
   updateEmptyTab:TFeatureCB
   onFeatureSave:TOnFeatureCB
   onFeatureClose:TOnFeatureCB
@@ -53,6 +54,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     updateEmptyTab,
     setFeatureRefs,
     updateExpanded,
+    onAuditFeature,
     onFeatureChange,
     onFeatureInactive,
     setFeature:_setFeature,
@@ -93,6 +95,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
     options?.expand && updateExpanded(options?.expand)
     setFeatureRefs(featuresRef.current)
+    onAuditFeature(updated)
     setFeature(updated)
   })
 

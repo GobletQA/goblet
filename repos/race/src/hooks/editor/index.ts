@@ -1,4 +1,4 @@
-export * from './useFeatureAudit'
+export * from './useAudit'
 export * from './useContainerHooks'
 export * from './useSectionActions'
 export * from './useGetEditorContext'

@@ -1,4 +1,5 @@
 import type {
+  TAudit,
   TEditorRef,
   TFeatureCB,
   TRaceFeature,
@@ -15,17 +16,15 @@ import type { MutableRefObject } from 'react'
 import {
   useMemo,
   useState,
-  useEffect,
   useContext,
   useCallback,
   createContext,
 } from 'react'
 
-import { useParkin } from './ParkinContext'
+
 import { useFeature } from './FeatureContext'
-import { useStepDefs } from './StepDefsContext'
 import { MemoChildren } from '@gobletqa/components'
-import { useFeatureAudit } from '@GBR/hooks/editor/useFeatureAudit'
+import { useAudit } from '@gobletqa/race/hooks/editor/useAudit'
 import { emptyObj, emptyArr, exists, ensureArr } from '@keg-hub/jsutils'
 import { useGetEditorContext } from '@GBR/hooks/editor/useGetEditorContext'
 import { useFeatureCallbacks } from '@GBR/hooks/features/useFeatureCallbacks'
@@ -51,15 +50,16 @@ export type TEditorProvider = {
 }
 
 export type TEditorCtx = {
+  audit:TAudit
   rootPrefix:string
   expanded:TExpanded
   displayMeta?:boolean
   feature:TRaceFeature
   setFeature:TOnFeatureCB
-  updateExpanded:TOnExpandedCB
-  updateFeature:TUpdateFeatureCB
-  menuContext?:TRaceContextMenu
   collapseAll: () => void
+  updateExpanded:TOnExpandedCB
+  menuContext?:TRaceContextMenu
+  updateFeature:TUpdateFeatureCB
   collapseAllExcept:(key:string|string[]) => void
 }
 
@@ -125,9 +125,10 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureInactive,
   } = props
 
-  const { world } = useParkin()
-  const { defs } = useStepDefs()
-  const auditFeature = useFeatureAudit({ defs, world })
+  const {
+    audit,
+    onAuditFeature
+  } = useAudit()
 
   const {
     feature,
@@ -156,6 +157,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     setFeatureRefs,
     updateExpanded,
     updateEmptyTab,
+    onAuditFeature,
     onFeatureActive,
     onFeatureChange,
     setFeatureGroups,
@@ -165,6 +167,7 @@ export const EditorProvider = (props:TEditorProvider) => {
 
   const editorCtx:TEditorCtx = useMemo(() => {
     return {
+      audit,
       expanded,
       setFeature,
       rootPrefix,
@@ -176,6 +179,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       feature: (feature || emptyObj) as TRaceFeature,
     }
   }, [
+    audit,
     feature,
     expanded,
     setFeature,
@@ -186,11 +190,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     collapseAllExcept,
   ])
 
-  useGetEditorContext({ editor: editorCtx })
-
-  useEffect(() => {
-    editorRef.current = editorCtx
-  }, [editorCtx])
+  useGetEditorContext({ editorRef, editorCtx })
 
   return (
     <EditorContext.Provider value={editorCtx}>
