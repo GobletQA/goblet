@@ -4,7 +4,7 @@ import type { ResizeMoveEvent } from 'react-page-split'
 
 import { useRef } from 'react'
 import { get } from '@keg-hub/jsutils'
-import { useEventListen, useEventEmit } from '@gobletqa/components'
+import { useOnEvent, useEventEmit } from '@gobletqa/components'
 import {
   getPanels,
   dimsFromCanvas
@@ -25,7 +25,7 @@ export const useLayoutResize = () => {
 
   const onHorResizeMove = useEventEmit(PanelDimsSetEvt, {})
 
-  useEventListen(VNCResizeEvt, () => {
+  useOnEvent(VNCResizeEvt, () => {
     canvasRef.current
       && lPPanelRef.current
       && rPPanelRef.current
@@ -38,7 +38,7 @@ export const useLayoutResize = () => {
 
   // Initial setup of the panel and canvas refs
   // Without this the other hooks don't work 
-  useEventListen(VNCConnectedEvt, (rfb:RFB) => {
+  useOnEvent(VNCConnectedEvt, (rfb:RFB) => {
     // When the VNC service connects, get the browser canvas
     // And use it to resize the panels relative to it
     canvasRef.current = get<HTMLCanvasElement>(rfb, `_canvas`)

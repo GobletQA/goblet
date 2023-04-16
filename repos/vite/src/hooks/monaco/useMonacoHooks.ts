@@ -23,7 +23,7 @@ import { useSettingValues } from '@hooks/settings/useSettingValues'
 import { loadGobletFile } from '@actions/files/api/loadGobletFile'
 import {
   useEventEmit,
-  useEventListen,
+  useOnEvent,
 } from '@gobletqa/components'
 
 import {
@@ -88,7 +88,7 @@ export const useMonacoHooks = (
 
   exists(theme) && set(config, `theme.name`, theme)
 
-  useEventListen<TDefinitionAst>(OpenEditorFileEvt, async (defAst:TDefinitionAst) => {
+  useOnEvent<TDefinitionAst>(OpenEditorFileEvt, async (defAst:TDefinitionAst) => {
     const { location } = defAst
 
     // If it's a custom file then it should already be loaded

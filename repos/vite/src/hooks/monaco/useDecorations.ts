@@ -8,7 +8,7 @@ import type {
 
 import { useRef } from 'react'
 import { PWPlay } from '@constants'
-import { useEventListen } from '@gobletqa/components'
+import { useOnEvent } from '@gobletqa/components'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { getTypeFromId } from '@utils/editor/getTypeFromId'
 import { buildDecoration } from '@utils/editor/buildDecoration'
@@ -105,7 +105,7 @@ export const useDecorations = ({
   const featureRef = useRef<TPlayerEventData|undefined>(undefined)
   const scenarioRef = useRef<TPlayerEventData|undefined>(undefined)
 
-  useEventListen<TPlayerResEvent>(PlayerEndedEvent, (event:TPlayerResEvent) => {
+  useOnEvent<TPlayerResEvent>(PlayerEndedEvent, (event:TPlayerResEvent) => {
     updateRefs({
       stepRef,
       featureRef,
@@ -114,7 +114,7 @@ export const useDecorations = ({
     })
   })
 
-  useEventListen<TPlayerResEvent>(PlayerErrorEvent, (event:TPlayerResEvent) => {
+  useOnEvent<TPlayerResEvent>(PlayerErrorEvent, (event:TPlayerResEvent) => {
     const id = event?.data?.id
     const decoration = editorRef?.current?.decoration
     if(!decoration || !id)
@@ -129,7 +129,7 @@ export const useDecorations = ({
   })
 
 
-  useEventListen<TPlayerResEvent>(PlayerClearDecorationEvt, (event:TPlayerResEvent) => {
+  useOnEvent<TPlayerResEvent>(PlayerClearDecorationEvt, (event:TPlayerResEvent) => {
     const { location } = event
     const decoration = editorRef?.current?.decoration
     location && decoration?.clear(location)
@@ -141,7 +141,7 @@ export const useDecorations = ({
     })
   })
 
-  useEventListen<TPlayerResEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
+  useOnEvent<TPlayerResEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
     const id = event?.data?.id
     const decoration = editorRef?.current?.decoration
     if(!decoration || !id) return

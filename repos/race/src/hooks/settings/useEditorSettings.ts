@@ -10,7 +10,7 @@ import { useReducer } from 'react'
 import { exists } from '@keg-hub/jsutils'
 import { ESettingAction } from '@GBR/types'
 import { UpdateSettingContextEvt } from '@GBR/constants'
-import { useEventListen, useEventEmit, useInline } from '@gobletqa/components'
+import { useOnEvent, useInline } from '@gobletqa/components'
 
 export type THEditorSettings = {
   displayMeta?:boolean
@@ -76,7 +76,7 @@ export const useEditorSettings = (props:THEditorSettings) => {
     })
   })
 
-  useEventListen<TUpdateSettingEvt>(
+  useOnEvent<TUpdateSettingEvt>(
     UpdateSettingContextEvt,
     ({ payload }) => updateSetting(payload)
   )

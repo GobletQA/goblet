@@ -14,7 +14,7 @@ import type { TExpanded, TOnExpandedCB } from '@GBR/contexts'
 
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
-import { GetActiveFileEvent, useEventListen, useInline } from '@gobletqa/components'
+import { GetActiveFileEvent, useOnEvent, useInline } from '@gobletqa/components'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 
@@ -108,7 +108,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
   // Listen to external events to update the feature context
   // Allows dispatching update outside of the react context
-  useEventListen<TUpdateFeature>(
+  useOnEvent<TUpdateFeature>(
     UpdateFeatureContextEvt,
     ({ feature, options }) => updateFeature({
       options,
@@ -116,21 +116,21 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     })
   )
 
-  useEventListen<TRaceFeature>(
+  useOnEvent<TRaceFeature>(
     SetFeatureContextEvt,
     setEmptyFeature
   )
 
   // Helper to allow external code ask the context for the current feature
   // Allows external actions to interface with the currently active feature
-  useEventListen<TAskForFeature>(AskForFeatureEvt, ({ cb }) => cb?.({
+  useOnEvent<TAskForFeature>(AskForFeatureEvt, ({ cb }) => cb?.({
     feature,
     updateFeature,
   }))
 
   // Helper to allow external code ask the context for the current file
   // Similar to AskForFeature, but used outside of race editor
-  useEventListen(GetActiveFileEvent, ({ cb }) => cb?.({
+  useOnEvent(GetActiveFileEvent, ({ cb }) => cb?.({
     content: curValueRef.current,
     location: curPathRef.current
   }))

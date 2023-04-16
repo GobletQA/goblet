@@ -4,7 +4,7 @@ import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 import {  } from '@GBR/contexts/EditorContext'
 
 import { AskForEditorEvt } from '@GBR/constants'
-import { useEventListen } from '@gobletqa/components'
+import { useOnEvent } from '@gobletqa/components'
 
 export type THEditorContext = {
   editor: TEditorCtx
@@ -17,5 +17,5 @@ export const useGetEditorContext = (props:THEditorContext) => {
 
   // Helper to allow external code ask the context for the current feature
   // Allows external actions to interface with the currently active feature
-  useEventListen<TAnswerEditor>(AskForEditorEvt, ({ cb }) => cb?.({ editor }))
+  useOnEvent<TAnswerEditor>(AskForEditorEvt, ({ cb }) => cb?.({ editor }))
 }

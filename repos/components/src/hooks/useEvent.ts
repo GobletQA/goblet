@@ -5,7 +5,7 @@ import { useEffectOnce } from '@GBC/hooks/components/useEffectOnce'
 
 export type TAnonFunc = (...args:any[]) => any
 
-export const useEventListen = <P=Record<any, any>>(
+export const useOnEvent = <P=Record<any, any>>(
   event:string,
   cb:TAnonFunc,
   key:string=event

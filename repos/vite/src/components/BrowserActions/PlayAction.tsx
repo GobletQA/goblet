@@ -8,7 +8,7 @@ import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
-import { useEventListen, BaseAction, gutter, PlayCircleOutlineIcon } from '@gobletqa/components'
+import { useOnEvent, BaseAction, gutter, PlayCircleOutlineIcon } from '@gobletqa/components'
 
 export type TEditorPathChange = {
   location: string
@@ -32,7 +32,7 @@ const RunTests = (props:TBrowserActionProps) => {
     await startBrowserPlay(fileModel, `feature`)
   }, [location])
 
-  useEventListen<TEditorPathChange>(EditorPathChangeEvt, ({ location }) => setLocation(location))
+  useOnEvent<TEditorPathChange>(EditorPathChangeEvt, ({ location }) => setLocation(location))
 
   const noActiveFile = !Boolean(location)
   const disabled = (browserState !== EBrowserState.idle) || noActiveFile
