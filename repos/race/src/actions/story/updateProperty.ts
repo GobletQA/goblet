@@ -10,7 +10,7 @@ export const updateProperty = async (
   content:string|string[]|null,
   parent?:TRaceFeature
 ) => {
-  const feature = await getFeature(parent)
+  const { feature } = await getFeature(parent)
   if(!feature) return
   
   content === null
@@ -18,7 +18,13 @@ export const updateProperty = async (
     : updateFeature({
         ...feature,
         [type]: isArr<string[]>(content)
-          ? blocksFactory({ feature, blocks: content.map(line => ({ content: line })) })
-          : blockFactory({ feature, block: { ...feature[type], content }})
+          ? blocksFactory({
+              feature,
+              blocks: content.map(line => ({ content: line }))
+            })
+          : blockFactory({
+              feature,
+              block: { ...feature[type], content }
+            })
       })
 }

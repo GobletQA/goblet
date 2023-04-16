@@ -5,9 +5,8 @@ import { useMemo } from 'react'
 import { ESplitType, StepHeaderChunk } from './StepHeaderChunk'
 
 export type TStepHeaderSplit = {
-  def:TStepDef
   step: TRaceStep
-  expressions:TExpPart[]
+  expressions?:TExpPart[]
 }
 
 const useSplitStep = (props:TStepHeaderSplit) => {

@@ -30,7 +30,7 @@ const toRule = (
   rules[ruleIdx] = {...rule, scenarios}
   
   const updated = {...feature, rules}
-  props.persist !== false && updateFeature(updated)
+  props.persist !== false && updateFeature(updated, { removeAuditSteps: true })
 
   return updated
 }
@@ -41,7 +41,7 @@ const toFeature = (
   scenarios:TRaceScenario[]
 ) => {
   const updated = {...feature, scenarios}
-  props.persist !== false && updateFeature(updated)
+  props.persist !== false && updateFeature(updated, { removeAuditSteps: true })
 
   return updated
 }

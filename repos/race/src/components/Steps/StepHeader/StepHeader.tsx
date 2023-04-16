@@ -7,9 +7,8 @@ import { StepHeaderText } from './StepHeader.styled'
 import { ESplitType, StepHeaderChunk } from './StepHeaderChunk'
 
 export type TStepHeader = {
-  def:TStepDef
   step: TRaceStep
-  expressions:TExpPart[]
+  expressions?:TExpPart[]
 }
 
 export const StepHeader = (props:TStepHeader) => {

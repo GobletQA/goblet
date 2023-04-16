@@ -15,7 +15,7 @@ export const stepTokens = (props: TStepTokens) => {
     step,
     parkin,
   } = props
-  
+
   return def
     ? parkin.matcher.stepTokens(step, def)
     : emptyArr as TMatchTokens[]

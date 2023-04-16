@@ -23,7 +23,7 @@ export const addRule = async (props?:TAddRule) => {
   rules.push(rule)
 
   const updated = {...feature, rules}
-  !props?.feature && updateFeature(updated, { expand: rule.uuid })
+  !props?.feature && updateFeature(updated, { expand: rule.uuid, skipAudit: true })
 
   return updated
 }

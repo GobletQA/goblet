@@ -82,5 +82,5 @@ export const moveScenario = async (props:TMoveScenario) => {
   if(!added)
     return missing(`Feature. Could not perform "Move scenario to ${newParent.type}"`, prefix)
 
-  updateFeature(added)
+  updateFeature(added, { mergeAudit: true })
 }

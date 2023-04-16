@@ -37,7 +37,7 @@ const toRule = (
   rules[ruleIdx as number] = {...rule, scenarios}
 
   const updated = {...feature, rules}
-  persist !== false && updateFeature(updated)
+  persist !== false && updateFeature(updated, { skipAudit: true })
 
   return updated
 }
@@ -62,7 +62,7 @@ const toFeature = (
   scenarios[index] = {...scenario, ...update}
 
   const updated = {...feature, scenarios}
-  persist !== false && updateFeature(updated)
+  persist !== false && updateFeature(updated, { skipAudit: true })
 
   return updated
 }

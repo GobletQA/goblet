@@ -15,14 +15,14 @@ import {
 } from './Steps.styled'
 
 export type TSelectAction = {
+  def?:TStepDef
   step: TRaceStep
-  definition?:TStepDef
   parent:TRaceStepParent
   onChange:(step:TRaceStep) => void
 }
 
 export type TActionInfo = {
-  definition?:TStepDef
+  def?:TStepDef
 }
 
 const actSelectProps = {
@@ -60,17 +60,18 @@ const RenderOption = (
 }
 
 const ActionInfo = (props:TActionInfo) => {
-  const { definition } = props
+  const { def } = props
+  const text = def?.meta?.info || def?.meta?.description || ``
 
   return (
     <Tooltip 
       loc='bottom'
       describeChild
       enterDelay={500}
-      title={definition?.meta?.info}
+      title={text}
     >
       <ActionInfoText>
-        {definition?.meta?.info}
+        {text}
       </ActionInfoText>
     </Tooltip>
   )
@@ -91,7 +92,7 @@ export const SelectAction = (props:TSelectAction) => {
         onChange={onChange}
         autocompleteProps={autocompleteProps}
         className='gb-step-action-select-dropdown'
-        helperText={<ActionInfo definition={props?.definition} />}
+        helperText={<ActionInfo def={props?.def} />}
       />
     </StepGridItem>
   )

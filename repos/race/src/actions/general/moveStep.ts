@@ -116,7 +116,7 @@ export const moveStep = async (props:TMoveStep) => {
   if(!added)
     return missing(`Feature. Could not perform "Move step to ${newParent.type}"`, prefix)
 
-  persist !== false && updateFeature(added)
+  persist !== false && updateFeature(added, { mergeAudit: true })
 
   return added
 }

@@ -42,7 +42,7 @@ const toRule = (
   rules[ruleIdx as number] = {...rule, background: background}
 
   const update = {...feature, rules}
-  props.persist !== false && updateFeature(update, { expand: background.uuid })
+  props.persist !== false && updateFeature(update, { expand: background.uuid, skipAudit: true })
 
   return update
 }
@@ -57,7 +57,7 @@ const toFeature = (
   if(!background) return factoryFailed(`background`, prefix)
 
   const update = {...feature, background}
-  props.persist !== false && updateFeature(update, { expand: background.uuid })
+  props.persist !== false && updateFeature(update, { expand: background.uuid, skipAudit: true })
 
   return update
 }

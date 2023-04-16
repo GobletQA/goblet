@@ -9,6 +9,6 @@ export const addStory = async () => {
   const story = storyFactory({ feature, empty: true })
 
   // TODO: add expand for story section ?? { expand: story.uuid }
-  updateFeature({...feature, ...story})
+  updateFeature({...feature, ...story}, { skipAudit: true })
 
 }

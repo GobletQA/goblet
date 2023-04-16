@@ -1,14 +1,18 @@
 import type { MutableRefObject, CSSProperties } from 'react'
-import type { TRaceGran, TRaceStep, TRaceStepParent } from '@GBR/types'
+import type {
+  TRaceStep,
+  TRaceGran,
+  TRaceStepParent,
+} from '@GBR/types'
 
 import { Section } from '../Section'
 import { cls } from '@keg-hub/jsutils'
 import { StepHeader } from './StepHeader'
+import { ESectionType } from '@GBR/types'
 import { Expressions } from '../Expressions'
 import { SelectAction } from './SelectAction'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
-import { useExpressions } from '@GBR/hooks/steps/useExpressions'
-import { useMatchStepToDef } from '@GBR/hooks/steps/useMatchStepToDef'
+import { useStepAudit } from '@GBR/hooks/steps/useStepAudit'
 import { useSectionActions } from '@GBR/hooks/editor/useSectionActions'
 import { collapseAllExcept } from '@GBR/actions/general/collapseAllExcept'
 import {
@@ -16,11 +20,7 @@ import {
   StepContent,
   StepContainer,
 } from './Steps.styled'
-import { ESectionType } from '@GBR/types'
-import { PlayAct } from '../Actions/Play'
-import { CopyAct } from '../Actions/Copy'
-import { DeleteAct } from '../Actions/Delete'
-import { CollapseAct } from '../Actions/Collapse'
+
 
 export type TStep = {
   step: TRaceStep
@@ -54,8 +54,11 @@ export const Step = (props:TStep) => {
     showDragHandle,
   } = props
 
-  const { step, definition } = useMatchStepToDef(props)
-  const { def, expressions } = useExpressions(props, { definition })
+  const {
+    def,
+    step,
+    expressions
+  } = useStepAudit(props)
 
   const onPlay = () => {}
   const onCopy = () => {}
@@ -94,7 +97,6 @@ export const Step = (props:TStep) => {
         parentTypes={[ESectionType.scenario, ESectionType.background]}
         label={(
           <StepHeader
-            def={def}
             step={step}
             expressions={expressions}
           />
@@ -108,12 +110,12 @@ export const Step = (props:TStep) => {
             disableEqualOverflow
           >
             <SelectAction
+              def={def}
               step={step}
               parent={parent}
-              definition={definition}
               onChange={onStepChange}
             />
-            {def && (
+            {def && expressions && (
               <Expressions
                 def={def}
                 step={step}

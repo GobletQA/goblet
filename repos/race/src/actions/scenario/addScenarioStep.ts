@@ -41,7 +41,7 @@ const toRule = (
   rules[ruleIdx as number] = {...rule, scenarios}
 
   const update = {...feature, rules}
-  props.persist !== false && updateFeature(update, { expand: step.uuid })
+  props.persist !== false && updateFeature(update, { expand: step.uuid, mergeAudit: true })
 
   return update
 }
@@ -53,7 +53,7 @@ const toFeature = (
   step:TRaceStep
 ) => {
   const update = {...feature, scenarios}
-  props.persist !== false && updateFeature(update, { expand: step.uuid })
+  props.persist !== false && updateFeature(update, { expand: step.uuid, mergeAudit: true })
 
   return update
 }

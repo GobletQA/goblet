@@ -9,7 +9,7 @@ import { useStepDefs }  from '@gobletqa/race/contexts/StepDefsContext'
 
 export type THStepOptions = {
   step:TRaceStep
-  definition?: TStepDef
+  def?: TStepDef
 }
 
 const emptyAction = {
@@ -23,7 +23,7 @@ const emptyAction = {
 export const useStepOptions = (props?:THStepOptions) => {
   const {defs} = useStepDefs()
   const step = props?.step
-  const definition = props?.definition
+  const definition = props?.def
   const activeRef = useRef<TAutoOptVal>(emptyAction)
 
   const options = useMemo(() => {

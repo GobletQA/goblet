@@ -1,7 +1,9 @@
+import type { TAuditOpts } from './audit.types'
 import type {
   TTagsAst,
   TStepAst,
   TRuleAst,
+  TBlockAst,
   TParentAst,
   TBlockType,
   TFeatureAst,
@@ -13,7 +15,8 @@ import type {
   TBackgroundParentAst,
 } from '@ltipton/parkin'
 
-export type TUpdateFeatureOpts = {
+
+export type TUpdateFeatureOpts = TAuditOpts & {
   expand?:string
   replace?:boolean
 }
@@ -45,7 +48,7 @@ export type TEmptyFeature = TRaceFeature & {
 export type TRaceStep = TStepAst
 export type TRaceTags = TTagsAst
 export type TRaceRule = TRuleAst
-export type TRaceBlock = TBlockType
+export type TRaceBlock = TBlockAst
 export type TRaceScenario = TScenarioAst
 export type TRaceBackground = TBackgroundAst
 

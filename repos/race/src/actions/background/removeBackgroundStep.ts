@@ -38,7 +38,7 @@ const toRule = (
   }
 
   const updated = {...feature, rules}
-  props.persist !== false && updateFeature(updated)
+  props.persist !== false && updateFeature(updated, { removeAuditSteps: true })
 
   return updated
 }
@@ -55,7 +55,7 @@ const toFeature = (
       steps: background.steps.filter(step => step.uuid !== props.stepId)
     }
   }
-  props.persist !== false && updateFeature(updated)
+  props.persist !== false && updateFeature(updated, { removeAuditSteps: true })
 
   return updated
 }

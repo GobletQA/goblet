@@ -69,7 +69,7 @@ const toRule = (
 
   const update = {...feature, rules}
 
-  props.persist !== false && updateFeature(update, { expand: scenario.uuid })
+  props.persist !== false && updateFeature(update, { expand: scenario.uuid, skipAudit: true })
 
   return update
 }
@@ -84,7 +84,7 @@ const toFeature = (
 
   const updated = {...feature, scenarios}
 
-  props.persist !== false && updateFeature(updated, { expand: scenario.uuid })
+  props.persist !== false && updateFeature(updated, { expand: scenario.uuid, skipAudit: true })
 
   return updated
 }

@@ -37,7 +37,7 @@ export const removeBackground = async (props:TRemoveBackground) => {
   rules[ruleIdx as number] = updated
 
   const update = {...feature, rules}
-  persist !== false &&  updateFeature(update)
+  persist !== false &&  updateFeature(update, { removeAuditSteps: true })
 
   return update
 }

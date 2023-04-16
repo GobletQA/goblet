@@ -44,7 +44,7 @@ const fromRule = (
   rules[ruleIdx] = moved
   const updated = {...feature, rules}
 
-  persist !== false && updateFeature(updated)
+  persist !== false && updateFeature(updated, { skipAudit: true })
 
   return updated
 }
@@ -67,7 +67,7 @@ const fromFeature = (
 
   updated
     && persist !== false
-    && updateFeature(updated)
+    && updateFeature(updated, { skipAudit: true })
 
   return updated
 }

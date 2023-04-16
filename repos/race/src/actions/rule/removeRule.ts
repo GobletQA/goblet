@@ -21,7 +21,7 @@ export const removeRule = async (props:TRemoveRule) => {
 
   const rules = feature?.rules?.filter(rule => rule.uuid !== ruleId)
   const update = {...feature, rules}
-  persist !== false && updateFeature(update)
+  persist !== false && updateFeature(update, { removeAuditSteps: true })
 
   return update
 }

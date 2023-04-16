@@ -8,9 +8,11 @@ import type {
   TAskForFeature,
   TSetFeatureRefs,
   TSetFeatureGroups,
+  TOnAuditFeatureCB,
 } from '@GBR/types'
 import type { MutableRefObject } from 'react'
-import type { TExpanded, TOnExpandedCB } from '@GBR/contexts'
+import type { TOnExpandedCB } from '@GBR/contexts'
+import type { TExpanded } from '@GBR/hooks/editor/useExpanded'
 
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
@@ -30,7 +32,6 @@ export type THFeatureCallbacks = {
   feature?:TRaceFeature
   setFeature:TSetFeature
   featuresRef: TFeaturesRef
-  onAuditFeature:TFeatureCB
   updateEmptyTab:TFeatureCB
   onFeatureSave:TOnFeatureCB
   onFeatureClose:TOnFeatureCB
@@ -39,6 +40,7 @@ export type THFeatureCallbacks = {
   onFeatureActive?:TOnFeatureCB
   setFeatureRefs:TSetFeatureRefs
   onFeatureInactive?:TOnFeatureCB
+  onAuditFeature:TOnAuditFeatureCB
   setFeatureGroups:TSetFeatureGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
@@ -95,7 +97,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
     options?.expand && updateExpanded(options?.expand)
     setFeatureRefs(featuresRef.current)
-    onAuditFeature(updated)
+    onAuditFeature(updated, options)
     setFeature(updated)
   })
 

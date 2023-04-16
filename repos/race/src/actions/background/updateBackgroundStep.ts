@@ -28,7 +28,7 @@ const fromFeature = (props:TUpdateBackgroundStep, feature:TRaceFeature) => {
 
   steps[stepIdx] = step
   const updated = {...feature, background: {...feature.background, steps}}
-  persist !== false && updateFeature(updated)
+  persist !== false && updateFeature(updated, { mergeAudit: true })
 
   return updated
 }
@@ -56,7 +56,7 @@ const fromRule = (props:TUpdateBackgroundStep, feature:TRaceFeature) => {
   rules[ruleIdx as number] = rule
 
   const updated = {...feature, rules}
-  persist !== false && updateFeature({...feature, rules})
+  persist !== false && updateFeature({...feature, rules}, { mergeAudit: true })
   
   return updated
 }

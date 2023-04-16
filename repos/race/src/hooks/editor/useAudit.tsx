@@ -1,13 +1,15 @@
-import type { TOnParkinInit, TAudit, TRaceFeature } from '@GBR/types'
+import type {
+  TAudit,
+  TRaceFeature,
+  TOnParkinInit,
+  TOnAuditFeatureCB,
+} from '@GBR/types'
 
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj, pickKeys } from '@keg-hub/jsutils'
 import { useCallback, useState } from 'react'
 import { useOnEvent } from '@gobletqa/components'
 import { ParkinInitEvt } from '@GBR/constants/events'
-import { useParkin } from '@GBR/contexts/ParkinContext'
-import { useStepDefs } from '@GBR/contexts/StepDefsContext'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
-
 
 const emptyAudit = emptyObj as TAudit
 
@@ -17,14 +19,23 @@ export type THFeatureAudit = {
 
 export const useAudit = (props:THFeatureAudit) => {
   const { feature } = props
-  const { world } = useParkin()
-  const { defs } = useStepDefs()
-  
   const [audit, setAudit] = useState(emptyAudit)
-  
-  const onAuditFeature = useCallback(async (feature:TRaceFeature) => {
-    const audit = await ParkinWorker.auditFeature({ feature })
-    audit && setAudit(audit)
+
+  const onAuditFeature = useCallback<TOnAuditFeatureCB>(async (feature, opts=emptyObj) => {
+    const {
+      skipAudit,
+      mergeAudit,
+      removeAuditSteps
+    } = opts
+
+    if(skipAudit) return
+
+    const updated = await ParkinWorker.auditFeature({ feature }) || emptyAudit
+
+    if(mergeAudit) return setAudit({ ...audit, ...updated })
+    if(removeAuditSteps) return setAudit(pickKeys(audit, Object.keys(updated)))
+
+    setAudit(updated)
   }, [ audit ])
 
   /**
