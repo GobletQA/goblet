@@ -1,11 +1,8 @@
 import type { TRaceFeature } from '@GBR/types'
-import type { MutableRefObject } from 'react'
-import type { TWorldConfig, TStepDefsList } from '@ltipton/parkin'
-
 import { useCallback, useState } from 'react'
 import { useParkin } from '@GBR/contexts/ParkinContext'
 import { useStepDefs } from '@GBR/contexts/StepDefsContext'
-import { EditorWorker } from '@GBR/workers/editor/editorWorker'
+import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 
 
 export type THFeatureAudit = {}
@@ -18,11 +15,15 @@ export const useAudit = (props?:THFeatureAudit) => {
   const [audit, setAudit] = useState({})
   
   const onAuditFeature = useCallback((feature:TRaceFeature) => {
-    
+    ParkinWorker.auditFeature({
+      defs,
+      world,
+      feature,
+    })
   }, [
     defs,
+    audit,
     world,
-    audit
   ])
 
   return {

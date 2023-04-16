@@ -2,7 +2,12 @@
 declare const self: DedicatedWorkerGlobalScope;
 
 import type { TRaceFeature } from '@GBR/types'
-import type { TWorldConfig, TRegisterOrAddStep, TFeatureAst } from '@ltipton/parkin'
+import type {
+  TFeatureAst,
+  TWorldConfig,
+  TStepDefsList,
+  TRegisterOrAddStep,
+} from '@ltipton/parkin'
 
 import { Parkin } from '@ltipton/parkin'
 import { deepMerge } from '@keg-hub/jsutils'
@@ -29,7 +34,6 @@ export const parseFeature = async (
   world?:TWorldConfig,
 ) => PK.parse.feature(text, world || {$alias: {}} as TWorldConfig)
 
-
 export const reIndex = async (options:TReIndexFeature) => {
   const { feature } = options
 
@@ -43,4 +47,22 @@ export const reIndex = async (options:TReIndexFeature) => {
   feature.content = assembled
 
   return feature
+}
+
+
+export type TAuditFeature = {
+  defs:TStepDefsList
+  world:TWorldConfig
+  feature:TRaceFeature
+}
+
+export const auditFeature = async (props:TAuditFeature) => {
+  const {
+    defs,
+    world,
+    feature
+  } = props
+
+  
+
 }
