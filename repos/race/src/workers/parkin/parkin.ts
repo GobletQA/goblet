@@ -1,14 +1,14 @@
 /// <reference lib="webworker" />
 declare const self: DedicatedWorkerGlobalScope;
 
-import type { TRaceFeature } from '@GBR/types'
+import type { TAudit, TRaceFeature, TAuditFeature } from '@GBR/types'
 import type {
   TFeatureAst,
   TWorldConfig,
-  TStepDefsList,
   TRegisterOrAddStep,
 } from '@ltipton/parkin'
 
+import { auditFeature as featureAudit } from './audit'
 import { Parkin } from '@ltipton/parkin'
 import { deepMerge } from '@keg-hub/jsutils'
 
@@ -50,19 +50,8 @@ export const reIndex = async (options:TReIndexFeature) => {
 }
 
 
-export type TAuditFeature = {
-  defs:TStepDefsList
-  world:TWorldConfig
-  feature:TRaceFeature
-}
-
 export const auditFeature = async (props:TAuditFeature) => {
-  const {
-    defs,
-    world,
-    feature
-  } = props
+  const audit = await featureAudit(props, PK)
 
-  
-
+  return audit as TAudit
 }

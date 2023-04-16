@@ -5,12 +5,19 @@ import type {
 
 import { removeQuotes } from '@GBR/utils/helpers/removeQuotes'
 
-
-export const mapStepTokens = (
-  expressions:TExpPart[],
+export type TMapStepTokens = {
+  exps:TExpPart[],
   tokens:TMatchTokens[]
-) => {
-  return expressions.map(exp => {
+}
+
+export const mapStepTokens = (props:TMapStepTokens) => {
+
+  const {
+    exps,
+    tokens,
+  } = props
+  
+  return exps.map(exp => {
     const token = tokens.find(tok => tok.defIndex === exp.index)
     if(!token) return exp
   

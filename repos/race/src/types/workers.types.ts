@@ -1,3 +1,4 @@
-import type { ParkinWorker } from '../workers/parkin/parkinWorker'
+
+import type { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 
 export type TParkinWorker = typeof ParkinWorker
