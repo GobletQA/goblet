@@ -1,8 +1,9 @@
-import type { TSettingsState } from './settings.types'
 import type { TRaceContextMenu } from './menu.types'
+import type { TSettingsState } from './settings.types'
+import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 import type { TWorldConfig, TStepDefsList } from '@ltipton/parkin'
+import type { KeyboardEvent, MutableRefObject, ComponentType } from 'react'
 import type { TRaceFeatureAsts, TRaceFeatures, TRaceFeature } from './features.types'
-import type { KeyboardEvent, RefObject, MutableRefObject, ComponentType } from 'react'
 import type {
   TTabItem,
   TTabAction,
@@ -17,17 +18,12 @@ import type {
   TOnFeatureCB,
 } from './helpers.types'
 
-export type TRaceEditor = {
-  [key:string]: any
-}
-
 export type TFeaturesRefs = {
   stepDefsRef: TStepDefsRef
   featuresRef: TFeaturesRef
 }
 
-export type TEditorRef = RefObject<TRaceEditor>
-
+export type TEditorRef = MutableRefObject<TEditorCtx>
 export type TEditorRefs = {
   editorRef: TEditorRef
   curPathRef: MutableRefObject<string>
@@ -67,7 +63,7 @@ export type TEditorShared = {
   onFeatureInactive?:TOnFeatureCB
   onSidebarResize?:(width:number) => void
   portal?:string|MutableRefObject<HTMLElement>
-  actions?:TEditorAction<TRaceEditor, TEditorRef>[]
+  actions?:TEditorAction<TEditorCtx, TEditorRef>[]
   containerRef:MutableRefObject<HTMLElement|undefined>
   onKeyDown?:(event: KeyboardEvent<HTMLElement>) => void
 }

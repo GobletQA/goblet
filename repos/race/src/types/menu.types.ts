@@ -1,6 +1,6 @@
 import type { MouseEvent } from 'react'
-import type { TExpPart } from './steps.types'
 import type { EAstObject } from '@ltipton/parkin'
+import type { TExpPart } from './expressions.types'
 import type { TOnMenuClose, TOnMenuOpen, TMenuItem } from '@gobletqa/components'
 import type { TFeatureCtx, TParkinCtx, TStepDefsCtx } from '@GBR/contexts'
 import type {

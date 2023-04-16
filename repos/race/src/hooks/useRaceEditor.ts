@@ -1,16 +1,17 @@
+import type { MutableRefObject } from 'react'
 import type { TStepDefsList } from '@ltipton/parkin'
+import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 import type {
-  TRaceEditor,
   TRaceFeatures,
   TRaceEditorProps,
 } from '../types'
 
-import { useRef, useEffect } from 'react'
 import { noOp } from '@keg-hub/jsutils'
+import { useRef, useEffect } from 'react'
 import { useInline } from '@gobletqa/components'
+import { useInitTabs } from '@GBR/hooks/tabs/useInitTabs'
 import { useFeatureGroups } from '@GBR/hooks/features/useFeatureGroups'
 import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
-import { useInitTabs } from '@GBR/hooks/tabs/useInitTabs'
 
 export const useRaceEditor = (props:TRaceEditorProps) => {
   const {
@@ -38,8 +39,8 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   const onFeatureActive = useInline(props.onFeatureActive || noOp)
   const onFeatureInactive = useInline(props.onFeatureInactive || noOp)
 
-  const editorRef = useRef<TRaceEditor>(null)
   const containerRef = useRef<HTMLDivElement|HTMLElement>()
+  const editorRef = useRef<TEditorCtx>(null) as MutableRefObject<TEditorCtx>
 
   const curPathRef = useRef<string>(initialFeature?.path || ``)
   const curValueRef = useRef<string>(initialFeature?.content || ``)

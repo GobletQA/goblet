@@ -14,9 +14,9 @@ import type { TExpanded, TOnExpandedCB } from '@GBR/contexts'
 
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
-import { GetActiveFileEvent, useOnEvent, useInline } from '@gobletqa/components'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
+import { GetActiveFileEvent, useOnEvent, useInline } from '@gobletqa/components'
 
 import {
   AskForFeatureEvt,
@@ -47,7 +47,6 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
   const {
     feature,
-    expanded,
     curPathRef,
     curValueRef,
     featuresRef,

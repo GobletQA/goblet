@@ -1,4 +1,5 @@
 import type {
+  TEditorRef,
   TFeatureCB,
   TRaceFeature,
   TOnFeatureCB,
@@ -14,13 +15,17 @@ import type { MutableRefObject } from 'react'
 import {
   useMemo,
   useState,
+  useEffect,
   useContext,
   useCallback,
   createContext,
 } from 'react'
 
+import { useParkin } from './ParkinContext'
 import { useFeature } from './FeatureContext'
+import { useStepDefs } from './StepDefsContext'
 import { MemoChildren } from '@gobletqa/components'
+import { useFeatureAudit } from '@GBR/hooks/editor/useFeatureAudit'
 import { emptyObj, emptyArr, exists, ensureArr } from '@keg-hub/jsutils'
 import { useGetEditorContext } from '@GBR/hooks/editor/useGetEditorContext'
 import { useFeatureCallbacks } from '@GBR/hooks/features/useFeatureCallbacks'
@@ -30,6 +35,7 @@ export type TOnExpandedCB =  (key:string, value?:boolean) => void
 export type TEditorProvider = {
   children:any
   rootPrefix:string
+  editorRef: TEditorRef
   updateEmptyTab:TFeatureCB
   featuresRef: TFeaturesRef
   onFeatureSave:TOnFeatureCB
@@ -100,10 +106,10 @@ const useExpanded = () => {
   }
 }
 
-
 export const EditorProvider = (props:TEditorProvider) => {
   const {
     children,
+    editorRef,
     rootPrefix,
     curPathRef,
     curValueRef,
@@ -118,6 +124,10 @@ export const EditorProvider = (props:TEditorProvider) => {
     setFeatureGroups,
     onFeatureInactive,
   } = props
+
+  const { world } = useParkin()
+  const { defs } = useStepDefs()
+  const auditFeature = useFeatureAudit({ defs, world })
 
   const {
     feature,
@@ -177,6 +187,10 @@ export const EditorProvider = (props:TEditorProvider) => {
   ])
 
   useGetEditorContext({ editor: editorCtx })
+
+  useEffect(() => {
+    editorRef.current = editorCtx
+  }, [editorCtx])
 
   return (
     <EditorContext.Provider value={editorCtx}>

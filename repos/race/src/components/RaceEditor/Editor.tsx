@@ -4,12 +4,10 @@ import { Container } from './Container'
 import { EditorProvider } from '@GBR/contexts'
 import { useRaceTheme } from '@GBR/hooks/useRaceTheme'
 import { useRaceEditor } from '@GBR/hooks/useRaceEditor'
-import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
 
 export const Editor = (props:TRaceEditorProps) => {
 
   useRaceTheme(props)
-
 
   const {
     onKeyDown,
@@ -35,6 +33,7 @@ export const Editor = (props:TRaceEditorProps) => {
 
   return (
     <EditorProvider
+      editorRef={editorRef}
       curPathRef={curPathRef}
       curValueRef={curValueRef}
       featuresRef={featuresRef}
