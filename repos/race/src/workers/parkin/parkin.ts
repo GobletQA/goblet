@@ -8,9 +8,9 @@ import type {
   TRegisterOrAddStep,
 } from '@ltipton/parkin'
 
-import { auditFeature as featureAudit } from './audit'
 import { Parkin } from '@ltipton/parkin'
 import { deepMerge } from '@keg-hub/jsutils'
+import { auditFeature as featureAudit } from './audit'
 
 export type TReIndexFeature = {
   feature:TRaceFeature
@@ -18,7 +18,9 @@ export type TReIndexFeature = {
 
 const PK  = new Parkin()
 
-export const init = async (world?:TWorldConfig, steps?:TRegisterOrAddStep) => PK.init(world, steps, false)
+export const init = async (world?:TWorldConfig, steps?:TRegisterOrAddStep) => {
+  PK.init(world, steps, false)
+}
 
 export const getWorld = async () => PK.world
 export const setWorld = async (world:TWorldConfig, merge?:boolean) => {
@@ -49,9 +51,7 @@ export const reIndex = async (options:TReIndexFeature) => {
   return feature
 }
 
-
-export const auditFeature = async (props:TAuditFeature) => {
-  const audit = await featureAudit(props, PK)
-
+export const auditFeature = async (options:TAuditFeature) => {
+  const audit = await featureAudit(PK, options.feature)
   return audit as TAudit
 }

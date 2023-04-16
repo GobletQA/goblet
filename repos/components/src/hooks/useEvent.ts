@@ -20,16 +20,20 @@ export const useOnEvent = <P=Record<any, any>>(
   })
 }
 
+export const onEmitEvent = <P=Record<any, any>>(
+  event:string,
+  params:P,
+  ...args:any[]
+) => EE.emit<P>(event, params, ...args)
+
 export const useEventEmit = <P=Record<any, any>>(
   event:string,
   params?:P
 ) => {
 
-  return useInline((...args:any[]) => {
-    EE.emit<P>(
-      event,
-      exists(params) ? params : args.shift(),
-      ...args
-    )
-  })
+  return useInline((...args:any[]) => onEmitEvent<P>(
+    event,
+    exists(params) ? params : args.shift(),
+    ...args
+  ))
 }

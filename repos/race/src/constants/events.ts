@@ -1,5 +1,6 @@
 export const SetFeatureContextEvt = `set-feature-context`
 
+export const ParkinInitEvt = `parkin-initialized-event`
 export const AnswerFeatureEvt = `answer-feature-context-event`
 export const AskForEditorEvt = `ask-for-editor-context-event`
 export const AskForFeatureEvt = `ask-for-feature-context-event`

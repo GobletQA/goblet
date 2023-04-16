@@ -19,6 +19,6 @@ export const useInitialFeature = ({
       ? Object.values(features)?.[0]
       : undefined
 
-    return !initial ? initial : {...initial, type: ESectionType.feature} as TRaceFeature
+    return initial as TRaceFeature
   }, [])
 }

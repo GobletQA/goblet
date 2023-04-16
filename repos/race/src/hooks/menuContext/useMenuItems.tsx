@@ -5,11 +5,11 @@ import type { TRaceMenuItemClickCtx, TMenuContextRef } from '@GBR/types'
 import { useSubMenu } from './useSubMenu'
 import { useInline } from '@gobletqa/components'
 import { useMemo, useState, useRef } from 'react'
+import { useMenuContext } from '@GBR/hooks/editor/useMenuContext'
 import {
   useParkin,
   useEditor,
   useStepDefs,
-  useMenuContext
 } from '@GBR/contexts'
 
 export type TMenuContentItem = Omit<TMenuItem, `onClick`> & {

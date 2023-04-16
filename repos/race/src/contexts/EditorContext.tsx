@@ -1,3 +1,5 @@
+import type { MutableRefObject } from 'react'
+import type { TExpanded } from '@GBR/hooks/editor/useExpanded'
 import type {
   TAudit,
   TEditorRef,
@@ -5,31 +7,21 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TFeaturesRef,
-  TRaceMenuItem,
   TSetFeatureRefs,
   TRaceContextMenu,
   TUpdateFeatureCB,
   TSetFeatureGroups,
 } from '../types'
-import type { MutableRefObject } from 'react'
-
-import {
-  useMemo,
-  useState,
-  useContext,
-  useCallback,
-  createContext,
-} from 'react'
-
 
 import { useFeature } from './FeatureContext'
 import { MemoChildren } from '@gobletqa/components'
+import { useMemo, useContext, createContext } from 'react'
+import { useExpanded } from '@GBR/hooks/editor/useExpanded'
 import { useAudit } from '@gobletqa/race/hooks/editor/useAudit'
 import { emptyObj, emptyArr, exists, ensureArr } from '@keg-hub/jsutils'
 import { useGetEditorContext } from '@GBR/hooks/editor/useGetEditorContext'
 import { useFeatureCallbacks } from '@GBR/hooks/features/useFeatureCallbacks'
 
-export type TExpanded = Record<string, boolean>
 export type TOnExpandedCB =  (key:string, value?:boolean) => void
 export type TEditorProvider = {
   children:any
@@ -66,46 +58,6 @@ export type TEditorCtx = {
 export const EditorContext = createContext<TEditorCtx>({} as TEditorCtx)
 export const useEditor = () => useContext(EditorContext)
 
-export const useMenuContext = (context?:keyof TRaceContextMenu) => {
-  const editor = useEditor()
-  return context
-    ? editor?.menuContext?.[context] || emptyArr as TRaceMenuItem[]
-    : emptyArr as TRaceMenuItem[]
-}
-
-const useExpanded = () => {
-  const [expanded, setExpanded] = useState<TExpanded>({})
-
-  const updateExpanded = useCallback((key:string, value?:boolean) => {
-    const val = exists<boolean>(value)
-      ? value
-      : exists<boolean>(expanded[key])
-        ? !expanded[key]
-        : true
-
-    setExpanded({...expanded, [key]: val})
-  }, [expanded])
-
-  const collapseAllExcept = useCallback((key:string|string[]) => {
-    const keep = ensureArr(key)
-    const updated:TExpanded = {}
-
-    Object.keys(expanded).forEach(key => (updated[key] = keep.includes(key) ? true : false))
-
-    setExpanded(updated)
-  }, [expanded])
-  
-  const collapseAll = useCallback(() => setExpanded({}), [expanded])
-
-  return {
-    expanded,
-    setExpanded,
-    collapseAll,
-    updateExpanded,
-    collapseAllExcept
-  }
-}
-
 export const EditorProvider = (props:TEditorProvider) => {
   const {
     children,
@@ -125,15 +77,16 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureInactive,
   } = props
 
-  const {
-    audit,
-    onAuditFeature
-  } = useAudit()
 
   const {
     feature,
     setFeature:_setFeature
   } = useFeature()
+
+  const {
+    audit,
+    onAuditFeature
+  } = useAudit({ feature })
 
   const {
     expanded,
