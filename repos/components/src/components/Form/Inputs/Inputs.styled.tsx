@@ -35,7 +35,9 @@ export const AutoInputControl = styled(FormControl)`
   }
 
   & .MuiInputBase-root {
-
+    & .MuiInputAdornment-root {
+      margin-right: 0px;
+    }
   }
 `
 
@@ -76,15 +78,16 @@ export const Auto = styled(Autocomplete)`
       height: 40px;
       padding-top: 0px;
       padding-bottom: 0px;
+      padding-right: 30px;
 
       &.MuiInputBase-adornedStart {
         padding-left: 5px;
+        padding-right: 30px;
       }
 
       & input {
         height: 40px;
-        padding-top: 0px !important;
-        padding-bottom: 0px !important;
+        padding: 0px !important;
       }
 
       & input::placeholder {

@@ -52,6 +52,6 @@ export const reIndex = async (options:TReIndexFeature) => {
 }
 
 export const auditFeature = async (options:TAuditFeature) => {
-  const audit = await featureAudit(PK, options.feature)
+  const audit = featureAudit(PK, options.feature)
   return audit as TAudit
 }

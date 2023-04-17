@@ -98,6 +98,6 @@ const auditFromGran = (
   return audit
 }
 
-export const auditFeature = async (parkin:Parkin, feature:TRaceFeature) => {
+export const auditFeature = (parkin:Parkin, feature:TRaceFeature) => {
   return auditFromGran(parkin, {}, [feature])
 }

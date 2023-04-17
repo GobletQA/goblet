@@ -16,6 +16,30 @@ export type TExpression = {
 
 const numberTypes = Object.values(ExpressionNoQuoteTypes)
 
+const formatVal = (val:string) => {
+  const hasDouble = val.includes(`"`)
+  const hasSingle = val.includes(`'`)
+
+  // If the value has both single and double quotes
+  if(hasSingle && hasDouble){
+    /**
+     * We wrap in single quotes, so if it has both single and double
+     * Just escape the single, and leave the double
+     * Looks something like
+     *   - 'I dom\'t know what\'s "happening" in this code'
+     * Playwright follows normal escaping rules
+     * See here https://playwright.dev/docs/next/other-locators#legacy-text-locator
+     */
+    const quoted = val.replace(/[\\']/g, '\\$&')
+    return `'${quoted}'`
+  }
+
+  let type:string= `'`
+  if(hasSingle) type = `"`
+
+  return `${type}${val}${type}`
+}
+
 const getFixes = (
   step:string,
   expression:TExpPart,
@@ -31,7 +55,7 @@ const getFixes = (
    */
   const postLength = expression?.value
     ? noQuotes
-      ? expression.value.length
+      ? `${expression.value}`.length
       : `${expression.value}`.length + 2
     : expression.text.length
 
@@ -58,7 +82,7 @@ export const useExpressionChange = (props:TExpression) => {
 
     const { postfix, prefix } = getFixes(step.step, expression, noQuotes)
 
-    const replace = value ? noQuotes ? value : `"${value}"` : text
+    const replace = value ? noQuotes ? value : formatVal(value) : text
     const result = `${prefix}${replace}${postfix}`
 
     onChange?.({...step, step: result}, step)
