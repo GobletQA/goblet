@@ -18,7 +18,7 @@
     "@emotion/styled": "*",
     "@gobletqa/components": "*",
     "@keg-hub/jsutils": ">=9.6.1",
-    "@ltipton/parkin": "3.0.0-beta-7",
+    "@ltipton/parkin": "3.0.0-beta-8",
     "@mui/icons-material": "*",
     "@mui/lab": "*",
     "@mui/material": "*",
