@@ -13,7 +13,7 @@ const useSplitStep = (props:TStepHeaderSplit) => {
   const { step, expressions } = props
 
   return useMemo(() => {
-    return expressions
+    return expressions?.length
       ? expressions.reduce((acc, exp) => {
 
           const [type, remaining] = acc.pop() || [ESplitType.text, step.step]
@@ -40,12 +40,18 @@ const useSplitStep = (props:TStepHeaderSplit) => {
           !exp.value
           ? acc.push([ESplitType.placeholder, exp.match, `${key}-placeholder`])
           : acc.push([ESplitType.expression, exp.match, `${key}-expression`])
+
           acc.push([ESplitType.text, postfix, `${key}-postfix`])
 
           return acc
         }, [] as string[][]).filter(Boolean)
-      : [[ESplitType.text, step.step, `empty-${step.uuid}`]]
-  }, [step.step])
+      : [ 
+          [ESplitType.text, step.step, `empty-${step.uuid}`]
+        ]
+  }, [
+    step.step,
+    expressions
+  ])
 }
 
 export const StepHeaderSplit = (props:TStepHeaderSplit) => {

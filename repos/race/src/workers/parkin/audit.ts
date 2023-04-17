@@ -29,7 +29,7 @@ const auditExpressions = (props:TMatchExpReq) => {
   /**
    * Get the tokens from the current step string for all definition expressions
    */
-  const tokens = stepTokens({def, parkin, step: step.step})
+  const tokens = stepTokens({ def, parkin, step: step.step })
 
   /**
    * Maps expressions to Parkin parameters, with parameters overriding expression meta-data

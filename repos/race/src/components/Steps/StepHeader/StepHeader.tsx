@@ -14,6 +14,7 @@ export type TStepHeader = {
 export const StepHeader = (props:TStepHeader) => {
   const { step } = props
   const hasStep = Boolean(step?.step?.trim())
+
   return (
     <StepHeaderText>
       {

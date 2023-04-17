@@ -1,5 +1,5 @@
 import type { TExpPart } from '@GBR/types'
-import { Parkin, TStepDef } from '@ltipton/parkin'
+import type { Parkin, TStepDef } from '@ltipton/parkin'
 
 import { emptyArr } from '@keg-hub/jsutils'
 import { expressionParts } from '@GBR/utils/steps/expressionParts'
@@ -17,10 +17,9 @@ export const getMatchExpressions = (props:TGetMatchExpressions) => {
   } = props
  
   const parts = def && expressionParts(parkin, def)
-  const filtered = parts && parts.filter((part) => part && part.type !== `optional`)
 
-  return def && filtered
-    ? matchExpressions(def, filtered)
+  return def && parts
+    ? matchExpressions(def, parts)
     : emptyArr as TExpPart[]
 
 }

@@ -16,7 +16,7 @@ export const mapStepTokens = (props:TMapStepTokens) => {
     exps,
     tokens,
   } = props
-  
+
   return exps.map(exp => {
     const token = tokens.find(tok => tok.defIndex === exp.index)
     if(!token) return exp
