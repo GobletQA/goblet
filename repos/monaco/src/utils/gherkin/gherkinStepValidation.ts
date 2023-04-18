@@ -1,12 +1,28 @@
 import type {
   IEditor,
+  TRange,
   TMonaco,
   TExpression,
 } from '@GBM/types'
 
-import { getGherkinDiagnostics } from './languageService'
+import { GherkinLangID } from '@GBM/constants'
 import { convertRange } from '@GBM/utils/editor/convertRange'
 
+type TGherkinDiagnostic = {
+  range:TRange
+  message:string
+}
+
+/**
+ * Add a validation method here to validate a feature files steps against the definitions
+ * Response should be an array of objects matching the TGherkinDiagnostic type
+ */
+const getGherkinDiagnostics = (
+  content:string,
+  expressions:any
+) => {
+  return [] as TGherkinDiagnostic[]
+}
 
 /**
  * Adds step definition validation to the feature file
@@ -17,7 +33,6 @@ const stepDefValidator = (
   expressions:TExpression[],
   editor:IEditor
 ) => {
-  // Diagnostics (Syntax validation)
   const runDefinitionValidation = () => {
     const model = editor?.getModel()
     if (model) {
@@ -30,7 +45,7 @@ const stepDefValidator = (
         )
       })
 
-      monaco.editor.setModelMarkers(model, 'gherkin', markers)
+      monaco.editor.setModelMarkers(model, GherkinLangID, markers)
     }
   }
   const runValidation = () => {
@@ -44,6 +59,9 @@ const stepDefValidator = (
 }
 
 
+/**
+ * TODO: this is not currently being called, but should be added at some point
+ */
 export const gherkinStepValidation = (
   monaco:TMonaco,
   editor:IEditor,

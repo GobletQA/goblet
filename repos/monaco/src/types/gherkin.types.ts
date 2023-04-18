@@ -1,3 +1,4 @@
+import type { EStepKey } from '@ltipton/parkin'
 import type { EDefinitionVariant } from './shared.types'
 import type { languages as Languages } from 'monaco-editor'
 import type { Range, TextEdit } from 'vscode-languageserver-types'
@@ -85,6 +86,7 @@ export type TExpression = {
 }
 
 export type TMonacoDefinition = {
+  type:EStepKey
   suggestion: string
   segments: string[] | RegExp[]
   expression: EDefinitionVariant

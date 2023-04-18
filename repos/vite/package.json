@@ -14,7 +14,6 @@
     "start": "vite --clearScreen false -c configs/vite.config.ts"
   },
   "dependencies": {
-    "@cucumber/language-service": "0.11.0",
     "@emotion/react": "11.10.4",
     "@emotion/styled": "11.10.4",
     "@gobletqa/shared": "*",

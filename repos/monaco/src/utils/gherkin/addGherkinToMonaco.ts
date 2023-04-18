@@ -3,19 +3,13 @@ import type {
   TMonaco,
   TTextEdit,
   NLanguages,
-  TExpression,
 } from '@GBM/types'
 
 import { noOp } from '@keg-hub/jsutils'
-import { monarch } from './monarch'
 import { GherkinLangID } from '@GBM/constants'
+import { getCompletionItems } from './getCompletionItems'
 import { convertRange } from '@GBM/utils/editor/convertRange'
 import { autoCompleteShortcuts } from './autoCompleteShortcuts'
-import {
-  getGherkinSemanticTokens,
-  getGherkinCompletionItems
-} from './languageService'
-
 
 const registerGherkin = (monaco:TMonaco) => {
   monaco.languages.register({
@@ -24,33 +18,53 @@ const registerGherkin = (monaco:TMonaco) => {
     extensions: [`.feature`],
     aliases: [`Feature`, `feature`]
   } as any)
-}
 
-const addGherkinMonarch = (monaco:TMonaco) => {
-  monaco.languages.setLanguageConfiguration(GherkinLangID, monarch.conf as any)
-  monaco.languages.setMonarchTokensProvider(GherkinLangID, monarch.language as any)
-}
+  monaco.languages.setMonarchTokensProvider(GherkinLangID, {
+    tokenizer: {
+      root: [
+        [/^\s*#.*$/, 'comment'], // Match comments starting with #
+        [/^\s*Feature:/, 'keyword'], // Match the "Feature:" keyword
+        [/^\s*Rule:/, 'keyword'], // Match the "Background:" keyword
+        [/^\s*Background:/, 'keyword'], // Match the "Background:" keyword
+        [/^\s*Scenario:/, 'keyword'], // Match the "Scenario:" keyword
+        [/^\s*Scenario Outline:/, 'keyword'], // Match the "Scenario Outline:" keyword
+        [/^\s*Examples:/, 'keyword'], // Match the "Examples:" keyword
+        [/^\s*Given /, 'keyword'], // Match the "Given" keyword
+        [/^\s*When /, 'keyword'], // Match the "When" keyword
+        [/^\s*Then /, 'keyword'], // Match the "Then" keyword
+        [/^\s*And /, 'keyword'], // Match the "And" keyword
+        [/^\s*But /, 'keyword'], // Match the "But" keyword
+        [/\s*{(.*?)}\s*/, 'invalid'], // Match text inside {}
+        [/"([^"\\]*(\\.[^"\\]*)*)"/, 'string'], // Match text inside double quotes
+        [/\'([^\'\\]*(\\.[^\'\\]*)*)\'/, 'string'], // Match text inside single quotes
+        [/\d+/, 'number'], // Match numbers
+        [/-?[0-9]+[.][0-9]+/, 'number'], // Match float numbers
+        [/^\s*\|.*\|$/, 'number'], // Match table cells
 
-/**
- * Setup syntax highlighting for the gherkin language
- */
-const addGherkinSyntax = (
-  monaco:TMonaco,
-  expressions:TExpression[]
-) => {
-  monaco.languages.registerDocumentSemanticTokensProvider('gherkin', {
-    getLegend: () => ({
-      tokenTypes: ['keyword', 'parameter', 'string', 'type', 'variable', 'property'],
-      tokenModifiers: [],
-    }),
-    releaseDocumentSemanticTokens: () => {},
-    provideDocumentSemanticTokens: model => {
-      const content = model.getValue()
-      const tokens = getGherkinSemanticTokens(content, expressions as any)
-      const data = new Uint32Array(tokens.data)
-      return { data }
-    },
+        /**
+         * TODO: validate world and alias values
+         */
+
+        // Match world values
+        // [/^["]?\$world\.\S+["]?/, `keyword`], 
+        // [/^\$world\./, `keyword`],
+        // [/(\$:world|\$world)+\.[^"'\s]*/gm, `keyword`],
+
+        // // Match alias values
+        // [/^["]?\$\$\S+["]?/, `keyword`],
+        // [/^\$\$/, `keyword`],
+        // [/(\$\$:\w+|\$\$\w+)[^"'\s]*/gm, `keyword`],
+
+        /**
+         * TODO: validate optional and alt values
+         */
+        // [/\w*\([^)]*?\)/, `keyword`],
+        // [/\s*\S*\/\S*\s*/, `keyword`],
+
+      ]
+    }
   })
+
 }
 
 /**
@@ -60,6 +74,7 @@ const addAutoComplete = (
   monaco:TMonaco,
   index:TIndex
 ) => {
+
   // Setup Auto-Complete when writing a feature file
   monaco.languages.registerCompletionItemProvider(GherkinLangID, {
     provideCompletionItems: function (
@@ -69,11 +84,13 @@ const addAutoComplete = (
       token
     ) {
       const content = model.getValue()
-      const completionItems = getGherkinCompletionItems(
+
+      const completionItems = getCompletionItems(
         content,
         position.lineNumber - 1,
         index as any
       )
+
       return {
         suggestions: [
           ...autoCompleteShortcuts(monaco),
@@ -96,11 +113,8 @@ const addAutoComplete = (
  */
 export const addGherkinToMonaco = (
   monaco:TMonaco,
-  index:TIndex,
-  expressions:TExpression[]
+  index:TIndex
 ) => {
   registerGherkin(monaco)
-  addGherkinMonarch(monaco)
-  addGherkinSyntax(monaco, expressions)
   addAutoComplete(monaco, index)
 }

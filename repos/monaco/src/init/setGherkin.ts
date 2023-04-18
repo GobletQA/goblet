@@ -10,16 +10,10 @@ export const setGherkin = async (config:TEditorConfig, monaco:TMonaco) => {
 
   const findStepDefMatch = (matchText:string) => {
     return definitions.filter(def => (
-      def.suggestion
-        .toLowerCase()
-        .includes(matchText.toLowerCase())
+      def.suggestion.toLowerCase().includes(matchText.toLowerCase())
     ))
   }
 
-  addGherkinToMonaco(
-    monaco,
-    findStepDefMatch,
-    noPropArr
-  )
+  addGherkinToMonaco(monaco, findStepDefMatch)
 
 }

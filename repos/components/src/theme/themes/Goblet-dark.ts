@@ -12,7 +12,8 @@ export const darkTheme = {
     },
     {
       token: `invalid`,
-      foreground: colors.red08
+      fontStyle: `bold`,
+      foreground: colors.red07,
     },
     {
       token: `emphasis`,

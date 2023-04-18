@@ -14,6 +14,7 @@ const useGherkinConfig = () => {
       gherkin: {
         definitions: flatArr(Object.values(defs.definitionTypes), flatOpts)
         .map(def => ({
+          type: def.type,
           suggestion: def.match,
           segments: [def.match],
           expression: def.variant,

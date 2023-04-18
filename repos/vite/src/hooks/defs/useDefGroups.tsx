@@ -152,7 +152,7 @@ export const useDefGroups = (props:THDefGroups) => {
       && Object.entries(definitionTypes)
           .forEach(([key, defs]) => {
             defs.map(def => {
-              const grouped = def?.location?.startsWith(repoRoot) ? customDefs : defaultDefs
+              const grouped = def?.location?.startsWith(repoRoot as string) ? customDefs : defaultDefs
 
               const itemProps = buildItem(def, onClose)
 
