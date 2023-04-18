@@ -74,6 +74,9 @@ export const Step = (props:TStep) => {
     onCollapse: onCollapseExcept,
   })
 
+  const hasDef = def && expressions
+  const missingDef = Boolean(!hasDef && step.step.trim())
+
   return (
     <StepContainer
       raised={false}
@@ -98,6 +101,7 @@ export const Step = (props:TStep) => {
         label={(
           <StepHeader
             step={step}
+            missingDef={missingDef}
             expressions={expressions}
           />
         )}
@@ -109,13 +113,16 @@ export const Step = (props:TStep) => {
             width='100%'
             disableEqualOverflow
           >
+          
+            {missingDef && (<NoExpMatch />)}
+          
             <SelectAction
               def={def}
               step={step}
               parent={parent}
               onChange={onStepChange}
             />
-            {def && expressions && (
+            {hasDef && (
               <Expressions
                 def={def}
                 step={step}
@@ -123,7 +130,7 @@ export const Step = (props:TStep) => {
                 onChange={onStepChange}
                 expressions={expressions}
               />
-            ) || step.step.trim() && (<NoExpMatch />)}
+            ) || null}
           </StepGrid>
         </StepContent>
       </Section>

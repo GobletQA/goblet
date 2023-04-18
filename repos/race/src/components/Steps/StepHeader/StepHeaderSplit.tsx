@@ -6,6 +6,7 @@ import { ESplitType, StepHeaderChunk } from './StepHeaderChunk'
 
 export type TStepHeaderSplit = {
   step: TRaceStep
+  missingDef?:boolean
   expressions?:TExpPart[]
 }
 
@@ -55,7 +56,7 @@ const useSplitStep = (props:TStepHeaderSplit) => {
 }
 
 export const StepHeaderSplit = (props:TStepHeaderSplit) => {
-  const { step } = props
+  const { step, missingDef } = props
   const split = useSplitStep(props)
 
   return (
@@ -66,6 +67,7 @@ export const StepHeaderSplit = (props:TStepHeaderSplit) => {
             key={key}
             type={step.type}
             children={content}
+            missingDef={missingDef}
             part={type as ESplitType}
           />
         )

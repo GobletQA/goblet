@@ -253,6 +253,8 @@ export const alerts = {
     pinkSteel: `#C700C7`,
     pinkPurple: `#AF00DB`,
     whiteBackground: `#FFFBFF`,
+    chartOrange: `#DF631C`,
+    evaOrange: `#FF6D12`
   },
   darkEditor: {
     green: `#6FE1F7`,

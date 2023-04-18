@@ -29,14 +29,17 @@ export const StepHeaderPart = styled(Span)`
 
 export const StepHeaderExp = styled(Span)`
   ${header.shared}
-  margin-left: 3px;
-  margin-right: 3px;
-  color: ${colors.green10};
+  color: ${colors.green12};
 `
 
 export const StepHeaderPlaceholder = styled(Span)`
   ${header.shared}
   margin-left: 3px;
   margin-right: 3px;
-  color: ${colors.red10};
+  color: ${colors.lightEditor.chartOrange};
+`
+
+export const StepHeaderMissing = styled(Span)`
+  ${header.shared}
+  color: ${colors.red08};
 `
