@@ -7,12 +7,12 @@ import type {
   TRaceStepParent
 } from '@GBR/types'
 
-
 import { DndStep } from './DndStep'
 import { Sections } from '../Section'
 import { ESectionType } from '@GBR/types'
 import { moveStep } from '@GBR/actions/general/moveStep'
-import { EDndPos, useInline } from '@gobletqa/components'
+import { useDropData } from '@GBR/hooks/editor/useDropData'
+import { Dnd, EDndPos, useInline } from '@gobletqa/components'
 
 export type TSteps = {
   steps?:TRaceStep[]
@@ -41,6 +41,8 @@ export const Steps = (props:TSteps) => {
     showAdd=true,
   } = props
 
+
+  const data = useDropData(props)
   const onAddStep = useInline(() => onAdd?.(parent.uuid))
   const onDropStep = useInline<TOnDrop<TDndItemData>>((
     oldIdx,
@@ -72,24 +74,35 @@ export const Steps = (props:TSteps) => {
       onAdd={onAddStep}
       type={ESectionType.step}
     >
-      {
-        parent?.steps?.map((step, idx) => {
-          return (
-            <DndStep
-              index={idx}
-              step={step}
-              gran={gran}
-              parent={parent}
-              onRemove={onRemove}
-              onChange={onChange}
+
+      {parent?.steps?.length
+        ? parent?.steps?.map((step, idx) => {
+            return (
+              <DndStep
+                index={idx}
+                step={step}
+                gran={gran}
+                parent={parent}
+                onRemove={onRemove}
+                onChange={onChange}
+                onDrop={onDropStep}
+                showDragHandle={true}
+                parentType={parentType}
+                key={`${parent.uuid}-step-${step.index || idx}-${step.uuid}`}
+              />
+            )
+          })
+        : (
+            <Dnd
+              index={0}
+              data={data}
+              dropOnly={true}
               onDrop={onDropStep}
-              showDragHandle={true}
-              parentType={parentType}
-              key={`${parent.uuid}-step-${step.index || idx}-${step.uuid}`}
+              parentTypes={[ESectionType.scenario, ESectionType.background]}
             />
           )
-        })
       }
+
       {children}
     </Sections>
   )

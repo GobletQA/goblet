@@ -24,7 +24,7 @@ const registerGherkin = (monaco:TMonaco) => {
       root: [
         [/^\s*#.*$/, 'comment'], // Match comments starting with #
         [/^\s*Feature:/, 'keyword'], // Match the "Feature:" keyword
-        [/^\s*Rule:/, 'keyword'], // Match the "Background:" keyword
+        [/^\s*Rule:/, 'keyword'], // Match the "Rule:" keyword
         [/^\s*Background:/, 'keyword'], // Match the "Background:" keyword
         [/^\s*Scenario:/, 'keyword'], // Match the "Scenario:" keyword
         [/^\s*Scenario Outline:/, 'keyword'], // Match the "Scenario Outline:" keyword
@@ -34,12 +34,19 @@ const registerGherkin = (monaco:TMonaco) => {
         [/^\s*Then /, 'keyword'], // Match the "Then" keyword
         [/^\s*And /, 'keyword'], // Match the "And" keyword
         [/^\s*But /, 'keyword'], // Match the "But" keyword
+        [/^\s*\* /, 'keyword'], // Match the "But" keyword
         [/\s*{(.*?)}\s*/, 'invalid'], // Match text inside {}
         [/"([^"\\]*(\\.[^"\\]*)*)"/, 'string'], // Match text inside double quotes
         [/\'([^\'\\]*(\\.[^\'\\]*)*)\'/, 'string'], // Match text inside single quotes
         [/\d+/, 'number'], // Match numbers
         [/-?[0-9]+[.][0-9]+/, 'number'], // Match float numbers
         [/^\s*\|.*\|$/, 'number'], // Match table cells
+
+        [/^\s*(@\S*[^@])+/, `tag`], // Match tags starting with #
+        [/^\s*As a/, `type`], // Match user of user story
+        [/^\s*I want/, `type`], // Match desire of user story
+        [/^\s*So that/, `type`], // Match reason of user story
+        [/^\s*In order/, `type`], // Match reason of user story
 
         /**
          * TODO: validate world and alias values

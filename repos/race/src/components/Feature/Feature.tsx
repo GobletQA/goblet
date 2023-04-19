@@ -97,6 +97,14 @@ export const Feature = (props:TFeature) => {
                         featuresRef={featuresRef}
                         onTagsChange={onTagsChange}
                       />
+
+                      {isEmpty && (
+                        <EmptyFeature
+                          parent={feature}
+                          items={featureItems}
+                        />
+                      ) || null}
+
                       {feature.background && (
                         <Background
                           parent={feature}
@@ -108,34 +116,24 @@ export const Feature = (props:TFeature) => {
                           onRemoveStep={onRemoveBackgroundStep}
                         />
                       ) || null}
+
                       {feature.rules?.length && (
                         <Rules
                           parent={feature}
                           rules={feature.rules}
                         />
                       ) || null}
-                      {feature.scenarios?.length && (
-                        <Scenarios
-                          parent={feature}
-                          onAdd={onAddScenario}
-                          onChange={onChangeScenario}
-                          onRemove={onRemoveScenario}
-                          onAddStep={onAddScenarioStep}
-                          scenarios={feature.scenarios}
-                          onChangeStep={onChangeScenarioStep}
-                          onRemoveStep={onRemoveScenarioStep}
-                        />
-                      ) || null}
-                      {
-                        isEmpty
-                        ? (
-                            <EmptyFeature
-                              parent={feature}
-                              items={featureItems}
-                            />
-                          )
-                        : null
-                      }
+
+                      <Scenarios
+                        parent={feature}
+                        onAdd={onAddScenario}
+                        onChange={onChangeScenario}
+                        onRemove={onRemoveScenario}
+                        onAddStep={onAddScenarioStep}
+                        scenarios={feature.scenarios}
+                        onChangeStep={onChangeScenarioStep}
+                        onRemoveStep={onRemoveScenarioStep}
+                      />
                     </>
                   )
                 : (

@@ -10,7 +10,8 @@ import { Sections } from '../Section'
 import { ESectionType } from '@GBR/types'
 import { useEditor } from '@GBR/contexts'
 import { DndScenario } from './DndScenario'
-import { useInline } from '@gobletqa/components'
+import { Dnd, useInline } from '@gobletqa/components'
+import { useDropData } from '@GBR/hooks/editor/useDropData'
 import { moveScenario } from '@GBR/actions/general/moveScenario'
 import { updateScenarioPos } from '@GBR/actions/scenario/updateScenarioPos'
 
@@ -39,6 +40,12 @@ export const Scenarios = (props:TScenarios) => {
   } = props
 
   const { feature } = useEditor()
+  const data = useDropData({
+    ...props,
+    gran: feature,
+    parentType: parent.type,
+  })
+
   const onDropScenario = useInline<TOnDrop<TDndItemData>>((
     oldIdx,
     newIdx,
@@ -63,27 +70,36 @@ export const Scenarios = (props:TScenarios) => {
       parent={parent}
       type={ESectionType.scenario}
     >
-    {
-      scenarios?.map((scenario, idx) => {
-        return (
-          <DndScenario
-            index={idx}
-            parent={parent}
-            feature={feature}
-            key={scenario.uuid}
-            onRemove={onRemove}
-            scenario={scenario}
-            onChange={onChange}
-            showDragHandle={true}
-            onAddStep={onAddStep}
+    {scenarios?.length
+      ? scenarios?.map((scenario, idx) => {
+          return (
+            <DndScenario
+              index={idx}
+              parent={parent}
+              feature={feature}
+              key={scenario.uuid}
+              onRemove={onRemove}
+              scenario={scenario}
+              onChange={onChange}
+              showDragHandle={true}
+              onAddStep={onAddStep}
+              onDrop={onDropScenario}
+              parentType={parent.type}
+              scenarioId={scenario.uuid}
+              onChangeStep={onChangeStep}
+              onRemoveStep={onRemoveStep}
+            />
+          )
+        })
+      : (
+          <Dnd
+            index={0}
+            data={data}
+            dropOnly={true}
             onDrop={onDropScenario}
-            parentType={parent.type}
-            scenarioId={scenario.uuid}
-            onChangeStep={onChangeStep}
-            onRemoveStep={onRemoveStep}
+            parentTypes={[ESectionType.feature, ESectionType.rule]}
           />
         )
-      })
     }
     </Sections>
   )

@@ -71,12 +71,12 @@ export type TRaceFeatureAsts = {
 }
 
 export type TRaceStepParent = TStepParentAst
-export type TRaceGran = TRaceFeature | TRaceRule
 export type TRaceParentAst = TRaceFeature | TParentAst
 export type TRaceBlockParent = TRaceFeature | TBlockParentAst
 export type TRaceTagsParent = TRaceScenarioParent | TRaceStepParent
 export type TRaceScenarioParent = TRaceFeature | TScenarioParentAst
 export type TRaceBackgroundParent = TRaceFeature | TBackgroundParentAst
+export type TRaceGran = TRaceFeature | TRaceRule | TFeatureAst
 
 export type TRaceAst = TRaceRule
   | TRaceTags

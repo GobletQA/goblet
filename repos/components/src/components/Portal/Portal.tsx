@@ -6,6 +6,7 @@ import { useForceUpdate } from '@GBC/hooks/components/useForceUpdate'
 
 export type TPortal = {
   id?:string
+  warn?:boolean
   children:ReactNode
   elementRef?:MutableRefObject<HTMLElement>
 }
@@ -13,6 +14,7 @@ export type TPortal = {
 export const Portal = (props:TPortal) => {
   const {
     id,
+    warn,
     children,
     elementRef,
   } = props
@@ -27,11 +29,13 @@ export const Portal = (props:TPortal) => {
       || id && document.getElementById(id) as HTMLElement
 
     if(!element)
-      return console.warn(`Can not find Portal Dom element`)
+      return warn ? console.warn(`Can not find Portal Dom element`) : undefined
 
     portalRef.current = element as HTMLElement
+    if(elementRef) elementRef.current = portalRef.current
+
     forceUpdate()
-  }, [id])
+  }, [id, warn])
 
   return portalRef.current
     ? createPortal(children, portalRef.current)

@@ -32,7 +32,7 @@ export const FeatureStack = styled(Stack)`
     }
     
     & > .gb-section-stack-content {
-      height: 100%;
+      height: fit-content;
       padding-bottom: 100px;
     }
 `

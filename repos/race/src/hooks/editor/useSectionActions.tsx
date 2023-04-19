@@ -48,6 +48,16 @@ export const useSectionActions = (props:THSectionActions) => {
     const typeCaps = capitalize(type)
     const actions:TSectionAction[] = []
 
+    exists(onPlay)
+      && actions.push({
+          type,
+          onClick: onPlay,
+          dividerBottom: true,
+          label: `Play ${typeCaps}`,
+          Icon: PlayCircleOutlineIcon,
+          key: `gb-${type}-play-action`,
+        })
+
     exists(onAddStep)
       && actions.push({
           label: `Add Step`,
@@ -102,16 +112,6 @@ export const useSectionActions = (props:THSectionActions) => {
           key: `gb-${type}-remove-action`,
         })
 
-    exists(onPlay)
-      && actions.push({
-          type,
-          onClick: onPlay,
-          dividerTop: true,
-          label: `Play ${typeCaps}`,
-          Icon: PlayCircleOutlineIcon,
-          key: `gb-${type}-play-action`,
-        })
-
       return actions
   }, [
     type,
@@ -126,14 +126,14 @@ export const useSectionActions = (props:THSectionActions) => {
 
   return useMemo(() => {
     return exists(editingTitle) && exists(toggleEditTitle)
-      ? ([{
+      ? actions.concat([{
           type,
-          dividerBottom: true,
+          dividerTop: true,
           label: `Edit Description`,
           onClick: toggleEditTitle,
           key: `gb-${type}-edit-title-action`,
           Icon: editingTitle ? PencilMinusIcon : PencilAddIcon
-        }] as TSectionAction[]).concat(actions)
+        }] as TSectionAction[])
       : actions
   }, [
     type,
