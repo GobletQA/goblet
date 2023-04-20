@@ -58,7 +58,6 @@ export type TSettings = {
   editor: TEditorSettings
   goblet: TSettingGroup
   browser: TBrowserSettings
-  terminal: TSettingGroup
 }
 
 export type TEditorSettings = {

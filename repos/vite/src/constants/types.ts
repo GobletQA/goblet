@@ -43,8 +43,6 @@ export const SocketMsgTypes = {
   BROWSER_AUTOMATE: `browserAutomate`,
 }
 
-export const BrowserLogTerminal = `browser-log`
-
 export const CreateNewRepo = {
   value: 0,
   branches: [],

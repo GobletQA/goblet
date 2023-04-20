@@ -1,2 +1,2 @@
-declare module 'local-echo'
+// Stub file for typescript
 

@@ -17,7 +17,6 @@ export type TVncHandlers = {
 
 const noFocusClasses = [
   `browser-nav-input`,
-  `xterm-helper-textarea`
 ]
 
 const refocusClasses = [

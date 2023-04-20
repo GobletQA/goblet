@@ -461,34 +461,5 @@
       "type": "boolean",
       "group": "browser"
     }
-  },
-  "terminal": {
-    "fontSize": {
-      "key": "fontSize",
-      "value": 14,
-      "default": 14,
-      "active": true,
-      "type": "number",
-      "postfix": "px",
-      "group": "terminal"
-    },
-    "fontColor": {
-      "key": "fontColor",
-      "value": "FFFFFF",
-      "default": "FFFFFF",
-      "active": true,
-      "type": "string",
-      "prefix": "#",
-      "group": "terminal"
-    },
-    "backgroundColor": {
-      "key": "backgroundColor",
-      "value": "000000",
-      "default": "000000",
-      "active": true,
-      "type": "string",
-      "prefix": "#",
-      "group": "terminal"
-    }
   }
 }
