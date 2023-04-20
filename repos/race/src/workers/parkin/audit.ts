@@ -3,6 +3,7 @@ import type {
   TAudit,
   TRaceStep,
   TRaceGran,
+  TAuditParkin,
   TMatchExpRes,
   TMatchExpReq,
   TRaceFeature,
@@ -98,6 +99,6 @@ const auditFromGran = (
   return audit
 }
 
-export const auditFeature = (parkin:Parkin, feature:TRaceFeature) => {
+export const auditFeature = ({ parkin, feature}:TAuditParkin) => {
   return auditFromGran(parkin, {}, [feature])
 }

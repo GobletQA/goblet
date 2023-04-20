@@ -1,3 +1,4 @@
+import type { Parkin } from '@ltipton/parkin'
 import type { TRaceFeature } from '@GBR/types/features.types'
 import type { TMatchExpRes } from '@GBR/types/expressions.types'
 
@@ -9,8 +10,10 @@ export type TAuditOpts = {
 
 export type TOnAuditFeatureCB = (feature: TRaceFeature, opts?:TAuditOpts) => void
 
-export type TAuditFeature = {
-  feature:TRaceFeature
+export type TAuditFeature = Omit<TAuditParkin, `parkin`>
+export type TAuditParkin = {
+  parkin:Parkin,
+  feature:TRaceFeature 
 }
 
 export type TAudit = {
