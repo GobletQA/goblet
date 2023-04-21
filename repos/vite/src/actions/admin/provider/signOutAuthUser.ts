@@ -1,12 +1,12 @@
 import { AuthActive } from '@constants'
 import { GitUser } from '@services/gitUser'
+import { account } from '@services/appwrite'
 import { signInModal } from '@actions/modals/modals'
 import { localStorage } from '@services/localStorage'
 import { getProviderMetadata } from '@services/providers'
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import { WSService } from '@services/socketService/socketService'
 import { clearContainerRoutes } from '@actions/container/local/clearContainerRoutes'
-
 
 const { auth } = getProviderMetadata()
 
@@ -46,7 +46,10 @@ export const signOutAuthUser = async () => {
     console.info(`[Auth State Info] Logging out of of Goblet-Admin`)
 
 // Disconnect from the web-socket server
-  try { await auth.signOut() }
+  try {
+    await auth.signOut()
+    await account.deleteSession(`current`)
+  }
   catch(err:any){ console.error(`Error in auth sign out.\n${err.message}`) }
 
   // Open the sign in modal to force the user to re-sign in
