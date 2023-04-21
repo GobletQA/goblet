@@ -38,12 +38,16 @@ const validateResp = (resp:TValidateResp) => {
  * On each sign in, it also saves the users auth token, which can be used for accessing the git provider
  * Then loads the Dashboard root
  */
-export const onSuccessAuth = async (authData:TRawAuthUser, type:EAuthType) => {
+export const onSuccessAuth = async (
+  authData:TRawAuthUser,
+  type:EAuthType,
+  appwriteCheck?:boolean
+) => {
   let statusCodeNum
 
   try {
     const userData = await formatUser(authData, type)
-    if(!userData) return
+    if(!userData) throw new Error(`[Auth State Error] Could not authenticate user. Invalid user format`)
 
     // TODO: update this so show a message
     // The user has logged in, and now we spin up a container for them
@@ -79,16 +83,22 @@ export const onSuccessAuth = async (authData:TRawAuthUser, type:EAuthType) => {
       await setContainerRoutes(status)
     }
     catch(err:any){
+      if(appwriteCheck) return [err as Error]
+
       console.warn(`[Auth State Error] Error setting Container or Repos status.`)
       console.error(err.message)
     }
   }
   catch (err:any) {
+
+    if(appwriteCheck) return [err as Error]
+
     console.warn(
       `[Auth State Error] Could not validate user. Please try agin later.`
     )
     console.error(err.message)
     ;(!statusCodeNum || statusCodeNum === 401) && await signOutAuthUser()
-
   }
+
+  return []
 }

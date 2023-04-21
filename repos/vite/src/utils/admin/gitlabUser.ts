@@ -25,8 +25,7 @@ export const gitlabUser = (rawUser:TGitlabUserRaw) => {
     photoUrl: picture,
     token: access_token,
     provider: EProvider.Gitlab,
-    reposUrl: `${iss}/projects`,
-    refresh_token: refresh_token,
+    refreshToken: refresh_token,
     username: preferred_username || name,
     displayName: name || preferred_username || email,
   } as TFormattedUser

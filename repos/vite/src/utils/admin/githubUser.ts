@@ -26,13 +26,12 @@ export const githubUser = (data:TGithubUserRaw):TFormattedUser => {
     'displayName',
   ])
 
-  const { screenName:username, profile } = pickKeys<TAuthAdditionalUserInfo>(data.additionalUserInfo, [
-    'profile',
+  const { screenName:username } = pickKeys<TAuthAdditionalUserInfo>(data.additionalUserInfo, [
     'screenName',
   ])
 
 
-  const { providerId, accessToken } = pickKeys<TGithubAuthCredential>(data.credential, [
+  const { accessToken } = pickKeys<TGithubAuthCredential>(data.credential, [
     'accessToken',
     'providerId',
   ])
@@ -47,6 +46,5 @@ export const githubUser = (data:TGithubUserRaw):TFormattedUser => {
     username: username,
     token: accessToken,
     provider: EProvider.Github,
-    reposUrl: profile.repos_url,
   } as TFormattedUser
 }

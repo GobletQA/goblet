@@ -18,12 +18,12 @@ const { auth } = getProviderMetadata()
  *
  * @return {Void}
  */
-export const authStateChange = async (rawUser:Record<any, any>) => {
+export const authStateChange = async (rawUser:any) => {
   if (rawUser) return
 
   console.warn(`[Auth State Change] Auth User no longer exists.`)
 
-  await signOutAuthUser()
+  // await signOutAuthUser()
 }
 
-onAuthStateChanged(auth, authStateChange as NextOrObserver<TUserState>)
+// onAuthStateChanged(auth, authStateChange)

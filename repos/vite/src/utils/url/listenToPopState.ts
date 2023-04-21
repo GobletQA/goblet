@@ -1,5 +1,5 @@
 import { getQueryData } from './getQueryData'
-import { repoModal } from '@actions/modals/modals'
+import { connectModal } from '@actions/modals/modals'
 import { loadFile } from '@actions/files/api/loadFile'
 import { isEmptyColl, noOpObj } from '@keg-hub/jsutils'
 
@@ -28,8 +28,8 @@ const listenToPopState = async (event:any) => {
 
   file && (await loadFile(file))
 
-  // display options modal if no valid querystring passed in
-  isEmptyColl(queryObj) && repoModal()
+  // display connect modal if no valid querystring passed in
+  isEmptyColl(queryObj) && connectModal()
 
   IN_POP_STATE = false
 }

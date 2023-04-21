@@ -4,8 +4,10 @@ import type { TRawAuthUser } from '@types'
 import { EAuthType } from '@types'
 import { useCallback } from 'react'
 import Button from '@mui/material/Button'
+import { account } from '@services/appwrite'
 import ListItem from '@mui/material/ListItem'
 import { colors } from '@gobletqa/components/theme'
+import { generateAuthUrls } from '@utils/admin/generateAuthUrls'
 import {
   signInWithPopup,
   GithubAuthProvider
@@ -39,29 +41,33 @@ export const GithubSignIn = (props:TSignInButton) => {
   } = props
 
   const onBtnPress = useCallback(async (evt:any) => {
-    onSigningIn?.(true)
+    const { success, failed } = generateAuthUrls()
 
-    signInWithPopup(auth, provider)
-      .then((result:any) => {
-        const credential = GithubAuthProvider.credentialFromResult(result)
-        if(!credential) throw new Error(`Could not parse Github credential from response`)
+    account.createOAuth2Session('github', success, failed, ['repo'])
 
-        const user = result.user
-        const additionalUserInfo = result._tokenResponse
-        try {
-          additionalUserInfo.profile = JSON.parse(additionalUserInfo.rawUserInfo)
-        }
-        catch(err:any){
-          console.error(err.message)
-          throw new Error(`Could not parse Github User profile information`)
-        }
-        onSuccess?.({
-          user,
-          credential,
-          additionalUserInfo
-        }, EAuthType.github)
-      })
-      .catch(err => onFail?.(err, EAuthType.github))
+    // onSigningIn?.(true)
+
+    // signInWithPopup(auth, provider)
+    //   .then((result:any) => {
+    //     const credential = GithubAuthProvider.credentialFromResult(result)
+    //     if(!credential) throw new Error(`Could not parse Github credential from response`)
+
+    //     const user = result.user
+    //     const additionalUserInfo = result._tokenResponse
+    //     try {
+    //       additionalUserInfo.profile = JSON.parse(additionalUserInfo.rawUserInfo)
+    //     }
+    //     catch(err:any){
+    //       console.error(err.message)
+    //       throw new Error(`Could not parse Github User profile information`)
+    //     }
+    //     onSuccess?.({
+    //       user,
+    //       credential,
+    //       additionalUserInfo
+    //     }, EAuthType.github)
+    //   })
+    //   .catch(err => onFail?.(err, EAuthType.github))
 
   }, [auth, provider, onSuccess, onFail])
 

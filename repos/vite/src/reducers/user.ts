@@ -6,7 +6,6 @@ export type TUserEmptyState = {
   username?: string
   provider?: string
   email?: string
-  reposUrl?: string
   photoUrl?: string
   displayName?: string
 }

@@ -23,3 +23,8 @@ envs:
   FIRE_BASE_MEASURMENT_ID: ''
 
   LINODE_V4_API_KEY: ''
+
+
+  # Github Auth config for Appwrite cloud
+  APPWRITE_GITHUB_CLIENT_ID: ''
+  APPWRITE_GITHUB_CLIENT_SECRET: ''

@@ -4,6 +4,16 @@ import type {
   OAuthCredential as TGithubAuthCredential,
   } from 'firebase/auth'
 
+import type {
+  Models
+} from 'appwrite'
+
+
+export type TAWUserRaw = {
+  user: Models.User<any>
+  session: Models.Session
+}
+
 export type TAuthProfile = {
   repos_url: string
   avatar_url?:string
@@ -25,18 +35,19 @@ export type TFormattedUser = {
   id: string
   email: string
   token: string
+  expire?:string
   photoUrl?:string
   username: string
   provider: string
-  reposUrl: string
   displayName:string
 }
 
-export type TRawAuthUser = TGithubUserRaw | TGitlabUserRaw
+export type TRawAuthUser = TGithubUserRaw | TGitlabUserRaw | TAWUserRaw
 
 export enum EAuthType {
   github=`github`,
-  gitlab=`gitlab`
+  gitlab=`gitlab`,
+  awGithub=`awGithub`
 }
 
 export {

@@ -1,4 +1,4 @@
-import { queryToObj, objToQuery, noOpObj, noPropArr } from '@keg-hub/jsutils'
+import { queryToObj, objToQuery, emptyObj, emptyArr } from '@keg-hub/jsutils'
 import { inPopStateUpdate } from './listenToPopState'
 /**
  * Wrapper around window.location and window.history
@@ -10,7 +10,7 @@ import { inPopStateUpdate } from './listenToPopState'
  */
 const getWindowProps = () => {
   return typeof window === 'undefined'
-    ? noOpObj
+    ? emptyObj
     : (() => ({ location: window.location, history: window.history }))()
 }
 
@@ -27,7 +27,7 @@ const getWindowProps = () => {
 const buildQuery = (
   current:Record<string, string>,
   update:Record<string, string>,
-  merge:boolean
+  merge?:boolean
 ) => {
   const query = merge ? { ...current, ...update } : update
   return objToQuery(query)
@@ -42,11 +42,11 @@ const buildQuery = (
  *
  * @return {void}
  */
-export const removeFromQuery = (toRemove:string[]=noPropArr as string[]) => {
+export const removeFromQuery = (toRemove:string[]=emptyArr as string[]) => {
   const current = queryToObj(location.search)
   toRemove.map(item => (delete current[item]))
 
-  history.pushState(noOpObj, '', objToQuery(current))
+  history.pushState(emptyObj, '', objToQuery(current))
 }
 
 /**
@@ -60,13 +60,13 @@ export const removeFromQuery = (toRemove:string[]=noPropArr as string[]) => {
  * @return {void}
  */
 export const updateUrlQuery = (
-  update:Record<string, string> = noOpObj as Record<string, string>,
-  merge:boolean
+  update:Record<string, string> = emptyObj as Record<string, string>,
+  merge?:boolean
 ) => {
   if (inPopStateUpdate()) return
 
   const { location, history } = getWindowProps() as { location: Record<any, any>, history:any }
   const current = queryToObj(location.search) as Record<any, any>
 
-  history.pushState(noOpObj, '', buildQuery(current, update, merge))
+  history.pushState(emptyObj, '', buildQuery(current, update, merge))
 }
