@@ -18,6 +18,7 @@ import type {
 
 export type TUpdateFeatureOpts = TAuditOpts & {
   expand?:string
+  create?:boolean
   replace?:boolean
 }
 

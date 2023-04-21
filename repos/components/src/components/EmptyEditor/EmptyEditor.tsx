@@ -26,7 +26,7 @@ export const EmptyEditor = (props:EmptyEditor) => {
     btnText,
     onClick,
     subText,
-    headerText=`Goblet Editor`,
+    headerText=`Goblet Feature Editor`,
   } = props
 
   return (

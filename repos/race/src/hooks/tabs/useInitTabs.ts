@@ -25,11 +25,13 @@ export const useInitTabs = (props:THInitTabs) => {
 
   const [openedTabs, setOpenedTabs] = useState<TTabItem[]>(initialTabs)
 
-  // There should only be one tab with an empty uuid
-  // always filter out any existing tags with that uuid
-  // The first call here, adds the tab with an empty uuid
-  // The second call removes it and replaces it
-  // With the updated feature that should now have a valid uuid
+  /**
+   * There should only be one tab with an empty uuid
+   * always filter out any existing tags with that uuid
+   * The first call here, adds the tab with an empty uuid
+   * The second call removes it and replaces it
+   * With the updated feature that should now have a valid uuid
+   */
   const updateEmptyTab = useInline((updated:TRaceFeature) => {
     const cleaned = openedTabs.filter(tab => tab.tab.uuid !== EmptyFeatureUUID)
     const updatedTabs = setTabActive(cleaned, updated)

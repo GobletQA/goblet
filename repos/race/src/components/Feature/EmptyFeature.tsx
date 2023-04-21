@@ -7,7 +7,6 @@ import { AddItem } from '../AddItem'
 import { ESectionType } from '@GBR/types'
 import { gutter } from '@gobletqa/components'
 import {
-  EmptyFeatureIcon,
   EmptyFeatureText,
   EmptyFeatureContent,
   EmptyFeatureHeaderText,
@@ -60,7 +59,7 @@ export const EmptyFeature = (props:TEmptyFeature) => {
           No Content
         </EmptyFeatureHeaderText>
         <EmptyFeatureText className='gb-empty-feature-text' >
-          Get started by adding a new Scenario ...
+          Get started by adding a new scenario ...
         </EmptyFeatureText>
         <AddScenario {...props} /> 
       </EmptyFeatureTextContainer>

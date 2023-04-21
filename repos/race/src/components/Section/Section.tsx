@@ -2,10 +2,12 @@ import type { TSectionAction } from './SectionActions'
 import type { TRaceStepParent, TRaceScenarioParent } from '@GBR/types'
 import type { CSSProperties, ReactNode, MutableRefObject } from 'react'
 
+
 import { AddItem } from '../AddItem'
-import { ESectionExt, ESectionType } from '@GBR/types'
 import { useEditor } from '@GBR/contexts'
 import { SectionActions } from './SectionActions'
+import { EmptyFeatureUUID } from '@GBR/constants'
+import { ESectionExt, ESectionType } from '@GBR/types'
 import { wordCaps, cls, isStr } from '@keg-hub/jsutils'
 import { SectionDragHandle } from './SectionDragHandle'
 import {
@@ -22,6 +24,7 @@ export type TSection = {
   label?:ReactNode
   className?:string
   sx?:CSSProperties
+  noHeader?:boolean
   noToggle?:boolean
   Header?:ReactNode
   Footer?:ReactNode
@@ -60,6 +63,7 @@ export const Section = (props:TSection) => {
     actions,
     children,
     noToggle,
+    noHeader,
     headerSx,
     footerSx,
     contentSx,
@@ -79,7 +83,7 @@ export const Section = (props:TSection) => {
   const { expanded, updateExpanded } = useEditor()
   const hasDragHandle = Boolean(showDragHandle !== false && dragHandleRef)
   const onChange = (expand:boolean) => (expand !== expanded[id] && updateExpanded(id, expand))
-  const isExpanded = expanded[id]
+  const isExpanded = id === EmptyFeatureUUID || expanded[id]
 
   return (
     <SectionContainer
@@ -112,19 +116,20 @@ export const Section = (props:TSection) => {
                 sx={dropdownSx}
                 Header={Header}
                 onChange={onChange}
+                noHeader={noHeader}
                 noToggle={noToggle}
                 headerSx={headerSx}
                 expanded={isExpanded}
                 showExpandIcon={showExpandIcon}
                 headerContentSx={headerContentSx}
                 id={`${parent.uuid}-${id || uuid}`}
-                actions={(
+                actions={actions && (
                   <SectionActions
                     id={id}
                     type={type}
                     actions={actions}
                   />
-                )}
+                ) || null}
                 headerText={isStr(label) && formatHeader ? wordCaps(label) : label}
                 className={cls(
                   `gb-section-dropdown`,

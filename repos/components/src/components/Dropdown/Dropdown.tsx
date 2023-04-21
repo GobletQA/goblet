@@ -22,6 +22,7 @@ export type TDropdown = Omit<AccordionProps, `children`|`onChange`> & {
   Header?:ReactNode
   disabled?:boolean
   noToggle?:boolean
+  noHeader?:boolean
   expanded?:boolean
   actions?:ReactNode
   children?:ReactNode
@@ -34,8 +35,8 @@ export type TDropdown = Omit<AccordionProps, `children`|`onChange`> & {
   headerTextSx?:CSSProperties
   expandIconSx?:CSSProperties
   headerContentSx?:CSSProperties
+  ExpandIcon?:ComponentType<any>
   onChange?:(expanded: boolean) => void
-  ExpandIcon?:ComponentType<typeof ExpandIconComp>
 }
 
 type TTransition = TransitionProps & { children: React.ReactElement<any, any> }
@@ -59,6 +60,7 @@ export const Dropdown = (props:TDropdown) => {
     actions,
     headerSx,
     noToggle,
+    noHeader,
     disabled,
     expanded,
     headerText,
@@ -117,30 +119,35 @@ export const Dropdown = (props:TDropdown) => {
         unmountOnExit: true,
       }}
     >
-      <Header
-        id={`${id}-header`}
-        transformOn={transformIconOn}
-        className='gb-dropdown-header'
-        transformOff={transformIconOff}
-        aria-controls={`${id}-content`}
-        sx={[headerSx, { [`& .MuiAccordionSummary-content`]: headerContentSx }] as CSSProperties[]}
-        expandIcon={
-          !showExpandIcon || noToggle
-            ? (<></>)
-            : (
-                // @ts-ignore
-                <ExpandIcon
-                  expand={expanded}
-                  noIconTransform={true}
-                  sx={[expandIconSx, styles.icon] as CSSProperties[]}
-                  className={cls(`gb-dropdown-expand-icon`, expanded && `expanded`)}
-                />
-              )
-        }
-      >
-        {HeaderComp ?? (headerText && (<HeaderText sx={headerTextSx} >{headerText}</HeaderText>)) ?? null}
-        {actions}
-      </Header>
+      {noHeader !== false && (
+        <Header
+          id={`${id}-header`}
+          transformOn={transformIconOn}
+          className='gb-dropdown-header'
+          transformOff={transformIconOff}
+          aria-controls={`${id}-content`}
+          sx={[headerSx, { [`& .MuiAccordionSummary-content`]: headerContentSx }] as CSSProperties[]}
+          expandIcon={
+            !showExpandIcon || noToggle
+              ? null
+              : (
+                  <ExpandIcon
+                    expand={expanded}
+                    noIconTransform={true}
+                    sx={[expandIconSx, styles.icon] as CSSProperties[]}
+                    className={cls(`gb-dropdown-expand-icon`, expanded && `expanded`)}
+                  />
+                )
+          }
+        >
+          {
+            HeaderComp
+              ?? (headerText && (<HeaderText sx={headerTextSx} >{headerText}</HeaderText>))
+              ?? null
+          }
+          {actions}
+        </Header>
+      )}
     {children && (
       <Body
         sx={bodySx}

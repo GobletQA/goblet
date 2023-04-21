@@ -8,7 +8,7 @@ export type TSetSteps = (steps:TStepDefsList) => void
 export type TStepDefsRef = MutableRefObject<TStepDefsList>
 export type TFeaturesRef = MutableRefObject<TRaceFeatures>
 export type TSetFeatureRefs = (features:TRaceFeatures) => void
-export type TSetFeatureGroups = Dispatch<SetStateAction<TRaceFeatures | undefined>>
+export type TSetFeatureGroups = (features:TRaceFeatures) => void
 
 export type TOnFeatureCBRef = MutableRefObject<TOnFeatureCB>
 export type TFeatureCB = (feature: TRaceFeature) => void

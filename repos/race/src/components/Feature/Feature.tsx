@@ -1,14 +1,16 @@
+import type { TFeaturesRefs } from '@GBR/types'
 import type { CSSProperties, MouseEvent } from 'react'
-import type { TFeaturesRefs, TRaceBackground, TRaceScenario, TRaceStep } from '@GBR/types'
 
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
 import { Title } from '../Title'
+import { Section } from '../Section'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { useEditor } from '@GBR/contexts'
 import { Background } from '../Background'
 import { EmptyFeature } from './EmptyFeature'
+import { EditTitle } from '../Title/EditTitle'
 import { FeatureHeader } from './FeatureHeader'
 import { EmptyFeatureUUID } from '@GBR/constants'
 import { useMemo, useCallback, useRef } from 'react'
@@ -23,8 +25,11 @@ export type TFeature = TFeaturesRefs & {}
 type StyleObj = Record<string, CSSProperties>
 
 const styles:Record<string, StyleObj|CSSProperties> = {
-  title: {
-    marginTop: `20px`
+  titleSection: {
+    marginTop: `40px`
+  },
+  titleEdit: {
+    marginTop: `10px`
   }
 }
 
@@ -35,7 +40,8 @@ export const Feature = (props:TFeature) => {
 
   const onEditFeatureTitle = useEditFeatureTitle({ parent: feature })
 
-  const onClick = useCallback((e:MouseEvent<HTMLButtonElement>) => {
+  const onCreateFeature = useCallback((evt:MouseEvent<HTMLButtonElement>) => {
+    evt.stopPropagation()
     createFeature({}, rootPrefix)
   }, [rootPrefix])
 
@@ -69,8 +75,8 @@ export const Feature = (props:TFeature) => {
     ? (
         <EmptyEditor
           Icon={BoltIcon}
-          onClick={onClick}
           btnText='Create Feature'
+          onClick={onCreateFeature}
           headerText='Goblet Feature Editor'
           subText='Create a new feature, or select an existing feature from the sidebar panel.'
         />
@@ -137,14 +143,26 @@ export const Feature = (props:TFeature) => {
                     </>
                   )
                 : (
-                    <Title
-                      autoFocus={true}
-                      uuid={feature.uuid}
-                      value={feature.feature}
-                      containerSx={styles.title}
+                    <Section
+                      show={true}
+                      label={``}
+                      noHeader={false}
+                      parent={feature}
+                      id={EmptyFeatureUUID}
+                      showExpandIcon={false}
+                      showDragHandle={false}
+                      sx={styles.titleSection}
                       type={ESectionType.feature}
-                      onChange={onEditFeatureTitle}
-                    />
+                      uuid={'empty-feature-title'}
+                    >
+                      <EditTitle
+                        uuid={feature.uuid}
+                        sx={styles.titleEdit}
+                        value={feature.feature}
+                        type={ESectionType.feature}
+                        onBlur={onEditFeatureTitle}
+                      />
+                    </Section>
                   )
             }
           </FeatureContent>

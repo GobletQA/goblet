@@ -23,7 +23,7 @@ export const useAddFile = (props:THAddFile) => {
         filetree,
         rootPrefix,
       }))
-      onAddFile(path)
+      onAddFile({ location: path })
     },
     [filetree]
   )

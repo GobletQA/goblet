@@ -33,6 +33,7 @@ export type TEditorProvider = {
   onFeatureClose:TOnFeatureCB
   onFeatureChange:TOnFeatureCB
   onFeatureActive:TOnFeatureCB
+  onFeatureCreate:TOnFeatureCB
   menuContext?:TRaceContextMenu
   onFeatureInactive:TOnFeatureCB
   setFeatureRefs:TSetFeatureRefs
@@ -67,11 +68,12 @@ export const EditorProvider = (props:TEditorProvider) => {
     curValueRef,
     featuresRef,
     menuContext,
+    onFeatureSave,
     updateEmptyTab,
     setFeatureRefs,
-    onFeatureSave,
     onFeatureClose,
     onFeatureChange,
+    onFeatureCreate,
     onFeatureActive,
     setFeatureGroups,
     onFeatureInactive,
@@ -113,6 +115,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     onAuditFeature,
     onFeatureActive,
     onFeatureChange,
+    onFeatureCreate,
     setFeatureGroups,
     onFeatureInactive,
     setFeature:_setFeature,

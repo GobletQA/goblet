@@ -29,9 +29,10 @@ export const VisualEditor = (props:TVisualEditor) => {
     features,
     connected,
     rootPrefix,
+    onFeatureClose,
     onFeatureChange,
     onFeatureActive,
-    onFeatureClose,
+    onFeatureCreate,
   } = useRaceHooks()
 
   const menuContext = useContextMenu()
@@ -53,6 +54,7 @@ export const VisualEditor = (props:TVisualEditor) => {
             sidebarStatus={!sidebarLocked}
             onFeatureClose={onFeatureClose}
             sidebarWidth={SidebarOpenWidth}
+            onFeatureCreate={onFeatureCreate}
             onFeatureChange={onFeatureChange}
             onFeatureActive={onFeatureActive}
           />

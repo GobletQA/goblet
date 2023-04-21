@@ -12,7 +12,7 @@ export const useRaceFeatures = (files:TFeatureFileModelList) => {
   return useMemo(() => {
 
     return isEmptyColl<TFeatureFileModelList>(files)
-      ? emptyObj
+      ? {}
       : Object.entries(files as TFeatureFileModelList)
         .reduce((models, [key, fileModel]) => {
 

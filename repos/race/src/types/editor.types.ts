@@ -43,6 +43,7 @@ export type TRaceEditorProps = TSettingsState & TEditorShared & {
   onFeatureClose?:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
+  onFeatureCreate?:TOnFeatureCB
 }
 
 export type TEditorShared = {

@@ -12,6 +12,7 @@ export type TSaveFile = {
 }
 export type TCreateFile = {
   type:string
+  content?:string
   location:string
 }
 
@@ -67,11 +68,12 @@ class FilesApi {
 
   createFile = async <T=TFileResp>({
     type,
+    content,
     location
   }:TCreateFile) => await this._req<T>({
     method: HttpMethods.POST,
     url: `/files/create`,
-    params: { location, type },
+    params: { content, location, type },
   })
 
   renameFile = async <T=TFileResp>({

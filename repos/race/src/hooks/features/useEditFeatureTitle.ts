@@ -15,7 +15,7 @@ export const useEditFeatureTitle = ({ parent }:THEditFeatureTitle) => {
   const { feature } = (parent || emptyObj)
   
   return useCallback(((evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, value:string) => {
-    updateFeature({ ...parent, feature: value || evt.target.value })
+    updateFeature({ ...parent, feature: value || evt.target.value }, { create: true })
   }) as TChangeCB, [parent, feature])
   
 }

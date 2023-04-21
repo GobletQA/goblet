@@ -6,14 +6,22 @@ import { filesApi } from '@services/filesApi'
 import { setFile } from '@actions/files/local/setFile'
 import { ensureExtension } from '@utils/files/ensureExtension'
 
+export type TCreateFileAct = {
+  fileName:string,
+  content?:string
+  isFolder?:boolean,
+  fileType:string|TFileType,
+}
+
 /**
  * Creates a new file from the passed in fileModel
  */
-export const createFile = async (
-  fileType:string|TFileType,
-  fileName:string,
-  isFolder?:boolean,
-) => {
+export const createFile = async ({
+  fileName,
+  content,
+  isFolder,
+  fileType,
+}:TCreateFileAct) => {
   const { file, typeMeta, error } = ensureExtension(fileType, fileName, isFolder)
 
   if (error)
@@ -29,9 +37,11 @@ export const createFile = async (
   })
 
   const resp = await filesApi.createFile<TFileResp>({
+    content,
     location: file,
     type: typeMeta.type,
   })
+
   if(!resp?.success) return noOpObj
 
   const { file: fileModel } = resp?.data

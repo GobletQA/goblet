@@ -31,7 +31,7 @@ export const useConfirmAddFile = (props:THConfirmAddFile) => {
           filetree: tree,
           path: file.path + file.name,
         })
-        onAddFile(file.path + file.name)
+        onAddFile({ location: file.path + file.name })
       }
       else {
         tree = deleteSourceFile({

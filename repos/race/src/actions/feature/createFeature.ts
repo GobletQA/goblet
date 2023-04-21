@@ -15,6 +15,11 @@ export const createFeature = (feat:Partial<TEmptyFeature>, rootPrefix:string) =>
     ...feat,
   } as TEmptyFeature, true)
 
+  /**
+   * Uses the event system to call
+   * the setEmptyFeature method defined in useFeatureCallbacks hook
+   * The useFeatureCallbacks hook has a listener to the SetFeatureContextEvt event
+   */
   EE.emit<TRaceFeature>(SetFeatureContextEvt, feature)
 
 }

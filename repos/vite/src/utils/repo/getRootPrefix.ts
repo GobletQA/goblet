@@ -7,7 +7,7 @@ export const getRootPrefix = (repo?:TRepoState, postfix?:string) => {
 
   const rootPrefix = repo?.paths?.workDir
     ? `${repo?.paths?.repoRoot}/${repo?.paths?.workDir}`
-    : repo?.paths?.repoRoot
+    : repo?.paths?.repoRoot || ``
   
   return postfix
     ? `${rootPrefix}/${postfix.replace(/^\//, '')}`

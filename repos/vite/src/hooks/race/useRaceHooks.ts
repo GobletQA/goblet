@@ -1,10 +1,11 @@
 import type { TFeatureFileModel } from '@types'
 import type { TRaceFeature } from '@gobletqa/race'
 
-import { useDefs, useRepo } from '@store'
 import { useMemo } from 'react'
+import { useDefs, useRepo } from '@store'
 import { useRaceSteps } from './useRaceSteps'
 import { useInline } from '@gobletqa/components'
+import { EmptyFeatureUUID } from '@gobletqa/race'
 import { useRaceFeatures } from './useRaceFeatures'
 import { getFeaturePrefix } from '@utils/features/getFeaturePrefix'
 import { getActiveFeature } from '@utils/features/getActiveFeature'
@@ -29,13 +30,14 @@ export const useRaceHooks = () => {
 
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
   const onSaveFile = useOnSaveFile(files, rootPrefix)
+  const onAddFile = useOnAddFile(files, rootPrefix, repo)
 
   // const onLoadFile = useOnLoadFile(files, rootPrefix)
   // const onDeleteFile = useOnDeleteFile(files, rootPrefix)
-  // const onAddFile = useOnAddFile(files, rootPrefix, repo)
   // const onRenameFile = useOnRenameFile(files, rootPrefix)
 
   const onPathChange = useOnPathChange()
+
 
   const onFeatureActive = useInline(async (feature:TRaceFeature) => {
     feature?.parent?.uuid
@@ -46,8 +48,11 @@ export const useRaceHooks = () => {
   const onFeatureClose = useInline(async (feature:TRaceFeature) => {
     const { location } = await getActiveFeature()
     const activeFeat = files[location]
-    
-    ;(activeFeat as TFeatureFileModel)?.uuid !== feature?.parent?.uuid
+
+    // This happens when an empty feature is closed before it's saved with a valid name
+    if(!activeFeat) return
+
+    activeFeat?.uuid !== EmptyFeatureUUID && activeFeat?.uuid !== feature?.parent?.uuid
       ? console.log(`Can not set file as inactive, it is not currently active`, activeFeat, feature)
       : onPathChange(``)
 
@@ -62,11 +67,22 @@ export const useRaceHooks = () => {
 
     const { parent, path, ...featureAst } = feature
 
+    // TODO: update this to be an object, instead of multi params
     onSaveFile(
       parent.uuid,
       feature.content,
       { ast:[featureAst] }
     )
+  })
+  
+  
+  const onFeatureCreate = useInline((feature:TRaceFeature) => {
+    if(!feature?.parent?.uuid)
+      return console.warn(`Failed to create feature, feature is missing the parent file path`)
+
+    const { parent, path, content, ...featureAst } = feature
+
+    onAddFile({ content, location: parent.uuid })
   })
 
   return {
@@ -74,6 +90,7 @@ export const useRaceHooks = () => {
     features,
     rootPrefix,
     onFeatureClose,
+    onFeatureCreate,
     onFeatureActive,
     onFeatureChange,
     onFeatureSave: onFeatureChange,

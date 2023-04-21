@@ -12,8 +12,8 @@ const styles = {
     width: `100%`,
     height: `100%`,
     display: `flex`,
-    flexDirection: `column`,
     marginTop: `0px`,
+    flexDirection: `column`,
     marginBottom: gutter.margin.px,
     padding: `0px ${gutter.padding.hpx}`,
   },
@@ -34,6 +34,8 @@ export type TEditTitle = {
   helperText?:string
   autoFocus?:boolean
   onChange?:TChangeCB
+  inputSx?:CSSProperties
+  titleSX?:CSSProperties
   variant?:TInputVariants
 }
 
@@ -42,6 +44,8 @@ export const EditTitle = (props:TEditTitle) => {
   const {
     sx,
     margin,
+    titleSX,
+    inputSx,
     padding,
     className,
     autoFocus=true,
@@ -55,7 +59,12 @@ export const EditTitle = (props:TEditTitle) => {
       sx={[styles.content, sx] as CSSProperties[]}
       className={cls(`gb-${props.type}-editing-title`, className)}
     >
-      <Title autoFocus={autoFocus} {...rest} />
+      <Title
+        sx={inputSx}
+        autoFocus={autoFocus}
+        containerSx={titleSX}
+        {...rest}
+      />
     </Box>
   )
 }

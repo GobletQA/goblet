@@ -26,6 +26,7 @@ export const Editor = (props:TRaceEditorProps) => {
     onFeatureClose,
     setFeatureRefs,
     onFeatureChange,
+    onFeatureCreate,
     setFeatureGroups,
     onFeatureActive,
     onFeatureInactive,
@@ -43,6 +44,7 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureClose={onFeatureClose}
       updateEmptyTab={updateEmptyTab}
       setFeatureRefs={setFeatureRefs}
+      onFeatureCreate={onFeatureCreate}
       onFeatureChange={onFeatureChange}
       onFeatureActive={onFeatureActive}
       setFeatureGroups={setFeatureGroups}
