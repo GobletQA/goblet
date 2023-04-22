@@ -33,8 +33,8 @@ jobs:
         include:
           - service: app
             dockerfile: container/Dockerfile
-          # - service: screencast
-          #   dockerfile: container/Dockerfile.screencast
+          - service: screencast
+            dockerfile: container/Dockerfile.screencast
           - service: backend
             dockerfile: container/Dockerfile.backend
           # Disable action docker image for now
