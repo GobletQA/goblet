@@ -3,9 +3,6 @@
   "version": "0.0.0",
   "description": "Web application testing framework",
   "main": "index.js",
-  "engines": {
-      "pnpm": ">=3"
-  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"
