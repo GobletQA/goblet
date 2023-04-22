@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box'
-import { getColor } from '@GBC/utils'
 import { dims, colors } from '@GBC/theme'
 import { styled } from '@mui/material/styles'
 

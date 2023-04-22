@@ -10,8 +10,8 @@ import { useState, useEffect, useMemo } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { HeaderSpacer, Drawer } from './SideNav.styled'
 import { SideNav as SideNavItems } from '@constants/nav'
-import ClickAwayListener from '@mui/base/ClickAwayListener'
 import { useSideNavToggle } from '@hooks/nav/useSideNavToggle'
+import ClickAwayListener from '@mui/material/ClickAwayListener'
 import { toggleSidebarLocked } from '@actions/nav/toggleSidebarLocked'
 import {
   useInline,

@@ -7,7 +7,7 @@ import { Definitions } from './Definitions'
 import { PanelDimsSetEvt } from '@constants'
 import { useEffectOnce } from '@hooks/useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import ClickAwayListener from '@mui/base/ClickAwayListener'
+import ClickAwayListener from '@mui/material/ClickAwayListener'
 import { gray, black, gobletColors } from '@gobletqa/components/theme'
 import {
   Tooltip,
