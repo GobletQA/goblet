@@ -18,6 +18,6 @@ const ePreFix = getEnvPrefix()
 
   dsEnvs+= filterEnvsAsArgs(repo)
 
-  process.stdout.write(`::set-output name=list::${dsEnvs}`)
+  process.stdout.write(`"{list}=${dsEnvs}" >> $GITHUB_OUTPUT`)
 
 })()
