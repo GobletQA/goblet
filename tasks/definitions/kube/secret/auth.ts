@@ -51,12 +51,12 @@ export const auth:TTask = {
   name: `auth`,
   action: docAuthAct,
   alias: [ `auth`, `doc`, `docauth`, `docAuth`, `da`],
-  example: `yarn kube secrets auth <options>`,
+  example: `pnpm kube secrets auth <options>`,
   description: `Calls the kubectl create secrets command with the docker-authentication`,
   options: {
     token: {
-      alias: ['tok'],
-      example: '--token ****',
+      alias: [`tok`],
+      example: `--token ****`,
       description: `Custom login token for the active git user, defaults to resolved NPM token`,
     },
     log: {

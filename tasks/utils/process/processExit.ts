@@ -18,7 +18,7 @@ export const getEventExitCode = () => {
 }
 
 /**
- * Error handler called when yarn command fails
+ * Error handler called when pnpm command fails
  *
  */
 export const onProcessExit = (

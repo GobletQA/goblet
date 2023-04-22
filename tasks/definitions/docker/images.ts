@@ -67,11 +67,11 @@ const buildPush = async (args) => {
 }
 
 export const images = {
-  name: 'images',
+  name: `images`,
   alias: [`imgs`, `image`, `img`],
   action: buildPush,
-  example: 'yarn task dev img build <options>',
-  description: 'Calls the image build command',
+  example: `pnpm task dev img build <options>`,
+  description: `Calls the image build command`,
   options: {
     ...build.options,
     context: {

@@ -80,7 +80,7 @@ export const provider:TTask = {
   name: `provider`,
   action: providerAct,
   alias: [ `pro`, `cp`, `cloud`, `clp`],
-  example: `yarn task kube secrets provider <options>`,
+  example: `pnpm task kube secrets provider <options>`,
   description: `Calls the kubectl create secrets command to create cloud provider secrets`,
   options: {
     token: {

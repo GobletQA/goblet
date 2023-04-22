@@ -35,7 +35,6 @@
     "tasks/goblet.ts",
     "node_modules",
     "bundle",
-    ".yarn",
     ".git",
     ".husky",
     ".firebase",

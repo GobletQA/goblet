@@ -178,7 +178,7 @@ export const secret:TTask = {
     auth,
     provider,
   },
-  example: `yarn kube secret <options>`,
+  example: `pnpm kube secret <options>`,
   description: `Calls the kubectl create secret command`,
   options: {
     name: {

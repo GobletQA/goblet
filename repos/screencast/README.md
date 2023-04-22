@@ -21,7 +21,7 @@
     ```
   * Install node_modules from goblet root directory
     ```sh
-      yarn install
+      pnpm install
     ```
 
 ### Run

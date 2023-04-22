@@ -70,14 +70,14 @@ const statusAct = async ({ params }) => {
 }
 
 export const status = {
-  name: 'status',
+  name: `status`,
   action: statusAct,
-  example: 'yarn task devspace status <options>',
-  description: 'Gets the current status of host environment',
+  example: `pnpm task devspace status <options>`,
+  description: `Gets the current status of host environment`,
   options: {
     context: {
       example: `--context proxy`,
-      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+      alias: [`ctx`, `name`, `type`, `deployment`, `deploy`, `selector`],
       description: `Context or name of devspace to get the status of`,
     },
   },

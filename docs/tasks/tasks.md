@@ -16,7 +16,7 @@
 * These define the different apps are used by the tasks for context specific execution
 * They allow a task to reference a specific app based on a passed in task option
 * For example
-  * Running task command `yarn doc build backend`, will build the backend docker image
+  * Running task command `pnpm doc build backend`, will build the backend docker image
   * It assumes
     * A `backend` context is defined in the `tasks.config.js`
     * A Dockerfile exists at `<root-dir>/container/Dockerfile.backend`

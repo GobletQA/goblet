@@ -57,8 +57,8 @@ export const deployAct = async (args:TTaskActionArgs) => {
 export const deploy:TTask = {
   name: `deploy`,
   action: deployAct,
-  example: `yarn task dev deploy <options>`,
-  description: `Calls the yarn devspace deploy command`,
+  example: `pnpm task dev deploy <options>`,
+  description: `Calls the pnpm devspace deploy command`,
   options: {
     context: {
       type: `array`,

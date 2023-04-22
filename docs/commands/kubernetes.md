@@ -15,7 +15,7 @@
 
 ## Production
 * Set both context and namespace for an environment
-  * `yarn kube set <environment>` - environment should be one of `local`, `production`, etc...
+  * `pnpm kube set <environment>` - environment should be one of `local`, `production`, etc...
 * Set just the namespace
   * `kubectl config set-context --current --namespace=gb-production` - Namespace is set as the default
   * `devspace use namespace gb-production` - should be done automatically via devspace
@@ -23,7 +23,7 @@
   * `devspace use context lke70246-ctx` - should be done automatically via devspace
   * `kubectl config set-context lke70246-ctx`
 * Deploy to production kubernetes
-  * `yarn dev deploy --env prod --log --skip fe`
+  * `pnpm dev deploy --env prod --log --skip fe`
   * **IMPORTANT** - Don't forget to add `--env prod` to ensure you are using the correct environment
 * Curl cmds to test Backend API
   * `curl -kivL -H 'Host: backend.dev.gobletqa.app' -H 'Origin: localhost' 'http://198.58.121.252'`

@@ -96,56 +96,56 @@ const buildImg = async (args) => {
 }
 
 export const build = {
-  name: 'build',
-  alias: ['bld'],
+  name: `build`,
+  alias: [`bld`],
   action: buildImg,
-  example: 'yarn task dev img build <options>',
-  description: 'Calls the image build command',
+  example: `pnpm task dev img build <options>`,
+  description: `Calls the image build command`,
   options: {
     context: {
       example: `--context proxy`,
-      alias: ['ctx', `name`, `type`],
+      alias: [`ctx`, `name`, `type`],
       description: `Context or name to use when resolving the Dockerfile to built`,
     },
     push: {
-      type: 'boolean',
+      type: `boolean`,
       default: false,
-      description: 'Push the built image to the docker provider',
+      description: `Push the built image to the docker provider`,
     },
     tag: {
       type: `array`,
-      alias: ['tags'],
+      alias: [`tags`],
       default: [`package`, `values`],
       example: `--tag package,branch`,
       allowed: [`package`, `branch`, `commit`, `values`, `env`, `node`],
-      description: 'Name of the tag to add to the built Docker image',
+      description: `Name of the tag to add to the built Docker image`,
     },
     image: {
       env: `GB_BUILD_IMAGE`,
-      description: 'Name of the docker image to be built. Used when tagging',
+      description: `Name of the docker image to be built. Used when tagging`,
     },
     force: {
       default: true,
-      type: 'boolean',
-      description: 'Force remove temporary images used while building',
+      type: `boolean`,
+      description: `Force remove temporary images used while building`,
     },
     log: {
-      type: 'boolean',
-      description: 'Log command before they are build',
+      type: `boolean`,
+      description: `Log command before they are build`,
     },
     builder: {
       default: `goblet`,
-      description: 'Name of the docker buildx builder instance to use',
+      description: `Name of the docker buildx builder instance to use`,
     },
     cache: {
-      type: 'boolean',
+      type: `boolean`,
       default: true,
-      description: 'User docker cache when building the image',
+      description: `User docker cache when building the image`,
     },
     platforms: {
       type: `array`,
       default: [`linux/amd64`, `linux/arm64`],
-      description: 'List of docker platforms to be built',
+      description: `List of docker platforms to be built`,
     },
     tagMatch: {
       type: `string`,

@@ -44,7 +44,7 @@ export const run:TTask = {
   name: `run`,
   alias: [`test`],
   action: runUnit,
-  example: `yarn dev unit run`,
+  example: `pnpm dev unit run`,
   description: `Run unit tests for the mounted repo`,
   options: sharedOptions(
     `run`,

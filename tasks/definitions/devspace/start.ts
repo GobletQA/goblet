@@ -20,7 +20,7 @@ const setStartEnvs = (params:TTaskParams) => {
 
   /**
    * Set the GB_NM_INSTALL env based on the passed in install option
-   * Tells the corresponding app to run yarn install prior to starting
+   * Tells the corresponding app to run pnpm install prior to starting
    */
   const nmInstall = getLongContext(install)
 
@@ -84,7 +84,7 @@ const startAct = async (args:TTaskActionArgs) => {
 export const start:TTask = {
   name: `start`,
   action: startAct,
-  example: `yarn task devspace start <options>`,
+  example: `pnpm task devspace start <options>`,
   description: `Calls the devspace dev command`,
   options: {
     context: {
@@ -141,8 +141,8 @@ export const start:TTask = {
     install: {
       type: `string`,
       example: `--install proxy`,
-      alias: [`in`, `yarn`, `nm`],
-      description: `Name of the app that should run yarn install prior to starting.`,
+      alias: [`in`, `pnpm`, `nm`],
+      description: `Name of the app that should run pnpm install prior to starting.`,
     },
     pull: {
       example: `--pull never`,

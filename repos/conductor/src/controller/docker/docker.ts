@@ -1,5 +1,4 @@
 import type { Conductor } from '../../conductor'
-import type { Request } from 'express'
 import type { ContainerCreateOptions } from 'dockerode'
 import type {
   TImgRef,
@@ -14,7 +13,6 @@ import type {
   TContainerMap,
   TContainerInfo,
   TContainerMeta,
-  TContainerRoute,
   TContainerInspect
 } from '@gobletqa/conductor/types'
 

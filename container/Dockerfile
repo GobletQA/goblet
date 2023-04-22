@@ -1,7 +1,10 @@
-ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.27.0-focal
+ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.32.0-focal
+
+FROM $GB_IMAGE_FROM as goblet-pnpm
+RUN npm i -g pnpm
 
 # ---- Prune Stage ---- #
-FROM $GB_IMAGE_FROM as goblet-pruner
+FROM goblet-pnpm as goblet-pruner
 WORKDIR /goblet/app
 COPY . .
 RUN <<EOF
@@ -18,39 +21,39 @@ RUN <<EOF
   cd /goblet/app/out/json/repos
   rm -rf ./**/node_modules
   cp /goblet/app/.nvmrc /goblet/app/out/json/.nvmrc
-  cp /goblet/app/.yarnrc /goblet/app/out/json/.yarnrc
-  cp /goblet/app/yarn.lock /goblet/app/out/json/yarn.lock
+  cp /goblet/app/.npmrc /goblet/app/out/json/.npmrc
+  cp /goblet/app/pnpm-lock.yaml /goblet/app/out/json/pnpm-lock.yaml
   cp /goblet/app/turbo.json /goblet/app/out/json/turbo.json
   cp /goblet/app/package.json /goblet/app/out/json/package.json
 EOF
 # ---- End Stage ---- #
 
 # ---- Install Stage  ---- #
-FROM $GB_IMAGE_FROM as goblet-installer
+FROM goblet-pnpm as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 RUN <<EOF
   set -eux;
-  yarn global add dot-json turbo
-  yarn json:rm
-  yarn json:repo-rm
-  yarn config set network-timeout 600000
-  yarn install
+  pnpm global add dot-json turbo
+  pnpm json:rm
+  pnpm json:repo-rm
+  pnpm config set network-timeout 600000
+  pnpm install
 EOF
 # ---- End Stage ---- #
 
 FROM bitnami/kubectl:latest as kubectl
 
 # ---- Build Stage ---- #
-FROM $GB_IMAGE_FROM as goblet-build
+FROM goblet-pnpm as goblet-build
 WORKDIR /goblet/app
 COPY --from=goblet-installer /goblet/app/ .
 COPY . .
-RUN yarn build:docker
+RUN pnpm build:docker
 # ---- End Stage ---- #
 
 # ---- Run Stage  ---- #
-FROM $GB_IMAGE_FROM as goblet-runner
+FROM goblet-pnpm as goblet-runner
 WORKDIR /goblet/app
 
 ARG GB_FE_PORT=19006
@@ -85,7 +88,6 @@ ENV HOME=/root \
     GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
     PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION \
-    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin \
     DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
 
 RUN <<EOF

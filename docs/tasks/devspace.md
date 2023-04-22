@@ -6,14 +6,14 @@
 
 ## Devspace
 
-* Cmd: `yarn devspace <sub-task> <options>`
+* Cmd: `pnpm devspace <sub-task> <options>`
 * Alias: `kubectl`, `kb`, `kcl`
 * Description: Run tasks related to devspace
-* Example `yarn dev start`
+* Example `pnpm dev start`
 
 ### Start
 
-* Cmd: `yarn dev start <options>`
+* Cmd: `pnpm dev start <options>`
 * Alias: `st`
 * Description: Runs the dev environment by default using devspace to deploy helm charts
-* Example `yarn dev start`
+* Example `pnpm dev start`

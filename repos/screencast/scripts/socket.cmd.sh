@@ -51,4 +51,4 @@ fi
 # Example Waypoint exec
 # bash scripts/socket.cmd.sh waypoint run context=/keg/repos/lancetipton/current/goblet/waypoint/first.waypoint.js
 
-yarn task "$@"
+pnpm task "$@"

@@ -21,7 +21,7 @@ const { runCmd } = require('@keg-hub/cli-utils')
   if(!found)
     throw new Error([
       `Could not find a valid devspace secret.`,
-      `Run command "yarn kube secret auth --log" to create the auth secrets`
+      `Run command "pnpm kube secret auth --log" to create the auth secrets`
     ].join(`\n`))
 
   process.stdout.write(found.metadata.name)

@@ -21,7 +21,7 @@
       * Verify <some_expectations>
   ```
 * Example Search Testing:
-  * Start server with command `yarn start`
+  * Start server with command `pnpm start`
   * Navigate to `http://localhost:5000` in your browser
   * Click on the login button 
     * Ensure the login modal displays

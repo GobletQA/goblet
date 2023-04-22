@@ -37,7 +37,7 @@ export const cmd:TTask = {
   name: `cmd`,
   alias: [`analyze`, `print`, `ui`],
   action: commandAct,
-  example: `yarn dev <cmd> <options>`,
+  example: `pnpm dev <cmd> <options>`,
   description: `Calls the devspace command`,
   options: {
     context: {

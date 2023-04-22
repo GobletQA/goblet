@@ -8,13 +8,13 @@ set -Eeo pipefail
 # Used for running goblet in a single docker container
 goblet_run_pm2(){
   # Ensure PM2 is installed
-  yarn global add pm2
+  pnpm global add pm2
   pm2 install pm2-logrotate
   pm2 set pm2-logrotate:retain '7'
   pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'
 
   # Start each of the services via pm2
-  yarn pm2
+  pnpm pm2
   # Tail the logs dir to keep the container running
   tail -f /goblet/app/logs/*.log && exit 0;
 }
@@ -22,16 +22,16 @@ goblet_run_pm2(){
 
 # When running in dev, sometimes we need to add new packages
 # Only needed in development
-goblet_run_dev_yarn_install(){
+goblet_run_dev_install(){
   if [ "$GB_NM_INSTALL" == "all" ]; then
-    echo "Running yarn install for all repos..."
+    echo "Running pnpm install for all repos..."
     cd /goblet/app
-    yarn install
+    pnpm install
 
   elif [ "$GB_NM_INSTALL" == "$GB_SUB_REPO" ]; then
-    echo "Running yarn install for $GB_SUB_REPO..."
+    echo "Running pnpm install for $GB_SUB_REPO..."
     cd /goblet/app/repos/$GB_SUB_REPO
-    yarn install
+    pnpm install
   fi
 }
 
@@ -57,7 +57,7 @@ goblet_screencast(){
 }
 
 # Check if we should install new packages
-[ "$GB_NM_INSTALL" ] && goblet_run_dev_yarn_install
+[ "$GB_NM_INSTALL" ] && goblet_run_dev_install
 
 # If a sub-repo is defined only run that one repo
 # Check if the process to run is defined, then run it
@@ -67,7 +67,7 @@ if [ "$GB_SUB_REPO" ]; then
   [ "$GB_SUB_REPO" == "screencast" ] && goblet_screencast
 
   cd /goblet/app/repos/$GB_SUB_REPO
-  yarn start >> /proc/1/fd/1 &
+  pnpm start >> /proc/1/fd/1 &
   # Tail /dev/null to keep the container running
   tail -f /dev/null && exit 0;
 else

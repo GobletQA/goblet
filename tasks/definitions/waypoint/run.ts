@@ -41,7 +41,7 @@ const runWp = async (args:TTaskActionArgs) => {
 export const run:TTask = {
   name: `run`,
   action: runWp,
-  example: `yarn test:run`,
+  example: `pnpm test:run`,
   description: `Runs all or defined QAWolf tests`,
   alias: [`test`],
   options: sharedOptions(

@@ -6,27 +6,27 @@
 
 ## Kube
 
-* Cmd: `yarn kube <sub-tasks> <options>`
+* Cmd: `pnpm kube <sub-tasks> <options>`
 * Alias: `kubectl`, `kb`, `kcl`
 * Description: Run tasks related to kubernetes and helm
-* Example `yarn kube ingress`
+* Example `pnpm kube ingress`
 
 ### Auth
 
-* Cmd: `yarn kube auth  <options>`
+* Cmd: `pnpm kube auth  <options>`
 * Description: Create `docker-auth` secrets used by the Backend API, calls the `secret` task internally
-* Example `yarn kube auth`
+* Example `pnpm kube auth`
 
 
 ### Secret
 
-* Cmd: `yarn kube secret <options>`
+* Cmd: `pnpm kube secret <options>`
 * Description: Create kubernetes secrets for the environment
-* Example `yarn kube secret --name my-secret --key my-key --value my-value`
+* Example `pnpm kube secret --name my-secret --key my-key --value my-value`
 
 
 ### Ingress
 
-* Cmd: `yarn kube ingress <options>`
+* Cmd: `pnpm kube ingress <options>`
 * Description: Create an new `nginx ingress` for the current kubernetes namespace via `helm chart`
-* Example `yarn kube ingress`
+* Example `pnpm kube ingress`

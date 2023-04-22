@@ -19,22 +19,22 @@ const logOutput = async ({ params }) => {
 }
 
 export const log:TTask = {
-  name: 'log',
-  alias: ['logs', 'lg'],
+  name: `log`,
+  alias: [`logs`, `lg`],
   action: logOutput,
-  example: 'yarn task devspace log <options>',
-  description: 'Calls the yarn devspace log command',
+  example: `pnpm task devspace log <options>`,
+  description: `Calls the pnpm devspace log command`,
   options: {
     context: {
       example: `--context app`,
-      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
-      description: 'Name of the app to be log relative to devspace deployments',
+      alias: [`ctx`, `name`, `type`, `deployment`, `deploy`, `selector`],
+      description: `Name of the app to be log relative to devspace deployments`,
     },
     follow: {
       default: true,
-      type: 'boolean',
-      alias: ['fl', 'watch'],
-      description: 'Follow the logs in realtime',
+      type: `boolean`,
+      alias: [`fl`, `watch`],
+      description: `Follow the logs in realtime`,
     }
   },
 }

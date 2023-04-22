@@ -9,7 +9,7 @@ gb_check_devspace_and_dependencies(){
   gb_brew_check_install "helm" "helm version"
 
   # Check and install devspace
-  gb_yarn_global_check_install "devspace@$GB_DEVSPACE_VERSION" "devspace -v"
+  gb_global_check_install "devspace@$GB_DEVSPACE_VERSION" "devspace -v"
   # Doing a check for the version will force the correct executabe to download
   devspace -v
 }

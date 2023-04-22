@@ -1,7 +1,7 @@
 import { TTaskActionArgs, TTask, TEnvObject } from '../../types'
 
 import { frontendDir } from '../../paths'
-import { Logger, yarn } from '@keg-hub/cli-utils'
+import { Logger, runCmd } from '@keg-hub/cli-utils'
 import { loadEnvs } from '../../utils/envs/loadEnvs'
 import { firebase } from '../../utils/firebase/firebase'
 import { getNpmToken } from '../../utils/envs/getNpmToken'
@@ -12,9 +12,9 @@ const bundleFrontend = async (args:TTaskActionArgs, envs:TEnvObject) => {
   const log = args?.params?.log
 
   // Build the goblet frontend application
-  log && Logger.pair(`Running frontend build command`, `yarn build`)
+  log && Logger.pair(`Running frontend build command`, `pnpm build`)
 
-  await yarn([`build`], {
+  await runCmd(`pnpm`, [`build`], {
     envs,
     cwd: frontendDir,
   })

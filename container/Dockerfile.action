@@ -1,7 +1,11 @@
-ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.27.0-focal
+ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.32.0-focal
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
-FROM $IMAGE_FROM as goblet-cleaner
+FROM $IMAGE_FROM as goblet-pnpm
+RUN npm i -g pnpm
+
+
+FROM goblet-pnpm as goblet-cleaner
 WORKDIR /goblet/app
 COPY . .
 # Clean up Goblet so it only includes the stuff we need to run tests
@@ -42,9 +46,9 @@ RUN <<EOF
 EOF
 
 WORKDIR /github/app
-RUN yarn install
+RUN pnpm install
 
-FROM $IMAGE_FROM as goblet-runner
+FROM goblet-pnpm as goblet-runner
 ARG GB_FE_PORT=19006
 ARG GB_BE_PORT=7005
 ARG GB_SC_PORT=7006
@@ -72,8 +76,7 @@ ENV HOME=/root \
     GB_DD_API_PROXY_PORT=$GB_DD_API_PROXY_PORT \
     GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT \
     PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 \
-    PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION \
-    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin
+    PLAYWRIGHT_BROWSERS_VERSION=$PLAYWRIGHT_BROWSERS_VERSION
 
 COPY --from=goblet-cleaner /github/app /github/app
 # Symlink the parent folder of the github workspace to the repos folder

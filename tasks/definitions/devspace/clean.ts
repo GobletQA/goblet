@@ -51,8 +51,8 @@ export const clean:TTask = {
   name: `clean`,
   action: cleanAct,
   alias: [`purge`, `stop`, `kill`],
-  example: `yarn task clean <options>`,
-  description: `Calls the yarn devspace clean command`,
+  example: `pnpm task clean <options>`,
+  description: `Calls the pnpm devspace clean command`,
   options: {
     context: {
       type: `array`,

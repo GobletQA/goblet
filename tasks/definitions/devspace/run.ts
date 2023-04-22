@@ -24,25 +24,25 @@ const runAct = async ({ params }) => {
 }
 
 export const run:TTask = {
-  name: 'run',
-  alias: ['run', 'cmd'],
+  name: `run`,
+  alias: [`run`, `cmd`],
   action: runAct,
-  example: 'yarn task devspace run <options>',
-  description: 'Calls the devspace run command',
+  example: `pnpm task devspace run <options>`,
+  description: `Calls the devspace run command`,
   options: {
     cmd: {
       required: true,
-      alias: ['context', 'command'],
-      description: 'Name of the command to be run from the container/devspace.yml file',
+      alias: [`context`, `command`],
+      description: `Name of the command to be run from the container/devspace.yml file`,
     },
     context: {
       example: `--context app`,
-      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+      alias: [`ctx`, `name`, `type`, `deployment`, `deploy`, `selector`],
       description: `Context or name of devspace app to be run`,
     },
     log: {
-      type: 'boolean',
-      description: 'Log the devspace command to be run',
+      type: `boolean`,
+      description: `Log the devspace command to be run`,
     },
   },
 }

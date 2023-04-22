@@ -13,9 +13,9 @@
   "module": "dist/gobletComponents.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "clean": "yarn clean:dist; yarn clean:nm",
+    "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist",
-    "clean:full": "yarn clean; yarn install",
+    "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "build": "GOBLET_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
     "prod": "GOBLET_ENV=production vite --clearScreen false -c configs/vite.config.ts",
@@ -23,30 +23,29 @@
     "start": "vite --clearScreen false -c configs/vite.config.ts --force"
   },
   "dependencies": {
-    "@emotion/react": "*",
-    "@emotion/styled": "*",
+    "@emotion/react": "11.10.6",
+    "@emotion/styled": "11.10.6",
     "@keg-hub/jsutils": ">=9.6.1",
-    "@mui/icons-material": "*",
-    "@mui/lab": "*",
-    "@mui/material": "*",
-    "@mui/x-date-pickers": "*",
-    "react-selecto": "*"
+    "@mui/icons-material": "5.11.16",
+    "@mui/lab": "5.0.0-alpha.127",
+    "@mui/material": "5.12.1",
+    "react-selecto": "1.22.2"
   },
   "devDependencies": {
     "@gobletqa/shared": "*",
     "@keg-hub/cli-utils": "0.8.0-alpha1",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
-    "@vitejs/plugin-react": "*",
-    "esbuild": "*",
-    "esbuild-plugin-path-alias": "*",
-    "esbuild-register": "*",
+    "@vitejs/plugin-react": "4.0.0",
+    "esbuild": "0.17.17",
+    "esbuild-plugin-path-alias": "1.0.7",
+    "esbuild-register": "3.4.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "serve": "*",
-    "vite": "*",
-    "vite-plugin-svgr": "*",
-    "vite-plugin-svgr-component": "*",
-    "vite-tsconfig-paths": "*"
+    "serve": "14.1.2",
+    "vite": "4.3.1",
+    "vite-plugin-svgr": "2.4.0",
+    "vite-plugin-svgr-component": "1.0.1",
+    "vite-tsconfig-paths": "4.2.0"
   }
 }

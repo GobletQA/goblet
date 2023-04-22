@@ -8,5 +8,5 @@ export const backend:TTask = {
   action: deploy.action,
   options: deploy.options,
   description: deploy.description,
-  example: `yarn task deploy backend <options>`,
+  example: `pnpm task deploy backend <options>`,
 }

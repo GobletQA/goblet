@@ -18,20 +18,20 @@ const attachAct = async ({ params }) => {
 }
 
 export const attach:TTask = {
-  name: 'attach',
+  name: `attach`,
   action: attachAct,
-  alias: ['enter', 'att'],
-  example: 'yarn task devspace attach <options>',
-  description: 'Calls the yarn devspace enter command to attach to the running pod',
+  alias: [`enter`, `att`],
+  example: `pnpm task devspace attach <options>`,
+  description: `Calls the pnpm devspace enter command to attach to the running pod`,
   options: {
     context: {
       example: `--context app`,
-      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
-      description: 'Name of the running app to attach to relative to devspace deployments',
+      alias: [`ctx`, `name`, `type`, `deployment`, `deploy`, `selector`],
+      description: `Name of the running app to attach to relative to devspace deployments`,
     },
     log: {
-      type: 'boolean',
-      description: 'Log the devspace command to be run',
+      type: `boolean`,
+      description: `Log the devspace command to be run`,
     },
   },
 }

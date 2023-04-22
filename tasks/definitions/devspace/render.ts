@@ -34,21 +34,21 @@ const renderAct = async ({ task, params }:TTaskActionArgs) => {
 }
 
 export const render:TTask = {
-  name: 'render',
-  alias: ['ren', 'rdr'],
+  name: `render`,
+  alias: [`ren`, `rdr`],
   action: renderAct,
-  example: 'yarn dev render <options>',
-  description: 'Calls the devspace render command',
+  example: `pnpm dev render <options>`,
+  description: `Calls the devspace render command`,
   options: {
     context: {
-      type: 'array',
+      type: `array`,
       example: `--context app1,app2`,
-      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
+      alias: [`ctx`, `name`, `type`, `deployment`, `deploy`, `selector`],
       description: `Contexts or names of apps to be started`,
     },
     skip: {
-      type: 'array',
-      alias: ['bypass'],
+      type: `array`,
+      alias: [`bypass`],
       example: `--skip proxy`,
       description: `Contexts or names of apps NOT to be started`,
     },

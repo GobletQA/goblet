@@ -1,9 +1,12 @@
-ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.27.0-focal
+ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.32.0-focal
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
+FROM $IMAGE_FROM as goblet-pnpm
+RUN npm i -g pnpm
+
 # ---- Turbo Stage ---- #
-FROM $IMAGE_FROM as goblet-turbo
-RUN yarn global add turbo dot-json
+FROM goblet-pnpm as goblet-turbo
+RUN pnpm global add turbo dot-json
 # ---- End Stage ---- #
 
 # ---- Prune Stage ---- #
@@ -17,24 +20,24 @@ RUN <<EOF
   rm -rf /goblet/app/repos/conductor
 
   cd /goblet/app/repos/screencast
-  yarn json:rm
+  pnpm json:rm
 
   cd /goblet/app/repos/testUtils
-  yarn json:rm
+  pnpm json:rm
 
   cd /goblet/app/repos/workflows
-  yarn json:rm
+  pnpm json:rm
 
   cd /goblet/app/repos/shared
-  yarn json:rm
+  pnpm json:rm
 
   cd /goblet/app/repos/workflows
-  yarn json:rm
+  pnpm json:rm
 
   cd /goblet/app
-  yarn json:rm
+  pnpm json:rm
 
-  yarn config set network-timeout 600000
+  pnpm config set network-timeout 600000
 
 EOF
 # The test-utils repo has a dependecy on the screencast repo
@@ -44,8 +47,7 @@ RUN turbo prune --docker --scope=@gobletqa/test-utils
 RUN <<EOF
   set -eux;
   cp .nvmrc out/json/.nvmrc
-  cp .yarnrc out/json/.yarnrc
-  cp yarn.lock out/json/yarn.lock
+  cp pnpm-lock.yaml out/json/pnpm-lock.yaml
 
   cp -r tasks out/full/tasks
   cp -r configs out/full/configs
@@ -56,7 +58,7 @@ RUN <<EOF
   mkdir -p out/full/temp
 
   rm -rf out/full/.turbo
-  rm -rf out/full/yarn.lock
+  rm -rf out/full/pnpm-lock.yaml
   rm -rf out/full/.turbo.json
 
   # Remove unused tasks in the container
@@ -75,7 +77,7 @@ EOF
 FROM goblet-turbo as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
-RUN yarn install
+RUN pnpm install
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
@@ -84,12 +86,12 @@ WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app/repos/screencast
-RUN yarn build:docker && \
-    yarn install --production
+RUN pnpm build:docker && \
+    pnpm install --production
 # ---- End Stage ---- #
 
 # # ---- Run Stage ---- #
-FROM $IMAGE_FROM as goblet-runner
+FROM goblet-pnpm as goblet-runner
 WORKDIR /goblet/app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -128,7 +130,6 @@ ENV DEBUG_FILE=$DEBUG_FILE \
     LANG=en_US.UTF-8 \
     LANGUAGE=en_US.UTF-8 \
     DEBIAN_FRONTEND=noninteractive \
-    PATH=$PATH:/usr/local/share/.config/yarn/global/node_modules/.bin \
     DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
     # See here => https://georgik.rocks/how-to-start-d-bus-in-docker-container/
     # Explains how to run dbus in docker container

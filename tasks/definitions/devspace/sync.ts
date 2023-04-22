@@ -19,33 +19,33 @@ const syncAct = async (args:TTaskActionArgs) => {
 }
 
 export const sync:TTask = {
-  name: 'sync',
+  name: `sync`,
   action: syncAct,
-  example: 'yarn task sync <options>',
-  description: 'Calls the yarn devspace sync command',
+  example: `pnpm task sync <options>`,
+  description: `Calls the pnpm devspace sync command`,
   options: {
     context: {
       required: true,
       example: `--context app`,
-      alias: ['ctx', `name`, `type`, 'deployment', 'deploy', 'selector'],
-      description: 'Context for the task being run relative to the devspace pods',
+      alias: [`ctx`, `name`, `type`, `deployment`, `deploy`, `selector`],
+      description: `Context for the task being run relative to the devspace pods`,
     },
     log: {
       default: false,
-      type: 'boolean',
-      description: 'Log the devspace command to be run',
+      type: `boolean`,
+      description: `Log the devspace command to be run`,
     },
     local: {
       required: true,
-      alias: ['local'],
-      description: 'Path on local machine to sync',
-      example: '--local=/path/to/folder',
+      alias: [`local`],
+      description: `Path on local machine to sync`,
+      example: `--local=/path/to/folder`,
     },
     container: {
       required: true,
-      alias: ['container'],
-      description: 'Path on container to sync',
-      example: '--container=/path/to/folder',
+      alias: [`container`],
+      description: `Path on container to sync`,
+      example: `--container=/path/to/folder`,
     },
   },
 }

@@ -12,7 +12,7 @@ module.exports = {
     {
       cwd: beRoot,
       args: 'start',
-      script: 'yarn',
+      script: 'pnpm',
       name: `backend`,
       interpreter: '/bin/bash',
       out_file: path.join(logDir, `backend.out.log`),

@@ -9,7 +9,7 @@ module.exports = {
   apps : [
     {
       cwd: scRoot,
-      script: 'yarn',
+      script: 'pnpm',
       args: 'start',
       name: `conductor`,
       interpreter: '/bin/bash',

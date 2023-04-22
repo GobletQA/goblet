@@ -3,7 +3,7 @@
 ## Install
 
 ```
-yarn add @gobletqa/monaco
+pnpm add @gobletqa/monaco
 ```
 
 ### Use

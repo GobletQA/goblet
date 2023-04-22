@@ -24,7 +24,7 @@ goblet_ensure_root() {
 goblet_print_config_message(){
   gb_info "Kubernetes is required to execute the setup tasks"
   gb_message "  - Please enable kubernetes from the docker-desktop ui"
-  gb_message "  - Then run \"yarn make setup\" from the projects root directory"
+  gb_message "  - Then run \"pnpm make setup\" from the projects root directory"
   echo ""
 }
 
@@ -42,8 +42,8 @@ goblet_run_setup_tasks() {
 
 
   # Setup the nginx ingress for the current namespace
-  yarn kube ingress
+  pnpm kube ingress
 
   # Setup kuberenetes secrets for docker user and password
-  yarn kube auth
+  pnpm kube auth
 }

@@ -37,7 +37,7 @@ const runBdd = async (args:TTaskActionArgs) => {
 export const run:TTask = {
   name: `run`,
   action: runBdd,
-  example: `yarn dev bdd run`,
+  example: `pnpm dev bdd run`,
   description: `Runs bdd feature file tests for the mounted repo`,
   alias: [`test`],
   options: sharedOptions(
