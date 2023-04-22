@@ -2,7 +2,9 @@ ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.32.0-focal
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 FROM $IMAGE_FROM as goblet-pnpm
-RUN npm i -g pnpm
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+RUN npm install --global pnpm
 
 
 FROM goblet-pnpm as goblet-cleaner

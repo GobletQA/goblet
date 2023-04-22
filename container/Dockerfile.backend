@@ -6,6 +6,9 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 FROM $IMAGE_FROM as goblet-setup
 WORKDIR /goblet/app
 ENV GB_SUB_REPO=backend
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+
 COPY .nvmrc .nvmrc
 
 # Install deps
@@ -38,7 +41,7 @@ RUN <<EOF
   curl -sL https://deb.nodesource.com/setup_${NODE_VER:-16}.x | bash -
   apt-get install -y nodejs
   npm install -g pnpm
-  pnpm global add turbo dot-json
+  pnpm add --global turbo dot-json
 
 EOF
 # ---- End Stage ---- #

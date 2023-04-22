@@ -2,14 +2,16 @@ ARG GB_IMAGE_FROM=node:20.0.0-alpine3.16
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 FROM $IMAGE_FROM as goblet-pnpm
-RUN npm i -g pnpm
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+RUN npm install --global pnpm
 
 # ---- Prune App Stage ---- #
 FROM goblet-pnpm as goblet-pruner
 ARG NPM_TOKEN
 ENV NPM_TOKEN=$NPM_TOKEN
 WORKDIR /goblet/app
-RUN pnpm global add turbo
+RUN pnpm add --global turbo
 COPY . .
 RUN turbo prune --docker --scope=@gobletqa/frontend
 COPY ./configs ./out/full/configs
@@ -69,7 +71,6 @@ RUN <<EOF
   set -eux;
   apt-get update
   apt-get install -y g++ make
-  pnpm global add --ignore-optional expo-cli@$EXPO_CLI_VERSION expo-optimize sharp-cli
   cd /goblet/app/repos/frontend
   npm_config_yes=true NODE_ENV=production pnpm build:fe
   rm -rf /goblet/app/repos/frontend/dist
@@ -88,12 +89,12 @@ ENV HOME=/root \
 COPY --from=goblet-builder /goblet/app/repos/frontend/dist /goblet/app/repos/frontend/dist
 RUN <<EOF
   set -eux;
-  pnpm global add serve
+  pnpm add --global serve
 
   echo "#! /bin/bash" >> /deploy.sh
   echo "" >> /deploy.sh
   echo "cd /goblet/app" >> /deploy.sh
-  echo "pnpm global add firebase-tools" >> /deploy.sh
+  echo "pnpm add --global firebase-tools" >> /deploy.sh
   echo "firebase deploy --non-interactive --token \$FIREBASE_TOKEN --project \$FIRE_BASE_PROJECT_ID --only hosting" >> /deploy.sh
   chmod a+x /deploy.sh
 EOF

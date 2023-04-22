@@ -2,11 +2,13 @@ ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.32.0-focal
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 FROM $IMAGE_FROM as goblet-pnpm
-RUN npm i -g pnpm
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+RUN npm install --global pnpm
 
 # ---- Turbo Stage ---- #
 FROM goblet-pnpm as goblet-turbo
-RUN pnpm global add turbo dot-json
+RUN pnpm add --global turbo dot-json
 # ---- End Stage ---- #
 
 # ---- Prune Stage ---- #
