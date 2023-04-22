@@ -3,8 +3,8 @@ import type { CSSProperties, MouseEvent } from 'react'
 
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
-import { Title } from '../Title'
 import { Section } from '../Section'
+import { cls } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
 import { ESectionType } from '@GBR/types'
 import { useEditor } from '@GBR/contexts'
@@ -87,7 +87,7 @@ export const Feature = (props:TFeature) => {
           ref={containerRef}
           contentRef={contentRef}
           type={ESectionType.feature}
-          className='gb-feature-editor-section'
+          className={cls(`gb-feature-editor-section`, isEmpty && `gb-feature-empty`)}
         >
           <FeatureContent className='gb-feature-sections-container'>
 

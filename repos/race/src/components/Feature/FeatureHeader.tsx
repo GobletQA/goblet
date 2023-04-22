@@ -1,6 +1,7 @@
 import type { TRaceFeature } from '@GBR/types'
 import type { TFeatureItem } from './FeatureItems'
 
+import { PurpleText } from '@gobletqa/components'
 import { FeatureHeaderActions } from './FeatureHeaderActions'
 import {
   HeaderText,
@@ -22,7 +23,7 @@ export const FeatureHeader = (props:TFeatureHeader) => {
   return (
     <FeatureHeaderContainer className='feature-header-container' >
       <HeaderText>
-        Feature: {feature.feature || ``}
+        <PurpleText>Feature:</PurpleText> {feature.feature || ``}
       </HeaderText>
       <FeatureHeaderActions feature={feature} items={items} />
     </FeatureHeaderContainer>

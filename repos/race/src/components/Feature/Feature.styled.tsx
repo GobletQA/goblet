@@ -1,13 +1,15 @@
 import { Stack } from '../Section'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
 import { colors, gutter, BlockIcon, dims, H3, H4, Text } from '@gobletqa/components'
 
 const { race } = dims
 
-export const FeatureStack = styled(Stack)`
+export const FeatureStack = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== `parentPath`
+})(({ theme }) => {
+  return `
     padding: 0px ${gutter.padding.hpx};
     overflow-y: auto;
     overflow-x: hidden;
@@ -35,7 +37,12 @@ export const FeatureStack = styled(Stack)`
       height: fit-content;
       padding-bottom: 100px;
     }
-`
+
+    &.gb-feature-empty > .gb-section-stack-content {
+      height: 100%;
+    }
+  ` 
+})
 
 export const FeatureContent = styled(Box)`
   width: 100%;
@@ -97,7 +104,7 @@ export const FeatureActionBtn = styled(Button)`
 
 export const HeaderText = styled(H3)`
   flex-grow: 1;
-  font-size: 18px;
+  font-size: 16px;
   padding-left: 20px;
   color: var(--goblet-editor-foreground);
 `

@@ -43,7 +43,6 @@ export const Stack = forwardRef((props:TStack, ref:ForwardedRef<HTMLElement|unde
 
   const {
     sx,
-    type,
     body,
     stack,
     gutter,
