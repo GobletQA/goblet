@@ -29,10 +29,20 @@ const repoProps = {
 }
 
 const styles = {
-  sync: { paddingTop: `3px` },
+  sync: { paddingTop: `2px` },
   name: { paddingTop: `0px` },
   description: { paddingTop: `0px` },
-  container: { alignItems: `center`, paddingBottom: gutter.padding.px },
+  container: {
+    alignItems: `center`,
+  },
+}
+
+const gridProps = {
+  xs: 12,
+  container: true,
+  sx: styles.container,
+  columnSpacing: {xs: 0, md: 0.5},
+  className: 'gb-grid-repo-select-container'
 }
 
 export const RepoConnect = (props:TRepoProps) => {
@@ -49,13 +59,7 @@ export const RepoConnect = (props:TRepoProps) => {
   } = props
 
   return (
-    <Grid
-      xs={12}
-      container
-      sx={styles.container}
-      className='gb-grid-repo-select-container'
-    >
-
+    <Grid {...gridProps} >
       <Grid
         xs={9}
         md={11}

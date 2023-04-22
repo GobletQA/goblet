@@ -149,7 +149,6 @@ export const Feature = (props:TFeature) => {
                       noHeader={false}
                       parent={feature}
                       id={EmptyFeatureUUID}
-                      showExpandIcon={false}
                       showDragHandle={false}
                       sx={styles.titleSection}
                       type={ESectionType.feature}

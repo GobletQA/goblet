@@ -90,11 +90,11 @@ export const Dropdown = (props:TDropdown) => {
     updated !== localExpand && setLocalExpanded(updated)
     updated !== expanded && inlineCB?.(updated)
 
-  }, [expanded, disabled, noToggle])
+  }, [expanded, disabled, noToggle, localExpand])
 
   useEffect(() => {
-
     const noOutsideUpdate = !exists<boolean>(expanded) || expanded === localExpand
+
     if(noOutsideUpdate) return
 
     onChange(emptyObj, expanded)
@@ -128,7 +128,7 @@ export const Dropdown = (props:TDropdown) => {
           aria-controls={`${id}-content`}
           sx={[headerSx, { [`& .MuiAccordionSummary-content`]: headerContentSx }] as CSSProperties[]}
           expandIcon={
-            !showExpandIcon || noToggle
+            showExpandIcon === false || noToggle
               ? null
               : (
                   <ExpandIcon

@@ -17,7 +17,6 @@ import {
 } from './Layout.styled'
 import {
   Proportional,
-  VerticalPageSplit,
   HorizontalPageSplit,
 } from 'react-page-split'
 

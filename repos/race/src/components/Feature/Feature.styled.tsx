@@ -65,6 +65,8 @@ export const FeatureHeaderContainer = styled(Box)`
   max-height: ${race.header.height.px};
   background-color: var(--goblet-tab-activeBackground);
   border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+
+  // box-shadow: 0px -1px 5px -1px rgba(0,0,0,0.2);
 `
 
 export const FeatureMenuContainer = styled(Box)`

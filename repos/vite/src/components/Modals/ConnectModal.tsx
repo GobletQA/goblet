@@ -31,7 +31,7 @@ const styles:Record<string, CSSProperties> = {
     flexDirection: `column`,
     paddingLeft: gutter.padding.hpx,
     paddingBottom: gutter.padding.px,
-    paddingRight: `${gutter.padding.size + 10}px`,
+    paddingRight: gutter.padding.hpx,
   },
   rightTop: {
     paddingBottom: `0px`,
@@ -58,11 +58,11 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
     : (
         <Box
           sx={styles.container}
-          className='connect-modal-container'
+          className='gb-connect-modal-container'
         >
           <Box
             sx={styles.left}
-            className='connect-modal-left'
+            className='gb-connect-modal-left'
           >
             <Suspense fallback={<Loading />} >
               <VersionCtrl />
@@ -70,19 +70,19 @@ export const ConnectModal:TModalRef = (props:TModalComponent) => {
           </Box>
           <Box
             sx={styles.right}
-            className='connect-modal-right'
+            className='gb-connect-modal-right'
           >
             <Box
               sx={styles.rightTop}
-              className='connect-modal-right-top'
+              className='gb-connect-modal-right-top'
             >
               <H3
                 sx={styles.header}
-                className='connect-modal-header-text'
+                className='gb-connect-modal-header-text'
               >
                 Repository
               </H3>
-              <Text className='connect-modal-sub-text' variant="subtitle2">
+              <Text className='gb-connect-modal-sub-text' variant="subtitle2">
                 Connect or create a repository using your git cloud provider. Once connected, all project files are automatically synced between the repository and GobletQA.
               </Text>
             </Box>

@@ -11,8 +11,8 @@ export const ActionBarContainer = styled(Box)(({ theme }) => `
   padding-left: ${gutter.padding.hpx};
   padding-right: ${gutter.padding.hpx};
   height: ${dims.browser.actions.height}px;
-  background-color: ${getColor(colors.gray00, colors.black11, theme)};
-  border-bottom: 1px solid ${getColor(colors.gray02, colors.black12, theme)};
+  background-color: ${getColor(colors.white, colors.black11, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray00, colors.black12, theme)};
 `)
 
 export const ActionContainer = styled(Box)(({ theme }) => `

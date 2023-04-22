@@ -12,10 +12,12 @@ export const BrowserNav = styled('nav')(({ theme }) => `
   width: 100%;
   display: flex;
   padding: 2px 0;
+  align-items: center;
   place-items: center;
   place-content: center;
   height: ${dims.browser.nav.hpx};
-  background-color: ${getColor(colors.gray01, colors.black09, theme)};
+  background-color: ${getColor(colors.purple00, colors.black09, theme)};
+  border-bottom: 1px solid ${getColor(colors.gray00, colors.black12, theme)};
 `)
 
 export const BrowserNavActions = styled(Box)(({ theme }) => `
@@ -28,7 +30,6 @@ export const BrowserNavActions = styled(Box)(({ theme }) => `
 `)
 
 export const BrowserInput = styled('input')(({ theme }) => `
-  top: -1px;
   flex-grow: 1;
   border: none;
   margin: 0 6px;
@@ -41,7 +42,8 @@ export const BrowserInput = styled('input')(({ theme }) => `
   letter-spacing: 0.2px;
   height: ${dims.browser.url.hpx};
   color: ${getColor(colors.black07, colors.white, theme)};
-  background-color: ${getColor(colors.white00, colors.black12, theme)};
+  background-color: ${getColor(colors.white, colors.black12, theme)};
+  outline: 1px solid ${colors.gray00};
 
   &:focus {
     outline: 2px solid ${colors.royalPurple};

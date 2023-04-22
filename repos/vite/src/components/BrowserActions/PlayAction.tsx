@@ -42,12 +42,12 @@ const RunTests = (props:TBrowserActionProps) => {
       text='Play'
       as='button'
       loc='bottom'
+      variant='text'
       color='success'
       onClick={onClick}
       disabled={disabled}
       Icon={PlayCircleOutlineIcon}
       className='goblet-browser-run-tests'
-      variant={ noActiveFile ? `text` : `contained`}
       tooltip='Play the steps from active file in the browser'
       disabledTooltip='DISABLED - Open a test or script to use this action'
     />
@@ -56,8 +56,6 @@ const RunTests = (props:TBrowserActionProps) => {
 
 export const PlayAction:TBrowserAction = {
   Component: RunTests,
-  containerSx: {
-    marginLeft: gutter.margin.hpx,
-  },
+  containerSx: {},
   name: `play-browser-action`,
 }

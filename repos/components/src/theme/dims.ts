@@ -1,7 +1,7 @@
 import { SidebarCloseWidth, SidebarOpenWidth } from '@GBC/constants/values'
 
 const bNavH = 37
-const bUrlH = 26
+const bUrlH = 28
 const bActH = 40
 
 const tTabH = 30

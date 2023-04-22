@@ -24,11 +24,11 @@ const styles = {
     flexGrow: 2,
     display: `flex`,
     flexDirection: `column`,
-    paddingTop: gutter.padding.hpx,
+    paddingTop: gutter.padding.px,
   } as CSSProperties,
   form: {
     sx: {
-      // paddingBottom: gutter.padding.px
+      paddingTop: gutter.padding.hpx
     },
     containerSx: {
       height: `100%`,
@@ -40,11 +40,12 @@ const styles = {
     }
   } as Record<string, CSSProperties>,
   grid: {
-    alignItems: `center`
+    margin: 0,
+    alignItems: `center`,
   } as CSSProperties,
   branch: {
-    paddingTop: `0px`,
-    paddingLeft: gutter.padding.qpx,
+    paddingLeft: 0,
+    paddingTop: gutter.padding.hpx,
   } as CSSProperties,
 }
 
@@ -134,7 +135,7 @@ export const ConnectForm = (props:TConnectForm) => {
     <>
       <Box
         sx={styles.container}
-        className='connect-form-container'
+        className='gb-connect-form-container'
       >
         <FormMessage
           error={reposError || formError}

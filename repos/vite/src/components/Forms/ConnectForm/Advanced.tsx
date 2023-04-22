@@ -1,7 +1,7 @@
 import type { TOnAutoChange } from '@gobletqa/components'
 import type { TBuiltRepos, TRepoValueCB, TRepoInputError, TBuiltRepo } from '@types'
 
-import { colors } from '@gobletqa/components'
+import { colors, gutter } from '@gobletqa/components'
 import { RepoAdvanced } from './RepoAdvanced'
 import { BranchConnect } from './BranchConnect'
 import { Container, Dropdown } from './Connect.styled'
@@ -27,8 +27,9 @@ export type TAdvanced = {
 }
 
 const styles = {
-  container: {
-    marginTop: `-10px`,
+  container: {},
+  bodySx:{
+    marginTop: gutter.margin.px
   },
   header: {
     opacity: 0.7,
@@ -57,10 +58,10 @@ export const Advanced = (props:TAdvanced) => {
       className='gb-advanced-connect-container'
     >
       <Dropdown
-        expanded={false}
         disabled={disabled}
         transformIconOff={0}
         transformIconOn={180}
+        bodySx={styles.bodySx}
         headerText={`Advanced`}
         headerSx={styles.header}
         expandIconSx={styles.expand}

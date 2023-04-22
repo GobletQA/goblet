@@ -8,7 +8,7 @@ import { useEditor } from '@GBR/contexts'
 import { SectionActions } from './SectionActions'
 import { EmptyFeatureUUID } from '@GBR/constants'
 import { ESectionExt, ESectionType } from '@GBR/types'
-import { wordCaps, cls, isStr } from '@keg-hub/jsutils'
+import { wordCaps, cls, isStr, exists } from '@keg-hub/jsutils'
 import { SectionDragHandle } from './SectionDragHandle'
 import {
   SectionFooter,
@@ -120,9 +120,9 @@ export const Section = (props:TSection) => {
                 noToggle={noToggle}
                 headerSx={headerSx}
                 expanded={isExpanded}
-                showExpandIcon={showExpandIcon}
                 headerContentSx={headerContentSx}
                 id={`${parent.uuid}-${id || uuid}`}
+                showExpandIcon={exists(showExpandIcon) ? showExpandIcon : false}
                 actions={actions && (
                   <SectionActions
                     id={id}

@@ -4,21 +4,21 @@ import { StateAction } from './StateAction'
 import { RecordAction } from './RecordAction'
 import { EmptyAction } from './EmptyAction'
 
-const centerActions = [
+const leftActions = [
   PlayAction,
   RecordAction,
 ] as TActionGroupActions
 
-centerActions.name = `browser-center-actions-group`
+leftActions.name = `browser-left-actions-group`
 
-const rightActions = [
+const centerActions = [
   EmptyAction,
 ] as TActionGroupActions
 
-rightActions.name = `browser-right-actions-group`
+centerActions.name = `browser-center-actions-group`
 
 export const BrowserActions:(TBrowserAction|TActionGroupActions)[] = [
-  StateAction,
+  leftActions,
   centerActions,
-  rightActions
+  StateAction,
 ]
