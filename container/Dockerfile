@@ -1,7 +1,9 @@
 ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.32.0-focal
 
 FROM $GB_IMAGE_FROM as goblet-pnpm
-RUN npm i -g pnpm
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="${PATH}:${PNPM_HOME}"
+RUN npm install --global pnpm
 
 # ---- Prune Stage ---- #
 FROM goblet-pnpm as goblet-pruner
@@ -22,9 +24,10 @@ RUN <<EOF
   rm -rf ./**/node_modules
   cp /goblet/app/.nvmrc /goblet/app/out/json/.nvmrc
   cp /goblet/app/.npmrc /goblet/app/out/json/.npmrc
-  cp /goblet/app/pnpm-lock.yaml /goblet/app/out/json/pnpm-lock.yaml
   cp /goblet/app/turbo.json /goblet/app/out/json/turbo.json
   cp /goblet/app/package.json /goblet/app/out/json/package.json
+  cp /goblet/app/pnpm-lock.yaml /goblet/app/out/json/pnpm-lock.yaml
+  cp /goblet/app/pnpm-workspace.yaml /goblet/app/out/json/pnpm-workspace.yaml
 EOF
 # ---- End Stage ---- #
 
@@ -34,7 +37,7 @@ WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 RUN <<EOF
   set -eux;
-  pnpm global add dot-json turbo
+  pnpm add --global dot-json turbo
   pnpm json:rm
   pnpm json:repo-rm
   pnpm config set network-timeout 600000

@@ -8,7 +8,7 @@ set -Eeo pipefail
 # Used for running goblet in a single docker container
 goblet_run_pm2(){
   # Ensure PM2 is installed
-  pnpm global add pm2
+  pnpm add --global add pm2
   pm2 install pm2-logrotate
   pm2 set pm2-logrotate:retain '7'
   pm2 set pm2-logrotate:rotateInterval '0 0 * * 1'
