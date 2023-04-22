@@ -1,4 +1,4 @@
-import type { CSSProperties, ComponentProps } from 'react'
+import type { CSSProperties, ComponentProps, RefObject } from 'react'
 import type { TInputDecor } from '@GBC/types'
 import {
   InputText,
@@ -10,7 +10,7 @@ import { InputLabel } from './InputLabel'
 import { cls, emptyObj } from '@keg-hub/jsutils'
 import { useInputCallbacks } from '@GBC/hooks/form/useInputCallbacks'
 
-export type TInput = Omit<ComponentProps<typeof InputText>, `error`> & {
+export type TInput = Omit<ComponentProps<typeof InputText>, `error`|`inputRef`> & {
   id?: string
   name?: string
   error?:string
@@ -27,6 +27,7 @@ export type TInput = Omit<ComponentProps<typeof InputText>, `error`> & {
   labelWrapSx?: CSSProperties
   value?:string|boolean|number
   variant?:`outlined`|`filled`|`standard`
+  inputRef:RefObject<HTMLInputElement | HTMLTextAreaElement | undefined>
 }
 
 export const Input = (props:TInput) => {
@@ -55,6 +56,7 @@ export const Input = (props:TInput) => {
     fullWidth=true,
     onBlur:onBlurIn,
     onFocus:onFocusIn,
+    inputRef:inputRefIn,
     onChange:onChangeIn,
     onKeyDown:onKeyDownIn,
     decor=emptyObj as TInputDecor,
@@ -73,6 +75,7 @@ export const Input = (props:TInput) => {
     onBlur: onBlurIn,
     onFocus: onFocusIn,
     onChange: onChangeIn,
+    inputRef: inputRefIn,
     onKeyDown: onKeyDownIn,
     value: props.value || ``,
   })

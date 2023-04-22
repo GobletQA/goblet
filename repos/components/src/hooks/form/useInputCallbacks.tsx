@@ -12,14 +12,14 @@ export type THInputCallbacks = {
   required?:boolean
   value:TInputValue
   multiple?:boolean
-  controlled?:boolean
-  onChange?:TChangeCB
   onBlur?:TChangeCB
   onFocus?:TChangeCB
   autoFocus?:boolean
+  onChange?:TChangeCB
+  controlled?:boolean
   onKeyDown?:TChangeCB
-  setValue?:(value?:TInputValue) => any
   inputRef?: RefObject<TInputType>
+  setValue?:(value?:TInputValue) => any
 }
 
 export const useInputCallbacks = (props:THInputCallbacks) => {
@@ -42,28 +42,38 @@ export const useInputCallbacks = (props:THInputCallbacks) => {
   const onChangeIn = useInline(props.onChange)
   const onKeyDownIn = useInline(props.onKeyDown)
 
-  const onFocus = useCallback((evt:TInputEvt) => {
+  const onFocus = useCallback((evt:TInputEvt, forceFocus?:boolean) => {
     if(!inputRef.current) return
 
-    if(autoFocus){
-      inputRef.current?.focus?.()
-      inputRef.current?.select?.()
-    }
+    /**
+     * If the input was told to focus, but it's also scheduled to be removed
+     * Then a maximum call stack error will throw
+     * To resolve this, the focus / select method calls are wrapped in a timeout
+     * Which allow the input to be removed first if needed
+     */
+    autoFocus || forceFocus
+      && setTimeout(() => {
+        inputRef.current?.focus?.()
+        inputRef.current?.select?.()
+      }, 0)
 
     onFocusIn?.(evt)
+
   }, [
     autoFocus,
     onFocusIn
-  ]) 
+  ])
 
   const onBlur = useCallback((evt:TInputEvt) => {
 
     const target = evt?.target as TInputType
     const val = inputRef?.current?.value || target?.value
-    error && setError(``)
 
-    if(required && !val)
+    if(required && !val?.trim()){
       setError(`A value is required for this field`)
+      onFocus(evt, true)
+    }
+    else error && setError(``)
 
     if(!onBlurIn) return
 
@@ -73,6 +83,7 @@ export const useInputCallbacks = (props:THInputCallbacks) => {
     error,
     value,
     required,
+    onFocus,
     setValue,
     onBlurIn,
   ])
@@ -128,7 +139,6 @@ export const useInputCallbacks = (props:THInputCallbacks) => {
       && (inputRef.current.value = props.value as any)
 
   }, [props.value, controlled])
-
 
   return {
     error,

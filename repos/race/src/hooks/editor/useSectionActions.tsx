@@ -129,7 +129,7 @@ export const useSectionActions = (props:THSectionActions) => {
       ? actions.concat([{
           type,
           dividerTop: true,
-          label: `Edit Description`,
+          label: `Edit Title`,
           onClick: toggleEditTitle,
           key: `gb-${type}-edit-title-action`,
           Icon: editingTitle ? PencilMinusIcon : PencilAddIcon

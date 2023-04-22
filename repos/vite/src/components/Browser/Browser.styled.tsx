@@ -43,7 +43,7 @@ export const BrowserInput = styled('input')(({ theme }) => `
   height: ${dims.browser.url.hpx};
   color: ${getColor(colors.black07, colors.white, theme)};
   background-color: ${getColor(colors.white, colors.black12, theme)};
-  outline: 1px solid ${colors.gray00};
+  outline: 1px solid ${getColor(colors.gray00, colors.black11)};
 
   &:focus {
     outline: 2px solid ${colors.royalPurple};

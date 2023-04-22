@@ -243,7 +243,7 @@ export const lightTheme = {
     [`list.highlightForeground`]: colors.purple10,
     [`list.warningForeground`]: colors.yellow10,
 
-    [`list.deemphasizedForeground`]: colors.gray07,
+    [`list.deemphasizedForeground`]: colors.gray04,
     [`list.errorForeground`]: colors.red10,
     [`list.filterMatchBackground`]: `${colors.purple13}66`,
     [`list.filterMatchBorder`]: `${colors.purple12}66`,

@@ -5,7 +5,8 @@ import Box from '@mui/material/Box'
 import { useRef, useEffect } from 'react'
 import { ESectionType } from '@GBR/types'
 import { capitalize } from '@keg-hub/jsutils'
-import { InlineInput } from '@gobletqa/components'
+import { stopEvent, useInline, Input, InlineInput } from '@gobletqa/components'
+
 
 export type TTitle = {
   id?:string
@@ -54,19 +55,20 @@ export const Title = (props:TTitle) => {
       minHeight={`40px`}
       className={`gb-${type}-title gb-${type}-input-container`}
     >
-      <InlineInput
+      <Input
         inputSx={sx}
         value={value}
-        required={true}
         onBlur={onBlur}
-        multiline={true}
-        variant={variant}
+        required={true}
+        labelSide={true}
+        multiline={false}
         inputRef={inputRef}
         onChange={onChange}
         helperText={helperText}
         label={label || `Title`}
         className={`gb-${type}-title`}
         name={name || `${type}-title`}
+        variant={variant || 'standard'}
         id={`${uuid || (type + '-' + name)}-title`}
         placeholder={`${capitalize(type)} ${(label || 'title or name').toLowerCase()} ...`}
       />

@@ -106,7 +106,7 @@ export const FeatureActionBtn = styled(Button)`
 
 export const HeaderText = styled(H3)`
   flex-grow: 1;
-  font-size: 16px;
+  font-size: 15px;
   padding-left: 20px;
   color: var(--goblet-editor-foreground);
 `

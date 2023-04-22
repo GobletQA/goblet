@@ -9,6 +9,7 @@ import { useInline } from '@gobletqa/components'
 export type THEditSectionTitle = {
   title:string
   key: EGherkinKeys
+  required?:boolean
   initialEdit?:boolean
   callback: (update:string) => void
 }
@@ -18,6 +19,7 @@ export const useEditSectionTitle = (props:THEditSectionTitle) => {
     key,
     title,
     callback,
+    required=true,
     initialEdit=false,
   } =  props
 
@@ -33,9 +35,12 @@ export const useEditSectionTitle = (props:THEditSectionTitle) => {
     evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     value?:TInputValue
   ) => {
-    cb(`${value || evt.target.value}`.trim())
+    const text = `${value || evt.target.value}`.trim()
+    if(!text && required) return
+
+    cb?.(text)
     setEditingTitle(false)
-  }, [key, cb])
+  }, [key, required, cb])
 
   const {
     isNamed,

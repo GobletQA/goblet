@@ -61,7 +61,7 @@ export const Meta = (props:TMeta) => {
         uuid={parent.uuid}
         value={parent.feature}
         type={ESectionType.feature}
-        onChange={onEditFeatureTitle}
+        onBlur={onEditFeatureTitle}
       />
       <Tags
         parent={parent}

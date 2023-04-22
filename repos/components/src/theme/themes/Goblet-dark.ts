@@ -220,7 +220,7 @@ export const darkTheme = {
 
     [`tab.border`]: colors.purple23,
     [`tab.activeBorder`]: colors.purple03,
-    [`tab.activeBackground`]: colors.purple23,
+    [`tab.activeBackground`]: colors.black11,
     [`tab.activeForeground`]: colors.purple00,
     [`tab.inactiveBackground`]: colors.black10,
     [`tab.inactiveForeground`]: colors.gray06,
@@ -229,7 +229,7 @@ export const darkTheme = {
     [`tab.unfocusedInactiveForeground`]: colors.purple02,
 
     // [`editorGroup.background`]: colors.black09,
-    [`editorGroupHeader.tabsBorder`]: colors.black10,
+    [`editorGroupHeader.tabsBorder`]: colors.black12,
     [`editorGroupHeader.tabsBackground`]: colors.black09,
     [`editorGroupHeader.noTabsBackground`]: colors.black09,
 

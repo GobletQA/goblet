@@ -15,7 +15,8 @@ const styles = {
     marginTop: `0px`,
     flexDirection: `column`,
     marginBottom: gutter.margin.px,
-    padding: `0px ${gutter.padding.hpx}`,
+    padding: `${gutter.padding.px}`,
+    paddingBottom: `0px`
   },
 }
 

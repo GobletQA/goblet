@@ -43,15 +43,21 @@ export const EditorActions = <
     // Actions currently closed - Switch the panel from closed to open
     if(open !== true){
       actionsEl.style.maxHeight = `${lastHeightRef.current || '100vh'}px`
+      actionsEl.style.opacity = `1`
       // IMPORTANT - timeout delay should match the transition time see ./Actions.css
-      setTimeout(() => actionsEl.style.maxHeight = ``, 300)
+      setTimeout(() => {
+        actionsEl.style.maxHeight = ``
+      }, 300)
     }
 
     // Actions currently open - Switch the panel from open to closed
     else {
       lastHeightRef.current = actionsEl.offsetHeight
       actionsEl.style.maxHeight = `${lastHeightRef.current}px`
-      setTimeout(() => actionsEl.style.maxHeight = `0px`, 0)
+      setTimeout(() => {
+        actionsEl.style.maxHeight = `0px`,
+        actionsEl.style.opacity = `0`
+      }, 0)
     }
 
     setOpen(!open)
@@ -84,7 +90,7 @@ export const EditorActions = <
       <ActionsList
         style={style}
         ref={actionsRef}
-        className='goblet-editor-actions-list'
+        className={cls('goblet-editor-actions-list', { open, closed: !open })}
       >
         <ActionsBack />
         {actions.map((action => {

@@ -5,6 +5,7 @@ import type { TChangeCB } from '@gobletqa/components'
 
 import { useCallback } from 'react'
 import { emptyObj } from '@keg-hub/jsutils'
+import { EmptyFeatureUUID } from '@GBR/constants'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 
 export type THEditFeatureTitle = {
@@ -12,10 +13,16 @@ export type THEditFeatureTitle = {
 }
 
 export const useEditFeatureTitle = ({ parent }:THEditFeatureTitle) => {
-  const { feature } = (parent || emptyObj)
-  
+  const { feature, uuid } = (parent || emptyObj)
+
   return useCallback(((evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, value:string) => {
-    updateFeature({ ...parent, feature: value || evt.target.value }, { create: true })
-  }) as TChangeCB, [parent, feature])
-  
+    const text = value || evt.target.value
+    
+    const opts = uuid === EmptyFeatureUUID
+      ? { create: true }
+      : emptyObj
+
+    text && updateFeature({ ...parent, feature: text }, opts)
+  }) as TChangeCB, [parent, feature, uuid])
+
 }

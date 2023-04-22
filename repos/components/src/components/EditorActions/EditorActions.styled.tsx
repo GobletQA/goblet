@@ -22,13 +22,13 @@ export const ActionsToggle = styled(Box)(({ theme }) => `
   flex-direction: column;
   justify-content: center;
   width: ${dims.editor.tabs.px};
-  height: ${dims.editor.tabs.px};
+  height: ${dims.editor.tabs.height - 1}px;
   color: var(--goblet-tab-inactiveForeground);
   background-color: var(--goblet-editorGroupHeader-tabsBackground);
   transition: color 300ms ease, background-color 300ms ease;
 
   box-sizing: border-box;
-  border-left: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+  // border-left: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
   // border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
 
   &:hover {
@@ -55,20 +55,26 @@ export const ActionsToggle = styled(Box)(({ theme }) => `
 export const ActionsToggleWrap = styled(Box)``
 
 export const ActionsList = styled(Box)`
+  opacity: 0;
   height: auto;
   overflow: hidden;
   position: relative;
-  transition: max-height 300ms ease;
+  transition: max-height 300ms ease, opacity 500ms ease;
+  
+  &.open {
+    overflow: visible;
+  }
+  
 `
 export const ActionsBack = styled(Box)`
-  z-index: 0;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
-  opacity: 0.75;
+  bottom: 0;
+  z-index: 0;
   position: absolute;
-  background-color: var(--goblet-tab-inactiveBackground);
+  box-shadow: -3px 3px 5px -5px rgba(0,0,0,0.2);
+  background-color: var(--goblet-editorGroupHeader-tabsBackground);
 `
 
 export const ActionItem = styled(Box)(({ theme }) => `
@@ -102,7 +108,7 @@ export const ActionItem = styled(Box)(({ theme }) => `
     transition: color 300ms ease, background-color 300ms ease;
     
     &.Mui-disabled {
-      color: var(--goblet-statusBarItem-activeBackground);
+      color: var(--goblet-list-deemphasizedForeground);
     }
     
     & svg {
