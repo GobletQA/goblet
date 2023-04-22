@@ -5,13 +5,27 @@ import type {
   TDefinitionsAstTypeMap,
   TDefinitionFileModelList,
 } from '@types'
+import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
+
+import { createReducer, createAction } from '@reduxjs/toolkit'
 
 export type TDefinitionsState = {
   activeDefinition?: TDefinitionAst
   definitions: TDefinitionFileModelList
   definitionTypes: TDefinitionsAstTypeMap
 }
+
 export const definitionsState = {} as TDefinitionsState
+
+const resetDefs = createAction<TDefinitionsState>(`resetDefs`)
+const setActiveDef = createAction<TDefinitionAst>(`setActiveDef`)
+const clearDefs = createAction<TDefinitionFileModelList>(`clearDefs`)
+const setDef = createAction<TDefinitionFileModel>(`setDef`)
+const setDefs = createAction<TDefinitionFileModelList>(`setDefs`)
+const upsertDefs = createAction<TDefinitionFileModelList>(`upsertDefs`)
+const clearDefTypes = createAction<TDefinitionsAstTypeMap>(`clearDefTypes`)
+const setDefTypes = createAction<TDefinitionsAstTypeMap>(`setDefTypes`)
+const upsertDefTypes = createAction<TDefinitionsAstTypeMap>(`upsertDefTypes`)
 
 export const definitionsActions = {
   resetDefs: (state:TDefinitionsState, action:TDspAction<TDefinitionsState>) => (definitionsState),
@@ -100,3 +114,17 @@ export const definitionsActions = {
   },
 }
 
+export const definitionsReducer = createReducer(
+  definitionsState,
+  (builder:ActionReducerMapBuilder<TDefinitionsState>) => {
+    builder.addCase(resetDefs, definitionsActions.resetDefs)
+    builder.addCase(setActiveDef, definitionsActions.setActiveDef)
+    builder.addCase(clearDefs, definitionsActions.clearDefs)
+    builder.addCase(setDef, definitionsActions.setDef)
+    builder.addCase(setDefs, definitionsActions.setDefs)
+    builder.addCase(upsertDefs, definitionsActions.upsertDefs)
+    builder.addCase(clearDefTypes, definitionsActions.clearDefTypes)
+    builder.addCase(setDefTypes, definitionsActions.setDefTypes)
+    builder.addCase(upsertDefTypes, definitionsActions.upsertDefTypes)
+  }
+)

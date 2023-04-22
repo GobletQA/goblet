@@ -105,10 +105,11 @@ export const loadConfig = () => {
 
   return {
     aliases,
+    environment: process.env.NODE_ENV,
+    port: parseInt(GB_FE_PORT || '19006', 10),
     envs: {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       ...envs
     },
-    port: parseInt(GB_FE_PORT || '19006', 10),
   }
 }

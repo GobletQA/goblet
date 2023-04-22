@@ -1,6 +1,8 @@
 import type { TFileTree, TDspAction, TFileModel } from '@types'
+import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
 
 import { exists, deepMerge } from '@keg-hub/jsutils'
+import { createReducer, createAction } from '@reduxjs/toolkit'
 
 type TRenameFile = {
   oldLoc:string,
@@ -16,6 +18,15 @@ export type TFilesState = {
 export const filesState = {
   files: {},
 } as TFilesState
+
+const clearFiles = createAction<TFilesState>(`clearFiles`)
+const setFile = createAction<TFileModel>(`setFile`)
+const removeFile = createAction<string>(`removeFile`)
+const upsertFile = createAction<TFileModel>(`upsertFile`)
+const renameFile = createAction<TRenameFile>(`renameFile`)
+const setFiles = createAction<TFileTree>(`setFiles`)
+const addFiles = createAction<TFileTree>(`addFiles`)
+const upsertFiles = createAction<TFileTree>(`upsertFiles`)
 
 export const filesActions = {
   clearFiles: (state:TFilesState, action:TDspAction<TFilesState>) => (filesState),
@@ -99,3 +110,17 @@ export const filesActions = {
     }
   },
 }
+
+export const filesReducer = createReducer(
+  filesState,
+  (builder:ActionReducerMapBuilder<TFilesState>) => {
+    builder.addCase(clearFiles, filesActions.clearFiles)
+    builder.addCase(setFile, filesActions.setFile)
+    builder.addCase(removeFile, filesActions.removeFile)
+    builder.addCase(upsertFile, filesActions.upsertFile)
+    builder.addCase(renameFile, filesActions.renameFile)
+    builder.addCase(setFiles, filesActions.setFiles)
+    builder.addCase(addFiles, filesActions.addFiles)
+    builder.addCase(upsertFiles, filesActions.upsertFiles)
+  }
+)

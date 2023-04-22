@@ -2,35 +2,40 @@ import type { TState } from '@types'
 
 import { combineReducers } from 'redux'
 import { createReducer } from '@reduxjs/toolkit'
-import { appState, appActions } from './app'
-import { userState, userActions } from './user'
-import { repoState, repoActions } from './repo'
-import { modalState, modalActions } from './modal'
-import { reposState, reposActions } from './repos'
-import { filesState, filesActions } from './files'
-import { settingsState, settingsActions } from './settings'
-import { containerState, containerActions } from './container'
-import { definitionsState, definitionsActions } from './definitions'
+
+import { appState, appReducer } from './app'
+import { userState, userReducer } from './user'
+import { repoState, repoReducer } from './repo'
+import { modalState, modalReducer } from './modal'
+import { reposState, reposReducer } from './repos'
+import { filesState, filesReducer } from './files'
+import { settingsState, settingsReducer } from './settings'
+import { containerState, containerReducer } from './container'
+import { screencastState, screencastReducer } from './screencast'
+import { definitionsState, definitionsReducer } from './definitions'
 
 export const preloadedState = {
   app: appState,
-  container: containerState,
-  definitions: definitionsState,
-  files: filesState,
-  modal: modalState,
   repo: repoState,
   user: userState,
+  files: filesState,
+  modal: modalState,
+  repos: reposState,
   settings: settingsState,
+  container: containerState,
+  screencast: screencastState,
+  definitions: definitionsState,
 }
 
 export const reducer = combineReducers<TState>({
-  app: createReducer(appState, appActions),
-  container: createReducer(containerState, containerActions),
-  definitions: createReducer(definitionsState, definitionsActions),
-  files: createReducer(filesState, filesActions),
-  modal: createReducer(modalState, modalActions),
-  repo: createReducer(repoState, repoActions),
-  repos: createReducer(reposState, reposActions),
-  settings: createReducer(settingsState, settingsActions),
-  user: createReducer(userState, userActions)
+  app: appReducer,
+  user: userReducer,
+  repo: repoReducer,
+  modal: modalReducer,
+  repos: reposReducer,
+  files: filesReducer,
+  settings: settingsReducer,
+  container: containerReducer,
+  screencast: screencastReducer,
+  definitions: definitionsReducer,
 })

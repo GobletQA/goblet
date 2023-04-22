@@ -6,7 +6,6 @@ import { modalActions } from '@reducers/modal'
 import { reposActions } from '@reducers/repos'
 import { filesActions } from '@reducers/files'
 import { settingsActions } from '@reducers/settings'
-
 import { containerActions } from '@reducers/container'
 import { definitionsActions } from '@reducers/definitions'
 

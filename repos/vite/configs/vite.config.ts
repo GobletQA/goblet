@@ -12,7 +12,7 @@ const rootDir = path.join(__dirname, '..')
 
 export default defineConfig(async () => {
 
-  const { aliases, envs, port } = loadConfig()
+  const { aliases, environment, envs, port } = loadConfig()
 
   return {
     root: rootDir,
@@ -26,7 +26,9 @@ export default defineConfig(async () => {
     },
     optimizeDeps: {
       esbuildOptions: {
-        target: 'esnext'
+        target: `esnext`,
+        jsx: `automatic`,
+        jsxDev: environment !== `production`,
       },
     },
     esbuild: {

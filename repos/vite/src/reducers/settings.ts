@@ -1,3 +1,4 @@
+import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
 import type {
   TDspAction,
   TSetting,
@@ -6,6 +7,7 @@ import type {
   TStorageSetting
 } from '@types'
 
+import { createReducer, createAction } from '@reduxjs/toolkit'
 import settingsJson from './settings.json'
 import { localStorage } from '@services/localStorage'
 import { findSetting } from '@utils/settings/findSetting'
@@ -40,6 +42,14 @@ const updateStorage = (setting:string, settingObj:TSetting) => {
     pickKeys<TStorageSetting>(settingObj, [`value`, `active`, `group`])
   )
 }
+
+const setAllSettings = createAction<TSettingsState>(`setAllSettings`)
+const resetAllSettings = createAction<any>(`resetAllSettings`)
+const mergeAllSettings = createAction<TSettingsState>(`mergeAllSettings`)
+const resetSettingGroup = createAction<string>(`resetSettingGroup`)
+const resetSetting = createAction<TSettingAct>(`resetSetting`)
+const toggleSettingActive = createAction<TSettingAct>(`toggleSettingActive`)
+const updateSetting = createAction<TSettingAct>(`updateSetting`)
 
 export const settingsActions = {
   setAllSettings: (
@@ -118,3 +128,17 @@ export const settingsActions = {
     return state
   },
 }
+
+
+export const settingsReducer = createReducer(
+  settingsState,
+  (builder:ActionReducerMapBuilder<TSettingsState>) => {
+    builder.addCase(setAllSettings, settingsActions.setAllSettings)
+    builder.addCase(resetAllSettings, settingsActions.resetAllSettings)
+    builder.addCase(mergeAllSettings, settingsActions.mergeAllSettings)
+    builder.addCase(resetSettingGroup, settingsActions.resetSettingGroup)
+    builder.addCase(resetSetting, settingsActions.resetSetting)
+    builder.addCase(toggleSettingActive, settingsActions.toggleSettingActive)
+    builder.addCase(updateSetting, settingsActions.updateSetting)
+  }
+)
