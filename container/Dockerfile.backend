@@ -73,19 +73,6 @@ RUN <<EOF
   pnpm json:rm
 
   dot-json package.json devDependencies -d
-  dot-json package.json resolutions.@jest/transform -d
-  dot-json package.json resolutions.@jest/create-cache-key-function -d
-  dot-json package.json resolutions.@keg-hub/args-parse -d
-  dot-json package.json resolutions.@keg-hub/spawn-cmd -d
-  dot-json package.json resolutions.@monaco-editor/react -d
-  dot-json package.json resolutions.expect -d
-  dot-json package.json resolutions.jest -d
-  dot-json package.json resolutions.jest-jasmine2 -d
-  dot-json package.json resolutions.playwright -d
-  dot-json package.json resolutions.nodemon -d
-  dot-json package.json resolutions.typescript -d
-
-  pnpm config set network-timeout 900000
 
 EOF
 
@@ -100,18 +87,18 @@ FROM goblet-setup as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 COPY --from=goblet-pruner /goblet/app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install --production
+RUN pnpm install --fix-lockfile --shamefully-hoist
 # # ---- End Stage ---- #
 
 # # ---- Build Stage ---- #
 FROM goblet-setup as goblet-builder
 WORKDIR /goblet/app
-COPY --from=goblet-pruner /goblet/app/out/full/ .
-COPY --from=goblet-installer /goblet/app/ .
+COPY --from=goblet-pruner /goblet/app/out/full/ /goblet/app/
+COPY --from=goblet-installer /goblet/app/ /goblet/app/
 WORKDIR /goblet/app/repos/backend
 RUN pnpm build:goblet && \
     pnpm build:docker && \
-    pnpm install --production
+    pnpm install --fix-lockfile --shamefully-hoist
 
 WORKDIR /goblet/app
 RUN <<EOF

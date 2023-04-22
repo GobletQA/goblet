@@ -79,7 +79,7 @@ EOF
 FROM goblet-turbo as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
-RUN pnpm install
+RUN pnpm install --fix-lockfile --shamefully-hoist
 # ---- End Stage ---- #
 
 # ---- Build Stage ---- #
@@ -89,7 +89,7 @@ COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app/repos/screencast
 RUN pnpm build:docker && \
-    pnpm install --production
+    pnpm install --fix-lockfile --shamefully-hoist
 # ---- End Stage ---- #
 
 # # ---- Run Stage ---- #

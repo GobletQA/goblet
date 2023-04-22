@@ -1,3 +1,5 @@
+const { register } = require('esbuild-register/dist/node')
+register()
 
 const fs = require('fs')
 const path = require('path')

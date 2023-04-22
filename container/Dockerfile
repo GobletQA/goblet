@@ -41,7 +41,7 @@ RUN <<EOF
   pnpm json:rm
   pnpm json:repo-rm
   pnpm config set network-timeout 600000
-  pnpm install
+  pnpm install --fix-lockfile --shamefully-hoist
 EOF
 # ---- End Stage ---- #
 

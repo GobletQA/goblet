@@ -48,7 +48,7 @@ RUN <<EOF
 EOF
 
 WORKDIR /github/app
-RUN pnpm install
+RUN pnpm install --fix-lockfile --shamefully-hoist
 
 FROM goblet-pnpm as goblet-runner
 ARG GB_FE_PORT=19006

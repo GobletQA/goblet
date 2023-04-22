@@ -30,7 +30,7 @@ FROM goblet-pnpm as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 COPY --from=goblet-pruner /goblet/app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install --ignore-optional
+RUN pnpm install --ignore-optional --no-frozen-lockfile --shamefully-hoist
 # ---- End Stage ---- #
 
 # ---- Build App Stage ---- #

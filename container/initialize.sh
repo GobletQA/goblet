@@ -26,12 +26,12 @@ goblet_run_dev_install(){
   if [ "$GB_NM_INSTALL" == "all" ]; then
     echo "Running pnpm install for all repos..."
     cd /goblet/app
-    pnpm install
+    pnpm install --fix-lockfile --shamefully-hoist
 
   elif [ "$GB_NM_INSTALL" == "$GB_SUB_REPO" ]; then
     echo "Running pnpm install for $GB_SUB_REPO..."
     cd /goblet/app/repos/$GB_SUB_REPO
-    pnpm install
+    pnpm install --fix-lockfile --shamefully-hoist
   fi
 }
 

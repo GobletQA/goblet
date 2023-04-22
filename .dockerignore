@@ -58,3 +58,4 @@ repos/resizer
 repos/race
 repos/traceViewer
 repos/vite
+repos/**/node_modules
