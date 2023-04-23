@@ -1,6 +1,7 @@
 import { CombinedState } from 'redux'
 import { TAppState } from '@reducers/app'
 import { TRepoState } from '@reducers/repo'
+import { TPageState } from '@reducers/page'
 import { TFilesState } from '@reducers/files'
 import { TReposState } from '@reducers/repos'
 import { TModalState } from '@reducers/modal'
@@ -18,6 +19,7 @@ export type {
   TModalState,
   TRepoState,
   TReposState,
+  TPageState,
   TSettingsState,
   TScreencastState,
   TUser,
@@ -27,6 +29,7 @@ export type {
 
 export type TCombinedState = {
   app: TAppState
+  page: TPageState
   container: TContainerState
   definitions: TDefinitionsState
   files: TFilesState

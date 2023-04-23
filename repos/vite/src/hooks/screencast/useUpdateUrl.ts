@@ -1,13 +1,10 @@
-import type { TBrowserNavEvt } from '@types'
-import type RFB from '@novnc/novnc/core/rfb'
 import type { RefObject } from 'react'
+import type { TBrowserNavEvt } from '@types'
 
 import { useRef } from 'react'
 import { BrowserNavEvt } from '@constants'
-import { useInline } from '@hooks/useInline'
 import { pageService } from '@services/pageService'
-import { useEffectOnce } from '@hooks/useEffectOnce'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { useInline, useOnEvent } from '@gobletqa/components'
 
 export type TUpdateUrl = (
   newUrl: string | undefined,
@@ -55,10 +52,7 @@ export const useUpdateUrl = (props:THUpdateUrl) => {
 
   })
 
-  useEffectOnce(() => {
-    const off = EE.on<TBrowserNavEvt>(BrowserNavEvt, data => updateUrl(data?.url))
-    return () => { off?.() }
-  })
+  useOnEvent<TBrowserNavEvt>(BrowserNavEvt, data => updateUrl(data?.url))
 
   return {
     updateUrl,

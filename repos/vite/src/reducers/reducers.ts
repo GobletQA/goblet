@@ -6,6 +6,7 @@ import { createReducer } from '@reduxjs/toolkit'
 import { appState, appReducer } from './app'
 import { userState, userReducer } from './user'
 import { repoState, repoReducer } from './repo'
+import { pageState, pageReducer } from './page'
 import { modalState, modalReducer } from './modal'
 import { reposState, reposReducer } from './repos'
 import { filesState, filesReducer } from './files'
@@ -18,6 +19,7 @@ export const preloadedState = {
   app: appState,
   repo: repoState,
   user: userState,
+  page: pageState,
   files: filesState,
   modal: modalState,
   repos: reposState,
@@ -31,6 +33,7 @@ export const reducer = combineReducers<TState>({
   app: appReducer,
   user: userReducer,
   repo: repoReducer,
+  page: pageReducer,
   modal: modalReducer,
   repos: reposReducer,
   files: filesReducer,

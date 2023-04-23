@@ -1,12 +1,11 @@
 import type { Socket } from 'socket.io-client'
-import type { TSockCmds, TSocketService, TSockCmd } from '@types'
+import type { TSockCmds, TSocketService } from '@types'
 
 import io from 'socket.io-client'
 import { events } from './events'
 import { TagPrefix } from '@constants'
 import * as EventTypes from '@constants/websocket'
 import {
-  getCommand,
   callAction,
   getTransports,
   buildEndpoint,

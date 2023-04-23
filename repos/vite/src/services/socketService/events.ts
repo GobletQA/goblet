@@ -6,6 +6,7 @@ import { camelCase, checkCall } from '@keg-hub/jsutils'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { WSAutomateEvent, BrowserNavEvt } from '@constants'
 import { playEvent } from '@actions/socket/local/playEvent'
+import { setPageAst } from '@actions/socket/local/setPageAst'
 import { recordAction } from '@actions/socket/local/recordAction'
 import { setBrowserRecording } from '@actions/socket/local/setBrowserRecording'
 
@@ -56,7 +57,9 @@ export const events = {
     console.log(message)
   },
   pwUrlChange: function(message:TSocketEvt){
-    EE.emit(BrowserNavEvt, message.data)
+    const { url, ast } = message.data
+    EE.emit(BrowserNavEvt, { url })
+    setPageAst(ast)
   },
   pwAutomateEvent: function(message:TSocketEvt){
     EE.emit(WSAutomateEvent, message.data)

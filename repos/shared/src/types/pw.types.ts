@@ -1,9 +1,13 @@
-import type { TFileModel } from './models.types'
-import type { EBrowserType } from './browser.types'
-import type { TRepo } from './repo.types'
-import type { TAutomateEvent } from './pwAutomate.types'
+import type { Express } from 'express'
+
 // Exported from screencast/src/types
 import type { Automate } from '@gobletqa/screencast'
+
+import type { TRepo } from './repo.types'
+import type { TFileModel } from './models.types'
+import type { EBrowserType } from './browser.types'
+import type { TSocketEvtCBProps } from './socket.types'
+import type { TAutomateEvent } from './pwAutomate.types'
 import type {
   Page,
   Locator,
@@ -210,9 +214,10 @@ export enum EBrowserEvent {
 }
 
 export type TBrowserEventCB = (...args:any[]) => void
+export type TBrowserEventArgs = TSocketEvtCBProps & { pwComponents?: TPWComponents }
 
 export type TBrowserEvents = {
-  [key in EBrowserEvent]?: TBrowserEventCB[]
+  [key in EBrowserEvent]?: TBrowserEventCB|TBrowserEventCB[]
 }
 
 export type TOnBrowserEvents = {

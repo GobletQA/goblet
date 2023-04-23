@@ -1,4 +1,3 @@
 export * from './setSCStatus'
-export * from './setBrowserStatus.rts'
+export * from './setBrowserStatus'
 export * from './setBrowserOptions'
-

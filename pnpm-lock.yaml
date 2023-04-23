@@ -499,6 +499,9 @@ importers:
       '@ltipton/parkin':
         specifier: 3.0.0-beta-8
         version: 3.0.0-beta-8
+      '@ltipton/symplasm':
+        specifier: 0.0.1
+        version: 0.0.1
       cross-spawn:
         specifier: 7.0.3
         version: 7.0.3
@@ -730,6 +733,9 @@ importers:
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
+      '@ltipton/symplasm':
+        specifier: 0.0.1
+        version: 0.0.1
       '@monaco-editor/react':
         specifier: 4.3.1
         version: 4.3.1(monaco-editor@0.34.0)(react-dom@18.2.0)(react@18.2.0)
@@ -3851,6 +3857,11 @@ packages:
       '@keg-hub/cli-utils': 0.8.0-alpha
       esbuild: 0.17.17
       esbuild-register: 3.4.2(esbuild@0.17.17)
+    dev: false
+
+  /@ltipton/symplasm@0.0.1:
+    resolution: {integrity: sha512-yds12U6+3gRvOGsH2YFK5fJ4Y0+xk330rg4ym4OO3G+WIGfPXVag2NdrU0FgxHnn0QKWE2P6Zwc4SOMmr7FxnA==}
+    engines: {node: '>= 16.0.0'}
     dev: false
 
   /@monaco-editor/loader@1.3.3(monaco-editor@0.34.0):

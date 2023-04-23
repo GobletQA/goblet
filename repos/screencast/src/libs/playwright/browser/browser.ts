@@ -152,7 +152,6 @@ const createBrowser = async (
  * Only used by testUtils
  *
  * @deprecated - Will be removed once testUtils is updated, use getBrowser instead
- * @DEPRECATED - Will be removed once testUtils is updated, use getBrowser instead
  *
  * @function
  */

@@ -1,3 +1,5 @@
+import type { TSymAST } from './shared.types'
+
 
 export type TGlobalCopyEvent = {
   text: string
@@ -5,4 +7,5 @@ export type TGlobalCopyEvent = {
 
 export type TBrowserNavEvt = {
   url:string
+  ast?:TSymAST[]
 }
