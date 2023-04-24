@@ -25,6 +25,7 @@ export type TEditorOpenFiles = TFileMeta[]
 
 
 export type TAllowedFileTypes = {
+  json: `json`,
   js: `javascript`,
   ts: `typescript`,
   jsx: `javascript`,

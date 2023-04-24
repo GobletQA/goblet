@@ -4,9 +4,9 @@ import type { TUpdateFeature, TAskForFeature } from '@GBR/types'
 import { useEmptyFeature } from './useEmptyFeature'
 import { useFeatureUpdate } from './useFeatureUpdate'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
+import { GetActiveFileEvent, useOnEvent } from '@gobletqa/components'
 import { AskForFeatureEvt, UpdateFeatureContextEvt } from '@GBR/constants'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
-import { GetActiveFileEvent, useOnEvent, useInline } from '@gobletqa/components'
 
 export type THFeatureCallbacks = THFeatureUpdate & {}
 

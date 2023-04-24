@@ -50,8 +50,10 @@ const loadClientWorld = (
   try {
 
     const basePath = getRepoGobletDir(config)
+
     worldJson = loaderSearch({
       basePath,
+      clearCache: true,
       file: `world.json`,
       location: worldPath
     })

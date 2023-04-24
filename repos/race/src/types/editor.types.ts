@@ -1,9 +1,10 @@
+import type { TExpPart } from './expressions.types'
 import type { TRaceContextMenu } from './menu.types'
+import type { TAutoOpt } from '@gobletqa/components'
 import type { TSettingsState } from './settings.types'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
-import type { TWorldConfig, TStepDefsList } from '@ltipton/parkin'
+import type { TStepDef, TWorldConfig, TStepDefsList } from '@ltipton/parkin'
 import type { KeyboardEvent, MutableRefObject, ComponentType } from 'react'
-import type { TRaceFeatureAsts, TRaceFeatures, TRaceFeature } from './features.types'
 import type {
   TTabItem,
   TTabAction,
@@ -11,6 +12,14 @@ import type {
   TSidebarPanel,
   TEditorAction,
 } from '@gobletqa/components'
+
+import type {
+  TRaceStep,
+  TRaceFeature,
+  TRaceFeatures,
+  TRaceStepParent,
+  TRaceFeatureAsts,
+} from './features.types'
 
 import type {
   TStepDefsRef,
@@ -30,6 +39,23 @@ export type TEditorRefs = {
   curValueRef: MutableRefObject<string>
 }
 
+export type TGetExpProps = {
+  def:TStepDef
+  step:TRaceStep
+  expression:TExpPart
+  parent:TRaceStepParent
+}
+export type TGetExpressionCB = (props:TGetExpProps) => TAutoOpt[]|undefined
+
+export type TExpOpts = TAutoOpt[]|TGetExpressionCB
+
+export type TWorldChange = {
+  world:TWorldConfig
+  replace?:boolean
+}
+
+export type TOnWorldChange = (props:TWorldChange) => void
+
 export type TRaceEditorProps = TSettingsState & TEditorShared & {
   world?:TWorldConfig
   steps:TStepDefsList
@@ -37,6 +63,8 @@ export type TRaceEditorProps = TSettingsState & TEditorShared & {
   feature?:TRaceFeature
   themeType?:EThemeMode
   features:TRaceFeatureAsts
+  expressionOptions?:TExpOpts
+  onWorldChange?:TOnWorldChange
   firstFeatureActive?:boolean
   initialFeature?:TRaceFeature
   onFeatureSave?:TOnFeatureCB

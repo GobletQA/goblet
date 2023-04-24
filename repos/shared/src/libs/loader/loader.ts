@@ -23,6 +23,7 @@ type TLoadShared = {
 type TSearchFile = TLoadShared & {
   file:string
   location?:string
+  clearCache?:boolean
 }
 
 
@@ -49,13 +50,24 @@ export const loadFromType = <T extends TMerge>(data:T, key:string=`default`, ...
 /**
  * Builds a require function for loading goblet configs dynamically
  */
-export const buildRequire = <T extends TMerge>(basePath:string, safe:boolean=false) => {
+export const buildRequire = <T extends TMerge>(
+  basePath:string,
+  safe:boolean=false,
+  clearCache:boolean=false
+) => {
   const relativeRequire = createRequire(basePath)
-  return (location:string, inlineSafe:boolean=false) => {
+  return (
+    location:string,
+    inlineSafe:boolean=false,
+    inlineClearCache:boolean=false
+  ) => {
+
     try {
       const fullLoc =  noBasePath.find(start => location.startsWith(start))
         ? location
         : path.join(basePath, location)
+
+      if(clearCache || inlineClearCache) delete require.cache[fullLoc]
 
       return relativeRequire(fullLoc) as T
     }
@@ -156,12 +168,13 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
     safe,
     location,
     basePath,
+    clearCache,
     ...rest
   } = params
 
   let data:T
 
-  const requireFunc = buildRequire<T>(basePath, safe)
+  const requireFunc = buildRequire<T>(basePath, safe, clearCache)
 
   // If a location is passed, try to load it
   if(location) data = requireFunc(location)
@@ -190,7 +203,6 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 
   // Merge all loaded data into a single Object
   return deepMerge<T>(data, ...loadedData)
-
 }
 
 

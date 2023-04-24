@@ -1,4 +1,4 @@
-import type { TOnParkinInit } from '@GBR/types'
+import type { TOnWorldUpdate, TOnParkinInit, TOnWorldChange } from '@GBR/types'
 import type {
   TWorldConfig,
   TRegisterOrAddStep,
@@ -6,10 +6,11 @@ import type {
 
 import { Parkin } from '@ltipton/parkin'
 import { deepMerge, iife } from '@keg-hub/jsutils'
-import { ParkinInitEvt } from '@GBR/constants/events'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
+import { ParkinInitEvt, UpdateWorldEvt } from '@GBR/constants/events'
 import {
   useInline,
+  useOnEvent,
   onEmitEvent,
   MemoChildren,
   useEffectOnce,
@@ -25,13 +26,13 @@ export type TParkinProvider = {
   children:any
   world?:TWorldConfig
   defs?:TRegisterOrAddStep
+  onWorldChange?:TOnWorldChange
 }
 
-export type TUpdateWorld = (updated:TWorldConfig, replace:boolean) => void
 export type TParkinCtx = {
   parkin:Parkin
   world:TWorldConfig
-  updateWorld: TUpdateWorld
+  updateWorld: TOnWorldChange
 }
 
 let __Parkin:Parkin
@@ -46,17 +47,25 @@ export const ParkinContext = createContext<TParkinCtx>({} as TParkinCtx)
 export const useParkin = () => useContext(ParkinContext)
 
 export const ParkinProvider = (props:TParkinProvider) => {
-  const { children, defs } = props
+  const {
+    defs,
+    children,
+    onWorldChange
+  } = props
 
   const [parkin, setParkin] = useState<Parkin>(initParkin(props.world || {} as TWorldConfig, defs))
   const [world, setWorld] = useState<TWorldConfig>(parkin?.world)
   
-  const updateWorld = useInline<TUpdateWorld>((updated:TWorldConfig, replace:boolean) => {
-    ParkinWorker.setWorld(updated, replace)
-
+  const updateWorld = useInline<TOnWorldChange>(({ world:updated, replace}) => {
     parkin.world = replace ? updated : deepMerge(parkin?.world, updated)
+    ParkinWorker.setWorld(parkin.world, false)
+
+    onWorldChange?.({ world: parkin?.world, replace })
+
     setWorld(parkin?.world)
   })
+
+  useOnEvent<TOnWorldUpdate>(UpdateWorldEvt, updateWorld)
 
   useEffectOnce(() => {
     iife(async () => {

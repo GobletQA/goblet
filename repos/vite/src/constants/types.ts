@@ -3,14 +3,15 @@ import { deepFreeze } from '@keg-hub/jsutils'
 export type TFileTypes = Record<string, string>
 
 let FileTypes:Record<string, string> = deepFreeze({
-    FEATURE: 'feature',
-    REPORT: 'report',
-    DEFINITION: 'definition',
-    WAYPOINT: 'waypoint',
-    UNIT: 'unit',
-    SUPPORT: 'support',
-    HTML: 'html',
-    DOCS: 'docs',
+    FEATURE: `feature`,
+    REPORT: `report`,
+    DEFINITION: `definition`,
+    WAYPOINT: `waypoint`,
+    UNIT: `unit`,
+    SUPPORT: `support`,
+    HTML: `html`,
+    DOCS: `docs`,
+    JSON: `json`
 }) as TFileTypes
 
 /**

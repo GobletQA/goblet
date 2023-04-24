@@ -2,6 +2,7 @@ import type { MutableRefObject } from 'react'
 import type { TExpanded } from '@GBR/hooks/editor/useExpanded'
 import type {
   TAudit,
+  TExpOpts,
   TEditorRef,
   TFeatureCB,
   TRaceFeature,
@@ -13,12 +14,12 @@ import type {
   TSetFeatureGroups,
 } from '../types'
 
+import { emptyObj } from '@keg-hub/jsutils'
 import { useFeature } from './FeatureContext'
 import { MemoChildren } from '@gobletqa/components'
 import { useMemo, useContext, createContext } from 'react'
 import { useExpanded } from '@GBR/hooks/editor/useExpanded'
 import { useAudit } from '@gobletqa/race/hooks/editor/useAudit'
-import { emptyObj, emptyArr, exists, ensureArr } from '@keg-hub/jsutils'
 import { useGetEditorContext } from '@GBR/hooks/editor/useGetEditorContext'
 import { useFeatureCallbacks } from '@GBR/hooks/features/useFeatureCallbacks'
 
@@ -26,11 +27,12 @@ export type TOnExpandedCB =  (key:string, value?:boolean) => void
 export type TEditorProvider = {
   children:any
   rootPrefix:string
-  editorRef: TEditorRef
+  editorRef:TEditorRef
   updateEmptyTab:TFeatureCB
-  featuresRef: TFeaturesRef
+  featuresRef:TFeaturesRef
   onFeatureSave:TOnFeatureCB
   onFeatureClose:TOnFeatureCB
+  expressionOptions?:TExpOpts
   onFeatureChange:TOnFeatureCB
   onFeatureActive:TOnFeatureCB
   onFeatureCreate:TOnFeatureCB
@@ -50,6 +52,7 @@ export type TEditorCtx = {
   feature:TRaceFeature
   setFeature:TOnFeatureCB
   collapseAll: () => void
+  expressionOptions?:TExpOpts
   updateExpanded:TOnExpandedCB
   menuContext?:TRaceContextMenu
   updateFeature:TUpdateFeatureCB
@@ -77,6 +80,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureActive,
     setFeatureGroups,
     onFeatureInactive,
+    expressionOptions,
   } = props
 
 
@@ -132,6 +136,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       updateFeature,
       updateExpanded,
       collapseAllExcept,
+      expressionOptions,
       feature: (feature || emptyObj) as TRaceFeature,
     }
   }, [
@@ -143,6 +148,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     collapseAll,
     updateFeature,
     updateExpanded,
+    expressionOptions,
     collapseAllExcept,
   ])
 

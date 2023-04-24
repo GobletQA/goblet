@@ -6,7 +6,9 @@ import { useDefs, useRepo } from '@store'
 import { useRaceSteps } from './useRaceSteps'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@gobletqa/race'
-import { useRaceFeatures } from './useRaceFeatures'
+import { useExpOpts } from '@hooks/race/useExpOpts'
+import { useRaceFeatures } from '@hooks/race/useRaceFeatures'
+import { useOnWorldChange } from '@hooks/race/useOnWorldChange'
 import { getFeaturePrefix } from '@utils/features/getFeaturePrefix'
 import { getActiveFeature } from '@utils/features/getActiveFeature'
 
@@ -18,7 +20,7 @@ import {
   useOnRenameFile,
   useOnDeleteFile,
   useOnPathChange,
-} from '../files'
+} from '@hooks/files'
 
 export const useRaceHooks = () => {
   const repo = useRepo()
@@ -31,13 +33,11 @@ export const useRaceHooks = () => {
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
   const onSaveFile = useOnSaveFile(files, rootPrefix)
   const onAddFile = useOnAddFile(files, rootPrefix, repo)
-
   // const onLoadFile = useOnLoadFile(files, rootPrefix)
   // const onDeleteFile = useOnDeleteFile(files, rootPrefix)
   // const onRenameFile = useOnRenameFile(files, rootPrefix)
 
   const onPathChange = useOnPathChange()
-
 
   const onFeatureActive = useInline(async (feature:TRaceFeature) => {
     feature?.parent?.uuid
@@ -85,14 +85,25 @@ export const useRaceHooks = () => {
     onAddFile({ content, location: parent.uuid })
   })
 
+  const expressionOptions = useExpOpts()
+
+  const onWorldChange = useOnWorldChange({
+    repo,
+    rootPrefix,
+    onSaveFile,
+  })
+
   return {
     steps,
     features,
     rootPrefix,
+    onWorldChange,
     onFeatureClose,
     onFeatureCreate,
     onFeatureActive,
     onFeatureChange,
+    world: repo.world,
+    expressionOptions,
     onFeatureSave: onFeatureChange,
     connected: Boolean(repo?.paths && repo?.name)
   }

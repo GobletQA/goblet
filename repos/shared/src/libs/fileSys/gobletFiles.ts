@@ -4,7 +4,7 @@ import type { TDefGobletConfig, TFileModel } from '../../types'
 import path from 'path'
 import fs from 'fs-extra'
 import { Exception } from '@GException'
-import { limbo } from '@keg-hub/jsutils'
+import { limbo, omitKeys } from '@keg-hub/jsutils'
 import { fileSys } from '@keg-hub/cli-utils'
 import { loadReport } from '@GSH/utils/loadReport'
 import { wordCaps, get, isBool } from '@keg-hub/jsutils'
@@ -13,6 +13,8 @@ import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { loadTemplate } from '@GSH/templates/loadTemplate'
 import { resolveFileType } from '@GSH/utils/resolveFileType'
 import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
+import { getPathFromConfig } from '@GSH/utils/getPathFromConfig'
+
 import { DefinitionOverrideFolder } from '@GSH/constants'
 
 const {
@@ -61,6 +63,35 @@ const inTestRoot = (
 }
 
 /**
+ * Helper to validate if the location is the path to the goblet world file
+ */
+const isWorldFile = (
+  repo:Repo,
+  location:string,
+) => {
+  return getPathFromConfig(`world`, repo) === location
+}
+
+/**
+ * Helper method to update the repo world anytime the world file is accessed
+ */
+const reloadWorld = async (
+  repo:Repo,
+  location:string,
+  content?:string
+) => {
+
+  const world = await repo.refreshWorld()
+
+  return await buildFileModel({
+    content,
+    location: location,
+    ast: { world: omitKeys(world, [`secrets`]) },
+    fileType: repo.fileTypes.json.type,
+  }, repo)
+}
+
+/**
  * Deletes a file at a given location. file should be located in the test root path
  * @param repo - Repo Class instance for the currently active repo
  * @param location - Location within the test root path the file should be deleted
@@ -74,6 +105,12 @@ export const deleteGobletFile = async (
   await checkPathExists(location)
 
   inTestRoot(repo, location)
+
+  if(isWorldFile(repo, location))
+    throw new Exception(
+      `The world file can not be deleted`,
+      403
+    )
 
   const [err] = await limbo(fs.remove(location))
   if (err)
@@ -116,9 +153,12 @@ export const getGobletFile = async (
   else if(fileType === get(repo, `fileTypes.report.type`))
     return await loadReport(repo, fullPath, baseDir)
 
-  // Build the file model for the file
   const [_, content] = await readFile(fullPath)
 
+  if(isWorldFile(repo, fullPath))
+    return await reloadWorld(repo, fullPath, content)
+
+  // Build the file model for the file
   return await buildFileModel({
     content,
     fileType,
@@ -238,12 +278,14 @@ export const saveGobletFile = async (
   else if(fileType === get(repo, `fileTypes.report.type`))
     fileModel = await loadReport(repo, saveLocation)
 
+  else if(isWorldFile(repo, saveLocation))
+    fileModel = await reloadWorld(repo, saveLocation, content)
+
   else fileModel = await buildFileModel({
     content,
     fileType: type,
     location: saveLocation,
   }, repo)
-
 
   return {
     success: Boolean(success && fileModel),
@@ -268,6 +310,13 @@ export const renameGobletFile = async (
   // Ensure both old and new locations are in the test root dir
   inTestRoot(repo, oldLoc)
   inTestRoot(repo, newLoc)
+  
+  // Ensure we are not renaming the world file
+  if(isWorldFile(repo, oldLoc))
+    throw new Exception(
+      `The world file can not be modified`,
+      403
+    )
 
   await checkPathExists(oldLoc)
   const existingLoc = await checkPathExists(newLoc, true)

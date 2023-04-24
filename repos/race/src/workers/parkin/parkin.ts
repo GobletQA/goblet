@@ -23,8 +23,8 @@ export const init = async (world?:TWorldConfig, steps?:TRegisterOrAddStep) => {
 }
 
 export const getWorld = async () => PK.world
-export const setWorld = async (world:TWorldConfig, merge?:boolean) => {
-  PK.world = merge ? deepMerge<TWorldConfig>(PK.world, world) : world
+export const setWorld = async (world:TWorldConfig, replace?:boolean) => {
+  PK.world = replace ? world : deepMerge<TWorldConfig>(PK.world, world)
 }
 
 export const registerSteps = async (steps:TRegisterOrAddStep) => PK.registerSteps(steps)

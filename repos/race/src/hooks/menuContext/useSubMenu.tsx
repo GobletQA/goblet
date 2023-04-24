@@ -1,5 +1,4 @@
 import type { MouseEvent } from 'react'
-import type {  TUpdateWorld } from '@GBR/contexts'
 import type { TOnMenuClose, TMenuItem } from '@gobletqa/components'
 import type {
   Parkin,
@@ -10,6 +9,7 @@ import type {
   TOnSubMenu,
   TRaceFeature,
   TRaceMenuItem,
+  TOnWorldChange,
   TMenuContextRef,
   TUpdateFeatureCB,
 } from '@GBR/types'
@@ -23,7 +23,7 @@ export type THUseSubMenu = TMenuContextRef & {
   world: TWorldConfig
   onClose:TOnMenuClose
   feature: TRaceFeature
-  updateWorld: TUpdateWorld
+  updateWorld: TOnWorldChange
   contextItems: TRaceMenuItem[]
   updateFeature: TUpdateFeatureCB
   onChange:(...args:any[]) => any

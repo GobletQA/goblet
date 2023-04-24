@@ -10,6 +10,7 @@ import type {
 } from '@GSH/types'
 
 import { Logger } from '@keg-hub/cli-utils'
+import { pickKeys, omitKeys } from '@keg-hub/jsutils'
 import { loadFeatures } from '@GSH/libs/features/features'
 import { buildFileTree } from '@GSH/libs/fileSys/fileTree'
 import { loadDefinitions } from '@GSH/libs/definitions/definitions'
@@ -27,13 +28,13 @@ export const loadRepoContent = async (
 ) => {
   try {
     const { parkin, world, ...repoData } = repo
+
     const content:Partial<TRepoContent> = {
       status,
       repo: {
-        ...repoData,
-        parkin: undefined,
-        world: { ...world, secrets: {} }
-      } as TRepo,
+        ...pickKeys<TRepo>(repo, [`fileTypes`, `environment`, `name`, `git`, `paths`]),
+        world: omitKeys(world, [`secrets`])
+      } as TRepo
     }
 
     content.fileTree = await buildFileTree(repo)

@@ -26,13 +26,16 @@ export const VisualEditor = (props:TVisualEditor) => {
   const { sidebarLocked } = useApp()
   const {
     steps,
+    world,
     features,
     connected,
     rootPrefix,
+    onWorldChange,
     onFeatureClose,
     onFeatureChange,
     onFeatureActive,
     onFeatureCreate,
+    expressionOptions,
   } = useRaceHooks()
 
   const menuContext = useContextMenu()
@@ -44,6 +47,7 @@ export const VisualEditor = (props:TVisualEditor) => {
           <RaceEditor
             {...props}
             steps={steps}
+            world={world}
             actions={Actions}
             Divider={Divider}
             features={features}
@@ -51,12 +55,14 @@ export const VisualEditor = (props:TVisualEditor) => {
             rootPrefix={rootPrefix}
             menuContext={menuContext}
             firstFeatureActive={true}
+            onWorldChange={onWorldChange}
             sidebarStatus={!sidebarLocked}
             onFeatureClose={onFeatureClose}
             sidebarWidth={SidebarOpenWidth}
             onFeatureCreate={onFeatureCreate}
             onFeatureChange={onFeatureChange}
             onFeatureActive={onFeatureActive}
+            expressionOptions={expressionOptions}
           />
         </>
       )

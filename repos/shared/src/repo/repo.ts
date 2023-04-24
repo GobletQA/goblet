@@ -14,7 +14,7 @@ import type {
 
 import { Parkin } from '@ltipton/parkin'
 import { getWorld } from '@GSH/repo/world'
-import { noOpObj, } from '@keg-hub/jsutils'
+import { emptyObj, } from '@keg-hub/jsutils'
 import { getFileTypes } from '@GSH/utils/getFileTypes'
 import { resetGobletConfig } from '@GSH/goblet/getGobletConfig'
 import {
@@ -211,12 +211,12 @@ export class Repo {
   // Temporary - this should be remove
   internalPaths:TInternalPaths
 
-  constructor(config:TRepoOpts = noOpObj as TRepoOpts) {
+  constructor(config:TRepoOpts = emptyObj as TRepoOpts) {
     const {
       git,
       name,
       environment,
-      paths=noOpObj as TRepoPaths,
+      paths=emptyObj as TRepoPaths,
     } = config
 
     this.setEnvironment(environment)
@@ -255,7 +255,7 @@ export class Repo {
    * @return {Object} - The reloaded repo.world object
    */
   refreshWorld = async (
-    opts:Record<`environment`, string>=noOpObj as Record<`environment`, string>
+    opts:Record<`environment`, string>=emptyObj as Record<`environment`, string>
   ) => {
     const { environment } = opts
     this.setEnvironment(environment)

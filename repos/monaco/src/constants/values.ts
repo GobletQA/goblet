@@ -1,6 +1,7 @@
 import type { TAllowedFileTypes } from '../types'
 
 export const ALLOWED_FILE_TYPES:TAllowedFileTypes = {
+  json: `json`,
   js: `javascript`,
   ts: `typescript`,
   jsx: `javascript`,

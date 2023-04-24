@@ -1,4 +1,4 @@
-import type { Parkin } from '@ltipton/parkin'
+import type { Parkin, TWorldConfig } from '@ltipton/parkin'
 import type { TRaceFeature } from './features.types'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 
@@ -22,4 +22,9 @@ export type TWithEditorCB = (data:TAnswerEditor) => void
 
 export type TOnParkinInit = {
   parkin: Parkin
+}
+
+export type TOnWorldUpdate = {
+  world: TWorldConfig
+  replace?:boolean
 }

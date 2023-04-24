@@ -49,6 +49,7 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureActive={onFeatureActive}
       setFeatureGroups={setFeatureGroups}
       onFeatureInactive={onFeatureInactive}
+      expressionOptions={props.expressionOptions}
     >
       <Container
         onKeyDown={onKeyDown}

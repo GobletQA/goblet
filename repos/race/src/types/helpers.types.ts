@@ -2,7 +2,7 @@ import type { ESectionType } from './section.types'
 import type { TStepDefsList } from '@ltipton/parkin'
 
 import type { TRaceFeatures, TRaceFeature } from './features.types'
-import type { SyntheticEvent, Dispatch, SetStateAction, MutableRefObject } from 'react'
+import type { SyntheticEvent, MutableRefObject } from 'react'
 
 export type TSetSteps = (steps:TStepDefsList) => void
 export type TStepDefsRef = MutableRefObject<TStepDefsList>

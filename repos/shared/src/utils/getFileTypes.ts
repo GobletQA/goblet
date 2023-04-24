@@ -31,13 +31,13 @@ const normalizePaths = paths => {
 
   return {
     workDir: workDir || GOBLET_WORK_DIR,
-    unitDir: unitDir || GOBLET_UNIT_DIR || 'units',
-    stepsDir: stepsDir || GOBLET_STEPS_DIR || 'bdd/steps',
-    supportDir: supportDir || GOBLET_SUPPORT_DIR || 'bdd/support',
-    featuresDir: featuresDir || GOBLET_FEATURES_DIR || 'bdd/features',
-    waypointDir: waypointDir || GOBLET_WAYPOINT_DIR || 'waypoints',
-    artifactsDir: artifactsDir || GOBLET_ARTIFACTS_DIR || 'artifacts',
-    reportsDir: reportsDir || GOBLET_REPORTS_DIR || 'artifacts/reports',
+    unitDir: unitDir || GOBLET_UNIT_DIR || `units`,
+    stepsDir: stepsDir || GOBLET_STEPS_DIR || `bdd/steps`,
+    supportDir: supportDir || GOBLET_SUPPORT_DIR || `bdd/support`,
+    featuresDir: featuresDir || GOBLET_FEATURES_DIR || `bdd/features`,
+    waypointDir: waypointDir || GOBLET_WAYPOINT_DIR || `waypoints`,
+    artifactsDir: artifactsDir || GOBLET_ARTIFACTS_DIR || `artifacts`,
+    reportsDir: reportsDir || GOBLET_REPORTS_DIR || `artifacts/reports`,
   }
 }
 
@@ -59,39 +59,44 @@ export const getFileTypes = (
 
   return {
     artifact: {
-      ext: '*',
-      type: 'artifact',
+      ext: `*`,
+      type: `artifact`,
       location: path.join(baseDir, locations.artifactsDir),
     },
     feature: {
-      ext: 'feature',
-      type: 'feature',
+      ext: `feature`,
+      type: `feature`,
       location: path.join(baseDir, locations.featuresDir),
     },
+    json: {
+      ext: `json`,
+      type: `json`,
+      location: baseDir,
+    },
     report: {
-      ext: 'html',
-      type: 'report',
+      ext: `html`,
+      type: `report`,
       location: path.join(baseDir, locations.reportsDir),
     },
     support: {
-      ext: 'js',
-      type: 'support',
+      ext: `js`,
+      type: `support`,
       location: path.join(baseDir, locations.supportDir),
     },
     definition: {
-      ext: 'js',
-      type: 'definition',
+      ext: `js`,
+      type: `definition`,
       location: path.join(baseDir, locations.stepsDir),
     },
     unit: {
-      ext: 'js',
-      type: 'unit',
+      ext: `js`,
+      type: `unit`,
       typeInName: true,
       location: path.join(baseDir, locations.unitDir),
     },
     waypoint: {
-      ext: 'js',
-      type: 'waypoint',
+      ext: `js`,
+      type: `waypoint`,
       typeInName: true,
       location: path.join(baseDir, locations.waypointDir),
     },
