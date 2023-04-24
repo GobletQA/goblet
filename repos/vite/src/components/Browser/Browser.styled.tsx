@@ -137,17 +137,17 @@ export const BrowserShadowTop = styled(Box)`
   opacity: 0.75;
   position: absolute;
   pointer-events: none;
-  top: -${dims.browser.nav.hpx};
+  top: -${dims.browser.nav.height - 10}px;
   height: ${dims.browser.nav.height - 12}px;
   transition: box-shadow 300ms ease;
   box-shadow: 0px 10px 14px transparent;
   
   &.playing {
-    box-shadow: 0px 14px 0px ${colors.purple10};
+    box-shadow: 0px 2px 0px ${colors.purple10};
   }
 
   &.recording {
-    box-shadow: 0px 14px 0px ${colors.recordRed};
+    box-shadow: 0px 2px 0px ${colors.recordRed};
   }
 `
 export const BrowserShadowBottom = styled(Box)`

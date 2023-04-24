@@ -11,8 +11,8 @@ export const ExpressionKindMap:Record<EExpParmKind|EExpParmType, ComponentType<a
   [EExpParmKind.alias]: ExpInput,
   [EExpParmKind.pairs]: ExpInput,
   [EExpParmKind.group]: ExpInput,
-  [EExpParmKind.element]: ExpAutoInput,
-  [EExpParmKind.selector]: ExpAutoInput,
+  [EExpParmKind.element]: ExpInput,
+  [EExpParmKind.selector]: ExpInput,
 
   [EExpParmType.any]: ExpInput,
   [EExpParmType.int]: ExpInput,

@@ -5,10 +5,8 @@ import { capitalize } from '@keg-hub/jsutils'
 import { Tooltip } from '@gobletqa/components'
 import { ExpGridItem, ExpressionInfoText } from './Expression.styled'
 
-
 import { useExpressionInput } from '@GBR/hooks/expressions/useExpressionInput'
 import { useExpressionChange } from '@GBR/hooks/expressions/useExpressionChange'
-import { useExpressionOptions } from '@GBR/hooks/expressions/useExpressionOptions'
 
 export type TExpression = {
   def:TStepDef
@@ -44,10 +42,8 @@ export const Expression = (props:TExpression) => {
     expression
   } = props
 
-  const expOps = useExpressionOptions(props)
-  const onBlur = useExpressionChange(props, expOps)
+  const onBlur = useExpressionChange(props)
   const { Input, inputType } = useExpressionInput(expression)
-  const { value, options } = expOps
 
   return (
     <ExpGridItem xs={12} sm >
@@ -57,9 +53,8 @@ export const Expression = (props:TExpression) => {
         parent={parent}
         onBlur={onBlur}
         type={inputType}
-        options={options}
-        value={value || null}
         expression={expression}
+        value={expression.value || null}
         placeholder={`${expression.example}`}
         helperText={<ExpressionInfo {...props} />}
         label={capitalize(expression.kind || expression.paramType)}

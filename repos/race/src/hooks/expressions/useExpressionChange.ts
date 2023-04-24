@@ -6,16 +6,7 @@ import type { TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 import { useInline } from '@gobletqa/components'
 import { removeQuotes } from '@GBR/utils/helpers/removeQuotes'
 import { ExpAliasTag, ExpressionNoQuoteTypes } from '@GBR/constants'
-import {
-  iife,
-  isArr,
-  isNum,
-  isStr,
-  isFunc,
-  exists,
-  emptyArr,
-  flatUnion
-} from '@keg-hub/jsutils'
+import { isNum } from '@keg-hub/jsutils'
 
 export type TExpression = {
   def:TStepDef
@@ -27,7 +18,6 @@ export type TExpression = {
 
 export type TExpOpts = {
   value?:string|number
-  options: TAutoOpt[]
 }
 
 const numberTypes = Object.values(ExpressionNoQuoteTypes)
@@ -80,30 +70,13 @@ const getFixes = (
   }
 }
 
-const checkAliasValue = (value:string|number, options:TAutoOpt[]) => {
-  if(
-    !value
-    || isNum(value)
-    || value.startsWith(`$$`)
-    || !value.startsWith(ExpAliasTag)
-  ) return value
-
-  const found = options.find(opt => opt.label === value)
-
-  return found ? found.id : value
-}
-
-export const useExpressionChange = (props:TExpression, expOpts:TExpOpts) => {
+export const useExpressionChange = (props:TExpression) => {
   const {
     step,
     onChange,
     expression,
   } = props
 
-  const {
-    value,
-    options
-  } = expOpts
 
   return useInline((evt:ChangeEvent<HTMLInputElement>) => {
 
@@ -114,8 +87,7 @@ export const useExpressionChange = (props:TExpression, expOpts:TExpOpts) => {
       return
     }
 
-    const val = removeQuotes(evt.target.value || ``)
-    const value = checkAliasValue(val, options)
+    const value = removeQuotes(evt.target.value || ``)
 
     if(value === expression.value) return
 

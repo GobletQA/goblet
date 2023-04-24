@@ -1,55 +1,34 @@
-import type { MouseEvent } from 'react'
+import type { MouseEvent, CSSProperties } from 'react'
 import type { TMenuItem } from '@gobletqa/components'
 import type {
   TAudit,
   TExpPart,
-  TRaceStep,
-  TRaceFeature,
   TRaceMenuItemClickCtx,
 } from '@gobletqa/race'
 
-import { isStr } from '@keg-hub/jsutils'
 import { EAstObject } from '@ltipton/parkin'
-import { FootIcon } from '@gobletqa/components'
-
-const getAllStep = (feature:TRaceFeature) => {
-  const { rules, background, scenarios } = feature
-  const steps:Record<string, TRaceStep> = {}
-
-  background
-    && background?.steps?.forEach(step => steps[step.uuid] = step)
-  
-  scenarios?.length
-    && scenarios.forEach(scenario => scenario?.steps?.forEach(step => steps[step.uuid] = step))
-
-  rules?.length
-    && rules.forEach(({ background, scenarios }) => {
-      background
-        && background?.steps?.forEach(step => steps[step.uuid] = step)
-      
-      scenarios?.length
-        && scenarios.forEach(scenario => scenario?.steps?.forEach(step => steps[step.uuid] = step))
-    })
-
-  return steps
-}
-
+import { ContextItem } from './ContextItem'
+import { FootIcon, colors } from '@gobletqa/components'
 
 const generateStepItems = (ctx:TRaceMenuItemClickCtx) => {
-  const { feature, audit, onChange } = ctx
-  // const steps = getAllStep(feature)
+  const { audit, onChange } = ctx
 
   return Object.entries(audit as TAudit).reduce((acc, [id, match]) => {
-    const { expressions } = match
-    // const step = steps[id]
-
+    const { expressions, def } = match
     ;(expressions as TExpPart[]).map(exp => {
       exp.value
-        && (!isStr(exp.value) || !exp.value.startsWith(`$$`))
         && acc.push({
-            text: `Step: ${exp.value}`,
             closeMenu: true,
             closeParent:true,
+            key: `${def.uuid}-${exp.index}`,
+            children: (
+              <ContextItem
+                name={exp.value}
+                valuePrefix={`type: `}
+                value={`${exp.kind}`}
+                valuePrefixSx={{ color: colors.green12, marginRight: `2px` }}
+              />
+            ),
             onClick: () => {
               onChange({target: { value: exp.value, tagName: `INPUT` }})
             }
