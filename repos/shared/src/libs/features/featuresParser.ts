@@ -26,10 +26,13 @@ export const featuresParser = (featureMeta:TFeatureMeta = noOpObj as TFeatureMet
         if (err) return rej(err)
         const content = data.toString()
 
+        // TODO: Add a proper logger for shared / screencast
+        // Logger.pair(`Parsing feature at`, location)
+
         try {
-          // TODO: Add a proper logger for shared / screencast
-          Logger.pair(`Parsing feature at`, location)
-          const ast = parkin.parse.feature(content)
+          // Pass in an empty world object so the values are not replaced
+          // We only want to replace values during execution
+          const ast = parkin.parse.feature(content, {})
           return res({
             ...featureMeta,
             content,

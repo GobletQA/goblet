@@ -46,6 +46,7 @@ export const ExpAutoInput = (props:TExpAutoInput) => {
 
   return (
     <AutoInput
+      freeSolo={true}
       {...expressionProps}
       {...rest}
       {...decorInputProps}

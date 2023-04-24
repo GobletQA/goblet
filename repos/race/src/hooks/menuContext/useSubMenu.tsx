@@ -6,6 +6,7 @@ import type {
   TStepDefsList 
 } from '@ltipton/parkin'
 import type {
+  TAudit,
   TOnSubMenu,
   TRaceFeature,
   TRaceMenuItem,
@@ -19,6 +20,7 @@ import { useCallback, useState, useRef } from 'react'
 
 export type THUseSubMenu = TMenuContextRef & {
   parkin: Parkin
+  audit: TAudit
   defs: TStepDefsList
   world: TWorldConfig
   onClose:TOnMenuClose

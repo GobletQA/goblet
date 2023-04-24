@@ -6,7 +6,6 @@ import { useDefs, useRepo } from '@store'
 import { useRaceSteps } from './useRaceSteps'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@gobletqa/race'
-import { useExpOpts } from '@hooks/race/useExpOpts'
 import { useRaceFeatures } from '@hooks/race/useRaceFeatures'
 import { useOnWorldChange } from '@hooks/race/useOnWorldChange'
 import { getFeaturePrefix } from '@utils/features/getFeaturePrefix'
@@ -85,8 +84,6 @@ export const useRaceHooks = () => {
     onAddFile({ content, location: parent.uuid })
   })
 
-  const expressionOptions = useExpOpts()
-
   const onWorldChange = useOnWorldChange({
     repo,
     rootPrefix,
@@ -103,7 +100,6 @@ export const useRaceHooks = () => {
     onFeatureActive,
     onFeatureChange,
     world: repo.world,
-    expressionOptions,
     onFeatureSave: onFeatureChange,
     connected: Boolean(repo?.paths && repo?.name)
   }

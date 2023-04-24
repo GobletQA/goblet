@@ -2,6 +2,7 @@ import type { TChangeCB, TInputValue } from '@GBC/types'
 import type { KeyboardEvent, RefObject, ChangeEvent } from 'react'
 
 import { isStr } from '@keg-hub/jsutils'
+import { useInputRef } from './useInputRef'
 import { useInline } from '@GBC/hooks/components/useInline'
 import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 
@@ -33,8 +34,7 @@ export const useInputCallbacks = (props:THInputCallbacks) => {
     controlled,
   } = props
 
-  const localInputRef = useRef<TInputType>(null)
-  const inputRef = useMemo(() => (props.inputRef || localInputRef) as RefObject<TInputType>, [props.inputRef])
+  const inputRef = useInputRef(props)
 
   const [error, setError] = useState(``)
   const onBlurIn = useInline(props.onBlur)

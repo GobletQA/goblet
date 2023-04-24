@@ -99,6 +99,6 @@ const auditFromGran = (
   return audit
 }
 
-export const auditFeature = ({ parkin, feature}:TAuditParkin) => {
+export const auditFeature = ({parkin, feature}:TAuditParkin) => {
   return auditFromGran(parkin, {}, [feature])
 }

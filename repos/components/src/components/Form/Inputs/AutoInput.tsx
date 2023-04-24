@@ -1,23 +1,30 @@
 import type {
-  ReactNode,
-  ChangeEvent,
-  KeyboardEvent,
-  CSSProperties,
-  SyntheticEvent,
-  ComponentProps
-} from 'react'
-import type { TAutoOptVal, TAutoOpt, TOnAutoChange, TInputDecor } from '@GBC/types'
-import type {
   AutocompleteChangeReason,
   AutocompleteChangeDetails
 } from '@mui/material/Autocomplete'
+import type {
+  ReactNode,
+  FocusEvent,
+  ChangeEvent,
+  KeyboardEvent,
+  CSSProperties,
+  ComponentProps,
+  MutableRefObject,
+} from 'react'
+import type {
+  TAutoOpt,
+  TAutoOptVal,
+  TInputDecor,
+  TOnAutoChange,
+} from '@GBC/types'
 
 import { Decor } from './Decor'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
+import { useInputRef } from '@GBC/hooks/form/useInputRef'
 
 import { InputLabel } from './InputLabel'
 import { useInline } from '@GBC/hooks/components/useInline'
-import { emptyObj, isStr, cls } from '@keg-hub/jsutils'
+import { emptyObj, emptyArr, isStr, cls } from '@keg-hub/jsutils'
 import CircularProgress from '@mui/material/CircularProgress'
 import {
   Checkbox,
@@ -60,23 +67,57 @@ export type TAutoInput = {
   rules?: Record<string, string>
   label?: TextFieldProps['label']
   variant?:`outlined`|`filled`|`standard`
-  onBlur?: (event:ChangeEvent<any>) => void
+  onBlur?: (event:any, ...args:any[]) => void
   autocompleteProps?: Partial<ComponentProps<typeof Auto>>
   color?: `primary`|`secondary`|`error`|`info`|`success`|`warning`
   textFieldProps?: Omit<TextFieldProps, 'name' | 'required' | 'label'>
+  inputRef:MutableRefObject<HTMLInputElement | HTMLTextAreaElement | undefined>
 }
 
-const useOnChangeVal = ({
-  matchId,
-  onChange,
-  autocompleteProps
-}:TAutoInput) => {
+const useOnChangeVal = (
+  props:TAutoInput,
+  inputRef:MutableRefObject<HTMLInputElement | HTMLTextAreaElement | undefined>,
+  fromChangeRef:MutableRefObject<boolean>,
+  onBlur: (evt: FocusEvent<HTMLInputElement>) => void,
+) => {
+  
+  const {
+    matchId,
+    onChange,
+    freeSolo,
+    autocompleteProps
+  } = props
+  
   return useCallback((
-    event:any,
+    evt:any,
     value:TAutoOptVal,
     reason:AutocompleteChangeReason,
     details:AutocompleteChangeDetails
   ) => {
+
+    // If in freeSolo, and there's a select option change
+    // And no onChange exists, we still want to capture the select option value
+    if(freeSolo && !onChange && !autocompleteProps?.onChange){
+      if(reason === `selectOption` && onBlur || autocompleteProps?.onBlur){
+        const event = {
+          ...evt,
+          target: {
+            tagName: `INPUT`,
+            value: isStr(value) ? value : value.id
+          }
+        }
+
+        onBlur?.(event)
+        fromChangeRef.current = true
+        inputRef?.current?.blur?.()
+      }
+      else {
+        evt?.stopPropagation?.()
+        evt?.preventDefault?.()
+      }
+
+      return undefined
+    }
     
     let changedVal:TAutoOptVal|TAutoOptVal[] = value
 
@@ -85,14 +126,48 @@ const useOnChangeVal = ({
         ? value.map((i: any) => i?.id || i) as TAutoOptVal[]
         : ((value as TAutoOpt)?.id || value) as TAutoOptVal
 
-    onChange?.(event, changedVal, reason, details)
+    onChange?.(evt, changedVal, reason, details)
     if (autocompleteProps?.onChange)
-      autocompleteProps?.onChange?.(event, value, reason, details)
+      autocompleteProps?.onChange?.(evt, value, reason, details)
   }, [
+    onBlur,
     matchId,
     onChange,
     autocompleteProps?.onChange
   ])
+}
+
+const useOnBlur = (
+  props:TAutoInput,
+  fromChangeRef:MutableRefObject<boolean>
+) => {
+  
+  const {
+    onBlur,
+    freeSolo,
+    autocompleteProps,
+  } = props
+  
+  return useCallback((evt:FocusEvent<HTMLInputElement>) => {
+    
+    // Bypass the onblur method call
+    // Because it was already called by on Change
+    if(fromChangeRef.current){
+      fromChangeRef.current = false
+      evt?.stopPropagation?.()
+      evt?.preventDefault?.()
+      return undefined
+    }
+    
+    onBlur?.(evt)
+    autocompleteProps?.onBlur?.(evt)
+
+  }, [
+    onBlur,
+    freeSolo,
+    autocompleteProps,
+  ])
+  
 }
 
 const AutoInputComp = (props:TAutoInput) => {
@@ -130,7 +205,16 @@ const AutoInputComp = (props:TAutoInput) => {
     ...rest
   } = props
 
-  const onChangeVal = useOnChangeVal(props)
+  const inputRef = useInputRef(props)
+  const fromChangeRef = useRef<boolean>(false)
+  const onBlurCB = useOnBlur(props, fromChangeRef)
+  const onChangeVal = useOnChangeVal(
+    props,
+    inputRef,
+    fromChangeRef,
+    onBlurCB,
+  )
+  
   const { Component:DecorComponent, decorPos=`start` } = decor
   const decorKey = decorPos === `end` ? `endAdornment` : `startAdornment`
 
@@ -158,7 +242,7 @@ const AutoInputComp = (props:TAutoInput) => {
         freeSolo={freeSolo}
         disabled={disabled}
         multiple={multiple}
-        value={currentValue}
+        value={currentValue || null}
         defaultValue={defaultValue}
         onChange={onChangeVal as any}
         className={cls(
@@ -186,7 +270,6 @@ const AutoInputComp = (props:TAutoInput) => {
             ? autocompleteProps.getOptionLabel
             : ((option:TAutoOptVal) => isStr(option) ? option : option?.label) as any
         }
-        
         renderOption={(
           autocompleteProps?.renderOption ?? (
             showCheckbox
@@ -203,10 +286,7 @@ const AutoInputComp = (props:TAutoInput) => {
                 )
               : undefined
         )) as any}
-        onBlur={(event) => {
-          onBlur?.(event)
-          autocompleteProps?.onBlur?.(event)
-        }}
+        onBlur={onBlurCB}
         renderInput={(params) => {
           return (
             <AutoTextInput
@@ -245,6 +325,7 @@ const AutoInputComp = (props:TAutoInput) => {
                   )
                 }),
                 ...textFieldProps?.InputProps,
+                inputRef: inputRef
               }}
               inputProps={{
                 ...params.inputProps,

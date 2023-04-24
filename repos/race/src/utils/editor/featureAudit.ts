@@ -2,16 +2,17 @@ import type { TAuditParkin } from '@GBR/types'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 
 export const Environment = process.env.NODE_ENV || `local`
-const isLocal = Environment === `local`
+const isLocal = Environment !== `production`
 
-export const featureAudit = async () => {
-  const mod = isLocal
-    ? await import('@GBR/workers/parkin/audit')
-    : ParkinWorker
-  
-  return async ({ parkin, feature }:TAuditParkin) => {
-    return isLocal
-      ? mod.auditFeature({ parkin, feature })
-      : ParkinWorker.auditFeature({ feature })
+export const featureAudit = async ({ parkin, feature }:TAuditParkin) => {
+  let audit
+  if(process.env.NODE_ENV !== `production`){
+    const mod = await import('@GBR/workers/parkin/audit')
+    audit = mod.auditFeature({ parkin, feature })
   }
+  else {
+    audit = await ParkinWorker.auditFeature({ feature })
+  }
+
+  return audit
 }

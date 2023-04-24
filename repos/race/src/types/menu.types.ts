@@ -10,6 +10,7 @@ import type {
   TRaceScenario,
   TRaceBackground,
 } from './features.types'
+import { TAudit } from './audit.types'
 
 import type { ComponentProps, ReactNode, ComponentType } from 'react'
 
@@ -25,6 +26,7 @@ export type TRaceMenuItemClickCtx = Omit<TMenuContextRef, 'context'>
   & Omit<TFeatureCtx, `setFeature`>
   & {
     open:boolean
+    audit: TAudit
     onOpen:TOnMenuOpen
     onClose:TOnMenuClose
     setOpen:(open:boolean) => void

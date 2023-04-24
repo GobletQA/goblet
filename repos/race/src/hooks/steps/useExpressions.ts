@@ -1,4 +1,4 @@
-import { Parkin, TStepDef } from '@ltipton/parkin'
+import { TStepDef } from '@ltipton/parkin'
 import type {
   TRaceStep,
   TMatchExpRes,

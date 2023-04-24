@@ -59,3 +59,7 @@ export const ExpInputTypes = deepFreeze(keyMap([
   `url`,
   `tel`
 ]))
+
+
+export const ExpAliasTag = `Alias: `
+export const ExpPageTag = `Page: `

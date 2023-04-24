@@ -1,5 +1,5 @@
-import type { TSocketEvt } from '@types'
 import type { SocketService } from './socketService'
+import type { TBrowserNavEvt, TSocketEvt } from '@types'
 
 import * as socketActions from '@actions/socket/local'
 import { camelCase, checkCall } from '@keg-hub/jsutils'
@@ -56,10 +56,10 @@ export const events = {
     console.log(`------- recordGeneral -------`)
     console.log(message)
   },
-  pwUrlChange: function(message:TSocketEvt){
-    const { url, ast } = message.data
-    EE.emit(BrowserNavEvt, { url })
-    setPageAst(ast)
+  pwUrlChange: function(message:TSocketEvt<TBrowserNavEvt>){
+    const data = message.data
+    EE.emit(BrowserNavEvt, data)
+    setPageAst(data)
   },
   pwAutomateEvent: function(message:TSocketEvt){
     EE.emit(WSAutomateEvent, message.data)

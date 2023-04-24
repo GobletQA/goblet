@@ -12,9 +12,6 @@ import { emptyObj, pickKeys } from '@keg-hub/jsutils'
 import { useParkin } from '@GBR/contexts/ParkinContext'
 import { featureAudit } from '@GBR/utils/editor/featureAudit'
 
-/**
- * IMPORTANT - don't include this in prod
- */
 const emptyAudit = emptyObj as TAudit
 
 export type THFeatureAudit = {
@@ -36,8 +33,7 @@ export const useAudit = (props:THFeatureAudit) => {
     if(skipAudit) return
 
     // Easier to debug when not running through a worker
-    const auditFeature = await featureAudit()
-    const updated = await auditFeature({ parkin, feature }) || emptyAudit
+    const updated = await featureAudit({ parkin, feature }) || emptyAudit
 
     if(mergeAudit) return setAudit({ ...audit, ...updated })
     if(removeAuditSteps) return setAudit(pickKeys(audit, Object.keys(updated)))

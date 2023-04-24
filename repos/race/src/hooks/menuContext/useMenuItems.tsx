@@ -37,17 +37,24 @@ export const useMenuItems = (props:THMenuItems) => {
 
   const { defs, setDefs } = useStepDefs()
   const onChange = useInline(props.onChange)
-  const { feature, updateFeature } = useEditor()
+  const { feature, audit, updateFeature } = useEditor()
+  
   const { parkin, world, updateWorld } = useParkin()
   
   const [open, setOpen] = useState<boolean>(false)
   const anchorRef = useRef<HTMLElement|undefined>(undefined)
-  const onOpen = useInline((event: MouseEvent<HTMLElement>) => {
+  const onOpen = useInline((evt: MouseEvent<HTMLElement>) => {
+    evt?.stopPropagation?.()
+    evt?.preventDefault?.()
+
     setOpen(true)
-    anchorRef.current = event.currentTarget
+    anchorRef.current = evt.currentTarget
   })
 
   const onClose = useInline<TOnMenuClose>((event) => {
+    event?.stopPropagation?.()
+    event?.preventDefault?.()
+
     setOpen(false)
     anchorRef.current = undefined
   })
@@ -61,6 +68,7 @@ export const useMenuItems = (props:THMenuItems) => {
     type,
     gran,
     world,
+    audit,
     parent,
     active,
     parkin,
@@ -82,26 +90,32 @@ export const useMenuItems = (props:THMenuItems) => {
           // Wrap the onclick handler, so we can pass in the current context
           // Ignore the empty ctx used to fix type issues
           // The rebuild the true ctx and pass that as the first argument
-          onClick: (evt: MouseEvent<HTMLElement>) => item?.onClick({
-            open,
-            type,
-            defs,
-            gran,
-            world,
-            parkin,
-            parent,
-            active,
-            onOpen,
-            onClose,
-            setOpen,
-            setDefs,
-            feature,
-            onChange,
-            onSubmenu,
-            updateWorld,
-            updateFeature,
-            setInputProps,
-          } as TRaceMenuItemClickCtx, evt)
+          onClick: (evt: MouseEvent<HTMLElement>) => {
+            evt?.stopPropagation?.()
+            evt?.preventDefault?.()
+
+            item?.onClick({
+              open,
+              type,
+              defs,
+              gran,
+              world,
+              audit,
+              parkin,
+              parent,
+              active,
+              onOpen,
+              onClose,
+              setOpen,
+              setDefs,
+              feature,
+              onChange,
+              onSubmenu,
+              updateWorld,
+              updateFeature,
+              setInputProps,
+            } as TRaceMenuItemClickCtx, evt)
+          }
         } as TMenuItem
       })
   }, [
@@ -110,6 +124,7 @@ export const useMenuItems = (props:THMenuItems) => {
     type,
     gran,
     world,
+    audit,
     parent,
     active,
     parkin,

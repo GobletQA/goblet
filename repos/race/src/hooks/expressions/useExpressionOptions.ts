@@ -7,7 +7,17 @@ import type { TExpOpts, TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
 import { useMemo, useState, useEffect } from 'react'
 import { useParkin, useEditor } from '@GBR/contexts'
-import { iife, isArr, emptyArr, isFunc } from '@keg-hub/jsutils'
+import { ExpAliasTag } from '@GBR/constants'
+import {
+  iife,
+  isArr,
+  isNum,
+  isStr,
+  isFunc,
+  exists,
+  emptyArr,
+  flatUnion
+} from '@keg-hub/jsutils'
 
 export type THExpressionOpts = {
   def:TStepDef
@@ -18,78 +28,89 @@ export type THExpressionOpts = {
 }
 
 
-const useWorldAlias = (world:TWorldConfig) => {
+const useWorldAlias = (props:THExpressionOpts, world:TWorldConfig) => {
+  const {
+    expression
+  } = props
+  
   return useMemo(() => {
-    return Object.entries(world?.$alias).map(([key, value]) => {
-      return {
-        key,
-        id: key,
-        value: `$$${key}`,
-        label: `Alias: ${key} - ${value}`
-      }
-    })
-  }, [world?.$alias])
+    let aliasVal:string|undefined=undefined
+
+    const aliasOpts = Object.entries(world?.$alias)
+      .map(([key, value]) => {
+        const ref = `$$${key}`
+        return {
+          id: ref,
+          key: ref,
+          value: ref,
+          label: `${ExpAliasTag}${key}`
+        }
+      })
+      
+    if(isStr(expression.value) && expression.value.startsWith(`$$`)){
+      const found = aliasOpts.find(opt => opt.id === expression.value)
+      if(found) aliasVal = found.label
+    }
+
+    return {
+      aliasVal,
+      aliasOpts
+    }
+  }, [
+    world?.$alias,
+    expression.value
+  ])
 }
 
 const useExpOpts = (props:THExpressionOpts, expressionOptions?:TExpOpts) => {
-  const {
-    def,
-    step,
-    parent,
-    expression
-  } = props
-
-  const options = isArr<TAutoOpt>(expressionOptions)
-    ? expressionOptions
-    : emptyArr
-
-  const [expOpts, setExpOpts] = useState<TAutoOpt[]>(options as TAutoOpt[])
-
-  useEffect(() => {
-    !expOpts.length
-      && isFunc(expressionOptions)
-      && iife(async () => {
-
-          const opts = await expressionOptions({
-            def,
-            step,
-            parent,
-            expression
-          })
-
-          isArr<TAutoOpt>(opts) && setExpOpts(opts)
-
-        })
-  }, [
-    // expOpts,
-    // expression,
-    // def?.uuid,
-    // step?.uuid,
-    // parent?.uuid,
-    // expressionOptions
-  ])
-
+  // TODO: Add logic for passed in expression options
   return {
-    expOpts,
-    setExpOpts
+    expVal: undefined,
+    expOpts: expressionOptions
   }
 }
 
 
 export const useExpressionOptions = (props:THExpressionOpts) => {
+  const { expression } = props
+
   const { world } = useParkin()
   const { expressionOptions } = useEditor()
 
-  const aliasOpts = useWorldAlias(world)
-  const { expOpts } = useExpOpts(props, expressionOptions)
-  
-  const options = [
-    ...aliasOpts,
-    ...expOpts,
-  ]
+  const { aliasVal, aliasOpts } = useWorldAlias(props, world)
+  const { expVal, expOpts } = useExpOpts(props, expressionOptions)
 
-  return {
-    options
-  }
+  return useMemo(() => {
+    const value = aliasVal || expVal || expression.value
+
+    let expArr:TAutoOpt[] = emptyArr
+
+    if(!aliasVal && !expVal && value)
+      expArr = [{
+        id: value,
+        key: value,
+        value: value,
+        label: `${value}`,
+      }]
+
+    return {
+      value,
+      options: flatUnion<TAutoOpt>(
+        expArr,
+        aliasOpts,
+        expOpts,
+        (item:TAutoOpt) => item.id
+      )
+    }
+  }, [
+    expVal,
+    expOpts,
+    aliasVal,
+    aliasOpts,
+    expression.value,
+  ])
+
+
+
 
 }

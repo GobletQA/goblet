@@ -49,7 +49,7 @@ const fromBrowser = async (ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement
 
   setInputProps({})
 
-  onChange?.({target: { value }})
+  onChange?.({target: { value, tagName: `INPUT` }})
 }
 
 export const FromBrowser:TRaceMenuItem = {

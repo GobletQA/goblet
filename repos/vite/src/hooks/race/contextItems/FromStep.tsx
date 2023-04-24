@@ -1,38 +1,64 @@
 import type { MouseEvent } from 'react'
-import type { TRaceMenuItemClickCtx } from '@gobletqa/race'
+import type { TMenuItem } from '@gobletqa/components'
+import type {
+  TAudit,
+  TExpPart,
+  TRaceStep,
+  TRaceFeature,
+  TRaceMenuItemClickCtx,
+} from '@gobletqa/race'
 
+import { isStr } from '@keg-hub/jsutils'
 import { EAstObject } from '@ltipton/parkin'
 import { FootIcon } from '@gobletqa/components'
 
-const generateStepItems = (ctx:TRaceMenuItemClickCtx) => {
-  // Then create items for each one
-  // TODO: figure out a way to pass in parsed expression values from other steps?
-  const { feature } = ctx
+const getAllStep = (feature:TRaceFeature) => {
+  const { rules, background, scenarios } = feature
+  const steps:Record<string, TRaceStep> = {}
 
-  return [
-    {
-      text: `Test 1`,
-      closeMenu: true,
-      closeParent:true,
-      onClick: () => {
-        console.log(`------- test 1 -------`)
-      }
-    },
-    {
-      text: `Test 2`,
-      closeMenu: true,
-      onClick: () => {
-        console.log(`------- test 2 -------`)
-      }
-    },
-    {
-      text: `Test 3`,
-      closeMenu: false,
-      onClick: () => {
-        console.log(`------- test 3 -------`)
-      }
-    }
-  ]
+  background
+    && background?.steps?.forEach(step => steps[step.uuid] = step)
+  
+  scenarios?.length
+    && scenarios.forEach(scenario => scenario?.steps?.forEach(step => steps[step.uuid] = step))
+
+  rules?.length
+    && rules.forEach(({ background, scenarios }) => {
+      background
+        && background?.steps?.forEach(step => steps[step.uuid] = step)
+      
+      scenarios?.length
+        && scenarios.forEach(scenario => scenario?.steps?.forEach(step => steps[step.uuid] = step))
+    })
+
+  return steps
+}
+
+
+const generateStepItems = (ctx:TRaceMenuItemClickCtx) => {
+  const { feature, audit, onChange } = ctx
+  // const steps = getAllStep(feature)
+
+  return Object.entries(audit as TAudit).reduce((acc, [id, match]) => {
+    const { expressions } = match
+    // const step = steps[id]
+
+    ;(expressions as TExpPart[]).map(exp => {
+      exp.value
+        && (!isStr(exp.value) || !exp.value.startsWith(`$$`))
+        && acc.push({
+            text: `Step: ${exp.value}`,
+            closeMenu: true,
+            closeParent:true,
+            onClick: () => {
+              onChange({target: { value: exp.value, tagName: `INPUT` }})
+            }
+          })
+    })
+
+    return acc
+  }, [] as TMenuItem[])
+
 }
 
 export const FromStep = {

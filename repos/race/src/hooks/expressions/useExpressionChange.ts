@@ -1,10 +1,21 @@
 import type { ChangeEvent } from 'react'
 import type { TStepDef } from '@ltipton/parkin'
+import type { TAutoOpt } from '@gobletqa/components'
 import type { TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
 import { useInline } from '@gobletqa/components'
-import { ExpressionNoQuoteTypes } from '@GBR/constants'
 import { removeQuotes } from '@GBR/utils/helpers/removeQuotes'
+import { ExpAliasTag, ExpressionNoQuoteTypes } from '@GBR/constants'
+import {
+  iife,
+  isArr,
+  isNum,
+  isStr,
+  isFunc,
+  exists,
+  emptyArr,
+  flatUnion
+} from '@keg-hub/jsutils'
 
 export type TExpression = {
   def:TStepDef
@@ -12,6 +23,11 @@ export type TExpression = {
   expression:TExpPart
   parent:TRaceStepParent
   onChange:(step:TRaceStep, old?:TRaceStep) => void
+}
+
+export type TExpOpts = {
+  value?:string|number
+  options: TAutoOpt[]
 }
 
 const numberTypes = Object.values(ExpressionNoQuoteTypes)
@@ -34,8 +50,7 @@ const formatVal = (val:string) => {
     return `'${quoted}'`
   }
 
-  let type:string= `'`
-  if(hasSingle) type = `"`
+  const [type, replace] = hasSingle ? [`"`, `'`] : [`'`, `"`]
 
   return `${type}${val}${type}`
 }
@@ -65,15 +80,43 @@ const getFixes = (
   }
 }
 
-export const useExpressionChange = (props:TExpression) => {
+const checkAliasValue = (value:string|number, options:TAutoOpt[]) => {
+  if(
+    !value
+    || isNum(value)
+    || value.startsWith(`$$`)
+    || !value.startsWith(ExpAliasTag)
+  ) return value
+
+  const found = options.find(opt => opt.label === value)
+
+  return found ? found.id : value
+}
+
+export const useExpressionChange = (props:TExpression, expOpts:TExpOpts) => {
   const {
     step,
     onChange,
     expression,
   } = props
 
+  const {
+    value,
+    options
+  } = expOpts
+
   return useInline((evt:ChangeEvent<HTMLInputElement>) => {
-    const value = removeQuotes(evt.target.value || ``)
+
+    // Ensure only changes to the input update the expression
+    if(evt.target.tagName !== `INPUT`){
+      evt?.stopPropagation?.()
+      evt?.preventDefault?.()
+      return
+    }
+
+    const val = removeQuotes(evt.target.value || ``)
+    const value = checkAliasValue(val, options)
+
     if(value === expression.value) return
 
     const { text } = expression
@@ -82,7 +125,12 @@ export const useExpressionChange = (props:TExpression) => {
 
     const { postfix, prefix } = getFixes(step.step, expression, noQuotes)
 
-    const replace = value ? noQuotes ? value : formatVal(value) : text
+    const replace = value && !isNum(value)
+      ? noQuotes
+        ? value
+        : formatVal(value)
+      : text
+
     const result = `${prefix}${replace}${postfix}`
 
     onChange?.({...step, step: result}, step)

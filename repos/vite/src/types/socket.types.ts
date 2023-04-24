@@ -20,7 +20,7 @@ export type TEndpointConf = {
   namespace?: string
 }
 
-export type TSocketEvt = {
+export type TSocketEvt<T=Record<string, any>> = {
   id: string
   name: string
   error:boolean
@@ -30,7 +30,7 @@ export type TSocketEvt = {
   socketId: string
   timestamp: number
   isRunning: boolean
-  data: Record<string, any>
+  data: T
 }
 
 

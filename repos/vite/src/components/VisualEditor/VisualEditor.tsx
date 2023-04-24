@@ -35,7 +35,6 @@ export const VisualEditor = (props:TVisualEditor) => {
     onFeatureChange,
     onFeatureActive,
     onFeatureCreate,
-    expressionOptions,
   } = useRaceHooks()
 
   const menuContext = useContextMenu()
@@ -62,7 +61,6 @@ export const VisualEditor = (props:TVisualEditor) => {
             onFeatureCreate={onFeatureCreate}
             onFeatureChange={onFeatureChange}
             onFeatureActive={onFeatureActive}
-            expressionOptions={expressionOptions}
           />
         </>
       )

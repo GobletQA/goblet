@@ -37,7 +37,6 @@ export const Feature = (props:TFeature) => {
   const { featuresRef } = props
 
   const { feature, rootPrefix } = useEditor()
-
   const onEditFeatureTitle = useEditFeatureTitle({ parent: feature })
 
   const onCreateFeature = useCallback((evt:MouseEvent<HTMLButtonElement>) => {
