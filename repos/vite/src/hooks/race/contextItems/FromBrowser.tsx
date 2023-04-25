@@ -1,9 +1,10 @@
 import type { MouseEvent } from 'react'
-import type { TSelectFromBrowserRespEvent } from '@types'
+import type { TAbortError, TSelectFromBrowserRespEvent } from '@types'
 import type { TExpPart, TRaceMenuItem, TRaceMenuItemClickCtx } from '@gobletqa/race'
 
-import { ExpressionKinds } from '@constants'
+import { limbo } from '@keg-hub/jsutils'
 import { EAstObject } from '@ltipton/parkin'
+import { ExpressionKinds } from '@constants'
 import { CursorClickIcon } from '@gobletqa/components'
 import { automateBrowser } from '@actions/socket/api/automateBrowser'
 
@@ -32,22 +33,27 @@ const fromBrowser = async (ctx:TRaceMenuItemClickCtx, evt:MouseEvent<HTMLElement
     setInputProps,
   } = ctx
 
-  // Update the inputs to be disabled until we get a response from the browser
-  // TODO: Add ability to cancel 
   setInputProps({
     disabled: true,
     className: `gb-select-element-active`,
     helperText: `Select an element from the browser`
   })
 
-  const data = await automateBrowser({
+  const [err, data] = await limbo<TSelectFromBrowserRespEvent, TAbortError>(automateBrowser({
     disabledEvents: true,
     selectorType: active.kind,
-  })
+  }))
+
+  // Reenable the input be removed the disabled prop set above
+  setInputProps({})
+
+  if(err && err?.canceled)
+    return console.log(`User canceled browser automation`)
+
+  if(!data || err)
+    return console.warn(err?.message || `Browser automation failed`, err)
 
   const value = resolveValue(active, data)
-
-  setInputProps({})
 
   onChange?.({target: { value, tagName: `INPUT` }})
 }

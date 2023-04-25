@@ -1,16 +1,17 @@
-import type { TUserAutomateOpts, TSelectFromBrowserRespEvent } from '@types'
+import type { TCancelAutomateRespEvent, TUserAutomateOpts, TSelectFromBrowserRespEvent } from '@types'
 
 import { EBrowserState } from '@types'
-import { noOpObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils'
 import { WSService } from '@services/socketService/socketService'
 import {
   SocketMsgTypes,
   BrowserStateEvt,
   WSAutomateEvent,
+  WSCancelAutomateEvent,
 } from '@constants'
 
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-
+import { PromiseAbort } from '@gobletqa/shared/utils/promiseAbort'
 
 /**
  * Calls websocket to turn on browser click listener
@@ -18,29 +19,50 @@ import { EE } from '@gobletqa/shared/libs/eventEmitter'
  * Add listener the fires when the user clicks the dom
  *
  */
-export const automateBrowser = (options:TUserAutomateOpts = noOpObj) => {
+export const automateBrowser = (options:TUserAutomateOpts = emptyObj) => {
 
-  /**
-   * TODO - Need to add some type of cancel / timeout if there's an error
-   * This will ensure the browser doesn't get stuck in an odd state
-   */
-  
-  let offEvent:any
-  return new Promise<TSelectFromBrowserRespEvent>((res, rej) => {
+  const promise = PromiseAbort<TSelectFromBrowserRespEvent>((res, rej) => {
+
     EE.emit(BrowserStateEvt, {browserState: EBrowserState.recording})
 
     WSService.emit(SocketMsgTypes.BROWSER_AUTOMATE, options)
 
     // Then listen for the response event fired from the websocket service
-    offEvent = EE.on<TSelectFromBrowserRespEvent>(
+    const selectOff = EE.on<TSelectFromBrowserRespEvent>(
       WSAutomateEvent,
       (data) => {
-
         EE.emit(BrowserStateEvt, {browserState: EBrowserState.idle})
-        offEvent?.()
-
+        selectOff?.()
         res(data)
       }
     )
+    
+    /**
+    * Listens for a cancel event
+    * When called, cancels the promise and cleans up the automation
+    * Calls clean up events on both backend and frontend
+    *
+    */
+    const cancelOff = EE.on<TCancelAutomateRespEvent>(
+      WSCancelAutomateEvent,
+      (data) => {
+        // Turn off the select listener above
+        selectOff?.()
+        // Send event to cancel on the backend
+        WSService.emit(SocketMsgTypes.CANCEL_AUTOMATE, emptyObj)
+        // Sent event to cancel on the frontend
+        EE.emit(BrowserStateEvt, {browserState: EBrowserState.idle})
+
+
+        // Finally stop listening, cancel and reject
+        cancelOff?.()
+        promise.cancel()
+        rej()
+      }
+    )
+
   })
+
+
+  return promise
 }

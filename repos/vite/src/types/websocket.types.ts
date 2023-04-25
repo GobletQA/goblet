@@ -11,3 +11,5 @@ export type TSelectFromBrowserRespEvent = TAutomateElementEvent & {
   // elementHtml: string
   // elementText: string
 }
+
+export type TCancelAutomateRespEvent = {}

@@ -41,10 +41,10 @@ export const ModalProvider = (props:TModalProvider) => {
   const [modalProps, setModalProps] = useState<Record<string, any>>(noOpObj)
 
   useEffect(() => {
-    EE.on<TModalEvtProps>(UpdateModalEvt, setModalProps, UpdateModalEvt)
+    const off = EE.on<TModalEvtProps>(UpdateModalEvt, setModalProps)
 
     return () => {
-      EE.off<TModalEvtProps>(UpdateModalEvt, UpdateModalEvt)
+      off?.()
     }
   }, [])
 

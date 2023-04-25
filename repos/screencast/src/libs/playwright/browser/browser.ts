@@ -27,6 +27,12 @@ import { checkInternalPWContext } from './checkInternalPWContext'
 import { GobletQAUrl, defaultBrowser, CreateBrowserRetry } from '@GSC/constants'
 import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
 
+type TGetBrowserOpts = {
+  noCreate?:boolean
+  browserServer?:boolean,
+}
+
+
 /**
  * Cache holder for all launched playwright browsers by type
  * @type {Object|undefined}
@@ -151,11 +157,10 @@ const createBrowser = async (
  * Returns the cached playwright page
  * Only used by testUtils
  *
- * @deprecated - Will be removed once testUtils is updated, use getBrowser instead
  *
  * @function
  */
-export const getPage = async (
+const getPage = async (
   browserConf:TBrowserConf
 ):Promise<TPWComponents> => {
   try {
@@ -217,12 +222,9 @@ getPage.creatingPage = false
  * Returns the cached Playwright context
  * Only used by testUtils
  *
- * @deprecated - Will be removed once testUtils is updated, use getBrowser instead
- * @DEPRECATED - Will be removed once testUtils is updated, use getBrowser instead
- *
  * @function
  */
-export const getContext = async (
+const getContext = async (
   browserConf:TBrowserConf
 ) => {
 
@@ -279,15 +281,18 @@ export const closeBrowser = async (type?:EBrowserType) => {
   return PW_BROWSERS
 }
 
+
 /**
  * Gets an existing browser, or starts a new one using the Playwright API
  * @function
  */
 const getBrowser = async (
   browserConf:TBrowserConf = noOpObj as TBrowserConf,
-  browserServer?:boolean,
+  opts:TGetBrowserOpts=noOpObj
 ):Promise<TPWBrowser> => {
   try {
+
+    const { noCreate, browserServer } = opts
 
     const type = getBrowserType(browserConf.type as EBrowserType)
     const pwBrowser = PW_BROWSERS[type]
@@ -295,6 +300,12 @@ const getBrowser = async (
     if (pwBrowser) {
       Logger.verbose(`getBrowser - Using existing browser ${type}`)
       return { browser: pwBrowser } as TPWBrowser
+    }
+
+    if(noCreate){
+      const message = `getBrowser - Could not find browser of type ${type}`
+      Logger.error(message)
+      throw new Error(message)
     }
 
     // Hack due to multiple calls on frontend startup
@@ -305,7 +316,7 @@ const getBrowser = async (
     if(getBrowser.creatingBrowser)
       return new Promise((res, rej) => {
         Logger.verbose(`getBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`)
-        setTimeout(() => res(getBrowser(browserConf, browserServer)), CreateBrowserRetry)
+        setTimeout(() => res(getBrowser(browserConf, opts)), CreateBrowserRetry)
       })
 
     getBrowser.creatingBrowser = true
@@ -368,7 +379,7 @@ export const startBrowser = async (
 
   if(browserOnly){
     const browserConf = buildBrowserConf(config)
-    const resp = await getBrowser(browserConf, browserServer)
+    const resp = await getBrowser(browserConf, { browserServer })
 
     return resp as TPWComponents
   }
@@ -428,3 +439,14 @@ export const startBrowser = async (
 }
 
 startBrowser.creatingBrowser = false
+
+
+export const getPWComponents = async (
+  config:TBrowserConf = noOpObj as TBrowserConf,
+) => {
+  const pwComponents = checkInternalPWContext(getBrowserType(config.type as EBrowserType))
+
+  return pwComponents.page
+    ? pwComponents
+    : await getPage(config)
+}

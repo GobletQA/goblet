@@ -7,9 +7,9 @@ import type {
 } from '@GSC/types'
 
 import { Automate } from '@GSC/libs/playwright/automate/automate'
-import { startBrowser } from '@GSC/libs/playwright/browser/browser'
+import { getPWComponents, startBrowser } from '@GSC/libs/playwright/browser/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds } from '@gobletqa/shared/constants'
 
 const onBrowserAutomate = async (
   data:TUserAutomateOpts,
@@ -34,5 +34,12 @@ const onBrowserAutomate = async (
 export const browserAutomate = (app:Express) => {
   return async ({ data, socket, Manager, user }:TSocketEvtCBProps) => {
     await onBrowserAutomate(data, socket, Manager, app)
+  }
+}
+
+export const cancelAutomate = (app:Express) => {
+  return async ({ data, socket, Manager, user }:TSocketEvtCBProps) => {
+    const pwComponents = await getPWComponents(data.browser)
+    await Automate.cancel(pwComponents, data)
   }
 }

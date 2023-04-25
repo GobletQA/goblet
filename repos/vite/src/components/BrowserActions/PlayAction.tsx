@@ -37,7 +37,7 @@ const RunTests = (props:TBrowserActionProps) => {
   const noActiveFile = !Boolean(location)
   const disabled = (browserState !== EBrowserState.idle) || noActiveFile
 
-  return (
+  return !disabled && (
     <BaseAction
       text='Play'
       as='button'
@@ -51,7 +51,7 @@ const RunTests = (props:TBrowserActionProps) => {
       tooltip='Play the steps from active file in the browser'
       disabledTooltip='DISABLED - Open a test or script to use this action'
     />
-  )
+  ) || null
 }
 
 export const PlayAction:TBrowserAction = {

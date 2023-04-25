@@ -49,12 +49,12 @@ export const useScreencastHooks = () => {
 
 
   useEffect(() => {
-    EE.on<TGlobalCopyEvent>(GlobalCopyEvt, ({ text }) => {
+    const off = EE.on<TGlobalCopyEvent>(GlobalCopyEvt, ({ text }) => {
       vncRef?.current?.clipboardPaste(text)
     }, GlobalCopyEvt)
 
     return () => {
-      EE.off<TGlobalCopyEvent>(GlobalCopyEvt)
+      off?.()
     }
   }, [])
 

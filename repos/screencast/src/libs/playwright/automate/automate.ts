@@ -99,6 +99,7 @@ export class Automate {
     const page = Automate.getPage(automate)
     await automate?.selectPageElementOn?.(page, options)
 
+    return automate
   }
 
   static turnOffElementSelect = async (pwComponents:Partial<TPWComponents>) => {
@@ -113,6 +114,7 @@ export class Automate {
     const page = Automate.getPage(automate)
     await automate?.selectPageElementOff?.(page)
 
+    return automate
   }
 
   static getPageUrl = async (
@@ -136,6 +138,16 @@ export class Automate {
     const parent = Automate.getParent(pwComponents)
     const automate = parent.__GobletAutomateInstance
     automate.registerListener(onEvent)
+  }
+
+  /**
+   * Turns off element select in the browser
+   * Will most likely do other things to once recording it worked on
+   */
+  static cancel = async (pwComponents:Partial<TPWComponents>, data:any) => {
+    Logger.info(`Automate - Canceling automation`)
+    await Automate.turnOffElementSelect(pwComponents)
+
   }
 
   /**

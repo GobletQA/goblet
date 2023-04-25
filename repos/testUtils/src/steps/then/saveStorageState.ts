@@ -1,5 +1,6 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 
+import { isStr } from '@keg-hub/jsutils'
 import { Then } from '@GTU/Parkin'
 import {
   getContext,
@@ -16,8 +17,7 @@ export const savePageState = async (
   world:TWorldConfig
 ) => {
   const context = await getContext()
-
-  return await saveContextState(context, title)
+  return await saveContextState(context, isStr(title) ? title : undefined)
 }
 
 const meta = {

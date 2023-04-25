@@ -5,11 +5,11 @@ import { styled } from '@mui/material/styles'
 
 export const OpenTabsContainer = styled(Box)`
   width: 100%;
-  height: 40px;
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
   box-sizing: border-box;
+  height: ${dims.editor.tabs.px};
   min-height: ${dims.editor.tabs.px};
   padding-right: ${dims.editor.tabs.px};
   background-color: var(--goblet-editorGroupHeader-tabsBackground);

@@ -2,14 +2,14 @@ import { SidebarCloseWidth, SidebarOpenWidth } from '@GBC/constants/values'
 
 const bNavH = 37
 const bUrlH = 28
-const bActH = 40
+const bActH = 45
 
 const tTabH = 30
 const tHeaderH = 30
 
 const divider = 1
 const headerH = 40
-const editorTabs = 40
+const editorTabs = 45
 const sectionHeaderH = 40
 const raceEditorHeader = 45
 const raceSectionHeaderH = 40
