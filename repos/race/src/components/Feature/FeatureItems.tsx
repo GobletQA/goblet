@@ -7,10 +7,12 @@ import { addRule } from '@GBR/actions/rule/addRule'
 import { ESectionExt, ESectionType } from '@GBR/types'
 import { addBackground } from '@GBR/actions/background'
 import { addScenario } from '@GBR/actions/scenario/addScenario'
+import { toggleWorldEditor } from '@GBR/actions/general/toggleWorldEditor'
 
 import {
   Span,
   colors,
+  WorldIcon,
   StepAddIcon,
   CardPlusIcon,
   NotePlusIcon,
@@ -21,7 +23,7 @@ import {
 export type TFeatureItem = Omit<TFeatureAction, `feature`> & {
   text:string
   key:ESectionType|ESectionExt
-  featureKey:keyof TRaceFeature | `steps` | `general`
+  featureKey:keyof TRaceFeature | `steps` | `general` | `world`
 }
 
 const GreenText = (props:ComponentProps<typeof Span>) => (
@@ -115,8 +117,18 @@ export const StepItem:TFeatureItem = {
 }
 
 
+export const WorldItem:TFeatureItem = {
+  Icon: WorldIcon,
+  featureKey: `world`,
+  key: ESectionExt.world,
+  type: ESectionExt.world,
+  text: `Open World Editor`,
+  onClick: () => toggleWorldEditor()
+}
+
 export const FeatureItems:TFeatureItem[] = [
   RuleItem,
+  WorldItem,
   GeneralItem,
   ScenarioItem,
   BackgroundItem,

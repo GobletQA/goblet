@@ -4,22 +4,28 @@ import { Text, Label, PurpleText, GreenText, Span, getColor, gutter, colors } fr
 
 export const ContextItemContainer = styled(Box)`
   width: 100%;
+  cursor: pointer;
 `
 export const ContextItemKey = styled(Span)`
+  cursor: pointer;
+  font-size: 14px;
   font-weight: bold;
   letter-spacing: 0.2px;
-  font-size: 14px;
   color: ${colors.purple12};
 `
 export const ContextItemBreak = styled(Span)`
+  cursor: pointer;
   margin: 0px ${gutter.margin.qpx};
 `
 
-export const ContextItemValWrap = styled(Span)``
+export const ContextItemValWrap = styled(Span)`
+  cursor: pointer;
+`
 
 
 export const ContextItemVal = styled(Label)`
   font-size: 12px;
+  cursor: pointer;
   font-weight: bold;
   letter-spacing: 0.2px;
   color: ${getColor(colors.gray20, colors.gray03)};

@@ -76,9 +76,9 @@ export const useSubMenu = (props:THUseSubMenu) => {
       items,
       onClose,
       anchorRef,
-      posTH: `left`,
-      posAH: `right`,
-      posTV: `center`,
+      posTH: `center`,
+      posAH: `center`,
+      posTV: `top`,
       posAV: `bottom`,
     },
   }

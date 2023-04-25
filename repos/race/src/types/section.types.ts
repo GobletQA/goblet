@@ -3,6 +3,7 @@ import { EAstObject } from '@ltipton/parkin'
 export enum ESectionExt {
   story=`story`,
   general=`general`,
+  world=`world`
 }
 
 export enum EGherkinKeys {

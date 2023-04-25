@@ -10,6 +10,7 @@ import {
 } from '@gobletqa/components'
 import {
   RuleItem,
+  WorldItem,
   GeneralItem,
   ScenarioItem,
   BackgroundItem,
@@ -51,6 +52,7 @@ export const useFeatureItems = (props:THFeatureItems) => {
         Icon: settings?.displayMeta ? NoteMinusIcon : NotePlusIcon,
         text: settings?.displayMeta ? `Hide General` : `Show General`,
       },
+      WorldItem
     ]
   }, [feature, settings?.displayMeta])
 }

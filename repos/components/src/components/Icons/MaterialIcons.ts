@@ -54,6 +54,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import BoltIcon from '@mui/icons-material/Bolt'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import MenuIcon from '@mui/icons-material/Menu'
+import WorldIcon from '@mui/icons-material/Language'
+
 
 export {
   Settings,
@@ -112,4 +114,5 @@ export {
   BoltIcon,
   DragIndicatorIcon,
   MenuIcon,
+  WorldIcon
 }

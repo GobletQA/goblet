@@ -27,7 +27,7 @@ export type TInput = Omit<ComponentProps<typeof InputText>, `error`|`inputRef`> 
   labelWrapSx?: CSSProperties
   value?:string|boolean|number
   variant?:`outlined`|`filled`|`standard`
-  inputRef:RefObject<HTMLInputElement | HTMLTextAreaElement | undefined>
+  inputRef?:RefObject<HTMLInputElement | HTMLTextAreaElement | undefined>
 }
 
 export const Input = (props:TInput) => {

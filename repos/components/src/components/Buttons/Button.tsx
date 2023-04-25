@@ -15,7 +15,14 @@ export type TButton = ComponentProps<typeof MuiButton> & {
 }
 
 const styles = {
-  text: {},
+  text: {
+    font: `inherit`,
+    fontSize: `inherit`,
+    fontWeight: `inherit`,
+    fontFamily: `inherit`,
+    lineHeight: `inherit`,
+    letterSpacing: `inherit`,
+  },
   button: {padding: `6px 12px 6px 6px`},
   icon: {marginRight: `5px`, fontSize: `20px`},
 }

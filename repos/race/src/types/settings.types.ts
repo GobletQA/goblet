@@ -21,3 +21,8 @@ export type TUpdateSettingEvt = {
 }
 
 export type TActionMethod = (state:TSettingsState, action:TSettingAction) => TSettingsState
+
+
+export type TToggleWorldEditorEvt = {
+  state?:boolean
+}
