@@ -11,8 +11,8 @@ const saveElToWorld = async (
 ) => {
   if(!worldPath)
     throw new Error(`A path on the $world object is required`)
-  
-  return await saveWorldLocator(selector, world, worldPath)
+
+  return await saveWorldLocator({ selector, world, worldPath })
 }
 
 const autoSaveElToWorld = async (selector:string, world:TWorldConfig) => {
@@ -24,8 +24,8 @@ const autoSaveElToWorld = async (selector:string, world:TWorldConfig) => {
   await element.focus()
 }
 
-
 const meta = {
+  autoSaveLocator: true,
   description: `Locates and saves an element for use in subsequent steps.`,
   module: `saveElement`,
   examples: [

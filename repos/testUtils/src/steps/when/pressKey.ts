@@ -36,7 +36,8 @@ const meta = {
       example: `a`,
     },
   ],
-  race: true
+  race: true,
+  fromSavedLocator: true,
 }
 
 When(`I press {string}`, pressKey, meta)

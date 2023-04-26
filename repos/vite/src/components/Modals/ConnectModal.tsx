@@ -1,13 +1,13 @@
 import type { CSSProperties } from 'react'
-import type { TModalFooter, TModalComponent, TModalRef } from '@types'
+import type { TModalFooter, TModalComponent, TModalRef } from '@gobletqa/components'
 
 
 import Box from '@mui/material/Box'
 import { useContainer } from '@store'
 import { lazy, Suspense, useMemo } from 'react'
+import { ModalFooter } from '@gobletqa/components'
 import { EModalTypes, EContainerState } from '@types'
 import { ConnectForm } from '@components/Forms/ConnectForm'
-import { ModalFooter } from '@components/ModalManager/ModalFooter'
 import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
 import { gutter, H3, Text, PlugIcon, Loading } from '@gobletqa/components'
 

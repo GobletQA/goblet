@@ -4,11 +4,10 @@ import Box from '@mui/material/Box'
 import { Advanced } from './Advanced'
 import { RepoConnect } from './RepoConnect'
 import Grid from '@mui/material/Unstable_Grid2'
-import { Form, gutter } from '@gobletqa/components'
 import { useSubmit } from '@hooks/connect/useSubmit'
 import { useConnect } from '@hooks/connect/useConnect'
 import { useInputError } from '@hooks/form/useInputError'
-import { ModalMessage } from '@components/ModalManager/ModalMessage'
+import { Form, gutter, ModalMessage } from '@gobletqa/components'
 import { useConnectActions } from '@hooks/connect/useConnectActions'
 
 export type TConnectForm = {

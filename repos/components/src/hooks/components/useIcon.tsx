@@ -12,7 +12,6 @@ export type TIconProps = {
   svgStyle?: CSSProperties
 }
 
-
 export const useIcon = (props:TIcon) => {
   const styleRef = useRef(props.style)
   if(props.style && props.style !== styleRef.current) styleRef.current = props.style

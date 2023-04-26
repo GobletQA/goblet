@@ -1,4 +1,4 @@
-import type { TModalRef, TModalComponent } from '@types'
+import type { TModalRef, TModalComponent } from '@gobletqa/components'
 
 import { EModalTypes } from '@types'
 import { Environments } from '@components/Environments'

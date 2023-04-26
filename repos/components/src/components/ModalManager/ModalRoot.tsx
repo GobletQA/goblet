@@ -1,4 +1,4 @@
-import type { TModalSlots, TModal, TModalTransition } from '@types'
+import type { TModalSlots, TModal, TModalTransition } from '@GBC/types'
 
 import {
   useMemo,
@@ -7,13 +7,11 @@ import {
   useCallback,
 } from 'react'
 
-import { useModal } from '@store'
 import Slide from '@mui/material/Slide'
 import Dialog from '@mui/material/Dialog'
 import { ModalFooter } from './ModalFooter'
 import { ModalHeader } from './ModalHeader'
 import { ModalContent } from './ModalContent'
-import { toggleModal } from '@actions/modals'
 import { noOpObj, exists } from '@keg-hub/jsutils'
 
 const modalCloseReasons = [`escapeKeyDown`, `backdropClick`]
@@ -61,7 +59,7 @@ const useModalSlots = (props:TModal) => {
 export const ModalRoot = (props:TModal) => {
 
   const {
-    visible=false,
+    open=false,
     text,
     slots,
     title,
@@ -69,6 +67,7 @@ export const ModalRoot = (props:TModal) => {
     actions,
     children,
     titleProps,
+    toggleModal,
     actionProps,
     type=`main`,
     manualClose,
@@ -113,9 +112,6 @@ export const ModalRoot = (props:TModal) => {
       : { transitionDuration: 500, TransitionComponent: Transition }
   }, [overrideContent, disableTransition])
 
-  // Not sure why, but visible prop is not updating
-  // So we have to re-pull the open state from the store
-  const { visible:open } = useModal()
 
   return (
     <Dialog

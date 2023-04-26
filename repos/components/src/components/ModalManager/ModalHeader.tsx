@@ -2,14 +2,16 @@ import type { CSSProperties } from 'react'
 import type {
   TModal,
   TModalTitle,
-} from '@types'
+} from '@GBC/types'
 
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
 import { noOpObj } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
+import { gutter, colors } from '@GBC/theme'
+import { useTheme } from '@GBC/hooks/theme'
+import { getColor } from '@GBC/utils/theme'
 import Typography from '@mui/material/Typography'
-import { gutter, colors, getColor, useTheme } from '@gobletqa/components'
 
 export const ModalHeader = (props:TModal) => {
   const {

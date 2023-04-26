@@ -11,7 +11,6 @@ import {
   AutoSavedLocatorWorldPath
 } from '@GTU/Constants'
 
-
 type TClickEl = {
   save?:boolean
   selector?:string
@@ -23,6 +22,13 @@ type TClickEl = {
 
 type TFillInput = TClickEl & {
   text:string
+}
+
+type TSaveWorldLocator = {
+  selector:string,
+  worldPath?:string
+  element?:TLocator
+  world:TWorldConfig
 }
 
 const checkTypes = {
@@ -147,12 +153,14 @@ export const saveWorldData = (
  * And registers it as the current ancestor
  *
  */
-export const saveWorldLocator = async (
-  selector:string,
-  world:TWorldConfig,
-  worldPath?:string,
-) => {
-  const element = await getLocator(selector)
+export const saveWorldLocator = async (props:TSaveWorldLocator) => {
+  const {
+    world,
+    selector,
+    worldPath
+  } = props
+
+  const element = props.element || await getLocator(selector)
   const cleaned = worldPath
     ? cleanWorldPath(worldPath)
     : AutoSavedLocatorWorldPath
@@ -199,8 +207,14 @@ export const getWorldLocator = (
     ? getFromWorldPath(worldPath, world, fallback)
     : get(world, SavedLocatorWorldPath, get(world, AutoSavedLocatorWorldPath, fallback))
 
-  if(saved === undefined)
-    throw new Error(`Saved value "$world.${worldPath}" does not exist.`)
+  if(saved === undefined){
+    if(worldPath)
+      throw new Error(`Saved value "$world.${worldPath}" does not exist.`)
+    
+    console.log(SavedLocatorWorldPath)
+    console.log(AutoSavedLocatorWorldPath)
+
+  }
 
   return saved
 }

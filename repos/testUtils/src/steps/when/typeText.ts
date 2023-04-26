@@ -63,8 +63,10 @@ When(`I type {string}`, typeWithSaved, {
   ...meta,
   race: true,
   name: `Type text`,
+  fromSavedLocator: true,
   expressions: [meta.expressions[0]]
 })
+
 When(`I write {string}`, typeWithSaved, meta)
 When(`I type {string} into {string}`, typeWithSelector, {
   ...meta,

@@ -65,6 +65,7 @@ When(`I set the text to {string}`, setTextWithSaved, {
   name: `Set input value`,
   expressions: [meta.expressions[0]],
   examples: [`I set the text to "some text"`],
+  fromSavedLocator: true,
 })
 
 When(`I set the text {string} to the element {string}`, setTextWithSelector, meta)

@@ -17,10 +17,10 @@ export const setSelectOption = async (
   world:TWorldConfig
 ) => {
   const page = await getPage()
-  
+
   // Defaults to use label if no 'by' key exists
   const options = data.split(',').map(value => ({ [key]: value }))
-  const element = await saveWorldLocator(selector, world)
+  const element = await saveWorldLocator({ selector, world })
   const resp = await element.selectOption(options)
 
   await saveWorldData({ options }, world)
@@ -29,7 +29,6 @@ export const setSelectOption = async (
 }
 
 When(`I set the select {string} to {string} by {string}`, setSelectOption, {
-  
   module: `setSelectOption`,
   description: `Locates a select element by selector and selects specified options.  Can specify options by option label or option value.`,
   expressions: [
@@ -56,6 +55,7 @@ When(`I set the select {string} to {string} by {string}`, setSelectOption, {
       example: `value`,
     },
   ],
-  race: true
+  race: true,
+  autoSaveLocator: true,
 })
 

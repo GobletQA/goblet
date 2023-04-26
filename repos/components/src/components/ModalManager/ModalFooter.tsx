@@ -1,9 +1,9 @@
-import type { CSSProperties, ComponentProps } from 'react'
-import type { TModalFooter, TModalAction } from '@types'
+import type { CSSProperties } from 'react'
+import type { TModalFooter, TModalAction } from '@GBC/types'
 
 import Button from '@mui/material/Button'
-import { useIcon } from '@hooks/components/useIcon'
 import DialogActions from '@mui/material/DialogActions'
+import { useGetIcon } from '@GBC/hooks/components/useGetIcon'
 
 const FooterAction = (props:TModalAction) => {
   const {
@@ -19,8 +19,8 @@ const FooterAction = (props:TModalAction) => {
     ...buttonProps
   } = props
   
-  const EIcon = useIcon(EndIcon, endIcon)
-  const SIcon = useIcon(StartIcon, startIcon)
+  const EIcon = useGetIcon(EndIcon, endIcon)
+  const SIcon = useGetIcon(StartIcon, startIcon)
 
   return (
     <Button

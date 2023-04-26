@@ -1,4 +1,4 @@
-import type { TModalRef, TModalComponent } from '@types'
+import type { TModalRef, TModalComponent } from '@gobletqa/components'
 import { lazy, Suspense, useEffect } from 'react'
 
 import { EModalTypes } from '@types'
