@@ -1,13 +1,8 @@
 import type { TOnWorldChange } from '@GBR/types'
 import type { TWorldConfig } from '@ltipton/parkin'
 
-import Divider from '@mui/material/Divider'
-import {
-  AliasList,
-  WorldAliasHeader,
-  AliasListContainer,
-  WorldAliasHeaderText,
-} from './WorldEditor.styled'
+import { WorldAliasListHeader } from './WorldAliasListHeader'
+import { AliasList, AliasListContainer } from './WorldEditor.styled'
 
 import { WorldAliasItem } from './WorldAliasItem'
 
@@ -70,7 +65,6 @@ const useOnValueChange = (props:TWorldAliasList, list:TAliasList) => {
   }, [world.$alias, onChange])
 }
 
-
 export const WorldAliasList = (props:TWorldAliasList) => {
   const {
      world
@@ -82,15 +76,9 @@ export const WorldAliasList = (props:TWorldAliasList) => {
 
   return (
     <AliasListContainer className='gb-world-alias-container' >
-
-      <WorldAliasHeader>
-        <WorldAliasHeaderText>
-          Aliases
-        </WorldAliasHeaderText>
-        <Divider />
-      </WorldAliasHeader>
-    
       <AliasList className='gb-world-alias-list' >
+        <WorldAliasListHeader />
+
         {list?.length && list.map(item => {
           return (
             <WorldAliasItem

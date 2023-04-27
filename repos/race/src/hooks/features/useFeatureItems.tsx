@@ -50,7 +50,7 @@ export const useFeatureItems = (props:THFeatureItems) => {
         dividerTop: true,
         onClick: () => toggleMeta(),
         Icon: settings?.displayMeta ? NoteMinusIcon : NotePlusIcon,
-        text: settings?.displayMeta ? `Hide General` : `Show General`,
+        text: settings?.displayMeta ? `Hide Meta` : `Show Meta`,
       },
       WorldItem
     ]

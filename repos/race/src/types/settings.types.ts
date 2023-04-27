@@ -8,7 +8,6 @@ export enum ESettingAction {
   ToggleMeta = `ToggleMeta`,
 }
 
-
 export type TSettingUpdate = Partial<TSettingsState>
 
 export type TSettingAction = {
@@ -23,6 +22,11 @@ export type TUpdateSettingEvt = {
 export type TActionMethod = (state:TSettingsState, action:TSettingAction) => TSettingsState
 
 
-export type TToggleWorldEditorEvt = {
+export type TToggleRaceModalEvt = {
   state?:boolean
+  type?:ERaceModal
+}
+
+export enum ERaceModal {
+  WorldEditor=`WorldEditor`
 }

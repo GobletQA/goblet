@@ -1,10 +1,10 @@
 import type { TEditorContainer } from '@GBR/types'
 
-import { Sidebar } from '../Sidebar'
-import { Feature } from '../Feature'
-import { FeaturesPanel } from '../Features'
-import { WorldEditor } from '../WorldEditor'
-import { useTabCallbacks } from '@gobletqa/race/hooks/tabs/useTabCallbacks'
+import { Sidebar } from '@GBR/components/Sidebar'
+import { Feature } from '@GBR/components/Feature'
+import { Modal } from '@GBR/components/Modals/Modal'
+import { FeaturesPanel } from '@GBR/components/Features'
+import { useTabCallbacks } from '@GBR/hooks/tabs/useTabCallbacks'
 import { useSidebarResize, EditorActions, OpenedTabs } from '@gobletqa/components'
 import {
   EditorContainer,
@@ -112,7 +112,7 @@ export const Container = (props:TEditorContainer) => {
             featuresRef={featuresRef}
           />
         </EditorContainer>
-        <WorldEditor />
+        <Modal />
         {actions?.length && (
           <EditorActions
             actions={actions}

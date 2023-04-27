@@ -35,4 +35,9 @@ export const SectionHeaderType = styled(Span)`
 export const SectionHeaderContent = styled(Span)`
   ${headerCss.textShared}
   color: var(--goblet-editor-foreground);
+
+  &.gb-section-header-part-general {
+    color: ${colors.green13}
+  }
+
 `

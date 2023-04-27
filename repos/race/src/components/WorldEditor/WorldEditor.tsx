@@ -1,57 +1,92 @@
-import type { ReactNode } from 'react'
-import type { TToggleWorldEditorEvt } from '@GBR/types'
+import type { TWorldGroupMeta } from '@GBR/types'
+import type { TWorldConfig } from '@ltipton/parkin'
+import type { ReactNode, SyntheticEvent } from 'react'
 
-import { useState } from 'react'
-import Modal from '@mui/material/Modal'
+import { WorldTabs } from './WorldTabs'
 import { useParkin } from '@GBR/contexts'
-import { exists } from '@keg-hub/jsutils'
-import { WorldAliasList } from './WorldAliasList'
-import { useOnEvent } from '@gobletqa/components'
-import { ToggleWorldEditorEvt } from '@GBR/constants'
-
-import { WorldEditorHeader } from './WorldEditorHeader'
-import {
-  WorldEditorContent,
-  WorldEditorContainer
-} from './WorldEditor.styled'
+import { WorldPanel } from './WorldPanel'
+import { useMemo, useState, useCallback } from 'react'
+import { WorldEditorContainer } from './WorldEditor.styled'
 
 export type TWorldEditor = {
   children?:ReactNode
 }
 
+const allowedGroups = [
+  `$alias`
+]
+
+
+const useGroupMeta = (world:TWorldConfig) => {
+  const groups = useMemo(() => {
+    return Object.entries(world)
+      .reduce((acc, [name, group]) => {
+        allowedGroups.includes(name)
+        && acc.push({
+            name,
+            group,
+            idx: acc.length
+          } as TWorldGroupMeta)
+
+        return acc
+      }, [] as TWorldGroupMeta[])
+  }, [world])
+
+  const [groupIdx, setGroupIdx] = useState<number>(0)
+  const group = groups[groupIdx]
+
+  const onChangeGroup = useCallback((event: SyntheticEvent, key: number) => {
+    const nextGrp = groups[key]
+
+    nextGrp
+      && group.name !== nextGrp.name
+      && setGroupIdx(key)
+
+  }, [group, groups])
+  
+  return {
+    group,
+    groups,
+    groupIdx,
+    setGroupIdx,
+    onChangeGroup,
+  }
+}
 
 export const WorldEditor = (props:TWorldEditor) => {
+
   const {
     children
   } = props
-  
-  const {world, updateWorld} = useParkin()
-  const [open, setOpen] = useState(false)
-  const onClose = () => setOpen(false)
 
-  useOnEvent<TToggleWorldEditorEvt>(ToggleWorldEditorEvt, ({ state }) => {
-    const update = exists(state) ? state : !open
-    setOpen(update)
-  })
+  const {world, updateWorld} = useParkin()
+  const {
+    groups,
+    groupIdx,
+    onChangeGroup
+  } = useGroupMeta(world)
 
   return world && (
-    <WorldEditorContainer>
-      <Modal
-        open={open}
-        onClose={onClose}
-        className='pb-world-modal'
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <WorldEditorContent className='pb-world-modal-content' >
-          <WorldEditorHeader />
-          <WorldAliasList
-            world={world}
-            onChange={updateWorld}
-          />
-          {children}
-        </WorldEditorContent>
-      </Modal>
+    <WorldEditorContainer className='pb-world-modal-container' >
+      <WorldTabs
+        groups={groups}
+        value={groupIdx}
+        onChange={onChangeGroup}
+      />
+      {
+        groups?.length &&
+          groups.map(group => {
+            return (
+              <WorldPanel
+                group={group}
+                world={world}
+                value={groupIdx}
+                onChange={updateWorld}
+                key={`${group.idx}-${group.name}`}
+              />
+            )
+          })
+      }
     </WorldEditorContainer>
   ) || null
   

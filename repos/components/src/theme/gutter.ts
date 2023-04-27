@@ -41,5 +41,7 @@ export const gutter = {
     paddingLeft: {paddingLeft: `${paddingSize}px`},
     paddingBottom: {paddingBottom: `${paddingSize}px`},
     paddingRight: {paddingRight: `${paddingSize}px`},
+    paddingV: {paddingLeft: `${paddingSize}px`, paddingRight: `${paddingSize}px`},
+    paddingH: { paddingTop: `${paddingSize}px`, paddingBottom: `${paddingSize}px` },
   }
 }

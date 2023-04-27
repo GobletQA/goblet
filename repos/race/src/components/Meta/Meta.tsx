@@ -3,15 +3,22 @@ import type { TRaceFeature, TFeaturesRef } from '@GBR/types'
 import { Tags } from '../Tags'
 import { Title } from '../Title'
 import { Story } from '../Story'
-import { Section } from '../Section'
-import { ESectionType, ESectionExt } from '@GBR/types'
+import Box from '@mui/material/Box'
 import { addStory } from '@GBR/actions/story'
+import { Section, SectionHeader } from '../Section'
+import { ESectionType, ESectionExt } from '@GBR/types'
 
-import { AddStoryAct } from '../Actions/AddStory'
 import { EmptyFeatureUUID } from '@GBR/constants'
-import { ToggleMetaAct } from '../Actions/ToggleMeta'
 import { useSettings } from '@GBR/contexts/SettingsContext'
 import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
+import {
+  gutter,
+  useInline,
+  stopEvent,
+  NoteMinusIcon,
+  UserDetailsIcon
+} from '@gobletqa/components'
+
 
 export type TMeta = {
   parent:TRaceFeature
@@ -20,7 +27,7 @@ export type TMeta = {
 }
 
 export const Meta = (props:TMeta) => {
-  const { settings } = useSettings()
+  const { settings, toggleMeta } = useSettings()
 
   const {
     parent,
@@ -28,6 +35,17 @@ export const Meta = (props:TMeta) => {
   } = props
 
   const onEditFeatureTitle = useEditFeatureTitle(props)
+
+  const onHideMeta = useInline((evt:MouseEvent) => {
+    stopEvent(evt)
+    toggleMeta()
+  })
+
+
+  const onShowStory = useInline((evt:MouseEvent) => {
+    stopEvent(evt)
+    addStory()
+  })
 
   // Always show if it's an empty feature without a title
   if(parent.uuid !== EmptyFeatureUUID && !settings?.displayMeta) return null
@@ -37,37 +55,50 @@ export const Meta = (props:TMeta) => {
       show={true}
       parent={parent}
       id={parent.uuid}
-      label={`general`}
+      label={
+        <SectionHeader
+          typeHidden
+          content={`Feature Meta`}
+          type={ESectionExt.general}
+        />
+      }
       type={ESectionType.feature}
       className='gb-feature-general-container'
       dropdownSx={{ marginBottom: `0px !important` }}
       actions={[
-        (
-          <AddStoryAct
-            onClick={addStory}
-            type={ESectionExt.story}
-            title={`Add User Story`}
-            key={`gb-general-add-story-action`}
-          />
-        ),
-        (
-          <ToggleMetaAct
-            key={`gb-general-toggle-general`}
-          />
-        )
+        {
+          onClick: onShowStory,
+          Icon: UserDetailsIcon,
+          type: ESectionExt.story,
+          label: `Add User Story`,
+          key: `gb-general-add-story-action`,
+        },
+        {
+          label: `Hide Meta`,
+          Icon: NoteMinusIcon,
+          onClick: onHideMeta,
+          type: ESectionExt.general,
+          key: `gb-general-toggle-general`,
+        }
       ]}
     >
-      <Title
-        uuid={parent.uuid}
-        value={parent.feature}
-        type={ESectionType.feature}
-        onBlur={onEditFeatureTitle}
-      />
-      <Tags
-        parent={parent}
-        featuresRef={featuresRef}
-        type={ESectionType.feature}
-      />
+      <Box
+        padding={gutter.padding.px}
+        className='gb-feature-meta-top-content'
+      >
+        <Title
+          autoFocus
+          uuid={parent.uuid}
+          value={parent.feature}
+          type={ESectionType.feature}
+          onBlur={onEditFeatureTitle}
+        />
+        <Tags
+          parent={parent}
+          featuresRef={featuresRef}
+          type={ESectionType.feature}
+        />
+      </Box>
       <Story
         parent={parent}
         featuresRef={featuresRef}

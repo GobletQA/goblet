@@ -1,8 +1,6 @@
 import type { TModalRef } from '@gobletqa/components'
 
-import {
-  ModalManager,
-} from '@gobletqa/components'
+import { ModalManager } from '@gobletqa/components'
 
 import { useMemo } from 'react'
 import { useModal } from '@store'
@@ -14,7 +12,12 @@ const MapModals = ModalMap as unknown as Record<any, TModalRef>
 
 export const Modal = () => {
   const { type, visible, modalProps } = useModal()
-  const ActiveModal = useMemo(() => Object.values(MapModals).find(Modal => Modal.modalType === type), [type])
+
+  const ActiveModal = useMemo(
+    () => type && Object.values(MapModals).find(Modal => Modal.modalType === type),
+    [type]
+  )
+
   const contextProps = useModalProps()
 
   return ActiveModal && (

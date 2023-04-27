@@ -5,10 +5,14 @@ import { Desire } from './Desire'
 import { Reason } from './Reason'
 import { Section } from '../Section'
 import { Perspective } from './Perspective'
-import { DeleteAct } from '../Actions/Delete'
+import { removeStory } from '@GBR/actions/story'
 import { ESectionExt, ESectionType } from '@GBR/types'
-import { addStory, removeStory } from '@GBR/actions/story'
-import { gutter, stopEvent, useInline } from '@gobletqa/components'
+import {
+  gutter,
+  TrashIcon,
+  useInline,
+  stopEvent,
+} from '@gobletqa/components'
 
 
 export type TMeta = {
@@ -17,7 +21,11 @@ export type TMeta = {
 }
 
 const styles = {
-  section: gutter.sx.marginTop
+  section: {
+    border: `none`,
+    ...gutter.sx.marginTop,
+    ...gutter.sx.paddingV
+  },
 }
 
 export const Story = (props:TMeta) => {
@@ -30,7 +38,6 @@ export const Story = (props:TMeta) => {
   } = parent
   
   const hasStory = Boolean(desire || reason || perspective)
-  const onClick = useInline(() => addStory())
   
   const onRemove = useInline<MouseEventHandler<HTMLButtonElement>>((evt) => {
     stopEvent(evt)
@@ -46,13 +53,13 @@ export const Story = (props:TMeta) => {
       type={ESectionExt.story}
       id={`${parent.uuid}-story`}
       className='gb-story-section'
-      actions={[
-        <DeleteAct
-          onClick={onRemove}
-          type={ESectionExt.story}
-          key={`gb-story-remove-action`}
-        />
-      ]}
+      actions={[{
+        Icon: TrashIcon,
+        onClick: onRemove,
+        type: ESectionExt.story,
+        label: `Remove User Story`,
+        key: `gb-story-remove-action`,
+      }]}
     >
       <Perspective {...props} type={ESectionType.feature} />
       <Desire {...props} type={ESectionType.feature} />

@@ -1,4 +1,4 @@
-import { ESectionType } from '@GBR/types'
+import { ESectionType, ESectionExt } from '@GBR/types'
 import { capitalize, cls } from '@keg-hub/jsutils'
 import {
   SectionHeaderText,
@@ -7,14 +7,16 @@ import {
 } from './SectionHeader.styled'
 
 export type TSectionHeader = {
-  type: ESectionType
   content?:string
+  typeHidden?:boolean
+  type: ESectionType|ESectionExt
 }
 
 export const SectionHeader = (props:TSectionHeader) => {
   const {
     type,
     content,
+    typeHidden,
   } = props
 
   const capType = capitalize(type)
@@ -25,15 +27,17 @@ export const SectionHeader = (props:TSectionHeader) => {
         content
           ? (
               <>
-                <SectionHeaderType
-                  className={cls(
-                    `gb-section-header-chunk`,
-                    `gb-section-header-type`,
-                    type && `gb-section-header-type-${type}`
-                  )}
-                >
-                  {capType}:
-                </SectionHeaderType>
+                {typeHidden !== true && (
+                  <SectionHeaderType
+                    className={cls(
+                      `gb-section-header-chunk`,
+                      `gb-section-header-type`,
+                      type && `gb-section-header-type-${type}`
+                    )}
+                  >
+                    {capType}:
+                  </SectionHeaderType>
+                )}
                 <SectionHeaderContent
                   className={cls(
                     `gb-section-header-chunk`,

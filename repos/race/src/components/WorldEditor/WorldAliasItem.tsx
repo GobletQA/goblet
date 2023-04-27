@@ -3,6 +3,8 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import {
   AliasListItem,
+  AliasItemCol,
+  AliasItemGrid,
   AliasNameInput,
   AliasValueInput,
   AliasNameContainer,
@@ -90,29 +92,42 @@ export const WorldAliasItem = (props:TWorldAliasItem) => {
 
   return (
     <AliasListItem>
-      <WorldAliasActions />
-      <AliasNameContainer
-        className='gb-world-alias-name-container'
+      <AliasItemGrid
+        container
+        spacing={1}
       >
-        <AliasNameInput
-          value={name}
-          label={`Name`}
-          required={true}
-          error={nameErr}
-          onBlur={onNameChange}
-        />
-      </AliasNameContainer>
-      <AliasValueContainer
-        className='gb-world-alias-value-container'
-      >
-        <AliasValueInput
-          value={value}
-          label={`Value`}
-          required={true}
-          error={valueErr}
-          onBlur={onValueChange}
-        />
-      </AliasValueContainer>
+        <AliasItemCol xs={4} >
+          <AliasNameContainer
+            className='gb-world-alias-name-container'
+          >
+            <AliasNameInput
+              value={name}
+              required={true}
+              error={nameErr}
+              onBlur={onNameChange}
+            />
+          </AliasNameContainer>
+        </AliasItemCol>
+
+        <AliasItemCol xs={6} >
+          <AliasValueContainer
+            className='gb-world-alias-value-container'
+          >
+            <AliasValueInput
+              value={value}
+              required={true}
+              error={valueErr}
+              onBlur={onValueChange}
+            />
+          </AliasValueContainer>
+        </AliasItemCol>
+
+        <AliasItemCol xs={2} >
+          <WorldAliasActions />
+        </AliasItemCol>
+
+
+      </AliasItemGrid>
     </AliasListItem>
   )
 }
