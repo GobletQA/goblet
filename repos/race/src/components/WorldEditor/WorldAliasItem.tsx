@@ -25,7 +25,7 @@ export type TWorldAliasItem = {
 
 
 const useOnChanges = (props:TWorldAliasItem) => {
-  
+
   const {
     name,
     value,
@@ -133,7 +133,10 @@ export const WorldAliasItem = (props:TWorldAliasItem) => {
         </AliasItemCol>
 
         <AliasItemCol xs={2} >
-          <WorldAliasActions onDelete={onDelete} />
+          <WorldAliasActions
+            name={name}
+            onDelete={onDelete}
+          />
         </AliasItemCol>
 
 

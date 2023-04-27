@@ -5,12 +5,17 @@ import { Feature } from '@GBR/components/Feature'
 import { Modal } from '@GBR/components/Modals/Modal'
 import { FeaturesPanel } from '@GBR/components/Features'
 import { useTabCallbacks } from '@GBR/hooks/tabs/useTabCallbacks'
-import { useSidebarResize, EditorActions, OpenedTabs } from '@gobletqa/components'
 import {
   EditorContainer,
   Divider as REDivider,
   Container as ContainerComp,
 } from './RaceEditor.styled'
+import {
+  Alert,
+  OpenedTabs,
+  EditorActions,
+  useSidebarResize,
+} from '@gobletqa/components'
 
 export const Container = (props:TEditorContainer) => {
 
@@ -122,6 +127,7 @@ export const Container = (props:TEditorContainer) => {
             curPath={curPathRef.current}
           />
         )}
+        <Alert />
       </ContainerComp>
   )
 }

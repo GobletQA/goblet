@@ -9,13 +9,13 @@ import { ModalManager, useOnEvent } from '@gobletqa/components'
 
 export type TModal = {
   type?: ERaceModal
-  visible: boolean
+  visible?: boolean
   modalProps?: Record<any, any>
 }
 
 export const Modal = (props:TModal) => {
 
-  const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(props.visible || false)
   const [type, setType] = useState<ERaceModal>()
   
   const onToggle = (state?:boolean) => {

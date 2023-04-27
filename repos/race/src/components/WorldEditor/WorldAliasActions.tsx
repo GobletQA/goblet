@@ -2,17 +2,21 @@ import type { ReactNode, CSSProperties, ComponentType, MouseEvent } from 'react'
 
 import { AliasListActions } from './WorldEditor.styled'
 import {
+  Span,
+  RedText,
   Tooltip,
+  useAlert,
   TrashIcon,
   IconButton,
   RestartIcon,
 } from '@gobletqa/components'
 
 export type TWorldAliasActions = {
+  name?:string
   text?:ReactNode
   sx?:CSSProperties
-  onReset?:(evt:MouseEvent<any>) => void
-  onDelete?: (evt:MouseEvent<any>) => void
+  onReset?:(evt?:MouseEvent<any>) => void
+  onDelete?: (evt?:MouseEvent<any>) => void
 }
 
 export type TWorldAliasAction = {
@@ -39,7 +43,6 @@ const IconProps = {
 }
 
 const AliasAction = (props:TWorldAliasAction) => {
-
   const {
     sx,
     type,
@@ -48,7 +51,6 @@ const AliasAction = (props:TWorldAliasAction) => {
     color,
     onClick,
   } = props
-
 
   return (
     <Tooltip
@@ -70,28 +72,41 @@ const AliasAction = (props:TWorldAliasAction) => {
   
 }
 
+
 export const WorldAliasActions = (props:TWorldAliasActions) => {
   const {
     sx,
+    name,
     onReset,
     onDelete,
   } = props
-  
+ 
+  const { openAlert } = useAlert({
+    onConfirm: () => onDelete?.(),
+    props: {
+      cancelText: `No`,
+      confirmText: `Yes`,
+      contentProps: {sx: {marginBottom: `10px`}},
+      text: `Are you sure you want to delete this alias?`,
+      title: (<Span sx={{ fontWeight: `bold` }} >Delete <RedText>{name}</RedText></Span>),
+    }
+  })
+
   return (
     <AliasListActions sx={sx} >
-      <AliasAction
-        type='delete'
-        color={`error`}
-        Icon={TrashIcon}
-        onClick={onDelete}
-        text={`Delete Alias`}
-      />
-      <AliasAction
+      {/* <AliasAction
         type='reset'
         color={`primary`}
         onClick={onReset}
         Icon={RestartIcon}
         text={`Reset Alias`}
+      /> */}
+      <AliasAction
+        type='delete'
+        color={`error`}
+        Icon={TrashIcon}
+        onClick={openAlert}
+        text={`Delete Alias`}
       />
     </AliasListActions>
   )

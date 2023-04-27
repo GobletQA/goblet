@@ -7,7 +7,7 @@ export type TAnonFunc = (...args:any[]) => any
 
 export const useOnEvent = <P=Record<any, any>>(
   event:string,
-  cb:TAnonFunc,
+  cb?:TAnonFunc,
   key:string=event
 ) => {
   const inline = useInline(cb)
