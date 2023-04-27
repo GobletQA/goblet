@@ -19,8 +19,7 @@ export const AliasListContainer = styled(Box)(({ theme }) => {
 
 export const AliasListActions = styled(Box)(({ theme }) => {
   return `
-    padding: 0px ${gutter.padding.hpx};
-    padding-left: ${gutter.padding.qpx}
+    padding: 0px ${gutter.padding.hpx} 0px ${gutter.padding.px};
   `
 })
 

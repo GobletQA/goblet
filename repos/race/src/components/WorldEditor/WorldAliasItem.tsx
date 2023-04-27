@@ -1,4 +1,4 @@
-import type { FocusEventHandler } from 'react'
+import type { FocusEventHandler, EventHandler } from 'react'
 import type { TWorldConfig } from '@ltipton/parkin'
 
 import {
@@ -18,6 +18,7 @@ export type TWorldAliasItem = {
   name:string
   value:string
   world:TWorldConfig
+  onDelete:(name:string) => void
   onNameChange:(name:string, oName:string) => void
   onValueChange:(name:string, value:string) => void
 }
@@ -42,7 +43,7 @@ const useOnChanges = (props:TWorldAliasItem) => {
     else setNameErr(undefined)
 
     updated !== name
-      && props.onValueChange(updated, name)
+      && props.onNameChange(updated, name)
 
   }, [
     name,
@@ -57,7 +58,6 @@ const useOnChanges = (props:TWorldAliasItem) => {
     else setValueErr(undefined)
 
     // TODO: and proper quotes to value
-
     updated !== value
       && props.onValueChange(name, updated)
 
@@ -68,10 +68,19 @@ const useOnChanges = (props:TWorldAliasItem) => {
     props.onValueChange,
   ])
 
+  const onDelete = useCallback(() => {
+    props?.onDelete?.(name)
+  }, [
+    name,
+    world.$alias,
+    props.onDelete
+  ])
+
 
   return {
     nameErr,
     valueErr,
+    onDelete,
     onNameChange,
     onValueChange
   }
@@ -86,6 +95,7 @@ export const WorldAliasItem = (props:TWorldAliasItem) => {
   const {
     nameErr,
     valueErr,
+    onDelete,
     onNameChange,
     onValueChange
   } = useOnChanges(props)
@@ -123,7 +133,7 @@ export const WorldAliasItem = (props:TWorldAliasItem) => {
         </AliasItemCol>
 
         <AliasItemCol xs={2} >
-          <WorldAliasActions />
+          <WorldAliasActions onDelete={onDelete} />
         </AliasItemCol>
 
 

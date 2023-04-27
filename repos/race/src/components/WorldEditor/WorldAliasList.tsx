@@ -8,8 +8,6 @@ import { WorldAliasItem } from './WorldAliasItem'
 
 import { useMemo, useCallback } from 'react'
 
-type TAliasList = TWorldConfig[`$alias`]
-
 type TAliasItem = {
   name:string
   value:string
@@ -33,7 +31,7 @@ const useAliasList = (props:TWorldAliasList) => {
   }, [$alias])
 }
 
-const useOnNameChange = (props:TWorldAliasList, list:TAliasList) => {
+const useOnNameChange = (props:TWorldAliasList) => {
   const {
     world,
     onChange
@@ -51,7 +49,7 @@ const useOnNameChange = (props:TWorldAliasList, list:TAliasList) => {
   }, [world.$alias,  onChange])
 }
 
-const useOnValueChange = (props:TWorldAliasList, list:TAliasList) => {
+const useOnValueChange = (props:TWorldAliasList) => {
   const {
     world,
     onChange
@@ -65,14 +63,31 @@ const useOnValueChange = (props:TWorldAliasList, list:TAliasList) => {
   }, [world.$alias, onChange])
 }
 
+const useOnDelete = (props:TWorldAliasList) => {
+  const {
+    world,
+    onChange
+  } = props
+
+  return useCallback((name:string) => {
+    const updated = {...world.$alias}
+    delete updated[name]
+
+    onChange({world: {...world, [`$alias`]: updated }, replace: true})
+  }, [world.$alias, onChange])
+}
+
+
 export const WorldAliasList = (props:TWorldAliasList) => {
   const {
      world
   } = props
 
   const list = useAliasList(props)
-  const onNameChange = useOnNameChange(props, list)
-  const onValueChange = useOnValueChange(props, list)
+  const onDelete = useOnDelete(props)
+  const onNameChange = useOnNameChange(props)
+  const onValueChange = useOnValueChange(props)
+  
 
   return (
     <AliasListContainer className='gb-world-alias-container' >
@@ -84,6 +99,7 @@ export const WorldAliasList = (props:TWorldAliasList) => {
             <WorldAliasItem
               {...item}
               world={world}
+              onDelete={onDelete}
               onNameChange={onNameChange}
               onValueChange={onValueChange}
               key={`${item.name}-${item.value}`}
