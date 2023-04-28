@@ -1,7 +1,7 @@
 import type { TSectionAction } from '@GBR/components/Section/SectionActions'
 import { useMemo } from 'react'
 import { exists, capitalize } from '@keg-hub/jsutils'
-import { ESectionType, EGherkinKeys } from '@GBR/types'
+import { TAnyCB, ESectionType, EGherkinKeys } from '@GBR/types'
 import {
   TrashIcon,
   StepAddIcon,
@@ -13,8 +13,6 @@ import {
   PlaylistPlusIcon,
   PlayCircleOutlineIcon
 } from '@gobletqa/components'
-
-type TAnyCB = (...args:any[]) => void
 
 export type THSectionActions = {
   onPlay?:TAnyCB

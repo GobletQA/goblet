@@ -1,6 +1,9 @@
-import type { FocusEventHandler, EventHandler } from 'react'
+import type { CSSProperties } from 'react'
 import type { TWorldConfig } from '@ltipton/parkin'
+import type { THAliasActions } from '@GBR/hooks/world/useAliasActions'
 
+import { WorldAliasActions } from './WorldAliasActions'
+import { useAliasItem } from '@GBR/hooks/world/useAliasItem'
 import {
   AliasListItem,
   AliasItemCol,
@@ -8,105 +11,57 @@ import {
   AliasNameInput,
   AliasValueInput,
   AliasNameContainer,
+  AliasItemActionsCol,
   AliasValueContainer,
 } from './WorldEditor.styled'
 
-import { useCallback, useState } from 'react'
-import { WorldAliasActions } from './WorldAliasActions'
 
-export type TWorldAliasItem = {
+export type TWorldAliasItem = Omit<THAliasActions, `onDelete`> & {
   name:string
   value:string
+  noAlert?:boolean
+  sx?:CSSProperties
+  nameLabel?:string
+  valueLabel?:string
   world:TWorldConfig
+  containerSx?:CSSProperties
   onDelete:(name:string) => void
   onNameChange:(name:string, oName:string) => void
   onValueChange:(name:string, value:string) => void
 }
 
-
-const useOnChanges = (props:TWorldAliasItem) => {
-
-  const {
-    name,
-    value,
-    world,
-  } = props
-
-  const [nameErr, setNameErr] = useState<string>()
-  const [valueErr, setValueErr] = useState<string>()
-
-  const onNameChange = useCallback<FocusEventHandler<HTMLInputElement>>((evt) => {
-    const updated = evt.target.value.replace(/\$\s-_%\^\&\?\/\\\[\]/g, ``)
-
-    if(!updated?.trim?.()) return setNameErr(`An alias name is required`)
-    else if(world.$alias[updated]) return setNameErr(`An alias name is required`)
-    else setNameErr(undefined)
-
-    updated !== name
-      && props.onNameChange(updated, name)
-
-  }, [
-    name,
-    world.$alias,
-    props.onNameChange,
-  ])
-
-  const onValueChange = useCallback<FocusEventHandler<HTMLInputElement>>((evt) => {
-    const updated = evt.target.value
-
-    if(!updated?.trim?.()) return setValueErr(`An alias value is required`)
-    else setValueErr(undefined)
-
-    // TODO: and proper quotes to value
-    updated !== value
-      && props.onValueChange(name, updated)
-
-  }, [
-    name,
-    value,
-    world.$alias,
-    props.onValueChange,
-  ])
-
-  const onDelete = useCallback(() => {
-    props?.onDelete?.(name)
-  }, [
-    name,
-    world.$alias,
-    props.onDelete
-  ])
-
-
-  return {
-    nameErr,
-    valueErr,
-    onDelete,
-    onNameChange,
-    onValueChange
-  }
-}
-
 export const WorldAliasItem = (props:TWorldAliasItem) => {
   const {
+    sx,
     name,
-    value
+    value,
+    noAlert,
+    nameLabel,
+    valueLabel,
+    containerSx
   } = props
 
   const {
+    actions,
     nameErr,
     valueErr,
     onDelete,
     onNameChange,
     onValueChange
-  } = useOnChanges(props)
+  } = useAliasItem(props)
 
   return (
-    <AliasListItem>
+    <AliasListItem
+      sx={sx}
+      className='gb-alias-grid-item'
+    >
       <AliasItemGrid
         container
         spacing={1}
+        sx={containerSx}
+        className='gb-alias-grid-item-container'
       >
-        <AliasItemCol xs={4} >
+        <AliasItemCol xs={4} className='gb-alias-grid-item-name' >
           <AliasNameContainer
             className='gb-world-alias-name-container'
           >
@@ -114,12 +69,14 @@ export const WorldAliasItem = (props:TWorldAliasItem) => {
               value={name}
               required={true}
               error={nameErr}
+              label={nameLabel}
               onBlur={onNameChange}
+              className='gb-alias-name-input'
             />
           </AliasNameContainer>
         </AliasItemCol>
 
-        <AliasItemCol xs={6} >
+        <AliasItemCol xs={6} className='gb-alias-grid-item-value' >
           <AliasValueContainer
             className='gb-world-alias-value-container'
           >
@@ -127,17 +84,16 @@ export const WorldAliasItem = (props:TWorldAliasItem) => {
               value={value}
               required={true}
               error={valueErr}
+              label={valueLabel}
               onBlur={onValueChange}
+              className='gb-alias-item-value-input'
             />
           </AliasValueContainer>
         </AliasItemCol>
 
-        <AliasItemCol xs={2} >
-          <WorldAliasActions
-            name={name}
-            onDelete={onDelete}
-          />
-        </AliasItemCol>
+        <AliasItemActionsCol xs={2} className='gb-alias-grid-item-actions' >
+          <WorldAliasActions actions={actions} />
+        </AliasItemActionsCol>
 
 
       </AliasItemGrid>

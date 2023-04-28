@@ -8,21 +8,18 @@ import {
   useAlert,
   TrashIcon,
   IconButton,
-  RestartIcon,
 } from '@gobletqa/components'
 
 export type TWorldAliasActions = {
-  name?:string
-  text?:ReactNode
   sx?:CSSProperties
-  onReset?:(evt?:MouseEvent<any>) => void
-  onDelete?: (evt?:MouseEvent<any>) => void
+  actions?:TWorldAliasAction[]
 }
 
 export type TWorldAliasAction = {
   type:string
   text?:ReactNode
   sx?:CSSProperties
+  disabled?:boolean
   Icon?:ComponentType<any>
   onClick?:(evt:any) => void
   color:`inherit` | `default` | `primary` | `secondary` | `error` | `info` | `success` | `warning`
@@ -50,6 +47,7 @@ const AliasAction = (props:TWorldAliasAction) => {
     text,
     color,
     onClick,
+    disabled,
   } = props
 
   return (
@@ -60,54 +58,34 @@ const AliasAction = (props:TWorldAliasAction) => {
       enterDelay={500}
       key={`${type}-action`}
     >
-      <IconButton
-        Icon={Icon}
-        color={color}
-        onClick={onClick}
-        iconProps={IconProps}
-        sx={[styles.button, sx] as CSSProperties[]}
-      />
+      <span>
+        <IconButton
+          Icon={Icon}
+          color={color}
+          onClick={onClick}
+          disabled={disabled}
+          iconProps={IconProps}
+          sx={[styles.button, sx] as CSSProperties[]}
+        />
+      </span>
     </Tooltip>
   )
   
 }
 
-
 export const WorldAliasActions = (props:TWorldAliasActions) => {
-  const {
-    sx,
-    name,
-    onReset,
-    onDelete,
-  } = props
- 
-  const { openAlert } = useAlert({
-    onConfirm: () => onDelete?.(),
-    props: {
-      cancelText: `No`,
-      confirmText: `Yes`,
-      contentProps: {sx: {marginBottom: `10px`}},
-      text: `Are you sure you want to delete this alias?`,
-      title: (<Span sx={{ fontWeight: `bold` }} >Delete <RedText>{name}</RedText></Span>),
-    }
-  })
+  const { sx, actions } = props
 
-  return (
+  return actions && (
     <AliasListActions sx={sx} >
-      {/* <AliasAction
-        type='reset'
-        color={`primary`}
-        onClick={onReset}
-        Icon={RestartIcon}
-        text={`Reset Alias`}
-      /> */}
-      <AliasAction
-        type='delete'
-        color={`error`}
-        Icon={TrashIcon}
-        onClick={openAlert}
-        text={`Delete Alias`}
-      />
+      {actions?.map(action => {
+        return (
+          <AliasAction
+            key={action.type}
+            {...action}
+          />
+        )
+      }) || null}
     </AliasListActions>
-  )
+  ) || null
 }

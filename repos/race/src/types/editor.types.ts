@@ -27,6 +27,11 @@ import type {
   TOnFeatureCB,
 } from './helpers.types'
 
+export enum EEditorMode {
+  simple=`simple`,
+  advanced=`advanced`
+}
+
 export type TFeaturesRefs = {
   stepDefsRef: TStepDefsRef
   featuresRef: TFeaturesRef

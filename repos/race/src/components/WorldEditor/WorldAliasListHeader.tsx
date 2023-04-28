@@ -16,7 +16,10 @@ const styles = {
     paddingBottom: 0.5,
     borderColor: 'divider'
   },
-  container: {}
+  container: {},
+  actions: {
+    textAlign: `center`
+  }
 }
 
 export const WorldAliasListHeader = () => {
@@ -42,7 +45,7 @@ export const WorldAliasListHeader = () => {
         </AliasItemCol>
 
 
-        <AliasItemCol xs={2} >
+        <AliasItemCol xs={2} sx={styles.actions} >
           <AliasHeaderContainer className='gb-world-alias-header-container'>
             Actions
           </AliasHeaderContainer>

@@ -42,6 +42,7 @@ import LabelImportantIcon from '@mui/icons-material/LabelImportant'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 import FileOpenIcon from '@mui/icons-material/FileOpen'
 import LockIcon from '@mui/icons-material/Lock'
 import LockOpenIcon from '@mui/icons-material/LockOpen'
@@ -55,7 +56,7 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import MenuIcon from '@mui/icons-material/Menu'
 import WorldIcon from '@mui/icons-material/Language'
-
+import RemoveIcon from '@mui/icons-material/Remove';
 
 export {
   Settings,
@@ -114,5 +115,6 @@ export {
   BoltIcon,
   DragIndicatorIcon,
   MenuIcon,
-  WorldIcon
+  WorldIcon,
+  RemoveCircleIcon,
 }

@@ -12,20 +12,23 @@ import type {
   TRaceContextMenu,
   TUpdateFeatureCB,
   TSetFeatureGroups,
-} from '../types'
+} from '@GBR/types'
 
+import { EEditorMode } from '@GBR/types'
 import { emptyObj } from '@keg-hub/jsutils'
 import { useFeature } from './FeatureContext'
 import { MemoChildren } from '@gobletqa/components'
 import { useMemo, useContext, createContext } from 'react'
 import { useExpanded } from '@GBR/hooks/editor/useExpanded'
 import { useAudit } from '@gobletqa/race/hooks/editor/useAudit'
+import { useEditorMode } from '@GBR/hooks/editor/useEditorMode'
 import { useGetEditorContext } from '@GBR/hooks/editor/useGetEditorContext'
 import { useFeatureCallbacks } from '@GBR/hooks/features/useFeatureCallbacks'
 
 export type TOnExpandedCB =  (key:string, value?:boolean) => void
 export type TEditorProvider = {
   children:any
+  mode:EEditorMode
   rootPrefix:string
   editorRef:TEditorRef
   updateEmptyTab:TFeatureCB
@@ -46,16 +49,18 @@ export type TEditorProvider = {
 
 export type TEditorCtx = {
   audit:TAudit
+  mode:EEditorMode
   rootPrefix:string
   expanded:TExpanded
   displayMeta?:boolean
   feature:TRaceFeature
   setFeature:TOnFeatureCB
-  collapseAll: () => void
+  collapseAll:() => void
   expressionOptions?:TExpOpts
   updateExpanded:TOnExpandedCB
   menuContext?:TRaceContextMenu
   updateFeature:TUpdateFeatureCB
+  updateMode:(update: EEditorMode) => void
   collapseAllExcept:(key:string|string[]) => void
 }
 
@@ -83,6 +88,11 @@ export const EditorProvider = (props:TEditorProvider) => {
     expressionOptions,
   } = props
 
+
+  const {
+    mode,
+    updateMode
+  } = useEditorMode(props)
 
   const {
     feature,
@@ -127,10 +137,12 @@ export const EditorProvider = (props:TEditorProvider) => {
 
   const editorCtx:TEditorCtx = useMemo(() => {
     return {
+      mode,
       audit,
       expanded,
       setFeature,
       rootPrefix,
+      updateMode,
       collapseAll,
       menuContext,
       updateFeature,
@@ -140,11 +152,13 @@ export const EditorProvider = (props:TEditorProvider) => {
       feature: (feature || emptyObj) as TRaceFeature,
     }
   }, [
+    mode,
     audit,
     feature,
     expanded,
     setFeature,
     rootPrefix,
+    updateMode,
     collapseAll,
     updateFeature,
     updateExpanded,

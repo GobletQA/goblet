@@ -3,7 +3,7 @@ import List from '@mui/material/List'
 import { styled } from '@mui/material/styles'
 import ListItem from '@mui/material/ListItem'
 import Grid from '@mui/material/Unstable_Grid2'
-import { H4, Input, gutter } from '@gobletqa/components'
+import { Input, gutter, Button } from '@gobletqa/components'
 
 export const WorldEditorContainer = styled(Box)`
   flex-grow: 1;
@@ -18,9 +18,7 @@ export const AliasListContainer = styled(Box)(({ theme }) => {
 })
 
 export const AliasListActions = styled(Box)(({ theme }) => {
-  return `
-    padding: 0px ${gutter.padding.hpx} 0px ${gutter.padding.px};
-  `
+  return ``
 })
 
 export const AliasList = styled(List)(({ theme }) => {
@@ -34,9 +32,10 @@ export const AliasList = styled(List)(({ theme }) => {
 export const AliasListItem = styled(ListItem)(({ theme }) => {
   return `
     width: 100%;
-    height: 70px;
+    height: 55px;
     padding-left: 0px;
     padding-right: 0px;
+    margin-bottom: 15px;
   `
 })
 
@@ -54,6 +53,16 @@ export const AliasItemCol = styled(Grid)(({ theme }) => {
   return `
     padding: 0px;
     height: 100%;
+  `
+})
+
+export const AliasItemActionsCol = styled(Grid)(({ theme }) => {
+  return `
+    padding: 0px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   `
 })
 
@@ -84,5 +93,22 @@ export const AliasNameInput = styled(Input)(({ theme }) => {
 })
 
 export const AliasValueInput = styled(Input)(({ theme }) => {
+  return ``
+})
+
+
+export const AddAliasContainer = styled(Box)(({ theme }) => {
+  return `
+    margin-top: ${gutter.margin.hpx};
+    margin-bottom: ${gutter.margin.px};
+  `
+})
+
+export const AddAliasItemWrap = styled(Box)(({ theme }) => {
+  return ``
+})
+
+
+export const AddAliasButton = styled(Button)(({ theme }) => {
   return ``
 })

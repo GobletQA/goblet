@@ -1,6 +1,7 @@
 import type { TOnWorldChange } from '@GBR/types'
 import type { TWorldConfig } from '@ltipton/parkin'
 
+import { AddAliasAction } from './AddAliasAction'
 import { WorldAliasListHeader } from './WorldAliasListHeader'
 import { AliasList, AliasListContainer } from './WorldEditor.styled'
 
@@ -87,7 +88,6 @@ export const WorldAliasList = (props:TWorldAliasList) => {
   const onDelete = useOnDelete(props)
   const onNameChange = useOnNameChange(props)
   const onValueChange = useOnValueChange(props)
-  
 
   return (
     <AliasListContainer className='gb-world-alias-container' >
@@ -107,6 +107,7 @@ export const WorldAliasList = (props:TWorldAliasList) => {
           )
         })}
       </AliasList>
+      <AddAliasAction world={world} />
     </AliasListContainer>
   )
 }
