@@ -1,8 +1,10 @@
 
 import type MuiMenu from '@mui/material/Menu'
+import type { TTooltip } from '@GBC/components/Tooltip'
 import type {
   ReactNode,
   MouseEvent,
+  CSSProperties,
   ComponentType,
   ComponentProps,
   MutableRefObject,
@@ -26,13 +28,18 @@ export type TMenuItem = {
   id?:string
   text?:string
   label?:string
+  sx?:CSSProperties
   closeMenu?:boolean
   children?:ReactNode
   dividerTop?:boolean
   closeParent?:boolean
+  textSx?:CSSProperties
+  iconSx?:CSSProperties
   dividerBottom?:boolean
+  tooltip?:string|TTooltip
   onCloseMenu?:TOnMenuClose
   iconProps?:ComponentProps<any>
+  iconContainerSx?:CSSProperties
   Icon?:ComponentType<any>|ReactNode
   onClick: (event: MouseEvent<HTMLElement>, ...args:any[]) => any
 }

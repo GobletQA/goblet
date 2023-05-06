@@ -1,9 +1,11 @@
 
-import type { MouseEvent } from 'react'
+import type { ComponentProps, RefObject, MouseEvent } from 'react'
 import type { TMenuItems, TMenuItem } from '@GBC/types'
 
-import { Fragment } from 'react'
+import { Fragment, forwardRef } from 'react'
+import { Tooltip } from '../Tooltip'
 import { RenderType } from '../RenderType'
+import { isStr, omitKeys } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
 import MuiMenuItem from '@mui/material/MenuItem'
 import ListItemText from '@mui/material/ListItemText'
@@ -17,17 +19,24 @@ const defIconProps = {
   }
 }
 
-export const MenuItem = (props:TMenuItem) => {
+export const MenuItem = forwardRef<HTMLLIElement, TMenuItem>((props, ref) => {
   const {
-    label,
+    sx,
     Icon,
+    label,
+    iconSx,
     onClick,
+    textSx,
     children,
+    tooltip,
     text=label,
+    dividerTop,
     onCloseMenu,
     closeParent,
     closeMenu=true,
+    iconContainerSx,
     iconProps=defIconProps,
+    ...rest
   } = props
 
   const onItemClick = useInline((event:MouseEvent<HTMLElement>, ...args:any[]) => {
@@ -36,19 +45,23 @@ export const MenuItem = (props:TMenuItem) => {
   })
 
   return (
-    <MuiMenuItem onClick={onItemClick}>
-
+    <MuiMenuItem
+      {...omitKeys<Partial<ComponentProps<typeof MuiMenuItem>>>(rest, [`type`, `featureKey`])}
+      sx={sx}
+      ref={ref}
+      onClick={onItemClick}
+    >
       {Icon && (
-        <ListItemIcon>
+        <ListItemIcon sx={iconContainerSx} >
           <RenderType
             Component={Icon}
-            props={iconProps}
+            props={{...iconProps, sx: [iconProps?.sx, iconSx]}}
           />
         </ListItemIcon>
       ) || null}
 
       {text && (
-        <ListItemText>
+        <ListItemText sx={textSx} >
           {text}
         </ListItemText>
       ) || null}
@@ -56,7 +69,7 @@ export const MenuItem = (props:TMenuItem) => {
       {children}
     </MuiMenuItem>
   )
-}
+})
 
 export const MenuItems = (props:TMenuItems) => {
   const {
@@ -68,15 +81,32 @@ export const MenuItems = (props:TMenuItems) => {
   return (
     <>
       {
-        items.map((item) => {
+        items.map(({tooltip, ...item}) => {
           return (
             <Fragment key={item.key || item.id || item.text} >
               {item.dividerTop && <Divider />}
-              <MenuItem
-                {...item}
-                onCloseMenu={onCloseMenu}
-                closeMenu={autoClose || item.closeMenu}
-              />
+              
+              {tooltip ? (
+                <Tooltip
+                  {...(isStr(tooltip)
+                    ? { describeChild: true, loc: `bottom`, title: tooltip }
+                    : tooltip
+                  )}
+                >
+                  <MenuItem
+                    {...item}
+                    onCloseMenu={onCloseMenu}
+                    closeMenu={autoClose || item.closeMenu}
+                  />
+                </Tooltip>
+              ): (
+                <MenuItem
+                  {...item}
+                  onCloseMenu={onCloseMenu}
+                  closeMenu={autoClose || item.closeMenu}
+                />
+              )}
+
               {item.dividerBottom && <Divider />}
             </Fragment>
           )

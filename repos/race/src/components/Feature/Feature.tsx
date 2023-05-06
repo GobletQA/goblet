@@ -58,7 +58,7 @@ export const Feature = (props:TFeature) => {
 
   const contentRef = useRef<HTMLElement>()
   const containerRef = useRef<HTMLElement>()
-  const featureItems = useFeatureItems({ feature })
+  const featureItems = useFeatureItems()
 
   const {
     onAddScenario,

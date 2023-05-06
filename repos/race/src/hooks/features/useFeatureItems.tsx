@@ -3,56 +3,76 @@ import type { TRaceFeature } from '@GBR/types'
 import type { TFeatureItem } from '@GBR/components/Feature/FeatureItems'
 
 import { useMemo } from 'react'
-import { useSettings } from '@GBR/contexts'
+import { EEditorMode } from '@GBR/types'
+import { useEditor, useSettings } from '@GBR/contexts'
 import {
+  colors,
   NotePlusIcon,
   NoteMinusIcon,
 } from '@gobletqa/components'
 import {
   RuleItem,
+  ModeItem,
   WorldItem,
   GeneralItem,
   ScenarioItem,
   BackgroundItem,
+  ModeItemActive,
+  GeneralItemActive,
 } from '@GBR/components/Feature/FeatureItems'
 
-export type THFeatureItems = {
-  feature:TRaceFeature
-}
+export const useFeatureItems = () => {
 
-export const useFeatureItems = (props:THFeatureItems) => {
-  const { feature } = props
-  
   const { settings, toggleMeta } = useSettings()
+  const { feature, mode, updateMode } = useEditor()
+  const advMode = mode === EEditorMode.advanced
+
   return useMemo<TFeatureItem[]>(() => {
 
+    const modeItem = {
+      ...(advMode ? ModeItemActive : ModeItem),
+      dividerTop: true,
+      onClick: () => updateMode(advMode ? EEditorMode.simple : EEditorMode.advanced)
+    }
+    
+    const generalItem = {
+      ...(settings?.displayMeta ? GeneralItemActive : GeneralItem),
+      dividerTop: true,
+      onClick: () => toggleMeta(),
+    }
+
+    const addItems = advMode
+      ? [
+          {
+            ...ScenarioItem,
+            onClick:(evt:MouseEvent<HTMLElement>) => ScenarioItem.onClick?.(
+              evt,
+              feature.uuid,
+              feature.type
+            )
+          },
+          RuleItem,
+          {
+            ...BackgroundItem,
+            text: feature?.background?.uuid ? `Remove Background` : BackgroundItem.text,
+            onClick:(evt:MouseEvent<HTMLElement>) => BackgroundItem.onClick?.(
+              evt,
+              feature.uuid,
+              feature.type
+            )
+          },
+          generalItem,
+        ]
+      : []
+
     return [
-      {
-        ...ScenarioItem,
-        onClick:(evt:MouseEvent<HTMLElement>) => ScenarioItem.onClick?.(
-          evt,
-          feature.uuid,
-          feature.type
-        )
-      },
-      RuleItem,
-      {
-        ...BackgroundItem,
-        text: feature?.background?.uuid ? `Remove Background` : BackgroundItem.text,
-        onClick:(evt:MouseEvent<HTMLElement>) => BackgroundItem.onClick?.(
-          evt,
-          feature.uuid,
-          feature.type
-        )
-      },
-      {
-        ...GeneralItem,
-        dividerTop: true,
-        onClick: () => toggleMeta(),
-        Icon: settings?.displayMeta ? NoteMinusIcon : NotePlusIcon,
-        text: settings?.displayMeta ? `Hide Meta` : `Show Meta`,
-      },
-      WorldItem
-    ]
-  }, [feature, settings?.displayMeta])
+      ...addItems,
+      WorldItem,
+      modeItem,
+    ].filter(Boolean)
+  }, [
+    advMode,
+    feature,
+    settings?.displayMeta,
+  ])
 }

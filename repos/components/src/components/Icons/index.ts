@@ -40,6 +40,11 @@ export * from './PencilMinusIcon'
 export * from './GitlabIcon'
 export * from './CollapseAllIcon'
 
+export * from './AdvancedIcon'
+export * from './AdvancedOutlineIcon'
+export * from './NoteMinusFilledIcon'
+
+
 // export * from './TextboxOutlineIcon'
 export * from './CancelIcon'
 
