@@ -21,15 +21,14 @@
     "repos/*"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "build:docker": "turbo run build:docker",
+    "build": "pnpm -r build",
+    "build:docker": "pnpm -r build:docker",
     "build:fe": "node -r esbuild-register tasks/entry.ts deploy build -- frontend=true",
-    "build:all": "turbo run build",
     "bundle": "node scripts/bundle.js",
     "bundle:compile": "pnpm bundle && pnpm compile",
     "certs": "/bin/bash scripts/shell/generate.sh $@",
-    "clean": "turbo run clean",
-    "clean:nm": "rimraf -rf ./node_modules; turbo run clean:nm",
+    "clean": "pnpm -r clean",
+    "clean:nm": "rimraf -rf ./node_modules; pnpm -r clean:nm",
     "clean:full": "pnpm clean; pnpm clean:nm; pnpm setup",
     "cz": "cz",
     "compile": "node scripts/compile.js",
@@ -37,13 +36,13 @@
     "doc": "node -r esbuild-register tasks/entry.ts docker",
     "deploy": "node -r esbuild-register tasks/entry.ts deploy",
     "format": "pnpm format:pretty && pnpm format:lint",
-    "format:all": "pnpm format && turbo run format",
+    "format:all": "pnpm format && pnpm -r format",
     "format:lint": "pnpm lint .",
     "format:pretty": "pnpm pretty .",
     "imgs": "node -r esbuild-register tasks/entry.ts docker images",
     "kube": "node -r esbuild-register tasks/entry.ts kube",
     "json:rm": "dot-json package.json devDependencies -d",
-    "json:repo-rm": "turbo run json:rm",
+    "json:rm-all": "pnpm json:rm && pnpm -r json:rm",
     "lint": "eslint --color --cache --fix --ignore-path .root.ignore --config ./configs/eslintrc.config.js",
     "make": "GB_ROOT_DIR=$(pwd) ./scripts/shell/init/init.sh",
     "mkcert": "GB_ROOT_DIR=$(pwd) ./scripts/shell/mkcert/mkcert.sh",
@@ -55,9 +54,9 @@
     "cp:tracer": "node scripts/js/cpTracer.js",
     "pm2": "pm2 start configs/app.pm2.config.js",
     "setup": "pnpm install && pnpm cp:tracer",
-    "test": "turbo run test",
-    "test:ci": "turbo run test:ci",
-    "validate": "turbo run validate"
+    "test": "pnpm -r test",
+    "test:ci": "pnpm -r test:ci",
+    "validate": "pnpm -r validate"
   },
   "dependencies": {
     "@keg-hub/args-parse": ">=10.0.0",
@@ -71,8 +70,7 @@
     "esbuild-register": "3.4.2",
     "esbuild-jest": "0.5.0",
     "module-alias": "2.2.2",
-    "nodemon": "2.0.22",
-    "turbo": "1.4.5"
+    "nodemon": "2.0.22"
   },
   "devDependencies": {
     "@keg-hub/spawn-cmd": ">=0.3.2",

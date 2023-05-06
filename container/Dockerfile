@@ -87,12 +87,6 @@ RUN pnpm fetch
 # ---- End Stage ---- #
 
 
-# ---- Extra globals Stage  ---- #
-FROM goblet-pnpm as goblet-extra
-RUN pnpm add --global dot-json turbo
-# ---- End Stage ---- #
-
-
 # ---- Prune Stage ---- #
 FROM goblet-pnpm as goblet-prune
 WORKDIR /goblet/app
@@ -110,7 +104,7 @@ COPY repos/testUtils repos/testUtils
 
 
 # ---- Build Stage ---- #
-FROM goblet-extra as goblet-build
+FROM goblet-pnpm as goblet-build
 WORKDIR /goblet/app
 COPY --from=goblet-prune /goblet/app/ .
 COPY --from=goblet-installer /goblet/app/ .

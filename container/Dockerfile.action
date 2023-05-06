@@ -33,7 +33,6 @@ RUN <<EOF
   rm -rf tap.js
   rm -rf *.md
   rm -rf release-please-config.json
-  rm -rf turbo.json
   rm -rf scripts
   rm -rf repos/backend
   rm -rf repos/components
