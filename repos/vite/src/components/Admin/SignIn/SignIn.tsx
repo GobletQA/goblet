@@ -5,15 +5,14 @@ import { EAuthType } from '@types'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import { Container } from './SignIn.style'
-import { GithubIcon, GitlabIcon } from '@gobletqa/components'
 import { OtherProviders } from '../OtherProviders'
 import { loadUser } from '@actions/admin/user/loadUser'
 import { getProviderMetadata } from '@services/providers'
 import { GithubSignIn } from '../GithubSignIn/GithubSignIn'
 import { GitlabSignIn } from '../GitlabSignIn/GitlabSignIn'
+import { GithubIcon, GitlabIcon } from '@gobletqa/components'
 import { onSuccessAuth, onFailedAuth } from '@actions/admin/provider'
 import { checkCall, isArr, noOp, capitalize } from '@keg-hub/jsutils'
-
 
 const { auth, config } = getProviderMetadata()
 
@@ -22,6 +21,8 @@ export type TSignIn = {
   MessageComponent?: ComponentType<any>
   onNoAuthConfig?: (...args:any) => any
 }
+
+const gitLabEnabled = false
 
 /**
  * Remove the signInSuccessUrl property to allow sign in to be handled by the callbacks
@@ -67,8 +68,8 @@ const SignIn = (props:TSignIn) => {
               onSuccess={onSuccessAuth}
               children='Sign in with Github'
             />
-          )}
-          {
+          ) || null}
+          {gitLabEnabled && (
             <GitlabSignIn
               Icon={GitlabIcon}
               disabled={signingIn}
@@ -77,7 +78,7 @@ const SignIn = (props:TSignIn) => {
               onSigningIn={setSigningIn}
               children='Sign in with Gitlab'
             />
-          }
+          ) || null}
           <OtherProviders />
         </List>
         <Box>
@@ -87,7 +88,7 @@ const SignIn = (props:TSignIn) => {
               error={signInError}
               loading={signingIn && 'Signing in ...'}
             />
-          )}
+          ) || null}
         </Box>
       </Container>
     )
