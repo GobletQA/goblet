@@ -18,6 +18,7 @@ export type TEmptyFeature = {
   sx?:CSSProperties
   parent:TRaceFeature
   items:TFeatureItem[]
+  onAdd?: () => void
 }
 
 const styles:Record<string, CSSProperties> = {
@@ -51,6 +52,27 @@ const AddScenario = (props:TEmptyFeature) => {
   )
 }
 
+const AddStep = (props:TEmptyFeature) => {
+  const {
+    onAdd,
+    items,
+    parent,
+  } = props
+  
+  const item = useMemo(() => items.find(item => item.type === ESectionType.step), [items])
+
+  return (
+    <AddItem
+      {...item}
+      sx={styles.add}
+      variant='contained'
+      parentId={parent.uuid}
+      type={ESectionType.step}
+      onClick={onAdd as TOnAddClick}
+    />
+  )
+}
+
 export const EmptyFeature = (props:TEmptyFeature) => {
 
   const { mode } = props
@@ -59,20 +81,21 @@ export const EmptyFeature = (props:TEmptyFeature) => {
     <EmptyFeatureContent className='gb-empty-feature-content' >
       <EmptyFeatureTextContainer>
         <EmptyFeatureHeaderText className='gb-empty-feature-header-text' >
-          Empty Feature
+          Feature Empty
         </EmptyFeatureHeaderText>
         {mode === EEditorMode.advanced ? (
             <>
               <EmptyFeatureText className='gb-empty-feature-text' >
-                Get started by adding a new scenario ...
+                Add a new Scenario to get started ...
               </EmptyFeatureText>
               <AddScenario {...props} /> 
             </>
         ) : (
           <>
             <EmptyFeatureText className='gb-empty-feature-text' >
-              Get started by adding a step ...
+              Add a new Step to get started ...
             </EmptyFeatureText>
+            <AddStep {...props} />
           </>
         )}
       </EmptyFeatureTextContainer>

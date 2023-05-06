@@ -63,4 +63,4 @@ export const ExpInputTypes = deepFreeze(keyMap([
 
 export const ExpAliasTag = `Alias: `
 export const ExpPageTag = `Page: `
-export const SimpleScenarioTitle = `Test Steps`
+export const SimpleScenarioTag = `@goblet-simple-steps`

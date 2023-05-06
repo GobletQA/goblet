@@ -1,6 +1,7 @@
 
 import type { TRaceFeature, TRaceScenario, TRaceScenarioParent } from '@GBR/types'
 
+import { tagsFactory } from './tagsFactory'
 import { EAstObject } from '@ltipton/parkin'
 import { stepsFactory } from './stepFactory'
 import { findIndex } from '@GBR/utils/find/findIndex'
@@ -15,6 +16,7 @@ export type TScenariosFactory = {
 
 export type TScenarioFactory = {
   empty?:boolean
+  tags?:string[]
   feature: TRaceFeature
   parent?:TRaceScenarioParent
   scenario?:Partial<TRaceScenario>
@@ -29,6 +31,7 @@ const emptyScenario = (scenario:Partial<TRaceScenario>) => ({
 } as Partial<TRaceScenario>)
 
 export const scenarioFactory = ({
+  tags,
   scenario,
   feature,
   empty=false,
@@ -52,14 +55,24 @@ export const scenarioFactory = ({
       ? emptyScenario({ index, whitespace }) as TRaceScenario
       : undefined
   
-  built && (
-    built.steps = stepsFactory({
+  if(!built) return undefined
+
+  if(tags?.length){
+    built.index = built.index + 1
+    built.tags = tagsFactory({
+      tags,
       feature,
-      steps: scenario?.steps,
-      parent: built as TRaceScenario,
+      parent: built,
+      index: built.index - 1,
     })
-  )
-  
+  }
+
+  built.steps = stepsFactory({
+    feature,
+    steps: scenario?.steps,
+    parent: built as TRaceScenario,
+  })
+
   return built
 }
 

@@ -77,7 +77,6 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
 
     const { create } = options
     const updated = create ? changed : await ParkinWorker.reIndex({ feature: changed })
-
     create ? onFeatureCreate(updated) : onFeatureChange?.(updated, feature)
 
     featuresRef.current[updated.uuid] = updated

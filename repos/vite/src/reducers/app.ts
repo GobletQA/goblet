@@ -3,6 +3,7 @@ import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
 
 import { EEditorType } from '@types'
 import { getQueryData } from '@utils/url/getQueryData'
+import { updateUrlQuery } from '@utils/url/updateUrlQuery'
 import { createReducer, createAction } from '@reduxjs/toolkit'
 
 export type TAppState = {
@@ -13,6 +14,8 @@ export type TAppState = {
 const editor = getQueryData()?.editor
   || EEditorType.visual
   || EEditorType.code
+
+updateUrlQuery({ editor }, true)
 
 export const appState = {
   editor,

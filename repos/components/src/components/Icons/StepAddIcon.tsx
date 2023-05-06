@@ -13,7 +13,7 @@ const styles:Record<string, CSSProperties> = {
     position: `absolute`,
   },
   shoe: {
-    top: `2px`,
+    top: `3px`,
     left: `-2px`,
     position: `relative`,
     // transform: `scaleX(-1)`,

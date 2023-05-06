@@ -2,6 +2,7 @@ import { EEditorType } from '@types'
 import { appDispatch, getStore } from '@store'
 import { EditorPathChangeEvt } from '@constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { updateUrlQuery } from '@utils/url/updateUrlQuery'
 
 const getType = (type:EEditorType, current:EEditorType) => {
   return EEditorType[type]
@@ -19,5 +20,7 @@ export const onEditor = (type:EEditorType) => {
   if(editorType === editor) return
 
   EE.emit(EditorPathChangeEvt, { location: `` })
+  updateUrlQuery({ editor: editorType }, true)
+
   appDispatch.setEditor(editorType)
 }
