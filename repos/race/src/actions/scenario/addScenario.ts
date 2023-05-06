@@ -20,6 +20,7 @@ export type TAddScenario = {
   persist?:Boolean
   feature?:TRaceFeature
   scenario?:TRaceScenario
+  defaults?:Partial<TRaceScenario>
 }
 
 const buildScenario = (
@@ -37,6 +38,7 @@ const buildScenario = (
       parent,
       feature,
       empty: true,
+      scenario: props.defaults
     })
     if(!scenario) return factoryFailed(`scenario`, prefix)
 
@@ -93,7 +95,7 @@ export const addScenario = async (props:TAddScenario) => {
   const {
     parentId,
   } = props
-  
+
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 

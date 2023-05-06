@@ -1,12 +1,12 @@
 import type { TFeaturesRefs } from '@GBR/types'
 import type { CSSProperties, MouseEvent } from 'react'
 
+
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
 import { Section } from '../Section'
 import { cls } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
-import { ESectionType } from '@GBR/types'
 import { useEditor } from '@GBR/contexts'
 import { Background } from '../Background'
 import { EmptyFeature } from './EmptyFeature'
@@ -14,6 +14,8 @@ import { EditTitle } from '../Title/EditTitle'
 import { FeatureHeader } from './FeatureHeader'
 import { EmptyFeatureUUID } from '@GBR/constants'
 import { useMemo, useCallback, useRef } from 'react'
+import { EEditorMode, ESectionType } from '@GBR/types'
+import { SimpleMode } from '@GBR/components/SimpleMode'
 import { BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { FeatureStack, FeatureContent } from './Feature.styled'
 import { createFeature } from '@GBR/actions/feature/createFeature'
@@ -36,7 +38,9 @@ const styles:Record<string, StyleObj|CSSProperties> = {
 export const Feature = (props:TFeature) => {
   const { featuresRef } = props
 
-  const { feature, rootPrefix } = useEditor()
+  const { feature, rootPrefix, mode } = useEditor()
+  const advMode = mode === EEditorMode.advanced
+  
   const onEditFeatureTitle = useEditFeatureTitle({ parent: feature })
 
   const onCreateFeature = useCallback((evt:MouseEvent<HTMLButtonElement>) => {
@@ -97,48 +101,65 @@ export const Feature = (props:TFeature) => {
                         feature={feature}
                         items={featureItems}
                       />
-                      <Meta
-                        parent={feature}
-                        featuresRef={featuresRef}
-                        onTagsChange={onTagsChange}
-                      />
+                      
+                      {advMode ? (
+                        <>
+                          <Meta
+                            parent={feature}
+                            featuresRef={featuresRef}
+                            onTagsChange={onTagsChange}
+                          />
 
-                      {isEmpty && (
-                        <EmptyFeature
+                          {isEmpty && (
+                            <EmptyFeature
+                              mode={mode}
+                              parent={feature}
+                              items={featureItems}
+                            />
+                          ) || null}
+
+                          {feature.background && (
+                            <Background
+                              parent={feature}
+                              onChange={onUpdateBackground}
+                              onRemove={onRemoveBackground}
+                              onAddStep={onAddBackgroundStep}
+                              background={feature.background}
+                              onChangeStep={onChangeBackgroundStep}
+                              onRemoveStep={onRemoveBackgroundStep}
+                            />
+                          ) || null}
+
+                          {feature.rules?.length && (
+                            <Rules
+                              parent={feature}
+                              rules={feature.rules}
+                            />
+                          ) || null}
+
+                          <Scenarios
+                            parent={feature}
+                            onAdd={onAddScenario}
+                            onChange={onChangeScenario}
+                            onRemove={onRemoveScenario}
+                            onAddStep={onAddScenarioStep}
+                            scenarios={feature.scenarios}
+                            onChangeStep={onChangeScenarioStep}
+                            onRemoveStep={onRemoveScenarioStep}
+                          />
+
+                        </>
+                      ) : (
+                        <SimpleMode
                           parent={feature}
-                          items={featureItems}
+                          onAdd={onAddScenario}
+                          onChange={onChangeScenario}
+                          onRemove={onRemoveScenario}
+                          onAddStep={onAddScenarioStep}
+                          onChangeStep={onChangeScenarioStep}
+                          onRemoveStep={onRemoveScenarioStep}
                         />
-                      ) || null}
-
-                      {feature.background && (
-                        <Background
-                          parent={feature}
-                          onChange={onUpdateBackground}
-                          onRemove={onRemoveBackground}
-                          onAddStep={onAddBackgroundStep}
-                          background={feature.background}
-                          onChangeStep={onChangeBackgroundStep}
-                          onRemoveStep={onRemoveBackgroundStep}
-                        />
-                      ) || null}
-
-                      {feature.rules?.length && (
-                        <Rules
-                          parent={feature}
-                          rules={feature.rules}
-                        />
-                      ) || null}
-
-                      <Scenarios
-                        parent={feature}
-                        onAdd={onAddScenario}
-                        onChange={onChangeScenario}
-                        onRemove={onRemoveScenario}
-                        onAddStep={onAddScenarioStep}
-                        scenarios={feature.scenarios}
-                        onChangeStep={onChangeScenarioStep}
-                        onRemoveStep={onRemoveScenarioStep}
-                      />
+                      )}
                     </>
                   )
                 : (

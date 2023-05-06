@@ -4,8 +4,8 @@ import type { TRaceFeature, TOnAddClick } from '@GBR/types'
 
 import { useMemo } from 'react'
 import { AddItem } from '../AddItem'
-import { ESectionType } from '@GBR/types'
 import { gutter } from '@gobletqa/components'
+import { EEditorMode, ESectionType } from '@GBR/types'
 import {
   EmptyFeatureText,
   EmptyFeatureContent,
@@ -14,6 +14,7 @@ import {
 } from './Feature.styled'
 
 export type TEmptyFeature = {
+  mode:EEditorMode
   sx?:CSSProperties
   parent:TRaceFeature
   items:TFeatureItem[]
@@ -33,7 +34,7 @@ const styles:Record<string, CSSProperties> = {
 const AddScenario = (props:TEmptyFeature) => {
   const {
     items,
-    parent
+    parent,
   } = props
 
   const item = useMemo(() => items.find(item => item.type === ESectionType.scenario), [items])
@@ -52,16 +53,28 @@ const AddScenario = (props:TEmptyFeature) => {
 
 export const EmptyFeature = (props:TEmptyFeature) => {
 
+  const { mode } = props
+
   return (
     <EmptyFeatureContent className='gb-empty-feature-content' >
       <EmptyFeatureTextContainer>
         <EmptyFeatureHeaderText className='gb-empty-feature-header-text' >
-          No Content
+          Empty Feature
         </EmptyFeatureHeaderText>
-        <EmptyFeatureText className='gb-empty-feature-text' >
-          Get started by adding a new scenario ...
-        </EmptyFeatureText>
-        <AddScenario {...props} /> 
+        {mode === EEditorMode.advanced ? (
+            <>
+              <EmptyFeatureText className='gb-empty-feature-text' >
+                Get started by adding a new scenario ...
+              </EmptyFeatureText>
+              <AddScenario {...props} /> 
+            </>
+        ) : (
+          <>
+            <EmptyFeatureText className='gb-empty-feature-text' >
+              Get started by adding a step ...
+            </EmptyFeatureText>
+          </>
+        )}
       </EmptyFeatureTextContainer>
     </EmptyFeatureContent>
   )
