@@ -4,6 +4,7 @@ import type { TRaceStepParent } from '@GBR/types'
 import { ESectionType } from '@GBR/types'
 import { StepItem } from '../Feature/FeatureItems'
 import { EmptyItem } from '../EmptyItem/EmptyItem'
+const {iconContainerSx, sx, iconSx, ...stepMeta} = StepItem
 
 export type TEmptySteps = {
   text?:string
@@ -34,17 +35,17 @@ export const EmptySteps = (props:TEmptySteps) => {
 
   return (
     <EmptyItem
-      {...StepItem}
+      {...stepMeta}
       sx={sx}
       text={text}
       addSx={addSx}
       variant={variant}
       buttonSx={buttonSx}
       onClick={onAddStep}
-      type={StepItem.type}
       parentId={parent.uuid}
       parentType={parentType}
       containerSx={containerSx}
+      type={StepItem.type as ESectionType}
     />
   )
 }

@@ -1,4 +1,4 @@
-import type { FocusEventHandler, CSSProperties } from 'react'
+import type { FocusEventHandler } from 'react'
 import type { TWorldAliasItem } from '@GBR/components/WorldEditor/WorldAliasItem'
 
 import { useCallback, useState } from 'react'
@@ -72,7 +72,6 @@ export const useAliasItem = (props:TWorldAliasItem) => {
       title: (<Span sx={{ fontWeight: `bold` }} >Delete <RedText>{name}</RedText></Span>),
     }
   })
-
 
   const actions = useAliasActions({...props, onDelete: noAlert ? onDelete : openAlert})
 

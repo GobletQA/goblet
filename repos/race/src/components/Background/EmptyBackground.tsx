@@ -5,6 +5,7 @@ import { ESectionType } from '@GBR/types'
 import { EAstObject } from '@ltipton/parkin'
 import { EmptyItem } from '../EmptyItem/EmptyItem'
 import { BackgroundItem } from '../Feature/FeatureItems'
+const {iconContainerSx, sx, iconSx, ...backgroundMeta} = BackgroundItem
 
 export type TEmptyBackground = {
   sx?:CSSProperties
@@ -31,7 +32,7 @@ export const EmptyBackground = (props:TEmptyBackground) => {
 
   return (
     <EmptyItem
-      {...BackgroundItem}
+      {...backgroundMeta}
       sx={sx}
       addSx={addSx}
       onClick={onClick}

@@ -1,6 +1,6 @@
-import type { TWorldGroupMeta } from '@GBR/types'
 import type { TWorldConfig } from '@ltipton/parkin'
 import type { ReactNode, SyntheticEvent } from 'react'
+import type { TWorldGroupMeta, TOnWorldChange } from '@GBR/types'
 
 import { WorldTabs } from './WorldTabs'
 import { useParkin } from '@GBR/contexts'
@@ -10,6 +10,8 @@ import { WorldEditorContainer } from './WorldEditor.styled'
 
 export type TWorldEditor = {
   children?:ReactNode
+  world:TWorldConfig
+  updateWorld:TOnWorldChange
 }
 
 const allowedGroups = [
@@ -56,10 +58,10 @@ const useGroupMeta = (world:TWorldConfig) => {
 export const WorldEditor = (props:TWorldEditor) => {
 
   const {
-    children
+    world,
+    updateWorld,
   } = props
 
-  const {world, updateWorld} = useParkin()
   const {
     groups,
     groupIdx,

@@ -1,7 +1,7 @@
-import type { FocusEventHandler, ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 import type { TWorldConfig } from '@ltipton/parkin'
+import type { TOnWorldChange } from '@GBR/types'
 
-import { useCallback, useState } from 'react'
 import { WorldAliasItem } from './WorldAliasItem'
 import { useAddAlias } from '@GBR/hooks/world/useAddAlias'
 import {
@@ -16,6 +16,7 @@ import {
 
 export type TAddAliasAction = {
   world:TWorldConfig
+  onChange:TOnWorldChange
 }
 
 const buttonProps:Record<string, Partial<ComponentProps<typeof AddAliasButton>>> = {

@@ -1,14 +1,17 @@
+import type { TOnWorldChange } from '@GBR/types'
 import type { TWorldConfig } from '@ltipton/parkin'
 
 import { useCallback, useState, useMemo } from 'react'
 
 export type THAddAlias = {
   world:TWorldConfig
+  onChange:TOnWorldChange
 }
 
 export const useAddAlias = (props:THAddAlias) => {
   const {
-    world
+    world,
+    onChange
   } = props
   
   const { $alias } = world
@@ -33,11 +36,15 @@ export const useAddAlias = (props:THAddAlias) => {
   }, [name, value])
 
   const onSave = useCallback(() => {
-    console.log(`------- on save -------`)
-    console.log(name, value)
+    const updated = {...world.$alias}
+    updated[name] = value
+
+    onChange({world: {...world, [`$alias`]: updated }, replace: true})
   }, [
     name,
-    value
+    value,
+    world,
+    onChange
   ])
 
   const save = useMemo(() => {

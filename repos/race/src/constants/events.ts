@@ -9,3 +9,4 @@ export const AskForFeatureEvt = `ask-for-feature-context-event`
 export const UpdateFeatureContextEvt = `update-feature-context`
 export const DispatchEditingActionEvt = `dispatch-editing-action`
 export const UpdateSettingContextEvt = `update-setting-context-event`
+export const OnWorldEditorModalClose = `on-world-editor-modal-close`

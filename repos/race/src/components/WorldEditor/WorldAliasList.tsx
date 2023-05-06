@@ -80,9 +80,7 @@ const useOnDelete = (props:TWorldAliasList) => {
 
 
 export const WorldAliasList = (props:TWorldAliasList) => {
-  const {
-     world
-  } = props
+  const { world } = props
 
   const list = useAliasList(props)
   const onDelete = useOnDelete(props)
@@ -107,7 +105,7 @@ export const WorldAliasList = (props:TWorldAliasList) => {
           )
         })}
       </AliasList>
-      <AddAliasAction world={world} />
+      <AddAliasAction {...props} />
     </AliasListContainer>
   )
 }
