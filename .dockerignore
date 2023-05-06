@@ -59,3 +59,5 @@ repos/race
 repos/traceViewer
 repos/vite
 repos/**/node_modules
+release-please-config.json
+.release-please-manifest.json
