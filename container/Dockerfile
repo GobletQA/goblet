@@ -4,7 +4,7 @@ ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.32.0-focal
 FROM $GB_IMAGE_FROM as goblet-pnpm
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-RUN npm install --global pnpm
+RUN npm install --global pnpm@8.3.1
 # ---- End Stage ---- #
 
 # ---- Kubectrl Stage ( backend only ) ---- #
@@ -114,7 +114,11 @@ FROM goblet-extra as goblet-build
 WORKDIR /goblet/app
 COPY --from=goblet-prune /goblet/app/ .
 COPY --from=goblet-installer /goblet/app/ .
-RUN pnpm install -r --prefer-offline --fix-lockfile
+
+# The --shamefully-hoist is required due to requirments of screencast / testUtils repos
+# When a client repo is mounted, it needs access to those repos node_modules
+# Which is node via a symlinkt to the /goblet/node_modules folder
+RUN pnpm -r install --fix-lockfile --shamefully-hoist --prefer-offline --link-workspace-packages deep
 RUN pnpm build:docker
 # ---- End Stage ---- #
 
