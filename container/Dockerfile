@@ -82,7 +82,7 @@ EXPOSE $GB_VNC_SERVER_PORT
 # ---- Install Stage  ---- #
 FROM goblet-pnpm as goblet-installer
 WORKDIR /goblet/app
-COPY pnpm-lock.yaml ./
+COPY .npmrc pnpm-lock.yaml ./
 RUN pnpm fetch
 # ---- End Stage ---- #
 
@@ -108,11 +108,7 @@ FROM goblet-pnpm as goblet-build
 WORKDIR /goblet/app
 COPY --from=goblet-prune /goblet/app/ .
 COPY --from=goblet-installer /goblet/app/ .
-
-# The --shamefully-hoist is required due to requirments of screencast / testUtils repos
-# When a client repo is mounted, it needs access to those repos node_modules
-# Which is node via a symlinkt to the /goblet/node_modules folder
-RUN pnpm -r install --fix-lockfile --shamefully-hoist --prefer-offline --link-workspace-packages deep
+RUN pnpm -r install --frozen-lockfile --offline --no-optional
 RUN pnpm build:docker
 # ---- End Stage ---- #
 
