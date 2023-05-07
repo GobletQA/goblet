@@ -57,7 +57,7 @@
     "@ltipton/symplasm": "0.0.1",
     "@ltipton/esdev": "0.1.3",
     "cross-spawn": "7.0.3",
-    "esbuild": "0.17.17",
+    "esbuild": "0.17.18",
     "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.4.2",
     "expect": "29.5.0",
