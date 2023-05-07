@@ -48,10 +48,7 @@ const useEnsureScenario = ({ parent }:TSimpleMode) => {
       },
     }) as TRaceScenario
 
-  }, [
-    parent.uuid,
-    parent?.scenarios?.length
-  ])
+  }, [parent?.scenarios])
 }
 
 const useOnSimpleAdd = (props:TSimpleMode, scenario:TRaceScenario) => {

@@ -33,7 +33,7 @@ const useSplitStep = (props:TStepHeaderSplit) => {
           * Later we rebuild the string following the same order
           * 
           * Each item is an array of [type, value, key]
-          * The type is used to know when component to use to render the value
+          * The type is used to know which component to use to render the value
           * The key is needed because of reacts requirement around array 
           */
           acc.push([ESplitType.text, prefix, `${key}-prefix`])

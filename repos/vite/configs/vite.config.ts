@@ -31,9 +31,14 @@ export default defineConfig(async () => {
         jsx: `automatic`,
         jsxDev: environment !== `production`,
       },
+      entries: [
+        `hoist-non-react-statics`,
+      ]
     },
     esbuild: {
-      logOverride: { 'this-is-undefined-in-esm': 'silent' }
+      logOverride: {
+        [`this-is-undefined-in-esm`]: `silent`
+      }
     },
     resolve:{
       alias: aliases,
@@ -43,7 +48,12 @@ export default defineConfig(async () => {
       comlink(),
       monacoEditor({
         globalAPI: true,
-        languageWorkers: ['editorWorkerService', 'html', 'json', 'typescript']
+        languageWorkers: [
+          `html`,
+          `json`,
+          `typescript`,
+          `editorWorkerService`,
+        ]
       }),
       tsconfigPaths(),
       svgrComponent({
