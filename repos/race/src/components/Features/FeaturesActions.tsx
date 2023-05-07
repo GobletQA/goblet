@@ -7,6 +7,7 @@ import { useEditor } from '@GBR/contexts'
 import { createFeature, createFolder } from '@GBR/actions'
 import {
   Tooltip,
+  stopEvent,
   NewFileIcon,
   NewFolderIcon,
 } from '@gobletqa/components'
@@ -20,8 +21,8 @@ const AddRootFile = (props:TAddRootFile) => {
   const { rootPrefix } = useEditor()
 
   const onClick = useCallback((e:Event) => {
-    e.stopPropagation()
-    createFolder(rootPrefix)
+    stopEvent(e)
+    createFeature({}, rootPrefix)
   }, [rootPrefix])
 
   return (
@@ -43,8 +44,8 @@ const AddRootFolder = (props:TAddRootFolder) => {
   const { rootPrefix } = useEditor()
 
   const onClick = useCallback((e:Event) => {
-    e.stopPropagation()
-    createFeature({}, rootPrefix)
+    stopEvent(e)
+    createFolder(rootPrefix)
   }, [rootPrefix])
 
   return (
@@ -68,12 +69,12 @@ export const FeaturesActions:TPanelHeaderAction[] = [
     action:noOp,
     id:`add-root-feature`,
     Component: AddRootFile,
-    className:`goblet-editor-feature-root-icon`,
+    className:`gb-race-feature-root-icon`,
   },
   {
     action:noOp,
     Component: AddRootFolder,
     id: `add-root-feature-folder`,
-    className:`goblet-editor-feature-root-icon`,
+    className:`gb-race-feature-root-icon`,
   },
 ]

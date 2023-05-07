@@ -3,9 +3,10 @@ import type { TRaceFeature } from '@GBR/types'
 
 import { useCallback } from 'react'
 import { cls, wordCaps } from '@keg-hub/jsutils'
+import { FeatureItemActions } from './FeatureItemActions'
 import {
-  FeatureText,
   FeatureItem,
+  FeatureItemName,
 } from './FeaturesList.styled'
 
 export type TFeatureListItem = {
@@ -21,14 +22,32 @@ export const FeatureListItem = (props:TFeatureListItem) => {
 
   const isActive = feature?.uuid === active?.uuid
 
+  // TODO: update these to actually change the file
+  const setEditing = () => {
+    console.log(`------- editing feature -------`)
+  }
+  const onDeleteFile = () => {
+    console.log(`------- delete feature -------`)
+  }
+
   return (
     <FeatureItem
       onClick={onClick}
+      focusRipple={true}
+      selected={isActive}
+      disableRipple={true}
+      disableTouchRipple={true}
       className={cls(`gb-features-list-item`, isActive && `active`)}
     >
-      <FeatureText>
+      <FeatureItemName>
         {wordCaps(feature.feature)}
-      </FeatureText>
+      </FeatureItemName>
+      <FeatureItemActions
+        feature={feature}
+        setEditing={setEditing}
+        currentPath={active?.path}
+        onDeleteFile={onDeleteFile}
+      />
     </FeatureItem>
   )
 }

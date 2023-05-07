@@ -4,6 +4,7 @@ import type { ListProps, ListItemButtonProps } from '@mui/material'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import { styled } from '@mui/material/styles'
+import { colors, Span } from '@gobletqa/components'
 
 import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
@@ -83,7 +84,7 @@ export const FeatureItem = styled(ListItemButton)<TFeatureItem>`
   }
 `
 
-export const FeatureText = styled(ListItemText)`
+export const FeatureItemName = styled(ListItemText)`
   margin: 0px;
 
   & span {
@@ -92,5 +93,25 @@ export const FeatureText = styled(ListItemText)`
   }
 `
 
+export const FeatureItemActionsContainer = styled(Span)`
+  right: 0px;
+  height: 25px;
+  padding-top: 3px;
+  padding-left: 5px;
+  position: absolute;
+  
+  & .gb-race-feature-item-icon {
+    font-size: 16px;
+    margin-right: 5px;
+    pointer-events: initial;
+    transition: color 300ms ease;
+    color: var(--goblet-sideBarSectionHeader-foreground);
+    
+    &:hover {
+      color: ${colors.royalPurple} !important;
+    }
+  }
+  
+`
 
-
+export const DirectoryEdit = styled(Box)``
