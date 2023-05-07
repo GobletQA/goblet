@@ -2,10 +2,15 @@ ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.32.0-focal
 
 # ---- PNPM State  ---- #
 FROM $GB_IMAGE_FROM as goblet-pnpm
+WORKDIR /goblet/app
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 RUN npm install --global pnpm@8.3.1
+COPY .npmrc pnpm-*.yaml ./
+RUN pnpm fetch --no-optional --ignore-scripts
+COPY package.json ./
 # ---- End Stage ---- #
+
 
 # ---- Kubectrl Stage ( backend only ) ---- #
 FROM bitnami/kubectl:latest as kubectl
@@ -79,37 +84,85 @@ EXPOSE $GB_VNC_SERVER_PORT
 # ---- End Stage ---- #
 
 
-# ---- Install Stage  ---- #
-FROM goblet-pnpm as goblet-installer
+# ---- Build files Stage ---- #
+FROM goblet-pnpm as goblet-build-files
 WORKDIR /goblet/app
-COPY .npmrc pnpm-lock.yaml ./
-RUN pnpm fetch
+COPY tsconfig.json gobletRoot.js ./
+COPY configs/alias* configs/goblet* configs/paths.config.js configs/
 # ---- End Stage ---- #
 
 
-# ---- Prune Stage ---- #
-FROM goblet-pnpm as goblet-prune
+# ---- Run files Stage ---- #
+FROM goblet-pnpm as goblet-run-files
 WORKDIR /goblet/app
-COPY .nvmrc .npmrc pnpm* *.json gobletRoot.js ./
 COPY tasks ./tasks
-COPY configs ./configs
 COPY container ./container
-COPY repos/conductor repos/conductor
-COPY repos/workflows repos/workflows
-COPY repos/shared repos/shared
-COPY repos/backend repos/backend
-COPY repos/screencast repos/screencast
-COPY repos/testUtils repos/testUtils
+COPY configs/app.pm2.config.js configs/
+COPY configs/firebase.config.js configs/
+COPY configs/tasks.config.js configs/
 # ---- End Stage ---- #
 
 
-# ---- Build Stage ---- #
-FROM goblet-pnpm as goblet-build
+# ---- Workflows Stage  ---- #
+FROM goblet-pnpm AS goblet-workflows
 WORKDIR /goblet/app
-COPY --from=goblet-prune /goblet/app/ .
-COPY --from=goblet-installer /goblet/app/ .
-RUN pnpm -r install --frozen-lockfile --offline --no-optional
+COPY repos/workflows/package.json repos/workflows/
+RUN pnpm install --no-optional --offline --frozen-lockfile --ignore-scripts --filter workflows
+COPY repos/workflows repos/workflows/
+# ---- End Stage ---- #
+
+
+# ---- Shared Stage  ---- #
+FROM goblet-workflows AS goblet-shared
+WORKDIR /goblet/app
+COPY repos/shared/package.json repos/shared/
+RUN pnpm install --no-optional --offline --frozen-lockfile --ignore-scripts --filter shared
+COPY repos/shared repos/shared/
+# ---- End Stage ---- #
+
+
+# ---- Conductor Stage  ---- #
+FROM goblet-shared AS goblet-conductor
+WORKDIR /goblet/app
+COPY repos/conductor/package.json repos/conductor/
+RUN pnpm install --no-optional --offline --frozen-lockfile --ignore-scripts --filter conductor
+COPY repos/conductor repos/conductor/
+# ---- End Stage ---- #
+
+
+# ---- Backend Stage  ---- #
+FROM goblet-conductor AS goblet-backend
+WORKDIR /goblet/app
+COPY repos/backend/package.json repos/backend/
+RUN pnpm install --no-optional --offline --frozen-lockfile --ignore-scripts --filter backend
+COPY repos/backend repos/backend/
+COPY --from=goblet-build-files /goblet/app .
+WORKDIR /goblet/app/repos/backend
 RUN pnpm build:docker
+WORKDIR /goblet/app
+# ---- End Stage ---- #
+
+
+# ---- Screencast Stage  ---- #
+FROM goblet-shared AS goblet-screencast
+WORKDIR /goblet/app
+COPY repos/screencast/package.json repos/screencast/
+RUN pnpm install --no-optional --offline --frozen-lockfile --ignore-scripts --filter screencast
+COPY repos/screencast repos/screencast/
+# ---- End Stage ---- #
+
+
+# ---- TestUtils Stage  ---- #
+FROM goblet-screencast AS goblet-testutils
+WORKDIR /goblet/app
+COPY repos/testUtils/package.json repos/testUtils/
+RUN pnpm install --no-optional --offline --frozen-lockfile --ignore-scripts --filter testUtils
+COPY repos/testUtils repos/testUtils/
+COPY --from=goblet-build-files /goblet/app .
+# Can only build screencast after testutils repo has been setup
+WORKDIR /goblet/app/repos/screencast
+RUN pnpm build:docker
+WORKDIR /goblet/app
 # ---- End Stage ---- #
 
 
@@ -117,13 +170,12 @@ RUN pnpm build:docker
 FROM goblet-setup as goblet-runner
 WORKDIR /goblet/app
 
-COPY --from=goblet-installer /root/.local/share/pnpm /root/.local/share/pnpm
-COPY --from=goblet-build /goblet/app/ .
+COPY --from=goblet-testutils /goblet/app/ .
+COPY --from=goblet-backend /goblet/app/ .
+COPY --from=goblet-run-files /goblet/app/ .
 
-RUN <<EOF
-  ln -s /goblet/app/node_modules $HOME/.node_modules
-  ln -s /goblet/app/node_modules /goblet/node_modules
-  chmod a+x /goblet/app/container/initialize.sh
-EOF
+RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
+    ln -s /goblet/app/node_modules /goblet/node_modules && \
+    chmod a+x /goblet/app/container/initialize.sh
 
 CMD [ "container/initialize.sh" ]
