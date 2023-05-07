@@ -4,7 +4,19 @@ import type { ForwardedRef, ReactNode, CSSProperties, ComponentType, ComponentPr
 import { forwardRef } from 'react'
 import { Span } from '@GBC/components/Text'
 import MuiButton from '@mui/material/Button'
+import { omitKeys } from '@keg-hub/jsutils'
 import { isValidFuncComp } from '@GBC/utils/components/isValidFuncComp'
+
+export const BtnRmKeys = [
+  `tooltip`,
+  `closeMenu`,
+  `featureKey`,
+  `dividerTop`,
+  `closeParent`,
+  `onCloseMenu`,
+  `dividerBottom`,
+  `iconContainerSx`,
+]
 
 export type TButton = ComponentProps<typeof MuiButton> & {
   text?:ReactNode
@@ -40,7 +52,10 @@ export const Button = forwardRef((props:TButton, ref:ForwardedRef<HTMLButtonElem
   } = props
 
   return (
-    <MuiButton {...rest} ref={ref} >
+    <MuiButton
+      {...omitKeys<Partial<TButton>>(rest, BtnRmKeys)}
+      ref={ref}
+    >
       <>
         {Icon && (
           isValidFuncComp(Icon)

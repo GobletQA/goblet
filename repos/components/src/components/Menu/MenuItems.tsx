@@ -1,15 +1,16 @@
 
-import type { ComponentProps, RefObject, MouseEvent } from 'react'
+import type { ComponentProps, MouseEvent } from 'react'
 import type { TMenuItems, TMenuItem } from '@GBC/types'
 
-import { Fragment, forwardRef } from 'react'
 import { Tooltip } from '../Tooltip'
 import { RenderType } from '../RenderType'
-import { isStr, omitKeys } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
+import { Fragment, forwardRef } from 'react'
 import MuiMenuItem from '@mui/material/MenuItem'
+import { isStr, omitKeys } from '@keg-hub/jsutils'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
+import { BtnRmKeys } from '@GBC/components/Buttons/Button'
 import { useInline } from '@GBC/hooks/components/useInline'
 
 const defIconProps = {
@@ -18,6 +19,15 @@ const defIconProps = {
     width: `20px`,
   }
 }
+
+export const ItemRmKeys = [
+  ...BtnRmKeys,
+  `type`,
+  `textSx`,
+  `iconSx`,
+  `iconProps`,
+  `Icon`,
+]
 
 export const MenuItem = forwardRef<HTMLLIElement, TMenuItem>((props, ref) => {
   const {
@@ -46,7 +56,7 @@ export const MenuItem = forwardRef<HTMLLIElement, TMenuItem>((props, ref) => {
 
   return (
     <MuiMenuItem
-      {...omitKeys<Partial<ComponentProps<typeof MuiMenuItem>>>(rest, [`type`, `featureKey`])}
+      {...omitKeys<Partial<ComponentProps<typeof MuiMenuItem>>>(rest, ItemRmKeys)}
       sx={sx}
       ref={ref}
       onClick={onItemClick}

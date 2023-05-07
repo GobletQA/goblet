@@ -1,13 +1,12 @@
 import type { CSSProperties, SyntheticEvent, ComponentProps, ForwardedRef } from 'react'
 import type { TOnAddClick } from '@GBR/types'
-import { EAstObject } from '@ltipton/parkin'
 
+import { EAstObject } from '@ltipton/parkin'
 import { capitalize } from '@keg-hub/jsutils'
 import { forwardRef, useCallback } from 'react'
-import { useInline } from '@gobletqa/components/hooks'
-
-import { AddContainer, AddBtn, AddBtnText } from './AddItem.styled'
+import { useInline } from '@gobletqa/components'
 import { ESectionExt, ESectionType } from '@GBR/types'
+import { AddContainer, AddBtn, AddBtnText } from './AddItem.styled'
 
 export type TAddItem = Omit<ComponentProps<typeof AddBtn>, `onClick`|`type`> & {
   text?:string
