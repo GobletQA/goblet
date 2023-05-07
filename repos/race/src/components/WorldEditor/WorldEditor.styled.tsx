@@ -99,7 +99,6 @@ export const AliasValueInput = styled(Input)(({ theme }) => {
 
 export const AddAliasContainer = styled(Box)(({ theme }) => {
   return `
-    margin-top: ${gutter.margin.hpx};
     margin-bottom: ${gutter.margin.px};
   `
 })

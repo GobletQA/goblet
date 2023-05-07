@@ -86,6 +86,7 @@ export const AddAliasAction = (props:TAddAliasAction) => {
         <AddAliasButton
           {...buttonProps.shared}
           {...btnProps}
+          variant='text'
           onClick={onAddAlias}
         />
       )}

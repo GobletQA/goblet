@@ -18,7 +18,7 @@ export const saveFile = async (
   const { location, content, fileType } = fileToSave
 
   if (!content || !location)
-    return console.warn('File content and location are required')
+    return console.warn(`[File Save Error]: File content and location are required`)
 
   addToast({
     type: 'info',
