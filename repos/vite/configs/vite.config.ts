@@ -1,13 +1,14 @@
 import 'esbuild-register'
 import path from 'path'
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react-swc'
 import { comlink } from 'vite-plugin-comlink'
 import { loadConfig } from './frontend.config'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { svgrComponent } from 'vite-plugin-svgr-component'
 import monacoEditorPlugin from 'vite-plugin-monaco-editor'
-
+// @ts-ignore
+const monacoEditor = monacoEditorPlugin.default
 const rootDir = path.join(__dirname, '..')
 
 export default defineConfig(async () => {
@@ -38,14 +39,12 @@ export default defineConfig(async () => {
       alias: aliases,
     },
     plugins: [
+      react(),
       comlink(),
-      // @ts-ignore
-      monacoEditorPlugin.default({
+      monacoEditor({
         globalAPI: true,
         languageWorkers: ['editorWorkerService', 'html', 'json', 'typescript']
       }),
-
-      react(),
       tsconfigPaths(),
       svgrComponent({
         svgrOptions: {

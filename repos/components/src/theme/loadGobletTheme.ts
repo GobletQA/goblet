@@ -18,8 +18,8 @@ export const loadGobletTheme = async ({
     mode = mode || getTheme()?.palette?.mode as EThemeMode
 
     const mod = name === EGobletThemeName.dark || (!name && mode === EThemeMode.dark)
-      ? await import(`./themes/Goblet-dark`)
-      : await import(`./themes/Goblet-light`)
+      ? await import('./themes/Goblet-dark')
+      : await import('./themes/Goblet-light')
 
     const theme = mod?.default as TEditorTheme
     loadVars && setThemeVars(theme, context)
