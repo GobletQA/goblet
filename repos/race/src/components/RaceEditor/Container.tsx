@@ -1,10 +1,12 @@
 import type { TEditorContainer } from '@GBR/types'
 
+import { EditorTabs } from './EditorTabs'
 import { Sidebar } from '@GBR/components/Sidebar'
 import { Feature } from '@GBR/components/Feature'
 import { Modal } from '@GBR/components/Modals/Modal'
 import { FeaturesPanel } from '@GBR/components/Features'
-import { useTabCallbacks } from '@GBR/hooks/tabs/useTabCallbacks'
+import { useTabHooks } from '@GBR/hooks/tabs/useTabHooks'
+import { useEditorActions } from '@GBR/hooks/editor/useEditorActions'
 import {
   EditorContainer,
   Divider as REDivider,
@@ -12,7 +14,6 @@ import {
 } from './RaceEditor.styled'
 import {
   Alert,
-  OpenedTabs,
   EditorActions,
   useSidebarResize,
 } from '@gobletqa/components'
@@ -46,22 +47,22 @@ export const Container = (props:TEditorContainer) => {
   } = props
 
   const {
-    onTabDown,
-    onTabHover,
-    onTabLeave,
+    onEditFeature,
     onCloseFeature,
+    onDeleteFeature,
     onActiveFeature,
-  } = useTabCallbacks({
-    openedTabs,
+  } = useEditorActions({
     featuresRef,
-    setOpenedTabs,
     onFeatureClose,
     onFeatureActive,
     onFeatureInactive,
-    onTabDown: props.onTabDown,
-    onTabLeave: props.onTabLeave,
-    onTabHover: props.onTabHover,
   })
+
+  const {
+    onTabDown,
+    onTabHover,
+    onTabLeave,
+  } = useTabHooks(props)
 
   const {
     styles,
@@ -98,19 +99,23 @@ export const Container = (props:TEditorContainer) => {
             stepDefsRef={stepDefsRef}
             featuresRef={featuresRef}
             featureGroups={featureGroups}
+            onEditFeature={onEditFeature}
             onActiveFeature={onActiveFeature}
+            onDeleteFeature={onDeleteFeature}
           />
         </Sidebar>
 
         <Divider onMouseDown={onMoveStart} className='gb-editor-drag' />
         <EditorContainer className='gb-race-editor-area'>
-          <OpenedTabs
+          <EditorTabs
             onTabDown={onTabDown}
             onTabHover={onTabHover}
             onTabLeave={onTabLeave}
             openedTabs={openedTabs}
+            featuresRef={featuresRef}
             onTabClose={onCloseFeature}
             onTabClick={onActiveFeature}
+            setOpenedTabs={setOpenedTabs}
           />
           <Feature
             stepDefsRef={stepDefsRef}

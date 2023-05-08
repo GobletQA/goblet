@@ -1,7 +1,7 @@
 import type { Tab } from '../components/OpenedTabs/Tab'
-import type { CSSProperties, SyntheticEvent, ComponentType } from 'react'
+import type { CSSProperties, SyntheticEvent, ComponentType, MouseEvent } from 'react'
 
-export type TTabAction = (tab:TTab, event?:SyntheticEvent, ...args:any[]) => void
+export type TTabAction = (tab:TTab, event?:SyntheticEvent|Event|MouseEvent, ...args:any[]) => void
 
 export type TTabStyles = {
   icon?: CSSProperties

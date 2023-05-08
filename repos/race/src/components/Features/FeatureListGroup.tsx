@@ -1,6 +1,9 @@
-import type { TTabAction } from '@gobletqa/components'
-import type { TRaceFeature, TRaceFeatureGroup } from '@GBR/types'
 import type { CSSProperties } from 'react'
+import type {
+  TRaceFeature,
+  TRaceFeatureGroup,
+  TEditorFeatureActions,
+} from '@GBR/types'
 
 import { useCallback } from 'react'
 import { wordCaps } from '@keg-hub/jsutils'
@@ -8,10 +11,9 @@ import { Dropdown, ExpandIcon } from '@gobletqa/components'
 import { FeatureItemRender } from './FeatureItemRender'
 import { FeaturesGroup, FeaturesGroupContainer } from './FeaturesList.styled'
 
-export type TFeatureListGroup = {
+export type TFeatureListGroup = TEditorFeatureActions & {
   active:TRaceFeature
-  onActiveFeature: TTabAction
-  featureGroup: TRaceFeatureGroup
+  featureGroup:TRaceFeatureGroup
 }
 
 const styles = {
@@ -29,6 +31,8 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
   const {
     active,
     featureGroup,
+    onEditFeature,
+    onDeleteFeature,
     onActiveFeature
   } = props
 
@@ -49,6 +53,8 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
         <FeaturesGroupContainer>
           <FeatureItemRender
             active={active}
+            onEditFeature={onEditFeature}
+            onDeleteFeature={onDeleteFeature}
             onActiveFeature={onActiveFeature}
             featureGroup={featureGroup.items}
           />

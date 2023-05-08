@@ -1,49 +1,44 @@
+import type {
+  TRaceFeature,
+  TEditorFeatureActions
+} from '@GBR/types'
 
-import type { TRaceFeature } from '@GBR/types'
-import type { RefObject, Dispatch, SetStateAction } from 'react'
-
-import { noOpObj } from '@keg-hub/jsutils'
 import { useCallback, useMemo } from 'react'
 import { toolTipProps, styles } from './FeatureItemHelpers'
-
+import { FeatureItemActionsContainer } from './FeaturesList.styled'
 import {
   Tooltip,
-  FileIcon,
   TrashIcon,
   stopEvent,
   PencilIcon,
-  stopPropagation,
 } from '@gobletqa/components'
 
-import {
-  FeatureItemActionsContainer,
-} from './FeaturesList.styled'
-
-
-export type TFeatureItemActions = {
+export type TFeatureItemActions = TEditorFeatureActions & {
   currentPath?:string
   feature:TRaceFeature
-  setEditing:(state:boolean) => void
-  onDeleteFile:(path:string) => void
 }
 
 export const FeatureItemActions = (props:TFeatureItemActions) => {
 
   const {
     feature,
-    setEditing,
     currentPath,
-    onDeleteFile,
+    onEditFeature,
+    onDeleteFeature,
   } = props
 
-  const onEdit = useCallback((e: Event) => {
-    stopEvent(e)
-    setEditing(true)
-  }, [setEditing])
+  const onEdit = useCallback((e:Event) => {
+    if(!onEditFeature) return
 
-  const onDelete = useCallback((e: Event) => {
     stopEvent(e)
-    onDeleteFile(feature.path)
+    onEditFeature?.(e, true)
+  }, [onEditFeature])
+
+  const onDelete = useCallback((e:Event) => {
+    if(!onDeleteFeature) return
+
+    stopEvent(e)
+    onDeleteFeature?.(e, feature.path)
   }, [feature.path])
 
 
@@ -56,27 +51,34 @@ export const FeatureItemActions = (props:TFeatureItemActions) => {
   }, [currentPath, feature.path])
 
   return (
-    <FeatureItemActionsContainer>
-      <Tooltip
-        {...toolTipProps}
-        title={`Edit the feature name`}
-      >
-        <PencilIcon
-          onClick={onEdit}
-          styles={styles.altIcon}
-          className='gb-race-feature-item-icon'
-        />
-      </Tooltip>
-      <Tooltip
-        {...toolTipProps}
-        title={`Delete the file`}
-      >
-        <TrashIcon
-          onClick={onDelete}
-          styles={styles.altIconLast}
-          className='gb-race-feature-item-icon'
-        />
-      </Tooltip>
+    <FeatureItemActionsContainer className={classNames} >
+
+      {onEditFeature && (
+        <Tooltip
+          {...toolTipProps}
+          title={`Edit the feature name`}
+        >
+          <PencilIcon
+            onClick={onEdit}
+            styles={styles.altIcon}
+            className='gb-race-feature-item-icon'
+          />
+        </Tooltip>
+      ) || null}
+
+      {onDeleteFeature && (
+        <Tooltip
+          {...toolTipProps}
+          title={`Delete the file`}
+        >
+          <TrashIcon
+            onClick={onDelete}
+            styles={styles.altIconLast}
+            className='gb-race-feature-item-icon'
+          />
+        </Tooltip>
+      ) || null}
+
     </FeatureItemActionsContainer>
   )
 

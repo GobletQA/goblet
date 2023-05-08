@@ -107,7 +107,7 @@ export const featureToTab = (
 /**
  * Converts a tab object into a feature object
  */
-export const featureFromTab = (tab:TTab, features:TRaceFeatures) => {
+export const featureFromTab = (tab:TTab) => {
   // This seems to break tab switching, doesn't make a lot of sense?
   // const feat = features[tab?.uuid as keyof typeof features]
   // return feat

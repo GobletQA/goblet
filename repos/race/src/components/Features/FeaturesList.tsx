@@ -2,24 +2,24 @@ import type { TTabAction } from '@gobletqa/components'
 import type {
   TRaceFeature,
   TRaceFeatures,
+  TEditorFeatureActions,
 } from '@GBR/types'
 
 
 import { Features } from './FeaturesList.styled'
 import { FeatureItemRender } from './FeatureItemRender'
 
-export type TFeaturesList = {
-  rootPrefix:string
+export type TFeaturesList = TEditorFeatureActions & {
   active:TRaceFeature
   featureGroups:TRaceFeatures
-  onActiveFeature: TTabAction
 }
 
 export const FeaturesList = (props:TFeaturesList) => {
   const {
     active,
-    rootPrefix,
     featureGroups,
+    onEditFeature,
+    onDeleteFeature,
     onActiveFeature
   } = props
 
@@ -32,6 +32,8 @@ export const FeaturesList = (props:TFeaturesList) => {
       <FeatureItemRender
         active={active}
         featureGroup={featureGroups}
+        onEditFeature={onEditFeature}
+        onDeleteFeature={onDeleteFeature}
         onActiveFeature={onActiveFeature}
       />
     </Features>

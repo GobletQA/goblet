@@ -1,21 +1,26 @@
-import type { TTabAction } from '@gobletqa/components'
-import type { TRaceFeatures, TRaceFeature, TRaceFeatureGroup } from '@GBR/types'
+import type {
+  TRaceFeature,
+  TRaceFeatures,
+  TRaceFeatureGroup,
+  TEditorFeatureActions,
+} from '@GBR/types'
 
 import { useMemo } from 'react'
 import { FeatureListItem } from './FeatureListItem'
 import { FeatureListGroup } from './FeatureListGroup'
 
 
-export type TFeatureItemRender = {
+export type TFeatureItemRender = TEditorFeatureActions & {
   active:TRaceFeature
-  onActiveFeature: TTabAction
-  featureGroup: TRaceFeatures
+  featureGroup:TRaceFeatures
 }
 
 export const FeatureItemRender = (props:TFeatureItemRender) => {
   const {
     active,
     featureGroup,
+    onEditFeature,
+    onDeleteFeature,
     onActiveFeature,
   } = props
 
@@ -36,6 +41,8 @@ export const FeatureItemRender = (props:TFeatureItemRender) => {
               <FeatureListGroup
                 active={active}
                 key={`${(item as TRaceFeatureGroup)?.title || key}-${item.uuid}`}
+                onEditFeature={onEditFeature}
+                onDeleteFeature={onDeleteFeature}
                 onActiveFeature={onActiveFeature}
                 featureGroup={item as TRaceFeatureGroup}
               />
@@ -45,6 +52,8 @@ export const FeatureItemRender = (props:TFeatureItemRender) => {
                 active={active}
                 key={`${(item as TRaceFeature)?.feature || key}-${item.uuid}`}
                 feature={item as TRaceFeature}
+                onEditFeature={onEditFeature}
+                onDeleteFeature={onDeleteFeature}
                 onActiveFeature={onActiveFeature}
               />
             )

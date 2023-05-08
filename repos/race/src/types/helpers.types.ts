@@ -1,8 +1,7 @@
 import type { ESectionType } from './section.types'
 import type { TStepDefsList } from '@ltipton/parkin'
-
 import type { TRaceFeatures, TRaceFeature } from './features.types'
-import type { SyntheticEvent, MutableRefObject } from 'react'
+import type { SyntheticEvent, MutableRefObject, MouseEvent } from 'react'
 
 export type TSetSteps = (steps:TStepDefsList) => void
 export type TStepDefsRef = MutableRefObject<TStepDefsList>
@@ -30,4 +29,18 @@ export enum EMetaType {
   reason=`reason`,
   desire=`desire`,
   perspective=`perspective`,
+}
+
+
+export type TEditorFeatureAction<T1=unknown, T2=unknown> = (evt:Event|MouseEvent, data:T1, other?:T2) => void
+export type TOnEditFeature = TEditorFeatureAction<boolean>
+export type TOnDeleteFeature = TEditorFeatureAction<string>
+export type TOnActiveFeature = TEditorFeatureAction<TRaceFeature|undefined>
+export type TOnCloseFeature = TEditorFeatureAction<TRaceFeature|undefined, TRaceFeature|undefined>
+
+export type TEditorFeatureActions = {
+  onEditFeature?:TOnEditFeature
+  onCloseFeature?:TOnCloseFeature
+  onDeleteFeature?:TOnDeleteFeature
+  onActiveFeature?:TOnActiveFeature
 }

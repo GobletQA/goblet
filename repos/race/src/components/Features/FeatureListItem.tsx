@@ -1,34 +1,31 @@
-import type { TTabAction } from '@gobletqa/components'
-import type { TRaceFeature } from '@GBR/types'
+import type { MouseEventHandler } from 'react'
+import type { TRaceFeature, TEditorFeatureActions } from '@GBR/types'
 
 import { useCallback } from 'react'
 import { cls, wordCaps } from '@keg-hub/jsutils'
 import { FeatureItemActions } from './FeatureItemActions'
-import {
-  FeatureItem,
-  FeatureItemName,
-} from './FeaturesList.styled'
+import { FeatureItem, FeatureItemName } from './FeaturesList.styled'
 
-export type TFeatureListItem = {
+export type TFeatureListItem = TEditorFeatureActions & {
   active:TRaceFeature
   feature:TRaceFeature
-  onActiveFeature: TTabAction
 }
 
 export const FeatureListItem = (props:TFeatureListItem) => {
-  const { active, feature, onActiveFeature } = props
+  const {
+    active,
+    feature,
+    onEditFeature,
+    onActiveFeature,
+    onDeleteFeature,
+  } = props
 
-  const onClick = useCallback(() => onActiveFeature(feature), [feature, onActiveFeature])
+  const onClick = useCallback<MouseEventHandler<HTMLDivElement>>(
+    (evt) => onActiveFeature?.(evt, feature),
+    [feature, onActiveFeature]
+  )
 
   const isActive = feature?.uuid === active?.uuid
-
-  // TODO: update these to actually change the file
-  const setEditing = () => {
-    console.log(`------- editing feature -------`)
-  }
-  const onDeleteFile = () => {
-    console.log(`------- delete feature -------`)
-  }
 
   return (
     <FeatureItem
@@ -44,9 +41,9 @@ export const FeatureListItem = (props:TFeatureListItem) => {
       </FeatureItemName>
       <FeatureItemActions
         feature={feature}
-        setEditing={setEditing}
         currentPath={active?.path}
-        onDeleteFile={onDeleteFile}
+        onEditFeature={onEditFeature}
+        onDeleteFeature={onDeleteFeature}
       />
     </FeatureItem>
   )
