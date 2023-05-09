@@ -1,5 +1,6 @@
 export const GetActiveFileEvent = `get-active-file`
 export const ResizeSideBarEvent = `resize-side-bar-event`
+export const OnTabActiveEvent = `on-tab-active-event`
 
 export const OnAlertOpen = `on-alert-open`
 export const OnAlertClose = `on-alert-close`

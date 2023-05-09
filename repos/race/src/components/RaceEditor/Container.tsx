@@ -1,6 +1,5 @@
 import type { TEditorContainer } from '@GBR/types'
 
-import { EditorTabs } from './EditorTabs'
 import { Sidebar } from '@GBR/components/Sidebar'
 import { Feature } from '@GBR/components/Feature'
 import { Modal } from '@GBR/components/Modals/Modal'
@@ -14,6 +13,7 @@ import {
 } from './RaceEditor.styled'
 import {
   Alert,
+  OpenedTabs,
   EditorActions,
   useSidebarResize,
 } from '@gobletqa/components'
@@ -62,7 +62,13 @@ export const Container = (props:TEditorContainer) => {
     onTabDown,
     onTabHover,
     onTabLeave,
-  } = useTabHooks(props)
+    onTabClose,
+    onTabClick,
+  } = useTabHooks({
+    ...props,
+    onCloseFeature,
+    onActiveFeature,
+  })
 
   const {
     styles,
@@ -107,14 +113,14 @@ export const Container = (props:TEditorContainer) => {
 
         <Divider onMouseDown={onMoveStart} className='gb-editor-drag' />
         <EditorContainer className='gb-race-editor-area'>
-          <EditorTabs
+          <OpenedTabs
             onTabDown={onTabDown}
             onTabHover={onTabHover}
             onTabLeave={onTabLeave}
             openedTabs={openedTabs}
+            onTabClose={onTabClose}
+            onTabClick={onTabClick}
             featuresRef={featuresRef}
-            onTabClose={onCloseFeature}
-            onTabClick={onActiveFeature}
             setOpenedTabs={setOpenedTabs}
           />
           <Feature

@@ -11,7 +11,6 @@ import type {
 import { useCallback } from 'react'
 import { useEditor } from '@GBR/contexts'
 
-
 export type THEditorActions = {
   featuresRef:TFeaturesRef
   onFeatureClose?:TOnFeatureCB
