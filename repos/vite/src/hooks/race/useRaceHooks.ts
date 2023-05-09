@@ -56,7 +56,7 @@ export const useRaceHooks = () => {
       : onPathChange(``)
 
   })
-  
+
   const onFeatureChange = useInline((feature:TRaceFeature) => {
     if(!feature?.parent?.uuid)
       return console.warn(`Failed to save feature, feature is missing the parent file path`)
@@ -73,8 +73,7 @@ export const useRaceHooks = () => {
       { ast:[featureAst] }
     )
   })
-  
-  
+
   const onFeatureCreate = useInline((feature:TRaceFeature) => {
     if(!feature?.parent?.uuid)
       return console.warn(`Failed to create feature, feature is missing the parent file path`)

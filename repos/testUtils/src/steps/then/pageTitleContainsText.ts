@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Checks that the page title is `title`
@@ -13,19 +14,20 @@ export const pageTitleContainsText = async (
 ) => {
   const page = await getPage()
   const actualTitle = await page.title()
-  // TODO: update to use expect contains text for better test output
-  expect(actualTitle.includes(title)).toBe(true)
+  expect(actualTitle).toEqual(expect.stringContaining(title))
 }
 
-Then('the page title contains {string}', pageTitleContainsText, {
+Then(`the page title contains {string}`, pageTitleContainsText, {
   description: `Verifies page title contains the string.`,
   expressions: [
     {
-      type: 'string',
+      example: `Goblet Blog`,
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
       description: `String expected to be contained within the page title.`,
-      example: 'Goblet Blog',
     },
   ],
-  module: `pageTitleContainsText`
+  module: `pageTitleContainsText`,
+  race: true,
 })
 

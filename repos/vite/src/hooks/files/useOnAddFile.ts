@@ -25,7 +25,7 @@ export const useOnAddFile = (
     isFolder,
     location:loc,
   }:TAddFileCBProps) => {
-    if(!loc) console.warn(`Can not add file, missing file location`)
+    if(!loc) return console.warn(`Can not add file, missing file location`)
     
     const ext = loc.split(`.`).pop()
 

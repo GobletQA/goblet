@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
+import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Checks that the page title is `title`
@@ -10,19 +11,21 @@ import { getPage } from '@GTU/Playwright'
 export const pageTitleIs = async (title:string, world:TWorldConfig) => {
   const page = await getPage()
   const actualTitle = await page.title()
-  expect(title).toBe(actualTitle)
+  expect(actualTitle).toBe(title)
 }
 
-Then('the page title is {string}', pageTitleIs, {
+Then(`the page title is {string}`, pageTitleIs, {
   description: `Verifies page title matches the expected string.`,
   expressions: [
     {
-      type: 'string',
+      example: `Goblet Blog`,
+      kind: ExpressionKinds.text,
+      type: ExpressionTypes.string,
       description: `String expected to match the page title.`,
-      example: 'Goblet Blog',
     },
   ],
-  module: `pageTitleIs`
+  module: `pageTitleIs`,
+  race: true,
 })
 
 

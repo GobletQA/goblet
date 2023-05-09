@@ -29,15 +29,12 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
   // Listen to external events to update the feature context
   // Allows dispatching update outside of the react context
-  useOnEvent<TUpdateFeature>(
-    UpdateFeatureContextEvt,
-    ({ feature, options }) => updateFeature({
-      options,
-      feature: feature.uuid !== EmptyFeatureUUID
-        ? feature
-        : updateEmptyFeature(feature, featuresRef),
-    })
-  )
+  useOnEvent<TUpdateFeature>(UpdateFeatureContextEvt, ({ feature, options }) => {
+    const isEmpty = feature.uuid === EmptyFeatureUUID
+    const feat = isEmpty ? updateEmptyFeature(feature, featuresRef) : feature
+
+    updateFeature({ options, feature: feat})
+  })
 
   // Helper to allow external code ask the context for the current feature
   // Allows external actions to interface with the currently active feature
