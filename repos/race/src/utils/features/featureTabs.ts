@@ -27,6 +27,10 @@ const isTabMatch = (tabItem:TTabItem, tab:TTab) => {
   }, false)
 }
 
+/**
+ * Checks if the passed in tab is already in the opened tabs
+ * If not, then creates it from the feature and adds it to the opened tabs
+ */
 const ensureTabOpened = (tabs:TTabItem[], tab:TTab) => {
   const found = tabs.find(tabItem => isTabMatch(tabItem, tab))
   return found
@@ -39,20 +43,21 @@ const ensureTabOpened = (tabs:TTabItem[], tab:TTab) => {
  * Switches any existing active tabs to false
  */
 export const setTabActive = (tabs:TTabItem[], tab:TTab) => {
-  return ensureTabOpened(tabs, tab).reduce((tabs, tabItem) => {
+  return ensureTabOpened(tabs, tab)
+    .reduce((tabs, tabItem) => {
 
-    const makeActive = isTabMatch(tabItem, tab)
+      const makeActive = isTabMatch(tabItem, tab)
 
-    const addTab = makeActive
-      ? updateTabProps(tabItem, {active: true})
-      : tabItem?.tab?.active
-        ? updateTabProps(tabItem, {active: false})
-        : tabItem
+      const addTab = makeActive
+        ? updateTabProps(tabItem, {active: true})
+        : tabItem?.tab?.active
+          ? updateTabProps(tabItem, {active: false})
+          : tabItem
 
-    tabs.push(addTab)
+      tabs.push(addTab)
 
-    return tabs
-  }, [] as TTabItem[])
+      return tabs
+    }, [] as TTabItem[])
 }
 
 /**
@@ -69,7 +74,11 @@ const setNextActive = (tabs:TTabItem[], idx:number) => {
 }
 
 /**
- * Removes a from from the passed in array of tabItems
+ * Removes a tab from the passed in array of tabItems
+ * If the tab was active, will set the previous tab active instead
+ * Uses the index of the removed tab to find the previous tab
+ * Defaults to setting the first tab to active if the previous tab can not be found
+ * If no tabs are left after removal, then the active tab is returned as undefined
  */
 export const removeTab = (tabs:TTabItem[], tab:TTab) => {
 
@@ -89,6 +98,7 @@ export const removeTab = (tabs:TTabItem[], tab:TTab) => {
 
 /**
  * Converts a feature object into a tab object for the tabs component
+ * Sets defaults that can be overwritten
  */
 export const featureToTab = (
   feature:TRaceFeature,
@@ -107,7 +117,8 @@ export const featureToTab = (
 
 
 /**
- * Converts a tab object into a feature object
+ * Uses the uuid to find an existing feature
+ * If not found, then converts a tab object into a feature object
  */
 export const featureFromTab = (tab:TTab, features:TRaceFeatures) => {
   const feat = features[tab?.uuid as keyof typeof features] as TRaceFeature
