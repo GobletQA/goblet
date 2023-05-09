@@ -1,9 +1,10 @@
+import type { MouseEventHandler } from 'react'
 import type { TRaceFeature, TEditorFeatureActions } from '@GBR/types'
 
+import { useCallback } from 'react'
 import { cls, wordCaps } from '@keg-hub/jsutils'
 import { FeatureItemActions } from './FeatureItemActions'
 import { FeatureItem, FeatureItemName } from './FeaturesList.styled'
-import { useEventEmit, OnTabActiveEvent } from '@gobletqa/components'
 
 export type TFeatureListItem = TEditorFeatureActions & {
   active:TRaceFeature
@@ -15,17 +16,15 @@ export const FeatureListItem = (props:TFeatureListItem) => {
     active,
     feature,
     onEditFeature,
+    onActiveFeature,
     onDeleteFeature,
   } = props
 
-  /**
-   * Instead of calling onActiveFeature, emit the OnTabActiveEvent event
-   * The Tabs hooks are listening for this event
-   * When emitted it will update the currently opened tabs
-   * And calls the onActiveFeature method
-   * This ensures the tabs are updated and the feature becomes active
-   */
-  const onClick = useEventEmit(OnTabActiveEvent, { feature })
+  const onClick = useCallback<MouseEventHandler<HTMLDivElement>>(
+    (evt) => onActiveFeature?.(evt, feature),
+    [feature, onActiveFeature]
+  )
+
   const isActive = feature?.uuid === active?.uuid
 
   return (

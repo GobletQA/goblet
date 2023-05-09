@@ -73,17 +73,18 @@ const setNextActive = (tabs:TTabItem[], idx:number) => {
  */
 export const removeTab = (tabs:TTabItem[], tab:TTab) => {
 
-  let nextActive:TTabItem | undefined
-
-  const updated = tabs.reduce((updated, tabItem, idx) => {
-    isTabMatch(tabItem, tab)
-      ? (nextActive = setNextActive(updated, idx))
-      : updated.push(tabItem)
+  let rmIdx:number=0
+  const removed = tabs.reduce((updated, tabItem, idx) => {
+    isTabMatch(tabItem, tab) ? (rmIdx = idx) : updated.push(tabItem)
 
     return updated
   }, [] as TTabItem[])
 
-  return { tabs: updated, active: nextActive || updated[0] }
+  const active = tab.active
+    ? setNextActive(removed, rmIdx) || removed[0]
+    : removed.find(item => item.tab.active) || removed[0]
+
+  return {active, tabs: removed}
 }
 
 /**
@@ -104,13 +105,11 @@ export const featureToTab = (
   }
 })
 
+
 /**
  * Converts a tab object into a feature object
  */
-export const featureFromTab = (tab:TTab) => {
-  // This seems to break tab switching, doesn't make a lot of sense?
-  // const feat = features[tab?.uuid as keyof typeof features]
-  // return feat
-  const omitFeat = omitKeys<TRaceFeature>(tab, [`active`, `editing`, `title`])
-  return omitFeat
+export const featureFromTab = (tab:TTab, features:TRaceFeatures) => {
+  const feat = features[tab?.uuid as keyof typeof features] as TRaceFeature
+  return feat || omitKeys<TRaceFeature>(tab, [`active`, `editing`, `title`])
 }

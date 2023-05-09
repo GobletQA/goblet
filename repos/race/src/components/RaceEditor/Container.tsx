@@ -1,10 +1,10 @@
-import type { TEditorContainer } from '@GBR/types'
+import type { TTabAction } from '@gobletqa/components'
+import type { TOnActiveFeature, TEditorContainer } from '@GBR/types'
 
 import { Sidebar } from '@GBR/components/Sidebar'
 import { Feature } from '@GBR/components/Feature'
 import { Modal } from '@GBR/components/Modals/Modal'
 import { FeaturesPanel } from '@GBR/components/Features'
-import { useTabHooks } from '@GBR/hooks/tabs/useTabHooks'
 import { useEditorActions } from '@GBR/hooks/editor/useEditorActions'
 import {
   EditorContainer,
@@ -47,27 +47,19 @@ export const Container = (props:TEditorContainer) => {
   } = props
 
   const {
-    onEditFeature,
-    onCloseFeature,
-    onDeleteFeature,
-    onActiveFeature,
-  } = useEditorActions({
-    featuresRef,
-    onFeatureClose,
-    onFeatureActive,
-    onFeatureInactive,
-  })
-
-  const {
     onTabDown,
     onTabHover,
     onTabLeave,
     onTabClose,
-    onTabClick,
-  } = useTabHooks({
+    onEditFeature,
+    onFeatureClick,
+    onDeleteFeature,
+  } = useEditorActions({
     ...props,
-    onCloseFeature,
-    onActiveFeature,
+    featuresRef,
+    onFeatureClose,
+    onFeatureActive,
+    onFeatureInactive,
   })
 
   const {
@@ -106,8 +98,8 @@ export const Container = (props:TEditorContainer) => {
             featuresRef={featuresRef}
             featureGroups={featureGroups}
             onEditFeature={onEditFeature}
-            onActiveFeature={onActiveFeature}
-            onDeleteFeature={onDeleteFeature}
+            onDeleteFeature={onDeleteFeature} 
+            onActiveFeature={onFeatureClick as TOnActiveFeature}
           />
         </Sidebar>
 
@@ -119,9 +111,9 @@ export const Container = (props:TEditorContainer) => {
             onTabLeave={onTabLeave}
             openedTabs={openedTabs}
             onTabClose={onTabClose}
-            onTabClick={onTabClick}
             featuresRef={featuresRef}
             setOpenedTabs={setOpenedTabs}
+            onTabClick={onFeatureClick as TTabAction}
           />
           <Feature
             stepDefsRef={stepDefsRef}

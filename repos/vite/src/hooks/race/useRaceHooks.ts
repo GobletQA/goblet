@@ -51,10 +51,8 @@ export const useRaceHooks = () => {
     // This happens when an empty feature is closed before it's saved with a valid name
     if(!activeFeat) return
 
-    activeFeat?.uuid !== EmptyFeatureUUID && activeFeat?.uuid !== feature?.parent?.uuid
-      ? console.log(`Can not set file as inactive, it is not currently active`, activeFeat, feature)
-      : onPathChange(``)
-
+    ;(activeFeat?.uuid === EmptyFeatureUUID || activeFeat?.uuid === feature?.parent?.uuid)
+      && onPathChange(``)
   })
 
   const onFeatureChange = useInline((feature:TRaceFeature) => {
