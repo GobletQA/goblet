@@ -31,8 +31,8 @@ export const FeatureItemActions = (props:TFeatureItemActions) => {
     if(!onEditFeature) return
 
     stopEvent(e)
-    onEditFeature?.(e, true)
-  }, [onEditFeature])
+    onEditFeature?.(e, feature.uuid)
+  }, [onEditFeature, feature])
 
   const onDelete = useCallback((e:Event) => {
     if(!onDeleteFeature) return

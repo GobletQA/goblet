@@ -30,6 +30,7 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
 
   const {
     active,
+    editingName,
     featureGroup,
     onEditFeature,
     onDeleteFeature,
@@ -53,6 +54,7 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
         <FeaturesGroupContainer>
           <FeatureItemRender
             active={active}
+            editingName={editingName}
             onEditFeature={onEditFeature}
             onDeleteFeature={onDeleteFeature}
             onActiveFeature={onActiveFeature}

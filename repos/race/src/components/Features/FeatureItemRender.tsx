@@ -18,6 +18,7 @@ export type TFeatureItemRender = TEditorFeatureActions & {
 export const FeatureItemRender = (props:TFeatureItemRender) => {
   const {
     active,
+    editingName,
     featureGroup,
     onEditFeature,
     onDeleteFeature,
@@ -40,21 +41,23 @@ export const FeatureItemRender = (props:TFeatureItemRender) => {
           ? acc.groups.push(
               <FeatureListGroup
                 active={active}
-                key={`${(item as TRaceFeatureGroup)?.title || key}-${item.uuid}`}
+                editingName={editingName}
                 onEditFeature={onEditFeature}
                 onDeleteFeature={onDeleteFeature}
                 onActiveFeature={onActiveFeature}
                 featureGroup={item as TRaceFeatureGroup}
+                key={`${(item as TRaceFeatureGroup)?.title || key}-${item.uuid}`}
               />
             )
           : acc.items.push(
               <FeatureListItem
                 active={active}
-                key={`${(item as TRaceFeature)?.feature || key}-${item.uuid}`}
-                feature={item as TRaceFeature}
+                editingName={editingName}
                 onEditFeature={onEditFeature}
+                feature={item as TRaceFeature}
                 onDeleteFeature={onDeleteFeature}
                 onActiveFeature={onActiveFeature}
+                key={`${(item as TRaceFeature)?.feature || key}-${item.uuid}`}
               />
             )
         
@@ -70,7 +73,12 @@ export const FeatureItemRender = (props:TFeatureItemRender) => {
       groups: groups.sort((a,b) => (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0)),
     }
     
-  }, [featureGroup, active, onActiveFeature])
+  }, [
+    active,
+    editingName,
+    featureGroup,
+    onActiveFeature
+  ])
 
   return (
     <>

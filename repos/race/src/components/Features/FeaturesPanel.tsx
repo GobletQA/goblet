@@ -16,6 +16,7 @@ export type TFeaturesPanel = TFeaturesRefs & TEditorFeatureActions & {
 
 export const FeaturesPanel = (props:TFeaturesPanel) => {
   const {
+    editingName,
     featureGroups,
     onEditFeature,
     onDeleteFeature,
@@ -34,6 +35,7 @@ export const FeaturesPanel = (props:TFeaturesPanel) => {
     >
       <FeaturesList
         active={active}
+        editingName={editingName}
         featureGroups={featureGroups}
         onEditFeature={onEditFeature}
         onDeleteFeature={onDeleteFeature}

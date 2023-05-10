@@ -51,6 +51,7 @@ export const Container = (props:TEditorContainer) => {
     onTabHover,
     onTabLeave,
     onTabClose,
+    editingName,
     onEditFeature,
     onFeatureClick,
     onDeleteFeature,
@@ -94,6 +95,7 @@ export const Container = (props:TEditorContainer) => {
           PrePanels={PrePanels}
         >
           <FeaturesPanel
+            editingName={editingName}
             stepDefsRef={stepDefsRef}
             featuresRef={featuresRef}
             featureGroups={featureGroups}

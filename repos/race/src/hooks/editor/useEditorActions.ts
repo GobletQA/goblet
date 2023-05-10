@@ -9,7 +9,7 @@ import type {
   TOnDeleteFeature,
 } from '@GBR/types'
 
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useEditor } from '@GBR/contexts'
 import { useTabHooks } from '@GBR/hooks/tabs/useTabHooks'
 
@@ -76,16 +76,16 @@ export const useEditorActions = (props:THEditorActions) => {
 
   const { feature, setFeature } = useEditor()
 
+  const [editingName, setEditingName] = useState(``)
 
  // TODO: update these to actually change the file
-  const onEditFeature = useCallback<TOnEditFeature>(() => {
-    console.log(`------- editing feature -------`)
-  }, [])
+  const onEditFeature = useCallback<TOnEditFeature>((_, loc) => {
+    editingName !== loc && setEditingName(loc)
+  }, [editingName])
  
   const onDeleteFeature = useCallback<TOnDeleteFeature>(() => {
     console.log(`------- delete feature -------`)
   }, [])
-  // ----- end tood 
 
   const onTabClose = useInline<TTabAction>((tab, evt) => {
     stopEvent(evt)
@@ -137,6 +137,7 @@ export const useEditorActions = (props:THEditorActions) => {
     onTabHover,
     onTabLeave,
     onTabClose,
+    editingName,
     onEditFeature,
     onFeatureClick,
     onDeleteFeature,

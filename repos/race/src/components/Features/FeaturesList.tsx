@@ -17,6 +17,7 @@ export type TFeaturesList = TEditorFeatureActions & {
 export const FeaturesList = (props:TFeaturesList) => {
   const {
     active,
+    editingName,
     featureGroups,
     onEditFeature,
     onDeleteFeature,
@@ -31,6 +32,7 @@ export const FeaturesList = (props:TFeaturesList) => {
     >
       <FeatureItemRender
         active={active}
+        editingName={editingName}
         featureGroup={featureGroups}
         onEditFeature={onEditFeature}
         onDeleteFeature={onDeleteFeature}

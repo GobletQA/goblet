@@ -33,12 +33,13 @@ export enum EMetaType {
 
 
 export type TEditorFeatureAction<T1=unknown, T2=unknown> = (evt:Event|MouseEvent, data:T1, other?:T2) => void
-export type TOnEditFeature = TEditorFeatureAction<boolean>
+export type TOnEditFeature = TEditorFeatureAction<string, boolean>
 export type TOnDeleteFeature = TEditorFeatureAction<string>
 export type TOnActiveFeature = TEditorFeatureAction<TRaceFeature|undefined, boolean>
 export type TOnCloseFeature = TEditorFeatureAction<TRaceFeature|undefined, TRaceFeature|undefined>
 
 export type TEditorFeatureActions = {
+  editingName?:string
   onEditFeature?:TOnEditFeature
   onCloseFeature?:TOnCloseFeature
   onDeleteFeature?:TOnDeleteFeature
