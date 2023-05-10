@@ -1,4 +1,3 @@
-import type { TEditorProvider } from '@GBR/contexts'
 
 import { EEditorMode } from '@GBR/types'
 import { useState } from 'react'

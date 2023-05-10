@@ -36,10 +36,10 @@ export const useSideNavToggle = (
   active:ESideNav|undefined,
   setActive:Dispatch<SetStateAction<ESideNav | undefined>>
 ) => {
-  
+
   const sideNavToggled = useEventEmit(SideNavToggledEvt)
 
-  useOnEvent(ToggleSideNavEvt, ({ open, name, force }:TSideNavToggleProps) => {
+  useOnEvent<TSideNavToggleProps>(ToggleSideNavEvt, ({ open, name, force }) => {
     const nextOpen = exists(open) ? open as boolean : true
     setOpen(nextOpen, force)
     exists<ESideNav>(name) && setActive(name)

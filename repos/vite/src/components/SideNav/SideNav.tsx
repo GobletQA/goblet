@@ -12,7 +12,6 @@ import { HeaderSpacer, Drawer } from './SideNav.styled'
 import { SideNav as SideNavItems } from '@constants/nav'
 import { useSideNavToggle } from '@hooks/nav/useSideNavToggle'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
-import { toggleSidebarLocked } from '@actions/nav/toggleSidebarLocked'
 import {
   useInline,
   useClickAway,
@@ -41,7 +40,8 @@ type TSideNavProps = {
 
 export const SideNav = (props:TSideNavProps) => {
   const { sidebarLocked } = useApp()
-  const [open, setOpen] = useState(false)
+
+  const [open, setOpen] = useState<boolean>(false)
   const [activeNav, setActiveNav] = useState<ESideNav|undefined>()
 
   const toggleOpen = useInline((toggle:boolean, force?:boolean) => {
@@ -90,9 +90,7 @@ export const SideNav = (props:TSideNavProps) => {
           groups={groups}
           subNavSx={subNavSx}
           activeNav={activeNav}
-          locked={sidebarLocked}
           toggleDrawer={toggleDrawer}
-          setLocked={toggleSidebarLocked}
           className={SideNavItems.groupClassName}
         />
       </Drawer>

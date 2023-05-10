@@ -1,16 +1,12 @@
-import type { TRepoState } from '@types'
-import type { ComponentProps } from 'react'
+import type { ComponentProps, MouseEventHandler } from 'react'
 
-import { useRepo } from '@store'
-import Box from '@mui/material/Box'
 import { asCallback } from '@utils/helpers'
 import { connectModal } from '@actions/modals/modals'
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import {
-  Git,
-  Text,
-  Button,
+  gutter,
   Tooltip,
+  IconButton,
   CloudOffIcon,
 } from '@gobletqa/components'
 
@@ -18,17 +14,34 @@ const onConnect = asCallback(connectModal, false)
 export type TUnmountContent = {}
 export type TUnmountBtn = ComponentProps<typeof CloudOffIcon>
 
-
+const styles = {
+  icon: {
+    fontSize: `16px`
+  },
+  button: {
+    padding: `0px`,
+    marginRight: `0px`,
+    pointerEvents: `auto`,
+  }
+}
 
 const UnmountBtn = (props:TUnmountBtn) => {
+  const { onClick, ...rest } = props
+  
   return (
     <Tooltip
       loc='bottom'
       describeChild
-      title={`Unmount repository`}
       enterDelay={500}
+      title={`Unmount repository`}
     >
-      <CloudOffIcon {...props} />
+      <IconButton
+        sx={styles.button}
+        onClick={onClick as MouseEventHandler<HTMLButtonElement>|undefined}
+      >
+        <CloudOffIcon {...rest} sx={styles.icon} />
+      </IconButton>
+    
     </Tooltip>
   )
 }

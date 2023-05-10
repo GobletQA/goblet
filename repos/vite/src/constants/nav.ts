@@ -1,6 +1,5 @@
 import type { TSideNav } from '@types'
 
-import { Environment } from './environment'
 import { EEditorType, ESideNav } from '@types'
 import { deepFreeze } from '@keg-hub/jsutils'
 import {

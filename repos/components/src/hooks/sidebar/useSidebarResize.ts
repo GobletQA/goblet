@@ -32,8 +32,8 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
 
   const dragStartRef = useRef<TDragObj>({
     pageX: 0,
-    width: 0,
     start: false,
+    width: sidebarWidth,
   })
 
   const onMoveStart = useCallback(
@@ -65,9 +65,9 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
 
   const styles = useMemo(
     () => {
-      // Only animate the sidebar widht when not manually resizing
+      // Only animate the sidebar width when not manually resizing
       return !dragStartRef?.current?.start
-        ? { width: `${sidebarWidth}px` }
+        ? { width: `${initialWidth}px` }
         : { width: `${sidebarWidth}px`, transition: `none` }
     },
     [maxWidth, sidebarWidth]
@@ -79,12 +79,10 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
   }, [onSidebarResize, setSidebarWidth])
 
   useOnEvent<TResizeSideBarEvent>(ResizeSideBarEvent, ({ size, toggle }) => {
-
     if(exists(size)) return resizeSidebar?.(size)
     if(!toggle) return
-    
-    sidebarWidth > 0 ? resizeSidebar?.(0) : resizeSidebar?.(SidebarOpenWidth)
 
+    sidebarWidth > 0 ? resizeSidebar?.(0) : resizeSidebar?.(SidebarOpenWidth)
   })
 
   return {

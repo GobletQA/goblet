@@ -21,7 +21,7 @@ export type TNavItemProps = TNavItem & {
   color?: string
   activeNav?: string
   isActive?: boolean
-  divider?: boolean | 'bottom' | 'top'
+  divider?: boolean | `bottom` | `top`
 }
 
 export const NavItem = (props:TNavItemProps) => {
@@ -38,7 +38,6 @@ export const NavItem = (props:TNavItemProps) => {
 
   const {
     color,
-    isActive,
     hoverBgColor,
     backgroundColor
   } = useMemo(() => {
@@ -59,16 +58,16 @@ export const NavItem = (props:TNavItemProps) => {
 
   return (
     <ListItem
+      disablePadding
       data-nav-item={name}
       className={`nav-list-item nav-item-${name}`}
-      disablePadding
       sx={{
         bgcolor: backgroundColor,
         width: dims.nav.closedWidth,
 
-        ['& .MuiListItemButton-root:hover']: {
+        [`& .MuiListItemButton-root:hover`]: {
           bgcolor: hoverBgColor,
-          '&, & .MuiListItemIcon-root': {
+          [`&, & .MuiListItemIcon-root`]: {
             
           },
         },

@@ -55,7 +55,7 @@ export const VisualEditor = (props:TVisualEditor) => {
             menuContext={menuContext}
             firstFeatureActive={true}
             onWorldChange={onWorldChange}
-            sidebarStatus={!sidebarLocked}
+            sidebarStatus={sidebarLocked}
             onFeatureClose={onFeatureClose}
             sidebarWidth={SidebarOpenWidth}
             onFeatureCreate={onFeatureCreate}

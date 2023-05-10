@@ -17,6 +17,12 @@ type TClickHandler = { onClick: (...args:any[]) => void }
 export type TAddRootFile = ComponentProps<typeof NewFileIcon> & TClickHandler
 export type TAddRootFolder = ComponentProps<typeof NewFolderIcon> & TClickHandler
 
+const styles = {
+  folderIcon: {
+    marginRight: `0px !important`,
+  }
+}
+
 const AddRootFile = (props:TAddRootFile) => {
   const { rootPrefix } = useEditor()
 
@@ -57,6 +63,7 @@ const AddRootFolder = (props:TAddRootFolder) => {
     >
       <NewFolderIcon
         {...props}
+        sx={styles.folderIcon}
         onClick={onClick}
       />
     </Tooltip>

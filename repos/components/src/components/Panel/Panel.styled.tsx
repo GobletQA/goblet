@@ -1,10 +1,10 @@
 import type { ElementType } from 'react'
 import type { ListItemButtonProps } from '@mui/material'
-import { colors } from '@GBC/theme'
 
 type THeaderItem = ListItemButtonProps & { component?: ElementType }
 
 import { Span } from '../Text'
+import { colors } from '@GBC/theme'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import ListItemButton from '@mui/material/ListItemButton'

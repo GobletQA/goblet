@@ -235,7 +235,7 @@ export const lightTheme = {
     [`list.hoverForeground`]: colors.gray21,
 
     [`list.inactiveSelectionBackground`]: colors.white,
-    [`list.inactiveSelectionForeground`]: colors.gray12,
+    [`list.inactiveSelectionForeground`]: colors.gray07,
 
     [`list.activeSelectionBackground`]: colors.gray01,
     [`list.activeSelectionForeground`]: colors.purple15,

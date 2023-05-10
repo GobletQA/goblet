@@ -39,6 +39,10 @@ export const useRaceHooks = () => {
   const onPathChange = useOnPathChange()
 
   const onFeatureActive = useInline(async (feature:TRaceFeature) => {
+    const { location } = await getActiveFeature()
+    const activeFeat = files[location]
+    if(activeFeat?.location === feature?.parent?.uuid) return
+
     feature?.parent?.uuid
       ? onPathChange(feature.parent.uuid)
       : console.warn(`Can not set feature active, missing file path`, feature)

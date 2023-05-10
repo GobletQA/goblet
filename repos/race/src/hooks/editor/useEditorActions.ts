@@ -76,14 +76,16 @@ export const useEditorActions = (props:THEditorActions) => {
 
   const { feature, setFeature } = useEditor()
 
+
  // TODO: update these to actually change the file
   const onEditFeature = useCallback<TOnEditFeature>(() => {
     console.log(`------- editing feature -------`)
   }, [])
-  
+ 
   const onDeleteFeature = useCallback<TOnDeleteFeature>(() => {
     console.log(`------- delete feature -------`)
   }, [])
+  // ----- end tood 
 
   const onTabClose = useInline<TTabAction>((tab, evt) => {
     stopEvent(evt)
@@ -95,8 +97,9 @@ export const useEditorActions = (props:THEditorActions) => {
     const nextFeat = active ? featureFromTab(active?.tab, featuresRef.current) : active
 
     onFeatureClose?.(feat)
-    setFeature(nextFeat)
     nextFeat && onFeatureActive?.(nextFeat)
+
+    setFeature(nextFeat)
   })
 
   /**
@@ -113,8 +116,8 @@ export const useEditorActions = (props:THEditorActions) => {
 
     if(feat?.uuid === feature?.uuid) return
 
-    setFeature(feat)
     feat && onFeatureActive?.(feat)
+    setFeature(feat)
   }, [
     feature,
     setFeature,

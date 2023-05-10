@@ -1,13 +1,15 @@
 import type { MouseEventHandler, ComponentProps } from 'react'
+import { getStore, useApp } from '@store'
+import { SettingSidebarLocked } from '@constants/settings'
+import { updateSettingValue } from '@actions/settings/updateSettingValue'
 import {
   colors,
   Tooltip,
   LockIcon,
+  stopEvent,
   IconButton,
   LockOpenIcon,
 } from '@gobletqa/components'
-import { useApp } from '@store'
-import { toggleSidebarLocked } from '@actions/nav/toggleSidebarLocked'
 
 type TIcon = typeof LockIcon | typeof LockOpenIcon
 export type TLockIcon = ComponentProps<TIcon>
@@ -18,7 +20,9 @@ const styles = {
     closed: { color: colors.red10, fontSize: `16px` }
   },
   button: {
-    pointerEvents: `auto`
+    padding: `0px`,
+    marginRight: `0px`,
+    pointerEvents: `auto`,
   }
 }
 
@@ -55,9 +59,14 @@ export const LockAction = {
   id:`lock-sidebar`,
   Component: LockActionComp,
   className:`goblet-lock-sidebar`,
-  action:(e:Event) => {
-    e?.stopPropagation?.()
-    e?.preventDefault?.()
-    toggleSidebarLocked()
+  action:(evt:Event) => {
+    stopEvent(evt)
+    const { app } = getStore().getState()
+    const { sidebarLocked } = app
+
+    updateSettingValue({
+      value: !sidebarLocked,
+      setting: SettingSidebarLocked
+    })
   },
 }

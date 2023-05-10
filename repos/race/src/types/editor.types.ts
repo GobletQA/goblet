@@ -62,6 +62,7 @@ export type TWorldChange = {
 export type TOnWorldChange = (props:TWorldChange) => void
 
 export type TRaceEditorProps = TSettingsState & TEditorShared & {
+  mode?:EEditorMode
   world?:TWorldConfig
   steps:TStepDefsList
   rootPrefix: string
@@ -69,9 +70,9 @@ export type TRaceEditorProps = TSettingsState & TEditorShared & {
   themeType?:EThemeMode
   features:TRaceFeatureAsts
   expressionOptions?:TExpOpts
-  onWorldChange?:TOnWorldChange
   firstFeatureActive?:boolean
   initialFeature?:TRaceFeature
+  onWorldChange?:TOnWorldChange
   onFeatureSave?:TOnFeatureCB
   onFeatureClose?:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB

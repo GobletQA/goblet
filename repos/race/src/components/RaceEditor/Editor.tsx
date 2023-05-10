@@ -1,6 +1,7 @@
 import type { TRaceEditorProps } from '@GBR/types'
 
 import { Container } from './Container'
+import { EEditorMode } from '@GBR/types'
 import { EditorProvider } from '@GBR/contexts'
 import { useRaceTheme } from '@GBR/hooks/useRaceTheme'
 import { useRaceEditor } from '@GBR/hooks/useRaceEditor'
@@ -49,6 +50,7 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureActive={onFeatureActive}
       setFeatureGroups={setFeatureGroups}
       onFeatureInactive={onFeatureInactive}
+      mode={props.mode || EEditorMode.simple}
       expressionOptions={props.expressionOptions}
     >
       <Container

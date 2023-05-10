@@ -2,10 +2,11 @@ import type { TSettingAct } from '@types'
 
 import { exists } from '@keg-hub/jsutils'
 import { settingsDispatch } from '@store'
+import { SettingSidebarLocked } from '@constants/settings'
 import { toggleSidebarLocked } from '../nav/toggleSidebarLocked'
 
 const settingActions:Record<string, (payload:TSettingAct) => void> = {
-  [`goblet.sidebarLocked`]: (payload:TSettingAct) => toggleSidebarLocked(payload.value)
+  [SettingSidebarLocked]: (payload:TSettingAct) => toggleSidebarLocked(payload.value)
   // Add other setting actions here as needed
 }
 
