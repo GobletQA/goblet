@@ -63,15 +63,20 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
     }
   }, [])
 
-  const styles = useMemo(
-    () => {
-      // Only animate the sidebar width when not manually resizing
-      return !dragStartRef?.current?.start
-        ? { width: `${initialWidth}px` }
-        : { width: `${sidebarWidth}px`, transition: `none` }
-    },
-    [maxWidth, sidebarWidth]
-  )
+  const styles = useMemo(() => {
+    
+    const startWidth = !initialStatus && !sidebarWidth
+      ? initialWidth
+      : sidebarWidth
+    
+    // Only animate the sidebar width when not manually resizing
+    return !dragStartRef?.current?.start
+      ? { width: `${startWidth}px` }
+      : { width: `${sidebarWidth}px`, transition: `none` }
+  }, [
+    maxWidth,
+    sidebarWidth
+  ])
 
   const resizeSidebar = useCallback((width:number) => {
     setSidebarWidth(width)
@@ -82,7 +87,9 @@ export const useSidebarResize = (props:TUseSidebarResize) => {
     if(exists(size)) return resizeSidebar?.(size)
     if(!toggle) return
 
-    sidebarWidth > 0 ? resizeSidebar?.(0) : resizeSidebar?.(SidebarOpenWidth)
+    sidebarWidth > 0
+      ? resizeSidebar?.(0)
+      : resizeSidebar?.(SidebarOpenWidth)
   })
 
   return {

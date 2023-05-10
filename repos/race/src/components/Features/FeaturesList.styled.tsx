@@ -16,8 +16,14 @@ export const Features = styled(List)<TListFeatures>`
   width: 100%;
   height: 100%;
   overflow: auto;
-  position: relative;
   padding-top: 0px;
+  position: relative;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { 
+    display: none;
+  }
 
   & ul {
     padding: 0px;
