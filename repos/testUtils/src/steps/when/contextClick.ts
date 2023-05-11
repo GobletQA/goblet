@@ -20,6 +20,7 @@ export const contextClick = async (
    * This can also happen with select drop downs
    * A good example is in Material UI 
    */
+    
   // @ts-ignore
   await page.evaluate(({ selector }) => document.querySelector(selector).click(), { selector })
 
@@ -37,7 +38,7 @@ const meta = {
       type: ExpressionTypes.string,
       kind: ExpressionKinds.element,
       description: `The element selector.  Selector must be specific enough to locate a single element.`,
-      example: "button[name='unique_name']",
+      example: `button[name='unique_name']`,
     },
   ],
   race: true
