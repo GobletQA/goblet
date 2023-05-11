@@ -3,7 +3,7 @@ import Card from '@mui/material/Card'
 import { styled } from '@mui/material/styles'
 import Grid from '@mui/material/Unstable_Grid2'
 import CardContent from '@mui/material/CardContent'
-import { Span, gutter } from '@gobletqa/components'
+import { dims, Span, gutter } from '@gobletqa/components'
 
 export const StepContainer = styled(Card)`
   width: 100%;
@@ -11,18 +11,18 @@ export const StepContainer = styled(Card)`
   background-color: var(--goblet-editorGroup-background);
 
   & .gb-dropdown-header {
-    transition: border 300ms ease;
     border-bottom: 1px solid transparent;
+    transition: border ${dims.trans.avgEase};
   }
 
 
 `
 export const StepContent = styled(CardContent)`
+  padding: 0px;
   display: flex;
   flex: 1 0 auto;
   align-items: center;
   justify-content: center;
-  padding: 0px;
   padding-top: ${gutter.padding.px};
 
   &:last-child {
@@ -45,11 +45,11 @@ export const ActionInfoText = styled(Span)`
 
 export const EmptyItem = styled(Box)`
   display: flex;
+  padding-left: 0px;
+  padding-right: 0px;
   align-items: start;
   justify-content: start;
   flex-direction: column;
-  padding-left: 0px;
-  padding-right: 0px;
   margin-bottom: 0px !important;
 `
 

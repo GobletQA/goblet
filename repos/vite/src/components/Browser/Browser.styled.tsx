@@ -42,8 +42,8 @@ export const BrowserInput = styled('input')(({ theme }) => `
   letter-spacing: 0.2px;
   height: ${dims.browser.url.hpx};
   color: ${getColor(colors.black07, colors.white, theme)};
-  background-color: ${getColor(colors.white, colors.black12, theme)};
   outline: 1px solid ${getColor(colors.gray00, colors.black11)};
+  background-color: ${getColor(colors.white, colors.black12, theme)};
 
   &:focus {
     outline: 2px solid ${colors.royalPurple};
@@ -118,8 +118,8 @@ export const BrowserBtn = styled(IconButton)(({ theme }) => `
   font-family: inherit;
   place-content: center;
   background-color: transparent;
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
   color: ${getColor(colors.gray12, colors.white, theme)};
+  transition: background-color ${dims.trans.avg} ease-in-out, color ${dims.trans.avg} ease-in-out;
   
   &.override-color:hover {
     color: ignore;
@@ -139,7 +139,7 @@ export const BrowserShadowTop = styled(Box)`
   pointer-events: none;
   top: -${dims.browser.nav.height - 10}px;
   height: ${dims.browser.nav.height - 12}px;
-  transition: box-shadow 300ms ease;
+  transition: box-shadow ${dims.trans.avgEase};
   box-shadow: 0px 10px 14px transparent;
   
   &.playing {
@@ -157,9 +157,9 @@ export const BrowserShadowBottom = styled(Box)`
   position: absolute;
   pointer-events: none;
   bottom: -${gutter.margin.px};
-  height: ${dims.browser.nav.height - 12}px;
-  transition: box-shadow 300ms ease;
   box-shadow: 0px -3px 0px transparent;
+  height: ${dims.browser.nav.height - 12}px;
+  transition: box-shadow ${dims.trans.avgEase};
 
   &.playing {
     box-shadow: 0px -3px 0px ${colors.purple10};

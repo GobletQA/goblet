@@ -1,3 +1,4 @@
+import { dims } from '@GBC/theme'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import { SidebarOpenWidth } from '@GBC/constants' 
@@ -18,7 +19,7 @@ export const SidebarContainer = styled(Box, {
   align-self: stretch;
   color: var(--goblet-editor-foreground);
   background: var(--goblet-sideBar-background);
-  transition: color 300ms ease, background-color 300ms ease, width 300ms ease;
+  transition: color ${dims.trans.avg} ease, background-color ${dims.trans.avg} ease, width ${dims.trans.avg} ease;
 
   &::-webkit-scrollbar {
     width: 1px;

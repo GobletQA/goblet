@@ -1,5 +1,5 @@
 import type { TPanel } from '../../types'
-import type { SyntheticEvent, MutableRefObject } from 'react'
+import type { SyntheticEvent, MutableRefObject, CSSProperties } from 'react'
 
 import { useMemo, useCallback, useState, useRef, useEffect } from 'react'
 import { cls } from '@keg-hub/jsutils'
@@ -9,15 +9,18 @@ import { PanelSidebar, PanelContent } from './Panel.styled'
 
 export const Panel = (props:TPanel) => {
   const {
+    sx,
     title,
     onClick,
     actions,
     children,
+    headerSx,
     startOpen,
     fillHeight,
     headerHover,
     header=true,
     className=``,
+    headerClassName,
     body=Boolean(children),
   } = props
 
@@ -73,17 +76,19 @@ export const Panel = (props:TPanel) => {
 
   return (
     <PanelSidebar
-      sx={style.container}
+      sx={[style.container, sx] as CSSProperties[]}
       className={cls(`goblet-sidebar-panel`, className, closed ? `closed` : `open`)}
     >
       {header && (
         <PanelHeader
           title={title}
+          sx={headerSx}
           hasBody={body}
           closed={closed}
           actions={actions}
           onCollapse={onCollapse}
           headerHover={headerHover}
+          className={headerClassName}
         />
       )}
       {body && (

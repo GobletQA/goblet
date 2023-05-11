@@ -1,5 +1,5 @@
+import { dims } from '@GBC/theme'
 import Box from '@mui/material/Box'
-import { dims, colors } from '@GBC/theme'
 import { styled } from '@mui/material/styles'
 
 export const ActionsContainer = styled(Box)(({ theme }) => `
@@ -25,19 +25,16 @@ export const ActionsToggle = styled(Box)(({ theme }) => `
   height: ${dims.editor.tabs.height - 1}px;
   color: var(--goblet-tab-inactiveForeground);
   background-color: var(--goblet-editorGroupHeader-tabsBackground);
-  transition: color 300ms ease, background-color 300ms ease;
-
+  transition: color ${dims.trans.avg} ease, background-color ${dims.trans.avg} ease;
   box-sizing: border-box;
-  // border-left: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
-  // border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
 
   &:hover {
     background-color: var(--goblet-editorGroupHeader-tabsBorder);
   }
 
   & .goblet-editor-icon-rotate {
-    transition: transform 300ms, top 300ms;
     position: relative;
+    transition: transform ${dims.trans.avg}, top ${dims.trans.avg};
   }
 
   &.closed .goblet-editor-icon-rotate {
@@ -59,7 +56,7 @@ export const ActionsList = styled(Box)`
   height: auto;
   overflow: hidden;
   position: relative;
-  transition: max-height 300ms ease, opacity 500ms ease;
+  transition: max-height ${dims.trans.avg} ease, opacity 500ms ease;
   
   &.open {
     overflow: visible;
@@ -85,7 +82,7 @@ export const ActionItem = styled(Box)(({ theme }) => `
   pointer-events: auto;
   justify-content: center;
   color: var(--goblet-tab-inactiveForeground);
-  transition: color 300ms ease, background-color 300ms ease;
+  transition: color ${dims.trans.avg} ease, background-color ${dims.trans.avg} ease;
 
   &:first-of-type {
     margin-top: 0px;
@@ -105,7 +102,7 @@ export const ActionItem = styled(Box)(({ theme }) => `
     border-radius: 0px;
     background-color: transparent;
     color: var(--goblet-tab-inactiveForeground);
-    transition: color 300ms ease, background-color 300ms ease;
+    transition: color ${dims.trans.avg} ease, background-color ${dims.trans.avg} ease;
     
     &.Mui-disabled {
       color: var(--goblet-list-deemphasizedForeground);

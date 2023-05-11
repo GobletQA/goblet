@@ -10,15 +10,14 @@ export const FeatureStack = styled(Stack, {
   shouldForwardProp: (prop) => prop !== `parentPath`
 })(({ theme }) => {
   return `
-    padding: 0px ${gutter.padding.hpx};
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: none;
+    padding: 0px ${gutter.padding.hpx};
+    scrollbar-gutter: stable both-edges;
 
     background: linear-gradient(90deg, var(--goblet-editorGroup-background) 23px, transparent 1%) center, linear-gradient(var(--goblet-editorGroup-background) 23px, transparent 1%) center, var(--goblet-editor-border);
-
     background-size: 25px 25px;
-    scrollbar-gutter: stable both-edges;
 
     ::-webkit-scrollbar-track {
       background-color: transparent;
@@ -77,14 +76,14 @@ export const FeatureMenuContainer = styled(Box)`
   padding-right: 20px;
 `
 export const FeatureActionBtn = styled(Button)`
-  padding: 4px 8px;
   width: auto;
+  padding: 4px 8px;
   min-width: initial;
   border-radius: 0px;
   border-left: 1px solid var(--goblet-sideBar-border);
 
   color: ${colors.gray08};
-  transition: color 300ms ease;
+  transition: color ${dims.trans.avg} ease;
   
   &:hover {
     color: ${colors.purple10};
@@ -123,9 +122,9 @@ export const EmptyFeatureContent = styled(Box)`
 
 export const EmptyFeatureTextContainer = styled(Box)`
   width: 100%;
+  padding: ${gutter.padding.dpx};
   margin-left: ${gutter.margin.dpx};
   margin-right: ${gutter.margin.dpx};
-  padding: ${gutter.padding.dpx};
   padding-bottom: ${gutter.padding.dpx};
   padding-top: ${gutter.padding.size * 3}px;
 `
@@ -150,5 +149,4 @@ export const EmptyFeatureText = styled(Text)`
 
 export const EmptyFeatureIcon = styled(BlockIcon)`
   margin-right: 5px;
-  // color: ${colors.cardinal};
 `

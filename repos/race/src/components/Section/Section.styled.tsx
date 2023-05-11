@@ -49,7 +49,7 @@ export const SectionContainer = styled(Paper)`
   color: var(--goblet-editor-foreground);
   background-color: var(--goblet-tab-activeBackground);
   border: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
-  transition: border 300ms ease, box-shadow 300ms ease;
+  transition: border ${dims.trans.avgEase}, box-shadow ${dims.trans.avgEase};
 
   &:hover {
     ${headerCss.textActive}
@@ -65,7 +65,7 @@ export const SectionContainer = styled(Paper)`
     border-radius: 4px;
 
     & > .MuiButtonBase-root.gb-dropdown-header {
-      transition: margin-bottom 300ms ease, border 300ms ease, box-shadow 300ms ease;
+      transition: margin-bottom ${dims.trans.avgEase}, border ${dims.trans.avgEase}, box-shadow ${dims.trans.avgEase};
     }
 
     & > .MuiButtonBase-root.gb-dropdown-header.Mui-expanded {
@@ -76,7 +76,7 @@ export const SectionContainer = styled(Paper)`
 `
 export const SectionDropdown = styled(DropdownComp)`
   cursor: default;
-  transition: background-color 300ms ease;
+  transition: background-color ${dims.trans.avgEase};
   ${dndCss.dropdown}
 
   & .gb-dropdown-header {
@@ -99,11 +99,11 @@ export const SectionDropdown = styled(DropdownComp)`
 
   & > .MuiAccordionSummary-root {
     height: ${dims.race.section.header.px};
+    transition: border ${dims.trans.avgEase};
     min-height: ${dims.race.section.header.px};
-    transition: background-color 300ms ease;
+    transition: background-color ${dims.trans.avgEase};
     padding: ${gutter.padding.hpx} ${gutter.padding.hpx};
     background-color: var(--goblet-tab-activeBackground);
-    transition: border 300ms ease;
 
     &:hover {
       ${dropdownCss.headerActive}

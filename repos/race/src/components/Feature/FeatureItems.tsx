@@ -9,6 +9,7 @@ import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { toggleWorldEditor } from '@GBR/actions/general/toggleWorldEditor'
 
 import {
+  dims,
   Span,
   colors,
   WorldIcon,
@@ -33,14 +34,14 @@ export type TFeatureItem = Omit<TFeatureAction, `feature`|`type`> & {
 const itemStyles = {
   def: {
     sx: {
-      transition: `color 300ms ease`,
+      transition: `color ${dims.trans.avgEase}`,
       [`&:hover`]: {
         color: colors.purple10
       }
     },
     iconContainerSx: {
       color: `inherit`,
-      transition: `color 50ms ease`,
+      transition: `color ${dims.trans.fastest} ease`,
     },
     iconSx: {
       color: `inherit`,
@@ -50,7 +51,7 @@ const itemStyles = {
   active: {
     sx: {
       color: colors.green10,
-      transition: `color 300ms ease`,
+      transition: `color ${dims.trans.avgEase}`,
       [`&:hover`]: {
         color: colors.purple10
       }

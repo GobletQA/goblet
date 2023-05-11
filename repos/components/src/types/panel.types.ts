@@ -1,4 +1,4 @@
-import type { SyntheticEvent, ComponentType, ReactNode } from 'react'
+import type { CSSProperties, SyntheticEvent, ComponentType, ReactNode } from 'react'
 
 export type TPanel = {
   id?:string
@@ -6,9 +6,12 @@ export type TPanel = {
   body?:boolean
   header?:boolean
   className?:string
+  sx?:CSSProperties
   startOpen?:boolean
   fillHeight?:boolean
   headerHover?:boolean
+  headerSx?:CSSProperties
+  headerClassName?: string
   actions?:TPanelHeaderAction[]
   title?:string|ReactNode|ComponentType<any>
   onClick?:(event:SyntheticEvent, ...args:any[]) => void
@@ -28,6 +31,8 @@ export type TPanelHeaderAction = {
 export type TPanelHeader = {
   closed: boolean
   hasBody?:boolean
+  sx?:CSSProperties
+  className?: string
   headerHover?:boolean
   actions?:TPanelHeaderAction[]
   onCollapse: (...args:any[]) => void

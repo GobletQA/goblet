@@ -222,7 +222,7 @@ export const lightTheme = {
     
     [`sideBar.border`]: colors.gray00,
     [`sideBar.background`]: colors.white,
-    [`sideBarSectionHeader.border`]: colors.gray01,
+    [`sideBarSectionHeader.border`]: colors.white01,
     [`sideBarSectionHeader.foreground`]: colors.gray07,
     [`sideBarSectionHeader.background`]: colors.white,
     [`statusBarItem.activeBackground`]: colors.white,
@@ -231,14 +231,14 @@ export const lightTheme = {
     [`list.focusBackground`]: colors.white01,
     [`list.focusForeground`]: colors.gray21,
 
-    [`list.hoverBackground`]: colors.gray00,
+    [`list.hoverBackground`]: colors.purple01,
     [`list.hoverForeground`]: colors.gray21,
 
     [`list.inactiveSelectionBackground`]: colors.white,
-    [`list.inactiveSelectionForeground`]: colors.gray07,
+    [`list.inactiveSelectionForeground`]: colors.gray10,
 
     [`list.activeSelectionBackground`]: colors.gray01,
-    [`list.activeSelectionForeground`]: colors.purple15,
+    [`list.activeSelectionForeground`]: colors.purple18,
 
     [`list.highlightForeground`]: colors.purple10,
     [`list.warningForeground`]: colors.yellow10,

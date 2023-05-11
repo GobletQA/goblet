@@ -5,7 +5,7 @@ import { wordCaps } from '@keg-hub/jsutils'
 import { LockAction } from './LockAction'
 import { styled } from '@mui/material/styles'
 import { UnmountAction } from './UnmountAction'
-import { gutter, colors, Span } from '@gobletqa/components'
+import { dims, gutter, colors, Span } from '@gobletqa/components'
 
 export const PanelHeaderText = styled(Span)`
   flex: 1;
@@ -18,7 +18,7 @@ export const PanelHeaderText = styled(Span)`
 const ActionsPanelTitle = () => {
   const repo = useRepo()
   return (
-    <PanelHeaderText>
+    <PanelHeaderText className='gb-panel-repo-header-text' >
       {wordCaps(repo?.name || `unknown`)}
     </PanelHeaderText>
   )
@@ -30,9 +30,16 @@ export const ActionsPanel:TSidebarPanel = {
     UnmountAction,
     LockAction
   ],
+  sx: {
+    borderBottom: `1px solid var(--goblet-sideBarSectionHeader-border)`,
+  },
   header: true,
   startOpen: false,
   headerHover:false,
   title: ActionsPanelTitle,
-  className:`goblet-editor-connect-panel`
+  className:`gb-editor-connect-panel`,
+  headerClassName: `gb-panel-connect-root-header`,
+  headerSx: {
+    height: dims.dropdown.header.px,
+  },
 }

@@ -4,9 +4,9 @@ import type { ListItemButtonProps } from '@mui/material'
 type THeaderItem = ListItemButtonProps & { component?: ElementType }
 
 import { Span } from '../Text'
-import { colors } from '@GBC/theme'
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
+import { dims, gutter, colors } from '@GBC/theme'
 import ListItemButton from '@mui/material/ListItemButton'
 
 export const PanelSidebar = styled(Box)`
@@ -16,39 +16,38 @@ export const PanelSidebar = styled(Box)`
   &.open {
     border-bottom: 1px solid var(--goblet-sideBarSectionHeader-border);
   }
-
 `
 
 const sharedPanelHeader = `
   color: var(--goblet-list-activeSelectionForeground);
-  background: var(--goblet-statusBarItem-hoverBackground);
+  background: var(--goblet-list-hoverBackground);
 
   & .gb-panel-toggle-icon {
     path {
       color: var(--goblet-list-activeSelectionForeground);
     }
   }
-
 `
 
 export const PanelHeader = styled(ListItemButton)<THeaderItem>`
-  height: 30px;
+  width: 100%;
   display: flex;
   cursor: pointer;
-  font-size: 14px;
-  user-select: none;
-  line-height: 28px;
   font-weight: bold;
-  flex-direction: row;
   flex-grow: initial;
-  align-items: center;
-  width: 100%;
   position: relative;
-  transition: color 300ms ease, background-color 300ms ease, border 300ms ease;
+  align-items: center;
+  flex-direction: row;
+  padding-left: ${gutter.padding.qpx};
+  padding-right: ${gutter.padding.qpx};
+  height: ${dims.sidebar.panel.header.px};
   color: var(--goblet-sideBarSectionHeader-foreground);
   background: var(--goblet-sideBarSectionHeader-background);
-  padding-left: 5px;
-  padding-right: 5px;
+  transition: color ${dims.trans.avgEase}, background-color ${dims.trans.avgEase}, border ${dims.trans.avgEase};
+
+  &.no-hover:hover {
+    background: var(--goblet-sideBarSectionHeader-background);
+  }
 
   &:hover:not(.no-hover) {
     ${sharedPanelHeader}
@@ -62,12 +61,10 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
     pointer-events: none;
   }
 
-
   & .gb-panel-toggle-icon {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     margin-right: 4px;
-
     & path {
       color: var(--goblet-sideBarSectionHeader-foreground);
     }
@@ -75,17 +72,15 @@ export const PanelHeader = styled(ListItemButton)<THeaderItem>`
   
   & .gb-panel-header-action {
     font-size: 16px;
-    margin-right: 5px;
     pointer-events: initial;
-    transition: color 300ms ease;
+    transition: color ${dims.trans.avgEase};
+    margin-right: ${gutter.margin.qpx};
     color: var(--goblet-sideBarSectionHeader-foreground);
     
     &:hover {
       color: ${colors.royalPurple} !important;
     }
-    
   }
-
 `
 
 export const PanelHeaderText = styled(Span)`
@@ -97,14 +92,14 @@ export const PanelHeaderText = styled(Span)`
 export const PanelContent = styled(Box)`
   height: auto;
   overflow:hidden;
-  position: relative;
   padding-top: 0px;
+  position: relative;
   padding-bottom: 0px;
-  transition: max-height 300ms ease, padding-top 300ms ease, padding-bottom 300ms ease;
+  transition: max-height ${dims.trans.avgEase}, padding-top ${dims.trans.avgEase}, padding-bottom ${dims.trans.avgEase};
 
   &.show {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: ${gutter.padding.qpx};
+    padding-bottom: ${gutter.padding.qpx};
   }
 `
 

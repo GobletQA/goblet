@@ -17,6 +17,14 @@ const raceSectionHeaderH = 40
 const defHeaderH = 35
 
 export const dims = {
+  sidebar: {
+    panel: {
+      header: {
+        size: defHeaderH,
+        px: `${defHeaderH}px`,
+      }
+    },
+  },
   panel: {
     divider: {
       width: divider,
@@ -104,5 +112,10 @@ export const dims = {
         px: `${raceSectionHeaderH}px`,
       }
     }
+  },
+  trans: {
+    fastest: `50ms`, 
+    avg: `300ms`,
+    avgEase: `300ms ease`
   }
 }

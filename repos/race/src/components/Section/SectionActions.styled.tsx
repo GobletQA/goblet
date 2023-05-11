@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import {
+  dims,
   gutter,
   Button,
   IconButton,
@@ -18,7 +19,7 @@ export const SectionActs = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 300ms ease;
+  transition: opacity ${dims.trans.avgEase};
 `
 export const SectionActBtn = styled(Button)(actionCss.button)
 export const SectionActIcnBtn = styled(IconButton)(actionCss.button)

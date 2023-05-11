@@ -5,7 +5,7 @@ import { BranchFrom } from './BranchFrom'
 import { emptyArr } from '@keg-hub/jsutils'
 import { BranchSelect } from './BranchSelect'
 import { CreateNewBranch } from '@constants'
-import { colors } from '@gobletqa/components'
+import { dims, colors } from '@gobletqa/components'
 import Grid from '@mui/material/Unstable_Grid2'
 
 
@@ -26,7 +26,7 @@ const styles = {
   header: {
     opacity: `0.7`,
     color: colors.purple10,
-    transition: `opacity 300ms ease`,
+    transition: `opacity ${dims.trans.avgEase}`,
     [`:hover`]: {
       opacity: `1`,
     }

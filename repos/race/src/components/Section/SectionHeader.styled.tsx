@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles'
-import { Span, gutter, colors } from '@gobletqa/components'
+import { dims, Span, gutter, colors } from '@gobletqa/components'
 
 
 export const headerCss = {
@@ -7,7 +7,7 @@ export const headerCss = {
     opacity: 0.8;
     font-size: 14px;
     font-weight: bold;
-    transition: color 300ms ease, opacity 300ms ease;
+    transition: color ${dims.trans.avgEase}, opacity ${dims.trans.avgEase};
   `,
   textActive: `
     & > .gb-section-dropdown {

@@ -75,8 +75,8 @@ export const OpenTab = styled(Box)`
   height: ${dims.editor.tabs.px};
   color: var(--goblet-tab-inactiveForeground);
   background-color: var(--goblet-tab-inactiveBackground);
-  transition: color 300ms ease, background-color 300ms ease;
   border-right: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
+  transition: color ${dims.trans.avg} ease, background-color ${dims.trans.avg} ease;
 
   &.focused {
     z-index: 2;
@@ -131,7 +131,7 @@ export const OpenTabClose = styled(Span)`
   position: relative;
   color: transparent;
   background: transparent;
-  transition: color 300ms ease, background-color 300ms ease;
+  transition: color ${dims.trans.avg} ease, background-color ${dims.trans.avg} ease;
   
   & svg {
     font-size: 12px;

@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box'
-import { Tooltip, Button, SyncIcon } from '@gobletqa/components'
+import { dims, Tooltip, Button, SyncIcon } from '@gobletqa/components'
 
 const styles = {
   button: {
@@ -7,7 +7,7 @@ const styles = {
     minWidth: `100%`,
     height: `40px`,
     opacity: `0.9`,
-    transition: `opacity 300ms ease`,
+    transition: `opacity ${dims.trans.avgEase}`,
     paddingLeft: `0`,
     paddingRight: `0`,
     [`:hover`]: {

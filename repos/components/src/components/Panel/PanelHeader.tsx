@@ -2,7 +2,7 @@ import type { TPanelHeader } from '../../types'
 
 import { ExpandIcon } from '@GBC/components/Icons'
 import { noOpObj, cls, isStr, isFunc, isObj } from '@keg-hub/jsutils'
-import { PanelHeaderText, PanelHeader as Container } from './Panel.styled'
+import { PanelHeaderText, PanelHeader as PanelHeaderComp } from './Panel.styled'
 
 
 export const PanelHeaderActions = (props:TPanelHeader) => {
@@ -48,7 +48,7 @@ const PanelTitle = (props:TPanelHeader):any => {
 
   return (
     isStr(Title)
-      ? (<PanelHeaderText>{Title}</PanelHeaderText>)
+      ? (<PanelHeaderText className='gb-panel-header-text' >{Title}</PanelHeaderText>)
       : isFunc(Title)
         ? (<Title {...props} />)
         : isObj(Title) ? Title : null
@@ -57,21 +57,25 @@ const PanelTitle = (props:TPanelHeader):any => {
 
 export const PanelHeader = (props:TPanelHeader) => {
   const {
+    sx,
     title,
     closed,
     actions,
+    className,
     onCollapse,
     hasBody=true,
     headerHover=true,
   } = props
 
   return (
-    <Container
+    <PanelHeaderComp
+      sx={sx}
       onClick={onCollapse}
       className={cls(
         !hasBody && `no-click`,
         !headerHover && `no-hover`,
         closed ? `closed` : `open`,
+        className,
         `gb-sidebar-panel-header`,
       )}
     >
@@ -83,6 +87,6 @@ export const PanelHeader = (props:TPanelHeader) => {
       )}
       {title && (<PanelTitle {...props} />)}
       {actions?.length ? (<PanelHeaderActions {...props} />) : null}
-    </Container>
+    </PanelHeaderComp>
   )
 }

@@ -1,7 +1,7 @@
 import type { TOnAutoChange } from '@gobletqa/components'
 import type { TBuiltRepos, TRepoValueCB, TRepoInputError, TBuiltRepo } from '@types'
 
-import { colors, gutter } from '@gobletqa/components'
+import { dims, colors, gutter } from '@gobletqa/components'
 import { RepoAdvanced } from './RepoAdvanced'
 import { BranchConnect } from './BranchConnect'
 import { Container, Dropdown } from './Connect.styled'
@@ -37,7 +37,7 @@ const styles = {
     color: colors.purple10,
     [`:hover`]: {
       opacity: 1,
-      transition: `opacity 300ms ease`,
+      transition: `opacity ${dims.trans.avgEase}`,
     },
     [`& h5`]: {
       color: colors.purple10,
