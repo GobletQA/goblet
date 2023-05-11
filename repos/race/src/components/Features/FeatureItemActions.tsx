@@ -38,7 +38,7 @@ export const FeatureItemActions = (props:TFeatureItemActions) => {
     if(!onDeleteFeature) return
 
     stopEvent(e)
-    onDeleteFeature?.(e, feature.path)
+    onDeleteFeature?.(e, feature.uuid)
   }, [feature.path])
 
 

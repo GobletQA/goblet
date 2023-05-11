@@ -1,5 +1,6 @@
 export * from './moveStep'
 export * from './moveScenario'
+export * from './toggleConfirm'
 export * from './collapseAllExcept'
 export * from './toggleWorldEditor'
 export * from './addSimpleModeStep'

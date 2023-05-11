@@ -66,6 +66,7 @@ export const ModalRoot = (props:TModal) => {
     onClose,
     actions,
     children,
+    headerSx,
     titleProps,
     toggleModal,
     actionProps,

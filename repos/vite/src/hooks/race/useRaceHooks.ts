@@ -32,8 +32,8 @@ export const useRaceHooks = () => {
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
   const onSaveFile = useOnSaveFile(files, rootPrefix)
   const onAddFile = useOnAddFile(files, rootPrefix, repo)
+  const onDeleteFeature = useOnDeleteFile(files, rootPrefix)
   // const onLoadFile = useOnLoadFile(files, rootPrefix)
-  // const onDeleteFile = useOnDeleteFile(files, rootPrefix)
   // const onRenameFile = useOnRenameFile(files, rootPrefix)
 
   const onPathChange = useOnPathChange()
@@ -85,6 +85,11 @@ export const useRaceHooks = () => {
     onAddFile({ content, location: parent.uuid })
   })
 
+  const onFeatureDelete = useInline((feature:TRaceFeature) => {
+    console.log(`------- feature -------`)
+    console.log(feature)
+  })
+
   const onWorldChange = useOnWorldChange({
     repo,
     rootPrefix,
@@ -100,6 +105,7 @@ export const useRaceHooks = () => {
     onFeatureCreate,
     onFeatureActive,
     onFeatureChange,
+    onFeatureDelete,
     world: repo.world,
     onFeatureSave: onFeatureChange,
     connected: Boolean(repo?.paths && repo?.name)

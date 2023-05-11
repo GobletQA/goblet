@@ -13,6 +13,7 @@ import { FeatureListGroup } from './FeatureListGroup'
 export type TFeatureItemRender = TEditorFeatureActions & {
   active:TRaceFeature
   featureGroup:TRaceFeatures
+  featureGroups:TRaceFeatures
 }
 
 export const FeatureItemRender = (props:TFeatureItemRender) => {
@@ -20,6 +21,7 @@ export const FeatureItemRender = (props:TFeatureItemRender) => {
     active,
     editingName,
     featureGroup,
+    featureGroups,
     onEditFeature,
     onDeleteFeature,
     onActiveFeature,
@@ -43,6 +45,7 @@ export const FeatureItemRender = (props:TFeatureItemRender) => {
                 active={active}
                 editingName={editingName}
                 onEditFeature={onEditFeature}
+                featureGroups={featureGroups}
                 onDeleteFeature={onDeleteFeature}
                 onActiveFeature={onActiveFeature}
                 featureGroup={item as TRaceFeatureGroup}
@@ -53,6 +56,7 @@ export const FeatureItemRender = (props:TFeatureItemRender) => {
               <FeatureListItem
                 active={active}
                 editingName={editingName}
+                featureGroups={featureGroups}
                 onEditFeature={onEditFeature}
                 feature={item as TRaceFeature}
                 onDeleteFeature={onDeleteFeature}

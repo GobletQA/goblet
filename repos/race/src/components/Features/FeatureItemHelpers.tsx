@@ -33,7 +33,7 @@ export const styles = {
   conflictFolder: {
     color: `#E83333`,
   },
-  conflictFile: {
+  nameConflict: {
     color: `#E83333`,
     border: `1px solid #E83333`,
   },

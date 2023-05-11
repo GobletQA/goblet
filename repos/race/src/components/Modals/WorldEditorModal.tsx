@@ -2,6 +2,7 @@ import type { TOnWorldChange } from '@GBR/types'
 import type { TWorldConfig } from '@ltipton/parkin'
 import type { TModalRef, TModalComponent } from '@gobletqa/components'
 
+import { ERaceModal } from '@GBR/types'
 import { useParkin } from '@GBR/contexts'
 import { deepMerge } from '@keg-hub/jsutils'
 import { useState, useEffect } from 'react'
@@ -37,7 +38,7 @@ export const WorldEditorModal:TModalRef = (props:TModalComponent) => {
     : (<Loading message='Loading world...' />)
 }
 
-WorldEditorModal.modalType = `WorldEditor`
+WorldEditorModal.modalType = ERaceModal.WorldEditor
 WorldEditorModal.modalProps = {
   title: `World Editor`,
   maxWidth: `md`,

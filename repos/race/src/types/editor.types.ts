@@ -74,9 +74,7 @@ export type TRaceEditorProps = TSettingsState & TEditorShared & {
   initialFeature?:TRaceFeature
   onWorldChange?:TOnWorldChange
   onFeatureSave?:TOnFeatureCB
-  onFeatureClose?:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
-  onFeatureActive?:TOnFeatureCB
   onFeatureCreate?:TOnFeatureCB
 }
 
@@ -94,6 +92,7 @@ export type TEditorShared = {
   featureGroups:TRaceFeatures
   onFeatureClose?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
+  onFeatureDelete?:TOnFeatureCB
   menuContext?:TRaceContextMenu
   onFeatureInactive?:TOnFeatureCB
   onSidebarResize?:(width:number) => void

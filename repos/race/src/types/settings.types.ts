@@ -25,8 +25,10 @@ export type TActionMethod = (state:TSettingsState, action:TSettingAction) => TSe
 export type TToggleRaceModalEvt = {
   state?:boolean
   type?:ERaceModal
+  [key:string]: any
 }
 
 export enum ERaceModal {
-  WorldEditor=`WorldEditor`
+  Confirm=`Confirm`,
+  WorldEditor=`WorldEditor`,
 }

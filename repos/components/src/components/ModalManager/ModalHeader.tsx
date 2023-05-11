@@ -6,7 +6,7 @@ import type {
 
 import { useMemo } from 'react'
 import Box from '@mui/material/Box'
-import { noOpObj } from '@keg-hub/jsutils'
+import { noOpObj, cls } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
 import { gutter, colors } from '@GBC/theme'
 import { useTheme } from '@GBC/hooks/theme'
@@ -17,6 +17,8 @@ export const ModalHeader = (props:TModal) => {
   const {
     title,
     Title,
+    headerSx,
+    className,
     titleProps=noOpObj as TModalTitle,
   } = props
 
@@ -41,8 +43,10 @@ export const ModalHeader = (props:TModal) => {
       alignContent="center"
       justifyContent="start"
       margin={`0 ${gutter.margin.px}`}
+      className={cls(`gb-modal-header`, className)}
       padding={`${gutter.padding.tQpx} ${gutter.padding.px}`}
       {...styles}
+      sx={headerSx}
     >
       {Icon}
       {

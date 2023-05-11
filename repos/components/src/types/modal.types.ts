@@ -43,23 +43,24 @@ export type TModalSlots = {
 
 export type TModal = Omit<ComponentProps<typeof Dialog>, "open"> & {
   type?: string
-  text?: ReactNode
   open?: boolean
-  disableTransition?: boolean
-  toggleModal:(open?:boolean) => void
-  Container?: ComponentType<any> | false
-  Title?: ComponentType<any> | false
-  Header?: ComponentType<any> | false
-  Content?: ComponentType<any> | false
-  ContentText?: ComponentType<any> | false
-  Footer?: ComponentType<any> | false
-  slots?: TModalSlots
+  text?: ReactNode
   ModalMessage?: any
+  slots?: TModalSlots
   manualClose?:boolean
-  overrideContent?:boolean
+  headerSx?:CSSProperties
   actions?: TModalAction[]
   titleProps?: TModalTitle
+  overrideContent?:boolean
+  disableTransition?: boolean
   onClose?: (...args:any[]) => void
+  Title?: ComponentType<any> | false
+  toggleModal:(open?:boolean) => void
+  Footer?: ComponentType<any> | false
+  Header?: ComponentType<any> | false
+  Content?: ComponentType<any> | false
+  Container?: ComponentType<any> | false
+  ContentText?: ComponentType<any> | false
   actionProps?: ComponentProps<typeof DialogActions>
   contentProps?: ComponentProps<typeof DialogContent>
 }

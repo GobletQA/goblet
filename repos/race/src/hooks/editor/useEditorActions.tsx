@@ -9,11 +9,13 @@ import type {
   TOnDeleteFeature,
 } from '@GBR/types'
 
-import { useCallback, useState } from 'react'
 import { useEditor } from '@GBR/contexts'
+import { useCallback, useState } from 'react'
 import { useTabHooks } from '@GBR/hooks/tabs/useTabHooks'
+import { toggleConfirm } from '@GBR/actions/general/toggleConfirm'
 
 import {
+  RedText,
   useInline,
   stopEvent,
 } from '@gobletqa/components'
@@ -32,6 +34,7 @@ export type THEditorActions = {
   featuresRef:TFeaturesRef
   onFeatureClose?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
+  onFeatureDelete?:TOnFeatureCB
   onFeatureInactive?:TOnFeatureCB
   setOpenedTabs:(tabs:TTabItem[]) => void
 }
@@ -72,20 +75,56 @@ export const useEditorActions = (props:THEditorActions) => {
     setOpenedTabs,
     onFeatureClose,
     onFeatureActive,
+    onFeatureDelete,
   } = props
 
   const { feature, setFeature } = useEditor()
 
   const [editingName, setEditingName] = useState(``)
 
- // TODO: update these to actually change the file
   const onEditFeature = useCallback<TOnEditFeature>((_, loc) => {
-    editingName !== loc && setEditingName(loc)
+    ;(editingName !== loc || loc === ``)
+      && setEditingName(loc)
   }, [editingName])
  
-  const onDeleteFeature = useCallback<TOnDeleteFeature>(() => {
-    console.log(`------- delete feature -------`)
-  }, [])
+  const onDeleteFeature = useCallback<TOnDeleteFeature>((__, loc) => {
+    const feature = featuresRef.current[loc] as TRaceFeature
+    toggleConfirm({
+      state: true,
+      title: `Delete Feature`,
+      text: (
+        <>
+          Are you sure your want to delete feature <b><RedText>{feature.feature}</RedText></b>?
+        </>
+      ),
+      actions: [
+        {
+          text: `No`,
+          color: `error`,
+          variant:`contained`,
+          onClick: () => toggleConfirm({ state: false }),
+        },
+        {
+          text: `Yes`,
+          color: `success`,
+          variant:`contained`,
+          onClick: () => {
+            // Close the modal
+            toggleConfirm({ state: false })
+
+            // TODO: remove the feature within race,
+            //  - Remove from feature
+            //  - Then update featureRefs
+            //  - And remove from tabs if it's open
+            // 
+            // Then Call the callback to save the feature on backend
+            //  - If file only has one feature, then delete entire file
+            onFeatureDelete?.(feature)
+          },
+        },
+      ],
+    })
+  }, [onFeatureDelete])
 
   const onTabClose = useInline<TTabAction>((tab, evt) => {
     stopEvent(evt)

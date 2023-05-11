@@ -1,14 +1,17 @@
 import type { MouseEventHandler } from 'react'
-import type { TRaceFeature, TEditorFeatureActions } from '@GBR/types'
+import type {
+  TRaceFeature,
+  TRaceFeatures,
+  TEditorFeatureActions
+} from '@GBR/types'
 
-import { cls, wordCaps } from '@keg-hub/jsutils'
-import { useCallback, useRef, useEffect } from 'react'
-import { stopPropagation } from '@gobletqa/components'
-
+import { useCallback, useRef, useEffect, useState } from 'react'
+import { useOnKeyDown, useOnBlur } from './useFeatureItemEvents'
 
 export type THFeatureItemHooks = TEditorFeatureActions & {
   active:TRaceFeature
   feature:TRaceFeature
+  featureGroups:TRaceFeatures
 }
 
 export const useFeatureItemHooks = (props:THFeatureItemHooks) => {
@@ -16,20 +19,15 @@ export const useFeatureItemHooks = (props:THFeatureItemHooks) => {
     active,
     feature,
     editingName,
+    featureGroups,
     onEditFeature,
     onActiveFeature,
-    onDeleteFeature,
   } = props
 
   const onClick = useCallback<MouseEventHandler<HTMLDivElement>>(
     (evt) => onActiveFeature?.(evt, feature),
     [feature, onActiveFeature]
   )
-
-  // TODO: Fix name editing of a feature
-  // Need to update feature title
-  // Need to add event handlers for key-down && click
-  // Need to add validations on name
 
   const isActive = feature?.uuid === active?.uuid
   const nameRef = useRef<HTMLDivElement>(null)
@@ -56,10 +54,33 @@ export const useFeatureItemHooks = (props:THFeatureItemHooks) => {
 
   }, [editingName, feature])
 
+  const [nameConflict, setNameConflict] = useState(false)
+
+  const onBlur = useOnBlur({
+    nameRef,
+    feature,
+    editingName,
+    nameConflict,
+    onEditFeature,
+    featureGroups,
+    setNameConflict
+  })
+
+  const onKeyDown = useOnKeyDown({
+    onBlur,
+    editingName,
+    nameConflict,
+    featureGroups,
+    onEditFeature,
+    setNameConflict
+  })
+
   return {
+    onBlur,
     onClick,
     nameRef,
     isActive,
+    onKeyDown,
+    nameConflict
   }
-
 }

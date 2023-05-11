@@ -2,8 +2,8 @@ import type { TToggleRaceModalEvt } from '@GBR/types'
 
 import { Modals } from './Modals'
 import { ERaceModal } from '@GBR/types'
-import { exists } from '@keg-hub/jsutils'
 import { useState, useMemo } from 'react'
+import { exists, emptyObj } from '@keg-hub/jsutils'
 import { ToggleRaceModalEvt } from '@GBR/constants'
 import { ModalManager, useOnEvent, useInline } from '@gobletqa/components'
 
@@ -17,6 +17,7 @@ export const Modal = (props:TModal) => {
 
   const [open, setOpen] = useState<boolean>(props.visible || false)
   const [type, setType] = useState<ERaceModal>()
+  const [modalProps, setModalProps] = useState<Record<string, any>>(emptyObj)
 
   const ActiveModal = useMemo(
     () => type && Object.values(Modals).find(Modal => Modal.modalType === type),
@@ -27,17 +28,19 @@ export const Modal = (props:TModal) => {
     exists<boolean>(state) ? setOpen(state) : setOpen(!open)
   })
 
-  useOnEvent<TToggleRaceModalEvt>(ToggleRaceModalEvt, ({ state, type }) => {
+  useOnEvent<TToggleRaceModalEvt>(ToggleRaceModalEvt, ({ state, type, ...props }) => {
     const toggle = exists(state) ? state : !open
     setOpen(toggle)
 
     const updated = exists(type) ? type : undefined
     setType(updated)
+    setModalProps(props)
   })
 
   return ActiveModal && (
     <ModalManager
       {...props}
+      {...modalProps}
       open={open}
       Modal={ActiveModal}
       toggleModal={onToggle}

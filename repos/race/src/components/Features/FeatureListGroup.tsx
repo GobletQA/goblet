@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import type {
   TRaceFeature,
+  TRaceFeatures,
   TRaceFeatureGroup,
   TEditorFeatureActions,
 } from '@GBR/types'
@@ -13,6 +14,7 @@ import { FeaturesGroup, FeaturesGroupContainer } from './FeaturesList.styled'
 
 export type TFeatureListGroup = TEditorFeatureActions & {
   active:TRaceFeature
+  featureGroups:TRaceFeatures
   featureGroup:TRaceFeatureGroup
 }
 
@@ -32,6 +34,7 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
     active,
     editingName,
     featureGroup,
+    featureGroups,
     onEditFeature,
     onDeleteFeature,
     onActiveFeature
@@ -56,6 +59,7 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
             active={active}
             editingName={editingName}
             onEditFeature={onEditFeature}
+            featureGroups={featureGroups}
             onDeleteFeature={onDeleteFeature}
             onActiveFeature={onActiveFeature}
             featureGroup={featureGroup.items}

@@ -38,11 +38,8 @@ export const Container = (props:TEditorContainer) => {
     sidebarStatus,
     setOpenedTabs,
     featureGroups,
-    onFeatureClose,
-    onFeatureActive,
     sidebarMaxWidth,
     onSidebarResize,
-    onFeatureInactive,
     Divider=REDivider,
   } = props
 
@@ -55,13 +52,7 @@ export const Container = (props:TEditorContainer) => {
     onEditFeature,
     onFeatureClick,
     onDeleteFeature,
-  } = useEditorActions({
-    ...props,
-    featuresRef,
-    onFeatureClose,
-    onFeatureActive,
-    onFeatureInactive,
-  })
+  } = useEditorActions(props)
 
   const {
     styles,

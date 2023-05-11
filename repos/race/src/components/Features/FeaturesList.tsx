@@ -34,6 +34,7 @@ export const FeaturesList = (props:TFeaturesList) => {
         active={active}
         editingName={editingName}
         featureGroup={featureGroups}
+        featureGroups={featureGroups}
         onEditFeature={onEditFeature}
         onDeleteFeature={onDeleteFeature}
         onActiveFeature={onActiveFeature}

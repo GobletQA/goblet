@@ -28,8 +28,9 @@ export const Editor = (props:TRaceEditorProps) => {
     setFeatureRefs,
     onFeatureChange,
     onFeatureCreate,
-    setFeatureGroups,
+    onFeatureDelete,
     onFeatureActive,
+    setFeatureGroups,
     onFeatureInactive,
   } = useRaceEditor(props)
 
@@ -65,6 +66,7 @@ export const Editor = (props:TRaceEditorProps) => {
         featureGroups={featureGroups}
         setOpenedTabs={setOpenedTabs}
         onFeatureClose={onFeatureClose}
+        onFeatureDelete={onFeatureDelete}
         onFeatureActive={onFeatureActive}
         onFeatureInactive={onFeatureInactive}
         portal={props.portal}
