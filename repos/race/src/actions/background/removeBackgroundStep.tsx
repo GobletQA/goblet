@@ -5,9 +5,11 @@ import type {
   TRaceBackgroundParent,
 } from '@GBR/types'
 
-import { emptyArr, exists } from '@keg-hub/jsutils'
+import { RedText } from '@gobletqa/components'
 import { findBackground } from '@GBR/utils/find'
+import { emptyArr, exists } from '@keg-hub/jsutils'
 import { logNotFound, missingId } from '@GBR/utils/logging'
+import { openYesNo } from '@GBR/actions/general/toggleConfirm'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
@@ -80,7 +82,28 @@ export const removeBackgroundStep = async (props:TRemoveBackgroundStep) => {
 
   if(!background) return logNotFound(`background`, prefix)
 
-  return !rule || !exists<number>(index)
-    ? toFeature(props, feature, background)
-    : toRule(props, feature, rule, index, background)
+  const step = background.steps.find(step => step.uuid === props.stepId)
+
+  return new Promise(async (res) => {
+    const trimmed = step?.step?.trim()
+    const stepTxt = trimmed || `background step `
+
+    openYesNo({
+      title: `Delete ${stepTxt}`,
+      text: step?.step
+        ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
+        : (<>Are you sure your want to delete <b><RedText>{stepTxt}</RedText></b>?</>),
+      yes: {
+        onClick: () => {
+
+          const updated = !rule || !exists<number>(index)
+            ? toFeature(props, feature, background)
+            : toRule(props, feature, rule, index, background)
+
+          res(updated)
+        }
+      }
+    })
+  })
+
 }

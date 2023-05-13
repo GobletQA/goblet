@@ -7,11 +7,9 @@ import type {
   CSSProperties,
 } from 'react'
 
+import { cls } from '@keg-hub/jsutils'
 import { ESectionType, ESectionExt }  from '@GBR/types'
-import { Tooltip } from '@gobletqa/components'
-import { cls, isObj, isFunc } from '@keg-hub/jsutils'
 import { SectionActionsMenu } from './SectionActionsMenu'
-import { ActionBtn, ActionIconBtn }  from '@GBR/components/Actions'
 import {
   SectionActs,
   SectionMenuContainer

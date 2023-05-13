@@ -1,8 +1,10 @@
-import type { TRaceFeature, TRaceScenarioParent, TRaceScenario } from '@GBR/types'
+import type { TRaceStep, TRaceFeature, TRaceScenarioParent, TRaceScenario } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
+import { RedText } from '@gobletqa/components'
 import { findScenario, findRule } from '@GBR/utils/find'
 import { logNotFound, missingId } from '@GBR/utils/logging'
+import { openYesNo } from '@GBR/actions/general/toggleConfirm'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
@@ -73,13 +75,36 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
   )
   if(!scenario) return logNotFound(`scenario`, prefix)
 
+  let step:TRaceStep
   scenarios[scenarioIdx as number] = {
     ...scenario,
-    steps: scenario.steps.filter(step => step.uuid !== stepId)
+    steps: scenario.steps.filter(st => {
+      if(st.uuid !== stepId) return true
+
+      step = st
+      return false
+    })
   }
 
-  return scenarioParent.type === ESectionType.feature
-    ? toFeature(props, feature, scenarios)
-    : toRule(props, feature, scenarioParent, scenarios)
+  return new Promise(async (res) => {
+    const trimmed = step?.step?.trim()
+    const stepTxt = trimmed || `scenario step `
+
+    openYesNo({
+      title: `Delete ${stepTxt}`,
+      text: trimmed
+        ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
+        : (<>Are you sure your want to delete <b><RedText>{stepTxt}</RedText></b>?</>),
+      yes: {
+        onClick: () => {
+          const updated = scenarioParent.type === ESectionType.feature
+            ? toFeature(props, feature, scenarios)
+            : toRule(props, feature, scenarioParent, scenarios)
+
+          res(updated)
+        }
+      }
+    })
+  })
 
 }

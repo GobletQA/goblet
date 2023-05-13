@@ -20,12 +20,14 @@ export type TModalTransition = TransitionProps & { children: React.ReactElement<
     
 export type TModalAction = Omit<ComponentProps<typeof Button>, `onClick` | `color` | `variant`> & {
   text?: string
+  color?:string
   label?: string
   loading?: boolean
   EndIcon?: ComponentType<any>
   StartIcon?: ComponentType<any>
   iconProps?: ComponentProps<any>
   onClick?: (...args:any[]) => void
+  variant?: `text`|`contained`|`outlined`
 }
 
 export type TModalTitle = ComponentProps<typeof DialogTitle> & {

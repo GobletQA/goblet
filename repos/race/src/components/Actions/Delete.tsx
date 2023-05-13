@@ -3,6 +3,7 @@ import type { ComponentType, MouseEvent, CSSProperties } from 'react'
 import { capitalize } from '@keg-hub/jsutils'
 import { ActionIconBtn }  from '@GBR/components/Actions'
 import { useActionStyles } from '@GBR/hooks/useActionStyles'
+import { openYesNo } from '@GBR/actions/general/toggleConfirm'
 import {
   Tooltip,
   TrashIcon,
@@ -29,9 +30,13 @@ export const DeleteAct = (props:TDeleteAct) => {
 
   const ref = `action-remove-${type}`
   const btnClk = useInline((evt:MouseEvent) => {
-    // TODO: add alert warning here to validate the delete action
     stopEvent(evt)
-    onClick?.(evt)
+
+    openYesNo({
+      title: `Delete ${type}`,
+      text: `Are you sure?`,
+      yes: { onClick }
+    })
   })
 
   const styles = useActionStyles({ sx, style, styles: defStyles })

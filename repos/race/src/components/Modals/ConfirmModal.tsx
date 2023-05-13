@@ -15,7 +15,7 @@ ConfirmModal.modalProps = {
     margin: `0px`
   },
   titleProps: {
-    Icon: (<WarningIcon sx={{ color: colors.red10}} />)
+    Icon: (<WarningIcon sx={{ color: colors.yellow10}} />)
   },
   actionProps: {
     sx: {

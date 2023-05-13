@@ -17,7 +17,7 @@ const commonPalette:TPaletteOpts = {
     main: colors.honeyYellow,
   },
   success: {
-    main: colors.shamrock,
+    main: colors.shinyShamrock,
     contrastText: colors.white,
   },
   info: {

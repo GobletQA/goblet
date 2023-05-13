@@ -1,7 +1,9 @@
 import type { TRaceFeature, TRaceScenarioParent, TRaceScenario } from '@GBR/types'
 
+import { RedText } from '@gobletqa/components'
 import { logNotFound } from '@GBR/utils/logging'
 import { findScenario, findRule } from '@GBR/utils/find'
+import { openYesNo } from '@GBR/actions/general/toggleConfirm'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
@@ -32,7 +34,7 @@ const toRule = (
   const updated = {...feature, rules}
   props.persist !== false && updateFeature(updated, { removeAuditSteps: true })
 
-  return updated
+  return updated as TRaceFeature
 }
 
 const toFeature = (
@@ -43,7 +45,7 @@ const toFeature = (
   const updated = {...feature, scenarios}
   props.persist !== false && updateFeature(updated, { removeAuditSteps: true })
 
-  return updated
+  return updated as TRaceFeature
 }
 
 export const removeScenario = async (props:TRemoveScenario) => {
@@ -59,9 +61,26 @@ export const removeScenario = async (props:TRemoveScenario) => {
   } = findScenario(feature, scenarioId, props.parent)
   if(!scenario) return logNotFound(`scenario`, prefix)
 
-  const updated = scenarios?.filter(scenario => scenario.uuid !== props.scenarioId)
+  const removed = scenarios?.filter(scenario => scenario.uuid !== props.scenarioId)
 
-  return parent.uuid === feature.uuid
-    ? toFeature(props, feature, updated)
-    : toRule(props, feature, parent, updated)
+  return new Promise(async (res) => {
+    openYesNo({
+      title: `Delete ${scenario.scenario}`,
+      text: (
+        <>
+          Are you sure your want to delete scenario <b><RedText>{scenario.scenario}</RedText></b>?
+        </>
+      ),
+      yes: {
+        onClick: () => {
+          const updated = parent.uuid === feature.uuid
+            ? toFeature(props, feature, removed)
+            : toRule(props, feature, parent, removed)
+          
+          res(updated)
+        }
+      }
+    })
+  })
+
 }
