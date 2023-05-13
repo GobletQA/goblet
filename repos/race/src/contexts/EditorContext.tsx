@@ -1,5 +1,6 @@
 import type { MutableRefObject } from 'react'
 import type { TExpanded } from '@GBR/hooks/editor/useExpanded'
+import type { TTabItem } from '@gobletqa/components'
 import type {
   TAudit,
   TExpOpts,
@@ -31,6 +32,7 @@ export type TEditorProvider = {
   mode:EEditorMode
   rootPrefix:string
   editorRef:TEditorRef
+  openedTabs:TTabItem[]
   updateEmptyTab:TFeatureCB
   featuresRef:TFeaturesRef
   onFeatureSave:TOnFeatureCB
@@ -39,12 +41,14 @@ export type TEditorProvider = {
   onFeatureChange:TOnFeatureCB
   onFeatureActive:TOnFeatureCB
   onFeatureCreate:TOnFeatureCB
+  onFeatureDelete:TOnFeatureCB
   menuContext?:TRaceContextMenu
   onFeatureInactive:TOnFeatureCB
   setFeatureRefs:TSetFeatureRefs
   setFeatureGroups:TSetFeatureGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
+  setOpenedTabs:(tabs:TTabItem[]) => void
 }
 
 export type TEditorCtx = {
@@ -60,7 +64,8 @@ export type TEditorCtx = {
   updateExpanded:TOnExpandedCB
   menuContext?:TRaceContextMenu
   updateFeature:TUpdateFeatureCB
-  updateMode:(update: EEditorMode) => void
+  deleteFeature:(loc:string)=>void
+  updateMode:(update: EEditorMode)=>void
   collapseAllExcept:(key:string|string[]) => void
 }
 
@@ -74,14 +79,17 @@ export const EditorProvider = (props:TEditorProvider) => {
     rootPrefix,
     curPathRef,
     curValueRef,
+    openedTabs,
     featuresRef,
     menuContext,
     onFeatureSave,
+    setOpenedTabs,
     updateEmptyTab,
     setFeatureRefs,
     onFeatureClose,
     onFeatureChange,
     onFeatureCreate,
+    onFeatureDelete,
     onFeatureActive,
     setFeatureGroups,
     onFeatureInactive,
@@ -114,19 +122,23 @@ export const EditorProvider = (props:TEditorProvider) => {
   const {
     setFeature,
     updateFeature,
+    deleteFeature,
   } = useFeatureCallbacks({
     feature,
     expanded,
     rootPrefix,
     curPathRef,
+    openedTabs,
     curValueRef,
     featuresRef,
+    setOpenedTabs,
     onFeatureSave,
     onFeatureClose,
     setFeatureRefs,
     updateExpanded,
     updateEmptyTab,
     onAuditFeature,
+    onFeatureDelete,
     onFeatureActive,
     onFeatureChange,
     onFeatureCreate,
@@ -145,6 +157,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       updateMode,
       collapseAll,
       menuContext,
+      deleteFeature,
       updateFeature,
       updateExpanded,
       collapseAllExcept,
@@ -160,6 +173,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     rootPrefix,
     updateMode,
     collapseAll,
+    deleteFeature,
     updateFeature,
     updateExpanded,
     expressionOptions,

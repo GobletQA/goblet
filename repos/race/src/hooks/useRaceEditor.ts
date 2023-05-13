@@ -25,7 +25,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   stepDefsRef.current = steps
 
   const featuresRef = useRef<TRaceFeatures>(features)
-  featuresRef.current = features
 
   const [
     featureGroups,
@@ -62,6 +61,16 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     initialFeature
       && onFeatureActive?.(initialFeature)
   }, [])
+
+  /**
+   * Track changes to the features object
+   * They can be changed externally to the Race Editor
+   * If they are, make sure to update the featureRefs to reflect that
+   */
+  useEffect(() => {
+    features !== featuresRef.current
+      && setFeatureRefs(features)
+  }, [features])
 
   return {
     editorRef,

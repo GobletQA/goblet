@@ -5,8 +5,10 @@ import type {
 
 import { useCallback, useMemo } from 'react'
 import { toolTipProps, styles } from './FeatureItemHelpers'
+import { openYesNo } from '@GBR/actions/general/toggleConfirm'
 import { FeatureItemActionsContainer } from './FeaturesList.styled'
 import {
+  RedText,
   Tooltip,
   TrashIcon,
   stopEvent,
@@ -16,6 +18,14 @@ import {
 export type TFeatureItemActions = TEditorFeatureActions & {
   currentPath?:string
   feature:TRaceFeature
+}
+
+const DeleteFeatureMsg = ({ feature }:TFeatureItemActions) => {
+  return (
+    <>
+      Are you sure your want to delete feature <b><RedText>{feature?.feature}</RedText></b>?
+    </>
+  )
 }
 
 export const FeatureItemActions = (props:TFeatureItemActions) => {
@@ -35,11 +45,17 @@ export const FeatureItemActions = (props:TFeatureItemActions) => {
   }, [onEditFeature, feature])
 
   const onDelete = useCallback((e:Event) => {
-    if(!onDeleteFeature) return
-
     stopEvent(e)
-    onDeleteFeature?.(e, feature.uuid)
-  }, [feature.path])
+
+    openYesNo({
+      title: `Delete Feature`,
+      text: <DeleteFeatureMsg feature={feature} />,
+      yes: {onClick: () => onDeleteFeature?.(e, feature.uuid)}
+    })
+  }, [
+    feature?.uuid,
+    feature?.feature,
+  ])
 
 
   const classNames = useMemo(() => {

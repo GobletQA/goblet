@@ -21,7 +21,7 @@ const updateTabProps = (tabItem:TTabItem, update: Partial<TTab>) => ({
 /**
  * Check if a tabItems matches a tab object
  */
-const isTabMatch = (tabItem:TTabItem, tab:TTab) => {
+export const isTabMatch = (tabItem:TTabItem, tab:TTab) => {
   return TabRefs.reduce((found, ref) => {
     return found || tabItem.tab[ref] === tab[ref]
   }, false)

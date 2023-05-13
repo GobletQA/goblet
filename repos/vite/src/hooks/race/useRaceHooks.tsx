@@ -1,15 +1,18 @@
 import type { TFeatureFileModel } from '@types'
 import type { TRaceFeature } from '@gobletqa/race'
+import type { TFeatureAst } from '@ltipton/parkin'
 
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { useDefs, useRepo } from '@store'
 import { useRaceSteps } from './useRaceSteps'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@gobletqa/race'
+import { confirmModal, toggleModal } from '@actions/modals'
 import { useRaceFeatures } from '@hooks/race/useRaceFeatures'
 import { useOnWorldChange } from '@hooks/race/useOnWorldChange'
 import { getFeaturePrefix } from '@utils/features/getFeaturePrefix'
 import { getActiveFeature } from '@utils/features/getActiveFeature'
+import { MultipleFeatureErr } from '@components/Errors/MultipleFeatureErr'
 
 import {
   useOnAddFile,
@@ -21,14 +24,14 @@ import {
   useOnPathChange,
 } from '@hooks/files'
 
+
 export const useRaceHooks = () => {
   const repo = useRepo()
   const defs = useDefs()
   const files = useFeatureFiles()
   const steps = useRaceSteps(defs)
 
-  const features = useRaceFeatures(files)
-
+  const { features, duplicates } = useRaceFeatures(files)
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
   const onSaveFile = useOnSaveFile(files, rootPrefix)
   const onAddFile = useOnAddFile(files, rootPrefix, repo)
@@ -85,9 +88,13 @@ export const useRaceHooks = () => {
     onAddFile({ content, location: parent.uuid })
   })
 
-  const onFeatureDelete = useInline((feature:TRaceFeature) => {
-    console.log(`------- feature -------`)
-    console.log(feature)
+  const onFeatureDelete = useInline(async (feature:TRaceFeature) => {
+    const loc = feature.parent.location
+    const featFile = files[loc]
+    if(!featFile) return console.warn(`Can not delete feature, missing feature file location`)
+
+    // Assume only 1 feature per file
+    await onDeleteFeature(loc)
   })
 
   const onWorldChange = useOnWorldChange({
@@ -95,6 +102,35 @@ export const useRaceHooks = () => {
     rootPrefix,
     onSaveFile,
   })
+
+  useEffect(() => {
+    
+    // TODO: check if the modal has already been shown
+    // If it has, don't show it again
+    // Also make `ok` button work with `enter` key press
+    
+    duplicates?.length
+      && confirmModal({
+          maxWidth: `sm`,
+          title: `Multiple Features Error`,
+          children: (<MultipleFeatureErr files={duplicates} />),
+          actionProps: {
+            sx: {
+              justifyContent: `end`,
+              padding: `20px`,
+              paddingTop: `10px`,
+            }
+          },
+          actions: [
+            {
+              text: `OK`,
+              color: `success`,
+              variant:`contained`,
+              onClick: () => toggleModal(false),
+            },
+          ]
+        })
+  }, [duplicates])
 
   return {
     steps,

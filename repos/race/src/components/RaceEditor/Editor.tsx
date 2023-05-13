@@ -37,18 +37,21 @@ export const Editor = (props:TRaceEditorProps) => {
   return (
     <EditorProvider
       editorRef={editorRef}
+      openedTabs={openedTabs}
       curPathRef={curPathRef}
       curValueRef={curValueRef}
       featuresRef={featuresRef}
       menuContext={menuContext}
       rootPrefix={props.rootPrefix}
       onFeatureSave={onFeatureSave}
+      setOpenedTabs={setOpenedTabs}
       onFeatureClose={onFeatureClose}
       updateEmptyTab={updateEmptyTab}
       setFeatureRefs={setFeatureRefs}
       onFeatureCreate={onFeatureCreate}
       onFeatureChange={onFeatureChange}
       onFeatureActive={onFeatureActive}
+      onFeatureDelete={onFeatureDelete}
       setFeatureGroups={setFeatureGroups}
       onFeatureInactive={onFeatureInactive}
       mode={props.mode || EEditorMode.simple}

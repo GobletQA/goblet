@@ -1,14 +1,20 @@
+import type { TTabItem } from '@gobletqa/components'
 import type { THFeatureUpdate } from './useFeatureUpdate'
-import type { TUpdateFeature, TAskForFeature } from '@GBR/types'
+import type { TUpdateFeature, TAskForFeature, TOnFeatureCB } from '@GBR/types'
 
 import { useEmptyFeature } from './useEmptyFeature'
 import { useFeatureUpdate } from './useFeatureUpdate'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { GetActiveFileEvent, useOnEvent } from '@gobletqa/components'
+import { useFeatureDelete } from '@GBR/hooks/features/useFeatureDelete'
 import { AskForFeatureEvt, UpdateFeatureContextEvt } from '@GBR/constants'
 import { updateEmptyFeature } from '@GBR/utils/features/updateEmptyFeature'
 
-export type THFeatureCallbacks = THFeatureUpdate & {}
+export type THFeatureCallbacks = THFeatureUpdate & {
+  openedTabs:TTabItem[]
+  onFeatureDelete?:TOnFeatureCB
+  setOpenedTabs:(tabs:TTabItem[]) => void
+}
 
 export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
@@ -24,6 +30,8 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     setFeature,
     updateFeature
   } = useFeatureUpdate(props)
+
+  const deleteFeature = useFeatureDelete(props)
 
   useEmptyFeature({...props, setFeature})
 
@@ -52,6 +60,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
 
   return {
     setFeature,
+    deleteFeature,
     updateFeature,
   }
 

@@ -26,7 +26,7 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
 
   return [
     featureGroups,
-    setFeatureGroups,
     setFeatureRefs,
+    setFeatureGroups,
   ] as [TRaceFeatures, TSetFeatureGroups, TSetFeatureRefs]
 }

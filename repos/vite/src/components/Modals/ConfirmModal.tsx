@@ -1,7 +1,7 @@
 import type { TModalRef, TModalComponent } from '@gobletqa/components'
 
 import { EModalTypes } from '@types'
-import { WarningIcon } from '@gobletqa/components'
+import { colors, WarningIcon } from '@gobletqa/components'
 
 export const ConfirmModal:TModalRef = (props:TModalComponent) => {
   const { children } = props
@@ -17,8 +17,11 @@ ConfirmModal.modalType = EModalTypes.confirm
 ConfirmModal.modalProps = {
   maxWidth: `xs`,
   title: `Confirm`,
+  headerSx: {
+    margin: `0px`
+  },
   titleProps: {
-    Icon: (<WarningIcon />)
+    Icon: (<WarningIcon sx={{ color: colors.yellow10}} />)
   },
   actionProps: {
     sx: {
