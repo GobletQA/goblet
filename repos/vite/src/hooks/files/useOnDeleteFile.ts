@@ -6,7 +6,7 @@ import { removeFile } from '@actions/files/api/removeFile'
 
 export const useOnDeleteFile = (files:TFileTree, rootPrefix:string) => {
   return useCallback(async (loc:string) => {
-    if(!loc) console.warn(`Can not delete file, missing file location`)
+    if(!loc) return console.warn(`Can not delete file, missing file location`)
 
     const fullLoc = addRootToLoc(loc, rootPrefix)
     const fileModel = files[fullLoc]

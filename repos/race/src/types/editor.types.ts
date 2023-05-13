@@ -25,6 +25,7 @@ import type {
   TStepDefsRef,
   TFeaturesRef,
   TOnFeatureCB,
+  TSetFeatureRefs,
 } from './helpers.types'
 
 export enum EEditorMode {
@@ -104,5 +105,6 @@ export type TEditorShared = {
 
 export type TEditorContainer = TFeaturesRefs & TEditorRefs & TEditorShared & {
   openedTabs:TTabItem[]
+  setFeatureRefs:TSetFeatureRefs
   setOpenedTabs:(tabs:TTabItem[]) => void
 }
