@@ -2,11 +2,16 @@ import type { TSettingAct } from '@types'
 
 import { exists } from '@keg-hub/jsutils'
 import { settingsDispatch } from '@store'
-import { SettingSidebarLocked } from '@constants/settings'
 import { toggleSidebarLocked } from '../nav/toggleSidebarLocked'
+import { toggleMultiFeatsErr } from '../features/local/toggleMultiFeatsErr'
+import {
+  SettingMultiFeatsErr,
+  SettingSidebarLocked,
+} from '@constants/settings'
 
 const settingActions:Record<string, (payload:TSettingAct) => void> = {
-  [SettingSidebarLocked]: (payload:TSettingAct) => toggleSidebarLocked(payload.value)
+  [SettingMultiFeatsErr]: (payload:TSettingAct) => toggleMultiFeatsErr(payload.value),
+  [SettingSidebarLocked]: (payload:TSettingAct) => toggleSidebarLocked(payload.value),
   // Add other setting actions here as needed
 }
 

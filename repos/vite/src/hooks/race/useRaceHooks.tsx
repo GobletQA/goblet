@@ -3,10 +3,11 @@ import type { TRaceFeature } from '@gobletqa/race'
 import type { TFeatureAst } from '@ltipton/parkin'
 
 import { useMemo, useEffect } from 'react'
-import { useDefs, useRepo } from '@store'
+import { useApp, useDefs, useRepo } from '@store'
 import { useRaceSteps } from './useRaceSteps'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@gobletqa/race'
+import { SettingMultiFeatsErr } from '@constants/settings'
 import { confirmModal, toggleModal } from '@actions/modals'
 import { useRaceFeatures } from '@hooks/race/useRaceFeatures'
 import { useOnWorldChange } from '@hooks/race/useOnWorldChange'
@@ -23,6 +24,7 @@ import {
   useOnDeleteFile,
   useOnPathChange,
 } from '@hooks/files'
+import {updateSettingValue} from '@actions/settings/updateSettingValue'
 
 
 export const useRaceHooks = () => {
@@ -30,6 +32,7 @@ export const useRaceHooks = () => {
   const defs = useDefs()
   const files = useFeatureFiles()
   const steps = useRaceSteps(defs)
+  const { multiFeatsErr } = useApp()
 
   const { features, duplicates } = useRaceFeatures(files)
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
@@ -104,12 +107,9 @@ export const useRaceHooks = () => {
   })
 
   useEffect(() => {
-    
-    // TODO: check if the modal has already been shown
-    // If it has, don't show it again
-    // Also make `ok` button work with `enter` key press
-    
-    duplicates?.length
+
+    !multiFeatsErr
+      && duplicates?.length
       && confirmModal({
           maxWidth: `sm`,
           title: `Multiple Features Error`,
@@ -125,8 +125,17 @@ export const useRaceHooks = () => {
             {
               text: `OK`,
               color: `success`,
+              keyboard: `enter`,
               variant:`contained`,
-              onClick: () => toggleModal(false),
+              onClick: () => {
+
+                updateSettingValue({
+                  value: true,
+                  setting: SettingMultiFeatsErr
+                })
+
+                toggleModal(false)
+              },
             },
           ]
         })
