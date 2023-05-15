@@ -8,6 +8,7 @@ import type {
   TEditorCB,
   TEditorConfig,
   TFileCallback,
+  TEditorAddFile,
 } from '../../types'
 
 import { useMemo } from 'react'
@@ -30,8 +31,8 @@ export type TSidebar = {
   defaultFiles: TFilelist
   onPathChange: TEditorCB
   onDeleteFile: TEditorCB
-  onAddFile: TFileCallback
   Panels?:TSidebarPanel[]
+  onAddFile: TEditorAddFile
   PrePanels?:TSidebarPanel[]
   onDeleteFolder: TEditorCB
   onAddFolder: TFileCallback

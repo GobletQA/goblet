@@ -1,11 +1,13 @@
+import type { TEditorAddFile, TFolderItem } from '@GBM/types'
+
 import { useCallback } from 'react'
 import { addSourceFile } from '../../utils/addSourceFile'
 
 export type THAddFile = {
   rootPrefix?: string
-  filetree: Record<any, any>,
-  updateFiletree: (...args:any[]) => any,
-  onAddFile: (...args:any[]) => any,
+  filetree: TFolderItem,
+  onAddFile: TEditorAddFile
+  updateFiletree: (fileTree:TFolderItem) => any
 }
 
 export const useAddFile = (props:THAddFile) => {
@@ -23,7 +25,7 @@ export const useAddFile = (props:THAddFile) => {
         filetree,
         rootPrefix,
       }))
-      onAddFile({ location: path })
+      onAddFile(path)
     },
     [filetree]
   )

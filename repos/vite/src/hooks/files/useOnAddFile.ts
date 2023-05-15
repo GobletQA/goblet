@@ -20,11 +20,14 @@ export const useOnAddFile = (
   repo:TRepoState
 ) => {
 
-  return useCallback(async ({
-    content,
-    isFolder,
-    location:loc,
-  }:TAddFileCBProps) => {
+  return useCallback(async (props:TAddFileCBProps) => {
+
+    const {
+      content,
+      isFolder,
+      location:loc,
+    } = props
+
     if(!loc) return console.warn(`Can not add file, missing file location`)
     
     const ext = loc.split(`.`).pop()

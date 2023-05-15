@@ -2,7 +2,7 @@ import type { SetStateAction, MutableRefObject } from 'react'
 import type {
   TFilelist,
   TAutoSave,
-  TEditorAddFile,
+  TAddFileCB,
   TEditorOpenFiles,
   TEditorDeleteFile,
   TEditorRenameFile
@@ -15,7 +15,7 @@ import { createOrUpdateModel } from '../../utils/editor/createOrUpdateModel'
 export type TUseFolderCallbacks = {
   curPath:string
   autoSave: TAutoSave
-  onAddFile?: TEditorAddFile
+  onAddFile?: TAddFileCB
   onDeleteFile?: TEditorDeleteFile
   onRenameFile?: TEditorRenameFile
   deleteFile: (path: string) => void
@@ -69,7 +69,7 @@ export const useFolderCallbacks = (props:TUseFolderCallbacks) => {
       })
       if (!hasChild) filesRef.current[path] = null
 
-      !isRename && onAddFile?.(path, true)
+      !isRename && onAddFile?.({ location: path, isFolder: true })
     }, [onAddFile])
 
     const deleteFolder = useCallback(

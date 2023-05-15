@@ -3,8 +3,8 @@ import type { SetStateAction, MutableRefObject } from 'react'
 import type {
   TFilelist,
   TAutoSave,
+  TAddFileCB,
   TCodeEditorRef,
-  TEditorAddFile,
   TEditorDeleteFile,
   TEditorRenameFile,
   TEditorOpenFiles,
@@ -19,8 +19,8 @@ import { createOrUpdateModel } from '@GBM/utils/editor/createOrUpdateModel'
 export type TUseEditorFileCallbacks = {
   curPath:string
   autoSave: TAutoSave
+  onAddFile?: TAddFileCB
   editorRef:TCodeEditorRef
-  onAddFile?: TEditorAddFile
   openedFiles: TEditorOpenFiles
   onDeleteFile?: TEditorDeleteFile
   onRenameFile?: TEditorRenameFile
@@ -54,7 +54,7 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
   } = props
 
   const handleFormat = useCallback(
-    () => editorRef.current?.getAction('editor.action.formatDocument').run(),
+    () => editorRef?.current?.getAction('editor.action.formatDocument')?.run(),
     []
   )
 
@@ -111,7 +111,7 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
 
   const addFile = useCallback(
     (path: string, content?: string, isEdit?:boolean) => {
-      const missingName = path.startsWith(`/`) && path.endsWith(`/`)
+      const missingName = path && path?.startsWith(`/`) && path?.endsWith(`/`)
       const newNamedFile = !missingName && !isEdit
 
       const cont = content || ''
@@ -122,7 +122,11 @@ export const useEditorFileCallbacks = (props:TUseEditorFileCallbacks) => {
 
       // Auto open the file in the editor when a new file is created
       pathChange(path)
-      onAddFile?.(path, false)
+      onAddFile?.({
+        content: cont,
+        location: path,
+        isFolder: false,
+      })
     },
     [onAddFile, pathChange]
   )

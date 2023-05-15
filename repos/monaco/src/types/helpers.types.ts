@@ -25,3 +25,12 @@ export type TEditorOpts = editor.IStandaloneEditorConstructionOptions & {
   openMode?: TOpenMode
   semanticHighlighting?: true | false | 'configuredByTheme'
 }
+export type TAddFileCB = ({
+  content,
+  isFolder,
+  location,
+}:{
+  content?:string
+  isFolder?:boolean
+  location:string
+}) => void

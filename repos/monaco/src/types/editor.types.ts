@@ -10,11 +10,11 @@ import type { TSidebarAction, TSidebarPanel, TEditorAction } from '@gobletqa/com
 import type {
   TMonaco,
   TEditorCB,
+  TAddFileCB,
   TCodeEditor,
   TEditorOpts,
   TEditorFileCB,
   TFileCallback,
-  TEditorAddFile,
   TOnEditorLoaded,
   TEditorPromiseCB,
   TEditorRenameFile,
@@ -98,12 +98,12 @@ export interface IMonacoEditorProps {
   style?: CSSProperties
   config?: TEditorConfig
   sidebarStatus?: boolean
+  onAddFile?: TAddFileCB
   Panels?:TSidebarPanel[]
   PrePanels?:TSidebarPanel[]
   defaultFiles?: TFilelist
   onDeleteFile?: TEditorCB
   onValueChange?: TEditorCB
-  onAddFile?: TEditorAddFile
   onSaveFile?: TEditorFileCB
   Divider?:ComponentType<any>
   onPathChange?: TEditorFileCB

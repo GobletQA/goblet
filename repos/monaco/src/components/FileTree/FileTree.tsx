@@ -6,6 +6,7 @@ import type {
   TFilelist,
   TEditorCB,
   TFileCallback,
+  TEditorAddFile,
 } from '@GBM/types'
 
 import { Panel } from '@gobletqa/components'
@@ -24,7 +25,7 @@ export type TFileTree = {
   style?: CSSProperties
   onPathChange: TEditorCB
   onDeleteFile: TEditorCB
-  onAddFile: TFileCallback
+  onAddFile: TEditorAddFile
   onDeleteFolder: TEditorCB
   onAddFolder: TFileCallback
   rootEl: HTMLElement | null
