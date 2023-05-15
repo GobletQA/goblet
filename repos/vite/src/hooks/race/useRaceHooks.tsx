@@ -1,19 +1,15 @@
-import type { TFeatureFileModel } from '@types'
 import type { TRaceFeature } from '@gobletqa/race'
-import type { TFeatureAst } from '@ltipton/parkin'
 
-import { useMemo, useEffect } from 'react'
-import { useApp, useDefs, useRepo } from '@store'
+import { useMemo } from 'react'
+import { useDefs, useRepo } from '@store'
 import { useRaceSteps } from './useRaceSteps'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@gobletqa/race'
-import { SettingMultiFeatsErr } from '@constants/settings'
-import { confirmModal, toggleModal } from '@actions/modals'
 import { useRaceFeatures } from '@hooks/race/useRaceFeatures'
 import { useOnWorldChange } from '@hooks/race/useOnWorldChange'
+import { useMultiFeatsErr } from '@hooks/race/useMultiFeatsErr'
 import { getFeaturePrefix } from '@utils/features/getFeaturePrefix'
 import { getActiveFeature } from '@utils/features/getActiveFeature'
-import { MultipleFeatureErr } from '@components/Errors/MultipleFeatureErr'
 
 import {
   useOnAddFile,
@@ -24,7 +20,6 @@ import {
   useOnDeleteFile,
   useOnPathChange,
 } from '@hooks/files'
-import {updateSettingValue} from '@actions/settings/updateSettingValue'
 
 
 export const useRaceHooks = () => {
@@ -32,7 +27,6 @@ export const useRaceHooks = () => {
   const defs = useDefs()
   const files = useFeatureFiles()
   const steps = useRaceSteps(defs)
-  const { multiFeatsErr } = useApp()
 
   const { features, duplicates } = useRaceFeatures(files)
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
@@ -106,40 +100,7 @@ export const useRaceHooks = () => {
     onSaveFile,
   })
 
-  useEffect(() => {
-
-    !multiFeatsErr
-      && duplicates?.length
-      && confirmModal({
-          maxWidth: `sm`,
-          title: `Multiple Features Error`,
-          children: (<MultipleFeatureErr files={duplicates} />),
-          actionProps: {
-            sx: {
-              justifyContent: `end`,
-              padding: `20px`,
-              paddingTop: `10px`,
-            }
-          },
-          actions: [
-            {
-              text: `OK`,
-              color: `success`,
-              keyboard: `enter`,
-              variant:`contained`,
-              onClick: () => {
-
-                updateSettingValue({
-                  value: true,
-                  setting: SettingMultiFeatsErr
-                })
-
-                toggleModal(false)
-              },
-            },
-          ]
-        })
-  }, [duplicates])
+  useMultiFeatsErr({ duplicates })
 
   return {
     steps,

@@ -65,7 +65,58 @@
       "group": "goblet"
     }
   },
-  "editor": {
+  "browser": {
+    "slowMo": {
+      "key": "slowMo",
+      "value": 100,
+      "active": true,
+      "default": 100,
+      "postfix": "ms",
+      "type": "number",
+      "group": "browser"
+    },
+    "timeout": {
+      "key": "timeout",
+      "value": 15000,
+      "active": true,
+      "default": 15000,
+      "postfix": "ms",
+      "type": "number",
+      "group": "browser"
+    },
+    "debug": {
+      "key": "debug",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "browser"
+    },
+    "width": {
+      "key": "width",
+      "active": false,
+      "postfix": "px",
+      "type": "number",
+      "group": "browser"
+    },
+    "height": {
+      "key": "height",
+      "active": false,
+      "postfix": "px",
+      "type": "number",
+      "group": "browser"
+    },
+    "ws": {
+      "key": "ws",
+      "value": true,
+      "active": true,
+      "default": true,
+      "enabled": false,
+      "type": "boolean",
+      "group": "browser"
+    }
+  },
+  "monaco": {
     "autoSave": {
       "key": "autoSave",
       "value": "blur",
@@ -411,55 +462,15 @@
       "group": "editor"
     }
   },
-  "browser": {
-    "slowMo": {
-      "key": "slowMo",
-      "value": 100,
-      "active": true,
-      "default": 100,
-      "postfix": "ms",
-      "type": "number",
-      "group": "browser"
-    },
-    "timeout": {
-      "key": "timeout",
-      "value": 15000,
-      "active": true,
-      "default": 15000,
-      "postfix": "ms",
-      "type": "number",
-      "group": "browser"
-    },
-    "debug": {
-      "key": "debug",
-      "value": true,
-      "active": true,
-      "default": true,
-      "type": "boolean",
-      "group": "browser"
-    },
-    "width": {
-      "key": "width",
+  "race": {
+    "multiFeatsErr": {
+      "key": "multiFeatsErr",
+      "value": false,
       "active": false,
-      "postfix": "px",
-      "type": "number",
-      "group": "browser"
-    },
-    "height": {
-      "key": "height",
-      "active": false,
-      "postfix": "px",
-      "type": "number",
-      "group": "browser"
-    },
-    "ws": {
-      "key": "ws",
-      "value": true,
-      "active": true,
-      "default": true,
-      "enabled": false,
+      "default": false,
+      "display": false,
       "type": "boolean",
-      "group": "browser"
+      "group": "race"
     }
   }
 }

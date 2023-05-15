@@ -25,7 +25,7 @@ ConfirmModal.modalProps = {
   },
   actionProps: {
     sx: {
-      paddingTop: `10px`,
+      paddingTop: `0px`,
       paddingBottom: `20px`,
       justifyContent: `space-around`
     }

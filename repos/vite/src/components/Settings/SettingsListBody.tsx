@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
-import type { TSettingGroupMeta, TSetting, TSettingsConfig } from '@types'
+import type { TSetting, TSettingsConfig } from '@types'
 
 import { Fragment } from 'react'
-import Grid from '@mui/material/Unstable_Grid2'
+import { exists } from '@keg-hub/jsutils'
 import Divider from '@mui/material/Divider'
-import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Unstable_Grid2'
 import { SettingsListRow } from './SettingsListRow'
 import { SettingsListItem } from './SettingsListItem'
 
@@ -35,58 +35,61 @@ export const SettingsListBody = (props:TSettingBody) => {
         items.map((item) => {
           const resetDisabled = !item?.active || item.value === item.default
 
-          return (
-            <Fragment key={item.key} >
-              <SettingsListRow>
-                {
-                  keys.reduce((acc, key, idx) => {
-                    if(config.hiddenKeys.includes(key)) return acc
-                    
-                    const align = idx ? `right` : `left`
-                    const value = item[key as keyof typeof item]
+          // If display is not defined, or it's set to true
+          return !exists<boolean>(item.display) || item.display === true
+            ? (
+                <Fragment key={item.key} >
+                  <SettingsListRow>
+                    {
+                      keys.reduce((acc, key, idx) => {
+                        if(config.hiddenKeys.includes(key)) return acc
+                        
+                        const align = idx ? `right` : `left`
+                        const value = item[key as keyof typeof item]
 
-                    acc.push(
-                      <SettingsListItem
-                        item={item}
-                        colKey={key}
-                        width={width}
-                        align={align}
-                        value={value}
-                        config={config}
-                        key={`${item.key}-${key}`}
-                        className='settings-list-body-item'
-                      />
-                    )
-                    
-                    if(idx === keys.length - 1)
-                      acc.push(
-                        <SettingsListItem
-                          item={item}
-                          key={`reset`}
-                          width={width}
-                          align={align}
-                          value={`Reset`}
-                          config={config}
-                          colKey={`reset`}
-                          className='settings-list-header-item'
-                          disabled={resetDisabled}
-                        />
-                      )
+                        acc.push(
+                          <SettingsListItem
+                            item={item}
+                            colKey={key}
+                            width={width}
+                            align={align}
+                            value={value}
+                            config={config}
+                            key={`${item.key}-${key}`}
+                            className='settings-list-body-item'
+                          />
+                        )
+                        
+                        if(idx === keys.length - 1)
+                          acc.push(
+                            <SettingsListItem
+                              item={item}
+                              key={`reset`}
+                              width={width}
+                              align={align}
+                              value={`Reset`}
+                              config={config}
+                              colKey={`reset`}
+                              className='settings-list-header-item'
+                              disabled={resetDisabled}
+                            />
+                          )
 
-                    return acc
-                  }, [] as ReactNode[])
-                }
-              </SettingsListRow>
-              <Divider
-                className={`${item.key}-divider`}
-                sx={{
-                  width: `100%`,
-                  display: `flex`,
-                  paddingTop: `3px`
-                }}
-              />
-            </Fragment>
-          )
+                        return acc
+                      }, [] as ReactNode[])
+                    }
+                  </SettingsListRow>
+                  <Divider
+                    className={`${item.key}-divider`}
+                    sx={{
+                      width: `100%`,
+                      display: `flex`,
+                      paddingTop: `3px`
+                    }}
+                  />
+                </Fragment>
+              )
+            : null
         })
       }
     </Grid>

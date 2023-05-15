@@ -1,16 +1,12 @@
 import { H4, GreenText, RedText, Text } from '@gobletqa/components'
 
 import {
-  BadIcon,
-  GoodIcon,
-  ErrorMsg,
   ErrorItem,
   ErrorTitle,
   ErrorContainer,
   ErrorFixContainer,
   ErrorMsgContainer,
   ErrorItemsContainer,
-  ErrorTitleContainer,
   ErrorProblemContainer,
 } from './MultipleFeatureErr.styled'
 
@@ -27,29 +23,37 @@ export const MultipleFeatureErr = (props:TMultipleFeatureErr) => {
   } = props
 
   return (
-    <ErrorContainer>
-      <H4><RedText>✖ {'\u00A0'}Problem</RedText></H4>
+    <ErrorContainer className='gb-error-container' >
 
-      <ErrorMsgContainer>
-        <ErrorProblemContainer>
-          <ErrorTitle>
+      <ErrorMsgContainer className='gb-error-msg-container gb-error-msg-problem-container' >
+
+        <H4 className='gb-error-problem-header' >
+          <RedText>✖ {'\u00A0'}Problem</RedText>
+        </H4>
+
+        <ErrorProblemContainer className='gb-error-problem-container' >
+          <ErrorTitle className='gb-error-problem-title' >
             The Editor does not support multiple features in the same file
           </ErrorTitle>
-          <Text>
+          <Text className='gb-error-problem-text' >
             Files containing multiple features will be ignored
           </Text>
         </ErrorProblemContainer>
       </ErrorMsgContainer>
 
-      <H4><GreenText>✓ {'\u00A0'}Solution</GreenText></H4>
 
-      <ErrorMsgContainer>
-        <ErrorFixContainer>
-          <ErrorMsg>
+      <ErrorMsgContainer className='gb-error-msg-container gb-error-msg-solution-container' >
+
+        <H4 className='gb-error-solution-header' >
+          <GreenText>✓ {'\u00A0'}Solution</GreenText>
+        </H4>
+
+        <ErrorFixContainer className='gb-error-solution-container' >
+          <ErrorTitle className='gb-error-solution-title' >
             Update the files below to contain only one feature
             <br/>
-          </ErrorMsg>
-          <ErrorItemsContainer>
+          </ErrorTitle>
+          <ErrorItemsContainer className='gb-error-solution-items' >
             {files.map(file => {
               return (
                 <ErrorItem key={file} >

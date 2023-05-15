@@ -7,6 +7,7 @@ export type TSetting = {
   parent?: string
   active?: boolean
   postfix?: string
+  display?:boolean
   enabled?: boolean
   options?: string[]
   emptyOption?: string
