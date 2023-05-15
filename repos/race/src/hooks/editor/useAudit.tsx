@@ -11,6 +11,7 @@ import { ParkinInitEvt } from '@GBR/constants/events'
 import { emptyObj, pickKeys } from '@keg-hub/jsutils'
 import { useParkin } from '@GBR/contexts/ParkinContext'
 import { featureAudit } from '@GBR/utils/editor/featureAudit'
+import { featureIsEmpty } from '@GBR/utils/features/featureIsEmpty'
 
 const emptyAudit = emptyObj as TAudit
 
@@ -47,13 +48,16 @@ export const useAudit = (props:THFeatureAudit) => {
    */
   useOnEvent<TOnParkinInit>(ParkinInitEvt, () => {
     feature
+      && !featureIsEmpty(feature)
       && audit === emptyAudit
       && onAuditFeature(feature)
   })
 
   return {
     audit,
+    feature,
     setAudit,
-    onAuditFeature
+    onAuditFeature,
+    featureIsEmpty,
   }
 }

@@ -5,16 +5,11 @@ import type {
 import type { TAutoOpt } from '@gobletqa/components'
 import type { TExpOpts, TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo } from 'react'
 import { useParkin, useEditor } from '@GBR/contexts'
 import { ExpAliasTag } from '@GBR/constants'
 import {
-  iife,
-  isArr,
-  isNum,
   isStr,
-  isFunc,
-  exists,
   emptyArr,
   flatUnion
 } from '@keg-hub/jsutils'
@@ -37,7 +32,7 @@ const useWorldAlias = (props:THExpressionOpts, world:TWorldConfig) => {
     let aliasVal:string|undefined=undefined
 
     const aliasOpts = Object.entries(world?.$alias)
-      .map(([key, value]) => {
+      .map(([key]) => {
         const ref = `$$${key}`
         return {
           id: ref,

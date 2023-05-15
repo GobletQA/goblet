@@ -93,6 +93,7 @@ const wrapActions = (
     } as TModalAction),
     onOk && ({
       color: `success`,
+      keyboard: `enter`,
       variant: `contained`,
       text: okText || `OK`,
       startIcon: `CheckIcon`,

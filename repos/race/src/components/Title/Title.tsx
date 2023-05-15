@@ -45,8 +45,10 @@ export const Title = (props:TTitle) => {
   useEffect(() => {
     if(!autoFocus || !inputRef?.current) return
 
-    inputRef?.current?.focus?.()
-    inputRef?.current?.select?.()
+    setTimeout(() => {
+      inputRef?.current?.focus?.()
+      inputRef?.current?.select?.()
+    }, 500)
   }, [])
 
   return (

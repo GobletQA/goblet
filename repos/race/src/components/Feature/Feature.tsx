@@ -21,6 +21,7 @@ import { FeatureStack, FeatureContent } from './Feature.styled'
 import { createFeature } from '@GBR/actions/feature/createFeature'
 import { useFeatureItems } from '@GBR/hooks/features/useFeatureItems'
 import { useFeatureActions } from '@GBR/hooks/actions/useFeatureActions'
+import { useFeatureIsEmpty } from '@GBR/hooks/features/useFeatureIsEmpty'
 import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 
 export type TFeature = TFeaturesRefs & {}
@@ -40,7 +41,8 @@ export const Feature = (props:TFeature) => {
 
   const { feature, rootPrefix, mode } = useEditor()
   const advMode = mode === EEditorMode.advanced
-  
+
+  const featureIsEmpty = useFeatureIsEmpty({ feature })
   const onEditFeatureTitle = useEditFeatureTitle({ parent: feature })
 
   const onCreateFeature = useCallback((evt:MouseEvent<HTMLButtonElement>) => {
@@ -48,7 +50,7 @@ export const Feature = (props:TFeature) => {
     createFeature({}, rootPrefix)
   }, [rootPrefix])
 
-  const isEmpty = useMemo(() => {
+  const noChildren = useMemo(() => {
     return Boolean(!feature?.background && !feature?.rules?.length && !feature?.scenarios?.length)
   }, [feature])
 
@@ -90,11 +92,11 @@ export const Feature = (props:TFeature) => {
           ref={containerRef}
           contentRef={contentRef}
           type={ESectionType.feature}
-          className={cls(`gb-feature-editor-section`, isEmpty && `gb-feature-empty`)}
+          className={cls(`gb-feature-editor-section`, noChildren && `gb-feature-empty`)}
         >
           <FeatureContent className='gb-feature-sections-container'>
 
-            { feature.uuid !== EmptyFeatureUUID
+            { !featureIsEmpty && feature.uuid !== EmptyFeatureUUID
                 ? (
                     <>
                       <FeatureHeader
@@ -110,7 +112,7 @@ export const Feature = (props:TFeature) => {
                             onTagsChange={onTagsChange}
                           />
 
-                          {isEmpty && (
+                          {noChildren && (
                             <EmptyFeature
                               mode={mode}
                               parent={feature}

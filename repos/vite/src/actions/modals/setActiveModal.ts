@@ -1,6 +1,6 @@
 import { EModalTypes } from '@types'
 import { modalDispatch } from '@store'
-import { noOpObj } from '@keg-hub/jsutils'
+import { exists, noOpObj } from '@keg-hub/jsutils'
 
 export type TModalProps = Record<any, any>
 
@@ -11,7 +11,7 @@ export type TModalProps = Record<any, any>
 export const setActiveModal = async (
   type:EModalTypes,
   visible:boolean=true,
-  modalProps:TModalProps=noOpObj
+  { visible:pVis, ...modalProps }:TModalProps=noOpObj
 ) => {
 
   if(!EModalTypes[type])
@@ -19,7 +19,7 @@ export const setActiveModal = async (
 
   modalDispatch.setModal({
     type,
-    visible,
     modalProps,
+    visible: exists(visible) ? visible : pVis,
   })
 }
