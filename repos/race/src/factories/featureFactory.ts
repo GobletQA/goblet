@@ -9,7 +9,7 @@ import { toObj } from '@gobletqa/race/utils/helpers/toObj'
 import { blockFactory, blocksFactory } from './blockFactory'
 import { FeatureIndexMap, EmptyFeatureUUID } from '@GBR/constants/values'
 
-export const featureFactory = (feat:TEmptyFeature, empty?:boolean) => {
+export const featureFactory = (feat:TEmptyFeature|TRaceFeature, empty?:boolean) => {
   const {
     path,
     rules,

@@ -1,6 +1,8 @@
 
 export type TRaceSettings = {
+  theme?:string
   displayMeta?:boolean
+  confirmDelete?:boolean
   firstFeatureActive?:boolean
 }
 

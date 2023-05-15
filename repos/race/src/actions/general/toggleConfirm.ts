@@ -38,6 +38,12 @@ export const openYesNo = ({
   callback=cb,
   ...props
 }:TOpenYesNo) => {
+  
+  /**
+   * TODO: get access to settings and check if `confirmDelete` is active
+   * If not, then call the `onClick` method for the yes option
+   * Otherwise use the below code to open the `toggleConfirm` modal
+   */
   toggleConfirm({
     ...props,
     state: true,

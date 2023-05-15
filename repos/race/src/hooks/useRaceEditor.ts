@@ -12,6 +12,7 @@ import { useInline } from '@gobletqa/components'
 import { useInitTabs } from '@GBR/hooks/tabs/useInitTabs'
 import { useFeatureGroups } from '@GBR/hooks/features/useFeatureGroups'
 import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
+import { useFeatureIsEmpty } from '@GBR/hooks/features/useFeatureIsEmpty'
 
 export const useRaceEditor = (props:TRaceEditorProps) => {
   const {

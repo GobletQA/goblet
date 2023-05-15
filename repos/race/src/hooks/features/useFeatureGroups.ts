@@ -1,5 +1,6 @@
 import type { TFeaturesRef, TRaceFeatures, TSetFeatureGroups, TSetFeatureRefs } from '@GBR/types'
 
+import {emptyObj} from '@keg-hub/jsutils'
 import { useMemo, useState, useCallback } from 'react'
 import { buildGroups } from '@GBR/utils/features/buildGroups'
 
@@ -14,7 +15,7 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
 
   const setFeatureGroups = useCallback((features:TRaceFeatures|TFeaturesRef) => {
     const feats = `current` in features ? features?.current : features
-    
+
     const groups = buildGroups({ current: feats as TRaceFeatures })
     _setFeatureGroups(groups)
   }, [featureGroups])

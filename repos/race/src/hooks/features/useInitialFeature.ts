@@ -1,7 +1,7 @@
 import type { TRaceFeatureAsts, TRaceFeature } from '@GBR/types'
 
 import { useMemo } from 'react'
-import { ESectionType } from '@GBR/types'
+import {isObj} from '@keg-hub/jsutils'
 
 export type THInitialFeature = {
   feature?:TRaceFeature,
@@ -15,10 +15,12 @@ export const useInitialFeature = ({
   firstFeatureActive
 }:THInitialFeature) => {
   return useMemo(() => {
-    const initial = feature || (firstFeatureActive)
-      ? Object.values(features)?.[0]
+    if(!firstFeatureActive) return undefined
+    if(feature && isObj<TRaceFeature>(feature)) return feature
+
+    return isObj<TRaceFeatureAsts>(features)
+      ? Object.values(features)[0]
       : undefined
 
-    return initial as TRaceFeature
   }, [])
 }

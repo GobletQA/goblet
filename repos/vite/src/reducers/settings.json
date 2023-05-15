@@ -132,7 +132,7 @@
       "active": true,
       "default": "blur",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "blur",
       "options": [
         "blur",
@@ -146,7 +146,7 @@
       "active": true,
       "default": "keep",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "keep",
       "options": [
         "keep",
@@ -175,7 +175,7 @@
       "value": "Goblet-dark",
       "active": true,
       "default": "Goblet-dark",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "",
       "options": [
         "",
@@ -256,7 +256,7 @@
       "active": true,
       "default": "line",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "line",
       "options": [
         "line",
@@ -273,7 +273,7 @@
       "active": true,
       "default": "phase",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "phase",
       "options": [
         "phase",
@@ -289,7 +289,7 @@
       "active": true,
       "default": "on",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "options": [
         "on",
         "off",
@@ -303,7 +303,7 @@
       "active": true,
       "default": "deepIndent",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "deepIndent",
       "options": [
         "deepIndent",
@@ -334,7 +334,7 @@
       "active": true,
       "default": "auto",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "auto",
       "options": [
         "auto",
@@ -347,7 +347,7 @@
       "active": true,
       "default": "always",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "always",
       "options": [
         "always",
@@ -369,7 +369,7 @@
       "active": true,
       "default": "always",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "always",
       "options": [
         "always",
@@ -383,7 +383,7 @@
       "active": true,
       "default": "selection",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "selection",
       "options": [
         "selection",
@@ -407,7 +407,7 @@
       "active": true,
       "default": "all",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "none",
       "options": [
         "all",
@@ -454,7 +454,7 @@
       "active": true,
       "default": "on",
       "type": "select",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "on",
       "options": [
         "on",
@@ -490,6 +490,14 @@
       "type": "boolean",
       "group": "race"
     },
+    "confirmDelete": {
+      "key": "confirmDelete",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "race"
+    },
     "firstFeatureActive": {
       "key": "firstFeatureActive",
       "value": false,
@@ -498,12 +506,25 @@
       "type": "boolean",
       "group": "race"
     },
+    "mode": {
+      "key": "mode",
+      "value": "simple",
+      "active": true,
+      "default": "simple",
+      "type": "select",
+      "group": "race",
+      "emptyOption": "simple",
+      "options": [
+        "simple",
+        "advanced"
+      ]
+    },
     "theme": {
       "key": "theme",
       "value": "Goblet-light",
       "active": true,
       "default": "Goblet-light",
-      "group": "editor",
+      "group": "monaco",
       "emptyOption": "",
       "options": [
         "",

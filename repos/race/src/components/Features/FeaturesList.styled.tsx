@@ -87,11 +87,20 @@ export const FeatureItem = styled(ListItemButton)<TFeatureItem>`
   &.active {
     ${shared}
   }
+  
+  &.gb-feature-item-title-missing {
+  }
 `
 
 export const FeatureItemName = styled(ListItemText)`
   margin: 0px;
   margin-left: ${gutter.margin.hpx};
+
+  &.gb-feature-title-missing {
+    border: 1px solid #E83333;
+    width: 100%;
+    height: 100%;
+  }
 `
 
 export const FeatureItemActionsContainer = styled(Span)`

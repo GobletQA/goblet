@@ -8,9 +8,8 @@ import type { TRaceFeature, TRaceFeatures } from '@gobletqa/race'
 import { useMemo } from 'react'
 import { useRepo } from '@store'
 import { fromRootDir } from '@utils/repo/fromRootDir'
-import { ensureArr, isEmptyColl } from '@keg-hub/jsutils'
-import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { rmFeaturePrefix } from '@utils/features/rmFeaturePrefix'
+import { ensureArr, isEmptyColl, isBool } from '@keg-hub/jsutils'
 
 
 export type THRaceFeaturesResp = {
@@ -67,7 +66,17 @@ const buildErrFeatureModel = ({
   astCount,
   buildEmpty,
 }:TBuildFeatureModel) => {
-  const feature = model?.feature || getFeatureName(key)
+
+  /**
+   * Parkin sets the feature property to `false`
+   * When the feature is missing `Feature: ...<some title>`
+   * So we have to validate it, and set it to an empty string
+   *
+   * TODO: Parkin should be update to handle that better
+   */
+  const feature = !isBool(model?.feature)
+    ? model?.feature || getFeatureName(key)
+    : ``
 
   return buildEmpty
     ? buildFeatureModel({

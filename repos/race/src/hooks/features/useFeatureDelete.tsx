@@ -22,6 +22,10 @@ export type THFeatureDelete = {
   setOpenedTabs:(tabs:TTabItem[]) => void
 }
 
+/**
+ * If only one feature exists, and it's deleted the race editor container should clear out
+ * but it keeps the deleted files content
+ */
 export const useFeatureDelete = (props:THFeatureDelete) => {
 
   const {
