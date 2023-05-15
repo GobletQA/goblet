@@ -1,8 +1,7 @@
+import type { TStepDefs, TStepDef } from '@ltipton/parkin'
 import type {
   TDspAction,
-  TDefinitionAst,
   TDefinitionFileModel,
-  TDefinitionsAstTypeMap,
   TDefinitionFileModelList,
 } from '@types'
 import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
@@ -10,28 +9,28 @@ import type { ActionReducerMapBuilder } from '@reduxjs/toolkit'
 import { createReducer, createAction } from '@reduxjs/toolkit'
 
 export type TDefinitionsState = {
-  activeDefinition?: TDefinitionAst
+  activeDefinition?: TStepDef
   definitions: TDefinitionFileModelList
-  definitionTypes: TDefinitionsAstTypeMap
+  definitionTypes: TStepDefs
 }
 
 export const definitionsState = {} as TDefinitionsState
 
 const resetDefs = createAction<TDefinitionsState>(`resetDefs`)
-const setActiveDef = createAction<TDefinitionAst>(`setActiveDef`)
+const setActiveDef = createAction<TStepDef>(`setActiveDef`)
 const clearDefs = createAction<TDefinitionFileModelList>(`clearDefs`)
 const setDef = createAction<TDefinitionFileModel>(`setDef`)
 const setDefs = createAction<TDefinitionFileModelList>(`setDefs`)
 const upsertDefs = createAction<TDefinitionFileModelList>(`upsertDefs`)
-const clearDefTypes = createAction<TDefinitionsAstTypeMap>(`clearDefTypes`)
-const setDefTypes = createAction<TDefinitionsAstTypeMap>(`setDefTypes`)
-const upsertDefTypes = createAction<TDefinitionsAstTypeMap>(`upsertDefTypes`)
+const clearDefTypes = createAction<TStepDefs>(`clearDefTypes`)
+const setDefTypes = createAction<TStepDefs>(`setDefTypes`)
+const upsertDefTypes = createAction<TStepDefs>(`upsertDefTypes`)
 
 export const definitionsActions = {
   resetDefs: (state:TDefinitionsState, action:TDspAction<TDefinitionsState>) => (definitionsState),
   setActiveDef: (
     state:TDefinitionsState,
-    action:TDspAction<TDefinitionAst>
+    action:TDspAction<TStepDef>
   ) => {
     return {
       ...state,
@@ -86,14 +85,14 @@ export const definitionsActions = {
   },
   clearDefTypes: (
     state:TDefinitionsState,
-    action:TDspAction<TDefinitionsAstTypeMap>
+    action:TDspAction<TStepDefs>
   ) => ({
     ...state,
-    definitionTypes: {} as TDefinitionsAstTypeMap
+    definitionTypes: {} as TStepDefs
   }),
   setDefTypes: (
     state:TDefinitionsState,
-    action:TDspAction<TDefinitionsAstTypeMap>
+    action:TDspAction<TStepDefs>
   ) => {
     return {
       ...state,
@@ -102,7 +101,7 @@ export const definitionsActions = {
   },
   upsertDefTypes: (
     state:TDefinitionsState,
-    action:TDspAction<TDefinitionsAstTypeMap>
+    action:TDspAction<TStepDefs>
   ) => {
     return {
       ...state,

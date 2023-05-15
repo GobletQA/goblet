@@ -1,7 +1,7 @@
 import type { TExpPart } from './expressions.types'
 import type { TRaceContextMenu } from './menu.types'
 import type { TAutoOpt } from '@gobletqa/components'
-import type { TSettingsState } from './settings.types'
+import type { TRaceSettings } from './settings.types'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 import type { TStepDef, TWorldConfig, TStepDefsList } from '@ltipton/parkin'
 import type { KeyboardEvent, MutableRefObject, ComponentType } from 'react'
@@ -62,19 +62,20 @@ export type TWorldChange = {
 
 export type TOnWorldChange = (props:TWorldChange) => void
 
-export type TRaceEditorProps = TSettingsState & TEditorShared & {
+export type TRaceEditorProps = TEditorShared & {
   mode?:EEditorMode
+  rootPrefix: string
   world?:TWorldConfig
   steps:TStepDefsList
-  rootPrefix: string
   feature?:TRaceFeature
   themeType?:EThemeMode
+  settings:TRaceSettings
   features:TRaceFeatureAsts
   expressionOptions?:TExpOpts
   firstFeatureActive?:boolean
+  onFeatureSave?:TOnFeatureCB
   initialFeature?:TRaceFeature
   onWorldChange?:TOnWorldChange
-  onFeatureSave?:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
   onFeatureCreate?:TOnFeatureCB
 }

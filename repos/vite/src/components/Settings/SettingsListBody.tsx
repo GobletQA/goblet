@@ -32,12 +32,12 @@ export const SettingsListBody = (props:TSettingBody) => {
       className='settings-list-body'
     >
       {
-        items.map((item) => {
+        items.reduce((acc, item) => {
           const resetDisabled = !item?.active || item.value === item.default
 
           // If display is not defined, or it's set to true
-          return !exists<boolean>(item.display) || item.display === true
-            ? (
+          ;(!exists<boolean>(item.display) || item.display === true)
+            && acc.push(
                 <Fragment key={item.key} >
                   <SettingsListRow>
                     {
@@ -89,8 +89,9 @@ export const SettingsListBody = (props:TSettingBody) => {
                   />
                 </Fragment>
               )
-            : null
-        })
+
+          return acc
+        }, [] as ReactNode[])
       }
     </Grid>
   )

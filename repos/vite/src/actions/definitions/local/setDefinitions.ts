@@ -1,4 +1,4 @@
-import type { TDefinitionFileModelList, TDefinitionsAstList, TDefinitionsAstTypeMap } from '@types'
+import type { TDefinitionFileModelList } from '@types'
 
 import { defsDispatch } from '@dispatchers'
 import { noOpObj } from '@keg-hub/jsutils'

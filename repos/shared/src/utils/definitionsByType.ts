@@ -1,4 +1,5 @@
-import type { TDefinitionFileModel, TDefinitionAst, TDefTypeGroup } from '@GSH/types'
+import type { TStepDef } from '@ltipton/parkin'
+import type { TDefinitionFileModel, TDefTypeGroup } from '@GSH/types'
 
 import { get, isArr } from '@keg-hub/jsutils'
 
@@ -12,7 +13,7 @@ export const definitionsByType = (defFileModels:TDefinitionFileModel[]) => {
 
   return isArr(defFileModels)
     ? defFileModels.reduce((organized, fileModel, idx) => {
-        get<TDefinitionAst[]>(fileModel, 'ast.definitions', [])
+        get<TStepDef[]>(fileModel, 'ast.definitions', [])
           .map(definition => {
             if (!definition || !definition.type) return
 

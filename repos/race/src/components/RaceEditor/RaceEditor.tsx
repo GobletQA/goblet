@@ -13,13 +13,11 @@ export const RaceEditor = (props:TRaceEditorProps) => {
   const initialFeature = useInitialFeature({
     feature: props.feature,
     features: props.features,
-    firstFeatureActive: props.firstFeatureActive,
+    firstFeatureActive: props?.settings?.firstFeatureActive,
   })
 
   return (
-    <SettingsProvider
-      displayMeta={props.displayMeta}
-    >
+    <SettingsProvider {...props?.settings} >
       <ParkinProvider
         defs={props.steps}
         world={props.world}

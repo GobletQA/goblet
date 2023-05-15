@@ -1,4 +1,4 @@
-import type { TRaceFeature } from '@gobletqa/race'
+import type { TRaceSettings, TRaceFeature } from '@gobletqa/race'
 
 import { useMemo } from 'react'
 import { useDefs, useRepo } from '@store'
@@ -10,6 +10,7 @@ import { useOnWorldChange } from '@hooks/race/useOnWorldChange'
 import { useMultiFeatsErr } from '@hooks/race/useMultiFeatsErr'
 import { getFeaturePrefix } from '@utils/features/getFeaturePrefix'
 import { getActiveFeature } from '@utils/features/getActiveFeature'
+import { useSettingValues } from '@hooks/settings/useSettingValues'
 
 import {
   useOnAddFile,
@@ -29,10 +30,13 @@ export const useRaceHooks = () => {
   const steps = useRaceSteps(defs)
 
   const { features, duplicates } = useRaceFeatures(files)
+  const settings = useSettingValues<TRaceSettings>(`race`)
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
+
   const onSaveFile = useOnSaveFile(files, rootPrefix)
   const onAddFile = useOnAddFile(files, rootPrefix, repo)
   const onDeleteFeature = useOnDeleteFile(files, rootPrefix)
+
   // const onLoadFile = useOnLoadFile(files, rootPrefix)
   // const onRenameFile = useOnRenameFile(files, rootPrefix)
 
@@ -104,6 +108,7 @@ export const useRaceHooks = () => {
 
   return {
     steps,
+    settings,
     features,
     rootPrefix,
     onWorldChange,

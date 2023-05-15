@@ -23,4 +23,5 @@ export type TOnEditorLoaded = (editor:TCodeEditor, monaco:typeof Monaco) => void
 export type TEditorOpts = editor.IStandaloneEditorConstructionOptions & {
   autoSave?: TAutoSave
   openMode?: TOpenMode
+  semanticHighlighting?: true | false | 'configuredByTheme'
 }

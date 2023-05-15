@@ -1,6 +1,6 @@
 import type {
   TActionMethod,
-  TSettingsState,
+  TRaceSettings,
   TSettingUpdate,
   TSettingAction,
   TUpdateSettingEvt,
@@ -18,23 +18,23 @@ export type THEditorSettings = {
 
 
 const SettingActions:Record<string, TActionMethod> = {
-  [ESettingAction.ToggleMeta]: (state:TSettingsState, action:TSettingAction) => {
+  [ESettingAction.ToggleMeta]: (state:TRaceSettings, action:TSettingAction) => {
     const { payload } = action
     return payload.displayMeta !== state.displayMeta
       ? { ...state, displayMeta: payload.displayMeta }
       : state
   },
-  [ESettingAction.Settings]: (state:TSettingsState, action:TSettingAction) => {
+  [ESettingAction.Settings]: (state:TRaceSettings, action:TSettingAction) => {
     return {
       ...state,
       ...action.payload
     }
   },
-  [ESettingAction.Setting]: (state:TSettingsState, action:TSettingAction) => {
+  [ESettingAction.Setting]: (state:TRaceSettings, action:TSettingAction) => {
     const updated = { ...state }
     Object.entries(action.payload)
       .forEach(([key, value]) => {
-        updated[key as keyof TSettingsState] = value
+        updated[key as keyof TRaceSettings] = value
       })
 
     return updated

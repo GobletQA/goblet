@@ -23,6 +23,7 @@ export type TModalAction = Omit<ComponentProps<typeof Button>, `onClick` | `colo
   color?:string
   label?: string
   loading?: boolean
+  keyboard?: string
   EndIcon?: ComponentType<any>
   StartIcon?: ComponentType<any>
   iconProps?: ComponentProps<any>

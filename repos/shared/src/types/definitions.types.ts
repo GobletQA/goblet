@@ -1,5 +1,8 @@
-import type { EStepKey } from '@ltipton/parkin'
 import type { TFileModel } from './models.types'
+import type {
+  TStepDef,
+  EStepKey,
+} from '@ltipton/parkin'
 
 export enum EDefinitionVariant {
   regex = 'regex',
@@ -28,34 +31,14 @@ export type TDefinitionParent = {
   location: string
 }
 
-export type TDefinitionAst = {
-  type: string
-  name: string
-  uuid: string
-  content: string
-  location: string,
-  meta: TDefinitionMeta
-  match: string | RegExp
-  parent?: TDefinitionParent
-  tokens: TDefinitionToken[]
-  variant: EDefinitionVariant
-}
-
-export type TDefinitionsAstList = Record<string, TDefinitionAst>
-export type TDefinitionsAstArr = TDefinitionAst[]
-
-export type TDefinitionsAstTypeMap = {
-  [key in EStepKey]: TDefinitionsAstArr
-}
-
 export type TDefinitionFileModel = Omit<TFileModel, 'ast'> & {
-  ast: Record<`definitions`, TDefinitionAst[]>
+  ast: Record<`definitions`, TStepDef[]>
 }
 
 export type TDefinitionFileModelList = Record<string, TDefinitionFileModel>
 
 type ComponentType<T=any, C=any> = (props?:T) => C
-export type TItemActionMethod = (item:TDefinitionAst, ...args:any[]) => void
+export type TItemActionMethod = (item:TStepDef, ...args:any[]) => void
 export type TDefItemAction<T=any, C=any> = {
   key:string
   name:string
@@ -90,7 +73,7 @@ export type TAllDefGroup = {
   all: TDefGroup
 }
 
-export type TDefLookupMap = Record<string, TDefinitionAst>
+export type TDefLookupMap = Record<string, TStepDef>
 
 export type TDefGroupTypes = {
   allDefs: TDefGroups

@@ -1,6 +1,6 @@
 import type {
+  TRaceSettings,
   TSettingUpdate,
-  TSettingsState
 } from '../types'
 
 import {
@@ -19,7 +19,7 @@ export type TSettingsProvider = {
 }
 
 export type TSettingsCtx = {
-  settings:TSettingsState
+  settings:TRaceSettings
   toggleMeta:(toggle?:boolean) => void
   updateSetting:(settings:TSettingUpdate) => void
   updateSettings:(settings:TSettingUpdate) => void

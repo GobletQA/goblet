@@ -1,5 +1,7 @@
-export type TSettingsState = {
+
+export type TRaceSettings = {
   displayMeta?:boolean
+  firstFeatureActive?:boolean
 }
 
 export enum ESettingAction {
@@ -8,7 +10,7 @@ export enum ESettingAction {
   ToggleMeta = `ToggleMeta`,
 }
 
-export type TSettingUpdate = Partial<TSettingsState>
+export type TSettingUpdate = Partial<TRaceSettings>
 
 export type TSettingAction = {
   type:ESettingAction
@@ -19,7 +21,7 @@ export type TUpdateSettingEvt = {
   payload:TSettingUpdate
 }
 
-export type TActionMethod = (state:TSettingsState, action:TSettingAction) => TSettingsState
+export type TActionMethod = (state:TRaceSettings, action:TSettingAction) => TRaceSettings
 
 
 export type TToggleRaceModalEvt = {

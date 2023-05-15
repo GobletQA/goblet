@@ -1,4 +1,5 @@
 import type { TRepoState } from './reducer.types'
+import type { TStepDefs } from '@ltipton/parkin'
 import type { TCreateRepo, TConnectRepo } from './repo.types'
 import type {
   TRepoMeta,
@@ -7,7 +8,6 @@ import type {
   TRouteMeta,
   TProxyRoute,
   TFeatureFileModelList,
-  TDefinitionsAstTypeMap,
   TDefinitionFileModelList,
 } from './shared.types'
 
@@ -16,11 +16,11 @@ export type TStatusRoutes = Record<string, TProxyRoute>
 export type TValidateResp = {
   id:string
   jwt: string
+  error?: string
   refresh: string
   username:string
   provider:string
   status: TRouteMeta
-  error?: string
 }
 
 export type TRepoStatus = {
@@ -33,9 +33,9 @@ export type TApiRepoResp = {
   repo: TRepoState,
   fileTree: TFileTree,
   status?: TRepoStatus
+  definitionTypes: TStepDefs
   features: TFeatureFileModelList,
   definitions: TDefinitionFileModelList,
-  definitionTypes: TDefinitionsAstTypeMap
 }
 
 export type TAPIReposResp = {
@@ -43,8 +43,8 @@ export type TAPIReposResp = {
 }
 
 export type TApiDefinitionsResp = {
+  definitionTypes: TStepDefs
   definitions: TDefinitionFileModelList,
-  definitionTypes: TDefinitionsAstTypeMap
 }
 
 export type TFileResp = Record<"file", TFileModel>

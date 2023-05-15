@@ -3,33 +3,44 @@ import type { TModalFooter, TModalAction } from '@GBC/types'
 
 import Button from '@mui/material/Button'
 import DialogActions from '@mui/material/DialogActions'
+import { useOnKeyDown } from '@GBC/hooks/dom/useOnKeyDown'
 import { useGetIcon } from '@GBC/hooks/components/useGetIcon'
+
 
 const FooterAction = (props:TModalAction) => {
   const {
     label,
     loading,
-    disabled,
-    text=label,
+    onClick,
     EndIcon,
     endIcon,
+    keyboard,
+    disabled,
     startIcon,
     StartIcon,
     iconProps,
+    text=label,
+    onKeyDown=onClick,
     ...buttonProps
   } = props
   
   const EIcon = useGetIcon(EndIcon, endIcon)
   const SIcon = useGetIcon(StartIcon, startIcon)
 
+  useOnKeyDown<HTMLButtonElement>({
+    keyboard,
+    onKeyDown
+  })
+
   return (
     <Button
       key={text}
-      className='modal-footer-action'
+      onClick={onClick}
       disabled={disabled || loading}
+      className='modal-footer-action'
       endIcon={EIcon && (<EIcon {...iconProps} />)}
       startIcon={SIcon && (<SIcon {...iconProps} />)}
-      {...buttonProps}
+      {...buttonProps as any}
     >
       {text}
     </Button>

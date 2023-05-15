@@ -1,3 +1,5 @@
+import type { TRaceSettings as TRRaceSettings } from '@gobletqa/race'
+
 export type TSetting = {
   value: any
   key: string
@@ -54,22 +56,27 @@ export type TValueGroup = {
 
 // ---- Key specific Settings and Groups ---- //
 
+export type TRaceSettings = {
+  [key in keyof TRRaceSettings]: TSetting
+}
+
 export type TSettings = {
   $config: TSettingsConfig
-  editor: TEditorSettings
+  race: TRaceSettings
   goblet: TSettingGroup
+  monaco: TMonacoSettings
   browser: TBrowserSettings
 }
 
-export type TEditorSettings = {
+export type TMonacoSettings = {
   autoSave: TSetting
   fontSize: TSetting
   automaticLayout: TSetting
   [key:string]: TSettingGroup | TSetting
 }
 
-export type TEditorSettingValues = {
-  [key: keyof TEditorSettings]: any
+export type TMonacoSettingValues = {
+  [key: keyof TMonacoSettings]: any
 }
 
 export type TBrowserSettings = {

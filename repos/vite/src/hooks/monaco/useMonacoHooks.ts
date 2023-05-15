@@ -1,10 +1,10 @@
 import type { MutableRefObject } from 'react'
+import type { TStepDef } from '@ltipton/parkin'
 import type { TEditorRefHandle } from '@gobletqa/monaco'
 import type {
   TFileTree,
-  TDefinitionAst,
   TSideNavToggleProps,
-  TEditorSettingValues,
+  TMonacoSettingValues,
 } from '@types'
 
 import { useMemo } from 'react'
@@ -19,8 +19,8 @@ import { exists, set, emptyObj } from '@keg-hub/jsutils'
 import { getRootPrefix } from '@utils/repo/getRootPrefix'
 import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { isCustomDef } from '@utils/definitions/isCustomDef'
-import { useSettingValues } from '@hooks/settings/useSettingValues'
 import { loadGobletFile } from '@actions/files/api/loadGobletFile'
+import { useSettingValues } from '@hooks/settings/useSettingValues'
 import {
   useEventEmit,
   useOnEvent,
@@ -84,12 +84,15 @@ export const useMonacoHooks = (
   )
 
   const config = useMonacoConfig()
-  const { theme, ...options } = useSettingValues<TEditorSettingValues>(`editor`)
+  const { theme, ...options } = useSettingValues<TMonacoSettingValues>(`monaco`)
 
   exists(theme) && set(config, `theme.name`, theme)
 
-  useOnEvent<TDefinitionAst>(OpenEditorFileEvt, async (defAst:TDefinitionAst) => {
+  useOnEvent<TStepDef>(OpenEditorFileEvt, async (defAst:TStepDef) => {
     const { location } = defAst
+
+    if(!location)
+      return console.warn(`[Error: ${OpenEditorFileEvt}] - Missing step def location`)
 
     // If it's a custom file then it should already be loaded
     if(isCustomDef(location)){

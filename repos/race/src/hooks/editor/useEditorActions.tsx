@@ -103,8 +103,7 @@ export const useEditorActions = (props:THEditorActions) => {
     setFeature(nextFeat)
   })
 
-
-  const onDeleteFeature = useInline<TOnDeleteFeature>((__, loc) => deleteFeature(loc))
+  const onDeleteFeature = useInline<TOnDeleteFeature>((__, loc) => deleteFeature?.(loc))
 
   /**
    * General hook for both sidebar and tab clicks on a feature

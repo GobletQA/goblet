@@ -1,5 +1,6 @@
 import type { Repo } from '../../repo/repo'
-import type { TDefinitionFileModel, TDefinitionAst } from '../../types'
+import type { TStepDef } from '@ltipton/parkin'
+import type { TDefinitionFileModel } from '../../types'
 
 import fs from 'fs'
 import { Logger } from '@keg-hub/cli-utils'
@@ -8,7 +9,7 @@ import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { parkinCheck } from '@GSH/libs/overrides/parkinOverride'
 import { requireOverride } from '@GSH/libs/overrides/requireOverride'
 
-export type TDefinitionAstLoaded = TDefinitionAst & {
+export type TDefinitionAstLoaded = TStepDef & {
   location:string
   __isLoaded?:boolean
 }

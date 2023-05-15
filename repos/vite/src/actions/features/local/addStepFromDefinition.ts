@@ -1,10 +1,11 @@
-import type { TDefinitionAst } from '@types'
+import type { TStepDef } from '@ltipton/parkin'
+
 import { addToast } from '@actions/toasts'
 import { copyToDefinitionClipboard } from '@utils/definitions'
 
 export type TAddStepFromDefinition = {
   clipboard: boolean
-  definition: TDefinitionAst
+  definition: TStepDef
 }
 
 /**

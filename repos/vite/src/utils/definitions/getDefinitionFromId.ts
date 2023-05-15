@@ -1,12 +1,13 @@
-import type { TDefinitionsTypeMapAst, TDefinitionsAstArr } from '@types'
-import type { EStepKey } from '@ltipton/parkin'
+import type { TStepDefs, TStepDefsArr, EStepKey } from '@ltipton/parkin'
+
 import { isArr } from '@keg-hub/jsutils'
+
 
 /**
  * Searches the passed in definitions for one that matches the passed in id
  */
 export const getDefinitionFromId = (
-  definitions:TDefinitionsAstArr | TDefinitionsTypeMapAst,
+  definitions:TStepDefsArr | TStepDefs,
   id:string,
   type:EStepKey
 ) => {
@@ -14,7 +15,7 @@ export const getDefinitionFromId = (
   const defs = isArr(definitions)
     ? definitions
     : type
-      ? definitions[type]
+      ? definitions[type as any]
       : null
 
   return !defs || !id ? null : defs.find(def => def.uuid === id)

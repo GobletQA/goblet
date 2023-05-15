@@ -57,6 +57,7 @@ export const openYesNo = ({
       {
         text: `Yes`,
         color: `success`,
+        keyboard: `enter`,
         variant:`contained`,
         ...yes,
         onClick: () => {

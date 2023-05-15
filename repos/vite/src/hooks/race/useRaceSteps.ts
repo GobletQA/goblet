@@ -1,5 +1,6 @@
 import type { TDefinitionsState } from '@types'
-import type { TRaceSteps } from '@gobletqa/race'
+import type { TStepDefsList } from '@ltipton/parkin'
+
 import { emptyArr } from '@keg-hub/jsutils'
 
 import { useMemo } from 'react'
@@ -41,6 +42,6 @@ export const useRaceSteps = (defs:TDefinitionsState) => {
           })
 
         return steps
-      }, {} as TRaceSteps)
+      }, {} as TStepDefsList)
   }, [defs.definitions])
 }

@@ -27,6 +27,7 @@ export const VisualEditor = (props:TVisualEditor) => {
   const {
     steps,
     world,
+    settings,
     features,
     connected,
     rootPrefix,
@@ -50,11 +51,11 @@ export const VisualEditor = (props:TVisualEditor) => {
             world={world}
             actions={Actions}
             Divider={Divider}
+            settings={settings}
             features={features}
             PrePanels={PrePanels}
             rootPrefix={rootPrefix}
             menuContext={menuContext}
-            firstFeatureActive={true}
             onWorldChange={onWorldChange}
             sidebarStatus={sidebarLocked}
             onFeatureClose={onFeatureClose}
