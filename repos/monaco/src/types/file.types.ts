@@ -66,5 +66,6 @@ export type TFile = {
 
 export type TFolderChildren = Record<string, TFileItem>
 
+export type TFolderItem = TRootDir | TFolder
 export type TFileItem = TRootDir | TFolder | TFile
 export type TItem = TFolder | TFile

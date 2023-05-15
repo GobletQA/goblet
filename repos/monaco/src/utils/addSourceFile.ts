@@ -1,13 +1,14 @@
 import { buildFile } from './buildFile'
-import { buildFolder } from './buildFolder'
+import type { TFolderItem } from '@GBM/types'
 
+import { buildFolder } from './buildFolder'
 import { deepMerge } from '@keg-hub/jsutils'
 
 export type TAddSrcFile = {
   path: string,
-  filetree: any,
   content?: string,
   rootPrefix?: string,
+  filetree: TFolderItem,
 }
 
 export const addSourceFile = ({
@@ -15,7 +16,7 @@ export const addSourceFile = ({
   filetree,
   content,
   rootPrefix,
-}:TAddSrcFile) => {
+}:TAddSrcFile):TFolderItem => {
   const copy = deepMerge(filetree)
   const paths = (path || '/').slice(1).split('/')
   const name = paths[paths.length - 1]
