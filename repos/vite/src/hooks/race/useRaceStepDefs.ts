@@ -1,11 +1,13 @@
 import type { TDefinitionsState } from '@types'
 import type { TStepDefsList } from '@ltipton/parkin'
 
+import { useDefs } from '@store'
 import { emptyArr } from '@keg-hub/jsutils'
 
 import { useMemo } from 'react'
 
-export const useRaceSteps = (defs:TDefinitionsState) => {
+export const useRaceStepDefs = () => {
+  const defs = useDefs()
 
   return useMemo(() => {
     return Object.entries(defs.definitions)

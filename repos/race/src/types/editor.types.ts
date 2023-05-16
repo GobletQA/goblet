@@ -66,10 +66,10 @@ export type TRaceEditorProps = TEditorShared & {
   mode?:EEditorMode
   rootPrefix: string
   world?:TWorldConfig
-  steps:TStepDefsList
   feature?:TRaceFeature
   themeType?:EThemeMode
   settings:TRaceSettings
+  definitions:TStepDefsList
   features:TRaceFeatureAsts
   expressionOptions?:TExpOpts
   firstFeatureActive?:boolean

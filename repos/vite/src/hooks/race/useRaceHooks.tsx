@@ -1,8 +1,8 @@
 import type { TRaceSettings, TRaceFeature } from '@gobletqa/race'
 
 import { useMemo } from 'react'
-import { useDefs, useRepo } from '@store'
-import { useRaceSteps } from './useRaceSteps'
+import { useRepo } from '@store'
+import { useRaceStepDefs } from './useRaceStepDefs'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@gobletqa/race'
 import { useRaceFeatures } from '@hooks/race/useRaceFeatures'
@@ -24,10 +24,10 @@ import {
 
 
 export const useRaceHooks = () => {
+
   const repo = useRepo()
-  const defs = useDefs()
   const files = useFeatureFiles()
-  const steps = useRaceSteps(defs)
+  const definitions = useRaceStepDefs()
 
   const { features, duplicates } = useRaceFeatures(files)
   const settings = useSettingValues<TRaceSettings>(`race`)
@@ -107,10 +107,10 @@ export const useRaceHooks = () => {
   useMultiFeatsErr({ duplicates })
 
   return {
-    steps,
     settings,
     features,
     rootPrefix,
+    definitions,
     onWorldChange,
     onFeatureClose,
     onFeatureCreate,

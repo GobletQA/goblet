@@ -25,12 +25,12 @@ export type TVisualEditor = {
 export const VisualEditor = (props:TVisualEditor) => {
   const { sidebarLocked } = useApp()
   const {
-    steps,
     world,
     settings,
     features,
     connected,
     rootPrefix,
+    definitions,
     onWorldChange,
     onFeatureClose,
     onFeatureDelete,
@@ -47,7 +47,6 @@ export const VisualEditor = (props:TVisualEditor) => {
           {/* <DragSelect /> */}
           <RaceEditor
             {...props}
-            steps={steps}
             world={world}
             actions={Actions}
             Divider={Divider}
@@ -56,6 +55,7 @@ export const VisualEditor = (props:TVisualEditor) => {
             PrePanels={PrePanels}
             rootPrefix={rootPrefix}
             menuContext={menuContext}
+            definitions={definitions}
             onWorldChange={onWorldChange}
             sidebarStatus={sidebarLocked}
             onFeatureClose={onFeatureClose}

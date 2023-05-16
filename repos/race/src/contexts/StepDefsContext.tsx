@@ -22,7 +22,7 @@ export type TStepDefsCtx = {
 export const StepDefsContext = createContext<TStepDefsCtx>({} as TStepDefsCtx)
 export const useStepDefs = () => useContext(StepDefsContext)
 
-const useRaceSteps = (defs:TStepDefsList={}) => {
+const useRaceStepDefs = (defs:TStepDefsList={}) => {
   return useMemo(() => {
     return Object.entries(defs).reduce((acc, [key, data]) => {
       data?.meta?.race && (acc[key] = data)
@@ -37,8 +37,8 @@ export const StepDefsProvider = (props:TStepDefsProvider) => {
     children,
   } = props
 
-  const raceSteps = useRaceSteps(props.defs)
-  const [defs, setDefs] = useState<TStepDefsList>(raceSteps)
+  const stepDefs = useRaceStepDefs(props.defs)
+  const [defs, setDefs] = useState<TStepDefsList>(stepDefs)
 
   const defsCtx:TStepDefsCtx = useMemo(() => ({
     defs,

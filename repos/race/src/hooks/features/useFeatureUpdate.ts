@@ -91,7 +91,8 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
 
     options?.expand && updateExpanded(options?.expand)
     setFeatureRefs(featuresRef.current)
-    onAuditFeature(updated, options)
+
+    await onAuditFeature(updated, options)
     setFeature(updated)
   })
  

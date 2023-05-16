@@ -1,8 +1,18 @@
 /// <reference lib="webworker" />
 declare const self: DedicatedWorkerGlobalScope;
 
-import type { TAudit, TRaceFeature, TAuditFeature } from '@GBR/types'
 import type {
+  TAudit,
+  TRaceFeature,
+  TAuditFeature,
+  TRaceParentAst,
+} from '@GBR/types'
+
+import type {
+  EBlockLoc,
+  EStepType,
+  EAstObject,
+  TParentAst,
   TFeatureAst,
   TWorldConfig,
   TRegisterOrAddStep,
@@ -11,6 +21,13 @@ import type {
 import { Parkin } from '@ltipton/parkin'
 import { deepMerge } from '@keg-hub/jsutils'
 import { auditFeature as featureAudit } from './audit'
+
+export type TFindIndex = {
+  loc?:EBlockLoc|string
+  type:EAstObject|EStepType
+  parent:TParentAst|TRaceParentAst
+  feature:TFeatureAst|TRaceFeature
+}
 
 export type TReIndexFeature = {
   feature:TRaceFeature
@@ -58,4 +75,21 @@ export const auditFeature = async (options:TAuditFeature) => {
   })
 
   return audit as TAudit
+}
+
+/**
+ * TODO: not currently be used, but should be
+ * Eventually want to update all calls to parkin
+ * So that they use the worker version only
+ * Will need to replace race/src/utils/find/findIndex with this
+ *
+ * Is used in the factories, but they are all sync, and this method is async
+ * Which means they all need to be updated, and all call sites as well
+ */
+export const findIndex = async (props:TFindIndex) => {
+  return PK.assemble.findIndex({
+    ...props,
+    parent: props.parent as TParentAst,
+    feature: props.feature as TFeatureAst,
+  })
 }

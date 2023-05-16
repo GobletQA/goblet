@@ -13,7 +13,6 @@ import {
   useOnEvent,
   onEmitEvent,
   MemoChildren,
-  useEffectOnce,
 } from '@gobletqa/components'
 import {
   useMemo,
@@ -35,25 +34,38 @@ export type TParkinCtx = {
   updateWorld: TOnWorldChange
 }
 
+/**
+ * TODO: Update so that this parkin version is no longer needed
+ * All parkin calls will use the ParkinWorker version
+ */
 let __Parkin:Parkin
 export const getParkin = () => __Parkin
 
-const initParkin = (world:TWorldConfig={ $alias: {} }, defs?:TRegisterOrAddStep) => {
-  __Parkin = __Parkin || new Parkin(world, defs)
- return __Parkin
+const useInitParkin = (props:TParkinProvider) => {
+  return useMemo<Parkin>(() => {
+    __Parkin = __Parkin
+      || new Parkin(props.world || {} as TWorldConfig, props.defs)
+
+    iife(async () => {
+      await ParkinWorker.init(__Parkin.world, props.defs)
+      onEmitEvent<TOnParkinInit>(ParkinInitEvt, { parkin: __Parkin })
+    })
+
+    return __Parkin
+  }, [])
 }
+
 
 export const ParkinContext = createContext<TParkinCtx>({} as TParkinCtx)
 export const useParkin = () => useContext(ParkinContext)
 
 export const ParkinProvider = (props:TParkinProvider) => {
   const {
-    defs,
     children,
     onWorldChange
   } = props
 
-  const [parkin, setParkin] = useState<Parkin>(initParkin(props.world || {} as TWorldConfig, defs))
+  const parkin = useInitParkin(props)
   const [world, setWorld] = useState<TWorldConfig>(parkin?.world)
   
   const updateWorld = useInline<TOnWorldChange>(({ world:updated, replace}) => {
@@ -66,19 +78,6 @@ export const ParkinProvider = (props:TParkinProvider) => {
   })
 
   useOnEvent<TOnWorldUpdate>(UpdateWorldEvt, updateWorld)
-
-  useEffectOnce(() => {
-    iife(async () => {
-      await ParkinWorker.init(parkin.world, defs)
-      onEmitEvent<TOnParkinInit>(ParkinInitEvt, { parkin })
-    })
-
-    return () => {
-      ParkinWorker.clearSteps()
-      parkin?.steps?.clear?.()
-      setParkin(undefined as any)
-    }
-  })
 
   const parkinCtx:TParkinCtx = useMemo(() => ({
     world,
