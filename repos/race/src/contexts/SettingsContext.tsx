@@ -14,7 +14,6 @@ import {
 import { MemoChildren } from '@gobletqa/components'
 import { useEditorSettings } from '@GBR/hooks/settings/useEditorSettings'
 
-
 export type TSettingsProvider = TRaceSettings & {
   children:ReactNode
   onSettingChange?:TOnSettingCB

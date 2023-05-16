@@ -12,7 +12,7 @@ export const useRaceSettings = () => {
     const key = update.setting as keyof TRaceSettings
 
     settings[key]
-      ? updateSettingValue(update)
+      ? updateSettingValue({...update, setting: `race.${update.setting}`})
       : console.warn(`[Settings Error] Race setting ${key} does not exist, ignoring update`)
 
   }, [
