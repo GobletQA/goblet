@@ -14,7 +14,7 @@ import {
 } from './Feature.styled'
 
 export type TEmptyFeature = {
-  mode:EEditorMode
+  mode?:EEditorMode
   sx?:CSSProperties
   parent:TRaceFeature
   items:TFeatureItem[]

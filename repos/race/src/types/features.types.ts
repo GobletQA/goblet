@@ -17,7 +17,7 @@ import type {
 
 
 export type TSetFeatureOpts = TAuditOpts & {
-  checkInactive:boolean
+  checkInactive?:boolean
 }
 
 export type TUpdateFeatureOpts = TSetFeatureOpts & {

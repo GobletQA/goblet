@@ -28,10 +28,9 @@ import type {
   TSetFeatureRefs,
 } from './helpers.types'
 
-export enum EEditorMode {
-  simple=`simple`,
-  advanced=`advanced`
-}
+import type {
+  TOnSettingCB
+} from './settings.types'
 
 export type TFeaturesRefs = {
   stepDefsRef: TStepDefsRef
@@ -63,7 +62,6 @@ export type TWorldChange = {
 export type TOnWorldChange = (props:TWorldChange) => void
 
 export type TRaceEditorProps = TEditorShared & {
-  mode?:EEditorMode
   rootPrefix: string
   world?:TWorldConfig
   feature?:TRaceFeature
@@ -78,6 +76,7 @@ export type TRaceEditorProps = TEditorShared & {
   onWorldChange?:TOnWorldChange
   onFeatureChange?:TOnFeatureCB
   onFeatureCreate?:TOnFeatureCB
+  onSettingChange?:TOnSettingCB
 }
 
 export type TEditorShared = {

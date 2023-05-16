@@ -1,16 +1,16 @@
-import type { TRaceSettings, TRaceFeature } from '@gobletqa/race'
+import type { TRaceFeature } from '@gobletqa/race'
 
 import { useMemo } from 'react'
 import { useRepo } from '@store'
-import { useRaceStepDefs } from './useRaceStepDefs'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@gobletqa/race'
+import { useRaceSettings } from '@hooks/race/useRaceSettings'
+import { useRaceStepDefs } from '@hooks/race/useRaceStepDefs'
 import { useRaceFeatures } from '@hooks/race/useRaceFeatures'
 import { useOnWorldChange } from '@hooks/race/useOnWorldChange'
 import { useMultiFeatsErr } from '@hooks/race/useMultiFeatsErr'
 import { getFeaturePrefix } from '@utils/features/getFeaturePrefix'
 import { getActiveFeature } from '@utils/features/getActiveFeature'
-import { useSettingValues } from '@hooks/settings/useSettingValues'
 
 import {
   useOnAddFile,
@@ -30,7 +30,6 @@ export const useRaceHooks = () => {
   const definitions = useRaceStepDefs()
 
   const { features, duplicates } = useRaceFeatures(files)
-  const settings = useSettingValues<TRaceSettings>(`race`)
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
 
   const onSaveFile = useOnSaveFile(files, rootPrefix)
@@ -39,6 +38,11 @@ export const useRaceHooks = () => {
 
   // const onLoadFile = useOnLoadFile(files, rootPrefix)
   // const onRenameFile = useOnRenameFile(files, rootPrefix)
+
+  const {
+    settings,
+    onSettingChange,
+  } = useRaceSettings()
 
   const onPathChange = useOnPathChange()
 
@@ -117,6 +121,7 @@ export const useRaceHooks = () => {
     onFeatureActive,
     onFeatureChange,
     onFeatureDelete,
+    onSettingChange,
     world: repo.world,
     onFeatureSave: onFeatureChange,
     connected: Boolean(repo?.paths && repo?.name)

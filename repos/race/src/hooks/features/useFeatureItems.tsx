@@ -1,15 +1,10 @@
 import type { MouseEvent } from 'react'
-import type { TRaceFeature } from '@GBR/types'
 import type { TFeatureItem } from '@GBR/components/Feature/FeatureItems'
 
 import { useMemo } from 'react'
 import { EEditorMode } from '@GBR/types'
 import { useEditor, useSettings } from '@GBR/contexts'
-import {
-  colors,
-  NotePlusIcon,
-  NoteMinusIcon,
-} from '@gobletqa/components'
+import { settingChange } from '@GBR/actions/settings/settingChange'
 import {
   RuleItem,
   ModeItem,
@@ -24,20 +19,24 @@ import {
 export const useFeatureItems = () => {
 
   const { settings, toggleMeta } = useSettings()
-  const { feature, mode, updateMode } = useEditor()
-  const advMode = mode === EEditorMode.advanced
+  const { feature,  } = useEditor()
+  const advMode = settings.mode === EEditorMode.advanced
 
   return useMemo<TFeatureItem[]>(() => {
 
     const modeItem = {
       ...(advMode ? ModeItemActive : ModeItem),
       dividerTop: true,
-      onClick: () => updateMode(advMode ? EEditorMode.simple : EEditorMode.advanced)
+      onClick: () => settingChange({
+        setting: `mode`,
+        value: advMode ? EEditorMode.simple : EEditorMode.advanced
+      })
     }
     
     const generalItem = {
       ...(settings?.displayMeta ? GeneralItemActive : GeneralItem),
       dividerTop: true,
+      // Doesn't call the external settings change callback
       onClick: () => toggleMeta(),
     }
 

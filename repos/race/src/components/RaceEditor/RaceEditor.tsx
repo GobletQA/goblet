@@ -17,7 +17,10 @@ export const RaceEditor = (props:TRaceEditorProps) => {
   })
 
   return (
-    <SettingsProvider {...props?.settings} >
+    <SettingsProvider
+      {...props?.settings}
+      onSettingChange={props.onSettingChange}
+    >
       <ParkinProvider
         world={props.world}
         defs={props.definitions}

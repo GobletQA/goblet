@@ -7,7 +7,7 @@ import { Rules } from '../Rules'
 import { Section } from '../Section'
 import { cls } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
-import { useEditor } from '@GBR/contexts'
+import { useEditor, useSettings } from '@GBR/contexts'
 import { Background } from '../Background'
 import { EmptyFeature } from './EmptyFeature'
 import { EditTitle } from '../Title/EditTitle'
@@ -39,8 +39,9 @@ const styles:Record<string, StyleObj|CSSProperties> = {
 export const Feature = (props:TFeature) => {
   const { featuresRef } = props
 
-  const { feature, rootPrefix, mode } = useEditor()
-  const advMode = mode === EEditorMode.advanced
+  const { feature, rootPrefix } = useEditor()
+  const { settings } = useSettings()
+  const advMode = settings.mode === EEditorMode.advanced
 
   const featureIsEmpty = useFeatureIsEmpty({ feature })
   const onEditFeatureTitle = useEditFeatureTitle({ parent: feature })
@@ -114,9 +115,9 @@ export const Feature = (props:TFeature) => {
 
                           {noChildren && (
                             <EmptyFeature
-                              mode={mode}
                               parent={feature}
                               items={featureItems}
+                              mode={settings.mode}
                             />
                           ) || null}
 

@@ -1,8 +1,10 @@
 import type {
+  TOnSettingCB,
   TRaceSettings,
   TSettingUpdate,
+  TSettingPayload,
 } from '../types'
-
+import { ReactNode } from 'react'
 import {
   useMemo,
   useContext,
@@ -13,15 +15,15 @@ import { MemoChildren } from '@gobletqa/components'
 import { useEditorSettings } from '@GBR/hooks/settings/useEditorSettings'
 
 
-export type TSettingsProvider = {
-  children:any
-  displayMeta?:boolean
+export type TSettingsProvider = TRaceSettings & {
+  children:ReactNode
+  onSettingChange?:TOnSettingCB
 }
 
 export type TSettingsCtx = {
   settings:TRaceSettings
   toggleMeta:(toggle?:boolean) => void
-  updateSetting:(settings:TSettingUpdate) => void
+  updateSetting:(settings:TSettingPayload) => void
   updateSettings:(settings:TSettingUpdate) => void
 }
 
@@ -47,13 +49,13 @@ export const SettingsProvider = (props:TSettingsProvider) => {
       toggleMeta,
       updateSetting,
       updateSettings,
-      settings: state,
+      settings:state,
     }
   }, [
+    state,
     toggleMeta,
     updateSetting,
     updateSettings,
-    state.displayMeta
   ])
 
   return (
