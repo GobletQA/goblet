@@ -10,6 +10,7 @@ import type {
   TSetFeatureOpts,
   TSetFeatureGroups,
   TOnAuditFeatureCB,
+  TUpdateFeatureOpts,
 } from '@GBR/types'
 import type { MutableRefObject } from 'react'
 import type { TOnExpandedCB } from '@GBR/contexts'
@@ -62,9 +63,8 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     feat?:TRaceFeature,
     opts:TSetFeatureOpts=emptyObj as TSetFeatureOpts
   ) => {
-    const {
-      checkInactive=true
-    } = opts
+
+    const { checkInactive=true } = opts
 
     // If a different feature is being set,
     // then call inactive callback on previous feature
@@ -84,7 +84,7 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
   })
 
   const updateFeature = useInline(async ({
-    options=emptyObj as TSetFeatureOpts,
+    options=emptyObj as TUpdateFeatureOpts,
     feature:changed,
   }:TUpdateFeature) => {
     if(!changed || !isValidUpdate(changed)) return

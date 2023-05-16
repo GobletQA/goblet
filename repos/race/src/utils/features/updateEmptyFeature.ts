@@ -12,9 +12,8 @@ import { EmptyFeatureUUID } from '@GBR/constants/values'
  * Cleans the feature name, and adds the call amount if it exists
  * This ensure the file name does not match an existing feature
  */
-const cleanFeatureName = (name:string, call:number) => {
-  const cleaned = name.replace(/[\s`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '-')
-  return call ? `${cleaned}-${call}` : cleaned
+const cleanFeatureName = (name:string) => {
+  return name.replace(/[\s`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '-')
 }
 
 /**
@@ -26,48 +25,22 @@ const addFeatureExt = (location:string) => {
 }
 
 /**
- * Builds a uuid matching the same format Parkin uses
- */
-const buildFeatureUuid = (name:string, location:string, fileName:string) => {
-  return `${location}-${fileName}-${name.length}`
-}
-
-/**
  * Generates the feature file path, uuid and parent properties
  * Ensures it does not overwrite an existing feature file name
  */
-const generateFeatureProps = (
-  feat:TRaceFeature,
-  features:TRaceFeatures,
-  call:number=0
-):Partial<TRaceFeature> => {
- 
-  const fileName = cleanFeatureName(feat.feature, call)
+const generateFeatureProps = (feat:TRaceFeature):Partial<TRaceFeature> => {
+  
+  const fileName = cleanFeatureName(feat.feature)
   const nameExt = addFeatureExt(fileName)
 
   const relative = `/${nameExt}`
   const fullLoc = `${feat.parent.location}${relative}`
-  
-  const uuid = buildFeatureUuid(feat.feature, fullLoc, fileName)
 
-  // Check if the path of full path match and existing feature
-  const invalid = Object.entries(features as TRaceFeatureAsts)
-    .reduce((invalid, [key, feature]) => {
-      return invalid
-        || (relative === feature?.path || fullLoc === feature?.parent?.location)
-    }, false)
-
-  /**
-   * If the generated uuid or file path already exists
-   * Then add 1 to the call amount and regenerate the uuid
-   */
-  return invalid || features[uuid as keyof typeof features]
-    ? generateFeatureProps(feat, features, call + 1)
-    : {
-        uuid,
-        path: relative,
-        parent: { uuid: fullLoc, location: fullLoc },
-      }
+  return {
+    uuid: fullLoc,
+    path: relative,
+    parent: { uuid: fullLoc, location: fullLoc },
+  }
 }
 
 /*
@@ -88,7 +61,7 @@ export const updateEmptyFeature = (feat:TRaceFeature, featuresRef:TFeaturesRef) 
     ? feat
     : {
         ...omitKeys(feat, [`isEmpty`]),
-        ...generateFeatureProps(feat, featuresRef.current, 0)
+        ...generateFeatureProps(feat)
       } as TRaceFeature
 
 }

@@ -1,6 +1,9 @@
 import type { ChangeEvent } from 'react'
-import type { TRaceFeature } from '@GBR/types'
 import type { TChangeCB } from '@gobletqa/components'
+import type {
+  TRaceFeature,
+  TUpdateFeatureOpts
+} from '@GBR/types'
 
 
 import { useCallback } from 'react'
@@ -20,15 +23,13 @@ export const useEditFeatureTitle = ({ parent }:THEditFeatureTitle) => {
   return useCallback(((evt:ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, value:string) => {
     const text = value || evt.target.value
 
-    const opts = uuid === EmptyFeatureUUID
-      ? { create: true }
-      : emptyObj
+    const opts = uuid === EmptyFeatureUUID ? { create: true } : emptyObj
 
     const updated = !featureIsEmpty(parent)
       ? { ...parent, feature: text }
       : featureFactory({...parent, feature: text}, true)
 
-    text && updateFeature(updated, opts)
+    text && updateFeature(updated, opts as TUpdateFeatureOpts)
   }) as TChangeCB, [parent, feature, uuid])
 
 }
