@@ -3,6 +3,7 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TFeaturesRef,
+  TSetFeatureOpts,
   TSetFeatureRefs,
 } from '@GBR/types'
 
@@ -15,7 +16,7 @@ export type THEmptyFeatureCallbacks = {
   featuresRef:TFeaturesRef
   updateEmptyTab:TFeatureCB
   setFeatureRefs:TSetFeatureRefs
-  setFeature:(feat?: TRaceFeature | undefined, checkInactive?: boolean) => void
+  setFeature:(feat?: TRaceFeature | undefined, opts?:TSetFeatureOpts) => void
 }
 
 export const useEmptyFeature = (props:THEmptyFeatureCallbacks) => {
@@ -33,7 +34,7 @@ export const useEmptyFeature = (props:THEmptyFeatureCallbacks) => {
       updateEmptyTab?.(feat)
     }
 
-    setFeature(feat, false)
+    setFeature(feat, { checkInactive: false })
   }) as TOnFeatureCB)
 
 

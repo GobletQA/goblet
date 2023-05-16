@@ -16,7 +16,11 @@ import type {
 } from '@ltipton/parkin'
 
 
-export type TUpdateFeatureOpts = TAuditOpts & {
+export type TSetFeatureOpts = TAuditOpts & {
+  checkInactive:boolean
+}
+
+export type TUpdateFeatureOpts = TSetFeatureOpts & {
   expand?:string
   create?:boolean
   replace?:boolean

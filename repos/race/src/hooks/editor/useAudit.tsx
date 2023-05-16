@@ -24,15 +24,13 @@ export const useAudit = (props:THFeatureAudit) => {
   const [audit, setAudit] = useState(emptyAudit)
 
   const onAuditFeature = useCallback<TOnAuditFeatureCB>(async (feat, opts=emptyObj) => {
+    if(opts.skipAudit) return
+    
     const {
-      skipAudit,
       mergeAudit,
       removeAuditSteps
     } = opts
 
-    if(skipAudit) return
-
-    // Easier to debug when not running through a worker
     const updated = await ParkinWorker.auditFeature({ feature: feat })
 
     if(mergeAudit) return setAudit({ ...audit, ...updated })

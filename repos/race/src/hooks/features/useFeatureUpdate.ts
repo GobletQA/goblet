@@ -1,4 +1,5 @@
 import type {
+  TAuditOpts,
   TFeatureCB,
   TSetFeature,
   TRaceFeature,
@@ -6,6 +7,7 @@ import type {
   TFeaturesRef,
   TUpdateFeature,
   TSetFeatureRefs,
+  TSetFeatureOpts,
   TSetFeatureGroups,
   TOnAuditFeatureCB,
 } from '@GBR/types'
@@ -56,7 +58,14 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     setFeature:_setFeature,
   } = props
 
-  const setFeature = useInline((feat?:TRaceFeature, checkInactive:boolean=true) => {
+  const setFeature = useInline(async (
+    feat?:TRaceFeature,
+    opts:TSetFeatureOpts=emptyObj as TSetFeatureOpts
+  ) => {
+    const {
+      checkInactive=true
+    } = opts
+
     // If a different feature is being set,
     // then call inactive callback on previous feature
     checkInactive
@@ -66,11 +75,16 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     curPathRef.current = feat?.parent?.location || ``
     curValueRef.current = !curPathRef.current ? `` : feat?.content || ``
 
+    // Only audit non-empty features
+    feat
+      && feat?.uuid !== EmptyFeatureUUID
+      && await onAuditFeature(feat, opts)
+
     _setFeature(feat)
   })
 
   const updateFeature = useInline(async ({
-    options=emptyObj,
+    options=emptyObj as TSetFeatureOpts,
     feature:changed,
   }:TUpdateFeature) => {
     if(!changed || !isValidUpdate(changed)) return
@@ -91,9 +105,7 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
 
     options?.expand && updateExpanded(options?.expand)
     setFeatureRefs(featuresRef.current)
-
-    await onAuditFeature(updated, options)
-    setFeature(updated)
+    setFeature(updated, options)
   })
  
   return {
