@@ -1,6 +1,10 @@
-import type { TFeaturesRef, TRaceFeatures, TSetFeatureGroups, TSetFeatureRefs } from '@GBR/types'
+import type {
+  TFeaturesRef,
+  TRaceFeatures,
+  TSetFeatureRefs,
+  TSetFeatureGroups,
+} from '@GBR/types'
 
-import {emptyObj} from '@keg-hub/jsutils'
 import { useMemo, useState, useCallback } from 'react'
 import { buildGroups } from '@GBR/utils/features/buildGroups'
 

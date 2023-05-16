@@ -12,19 +12,17 @@ import { useInline } from '@gobletqa/components'
 import { useInitTabs } from '@GBR/hooks/tabs/useInitTabs'
 import { useFeatureGroups } from '@GBR/hooks/features/useFeatureGroups'
 import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
-import { useFeatureIsEmpty } from '@GBR/hooks/features/useFeatureIsEmpty'
 
 export const useRaceEditor = (props:TRaceEditorProps) => {
   const {
-    steps,
     features,
+    definitions,
     menuContext,
     initialFeature
   } = props
 
-  const stepDefsRef = useRef<TStepDefsList>(steps)
-  stepDefsRef.current = steps
-
+  const stepDefsRef = useRef<TStepDefsList>(definitions)
+  stepDefsRef.current = definitions
   const featuresRef = useRef<TRaceFeatures>(features)
 
   const [
@@ -64,14 +62,18 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   }, [])
 
   /**
-   * Track changes to the features object
-   * They can be changed externally to the Race Editor
-   * If they are, make sure to update the featureRefs to reflect that
+   * TODO: Would be good to track updates to featuresRefs outside of Race
+   * But doing that causes issues internally
+   * If the external feature is out of date, then
+   * Add this code will update the internal Race feature
+   * to an out of date version
+   * Would need to add a timestamp to the AST, but that will require a lot of work
+   * Something that can be investigated later
    */
-  useEffect(() => {
-    features !== featuresRef.current
-      && setFeatureRefs(features)
-  }, [features])
+  // useEffect(() => {
+  //   features !== featuresRef.current
+  //     && setFeatureRefs(features)
+  // }, [features])
 
   return {
     editorRef,
