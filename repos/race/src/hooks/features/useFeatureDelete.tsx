@@ -14,7 +14,9 @@ import {
 } from '@GBR/utils/features/featureTabs'
 
 export type THFeatureDelete = {
+  feature?:TRaceFeature
   openedTabs:TTabItem[]
+  setFeature:TOnFeatureCB
   featuresRef:TFeaturesRef
   onFeatureActive?:TOnFeatureCB
   onFeatureDelete?:TOnFeatureCB
@@ -29,7 +31,9 @@ export type THFeatureDelete = {
 export const useFeatureDelete = (props:THFeatureDelete) => {
 
   const {
+    feature,
     openedTabs,
+    setFeature,
     featuresRef,
     setOpenedTabs,
     setFeatureRefs,
@@ -38,25 +42,35 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
   } = props
 
   return useInline<(loc:string)=>void>((loc) => {
-    const feature = featuresRef.current[loc] as TRaceFeature
+    const remove = featuresRef.current[loc] as TRaceFeature
 
-    // Update feature refs to creates the sidebar feature groups
-    const feats = {...featuresRef.current}
-    delete feats[feature.uuid]
-    setFeatureRefs(feats)
+    if(!remove)
+      return console.warn(
+        `[Error Delete Feature] Can not delete feature. The location ${loc} does not exists`
+      )
 
     // Check if the feature is opened as a tab, and if so remove it
-    const tab = openedTabs.find(tb => isTabMatch(tb, feature))
+    const tab = openedTabs.find(tb => isTabMatch(tb, remove))
 
     if(tab){
       const { tabs, active } = removeTab(openedTabs, tab.tab)
       setOpenedTabs(tabs)
       const nextFeat = active ? featureFromTab(active?.tab, featuresRef.current) : active
       nextFeat && onFeatureActive?.(nextFeat)
+
+      setFeature(nextFeat)
+    }
+    else {
+      // If the feature if active, then remove the active feature
+      feature?.uuid === remove?.uuid && setFeature()
     }
 
+    // Update feature refs to creates the sidebar feature groups
+    delete featuresRef.current[remove.uuid]
+    setFeatureRefs(featuresRef.current)
+
     // Finally call the onFeatureDelete callback
-    onFeatureDelete?.(feature)
+    onFeatureDelete?.(remove)
   })
 
 

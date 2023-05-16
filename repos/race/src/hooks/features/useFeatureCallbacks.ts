@@ -31,9 +31,15 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
     updateFeature
   } = useFeatureUpdate(props)
 
-  const deleteFeature = useFeatureDelete(props)
+  const deleteFeature = useFeatureDelete({
+    ...props,
+    setFeature
+  })
 
-  useEmptyFeature({...props, setFeature})
+  useEmptyFeature({
+    ...props,
+    setFeature
+  })
 
   // Listen to external events to update the feature context
   // Allows dispatching update outside of the react context

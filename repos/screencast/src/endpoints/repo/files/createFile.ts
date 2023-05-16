@@ -10,8 +10,13 @@ import { createGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  * @returns {Object} - response object model containing the saved fileModel
  */
 export const createFile = asyncWrap(async (req:Request, res:Response) => {
-  const { location, type } = req.body
-  const meta = await createGobletFile(res.locals.repo, location, type)
+  const { content, location, type } = req.body
+  const meta = await createGobletFile(
+    res.locals.repo,
+    location,
+    type,
+    content,
+  )
 
   return apiRes(res, meta, 200)
 })

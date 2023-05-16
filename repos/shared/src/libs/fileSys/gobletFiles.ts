@@ -1,26 +1,52 @@
 import type { Repo } from '@GSH/repo/repo'
 import type { TDefGobletConfig, TFileModel } from '../../types'
 
+
 import path from 'path'
 import fs from 'fs-extra'
 import { Exception } from '@GException'
-import { limbo, omitKeys } from '@keg-hub/jsutils'
-import { fileSys } from '@keg-hub/cli-utils'
+import { get, isBool } from '@keg-hub/jsutils'
 import { loadReport } from '@GSH/utils/loadReport'
-import { wordCaps, get, isBool } from '@keg-hub/jsutils'
+import { DefinitionOverrideFolder } from '@GSH/constants'
 import { loadFeature } from '@GSH/libs/features/features'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
-import { loadTemplate } from '@GSH/templates/loadTemplate'
+import { limbo, limboify, omitKeys } from '@keg-hub/jsutils'
 import { resolveFileType } from '@GSH/utils/resolveFileType'
 import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
 import { getPathFromConfig } from '@GSH/utils/getPathFromConfig'
 
-import { DefinitionOverrideFolder } from '@GSH/constants'
 
-const {
-  readFile,
-  writeFile,
-} = fileSys
+/**
+ * Writes a file to the local HHD
+ * @function
+ * @param {string} filePath - Path to where the file should be written
+ * @param {*} data - Contents to be written to the file
+ * @param {string} [format=utf8] - Format of the file
+ *
+ */
+const writeFile = (
+  location:string,
+  data:string,
+  format:string = 'utf8'
+) => {
+  return limboify(fs.writeFile, location, data, format)
+}
+
+/**
+ * Reads a file from local HHD, and returns the contents
+ * @function
+ * @param {string} filePath - Path of the file to read
+ * @param {string} [format=utf8] - Format of the file
+ *
+ * @returns {Promise|string} - Content of the file
+ */
+const readFile = (
+  location:string,
+  format:string='utf8'
+) => {
+  return limboify(fs.readFile, location, format)
+}
+
 
 /**
  * Checks that the file path exists
@@ -351,9 +377,11 @@ export const renameGobletFile = async (
 export const createGobletFile = async (
   repo:Repo,
   location:string,
-  fileType:string
+  fileType:string,
+  content:string=``
 ) => {
 
+  // Validate we are creating the file in the test root directory
   inTestRoot(repo, location)
 
   // Check if the path already exists, so we don't overwrite an existing file
@@ -385,18 +413,6 @@ export const createGobletFile = async (
   // Ensure the directory exists for the file
   const [mkDirErr, mkDirSuccess] = await limbo(fs.ensureDir(dirname))
   if (mkDirErr) throw new Exception(mkDirErr, 422)
-
-  // TODO: investigate issues with template system
-  // Currently not working properly
-  // For not just create empty files
-  const content = ``
-
-  // Create the new test file using the template for the file type
-  // In the future we might want to allow custom templates from the mounted tests folder
-  // But that's a lot more work
-  // const content = await loadTemplate(fileType, {
-  //   name: wordCaps(basename.split('.').shift()),
-  // })
 
   const [writeErr, writeSuccess] = await writeFile(location, content)
   if (writeErr) throw new Exception(writeErr, 400)

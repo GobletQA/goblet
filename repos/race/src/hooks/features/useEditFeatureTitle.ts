@@ -23,7 +23,7 @@ export const useEditFeatureTitle = ({ parent }:THEditFeatureTitle) => {
     const opts = uuid === EmptyFeatureUUID
       ? { create: true }
       : emptyObj
-      
+
     const updated = !featureIsEmpty(parent)
       ? { ...parent, feature: text }
       : featureFactory({...parent, feature: text}, true)
