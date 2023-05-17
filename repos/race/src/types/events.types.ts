@@ -1,6 +1,7 @@
-import type { Parkin, TWorldConfig } from '@ltipton/parkin'
 import type { TRaceFeature } from './features.types'
+import type { Parkin, TWorldConfig } from '@ltipton/parkin'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
+import type { TSettingsCtx } from '@GBR/contexts/SettingsContext'
 
 export type TAnswerFeature = {
   feature:TRaceFeature
@@ -28,3 +29,8 @@ export type TOnWorldUpdate = {
   world: TWorldConfig
   replace?:boolean
 }
+
+export type TAskForSettings = {
+  cb: TWithSettingsCB
+}
+export type TWithSettingsCB = (data:TSettingsCtx) => void

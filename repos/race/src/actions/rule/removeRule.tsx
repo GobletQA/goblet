@@ -21,7 +21,7 @@ export const removeRule = async (props:TRemoveRule) => {
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, `[Remove Rule]`)
 
-  let rule:TRaceRule
+  let rule:TRaceRule|undefined
   const rules = feature?.rules?.filter(rl => {
     if(rl.uuid !== ruleId) return true
 
@@ -29,22 +29,20 @@ export const removeRule = async (props:TRemoveRule) => {
     return false
   })
 
-  return new Promise(async (res) => {
-    openYesNo({
-      title: `Delete ${rule.rule}`,
-      text: (
-        <>
-          Are you sure your want to delete rule <b><RedText>{rule.rule}</RedText></b>?
-        </>
-      ),
-      yes: {
-        onClick: () => {
-          const update = {...feature, rules}
-          persist !== false && updateFeature(update, { removeAuditSteps: true })
+  return await openYesNo({
+    title: `Delete ${rule?.rule}`,
+    text: (
+      <>
+        Are you sure your want to delete rule <b><RedText>{rule?.rule}</RedText></b>?
+      </>
+    ),
+    yes: {
+      onClick: () => {
+        const update = {...feature, rules}
+        persist !== false && updateFeature(update, { removeAuditSteps: true })
 
-          res(update)
-        }
+        return update
       }
-    })
+    }
   })
 }

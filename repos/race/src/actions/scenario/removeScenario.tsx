@@ -63,24 +63,19 @@ export const removeScenario = async (props:TRemoveScenario) => {
 
   const removed = scenarios?.filter(scenario => scenario.uuid !== props.scenarioId)
 
-  return new Promise(async (res) => {
-    openYesNo({
-      title: `Delete ${scenario.scenario}`,
-      text: (
-        <>
-          Are you sure your want to delete scenario <b><RedText>{scenario.scenario}</RedText></b>?
-        </>
-      ),
-      yes: {
-        onClick: () => {
-          const updated = parent.uuid === feature.uuid
-            ? toFeature(props, feature, removed)
-            : toRule(props, feature, parent, removed)
-          
-          res(updated)
-        }
+  return await openYesNo({
+    title: `Delete ${scenario.scenario}`,
+    text: (
+      <>
+        Are you sure your want to delete scenario <b><RedText>{scenario.scenario}</RedText></b>?
+      </>
+    ),
+    yes: {
+      onClick: () => {
+        return parent.uuid === feature.uuid
+          ? toFeature(props, feature, removed)
+          : toRule(props, feature, parent, removed)
       }
-    })
+    }
   })
-
 }

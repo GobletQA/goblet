@@ -10,25 +10,20 @@ export const removeStory = async (parent?:TRaceFeature) => {
   const { feature } = await getFeature(parent)
   if(!feature) return
 
-  return new Promise(async (res) => {
-    openYesNo({
-      title: `Delete feature story`,
-      text: (
-        <>
-          Are you sure your want to delete the <b><RedText>feature story</RedText></b>?
-        </>
-      ),
-      yes: {
-        onClick: () => {
-
-          updateFeature(
-            omitKeys<TRaceFeature>(feature, [`perspective`, `reason`, `desire`]),
-            { skipAudit: true }
-          )
-
-          res(undefined)
-        }
+  return await openYesNo({
+    title: `Delete feature story`,
+    text: (
+      <>
+        Are you sure your want to delete the <b><RedText>feature story</RedText></b>?
+      </>
+    ),
+    yes: {
+      onClick: () => {
+        updateFeature(
+          omitKeys<TRaceFeature>(feature, [`perspective`, `reason`, `desire`]),
+          { skipAudit: true }
+        )
       }
-    })
+    }
   })
 }

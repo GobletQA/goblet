@@ -17,8 +17,8 @@ export const useGetEditorContext = (props:THEditorContext) => {
     editorCtx,
   } = props
 
-  // Helper to allow external code ask the context for the current feature
-  // Allows external actions to interface with the currently active feature
+  // Helper to allow external code ask the context for the current editor
+  // Allows external actions to interface with the editor
   useOnEvent<TAnswerEditor>(AskForEditorEvt, ({ cb }) => cb?.({ editor: editorCtx }))
   
   useEffect(() => {

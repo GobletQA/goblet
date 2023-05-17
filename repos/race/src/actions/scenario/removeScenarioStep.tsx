@@ -75,7 +75,7 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
   )
   if(!scenario) return logNotFound(`scenario`, prefix)
 
-  let step:TRaceStep
+  let step:TRaceStep|undefined
   scenarios[scenarioIdx as number] = {
     ...scenario,
     steps: scenario.steps.filter(st => {
@@ -86,25 +86,21 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
     })
   }
 
-  return new Promise(async (res) => {
-    const trimmed = step?.step?.trim()
-    const stepTxt = trimmed || `scenario step `
+  const trimmed = step?.step?.trim()
+  const stepTxt = trimmed || `scenario step `
 
-    openYesNo({
-      title: `Delete ${stepTxt}`,
-      text: trimmed
-        ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
-        : (<>Are you sure your want to delete <b><RedText>{stepTxt}</RedText></b>?</>),
-      yes: {
-        onClick: () => {
-          const updated = scenarioParent.type === ESectionType.feature
-            ? toFeature(props, feature, scenarios)
-            : toRule(props, feature, scenarioParent, scenarios)
-
-          res(updated)
-        }
+  return await openYesNo({
+    title: `Delete ${stepTxt}`,
+    text: trimmed
+      ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
+      : (<>Are you sure your want to delete <b><RedText>{stepTxt}</RedText></b>?</>),
+    yes: {
+      onClick: () => {
+        return scenarioParent.type === ESectionType.feature
+          ? toFeature(props, feature, scenarios)
+          : toRule(props, feature, scenarioParent, scenarios)
       }
-    })
+    }
   })
 
 }

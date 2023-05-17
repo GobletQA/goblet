@@ -84,26 +84,22 @@ export const removeBackgroundStep = async (props:TRemoveBackgroundStep) => {
 
   const step = background.steps.find(step => step.uuid === props.stepId)
 
-  return new Promise(async (res) => {
-    const trimmed = step?.step?.trim()
-    const stepTxt = trimmed || `background step `
+  const trimmed = step?.step?.trim()
+  const stepTxt = trimmed || `background step `
 
-    openYesNo({
-      title: `Delete ${stepTxt}`,
-      text: step?.step
-        ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
-        : (<>Are you sure your want to delete <b><RedText>{stepTxt}</RedText></b>?</>),
-      yes: {
-        onClick: () => {
-
-          const updated = !rule || !exists<number>(index)
-            ? toFeature(props, feature, background)
-            : toRule(props, feature, rule, index, background)
-
-          res(updated)
-        }
+  return await openYesNo({
+    title: `Delete ${stepTxt}`,
+    text: step?.step
+      ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
+      : (<>Are you sure your want to delete <b><RedText>{stepTxt}</RedText></b>?</>),
+    yes: {
+      onClick: () => {
+        return !rule || !exists<number>(index)
+          ? toFeature(props, feature, background)
+          : toRule(props, feature, rule, index, background)
       }
-    })
+    }
   })
+
 
 }

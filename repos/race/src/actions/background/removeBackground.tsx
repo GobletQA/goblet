@@ -63,23 +63,19 @@ export const removeBackground = async (props:TRemoveBackground) => {
 
   return !background
     ? logNotFound(`background`, prefix)
-    : new Promise(async (res) => {
-        openYesNo({
-          title: `Delete ${background?.background}`,
-          text: (
-            <>
-              Are you sure your want to delete background <b><RedText>{background?.background}</RedText></b>?
-            </>
-          ),
-          yes: {
-            onClick: () => {
-              const updated = feature.uuid === parentId
-                ? toFeature(feature)
-                : toRule(props, feature, rules, rule, ruleIdx)
-              
-              res(updated)
-            }
+    : await openYesNo({
+        title: `Delete ${background?.background}`,
+        text: (
+          <>
+            Are you sure your want to delete background <b><RedText>{background?.background}</RedText></b>?
+          </>
+        ),
+        yes: {
+          onClick: () => {
+            return feature.uuid === parentId
+              ? toFeature(feature)
+              : toRule(props, feature, rules, rule, ruleIdx)
           }
-        })
+        }
       })
 }

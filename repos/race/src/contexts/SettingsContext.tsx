@@ -1,18 +1,19 @@
+import type { ReactNode } from 'react'
 import type {
   TOnSettingCB,
   TRaceSettings,
   TSettingUpdate,
   TSettingPayload,
 } from '../types'
-import { ReactNode } from 'react'
+
+import { AskForSettingsEvt } from '@GBR/constants'
+import { MemoChildren, useOnEvent } from '@gobletqa/components'
+import { useEditorSettings } from '@GBR/hooks/settings/useEditorSettings'
 import {
   useMemo,
   useContext,
   createContext,
 } from 'react'
-
-import { MemoChildren } from '@gobletqa/components'
-import { useEditorSettings } from '@GBR/hooks/settings/useEditorSettings'
 
 export type TSettingsProvider = TRaceSettings & {
   children:ReactNode
@@ -56,6 +57,10 @@ export const SettingsProvider = (props:TSettingsProvider) => {
     updateSetting,
     updateSettings,
   ])
+
+  // Helper to allow external code ask the context for the settings
+  // Allows external actions to interface with the settings
+  useOnEvent<TSettingsCtx>(AskForSettingsEvt, ({ cb }) => cb?.(settingsCtx))
 
   return (
     <SettingsContext.Provider value={settingsCtx}>
