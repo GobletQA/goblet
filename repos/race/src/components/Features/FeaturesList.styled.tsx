@@ -94,6 +94,7 @@ export const FeatureItem = styled(ListItemButton)<TFeatureItem>`
 
 export const FeatureItemName = styled(ListItemText)`
   margin: 0px;
+  white-space: nowrap;
   margin-left: ${gutter.margin.hpx};
 
   &.gb-feature-title-missing {

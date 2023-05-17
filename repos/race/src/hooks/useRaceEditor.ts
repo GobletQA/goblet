@@ -32,6 +32,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   ] = useFeatureGroups({ featuresRef })
 
   const onFeatureSave = useInline(props.onFeatureSave || noOp)
+  const onFolderCreate = useInline(props.onFolderCreate || noOp)
   const onFeatureClose = useInline(props.onFeatureClose || noOp)
   const onFeatureChange = useInline(props.onFeatureChange || noOp)
   const onFeatureActive = useInline(props.onFeatureActive || noOp)
@@ -90,6 +91,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     setFeatureRefs,
     onFeatureSave,
     onFeatureClose,
+    onFolderCreate,
     updateEmptyTab,
     onFeatureChange,
     onFeatureCreate,

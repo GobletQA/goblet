@@ -26,6 +26,7 @@ import type {
   TFeaturesRef,
   TOnFeatureCB,
   TSetFeatureRefs,
+  TOnFolderCreateCB,
 } from './helpers.types'
 
 import type {
@@ -77,6 +78,7 @@ export type TRaceEditorProps = TEditorShared & {
   onFeatureChange?:TOnFeatureCB
   onFeatureCreate?:TOnFeatureCB
   onSettingChange?:TOnSettingCB
+  onFolderCreate?:TOnFolderCreateCB
 }
 
 export type TEditorShared = {

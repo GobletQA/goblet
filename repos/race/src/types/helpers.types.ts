@@ -9,6 +9,7 @@ export type TFeaturesRef = MutableRefObject<TRaceFeatures>
 export type TSetFeatureRefs = (features:TRaceFeatures) => void
 export type TSetFeatureGroups = (features:TRaceFeatures) => void
 
+export type TOnFolderCreateCB = (location?:string) => void
 export type TOnFeatureCBRef = MutableRefObject<TOnFeatureCB>
 export type TFeatureCB = (feature: TRaceFeature) => void
 export type TOnFeatureCB = (feature?:TRaceFeature, ...rest:any[]) => void

@@ -55,8 +55,8 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           onPathChange={onPathChange}
           onRenameFile={onRenameFile}
           onDeleteFile={onDeleteFile}
+          sidebarStatus={sidebarLocked}
           sidebarWidth={SidebarOpenWidth}
-          sidebarStatus={!sidebarLocked}
           onBeforeAddFile={onBeforeAddFile}
         />
       )

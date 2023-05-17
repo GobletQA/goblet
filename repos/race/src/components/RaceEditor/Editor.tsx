@@ -24,6 +24,7 @@ export const Editor = (props:TRaceEditorProps) => {
     featureGroups,
     onFeatureSave,
     updateEmptyTab,
+    onFolderCreate,
     onFeatureClose,
     setFeatureRefs,
     onFeatureChange,
@@ -46,6 +47,7 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureSave={onFeatureSave}
       setOpenedTabs={setOpenedTabs}
       onFeatureClose={onFeatureClose}
+      onFolderCreate={onFolderCreate}
       updateEmptyTab={updateEmptyTab}
       setFeatureRefs={setFeatureRefs}
       onFeatureCreate={onFeatureCreate}

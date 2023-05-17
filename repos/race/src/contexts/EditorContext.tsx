@@ -12,6 +12,7 @@ import type {
   TSetFeatureRefs,
   TRaceContextMenu,
   TUpdateFeatureCB,
+  TOnFolderCreateCB,
   TSetFeatureGroups,
 } from '@GBR/types'
 
@@ -42,6 +43,7 @@ export type TEditorProvider = {
   menuContext?:TRaceContextMenu
   onFeatureInactive:TOnFeatureCB
   setFeatureRefs:TSetFeatureRefs
+  onFolderCreate?:TOnFolderCreateCB
   setFeatureGroups:TSetFeatureGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
@@ -61,6 +63,7 @@ export type TEditorCtx = {
   menuContext?:TRaceContextMenu
   updateFeature:TUpdateFeatureCB
   deleteFeature:(loc:string)=>void
+  onFolderCreate?:TOnFolderCreateCB
   collapseAllExcept:(key:string|string[]) => void
 }
 
@@ -80,6 +83,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureSave,
     setOpenedTabs,
     updateEmptyTab,
+    onFolderCreate,
     setFeatureRefs,
     onFeatureClose,
     onFeatureChange,
@@ -147,6 +151,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       deleteFeature,
       updateFeature,
       updateExpanded,
+      onFolderCreate,
       collapseAllExcept,
       expressionOptions,
       feature: (feature || emptyObj) as TRaceFeature,
@@ -161,6 +166,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     deleteFeature,
     updateFeature,
     updateExpanded,
+    onFolderCreate,
     expressionOptions,
     collapseAllExcept,
   ])
