@@ -196,13 +196,9 @@ export const lightTheme = {
     }
   ],
   colors: {
-    // TODO: This is a custom property for the Race editor only
-    // Not a fan of having a custom property, will need to refactor at some point
-    [`race.featureBackground`]: colors.purple00,
-
     [`editor.border`]: colors.gray01,
 
-    [`editor.background`]: colors.white,
+    [`editor.background`]: colors.purple00,
     [`editor.foreground`]: colors.black08,
 
     [`tab.border`]: colors.white,
@@ -215,7 +211,7 @@ export const lightTheme = {
     [`tab.unfocusedActiveForeground`]: colors.gray07,
     [`tab.unfocusedInactiveForeground`]: colors.gray07,
 
-    [`editorGroup.background`]: colors.purple00,
+    [`editorGroup.background`]: colors.white,
     [`editorGroupHeader.tabsBorder`]: colors.gray00,
     [`editorGroupHeader.tabsBackground`]: colors.purple00,
     [`editorGroupHeader.noTabsBackground`]: colors.purple00,

@@ -1,3 +1,4 @@
+import type { EGobletThemeName } from '@gobletqa/components'
 
 export enum EEditorMode {
   simple=`simple`,
@@ -7,10 +8,10 @@ export enum EEditorMode {
 
 export type TRaceSettings = {
   mode?:EEditorMode
-  theme?:string|undefined
   displayMeta?:boolean|undefined
   confirmDelete?:boolean|undefined
   firstFeatureActive?:boolean|undefined
+  themeType?:EGobletThemeName|string|undefined
 }
 
 export enum ESettingAction {

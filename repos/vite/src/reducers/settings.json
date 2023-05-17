@@ -519,12 +519,12 @@
         "advanced"
       ]
     },
-    "theme": {
-      "key": "theme",
+    "themeType": {
+      "key": "themeType",
       "value": "Goblet-light",
       "active": true,
       "default": "Goblet-light",
-      "group": "monaco",
+      "group": "race",
       "emptyOption": "",
       "options": [
         "",

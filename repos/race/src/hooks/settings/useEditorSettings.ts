@@ -8,7 +8,7 @@ import type {
   TUpdateSettingEvt,
 } from '@GBR/types'
 
-import { useReducer } from 'react'
+import { useReducer, useEffect } from 'react'
 import { exists } from '@keg-hub/jsutils'
 import { ESettingAction } from '@GBR/types'
 import { UpdateSettingContextEvt } from '@GBR/constants'
@@ -77,6 +77,27 @@ export const useEditorSettings = (props:THEditorSettings) => {
     UpdateSettingContextEvt,
     ({ payload }) => updateSetting(payload)
   )
+
+  useEffect(() => {
+    // Look for a change in the settings object
+   const hasChange = Object.keys(settings)
+    .filter((key) => settings[key as keyof typeof settings] !== state[key as keyof typeof settings])
+    .length
+
+    // If a change exists, update the internal settings object
+    hasChange && updateSettings(settings)
+  }, [
+    state.mode,
+    state.themeType,
+    state.displayMeta,
+    state.confirmDelete,
+    state.firstFeatureActive,
+    settings.mode,
+    settings.themeType,
+    settings.displayMeta,
+    settings.confirmDelete,
+    settings.firstFeatureActive,
+  ])
 
   return {
     state,

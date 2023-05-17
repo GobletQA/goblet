@@ -39,7 +39,7 @@ const styles = {
   },
   content: {
     boxShadow: `none`,
-    backgroundColor: `var(--goblet-editor-background);`
+    backgroundColor: `var(--goblet-editorGroup-background);`
   },
 }
 

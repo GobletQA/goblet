@@ -8,7 +8,7 @@ import { useRaceEditor } from '@GBR/hooks/useRaceEditor'
 
 export const Editor = (props:TRaceEditorProps) => {
 
-  useRaceTheme(props)
+  useRaceTheme()
 
   const {
     onKeyDown,
@@ -54,7 +54,6 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureDelete={onFeatureDelete}
       setFeatureGroups={setFeatureGroups}
       onFeatureInactive={onFeatureInactive}
-      mode={props.mode || EEditorMode.simple}
       expressionOptions={props.expressionOptions}
     >
       <Container

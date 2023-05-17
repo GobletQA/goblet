@@ -18,7 +18,7 @@ export const sharedInputStyles = {
   [`& .MuiInputBase-root`]: {
     height: input.hpx,
     minHeight: input.hpx,
-    backgroundColor: `var(--goblet-editorGroup-background)`,
+    backgroundColor: `var(--goblet-editor-background)`,
     
     [`& input`]: {
       height: input.hpx,
@@ -35,7 +35,7 @@ export const sharedAutoInputStyles = {
   [`&.gb-auto-input`]: {
     [`& .MuiInputBase-root`]: {
       height: input.hpx,
-      backgroundColor: `var(--goblet-editorGroup-background)`,
+      backgroundColor: `var(--goblet-editor-background)`,
 
       [`& input`]: {
         height: input.hpx,

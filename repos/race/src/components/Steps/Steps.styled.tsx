@@ -8,7 +8,7 @@ import { dims, Span, gutter } from '@gobletqa/components'
 export const StepContainer = styled(Card)`
   width: 100%;
   border: none;
-  background-color: var(--goblet-editorGroup-background);
+  background-color: var(--goblet-editor-background);
 
   & .gb-dropdown-header {
     border-bottom: 1px solid transparent;

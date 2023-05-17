@@ -12,7 +12,7 @@ export const EditorContainer = styled(Box)`
   align-items: flex-start;
   justify-content: flex-start;
   color: var(--goblet-editor-foreground);
-  background-color: var(--goblet-editor-background);
+  background-color: var(--goblet-editorGroup-background);
 `
 
 export const Container = styled(Box)`
@@ -35,7 +35,7 @@ export const Divider = styled(Box)`
   
   cursor: col-resize;
   background: var(--goblet-editorCursor-foreground);
-  background: var(--goblet-editor-background);
+  background: var(--goblet-editorGroup-background);
 
   &:hover {
     background: var(--goblet-editorCursor-foreground);
