@@ -213,8 +213,8 @@ export const lightTheme = {
 
     [`editorGroup.background`]: colors.white,
     [`editorGroupHeader.tabsBorder`]: colors.gray00,
-    [`editorGroupHeader.tabsBackground`]: colors.purple00,
-    [`editorGroupHeader.noTabsBackground`]: colors.purple00,
+    [`editorGroupHeader.tabsBackground`]: colors.purple01,
+    [`editorGroupHeader.noTabsBackground`]: colors.purple01,
     
     [`sideBar.border`]: colors.gray00,
     [`sideBar.background`]: colors.white,

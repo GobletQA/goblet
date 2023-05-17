@@ -1,5 +1,7 @@
+export * from './useOnSimpleAdd'
 export * from './useFeatureTags'
 export * from './useFeatureItems'
 export * from './useFeatureGroups'
+export * from './useEnsureScenario'
 export * from './useFeatureCallbacks'
 export * from './useEditFeatureTitle'

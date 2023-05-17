@@ -91,7 +91,6 @@ export const GeneralItemActive = {
   },
 }
 
-
 export const ScenarioItem:TFeatureItem = {
   ...itemStyles.def,
   text: `Add Scenario`,

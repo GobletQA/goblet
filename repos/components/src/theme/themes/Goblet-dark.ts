@@ -228,7 +228,7 @@ export const darkTheme = {
     [`tab.unfocusedActiveForeground`]: colors.purple02,
     [`tab.unfocusedInactiveForeground`]: colors.purple02,
 
-    // [`editorGroup.background`]: colors.black09,
+    [`editorGroup.background`]: colors.purple20,
     [`editorGroupHeader.tabsBorder`]: colors.black12,
     [`editorGroupHeader.tabsBackground`]: colors.black09,
     [`editorGroupHeader.noTabsBackground`]: colors.black09,
@@ -324,7 +324,6 @@ export const darkTheme = {
     [`editorBracketMatch.border`]: `#6c73804d`,
     [`editorCodeLens.foreground`]: `#acb6bf8c`,
     [`editorError.foreground`]: colors.red10,
-    [`editorGroup.background`]: colors.purple20,
     [`editorGroup.border`]: colors.purple19,
     [`editorGutter.addedBackground`]: `#7fd962cc`,
     [`editorGutter.deletedBackground`]: `${colors.red08}cc`,

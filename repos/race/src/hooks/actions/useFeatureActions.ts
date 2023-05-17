@@ -1,3 +1,5 @@
+import type { MouseEvent } from 'react'
+
 import type {
   TRaceStep,
   TRaceFeature,
@@ -5,8 +7,9 @@ import type {
   TRaceBackground
 } from '@GBR/types'
 
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { addScenario } from '@GBR/actions/scenario/addScenario'
+import { createFeature } from '@GBR/actions/feature/createFeature'
 import { removeScenario } from '@GBR/actions/scenario/removeScenario'
 import { updateScenario } from '@GBR/actions/scenario/updateScenario'
 import { addScenarioStep } from '@GBR/actions/scenario/addScenarioStep'
@@ -19,15 +22,24 @@ import { removeBackgroundStep } from '@GBR/actions/background/removeBackgroundSt
 import { updateBackgroundStep } from '@GBR/actions/background/updateBackgroundStep'
 
 export type THFeatureActions = {
+  rootPrefix:string
   feature:TRaceFeature
 }
 
 export const useFeatureActions = (props:THFeatureActions) => {
   const {
-    feature
+    feature,
+    rootPrefix
   } = props
 
-  return useMemo(() => {
+  const onTagsChange = useCallback((...args:any) => {}, [])
+
+  const onCreateFeature = useCallback((evt:MouseEvent<HTMLButtonElement>) => {
+    evt.stopPropagation()
+    createFeature({}, rootPrefix)
+  }, [rootPrefix])
+
+  const childActions = useMemo(() => {
     
     const onRemoveBackground = () => removeBackground({parentId: feature.uuid})
 
@@ -100,5 +112,11 @@ export const useFeatureActions = (props:THFeatureActions) => {
     }
 
   }, [feature])
+
+  return {
+    onTagsChange,
+    onCreateFeature,
+    ...childActions
+  }
 
 }

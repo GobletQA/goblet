@@ -1,4 +1,5 @@
 import type { MouseEvent } from 'react'
+import type { TRaceScenario } from '@GBR/types'
 import type { TFeatureItem } from '@GBR/components/Feature/FeatureItems'
 
 import { useMemo } from 'react'
@@ -8,6 +9,7 @@ import { settingChange } from '@GBR/actions/settings/settingChange'
 import {
   RuleItem,
   ModeItem,
+  StepItem,
   WorldItem,
   GeneralItem,
   ScenarioItem,
@@ -16,8 +18,14 @@ import {
   GeneralItemActive,
 } from '@GBR/components/Feature/FeatureItems'
 
-export const useFeatureItems = () => {
+export type THFeatureItems = {
+  scenario?:TRaceScenario
+  onSimpleAdd?:() => void
+}
 
+export const useFeatureItems = (props:THFeatureItems) => {
+
+  const { onSimpleAdd } = props
   const { settings, toggleMeta } = useSettings()
   const { feature,  } = useEditor()
   const advMode = settings.mode === EEditorMode.advanced
@@ -62,7 +70,10 @@ export const useFeatureItems = () => {
           },
           generalItem,
         ]
-      : []
+      : [{
+          ...StepItem,
+          onClick:(evt:MouseEvent<HTMLElement>) => onSimpleAdd?.()
+        }]
 
     return [
       ...addItems,
@@ -72,6 +83,7 @@ export const useFeatureItems = () => {
   }, [
     advMode,
     feature,
+    onSimpleAdd,
     settings?.displayMeta,
   ])
 }

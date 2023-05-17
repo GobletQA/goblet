@@ -7,7 +7,6 @@ import { Rules } from '../Rules'
 import { Section } from '../Section'
 import { cls } from '@keg-hub/jsutils'
 import { Scenarios } from '../Scenarios'
-import { useEditor, useSettings } from '@GBR/contexts'
 import { Background } from '../Background'
 import { EmptyFeature } from './EmptyFeature'
 import { EditTitle } from '../Title/EditTitle'
@@ -15,12 +14,15 @@ import { FeatureHeader } from './FeatureHeader'
 import { EmptyFeatureUUID } from '@GBR/constants'
 import { useMemo, useCallback, useRef } from 'react'
 import { EEditorMode, ESectionType } from '@GBR/types'
+import { useEditor, useSettings } from '@GBR/contexts'
 import { SimpleMode } from '@GBR/components/SimpleMode'
 import { BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { FeatureStack, FeatureContent } from './Feature.styled'
 import { createFeature } from '@GBR/actions/feature/createFeature'
+import { useOnSimpleAdd } from '@GBR/hooks/features/useOnSimpleAdd'
 import { useFeatureItems } from '@GBR/hooks/features/useFeatureItems'
 import { useFeatureActions } from '@GBR/hooks/actions/useFeatureActions'
+import { useEnsureScenario } from '@GBR/hooks/features/useEnsureScenario'
 import { useFeatureIsEmpty } from '@GBR/hooks/features/useFeatureIsEmpty'
 import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 
@@ -39,32 +41,21 @@ const styles:Record<string, StyleObj|CSSProperties> = {
 export const Feature = (props:TFeature) => {
   const { featuresRef } = props
 
-  const { feature, rootPrefix } = useEditor()
   const { settings } = useSettings()
-  const advMode = settings.mode === EEditorMode.advanced
-
-  const featureIsEmpty = useFeatureIsEmpty({ feature })
-  const onEditFeatureTitle = useEditFeatureTitle({ parent: feature })
-
-  const onCreateFeature = useCallback((evt:MouseEvent<HTMLButtonElement>) => {
-    evt.stopPropagation()
-    createFeature({}, rootPrefix)
-  }, [rootPrefix])
+  const { feature, rootPrefix } = useEditor()
 
   const noChildren = useMemo(() => {
-    return Boolean(!feature?.background && !feature?.rules?.length && !feature?.scenarios?.length)
+    return Boolean(
+      !feature?.background
+        && !feature?.rules?.length
+        && !feature?.scenarios?.length
+    )
   }, [feature])
 
-  const onTagsChange = useCallback((...args:any) => {
-
-  }, [])
-
-  const contentRef = useRef<HTMLElement>()
-  const containerRef = useRef<HTMLElement>()
-  const featureItems = useFeatureItems()
-
   const {
+    onTagsChange,
     onAddScenario,
+    onCreateFeature,
     onRemoveScenario,
     onChangeScenario,
     onAddScenarioStep,
@@ -75,7 +66,14 @@ export const Feature = (props:TFeature) => {
     onChangeScenarioStep,
     onRemoveBackgroundStep,
     onChangeBackgroundStep,
-  } = useFeatureActions({ feature })
+  } = useFeatureActions({ feature, rootPrefix })
+  const contentRef = useRef<HTMLElement>()
+  const containerRef = useRef<HTMLElement>()
+  const featureIsEmpty = useFeatureIsEmpty({ feature })
+  const scenario = useEnsureScenario({ parent: feature })
+  const onSimpleAdd = useOnSimpleAdd({ scenario, parent: feature })
+  const featureItems = useFeatureItems({ scenario, onSimpleAdd })
+  const onEditFeatureTitle = useEditFeatureTitle({ parent: feature })
 
   return !feature || !feature?.uuid
     ? (
@@ -105,7 +103,7 @@ export const Feature = (props:TFeature) => {
                         items={featureItems}
                       />
                       
-                      {advMode ? (
+                      {settings.mode === EEditorMode.advanced ? (
                         <>
                           <Meta
                             parent={feature}
@@ -152,17 +150,19 @@ export const Feature = (props:TFeature) => {
                           />
 
                         </>
-                      ) : (
+                      ) : scenario && (
                         <SimpleMode
                           parent={feature}
+                          scenario={scenario}
                           onAdd={onAddScenario}
+                          onSimpleAdd={onSimpleAdd}
                           onChange={onChangeScenario}
                           onRemove={onRemoveScenario}
                           onAddStep={onAddScenarioStep}
                           onChangeStep={onChangeScenarioStep}
                           onRemoveStep={onRemoveScenarioStep}
                         />
-                      )}
+                      ) || null}
                     </>
                   )
                 : (
