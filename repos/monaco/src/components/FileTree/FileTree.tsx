@@ -9,8 +9,8 @@ import type {
   TEditorAddFile,
 } from '@GBM/types'
 
+import { useMemo, memo } from 'react'
 import { Panel } from '@gobletqa/components'
-import { useMemo, memo, useState } from 'react'
 import { FileTreeActions } from './FileTreeActions'
 
 import './FileTree.css'

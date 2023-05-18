@@ -27,7 +27,7 @@ export const useFeatureItems = (props:THFeatureItems) => {
 
   const { onSimpleAdd } = props
   const { settings, toggleMeta } = useSettings()
-  const { feature,  } = useEditor()
+  const { feature } = useEditor()
   const advMode = settings.mode === EEditorMode.advanced
 
   return useMemo<TFeatureItem[]>(() => {

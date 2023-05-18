@@ -92,6 +92,11 @@ export const useRaceHooks = () => {
 
     onAddFile({ content, location: parent.uuid })
   })
+  
+  const onFolderCreate = useInline((location:string) => {
+    console.log(location)
+    // onAddFile({ location, isFolder: true })
+  })
 
   const onFeatureDelete = useInline(async (feature:TRaceFeature) => {
     const loc = feature.parent.location
@@ -116,6 +121,7 @@ export const useRaceHooks = () => {
     rootPrefix,
     definitions,
     onWorldChange,
+    onFolderCreate,
     onFeatureClose,
     onFeatureCreate,
     onFeatureActive,

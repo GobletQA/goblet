@@ -1,7 +1,14 @@
 import type { ESectionType } from './section.types'
 import type { TStepDefsList } from '@ltipton/parkin'
 import type { TRaceFeatures, TRaceFeature } from './features.types'
-import type { SyntheticEvent, MutableRefObject, MouseEvent, KeyboardEvent } from 'react'
+import type {
+  MouseEvent,
+  KeyboardEvent,
+  SyntheticEvent,
+  MutableRefObject,
+} from 'react'
+
+
 
 export type TSetSteps = (steps:TStepDefsList) => void
 export type TStepDefsRef = MutableRefObject<TStepDefsList>
@@ -50,3 +57,10 @@ export type TEditorFeatureActions = {
   onDeleteFeature?:TOnDeleteFeature
   onActiveFeature?:TOnActiveFeature
 }
+
+
+export type TOnEditGroupName = (
+  event:MouseEvent|KeyboardEvent|Event,
+  name:string,
+  cancel?:boolean
+) => void

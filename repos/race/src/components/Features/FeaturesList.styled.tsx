@@ -125,4 +125,16 @@ export const FeatureItemActionsContainer = styled(Span)`
   
 `
 
-export const DirectoryEdit = styled(Box)``
+export const FeatureGroupHeaderEdit = styled(Box)`
+  width: 99%;
+  height: 100%;
+  padding-left: ${gutter.padding.qpx};
+`
+
+export const FeatureGroupHeaderActions = styled(Span)`
+  right: 0px;
+  height: 25px;
+  padding-top: 3px;
+  padding-left: 5px;
+  position: absolute;
+`

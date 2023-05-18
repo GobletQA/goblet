@@ -6,11 +6,13 @@ import type {
   TEditorFeatureActions,
 } from '@GBR/types'
 
-import { useCallback } from 'react'
 import { wordCaps } from '@keg-hub/jsutils'
-import { Dropdown, ExpandIcon } from '@gobletqa/components'
+import { useCallback, useRef, useState } from 'react'
 import { FeatureItemRender } from './FeatureItemRender'
+import { FeatureGroupHeader } from './FeatureGroupHeader'
+import { Dropdown, ExpandIcon } from '@gobletqa/components'
 import { FeaturesGroup, FeaturesGroupContainer } from './FeaturesList.styled'
+import { useFeatureGroupHooks } from '@GBR/hooks/features/useFeatureGroupHooks'
 
 export type TFeatureListGroup = TEditorFeatureActions & {
   active:TRaceFeature
@@ -32,7 +34,6 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
 
   const {
     active,
-    editingName,
     featureGroup,
     featureGroups,
     onEditFeature,
@@ -40,10 +41,14 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
     onActiveFeature
   } = props
 
-  const onClick = useCallback(() => {
-    
-    
-  }, [])
+  const {
+    onBlur,
+    editing,
+    nameRef,
+    onKeyDown,
+    setEditing,
+    editingName,
+  } = useFeatureGroupHooks(props)
 
   return (
     <FeaturesGroup className='gb-features-list-group'>
@@ -52,7 +57,16 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
         ExpandIcon={ExpandIcon}
         headerSx={styles.header}
         id={`${featureGroup.title}-dropdown`}
-        headerText={wordCaps(featureGroup.title)}
+        Header={(
+          <FeatureGroupHeader
+            onBlur={onBlur}
+            editing={editing}
+            nameRef={nameRef}
+            onKeyDown={onKeyDown}
+            setEditing={setEditing}
+            text={wordCaps(featureGroup.title)}
+          />
+        )}
       >
         <FeaturesGroupContainer>
           <FeatureItemRender
