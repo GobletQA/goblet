@@ -7,7 +7,6 @@ import type {
 } from '@GBR/types'
 
 import { wordCaps } from '@keg-hub/jsutils'
-import { useCallback, useRef, useState } from 'react'
 import { FeatureItemRender } from './FeatureItemRender'
 import { FeatureGroupHeader } from './FeatureGroupHeader'
 import { Dropdown, ExpandIcon } from '@gobletqa/components'
@@ -25,6 +24,10 @@ const styles = {
     flexDirection: `row-reverse`,
     minHeight: `initial`,
   } as CSSProperties,
+  headerContent: {
+    alignItems: `center`,
+    justifyContent: `space-between`,
+  },
   body: {
     margin: `0px`,
   } as CSSProperties
@@ -46,16 +49,21 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
     editing,
     nameRef,
     onKeyDown,
-    setEditing,
+    onEditName,
+    onAddFolder,
     editingName,
+    onDeleteGroup,
+    onCreateFeature,
   } = useFeatureGroupHooks(props)
 
   return (
-    <FeaturesGroup className='gb-features-list-group'>
+    <FeaturesGroup className='gb-race-features-list-group'>
       <Dropdown
         bodySx={styles.body}
         ExpandIcon={ExpandIcon}
         headerSx={styles.header}
+        headerContentSx={styles.headerContent}
+        className='gb-race-features-list-dropdown'
         id={`${featureGroup.title}-dropdown`}
         Header={(
           <FeatureGroupHeader
@@ -63,7 +71,10 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
             editing={editing}
             nameRef={nameRef}
             onKeyDown={onKeyDown}
-            setEditing={setEditing}
+            onEditName={onEditName}
+            onAddSubFolder={onAddFolder}
+            onDeleteGroup={onDeleteGroup}
+            onCreateFeature={onCreateFeature}
             text={wordCaps(featureGroup.title)}
           />
         )}

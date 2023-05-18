@@ -1,4 +1,7 @@
-import type { RefObject, CSSProperties } from 'react'
+import type {
+  RefObject,
+  CSSProperties
+} from 'react'
 import {
   Tooltip,
   TrashIcon,
@@ -14,9 +17,9 @@ import {
   FeatureGroupHeaderActions,
 } from './FeaturesList.styled'
 
-import { useCallback } from 'react'
 import { emptyObj } from '@keg-hub/jsutils'
 import { toolTipProps, styles } from './FeatureItemHelpers'
+
 
 export type TFeatureGroupHeader = {
   text: string
@@ -25,7 +28,10 @@ export type TFeatureGroupHeader = {
   textSx?: CSSProperties
   onBlur?:(evt:any) => void
   onKeyDown?:(evt:any) => void
-  setEditing?:(state:boolean) => void
+  onEditName?:(evt:any) => void
+  onDeleteGroup?:(evt:any) => void
+  onAddSubFolder?:(evt:any) => void
+  onCreateFeature?:(evt:any) => void
   nameRef:RefObject<HTMLDivElement|undefined>
 }
 
@@ -38,32 +44,12 @@ export const FeatureGroupHeader = (props:TFeatureGroupHeader) => {
     editing,
     nameRef,
     onKeyDown,
-    setEditing,
+    onEditName,
     nameConflict,
+    onDeleteGroup,
+    onAddSubFolder,
+    onCreateFeature
   } = props
-
-  const onEdit = useCallback((evt: Event) => {
-    stopPropagation(evt)
-    setEditing?.(true)
-  }, [setEditing])
-
-  const onDelete = useCallback((evt: Event) => {
-    stopPropagation(evt)
-    // onDeleteFolder(file.path)
-  }, [])
-
-  const onAddFolder = useCallback((evt: Event) => {
-    stopPropagation(evt)
-    // setShowChild(true)
-    // addFolder(file.path + '/')
-
-  }, [])
-
-  const onAddFile = useCallback((evt: Event) => {
-    stopPropagation(evt)
-    // setShowChild(true)
-    // addFile(file.path + '/')
-  }, [])
 
   return (
     <>
@@ -87,7 +73,7 @@ export const FeatureGroupHeader = (props:TFeatureGroupHeader) => {
               title={`Edit the group name`}
             >
               <PencilIcon
-                onClick={onEdit}
+                onClick={onEditName}
                 styles={styles.altIcon}
                 className='gb-race-group-header-action'
               />
@@ -97,7 +83,7 @@ export const FeatureGroupHeader = (props:TFeatureGroupHeader) => {
               title={`Delete group and and child features`}
             >
               <TrashIcon
-                onClick={onDelete}
+                onClick={onDeleteGroup}
                 styles={styles.altIcon}
                 className='gb-race-group-header-action'
               />
@@ -107,8 +93,8 @@ export const FeatureGroupHeader = (props:TFeatureGroupHeader) => {
               title={`Create a new feature in the group`}
             >
               <NewFileIcon
-                onClick={onAddFile}
                 styles={styles.altIcon}
+                onClick={onCreateFeature}
                 className='gb-race-group-header-action'
               />
             </Tooltip>
@@ -117,7 +103,7 @@ export const FeatureGroupHeader = (props:TFeatureGroupHeader) => {
               title={`Create a new sub-group`}
             >
               <NewFolderIcon
-                onClick={onAddFolder}
+                onClick={onAddSubFolder}
                 styles={styles.altIconLast}
                 className='gb-race-group-header-action'
               />

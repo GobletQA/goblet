@@ -1,14 +1,20 @@
-import type { MouseEvent, KeyboardEvent } from 'react'
 import type {
   TRaceFeatures,
-  TOnEditGroupName,
   TRaceFeatureGroup,
   TEditorFeatureActions
 } from '@GBR/types'
 
-import { useEditor } from '@GBR/contexts/EditorContext'
+import { stopPropagation } from '@gobletqa/components'
 import { useRef, useEffect, useState, useCallback } from 'react'
-import { useOnKeyDown, useOnBlur } from './useFeatureGroupEvents'
+import {
+  useOnBlur,
+  useOnKeyDown,
+  useSaveGroupName,
+  useOnDeleteGroup,
+  useOnAddSubFolder,
+  useOnCreateFeature,
+} from './useFeatureGroupEvents'
+
 
 export type THFeatureItemHooks = TEditorFeatureActions & {
   featureGroups:TRaceFeatures
@@ -25,12 +31,14 @@ export const useFeatureGroupHooks = (props:THFeatureItemHooks) => {
   const [editing, setEditing] = useState<boolean>(false)
   const [editingName, setEditingName] = useState<string>(featureGroup.title)
 
-  const onEditGroupName = useCallback<TOnEditGroupName>((event, name, cancel) => {
-    // TODO: make call to save change to group name here
-    console.log(`------- name -------`)
-    console.log(name)
+  const onSaveGroupName = useSaveGroupName({
+    editingName
+  })
 
-  }, [editingName])
+  const onEditName = useCallback((evt: Event) => {
+    stopPropagation(evt)
+    setEditing?.(true)
+  }, [setEditing])
 
 
   useEffect(() => {
@@ -65,8 +73,8 @@ export const useFeatureGroupHooks = (props:THFeatureItemHooks) => {
     editingName,
     nameConflict,
     featureGroups,
-    onEditGroupName,
-    setNameConflict
+    setNameConflict,
+    onSaveGroupName,
   })
 
   const onKeyDown = useOnKeyDown({
@@ -74,8 +82,20 @@ export const useFeatureGroupHooks = (props:THFeatureItemHooks) => {
     editingName,
     nameConflict,
     featureGroups,
-    onEditGroupName,
-    setNameConflict
+    onSaveGroupName,
+    setNameConflict,
+  })
+  
+  const onAddFolder = useOnAddSubFolder({
+    featureGroup,
+  })
+  
+  const onCreateFeature = useOnCreateFeature({
+    featureGroup,
+  })
+  
+  const onDeleteGroup = useOnDeleteGroup({
+    featureGroup,
   })
 
   return {
@@ -83,9 +103,13 @@ export const useFeatureGroupHooks = (props:THFeatureItemHooks) => {
     nameRef,
     editing,
     onKeyDown,
+    onEditName,
     setEditing,
     editingName,
+    onAddFolder,
     nameConflict,
+    onDeleteGroup,
     setEditingName,
+    onCreateFeature,
   }
 }

@@ -59,7 +59,7 @@ export type TEditorFeatureActions = {
 }
 
 
-export type TOnEditGroupName = (
+export type TOnSaveGroupName = (
   event:MouseEvent|KeyboardEvent|Event,
   name:string,
   cancel?:boolean

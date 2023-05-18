@@ -1,48 +1,61 @@
 import type {
   RefObject,
-  MouseEvent,
-  KeyboardEvent,
   MouseEventHandler,
   KeyboardEventHandler
 } from 'react'
 import type {
   TRaceFeatures,
-  TOnEditGroupName,
+  TOnSaveGroupName,
+  TRaceFeatureGroup
 } from '@GBR/types'
 
 import { useCallback } from 'react'
-import { preventDefault } from '@gobletqa/components'
 import {exists} from '@keg-hub/jsutils'
+import { createFeature, createFolder } from '@GBR/actions'
+import { preventDefault, stopPropagation } from '@gobletqa/components'
 
+type THOnFeatureGroup = {
+  featureGroup:TRaceFeatureGroup
+}
 
-type TOnSharedProps = {
+type THOnSharedProps = {
   nameConflict:boolean,
   featureGroups:TRaceFeatures
   editingName:string|undefined
-  onEditGroupName:TOnEditGroupName
+  onSaveGroupName:TOnSaveGroupName
   setNameConflict: (state:boolean) => void
 }
 
-export type TOnKeyDown = TOnSharedProps & {
+type THEditGroupName = {
+  editingName:string|undefined
+}
+
+export type THOnKeyDown = THOnSharedProps & {
   onBlur:(event:any) => void
 }
 
-export type TOnBlur = TOnSharedProps & {
+export type THOnBlur = THOnSharedProps & {
   nameRef:RefObject<HTMLDivElement>
 }
+
+export type THOnAddSubFolder = THOnFeatureGroup & {}
+
+export type THOnCreateFeature = THOnFeatureGroup & {}
+
+export type THOnDeleteGroup = THOnFeatureGroup & {}
 
 const checkNameConflict = (
   name:string,
   featureGroups:TRaceFeatures
 ):boolean => exists<boolean>(featureGroups[name])
 
-export const useOnKeyDown = (props:TOnKeyDown) => {
+export const useOnKeyDown = (props:THOnKeyDown) => {
   const {
     onBlur,
     editingName,
     nameConflict,
     featureGroups,
-    onEditGroupName,
+    onSaveGroupName,
     setNameConflict
   } = props
   
@@ -65,7 +78,7 @@ export const useOnKeyDown = (props:TOnKeyDown) => {
      */
     if(event.keyCode === 27){
       preventDefault(event)
-      onEditGroupName?.(event, ``, true)
+      onSaveGroupName?.(event, ``, true)
       return
     }
 
@@ -80,16 +93,16 @@ export const useOnKeyDown = (props:TOnKeyDown) => {
     editingName,
     nameConflict,
     featureGroups,
-    onEditGroupName,
+    onSaveGroupName,
   ])
 }
 
-export const useOnBlur = (props:TOnBlur) => {
+export const useOnBlur = (props:THOnBlur) => {
   const {
     nameRef,
     editingName,
     nameConflict,
-    onEditGroupName,
+    onSaveGroupName,
     featureGroups,
     setNameConflict
   } = props
@@ -105,13 +118,69 @@ export const useOnBlur = (props:TOnBlur) => {
         return
       }
 
-      onEditGroupName?.(event, name)
+      onSaveGroupName?.(event, name)
     },
     [
       editingName,
       nameConflict,
       featureGroups,
-      onEditGroupName,
+      onSaveGroupName,
     ]
   )
+}
+
+export const useOnAddSubFolder = (props:THOnAddSubFolder) => {
+  const {
+    featureGroup
+  } = props
+  
+  return useCallback<MouseEventHandler>((evt) => {
+    stopPropagation(evt)
+
+    console.log(`------- on add sub folder -------`)
+    // createFolder()
+  }, [
+    featureGroup
+  ])
+
+}
+
+export const useOnCreateFeature = (props:THOnCreateFeature) => {
+  const {
+    featureGroup
+  } = props
+
+  return useCallback<MouseEventHandler>((evt) => {
+    stopPropagation(evt)
+
+    console.log(`------- on create feature -------`)
+    // createFeature()
+  }, [featureGroup])
+}
+
+export const useOnDeleteGroup = (props:THOnDeleteGroup) => {
+  const {
+    featureGroup
+  } = props
+
+  return useCallback<MouseEventHandler>((evt) => {
+    stopPropagation(evt)
+
+    console.log(`------- on delete group -------`)
+    // createFeature()
+  }, [featureGroup])
+}
+
+export const useSaveGroupName = (props:THEditGroupName) => {
+  const {
+    editingName
+  } = props
+  
+   return useCallback<TOnSaveGroupName>((event, name, cancel) => {
+    // TODO: make call to save change to group name here
+    console.log(`------- name -------`)
+    console.log(name)
+
+  }, [editingName])
+
 }
