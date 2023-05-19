@@ -36,29 +36,33 @@ export const useLayoutResize = () => {
         })
   })
 
-  // Initial setup of the panel and canvas refs
-  // Without this the other hooks don't work 
-  useOnEvent(VNCConnectedEvt, (rfb:RFB) => {
-    // When the VNC service connects, get the browser canvas
-    // And use it to resize the panels relative to it
-    canvasRef.current = get<HTMLCanvasElement>(rfb, `_canvas`)
+  /**
+   * Need to fix this for large screens, resizing does not work well when the screen is very large
+   */
 
-    const panels = getPanels(parentElRef.current)
+  // // Initial setup of the panel and canvas refs
+  // // Without this the other hooks don't work 
+  // useOnEvent(VNCConnectedEvt, (rfb:RFB) => {
+  //   // When the VNC service connects, get the browser canvas
+  //   // And use it to resize the panels relative to it
+  //   canvasRef.current = get<HTMLCanvasElement>(rfb, `_canvas`)
 
-    if(!canvasRef.current || !panels || !panels.canvasPanel || !panels.actionsPanel) return
+  //   const panels = getPanels(parentElRef.current)
 
-    canvasRef?.current?.setAttribute(`willReadFrequently`, ``)
+  //   if(!canvasRef.current || !panels || !panels.canvasPanel || !panels.actionsPanel) return
 
-    // // Store the panels for use in the onResizeMove callbacks
-    lPPanelRef.current = panels.lPPanel
-    rPPanelRef.current = panels.rPPanel
+  //   canvasRef?.current?.setAttribute(`willReadFrequently`, ``)
 
-    dimsFromCanvas({
-      canvas: canvasRef.current,
-      lPPanel: lPPanelRef.current,
-      rPPanel: rPPanelRef.current,
-    })
-  })
+  //   // // Store the panels for use in the onResizeMove callbacks
+  //   lPPanelRef.current = panels.lPPanel
+  //   rPPanelRef.current = panels.rPPanel
+
+  //   dimsFromCanvas({
+  //     canvas: canvasRef.current,
+  //     lPPanel: lPPanelRef.current,
+  //     rPPanel: rPPanelRef.current,
+  //   })
+  // })
 
   return [
     parentElRef,

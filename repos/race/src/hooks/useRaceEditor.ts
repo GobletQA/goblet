@@ -25,11 +25,12 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   stepDefsRef.current = definitions
   const featuresRef = useRef<TRaceFeatures>(features)
 
-  const [
+  const {
     featureGroups,
     setFeatureRefs,
     setFeatureGroups,
-  ] = useFeatureGroups({ featuresRef })
+    editingFeatureGroup
+  } = useFeatureGroups({ featuresRef })
 
   const onFeatureSave = useInline(props.onFeatureSave || noOp)
   const onFolderCreate = useInline(props.onFolderCreate || noOp)
@@ -99,6 +100,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     onFeatureDelete,
     setFeatureGroups,
     onFeatureInactive,
+    editingFeatureGroup
   }
 
 }

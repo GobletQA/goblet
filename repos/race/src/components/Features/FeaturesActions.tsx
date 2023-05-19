@@ -4,14 +4,13 @@ import type { TPanelHeaderAction } from '@gobletqa/components'
 import { useCallback } from 'react'
 import { noOp } from '@keg-hub/jsutils'
 import { useEditor } from '@GBR/contexts'
-import { createFeature, createFolder } from '@GBR/actions'
+import { createFeature, createFeatureGroup } from '@GBR/actions'
 import {
   Tooltip,
   stopEvent,
   NewFileIcon,
   NewFolderIcon,
 } from '@gobletqa/components'
-
 
 type TClickHandler = { onClick: (...args:any[]) => void }
 export type TAddRootFile = ComponentProps<typeof NewFileIcon> & TClickHandler
@@ -51,7 +50,7 @@ const AddRootFolder = (props:TAddRootFolder) => {
 
   const onClick = useCallback((e:Event) => {
     stopEvent(e)
-    createFolder(rootPrefix)
+    createFeatureGroup()
   }, [rootPrefix])
 
   return (

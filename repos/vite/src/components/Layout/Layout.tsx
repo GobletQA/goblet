@@ -59,7 +59,7 @@ export const Layout = (props:TLayout) => {
       <HorizontalPageSplit
         divider={Divider}
         resize={Proportional}
-        widths={['50%', '50%']}
+        widths={['40%', '60%']}
         onResizeMove={onHorResizeMove}
       >
         <LContainer

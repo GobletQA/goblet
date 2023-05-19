@@ -10,8 +10,8 @@ import { wordCaps } from '@keg-hub/jsutils'
 import { FeatureItemRender } from './FeatureItemRender'
 import { FeatureGroupHeader } from './FeatureGroupHeader'
 import { Dropdown, ExpandIcon } from '@gobletqa/components'
+import { FeatureGroupEditingHeader } from './FeatureGroupEditingHeader'
 import { FeaturesGroup, FeaturesGroupContainer } from './FeaturesList.styled'
-import { useFeatureGroupHooks } from '@GBR/hooks/features/useFeatureGroupHooks'
 
 export type TFeatureListGroup = TEditorFeatureActions & {
   active:TRaceFeature
@@ -37,6 +37,7 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
 
   const {
     active,
+    editingName,
     featureGroup,
     featureGroups,
     onEditFeature,
@@ -44,40 +45,32 @@ export const FeatureListGroup = (props:TFeatureListGroup) => {
     onActiveFeature
   } = props
 
-  const {
-    onBlur,
-    editing,
-    nameRef,
-    onKeyDown,
-    onEditName,
-    onAddFolder,
-    editingName,
-    onDeleteGroup,
-    onCreateFeature,
-  } = useFeatureGroupHooks(props)
-
   return (
     <FeaturesGroup className='gb-race-features-list-group'>
       <Dropdown
         bodySx={styles.body}
         ExpandIcon={ExpandIcon}
         headerSx={styles.header}
+        noToggle={featureGroup.editing}
         headerContentSx={styles.headerContent}
         className='gb-race-features-list-dropdown'
         id={`${featureGroup.title}-dropdown`}
-        Header={(
-          <FeatureGroupHeader
-            onBlur={onBlur}
-            editing={editing}
-            nameRef={nameRef}
-            onKeyDown={onKeyDown}
-            onEditName={onEditName}
-            onAddSubFolder={onAddFolder}
-            onDeleteGroup={onDeleteGroup}
-            onCreateFeature={onCreateFeature}
-            text={wordCaps(featureGroup.title)}
-          />
-        )}
+        Header={
+          featureGroup.editing
+            ? (
+                <FeatureGroupEditingHeader
+                  featureGroup={featureGroup}
+                  featureGroups={featureGroups}
+                />
+              )
+            : (
+                <FeatureGroupHeader
+                  featureGroup={featureGroup}
+                  featureGroups={featureGroups}
+                  text={wordCaps(featureGroup.title)}
+                />
+              )
+        }
       >
         <FeaturesGroupContainer>
           <FeatureItemRender

@@ -1,20 +1,11 @@
 import type {
   TFeaturesRef,
   TRaceFeature,
-  TRaceFeatures,
-  TRaceFeatureAsts,
 } from '@GBR/types'
 
 import { omitKeys } from '@keg-hub/jsutils'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
-
-/**
- * Cleans the feature name, and adds the call amount if it exists
- * This ensure the file name does not match an existing feature
- */
-const cleanFeatureName = (name:string) => {
-  return name.replace(/[\s`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '-')
-}
+import { cleanString } from '@GBR/utils/helpers/cleanString'
 
 /**
  * Ensure the feature file extension is added to the file name
@@ -29,8 +20,7 @@ const addFeatureExt = (location:string) => {
  * Ensures it does not overwrite an existing feature file name
  */
 const generateFeatureProps = (feat:TRaceFeature):Partial<TRaceFeature> => {
-  
-  const fileName = cleanFeatureName(feat.feature)
+  const fileName = cleanString(feat.feature)
   const nameExt = addFeatureExt(fileName)
 
   const relative = `/${nameExt}`

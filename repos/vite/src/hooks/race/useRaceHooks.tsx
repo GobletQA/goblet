@@ -94,8 +94,12 @@ export const useRaceHooks = () => {
   })
   
   const onFolderCreate = useInline((location:string) => {
-    console.log(location)
-    // onAddFile({ location, isFolder: true })
+    onAddFile({
+      isFolder: true,
+      // TODO: Need to add check in backend for existing folder
+      // If the folder path already exists, then don't recreate it
+      location: `${rootPrefix}/${location}`,
+    })
   })
 
   const onFeatureDelete = useInline(async (feature:TRaceFeature) => {

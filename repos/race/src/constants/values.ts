@@ -1,6 +1,7 @@
 import { keyMap, deepFreeze } from '@keg-hub/jsutils'
 
 export const EmptyFeatureUUID = `EMPTY-FEATURE`
+export const EmptyFeatureGroupUUID = `EMPTY-FEATURE-GROUP`
 
 export const PerspectiveOpts = [
   `As a user`,

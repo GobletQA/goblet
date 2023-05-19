@@ -42,6 +42,7 @@ export type TRaceFeatureGroup = {
   uuid:string
   path:string
   title:string
+  editing?:boolean
   items:TRaceFeatures
 }
 

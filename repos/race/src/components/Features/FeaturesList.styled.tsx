@@ -129,6 +129,12 @@ export const FeatureGroupHeaderEdit = styled(Box)`
   width: 99%;
   height: 100%;
   padding-left: ${gutter.padding.qpx};
+
+  &[contenteditable=true]:empty:before {
+    display: block;
+    pointer-events: none;
+    content: attr(placeholder);
+  }
 `
 
 export const FeatureGroupHeaderActions = styled(Span)`

@@ -4,16 +4,12 @@ import type {
   TEditorFeatureActions
 } from '@GBR/types'
 
+import { useCallback } from 'react'
 import { stopPropagation } from '@gobletqa/components'
-import { useRef, useEffect, useState, useCallback } from 'react'
 import {
-  useOnBlur,
-  useOnKeyDown,
-  useSaveGroupName,
-  useOnDeleteGroup,
-  useOnAddSubFolder,
-  useOnCreateFeature,
-} from './useFeatureGroupEvents'
+  createFeatureGroup,
+  editFeatureGroupName
+} from '@GBR/actions/feature'
 
 
 export type THFeatureItemHooks = TEditorFeatureActions & {
@@ -22,94 +18,32 @@ export type THFeatureItemHooks = TEditorFeatureActions & {
 }
 
 export const useFeatureGroupHooks = (props:THFeatureItemHooks) => {
-  const {
-    featureGroup,
-    featureGroups,
-  } = props
-
-  const nameRef = useRef<HTMLDivElement>(null)
-  const [editing, setEditing] = useState<boolean>(false)
-  const [editingName, setEditingName] = useState<string>(featureGroup.title)
-
-  const onSaveGroupName = useSaveGroupName({
-    editingName
-  })
+  const { featureGroup } = props
 
   const onEditName = useCallback((evt: Event) => {
     stopPropagation(evt)
-    setEditing?.(true)
-  }, [setEditing])
+    editFeatureGroupName({ featureGroup, editing: true })
+  }, [featureGroup])
 
-
-  useEffect(() => {
-    if(!nameRef.current || !editing || !editingName) return
-
-    nameRef.current.textContent = featureGroup.title
-    nameRef.current?.focus()
-    const selection = window.getSelection()
-    const range = document.createRange()
-
-    let firstChild = nameRef?.current?.firstChild
-    if(!firstChild){
-      const textNode = document.createTextNode(``)
-      nameRef?.current?.appendChild(textNode)
-      firstChild = textNode
-    }
-
-    range.setStart(firstChild, 0)
-    range.setEnd(firstChild, featureGroup.title.length)
-    selection?.removeAllRanges()
-    selection?.addRange(range)
-
-  }, [
-    editing,
-    editingName,
-  ])
-
-  const [nameConflict, setNameConflict] = useState(false)
-
-  const onBlur = useOnBlur({
-    nameRef,
-    editingName,
-    nameConflict,
-    featureGroups,
-    setNameConflict,
-    onSaveGroupName,
-  })
-
-  const onKeyDown = useOnKeyDown({
-    onBlur,
-    editingName,
-    nameConflict,
-    featureGroups,
-    onSaveGroupName,
-    setNameConflict,
-  })
+  const onCreateGroup = useCallback((evt:any) => {
+    stopPropagation(evt)
+    createFeatureGroup({ featureGroup })
+  }, [featureGroup])
   
-  const onAddFolder = useOnAddSubFolder({
-    featureGroup,
-  })
-  
-  const onCreateFeature = useOnCreateFeature({
-    featureGroup,
-  })
-  
-  const onDeleteGroup = useOnDeleteGroup({
-    featureGroup,
-  })
+  const onCreateFeature = useCallback((evt:any) => {
+    stopPropagation(evt)
+    // createFeature({ featureGroup })
+  }, [featureGroup])
+
+  const onDeleteGroup = useCallback((evt:any) => {
+    stopPropagation(evt)
+    console.log(`------- on delete group -------`)
+  }, [featureGroup])
 
   return {
-    onBlur,
-    nameRef,
-    editing,
-    onKeyDown,
     onEditName,
-    setEditing,
-    editingName,
-    onAddFolder,
-    nameConflict,
+    onCreateGroup,
     onDeleteGroup,
-    setEditingName,
     onCreateFeature,
   }
 }
