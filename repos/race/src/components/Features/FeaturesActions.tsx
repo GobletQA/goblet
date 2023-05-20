@@ -4,7 +4,8 @@ import type { TPanelHeaderAction } from '@gobletqa/components'
 import { useCallback } from 'react'
 import { noOp } from '@keg-hub/jsutils'
 import { useEditor } from '@GBR/contexts'
-import { createFeature, createFeatureGroup } from '@GBR/actions'
+import { createFeature } from '@GBR/actions/feature/createFeature'
+import { createFeatureGroup } from '@GBR/actions/featureGroups/createFeatureGroup'
 import {
   Tooltip,
   stopEvent,

@@ -66,6 +66,7 @@ export type TEditorCtx = {
   updateExpanded:TOnExpandedCB
   menuContext?:TRaceContextMenu
   updateFeature:TUpdateFeatureCB
+  setFeatureRefs:TSetFeatureRefs
   deleteFeature:(loc:string)=>void
   onFolderCreate?:TOnFolderCreateCB
   setFeatureGroups:TSetFeatureGroups
@@ -143,7 +144,6 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureActive,
     onFeatureChange,
     onFeatureCreate,
-    setFeatureGroups,
     onFeatureInactive,
     setFeature:_setFeature,
   })
@@ -160,6 +160,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       deleteFeature,
       updateFeature,
       updateExpanded,
+      setFeatureRefs,
       onFolderCreate,
       setFeatureGroups,
       collapseAllExcept,
@@ -177,6 +178,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     deleteFeature,
     updateFeature,
     featureGroups,
+    setFeatureRefs,
     updateExpanded,
     onFolderCreate,
     setFeatureGroups,

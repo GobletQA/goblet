@@ -1,7 +1,5 @@
-import type { TTabAction } from '@gobletqa/components'
 import type {
   TRaceFeatures,
-  TFeaturesRefs,
   TEditorFeatureActions,
 } from '@GBR/types'
 
@@ -10,7 +8,7 @@ import { Panel } from '@gobletqa/components'
 import { FeaturesList } from './FeaturesList'
 import { FeaturesActions } from './FeaturesActions'
 
-export type TFeaturesPanel = TFeaturesRefs & TEditorFeatureActions & {
+export type TFeaturesPanel = TEditorFeatureActions & {
   featureGroups:TRaceFeatures
 }
 

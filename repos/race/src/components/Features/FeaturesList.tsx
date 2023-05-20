@@ -5,8 +5,8 @@ import type {
   TEditorFeatureActions,
 } from '@GBR/types'
 
-
 import { Features } from './FeaturesList.styled'
+import { useEditor } from '@GBR/contexts/EditorContext'
 import { FeatureItemRender } from './FeatureItemRender'
 
 export type TFeaturesList = TEditorFeatureActions & {

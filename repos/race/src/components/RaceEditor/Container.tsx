@@ -87,11 +87,9 @@ export const Container = (props:TEditorContainer) => {
         >
           <FeaturesPanel
             editingName={editingName}
-            stepDefsRef={stepDefsRef}
-            featuresRef={featuresRef}
             featureGroups={featureGroups}
             onEditFeature={onEditFeature}
-            onDeleteFeature={onDeleteFeature} 
+            onDeleteFeature={onDeleteFeature}
             onActiveFeature={onFeatureClick as TOnActiveFeature}
           />
         </Sidebar>

@@ -6,11 +6,8 @@ import type {
 
 import { useCallback } from 'react'
 import { stopPropagation } from '@gobletqa/components'
-import {
-  createFeatureGroup,
-  editFeatureGroupName
-} from '@GBR/actions/feature'
-
+import { createFeatureGroup } from '@GBR/actions/featureGroups/createFeatureGroup'
+import { editFeatureGroupName } from '@GBR/actions/featureGroups/editFeatureGroupName'
 
 export type THFeatureItemHooks = TEditorFeatureActions & {
   featureGroups:TRaceFeatures

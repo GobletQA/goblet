@@ -10,14 +10,15 @@ export type TEditFeatureGroup = {
 
 export const editFeatureGroupName = async (props:TEditFeatureGroup) => {
 
-  const { editor } = await getEditor()
-  const { featureGroups, setFeatureGroups } = editor
   const { featureGroup, editing=true } = props
+
+  const { editor } = await getEditor()
+  const { featureGroups, setFeatureRefs } = editor
 
   const updated = updateGroups(
     { items: featureGroups },
     {...featureGroup, editing }
   )
 
-  return setFeatureGroups(updated.items)
+  return setFeatureRefs(updated.items)
 }

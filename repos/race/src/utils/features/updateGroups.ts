@@ -5,23 +5,23 @@ import { EmptyFeatureGroupUUID } from '@GBR/constants/values'
 export const updateGroups = (
   parentGroup:Partial<TRaceFeatureGroup>,
   featureGroup:TRaceFeatureGroup,
-  replaceEmpty?:boolean
+  replaceEmptyKey?:string
 ) => {
   let found = false
   const items = Object.entries(parentGroup?.items || {})
     .reduce((acc, [key, item]) => {
 
       if(!(`items` in item) || found){
-        acc[item.path] = item
+        acc[key] = item
         return acc
       }
 
-      if(!replaceEmpty && item.uuid === featureGroup.uuid) found = true
-      else if(replaceEmpty && item.uuid === EmptyFeatureGroupUUID) found = true
+      if(!replaceEmptyKey && item.uuid === featureGroup.uuid) found = true
+      else if(replaceEmptyKey && item.uuid === EmptyFeatureGroupUUID) found = true
 
-      const replace = found ? featureGroup : updateGroups(item, featureGroup, replaceEmpty)
-
-      acc[replace.uuid] = replace
+      const replace = found ? featureGroup : updateGroups(item, featureGroup, replaceEmptyKey)
+      const ref = replaceEmptyKey || key
+      acc[ref] = replace
 
       return acc
     }, {} as TRaceFeatureGroup[`items`])

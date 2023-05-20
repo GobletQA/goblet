@@ -38,7 +38,6 @@ export type THFeatureUpdate = {
   setFeatureRefs:TSetFeatureRefs
   onFeatureInactive?:TOnFeatureCB
   onAuditFeature:TOnAuditFeatureCB
-  setFeatureGroups:TSetFeatureGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
 }

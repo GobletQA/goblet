@@ -48,13 +48,15 @@ const buildPathInGroup = (
   item:TRaceFeatureItem,
   parts:string[],
   fullLoc:string,
+  relative:string
 ):TRaceFeatureGroup => {
 
   const part = parts.shift()
   if(!part) return groups
 
   const loc = `/${part}`
-  fullLoc = `${fullLoc}${loc}`
+  fullLoc = `${fullLoc.replace(/\/$/, ``)}${loc}`
+  relative = `${relative.replace(/\/$/, ``)}/${loc}`
 
   // If it's the last part of the path, 
   // Then this is where the item should be added
@@ -78,6 +80,7 @@ const buildPathInGroup = (
       item,
       parts,
       fullLoc,
+      relative,
     )
 
     return groups
@@ -87,7 +90,11 @@ const buildPathInGroup = (
   // This happens when a feature is built before it's parent folder
   // But the duplicate folder should be resolved  when the folder is built
   // When it checks for a found item above
-  const built = groupFactory(fullLoc, part, loc)
+  const built = groupFactory({
+    fullLoc,
+    title: part,
+    path: relative,
+  })
 
   // Use the newly built group as the parent group moving forward
   groups.items[loc] = buildPathInGroup(
@@ -96,6 +103,7 @@ const buildPathInGroup = (
     item,
     parts,
     fullLoc,
+    relative,
   )
 
   return groups
@@ -119,6 +127,7 @@ export const buildGroups = ({
             item,
             item.path.split(`/`).filter(Boolean),
             rootPrefix,
+            item.path
           )
 
     }, { items: {} } as any)

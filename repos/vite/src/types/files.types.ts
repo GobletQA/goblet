@@ -14,9 +14,9 @@ export type TBuiltRaceFeatures = {
 }
 
 export type TRaceFolder = {
+  path:string
   uuid: string
   isDir: boolean,
-  relative:string
   parent: {
     uuid: string
     location: string

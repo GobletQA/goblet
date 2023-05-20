@@ -88,15 +88,15 @@ export const buildRaceFolder = (
   folder:TRaceFolder,
 ) => {
 
-  const split = folder.relative.split(`/`).filter(Boolean)
-  const name = split.pop() || folder.relative
+  const split = folder.path.split(`/`).filter(Boolean)
+  const name = split.pop() || folder.path
 
-  models.features[folder.relative] = {
+  models.features[folder.path] = {
     ...folder,
     items: {},
     title: name,
     type: `folder`,
-    path: folder.relative,
+    path: folder.path,
   }
 
   return models

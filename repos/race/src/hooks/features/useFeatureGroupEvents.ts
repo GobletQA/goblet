@@ -6,7 +6,6 @@ import type {
   TRaceFeatures,
   TOnSaveGroupName,
   TRaceFeatureGroup,
-  TOnFolderCreateCB,
 } from '@GBR/types'
 
 import { useCallback } from 'react'
@@ -14,9 +13,9 @@ import {exists} from '@keg-hub/jsutils'
 import { preventDefault } from '@gobletqa/components'
 import { EmptyFeatureGroupUUID } from '@GBR/constants'
 
-import { cancelFeatureGroup } from '@GBR/actions/feature/cancelFeatureGroup'
-import { saveNewFeatureGroup } from '@GBR/actions/feature/saveNewFeatureGroup'
-import { editFeatureGroupName } from '@GBR/actions/feature/editFeatureGroupName'
+import { saveNewFeatureGroup } from '@GBR/actions/featureGroups/saveNewFeatureGroup'
+import { editFeatureGroupName } from '@GBR/actions/featureGroups/editFeatureGroupName'
+import { cancelFeatureGroup } from '@gobletqa/race/actions/featureGroups/cancelFeatureGroup'
 
 type THOnFeatureGroup = {
   featureGroup:TRaceFeatureGroup
@@ -34,7 +33,6 @@ type THSaveGroupName = THOnFeatureGroup & {
 }
 
 export type THOnKeyDown = THOnSharedProps & {
-  onBlur:(event:any) => void
   featureGroup:TRaceFeatureGroup
 }
 
@@ -49,7 +47,6 @@ const checkNameConflict = (
 
 export const useOnKeyDown = (props:THOnKeyDown) => {
   const {
-    onBlur,
     nameConflict,
     featureGroup,
     featureGroups,
@@ -58,14 +55,15 @@ export const useOnKeyDown = (props:THOnKeyDown) => {
   } = props
   
   return useCallback<KeyboardEventHandler<HTMLDivElement>>((event) => {
-    const name = `${(event?.target as HTMLDivElement)?.textContent}${event.key}`
+    const divElement = event?.target as HTMLDivElement
+    const name = `${divElement?.textContent}${event.key}`
 
     /**
      * Pressing Enter key 
      */
     if(event.keyCode === 13){
       preventDefault(event)
-      onBlur(event)
+      divElement?.blur()
       return
     }
 
@@ -86,7 +84,6 @@ export const useOnKeyDown = (props:THOnKeyDown) => {
       && setNameConflict(hasConflict)
 
   },[
-    onBlur,
     nameConflict,
     featureGroup,
     featureGroups,

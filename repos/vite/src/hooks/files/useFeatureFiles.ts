@@ -29,7 +29,7 @@ export const useFeatureFiles = (rootPrefix:string) => {
           acc[loc] = {
             uuid: loc,
             isDir: true,
-            relative: relative.replace(/\/$/, ``),
+            path: relative.replace(/\/$/, ``),
             parent: {
               uuid: loc,
               location: loc,

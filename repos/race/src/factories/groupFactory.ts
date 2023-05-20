@@ -1,25 +1,31 @@
 import type { TRaceFeatureGroup, TFeaturesRef } from '@GBR/types'
+import {exists} from '@keg-hub/jsutils'
 
 
-export type TBuildFeatureGroups = {
-  rootPrefix:string
-  featuresRef: TFeaturesRef
+
+export type TGroupFactory = Partial<TRaceFeatureGroup> & {
+  path?:string,
+  title?:string,
+  fullLoc?:string,
 }
 
-export const groupFactory = (
-  fullLoc:string,
-  part:string,
-  loc:string
-) => {
+export const groupFactory = ({
+  path,
+  title,
+  fullLoc,
+  ...rest
+}:TGroupFactory) => {
   return {
-    path: loc,
-    title: part,
+    path,
     items: {},
-    type: `folder` as const,
     uuid: fullLoc,
+    type: `folder` as const,
+    title: exists(title) ? title : path?.split(`/`)?.pop(),
+    ...rest,
     parent: {
       uuid: fullLoc,
-      location: fullLoc
+      location: fullLoc,
+      ...rest?.parent
     }
   } as TRaceFeatureGroup
 }
