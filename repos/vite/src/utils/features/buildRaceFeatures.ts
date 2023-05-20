@@ -1,9 +1,10 @@
 import type {
   TRepoOpts,
+  TRaceFolder,
   TFeatureFileModel,
   TBuiltRaceFeatures,
 } from '@types'
-import type { TRaceFeature, TRaceFeatures } from '@gobletqa/race'
+import type { TRaceFeatureGroup, TRaceFeature, TRaceFeatures } from '@gobletqa/race'
 
 import { fromRootDir } from '@utils/repo/fromRootDir'
 import { rmFeaturePrefix } from '@utils/features/rmFeaturePrefix'
@@ -15,7 +16,7 @@ type TBuildFeatureModel = {
   index?:number
   repo: TRepoOpts
   astCount?:number
-  model:TRaceFeature
+  ast:TRaceFeature
   buildEmpty?:boolean
   models:TRaceFeatures
 }
@@ -33,29 +34,25 @@ const getFeatureName = (loc:string) => {
 }
 
 export const buildRaceFeature = ({
+  ast,
   key,
   repo,
-  index,
-  model,
   models,
-  astCount=1,
 }:TBuildFeatureModel) => {
-  const uuidRef = astCount > 1 ? `${key}-${index}` : key
-  models[uuidRef] = {
-    ...model,
-    uuid: uuidRef,
+
+  models[key] = {
+    ...ast,
+    uuid: key,
     path: rmFeaturePrefix(key, repo),
     parent: { uuid: key, location: key },
   }
 }
 
 export const buildRaceErrFeature = ({
+  ast,
   key,
   repo,
-  model,
-  index,
   models,
-  astCount,
   buildEmpty,
 }:TBuildFeatureModel) => {
 
@@ -66,40 +63,40 @@ export const buildRaceErrFeature = ({
    *
    * TODO: Parkin should be update to handle that better
    */
-  const feature = !isBool(model?.feature)
-    ? model?.feature || getFeatureName(key)
+  const feature = !isBool(ast?.feature)
+    ? ast?.feature || getFeatureName(key)
     : ``
 
   return buildEmpty
     ? buildRaceFeature({
         key,
         repo,
-        index,
         models,
-        astCount,
-        model: {
-          ...model,
+        ast: {
+          ...ast,
           feature,
         },
       })
-    : console.warn(`[Feature Error]: Could not parse feature`, model?.errors)
+    : console.warn(`[Feature Error]: Could not parse feature`, ast?.errors)
 }
 
 
 export const buildRaceFolder = (
   models: TBuiltRaceFeatures,
-  loc:string,
+  repo: TRepoOpts,
+  key:string,
+  folder:TRaceFolder,
 ) => {
 
-  const split = loc.split(`/`)
-  split.pop()
-  const name = split.pop() || ``
+  const split = folder.relative.split(`/`).filter(Boolean)
+  const name = split.pop() || folder.relative
 
-  models.features[name] = {
+  models.features[key] = {
+    ...folder,
     items: {},
-    path: loc,
-    uuid: name,
     title: name,
+    type: `folder`,
+    path: folder.relative,
   }
 
   return models
@@ -109,7 +106,7 @@ export const buildRaceFeatures = (
   models:TBuiltRaceFeatures,
   repo:TRepoOpts,
   key:string,
-  fileModel:TFeatureFileModel
+  fileModel:TFeatureFileModel,
 ) => {
   const featureAsts = ensureArr<TRaceFeature>(fileModel?.ast)
   const astCount = featureAsts.length
@@ -120,27 +117,27 @@ export const buildRaceFeatures = (
     return models
   }
 
-  featureAsts.forEach((model, index) => {
-      const buildEmpty = !model.uuid
-        || !model.content
-        || !model.feature
-        || Boolean(model?.errors?.length)
+  featureAsts.forEach((ast, index) => {
+      const buildEmpty = !ast.uuid
+        || !ast.content
+        || !ast.feature
+        || Boolean(ast?.errors?.length)
 
       buildEmpty
         ? buildRaceErrFeature({
+            ast,
             key,
             repo,
-            model,
             index,
             astCount,
             buildEmpty,
             models: models.features,
           })
         : buildRaceFeature({
+            ast,
             key,
             repo,
             index,
-            model,
             astCount,
             models: models.features,
           })

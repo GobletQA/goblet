@@ -27,8 +27,13 @@ export const useFeatureFiles = (rootPrefix:string) => {
         const relative = loc.replace(rootPrefix, ``)
         if(relative !== `/`)
           acc[loc] = {
-            relative,
+            uuid: loc,
             isDir: true,
+            relative: relative.replace(/\/$/, ``),
+            parent: {
+              uuid: loc,
+              location: loc,
+            }
           }
       }
 

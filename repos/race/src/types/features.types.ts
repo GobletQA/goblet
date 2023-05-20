@@ -42,8 +42,13 @@ export type TRaceFeatureGroup = {
   uuid:string
   path:string
   title:string
+  type:`folder`,
   editing?:boolean
   items:TRaceFeatures
+  parent: {
+    uuid: string
+    location: string
+  }
 }
 
 export type TEmptyFeature = TRaceFeature & {

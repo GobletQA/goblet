@@ -17,15 +17,14 @@ export const useRaceFeatures = (files:TRaceFiles) => {
   const repo = useRepo()
 
   return useMemo(() => {
-    return isEmptyColl<TFeatureFileModelList>(files)
-      ? { features: {} } as TBuiltRaceFeatures
-      : Object.entries(files as TFeatureFileModelList)
-        .reduce((models, [key, fileModel]) => {
+    const items = { features: {} } as TBuiltRaceFeatures
 
-          return `isDir` in fileModel
-            ? buildRaceFolder(models, (fileModel as TRaceFolder).relative)
-            : buildRaceFeatures(models, repo, key, fileModel)
+    return Object.entries(files as TFeatureFileModelList)
+      .reduce((models, [key, fileModel]) => {
+        return (`isDir` in fileModel)
+          ? buildRaceFolder(models, repo, key, fileModel as TRaceFolder)
+          : buildRaceFeatures(models, repo, key, fileModel)
+      }, items)
 
-        }, { features: {} } as TBuiltRaceFeatures)
   }, [files, repo])
 }

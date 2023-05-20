@@ -18,8 +18,13 @@ export const createFeatureGroup = async (props?:TCreateFeatureGroup) => {
     title: ``,
     items: {},
     editing: true,
+    type: `folder` as const,
     path: EmptyFeatureGroupUUID,
     uuid: EmptyFeatureGroupUUID,
+    parent: {
+      uuid: EmptyFeatureGroupUUID,
+      location: EmptyFeatureGroupUUID
+    }
   }
 
   if(!featureGroup){

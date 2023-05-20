@@ -14,7 +14,12 @@ export type TBuiltRaceFeatures = {
 }
 
 export type TRaceFolder = {
+  uuid: string
   isDir: boolean,
   relative:string
+  parent: {
+    uuid: string
+    location: string
+  }
 }
 export type TRaceFiles = Record<string, TFeatureFileModel|TRaceFolder>
