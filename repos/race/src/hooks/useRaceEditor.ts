@@ -16,6 +16,7 @@ import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
 export const useRaceEditor = (props:TRaceEditorProps) => {
   const {
     features,
+    rootPrefix,
     definitions,
     menuContext,
     initialFeature
@@ -30,7 +31,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     setFeatureRefs,
     setFeatureGroups,
     editingFeatureGroup
-  } = useFeatureGroups({ featuresRef })
+  } = useFeatureGroups({ featuresRef, rootPrefix })
 
   const onFeatureSave = useInline(props.onFeatureSave || noOp)
   const onFolderCreate = useInline(props.onFolderCreate || noOp)

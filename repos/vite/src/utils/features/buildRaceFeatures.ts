@@ -39,11 +39,11 @@ export const buildRaceFeature = ({
   repo,
   models,
 }:TBuildFeatureModel) => {
-
-  models[key] = {
+  const relative = rmFeaturePrefix(key, repo)
+  models[relative] = {
     ...ast,
     uuid: key,
-    path: rmFeaturePrefix(key, repo),
+    path: relative,
     parent: { uuid: key, location: key },
   }
 }
@@ -91,7 +91,7 @@ export const buildRaceFolder = (
   const split = folder.relative.split(`/`).filter(Boolean)
   const name = split.pop() || folder.relative
 
-  models.features[key] = {
+  models.features[folder.relative] = {
     ...folder,
     items: {},
     title: name,

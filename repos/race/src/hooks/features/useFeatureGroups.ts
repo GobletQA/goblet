@@ -1,8 +1,6 @@
 import type {
   TFeaturesRef,
   TRaceFeatures,
-  TSetFeatureRefs,
-  TSetFeatureGroups,
 } from '@GBR/types'
 
 import { useMemo, useState, useCallback } from 'react'
@@ -10,15 +8,17 @@ import { buildGroups } from '@GBR/utils/features/buildGroups'
 import {exists} from '@keg-hub/jsutils'
 
 export type THFeatureGroups = {
+  rootPrefix:string
   featuresRef: TFeaturesRef
 }
 
 export const useFeatureGroups = (props:THFeatureGroups) => {
-  const { featuresRef } = props
+  const { rootPrefix, featuresRef } = props
+  
   const [editingFeatureGroup, setEditingGroup] = useState<string|boolean>(false)
 
   const groups = useMemo(() => {
-    const { groups } = buildGroups(featuresRef)
+    const { groups } = buildGroups({ featuresRef, rootPrefix })
     return groups
   }, [])
   const [featureGroups, _setFeatureGroups] = useState<TRaceFeatures>(groups)
@@ -26,13 +26,17 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
   const setFeatureGroups = useCallback((features:TRaceFeatures|TFeaturesRef) => {
     const feats = `current` in features ? features?.current : features
 
-    const { groups, editingGroup } = buildGroups({ current: feats as TRaceFeatures })
+    const { groups, editingGroup } = buildGroups({
+      rootPrefix,
+      featuresRef: { current: feats as TRaceFeatures }
+    })
+
     _setFeatureGroups(groups)
 
     exists<string|boolean>(editingGroup)
       && editingGroup !== editingFeatureGroup
       && setEditingGroup(editingGroup)
-  }, [featureGroups])
+  }, [featureGroups, rootPrefix])
 
   const setFeatureRefs = useCallback((features:TRaceFeatures) => {
     featuresRef.current = features

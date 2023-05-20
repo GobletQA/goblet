@@ -1,4 +1,5 @@
 export * from './blockFactory'
 export * from './ruleFactory'
+export * from './groupFactory'
 export * from './scenarioFactory'
 export * from './featureFactory'
