@@ -25,7 +25,7 @@ import type {
   TStepDefsRef,
   TFeaturesRef,
   TOnFeatureCB,
-  TSetFeatureRefs,
+  TSetFeatureGroups,
   TOnFolderCreateCB,
 } from './helpers.types'
 
@@ -107,6 +107,6 @@ export type TEditorShared = {
 
 export type TEditorContainer = TFeaturesRefs & TEditorRefs & TEditorShared & {
   openedTabs:TTabItem[]
-  setFeatureRefs:TSetFeatureRefs
+  setFeatureGroups:TSetFeatureGroups
   setOpenedTabs:(tabs:TTabItem[]) => void
 }

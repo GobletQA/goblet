@@ -10,7 +10,6 @@ import type {
   TOnFeatureCB,
   TFeaturesRef,
   TRaceFeatures,
-  TSetFeatureRefs,
   TRaceContextMenu,
   TUpdateFeatureCB,
   TOnFolderCreateCB,
@@ -44,9 +43,8 @@ export type TEditorProvider = {
   onFeatureDelete:TOnFeatureCB
   menuContext?:TRaceContextMenu
   onFeatureInactive:TOnFeatureCB
-  setFeatureRefs:TSetFeatureRefs
   onFolderCreate?:TOnFolderCreateCB
-  editingFeatureGroup:string|boolean
+  setFeatureGroups:TSetFeatureGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
   setOpenedTabs:(tabs:TTabItem[]) => void
@@ -65,10 +63,9 @@ export type TEditorCtx = {
   updateExpanded:TOnExpandedCB
   menuContext?:TRaceContextMenu
   updateFeature:TUpdateFeatureCB
-  setFeatureRefs:TSetFeatureRefs
   deleteFeature:(loc:string)=>void
   onFolderCreate?:TOnFolderCreateCB
-  editingFeatureGroup:string|boolean
+  setFeatureGroups:TSetFeatureGroups
   collapseAllExcept:(key:string|string[]) => void
 }
 
@@ -90,15 +87,14 @@ export const EditorProvider = (props:TEditorProvider) => {
     setOpenedTabs,
     updateEmptyTab,
     onFolderCreate,
-    setFeatureRefs,
     onFeatureClose,
     onFeatureChange,
     onFeatureCreate,
     onFeatureDelete,
     onFeatureActive,
+    setFeatureGroups,
     onFeatureInactive,
     expressionOptions,
-    editingFeatureGroup
   } = props
 
   const {
@@ -133,7 +129,6 @@ export const EditorProvider = (props:TEditorProvider) => {
     setOpenedTabs,
     onFeatureSave,
     onFeatureClose,
-    setFeatureRefs,
     updateExpanded,
     updateEmptyTab,
     onAuditFeature,
@@ -141,6 +136,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureActive,
     onFeatureChange,
     onFeatureCreate,
+    setFeatureGroups,
     onFeatureInactive,
     setFeature:_setFeature,
   })
@@ -157,11 +153,10 @@ export const EditorProvider = (props:TEditorProvider) => {
       deleteFeature,
       updateFeature,
       updateExpanded,
-      setFeatureRefs,
       onFolderCreate,
+      setFeatureGroups,
       collapseAllExcept,
       expressionOptions,
-      editingFeatureGroup,
       feature: (feature || emptyObj) as TRaceFeature,
     }
   }, [
@@ -174,12 +169,11 @@ export const EditorProvider = (props:TEditorProvider) => {
     deleteFeature,
     updateFeature,
     featureGroups,
-    setFeatureRefs,
     updateExpanded,
     onFolderCreate,
+    setFeatureGroups,
     expressionOptions,
     collapseAllExcept,
-    editingFeatureGroup
   ])
 
   useGetEditorContext({ editorRef, editorCtx })

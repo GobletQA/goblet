@@ -18,7 +18,7 @@ export const saveNewFeatureGroup = async (props:TSaveNewFeatureGroup) => {
     rootPrefix,
     featureGroups,
     onFolderCreate,
-    setFeatureRefs,
+    setFeatureGroups,
     } = editor
 
   const {
@@ -41,6 +41,6 @@ export const saveNewFeatureGroup = async (props:TSaveNewFeatureGroup) => {
 
   const updated = updateGroups({ items: featureGroups }, group, relative)
 
-  return setFeatureRefs(updated.items)
+  return setFeatureGroups(updated.items)
 
 }

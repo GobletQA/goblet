@@ -23,7 +23,7 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
   }, [])
   const [featureGroups, _setFeatureGroups] = useState<TRaceFeatures>(groups)
 
-  const setFeatureRefs = useCallback((features:TRaceFeatures) => {
+  const setFeatureGroups = useCallback((features:TRaceFeatures) => {
     featuresRef.current = features
     const { groups, editingGroup } = buildGroups({
       rootPrefix,
@@ -42,8 +42,7 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
 
   return {
     featureGroups,
-    setFeatureRefs,
     setEditingGroup,
-    editingFeatureGroup
+    setFeatureGroups,
   }
 }

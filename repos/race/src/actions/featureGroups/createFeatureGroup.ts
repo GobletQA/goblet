@@ -12,7 +12,7 @@ export type TCreateFeatureGroup = {
 export const createFeatureGroup = async (props?:TCreateFeatureGroup) => {
 
   const { editor } = await getEditor()
-  const { featureGroups, setFeatureRefs, rootPrefix } = editor
+  const { featureGroups, setFeatureGroups, rootPrefix } = editor
   const featureGroup = props?.featureGroup
 
 
@@ -35,7 +35,7 @@ export const createFeatureGroup = async (props?:TCreateFeatureGroup) => {
 
   if(!featureGroup){
     const items = {...featureGroups, [relative]: group}
-    return setFeatureRefs(items)
+    return setFeatureGroups(items)
   }
 
   const updated = updateGroups(
@@ -43,5 +43,5 @@ export const createFeatureGroup = async (props?:TCreateFeatureGroup) => {
     {...featureGroup, items: {...featureGroup.items, [relative]: group}}
   )
 
-  return setFeatureRefs(updated.items)
+  return setFeatureGroups(updated.items)
 }

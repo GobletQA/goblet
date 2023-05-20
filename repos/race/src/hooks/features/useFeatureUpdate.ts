@@ -6,9 +6,8 @@ import type {
   TOnFeatureCB,
   TFeaturesRef,
   TUpdateFeature,
-  TSetFeatureRefs,
-  TSetFeatureOpts,
   TSetFeatureGroups,
+  TSetFeatureOpts,
   TOnAuditFeatureCB,
   TUpdateFeatureOpts,
 } from '@GBR/types'
@@ -35,9 +34,9 @@ export type THFeatureUpdate = {
   onFeatureCreate:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
-  setFeatureRefs:TSetFeatureRefs
   onFeatureInactive?:TOnFeatureCB
   onAuditFeature:TOnAuditFeatureCB
+  setFeatureGroups:TSetFeatureGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
 }
@@ -49,7 +48,7 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     curValueRef,
     featuresRef,
     updateEmptyTab,
-    setFeatureRefs,
+    setFeatureGroups,
     updateExpanded,
     onAuditFeature,
     onFeatureChange,
@@ -103,7 +102,7 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     }
 
     options?.expand && updateExpanded(options?.expand)
-    setFeatureRefs(featuresRef.current)
+    setFeatureGroups(featuresRef.current)
     setFeature(updated, options)
   })
  

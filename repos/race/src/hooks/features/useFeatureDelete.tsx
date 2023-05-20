@@ -3,7 +3,7 @@ import type {
   TRaceFeature,
   TFeaturesRef,
   TOnFeatureCB,
-  TSetFeatureRefs,
+  TSetFeatureGroups,
 } from '@GBR/types'
 
 import { useInline } from '@gobletqa/components'
@@ -20,7 +20,7 @@ export type THFeatureDelete = {
   featuresRef:TFeaturesRef
   onFeatureActive?:TOnFeatureCB
   onFeatureDelete?:TOnFeatureCB
-  setFeatureRefs:TSetFeatureRefs
+  setFeatureGroups:TSetFeatureGroups
   setOpenedTabs:(tabs:TTabItem[]) => void
 }
 
@@ -36,9 +36,9 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
     setFeature,
     featuresRef,
     setOpenedTabs,
-    setFeatureRefs,
     onFeatureDelete,
     onFeatureActive,
+    setFeatureGroups,
   } = props
 
   return useInline<(loc:string)=>void>((loc) => {
@@ -67,7 +67,7 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
 
     // Update feature refs to creates the sidebar feature groups
     delete featuresRef.current[remove.uuid]
-    setFeatureRefs(featuresRef.current)
+    setFeatureGroups(featuresRef.current)
 
     // Finally call the onFeatureDelete callback
     onFeatureDelete?.(remove)

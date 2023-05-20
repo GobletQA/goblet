@@ -5,7 +5,6 @@ import type {
   TOnFeatureCB,
   TRaceFeatures,
   TOnEditFeature,
-  TSetFeatureRefs,
   TOnActiveFeature,
   TOnDeleteFeature,
 } from '@GBR/types'
@@ -13,12 +12,8 @@ import type {
 import { useEditor } from '@GBR/contexts'
 import { useCallback, useState } from 'react'
 import { useTabHooks } from '@GBR/hooks/tabs/useTabHooks'
-import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
-import { openYesNo } from '@GBR/actions/general/toggleConfirm'
-import { useFeatureDelete } from '@GBR/hooks/features/useFeatureDelete'
 
 import {
-  RedText,
   useInline,
   stopEvent,
 } from '@gobletqa/components'

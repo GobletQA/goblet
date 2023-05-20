@@ -26,13 +26,12 @@ export const Editor = (props:TRaceEditorProps) => {
     updateEmptyTab,
     onFolderCreate,
     onFeatureClose,
-    setFeatureRefs,
     onFeatureChange,
     onFeatureCreate,
     onFeatureDelete,
     onFeatureActive,
+    setFeatureGroups,
     onFeatureInactive,
-    editingFeatureGroup
   } = useRaceEditor(props)
 
   return (
@@ -50,13 +49,12 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureClose={onFeatureClose}
       onFolderCreate={onFolderCreate}
       updateEmptyTab={updateEmptyTab}
-      setFeatureRefs={setFeatureRefs}
       onFeatureCreate={onFeatureCreate}
       onFeatureChange={onFeatureChange}
       onFeatureActive={onFeatureActive}
       onFeatureDelete={onFeatureDelete}
+      setFeatureGroups={setFeatureGroups}
       onFeatureInactive={onFeatureInactive}
-      editingFeatureGroup={editingFeatureGroup}
       expressionOptions={props.expressionOptions}
     >
       <Container
@@ -71,9 +69,9 @@ export const Editor = (props:TRaceEditorProps) => {
         featureGroups={featureGroups}
         setOpenedTabs={setOpenedTabs}
         onFeatureClose={onFeatureClose}
-        setFeatureRefs={setFeatureRefs}
         onFeatureDelete={onFeatureDelete}
         onFeatureActive={onFeatureActive}
+        setFeatureGroups={setFeatureGroups}
         onFeatureInactive={onFeatureInactive}
         portal={props.portal}
         Panels={props.Panels}

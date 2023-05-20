@@ -13,8 +13,7 @@ import type {
 export type TSetSteps = (steps:TStepDefsList) => void
 export type TStepDefsRef = MutableRefObject<TStepDefsList>
 export type TFeaturesRef = MutableRefObject<TRaceFeatures>
-export type TSetFeatureRefs = (features:TRaceFeatures) => void
-export type TSetFeatureGroups = (features:TRaceFeatures, editingGroup?:string|boolean) => void
+export type TSetFeatureGroups = (features:TRaceFeatures) => void
 
 export type TOnFolderCreateCB = (location?:string) => void
 export type TOnFeatureCBRef = MutableRefObject<TOnFeatureCB>

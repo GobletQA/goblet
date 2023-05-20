@@ -28,8 +28,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
 
   const {
     featureGroups,
-    setFeatureRefs,
-    editingFeatureGroup
+    setFeatureGroups,
   } = useFeatureGroups({ featuresRef, rootPrefix })
 
   const onFeatureSave = useInline(props.onFeatureSave || noOp)
@@ -74,7 +73,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
    */
   // useEffect(() => {
   //   features !== featuresRef.current
-  //     && setFeatureRefs(features)
+  //     && setFeatureGroups(features)
   // }, [features])
 
   return {
@@ -89,7 +88,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     menuContext,
     setOpenedTabs,
     featureGroups,
-    setFeatureRefs,
     onFeatureSave,
     onFeatureClose,
     onFolderCreate,
@@ -98,8 +96,8 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     onFeatureCreate,
     onFeatureActive,
     onFeatureDelete,
-    onFeatureInactive,
-    editingFeatureGroup
+    setFeatureGroups,
+    onFeatureInactive
   }
 
 }
