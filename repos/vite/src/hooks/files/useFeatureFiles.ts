@@ -1,4 +1,8 @@
-import type { TFeatureFileModelList, TFeatureFileModel, TFileTree } from '@types'
+import type {
+  TFileTree,
+  TRaceFiles,
+  TFeatureFileModel
+} from '@types'
 
 import { useMemo } from 'react'
 import { useFiles } from '@store'
@@ -7,16 +11,28 @@ import { emptyObj } from '@keg-hub/jsutils'
 
 const emptyFileTree = emptyObj as TFileTree
 
-export const useFeatureFiles = () => {
+export const useFeatureFiles = (rootPrefix:string) => {
   const repoFiles = useFiles()
   const files = repoFiles?.files || emptyFileTree 
 
   return useMemo(() => {
     return Object.entries(files).reduce((acc, [loc, model]) => {
-      model?.ext === FileTypes.FEATURE
-        && (acc[loc] = model as TFeatureFileModel)
+      // Add any files that are of type feature
+      if(model?.ext === FileTypes.FEATURE)
+        acc[loc] = model as TFeatureFileModel
+
+      // Add any folders that are in the features folder
+      // But skip the root directory
+      else if(loc.startsWith(rootPrefix) && loc.endsWith(`/`)){
+        const relative = loc.replace(rootPrefix, ``)
+        if(relative !== `/`)
+          acc[loc] = {
+            relative,
+            isDir: true,
+          }
+      }
 
       return acc
-    }, {} as TFeatureFileModelList)
+    }, {} as TRaceFiles) as TFileTree
   }, [files])
 }

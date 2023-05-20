@@ -1,3 +1,4 @@
+import type { TRaceFiles } from '@types'
 import type { TRaceFeature } from '@gobletqa/race'
 
 import { useMemo } from 'react'
@@ -26,15 +27,14 @@ import {
 export const useRaceHooks = () => {
 
   const repo = useRepo()
-  const files = useFeatureFiles()
-  const definitions = useRaceStepDefs()
-
-  const { features, duplicates } = useRaceFeatures(files)
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
 
+  const definitions = useRaceStepDefs()
+  const files = useFeatureFiles(rootPrefix)
   const onSaveFile = useOnSaveFile(files, rootPrefix)
   const onAddFile = useOnAddFile(files, rootPrefix, repo)
   const onDeleteFeature = useOnDeleteFile(files, rootPrefix)
+  const { features, duplicates } = useRaceFeatures(files as TRaceFiles)
 
   // const onLoadFile = useOnLoadFile(files, rootPrefix)
   // const onRenameFile = useOnRenameFile(files, rootPrefix)

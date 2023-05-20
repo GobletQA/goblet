@@ -29,7 +29,35 @@ const writeFile = (
   data:string,
   format:string = 'utf8'
 ) => {
-  return limboify(fs.writeFile, location, data, format)
+  return limboify<boolean>(fs.writeFile, location, data, format)
+}
+
+/**
+ * Helper to create a .gobletkeep file when creating an empty directory
+ * @function
+ * @param {string} location - Folder path to where the file should be created
+ *
+ */
+const ensureGobletKeep = async (location:string) => {
+  const emptyTxt = `// Stub - To ensure the folder path is tracked by git`
+  const stubFile = `.gobletkeep`
+  const loc = path.join(location, stubFile)
+
+  const [err, exists] = await limbo(fs.pathExists(location))
+
+  if(err){
+    const error = new Exception({
+      err,
+      status: 400,
+      msg: `Error creating file at : ${loc}`,
+    })
+
+    return [error, null]
+  }
+  
+  return exists
+    ? [null, true]
+    : await writeFile(loc, emptyTxt) 
 }
 
 /**
@@ -66,7 +94,7 @@ const checkPathExists = async (location:string, skipThrow?:boolean) => {
   return exists ? true : false
 }
 
-const inTestRoot = (
+const inRepoRoot = (
   repo:Repo,
   location:string,
   skipThrow?:boolean
@@ -130,7 +158,7 @@ export const deleteGobletFile = async (
 ) => {
   await checkPathExists(location)
 
-  inTestRoot(repo, location)
+  inRepoRoot(repo, location)
 
   if(isWorldFile(repo, location))
     throw new Exception(
@@ -265,7 +293,7 @@ export const saveGobletFile = async (
 ) => {
   
   let saveLocation = location
-  const isInRoot = inTestRoot(repo, location, true)
+  const isInRoot = inRepoRoot(repo, location, true)
 
   // Check the file type, and if it's a definition then create a new definition file
   // This allows saving definitions form the standard lib in to the users lib
@@ -334,8 +362,8 @@ export const renameGobletFile = async (
 ) => {
   
   // Ensure both old and new locations are in the test root dir
-  inTestRoot(repo, oldLoc)
-  inTestRoot(repo, newLoc)
+  inRepoRoot(repo, oldLoc)
+  inRepoRoot(repo, newLoc)
   
   // Ensure we are not renaming the world file
   if(isWorldFile(repo, oldLoc))
@@ -382,7 +410,7 @@ export const createGobletFile = async (
 ) => {
 
   // Validate we are creating the file in the test root directory
-  inTestRoot(repo, location)
+  inRepoRoot(repo, location)
 
   // Check if the path already exists, so we don't overwrite an existing file
   const [existsErr, fileExists] = await limbo(fs.pathExists(location))
@@ -390,15 +418,17 @@ export const createGobletFile = async (
     throw new Exception(`File already exists at that location!`, 422)
 
   if(fileType === `folder`){
-    const [mkDErr, mkDSuccess] = await limbo(fs.ensureDir(location))
+    const [mkDErr] = await limbo(fs.ensureDir(location))
     if (mkDErr) throw new Exception(mkDErr, 422)
+
+    const [gobErr] = await ensureGobletKeep(location)
+    if (gobErr) throw new Exception(gobErr as Error, 422)
 
     return {
       success: true,
       // Build the file model for the new test file
       file: await buildFileModel(
-        {
-          fileType,
+        { fileType,
           location,
         },
         repo
