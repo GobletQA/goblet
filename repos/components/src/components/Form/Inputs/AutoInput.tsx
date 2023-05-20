@@ -71,7 +71,7 @@ export type TAutoInput = {
   autocompleteProps?: Partial<ComponentProps<typeof Auto>>
   color?: `primary`|`secondary`|`error`|`info`|`success`|`warning`
   textFieldProps?: Omit<TextFieldProps, 'name' | 'required' | 'label'>
-  inputRef:MutableRefObject<HTMLInputElement | HTMLTextAreaElement | undefined>
+  inputRef?:MutableRefObject<HTMLInputElement | HTMLTextAreaElement | undefined>
 }
 
 const useOnChangeVal = (

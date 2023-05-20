@@ -1,24 +1,22 @@
-import type { TFeaturesRefs } from '@GBR/types'
-import type { CSSProperties, MouseEvent } from 'react'
+import type { CSSProperties } from 'react'
 
 
 import { Meta } from '../Meta'
 import { Rules } from '../Rules'
 import { Section } from '../Section'
 import { cls } from '@keg-hub/jsutils'
+import { useMemo, useRef } from 'react'
 import { Scenarios } from '../Scenarios'
 import { Background } from '../Background'
 import { EmptyFeature } from './EmptyFeature'
 import { EditTitle } from '../Title/EditTitle'
 import { FeatureHeader } from './FeatureHeader'
 import { EmptyFeatureUUID } from '@GBR/constants'
-import { useMemo, useCallback, useRef } from 'react'
 import { EEditorMode, ESectionType } from '@GBR/types'
 import { useEditor, useSettings } from '@GBR/contexts'
 import { SimpleMode } from '@GBR/components/SimpleMode'
 import { BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { FeatureStack, FeatureContent } from './Feature.styled'
-import { createFeature } from '@GBR/actions/feature/createFeature'
 import { useOnSimpleAdd } from '@GBR/hooks/features/useOnSimpleAdd'
 import { useFeatureItems } from '@GBR/hooks/features/useFeatureItems'
 import { useFeatureActions } from '@GBR/hooks/actions/useFeatureActions'
@@ -26,7 +24,7 @@ import { useEnsureScenario } from '@GBR/hooks/features/useEnsureScenario'
 import { useFeatureIsEmpty } from '@GBR/hooks/features/useFeatureIsEmpty'
 import { useEditFeatureTitle } from '@GBR/hooks/features/useEditFeatureTitle'
 
-export type TFeature = TFeaturesRefs & {}
+export type TFeature = {}
 type StyleObj = Record<string, CSSProperties>
 
 const styles:Record<string, StyleObj|CSSProperties> = {
@@ -39,7 +37,6 @@ const styles:Record<string, StyleObj|CSSProperties> = {
 }
 
 export const Feature = (props:TFeature) => {
-  const { featuresRef } = props
 
   const { settings } = useSettings()
   const { feature, rootPrefix } = useEditor()
@@ -107,7 +104,6 @@ export const Feature = (props:TFeature) => {
                         <>
                           <Meta
                             parent={feature}
-                            featuresRef={featuresRef}
                             onTagsChange={onTagsChange}
                           />
 

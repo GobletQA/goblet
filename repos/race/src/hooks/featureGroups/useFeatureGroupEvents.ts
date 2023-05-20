@@ -12,10 +12,9 @@ import { useCallback } from 'react'
 import {exists} from '@keg-hub/jsutils'
 import { preventDefault } from '@gobletqa/components'
 import { EmptyFeatureGroupUUID } from '@GBR/constants'
-
+import { cancelFeatureGroup } from '@GBR/actions/featureGroups/cancelFeatureGroup'
 import { saveNewFeatureGroup } from '@GBR/actions/featureGroups/saveNewFeatureGroup'
 import { editFeatureGroupName } from '@GBR/actions/featureGroups/editFeatureGroupName'
-import { cancelFeatureGroup } from '@gobletqa/race/actions/featureGroups/cancelFeatureGroup'
 
 type THOnFeatureGroup = {
   featureGroup:TRaceFeatureGroup

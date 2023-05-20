@@ -1,7 +1,7 @@
 import type { TRaceFeatureGroup } from '@GBR/types'
 
 import { getEditor } from '@GBR/utils/editor/getEditor'
-import { removeGroup } from '@GBR/utils/features/removeGroup'
+import { removeFromGroup } from '@GBR/utils/features/removeFromGroup'
 
 export type TCancelFeatureGroup = {
   uuid:string
@@ -13,7 +13,7 @@ export const cancelFeatureGroup = async (props:TCancelFeatureGroup) => {
   
   const { editor } = await getEditor()
   const { featureGroups, setFeatureGroups } = editor
-  const removed = removeGroup({ items: featureGroups } as TRaceFeatureGroup, uuid)
+  const removed = removeFromGroup({ items: featureGroups } as TRaceFeatureGroup, uuid)
 
   return setFeatureGroups(removed.items)
 }

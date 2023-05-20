@@ -7,7 +7,7 @@ import { emptyObj } from '@keg-hub/jsutils'
 import { styles } from './FeatureItemHelpers'
 import { stopPropagation } from '@gobletqa/components'
 import { FeatureGroupHeaderEdit } from './FeaturesList.styled'
-import { useEditingFeatureGroup } from '@GBR/hooks/features/useEditingFeatureGroup'
+import { useEditingFeatureGroup } from '@GBR/hooks/featureGroups/useEditingFeatureGroup'
 
 
 export type TFeatureGroupHeader = {

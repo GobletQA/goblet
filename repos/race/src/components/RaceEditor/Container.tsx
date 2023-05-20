@@ -28,10 +28,8 @@ export const Container = (props:TEditorContainer) => {
     editorRef,
     onKeyDown,
     curPathRef,
-    curValueRef,
-    stepDefsRef,
-    featuresRef,
     openedTabs,
+    curValueRef,
     containerRef,
     actionsOpen,
     sidebarWidth,
@@ -102,14 +100,10 @@ export const Container = (props:TEditorContainer) => {
             onTabLeave={onTabLeave}
             openedTabs={openedTabs}
             onTabClose={onTabClose}
-            featuresRef={featuresRef}
             setOpenedTabs={setOpenedTabs}
             onTabClick={onFeatureClick as TTabAction}
           />
-          <Feature
-            stepDefsRef={stepDefsRef}
-            featuresRef={featuresRef}
-          />
+          <Feature />
         </EditorContainer>
         <Modal />
         {actions?.length && (

@@ -1,7 +1,6 @@
 import type { TTabAction, TTabItem, TTab } from '@gobletqa/components'
 import type {
   TRaceFeature,
-  TFeaturesRef,
   TOnFeatureCB,
   TRaceFeatures,
   TOnEditFeature,
@@ -29,7 +28,7 @@ export type THEditorActions = {
   onTabDown?:TTabAction
   onTabLeave?:TTabAction
   onTabHover?:TTabAction
-  featuresRef:TFeaturesRef
+  featureGroups:TRaceFeatures
   onFeatureClose?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
   onFeatureInactive?:TOnFeatureCB
@@ -68,8 +67,8 @@ export const useEditorActions = (props:THEditorActions) => {
 
   const {
     openedTabs,
-    featuresRef,
     setOpenedTabs,
+    featureGroups,
     onFeatureClose,
     onFeatureActive,
   } = props
@@ -89,8 +88,8 @@ export const useEditorActions = (props:THEditorActions) => {
     const { tabs, active } = removeTab(openedTabs, tab)
     setOpenedTabs(tabs)
 
-    const feat = featureFromTab(tab, featuresRef.current)
-    const nextFeat = active ? featureFromTab(active?.tab, featuresRef.current) : active
+    const feat = featureFromTab(tab, featureGroups)
+    const nextFeat = active ? featureFromTab(active?.tab, featureGroups) : active
 
     onFeatureClose?.(feat)
     nextFeat && onFeatureActive?.(nextFeat)
@@ -107,7 +106,7 @@ export const useEditorActions = (props:THEditorActions) => {
     arg1:TTab|Event,
     arg2?:TRaceFeature|Event
   ) => {
-    const { tab, feature:feat } = normalizeArgs(featuresRef.current, arg1, arg2)
+    const { tab, feature:feat } = normalizeArgs(featureGroups, arg1, arg2)
 
     const tabs = tab && setTabActive(openedTabs, tab)
     tabs && setOpenedTabs(tabs)
@@ -121,6 +120,7 @@ export const useEditorActions = (props:THEditorActions) => {
     setFeature,
     openedTabs,
     setOpenedTabs,
+    featureGroups,
     onFeatureActive
   ])
   

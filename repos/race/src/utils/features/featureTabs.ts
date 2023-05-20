@@ -6,6 +6,7 @@ import { BoltIcon } from '@gobletqa/components'
 import { noOpObj, omitKeys } from '@keg-hub/jsutils'
 import { TabStyles, TabRefs } from '@GBR/constants/tabs'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
+import { featureFromLoc } from '@GBR/utils/features/featureFromLoc'
 
 /**
  * Updates a tab with the passed in update object
@@ -121,6 +122,12 @@ export const featureToTab = (
  * If not found, then converts a tab object into a feature object
  */
 export const featureFromTab = (tab:TTab, features:TRaceFeatures) => {
-  const feat = features[tab?.uuid as keyof typeof features] as TRaceFeature
-  return feat || omitKeys<TRaceFeature>(tab, [`active`, `editing`, `title`])
+  const feat = featureFromLoc({
+    features,
+    loc: tab.path as string,
+  })
+
+  if(feat && feat.type !== `folder`) return feat
+
+  return omitKeys<TRaceFeature>(tab, [`active`, `editing`, `title`])
 }

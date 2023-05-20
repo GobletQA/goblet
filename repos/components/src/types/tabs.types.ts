@@ -9,9 +9,9 @@ export type TTabStyles = {
 }
 
 export type TTab = {
+  path?:string
   uuid?:string
   title?:string
-  path?:string
   active?:boolean
   editing?:boolean
   [key:string]: any

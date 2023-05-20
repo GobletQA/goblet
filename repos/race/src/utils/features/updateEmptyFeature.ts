@@ -46,7 +46,7 @@ const generateFeatureProps = (feat:TRaceFeature):Partial<TRaceFeature> => {
     6. Add `Feature: <name>\n` to content
     7. Update the uuid
 */
-export const updateEmptyFeature = (feat:TRaceFeature, featuresRef:TFeaturesRef) => {
+export const updateEmptyFeature = (feat:TRaceFeature) => {
   return feat.uuid !== EmptyFeatureUUID
     ? feat
     : {

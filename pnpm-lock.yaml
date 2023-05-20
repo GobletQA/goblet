@@ -3933,6 +3933,14 @@ packages:
       '@keg-hub/jsutils': 9.6.1
       app-root-path: 3.0.0
 
+  /@keg-hub/args-parse@9.0.0:
+    resolution: {integrity: sha512-N7/98lGiZDWGbYAWz1Q/EvknrT4GywjQV9gGtxZco0JP2HJR/9rU3fP4Vl7ciGWLxIXikjt4N5t1j8g4rp6FbQ==}
+    dependencies:
+      '@keg-hub/ask-it': 1.1.2
+      '@keg-hub/jsutils': 9.6.1
+      app-root-path: 3.0.0
+    dev: false
+
   /@keg-hub/ask-it@1.1.2:
     resolution: {integrity: sha512-i/KMYeNZGOA++LHRM0tsJ57pa2qaFyRMrDq9Q0zCilu3ET+gFBphrrQuzJB+03jA/HNpNUjNwNFc5XjkgfBbjA==}
     engines: {node: '>= 12.15.0'}
@@ -3942,20 +3950,20 @@ packages:
       inquirer: 7.3.3
     dev: false
 
-  /@keg-hub/cli-utils@0.7.0:
-    resolution: {integrity: sha512-r044xoIcXiYudShalw71+snBywsuGEOCZQ68nc1f17kTGK1qxDu90sL1ktcAa1WEPl22JnJBV9Ts9Y9//f3DnQ==}
-    engines: {node: '>= 12.0.0'}
+  /@keg-hub/cli-utils@0.8.0-alpha:
+    resolution: {integrity: sha512-uxQI8WT3AoHMYEjlNHFM0K5pkWVJkiZw2datm0cxNF1ByS4veDXbd+3oayRKGRGzUkkZyufeVMxwdqSlr7Mr1w==}
+    engines: {node: '>= 16.0.0'}
     dependencies:
-      '@keg-hub/args-parse': 10.0.0
-      '@keg-hub/ask-it': 1.1.2
+      '@keg-hub/args-parse': 9.0.0
       '@keg-hub/jsutils': 9.6.1
       '@keg-hub/spawn-cmd': 0.3.2
       app-root-path: 3.0.0
-      axios: 0.24.0
-      colors: 1.4.0
       fs-extra: 9.0.1
+    optionalDependencies:
+      esbuild: 0.17.6
+      esbuild-register: 3.4.2(esbuild@0.17.6)
     transitivePeerDependencies:
-      - debug
+      - supports-color
     dev: false
 
   /@keg-hub/cli-utils@0.8.0-alpha1:
@@ -3979,13 +3987,13 @@ packages:
   /@keg-hub/parse-config@2.1.0:
     resolution: {integrity: sha512-6AZyINWm8S6oWSbUxwzSTZ1BBcXpne7BiDDreRdN2GJ3kU8dDfwd1cJvQtggo4p0KRMw8fTDgtMv7PjH0bFgVQ==}
     dependencies:
-      '@keg-hub/cli-utils': 0.7.0
+      '@keg-hub/cli-utils': 0.8.0-alpha
       '@keg-hub/jsutils': 9.6.1
       '@keg-hub/spawn-cmd': 0.3.2
       js-yaml: 3.14.1
       write-yaml-file: 4.2.0
     transitivePeerDependencies:
-      - debug
+      - supports-color
     dev: false
 
   /@keg-hub/spawn-cmd@0.3.2:
@@ -5779,14 +5787,6 @@ packages:
 
   /aws4@1.12.0:
     resolution: {integrity: sha512-NmWvPnx0F1SfrQbYwOi7OeaNGokp9XhzNioJ/CSBs8Qa4vxug81mhJEAVZwxXuBmYB5KDRfMq/F3RR0BIU7sWg==}
-    dev: false
-
-  /axios@0.24.0:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
-    dependencies:
-      follow-redirects: 1.15.2
-    transitivePeerDependencies:
-      - debug
     dev: false
 
   /axios@1.4.0:

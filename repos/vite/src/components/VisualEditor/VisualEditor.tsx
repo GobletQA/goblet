@@ -32,7 +32,6 @@ export const VisualEditor = (props:TVisualEditor) => {
     rootPrefix,
     definitions,
     onWorldChange,
-    onFolderCreate,
     onFeatureClose,
     onFeatureDelete,
     onFeatureChange,
@@ -60,7 +59,6 @@ export const VisualEditor = (props:TVisualEditor) => {
             definitions={definitions}
             onWorldChange={onWorldChange}
             sidebarStatus={sidebarLocked}
-            onFolderCreate={onFolderCreate}
             onFeatureClose={onFeatureClose}
             sidebarWidth={SidebarOpenWidth}
             onSettingChange={onSettingChange}

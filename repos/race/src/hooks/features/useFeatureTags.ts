@@ -1,23 +1,32 @@
-import type { TRaceFeatureAsts, TFeaturesRef } from '@GBR/types'
+import type { TRaceFeatures } from '@GBR/types'
 
 import { useMemo } from 'react'
+import {uniqArr} from '@keg-hub/jsutils'
+import { useEditor } from '@GBR/contexts/EditorContext'
 
-export type THFeatureTags = {
-  featuresRef: TFeaturesRef
+const loopFeatures = (
+  features:TRaceFeatures,
+  tags:string[]
+):string[] => {
+  return Object.entries(features)
+    .reduce((tags, [key, feature]) => {
+      ;(`items` in feature)
+        ? tags.concat(loopFeatures(feature.items, tags))
+        : feature?.tags?.tokens?.forEach((tag) => !tags.includes(tag) && tags.push(tag))
+
+      return tags
+    }, tags)
 }
 
-export const useFeatureTags = (props:THFeatureTags) => {
-  const { featuresRef } = props
+
+export const useFeatureTags = () => {
+  const { featureGroups } = useEditor()
 
   return useMemo(() => {
-    return Object.entries(featuresRef.current as TRaceFeatureAsts)
-      .reduce((tags, [key, feature]) => {
-        feature?.tags?.forEach((tag) => {
-          tags[tag] = tags[tag] || []
-          !tags[tag].includes(feature.uuid) && tags[tag].push(feature.uuid)
-        })
+    const tags = loopFeatures(featureGroups, [])
 
-        return tags
-      }, {} as Record<string, string[]>)
+    // The types in uniqArr are broken
+    // @ts-ignore
+    return uniqArr(tags)
   }, [])
 }

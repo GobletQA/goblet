@@ -3,7 +3,6 @@ import type {
   TRaceFeatures,
 } from '@GBR/types'
 
-import {exists} from '@keg-hub/jsutils'
 import { useMemo, useState, useCallback } from 'react'
 import { buildGroups } from '@GBR/utils/features/buildGroups'
 
@@ -22,11 +21,12 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
 
   const [featureGroups, _setFeatureGroups] = useState<TRaceFeatures>(groups)
 
-  const setFeatureGroups = useCallback((features:TRaceFeatures) => {
-    featuresRef.current = features
+  const setFeatureGroups = useCallback((features:TRaceFeatures, merge?:boolean) => {
+    featuresRef.current = merge ? { ...featuresRef.current, ...features } : features
+
     const groups = buildGroups({
-      features,
       rootPrefix,
+      features: featuresRef.current,
     })
 
   _setFeatureGroups(groups)

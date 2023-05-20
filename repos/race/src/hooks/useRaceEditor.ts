@@ -10,8 +10,8 @@ import { noOp } from '@keg-hub/jsutils'
 import { useRef, useEffect } from 'react'
 import { useInline } from '@gobletqa/components'
 import { useInitTabs } from '@GBR/hooks/tabs/useInitTabs'
-import { useFeatureGroups } from '@GBR/hooks/features/useFeatureGroups'
 import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
+import { useFeatureGroups } from '@gobletqa/race/hooks/featureGroups/useFeatureGroups'
 
 export const useRaceEditor = (props:TRaceEditorProps) => {
   const {
@@ -32,7 +32,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   } = useFeatureGroups({ featuresRef, rootPrefix })
 
   const onFeatureSave = useInline(props.onFeatureSave || noOp)
-  const onFolderCreate = useInline(props.onFolderCreate || noOp)
   const onFeatureClose = useInline(props.onFeatureClose || noOp)
   const onFeatureChange = useInline(props.onFeatureChange || noOp)
   const onFeatureActive = useInline(props.onFeatureActive || noOp)
@@ -90,7 +89,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     featureGroups,
     onFeatureSave,
     onFeatureClose,
-    onFolderCreate,
     updateEmptyTab,
     onFeatureChange,
     onFeatureCreate,

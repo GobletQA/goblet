@@ -17,7 +17,6 @@ import {
 
 export type TMeta = {
   parent:TRaceFeature
-  featuresRef: TFeaturesRef
 }
 
 const styles = {

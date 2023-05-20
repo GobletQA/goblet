@@ -1,5 +1,5 @@
 import type { TRaceFiles } from '@types'
-import type { TRaceFeature } from '@gobletqa/race'
+import type { TRaceFeatureGroup, TRaceFeature } from '@gobletqa/race'
 
 import { useMemo } from 'react'
 import { useRepo } from '@store'
@@ -84,28 +84,34 @@ export const useRaceHooks = () => {
     )
   })
 
-  const onFeatureCreate = useInline((feature:TRaceFeature) => {
-    if(!feature?.parent?.uuid)
+  const onFeatureCreate = useInline(async (feature:TRaceFeature|TRaceFeatureGroup) => {
+    if(!feature?.parent?.location)
       return console.warn(`Failed to create feature, feature is missing the parent file path`)
+
+    if(feature.type === `folder`)
+      return await onAddFile({
+        isFolder: true,
+        location: feature?.parent?.location,
+      })
 
     const { parent, path, content, ...featureAst } = feature
 
-    onAddFile({ content, location: parent.uuid })
-  })
-  
-  const onFolderCreate = useInline((location:string) => {
-    onAddFile({
-      isFolder: true,
-      // TODO: Need to add check in backend for existing folder
-      // If the folder path already exists, then don't recreate it
-      location: `${rootPrefix}/${location}`,
-    })
+    await onAddFile({ content, location: parent.uuid })
   })
 
-  const onFeatureDelete = useInline(async (feature:TRaceFeature) => {
+  const onFeatureDelete = useInline(async (feature:TRaceFeature|TRaceFeatureGroup) => {
+    if(!feature?.parent?.location)
+      return console.warn(`Failed to delete feature, missing feature file location`)
+
     const loc = feature.parent.location
+
+    if(feature.type === `folder`)
+      return await onDeleteFeature(loc)
+
+
     const featFile = files[loc]
-    if(!featFile) return console.warn(`Can not delete feature, missing feature file location`)
+    if(!featFile)
+      return console.warn(`Failed to delete feature, Feature file does not exist?`)
 
     // Assume only 1 feature per file
     await onDeleteFeature(loc)
@@ -125,7 +131,6 @@ export const useRaceHooks = () => {
     rootPrefix,
     definitions,
     onWorldChange,
-    onFolderCreate,
     onFeatureClose,
     onFeatureCreate,
     onFeatureActive,

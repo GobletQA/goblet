@@ -39,11 +39,11 @@ const writeFile = (
  *
  */
 const ensureGobletKeep = async (location:string) => {
-  const emptyTxt = `// Stub - To ensure the folder path is tracked by git`
+  const emptyTxt = `// Stub - To ensure the folder path is tracked by git\n`
   const stubFile = `.gobletkeep`
   const loc = path.join(location, stubFile)
 
-  const [err, exists] = await limbo(fs.pathExists(location))
+  const [err, exists] = await limbo(fs.pathExists(loc))
 
   if(err){
     const error = new Exception({
@@ -54,7 +54,7 @@ const ensureGobletKeep = async (location:string) => {
 
     return [error, null]
   }
-  
+
   return exists
     ? [null, true]
     : await writeFile(loc, emptyTxt) 

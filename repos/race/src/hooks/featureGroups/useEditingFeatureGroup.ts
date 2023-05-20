@@ -12,12 +12,12 @@ import {
 } from './useFeatureGroupEvents'
 
 
-export type THFeatureItemHooks = TEditorFeatureActions & {
+export type THEditingFeatureGroup = TEditorFeatureActions & {
   featureGroups:TRaceFeatures
   featureGroup:TRaceFeatureGroup
 }
 
-export const useEditingFeatureGroup = (props:THFeatureItemHooks) => {
+export const useEditingFeatureGroup = (props:THEditingFeatureGroup) => {
   const {
     featureGroup,
     featureGroups,

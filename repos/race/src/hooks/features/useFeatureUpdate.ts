@@ -1,10 +1,10 @@
 import type {
-  TAuditOpts,
   TFeatureCB,
   TSetFeature,
   TRaceFeature,
   TOnFeatureCB,
   TFeaturesRef,
+  TRaceFeatures,
   TUpdateFeature,
   TSetFeatureGroups,
   TSetFeatureOpts,
@@ -20,16 +20,17 @@ import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
+import { updateFeatureInGroup } from '@GBR/utils/features/updateFeatureInGroup'
 
 export type THFeatureUpdate = {
   rootPrefix:string
   expanded:TExpanded
   feature?:TRaceFeature
   setFeature:TSetFeature
-  featuresRef: TFeaturesRef
   updateEmptyTab:TFeatureCB
   onFeatureSave:TOnFeatureCB
   onFeatureClose:TOnFeatureCB
+  featureGroups:TRaceFeatures
   updateExpanded:TOnExpandedCB
   onFeatureCreate:TOnFeatureCB
   onFeatureChange?:TOnFeatureCB
@@ -46,13 +47,13 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     feature,
     curPathRef,
     curValueRef,
-    featuresRef,
-    updateEmptyTab,
-    setFeatureGroups,
+    featureGroups,
     updateExpanded,
     onAuditFeature,
     onFeatureChange,
     onFeatureCreate,
+    updateEmptyTab,
+    setFeatureGroups,
     onFeatureInactive,
     setFeature:_setFeature,
   } = props
@@ -91,18 +92,19 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
 
     options.create ? onFeatureCreate(updated) : onFeatureChange?.(updated, feature)
 
-    featuresRef.current[updated.uuid] = updated
+    const { items:groups } = updateFeatureInGroup({
+      feature: updated,
+      features: { items: featureGroups },
+      replaceEmptyKey: feature?.uuid === EmptyFeatureUUID ? updated.uuid : undefined,
+    })
 
     // If the updated feature was an empty feature
-    // Remove the temp empty feature, and update the tab name
-    // So the tab has the correct feature title
-    if(feature?.uuid === EmptyFeatureUUID){
-      delete featuresRef.current[EmptyFeatureUUID]
-      updateEmptyTab?.(updated)
-    }
+    // Update the tab name, so the tab has the correct feature title
+    feature?.uuid === EmptyFeatureUUID
+      && updateEmptyTab?.(updated)
 
     options?.expand && updateExpanded(options?.expand)
-    setFeatureGroups(featuresRef.current)
+    setFeatureGroups(groups)
     setFeature(updated, options)
   })
  

@@ -7,6 +7,7 @@ import type {
 import { useCallback } from 'react'
 import { stopPropagation } from '@gobletqa/components'
 import { createFeatureGroup } from '@GBR/actions/featureGroups/createFeatureGroup'
+import { removeFeatureGroup } from '@GBR/actions/featureGroups/removeFeatureGroup'
 import { editFeatureGroupName } from '@GBR/actions/featureGroups/editFeatureGroupName'
 
 export type THFeatureItemHooks = TEditorFeatureActions & {
@@ -34,7 +35,7 @@ export const useFeatureGroupHooks = (props:THFeatureItemHooks) => {
 
   const onDeleteGroup = useCallback((evt:any) => {
     stopPropagation(evt)
-    console.log(`------- on delete group -------`)
+    removeFeatureGroup({ featureGroup })
   }, [featureGroup])
 
   return {

@@ -22,17 +22,13 @@ import {
 
 export type TMeta = {
   parent:TRaceFeature
-  featuresRef: TFeaturesRef
   onTagsChange:(...args:any[]) => void
 }
 
 export const Meta = (props:TMeta) => {
   const { settings, toggleMeta } = useSettings()
 
-  const {
-    parent,
-    featuresRef,
-  } = props
+  const { parent } = props
 
   const onEditFeatureTitle = useEditFeatureTitle(props)
 
@@ -95,14 +91,10 @@ export const Meta = (props:TMeta) => {
         />
         <Tags
           parent={parent}
-          featuresRef={featuresRef}
           type={ESectionType.feature}
         />
       </Box>
-      <Story
-        parent={parent}
-        featuresRef={featuresRef}
-      />
+      <Story parent={parent} />
     </Section>
   )
 

@@ -22,7 +22,7 @@ export const useRaceFeatures = (files:TRaceFiles) => {
     return Object.entries(files as TFeatureFileModelList)
       .reduce((models, [key, fileModel]) => {
         return (`isDir` in fileModel)
-          ? buildRaceFolder(models, repo, key, fileModel as TRaceFolder)
+          ? buildRaceFolder(models, fileModel as TRaceFolder)
           : buildRaceFeatures(models, repo, key, fileModel)
       }, items)
 

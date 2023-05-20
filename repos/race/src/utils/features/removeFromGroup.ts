@@ -1,25 +1,29 @@
 import type { TRaceFeatures, TRaceFeatureGroup } from '@GBR/types'
 
 
-export const removeGroup = (
+export const removeFromGroup = (
   featureGroups:TRaceFeatureGroup,
   uuid:string
 ) => {
   if(!uuid){
-    console.warn(`[Remove Feature Group] Missing feature group uuid`)
+    console.warn(`[Remove Feature Group] Missing feature group item uuid`)
     return featureGroups
   }
 
   const groups = featureGroups?.items || {}
 
   let found = false
-  const items = Object.entries(groups)
+  featureGroups.items = Object.entries(groups)
     .reduce((acc, [key, item]) => {
-      if(found) return acc
+
+      if(found){
+        acc[key] = item
+        return acc
+      }
 
       let add = item.uuid !== uuid
         ? `items` in item
-          ? removeGroup(item, uuid)
+          ? removeFromGroup(item, uuid)
           : item
         : undefined
 
@@ -27,8 +31,6 @@ export const removeGroup = (
 
       return acc
     }, {} as TRaceFeatures)
-
-  if(found) featureGroups.items = items
 
   return featureGroups
 }

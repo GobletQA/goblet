@@ -23,10 +23,9 @@ import type {
 
 import type {
   TStepDefsRef,
-  TFeaturesRef,
   TOnFeatureCB,
   TSetFeatureGroups,
-  TOnFolderCreateCB,
+  TOnFeatureItemCB,
 } from './helpers.types'
 
 import type {
@@ -35,7 +34,6 @@ import type {
 
 export type TFeaturesRefs = {
   stepDefsRef: TStepDefsRef
-  featuresRef: TFeaturesRef
 }
 
 export type TEditorRef = MutableRefObject<TEditorCtx>
@@ -76,9 +74,8 @@ export type TRaceEditorProps = TEditorShared & {
   initialFeature?:TRaceFeature
   onWorldChange?:TOnWorldChange
   onFeatureChange?:TOnFeatureCB
-  onFeatureCreate?:TOnFeatureCB
   onSettingChange?:TOnSettingCB
-  onFolderCreate?:TOnFolderCreateCB
+  onFeatureCreate?:TOnFeatureItemCB
 }
 
 export type TEditorShared = {
@@ -95,9 +92,9 @@ export type TEditorShared = {
   featureGroups:TRaceFeatures
   onFeatureClose?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
-  onFeatureDelete?:TOnFeatureCB
   menuContext?:TRaceContextMenu
   onFeatureInactive?:TOnFeatureCB
+  onFeatureDelete?:TOnFeatureItemCB
   onSidebarResize?:(width:number) => void
   portal?:string|MutableRefObject<HTMLElement>
   actions?:TEditorAction<TEditorCtx, TEditorRef>[]
@@ -105,7 +102,7 @@ export type TEditorShared = {
   onKeyDown?:(event: KeyboardEvent<HTMLElement>) => void
 }
 
-export type TEditorContainer = TFeaturesRefs & TEditorRefs & TEditorShared & {
+export type TEditorContainer = TEditorRefs & TEditorShared & {
   openedTabs:TTabItem[]
   setFeatureGroups:TSetFeatureGroups
   setOpenedTabs:(tabs:TTabItem[]) => void

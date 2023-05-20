@@ -37,8 +37,7 @@ export const saveNewFeatureGroup = async (props:TSaveNewFeatureGroup) => {
   })
 
   // call the on folder create callback to save it in the backend
-  onFolderCreate?.(path)
-
+  onFolderCreate?.(group)
   const updated = updateGroups({ items: featureGroups }, group, relative)
 
   return setFeatureGroups(updated.items)

@@ -83,8 +83,6 @@ export const buildRaceErrFeature = ({
 
 export const buildRaceFolder = (
   models: TBuiltRaceFeatures,
-  repo: TRepoOpts,
-  key:string,
   folder:TRaceFolder,
 ) => {
 

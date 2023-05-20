@@ -1,25 +1,28 @@
 import type { ESectionType } from './section.types'
 import type { TStepDefsList } from '@ltipton/parkin'
-import type { TRaceFeatures, TRaceFeature } from './features.types'
 import type {
   MouseEvent,
   KeyboardEvent,
   SyntheticEvent,
   MutableRefObject,
 } from 'react'
-
+import type {
+  TRaceFeature,
+  TRaceFeatures,
+  TRaceFeatureItem,
+} from './features.types'
 
 
 export type TSetSteps = (steps:TStepDefsList) => void
 export type TStepDefsRef = MutableRefObject<TStepDefsList>
 export type TFeaturesRef = MutableRefObject<TRaceFeatures>
-export type TSetFeatureGroups = (features:TRaceFeatures) => void
+export type TSetFeatureGroups = (features:TRaceFeatures, merge?:boolean) => void
 
-export type TOnFolderCreateCB = (location?:string) => void
-export type TOnFeatureCBRef = MutableRefObject<TOnFeatureCB>
 export type TFeatureCB = (feature: TRaceFeature) => void
-export type TOnFeatureCB = (feature?:TRaceFeature, ...rest:any[]) => void
 export type TSetFeature = (feature?:TRaceFeature) => void
+export type TOnFeatureCBRef = MutableRefObject<TOnFeatureCB>
+export type TOnFeatureCB = (feature?:TRaceFeature, ...rest:any[]) => void
+export type TOnFeatureItemCB = (feature?:TRaceFeature|TRaceFeatureItem, ...rest:any[]) => void
 export type TOnAddClick = (evt:SyntheticEvent, parentId?:string, type?:ESectionType) => void
 
 export enum EPatchType {

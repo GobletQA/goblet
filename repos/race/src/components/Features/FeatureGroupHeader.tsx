@@ -15,7 +15,7 @@ import {
 
 import { toolTipProps, styles } from './FeatureItemHelpers'
 import { FeatureGroupHeaderActions } from './FeaturesList.styled'
-import { useFeatureGroupHooks } from '@GBR/hooks/features/useFeatureGroupHooks'
+import { useFeatureGroupHooks } from '@GBR/hooks/featureGroups/useFeatureGroupHooks'
 
 
 export type TFeatureGroupHeader = {
