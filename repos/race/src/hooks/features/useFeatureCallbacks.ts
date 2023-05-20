@@ -21,6 +21,7 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   const {
     feature,
     curPathRef,
+    rootPrefix,
     curValueRef,
     setFeature:_setFeature,
   } = props
@@ -44,9 +45,9 @@ export const useFeatureCallbacks = (props:THFeatureCallbacks) => {
   // Allows dispatching update outside of the react context
   useOnEvent<TUpdateFeature>(UpdateFeatureContextEvt, ({ feature, options }) => {
     const isEmpty = feature.uuid === EmptyFeatureUUID
-    const feat = isEmpty ? updateEmptyFeature(feature) : feature
+    const feat = isEmpty ? updateEmptyFeature(feature, rootPrefix) : feature
 
-    updateFeature({ options, feature: feat})
+    updateFeature({ options, feature: feat })
   })
 
   // Helper to allow external code ask the context for the current feature

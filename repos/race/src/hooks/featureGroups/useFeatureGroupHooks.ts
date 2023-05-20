@@ -6,6 +6,7 @@ import type {
 
 import { useCallback } from 'react'
 import { stopPropagation } from '@gobletqa/components'
+import { createFeature } from '@GBR/actions/feature/createFeature'
 import { createFeatureGroup } from '@GBR/actions/featureGroups/createFeatureGroup'
 import { removeFeatureGroup } from '@GBR/actions/featureGroups/removeFeatureGroup'
 import { editFeatureGroupName } from '@GBR/actions/featureGroups/editFeatureGroupName'
@@ -30,7 +31,7 @@ export const useFeatureGroupHooks = (props:THFeatureItemHooks) => {
   
   const onCreateFeature = useCallback((evt:any) => {
     stopPropagation(evt)
-    // createFeature({ featureGroup })
+    createFeature({ path: featureGroup.parent.location })
   }, [featureGroup])
 
   const onDeleteGroup = useCallback((evt:any) => {

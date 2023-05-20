@@ -19,16 +19,17 @@ const addFeatureExt = (location:string) => {
  * Generates the feature file path, uuid and parent properties
  * Ensures it does not overwrite an existing feature file name
  */
-const generateFeatureProps = (feat:TRaceFeature):Partial<TRaceFeature> => {
+const generateFeatureProps = (feat:TRaceFeature, rootPrefix:string):Partial<TRaceFeature> => {
   const fileName = cleanString(feat.feature)
   const nameExt = addFeatureExt(fileName)
 
   const relative = `/${nameExt}`
-  const fullLoc = `${feat.parent.location}${relative}`
+  const fullLoc = `${feat.parent.location.replace(/\/$/, ``)}${relative}`
+  const path = fullLoc.replace(rootPrefix, ``)
 
   return {
+    path,
     uuid: fullLoc,
-    path: relative,
     parent: { uuid: fullLoc, location: fullLoc },
   }
 }
@@ -46,12 +47,12 @@ const generateFeatureProps = (feat:TRaceFeature):Partial<TRaceFeature> => {
     6. Add `Feature: <name>\n` to content
     7. Update the uuid
 */
-export const updateEmptyFeature = (feat:TRaceFeature) => {
+export const updateEmptyFeature = (feat:TRaceFeature, rootPrefix:string) => {
   return feat.uuid !== EmptyFeatureUUID
     ? feat
     : {
         ...omitKeys(feat, [`isEmpty`]),
-        ...generateFeatureProps(feat)
+        ...generateFeatureProps(feat, rootPrefix)
       } as TRaceFeature
 
 }

@@ -50,7 +50,7 @@ export const FeatureItemActions = (props:TFeatureItemActions) => {
     openYesNo({
       title: `Delete Feature`,
       text: <DeleteFeatureMsg feature={feature} />,
-      yes: {onClick: () => onDeleteFeature?.(e, feature.uuid)}
+      yes: {onClick: () => onDeleteFeature?.(e, feature.path)}
     })
   }, [
     feature?.uuid,

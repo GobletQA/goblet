@@ -3,7 +3,6 @@ import type {
   TSetFeature,
   TRaceFeature,
   TOnFeatureCB,
-  TFeaturesRef,
   TRaceFeatures,
   TUpdateFeature,
   TSetFeatureGroups,
@@ -18,6 +17,7 @@ import type { TExpanded } from '@GBR/hooks/editor/useExpanded'
 import { emptyObj } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
+import { addToGroup } from '@GBR/utils/features/addToGroup'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateFeatureInGroup } from '@GBR/utils/features/updateFeatureInGroup'
@@ -92,11 +92,9 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
 
     options.create ? onFeatureCreate(updated) : onFeatureChange?.(updated, feature)
 
-    const { items:groups } = updateFeatureInGroup({
-      feature: updated,
-      features: { items: featureGroups },
-      replaceEmptyKey: feature?.uuid === EmptyFeatureUUID ? updated.uuid : undefined,
-    })
+    const groups = feature?.uuid === EmptyFeatureUUID
+      ? addToGroup({ feature: updated, features: { items: featureGroups }})
+      : updateFeatureInGroup({feature: updated, features: { items: featureGroups }})
 
     // If the updated feature was an empty feature
     // Update the tab name, so the tab has the correct feature title
@@ -104,7 +102,7 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
       && updateEmptyTab?.(updated)
 
     options?.expand && updateExpanded(options?.expand)
-    setFeatureGroups(groups)
+    setFeatureGroups(groups.items)
     setFeature(updated, options)
   })
  
