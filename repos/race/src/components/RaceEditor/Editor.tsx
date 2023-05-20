@@ -31,7 +31,6 @@ export const Editor = (props:TRaceEditorProps) => {
     onFeatureCreate,
     onFeatureDelete,
     onFeatureActive,
-    setFeatureGroups,
     onFeatureInactive,
     editingFeatureGroup
   } = useRaceEditor(props)
@@ -56,7 +55,6 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureChange={onFeatureChange}
       onFeatureActive={onFeatureActive}
       onFeatureDelete={onFeatureDelete}
-      setFeatureGroups={setFeatureGroups}
       onFeatureInactive={onFeatureInactive}
       editingFeatureGroup={editingFeatureGroup}
       expressionOptions={props.expressionOptions}

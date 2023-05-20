@@ -47,7 +47,6 @@ export type TEditorProvider = {
   setFeatureRefs:TSetFeatureRefs
   onFolderCreate?:TOnFolderCreateCB
   editingFeatureGroup:string|boolean
-  setFeatureGroups:TSetFeatureGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
   setOpenedTabs:(tabs:TTabItem[]) => void
@@ -69,7 +68,6 @@ export type TEditorCtx = {
   setFeatureRefs:TSetFeatureRefs
   deleteFeature:(loc:string)=>void
   onFolderCreate?:TOnFolderCreateCB
-  setFeatureGroups:TSetFeatureGroups
   editingFeatureGroup:string|boolean
   collapseAllExcept:(key:string|string[]) => void
 }
@@ -98,7 +96,6 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureCreate,
     onFeatureDelete,
     onFeatureActive,
-    setFeatureGroups,
     onFeatureInactive,
     expressionOptions,
     editingFeatureGroup
@@ -162,7 +159,6 @@ export const EditorProvider = (props:TEditorProvider) => {
       updateExpanded,
       setFeatureRefs,
       onFolderCreate,
-      setFeatureGroups,
       collapseAllExcept,
       expressionOptions,
       editingFeatureGroup,
@@ -181,7 +177,6 @@ export const EditorProvider = (props:TEditorProvider) => {
     setFeatureRefs,
     updateExpanded,
     onFolderCreate,
-    setFeatureGroups,
     expressionOptions,
     collapseAllExcept,
     editingFeatureGroup

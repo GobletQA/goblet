@@ -23,34 +23,27 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
   }, [])
   const [featureGroups, _setFeatureGroups] = useState<TRaceFeatures>(groups)
 
-  const setFeatureGroups = useCallback((groups:TRaceFeatures,  editingGroup?:string|boolean) => {
-    _setFeatureGroups(groups)
-
-    exists<string|boolean>(editingGroup)
-      && editingGroup !== editingFeatureGroup
-      && setEditingGroup(editingGroup)
-  }, [
-    featureGroups,
-    editingFeatureGroup
-  ])
-
   const setFeatureRefs = useCallback((features:TRaceFeatures) => {
     featuresRef.current = features
     const { groups, editingGroup } = buildGroups({
       rootPrefix,
       featuresRef: { current: features }
     })
-    setFeatureGroups(groups, editingGroup)
+
+  _setFeatureGroups(groups)
+
+  exists<string|boolean>(editingGroup)
+    && editingGroup !== editingFeatureGroup
+    && setEditingGroup(editingGroup)
   }, [
     rootPrefix,
-    setFeatureGroups
+    editingFeatureGroup
   ])
 
   return {
     featureGroups,
     setFeatureRefs,
     setEditingGroup,
-    setFeatureGroups,
     editingFeatureGroup
   }
 }

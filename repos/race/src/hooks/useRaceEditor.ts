@@ -29,7 +29,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   const {
     featureGroups,
     setFeatureRefs,
-    setFeatureGroups,
     editingFeatureGroup
   } = useFeatureGroups({ featuresRef, rootPrefix })
 
@@ -99,7 +98,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     onFeatureCreate,
     onFeatureActive,
     onFeatureDelete,
-    setFeatureGroups,
     onFeatureInactive,
     editingFeatureGroup
   }
