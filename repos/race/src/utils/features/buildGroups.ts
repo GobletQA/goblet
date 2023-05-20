@@ -1,18 +1,35 @@
-import type { TRaceFeatureGroup, TRaceFeatureItem, TFeaturesRef } from '@GBR/types'
+import type { TRaceFeatureGroup, TRaceFeatureItem, TRaceFeatures } from '@GBR/types'
 
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj, exists } from '@keg-hub/jsutils'
 import { groupFactory } from '@GBR/factories/groupFactory'
 import { EmptyFeatureUUID, EmptyFeatureGroupUUID } from '@GBR/constants/values'
 
-type TEditingRef = Record<`editingGroup`, string|boolean>
-
 export type TBuildFeatureGroups = {
   rootPrefix:string
-  featuresRef: TFeaturesRef
+  features: TRaceFeatures
+}
+
+
+const addGroupProps = (
+  existing:TRaceFeatureGroup,
+  item:TRaceFeatureGroup,
+  part:string
+) => {
+
+  const group:Partial<TRaceFeatureGroup> = {
+    items: { ...existing.items, ...item.items }
+  }
+
+  // Check if it's a folder, and in editing mode
+  // Ensure editing is set directly on the featureGroup object
+  // Editing mode is reused for both a new group, and existing with `editing` property set
+  if(part === EmptyFeatureGroupUUID || item.editing || (!exists(item.editing) && existing.editing))
+    group.editing = true
+
+  return group
 }
 
 const addItemToGroup = (
-  editingRef:TEditingRef,
   groups:TRaceFeatureGroup,
   item:TRaceFeatureItem,
   part:string,
@@ -20,30 +37,21 @@ const addItemToGroup = (
 ) => {
   const existing = groups.items[loc] || emptyObj
 
-  const joined:TRaceFeatureItem = {
+  groups.items[loc] = {
     ...existing,
     ...item,
     ...(
-      existing && (`items` in existing)
-        ? { items: { ...existing.items, ...(item as TRaceFeatureGroup).items } }
+      // Only groups has items, so check and add group props when needed
+      (`items` in existing)
+        ? addGroupProps(existing, item as TRaceFeatureGroup, part)
         : emptyObj
       )
   }
 
-  if((`items` in joined)){
-    if(part === EmptyFeatureGroupUUID || joined.editing){
-      joined.editing = true
-      editingRef.editingGroup = groups.items[loc].uuid
-    }
-  }
-
-  groups.items[loc] = joined
-
   return groups
 }
  
-const buildPathInGroup = (
-  editingRef:TEditingRef,
+const createGroupsFromPath = (
   groups:TRaceFeatureGroup,
   item:TRaceFeatureItem,
   parts:string[],
@@ -58,12 +66,12 @@ const buildPathInGroup = (
   fullLoc = `${fullLoc.replace(/\/$/, ``)}${loc}`
   relative = `${relative.replace(/\/$/, ``)}/${loc}`
 
-  // If it's the last part of the path, 
+  // If it's the last part of the path,
   // Then this is where the item should be added
-  // So add it and return
+  // The addItemToGroup, with merge the item, with any existing item in groups
+  // item takes precedence over an existing item in the groups object
   if(!parts.length)
     return addItemToGroup(
-      editingRef,
       groups,
       item,
       part,
@@ -74,8 +82,7 @@ const buildPathInGroup = (
   // And if it exists, then use it as the parent Groups object
   const found = groups.items[loc] as TRaceFeatureGroup
   if(found){
-    groups.items[loc] = buildPathInGroup(
-      editingRef,
+    groups.items[loc] = createGroupsFromPath(
       found,
       item,
       parts,
@@ -86,10 +93,11 @@ const buildPathInGroup = (
     return groups
   }
 
-  // If not existing item, then build it
-  // This happens when a feature is built before it's parent folder
-  // But the duplicate folder should be resolved  when the folder is built
-  // When it checks for a found item above
+  // If no existing item, then build it
+  // This happens when a feature is built before it's parent folder / group
+  // This will recreate an existing folder
+  // But duplicate folder should be merged when the folder is built
+  // From the found check in the code above
   const built = groupFactory({
     fullLoc,
     title: part,
@@ -97,8 +105,7 @@ const buildPathInGroup = (
   })
 
   // Use the newly built group as the parent group moving forward
-  groups.items[loc] = buildPathInGroup(
-    editingRef,
+  groups.items[loc] = createGroupsFromPath(
     built,
     item,
     parts,
@@ -112,17 +119,14 @@ const buildPathInGroup = (
 
 export const buildGroups = ({
   rootPrefix,
-  featuresRef,
+  features,
 }:TBuildFeatureGroups) => {
-
-  const editingRef:TEditingRef={editingGroup: false}
-  const groups = Object.entries(featuresRef?.current)
+  return Object.entries(features)
     .reduce((groups, [key, item]) => {
       // Skip a feature if it's empty, so it doesn't show in the sidebar
       return item.uuid === EmptyFeatureUUID
         ? groups
-        : buildPathInGroup(
-            editingRef,
+        : createGroupsFromPath(
             groups,
             item,
             item.path.split(`/`).filter(Boolean),
@@ -130,11 +134,6 @@ export const buildGroups = ({
             item.path
           )
 
-    }, { items: {} } as any)
-
-  return {
-    ...editingRef,
-    groups: groups.items,
-  }
+    }, { items: {} } as any).items
 }
 

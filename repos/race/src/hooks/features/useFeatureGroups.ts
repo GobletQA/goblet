@@ -14,35 +14,27 @@ export type THFeatureGroups = {
 
 export const useFeatureGroups = (props:THFeatureGroups) => {
   const { rootPrefix, featuresRef } = props
-  
-  const [editingFeatureGroup, setEditingGroup] = useState<string|boolean>(false)
 
-  const groups = useMemo(() => {
-    const { groups } = buildGroups({ featuresRef, rootPrefix })
-    return groups
-  }, [])
+  const groups = useMemo(
+    () => buildGroups({ rootPrefix, features: featuresRef.current }),
+    [rootPrefix]
+  )
+
   const [featureGroups, _setFeatureGroups] = useState<TRaceFeatures>(groups)
 
   const setFeatureGroups = useCallback((features:TRaceFeatures) => {
     featuresRef.current = features
-    const { groups, editingGroup } = buildGroups({
+    const groups = buildGroups({
+      features,
       rootPrefix,
-      featuresRef: { current: features }
     })
 
   _setFeatureGroups(groups)
 
-  exists<string|boolean>(editingGroup)
-    && editingGroup !== editingFeatureGroup
-    && setEditingGroup(editingGroup)
-  }, [
-    rootPrefix,
-    editingFeatureGroup
-  ])
+  }, [rootPrefix])
 
   return {
     featureGroups,
-    setEditingGroup,
     setFeatureGroups,
   }
 }
