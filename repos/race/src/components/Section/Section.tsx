@@ -36,8 +36,10 @@ export type TSection = {
   showExpandIcon?:boolean
   headerSx?:CSSProperties
   contentSx?:CSSProperties
+  actionsSx?:CSSProperties
   actions?:TSectionAction[]
   dropdownSx?:CSSProperties
+  headerTextSx?:CSSProperties
   dragHandleSx?:CSSProperties
   type:ESectionType|ESectionExt
   headerContentSx?:CSSProperties
@@ -67,10 +69,12 @@ export const Section = (props:TSection) => {
     headerSx,
     footerSx,
     contentSx,
+    actionsSx,
     className,
     label=type,
     dropdownSx,
     parentTypes,
+    headerTextSx,
     dragHandleSx,
     dragHandleRef,
     showExpandIcon,
@@ -120,6 +124,7 @@ export const Section = (props:TSection) => {
                 noToggle={noToggle}
                 headerSx={headerSx}
                 expanded={isExpanded}
+                headerTextSx={headerTextSx}
                 headerContentSx={headerContentSx}
                 id={`${parent.uuid}-${id || uuid}`}
                 showExpandIcon={exists(showExpandIcon) ? showExpandIcon : false}
@@ -127,6 +132,7 @@ export const Section = (props:TSection) => {
                   <SectionActions
                     id={id}
                     type={type}
+                    sx={actionsSx}
                     actions={actions}
                   />
                 ) || null}

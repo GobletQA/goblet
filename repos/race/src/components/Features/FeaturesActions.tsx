@@ -59,7 +59,7 @@ const AddRootFolder = (props:TAddRootFolder) => {
       loc='bottom'
       describeChild
       enterDelay={500}
-      title={`Create a feature folder in the root directory`}
+      title={`Create a folder to group similar features together`}
     >
       <NewFolderIcon
         {...props}

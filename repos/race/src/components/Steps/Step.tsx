@@ -35,12 +35,18 @@ export type TStep = {
 
 const styles = {
   section: {
-    marginTop: `0px`
+    marginTop: `0px`,
   },
   content: {
     boxShadow: `none`,
     backgroundColor: `var(--goblet-editorGroup-background);`
   },
+  headerText: {
+    height: `auto`
+  },
+  actions: {
+    alignItems: `start`,
+  }
 }
 
 export const Step = (props:TStep) => {
@@ -92,11 +98,13 @@ export const Step = (props:TStep) => {
         sx={styles.section}
         formatHeader={false}
         type={ESectionType.step}
+        actionsSx={styles.actions}
         contentSx={styles.content}
         dragHandleSx={dragHandleSx}
         dragHandleRef={dragHandleRef}
         className={`gb-step-section`}
         showDragHandle={showDragHandle}
+        headerTextSx={styles.headerText}
         parentTypes={[ESectionType.scenario, ESectionType.background]}
         label={(
           <StepHeader

@@ -17,7 +17,7 @@ export const StepHeader = (props:TStepHeader) => {
   const hasStep = Boolean(step?.step?.trim())
 
   return (
-    <StepHeaderText>
+    <StepHeaderText className='gb-step-header-text' >
       {
         hasStep
           ? (

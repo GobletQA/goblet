@@ -14,13 +14,14 @@ const dndCss = {
   dropdown: `
     &.gb-section-dropdown-dnd {
       & .gb-dropdown-header {
+        padding: 0px;
         padding-left: 30px;
       }
     }
   `,
   dragHandle: `
     z-index: 1;
-    left: 15px;
+    left: 10px;
     width: 10px;
     display: flex;
     position: absolute;
@@ -98,7 +99,8 @@ export const SectionDropdown = styled(DropdownComp)`
   }
 
   & > .MuiAccordionSummary-root {
-    height: ${dims.race.section.header.px};
+    // height: ${dims.race.section.header.px};
+    height: auto;
     transition: border ${dims.trans.avgEase};
     min-height: ${dims.race.section.header.px};
     transition: background-color ${dims.trans.avgEase};
@@ -124,7 +126,6 @@ export const SectionContent = styled(Box)`
   padding-left: ${gutter.padding.hpx};
   padding-right: ${gutter.padding.hpx};
   border-top: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
-  // box-shadow: inset 0px 0px 2px 0px ${colors.fadeDark10};
 `
 
 export const SectionFooter = styled(Box)`
