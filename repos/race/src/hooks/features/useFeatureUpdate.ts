@@ -77,19 +77,23 @@ const updateGroups = ({
   setTabsAndGroups,
 }:TUpdateFeatureGroups) => {
   const tabs = getOpenedTabs()
-  const groupProps = { tabs, feature: updated, features: { items: featureGroups }}
+  const groupProps = {
+    tabs,
+    feature: updated,
+    old: feature || updated,
+    features: { items: featureGroups }
+  }
 
   const groups = feature?.uuid === EmptyFeatureUUID
     ? addToGroup(groupProps)
-    : options.rename
-      ? renameFeatureInGroup({
+    : !options.rename
+      ? updateFeatureInGroup(groupProps)
+      : renameFeatureInGroup({
           tabs,
           feature: updated,
-          newLoc: updated.path,
-          oldLoc: feature?.path as string,
+          old: feature || updated,
           features: { items: featureGroups },
         })
-      : updateFeatureInGroup(groupProps)
 
   setTabsAndGroups(groups)
 }
@@ -122,7 +126,6 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     onFeatureChange,
     onFeatureCreate,
     onFeatureRename,
-    setFeatureGroups,
     setTabsAndGroups,
     onFeatureInactive,
     setFeature:_setFeature,

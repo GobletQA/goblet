@@ -45,7 +45,7 @@ export const saveFeatureGroup = async (props:TSaveFeatureGroup) => {
   const isNew = featureGroup.uuid === EmptyFeatureGroupUUID
   const updated = isNew
     ? updateGroups({
-        tabs,
+        oldPath,
         featureGroup: group,
         replaceEmptyKey: relative,
         parentGroup: { items: featureGroups },

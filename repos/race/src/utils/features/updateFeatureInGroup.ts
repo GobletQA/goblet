@@ -1,70 +1,80 @@
 import type { TTabItem } from '@gobletqa/components'
-import type { TRaceFeatureGroup, TRaceFeature, TRaceFeatures } from '@GBR/types'
+import type {
+  TRaceFeature,
+  TRaceFeatureGroup,
+} from '@GBR/types'
 
+import { groupFindArr } from './groupFindArr'
+import {emptyObj, set, unset} from '@keg-hub/jsutils'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
+import {featureToTab} from '@GBR/utils/features/featureTabs'
 
 export type TFeatureFromLoc = {
   tabs:TTabItem[]
+  old:TRaceFeature
   feature:TRaceFeature
-  replaceEmptyKey?:string
   features:Partial<TRaceFeatureGroup>
 }
 
-type TLoopItems = TFeatureFromLoc & {
-  foundRef: { found?:boolean }
+type TUpdateTabs = {
+  tabs: TTabItem[]
+  feature:TRaceFeature,
+  replaceEmptyKey:boolean
 }
 
-const loopItems = ({
+const updateTabs = ({
   tabs,
-  foundRef,
   feature,
-  features,
   replaceEmptyKey
-}:TLoopItems) => {
+}:TUpdateTabs) => {
 
-  features.items = Object.entries(features?.items || {})
-    .reduce((acc, [key, item]) => {
+  const tabMatch = tabs.find(tt => (
+    tt?.tab?.uuid === feature.uuid
+      || tt?.tab?.uuid === EmptyFeatureUUID
+  ))
 
-      if(foundRef.found){
-        acc[key] = item
-        return acc
-      }
+  if(!tabMatch) return emptyObj
 
-      const uuidMatch = item.uuid === feature.uuid
-      const emptyMatch = item.uuid === EmptyFeatureUUID
-      const hasMatch = uuidMatch || emptyMatch
+  return {
+    tabs: tabs.map(tt => {
+      const emptyMatch = replaceEmptyKey && tt.tab.uuid === EmptyFeatureUUID
+      const uuidMatch = tt.tab.uuid === feature.uuid
+      if(!uuidMatch && !emptyMatch) return tt
 
-      if(!replaceEmptyKey && uuidMatch) foundRef.found = true
-      else if(replaceEmptyKey && emptyMatch) foundRef.found = true
+      const update = featureToTab(feature)
+      if(tt.tab.active) update.tab.active = true
 
-
-      const replace = hasMatch && foundRef.found
-        ? feature
-        : !(`items` in item)
-          ? item
-          : loopItems({ tabs, features: item, feature, replaceEmptyKey, foundRef })
-
-      // If there was an empty match && replaceEmptyKey exists, then use it
-      // Otherwise keep the same key for consistent reference
-      const ref = (emptyMatch && replaceEmptyKey) || key
-
-      acc[ref] = replace
-
-      return acc
-    }, {} as TRaceFeatures)
-
-  return features as TRaceFeatureGroup
+      return update
+    })
+  }
 }
 
 export const updateFeatureInGroup = ({
+  old,
   tabs,
   feature,
   features,
-  replaceEmptyKey
-}:TFeatureFromLoc) => loopItems({
-  tabs,
-  feature,
-  features,
-  replaceEmptyKey,
-  foundRef: { found: false }
-})
+}:TFeatureFromLoc) => {
+
+  const items = {...features.items}
+  const sameLoc = old.path === feature.path
+
+  if(!sameLoc){
+    const oldArr = groupFindArr(old.path)
+    unset(items, oldArr)
+  }
+
+  const newArr = groupFindArr(feature.path)
+  set(items, newArr, feature)
+
+  const updates = updateTabs({
+    tabs,
+    feature,
+    replaceEmptyKey: !sameLoc && old.path.includes(EmptyFeatureUUID)
+  })
+
+  return {
+    ...updates,
+    items,
+  }
+}

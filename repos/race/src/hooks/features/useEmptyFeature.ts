@@ -29,7 +29,10 @@ export const useEmptyFeature = (props:THEmptyFeatureCallbacks) => {
 
   const setEmptyFeature = useInline(((feat:TRaceFeature) => {
     if(feat?.uuid === EmptyFeatureUUID){
-      setTabsAndGroups(undefined, { [EmptyFeatureUUID]: feat }, true)
+      setTabsAndGroups({
+        merge: true,
+        items: { [EmptyFeatureUUID]: feat },
+      })
       updateEmptyTab?.(feat)
     }
 

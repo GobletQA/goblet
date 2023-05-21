@@ -13,10 +13,9 @@ export const editFeatureGroupName = async (props:TEditFeatureGroup) => {
   const { featureGroup, editing=true } = props
 
   const { editor } = await getEditor()
-  const { getOpenedTabs, featureGroups, setTabsAndGroups } = editor
-  const tabs = getOpenedTabs()
+  const { featureGroups, setTabsAndGroups } = editor
+
   const updated = updateGroups({
-    tabs,
     parentGroup: { items: featureGroups },
     featureGroup: {...featureGroup, editing },
   })

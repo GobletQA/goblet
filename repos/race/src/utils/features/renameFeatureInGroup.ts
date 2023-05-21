@@ -2,31 +2,50 @@ import type { TTabItem } from '@gobletqa/components'
 import type { TRaceFeatures, TRaceFeature } from '@GBR/types'
 
 import { groupFindArr } from './groupFindArr'
-import {set, unset} from '@keg-hub/jsutils'
+import {emptyObj, set, unset} from '@keg-hub/jsutils'
+import {featureToTab} from '@GBR/utils/features/featureTabs'
 
 export type TRenameGroup = {
-  oldLoc:string
-  newLoc:string
   tabs:TTabItem[]
+  old:TRaceFeature,
   feature:TRaceFeature,
   features:Record<`items`, TRaceFeatures>,
 }
 
-export const renameFeatureInGroup = ({
-  tabs,
-  oldLoc,
-  newLoc,
-  feature,
-  features,
-}:TRenameGroup) => {
+const updateTabs = ({tabs, old, feature }:TRenameGroup) => {
+  return !tabs.find(tt => tt.tab.uuid === old.uuid)
+    ? emptyObj
+    : {
+        tabs: tabs.map(tt => {
+          if(tt.tab.uuid !== old.uuid) return tt
+          
+          const update = featureToTab(feature)
+          if(tt.tab.active) update.tab.active = true
 
-  const oldArr = groupFindArr(oldLoc)
+          return update
+        })
+      }
+}
+
+export const renameFeatureInGroup = (props:TRenameGroup) => {
+  const {
+    old,
+    feature,
+    features,
+  } = props
+
+  const oldArr = groupFindArr(old.path)
 
   unset(features.items, oldArr)
 
-  const newArr = groupFindArr(newLoc)
+  const newArr = groupFindArr(feature.path)
 
   set(features.items, newArr, feature)
 
-  return features
+  const update = updateTabs(props)
+
+  return {
+    ...update,
+    items: features.items
+  }
 }

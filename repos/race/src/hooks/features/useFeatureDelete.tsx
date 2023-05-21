@@ -73,9 +73,10 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
     }
 
     const removed = removeFromGroup({
-      featureGroups:{ items: featureGroups } as TRaceFeatureGroup,
-      uuid:remove?.uuid,
-      tabs:openedTabs
+      // tabs:openedTabs,
+      uuid: remove?.uuid,
+      path: remove?.path,
+      featureGroups: { items: featureGroups } as TRaceFeatureGroup,
     })
 
     setTabsAndGroups(removed)

@@ -45,9 +45,8 @@ const updateNonActive = async ({
   const tabs = getOpenedTabs()
   const groups = renameFeatureInGroup({
     tabs,
+    old: feature,
     feature: updated,
-    oldLoc: feature.path,
-    newLoc: updated.path,
     features: { items: featureGroups },
   })
 
@@ -72,7 +71,7 @@ export const renameFeature = async ({
     ...renameFeatureProps({ newName, oldName, feature })
   }
 
-  return activeFeat.uuid === feature.uuid
+  return activeFeat?.uuid === feature?.uuid
     ? updateFeature(renamed, { rename: true })
     : await updateNonActive({ editor, renamed, feature })
 

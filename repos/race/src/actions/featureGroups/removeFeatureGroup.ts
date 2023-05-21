@@ -21,8 +21,9 @@ export const removeFeatureGroup = async (props:TRMFeatureGroup) => {
   const tabs = getOpenedTabs()
   const removed = removeFromGroup({
     tabs,
-    uuid:featureGroup.uuid,
-    featureGroups:{ items: featureGroups } as TRaceFeatureGroup,
+    uuid: featureGroup.uuid,
+    path: featureGroup.path,
+    featureGroups: { items: featureGroups } as TRaceFeatureGroup,
   })
   onFolderDelete?.(featureGroup)
 

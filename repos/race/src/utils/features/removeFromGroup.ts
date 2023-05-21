@@ -1,43 +1,64 @@
+import type { TRaceFeatureGroup } from '@GBR/types'
 import type { TTabItem } from '@gobletqa/components'
-import type { TRaceFeatures, TRaceFeatureGroup } from '@GBR/types'
+
+import { groupFindArr } from './groupFindArr'
+import {emptyObj, get, unset} from '@keg-hub/jsutils'
 
 export type TRemoveFromGroup = {
   uuid:string,
-  tabs:TTabItem[]
+  path:string
+  tabs?:TTabItem[]
   featureGroups:TRaceFeatureGroup,
 }
 
-export const removeFromGroup = ({
-  tabs,
-  uuid,
-  featureGroups,
-}:TRemoveFromGroup) => {
-  if(!uuid){
-    console.warn(`[Remove Feature Group] Missing feature group item uuid`)
-    return featureGroups
+type TUpdateTabs = {
+  tabs?:TTabItem[]
+  group:TRaceFeatureGroup
+}
+
+const updateTabs = ({tabs, group}:TUpdateTabs) => {
+  const items = Object.values(group?.items || emptyObj)
+  const isFolder = group.type === `folder`
+
+  if(!tabs?.length || (!items.length && isFolder)) return emptyObj
+
+  const itemIds = isFolder
+    ? items.filter(item => item.type !== `folder`).map(item => item.uuid).filter(Boolean)
+    : [group.uuid]
+
+  const filterTabs = tabs.filter((tt, idx) => !tt?.tab?.uuid || !itemIds.includes((tt?.tab?.uuid)))
+  if(filterTabs.length === tabs?.length) return emptyObj
+
+  if(!filterTabs.find(tt => tt.tab.active)){
+    const lIdx = filterTabs.length - 1
+    const last = filterTabs[lIdx]
+    filterTabs[lIdx] = {...last, tab: { ...last.tab, active: true }}
   }
 
-  const groups = featureGroups?.items || {}
+  return { tabs: filterTabs }
+}
 
-  let found = false
-  featureGroups.items = Object.entries(groups)
-    .reduce((acc, [key, item]) => {
+export const removeFromGroup = (props:TRemoveFromGroup) => {
+  const {
+    tabs,
+    uuid,
+    path,
+    featureGroups,
+  } = props
 
-      if(found){
-        acc[key] = item
-        return acc
-      }
+  if(!uuid || !path){
+    console.warn(`[Remove Feature Group] Missing feature group item uuid or path`)
+    return { items: featureGroups.items }
+  }
 
-      let add = item.uuid !== uuid
-        ? `items` in item
-          ? removeFromGroup({ featureGroups: item, uuid, tabs})
-          : item
-        : undefined
+  const items = {...featureGroups.items}
+  const findArr = groupFindArr(path)
+  const group = get(items, findArr)
 
-      add ? (acc[key] = add) : (found = true)
+  unset(items, findArr)
 
-      return acc
-    }, {} as TRaceFeatures)
-
-  return featureGroups
+  return {
+    items,
+    ...updateTabs({ tabs, group }),
+  }
 }
