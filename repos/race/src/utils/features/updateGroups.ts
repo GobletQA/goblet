@@ -1,12 +1,21 @@
+import type { TTabItem } from '@gobletqa/components'
 import type { TRaceFeatureGroup, TRaceFeatures } from '@GBR/types'
 
 import { EmptyFeatureGroupUUID } from '@GBR/constants/values'
 
-export const updateGroups = (
-  parentGroup:Partial<TRaceFeatureGroup>,
-  featureGroup:TRaceFeatureGroup,
+export type TUpdateGroups = {
+  tabs:TTabItem[]
   replaceEmptyKey?:string
-) => {
+  featureGroup:TRaceFeatureGroup
+  parentGroup:Partial<TRaceFeatureGroup>
+}
+
+export const updateGroups = ({
+  tabs,
+  parentGroup,
+  featureGroup,
+  replaceEmptyKey,
+}:TUpdateGroups) => {
   let found = false
   const items = Object.entries(parentGroup?.items || {})
     .reduce((acc, [key, item]) => {
@@ -24,7 +33,12 @@ export const updateGroups = (
 
       // If not found, search the group's children
       const replace = !found
-        ? updateGroups(item, featureGroup, replaceEmptyKey)
+        ? updateGroups({
+            tabs,
+            featureGroup,
+            replaceEmptyKey,
+            parentGroup: item,
+          })
         : featureGroup
 
       // If there was an empty match && replaceEmptyKey exists, then use it

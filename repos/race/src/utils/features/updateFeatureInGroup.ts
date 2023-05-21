@@ -1,8 +1,10 @@
+import type { TTabItem } from '@gobletqa/components'
 import type { TRaceFeatureGroup, TRaceFeature, TRaceFeatures } from '@GBR/types'
 
 import { EmptyFeatureUUID } from '@GBR/constants/values'
 
 export type TFeatureFromLoc = {
+  tabs:TTabItem[]
   feature:TRaceFeature
   replaceEmptyKey?:string
   features:Partial<TRaceFeatureGroup>
@@ -13,6 +15,7 @@ type TLoopItems = TFeatureFromLoc & {
 }
 
 const loopItems = ({
+  tabs,
   foundRef,
   feature,
   features,
@@ -39,7 +42,7 @@ const loopItems = ({
         ? feature
         : !(`items` in item)
           ? item
-          : loopItems({ features: item, feature, replaceEmptyKey, foundRef })
+          : loopItems({ tabs, features: item, feature, replaceEmptyKey, foundRef })
 
       // If there was an empty match && replaceEmptyKey exists, then use it
       // Otherwise keep the same key for consistent reference
@@ -54,10 +57,12 @@ const loopItems = ({
 }
 
 export const updateFeatureInGroup = ({
+  tabs,
   feature,
   features,
   replaceEmptyKey
 }:TFeatureFromLoc) => loopItems({
+  tabs,
   feature,
   features,
   replaceEmptyKey,

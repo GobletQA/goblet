@@ -1,3 +1,4 @@
+import type { TTabItem } from '@gobletqa/components'
 import type { ESectionType } from './section.types'
 import type { TStepDefsList } from '@ltipton/parkin'
 import type {
@@ -13,21 +14,19 @@ import type {
 } from './features.types'
 
 
-export type TRaceChangeOp = {
-  op:EPatchType|`add`|`remove`|`update`|`replace`|`merge`|`rename`
-  old?:TRaceFeatures|TRaceFeatureItem
-  new?:TRaceFeatures|TRaceFeatureItem
+export type TGetOpenedTabs = () => TTabItem[]
+
+export type TTabsAndGroupsProps = {
+  merge?:boolean
+  tabs?:TTabItem[]
+  items?:TRaceFeatures
 }
 
 export type TSetSteps = (steps:TStepDefsList) => void
 export type TStepDefsRef = MutableRefObject<TStepDefsList>
 export type TFeaturesRef = MutableRefObject<TRaceFeatures>
 export type TSetFeatureGroups = (features:TRaceFeatures, merge?:boolean) => void
-export type TSetTabsAndGroups = (
-  op?:TRaceChangeOp,
-  features?:TRaceFeatures,
-  merge?:boolean
-) => void
+export type TSetTabsAndGroups = (props:TTabsAndGroupsProps) => void
 
 export type TFeatureCB = (feature: TRaceFeature) => void
 export type TSetFeature = (feature?:TRaceFeature) => void

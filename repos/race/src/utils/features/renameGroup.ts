@@ -1,3 +1,4 @@
+import type { TTabItem } from '@gobletqa/components'
 import type { TRaceFeatureGroup, TRaceFeatures, TRaceFeatureItem } from '@GBR/types'
 
 import { groupFindArr } from './groupFindArr'
@@ -5,6 +6,7 @@ import {get, set, unset} from '@keg-hub/jsutils'
 
 export type TRenameGroup = {
   oldPath:string
+  tabs:TTabItem[]
   featureGroup:TRaceFeatureGroup,
   parentGroup:Record<`items`, TRaceFeatures>,
 }
@@ -40,6 +42,7 @@ const updateChildPaths = (
 }
 
 export const renameGroup = ({
+  tabs,
   oldPath,
   parentGroup,
   featureGroup,

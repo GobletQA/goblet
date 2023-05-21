@@ -8,6 +8,7 @@ import type {
   TOnFeatureCB,
   TRaceFeatures,
   TUpdateFeature,
+  TGetOpenedTabs,
   TSetFeatureOpts,
   TOnFeatureItemCB,
   TSetTabsAndGroups,
@@ -31,8 +32,8 @@ export type TUpdateFeatureGroups = {
   feature?:TRaceFeature
   options: TUpdateFeatureOpts
   featureGroups:TRaceFeatures
+  getOpenedTabs:TGetOpenedTabs
   setTabsAndGroups:TSetTabsAndGroups
-  setFeatureGroups:TSetFeatureGroups
 }
 
 export type TFeatureCBs = {
@@ -55,6 +56,7 @@ export type THFeatureUpdate = {
   featureGroups:TRaceFeatures
   updateExpanded:TOnExpandedCB
   onFeatureCreate:TOnFeatureCB
+  getOpenedTabs:TGetOpenedTabs
   onFeatureChange?:TOnFeatureCB
   onFeatureActive?:TOnFeatureCB
   onFeatureInactive?:TOnFeatureCB
@@ -71,16 +73,17 @@ const updateGroups = ({
   updated,
   feature,
   featureGroups,
-  setFeatureGroups,
-  // TODO: ensure tabs are updated when groups are updated
+  getOpenedTabs,
   setTabsAndGroups,
 }:TUpdateFeatureGroups) => {
-  const groupProps = { feature: updated, features: { items: featureGroups }}
+  const tabs = getOpenedTabs()
+  const groupProps = { tabs, feature: updated, features: { items: featureGroups }}
 
   const groups = feature?.uuid === EmptyFeatureUUID
     ? addToGroup(groupProps)
     : options.rename
       ? renameFeatureInGroup({
+          tabs,
           feature: updated,
           newLoc: updated.path,
           oldLoc: feature?.path as string,
@@ -88,16 +91,7 @@ const updateGroups = ({
         })
       : updateFeatureInGroup(groupProps)
 
-  const op = feature?.uuid === EmptyFeatureUUID
-    ? EPatchType.add
-    : options.rename
-      ? EPatchType.rename
-      : EPatchType.update
-
-  setTabsAndGroups(
-    {op, new: updated, old: feature},
-    groups.items
-  )
+  setTabsAndGroups(groups)
 }
 
 const featureCallbacks = ({
@@ -121,6 +115,7 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     curPathRef,
     curValueRef,
     featureGroups,
+    getOpenedTabs,
     updateExpanded,
     updateEmptyTab,
     onAuditFeature,
@@ -183,8 +178,8 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
           updated,
           feature,
           featureGroups,
+          getOpenedTabs,
           setTabsAndGroups,
-          setFeatureGroups,
         })
 
     // Ensure the tab name is updated when feature is empty

@@ -12,8 +12,14 @@ export const cancelFeatureGroup = async (props:TCancelFeatureGroup) => {
   if(!uuid) return console.warn(`[Cancel Feature Group] Can not cancel group, missing uuid`)
   
   const { editor } = await getEditor()
-  const { featureGroups, setTabsAndGroups } = editor
-  const removed = removeFromGroup({ items: featureGroups } as TRaceFeatureGroup, uuid)
+  const { getOpenedTabs, featureGroups, setTabsAndGroups } = editor
+  const tabs = getOpenedTabs()
+  const removed = removeFromGroup({
+    uuid,
+    tabs,
+    featureGroups:{ items: featureGroups } as TRaceFeatureGroup,
+  })
 
-  return setTabsAndGroups(undefined, removed.items)
+
+  return setTabsAndGroups(removed)
 }

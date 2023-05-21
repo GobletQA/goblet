@@ -8,8 +8,6 @@ import type {
 
 import { useMemo, useState, useCallback } from 'react'
 import { buildGroups } from '@GBR/utils/features/buildGroups'
-import { updateTabsFromGroups } from '@GBR/utils/features/updateTabsFromGroups'
-
 
 export type THFeatureGroups = {
   rootPrefix:string
@@ -45,19 +43,17 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
 
   }, [rootPrefix])
 
-  const setTabsAndGroups = useCallback<TSetTabsAndGroups>((
-    changed,
-    features,
-    merge
-  ) => {
-    // Need to add a callback thats in the editor context
-    // That allows updating tabs
-    // I need to know what tabs to update
-    // Which means I need to know which feature updated
-    // const tabs = updateTabsFromGroups(featureGroups, groups, openedTabs)
-    // tabs !== openedTabs && setOpenedTabs(tabs)
+  const setTabsAndGroups = useCallback<TSetTabsAndGroups>(({
+    tabs,
+    merge,
+    items,
+  }) => {
 
-    features && setFeatureGroups(features, merge)
+    tabs
+      && tabs !== openedTabs
+      && setOpenedTabs(tabs)
+
+    items && setFeatureGroups(items, merge)
   }, [
     rootPrefix,
     openedTabs,

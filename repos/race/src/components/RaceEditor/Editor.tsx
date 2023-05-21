@@ -20,6 +20,7 @@ export const Editor = (props:TRaceEditorProps) => {
     setOpenedTabs,
     featureGroups,
     onFeatureSave,
+    getOpenedTabs,
     updateEmptyTab,
     onFeatureClose,
     onFeatureChange,
@@ -39,6 +40,7 @@ export const Editor = (props:TRaceEditorProps) => {
       curPathRef={curPathRef}
       curValueRef={curValueRef}
       menuContext={menuContext}
+      getOpenedTabs={getOpenedTabs}
       featureGroups={featureGroups}
       rootPrefix={props.rootPrefix}
       onFeatureSave={onFeatureSave}

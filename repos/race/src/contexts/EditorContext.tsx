@@ -9,6 +9,7 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TRaceFeatures,
+  TGetOpenedTabs,
   TOnFeatureItemCB,
   TRaceContextMenu,
   TUpdateFeatureCB,
@@ -38,6 +39,7 @@ export type TEditorProvider = {
   featureGroups:TRaceFeatures
   onFeatureChange:TOnFeatureCB
   onFeatureActive:TOnFeatureCB
+  getOpenedTabs:TGetOpenedTabs
   menuContext?:TRaceContextMenu
   onFeatureInactive:TOnFeatureCB
   onFeatureDelete:TOnFeatureItemCB
@@ -61,6 +63,7 @@ export type TEditorCtx = {
   featureGroups:TRaceFeatures
   expressionOptions?:TExpOpts
   updateExpanded:TOnExpandedCB
+  getOpenedTabs:TGetOpenedTabs
   menuContext?:TRaceContextMenu
   onFeatureChange?:TOnFeatureCB
   updateFeature:TUpdateFeatureCB
@@ -87,6 +90,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     menuContext,
     featureGroups,
     onFeatureSave,
+    getOpenedTabs,
     setOpenedTabs,
     updateEmptyTab,
     onFeatureClose,
@@ -129,6 +133,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     curPathRef,
     openedTabs,
     curValueRef,
+    getOpenedTabs,
     featureGroups,
     setOpenedTabs,
     onFeatureSave,
@@ -155,6 +160,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       rootPrefix,
       collapseAll,
       menuContext,
+      getOpenedTabs,
       featureGroups,
       deleteFeature,
       updateFeature,
@@ -176,6 +182,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     setFeature,
     rootPrefix,
     collapseAll,
+    getOpenedTabs,
     deleteFeature,
     updateFeature,
     featureGroups,

@@ -72,14 +72,13 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
       feature?.uuid === remove?.uuid && setFeature()
     }
 
-    const removed = removeFromGroup({ items: featureGroups } as TRaceFeatureGroup, remove?.uuid)
-    setTabsAndGroups(
-      // Disabling for now, because this method handles it
-      // Should migrate to use an operation though
-      // { op: EPatchType.remove, new: remove, old: remove },
-      undefined,
-      removed.items
-    )
+    const removed = removeFromGroup({
+      featureGroups:{ items: featureGroups } as TRaceFeatureGroup,
+      uuid:remove?.uuid,
+      tabs:openedTabs
+    })
+
+    setTabsAndGroups(removed)
 
     // Finally call the onFeatureDelete callback
     onFeatureDelete?.(remove)

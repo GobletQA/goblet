@@ -19,6 +19,7 @@ export const saveFeatureGroup = async (props:TSaveFeatureGroup) => {
   const { editor } = await getEditor()
   const {
     rootPrefix,
+    getOpenedTabs,
     featureGroups,
     onFolderRename,
     onFolderCreate,
@@ -40,10 +41,17 @@ export const saveFeatureGroup = async (props:TSaveFeatureGroup) => {
     uuid: fullLoc
   })
 
+  const tabs = getOpenedTabs()
   const isNew = featureGroup.uuid === EmptyFeatureGroupUUID
   const updated = isNew
-    ? updateGroups({ items: featureGroups }, group, relative)
+    ? updateGroups({
+        tabs,
+        featureGroup: group,
+        replaceEmptyKey: relative,
+        parentGroup: { items: featureGroups },
+      })
     : renameGroup({
+        tabs,
         oldPath,
         featureGroup: group,
         parentGroup: { items: featureGroups },
@@ -53,9 +61,6 @@ export const saveFeatureGroup = async (props:TSaveFeatureGroup) => {
     ? onFolderCreate?.(group)
     : onFolderRename?.(group, oldPath)
 
-  return setTabsAndGroups(
-    !isNew ? { op: EPatchType.rename, new: group, old: featureGroup } : undefined,
-    updated.items
-  )
+  return setTabsAndGroups(updated)
 
 }

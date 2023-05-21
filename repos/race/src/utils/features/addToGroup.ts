@@ -1,8 +1,10 @@
 import type { TRaceFeature, TRaceFeatureGroup } from '@GBR/types'
+import type { TTabItem } from '@gobletqa/components'
 
 import { createFromPath } from '@GBR/utils/features/createFromPath'
 
 export type TAddToGroup = {
+  tabs:TTabItem[]
   feature:TRaceFeature
   features:Partial<TRaceFeatureGroup>
 }

@@ -12,16 +12,19 @@ export const removeFeatureGroup = async (props:TRMFeatureGroup) => {
   const { featureGroup } = props
   const { editor } = await getEditor()
   const {
+    getOpenedTabs,
     featureGroups,
     onFolderDelete,
     setTabsAndGroups,
     } = editor
-    
-  const removed = removeFromGroup({ items: featureGroups } as TRaceFeatureGroup, featureGroup.uuid)
+  
+  const tabs = getOpenedTabs()
+  const removed = removeFromGroup({
+    tabs,
+    uuid:featureGroup.uuid,
+    featureGroups:{ items: featureGroups } as TRaceFeatureGroup,
+  })
   onFolderDelete?.(featureGroup)
 
-  return setTabsAndGroups(
-    {op: EPatchType.remove,  old: featureGroup},
-    removed.items
-  )
+  return setTabsAndGroups(removed)
 }

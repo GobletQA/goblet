@@ -1,10 +1,17 @@
+import type { TTabItem } from '@gobletqa/components'
 import type { TRaceFeatures, TRaceFeatureGroup } from '@GBR/types'
 
-
-export const removeFromGroup = (
+export type TRemoveFromGroup = {
+  uuid:string,
+  tabs:TTabItem[]
   featureGroups:TRaceFeatureGroup,
-  uuid:string
-) => {
+}
+
+export const removeFromGroup = ({
+  tabs,
+  uuid,
+  featureGroups,
+}:TRemoveFromGroup) => {
   if(!uuid){
     console.warn(`[Remove Feature Group] Missing feature group item uuid`)
     return featureGroups
@@ -23,7 +30,7 @@ export const removeFromGroup = (
 
       let add = item.uuid !== uuid
         ? `items` in item
-          ? removeFromGroup(item, uuid)
+          ? removeFromGroup({ featureGroups: item, uuid, tabs})
           : item
         : undefined
 

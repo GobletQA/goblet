@@ -1,7 +1,6 @@
 import type { TRaceFeature } from '@GBR/types'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 
-import { EPatchType } from '@GBR/types'
 import { getEditor } from '@GBR/utils/editor/getEditor'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -34,6 +33,7 @@ const updateNonActive = async ({
 }:TUpdateNonActive) => {
   const {
     featureGroups,
+    getOpenedTabs,
     onFolderRename,
     setTabsAndGroups,
   } = editor
@@ -42,17 +42,16 @@ const updateNonActive = async ({
   
   onFolderRename?.(updated, feature.parent.location, updated.content)
 
+  const tabs = getOpenedTabs()
   const groups = renameFeatureInGroup({
+    tabs,
     feature: updated,
     oldLoc: feature.path,
     newLoc: updated.path,
     features: { items: featureGroups },
   })
 
-  setTabsAndGroups(
-    { op: EPatchType.rename, new: updated, old: feature },
-    groups.items
-  )
+  setTabsAndGroups(groups)
 
 }
 

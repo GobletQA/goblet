@@ -3,15 +3,16 @@ import type { TStepDefsList } from '@ltipton/parkin'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 import type {
   TRaceFeatures,
+  TGetOpenedTabs,
   TRaceEditorProps,
-} from '../types'
+} from '@GBR/types'
 
 import { noOp } from '@keg-hub/jsutils'
 import { useRef, useEffect } from 'react'
 import { useInline } from '@gobletqa/components'
 import { useInitTabs } from '@GBR/hooks/tabs/useInitTabs'
 import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
-import { useFeatureGroups } from '@gobletqa/race/hooks/featureGroups/useFeatureGroups'
+import { useFeatureGroups } from '@GBR/hooks/featureGroups/useFeatureGroups'
 
 export const useRaceEditor = (props:TRaceEditorProps) => {
   const {
@@ -51,6 +52,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   const onFeatureDelete = useInline(props.onFeatureDelete || noOp)
   const onFeatureRename = useInline(props.onFeatureRename || noOp)
   const onFeatureInactive = useInline(props.onFeatureInactive || noOp)
+  const getOpenedTabs = useInline<TGetOpenedTabs>(() => openedTabs)
 
   const containerRef = useRef<HTMLDivElement|HTMLElement>()
   const editorRef = useRef<TEditorCtx>(null) as MutableRefObject<TEditorCtx>
@@ -79,7 +81,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
    */
   // useEffect(() => {
   //   features !== featuresRef.current
-  //     && setTabsAndGroups({ op:`update`, new: features}, features)
+  //     && setTabsAndGroups({ items: features})
   // }, [features])
 
   return {
@@ -90,8 +92,9 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     curValueRef,
     stepDefsRef,
     featuresRef,
-    containerRef,
     menuContext,
+    containerRef,
+    getOpenedTabs,
     setOpenedTabs,
     featureGroups,
     onFeatureSave,
