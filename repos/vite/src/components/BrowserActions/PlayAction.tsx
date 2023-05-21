@@ -32,7 +32,9 @@ const RunTests = (props:TBrowserActionProps) => {
     await startBrowserPlay(fileModel, `feature`)
   }, [location])
 
-  useOnEvent<TEditorPathChange>(EditorPathChangeEvt, ({ location }) => setLocation(location))
+  useOnEvent<TEditorPathChange>(EditorPathChangeEvt, ({ location }) => {
+    setLocation(location)
+  })
 
   const noActiveFile = !Boolean(location)
   const disabled = (browserState !== EBrowserState.idle) || noActiveFile

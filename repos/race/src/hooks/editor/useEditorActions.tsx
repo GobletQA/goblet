@@ -91,7 +91,6 @@ export const useEditorActions = (props:THEditorActions) => {
     const nextFeat = active ? featureFromTab(active?.tab, featureGroups) : active
 
     onFeatureClose?.(feat)
-    nextFeat && onFeatureActive?.(nextFeat)
 
     setFeature(nextFeat)
   })
@@ -112,7 +111,6 @@ export const useEditorActions = (props:THEditorActions) => {
 
     if(feat?.uuid === feature?.uuid) return
 
-    feat && onFeatureActive?.(feat)
     setFeature(feat)
   }, [
     feature,

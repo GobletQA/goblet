@@ -126,6 +126,7 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     onFeatureChange,
     onFeatureCreate,
     onFeatureRename,
+    onFeatureActive,
     setTabsAndGroups,
     onFeatureInactive,
     setFeature:_setFeature,
@@ -140,9 +141,11 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
 
     // If a different feature is being set,
     // then call inactive callback on previous feature
-    checkInactive
-      && feat?.uuid !== feature?.uuid
-      && onFeatureInactive?.(feature, feat)
+    // Then call the feature active of the new feature
+    if(feat?.uuid !== feature?.uuid){
+      checkInactive && onFeatureInactive?.(feature, feat)
+      onFeatureActive?.(feat)
+    }
 
     curPathRef.current = feat?.parent?.location || ``
     curValueRef.current = !curPathRef.current ? `` : feat?.content || ``

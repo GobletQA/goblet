@@ -24,7 +24,6 @@ export type THFeatureDelete = {
   openedTabs:TTabItem[]
   setFeature:TOnFeatureCB
   featureGroups:TRaceFeatures
-  onFeatureActive?:TOnFeatureCB
   onFeatureDelete?:TOnFeatureCB
   setTabsAndGroups:TSetTabsAndGroups
   setFeatureGroups:TSetFeatureGroups
@@ -44,7 +43,6 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
     setOpenedTabs,
     featureGroups,
     onFeatureDelete,
-    onFeatureActive,
     setTabsAndGroups
   } = props
 
@@ -63,7 +61,6 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
       const { tabs, active } = removeTab(openedTabs, tab.tab)
       setOpenedTabs(tabs)
       const nextFeat = active ? featureFromTab(active?.tab, featureGroups) : active
-      nextFeat && onFeatureActive?.(nextFeat)
 
       setFeature(nextFeat)
     }

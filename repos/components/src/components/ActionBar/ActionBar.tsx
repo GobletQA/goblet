@@ -15,7 +15,7 @@ export const ActionBar = (props:TActionBar) => {
   const {
     actions
   } = props
-  
+
   return (
     <ActionBarContainer className='action-bar-container'>
       {actions.map(action => {
