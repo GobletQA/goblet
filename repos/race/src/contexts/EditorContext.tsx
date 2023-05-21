@@ -8,12 +8,11 @@ import type {
   TFeatureCB,
   TRaceFeature,
   TOnFeatureCB,
-  TFeaturesRef,
   TRaceFeatures,
   TOnFeatureItemCB,
   TRaceContextMenu,
   TUpdateFeatureCB,
-  TRaceFeatureGroup,
+  TSetTabsAndGroups,
   TSetFeatureGroups,
 } from '@GBR/types'
 
@@ -45,6 +44,7 @@ export type TEditorProvider = {
   onFeatureCreate:TOnFeatureItemCB
   onFeatureRename:TOnFeatureItemCB
   setFeatureGroups:TSetFeatureGroups
+  setTabsAndGroups: TSetTabsAndGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
   setOpenedTabs:(tabs:TTabItem[]) => void
@@ -69,6 +69,7 @@ export type TEditorCtx = {
   onFolderDelete?:TOnFeatureItemCB
   onFolderRename?:TOnFeatureItemCB
   setFeatureGroups:TSetFeatureGroups
+  setTabsAndGroups: TSetTabsAndGroups
   collapseAllExcept:(key:string|string[]) => void
 }
 
@@ -81,8 +82,8 @@ export const EditorProvider = (props:TEditorProvider) => {
     editorRef,
     rootPrefix,
     curPathRef,
-    curValueRef,
     openedTabs,
+    curValueRef,
     menuContext,
     featureGroups,
     onFeatureSave,
@@ -95,6 +96,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureRename,
     onFeatureActive,
     setFeatureGroups,
+    setTabsAndGroups,
     onFeatureInactive,
     expressionOptions,
   } = props
@@ -140,6 +142,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureChange,
     onFeatureCreate,
     setFeatureGroups,
+    setTabsAndGroups,
     onFeatureInactive,
     setFeature:_setFeature,
   })
@@ -158,6 +161,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       updateExpanded,
       onFeatureChange,
       setFeatureGroups,
+      setTabsAndGroups,
       collapseAllExcept,
       expressionOptions,
       onFolderRename: onFeatureRename,
@@ -181,6 +185,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureChange,
     onFeatureRename,
     setFeatureGroups,
+    setTabsAndGroups,
     expressionOptions,
     collapseAllExcept,
   ])

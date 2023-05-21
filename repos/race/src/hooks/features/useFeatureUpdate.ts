@@ -7,6 +7,7 @@ import type {
   TUpdateFeature,
   TSetFeatureOpts,
   TOnFeatureItemCB,
+  TSetTabsAndGroups,
   TSetFeatureGroups,
   TOnAuditFeatureCB,
   TUpdateFeatureOpts,
@@ -29,6 +30,7 @@ export type TUpdateFeatureGroups = {
   feature?:TRaceFeature
   options: TUpdateFeatureOpts
   featureGroups:TRaceFeatures
+  setTabsAndGroups:TSetTabsAndGroups
   setFeatureGroups:TSetFeatureGroups
 }
 
@@ -58,6 +60,7 @@ export type THFeatureUpdate = {
   onAuditFeature:TOnAuditFeatureCB
   onFeatureRename:TOnFeatureItemCB
   setFeatureGroups:TSetFeatureGroups
+  setTabsAndGroups:TSetTabsAndGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
 }
@@ -67,7 +70,9 @@ const updateGroups = ({
   updated,
   feature,
   featureGroups,
-  setFeatureGroups
+  setFeatureGroups,
+  // TODO: ensure tabs are updated when groups are updated
+  setTabsAndGroups,
 }:TUpdateFeatureGroups) => {
   const groupProps = { feature: updated, features: { items: featureGroups }}
 
@@ -82,6 +87,10 @@ const updateGroups = ({
         })
       : updateFeatureInGroup(groupProps)
 
+  // TODO:
+  // Call this instead, with the features that were changed
+  // That way we can know when tabs to update
+  // setTabsAndGroups
   setFeatureGroups(groups.items)
 }
 
@@ -113,6 +122,7 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     onFeatureCreate,
     onFeatureRename,
     setFeatureGroups,
+    setTabsAndGroups,
     onFeatureInactive,
     setFeature:_setFeature,
   } = props
@@ -167,7 +177,8 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
           updated,
           feature,
           featureGroups,
-          setFeatureGroups
+          setTabsAndGroups,
+          setFeatureGroups,
         })
 
     // Ensure the tab name is updated when feature is empty

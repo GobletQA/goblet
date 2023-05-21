@@ -17,6 +17,7 @@ export type TSetSteps = (steps:TStepDefsList) => void
 export type TStepDefsRef = MutableRefObject<TStepDefsList>
 export type TFeaturesRef = MutableRefObject<TRaceFeatures>
 export type TSetFeatureGroups = (features:TRaceFeatures, merge?:boolean) => void
+export type TSetTabsAndGroups = (changes:TRaceFeatures, features:TRaceFeatures, merge?:boolean) => void
 
 export type TFeatureCB = (feature: TRaceFeature) => void
 export type TSetFeature = (feature?:TRaceFeature) => void

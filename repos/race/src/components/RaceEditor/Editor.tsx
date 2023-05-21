@@ -15,8 +15,8 @@ export const Editor = (props:TRaceEditorProps) => {
     curPathRef,
     openedTabs,
     curValueRef,
-    containerRef,
     menuContext,
+    containerRef,
     setOpenedTabs,
     featureGroups,
     onFeatureSave,
@@ -28,6 +28,7 @@ export const Editor = (props:TRaceEditorProps) => {
     onFeatureDelete,
     onFeatureActive,
     setFeatureGroups,
+    setTabsAndGroups,
     onFeatureInactive,
   } = useRaceEditor(props)
 
@@ -49,6 +50,7 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureActive={onFeatureActive}
       onFeatureDelete={onFeatureDelete}
       onFeatureRename={onFeatureRename}
+      setTabsAndGroups={setTabsAndGroups}
       setFeatureGroups={setFeatureGroups}
       onFeatureInactive={onFeatureInactive}
       expressionOptions={props.expressionOptions}

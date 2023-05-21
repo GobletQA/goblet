@@ -1,6 +1,6 @@
 import type { TTabItem } from '@gobletqa/components'
 import type { THFeatureUpdate } from './useFeatureUpdate'
-import type { TUpdateFeature, TAskForFeature, TOnFeatureCB } from '@GBR/types'
+import type { TUpdateFeature, TAskForFeature, TOnFeatureCB, TSetTabsAndGroups } from '@GBR/types'
 
 import { useEmptyFeature } from './useEmptyFeature'
 import { useFeatureUpdate } from './useFeatureUpdate'

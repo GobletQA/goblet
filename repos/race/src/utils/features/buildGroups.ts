@@ -1,4 +1,4 @@
-import type { TRaceFeatures } from '@GBR/types'
+import type { TRaceFeatures, TRaceFeatureGroup } from '@GBR/types'
 
 import { createFromPath } from '@GBR/utils/features/createFromPath'
 
@@ -25,4 +25,4 @@ export const buildGroups = ({
           item.path
         )
 
-  }, { items: {} } as any).items
+  }, { items: {} } as TRaceFeatureGroup).items

@@ -27,9 +27,21 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   const featuresRef = useRef<TRaceFeatures>(features)
 
   const {
+    openedTabs,
+    setOpenedTabs,
+    updateEmptyTab,
+  } = useInitTabs({ feature:initialFeature })
+
+  const {
     featureGroups,
+    setTabsAndGroups,
     setFeatureGroups,
-  } = useFeatureGroups({ featuresRef, rootPrefix })
+  } = useFeatureGroups({
+    openedTabs,
+    rootPrefix,
+    featuresRef,
+    setOpenedTabs,
+  })
 
   const onFeatureSave = useInline(props.onFeatureSave || noOp)
   const onFeatureClose = useInline(props.onFeatureClose || noOp)
@@ -50,12 +62,6 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     containerRef,
     onFeatureSave
   })
-
-  const {
-    openedTabs,
-    setOpenedTabs,
-    updateEmptyTab,
-  } = useInitTabs({ feature:initialFeature })
 
   useEffect(() => {
     initialFeature
@@ -96,6 +102,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     onFeatureActive,
     onFeatureDelete,
     onFeatureRename,
+    setTabsAndGroups,
     setFeatureGroups,
     onFeatureInactive
   }

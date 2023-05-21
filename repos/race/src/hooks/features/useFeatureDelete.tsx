@@ -3,6 +3,7 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TRaceFeatures,
+  TSetTabsAndGroups,
   TRaceFeatureGroup,
   TSetFeatureGroups,
 } from '@GBR/types'
@@ -24,6 +25,7 @@ export type THFeatureDelete = {
   featureGroups:TRaceFeatures
   onFeatureActive?:TOnFeatureCB
   onFeatureDelete?:TOnFeatureCB
+  setTabsAndGroups:TSetTabsAndGroups
   setFeatureGroups:TSetFeatureGroups
   setOpenedTabs:(tabs:TTabItem[]) => void
 }
@@ -43,6 +45,8 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
     onFeatureDelete,
     onFeatureActive,
     setFeatureGroups,
+    // TODO: ensure tabs are updated when groups are updated
+    setTabsAndGroups
   } = props
 
   return useInline<(loc:string)=>void>((loc) => {

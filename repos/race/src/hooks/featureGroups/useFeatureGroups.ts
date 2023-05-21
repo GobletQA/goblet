@@ -1,3 +1,5 @@
+import type { TTabItem } from '@gobletqa/components'
+
 import type {
   TFeaturesRef,
   TRaceFeatures,
@@ -5,14 +7,23 @@ import type {
 
 import { useMemo, useState, useCallback } from 'react'
 import { buildGroups } from '@GBR/utils/features/buildGroups'
+import { updateTabsFromGroups } from '@GBR/utils/features/updateTabsFromGroups'
+
 
 export type THFeatureGroups = {
   rootPrefix:string
+  openedTabs:TTabItem[]
   featuresRef: TFeaturesRef
+  setOpenedTabs: (tabs:TTabItem[]) => void
 }
 
 export const useFeatureGroups = (props:THFeatureGroups) => {
-  const { rootPrefix, featuresRef } = props
+  const {
+    rootPrefix,
+    openedTabs,
+    featuresRef,
+    setOpenedTabs
+  } = props
 
   const groups = useMemo(
     () => buildGroups({ rootPrefix, features: featuresRef.current }),
@@ -33,8 +44,30 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
 
   }, [rootPrefix])
 
+  const setTabsAndGroups = useCallback((
+    changed:TRaceFeatures,
+    features:TRaceFeatures,
+    merge?:boolean
+  ) => {
+    // Need to add a callback thats in the editor context
+    // That allows updating tabs
+    // I need to know what tabs to update
+    // Which means I need to know which feature updated
+    // const tabs = updateTabsFromGroups(featureGroups, groups, openedTabs)
+    // tabs !== openedTabs && setOpenedTabs(tabs)
+
+    setFeatureGroups(features, merge)
+  }, [
+    rootPrefix,
+    openedTabs,
+    setOpenedTabs,
+    setFeatureGroups
+  ])
+
+
   return {
     featureGroups,
+    setTabsAndGroups,
     setFeatureGroups,
   }
 }
