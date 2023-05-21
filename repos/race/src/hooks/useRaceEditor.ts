@@ -37,6 +37,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   const onFeatureActive = useInline(props.onFeatureActive || noOp)
   const onFeatureCreate = useInline(props.onFeatureCreate || noOp)
   const onFeatureDelete = useInline(props.onFeatureDelete || noOp)
+  const onFeatureRename = useInline(props.onFeatureRename || noOp)
   const onFeatureInactive = useInline(props.onFeatureInactive || noOp)
 
   const containerRef = useRef<HTMLDivElement|HTMLElement>()
@@ -94,6 +95,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
     onFeatureCreate,
     onFeatureActive,
     onFeatureDelete,
+    onFeatureRename,
     setFeatureGroups,
     onFeatureInactive
   }

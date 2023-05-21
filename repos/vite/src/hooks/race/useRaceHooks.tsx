@@ -33,11 +33,9 @@ export const useRaceHooks = () => {
   const files = useFeatureFiles(rootPrefix)
   const onSaveFile = useOnSaveFile(files, rootPrefix)
   const onAddFile = useOnAddFile(files, rootPrefix, repo)
+  const onRenameFile = useOnRenameFile(files, rootPrefix)
   const onDeleteFeature = useOnDeleteFile(files, rootPrefix)
   const { features, duplicates } = useRaceFeatures(files as TRaceFiles)
-
-  // const onLoadFile = useOnLoadFile(files, rootPrefix)
-  // const onRenameFile = useOnRenameFile(files, rootPrefix)
 
   const {
     settings,
@@ -45,6 +43,16 @@ export const useRaceHooks = () => {
   } = useRaceSettings()
 
   const onPathChange = useOnPathChange()
+
+  const onFeatureRename = useInline(async (feature:TRaceFeature|TRaceFeatureGroup, oldLoc:string) => {
+    if(!feature?.parent?.location)
+      return console.warn(`Failed to rename item, The new item location is required`)
+
+    if(!oldLoc)
+      return console.warn(`Failed to rename item, The original item location is required`)
+
+    onRenameFile(oldLoc, feature?.parent?.location)
+  })
 
   const onFeatureActive = useInline(async (feature:TRaceFeature) => {
     const { location } = await getActiveFeature()
@@ -132,11 +140,12 @@ export const useRaceHooks = () => {
     definitions,
     onWorldChange,
     onFeatureClose,
-    onFeatureCreate,
+    onSettingChange,
     onFeatureActive,
     onFeatureChange,
     onFeatureDelete,
-    onSettingChange,
+    onFeatureCreate,
+    onFeatureRename,
     world: repo.world,
     onFeatureSave: onFeatureChange,
     connected: Boolean(repo?.paths && repo?.name)

@@ -48,7 +48,7 @@ const loopItems = ({
       acc[ref] = replace
 
       return acc
-    }, {} as TRaceFeatureGroup[`items`])
+    }, {} as TRaceFeatures)
 
   return features as TRaceFeatureGroup
 }

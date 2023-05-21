@@ -1,7 +1,6 @@
 import type { TRaceEditorProps } from '@GBR/types'
 
 import { Container } from './Container'
-import { EEditorMode } from '@GBR/types'
 import { EditorProvider } from '@GBR/contexts'
 import { useRaceTheme } from '@GBR/hooks/useRaceTheme'
 import { useRaceEditor } from '@GBR/hooks/useRaceEditor'
@@ -24,6 +23,7 @@ export const Editor = (props:TRaceEditorProps) => {
     updateEmptyTab,
     onFeatureClose,
     onFeatureChange,
+    onFeatureRename,
     onFeatureCreate,
     onFeatureDelete,
     onFeatureActive,
@@ -48,6 +48,7 @@ export const Editor = (props:TRaceEditorProps) => {
       onFeatureChange={onFeatureChange}
       onFeatureActive={onFeatureActive}
       onFeatureDelete={onFeatureDelete}
+      onFeatureRename={onFeatureRename}
       setFeatureGroups={setFeatureGroups}
       onFeatureInactive={onFeatureInactive}
       expressionOptions={props.expressionOptions}

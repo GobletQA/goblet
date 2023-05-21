@@ -94,6 +94,7 @@ export type TEditorShared = {
   onFeatureActive?:TOnFeatureCB
   menuContext?:TRaceContextMenu
   onFeatureInactive?:TOnFeatureCB
+  onFeatureRename?:TOnFeatureItemCB
   onFeatureDelete?:TOnFeatureItemCB
   onSidebarResize?:(width:number) => void
   portal?:string|MutableRefObject<HTMLElement>

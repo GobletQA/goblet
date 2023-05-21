@@ -12,8 +12,10 @@ import { useCallback } from 'react'
 import {exists} from '@keg-hub/jsutils'
 import { preventDefault } from '@gobletqa/components'
 import { EmptyFeatureGroupUUID } from '@GBR/constants'
+import { cleanString } from '@GBR/utils/helpers/cleanString'
+
+import { saveFeatureGroup } from '@GBR/actions/featureGroups/saveFeatureGroup'
 import { cancelFeatureGroup } from '@GBR/actions/featureGroups/cancelFeatureGroup'
-import { saveNewFeatureGroup } from '@GBR/actions/featureGroups/saveNewFeatureGroup'
 import { editFeatureGroupName } from '@GBR/actions/featureGroups/editFeatureGroupName'
 
 type THOnFeatureGroup = {
@@ -125,7 +127,8 @@ export const useSaveGroupName = (props:THSaveGroupName) => {
 
    return useCallback<TOnSaveGroupName>((event) => {
     const textName = nameRef.current?.textContent as string
-    saveNewFeatureGroup({ featureGroup: { ...featureGroup, title: textName }})
+    
+    saveFeatureGroup({ featureGroup: { ...featureGroup, title: cleanString(textName) }})
   }, [
     featureGroup,
   ])

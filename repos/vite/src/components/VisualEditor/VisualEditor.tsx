@@ -34,6 +34,7 @@ export const VisualEditor = (props:TVisualEditor) => {
     onWorldChange,
     onFeatureClose,
     onFeatureDelete,
+    onFeatureRename,
     onFeatureChange,
     onFeatureActive,
     onFeatureCreate,
@@ -62,6 +63,7 @@ export const VisualEditor = (props:TVisualEditor) => {
             onFeatureClose={onFeatureClose}
             sidebarWidth={SidebarOpenWidth}
             onSettingChange={onSettingChange}
+            onFeatureRename={onFeatureRename}
             onFeatureDelete={onFeatureDelete}
             onFeatureCreate={onFeatureCreate}
             onFeatureChange={onFeatureChange}

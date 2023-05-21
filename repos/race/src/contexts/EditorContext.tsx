@@ -43,6 +43,7 @@ export type TEditorProvider = {
   onFeatureInactive:TOnFeatureCB
   onFeatureDelete:TOnFeatureItemCB
   onFeatureCreate:TOnFeatureItemCB
+  onFeatureRename:TOnFeatureItemCB
   setFeatureGroups:TSetFeatureGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
@@ -65,6 +66,7 @@ export type TEditorCtx = {
   deleteFeature:(loc:string)=>void
   onFolderCreate?:TOnFeatureItemCB
   onFolderDelete?:TOnFeatureItemCB
+  onFolderRename?:TOnFeatureItemCB
   setFeatureGroups:TSetFeatureGroups
   collapseAllExcept:(key:string|string[]) => void
 }
@@ -89,6 +91,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     onFeatureChange,
     onFeatureCreate,
     onFeatureDelete,
+    onFeatureRename,
     onFeatureActive,
     setFeatureGroups,
     onFeatureInactive,
@@ -154,6 +157,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       setFeatureGroups,
       collapseAllExcept,
       expressionOptions,
+      onFolderRename: onFeatureRename,
       onFolderDelete: onFeatureDelete,
       onFolderCreate: onFeatureCreate,
       feature: (feature || emptyObj) as TRaceFeature,
@@ -171,6 +175,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     updateExpanded,
     onFeatureDelete,
     onFeatureCreate,
+    onFeatureRename,
     setFeatureGroups,
     expressionOptions,
     collapseAllExcept,

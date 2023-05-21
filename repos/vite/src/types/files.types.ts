@@ -17,7 +17,6 @@ export type TRaceFolder = {
   path:string
   uuid: string
   isDir: boolean,
-  location: string
   parent: {
     uuid: string
     location: string

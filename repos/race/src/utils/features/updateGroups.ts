@@ -1,4 +1,4 @@
-import type { TRaceFeatureGroup } from '@GBR/types'
+import type { TRaceFeatureGroup, TRaceFeatures } from '@GBR/types'
 
 import { EmptyFeatureGroupUUID } from '@GBR/constants/values'
 
@@ -34,7 +34,7 @@ export const updateGroups = (
       acc[ref] = replace
 
       return acc
-    }, {} as TRaceFeatureGroup[`items`])
+    }, {} as TRaceFeatures)
 
   if(found) parentGroup.items = items
 
