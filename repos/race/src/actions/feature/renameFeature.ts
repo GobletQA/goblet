@@ -1,7 +1,7 @@
 import type { TRaceFeature } from '@GBR/types'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 
-
+import { EPatchType } from '@GBR/types'
 import { getEditor } from '@GBR/utils/editor/getEditor'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
@@ -35,7 +35,7 @@ const updateNonActive = async ({
   const {
     featureGroups,
     onFolderRename,
-    setFeatureGroups,
+    setTabsAndGroups,
   } = editor
 
   const updated = await ParkinWorker.reIndex({ feature: renamed })
@@ -49,7 +49,10 @@ const updateNonActive = async ({
     features: { items: featureGroups },
   })
 
-  setFeatureGroups(groups.items)
+  setTabsAndGroups(
+    { op: EPatchType.rename, new: updated, old: feature },
+    groups.items
+  )
 
 }
 

@@ -13,11 +13,21 @@ import type {
 } from './features.types'
 
 
+export type TRaceChangeOp = {
+  op:EPatchType|`add`|`remove`|`update`|`replace`|`merge`|`rename`
+  old?:TRaceFeatures|TRaceFeatureItem
+  new?:TRaceFeatures|TRaceFeatureItem
+}
+
 export type TSetSteps = (steps:TStepDefsList) => void
 export type TStepDefsRef = MutableRefObject<TStepDefsList>
 export type TFeaturesRef = MutableRefObject<TRaceFeatures>
 export type TSetFeatureGroups = (features:TRaceFeatures, merge?:boolean) => void
-export type TSetTabsAndGroups = (changes:TRaceFeatures, features:TRaceFeatures, merge?:boolean) => void
+export type TSetTabsAndGroups = (
+  op?:TRaceChangeOp,
+  features?:TRaceFeatures,
+  merge?:boolean
+) => void
 
 export type TFeatureCB = (feature: TRaceFeature) => void
 export type TSetFeature = (feature?:TRaceFeature) => void
@@ -28,6 +38,8 @@ export type TOnAddClick = (evt:SyntheticEvent, parentId?:string, type?:ESectionT
 
 export enum EPatchType {
   add = `add`,
+  merge = `merge`,
+  rename = `rename`,
   remove = `remove`,
   update = `update`,
   replace = `replace`,

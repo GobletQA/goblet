@@ -1,5 +1,6 @@
 import type { TRaceFeatureGroup } from '@GBR/types'
 
+import { EPatchType } from '@GBR/types'
 import {EmptyFeatureGroupUUID} from '@GBR/constants'
 import { getEditor } from '@GBR/utils/editor/getEditor'
 import { groupFactory } from '@GBR/factories/groupFactory'
@@ -12,7 +13,7 @@ export type TCreateFeatureGroup = {
 export const createFeatureGroup = async (props?:TCreateFeatureGroup) => {
 
   const { editor } = await getEditor()
-  const { featureGroups, setFeatureGroups, rootPrefix } = editor
+  const { featureGroups, setTabsAndGroups, rootPrefix } = editor
   const featureGroup = props?.featureGroup
 
 
@@ -35,7 +36,11 @@ export const createFeatureGroup = async (props?:TCreateFeatureGroup) => {
 
   if(!featureGroup){
     const items = {...featureGroups, [relative]: group}
-    return setFeatureGroups(items)
+    return setTabsAndGroups(
+      // { op: EPatchType.add, new: items },
+      undefined,
+      items
+    )
   }
 
   const updated = updateGroups(
@@ -43,5 +48,9 @@ export const createFeatureGroup = async (props?:TCreateFeatureGroup) => {
     {...featureGroup, items: {...featureGroup.items, [relative]: group}}
   )
 
-  return setFeatureGroups(updated.items)
+  return setTabsAndGroups(
+    // { op: EPatchType.add, new: updated.items },
+    undefined,
+    updated.items
+  )
 }

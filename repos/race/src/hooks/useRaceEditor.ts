@@ -79,7 +79,7 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
    */
   // useEffect(() => {
   //   features !== featuresRef.current
-  //     && setFeatureGroups(features)
+  //     && setTabsAndGroups({ op:`update`, new: features}, features)
   // }, [features])
 
   return {

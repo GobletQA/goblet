@@ -1,3 +1,6 @@
+import type { MutableRefObject } from 'react'
+import type { TOnExpandedCB } from '@GBR/contexts'
+import type { TExpanded } from '@GBR/hooks/editor/useExpanded'
 import type {
   TFeatureCB,
   TSetFeature,
@@ -12,10 +15,8 @@ import type {
   TOnAuditFeatureCB,
   TUpdateFeatureOpts,
 } from '@GBR/types'
-import type { MutableRefObject } from 'react'
-import type { TOnExpandedCB } from '@GBR/contexts'
-import type { TExpanded } from '@GBR/hooks/editor/useExpanded'
 
+import { EPatchType } from '@GBR/types'
 import { emptyObj } from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
@@ -87,11 +88,16 @@ const updateGroups = ({
         })
       : updateFeatureInGroup(groupProps)
 
-  // TODO:
-  // Call this instead, with the features that were changed
-  // That way we can know when tabs to update
-  // setTabsAndGroups
-  setFeatureGroups(groups.items)
+  const op = feature?.uuid === EmptyFeatureUUID
+    ? EPatchType.add
+    : options.rename
+      ? EPatchType.rename
+      : EPatchType.update
+
+  setTabsAndGroups(
+    {op, new: updated, old: feature},
+    groups.items
+  )
 }
 
 const featureCallbacks = ({

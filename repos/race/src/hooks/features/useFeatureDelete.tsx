@@ -8,6 +8,7 @@ import type {
   TSetFeatureGroups,
 } from '@GBR/types'
 
+import { EPatchType } from '@GBR/types'
 import { useInline } from '@gobletqa/components'
 import { featureFromLoc } from '@GBR/utils/features/featureFromLoc'
 import { removeFromGroup } from '@GBR/utils/features/removeFromGroup'
@@ -44,8 +45,6 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
     featureGroups,
     onFeatureDelete,
     onFeatureActive,
-    setFeatureGroups,
-    // TODO: ensure tabs are updated when groups are updated
     setTabsAndGroups
   } = props
 
@@ -74,7 +73,13 @@ export const useFeatureDelete = (props:THFeatureDelete) => {
     }
 
     const removed = removeFromGroup({ items: featureGroups } as TRaceFeatureGroup, remove?.uuid)
-    setFeatureGroups(removed.items)
+    setTabsAndGroups(
+      // Disabling for now, because this method handles it
+      // Should migrate to use an operation though
+      // { op: EPatchType.remove, new: remove, old: remove },
+      undefined,
+      removed.items
+    )
 
     // Finally call the onFeatureDelete callback
     onFeatureDelete?.(remove)

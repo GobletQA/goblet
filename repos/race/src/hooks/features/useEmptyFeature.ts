@@ -3,6 +3,7 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TSetFeatureOpts,
+  TSetTabsAndGroups,
   TSetFeatureGroups,
 } from '@GBR/types'
 
@@ -13,6 +14,7 @@ import { useOnEvent, useInline } from '@gobletqa/components'
 
 export type THEmptyFeatureCallbacks = {
   updateEmptyTab:TFeatureCB
+  setTabsAndGroups:TSetTabsAndGroups
   setFeatureGroups:TSetFeatureGroups
   setFeature:(feat?: TRaceFeature | undefined, opts?:TSetFeatureOpts) => void
 }
@@ -22,12 +24,12 @@ export const useEmptyFeature = (props:THEmptyFeatureCallbacks) => {
   const {
     setFeature,
     updateEmptyTab,
-    setFeatureGroups,
+    setTabsAndGroups,
   } = props
 
   const setEmptyFeature = useInline(((feat:TRaceFeature) => {
     if(feat?.uuid === EmptyFeatureUUID){
-      setFeatureGroups({ [EmptyFeatureUUID]: feat }, true)
+      setTabsAndGroups(undefined, { [EmptyFeatureUUID]: feat }, true)
       updateEmptyTab?.(feat)
     }
 

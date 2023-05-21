@@ -1,5 +1,6 @@
 import type { TRaceFeatureGroup } from '@GBR/types'
 
+import { EPatchType } from '@GBR/types'
 import {EmptyFeatureGroupUUID} from '@GBR/constants'
 import { getEditor } from '@GBR/utils/editor/getEditor'
 import { groupFactory } from '@GBR/factories/groupFactory'
@@ -21,7 +22,7 @@ export const saveFeatureGroup = async (props:TSaveFeatureGroup) => {
     featureGroups,
     onFolderRename,
     onFolderCreate,
-    setFeatureGroups,
+    setTabsAndGroups,
     } = editor
 
   const {
@@ -52,6 +53,9 @@ export const saveFeatureGroup = async (props:TSaveFeatureGroup) => {
     ? onFolderCreate?.(group)
     : onFolderRename?.(group, oldPath)
 
-  return setFeatureGroups(updated.items)
+  return setTabsAndGroups(
+    !isNew ? { op: EPatchType.rename, new: group, old: featureGroup } : undefined,
+    updated.items
+  )
 
 }

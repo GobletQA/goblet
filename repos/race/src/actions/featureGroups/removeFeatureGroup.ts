@@ -1,5 +1,6 @@
 import type { TRaceFeatureGroup } from '@GBR/types'
 
+import { EPatchType } from '@GBR/types'
 import { getEditor } from '@GBR/utils/editor/getEditor'
 import { removeFromGroup } from '@GBR/utils/features/removeFromGroup'
 
@@ -13,11 +14,14 @@ export const removeFeatureGroup = async (props:TRMFeatureGroup) => {
   const {
     featureGroups,
     onFolderDelete,
-    setFeatureGroups,
+    setTabsAndGroups,
     } = editor
     
   const removed = removeFromGroup({ items: featureGroups } as TRaceFeatureGroup, featureGroup.uuid)
   onFolderDelete?.(featureGroup)
 
-  return setFeatureGroups(removed.items)
+  return setTabsAndGroups(
+    {op: EPatchType.remove,  old: featureGroup},
+    removed.items
+  )
 }

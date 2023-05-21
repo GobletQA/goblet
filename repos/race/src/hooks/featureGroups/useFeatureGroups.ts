@@ -3,6 +3,7 @@ import type { TTabItem } from '@gobletqa/components'
 import type {
   TFeaturesRef,
   TRaceFeatures,
+  TSetTabsAndGroups
 } from '@GBR/types'
 
 import { useMemo, useState, useCallback } from 'react'
@@ -44,10 +45,10 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
 
   }, [rootPrefix])
 
-  const setTabsAndGroups = useCallback((
-    changed:TRaceFeatures,
-    features:TRaceFeatures,
-    merge?:boolean
+  const setTabsAndGroups = useCallback<TSetTabsAndGroups>((
+    changed,
+    features,
+    merge
   ) => {
     // Need to add a callback thats in the editor context
     // That allows updating tabs
@@ -56,7 +57,7 @@ export const useFeatureGroups = (props:THFeatureGroups) => {
     // const tabs = updateTabsFromGroups(featureGroups, groups, openedTabs)
     // tabs !== openedTabs && setOpenedTabs(tabs)
 
-    setFeatureGroups(features, merge)
+    features && setFeatureGroups(features, merge)
   }, [
     rootPrefix,
     openedTabs,
