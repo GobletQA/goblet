@@ -24,6 +24,7 @@ export type TDeleteFileRep = {
 export type TRenameFile = {
   oldLoc:string
   newLoc:string
+  content?:string
 }
 
 export type TLoadFile = {
@@ -79,12 +80,14 @@ class FilesApi {
   renameFile = async <T=TFileResp>({
     oldLoc,
     newLoc,
+    content,
   }:TRenameFile) => await this._req<T>({
     url: `/files/rename`,
     method: HttpMethods.POST,
     params: {
       oldLoc,
-      newLoc
+      newLoc,
+      content
     },
   })
 

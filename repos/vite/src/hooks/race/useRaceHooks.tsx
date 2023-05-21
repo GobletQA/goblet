@@ -3,6 +3,7 @@ import type { TRaceFeatureGroup, TRaceFeature } from '@gobletqa/race'
 
 import { useMemo } from 'react'
 import { useRepo } from '@store'
+import {exists} from '@keg-hub/jsutils'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@gobletqa/race'
 import { useRaceSettings } from '@hooks/race/useRaceSettings'
@@ -15,14 +16,12 @@ import { getActiveFeature } from '@utils/features/getActiveFeature'
 
 import {
   useOnAddFile,
-  useOnLoadFile,
   useOnSaveFile,
   useFeatureFiles,
   useOnRenameFile,
   useOnDeleteFile,
   useOnPathChange,
 } from '@hooks/files'
-
 
 export const useRaceHooks = () => {
 
@@ -44,14 +43,22 @@ export const useRaceHooks = () => {
 
   const onPathChange = useOnPathChange()
 
-  const onFeatureRename = useInline(async (feature:TRaceFeature|TRaceFeatureGroup, oldLoc:string) => {
+  const onFeatureRename = useInline(async (
+    feature:TRaceFeature|TRaceFeatureGroup,
+    oldLoc:string,
+    content?:string
+  ) => {
     if(!feature?.parent?.location)
       return console.warn(`Failed to rename item, The new item location is required`)
 
     if(!oldLoc)
       return console.warn(`Failed to rename item, The original item location is required`)
 
-    onRenameFile(oldLoc, feature?.parent?.location)
+    onRenameFile(
+      oldLoc,
+      feature?.parent?.location,
+      exists(content) ? content : undefined
+    )
   })
 
   const onFeatureActive = useInline(async (feature:TRaceFeature) => {

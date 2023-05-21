@@ -1,3 +1,4 @@
+import type { TTab } from '@gobletqa/components'
 import type { TRaceFeature } from './features.types'
 import type { Parkin, TWorldConfig } from '@ltipton/parkin'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
@@ -34,3 +35,8 @@ export type TAskForSettings = {
   cb: TWithSettingsCB
 }
 export type TWithSettingsCB = (data:TSettingsCtx) => void
+
+
+export type TOnCloseRaceTabEvt = {
+  tab:TTab
+}

@@ -9,7 +9,7 @@ import { cleanString } from '@GBR/utils/helpers/cleanString'
  * Ensure the feature file extension is added to the file name
  * Removes the extension if it already exists, then adds it
  */
-const addFeatureExt = (location:string) => {
+export const addFeatureExt = (location:string) => {
   return `${location.replace(/\.feature$/, ``)}.feature`
 }
 

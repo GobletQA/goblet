@@ -25,6 +25,7 @@ export const FeatureListItem = (props:TFeatureListItem) => {
 
   const {
     nameRef,
+    onBlur,
     onClick,
     isActive,
     onKeyDown,
@@ -50,6 +51,7 @@ export const FeatureListItem = (props:TFeatureListItem) => {
           <FeatureItemName>
             <div
               ref={nameRef}
+              onBlur={onBlur}
               contentEditable
               spellCheck={false}
               onKeyDown={onKeyDown}

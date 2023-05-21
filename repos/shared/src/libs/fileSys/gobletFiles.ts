@@ -5,13 +5,13 @@ import type { TDefGobletConfig, TFileModel } from '../../types'
 import path from 'path'
 import fs from 'fs-extra'
 import { Exception } from '@GException'
-import { get, isBool } from '@keg-hub/jsutils'
 import { loadReport } from '@GSH/utils/loadReport'
 import { DefinitionOverrideFolder } from '@GSH/constants'
 import { loadFeature } from '@GSH/libs/features/features'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { limbo, limboify, omitKeys } from '@keg-hub/jsutils'
 import { resolveFileType } from '@GSH/utils/resolveFileType'
+import { exists, get, isBool, isStr } from '@keg-hub/jsutils'
 import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
 import { getPathFromConfig } from '@GSH/utils/getPathFromConfig'
 
@@ -359,6 +359,7 @@ export const renameGobletFile = async (
   repo:Repo,
   oldLoc:string,
   newLoc:string,
+  content?:string
 ) => {
   
   // Ensure both old and new locations are in the test root dir
@@ -383,6 +384,17 @@ export const renameGobletFile = async (
     })
 
   const moved = await limbo(fs.move(oldLoc, newLoc))
+  
+  if(exists(content) && isStr(content)){
+    const [err, success] = await writeFile(newLoc, content)
+    if (err)
+      throw new Exception({
+        err,
+        status: 404,
+        msg: `Save failed: ${newLoc} - ${err.message}`,
+      })
+  }
+
   const file = await getGobletFile(repo, newLoc)
 
   return {

@@ -23,7 +23,11 @@ export type TSetFeatureOpts = TAuditOpts & {
 export type TUpdateFeatureOpts = TSetFeatureOpts & {
   expand?:string
   create?:boolean
+  rename?:boolean
+  groups?:boolean
   replace?:boolean
+  reindex?:boolean
+  callbacks?:boolean
 }
 
 export type TUpdateFeature = {

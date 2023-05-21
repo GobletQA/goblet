@@ -64,7 +64,6 @@ export const useEditingFeatureGroup = (props:THEditingFeatureGroup) => {
   })
 
   const onKeyDown = useOnKeyDown({
-    onBlur,
     featureGroup,
     nameConflict,
     featureGroups,

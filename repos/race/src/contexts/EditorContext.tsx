@@ -62,6 +62,7 @@ export type TEditorCtx = {
   expressionOptions?:TExpOpts
   updateExpanded:TOnExpandedCB
   menuContext?:TRaceContextMenu
+  onFeatureChange?:TOnFeatureCB
   updateFeature:TUpdateFeatureCB
   deleteFeature:(loc:string)=>void
   onFolderCreate?:TOnFeatureItemCB
@@ -133,6 +134,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     updateExpanded,
     updateEmptyTab,
     onAuditFeature,
+    onFeatureRename,
     onFeatureDelete,
     onFeatureActive,
     onFeatureChange,
@@ -154,6 +156,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       deleteFeature,
       updateFeature,
       updateExpanded,
+      onFeatureChange,
       setFeatureGroups,
       collapseAllExcept,
       expressionOptions,
@@ -175,6 +178,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     updateExpanded,
     onFeatureDelete,
     onFeatureCreate,
+    onFeatureChange,
     onFeatureRename,
     setFeatureGroups,
     expressionOptions,

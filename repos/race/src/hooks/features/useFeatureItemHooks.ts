@@ -67,7 +67,6 @@ export const useFeatureItemHooks = (props:THFeatureItemHooks) => {
   })
 
   const onKeyDown = useOnKeyDown({
-    onBlur,
     editingName,
     nameConflict,
     featureGroups,

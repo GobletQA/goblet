@@ -1,6 +1,6 @@
 import type { TFileResp } from '@types'
 
-import { noOpObj } from '@keg-hub/jsutils'
+import { exists, emptyObj } from '@keg-hub/jsutils'
 import { addToast } from '@actions/toasts'
 import { filesApi } from '@services/filesApi'
 import { renameFile as renameFileLocal } from '@actions/files/local/renameFile'
@@ -11,7 +11,8 @@ import { renameFile as renameFileLocal } from '@actions/files/local/renameFile'
  */
 export const renameFile = async (
   oldLoc:string,
-  newLoc:string
+  newLoc:string,
+  content?:string
 ) => {
 
   if (!oldLoc || !newLoc)
@@ -22,11 +23,14 @@ export const renameFile = async (
     message: `Renaming file to ${newLoc}!`,
   })
 
+
   const resp = await filesApi.renameFile({
     oldLoc,
-    newLoc
+    newLoc,
+    ...(exists(content) ? { content } : emptyObj)
   })
-  if(!resp?.success) return noOpObj as TFileResp
+
+  if(!resp?.success) return emptyObj as TFileResp
 
   addToast({
     type: `success`,

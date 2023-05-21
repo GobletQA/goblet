@@ -5,8 +5,9 @@ import type {
   TOnFeatureCB,
   TRaceFeatures,
   TUpdateFeature,
-  TSetFeatureGroups,
   TSetFeatureOpts,
+  TOnFeatureItemCB,
+  TSetFeatureGroups,
   TOnAuditFeatureCB,
   TUpdateFeatureOpts,
 } from '@GBR/types'
@@ -21,6 +22,24 @@ import { addToGroup } from '@GBR/utils/features/addToGroup'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateFeatureInGroup } from '@GBR/utils/features/updateFeatureInGroup'
+import { renameFeatureInGroup } from '@GBR/utils/features/renameFeatureInGroup'
+
+export type TUpdateFeatureGroups = {
+  updated:TRaceFeature
+  feature?:TRaceFeature
+  options: TUpdateFeatureOpts
+  featureGroups:TRaceFeatures
+  setFeatureGroups:TSetFeatureGroups
+}
+
+export type TFeatureCBs = {
+  feature?:TRaceFeature
+  updated:TRaceFeature
+  options: TUpdateFeatureOpts
+  onFeatureCreate:TOnFeatureCB
+  onFeatureChange?:TOnFeatureCB
+  onFeatureRename:TOnFeatureItemCB
+}
 
 export type THFeatureUpdate = {
   rootPrefix:string
@@ -37,9 +56,48 @@ export type THFeatureUpdate = {
   onFeatureActive?:TOnFeatureCB
   onFeatureInactive?:TOnFeatureCB
   onAuditFeature:TOnAuditFeatureCB
+  onFeatureRename:TOnFeatureItemCB
   setFeatureGroups:TSetFeatureGroups
   curPathRef: MutableRefObject<string>
   curValueRef: MutableRefObject<string>
+}
+
+const updateGroups = ({
+  options,
+  updated,
+  feature,
+  featureGroups,
+  setFeatureGroups
+}:TUpdateFeatureGroups) => {
+  const groupProps = { feature: updated, features: { items: featureGroups }}
+
+  const groups = feature?.uuid === EmptyFeatureUUID
+    ? addToGroup(groupProps)
+    : options.rename
+      ? renameFeatureInGroup({
+          feature: updated,
+          newLoc: updated.path,
+          oldLoc: feature?.path as string,
+          features: { items: featureGroups },
+        })
+      : updateFeatureInGroup(groupProps)
+
+  setFeatureGroups(groups.items)
+}
+
+const featureCallbacks = ({
+  options,
+  feature,
+  updated,
+  onFeatureCreate,
+  onFeatureChange,
+  onFeatureRename,
+}:TFeatureCBs) => {
+  options.create
+    ? onFeatureCreate(updated)
+    : options.rename
+      ? onFeatureRename(updated, feature?.parent?.location, updated.content)
+      : onFeatureChange?.(updated, feature)
 }
 
 export const useFeatureUpdate = (props:THFeatureUpdate) => {
@@ -49,10 +107,11 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     curValueRef,
     featureGroups,
     updateExpanded,
+    updateEmptyTab,
     onAuditFeature,
     onFeatureChange,
     onFeatureCreate,
-    updateEmptyTab,
+    onFeatureRename,
     setFeatureGroups,
     onFeatureInactive,
     setFeature:_setFeature,
@@ -88,24 +147,39 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
   }:TUpdateFeature) => {
     if(!changed || !isValidUpdate(changed)) return
 
-    const updated = await ParkinWorker.reIndex({ feature: changed })
+    const updated = options.reindex !== false
+      ? await ParkinWorker.reIndex({ feature: changed })
+      : changed
 
-    options.create ? onFeatureCreate(updated) : onFeatureChange?.(updated, feature)
+    options.callbacks !== false
+      && featureCallbacks({
+          options,
+          updated,
+          feature,
+          onFeatureCreate,
+          onFeatureChange,
+          onFeatureRename,
+        })
 
-    const groups = feature?.uuid === EmptyFeatureUUID
-      ? addToGroup({ feature: updated, features: { items: featureGroups }})
-      : updateFeatureInGroup({feature: updated, features: { items: featureGroups }})
+    options.groups !== false
+      && updateGroups({
+          options,
+          updated,
+          feature,
+          featureGroups,
+          setFeatureGroups
+        })
 
-    // If the updated feature was an empty feature
-    // Update the tab name, so the tab has the correct feature title
+    // Ensure the tab name is updated when feature is empty
     feature?.uuid === EmptyFeatureUUID
       && updateEmptyTab?.(updated)
 
-    options?.expand && updateExpanded(options?.expand)
-    setFeatureGroups(groups.items)
+    options?.expand
+      && updateExpanded(options?.expand)
+  
     setFeature(updated, options)
   })
- 
+
   return {
     setFeature,
     updateFeature

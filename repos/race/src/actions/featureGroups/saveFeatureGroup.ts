@@ -1,6 +1,5 @@
 import type { TRaceFeatureGroup } from '@GBR/types'
 
-
 import {EmptyFeatureGroupUUID} from '@GBR/constants'
 import { getEditor } from '@GBR/utils/editor/getEditor'
 import { groupFactory } from '@GBR/factories/groupFactory'
@@ -8,11 +7,11 @@ import { renameGroup } from '@GBR/utils/features/renameGroup'
 import { updateGroups } from '@GBR/utils/features/updateGroups'
 import { getGroupData } from '@gobletqa/race/utils/features/getGroupData'
 
-export type TSaveNewFeatureGroup = {
+export type TSaveFeatureGroup = {
   featureGroup:TRaceFeatureGroup
 }
 
-export const saveFeatureGroup = async (props:TSaveNewFeatureGroup) => {
+export const saveFeatureGroup = async (props:TSaveFeatureGroup) => {
   const { featureGroup } = props
   const oldPath = featureGroup.path
 

@@ -6,15 +6,17 @@ import type {
   TOnEditFeature,
   TOnActiveFeature,
   TOnDeleteFeature,
+  TOnCloseRaceTabEvt,
 } from '@GBR/types'
 
 import { useEditor } from '@GBR/contexts'
 import { useCallback, useState } from 'react'
+import { OnCloseRaceTabEvt } from '@GBR/constants/events'
 import { useTabHooks } from '@GBR/hooks/tabs/useTabHooks'
-
 import {
   useInline,
   stopEvent,
+  useOnEvent,
 } from '@gobletqa/components'
 import {
   removeTab,
@@ -96,6 +98,8 @@ export const useEditorActions = (props:THEditorActions) => {
 
     setFeature(nextFeat)
   })
+
+  useOnEvent<TOnCloseRaceTabEvt>(OnCloseRaceTabEvt, ({ tab }) => onTabClose(tab))
 
   const onDeleteFeature = useInline<TOnDeleteFeature>((__, loc) => deleteFeature?.(loc))
 

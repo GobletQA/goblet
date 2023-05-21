@@ -11,12 +11,12 @@ import { renameGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  * @returns {Object} - response object model containing the saved fileModel
  */
 export const renameFile = asyncWrap(async (req:Request, res:Response) => {
-  const {oldLoc, newLoc} = req.body
+  const {oldLoc, newLoc, content} = req.body
 
   if (!oldLoc) throw new Exception(`[Backend API] Rename failed: oldLoc required`, 400)
   if (!newLoc) throw new Exception(`[Backend API] Rename failed: newLoc required`, 400)
 
-  const meta = await renameGobletFile(res.locals.repo, oldLoc, newLoc)
+  const meta = await renameGobletFile(res.locals.repo, oldLoc, newLoc, content)
 
   return apiRes(res, meta || {}, 200)
 })
