@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
+import type { TEditorCtx } from '@gobletqa/race'
 
-
+import { useRef } from 'react'
 import { useApp } from '@store'
 import { RaceEditor } from '@gobletqa/race'
 import { Actions } from '../EditorActions/Actions'
@@ -24,8 +25,11 @@ export type TVisualEditor = {
 
 export const VisualEditor = (props:TVisualEditor) => {
   const { sidebarLocked } = useApp()
+  const editorRef = useRef<TEditorCtx>(null)
+  
   const {
     world,
+    decoRef,
     settings,
     features,
     connected,
@@ -39,7 +43,7 @@ export const VisualEditor = (props:TVisualEditor) => {
     onFeatureActive,
     onFeatureCreate,
     onSettingChange,
-  } = useRaceHooks()
+  } = useRaceHooks(editorRef)
 
   const menuContext = useContextMenu()
 
@@ -50,10 +54,12 @@ export const VisualEditor = (props:TVisualEditor) => {
           <RaceEditor
             {...props}
             world={world}
+            decoRef={decoRef}
             actions={Actions}
             Divider={Divider}
             settings={settings}
             features={features}
+            editorRef={editorRef}
             PrePanels={PrePanels}
             rootPrefix={rootPrefix}
             menuContext={menuContext}

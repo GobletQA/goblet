@@ -8,13 +8,13 @@ import type {
 } from '@GBR/types'
 
 import { noOp } from '@keg-hub/jsutils'
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useMemo, createRef } from 'react'
 import { useInline } from '@gobletqa/components'
 import { useInitTabs } from '@GBR/hooks/tabs/useInitTabs'
 import { useContainerHooks } from '@GBR/hooks/editor/useContainerHooks'
 import { useFeatureGroups } from '@GBR/hooks/featureGroups/useFeatureGroups'
 
-export const useRaceEditor = (props:TRaceEditorProps) => {
+export const useRaceSetup = (props:TRaceEditorProps) => {
   const {
     features,
     rootPrefix,
@@ -55,7 +55,14 @@ export const useRaceEditor = (props:TRaceEditorProps) => {
   const getOpenedTabs = useInline<TGetOpenedTabs>(() => openedTabs)
 
   const containerRef = useRef<HTMLDivElement|HTMLElement>()
-  const editorRef = useRef<TEditorCtx>(null) as MutableRefObject<TEditorCtx>
+
+  const localEditorRef = useRef<TEditorCtx>(null) as MutableRefObject<TEditorCtx>
+  const editorRef = useMemo(
+    () => (props.editorRef || localEditorRef),
+    [props.editorRef, localEditorRef]
+  )
+
+  
 
   const curPathRef = useRef<string>(initialFeature?.path || ``)
   const curValueRef = useRef<string>(initialFeature?.content || ``)

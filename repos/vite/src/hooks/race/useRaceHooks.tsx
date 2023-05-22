@@ -1,16 +1,24 @@
 import type { TRaceFiles } from '@types'
-import type { TRaceFeatureGroup, TRaceFeature } from '@gobletqa/race'
+import type { MutableRefObject } from 'react'
+import type {
+  TEditorRef,
+  TRaceDecoRef,
+  TRaceFeature,
+  TRaceFeatureGroup,
+} from '@gobletqa/race'
 
-import { useMemo } from 'react'
 import { useRepo } from '@store'
 import {exists} from '@keg-hub/jsutils'
+import { useMemo, useRef } from 'react'
 import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@gobletqa/race'
+
 import { useRaceSettings } from '@hooks/race/useRaceSettings'
 import { useRaceStepDefs } from '@hooks/race/useRaceStepDefs'
 import { useRaceFeatures } from '@hooks/race/useRaceFeatures'
 import { useOnWorldChange } from '@hooks/race/useOnWorldChange'
 import { useMultiFeatsErr } from '@hooks/race/useMultiFeatsErr'
+import { useRaceDecorations } from '@hooks/race/useRaceDecorations'
 import { getFeaturePrefix } from '@utils/features/getFeaturePrefix'
 import { getActiveFeature } from '@utils/features/getActiveFeature'
 
@@ -23,10 +31,11 @@ import {
   useOnPathChange,
 } from '@hooks/files'
 
-export const useRaceHooks = () => {
+export const useRaceHooks = (editorRef:TEditorRef) => {
 
   const repo = useRepo()
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
+  const decoRef = useRef<TRaceDecoRef>() as MutableRefObject<TRaceDecoRef>
 
   const definitions = useRaceStepDefs()
   const files = useFeatureFiles(rootPrefix)
@@ -135,8 +144,15 @@ export const useRaceHooks = () => {
   })
 
   useMultiFeatsErr({ duplicates })
+  useRaceDecorations({
+    repo,
+    decoRef,
+    editorRef,
+    rootPrefix
+  })
 
   return {
+    decoRef,
     settings,
     features,
     rootPrefix,

@@ -1,5 +1,5 @@
 import type { MutableRefObject } from 'react'
-import type { TEditorRefHandle, TDecorationAdd } from '@gobletqa/monaco'
+import type { TRaceDecoRef, TEditorRef } from '@gobletqa/race'
 import type {
   TRepoState,
   TPlayerResEvent,
@@ -9,10 +9,12 @@ import type {
 import { useRef } from 'react'
 import { EEditorType } from '@types'
 import { useOnEvent } from '@gobletqa/components'
-import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { updateRefs } from '@utils/decorations/updateRefs'
+import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
+import { getTypeFromId } from '@utils/decorations/getTypeFromId'
 import { checkFailedSpec } from '@utils/decorations/checkFailedSpec'
 import { buildDecoration } from '@utils/decorations/buildDecoration'
+import { buildDecorationFrom } from '@utils/decorations/buildDecorationFrom'
 
 import {
   PlayerTestEvt,
@@ -22,13 +24,14 @@ import {
 } from '@constants'
 
 export type THDecorations = {
-  editorRef:MutableRefObject<TEditorRefHandle|null>,
   repo:TRepoState,
   rootPrefix:string
+  decoRef:TRaceDecoRef
+  editorRef:TEditorRef
 }
 
-export const useDecorations = ({
-  editorRef,
+export const useRaceDecorations = ({
+  decoRef,
   rootPrefix,
 }:THDecorations) => {
 
@@ -37,6 +40,8 @@ export const useDecorations = ({
   const scenarioRef = useRef<TPlayerEventData|undefined>(undefined)
 
   useOnEvent<TPlayerResEvent>(PlayerEndedEvent, (event:TPlayerResEvent) => {
+    // console.log(`------- PlayerEndedEvent -------`)
+    // console.log(event)
     updateRefs({
       stepRef,
       featureRef,
@@ -46,8 +51,10 @@ export const useDecorations = ({
   })
 
   useOnEvent<TPlayerResEvent>(PlayerErrorEvent, (event:TPlayerResEvent) => {
+    // console.log(`------- PlayerErrorEvent -------`)
+    // console.log(event)
     const id = event?.data?.id
-    const decoration = editorRef?.current?.decoration
+    const decoration = decoRef?.current
     if(!decoration || !id)
       return updateRefs({
         stepRef,
@@ -55,15 +62,18 @@ export const useDecorations = ({
         scenarioRef,
         clear: true
       })
-
-    // Handle spec failed here - animation?
+    
+    // TODO: update to handle errors here
+    
   })
 
 
   useOnEvent<TPlayerResEvent>(PlayerClearDecorationEvt, (event:TPlayerResEvent) => {
+    // console.log(`------- PlayerClearDecorationEvt -------`)
+    // console.log(event)
+
     const { location } = event
-    const decoration = editorRef?.current?.decoration
-    location && decoration?.clear(location)
+    location && decoRef?.current?.clear?.(location)
     updateRefs({
       stepRef,
       featureRef,
@@ -73,8 +83,11 @@ export const useDecorations = ({
   })
 
   useOnEvent<TPlayerResEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
+    // console.log(`------- PlayerTestEvt -------`)
+    // console.log(event)
+
     const id = event?.data?.id
-    const decoration = editorRef?.current?.decoration
+    const decoration = decoRef?.current
     if(!decoration || !id) return
 
     updateRefs({
@@ -85,16 +98,17 @@ export const useDecorations = ({
     })
 
     const dec = buildDecoration(event.data)
-    const relative = rmRootFromLoc(event.location, rootPrefix)
-    decoration?.add(relative, dec, { action: event.data.action })
+    const relative = event.location
+    // const relative = rmRootFromLoc(event.location, rootPrefix)
+    // decoRef?.current?.add(relative, dec, { action: event.data.action })
 
     checkFailedSpec({
       event,
       relative,
       featureRef,
       scenarioRef,
-      add: decoration?.add,
-      editor: EEditorType.code,
+      add: decoRef?.current?.add,
+      editor: EEditorType.visual,
     })
 
   })

@@ -32,6 +32,10 @@ import type {
   TOnSettingCB
 } from './settings.types'
 
+import type {
+  TRaceDecoRef
+} from './decorations.types'
+
 export type TFeaturesRefs = {
   stepDefsRef: TStepDefsRef
 }
@@ -63,8 +67,10 @@ export type TOnWorldChange = (props:TWorldChange) => void
 export type TRaceEditorProps = TEditorShared & {
   rootPrefix: string
   world?:TWorldConfig
-  feature?:TRaceFeature
+  decoRef?:TRaceDecoRef
   themeType?:EThemeMode
+  editorRef?:TEditorRef
+  feature?:TRaceFeature
   settings:TRaceSettings
   definitions:TStepDefsList
   features:TRaceFeatureAsts

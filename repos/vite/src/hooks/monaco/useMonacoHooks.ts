@@ -7,9 +7,9 @@ import type {
   TMonacoSettingValues,
 } from '@types'
 
-import { useMemo } from 'react'
 import { ESideNav } from '@types'
 import { useFiles, useRepo } from '@store'
+import { useMemo, useCallback } from 'react'
 import { useDecorations } from './useDecorations'
 import { useMonacoConfig } from './useMonacoConfig'
 import { confirmModal } from '@actions/modals/modals'
@@ -22,8 +22,8 @@ import { isCustomDef } from '@utils/definitions/isCustomDef'
 import { loadGobletFile } from '@actions/files/api/loadGobletFile'
 import { useSettingValues } from '@hooks/settings/useSettingValues'
 import {
-  useEventEmit,
   useOnEvent,
+  useEventEmit,
 } from '@gobletqa/components'
 
 import {
@@ -72,7 +72,12 @@ export const useMonacoHooks = (
     rootPrefix,
   })
 
-  const onPathChange = useOnPathChange()
+  const onPathChangeCB = useOnPathChange()
+  const onPathChange = useCallback(
+    (loc:string, content?:string|null) => onPathChangeCB(loc),
+    [onPathChangeCB]
+  )
+
   const onLoadFile = useOnLoadFile(files, rootPrefix)
   const onSaveFile = useOnSaveFile(files, rootPrefix)
   const onDeleteFile = useOnDeleteFile(files, rootPrefix)

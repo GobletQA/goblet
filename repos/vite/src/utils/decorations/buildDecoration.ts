@@ -1,10 +1,13 @@
 import type { TPlayerTestEvent } from '@types'
+import type { TRaceDeco } from '@gobletqa/race'
 import type { TDecoration } from '@gobletqa/monaco'
 import type { IMarkdownString } from 'monaco-editor'
 
 import { EAstObjects } from '@types'
 import { getTypeFromId } from './getTypeFromId'
 import { cls, capitalize } from '@keg-hub/jsutils'
+
+type TBuiltDeco = TDecoration | TRaceDeco
 
 const getDecoCls = (event:TPlayerTestEvent, type:string) => {
   return event.action === `start`
@@ -67,6 +70,15 @@ export const buildDecoration = (
   const search = getSearchText(description || event.description, type)
 
   return {
+    // Race only properties
+    // Map these to the correct properties
+    // type - Race Decoration type i.e. pass | fail | error | spin | etc...
+    // id - UUID of the feature property
+    // Will need to pass in the current feature being run
+    type,
+    id:testPath,
+    // -------------
+
     search,
     options: {
       zIndex: 1000,
@@ -77,5 +89,5 @@ export const buildDecoration = (
       glyphMarginHoverMessage: getHoverMessage(event, type),
       marginClassName: (testPath || event.testPath).replaceAll(`/`, `_`),
     }
-  } as TDecoration
+  } as TBuiltDeco
 }

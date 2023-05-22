@@ -1,7 +1,10 @@
 export const SetFeatureContextEvt = `set-feature-context`
 
 export const UpdateWorldEvt = `update-world-event`
+export const RaceEmitDecoEvt = `race-emit-deco-event`
 export const ParkinInitEvt = `parkin-initialized-event`
+export const AskForDecoEvt = `ask-for-deco-context-event`
+export const RaceEmitEditorEvt = `race-emit-editor-event`
 export const OnCloseRaceTabEvt = `on-close-race-tab-event`
 export const ToggleRaceModalEvt = `toggle-race-modal-event`
 export const AskForEditorEvt = `ask-for-editor-context-event`

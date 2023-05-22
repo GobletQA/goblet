@@ -53,9 +53,10 @@ export const FeatureContent = styled(Box)`
 export const FeatureHeaderContainer = styled(Box)`
   top: 0;
   display: flex;
-  position: sticky;
-  align-items: center;
   margin-top: 0;
+  position: sticky;
+  padding-left: 20px;
+  align-items: center;
   z-index: ${race.header.zIdx};
   justify-content: space-between;
   margin-left: -${gutter.margin.px};
@@ -65,7 +66,6 @@ export const FeatureHeaderContainer = styled(Box)`
   background-color: var(--goblet-tab-activeBackground);
   border-bottom: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
 
-  // box-shadow: 0px -1px 5px -1px rgba(0,0,0,0.2);
 `
 
 export const FeatureMenuContainer = styled(Box)`
@@ -106,7 +106,6 @@ export const FeatureActionBtn = styled(Button)`
 export const HeaderText = styled(H3)`
   flex-grow: 1;
   font-size: 15px;
-  padding-left: 20px;
   color: var(--goblet-editor-foreground);
 `
 

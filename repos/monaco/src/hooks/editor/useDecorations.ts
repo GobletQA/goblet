@@ -1,4 +1,3 @@
-import type { MutableRefObject } from 'react'
 import type { editor } from 'monaco-editor'
 import type {
   TDecoration,
