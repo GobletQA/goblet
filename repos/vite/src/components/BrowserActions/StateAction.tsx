@@ -69,6 +69,7 @@ export const StateAction:TBrowserAction = {
   Component: StateBrowser,
   name: `state-browser-action`,
   containerSx: {
+    opacity: `0.5`,
     justifyContent: `start`,
   },
 }

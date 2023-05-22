@@ -37,10 +37,10 @@ const useActionProps = (props:TBrowserActionProps, browserState:EBrowserState) =
         loc: 'bottom',
         color: 'error',
         text: 'Cancel',
+        variant: 'text',
         Icon: DangerousIcon,
-        variant: 'contained',
         onClick: onCancelAutomation,
-        tooltip: 'Cancel browser recording',
+        tooltip: 'Cancel browser automation',
         className: 'goblet-browser-cancel-recording',
       }
   }, [browserState])
