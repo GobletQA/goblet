@@ -1,5 +1,6 @@
 
 import type { MutableRefObject } from 'react'
+import type { EAstObject } from '@ltipton/parkin'
 
 export enum ERaceDecoType {
   pass=`pass`,
@@ -7,6 +8,7 @@ export enum ERaceDecoType {
   spin=`spin`,
   error=`error`,
   success=`success`,
+  unknown=`unknown`,
 }
 
 export type TAnswerDeco = {
@@ -49,13 +51,21 @@ export type TRaceDecoUpdate = (
 ) => void
 
 export type TRaceDecoOpts = {
-  [k: string]: any
+  zIndex:number
+  className:string
+  isWholeLine:boolean
+  marginClassName:string
+  showIfCollapsed:boolean
+  glyphMarginClassName:string
+  glyphMarginHoverMessage:string
 }
 
 export type TRaceDeco = {
   id: string
-  options?: TRaceDecoOpts
-  type: ERaceDecoType|`spin`|`pass`|`fail`|`error`
+  search:string
+  type:EAstObject
+  options?:TRaceDecoOpts
+  decoType:ERaceDecoType|`spin`|`pass`|`fail`|`error`
 }
 
 export type TRaceDecoFns = {

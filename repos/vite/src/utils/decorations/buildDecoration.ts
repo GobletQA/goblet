@@ -1,13 +1,12 @@
-import type { TPlayerTestEvent } from '@types'
-import type { TRaceDeco } from '@gobletqa/race'
-import type { TDecoration } from '@gobletqa/monaco'
+import type { TBuildDecoration, TBuiltDeco, TPlayerTestEvent } from '@types'
 import type { IMarkdownString } from 'monaco-editor'
 
-import { EAstObjects } from '@types'
-import { getTypeFromId } from './getTypeFromId'
-import { cls, capitalize } from '@keg-hub/jsutils'
 
-type TBuiltDeco = TDecoration | TRaceDeco
+
+import { getDecoType } from './getDecoType'
+import { getTypeFromId } from './getTypeFromId'
+import { EEditorType, EAstObjects } from '@types'
+import { cls, capitalize } from '@keg-hub/jsutils'
 
 const getDecoCls = (event:TPlayerTestEvent, type:string) => {
   return event.action === `start`
@@ -45,7 +44,14 @@ const getHoverMessage = (event:TPlayerTestEvent, type:string) => {
   } as IMarkdownString
 }
 
-const getSearchText = (description:string, type:string) => {
+const getSearchText = (
+  description:string,
+  type:string,
+  editor:EEditorType=EEditorType.code
+) => {
+  // Add this is search is not needed in Race Editor
+  // if(editor !== EEditorType.code) return ``
+
   switch(type){
     case EAstObjects.step:
       return description
@@ -59,24 +65,24 @@ const getSearchText = (description:string, type:string) => {
   }
 }
 
-export const buildDecoration = (
-  event:TPlayerTestEvent,
-  type?:string,
-  description?:string,
-  testPath?:string
-) => {
-  type = type || getTypeFromId(event)
+export const buildDecoration = <T=TBuiltDeco, A=any>(props:TBuildDecoration<A>) => {
+  const {
+    event,
+    testPath,
+    description,
+    editor=EEditorType.code
+  } = props
+
+  const type = props.type || getTypeFromId(event)
   const classes = getDecoCls(event, type)
-  const search = getSearchText(description || event.description, type)
+  const decoType = getDecoType(event, type)
+  const search = getSearchText(description || event.description, type, editor)
 
   return {
     // Race only properties
-    // Map these to the correct properties
-    // type - Race Decoration type i.e. pass | fail | error | spin | etc...
-    // id - UUID of the feature property
-    // Will need to pass in the current feature being run
     type,
-    id:testPath,
+    decoType,
+    id:testPath || event.testPath,
     // -------------
 
     search,
@@ -89,5 +95,5 @@ export const buildDecoration = (
       glyphMarginHoverMessage: getHoverMessage(event, type),
       marginClassName: (testPath || event.testPath).replaceAll(`/`, `_`),
     }
-  } as TBuiltDeco
+  } as T
 }

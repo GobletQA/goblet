@@ -6,24 +6,28 @@ import type {
 
 import { getTypeFromId } from '@utils/decorations/getTypeFromId'
 
-type TUpdateRefs = {
+type TUpdateRefs<T=any> = {
   event?:TPlayerResEvent
   clear?:boolean
   type?:`step`|`scenario`|`feature`
+  fileRef?:MutableRefObject<T|undefined>
   stepRef:MutableRefObject<TPlayerEventData|undefined>
   featureRef:MutableRefObject<TPlayerEventData|undefined>
   scenarioRef:MutableRefObject<TPlayerEventData|undefined>
 }
 
-export const updateRefs = ({
+export const updateRefs = <T=any>({
   type,
   event,
   clear,
+  fileRef,
   stepRef,
   featureRef,
   scenarioRef,
-}:TUpdateRefs) => {
+}:TUpdateRefs<T>) => {
   if(clear){
+    if(fileRef) fileRef.current = undefined
+
     stepRef.current = undefined
     featureRef.current = undefined
     scenarioRef.current = undefined

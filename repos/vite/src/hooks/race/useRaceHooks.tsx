@@ -3,6 +3,7 @@ import type { MutableRefObject } from 'react'
 import type {
   TEditorRef,
   TRaceDecoRef,
+  TRaceDecoCtx,
   TRaceFeature,
   TRaceFeatureGroup,
 } from '@gobletqa/race'
@@ -34,8 +35,8 @@ import {
 export const useRaceHooks = (editorRef:TEditorRef) => {
 
   const repo = useRepo()
+  const decoRef = useRef<TRaceDecoCtx>() as TRaceDecoRef
   const rootPrefix = useMemo(() => getFeaturePrefix(repo), [repo?.paths])
-  const decoRef = useRef<TRaceDecoRef>() as MutableRefObject<TRaceDecoRef>
 
   const definitions = useRaceStepDefs()
   const files = useFeatureFiles(rootPrefix)
@@ -146,6 +147,7 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
   useMultiFeatsErr({ duplicates })
   useRaceDecorations({
     repo,
+    files,
     decoRef,
     editorRef,
     rootPrefix

@@ -17,26 +17,13 @@ import {
 export const DecorationsContext = createContext<TRaceDecoCtx>({} as TRaceDecoCtx)
 export const useDecorations = () => useContext(DecorationsContext)
 
-/**
- * TODO: this is for testing only
- * Remove once decorations are completed
- */
-const testDecorations = {
-  [`/goblet/repos/lancetipton04/goblet/bdd/features/run-tests.feature`]: {
-    [`/goblet/repos/lancetipton04/goblet/bdd/features/run-tests.feature`]: {
-      type: `spin`,
-      id: `/goblet/repos/lancetipton04/goblet/bdd/features/run-tests.feature`,
-    }
-  }
-}
-
 export const DecorationsProvider = (props:TRaceDecoProvider) => {
   const {
     decoRef,
     children,
   } = props
 
-  const [decorations, setDecorations] = useState<TRaceDecorations>(testDecorations as TRaceDecorations)
+  const [decorations, setDecorations] = useState<TRaceDecorations>({} as TRaceDecorations)
 
   const {
     add,

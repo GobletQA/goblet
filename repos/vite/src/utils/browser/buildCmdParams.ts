@@ -37,11 +37,11 @@ const ensureType = (setting:TSetting) => {
       : setting.value
 }
 
-const conditionalAddParam = (key:string, value:string|number) => {
+const conditionalAddParam = (key:string, value?:string|number) => {
   return exists(value) ? (key ? `${key}=${value}` : `--${value}`) : ''
 }
 
-const conditionalAddOpt = (key:string, value:string|number) => {
+const conditionalAddOpt = (key:string, value?:string|number) => {
   return exists(value) ? ({[key]: value}) : emptyObj
 }
 

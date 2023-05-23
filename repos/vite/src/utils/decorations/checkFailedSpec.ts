@@ -5,6 +5,7 @@ import type { TDecoration, TDecorationAdd } from '@gobletqa/monaco'
 
 import { EEditorType } from '@types'
 import type {
+  TBuiltDeco,
   TPlayerResEvent,
   TPlayerEventData,
 } from '@types'
@@ -12,57 +13,41 @@ import type {
 import { PWPlay } from '@constants'
 import { buildDecorationFrom } from '@utils/decorations/buildDecorationFrom'
 
-type TUpdateDecs = {
+type TUpdateDecs<E=EEditorType, A=TDecorationAdd|TRaceDecoAdd> = {
+  add:A
+  editor: E
   relative:string
-  editor: EEditorType
   event:TPlayerResEvent
-  add:TDecorationAdd|TRaceDecoAdd
   featureRef:MutableRefObject<TPlayerEventData|undefined>
   scenarioRef:MutableRefObject<TPlayerEventData|undefined>
 }
 
-export const checkFailedSpec = ({
+export const checkFailedSpec = <
+  E=EEditorType,
+  A=TDecorationAdd|TRaceDecoAdd,
+  D=TBuiltDeco
+>({
   add,
   event,
-  editor,
   relative,
   featureRef,
   scenarioRef,
-}:TUpdateDecs) => {
+}:TUpdateDecs<E, A>) => {
   if(!event) return
 
   if(PWPlay.playSpecDone === event.name && !event.data.passed){
-    
+
     const featDeco = featureRef.current
       && buildDecorationFrom(event.data, featureRef.current)
 
-    if(featDeco)
-      editor === EEditorType.code
-        ? (add as TDecorationAdd)?.(
-            relative,
-            featDeco as TDecoration,
-            { action: event.data.action }
-          )
-        : (add as TRaceDecoAdd)?.(
-            relative,
-            featDeco as TRaceDeco,
-            { action: event.data.action }
-          )
+    // TODO: fix the types here
+    featDeco && (add as any)(relative, featDeco, { action: event.data.action })
 
     const sceDeco = scenarioRef.current
       && buildDecorationFrom(event.data, scenarioRef.current)
-
-    if(sceDeco)
-      editor === EEditorType.code
-        ? (add as TDecorationAdd)?.(
-            relative,
-            sceDeco as TDecoration,
-            { action: event.data.action }
-          )
-        : (add as TRaceDecoAdd)?.(
-            relative,
-            sceDeco as TRaceDeco,
-            { action: event.data.action }
-          )
+    
+    // TODO: fix the types here
+    sceDeco && (add as any)(relative, sceDeco, { action: event.data.action })
   }
+
 }
