@@ -5,8 +5,8 @@ import type {
   TDecorationList,
 } from '@GBM/types'
 
-import { rangesEqual } from '@GBM/utils/editor/rangesEqual'
-import { findTextMatch } from '@GBM/utils/editor/findTextMatch'
+import { rangesEqual } from '@GBM/utils/decorations/rangesEqual'
+import { findTextMatch } from '@GBM/utils/decorations/findTextMatch'
 import { getModelFromPath } from '@GBM/utils/editor/getModelFromPath'
 
 export type TValidationDecoration = {

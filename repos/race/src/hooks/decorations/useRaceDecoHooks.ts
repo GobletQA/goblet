@@ -1,40 +1,23 @@
-import { MutableRefObject, useRef } from 'react'
-import type { TAstType, TStepParentAst } from '@ltipton/parkin'
+import type { TParentAst } from '@ltipton/parkin'
 import type {
-  TRaceDecoRef,
-  TRaceDecoCtx,
+  TDecoCache,
   TRaceDecoFns,
   TRaceDecoAdd,
   TRaceDecoClear,
   TSetDecorations,
   TRaceDecorations,
   TRaceDecoUpdate,
-  TRaceDeco,
-  TRaceDecoMeta,
 } from '@GBR/types'
 
-import { useEffect, useState } from 'react'
-import { EAstObject } from '@ltipton/parkin'
+import { useRef, useEffect, useState } from 'react'
 import { useInline } from '@gobletqa/components'
 import { useEditor } from '@GBR/contexts/EditorContext'
-import { fromDecoration } from '@gobletqa/race/utils/editor/fromDecoration'
+import { upsertDecos } from '@gobletqa/race/utils/decorations/upsertDecos'
+import { checkActiveParent } from '@gobletqa/race/utils/decorations/checkActiveParent'
 
 export type THDecoration = {
   decorations:TRaceDecorations
   setDecorations:TSetDecorations
-}
-
-
-const checkActiveParent = (
-  deco:TRaceDeco,
-  meta:TRaceDecoMeta
-) => {
-  return meta.action === `start` &&  (deco.type === EAstObject.scenario || deco.type === EAstObject.background)
-}
-
-type TDecoCache = {
-  feature:string
-  cache: Record<string, TAstType>
 }
 
 export const useRaceDecoHooks = (props:THDecoration) => {
@@ -43,9 +26,8 @@ export const useRaceDecoHooks = (props:THDecoration) => {
     setDecorations
   } = props
 
-
   const { feature } = useEditor()
-  const parentRef = useRef<TStepParentAst>()
+  const parentRef = useRef<TParentAst>()
 
   const [cache, setCache] = useState<TDecoCache>({
     cache: {},
@@ -53,26 +35,23 @@ export const useRaceDecoHooks = (props:THDecoration) => {
   })
 
   const addDecoration = useInline<TRaceDecoAdd>((location, deco, meta) => {
-    const item = cache.cache[deco.id]
-      || fromDecoration({
-          deco,
-          feature,
-          cache: cache.cache,
-          parent: parentRef.current
-        })
+    const updates = upsertDecos({
+      cache,
+      feature,
+      location,
+      decorations,
+      updates:[deco],
+      parent: parentRef.current
+    })
+    
+    const item = updates.cache.cache[deco.id]
 
-    if(!item.uuid)
-      return console.warn(`[Race Deco] Can not add decoration, failed to match ID`, feature, deco)
+    item
+      && checkActiveParent(deco, meta)
+      && (parentRef.current = item as TParentAst)
 
-
-    const decos = {...decorations}
-    decos[location] = {...decos[location], [item.uuid]: deco}
-
-    checkActiveParent(deco, meta)
-      && (parentRef.current = item as TStepParentAst)
-
-    ;setDecorations(decos)
-    setCache({...cache, cache:{ ...cache.cache, [deco.id]: item }})
+    updates.cache !== cache && setCache(updates.cache)
+    setDecorations(updates.decorations)
 
   })
 
@@ -86,15 +65,18 @@ export const useRaceDecoHooks = (props:THDecoration) => {
     setCache({ feature: feature.uuid, cache: {} })
   })
 
-  const updateDecorations = useInline<TRaceDecoUpdate>((location, decoration, meta) => {
-    // console.log(`------- location -------`)
-    // console.log(location)
-    // console.log(`------- decoration -------`)
-    // console.log(decoration)
-    // const decos = {...decorations}
-    // decos[location] = {...decos[location], ...decoration}
+  const updateDecorations = useInline<TRaceDecoUpdate>((location, decos, meta) => {
+    const updates = upsertDecos({
+      cache,
+      feature,
+      location,
+      decorations,
+      updates:decos,
+      parent: parentRef.current
+    })
 
-    // setDecorations(decos)
+    updates.cache !== cache && setCache(updates.cache)
+    setDecorations(updates.decorations)
   })
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import type { TFeatureAst } from '@ltipton/parkin'
-import type { TRaceDecoRef, TEditorRef, TRaceDeco, TRaceDecoAdd } from '@gobletqa/race'
+import type { TRaceDecoRef, TEditorRef, TRaceDeco, TRaceDecoAdd, TRaceDecoUpdate } from '@gobletqa/race'
 import type {
   TFileTree,
   TFileModel,
@@ -110,31 +110,23 @@ export const useRaceDecorations = ({
 
     const { location } = event
     const relative = rmRootFromLoc(location, rootPrefix)
-
+    const meta = { action: event.data.action }
     const dec = buildDecoration<TRaceDeco, TFeatureAst>({
       event: data,
       testPath: data.testPath,
       editor: EEditorType.visual,
     })
 
-    decoRef?.current?.add(relative, dec, { action: event.data.action })
-
-    // Calling this after calling the add call above causes
-    // The call above to get overwritten
-    // Seems to be related to batching,
-    // be we lost the update set to the decoration object
-    // And it's overwritten by the add call below
-    // Need to add method to update multiple decos at the same time
-    // Instead of 3 different calls
-    
-    checkFailedSpec<EEditorType.visual, TRaceDecoAdd, TRaceDeco>({
+    const decos = checkFailedSpec<EEditorType.visual, TRaceDeco>({
       event,
-      relative,
       featureRef,
       scenarioRef,
-      add: decoRef?.current?.add,
       editor: EEditorType.visual,
     })
+    
+    decos.length
+      ? decoRef?.current?.update?.(relative, decos.concat([dec]), meta)
+      : decoRef?.current?.add(relative, dec, meta)
 
   })
 

@@ -1,5 +1,5 @@
 import type { MutableRefObject } from 'react'
-import type { TEditorRefHandle, TDecorationAdd, TDecoration } from '@gobletqa/monaco'
+import type { TEditorRefHandle, TDecoration } from '@gobletqa/monaco'
 import type {
   TRepoState,
   TPlayerResEvent,
@@ -86,17 +86,17 @@ export const useDecorations = ({
 
     const dec = buildDecoration<TDecoration>({ event: event.data })
     const relative = rmRootFromLoc(event.location, rootPrefix)
-    decoration?.add(relative, dec, { action: event.data.action })
-
-    checkFailedSpec({
+    const meta = { action: event.data.action }
+    const decos = checkFailedSpec<EEditorType.code, TDecoration>({
       event,
-      relative,
       featureRef,
       scenarioRef,
-      add: decoration?.add,
       editor: EEditorType.code,
     })
 
+    decos.length
+      ? decoration?.update(relative, decos.concat([dec]), meta)
+      : decoration?.add(relative, dec, meta)
   })
 
 }

@@ -13,7 +13,7 @@ export type TDecorationAdd = (
 
 export type TDecorationUpdate = (
   location:string,
-  decoration:TDecoration,
+  decoration:TDecoration[],
   meta:TDecorationMeta
 ) => void
 
@@ -37,4 +37,8 @@ export type TDecorationList = {
 
 export type TDecorationFiles = {
   [key:string]: TDecorationList
+}
+
+export type TCollectionFiles = {
+  [key:string]: editor.IEditorDecorationsCollection
 }

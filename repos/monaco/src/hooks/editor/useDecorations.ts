@@ -1,40 +1,21 @@
 import type { editor } from 'monaco-editor'
 import type {
-  TDecoration,
   TDecorationCB,
   TDecorationFns,
   TCodeEditorRef,
   TDecorationAdd,
-  TDecorationList,
+  TCollectionFiles,
   TDecorationFiles,
   TDecorationUpdate,
 } from '@GBM/types'
 
 import { useRef, useEffect } from 'react'
 import { useInline } from '@gobletqa/components'
-import { validateMatch } from '@GBM/utils/editor/validateMatch'
+import { upsertDecos } from '@GBM/utils/decorations/upsertDecos'
 
 export type THDecoration = {
   curPath: string
   editorRef:TCodeEditorRef
-}
-
-type TCollectionFiles = {
-  [key:string]: editor.IEditorDecorationsCollection
-}
-
-const createDecoration = (
-  decorationsList:TDecorationList,
-  match:editor.FindMatch,
-  decoration:TDecoration
-) => {
-  const range = match.range
-  const { search, options } = decoration
-  const decoId = `${range.startLineNumber}-${search}`
-  
-  decorationsList[decoId] = { options, range }
-
-  return decorationsList
 }
 
 export const useDecorations = (props:THDecoration) => {
@@ -47,25 +28,17 @@ export const useDecorations = (props:THDecoration) => {
   const collectionRef = useRef<TCollectionFiles>({})
 
   const addDecoration = useInline<TDecorationAdd>((location, decoration, meta) => {
-    const decorationList = decorationsRef.current[location] || {} as TDecorationList
-    const match = validateMatch({
+    const updates = upsertDecos({
       meta,
       location,
       editorRef,
-      decoration,
-      decorationList,
+      updates: [decoration],
+      collection: collectionRef.current,
+      decorations: decorationsRef.current,
     })
-    if(!match) return
-
-    const editor = editorRef.current as editor.IStandaloneCodeEditor
-
-    decorationsRef.current[location] = createDecoration(decorationList, match, decoration)
-    const decorationsArr = Object.values(decorationsRef.current[location])
-
-    collectionRef.current?.[location]
-      ? collectionRef.current?.[location].set(decorationsArr)
-      : (collectionRef.current[location] = editor.createDecorationsCollection(decorationsArr))
-
+    
+    collectionRef.current = updates.collection
+    decorationsRef.current = updates.decorations
   })
 
   const removeDecoration = useInline<TDecorationCB>(() => {
@@ -81,8 +54,18 @@ export const useDecorations = (props:THDecoration) => {
     delete decorationsRef.current[location]
   })
 
-  const updateDecorations = useInline<TDecorationUpdate>((location, decoration, meta) => {
-    addDecoration(location, decoration, meta)
+  const updateDecorations = useInline<TDecorationUpdate>((location, decorations, meta) => {
+    const updates = upsertDecos({
+      meta,
+      location,
+      editorRef,
+      updates: decorations,
+      collection: collectionRef.current,
+      decorations: decorationsRef.current,
+    })
+
+    collectionRef.current = updates.collection
+    decorationsRef.current = updates.decorations
   })
 
   useEffect(() => {

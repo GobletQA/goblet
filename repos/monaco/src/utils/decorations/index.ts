@@ -1,0 +1,5 @@
+export * from './createDecoration'
+export * from './upsertDecos'
+export * from './findTextMatch'
+export * from './rangesEqual'
+export * from './validateMatch'

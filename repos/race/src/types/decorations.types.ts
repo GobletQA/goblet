@@ -1,6 +1,6 @@
 
 import type { MutableRefObject } from 'react'
-import type { EAstObject } from '@ltipton/parkin'
+import type { TAstType, EAstObject } from '@ltipton/parkin'
 
 export enum ERaceDecoType {
   pass=`pass`,
@@ -46,7 +46,7 @@ export type TRaceDecoAdd = (
 
 export type TRaceDecoUpdate = (
   location:string,
-  decoration:TRaceDecoList,
+  decoration:TRaceDeco[],
   meta:TRaceDecoMeta
 ) => void
 
@@ -84,3 +84,7 @@ export type TRaceDecorations = {
 
 export type TSetDecorations = (decorations:TRaceDecorations) => void
 
+export type TDecoCache = {
+  feature:string
+  cache: Record<string, TAstType>
+}
