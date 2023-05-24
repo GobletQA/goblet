@@ -1,7 +1,7 @@
 import type { TRaceFeature } from '@GBR/types'
 import type { TFeatureItem } from './FeatureItems'
 
-import { PurpleText } from '@gobletqa/components'
+import { gutter, PurpleText } from '@gobletqa/components'
 import { DecoText } from '@GBR/components/Deco/DecoText'
 import { FeatureHeaderActions } from './FeatureHeaderActions'
 import {
@@ -15,6 +15,12 @@ export type TFeatureHeader = {
   items:TFeatureItem[]
 }
 
+const styles = {
+  deco: {
+    marginRight: gutter.margin.hpx,
+  }
+}
+
 export const FeatureHeader = (props:TFeatureHeader) => {
   const {
     items,
@@ -23,7 +29,10 @@ export const FeatureHeader = (props:TFeatureHeader) => {
 
   return (
     <FeatureHeaderContainer className='feature-header-container' >
-      <DecoText id={feature.uuid} >
+      <DecoText
+        sx={styles.deco}
+        id={feature.uuid}
+      >
         <HeaderText>
           <PurpleText>Feature:</PurpleText> {feature.feature || ``}
         </HeaderText>

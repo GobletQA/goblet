@@ -1,5 +1,5 @@
 import type { TRaceDeco } from '@GBR/types'
-import type { ForwardedRef, ReactNode } from 'react'
+import type { ForwardedRef, ReactNode, CSSProperties } from 'react'
 
 import { forwardRef } from 'react'
 import { DecoFailIcon, DecoFailContainer } from './Deco.styled'
@@ -7,6 +7,7 @@ import { DecoFailIcon, DecoFailContainer } from './Deco.styled'
 export type TDeco = {
   deco:TRaceDeco
   children:ReactNode
+  sx?:CSSProperties
 }
 
 

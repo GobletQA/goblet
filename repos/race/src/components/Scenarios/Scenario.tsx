@@ -93,6 +93,7 @@ export const Scenario = (props:TScenario) => {
       parentTypes={[ESectionType.feature, ESectionType.rule]}
       label={(
         <SectionHeader
+          id={scenario.uuid}
           content={sectionTitle}
           type={ESectionType.scenario}
         />

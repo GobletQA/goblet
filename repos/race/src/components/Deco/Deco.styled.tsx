@@ -13,14 +13,13 @@ export const DecoContainer = styled(Box)`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
 `
 
 const shared = `
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: ${gutter.margin.hpx};
 `
 
 export const DecoErrorContainer = styled(Box)`
@@ -30,6 +29,7 @@ export const DecoErrorContainer = styled(Box)`
 
 export const DecoFailContainer = styled(Span)`
   ${shared}
+  color: ${colors.red10};
 `
 
 export const DecoPassContainer = styled(Span)`
@@ -39,14 +39,19 @@ export const DecoPassContainer = styled(Span)`
 
 export const DecoSuccessContainer = styled(Span)`
   ${shared}
+  color: ${colors.shinyShamrock};
 `
 
 export const DecoSpinContainer = styled(Span)`
   ${shared}
 `
 
-export const DecoFailIcon = styled(FailIcon)``
-export const DecoPassIcon = styled(PassIcon)``
+export const DecoFailIcon = styled(FailIcon)`
+  color: ${colors.red10};
+`
+export const DecoPassIcon = styled(PassIcon)`
+  color: ${colors.shinyShamrock};
+`
 export const DecoSpinIcon = styled(Span)`
   font-size: 3px;
   border-radius: 50%;

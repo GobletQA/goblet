@@ -76,6 +76,7 @@ export const Background = (props:TBackground) => {
       className='gb-background-section'
       label={(
         <SectionHeader
+          id={background.uuid}
           content={sectionTitle}
           type={ESectionType.background}
         />

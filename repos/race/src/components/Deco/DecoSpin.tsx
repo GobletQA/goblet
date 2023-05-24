@@ -1,5 +1,5 @@
 import type { TRaceDeco } from '@GBR/types'
-import type { ForwardedRef, ReactNode } from 'react'
+import type { ForwardedRef, ReactNode, CSSProperties } from 'react'
 
 import { forwardRef } from 'react'
 import { DecoSpinIcon, DecoSpinContainer } from './Deco.styled'
@@ -7,8 +7,8 @@ import { DecoSpinIcon, DecoSpinContainer } from './Deco.styled'
 export type TDeco = {
   deco:TRaceDeco
   children:ReactNode
+  sx?:CSSProperties
 }
-
 
 export const DecoSpin = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
   const { deco, children, ...rest } = props

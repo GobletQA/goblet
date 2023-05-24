@@ -1,5 +1,7 @@
-import { ESectionType, ESectionExt } from '@GBR/types'
+
 import { capitalize, cls } from '@keg-hub/jsutils'
+import { ESectionType, ESectionExt } from '@GBR/types'
+import { DecoText } from '@GBR/components/Deco/DecoText'
 import {
   SectionHeaderText,
   SectionHeaderType,
@@ -7,6 +9,7 @@ import {
 } from './SectionHeader.styled'
 
 export type TSectionHeader = {
+  id?:string
   content?:string
   typeHidden?:boolean
   type: ESectionType|ESectionExt
@@ -14,6 +17,7 @@ export type TSectionHeader = {
 
 export const SectionHeader = (props:TSectionHeader) => {
   const {
+    id,
     type,
     content,
     typeHidden,
@@ -22,46 +26,48 @@ export const SectionHeader = (props:TSectionHeader) => {
   const capType = capitalize(type)
 
   return (
-    <SectionHeaderText>
-      {
-        content
-          ? (
-              <>
-                {typeHidden !== true && (
-                  <SectionHeaderType
+    <DecoText id={id} >
+      <SectionHeaderText>
+        {
+          content
+            ? (
+                <>
+                  {typeHidden !== true && (
+                    <SectionHeaderType
+                      className={cls(
+                        `gb-section-header-chunk`,
+                        `gb-section-header-type`,
+                        type && `gb-section-header-type-${type}`
+                      )}
+                    >
+                      {capType}:
+                    </SectionHeaderType>
+                  )}
+                  <SectionHeaderContent
                     className={cls(
                       `gb-section-header-chunk`,
-                      `gb-section-header-type`,
-                      type && `gb-section-header-type-${type}`
+                      `gb-section-header-part`,
+                      type && `gb-section-header-part-${type}`
                     )}
                   >
-                    {capType}:
-                  </SectionHeaderType>
-                )}
-                <SectionHeaderContent
+                    {content}
+                  </SectionHeaderContent>
+                </>
+              )
+            : (
+                <SectionHeaderType
                   className={cls(
                     `gb-section-header-chunk`,
-                    `gb-section-header-part`,
-                    type && `gb-section-header-part-${type}`
+                    `gb-section-header-type`,
+                    type && `gb-section-header-type-${type}`
                   )}
                 >
-                  {content}
-                </SectionHeaderContent>
-              </>
-            )
-          : (
-              <SectionHeaderType
-                className={cls(
-                  `gb-section-header-chunk`,
-                  `gb-section-header-type`,
-                  type && `gb-section-header-type-${type}`
-                )}
-              >
-                {capType}
-              </SectionHeaderType>
-            )
-      }
-      
-    </SectionHeaderText>
+                  {capType}
+                </SectionHeaderType>
+              )
+        }
+        
+      </SectionHeaderText>
+    </DecoText>
   )
 }

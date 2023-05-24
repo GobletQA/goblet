@@ -82,6 +82,7 @@ export const Rule = (props:TRule) => {
       className='gb-rule-section'
       label={(
         <SectionHeader
+          id={rule.uuid}
           content={sectionTitle}
           type={ESectionType.rule}
         />
