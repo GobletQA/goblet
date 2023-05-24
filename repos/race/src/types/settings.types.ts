@@ -8,9 +8,11 @@ export enum EEditorMode {
 
 export type TRaceSettings = {
   mode?:EEditorMode
+  autoSave?:string|undefined
   displayMeta?:boolean|undefined
   confirmDelete?:boolean|undefined
   firstFeatureActive?:boolean|undefined
+  autoClearDecorations?:boolean|undefined
   themeType?:EGobletThemeName|string|undefined
 }
 

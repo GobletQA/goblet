@@ -88,15 +88,19 @@ export const useEditorSettings = (props:THEditorSettings) => {
     hasChange && updateSettings(settings)
   }, [
     state.mode,
+    state.autoSave,
     state.themeType,
     state.displayMeta,
     state.confirmDelete,
     state.firstFeatureActive,
+    state.autoClearDecorations,
     settings.mode,
+    settings.autoSave,
     settings.themeType,
     settings.displayMeta,
     settings.confirmDelete,
     settings.firstFeatureActive,
+    settings.autoClearDecorations,
   ])
 
   return {

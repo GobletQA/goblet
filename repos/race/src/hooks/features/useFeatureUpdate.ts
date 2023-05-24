@@ -7,6 +7,7 @@ import type {
   TRaceFeature,
   TOnFeatureCB,
   TRaceFeatures,
+  TOnFeatureEvt,
   TUpdateFeature,
   TGetOpenedTabs,
   TSetFeatureOpts,
@@ -17,11 +18,11 @@ import type {
   TUpdateFeatureOpts,
 } from '@GBR/types'
 
-import { EPatchType } from '@GBR/types'
 import { emptyObj } from '@keg-hub/jsutils'
-import { useInline } from '@gobletqa/components'
 import { EmptyFeatureUUID } from '@GBR/constants/values'
+import { RaceOnFeatureEvt } from '@GBR/constants/events'
 import { addToGroup } from '@GBR/utils/features/addToGroup'
+import { onEmitEvent, useInline } from '@gobletqa/components'
 import { ParkinWorker } from '@GBR/workers/parkin/parkinWorker'
 import { isValidUpdate } from '@GBR/utils/features/isValidUpdate'
 import { updateFeatureInGroup } from '@GBR/utils/features/updateFeatureInGroup'
@@ -154,6 +155,9 @@ export const useFeatureUpdate = (props:THFeatureUpdate) => {
     feat
       && feat?.uuid !== EmptyFeatureUUID
       && await onAuditFeature(feat, opts)
+
+    // Dispatch an event anytime the feature is updated
+    onEmitEvent<TOnFeatureEvt>(RaceOnFeatureEvt, { feature: feat })
 
     _setFeature(feat)
   })

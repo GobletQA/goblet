@@ -9,13 +9,13 @@ import type {
 } from 'react'
 
 
-import { useCallback, useState, useRef } from 'react'
 import { noOpObj } from '@keg-hub/jsutils'
 import MuiSwitch from '@mui/material/Switch'
 import TextField from '@mui/material/TextField'
 import { StyledInput } from './Settings.styled'
 import Typography from '@mui/material/Typography'
 import { useColorMap } from '@hooks/theme/useColorMap'
+import { useCallback, useState, useRef, forwardRef } from 'react'
 
 
 import MuiInput from '@mui/material/Input'
@@ -136,7 +136,7 @@ export type TText = ComponentProps<typeof Typography> & {
   align: `left`|`right`
 }
 
-export const Text = (props:TText) => {
+export const Text = forwardRef((props:TText, ref:any) => {
   const {
     sx,
     align,
@@ -150,6 +150,7 @@ export const Text = (props:TText) => {
   return (
     <Typography
       {...rest}
+      ref={ref}
       sx={[
         {
           width: `100%`,
@@ -162,7 +163,7 @@ export const Text = (props:TText) => {
       {`${value}`}
     </Typography>
   )
-}
+})
 
 export type TSelect = Omit<ComponentProps<typeof MuiSelect>, `onChange`> & {
   item:TSetting

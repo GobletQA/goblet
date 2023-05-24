@@ -3,6 +3,7 @@ import type {
   TDecoCache,
   TRaceDecoFns,
   TRaceDecoAdd,
+  TOnFeatureEvt,
   TRaceDecoClear,
   TSetDecorations,
   TRaceDecorations,
@@ -10,8 +11,10 @@ import type {
 } from '@GBR/types'
 
 import { useRef, useEffect, useState } from 'react'
-import { useInline } from '@gobletqa/components'
 import { useEditor } from '@GBR/contexts/EditorContext'
+import { RaceOnFeatureEvt } from '@GBR/constants/events'
+import { useSettings } from '@GBR/contexts/SettingsContext'
+import { useInline, useOnEvent } from '@gobletqa/components'
 import { upsertDecos } from '@gobletqa/race/utils/decorations/upsertDecos'
 import { checkActiveParent } from '@gobletqa/race/utils/decorations/checkActiveParent'
 
@@ -27,6 +30,7 @@ export const useRaceDecoHooks = (props:THDecoration) => {
   } = props
 
   const { feature } = useEditor()
+  const { settings } = useSettings()
   const parentRef = useRef<TParentAst>()
 
   const [cache, setCache] = useState<TDecoCache>({
@@ -63,6 +67,12 @@ export const useRaceDecoHooks = (props:THDecoration) => {
 
     setDecorations(decos)
     setCache({ feature: feature.uuid, cache: {} })
+  })
+
+  // Listen for any changes to the feature and clear out decorations
+  useOnEvent<TOnFeatureEvt>(RaceOnFeatureEvt, ({ feature }) => {
+    settings.autoClearDecorations
+      && clearDecorations(feature.path)
   })
 
   const updateDecorations = useInline<TRaceDecoUpdate>((location, decos, meta) => {

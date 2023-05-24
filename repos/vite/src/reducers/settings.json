@@ -9,6 +9,7 @@
       "options",
       "default",
       "display",
+      "description",
       "emptyOption"
     ],
     "editKeys": [
@@ -23,39 +24,48 @@
       "active": true,
       "default": true,
       "type": "boolean",
-      "group": "goblet"
+      "group": "goblet",
+      "description": "Allow running feature tests"
     },
     "parallelEditors": {
       "key": "parallelEditors",
       "value": true,
       "active": true,
       "default": true,
+      "enabled": false,
       "type": "boolean",
-      "group": "goblet"
+      "group": "goblet",
+      "description": "Allows opening two editors side-by-side"
     },
     "customSteps": {
       "key": "customSteps",
       "value": true,
       "active": true,
       "default": true,
+      "enabled": true,
       "type": "boolean",
-      "group": "goblet"
+      "group": "goblet",
+      "description": "Allow custom step-definitions"
     },
     "waypoint": {
       "key": "waypoint",
       "value": false,
       "active": false,
       "default": false,
+      "enabled": false,
       "type": "boolean",
-      "group": "goblet"
+      "group": "goblet",
+      "description": "Allow running waypoint tests"
     },
     "unit": {
       "key": "unit",
       "value": false,
       "active": false,
       "default": false,
+      "enabled": false,
       "type": "boolean",
-      "group": "goblet"
+      "group": "goblet",
+      "description": "Allow running unit tests"
     },
     "lockResize": {
       "key": "lockResize",
@@ -63,7 +73,8 @@
       "active": false,
       "default": true,
       "type": "boolean",
-      "group": "goblet"
+      "group": "goblet",
+      "description": "Allow the sidebar to be resized while in a locked state"
     },
     "sidebarLocked": {
       "key": "sidebarLocked",
@@ -71,7 +82,8 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "goblet"
+      "group": "goblet",
+      "description": "When enabled, the sidebar file-explorer is locked to an open state"
     }
   },
   "browser": {
@@ -82,7 +94,8 @@
       "default": 100,
       "postfix": "ms",
       "type": "number",
-      "group": "browser"
+      "group": "browser",
+      "description": "Speed in which actions are executed within the browser"
     },
     "timeout": {
       "key": "timeout",
@@ -91,29 +104,36 @@
       "default": 15000,
       "postfix": "ms",
       "type": "number",
-      "group": "browser"
+      "group": "browser",
+      "description": "Amount of time to wait for a browser action to complete successfully"
     },
     "debug": {
       "key": "debug",
       "value": true,
       "active": true,
       "default": true,
+      "enabled": false,
       "type": "boolean",
-      "group": "browser"
+      "group": "browser",
+      "description": "Run the Automated Browser in debug mode"
     },
     "width": {
       "key": "width",
       "active": false,
       "postfix": "px",
       "type": "number",
-      "group": "browser"
+      "enabled": false,
+      "group": "browser",
+      "description": "Scaled width of the Automated Browser"
     },
     "height": {
       "key": "height",
       "active": false,
       "postfix": "px",
       "type": "number",
-      "group": "browser"
+      "enabled": false,
+      "group": "browser",
+      "description": "Scaled height of the Automated Browser"
     },
     "ws": {
       "key": "ws",
@@ -134,6 +154,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "blur",
+      "description": "File changes will be automatically saved based on this setting",
       "options": [
         "blur",
         "change",
@@ -148,6 +169,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "keep",
+      "description": "How files should be opened when selected from the sidebar file-explorer",
       "options": [
         "keep",
         "preview"
@@ -160,7 +182,8 @@
       "active": true,
       "type": "number",
       "postfix": "px",
-      "group": "editor"
+      "group": "editor",
+      "description": "Default text size within the Code Editor"
     },
     "tabSize": {
       "key": "tabSize",
@@ -168,7 +191,8 @@
       "active": true,
       "default": 2,
       "type": "number",
-      "group": "editor"
+      "group": "editor",
+      "description": "Default amount of spaces to use in place of tab within the Code Editor"
     },
     "theme": {
       "key": "theme",
@@ -177,45 +201,11 @@
       "default": "Goblet-dark",
       "group": "monaco",
       "emptyOption": "",
+      "description": "Color theme of the Code Editor",
       "options": [
         "",
         "Goblet-dark",
-        "Goblet-light",
-        "AtlanticNight",
-        "AtomOneDark",
-        "AuroraX",
-        "AyuDark",
-        "AyuLight",
-        "BlulocoLight",
-        "CodeSandBox",
-        "Darktooth",
-        "Dracula",
-        "EvaLight",
-        "FlatUI",
-        "Hopscotch",
-        "HorlaLightTheme",
-        "HybridNext",
-        "KimbieDark",
-        "Lucario",
-        "MonokaiDimmed",
-        "MonokaiPro",
-        "Nebula",
-        "NoctisAzureus",
-        "NoctisBordo",
-        "NoctisLux",
-        "OneDarkPro",
-        "OneMonokai",
-        "Panda",
-        "ReUI",
-        "RemedyDark",
-        "ShadesOfPurple",
-        "SnazzyLight",
-        "SnazzyOperator",
-        "SublimeMaterialThemeDark",
-        "SynthWave84",
-        "TokyoNightStorm",
-        "TomorrowNightBlue",
-        "Twilight"
+        "Goblet-light"
       ]
     },
     "detectIndentation": {
@@ -224,7 +214,8 @@
       "active": true,
       "default": true,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Automatically detect the indentation style of the opened file"
     },
     "minimap-enabled": {
       "key": "minimap.enabled",
@@ -232,7 +223,8 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Enable the minimap for the active file"
     },
     "minimap-autohide": {
       "key": "minimap.autohide",
@@ -240,7 +232,8 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Automatically hide the minimap when inactive"
     },
     "minimap-renderCharacters": {
       "key": "minimap.renderCharacters",
@@ -248,7 +241,8 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Display the actually characters of the active file within the minimap"
     },
     "cursorStyle": {
       "key": "cursorStyle",
@@ -258,6 +252,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "line",
+      "description": "Display style of the users cursor within the Code Editor",
       "options": [
         "line",
         "block",
@@ -275,6 +270,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "phase",
+      "description": "Style in which the users cursor will blink within the Code Editor",
       "options": [
         "phase",
         "blink",
@@ -290,6 +286,7 @@
       "default": "on",
       "type": "select",
       "group": "monaco",
+      "description": "How to handle a line of text that is longer then the Code Editor width",
       "options": [
         "on",
         "off",
@@ -305,6 +302,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "deepIndent",
+      "description": "The indentation style used when a line of text is wrapped to a new line",
       "options": [
         "deepIndent",
         "none",
@@ -318,7 +316,8 @@
       "active": true,
       "default": 3,
       "type": "number",
-      "group": "editor"
+      "group": "editor",
+      "description": "Number of characters allowed per line of text"
     },
     "folding": {
       "key": "folding",
@@ -326,7 +325,8 @@
       "active": true,
       "default": true,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Allow sections of code to be folded"
     },
     "foldingStrategy": {
       "key": "foldingStrategy",
@@ -336,6 +336,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "auto",
+      "description": "Strategy to use when calculating sections of code that can be folded",
       "options": [
         "auto",
         "indentation"
@@ -349,6 +350,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "always",
+      "description": "Show controls to toggle folding sections of code",
       "options": [
         "always",
         "never",
@@ -360,8 +362,10 @@
       "value": true,
       "active": true,
       "default": true,
+      "enabled": false,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Add an extra margin to allow displaying glyphs"
     },
     "matchBrackets": {
       "key": "matchBrackets",
@@ -371,6 +375,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "always",
+      "description": "Calculate and utilize matching brackets within the active file",
       "options": [
         "always",
         "never",
@@ -385,6 +390,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "selection",
+      "description": "Render an indicator of white space characters",
       "options": [
         "selection",
         "none",
@@ -399,7 +405,8 @@
       "active": true,
       "default": true,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Render a indicators of control characters"
     },
     "renderLineHighlight": {
       "key": "renderLineHighlight",
@@ -409,6 +416,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "none",
+      "description": "Render a line-highlight of the currently active line",
       "options": [
         "all",
         "none",
@@ -422,7 +430,8 @@
       "active": true,
       "default": true,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Automatically layout the Code Editor"
     },
     "codeLens": {
       "key": "codeLens",
@@ -430,7 +439,8 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Enable code-lens within the Code Editor"
     },
     "lineDecorationsWidth": {
       "key": "lineDecorationsWidth",
@@ -438,7 +448,8 @@
       "active": true,
       "default": 10,
       "type": "number",
-      "group": "editor"
+      "group": "editor",
+      "description": "Width of the space used to display decorators"
     },
     "selectOnLineNumbers": {
       "key": "selectOnLineNumbers",
@@ -446,7 +457,8 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Select an entire line when the line number is clicked"
     },
     "renderValidationDecorations": {
       "key": "renderValidationDecorations",
@@ -456,6 +468,7 @@
       "type": "select",
       "group": "monaco",
       "emptyOption": "on",
+      "description": "Render decorators used for validation",
       "options": [
         "on",
         "off",
@@ -468,7 +481,8 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor"
+      "group": "editor",
+      "description": "Enable the light-bulb indicator within the Code Editor"
     }
   },
   "race": {
@@ -496,7 +510,24 @@
       "active": true,
       "default": true,
       "type": "boolean",
-      "group": "race"
+      "group": "race",
+      "description": "Show a confirmation modal before executing a delete action within the Race Editor"
+    },
+    "autoSave": {
+      "display": false,
+      "key": "autoSave",
+      "value": "blur",
+      "active": true,
+      "default": "blur",
+      "type": "select",
+      "group": "race",
+      "emptyOption": "blur",
+      "description": "Feature changes will be automatically saved based on this setting",
+      "options": [
+        "blur",
+        "change",
+        "off"
+      ]
     },
     "firstFeatureActive": {
       "key": "firstFeatureActive",
@@ -504,28 +535,40 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "race"
+      "group": "race",
+      "description": "Automatically open the first available feature on start"
+    },
+    "autoClearDecorations": {
+      "key": "autoClearDecorations",
+      "value": true,
+      "active": true,
+      "default": true,
+      "group": "race",
+      "type": "boolean",
+      "description": "Automatically clear decorations when a feature is changed or updated"
     },
     "mode": {
       "key": "mode",
-      "value": "simple",
       "active": true,
-      "default": "simple",
-      "type": "select",
       "group": "race",
+      "type": "select",
+      "value": "simple",
+      "default": "simple",
       "emptyOption": "simple",
+      "description": "Default mode used when starting the Race Editor",
       "options": [
         "simple",
         "advanced"
       ]
     },
     "themeType": {
-      "key": "themeType",
-      "value": "Goblet-light",
       "active": true,
-      "default": "Goblet-light",
       "group": "race",
+      "key": "themeType",
       "emptyOption": "",
+      "value": "Goblet-light",
+      "default": "Goblet-light",
+      "description": "Color theme of the Race Editor",
       "options": [
         "",
         "Goblet-dark",

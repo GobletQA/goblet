@@ -4,13 +4,14 @@ import type { Parkin, TWorldConfig } from '@ltipton/parkin'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 import type { TSettingsCtx } from '@GBR/contexts/SettingsContext'
 
-export type TAnswerFeature = {
-  feature:TRaceFeature
+export type TOnFeatureEvt = {
+  feature:TRaceFeature|undefined
 }
+
 export type TAskForFeature = {
   cb: TWithFeatureCB
 }
-export type TWithFeatureCB = (data:TAnswerFeature) => void
+export type TWithFeatureCB = (data:TOnFeatureEvt) => void
 
 
 export type TAnswerEditor = {

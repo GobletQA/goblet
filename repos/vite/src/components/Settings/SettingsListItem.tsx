@@ -1,12 +1,22 @@
-import type { TSetting, TSettingsConfig, CSSObj } from '@types'
-import type { ChangeEvent, FocusEvent, ChangeEventHandler, FocusEventHandler } from 'react'
+import type { TSetting, TSettingsConfig } from '@types'
+import type {
+  FocusEvent,
+  ChangeEvent,
+  CSSProperties,
+  FocusEventHandler,
+  ChangeEventHandler,
+} from 'react'
 
 import { useCallback } from 'react'
 import Grid from '@mui/material/Unstable_Grid2'
 
-import { noOpObj, exists } from '@keg-hub/jsutils'
-import { RestartIcon, Button } from '@gobletqa/components'
+import { noOpObj, exists, wordCaps, snakeCase } from '@keg-hub/jsutils'
 import { Input, Switch, Text, Select } from './SettingsInputs'
+import {
+  Button,
+  Tooltip,
+  RestartIcon,
+} from '@gobletqa/components'
 import { updateSettingValue } from '@actions/settings/updateSettingValue'
 import { toggleSettingActive } from '@actions/settings/toggleSettingActive'
 
@@ -17,13 +27,13 @@ type TInputChangeEvt = ChangeEvent<HTMLInputElement>
 
 export type TSettingsListItem = {
   value:any
-  sx?: CSSObj
-  colSx?: CSSObj
   colKey:string
   item?: TSetting
   header?: boolean
   className?:string
   disabled?:boolean
+  sx?: CSSProperties
+  colSx?: CSSProperties
   width: number|boolean
   align: `left`|`right`
   config: TSettingsConfig
@@ -95,12 +105,17 @@ const RenderByType = (props:TSettingsListItem) => {
           </Button>
         )
       : (
-          <Text
-            align={align}
-            value={value}
-            sx={sx as CSSObj}
-            disabled={disabled}
-          />
+          <Tooltip
+            disabled={header}
+            title={item.description || `N/A`}
+          >
+            <Text
+              align={align}
+              disabled={disabled}
+              sx={sx as CSSProperties}
+              value={wordCaps(snakeCase(value))}
+            />
+          </Tooltip>
         )
   }
 
