@@ -1,13 +1,14 @@
 import type { TPlayerTestEvent } from '@types'
 
+import { EPlayerTestAction } from '@types'
+import { EAstObject } from '@ltipton/parkin'
 import { ERaceDecoType } from '@gobletqa/race'
-import { EAstObjects, EPlayerTestAction } from '@types'
 
 const decoTypeFromItemType = (event:TPlayerTestEvent,type:string)=> {
   const { failed, passed } = event
 
   switch(type){
-    case EAstObjects.feature: {
+    case EAstObject.feature: {
       if(failed) return ERaceDecoType.error
       if(passed) return ERaceDecoType.success
 

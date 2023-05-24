@@ -1,9 +1,10 @@
 import type { TPlayerTestEvent } from '@types'
-import { EAstObjects } from '@types'
+
+import { EAstObject } from '@ltipton/parkin'
 
 export const getTypeFromId = (event:TPlayerTestEvent) => {
   const [name, ...rest] = event?.id?.split(`-`)
   return name.startsWith(`spec`)
-    ? EAstObjects.step
-    : rest.length > 1 ? EAstObjects.scenario : EAstObjects.feature
+    ? EAstObject.step
+    : rest.length > 1 ? EAstObject.scenario : EAstObject.feature
 }

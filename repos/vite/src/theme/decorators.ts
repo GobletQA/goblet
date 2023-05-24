@@ -1,22 +1,22 @@
 import { colors } from '@gobletqa/components'
 
 export const decorators = `
-  .gb-player-line.gb-player-running {
+  .gb-player-line.gb-player-running.code {
     background-color: ${colors.purple10}33;
     border-bottom: 2px solid ${colors.purple10}66;
   }
 
-  .gb-player-line.gb-player-finished.passed {
+  .gb-player-line.gb-player-finished.code.passed {
     background-color: ${colors.green10}33;
     border-bottom: 2px solid ${colors.green10}66;
   }
 
-  .gb-player-line.gb-player-finished.failed {
+  .gb-player-line.gb-player-finished.code.failed {
     background-color: ${colors.red10}33;
     border-bottom: 2px solid ${colors.red10}66;
   }
 
-  .gb-player-glyph.gb-player-running {
+  .gb-player-glyph.gb-player-running.code {
     margin: 0px auto;
     font-size: 3px;
     position: absolute;
@@ -25,13 +25,16 @@ export const decorators = `
     left: 3px !important;
     width: 18px !important;
     height: 18px !important;
-    transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    -webkit-transform: translateZ(0);
     border-left: 1em solid ${colors.purple10};
     border-top: 1em solid ${colors.purple10}33;
     border-right: 1em solid ${colors.purple10}33;
     border-bottom: 1em solid ${colors.purple10}33;
+  }
+
+  .gb-player-glyph.gb-player-running {
+    transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -webkit-transform: translateZ(0);
     -webkit-animation: gb-player-running-ani 1.1s infinite linear;
     animation: gb-player-running-ani 1.1s infinite linear;
   }
@@ -56,7 +59,7 @@ export const decorators = `
     }
   }
 
-  .gb-player-glyph.gb-player-finished.passed {
+  .gb-player-glyph.gb-player-finished.code.passed {
     left: 12px !important;
     width: 8px !important;
     display: inline-block;
@@ -66,14 +69,14 @@ export const decorators = `
     border-bottom: 3px solid ${colors.green10};
   }
 
-  .gb-player-glyph.gb-player-finished.failed {
+  .gb-player-glyph.gb-player-finished.code.failed {
     position: absolute;
     left: 0px !important;
     width: 18px !important;
     height: 18px !important;
   }
-  .gb-player-glyph.gb-player-finished.failed:before,
-  .gb-player-glyph.gb-player-finished.failed:after {
+  .gb-player-glyph.gb-player-finished.code.failed:before,
+  .gb-player-glyph.gb-player-finished.code.failed:after {
     position: absolute;
     width: 3px;
     left: 15px;
@@ -81,10 +84,10 @@ export const decorators = `
     content: ' ';
     background-color: ${colors.red10};
   }
-  .gb-player-glyph.gb-player-finished.failed:before {
+  .gb-player-glyph.gb-player-finished.code.failed:before {
     transform: rotate(45deg);
   }
-  .gb-player-glyph.gb-player-finished.failed:after {
+  .gb-player-glyph.gb-player-finished.code.failed:after {
     transform: rotate(-45deg);
   }
 `

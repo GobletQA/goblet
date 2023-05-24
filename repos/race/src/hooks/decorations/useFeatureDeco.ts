@@ -5,5 +5,5 @@ export const useFeatureDeco = () => {
   const { feature } = useEditor()
   const { decorations } = useDecorations()
 
-  return decorations?.[feature?.parent?.location]
+  return decorations?.[feature?.path]
 }

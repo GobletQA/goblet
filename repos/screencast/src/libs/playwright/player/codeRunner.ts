@@ -164,11 +164,11 @@ export class CodeRunner {
   }
 
   onSpecDone = (result:TPlayerTestMeta) => {
-
     this.player.fireEvent({
-      data: clearTestResults(result),
-      message: 'Player - Spec Done',
       name: PWPlay.playSpecDone,
+      message: `Player - Spec Done`,
+      // Includes the `failedExpectations` data so we have access to the error messages
+      data: {...clearTestResults(result), failedExpectations: result?.failedExpectations},
     })
 
     // TODO: Update parkin to accept a failed event
@@ -183,25 +183,25 @@ export class CodeRunner {
     cleanupWorld(this.PK)
 
     this.player.fireEvent({
-      data: clearTestResults(result),
-      message: 'Player - Suite Done',
       name: PWPlay.playSuiteDone,
+      data: clearTestResults(result),
+      message: `Player - Suite Done`,
     })
   }
 
   onSpecStarted = (result:TPlayerTestMeta) => {
     this.player.fireEvent({
-      data: clearTestResults(result),
-      message: 'Player - Spec Start',
       name: PWPlay.playSpecStart,
+      data: clearTestResults(result),
+      message: `Player - Spec Start`,
     })
   }
 
   onSuiteStarted = (result:TPlayerTestMeta) => {
     this.player.fireEvent({
-      data: clearTestResults(result),
-      message: 'Player - Suite Start',
       name: PWPlay.playSuiteStart,
+      data: clearTestResults(result),
+      message: `Player - Suite Start`,
     })
   }
 

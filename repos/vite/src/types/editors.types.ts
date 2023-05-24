@@ -9,7 +9,7 @@ export type TBuildDecoration<A=any> = {
   ast?:A
   type?:string
   testPath?:string
-  editor?:EEditorType
+  editor:EEditorType
   description?:string
   event:TPlayerTestEvent
 }

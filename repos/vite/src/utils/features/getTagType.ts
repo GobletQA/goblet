@@ -1,6 +1,6 @@
 import type { TAstType } from '@types'
-import { EAstObjects } from '@types'
 
+import { EAstObject } from '@ltipton/parkin'
 
 /**
  * Finds the parents type by checking for its corresponding AST type
@@ -8,5 +8,5 @@ import { EAstObjects } from '@types'
  *
  */
 export const getTagType = (parent:TAstType) => {
-  return parent && Object.keys(EAstObjects).find(type => type in parent) || null
+  return parent && Object.keys(EAstObject).find(type => type in parent) || null
 }

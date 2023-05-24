@@ -23,7 +23,7 @@ export const DecorationsProvider = (props:TRaceDecoProvider) => {
     children,
   } = props
 
-  const [decorations, setDecorations] = useState<TRaceDecorations>({} as TRaceDecorations)
+  const [decorations, setDecorations] = useState<TRaceDecorations>({} as unknown as TRaceDecorations)
 
   const {
     add,

@@ -2,62 +2,35 @@ import type { TBuildDecoration, TBuiltDeco, TPlayerTestEvent } from '@types'
 import type { IMarkdownString } from 'monaco-editor'
 
 
-
+import { EEditorType } from '@types'
+import { cls } from '@keg-hub/jsutils'
 import { getDecoType } from './getDecoType'
+import { EAstObject } from '@ltipton/parkin'
 import { getTypeFromId } from './getTypeFromId'
-import { EEditorType, EAstObjects } from '@types'
-import { cls, capitalize } from '@keg-hub/jsutils'
 
-const getDecoCls = (event:TPlayerTestEvent, type:string) => {
+const getDecoCls = (
+  event:TPlayerTestEvent,
+  type:string,
+  editor:EEditorType
+) => {
   return event.action === `start`
-    ? `gb-player-running gb-player-${type}-running`
-    : cls(`gb-player-finished gb-player-${type}-finished`, event.passed ? `passed` : `failed`)
-}
-
-const errorLogFilter = [
-  `===== logs =====`,
-  `================`
-]
-
-const getHoverMessage = (event:TPlayerTestEvent, type:string) => {
-  const status = event.action === `start`
-    ? `running`
-    : event.passed ? `passed` : `failed`
-  
-  let message = ``
-  if(event.failed && type === EAstObjects.step){
-    // @ts-ignore
-    message = event?.failedExpectations?.reduce((message, exp:Record<any, any>) => {
-      return exp?.message
-        ? `${message}\n${exp?.message?.split(`\n`).map((line:string) => {
-          return errorLogFilter.filter(log => line.includes(log)).length ? `` : `  ${line}`
-        }).filter(Boolean).join(`\n`)}`
-        : message
-    }, `\n`) || ``
-  }
-  
-  return {
-    isTrusted: true,
-    supportHtml: false,
-    supportThemeIcons: false,
-    value: `${capitalize(type)} - ${status}${message}`
-  } as IMarkdownString
+    ? `gb-player-running gb-player-${type}-running ${editor}`
+    : cls(`gb-player-finished gb-player-${type}-finished`, editor, event.passed ? `passed` : `failed`)
 }
 
 const getSearchText = (
   description:string,
   type:string,
-  editor:EEditorType=EEditorType.code
 ) => {
   // Add this is search is not needed in Race Editor
   // if(editor !== EEditorType.code) return ``
 
   switch(type){
-    case EAstObjects.step:
+    case EAstObject.step:
       return description
-    case EAstObjects.scenario:
+    case EAstObject.scenario:
       return description.replace(/Scenario > /g,``)
-    case EAstObjects.feature:
+    case EAstObject.feature:
       return description.replace(/Feature > /g,``)
     default: 
       const [type, ...rest] = description.split(` > `)
@@ -70,13 +43,14 @@ export const buildDecoration = <T=TBuiltDeco, A=any>(props:TBuildDecoration<A>) 
     event,
     testPath,
     description,
-    editor=EEditorType.code
+    editor
   } = props
 
-  const type = props.type || getTypeFromId(event)
-  const classes = getDecoCls(event, type)
+  const type = props.type || event.eventParent || getTypeFromId(event)
+
+  const classes = getDecoCls(event, type, editor)
   const decoType = getDecoType(event, type)
-  const search = getSearchText(description || event.description, type, editor)
+  const search = getSearchText(description || event.description, type)
 
   return {
     // Race only properties
@@ -92,8 +66,13 @@ export const buildDecoration = <T=TBuiltDeco, A=any>(props:TBuildDecoration<A>) 
       showIfCollapsed: true,
       className: `gb-player-line ${classes}`,
       glyphMarginClassName: `gb-player-glyph ${classes}`,
-      glyphMarginHoverMessage: getHoverMessage(event, type),
       marginClassName: (testPath || event.testPath).replaceAll(`/`, `_`),
+      glyphMarginHoverMessage: {
+        isTrusted: true,
+        supportHtml: false,
+        value: event.message,
+        supportThemeIcons: false,
+      } as IMarkdownString,
     }
   } as T
 }

@@ -1,23 +1,28 @@
-import type { ReactNode } from 'react'
 import type { TRaceDeco } from '@GBR/types'
+import type { ForwardedRef, ReactNode } from 'react'
 
-import { useFeatureDeco } from '@GBR/hooks/decorations/useFeatureDeco'
-import { DecoErrorContainer } from './Deco.styled'
+import { forwardRef } from 'react'
+import { DecoFailIcon, DecoErrorContainer } from './Deco.styled'
 
-export type TDecoError = {
-  deco?:TRaceDeco
+export type TDeco = {
+  deco:TRaceDeco
   children:ReactNode
 }
 
-export const DecoError = (props:TDecoError) => {
-  const { deco, children } = props
+
+export const DecoError = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
+  const { deco, children, ...rest } = props
 
     return (
       <>
-        <DecoErrorContainer>
-          Deco Error
+        <DecoErrorContainer
+          {...rest}
+          ref={ref}
+          className='gb-deco-icon-error-container'
+        >
+          <DecoFailIcon className='gb-deco-icon-error' />
         </DecoErrorContainer>
         {children}
       </>
     )
-}
+})

@@ -30,8 +30,8 @@ export const typography = (
       fontWeight: 600
     },
     h4: {
-      fontSize: '1rem',
-      fontWeight: 600
+      fontWeight: 600,
+      fontSize: '0.94rem',
     },
     h5: {
       fontWeight: 'bold',

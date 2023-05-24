@@ -103,9 +103,8 @@ export const FeatureActionBtn = styled(Button)`
   }
 `
 
-export const HeaderText = styled(H3)`
+export const HeaderText = styled(H4)`
   flex-grow: 1;
-  font-size: 15px;
   color: var(--goblet-editor-foreground);
 `
 
@@ -128,7 +127,7 @@ export const EmptyFeatureTextContainer = styled(Box)`
   padding-top: ${gutter.padding.size * 3}px;
 `
 
-export const EmptyFeatureHeaderText = styled(H4)`
+export const EmptyFeatureHeaderText = styled(H3)`
   display: flex;
   font-size: 20px;
   text-align: center;

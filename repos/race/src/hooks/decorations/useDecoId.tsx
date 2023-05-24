@@ -7,5 +7,6 @@ export type THDecoId = {
 export const useDecoId = (props:THDecoId) => {
   const { id } = props
   const deco = useFeatureDeco()
+
   return id ? deco?.[id] : undefined
 }

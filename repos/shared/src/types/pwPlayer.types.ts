@@ -4,6 +4,7 @@ import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } f
 
 // Exported from screencast/src/types
 import type { Player } from '@gobletqa/screencast'
+import {EAstObject} from '@ltipton/parkin'
 
 export type TPlayerEvent = {
   name:string
@@ -65,13 +66,15 @@ export type TPlayerTestMeta = {
   fullName:string
   failed:boolean
   passed:boolean
+  message?:string
   timestamp:number
+  describes?:any[]
   description:string
+  eventParent?:EAstObject
+  tests?: TPlayerTestMeta[]
   options?:Record<string, string|number>
   failedExpectations?:TPlayerTestExpectation[]
   passedExpectations?:TPlayerTestExpectation[]
-  describes?: any[]
-  tests?: TPlayerTestMeta[]
 }
 
 export type TPlayerTestEvent = TPlayerTestMeta & {

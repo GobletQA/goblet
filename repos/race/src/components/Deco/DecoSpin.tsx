@@ -1,23 +1,29 @@
-import type { ReactNode } from 'react'
 import type { TRaceDeco } from '@GBR/types'
+import type { ForwardedRef, ReactNode } from 'react'
 
-import { useFeatureDeco } from '@GBR/hooks/decorations/useFeatureDeco'
-import { DecoSpinContainer } from './Deco.styled'
+import { forwardRef } from 'react'
+import { DecoSpinIcon, DecoSpinContainer } from './Deco.styled'
 
-export type TDecoSpin = {
-  deco?:TRaceDeco
+export type TDeco = {
+  deco:TRaceDeco
   children:ReactNode
 }
 
-export const DecoSpin = (props:TDecoSpin) => {
-  const { children } = props
+
+export const DecoSpin = forwardRef((props:TDeco, ref:ForwardedRef<any>) => {
+  const { deco, children, ...rest } = props
+  const { className, glyphMarginClassName  } = deco.options
 
     return (
       <>
-        <DecoSpinContainer>
-          Deco Spinner
+        <DecoSpinContainer
+          {...rest}
+          ref={ref}
+          className={`gb-deco-icon-spin-container ${className}`}
+        >
+          <DecoSpinIcon className={`gb-deco-icon-spin ${glyphMarginClassName}`} />
         </DecoSpinContainer>
         {children}
       </>
     )
-}
+})

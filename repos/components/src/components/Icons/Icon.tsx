@@ -1,7 +1,7 @@
 import type { CSSProperties, ElementType, ReactNode } from 'react'
 import { forwardRef, useMemo } from 'react'
 import SvgIcon from '@mui/material/SvgIcon'
-import { exists, cls }  from '@keg-hub/jsutils'
+import { exists }  from '@keg-hub/jsutils'
 import { useJoinSx } from '@GBC/hooks/theme/useJoinSx'
 
 export type TIconProps = {

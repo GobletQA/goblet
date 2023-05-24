@@ -1,7 +1,6 @@
 import type { Express } from 'express'
 import type { Socket } from 'socket.io'
 import type {
-  TPlayerEvent,
   SocketManager,
   TPlayerTestEvent,
   TSocketEvtCBProps,
@@ -9,11 +8,39 @@ import type {
 } from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
-import { emptyArr, isArr } from '@keg-hub/jsutils'
+import { EAstObject } from '@ltipton/parkin'
 import { Repo } from '@gobletqa/shared/repo/repo'
+import { PWEventErrorLogFilter } from '@GSC/constants'
+import { capitalize, emptyArr, isArr } from '@keg-hub/jsutils'
 import { playBrowser } from '@GSC/libs/playwright/browser/playBrowser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
+const getEventParent = (evtData:TPlayerTestEvent) => {
+  if(!evtData?.id) return
+
+  const [name, ...rest] = evtData?.id?.split(`-`)
+  return name.startsWith(`spec`)
+    ? EAstObject.step
+    : rest.length > 1 ? EAstObject.scenario : EAstObject.feature
+}
+
+const getEventMessage = (evtData:TPlayerTestEvent) => {
+  const status = evtData.action === `start`
+    ? `running`
+    : evtData.passed ? `passed` : `failed`
+
+  const message = !evtData.failed || evtData.eventParent !== EAstObject.step
+    ? ``
+    : evtData?.failedExpectations?.reduce((message, exp:Record<any, any>) => {
+        return exp?.message
+          ? `${message}\n${exp?.message?.split(`\n`).map((line:string) => {
+            return PWEventErrorLogFilter.filter(log => line.includes(log)).length ? `` : `  ${line}`
+          }).filter(Boolean).join(`\n`)}`
+          : message
+      }, `\n`) || ``
+
+  return `${capitalize(evtData.eventParent)} - ${status}${message}`
+}
 
 const handleStartPlaying = async (
   data:Record<any, any>,
@@ -31,15 +58,33 @@ const handleStartPlaying = async (
     browserConf,
     id: socket.id,
     onEvent:(event:TPlayerTestEventMeta) => {
+
+      // Check for array, because final results returned from the player
+      // It could be an array of all test events fired durning the run
+      // Which is not something we need now, because track them as they happen
+      // But could be good for generating test results documentation
+      const evtData = isArr<TPlayerTestEvent>(event.data)
+        ? {} as TPlayerTestEvent
+        : (event.data || {}) as TPlayerTestEvent
+
+      const parent = getEventParent(evtData)
+
+      // Get the event parent, and message if they exist
+      if(parent) evtData.eventParent = parent
+      if(evtData.eventParent) evtData.message = getEventMessage(evtData)
+
       // Clean up the event data, we don't need the tests and describes content
       // And it can be pretty large. No point in sending it over the wire
-      event.data = event.data || {} as TPlayerTestEvent
-      if(isArr(event.data)) event.data = {} as TPlayerTestEvent
-      if(event.data.tests) event.data.tests = emptyArr
-      if(event.data.describes) event.data.describes = emptyArr
+      if(evtData.tests) evtData.tests = emptyArr
+      if(evtData.describes) evtData.describes = emptyArr
 
       Logger.verbose(`Emit ${event.name} event`, event)
-      Manager.emit(socket, event.name, { ...event, group: socket.id })
+      Manager.emit(socket, event.name, {
+        ...event,
+        data: evtData,
+        group: socket.id
+      })
+
     },
     onCleanup: async (closeBrowser:boolean) => {
       socket?.id
@@ -62,3 +107,4 @@ export const browserPlay = (app:Express) => {
     await handleStartPlaying(data, repo, socket, Manager, app)
   }
 }
+

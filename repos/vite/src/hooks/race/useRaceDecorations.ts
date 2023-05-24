@@ -117,7 +117,7 @@ export const useRaceDecorations = ({
       editor: EEditorType.visual,
     })
 
-    const decos = checkFailedSpec<EEditorType.visual, TRaceDeco>({
+    const decos = checkFailedSpec<TRaceDeco>({
       event,
       featureRef,
       scenarioRef,

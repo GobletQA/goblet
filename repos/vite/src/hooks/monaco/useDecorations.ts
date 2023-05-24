@@ -84,10 +84,10 @@ export const useDecorations = ({
       scenarioRef,
     })
 
-    const dec = buildDecoration<TDecoration>({ event: event.data })
+    const dec = buildDecoration<TDecoration>({ event: event.data, editor: EEditorType.code })
     const relative = rmRootFromLoc(event.location, rootPrefix)
     const meta = { action: event.data.action }
-    const decos = checkFailedSpec<EEditorType.code, TDecoration>({
+    const decos = checkFailedSpec<TDecoration>({
       event,
       featureRef,
       scenarioRef,

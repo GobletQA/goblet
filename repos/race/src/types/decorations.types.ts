@@ -50,6 +50,13 @@ export type TRaceDecoUpdate = (
   meta:TRaceDecoMeta
 ) => void
 
+export type TGlyphHoverMessage = {
+  value: string
+  isTrusted: boolean
+  supportHtml: boolean
+  supportThemeIcons: boolean
+}
+
 export type TRaceDecoOpts = {
   zIndex:number
   className:string
@@ -57,14 +64,14 @@ export type TRaceDecoOpts = {
   marginClassName:string
   showIfCollapsed:boolean
   glyphMarginClassName:string
-  glyphMarginHoverMessage:string
+  glyphMarginHoverMessage:TGlyphHoverMessage
 }
 
 export type TRaceDeco = {
   id: string
   search:string
   type:EAstObject
-  options?:TRaceDecoOpts
+  options:TRaceDecoOpts
   decoType:ERaceDecoType|`spin`|`pass`|`fail`|`error`
 }
 

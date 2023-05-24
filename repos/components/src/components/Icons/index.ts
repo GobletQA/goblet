@@ -44,9 +44,11 @@ export * from './AdvancedIcon'
 export * from './AdvancedOutlineIcon'
 export * from './NoteMinusFilledIcon'
 
+export * from './FailIcon'
+export * from './PassIcon'
 
 // export * from './TextboxOutlineIcon'
-export * from './CancelIcon'
+// export * from './CancelIcon'
 
 // -- TODO - Use for dragging on top of the browser
 // export * from './SelectDragIcon'

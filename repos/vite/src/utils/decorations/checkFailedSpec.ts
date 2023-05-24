@@ -10,32 +10,28 @@ import type {
 import { PWPlay } from '@constants'
 import { buildDecorationFrom } from '@utils/decorations/buildDecorationFrom'
 
-type TUpdateDecs<
-E=EEditorType
-> = {
-  editor: E
+type TUpdateDecs = {
+  editor: EEditorType
   event:TPlayerResEvent
   featureRef:MutableRefObject<TPlayerEventData|undefined>
   scenarioRef:MutableRefObject<TPlayerEventData|undefined>
 }
 
-export const checkFailedSpec = <
-  E=EEditorType,
-  R=TBuiltDeco
->({
+export const checkFailedSpec = <R=TBuiltDeco>({
   event,
+  editor,
   featureRef,
   scenarioRef,
-}:TUpdateDecs<E>):R[] => {
+}:TUpdateDecs):R[] => {
   let decos = [] as R[]
 
   if(!event || event.name !== PWPlay.playSpecDone || event.data.passed) return decos
 
   const featDeco = featureRef.current
-    && buildDecorationFrom(event.data, featureRef.current)
+    && buildDecorationFrom(event.data, featureRef.current, editor)
 
   const sceDeco = scenarioRef.current
-    && buildDecorationFrom(event.data, scenarioRef.current)
+    && buildDecorationFrom(event.data, scenarioRef.current, editor)
 
   featDeco && decos.push(featDeco as R)
   sceDeco && decos.push(sceDeco as R)

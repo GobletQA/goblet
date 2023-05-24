@@ -43,15 +43,6 @@ export type TStepParent = {
   location: string
 }
 
-
-export enum EAstObjects {
-  feature = `feature`,
-  rule = `rule`,
-  background = `background`,
-  scenario = `scenario`,
-  step = `step`
-}
-
 export enum EStepKey {
   given=`given`,
   when=`when`,

@@ -54,3 +54,8 @@ export const PWLogFilter = [
 
 
 export const CreateBrowserRetry = 300
+
+export const PWEventErrorLogFilter = [
+  `===== logs =====`,
+  `================`
+]
