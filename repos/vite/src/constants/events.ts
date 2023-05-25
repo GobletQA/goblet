@@ -18,4 +18,5 @@ export const SideNavToggledEvt = `side-nav-toggled-event`
 export const WSAutomateEvent = `ws-automate-response-event`
 export const EditorPathChangeEvt = `editor-path-change-event`
 export const PlayerClearDecorationEvt = `player-clear-decoration-event`
+export const WSCancelPlayerEvent = `ws-cancel-player-response-event`
 export const WSCancelAutomateEvent = `ws-cancel-automate-response-event`

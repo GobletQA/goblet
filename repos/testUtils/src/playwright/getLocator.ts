@@ -31,7 +31,10 @@ export const getLocator = async (
   waitFor:boolean=true
 ) => {
   const page = await getPage()
-  const locator = await page.locator(selector)
+  // TODO: allow first to be configurable
+  // Should be set in the same way the timeout options are set
+  // Need to figure out how to set those, maybe a global, but not a great solution
+  const locator = await page.locator(selector).first()
   if (!locator) throw new Error(`The element with selector "${selector}" could not be found.`)
 
   const opts = getLocationWaitOpts(waitFor)

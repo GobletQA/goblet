@@ -13,6 +13,7 @@ export const PWPlay = {
   playGeneral: `PLAY-GENERAL`,
   playResults: `PLAY-RESULTS`,
   playStarted: `PLAY-STARTED`,
+  playCanceled: `PLAY-CANCELED`,
 }
 
 export const PWAutomateEvent = `PW-AUTOMATE-EVENT`

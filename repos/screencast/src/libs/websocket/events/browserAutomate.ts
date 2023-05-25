@@ -36,10 +36,3 @@ export const browserAutomate = (app:Express) => {
     await onBrowserAutomate(data, socket, Manager, app)
   }
 }
-
-export const cancelAutomate = (app:Express) => {
-  return async ({ data, socket, Manager, user }:TSocketEvtCBProps) => {
-    const pwComponents = await getPWComponents(data.browser)
-    await Automate.cancel(pwComponents, data)
-  }
-}

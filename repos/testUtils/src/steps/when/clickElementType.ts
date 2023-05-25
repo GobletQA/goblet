@@ -4,7 +4,7 @@ import { When } from '@GTU/Parkin'
 import { clickElement } from '@GTU/Support/helpers'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
-const attrTypes = [`.`, `#`, `$`, `#`, `:`, `(`, `>`]
+const attrTypes = [`internal`, `.`, `#`, `$`, `#`, `:`, `(`, `>`]
 
 export const checkSelectorType = (selector:string, world:TWorldConfig) => {
   const check = selector.trim()
@@ -19,7 +19,9 @@ export const clickElementTypeHandler = async (
   world:TWorldConfig
 ) => {
   const formatted = checkSelectorType(selector, world)
-  const joined = `${type}${formatted}`
+  const joined = formatted.startsWith(`internal`)
+    ? formatted
+    : `${type}${formatted}`
 
   return await clickElement({ selector: joined, world })
 }

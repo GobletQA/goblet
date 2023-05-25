@@ -9,6 +9,11 @@ import { playEvent } from '@actions/socket/local/playEvent'
 import { setPageAst } from '@actions/socket/local/setPageAst'
 import { recordAction } from '@actions/socket/local/recordAction'
 import { setBrowserRecording } from '@actions/socket/local/setBrowserRecording'
+import {clearEditorDecorations} from '@actions/runner/clearEditorDecorations'
+
+type TPlayerCancelEvent = TSocketEvt & {
+  location:string
+}
 
 /**
  * Callback event functions bound to the SocketService
@@ -63,6 +68,9 @@ export const events = {
   },
   pwAutomateEvent: function(message:TSocketEvt){
     EE.emit(WSAutomateEvent, message.data)
+  },
+  playCanceled: function(message:TPlayerCancelEvent){
+    clearEditorDecorations(message.location)
   },
   playEnded: playEvent,
   playError: playEvent,

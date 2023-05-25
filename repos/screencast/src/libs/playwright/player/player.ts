@@ -35,6 +35,8 @@ export class Player {
   id:string = null
   browser:TBrowser
   page:TBrowserPage
+  codeRunner:CodeRunner
+  canceled:boolean=false
   playing:boolean = false
   context:TBrowserContext
   onEvents:TPlayerEventCB[] = []
@@ -54,6 +56,8 @@ export class Player {
    * @member {Recorder}
    */
   fireEvent = (event:Omit<TPlayerEvent, 'isPlaying'>) => {
+    if(this.canceled) return this
+    
     this.onEvents.map(func => checkCall(
       func,
       {
@@ -146,30 +150,36 @@ export class Player {
         data: { options: this.options.playOptions } as TPlayerTestEvent
       })
 
-
-      const codeRunner = new CodeRunner(this, {
+      this.codeRunner = new CodeRunner(this, {
         debug: this.options?.playOptions?.debug as boolean,
         slowMo: this.options?.playOptions?.slowMo as number,
         timeout: this.options?.playOptions?.testTimeout as number,
       })
 
-      const results = await codeRunner.run(this.options?.file?.content)
-      this.fireEvent({
-        data: results,
-        message: 'Player results',
-        name: PWPlay.playResults,
-      })
+      const results = await this.codeRunner.run(this.options?.file?.content)
+
+      !this.canceled
+        && this.fireEvent({
+            data: results,
+            message: 'Player results',
+            name: PWPlay.playResults,
+          })
 
     }
     catch(err){
-      console.error(err.stack)
-      this.fireEvent({
-        message: err.message,
-        name: PWPlay.playError,
-      })
+      if(!this.canceled){
+        console.error(err.stack)
+        this.fireEvent({
+          message: err.message,
+          name: PWPlay.playError,
+        })
+      }
     }
     finally {
-      return await this.stop()
+      this.codeRunner = undefined
+      delete this.codeRunner
+
+      return this.canceled ? this : await this.stop()
     }
 
   }
@@ -181,7 +191,6 @@ export class Player {
    */
   stop = async () => {
     try {
-
       if(!this.context || !Player.isPlaying)
         this.fireEvent({
           name: PWPlay.playError,
@@ -194,8 +203,6 @@ export class Player {
         name: PWPlay.playEnded,
         message: 'Playing stopped',
       })
-
-      await this.cleanUp()
     }
     catch(err){
       console.error(err.stack)
@@ -204,6 +211,9 @@ export class Player {
         name: PWPlay.playError,
         message: err.message,
       })
+    }
+    finally {
+      await this.cleanUp()
     }
 
     return this
@@ -217,19 +227,40 @@ export class Player {
     return Player.isPlaying
   }
 
+  cancel = async () => {
+    this.fireEvent({
+      name: PWPlay.playCanceled,
+      message: 'Playing canceled',
+    })
+
+    await this.codeRunner?.cancel?.()
+
+    this.canceled = true
+    await this.stop()
+
+    return this
+  }
+ 
   /**
    * Helper method to clean up when recording is stopped
    * Attempts to avoid memory leaks by un setting Recorder instance properties
    */
   cleanUp = async () => {
-    await this.onCleanup(this)
+    try {
+      await this.onCleanup(this)
+    }
+    catch(err){
+      console.error(err)
+    }
 
     this.page = undefined
     this.context = undefined
     this.browser = undefined
+    this.codeRunner = undefined
     delete this.page
     delete this.context
     delete this.browser
+    delete this.codeRunner
     this.options = {}
     this.onEvents = []
     Player.isPlaying = false

@@ -30,7 +30,10 @@ const PromiseWrap = <T=any>(
       if(!abort.canceled) throw err
     })
   })
-  
+  .catch(err => {
+    if(!abort.canceled) throw err
+  })
+
   // @ts-ignore
   promise.cancel = () => (abort.canceled = true)
 

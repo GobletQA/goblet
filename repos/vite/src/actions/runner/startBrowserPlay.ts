@@ -1,13 +1,21 @@
-import type { TGitData, TFileModel, TStartPlaying, TBrowserActionOptions } from '@types'
+import type { TGitData, TFileModel, TStartPlaying, TPlayerResEvent } from '@types'
 
+import { EBrowserState } from '@types'
 import { addToast } from '@actions/toasts'
-import { pickKeys } from '@keg-hub/jsutils'
 import { WSService } from '@services/socketService'
+import { pickKeys, emptyObj } from '@keg-hub/jsutils'
 import { getWorldVal } from '@utils/repo/getWorldVal'
 import { getRepoData } from '@utils/store/getStoreData'
-import { clearSpecs } from '@actions/tracker/clearSpecs'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { SocketMsgTypes, WSRecordActions } from '@constants'
 import { buildCmdParams } from '@utils/browser/buildCmdParams'
+import { PromiseAbort } from '@gobletqa/shared/utils/promiseAbort'
+import {
+  BrowserStateEvt,
+  PlayerEndedEvent,
+  WSCancelPlayerEvent,
+} from '@constants'
+
 
 type TBuildOpts = {
   appUrl:string
@@ -59,8 +67,6 @@ export const startBrowserPlay = async (
     message: `Running ${cmd} tests for file ${file.name}!`,
   })
 
-  // Clear any existing tracker specs
-  clearSpecs()
 
   const repo = getRepoData()
   const { params, options } = buildCmdParams({ file, cmd })
@@ -80,5 +86,35 @@ export const startBrowserPlay = async (
     )
   )
 
-  WSService.emit(SocketMsgTypes.BROWSER_PLAY, opts)
+  const promise = PromiseAbort((res, rej) => {
+    WSService.emit(SocketMsgTypes.BROWSER_PLAY, opts)
+
+    // Then listen for the response event fired from the websocket service
+    const onPlayerEnd = EE.on<TPlayerResEvent>(PlayerEndedEvent, () => res(emptyObj))
+
+    /**
+    * Listens for a cancel event
+    * When called, cancels the promise and cleans up the automation
+    * Calls clean up events on both backend and frontend
+    *
+    */
+    const cancelOff = EE.on(
+      WSCancelPlayerEvent,
+      () => {
+        // Turn off the select listener above
+        onPlayerEnd?.()
+        // Send event to cancel on the backend
+        WSService.emit(SocketMsgTypes.CANCEL_AUTOMATE, { player: true })
+
+        // Sent event to cancel on the frontend
+        EE.emit(BrowserStateEvt, {browserState: EBrowserState.idle})
+
+        // Finally stop listening, cancel and reject
+        cancelOff?.()
+        promise.cancel()
+        rej(emptyObj)
+      }
+    )
+  })
+
 }

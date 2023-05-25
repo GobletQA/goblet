@@ -24,5 +24,7 @@ export const playBrowser = async (data:TStartPlaying) => {
     ...browserItems,
   }, id)
 
-  return await player.start({ url, options: playerOpts, repo })
+  player.start({ url, options: playerOpts, repo })
+
+  return player
 }

@@ -22,9 +22,25 @@ import expect from 'expect'
 
 import { PWPlay } from '@GSC/constants'
 import { Parkin } from '@ltipton/parkin'
-import { unset, omitKeys } from '@keg-hub/jsutils'
+import { unset, omitKeys, emptyObj } from '@keg-hub/jsutils'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { getDefinitions } from '@gobletqa/shared/repo/getDefinitions'
+
+
+const testGlobals = [
+  `it`,
+  `xit`,
+  `test`,
+  `xtest`,
+  `describe`,
+  `xdescribe`,
+  `afterAll`,
+  `afterEach`,
+  `beforeAll`,
+  `beforeEach`,
+]
+
+let TestGlobalsCache = {}
 
 /**
  * Use custom test runner from parkin
@@ -41,25 +57,31 @@ const setTestGlobals = (Runner:CodeRunner, timeout=6000) => {
     suiteStarted: Runner.onSuiteStarted,
   })
 
-  global.it = PTE.it
-  global.xit = PTE.xit
-  global.test = PTE.test
-  global.xtest = PTE.xtest
-  global.describe = PTE.describe
-  global.xdescribe = PTE.xdescribe
-  global.afterAll = PTE.afterAll
-  global.afterEach = PTE.afterEach
-  global.beforeAll = PTE.beforeAll
-  global.beforeEach = PTE.beforeEach
+  testGlobals.forEach((item) => {
+    TestGlobalsCache[item] = global[item]
+    global[item] = PTE[item]
+  })
 
   return PTE
 }
 
 const setupGlobals = (Runner:CodeRunner) => {
+  ;(TestGlobalsCache as any).expect = (global as any).expect
+  ;(TestGlobalsCache as any).context = (global as any).context
+
   ;(global as any).expect = expect
   global.context = Runner.player.context
   return setTestGlobals(Runner)
 }
+
+const resetTestGlobals = () => {
+  ;(global as any).expect = (TestGlobalsCache as any).expect
+  ;(global as any).context = (TestGlobalsCache as any).context
+
+  testGlobals.forEach((item) => global[item] = TestGlobalsCache[item])
+  TestGlobalsCache = {}
+}
+
 
 const setupParkin = async (Runner:CodeRunner) => {
   const PK = Runner?.player?.repo?.parkin
@@ -82,7 +104,7 @@ const worldSavePaths = [
 ]
 
 const cleanupWorld = (PK:Parkin) => {
-  worldSavePaths.forEach(loc => unset(PK.world, loc))
+  worldSavePaths.forEach(loc => unset(PK?.world, loc))
 }
 /**
  * ------ END - TODO: Move this to parkin ------ *
@@ -131,6 +153,7 @@ export class CodeRunner {
   player:Player
   PTE:ParkinTest
   exec = undefined
+  canceled:boolean
 
   /**
    * Custom options for each run of the code
@@ -161,10 +184,15 @@ export class CodeRunner {
     const results = await this.PTE.run() as TPlayerTestEvent[]
 
     // We only support 1 feature per file, so we only care about the first test result 
-    return clearTestResults(results[0])
+    const final = clearTestResults(results[0])
+    await this.cleanup()
+
+    return this.canceled ? emptyObj as TPlayerTestEvent : final
   }
 
   onSpecDone = (result:TPlayerTestMeta) => {
+    if(this.canceled) return
+    
     this.player.fireEvent({
       name: PWPlay.playSpecDone,
       message: `Player - Spec Done`,
@@ -182,6 +210,7 @@ export class CodeRunner {
 
   onSuiteDone = (result:TPlayerTestMeta) => {
     cleanupWorld(this.PK)
+    if(this.canceled) return
 
     this.player.fireEvent({
       name: PWPlay.playSuiteDone,
@@ -191,6 +220,8 @@ export class CodeRunner {
   }
 
   onSpecStarted = (result:TPlayerTestMeta) => {
+    if(this.canceled) return
+
     this.player.fireEvent({
       name: PWPlay.playSpecStart,
       data: clearTestResults(result),
@@ -199,11 +230,31 @@ export class CodeRunner {
   }
 
   onSuiteStarted = (result:TPlayerTestMeta) => {
+    if(this.canceled) return
+
     this.player.fireEvent({
       name: PWPlay.playSuiteStart,
       data: clearTestResults(result),
       message: `Player - Suite Start`,
     })
+  }
+
+  cancel = async () => {
+    this.canceled = true
+    this?.PK?.runner?.steps?.clear()
+    this?.PK?.steps?.clear()
+
+    await this.cleanup?.()
+  }
+
+  cleanup = async () => {
+    cleanupWorld(this.PK)
+    resetTestGlobals()
+    this?.PTE?.clean()
+
+    this.player = undefined
+    this.PK = undefined
+    this.PTE = undefined
   }
 
 }
