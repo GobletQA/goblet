@@ -1,6 +1,6 @@
 import { AuthActive } from '@constants'
 import { GitUser } from '@services/gitUser'
-import { account } from '@services/appwrite'
+// import { account } from '@services/appwrite'
 import { signInModal } from '@actions/modals/modals'
 import { localStorage } from '@services/localStorage'
 import { getProviderMetadata } from '@services/providers'
@@ -48,7 +48,7 @@ export const signOutAuthUser = async () => {
 // Disconnect from the web-socket server
   try {
     await auth.signOut()
-    await account.deleteSession(`current`)
+    // await account.deleteSession(`current`)
   }
   catch(err:any){ console.error(`Error in auth sign out.\n${err.message}`) }
 

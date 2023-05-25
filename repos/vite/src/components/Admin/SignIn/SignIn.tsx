@@ -9,10 +9,11 @@ import { OtherProviders } from '../OtherProviders'
 import { loadUser } from '@actions/admin/user/loadUser'
 import { getProviderMetadata } from '@services/providers'
 import { GithubSignIn } from '../GithubSignIn/GithubSignIn'
-import { GitlabSignIn } from '../GitlabSignIn/GitlabSignIn'
-import { GithubIcon, GitlabIcon } from '@gobletqa/components'
+import { GithubIcon } from '@gobletqa/components'
 import { onSuccessAuth, onFailedAuth } from '@actions/admin/provider'
 import { checkCall, isArr, noOp, capitalize } from '@keg-hub/jsutils'
+// import { GitlabSignIn } from '../GitlabSignIn/GitlabSignIn'
+// import { GithubIcon, GitlabIcon } from '@gobletqa/components'
 
 const { auth, config } = getProviderMetadata()
 
@@ -69,7 +70,7 @@ const SignIn = (props:TSignIn) => {
               children='Sign in with Github'
             />
           ) || null}
-          {gitLabEnabled && (
+          {/* {gitLabEnabled && (
             <GitlabSignIn
               Icon={GitlabIcon}
               disabled={signingIn}
@@ -78,7 +79,7 @@ const SignIn = (props:TSignIn) => {
               onSigningIn={setSigningIn}
               children='Sign in with Gitlab'
             />
-          ) || null}
+          ) || null} */}
           <OtherProviders />
         </List>
         <Box>
