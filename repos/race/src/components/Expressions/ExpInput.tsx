@@ -7,7 +7,11 @@ import { ESectionType } from '@GBR/types'
 import { Input } from '@gobletqa/components'
 import { ExpressionMenu } from './ExpressionMenu'
 import { exists, emptyArr } from '@keg-hub/jsutils'
-import { sharedInputStyles, sharedLabelProps } from '../Shared'
+import {
+  sharedLabelProps,
+  sharedInputStyles,
+  sharedHelperTextProps,
+} from '../Shared'
 
 export type TExpInput = ComponentProps<typeof Input> & {
   step: TRaceStep
@@ -20,6 +24,7 @@ export type TExpInput = ComponentProps<typeof Input> & {
 
 const inputProps = {
   ...sharedLabelProps,
+  ...sharedHelperTextProps,
   inputSx: sharedInputStyles
 }
 

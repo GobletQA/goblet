@@ -20,7 +20,8 @@ export type TSectionActionsMenu = {
 
 const styles = {
   button: {
-    padding: `5px`
+    padding: `5px`,
+    color: `var(--goblet-editor-foreground)`,
   }
 }
 

@@ -1,3 +1,4 @@
+import type { FormHelperTextProps } from '@mui/material/FormHelperText'
 import type {
   AutocompleteChangeReason,
   AutocompleteChangeDetails
@@ -5,7 +6,6 @@ import type {
 import type {
   ReactNode,
   FocusEvent,
-  ChangeEvent,
   KeyboardEvent,
   CSSProperties,
   ComponentProps,
@@ -23,8 +23,8 @@ import { useCallback, useRef } from 'react'
 import { useInputRef } from '@GBC/hooks/form/useInputRef'
 
 import { InputLabel } from './InputLabel'
+import { emptyObj, isStr, cls } from '@keg-hub/jsutils'
 import { useInline } from '@GBC/hooks/components/useInline'
-import { emptyObj, emptyArr, isStr, cls } from '@keg-hub/jsutils'
 import CircularProgress from '@mui/material/CircularProgress'
 import {
   Checkbox,
@@ -60,13 +60,16 @@ export type TAutoInput = {
   showCheckbox?: boolean
   options?: TAutoOptVal[]
   labelSx?: CSSProperties
+  helperSx?: CSSProperties
   onChange?: TOnAutoChange
   currentValue?:TAutoOptVal
   defaultValue?:TAutoOptVal
   labelWrapSx?: CSSProperties
   rules?: Record<string, string>
   label?: TextFieldProps['label']
+  helperTextProps?:FormHelperTextProps
   variant?:`outlined`|`filled`|`standard`
+  FormHelperTextProps?:FormHelperTextProps
   onBlur?: (event:any, ...args:any[]) => void
   autocompleteProps?: Partial<ComponentProps<typeof Auto>>
   color?: `primary`|`secondary`|`error`|`info`|`success`|`warning`
@@ -188,6 +191,7 @@ const AutoInputComp = (props:TAutoInput) => {
     required,
     freeSolo,
     disabled,
+    helperSx,
     autoFocus,
     className,
     labelSide,
@@ -199,8 +203,10 @@ const AutoInputComp = (props:TAutoInput) => {
     showCheckbox,
     defaultValue,
     textFieldProps,
+    helperTextProps,
     autocompleteProps,
     currentValue=value,
+    FormHelperTextProps,
     decor=emptyObj as TInputDecor,
     ...rest
   } = props
@@ -308,6 +314,15 @@ const AutoInputComp = (props:TAutoInput) => {
                   ? error
                   : helperText || textFieldProps?.helperText || ` `
               }
+              FormHelperTextProps={{
+                ...FormHelperTextProps,
+                ...helperTextProps,
+                sx: [
+                  FormHelperTextProps?.sx,
+                  helperTextProps?.sx,
+                  helperSx
+                ] as CSSProperties[]
+              }}
               InputProps={{
                 ...params.InputProps,
                 endAdornment: (

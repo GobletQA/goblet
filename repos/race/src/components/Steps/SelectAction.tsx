@@ -8,7 +8,12 @@ import { Tooltip, AutoInput } from '@gobletqa/components'
 import { useOnStepAction }  from '@gobletqa/race/hooks/useOnStepAction'
 import { useStepOptions } from '@gobletqa/race/hooks/useStepOptions'
 
-import { sharedAutoInputStyles, sharedLabelProps } from '../Shared'
+import {
+  sharedLabelProps,
+  sharedHelperTextProps,
+  sharedAutoInputStyles,
+} from '../Shared'
+
 import {
   StepGridItem,
   ActionInfoText
@@ -33,6 +38,7 @@ const actSelectProps = {
     placeholder: `Select an action`,
   },
   ...sharedLabelProps,
+  ...sharedHelperTextProps,
   sx: sharedAutoInputStyles
 }
 

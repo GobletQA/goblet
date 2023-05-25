@@ -78,6 +78,7 @@ export const SectionContainer = styled(Paper)`
 export const SectionDropdown = styled(DropdownComp)`
   cursor: default;
   transition: background-color ${dims.trans.avgEase};
+  background-color: var(--goblet-tab-activeBackground);
   ${dndCss.dropdown}
 
   & .gb-dropdown-header {
@@ -125,10 +126,12 @@ export const SectionDropdown = styled(DropdownComp)`
 export const SectionContent = styled(Box)`
   padding-left: ${gutter.padding.hpx};
   padding-right: ${gutter.padding.hpx};
+  background-color: var(--goblet-editorGroup-background);
   border-top: 1px solid var(--goblet-editorGroupHeader-tabsBorder);
 `
 
 export const SectionFooter = styled(Box)`
+  background-color: var(--goblet-editorGroup-background);
   padding: ${gutter.padding.hpx} ${gutter.padding.qpx} ${gutter.padding.hpx};
 `
 

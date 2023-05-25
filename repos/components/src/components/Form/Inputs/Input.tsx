@@ -1,4 +1,5 @@
 import type { CSSProperties, ComponentProps, RefObject } from 'react'
+import type { FormHelperTextProps } from '@mui/material/FormHelperText'
 import type { TInputDecor } from '@GBC/types'
 import {
   InputText,
@@ -24,8 +25,10 @@ export type TInput = Omit<ComponentProps<typeof InputText>, `error`|`inputRef`> 
   labelInline?:boolean
   inputSx?: CSSProperties
   labelSx?: CSSProperties
+  helperSx?: CSSProperties
   labelWrapSx?: CSSProperties
   value?:string|boolean|number
+  helperTextProps?:FormHelperTextProps
   variant?:`outlined`|`filled`|`standard`
   inputRef?:RefObject<HTMLInputElement | HTMLTextAreaElement | undefined>
 }
@@ -43,6 +46,7 @@ export const Input = (props:TInput) => {
     inputSx,
     required,
     disabled,
+    helperSx,
     labelSide,
     className,
     multiline,
@@ -54,8 +58,10 @@ export const Input = (props:TInput) => {
     labelInline,
     placeholder,
     fullWidth=true,
+    helperTextProps,
     onBlur:onBlurIn,
     onFocus:onFocusIn,
+    FormHelperTextProps,
     inputRef:inputRefIn,
     onChange:onChangeIn,
     onKeyDown:onKeyDownIn,
@@ -132,6 +138,15 @@ export const Input = (props:TInput) => {
           onFocus: onFocus,
           disabled: disabled,
           onKeyDown: onKeyDown
+        }}
+        FormHelperTextProps={{
+          ...FormHelperTextProps,
+          ...helperTextProps,
+          sx: [
+            FormHelperTextProps?.sx,
+            helperTextProps?.sx,
+            helperSx
+          ] as CSSProperties[]
         }}
         {...rest}
       />

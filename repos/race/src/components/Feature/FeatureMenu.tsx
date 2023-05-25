@@ -15,6 +15,12 @@ export type TFeatureMenu = {
   items: TFeatureItem[]
 }
 
+const styles = {
+  toggle: {
+    color: `var(--goblet-editor-foreground)`,
+  }
+}
+
 export const FeatureMenu = (props:TFeatureMenu) => {
   const {
     items
@@ -38,8 +44,9 @@ export const FeatureMenu = (props:TFeatureMenu) => {
       <MenuToggle
         open={open}
         onOpen={onOpen}
+        sx={styles.toggle}
         controlId={controlId}
-        id="gb-feature-menu-button"
+        id="feature"
       />
       <Menu
         open={open}

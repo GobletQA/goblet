@@ -62,3 +62,31 @@ export const DecoSpinIcon = styled(Span)`
   border-right: 1em solid ${colors.purple10}33;
   border-bottom: 1em solid ${colors.purple10}33;
 `
+
+export const DecoLineHighlight = styled(Box)`
+
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+
+  &.top {
+    top: 0px;
+  }
+
+  &.bottom {
+    bottom: 0px;
+  }
+
+  &.failed {
+    background-color: ${colors.red10}33;
+    border-bottom: 2px solid ${colors.red10}66;
+  }
+
+  &.passed {
+    background-color: ${colors.green10}33;
+    border-bottom: 2px solid ${colors.green10}66;
+  }
+
+`

@@ -7,7 +7,11 @@ import { ESectionType } from '@GBR/types'
 import { emptyArr } from '@keg-hub/jsutils'
 import { AutoInput } from '@gobletqa/components'
 import { ExpressionMenu } from './ExpressionMenu'
-import { sharedAutoInputStyles, sharedLabelProps } from '../Shared'
+import {
+  sharedLabelProps,
+  sharedHelperTextProps,
+  sharedAutoInputStyles,
+} from '../Shared'
 
 const expressionProps = {
   label: `Type`,
@@ -17,6 +21,7 @@ const expressionProps = {
     placeholder: `Select from list...`,
   },
   ...sharedLabelProps,
+  ...sharedHelperTextProps,
   sx: sharedAutoInputStyles
 }
 

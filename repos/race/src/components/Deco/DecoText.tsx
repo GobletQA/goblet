@@ -1,8 +1,8 @@
 import type { ReactNode, CSSProperties } from 'react'
 
 import { DecoTypes } from './DecoTypes'
-import { DecoContainer } from './Deco.styled'
 import { useDecoId } from '@GBR/hooks/decorations/useDecoId'
+import { DecoContainer, DecoLineHighlight } from './Deco.styled'
 import {
   Tooltip
 } from '@gobletqa/components'
@@ -31,20 +31,23 @@ export const DecoText = (props:TDecoText) => {
   } = deco.options
 
   return (
-    <DecoContainer
-      sx={containerSx}
-      className={`gb-deco-container ${className}`}
-    >
-      <Tooltip
-        loc='bottom'
-        describeChild
-        enterDelay={300}
-        title={glyphMarginHoverMessage.value}
+    <>
+      <DecoContainer
+        sx={containerSx}
+        className={`gb-deco-container ${className}`}
       >
-        <Component sx={sx} deco={deco} >
-          {children}
-        </Component>
-      </Tooltip>
-    </DecoContainer>
+        <Tooltip
+          loc='bottom'
+          describeChild
+          enterDelay={300}
+          title={glyphMarginHoverMessage.value}
+        >
+          <Component sx={sx} deco={deco} >
+            {children}
+          </Component>
+        </Tooltip>
+      </DecoContainer>
+      <DecoLineHighlight className={`gb-deco-line-highlight bottom ${className}`} />
+    </>
   )
 }
