@@ -32,6 +32,7 @@ export const DecoText = (props:TDecoText) => {
 
   return (
     <>
+      <DecoLineHighlight className={`gb-deco-line-highlight bottom ${className}`} />
       <DecoContainer
         sx={containerSx}
         className={`gb-deco-container ${className}`}
@@ -47,7 +48,6 @@ export const DecoText = (props:TDecoText) => {
           </Component>
         </Tooltip>
       </DecoContainer>
-      <DecoLineHighlight className={`gb-deco-line-highlight bottom ${className}`} />
     </>
   )
 }

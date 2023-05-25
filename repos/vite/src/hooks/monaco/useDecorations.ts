@@ -62,8 +62,10 @@ export const useDecorations = ({
 
   useOnEvent<TPlayerResEvent>(PlayerClearDecorationEvt, (event:TPlayerResEvent) => {
     const { location } = event
+    
+    const relative = rmRootFromLoc(location, rootPrefix)
     const decoration = editorRef?.current?.decoration
-    location && decoration?.clear(location)
+    relative && decoration?.clear(relative)
     updateRefs({
       stepRef,
       featureRef,

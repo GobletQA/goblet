@@ -10,6 +10,7 @@ import {
 } from '@gobletqa/components'
 
 export const DecoContainer = styled(Box)`
+  z-index: 0;
   width: 100%;
   display: flex;
   align-items: center;
@@ -65,18 +66,22 @@ export const DecoSpinIcon = styled(Span)`
 
 export const DecoLineHighlight = styled(Box)`
 
+  z-index: 0;
   left: 0px;
   right: 0px;
   width: 100%;
-  height: 100%;
   position: absolute;
+  // Odd hack needed to cover the entire element
+  // Pretty sure it's related to a border somewhere, on the dropdown maybe?
+  height: calc(100% + 1px);
 
   &.top {
     top: 0px;
   }
 
   &.bottom {
-    bottom: 0px;
+    // See comment above
+    bottom: -1px;
   }
 
   &.failed {
@@ -87,6 +92,11 @@ export const DecoLineHighlight = styled(Box)`
   &.passed {
     background-color: ${colors.green10}33;
     border-bottom: 2px solid ${colors.green10}66;
+  }
+  
+  &.gb-player-running {
+    background-color: ${colors.purple10}33;
+    border-bottom: 2px solid ${colors.purple10}66;
   }
 
 `

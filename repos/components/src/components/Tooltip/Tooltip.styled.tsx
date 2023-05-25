@@ -1,5 +1,6 @@
 import type { TooltipProps } from '@mui/material/Tooltip'
 
+import Box from '@mui/material/Box'
 import { colors, gutter } from '@GBC/theme'
 import { styled } from '@mui/material/styles'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
@@ -18,3 +19,7 @@ export const MuiTooltip = styled(({ className, fontSize, ...props }: TTooltipPro
     backgroundColor: `var(--goblet-editor-background)`,
   },
 }))
+
+export const TooltipTitle = styled(Box)`
+  white-space: pre-line;
+`

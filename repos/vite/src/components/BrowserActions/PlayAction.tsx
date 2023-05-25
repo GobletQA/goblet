@@ -4,7 +4,6 @@ import { EBrowserState } from '@types'
 import { useCallback, useState } from 'react'
 import { EditorPathChangeEvt } from '@constants'
 import { getFileModel } from '@utils/files/getFileModel'
-import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
@@ -27,7 +26,7 @@ const RunTests = (props:TBrowserActionProps) => {
     if(!fileModel)
       return console.warn(`Can not run tests, File model could not be found.`, location)
     
-    clearEditorDecorations(rmRootFromLoc(location))
+    clearEditorDecorations(location)
 
     await startBrowserPlay(fileModel, `feature`)
   }, [location])
