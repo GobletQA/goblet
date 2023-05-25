@@ -46,15 +46,15 @@ export const useSectionActions = (props:THSectionActions) => {
     const typeCaps = capitalize(type)
     const actions:TSectionAction[] = []
 
-    exists(onPlay)
-      && actions.push({
-          type,
-          onClick: onPlay,
-          dividerBottom: true,
-          label: `Play ${typeCaps}`,
-          Icon: PlayCircleOutlineIcon,
-          key: `gb-${type}-play-action`,
-        })
+    // exists(onPlay)
+    //   && actions.push({
+    //       type,
+    //       onClick: onPlay,
+    //       dividerBottom: true,
+    //       label: `Play ${typeCaps}`,
+    //       Icon: PlayCircleOutlineIcon,
+    //       key: `gb-${type}-play-action`,
+    //     })
 
     exists(onAddStep)
       && actions.push({
@@ -83,14 +83,14 @@ export const useSectionActions = (props:THSectionActions) => {
           key: `gb-${type}-add-background-action`,
         })
 
-    exists(onCopy)
-      && actions.push({
-          type,
-          onClick: onCopy,
-          Icon: ContentCopyIcon,
-          label: `Copy ${typeCaps}`,
-          key: `gb-${type}-copy-action`,
-        })
+    // exists(onCopy)
+    //   && actions.push({
+    //       type,
+    //       onClick: onCopy,
+    //       Icon: ContentCopyIcon,
+    //       label: `Copy ${typeCaps}`,
+    //       key: `gb-${type}-copy-action`,
+    //     })
 
     exists(onCollapse)
       && actions.push({

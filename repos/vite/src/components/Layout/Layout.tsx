@@ -5,20 +5,24 @@ import { Divider } from './Divider'
 
 import Box from '@mui/material/Box'
 
+import { EBrowserState } from '@types'
 import { BrowserActions } from '../BrowserActions'
 import { Screencast } from '@components/Screencast'
 import { ActionBar, dims } from '@gobletqa/components'
 import { useLayoutResize } from '@hooks/components/useLayoutResize'
+import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import {
   LContainer,
   RContainer,
   RTSection,
   LayoutContainer,
+  LAutomationCover,
 } from './Layout.styled'
 import {
   Proportional,
   HorizontalPageSplit,
 } from 'react-page-split'
+import {cls} from '@keg-hub/jsutils'
 
 export type TScreenDimsFull = {
   width: number
@@ -51,6 +55,9 @@ export type TLayout = {
 export const Layout = (props:TLayout) => { 
   const [ref, onHorResizeMove] = useLayoutResize()
 
+  const { browserState } = useBrowserState()
+  const automationActive = (browserState !== EBrowserState.idle)
+
   return (
     <LayoutContainer
       ref={ref}
@@ -68,6 +75,12 @@ export const Layout = (props:TLayout) => {
           className='gb-layout-left-container gb-container-editor'
         >
           {props.children}
+          <LAutomationCover
+            className={cls(
+              `gb-automation-cover`,
+              automationActive && `active`
+            )}
+          />
         </LContainer>
 
         <RContainer

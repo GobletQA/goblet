@@ -103,7 +103,7 @@ export const WorldAliasList = (props:TWorldAliasList) => {
               key={`${item.name}-${item.value}`}
             />
           )
-        })}
+        }) || null}
       </AliasList>
       <AddAliasAction {...props} />
     </AliasListContainer>

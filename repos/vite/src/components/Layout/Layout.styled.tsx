@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import { colors, dims } from '@gobletqa/components'
+import { getColor, colors, dims } from '@gobletqa/components'
 import MuiContainer from '@mui/material/Container'
 
 export const LayoutContainer = styled(Box)`
@@ -12,7 +12,27 @@ export const LayoutContainer = styled(Box)`
 `
 
 export const LContainer = styled(MuiContainer)`
+  position: relative;
   max-width: 100% !important;
+`
+
+export const LAutomationCover = styled(Box)`
+  top: 0px;
+  left:0px;
+  right:0px;
+  opacity: 0;
+  width: 100%;
+  height: 0%;
+  position: absolute;
+  background-color: ${colors.black03};
+  transition: height ${dims.trans.avgEase}, background-color ${dims.trans.avgEase}, opacity ${dims.trans.avgEase};
+
+  &.active {
+    height: 100%;
+    z-index: 100;
+    opacity: 0.5;
+  }
+  
 `
 
 export const RContainer = styled(MuiContainer)`
