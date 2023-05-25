@@ -10,7 +10,8 @@ import type {
   TRaceDecoUpdate,
 } from '@GBR/types'
 
-import { useRef, useEffect, useState } from 'react'
+import {throttleLast} from '@keg-hub/jsutils'
+import { useRef, useEffect, useState, useMemo } from 'react'
 import { useEditor } from '@GBR/contexts/EditorContext'
 import { RaceOnFeatureEvt } from '@GBR/constants/events'
 import { useSettings } from '@GBR/contexts/SettingsContext'
@@ -32,6 +33,7 @@ export const useRaceDecoHooks = (props:THDecoration) => {
   const { feature } = useEditor()
   const { settings } = useSettings()
   const parentRef = useRef<TParentAst>()
+
   /**
    * The decorations can sometimes be updated too quickly
    * The setDecorations method is called multiple times
@@ -46,6 +48,11 @@ export const useRaceDecoHooks = (props:THDecoration) => {
    * This way they always are up to date, and nothing is missed
    */
   const decosRef = useRef<TRaceDecorations>(decorations)
+
+  /**
+   * Throttle calls to the setDecorations method, to avoid calling it too often
+   */
+  const updateDecos = useMemo(() => throttleLast(setDecorations), [])
 
   /**
    * Caches reference to feature properties
@@ -74,7 +81,7 @@ export const useRaceDecoHooks = (props:THDecoration) => {
 
     updates.cache !== cache && setCache(updates.cache)
     decosRef.current = updates.decorations
-    setDecorations(decosRef.current)
+    updateDecos(decosRef.current)
 
   })
 
@@ -85,7 +92,7 @@ export const useRaceDecoHooks = (props:THDecoration) => {
     delete decos[location]
 
     decosRef.current = decos
-    setDecorations(decosRef.current)
+    updateDecos(decosRef.current)
     setCache({ feature: feature.uuid, cache: {} })
   })
 
@@ -107,7 +114,7 @@ export const useRaceDecoHooks = (props:THDecoration) => {
 
     updates.cache !== cache && setCache(updates.cache)
     decosRef.current = updates.decorations
-    setDecorations(decosRef.current)
+    updateDecos(decosRef.current)
   })
 
   useEffect(() => {
