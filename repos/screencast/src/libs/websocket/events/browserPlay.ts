@@ -59,14 +59,7 @@ const handleStartPlaying = async (
     id: socket.id,
     onEvent:(event:TPlayerTestEventMeta) => {
 
-      // Check for array, because final results returned from the player
-      // It could be an array of all test events fired durning the run
-      // Which is not something we need now, because track them as they happen
-      // But could be good for generating test results documentation
-      const evtData = isArr<TPlayerTestEvent>(event.data)
-        ? {} as TPlayerTestEvent
-        : (event.data || {}) as TPlayerTestEvent
-
+      const evtData = (event.data || {}) as TPlayerTestEvent
       const parent = getEventParent(evtData)
 
       // Get the event parent, and message if they exist

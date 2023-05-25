@@ -158,9 +158,10 @@ export class CodeRunner {
     this.PK = await setupParkin(this)
 
     await this.PK.run(content, {})
-    const results = await this.PTE.run()
+    const results = await this.PTE.run() as TPlayerTestEvent[]
 
-    return results
+    // We only support 1 feature per file, so we only care about the first test result 
+    return clearTestResults(results[0])
   }
 
   onSpecDone = (result:TPlayerTestMeta) => {
