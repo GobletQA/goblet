@@ -32,7 +32,7 @@ const updateTabs = ({tabs, group}:TUpdateTabs) => {
   if(!filterTabs.find(tt => tt.tab.active)){
     const lIdx = filterTabs.length - 1
     const last = filterTabs[lIdx]
-    filterTabs[lIdx] = {...last, tab: { ...last.tab, active: true }}
+    if(last) filterTabs[lIdx] = {...last, tab: { ...last?.tab, active: true }}
   }
 
   return { tabs: filterTabs }

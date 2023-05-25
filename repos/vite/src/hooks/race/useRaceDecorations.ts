@@ -17,6 +17,7 @@ import { rmRootFromLoc } from '@utils/repo/rmRootFromLoc'
 import { checkFailedSpec } from '@utils/decorations/checkFailedSpec'
 import { buildDecoration } from '@utils/decorations/buildDecoration'
 import {
+  PWPlay,
   PlayerTestEvt,
   PlayerErrorEvent,
   PlayerEndedEvent,
@@ -92,6 +93,8 @@ export const useRaceDecorations = ({
 
   useOnEvent<TPlayerResEvent>(PlayerTestEvt, (event:TPlayerResEvent) => {
     if(!event) return console.warn(`[Decoration Event] The "PlayerTestEvt" was fired without an event object`)
+
+    if(event.name === PWPlay.playResults) return
 
     const { data } = event
 

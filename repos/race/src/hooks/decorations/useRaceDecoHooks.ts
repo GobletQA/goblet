@@ -32,7 +32,25 @@ export const useRaceDecoHooks = (props:THDecoration) => {
   const { feature } = useEditor()
   const { settings } = useSettings()
   const parentRef = useRef<TParentAst>()
+  /**
+   * The decorations can sometimes be updated too quickly
+   * The setDecorations method is called multiple times
+   * Before the decorations object in the context can be updated
+   * This causes events to be missed in some decorations do not get displayed
+   * 
+   * To fix this, we create a cached ref version of the decorations
+   * And all updates are applied to it first
+   * Because it's just a simple object, updates to it are stored instantly
+   * And don't require updating the decorations context
+   * We then pass that on to the setDecorations method
+   * This way they always are up to date, and nothing is missed
+   */
+  const decosRef = useRef<TRaceDecorations>(decorations)
 
+  /**
+   * Caches reference to feature properties
+   * So we don't have to look them up each time
+   */
   const [cache, setCache] = useState<TDecoCache>({
     cache: {},
     feature: feature.uuid,
@@ -43,9 +61,9 @@ export const useRaceDecoHooks = (props:THDecoration) => {
       cache,
       feature,
       location,
-      decorations,
       updates:[deco],
-      parent: parentRef.current
+      parent: parentRef.current,
+      decorations: decosRef.current,
     })
     
     const item = updates.cache.cache[deco.id]
@@ -55,7 +73,8 @@ export const useRaceDecoHooks = (props:THDecoration) => {
       && (parentRef.current = item as TParentAst)
 
     updates.cache !== cache && setCache(updates.cache)
-    setDecorations(updates.decorations)
+    decosRef.current = updates.decorations
+    setDecorations(decosRef.current)
 
   })
 
@@ -65,7 +84,8 @@ export const useRaceDecoHooks = (props:THDecoration) => {
     const decos = {...decorations}
     delete decos[location]
 
-    setDecorations(decos)
+    decosRef.current = decos
+    setDecorations(decosRef.current)
     setCache({ feature: feature.uuid, cache: {} })
   })
 
@@ -80,13 +100,14 @@ export const useRaceDecoHooks = (props:THDecoration) => {
       cache,
       feature,
       location,
-      decorations,
       updates:decos,
-      parent: parentRef.current
+      parent: parentRef.current,
+      decorations: decosRef.current,
     })
 
     updates.cache !== cache && setCache(updates.cache)
-    setDecorations(updates.decorations)
+    decosRef.current = updates.decorations
+    setDecorations(decosRef.current)
   })
 
   useEffect(() => {
