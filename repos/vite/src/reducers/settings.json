@@ -182,7 +182,7 @@
       "active": true,
       "type": "number",
       "postfix": "px",
-      "group": "editor",
+      "group": "monaco",
       "description": "Default text size within the Code Editor"
     },
     "tabSize": {
@@ -191,7 +191,7 @@
       "active": true,
       "default": 2,
       "type": "number",
-      "group": "editor",
+      "group": "monaco",
       "description": "Default amount of spaces to use in place of tab within the Code Editor"
     },
     "theme": {
@@ -214,7 +214,7 @@
       "active": true,
       "default": true,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Automatically detect the indentation style of the opened file"
     },
     "minimap-enabled": {
@@ -223,7 +223,7 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Enable the minimap for the active file"
     },
     "minimap-autohide": {
@@ -232,7 +232,7 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Automatically hide the minimap when inactive"
     },
     "minimap-renderCharacters": {
@@ -241,7 +241,7 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Display the actually characters of the active file within the minimap"
     },
     "cursorStyle": {
@@ -316,7 +316,7 @@
       "active": true,
       "default": 3,
       "type": "number",
-      "group": "editor",
+      "group": "monaco",
       "description": "Number of characters allowed per line of text"
     },
     "folding": {
@@ -325,7 +325,7 @@
       "active": true,
       "default": true,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Allow sections of code to be folded"
     },
     "foldingStrategy": {
@@ -364,7 +364,7 @@
       "default": true,
       "enabled": false,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Add an extra margin to allow displaying glyphs"
     },
     "matchBrackets": {
@@ -405,7 +405,7 @@
       "active": true,
       "default": true,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Render a indicators of control characters"
     },
     "renderLineHighlight": {
@@ -430,7 +430,7 @@
       "active": true,
       "default": true,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Automatically layout the Code Editor"
     },
     "codeLens": {
@@ -439,7 +439,7 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Enable code-lens within the Code Editor"
     },
     "lineDecorationsWidth": {
@@ -448,7 +448,7 @@
       "active": true,
       "default": 10,
       "type": "number",
-      "group": "editor",
+      "group": "monaco",
       "description": "Width of the space used to display decorators"
     },
     "selectOnLineNumbers": {
@@ -457,7 +457,7 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Select an entire line when the line number is clicked"
     },
     "renderValidationDecorations": {
@@ -481,7 +481,7 @@
       "active": true,
       "default": false,
       "type": "boolean",
-      "group": "editor",
+      "group": "monaco",
       "description": "Enable the light-bulb indicator within the Code Editor"
     }
   },
