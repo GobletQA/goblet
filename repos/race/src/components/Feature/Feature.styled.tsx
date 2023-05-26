@@ -16,7 +16,7 @@ export const FeatureStack = styled(Stack, {
     padding: 0px ${gutter.padding.hpx};
     scrollbar-gutter: stable both-edges;
 
-    background: linear-gradient(90deg, var(--goblet-editor-background) 23px, transparent 1%) center, linear-gradient(var(--goblet-editor-background) 23px, transparent 1%) center, var(--goblet-editor-border);
+    background: linear-gradient(90deg, var(--goblet-editor-raceBackground) 23px, transparent 1%) center, linear-gradient(var(--goblet-editor-raceBackground) 23px, transparent 1%) center, var(--goblet-editor-border);
     background-size: 25px 25px;
 
     ::-webkit-scrollbar-track {

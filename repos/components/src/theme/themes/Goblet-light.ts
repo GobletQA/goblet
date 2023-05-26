@@ -198,6 +198,7 @@ export const lightTheme = {
   colors: {
     [`editor.border`]: colors.gray01,
 
+    [`editor.raceBackground`]: colors.purple00,
     [`editor.background`]: colors.white,
     [`editor.foreground`]: colors.black08,
 
