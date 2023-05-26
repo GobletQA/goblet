@@ -7,6 +7,8 @@ import { useAppInit } from '@hooks/useAppInit'
 import { Modal } from '@components/Modals/Modal'
 import { ThemeProvider } from '@gobletqa/components'
 import { ModalProvider } from '@contexts/ModalContext'
+import { KeyboardProvider } from '@contexts/KeyboardContext'
+
 import { useWindowResize } from '@hooks/dom/useWindowResize'
 
 type TRootApp = {}
@@ -18,7 +20,9 @@ const App = (props:TRootApp) => {
   return (
     <ThemeProvider globalStyles={globalStyles} >
       <ModalProvider>
-        <RootScreen />
+        <KeyboardProvider>
+          <RootScreen />
+        </KeyboardProvider>
         <Modal />
       </ModalProvider>
     </ThemeProvider>

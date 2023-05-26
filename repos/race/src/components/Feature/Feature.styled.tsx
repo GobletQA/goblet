@@ -75,33 +75,6 @@ export const FeatureMenuContainer = styled(Box)`
   padding-left: 20px;
   padding-right: 20px;
 `
-export const FeatureActionBtn = styled(Button)`
-  width: auto;
-  padding: 4px 8px;
-  min-width: initial;
-  border-radius: 0px;
-  border-left: 1px solid var(--goblet-sideBar-border);
-
-  color: ${colors.gray08};
-  transition: color ${dims.trans.avg} ease;
-  
-  &:hover {
-    color: ${colors.purple10};
-  }
-
-  &:first-of-type {
-    border-left: none;
-  }
-  
-  > span {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  & .MuiButton-startIcon {
-    margin-right: ${gutter.margin.qpx};
-  }
-`
 
 export const HeaderText = styled(H4)`
   flex-grow: 1;

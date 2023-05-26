@@ -11,6 +11,8 @@ import {
   RadioButtonCheckedIcon,
 } from '@gobletqa/components'
 import {
+  CancelButtonID,
+  BrowserStateAttr,
   WSCancelPlayerEvent,
   WSCancelAutomateEvent,
 } from '@constants'
@@ -40,10 +42,12 @@ const useActionProps = (props:TBrowserActionProps, browserState:EBrowserState) =
         color: 'error',
         text: 'Cancel',
         variant: 'text',
+        id: CancelButtonID,
         Icon: DangerousIcon,
-        onClick: EBrowserState.playing ? onCancelPlayers : onCancelAutomation,
+        [BrowserStateAttr]: browserState,
         tooltip: 'Cancel browser automation',
         className: 'goblet-browser-cancel-recording',
+        onClick: browserState === EBrowserState.playing ? onCancelPlayers : onCancelAutomation,
       }
   }, [browserState])
 

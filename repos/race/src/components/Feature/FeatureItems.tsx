@@ -1,5 +1,5 @@
 import type { TRaceFeature } from '@GBR/types'
-import type { TFeatureAction } from './FeatureAction'
+import type { TMenuItem } from '@gobletqa/components'
 
 import { noOp } from '@keg-hub/jsutils'
 import { addRule } from '@GBR/actions/rule/addRule'
@@ -7,6 +7,8 @@ import { ESectionExt, ESectionType } from '@GBR/types'
 import { addBackground } from '@GBR/actions/background'
 import { addScenario } from '@GBR/actions/scenario/addScenario'
 import { toggleWorldEditor } from '@GBR/actions/general/toggleWorldEditor'
+import type { ReactNode, ComponentType, MouseEvent } from 'react'
+
 
 import {
   dims,
@@ -24,43 +26,28 @@ import {
   NoteMinusFilledIcon,
 } from '@gobletqa/components'
 
-export type TFeatureItem = Omit<TFeatureAction, `feature`|`type`> & {
+export type TFeatureItem = Omit<TMenuItem, `onCloseMenu`|`closeMenu`|`onClick`|`Icon`> & {
   text:string
-  type: TFeatureAction[`type`] | `mode`
+  description?:ReactNode
+  Icon:ComponentType<any>
   key:ESectionType|ESectionExt | `mode`
+  type: ESectionType|ESectionExt | `mode`
+  variant?:"text" | "outlined" | "contained" | undefined
   featureKey:keyof TRaceFeature | `steps` | `general` | `world` | `mode`
+  onClick: (evt:MouseEvent<HTMLElement>, featureId:string, featureType:string) => void
 }
 
-const itemStyles = {
-  def: {
-    sx: {
-      transition: `color ${dims.trans.avgEase}`,
-      [`&:hover`]: {
-        color: colors.purple10
-      }
-    },
-    iconContainerSx: {
-      color: `inherit`,
-      transition: `color ${dims.trans.fastest} ease`,
-    },
-    iconSx: {
-      color: `inherit`,
-      transition: `inherit`,
-    },
-  },
-  active: {
-    sx: {
-      color: colors.green10,
-      transition: `color ${dims.trans.avgEase}`,
-      [`&:hover`]: {
-        color: colors.purple10
-      }
-    },
+const activeStyles = {
+  sx: {
+    color: colors.green10,
+    transition: `color ${dims.trans.avgEase}`,
+    [`&:hover`]: {
+      color: colors.purple10
+    }
   }
 }
 
 export const GeneralItem:TFeatureItem = {
-  ...itemStyles.def,
   onClick: noOp,
   Icon: NotePlusIcon,
   text: `Feature Metadata`,
@@ -82,7 +69,7 @@ export const GeneralItem:TFeatureItem = {
 
 export const GeneralItemActive = {
   ...GeneralItem,
-  ...itemStyles.active,
+  ...activeStyles,
   text: `Feature Metadata`,
   Icon: NoteMinusFilledIcon,
   tooltip: {
@@ -92,7 +79,6 @@ export const GeneralItemActive = {
 }
 
 export const ScenarioItem:TFeatureItem = {
-  ...itemStyles.def,
   text: `Add Scenario`,
   Icon: PlaylistPlusIcon,
   featureKey: `scenarios`,
@@ -109,7 +95,6 @@ export const ScenarioItem:TFeatureItem = {
 }
 
 export const RuleItem:TFeatureItem = {
-  ...itemStyles.def,
   text: `Add Rule`,
   onClick: () => addRule(),
   featureKey: `rules`,
@@ -126,7 +111,6 @@ export const RuleItem:TFeatureItem = {
 }
 
 export const BackgroundItem:TFeatureItem = {
-  ...itemStyles.def,
   Icon:CardPlusIcon,
   text: `Add Background`,
   featureKey: `background`,
@@ -143,7 +127,6 @@ export const BackgroundItem:TFeatureItem = {
 }
 
 export const StepItem:TFeatureItem = {
-  ...itemStyles.def,
   text: `Add Step`,
   Icon: StepAddIcon,
   featureKey: `steps`,
@@ -161,7 +144,6 @@ export const StepItem:TFeatureItem = {
 
 
 export const WorldItem:TFeatureItem = {
-  ...itemStyles.def,
   Icon: WorldIcon,
   featureKey: `world`,
   key: ESectionExt.world,
@@ -171,7 +153,6 @@ export const WorldItem:TFeatureItem = {
 }
 
 export const ModeItem:TFeatureItem = {
-  ...itemStyles.def,
   key: `mode`,
   type: `mode`,
   onClick: noOp,
@@ -186,7 +167,7 @@ export const ModeItem:TFeatureItem = {
 
 export const ModeItemActive:TFeatureItem = {
   ...ModeItem,
-  ...itemStyles.active,
+  ...activeStyles,
   Icon: AdvancedIcon,
   tooltip: {
     loc: `right`,

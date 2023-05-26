@@ -43,7 +43,7 @@ export const Header = styled(AccordionSummary, {
     transform: rotate(${transformOn}deg);
   }
 
-  & .MuiAccordionSummary-content: {
+  & .MuiAccordionSummary-content {
     margin-top: 0px;
     margin-bottom: 0px;
   }

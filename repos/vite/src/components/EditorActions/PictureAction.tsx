@@ -1,25 +1,20 @@
-import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
+import type { TMenuItem } from '@gobletqa/components'
 
-import { BaseAction, CameraAltIcon } from '@gobletqa/components'
+import { CameraAltIcon } from '@gobletqa/components'
 
-
-const PictureComp = (props:TSidebarActionProps) => {
-  return (
-    <BaseAction
-      disabled
-      Icon={CameraAltIcon}
-      onClick={props.onClick}
-      className='goblet-browser-picture'
-      tooltip=''
-      disabledTooltip='COMING SOON - Take a picture of the browser'
-    />
-  )
-}
-
-export const PictureAction:TSidebarAction = {
-  Component: PictureComp,
-  name: `picture-browser-action`,
-  onClick: async (event, editor, loc, content) => {
+export const PictureAction:TMenuItem = {
+  onClick: async (event) => {
     console.log(`------- TODO - Take a Picture of the page -------`)
-  }
+  },
+  disabled: true,
+  closeMenu:true,
+  Icon: CameraAltIcon,
+  id:`picture-browser-action`,
+  key:`picture-browser-action`,
+  text: `Browser - Screenshot`,
+  tooltip: {
+    loc: `right`,
+    describeChild: true,
+    title: `COMING SOON - Take a picture of the browser`,
+  },
 }

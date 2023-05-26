@@ -1,23 +1,19 @@
-import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
+import type { TMenuItem } from '@gobletqa/components'
 
-import { BaseAction, ModeEditIcon } from '@gobletqa/components'
+import { ModeEditIcon } from '@gobletqa/components'
 
-const DrawComp = (props:TSidebarActionProps) => {
-  return (
-    <BaseAction
-      disabled
-      Icon={ModeEditIcon}
-      onClick={props.onClick}
-      className='goblet-browser-free-draw'
-      tooltip=''
-      disabledTooltip='COMING SOON - Free draw in the browser'
-    />
-  )
-}
-
-export const DrawAction:TSidebarAction = {
-  Component: DrawComp,
-  name: `draw-browser-action`,
+export const DrawAction:TMenuItem = {
+  disabled: true,
+  closeMenu:true,
+  Icon: ModeEditIcon,
+  id:`free-draw-in-editor-action`,
+  key:`free-draw-in-editor-action`,
+  text: `Browser - Pencil Tool`,
+  tooltip: {
+    loc: `right`,
+    describeChild: true,
+    title: `COMING SOON - Free draw in the browser`,
+  },
   onClick: async (event, editor, loc, content) => {
     console.log(`------- TODO - Draw a line on the page -------`)
   }

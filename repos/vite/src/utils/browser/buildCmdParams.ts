@@ -15,7 +15,6 @@ import {
 import { getStore } from '@store'
 
 export type TBuiltCmdParams = {
-  cmd:string
   file:TFileModel
 }
 

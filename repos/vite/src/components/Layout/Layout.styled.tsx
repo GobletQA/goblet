@@ -28,9 +28,10 @@ export const LAutomationCover = styled(Box)`
   transition: height ${dims.trans.avgEase}, background-color ${dims.trans.avgEase}, opacity ${dims.trans.avgEase};
 
   &.active {
+    cursor: wait;
     height: 100%;
     z-index: 100;
-    opacity: 0.5;
+    opacity: 0.1;
   }
   
 `

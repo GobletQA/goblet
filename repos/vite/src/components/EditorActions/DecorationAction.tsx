@@ -1,25 +1,22 @@
-import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
+import type { TMenuItem } from '@gobletqa/components'
 
-import { BaseAction, BackspaceTagIcon } from '@gobletqa/components'
+import { BackspaceTagIcon } from '@gobletqa/components'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
-
-const DecorationComp = (props:TSidebarActionProps) => {
-  return (
-    <BaseAction
-      Icon={BackspaceTagIcon}
-      onClick={props.onClick}
-      className='gb-decoration-action'
-      tooltip='Clear test results from the editor'
-    />
-  )
-}
-
-export const DecorationAction:TSidebarAction = {
-  Component: DecorationComp,
-  name: `decoration-editor-action`,
+export const DecorationAction:TMenuItem = {
+  closeMenu:true,
+  dividerBottom: true,
+  Icon: BackspaceTagIcon,
+  text: `Clear Test Decorations`,
+  id:`decoration-editor-action`,
+  key:`decoration-editor-action`,
+  tooltip: {
+    loc: `right`,
+    describeChild: true,
+    title: `Clear test result decorations from the editor`,
+  },
   onClick: async (event, editor, loc, content) => {
     if(!loc) return console.warn(`Can not clear decorations, no active file.`)
     clearEditorDecorations(loc)
-  }
+  },
 }

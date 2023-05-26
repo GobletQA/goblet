@@ -28,7 +28,7 @@ const RunTests = (props:TBrowserActionProps) => {
     
     clearEditorDecorations(location)
 
-    await startBrowserPlay(fileModel, `feature`)
+    startBrowserPlay(fileModel)
   }, [location])
 
   useOnEvent<TEditorPathChange>(EditorPathChangeEvt, ({ location }) => {

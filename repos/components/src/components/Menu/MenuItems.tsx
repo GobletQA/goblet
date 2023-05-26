@@ -1,11 +1,14 @@
 
-import type { ComponentProps, MouseEvent } from 'react'
+import type { ComponentProps, MouseEvent, CSSProperties } from 'react'
 import type { TMenuItems, TMenuItem } from '@GBC/types'
 
 import { Tooltip } from '../Tooltip'
+import {dims} from '@GBC/theme/dims'
+import {colors} from '@GBC/theme/colors'
 import { RenderType } from '../RenderType'
 import Divider from '@mui/material/Divider'
 import { Fragment, forwardRef } from 'react'
+import { MenuItemWrap } from './Menu.styled'
 import MuiMenuItem from '@mui/material/MenuItem'
 import { isStr, omitKeys } from '@keg-hub/jsutils'
 import ListItemText from '@mui/material/ListItemText'
@@ -28,6 +31,23 @@ export const ItemRmKeys = [
   `iconProps`,
   `Icon`,
 ]
+
+const styles = {
+  sx: {
+    transition: `color ${dims.trans.avgEase}`,
+    [`&:hover`]: {
+      color: colors.purple10
+    }
+  },
+  iconContainerSx: {
+    color: `inherit`,
+    transition: `color ${dims.trans.fastest} ease`,
+  },
+  iconSx: {
+    color: `inherit`,
+    transition: `inherit`,
+  }
+}
 
 export const MenuItem = forwardRef<HTMLLIElement, TMenuItem>((props, ref) => {
   const {
@@ -56,22 +76,36 @@ export const MenuItem = forwardRef<HTMLLIElement, TMenuItem>((props, ref) => {
 
   return (
     <MuiMenuItem
+      className='gb-menu-list-item'
       {...omitKeys<Partial<ComponentProps<typeof MuiMenuItem>>>(rest, ItemRmKeys)}
-      sx={sx}
       ref={ref}
       onClick={onItemClick}
+      sx={[styles.sx, sx] as CSSProperties[]}
     >
       {Icon && (
-        <ListItemIcon sx={iconContainerSx} >
+        <ListItemIcon
+          className='gb-menu-list-item-icon'
+          sx={[styles.iconContainerSx, iconContainerSx] as CSSProperties[]}
+        >
           <RenderType
             Component={Icon}
-            props={{...iconProps, sx: [iconProps?.sx, iconSx]}}
+            props={{
+              ...iconProps,
+              sx: [
+                styles.iconSx,
+                iconProps?.sx,
+                iconSx
+              ]
+            }}
           />
         </ListItemIcon>
       ) || null}
 
       {text && (
-        <ListItemText sx={textSx} >
+        <ListItemText
+          sx={textSx}
+          className='gb-menu-list-item-text'
+        >
           {text}
         </ListItemText>
       ) || null}
@@ -103,11 +137,13 @@ export const MenuItems = (props:TMenuItems) => {
                     : tooltip
                   )}
                 >
-                  <MenuItem
-                    {...item}
-                    onCloseMenu={onCloseMenu}
-                    closeMenu={autoClose || item.closeMenu}
-                  />
+                  <MenuItemWrap>
+                    <MenuItem
+                      {...item}
+                      onCloseMenu={onCloseMenu}
+                      closeMenu={autoClose || item.closeMenu}
+                    />
+                  </MenuItemWrap>
                 </Tooltip>
               ): (
                 <MenuItem

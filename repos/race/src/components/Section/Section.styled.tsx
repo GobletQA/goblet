@@ -113,11 +113,6 @@ export const SectionDropdown = styled(DropdownComp)`
     }
   }
 
-  & .MuiAccordionSummary-content {
-    margin-top: 0px;
-    margin-bottom: 0px;
-  }
-
   & .gb-section-dropdown-step .MuiCollapse-root {
     padding-left: 0px;
   }

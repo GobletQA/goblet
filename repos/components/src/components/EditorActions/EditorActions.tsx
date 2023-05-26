@@ -1,17 +1,11 @@
-import type { MutableRefObject } from 'react'
-import type { TEditorAction } from '@gobletqa/components/types'
+import type { MouseEvent, MutableRefObject } from 'react'
+import type { TEditorAction, TMenuItem } from '@gobletqa/components/types'
 
-import { EditorAction } from './EditorAction'
-import { ChevronDownIcon } from '../Icons'
-import { useState, useCallback, useRef, useMemo, useEffect } from 'react'
-import { cls } from '@keg-hub/jsutils'
-import {
-  ActionsBack,
-  ActionsList,
-  ActionsToggle,
-  ActionsContainer,
-  ActionsToggleWrap,
-} from './EditorActions.styled'
+import { dims } from '@GBC/theme'
+import { useRef, useState, useMemo } from 'react'
+import { Menu, MenuToggle } from '../Menu'
+import { ActionsContainer } from './EditorActions.styled'
+import {useInline} from '@GBC/hooks/components/useInline'
 
 export type TEditorActions<TEditor, TEditorRef extends MutableRefObject<any>=MutableRefObject<any>> = {
   open?:boolean
@@ -21,90 +15,94 @@ export type TEditorActions<TEditor, TEditorRef extends MutableRefObject<any>=Mut
   actions: TEditorAction<TEditor, TEditorRef>[]
 }
 
+const styles = {
+  dropdown: {
+    width: dims.editor.tabs.px,
+    height: dims.editor.tabs.px,
+    borderLeft: `1px solid var(--goblet-editor-border)`,
+  },
+  header: {
+    width: dims.editor.tabs.px,
+    height: dims.editor.tabs.px,
+    
+    backgroundColor: `var(--goblet-editorGroupHeader-tabsBackground)`,
+    [`&:hover`]: {
+      
+    },
+  },
+  headerContent: {
+    display: `none`
+  },
+  toggle: {
+    color: `var(--goblet-editor-foreground)`,
+  }
+}
+
+const useEditorItems = <
+  TEditor=Record<any, any>,
+  TEditorRef extends MutableRefObject<any>=MutableRefObject<any>
+>({
+  actions,
+  curPath,
+  editorRef,
+  curValueRef,
+}:TEditorActions<TEditor, TEditorRef>) => {
+  return useMemo(() => {
+    return actions.map(action => {
+      return {
+        ...action,
+        onClick: (evt) => action?.onClick?.(
+          evt,
+          editorRef.current,
+          curPath,
+          curValueRef.current,
+        )
+      } as TMenuItem
+    })
+  }, [actions, curPath])
+}
+
 export const EditorActions = <
   TEditor=Record<any, any>,
   TEditorRef extends MutableRefObject<any>=MutableRefObject<any>
 >(props:TEditorActions<TEditor, TEditorRef>) => {
-  const {
-    curPath,
-    actions,
-    editorRef,
-    curValueRef,
-  } = props
 
-  const [open, setOpen] = useState<boolean>(props.open || false)
-  const actionsRef = useRef<HTMLDivElement>(null)
-  const lastHeightRef = useRef<number>(0) as MutableRefObject<number>
+  const items = useEditorItems(props)
+  const [open, setOpen] = useState<boolean>(false)
+  const anchorRef = useRef<HTMLElement|undefined>(undefined)
+  const onOpen = useInline((event: MouseEvent<HTMLElement>) => {
+    setOpen(true)
+    anchorRef.current = event.currentTarget
+  })
+  const onClose = useInline(() => {
+    setOpen(false)
+    anchorRef.current = undefined
+  })
 
-  const onToggle = useCallback(() => {
-    const actionsEl = actionsRef.current as HTMLDivElement
-    if(!actionsEl) return
-
-    // Actions currently closed - Switch the panel from closed to open
-    if(open !== true){
-      actionsEl.style.maxHeight = `${lastHeightRef.current || '100vh'}px`
-      actionsEl.style.opacity = `1`
-      // IMPORTANT - timeout delay should match the transition time see ./Actions.css
-      setTimeout(() => {
-        actionsEl.style.maxHeight = ``
-      }, 300)
-    }
-
-    // Actions currently open - Switch the panel from open to closed
-    else {
-      lastHeightRef.current = actionsEl.offsetHeight
-      actionsEl.style.maxHeight = `${lastHeightRef.current}px`
-      setTimeout(() => {
-        actionsEl.style.maxHeight = `0px`,
-        actionsEl.style.opacity = `0`
-      }, 0)
-    }
-
-    setOpen(!open)
-  }, [open])
-
-  useEffect(() => {
-    const actionsEl = actionsRef.current as HTMLDivElement
-    if(!actionsEl) return
-
-    lastHeightRef.current = actionsEl.offsetHeight
-    // actionsEl.style.maxHeight = `${lastHeightRef.current}px`
-  }, [])
-
-  const style = useMemo(() => {
-    return props.open ? { maxHeight: `100vh` } : { maxHeight: `0px` }
-  }, [props.open])
+  const controlId = `gb-editor-actions-menu`
 
   return (
-    <ActionsContainer className='goblet-editor-actions-main' >
-      <ActionsToggle
-        onClick={onToggle}
-        className={cls('goblet-editor-actions-toggle', { open, closed: !open })}
-      >
-        <ActionsToggleWrap className='goblet-editor-actions-toggle-icon'>
-          <div className='goblet-editor-icon-rotate' >
-            <ChevronDownIcon />
-          </div>
-        </ActionsToggleWrap>
-      </ActionsToggle>
-      <ActionsList
-        style={style}
-        ref={actionsRef}
-        className={cls('goblet-editor-actions-list', { open, closed: !open })}
-      >
-        <ActionsBack />
-        {actions.map((action => {
-          return (
-            <EditorAction
-              key={action.id || action.name}
-              {...action}
-              curPath={curPath}
-              editorRef={editorRef}
-              curValueRef={curValueRef}
-            />
-          )
-        }))}
-      </ActionsList>
+    <ActionsContainer className='gb-editor-actions-main' >
+      <MenuToggle
+        open={open}
+        onOpen={onOpen}
+        sx={styles.toggle}
+        id="editor-actions"
+        controlId={controlId}
+      />
+      <Menu
+        open={open}
+        posTV='top'
+        posTH='right'
+        posAH='right'
+        items={items}
+        posAV='bottom'
+        id={controlId}
+        onOpen={onOpen}
+        onClose={onClose}
+        anchorRef={anchorRef}
+        aria-labelledby="gb-editor-actions-menu-button"
+      />
     </ActionsContainer>
   )
 }

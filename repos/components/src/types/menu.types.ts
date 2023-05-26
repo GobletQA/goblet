@@ -29,6 +29,7 @@ export type TMenuItem = {
   text?:string
   label?:string
   sx?:CSSProperties
+  disabled?:boolean
   closeMenu?:boolean
   children?:ReactNode
   dividerTop?:boolean

@@ -1,25 +1,21 @@
-import type { TSidebarAction, TSidebarActionProps } from '@gobletqa/components'
+import type { TMenuItem } from '@gobletqa/components'
 
-import { BaseAction, CropSquareIcon } from '@gobletqa/components'
+import { CropSquareIcon } from '@gobletqa/components'
 
 
-const SquareComp = (props:TSidebarActionProps) => {
-  return (
-    <BaseAction
-      disabled
-      Icon={CropSquareIcon}
-      onClick={props.onClick}
-      className='goblet-browser-square-draw'
-      tooltip=''
-      disabledTooltip='COMING SOON - Draw a square in the browser'
-    />
-  )
-}
-
-export const SquareAction:TSidebarAction = {
-  Component: SquareComp,
-  name: `square-browser-action`,
-  onClick: async (event, editor, loc, content) => {
+export const SquareAction:TMenuItem = {
+  onClick: async (event) => {
     console.log(`------- TODO - draw a square on the page -------`)
-  }
+  },
+  disabled: true,
+  closeMenu:true,
+  Icon: CropSquareIcon,
+  id:`square-browser-action`,
+  key:`square-browser-action`,
+  text: `Browser - Square Draw Tool`,
+  tooltip: {
+    loc: `right`,
+    describeChild: true,
+    title: `COMING SOON - Draw a square in the browser`,
+  },
 }

@@ -32,6 +32,6 @@ export const RunTestsAction:TSidebarAction = {
     if(!fileModel)
       return console.warn(`Can not run tests, File model could not be found.`, loc)
 
-    await startBrowserPlay(fileModel, `feature`)
+    startBrowserPlay(fileModel)
   }
 }

@@ -19,7 +19,6 @@ import {
 
 type TBuildOpts = {
   appUrl:string
-  cmd:string,
   params:string[],
   file:TFileModel,
   options:Record<string, any>
@@ -29,14 +28,13 @@ type TBrowserPlay = Omit<TStartPlaying, `repo`|`id`|`onEvent`|`browserConf`|`onC
   repo:TGitData
 }
 
-const buildOptions = ({ options, params, cmd, file, appUrl }:TBuildOpts, repo:TGitData) => {
+const buildOptions = ({ options, params, file, appUrl }:TBuildOpts, repo:TGitData) => {
   return {
     repo,
     ref: 'page',
     action: {
       props: [
         {
-          cmd,
           params,
           playOptions: options,
           file: pickKeys<Partial<TFileModel>>(
@@ -58,23 +56,19 @@ const buildOptions = ({ options, params, cmd, file, appUrl }:TBuildOpts, repo:TG
  * @function
  *
  */
-export const startBrowserPlay = async (
-  file:TFileModel,
-  cmd:string,
-) => {
+export const startBrowserPlay = async (file:TFileModel) => {
   addToast({
     type: `info`,
-    message: `Running ${cmd} tests for file ${file.name}!`,
+    message: `Running tests for file ${file.name}!`,
   })
 
 
   const repo = getRepoData()
-  const { params, options } = buildCmdParams({ file, cmd })
+  const { params, options } = buildCmdParams({ file })
   const appUrl = getWorldVal({loc: `url`, fb: `app.url`})
 
   const opts = buildOptions(
     {
-      cmd,
       file,
       appUrl,
       params,

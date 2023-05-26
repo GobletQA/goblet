@@ -52,11 +52,11 @@
 ## Frontend - Steps
 
 ### Re-Deploy
-
+* Ensure firebase is installed
 * Set the namespace and context
   * `pnpm kube set prod --env prod`
 * Deploy the Frontend Apps
-  * `pnpm deploy fe --env prod`
+  * `pnpm task deploy fe --env prod`
 
 
 ## Helpful Command
