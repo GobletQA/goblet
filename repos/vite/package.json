@@ -27,6 +27,7 @@
     "@novnc/novnc": "1.4.0",
     "@redux-devtools/extension": "3.2.5",
     "@reduxjs/toolkit": "1.9.5",
+    "allotment": "1.19.0",
     "appwrite": "11.0.0",
     "axios": "1.4.0",
     "comlink": "4.4.1",

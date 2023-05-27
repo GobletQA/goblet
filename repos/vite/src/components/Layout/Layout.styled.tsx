@@ -1,14 +1,11 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
-import { getColor, colors, dims } from '@gobletqa/components'
 import MuiContainer from '@mui/material/Container'
+import { colors, dims } from '@gobletqa/components'
 
 export const LayoutContainer = styled(Box)`
   width: 100%;
-
-  & .react-page-split__panel {
-    overflow: hidden;
-  }
+  height: calc( 100vh - ${dims.header.hpx} );
 `
 
 export const LContainer = styled(MuiContainer)`
@@ -42,18 +39,6 @@ export const RContainer = styled(MuiContainer)`
   flex-direction: column;
   justify-content: center;
   max-width: 100% !important;
-
-  & .react-page-split.react-page-split--vertical {
-    & .react-page-split__panel:first-of-type {
-      overflow: hidden;
-      min-height: ${dims.browser.actions.hpx};
-    }
-
-    & .react-page-split__panel:last-of-type {
-      overflow: hidden;
-    }
-  }
-
 `
 
 export const RTSection = styled(Box)`

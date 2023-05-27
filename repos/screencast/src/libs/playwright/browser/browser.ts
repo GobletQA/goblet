@@ -6,6 +6,7 @@ import type {
   EBrowserType,
   EBrowserName,
   TPWComponents,
+  TBrowserContextOpts,
 } from '@GSC/types'
 
 import playwright from 'playwright'
@@ -161,10 +162,11 @@ const createBrowser = async (
  * @function
  */
 const getPage = async (
-  browserConf:TBrowserConf
+  browserConf:TBrowserConf,
+  overrides:TBrowserConf=noOpObj as TBrowserConf,
 ):Promise<TPWComponents> => {
   try {
-    const { context, browser } = await getContext(browserConf)
+    const { context, browser } = await getContext(browserConf, overrides)
     const pages = context.pages()
     
     Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
@@ -193,6 +195,7 @@ const getPage = async (
     else {
 
       const pg = await context.newPage()
+      
       const page = ghostMouse(pg)
 
       try {
@@ -224,8 +227,9 @@ getPage.creatingPage = false
  *
  * @function
  */
-const getContext = async (
-  browserConf:TBrowserConf
+export const getContext = async (
+  browserConf:TBrowserConf,
+  overrides:TBrowserConf=noOpObj as TBrowserConf,
 ) => {
 
   const resp = await getBrowser(browserConf)
@@ -243,7 +247,7 @@ const getContext = async (
       await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
     }
 
-    const opts = getContextOpts(browserConf.context)
+    const opts = getContextOpts(browserConf.context, undefined, overrides.context)
     Logger.verbose(`Context Options`, opts)
 
     if(hasContexts){
@@ -375,6 +379,7 @@ export const startBrowser = async (
   config:TBrowserConf = noOpObj as TBrowserConf,
   browserOnly?:boolean,
   browserServer?:boolean,
+  overrides:TBrowserConf=noOpObj as TBrowserConf,
 ):Promise<TPWComponents> => {
 
   if(browserOnly){
@@ -409,7 +414,7 @@ export const startBrowser = async (
 
 
       startBrowser.creatingBrowser = true
-      pwComponents = await getPage(browserConf)
+      pwComponents = await getPage(browserConf, overrides)
       startBrowser.creatingBrowser = false
 
       Logger.info(`startBrowser - Browser ${type} and child components found`)

@@ -37,7 +37,6 @@ const BrowserComp: ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (pr
 
   const {
     style,
-    className,
     displayUrl,
     elementAttrs,
     loadingProps,
@@ -147,7 +146,7 @@ const BrowserComp: ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (pr
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           id={ScreencastBrowserSelector}
-          className={cls(className || ``, `gb-browser`)}
+          className={cls(ScreencastBrowserSelector, `gb-browser`)}
         />
         {((forceShowLoading || loading))
           && (

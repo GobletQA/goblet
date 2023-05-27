@@ -2,7 +2,6 @@ import type { CSSProperties } from 'react'
 
 import { Browser } from '@components/Browser'
 import { useColor } from '@hooks/theme/useColor'
-import { ScreencastBrowserSelector } from '@constants'
 import { useScreencastHooks } from '@hooks/screencast/useScreencastHooks'
 
 export type TScreencastViewProps = {
@@ -38,7 +37,6 @@ export const ScreencastView = (props:TScreencastViewProps) => {
       onClipboard={onClipboard}
       loadingFadeout={fadeStart}
       onDisconnect={onDisconnect}
-      className={ScreencastBrowserSelector}
     />
   )
 }

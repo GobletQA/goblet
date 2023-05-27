@@ -22,7 +22,8 @@ const options = {
  */
 export const getContextOpts = (
   contextOpts:TBrowserContextOpts=noOpObj as TBrowserContextOpts,
-  config?:TGobletConfig
+  config?:TGobletConfig,
+  overrides:TBrowserContextOpts=noOpObj as TBrowserContextOpts,
 ) => {
   
   const defContextOpts = checkVncEnv().vncActive
@@ -47,6 +48,7 @@ export const getContextOpts = (
      * These come from the options passed to a task that started the process
      * This ensures those options gets set
      */
-    taskEnvToContextOpts(config)
+    taskEnvToContextOpts(config),
+    overrides
   )
 }
