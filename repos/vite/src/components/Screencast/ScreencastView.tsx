@@ -13,7 +13,7 @@ export const ScreencastView = (props:TScreencastViewProps) => {
   const {
     vncRef,
     repoUrl,
-    fadeStart,
+    isLoaded,
     onConnect,
     onKeyDown,
     onClipboard,
@@ -28,13 +28,13 @@ export const ScreencastView = (props:TScreencastViewProps) => {
       ref={vncRef}
       url={screencastUrl}
       autoConnect={false}
+      isLoaded={isLoaded}
       scaleViewport={true}
       displayUrl={repoUrl}
       onConnect={onConnect}
       onKeyDown={onKeyDown}
       background={background}
       onClipboard={onClipboard}
-      loadingFadeout={fadeStart}
       onDisconnect={onDisconnect}
     />
   )

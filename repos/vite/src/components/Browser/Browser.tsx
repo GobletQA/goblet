@@ -37,11 +37,10 @@ const BrowserComp: ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (pr
 
   const {
     style,
+    isLoaded,
     displayUrl,
     elementAttrs,
     loadingProps,
-    loadingFadeout,
-    forceShowLoading,
     autoConnect = true,
   } = props
 
@@ -148,17 +147,14 @@ const BrowserComp: ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (pr
           id={ScreencastBrowserSelector}
           className={cls(ScreencastBrowserSelector, `gb-browser`)}
         />
-        {((forceShowLoading || loading))
-          && (
-            <BrowserLoading
-              speed={800}
-              loading={loading}
-              start={loadingFadeout}
-              styles={loadingStyles}
-              forced={forceShowLoading}
-              {...loadingProps}
-            />
-          )}
+        
+        <BrowserLoading
+          speed={800}
+          fadeOut={isLoaded}
+          styles={loadingStyles}
+          {...loadingProps}
+        />
+
       </BrowserViewContainer>
       <BrowserCover
         browserState={browserState}

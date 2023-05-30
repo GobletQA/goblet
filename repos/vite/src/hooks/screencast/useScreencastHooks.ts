@@ -1,12 +1,12 @@
 import type RFB from '@novnc/novnc/core/rfb'
 import type { TGlobalCopyEvent, TBrowserDetailEvt, TBrowserHandle } from '@types'
 
+import { useOnEvent } from '@gobletqa/components/hooks/useEvent'
 import { useRef, useCallback, useState, useEffect } from 'react'
-import { GlobalCopyEvt } from '@constants'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { Clipboard } from '@gobletqa/shared/frontend/dom/clipBoard'
 import { useScreencastUrl }  from '@hooks/screencast/useScreencastUrl'
 import { useCheckBrowserStatus } from '@hooks/screencast/useCheckBrowserStatus'
+import { GlobalCopyEvt, ResetBrowserLoadingEvent, ShowBrowserLoadingEvent } from '@constants'
 
 
 const useDelayCallback = (method:(...args:any[]) => void, delay:number=2000) => {
@@ -16,7 +16,7 @@ const useDelayCallback = (method:(...args:any[]) => void, delay:number=2000) => 
 export const useScreencastHooks = () => {
   const vncRef = useRef<TBrowserHandle>(null)
   const screencastUrl = useScreencastUrl()
-  const [fadeStart, setFadeStart] = useState<boolean>(false)
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     if(!vncRef?.current) return
@@ -28,17 +28,16 @@ export const useScreencastHooks = () => {
 
   }, [screencastUrl])
 
-  const delayFadeState = useDelayCallback(setFadeStart)
+  const delayFadeState = useDelayCallback(setIsLoaded)
   const [checkStatus, repoUrl] = useCheckBrowserStatus(delayFadeState)
 
   const onConnect = useCallback(async (...args:any[]) => {
     await checkStatus?.()
   }, [checkStatus])
 
-
   const onDisconnect = useCallback(async (rfb?:RFB) => {
     !vncRef.current?.screen?.current?.childNodes?.length
-      && setFadeStart(false)
+      && setIsLoaded(false)
 
   }, [checkStatus])
 
@@ -48,15 +47,8 @@ export const useScreencastHooks = () => {
   }, [])
 
 
-  useEffect(() => {
-    const off = EE.on<TGlobalCopyEvent>(GlobalCopyEvt, ({ text }) => {
-      vncRef?.current?.clipboardPaste(text)
-    }, GlobalCopyEvt)
-
-    return () => {
-      off?.()
-    }
-  }, [])
+  useOnEvent(ResetBrowserLoadingEvent, ({}) => setIsLoaded(false))
+  useOnEvent<TGlobalCopyEvent>(GlobalCopyEvt, ({ text }) => vncRef?.current?.clipboardPaste(text))
 
   const onKeyDown = useCallback((event:Event) => {
     // TODO: add check here for it on mac
@@ -69,12 +61,12 @@ export const useScreencastHooks = () => {
   return {
     vncRef,
     repoUrl,
-    fadeStart,
+    isLoaded,
     onConnect,
     onKeyDown,
     onClipboard,
     onDisconnect,
-    setFadeStart,
+    setIsLoaded,
     screencastUrl,
   }
 
