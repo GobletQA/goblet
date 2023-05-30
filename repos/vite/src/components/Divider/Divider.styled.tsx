@@ -1,7 +1,9 @@
+import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import { colors, dims } from '@gobletqa/components/theme'
-import { VerticalDivider, HorizontalDivider } from 'react-page-split'
+
 const { divider } = dims.panel
+
 
 const sharedStyle = `
   opacity: 0;
@@ -17,7 +19,7 @@ const sharedStyle = `
   }
 `
 
-export const HDivider = styled(HorizontalDivider)`
+export const HDivider = styled(Box)`
   ${sharedStyle}
   height: 100%;
   cursor: col-resize;
@@ -29,7 +31,7 @@ export const HDivider = styled(HorizontalDivider)`
   border-right: ${divider.hvrpx} solid ${colors.royalPurple};
 `
 
-export const VDivider = styled(VerticalDivider)`
+export const VDivider = styled(Box)`
   ${sharedStyle}
   cursor: row-resize;
   max-height: ${divider.hpx};

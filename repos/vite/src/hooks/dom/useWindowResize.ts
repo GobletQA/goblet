@@ -14,7 +14,7 @@ export const useWindowResize = () => {
     const onResize = throttle(
       () => EE.emit(WindowResizeEvt, { width: window.innerWidth, height: window.innerHeight }),
       null,
-      500
+      1000
     )
 
     // Add the debounced method as the resize listener on the window

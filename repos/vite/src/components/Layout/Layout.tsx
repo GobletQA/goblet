@@ -17,6 +17,7 @@ import {
 
 import "allotment/dist/style.css"
 import { Allotment } from "allotment"
+import {useLayoutResize} from '@hooks/components/useLayoutResize'
 
 
 const styles = {
@@ -31,6 +32,11 @@ export type TLayout = {
 }
 
 export const Layout = (props:TLayout) => { 
+  
+  const {
+    onDragEnd 
+  } = useLayoutResize()
+  
   const { browserState } = useBrowserState()
   const automationActive = (browserState !== EBrowserState.idle)
 
@@ -38,7 +44,9 @@ export const Layout = (props:TLayout) => {
     <LayoutContainer
       className='gb-layout-container'
     >
-      <Allotment>
+      <Allotment
+        onDragEnd={onDragEnd}
+      >
 
         <Allotment.Pane preferredSize={`40%`} >
           <LContainer

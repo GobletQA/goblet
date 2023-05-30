@@ -1,6 +1,6 @@
-import type RFB from '@novnc/novnc/core/rfb'
 import type { MutableRefObject } from 'react'
 
+import RFB from '@novnc/novnc/core/rfb'
 import { useRef, useCallback } from 'react'
 import { useUpdateUrl } from './useUpdateUrl'
 import { useBrowserActions } from './useBrowserActions'
@@ -40,39 +40,7 @@ export const useBrowserNav = (props:THBrowserNav) => {
   })
 
 
-  const onReconnect = useCallback(async () => {
-    if(!rfbRef?.current) return
-
-    const parentEl = rfbRef.current._target.parentElement
-    if(!parentEl) return console.warn(`NoVNC RFB._target is missing, try reloading the page.`)
-
-    await restartBrowser()
-
-    // const width = parentEl.offsetWidth + 627;
-    // const height = parentEl.offsetHeight + 200;
-    // // const width = parentEl.offsetWidth;
-    // // const height = parentEl.offsetHeight;
-    // const size = { width, height }
-
-    // await restartBrowser({
-    //   ...size,
-    //   context: {
-    //     screen: size,
-    //     viewport: size
-    //   }
-    // })
-
-    /**
-     * RFB._connect is an internal method, so it does not exist on the RFB type
-     * Technically we only need this in dev, so using is should not be an issue
-     */
-    // @ts-ignore
-    // rfbRef.current?._connect
-    //   // @ts-ignore
-    //   ? rfbRef.current?._connect?.()
-    //   : console.warn(`NoVNC RFB._connect method does not exist. Can not reconnect`)
-
-  }, [])
+  const onReconnect = useCallback(async () => await restartBrowser(), [])
 
   return {
     url,

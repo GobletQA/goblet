@@ -1,6 +1,6 @@
 import type { TGobletTheme } from '@gobletqa/components'
 
-import { browser } from './browser'
+import { layout } from './layout'
 import { decorators } from './decorators'
 import { EThemeMode, colors } from '@gobletqa/components'
 
@@ -56,7 +56,7 @@ export const globalStyles = ({ theme }:TGlobalStyles) => {
     }
 
     ${decorators}
-    ${browser}
+    ${layout()}
 
   `
 }

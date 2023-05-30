@@ -32,7 +32,6 @@ const browserRestart = asyncWrap(async (req:Request, res:Response) => {
   //  Also try sending key command
         // await page.keyboard.press('F11')
         // await page.keyboard.press('Cmd+Shift+F')
-        // await page.keyboard.press('Cmd+Shift+F')
         // await page.keyboard.press('Control+Shift+F')
   
   
