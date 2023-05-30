@@ -79,7 +79,6 @@ export type TBrowserProps = {
   showDotCursor?: boolean
   loadingFadeout?: boolean
   compressionLevel?: number
-  forceShowLoading?: boolean
   onError?: (event:any) => void
   onClipboard?: TBrowserCallback
   onConnect?: (rfb?: RFB) => void

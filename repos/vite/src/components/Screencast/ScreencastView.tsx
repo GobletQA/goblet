@@ -32,7 +32,6 @@ export const ScreencastView = (props:TScreencastViewProps) => {
       displayUrl={repoUrl}
       onConnect={onConnect}
       onKeyDown={onKeyDown}
-      forceShowLoading={true}
       background={background}
       onClipboard={onClipboard}
       loadingFadeout={fadeStart}

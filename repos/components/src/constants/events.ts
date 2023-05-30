@@ -8,3 +8,4 @@ export const OnAlertToggle = `on-alert-toggle`
 export const AlertWasClosed = `alert-was-closed`
 export const AlertWasOpened = `alert-was-opened`
 export const AlertWasConfirmed = `alert-was-confirmed`
+export const ResetFadeoutLoadingEvent = `reset-fadeout-loading-event`
