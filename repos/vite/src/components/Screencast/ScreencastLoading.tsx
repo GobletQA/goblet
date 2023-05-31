@@ -1,5 +1,4 @@
-import type { CSSObj } from '@types'
-import type { ComponentProps } from 'react'
+import type { CSSProperties, ComponentProps } from 'react'
 
 import { useCallback, useState } from 'react'
 import Box from '@mui/material/Box'
@@ -8,7 +7,7 @@ import { Fadeout, Text } from '@gobletqa/components'
 import { gutter, colors } from '@gobletqa/components/theme'
 
 export type TScreencastLoading = ComponentProps<typeof Fadeout> & {
-  sx?: CSSObj
+  sx?: CSSProperties
 }
 
 const styles = {
@@ -64,7 +63,7 @@ export const ScreencastLoading = (props:TScreencastLoading) => {
       className='gb-screencast-loading'
       sx={[
         styles.container,
-        props.sx as CSSObj,
+        props.sx as CSSProperties,
         fadedOut && { display: `none` }
       ]}
     >

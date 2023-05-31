@@ -1,5 +1,4 @@
-import type { CSSObj } from '@types'
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 import { useState } from 'react'
 import Box from '@mui/material/Box'
@@ -9,8 +8,8 @@ import { useSetTimeout, gutter, Loading } from '@gobletqa/components'
 export type TWaitOnContainer = {
   disable?:boolean
   timeout?:number
-  messageSx?:CSSObj
-  containerSx?:CSSObj
+  messageSx?:CSSProperties
+  containerSx?:CSSProperties
   timeoutMessage?: ReactNode
 }
 
@@ -64,7 +63,7 @@ export const WaitOnContainer = (props:TWaitOnContainer) => {
             messageSx={[{
               marginTop: gutter.margin.dpx,
               marginBottom: gutter.margin.px
-            }, messageSx] as CSSObj[]}
+            }, messageSx] as CSSProperties[]}
           />
         </Box>
         {timedOut && (

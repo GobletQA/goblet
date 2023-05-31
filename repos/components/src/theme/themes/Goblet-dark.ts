@@ -215,6 +215,7 @@ export const darkTheme = {
   ],
   colors: {
     [`editor.border`]: colors.black10,
+    [`editor.raceBackground`]: colors.purple23,
     [`editor.background`]: colors.purple23,
     [`editor.foreground`]: colors.white00,
 

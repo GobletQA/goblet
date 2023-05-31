@@ -1,8 +1,9 @@
-import type { TSetting, CSSObj } from '@types'
+import type { TSetting } from '@types'
 import type {
   FocusEvent,
   ChangeEvent,
   KeyboardEvent,
+  CSSProperties,
   ComponentProps,
   FocusEventHandler,
   ChangeEventHandler,
@@ -98,13 +99,13 @@ export const Input = (props:TInput) => {
         sx={[{
           minWidth: `30px`,
           width: `${(('' + val).length * 12)}px`
-        }, sx as CSSObj]}
+        }, sx as CSSProperties]}
         inputProps={{
           ...inputProps,
           sx: [{
             padding: `4px`,
             textAlign: align,
-          }, inputProps?.sx as CSSObj]
+          }, inputProps?.sx as CSSProperties]
         }}
         value={val}
         inputRef={inputRef}
@@ -130,7 +131,7 @@ export const Input = (props:TInput) => {
 }
 
 export type TText = ComponentProps<typeof Typography> & {
-  sx?:CSSObj
+  sx?:CSSProperties
   value: any
   disabled:boolean
   align: `left`|`right`
@@ -152,13 +153,10 @@ export const Text = forwardRef((props:TText, ref:any) => {
       {...rest}
       ref={ref}
       sx={[
-        {
-          width: `100%`,
-          textAlign: align
-        },
-        sx as CSSObj,
-        disabled && { color: colors.disabled } as CSSObj,
-      ]}
+        { width: `100%`, textAlign: align },
+        sx,
+        disabled && { color: colors.disabled },
+      ] as CSSProperties[]}
     >
       {`${value}`}
     </Typography>

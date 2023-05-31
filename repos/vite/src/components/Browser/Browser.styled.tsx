@@ -52,7 +52,9 @@ export const BrowserInput = styled('input')(({ theme }) => `
 
 export const BrowserContainer = styled(Box)(({ theme }) => `
   width: 100%;
-  height: 100%;
+  height: calc( 100% - ${dims.browser.actions.hpx} );
+  max-height: calc( 100% - ${dims.browser.actions.hpx} );
+  
   flex-grow: 1;
   flex-shrink: 1;
   display: block;
@@ -76,16 +78,7 @@ export const BrowserViewContainer = styled(Box)`
   position: relative;
   align-items: stretch;
   height: calc( 100% - ${dims.browser.nav.hpx} );
-
-  // @novnc does some automatic re-alignment
-  // That causes the browser to jump on focus
-  // When if it goes out of the screen view
-  // 
-  // The 100% - browser.nav.height should be correct
-  // But for some reason, that still causes it to jump
-  // So we subtract an extra 5px to fix it
-  // Not sure where it get's the 5px from, maybe a rounding error?
-  max-height: calc( 100% - ${dims.browser.nav.height + 5}px );
+  max-height: calc( 100% - ${dims.browser.nav.hpx} );
 `
 
 export const BrowserView = styled('div')(({ theme }) => {

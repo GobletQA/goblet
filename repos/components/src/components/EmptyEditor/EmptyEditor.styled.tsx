@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
+import {gutter} from '@theme'
 
 export const EmptyEditorContainer = styled(Box)`
   z-index: 1;
@@ -23,4 +24,6 @@ export const EmptyEditorContent = styled(Box)`
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  padding-left: ${gutter.padding.px};
+  padding-right: ${gutter.padding.px};
 `

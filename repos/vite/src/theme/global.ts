@@ -1,6 +1,6 @@
 import type { TGobletTheme } from '@gobletqa/components'
 
-import { browser } from './browser'
+import { layout } from './layout'
 import { decorators } from './decorators'
 import { EThemeMode, colors } from '@gobletqa/components'
 
@@ -55,16 +55,8 @@ export const globalStyles = ({ theme }:TGlobalStyles) => {
       -webkit-text-fill-color: rgba(0,0,0,0.87);
     }
 
-    /* This sets the color of the split divider */
-    /* Need to come up with a good way to set the color */
-    /* right now just overrides the blue color */
-    .react-page-split__divider:focus,
-    .react-page-split__divider:hover {
-      background-color: ${primary.main} !important;
-    }
-
     ${decorators}
-    ${browser}
+    ${layout()}
 
   `
 }

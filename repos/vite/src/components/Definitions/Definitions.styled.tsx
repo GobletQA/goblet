@@ -1,4 +1,5 @@
-import type { Theme, CSSObject } from '@mui/material/styles'
+import type { CSSProperties } from 'react'
+import type { Theme } from '@mui/material/styles'
 
 import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
@@ -19,14 +20,18 @@ const actionsWidthSplit = Math.round((actionsWidth / DefinitionTabs.length + Num
 const tabWidth = Math.round((100 / DefinitionTabs.length + Number.EPSILON) * 100) / 100
 const tabWidthStr = `calc( ${tabWidth}% - ${actionsWidthSplit}px )`
 
-const shared:CSSObject = {
+const noForwardProps = [
+  `open`,
+  `disablePortal`
+] as any[]
+
+const shared:CSSProperties = {
   padding: `0px`,
   border: `none`,
   overflowY: `hidden`,
-  left: dims.nav.closedWidth,
 }
 
-const openedStyles = (theme: Theme): CSSObject => ({
+const openedStyles = (theme: Theme): CSSProperties => ({
   ...shared,
   height: dims.defs.openedHeight,
   transition: theme.transitions.create('height', {
@@ -35,9 +40,8 @@ const openedStyles = (theme: Theme): CSSObject => ({
   }),
 })
 
-const closedStyles = (theme: Theme): CSSObject => ({
+const closedStyles = (theme: Theme): CSSProperties => ({
   ...shared,
-  left: dims.nav.closedWidth,
   height: dims.defs.closedHeight,
   transition: theme.transitions.create('height', {
     easing: theme.transitions.easing.sharp,
@@ -47,7 +51,7 @@ const closedStyles = (theme: Theme): CSSObject => ({
 
 export const Drawer = styled(
   MuiDrawer,
-  { shouldForwardProp: (prop) => prop !== 'open' }
+  { shouldForwardProp: (prop) => !noForwardProps.includes(prop) }
 )(({ theme, open }) => ({
   flexShrink: 0,
   whiteSpace: `nowrap`,

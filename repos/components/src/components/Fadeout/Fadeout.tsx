@@ -49,8 +49,8 @@ const useFadeEffect = (
 
   useSetTimeout({
     delay: speed || 2000,
-    condition: start && style.display !== 'none',
-    callback: () => setStyle({ ...style, display: 'none' }),
+    condition: start && style.display !== `none`,
+    callback: () => setStyle({ ...style, display: `none` }),
   })
 
   return [style, setStyle] as [CSSProperties, (css:CSSProperties) => void]
@@ -68,7 +68,12 @@ export const Fadeout = (props:TFadeoutProps) => {
   } = props
 
   const fadeStart = useFadeStart(start)
-  const [fadeStyle] = useFadeEffect(fadeStart, speed, styles, initOpacity)
+  const [fadeStyle] = useFadeEffect(
+    fadeStart,
+    speed,
+    styles,
+    initOpacity
+  )
 
   useEffect(() => {
     fadeStyle?.display === `none` && onFadeOut?.()
@@ -77,8 +82,8 @@ export const Fadeout = (props:TFadeoutProps) => {
   return (
     <Fade
       speed={speed}
-      className='gb-fade-out'
       sx={fadeStyle}
+      className='gb-fade-out'
     >
       <FadeSection sx={styles?.section} >
         <FadeView color={color} sx={styles?.view} >

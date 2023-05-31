@@ -1,11 +1,11 @@
-import type { CSSObj } from '@types'
+import type { CSSProperties } from 'react'
 
 import { noOpObj, ensureArr } from '@keg-hub/jsutils'
 import { useMemo } from 'react'
 
 export const useJoinSx = (
-  original:CSSObj|CSSObj[]=noOpObj,
-  add:CSSObj|CSSObj[]=noOpObj
+  original:CSSProperties|CSSProperties[]=noOpObj,
+  add:CSSProperties|CSSProperties[]=noOpObj
 ) => {
   return useMemo(() => {
     return [ ...ensureArr(original), ...ensureArr(add)]

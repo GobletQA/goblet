@@ -92,8 +92,8 @@ export const useRFBConfig = (props:TBrowserProps, ext:TConnectExt) => {
       })
 
       onKeyDown && screen.current.addEventListener("keydown", onKeyDown, true)
-
       connected.current = true
+
     }
     catch (err) {
       logger.error(err)

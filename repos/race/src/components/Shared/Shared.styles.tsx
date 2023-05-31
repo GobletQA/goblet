@@ -13,7 +13,7 @@ const inputBaseStyles = {
   height: input.hpx,
   minHeight: input.hpx,
   color: `var(--goblet-editor-foreground)`,
-  backgroundColor: `var(--goblet-editor-background)`,
+  backgroundColor: `var(--goblet-editor-raceBackground)`,
   
   [`& input`]: {
     height: input.hpx,

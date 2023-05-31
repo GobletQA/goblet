@@ -1,11 +1,10 @@
 import type { MutableRefObject, SyntheticEvent } from 'react'
 
-import { useCallback, useRef } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
-import { VNCRefocusEvent, Environment } from '@constants'
-import { useVncResize } from './useVncResize'
+import { useCallback, useRef } from 'react'
 import { useEffectOnce } from '../useEffectOnce'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { VNCRefocusEvent, Environment } from '@constants'
 
 
 export type TVncHandlers = {
@@ -58,8 +57,6 @@ export const useVncHandlers = (props:TVncHandlers) => {
     disconnect,
     autoConnect
   } = props
-
-  useVncResize(props)
 
   useEffectOnce(() => {
     autoConnect && connect()

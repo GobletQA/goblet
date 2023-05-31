@@ -7,7 +7,7 @@ import type {
 } from '@GSC/types'
 
 import { Automate } from '@GSC/libs/playwright/automate/automate'
-import { getPWComponents, startBrowser } from '@GSC/libs/playwright/browser/browser'
+import { startBrowser } from '@GSC/libs/playwright/browser/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 import { ExpressionKinds } from '@gobletqa/shared/constants'
 

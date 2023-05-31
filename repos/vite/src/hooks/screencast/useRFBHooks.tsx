@@ -60,9 +60,6 @@ const useDisconnectCB = (
 export const useRFBHooks = (props:TBrowserProps, ext:TBrowserExt) => {
 
   const { rfb, disconnectRef } = ext
-  const setRfb = useCallback((_rfb: RFB | null) => {
-    rfb.current = _rfb
-  },[])
 
   const sendCredentials = useCallback((credentials: TCredentials) => {
     rfb?.current?.sendCredentials(credentials)
@@ -106,7 +103,6 @@ export const useRFBHooks = (props:TBrowserProps, ext:TBrowserExt) => {
   return {
     blur,
     focus,
-    setRfb,
     sendKey,
     disconnect,
     machineReset,

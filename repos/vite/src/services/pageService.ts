@@ -1,9 +1,14 @@
 import { ensureArr, noPropArr } from '@keg-hub/jsutils'
 import { actionBrowser } from '@actions/screencast/api/actionBrowser'
 
+type TResizeDims = {
+  height: number
+  width: number
+}
+
 export class PageService {
 
-  action = async (act:string, props:string|string[], log?:boolean) => {
+  action = async (act:string, props:any|any[], log?:boolean) => {
     return await actionBrowser({
       ref: 'page',
       addAutomate: true,
@@ -16,6 +21,10 @@ export class PageService {
 
   reload = async (log?:boolean) => {
     return await this.action(`reload`, noPropArr, log)
+  }
+
+  resize = async (dims:TResizeDims) => {
+    return await this.action(`setViewportSize`, [dims], true)
   }
 
   /**

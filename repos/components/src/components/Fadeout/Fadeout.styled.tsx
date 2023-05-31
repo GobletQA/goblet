@@ -1,5 +1,4 @@
 import type { Theme } from '@mui/material/styles'
-import type { CSSProperties } from 'react'
 
 import { styled } from '@mui/material/styles'
 import Box, { BoxProps } from '@mui/material/Box'
@@ -9,7 +8,6 @@ import Typography, { TypographyProps } from '@mui/material/Typography'
 export type TFade = BoxProps & {
   theme?:Theme
   speed?:number
-  sx?: CSSProperties
 }
 
 export const Fade = styled(Box)<TFade>(
