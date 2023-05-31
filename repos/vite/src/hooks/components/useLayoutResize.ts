@@ -1,16 +1,15 @@
 import type RFB from '@novnc/novnc/core/rfb'
+import type { TBrowserIsLoadedEvent, TVncConnected } from '@types'
 
 import { useRef } from 'react'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { useInline, useOnEvent } from '@gobletqa/components'
 import {
-  VNCResizeEvt,
   VNCConnectedEvt,
   WindowResizeEvt,
   SetBrowserIsLoadedEvent,
 } from '@constants'
 import {resizeBrowser} from '@actions/screencast/api/resizeBrowser'
-import {TBrowserIsLoadedEvent} from '@types'
 
 
 export const useLayoutResize = () => {
@@ -28,12 +27,7 @@ export const useLayoutResize = () => {
 
   useOnEvent(WindowResizeEvt, async () => onBrowserResize())
 
-  useOnEvent(VNCResizeEvt, async (rfb) => {
-    refRef.current = rfb
-    onBrowserResize()
-  })
-
-  useOnEvent(VNCConnectedEvt, rfb => {
+  useOnEvent<TVncConnected>(VNCConnectedEvt, ({ rfb }) => {
     refRef.current = rfb
     onBrowserResize()
   })

@@ -64,8 +64,6 @@ export const useRFBConfig = (props:TBrowserProps, ext:TConnectExt) => {
         ...rfbOptions,
       })
 
-      // _rfb.resizeSession = true
-      // _rfb.scaleViewport = true
       _rfb.viewOnly = viewOnly ?? false
       _rfb.focusOnClick = focusOnClick ?? false
       _rfb.clipViewport = clipViewport ?? false
@@ -95,28 +93,6 @@ export const useRFBConfig = (props:TBrowserProps, ext:TConnectExt) => {
 
       onKeyDown && screen.current.addEventListener("keydown", onKeyDown, true)
       connected.current = true
-
-
-      // setTimeout(() => {
-        // @ts-ignore
-        // _rfb._requestRemoteResize()
-        // @ts-ignore
-        // const size = _rfb._screenSize()
-        
-        // const size = { w: 1167, h: 1214 }
-        
-        // // @ts-ignore
-        // RFB.messages.setDesktopSize(
-        //   _rfb._sock,
-        //   Math.floor(size.w),
-        //   Math.floor(size.h),
-        //   _rfb._screenID,
-        //   _rfb._screenFlags
-        // )
-        
-
-      // }, 5000)
-
 
     }
     catch (err) {

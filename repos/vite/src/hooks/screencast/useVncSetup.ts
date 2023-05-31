@@ -2,17 +2,15 @@ import type {
   TBrowserExt,
   TCredentials,
   TBrowserProps,
+  TVncConnected,
   TBrowserDetailEvt,
 } from '@types'
 
 import { useCallback } from 'react'
-import { get } from '@keg-hub/jsutils'
 import RFB from '@novnc/novnc/core/rfb'
 import { VNCConnectedEvt } from '@constants'
 import { useRFBConfig } from './useRFBConfig'
-import { useInline } from '@gobletqa/components'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { isCanvasBlank } from '@utils/components/isCanvasBlank'
 
 export const useVncSetup = (props:TBrowserProps, ext:TBrowserExt) => {
   const {
@@ -34,7 +32,7 @@ export const useVncSetup = (props:TBrowserProps, ext:TBrowserExt) => {
 
   const _onConnect = useCallback((...args:any[]) => {
     connected.current = true
-    EE.emit(VNCConnectedEvt, rfb.current)
+    EE.emit<TVncConnected>(VNCConnectedEvt, { rfb: rfb.current })
     onConnect?.(rfb.current ?? undefined)
     setLoading(false)
   }, [onConnect])
