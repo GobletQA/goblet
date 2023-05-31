@@ -1,12 +1,18 @@
 import type RFB from '@novnc/novnc/core/rfb'
-import type { TGlobalCopyEvent, TBrowserDetailEvt, TBrowserHandle } from '@types'
+import type {
+  TBrowserHandle,
+  TGlobalCopyEvent,
+  TBrowserDetailEvt,
+  TBrowserIsLoadedEvent,
+} from '@types'
+
 
 import { useOnEvent } from '@gobletqa/components/hooks/useEvent'
 import { useRef, useCallback, useState, useEffect } from 'react'
 import { Clipboard } from '@gobletqa/shared/frontend/dom/clipBoard'
+import { GlobalCopyEvt, SetBrowserIsLoadedEvent } from '@constants'
 import { useScreencastUrl }  from '@hooks/screencast/useScreencastUrl'
 import { useCheckBrowserStatus } from '@hooks/screencast/useCheckBrowserStatus'
-import { GlobalCopyEvt, ResetBrowserLoadingEvent, ShowBrowserLoadingEvent } from '@constants'
 
 
 const useDelayCallback = (method:(...args:any[]) => void, delay:number=2000) => {
@@ -47,8 +53,11 @@ export const useScreencastHooks = () => {
   }, [])
 
 
-  useOnEvent(ResetBrowserLoadingEvent, ({}) => setIsLoaded(false))
   useOnEvent<TGlobalCopyEvent>(GlobalCopyEvt, ({ text }) => vncRef?.current?.clipboardPaste(text))
+
+  useOnEvent<TBrowserIsLoadedEvent>(SetBrowserIsLoadedEvent, ({ state }) => {
+    state !== isLoaded && setIsLoaded(state)
+  })
 
   const onKeyDown = useCallback((event:Event) => {
     // TODO: add check here for it on mac

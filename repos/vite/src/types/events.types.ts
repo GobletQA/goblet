@@ -9,3 +9,7 @@ export type TBrowserNavEvt = {
   url:string
   ast?:TSymAST[]
 }
+
+export type TBrowserIsLoadedEvent = {
+  state:boolean
+}

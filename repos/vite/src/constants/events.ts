@@ -20,4 +20,4 @@ export const PlayerClearDecorationEvt = `player-clear-decoration-event`
 export const WSCancelPlayerEvent = `ws-cancel-player-response-event`
 export const WSCancelAutomateEvent = `ws-cancel-automate-response-event`
 export const ShowBrowserLoadingEvent = `show-browser-loading-event`
-export const ResetBrowserLoadingEvent = `reset-browser-loading-event`
+export const SetBrowserIsLoadedEvent = `set-browser-is-loaded-event`
