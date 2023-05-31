@@ -781,9 +781,6 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
-      react-page-split:
-        specifier: 0.0.7
-        version: 0.0.7
       react-redux:
         specifier: 8.0.5
         version: 8.0.5(@types/react-dom@18.0.6)(@types/react@18.0.17)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
@@ -10309,10 +10306,6 @@ packages:
 
   /react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
-
-  /react-page-split@0.0.7:
-    resolution: {integrity: sha512-3fVgHmR+MNdyc8KW3b6Sn590ZS+ULIFtt7vclqGEWyAsTNnBQbXIh7QqK8onls8Hint0X4eq6SAyhdv9yziyPA==}
-    dev: false
 
   /react-redux@8.0.5(@types/react-dom@18.0.6)(@types/react@18.0.17)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1):
     resolution: {integrity: sha512-Q2f6fCKxPFpkXt1qNRZdEDLlScsDWyrgSj0mliK59qU6W5gvBiKkdMEG2lJzhd1rCctf0hb6EtePPLZ2e0m1uw==}
