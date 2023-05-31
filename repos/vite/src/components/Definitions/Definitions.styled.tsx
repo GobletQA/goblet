@@ -20,11 +20,15 @@ const actionsWidthSplit = Math.round((actionsWidth / DefinitionTabs.length + Num
 const tabWidth = Math.round((100 / DefinitionTabs.length + Number.EPSILON) * 100) / 100
 const tabWidthStr = `calc( ${tabWidth}% - ${actionsWidthSplit}px )`
 
+const noForwardProps = [
+  `open`,
+  `disablePortal`
+] as any[]
+
 const shared:CSSProperties = {
   padding: `0px`,
   border: `none`,
   overflowY: `hidden`,
-  left: dims.nav.closedWidth,
 }
 
 const openedStyles = (theme: Theme): CSSProperties => ({
@@ -38,7 +42,6 @@ const openedStyles = (theme: Theme): CSSProperties => ({
 
 const closedStyles = (theme: Theme): CSSProperties => ({
   ...shared,
-  left: dims.nav.closedWidth,
   height: dims.defs.closedHeight,
   transition: theme.transitions.create('height', {
     easing: theme.transitions.easing.sharp,
@@ -48,7 +51,7 @@ const closedStyles = (theme: Theme): CSSProperties => ({
 
 export const Drawer = styled(
   MuiDrawer,
-  { shouldForwardProp: (prop) => prop !== 'open' }
+  { shouldForwardProp: (prop) => !noForwardProps.includes(prop) }
 )(({ theme, open }) => ({
   flexShrink: 0,
   whiteSpace: `nowrap`,

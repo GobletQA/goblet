@@ -1,12 +1,9 @@
 import type { DrawerProps } from '@mui/material/Drawer'
 
-import { useRef, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 
 import Box from '@mui/material/Box'
 import { Definitions } from './Definitions'
-import { PanelDimsSetEvt } from '@constants'
-import { useEffectOnce } from '@hooks/useEffectOnce'
-import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import ClickAwayListener from '@mui/material/ClickAwayListener'
 import { gray, black, gobletColors } from '@gobletqa/components/theme'
 import {
@@ -30,8 +27,11 @@ const drawerProps:Partial<DrawerProps> = {
   elevation: 0,
   anchor: `bottom`,
   hideBackdrop: true,
+  disablePortal: true,
   variant: `permanent`,
-  sx: { left: `50px` },
+  sx: {
+    width: `100%`,
+  },
   className: `gb-defs-drawer`,
 }
 
@@ -49,8 +49,6 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
 
   const [open, setOpen] = useState(false)
   const [locked, setLocked] = useState(false)
-  const drawerRef = useRef<HTMLDivElement>(null)
-  const parentRef = useRef<HTMLDivElement>(null)
 
   const theme = useTheme()
 
@@ -66,20 +64,6 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
     !open && toggleDrawer()
   }, [open, toggleDrawer])
 
-  useEffectOnce(() => {
-    const off = EE.on(PanelDimsSetEvt, () => {
-      const parent = parentRef?.current
-      const drawerChild = drawerRef?.current?.firstElementChild as HTMLDivElement
-      if(!drawerChild || !parent) return
-
-      drawerChild.style.width = `${parentRef?.current?.clientWidth}px`
-    })
-
-    return () => {
-      off?.()
-    }
-  })
-
   const onClickAway = useCallback((event: MouseEvent | TouchEvent) => {
     !locked && open && setOpen(false)
   }, [open, locked])
@@ -88,8 +72,6 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
     <Box
       width='100%'
       height='100%'
-      ref={parentRef}
-      position='relative'
       className='gb-definitions-slider'
       bgcolor={theme.palette.mode === 'light' ? gray.gray00 : black.black12}
     >
@@ -97,13 +79,13 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
         <Drawer
           {...drawerProps}
           open={open}
-          ref={drawerRef}
           onClose={toggleDrawer}
           PaperProps={{
             elevation: 0,
             sx:{
               zIndex: `20`,
-              width: parentRef?.current?.clientWidth || 0
+              width: `100%`,
+              position: `absolute`,
             }
           }}
         >
