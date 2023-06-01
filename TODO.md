@@ -51,6 +51,9 @@
     * Looks to be related to the decorators issues
   * Steps not getting the correct decorator
   * Steps with same step text cause decorator to only use the first step
+  * Needs an update to Parkin to keep a consistent uuid for feature items
+  * Needs to pass on feature test meta data
+    * This is mostly done, but needs to be published
 
 * Add cover over browser
   * Must intentionally click the browser to interact with it
