@@ -27,12 +27,12 @@ const meta = {
   expressions: [],
 }
 
-Then('I save the page cookie', (world:TWorldConfig) => savePageCookie(false, world), meta)
-Then('I save the page cookie as {string}', savePageCookie, {
+Then(`I save the page cookie`, (world:TWorldConfig) => savePageCookie(false, world), meta)
+Then(`I save the page cookie as {string}`, savePageCookie, {
   ...meta,
   expressions: [
     {
-      type: 'string',
+      type: `string`,
       description: `Name of the context cookie file that is being saved`,
       example: defaultCookieFile,
     }

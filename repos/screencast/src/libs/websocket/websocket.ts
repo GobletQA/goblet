@@ -12,6 +12,7 @@ const {
   disconnect,
   browserPlay,
   browserRecord,
+  browserRestart,
   cancelAutomate,
   browserAutomate,
 } = SocketEvents
@@ -37,6 +38,7 @@ export const initSocket = (
         connection: connection(app),
         browserPlay: browserPlay(app),
         browserRecord: browserRecord(app),
+        browserRestart: browserRestart(app),
         cancelAutomate: cancelAutomate(app),
         browserAutomate: browserAutomate(app),
       },

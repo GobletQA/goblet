@@ -4,13 +4,13 @@ import type { TRepoValueCB, TRepoInputError, TBuiltRepo, TBuiltRepos } from '@ty
 import { SyncRepos } from './SyncRepos'
 import { RepoSelect } from './RepoSelect'
 import { RepoCreate } from './RepoCreate'
-import { gutter } from '@gobletqa/components'
 import Grid from '@mui/material/Unstable_Grid2'
 
 export type TRepoProps = Partial<typeof repoProps> & {
   repo?:TBuiltRepo
   repos?:TBuiltRepos
   newRepo?:string
+  disabled?:boolean
   createRepo:boolean
   onChange?:TOnAutoChange
   inputError:TRepoInputError
@@ -50,6 +50,7 @@ export const RepoConnect = (props:TRepoProps) => {
     repo,
     repos,
     newRepo,
+    disabled,
     onChange,
     inputError,
     createRepo,
@@ -68,6 +69,7 @@ export const RepoConnect = (props:TRepoProps) => {
         <RepoSelect
           repo={repo}
           repos={repos}
+          disabled={disabled}
           onChange={onChange}
           error={inputError?.repo}
         />

@@ -27,12 +27,12 @@ const options = {
       `--enable-automation`
     ],
     args: [
-      `--app`,
       `--disable-gpu`,
       `--start-maximized`,
       `--start-fullscreen`,
       // Hides the top-bar header. Should validate this this is what we want
       `--window-position=0,-74`,
+      // `--window-position=0,0`,
       `--allow-insecure-localhost`,
       `--unsafely-treat-insecure-origin-as-secure`,
 
@@ -77,8 +77,6 @@ export const getBrowserOpts = (
     context,
     page,
     args = noPropArr,
-    // Used for adding the Automate class to the page
-    addAutomate,
     // type / url is not used, just pulled out of the config object
     type,
     url,

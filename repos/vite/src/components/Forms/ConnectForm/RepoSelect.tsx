@@ -6,6 +6,7 @@ import { AutoInput } from '@gobletqa/components'
 const repoProps = {
   name: `repo`,
   required: true,
+  disabled: false,
   label: `Repository`,
   textFieldProps: {
     placeholder: `Select from list...`,
@@ -32,6 +33,7 @@ export const RepoSelect = (props:TRepoProps) => {
       {...rest}
       onChange={onChange}
       options={repos || []}
+      currentValue={props.repo}
       className='repo-select-dropdown'
     />
   )

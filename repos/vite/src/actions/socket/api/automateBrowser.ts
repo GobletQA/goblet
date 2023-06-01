@@ -12,6 +12,7 @@ import {
 
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { PromiseAbort } from '@gobletqa/shared/utils/promiseAbort'
+import { getSettingsValues } from '@utils/settings/getSettingsValues'
 
 /**
  * Calls websocket to turn on browser click listener
@@ -22,10 +23,14 @@ import { PromiseAbort } from '@gobletqa/shared/utils/promiseAbort'
 export const automateBrowser = (options:TUserAutomateOpts = emptyObj) => {
 
   const promise = PromiseAbort<TSelectFromBrowserRespEvent>((res, rej) => {
+    const browserOpts = getSettingsValues(`browser`)
 
     EE.emit(BrowserStateEvt, {browserState: EBrowserState.recording})
 
-    WSService.emit(SocketMsgTypes.BROWSER_AUTOMATE, options)
+    WSService.emit(SocketMsgTypes.BROWSER_AUTOMATE, {
+      ...options,
+      browser: { ...browserOpts, ...options?.browser }
+    })
 
     // Then listen for the response event fired from the websocket service
     const selectOff = EE.on<TSelectFromBrowserRespEvent>(

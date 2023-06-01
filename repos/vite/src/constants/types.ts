@@ -41,6 +41,7 @@ export const SocketMsgTypes = {
   BROWSER_PLAY: `browserPlay`,
   BROWSER_STATUS: `browserStatus`,
   BROWSER_RECORD: `browserRecord`,
+  BROWSER_RESTART: `browserRestart`,
   CANCEL_AUTOMATE: `cancelAutomate`,
   BROWSER_AUTOMATE: `browserAutomate`,
 }

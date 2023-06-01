@@ -16,7 +16,6 @@ export const stopBrowser = async (options = noOpObj) => {
   } = await screencastApi.stop({
     ...browserOpts,
     ...options,
-    addAutomate: true
   })
 
 
