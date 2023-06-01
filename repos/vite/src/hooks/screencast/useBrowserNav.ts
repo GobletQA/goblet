@@ -8,7 +8,7 @@ import { SetBrowserIsLoadedEvent } from '@constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { useBrowserActions } from './useBrowserActions'
 import { calcPageSize } from '@utils/browser/calcPageSize'
-import {restartBrowser} from '@actions/screencast/api/restartBrowser'
+import {restartBrowserContext} from '@actions/socket/api/restartBrowserContext'
 
 
 export type THBrowserNav = {
@@ -49,7 +49,7 @@ export const useBrowserNav = (props:THBrowserNav) => {
     const size = calcPageSize(rfbRef.current)
 
     EE.emit<TBrowserIsLoadedEvent>(SetBrowserIsLoadedEvent, { state: false })
-    await restartBrowser({
+    await restartBrowserContext({
       context: {
         screen: size,
         viewport: size

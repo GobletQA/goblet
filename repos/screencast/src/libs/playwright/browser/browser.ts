@@ -17,7 +17,7 @@ import { deepMerge } from '@keg-hub/jsutils'
 import { EmptyBrowser } from './emptyBrowser'
 import { buildStatus } from '../helpers/buildStatus'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
-import { toBool, noOpObj, isFunc } from '@keg-hub/jsutils'
+import { toBool, emptyObj, isFunc } from '@keg-hub/jsutils'
 import { getBrowserOpts } from '../helpers/getBrowserOpts'
 import { getBrowserType } from '../helpers/getBrowserType'
 import { getContextOpts } from '../helpers/getContextOpts'
@@ -72,7 +72,7 @@ const setBrowser = (
  * Checks if the Browser should be created from a Websocket and the running browser server
  */
 const fromWebsocket = (
-  browserConf:TBrowserConf = noOpObj as TBrowserConf,
+  browserConf:TBrowserConf = emptyObj as TBrowserConf,
   browserServer?:boolean
 ):boolean => {
   const { isKube, socketActive } = checkVncEnv()
@@ -113,7 +113,7 @@ const createWSBrowser = async (type:EBrowserName):Promise<TPWBrowser> => {
  * The context is always the same, and saves data
  */
 const createPersistentBrowser = async (
-  browserConf:TBrowserConf = noOpObj as TBrowserConf,
+  browserConf:TBrowserConf = emptyObj as TBrowserConf,
   type:EBrowserName
 ) => {
 
@@ -142,7 +142,7 @@ const createPersistentBrowser = async (
  * All other cases should use the browser-server websocket
  */
 const createBrowser = async (
-  browserConf:TBrowserConf = noOpObj as TBrowserConf,
+  browserConf:TBrowserConf = emptyObj as TBrowserConf,
   type:EBrowserName
 ) => {
 
@@ -163,7 +163,8 @@ const createBrowser = async (
  */
 const getPage = async (
   browserConf:TBrowserConf,
-  overrides:TBrowserConf=noOpObj as TBrowserConf,
+  overrides:TBrowserConf=emptyObj as TBrowserConf,
+  initialUrl:string=GobletQAUrl
 ):Promise<TPWComponents> => {
   try {
     const { context, browser } = await getContext(browserConf, overrides)
@@ -186,7 +187,7 @@ const getPage = async (
     if(!hasPages && getPage.creatingPage)
       return new Promise((res, rej) => {
         Logger.info(`getPage - Browser Page is creating, try agin in ${CreateBrowserRetry}ms`)
-        setTimeout(() => res(getPage(browserConf)), CreateBrowserRetry)
+        setTimeout(() => res(getPage(browserConf, undefined, initialUrl)), CreateBrowserRetry)
       })
 
     let page:TBrowserPage
@@ -199,7 +200,7 @@ const getPage = async (
       const page = ghostMouse(pg)
 
       try {
-        await page.goto(GobletQAUrl)
+        await page.goto(initialUrl)
       }
       catch(err){
         console.error(err)
@@ -227,9 +228,9 @@ getPage.creatingPage = false
  *
  * @function
  */
-export const getContext = async (
+const getContext = async (
   browserConf:TBrowserConf,
-  overrides:TBrowserConf=noOpObj as TBrowserConf,
+  overrides:TBrowserConf=emptyObj as TBrowserConf,
 ) => {
 
   const resp = await getBrowser(browserConf)
@@ -291,8 +292,8 @@ export const closeBrowser = async (type?:EBrowserType) => {
  * @function
  */
 const getBrowser = async (
-  browserConf:TBrowserConf = noOpObj as TBrowserConf,
-  opts:TGetBrowserOpts=noOpObj
+  browserConf:TBrowserConf = emptyObj as TBrowserConf,
+  opts:TGetBrowserOpts=emptyObj
 ):Promise<TPWBrowser> => {
   try {
 
@@ -376,10 +377,11 @@ getBrowser.creatingBrowser = false
  * @public
  */
 export const startBrowser = async (
-  config:TBrowserConf = noOpObj as TBrowserConf,
+  config:TBrowserConf = emptyObj as TBrowserConf,
   browserOnly?:boolean,
   browserServer?:boolean,
-  overrides:TBrowserConf=noOpObj as TBrowserConf,
+  overrides:TBrowserConf=emptyObj as TBrowserConf,
+  initialUrl:string=GobletQAUrl
 ):Promise<TPWComponents> => {
 
   if(browserOnly){
@@ -414,7 +416,7 @@ export const startBrowser = async (
 
 
       startBrowser.creatingBrowser = true
-      pwComponents = await getPage(browserConf, overrides)
+      pwComponents = await getPage(browserConf, overrides, initialUrl)
       startBrowser.creatingBrowser = false
 
       Logger.info(`startBrowser - Browser ${type} and child components found`)
@@ -447,11 +449,12 @@ startBrowser.creatingBrowser = false
 
 
 export const getPWComponents = async (
-  config:TBrowserConf = noOpObj as TBrowserConf,
+  config:TBrowserConf = emptyObj as TBrowserConf,
+  initialUrl:string=GobletQAUrl
 ) => {
   const pwComponents = checkInternalPWContext(getBrowserType(config.type as EBrowserType))
 
   return pwComponents.page
     ? pwComponents
-    : await getPage(config)
+    : await getPage(config, undefined, initialUrl)
 }

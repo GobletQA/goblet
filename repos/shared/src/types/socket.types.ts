@@ -1,6 +1,7 @@
 import type {Socket, Server} from 'socket.io'
 import type { TTokenUser } from './user.types'
 import type { TWebSocketEvents, TWebSocketEvent, SocketManager } from '@gobletqa/screencast'
+import {TBrowserConf} from './pw.types'
 
 export type TSocketEvent = TWebSocketEvent
 
@@ -32,14 +33,20 @@ export type TSocketTokenErr = {
 
 export type TSocketTokenData = TSocketTokenValid | TSocketTokenErr
 
+type TSockerBrowserData = {
+  url?:string
+  browser?:TBrowserConf
+  [key:string]: any
+}
+
 export type TSocketEvtCBProps = {
   io:Server
   event:string
   socket:Socket
-  user: TTokenUser
+  user:TTokenUser
   config:TSocketConfig
   Manager:SocketManager
-  data:Record<string, any>
+  data:TSockerBrowserData
 }
 
 export type TProcConfig = {

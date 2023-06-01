@@ -18,6 +18,10 @@ export const pageUrlContainsText = async (
 }
 
 Then(`the page url contains {string}`, pageUrlContainsText, {
+  name: `Page url contains`,
+  alias: [
+    `Page Url`
+  ],
   description: `Verifies page url contains the string.`,
   expressions: [
     {
@@ -27,7 +31,7 @@ Then(`the page url contains {string}`, pageUrlContainsText, {
       description: `String expected to be contained within the page url.`,
     },
   ],
-  module: `pageUrlContainsText`,
   race: true,
+  module: `pageUrlContainsText`,
 })
 

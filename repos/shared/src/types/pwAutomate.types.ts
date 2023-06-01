@@ -1,4 +1,4 @@
-import type { TBrowserContext, TBrowserPage } from './pw.types'
+import type { TBrowserConf, TBrowserContext, TBrowserPage } from './pw.types'
 
 // Exported from screencast/src/types
 import type { Automate } from '@gobletqa/screencast'
@@ -16,6 +16,7 @@ export type TAutomateOpts = {
 }
 
 export type TUserAutomateOpts = {
+  browser?:TBrowserConf
   selectorType?: string
   disabledEvents?:boolean
 }

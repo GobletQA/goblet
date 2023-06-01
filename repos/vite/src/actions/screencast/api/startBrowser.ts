@@ -14,7 +14,6 @@ export const startBrowser = async (options = noOpObj) => {
   } = await screencastApi.start({
     ...browserOpts,
     ...options,
-    addAutomate: true
   })
 
   if(!success || error)

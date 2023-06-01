@@ -18,7 +18,7 @@ const onBrowserAutomate = async (
   app:Express
 ) => {
 
-  const browserConf = joinBrowserConf({ addAutomate: true }, app)
+  const browserConf = joinBrowserConf(data.browser, app)
   const pwComponents = await startBrowser(browserConf)
 
   switch(data?.selectorType){

@@ -21,7 +21,6 @@ export const getSCStatus = async (options:Record<any, any> = noOpObj) => {
     browser: {
       ...browserOpts,
       ...options.browser,
-      addAutomate: true,
     },
   })
 

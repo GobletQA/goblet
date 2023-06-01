@@ -10,4 +10,6 @@ export * from './descendentContainsText'
 export * from './descendentExactText'
 export * from './getSelectedOption'
 export * from './getAttribute'
+export * from './pageUrlContainsText'
+export * from './assertStyleValue'
 

@@ -163,6 +163,7 @@ export const ConnectForm = (props:TConnectForm) => {
                 repo={repo}
                 repos={repos}
                 newRepo={newRepo}
+                disabled={loading}
                 onChange={onChangeRepo}
                 inputError={inputError}
                 createRepo={createRepo}
@@ -181,7 +182,6 @@ export const ConnectForm = (props:TConnectForm) => {
                   repos={repos}
                   owner={owner}
                   branch={branch}
-                  disabled={!repo}
                   parents={parents}
                   newBranch={newBranch}
                   inputError={inputError}
@@ -189,6 +189,7 @@ export const ConnectForm = (props:TConnectForm) => {
                   createRepo={createRepo}
                   onChange={onChangeBranch}
                   description={description}
+                  disabled={!repo || loading}
                   onInputError={onInputError}
                   onChangeOwner={onChangeOwner}
                   onChangeBranchFrom={setBranchFrom}

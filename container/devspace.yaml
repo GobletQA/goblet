@@ -13,13 +13,16 @@ pipelines:
       run_pipelines $services
     fi
 
+  deploy: |-
+    ensure_pull_secrets --all
+    run_pipelines deploy-be
+
   deployments: |-
     run_pipelines deploy-be
 
   build: null
 
   deploy-be: |-
-    ensure_pull_secrets goblet-backend
     create_deployments goblet-backend
 
   start-be: |-

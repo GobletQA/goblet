@@ -12,7 +12,6 @@ type TStatusQuery = {
   slowMo:number
   timeout:number
   debug:boolean
-  addAutomate:boolean
 
   /**
    * TODO: Pretty sure width/height are **NOT** being used

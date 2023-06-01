@@ -38,7 +38,15 @@ const hoverHighlighter = (event, styles) => {
   }
 
   const rect = event.target.getBoundingClientRect()
-  sides.forEach(side => highlightEl.style[side] = rect[side] + 'px')
+  sides.forEach(side => {
+    if(side === `left`)
+      highlightEl.style[side] = (rect[side] + window.scrollX) + 'px'
+
+    else if(side === `top`)
+      highlightEl.style[side] = (rect[side] + window.scrollY) + 'px'
+
+    else highlightEl.style[side] = rect[side] + 'px'
+  })
 }
 
 const addListener = (styles) => {
@@ -115,7 +123,8 @@ const initElementHover = async () => {
 
   window.__gobletElementSelectOff = () => {
     console.log(`[Goblet] - __gobletElementSelectOff`)
-    highlightEl.style.display = `none`
+    if(highlightEl && highlightEl.style) highlightEl.style.display = `none`
+
     window.removeEventListener(`click`, onSelectElement)
 
     if(removeListener) removeListener()

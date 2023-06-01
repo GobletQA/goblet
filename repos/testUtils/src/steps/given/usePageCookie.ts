@@ -20,7 +20,7 @@ export const usePageCookie = async (
 }
 
 const meta = {
-  name: `Save page cookie`,
+  name: `Use saved page cookie`,
   module: `usePageCookie`,
   examples: [
     `Given I use the saved page cookie`,
@@ -33,13 +33,13 @@ const meta = {
 
 Given(`I use the saved page cookie`, (world:TWorldConfig) => usePageCookie(false, world), meta)
 Given(`I use the saved {string} page cookie`, usePageCookie, {
-  name: `Save page cookie as`,
+  name: `Use saved page cookie`,
   ...meta,
   expressions: [
     {
       kind: ExpressionKinds.text,
       type: ExpressionTypes.string,
-      description: `Name of the context cookie file that is being saved`,
+      description: `Name of the context cookie file that is being used`,
       example: defaultCookieFile,
     }
   ]

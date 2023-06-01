@@ -105,7 +105,6 @@ export type TBrowserConf = TBrowserLaunchOpts & {
   url?:string
   page: TPageOpts
   restart?:boolean
-  addAutomate?: boolean
   colorScheme?: TColorSchema
   context?:TBrowserContextOpts
 }

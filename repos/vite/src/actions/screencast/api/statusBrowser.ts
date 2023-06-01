@@ -21,7 +21,6 @@ export const statusBrowser = async (options = noOpObj) => {
   } = await screencastApi.status({
     ...browserOpts,
     ...options,
-    addAutomate: true
   })
 
   !success || error

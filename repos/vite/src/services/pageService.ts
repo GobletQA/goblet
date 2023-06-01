@@ -11,7 +11,6 @@ export class PageService {
   action = async (act:string, props:any|any[], log?:boolean) => {
     return await actionBrowser({
       ref: 'page',
-      addAutomate: true,
       actions: [{
         action: act,
         props: ensureArr(props),

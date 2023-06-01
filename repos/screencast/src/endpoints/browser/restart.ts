@@ -4,7 +4,7 @@ import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { startBrowser, closeBrowser, getContext } from '@GSC/libs/playwright/browser/browser'
+import { startBrowser, getPWComponents } from '@GSC/libs/playwright/browser/browser'
 
 /**
  * Restarts a Browser by killing the browser context, and starting it again
@@ -15,7 +15,7 @@ const browserRestart = asyncWrap(async (req:Request, res:Response) => {
 
   const browserConf = joinBrowserConf(body)
 
-  const { context } = await getContext(browserConf)
+  const { context } = await getPWComponents(browserConf)
   context && await context.close()
   const { status } = await startBrowser(browserConf, false, false, body)
   
@@ -33,9 +33,6 @@ const browserRestart = asyncWrap(async (req:Request, res:Response) => {
         // await page.keyboard.press('F11')
         // await page.keyboard.press('Cmd+Shift+F')
         // await page.keyboard.press('Control+Shift+F')
-  
-  
-
   return apiRes(res, status, 200)
 })
 

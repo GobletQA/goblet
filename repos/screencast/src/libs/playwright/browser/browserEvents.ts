@@ -1,18 +1,17 @@
 import type { Express } from 'express'
 import type {
+  TBrowserConf,
   TPWComponents,
   TBrowserPage,
   TBrowserEvents,
   TBrowserEventCB,
   TOnAutomateEvent,
-  TSocketEvtCBProps
+  TSocketEvtCBProps,
 } from '@GSC/types'
 
 import { Events } from './events'
 import { EBrowserEvent } from '@GSC/types'
-import { Logger } from '@GSC/utils/logger'
 import { ensureArr } from '@keg-hub/jsutils'
-import { WS_PW_URL_CHANGE } from '@GSC/constants'
 import { Automate } from '@GSC/libs/playwright/automate/automate'
 import { startBrowser } from '@GSC/libs/playwright/browser/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
@@ -129,11 +128,11 @@ export class BrowserEvents {
 
 export const browserEvents = async (
   app:Express,
-  args:TSocketEvtCBProps & { pwComponents?: TPWComponents }
+  args:TSocketEvtCBProps & { pwComponents?: TPWComponents, browser?:TBrowserConf }
 ) => {
 
   const pwComponents = args.pwComponents
-    || await startBrowser(joinBrowserConf({ addAutomate: true }, app))
+    || await startBrowser(joinBrowserConf(args.browser, app))
 
   const { Automate, ...browserEvts } = Events(app, args)
 

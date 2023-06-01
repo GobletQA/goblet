@@ -18,7 +18,6 @@ export const restartBrowser = async (options:Record<any, any> = noOpObj) => {
   } = await screencastApi.restart({
     ...browserOpts,
     ...options,
-    addAutomate: true
   })
   
   if(!success || error)

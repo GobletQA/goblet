@@ -24,6 +24,8 @@ const mockCacheActive = process.env.NODE_ENV === `production`
   ? false
   : true
 
+// const mockCacheActive = false
+
 const defOpts:TGCacheOpts = emptyObj as TGCacheOpts
 const defVarOpts:TGraphApiVars = emptyObj as TGraphApiVars
 
