@@ -98,7 +98,8 @@ export const useRaceDecoHooks = (props:THDecoration) => {
 
   // Listen for any changes to the feature and clear out decorations
   useOnEvent<TOnFeatureEvt>(RaceOnFeatureEvt, ({ feature }) => {
-    settings.autoClearDecorations
+    feature?.path
+      && settings.autoClearDecorations
       && clearDecorations(feature.path)
   })
 

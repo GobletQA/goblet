@@ -35,6 +35,11 @@ export const resizeBrowser = async (
     inRFB._screenFlags
   )
 
-  await pageService.resize(size)
+  await pageService.resize({
+    ...size,
+    // Not sure why, but 10px from the bottom of the browser seem to get cutoff
+    // So we make the browser 10px smaller to ensure the whole browser displays
+    height: size.height - 10
+  })
 
 }

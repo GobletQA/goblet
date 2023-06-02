@@ -17,9 +17,6 @@
 
 * When in simple mode mode, Should only run the single scenario
   * Currently runs all scenarios
-
-* When closing the last open file
-  * Does not update the content of the editor to be empty
   
 * Save currently opened file
   * Auto reopen it on reload
@@ -30,7 +27,6 @@
     * So don't have to use keyboard
 
 * Duplicated in expression actions
-  * Save page cookie
   * Is checked
 
 * On world save, reload the entire world
