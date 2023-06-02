@@ -4,8 +4,8 @@ import { getStore } from '@store'
 import { EContainerState } from '@types'
 import { addToast } from '@actions/toasts'
 import { isEmptyColl } from '@keg-hub/jsutils'
-import { apiRequest } from '@utils/api/apiRequest'
 import { connectModal } from '@actions/modals/modals'
+import { containerApi } from '@services/containerApi'
 import { setErrorState } from '@actions/admin/provider/setErrorState'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
@@ -25,11 +25,7 @@ export const statusContainer = async (
     data,
     error,
     success
-  } = await apiRequest<TRouteMeta>({
-    method: 'GET',
-    url: `/container/status`,
-    params: {...params },
-  })
+  } = await containerApi.status({...params })
 
   if(!success || error) return setErrorState(error)
 

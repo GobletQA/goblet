@@ -13,6 +13,7 @@ import { formatUser } from '@utils/admin/formatUser'
 import { localStorage } from '@services/localStorage'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
+import {containerApi} from '@services/containerApi'
 
 
 /**
@@ -59,11 +60,7 @@ export const onSuccessAuth = async (
       error,
       success,
       statusCode,
-    } = await apiRequest<TValidateResp>({
-      params: userData,
-      method: 'POST',
-      url: `/auth/validate`,
-    })
+    } = await containerApi.validate(userData)
 
     statusCodeNum = statusCode
     // If response if false, the session is invalid, and the user must sign in again

@@ -10,7 +10,7 @@ import { SideNav } from '@components/SideNav'
 import { settingsModal } from '@actions/modals'
 import { Outlet, useLocation } from "react-router-dom"
 import { disconnectRepo } from '@actions/repo/api/disconnect'
-import { signOutReload } from '@actions/admin/user/signOutReload'
+import { signOutManually } from '@actions/admin/user/signOutManually'
 
 type THomeProps = {
   [key:string]: any
@@ -35,7 +35,7 @@ export default function Home(props:THomeProps) {
 }
 
 const navActions = {
-  Logout: signOutReload,
+  Logout: signOutManually,
   Settings: asCallback(settingsModal, false),
   UnmountRepo: asCallback(disconnectRepo, false),
 }
@@ -58,6 +58,6 @@ const settings = [
     divider: true,
     label: `Sign Out`,
     Icon: LogoutIcon,
-    onClick: signOutReload,
+    onClick: signOutManually,
   }
 ]

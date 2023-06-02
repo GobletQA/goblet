@@ -41,3 +41,9 @@
   * comment it out
 
 * Drag and drop not updating position in feature
+
+* Add ability to restart session container from UI
+* Add scroll to position step
+* Add action to re-audit feature
+
+
