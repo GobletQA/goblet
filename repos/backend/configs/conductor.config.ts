@@ -37,6 +37,7 @@ const {
 
   GB_SC_PORT,
   GB_SC_IMAGE,
+  GB_SC_ACTIVE,
   GB_SC_IMAGE_TAG,
   GB_SC_DEPLOYMENT,
   GB_NO_VNC_PORT,
@@ -121,6 +122,10 @@ const devRouter = NODE_ENV === `local`
         }
       }
     : {}
+
+// Enable this disable local devRouter.
+// Used when running dev and the screencast pod is not automatically started
+// const devRouter = {}
 
 /**
 * Loads the envs and filters out all except for the those the match the whiteList prefix
