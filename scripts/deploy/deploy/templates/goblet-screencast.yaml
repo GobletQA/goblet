@@ -175,12 +175,14 @@ spec:
             value: {{ env.GB_VNC_VIEW_HEIGHT }}
           - name: GB_VNC_VIEW_WIDTH
             value: {{ env.GB_VNC_VIEW_WIDTH }}
-          - name: GB_SC_TIMEOUT_ACTIVE
-            value: {{ env.GB_SC_TIMEOUT_ACTIVE }}
-          - name: GB_SC_INACTIVE_TIMEOUT
-            value: {{ env.GB_SC_INACTIVE_TIMEOUT }}
-          - name: GB_SC_DISCONNECT_TIMEOUT
-            value: {{ env.GB_SC_DISCONNECT_TIMEOUT }}
+          - name: GB_SC_IDLE_TIMEOUT_ACTIVE
+            value: {{ env.GB_SC_IDLE_TIMEOUT_ACTIVE }}
+          - name: GB_SC_IDLE_INTERVAL
+            value: {{ env.GB_SC_IDLE_INTERVAL }}
+          - name: GB_SC_IDLE_WAIT_TO_START
+            value: {{ env.GB_SC_IDLE_WAIT_TO_START }}
+          - name: GB_SC_IDLE_THRESHOLD
+            value: {{ env.GB_SC_IDLE_THRESHOLD }}
           - name: GB_CD_VALIDATION_KEY
             value: {{ env.GB_CD_VALIDATION_KEY }}
           - name: GB_CD_VALIDATION_HEADER

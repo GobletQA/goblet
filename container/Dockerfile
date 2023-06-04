@@ -29,6 +29,7 @@ RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
     apt-get update && apt-get install --yes --no-install-recommends \
     curl \
     novnc \
+    net-tools \
     supervisor \
     openssh-client \
     ca-certificates \
@@ -40,9 +41,7 @@ RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list && \
     apt-get autoclean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -rf /var/lib/apt/lists.d/* && \
-    dbus-uuidgen > /var/lib/dbus/machine-id && \
-    mkdir -p /var/run/dbus
+    rm -rf /var/lib/apt/lists.d/*
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
 ARG GB_FE_PORT=19006
 ARG GB_BE_PORT=7005

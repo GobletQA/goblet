@@ -1,8 +1,7 @@
 import type { MouseEvent, ReactNode, CSSProperties } from 'react'
 
 import { MenuToggleBtn } from './Menu.styled'
-import { MenuIcon } from '@GBC/components/Icons'
-
+import { Kebab } from '@GBC/components/Icons'
 
 export type TMenuToggle = {
   id:string
@@ -21,7 +20,7 @@ export const MenuToggle = (props:TMenuToggle) => {
     open,
     onOpen,
     controlId,
-    Icon=MenuIcon
+    Icon=Kebab
   } = props
 
   return (

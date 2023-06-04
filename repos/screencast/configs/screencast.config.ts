@@ -47,9 +47,11 @@ const {
   GB_SC_WS_PATH,
 
   // Set defaults to ensure the container dies if not being used
-  GB_SC_TIMEOUT_ACTIVE,
-  GB_SC_INACTIVE_TIMEOUT=20,
-  GB_SC_DISCONNECT_TIMEOUT=5,
+  GB_SC_IDLE_INTERVAL=20,
+  GB_SC_IDLE_THRESHOLD=2,
+  GB_SC_IDLE_TIMEOUT_ACTIVE,
+  GB_SC_IDLE_WAIT_TO_START=180,
+  GB_SC_IDLE_CONNECTION_THRESHOLD=2,
 
   // TODO Add these envs as a header for request validation
   // This will ensure requests are coming from the backend API only
@@ -92,9 +94,11 @@ export const screencastConfig:TGScreencastConfig = {
     }
   },
   container: {
-    timeoutActive: toBool(GB_SC_TIMEOUT_ACTIVE),
-    inactiveTimeout:  toNum(GB_SC_INACTIVE_TIMEOUT) * 60000,
-    disconnectTimeout: toNum(GB_SC_DISCONNECT_TIMEOUT) * 1000
+    inactiveThreshold: toNum(GB_SC_IDLE_THRESHOLD),
+    inactiveTimeout:  toNum(GB_SC_IDLE_INTERVAL) * 1000,
+    idleWaitToStart:toNum(GB_SC_IDLE_WAIT_TO_START) * 1000,
+    connectionThreshold: toNum(GB_SC_IDLE_CONNECTION_THRESHOLD),
+    timeoutActive: toBool(GB_SC_IDLE_TIMEOUT_ACTIVE || nodeEnv !== `local`),
   },
   screencast: {
     // Set if the screencast is active or not

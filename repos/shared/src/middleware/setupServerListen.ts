@@ -12,106 +12,17 @@ type TCredentials = {
   cert?: string
 }
 
-type TUncaughtExpCB = (exitCode:number, err:Error) => boolean
-
 type TServerListen = {
   app:Express,
-  config:Record<any, any>,
-  exitListener?:boolean,
-  exitTimeout?:number,
-  uncaughtExpCB?:TUncaughtExpCB,
+  config:Record<any, any>
 }
 
-/**
- * Adds a timer to force exiting the current process after a given time
- * Allow forcing the servers closed after a given time when an exit event is fired
- * @param {number} exitTimeout - Amount of time to wait until force exiting the process
- * @param {number} exitCode - Code relative to the type of exit event that fired
- *
- */
-const addExitTimeout = (exitTimeout:number, exitCode:number=0) => {
-  return setTimeout(() => {
-    process.exit(exitCode)
-  }, exitTimeout)
-}
+// TODO investigate this
+// Enable keepalive globally for https servers
+// http.globalAgent = new http.Agent({ keepAlive:true })
+// https.globalAgent = new https.Agent({ keepAlive:true })
+// server.keepAliveTimeout = 30000; 
 
-/**
- * Def method used if uncaughtExpCB is not passed in
- */
-const handleUncaughtExp = (exitCode:number=0, err:Error) => false
-
-
-// handleUncaughtException
-/**
- * Adds exit listeners to allow graceful shutdown of the servers
- * @exits
- * @param {Object} insecureServer - Express server object
- * @param {Object} secureServer - Express server object
- * @param {number} exitTimeout - Amount of time to wait until force exiting the process
- *
- */
-const addExitListener = (
-  insecureServer:http.Server,
-  secureServer:https.Server,
-  exitTimeout:number=3000,
-  uncaughtExpCB:TUncaughtExpCB=handleUncaughtExp
-) => {
-  let exitCalled:boolean
-
-  ;([
-    `SIGINT`,
-    `SIGTERM`,
-    `SIGUSR1`,
-    `SIGUSR2`,
-    `uncaughtException`,
-  ]).map(type => {
-    
-    process.on(type, (err:Error) => {
-      const exitCode = type === `uncaughtException` ? 1 : 0
-      
-
-      if(uncaughtExpCB(exitCode, err)) return
-
-      // if(type === `uncaughtException`){
-      //   return console.log(`TODO: fix error when process throws uncaughtException`, err)
-      // }
-
-      if(exitCalled) return
-
-      const timeout = exitTimeout && addExitTimeout(exitTimeout, exitCode)
-      timeout.unref()
-
-      let secureClosed
-      let insecureClosed
-      exitCalled = true
-      Logger.info(`[Goblet] Server cleaning up...`)
-
-      secureServer &&
-        secureServer.close(() => {
-          secureClosed = true
-          Logger.success(`[Goblet] Finished cleaning up secure server!`)
-          if(insecureServer && !insecureClosed) return
-
-          timeout && clearTimeout(timeout)
-          process.exit(exitCode)
-        })
-
-      insecureServer &&
-        insecureServer.close(() => {
-          insecureClosed = true
-          Logger.success(`[Goblet] Finished cleaning up insecure server!`)
-          if(secureServer && !secureClosed) return
-
-          timeout && clearTimeout(timeout)
-          process.exit(exitCode)
-        })
-
-      if((!secureServer && !insecureServer) || (insecureClosed && secureClosed))
-        process.exit(exitCode)
-
-    })
-  })
-}
 
 /**
  * Sets up a secure server, typically used for local development
@@ -124,9 +35,6 @@ const addExitListener = (
 const serverListen = (
   app:Express,
   serverConf:Record<any, any>,
-  exitListener:boolean=true,
-  exitTimeout?:number,
-  uncaughtExpCB?:TUncaughtExpCB,
 ) => {
   const { securePort, port, host, name } = serverConf
   const creds = {
@@ -160,20 +68,6 @@ const serverListen = (
       Logger.empty()
     })
 
-
-  /**
-    * Disabling for now. Seem to cause lots of issues
-    * The Logger should capture the exceptions
-    * Don't look like this is needed any longer
-   */
-  // ;(serverConf.exitListener || exitListener) &&
-  //   addExitListener(
-  //     insecureServer,
-  //     secureServer,
-  //     exitTimeout || serverConf.exitTimeout,
-  //     uncaughtExpCB
-  //   )
-
   return { insecureServer, secureServer, app }
 }
 
@@ -183,16 +77,10 @@ const serverListen = (
  */
 export const setupServerListen = ({
   app,
-  config,
-  exitListener,
-  exitTimeout,
-  uncaughtExpCB=handleUncaughtExp,
+  config
 }: TServerListen) => {
   return serverListen(
     app || getApp(),
     config,
-    exitListener,
-    exitTimeout,
-    uncaughtExpCB,
   )
 }

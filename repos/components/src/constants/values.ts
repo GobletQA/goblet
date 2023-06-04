@@ -8,3 +8,5 @@ export const CreateFileButtonID = `gb-create-file-button`
 export const DndHoverCls = `gb-dnd-hover`
 export const DndDraggingCls = `gb-dnd-dragging`
 export const DndDragHandleCls = `gb-dnd-drag-handle`
+
+export const ActionsControlId = `gb-editor-actions-menu`

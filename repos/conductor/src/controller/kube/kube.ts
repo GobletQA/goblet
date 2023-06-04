@@ -41,7 +41,7 @@ export class Kube extends Controller {
   config: TKubeController
   devRouterActive: boolean
   pods: Record<string, TPod>
-  containerMaps: Record<string, TContainerMap>
+  containerMaps: Record<string, TContainerMap>={}
 
   constructor(conductor:Conductor, config:TKubeController){
     super(conductor, config)

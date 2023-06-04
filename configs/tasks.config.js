@@ -148,6 +148,7 @@ module.exports = {
           `DISPLAY`,
           `PLAYWRIGHT_*`,
           `GOBLET_KIND_*`,
+          `GB_SC_ACTIVE`,
           `GB_LOG_LEVEL`,
           `GB_KUBE_CONTEXT`,
           `GB_KUBE_NAMESPACE`,

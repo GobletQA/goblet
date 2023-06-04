@@ -1,1 +1,1 @@
-export * from './processExit'
+export * from './command'

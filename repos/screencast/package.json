@@ -28,22 +28,17 @@
     "json:rm": "dot-json package.json devDependencies -d",
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
-
     "start": "pnpm sc:start",
     "serve": "/bin/bash scripts/initialize.sh",
-
     "bs": "node --enable-source-maps -r esbuild-register dist/bs.js",
     "bs:build": "node --enable-source-maps -r esbuild-register configs/bs.build.config.ts",
     "bs:start": "node --enable-source-maps -r esbuild-register configs/bs.build.config.ts",
-
     "sc": "node --enable-source-maps -r esbuild-register dist/sc.js",
     "sc:build": "node --enable-source-maps -r esbuild-register configs/sc.build.config.ts",
     "sc:start": "node --enable-source-maps -r esbuild-register configs/sc.build.config.ts",
-
     "sock": "node --enable-source-maps -r esbuild-register dist/sock.js",
     "sock:build": "node --enable-source-maps -r esbuild-register configs/sock.build.config.ts",
     "sock:start": "node --enable-source-maps -r esbuild-register configs/sock.build.config.ts",
-
     "vnc": "node --enable-source-maps -r esbuild-register dist/vnc.js",
     "vnc:build": "node --enable-source-maps -r esbuild-register configs/vnc.build.config.ts",
     "vnc:start": "node --enable-source-maps -r esbuild-register configs/vnc.build.config.ts"
@@ -53,9 +48,9 @@
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/spawn-cmd": ">=0.3.2",
+    "@ltipton/esdev": "0.1.3",
     "@ltipton/parkin": "3.0.1",
     "@ltipton/symplasm": "0.0.1",
-    "@ltipton/esdev": "0.1.3",
     "cross-spawn": "7.0.3",
     "esbuild": "0.17.18",
     "esbuild-plugin-path-alias": "1.0.7",

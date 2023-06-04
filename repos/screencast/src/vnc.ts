@@ -18,7 +18,6 @@ import { noOpObj, parseJSON } from '@keg-hub/jsutils'
     'SIGINT',
     'SIGUSR1',
     'SIGUSR2',
-    'uncaughtException',
     'TERM',
     'SIGTERM'
   ])
@@ -26,7 +25,7 @@ import { noOpObj, parseJSON } from '@keg-hub/jsutils'
       if(exitCalled) return
       exitCalled = true
 
-      stopVNC()
+      await stopVNC()
     }))
 
 })()

@@ -3,8 +3,26 @@ import type { TProcOpts, TTaskParams } from '../../types'
 import { appRoot } from '../../paths'
 import { loadEnvs } from '../envs/loadEnvs'
 import { runCmd, Logger } from '@keg-hub/cli-utils'
-import { processError } from '../process/processError'
 import { ensureArr, noOpObj, noPropArr, isObj, parseJSON } from '@keg-hub/jsutils'
+
+/**
+ * Logs and error if log argument is true, then exits the current process
+ * @function
+ * @private
+ * @exits
+ *
+ */
+const processError = (
+  error:string,
+  exitCode:number=1,
+  log:boolean=true
+) => {
+  error && log && Logger.error(error)
+  Logger.empty()
+
+  process.exit(exitCode)
+}
+
 
 /**
  * Gets a list of current pm2 processes being run
