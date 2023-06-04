@@ -199,7 +199,7 @@ export const conductorConfig:TConductorOpts = deepMerge({
           // When a user logs out
           GB_SC_IDLE_INTERVAL: containerEnvs.GB_SC_IDLE_INTERVAL || `20`,
           GB_SC_IDLE_THRESHOLD: containerEnvs.GB_SC_IDLE_THRESHOLD || `2`,
-          GB_SC_IDLE_WAIT_TO_START: containerEnvs.GB_SC_IDLE_WAIT_TO_START || `180`,
+          GB_SC_IDLE_WAIT_TO_START: containerEnvs.GB_SC_IDLE_WAIT_TO_START || `120`,
           GB_SC_IDLE_CONNECTION_THRESHOLD: containerEnvs.GB_SC_IDLE_CONNECTION_THRESHOLD || `2`,
           GB_SC_IDLE_TIMEOUT_ACTIVE: containerEnvs.GB_SC_IDLE_TIMEOUT_ACTIVE || NODE_ENV !== `local`,
         },

@@ -210,16 +210,16 @@ env:
   GB_PW_SOCKET_ACTIVE: false
 
   # --- CONTAINER TIMEOUT ENVs --- #
-  GB_SC_IDLE_TIMEOUT_ACTIVE: false
+  GB_SC_IDLE_DEBUG: true
+  GB_SC_IDLE_TIMEOUT_ACTIVE: true
   # Interval in seconds that the inactive check will run
   GB_SC_IDLE_INTERVAL: 20
   # Number of times the inactive check can be true before shutting down the container
   GB_SC_IDLE_THRESHOLD: 4
   # Time in seconds to wait before starting to check for active connections, i.e. 180 === 3min
-  # GB_SC_IDLE_WAIT_TO_START: 180
-  GB_SC_IDLE_WAIT_TO_START: 1
+  GB_SC_IDLE_WAIT_TO_START: 120
   # Max number of connections that can exist to consider the container to be idle
-  GB_SC_IDLE_CONNECTION_THRESHOLD: 1
+  GB_SC_IDLE_CONNECTION_THRESHOLD: 2
 
   # Mount the app directory in the screencast repo
   # GB_SC_MOUNT_PATH: .:/goblet/app

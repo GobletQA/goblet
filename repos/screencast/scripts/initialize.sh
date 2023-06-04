@@ -25,15 +25,18 @@ startSup(){
 # Stops any running supervisor services
 stopSup(){
   gb_log "Stopping supervisor..."
-  supervisorctl -c configs/$SupCfgLoc shutdown all
+  supervisorctl -c configs/$SupCfgLoc shutdown all >> /proc/1/fd/1 &
 
   # In local, we call kill command on the "tail /dev/null" process to force kill the container
   pid=$(ps -ef | grep /dev/null | grep -v grep | awk '{print $2}')
 
-  if [ "$pid" ]; then
+  if [[ "$pid" ]]; then
     gb_log "Killing tail pid: $pid"
-    # kill -9 $pid
+    kill -9 $pid
   fi
+
+  # In non-local environemnt, this is the init script, so we just need to exit
+  exit 0
 }
 
 
