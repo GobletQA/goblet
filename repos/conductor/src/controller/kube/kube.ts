@@ -83,7 +83,7 @@ export class Kube extends Controller {
       // Any container not running always just remove it
       // The user can't access it anyways
       if(mapped.state !== EContainerState.Running){
-        this.remove(pod)
+        this.remove(mapped, true)
         return acc
       }
 
@@ -137,7 +137,7 @@ export class Kube extends Controller {
     if(!image) return
 
     const mapped = buildContainerMap(pod, annotations.ports)
-    const doRemove = shouldRemove(pod, image, mapped, annotations)
+    const doRemove = shouldRemove(pod, mapped, annotations)
     if(doRemove) return this.remove(mapped, true)
 
     const doHydrate = shouldHydrate(mapped.state, watchObj.type, pod?.metadata?.deletionTimestamp)

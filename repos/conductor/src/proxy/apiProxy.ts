@@ -2,6 +2,7 @@ import type { IncomingMessage } from 'http'
 import type { Request, Response, Router } from 'express'
 import type { TProxyConfig } from '@gobletqa/conductor/types'
 
+import { createProxy } from './createProxy'
 import { checkCall, exists, isFunc } from '@keg-hub/jsutils'
 import { getOrigin } from '@gobletqa/shared/utils/getOrigin'
 import { createProxyMiddleware } from 'http-proxy-middleware'
@@ -53,7 +54,7 @@ export const createApiProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
   const { target, proxyRouter, headers, proxy } = config
   const addHeaders = ensureHeaders({ ...headers, ...proxy?.headers })
 
-  const proxyHandler = createProxyMiddleware({
+  const proxyHandler = createProxy({
     ws: false,
     xfwd: true,
     toProxy: true,
@@ -81,7 +82,7 @@ export const createApiProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
     },
   })
 
-  ProxyRouter && ProxyRouter.use(proxyHandler)
+  ProxyRouter && ProxyRouter.use(proxyHandler.middleware)
 
-  return proxyHandler
+  return proxyHandler.middleware
 }

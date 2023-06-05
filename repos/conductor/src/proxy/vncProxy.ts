@@ -1,9 +1,9 @@
 import type { Express, Request } from 'express'
 import type { TProxyOpts } from '@gobletqa/shared/types'
 
+import { createProxy } from './createProxy'
 import { queryToObj } from '@keg-hub/jsutils'
 import { getApp } from '@gobletqa/shared/express/app'
-import { createProxyMiddleware } from 'http-proxy-middleware'
 
 /**
  * Setup the novnc proxy to forward all requests to that server
@@ -28,7 +28,7 @@ export const createVNCProxy = (config:TProxyOpts, app:Express) => {
   const url = port ? `${host}:${port}` : host
   const pxTarget = target || `${protocol}://${url}`
 
-  const vncProxy = createProxyMiddleware(path, {
+  const vncProxy = createProxy(path, {
     ws: true,
     xfwd:true,
     toProxy: true,
@@ -40,9 +40,9 @@ export const createVNCProxy = (config:TProxyOpts, app:Express) => {
     ...options,
   })
 
-  app.use(vncProxy)
+  app.use(vncProxy.middleware)
   // @ts-ignore
-  vncProxy.path = path
+  vncProxy.middleware.path = path
 
-  return vncProxy
+  return vncProxy.middleware
 }

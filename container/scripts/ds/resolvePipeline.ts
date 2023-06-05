@@ -3,7 +3,7 @@
  * Ensures only deployed apps actually get started
  */
 
-import { getEnvPrefix } from './resolveValues'
+import { getEnvPrefix, resolveValue } from './resolveValues'
 const ePreFix = getEnvPrefix()
 
 const pipelineMethods = {
@@ -16,7 +16,11 @@ const pipelines = () => {
   if (!slice.length)
     return ''
 
+  const isDevMode = resolveValue(`${ePreFix}LOCAL_DEV_MODE`)
+
   const services = slice.reduce((acc:string, prefix:string) => {
+    if(!isDevMode && prefix === `SC`) return acc
+
     const envPrefix = `${ePreFix}${prefix}`
     const deployment = process.env[`${envPrefix}_ACTIVE`]
     acc += deployment ? pipelineMethods[deployment] : ``

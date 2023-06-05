@@ -55,7 +55,8 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
 import MenuIcon from '@mui/icons-material/Menu'
 import WorldIcon from '@mui/icons-material/Language'
-import Kebab from '@mui/icons-material/MoreVert'
+import KebabIcon from '@mui/icons-material/MoreVert'
+import ClockIcon from '@mui/icons-material/AccessTime'
 
 export {
   Settings,
@@ -115,5 +116,6 @@ export {
   MenuIcon,
   WorldIcon,
   RemoveCircleIcon,
-  Kebab
+  KebabIcon,
+  ClockIcon
 }

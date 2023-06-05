@@ -17,6 +17,8 @@ export enum EContainerState {
   Stopped = `Stopped`,
   CREATING = `Creating`,
   Creating = `Creating`,
+  Succeeded = `Succeeded`,
+  SUCCEEDED = `Succeeded`,
 }
 
 

@@ -252,7 +252,13 @@ env:
   GB_DD_EXP_ADMIN_PORT: 2018
   GB_DD_LOCAL_ADMIN_PORT: 2019
 
-  GB_LOCAL_DEV_MODE: true
+  # If set to true, the screencast container will be managed automatically
+  # Instead of starting a new session container for each user
+  # Only one container will be started at the same time as the backend api container
+  # And all proxy traffic will be directed to that container
+  # It uses dev-space instead of the kubernetes API, so all the same hot-reload benefits are included
+  # This makes local development way easier
+  GB_LOCAL_DEV_MODE: false
 
 # --- KIND ENVs --- #
   GB_KD_DEPLOYMENT: goblet-kind

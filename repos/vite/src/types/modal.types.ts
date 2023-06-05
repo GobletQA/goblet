@@ -1,5 +1,8 @@
 
 export enum EModalTypes {
+  Idle = `idle`,
+  IDLE = `idle`,
+  idle = `idle`,
   Artifacts = `artifacts`,
   ARTIFACTS = `artifacts`,
   artifacts = `artifacts`,
@@ -17,7 +20,7 @@ export enum EModalTypes {
   signIn = `signIn`,
   Environments = `environments`,
   environments = `environments`,
-  ENVIRONMENTS = `environments`,
+  ENVIRONMENTS = `environments`
 } 
 
 

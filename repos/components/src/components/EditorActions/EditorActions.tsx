@@ -3,6 +3,7 @@ import type { TEditorAction, TMenuItem } from '@gobletqa/components/types'
 
 import { dims } from '@GBC/theme'
 import { Menu, MenuToggle } from '../Menu'
+import { KebabIcon } from '@GBC/components/Icons'
 import { useRef, useState, useMemo } from 'react'
 import { ActionsControlId } from '@GBC/constants/values'
 import { ActionsContainer } from './EditorActions.styled'
@@ -85,6 +86,7 @@ export const EditorActions = <
       <MenuToggle
         open={open}
         onOpen={onOpen}
+        Icon={KebabIcon}
         sx={styles.toggle}
         id="editor-actions"
         controlId={ActionsControlId}

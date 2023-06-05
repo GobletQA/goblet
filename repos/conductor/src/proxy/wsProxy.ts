@@ -1,11 +1,10 @@
 
-import type { ServerOptions } from 'http-proxy'
 import type { Express, Request } from 'express'
 import type { TProxyOpts } from '@gobletqa/shared/types'
 
+import { createProxy } from './createProxy'
 import { queryToObj } from '@keg-hub/jsutils'
 import { getApp } from '@gobletqa/shared/express/app'
-import { createProxyMiddleware } from 'http-proxy-middleware'
 
 /**
  * Setup the novnc proxy to forward all requests to that server
@@ -30,7 +29,7 @@ export const createWSProxy = (config:TProxyOpts, app:Express) => {
   const url = port ? `${host}:${port}` : host
   const pxTarget = target || `${protocol}://${url}`
 
-  const wsProxy = createProxyMiddleware(path, {
+  const wsProxy = createProxy(path, {
     ws: true,
     xfwd:true,
     toProxy: true,
@@ -41,9 +40,9 @@ export const createWSProxy = (config:TProxyOpts, app:Express) => {
     ...options,
   })
 
-  app.use(wsProxy)
+  app.use(wsProxy.middleware)
   // @ts-ignore
-  wsProxy.path = path
+  wsProxy.middleware.path = path
 
-  return wsProxy
+  return wsProxy.middleware
 }

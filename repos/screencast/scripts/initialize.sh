@@ -13,19 +13,21 @@ GB_SC_IDLE_CONNECTION_THRESHOLD=${GB_SC_IDLE_CONNECTION_THRESHOLD:-1}
 
 # Prints an error message to the terminal in the color white
 gb_log(){
-  [ "$GB_SC_IDLE_DEBUG" ] && echo "$@"
+  if [ "$GB_SC_IDLE_DEBUG" == "true" ] || [ "$GB_SC_IDLE_DEBUG" == "1" ]; then
+    echo "$@"
+  fi
 }
 
 # Starts supervisor using the config based on the current $NODE_ENV
 startSup(){
   gb_log "Starting supervisor..."
-  exec supervisord -n -c configs/$SupCfgLoc >> /proc/1/fd/1 &
+  exec supervisord -n -c configs/$SupCfgLoc
 }
 
 # Stops any running supervisor services
 stopSup(){
   gb_log "Stopping supervisor..."
-  supervisorctl -c configs/$SupCfgLoc shutdown all >> /proc/1/fd/1 &
+  supervisorctl -c configs/$SupCfgLoc shutdown all
 
   # In local, we call kill command on the "tail /dev/null" process to force kill the container
   pid=$(ps -ef | grep /dev/null | grep -v grep | awk '{print $2}')
