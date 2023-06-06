@@ -16,7 +16,7 @@ export const useSetTimeout = (props:TTimeoutHookProps) => {
     if(disable || timeoutRef.current) return
     
     timeoutRef.current = condition
-      ? setTimeout(() => checkCall(callback, condition), delay)
+      ? setTimeout(() => checkCall(callback, condition), delay * 1000)
       : undefined
 
     return () => {

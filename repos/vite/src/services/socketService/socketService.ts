@@ -3,8 +3,10 @@ import type { TSockCmds, TSocketService } from '@types'
 
 import io from 'socket.io-client'
 import { events } from './events'
-import { TagPrefix } from '@constants'
-import * as EventTypes from '@constants/websocket'
+import { TagPrefix, WSSocketResetEvt } from '@constants'
+import * as WSEventTypes from '@constants/websocket'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import { signOutManually } from '@actions/admin/user/signOutManually'
 import {
   callAction,
   getTransports,
@@ -18,6 +20,13 @@ import {
   deepMerge,
   snakeCase,
 } from '@keg-hub/jsutils'
+
+
+const {
+  WSReconnectInterval,
+  WSReconnectAttempts,
+  ...EventTypes
+} = WSEventTypes
 
 
 /**
@@ -85,6 +94,8 @@ export class SocketService {
       path: this.config.path,
       query: this.config.query || noOpObj,
       transports: getTransports(this.config),
+      reconnectionAttempts: WSReconnectAttempts,
+      reconnectionDelay: WSReconnectInterval * 1000,
       extraHeaders: this.config.extraHeaders || noOpObj,
     })
 
@@ -130,6 +141,40 @@ export class SocketService {
     // Initial connection to the server through the socket
     // Call the onConnection method which will handel authorization
     this.socket.on(`connect`, this.onConnection.bind(this))
+    this.socket.on(
+      `connect_failed`,
+      this.onError.bind(this, `connect_failed`)
+    )
+    this.socket.io.on(
+      `error`,
+      this.onError.bind(this, `error`)
+    )
+    this.socket.io.on(
+      `reconnect_error`,
+      this.onError.bind(this, `reconnect_error`)
+    )
+    this.socket.io.on(
+      `reconnect_failed`,
+      this.onReconnectFailed.bind(this)
+    )
+  }
+
+  onReconnectFailed(){
+    EE.emit(WSSocketResetEvt, {})
+
+    // If we failed to reconnect
+    // Then just log out, because we can't do anything anyways
+    // signOutManually()
+  }
+
+  // TODO: handle errors and reconnect errors for main web-socket
+  // When the user is idle, or the container is killed,
+  // Need to stop calling backend api web-socket 
+  onError(type:string, err:any) {
+
+    console.log(`------- err -------`)
+    console.log(type, [err])
+    // EE.emit(WSSocketResetEvt, {})
   }
 
   /**
@@ -174,7 +219,16 @@ export class SocketService {
     if (!this.socket) return this.logData(`Socket already disconnected!`)
 
     this.logData(`Disconnecting from Socket!`)
-    this.socket.disconnect()
+    try {
+      this.socket.disconnect()
+    }
+    catch(err){
+      if(!this.socket.disconnected){
+        console.log(`Error disconnecting from web-socket`)
+        console.log(err)
+      }
+    }
+
     this.socket = null
     this.config = noOpObj as TSocketService
   }

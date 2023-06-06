@@ -26,7 +26,7 @@ import { dockerEvents } from './dockerEvents'
 import { buildImgUri } from './image/buildImgUri'
 import { buildPorts } from './container/buildPorts'
 import { resolveHost } from './container/resolveHost'
-import { isObj, isEmptyColl } from '@keg-hub/jsutils'
+import { isObj, isEmptyColl, isStr } from '@keg-hub/jsutils'
 import { ConductorUserHashLabel } from '../../constants'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
 import { EContainerState } from '@gobletqa/conductor/types'
@@ -217,6 +217,20 @@ export class Docker extends Controller {
               })))
         })
     })
+  }
+
+  /**
+   * Gets a single container map from the Docker-Api by reference
+   * @member Docker
+   */
+  get = async (containerRef:TContainerRef):Promise<TContainerMap> => {
+    const id = isStr(containerRef)
+      ? containerRef
+      : (containerRef as TContainerMap)?.id || (containerRef as TContainerInfo)?.Id
+
+    const containerInspect = await this.docker.getContainer(id).inspect()
+
+    return buildContainerMap(containerInspect, this)
   }
 
   /**

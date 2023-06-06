@@ -62,9 +62,9 @@ export const initApi = async () => {
   const server = secureServer || insecureServer
  
   server.on('upgrade', (req, socket, head) => {
-    req.url.includes(vncProxy?.path)
-      ? vncProxy?.upgrade(req, socket, head)
-      : wsProxy?.upgrade(req, socket, head)
+    req.url.includes(vncProxy?.middleware?.path)
+      ? vncProxy?.middleware?.upgrade(req, socket, head)
+      : wsProxy?.middleware?.upgrade(req, socket, head)
   })
 
   return { app, server }

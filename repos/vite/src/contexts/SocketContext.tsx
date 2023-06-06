@@ -12,14 +12,15 @@ import {
 
 import { useModal } from '@store'
 import { EModalTypes } from '@types'
-import { AuthActive } from '@constants'
 import { noOpObj } from '@keg-hub/jsutils'
-import { Fadeout } from '@gobletqa/components'
+import { Fadeout, useOnEvent } from '@gobletqa/components'
 import { localStorage } from '@services/localStorage'
 import { useContainer, useUser, useRepo } from '@store'
 import { SocketService, WSService } from '@services/socketService'
 import { getWebsocketConfig } from '@utils/api/getWebsocketConfig'
 import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
+import {useContainerCreating} from '@hooks/api/useContainerCreating'
+import {WSSocketResetEvt} from '@constants/events'
 
 export type TSocketProvider = {
   children: ReactNode
@@ -112,6 +113,12 @@ const useWSHooks = () => {
     container?.meta?.state
   ])
 
+  useOnEvent(WSSocketResetEvt, () => {
+    setWSService(undefined)
+    setFade(true)
+  })
+
+
   return {
     fade,
     wsService,
@@ -130,13 +137,15 @@ const SocketChildren = memo((props:TSocketChildren) => {
     ...rest
   } = props
 
+  const showWaiting = useContainerCreating()
+
   const disable = modal.visible
     && (modal?.type === EModalTypes.connect || modal?.type === EModalTypes.signIn)
 
   return (
     <>
       {wsActive && props.children}
-      {AuthActive && (
+      {showWaiting && (
         <Fadeout
           {...rest}
           content={

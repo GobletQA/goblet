@@ -3,11 +3,13 @@ import type { TSideNav } from '@types'
 import { EEditorType, ESideNav } from '@types'
 import { deepFreeze } from '@keg-hub/jsutils'
 import {
-  onEditor,
   onSettings,
   onArtifacts,
   onEnvironments,
 } from '@actions/nav'
+import {
+  setEditor
+} from '@actions/app'
 import {
   AppsIcon,
   Settings,
@@ -45,7 +47,7 @@ export const HeaderNav = [
 export const EditorNavItems = {
   [EEditorType.visual]: {
     title: `Visual Editor`,
-    action: onEditor,
+    action: setEditor,
     Icon: DesignIcon,
     name: ESideNav.editor,
     tooltip: `Switch to Code Editor`,
@@ -53,7 +55,7 @@ export const EditorNavItems = {
   [EEditorType.code]: {
     title: `Code Editor`,
     hidden: true,
-    action: onEditor,
+    action: setEditor,
     Icon: DesignIcon,
     name: ESideNav.editor,
     tooltip: `Switch to Visual Editor`,

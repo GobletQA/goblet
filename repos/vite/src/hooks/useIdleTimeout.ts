@@ -1,68 +1,49 @@
-import { useEffect, useState } from 'react'
-import {useInline} from '@gobletqa/components'
-import { useIdleTimer } from 'react-idle-timer'
-
-const timeout = 10_000
-const promptBeforeIdle = 4_000
-
-export enum EIdleState {
-  Idle=`Idle`,
-  Active=`Active`,
-  Prompted=`Prompted`
-}
+import type { IIdleTimer, IIdleTimerProps } from "react-idle-timer"
 
 
-export const useIdleTimeout = () => {
+import { useApp } from "@store"
+import { EAppStatus } from "@types"
+import { emptyObj } from "@keg-hub/jsutils"
+import {useInline} from "@gobletqa/components"
+import { useIdleTimer } from "react-idle-timer"
+import {setStatus} from "@actions/app/setStatus"
+import {idleModal} from "@actions/modals/modals"
+import { IdleTimeout, IdlePromptTimeout } from "@constants/values"
+import { signOutManually } from '@actions/admin/user/signOutManually'
 
-  const [open, setOpen] = useState<boolean>(false)
-  const [state, setState] = useState<string>(EIdleState.Active)
-  const [remaining, setRemaining] = useState<number>(timeout)
+export type TIdleTimeout = Partial<IIdleTimerProps>
 
-  const onIdle = useInline(() => {
-    setState(EIdleState.Idle)
-    setOpen(false)
-  })
 
-  const onActive = useInline(() => {
-    setState(EIdleState.Active)
-    setOpen(false)
-  })
 
-  const onPrompt = useInline(() => {
-    setState(EIdleState.Prompted)
-    setOpen(true)
-  })
 
-  const { getRemainingTime, activate } = useIdleTimer({
-    onIdle,
-    onActive,
-    onPrompt,
-    timeout,
-    promptBeforeIdle,
-    throttle: 500
-  })
+/**
+ * Helper hook to track if the user is idle on the frontend
+ */
+export const useIdleTimeout = (props:TIdleTimeout=emptyObj) => {
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRemaining(Math.ceil(getRemainingTime() / 1000))
-    }, 500)
+  const { status } = useApp()
 
-    return () => {
-      clearInterval(interval)
+    const onIdle = useInline(() => {
+      signOutManually()
+    })
+
+    const onPrompt = useInline((evt?:Event, idleTimer?:IIdleTimer) => {
+      if(status === EAppStatus.Idle) return
+
+      setStatus(EAppStatus.Idle)
+      idleModal({ visible: true })
+    })
+
+    const idleTimer = useIdleTimer({
+      onIdle,
+      onPrompt,
+      debounce: 500,
+      ...props,
+      timeout: (props?.timeout || IdleTimeout) * 1000,
+      promptBeforeIdle: (props?.promptBeforeIdle || IdlePromptTimeout) * 1000,
+    })
+
+    return {
+      idleTimer
     }
-  })
-
-  const onNotIdle = useInline(() => activate())
-
-  const timeTillPrompt = Math.max(remaining - promptBeforeIdle / 1000, 0)
-  const seconds = timeTillPrompt > 1 ? 'seconds' : 'second'
-
-  return {
-    onIdle,
-    onPrompt,
-    onActive,
-    activate,
-    onNotIdle,
-  }
-
 }

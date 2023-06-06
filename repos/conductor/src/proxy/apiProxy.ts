@@ -84,5 +84,5 @@ export const createApiProxy = (config:TProxyConfig, ProxyRouter?:Router) => {
 
   ProxyRouter && ProxyRouter.use(proxyHandler.middleware)
 
-  return proxyHandler.middleware
+  return proxyHandler
 }

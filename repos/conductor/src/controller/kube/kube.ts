@@ -19,7 +19,7 @@ import { buildPorts } from './pod/buildPorts'
 import { buildPortMap } from './pod/buildPortMap'
 import { shouldRemove } from './pod/shouldRemove'
 import { shouldHydrate } from './pod/shouldHydrate'
-import { isObj, isEmptyColl } from '@keg-hub/jsutils'
+import { isObj, isEmptyColl, isStr } from '@keg-hub/jsutils'
 import { buildPodManifest } from './pod/buildPodManifest'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
 import { buildImgUri } from '../docker/image/buildImgUri'
@@ -236,6 +236,20 @@ export class Kube extends Controller {
   }
 
   /**
+   * Gets a single container map from the Docker-Api by reference
+   * @member Kube
+   */
+  get = async (podRef:TPodRef):Promise<TContainerMap> => {
+    const id = isStr(podRef)
+      ? podRef
+      : (podRef as TContainerMap)?.id || (podRef as TPod)?.metadata?.name
+
+    const pod = await this.kubectl.getPod(id) as TPod
+
+    return buildContainerMap(pod, {})
+  }
+
+  /**
    * Removes a container from the runtime cache based on Id
    * @member Kube
    */
@@ -263,14 +277,23 @@ export class Kube extends Controller {
    * Removes a pod from kubernetes, by calling the kubectl API
    * @member Kube
    */
-  remove = async (podRef:TPodRef, isContainerMap:boolean=false) => {
+  remove = async (
+    podRef:TPodRef,
+    isContainerMap:boolean=false,
+    throwOnEmpty:boolean=true
+  ) => {
     if(this.devRouterActive) return
 
     const containerMap = isContainerMap
       ? podRef as TContainerMap
       : this.getContainer(podRef)
 
-    !containerMap && this.notFoundErr({ type: `container`, ref: podRef as string })
+    if(!containerMap){
+      throwOnEmpty
+        && this.notFoundErr({ type: `container`, ref: podRef as string })
+
+      return containerMap
+    }
 
     await this.kubectl.deletePod(containerMap.id)
     Logger.info(`Removing container with ID ${containerMap.id}`)

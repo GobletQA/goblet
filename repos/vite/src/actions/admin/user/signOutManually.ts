@@ -7,7 +7,14 @@ export type TSignOutManually = {
 }
 
 export const signOutManually = async (params?:TSignOutManually) => {
-  const containerId = params?.id || getContainerData()?.meta?.id
+  try {
+    const containerId = params?.id || getContainerData()?.meta?.id
+    await containerApi.remove({ id: containerId })
+  }
+  catch(err){
+    console.log(`Error removing session container`)
+    console.log(err)
+  }
+
   await signOutAuthUser()
-  await containerApi.remove({ id: containerId })
 }

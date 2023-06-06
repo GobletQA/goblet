@@ -44,5 +44,5 @@ export const createVNCProxy = (config:TProxyOpts, app:Express) => {
   // @ts-ignore
   vncProxy.middleware.path = path
 
-  return vncProxy.middleware
+  return vncProxy
 }

@@ -1,16 +1,19 @@
-import type {
+import {
   TBrowserExt,
   TCredentials,
   TBrowserProps,
   TVncConnected,
   TBrowserDetailEvt,
+  EAppStatus,
 } from '@types'
 
+import { useApp } from "@store"
 import { useCallback } from 'react'
 import RFB from '@novnc/novnc/core/rfb'
 import { VNCConnectedEvt } from '@constants'
 import { useRFBConfig } from './useRFBConfig'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
+import {useInline} from '@gobletqa/components'
 
 export const useVncSetup = (props:TBrowserProps, ext:TBrowserExt) => {
   const {
@@ -29,6 +32,7 @@ export const useVncSetup = (props:TBrowserProps, ext:TBrowserExt) => {
     setLoading,
   } = ext
 
+  const { status } = useApp()
 
   const _onConnect = useCallback((...args:any[]) => {
     connected.current = true
@@ -37,14 +41,16 @@ export const useVncSetup = (props:TBrowserProps, ext:TBrowserExt) => {
     setLoading(false)
   }, [onConnect])
 
-  const _onDisconnect = useCallback((rfbObj?:RFB) => {
+  const _onDisconnect = useInline((rfbObj?:RFB) => {
 
     setLoading(true)
     connected.current = false
     onDisconnect?.(rfb?.current || rfbObj || undefined)
-    connectRef?.current?.()
 
-  }, [onDisconnect])
+    status === EAppStatus.Active
+      && connectRef?.current?.()
+
+  })
 
   const _onCredentialsRequired = useCallback(() => {
     if (onCredentialsRequired) {

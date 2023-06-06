@@ -11,9 +11,9 @@ export const remove = async (req:Request, res:Response) => {
   if(!container)
     throw new Error(`Container not found for ${req.params.containerRef || res.locals.subdomain}`) 
 
-  const status = await conductor.remove(container?.id)
+  const status = await conductor.remove(container?.id, false, false)
 
-  res.status(200).json(status)
+  res.status(200).json(status || container)
 }
 
 AsyncRouter.post(`/container/remove/:containerRef`, remove)

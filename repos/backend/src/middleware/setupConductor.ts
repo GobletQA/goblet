@@ -9,8 +9,8 @@ export const setupConductor = async (app:Express) => {
   await app.locals.conductor.validate()
   const proxies = app.locals.conductor.createProxy(app)
   // TODO: make this one use call instead of two
-  AsyncRouter.use(/^\/repo\/(?!(all)).*/, proxies?.apiProxy)
-  AsyncRouter.use('/screencast/*', proxies?.apiProxy)
+  AsyncRouter.use(/^\/repo\/(?!(all)).*/, proxies?.apiProxy?.middleware)
+  AsyncRouter.use('/screencast/*', proxies?.apiProxy?.middleware)
 
   return proxies
 }

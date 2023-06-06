@@ -13,3 +13,8 @@ export const environmentsModal = (props?:TModalProps) => setActiveModal(
   props?.visible,
   props
 )
+export const idleModal = (props?:TModalProps) => setActiveModal(
+  EModalTypes.idle,
+  props?.visible,
+  props
+)

@@ -115,7 +115,11 @@ export class Controller {
     return undefined
   }
 
-  remove = async (containerRef:TContainerRef|TPodRef) => {
+  remove = async (
+    containerRef:TContainerRef|TPodRef,
+    isContainerMap:boolean=false,
+    throwOnEmpty:boolean=true
+  ) => {
     throwOverrideErr()
     return undefined
   }
@@ -126,6 +130,11 @@ export class Controller {
   }
 
   cleanup = async () => {
+    throwOverrideErr()
+    return undefined
+  }
+
+  get = async (ref:TContainerRef|TPodRef) => {
     throwOverrideErr()
     return undefined
   }

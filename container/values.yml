@@ -121,6 +121,18 @@ env:
 # ---- Frontend ENVs ---- #
   GB_FE_PORT: 19006
   GB_FE_IMAGE_TAG: latest
+  # Time to wait until User will be automatically signed out (seconds) i.e. 1200 === 20min
+  GB_FE_IDLE_TIMEOUT: 1200
+  # Time to wait until showing the Idle timeout model (seconds) i.e. 900 === 15min
+  GB_FE_IDLE_PROMPT_TIMEOUT: 900
+  # Time to wait until showing an error message when checking the session container status (seconds)
+  GB_FE_CONTAINER_WAIT: 20
+
+  # Time to wait between reconnect attempts for the frontend websocket, **NOT VNC**
+  GB_FE_WS_RECONNECT_INTERVAL: 5
+  # Number of reconnect attempts to make for the frontend websocket, **NOT VNC**
+  GB_FE_WS_RECONNECT_ATTEMPTS: 30
+
   GB_FE_DEPLOYMENT: goblet-frontend
   GB_FE_IMAGE: 'ghcr.io/gobletqa/goblet-frontend'
   GB_FE_MOUNT_PATH: .:/goblet/app

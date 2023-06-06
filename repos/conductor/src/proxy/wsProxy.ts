@@ -44,5 +44,5 @@ export const createWSProxy = (config:TProxyOpts, app:Express) => {
   // @ts-ignore
   wsProxy.middleware.path = path
 
-  return wsProxy.middleware
+  return wsProxy
 }

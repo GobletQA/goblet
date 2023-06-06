@@ -146,8 +146,16 @@ export class Conductor {
   /**
    * Removes a container be reference name
    */
-  async remove(containerRef:TContainerRef){
-    return await this.controller.remove(containerRef)
+  async remove(
+    containerRef:TContainerRef,
+    isContainerMap:boolean=false,
+    throwOnEmpty:boolean=true
+  ){
+    return await this.controller.remove(
+      containerRef,
+      isContainerMap,
+      throwOnEmpty
+    )
   } 
 
   /**
@@ -207,7 +215,11 @@ export class Conductor {
       proxyRouter,
     }, app)
 
-    return { apiProxy, vncProxy, wsProxy }
+    return {
+      wsProxy,
+      apiProxy,
+      vncProxy,
+    }
   }
 
   /**
