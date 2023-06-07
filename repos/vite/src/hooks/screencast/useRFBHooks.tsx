@@ -6,7 +6,7 @@ import type {
 } from '@types'
 
 import { useCallback } from 'react'
-import RFB from '@novnc/novnc/core/rfb'
+
 
 const useDisconnectCB = (
   props:TBrowserProps,

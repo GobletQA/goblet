@@ -10,6 +10,7 @@ import type {
 } from '@gobletqa/conductor/types'
 
 import { buildConfig } from './utils/buildConfig'
+import { proxyUpgrade } from './utils/proxyUpgrade'
 import { Controller } from './controller/controller'
 import { getApp } from '@gobletqa/shared/express/app'
 import { EContainerState } from '@gobletqa/conductor/types'
@@ -215,11 +216,11 @@ export class Conductor {
       proxyRouter,
     }, app)
 
-    return {
+    return proxyUpgrade(this, {
       wsProxy,
       apiProxy,
       vncProxy,
-    }
+    })
   }
 
   /**

@@ -42,3 +42,14 @@
 * Add scroll to position step
 * Add action to re-audit feature
 
+* Reload custom steps without reloading page
+  * Add step reload button
+
+* Keeping the feature file open when switching editors
+
+* Move editor switcher to bottom of menu
+
+
+
+
+TODO: show initializing session container modal when user clicks yes in session expire modal

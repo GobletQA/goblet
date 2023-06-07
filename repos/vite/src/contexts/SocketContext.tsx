@@ -95,7 +95,7 @@ const useWSHooks = () => {
     ;(async () => {
       const jwt = await localStorage.getJwt()
       // Once the container?.api is loaded, then init the websocket
-      const wsConfig = getWebsocketConfig(container.api)
+      const wsConfig = getWebsocketConfig(container)
       WSService.initSocket(wsConfig, jwt)
 
       // Now update the state to include the websocket

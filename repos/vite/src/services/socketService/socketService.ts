@@ -3,10 +3,10 @@ import type { TSockCmds, TSocketService } from '@types'
 
 import io from 'socket.io-client'
 import { events } from './events'
+import { EAppStatus } from '@types'
 import { TagPrefix, WSSocketResetEvt } from '@constants'
 import * as WSEventTypes from '@constants/websocket'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
-import { signOutManually } from '@actions/admin/user/signOutManually'
 import {
   callAction,
   getTransports,
@@ -20,6 +20,8 @@ import {
   deepMerge,
   snakeCase,
 } from '@keg-hub/jsutils'
+import {getAppData} from '@utils/store/getStoreData'
+import {signOutManually} from '@actions/admin/user/signOutManually'
 
 
 const {
@@ -160,21 +162,21 @@ export class SocketService {
   }
 
   onReconnectFailed(){
-    EE.emit(WSSocketResetEvt, {})
+    const { status } = getAppData()
 
-    // If we failed to reconnect
+    // If we failed to reconnect and in idle status
     // Then just log out, because we can't do anything anyways
-    // signOutManually()
+    status === EAppStatus.Idle
+      ? signOutManually()
+      : EE.emit(WSSocketResetEvt, {})
   }
 
   // TODO: handle errors and reconnect errors for main web-socket
   // When the user is idle, or the container is killed,
   // Need to stop calling backend api web-socket 
   onError(type:string, err:any) {
-
-    console.log(`------- err -------`)
-    console.log(type, [err])
-    // EE.emit(WSSocketResetEvt, {})
+    // console.log(`------- err -------`)
+    // console.log(type, [err])
   }
 
   /**

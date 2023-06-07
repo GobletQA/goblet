@@ -19,7 +19,7 @@ import { buildPorts } from './pod/buildPorts'
 import { buildPortMap } from './pod/buildPortMap'
 import { shouldRemove } from './pod/shouldRemove'
 import { shouldHydrate } from './pod/shouldHydrate'
-import { isObj, isEmptyColl, isStr } from '@keg-hub/jsutils'
+import { isObj, isEmptyColl, isStr, noOp } from '@keg-hub/jsutils'
 import { buildPodManifest } from './pod/buildPodManifest'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
 import { buildImgUri } from '../docker/image/buildImgUri'
@@ -289,6 +289,8 @@ export class Kube extends Controller {
       : this.getContainer(podRef)
 
     if(!containerMap){
+      this?.config?.onRemove?.(containerMap)
+
       throwOnEmpty
         && this.notFoundErr({ type: `container`, ref: podRef as string })
 
@@ -306,6 +308,7 @@ export class Kube extends Controller {
       }, {})
 
     Logger.success(`Pod ${containerMap.id} removed successfully`)
+    this?.config?.onRemove?.(containerMap)
 
     return containerMap
   }

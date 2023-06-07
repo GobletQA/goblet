@@ -2,7 +2,7 @@ import type { Request } from 'express'
 import type { Conductor } from '../conductor'
 import { buildImgUri } from './docker/image/buildImgUri'
 import { checkImgConfig } from '../utils/checkImgConfig'
-import { capitalize, deepMerge, omitKeys } from '@keg-hub/jsutils'
+import { capitalize, deepMerge, noOp, omitKeys } from '@keg-hub/jsutils'
 import { ForwardPortHeader, ForwardSubdomainHeader } from '@GCD/constants'
 import {
   TImgRef,
@@ -17,10 +17,8 @@ import {
   TContainerRoute,
   TControllerRoutes,
   TControllerConfig,
+  TOnContainerRemove,
 } from '../types'
-
-
-
 
 const throwOverrideErr = (message?:string) => {
   throw new Error(message || `Controller method must be overriden by an extending Class`)
@@ -32,6 +30,7 @@ export class Controller {
   conductor: Conductor
   config: TControllerConfig
   routes: TControllerRoutes = {}
+  onRemove:TOnContainerRemove=noOp
   containerMaps: Record<string, TContainerMap> = {}
 
   constructor(conductor:Conductor, config:TControllerConfig){

@@ -1,5 +1,6 @@
 import type { DockerOptions } from 'dockerode'
 import type { TRouteMeta } from './routes.types'
+import type { TContainerMap } from './helpers.types'
 
 export type TControllerEvt = (message?:Record<any, any>) => void
 
@@ -15,6 +16,7 @@ export type TControllerEvts = {
 }
 
 export type TControllerType = 'docker' | 'Docker' | 'Kube' | 'kube'
+export type TOnContainerRemove = (container:TContainerMap) => void
 
 export type TControllerConfig = {
   pidsLimit?: number
@@ -23,4 +25,5 @@ export type TControllerConfig = {
   options:DockerOptions
   devRouter?: TRouteMeta
   listenerTimeout?:number
+  onRemove?: TOnContainerRemove
 }

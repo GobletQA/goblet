@@ -276,6 +276,8 @@ export class Docker extends Controller {
       }, {})
 
     Logger.success(`Container removed successfully`)
+    this?.config?.onRemove?.(containerMap)
+
     return cont
   }
 
