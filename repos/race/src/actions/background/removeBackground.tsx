@@ -64,7 +64,7 @@ export const removeBackground = async (props:TRemoveBackground) => {
   return !background
     ? logNotFound(`background`, prefix)
     : await openYesNo({
-        title: `Delete ${background?.background}`,
+        title: `Delete Background?`,
         text: (
           <>
             Are you sure your want to delete background <b><RedText>{background?.background}</RedText></b>?

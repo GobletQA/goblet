@@ -7,3 +7,9 @@ export enum EEditorType {
   Code = `code`,
   CODE = `code`,
 }
+
+export enum EAppStatus {
+  Idle=`Idle`,
+  Active=`Active`,
+  Prompted=`Prompted`
+}

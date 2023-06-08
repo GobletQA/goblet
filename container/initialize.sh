@@ -19,22 +19,6 @@ goblet_run_pm2(){
   tail -f /goblet/app/logs/*.log && exit 0;
 }
 
-
-# When running in dev, sometimes we need to add new packages
-# Only needed in development
-goblet_run_dev_install(){
-  if [ "$GB_NM_INSTALL" == "all" ]; then
-    echo "Running pnpm install for all repos..."
-    cd /goblet/app
-    pnpm install --fix-lockfile --shamefully-hoist
-
-  elif [ "$GB_NM_INSTALL" == "$GB_SUB_REPO" ]; then
-    echo "Running pnpm install for $GB_SUB_REPO..."
-    cd /goblet/app/repos/$GB_SUB_REPO
-    pnpm install --fix-lockfile --shamefully-hoist
-  fi
-}
-
 goblet_screencast(){
   if [ "$PW_DEBUG_FILE" ]; then
     export DEBUG_FILE=$PW_DEBUG_FILE
@@ -46,18 +30,18 @@ goblet_screencast(){
   mkdir -p $LOG_DIR
   touch $DEBUG_FILE
 
-
   cd /goblet/app/repos/screencast
-  exec supervisord -c configs/supervisord.dev.conf >> /proc/1/fd/1 &
 
-  # See here => https://georgik.rocks/how-to-start-d-bus-in-docker-container/
-  # Explains how to run dbus in docker container
-  # Seems to be needed for Playwright
-  # dbus-daemon --config-file=/usr/share/dbus-1/system.conf --print-address
+  if [ "$GB_SC_IDLE_TIMEOUT_ACTIVE" == "true" ] || [ "$GB_SC_IDLE_TIMEOUT_ACTIVE" == "1" ]; then
+    # Run the init script that contains the idle timeout check
+    /bin/bash ./scripts/initialize.sh >> /proc/1/fd/1 &
+  else
+    # Start supervisord in local environment
+    exec supervisord -c configs/supervisord.local.conf >> /proc/1/fd/1 &
+  fi
+
 }
 
-# Check if we should install new packages
-[ "$GB_NM_INSTALL" ] && goblet_run_dev_install
 
 # If a sub-repo is defined only run that one repo
 # Check if the process to run is defined, then run it

@@ -1,13 +1,12 @@
-import type { MouseEvent, ReactNode, CSSProperties } from 'react'
+import type { MouseEvent, CSSProperties } from 'react'
 
 import { MenuToggleBtn } from './Menu.styled'
 import { MenuIcon } from '@GBC/components/Icons'
 
-
 export type TMenuToggle = {
   id:string
+  Icon?:any
   open?:boolean
-  Icon?:ReactNode
   sx?:CSSProperties
   controlId:string
   onOpen: (event: MouseEvent<HTMLElement>) => void

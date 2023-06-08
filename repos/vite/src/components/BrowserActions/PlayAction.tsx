@@ -7,7 +7,7 @@ import { getFileModel } from '@utils/files/getFileModel'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
-import { useOnEvent, BaseAction, gutter, PlayCircleOutlineIcon } from '@gobletqa/components'
+import { useOnEvent, BaseAction, PlayCircleOutlineIcon } from '@gobletqa/components'
 
 export type TEditorPathChange = {
   location: string

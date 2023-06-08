@@ -98,6 +98,7 @@ WORKDIR /goblet/app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     novnc \
+    net-tools \
     supervisor \
     tigervnc-standalone-server; \
     apt-get clean && \

@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from 'react'
 
 import { useState } from 'react'
 import Box from '@mui/material/Box'
+import { WaitTimeout } from '@constants/screencast'
 import { LogoutButton } from '@components/Buttons/LogoutButton'
 import { useSetTimeout, gutter, Loading } from '@gobletqa/components'
 
@@ -29,8 +30,8 @@ export const WaitOnContainer = (props:TWaitOnContainer) => {
     // Give the session 20 seconds to start
     // Otherwise show reload warning
     condition: !timedOut,
-    delay: timeout || 15000,
     callback: () => setTimedOut(true),
+    delay: timeout || WaitTimeout || 20,
   })
 
   const message = !timedOut
@@ -42,7 +43,7 @@ export const WaitOnContainer = (props:TWaitOnContainer) => {
         Please sign out and back in again.
         <br/>
         <br/>
-        If the problem persists, please let us know.
+        If the problem persists, please contact support.
       </>
     )
 

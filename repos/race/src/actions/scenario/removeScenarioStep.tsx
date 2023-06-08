@@ -50,7 +50,7 @@ const toFeature = (
   return update
 }
 
-export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
+export const removeScenarioStep = async (props:TRemoveScenarioStep):Promise<TRaceFeature|undefined|void> => {
   const {
     stepId,
     granParent,
@@ -90,7 +90,7 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
   const stepTxt = trimmed || `scenario step `
 
   return await openYesNo({
-    title: `Delete ${stepTxt}`,
+    title: `Delete Scenario Step?`,
     text: trimmed
       ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
       : (<>Are you sure your want to delete <b><RedText>{stepTxt}</RedText></b>?</>),
@@ -101,6 +101,6 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep) => {
           : toRule(props, feature, scenarioParent, scenarios)
       }
     }
-  })
+  }) as Promise<TRaceFeature|undefined|void>
 
 }

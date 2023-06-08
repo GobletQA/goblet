@@ -5,10 +5,10 @@ import type {
   TControllerType,
   TControllerConnectOpts,
 } from '@GBE/types'
-import { toNum, exists, deepMerge } from '@keg-hub/jsutils'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
+import { toNum, exists, deepMerge, toBool } from '@keg-hub/jsutils'
 
 const { NODE_ENV=`local` } = process.env
 
@@ -39,7 +39,7 @@ const {
   GB_CD_VALIDATION_KEY,
   GB_CD_VALIDATION_HEADER,
   GOBLET_KIND_SERVICE_PORT,
-  
+
 } = process.env
 
 const whiteList = [
@@ -59,9 +59,11 @@ const whiteList = [
   `GB_BE_JWT_CREDENTIALS`,
   `GB_BE_JWT_REFRESH_EXP`,
   `GB_BE_JWT_REFRESH_SECRET`,
-  `GB_SC_TIMEOUT_ACTIVE`,
-  `GB_SC_INACTIVE_TIMEOUT`,
-  `GB_SC_DISCONNECT_TIMEOUT`,
+  `GB_SC_IDLE_INTERVAL`,
+  `GB_SC_IDLE_THRESHOLD`,
+  `GB_SC_IDLE_WAIT_TO_START`,
+  `GB_SC_IDLE_TIMEOUT_ACTIVE`,
+  `GB_SC_IDLE_CONNECTION_THRESHOLD`,
 ]
 
 const blackList = []
@@ -71,7 +73,12 @@ const controllerHost = isDockerHost
   ? getDindHost()
   : getKindHost()
 
-const devRouter = (NODE_ENV === `local` || Boolean(GB_LOCAL_DEV_MODE === 'true'))
+
+// TODO: look into passing the GB_*_ACTIVE envs to the pods on deployment
+// That and update GB_LOCAL_DEV_MODE env to be set via a argument when starting
+// When running without auto-starting the screencast pod
+const devRouter = NODE_ENV === `local`
+  && toBool(GB_LOCAL_DEV_MODE)
   && exists(GOBLET_SCREENCAST_SERVICE_HOST)
   && exists(GOBLET_SCREENCAST_PORT)
     ? {
@@ -185,9 +192,11 @@ export const conductorConfig:TConductorOpts = deepMerge({
           GB_VNC_ACTIVE: true,
           // Amount to time to wait before auto-killing the container
           // When a user logs out
-          GB_SC_TIMEOUT_ACTIVE: containerEnvs.GB_SC_TIMEOUT_ACTIVE,
-          GB_SC_INACTIVE_TIMEOUT: containerEnvs.GB_SC_INACTIVE_TIMEOUT || `20`,
-          GB_SC_DISCONNECT_TIMEOUT:  containerEnvs.GB_SC_DISCONNECT_TIMEOUT || `5`
+          GB_SC_IDLE_INTERVAL: containerEnvs.GB_SC_IDLE_INTERVAL || `20`,
+          GB_SC_IDLE_THRESHOLD: containerEnvs.GB_SC_IDLE_THRESHOLD || `2`,
+          GB_SC_IDLE_WAIT_TO_START: containerEnvs.GB_SC_IDLE_WAIT_TO_START || `120`,
+          GB_SC_IDLE_CONNECTION_THRESHOLD: containerEnvs.GB_SC_IDLE_CONNECTION_THRESHOLD || `2`,
+          GB_SC_IDLE_TIMEOUT_ACTIVE: containerEnvs.GB_SC_IDLE_TIMEOUT_ACTIVE || NODE_ENV !== `local`,
         },
         runtimeEnvs: {}
       }

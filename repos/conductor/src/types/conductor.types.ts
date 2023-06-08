@@ -2,6 +2,7 @@ import type { Conductor } from '../conductor'
 import type { V1Pod, V1ObjectMeta, KubernetesObject } from '@kubernetes/client-node'
 import type {
   TPort,
+  TRouteId,
   TPortsMap,
   TUserHash,
   TContainerMap,
@@ -22,16 +23,16 @@ export type TPodMeta = Omit<V1ObjectMeta, `name` | `namespace`> & {
 
 export type TGenRoute = {
   hostPort:TPort,
-  userHash:TUserHash,
-  containerPort:TPort,
-  conductor:Conductor,
+  userHash:TUserHash
+  containerPort:TPort
+  conductor:Conductor
   meta: TContainerMeta
 }
 
 export type TGenRoutes = {
-  ports:TPortsMap,
-  userHash:TUserHash,
-  conductor:Conductor,
+  ports:TPortsMap
+  userHash:TUserHash
+  conductor:Conductor
   meta: TContainerMeta
 }
 

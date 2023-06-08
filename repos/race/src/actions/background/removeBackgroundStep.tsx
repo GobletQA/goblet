@@ -62,7 +62,7 @@ const toFeature = (
   return updated
 }
 
-export const removeBackgroundStep = async (props:TRemoveBackgroundStep) => {
+export const removeBackgroundStep = async (props:TRemoveBackgroundStep):Promise<TRaceFeature|undefined|void> => {
   const {
     stepId,
     granParent,
@@ -88,7 +88,7 @@ export const removeBackgroundStep = async (props:TRemoveBackgroundStep) => {
   const stepTxt = trimmed || `background step `
 
   return await openYesNo({
-    title: `Delete ${stepTxt}`,
+    title: `Delete Background Step?`,
     text: step?.step
       ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
       : (<>Are you sure your want to delete <b><RedText>{stepTxt}</RedText></b>?</>),
@@ -99,7 +99,7 @@ export const removeBackgroundStep = async (props:TRemoveBackgroundStep) => {
           : toRule(props, feature, rule, index, background)
       }
     }
-  })
+  }) as Promise<TRaceFeature|undefined|void>
 
 
 }

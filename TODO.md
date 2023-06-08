@@ -15,12 +15,6 @@
 * Any paths outside of it, are not allowed
 
 
-* When in simple mode mode, Should only run the single scenario
-  * Currently runs all scenarios
-
-* When closing the last open file
-  * Does not update the content of the editor to be empty
-  
 * Save currently opened file
   * Auto reopen it on reload
 
@@ -29,15 +23,32 @@
   * Sort actions by most used
     * So don't have to use keyboard
 
-* Duplicated in expression actions
-  * Save page cookie
-  * Is checked
 
 * On world save, reload the entire world
-* When hitting x on expression action, it should reset the expression to initial state
-* Remove the X for all auto-completes
+
 
 * Add disable step
   * comment it out
+  * Will require parsing commented out steps
+  * Which means this needs updates to parkin
 
-* Drag and drop not updating position in feature
+
+* Add ability to restart session container from UI
+* Add scroll to position step
+
+* Reload custom steps without reloading page
+  * Add step reload button
+
+* Keeping the feature file open when switching editors
+
+
+* Fix `feature` references when running feature tests to use a constant
+  * Should come from the fileTypes, and not be a hard coded string
+
+
+* Fix bug with race decorators
+  * Rules seem to fail when running
+    * Looks to be related to the decorators issues
+  * Needs an update to Parkin to keep a consistent uuid for feature items
+  * Needs to pass on feature test meta data
+    * This is mostly done, but needs to be published

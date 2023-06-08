@@ -1,16 +1,10 @@
 import type { TRouteMeta } from '@types'
 import { EContainerState } from '@types'
 import { noOpObj } from '@keg-hub/jsutils'
-import { apiRequest } from '@utils/api/apiRequest'
+import { containerApi } from '@services/containerApi'
+import {ContainerCheckInterval} from '@constants/screencast'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
 
-const checkContainerState = async (params:any) => {
-  return await apiRequest<TRouteMeta>({
-    method: 'GET',
-    url: `/container/state`,
-    params: {...params },
-  })
-}
 
 /**
  * Calls the Backend API to get the current status of a connected repo ( mounted || via git )
@@ -25,9 +19,8 @@ export const waitForRunning = async (
   const {
     data,
     error,
-  } = await checkContainerState(params)
+  } = await containerApi.state(params)
 
-  // TODO: figure out proper error handling
   if(error){
     console.log(`Error getting the state of the container :(`)
     console.log(error)
@@ -48,7 +41,7 @@ export const waitForRunning = async (
         const data = await waitForRunning(params, nextCall)
         await setContainerRoutes(data)
         res(data)
-      }, 4000)
+      }, ContainerCheckInterval)
     }
     catch(err) {
       rej(err)

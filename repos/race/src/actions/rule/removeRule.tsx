@@ -30,7 +30,7 @@ export const removeRule = async (props:TRemoveRule) => {
   })
 
   return await openYesNo({
-    title: `Delete ${rule?.rule}`,
+    title: `Delete Rule?`,
     text: (
       <>
         Are you sure your want to delete rule <b><RedText>{rule?.rule}</RedText></b>?

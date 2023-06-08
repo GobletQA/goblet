@@ -7,7 +7,7 @@ require:
 pipelines:
   # Overwrite the default pipelines with custom actions
   dev: |-
-    services=$(node scripts/ds/resolvePipeline.ts BE SC)
+    services=$(node -r esbuild-register scripts/ds/resolvePipeline.ts BE SC)
     ensure_pull_secrets --all
     if ! is_empty $services; then
       run_pipelines $services

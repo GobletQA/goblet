@@ -7,5 +7,8 @@ import { getScreencastUrl } from '@utils/api/getScreencastUrl'
  */
 export const useScreencastUrl = () => {
   const container = useContainer()
-  return useMemo(() => getScreencastUrl(container.screencast), [container.screencast])
+  return useMemo(
+    () => getScreencastUrl(container),
+    [container?.screencast, container?.meta]
+  )
 }

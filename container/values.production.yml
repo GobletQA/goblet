@@ -34,4 +34,4 @@ env:
   GB_PW_SOCKET_ACTIVE: false
 
   # --- CONTAINER TIMEOUT ENVs --- #
-  GB_SC_TIMEOUT_ACTIVE: true
+  GB_SC_IDLE_TIMEOUT_ACTIVE: true

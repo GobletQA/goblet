@@ -3,12 +3,11 @@ import type { TTask, TTaskActionArgs, TTaskParams } from '../../types'
 import { clean as cleanTask } from './clean'
 import { getNpmToken } from '../../utils/envs'
 import { devspace } from '../../utils/devspace/devspace'
-import { getLongContext } from '../../utils/helpers/contexts'
 import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
 import { getDeployments } from '../../utils/devspace/getDeployments'
 
 const setStartEnvs = (params:TTaskParams) => {
-  const { install, pull, build } = params
+  const { pull, build } = params
 
   setPullPolicy(pull)
 
@@ -17,14 +16,6 @@ const setStartEnvs = (params:TTaskParams) => {
    * This determines if the docker images should be built locally or pulled from a registry
    */
   process.env.BUILD_LOCAL_IMAGE = build
-
-  /**
-   * Set the GB_NM_INSTALL env based on the passed in install option
-   * Tells the corresponding app to run pnpm install prior to starting
-   */
-  const nmInstall = getLongContext(install)
-
-  if (nmInstall) process.env.GB_NM_INSTALL = nmInstall
 }
 
 /**
@@ -137,12 +128,6 @@ export const start:TTask = {
     },
     profile: {
       description: `Devspace profile to use defined in the container/devspace.yml`,
-    },
-    install: {
-      type: `string`,
-      example: `--install proxy`,
-      alias: [`in`, `pnpm`, `nm`],
-      description: `Name of the app that should run pnpm install prior to starting.`,
     },
     pull: {
       example: `--pull never`,

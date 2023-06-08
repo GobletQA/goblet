@@ -18,7 +18,6 @@ import { startSockify, stopSockify } from '@GSC/libs/vnc/sockify'
     'SIGINT',
     'SIGUSR1',
     'SIGUSR2',
-    'uncaughtException',
     'TERM',
     'SIGTERM'
   ])
@@ -26,7 +25,7 @@ import { startSockify, stopSockify } from '@GSC/libs/vnc/sockify'
       if(exitCalled) return
       exitCalled = true
       
-      stopSockify()
+      await stopSockify()
     }))
 
 })()

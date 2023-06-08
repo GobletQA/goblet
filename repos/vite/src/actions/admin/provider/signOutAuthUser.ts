@@ -1,6 +1,7 @@
 import { AuthActive } from '@constants'
 import { GitUser } from '@services/gitUser'
 // import { account } from '@services/appwrite'
+import { emptyObj } from '@keg-hub/jsutils'
 import { signInModal } from '@actions/modals/modals'
 import { localStorage } from '@services/localStorage'
 import { getProviderMetadata } from '@services/providers'
@@ -10,6 +11,14 @@ import { clearContainerRoutes } from '@actions/container/local/clearContainerRou
 
 const { auth } = getProviderMetadata()
 
+export type TSignOutOpts = {
+  ws?:boolean
+  user?:boolean
+  repo?:boolean
+  session?:boolean
+  container?:boolean
+}
+
 /**
  * Calls the authProviders sign out method to sign out the currently signed in user
  * @public
@@ -17,41 +26,53 @@ const { auth } = getProviderMetadata()
  *
  * @return {Void}
  */
-export const signOutAuthUser = async () => {
+export const signOutAuthUser = async (opts:TSignOutOpts=emptyObj) => {
   if(!AuthActive) return
 
   // Log-out the github user
   const currentUser = GitUser.getUser()
 
-  try { await disconnectRepo(currentUser?.username, false) }
-  catch(err:any){ console.error(`Error disconnecting mounted repo.\n${err.message}`) }
+  if(opts.repo !== false){
+    try { await disconnectRepo(currentUser?.username, false) }
+    catch(err:any){ console.error(`Error disconnecting mounted repo.\n${err.message}`) }
+  }
 
   // Remove the local cache
-  try { await localStorage.cleanupSession() }
-  catch(err:any){ console.error(`Error clearing local storage.\n${err.message}`) }
+  if(opts.session !== false){
+    try { await localStorage.cleanupSession() }
+    catch(err:any){ console.error(`Error clearing local storage.\n${err.message}`) }
+  }
 
   // Remove the container routes from redux store
-  try { await clearContainerRoutes(false) }
-  catch(err:any){ console.error(`Error clearing container routes.\n${err.message}`) }
+  if(opts.container !== false){
+    try { await clearContainerRoutes() }
+    catch(err:any){ console.error(`Error clearing container routes.\n${err.message}`) }
+  }
 
   // Disconnect from the web-socket server
-  try { await WSService.disconnect() }
-  catch(err:any){ console.error(`Error disconnecting from websocket.\n${err.message}`) }
+  if(opts.ws !== false){
+    try { await WSService.disconnect() }
+    catch(err:any){ console.error(`Error disconnecting from websocket.\n${err.message}`) }
+  }
 
   // Remove local user data here
-  try { GitUser.signOut() }
-  catch(err:any){ console.error(`Error logging out github user.\n${err.message}`) }
+  if(opts.user !== false){
+    try { GitUser.signOut() }
+    catch(err:any){ console.error(`Error logging out github user.\n${err.message}`) }
 
-  currentUser &&
-    console.info(`[Auth State Info] Logging out of of Goblet-Admin`)
+    currentUser &&
+      console.info(`[Auth State Info] Logging out of of Goblet-Admin`)
 
-// Disconnect from the web-socket server
-  try {
-    await auth.signOut()
-    // await account.deleteSession(`current`)
+  // Disconnect from the web-socket server
+    try {
+      await auth.signOut()
+      // await account.deleteSession(`current`)
+    }
+    catch(err:any){ console.error(`Error in auth sign out.\n${err.message}`) }
+
+    // Open the sign in modal to force the user to re-sign in
+    signInModal()
   }
-  catch(err:any){ console.error(`Error in auth sign out.\n${err.message}`) }
 
-  // Open the sign in modal to force the user to re-sign in
-  signInModal()
+
 }

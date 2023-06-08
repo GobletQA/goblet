@@ -3,6 +3,7 @@ import {
   ForwardHostHeader,
   ForwardPortHeader,
   ForwardProtoHeader,
+  ForwardRouteHeader,
   ForwardSubdomainHeader
 } from '@GCD/constants'
 import {
@@ -65,6 +66,7 @@ export const generateRoute = ({
     headers: {
       [ForwardPortHeader]: cPort,
       [ForwardProtoHeader]: proto,
+      [ForwardRouteHeader]: meta.id,
       [ForwardSubdomainHeader]: userHash,
       [ForwardHostHeader]: generateExternalUrl(hostPort, userHash, conductor)
     },

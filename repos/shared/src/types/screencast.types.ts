@@ -59,8 +59,10 @@ export type TScreencastConfig = {
 
 export type TSCContainerConfig = {
   timeoutActive?: boolean
+  idleWaitToStart?:number
   inactiveTimeout?: number
-  disconnectTimeout?: number
+  inactiveThreshold?: number
+  connectionThreshold?:number
 }
 
 export type TGScreencastConfig = {

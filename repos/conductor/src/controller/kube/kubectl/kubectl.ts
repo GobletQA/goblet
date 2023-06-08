@@ -72,7 +72,12 @@ export class Kubectl {
     const [err, res] = await limbo<Record<'body', any>, TKubeError>(
       this.client.deleteNamespacedPod(selector, this.config.namespace)
     )
-    return err ? throwError(err) : res?.body
+
+    return err
+      ? err.body.reason === `NotFound`
+        ? undefined
+        : throwError(err)
+      : res?.body
   }
 
   /**

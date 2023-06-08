@@ -7,7 +7,6 @@ import { Logger } from '../../../utils/logger'
 
 export const shouldRemove = (
   pod:TPod,
-  image:TImgConfig,
   mapped:TContainerMap,
   annotations:Record<string, string>,
 ) => {
@@ -20,6 +19,11 @@ export const shouldRemove = (
   if(!annotations.ports){
     Logger.warn(`Found pod with missing ports`, pod)
     Logger.info(`Force removing pod ${mapped.name}`)
+    return true
+  }
+
+  if(mapped.state === `Succeeded`){
+    Logger.info(`Found pod with "Succeeded" state, removing...`)
     return true
   }
 

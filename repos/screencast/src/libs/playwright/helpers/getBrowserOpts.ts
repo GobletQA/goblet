@@ -27,6 +27,9 @@ const options = {
       `--enable-automation`
     ],
     args: [
+        // `--disable-extensions-except=${pathToExtension}`,
+        // `--load-extension=${pathToExtension}`,
+
       `--disable-gpu`,
       `--start-maximized`,
       `--start-fullscreen`,

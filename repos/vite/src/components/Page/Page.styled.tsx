@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import { styled } from '@mui/material/styles'
 import { dims } from '@gobletqa/components/theme'
 
-export const ScreenContainer = styled(Box)`
+export const PageContainer = styled(Box)`
   z-index: 0;
   display: flex;
   position: relative;
@@ -13,6 +13,3 @@ export const ScreenContainer = styled(Box)`
   margin-top: ${dims.header.hpx} !important;
   max-height: calc( 100vh - ${dims.header.hpx} ) !important;
 `
-// overflow: hidden;
-// position: relative;
-// top: ${dims.header.hpx} !important;

@@ -17,6 +17,7 @@ export type TContainerRoute = ProxyTarget & {
 
 export type TProxyForwardHeaders = {
   [`x-goblet-host`]: string
+  [`x-goblet-route`]: string
   [`x-goblet-proto`]: string
   [`x-goblet-subdomain`]: string
   [`x-goblet-port`]: string | number

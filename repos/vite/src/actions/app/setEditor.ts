@@ -12,7 +12,7 @@ const getType = (type:EEditorType, current:EEditorType) => {
       : EEditorType.visual
 }
 
-export const onEditor = (type:EEditorType) => {
+export const setEditor = (type:EEditorType) => {
   const { app } = getStore().getState()
   const { editor } = app
 

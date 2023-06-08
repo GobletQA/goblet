@@ -10,6 +10,7 @@ import type {
 } from '@gobletqa/conductor/types'
 
 import { buildConfig } from './utils/buildConfig'
+import { proxyUpgrade } from './utils/proxyUpgrade'
 import { Controller } from './controller/controller'
 import { getApp } from '@gobletqa/shared/express/app'
 import { EContainerState } from '@gobletqa/conductor/types'
@@ -146,8 +147,16 @@ export class Conductor {
   /**
    * Removes a container be reference name
    */
-  async remove(containerRef:TContainerRef){
-    return await this.controller.remove(containerRef)
+  async remove(
+    containerRef:TContainerRef,
+    isContainerMap:boolean=false,
+    throwOnEmpty:boolean=true
+  ){
+    return await this.controller.remove(
+      containerRef,
+      isContainerMap,
+      throwOnEmpty
+    )
   } 
 
   /**
@@ -207,7 +216,11 @@ export class Conductor {
       proxyRouter,
     }, app)
 
-    return { apiProxy, vncProxy, wsProxy }
+    return proxyUpgrade(this, {
+      wsProxy,
+      apiProxy,
+      vncProxy,
+    })
   }
 
   /**

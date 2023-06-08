@@ -149,7 +149,7 @@ const BrowserComp: ForwardRefRenderFunction<TBrowserHandle, TBrowserProps> = (pr
         />
         
         <BrowserLoading
-          speed={800}
+          speed={1}
           fadeOut={isLoaded}
           styles={loadingStyles}
           {...loadingProps}

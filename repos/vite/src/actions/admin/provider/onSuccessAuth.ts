@@ -6,11 +6,11 @@ import type {
 
 import { omitKeys } from '@keg-hub/jsutils'
 import { GitUser } from '@services/gitUser'
-import { apiRequest } from '@utils/api/apiRequest'
 import { EAuthType, EContainerState } from '@types'
 import { signOutAuthUser } from './signOutAuthUser'
 import { formatUser } from '@utils/admin/formatUser'
 import { localStorage } from '@services/localStorage'
+import { containerApi } from '@services/containerApi'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
 
@@ -49,21 +49,15 @@ export const onSuccessAuth = async (
     const userData = await formatUser(authData, type)
     if(!userData) throw new Error(`[Auth State Error] Could not authenticate user. Invalid user format`)
 
-    // TODO: update this so show a message
-    // The user has logged in, and now we spin up a container for them
-    // This can take a while, so ensure we update the user so they know what's happening
-    // Also encrypt the user data to ensure it's not passed on via plain-text
+    // TODO: Look into encrypting the user data to ensure it's not passed on via plain-text
+    // While this is a common pattern, would be better to avoid it
 
     const {
       data,
       error,
       success,
       statusCode,
-    } = await apiRequest<TValidateResp>({
-      params: userData,
-      method: 'POST',
-      url: `/auth/validate`,
-    })
+    } = await containerApi.validate(userData)
 
     statusCodeNum = statusCode
     // If response if false, the session is invalid, and the user must sign in again
@@ -76,7 +70,7 @@ export const onSuccessAuth = async (
     await localStorage.setUser(omitKeys(userData, [`token`]))
     new GitUser(user as TUserState)
     
-    status?.meta?.state === EContainerState.CREATING && waitForRunning()
+    status?.meta?.state === EContainerState.Creating && waitForRunning()
 
     // Wrap container and repos so if they throw, the login auth is still valid
     try {

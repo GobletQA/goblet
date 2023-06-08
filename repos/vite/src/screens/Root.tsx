@@ -1,8 +1,9 @@
 import type { Component } from 'react'
 import type { RouteObject } from 'react-router-dom'
 
-import { isStr } from '@keg-hub/jsutils'
 import Screens from './Screens'
+import { isStr } from '@keg-hub/jsutils'
+import { Idle } from '@components/Idle'
 import { buildRouter } from '@services/router'
 import { RouterProvider } from 'react-router-dom'
 
@@ -62,5 +63,9 @@ const routes = buildRoutes(Object.values(Screens), Screens as unknown as TRouteC
 const router = buildRouter({ routes })
 
 export const RootScreen = () => {
-  return (<RouterProvider router={router} />)
+  return (
+    <Idle>
+      <RouterProvider router={router} />
+    </Idle>
+  )
 }

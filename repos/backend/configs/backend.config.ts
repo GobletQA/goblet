@@ -8,7 +8,6 @@ import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
 import { generateOrigins } from '@gobletqa/shared/utils/generateOrigins'
 
-
 const nodeEnv = process.env.NODE_ENV || `local`
 loadEnvs({
   force: true,

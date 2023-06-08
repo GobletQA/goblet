@@ -119,6 +119,7 @@ export type TConductorHeaders = {
   hostHeader:string
   portHeader:string
   protoHeader:string
+  routeHeader:string
   subdomainHeader:string
 } 
 

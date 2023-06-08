@@ -2,8 +2,10 @@ import type { MouseEvent, MutableRefObject } from 'react'
 import type { TEditorAction, TMenuItem } from '@gobletqa/components/types'
 
 import { dims } from '@GBC/theme'
-import { useRef, useState, useMemo } from 'react'
 import { Menu, MenuToggle } from '../Menu'
+import { KebabIcon } from '@GBC/components/Icons'
+import { useRef, useState, useMemo } from 'react'
+import { ActionsControlId } from '@GBC/constants/values'
 import { ActionsContainer } from './EditorActions.styled'
 import {useInline} from '@GBC/hooks/components/useInline'
 
@@ -79,16 +81,15 @@ export const EditorActions = <
     anchorRef.current = undefined
   })
 
-  const controlId = `gb-editor-actions-menu`
-
   return (
     <ActionsContainer className='gb-editor-actions-main' >
       <MenuToggle
         open={open}
         onOpen={onOpen}
+        Icon={KebabIcon}
         sx={styles.toggle}
         id="editor-actions"
-        controlId={controlId}
+        controlId={ActionsControlId}
       />
       <Menu
         open={open}
@@ -97,10 +98,10 @@ export const EditorActions = <
         posAH='right'
         items={items}
         posAV='bottom'
-        id={controlId}
         onOpen={onOpen}
         onClose={onClose}
         anchorRef={anchorRef}
+        id={ActionsControlId}
         aria-labelledby="gb-editor-actions-menu-button"
       />
     </ActionsContainer>

@@ -1,32 +1,32 @@
-import type { TProxyRoute } from '@types'
+import type { TContainerState } from '@types'
 
 import { WS_CONFIG } from '@constants'
-import { noOpObj } from '@keg-hub/jsutils'
+import {getSocketQueryData} from './getSocketQueryData'
 import { getBaseApiUrl } from '@utils/api/getBaseApiUrl'
-import { getContainerData } from '@utils/store/getStoreData'
 
 /**
  * Returns the generated screencast url if VNC_ACTIVE is active
  */
-export const getWebsocketConfig = (api?:TProxyRoute) => {
+export const getWebsocketConfig = (container?:TContainerState) => {
   const base = getBaseApiUrl()
   const { host } = new URL(base)
   const { protocol } = new URL(window.location.origin)
   const isHttps = Boolean(protocol.includes(`https`))
-  const headers = api?.headers || getContainerData()?.api?.headers || noOpObj
+  
+  const socketData = getSocketQueryData(`api`, container)
 
   return {
     host,
     ...WS_CONFIG,
     extraHeaders: {
       ...WS_CONFIG?.headers,
-      ...headers
+      ...socketData
     },
     query: {
       ...WS_CONFIG?.query,
       // Pass the headers in the query because websocket
       // doesn't pass extra headers for some protocols
-      ...headers
+      ...socketData
     },
     endpoint: `${protocol}//${host}`,
     protocol: isHttps ? 'wss' : 'ws',

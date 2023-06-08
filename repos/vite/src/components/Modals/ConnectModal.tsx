@@ -3,13 +3,13 @@ import type { TModalFooter, TModalComponent, TModalRef } from '@gobletqa/compone
 
 
 import Box from '@mui/material/Box'
-import { useContainer } from '@store'
-import { lazy, Suspense, useMemo } from 'react'
+import { EModalTypes } from '@types'
+import { lazy, Suspense } from 'react'
 import { ModalFooter } from '@gobletqa/components'
-import { EModalTypes, EContainerState } from '@types'
 import { ConnectForm } from '@components/Forms/ConnectForm'
-import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
+import { useContainerCreating } from '@hooks/api/useContainerCreating'
 import { gutter, H3, Text, PlugIcon, Loading } from '@gobletqa/components'
+import { WaitOnContainer } from '@components/WaitOnContainer/WaitOnContainer'
 
 const VersionCtrl = lazy(() => import('@gobletqa/components/components/Svgs/VersionCtrl'))
 
@@ -47,11 +47,8 @@ const styles:Record<string, CSSProperties> = {
 
 export const ConnectModal:TModalRef = (props:TModalComponent) => {
   const { ModalMessage } = props
-  const container = useContainer()
 
-  const showWaiting = useMemo(() => {
-    return !container?.meta?.state || container?.meta?.state === EContainerState.Creating
-  }, [container?.meta?.state])
+  const showWaiting = useContainerCreating()
 
   return showWaiting
     ? (<WaitOnContainer />)

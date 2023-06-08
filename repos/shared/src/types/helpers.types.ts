@@ -1,5 +1,6 @@
 import type { TPort } from './ports.types'
 
+export type TRouteId = string
 export type TUserHash = string
 export type TAnyCB = (...args:any[]) => any
 export type TUserHashMap = Record<TUserHash, TUserHash>
@@ -17,6 +18,8 @@ export enum EContainerState {
   Stopped = `Stopped`,
   CREATING = `Creating`,
   Creating = `Creating`,
+  Succeeded = `Succeeded`,
+  SUCCEEDED = `Succeeded`,
 }
 
 

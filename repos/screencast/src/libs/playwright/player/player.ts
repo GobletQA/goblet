@@ -11,6 +11,7 @@ import type {
   TPlayerTestEvent,
   TPlayerStartConfig,
 } from '@GSC/types'
+import type { TFeatureAst } from '@ltipton/parkin'
 
 import { PWPlay } from '@GSC/constants'
 import { CodeRunner } from './codeRunner'
@@ -156,7 +157,12 @@ export class Player {
         timeout: this.options?.playOptions?.testTimeout as number,
       })
 
-      const results = await this.codeRunner.run(this.options?.file?.content)
+      // TODO: fix `feature` to come from a constant
+      const content = this.options?.file?.fileType === `feature`
+        ? this.options?.file?.ast as TFeatureAst | TFeatureAst[]
+        : this.options?.file?.content
+
+      const results = await this.codeRunner.run(content)
 
       !this.canceled
         && this.fireEvent({
