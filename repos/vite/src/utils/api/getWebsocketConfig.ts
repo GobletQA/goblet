@@ -1,6 +1,7 @@
 import type { TContainerState } from '@types'
 
-import { WS_CONFIG } from '@constants'
+import {omitKeys} from '@keg-hub/jsutils'
+import { ForwardHeaders, WS_CONFIG } from '@constants'
 import {getSocketQueryData} from './getSocketQueryData'
 import { getBaseApiUrl } from '@utils/api/getBaseApiUrl'
 
@@ -20,7 +21,7 @@ export const getWebsocketConfig = (container?:TContainerState) => {
     ...WS_CONFIG,
     extraHeaders: {
       ...WS_CONFIG?.headers,
-      ...socketData
+      ...omitKeys(socketData, [ForwardHeaders.routeHeader])
     },
     query: {
       ...WS_CONFIG?.query,
