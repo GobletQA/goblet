@@ -64,7 +64,7 @@ export const removeScenario = async (props:TRemoveScenario) => {
   const removed = scenarios?.filter(scenario => scenario.uuid !== props.scenarioId)
 
   return await openYesNo({
-    title: `Delete ${scenario.scenario}`,
+    title: `Delete Scenario?`,
     text: (
       <>
         Are you sure your want to delete scenario <b><RedText>{scenario.scenario}</RedText></b>?

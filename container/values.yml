@@ -121,10 +121,10 @@ env:
 # ---- Frontend ENVs ---- #
   GB_FE_PORT: 19006
   GB_FE_IMAGE_TAG: latest
-  # Time to wait until User will be automatically signed out (seconds) i.e. 1200 === 20min
-  GB_FE_IDLE_TIMEOUT: 1200
-  # Time to wait until showing the Idle timeout model (seconds) i.e. 900 === 15min
-  GB_FE_IDLE_PROMPT_TIMEOUT: 900
+  # Time to wait until User will be automatically signed out (seconds) i.e. 1800 === 30min
+  GB_FE_IDLE_TIMEOUT: 1800
+  # Time to wait until showing the Idle timeout model (seconds) i.e. 1500 === 25min
+  GB_FE_IDLE_PROMPT_TIMEOUT: 1500
   # Time to wait until showing an error message when checking the session container status (seconds)
   GB_FE_CONTAINER_WAIT: 20
   # Time to wait between each check for the backend session container (seconds)
@@ -273,7 +273,7 @@ env:
   # And all proxy traffic will be directed to that container
   # It uses dev-space instead of the kubernetes API, so all the same hot-reload benefits are included
   # This makes local development way easier
-  GB_LOCAL_DEV_MODE: true
+  GB_LOCAL_DEV_MODE: false
 
 # --- KIND ENVs --- #
   GB_KD_DEPLOYMENT: goblet-kind

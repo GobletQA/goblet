@@ -88,7 +88,7 @@ export const removeBackgroundStep = async (props:TRemoveBackgroundStep):Promise<
   const stepTxt = trimmed || `background step `
 
   return await openYesNo({
-    title: `Delete ${stepTxt}`,
+    title: `Delete Background Step?`,
     text: step?.step
       ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
       : (<>Are you sure your want to delete <b><RedText>{stepTxt}</RedText></b>?</>),

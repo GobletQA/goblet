@@ -90,7 +90,7 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep):Promise<TRac
   const stepTxt = trimmed || `scenario step `
 
   return await openYesNo({
-    title: `Delete ${stepTxt}`,
+    title: `Delete Scenario Step?`,
     text: trimmed
       ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
       : (<>Are you sure your want to delete <b><RedText>{stepTxt}</RedText></b>?</>),

@@ -1,4 +1,7 @@
+import type { TFeatureAst } from '@ltipton/parkin'
 import type { TGitData, TFileModel, TStartPlaying, TPlayerResEvent } from '@types'
+
+
 
 import { EBrowserState } from '@types'
 import { addToast } from '@actions/toasts'
@@ -9,12 +12,14 @@ import { getRepoData } from '@utils/store/getStoreData'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { SocketMsgTypes, WSRecordActions } from '@constants'
 import { buildCmdParams } from '@utils/browser/buildCmdParams'
+import { EEditorMode, SimpleScenarioTag } from '@gobletqa/race'
 import { PromiseAbort } from '@gobletqa/shared/utils/promiseAbort'
 import {
   BrowserStateEvt,
   PlayerEndedEvent,
   WSCancelPlayerEvent,
 } from '@constants'
+import {getEditorSettings} from '@utils/editor/getEditorSettings'
 
 
 type TBuildOpts = {
@@ -39,15 +44,40 @@ const buildOptions = ({ options, params, file, appUrl }:TBuildOpts, repo:TGitDat
           playOptions: options,
           file: pickKeys<Partial<TFileModel>>(
             file,
-            [`fileType`, `location`, `uuid`, `name`, `content`]
+            [`fileType`, `location`, `uuid`, `name`, `content`, `ast`]
           )
-          
         },
         appUrl
       ],
       action: WSRecordActions.start
     }
   } as TBrowserPlay
+}
+
+
+const findSimpleTag = (feature:TFeatureAst) => {
+  return feature.scenarios.find(scenario => scenario?.tags?.tokens?.includes(SimpleScenarioTag))
+}
+
+const fileModelContext = async (file:TFileModel) => {
+  if(file?.fileType !== `feature`) return file
+
+  const { settings } = await getEditorSettings()
+  if(!settings || settings?.mode !== EEditorMode.simple || !file?.ast?.[0])
+    return file
+  
+  const feat = file?.ast?.[0]
+  const scenario = findSimpleTag(feat)
+  
+  return {
+    ...file,
+    ast: [{
+      ...feat,
+      rules: [],
+      background: undefined,
+      scenarios: [scenario]
+    }]
+  }
 }
 
 /**
@@ -62,17 +92,18 @@ export const startBrowserPlay = async (file:TFileModel) => {
     message: `Running tests for file ${file.name}!`,
   })
 
-
   const repo = getRepoData()
   const { params, options } = buildCmdParams({ file })
   const appUrl = getWorldVal({loc: `url`, fb: `app.url`})
 
+  const model = await fileModelContext(file)
+
   const opts = buildOptions(
     {
-      file,
       appUrl,
       params,
-      options
+      options,
+      file: model,
     },
     pickKeys<TGitData>(
       repo?.git,
