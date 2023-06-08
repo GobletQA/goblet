@@ -16,6 +16,7 @@ const allowedHeaders = [
   `x-goblet-host`,
   `x-goblet-proto`,
   `x-goblet-port`,
+  `x-goblet-route`,
   `x-goblet-subdomain`,
   `x-forwarded-subdomain`,
   `x-forwarded-port`,
@@ -66,6 +67,7 @@ const proxyAnnotations = () => (`
   nginx.ingress.kubernetes.io/configuration-snippet: |
     more_set_headers "X-Goblet-Host: $http_x_goblet_host";
     more_set_headers "X-Goblet-Port: $http_x_goblet_port";
+    more_set_headers "X-Goblet-Route: $http_x_goblet_route";
     more_set_headers "X-Goblet-Proto: $http_x_goblet_proto";
     more_set_headers "X-Goblet-Subdomain: $http_x_goblet_subdomain";
 
