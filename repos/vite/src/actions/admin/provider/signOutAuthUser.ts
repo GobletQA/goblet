@@ -45,7 +45,7 @@ export const signOutAuthUser = async (opts:TSignOutOpts=emptyObj) => {
 
   // Remove the container routes from redux store
   if(opts.container !== false){
-    try { await clearContainerRoutes(false) }
+    try { await clearContainerRoutes() }
     catch(err:any){ console.error(`Error clearing container routes.\n${err.message}`) }
   }
 

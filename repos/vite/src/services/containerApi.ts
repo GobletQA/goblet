@@ -24,7 +24,16 @@ export class ContainerApi {
   }
 
 
-  status = async (params:Record<any, any>) => {
+  state = async (params:Record<any, any>=emptyObj) => {
+    return await apiRequest<TRouteMeta>({
+      params: {...params },
+      method: HttpMethods.GET,
+      url: `${this.containerPath}/state`,
+    })
+  }
+
+
+  status = async (params:Record<any, any>=emptyObj) => {
     return await apiRequest<TRouteMeta>({
       params,
       method: HttpMethods.GET,

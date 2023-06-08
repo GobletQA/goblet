@@ -60,10 +60,10 @@ IdleModal.modalProps = {
       color: `success`,
       keyboard: `enter`,
       variant:`contained`,
-      onClick: async () => {
+      onClick: () => {
         toggleModal(false)
         setStatus(EAppStatus.Active)
-        await initStatus()
+        setTimeout(async () => await initStatus({ fromIdle: true }), 500)
       },
     },
   ],

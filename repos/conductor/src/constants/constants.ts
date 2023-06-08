@@ -4,6 +4,7 @@ export const ConductorLabel = `com.gobletqa`
 export const ConductorUserHashLabel = `${ConductorLabel}.conductor`
 export const ForwardHostHeader = conductorHeaders.hostHeader
 export const ForwardPortHeader = conductorHeaders.portHeader
+export const ForwardRouteHeader = conductorHeaders.routeHeader
 export const ForwardProtoHeader = conductorHeaders.protoHeader
 export const ForwardSubdomainHeader = conductorHeaders.subdomainHeader
 export const DevUserHash = `goblet-dev-user`

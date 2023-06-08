@@ -1,5 +1,6 @@
 import type { TPort } from './ports.types'
 
+export type TRouteId = string
 export type TUserHash = string
 export type TAnyCB = (...args:any[]) => any
 export type TUserHashMap = Record<TUserHash, TUserHash>

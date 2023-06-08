@@ -70,7 +70,7 @@ export const onSuccessAuth = async (
     await localStorage.setUser(omitKeys(userData, [`token`]))
     new GitUser(user as TUserState)
     
-    status?.meta?.state === EContainerState.CREATING && waitForRunning()
+    status?.meta?.state === EContainerState.Creating && waitForRunning()
 
     // Wrap container and repos so if they throw, the login auth is still valid
     try {

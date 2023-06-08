@@ -12,13 +12,14 @@ const allowedHeaders = [
   `x-goblet-host`,
   `x-goblet-proto`,
   `x-goblet-port`,
+  `x-goblet-route`,
   `x-goblet-subdomain`,
   `x-forwarded-subdomain`,
   `x-forwarded-port`,
   `x-forwarded-proto`,
   `x-forwarded-host`,
   `x-forwarded-for`,
-].join(`,`)
+]
 
 const allowedMethods = [
   `GET`,
@@ -37,7 +38,7 @@ const allowedMethods = [
  *
  * @returns {void}
  */
-export const setupCors = (app:Express) => {
+export const setupCors = (app:Express, extraHeaders:string[]=[]) => {
   const config = app?.locals?.config?.server
   if (!app) throw new Error(`Error setting up Cors. Express app does not exist`)
   if(!config) throw new Error(`Error setting up Cors. Server config does not exist`)
@@ -60,7 +61,7 @@ export const setupCors = (app:Express) => {
     res.setHeader('Vary', 'Origin,Access-Control-Request-Headers')
     res.setHeader('Access-Control-Allow-Credentials', 'true')
     res.setHeader('Access-Control-Allow-Methods', allowedMethods)
-    res.setHeader('Access-Control-Allow-Headers', allowedHeaders)
+    res.setHeader('Access-Control-Allow-Headers', [...allowedHeaders, ...extraHeaders].join(`,`))
 
     return req.method === 'OPTIONS' ? res.status(200).send('OK') : next()
   })

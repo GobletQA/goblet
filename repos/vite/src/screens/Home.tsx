@@ -1,37 +1,27 @@
 
-import Editor from './Editor'
 import { HeaderNav } from '@constants'
+import { Page } from '@components/Page'
 import { LogoutIcon } from '@gobletqa/components'
-import { ScreenContainer } from './Root.styled'
+
 import { SocketProvider } from '@contexts'
-import { Header } from '@components/Header'
+
 import { asCallback } from '@utils/helpers'
-import { SideNav } from '@components/SideNav'
 import { settingsModal } from '@actions/modals'
-import { Outlet, useLocation } from "react-router-dom"
 import { disconnectRepo } from '@actions/repo/api/disconnect'
 import { signOutManually } from '@actions/admin/user/signOutManually'
+import {useContainerCreating} from '@hooks/api/useContainerCreating'
 
 type THomeProps = {
   [key:string]: any
 }
 
 export default function Home(props:THomeProps) {
-  const location = useLocation()
 
-  return (
-    <SocketProvider>
-      <ScreenContainer className="screen-container">
-        {
-          location.pathname === '/' || location.pathname.startsWith(Editor.path)
-            ? (<Editor />)
-            : (<Outlet />)
-        }
-      </ScreenContainer>
-      <SideNav />
-      <Header settings={settings} />
-    </SocketProvider>
-  )
+  const creatingContainer = useContainerCreating()
+
+  return creatingContainer
+   ? (<></>)
+   : (<Page settings={settings} />)
 }
 
 const navActions = {

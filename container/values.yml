@@ -127,6 +127,8 @@ env:
   GB_FE_IDLE_PROMPT_TIMEOUT: 900
   # Time to wait until showing an error message when checking the session container status (seconds)
   GB_FE_CONTAINER_WAIT: 20
+  # Time to wait between each check for the backend session container (seconds)
+  GB_FE_CONTAINER_CHECK_INTERVAL: 4
 
   # Time to wait between reconnect attempts for the frontend websocket, **NOT VNC**
   GB_FE_WS_RECONNECT_INTERVAL: 5
@@ -162,6 +164,7 @@ env:
   GB_CD_FORWARD_HOST_HEADER: x-goblet-host
   GB_CD_FORWARD_PORT_HEADER: x-goblet-port
   GB_CD_FORWARD_PROTO_HEADER: x-goblet-proto
+  GB_CD_FORWARD_ROUTE_HEADER: x-goblet-route
   GB_CD_FORWARD_SUBDOMAIN_HEADER: x-goblet-subdomain
 
   # --- Certs ENVs --- #
@@ -270,7 +273,7 @@ env:
   # And all proxy traffic will be directed to that container
   # It uses dev-space instead of the kubernetes API, so all the same hot-reload benefits are included
   # This makes local development way easier
-  GB_LOCAL_DEV_MODE: false
+  GB_LOCAL_DEV_MODE: true
 
 # --- KIND ENVs --- #
   GB_KD_DEPLOYMENT: goblet-kind

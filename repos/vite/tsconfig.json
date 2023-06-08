@@ -41,6 +41,8 @@
       "@reducers/*": [ "src/reducers/*" ],
       "@services": [ "src/services" ],
       "@services/*": [ "src/services/*" ],
+      "@screens": [ "src/screens" ],
+      "@screens/*": [ "src/screens/*" ],
       "@store": [ "src/store" ],
       "@store/*": [ "src/store/*" ],
       "@dispatchers": [ "src/store/dispatchers.ts" ],

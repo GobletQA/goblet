@@ -12,7 +12,7 @@ export const useShowBrowser = () => {
       const isActive = status === EAppStatus.Active
       return {
         isActive,
-        showBrowser: isActive && Boolean(user.id && repo.name)
+        showBrowser: Boolean(user.id && repo.name)
       }
     },
     [user, repo]
