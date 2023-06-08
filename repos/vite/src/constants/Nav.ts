@@ -68,8 +68,6 @@ export const SideNav = deepFreeze({
     {
       name: `core-navigation`,
       items: [
-        EditorNavItems[EEditorType.code],
-        EditorNavItems[EEditorType.visual],
         {
           title: `Files`,
           Icon: FileTreeIcon,
@@ -94,6 +92,8 @@ export const SideNav = deepFreeze({
         position: `absolute`,
       },
       items: [
+        EditorNavItems[EEditorType.code],
+        EditorNavItems[EEditorType.visual],
         {
           Icon: Settings,
           title: `Settings`,

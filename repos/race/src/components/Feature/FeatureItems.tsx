@@ -17,6 +17,7 @@ import {
   WorldIcon,
   GreenText,
   StepAddIcon,
+  GradingIcon,
   CardPlusIcon,
   NotePlusIcon,
   AdvancedIcon,
@@ -30,10 +31,10 @@ export type TFeatureItem = Omit<TMenuItem, `onCloseMenu`|`closeMenu`|`onClick`|`
   text:string
   description?:ReactNode
   Icon:ComponentType<any>
-  key:ESectionType|ESectionExt | `mode`
-  type: ESectionType|ESectionExt | `mode`
+  key:ESectionType|ESectionExt | `mode` | `audit`
+  type: ESectionType|ESectionExt | `mode` | `audit`
   variant?:"text" | "outlined" | "contained" | undefined
-  featureKey:keyof TRaceFeature | `steps` | `general` | `world` | `mode`
+  featureKey:keyof TRaceFeature | `steps` | `general` | `world` | `mode` | `audit`
   onClick: (evt:MouseEvent<HTMLElement>, featureId:string, featureType:string) => void
 }
 
@@ -162,6 +163,19 @@ export const ModeItem:TFeatureItem = {
   tooltip: {
     loc: `right`,
     title: `Enable Advanced mode`,
+  },
+}
+
+export const AuditItem:TFeatureItem = {
+  key: `audit`,
+  type: `audit`,
+  onClick: noOp,
+  Icon: GradingIcon,
+  featureKey: `audit`,
+  text: `Audit Feature`,
+  tooltip: {
+    loc: `right`,
+    title: `Audit feature steps against the loaded definitions`,
   },
 }
 

@@ -20,8 +20,12 @@ export const moveStep = <T extends TRaceStepParent>(
   const idx = (pos === EDndPos.before || oldIdx < newIdx)
     ? newIdx
     : newIdx + 1
-  
-  steps.splice(idx, 0, step)
+
+  steps.splice(idx, 0, {
+    ...step,
+    // Update the steps index to match the current index + amount of items moved
+    index: step.index + (newIdx - oldIdx)
+  })
 
   return {...parent, steps}
 }

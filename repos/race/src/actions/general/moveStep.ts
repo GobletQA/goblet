@@ -92,7 +92,7 @@ export const moveStep = async (props:TMoveStep) => {
   const { parent:newParent, gran:newGran, add } = newParentData
   
   const move = oldParent.steps[oldData.index]
- 
+
   const removed = await remove({
     feature,
     persist: false,

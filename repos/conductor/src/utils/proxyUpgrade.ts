@@ -24,14 +24,16 @@ export const proxyUpgrade = (conductor:Conductor, proxies:TProxies) => {
   const { vncProxy, wsProxy } = proxies
 
   const onUpgrade = (req:Request, socket:Socket, head:any) => {
-    const containerMaps = conductor.controller.containerMaps
+    if(!conductor.controller.devRouterActive){
+      const searchParams = new URLSearchParams(req.url.replace(/.*?\?/, ``))
+      const containerMaps = conductor.controller.containerMaps
 
-    const url = new URL(`https://empty.co${req.url}`)
-    const routeId = url.searchParams.get(routeKey)
-    const userHash = url.searchParams.get(subdomainKey)
-    const mapExists = Boolean(containerMaps[routeId] || containerMaps[userHash])
+      const routeId = searchParams.get(routeKey)
+      const userHash = searchParams.get(subdomainKey)
+      const mapExists = Boolean(containerMaps[routeId] || containerMaps[userHash])
 
-    if(!mapExists) return
+      if(!mapExists) return
+    }
 
     // @ts-ignore
     req.url.includes(vncProxy?.middleware?.path)

@@ -37,7 +37,7 @@ export const getCheckedState = async (
 }
 
 const meta = {
-  name: `Is Checked`,
+  name: `Is Checked or Unchecked`,
   alias: [`Checked`, `Clicked`, `Unchecked`],
   module: `getCheckedState`,
   description: `Locates a checkbox element by selector and verifies its checked state, checked or unchecked.`,
@@ -56,7 +56,6 @@ const meta = {
       description: `Valid options are 'checked' or 'uncheck' only.`,
     },
   ],
-  race: true
 }
 
 Then(`the element {string} checked state is {string}`, getCheckedState, meta)
@@ -67,6 +66,8 @@ Then(
   (selector:string, world:TWorldConfig) => getCheckedState(selector, checkedStates.checked, world),
   {
     ...meta,
+    race: true,
+    name: `Is Checked`,
     expressions: [meta.expressions[0]],
     description: `Locates a checkbox element by selector and verifies it is checked.`,
   }
@@ -77,6 +78,8 @@ Then(
   (selector:string, world:TWorldConfig) => getCheckedState(selector, checkedStates.unchecked, world),
   {
     ...meta,
+    race: true,
+    name: `Is Unchecked`,
     expressions: [meta.expressions[0]],
     description: `Locates a checkbox element by selector and verifies it is unchecked.`,
   }

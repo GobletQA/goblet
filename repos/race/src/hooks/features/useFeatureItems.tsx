@@ -11,6 +11,7 @@ import {
   ModeItem,
   StepItem,
   WorldItem,
+  AuditItem,
   GeneralItem,
   ScenarioItem,
   BackgroundItem,
@@ -27,14 +28,19 @@ export const useFeatureItems = (props:THFeatureItems) => {
 
   const { onSimpleAdd } = props
   const { settings, toggleMeta } = useSettings()
-  const { feature } = useEditor()
+  const { feature, onAuditFeature } = useEditor()
   const advMode = settings.mode === EEditorMode.advanced
 
   return useMemo<TFeatureItem[]>(() => {
 
+    const auditItem = {
+      ...AuditItem,
+      dividerTop: true,
+      onClick: () => onAuditFeature(feature, {})
+    }
+
     const modeItem = {
       ...(advMode ? ModeItemActive : ModeItem),
-      dividerTop: true,
       onClick: () => settingChange({
         setting: `mode`,
         value: advMode ? EEditorMode.simple : EEditorMode.advanced
@@ -77,6 +83,7 @@ export const useFeatureItems = (props:THFeatureItems) => {
 
     return [
       ...addItems,
+      auditItem,
       WorldItem,
       modeItem,
     ].filter(Boolean)
@@ -84,6 +91,7 @@ export const useFeatureItems = (props:THFeatureItems) => {
     advMode,
     feature,
     onSimpleAdd,
+    onAuditFeature,
     settings?.displayMeta,
   ])
 }

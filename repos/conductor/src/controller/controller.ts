@@ -28,6 +28,7 @@ export class Controller {
 
   images: TImgsConfig
   conductor: Conductor
+  devRouterActive: boolean
   config: TControllerConfig
   routes: TControllerRoutes = {}
   onRemove:TOnContainerRemove=noOp

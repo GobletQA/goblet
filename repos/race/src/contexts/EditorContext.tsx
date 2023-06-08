@@ -15,6 +15,7 @@ import type {
   TUpdateFeatureCB,
   TSetTabsAndGroups,
   TSetFeatureGroups,
+  TOnAuditFeatureCB,
 } from '@GBR/types'
 
 import { emptyObj } from '@keg-hub/jsutils'
@@ -67,6 +68,7 @@ export type TEditorCtx = {
   menuContext?:TRaceContextMenu
   onFeatureChange?:TOnFeatureCB
   updateFeature:TUpdateFeatureCB
+  onAuditFeature:TOnAuditFeatureCB
   deleteFeature:(loc:string)=>void
   onFolderCreate?:TOnFeatureItemCB
   onFolderDelete?:TOnFeatureItemCB
@@ -165,6 +167,7 @@ export const EditorProvider = (props:TEditorProvider) => {
       deleteFeature,
       updateFeature,
       updateExpanded,
+      onAuditFeature,
       onFeatureChange,
       setFeatureGroups,
       setTabsAndGroups,
@@ -187,6 +190,7 @@ export const EditorProvider = (props:TEditorProvider) => {
     updateFeature,
     featureGroups,
     updateExpanded,
+    onAuditFeature,
     onFeatureDelete,
     onFeatureCreate,
     onFeatureChange,

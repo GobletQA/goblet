@@ -94,6 +94,10 @@ export const Auto = styled(Autocomplete)`
         font-size: 14px;
       }
     }
+    
+    & .MuiAutocomplete-clearIndicator {
+      display: none;
+    }
   }
 `
 

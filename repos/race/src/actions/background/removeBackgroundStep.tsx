@@ -62,7 +62,7 @@ const toFeature = (
   return updated
 }
 
-export const removeBackgroundStep = async (props:TRemoveBackgroundStep) => {
+export const removeBackgroundStep = async (props:TRemoveBackgroundStep):Promise<TRaceFeature|undefined|void> => {
   const {
     stepId,
     granParent,
@@ -99,7 +99,7 @@ export const removeBackgroundStep = async (props:TRemoveBackgroundStep) => {
           : toRule(props, feature, rule, index, background)
       }
     }
-  })
+  }) as Promise<TRaceFeature|undefined|void>
 
 
 }
