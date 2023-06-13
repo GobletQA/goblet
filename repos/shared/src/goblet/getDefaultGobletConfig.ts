@@ -20,7 +20,6 @@ import path from 'path'
 import { GSHRoot } from '../../resolveRoot'
 import { deepMerge } from '@keg-hub/jsutils'
 
-
 /**
  * **IMPORTANT**
  * Loads the default goblet.config
@@ -42,3 +41,4 @@ export const getDefaultGobletConfig = () => {
   __DEF_CONFIG = __DEF_CONFIG || deepMerge(defConfig)
   return __DEF_CONFIG
 }
+

@@ -111,7 +111,7 @@ images:
     context: ../
 
 # The `deployments` section tells devspace how to deploy this project into the cluster
-deployments: 
+deployments:
   # ----- Screencast API Deployment ----- #
   goblet-screencast:
     helm:

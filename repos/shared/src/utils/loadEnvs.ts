@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { noPropArr } from '@keg-hub/jsutils'
+import { emptyArr, omitKeys } from '@keg-hub/jsutils'
 import { addToProcess } from '@keg-hub/cli-utils'
 
 export type TLoadConfigs = {
@@ -21,6 +21,7 @@ export type TLoadConfigs = {
 export type TLoadEnvs = TLoadConfigs & {
   force?:boolean
   override?:boolean
+  ignore?:string[]
 }
 
 const appRoot = path.join(__dirname, '../../../')
@@ -57,7 +58,8 @@ export const loadEnvs = ({
   force,
   override,
   name=`goblet`,
-  locations=noPropArr,
+  ignore=emptyArr,
+  locations=emptyArr,
   ...envOpts
 }:TLoadEnvs) => {
   const nodeEnv = process.env.NODE_ENV || env || `local`
@@ -90,9 +92,17 @@ export const loadEnvs = ({
   // Ensure node ENV is set is it doesn't exist
   if(!process.env.NODE_ENV) process.env.NODE_ENV = (__LOADED_ENVS__.NODE_ENV || env || `local`) as string
 
+  // Use this as a temporary fix until cli-utils is updated
+  const toAdd = ignore?.length ? omitKeys(__LOADED_ENVS__, ignore) : __LOADED_ENVS__
+
   // Add the loaded envs to process.env if override is set
   // Or env if local, and override is not explicitly set to false
-  addToProcess(__LOADED_ENVS__, {force: override || (nodeEnv === 'local' && override !== false)})
+  addToProcess(toAdd, {
+    // ignore doesn't currently work, but will be added in next release of cli-utils
+    // Adding now so it will work when it's updated
+    ignore,
+    force: override || (nodeEnv === 'local' && override !== false),
+  })
 
   return __LOADED_ENVS__
 }

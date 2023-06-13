@@ -12,14 +12,17 @@ import { toNum, exists, deepMerge, toBool } from '@keg-hub/jsutils'
 
 const { NODE_ENV=`local` } = process.env
 
+
 loadEnvs({
   force: true,
   name: `goblet`,
   locations: [],
+  ignore: [`GB_LOCAL_DEV_MODE`],
   override: NODE_ENV === 'local'
 })
 
 const {
+  GB_LOCAL_DEV_MODE,
   GOBLET_SCREENCAST_PORT,
   GOBLET_SCREENCAST_SERVICE_HOST,
 
@@ -31,8 +34,6 @@ const {
   GB_CD_CONTROLLER_TYPE,
   GB_CD_LISTENER_TIMEOUT,
 
-  GB_LOCAL_DEV_MODE,
-  
   GB_KUBE_NAMESPACE,
 
   GB_KD_PORT,
