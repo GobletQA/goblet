@@ -53,7 +53,7 @@ WORKDIR /goblet/app
 
 
 # ---- Run Stage  ---- #
-FROM goblet-setup as goblet-runner
+FROM goblet-built as goblet-runner
 WORKDIR /goblet/app
 
 COPY --from=goblet-run-files /goblet/app/ .

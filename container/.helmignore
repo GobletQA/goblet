@@ -26,6 +26,8 @@
 Dockerfile
 Dockerfile.backend
 Dockerfile.frontend
+Dockerfile.base
+Dockerfile.action
 initialize.sh
 devspace.yaml
 .gitignore

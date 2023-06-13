@@ -102,7 +102,7 @@ env:
   GB_BE_IMAGE_TAG: latest
   GB_BE_DEPLOYMENT: goblet-backend
   GB_BE_IMAGE: 'ghcr.io/gobletqa/goblet-backend'
-  GB_BE_IMAGE_FROM: 'ubuntu:20.04'
+  # GB_BE_IMAGE_FROM: 'ubuntu:20.04'
 
   # ---- Backend Websocket ENVs ---- #
   GB_BE_WS_PATH: /goblet-socket

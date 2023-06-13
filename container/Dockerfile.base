@@ -12,7 +12,8 @@ FROM $IMAGE_FROM as goblet-pnpm
 WORKDIR /goblet/app
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
-RUN npm install --global pnpm@8.3.1
+RUN npm install --global pnpm@8.3.1 && \
+    npm uninstall -g yarn
 COPY .npmrc pnpm-*.yaml ./
 RUN pnpm fetch --no-optional --ignore-scripts
 COPY package.json ./
