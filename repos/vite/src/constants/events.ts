@@ -8,6 +8,7 @@ export const WindowResizeEvt = `window-resize-event`
 export const PlayerEndedEvent = `player-ended-event`
 export const PlayerErrorEvent = `player-error-event`
 export const BrowserStateEvt = `browser-state-event`
+export const SnapshotToolEvt = `snapshot-tool-event`
 export const ToggleSideNavEvt = `toggle-side-nav-event`
 export const PlayerStartedEvent = `player-started-event`
 export const OpenEditorFileEvt = `open-editor-file-event`

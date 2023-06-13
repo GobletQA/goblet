@@ -64,6 +64,8 @@ import KeyIcon from '@mui/icons-material/Key'
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
 // Icon for playing all or a group of features
 import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
+import TextFieldsIcon from '@mui/icons-material/TextFields'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
 
 export {
   Settings,
@@ -128,5 +130,7 @@ export {
   GradingIcon,
   KeyIcon,
   PlaylistPlayIcon,
-  SubscriptionsIcon
+  SubscriptionsIcon,
+  TextFieldsIcon,
+  DeleteForeverIcon
 }

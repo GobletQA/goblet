@@ -1,21 +1,25 @@
 import type { TMenuItem } from '@gobletqa/components'
+import type { TSnapshotEvt } from '@types'
 
+
+import { ESnapTool } from '@types'
+import { SnapshotToolEvt } from '@constants/events'
 import { CropSquareIcon } from '@gobletqa/components'
-
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 export const SquareAction:TMenuItem = {
-  onClick: async (event) => {
-    console.log(`------- TODO - draw a square on the page -------`)
-  },
-  disabled: true,
   closeMenu:true,
   Icon: CropSquareIcon,
   id:`square-browser-action`,
   key:`square-browser-action`,
-  text: `Browser - Square Draw Tool`,
+  text: `Square`,
   tooltip: {
     loc: `right`,
     describeChild: true,
-    title: `COMING SOON - Draw a square in the browser`,
+    title: `Draw a square over the browser`,
+  },
+  onClick: async (event) => {
+    console.log(`Emit snapshot square event`)
+    EE.emit<TSnapshotEvt>(SnapshotToolEvt, { type: ESnapTool.square })
   },
 }
