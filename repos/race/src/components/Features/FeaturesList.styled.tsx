@@ -87,9 +87,16 @@ export const FeatureItem = styled(ListItemButton)<TFeatureItem>`
   &.active {
     ${shared}
   }
-  
-  &.gb-feature-item-title-missing {
+
+  & .gb-feature-item-action-container {
+    opacity: 0;
+    transition: opacity ${dims.trans.avgEase};
   }
+
+  &:hover .gb-feature-item-action-container {
+    opacity: 1;
+  }
+
 `
 
 export const FeatureItemName = styled(ListItemText)`

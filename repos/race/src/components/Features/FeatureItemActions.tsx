@@ -3,6 +3,7 @@ import type {
   TEditorFeatureActions
 } from '@GBR/types'
 
+import { cls } from '@keg-hub/jsutils'
 import { useCallback, useMemo } from 'react'
 import { toolTipProps, styles } from './FeatureItemHelpers'
 import { openYesNo } from '@GBR/actions/general/toggleConfirm'
@@ -67,7 +68,7 @@ export const FeatureItemActions = (props:TFeatureItemActions) => {
   }, [currentPath, feature.path])
 
   return (
-    <FeatureItemActionsContainer className={classNames} >
+    <FeatureItemActionsContainer className={cls(classNames, `gb-feature-item-action-container`)} >
 
       {onEditFeature && (
         <Tooltip

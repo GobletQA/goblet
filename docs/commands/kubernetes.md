@@ -29,3 +29,10 @@
   * `curl -kivL -H 'Host: backend.dev.gobletqa.app' -H 'Origin: localhost' 'http://198.58.121.252'`
 * See the ingress-nginx, and get the IP address of it
   * `kubectl --namespace gb-production get services -o wide -w ingress-nginx-controller`
+
+
+## Ingress
+* Deploy Ingress
+  * `pnpm kube ingress --env prod --log`
+* Remove Old Ingress
+  * `kubectl delete replicaset ingress-nginx-controller-6f7bd4bcfb`
