@@ -1,3 +1,6 @@
+import type { TTask, TTaskActionArgs } from '../../types'
+import type { TDockerBuildParams } from '../../utils/docker/getDockerBuildParams'
+
 import { appRoot } from '../../paths'
 import { Logger, error } from '@keg-hub/cli-utils'
 import { docker } from '../../utils/docker/docker'
@@ -7,39 +10,18 @@ import { setupBuildX } from '../../utils/docker/setupBuildX'
 import { toBuildArgsArr } from '../../utils/docker/buildArgs'
 import { getDockerFile } from '../../utils/docker/getDockerFile'
 import { resolveImgTags } from '../../utils/docker/resolveImgTags'
+import { resolveImgFrom } from '../../utils/docker/resolveImgFrom'
 import { getDockerLabels } from '../../utils/docker/getDockerLabels'
 import { getDockerBuildParams } from '../../utils/docker/getDockerBuildParams'
 import { getContextValue, getLongContext } from '../../utils/helpers/contexts'
 
 /**
- * Looks for a custom IMAGE_FROM value based on the context or custom context env
- * @param {string} docFileCtx - Context of the Dockerfile to use
- * @param {Object} allEnvs - All loaded envs for the app
- * @param {string} from - Value passed to the from option from the cmd line
- *
- * @returns {void}
- */
-const resolveImgFrom = (docFileCtx, allEnvs, from, imageName) => {
-  // If from option is set, then set the IMAGE_FROM value
-  // Which will override the default IMAGE_FROM in the Dockerfile
-  // If it includes a : assume a image and tag, otherwise assume from is a tag
-  return from
-    ? from.includes(':')
-        ? from
-        : `${imageName}:${from}`
-    : getContextValue(docFileCtx, allEnvs, `IMAGE_FROM`, allEnvs.GB_IMAGE_FROM)
-}
-
-/**
  * Runs a docker build command and returns the output
  * @function
  * @public
- * @param {string|Array<string>} cmd - kubectl command to build split as an array
- * @param {Object} params - Passed in task options, converted into an object
- *
  * @returns {Void}
  */
-const buildImg = async (args) => {
+const buildImg = async (args:TTaskActionArgs) => {
   const { params } = args
   const { builder, context, env, from, image, log, login } = params
 
@@ -69,7 +51,7 @@ const buildImg = async (args) => {
 
   const builtTags = await resolveImgTags(params, docFileCtx, envs)
 
-  const buildParams = getDockerBuildParams(params)
+  const buildParams = getDockerBuildParams(params as TDockerBuildParams)
   const labels = getDockerLabels(docFileCtx, env)
   const dockerFile = getDockerFile(docFileCtx)
   const buildArgsArr = toBuildArgsArr(allEnvs)
@@ -95,7 +77,7 @@ const buildImg = async (args) => {
   return output
 }
 
-export const build = {
+export const build:TTask = {
   name: `build`,
   alias: [`bld`],
   action: buildImg,

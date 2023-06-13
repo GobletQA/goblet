@@ -1,5 +1,5 @@
 
-export type DockerBuildParams = {
+export type TDockerBuildParams = {
   cache?:boolean
   force?:boolean
   push?:boolean
@@ -8,7 +8,7 @@ export type DockerBuildParams = {
 /**
  * Gets the docker build cmd args to pass on to the build cmd call
  */
-export const getDockerBuildParams = ({ cache, force, push }:DockerBuildParams) => {
+export const getDockerBuildParams = ({ cache, force, push }:TDockerBuildParams) => {
   return [
     force && `--force-rm`,
     !cache && `--no-cache`,

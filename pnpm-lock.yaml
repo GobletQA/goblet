@@ -81,8 +81,8 @@ importers:
         specifier: 12.3.4
         version: 12.3.4
       playwright:
-        specifier: 1.32.3
-        version: 1.32.3
+        specifier: 1.35.0
+        version: 1.35.0
       prettier:
         specifier: 2.5.1
         version: 2.5.1
@@ -530,8 +530,8 @@ importers:
         specifier: 2.0.22
         version: 2.0.22
       playwright:
-        specifier: 1.32.3
-        version: 1.32.3
+        specifier: 1.35.0
+        version: 1.35.0
       socket.io:
         specifier: 4.6.1
         version: 4.6.1
@@ -697,8 +697,8 @@ importers:
         specifier: 2.2.2
         version: 2.2.2
       playwright:
-        specifier: 1.32.3
-        version: 1.32.3
+        specifier: 1.35.0
+        version: 1.35.0
     devDependencies:
       '@types/debug':
         specifier: 4.1.5
@@ -10085,18 +10085,18 @@ packages:
     dependencies:
       find-up: 4.1.0
 
-  /playwright-core@1.32.3:
-    resolution: {integrity: sha512-SB+cdrnu74ZIn5Ogh/8278ngEh9NEEV0vR4sJFmK04h2iZpybfbqBY0bX6+BLYWVdV12JLLI+JEFtSnYgR+mWg==}
-    engines: {node: '>=14'}
+  /playwright-core@1.35.0:
+    resolution: {integrity: sha512-muMXyPmIx/2DPrCHOD1H1ePT01o7OdKxKj2ebmCAYvqhUy+Y1bpal7B0rdoxros7YrXI294JT/DWw2LqyiqTPA==}
+    engines: {node: '>=16'}
     hasBin: true
 
-  /playwright@1.32.3:
-    resolution: {integrity: sha512-h/ylpgoj6l/EjkfUDyx8cdOlfzC96itPpPe8BXacFkqpw/YsuxkpPyVbzEq4jw+bAJh5FLgh31Ljg2cR6HV3uw==}
-    engines: {node: '>=14'}
+  /playwright@1.35.0:
+    resolution: {integrity: sha512-xhFhsoBmKPQfj3dM+HbIiFVlqRCZp2rwdJd/QFd9YBuidabo3TkVv0iuxPQ4vZoMwtSI7qzjY93f5ohdC97hww==}
+    engines: {node: '>=16'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      playwright-core: 1.32.3
+      playwright-core: 1.35.0
 
   /posix-character-classes@0.1.1:
     resolution: {integrity: sha512-xTgYBc3fuo7Yt7JbiuFxSYGToMoz8fLoE6TC9Wx1P/u+LfeThMOAqmuyECnlBaaJb+u1m9hHiXUEtwW4OzfUJg==}

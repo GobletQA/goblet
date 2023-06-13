@@ -38,7 +38,7 @@ RUN <<EOF
 
   # Install Node.js and pnpm
   NODE_VER=$(cat ./.nvmrc | cut -d "." -f 1)
-  curl -sL https://deb.nodesource.com/setup_${NODE_VER:-16}.x | bash -
+  curl -sL https://deb.nodesource.com/setup_${NODE_VER:-20}.x | bash -
   apt-get install -y nodejs
   npm install -g pnpm
   pnpm add --global turbo dot-json

@@ -33,11 +33,12 @@ env:
 
 # ---- General Shared ENVs ---- #
   IMAGE_TAG: latest
+  DISPLAY: ":0.0"
   DOCKER_REGISTRY: ghcr.io
   IMAGE: 'ghcr.io/gobletqa/goblet-app'
-  DISPLAY: ":0.0"
+  GB_NODE_VERSION: 20.3.0
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
-  PLAYWRIGHT_BROWSERS_VERSION: 1.32.0
+  PLAYWRIGHT_BROWSERS_VERSION: 1.35.0
 
   # Log file for all playwright logs
   # Gets set in container/scripts/resolveDSEnvs.js for screencast deployment
@@ -63,7 +64,7 @@ env:
   # Image tags added to all built images
   GB_IMAGE_BUILD_TAGS: values,package
   # Then, all sub goblet images are built from the goblet-base image
-  GB_IMAGE_FROM: mcr.microsoft.com/playwright:v1.32.0-focal
+  GB_IMAGE_FROM: ghcr.io/gobletqa/goblet-base:latest
 
   # ---- Logger ENVs ---- #
   # Enable to set custom log-level for conductor
@@ -80,6 +81,15 @@ env:
   # GB_APP_DOC_VOLUMES: ".:/goblet/app,/var/run/docker.sock"
   GB_AUTH_ACTIVE: true
   GB_APP_MOUNT_PATH: /goblet/app
+
+
+# ---- Base ENVs ---- #
+  GB_BS_IMAGE_TAG: latest
+  GB_BS_DEPLOYMENT: goblet-base
+  GB_BS_IMAGE: ghcr.io/gobletqa/goblet-base
+  # This only works if the dockerfile has args GB_IMAGE_FROM && IMAGE_FROM configured
+  GB_BS_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.35.0-focal'
+
 
 # ---- Backend ENVs ---- #
   GB_BE_PORT: 7005

@@ -1,4 +1,4 @@
-import type { TTaskParams, TEnvObject } from '../../types'
+import type { TTaskParams } from '../../types'
 
 import { appRoot } from '../../paths'
 import { loadEnvs } from '../envs/loadEnvs'
@@ -156,7 +156,7 @@ docker.run = (...args:TDockerCmdAdd) => docker('run', ...args)
 docker.stop = (...args:TDockerCmdAdd) => docker('stop', ...args)
 docker.remove = (...args:TDockerCmdAdd) => docker('rm', ...args)
 docker.exec = (...args:TDockerCmdAdd) => docker('exec', ...args)
-docker.build = (...args) => buildX(
+docker.build = (...args):any => buildX(
   'build',
   ((...args) => docker(...args)) as TBuildXCB,
   ...args as TBuildArgs
