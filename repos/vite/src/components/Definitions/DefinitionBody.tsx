@@ -34,7 +34,12 @@ export const DefinitionBody = (props:TDefinitionsBody) => {
       [DefaultDefsList, defaultDefs],
       [CustomDefsList, customDefs],
     ])[idx] as [ElementType<TDefsList>, TDefGroups]
-  }, [idx, defaultDefs, customDefs, allDefs])
+  }, [
+    idx,
+    allDefs?.all?.items,
+    defaultDefs,
+    customDefs,
+  ])
 
   return (
     <DefsBody className='gb-defs-body' sx={sx} >

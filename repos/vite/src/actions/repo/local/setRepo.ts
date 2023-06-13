@@ -4,7 +4,7 @@ import { repoDispatch } from '@store'
 import { localStorage } from '@services/localStorage'
 import { setFileTypeConstants } from '@constants/types'
 import { upsertFeatures } from '@actions/features/local'
-import { upsertDefinitions } from '@actions/definitions/local'
+import { setDefinitions } from '@actions/definitions/local'
 import { setFileTree } from '@actions/files/local/setFileTree'
 
 /**
@@ -40,6 +40,6 @@ export const setRepo = (params:TApiRepoResp) => {
 
   repo && setRepoData(repo)
   features && upsertFeatures(features)
-  definitions && upsertDefinitions(definitions)
+  definitions && setDefinitions(definitions)
   fileTree && setFileTree(fileTree)
 }

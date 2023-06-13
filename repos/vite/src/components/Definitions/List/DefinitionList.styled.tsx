@@ -110,6 +110,7 @@ export const DefItem = styled(ListItem)(({ theme }) => `
     color: ${getColor(colors.black09, colors.white, theme)};
     
     & .gb-def-item-action {
+      opacity: 1;
       color: ${getColor(colors.gray11, colors.fadeLight50, theme)};
     }
 
@@ -120,6 +121,7 @@ export const DefItem = styled(ListItem)(({ theme }) => `
     color: ${getColor(colors.black09, colors.white, theme)};
     
     & .gb-def-item-action {
+      opacity: 1;
       color: ${getColor(colors.gray15, colors.fadeLight50, theme)};
     }
     
@@ -159,7 +161,11 @@ export const DefButton = styled(ListItemButton)(({ theme }) => `
   padding-right: 0px;
   font-weight: bold;
   color: ${getColor(colors.gray05, colors.black08, theme)};
-  transition: background-color 500ms ease-in-out, color 500ms ease-in-out;
+  transition: background-color 500ms ease-in-out, color 500ms ease-in-out, opacity 500ms ease-in-out;
+
+  &.gb-def-item-action {
+    opacity: 0;
+  }
 
   &:hover {
     color: ${colors.royalPurple} !important;

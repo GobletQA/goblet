@@ -1,9 +1,9 @@
+import type { TStepDef } from '@ltipton/parkin'
 import type {
   TDefGroup,
   TDefLookupMap,
   TDefTypeGroup,
   TAllDefGroup,
-  TDefinitionAst,
   TDefGroupItem,
   TDefGroupType,
   TDefGroupTypes,
@@ -93,13 +93,13 @@ const sortDefinitions = (grouped:TDefTypeGroup) => {
 }
 
 
-function onAdd(item:TDefinitionAst, event?:any) {
+function onAdd(item:TStepDef, event?:any) {
   event?.stopPropagation?.()
   event?.preventDefault?.()
-  addStepFromDefinition({ clipboard: true, definition: item as TDefinitionAst})
+  addStepFromDefinition({ clipboard: true, definition: item as TStepDef})
 }
 
-function onOpen(item:TDefinitionAst, onClose:TOnClose, event?:any) {
+function onOpen(item:TStepDef, onClose:TOnClose, event?:any) {
   event?.stopPropagation?.()
   event?.preventDefault?.()
   EE.emit(OpenEditorFileEvt, item)
@@ -107,7 +107,7 @@ function onOpen(item:TDefinitionAst, onClose:TOnClose, event?:any) {
   onClose?.(event)
 }
 
-const buildItem = (def:TDefinitionAst, onClose:TOnClose) => {
+const buildItem = (def:TStepDef, onClose:TOnClose) => {
   return {
     title: `${capitalize(def.type)} ${def.name}`,
     uuid: def.uuid,
