@@ -212,8 +212,8 @@ importers:
         specifier: 18.0.6
         version: 18.0.6
       '@vitejs/plugin-react-swc':
-        specifier: 3.3.0
-        version: 3.3.0(vite@4.3.5)
+        specifier: 3.3.2
+        version: 3.3.2(vite@4.3.9)
       esbuild:
         specifier: 0.17.18
         version: 0.17.18
@@ -233,14 +233,14 @@ importers:
         specifier: 14.1.2
         version: 14.1.2
       vite:
-        specifier: 4.3.5
-        version: 4.3.5(@types/node@18.15.13)
+        specifier: 4.3.9
+        version: 4.3.9(@types/node@18.15.13)
       vite-plugin-svgr-component:
         specifier: 1.0.1
-        version: 1.0.1(react@18.2.0)(vite@4.3.5)
+        version: 1.0.1(react@18.2.0)(vite@4.3.9)
       vite-tsconfig-paths:
         specifier: 4.2.0
-        version: 4.2.0(typescript@5.0.4)(vite@4.3.5)
+        version: 4.2.0(typescript@5.0.4)(vite@4.3.9)
 
   repos/conductor:
     dependencies:
@@ -340,7 +340,7 @@ importers:
         version: 9.6.1
       '@monaco-editor/react':
         specifier: 4.3.1
-        version: 4.3.1(monaco-editor@0.38.0)(react-dom@18.2.0)(react@18.2.0)
+        version: 4.3.1(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)
       '@mui/icons-material':
         specifier: 5.11.16
         version: 5.11.16(@mui/material@5.12.1)(@types/react@18.0.21)(react@18.2.0)
@@ -354,11 +354,11 @@ importers:
         specifier: 6.2.1
         version: 6.2.1
       monaco-editor:
-        specifier: 0.38.0
-        version: 0.38.0
+        specifier: 0.39.0
+        version: 0.39.0
       monaco-editor-textmate:
         specifier: 4.0.0
-        version: 4.0.0(monaco-editor@0.38.0)(monaco-textmate@3.0.1)
+        version: 4.0.0(monaco-editor@0.39.0)(monaco-textmate@3.0.1)
       monaco-textmate:
         specifier: 3.0.1
         version: 3.0.1(onigasm@2.2.5)
@@ -373,8 +373,8 @@ importers:
         specifier: 18.0.6
         version: 18.0.6
       '@vitejs/plugin-react-swc':
-        specifier: 3.3.0
-        version: 3.3.0(vite@4.3.5)
+        specifier: 3.3.2
+        version: 3.3.2(vite@4.3.9)
       esbuild:
         specifier: 0.17.18
         version: 0.17.18
@@ -394,17 +394,17 @@ importers:
         specifier: 14.1.2
         version: 14.1.2
       vite:
-        specifier: 4.3.5
-        version: 4.3.5(@types/node@18.15.13)
+        specifier: 4.3.9
+        version: 4.3.9(@types/node@18.15.13)
       vite-plugin-monaco-editor:
         specifier: 1.1.0
-        version: 1.1.0(monaco-editor@0.38.0)
+        version: 1.1.0(monaco-editor@0.39.0)
       vite-plugin-svgr-component:
         specifier: 1.0.1
-        version: 1.0.1(react@18.2.0)(vite@4.3.5)
+        version: 1.0.1(react@18.2.0)(vite@4.3.9)
       vite-tsconfig-paths:
         specifier: 4.2.0
-        version: 4.2.0(typescript@5.0.4)(vite@4.3.5)
+        version: 4.2.0(typescript@5.0.4)(vite@4.3.9)
 
   repos/race:
     dependencies:
@@ -449,8 +449,8 @@ importers:
         specifier: 18.0.6
         version: 18.0.6
       '@vitejs/plugin-react-swc':
-        specifier: 3.3.0
-        version: 3.3.0(vite@4.3.5)
+        specifier: 3.3.2
+        version: 3.3.2(vite@4.3.9)
       esbuild-register:
         specifier: 3.4.2
         version: 3.4.2(esbuild@0.17.18)
@@ -464,17 +464,17 @@ importers:
         specifier: 14.1.2
         version: 14.1.2
       vite:
-        specifier: 4.3.5
-        version: 4.3.5(@types/node@18.15.13)
+        specifier: 4.3.9
+        version: 4.3.9(@types/node@18.15.13)
       vite-plugin-comlink:
         specifier: 3.0.5
-        version: 3.0.5(comlink@4.4.1)(vite@4.3.5)
+        version: 3.0.5(comlink@4.4.1)(vite@4.3.9)
       vite-plugin-svgr-component:
         specifier: 1.0.1
-        version: 1.0.1(react@18.2.0)(vite@4.3.5)
+        version: 1.0.1(react@18.2.0)(vite@4.3.9)
       vite-tsconfig-paths:
         specifier: 4.2.0
-        version: 4.2.0(typescript@5.0.4)(vite@4.3.5)
+        version: 4.2.0(typescript@5.0.4)(vite@4.3.9)
 
   repos/screencast:
     dependencies:
@@ -738,7 +738,7 @@ importers:
         version: 0.0.1
       '@monaco-editor/react':
         specifier: 4.5.1
-        version: 4.5.1(monaco-editor@0.38.0)(react-dom@18.2.0)(react@18.2.0)
+        version: 4.5.1(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)
       '@mui/icons-material':
         specifier: 5.11.16
         version: 5.11.16(@mui/material@5.12.3)(@types/react@18.0.17)(react@18.2.0)
@@ -819,8 +819,8 @@ importers:
         specifier: 18.0.6
         version: 18.0.6
       '@vitejs/plugin-react-swc':
-        specifier: 3.3.0
-        version: 3.3.0(vite@4.3.5)
+        specifier: 3.3.2
+        version: 3.3.2(vite@4.3.9)
       esbuild-register:
         specifier: 3.4.2
         version: 3.4.2(esbuild@0.17.18)
@@ -828,20 +828,20 @@ importers:
         specifier: 14.1.2
         version: 14.1.2
       vite:
-        specifier: 4.3.5
-        version: 4.3.5(@types/node@18.15.13)
+        specifier: 4.3.9
+        version: 4.3.9(@types/node@18.15.13)
       vite-plugin-comlink:
         specifier: 3.0.5
-        version: 3.0.5(comlink@4.4.1)(vite@4.3.5)
+        version: 3.0.5(comlink@4.4.1)(vite@4.3.9)
       vite-plugin-monaco-editor:
         specifier: 1.1.0
-        version: 1.1.0(monaco-editor@0.38.0)
+        version: 1.1.0(monaco-editor@0.39.0)
       vite-plugin-svgr-component:
         specifier: 1.0.1
-        version: 1.0.1(react@18.2.0)(vite@4.3.5)
+        version: 1.0.1(react@18.2.0)(vite@4.3.9)
       vite-tsconfig-paths:
         specifier: 4.2.0
-        version: 4.2.0(typescript@5.0.4)(vite@4.3.5)
+        version: 4.2.0(typescript@5.0.4)(vite@4.3.9)
 
   repos/workflows:
     dependencies:
@@ -4048,16 +4048,16 @@ packages:
     engines: {node: '>= 16.0.0'}
     dev: false
 
-  /@monaco-editor/loader@1.3.3(monaco-editor@0.38.0):
+  /@monaco-editor/loader@1.3.3(monaco-editor@0.39.0):
     resolution: {integrity: sha512-6KKF4CTzcJiS8BJwtxtfyYt9shBiEv32ateQ9T4UVogwn4HM/uPo9iJd2Dmbkpz8CM6Y0PDUpjnZzCwC+eYo2Q==}
     peerDependencies:
       monaco-editor: '>= 0.21.0 < 1'
     dependencies:
-      monaco-editor: 0.38.0
+      monaco-editor: 0.39.0
       state-local: 1.0.7
     dev: false
 
-  /@monaco-editor/react@4.3.1(monaco-editor@0.38.0)(react-dom@18.2.0)(react@18.2.0):
+  /@monaco-editor/react@4.3.1(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-f+0BK1PP/W5I50hHHmwf11+Ea92E5H1VZXs+wvKplWUWOfyMa1VVwqkJrXjRvbcqHL+XdIGYWhWNdi4McEvnZg==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
@@ -4067,14 +4067,14 @@ packages:
       react:
         optional: true
     dependencies:
-      '@monaco-editor/loader': 1.3.3(monaco-editor@0.38.0)
-      monaco-editor: 0.38.0
+      '@monaco-editor/loader': 1.3.3(monaco-editor@0.39.0)
+      monaco-editor: 0.39.0
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@monaco-editor/react@4.5.1(monaco-editor@0.38.0)(react-dom@18.2.0)(react@18.2.0):
+  /@monaco-editor/react@4.5.1(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-NNDFdP+2HojtNhCkRfE6/D6ro6pBNihaOzMbGK84lNWzRu+CfBjwzGt4jmnqimLuqp5yE5viHS2vi+QOAnD5FQ==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
@@ -4084,8 +4084,8 @@ packages:
       react:
         optional: true
     dependencies:
-      '@monaco-editor/loader': 1.3.3(monaco-editor@0.38.0)
-      monaco-editor: 0.38.0
+      '@monaco-editor/loader': 1.3.3(monaco-editor@0.39.0)
+      monaco-editor: 0.39.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -4977,8 +4977,8 @@ packages:
       - supports-color
     dev: true
 
-  /@swc/core-darwin-arm64@1.3.56:
-    resolution: {integrity: sha512-DZcu7BzDaLEdWHabz9DRTP0yEBLqkrWmskFcD5BX0lGAvoIvE4duMnAqi5F2B3X7630QioHRCYFoRw2WkeE3Cw==}
+  /@swc/core-darwin-arm64@1.3.63:
+    resolution: {integrity: sha512-lNR0BgG0/6dGpGP+AyFZoZ3YBhZN5GzvgAUzwy4skqn5sKZ7duQD02CNq1lIy7Im5BzgMUcJ+/Z7z/YUlqBK+Q==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [darwin]
@@ -4986,8 +4986,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-darwin-x64@1.3.56:
-    resolution: {integrity: sha512-VH5saqYFasdRXJy6RAT+MXm0+IjkMZvOkohJwUei+oA65cKJofQwrJ1jZro8yOJFYvUSI3jgNRGsdBkmo/4hMw==}
+  /@swc/core-darwin-x64@1.3.63:
+    resolution: {integrity: sha512-1lydnc+LgSD0gwD1axW3+Y1htKZZRn33aJF4ITd6hsA9Y2eIhdMVxgx6peXp8wWzoRBXy5GEMTnd7704oya4zw==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [darwin]
@@ -4995,8 +4995,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm-gnueabihf@1.3.56:
-    resolution: {integrity: sha512-LWwPo6NnJkH01+ukqvkoNIOpMdw+Zundm4vBeicwyVrkP+mC3kwVfi03TUFpQUz3kRKdw/QEnxGTj+MouCPbtw==}
+  /@swc/core-linux-arm-gnueabihf@1.3.63:
+    resolution: {integrity: sha512-cJT+XJ6f25QeAcz2ONy1i8WKP6olqOIbU5fHZKsoPqEZmLkK5NCTnmIolT0HZpH1SNkE/hHkPYGn620Domvn8g==}
     engines: {node: '>=10'}
     cpu: [arm]
     os: [linux]
@@ -5004,8 +5004,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm64-gnu@1.3.56:
-    resolution: {integrity: sha512-GzsUy/4egJ4cMlxbM+Ub7AMi5CKAc+pxBxrh8MUPQbyStW8jGgnQsJouTnGy0LHawtdEnsCOl6PcO6OgvktXuQ==}
+  /@swc/core-linux-arm64-gnu@1.3.63:
+    resolution: {integrity: sha512-xtuk0v/86i0UR6G+5X6l3bgP1I1iWlEI23ad44L0FNrZ8wLLEvVzYuVoI6U5fKbp91LAsVpdWyyvSAo1sT7BWQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -5013,8 +5013,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-arm64-musl@1.3.56:
-    resolution: {integrity: sha512-9gxL09BIiAv8zY0DjfnFf19bo8+P4T9tdhzPwcm+1yPJcY5yr1+YFWLNFzz01agtOj6VlZ2/wUJTaOfdjjtc+A==}
+  /@swc/core-linux-arm64-musl@1.3.63:
+    resolution: {integrity: sha512-AIRqE/3659zt5hfZzj3i/xtJbJl1iz9FcYEGUsIqqrxouqZWNbFujQpIguX4qFI7uoM+m6p6pqLjMmArwErRxQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
@@ -5022,8 +5022,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-x64-gnu@1.3.56:
-    resolution: {integrity: sha512-n0ORNknl50vMRkll3BDO1E4WOqY6iISlPV1ZQCRLWQ6YQ2q8/WAryBxc2OAybcGHBUFkxyACpJukeU1QZ/9tNw==}
+  /@swc/core-linux-x64-gnu@1.3.63:
+    resolution: {integrity: sha512-EAB5gkgDvStJofvdQU40hqEqjtSvtPs3PR0WupZtbLKWWCTWg76uTXQZEKNYx9r60Pt7sx1BAa3XnqgXjmcjDg==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -5031,8 +5031,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-linux-x64-musl@1.3.56:
-    resolution: {integrity: sha512-r+D34WLAOAlJtfw1gaVWpHRwCncU9nzW9i7w9kSw4HpWYnHJOz54jLGSEmNsrhdTCz1VK2ar+V2ktFUsrlGlDA==}
+  /@swc/core-linux-x64-musl@1.3.63:
+    resolution: {integrity: sha512-8ScbtDPd8Hr1VkpzCseI5H770YgxxjTFsxinH9UtJWJBFIkdu2rEwjgz4t+lDjsc/R3JWaKt1q8Dkgzqmj+77g==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
@@ -5040,8 +5040,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-arm64-msvc@1.3.56:
-    resolution: {integrity: sha512-29Yt75Is6X24z3x8h/xZC1HnDPkPpyLH9mDQiM6Cuc0I9mVr1XSriPEUB2N/awf5IE4SA8c+3IVq1DtKWbkJIw==}
+  /@swc/core-win32-arm64-msvc@1.3.63:
+    resolution: {integrity: sha512-+41tEugXJjpK04KIb2+Xlpb1NArhIne4u0NQo+cHb6ekJoqQmgIj3uNJhQ0v+0DDMjFqbA07l0KYNMgYLBls/A==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [win32]
@@ -5049,8 +5049,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-ia32-msvc@1.3.56:
-    resolution: {integrity: sha512-mplp0zbYDrcHtfvkniXlXdB04e2qIjz2Gq/XHKr4Rnc6xVORJjjXF91IemXKpavx2oZYJws+LNJL7UFQ8jyCdQ==}
+  /@swc/core-win32-ia32-msvc@1.3.63:
+    resolution: {integrity: sha512-W6nPOD5k++rSmoAb0Jg0h7gyfjly8b5ld7cSnmrWKXfmjgxOqxcoqP2LlzNkamg320eqkGaD9n+UnPJDteLTBw==}
     engines: {node: '>=10'}
     cpu: [ia32]
     os: [win32]
@@ -5058,8 +5058,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core-win32-x64-msvc@1.3.56:
-    resolution: {integrity: sha512-zp8MBnrw/bjdLenO/ifYzHrImSjKunqL0C2IF4LXYNRfcbYFh2NwobsVQMZ20IT0474lKRdlP8Oxdt+bHuXrzA==}
+  /@swc/core-win32-x64-msvc@1.3.63:
+    resolution: {integrity: sha512-MHNCF3GWtlKZL3vNhMiCrtM4gBHqAv0Iw38bLoJRagh1Q/UDNVjNzWhgngCno9NUQodMtCo6G7iTQilW7YaAQQ==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [win32]
@@ -5067,8 +5067,8 @@ packages:
     dev: true
     optional: true
 
-  /@swc/core@1.3.56:
-    resolution: {integrity: sha512-yz/EeXT+PMZucUNrYceRUaTfuNS4IIu5EDZSOlvCEvm4jAmZi7CYH1B/kvzEzoAOzr7zkQiDPNJftcQXLkjbjA==}
+  /@swc/core@1.3.63:
+    resolution: {integrity: sha512-mNRMr0xcqkvnC1a/H7rpMtbIjq7KKy4XaW/+zj3+w9cH5g72eMo3ADNHE03zHoqPn+Ov3szzFOMHT6rgJlRxow==}
     engines: {node: '>=10'}
     requiresBuild: true
     peerDependencies:
@@ -5077,16 +5077,16 @@ packages:
       '@swc/helpers':
         optional: true
     optionalDependencies:
-      '@swc/core-darwin-arm64': 1.3.56
-      '@swc/core-darwin-x64': 1.3.56
-      '@swc/core-linux-arm-gnueabihf': 1.3.56
-      '@swc/core-linux-arm64-gnu': 1.3.56
-      '@swc/core-linux-arm64-musl': 1.3.56
-      '@swc/core-linux-x64-gnu': 1.3.56
-      '@swc/core-linux-x64-musl': 1.3.56
-      '@swc/core-win32-arm64-msvc': 1.3.56
-      '@swc/core-win32-ia32-msvc': 1.3.56
-      '@swc/core-win32-x64-msvc': 1.3.56
+      '@swc/core-darwin-arm64': 1.3.63
+      '@swc/core-darwin-x64': 1.3.63
+      '@swc/core-linux-arm-gnueabihf': 1.3.63
+      '@swc/core-linux-arm64-gnu': 1.3.63
+      '@swc/core-linux-arm64-musl': 1.3.63
+      '@swc/core-linux-x64-gnu': 1.3.63
+      '@swc/core-linux-x64-musl': 1.3.63
+      '@swc/core-win32-arm64-msvc': 1.3.63
+      '@swc/core-win32-ia32-msvc': 1.3.63
+      '@swc/core-win32-x64-msvc': 1.3.63
     dev: true
 
   /@tsconfig/node10@1.0.9:
@@ -5487,13 +5487,13 @@ packages:
       eslint-visitor-keys: 3.4.0
     dev: true
 
-  /@vitejs/plugin-react-swc@3.3.0(vite@4.3.5):
-    resolution: {integrity: sha512-Ycg+n2eyCOTpn/wRy+evVo859+hw7qCj9iaX5CMny6x1fx1Uoq0xBG+a98lFtwLNGfGEnpI0F26YigRuxCRkwg==}
+  /@vitejs/plugin-react-swc@3.3.2(vite@4.3.9):
+    resolution: {integrity: sha512-VJFWY5sfoZerQRvJrh518h3AcQt6f/yTuWn4/TRB+dqmYU0NX1qz7qM5Wfd+gOQqUzQW4gxKqKN3KpE/P3+zrA==}
     peerDependencies:
       vite: ^4
     dependencies:
-      '@swc/core': 1.3.56
-      vite: 4.3.5(@types/node@18.15.13)
+      '@swc/core': 1.3.63
+      vite: 4.3.9(@types/node@18.15.13)
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -9648,18 +9648,18 @@ packages:
     resolution: {integrity: sha512-A/78XjoX2EmNvppVWEhM2oGk3x4lLxnkEA4jTbaK97QKSDjkIoOsKQlfylt/d3kKKi596Qy3NP5XrXJ6fZIC9Q==}
     dev: false
 
-  /monaco-editor-textmate@4.0.0(monaco-editor@0.38.0)(monaco-textmate@3.0.1):
+  /monaco-editor-textmate@4.0.0(monaco-editor@0.39.0)(monaco-textmate@3.0.1):
     resolution: {integrity: sha512-Clwup5LJzVfwURQrS+odSEC5/hZBEG36pQnvBKt4OtBndF8r2xLeXUZcK/AqEBK2u0Npy7frFp9hG7m66Ol9hA==}
     peerDependencies:
       monaco-editor: 0.x.x
       monaco-textmate: ^3.0.0
     dependencies:
-      monaco-editor: 0.38.0
+      monaco-editor: 0.39.0
       monaco-textmate: 3.0.1(onigasm@2.2.5)
     dev: false
 
-  /monaco-editor@0.38.0:
-    resolution: {integrity: sha512-11Fkh6yzEmwx7O0YoLxeae0qEGFwmyPRlVxpg7oF9czOOCB/iCjdJrG5I67da5WiXK3YJCxoz9TJFE8Tfq/v9A==}
+  /monaco-editor@0.39.0:
+    resolution: {integrity: sha512-zhbZ2Nx93tLR8aJmL2zI1mhJpsl87HMebNBM6R8z4pLfs8pj604pIVIVwyF1TivcfNtIPpMXL+nb3DsBmE/x6Q==}
 
   /monaco-textmate@3.0.1(onigasm@2.2.5):
     resolution: {integrity: sha512-ZxxY3OsqUczYP1sGqo97tu+CJmMBwuSW+dL0WEBdDhOZ5G1zntw72hvBc68ZQAirosWvbDKgN1dL5k173QtFww==}
@@ -11872,7 +11872,7 @@ packages:
       extsprintf: 1.3.0
     dev: false
 
-  /vite-plugin-comlink@3.0.5(comlink@4.4.1)(vite@4.3.5):
+  /vite-plugin-comlink@3.0.5(comlink@4.4.1)(vite@4.3.9):
     resolution: {integrity: sha512-my8BE9GFJEaLc7l3e2SfRUL8JJsN9On8PiW7q4Eyq3g6DHUsNqo5WlS7Butuzc8ngrs24Tf1RC8Xfdda+E5T9w==}
     peerDependencies:
       comlink: ^4.3.1
@@ -11881,18 +11881,18 @@ packages:
       comlink: 4.4.1
       json5: 2.2.1
       magic-string: 0.26.7
-      vite: 4.3.5(@types/node@18.15.13)
+      vite: 4.3.9(@types/node@18.15.13)
     dev: true
 
-  /vite-plugin-monaco-editor@1.1.0(monaco-editor@0.38.0):
+  /vite-plugin-monaco-editor@1.1.0(monaco-editor@0.39.0):
     resolution: {integrity: sha512-IvtUqZotrRoVqwT0PBBDIZPNraya3BxN/bfcNfnxZ5rkJiGcNtO5eAOWWSgT7zullIAEqQwxMU83yL9J5k7gww==}
     peerDependencies:
       monaco-editor: '>=0.33.0'
     dependencies:
-      monaco-editor: 0.38.0
+      monaco-editor: 0.39.0
     dev: true
 
-  /vite-plugin-svgr-component@1.0.1(react@18.2.0)(vite@4.3.5):
+  /vite-plugin-svgr-component@1.0.1(react@18.2.0)(vite@4.3.9):
     resolution: {integrity: sha512-v5V3JpMt1zQBndAxvPMlRVSgyRzP+zI4e8j7Nf5FS1PkAXxRHB7uoXWrfN6WBj8KwZpoIsK/a+M6xqSaV6hc+g==}
     peerDependencies:
       react: '>= 17.0.2'
@@ -11904,12 +11904,12 @@ packages:
       '@svgr/core': 6.2.1
       micromatch: 4.0.4
       react: 18.2.0
-      vite: 4.3.5(@types/node@18.15.13)
+      vite: 4.3.9(@types/node@18.15.13)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-tsconfig-paths@4.2.0(typescript@5.0.4)(vite@4.3.5):
+  /vite-tsconfig-paths@4.2.0(typescript@5.0.4)(vite@4.3.9):
     resolution: {integrity: sha512-jGpus0eUy5qbbMVGiTxCL1iB9ZGN6Bd37VGLJU39kTDD6ZfULTTb1bcc5IeTWqWJKiWV5YihCaibeASPiGi8kw==}
     peerDependencies:
       vite: '*'
@@ -11920,14 +11920,14 @@ packages:
       debug: 4.3.4(supports-color@9.3.1)
       globrex: 0.1.2
       tsconfck: 2.1.1(typescript@5.0.4)
-      vite: 4.3.5(@types/node@18.15.13)
+      vite: 4.3.9(@types/node@18.15.13)
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
-  /vite@4.3.5(@types/node@18.15.13):
-    resolution: {integrity: sha512-0gEnL9wiRFxgz40o/i/eTBwm+NEbpUeTWhzKrZDSdKm6nplj+z4lKz8ANDgildxHm47Vg8EUia0aicKbawUVVA==}
+  /vite@4.3.9(@types/node@18.15.13):
+    resolution: {integrity: sha512-qsTNZjO9NoJNW7KnOrgYwczm0WctJ8m/yqYAMAK9Lxt4SoySUfS5S8ia9K7JHpa3KEeMfyF8LoJ3c5NeBJy6pg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
