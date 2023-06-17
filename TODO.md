@@ -36,9 +36,6 @@
 * Add ability to restart session container from UI
 * Add scroll to position step
 
-* Reload custom steps without reloading page
-  * Add step reload button
-
 * Keeping the feature file open when switching editors
 
 
