@@ -148,7 +148,7 @@ export class Repo {
     const name = repoId.split('/').pop()
     const provider = url.host.split('.').slice(0).join('.')
 
-    const data = await Repo.getProvider(args)
+    const data = await Repo.getProvider({...args, provider})
     const { repo, ...status } = await initializeGoblet({
       ...data,
       user: {

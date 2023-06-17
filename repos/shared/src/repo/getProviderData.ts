@@ -12,25 +12,46 @@ export type TProviderData = {
   [key:string]:any
 }
 
+let __PROVIDER_DATA = {}
 
-const providerData = GB_GIT_PROVIDER_DATA.split(`,`).reduce((acc, part:string) => {
-  if(!part || !isStr(part)) return acc
+/**
+ * Wrap in a try catch, so we don't leak provider information
+ */
+try {
+  __PROVIDER_DATA = GB_GIT_PROVIDER_DATA.split(`,`)
+    .reduce((acc, part:string) => {
+      if(!part || !isStr(part)) return acc
 
-  const [user, provider, ...rest] = part.trim().split(`|`)
-  acc[user] = acc[user] || {}
-  acc[user][provider] = { token: rest.join(`|`).trim() }
+      const [part1, part2, ...rest] = part.trim().split(`|`)
+      const user = (part1 || ``).toLowerCase().trim()
+      const provider = (part2 || ``).toLowerCase().trim()
+      const token = rest.join(`|`).trim()
 
-  return acc
-}, {})
+      if(!user || !provider || !token) return acc
+
+      acc[user] = acc[user] || {}
+      acc[user][provider] = { token }
+
+      return acc
+    }, {})
+}
+catch(err){
+  /**
+   * Don't log the error because we don't want to leak git provider information
+   */
+  console.error(`The "__PROVIDER_DATA" cache could not be set. Error parsing "GB_GIT_PROVIDER_DATA" env`)
+}
 
 
 export const getProviderData = (opts:TProviderData) => {
   const fallback = { token: opts.token }
-  const user = opts?.username || opts?.user
-  const provider = (opts?.provider || ``)
-    .replace(`https://`, ``)
-    .replace(`http://`, ``)
-    .replace(`.com`, ``)
+  try {
+    const user = (opts?.username || opts?.user || ``).toLowerCase().trim()
+    const provider = (opts?.provider || ``).replace(`.com`, ``).toLowerCase().trim()
 
-  return get(providerData, [user, provider], fallback)
+    return get(__PROVIDER_DATA, [user, provider], fallback)
+  }
+  catch(err){
+    return fallback
+  }
 }
