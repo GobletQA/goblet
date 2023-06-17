@@ -3,6 +3,14 @@ export const repos = {
     viewer: {
       repositories: [
         {
+          "url": 'https://github.com/Use-Verb/use-verb-webapp-tests',
+          "name": 'use-verb-webapp-tests',
+          "branches": [
+            "main",
+            "goblet-lancetipton"
+          ]
+        },
+        {
           "url": "https://github.com/lancetipton/asteroids-remake",
           "name": "asteroids-remake",
           "branches": [

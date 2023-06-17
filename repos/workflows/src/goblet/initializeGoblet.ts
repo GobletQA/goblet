@@ -1,4 +1,4 @@
-import type { TGitOpts, TWFArgs, TWFResp } from '@gobletqa/workflows/types'
+import type { TWFArgs, TWFResp } from '@gobletqa/workflows/types'
 
 import { Logger } from '@keg-hub/cli-utils'
 import { git } from '@gobletqa/workflows/git'
