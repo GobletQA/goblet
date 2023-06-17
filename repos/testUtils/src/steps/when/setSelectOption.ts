@@ -1,7 +1,6 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
-import { getPage } from '@GTU/Playwright'
 import { saveWorldData, saveWorldLocator } from '@GTU/Support/helpers'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
@@ -14,9 +13,9 @@ export const setSelectOption = async (
   selector:string,
   data:string,
   key:string = 'label',
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
-  const page = await getPage()
+  const { world } = ctx
 
   // Defaults to use label if no 'by' key exists
   const options = data.split(',').map(value => ({ [key]: value }))

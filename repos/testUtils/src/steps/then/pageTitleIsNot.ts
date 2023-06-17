@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import expect from 'expect'
 import { Then } from '@GTU/Parkin'
@@ -9,7 +9,7 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  * Checks that the page title is not `title`
  * @param {string} title - text to compare to page title
  */
-export const pageTitleIsNot = async (title:string, world:TWorldConfig) => {
+export const pageTitleIsNot = async (title:string, ctx:TStepCtx) => {
   const page = await getPage()
   expect(await page.title()).not.toBe(title)
 }

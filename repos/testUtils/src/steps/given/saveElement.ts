@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
 import { SavedLocatorWorldPath } from '@GTU/Constants'
@@ -7,19 +7,20 @@ import { saveWorldLocator } from '@GTU/Support/helpers'
 const saveElToWorld = async (
   selector:string,
   worldPath:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
   if(!worldPath)
     throw new Error(`A path on the $world object is required`)
 
+  const { world } = ctx
   return await saveWorldLocator({ selector, world, worldPath })
 }
 
-const autoSaveElToWorld = async (selector:string, world:TWorldConfig) => {
+const autoSaveElToWorld = async (selector:string, ctx:TStepCtx) => {
   const element = await saveElToWorld(
     selector,
     SavedLocatorWorldPath,
-    world
+    ctx
   )
   await element.focus()
 }
@@ -53,12 +54,12 @@ const metaExp = {
 
 Given(`{string} is saved`, (
   selector:string,
-  world:TWorldConfig
-) => autoSaveElToWorld(selector, world), meta)
+  ctx:TStepCtx
+) => autoSaveElToWorld(selector, ctx), meta)
 Given(`I select {string}`, (
   selector:string,
-  world:TWorldConfig
-) => autoSaveElToWorld(selector, world), meta)
+  ctx:TStepCtx
+) => autoSaveElToWorld(selector, ctx), meta)
 
 
 Given(`{string} is saved as {string}`, saveElToWorld, metaExp)

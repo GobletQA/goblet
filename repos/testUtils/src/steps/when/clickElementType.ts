@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { clickElement } from '@GTU/Support/helpers'
@@ -6,7 +6,7 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 const attrTypes = [`internal`, `.`, `#`, `$`, `#`, `:`, `(`, `>`]
 
-export const checkSelectorType = (selector:string, world:TWorldConfig) => {
+export const checkSelectorType = (selector:string, ctx:TStepCtx) => {
   const check = selector.trim()
   return attrTypes.find(attr => check.startsWith(attr))
     ? selector
@@ -16,9 +16,10 @@ export const checkSelectorType = (selector:string, world:TWorldConfig) => {
 export const clickElementTypeHandler = async (
   type:string,
   selector:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
-  const formatted = checkSelectorType(selector, world)
+  const { world } = ctx
+  const formatted = checkSelectorType(selector, ctx)
   const joined = formatted.startsWith(`internal`)
     ? formatted
     : `${type}${formatted}`
@@ -42,8 +43,8 @@ const meta = {
 
 When(`I click the link {string}`, (
   link:string,
-  world:TWorldConfig
-) => clickElementTypeHandler(`a`, link, world), {
+  ctx:TStepCtx
+) => clickElementTypeHandler(`a`, link, ctx), {
   ...meta,
   name: `Click link`,
   module: `clickElements - Link`,
@@ -52,8 +53,8 @@ When(`I click the link {string}`, (
 
 When(`I click the button {string}`, (
   button:string,
-  world:TWorldConfig
-) => clickElementTypeHandler(`button`, button, world), {
+  ctx:TStepCtx
+) => clickElementTypeHandler(`button`, button, ctx), {
   ...meta,
   name: `Click button`,
   module: `clickElements - Button`,

@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
@@ -8,8 +8,9 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 export const typeWithSaved = async (
   text:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
+  const { world } = ctx
   const { selector, element } = getWorldLocator(world)
   const locator = element || await getLocator(`:focus`)
  
@@ -27,8 +28,9 @@ export const typeWithSaved = async (
 export const typeWithSelector = async (
   text:string,
   selector:string=`:focus`,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
+  const { world } = ctx
   return await typeInput({
     text,
     world,

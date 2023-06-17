@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { clickElement } from '@GTU/Support/helpers'
@@ -8,7 +8,8 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  * Click the element matching `selector`
  * @param {String} selector - valid playwright selector
  */
-export const clickTextHandler = async (selector:string, world:TWorldConfig) => {
+export const clickTextHandler = async (selector:string, ctx:TStepCtx) => {
+  const { world } = ctx
   return await clickElement({
     world,
     selector

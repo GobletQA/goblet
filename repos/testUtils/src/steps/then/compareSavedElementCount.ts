@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { get } from '@keg-hub/jsutils'
@@ -17,9 +17,10 @@ export const compareSavedElementCount = async (
   selector:string,
   type:string,
   worldPath:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
 
+  const { world } = ctx
   const cleaned = cleanWorldPath(worldPath)
   if(!cleaned) throw new Error(`World Path "${worldPath}" is invalid.`)
 
@@ -41,22 +42,22 @@ const meta = {
   description: `Locates elements by selector and compares the amount of found elements against a previously stored number from the $wold.`,
   expressions: [
     {
-      type: 'string',
+      type: `string`,
       description: `The selector for the elements.`,
-      example: 'li.list-item',
+      example: `li.list-item`,
     },
     {
-      type: 'string',
+      type: `string`,
       description: `The word or symbol that defines the validation check. Must be one of ${greaterLessEqual.matchTypes}`,
-      example: '<',
+      example: `<`,
     },
     {
-      type: 'string',
+      type: `string`,
       description: `Path on the world where the count should be saved`,
-      example: 'page.items.count',
+      example: `page.items.count`,
     },
   ],
 }
 
-Then('the {string} count is {string} to {string}', compareSavedElementCount, meta)
+Then(`the {string} count is {string} to {string}`, compareSavedElementCount, meta)
 

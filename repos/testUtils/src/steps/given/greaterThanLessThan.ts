@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
 import { getLocators } from '@GTU/Playwright'
@@ -14,7 +14,7 @@ export const greaterThanLessThan = async (
   selector:string,
   type:string,
   count:number,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
   const elements = await getLocators(selector)
   const current = await elements.count()

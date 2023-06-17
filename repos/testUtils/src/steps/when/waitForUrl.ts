@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -9,7 +9,7 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  * Without specifying any arguments, it by default waits for the load event to fire.
  * Read more here: https://playwright.dev/docs/api/class-page#pagewaitforloadstatestate-options
  */
-export const waitForUrl = async (url:string, world:TWorldConfig) => {
+export const waitForUrl = async (url:string, ctx:TStepCtx) => {
   const page = await getPage()
   await page.waitForURL(url)
 }

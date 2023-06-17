@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -14,8 +14,9 @@ export const assertStyleValue = async (
   selector:string,
   rule:string,
   value:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
+
   const page = await getPage()
 
   const locator = page.locator(selector)

@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -12,16 +12,16 @@ const randomInt = (min:number, max:number) => Math.floor(Math.random() * (max - 
 export const moveMouse = async (
   XPos:number,
   YPos:number,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
   const page = await getPage()
   await page.mouse.move(XPos, YPos);
 }
 
-const moveMouseRandom = async (world:TWorldConfig) => {
+const moveMouseRandom = async (ctx:TStepCtx) => {
   const page = await getPage()
   const { width, height } = page.viewportSize()
-  await moveMouse(randomInt(1, width), randomInt(1, height), world)
+  await moveMouse(randomInt(1, width), randomInt(1, height), ctx)
 }
 
 Given(`I move the mouse`, moveMouseRandom, {

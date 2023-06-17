@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -14,7 +14,7 @@ export const getAttribute = async (
   selector:string,
   attribute:string,
   value:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
   const page = await getPage()
 

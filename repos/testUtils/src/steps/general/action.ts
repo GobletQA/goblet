@@ -1,13 +1,12 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
-import { Then } from '@GTU/Parkin'
 import { getLocator, getPage } from '@GTU/Playwright'
 
 /**
  * Click the element matching `selector`
  * @param {String} selector - valid playwright selector
  */
-export const generalAction = async (action:string, selector:string, world:TWorldConfig) => {
+export const generalAction = async (action:string, selector:string, ctx:TStepCtx) => {
   const page = await getPage()
   await getLocator(selector)
   return page[action](selector, { force: true })

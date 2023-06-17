@@ -1,9 +1,9 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
 
-export const mouseLeavePage = async (world:TWorldConfig) => {
+export const mouseLeavePage = async (ctx:TStepCtx) => {
   const page = await getPage()
   await page.locator('html').dispatchEvent('mouseleave')
 }
@@ -11,12 +11,12 @@ export const mouseLeavePage = async (world:TWorldConfig) => {
 const meta = {
   module: `mouseLeavePage`,
   examples: [
-    'I move the mouse off the page'
+    `I move the mouse off the page`
   ],
   description: `Simulates moving the mouse off the browser page.`,
   expressions: [
   ],
 }
 
-When('I move the mouse off the page', mouseLeavePage, meta)
+When(`I move the mouse off the page`, mouseLeavePage, meta)
 
