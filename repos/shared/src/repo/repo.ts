@@ -1,4 +1,5 @@
 import type { TWorldConfig } from '@ltipton/parkin'
+import type { TProviderData } from './getProviderData'
 import type { TWFGobletConfig, TGitOpts } from '@gobletqa/workflows/types'
 import type {
   TRepoOpts,
@@ -15,6 +16,7 @@ import type {
 import { Parkin } from '@ltipton/parkin'
 import { getWorld } from '@GSH/repo/world'
 import { emptyObj, } from '@keg-hub/jsutils'
+import { getProviderData } from './getProviderData'
 import { getFileTypes } from '@GSH/utils/getFileTypes'
 import { resetGobletConfig } from '@GSH/goblet/getGobletConfig'
 import {
@@ -25,7 +27,6 @@ import {
   initializeGoblet,
   disconnectGoblet,
 } from '@gobletqa/workflows'
-
 
 /**
  * Class variation of the a goblet config
@@ -38,6 +39,10 @@ export class Repo {
    * Allows extending it with logic at runtime 
    */
   merge?:string[]=[]
+
+  static getProvider = async (opts:TProviderData) => {
+    return getProviderData(opts)
+  }
 
   /**
    * Gets all repos for a user, including each repos branches
@@ -52,7 +57,8 @@ export class Repo {
       ? new GitlabGraphApi()
       : new GithubGraphApi()
 
-    return await graphApi.userRepos(opts)
+    const data = await Repo.getProvider(opts)
+    return await graphApi.userRepos({...opts, ...data})
   }
 
   /**
@@ -62,7 +68,8 @@ export class Repo {
     config:TWFGobletConfig,
     repoData:TGitOpts
   ) => {
-    const { repo, ...status } = await statusGoblet(config, repoData, false)
+    const data = await Repo.getProvider(repoData)
+    const { repo, ...status } = await statusGoblet(config, {...repoData, ...data}, false)
 
     return !repo || !status.mounted
       ? { status }
@@ -86,7 +93,6 @@ export class Repo {
   static create = async (args:TRepoFromCreate) => {
     const {
       name,
-      token,
       branch,
       provider,
       username,
@@ -96,8 +102,9 @@ export class Repo {
       organization,
     } = args
 
+    const data = await Repo.getProvider(args)
     const { repo, ...status } = await createGoblet({
-      token,
+      ...data,
       user: {
         gitUser: username
       },
@@ -128,7 +135,6 @@ export class Repo {
    */
   static fromWorkflow = async (args:TRepoFromWorkflow) => {
     const {
-      token,
       branch,
       repoUrl,
       username,
@@ -142,8 +148,9 @@ export class Repo {
     const name = repoId.split('/').pop()
     const provider = url.host.split('.').slice(0).join('.')
 
+    const data = await Repo.getProvider(args)
     const { repo, ...status } = await initializeGoblet({
-      token,
+      ...data,
       user: {
         gitUser: username
       },

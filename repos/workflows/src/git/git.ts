@@ -445,7 +445,12 @@ git.remove = async (args:TGitMeta) => {
  * Not technically a git method but relative to the repo in this context
  */
 git.exists = async (args:TGitMeta, localPath?:string) => {
-  const repoPath = localPath || getRepoPath(args)
+  const repoPath = localPath || args && getRepoPath(args)
+
+  if(!repoPath){
+    Logger.log(`Can not find repo path, assuming repo is unmounted`)
+    return false
+  }
 
   Logger.log(`Checking if repo is mounted at ${repoPath}`)
   const [err, pathExists] = await fileSys.pathExists(repoPath)

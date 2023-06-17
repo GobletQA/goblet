@@ -150,6 +150,7 @@ module.exports = {
           `GB_KUBE_NAMESPACE`,
           `GB_SERVER_ORIGINS`,
           `GB_LOCAL_DEV_MODE`,
+          `GB_GIT_PROVIDER_DATA`,
         ],
         /**
         * ENVs to not include in the backend
