@@ -1,3 +1,4 @@
+import {TWorldConfig} from '@ltipton/parkin'
 import { TLocator, TBrowserPage, TGobletTestOpts } from './shared.types'
 
 export type TGobletGlobalRecordVideo = {
@@ -43,4 +44,9 @@ export type TLocatorTypeMap = {
   title: TLocatorMapMethod
   label: TLocatorMapMethod
   placeholder: TLocatorMapMethod
+}
+
+export type TStepCtx = {
+  world:TWorldConfig
+  [key:string]: any
 }
