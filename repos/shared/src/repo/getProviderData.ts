@@ -22,10 +22,10 @@ try {
     .reduce((acc, part:string) => {
       if(!part || !isStr(part)) return acc
 
-      const [part1, part2, ...rest] = part.trim().split(`|`)
+      const [part1, part2, ...rest] = part.trim().split(`::`)
       const user = (part1 || ``).toLowerCase().trim()
       const provider = (part2 || ``).toLowerCase().trim()
-      const token = rest.join(`|`).trim()
+      const token = rest.join(`::`).trim()
 
       if(!user || !provider || !token) return acc
 
@@ -41,7 +41,6 @@ catch(err){
    */
   console.error(`The "__PROVIDER_DATA" cache could not be set. Error parsing "GB_GIT_PROVIDER_DATA" env`)
 }
-
 
 export const getProviderData = (opts:TProviderData) => {
   const fallback = { token: opts.token }
