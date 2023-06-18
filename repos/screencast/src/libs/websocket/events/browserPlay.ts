@@ -64,7 +64,7 @@ const handleStartPlaying = async (
 
       // Get the event parent, and message if they exist
       if(parent) evtData.eventParent = parent
-      if(evtData.eventParent) evtData.message = getEventMessage(evtData)
+      if(evtData.eventParent) evtData.description = getEventMessage(evtData)
 
       // Clean up the event data, we don't need the tests and describes content
       // And it can be pretty large. No point in sending it over the wire

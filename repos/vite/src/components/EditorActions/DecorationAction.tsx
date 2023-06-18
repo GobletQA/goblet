@@ -5,7 +5,6 @@ import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
 export const DecorationAction:TMenuItem = {
   closeMenu:true,
-  dividerBottom: true,
   Icon: BackspaceTagIcon,
   text: `Clear Test Decorations`,
   id:`decoration-editor-action`,

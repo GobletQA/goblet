@@ -4,15 +4,14 @@ import type { TEditorCtx } from '@gobletqa/race'
 import { useRef } from 'react'
 import { useApp } from '@store'
 import { RaceEditor } from '@gobletqa/race'
-import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Divider/Divider'
+import { RaceActions } from '../EditorActions/Actions'
 import { NotConnected } from '@components/NotConnected'
 import { useRaceHooks } from '@hooks/race/useRaceHooks'
 import { useContextMenu } from '@hooks/race/useContextMenu'
 import { PrePanels } from '@components/Panels/PrePanels'
 import {
   BlockIcon,
-  EThemeMode,
   SidebarOpenWidth,
 } from '@gobletqa/components'
 
@@ -20,7 +19,6 @@ import {
 export type TVisualEditor = {
   portal?:string
   style?: CSSProperties
-  // themeType?: EThemeMode
 }
 
 export const VisualEditor = (props:TVisualEditor) => {
@@ -50,15 +48,14 @@ export const VisualEditor = (props:TVisualEditor) => {
   return connected
     ? (
         <>
-          {/* <DragSelect /> */}
           <RaceEditor
             {...props}
             world={world}
             decoRef={decoRef}
-            actions={Actions}
             Divider={Divider}
             settings={settings}
             features={features}
+            actions={RaceActions}
             editorRef={editorRef}
             PrePanels={PrePanels}
             rootPrefix={rootPrefix}

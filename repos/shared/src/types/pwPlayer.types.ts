@@ -1,16 +1,16 @@
 import type { TRepo } from './repo.types'
+import { EAstObject, TRunResult } from '@ltipton/parkin'
 import type { TSocketMessageObj } from './socket.types'
 import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 
 // Exported from screencast/src/types
 import type { Player } from '@gobletqa/screencast'
-import {EAstObject} from '@ltipton/parkin'
 
 export type TPlayerEvent = {
   name:string
   message?:string
   isPlaying:boolean
-  data?:TPlayerTestEvent
+  data?:TPlayerEventData
 }
 
 export type TPlayerEventCB = (event:TPlayerEvent) => void
@@ -33,7 +33,7 @@ export type TPlayerStartConfig = TPlayerConfig & {
 
 export type TPlayerOpts = TBrowserActionOptions
 
-export type TPlayerResEvent<T=TPlayerTestEvent> = Omit<TSocketMessageObj, `data`> & {
+export type TPlayerResEvent<T=TPlayerEventData> = Omit<TSocketMessageObj, `data`> & {
   location: string,
   fileType: string,
   data:T
@@ -60,53 +60,38 @@ export type TPlayerTestExpectation = {
   message:string
 }
 
-export type TPlayerTestMeta = {
-  id:string
-  testPath:string
-  fullName:string
-  failed:boolean
-  passed:boolean
-  message?:string
-  timestamp:number
-  describes?:any[]
-  description:string
-  eventParent?:EAstObject
-  tests?: TPlayerTestMeta[]
-  options?:Record<string, string|number>
-  failedExpectations?:TPlayerTestExpectation[]
-  passedExpectations?:TPlayerTestExpectation[]
-}
+export type TEventParent = EAstObject.step
+  | EAstObject.scenario
+  | EAstObject.background
+  | EAstObject.rule
+  | EAstObject.feature
 
-export type TPlayerTestEvent = TPlayerTestMeta & {
-  type:EPlayerTestType
-  action:EPlayerTestAction
-  status?:EPlayerTestStatus
-}
-
-export type TPlayerTestStart = TPlayerTestMeta & {
+export type TPlayerTestStart = Omit<TRunResult, `type`|`action`|`status`> & {
   status:EPlayerTestStatus
   type:EPlayerTestType.test
+  eventParent?: TEventParent
   action:EPlayerTestAction.start
 }
 
-export type TPlayerTestDone = TPlayerTestMeta & {
+export type TPlayerTestDone = Omit<TRunResult, `type`|`action`|`status`> & {
   status:EPlayerTestStatus
   type:EPlayerTestType.test
+  eventParent?: TEventParent
   action:EPlayerTestAction.end
 }
 
-export type TPlayerTestResult = TPlayerTestMeta & {
+export type TPlayerTestResult = Omit<TRunResult, `type`|`action`|`status`> & {
   status:EPlayerTestStatus
   type:EPlayerTestType.test
+  eventParent?: TEventParent
   action:EPlayerTestAction.test
 }
 
-export type TPlayerTestSuiteDone<T=TPlayerTestEvent> = TPlayerTestEvent & {
-  tests: T[]
-}
-
-export type TPlayerTestSuiteFinished<T=TPlayerTestEvent> = TPlayerTestEvent & {
-  describes: T[]
+export type TPlayerTestEvent = Omit<TRunResult, `type`|`action`|`status`> & {
+  type:EPlayerTestType
+  action:EPlayerTestAction
+  status?:EPlayerTestStatus
+  eventParent?: TEventParent
 }
 
 export type TPlayerEventData = TPlayerTestEvent
@@ -116,6 +101,14 @@ export type TPlayerEventData = TPlayerTestEvent
   | TPlayerTestSuiteDone
   | TPlayerTestSuiteFinished
 
+
+export type TPlayerTestSuiteDone<T=TPlayerTestEvent> = TPlayerTestEvent & {
+  tests: T[]
+}
+
+export type TPlayerTestSuiteFinished<T=TPlayerTestEvent> = TPlayerTestEvent & {
+  describes: T[]
+}
 
 export type TPlayerEnded = TPlayerResEvent<Record<string, any>>
 export type TPlayerStarted = TPlayerResEvent<Record<string, any>>

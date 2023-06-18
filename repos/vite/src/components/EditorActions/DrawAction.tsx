@@ -5,6 +5,7 @@ import { ModeEditIcon } from '@gobletqa/components'
 export const DrawAction:TMenuItem = {
   disabled: true,
   closeMenu:true,
+  dividerTop: true,
   Icon: ModeEditIcon,
   id:`free-draw-in-editor-action`,
   key:`free-draw-in-editor-action`,

@@ -37,7 +37,7 @@ export const upsertDecos = ({
         })
 
     if(!item?.uuid){
-      console.warn(`[Race Deco] Can not update decorations, failed to match ID`, feature, deco)
+      console.warn(`[Race Deco] Can not update decorations, failed to match ID`)
       return acc
     }
 

@@ -4,6 +4,10 @@ import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 
 export const remove = async (req:Request, res:Response) => {
   const conductor = req.app.locals.conductor
+
+  if(conductor.controller.devRouterActive)
+    return res.status(200).json({})
+
   const refCont = conductor.controller.getContainer((req.params.containerRef || ``)?.trim())
 
   const container = refCont || conductor.controller.getContainer((res.locals.subdomain || ``)?.trim?.())

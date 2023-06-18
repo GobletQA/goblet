@@ -49,3 +49,19 @@
   * Needs an update to Parkin to keep a consistent uuid for feature items
   * Needs to pass on feature test meta data
     * This is mostly done, but needs to be published
+
+
+## To Investigate
+* Figure out how to handle camera and mic recording within the session container
+  * Need to be able to record camera and audio
+  * Most likely need sometime of emulator that runs on ubuntu
+    * The browser would then talk to those instead
+
+* Run Test from specific Step 
+  * Expect browser to already be in correct state for step to pass
+
+* Figure out why recording events is not propagating
+* Figure out how to add an empty 
+* File upload
+  * opens a file explorer
+  * Need a way to stop that from happening

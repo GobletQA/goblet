@@ -1,3 +1,4 @@
+import type { TFeatureAst } from '@ltipton/parkin'
 import type {
   TRepo,
   TBrowser,
@@ -8,10 +9,8 @@ import type {
   TPlayerEventCB,
   TBrowserContext,
   TPlayerCleanupCB,
-  TPlayerTestEvent,
   TPlayerStartConfig,
 } from '@GSC/types'
-import type { TFeatureAst } from '@ltipton/parkin'
 
 import { PWPlay } from '@GSC/constants'
 import { CodeRunner } from './codeRunner'
@@ -148,7 +147,6 @@ export class Player {
       this.fireEvent({
         message: 'Playing started',
         name: PWPlay.playStarted,
-        data: { options: this.options.playOptions } as TPlayerTestEvent
       })
 
       this.codeRunner = new CodeRunner(this, {

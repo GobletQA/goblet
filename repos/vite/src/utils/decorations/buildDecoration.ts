@@ -1,15 +1,33 @@
-import type { TBuildDecoration, TBuiltDeco, TPlayerTestEvent } from '@types'
+import type { TBuildDecoration, TBuiltDeco, TPlayerEventData } from '@types'
 import type { IMarkdownString } from 'monaco-editor'
 
 
 import { EEditorType } from '@types'
-import { cls } from '@keg-hub/jsutils'
 import { getDecoType } from './getDecoType'
-import { EAstObject } from '@ltipton/parkin'
+import { ERaceDecoType } from '@gobletqa/race'
 import { getTypeFromId } from './getTypeFromId'
+import { cls, emptyObj, exists } from '@keg-hub/jsutils'
+import { EAstObject, TRunResultActionMeta, TRunResultStepMeta } from '@ltipton/parkin'
+
+const getDecoValue = (
+  event:TPlayerEventData,
+  decoType:ERaceDecoType,
+) => {
+  
+  const isErr = decoType !== ERaceDecoType.error && decoType !== ERaceDecoType.fail
+  const failedItems = event?.failedExpectations
+
+  return !failedItems?.length || isErr
+    ? event.description
+    : failedItems.reduce((acc, item) => {
+        item?.description && (acc += `${item?.description}\n`)
+
+        return acc
+      }, `${event.description}\n`)
+}
 
 const getDecoCls = (
-  event:TPlayerTestEvent,
+  event:TPlayerEventData,
   type:string,
   editor:EEditorType
 ) => {
@@ -19,11 +37,15 @@ const getDecoCls = (
 }
 
 const getSearchText = (
+  meta:TRunResultActionMeta,
   description:string,
   type:string,
 ) => {
   // Add this is search is not needed in Race Editor
   // if(editor !== EEditorType.code) return ``
+
+  const metaText = meta[type as keyof typeof meta]
+  if(exists(metaText)) return metaText
 
   switch(type){
     case EAstObject.step:
@@ -40,25 +62,37 @@ const getSearchText = (
 
 export const buildDecoration = <T=TBuiltDeco, A=any>(props:TBuildDecoration<A>) => {
   const {
+    uuid,
     event,
     testPath,
     description,
     editor
   } = props
 
-  const type = props.type || event.eventParent || getTypeFromId(event)
+  const meta = (event?.metaData || emptyObj) as TRunResultActionMeta
+
+  const type = !props.type && meta.type
+    ? exists((meta as TRunResultStepMeta)?.step) ? EAstObject.step : meta.type
+    : props.type || event.eventParent || getTypeFromId(event)
 
   const classes = getDecoCls(event, type, editor)
   const decoType = getDecoType(event, type)
-  const search = getSearchText(description || event.description, type)
+  const search = getSearchText(
+    meta,
+    description || event.description,
+    type
+  )
 
   return {
-    // Race only properties
     type,
     decoType,
-    id:testPath || event.testPath,
-    // -------------
-
+    id: uuid
+      || event?.metaData?.uuid
+      || testPath
+      || event.testPath,
+    // Ref so we know the id came from the metaData object
+    // Trigger to tell it how to match to the feature property
+    metaId: Boolean(uuid || event?.metaData?.uuid),
     search,
     options: {
       zIndex: 1000,
@@ -70,8 +104,8 @@ export const buildDecoration = <T=TBuiltDeco, A=any>(props:TBuildDecoration<A>) 
       glyphMarginHoverMessage: {
         isTrusted: true,
         supportHtml: false,
-        value: event.message,
         supportThemeIcons: false,
+        value: getDecoValue(event, decoType),
       } as IMarkdownString,
     }
   } as T

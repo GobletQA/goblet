@@ -11,6 +11,15 @@ export const repos = {
           ]
         },
         {
+          "url": 'https://github.com/GobletQA/use-verb',
+          "name": 'use-verb',
+          "branches": [
+            "main",
+            "goblet-lancetipton",
+            "goblet-HerrSchultz"
+          ]
+        },
+        {
           "url": "https://github.com/lancetipton/asteroids-remake",
           "name": "asteroids-remake",
           "branches": [

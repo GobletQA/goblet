@@ -120,7 +120,6 @@ export const cleanupWorld = (PK:Parkin) => {
  * This clears out some of it, because the frontend does not need it
  */
 export const clearTestResults = (result:TPlayerTestMeta) => {
-  // TODO: fix the 'TPlayerTestEvent' type, it's wrong
   return omitKeys<TPlayerTestEvent>(
     result,
     [

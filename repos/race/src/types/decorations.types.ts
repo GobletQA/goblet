@@ -70,6 +70,7 @@ export type TRaceDecoOpts = {
 export type TRaceDeco = {
   id: string
   search:string
+  metaId?:boolean
   type:EAstObject
   options:TRaceDecoOpts
   decoType:ERaceDecoType|`spin`|`pass`|`fail`|`error`

@@ -1,6 +1,6 @@
 import type { Player } from './player'
 import type { TFeatureAst } from '@ltipton/parkin'
-import type { TPlayerTestEvent, TPlayerTestMeta } from '@gobletqa/shared/types'
+import type { TPlayerEvent, TPlayerEventData } from '@gobletqa/shared/types'
 
 import { PWPlay } from '@GSC/constants'
 import { Parkin } from '@ltipton/parkin'
@@ -65,35 +65,38 @@ export class CodeRunner {
     this.PK = await setupParkin(this)
 
     await this.PK.run(content, {})
-    const results = await this.PTE.run() as TPlayerTestEvent[]
+    const results = await this.PTE.run() as TPlayerEventData[]
 
     // We only support 1 feature per file, so we only care about the first test result 
     const final = clearTestResults(results[0])
     await this.cleanup()
 
-    return this.canceled ? emptyObj as TPlayerTestEvent : final
+    return this.canceled ? emptyObj as TPlayerEventData : final
   }
 
-  onSpecDone = (result:TPlayerTestMeta) => {
+  onSpecDone = (result:TPlayerEventData) => {
     if(this.canceled) return
     
     this.player.fireEvent({
       name: PWPlay.playSpecDone,
       message: `Player - Spec Done`,
       // Includes the `failedExpectations` data so we have access to the error messages
-      data: {...clearTestResults(result), failedExpectations: result?.failedExpectations},
-    })
+      data: {
+        ...clearTestResults(result),
+        failedExpectations: result?.failedExpectations
+      },
+    } as TPlayerEvent)
 
     if(result.failed){
       this.cancel()
 
       throw new Error(
-        result?.failedExpectations?.[0]?.message || `Spec Failed`
+        result?.failedExpectations?.[0]?.description || `Spec Failed`
       )
     }
   }
 
-  onSuiteDone = (result:TPlayerTestMeta) => {
+  onSuiteDone = (result:TPlayerEventData) => {
     cleanupWorld(this.PK)
     if(this.canceled) return
 
@@ -104,7 +107,7 @@ export class CodeRunner {
     })
   }
 
-  onSpecStarted = (result:TPlayerTestMeta) => {
+  onSpecStarted = (result:TPlayerEventData) => {
     if(this.canceled) return
 
     this.player.fireEvent({
@@ -114,7 +117,7 @@ export class CodeRunner {
     })
   }
 
-  onSuiteStarted = (result:TPlayerTestMeta) => {
+  onSuiteStarted = (result:TPlayerEventData) => {
     if(this.canceled) return
 
     this.player.fireEvent({

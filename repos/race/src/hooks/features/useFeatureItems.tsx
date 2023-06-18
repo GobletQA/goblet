@@ -10,7 +10,6 @@ import {
   RuleItem,
   ModeItem,
   StepItem,
-  WorldItem,
   AuditItem,
   GeneralItem,
   ScenarioItem,
@@ -84,7 +83,6 @@ export const useFeatureItems = (props:THFeatureItems) => {
     return [
       ...addItems,
       auditItem,
-      WorldItem,
       modeItem,
     ].filter(Boolean)
   }, [

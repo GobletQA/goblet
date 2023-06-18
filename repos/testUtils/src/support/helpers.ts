@@ -380,6 +380,19 @@ export const fillInput = async (props:TFillInput) => {
   return { page, locator }
 }
 
+/**
+ * Finds an input from selector or locator, then fills it with the text
+ *
+ */
+export const clearInput = async (props:TClickEl) => {
+  const { page, locator } = await clickElement(props)
+
+  // clear value of the input
+  await locator.fill('')
+
+  return { page, locator }
+}
+
 
 /**
  * Finds an input from selector or locator, then types in the text

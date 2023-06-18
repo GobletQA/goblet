@@ -1,13 +1,13 @@
 import type { CSSProperties } from 'react'
-import type { TEditorRefHandle } from '@gobletqa/monaco'
+import type { TEditorAction, TEditorRefHandle } from '@gobletqa/monaco'
 
 import { useRef } from 'react'
 import { useApp } from '@store'
 import { MonacoEditor } from '@gobletqa/monaco'
-import { Actions } from '../EditorActions/Actions'
 import { Divider } from '@components/Divider/Divider'
 import { NotConnected } from '@components/NotConnected'
 import { PrePanels } from '@components/Panels/PrePanels'
+import { MonacoActions } from '../EditorActions/Actions'
 import { useMonacoHooks } from '@hooks/monaco/useMonacoHooks'
 import { BlockIcon, SidebarOpenWidth } from '@gobletqa/components'
 
@@ -41,7 +41,6 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           {...props}
           ref={editorRef}
           config={config}
-          actions={Actions}
           Divider={Divider}
           options={options}
           actionsOpen={false}
@@ -58,6 +57,7 @@ export const CodeEditor = (props:TCodeEditorProps) => {
           sidebarStatus={sidebarLocked}
           sidebarWidth={SidebarOpenWidth}
           onBeforeAddFile={onBeforeAddFile}
+          actions={MonacoActions as TEditorAction[]}
         />
       )
     : (
