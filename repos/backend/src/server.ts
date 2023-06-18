@@ -39,9 +39,9 @@ export const initApi = async () => {
   setupRouters(app)
   setupStatic(app)
   validateUser({
-    route: `/repo\/*`,
     expressRouter: `async`,
-    bypassRoutes: AUTH_BYPASS_ROUTES
+    bypassRoutes: AUTH_BYPASS_ROUTES,
+    route: /(\/repo\/*|\/auth\/claims\/*)/,
   })
   await setupEndpoints()
   setupLoggerErr(app)

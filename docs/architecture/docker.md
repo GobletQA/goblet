@@ -43,4 +43,5 @@
   * If the `goblet buildx` instance was already created, you may need to recreate it
     * Use the command `docker buildx rm goblet` to delete it
     * It will be automatically recreated when a `pnpm doc build <...>` command is run
+  * Or just try rebuilding and it might work -- Seems to be a bug in docker
 

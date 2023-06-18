@@ -1,4 +1,4 @@
-import type { TRouteMeta, TStatusRoutes } from '@types'
+import type { TStatusRoutes } from '@types'
 
 import { loadFile } from './files/api/loadFile'
 import { emptyObj, isObj } from '@keg-hub/jsutils'

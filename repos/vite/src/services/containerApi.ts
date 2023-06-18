@@ -1,4 +1,4 @@
-import type { TFormattedUser, TRouteMeta, TValidateResp } from '@types'
+import type { TRouteMeta } from '@types'
 
 import { HttpMethods } from '@constants'
 import { emptyObj } from '@keg-hub/jsutils'
@@ -11,18 +11,8 @@ export type TContainerRemove = {
 }
 
 export class ContainerApi {
-  
+
   containerPath = `/container`
-  validatePath = `/auth/validate`
-
-  validate = async (params:TFormattedUser) => {
-    return await apiRequest<TValidateResp>({
-      params,
-      url: this.validatePath,
-      method: HttpMethods.POST,
-    })
-  }
-
 
   state = async (params:Record<any, any>=emptyObj) => {
     return await apiRequest<TRouteMeta>({

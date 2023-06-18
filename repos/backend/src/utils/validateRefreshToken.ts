@@ -18,7 +18,7 @@ export const validateRefreshToken = (
   const { refreshSecret } = config
 
   try {
-    const decoded = jwt.verify(refreshToken, refreshSecret)
+    const decoded = jwt.verify(refreshToken, refreshSecret) as any
 
     return decoded.userId === user.userId &&
       decoded.username === user.username &&

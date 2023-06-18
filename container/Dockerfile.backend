@@ -103,4 +103,5 @@ WORKDIR /goblet/app/repos/backend
 EXPOSE $GB_BE_PORT
 EXPOSE $GB_NO_VNC_PORT
 
-CMD [ "pnpm", "serve" ]
+CMD [ "/bin/bash", "scripts/initialize.sh" ]
+

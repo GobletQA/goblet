@@ -7,7 +7,7 @@ import { screencastConfig } from '@GSC/Configs/screencast.config'
 
 export const validateToken = (inputToken:string) => {
   const secret = screencastConfig?.server?.jwt?.secret
-  const data = jwt.verify(inputToken, secret) as TSocketTokenValid
+  const data = jwt.verify(inputToken, secret) as unknown as TSocketTokenValid
 
   const {
     token,

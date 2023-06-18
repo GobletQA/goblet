@@ -2,17 +2,17 @@
 
 ## Deploy Backend Only
 ```sh
-  pnpm kube set prod --env prod && pnpm dev clean --images --env prod && pnpm deploy be --env prod
+  pnpm kube set prod --env prod && pnpm dev clean --images --env prod && pnpm dep be --env prod
 ```
 
 ## Deploy Frontend Only
 ```sh
-  pnpm kube set prod --env prod && pnpm deploy fe --env prod
+  pnpm kube set prod --env prod && pnpm dep fe --env prod
 ```
 
 ## Full Deploy
 ```sh
-  pnpm kube set prod --env prod && pnpm dev clean --images --env prod && pnpm deploy be --env prod && pnpm deploy fe --env prod
+  pnpm kube set prod --env prod && pnpm dev clean --images --env prod && pnpm dep be --env prod && pnpm dep fe --env prod
 ```
 
 ## Backend - Steps
@@ -24,6 +24,8 @@
   * `pnpm kube secret auth --env prod --log`
 * Add the cloud provider API Token secrets
   * `pnpm kube secret provider --env prod --cert --log`
+* Add firebase service-account secret
+  * `pnpm kube secret firebase --env prod --log`
 * Deploy the Nginx Ingress Controller
   * `pnpm kube ingress --env prod --log`
 * Deploy the Backend Apps
@@ -56,7 +58,7 @@
 * Set the namespace and context
   * `pnpm kube set prod --env prod`
 * Deploy the Frontend Apps
-  * `pnpm task deploy fe --env prod`
+  * `pnpm dep fe --env prod`
 
 
 ## Helpful Command

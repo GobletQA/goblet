@@ -42,12 +42,20 @@ goblet_screencast(){
 
 }
 
+goblet_backend(){
+  if [ "$FIREBASE_SERVICE_ACCOUNT" ]; then
+    echo "$FIREBASE_SERVICE_ACCOUNT" >> /etc/fb-service-account.json
+    unset FIREBASE_SERVICE_ACCOUNT
+    export GOOGLE_APPLICATION_CREDENTIALS=/etc/fb-service-account.json
+  fi
+}
 
 # If a sub-repo is defined only run that one repo
 # Check if the process to run is defined, then run it
 if [ "$GB_SUB_REPO" ]; then
 
   # Handle repo specific tasks as needed
+  [ "$GB_SUB_REPO" == "backend" ] && goblet_backend
   [ "$GB_SUB_REPO" == "screencast" ] && goblet_screencast
 
   cd /goblet/app/repos/$GB_SUB_REPO

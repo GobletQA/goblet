@@ -34,7 +34,7 @@
     "compile": "node scripts/compile.js",
     "dev": "node -r esbuild-register tasks/entry.ts devspace",
     "doc": "node -r esbuild-register tasks/entry.ts docker",
-    "deploy": "node -r esbuild-register tasks/entry.ts deploy",
+    "dep": "node -r esbuild-register tasks/entry.ts deploy",
     "format": "pnpm format:pretty && pnpm format:lint",
     "format:all": "pnpm format && pnpm -r format",
     "format:lint": "pnpm lint .",

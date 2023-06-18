@@ -36,8 +36,6 @@ RUN <<EOF
   cd /goblet/app
   pnpm json:rm
 
-  pnpm config set network-timeout 600000
-
 EOF
 # The test-utils repo has a dependecy on the screencast repo
 # So by pruning the test-utils repo, we get the screencast repo
