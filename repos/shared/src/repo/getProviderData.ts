@@ -41,20 +41,22 @@ catch(err){
    */
   console.error(`The "__PROVIDER_DATA" cache could not be set. Error parsing "GB_GIT_PROVIDER_DATA" env`)
 }
+finally {
+  /**
+   * Delay to ensure the conductor config has time to load it
+   * So it can be passed on to the session container as an ENV
+   */
+  setTimeout(() => {
+    process.env.GB_GIT_PROVIDER_DATA = undefined
+    delete process.env.GB_GIT_PROVIDER_DATA
+  }, 2000)
+}
 
 export const getProviderData = (opts:TProviderData) => {
   const fallback = { token: opts.token }
   try {
     const user = (opts?.username || opts?.user || ``).toLowerCase().trim()
     const provider = (opts?.provider || ``).replace(`.com`, ``).toLowerCase().trim()
-
-    console.log(`------- PROVIDER DATA ARGS -------`)
-    console.log(`user:`, user, `provider:`, provider)
-    console.log(`------- PROVIDER DATA KEYS -------`)
-    console.log(Object.keys(__PROVIDER_DATA))
-    console.log(`------- PROVIDER DATA USER -------`)
-    console.log(__PROVIDER_DATA[user])
-    console.log(`------- PROVIDER DATA END -------`)
 
     return get(__PROVIDER_DATA, [user, provider], fallback)
   }
