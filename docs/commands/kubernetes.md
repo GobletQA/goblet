@@ -11,7 +11,9 @@
   * `kubectl get ingress`
 * List all resource for all namespaces
   * `kubectl get all --all-namespaces`
-
+* Remove an ENV from a running pod
+  * `kubectl set env deployment/<deployment-name> <env-name>-`
+  * Be sure to include the `-` at the end
 
 ## Production
 

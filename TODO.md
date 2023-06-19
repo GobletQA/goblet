@@ -51,6 +51,13 @@
     * This is mostly done, but needs to be published
 
 
+* Fix formatting when saving world.json file
+* Add cover over browser
+  * Must intentionally click the browser to interact with it
+  * Add message hover over the 
+* Add ability to bypass world passing when passing a feature file
+
+
 ## To Investigate
 * Figure out how to handle camera and mic recording within the session container
   * Need to be able to record camera and audio
@@ -65,3 +72,7 @@
 * File upload
   * opens a file explorer
   * Need a way to stop that from happening
+
+
+* World not being passed to Test Runner after being auto-logged out
+* 
