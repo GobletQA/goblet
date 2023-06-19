@@ -146,8 +146,9 @@ export const build:TTask = {
     login: {
       default: true,
       type: `boolean`,
+      alias: [`auth`],
       example: `--no-login`,
-      description: `Log into the docker registry before building the image. Usefully works along side the push option`,
+      description: `Log into the docker registry before building the image. Typically used along side the push option`,
     },
   },
 }

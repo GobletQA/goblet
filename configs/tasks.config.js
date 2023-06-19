@@ -74,6 +74,7 @@ module.exports = {
           `GB_KUBE_NAMESPACE`,
           `*_DEVSPACE_CONFIG`,
           `GB_IMAGE_BUILD_TAGS`,
+          `BUILDKIT_INLINE_CACHE`
         ]
       },
       sync: {

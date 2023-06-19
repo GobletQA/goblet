@@ -32,6 +32,7 @@ pullSecrets: []
 env:
 
 # ---- General Shared ENVs ---- #
+  BUILDKIT_INLINE_CACHE: 1
   IMAGE_TAG: latest
   DISPLAY: ":0.0"
   DOCKER_REGISTRY: ghcr.io

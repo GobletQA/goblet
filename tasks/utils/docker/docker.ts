@@ -15,7 +15,7 @@ import {
 } from '@keg-hub/jsutils'
 
 export type TBuildArgs = [string[], Record<string, any>, TTaskParams]
-export type TDockerCmdAdd = [string[], Record<any, any>, Record<any, any>]
+export type TDockerCmdAdd = [args:string[], params?:Record<any, any>, opts?:Record<any, any>]
 export type TDockerResolveArr = [string, string[], Record<any, any>, Record<any, any>]
 export type TBuildXCB = (cmd:string, opts?:string[], options?:Record<string, any>) => void
 export type TDockerMethod = (

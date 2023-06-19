@@ -39,8 +39,10 @@
   * `pnpm kube set prod --env prod`
 * Clean existing pods and images
   * `pnpm dev clean --env prod --images`
+  * You can also use the `--clean` option in the deploy command
 * Deploy the Backend Apps
-  * `pnpm dev deploy --env prod`
+  * `pnpm dep be --env prod`
+  * Alternative - `pnpm dev deploy --env prod`
 
 ### Clean Prod
 

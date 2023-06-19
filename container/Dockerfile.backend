@@ -67,10 +67,11 @@ RUN pnpm build:goblet && \
 
 WORKDIR /goblet/app
 RUN <<EOF
-  mkdir -p /goblet-runner/repos/backend/scripts
   mkdir -p /goblet-runner/configs
+  mkdir -p /goblet-runner/repos/backend
   cp -R /goblet/app/node_modules /goblet-runner/node_modules
   cp -R /goblet/app/repos/backend/dist /goblet-runner/repos/backend/dist
+  cp -R /goblet/app/repos/backend/scripts /goblet-runner/repos/backend/scripts
   cp -R /goblet/app/repos/shared/src/templates /goblet-runner/repos/backend/templates
   cp -R /goblet/app/repos/backend/node_modules /goblet-runner/repos/backend/node_modules
   cp -R /goblet/app/repos/backend/package.json /goblet-runner/repos/backend/package.json

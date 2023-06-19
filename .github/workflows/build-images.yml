@@ -93,6 +93,10 @@ jobs:
           username: ${{ secrets.GIT_USER }}
           password: ${{ secrets.GIT_TOKEN }}
 
+      - name: Pull Base Image
+        id: pull-base
+        run: docker pull ghcr.io/gobletqa/goblet-backend:latest
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
@@ -114,10 +118,11 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           build-args: |
+            BUILDKIT_INLINE_CACHE=1
             NPM_TOKEN=${{ secrets.GIT_TOKEN }}
             ${{ steps.args.outputs.list }}
-          cache-from: type=gha, scope=${{ github.workflow }}
-          cache-to: type=gha, scope=${{ github.workflow }}
+          cache-from: gobletqa/goblet-backend:latest
+          cache-to: type=inline,mode=all
           file: container/Dockerfile.base
           push: true
           tags: ${{ steps.meta.outputs.tags }}
