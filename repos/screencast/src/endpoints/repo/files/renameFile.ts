@@ -1,4 +1,4 @@
-import type { Response, Request } from 'express'
+import type { Response, Request, RequestHandler } from 'express'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
@@ -10,7 +10,7 @@ import { renameGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  *
  * @returns {Object} - response object model containing the saved fileModel
  */
-export const renameFile = asyncWrap(async (req:Request, res:Response) => {
+export const renameFile:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   const {oldLoc, newLoc, content} = req.body
 
   if (!oldLoc) throw new Exception(`[Backend API] Rename failed: oldLoc required`, 400)

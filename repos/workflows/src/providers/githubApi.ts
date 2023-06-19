@@ -181,7 +181,7 @@ export class GithubApi extends BaseRestApi {
   }
 
   getOrgRepos = async () => {
-    // curl -s -H "Authorization: token <token>" 'https://api.github.com/user/repos?affiliation=organization_member&sort=updated''
+    // curl -s -H "Authorization: token <token>" 'https://api.github.com/user/repos?affiliation=organization_member&sort=updated'
   }
 
 }

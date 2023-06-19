@@ -48,6 +48,14 @@ export const getProviderData = (opts:TProviderData) => {
     const user = (opts?.username || opts?.user || ``).toLowerCase().trim()
     const provider = (opts?.provider || ``).replace(`.com`, ``).toLowerCase().trim()
 
+    console.log(`------- PROVIDER DATA ARGS -------`)
+    console.log(`user:`, user, `provider:`, provider)
+    console.log(`------- PROVIDER DATA KEYS -------`)
+    console.log(Object.keys(__PROVIDER_DATA))
+    console.log(`------- PROVIDER DATA USER -------`)
+    console.log(__PROVIDER_DATA[user])
+    console.log(`------- PROVIDER DATA END -------`)
+
     return get(__PROVIDER_DATA, [user, provider], fallback)
   }
   catch(err){

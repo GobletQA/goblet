@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, RequestHandler, Response } from 'express'
 import { htmlErr }from '@gobletqa/shared/express/htmlErr'
 import { htmlRes }from '@gobletqa/shared/express/htmlRes'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
@@ -9,7 +9,7 @@ import { loadTemplate }from '@gobletqa/shared/templates/loadTemplate'
 /**
  * Loads reports from the passed in params
  */
-export const loadReport = asyncWrap(async (req:Request, res:Response) => {
+export const loadReport:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   // Load the default 404 page for non-existing reports
   const report404 = await loadTemplate('reports404')
 

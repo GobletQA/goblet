@@ -1,5 +1,5 @@
 
-import type { Response } from 'express'
+import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoGraphRepos } from '@gobletqa/shared/types'
 
@@ -12,7 +12,7 @@ import { AppRouter } from '@gobletqa/shared/express/appRouter'
  * Endpoint to get all repos from the authorized provider
  * Calls Repo.getUserRepos which calls the workflow getUserRepos method
  */
-export const getRepos = asyncWrap(async (req:JWTRequest, res:Response) => {
+export const getRepos:RequestHandler = asyncWrap(async (req:JWTRequest, res:Response) => {
   const { iat, exp, ...user } = req.auth
   const repos = await Repo.getUserRepos(user as TRepoGraphRepos)
 

@@ -1,4 +1,4 @@
-import type { Response } from 'express'
+import type { Response, RequestHandler } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
@@ -19,7 +19,7 @@ export type TConnectBody = {
 /**
  * Runs the initializeGoblet workflow to setup a new repository
  */
-export const connectRepo = asyncWrap(async (
+export const connectRepo:RequestHandler = asyncWrap(async (
   req:JWTRequest,
   res:Response
 ) => {

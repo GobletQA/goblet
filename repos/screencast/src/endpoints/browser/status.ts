@@ -1,4 +1,4 @@
-import type { Response, Request } from 'express'
+import type { Response, Request, RequestHandler } from 'express'
 import type { TBrowserConf } from '@gobletqa/shared'
 import type * as core from "express-serve-static-core"
 
@@ -41,7 +41,7 @@ type TStatusQuery = {
  * Gets the current status of the browser
  *
  */
-export const browserStatus = asyncWrap(async (
+export const browserStatus:RequestHandler = asyncWrap(async (
   req:Request<core.ParamsDictionary, any, any, TStatusQuery>,
   res:Response
 ) => {
