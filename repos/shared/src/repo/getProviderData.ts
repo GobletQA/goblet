@@ -49,7 +49,7 @@ finally {
   setTimeout(() => {
     process.env.GB_GIT_PROVIDER_DATA = undefined
     delete process.env.GB_GIT_PROVIDER_DATA
-  }, 2000)
+  }, 4000)
 }
 
 export const getProviderData = (opts:TProviderData) => {

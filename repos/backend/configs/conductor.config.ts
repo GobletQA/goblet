@@ -10,7 +10,7 @@ import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
 import { toNum, exists, deepMerge, toBool } from '@keg-hub/jsutils'
 
-const { NODE_ENV=`local` } = process.env
+const { NODE_ENV=`local`, GB_GIT_PROVIDER_DATA } = process.env
 
 
 loadEnvs({
@@ -194,6 +194,7 @@ export const conductorConfig:TConductorOpts = deepMerge({
           GB_VNC_ACTIVE: true,
           // Amount to time to wait before auto-killing the container
           // When a user logs out
+          GB_GIT_PROVIDER_DATA,
           GB_SC_IDLE_INTERVAL: containerEnvs.GB_SC_IDLE_INTERVAL || `20`,
           GB_SC_IDLE_THRESHOLD: containerEnvs.GB_SC_IDLE_THRESHOLD || `2`,
           GB_SC_IDLE_WAIT_TO_START: containerEnvs.GB_SC_IDLE_WAIT_TO_START || `120`,

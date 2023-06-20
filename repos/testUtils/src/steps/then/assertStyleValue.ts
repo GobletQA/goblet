@@ -33,7 +33,7 @@ export const assertStyleValue = async (
 }
 
 Then(`the element {string} style {string} is {string}`, assertStyleValue, {
-  name: `Check Element Style`,
+  name: `Assert Element Style`,
   alias: [],
   module: `assertStyleValue`,
   description: `Locates element by selector, and validates that a style rule matches the expected value`,
