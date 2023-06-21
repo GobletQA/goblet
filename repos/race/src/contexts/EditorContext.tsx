@@ -11,6 +11,7 @@ import type {
   TRaceFeatures,
   TGetOpenedTabs,
   TOnFeatureItemCB,
+  TRaceMenuActions,
   TRaceContextMenu,
   TUpdateFeatureCB,
   TSetTabsAndGroups,
@@ -28,7 +29,7 @@ import { useGetEditorContext } from '@GBR/hooks/editor/useGetEditorContext'
 import { useFeatureCallbacks } from '@GBR/hooks/features/useFeatureCallbacks'
 
 export type TOnExpandedCB =  (key:string, value?:boolean) => void
-export type TEditorProvider = {
+export type TEditorProvider = TRaceMenuActions & {
   children:any
   rootPrefix:string
   editorRef:TEditorRef
@@ -53,7 +54,7 @@ export type TEditorProvider = {
   setOpenedTabs:(tabs:TTabItem[]) => void
 }
 
-export type TEditorCtx = {
+export type TEditorCtx = TRaceMenuActions & {
   audit:TAudit
   rootPrefix:string
   expanded:TExpanded
@@ -105,6 +106,11 @@ export const EditorProvider = (props:TEditorProvider) => {
     setTabsAndGroups,
     onFeatureInactive,
     expressionOptions,
+    stepActions,
+    ruleActions,
+    featureActions,
+    scenarioActions,
+    backgroundActions,
   } = props
 
   const {
@@ -173,6 +179,11 @@ export const EditorProvider = (props:TEditorProvider) => {
       setTabsAndGroups,
       collapseAllExcept,
       expressionOptions,
+      stepActions,
+      ruleActions,
+      featureActions,
+      scenarioActions,
+      backgroundActions,
       onFolderRename: onFeatureRename,
       onFolderDelete: onFeatureDelete,
       onFolderCreate: onFeatureCreate,
@@ -199,6 +210,11 @@ export const EditorProvider = (props:TEditorProvider) => {
     setTabsAndGroups,
     expressionOptions,
     collapseAllExcept,
+    stepActions,
+    ruleActions,
+    featureActions,
+    scenarioActions,
+    backgroundActions,
   ])
 
   useGetEditorContext({ editorRef, editorCtx })

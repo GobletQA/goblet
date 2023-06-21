@@ -36,6 +36,8 @@ import type {
   TRaceDecoRef
 } from './decorations.types'
 
+import type { TRaceMenuActions } from './menu.types'
+
 export type TFeaturesRefs = {
   stepDefsRef: TStepDefsRef
 }
@@ -84,7 +86,8 @@ export type TRaceEditorProps = TEditorShared & {
   onFeatureCreate?:TOnFeatureItemCB
 }
 
-export type TEditorShared = {
+
+export type TEditorShared = TRaceMenuActions & {
   onTabDown?:TTabAction
   onTabLeave?:TTabAction
   onTabHover?:TTabAction

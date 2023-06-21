@@ -57,6 +57,11 @@ export const Editor = (props:TRaceEditorProps) => {
       setFeatureGroups={setFeatureGroups}
       onFeatureInactive={onFeatureInactive}
       expressionOptions={props.expressionOptions}
+      stepActions={props.stepActions}
+      ruleActions={props.ruleActions}
+      featureActions={props.featureActions}
+      scenarioActions={props.scenarioActions}
+      backgroundActions={props.backgroundActions}
     >
       <DecorationsProvider decoRef={props.decoRef} >
         <Container

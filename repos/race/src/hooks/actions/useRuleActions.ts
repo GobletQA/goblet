@@ -34,7 +34,6 @@ export const useRuleActions = (props:THRuleActions) => {
 
   return useMemo(() => {
 
-    const onPlay = () => {}
     const onCopy = () => copyRule(rule)
     const onRemove = () => removeRule({
       ruleId: rule.uuid
@@ -103,7 +102,6 @@ export const useRuleActions = (props:THRuleActions) => {
     })
 
     return {
-      onPlay,
       onCopy,
       onRemove,
       onAddScenario,

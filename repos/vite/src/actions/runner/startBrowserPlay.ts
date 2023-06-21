@@ -1,7 +1,10 @@
-import type { TFeatureAst } from '@ltipton/parkin'
-import type { TGitData, TFileModel, TStartPlaying, TPlayerResEvent } from '@types'
-
-
+import type {
+  TGitData,
+  TFileModel,
+  TStartPlaying,
+  TPlayerResEvent,
+  TStartBrowserPlayOpts
+} from '@types'
 
 import { EBrowserState } from '@types'
 import { addToast } from '@actions/toasts'
@@ -12,14 +15,13 @@ import { getRepoData } from '@utils/store/getStoreData'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { SocketMsgTypes, WSRecordActions } from '@constants'
 import { buildCmdParams } from '@utils/browser/buildCmdParams'
-import { EEditorMode, SimpleScenarioTag } from '@gobletqa/race'
+import { filterFileContext } from '@utils/files/filterFileContext'
 import { PromiseAbort } from '@gobletqa/shared/utils/promiseAbort'
 import {
   BrowserStateEvt,
   PlayerEndedEvent,
   WSCancelPlayerEvent,
 } from '@constants'
-import {getEditorSettings} from '@utils/editor/getEditorSettings'
 
 
 type TBuildOpts = {
@@ -33,7 +35,10 @@ type TBrowserPlay = Omit<TStartPlaying, `repo`|`id`|`onEvent`|`browserConf`|`onC
   repo:TGitData
 }
 
-const buildOptions = ({ options, params, file, appUrl }:TBuildOpts, repo:TGitData) => {
+const buildOptions = (
+  { options, params, file, appUrl }:TBuildOpts,
+  repo:TGitData
+) => {
   return {
     repo,
     ref: 'page',
@@ -55,38 +60,16 @@ const buildOptions = ({ options, params, file, appUrl }:TBuildOpts, repo:TGitDat
 }
 
 
-const findSimpleTag = (feature:TFeatureAst) => {
-  return feature.scenarios.find(scenario => scenario?.tags?.tokens?.includes(SimpleScenarioTag))
-}
-
-const fileModelContext = async (file:TFileModel) => {
-  if(file?.fileType !== `feature`) return file
-
-  const { settings } = await getEditorSettings()
-  if(!settings || settings?.mode !== EEditorMode.simple || !file?.ast?.[0])
-    return file
-  
-  const feat = file?.ast?.[0]
-  const scenario = findSimpleTag(feat)
-  
-  return {
-    ...file,
-    ast: [{
-      ...feat,
-      rules: [],
-      background: undefined,
-      scenarios: [scenario]
-    }]
-  }
-}
-
 /**
  * Uses a web-socket to run tests on a file from the backend
  * Also updates the current active test file, which is different from the file per-screen
  * @function
  *
  */
-export const startBrowserPlay = async (file:TFileModel) => {
+export const startBrowserPlay = async (
+  file:TFileModel,
+  startOpts:TStartBrowserPlayOpts=emptyObj
+) => {
   addToast({
     type: `info`,
     message: `Running tests for file ${file.name}!`,
@@ -96,7 +79,7 @@ export const startBrowserPlay = async (file:TFileModel) => {
   const { params, options } = buildCmdParams({ file })
   const appUrl = getWorldVal({loc: `url`, fb: `app.url`})
 
-  const model = await fileModelContext(file)
+  const model = await filterFileContext(file, startOpts)
 
   const opts = buildOptions(
     {

@@ -1,7 +1,16 @@
+import type { MouseEvent } from 'react'
 import type { TSectionAction } from '@GBR/components/Section/SectionActions'
+import type {
+  TAnyCB,
+  TRaceMenuItem,
+  TRaceSectionItem,
+  TCustomMenuAction,
+} from '@GBR/types'
+
 import { useMemo } from 'react'
-import { exists, capitalize } from '@keg-hub/jsutils'
-import { TAnyCB, ESectionType, EGherkinKeys } from '@GBR/types'
+import { exists, capitalize, emptyArr } from '@keg-hub/jsutils'
+import { ESectionType, EGherkinKeys } from '@GBR/types'
+import {useEditor} from '@gobletqa/race/contexts/EditorContext'
 import {
   TrashIcon,
   StepAddIcon,
@@ -13,25 +22,84 @@ import {
   PlaylistPlusIcon,
   PlayCircleOutlineIcon
 } from '@gobletqa/components'
+import {EAstObject} from '@ltipton/parkin'
 
 export type THSectionActions = {
-  onPlay?:TAnyCB
   onCopy?:TAnyCB
   onRemove?:TAnyCB
   onAddStep?:TAnyCB
   onCollapse?:TAnyCB
   onAddScenario?:TAnyCB
   onAddBackground?:TAnyCB
+  item:TRaceSectionItem
   editingTitle?:boolean
   type:ESectionType|EGherkinKeys
   toggleEditTitle?:(val?: boolean | undefined) => void
+}
+
+const useTypeMenuActions = (props:THSectionActions):TCustomMenuAction[] => {
+
+  const {
+    item,
+    type
+  } = props
+
+  const {
+    feature,
+    stepActions,
+    ruleActions,
+    featureActions,
+    scenarioActions,
+    backgroundActions,
+  } = useEditor()
+
+  return useMemo(() => {
+    let actions = emptyArr as TCustomMenuAction[]
+    switch(type){
+      case ESectionType.step: {
+        if(stepActions) actions = stepActions
+      }
+      case ESectionType.scenario: {
+        if(scenarioActions) actions = scenarioActions
+      }
+      case ESectionType.background: {
+        if(backgroundActions) actions = backgroundActions
+      }
+      case ESectionType.rule: {
+        if(ruleActions) actions = ruleActions
+      }
+      case ESectionType.feature: {
+        if(featureActions) actions = featureActions
+      }
+    }
+
+    return actions.map(action => {
+      
+      return {
+        ...action,
+        onClick: (evt:MouseEvent) => action.onClick(evt, {
+          item,
+          feature,
+        })
+      }
+    })
+
+  }, [
+    item,
+    type,
+    feature,
+    stepActions,
+    ruleActions,
+    featureActions,
+    scenarioActions,
+    backgroundActions,
+  ])
 }
 
 export const useSectionActions = (props:THSectionActions) => {
   const {
     type,
     onCopy,
-    onPlay,
     onRemove,
     onAddStep,
     onCollapse,
@@ -41,20 +109,11 @@ export const useSectionActions = (props:THSectionActions) => {
     toggleEditTitle
   } = props
 
+  const menuActions = useTypeMenuActions(props)
 
   const actions = useMemo(() => {
     const typeCaps = capitalize(type)
-    const actions:TSectionAction[] = []
-
-    // exists(onPlay)
-    //   && actions.push({
-    //       type,
-    //       onClick: onPlay,
-    //       dividerBottom: true,
-    //       label: `Play ${typeCaps}`,
-    //       Icon: PlayCircleOutlineIcon,
-    //       key: `gb-${type}-play-action`,
-    //     })
+    const actions:TSectionAction[] = [...menuActions as TSectionAction[]]
 
     exists(onAddStep)
       && actions.push({
@@ -114,10 +173,10 @@ export const useSectionActions = (props:THSectionActions) => {
   }, [
     type,
     onCopy,
-    onPlay,
     onRemove,
     onAddStep,
     onCollapse,
+    menuActions,
     onAddScenario,
     onAddBackground,
   ])

@@ -14,6 +14,7 @@ import {
   BlockIcon,
   SidebarOpenWidth,
 } from '@gobletqa/components'
+import {useRaceActions} from '@hooks/race/useRaceActions'
 
 
 export type TVisualEditor = {
@@ -44,12 +45,14 @@ export const VisualEditor = (props:TVisualEditor) => {
   } = useRaceHooks(editorRef)
 
   const menuContext = useContextMenu()
+  const raceActions = useRaceActions()
 
   return connected
     ? (
         <>
           <RaceEditor
             {...props}
+            {...raceActions}
             world={world}
             decoRef={decoRef}
             Divider={Divider}

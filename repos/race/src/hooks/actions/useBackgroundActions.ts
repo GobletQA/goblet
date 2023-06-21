@@ -27,7 +27,6 @@ export const useBackgroundActions = (props:THBackgroundActions) => {
 
   return useMemo(() => {
 
-    const onPlay = () => {}
     const onStepChange = onChangeStep
     const onRemoveBackgroundStep = onRemoveStep
 
@@ -51,7 +50,6 @@ export const useBackgroundActions = (props:THBackgroundActions) => {
     })
 
     return {
-      onPlay,
       onStepMove,
       onStepChange,
       onCopyBackground,

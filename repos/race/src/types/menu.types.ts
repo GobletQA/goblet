@@ -10,6 +10,7 @@ import type {
   TRaceScenario,
   TRaceBackground,
 } from './features.types'
+
 import { TAudit } from './audit.types'
 
 import type { ComponentProps, ReactNode, ComponentType } from 'react'
@@ -78,4 +79,30 @@ export type TMenuContextRef = {
   // TODO: look into adding other types as needed
   // active: TExpPart | TRaceBackground | TRaceRule | TRaceScenario | TRaceStep | TRaceBlock
   active: TExpPart
+}
+
+export type TCustomMenuActionCtx<T> = {
+  item: T
+  feature: TRaceFeature
+}
+
+export type TCustomMenuOnClick<T> = (evt:MouseEvent, ctx:TCustomMenuActionCtx<T>) => void
+
+export type TCustomMenuAction<T> = Omit<TRaceMenuItem, `onClick`> & {
+  onClick:TCustomMenuOnClick<T>
+}
+
+
+export type TRuleMenuAction = TCustomMenuAction<TRaceRule>
+export type TStepMenuAction = TCustomMenuAction<TRaceStep>
+export type TFeatureMenuAction = TCustomMenuAction<TRaceFeature>
+export type TScenarioMenuAction = TCustomMenuAction<TRaceScenario>
+export type TBackgroundMenuAction = TCustomMenuAction<TRaceBackground>
+
+export type TRaceMenuActions = {
+  stepActions?:TStepMenuAction[]
+  ruleActions?:TRuleMenuAction[]
+  featureActions?:TFeatureMenuAction[]
+  scenarioActions?:TScenarioMenuAction[]
+  backgroundActions?:TBackgroundMenuAction[]
 }
