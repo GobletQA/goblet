@@ -1,4 +1,4 @@
-import type { Response, Request } from 'express'
+import type { Response, Request, RequestHandler } from 'express'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
@@ -10,7 +10,7 @@ import { buildFileTree } from '@gobletqa/shared/libs/fileSys/fileTree'
  *
  * @returns {Object} - { rootPaths: array of root paths, nodes: array of all valid node object }
  */
-export const getTree = asyncWrap(async (req:Request, res:Response) => {
+export const getTree:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   const meta = await buildFileTree(res.locals.repo)
   return apiRes(res, meta || {}, 200)
 })

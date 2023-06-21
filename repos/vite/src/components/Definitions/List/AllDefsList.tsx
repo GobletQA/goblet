@@ -79,15 +79,21 @@ export const AllDefsList = (props:TAllDefsList) => {
       check?.length ? item.title.toLowerCase().includes(check) : true
     ))
 
-    searchRef.current = true
+    searchRef.current = Boolean(check?.trim()?.length)
     setSearchDefs(copy)
   }, [searchDefs, definitions])
 
   useEffect(() => {
-    !searchRef.current
-      && definitions?.all?.items?.length
-      && !searchDefs?.all?.items?.length
-      && setSearchDefs(definitions as TAllDefGroup)
+    if(searchRef.current || !definitions?.all?.items?.length) return
+
+    // Definitions were updated and not searchDefs exist
+    if(definitions?.all?.items && !searchDefs?.all?.items?.length)
+      setSearchDefs(definitions as TAllDefGroup)
+
+    // Definitions updated from outside, so reset the searchDefs
+    else if(definitions?.all?.items !== searchDefs?.all?.items)
+      setSearchDefs(definitions as TAllDefGroup)
+
   }, [definitions])
 
   return (

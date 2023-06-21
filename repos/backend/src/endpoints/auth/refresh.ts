@@ -13,6 +13,7 @@ export const refresh = async (req:JWTRequest, res:Response) => {
   const config = req.app.locals.config.server
 
   const jwtTokens = validateRefreshToken(config.jwt, req.auth, refreshToken)
+  // TODO: Need to also refresh the firebase token via the firebase service
 
   return jwtTokens
     ? apiRes(res, jwtTokens, 200)
@@ -20,4 +21,4 @@ export const refresh = async (req:JWTRequest, res:Response) => {
 }
 
 
-AsyncRouter.post('/auth/refresh', refresh)
+AsyncRouter.post(`/auth/refresh`, refresh)

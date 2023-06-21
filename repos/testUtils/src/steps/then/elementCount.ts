@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -12,7 +12,7 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 export const elementCount = async (
   selector:string,
   count:number,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
   const page = await getPage()
   const elements = await page.$$(selector)

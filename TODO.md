@@ -36,9 +36,6 @@
 * Add ability to restart session container from UI
 * Add scroll to position step
 
-* Reload custom steps without reloading page
-  * Add step reload button
-
 * Keeping the feature file open when switching editors
 
 
@@ -52,3 +49,30 @@
   * Needs an update to Parkin to keep a consistent uuid for feature items
   * Needs to pass on feature test meta data
     * This is mostly done, but needs to be published
+
+
+* Fix formatting when saving world.json file
+* Add cover over browser
+  * Must intentionally click the browser to interact with it
+  * Add message hover over the 
+* Add ability to bypass world passing when passing a feature file
+
+
+## To Investigate
+* Figure out how to handle camera and mic recording within the session container
+  * Need to be able to record camera and audio
+  * Most likely need sometime of emulator that runs on ubuntu
+    * The browser would then talk to those instead
+
+* Run Test from specific Step 
+  * Expect browser to already be in correct state for step to pass
+
+* Figure out why recording events is not propagating
+* Figure out how to add an empty 
+* File upload
+  * opens a file explorer
+  * Need a way to stop that from happening
+
+
+* World not being passed to Test Runner after being auto-logged out
+* 

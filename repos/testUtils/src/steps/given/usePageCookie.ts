@@ -1,4 +1,5 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
+
 import { Given } from '@GTU/Parkin'
 import {
   getContext,
@@ -13,7 +14,7 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  */
 export const usePageCookie = async (
   name:boolean|string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
   const context = await getContext()
   await setContextCookie(context, name)
@@ -31,7 +32,7 @@ const meta = {
   race: true
 }
 
-Given(`I use the saved page cookie`, (world:TWorldConfig) => usePageCookie(false, world), meta)
+Given(`I use the saved page cookie`, (ctx:TStepCtx) => usePageCookie(false, ctx), meta)
 Given(`I use the saved {string} page cookie`, usePageCookie, {
   name: `Use saved page cookie`,
   ...meta,

@@ -8,7 +8,7 @@ import { namespace } from './namespace'
 import { secret } from './secret/secret'
 
 export const kube:TTask = {
-  name: 'kube',
+  name: `kube`,
   alias: [ `kubectl`, `kb`, `kcl` ],
   tasks: {
     set,

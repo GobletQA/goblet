@@ -1,4 +1,4 @@
-import type { Response, Request } from 'express'
+import type { Response, Request, RequestHandler } from 'express'
 
 import { closeBrowser } from '@GSC/libs/playwright/browser/browser'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
@@ -10,7 +10,7 @@ import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
  * Stops a Browser if its running
  *
  */
-const browserStop = asyncWrap(async (req:Request, res:Response) => {
+const browserStop:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   const { params } = req
   const { type } = joinBrowserConf(params)
   const status = await closeBrowser(type)

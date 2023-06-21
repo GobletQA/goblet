@@ -1,15 +1,12 @@
-ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.32.0-focal
+ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
-FROM $IMAGE_FROM as goblet-pnpm
-ENV PNPM_HOME="/root/.local/share/pnpm"
-ENV PATH="${PATH}:${PNPM_HOME}"
-RUN npm install --global pnpm
 
 # ---- Turbo Stage ---- #
-FROM goblet-pnpm as goblet-turbo
+FROM $IMAGE_FROM as goblet-turbo
 RUN pnpm add --global turbo dot-json
 # ---- End Stage ---- #
+
 
 # ---- Prune Stage ---- #
 FROM goblet-turbo as goblet-pruner
@@ -38,8 +35,6 @@ RUN <<EOF
 
   cd /goblet/app
   pnpm json:rm
-
-  pnpm config set network-timeout 600000
 
 EOF
 # The test-utils repo has a dependecy on the screencast repo
@@ -75,12 +70,14 @@ RUN <<EOF
 EOF
 # ---- End Stage ---- #
 
+
 # ---- Install Stage ---- #
 FROM goblet-turbo as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 RUN pnpm install --fix-lockfile --shamefully-hoist
 # ---- End Stage ---- #
+
 
 # ---- Build Stage ---- #
 FROM goblet-turbo as goblet-builder
@@ -92,51 +89,25 @@ RUN pnpm build:docker && \
     pnpm install --fix-lockfile --shamefully-hoist
 # ---- End Stage ---- #
 
-# # ---- Run Stage ---- #
-FROM goblet-pnpm as goblet-runner
-WORKDIR /goblet/app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    novnc \
-    net-tools \
-    supervisor \
-    tigervnc-standalone-server; \
-    apt-get clean && \
-    apt-get autoclean && \
-    apt-get autoremove && \
-    rm -rf /var/cache/apk/* && \
-    ln -s /goblet/app/node_modules $HOME/.node_modules && \
+# ---- Run Stage ---- #
+FROM $IMAGE_FROM as goblet-runner
+WORKDIR /goblet/app
+ARG GB_SC_PORT=7006
+ARG GB_NO_VNC_PORT=26369
+ARG GB_VNC_SERVER_PORT=26370
+ENV GB_SUB_REPO=screencast \
+    GB_SC_PORT=$GB_SC_PORT \
+    GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
+    GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT
+RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
     ln -s /goblet/app/node_modules /goblet/node_modules && \
     mkdir -p /etc/supervisor && \
-    dbus-uuidgen > /var/lib/dbus/machine-id && \
-    mkdir -p /var/run/dbus
+    rm -rf /ms-playwright/firefox-* /ms-playwright/webkit-*
 
 COPY --from=goblet-builder /goblet/app/. .
 
 WORKDIR /goblet/app/repos/screencast
-ARG GB_SC_PORT=7006
-ARG GB_NO_VNC_PORT=26369
-ARG GB_VNC_SERVER_PORT=26370
-ARG PW_DEBUG_FILE=/goblet/app/logs/pwlogs.log
-ARG DEBUG_FILE=$PW_DEBUG_FILE
-
-ENV DEBUG_FILE=$DEBUG_FILE \
-    GB_SC_PORT=$GB_SC_PORT \
-    GB_SUB_REPO=screencast \
-    GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
-    GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT \
-    HOME=/root \
-    DISPLAY=:0.0 \
-    DEBUG=pw:* \
-    PWDEBUG=console \
-    LC_ALL=C.UTF-8 \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
-    DEBIAN_FRONTEND=noninteractive \
-    DBUS_SYSTEM_BUS_ADDRESS=unix:path=/var/run/dbus/system_bus_socket
-    # See here => https://georgik.rocks/how-to-start-d-bus-in-docker-container/
-    # Explains how to run dbus in docker container
-    # Seems to be needed for Playwright
 
 EXPOSE $GB_SC_PORT
 EXPOSE $GB_NO_VNC_PORT

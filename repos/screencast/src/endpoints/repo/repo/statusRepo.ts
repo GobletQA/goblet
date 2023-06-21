@@ -1,4 +1,4 @@
-import type { Response } from 'express'
+import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 
 import { Repo } from '@gobletqa/shared/repo/repo'
@@ -12,12 +12,17 @@ import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
  * Gets the status of a connected repo
  * Calls the statusGoblet workflow
  */
-export const statusRepo = asyncWrap(async (req:JWTRequest, res:Response) => {
+export const statusRepo:RequestHandler = asyncWrap(async (req:JWTRequest, res:Response) => {
 
   const { query } = req
-  const { token } = req.auth
+  const { token, username, provider } = req.auth
   const { config } = req.app.locals
-  const { repo, status } = await Repo.status(config, { token, ...query })
+  const { repo, status } = await Repo.status(config, {
+    token,
+    provider,
+    username,
+    ...query,
+  })
 
   // If not mounted, return the unmounted status, so the ui can update base on the mode
   // In local mode, it just shows the editor

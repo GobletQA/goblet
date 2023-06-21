@@ -10,6 +10,7 @@ import {
   Tooltip,
   useTheme,
   LockIcon,
+  SyncIcon,
   LockOpenIcon,
   ChevronUpIcon,
   ChevronDownIcon,
@@ -20,6 +21,7 @@ import {
   DefsSliderAction,
   DefsSliderActions,
 } from './Definitions.styled'
+import {getRemoteDefinitions} from '@actions/definitions/api/getRemoteDefinitions'
 
 export type TDefinitionSlider = {}
 
@@ -44,6 +46,8 @@ const styles = {
     fontSize: `22px`
   }
 }
+
+
 
 export const DefinitionsSlider = (props:TDefinitionSlider) => {
 
@@ -92,6 +96,13 @@ export const DefinitionsSlider = (props:TDefinitionSlider) => {
           <Definitions onTabClick={onTabClick} onClose={onClickAway} />
 
           <DefsSliderActions>
+          
+            <Tooltip title='Sync step definitions with backend.'>
+              <DefsSliderAction onClick={getRemoteDefinitions} >
+                <SyncIcon sx={styles.lock.closed} />
+              </DefsSliderAction>
+            </Tooltip>
+          
             <Tooltip title='Lock the drawer open state. Must be manually closed.'>
               <DefsSliderAction onClick={toggleLock} >
                 {

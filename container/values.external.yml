@@ -28,3 +28,8 @@ envs:
   # Github Auth config for Appwrite cloud
   APPWRITE_GITHUB_CLIENT_ID: ''
   APPWRITE_GITHUB_CLIENT_SECRET: ''
+  
+  # Custom overrides for a git provider
+  # Allows setting a custom git token via a PAT
+  # Follows the format of <username>::<provider>::<token>
+  GB_GIT_PROVIDER_DATA: ""

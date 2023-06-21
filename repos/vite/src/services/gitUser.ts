@@ -49,7 +49,9 @@ export class GitUser {
   }
 
 
+  id?:string
   username?:string
+  provider?: string
 
   constructor(data:TUserState) {
     if (__CURRENT_USER) return __CURRENT_USER

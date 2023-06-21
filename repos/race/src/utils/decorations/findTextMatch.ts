@@ -9,7 +9,7 @@ import type {
   TBackgroundParentAst,
 } from '@ltipton/parkin'
 
-import { emptyArr } from "@keg-hub/jsutils"
+import { emptyArr, get } from "@keg-hub/jsutils"
 import { EAstObject } from '@ltipton/parkin'
 import {
   findChild,
@@ -24,6 +24,20 @@ export type TIDFrom = {
   feature:TRaceFeature
   cache:Record<string, TAstType>
 }
+
+const parents = [
+  EAstObject.rule,
+  EAstObject.scenario,
+  EAstObject.background,
+]
+const steps = [
+  EAstObject.given,
+  EAstObject.when,
+  EAstObject.then,
+  EAstObject.and,
+  EAstObject.but,
+]
+
 
 const IDFinders = {
 
@@ -116,8 +130,42 @@ const IDFinders = {
   },
 }
 
+const matchFromMetaId = (props:TIDFrom) => {
+  const { deco, feature } = props
+  if(!deco) return
+
+  const loc = deco.id.split(`.`).reduce((acc, part) => {
+    if(part.startsWith(EAstObject.feature)) return acc
+
+    const child = parents.includes(part as EAstObject)
+      ? part === EAstObject.scenario
+        ? `scenarios`
+        : part === EAstObject.rule
+          ? `rules`
+          : EAstObject.background
+      : steps.includes(part as EAstObject)
+        ? `steps`
+        : part
+
+    child && acc.push(child)
+
+    return acc
+  }, [] as string[])
+
+  const item = get(feature, loc)
+
+  return item.uuid === deco.id && item
+}
+
 
 export const findTextMatch = (props:TIDFrom) => {
+  const { deco } = props
+  if(!deco) return
+
+  if(deco?.type !== EAstObject.feature && deco?.metaId){
+    const found = matchFromMetaId(props)
+    if(found) return found
+  }
 
   const text = props?.deco?.search?.trim()
   if(!text) return undefined

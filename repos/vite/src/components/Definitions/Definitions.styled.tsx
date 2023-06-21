@@ -14,7 +14,7 @@ import {
   IconButton
 } from '@gobletqa/components'
 
-const actionsWidth = (dims.defs.header.height + 8) * 2
+const actionsWidth = (dims.defs.header.height + 8) * 3
 const actionsWidthSplit = Math.round((actionsWidth / DefinitionTabs.length + Number.EPSILON) * 100) / 100
 
 const tabWidth = Math.round((100 / DefinitionTabs.length + Number.EPSILON) * 100) / 100

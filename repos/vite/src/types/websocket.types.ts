@@ -1,4 +1,5 @@
-import { TAutomateElementEvent } from './shared.types'
+import type { TFeatureAst } from '@ltipton/parkin'
+import type { TAutomateElementEvent } from './shared.types'
 
 export type TSocket = {
   [key:string]: any
@@ -13,3 +14,7 @@ export type TSelectFromBrowserRespEvent = TAutomateElementEvent & {
 }
 
 export type TCancelAutomateRespEvent = {}
+
+export type TStartBrowserPlayOpts = {
+  ast?: TFeatureAst
+}

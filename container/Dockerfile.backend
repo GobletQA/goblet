@@ -1,4 +1,4 @@
-ARG GB_IMAGE_FROM=ubuntu:20.04
+ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 
@@ -6,75 +6,38 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 FROM $IMAGE_FROM as goblet-setup
 WORKDIR /goblet/app
 ENV GB_SUB_REPO=backend
-ENV PNPM_HOME="/root/.local/share/pnpm"
-ENV PATH="${PATH}:${PNPM_HOME}"
-
-COPY .nvmrc .nvmrc
-
-# Install deps
-RUN <<EOF
-  set -eux;
-
-  # Enabel all sources
-  sed -i 's/# deb/deb/g' /etc/apt/sources.list
-
-  # Preinstall any dependecies for settting up the image
-  apt-get update && apt-get install --yes --no-install-recommends \
-    curl \
-    openssh-client \
-    ca-certificates
-
-  rm -rf /var/lib/apt/lists/*
-  rm -rf /var/lib/apt/lists.d/*
-  apt-get autoremove
-  apt-get clean
-  apt-get autoclean
-
-EOF
-
-# Install setup node + pnpm
-RUN <<EOF
-  set -eux;
-
-  # Install Node.js and pnpm
-  NODE_VER=$(cat ./.nvmrc | cut -d "." -f 1)
-  curl -sL https://deb.nodesource.com/setup_${NODE_VER:-16}.x | bash -
-  apt-get install -y nodejs
-  npm install -g pnpm
-  pnpm add --global turbo dot-json
-
-EOF
+RUN apt-get purge --yes \
+    novnc \
+    net-tools \
+    supervisor \
+    tigervnc-standalone-server && \
+    apt-get clean && \
+    apt-get autoremove --yes && \
+    npm uninstall -g yarn && \
+    rm -rf /ms-playwright && \
+    rm -rf ms-playwright-agent
 # ---- End Stage ---- #
 
+
 # ---- Prune Stage ---- #
-FROM goblet-setup as goblet-pruner
+FROM $IMAGE_FROM as goblet-pruner
 WORKDIR /goblet/app
 COPY . .
 # Clean up repo for backend
-RUN <<EOF
-  set -eux;
-
-  rm -rf /goblet/app/repos/screencast
-  rm -rf /goblet/app/repos/testUtils
-
-  cd /goblet/app/repos/backend
-  pnpm json:rm
-
-  cd /goblet/app/repos/conductor
-  pnpm json:rm
-
-  cd /goblet/app/repos/shared
-  pnpm json:rm
-
-  cd /goblet/app/repos/workflows
-  pnpm json:rm
-
-  cd /goblet/app
-  pnpm json:rm
-
-  dot-json package.json devDependencies -d
-
-EOF
+RUN pnpm add --global turbo dot-json && \
+    rm -rf /goblet/app/repos/screencast && \
+    rm -rf /goblet/app/repos/testUtils && \
+    cd /goblet/app/repos/backend && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/conductor && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/shared && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/workflows && \
+    pnpm json:rm && \
+    cd /goblet/app && \
+    pnpm json:rm && \
+    dot-json package.json devDependencies -d
 
 RUN turbo prune --docker --scope=@gobletqa/backend
 COPY ./configs ./out/full/configs
@@ -82,15 +45,17 @@ COPY ./gobletRoot.js ./out/full/gobletRoot.js
 COPY ./tsconfig.json ./out/full/tsconfig.json
 # ---- End Stage ---- #
 
+
 # ---- Install Stage ---- #
 FROM goblet-setup as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 COPY --from=goblet-pruner /goblet/app/out/pnpm-lock.yaml ./pnpm-lock.yaml
 RUN pnpm install --fix-lockfile --shamefully-hoist
-# # ---- End Stage ---- #
+# ---- End Stage ---- #
 
-# # ---- Build Stage ---- #
+
+# ---- Build Stage ---- #
 FROM goblet-setup as goblet-builder
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/full/ /goblet/app/
@@ -102,20 +67,19 @@ RUN pnpm build:goblet && \
 
 WORKDIR /goblet/app
 RUN <<EOF
-  mkdir -p /goblet-runner/repos/backend/scripts
   mkdir -p /goblet-runner/configs
+  mkdir -p /goblet-runner/repos/backend
   cp -R /goblet/app/node_modules /goblet-runner/node_modules
   cp -R /goblet/app/repos/backend/dist /goblet-runner/repos/backend/dist
+  cp -R /goblet/app/repos/backend/scripts /goblet-runner/repos/backend/scripts
   cp -R /goblet/app/repos/shared/src/templates /goblet-runner/repos/backend/templates
   cp -R /goblet/app/repos/backend/node_modules /goblet-runner/repos/backend/node_modules
   cp -R /goblet/app/repos/backend/package.json /goblet-runner/repos/backend/package.json
   cp -R /goblet/app/repos/backend/tsconfig.json /goblet-runner/repos/backend/tsconfig.json
   cp -R /goblet/app/repos/backend/dist/goblet.default.config.js /goblet-runner/configs/goblet.default.config.js
 EOF
-# # ---- End Stage ---- #
+# ---- End Stage ---- #
 
-
-FROM bitnami/kubectl:latest as kubectl
 
 # ---- Run Stage ---- #
 FROM goblet-setup as goblet-runner
@@ -126,16 +90,8 @@ ARG GB_NO_VNC_PORT=26369
 ARG GB_DD_API_PROXY_PORT=2121
 ARG GB_DD_WS_PROXY_PORT=2122
 ARG GB_DD_VNC_PROXY_PORT=2123
-ARG GB_DD_DEPLOYMENT
 
-ENV HOME=/root \
-    DISPLAY=:0.0 \
-    LC_ALL=C.UTF-8 \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US.UTF-8 \
-    DEBUG=pw:* \
-    GB_SUB_REPO=backend \
-    GB_BE_PORT=$GB_BE_PORT \
+ENV GB_BE_PORT=$GB_BE_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
     DEBIAN_FRONTEND=noninteractive \
     GB_DD_WS_PROXY_PORT=$GB_DD_WS_PROXY_PORT \
@@ -143,10 +99,10 @@ ENV HOME=/root \
     GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT
 
 COPY --from=goblet-builder /goblet-runner /goblet/app
-COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
 
 WORKDIR /goblet/app/repos/backend
 EXPOSE $GB_BE_PORT
 EXPOSE $GB_NO_VNC_PORT
 
-CMD [ "pnpm", "serve" ]
+CMD [ "/bin/bash", "scripts/initialize.sh" ]
+

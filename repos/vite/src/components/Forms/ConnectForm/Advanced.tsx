@@ -1,10 +1,10 @@
 import type { TOnAutoChange } from '@gobletqa/components'
 import type { TBuiltRepos, TRepoValueCB, TRepoInputError, TBuiltRepo } from '@types'
 
-import { dims, colors, gutter } from '@gobletqa/components'
 import { RepoAdvanced } from './RepoAdvanced'
 import { BranchConnect } from './BranchConnect'
 import { Container, Dropdown } from './Connect.styled'
+import { dims, colors, gutter } from '@gobletqa/components'
 
 export type TAdvanced = {
   branch?: string
@@ -73,7 +73,6 @@ export const Advanced = (props:TAdvanced) => {
         ) : (
           <BranchConnect {...props} />
         )}
-
       </Dropdown>
     </Container>
   )

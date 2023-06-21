@@ -7,7 +7,7 @@ import type {
   TRepoGraphRepos,
 } from '@gobletqa/workflows/types'
 
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import { ApiCache } from './apiCache'
 import { buildHeaders } from '../utils/buildHeaders'
 import {
@@ -18,7 +18,6 @@ import {
   hashObj,
   emptyObj,
   emptyArr,
-  deepMerge,
 } from '@keg-hub/jsutils'
 
 const defPageInfo:TGraphPageInfo = emptyObj as TGraphPageInfo
@@ -29,7 +28,7 @@ export class BaseGraphApi {
   provider: TGraphProvider
 
   constructor(args:TBaseGraphApi){
-    this.provider = args.provider 
+    this.provider = args.provider
     this.cache = ApiCache.getInstance({
       variables: args.variables
     })
@@ -40,7 +39,7 @@ export class BaseGraphApi {
 
     if(!errors) return
 
-    const defMes = `Could not complete github.listRepos API call. Please try again later`
+    const defMes = `Could not complete Git Provider API call. Please try again later`
 
     if(isArr<Error[]>(errors)){
       if(errors.length) throw new Error(errors[0].message || defMes)
@@ -55,6 +54,8 @@ export class BaseGraphApi {
       provider: this.provider
     })
   }
+
+  request = async <T=any>(opts:AxiosRequestConfig) => await limbo<T>(axios(opts))
 
   /**
    * Calls Github's GraphQL API endpoint to get a list of a users repos
@@ -79,7 +80,7 @@ export class BaseGraphApi {
       headers: this.buildHeaders(token, headers),
     }
 
-    const [err, resp] = await limbo(axios(opts))
+    const [err, resp] = await this.request(opts)
     this.apiError(err, resp?.data?.errors)
 
     const {

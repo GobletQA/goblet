@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -14,8 +14,9 @@ export const assertStyleValue = async (
   selector:string,
   rule:string,
   value:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
+
   const page = await getPage()
 
   const locator = page.locator(selector)
@@ -32,7 +33,7 @@ export const assertStyleValue = async (
 }
 
 Then(`the element {string} style {string} is {string}`, assertStyleValue, {
-  name: `Check Element Style`,
+  name: `Assert Element Style`,
   alias: [],
   module: `assertStyleValue`,
   description: `Locates element by selector, and validates that a style rule matches the expected value`,

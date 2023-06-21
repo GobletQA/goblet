@@ -6,10 +6,11 @@ import { emptyObj } from '@keg-hub/jsutils'
 import { containerApi } from '@services/containerApi'
 import { connectModal } from '@actions/modals/modals'
 import { removeRepo } from '@actions/repo/local/removeRepo'
-import { setErrorState } from '@actions/admin/provider/setErrorState'
+import { Exception } from '@gobletqa/shared/exceptions/Exception'
+import {clearContainerRoutes} from '../local/clearContainerRoutes'
 import { waitForRunning } from '@actions/container/api/waitForRunning'
 import { setContainerRoutes } from '@actions/container/local/setContainerRoutes'
-import {clearContainerRoutes} from '../local/clearContainerRoutes'
+
 
 export type TStatusContainer = {
   fromIdle?:boolean
@@ -35,10 +36,12 @@ export const statusContainer = async (
   const {
     data,
     error,
-    success
+    success,
+    statusCode,
   } = await containerApi.status(params)
 
-  if(!success || error) return setErrorState(error)
+  if(!success || error)
+    return new Exception(error || `Container status request failed`, statusCode)
 
   const containerState = data?.meta?.state
 

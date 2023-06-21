@@ -14,5 +14,7 @@ export const resolveLocalPath = (location:string) => {
       ? appRoot
       : location.startsWith(`./`)
         ? path.resolve(path.join(`${appRoot}/`, location.replace(`./`, ``)))
-        : path.resolve(path.join(appRoot, location))
+        : location.startsWith(`/`)
+          ? location
+          : path.resolve(path.join(appRoot, location))
 }

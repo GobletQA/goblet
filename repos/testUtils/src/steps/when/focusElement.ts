@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
@@ -11,7 +11,8 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  * @param {string} data - set selector text to `data`
  * @param {Object} world
  */
-export const focusElement = async (selector:string, world:TWorldConfig) => {
+export const focusElement = async (selector:string, ctx:TStepCtx) => {
+  const { world } = ctx
   const element = await getLocator(selector)
   const resp = await element.focus()
   saveWorldLocator({ selector, world, element })

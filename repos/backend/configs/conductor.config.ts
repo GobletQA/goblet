@@ -10,16 +10,19 @@ import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
 import { toNum, exists, deepMerge, toBool } from '@keg-hub/jsutils'
 
-const { NODE_ENV=`local` } = process.env
+const { NODE_ENV=`local`, GB_GIT_PROVIDER_DATA } = process.env
+
 
 loadEnvs({
   force: true,
   name: `goblet`,
   locations: [],
+  ignore: [`GB_LOCAL_DEV_MODE`],
   override: NODE_ENV === 'local'
 })
 
 const {
+  GB_LOCAL_DEV_MODE,
   GOBLET_SCREENCAST_PORT,
   GOBLET_SCREENCAST_SERVICE_HOST,
 
@@ -31,8 +34,6 @@ const {
   GB_CD_CONTROLLER_TYPE,
   GB_CD_LISTENER_TIMEOUT,
 
-  GB_LOCAL_DEV_MODE,
-  
   GB_KUBE_NAMESPACE,
 
   GB_KD_PORT,
@@ -56,6 +57,7 @@ const whiteList = [
   `GB_BE_JWT_EXP`,
   `GB_BE_JWT_ALGO`,
   `GB_BE_JWT_SECRET`,
+  `GB_GIT_PROVIDER_DATA`,
   `GB_BE_JWT_CREDENTIALS`,
   `GB_BE_JWT_REFRESH_EXP`,
   `GB_BE_JWT_REFRESH_SECRET`,
@@ -192,6 +194,7 @@ export const conductorConfig:TConductorOpts = deepMerge({
           GB_VNC_ACTIVE: true,
           // Amount to time to wait before auto-killing the container
           // When a user logs out
+          GB_GIT_PROVIDER_DATA,
           GB_SC_IDLE_INTERVAL: containerEnvs.GB_SC_IDLE_INTERVAL || `20`,
           GB_SC_IDLE_THRESHOLD: containerEnvs.GB_SC_IDLE_THRESHOLD || `2`,
           GB_SC_IDLE_WAIT_TO_START: containerEnvs.GB_SC_IDLE_WAIT_TO_START || `120`,

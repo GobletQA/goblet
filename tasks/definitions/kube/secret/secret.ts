@@ -1,7 +1,8 @@
-import type { TTask } from '../../../types'
+import type { TTask, TTaskActionArgs, TTaskParams } from '../../../types'
 
 import path from 'path'
 import { auth } from './auth'
+import { fbsa } from './fbsa'
 import { provider } from './provider'
 import { uuid } from '@keg-hub/jsutils'
 import { tempDir } from '../../../paths'
@@ -21,7 +22,6 @@ const resolveNames = (name:string, key:string, keyvalue:string) => {
   return {name, key}
 }
 
-
 const saveTempSecret = (value:string) => {
   const tempFileLoc = path.join(tempDir, `${uuid()}.txt`)
   writeFileSync(tempFileLoc, value)
@@ -29,6 +29,14 @@ const saveTempSecret = (value:string) => {
   return tempFileLoc
 }
 
+type TAddSecretArg = {
+  key?:string
+  log?:boolean
+  args:string[]
+  name:string
+  files:string[]
+  value:string
+}
 
 const addSecretArg = ({
   key,
@@ -37,15 +45,22 @@ const addSecretArg = ({
   name,
   files,
   value,
-}:Record<any, any>) => {
+}:TAddSecretArg) => {
   const loc = saveTempSecret(value)
-  key && loc && args.push(`--from-file=${key}=${loc}`)
-  loc && files.push(loc)
+  if(!loc) return loc
+
+  args.push(key ? `--from-file=${key}=${loc}` : `--from-file=${loc}`)
+  files.push(loc)
   log && logCreate(name, key, loc)
+
   return loc
 }
 
-const buildLocs = (params:Record<any, any>, name:string, defkey:string) => {
+const buildLocs = (
+  params:TTaskParams,
+  name:string,
+  defkey:string
+) => {
   const {
     file,
     log,
@@ -64,10 +79,18 @@ const buildLocs = (params:Record<any, any>, name:string, defkey:string) => {
       : []
   
   const builtArr = secretFiles.reduce((acc, joined) => {
-    const [key, loc] = joined.trim().split(`:`)
+    
+    const [key, ...rest] = joined.includes(`:`)
+      ? joined.trim().split(`:`)
+      : [``, joined]
+
+    const loc = rest.join(`:`)
+
     if(!loc) return acc
 
-    key && loc && acc.push(`--from-file=${key}=${resolveLocalPath(loc)}`)
+    key
+      ? acc.push(`--from-file=${key}=${resolveLocalPath(loc)}`)
+      : acc.push(`--from-file=${resolveLocalPath(loc)}`)
 
     log && logCreate(name, key, loc)
 
@@ -116,10 +139,10 @@ const logCreate = (name:string, key:string, loc:string) => {
   Logger.info([
     `\n`,
     `Creating Secret: ${Logger.colors.white(name)}\n`,
-    ` - Key: ${Logger.colors.white(key)}\n`,
+    key && ` - Key: ${Logger.colors.white(key)}\n`,
     ` - File: ${Logger.colors.white(loc)}`,
     `\n`
-  ].join(' '))
+  ].filter(Boolean).join(' '))
 }
 
 /**
@@ -134,7 +157,7 @@ const logCreate = (name:string, key:string, loc:string) => {
  *
  * @returns {void}
  */
-const secretAct = async ({ params }) => {
+const secretAct = async ({ params }:TTaskActionArgs) => {
   const {
     file,
     files,
@@ -157,7 +180,6 @@ const secretAct = async ({ params }) => {
   const { tempFiles,  secretArgs } = buildLocs(params, name, key)
   namespace && secretArgs.push(`--namespace`, namespace)
 
-  // @ts-ignore
   await kubectl.create([
     `secret`,
     type,
@@ -172,9 +194,10 @@ const secretAct = async ({ params }) => {
 
 export const secret:TTask = {
   name: `secret`,
-  alias: [ `secrets`, `scrt`, `sct`, `sec`],
+  alias: [ `secrets`, `scrt`, `sct`, `sec`, `sc`],
   action: secretAct,
   tasks: {
+    fbsa,
     auth,
     provider,
   },

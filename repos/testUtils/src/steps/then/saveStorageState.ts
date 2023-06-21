@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { isStr } from '@keg-hub/jsutils'
 import { Then } from '@GTU/Parkin'
@@ -14,7 +14,7 @@ import {
  */
 export const savePageState = async (
   title:boolean|string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
   const context = await getContext()
   return await saveContextState(context, isStr(title) ? title : undefined)
@@ -30,12 +30,12 @@ const meta = {
   expressions: [],
 }
 
-Then('I save the page state', (world:TWorldConfig) => savePageState(false, world), meta)
-Then('I save the page state as {string}', savePageState, {
+Then(`I save the page state`, (ctx:TStepCtx) => savePageState(false, ctx), meta)
+Then(`I save the page state as {string}`, savePageState, {
   ...meta,
   expressions: [
     {
-      type: 'string',
+      type: `string`,
       description: `Name of the context state file that is being saved`,
       example: defaultStateFile,
     }

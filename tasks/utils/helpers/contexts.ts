@@ -217,7 +217,7 @@ export const getDeployContext = (
 export const getLabelContext = (
   context:TContextKey,
   env:string,
-  fallback:any
+  fallback?:any
 ) => {
   const { labelSelectors } = getDeploymentOpts(env)
   return resolveContext(context, labelSelectors, fallback)

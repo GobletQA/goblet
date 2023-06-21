@@ -58,6 +58,7 @@ import WorldIcon from '@mui/icons-material/Language'
 import KebabIcon from '@mui/icons-material/MoreVert'
 import ClockIcon from '@mui/icons-material/AccessTime'
 import GradingIcon from '@mui/icons-material/Grading'
+import KeyIcon from '@mui/icons-material/Key'
 
 export {
   Settings,
@@ -119,5 +120,6 @@ export {
   RemoveCircleIcon,
   KebabIcon,
   ClockIcon,
-  GradingIcon
+  GradingIcon,
+  KeyIcon
 }

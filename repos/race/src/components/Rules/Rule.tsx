@@ -24,7 +24,6 @@ export const Rule = (props:TRule) => {
   } = props
 
   const {
-    onPlay,
     onCopy,
     onRemove,
     onAddScenario,
@@ -62,9 +61,9 @@ export const Rule = (props:TRule) => {
   })
   
   const actions = useSectionActions({
-    onPlay,
     onCopy,
     onRemove,
+    item: rule,
     onAddScenario,
     onAddBackground,
     editingTitle,

@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -8,7 +8,7 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  * Simply waits `num` seconds before continuing to next step
  * @param {number} num - number of seconds
  */
-export const wait = async (num:number, world:TWorldConfig) => {
+export const wait = async (num:number, ctx:TStepCtx) => {
   const page = await getPage()
   const seconds = num * 1000
   await page.waitForTimeout(seconds)

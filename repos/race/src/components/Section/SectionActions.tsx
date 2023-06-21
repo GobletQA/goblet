@@ -1,11 +1,6 @@
+import type { TSectionActionMeta }  from '@GBR/types'
 import type { TMenuItem } from '@gobletqa/components'
-import type {
-  ReactNode,
-  MouseEvent,
-  ComponentType,
-  ComponentProps,
-  CSSProperties,
-} from 'react'
+import type { ReactNode, CSSProperties } from 'react'
 
 import { cls } from '@keg-hub/jsutils'
 import { ESectionType, ESectionExt }  from '@GBR/types'
@@ -14,24 +9,6 @@ import {
   SectionActs,
   SectionMenuContainer
 } from './SectionActions.styled'
-
-export type TSectionActionMeta = {
-  id?:string
-  key?:string
-  label?:string
-  asButton?:boolean
-  className?:string
-  sx?:CSSProperties
-  disabled?:boolean
-  closeMenu?:boolean
-  children?:ReactNode
-  dividerTop?:boolean
-  dividerBottom?:boolean
-  iconProps?:ComponentProps<any>
-  onClick?:(...args:any[]) => void
-  Icon?:ReactNode|ComponentType<any>
-  onCloseMenu?:(event: MouseEvent<HTMLElement>) => any
-}
 
 export type TSectionAction = ReactNode | TSectionActionMeta
 

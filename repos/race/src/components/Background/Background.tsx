@@ -28,7 +28,6 @@ export const Background = (props:TBackground) => {
   } = props
 
   const {
-    onPlay,
     onStepMove,
     onStepChange,
     onCopyBackground,
@@ -57,9 +56,9 @@ export const Background = (props:TBackground) => {
   })
 
   const actions = useSectionActions({
-    onPlay,
     editingTitle,
     toggleEditTitle,
+    item: background,
     onCopy: onCopyBackground,
     onRemove: onRemoveBackground,
     onAddStep: onAddBackgroundStep,

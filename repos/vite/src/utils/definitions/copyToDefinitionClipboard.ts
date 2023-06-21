@@ -1,11 +1,12 @@
-import type { TDefinitionAst } from '@types'
+import type { TStepDef } from '@ltipton/parkin'
+
 import { capitalize } from '@keg-hub/jsutils'
 import { Clipboard } from '@gobletqa/components'
 
 /**
  * Copies a definitions matcher text to the users clipboard
  */
-export const copyToDefinitionClipboard = (definition:TDefinitionAst) => {
+export const copyToDefinitionClipboard = (definition:TStepDef) => {
   if (!definition || !definition.name)
     return console.warn(
       `Can not copy to clipboard, a definition is require!`,

@@ -11,9 +11,12 @@
   * `kubectl get ingress`
 * List all resource for all namespaces
   * `kubectl get all --all-namespaces`
-
+* Remove an ENV from a running pod
+  * `kubectl set env deployment/<deployment-name> <env-name>-`
+  * Be sure to include the `-` at the end
 
 ## Production
+
 * Set both context and namespace for an environment
   * `pnpm kube set <environment>` - environment should be one of `local`, `production`, etc...
 * Set just the namespace
@@ -29,3 +32,19 @@
   * `curl -kivL -H 'Host: backend.dev.gobletqa.app' -H 'Origin: localhost' 'http://198.58.121.252'`
 * See the ingress-nginx, and get the IP address of it
   * `kubectl --namespace gb-production get services -o wide -w ingress-nginx-controller`
+
+
+## Ingress
+
+* Deploy Ingress
+  * `pnpm kube ingress --env prod --log`
+* Remove Old Ingress
+  * `kubectl delete replicaset ingress-nginx-controller-6f7bd4bcfb`
+
+
+## Secrets
+
+* See secret in pod
+  * `kubectl exec -i -t <pod-name> -- /bin/sh -c 'echo $SECRET_ENV'`
+* See secret locally
+  * `kubectl get secret <secret-name> -o jsonpath='{.data.<secret-key>}'`

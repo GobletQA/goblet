@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -14,7 +14,7 @@ export const getSelectedOption = async (
   selector:string,
   data:string,
   key:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
   const page = await getPage()
 
@@ -33,8 +33,8 @@ export const getSelectedOption = async (
 }
 
 //this step calls the function this way, as opposed to the step below, because there is no 3rd argument so it's injecting world object and where label should be
-// Then('the select {string} selected option(s) is/are {string}', (selector,data,world) => {
-//   return getSelectedOption(selector,data,'label',world)
+// Then('the select {string} selected option(s) is/are {string}', (selector,data,ctx) => {
+//   return getSelectedOption(selector,data,'label',ctx)
 // })
 
 Then(

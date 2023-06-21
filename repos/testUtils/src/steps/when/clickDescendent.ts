@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
@@ -11,8 +11,9 @@ import { checkForAncestor } from '@GTU/Support/validate'
  */
 export const clickDescendent = async (
   selector:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
+  const { world } = ctx
   checkForAncestor(world)
   const descendent = await getLocator(
     `${world.meta.ancestorSelector} ${selector}`
@@ -23,14 +24,14 @@ export const clickDescendent = async (
   })
 }
 
-When('I click the descendent element {string}', clickDescendent, {
+When(`I click the descendent element {string}`, clickDescendent, {
   module: `clickDescendent`,
   description: `Locates a element by selector and clicks.\nThere must be a preceding step that establishes an ancestor.`,
   expressions: [
     {
-      type: 'string',
+      type: `string`,
       description: `The selector for the element. Selector must be specific enough to locate a single element.`,
-      example: "button[name='button-name']",
+      example: `button[name='button-name']`,
     },
   ],
 })

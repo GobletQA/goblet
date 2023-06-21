@@ -43,7 +43,6 @@ export const Scenario = (props:TScenario) => {
   } = props
 
   const {
-    onPlay,
     onMoveStep,
     onCopyScenario,
     onRemoveScenario,
@@ -68,8 +67,8 @@ export const Scenario = (props:TScenario) => {
   })
 
   const actions = useSectionActions({
-    onPlay,
     editingTitle,
+    item: scenario,
     toggleEditTitle,
     onCopy: onCopyScenario,
     onRemove: onRemoveScenario,

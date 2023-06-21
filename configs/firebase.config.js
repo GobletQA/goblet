@@ -1,6 +1,6 @@
+const { NODE_ENV=`local` } = process.env
 const { loadEnvs } = require('@gobletqa/shared/utils/loadEnvs')
-const nodeEnv = process.env.NODE_ENV || `local`
-loadEnvs({ override: nodeEnv === 'local'})
+loadEnvs({ override: NODE_ENV === 'local', ignore: [`GB_LOCAL_DEV_MODE`] })
 
 const {
   FIRE_BASE_KEY,

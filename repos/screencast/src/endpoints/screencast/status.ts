@@ -1,6 +1,6 @@
 import type { TBrowserConf } from '@GSC/types'
+import type { Response, Request, RequestHandler } from 'express'
 
-import type { Response, Request } from 'express'
 import { parseJSON } from '@keg-hub/jsutils'
 import { statusScreencast } from '@GSC/utils/statusScreencast'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
@@ -14,7 +14,7 @@ export type TStatusSCParams = {
 /**
  * Endpoint to get the current status  of the browser
  */
-export const scStatus = asyncWrap(async (req:Request, res:Response) => {
+export const scStatus:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   const query = req.query as TStatusSCParams
 
   const status = await statusScreencast({

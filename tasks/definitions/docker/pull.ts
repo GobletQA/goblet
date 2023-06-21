@@ -55,7 +55,7 @@ const resolveParams = (params) => {
  */
 const docPull = async (args) => {
   const params = resolveParams(args.params)
-  const { context, env, tag, log } = params
+  const { context, env, tag, login, log } = params
 
   const envs = loadEnvs({ env })
   const token = getNpmToken()
@@ -72,8 +72,10 @@ const docPull = async (args) => {
   // Uses the images name to get the registry url to log into it
   const registryUrl = resolvedName.indexOf(`/`) ? resolvedName.split('/').shift() : ``
 
-  const { dockerLogin } = await import(path.join(containerDir, 'scripts/ds/dockerLogin.js'))
-  await dockerLogin(token, registryUrl)
+  if(login){
+    const { dockerLogin } = await import(path.join(containerDir, 'scripts/ds/dockerLogin.js'))
+    await dockerLogin(token, registryUrl)
+  }
 
   // Ensure the correct tag it added to the image
   const imgName = tag
@@ -99,29 +101,36 @@ export const pull = {
   options: {
     context: {
       example: `--context proxy`,
-      alias: ['ctx', `name`, `type`],
+      alias: [`ctx`, `name`, `type`],
       description: `Name of the sub-repo image to pull and optionally its tag seperated by a ":"`,
     },
     tag: {
-      alias: ['tg'],
+      alias: [`tg`],
       type: `string`,
       example: `--tag package`,
       allowed: [`package`, `branch`, `commit`, `values`, `env`, `node`],
-      description: 'Tag name of the image to pull, overridden by context',
+      description: `Tag name of the image to pull, overridden by context`,
     },
     image: {
-      alias: ['img'],
+      alias: [`img`],
       example: `--img my-image`,
-      description: 'Name of the docker image to pull, overridden by context',
+      description: `Name of the docker image to pull, overridden by context`,
     },
     registry: {
-      alias: ['reg'],
-      example: '--registry ghcr.io',
-      description: 'Docker Registry url to log into, defaults to DOCKER_REGISTRY env',
+      alias: [`reg`],
+      example: `--registry ghcr.io`,
+      description: `Docker Registry url to log into, defaults to DOCKER_REGISTRY env`,
+    },
+    login: {
+      type: `bool`,
+      default: true,
+      alias: [`auth`],
+      example: `--login`,
+      description: `Attempt to log into the docker registry`
     },
     log: {
-      type: 'boolean',
-      description: 'Log command before they are build',
+      type: `boolean`,
+      description: `Log command before they are build`,
     },
   },
 }

@@ -1,7 +1,7 @@
 
 import '../resolveRoot'
-import { toBool, deepMerge } from '@keg-hub/jsutils'
 import { TBackendConfig } from '@GBE/types'
+import { toBool, deepMerge } from '@keg-hub/jsutils'
 import { conductorConfig } from './conductor.config'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { getDindHost } from '@gobletqa/shared/utils/getDindHost'

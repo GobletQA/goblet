@@ -1,6 +1,7 @@
 import type { Response, Request } from 'express'
 
 import { hashString } from '@keg-hub/jsutils'
+import {authService} from '@GBE/services/firebase'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { generateTokens } from '@GBE/utils/generateTokens'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
@@ -10,7 +11,14 @@ import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
  */
 export const validate = async (req:Request, res:Response) => {
   const { conductor } = req.app.locals
-  const { id, username, token, provider } = req.body
+
+  const {
+    id,
+    token,
+    provider,
+    username,
+  } = await authService.validate(req.body)
+
   const imageRef = Object.keys(conductor.config.images)[0]
 
   if(!imageRef) throw new Error(`Conductor config missing Image Reference`)
@@ -37,11 +45,11 @@ export const validate = async (req:Request, res:Response) => {
 
   // First generate tokens for accessing conductor form the frontend
   const jwtTokens = generateTokens(config.jwt, {
+    token,
     status,
     userId: id,
-    token: token,
-    username: username,
     provider: provider,
+    username: username,
     subdomain: res.locals.subdomain,
   })
 
@@ -50,4 +58,4 @@ export const validate = async (req:Request, res:Response) => {
 }
 
 
-AsyncRouter.post('/auth/validate', validate)
+AsyncRouter.post(`/auth/validate`, validate)

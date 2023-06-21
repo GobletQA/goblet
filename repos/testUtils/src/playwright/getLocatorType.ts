@@ -9,11 +9,11 @@ import { emptyObj } from '@keg-hub/jsutils'
 import { getPage } from '@GTU/Playwright/browserContext'
 
 export const locatorTypeMap:TLocatorTypeMap = {
-  [`title`]: async (page, selector) => await page.getByTitle(selector),
-  [`label`]: async (page, selector) => await page.getByLabel(selector),
-  [`placeholder`]: async (page, selector) => await page.getByPlaceholder(selector),
-  [`role`]: (async (page, selector, options) => await page.getByRole(selector, options)) as TLocatorMapMethod,
-  [`text`]: (async (page, selector, options) => await page.getByText(selector, options)) as TLocatorMapMethod,
+  [`title`]: async (page, selector):Promise<TLocator> => await page.getByTitle(selector),
+  [`label`]: async (page, selector):Promise<TLocator> => await page.getByLabel(selector),
+  [`placeholder`]: async (page, selector):Promise<TLocator> => await page.getByPlaceholder(selector),
+  [`role`]: (async (page, selector, options):Promise<TLocator> => await page.getByRole(selector, options)) as TLocatorMapMethod,
+  [`text`]: (async (page, selector, options):Promise<TLocator> => await page.getByText(selector, options)) as TLocatorMapMethod,
 }
 
 type TLocatorTypeKey = keyof typeof locatorTypeMap
@@ -42,7 +42,7 @@ export const getLocatorType = async (
 
   const activePage = page || await getPage()
 
-  const locator = await locatorTypeMap[type](activePage, selector, opts)
+  const locator:TLocator = await locatorTypeMap[type](activePage, selector, opts)
   if (!locator) throw new Error(`Element of type "${type}" using selector "${selector}" could not be found.`)
 
   if(waitFor)

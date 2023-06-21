@@ -72,6 +72,7 @@ export const Input = (props:TInput) => {
   const {
     onBlur,
     onFocus,
+    onChange,
     inputRef,
     onKeyDown,
     error: inputErr
@@ -133,6 +134,7 @@ export const Input = (props:TInput) => {
         placeholder={placeholder || "Enter some text..."}
         helperText={error ? error : inputErr || helperText || ` `}
         inputProps={{
+          onChange,
           ...inputProps,
           onBlur: onBlur,
           onFocus: onFocus,

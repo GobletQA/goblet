@@ -1,18 +1,19 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { clickElement } from '@GTU/Support/helpers'
+import { getPage, getLocator, getLocatorByText } from '@GTU/Playwright'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 /**
  * Click the element matching `selector`
  * @param {String} selector - valid playwright selector
  */
-export const clickTextHandler = async (selector:string, world:TWorldConfig) => {
-  return await clickElement({
-    world,
-    selector
-  })
+export const clickTextHandler = async (selector:string, ctx:TStepCtx) => {
+  const locator = await getLocatorByText(selector)
+
+  // TODO: add way to pull in options for click
+  return await locator.click({})
 }
 
 const meta = {

@@ -30,7 +30,6 @@ export const useScenarioActions = (props:THScenarioActions) => {
 
   return useMemo(() => {
 
-    const onPlay = () => {}
     const onChangeScenarioStep = onChangeStep
     const onRemoveScenarioStep = onRemoveStep
 
@@ -52,7 +51,6 @@ export const useScenarioActions = (props:THScenarioActions) => {
     })
     
     return {
-      onPlay,
       onMoveStep,
       onCopyScenario,
       onRemoveScenario,

@@ -74,6 +74,7 @@ module.exports = {
           `GB_KUBE_NAMESPACE`,
           `*_DEVSPACE_CONFIG`,
           `GB_IMAGE_BUILD_TAGS`,
+          `BUILDKIT_INLINE_CACHE`
         ]
       },
       sync: {
@@ -98,13 +99,9 @@ module.exports = {
     },
     action: {
       contexts: [`action`, `act`],
-      envs: {
-        values: {
-          imageTag: `latest`,
-          image: `ghcr.io/gobletqa/goblet-action`,
-          imageFrom: `mcr.microsoft.com/playwright:v1.32.0-focal`,
-        }
-      },
+    },
+    base: {
+      contexts: [`base`, `bs`],
     },
     backend: {
       /**
@@ -154,6 +151,7 @@ module.exports = {
           `GB_KUBE_NAMESPACE`,
           `GB_SERVER_ORIGINS`,
           `GB_LOCAL_DEV_MODE`,
+          `GB_GIT_PROVIDER_DATA`,
         ],
         /**
         * ENVs to not include in the backend

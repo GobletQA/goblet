@@ -11,10 +11,10 @@ import { pickKeys, deepMerge } from '@keg-hub/jsutils'
  */
 export const getRepoGit = ({ query, params, body }:JWTRequest) => {
   return pickKeys(deepMerge(params, query, body), [
-    'path',
-    'local',
-    'remote',
-    'branch',
+    `path`,
+    `local`,
+    `remote`,
+    `branch`,
   ])
 }
 

@@ -1,4 +1,4 @@
-ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.32.0-focal
+ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 FROM $IMAGE_FROM as goblet-pnpm

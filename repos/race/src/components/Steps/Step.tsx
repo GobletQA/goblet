@@ -66,15 +66,14 @@ export const Step = (props:TStep) => {
     expressions
   } = useStepAudit(props)
 
-  const onPlay = () => {}
   const onCopy = () => {}
   const onStepChange = (updated:TRaceStep) => onChange?.(updated, parent.uuid)
   const onRemoveStep = () => onRemove?.(step.uuid, parent.uuid)
   const onCollapseExcept = () => collapseAllExcept(step.uuid, parent?.uuid, gran?.uuid)
 
   const actions = useSectionActions({
-    onPlay,
     onCopy,
+    item:step,
     onRemove: onRemoveStep,
     type: ESectionType.step,
     onCollapse: onCollapseExcept,

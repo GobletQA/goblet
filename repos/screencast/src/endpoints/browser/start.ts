@@ -1,4 +1,4 @@
-import type { Response, Request } from 'express'
+import type { Response, Request, RequestHandler } from 'express'
 
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
@@ -12,7 +12,7 @@ import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
  * @param {string} params.type - The browser type to start [chromium|firefox]
  *
  */
-export const browserStart = asyncWrap(async (req:Request, res:Response) => {
+export const browserStart:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   const { query } = req
   const { status } = await startBrowser(joinBrowserConf(query))
 

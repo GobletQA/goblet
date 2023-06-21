@@ -1,7 +1,13 @@
 /**
  * Used by devspace in the devspace.yml to dynamically load ENV value secrets
  * Allows loading them from pre-configured secrets in the kubernetes cluster
+ * **Test run script**:
+ * ```
+    node -r esbuild-register container/scripts/ds/resolveDSEnvs.js backend docker-auth:user docker-auth:password firebase-sa:firebase-sa
+ * ```
  */
+ 
+ 
 const { isStrBool } = require('@keg-hub/jsutils') 
 
 /**
@@ -12,9 +18,9 @@ const addSecret = (envName, name, key, optional) => (`
 - name: ${envName}
   valueFrom:
     secretKeyRef:
-      name: ${name}
-      key: ${key}
       optional: ${optional}
+      name: ${name}
+      ${key ? `key: ${key}` : ``}
 `)
 
 /**
@@ -33,7 +39,9 @@ const cleanStr = (str) => {
  * If no envName, then use the name and key to create it
  */
 const resolveSecretOpts = secret => {
-  let [name, key, optional='false', envKey] = secret.trim().split(`:`)
+  let [name, key, optional='false', envKey] = secret.includes(`:`)
+    ? secret.trim().split(`:`)
+    : [secret, undefined, 'false', undefined]
 
   // Check if envKey is set as third option
   // If it is, set envKey to optional value, and default optional to false
@@ -46,7 +54,7 @@ const resolveSecretOpts = secret => {
     key,
     name,
     optional,
-    envName: envKey || `${cleanStr(name)}_${cleanStr(key)}`
+    envName: envKey || (key ? `${cleanStr(name)}_${cleanStr(key)}` : `${cleanStr(name)}`)
   }
 }
 
@@ -54,23 +62,23 @@ const resolveSecretOpts = secret => {
  * Builds the format for adding a kubernetes secret as an ENV within a container
  */
 const buildEnvSecrets = (fromSecrets) => {
+
   return fromSecrets.reduce((acc, secret) => {
     if(!secret) return acc
-
-    const resolved = resolveSecretOpts(secret)
 
     const {
       key,
       name,
       envName,
       optional,
-    } = resolved
+    } = resolveSecretOpts(secret)
 
-    name && key
+
+    name
       && (acc+= addSecret(
         envName.trim(),
         name.trim(),
-        key.trim(),
+        key && key.trim(),
         optional.trim()
       ))
 

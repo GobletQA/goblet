@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import {
@@ -11,7 +11,7 @@ import {
  * Checks that the page title is `title`
  * @param {string} name - text to compare to page title
  */
-export const savePageCookie = async (name:boolean|string, world:TWorldConfig) => {
+export const savePageCookie = async (name:boolean|string, ctx:TStepCtx) => {
   const context = await getContext()
 
   return await saveContextCookie(context, name)
@@ -27,7 +27,7 @@ const meta = {
   expressions: [],
 }
 
-Then(`I save the page cookie`, (world:TWorldConfig) => savePageCookie(false, world), meta)
+Then(`I save the page cookie`, (ctx:TStepCtx) => savePageCookie(false, ctx), meta)
 Then(`I save the page cookie as {string}`, savePageCookie, {
   ...meta,
   expressions: [

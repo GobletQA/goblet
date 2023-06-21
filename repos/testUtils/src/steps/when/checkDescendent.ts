@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { checkElement } from './checkElement'
@@ -13,13 +13,14 @@ import { checkForAncestor } from '@GTU/Support/validate'
 export const checkDescendent = async (
   action:string,
   selector:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
+  const { world } = ctx
   checkForAncestor(world)
   return checkElement(
     action,
     `${world.meta.ancestorSelector} ${selector}`,
-    world
+    ctx
   )
 }
 

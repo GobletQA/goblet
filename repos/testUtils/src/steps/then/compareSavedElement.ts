@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { deepMerge } from '@keg-hub/jsutils'
@@ -16,7 +16,7 @@ import {
  * @param {string} typeJoin - Type of comparison to evaluate
  * @param {string} worldPath - Path on the world object
  * @param {string} worldProp - property of a playwright locator
- * @param {Object} world - Global world object
+ * @param {Object} ctx - Step parkin context
  */
 export const compareElements = async (
   selector:string,
@@ -24,8 +24,9 @@ export const compareElements = async (
   typeJoin:string,
   worldPath:string,
   worldProp:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
+  const { world } = ctx
   const { element:saved } = getWorldLocator(world, worldPath)
   if(!saved[worldProp]) throw new Error(`Saved Element property "${worldProp}" does not exist.`)
 
@@ -44,15 +45,16 @@ export const compareElements = async (
  * @param {string} prop - property of a playwright locator
  * @param {string} typeJoin - Type of comparison to evaluate
  * @param {string} worldPath - Path on the world object
- * @param {Object} world - Global world object
+ * @param {Object} ctx - Step parkin context
  */
 export const compareToWorldValue = async (
   selector:string,
   prop:string,
   typeJoin:string,
   worldPath:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
+  const { world } = ctx
   const savedVal = getWorldData(world, worldPath)
   const elementVal = await getLocatorAttribute(selector, prop)
 
@@ -94,8 +96,8 @@ const elToVal = {
   expressions: [
     ...metaBase.expressions,
     {
-      type: 'string',
-      example: 'context.selected',
+      type: `string`,
+      example: `context.selected`,
       description: `An inline value or a path on the world where the saved data exists`,
     }
   ]
@@ -106,13 +108,13 @@ Then(
     sel:string,
     prop:string,
     wPath:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) => compareToWorldValue(
     sel,
     prop,
     `matches-world`,
     wPath,
-    world
+    ctx
   ),
   elToVal
 )
@@ -122,13 +124,13 @@ Then(
     sel:string,
     prop:string,
     wPath:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) => compareToWorldValue(
     sel,
     prop,
     `contains-world`,
     wPath,
-    world
+    ctx
   ),
   elToVal
 )
@@ -158,13 +160,13 @@ Then(
     type:string,
     sel:string,
     prop:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) => compareToWorldValue(
     sel,
     prop,
     `matches-el`,
     wPath,
-    world
+    ctx
   ),
   valToElMeta
 )
@@ -175,13 +177,13 @@ Then(
     type:string,
     sel:string,
     prop:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) => compareToWorldValue(
     sel,
     prop,
     `contains-el`,
     wPath,
-    world
+    ctx
   ),
   valToElMeta
 )
@@ -200,14 +202,14 @@ Then(
   (
     sel:string,
     prop:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) => compareElements(
     sel,
     prop,
     `matches-world`,
     `__meta.savedElement`,
     prop,
-    world
+    ctx
   ),
   elToSaved
 )
@@ -216,14 +218,14 @@ Then(
   (
     sel:string,
     prop:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) => compareElements(
     sel,
     prop,
     `contains-world`,
     `__meta.savedElement`,
     prop,
-    world
+    ctx
   ),
   elToSaved
 )
@@ -241,14 +243,14 @@ Then(
   (
     sel:string,
     prop:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) => compareElements(
     sel,
     prop,
     `matches-el`,
     `__meta.savedElement`,
     prop,
-    world
+    ctx
   ),
   savedToEl
 )
@@ -257,14 +259,14 @@ Then(
   (
     sel:string,
     prop:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) => compareElements(
     sel,
     prop,
     `contains-el`,
     `__meta.savedElement`,
     prop,
-    world
+    ctx
   ),
   savedToEl
 )
@@ -290,14 +292,14 @@ Then(
     sel:string,
     prop:string,
     wPath:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) =>  compareElements(
     sel,
     prop,
     `matches-world`,
     wPath,
     prop,
-    world
+    ctx
   ),
   elToWorldNoProp
 )
@@ -307,14 +309,14 @@ Then(
     sel:string,
     prop:string,
     wPath:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) =>  compareElements(
     sel,
     prop,
     `contains-world`,
     wPath,
     prop,
-    world
+    ctx
   ),
   elToWorldNoProp
 )
@@ -342,14 +344,14 @@ Then(
     wPath:string,
     sel:string,
     prop:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) =>  compareElements(
     sel,
     prop,
     `matches-el`,
     wPath,
     prop,
-    world
+    ctx
   ),
   worldToElNoProp
 )
@@ -359,14 +361,14 @@ Then(
     wPath:string,
     sel:string,
     prop:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) =>  compareElements(
     sel,
     prop,
     `contains-el`,
     wPath,
     prop,
-    world
+    ctx
   ),
   worldToElNoProp
 )
@@ -455,14 +457,14 @@ Then(
     wProp:string,
     sel:string,
     prop:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) =>  compareElements(
     sel,
     prop,
     `matches-el`,
     wPath,
     wProp,
-    world
+    ctx
   ),
   worldToElWProps
 )
@@ -473,14 +475,14 @@ Then(
     wProp:string,
     sel:string,
     prop:string,
-    world:TWorldConfig
+    ctx:TStepCtx
   ) =>  compareElements(
     sel,
     prop,
     `contains-el`,
     wPath,
     wProp,
-    world
+    ctx
   ),
   worldToElWProps
 )

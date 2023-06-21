@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -10,7 +10,7 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  */
 export const contextClick = async (
   selector:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
   const page = await getPage()
   /**

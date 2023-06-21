@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -8,12 +8,14 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 /**
  * Parses the url, replacing any dynamic variables
  * @param {string} url
- * @param {Object} world
+ * @param {Object} ctx
  * @return {string} - updated url
  */
 
-const parseUrl = (url:string, world:TWorldConfig) => {
+const parseUrl = (url:string, ctx:TStepCtx) => {
   if (!url.startsWith(`$world`)) return url
+
+  const { world } = ctx
 
   //isolate query string
   const [baseUrl, urlParams] = url.split('?')
@@ -52,8 +54,9 @@ const parseUrl = (url:string, world:TWorldConfig) => {
  * @param {string} url - url to load in the browser
  * @param {object} world
  */
-export const openUrl = async (url:string, world:TWorldConfig) => {
-  const site = parseUrl(url, world)
+export const openUrl = async (url:string, ctx:TStepCtx) => {
+  const site = parseUrl(url, ctx)
+
   if (!isStr(site)) throw new Error(`Site must be a valid URL. Found: ${site}`)
 
   const page = await getPage()

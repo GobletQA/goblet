@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
 import { getLocators } from '@GTU/Playwright'
@@ -13,11 +13,12 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 export const saveElementCount = async (
   selector:string,
   worldPath:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
 
   const elements = await getLocators(selector)
   const count = await elements.count()
+  const { world } = ctx
 
   await saveWorldData({ selector, elements, count }, world, worldPath)
   

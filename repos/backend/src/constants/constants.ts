@@ -5,13 +5,11 @@ export const PARAMETER = `PARAMETER`
 export const NOT_PARAMETER = `NOT_PARAMETER`
 export const AUTH_BYPASS_ROUTES = [
   `/`,
+  `/iframe`,
   `/auth/validate`,
   `/health-check`,
   `/favicon.ico`,
   `/goblet-socket`,
   `/goblet-socket/`,
-  `/iframe`,
   `/repo/disconnect`,
-  // For DEV Only -- remember to remove this
-  // /\/container\/.*/,
 ]

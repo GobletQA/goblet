@@ -1,21 +1,33 @@
-import type { TTask, TTaskActionArgs, TTaskParams } from '../../types'
+import type { TEnvObject, TTask, TTaskActionArgs, TTaskParams } from '../../types'
 
+import { ensureArr } from '@keg-hub/jsutils'
 import { clean as cleanTask } from './clean'
 import { getNpmToken } from '../../utils/envs'
+import { addEnv } from '../../utils/envs/addEnv'
 import { devspace } from '../../utils/devspace/devspace'
 import { setPullPolicy } from '../../utils/helpers/setPullPolicy'
 import { getDeployments } from '../../utils/devspace/getDeployments'
 
 const setStartEnvs = (params:TTaskParams) => {
-  const { pull, build } = params
+  const { pull, build, dev } = params
+
+  const envs:TEnvObject = {}
 
   setPullPolicy(pull)
+  addEnv(envs, `IMAGE_PULL_POLICY`, process.env.IMAGE_PULL_POLICY)
 
   /**
    * Set the BUILD_LOCAL_IMAGE env based on the passed in build option
    * This determines if the docker images should be built locally or pulled from a registry
    */
   process.env.BUILD_LOCAL_IMAGE = build
+  addEnv(envs, `BUILD_LOCAL_IMAGE`, process.env.BUILD_LOCAL_IMAGE)
+
+  // Force set the local dev mode to false when explicitly set
+  dev === false && (envs.GB_LOCAL_DEV_MODE = `false`)
+
+  return envs
+
 }
 
 /**
@@ -28,6 +40,7 @@ const startAct = async (args:TTaskActionArgs) => {
   // Extract the daemon flag so it doesn't impact other commands
   // We only want it set on the devspace start command
   const {
+    dev,
     skip,
     pull,
     clean,
@@ -56,12 +69,17 @@ const startAct = async (args:TTaskActionArgs) => {
     }
   })
 
-  setStartEnvs(params)
 
   /**
    * Check the context and skip arrays for which apps to deploy
    */
-  const deployments = getDeployments(context, skip, params.env)
+  const deployments = getDeployments(
+    context,
+    ensureArr(skip).concat([dev === false ? `sc` : ``]),
+    params.env
+  )
+
+  const startEnvs = setStartEnvs(params)
 
   getNpmToken()
   return await devspace.start({
@@ -69,6 +87,7 @@ const startAct = async (args:TTaskActionArgs) => {
     context,
     devspace:ds,
     deployments,
+    envs: startEnvs,
   }, { daemon, watch })
 }
 
@@ -154,6 +173,9 @@ export const start:TTask = {
       type: `boolean`,
       default: true,
       description: `Removes screencast pods while cleaning. Only valid when clean option is true`,
+    },
+    dev: {
+      description: `Run the app in local dev mode. Uses the 'GB_LOCAL_DEV_MODE' env by default`,
     },
     cache: {
       default: true,

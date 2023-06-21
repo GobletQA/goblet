@@ -180,4 +180,8 @@ export class GithubApi extends BaseRestApi {
     return sha || this.throwError(new Error(resp?.data))
   }
 
+  getOrgRepos = async () => {
+    // curl -s -H "Authorization: token <token>" 'https://api.github.com/user/repos?affiliation=organization_member&sort=updated'
+  }
+
 }

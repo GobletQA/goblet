@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -8,7 +8,7 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  * Checks that the page url matches the passed in url
  * @param {string} url - text to compare to page url
  */
-export const assertUrl = async (url:string, world:TWorldConfig) => {
+export const assertUrl = async (url:string, ctx:TStepCtx) => {
   const page = await getPage()
   const currentUrl = page.url()
 

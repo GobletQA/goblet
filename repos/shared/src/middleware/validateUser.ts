@@ -7,7 +7,7 @@ import { getRouter } from '../express/appRouter'
 import { asyncWrap } from '../express/asyncWrap'
 
 export type TMValidateUser = {
-  route:string,
+  route:string|RegExp,
   bypassRoutes?: string[]
   expressRouter?:Router|boolean|string
 }

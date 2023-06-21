@@ -1,17 +1,17 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
+import {isStr} from '@keg-hub/jsutils'
 import {
   contextStateLoc,
   defaultStateFile,
 } from '@GTU/Playwright/browserContext'
 
 /**
- * Checks that the page title is `title`
- * @param {*} title - text to compare to page title
+ * Saves the page state by name, or default name if not name is passed
  */
-export const usePageState = async (name:boolean|string, world:TWorldConfig) => {
-  const contextState = contextStateLoc(name)
+export const usePageState = async (name:boolean|string, ctx:TStepCtx) => {
+  const contextState = isStr(name) && contextStateLoc(name)
   // TODO: Figure out how to add state to a context
 
 }
@@ -26,12 +26,12 @@ const meta = {
   expressions: [],
 }
 
-Given('I use the saved page state', (world) => usePageState(false, world), meta)
+Given('I use the saved page state', (ctx:TStepCtx) => usePageState(false, ctx), meta)
 Given('I use the saved {string} page state', usePageState, {
   ...meta,
   expressions: [
     {
-      type: 'string',
+      type: `string`,
       description: `Name of the context state file that is being saved`,
       example: defaultStateFile,
     }

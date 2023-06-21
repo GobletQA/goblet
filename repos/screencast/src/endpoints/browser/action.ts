@@ -1,4 +1,4 @@
-import type { Response } from 'express'
+import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 
 import { noOpObj } from '@keg-hub/jsutils'
@@ -12,7 +12,7 @@ import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
  * Execute an action on a playwright component ( browser, context, page )
  *
  */
-const browserAction = asyncWrap(async (req:JWTRequest, res:Response) => {
+const browserAction:RequestHandler = asyncWrap(async (req:JWTRequest, res:Response) => {
   const { body } = req
   const { ref, actions, ...browser } = body
   const browserConf = joinBrowserConf(browser)

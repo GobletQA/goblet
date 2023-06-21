@@ -27,7 +27,7 @@ const getProviderToken = async (
 }
 
 /**
- * Log the output of a running kubernetes pod
+ * Sets an auth token for a kubernetes provider to allow using kubectl 
  * @param {Object} args - arguments passed from the runTask method
  * @param {string} args.command - Root task name
  * @param {Object} args.tasks - All registered tasks of the CLI

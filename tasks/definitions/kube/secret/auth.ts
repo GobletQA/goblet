@@ -1,4 +1,4 @@
-import type { TTask } from '../../../types'
+import type { TTask, TTaskActionArgs } from '../../../types'
 
 import { Logger, error } from'@keg-hub/cli-utils'
 import { loadEnvs } from '../../../utils/envs/loadEnvs'
@@ -17,7 +17,7 @@ import { loadScript } from '../../../utils/helpers/loadScript'
  *
  * @returns {void}
  */
-const docAuthAct = async (args) => {
+const docAuthAct = async (args:TTaskActionArgs) => {
   const { params, tasks } = args
   const secretTask = tasks?.kube?.tasks?.secret
   !secretTask &&
@@ -41,8 +41,8 @@ const docAuthAct = async (args) => {
     ...args,
     params: {
       ...secParams,
-      name: `docker-auth`,
-      secrets: `user:${user},password:${token}`
+      secrets: `user:${user},password:${token}`,
+      name: envs.GB_KUBE_SCRT_DOC_AUTH || `docker-auth`,
     }
   })
 }

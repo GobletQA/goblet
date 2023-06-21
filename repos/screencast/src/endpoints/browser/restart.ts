@@ -1,4 +1,4 @@
-import type { Response, Request } from 'express'
+import type { Response, Request, RequestHandler } from 'express'
 
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
@@ -10,7 +10,7 @@ import { startBrowser, getPWComponents } from '@GSC/libs/playwright/browser/brow
  * Restarts a Browser by killing the browser context, and starting it again
  *
  */
-const browserRestart = asyncWrap(async (req:Request, res:Response) => {
+const browserRestart:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   const { body } = req
 
   const browserConf = joinBrowserConf(body)

@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -12,7 +12,7 @@ import { getPage } from '@GTU/Playwright'
 export const fileUpload = async (
   selector:string,
   filePath:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
   const page = await getPage()
   const handle = await page.$(selector)

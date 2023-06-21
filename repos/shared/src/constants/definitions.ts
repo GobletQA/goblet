@@ -34,6 +34,7 @@ export const ExpressionKinds = deepFreeze<Record<string, string>>(
     `selector`,
     `element`,
     `select`,
+    `className`, // - element style rule
     `style`, // - element style rule
     `attribute`, // - Any element attribute
     `checkbox`, // - checked || unchecked/ 

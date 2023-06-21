@@ -1,21 +1,39 @@
-import type { TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
+import type { TBaseActionAction, TBrowserAction, TBrowserActionProps } from '@gobletqa/components'
 
 import { EBrowserState } from '@types'
-import { useCallback, useState } from 'react'
 import { EditorPathChangeEvt } from '@constants'
+import { DangerousIcon } from '@gobletqa/components'
+import { useCallback, useMemo, useState } from 'react'
+import { EE } from '@gobletqa/shared/libs/eventEmitter'
 import { getFileModel } from '@utils/files/getFileModel'
 import { useBrowserState } from '@hooks/screencast/useBrowserState'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 import { useOnEvent, BaseAction, PlayCircleOutlineIcon } from '@gobletqa/components'
 
+import {
+  CancelButtonID,
+  BrowserStateAttr,
+  WSCancelPlayerEvent,
+  WSCancelAutomateEvent,
+} from '@constants'
+
 export type TEditorPathChange = {
   location: string
 }
 
-const RunTests = (props:TBrowserActionProps) => {
+const onCancelPlayers = () => EE.emit(WSCancelPlayerEvent, {})
+const onCancelAutomation = () => EE.emit(WSCancelAutomateEvent, {})
+
+const useActionProps = (props:TBrowserActionProps) => {
+
   const { browserState } = useBrowserState()
   const [location, setLocation] = useState<string>(``)
+  useOnEvent<TEditorPathChange>(EditorPathChangeEvt, ({ location }) => {
+    setLocation(location)
+  })
+
+  const noActiveFile = !Boolean(location)
 
   const onClick = useCallback(async (...args:any[]) => {
     if(!location)
@@ -31,28 +49,51 @@ const RunTests = (props:TBrowserActionProps) => {
     startBrowserPlay(fileModel)
   }, [location])
 
-  useOnEvent<TEditorPathChange>(EditorPathChangeEvt, ({ location }) => {
-    setLocation(location)
-  })
+  const actProps = useMemo<TBaseActionAction>(() => {
+    return browserState ===  EBrowserState.idle
+    ? {
+        as: 'button',
+        text: 'Play',
+        loc: 'bottom',
+        variant: 'text',
+        color: 'success',
+        onClick: onClick,
+        disabled: noActiveFile,
+        Icon: PlayCircleOutlineIcon,
+        className: 'goblet-browser-run-tests',
+        tooltip: 'Play the steps from active file in the browser',
+        disabledTooltip: 'DISABLED - Open a test or script to use this action',
+      }
+    : {
+        as: 'button',
+        loc: 'bottom',
+        color: 'error',
+        text: 'Cancel',
+        variant: 'text',
+        id: CancelButtonID,
+        Icon: DangerousIcon,
+        [BrowserStateAttr]: browserState,
+        tooltip: 'Cancel browser automation',
+        className: 'goblet-browser-cancel-recording',
+        onClick: browserState === EBrowserState.playing ? onCancelPlayers : onCancelAutomation,
+      }
+  }, [
+    onClick,
+    noActiveFile,
+    browserState,
+  ])
 
-  const noActiveFile = !Boolean(location)
-  const disabled = (browserState !== EBrowserState.idle) || noActiveFile
+  return {
+    actProps
+  }
 
-  return !disabled && (
-    <BaseAction
-      text='Play'
-      as='button'
-      loc='bottom'
-      variant='text'
-      color='success'
-      onClick={onClick}
-      disabled={disabled}
-      Icon={PlayCircleOutlineIcon}
-      className='goblet-browser-run-tests'
-      tooltip='Play the steps from active file in the browser'
-      disabledTooltip='DISABLED - Open a test or script to use this action'
-    />
-  ) || null
+}
+
+
+const RunTests = (props:TBrowserActionProps) => {
+  const { actProps } = useActionProps(props)
+
+  return (<BaseAction {...actProps} />)
 }
 
 export const PlayAction:TBrowserAction = {

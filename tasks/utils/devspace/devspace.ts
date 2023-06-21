@@ -147,7 +147,7 @@ devspace.start = async (
   daemonOpts:Omit<TTaskParams, 'env'>=emptyParams,
 ) => {
   const cmdArgs = getCmdOptions(params, {
-    build: '-b',
+    build: `-b`,
     debug: `--debug`,
   }, [])
 

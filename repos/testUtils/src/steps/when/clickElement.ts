@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { clickElement } from '@GTU/Support/helpers'
@@ -10,8 +10,9 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  */
 export const clickElementHandler = async (
   selector:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
+  const { world } = ctx
   return await clickElement({ world, selector })
 }
 
@@ -42,7 +43,7 @@ When(`I click {string}`, clickElementHandler, {
 })
 When(`I click the {string}`, clickElementHandler, meta)
 When(`I click the element {string}`, clickElementHandler, meta)
-When(`I click the page`, async (world:TWorldConfig) => await clickElementHandler(`body`, world), {
+When(`I click the page`, async (ctx:TStepCtx) => await clickElementHandler(`body`, ctx), {
   ...meta,
   name: `Click page`,
   expressions: [],

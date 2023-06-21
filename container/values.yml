@@ -32,16 +32,21 @@ pullSecrets: []
 env:
 
 # ---- General Shared ENVs ---- #
+  BUILDKIT_INLINE_CACHE: 1
   IMAGE_TAG: latest
+  DISPLAY: ":0.0"
   DOCKER_REGISTRY: ghcr.io
   IMAGE: 'ghcr.io/gobletqa/goblet-app'
-  DISPLAY: ":0.0"
+  GB_NODE_VERSION: 20.3.0
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
-  PLAYWRIGHT_BROWSERS_VERSION: 1.32.0
+  PLAYWRIGHT_BROWSERS_VERSION: 1.35.0
 
   # Log file for all playwright logs
   # Gets set in container/scripts/resolveDSEnvs.js for screencast deployment
   PW_DEBUG_FILE: /goblet/app/logs/pwlogs.log
+
+  GB_KUBE_SCRT_DOC_AUTH: docker-auth
+  GB_KUBE_SCRT_FB_SA: firebase-sa
 
 # ---- Goblet Action Shared ENVs ---- #
 # These ENVs should be overwritten by the github action
@@ -63,7 +68,7 @@ env:
   # Image tags added to all built images
   GB_IMAGE_BUILD_TAGS: values,package
   # Then, all sub goblet images are built from the goblet-base image
-  GB_IMAGE_FROM: mcr.microsoft.com/playwright:v1.32.0-focal
+  GB_IMAGE_FROM: ghcr.io/gobletqa/goblet-base:latest
 
   # ---- Logger ENVs ---- #
   # Enable to set custom log-level for conductor
@@ -81,6 +86,15 @@ env:
   GB_AUTH_ACTIVE: true
   GB_APP_MOUNT_PATH: /goblet/app
 
+
+# ---- Base ENVs ---- #
+  GB_BS_IMAGE_TAG: latest
+  GB_BS_DEPLOYMENT: goblet-base
+  GB_BS_IMAGE: ghcr.io/gobletqa/goblet-base
+  # This only works if the dockerfile has args GB_IMAGE_FROM && IMAGE_FROM configured
+  GB_BS_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.35.0-focal'
+
+
 # ---- Backend ENVs ---- #
   GB_BE_PORT: 7005
   GB_BE_SECURE_PORT: 443
@@ -92,7 +106,7 @@ env:
   GB_BE_IMAGE_TAG: latest
   GB_BE_DEPLOYMENT: goblet-backend
   GB_BE_IMAGE: 'ghcr.io/gobletqa/goblet-backend'
-  GB_BE_IMAGE_FROM: 'ubuntu:20.04'
+  # GB_BE_IMAGE_FROM: 'ubuntu:20.04'
 
   # ---- Backend Websocket ENVs ---- #
   GB_BE_WS_PATH: /goblet-socket
@@ -298,8 +312,7 @@ env:
 
   GITHUB_API_URL: api.github.com
   GITHUB_GRAPH_URL: https://api.github.com/graphql
-  
-  
+
   # Appwrite ENVs
   GB_APPWRITE_PROJECT: goblet-dev
   GB_APPWRITE_URL: https://cloud.appwrite.io/v1

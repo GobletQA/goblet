@@ -1,4 +1,4 @@
-import type { Response, Request } from 'express'
+import type { Response, Request, RequestHandler } from 'express'
 import type { TDefGobletConfig } from '@gobletqa/shared/types'
 
 import { apiRes } from '@gobletqa/shared/express/apiRes'
@@ -11,7 +11,7 @@ import { getGobletDefaultFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  *
  * @returns {Object} - response object model containing the loaded fileModel
  */
-export const loadGobletDefinition = asyncWrap(async (req:Request, res:Response) => {
+export const loadGobletDefinition:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   const filePath = req.query.location
   const config:TDefGobletConfig = req.app.locals.config
   

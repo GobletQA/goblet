@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
@@ -21,7 +21,7 @@ checkedStates.unchecked = checkedStates[1]
 export const getCheckedState = async (
   selector:string,
   state:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
 
   // Validate checked || unchecked was passed
@@ -63,7 +63,7 @@ Then(`the element {string} checked state is {string}`, getCheckedState, meta)
 
 Then(
   `the {string} to be checked`,
-  (selector:string, world:TWorldConfig) => getCheckedState(selector, checkedStates.checked, world),
+  (selector:string, ctx:TStepCtx) => getCheckedState(selector, checkedStates.checked, ctx),
   {
     ...meta,
     race: true,
@@ -75,7 +75,7 @@ Then(
 
 Then(
   `the {string} to be unchecked`,
-  (selector:string, world:TWorldConfig) => getCheckedState(selector, checkedStates.unchecked, world),
+  (selector:string, ctx:TStepCtx) => getCheckedState(selector, checkedStates.unchecked, ctx),
   {
     ...meta,
     race: true,

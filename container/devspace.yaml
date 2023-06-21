@@ -81,6 +81,10 @@ vars:
     command: "node scripts/ds/getYamlValue.js GB_BE_WS_PATH"
   GB_NO_VNC_PATH:
     command: "node scripts/ds/getYamlValue.js GB_NO_VNC_PATH"
+  GB_KUBE_SCRT_DOC_AUTH:
+    command: "node scripts/ds/getYamlValue.js GB_KUBE_SCRT_DOC_AUTH"
+  GB_KUBE_SCRT_FB_SA:
+    command: "node scripts/ds/getYamlValue.js GB_KUBE_SCRT_FB_SA"
 
 # ----- KinD Values ----- #
   GB_KD_SERVICE_ACCOUNT:
@@ -111,7 +115,7 @@ images:
     context: ../
 
 # The `deployments` section tells devspace how to deploy this project into the cluster
-deployments: 
+deployments:
   # ----- Screencast API Deployment ----- #
   goblet-screencast:
     helm:
@@ -174,7 +178,7 @@ deployments:
         containers:
         - image: ${GB_BE_IMG_URI}
           imagePullPolicy: $(node scripts/ds/resolvePullPolicy.js BE)
-          env: $(node scripts/ds/resolveDSEnvs.js backend docker-auth:user docker-auth:password)
+          env: $(node scripts/ds/resolveDSEnvs.js backend $GB_KUBE_SCRT_DOC_AUTH:user $GB_KUBE_SCRT_DOC_AUTH:password $GB_KUBE_SCRT_FB_SA:$GB_KUBE_SCRT_FB_SA:FIREBASE_SERVICE_ACCOUNT)
         service: $(node scripts/ds/resolveService.js BE $GB_BE_PORT)
         ingress: $(node scripts/ds/resolveIngress.js BE $GB_BE_PORT "*" "$GB_BE_WS_PATH" "$GB_NO_VNC_PATH")
 

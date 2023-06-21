@@ -1,6 +1,5 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
-import { Given } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
 
 type TDescendentElementOpts = {
@@ -32,23 +31,17 @@ const getDescendentElement = async (
   return descendent
 }
 
-/**
- *
- * @param {string} ancestorSelector
- * @param {string} descendentType
- * @param {string} descendentSelector
- * @param {string} world
- */
-
 export const isAncestorTo = async (
   ancestorSelector:string,
   descendentType:string,
   descendentSelector:string,
-  world:TWorldConfig
+  ctx:TStepCtx
 ) => {
-  const page = await getPage()
 
+  const { world } = ctx
+  const page = await getPage()
   const ancestor = await page.$(ancestorSelector)
+
   if (!ancestor)
     throw new Error(`Found no ancestor with selector ${ancestorSelector}`)
 

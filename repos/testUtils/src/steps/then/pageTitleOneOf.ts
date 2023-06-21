@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -7,7 +7,7 @@ import { getPage } from '@GTU/Playwright'
  * Checks that the page title is `title`
  * @param {*} title - text to compare to page title
  */
-export const pageTitleOneOf = async (title:string, world:TWorldConfig) => {
+export const pageTitleOneOf = async (title:string, ctx:TStepCtx) => {
   const page = await getPage()
   const pageTitle = await page.title()
   const opts = (title || ``).split(`,`)

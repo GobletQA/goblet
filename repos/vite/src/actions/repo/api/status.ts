@@ -14,8 +14,7 @@ import { StatusTypes, AuthActive } from '@constants'
 import { localStorage } from '@services/localStorage'
 import { checkCall, noOpObj } from '@keg-hub/jsutils'
 import { ScreencastPort } from '@constants/screencast'
-import { setErrorState } from '@actions/admin/provider/setErrorState'
-
+import { Exception } from '@gobletqa/shared/exceptions/Exception'
 
 type TStatusRepo = Omit<TRouteMeta, "routes" | "meta"> & {
   routes?: TStatusRoutes
@@ -87,7 +86,8 @@ export const statusRepo = async ({
   const {
     data,
     error,
-    success
+    success,
+    statusCode
   } = await apiRequest<TApiRepoResp>({
     method: 'GET',
     url: `/repo/status`,
@@ -95,7 +95,8 @@ export const statusRepo = async ({
     headers: routes?.[ScreencastPort]?.headers,
   })
 
-  if(!success || error) return setErrorState(error)
+  if(!success || error)
+    return new Exception(error || `Repo status request failed`, statusCode)
 
   return !data?.status?.mounted
       ? setNoLocalMountState(data?.status as TRepoStatus)

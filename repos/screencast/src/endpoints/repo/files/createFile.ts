@@ -1,4 +1,4 @@
-import type { Response, Request } from 'express'
+import type { Response, Request, RequestHandler } from 'express'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
@@ -9,7 +9,7 @@ import { createGobletFile } from '@gobletqa/shared/libs/fileSys/gobletFiles'
  *
  * @returns {Object} - response object model containing the saved fileModel
  */
-export const createFile = asyncWrap(async (req:Request, res:Response) => {
+export const createFile:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   const { content, location, type } = req.body
   const meta = await createGobletFile(
     res.locals.repo,

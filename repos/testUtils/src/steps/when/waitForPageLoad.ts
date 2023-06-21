@@ -1,4 +1,4 @@
-import type { TWorldConfig } from '@ltipton/parkin'
+import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
@@ -8,12 +8,12 @@ import { getPage } from '@GTU/Playwright'
  * Without specifying any arguments, it by default waits for the load event to fire.
  * Read more here: https://playwright.dev/docs/api/class-page#pagewaitforloadstatestate-options
  */
-export const waitForPageLoad = async (world:TWorldConfig) => {
+export const waitForPageLoad = async (ctx:TStepCtx) => {
   const page = await getPage()
   await page.waitForLoadState()
 }
 
-When('I wait for the page to load', waitForPageLoad, {
+When(`I wait for the page to load`, waitForPageLoad, {
   name: `Wait for page load`,
   alias: [`Page loaded`],
   module: `waitForPageLoad`,
