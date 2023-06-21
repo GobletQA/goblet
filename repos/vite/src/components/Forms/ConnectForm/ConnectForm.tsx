@@ -9,6 +9,8 @@ import { useConnect } from '@hooks/connect/useConnect'
 import { useInputError } from '@hooks/form/useInputError'
 import { Form, gutter, ModalMessage } from '@gobletqa/components'
 import { useConnectActions } from '@hooks/connect/useConnectActions'
+import { AddPat } from '@components/Forms/ConnectForm/AddPat'
+
 
 export type TConnectForm = {
   Footer?:ComponentType<any>
@@ -171,6 +173,14 @@ export const ConnectForm = (props:TConnectForm) => {
                 onInputError={onInputError}
                 onChangeNewRepo={onChangeNewRepo}
               />
+
+              {/* <Grid
+                xs={12}
+                sx={styles.branch}
+                className='gb-grid-add-pat'
+              >
+                <AddPat />
+              </Grid> */}
 
               <Grid
                 xs={12}

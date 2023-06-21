@@ -4,7 +4,7 @@ import type { ForwardedRef, ReactNode, CSSProperties, ComponentType, ComponentPr
 import { forwardRef } from 'react'
 import { Span } from '@GBC/components/Text'
 import MuiButton from '@mui/material/Button'
-import { omitKeys } from '@keg-hub/jsutils'
+import { emptyObj, omitKeys } from '@keg-hub/jsutils'
 import { isValidFuncComp } from '@GBC/utils/components/isValidFuncComp'
 
 export const BtnRmKeys = [
@@ -22,8 +22,8 @@ export type TButton = ComponentProps<typeof MuiButton> & {
   text?:ReactNode
   textSx?:CSSProperties
   iconSx?:CSSProperties
-  iconProps?:SvgIconProps
   Icon?:ComponentType<any>|ReactNode
+  iconProps?:Record<string, any>|null|undefined
 }
 
 const styles = {
@@ -61,8 +61,8 @@ export const Button = forwardRef((props:TButton, ref:ForwardedRef<HTMLButtonElem
           isValidFuncComp(Icon)
             ? (
                 <Icon
-                  {...iconProps}
                   className='gb-button-icon'
+                  {...(iconProps || emptyObj)}
                   sx={[styles.icon, iconProps?.sx, iconSx]}
                 />
               )

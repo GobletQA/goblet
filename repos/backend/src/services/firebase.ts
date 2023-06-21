@@ -1,7 +1,7 @@
 import type { App } from 'firebase-admin/app'
 import type { Auth, UserRecord, DecodedIdToken } from 'firebase-admin/auth'
 
-import {limbo} from '@keg-hub/jsutils'
+import {limbo, omitKeys} from '@keg-hub/jsutils'
 import { getAuth } from "firebase-admin/auth"
 import { initializeApp } from "firebase-admin/app"
 import { resError } from '@gobletqa/shared/express/resError'
@@ -87,7 +87,6 @@ export class FBService {
   validate = async (data:TValidateUser) => {
     const {
       id,
-      pat,
       idToken,
       provider,
       username,
@@ -100,17 +99,11 @@ export class FBService {
     err && resError(`Authorization failed`, 401)
 
     /**
-     * If a pat was passed, then add it as a custom-claim
-     * Will overwrite the custom claims object that exists,
-     * so pass in the existing claims as well
-    */
-    pat && await this.addClaims({ id, ...claims, pat })
-
-    /**
      * If a custom PAT exists, then use that as the token 
      * otherwise use the default
     */
-    const token = pat || claims.pat
+    const token = claims[provider]
+
     return token ? {...data, token } : data
   }
 

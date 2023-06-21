@@ -14,6 +14,7 @@ import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 export const claimsAdd = async (req:JWTRequest, res:Response) => {
   const claims = req.body
   const id = req.auth.userId
+  const provider = req.auth.provider
 
   await authService.addClaims({ id, ...claims}, true)
 
@@ -21,8 +22,8 @@ export const claimsAdd = async (req:JWTRequest, res:Response) => {
    * If the PAT was updated
    * We need to also update the JWT token to it can start being used
    */
-  const tokens = claims.pat
-    ? updateToken(req, { token: claims.pat })
+  const tokens = claims[provider]
+    ? updateToken(req, { token: claims[provider] })
     : emptyObj
 
   return apiRes(res, tokens, 200)

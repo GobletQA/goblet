@@ -14,7 +14,6 @@ export type TAddClaimsRep = {
   refresh?:string
 }
 
-
 export class AuthApi {
 
   authPath = `/auth`
@@ -49,8 +48,9 @@ export class AuthApi {
 
 
   addClaims = async (params:Record<any, any>=emptyObj) => {
+
     const resp = await apiRequest<TAddClaimsRep>({
-      params: {...params },
+      params: {...params},
       method: HttpMethods.POST,
       url: `${this.authPath}/claims/add`,
     })

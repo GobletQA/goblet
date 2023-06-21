@@ -34,6 +34,7 @@ const actSelectProps = {
   name: `step-action`,
   required: true,
   label: `Action`,
+  autoFocus: true,
   textFieldProps: {
     placeholder: `Select an action`,
   },
