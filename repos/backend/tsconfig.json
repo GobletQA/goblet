@@ -24,6 +24,8 @@
       "@gobletqa/conductor/*": ["../conductor/src/*"],
       "@gobletqa/shared/*": ["../shared/src/*"],
       "@gobletqa/shared": ["../shared/src"],
+      "@gobletqa/latent": ["../latent/src"],
+      "@gobletqa/latent/*": ["../latent/src/*"],
       "@GLogs/*": ["../../logs/*"],
       "@GRepos/*": ["../../repos/*"],
       "@GConfigs/*": ["../../configs/*"],

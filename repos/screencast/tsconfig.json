@@ -23,6 +23,8 @@
       "@GSC/*": ["src/*"],
       "@GSCRoot": ["./"],
       "@GSCRoot/*": ["./*"],
+      "@gobletqa/latent": ["../latent/src"],
+      "@gobletqa/latent/*": ["../latent/src/*"],
       "@gobletqa/shared": ["../shared/src"],
       "@gobletqa/shared/*": ["../shared/src/*"],
       "@gobletqa/screencast": ["src"],

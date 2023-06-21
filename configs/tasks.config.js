@@ -118,6 +118,7 @@ module.exports = {
           '**',
           '!/repos/backend',
           '!/repos/conductor',
+          '!/repos/latent',
           '!/repos/screencast',
           '!/repos/shared',
           '!/repos/workflows',
@@ -222,6 +223,7 @@ module.exports = {
       sync: {
         excludePaths: [
           '**',
+          '!/repos/latent',
           '!/repos/screencast',
           '!/repos/shared',
           '!/repos/testUtils',

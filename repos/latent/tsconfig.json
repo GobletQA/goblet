@@ -1,0 +1,32 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "typeRoots": [
+      "./src/types",
+      "../shared/src/types",
+      "./node_modules/@types",
+      "../../node_modules/@types"
+    ],
+    "paths": {
+      "@GLT/templates": ["src/templates"],
+      "@GLT/libs": ["src/libs"],
+      "@GLT/libs/*": ["src/libs/*"],
+      "@GLT": ["src"],
+      "@GLT/*": ["src/*"],
+      "@GLTRoot": ["."],
+      "@GLogs/*": ["../../logs/*"],
+      "@GRepos/*": ["../../repos/*"],
+      "@GConfigs/*": ["../../configs/*"],
+      "@GEnv": ["../shared/src/environment/environment"],
+      "@GException": ["../shared/src/exceptions/Exception"],
+      "@GEnv/secrets": ["../shared/src/environment/secrets"],
+      "@GEnv/values": ["../shared/src/environment/values"],
+      "@GEnvironment": ["../shared/src/environment/environment"],
+      "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
+      "@GEnvironment/values": ["../shared/src/environment/values"]
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+}

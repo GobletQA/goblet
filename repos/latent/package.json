@@ -1,0 +1,60 @@
+{
+  "name": "@gobletqa/latent",
+  "version": "0.0.0",
+  "description": "Encrypt and decrypt variables",
+  "main": "index.js",
+  "author": "Lance Tipton",
+  "license": "ISC",
+  "keywords": [],
+  "private": true,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "url": "git+https://github.com/GobletQA/goblet.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/GobletQA/goblet/issues"
+  },
+  "scripts": {
+    "build": "pnpm build:docker",
+    "build:docker": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
+    "lt:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
+    "clean": "pnpm clean:dist; pnpm clean:nm",
+    "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
+    "clean:full": "pnpm clean; pnpm install",
+    "clean:nm": "rm -rf node_modules",
+    "format": "pnpm lint && pnpm pretty",
+    "json:rm": "dot-json package.json devDependencies -d",
+    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
+    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
+    "test": "jest --colors --config ./configs/jest.config.js",
+    "types": "tsc --emitDeclarationOnly --outDir dist",
+    "validate": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gobletqa/shared": "*",
+    "@keg-hub/cli-utils": ">=0.8.0-alpha1",
+    "@keg-hub/jsutils": ">=9.6.1",
+    "@keg-hub/parse-config": ">=2.1.0",
+    "jsonwebtoken": "9.0.0",
+    "module-alias": "2.2.2",
+    "source-map-support": "0.5.21"
+  },
+  "devDependencies": {
+    "@ltipton/esdev": "0.1.3",
+    "@types/debug": "4.1.5",
+    "@types/dockerode": "3.3.9",
+    "@types/express": "4.17.17",
+    "@types/jest": "29.1.2",
+    "@types/node": "18.15.13",
+    "esbuild": "0.17.18",
+    "esbuild-plugin-path-alias": "1.0.7",
+    "esbuild-register": "3.4.2",
+    "jest": "29.5.0",
+    "nodemon": "2.0.22"
+  }
+}
+
