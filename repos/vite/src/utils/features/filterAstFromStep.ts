@@ -6,7 +6,7 @@ import type {
   TRaceBackground,
 } from "@gobletqa/race"
 
-import { TFeatureAst, EAstObject} from "@ltipton/parkin"
+import { EAstObject} from "@ltipton/parkin"
 import {emptyArr, get } from "@keg-hub/jsutils"
 
 type TFilerFeature = Omit<TRaceFeature, `path`|`parent`>
