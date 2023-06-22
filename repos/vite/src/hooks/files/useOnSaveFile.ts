@@ -2,17 +2,28 @@ import type { TFileTree, TFileModel } from '@types'
 
 import { useCallback } from 'react'
 import { emptyObj } from '@keg-hub/jsutils'
+import {getWorldLoc} from '@utils/repo/getWorldLoc'
 import { saveFile } from '@actions/files/api/saveFile'
 import { addRootToLoc } from '@utils/repo/addRootToLoc'
+import { useWorldSettings } from '@hooks/settings/useWorldSettings'
+import {formatWorldFile} from '@utils/repo/formatWorldFile'
+
 
 export const useOnSaveFile = (
   files:TFileTree,
   rootPrefix:string
 ) => {
+
+  const {
+    autoFormat,
+    indentation
+  } = useWorldSettings()
+
   return useCallback(async (
     loc:string,
     content:string|null,
-    ext:Partial<TFileModel>= emptyObj as Partial<TFileModel>
+    ext:Partial<TFileModel>= emptyObj as Partial<TFileModel>,
+    checkWorld:boolean=true
   ) => {
     if(content === null)
       return console.warn(`[File Save Error]: Can not save file with null content`)
@@ -28,11 +39,32 @@ export const useOnSaveFile = (
     if(!fileModel && !hasInlineModel)
       return console.warn(`[File Save Error]: Can not save file. Missing file model at ${fullLoc}`)
 
+    if(checkWorld){
+      const worldLoc = getWorldLoc()
+      if(fullLoc === worldLoc){
+        const resp = formatWorldFile({
+          world: JSON.parse(content),
+          autoFormat,
+          indentation
+        })
+
+        // TODO: add some kind of alert about invalid JSON formatting
+        if(resp.error)
+          return console.warn(resp.error.message)
+        else content = resp.content
+      }
+    }
+
     await saveFile({
       ...(fileModel as TFileModel),
       ...ext,
       content
     })
 
-  }, [files, rootPrefix])
+  }, [
+    files,
+    rootPrefix,
+    autoFormat,
+    indentation
+  ])
 }

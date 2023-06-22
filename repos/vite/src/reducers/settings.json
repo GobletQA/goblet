@@ -84,6 +84,25 @@
       "type": "boolean",
       "group": "goblet",
       "description": "When enabled, the sidebar file-explorer is locked to an open state"
+    },
+    "worldAutoFormat": {
+      "key": "worldAutoFormat",
+      "value": true,
+      "active": true,
+      "default": true,
+      "type": "boolean",
+      "group": "goblet",
+      "description": "Enable auto-formatting the world.json file"
+    },
+    "worldIndentation": {
+      "key": "worldIndentation",
+      "value": 2,
+      "postfix": "space(s)",
+      "active": true,
+      "default": 2,
+      "type": "number",
+      "group": "goblet",
+      "description": "Number of spaces to indent when formatting the world.json file"
     }
   },
   "browser": {

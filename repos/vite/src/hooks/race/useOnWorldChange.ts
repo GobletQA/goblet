@@ -1,24 +1,15 @@
 import type { TRepoOpts, TFileModel } from '@types'
 import type { TWorldConfig } from '@ltipton/parkin'
 
-import { useMemo, useCallback } from 'react'
-import { addRootToLoc } from '@utils/repo/addRootToLoc'
+import { useCallback } from 'react'
+import {getWorldLoc} from '@utils/repo/getWorldLoc'
+import { useWorldSettings } from '@hooks/settings/useWorldSettings'
+import {formatWorldFile} from '@utils/repo/formatWorldFile'
 
 export type THOnWorldChange = {
   repo:TRepoOpts
   rootPrefix:string
   onSaveFile: (loc: string, content: string | null, ext?: Partial<TFileModel>) => Promise<void>
-}
-
-const useWorldLoc = (props:THOnWorldChange) => {
-  const {
-    repo
-  } = props
-
-  return useMemo(() => {
-    const worldFile = repo?.paths?.world || `world.json`
-    return addRootToLoc(`/${worldFile.replace(/^\//, ``)}`)
-  }, [repo?.paths?.world])
 }
 
 export const useOnWorldChange = (props:THOnWorldChange) => {
@@ -27,28 +18,42 @@ export const useOnWorldChange = (props:THOnWorldChange) => {
     rootPrefix,
     onSaveFile
   } = props
-  
-  const worldLoc = useWorldLoc(props)
+
+  const {
+    autoFormat,
+    indentation
+  } = useWorldSettings()
 
   return useCallback((props:TWorldConfig) => {
     const { world } = props
-    const worldStr = JSON.stringify(world)
-    
-    onSaveFile(worldLoc, worldStr, {
+    const worldLoc = getWorldLoc(repo)
+    const { error, content } = formatWorldFile({
+      world,
+      autoFormat,
+      indentation
+    })
+
+    if(error){
+      // TODO: add some kind of alert about invalid JSON formatting
+      throw new Error(error.message)
+    }
+
+    onSaveFile(worldLoc, content, {
+      content,
       ast:{world},
       ext: `json`,
       uuid: worldLoc,
       fileType: `json`,
-      content: worldStr,
       location: worldLoc,
       mime: `application/json`,
       name: worldLoc.split(`/`).pop(),
-    })
+    }, false)
 
   }, [
     repo,
-    worldLoc,
     onSaveFile,
     rootPrefix,
+    autoFormat,
+    indentation,
   ])
 }

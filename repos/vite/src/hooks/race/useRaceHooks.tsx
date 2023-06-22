@@ -97,7 +97,8 @@ export const useRaceHooks = (editorRef:TEditorRef) => {
 
     const { parent, path, ...featureAst } = feature
 
-    // TODO: update this to be an object, instead of multi params
+    // Keeping as multiple params because thats how monaco lib expects it to be
+    // Need to update monaco to convert the arguments to a single object
     onSaveFile(
       parent.uuid,
       feature.content,
