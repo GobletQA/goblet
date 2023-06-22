@@ -33,3 +33,5 @@ envs:
   # Allows setting a custom git token via a PAT
   # Follows the format of <username>::<provider>::<token>
   GB_GIT_PROVIDER_DATA: ""
+
+  GB_LT_TOKEN_SECRET: ""
