@@ -75,4 +75,13 @@
 
 
 * World not being passed to Test Runner after being auto-logged out
-* 
+
+On every page load
+* Walk the dom tree and add a dynamically generated selector
+* Allow using that selector in tests
+* Investigate adding a custom selector engine to playwright
+
+
+* Monaco Editor
+  * Loading Decorators not being cleared when a the test fails
+  * 

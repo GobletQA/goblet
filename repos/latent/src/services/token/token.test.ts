@@ -11,7 +11,20 @@ import {
 
 const latentToken = new LatentToken()
 
+const orgErr = console.error
+console.error = jest.fn()
+
 describe(`LatentToken`, () => {
+  
+  beforeEach(() => {
+    // @ts-ignore
+    console.error.mockClear()
+  })
+  
+  afterAll(() => {
+    console.error = orgErr
+  })
+  
   describe(`LatentToken.generate`, () => {
 
     it(`should generate a consistent token when called with same inputs`, () => {
@@ -65,6 +78,7 @@ describe(`LatentToken`, () => {
 
     it(`should throw an error if the token fails validation`, () => {
       expect(() => latentToken.validate(altUrl, repoToken)).toThrow()
+      expect(console.error).toHaveBeenCalled()
     })
 
   })

@@ -31,6 +31,7 @@
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
+    "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
     "types": "tsc --emitDeclarationOnly --outDir dist",
     "validate": "tsc --noEmit"
   },
