@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist",
+    "module": "esnext",
     "typeRoots": [
       "./src/types",
       "../shared/src/types",

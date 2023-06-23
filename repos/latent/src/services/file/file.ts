@@ -1,20 +1,20 @@
 import type { Latent } from '@GLT/latent'
-import {
+import type {
+  TEnvObj,
+  TFileOpts,
   TLoadOpts,
-  EFileType,
-  ELatentEnv,
-  ELoadFormat,
+  TSaveOpts,
   TLatentFile,
-  TFileContentOpts,
 } from '@GLT/types'
-import {generateFileNames} from '@GLT/utils/generateFileNames'
 
+import path from 'path'
+import { writeFileSync } from 'fs'
 import {emptyObj} from '@keg-hub/jsutils'
 import { env } from '@keg-hub/parse-config'
-
+import {dataToString} from '@GLT/utils/dataToString'
+import {generateFileNames} from '@GLT/utils/generateFileNames'
+import { EFileType, ELatentEnv, ELoadFormat } from '@GLT/types'
 import { loadTemplate } from '@keg-hub/parse-config/src/utils/utils'
-import path from 'path'
-
 
 export class LatentFile {
 
@@ -27,23 +27,21 @@ export class LatentFile {
     this.latent = latent
   }
 
-  #getOpts = (location:string, opts:TLoadOpts) => {
+  #getOpts = (opts:TLoadOpts|TSaveOpts) => {
     return {
       ...opts,
-      location,
-      data: {...this.data, ...opts.data},
+      data: {...this.data, ...opts?.data},
       environment: opts.environment || this.environment,
-    } as TFileContentOpts
+    } as TFileOpts
   }
 
-  #fileContent = (options:TFileContentOpts) => {
-    const { type, environment, ...rest} = options
-
+  #readFile = <T=string|TEnvObj>(options:TLoadOpts):T => {
+    const { type, environment, format, ...rest} = options
     const content = env.loadEnvSync({
       ...rest,
       fill: false,
       error: true,
-      format: ELoadFormat.string
+      format: format || ELoadFormat.string
     })
 
     return type === EFileType.secrets
@@ -51,12 +49,13 @@ export class LatentFile {
       : content
   }
 
-  load = (
-    directory:string,
-    opts:TLoadOpts
-  ) => {
+  #writeFile = (location:string, content:string) => {
+    return writeFileSync(location, content)
+  }
 
-    const options = this.#getOpts(directory, opts)
+  load = (opts:TLoadOpts) => {
+
+    const options = this.#getOpts(opts)
     const {
       type,
       location,
@@ -74,7 +73,7 @@ export class LatentFile {
     return generateFileNames(environment, type)
       .reduce((acc, file) => {
 
-        const content = this.#fileContent({
+        const content = this.#readFile<string>({
           ...options,
           location: path.join(location, file)
         })
@@ -86,4 +85,35 @@ export class LatentFile {
       }, {} as Record<any, any> )
   }
 
+  save = (opts:TSaveOpts) => {
+    const { data, patch } = opts
+
+    const options = this.#getOpts(opts)
+    const { type, location } = options
+
+    const current = this.#readFile<TEnvObj>({
+      ...options,
+      format:ELoadFormat.object
+    })
+
+    const {
+      failed,
+      content,
+    } = dataToString({
+      data,
+      patch,
+      current,
+    })
+
+    const safe = type === EFileType.secrets
+      ? this.latent.crypto.encrypt(content, this.latent.encoded, true)
+      : content
+
+    this.#writeFile(location, safe)
+
+    return failed?.length
+      ? { failed, location }
+      : { location }
+
+  }
 }

@@ -5,8 +5,9 @@ import { createHmac } from 'crypto'
 import {emptyObj} from '@keg-hub/jsutils'
 import { LatentError } from '@GLT/utils/error'
 import { toB64, fromB64 } from '@GLT/utils/base64'
+import { getLTToken } from '@GLT/utils/getLTToken'
 
-const ltSecretToken = process.env.GB_LT_TOKEN_SECRET
+const ltSecretToken = getLTToken()
 
 export class LatentToken {
 

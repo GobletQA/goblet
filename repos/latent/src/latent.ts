@@ -3,7 +3,6 @@ import {
   TLTLoad,
   EFileType,
   ELatentEnv,
-  ELoadFormat,
 } from "@GLT/types"
 
 import { LatentFile } from '@GLT/services/file'
@@ -40,14 +39,14 @@ export class Latent {
       environment
     } = props
 
-    this.token = new LatentToken(token)
-    this.crypto = new LatentCrypto(crypto)
     this.#environment = environment || (
       GOBLET_ENV && (GOBLET_ENV in ELatentEnv)
         ? GOBLET_ENV as ELatentEnv
         : ELatentEnv.develop
     )
 
+    this.token = new LatentToken(token)
+    this.crypto = new LatentCrypto(crypto)
     this.file = new LatentFile({
       ...file,
       environment: this.environment
@@ -60,7 +59,7 @@ export class Latent {
       || this.environment
       || ELatentEnv.develop
 
-    return this.file.load(location, { type, environment })
+    return this.file.load({ type, location, environment })
   }
 
   loadValues = (props:TLTLoad) => {
@@ -69,6 +68,10 @@ export class Latent {
 
   loadSecrets = (props:TLTLoad) => {
     return this.#load(props, EFileType.secrets)
+  }
+
+  getToken = (ref:string) => {
+    return this.token.generate(ref)
   }
 
 }
