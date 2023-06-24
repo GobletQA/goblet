@@ -8,12 +8,8 @@ import { getRepoName } from '../utils/getRepoName'
 import { failResp, successResp } from './response'
 import { copyTemplate } from '../utils/copyTemplate'
 import { createRepoWatcher } from '../repo/mountRepo'
+import { gobletLoader } from '@gobletqa/shared/libs/loader'
 import { configureGitOpts } from '../utils/configureGitOpts'
-
-// TODO: Figure out how to load this from shared repo. May need to more to diff location
-// Maybe create a gobletConfig repo - Dedicating to loading the config
-import { configAtPath } from '@gobletqa/shared/goblet'
-
 
 /**
  * Workflow that creates the folder structure for goblet (templates/repo/default-template)
@@ -23,45 +19,48 @@ import { configAtPath } from '@gobletqa/shared/goblet'
  */
 export const setupGoblet = async (
   args:TWFArgs,
-  gitArgs:TGitOpts,
+  gitOpts:TGitOpts,
   mounted?:boolean
 ) => {
 
   Logger.subHeader(`Running Setup Goblet Workflow`)
 
-  const token = (gitArgs && gitArgs.token) || (await git.loadToken(args))
-  gitArgs = gitArgs || (await configureGitOpts({ ...args, token }))
-  const gitOpts = omitKeys(gitArgs, ['email', 'token']) as TGitData
+  const token = (gitOpts && gitOpts.token) || (await git.loadToken(args))
+  gitOpts = gitOpts || (await configureGitOpts({ ...args, token }))
+  const gitData = omitKeys(gitOpts, ['email', 'token']) as TGitData
 
   const isMounted = mounted || (await git.exists(args))
   if (!isMounted)
-    return failResp({ setup: false }, `Repo ${gitArgs.remote} is not connected`)
+    return failResp({ setup: false }, `Repo ${gitOpts.remote} is not connected`)
 
-  Logger.log(`Checking for repo watcher at path ${gitArgs.local}...`)
-  const watcher = RepoWatcher.getWatcher(gitArgs.local)
+  Logger.log(`Checking for repo watcher at path ${gitOpts.local}...`)
+  const watcher = RepoWatcher.getWatcher(gitOpts.local)
 
   watcher
-    ? Logger.log(`Found existing watcher at path ${gitArgs.local}`)
-    : createRepoWatcher(gitArgs)
+    ? Logger.log(`Found existing watcher at path ${gitOpts.local}`)
+    : createRepoWatcher(gitOpts)
 
   Logger.log(`Waiting 1 second for watcher to initialize...`)
   await wait(1000)
 
   Logger.log(`Checking goblet configuration...`)
-  const hasGoblet = await copyTemplate(gitArgs.local, args.repoTemplate)
+  const hasGoblet = await copyTemplate(
+    gitData.local,
+    args.repoTemplate
+  )
 
   if (!hasGoblet)
     return failResp(
       { setup: false },
-      `Goblet could not be created or loaded for repo ${gitArgs.remote}`
+      `Goblet could not be created or loaded for repo ${gitOpts.remote}`
     )
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = await configAtPath(gitArgs.local)
+  const gobletConfig = gobletLoader({ basePath: gitOpts.local })
   if(!gobletConfig)
     return failResp({ setup: false }, `Could not load goblet.config for mounted repo`)
 
-  const { remote } = gitOpts
+  const { remote } = gitData
 
 
   return successResp(
@@ -69,8 +68,8 @@ export const setupGoblet = async (
     {
       repo: {
         ...gobletConfig,
-        git:gitOpts,
-        name: getRepoName(gitArgs.remote),
+        git:gitData,
+        name: getRepoName(gitOpts.remote),
       } as TRepoOpts,
     },
     `Finished running Setup Goblet Workflow`

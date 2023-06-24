@@ -29,7 +29,7 @@ export const getContextOpts = (
   const defContextOpts = checkVncEnv().vncActive
     ? options.vnc
     : options.host
-  
+
   config = config || getGobletConfig()
   return deepMerge<TBrowserContextOpts>(
     defContextOpts,

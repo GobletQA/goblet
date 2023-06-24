@@ -5,15 +5,11 @@ import type { TWFGobletConfig, TWFResp, TGitOpts, } from '@gobletqa/workflows/ty
 import path from 'path'
 import { git, RepoWatcher } from '../git'
 import { LOCAL_MOUNT } from '../constants'
-import { noOpObj, omitKeys } from '@keg-hub/jsutils'
 import { getRepoName } from '../utils/getRepoName'
+import { noOpObj, omitKeys } from '@keg-hub/jsutils'
 import { fileSys, Logger } from '@keg-hub/cli-utils'
 import { createRepoWatcher } from '../repo/mountRepo'
-
-// TODO: Figure out how to load this from shared repo. May need to more to diff location
-// Maybe create a gobletConfig repo - Dedicating to loading the config
-import { configAtPath } from '@gobletqa/shared/goblet'
-
+import { gobletLoader } from '@gobletqa/shared/libs/loader'
 
 const { pathExists } = fileSys
 const emptyOpts = noOpObj as TGitOpts
@@ -53,7 +49,7 @@ const statusForLocal = async (config:TWFGobletConfig) => {
 
   // Check if the local mount folder exists
   // If not then it's empty
-  const gobletConfig = isValidPath && (await configAtPath(LOCAL_MOUNT))
+  const gobletConfig = isValidPath && gobletLoader({ basePath: LOCAL_MOUNT})
 
   return !isValidPath || !gobletConfig
     ? {
@@ -127,7 +123,7 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
 
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = await configAtPath(local)
+  const gobletConfig = gobletLoader({ basePath: local})
 
   return !gobletConfig
     ? unknownStatus

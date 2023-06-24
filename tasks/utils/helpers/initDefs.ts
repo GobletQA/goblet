@@ -14,9 +14,10 @@ const injectGobletConfig = taskAction => {
     args?.params?.env !== process.env.NODE_ENV
       && (process.env.NODE_ENV = args?.params?.env)
 
+    const {base, warn, local} = args.params
     return taskAction({
       ...args,
-      goblet: getGobletConfig(args.params),
+      goblet: getGobletConfig({base, warn, local}),
     })
   }
 }

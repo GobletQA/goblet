@@ -17,7 +17,6 @@
 import type { TGobletConfig } from '../types'
 
 import { Logger } from '@keg-hub/cli-utils'
-import { loadCustomConfig } from './loadCustomConfig'
 import { addConfigFileTypes } from './addConfigFileTypes'
 import { loadConfigFromBase } from './loadConfigFromBase'
 import { isStr, noOpObj, deepMerge } from '@keg-hub/jsutils'
@@ -25,7 +24,6 @@ import { getDefaultGobletConfig } from './getDefaultGobletConfig'
 
 type TGetGobletConfigArgs = {
   base?:string
-  config?: string
   warn?: boolean
   local?: boolean
 }
@@ -44,9 +42,8 @@ export const getGobletConfig = (
   if (!Boolean(process.env.JEST_WORKER_ID) && __GOBLET_CONFIG) return __GOBLET_CONFIG
 
   const baseConfig = loadConfigFromBase(isStr(argsConfig.base) && argsConfig.base)
-  const customConfig = loadCustomConfig(argsConfig.config)
 
-  if (!customConfig && argsConfig.local && argsConfig.warn) {
+  if (argsConfig.local && argsConfig.warn) {
     Logger.warn(
       `\n[ WARNING ] ${Logger.colors.red("Can't find a goblet.config file")}\n`
     )
@@ -68,8 +65,6 @@ export const getGobletConfig = (
       defConfig,
       // Base if a folder path, not a config file path
       baseConfig,
-      // Comes after baseConfig because it's more specific
-      customConfig
     )
   )
 

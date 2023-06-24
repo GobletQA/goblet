@@ -906,6 +906,9 @@ importers:
 
   repos/workflows:
     dependencies:
+      '@gobletqa/shared':
+        specifier: '*'
+        version: link:../shared
       '@keg-hub/cli-utils':
         specifier: '>=0.8.0-alpha1'
         version: 0.8.0-alpha1

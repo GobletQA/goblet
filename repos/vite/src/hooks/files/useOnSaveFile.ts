@@ -41,7 +41,8 @@ export const useOnSaveFile = (
 
     if(checkWorld){
       const worldLoc = getWorldLoc()
-      if(fullLoc === worldLoc){
+
+      if(fullLoc === worldLoc && fileModel?.ext === `json`){
         const resp = formatWorldFile({
           world: JSON.parse(content),
           autoFormat,

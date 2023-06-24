@@ -11,10 +11,7 @@ import { configFromFolder } from '@gobletqa/shared/goblet'
  */
 export const copyTemplate = async (local:string, template:string) => {
   Logger.info(`Searching for goblet config...`)
-  
-  // TODO: This is the first time a goblet config would be loaded
-  // May want to set it to the GOBLET_CONFIG cache in getGobletConfig
-  // To ensure it loads this config, loaded from the mounted repo
+
   const gobletConfig = await configFromFolder(local)
 
   if (gobletConfig){

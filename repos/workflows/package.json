@@ -36,6 +36,7 @@
     "@keg-hub/cli-utils": ">=0.8.0-alpha1",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
+    "@gobletqa/shared": "*",
     "axios": "1.4.0",
     "chokidar": "3.5.3",
     "module-alias": "2.2.2"

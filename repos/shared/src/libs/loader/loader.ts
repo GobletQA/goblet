@@ -1,18 +1,19 @@
-
 import path from 'path'
 import glob from 'glob'
 import { createRequire } from 'module'
+import {TGobletConfig} from '@GSH/types'
+import { GobletConfigFileNames } from '@GSH/constants'
 import { isStr, deepMerge } from '@keg-hub/jsutils/src/node'
 
 type TMerge = { merge?: string[] | false | null | undefined }
 type TLoadedFunc<T extends TMerge> = (...args:any[]) => T
 
-type TLoopLoad<T extends TMerge> = TLoader & {
+type TLoopLoad<T extends TMerge> = TLoadShared & {
+  loadArr:string[]
   requireFunc?:TLoadedFunc<T>,
 }
 
 type TLoadShared = {
-  key?:string
   type?:string
   safe?: boolean
   first?: boolean
@@ -26,10 +27,10 @@ type TSearchFile = TLoadShared & {
   clearCache?:boolean
 }
 
-
 export type TLoader = TLoadShared & {
-  loadArr:string[]
+  loadArr?:string[]
 }
+
 
 /**
  * Characters that define if a path
@@ -39,18 +40,18 @@ const noBasePath = [`.`, `/`, `@`, `~`]
 /**
  * Checks if the passed in config is a function and calls it if it is
  */
-export const loadFromType = <T extends TMerge>(data:T, key:string=`default`, ...args:any[]) => {
+const loadFromType = <T extends TMerge>(data:T) => {
   const loaded = typeof data === 'function'
-    ?  (data as TLoadedFunc<T>)(...args) as T
+    ?  (data as TLoadedFunc<T>)() as T
     : data
 
-  return loaded?.[key] ? loaded[key] : loaded
+  return loaded?.[`default`] ? loaded[`default`] : loaded
 }
 
 /**
  * Builds a require function for loading goblet configs dynamically
  */
-export const buildRequire = <T extends TMerge>(
+const buildRequire = <T extends TMerge>(
   basePath:string,
   safe:boolean=false,
   clearCache:boolean=false
@@ -114,7 +115,6 @@ const loadWithMerge = <T extends TMerge>(data:T, {
  */
 const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
   const {
-    key,
     type,
     safe,
     first,
@@ -137,7 +137,7 @@ const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
 
       if(!loadedData) continue;
 
-      const dataByType = loadFromType(loadedData, key)
+      const dataByType = loadFromType(loadedData)
       if(!dataByType) continue;
 
       const loadedMerge = loadWithMerge(dataByType, params)
@@ -209,14 +209,37 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 /**
  * @description - Loads config files based on the passed in basePath and loadArr
  */
-export const loader = <T extends TMerge>(params:TLoader) => {
-  const { safe, ...loadArgs } = params
-  const loadedData = loopLoadArray<T>({
+export const gobletLoader = (params:TLoader):TGobletConfig|undefined => {
+  const {
+    basePath,
+    safe=true,
+    first=true,
+  ...loadArgs
+} = params
+
+  const loadedData = loopLoadArray<TGobletConfig>({
     safe,
+    first,
+    basePath,
+    merge: false,
+    loadArr: GobletConfigFileNames,
     ...loadArgs,
     requireFunc: buildRequire(params.basePath, safe),
   })
 
+  if(!loadedData?.length) return undefined
+
   // Merge all loaded configs into a single config file
-  return loadedData?.length ? deepMerge<T>(...loadedData) : undefined
+  const config = first || loadedData?.length <= 1
+    ? loadedData.pop() as TGobletConfig | undefined
+    : deepMerge<TGobletConfig>(...loadedData) as TGobletConfig
+
+  // Ensure the repoRoot path gets set
+  // This should never happen because it's enforce when the repo is mounted
+  // But its a hold over from the past
+  // So keeping it for now until I can validate it's not needed
+  !config?.paths?.repoRoot
+    && (config.paths = {...config?.paths, repoRoot: basePath })
+
+  return config as TGobletConfig
 }
