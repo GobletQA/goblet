@@ -72,3 +72,13 @@
 * If the current environments contains a `key` that matches a `key` from the defaults
   * The current environments value override the default value
 
+
+
+## Process Flow
+* User selects git repo to clone
+* Workflows clones down repo
+* Check is made for goblet config
+  * Then a check is made for the `repoUrl` property in the goblet config
+  * If it does not contain a repoUrl, add the current `remote` as the value
+* Use Latent to generate a token with the `repoUrl` and the goblet-env salt
+  * 

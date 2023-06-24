@@ -25,4 +25,4 @@ export type TFileOpts = {
 export type TEnvObj = Record<string, any>
 
 
-export type TLatentFile = Omit<TLoadOpts, `location`> & {}
+export type TLatentFile = Omit<TLoadOpts, `location`|`type`> & {}

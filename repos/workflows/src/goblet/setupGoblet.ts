@@ -58,22 +58,22 @@ export const setupGoblet = async (
 
   Logger.log(`Loading goblet.config...`)
   const gobletConfig = await configAtPath(gitArgs.local)
+  if(!gobletConfig)
+    return failResp({ setup: false }, `Could not load goblet.config for mounted repo`)
 
-  return gobletConfig
-    ? successResp(
-        { setup: true },
-        {
-          repo: {
-            ...gobletConfig,
-            git:gitOpts,
-            name: getRepoName(gitArgs.remote),
-          } as TRepoOpts,
-        },
-        `Finished running Setup Goblet Workflow`
-      )
-    : failResp(
-        { setup: false },
-        `Could not load goblet.config for mounted repo`
-      )
+  const { remote } = gitOpts
+
+
+  return successResp(
+    { setup: true },
+    {
+      repo: {
+        ...gobletConfig,
+        git:gitOpts,
+        name: getRepoName(gitArgs.remote),
+      } as TRepoOpts,
+    },
+    `Finished running Setup Goblet Workflow`
+  )
 }
 
