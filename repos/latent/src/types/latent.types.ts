@@ -3,6 +3,11 @@ import {ELatentEnv} from "./helpers.types"
 import {TLatentTokenOpts} from "./token.types"
 import {TLatentCryptoOpts} from "./crypto.types"
 
+export type TLTRekey = {
+  old:string
+  update:string
+  location:string
+}
 
 export type TLTLoad = TLatent & {
   location?:string
@@ -10,8 +15,8 @@ export type TLTLoad = TLatent & {
 
 export type TLatent = {
   encoded?:string
-  environment?:ELatentEnv
   file?:TLatentFile
   token?:TLatentTokenOpts
+  environment?:ELatentEnv
   crypto?:TLatentCryptoOpts
 }

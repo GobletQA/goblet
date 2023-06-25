@@ -316,3 +316,7 @@ env:
   # Appwrite ENVs
   GB_APPWRITE_PROJECT: goblet-dev
   GB_APPWRITE_URL: https://cloud.appwrite.io/v1
+
+
+# --- WORKFLOW ENVs --- #
+  GB_SECRETS_TAG_REF: goblet-do-not-delete

@@ -32,13 +32,13 @@ export const toggleConfirm = (props:TToggleConfirm) => {
 }
 
 
-export const openYesNo = async ({
+export const openYesNo = async <T=any>({
   yes,
   no,
   cb,
   callback=cb,
   ...props
-}:TOpenYesNo) => {
+}:TOpenYesNo):Promise<T|void> => {
   return new Promise(async (res) => {
     
     const onConfirm = (turnOffConfirm?:boolean) => {

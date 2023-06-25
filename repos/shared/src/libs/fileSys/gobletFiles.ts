@@ -1,12 +1,11 @@
 import type { Repo } from '@GSH/repo/repo'
 import type { TDefGobletConfig, TFileModel } from '../../types'
 
-
+import os from 'os'
 import path from 'path'
 import fs from 'fs-extra'
 import { Exception } from '@GException'
 import { loadReport } from '@GSH/utils/loadReport'
-import { DefinitionOverrideFolder } from '@GSH/constants'
 import { loadFeature } from '@GSH/libs/features/features'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { limbo, limboify, omitKeys } from '@keg-hub/jsutils'
@@ -14,7 +13,12 @@ import { resolveFileType } from '@GSH/utils/resolveFileType'
 import { exists, get, isBool, isStr } from '@keg-hub/jsutils'
 import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
 import { getPathFromConfig } from '@GSH/utils/getPathFromConfig'
+import {
+  AllowedWorldExtensions,
+  DefinitionOverrideFolder
+} from '@GSH/constants'
 
+const nPath = os.platform() === `win32` ? path.win32 : path.posix
 
 /**
  * Writes a file to the local HHD
@@ -116,15 +120,51 @@ const inRepoRoot = (
   return true
 }
 
-/**
- * Helper to validate if the location is the path to the goblet world file
- */
 const isWorldFile = (
   repo:Repo,
   location:string,
+) => getPathFromConfig(`world`, repo) === location
+
+/**
+ * Helper to validate if the location is the path to the goblet world file
+ */
+const shouldReloadWorld = (
+  repo:Repo,
+  location:string,
 ) => {
-  return getPathFromConfig(`world`, repo) === location
+
+
+  if(isWorldFile(repo, location)) return true
+
+  // Check if the file name includes "world"
+  // This is a hard requirement that all world extensions must have "world" in their name
+  if(!nPath.basename(location).includes(`world`)) return false
+  
+  // Check the $merge array of the world to see if the file change should update the world
+  // This is non-recursive, so sub-files of merge files would not be found
+  // Basically it's just one level deep
+  const { $merge } = repo.world
+  // Check if merge is empty
+  if(!$merge?.length) return false
+
+  // File must have the allow extension type
+  const hasExt = AllowedWorldExtensions.includes(path.extname(location))
+  if(!hasExt) return false
+
+  // Ensure the file is located in the goblet base directory
+  // This was probably already checked, but doesn't hurt to do again
+  const baseDir = getRepoGobletDir(repo)
+  if(!location.startsWith(baseDir)) return false
+
+  // Get the file relative to the baseDir because that's how they are loaded when
+  // The World object is loaded
+  const noBaseLoc = location.replace(baseDir, ``).replace(/^\//, ``)
+  // Check if the file exists in the merge array
+  const inMerge = $merge.find((item:string) => !item.startsWith(`@`)  && item.endsWith(noBaseLoc))
+
+  return Boolean(inMerge)
 }
+
 
 /**
  * Helper method to update the repo world anytime the world file is accessed
@@ -209,7 +249,7 @@ export const getGobletFile = async (
 
   const [_, content] = await readFile(fullPath)
 
-  if(isWorldFile(repo, fullPath))
+  if(shouldReloadWorld(repo, fullPath))
     return await reloadWorld(repo, fullPath, content)
 
   // Build the file model for the file
@@ -309,6 +349,8 @@ export const saveGobletFile = async (
     saveLocation = convertDefaultDefToCustomDef(repo, location)
   }
 
+  // TODO: Need to check if this is the wold file
+  // Then ensure extra properties are not added to it
   const [err, success] = await writeFile(saveLocation, content)
 
   if (err)
@@ -332,7 +374,7 @@ export const saveGobletFile = async (
   else if(fileType === get(repo, `fileTypes.report.type`))
     fileModel = await loadReport(repo, saveLocation)
 
-  else if(isWorldFile(repo, saveLocation))
+  else if(shouldReloadWorld(repo, saveLocation))
     fileModel = await reloadWorld(repo, saveLocation, content)
 
   else fileModel = await buildFileModel({
@@ -386,7 +428,7 @@ export const renameGobletFile = async (
   const moved = await limbo(fs.move(oldLoc, newLoc))
   
   if(exists(content) && isStr(content)){
-    const [err, success] = await writeFile(newLoc, content)
+    const [err] = await writeFile(newLoc, content)
     if (err)
       throw new Exception({
         err,
@@ -449,11 +491,10 @@ export const createGobletFile = async (
 
   }
 
-  const basename = path.basename(location)
   const dirname = path.dirname(location)
 
   // Ensure the directory exists for the file
-  const [mkDirErr, mkDirSuccess] = await limbo(fs.ensureDir(dirname))
+  const [mkDirErr] = await limbo(fs.ensureDir(dirname))
   if (mkDirErr) throw new Exception(mkDirErr, 422)
 
   const [writeErr, writeSuccess] = await writeFile(location, content)

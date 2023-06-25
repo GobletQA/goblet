@@ -123,7 +123,7 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
 
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = gobletLoader({ basePath: local})
+  const gobletConfig = gobletLoader({ basePath: local })
 
   return !gobletConfig
     ? unknownStatus

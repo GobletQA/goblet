@@ -21,7 +21,7 @@ export const ARTIFACT_SAVE_OPTS = deepFreeze({
 export const DefWorld:TWorldConfig = deepFreeze({
   app: {},
   data: {},
-  merge: [],
+  $merge: [],
   $alias: {},
   context: {},
 })

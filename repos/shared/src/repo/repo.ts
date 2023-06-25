@@ -38,7 +38,7 @@ export class Repo {
    * Extra code paths loaded with the goblet config JSON file
    * Allows extending it with logic at runtime 
    */
-  merge?:string[]=[]
+  $merge?:string[]=[]
 
   static getProvider = async (opts:TProviderData) => {
     return getProviderData(opts)
@@ -182,7 +182,7 @@ export class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  world:TWorldConfig
+  #world:TWorldConfig
 
   /**
    * Paths object for the repo
@@ -237,11 +237,20 @@ export class Repo {
      * So should be used before any calls to it are made for a loaded repo
      * Specifically calls to load the goblet config for the repo from the base path
      */
-    this.world = getWorld(this)
     this.parkin = new Parkin(this.world)
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)
 
   }
+
+  get world(){
+    this.#world = this.#world || getWorld(this)
+    return this.#world
+  }
+
+  set world(update:TWorldConfig){
+    this.#world = getWorld(this)
+  }
+
 
   /**
    * Sets the loaded environment for the repo
@@ -264,10 +273,14 @@ export class Repo {
   refreshWorld = async (
     opts:Record<`environment`, string>=emptyObj as Record<`environment`, string>
   ) => {
+
     const { environment } = opts
     this.setEnvironment(environment)
 
-    this.world = getWorld(this)
+    // Force refresh of the world object
+    this.world = undefined
+
+    // Then update parkin's instance of the world
     this.parkin.world = this.world
 
     return this.world

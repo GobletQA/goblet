@@ -29,7 +29,7 @@ runTask(tasks, { env: process.env.NODE_ENV || `local` }, {
       example: `<command> --environment staging`,
     },
     token: {
-      env: `GOBLET_LATENT`,
+      env: `GOBLET_TOKEN`,
       alias: [`tok`],
       description: `Token for encrypting and decrypting secret files`,
       example: `<command> --token my-awesome-token`,

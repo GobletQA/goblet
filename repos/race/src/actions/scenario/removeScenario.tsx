@@ -48,7 +48,7 @@ const toFeature = (
   return updated as TRaceFeature
 }
 
-export const removeScenario = async (props:TRemoveScenario) => {
+export const removeScenario = async (props:TRemoveScenario):Promise<TRaceFeature|void> => {
   const { scenarioId } = props
 
   const { feature } = await getFeature(props.feature)
@@ -63,7 +63,7 @@ export const removeScenario = async (props:TRemoveScenario) => {
 
   const removed = scenarios?.filter(scenario => scenario.uuid !== props.scenarioId)
 
-  return await openYesNo({
+  return await openYesNo<TRaceFeature>({
     title: `Delete Scenario?`,
     text: (
       <>
