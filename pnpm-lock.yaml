@@ -98,6 +98,9 @@ importers:
       '@gobletqa/conductor':
         specifier: '*'
         version: link:../conductor
+      '@gobletqa/latent':
+        specifier: '*'
+        version: link:../latent
       '@gobletqa/shared':
         specifier: '*'
         version: link:../shared
@@ -539,6 +542,9 @@ importers:
 
   repos/screencast:
     dependencies:
+      '@gobletqa/latent':
+        specifier: '*'
+        version: link:../latent
       '@gobletqa/shared':
         specifier: '*'
         version: link:../shared
@@ -615,6 +621,9 @@ importers:
 
   repos/shared:
     dependencies:
+      '@gobletqa/latent':
+        specifier: '*'
+        version: link:../latent
       '@gobletqa/workflows':
         specifier: '*'
         version: link:../workflows

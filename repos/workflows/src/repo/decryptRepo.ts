@@ -1,6 +1,7 @@
 import type { TGitOpts, TGobletConfig } from '@gobletqa/workflows/types'
 
-import { latentRepo } from './latentRepo'
+
+import { latentRepo } from '@gobletqa/shared/repo/latentRepo'
 import { getPathFromConfig } from '@gobletqa/shared/utils/getPathFromConfig'
 
 export const decryptRepo = (gitOpts:TGitOpts, config:TGobletConfig) => {

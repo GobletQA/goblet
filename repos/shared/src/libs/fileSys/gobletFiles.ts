@@ -5,6 +5,7 @@ import os from 'os'
 import path from 'path'
 import fs from 'fs-extra'
 import { Exception } from '@GException'
+import { latentRepo } from '@GSH/repo/latentRepo'
 import { loadReport } from '@GSH/utils/loadReport'
 import { loadFeature } from '@GSH/libs/features/features'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
@@ -125,6 +126,34 @@ const isWorldFile = (
   location:string,
 ) => getPathFromConfig(`world`, repo) === location
 
+
+const isEnvFile = (
+  repo:Repo,
+  location:string,
+  type:string
+) => {
+  
+  const {
+    type:repoEnvType,
+    location:repoLocation,
+  } = get(repo, `fileTypes.env`, { type: ``, location: `` })
+
+  if(!location.startsWith(repoLocation)) return false
+
+  const pathExt = path.extname(location).replace(/^\./, ``)
+  const locIsType = pathExt === type
+
+  if(repoEnvType !== type && (locIsType || pathExt !== repoEnvType)) return false
+
+  // TODO: figure out how to handle this
+  // The location extension matches the repo env type
+  // But the passed in type does not match the repo.env type
+  // Which means the type of the file is miss-labeled 
+  // if(repoEnvType !== type && pathExt === repoEnvType){}
+
+  return true
+}
+
 /**
  * Helper to validate if the location is the path to the goblet world file
  */
@@ -132,7 +161,6 @@ const shouldReloadWorld = (
   repo:Repo,
   location:string,
 ) => {
-
 
   if(isWorldFile(repo, location)) return true
 
@@ -241,15 +269,19 @@ export const getGobletFile = async (
 
   // Check the fileType, and handle some files with their own method
   const fileType = resolveFileType(repo, fullPath)
+  const envFile = isEnvFile(repo, location, fileType)
 
   if(fileType === get(repo, `fileTypes.feature.type`))
     return await loadFeature(repo, fullPath)
+
   else if(fileType === get(repo, `fileTypes.report.type`))
     return await loadReport(repo, fullPath, baseDir)
 
-  const [_, content] = await readFile(fullPath)
+  const [_, content] = envFile
+    ? await latentRepo.getFile({ repo, location })
+    : await readFile(fullPath)
 
-  if(shouldReloadWorld(repo, fullPath))
+  if(envFile || shouldReloadWorld(repo, fullPath))
     return await reloadWorld(repo, fullPath, content)
 
   // Build the file model for the file
@@ -331,7 +363,7 @@ export const saveGobletFile = async (
   content:string,
   type:string
 ) => {
-  
+
   let saveLocation = location
   const isInRoot = inRepoRoot(repo, location, true)
 
@@ -349,9 +381,13 @@ export const saveGobletFile = async (
     saveLocation = convertDefaultDefToCustomDef(repo, location)
   }
 
+  const envFile = isEnvFile(repo, location, type)
+
   // TODO: Need to check if this is the wold file
   // Then ensure extra properties are not added to it
-  const [err, success] = await writeFile(saveLocation, content)
+  const [err, success] = envFile
+    ? await latentRepo.saveFile({ repo, content, location })
+    : await writeFile(saveLocation, content)
 
   if (err)
     throw new Exception({
@@ -374,7 +410,7 @@ export const saveGobletFile = async (
   else if(fileType === get(repo, `fileTypes.report.type`))
     fileModel = await loadReport(repo, saveLocation)
 
-  else if(shouldReloadWorld(repo, saveLocation))
+  else if(envFile || shouldReloadWorld(repo, saveLocation))
     fileModel = await reloadWorld(repo, saveLocation, content)
 
   else fileModel = await buildFileModel({

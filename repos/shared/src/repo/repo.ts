@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 import type { TProviderData } from './getProviderData'
 import type { TWFGobletConfig, TGitOpts } from '@gobletqa/workflows/types'
 import type {
+  TGitData,
   TRepoOpts,
   TFileTypes,
   TRepoPaths,
@@ -198,7 +199,7 @@ export class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  git:Record<string, any>
+  git:TGitData
 
 
   /**

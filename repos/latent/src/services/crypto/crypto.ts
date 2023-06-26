@@ -49,6 +49,7 @@ export class LatentCrypto {
     encoded:string,
     base64:boolean=true
   ): string => {
+
     try {
       const encryption = base64 ? fromB64(encoded) : encoded
 

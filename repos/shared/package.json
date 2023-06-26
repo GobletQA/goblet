@@ -38,6 +38,7 @@
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "4.0.1",
     "@gobletqa/workflows": "*",
+    "@gobletqa/latent": "*",
     "cookie-session": "2.0.0",
     "cors": "2.8.5",
     "express-blacklist": "1.0.3",

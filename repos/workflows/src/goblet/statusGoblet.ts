@@ -127,8 +127,8 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
     name: getRepoName(remote),
   }
 
-  const secretsFail = await repoSecrets(opts, repo, true)
-  if(secretsFail) return secretsFail
+  // const secretsFail = await repoSecrets(opts, repo, true)
+  // if(secretsFail) return secretsFail
 
   Logger.log(`Checking for repo watcher at path ${opts.local}...`)
   const watcher = RepoWatcher.getWatcher(opts.local)

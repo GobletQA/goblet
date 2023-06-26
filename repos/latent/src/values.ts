@@ -4,6 +4,7 @@ import {
   TLTSave,
   TLTCreate,
   EFileType,
+  TLTGet,
 } from "@GLT/types"
 import {exists} from "@keg-hub/jsutils"
 
@@ -22,6 +23,13 @@ export class Values {
    */
   load = (props:TLTLoad) => {
     return this.latent.load(props, EFileType.values)
+  }
+
+  get = (props:TLTGet) => {
+    return this.latent.file.loadSingle({
+      ...props,
+      type: EFileType.values
+    })
   }
 
   /**

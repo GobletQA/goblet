@@ -5,8 +5,8 @@ import fs from 'fs'
 import path from 'path'
 import mime from 'mime'
 import { fileModel } from '@GSH/models'
-import { getFileType } from './getFileType'
 import { limboify } from '@keg-hub/jsutils'
+import { resolveFileType } from './resolveFileType'
 
 /**
  * getType seemed to stop working, the owner of the package is doing odd things
@@ -50,7 +50,7 @@ export const buildFileModel = async (
 ) => {
   const { location, uuid, ...modelData } = data
   
-  const fileType = data.fileType || getFileType(location, repo.fileTypes)
+  const fileType = data.fileType || resolveFileType(repo, location)
   
   let finalLoc = location
   let name = location.split('/').pop()

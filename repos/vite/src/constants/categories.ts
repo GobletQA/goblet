@@ -5,7 +5,7 @@ export const Categories = deepFreeze({
   FEATURES: `features`,
   DEFINITIONS: `definitions`,
   DEFINITION_TYPES: `definitionTypes`,
-  UNITS: `units`,
+  UNIT: `unit`,
   WAYPOINTS: `waypoints`,
   ACTIVE_TAB: `activeTab`,
   TEST_RUNS: `testFileOutput`,

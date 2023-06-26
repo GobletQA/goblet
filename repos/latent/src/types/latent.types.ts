@@ -16,6 +16,10 @@ export type TLTLoad = Omit<TLatent, `token`> & {
   location?:string
 }
 
+export type TLTGet = Omit<TLTLoad, `location`> & {
+  location:string
+}
+
 export type TLatent = {
   encoded?:string
   file?:TLatentFile

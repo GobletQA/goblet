@@ -61,24 +61,23 @@ export class LatentFile {
    * @description - Reads the content of a file and decrypts it if type is "secrets"
    * @member {LatentFile}
    */
-  #readFile = <T>(options:TReadOpts):T => {
+  #readFile = (options:TReadOpts):string => {
     const {
       type,
       token,
-      format,
       environment,
       ...rest
     } = options
 
     const content = env.loadSync({
-      format,
       ...rest,
       fill: false,
       error: false,
+      format: ELoadFormat.string,
     })
 
     return !content
-      ? this.#formatEmpty(format)
+      ? ``
       : type === EFileType.secrets
         ? this.latent.crypto.decrypt(content, token || this.latent.encoded, true)
         : content
@@ -137,8 +136,8 @@ export class LatentFile {
    * @note - "opts.data" is an object used to fill the ENV template
    */
   loadSingle = (opts:TLoadSingleOpts) => {
-    const { format, token } = opts
-    const options = this.#getOpts(opts)
+    const { format, token, ...rest } = opts
+    const options = this.#getOpts(rest)
 
     const templateOpts = {
       ...options,
@@ -147,13 +146,9 @@ export class LatentFile {
       format: format || ELoadFormat.object
     }
 
-    const content = this.#readFile<string>({
-      ...options,
-      token,
-      format: ELoadFormat.string
-    })
+    const content = this.#readFile({...options, token})
 
-    return loadTemplate(templateOpts, content, `ENV`)
+    return loadTemplate(templateOpts, content, env.parse)
   }
 
   /**
@@ -172,10 +167,8 @@ export class LatentFile {
       location,
     } = options
 
-    const current = opts.current || this.#readFile<TEnvObj>({
-      ...options,
-      format:ELoadFormat.object
-    })
+    const current = opts.current
+      || env.parse(this.#readFile({...options, token }))
 
     const {
       failed,

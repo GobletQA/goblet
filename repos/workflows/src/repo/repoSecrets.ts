@@ -12,10 +12,11 @@ export const repoSecrets = async (
   statusCheck?:boolean
 ) => {
 
-  Logger.log(`Checking goblet remote tag...`)
-  const tagErr = await ensureRemoteTag(opts, repo)
-  if(tagErr) return failResp({ setup: false }, tagErr.message)
-
+  if(!statusCheck){
+    Logger.log(`Checking goblet remote tag...`)
+    const tagErr = await ensureRemoteTag(opts, repo)
+    if(tagErr) return failResp({ setup: false }, tagErr.message)
+  }
 
   Logger.log(`Decrypting repo secrets...`)
   const cryptoErr = await decryptRepo(opts, repo)

@@ -6,6 +6,7 @@ import {
   TLTCreate,
   EFileType,
   ELatentEnv,
+  TLTGet,
 } from "@GLT/types"
 import {exists} from "@keg-hub/jsutils"
 
@@ -24,6 +25,13 @@ export class Secrets {
    */
   load = (props:TLTLoad) => {
     return this.latent.load(props, EFileType.secrets)
+  }
+
+  get = (props:TLTGet) => {
+    return this.latent.file.loadSingle({
+      ...props,
+      type: EFileType.secrets
+    })
   }
 
   /**
