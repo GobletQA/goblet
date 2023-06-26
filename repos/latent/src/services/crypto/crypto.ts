@@ -49,21 +49,28 @@ export class LatentCrypto {
     encoded:string,
     base64:boolean=true
   ): string => {
-    const encryption = base64 ? fromB64(encoded) : encoded
+    try {
+      const encryption = base64 ? fromB64(encoded) : encoded
 
-    const key = this.#getKey(encryption)
-    const authTag = Buffer.from(encrypted.substring(0, this.#tagLength * 2), `hex`)
-    const initVector = Buffer.from(
-      encrypted.substring(this.#tagLength * 2, this.#tagLength * 2 + this.#ivLength * 2),
-      `hex`
-    )
-    const cypherText = encrypted.substring(this.#tagLength * 2 + this.#ivLength * 2)
-    const decipher = crypto.createDecipheriv(this.algorithm, key, initVector, {
-      authTagLength: this.#tagLength,
-    })
-    decipher.setAuthTag(authTag)
+      const key = this.#getKey(encryption)
+      const authTag = Buffer.from(encrypted.substring(0, this.#tagLength * 2), `hex`)
+      const initVector = Buffer.from(
+        encrypted.substring(this.#tagLength * 2, this.#tagLength * 2 + this.#ivLength * 2),
+        `hex`
+      )
+      const cypherText = encrypted.substring(this.#tagLength * 2 + this.#ivLength * 2)
+      const decipher = crypto.createDecipheriv(this.algorithm, key, initVector, {
+        authTagLength: this.#tagLength,
+      })
+      decipher.setAuthTag(authTag)
 
-    return decipher.update(cypherText, `hex`, `utf-8`) + decipher.final(`utf8`)
+      return decipher.update(cypherText, `hex`, `utf-8`) + decipher.final(`utf8`)
+    }
+    catch(err){
+      if(err.code === `ERR_CRYPTO_INVALID_IV`) return ``
+
+      throw err
+    }
   }
 }
 

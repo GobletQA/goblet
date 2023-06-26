@@ -19,9 +19,8 @@ export const WSPlayActions = {
 
 export const ResetAllGroupSetting = `reset-all-group-setting`
 
+// Default to 45min for idle timeout
+export const IdleTimeout =  (toNum(process.env.GB_FE_IDLE_TIMEOUT) || 2700)
 
-// Default to 15min for idle prompt timeout
-export const IdlePromptTimeout = toNum(process.env.GB_FE_IDLE_PROMPT_TIMEOUT) || 900
-
-// Default to 20min for idle timeout
-export const IdleTimeout = toNum(process.env.GB_FE_IDLE_TIMEOUT) || 1200
+// Default to 30min for idle prompt timeout
+export const IdlePromptTimeout = toNum(process.env.GB_FE_IDLE_PROMPT_TIMEOUT) || 1800

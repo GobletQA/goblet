@@ -1,3 +1,4 @@
+import type { TGitFetchOpts } from './gitcmd.types'
 import type {
   TCmdResp,
   TGitOpts,
@@ -6,6 +7,7 @@ import type {
 
 import path from 'path'
 import { URL } from 'url'
+import { git } from './gitCmd'
 import { Logger } from '@keg-hub/cli-utils'
 import { isObj, exists } from '@keg-hub/jsutils'
 import { EProvider } from '@gobletqa/workflows/types'
@@ -92,17 +94,83 @@ export const generateRemoteUrl = (gitOpts:TGitOpts) => {
 /**
  * Helper to log git command error messages
  */
-export const hasGitError = (err?:Error, resp?:TCmdResp, command:string=``) => {
+export const hasGitError = (
+  err?:Error,
+  resp?:TCmdResp,
+  command:string=``,
+  logErr:boolean=true
+) => {
   let message
   if(err) message = err.message
   else if(resp?.exitCode) message = resp.error || `An unknown error occurred`
 
   if(!message) return false
 
-  Logger.error(`Error running git ${command}:\n`)
-  Logger.log(message)
-  Logger.empty()
+  if(logErr){
+    Logger.error(`Error running git ${command}:\n`)
+    Logger.log(message)
+    Logger.empty()
+  }
 
   return true
 }
 
+/**
+ * Node sometimes reports too early when a folder is removed from the file-system
+ * This causes issues when trying to remount a repo over a previous one
+ * As a work around we loop check if the location exists, until it does not
+ */
+export const loopNoExistsCheck = async (location:string, checks:number=0) => {
+  return await new Promise(async (res, rej) => {
+    const exists = await git.exists(null, location)
+    if(!exists) return res(true)
+
+    if(checks > 4)
+      return rej(`Failed to validate repo was removed from disk`)
+    
+    const count = checks + 1
+    setTimeout(() => res(loopNoExistsCheck(location, count)), 500)
+  })
+}
+
+export const buildFetchOpts = (opts:TGitFetchOpts) => {
+  const {
+    all,
+    tags,
+    force,
+    prune,
+    depth,
+    deepen,
+    update,
+    append,
+    verbose,
+    progress,
+    multiple,
+    upstream,
+    pruneTags,
+    unshallow,
+    submodules,
+    ...gitOpts
+  } = opts
+  
+  const gitArgs = []
+  all && gitArgs.push(`--all`)
+  tags && gitArgs.push(`--tags`)
+  force && gitArgs.push(`--force`)
+  prune && gitArgs.push(`--prune`)
+  append && gitArgs.push(`--append`)
+  verbose && gitArgs.push(`--verbose`)
+  multiple && gitArgs.push(`--multiple`)
+  progress && gitArgs.push(`--progress`)
+  unshallow && gitArgs.push(`--unshallow`)
+  pruneTags && gitArgs.push(`--prune-tags`)
+  update && gitArgs.push(`--update-shallow`)
+  upstream && gitArgs.push(`--set-upstream`)
+  submodules && gitArgs.push(`--recurse-submodules`)
+  
+
+  exists(depth) && gitArgs.push(`--depth=${depth}`)
+  exists(deepen) && gitArgs.push(`--deepen=${deepen}`)
+
+  return { gitArgs, gitOpts }
+}

@@ -1,4 +1,5 @@
 import type {
+  TGitFetchOpts,
   TGitRemote,
   TGitRemoteOpts
 } from './gitcmd.types'
@@ -9,7 +10,6 @@ import type {
   TRunCmdOpts,
 } from '@gobletqa/workflows/types'
 
-
 import { git, gitCmd } from './gitCmd'
 import { Logger } from '@keg-hub/cli-utils'
 import { emptyObj, deepMerge } from '@keg-hub/jsutils'
@@ -17,6 +17,7 @@ import { throwErr } from '@gobletqa/workflows/utils/throwErr'
 import { ensurePath } from '@gobletqa/workflows/utils/ensurePath'
 import {
   defCmdOpts,
+  buildFetchOpts,
   generateRemoteUrl,
 } from './gitHelpers'
 
@@ -50,8 +51,9 @@ git.remote.add = async (
   const options = validateGitOpts(gitOpts)
   const url = opts?.url || options.remote
   const origin = opts?.origin || gobletRefRemote
+  const cmdArgs = [`remote`, `add`, origin, url]
 
-  const [err, resp] = await git.remote([`add`, origin, url], options)
+  const [err, resp] = await git(cmdArgs, {}, options.local)
 
   return !hasGitError(err, resp, `remote.add`)
 }
@@ -67,6 +69,7 @@ git.remote.print = async (
   opts:TGitRemoteOpts=emptyObj,
   cmdOpts:TRunCmdOpts=emptyObj
 ) => {
+
   const origin = opts?.origin || gobletRefRemote
   const [err, resp] = await gitCmd(
     [`config`, `--get`, `remote.${origin}.url`],
@@ -110,12 +113,22 @@ git.clone = async (
 
   const [pullErr, pullResp] = await git.pull(gitOpts, cmdOpts)
 
-  // Add the git remote for reference 
+  // Add the git remote for reference
   await git.remote.add(gitOpts, { url: options.remote })
+
+  // Must come after the remote add, so the remote exists
+  Logger.log(`Fetching repo tags...`)
+  await git.tag.fetch({...gitOpts, auth: true}, cmdOpts)
 
   // Ensure the user is configured for future git operations after pulling
   await git.setUser(gitOpts, cmdOpts)
-  
+
+  // Ensure global git ignore is setup before mounting the repo
+  Logger.log(`Setting up global git ignore...`)
+  const [ignoreErr, ignoreResp] = await git.ignore.global(gitOpts)
+
+  if(hasGitError(ignoreErr, ignoreResp, `ignore.global`)) return [ignoreErr, ignoreResp]
+
   /**
    * TODO - May need to do this in some cases, need to investigate
    * `git remote prune origin`
@@ -184,4 +197,18 @@ git.push = async (
     ? [err, resp, false]
     : [err, resp, true]
 
+}
+
+git.fetch = async (
+  fetchOpts:TGitFetchOpts,
+  cmdOpts?:TRunCmdOpts
+):Promise<[err:Error, resp:TCmdResp]> => {
+  const { gitArgs, gitOpts } = buildFetchOpts(fetchOpts)
+  const options = validateGitOpts(gitOpts)
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+
+  const [err, resp] = await git([`fetch`, ...gitArgs], joinedOpts, options.local)
+  if(hasGitError(err, resp, `fetch`))
+
+  return [err, resp]
 }

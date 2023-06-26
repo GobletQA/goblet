@@ -1,3 +1,5 @@
 export * from './saveRepo'
 export * from './mountRepo'
+export * from './decryptRepo'
 export * from './ensureMounted'
+export * from './ensureRemoteTag'

@@ -17,5 +17,5 @@ export const parseMock = {
 
 export const loadTemplate = jest.fn((args:any, content:string, loader:(temp:string)=>Record<any, any>) => {
   const { format = true } = args
-  return format === 'string' ? content : loader(content)
+  return format === 'string' ? content || mockFileContent : loader(content)
 })

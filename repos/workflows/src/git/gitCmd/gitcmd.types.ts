@@ -53,7 +53,25 @@ export type TGitHash = {
   content: (gitOpts:TGitHashOpts, opts?:TRunCmdOpts) => Promise<string>
   hashFile: (gitOpts:TGitHashOpts, opts?:TRunCmdOpts) => Promise<TLimboCmdResp>
   hashContent: (gitOpts:TGitHashOpts, opts?:TRunCmdOpts) => Promise<TLimboCmdResp>
-} 
+}
+
+export type TGitIgnoreOpts = {
+  log?:boolean
+  local:string
+  location?:string
+}
+
+export type TGitIgnoreTrackOpts = TGitIgnoreOpts & {
+  track?:boolean
+}
+
+export type TGitIgnore = {
+  (args:TGitIgnoreOpts, cmdOpts?:TRunCmdOpts): Promise<TLimboCmdResp>
+  track: (gitOpts:TGitIgnoreTrackOpts, opts?:TRunCmdOpts) => Promise<boolean>
+  untrack: (gitOpts:TGitIgnoreTrackOpts, opts?:TRunCmdOpts) => Promise<boolean>
+  global: (gitOpts:TGitIgnoreOpts, opts?:TRunCmdOpts) => Promise<TLimboCmdResp>
+  exclude: (gitOpts:TGitIgnoreOpts, opts?:TRunCmdOpts) => Promise<TLimboCmdResp>
+}
 
 export type TGitTagOpts = TGitOpts & {
   log?:boolean
@@ -69,16 +87,27 @@ export type TGitTagOpts = TGitOpts & {
   list?:string|boolean
 }
 
-export type TTagCatOpts = Omit<TGitTagOpts, `ref`>
 export type TTagRemoveOpts = Omit<TGitTagOpts, `ref`>
 export type TTagListOpts = Omit<TGitTagOpts, `tag`|`ref`>
+export type TTagCatOpts = Omit<TGitTagOpts, `ref`> & {
+  log?:boolean
+}
+
+export type TTagPushOpts = Omit<TGitTagOpts, `ref`> & {
+  tag:string
+  origin?:string
+  force?:boolean
+}
+
 
 export type TGitTag = {
   (args:TGitTagOpts, cmdOpts?:TRunCmdOpts): Promise<TLimboCmdResp>
+  fetch:TGitFetch
   cat: (gitOpts:TTagCatOpts, opts?:TRunCmdOpts) => Promise<string>
+  push:(gitOpts:TTagPushOpts, opts?:TRunCmdOpts) => Promise<boolean>
   list: (gitOpts:TTagListOpts, opts?:TRunCmdOpts) => Promise<string[]>
   remove: (gitOpts:TTagRemoveOpts, opts?:TRunCmdOpts) => Promise<TLimboCmdResp>
-} 
+}
 
 export type TGitSetUser = (gitOpts:TGitOpts, cmdOpts?:TRunCmdOpts) => Promise<TLimboCmdResp>
 
@@ -90,7 +119,10 @@ export type TGitExecCmd = (
 
 export type TGitClone = TGitExecCmd
 export type TGitPull = TGitExecCmd
-
+export type TGitClearCache = (
+  location:string,
+  cmdOpts?:TRunCmdOpts
+) => TGitCmdResp
 
 export type TGitPush = (
   gitOpts:TGitOpts,
@@ -103,6 +135,33 @@ export type TGitCommit = (
   metaData?:TSaveMetaData
 ) => TGitCmdResp
 
+
+export type TGitFetchOpts = TGitOpts & {
+  all?:boolean
+  tags?:boolean
+  keep?:boolean
+  force?:boolean
+  prune?:boolean
+  append?:boolean
+  update?:boolean // update-shallow
+  verbose?:boolean
+  multiple?:boolean
+  progress?:boolean
+  upstream?:boolean // --set-upstream
+  unshallow?:boolean
+  pruneTags?:boolean // --prune-tags
+  submodules?:boolean // recurse-submodules yes|on-demand|no
+  depth?:number|string
+  deepen?:number|string
+
+  origin?:string // Origin to use
+  auth?:boolean // Switch remotes to allow auth when fetching
+}
+
+export type TGitFetch = (
+  gitOpts:TGitFetchOpts,
+  cmdOpts?:TRunCmdOpts
+) => TGitCmdResp
 
 export type TGitExec = {
   (
@@ -128,4 +187,7 @@ export type TGitExec = {
   checkRepo:(gitOpts:TGitOpts) => Promise<TRepoGitState>
   tag:TGitTag
   hash:TGitHash
+  ignore:TGitIgnore
+  fetch:TGitFetch
+  clearCache:TGitClearCache
 }

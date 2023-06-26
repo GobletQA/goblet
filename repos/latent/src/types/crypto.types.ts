@@ -1,7 +1,3 @@
-jest.resetModules()
-jest.resetAllMocks()
-jest.clearAllMocks()
-
 import type { CipherGCMTypes } from 'crypto'
 
 export type TLatentCryptoOpts = {

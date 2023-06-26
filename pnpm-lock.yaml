@@ -906,6 +906,9 @@ importers:
 
   repos/workflows:
     dependencies:
+      '@gobletqa/latent':
+        specifier: '*'
+        version: link:../latent
       '@gobletqa/shared':
         specifier: '*'
         version: link:../shared

@@ -40,6 +40,7 @@ env:
   GB_NODE_VERSION: 20.3.0
   # **IMPORTANT** - Must exactly match the version use in $GB_BASE_IMAGE_FROM
   PLAYWRIGHT_BROWSERS_VERSION: 1.35.0
+  GB_GIT_GLOBAL_IGNORE: /goblet/.gitignore
 
   # Log file for all playwright logs
   # Gets set in container/scripts/resolveDSEnvs.js for screencast deployment
@@ -135,10 +136,10 @@ env:
 # ---- Frontend ENVs ---- #
   GB_FE_PORT: 19006
   GB_FE_IMAGE_TAG: latest
-  # Time to wait until User will be automatically signed out (seconds) i.e. 1800 === 30min
-  GB_FE_IDLE_TIMEOUT: 1800
-  # Time to wait until showing the Idle timeout model (seconds) i.e. 1500 === 25min
-  GB_FE_IDLE_PROMPT_TIMEOUT: 1500
+  # Time to wait until User will be automatically signed out (seconds) i.e. 2700 === 45min
+  GB_FE_IDLE_TIMEOUT: 2700
+  # Time to wait until showing the Idle timeout model (seconds) i.e. 1800 === 30min
+  GB_FE_IDLE_PROMPT_TIMEOUT: 1800
   # Time to wait until showing an error message when checking the session container status (seconds)
   GB_FE_CONTAINER_WAIT: 20
   # Time to wait between each check for the backend session container (seconds)

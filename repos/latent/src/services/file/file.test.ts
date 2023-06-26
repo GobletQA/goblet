@@ -22,17 +22,16 @@ setMox('@keg-hub/parse-config/src/utils/utils', { loadTemplate })
 
 const latentMock = {
   encoded: mockEncrypted,
+  environment: ELatentEnv.test,
   crypto: {
     decrypt: jest.fn(),
     encrypt: jest.fn()
   }
 }
 
-
 const fileOpts = {
   data: { foo: `bar` },
   type: EFileType.secrets,
-  environment: ELatentEnv.test,
 }
 
 const { LatentFile } = require('./file')
@@ -46,44 +45,46 @@ const secretsLoc = path.join(tempDir, `${EFileType.secrets}.env`)
 
 describe(`latentFile`, () => {
 
+    beforeAll(() => {
+      fsMock.existsSync.mockReturnValue(true)
+      env.loadEnvSync.mockReturnValue(mockEncrypted)
+    })
+
   describe(`latentFile.<properties>`, () => {
 
     it(`should set the default properties`, () => {
-      const latentF = new LatentFile({
-        ...fileOpts,
-        environment: ELatentEnv.local
-      }, latentMock)
+      const latentF = new LatentFile(fileOpts, latentMock)
 
       expect(latentF.data).toBe(fileOpts.data)
-      expect(latentF.environment).toBe(ELatentEnv.local)
+      expect(latentF.latent.environment).toBe(ELatentEnv.test)
     })
 
     it(`should allow overwriting the default properties`, () => {
       expect(latentFile.data).toEqual({ foo: `bar` })
-      expect(latentFile.environment).toBe(ELatentEnv.test)
+      expect(latentFile.latent.environment).toBe(ELatentEnv.test)
     })
 
   })
 
 
-  describe(`latentFile.load`, () => {
+  describe(`latentFile.loadAll`, () => {
     afterEach(() => {
       env.loadEnvSync.mockClear()
       latentMock.crypto.decrypt.mockClear()
     })
 
     it(`should call env.loadEnvSync`, () => {
-      latentFile.load({...fileOpts, location: `/some/test/location`})
+      latentFile.loadAll({...fileOpts, location: `/some/test/location`})
       expect(env.loadEnvSync).toHaveBeenCalled()
     })
 
-    it(`should call env.loadEnvSync with the current correct options`, () => {
-      latentFile.load({...fileOpts, location: `/some/test/location`})
+    it(`should call env.loadEnvSync with the default options`, () => {
+      latentFile.loadAll({...fileOpts, location: `/some/test/location`})
       const options = env.loadEnvSync.mock.calls[0][0]
       
       expect(options).toEqual({
         fill: false,
-        error: true,
+        error: false,
         data: { foo: 'bar' },
         format: ELoadFormat.string,
         location:  `/some/test/location/${EFileType.secrets}.env`
@@ -92,7 +93,7 @@ describe(`latentFile`, () => {
     })
 
     it(`should allow overwriting existing options`, () => {
-      latentFile.load({
+      latentFile.loadAll({
         data: { bar: `foo` },
         type: EFileType.values,
         environment: ELatentEnv.local,
@@ -102,7 +103,7 @@ describe(`latentFile`, () => {
 
       expect(options).toEqual({
         fill: false,
-        error: true,
+        error: false,
         format: ELoadFormat.string,
         data: { foo: `bar`, bar: `foo` },
         location:  `/some/test/location/${EFileType.values}.env`
@@ -111,8 +112,65 @@ describe(`latentFile`, () => {
     })
 
     it(`should call latent.crypto.decrypt`, () => {
-      latentFile.load({...fileOpts, location: `/some/test/location`})
+      fsMock.existsSync.mockReturnValue(true)
+      env.loadEnvSync.mockReturnValue(mockEncrypted)
+
+      latentFile.loadAll({...fileOpts, location: `/some/test/location`})
       expect(latentMock.crypto.decrypt).toHaveBeenCalled()
+    })
+
+  })
+
+
+  describe(`latentFile.loadSingle`, () => {
+
+    afterEach(() => {
+      env.loadEnvSync.mockClear()
+      latentMock.crypto.decrypt.mockClear()
+    })
+
+    it(`should call env.loadEnvSync`, () => {
+      latentFile.loadSingle({...fileOpts, location: `/some/test/${EFileType.secrets}.test.env`})
+      expect(env.loadEnvSync).toHaveBeenCalled()
+    })
+
+    it(`should call env.loadEnvSync with the current correct options`, () => {
+      const location = `/some/test/location/${EFileType.secrets}.test.env`
+      latentFile.loadSingle({...fileOpts, location})
+      const options = env.loadEnvSync.mock.calls[0][0]
+      
+      expect(options).toEqual({
+        location,
+        fill: false,
+        error: false,
+        data: { foo: 'bar' },
+        format: ELoadFormat.string,
+      })
+
+    })
+
+    it(`should only allow overwriting some options`, () => {
+      const location = `/some/test/location/${EFileType.secrets}.test.env`
+      latentFile.loadSingle({
+        location,
+        data: { bar: `foo` },
+        type: EFileType.values,
+        environment: ELatentEnv.local,
+        // Can not overwrite when calling env.loadEnvSync
+        fill: true,
+        error: true,
+        format: ELoadFormat.object,
+      })
+      const options = env.loadEnvSync.mock.calls[0][0]
+
+      expect(options).toEqual({
+        location,
+        fill: false,
+        error: false,
+        format: ELoadFormat.string,
+        data: { foo: `bar`, bar: `foo` },
+      })
+
     })
 
   })
@@ -132,7 +190,7 @@ describe(`latentFile`, () => {
       expect(env.loadEnvSync.mock.calls[0][0]).toEqual({
         data: { foo: `bar` },
         fill: false,
-        error: true,
+        error: false,
         format: `object`,
         location: valuesLoc,
       })
@@ -171,6 +229,5 @@ describe(`latentFile`, () => {
     })
 
   })
-
 
 })

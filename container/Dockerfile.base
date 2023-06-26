@@ -24,6 +24,8 @@ COPY package.json ./
 FROM goblet-pnpm as goblet-base
 WORKDIR /goblet/app
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
+ARG GIT_GLOBAL_IGNORE=/goblet/.gitignore
+
 # 1. Enabel all sources
 # 2. Preinstall any dependecies for settting up the image
 RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list && apt-get update
@@ -38,7 +40,10 @@ RUN apt-get install --yes --no-install-recommends \
     apt-get clean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -rf /var/lib/apt/lists.d/*
+    rm -rf /var/lib/apt/lists.d/* && \
+    touch $GIT_GLOBAL_IGNORE && \
+    echo "goblet/**/**secrets**.env" >> $GIT_GLOBAL_IGNORE && \
+    echo "goblet/**/**values**.env" >> $GIT_GLOBAL_IGNORE
 
 ARG GB_FE_PORT=19006
 ARG GB_BE_PORT=7005
@@ -61,6 +66,7 @@ ENV HOME=/root \
     PWDEBUG=console \
     DEBUG_FILE=$DEBUG_FILE \
     DEBIAN_FRONTEND=noninteractive \
+    GIT_GLOBAL_IGNORE=$GIT_GLOBAL_IGNORE \
     GB_FE_PORT=$GB_FE_PORT \
     GB_BE_PORT=$GB_BE_PORT \
     GB_SC_PORT=$GB_SC_PORT \

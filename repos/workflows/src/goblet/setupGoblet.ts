@@ -1,9 +1,10 @@
-import type { TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
-import type { TGitData, TRepoOpts } from '@gobletqa/workflows/types/shared.types'
+import type { TGitData, TRepoOpts, TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
+
 
 import { git, RepoWatcher } from '../git'
 import { Logger } from '@keg-hub/cli-utils'
 import { omitKeys, wait } from '@keg-hub/jsutils'
+import { repoSecrets } from '../repo/repoSecrets'
 import { getRepoName } from '../utils/getRepoName'
 import { failResp, successResp } from './response'
 import { copyTemplate } from '../utils/copyTemplate'
@@ -11,28 +12,7 @@ import { createRepoWatcher } from '../repo/mountRepo'
 import { gobletLoader } from '@gobletqa/shared/libs/loader'
 import { configureGitOpts } from '../utils/configureGitOpts'
 
-/**
- * Workflow that creates the folder structure for goblet (templates/repo/default-template)
- * @function
- * @public
- * @throws
- */
-export const setupGoblet = async (
-  args:TWFArgs,
-  gitOpts:TGitOpts,
-  mounted?:boolean
-) => {
-
-  Logger.subHeader(`Running Setup Goblet Workflow`)
-
-  const token = (gitOpts && gitOpts.token) || (await git.loadToken(args))
-  gitOpts = gitOpts || (await configureGitOpts({ ...args, token }))
-  const gitData = omitKeys(gitOpts, ['email', 'token']) as TGitData
-
-  const isMounted = mounted || (await git.exists(args))
-  if (!isMounted)
-    return failResp({ setup: false }, `Repo ${gitOpts.remote} is not connected`)
-
+const setupWatcher = async (gitOpts:TGitOpts,) => {
   Logger.log(`Checking for repo watcher at path ${gitOpts.local}...`)
   const watcher = RepoWatcher.getWatcher(gitOpts.local)
 
@@ -42,6 +22,45 @@ export const setupGoblet = async (
 
   Logger.log(`Waiting 1 second for watcher to initialize...`)
   await wait(1000)
+}
+
+
+const getGitData = async (
+  args:TWFArgs,
+  gitArgs:TGitOpts,
+) => {
+
+  const token = (gitArgs && gitArgs.token) || (await git.loadToken(args))
+  const gitOpts = gitArgs || (await configureGitOpts({ ...args, token }))
+  const gitData = omitKeys(gitArgs, ['email', 'token']) as TGitData
+
+  return { gitData, gitOpts }
+}
+
+/**
+ * Workflow that creates the folder structure for goblet (templates/repo/default-template)
+ * @function
+ * @public
+ * @throws
+ */
+export const setupGoblet = async (
+  args:TWFArgs,
+  gitArgs:TGitOpts,
+  mounted?:boolean
+) => {
+
+  Logger.subHeader(`Running Setup Goblet Workflow`)
+
+  const {
+    gitOpts,
+    gitData
+  } = await getGitData(args, gitArgs)
+
+  const isMounted = mounted || (await git.exists(args))
+  if (!isMounted)
+    return failResp({ setup: false }, `Repo ${gitOpts.remote} is not connected`)
+
+  await setupWatcher(gitOpts)
 
   Logger.log(`Checking goblet configuration...`)
   const hasGoblet = await copyTemplate(
@@ -60,19 +79,15 @@ export const setupGoblet = async (
   if(!gobletConfig)
     return failResp({ setup: false }, `Could not load goblet.config for mounted repo`)
 
-  const { remote } = gitData
+  const repo = {
+    ...gobletConfig,
+    git:gitData,
+    name: getRepoName(gitOpts.remote),
+  } as TRepoOpts
 
+  const secretsResp = await repoSecrets(gitOpts, repo)
 
-  return successResp(
-    { setup: true },
-    {
-      repo: {
-        ...gobletConfig,
-        git:gitData,
-        name: getRepoName(gitOpts.remote),
-      } as TRepoOpts,
-    },
-    `Finished running Setup Goblet Workflow`
-  )
+  return secretsResp
+    || successResp({ setup: true }, { repo }, `Finished running Setup Goblet Workflow`)
 }
 

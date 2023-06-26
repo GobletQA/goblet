@@ -1,11 +1,18 @@
-import type { TGitOpts, TLimboCmdResp, TRunCmdOpts } from '@gobletqa/workflows/types'
+import type {
+  TCmdResp,
+  TGitOpts,
+  TRunCmdOpts,
+  TLimboCmdResp,
+} from '@gobletqa/workflows/types'
 
 import type {
   TGitTag,
   TGitTagOpts,
   TTagCatOpts,
   TTagListOpts,
-  TTagRemoveOpts
+  TGitFetchOpts,
+  TTagRemoveOpts,
+  TTagPushOpts
 } from './gitcmd.types'
 
 import { git } from './gitCmd'
@@ -14,7 +21,10 @@ import { deepMerge, isStr } from '@keg-hub/jsutils'
 import {
   defCmdOpts,
   hasGitError,
+  buildFetchOpts,
   validateGitOpts,
+  gobletRefRemote,
+  generateRemoteUrl,
 } from './gitHelpers'
 
 const buildTagArgs = (opts:TTagListOpts) => {
@@ -154,7 +164,7 @@ git.tag.list = async (
 ) => {
   const [tagErr, tagResp] = await tagList(gitOpts, cmdOpts)
 
-  return hasGitError(tagErr, tagResp, `tag-list`)
+  return hasGitError(tagErr, tagResp, `tag.list`)
     ? undefined
     : tagResp.data.split(`\n`)
         .reduce((acc, item:string) => {
@@ -173,9 +183,90 @@ git.tag.cat = async (
   gitOpts:TTagCatOpts,
   cmdOpts?:TRunCmdOpts
 ) => {
+  const { log } = gitOpts
   const [tagErr, tagResp] = await tagCat(gitOpts, cmdOpts)
 
-  return hasGitError(tagErr, tagResp, `tag-cat`)
+  return hasGitError(tagErr, tagResp, `cat-file`, log)
     ? undefined
     : tagResp?.data?.trim()
+}
+
+/**
+ * Fetch all tags for a repo
+ */
+git.tag.fetch = async (
+  fetchOpts:TGitFetchOpts,
+  cmdOpts?:TRunCmdOpts
+) => {
+  const { origin, auth } = fetchOpts
+  const { gitArgs, gitOpts } = buildFetchOpts({
+    force: true,
+    prune: true,
+    update: true,
+    pruneTags: true,
+    ...fetchOpts,
+    all: true,
+    tags: true,
+  })
+
+  const options = validateGitOpts(gitOpts)
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+  const gitUrl = generateRemoteUrl(options)
+
+  let err:Error
+  let resp:TCmdResp
+  try {
+    // Update the git remote to include the url with the token
+    auth &&
+      await git([
+        `remote`,
+        `set-url`,
+        origin || gobletRefRemote,
+        gitUrl
+      ], joinedOpts, options.local)
+
+    const gitRes = await git([`fetch`, ...gitArgs], joinedOpts, options.local)
+    err = gitRes[0]
+    resp = gitRes[1]
+
+    const errMsg = err?.message || resp?.error
+    if(errMsg) throw new Error(errMsg)
+
+  }
+  catch(error){
+    hasGitError(err, resp, `tag.fetech`)
+  }
+  finally {
+    // Switch the remotes back after fetching the tags
+    auth &&
+      await git([
+        `remote`,
+        `set-url`,
+        origin || gobletRefRemote,
+        options.remote
+      ], joinedOpts, options.local)
+    
+  }
+
+  return [err, resp]
+
+}
+
+
+git.tag.push = async (
+  gitOpts:TTagPushOpts,
+  cmdOpts?:TRunCmdOpts
+) => {
+
+  const { tag } = gitOpts
+  const options = validateGitOpts(gitOpts)
+  const { local } = options
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+  const gitUrl = generateRemoteUrl(options)
+
+  const [err, resp] = await git([`push`, gitUrl, tag], joinedOpts, local)
+
+  return hasGitError(err, resp, `tag.push`)
+    ? false
+    : true
 }

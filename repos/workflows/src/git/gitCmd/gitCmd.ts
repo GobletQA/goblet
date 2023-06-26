@@ -26,7 +26,9 @@ export const gitCmd = async (
   cmdOpts?:TRunCmdOpts,
 ) => {
   const options = validateGitOpts(gitOpts)
-  return await git(args, deepMerge(defCmdOpts, cmdOpts), options.local)
+  const merged = deepMerge(defCmdOpts, cmdOpts)
+
+  return await git(args, merged, options.local)
 }
 
 git.cmd = gitCmd

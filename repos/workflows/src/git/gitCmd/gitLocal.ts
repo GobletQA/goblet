@@ -10,8 +10,8 @@ import type {
 import fs from 'fs'
 import { git } from './gitCmd'
 import { RepoWatcher } from '../repoWatcher'
-import { limbo, deepMerge } from '@keg-hub/jsutils'
 import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { limbo, deepMerge, wait } from '@keg-hub/jsutils'
 import { throwErr } from '@gobletqa/workflows/utils/throwErr'
 import { getRepoPath } from '@gobletqa/workflows/utils/getRepoPath'
 
@@ -19,6 +19,7 @@ import {
   defCmdOpts,
   hasGitError,
   validateGitOpts,
+  loopNoExistsCheck,
 } from './gitHelpers'
 
 
@@ -66,6 +67,10 @@ git.remove = async (args:TGitMeta) => {
   await RepoWatcher.remove(repoPath)
   Logger.log(`Removing repo at path ${repoPath}`)
 
+  // Clear any cache before remove the directory
+  // Ensure git doesn't lose it by force removing the repo
+  await git.clearCache(repoPath)
+
   // Remove the repo directory
   Logger.log(`Removing repo directory...`)
   const [err] = await limbo(
@@ -76,7 +81,12 @@ git.remove = async (args:TGitMeta) => {
     })
   )
 
-  err ? throwErr(err) : Logger.log(`Repo directory at ${repoPath} has been removed.`)
+  err && throwErr(err)
+
+  const [exErr] = await limbo(loopNoExistsCheck(repoPath))
+  exErr && throwErr(err)
+
+  Logger.log(`Repo directory at ${repoPath} has been removed.`)
 }
 
 /**
@@ -121,4 +131,16 @@ git.checkRepo = async (gitOpts:TGitOpts):Promise<TRepoGitState> => {
   if(checkBranch === currentBranch) state.branch = true
 
   return state
+}
+
+git.clearCache = async (
+  location:string,
+  cmdOpts?:TRunCmdOpts,
+) => {
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+
+  const [err, resp] = await git([`rm`, `-r`, `--cached`, `.`], joinedOpts, location)
+  if(hasGitError(err, resp, `clear.cache`))
+
+  return [err, resp]
 }

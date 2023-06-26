@@ -45,6 +45,7 @@ const {
   GB_CD_VALIDATION_KEY,
   GB_CD_VALIDATION_HEADER,
   GOBLET_KIND_SERVICE_PORT,
+  GB_GIT_GLOBAL_IGNORE,
 
 } = process.env
 
@@ -64,6 +65,7 @@ const whiteList = [
   `GB_BE_JWT_SECRET`,
   `GB_SECRETS_TAG_REF`,
   `GB_LT_TOKEN_SECRET`,
+  `GB_GIT_GLOBAL_IGNORE`,
   `GB_GIT_PROVIDER_DATA`,
   `GB_BE_JWT_CREDENTIALS`,
   `GB_BE_JWT_REFRESH_EXP`,
@@ -199,6 +201,8 @@ export const conductorConfig:TConductorOpts = deepMerge({
         envs: {
           ...containerEnvs,
           GB_VNC_ACTIVE: true,
+          
+          GB_GIT_GLOBAL_IGNORE,
 
           // Used to generate the secret from a repository tag. Is NOT secret and can be public
           GB_SECRETS_TAG_REF,

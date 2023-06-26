@@ -1,4 +1,6 @@
-require('../../configs/aliases.config').registerAliases()
+const { registerAliases,} = require('../../configs/aliases.config')
+registerAliases()
+
 
 /**
  * Will be needed when the package is bundled
