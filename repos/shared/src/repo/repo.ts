@@ -244,6 +244,7 @@ export class Repo {
   }
 
   get world(){
+    // this.#world = getWorld(this)
     this.#world = this.#world || getWorld(this)
     return this.#world
   }

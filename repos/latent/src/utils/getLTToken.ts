@@ -12,9 +12,6 @@ let __ltSecretToken:string
  *  - Then delete the file from disk
  */
 export const getLTToken = () => {
-  
-  console.log(`------- process.env.GB_LT_TOKEN_SECRET -------`)
-  console.log(process.env.GB_LT_TOKEN_SECRET)
   return process.env.GB_LT_TOKEN_SECRET
 
   // if(__ltSecretToken) return __ltSecretToken

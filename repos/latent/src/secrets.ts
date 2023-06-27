@@ -1,12 +1,12 @@
 import {
   TLTAdd,
+  TLTGet,
   TLTSave,
   TLTLoad,
   TLTRekey,
   TLTCreate,
   EFileType,
   ELatentEnv,
-  TLTGet,
 } from "@GLT/types"
 import {exists} from "@keg-hub/jsutils"
 
