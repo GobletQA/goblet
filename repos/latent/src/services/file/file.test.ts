@@ -47,7 +47,7 @@ describe(`latentFile`, () => {
 
     beforeAll(() => {
       fsMock.existsSync.mockReturnValue(true)
-      env.loadEnvSync.mockReturnValue(mockEncrypted)
+      env.loadSync.mockReturnValue(mockEncrypted)
     })
 
   describe(`latentFile.<properties>`, () => {
@@ -69,18 +69,18 @@ describe(`latentFile`, () => {
 
   describe(`latentFile.loadAll`, () => {
     afterEach(() => {
-      env.loadEnvSync.mockClear()
+      env.loadSync.mockClear()
       latentMock.crypto.decrypt.mockClear()
     })
 
-    it(`should call env.loadEnvSync`, () => {
+    it(`should call env.loadSync`, () => {
       latentFile.loadAll({...fileOpts, location: `/some/test/location`})
-      expect(env.loadEnvSync).toHaveBeenCalled()
+      expect(env.loadSync).toHaveBeenCalled()
     })
 
-    it(`should call env.loadEnvSync with the default options`, () => {
+    it(`should call env.loadSync with the default options`, () => {
       latentFile.loadAll({...fileOpts, location: `/some/test/location`})
-      const options = env.loadEnvSync.mock.calls[0][0]
+      const options = env.loadSync.mock.calls[0][0]
       
       expect(options).toEqual({
         fill: false,
@@ -99,7 +99,7 @@ describe(`latentFile`, () => {
         environment: ELatentEnv.local,
         location: `/some/test/location`,
       })
-      const options = env.loadEnvSync.mock.calls[0][0]
+      const options = env.loadSync.mock.calls[0][0]
 
       expect(options).toEqual({
         fill: false,
@@ -113,7 +113,7 @@ describe(`latentFile`, () => {
 
     it(`should call latent.crypto.decrypt`, () => {
       fsMock.existsSync.mockReturnValue(true)
-      env.loadEnvSync.mockReturnValue(mockEncrypted)
+      env.loadSync.mockReturnValue(mockEncrypted)
 
       latentFile.loadAll({...fileOpts, location: `/some/test/location`})
       expect(latentMock.crypto.decrypt).toHaveBeenCalled()
@@ -125,19 +125,19 @@ describe(`latentFile`, () => {
   describe(`latentFile.loadSingle`, () => {
 
     afterEach(() => {
-      env.loadEnvSync.mockClear()
+      env.loadSync.mockClear()
       latentMock.crypto.decrypt.mockClear()
     })
 
-    it(`should call env.loadEnvSync`, () => {
+    it(`should call env.loadSync`, () => {
       latentFile.loadSingle({...fileOpts, location: `/some/test/${EFileType.secrets}.test.env`})
-      expect(env.loadEnvSync).toHaveBeenCalled()
+      expect(env.loadSync).toHaveBeenCalled()
     })
 
-    it(`should call env.loadEnvSync with the current correct options`, () => {
+    it(`should call env.loadSync with the current correct options`, () => {
       const location = `/some/test/location/${EFileType.secrets}.test.env`
       latentFile.loadSingle({...fileOpts, location})
-      const options = env.loadEnvSync.mock.calls[0][0]
+      const options = env.loadSync.mock.calls[0][0]
       
       expect(options).toEqual({
         location,
@@ -156,12 +156,12 @@ describe(`latentFile`, () => {
         data: { bar: `foo` },
         type: EFileType.values,
         environment: ELatentEnv.local,
-        // Can not overwrite when calling env.loadEnvSync
+        // Can not overwrite when calling env.loadSync
         fill: true,
         error: true,
         format: ELoadFormat.object,
       })
-      const options = env.loadEnvSync.mock.calls[0][0]
+      const options = env.loadSync.mock.calls[0][0]
 
       expect(options).toEqual({
         location,
@@ -177,22 +177,22 @@ describe(`latentFile`, () => {
 
   describe(`latentFile.save`, () => {
     afterEach(() => {
-      env.loadEnvSync.mockClear()
+      env.loadSync.mockClear()
       fsMock.writeFileSync.mockClear()
       latentMock.crypto.decrypt.mockClear()
       latentMock.crypto.encrypt.mockClear()
     })
 
-    it(`should try to load the existing file with a call to call env.loadEnvSync`, () => {
+    it(`should try to load the existing file with a call to call env.loadSync`, () => {
       latentFile.save({...fileOpts, type: EFileType.values, location: valuesLoc })
-      expect(env.loadEnvSync).toHaveBeenCalled()
+      expect(env.loadSync).toHaveBeenCalled()
       
-      expect(env.loadEnvSync.mock.calls[0][0]).toEqual({
+      expect(env.loadSync.mock.calls[0][0]).toEqual({
         data: { foo: `bar` },
         fill: false,
         error: false,
-        format: `object`,
         location: valuesLoc,
+        format: ELoadFormat.string,
       })
     })
 
@@ -214,7 +214,7 @@ describe(`latentFile`, () => {
     })
 
     it(`should try to write the file to disk with a writeFileSync call`, () => {
-      env.loadEnvSync.mockReturnValue(mockEncrypted)
+      env.loadSync.mockReturnValue(mockEncrypted)
       env.stringify.mockReturnValue(mockWriteFileContent)
       latentMock.crypto.decrypt.mockReturnValue(mockEnvObj)
       latentMock.crypto.encrypt.mockReturnValue(mockEncrypted)
