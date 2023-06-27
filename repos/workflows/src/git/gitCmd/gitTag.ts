@@ -17,13 +17,12 @@ import type {
 
 import { git } from './gitCmd'
 import { deepMerge, isStr } from '@keg-hub/jsutils'
-
+import { GB_GIT_REMOTE_REF } from '@gobletqa/workflows/constants'
 import {
   defCmdOpts,
   hasGitError,
   buildFetchOpts,
   validateGitOpts,
-  gobletRefRemote,
   generateRemoteUrl,
 } from './gitHelpers'
 
@@ -221,7 +220,7 @@ git.tag.fetch = async (
       await git([
         `remote`,
         `set-url`,
-        origin || gobletRefRemote,
+        origin || GB_GIT_REMOTE_REF,
         gitUrl
       ], joinedOpts, options.local)
 
@@ -242,7 +241,7 @@ git.tag.fetch = async (
       await git([
         `remote`,
         `set-url`,
-        origin || gobletRefRemote,
+        origin || GB_GIT_REMOTE_REF,
         options.remote
       ], joinedOpts, options.local)
     

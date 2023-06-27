@@ -320,4 +320,5 @@ env:
 
 
 # --- WORKFLOW ENVs --- #
+  GB_GIT_REMOTE_REF: goblet-ref
   GB_SECRETS_TAG_REF: goblet-do-not-delete

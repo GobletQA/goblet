@@ -190,4 +190,5 @@ export type TGitExec = {
   ignore:TGitIgnore
   fetch:TGitFetch
   clearCache:TGitClearCache
+  gc:(location:string, cmdOpts?:TRunCmdOpts) => TGitCmdResp
 }

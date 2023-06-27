@@ -1,5 +1,7 @@
 import {LatentError} from "./error"
 
+let __ltSecretToken:string
+
 /**
  * Loads the ltSecretToken from environment variable
  * Then un-sets the environment variable containing the secret
@@ -10,13 +12,20 @@ import {LatentError} from "./error"
  *  - Then delete the file from disk
  */
 export const getLTToken = () => {
-  const ltSecretToken = process.env.GB_LT_TOKEN_SECRET
+  
+  console.log(`------- process.env.GB_LT_TOKEN_SECRET -------`)
+  console.log(process.env.GB_LT_TOKEN_SECRET)
+  return process.env.GB_LT_TOKEN_SECRET
 
-  if(!ltSecretToken)
-    throw new LatentError(`Missing value for Latent Token Secret ENV`, `getLTToken`)
+  // if(__ltSecretToken) return __ltSecretToken
+  
+  // __ltSecretToken = process.env.GB_LT_TOKEN_SECRET
 
-  process.env.GB_LT_TOKEN_SECRET = undefined
-  delete process.env.GB_LT_TOKEN_SECRET 
+  // if(!__ltSecretToken)
+  //   throw new LatentError(`Missing value for Latent Token Secret ENV`, `getLTToken`)
 
-  return ltSecretToken
+  // // process.env.GB_LT_TOKEN_SECRET = undefined
+  // // delete process.env.GB_LT_TOKEN_SECRET
+
+  // return __ltSecretToken
 }

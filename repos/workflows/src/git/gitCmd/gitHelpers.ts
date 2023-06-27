@@ -13,9 +13,6 @@ import { isObj, exists } from '@keg-hub/jsutils'
 import { EProvider } from '@gobletqa/workflows/types'
 import { throwErr } from '@gobletqa/workflows/utils/throwErr'
 
-
-export const gobletRefRemote = `goblet-ref`
-
 /**
  * Default child process options
  * @type {Object}

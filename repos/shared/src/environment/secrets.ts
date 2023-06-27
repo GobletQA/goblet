@@ -11,16 +11,20 @@ import { getReplaceOnlyEmpty } from './getReplaceOnlyEmpty'
 
 const { GOBLET_ENV } = process.env
 
-let secrets =  mapValues({
-  existing: {},
-  values: loadEnvFile({ file: `secrets.env` }),
-})
+const loadSecrets = (existing:Record<string, any>, file:string) => {
+  return mapValues({
+    existing,
+    values: loadEnvFile({ file }),
+  })
+}
+
+let secrets =  loadSecrets({}, `secrets.env`)
 
 if(GOBLET_ENV)
-  secrets = mapValues({
-    existing: secrets,
-    values: loadEnvFile({ file: `secrets.${GOBLET_ENV}.env` }),
-  })
+  secrets = loadSecrets(
+    loadSecrets(secrets, `secrets.${GOBLET_ENV}.env`),
+    `${GOBLET_ENV}.secrets.env`
+  )
 
 /**
  * Add secrets from the current process

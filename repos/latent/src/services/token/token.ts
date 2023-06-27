@@ -7,7 +7,6 @@ import { LatentError } from '@GLT/utils/error'
 import { toB64, fromB64 } from '@GLT/utils/base64'
 import { getLTToken } from '@GLT/utils/getLTToken'
 
-const ltSecretToken = getLTToken()
 
 export class LatentToken {
 
@@ -22,7 +21,7 @@ export class LatentToken {
    * @private
    */
   #createToken = (ref:string) => {
-    const hmac = createHmac(this.sha, ltSecretToken)
+    const hmac = createHmac(this.sha, getLTToken())
     return hmac.update(ref).digest(`hex`)
   }
 

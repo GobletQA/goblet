@@ -45,6 +45,7 @@ const {
   GB_CD_VALIDATION_KEY,
   GB_CD_VALIDATION_HEADER,
   GOBLET_KIND_SERVICE_PORT,
+  GB_GIT_REMOTE_REF,
   GB_GIT_GLOBAL_IGNORE,
 
 } = process.env
@@ -63,6 +64,7 @@ const whiteList = [
   `GB_BE_JWT_EXP`,
   `GB_BE_JWT_ALGO`,
   `GB_BE_JWT_SECRET`,
+  `GB_GIT_REMOTE_REF`,
   `GB_SECRETS_TAG_REF`,
   `GB_LT_TOKEN_SECRET`,
   `GB_GIT_GLOBAL_IGNORE`,
@@ -202,6 +204,7 @@ export const conductorConfig:TConductorOpts = deepMerge({
           ...containerEnvs,
           GB_VNC_ACTIVE: true,
           
+          // Location of the global git ignore file
           GB_GIT_GLOBAL_IGNORE,
 
           // Used to generate the secret from a repository tag. Is NOT secret and can be public
@@ -212,6 +215,9 @@ export const conductorConfig:TConductorOpts = deepMerge({
 
           // TODO: Remove this when PAT's are fully integrated
           GB_GIT_PROVIDER_DATA,
+
+          // Name of the remote origin used on mounted repos
+          GB_GIT_REMOTE_REF,
 
           // Amount to time to wait before auto-killing the container
           GB_SC_IDLE_INTERVAL: containerEnvs.GB_SC_IDLE_INTERVAL || `20`,

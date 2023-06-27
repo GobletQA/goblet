@@ -140,7 +140,19 @@ git.clearCache = async (
   const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
 
   const [err, resp] = await git([`rm`, `-r`, `--cached`, `.`], joinedOpts, location)
-  if(hasGitError(err, resp, `clear.cache`))
+  hasGitError(err, resp, `clear.cache`)
+
+  return [err, resp]
+}
+
+
+git.gc = async (
+  location:string,
+  cmdOpts?:TRunCmdOpts,
+) => {
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+  const [err, resp] = await git([`gc`, `--prune=now`], joinedOpts, location)
+  hasGitError(err, resp, `gc`)
 
   return [err, resp]
 }
