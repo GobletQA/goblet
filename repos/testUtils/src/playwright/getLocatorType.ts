@@ -30,7 +30,7 @@ export const getLocatorType = async (
   type:string|TLocatorTypeKey=`text`,
   options:TGetLocationOpts=emptyObj
 ) => {
-  const { page, waitFor=true, ...opts } = options
+  const { page, waitFor, ...opts } = options
   
   if(!allowedLocatorTypes.includes(type as TLocatorTypeKey))
     throw new Error([
@@ -48,7 +48,7 @@ export const getLocatorType = async (
   if(waitFor)
     typeof waitFor === `object`
       ? await locator.waitFor(waitFor)
-      : await locator.waitFor()
+      : await locator.waitFor({ timeout: 5000 })
 
   return locator as TLocator
 }

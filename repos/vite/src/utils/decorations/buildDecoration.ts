@@ -4,27 +4,10 @@ import type { IMarkdownString } from 'monaco-editor'
 
 import { EEditorType } from '@types'
 import { getDecoType } from './getDecoType'
-import { ERaceDecoType } from '@gobletqa/race'
 import { getTypeFromId } from './getTypeFromId'
 import { cls, emptyObj, exists } from '@keg-hub/jsutils'
 import { EAstObject, TRunResultActionMeta, TRunResultStepMeta } from '@ltipton/parkin'
 
-const getDecoValue = (
-  event:TPlayerEventData,
-  decoType:ERaceDecoType,
-) => {
-  
-  const isErr = decoType !== ERaceDecoType.error && decoType !== ERaceDecoType.fail
-  const failedItems = event?.failedExpectations
-
-  return !failedItems?.length || isErr
-    ? event.description
-    : failedItems.reduce((acc, item) => {
-        item?.description && (acc += `${item?.description}\n`)
-
-        return acc
-      }, `${event.description}\n`)
-}
 
 const getDecoCls = (
   event:TPlayerEventData,
@@ -105,7 +88,7 @@ export const buildDecoration = <T=TBuiltDeco, A=any>(props:TBuildDecoration<A>) 
         isTrusted: true,
         supportHtml: false,
         supportThemeIcons: false,
-        value: getDecoValue(event, decoType),
+        value: event.description,
       } as IMarkdownString,
     }
   } as T

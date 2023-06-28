@@ -91,7 +91,7 @@ export const SelectAction = (props:TSelectAction) => {
   const onChange = useOnStepAction(props)
 
   return (
-    <StepGridItem xs={12} sm >
+    <StepGridItem xs={12} >
       <AutoInput
         {...actSelectProps}
         value={active}

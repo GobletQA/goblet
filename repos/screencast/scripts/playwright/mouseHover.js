@@ -1,3 +1,9 @@
+/**
+ * **IMPORTANT** - This script must run before client code
+ * It overrides the default `EventTarget.prototype.addEventListener`
+ * Which allows us to capture all events even when `preventDefault` / `stopPropitiation` are called
+ */
+
 console.log(`[Goblet] - Mouse-Hover Init`)
 
 /**
@@ -108,30 +114,49 @@ const initElementHover = async () => {
   let onSelectElement
 
   window.__gobletElementSelectOn = async (options={}) => {
+    // If already set, then make it undefined to allow GC to pick it up
+    if(onSelectElement) onSelectElement = undefined
 
+    // Sets a callback method, that is called within the addEventListener override
+    // We must rebind the method each time to ensure the updated options are passed in
     onSelectElement = elementSelectEvent.bind(window, options)
 
+    // Remove existing styles
     if(removeListener) removeListener()
 
+    // Update the highlighter styles to be the current styles
     const styles = await window.getGobletHoverOption('highlightStyles')
     removeListener = addListener(styles)
 
+    // Ensure the highlight element can be seen
     if(highlightEl && highlightEl.style) highlightEl.style.display = ``
-
-    window.addEventListener(`click`, onSelectElement)
   }
 
   window.__gobletElementSelectOff = () => {
-    console.log(`[Goblet] - __gobletElementSelectOff`)
+    // Turn off the highlight element
     if(highlightEl && highlightEl.style) highlightEl.style.display = `none`
 
-    window.removeEventListener(`click`, onSelectElement)
-
+    // Remove any styles if needed
     if(removeListener) removeListener()
     removeListener = undefined
   }
 
+  // Override for adding event listeners
+  const oldAddEventListener = EventTarget.prototype.addEventListener
+  EventTarget.prototype.addEventListener = function(eventName, eventHandler){
+    oldAddEventListener.call(this, eventName, function(event) {
+      // Ensure the select method exists, and the event is a click event
+      onSelectElement
+        && eventName === `click`
+        && onSelectElement(event)
+
+      // Call the original passed in eventHandler
+      eventHandler(event)
+    })
+  }
+
   console.log(`[Goblet] - Finish initElementHover`)
 }
+
 
 initElementHover()

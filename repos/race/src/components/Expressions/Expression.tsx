@@ -46,7 +46,7 @@ export const Expression = (props:TExpression) => {
   const { Input, inputType } = useExpressionInput(expression)
 
   return (
-    <ExpGridItem xs={12} sm >
+    <ExpGridItem xs={12} >
       <Input
         autoFocus
         step={step}

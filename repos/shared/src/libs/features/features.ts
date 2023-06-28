@@ -25,7 +25,7 @@ export const mapStepsToDefinitions = (repo, fileModel) => {
         feature.scenarios.map(scenario => {
           scenario.steps &&
             scenario.steps.map(step => {
-              const match = repo.parkin.steps.match(step.step)
+              const match = repo.parkin.steps.match(step.step, step)
               match &&
                 match.definition &&
                 (step.definition = match.definition.uuid)

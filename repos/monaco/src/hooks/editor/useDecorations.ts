@@ -36,7 +36,7 @@ export const useDecorations = (props:THDecoration) => {
       collection: collectionRef.current,
       decorations: decorationsRef.current,
     })
-    
+
     collectionRef.current = updates.collection
     decorationsRef.current = updates.decorations
   })

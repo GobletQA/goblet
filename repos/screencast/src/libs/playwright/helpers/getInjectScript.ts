@@ -18,7 +18,7 @@ const scripts = {
   ).toString(),
 
   mouseHover: fs.readFileSync(
-    path.join(aliases[`@GSC/Scripts`], `playwright/hover.js`)
+    path.join(aliases[`@GSC/Scripts`], `playwright/mouseHover.js`)
   ).toString(),
 
 }

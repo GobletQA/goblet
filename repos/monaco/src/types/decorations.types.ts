@@ -18,6 +18,7 @@ export type TDecorationUpdate = (
 ) => void
 
 export type TDecoration = {
+  id?:string
   range?: Range
   search?: string
   options: editor.IModelDecorationOptions
