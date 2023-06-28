@@ -68,7 +68,7 @@ export const loadFeature = async (repo:Repo, location:string) => {
 
   return await buildFeatureFileModel(
     repo,
-    repo.parkin.parse.feature(content, repo.world),
+    repo.parkin.parse.feature(content, repo.world,  { worldReplace: false }),
     content,
     location,
   )

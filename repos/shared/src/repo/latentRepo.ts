@@ -92,13 +92,13 @@ export class LatentRepo {
     const token = this.latent.getToken(repo.git.remote)
     const type = getLatentType(location)
     const data = env.parse(content) as TEnvObj
-    
+
     const args = {
       data,
       type,
       token,
       location,
-      patch: true,
+      replace: true,
       environment: repo.environment
     }
     

@@ -24,6 +24,7 @@ type TSaveRekey = {
   data?:never
   patch?:never
   rekey:boolean
+  replace?:never
   current:TEnvObj
 }
 
@@ -31,6 +32,7 @@ export type TSaveData = {
   rekey?:never
   data:TEnvObj
   patch?:boolean
+  replace?:boolean
   current?:TEnvObj
 }
 type TSaveParams = TSaveData | TSaveRekey
@@ -48,6 +50,7 @@ export type TFileOpts = {
   rekey?:boolean
   type: EFileType
   location:string
+  replace?:boolean
   format:ELoadFormat
   data:Record<any, any>
   environment:ELatentEnv

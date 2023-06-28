@@ -36,7 +36,7 @@
     "@keg-hub/cli-utils": ">=0.8.0-alpha1",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/parkin": "4.1.1",
+    "@ltipton/parkin": "4.2.0",
     "@gobletqa/workflows": "*",
     "@gobletqa/latent": "*",
     "cookie-session": "2.0.0",

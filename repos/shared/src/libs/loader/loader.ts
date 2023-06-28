@@ -179,7 +179,6 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 
   // If a location is passed, try to load it
   if(location) data = requireFunc(location)
-  
   // If no data has loaded, the try to search for it
   if(!data){
     data = glob

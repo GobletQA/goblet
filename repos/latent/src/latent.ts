@@ -73,7 +73,7 @@ export class Latent {
   }
 
   save = (props:TLTSave, type:EFileType) => {
-    const { location, token, data, patch } = props
+    const { location, token, data, patch, replace } = props
     const environment = props.environment
       || this.environment
       || ELatentEnv.develop
@@ -83,6 +83,7 @@ export class Latent {
       type,
       token,
       patch,
+      replace,
       location,
       environment,
     })

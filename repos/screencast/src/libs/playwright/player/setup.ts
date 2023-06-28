@@ -1,5 +1,5 @@
 import type { CodeRunner } from './codeRunner'
-import type { TPlayerTestEvent, TPlayerTestMeta } from '@gobletqa/shared/types'
+import type { TPlayerTestEvent } from '@gobletqa/shared/types'
 
 /**
  * This is needed so that expect is added to the global context
@@ -119,7 +119,7 @@ export const cleanupWorld = (PK:Parkin) => {
  * There's a lot of meta-data that is added to the player tests results object
  * This clears out some of it, because the frontend does not need it
  */
-export const clearTestResults = (result:TPlayerTestMeta) => {
+export const clearTestResults = (result:TPlayerTestEvent) => {
   return omitKeys<TPlayerTestEvent>(
     result,
     [

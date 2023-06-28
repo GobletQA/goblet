@@ -9,20 +9,30 @@ export type TContentToStr = {
   rekey?:boolean
   force?:boolean
   current:TEnvObj
+  replace?:boolean
 }
 
 const EXPAND_MATCH = /(.?\${?(?:[a-zA-Z0-9_]+)?}?)/g
 const currIsEnv = (val:string) => Boolean(val.match(EXPAND_MATCH))
 
-export const dataToString = ({
-  data,
-  patch,
-  rekey,
-  force,
-  current,
-}:TContentToStr) => {
+export const dataToString = (opts:TContentToStr) => {
+  
+  const {
+    data,
+    patch,
+    rekey,
+    force,
+    replace,
+    current,
+  } = opts
 
   const failed:string[] = []
+
+  if(replace)
+    return {
+      failed,
+      content: env.stringify(data) as string
+    }
 
   if(rekey)
     return {

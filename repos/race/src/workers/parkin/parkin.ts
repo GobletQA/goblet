@@ -51,7 +51,7 @@ export const clearSteps = async () => PK?.steps?.clear?.()
 export const parseFeature = async (
   text:string,
   world?:TWorldConfig,
-) => PK.parse.feature(text, world || {$alias: {}} as TWorldConfig)
+) => PK.parse.feature(text, world || {$alias: {}} as TWorldConfig, { worldReplace: false })
 
 export const reIndex = async (options:TReIndexFeature) => {
   const { feature } = options

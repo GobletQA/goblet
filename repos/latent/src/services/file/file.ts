@@ -164,6 +164,7 @@ export class LatentFile {
       type,
       patch,
       rekey,
+      replace,
       location,
     } = options
 
@@ -177,6 +178,7 @@ export class LatentFile {
       data,
       rekey,
       patch,
+      replace,
       current,
     })
 
