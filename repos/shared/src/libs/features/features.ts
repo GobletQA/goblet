@@ -25,7 +25,7 @@ export const mapStepsToDefinitions = (repo, fileModel) => {
         feature.scenarios.map(scenario => {
           scenario.steps &&
             scenario.steps.map(step => {
-              const match = repo.parkin.steps.match(step.step)
+              const match = repo.parkin.steps.match(step.step, step)
               match &&
                 match.definition &&
                 (step.definition = match.definition.uuid)
@@ -68,7 +68,7 @@ export const loadFeature = async (repo:Repo, location:string) => {
 
   return await buildFeatureFileModel(
     repo,
-    repo.parkin.parse.feature(content, repo.world),
+    repo.parkin.parse.feature(content, repo.world,  { worldReplace: false }),
     content,
     location,
   )

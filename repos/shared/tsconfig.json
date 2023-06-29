@@ -27,6 +27,8 @@
       "@GEnvironment": ["../shared/src/environment/environment"],
       "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
       "@GEnvironment/values": ["../shared/src/environment/values"],
+      "@gobletqa/latent": ["../latent/src"],
+      "@gobletqa/latent/*": ["../latent/src/*"],
       "@gobletqa/screencast": ["../screencast/src/types"],
       "@gobletqa/screencast/*": ["../screencast/src/types/*"]
     }

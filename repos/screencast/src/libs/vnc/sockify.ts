@@ -5,7 +5,7 @@ import { exec } from 'node:child_process'
 import { Logger } from '@GSC/utils/logger'
 import { findProc, killProc } from '@GSC/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
-import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
+import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
 import {
   limbo,
   noOpObj,
@@ -37,7 +37,7 @@ export const startSockify = async ({
   options = noOpObj,
 }:TChildProcArgs=defSockArgs) => {
 
-  const config = getGobletConfig()
+  const config = getDefaultGobletConfig()
   const { novnc, vnc } = screencastConfig.screencast
   const status = await statusSockify()
 

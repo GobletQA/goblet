@@ -118,12 +118,14 @@ module.exports = {
           '**',
           '!/repos/backend',
           '!/repos/conductor',
+          '!/repos/latent',
           '!/repos/screencast',
           '!/repos/shared',
           '!/repos/workflows',
           // Ignore the dist folders so local bundles are not synced
           '/repos/backend/dist',
           '/repos/conductor/dist',
+          '/repos/latent/dist',
           '/repos/screencast/dist',
           '/repos/shared/dist',
           '/repos/workflows/dist',
@@ -151,7 +153,10 @@ module.exports = {
           `GB_KUBE_NAMESPACE`,
           `GB_SERVER_ORIGINS`,
           `GB_LOCAL_DEV_MODE`,
+          `GB_GIT_REMOTE_REF`,
+          `GB_LT_TOKEN_SECRET`,
           `GB_GIT_PROVIDER_DATA`,
+          `GB_GIT_GLOBAL_IGNORE`,
         ],
         /**
         * ENVs to not include in the backend
@@ -222,6 +227,7 @@ module.exports = {
       sync: {
         excludePaths: [
           '**',
+          '!/repos/latent',
           '!/repos/screencast',
           '!/repos/shared',
           '!/repos/testUtils',

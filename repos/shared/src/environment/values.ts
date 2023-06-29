@@ -4,6 +4,7 @@
 import './ensureGobletEnv'
 import { mapValues } from './mapValues'
 import { loadEnvFile } from './loadEnvFile'
+import { EFileType } from '@gobletqa/latent'
 import { deepFreeze } from '@keg-hub/jsutils'
 import { getReplaceOnlyEmpty } from './getReplaceOnlyEmpty'
 
@@ -11,13 +12,13 @@ const { GOBLET_ENV } = process.env
 
 let values = mapValues({
   existing: {},
-  values: loadEnvFile({ file: `values.env` }),
+  values: loadEnvFile({ file: `values.env`, type: EFileType.values }),
 })
 
 if(GOBLET_ENV)
   values = mapValues({
     existing: values,
-    values: loadEnvFile({ file: `values.${GOBLET_ENV}.env` }),
+    values: loadEnvFile({ file: `values.${GOBLET_ENV}.env`, type: EFileType.values }),
   })
 
 /**

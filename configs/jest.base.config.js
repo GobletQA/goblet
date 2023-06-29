@@ -14,8 +14,14 @@ module.exports = {
     '<rootDir>/**/__tests__/*.{js,jsx,ts,tsx}',
   ],
   transform: {
-    '\\.[jt]sx?$': ['esbuild-jest', { sourcemap: true }],
-    '\\.(js|jsx|mjs|cjs|ts|tsx)?$': ['esbuild-jest', { sourcemap: true }],
+    '\\.[jt]sx?$': ['esbuild-jest', {
+      target: `esnext`,
+      sourcemap: true
+    }],
+    '\\.(js|jsx|mjs|cjs|ts|tsx)?$': ['esbuild-jest', {
+      target: `esnext`,
+      sourcemap: true
+    }],
   },
   coverageDirectory: '<rootDir>/coverage',
   coverageReporters: ['lcov', 'text-summary', 'text', 'html'],
@@ -27,6 +33,7 @@ module.exports = {
     '!**/__tests__/**',
     '!**/node_modules/**',
     '!**/*.spec.{js,jsx,ts,tsx}',
+    '!**/*.test.{js,jsx,ts,tsx}',
   ],
   coveragePathIgnorePatterns: ['/node_modules/'],
 }

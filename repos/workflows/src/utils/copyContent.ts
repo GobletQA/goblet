@@ -22,7 +22,7 @@ export const copyContent = async ({ src, dest }:TCopyArgs) => {
 
   // Sometimes the file-system takes a second to finish the copy
   // Technically it should be done, be we wait an extra second just incase
-  await wait(1000)
+  await wait(2000)
 
   return err || error ? throwErr(err || new Error(error)) : true
 }

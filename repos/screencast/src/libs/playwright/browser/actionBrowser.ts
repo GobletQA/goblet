@@ -8,9 +8,11 @@ import type {
   TBrowserActionResp
 } from '@GSC/types'
 
+import { Repo } from '@gobletqa/shared/repo'
 import { startBrowser } from './browser'
 import { recordBrowser } from './recordBrowser'
 import { isArr, isStr, isFunc, noPropArr } from '@keg-hub/jsutils'
+import {setBrowserDefaults} from './setBrowserDefaults'
 
 /**
  * Helper to thrown an error
@@ -88,10 +90,13 @@ const callAction = async (
  */
 export const actionBrowser = async (
   args:TBrowserActionArgs,
-  browserConf:TBrowserConf
+  browserConf:TBrowserConf,
+  repo?:Repo
 ) => {
   const { ref = 'browser', actions = noPropArr, id, onRecordEvent } = args
   const pwComponents = await startBrowser(browserConf)
+  repo && await setBrowserDefaults({ repo, browserConf, pwComponents })
+
   const component = pwComponents[ref]
   validateArgs(args, component)
 
@@ -111,7 +116,7 @@ export const actionBrowser = async (
           responses,
           id
         )
-      : action.action === 'record'
+      : action.action === `record`
         ? await recordBrowser({
             id,
             action,

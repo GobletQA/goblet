@@ -32,7 +32,7 @@ export const featuresParser = (featureMeta:TFeatureMeta = noOpObj as TFeatureMet
         try {
           // Pass in an empty world object so the values are not replaced
           // We only want to replace values during execution
-          const ast = parkin.parse.feature(content, {})
+          const ast = parkin.parse.feature(content, parkin.world, { worldReplace: false })
           return res({
             ...featureMeta,
             content,

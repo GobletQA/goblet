@@ -1,18 +1,19 @@
-
 import path from 'path'
 import glob from 'glob'
 import { createRequire } from 'module'
+import {TGobletConfig} from '@GSH/types'
+import { GobletConfigFileNames } from '@GSH/constants'
 import { isStr, deepMerge } from '@keg-hub/jsutils/src/node'
 
-type TMerge = { merge?: string[] | false | null | undefined }
+type TMerge = { $merge?: string[] | false | null | undefined }
 type TLoadedFunc<T extends TMerge> = (...args:any[]) => T
 
-type TLoopLoad<T extends TMerge> = TLoader & {
+type TLoopLoad<T extends TMerge> = TLoadShared & {
+  loadArr:string[]
   requireFunc?:TLoadedFunc<T>,
 }
 
 type TLoadShared = {
-  key?:string
   type?:string
   safe?: boolean
   first?: boolean
@@ -26,10 +27,10 @@ type TSearchFile = TLoadShared & {
   clearCache?:boolean
 }
 
-
 export type TLoader = TLoadShared & {
-  loadArr:string[]
+  loadArr?:string[]
 }
+
 
 /**
  * Characters that define if a path
@@ -39,18 +40,18 @@ const noBasePath = [`.`, `/`, `@`, `~`]
 /**
  * Checks if the passed in config is a function and calls it if it is
  */
-export const loadFromType = <T extends TMerge>(data:T, key:string=`default`, ...args:any[]) => {
+const loadFromType = <T extends TMerge>(data:T) => {
   const loaded = typeof data === 'function'
-    ?  (data as TLoadedFunc<T>)(...args) as T
+    ?  (data as TLoadedFunc<T>)() as T
     : data
 
-  return loaded?.[key] ? loaded[key] : loaded
+  return loaded?.[`default`] ? loaded[`default`] : loaded
 }
 
 /**
  * Builds a require function for loading goblet configs dynamically
  */
-export const buildRequire = <T extends TMerge>(
+const buildRequire = <T extends TMerge>(
   basePath:string,
   safe:boolean=false,
   clearCache:boolean=false
@@ -80,7 +81,7 @@ export const buildRequire = <T extends TMerge>(
 }
 
 /**
- * @description - Checks if the passed in world has a merge property
+ * @description - Checks if the passed in world has a $merge property
  * If not, then returns the world object
  * If it does, then calls loopLoadArray to load the paths
  * Once loaded, then merges each loaded world into a single world object
@@ -92,12 +93,12 @@ const loadWithMerge = <T extends TMerge>(data:T, {
   requireFunc
 }:Omit<TLoopLoad<T>, `loadArr`>) => {
 
-  if(merge === false || !data?.merge || !data?.merge?.length) return data
+  if(merge === false || !data?.$merge || !data?.$merge?.length) return data
 
   const loadedArr = loopLoadArray({
     basePath,
     requireFunc,
-    loadArr: data?.merge,
+    loadArr: data?.$merge,
   })
 
   // Merge all loaded data configs into a single object
@@ -108,13 +109,12 @@ const loadWithMerge = <T extends TMerge>(data:T, {
  * @description - Loops over an array of paths, and tries to require each one
  * @first - if true, will return the loaded file as an array of 1
  * Otherwise returns all loaded files content in an array
- * If the loaded config has a merge property that is an array of string
+ * If the loaded config has a $merge property that is an array of string
  * It will recursively call it's self to load those files as well
  * @recursive
  */
 const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
   const {
-    key,
     type,
     safe,
     first,
@@ -137,7 +137,7 @@ const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
 
       if(!loadedData) continue;
 
-      const dataByType = loadFromType(loadedData, key)
+      const dataByType = loadFromType(loadedData)
       if(!dataByType) continue;
 
       const loadedMerge = loadWithMerge(dataByType, params)
@@ -148,7 +148,8 @@ const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
     }
     catch(err){
       console.log(`Error loading data ${type || 'in loopLoadArray'}...`)
-      console.error(err.stack)
+      console.log(err.message)
+      console.log(err.stack)
     }
   }
 
@@ -159,7 +160,7 @@ const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
  * Searches for a file based on the passed in basePath and fileName
  * If a location is passed, will load that first
  * Then search's for a matching file by name
- * Is loaded file has a merge array property, will try to load all paths from it
+ * Is loaded file has a $merge array property, will try to load all paths from it
  */
 export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 
@@ -178,7 +179,6 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 
   // If a location is passed, try to load it
   if(location) data = requireFunc(location)
-  
   // If no data has loaded, the try to search for it
   if(!data){
     data = glob
@@ -189,8 +189,8 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
       ) as T
   }
 
-  // If no data or, no merge array, then return data
-  if(!data?.merge || !data?.merge?.length) return data as T
+  // If no data or, no $merge array, then return data
+  if(!data?.$merge || !data?.$merge?.length) return data as T
 
   // If there is a merge array, try to load the them
   const loadedData = loopLoadArray<T>({
@@ -198,7 +198,7 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
     safe,
     basePath,
     requireFunc,
-    loadArr: data.merge,
+    loadArr: data.$merge,
   })
 
   // Merge all loaded data into a single Object
@@ -209,14 +209,37 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
 /**
  * @description - Loads config files based on the passed in basePath and loadArr
  */
-export const loader = <T extends TMerge>(params:TLoader) => {
-  const { safe, ...loadArgs } = params
-  const loadedData = loopLoadArray<T>({
+export const gobletLoader = (params:TLoader):TGobletConfig|undefined => {
+  const {
+    basePath,
+    safe=true,
+    first=true,
+  ...loadArgs
+} = params
+
+  const loadedData = loopLoadArray<TGobletConfig>({
     safe,
+    first,
+    basePath,
+    merge: false,
+    loadArr: GobletConfigFileNames,
     ...loadArgs,
     requireFunc: buildRequire(params.basePath, safe),
   })
 
+  if(!loadedData?.length) return undefined
+
   // Merge all loaded configs into a single config file
-  return loadedData?.length ? deepMerge<T>(...loadedData) : undefined
+  const config = first || loadedData?.length <= 1
+    ? loadedData.pop() as TGobletConfig | undefined
+    : deepMerge<TGobletConfig>(...loadedData) as TGobletConfig
+
+  // Ensure the repoRoot path gets set
+  // This should never happen because it's enforce when the repo is mounted
+  // But its a hold over from the past
+  // So keeping it for now until I can validate it's not needed
+  !config?.paths?.repoRoot
+    && (config.paths = {...config?.paths, repoRoot: basePath })
+
+  return config as TGobletConfig
 }

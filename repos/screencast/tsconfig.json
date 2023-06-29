@@ -23,10 +23,14 @@
       "@GSC/*": ["src/*"],
       "@GSCRoot": ["./"],
       "@GSCRoot/*": ["./*"],
+      "@gobletqa/latent": ["../latent/src"],
+      "@gobletqa/latent/*": ["../latent/src/*"],
       "@gobletqa/shared": ["../shared/src"],
       "@gobletqa/shared/*": ["../shared/src/*"],
       "@gobletqa/screencast": ["src"],
       "@gobletqa/screencast/*": ["src/*"],
+      "@gobletqa/test-utils": ["../testUtils/src"],
+      "@gobletqa/test-utils/*": ["../testUtils/src/*"],
       "@GLogs/*": ["../../logs/*"],
       "@GRepos/*": ["../../repos/*"],
       "@GConfigs/*": ["../../configs/*"],
@@ -47,7 +51,10 @@
     "../shared",
     "../testUtils",
     "../workflows",
-    "src/bs.ts"
+    "src/bs.ts",
+    "../shared",
+    "../testUtils",
+    "../workflows"
   ],
   "exclude": ["node_modules", "dist"]
 }

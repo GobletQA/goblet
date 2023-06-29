@@ -10,10 +10,11 @@ export const createDecoration = (
   match:editor.FindMatch,
   decoration:TDecoration
 ) => {
+
   const range = match.range
-  const { search, options } = decoration
-  const decoId = `${range.startLineNumber}-${search}`
-  
+  const { id, options } = decoration
+  const decoId = id || options?.marginClassName || `${range.startLineNumber}`
+
   decorationsList[decoId] = { options, range }
 
   return decorationsList

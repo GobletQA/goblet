@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { noOp } from '@keg-hub/jsutils'
 import { Logger } from '@keg-hub/cli-utils'
-import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
+import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
 
 /**
  * Clears out the temp folder that contains test artifacts
@@ -10,7 +10,7 @@ import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 export const clearTestMetaDirs = () => {
   Logger.log(`Clearing temp folder...`)
   
-  const { internalPaths } = getGobletConfig()
+  const { internalPaths } = getDefaultGobletConfig()
   const tempDir = path.join(internalPaths.gobletRoot, `temp`)
 
   Object.entries(internalPaths)

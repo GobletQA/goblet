@@ -149,10 +149,19 @@ export class Player {
         name: PWPlay.playStarted,
       })
 
+      const timeout = this.options?.playOptions?.testTimeout as number
+      timeout && this.page.setDefaultTimeout(timeout)
+
+      const extraHeaders = this.repo?.world?.$headers
+      extraHeaders &&
+        await this.page.setExtraHTTPHeaders({
+          ...this.repo?.world?.$headers
+        })
+
       this.codeRunner = new CodeRunner(this, {
+        timeout,
         debug: this.options?.playOptions?.debug as boolean,
         slowMo: this.options?.playOptions?.slowMo as number,
-        timeout: this.options?.playOptions?.testTimeout as number,
       })
 
       // TODO: fix `feature` to come from a constant

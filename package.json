@@ -72,7 +72,7 @@
     "@keg-hub/cli-utils": "0.8.0-alpha1",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/parkin": "4.0.1",
+    "@ltipton/parkin": "4.2.0",
     "@ltipton/esdev": "0.1.3",
     "esbuild": "0.17.17",
     "esbuild-plugin-path-alias": "1.0.7",

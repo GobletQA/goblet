@@ -30,6 +30,7 @@ COPY repos/backend/package.json repos/backend/
 COPY repos/screencast/package.json repos/screencast/
 COPY repos/testUtils/package.json repos/testUtils/
 COPY repos/shared/package.json repos/shared/
+COPY repos/latent/package.json repos/latent/
 RUN pnpm install --no-optional --offline --frozen-lockfile --ignore-scripts
 # ---- End Stage ---- #
 
@@ -43,6 +44,7 @@ COPY repos/backend repos/backend/
 COPY repos/screencast repos/screencast/
 COPY repos/testUtils repos/testUtils/
 COPY repos/shared repos/shared/
+COPY repos/latent repos/latent/
 COPY --from=goblet-build-files /goblet/app .
 WORKDIR /goblet/app/repos/backend
 RUN pnpm build:docker

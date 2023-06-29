@@ -32,10 +32,12 @@ const getEventMessage = (evtData:TPlayerTestEvent) => {
   const message = !evtData.failed || evtData.eventParent !== EAstObject.step
     ? ``
     : evtData?.failedExpectations?.reduce((message, exp:Record<any, any>) => {
-        return exp?.message
-          ? `${message}\n${exp?.message?.split(`\n`).map((line:string) => {
-            return PWEventErrorLogFilter.filter(log => line.includes(log)).length ? `` : `  ${line}`
-          }).filter(Boolean).join(`\n`)}`
+        return exp?.description
+          ? `${message}\n${exp?.fullName + `\n` || ``}${
+              exp?.description?.split(`\n`).map((line:string) => (
+                PWEventErrorLogFilter.filter(log => line.includes(log)).length ? `` : `  ${line}`
+              )).filter(Boolean).join(`\n`)
+            }`
           : message
       }, `\n`) || ``
 

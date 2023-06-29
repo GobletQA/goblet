@@ -34,13 +34,16 @@ export const useIdleTimeout = (props:TIdleTimeout=emptyObj) => {
       idleModal({ visible: true })
     })
 
+    const timeout = (props?.timeout || IdleTimeout) * 1000
+    const promptBeforeIdle = (props?.promptBeforeIdle || IdlePromptTimeout) * 1000
+
     const idleTimer = useIdleTimer({
       onIdle,
       onPrompt,
       debounce: 500,
       ...props,
-      timeout: (props?.timeout || IdleTimeout) * 1000,
-      promptBeforeIdle: (props?.promptBeforeIdle || IdlePromptTimeout) * 1000,
+      timeout,
+      promptBeforeIdle,
     })
 
     return {

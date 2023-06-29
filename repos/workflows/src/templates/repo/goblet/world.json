@@ -1,10 +1,11 @@
 {
-  "merge": [
+  "$alias": {},
+  "$merge": [
     "@GEnvironment",
     "world.ts"
   ],
+  "$headers": {},
   "app": {},
   "data": {},
-  "context": {},
-  "$alias": {}
+  "context": {}
 }

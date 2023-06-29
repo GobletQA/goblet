@@ -1,26 +1,27 @@
-// TODO: update this to load repo specific secrets
-// Should be considered secure - Still figuring out what that looks like
-// Need to add git encryption to secrets files
-
 import './ensureGobletEnv'
 import { values } from './values'
 import { mapValues } from './mapValues'
+import { EFileType } from '@gobletqa/latent'
 import { loadEnvFile } from './loadEnvFile'
 import { deepFreeze } from '@keg-hub/jsutils'
 import { getReplaceOnlyEmpty } from './getReplaceOnlyEmpty'
 
 const { GOBLET_ENV } = process.env
 
-let secrets =  mapValues({
-  existing: {},
-  values: loadEnvFile({ file: `secrets.env` }),
-})
+const loadSecrets = (existing:Record<string, any>, file:string) => {
+  return mapValues({
+    existing,
+    values: loadEnvFile({ file, type: EFileType.secrets }),
+  })
+}
+
+let secrets =  loadSecrets({}, `secrets.env`)
 
 if(GOBLET_ENV)
-  secrets = mapValues({
-    existing: secrets,
-    values: loadEnvFile({ file: `secrets.${GOBLET_ENV}.env` }),
-  })
+  secrets = loadSecrets(
+    loadSecrets(secrets, `secrets.${GOBLET_ENV}.env`),
+    `${GOBLET_ENV}.secrets.env`
+  )
 
 /**
  * Add secrets from the current process

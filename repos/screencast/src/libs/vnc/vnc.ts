@@ -1,11 +1,11 @@
 import type { TProc, TChildProcArgs } from '@GSC/types'
 
-import spawn from 'cross-spawn'
-import { exec } from 'node:child_process'
-import { findProc, killProc }from '@GSC/libs/proc'
+
+import { exec } from 'child_process'
 import { Logger } from '@GSC/utils/logger'
+import { findProc, killProc }from '@GSC/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
-import { getGobletConfig }from '@gobletqa/shared/goblet/getGobletConfig'
+import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
 import {
   limbo,
   noOpObj,
@@ -49,7 +49,7 @@ export const startVNC = async ({
     return status
   }
 
-  const config = getGobletConfig()
+  const config = getDefaultGobletConfig()
   const { vnc } = screencastConfig.screencast
 
   const cmdArgs = flatUnion(
@@ -69,7 +69,7 @@ export const startVNC = async ({
   )
 
   const cmdOpts = deepMerge({
-    stdio: 'inherit',
+    stdio: 'inherit',
     cwd: cwd || config.internalPaths.gobletRoot,
     env: {
       ...process.env,

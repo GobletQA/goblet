@@ -75,4 +75,21 @@
 
 
 * World not being passed to Test Runner after being auto-logged out
-* 
+
+On every page load
+* Walk the dom tree and add a dynamically generated selector
+* Allow using that selector in tests
+* Investigate adding a custom selector engine to playwright
+
+
+* Monaco Editor
+  * Loading Decorators not being cleared when a the test fails
+
+
+* Add better descriptions to step meta-data
+* Add step to set the sizes of the browser
+  * Works in tandem with the move mouse to x-y position
+* Add step to track the state of a video on the page
+* Add step to reset the browser context
+* Add step to upload video
+* Be able to reuse blocks

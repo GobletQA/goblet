@@ -2,6 +2,7 @@ import type { TWorldConfig } from '@ltipton/parkin'
 import type { TProviderData } from './getProviderData'
 import type { TWFGobletConfig, TGitOpts } from '@gobletqa/workflows/types'
 import type {
+  TGitData,
   TRepoOpts,
   TFileTypes,
   TRepoPaths,
@@ -10,6 +11,7 @@ import type {
   TRepoGraphRepos,
   TRepoFromCreate,
   TRepoMountStatus,
+  TGScreencastConfig,
   TRepoFromWorkflow,
 } from '../types'
 
@@ -28,6 +30,12 @@ import {
   disconnectGoblet,
 } from '@gobletqa/workflows'
 
+
+type TRepoWorldRefresh = {
+  environment:string
+  refreshEnv?:boolean
+}
+
 /**
  * Class variation of the a goblet config
  * Has the same properties as a Goblet Config object, but includes some helper methods
@@ -38,7 +46,7 @@ export class Repo {
    * Extra code paths loaded with the goblet config JSON file
    * Allows extending it with logic at runtime 
    */
-  merge?:string[]=[]
+  $merge?:string[]=[]
 
   static getProvider = async (opts:TProviderData) => {
     return getProviderData(opts)
@@ -182,7 +190,7 @@ export class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  world:TWorldConfig
+  #world:TWorldConfig
 
   /**
    * Paths object for the repo
@@ -198,7 +206,7 @@ export class Repo {
    * @memberOf Repo
    * @type {Object}
    */
-  git:Record<string, any>
+  git:TGitData
 
 
   /**
@@ -214,6 +222,7 @@ export class Repo {
   environment:string
   fileTypes:TFileTypes
   recorder: TRecorderOpts
+  screencast?:TGScreencastConfig
 
   // Temporary - this should be remove
   internalPaths:TInternalPaths
@@ -237,11 +246,21 @@ export class Repo {
      * So should be used before any calls to it are made for a loaded repo
      * Specifically calls to load the goblet config for the repo from the base path
      */
-    this.world = getWorld(this)
     this.parkin = new Parkin(this.world)
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)
 
   }
+
+  get world(){
+    // this.#world = this.#world || getWorld(this)
+    this.#world = getWorld(this)
+    return this.#world
+  }
+
+  set world(update:TWorldConfig){
+    this.#world = getWorld(this)
+  }
+
 
   /**
    * Sets the loaded environment for the repo
@@ -249,9 +268,15 @@ export class Repo {
    * @type {function}
    *
    */
-  setEnvironment = (environment?:string) => {
+  setEnvironment = (environment?:string, refreshWld:boolean=true) => {
     this.environment = environment || process.env.GOBLET_ENV || `develop`
     if(!process.env.GOBLET_ENV) process.env.GOBLET_ENV = this.environment
+    
+    // Pass false to ensure we don't get into an infinite loop
+    refreshWld && this.refreshWorld({
+      refreshEnv: false,
+      environment: this.environment,
+    })
   }
 
   /**
@@ -262,13 +287,17 @@ export class Repo {
    * @return {Object} - The reloaded repo.world object
    */
   refreshWorld = async (
-    opts:Record<`environment`, string>=emptyObj as Record<`environment`, string>
+    opts:TRepoWorldRefresh=emptyObj as TRepoWorldRefresh
   ) => {
-    const { environment } = opts
-    this.setEnvironment(environment)
+    const { environment, refreshEnv } = opts
+    // Pass false to ensure we don't get into an infinite loop
+    refreshEnv && this.setEnvironment(environment, false)
 
-    this.world = getWorld(this)
-    this.parkin.world = this.world
+    // Force refresh of the world object
+    this.world = undefined
+
+    // Then update parkin's instance of the world
+    if(this.parkin) this.parkin.world = this.world
 
     return this.world
   }

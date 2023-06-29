@@ -1,7 +1,9 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 import { deepFreeze } from '@keg-hub/jsutils/src/node'
 
+
 export const DefinitionOverrideFolder = `override`
+export const GB_GIT_REMOTE_REF = process.env.GB_GIT_REMOTE_REF || `goblet-ref`
 
 export const ARTIFACT_TYPES = deepFreeze([
   `traces`,
@@ -21,8 +23,9 @@ export const ARTIFACT_SAVE_OPTS = deepFreeze({
 export const DefWorld:TWorldConfig = deepFreeze({
   app: {},
   data: {},
-  merge: [],
+  $merge: [],
   $alias: {},
+  $headers: {},
   context: {},
 })
 

@@ -15,7 +15,7 @@ const { aliases, registerAliases } = requireAliases('./configs/aliases.config')
 registerAliases()
 
 const requireGoblet = createRequire(path.join(__dirname, '../../shared/src/utils'))
-const { getGobletConfig } = requireGoblet('./goblet/getGobletConfig.ts')
+const { getDefaultGobletConfig } = requireGoblet('./goblet/getDefaultGobletConfig.ts')
 
 
 /**
@@ -34,7 +34,7 @@ export const loadConfig = () => {
     { force: exists(process.env.GOBLET_ENV) }
   )
 
-  const config = getGobletConfig()
+  const config = getDefaultGobletConfig()
   const firebaseConfig = config.firebase
 
   const {

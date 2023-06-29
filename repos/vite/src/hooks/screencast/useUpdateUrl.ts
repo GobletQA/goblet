@@ -37,7 +37,7 @@ export const useUpdateUrl = (props:THUpdateUrl) => {
     const url = urlRef.current
     if(!newUrl) return
     const normalized = pageService.normalize(newUrl)
-    if(newUrl === url || normalized === url) return
+    if(!normalized || newUrl === url || normalized === url) return
 
     inputRef.current && (inputRef.current.value = normalized)
 

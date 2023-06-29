@@ -103,7 +103,7 @@ export type TBrowserConf = TBrowserLaunchOpts & {
   type: EBrowserType
   ws?: boolean
   url?:string
-  page: TPageOpts
+  page:TPageOpts
   restart?:boolean
   colorScheme?: TColorSchema
   context?:TBrowserContextOpts
@@ -154,6 +154,14 @@ export type TBrowserAction = {
   prev?: string | boolean
   action?: string | TActionCallback
   props?: [TBrowserActionOptions, string]
+}
+
+export type TSetBrowserDefaults = {
+  repo:TRepo,
+  url?:boolean
+  headers?:boolean
+  browserConf:TBrowserConf
+  pwComponents?:TPWComponents
 }
 
 export type TStartPlaying = {

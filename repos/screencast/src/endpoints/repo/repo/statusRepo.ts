@@ -7,6 +7,8 @@ import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { Exception } from '@gobletqa/shared/exceptions/Exception'
 import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
+import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { setBrowserDefaults } from '@GSC/libs/playwright/browser/setBrowserDefaults'
 
 /**
  * Gets the status of a connected repo
@@ -37,6 +39,10 @@ export const statusRepo:RequestHandler = asyncWrap(async (req:JWTRequest, res:Re
     throw new Exception(`Error getting repo status. No repo exists.`, 422)
 
   const repoContent = await loadRepoContent(foundRepo, config, status)
+  await setBrowserDefaults({
+    repo: foundRepo,
+    browserConf: joinBrowserConf(foundRepo?.screencast?.browser)
+  })
 
   return apiRes(res, repoContent)
 })

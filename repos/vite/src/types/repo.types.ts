@@ -50,3 +50,10 @@ export type TRepoInputError = {
 }
 
 export type TRepoValueCB = (value:string) => void
+
+export type TRepoApiObj = {
+  path:string
+  local:string
+  remote:string
+  branch:string
+}

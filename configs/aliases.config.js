@@ -36,7 +36,7 @@ const addRepoAliases = () => {
   return Object.entries(SUB_REPOS)
     .reduce((acc, [repoKey, location]) => {
       if(ignoreRepos.includes(repoKey)) return acc
-      
+
       // Try to load from the alias.json first
       let { data } = requireFile(location, `configs/alias.json`)
 

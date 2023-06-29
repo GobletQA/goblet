@@ -1,7 +1,24 @@
+import type { TGobletConfig } from '../types'
+
 import fs from 'fs'
 import path from 'path'
-import { findConfig } from './helpers'
 import { Logger } from '@keg-hub/cli-utils'
+import { configFromFolder } from './configFromFolder'
+
+/**
+ * @description - Searches the file system, from the current working directory
+ * upwards to the root directory, for the goblet config
+ */
+export const findConfig = (startDir?:string) => {
+  let currentPath = startDir || process.cwd()
+  while (currentPath != '/') {
+    const config = configFromFolder(currentPath)
+    if (config) return config
+
+    currentPath = path.join(currentPath, '../')
+  }
+  return null
+}
 
 
 /**

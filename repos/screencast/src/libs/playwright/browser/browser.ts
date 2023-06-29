@@ -372,7 +372,7 @@ getBrowser.creatingBrowser = false
 
 /**
  * Starts browser using playwright
- * See {@link https://playwright.dev/docs/api/class-browsertype#browser-type-launch|Playwright Docs} for more info
+ * See https://playwright.dev/docs/api/class-browsertype#browser-type-launch|Playwright Docs for more info
  * @function
  * @public
  */
@@ -454,7 +454,7 @@ export const getPWComponents = async (
 ) => {
   const pwComponents = checkInternalPWContext(getBrowserType(config.type as EBrowserType))
 
-  return pwComponents.page
+  return pwComponents?.page
     ? pwComponents
     : await getPage(config, undefined, initialUrl)
 }

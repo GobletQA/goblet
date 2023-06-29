@@ -6,6 +6,7 @@ import {
   defaultCookieFile,
   saveContextCookie
 } from '@GTU/Playwright'
+import {isStr} from '@keg-hub/jsutils'
 
 /**
  * Checks that the page title is `title`
@@ -13,8 +14,9 @@ import {
  */
 export const savePageCookie = async (name:boolean|string, ctx:TStepCtx) => {
   const context = await getContext()
+  const loc = isStr(name) ? name : undefined
 
-  return await saveContextCookie(context, name)
+  return await saveContextCookie(context, loc)
 }
 
 const meta = {

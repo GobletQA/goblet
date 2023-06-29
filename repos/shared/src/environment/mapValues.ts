@@ -20,7 +20,6 @@ type TMapValues = {
  */
 const setValue = (acc:TValuesObj, key:string, value:any) => {
   acc[key] = value
-  acc[camelCase(key)] = value
 
   return acc
 }

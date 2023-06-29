@@ -1,11 +1,13 @@
 import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
+import type { Repo } from '@gobletqa/shared/src/repo'
 
-import { noOpObj } from '@keg-hub/jsutils'
+import { limbo, noOpObj } from '@keg-hub/jsutils'
 import { actionBrowser } from '@GSC/libs/playwright'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
+import { loadRepoFromReq } from '@gobletqa/shared/middleware/setupRepo'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 /**
@@ -14,10 +16,23 @@ import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
  */
 const browserAction:RequestHandler = asyncWrap(async (req:JWTRequest, res:Response) => {
   const { body } = req
-  const { ref, actions, ...browser } = body
+  const {
+    ref,
+    actions,
+    repo:repoBody,
+    ...browser
+  } = body
+
+  req.body = repoBody
+  const [__, repo] = await limbo<Repo>(loadRepoFromReq(req))
+
   const browserConf = joinBrowserConf(browser)
 
-  await actionBrowser({ ref, actions, id: req.auth.userId }, browserConf)
+  await actionBrowser(
+    { ref, actions, id: req.auth.userId },
+    browserConf,
+    repo
+  )
 
   return apiRes(res, noOpObj, 200)
 })

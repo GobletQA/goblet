@@ -1,19 +1,41 @@
-import type { TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
-import type { TGitData, TRepoOpts } from '@gobletqa/workflows/types/shared.types'
+import type { TGitData, TRepoOpts, TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
+
 
 import { git, RepoWatcher } from '../git'
 import { Logger } from '@keg-hub/cli-utils'
 import { omitKeys, wait } from '@keg-hub/jsutils'
+import { repoSecrets } from '../repo/repoSecrets'
 import { getRepoName } from '../utils/getRepoName'
 import { failResp, successResp } from './response'
 import { copyTemplate } from '../utils/copyTemplate'
 import { createRepoWatcher } from '../repo/mountRepo'
+import { gobletLoader } from '@gobletqa/shared/libs/loader'
 import { configureGitOpts } from '../utils/configureGitOpts'
 
-// TODO: Figure out how to load this from shared repo. May need to more to diff location
-// Maybe create a gobletConfig repo - Dedicating to loading the config
-import { configAtPath } from '@gobletqa/shared/goblet'
+const setupWatcher = async (gitOpts:TGitOpts,) => {
+  Logger.log(`Checking for repo watcher at path ${gitOpts.local}...`)
+  const watcher = RepoWatcher.getWatcher(gitOpts.local)
 
+  watcher
+    ? Logger.log(`Found existing watcher at path ${gitOpts.local}`)
+    : createRepoWatcher(gitOpts)
+
+  Logger.log(`Waiting 1 second for watcher to initialize...`)
+  await wait(1000)
+}
+
+
+const getGitData = async (
+  args:TWFArgs,
+  gitArgs:TGitOpts,
+) => {
+
+  const token = (gitArgs && gitArgs.token) || git.loadToken(args)
+  const gitOpts = gitArgs || (await configureGitOpts({ ...args, token }))
+  const gitData = omitKeys(gitArgs, ['email', 'token']) as TGitData
+
+  return { gitData, gitOpts }
+}
 
 /**
  * Workflow that creates the folder structure for goblet (templates/repo/default-template)
@@ -29,51 +51,43 @@ export const setupGoblet = async (
 
   Logger.subHeader(`Running Setup Goblet Workflow`)
 
-  const token = (gitArgs && gitArgs.token) || (await git.loadToken(args))
-  gitArgs = gitArgs || (await configureGitOpts({ ...args, token }))
-  const gitOpts = omitKeys(gitArgs, ['email', 'token']) as TGitData
+  const {
+    gitOpts,
+    gitData
+  } = await getGitData(args, gitArgs)
 
   const isMounted = mounted || (await git.exists(args))
   if (!isMounted)
-    return failResp({ setup: false }, `Repo ${gitArgs.remote} is not connected`)
+    return failResp({ setup: false }, `Repo ${gitOpts.remote} is not connected`)
 
-  Logger.log(`Checking for repo watcher at path ${gitArgs.local}...`)
-  const watcher = RepoWatcher.getWatcher(gitArgs.local)
-
-  watcher
-    ? Logger.log(`Found existing watcher at path ${gitArgs.local}`)
-    : createRepoWatcher(gitArgs)
-
-  Logger.log(`Waiting 1 second for watcher to initialize...`)
-  await wait(1000)
+  await setupWatcher(gitOpts)
 
   Logger.log(`Checking goblet configuration...`)
-  const hasGoblet = await copyTemplate(gitArgs.local, args.repoTemplate)
+  const hasGoblet = await copyTemplate(
+    gitData.local,
+    args.repoTemplate
+  )
 
   if (!hasGoblet)
     return failResp(
       { setup: false },
-      `Goblet could not be created or loaded for repo ${gitArgs.remote}`
+      `Goblet could not be created or loaded for repo ${gitOpts.remote}`
     )
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = await configAtPath(gitArgs.local)
+  const gobletConfig = gobletLoader({ basePath: gitOpts.local })
+  if(!gobletConfig)
+    return failResp({ setup: false }, `Could not load goblet.config for mounted repo`)
 
-  return gobletConfig
-    ? successResp(
-        { setup: true },
-        {
-          repo: {
-            ...gobletConfig,
-            git:gitOpts,
-            name: getRepoName(gitArgs.remote),
-          } as TRepoOpts,
-        },
-        `Finished running Setup Goblet Workflow`
-      )
-    : failResp(
-        { setup: false },
-        `Could not load goblet.config for mounted repo`
-      )
+  const repo = {
+    ...gobletConfig,
+    git:gitData,
+    name: getRepoName(gitOpts.remote),
+  } as TRepoOpts
+
+  const secretsResp = await repoSecrets(gitOpts, repo)
+
+  return secretsResp
+    || successResp({ setup: true }, { repo }, `Finished running Setup Goblet Workflow`)
 }
 

@@ -16,7 +16,7 @@ const getPm2Status = async () => {
   let status = {}
   pm2List.map(
     (item) =>
-      (status = { 'PM2 Daemon      ': { status: RUNNING, info: `PID: ${item.pid}` } })
+      (status = { 'PM2 Daemon      ': { status: RUNNING, info: `PID: ${(item  as any).pid}` } })
   )
 
   return status

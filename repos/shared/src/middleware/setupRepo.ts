@@ -5,6 +5,8 @@ import { Repo } from '@GSH/repo/repo'
 import { asyncWrap } from '@GSH/express'
 import { AppRouter } from '@GSH/express/appRouter'
 import { pickKeys, deepMerge } from '@keg-hub/jsutils'
+import {TWFGobletConfig} from '@gobletqa/workflows/types'
+
 
 /**
  * Gets the git keys off the request for all request types
@@ -18,6 +20,24 @@ export const getRepoGit = ({ query, params, body }:JWTRequest) => {
   ])
 }
 
+
+export const loadRepoFromReq = async (
+  req:JWTRequest,
+) => {
+  const config:TWFGobletConfig = req.app.locals.config
+  const repoGit = getRepoGit(req)
+
+  if (!repoGit || !repoGit.local)
+    throw new Error(`Endpoint requires a locally mounted path, I.E. /repos/:repo-name/*`)
+
+  const { iat, exp, ...user } = req.auth
+  const { repo } = await Repo.status(config, { ...repoGit, ...user })
+
+  if (!repo) throw new Error(`Requested repo does not exist`)
+
+  return repo
+}
+
 /**
  * Finds the currently active repo for the request
  * Then ensures it's loaded on the res.locals.repo property
@@ -29,20 +49,7 @@ const findRepo = asyncWrap(async (req:JWTRequest, res:Response, next:NextFunctio
   if (req.originalUrl.startsWith(`/repo/${req.params.repo}/reports/`))
     return next()
 
-  const config = req.app.locals.config
-  const repoGit = getRepoGit(req)
-
-  if (!repoGit || !repoGit.local)
-    throw new Error(
-      `Endpoint requires a locally mounted path, I.E. /repo/:repo-name/*`
-    )
-
-  // @ts-ignore
-  const { iat, exp, ...user } = req.auth
-  const { repo } = await Repo.status(config, { ...repoGit, ...user })
-
-  if (!repo) throw new Error(`Requested repo does not exist`)
-
+  const repo = await loadRepoFromReq(req)
   res.locals.repo = repo
 
   next()

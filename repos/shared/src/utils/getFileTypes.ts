@@ -19,6 +19,7 @@ const normalizePaths = paths => {
     featuresDir,
     waypointDir,
     artifactsDir,
+    environmentsDir,
     GOBLET_UNIT_DIR,
     GOBLET_WORK_DIR,
     GOBLET_STEPS_DIR,
@@ -27,17 +28,19 @@ const normalizePaths = paths => {
     GOBLET_FEATURES_DIR,
     GOBLET_WAYPOINT_DIR,
     GOBLET_ARTIFACTS_DIR,
+    GOBLET_ENVIRONMENTS_DIR
   } = paths
 
   return {
     workDir: workDir || GOBLET_WORK_DIR,
-    unitDir: unitDir || GOBLET_UNIT_DIR || `units`,
+    unitDir: unitDir || GOBLET_UNIT_DIR || `unit`,
     stepsDir: stepsDir || GOBLET_STEPS_DIR || `bdd/steps`,
     supportDir: supportDir || GOBLET_SUPPORT_DIR || `bdd/support`,
     featuresDir: featuresDir || GOBLET_FEATURES_DIR || `bdd/features`,
     waypointDir: waypointDir || GOBLET_WAYPOINT_DIR || `waypoints`,
     artifactsDir: artifactsDir || GOBLET_ARTIFACTS_DIR || `artifacts`,
     reportsDir: reportsDir || GOBLET_REPORTS_DIR || `artifacts/reports`,
+    environmentsDir: environmentsDir || GOBLET_ENVIRONMENTS_DIR || `environments`,
   }
 }
 
@@ -72,6 +75,11 @@ export const getFileTypes = (
       ext: `json`,
       type: `json`,
       location: baseDir,
+    },
+    env: {
+      ext: `env`,
+      type: `env`,
+      location: path.join(baseDir, locations.environmentsDir),
     },
     report: {
       ext: `html`,

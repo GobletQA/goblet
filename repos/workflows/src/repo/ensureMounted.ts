@@ -21,21 +21,7 @@ export const ensureMounted = async (
     await mountRepo(gitOpts)
     gitState.mounted = true
   }
-
-  /**
-   * There's some kind of odd caching issue going on
-   * When a previous repo was mounted, then unmounted
-   * The next mounted repo throws errors when syncing the file system
-   * It can't seem to find the file on disk even though they exist
-   *
-   * We should be able to just check the gitState.mounted state
-   * And if true, skip this part
-   * But due to the above caching issue, we have to un-mount, then re-mount
-   * Which seems to fix the cache issue
-   */
-  // if(!gitState.mounted && (!gitState.repo || !gitState.branch)){
-
-  if(!gitState.repo || !gitState.branch){
+  else if(!gitState.repo || !gitState.branch){
 
     // Only log this when wrong repo is mounted, not when mounting and re-mounting
     if(!gitState.mounted)
