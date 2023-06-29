@@ -15,7 +15,7 @@ import {
 //   // saveContextCookie,
 //   contextStorageLoc,
 //   saveContextStorageState,
-// } from '@gobletqa/testUtils/playwright/browserCookie'
+// } from '@gobletqa/test-utils/playwright/browserCookie'
 
 
 export const browserRestart = (app:Express) => {

@@ -2,7 +2,7 @@
   "name": "@gobletqa/test-utils",
   "version": "0.0.0",
   "description": "Utility methods to help writing tests on with GobletQA",
-  "main": "src/index.js",
+  "main": "index.js",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"

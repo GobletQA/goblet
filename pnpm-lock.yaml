@@ -548,6 +548,9 @@ importers:
       '@gobletqa/shared':
         specifier: '*'
         version: link:../shared
+      '@gobletqa/test-utils':
+        specifier: '*'
+        version: link:../testUtils
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1

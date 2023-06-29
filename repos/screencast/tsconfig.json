@@ -29,8 +29,8 @@
       "@gobletqa/shared/*": ["../shared/src/*"],
       "@gobletqa/screencast": ["src"],
       "@gobletqa/screencast/*": ["src/*"],
-      "@gobletqa/testUtils": ["../testUtils/src"],
-      "@gobletqa/testUtils/*": ["../testUtils/src/*"],
+      "@gobletqa/test-utils": ["../testUtils/src"],
+      "@gobletqa/test-utils/*": ["../testUtils/src/*"],
       "@GLogs/*": ["../../logs/*"],
       "@GRepos/*": ["../../repos/*"],
       "@GConfigs/*": ["../../configs/*"],
@@ -51,7 +51,10 @@
     "../shared",
     "../testUtils",
     "../workflows",
-    "src/bs.ts"
+    "src/bs.ts",
+    "../shared",
+    "../testUtils",
+    "../workflows"
   ],
   "exclude": ["node_modules", "dist"]
 }
