@@ -46,7 +46,6 @@
   "dependencies": {
     "@gobletqa/shared": "*",
     "@gobletqa/latent": "*",
-    "@gobletqa/test-utils": "*",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/spawn-cmd": ">=0.3.2",

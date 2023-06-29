@@ -84,4 +84,12 @@ On every page load
 
 * Monaco Editor
   * Loading Decorators not being cleared when a the test fails
-  * 
+
+
+* Add better descriptions to step meta-data
+* Add step to set the sizes of the browser
+  * Works in tandem with the move mouse to x-y position
+* Add step to track the state of a video on the page
+* Add step to reset the browser context
+* Add step to upload video
+* Be able to reuse blocks

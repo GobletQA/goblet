@@ -34,9 +34,11 @@ export const ExpressionKinds = deepFreeze<Record<string, string>>(
     `selector`,
     `element`,
     `select`,
+    `media`, // - video || audio element
     `className`, // - element style rule
     `style`, // - element style rule
     `attribute`, // - Any element attribute
-    `checkbox`, // - checked || unchecked/ 
+    `checkbox`, // - checked || unchecked/
+    `options`, // - Dropdown select from options
   ])
 )
