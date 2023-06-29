@@ -1,14 +1,19 @@
-import type { TValueGroup } from '@types'
+import type { TValueGroup, TRepoApiObj } from '@types'
+
 import { HttpMethods } from '@constants'
 import { apiRequest } from '@utils/api/apiRequest'
+import { repoApiObj } from '@utils/repo/repoApiObj'
 
 type TServiceStatus = {
+  repo?:TRepoApiObj
   browser: TValueGroup
   [key:string]: any
 }
 
-type TBrowserAction = {
-  [key:string]: any
+export type TBrowserAction = {
+  ref:`page`|`context`|`browser`,
+  actions: Record<any, any>[]
+  repo?:TRepoApiObj
 }
 
 class ScreencastApi {
@@ -33,6 +38,8 @@ class ScreencastApi {
   }
 
   status = async (browserOpts:TValueGroup) => {
+    browserOpts.repo = repoApiObj(browserOpts.repo)
+
     return await apiRequest({
       params: browserOpts,
       method: HttpMethods.GET,
@@ -49,6 +56,8 @@ class ScreencastApi {
   }
 
   restart = async (browserOpts:TValueGroup) => {
+    browserOpts.repo = repoApiObj(browserOpts.repo)
+
     return await apiRequest({
       params: browserOpts,
       method: HttpMethods.POST,
@@ -57,6 +66,8 @@ class ScreencastApi {
   }
 
   action = async (actionOpts:TBrowserAction) => {
+    actionOpts.repo = repoApiObj(actionOpts.repo)
+
     return await apiRequest({
       params: actionOpts,
       method: HttpMethods.POST,

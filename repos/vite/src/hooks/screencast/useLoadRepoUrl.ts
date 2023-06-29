@@ -19,7 +19,7 @@ export const useLoadRepoUrl = (repo?:any) => {
       def: GobletQAUrl
     })
 
-    return pageService.normalize(url)
+    return url && pageService.normalize(url)
   }, [repo])
 
   const loadRepoUrl = useCallback(async () => {

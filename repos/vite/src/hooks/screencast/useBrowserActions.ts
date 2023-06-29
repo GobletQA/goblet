@@ -29,6 +29,8 @@ export const useBrowserActions = (props:THBrowserActions) => {
     if(!inputRef?.current || key !== `Enter`) return
 
     const newUrl = pageService.normalize(inputRef?.current?.value)
+    if(!newUrl) return
+
     window.getSelection()?.removeAllRanges()
     inputRef.current.blur()
     // When the url is directly added, reset the forward amount

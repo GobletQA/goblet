@@ -1,4 +1,5 @@
 import type { SocketService } from '@services/socketService'
+import {TRepoApiObj} from './repo.types'
 
 export type TSockCmdObj = {
   id:string
@@ -51,4 +52,9 @@ export type TSocketService = TEndpointConf & {
   events:TSocketEvtsFE
   query: Record<string, string>
   extraHeaders: Record<string, string>
+}
+
+export type TSocketEmitData = {
+  repo?:TRepoApiObj
+  [K:string]:any
 }

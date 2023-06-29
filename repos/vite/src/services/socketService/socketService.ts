@@ -1,5 +1,5 @@
 import type { Socket } from 'socket.io-client'
-import type { TSockCmds, TSocketService } from '@types'
+import type { TSockCmds, TSocketEmitData, TSocketService } from '@types'
 
 import io from 'socket.io-client'
 import { events } from './events'
@@ -20,9 +20,9 @@ import {
   deepMerge,
   snakeCase,
 } from '@keg-hub/jsutils'
+import { repoApiObj } from '@utils/repo/repoApiObj'
 import {getAppData} from '@utils/store/getStoreData'
 import {signOutManually} from '@actions/admin/user/signOutManually'
-
 
 const {
   WSReconnectInterval,
@@ -193,7 +193,9 @@ export class SocketService {
    * Sends an event to the connected backend through websocket ( Like an REST API call )
    * @memberof SocketService
    */
-  emit = (event:string, data:Record<any, any>) => {
+  emit = (event:string, data:TSocketEmitData={}) => {
+    data.repo = repoApiObj(data.repo)
+
     if (!this.socket)
       return console.error(`Socket not connected, cannot emit socket event!`)
 

@@ -72,4 +72,3 @@ export type TGScreencastConfig = {
   screencast: TScreencastConfig
   container?: TSCContainerConfig
 }
-

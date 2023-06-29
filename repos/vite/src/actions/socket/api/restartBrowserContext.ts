@@ -20,6 +20,10 @@ export const restartBrowserContext = async (options:Record<string, any> = emptyO
     def: GobletQAUrl
   })
 
+  
+  const normal = pageService.normalize(url)
+  if(!normal) return
+
   WSService.emit(SocketMsgTypes.BROWSER_RESTART, {
     url: pageService.normalize(url),
     browser: {

@@ -10,7 +10,7 @@ export class PageService {
 
   action = async (act:string, props:any|any[], log?:boolean) => {
     return await actionBrowser({
-      ref: 'page',
+      ref: `page`,
       actions: [{
         action: act,
         props: ensureArr(props),
@@ -30,7 +30,13 @@ export class PageService {
    * Normalizes a url string to ensure it's consistent
    */
   normalize = (url:string) => {
-    return new URL(this.ensureProtocol(url)).toString()
+    try {
+      return new URL(this.ensureProtocol(url)).toString()
+    }
+    catch(err){
+      console.log(err)
+      return false
+    }
   }
 
   /**
@@ -63,7 +69,8 @@ export class PageService {
    * Tell playwright to navigate to a specific page
    */
   goto = async (url:string, log?:boolean) => {
-    return await this.action(`goto`, this.normalize(url), log)
+    const normal = this.normalize(url)
+    return normal && await this.action(`goto`, normal, log)
   }
 }
 

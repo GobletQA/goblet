@@ -30,7 +30,7 @@ const getGitData = async (
   gitArgs:TGitOpts,
 ) => {
 
-  const token = (gitArgs && gitArgs.token) || (await git.loadToken(args))
+  const token = (gitArgs && gitArgs.token) || git.loadToken(args)
   const gitOpts = gitArgs || (await configureGitOpts({ ...args, token }))
   const gitData = omitKeys(gitArgs, ['email', 'token']) as TGitData
 

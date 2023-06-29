@@ -25,6 +25,7 @@ export const DefWorld:TWorldConfig = deepFreeze({
   data: {},
   $merge: [],
   $alias: {},
+  $headers: {},
   context: {},
 })
 

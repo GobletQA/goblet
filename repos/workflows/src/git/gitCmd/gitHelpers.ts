@@ -9,7 +9,7 @@ import path from 'path'
 import { URL } from 'url'
 import { git } from './gitCmd'
 import { Logger } from '@keg-hub/cli-utils'
-import { isObj, exists } from '@keg-hub/jsutils'
+import { isObj, exists, wait } from '@keg-hub/jsutils'
 import { EProvider } from '@gobletqa/workflows/types'
 import { throwErr } from '@gobletqa/workflows/utils/throwErr'
 
@@ -117,16 +117,19 @@ export const hasGitError = (
  * This causes issues when trying to remount a repo over a previous one
  * As a work around we loop check if the location exists, until it does not
  */
-export const loopNoExistsCheck = async (location:string, checks:number=0) => {
+export const loopNoExistsCheck = async (
+  location:string,
+  checks:number=0
+) => {
   return await new Promise(async (res, rej) => {
     const exists = await git.exists(null, location)
     if(!exists) return res(true)
 
-    if(checks > 4)
+    if(checks > 2)
       return rej(`Failed to validate repo was removed from disk`)
     
-    const count = checks + 1
-    setTimeout(() => res(loopNoExistsCheck(location, count)), 500)
+    await wait(50)
+    return await loopNoExistsCheck(location, checks + 1)
   })
 }
 

@@ -29,6 +29,8 @@
       "@gobletqa/shared/*": ["../shared/src/*"],
       "@gobletqa/screencast": ["src"],
       "@gobletqa/screencast/*": ["src/*"],
+      "@gobletqa/testUtils": ["../testUtils/src"],
+      "@gobletqa/testUtils/*": ["../testUtils/src/*"],
       "@GLogs/*": ["../../logs/*"],
       "@GRepos/*": ["../../repos/*"],
       "@GConfigs/*": ["../../configs/*"],

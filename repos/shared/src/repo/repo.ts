@@ -11,6 +11,7 @@ import type {
   TRepoGraphRepos,
   TRepoFromCreate,
   TRepoMountStatus,
+  TGScreencastConfig,
   TRepoFromWorkflow,
 } from '../types'
 
@@ -28,6 +29,12 @@ import {
   initializeGoblet,
   disconnectGoblet,
 } from '@gobletqa/workflows'
+
+
+type TRepoWorldRefresh = {
+  environment:string
+  refreshEnv?:boolean
+}
 
 /**
  * Class variation of the a goblet config
@@ -215,6 +222,7 @@ export class Repo {
   environment:string
   fileTypes:TFileTypes
   recorder: TRecorderOpts
+  screencast?:TGScreencastConfig
 
   // Temporary - this should be remove
   internalPaths:TInternalPaths
@@ -260,9 +268,15 @@ export class Repo {
    * @type {function}
    *
    */
-  setEnvironment = (environment?:string) => {
+  setEnvironment = (environment?:string, refreshWld:boolean=true) => {
     this.environment = environment || process.env.GOBLET_ENV || `develop`
     if(!process.env.GOBLET_ENV) process.env.GOBLET_ENV = this.environment
+    
+    // Pass false to ensure we don't get into an infinite loop
+    refreshWld && this.refreshWorld({
+      refreshEnv: false,
+      environment: this.environment,
+    })
   }
 
   /**
@@ -273,17 +287,17 @@ export class Repo {
    * @return {Object} - The reloaded repo.world object
    */
   refreshWorld = async (
-    opts:Record<`environment`, string>=emptyObj as Record<`environment`, string>
+    opts:TRepoWorldRefresh=emptyObj as TRepoWorldRefresh
   ) => {
-
-    const { environment } = opts
-    this.setEnvironment(environment)
+    const { environment, refreshEnv } = opts
+    // Pass false to ensure we don't get into an infinite loop
+    refreshEnv && this.setEnvironment(environment, false)
 
     // Force refresh of the world object
     this.world = undefined
 
     // Then update parkin's instance of the world
-    this.parkin.world = this.world
+    if(this.parkin) this.parkin.world = this.world
 
     return this.world
   }
