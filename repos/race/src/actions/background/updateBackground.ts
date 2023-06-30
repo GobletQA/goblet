@@ -1,4 +1,4 @@
-import type { TRaceFeature, TRaceBackground } from '@GBR/types'
+import type { TRaceFeature, TRaceBackground, TUpdateFeatureOpts } from '@GBR/types'
 
 import { findRule } from '@GBR/utils/find'
 import { logNotFound } from '@GBR/utils/logging'
@@ -12,6 +12,7 @@ export type TUpdateBackground = {
   persist?:Boolean
   feature?:TRaceFeature
   background:TRaceBackground
+  featureOpts?:TUpdateFeatureOpts
 }
 
 
@@ -19,7 +20,8 @@ const toRule = (props:TUpdateBackground, feature:TRaceFeature) => {
   const {
     persist,
     parentId,
-    background
+    background,
+    featureOpts
   } = props
 
   const {
@@ -33,16 +35,16 @@ const toRule = (props:TUpdateBackground, feature:TRaceFeature) => {
   rules[ruleIdx as number] = rule
 
   const updated = {...feature, rules}
-  persist !== false && updateFeature(updated, { skipAudit: true })
-  
+  persist !== false && updateFeature(updated, { skipAudit: true, ...featureOpts })
+
   return updated
 }
 
 const toFeature = (props:TUpdateBackground, feature:TRaceFeature) => {
-  const { persist, background } = props
+  const { persist, background, featureOpts } = props
   
   const updated = {...feature, background: {...feature?.background, ...background}}
-  persist !== false && updateFeature(updated, { skipAudit: true })
+  persist !== false && updateFeature(updated, { skipAudit: true, ...featureOpts })
 
   return updated
 }

@@ -14,6 +14,7 @@ export type TRepoContent = {
   fileTree:TRootPaths
   status:TRepoMountStatus
   definitions:TDefinitionFileModelList
+  warning?:{ message:string, type?:string }
 }
 
 export type TRepoPaths = {

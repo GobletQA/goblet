@@ -101,6 +101,7 @@ const tagList = async (
   return await gitTagCmd(gitOpts, gitArgs, cmdOpts)
 }
 
+// git cat-file blob goblet-do-not-delete
 const tagCat = async (
   tagOpts:TTagCatOpts,
   cmdOpts?:TRunCmdOpts
@@ -112,7 +113,6 @@ const tagCat = async (
   } = buildTagArgs(tagOpts)
   
   gitArgs.push(`blob`, tag)
-  
   return await gitTagCmd(gitOpts, gitArgs, cmdOpts, `cat-file`)
 }
 

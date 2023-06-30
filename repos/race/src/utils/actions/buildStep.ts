@@ -6,9 +6,8 @@ import type {
 
 
 import { emptyArr, exists } from '@keg-hub/jsutils'
-
-import { stepFactory } from '@GBR/factories/stepFactory'
 import { factoryFailed } from '@GBR/utils/logging'
+import { stepFactory } from '@GBR/factories/stepFactory'
 
 const prefix = `[Add Step]`
 

@@ -30,7 +30,7 @@ export const Background = (props:TBackground) => {
   const {
     onStepMove,
     onStepChange,
-    onCopyBackground,
+    // onCopyBackground,
     onRemoveBackground,
     onAddBackgroundStep,
     onRemoveBackgroundStep,
@@ -59,7 +59,7 @@ export const Background = (props:TBackground) => {
     editingTitle,
     toggleEditTitle,
     item: background,
-    onCopy: onCopyBackground,
+    // onCopy: onCopyBackground,
     onRemove: onRemoveBackground,
     onAddStep: onAddBackgroundStep,
     type: ESectionType.background,

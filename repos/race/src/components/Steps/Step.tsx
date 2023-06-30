@@ -13,6 +13,7 @@ import { Expressions } from '../Expressions'
 import { SelectAction } from './SelectAction'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
 import { useStepAudit } from '@GBR/hooks/steps/useStepAudit'
+import { copyOperation } from '@GBR/actions/operations/copyOperation'
 import { useSectionActions } from '@GBR/hooks/editor/useSectionActions'
 import { collapseAllExcept } from '@GBR/actions/general/collapseAllExcept'
 import {
@@ -66,7 +67,7 @@ export const Step = (props:TStep) => {
     expressions
   } = useStepAudit(props)
 
-  const onCopy = () => {}
+  const onCopy = () => copyOperation({ data: step })
   const onStepChange = (updated:TRaceStep) => onChange?.(updated, parent.uuid)
   const onRemoveStep = () => onRemove?.(step.uuid, parent.uuid)
   const onCollapseExcept = () => collapseAllExcept(step.uuid, parent?.uuid, gran?.uuid)

@@ -241,7 +241,7 @@ env:
 
   # --- CONTAINER TIMEOUT ENVs --- #
   GB_SC_IDLE_DEBUG: true
-  GB_SC_IDLE_TIMEOUT_ACTIVE: true
+  GB_SC_IDLE_TIMEOUT_ACTIVE: false
   # Interval in seconds that the inactive check will run
   GB_SC_IDLE_INTERVAL: 20
   # Number of times the inactive check can be true before shutting down the container

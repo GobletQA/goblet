@@ -27,12 +27,17 @@ const browserAction:RequestHandler = asyncWrap(async (req:JWTRequest, res:Respon
   const [__, repo] = await limbo<Repo>(loadRepoFromReq(req))
 
   const browserConf = joinBrowserConf(browser)
-
-  await actionBrowser(
-    { ref, actions, id: req.auth.userId },
-    browserConf,
-    repo
-  )
+  const resp:Record<any, any> = {}
+  try {
+    await actionBrowser(
+      { ref, actions, id: req.auth.userId },
+      browserConf,
+      repo
+    )
+  }
+  catch(err){
+    resp.warning = { message: err.message, type: `BROWSER_ACTION` }
+  }
 
   return apiRes(res, noOpObj, 200)
 })

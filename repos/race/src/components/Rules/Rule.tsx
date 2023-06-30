@@ -61,7 +61,7 @@ export const Rule = (props:TRule) => {
   })
   
   const actions = useSectionActions({
-    onCopy,
+    // onCopy,
     onRemove,
     item: rule,
     onAddScenario,

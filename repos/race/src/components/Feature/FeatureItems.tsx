@@ -31,10 +31,10 @@ export type TFeatureItem = Omit<TMenuItem, `onCloseMenu`|`closeMenu`|`onClick`|`
   text:string
   description?:ReactNode
   Icon:ComponentType<any>
-  key:ESectionType|ESectionExt | `mode` | `audit`
-  type: ESectionType|ESectionExt | `mode` | `audit`
+  key:ESectionType|ESectionExt | `mode` | `audit`|`simple-paste`
+  type: ESectionType|ESectionExt | `mode` | `audit`|`simple-paste`
   variant?:"text" | "outlined" | "contained" | undefined
-  featureKey:keyof TRaceFeature | `steps` | `general` | `world` | `mode` | `audit`
+  featureKey:keyof TRaceFeature | `steps` | `general` | `world` | `mode` | `audit`|`simple-paste`
   onClick: (evt:MouseEvent<HTMLElement>, featureId:string, featureType:string) => void
 }
 

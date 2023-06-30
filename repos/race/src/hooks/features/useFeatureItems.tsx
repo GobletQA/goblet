@@ -1,10 +1,12 @@
 import type { MouseEvent } from 'react'
-import type { TRaceScenario } from '@GBR/types'
+import type { TRaceScenario, TRaceStep } from '@GBR/types'
 import type { TFeatureItem } from '@GBR/components/Feature/FeatureItems'
 
 import { useMemo } from 'react'
 import { EEditorMode } from '@GBR/types'
-import { useEditor, useSettings } from '@GBR/contexts'
+import {capitalize} from '@keg-hub/jsutils'
+import {PasteIcon} from '@gobletqa/components'
+import { useEditor, useOperations, useSettings } from '@GBR/contexts'
 import { settingChange } from '@GBR/actions/settings/settingChange'
 import {
   RuleItem,
@@ -21,11 +23,13 @@ import {
 export type THFeatureItems = {
   scenario?:TRaceScenario
   onSimpleAdd?:() => void
+  onSimplePaste?:() => void
 }
 
 export const useFeatureItems = (props:THFeatureItems) => {
 
-  const { onSimpleAdd } = props
+  const { onSimpleAdd, onSimplePaste } = props
+  const { operations } = useOperations()
   const { settings, toggleMeta } = useSettings()
   const { feature, onAuditFeature } = useEditor()
   const advMode = settings.mode === EEditorMode.advanced
@@ -80,6 +84,22 @@ export const useFeatureItems = (props:THFeatureItems) => {
           onClick:(evt:MouseEvent<HTMLElement>) => onSimpleAdd?.()
         }]
 
+    if(onSimplePaste){
+      const pasteType = (operations?.paste as TRaceStep)?.step
+        ? `Step`
+        : capitalize(operations?.paste?.type || `Item`)
+      
+      addItems.push({
+        Icon: PasteIcon,
+        key: `simple-paste`,
+        type: `simple-paste`,
+        text: `Paste ${pasteType}`,
+        featureKey: `simple-paste`,
+        onClick:(evt:MouseEvent<HTMLElement>) => onSimplePaste?.()
+      })
+    }
+
+
     return [
       ...addItems,
       auditItem,
@@ -89,7 +109,9 @@ export const useFeatureItems = (props:THFeatureItems) => {
     advMode,
     feature,
     onSimpleAdd,
+    onSimplePaste,
     onAuditFeature,
+    operations.paste,
     settings?.displayMeta,
   ])
 }

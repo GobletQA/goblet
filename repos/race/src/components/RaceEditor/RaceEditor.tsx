@@ -7,6 +7,7 @@ import {
   FeatureProvider,
   StepDefsProvider,
   SettingsProvider,
+  OperationsProvider,
 } from '@GBR/contexts'
 
 export const RaceEditor = (props:TRaceEditorProps) => {
@@ -21,17 +22,19 @@ export const RaceEditor = (props:TRaceEditorProps) => {
       {...props?.settings}
       onSettingChange={props.onSettingChange}
     >
-      <ParkinProvider
-        world={props.world}
-        defs={props.definitions}
-        onWorldChange={props.onWorldChange}
-      >
-        <FeatureProvider initialFeature={initialFeature} >
-          <StepDefsProvider defs={props.definitions} >
-            <Editor {...props} initialFeature={initialFeature} />
-          </StepDefsProvider>
-        </FeatureProvider>
-      </ParkinProvider>
+      <OperationsProvider>
+        <ParkinProvider
+          world={props.world}
+          defs={props.definitions}
+          onWorldChange={props.onWorldChange}
+        >
+          <FeatureProvider initialFeature={initialFeature} >
+            <StepDefsProvider defs={props.definitions} >
+              <Editor {...props} initialFeature={initialFeature} />
+            </StepDefsProvider>
+          </FeatureProvider>
+        </ParkinProvider>
+      </OperationsProvider>
     </SettingsProvider>
   )
 
