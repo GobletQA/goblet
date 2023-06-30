@@ -14,6 +14,7 @@ import { SelectAction } from './SelectAction'
 import { useStepCP } from '@GBR/hooks/steps/useStepCP'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
 import { useStepAudit } from '@GBR/hooks/steps/useStepAudit'
+import { copyOperation } from '@GBR/actions/operations/copyOperation'
 import { useSectionActions } from '@GBR/hooks/editor/useSectionActions'
 import { collapseAllExcept } from '@GBR/actions/general/collapseAllExcept'
 

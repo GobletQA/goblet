@@ -5,10 +5,10 @@ import type {
 } from '@GBR/types'
 
 
+import { EAstObject } from '@ltipton/parkin'
 import { emptyArr, exists } from '@keg-hub/jsutils'
 import { factoryFailed } from '@GBR/utils/logging'
 import { stepFactory } from '@GBR/factories/stepFactory'
-import {EAstObject} from '@ltipton/parkin'
 
 const prefix = `[Add Step]`
 

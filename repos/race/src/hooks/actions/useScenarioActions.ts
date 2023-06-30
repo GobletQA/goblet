@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { EDndPos } from '@gobletqa/components'
 import { useOperations } from '@gobletqa/race/contexts'
 import { copyScenario } from '@GBR/actions/scenario/copyScenario'
-import { pasteOperation } from '@gobletqa/race/actions/operations/pasteOperation'
+import { pasteOperation } from '@GBR/actions/operations/pasteOperation'
 import { updateScenarioStepPos } from '@GBR/actions/scenario/updateScenarioStepPos'
 
 export type THScenarioActions = {
