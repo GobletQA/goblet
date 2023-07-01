@@ -150,7 +150,7 @@ export class Player {
       })
 
       const timeout = this.options?.playOptions?.testTimeout as number
-      timeout && this.page.setDefaultTimeout(timeout)
+      this.page.setDefaultTimeout(timeout || 30000)
 
       const extraHeaders = this.repo?.world?.$headers
       extraHeaders &&

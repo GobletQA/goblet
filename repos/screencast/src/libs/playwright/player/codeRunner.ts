@@ -64,7 +64,7 @@ export class CodeRunner {
   run = async (content:RunContent) => {
     this.PK = await setupParkin(this)
 
-    await this.PK.run(content, {})
+    await this.PK.run(content, { timeout: this.timeout })
     const results = await this.PTE.run() as TPlayerEventData[]
 
     // We only support 1 feature per file, so we only care about the first test result 

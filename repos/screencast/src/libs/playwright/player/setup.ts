@@ -6,9 +6,8 @@ import type { TPlayerTestEvent } from '@gobletqa/shared/types'
  * Which allows it to be referenced directly in step definitions
  */
 import expect from 'expect'
-
 import { Parkin } from '@ltipton/parkin'
-import { unset, omitKeys, emptyObj } from '@keg-hub/jsutils'
+import { unset, omitKeys } from '@keg-hub/jsutils'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { getDefinitions } from '@gobletqa/shared/repo/getDefinitions'
 import {
