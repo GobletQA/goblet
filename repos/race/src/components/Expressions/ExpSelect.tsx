@@ -4,7 +4,7 @@ import type { TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 
 import { useState } from 'react'
 import { ESectionType } from '@GBR/types'
-import { Input } from '@gobletqa/components'
+import { Select } from '@gobletqa/components'
 import { ExpressionMenu } from './ExpressionMenu'
 import { exists, emptyArr } from '@keg-hub/jsutils'
 import {
@@ -13,16 +13,17 @@ import {
   sharedHelperTextProps,
 } from '../Shared'
 
-export type TExpInput = ComponentProps<typeof Input> & {
-  step: TRaceStep
+export type TExpInput = ComponentProps<typeof Select> & {
+  step:TRaceStep
+  disabled:boolean
+  items?:TMenuItem[]
+  value:string|number
   expression:TExpPart
   parent:TRaceStepParent
-  disabled:boolean
-  value:string|number
-  items?:TMenuItem[]
+  defaultValue:string|number
 }
 
-const inputProps = {
+const selectProps = {
   ...sharedLabelProps,
   ...sharedHelperTextProps,
   inputSx: sharedInputStyles
@@ -32,12 +33,12 @@ const inputProps = {
  * **NOTICE** - Menu Item definitions are in the main frontend (vite) app
  * Look at file `src/hooks/race/ueContentMenu.ts`
  */
-export const ExpInput = (props:TExpInput) => {
+export const ExpSelect = (props:TExpInput) => {
   const {
     step,
-    parent,
     value,
-    onBlur,
+    parent,
+    options,
     onChange,
     expression,
     defaultValue,
@@ -45,26 +46,34 @@ export const ExpInput = (props:TExpInput) => {
     ...rest
   } = props
 
-  const [decorInputProps, setDecorInputProps] = useState<Partial<ComponentProps<typeof Input>>>({})
+  const [
+    decorInputProps,
+    setDecorInputProps
+  ] = useState<Partial<ComponentProps<typeof Select>>>({})
 
-  return (
-    <Input
-      {...inputProps}
-      {...rest}
-      {...decorInputProps}
-      onBlur={onBlur}
-      value={!exists(value) && !exists(defaultValue) ? `` : value}
-      decor={{
+  const decor = expression.decor !== false
+    ? {
         items,
         gran: parent,
         parent: step,
-        onChange: onBlur,
         active: expression,
+        onChange: onChange,
         Component: ExpressionMenu,
         type:ESectionType.expression,
         context: ESectionType.expression,
         setInputProps:setDecorInputProps,
-      }}
+      }
+    : undefined
+
+  return (
+    <Select
+      {...selectProps}
+      {...rest}
+      {...decorInputProps}
+      decor={decor}
+      onChange={onChange}
+      options={expression.options || options}
+      value={!exists(value) && !exists(defaultValue) ? `` : value}
     />
   )
 }

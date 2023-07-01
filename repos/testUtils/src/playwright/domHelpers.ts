@@ -49,6 +49,20 @@ export const runInBrowser = async (
 }
 
 
+export const mediaPlay = async (props:TMediaIsPlayingSel|TMediaIsPlayingLoc) => {
+  return await runInBrowser(props, (element) => {
+    return element instanceof HTMLMediaElement
+      && element.play()
+  })
+}
+
+export const mediaStop = async (props:TMediaIsPlayingSel|TMediaIsPlayingLoc) => {
+  return await runInBrowser(props, (element) => {
+    return element instanceof HTMLMediaElement
+      && element.pause()
+  })
+}
+
 export const mediaIsPlaying = async (props:TMediaIsPlayingSel|TMediaIsPlayingLoc) => {
   return await runInBrowser(props, (element) => {
     return element instanceof HTMLMediaElement

@@ -1,43 +1,41 @@
 
 import type { TStepCtx } from '@GTU/Types'
 
-import { Then } from '@GTU/Parkin'
-import { mediaIsPlaying, mediaIsFinished } from '@GTU/Playwright'
+import { When } from '@GTU/Parkin'
+import { mediaPlay, mediaStop, mediaIsPlaying } from '@GTU/Playwright'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
 
 
 enum EMediaPlayerState {
   playing=`playing`,
   stopped=`stopped`,
-  finished=`finished`
 }
+
 
 /**
  * Checks that the state of the media matches the passed in state
  * @param {string} selector - Element selector on the page
  */
-export const assertMediaState = async (
+export const setMediaState = async (
   selector:string,
   state:EMediaPlayerState,
   ctx:TStepCtx
 ) => {
   
   switch(state){
-    case EMediaPlayerState.finished: {
-      const isFinished = await mediaIsFinished({ selector })
-      if(!isFinished) throw new Error(`The media element ${selector} is not finished playing`)
-
-      return expect(isFinished).toBe(true)
-    }
     case EMediaPlayerState.stopped: {
+      await mediaStop({ selector })
+      
       const isPlaying = await mediaIsPlaying({ selector })
-      if(isPlaying) throw new Error(`The media element ${selector} is currently playing`)
+      if(isPlaying) throw new Error(`The media element ${selector} could not be stopped`)
 
       return expect(isPlaying).toBe(false)
     }
     case EMediaPlayerState.playing: {
+      await mediaPlay({ selector })
+
       const isPlaying = await mediaIsPlaying({ selector })
-      if(!isPlaying) throw new Error(`The media element ${selector} is currently stopped`)
+      if(!isPlaying) throw new Error(`The media element ${selector} could not be started`)
   
       return expect(isPlaying).toBe(true)
     }
@@ -45,21 +43,20 @@ export const assertMediaState = async (
 }
 
 const meta = {
-  name: `Assert Media State`,
-  module: `assertMediaState`,
+  race: true,
+  name: `Set Media State`,
+  module: `setMediaState`,
   alias: [
     `Stop`,
     `Play`,
     `Media`,
-    `Assert Media State`,
-    `Assert Video State`,
-    `Assert Audio State`,
-    `Validate Media`,
+    `Set Media State`,
+    `Set Video State`,
+    `Set Audio State`,
   ],
   examples: [
-    `Then the "#video" should be "playing"`,
-    `Then the ".stereo" should be "stopped"`,
-    `Then the ".musik-box" should be "finished"`,
+    `When I set the media "#video" state to "playing"`,
+    `When I set the media ".stereo" state to "stopped"`,
   ],
   description: `Asserts the the state of a HTML Media Element`,
   expressions: [
@@ -75,13 +72,12 @@ const meta = {
       example: `playing`,
       type: ExpressionTypes.string,
       kind: ExpressionKinds.options,
+      options: Object.values(EMediaPlayerState),
       description: `State of the media element`,
-      options: Object.values(EMediaPlayerState)
     }
   ],
-  race: true
 }
 
-Then(`the media {string} should be {string}`, assertMediaState, meta)
+When(`I set the media {string} state to {string}`, setMediaState, meta)
 
 

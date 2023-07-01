@@ -29,14 +29,24 @@ const getEventMessage = (evtData:TPlayerTestEvent) => {
     ? `running`
     : evtData.passed ? `passed` : `failed`
 
+  const lines = []
   const message = !evtData.failed || evtData.eventParent !== EAstObject.step
     ? ``
     : evtData?.failedExpectations?.reduce((message, exp:Record<any, any>) => {
         return exp?.description
           ? `${message}\n${exp?.fullName + `\n` || ``}${
-              exp?.description?.split(`\n`).map((line:string) => (
-                PWEventErrorLogFilter.filter(log => line.includes(log)).length ? `` : `  ${line}`
-              )).filter(Boolean).join(`\n`)
+              exp?.description?.split(`\n`)
+                .map((line:string) => (
+                  PWEventErrorLogFilter.filter(log => line.includes(log)).length ? `` : `  ${line}`
+                ))
+                .filter((line:string) => {
+                  if(!line || !Boolean(line.trim())) return false
+                  if(lines.includes(line.trim()))  return false
+                  lines.push(line.trim())
+
+                  return line
+                })
+                .join(`\n`)
             }`
           : message
       }, `\n`) || ``
