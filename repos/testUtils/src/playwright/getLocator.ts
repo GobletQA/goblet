@@ -4,7 +4,6 @@ import {getStepTimeout} from '@GTU/Support'
 import {isBool, isObj } from '@keg-hub/jsutils'
 import { getPage } from '@GTU/Playwright/browserContext'
 
-
 type TWaitFor = {
   timeout:number
   state:`visible` | `attached` | `detached` | `hidden`

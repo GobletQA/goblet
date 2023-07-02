@@ -57,9 +57,20 @@ export class SocketManager {
   isRunning:boolean
   cache:Record<any, any>={}
   peers:Record<any, any>={}
+  static instance:SocketManager
+  
+  static create = (opts = {}) => {
+    if(SocketManager.instance) return SocketManager.instance
+
+    SocketManager.instance = new SocketManager(opts)
+    return SocketManager.instance
+  }
 
   constructor(opts = {}) {
     this.isRunning = false
+
+    if(SocketManager.instance)
+      throw new Error(`Only one instance of the Socket Manger is allowed`)
   }
 
   /**
