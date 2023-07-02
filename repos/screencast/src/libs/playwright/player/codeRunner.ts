@@ -21,6 +21,7 @@ export type TCodeRunnerOpts = {
   debug?: boolean
   slowMo?: number
   timeout?: number
+  globalTimeout?:number
 }
 
 /**
@@ -45,16 +46,19 @@ export class CodeRunner {
   debug?: boolean
   slowMo?: number
   timeout?: number
+  globalTimeout?: number
 
   constructor(player:Player, opts?:TCodeRunnerOpts) {
     this.player = player
-    this.PTE = setupGlobals(this)
-    
-    // TODO: update options to impact how code runner executes code
-    // Need way to pass timeout to step definitions
     if(opts?.debug) this.debug = opts.debug
     if(opts?.slowMo) this.slowMo = opts.slowMo
     if(opts?.timeout) this.timeout = opts.timeout
+    
+    // Global Timeout gets passed to Parkin Test as the overall test timeout
+    // So all tests must finish before this timeout
+    if(opts?.globalTimeout) this.globalTimeout = opts.globalTimeout
+
+    this.PTE = setupGlobals(this)
 
   }
 
@@ -64,7 +68,18 @@ export class CodeRunner {
   run = async (content:RunContent) => {
     this.PK = await setupParkin(this)
 
-    await this.PK.run(content, { timeout: this.timeout })
+    // Timeout gets passed as last argument to test() method of global test method 
+    await this.PK.run(content, {
+      tags: {},
+      timeout: this.timeout,
+      steps: {
+        shared: {
+          // The player.id is actually the socket ID of the use who started the tests
+          playerId: this.player.id
+        }
+      },
+    })
+
     const results = await this.PTE.run() as TPlayerEventData[]
 
     // We only support 1 feature per file, so we only care about the first test result 
@@ -75,8 +90,9 @@ export class CodeRunner {
   }
 
   onSpecDone = (result:TPlayerEventData) => {
+
     if(this.canceled) return
-    
+
     this.player.fireEvent({
       name: PWPlay.playSpecDone,
       message: `Player - Spec Done`,
@@ -89,10 +105,7 @@ export class CodeRunner {
 
     if(result.failed){
       this.cancel()
-
-      throw new Error(
-        result?.failedExpectations?.[0]?.description || `Spec Failed`
-      )
+      throw new Error(result?.failedExpectations?.[0]?.description || `Spec Failed`)
     }
   }
 

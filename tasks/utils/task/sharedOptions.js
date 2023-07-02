@@ -69,10 +69,10 @@ const taskOptions = {
     },
     testTimeout: {
       type: 'number',
-      default: 30000, // 30 seconds
+      default: 15000, // 15 seconds
       env: `GOBLET_TEST_TIMEOUT`,
       example: `--timeout 15000`,
-      description: 'Test timeout in seconds. Defaults to 60000 milliseconds (1min).',
+      description: 'Test timeout in seconds. Defaults to 15000 milliseconds (1min).',
     },
     testDebug: {
       default: false,

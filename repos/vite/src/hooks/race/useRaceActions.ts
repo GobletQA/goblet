@@ -6,15 +6,18 @@ import type {
 } from '@gobletqa/race'
 
 import { getFileModel } from '@utils/files/getFileModel'
-import { PlayCircleOutlineIcon } from '@gobletqa/components'
 import {startBrowserPlay} from '@actions/runner/startBrowserPlay'
-import {filterAstFromStep} from '@utils/features/filterAstFromStep'
+import { filterAstFromId } from '@utils/features/filterAstFromId'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
+import {
+  PlaylistPlayIcon,
+  SubscriptionsIcon,
+  PlayCircleOutlineIcon
+} from '@gobletqa/components'
 
-const playFromStep:TCustomMenuOnClick<TRaceStep> = (evt, ctx) => {
+const playOnlyStep:TCustomMenuOnClick<TRaceStep> = (evt, ctx) => {
   const { item:step, feature } = ctx
-  const ast = filterAstFromStep({ step, feature })
-
+  const ast = filterAstFromId({ id: step.uuid, feature, single: true })
   const location = feature.parent.location
   const fileModel = getFileModel(location)
 
@@ -23,21 +26,57 @@ const playFromStep:TCustomMenuOnClick<TRaceStep> = (evt, ctx) => {
 
   clearEditorDecorations(location)
 
-  startBrowserPlay({...fileModel, ast:[ast]})
+  startBrowserPlay(fileModel, { ast })
 } 
 
-const stepActions:TStepMenuAction[] = [{
-  closeMenu: true,
-  text: `Play Step`,
-  id: `play-from-step`,
-  onClick: playFromStep,
-  type: EAstObject.step,
-  Icon: PlayCircleOutlineIcon,
-}]
+const playFromStep:TCustomMenuOnClick<TRaceStep> = (evt, ctx) => {
+  const { item:step, feature } = ctx
+  const ast = filterAstFromId({ id: step.uuid, feature })
+  const location = feature.parent.location
+  const fileModel = getFileModel(location)
+
+  if(!fileModel)
+    return console.warn(`Can not run tests, File model could not be found.`, location)
+
+  clearEditorDecorations(location)
+
+  startBrowserPlay(fileModel, { ast })
+}
+
+const featureActions = [
+  {
+    closeMenu: true,
+    id: `play-all-features`,
+    Icon: SubscriptionsIcon,
+    type: EAstObject.feature,
+    text: `Play All Features`,
+    onClick: () => console.log(`Not Implemented`),
+  }
+]
+
+const stepActions:TStepMenuAction[] = [
+  {
+    closeMenu: true,
+    text: `Play Step`,
+    id: `play-only-step`,
+    onClick: playOnlyStep,
+    type: EAstObject.step,
+    Icon: PlayCircleOutlineIcon,
+  },
+  {
+    closeMenu: true,
+    id: `play-from-step`,
+    text: `Play From Step`,
+    onClick: playFromStep,
+    type: EAstObject.step,
+    Icon: PlaylistPlayIcon,
+  }
+]
 
 export const useRaceActions = () => {
 
   return {
-    stepActions
+    stepActions,
+    // featureActions
   }
 }

@@ -1,4 +1,3 @@
-import type { Express } from 'express'
 import type { Frame } from 'playwright'
 import type { TBrowserEventArgs, TBrowserPage } from '@GSC/types'
 
@@ -6,10 +5,7 @@ import { EBrowserEvent } from '@GSC/types'
 import { symParse } from '@GSC/libs/symplasm'
 import { WS_PW_URL_CHANGE } from '@GSC/constants'
 
-export const onFrameNavigated = (
-  app:Express,
-  { socket, Manager }:TBrowserEventArgs
-) => {
+export const onFrameNavigated = ({ socket, Manager }:TBrowserEventArgs) => {
   return async (page:TBrowserPage, frame:Frame) => {
     /**
       * Check if frame is the top most frame

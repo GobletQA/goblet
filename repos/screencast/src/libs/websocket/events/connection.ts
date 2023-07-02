@@ -21,7 +21,7 @@ export const connection = (app:Express) => {
     // Only tail logs is setting it set to verbose
     // tailBrowserLogs(app, props)
 
-    setTimeout(() => browserEvents(app, props), 1000)
+    setTimeout(() => browserEvents(props), 1000)
 
   }
 }

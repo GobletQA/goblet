@@ -54,6 +54,8 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & TWithGui
   __goblet?: {
     cookie?:string
     tracing?:Boolean
+    extraHeaders?:Record<string, string>
+    options?:Partial<BrowserContextOptions>
     [key:string]: any
   }
 }
@@ -221,7 +223,12 @@ export enum EBrowserEvent {
 }
 
 export type TBrowserEventCB = (...args:any[]) => void
-export type TBrowserEventArgs = TSocketEvtCBProps & { pwComponents?: TPWComponents }
+export type TBrowserEventArgs = Pick<
+  TSocketEvtCBProps, `socket`|`Manager`
+> & { 
+  browser?:TBrowserConf
+  pwComponents?: TPWComponents
+}
 
 export type TBrowserEvents = {
   [key in EBrowserEvent]?: TBrowserEventCB|TBrowserEventCB[]

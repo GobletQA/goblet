@@ -2,14 +2,19 @@ import type { TLocator } from '@GTU/Types'
 
 import { getPage } from '@GTU/Playwright/browserContext'
 
+type TWaitFor = {
+  timeout:number
+  state:`visible` | `attached` | `detached` | `hidden`
+}
+
 /**
  * TODO: figure out how to set global timeout from the browser or cli
  * The pull it in here and use it to set the config of the waitFor
  */
-const getLocationWaitOpts = (waitFor) => {
+const getLocationWaitOpts = (waitFor:TWaitFor|boolean):TWaitFor|undefined => {
   // process.env.JEST_WORKER_ID
   const defWaitOpts = {
-    timeout: 5000,
+    timeout: 15000,
     state: `visible`,
   }
 
@@ -17,8 +22,8 @@ const getLocationWaitOpts = (waitFor) => {
   return waitFor === false
     ? undefined
     : typeof waitFor === `object`
-      ? { ...defWaitOpts, ...waitFor }
-      : defWaitOpts
+      ? { ...defWaitOpts, ...waitFor } as TWaitFor
+      : defWaitOpts as TWaitFor
 }
 
 /**
@@ -28,7 +33,7 @@ const getLocationWaitOpts = (waitFor) => {
  */
 export const getLocator = async (
   selector:string,
-  waitFor:boolean=true
+  waitFor:TWaitFor|boolean=true
 ) => {
   const page = await getPage()
   // TODO: allow first to be configurable

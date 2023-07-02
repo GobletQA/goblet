@@ -9,6 +9,7 @@ import type {
   TBackgroundParentAst,
 } from '@ltipton/parkin'
 
+import { findInFeature } from './findInFeature'
 import { emptyArr, get } from "@keg-hub/jsutils"
 import { EAstObject } from '@ltipton/parkin'
 import {
@@ -130,40 +131,13 @@ const IDFinders = {
   },
 }
 
-const matchFromMetaId = (props:TIDFrom) => {
+export const findTextMatch = (props:TIDFrom) => {
   const { deco, feature } = props
   if(!deco) return
 
-  const loc = deco.id.split(`.`).reduce((acc, part) => {
-    if(part.startsWith(EAstObject.feature)) return acc
-
-    const child = parents.includes(part as EAstObject)
-      ? part === EAstObject.scenario
-        ? `scenarios`
-        : part === EAstObject.rule
-          ? `rules`
-          : EAstObject.background
-      : steps.includes(part as EAstObject)
-        ? `steps`
-        : part
-
-    child && acc.push(child)
-
-    return acc
-  }, [] as string[])
-
-  const item = get(feature, loc)
-
-  return item.uuid === deco.id && item
-}
-
-
-export const findTextMatch = (props:TIDFrom) => {
-  const { deco } = props
-  if(!deco) return
 
   if(deco?.type !== EAstObject.feature && deco?.metaId){
-    const found = matchFromMetaId(props)
+    const found = findInFeature({ id: deco?.id, feature })
     if(found) return found
   }
 

@@ -1,5 +1,5 @@
 import type { Socket } from 'socket.io-client'
-import type { TSockCmds, TSocketEmitData, TSocketService } from '@types'
+import type { TRepoApiObj, TSockCmds, TSocketEmitData, TSocketService } from '@types'
 
 import io from 'socket.io-client'
 import { events } from './events'
@@ -194,7 +194,6 @@ export class SocketService {
    * @memberof SocketService
    */
   emit = (event:string, data:TSocketEmitData={}) => {
-    data.repo = repoApiObj(data.repo)
 
     if (!this.socket)
       return console.error(`Socket not connected, cannot emit socket event!`)
@@ -207,7 +206,9 @@ export class SocketService {
 
     this.logData(`Sending Socket Event: ${event}`, data)
 
-    const toSend = isObj(data) ? data : { data }
+    const toSend = isObj(data)
+      ? { ...data, repo: repoApiObj(data.repo as TRepoApiObj) }
+      : { data, repo: repoApiObj() }
 
     // Send a message to the server
     this.socket.emit(event, toSend)

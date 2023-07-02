@@ -14,7 +14,7 @@ const setupManager = (
   io:Server
 ) => {
   // Setup the Socket Manager
-  const Manager = new SocketManager()
+  const Manager = SocketManager.create()
   // Ensure we have access to the SocketIO class
   Manager.socketIo = Manager.socketIo || io
   return Manager
@@ -58,11 +58,17 @@ export const onConnect = (
   })
 }
 
+export type TSocketInit = {
+  io:Server
+  config:TSocketConfig
+  Manager:SocketManager
+}
+
 export const socketInit = async (
   server:http.Server | https.Server,
   socketConfig:TSocketConfig,
   cmdGroup:string
-) => {
+):Promise<TSocketInit> => {
 
   const config = await setupConfig(socketConfig, cmdGroup)
 

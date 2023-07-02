@@ -130,11 +130,11 @@ const dockerExec = async (
 }
 
 const login = async (...args) => {
-  const { dockerLogin } = await loadScript('dockerLogin')
+  const { dockerLogin } = await loadScript(`dockerLogin`)
   
   return !isArr(args[0]) && (!args[1] || isStr(args[1]))
     ? await dockerLogin(...args)
-    : await dockerCmd(['login', ...args[0]], args[1], args[2])
+    : await dockerCmd([`login`, ...args[0]], args[1], args[2])
 }
 
 const createContext = async (args, options=emptyObj, cwd=appRoot) => {
@@ -157,12 +157,12 @@ docker.stop = (...args:TDockerCmdAdd) => docker('stop', ...args)
 docker.remove = (...args:TDockerCmdAdd) => docker('rm', ...args)
 docker.exec = (...args:TDockerCmdAdd) => docker('exec', ...args)
 docker.build = (...args):any => buildX(
-  'build',
+  `build`,
   ((...args) => docker(...args)) as TBuildXCB,
   ...args as TBuildArgs
 )
 docker.pull = (...args:TDockerCmdAdd) => dockerCmd([
-  'pull',
+  `pull`,
   ...toArr(args.shift() as string[])],
   ...args as Record<any, any>[]
 )

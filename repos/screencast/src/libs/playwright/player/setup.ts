@@ -1,12 +1,12 @@
 import type { CodeRunner } from './codeRunner'
-import type { TPlayerTestEvent } from '@gobletqa/shared/types'
+import type { TPlayerEventData, TPlayerTestEvent } from '@gobletqa/shared/types'
 
 /**
  * This is needed so that expect is added to the global context
  * Which allows it to be referenced directly in step definitions
  */
 import expect from 'expect'
-import { Parkin } from '@ltipton/parkin'
+import { Parkin, TParkinTestConfig } from '@ltipton/parkin'
 import { unset, omitKeys } from '@keg-hub/jsutils'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { getDefinitions } from '@gobletqa/shared/repo/getDefinitions'
@@ -32,26 +32,41 @@ const testGlobals = [
 ]
 
 let TestGlobalsCache = {}
+let ProcessEnvCache = {}
+
+const processENVs = {
+  GOBLET_RUN_FROM_UI: `1`
+}
 
 /**
  * Use custom test runner from parkin
  * Jest does not allow calling from the Node directly
  * So we use Parkin's test runner instead
  */
-export const setTestGlobals = (Runner:CodeRunner, timeout=6000) => {
-
-  const PTE = new ParkinTest({
-    timeout: timeout,
+const setTestGlobals = (Runner:CodeRunner, timeout?:number) => {
+  const opts:TParkinTestConfig = {
     specDone: Runner.onSpecDone,
     suiteDone: Runner.onSuiteDone,
     specStarted: Runner.onSpecStarted,
     suiteStarted: Runner.onSuiteStarted,
-  })
+  }
+
+  const tOut = timeout || Runner.globalTimeout
+  tOut && (opts.timeout = tOut)
+
+  const PTE = new ParkinTest(opts)
 
   testGlobals.forEach((item) => {
     TestGlobalsCache[item] = global[item]
     global[item] = PTE[item]
   })
+  
+  // TODO: investigate overwriting all envs
+  Object.entries(processENVs)
+    .forEach(([key, val]) => {
+      ProcessEnvCache[key] = process.env[key]
+      process.env[key] = val
+    })
 
   return PTE
 }
@@ -61,13 +76,13 @@ export const setTestGlobals = (Runner:CodeRunner, timeout=6000) => {
  * Caches any existing globals so they can be reset after the test run
  * This ensures it doesn't clobber what ever already exists
  */
-export const setupGlobals = (Runner:CodeRunner) => {
+export const setupGlobals = (Runner:CodeRunner, timeout?:number) => {
   ;(TestGlobalsCache as any).expect = (global as any).expect
   ;(TestGlobalsCache as any).context = (global as any).context
 
   ;(global as any).expect = expect
   global.context = Runner.player.context
-  return setTestGlobals(Runner)
+  return setTestGlobals(Runner, timeout)
 }
 
 /**
@@ -79,9 +94,16 @@ export const resetTestGlobals = () => {
   ;(global as any).context = (TestGlobalsCache as any).context
 
   testGlobals.forEach((item) => global[item] = TestGlobalsCache[item])
-  TestGlobalsCache = {}
-}
+  
+  // TODO: investigate overwriting all envs
+  Object.entries(processENVs)
+    .forEach(([key, val]) => {
+      process.env[key] = ProcessEnvCache[key]
+    })
 
+  TestGlobalsCache = {}
+  ProcessEnvCache = {}
+}
 
 /**
  * Sets up Parkin globally, so it can be accessed by step definitions
@@ -118,7 +140,7 @@ export const cleanupWorld = (PK:Parkin) => {
  * There's a lot of meta-data that is added to the player tests results object
  * This clears out some of it, because the frontend does not need it
  */
-export const clearTestResults = (result:TPlayerTestEvent) => {
+export const clearTestResults = (result:TPlayerTestEvent|TPlayerEventData) => {
   return omitKeys<TPlayerTestEvent>(
     result,
     [

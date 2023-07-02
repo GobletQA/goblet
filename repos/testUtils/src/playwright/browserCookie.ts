@@ -11,7 +11,7 @@ export const defaultStorageFile = 'browser-storage-state'
 /**
  * Gets the storage location from the temp-directory
  */
-export const browserCookieLoc = (saveLocation?:string) => {
+export const browserCookieLoc = (saveLocation?:string|false) => {
   const location = `${(saveLocation || defaultCookieFile).split(`.json`).shift()}.json`
 
   return path.join(tempDir, location)
@@ -30,7 +30,10 @@ export const contextStorageLoc = (saveLocation?:string) => {
 /**
  * Save storage state into the file.
  */
-export const saveContextCookie = async (context:TBrowserContext, location?:string) => {
+export const saveContextCookie = async (
+  context:TBrowserContext,
+  location?:string|false
+) => {
   const cookies = await context.cookies()
   const saveLoc = browserCookieLoc(location)
   await promises.writeFile(saveLoc, JSON.stringify(cookies))
@@ -38,7 +41,10 @@ export const saveContextCookie = async (context:TBrowserContext, location?:strin
   return true
 }
 
-export const setContextCookie = async (context:TBrowserContext, location?:string) => {
+export const setContextCookie = async (
+  context:TBrowserContext,
+  location?:string|false
+) => {
   const loadLoc = browserCookieLoc(location)
   // TODO: Investigate if this should throw or not
   // If instead we want to return false because the cookie could not be set

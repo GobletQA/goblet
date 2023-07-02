@@ -14,6 +14,7 @@ import { resolveImgFrom } from '../../utils/docker/resolveImgFrom'
 import { getDockerLabels } from '../../utils/docker/getDockerLabels'
 import { getDockerBuildParams } from '../../utils/docker/getDockerBuildParams'
 import { getContextValue, getLongContext } from '../../utils/helpers/contexts'
+import {isStr} from '@keg-hub/jsutils'
 
 /**
  * Runs a docker build command and returns the output
@@ -30,7 +31,7 @@ const buildImg = async (args:TTaskActionArgs) => {
   const allEnvs = { ...envs, NPM_TOKEN: token }
 
   // Ensure we are using the correct buildx builder instance
-  builder && (await setupBuildX(builder, appRoot, allEnvs))
+  builder && (await setupBuildX(isStr(builder) ? builder : `goblet`, appRoot, allEnvs))
 
   // Get the context for the docker image being built
   const docFileCtx = getLongContext(context)
@@ -135,7 +136,7 @@ export const build:TTask = {
       description: `Use a specific tag type based on the git branch`,
     },
     base: {
-      type: 'boolean',
+      type: `boolean`,
       example: `--base`,
       description: `Should the base image be built first. Only used when "--context" option is set`,
     },
@@ -149,6 +150,6 @@ export const build:TTask = {
       alias: [`auth`],
       example: `--no-login`,
       description: `Log into the docker registry before building the image. Typically used along side the push option`,
-    },
+    }
   },
 }

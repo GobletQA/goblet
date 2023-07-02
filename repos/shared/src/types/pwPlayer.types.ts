@@ -100,6 +100,7 @@ export type TPlayerEventData = TPlayerTestEvent
   | TPlayerTestResult
   | TPlayerTestSuiteDone
   | TPlayerTestSuiteFinished
+  | TRunResult
 
 
 export type TPlayerTestSuiteDone<T=TPlayerTestEvent> = TPlayerTestEvent & {
