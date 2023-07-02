@@ -3,8 +3,8 @@ import { values } from './values'
 import { mapValues } from './mapValues'
 import { EFileType } from '@gobletqa/latent'
 import { loadEnvFile } from './loadEnvFile'
-import { deepFreeze } from '@keg-hub/jsutils'
-import { getReplaceOnlyEmpty } from './getReplaceOnlyEmpty'
+import { deepFreeze, toBool } from '@keg-hub/jsutils'
+
 
 const { GOBLET_ENV } = process.env
 
@@ -22,19 +22,6 @@ if(GOBLET_ENV)
     loadSecrets(secrets, `secrets.${GOBLET_ENV}.env`),
     `${GOBLET_ENV}.secrets.env`
   )
-
-/**
- * Add secrets from the current process
- * Only add ENVs where the keys already exist in the secrets object ( i.e. addNew )
- */
-secrets = mapValues({
-  existing: secrets,
-  values: process.env,
-  opts: {
-    addNew: false,
-    replaceOnlyEmpty: getReplaceOnlyEmpty(values.GOBLET_REPLACE_ONLY_EMPTY),
-  },
-})
 
 const frozen = deepFreeze(secrets)
 

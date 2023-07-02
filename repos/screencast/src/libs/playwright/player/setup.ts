@@ -78,9 +78,13 @@ const setTestGlobals = (Runner:CodeRunner, timeout?:number) => {
  */
 export const setupGlobals = (Runner:CodeRunner, timeout?:number) => {
   ;(TestGlobalsCache as any).expect = (global as any).expect
+  ;(TestGlobalsCache as any).page = (global as any).page
   ;(TestGlobalsCache as any).context = (global as any).context
+  ;(TestGlobalsCache as any).browser = (global as any).browser
 
   ;(global as any).expect = expect
+  global.page = Runner.player.page
+  global.browser = Runner.player.browser
   global.context = Runner.player.context
   return setTestGlobals(Runner, timeout)
 }
@@ -91,7 +95,9 @@ export const setupGlobals = (Runner:CodeRunner, timeout?:number) => {
  */
 export const resetTestGlobals = () => {
   ;(global as any).expect = (TestGlobalsCache as any).expect
+  ;(global as any).page = (TestGlobalsCache as any).page
   ;(global as any).context = (TestGlobalsCache as any).context
+  ;(global as any).browser = (TestGlobalsCache as any).browser
 
   testGlobals.forEach((item) => global[item] = TestGlobalsCache[item])
   

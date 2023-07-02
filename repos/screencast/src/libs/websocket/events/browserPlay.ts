@@ -69,6 +69,11 @@ const handleStartPlaying = async (
     action,
     browserConf,
     id: socket.id,
+    // TODO: update this to pass in step / shared options
+    // Could also use as a way to pass callbacks as needed
+    steps: {
+      shared: {}
+    },
     onEvent:(event:TPlayerTestEventMeta) => {
 
       const evtData = (event.data || {}) as TPlayerTestEvent

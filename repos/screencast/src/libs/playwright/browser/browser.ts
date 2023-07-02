@@ -163,7 +163,7 @@ const createBrowser = async (
  */
 const getPage = async (
   browserConf:TBrowserConf,
-  overrides:TBrowserConf=emptyObj as TBrowserConf,
+  overrides:Partial<TBrowserConf>=emptyObj as TBrowserConf,
   initialUrl:string=GobletQAUrl
 ):Promise<TPWComponents> => {
   try {
@@ -230,7 +230,7 @@ getPage.creatingPage = false
  */
 const getContext = async (
   browserConf:TBrowserConf,
-  overrides:TBrowserConf=emptyObj as TBrowserConf,
+  overrides:Partial<TBrowserConf>=emptyObj as TBrowserConf,
 ) => {
 
   const resp = await getBrowser(browserConf)
@@ -380,7 +380,7 @@ export const startBrowser = async (
   config:TBrowserConf = emptyObj as TBrowserConf,
   browserOnly?:boolean,
   browserServer?:boolean,
-  overrides:TBrowserConf=emptyObj as TBrowserConf,
+  overrides:Partial<TBrowserConf>=emptyObj as TBrowserConf,
   initialUrl:string=GobletQAUrl
 ):Promise<TPWComponents> => {
 

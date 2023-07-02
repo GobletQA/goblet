@@ -95,7 +95,12 @@ export const actionBrowser = async (
 ) => {
   const { ref = 'browser', actions = noPropArr, id, onRecordEvent } = args
   const pwComponents = await startBrowser(browserConf)
-  repo && await setBrowserDefaults({ repo, browserConf, pwComponents })
+  repo
+    && await setBrowserDefaults({
+        repo,
+        browserConf,
+        pwComponents,
+      })
 
   const component = pwComponents[ref]
   validateArgs(args, component)

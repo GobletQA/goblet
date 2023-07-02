@@ -1,11 +1,11 @@
 import type { Express } from 'express'
 
 // Exported from screencast/src/types
-import type { Automate } from '@gobletqa/screencast'
-
 import type { TRepo } from './repo.types'
 import type { TFileModel } from './models.types'
 import type { EBrowserType } from './browser.types'
+import type { TParkinRunStepOptsMap, TWorldConfig } from '@ltipton/parkin'
+import type { Automate } from '@gobletqa/screencast'
 import type { TSocketEvtCBProps } from './socket.types'
 import type { TAutomateEvent } from './pwAutomate.types'
 import type {
@@ -54,7 +54,7 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & TWithGui
   __goblet?: {
     cookie?:string
     tracing?:Boolean
-    extraHeaders?:Record<string, string>
+    extraHTTPHeaders?:Record<string, string>
     options?:Partial<BrowserContextOptions>
     [key:string]: any
   }
@@ -174,6 +174,7 @@ export type TStartPlaying = {
   onCleanup:TActionCallback
   browserConf: TBrowserConf
   pwComponents?:TPWComponents
+  steps?:TParkinRunStepOptsMap
 }
 
 export type TStartRecording = {

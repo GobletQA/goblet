@@ -1,4 +1,4 @@
-import type { TFeatureAst } from '@ltipton/parkin'
+import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type {
   TRepo,
   TBrowser,
@@ -39,6 +39,7 @@ export class Player {
   canceled:boolean=false
   playing:boolean = false
   context:TBrowserContext
+  steps?:TParkinRunStepOptsMap
   onEvents:TPlayerEventCB[] = []
   onCleanup:TPlayerCleanupCB = noOp
   options:TPlayerOpts = {} as TPlayerOpts
@@ -80,6 +81,7 @@ export class Player {
     const {
       page,
       repo,
+      steps,
       context,
       browser,
       options,
@@ -88,10 +90,11 @@ export class Player {
     } = config
 
     if(page) this.page = page
+    if(repo) this.repo = repo
+    if(steps) this.steps = steps
     if(context) this.context = context
     if(browser) this.browser = browser
     if(options) this.options = deepMerge(this.options, options)
-    if(repo) this.repo = repo
 
     if(onEvent) this.onEvents.push(onEvent)
     if(onCleanup) this.onCleanup = onCleanup
@@ -153,11 +156,9 @@ export class Player {
       const globalTimeout = this.options?.playOptions?.globalTimeout as number
       this.page.setDefaultTimeout(timeout || 15000)
 
-      const extraHeaders = this.repo?.world?.$headers
-      extraHeaders &&
-        await this.page.setExtraHTTPHeaders({
-          ...this.repo?.world?.$headers
-        })
+      const extraHTTPHeaders = this.repo?.world?.$headers
+      extraHTTPHeaders &&
+        await this.page.setExtraHTTPHeaders({...extraHTTPHeaders})
 
       this.codeRunner = new CodeRunner(this, {
         timeout,
@@ -171,7 +172,7 @@ export class Player {
         ? this.options?.file?.ast as TFeatureAst | TFeatureAst[]
         : this.options?.file?.content
 
-      const results = await this.codeRunner.run(content)
+      const results = await this.codeRunner.run(content, this.steps)
 
       !this.canceled
         && this.fireEvent({
@@ -209,14 +210,14 @@ export class Player {
       if(!this.context || !Player.isPlaying)
         this.fireEvent({
           name: PWPlay.playError,
-          message: 'Playing context does not exist'
+          message: `Playing context does not exist`
         })
 
       Player.isPlaying = false
 
       this.fireEvent({
         name: PWPlay.playEnded,
-        message: 'Playing stopped',
+        message: `Playing stopped`,
       })
     }
     catch(err){
@@ -245,7 +246,7 @@ export class Player {
   cancel = async () => {
     this.fireEvent({
       name: PWPlay.playCanceled,
-      message: 'Playing canceled',
+      message: `Playing canceled`,
     })
 
     await this.codeRunner?.cancel?.()
@@ -255,7 +256,7 @@ export class Player {
 
     return this
   }
- 
+
   /**
    * Helper method to clean up when recording is stopped
    * Attempts to avoid memory leaks by un setting Recorder instance properties

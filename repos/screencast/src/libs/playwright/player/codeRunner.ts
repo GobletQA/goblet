@@ -1,5 +1,5 @@
 import type { Player } from './player'
-import type { TFeatureAst } from '@ltipton/parkin'
+import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type { TPlayerEvent, TPlayerEventData } from '@gobletqa/shared/types'
 
 import { PWPlay } from '@GSC/constants'
@@ -58,26 +58,20 @@ export class CodeRunner {
     // So all tests must finish before this timeout
     if(opts?.globalTimeout) this.globalTimeout = opts.globalTimeout
 
-    this.PTE = setupGlobals(this)
-
   }
 
   /**
    * Runs the code passed to it via the player
    */
-  run = async (content:RunContent) => {
+  run = async (content:RunContent, steps?:TParkinRunStepOptsMap) => {
+    this.PTE = setupGlobals(this)
     this.PK = await setupParkin(this)
 
     // Timeout gets passed as last argument to test() method of global test method 
     await this.PK.run(content, {
       tags: {},
+      steps: steps,
       timeout: this.timeout,
-      steps: {
-        shared: {
-          // The player.id is actually the socket ID of the use who started the tests
-          playerId: this.player.id
-        }
-      },
     })
 
     const results = await this.PTE.run() as TPlayerEventData[]
