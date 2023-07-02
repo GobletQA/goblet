@@ -14,7 +14,7 @@ const setupManager = (
   io:Server
 ) => {
   // Setup the Socket Manager
-  const Manager = SocketManager.create()
+  const Manager = new SocketManager()
   // Ensure we have access to the SocketIO class
   Manager.socketIo = Manager.socketIo || io
   return Manager

@@ -1,9 +1,9 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
+import { getStepTimeout } from '@GTU/Support'
 import { getLocator, getPage } from '@GTU/Playwright'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
-import {getStepTimeout} from '@GTU/Support'
 
 /**
  * Checks that the parent element contains the child element
