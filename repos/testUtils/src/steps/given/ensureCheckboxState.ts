@@ -39,6 +39,7 @@ export const ensureCheckedState = async (
 }
 
 const meta = {
+  race: true,
   name: `Ensure checkbox is checked or unchecked`,
   alias: [`Checked`, `Clicked`, `Unchecked`],
   module: `ensureCheckedState`,
