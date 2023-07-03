@@ -37,6 +37,11 @@ export type TGitRemote = {
 }
 
 
+export type TGitCreateBranch = TGitOpts & {
+  force?:boolean
+  reset?:boolean
+}
+
 export type TGitBranch = {
   (
     cmdArgs:string[],
@@ -44,6 +49,7 @@ export type TGitBranch = {
     cmdOpts?:TRunCmdOpts,
   ): Promise<TLimboCmdResp>
   current: (gitOpts:TGitOpts, opts?:TGitRemoteOpts, cmdOpts?:TRunCmdOpts) => Promise<string>
+  create: (gitOpts:TGitCreateBranch, cmdOpts?:TRunCmdOpts) => Promise<string>
 }
 
 
@@ -191,4 +197,5 @@ export type TGitExec = {
   fetch:TGitFetch
   clearCache:TGitClearCache
   gc:(location:string, cmdOpts?:TRunCmdOpts) => TGitCmdResp
+  merge:TGitCommit
 }

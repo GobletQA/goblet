@@ -13,3 +13,4 @@ export const MOUNT_ROOT = path.resolve(GOBLET_MOUNT_ROOT)
 export const LOCAL_MOUNT = path.join(MOUNT_ROOT, GB_SH_LOCAL_MOUNT)
 export const GIT_GLOBAL_IGNORE = path.resolve(GB_GIT_GLOBAL_IGNORE)
 
+export const GIT_RESET_BRANCH = `goblet-sync-revert-branch`

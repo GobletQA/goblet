@@ -11,7 +11,7 @@ import fs from 'fs'
 import { git } from './gitCmd'
 import { RepoWatcher } from '../repoWatcher'
 import { fileSys, Logger } from '@keg-hub/cli-utils'
-import { limbo, deepMerge, wait } from '@keg-hub/jsutils'
+import { limbo, deepMerge } from '@keg-hub/jsutils'
 import { throwErr } from '@gobletqa/workflows/utils/throwErr'
 import { getRepoPath } from '@gobletqa/workflows/utils/getRepoPath'
 
@@ -153,6 +153,39 @@ git.gc = async (
   const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
   const [err, resp] = await git([`gc`, `--prune=now`], joinedOpts, location)
   hasGitError(err, resp, `gc`)
+
+  return [err, resp]
+}
+
+
+git.merge = async (
+  gitOpts:TGitOpts,
+  cmdOpts?:TRunCmdOpts,
+  metaData?:TSaveMetaData
+) => {
+
+  const options = validateGitOpts(gitOpts)
+  const { local } = options
+  
+  const {
+    arg,
+    from,
+    message,
+  } = metaData
+  // git merge origin/main -Xours -m "Goblet Sync branches - main-into-goblet-HerrSchultz -Xours"
+  const joinedOpts = deepMerge(defCmdOpts, cmdOpts)
+  const [err, resp] = await git([
+    `merge`,
+    from,
+    arg,
+    `-m`,
+    message
+  ], joinedOpts, local)
+  
+  if(resp.exitCode && resp.data.includes(`nothing to commit`))
+    return [err, resp]
+
+  hasGitError(err, resp, `commit`)
 
   return [err, resp]
 }

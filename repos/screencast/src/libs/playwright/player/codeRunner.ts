@@ -24,6 +24,14 @@ export type TCodeRunnerOpts = {
   globalTimeout?:number
 }
 
+class CodeRunError extends Error {
+  constructor(message:string) {
+    super(message)
+    this.name = this.constructor.name
+    Error.captureStackTrace(this, this.constructor)
+  }
+}
+
 /**
  * CodeRunner
  * Sets up the test environment to allow running tests in a secure context
@@ -99,7 +107,7 @@ export class CodeRunner {
 
     if(result.failed){
       this.cancel()
-      throw new Error(result?.failedExpectations?.[0]?.description || `Spec Failed`)
+      throw new CodeRunError(result?.failedExpectations?.[0]?.description || `Spec Failed`)
     }
   }
 
