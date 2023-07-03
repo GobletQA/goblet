@@ -1,4 +1,4 @@
-import { TRaceAst } from "./features.types"
+import { TRaceAst, TRaceFeature, TRaceGran, TRaceParentAst } from "./features.types"
 
 export enum EOperations {
   cut=`cut`,
@@ -6,13 +6,22 @@ export enum EOperations {
   paste=`paste`
 }
 
+export type TRaceOpData = {
+  item:TRaceAst,
+  from?:EOperations
+  gran?: TRaceGran
+  feature?:TRaceFeature
+  parent?: TRaceParentAst
+}
+
 export type TOperationsUpdate = {
-  data?:any
   type:EOperations
+  data?:TRaceOpData
 }
 
 export type TSetOperations = (update:TOperationsUpdate) => void
 
+
 export type TRaceOperations = {
-  [K in EOperations]?:TRaceAst|undefined
+  [K in EOperations]?:TRaceOpData|undefined
 }

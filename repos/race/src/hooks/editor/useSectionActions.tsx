@@ -12,13 +12,17 @@ import { useMemo } from 'react'
 import { ESectionType, EGherkinKeys } from '@GBR/types'
 import { useOperations } from '@gobletqa/race/contexts'
 import { exists, capitalize, emptyArr } from '@keg-hub/jsutils'
-import {useEditor} from '@gobletqa/race/contexts/EditorContext'
+import { useEditor } from '@gobletqa/race/contexts/EditorContext'
+
 import {
+  CutIcon,
   PasteIcon,
   TrashIcon,
   StepAddIcon,
   CardPlusIcon,
   PencilAddIcon,
+  PasteAfterIcon,
+  PasteBeforeIcon,
   PencilMinusIcon,
   ContentCopyIcon,
   CollapseAllIcon,
@@ -26,11 +30,14 @@ import {
 } from '@gobletqa/components'
 
 export type THSectionActions = {
+  onCut?:TAnyCB
   onCopy?:TAnyCB
   onRemove?:TAnyCB
   onPaste?:TAnyCB
   onAddStep?:TAnyCB
   onCollapse?:TAnyCB
+  onPasteAfter?:TAnyCB
+  onPasteBefore?:TAnyCB
   onAddScenario?:TAnyCB
   onAddBackground?:TAnyCB
   item:TRaceSectionItem
@@ -101,11 +108,14 @@ const useTypeMenuActions = (props:THSectionActions):TCustomMenuAction<any>[] => 
 export const useSectionActions = (props:THSectionActions) => {
   const {
     type,
+    onCut,
     onCopy,
     onPaste,
     onRemove,
     onAddStep,
     onCollapse,
+    onPasteAfter,
+    onPasteBefore,
     editingTitle,
     onAddScenario,
     onAddBackground,
@@ -155,17 +165,13 @@ export const useSectionActions = (props:THSectionActions) => {
           key: `gb-${type}-copy-action`,
         })
 
-    const pasteType = (operations?.paste as TRaceStep)?.step
-      ? `Step`
-      : capitalize(operations?.paste?.type || `Item`)
-
-    exists(onPaste)
+    exists(onCut)
       && actions.push({
           type,
-          Icon: PasteIcon,
-          onClick: onPaste,
-          label: `Paste ${pasteType}`,
-          key: `gb-${type}-copy-${pasteType}-action`,
+          onClick: onCut,
+          Icon: CutIcon,
+          label: `Cut ${typeCaps}`,
+          key: `gb-${type}-cut-action`,
         })
 
     exists(onCollapse)
@@ -177,10 +183,43 @@ export const useSectionActions = (props:THSectionActions) => {
           key: `gb-${type}-collapse-action`,
         })
 
+    const pasteType = (operations?.paste?.item as TRaceStep)?.step
+      ? `Step`
+      : capitalize(operations?.paste?.item?.type || `Item`)
+
+    exists(onPasteBefore)
+      && actions.push({
+          type,
+          dividerTop: true,
+          onClick: onPasteBefore,
+          Icon: PasteBeforeIcon,
+          label: `Paste Before ${pasteType}`,
+          key: `gb-${type}-copy-${pasteType}-before-action`,
+        })
+
+    exists(onPaste)
+      && actions.push({
+          type,
+          Icon: PasteIcon,
+          onClick: onPaste,
+          label: `Paste ${pasteType}`,
+          key: `gb-${type}-copy-${pasteType}-action`,
+        })
+
+    exists(onPasteAfter)
+      && actions.push({
+          type,
+          onClick: onPasteAfter,
+          Icon: PasteAfterIcon,
+          label: `Paste After ${pasteType}`,
+          key: `gb-${type}-copy-${pasteType}-after-action`,
+        })
+
     exists(onRemove)
       && actions.push({
           type,
           Icon: TrashIcon,
+          dividerTop: true,
           onClick: onRemove,
           label: `Delete ${typeCaps}`,
           key: `gb-${type}-remove-action`,
@@ -196,6 +235,8 @@ export const useSectionActions = (props:THSectionActions) => {
     onCollapse,
     operations,
     menuActions,
+    onPasteAfter,
+    onPasteBefore,
     onAddScenario,
     onAddBackground,
     operations.paste

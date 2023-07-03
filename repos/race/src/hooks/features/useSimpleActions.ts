@@ -29,12 +29,13 @@ export const useSimpleActions = (props:THOnSimpleAdd) => {
     [parent, scenario?.uuid]
   )
 
-  const hasPasteStep = operations?.paste && (operations?.paste as TRaceStep)?.step
+  const hasPasteStep = operations?.paste && (operations?.paste?.item as TRaceStep)?.step
   const onSimplePaste =  useInline(() => {
     hasPasteStep
       && pasteSimpleModeStep({
           parent,
-          step: operations?.paste as TRaceStep,
+          from: operations?.paste?.from,
+          step: operations?.paste?.item as TRaceStep,
           scenario: scenario || ensureScenario(parent),
         })
   })

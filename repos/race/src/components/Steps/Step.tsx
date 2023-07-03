@@ -11,11 +11,12 @@ import { StepHeader } from './StepHeader'
 import { ESectionType } from '@GBR/types'
 import { Expressions } from '../Expressions'
 import { SelectAction } from './SelectAction'
+import { useStepCP } from '@GBR/hooks/steps/useStepCP'
 import { NoExpMatch } from '../Expressions/NoExpMatch'
 import { useStepAudit } from '@GBR/hooks/steps/useStepAudit'
-import { copyOperation } from '@GBR/actions/operations/copyOperation'
 import { useSectionActions } from '@GBR/hooks/editor/useSectionActions'
 import { collapseAllExcept } from '@GBR/actions/general/collapseAllExcept'
+
 import {
   StepGrid,
   StepContent,
@@ -50,6 +51,7 @@ const styles = {
   }
 }
 
+
 export const Step = (props:TStep) => {
   const {
     gran,
@@ -67,14 +69,27 @@ export const Step = (props:TStep) => {
     expressions
   } = useStepAudit(props)
 
-  const onCopy = () => copyOperation({ data: step })
+  const {
+    onCut,
+    onCopy,
+    onPasteAfter,
+    onPasteBefore
+  } = useStepCP({
+    step,
+    gran,
+    parent,
+  })
+
   const onStepChange = (updated:TRaceStep) => onChange?.(updated, parent.uuid)
   const onRemoveStep = () => onRemove?.(step.uuid, parent.uuid)
   const onCollapseExcept = () => collapseAllExcept(step.uuid, parent?.uuid, gran?.uuid)
 
   const actions = useSectionActions({
+    onCut,
     onCopy,
     item:step,
+    onPasteAfter,
+    onPasteBefore,
     onRemove: onRemoveStep,
     type: ESectionType.step,
     onCollapse: onCollapseExcept,

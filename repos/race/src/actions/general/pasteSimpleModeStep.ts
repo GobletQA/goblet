@@ -21,6 +21,7 @@ const prefix = `[Paste Simple Mode]`
 export type TPasteSimpleModeStep = {
   step: TRaceStep
   persist?:boolean
+  from?:EOperations
   feature?:TRaceFeature
   scenario: TRaceScenario
   parent: TRaceScenarioParent
@@ -41,12 +42,12 @@ export const pasteSimpleModeStep = async (props:TPasteSimpleModeStep) => {
 
   const { scenario:scn, index } = findSimpleScenario({...props, feature})
 
-  const stepMeta = getStepMeta(scn, props.step)
+  const { insert, step:stepMeta } = getStepMeta(scn, props.step)
   const added = buildStep<TRaceStepParent>(
     feature,
     scn,
     {...props.step, ...stepMeta },
-    stepMeta.index
+    insert
   )
 
   if(!added) return

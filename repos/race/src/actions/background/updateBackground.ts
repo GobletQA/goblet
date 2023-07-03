@@ -37,7 +37,7 @@ const toRule = (props:TUpdateBackground, feature:TRaceFeature) => {
   const updated = {...feature, rules}
   persist !== false && updateFeature(updated, { skipAudit: true, ...featureOpts })
 
-  return updated
+  return updated as TRaceFeature
 }
 
 const toFeature = (props:TUpdateBackground, feature:TRaceFeature) => {
@@ -46,7 +46,7 @@ const toFeature = (props:TUpdateBackground, feature:TRaceFeature) => {
   const updated = {...feature, background: {...feature?.background, ...background}}
   persist !== false && updateFeature(updated, { skipAudit: true, ...featureOpts })
 
-  return updated
+  return updated as TRaceFeature
 }
 
 export const updateBackground = async (props:TUpdateBackground) => {

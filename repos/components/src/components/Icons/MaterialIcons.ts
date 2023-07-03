@@ -59,7 +59,6 @@ import KebabIcon from '@mui/icons-material/MoreVert'
 import ClockIcon from '@mui/icons-material/AccessTime'
 import GradingIcon from '@mui/icons-material/Grading'
 import KeyIcon from '@mui/icons-material/Key'
-import PasteIcon from '@mui/icons-material/ContentPasteGo'
 
 // Icon for playing from a specific point in a feature
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
@@ -128,7 +127,6 @@ export {
   ClockIcon,
   GradingIcon,
   KeyIcon,
-  PasteIcon,
   PlaylistPlayIcon,
   SubscriptionsIcon
 }

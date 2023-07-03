@@ -26,7 +26,6 @@ export type TDockerMethod = (
 ) => void
 
 
-
 /**
  * Sets up docker to use buildX build instead of build
  * Also check and add platforms, if the build is being pushed
@@ -52,13 +51,15 @@ const buildX = (
         )
       ]
 
+  const allArgs = platformOpts.concat(toArr(cmdArgs))
+  params.log && Logger.pair(
+    `Running Cmd:`,
+    `docker buildx ${allArgs.join(' ')}\n`
+  )
+
   // Call the callback, adding the platform args array with the first arg, which should be an array
   // Then spread the other args to match calling the docker command
-  return callback(
-    `buildx`,
-    platformOpts.concat(toArr(cmdArgs)),
-    options
-  )
+  return callback(`buildx`, allArgs, options)
 }
 
 /**

@@ -65,6 +65,7 @@ const stepActions:TStepMenuAction[] = [
   },
   {
     closeMenu: true,
+    dividerBottom: true,
     id: `play-from-step`,
     text: `Play From Step`,
     onClick: playFromStep,

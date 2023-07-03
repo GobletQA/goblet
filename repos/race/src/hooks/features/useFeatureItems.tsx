@@ -85,9 +85,9 @@ export const useFeatureItems = (props:THFeatureItems) => {
         }]
 
     if(onSimplePaste){
-      const pasteType = (operations?.paste as TRaceStep)?.step
+      const pasteType = (operations?.paste?.item as TRaceStep)?.step
         ? `Step`
-        : capitalize(operations?.paste?.type || `Item`)
+        : capitalize(operations?.paste?.item?.type || `Item`)
       
       addItems.push({
         Icon: PasteIcon,

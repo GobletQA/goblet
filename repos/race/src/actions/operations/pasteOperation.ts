@@ -4,86 +4,32 @@ import {
   TRaceGran,
   EOperations,
   TRaceFeature,
-  TRaceScenario,
   TRaceStepParent,
-  TRaceBackground,
-  TRaceScenarioParent,
 } from "@GBR/types"
 
-import { dispatchOp } from "./dispatchOp"
-import { buildStep } from '@GBR/utils/actions/buildStep'
+import { EDndPos } from '@gobletqa/components'
+import { pasteStepOperation } from "./pasteStepOperation"
 import { getFeature } from '@GBR/utils/features/getFeature'
 import { logNotFound } from "@gobletqa/race/utils/logging/logNotFound"
-import { updateScenario } from "@GBR/actions/scenario/updateScenario"
-import { getStepMeta } from "@gobletqa/race/utils/actions/getStepMeta"
-import { updateBackground } from "@GBR/actions/background/updateBackground"
 
 const prefix = `[Paste Operation]`
 
 export type TPasteOp = {
+  pos?:EDndPos
+  index?:number
   gran?:TRaceGran
   parent:TRaceAst
   child?:TRaceAst
+  from?:EOperations
   feature?:TRaceFeature
 }
 
-export type TPasteStep = {
-  step:TRaceStep
-  gran:TRaceGran
-  parent:TRaceStepParent
-  feature:TRaceFeature
-}
-
-
-const cleanUpAfterPaste = () => {
-  return dispatchOp({
-    data: undefined,
-    type: EOperations.paste
-  })
-}
- 
-const pasteStep = (props:TPasteStep) => {
-  const {
-    gran,
-    parent,
-    feature,
-  } = props
-
-  const stepMeta = getStepMeta(parent, props.step)
-  const added = buildStep<TRaceStepParent>(
-    feature,
-    parent,
-    {...props.step, ...stepMeta},
-    stepMeta.index
-  )
-
-  if(!added) return
-
-  const { steps } = added
-  const featureOpts = { skipAudit: false }
-
-  ;(parent as TRaceBackground).background
-    ? updateBackground({
-        feature,
-        featureOpts,
-        parentId: gran.uuid,
-        background: {...parent, steps} as TRaceBackground
-      })
-    : updateScenario({
-        feature,
-        featureOpts,
-        scenarioId: parent.uuid,
-        parent: gran as TRaceScenarioParent,
-        update: {...parent, steps} as TRaceScenario,
-      })
-
-  cleanUpAfterPaste()
-}
-
 export const pasteOperation = async (props:TPasteOp) => {
-  
   const {
+    pos,
     gran,
+    from,
+    index,
     parent,
     child,
   } = props
@@ -94,7 +40,10 @@ export const pasteOperation = async (props:TPasteOp) => {
   if(!feature) return logNotFound(`feature`, prefix)
 
   if((child as TRaceStep).step)
-    return pasteStep({
+    return await pasteStepOperation({
+      pos,
+      from,
+      index,
       feature,
       gran: gran || feature,
       step: child as TRaceStep,

@@ -3,6 +3,7 @@ import type {
   TRaceFeature,
   TRaceBackground,
   TRaceBackgroundParent,
+  TUpdateFeatureOpts,
 } from '@GBR/types'
 
 import { RedText } from '@gobletqa/components'
@@ -17,9 +18,11 @@ const prefix = `[Remove Background#Step]`
 
 export type TRemoveBackgroundStep = {
   stepId:string,
+  force?:boolean
   persist?:Boolean
   stepParentId:string,
   feature?:TRaceFeature
+  featureOpts?:TUpdateFeatureOpts
   granParent?:TRaceBackgroundParent
 }
 
@@ -40,7 +43,8 @@ const toRule = (
   }
 
   const updated = {...feature, rules}
-  props.persist !== false && updateFeature(updated, { removeAuditSteps: true })
+  props.persist !== false
+    && updateFeature(updated, { removeAuditSteps: true, ...props?.featureOpts })
 
   return updated
 }
@@ -57,13 +61,15 @@ const toFeature = (
       steps: background.steps.filter(step => step.uuid !== props.stepId)
     }
   }
-  props.persist !== false && updateFeature(updated, { removeAuditSteps: true })
+  props.persist !== false
+    && updateFeature(updated, { removeAuditSteps: true, ...props?.featureOpts })
 
   return updated
 }
 
 export const removeBackgroundStep = async (props:TRemoveBackgroundStep):Promise<TRaceFeature|undefined|void> => {
   const {
+    force,
     stepId,
     granParent,
     stepParentId,
@@ -88,6 +94,7 @@ export const removeBackgroundStep = async (props:TRemoveBackgroundStep):Promise<
   const stepTxt = trimmed || `background step `
 
   return await openYesNo({
+    force,
     title: `Delete Background Step?`,
     text: step?.step
       ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
@@ -99,7 +106,7 @@ export const removeBackgroundStep = async (props:TRemoveBackgroundStep):Promise<
           : toRule(props, feature, rule, index, background)
       }
     }
-  }) as Promise<TRaceFeature|undefined|void>
+  })
 
 
 }

@@ -66,8 +66,6 @@ const buildImg = async (args:TTaskActionArgs) => {
     `.`,
   ].filter((arg) => arg)
 
-  log && Logger.pair(`Running Cmd:`, `docker ${cmdArgs.join(' ')}\n`)
-
   const output = await docker.build(cmdArgs, { cwd: appRoot, env: allEnvs }, params)
   if (!log) return
 

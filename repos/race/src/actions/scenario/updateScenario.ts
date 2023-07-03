@@ -40,7 +40,7 @@ const toRule = (
   const updated = {...feature, rules}
   persist !== false && updateFeature(updated, { skipAudit: true, ...featureOpts })
 
-  return updated
+  return updated as TRaceFeature
 }
 
 const toFeature = (
@@ -66,7 +66,7 @@ const toFeature = (
   const updated = {...feature, scenarios}
   persist !== false && updateFeature(updated, { skipAudit: true, ...featureOpts })
 
-  return updated
+  return updated as TRaceFeature
 }
 
 export const updateScenario = async (props:TUpdateScenario) => {

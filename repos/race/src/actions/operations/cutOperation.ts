@@ -1,17 +1,18 @@
 import { TRaceOpData, EOperations } from "@GBR/types"
 import { dispatchOp }  from './dispatchOp'
 
-export type TCopyOp = {
+export type TCutOp = {
   data:TRaceOpData
 }
 
-export const copyOperation = (props:TCopyOp) => {
+
+export const cutOperation = (props:TCutOp) => {
   return dispatchOp({
     data: {
       ...props?.data,
-      from: EOperations.copy,
+      from: EOperations.cut,
     },
-    // Dispatch the copy event into the paste slot on the operations context
+    // Dispatch the cut event into the paste slot on the operations context
     type: EOperations.paste
   })
 }

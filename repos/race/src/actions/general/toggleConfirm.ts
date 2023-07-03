@@ -36,6 +36,7 @@ export const openYesNo = async <T=any>({
   yes,
   no,
   cb,
+  force=false,
   callback=cb,
   ...props
 }:TOpenYesNo):Promise<T|void> => {
@@ -57,7 +58,7 @@ export const openYesNo = async <T=any>({
      * Skip opening the confirm modal is `confirmDelete` is **NOT** enabled
      * Othewise open the `toggleConfirm` modal
      */
-    !settings.confirmDelete
+    ;(!settings.confirmDelete || force === true)
       ? onConfirm(false)
       : toggleConfirm({
           ...props,

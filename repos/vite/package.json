@@ -10,6 +10,7 @@
     "clean:nm": "rm -rf node_modules",
     "build": "GOBLET_ENV=production NODE_ENV=production vite build --clearScreen false -c configs/vite.config.ts",
     "prod": "GOBLET_ENV=production NODE_ENV=production vite --clearScreen false -c configs/vite.config.ts",
+    "cache": "GOBLET_ENV=local NODE_ENV=local vite --force --clearScreen false -c configs/vite.config.ts",
     "serve": "GOBLET_ENV=production NODE_ENV=production serve -p 19006 dist",
     "start": "GOBLET_ENV=local NODE_ENV=local vite --clearScreen false -c configs/vite.config.ts"
   },

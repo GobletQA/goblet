@@ -49,6 +49,8 @@ export type TRaceMenuItem = {
   closeMenu?:boolean
   tooltip?:ReactNode
   children?:ReactNode
+  dividerTop?:boolean
+  dividerBottom?:boolean
   description?:ReactNode
   Icon?:ComponentType<any>
   onClick:TRaceMenuItemClick

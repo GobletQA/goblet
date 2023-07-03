@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { EDndPos } from '@gobletqa/components'
 import { useOperations } from '@gobletqa/race/contexts'
 import { copyScenario } from '@GBR/actions/scenario/copyScenario'
-import { pasteOperation } from '@GBR/actions/operations/pasteOperation'
+import { pasteOperation } from '@gobletqa/race/actions/operations/pasteOperation'
 import { updateScenarioStepPos } from '@GBR/actions/scenario/updateScenarioStepPos'
 
 export type THScenarioActions = {
@@ -38,9 +38,13 @@ export const useScenarioActions = (props:THScenarioActions) => {
     const onRemoveScenarioStep = onRemoveStep
 
     const onPasteStep = (
-      operations?.paste
-        && (operations?.paste as TRaceStep)?.step
-        && (() => pasteOperation({ parent: scenario, child: operations?.paste, gran: parent }))
+      (operations?.paste?.item as TRaceStep)?.step
+        && (() => pasteOperation({
+            gran: parent,
+            parent: scenario,
+            from: operations?.paste?.from,
+            child: operations?.paste?.item,
+          }))
     ) as TAnyCB
 
     const onCopyScenario = () => copyScenario(scenario)

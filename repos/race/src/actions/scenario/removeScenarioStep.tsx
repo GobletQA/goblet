@@ -1,4 +1,4 @@
-import type { TRaceStep, TRaceFeature, TRaceScenarioParent, TRaceScenario } from '@GBR/types'
+import type { TRaceStep, TRaceFeature, TRaceScenarioParent, TRaceScenario, TUpdateFeatureOpts } from '@GBR/types'
 
 import { ESectionType } from '@GBR/types'
 import { RedText } from '@gobletqa/components'
@@ -12,9 +12,11 @@ const prefix = `[Remove Scenario#Step]`
 
 export type TRemoveScenarioStep = {
   stepId:string
+  force?:boolean
   persist?:Boolean
   stepParentId?:string
   feature?:TRaceFeature
+  featureOpts?:TUpdateFeatureOpts
   granParent?:TRaceScenarioParent
 }
 
@@ -34,7 +36,8 @@ const toRule = (
   rules[ruleIdx as number] = {...rule, scenarios}
 
   const update = {...feature, rules}
-  props.persist !== false && updateFeature(update, { removeAuditSteps: true })
+  props.persist !== false
+    && updateFeature(update, { removeAuditSteps: true, ...props?.featureOpts })
   
   return update
 }
@@ -45,13 +48,15 @@ const toFeature = (
   scenarios:TRaceScenario[]
 ) => {
   const update = {...feature, scenarios}
-  props.persist !== false && updateFeature(update, { removeAuditSteps: true })
+  props.persist !== false
+    && updateFeature(update, { removeAuditSteps: true, ...props.featureOpts })
 
   return update
 }
 
 export const removeScenarioStep = async (props:TRemoveScenarioStep):Promise<TRaceFeature|undefined|void> => {
   const {
+    force,
     stepId,
     granParent,
     stepParentId,
@@ -90,6 +95,7 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep):Promise<TRac
   const stepTxt = trimmed || `scenario step `
 
   return await openYesNo({
+    force,
     title: `Delete Scenario Step?`,
     text: trimmed
       ? (<>Are you sure your want to delete step <b><RedText>{stepTxt}</RedText></b>?</>)
@@ -101,6 +107,6 @@ export const removeScenarioStep = async (props:TRemoveScenarioStep):Promise<TRac
           : toRule(props, feature, scenarioParent, scenarios)
       }
     }
-  }) as Promise<TRaceFeature|undefined|void>
+  })
 
 }
