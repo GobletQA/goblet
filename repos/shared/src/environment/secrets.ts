@@ -4,7 +4,6 @@ import { loadFiles } from './mapValues'
 import { EFileType } from '@gobletqa/latent'
 import { injectUnsafe } from '@GSH/utils/safeReplacer'
 
-
 const { GOBLET_ENV } = process.env
 
 export const secrets = loadFiles([
