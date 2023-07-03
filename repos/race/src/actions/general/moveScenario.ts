@@ -63,6 +63,7 @@ export const moveScenario = async (props:TMoveScenario) => {
  
   const removed = await removeScenario({
     feature,
+    force: true,
     persist: false,
     parent: oldParent,
     scenarioId: move.uuid,

@@ -5,7 +5,7 @@ import { tagsFactory } from './tagsFactory'
 import { EAstObject } from '@ltipton/parkin'
 import { stepsFactory } from './stepFactory'
 import { findIndex } from '@GBR/utils/find/findIndex'
-import { deepMerge, uuid, emptyArr } from '@keg-hub/jsutils'
+import { deepMerge, emptyArr } from '@keg-hub/jsutils'
 
 export type TScenariosFactory = {
   empty?:boolean
@@ -24,7 +24,6 @@ export type TScenarioFactory = {
 
 const emptyScenario = (scenario:Partial<TRaceScenario>) => ({
   steps: [],
-  uuid: uuid(),
   scenario: ``,
   type: EAstObject.scenario,
   ...scenario
@@ -45,14 +44,15 @@ export const scenarioFactory = ({
   })
 
   const whitespace = parent?.whitespace?.length ? `${parent.whitespace}  ` : `  `
+  const uuid = `${parent.uuid}.${EAstObject.scenario}.${index}`
 
   const built = scenario
     ? deepMerge<TRaceScenario>(
-        emptyScenario({ index, whitespace }),
+        emptyScenario({ uuid, index, whitespace }),
         scenario,
       )
     : empty
-      ? emptyScenario({ index, whitespace }) as TRaceScenario
+      ? emptyScenario({ uuid, index, whitespace }) as TRaceScenario
       : undefined
   
   if(!built) return undefined
