@@ -15,7 +15,7 @@ import { Logger } from '@keg-hub/cli-utils'
 import { emptyObj, deepMerge } from '@keg-hub/jsutils'
 import { throwErr } from '@gobletqa/workflows/utils/throwErr'
 import { ensurePath } from '@gobletqa/workflows/utils/ensurePath'
-import { GB_GIT_REMOTE_REF } from '@gobletqa/workflows/constants'
+import { GBGitRemoteRef } from '@gobletqa/workflows/constants'
 import {
   defCmdOpts,
   buildFetchOpts,
@@ -50,7 +50,7 @@ git.remote.add = async (
 ) => {
   const options = validateGitOpts(gitOpts)
   const url = opts?.url || options.remote
-  const origin = opts?.origin || GB_GIT_REMOTE_REF
+  const origin = opts?.origin || GBGitRemoteRef
   const cmdArgs = [`remote`, `add`, origin, url]
 
   const [err, resp] = await git(cmdArgs, {}, options.local)
@@ -70,7 +70,7 @@ git.remote.print = async (
   cmdOpts:TRunCmdOpts=emptyObj
 ) => {
 
-  const origin = opts?.origin || GB_GIT_REMOTE_REF
+  const origin = opts?.origin || GBGitRemoteRef
   const [err, resp] = await gitCmd(
     [`config`, `--get`, `remote.${origin}.url`],
     gitOpts,

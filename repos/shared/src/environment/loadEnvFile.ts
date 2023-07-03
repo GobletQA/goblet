@@ -5,8 +5,7 @@ import { execSync } from 'child_process'
 import { EFileType, Latent } from '@gobletqa/latent'
 import { getGobletConfig } from '../goblet/getGobletConfig'
 import { getPathFromConfig } from '../utils/getPathFromConfig'
-
-const { GB_GIT_REMOTE_REF=`goblet-ref` } = process.env
+import { GBGitRemoteRef, GBMountedRemoteKey } from '../constants/git'
 
 type TLoadEnvFile = {
   file?:string
@@ -17,7 +16,9 @@ type TLoadEnvFile = {
 
 const getGitRemote = (repoRoot:string) => {
   try {
-    return execSync(`git config --get remote.${GB_GIT_REMOTE_REF}.url`, { cwd: repoRoot })
+    if(process.env[GBMountedRemoteKey]) return process.env[GBMountedRemoteKey]
+    
+    return execSync(`git config --get remote.${GBGitRemoteRef}.url`, { cwd: repoRoot })
       ?.toString()?.trim()
   }
   catch(err){
@@ -56,12 +57,16 @@ export const loadEnvFile = ({
   }
 
   const loc = location || path.join(environmentsDir, file)
+  const latent = new Latent()
+
+  if(type !== EFileType.secrets)
+    return latent.values.get({ location: loc })
+
 
   // Error is logged in the getGitRemote method
   const repoUrl = getGitRemote(repoRoot)
   if(!repoUrl) return {}
 
-  const latent = new Latent()
   const token = latent.getToken(repoUrl)
   if(!token){
     console.log(`[ENV LOADER] Failed to get token from repoUrl`)
@@ -70,8 +75,6 @@ export const loadEnvFile = ({
     return {}
   }
 
-  return type === EFileType.secrets
-    ? latent.secrets.get({ token, location: loc })
-    : latent.values.get({ token, location: loc })
+  return latent.secrets.get({ token, location: loc })
 
 }

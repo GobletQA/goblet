@@ -16,6 +16,11 @@ export type TLTLoad = Omit<TLatent, `token`> & {
   location?:string
 }
 
+export type TLTGetSecrets = Omit<TLTLoad, `location`|`token`> & {
+  token:string
+  location:string
+}
+
 export type TLTGet = Omit<TLTLoad, `location`> & {
   location:string
 }
