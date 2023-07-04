@@ -32,8 +32,11 @@ const options = {
         // `--load-extension=${pathToExtension}`,
 
       `--disable-gpu`,
-      `--start-maximized`,
-      `--start-fullscreen`,
+      // `--start-maximized`,
+      // `--start-fullscreen`,
+      // `--app=https://www.gobletqa.com`,
+      `--kiosk`,
+      `--disable-infobars `,
       // Hides the top-bar header. Should validate this this is what we want
       `--window-position=0,-74`,
       // `--window-position=0,0`,

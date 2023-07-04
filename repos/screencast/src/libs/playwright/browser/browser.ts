@@ -8,6 +8,7 @@ import type {
 } from '@GSC/types'
 
 import { Automate } from '../automate'
+import { execSync } from 'child_process'
 import { pwBrowsers } from './PWBrowsers'
 import { ghostMouse } from './ghostMouse'
 import { Logger } from '@GSC/utils/logger'
@@ -99,12 +100,20 @@ const getPage = (async ({
       }
     }
 
+
     getPage.creatingPage = false
     const browserType = browser.browserType?.().name?.()
 
+    console.log(`------- running xdotool -------`)
+    execSync(`xdotool key F11`)
+    console.log(`------- finish xdotool -------`)
+
+
     hasPages
-      ? notCI && Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
-      : notCI && Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
+      ? notCI
+          && Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
+      : notCI
+          && Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
 
     return { context, browser, page } as TPWComponents
   }
