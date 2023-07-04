@@ -14,6 +14,7 @@ import { ghostMouse } from './ghostMouse'
 import { Logger } from '@GSC/utils/logger'
 import { emptyObj } from '@keg-hub/jsutils'
 import { notCI } from '@gobletqa/shared/utils/isCI'
+import { wmctrlFullScreen } from '@GSC/libs/vnc/wmctrl'
 import { getBrowserType } from '../helpers/getBrowserType'
 import { getContextOpts } from '../helpers/getContextOpts'
 import { buildBrowserConf } from '../helpers/buildBrowserConf'
@@ -85,12 +86,19 @@ const getPage = (async ({
 
     let page:TBrowserPage
     getPage.creatingPage = true
-    if(hasPages) page = pages[0]
+    if(hasPages){
+      page = pages[0]
+      const currentUrl = page.url()
+      currentUrl === `about:blank`
+        && await page.goto(initialUrl)
+      
+    }
     else {
 
       const pg = await context.newPage()
-      
-      const page = ghostMouse(pg)
+      page = ghostMouse(pg)
+      Logger.verbose(`getPage - Ensuring full-screen`)
+      await wmctrlFullScreen()
 
       try {
         await page.goto(initialUrl)
@@ -138,7 +146,7 @@ const getContext = async (
 
   let context = resp.context
   const browser = resp.browser
-  
+
   if(!context){
     const contexts = browser.contexts()
     const hasContexts = Boolean(contexts.length)
@@ -152,7 +160,8 @@ const getContext = async (
     const options = getContextOpts(browserConf.context, undefined, overrides.context)
     notCI && Logger.verbose(`Context Options`, options)
 
-    if(hasContexts){
+    // @ts-ignore
+    if(hasContexts && !contexts[0]._closeWasCalled){
       context = contexts[0]
       notCI && Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
     }

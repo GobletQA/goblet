@@ -1,3 +1,4 @@
+import type PW from 'playwright'
 import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GSC/types'
 import type playwright from 'playwright'
 
@@ -15,6 +16,7 @@ import {
   deepMerge,
 } from '@keg-hub/jsutils'
 
+
 /**
  * Default browser options
  * @type {Object}
@@ -25,11 +27,13 @@ const options = {
     slowMo: 100,
     headless: false,
     ignoreDefaultArgs: [
-      `--enable-automation`
+      `--enable-automation`,
+      // `--no-startup-window`
     ],
     args: [
         // `--disable-extensions-except=${pathToExtension}`,
         // `--load-extension=${pathToExtension}`,
+      `--kiosk`,
 
       `--disable-gpu`,
       // `--start-maximized`,
@@ -38,7 +42,7 @@ const options = {
       `--kiosk`,
       `--disable-infobars `,
       // Hides the top-bar header. Should validate this this is what we want
-      `--window-position=0,-74`,
+      // `--window-position=0,-74`,
       // `--window-position=0,0`,
       `--allow-insecure-localhost`,
       `--unsafely-treat-insecure-origin-as-secure`,

@@ -31,7 +31,10 @@ ARG GIT_GLOBAL_IGNORE=/goblet/.gitignore
 RUN sed -i 's/# deb/deb/g' /etc/apt/sources.list && apt-get update
 RUN apt-get install --yes --no-install-recommends \
     curl \
+    menu \
     novnc \
+    wmctrl \
+    openbox \
     net-tools \
     supervisor \
     openssh-client \
