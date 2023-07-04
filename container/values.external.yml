@@ -41,3 +41,6 @@ envs:
 
   # True when tests are run from the goblet web-platform
   GOBLET_RUN_FROM_UI: ""
+
+  # Email list of users who have access to the goblet UI platform
+  GB_GITHUB_AUTH_USERS: ""
