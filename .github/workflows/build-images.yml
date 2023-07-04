@@ -238,8 +238,8 @@ jobs:
           build-args: |
             NPM_TOKEN=${{ secrets.GIT_TOKEN }}
             ${{ steps.args.outputs.list }}
-          cache-from: type=gha, scope=${{ github.workflow }}
-          cache-to: type=gha, scope=${{ github.workflow }}
+          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-to: type=gha,scope=${{ matrix.service }}
           file: ${{ matrix.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}

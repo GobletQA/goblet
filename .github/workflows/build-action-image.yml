@@ -108,8 +108,10 @@ jobs:
             BUILDKIT_INLINE_CACHE=1
             NPM_TOKEN=${{ secrets.GIT_TOKEN }}
             ${{ steps.args.outputs.list }}
-          cache-from: gobletqa/goblet-action:latest
-          cache-to: type=inline,mode=all
+          # cache-from: gobletqa/goblet-action:latest
+          # cache-to: type=inline,mode=all
+          cache-from: type=gha,scope=action
+          cache-to: type=gha,scope=action
           file: container/Dockerfile.action
           push: true
           tags: ${{ steps.meta.outputs.tags }}
