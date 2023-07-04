@@ -1,4 +1,4 @@
-import type { TRaceFeature, TRaceScenarioParent, TRaceScenario } from '@GBR/types'
+import type { TRaceFeature, TRaceScenarioParent, TRaceScenario, TUpdateFeatureOpts } from '@GBR/types'
 
 import { logNotFound } from '@GBR/utils/logging'
 import { findScenario, findRule } from '@GBR/utils/find'
@@ -13,6 +13,7 @@ export type TUpdateScenario = {
   feature?:TRaceFeature
   parent?:TRaceScenarioParent
   update:Partial<TRaceScenario>
+  featureOpts?:TUpdateFeatureOpts
 }
 
 const toRule = (
@@ -24,7 +25,7 @@ const toRule = (
   index:number
 ) => {
 
-  const { update, persist } = props
+  const { update, persist, featureOpts } = props
 
   const {
     rule,
@@ -37,9 +38,9 @@ const toRule = (
   rules[ruleIdx as number] = {...rule, scenarios}
 
   const updated = {...feature, rules}
-  persist !== false && updateFeature(updated, { skipAudit: true })
+  persist !== false && updateFeature(updated, { skipAudit: true, ...featureOpts })
 
-  return updated
+  return updated as TRaceFeature
 }
 
 const toFeature = (
@@ -53,7 +54,8 @@ const toFeature = (
   const {
     update,
     persist,
-    scenarioId
+    scenarioId,
+    featureOpts
   } = props
 
   if(!scenario)
@@ -62,9 +64,9 @@ const toFeature = (
   scenarios[index] = {...scenario, ...update}
 
   const updated = {...feature, scenarios}
-  persist !== false && updateFeature(updated, { skipAudit: true })
+  persist !== false && updateFeature(updated, { skipAudit: true, ...featureOpts })
 
-  return updated
+  return updated as TRaceFeature
 }
 
 export const updateScenario = async (props:TUpdateScenario) => {

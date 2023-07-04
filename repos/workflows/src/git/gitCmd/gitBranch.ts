@@ -1,6 +1,7 @@
 import type {
   TGitBranch,
-  TGitRemoteOpts
+  TGitRemoteOpts,
+  TGitCreateBranch,
 } from './gitcmd.types'
 
 import type {
@@ -46,4 +47,23 @@ git.branch.current = async (
   )
 
   return hasGitError(err, resp, `branch.current`) ? `` : resp?.data?.trim()
+}
+
+git.branch.create = async (
+  gitOpts:TGitCreateBranch,
+  cmdOpts:TRunCmdOpts=emptyObj
+) => {
+
+  const { newBranch, force, reset } = gitOpts
+  const args = []
+  force && args.push(`--force`)
+  reset ? args.push(`-B`) : args.push(`-b`)
+
+  const [err, resp] = await gitCmd(
+    [`checkout`, ...args, newBranch],
+    gitOpts,
+    cmdOpts
+  )
+
+  return hasGitError(err, resp, `branch.create`) ? `` : resp?.data?.trim()
 }

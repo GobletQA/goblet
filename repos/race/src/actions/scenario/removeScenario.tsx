@@ -10,7 +10,8 @@ import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 const prefix = `[Remove Scenario]`
 
 export type TRemoveScenario = {
-  persist?:Boolean
+  force?:boolean
+  persist?:boolean
   scenarioId:string
   feature?:TRaceFeature
   parent?:TRaceScenarioParent
@@ -49,7 +50,7 @@ const toFeature = (
 }
 
 export const removeScenario = async (props:TRemoveScenario):Promise<TRaceFeature|void> => {
-  const { scenarioId } = props
+  const { force, scenarioId } = props
 
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
@@ -64,6 +65,7 @@ export const removeScenario = async (props:TRemoveScenario):Promise<TRaceFeature
   const removed = scenarios?.filter(scenario => scenario.uuid !== props.scenarioId)
 
   return await openYesNo<TRaceFeature>({
+    force,
     title: `Delete Scenario?`,
     text: (
       <>

@@ -6,7 +6,7 @@ import type { TExpPart, TRaceStepParent, TRaceStep } from '@GBR/types'
 import { useInline } from '@gobletqa/components'
 import { removeQuotes } from '@GBR/utils/helpers/removeQuotes'
 import { ExpAliasTag, ExpressionNoQuoteTypes } from '@GBR/constants'
-import { isNum } from '@keg-hub/jsutils'
+import { exists, isNum, isStr } from '@keg-hub/jsutils'
 
 export type TExpression = {
   def:TStepDef
@@ -78,10 +78,12 @@ export const useExpressionChange = (props:TExpression) => {
   } = props
 
 
-  return useInline((evt:ChangeEvent<HTMLInputElement>) => {
+  return useInline((evt:ChangeEvent<HTMLInputElement>, prop?:unknown) => {
 
-    // Ensure only changes to the input update the expression
-    if(evt.target.tagName !== `INPUT`){
+    // Ensure only changes to the input || select update the expression
+    const fromSelect = !exists(prop) || prop && !isStr(prop)
+
+    if(!fromSelect && evt.target.tagName !== `INPUT`){
       evt?.stopPropagation?.()
       evt?.preventDefault?.()
       return

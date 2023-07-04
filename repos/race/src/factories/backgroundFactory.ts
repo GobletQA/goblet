@@ -2,7 +2,7 @@ import type { TRaceFeature, TRaceBackgroundParent, TRaceBackground } from '@GBR/
 
 import { EAstObject } from '@ltipton/parkin'
 import { stepsFactory } from './stepFactory'
-import { deepMerge, uuid } from '@keg-hub/jsutils'
+import { deepMerge } from '@keg-hub/jsutils'
 import { findIndex } from '@GBR/utils/find/findIndex'
 
 export type TBackgroundFactory = {
@@ -15,7 +15,6 @@ export type TBackgroundFactory = {
 const emptyBackground = (background:Partial<TRaceBackground>) => {
   return {
     steps: [],
-    uuid: uuid(),
     background: ``,
     type: EAstObject.background,
     ...background
@@ -37,11 +36,20 @@ export const backgroundFactory = ({
   })
 
   const whitespace = parent?.whitespace?.length ? `${parent.whitespace}  ` : `  `
+  const uuid = `${parent.uuid}.${EAstObject.background}.${index}`
 
   const built = background
-    ? deepMerge<TRaceBackground>(emptyBackground({ index, whitespace }), background)
+    ? deepMerge<TRaceBackground>(emptyBackground({
+        uuid,
+        index,
+        whitespace
+      }), background)
     : empty
-      ? emptyBackground({ index, whitespace }) as TRaceBackground
+      ? emptyBackground({
+          uuid,
+          index,
+          whitespace
+        }) as TRaceBackground
       : undefined
   
   built && (

@@ -9,8 +9,8 @@ import { ESectionType } from '@GBR/types'
 import { findScenario, findRule } from '@GBR/utils/find'
 import { buildStep } from '@GBR/utils/actions/buildStep'
 import { logNotFound, missingId } from '@GBR/utils/logging'
+import { getFeature } from '@GBR/utils/features/getFeature'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
-import { getFeature } from '@gobletqa/race/utils/features/getFeature'
 
 const prefix = `[Add Scenario#Step]`
 

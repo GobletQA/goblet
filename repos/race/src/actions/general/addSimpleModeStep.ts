@@ -6,11 +6,10 @@ import type {
 
 import {emptyArr} from '@keg-hub/jsutils'
 import { logNotFound } from '@GBR/utils/logging'
-import { SimpleScenarioTag } from '@GBR/constants'
 import { buildStep } from '@GBR/utils/actions/buildStep'
 import { updateFeature } from '@GBR/actions/feature/updateFeature'
 import { getFeature } from '@gobletqa/race/utils/features/getFeature'
-import { findScenarioWithTag } from '@GBR/utils/find/findScenarioWithTag'
+import { findSimpleScenario } from '@GBR/utils/find/findSimpleScenario'
 
 const prefix = `[Add Simple Mode]`
 
@@ -21,24 +20,12 @@ export type TAddSimpleModeStep = {
   scenario: TRaceScenario
 }
 
-const getScenario = ({ feature, scenario }:TAddSimpleModeStep) => {
-  
-  if(!feature.scenarios.length)
-    return {scenario, index: 0}
-
-  const found = findScenarioWithTag(feature.scenarios, SimpleScenarioTag)
-
-  return !found
-    ? {scenario, index: 0}
-    : {scenario: {...found}, index: feature.scenarios.indexOf(found)}
-}
 
 const addScenarioStep = ({ feature, scenario, ...props }:TAddSimpleModeStep) => {
   const added = buildStep<TRaceScenario>(
     feature,
     scenario,
-    props.step,
-    scenario.index
+    props.step
   )
 
   if(!added) return
@@ -47,11 +34,11 @@ const addScenarioStep = ({ feature, scenario, ...props }:TAddSimpleModeStep) => 
   return {scenario, step: added.step}
 }
 
-export const addSimpleModeStep = async (props:TAddSimpleModeStep) => {  
+export const addSimpleModeStep = async (props:TAddSimpleModeStep) => {
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 
-  const { scenario:scn, index } = getScenario({...props, feature})
+  const { scenario:scn, index } = findSimpleScenario({...props, feature})
   const added = addScenarioStep({...props, scenario:scn})
 
   if(!added) return

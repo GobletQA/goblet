@@ -1,12 +1,10 @@
-import type { Express } from 'express'
 import type {
-  TBrowserConf,
   TPWComponents,
   TBrowserPage,
   TBrowserEvents,
   TBrowserEventCB,
   TOnAutomateEvent,
-  TSocketEvtCBProps,
+  TBrowserEventArgs,
 } from '@GSC/types'
 
 import { Events } from './events'
@@ -126,15 +124,11 @@ export class BrowserEvents {
 
 }
 
-export const browserEvents = async (
-  app:Express,
-  args:TSocketEvtCBProps & { pwComponents?: TPWComponents, browser?:TBrowserConf }
-) => {
-
+export const browserEvents = async (args:TBrowserEventArgs) => {
   const pwComponents = args.pwComponents
-    || await startBrowser(joinBrowserConf(args.browser, app))
+    || await startBrowser(joinBrowserConf(args.browser))
 
-  const { Automate, ...browserEvts } = Events(app, args)
+  const { Automate, ...browserEvts } = Events(args)
 
   BrowserEvents.automateEvent(pwComponents, Automate)
   BrowserEvents.registerEvents(browserEvts, pwComponents.page)

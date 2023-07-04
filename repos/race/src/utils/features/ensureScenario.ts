@@ -3,7 +3,6 @@ import type {
   TRaceScenario,
 } from '@GBR/types'
 
-import { uuid } from '@keg-hub/jsutils'
 import { EAstObject } from '@ltipton/parkin'
 import { SimpleScenarioTag } from '@GBR/constants'
 import { scenarioFactory } from '@GBR/factories/scenarioFactory'
@@ -21,7 +20,6 @@ export const ensureScenario = (parent:TRaceFeature) => {
     feature: parent,
     tags: [SimpleScenarioTag],
     scenario: {
-      uuid: uuid(),
       scenario: `Steps`,
       type: EAstObject.scenario,
     },

@@ -1,4 +1,5 @@
 import type {
+  TStepCtx,
   TBrowser,
   TBrowserPage,
   TBrowserContext,
@@ -10,8 +11,13 @@ import os from 'os'
 import path from 'path'
 import { startTracing } from './tracing'
 import { get, noOpObj } from '@keg-hub/jsutils'
-import { metadata, ghostMouse } from '@gobletqa/screencast/libs/playwright'
-import { startBrowser } from '@gobletqa/screencast/libs/playwright/browser/browser'
+import {
+  metadata,
+  ghostMouse,
+  startBrowser,
+  setBrowserDefaults,
+} from '@gobletqa/screencast/libs/playwright'
+
 import {
   browserCookieLoc,
   setContextCookie,
@@ -35,17 +41,23 @@ export const setupBrowser = async () => {
   // TODO: Should update to check if in docker container
   // Then pass false based on that
   // Pass false to bypass checking the browser status
-  const { browser } = await startBrowser({
+  const browserOpts = {
     ...browserConf,
     type,
     ...get(global, `__goblet.browser.options`, noOpObj),
-  }, true)
+  }
+
+  const { browser } = await startBrowser(browserOpts, true)
 
   if (!browser)
     throw new Error(`Could not create browser. Please ensure the browser server is running.`)
 
   global.browser = browser
-  
+  global.browser.__goblet = {
+    ...global.browser.__goblet,
+    ...browserOpts
+  }
+
   return global.browser as TBrowser
 }
 
@@ -168,6 +180,32 @@ export const closeBrowser = async () => {
   global.browser = undefined
 }
 
+export const restartContext = async (ctx:TStepCtx) => {
+  const { world } = ctx
+  
+  // global.__goblet.context.options // Browser Context Options
+  // global.__goblet.context.options.recordVideo // string path to video save directory
+  // global.context.__goblet.cookie // string path to saved cookie
+  // global.context.__goblet.extraHTTPHeaders // Record<string, string>
+  // global.context.__goblet.tracing // boolean
+  // const gobletCtxOpts = global?.context?.__goblet || {}
+
+  // Cache the url so we can reset it
+  const _page = await getPage()
+  const url = _page.url()
+
+  await closeContext()
+
+  const context = await getContext()
+  const page = await getPage()
+  setBrowserDefaults({
+    url,
+    world,
+    browserConf: global.browser.__goblet,
+    pwComponents: { context, page }
+  })
+
+}
 
 export {
   browserCookieLoc,

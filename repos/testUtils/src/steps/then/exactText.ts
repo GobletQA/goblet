@@ -14,6 +14,7 @@ export const exactText = async (
   data:string,
   ctx:TStepCtx
 ) => {
+
   const content = await getLocatorContent(selector)
   expect(content).toEqual(data)
 }

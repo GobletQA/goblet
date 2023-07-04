@@ -235,7 +235,7 @@ export class Repo {
       paths=emptyObj as TRepoPaths,
     } = config
 
-    this.setEnvironment(environment)
+    this.setEnvironment(environment, false)
 
     this.git = git
     this.name = name

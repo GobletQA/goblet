@@ -44,7 +44,8 @@ export const Scenario = (props:TScenario) => {
 
   const {
     onMoveStep,
-    onCopyScenario,
+    onPasteStep,
+    // onCopyScenario,
     onRemoveScenario,
     onAddScenarioStep,
     onChangeScenarioStep,
@@ -70,7 +71,8 @@ export const Scenario = (props:TScenario) => {
     editingTitle,
     item: scenario,
     toggleEditTitle,
-    onCopy: onCopyScenario,
+    // onCopy: onCopyScenario,
+    onPaste: onPasteStep,
     onRemove: onRemoveScenario,
     onAddStep: onAddScenarioStep,
     type: ESectionType.scenario,

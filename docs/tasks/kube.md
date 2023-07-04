@@ -13,13 +13,13 @@
 
 ### Auth
 
-* Cmd: `pnpm kube auth  <options>`
+* Cmd: `pnpm kube secret auth  <options>`
 * Description: Create kubernetes docker auth secret used by the Backend API, calls the `secret` task internally
-* Example `pnpm kube auth`
+* Example `pnpm kube secret auth`
 * Sets the name of the secret to the value of the `GB_KUBE_SCRT_DOC_AUTH` env (default: `docker-auth`).
 
 
-* Cmd: `pnpm kube fbsa  <options>`
+* Cmd: `pnpm kube secret fbsa  <options>`
 * Description: Create kubernetes firebase service account secret used by the Backend API, calls the `secret` task internally
 * Example `pnpm kube fbsa`
 * Sets the name of the secret to the value of the `GB_KUBE_SCRT_FB_SA` env (default: `firebase-sa`).

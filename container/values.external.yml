@@ -24,14 +24,23 @@ envs:
 
   LINODE_V4_API_KEY: ''
 
-
   # Github Auth config for Appwrite cloud
   APPWRITE_GITHUB_CLIENT_ID: ''
   APPWRITE_GITHUB_CLIENT_SECRET: ''
-  
+
   # Custom overrides for a git provider
   # Allows setting a custom git token via a PAT
   # Follows the format of <username>::<provider>::<token>
   GB_GIT_PROVIDER_DATA: ""
 
   GB_LT_TOKEN_SECRET: ""
+
+  # True when tests are run from the goblet action docker image
+  # Purposely build for CI environments, but can be used in other scenarios
+  GOBLET_RUN_FROM_CI: ""
+
+  # True when tests are run from the goblet web-platform
+  GOBLET_RUN_FROM_UI: ""
+
+  # Email list of users who have access to the goblet UI platform
+  GB_GITHUB_AUTH_USERS: ""

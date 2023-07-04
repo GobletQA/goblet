@@ -26,7 +26,6 @@ export type TDockerMethod = (
 ) => void
 
 
-
 /**
  * Sets up docker to use buildX build instead of build
  * Also check and add platforms, if the build is being pushed
@@ -52,13 +51,15 @@ const buildX = (
         )
       ]
 
+  const allArgs = platformOpts.concat(toArr(cmdArgs))
+  params.log && Logger.pair(
+    `Running Cmd:`,
+    `docker buildx ${allArgs.join(' ')}\n`
+  )
+
   // Call the callback, adding the platform args array with the first arg, which should be an array
   // Then spread the other args to match calling the docker command
-  return callback(
-    `buildx`,
-    platformOpts.concat(toArr(cmdArgs)),
-    options
-  )
+  return callback(`buildx`, allArgs, options)
 }
 
 /**
@@ -130,11 +131,11 @@ const dockerExec = async (
 }
 
 const login = async (...args) => {
-  const { dockerLogin } = await loadScript('dockerLogin')
+  const { dockerLogin } = await loadScript(`dockerLogin`)
   
   return !isArr(args[0]) && (!args[1] || isStr(args[1]))
     ? await dockerLogin(...args)
-    : await dockerCmd(['login', ...args[0]], args[1], args[2])
+    : await dockerCmd([`login`, ...args[0]], args[1], args[2])
 }
 
 const createContext = async (args, options=emptyObj, cwd=appRoot) => {
@@ -157,12 +158,12 @@ docker.stop = (...args:TDockerCmdAdd) => docker('stop', ...args)
 docker.remove = (...args:TDockerCmdAdd) => docker('rm', ...args)
 docker.exec = (...args:TDockerCmdAdd) => docker('exec', ...args)
 docker.build = (...args):any => buildX(
-  'build',
+  `build`,
   ((...args) => docker(...args)) as TBuildXCB,
   ...args as TBuildArgs
 )
 docker.pull = (...args:TDockerCmdAdd) => dockerCmd([
-  'pull',
+  `pull`,
   ...toArr(args.shift() as string[])],
   ...args as Record<any, any>[]
 )

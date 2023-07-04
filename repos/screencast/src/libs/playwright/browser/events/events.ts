@@ -1,25 +1,13 @@
-import type { Express } from 'express'
 import type { Frame } from 'playwright'
 import type {
   TAutomateEvent,
-  TBrowserPage,
   TBrowserEventArgs,
-  TSocketEvtCBProps,
 } from '@GSC/types'
 
-import { EBrowserEvent } from '@GSC/types'
 import { Logger } from '@GSC/utils/logger'
-import { ensureArr } from '@keg-hub/jsutils'
-import { WS_PW_URL_CHANGE } from '@GSC/constants'
-import { Automate } from '@GSC/libs/playwright/automate/automate'
-import { startBrowser } from '@GSC/libs/playwright/browser/browser'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 import { onFrameNavigated } from './onFrameNavigated'
 
-export const Events = (
-  app:Express,
-  args:TBrowserEventArgs
-) => {
+export const Events = (args:TBrowserEventArgs) => {
 
   const { socket, Manager } = args
 
@@ -37,7 +25,7 @@ export const Events = (
      * All events below are Playwright page specific events
      * For more info go here => https://playwright.dev/docs/api/class-page#events
      */
-    [onFrameNavigated.event]: onFrameNavigated(app, args),
+    [onFrameNavigated.event]: onFrameNavigated(args),
 
     // TODO: Add these for tracking requests and responses from a page
     // [EBrowserEvent.request]: async (page:TBrowserPage, frame:Frame) => {},

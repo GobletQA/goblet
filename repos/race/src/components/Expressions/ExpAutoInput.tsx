@@ -42,6 +42,7 @@ export const ExpAutoInput = (props:TExpAutoInput) => {
     step,
     parent,
     onBlur,
+    onChange,
     expression,
     items=emptyArr,
     ...rest

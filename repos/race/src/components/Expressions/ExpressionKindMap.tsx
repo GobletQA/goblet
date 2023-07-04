@@ -1,25 +1,30 @@
 import { ComponentType } from 'react'
 
 import { ExpInput } from './ExpInput'
-import { ExpAutoInput } from './ExpAutoInput'
-import { EExpParmKind, EExpParmType } from '@GBR/types'
+import { ExpSelect } from './ExpSelect'
+import { ExpressionTypes, ExpressionKinds } from '@GBR/constants'
 
-export const ExpressionKindMap:Record<EExpParmKind|EExpParmType, ComponentType<any>> = {
-  [EExpParmKind.url]: ExpInput,
-  [EExpParmKind.text]: ExpInput,
-  [EExpParmKind.number]: ExpInput,
-  [EExpParmKind.alias]: ExpInput,
-  [EExpParmKind.pairs]: ExpInput,
-  [EExpParmKind.group]: ExpInput,
-  [EExpParmKind.element]: ExpInput,
-  [EExpParmKind.selector]: ExpInput,
+type TKindKeys = keyof typeof ExpressionKinds
+  | keyof typeof ExpressionTypes
 
-  [EExpParmType.any]: ExpInput,
-  [EExpParmType.int]: ExpInput,
-  [EExpParmType.word]: ExpInput,
-  [EExpParmType.float]: ExpInput,
-  [EExpParmType.string]: ExpInput,
-  [EExpParmType.array]: ExpInput,
-  [EExpParmType.object]: ExpInput,
+export const ExpressionKindMap:Record<TKindKeys, ComponentType<any>> = {
+  [ExpressionKinds.options]: ExpSelect,
+  
+  [ExpressionKinds.url]: ExpInput,
+  [ExpressionKinds.text]: ExpInput,
+  [ExpressionKinds.number]: ExpInput,
+  [ExpressionKinds.alias]: ExpInput,
+  [ExpressionKinds.pairs]: ExpInput,
+  [ExpressionKinds.group]: ExpInput,
+  [ExpressionKinds.element]: ExpInput,
+  [ExpressionKinds.selector]: ExpInput,
+
+  [ExpressionTypes.any]: ExpInput,
+  [ExpressionTypes.int]: ExpInput,
+  [ExpressionTypes.word]: ExpInput,
+  [ExpressionTypes.float]: ExpInput,
+  [ExpressionTypes.string]: ExpInput,
+  [ExpressionTypes.array]: ExpInput,
+  [ExpressionTypes.object]: ExpInput,
 
 }

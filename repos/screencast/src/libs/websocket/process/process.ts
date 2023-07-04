@@ -125,7 +125,7 @@ export class Process {
       message: data,
     }
 
-    this.debugEvent(WS_CMD_OUT, emitMessage)
+    this.debugEvent(WS_CMD_OUT, emitMessage as any)
     this.manager.emitAll(WS_CMD_OUT, emitMessage)
   }
 
@@ -151,7 +151,7 @@ export class Process {
       message: data,
     }
 
-    this.debugEvent(WS_CMD_ERR, emitMessage)
+    this.debugEvent(WS_CMD_ERR, emitMessage as any)
 
     !this.filterMessage(data, cmd, group, name) &&
       this.manager.emitAll(WS_CMD_ERR, emitMessage)
@@ -181,7 +181,7 @@ export class Process {
       data: { exitCode: code },
     }
 
-    this.debugEvent(WS_CMD_END, emitMessage)
+    this.debugEvent(WS_CMD_END, emitMessage as any)
     this.manager.emitAll(WS_CMD_END, emitMessage)
   }
 
@@ -214,12 +214,12 @@ export class Process {
       message: message,
     }
 
-    this.debugError(err, emitMessage)
+    this.debugError(err, emitMessage as any)
 
     if (this.filterMessage( err.message, cmd, group, name)) return
 
     this.manager.isRunning = false
-    this.debugEvent(WS_CMD_FAIL, emitMessage)
+    this.debugEvent(WS_CMD_FAIL, emitMessage as any)
     this.manager.emitAll(WS_CMD_FAIL, emitMessage)
   }
 
@@ -266,7 +266,7 @@ export class Process {
       message: 'Running command',
     }
 
-    this.debugEvent(WS_CMD_RUNNING, emitMessage)
+    this.debugEvent(WS_CMD_RUNNING, emitMessage as any)
     this.manager.emitAll(WS_CMD_RUNNING, emitMessage)
 
     const cmdArr = addConfig(
@@ -321,7 +321,7 @@ export class Process {
           message: `Error running command:\n${err.message}`,
         }
 
-        this.debugEvent(WS_RUN_CMD, emitMessage)
+        this.debugEvent(WS_RUN_CMD, emitMessage as any)
 
         this.manager.emitAll(WS_CMD_RUNNING, emitMessage)
       }

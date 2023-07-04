@@ -95,6 +95,7 @@ export const moveStep = async (props:TMoveStep) => {
 
   const removed = await remove({
     feature,
+    force: true,
     persist: false,
     stepId: move.uuid,
     granParent: oldGran.gran,

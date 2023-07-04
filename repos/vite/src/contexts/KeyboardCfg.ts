@@ -14,6 +14,20 @@ import { getActiveFile } from '@utils/editor/getActiveFile'
 import { startBrowserPlay } from '@actions/runner/startBrowserPlay'
 import { clearEditorDecorations } from '@actions/runner/clearEditorDecorations'
 
+const cancelAutomation = async () => {
+  const cancelBtn = document.querySelector<HTMLButtonElement>(`#${CancelButtonID}`)
+  if(!cancelBtn) return console.log(`[Key-Cmd] - Cancel action not found`)
+
+  const browserState = cancelBtn?.dataset?.[BrowserStateAttrKey]
+  if(!browserState) return console.log(`[Key-Cmd] - Browser state not found on Cancel action`)
+  
+  if(browserState === EBrowserState.idle)
+    return console.log(`[Key-Cmd] - Can not cancel browser automation in idle state`)
+
+  const event = browserState === EBrowserState.playing ? WSCancelPlayerEvent : WSCancelAutomateEvent
+  EE.emit(event, {})
+}
+
 export const KeyboardCfg:TKeyboard = {
   active: true,
   z: {
@@ -41,18 +55,7 @@ export const KeyboardCfg:TKeyboard = {
   },
   c: {
     combo:[`shift`, `ctrl`],
-    action: async () => {
-      const cancelBtn = document.querySelector<HTMLButtonElement>(`#${CancelButtonID}`)
-      if(!cancelBtn) return console.log(`[Key-Cmd] - Cancel action not found`)
-
-      const browserState = cancelBtn?.dataset?.[BrowserStateAttrKey]
-      if(!browserState) return console.log(`[Key-Cmd] - Browser state not found on Cancel action`)
-      
-      if(browserState === EBrowserState.idle)
-        return console.log(`[Key-Cmd] - Can not cancel browser automation in idle state`)
-
-      const event = browserState === EBrowserState.playing ? WSCancelPlayerEvent : WSCancelAutomateEvent
-      EE.emit(event, {})
-    }
-  }
+    action: cancelAutomation
+  },
+  escape: { action: cancelAutomation }
 }

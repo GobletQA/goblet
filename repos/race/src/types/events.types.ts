@@ -3,6 +3,7 @@ import type { TRaceFeature } from './features.types'
 import type { Parkin, TWorldConfig } from '@ltipton/parkin'
 import type { TEditorCtx } from '@GBR/contexts/EditorContext'
 import type { TSettingsCtx } from '@GBR/contexts/SettingsContext'
+import type { EOperations, TOperationsUpdate } from './operations.types'
 
 export type TOnFeatureEvt = {
   feature:TRaceFeature|undefined
@@ -40,4 +41,9 @@ export type TWithSettingsCB = (data:TSettingsCtx) => void
 
 export type TOnCloseRaceTabEvt = {
   tab:TTab
+}
+
+export type TOnUpdateOperationEvt = {
+  type:EOperations
+  data?:TOperationsUpdate
 }

@@ -1,5 +1,5 @@
 import type { Repo } from '@GSH/repo/repo'
-import type { TEnvObj, TLTLoad, TLTRekey } from '@gobletqa/latent'
+import type { TEnvObj, TLTLoad, TLTRekey, TFileSaveResp } from '@gobletqa/latent'
 
 import { exists } from '@keg-hub/jsutils'
 import { env } from '@keg-hub/parse-config'
@@ -103,10 +103,16 @@ export class LatentRepo {
     }
     
     try {
-      const saved = type === EFileType.secrets
-        ? this.latent.secrets.save(args)
-        : this.latent.values.save(args)
 
+      let saved:TFileSaveResp
+      if(type === EFileType.secrets){
+        console.log(`Repo secrets are being updated...`)
+        saved = this.latent.secrets.save(args)
+      }
+      else {
+        console.log(`Repo values are being updated...`)
+        saved = this.latent.values.save(args)
+      }
 
       const { failed } = saved
       const success = (!failed || failed?.length === 0)

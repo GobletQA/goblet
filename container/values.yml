@@ -61,8 +61,6 @@ env:
   GB_SH_LOCAL_MOUNT: goblet-local/current
   GB_SERVER_ORIGINS: 'http://localhost:19006,localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app'
 
-  # TODO: @lance-tipton - Make this more dynamic - value comes from firebase?
-  GB_GITHUB_AUTH_USERS: geoffrey.schultz@gmail.com,lancetipton04@gmail.com,lancetipton04+abstrakt@gmail.com,jburchqa@gmail.com
   GB_WS_TRANSPORTS: websocket
 
   # ---- Docker Images ---- #
@@ -241,7 +239,7 @@ env:
 
   # --- CONTAINER TIMEOUT ENVs --- #
   GB_SC_IDLE_DEBUG: true
-  GB_SC_IDLE_TIMEOUT_ACTIVE: true
+  GB_SC_IDLE_TIMEOUT_ACTIVE: false
   # Interval in seconds that the inactive check will run
   GB_SC_IDLE_INTERVAL: 20
   # Number of times the inactive check can be true before shutting down the container

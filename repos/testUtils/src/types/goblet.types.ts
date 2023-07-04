@@ -1,13 +1,13 @@
-import {TWorldConfig} from '@ltipton/parkin'
-import { TLocator, TBrowserPage, TGobletTestOpts } from './shared.types'
+import type {TWorldConfig} from '@ltipton/parkin'
+import type { BrowserContextOptions } from 'playwright'
+import type { TLocator, TBrowserPage, TGobletTestOpts } from './shared.types'
+
 
 export type TGobletGlobalRecordVideo = {
   dir?:string
 }
 
-export type TGobletGlobalContextOpts = {
-  recordVideo?: TGobletGlobalRecordVideo
-}
+export type TGobletGlobalContextOpts = Partial<BrowserContextOptions>
 
 export type TGobletGlobalContext = {
   options: TGobletGlobalContextOpts

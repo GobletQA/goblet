@@ -42,7 +42,7 @@ export const Expression = (props:TExpression) => {
     expression
   } = props
 
-  const onBlur = useExpressionChange(props)
+  const onChange = useExpressionChange(props)
   const { Input, inputType } = useExpressionInput(expression)
 
   return (
@@ -51,13 +51,14 @@ export const Expression = (props:TExpression) => {
         autoFocus
         step={step}
         parent={parent}
-        onBlur={onBlur}
         type={inputType}
+        onBlur={onChange}
+        onChange={onChange}
         expression={expression}
         value={expression.value || null}
         placeholder={`${expression.example}`}
         helperText={<ExpressionInfo {...props} />}
-        label={capitalize(expression.kind || expression.paramType)}
+        label={capitalize(expression.label || expression.kind || expression.paramType)}
       />
     </ExpGridItem>
   )

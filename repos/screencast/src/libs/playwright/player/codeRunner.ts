@@ -1,5 +1,5 @@
 import type { Player } from './player'
-import type { TFeatureAst } from '@ltipton/parkin'
+import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type { TPlayerEvent, TPlayerEventData } from '@gobletqa/shared/types'
 
 import { PWPlay } from '@GSC/constants'
@@ -21,6 +21,15 @@ export type TCodeRunnerOpts = {
   debug?: boolean
   slowMo?: number
   timeout?: number
+  globalTimeout?:number
+}
+
+class CodeRunError extends Error {
+  constructor(message:string) {
+    super(message)
+    this.name = this.constructor.name
+    Error.captureStackTrace(this, this.constructor)
+  }
 }
 
 /**
@@ -45,26 +54,34 @@ export class CodeRunner {
   debug?: boolean
   slowMo?: number
   timeout?: number
+  globalTimeout?: number
 
   constructor(player:Player, opts?:TCodeRunnerOpts) {
     this.player = player
-    this.PTE = setupGlobals(this)
-    
-    // TODO: update options to impact how code runner executes code
-    // Need way to pass timeout to step definitions
     if(opts?.debug) this.debug = opts.debug
     if(opts?.slowMo) this.slowMo = opts.slowMo
     if(opts?.timeout) this.timeout = opts.timeout
+    
+    // Global Timeout gets passed to Parkin Test as the overall test timeout
+    // So all tests must finish before this timeout
+    if(opts?.globalTimeout) this.globalTimeout = opts.globalTimeout
 
   }
 
   /**
    * Runs the code passed to it via the player
    */
-  run = async (content:RunContent) => {
+  run = async (content:RunContent, steps?:TParkinRunStepOptsMap) => {
+    this.PTE = setupGlobals(this)
     this.PK = await setupParkin(this)
 
-    await this.PK.run(content, {})
+    // Timeout gets passed as last argument to test() method of global test method 
+    await this.PK.run(content, {
+      tags: {},
+      steps: steps,
+      timeout: this.timeout,
+    })
+
     const results = await this.PTE.run() as TPlayerEventData[]
 
     // We only support 1 feature per file, so we only care about the first test result 
@@ -75,8 +92,9 @@ export class CodeRunner {
   }
 
   onSpecDone = (result:TPlayerEventData) => {
+
     if(this.canceled) return
-    
+
     this.player.fireEvent({
       name: PWPlay.playSpecDone,
       message: `Player - Spec Done`,
@@ -89,10 +107,7 @@ export class CodeRunner {
 
     if(result.failed){
       this.cancel()
-
-      throw new Error(
-        result?.failedExpectations?.[0]?.description || `Spec Failed`
-      )
+      throw new CodeRunError(result?.failedExpectations?.[0]?.description || `Spec Failed`)
     }
   }
 

@@ -97,3 +97,7 @@ startSup "$@"
 
 # Then run the loop connections check forever until the container is killed
 loopConnectionsCheck "$@"
+
+
+# TODO: Validate this for local environments
+# [["$NODE_ENV" != "local" ]] && loopConnectionsCheck "$@"

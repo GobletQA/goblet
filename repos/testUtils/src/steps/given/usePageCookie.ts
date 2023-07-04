@@ -13,7 +13,7 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  * @param {*} title - text to compare to page title
  */
 export const usePageCookie = async (
-  name:boolean|string,
+  name:string|false,
   ctx:TStepCtx
 ) => {
   const context = await getContext()

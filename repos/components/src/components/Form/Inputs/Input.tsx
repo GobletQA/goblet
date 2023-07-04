@@ -1,6 +1,7 @@
-import type { CSSProperties, ComponentProps, RefObject } from 'react'
-import type { FormHelperTextProps } from '@mui/material/FormHelperText'
 import type { TInputDecor } from '@GBC/types'
+import type { TInputLabel } from './InputLabel'
+import type { CSSProperties, ComponentProps, RefObject, ReactNode } from 'react'
+import type { FormHelperTextProps } from '@mui/material/FormHelperText'
 import {
   InputText,
   InputContainer,
@@ -9,10 +10,11 @@ import {
 import { Decor } from './Decor'
 import { InputLabel } from './InputLabel'
 import { cls, emptyObj } from '@keg-hub/jsutils'
+import { useDecor } from '@GBC/hooks/form/useDecor'
+import { useLabelId } from '@GBC/hooks/form/useLabelId'
 import { useInputCallbacks } from '@GBC/hooks/form/useInputCallbacks'
 
-export type TInput = Omit<ComponentProps<typeof InputText>, `error`|`inputRef`> & {
-  id?: string
+export type TInput = Omit<ComponentProps<typeof InputText>, `error`|`inputRef`> & TInputLabel & {
   name?: string
   error?:string
   matchId?: boolean
@@ -21,12 +23,8 @@ export type TInput = Omit<ComponentProps<typeof InputText>, `error`|`inputRef`> 
   disabled?: boolean
   decor?: TInputDecor
   className?:string
-  labelSide?:boolean
-  labelInline?:boolean
   inputSx?: CSSProperties
-  labelSx?: CSSProperties
   helperSx?: CSSProperties
-  labelWrapSx?: CSSProperties
   value?:string|boolean|number
   helperTextProps?:FormHelperTextProps
   variant?:`outlined`|`filled`|`standard`
@@ -52,6 +50,7 @@ export const Input = (props:TInput) => {
     multiline,
     autoFocus,
     helperText,
+    labelClass,
     InputProps,
     inputProps,
     labelWrapSx,
@@ -87,8 +86,8 @@ export const Input = (props:TInput) => {
     value: props.value || ``,
   })
 
-  const { Component:DecorComponent, decorPos=`start` } = decor
-  const decorKey = decorPos === `end` ? `endAdornment` : `startAdornment`
+  const labelId = useLabelId(props)
+  const { decorProps, decorKey } = useDecor(props)
 
   return (
     <InputContainer
@@ -102,7 +101,9 @@ export const Input = (props:TInput) => {
         id={id}
         label={label}
         labelSx={labelSx}
+        labelId={labelId}
         labelSide={labelSide}
+        labelClass={labelClass}
         labelInline={labelInline}
         labelWrapSx={labelWrapSx}
       />
@@ -118,14 +119,7 @@ export const Input = (props:TInput) => {
         multiline={multiline}
         InputProps={{
           ...InputProps,
-          ...(DecorComponent && {
-            [decorKey]: (
-              <Decor
-                {...decor}
-                Component={DecorComponent}
-              />
-            )
-          }),
+          ...(decorProps && { [decorKey]: (<Decor {...decorProps} />) }),
         }}
         defaultValue={props.value || ``}
         className={cls(`gb-input`, className)}

@@ -47,6 +47,12 @@ export * from './NoteMinusFilledIcon'
 export * from './FailIcon'
 export * from './PassIcon'
 
+export * from './CutIcon'
+export * from './PasteIcon'
+export * from './PasteAfterIcon'
+export * from './PasteBeforeIcon'
+
+
 // export * from './TextboxOutlineIcon'
 // export * from './CancelIcon'
 

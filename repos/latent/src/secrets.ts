@@ -1,6 +1,6 @@
 import {
   TLTAdd,
-  TLTGet,
+  TLTGetSecrets,
   TLTSave,
   TLTLoad,
   TLTRekey,
@@ -27,7 +27,7 @@ export class Secrets {
     return this.latent.load(props, EFileType.secrets)
   }
 
-  get = (props:TLTGet) => {
+  get = (props:TLTGetSecrets) => {
     return this.latent.file.loadSingle({
       ...props,
       type: EFileType.secrets

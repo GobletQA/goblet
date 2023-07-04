@@ -19,10 +19,17 @@ const {
 
 const defConfig = noOpObj as TSocketConfig
 
+export type TInitSocket = (
+  app:Express,
+  server:Server,
+  config:TSocketConfig,
+  cmdType?:string
+) => Promise<any>
+
 /**
  * Init websocket passing in the custom event listeners
  */
-export const initSocket = (
+export const initSocket:TInitSocket = (
   app:Express,
   server:Server,
   config:TSocketConfig = defConfig,

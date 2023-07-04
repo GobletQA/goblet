@@ -60,6 +60,11 @@ import ClockIcon from '@mui/icons-material/AccessTime'
 import GradingIcon from '@mui/icons-material/Grading'
 import KeyIcon from '@mui/icons-material/Key'
 
+// Icon for playing from a specific point in a feature
+import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay'
+// Icon for playing all or a group of features
+import SubscriptionsIcon from '@mui/icons-material/Subscriptions'
+
 export {
   Settings,
   PlugIcon,
@@ -121,5 +126,7 @@ export {
   KebabIcon,
   ClockIcon,
   GradingIcon,
-  KeyIcon
+  KeyIcon,
+  PlaylistPlayIcon,
+  SubscriptionsIcon
 }

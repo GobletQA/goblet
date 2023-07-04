@@ -3,6 +3,7 @@ import type { ReactNode, CSSProperties } from 'react'
 import { DecoTypes } from './DecoTypes'
 import { useDecoId } from '@GBR/hooks/decorations/useDecoId'
 import { DecoContainer, DecoLineHighlight } from './Deco.styled'
+import { tooltipClasses } from '@mui/material/Tooltip'
 import {
   Tooltip
 } from '@gobletqa/components'
@@ -13,6 +14,14 @@ export type TDecoText = {
   children:ReactNode
   containerSx?:CSSProperties
 }
+
+const styles = {
+  tooltip: {
+    [`& .${tooltipClasses.tooltip}`]: {
+      maxWidth: 1000,
+    },
+  }
+} 
 
 export const DecoText = (props:TDecoText) => {
   const {
@@ -41,6 +50,7 @@ export const DecoText = (props:TDecoText) => {
           loc='bottom'
           describeChild
           enterDelay={300}
+          sx={styles.tooltip}
           title={glyphMarginHoverMessage.value}
         >
           <Component sx={sx} deco={deco} >

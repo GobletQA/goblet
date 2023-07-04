@@ -45,6 +45,7 @@ export type TKeyboard = {
   x?:TKeyConfig
   y?:TKeyConfig
   z?:TKeyConfig
+  escape?:TKeyConfig
 }
 export type TKeyboardProvider = {
   children: ReactNode

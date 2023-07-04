@@ -17,7 +17,7 @@ import type {
 
 import { git } from './gitCmd'
 import { deepMerge, isStr } from '@keg-hub/jsutils'
-import { GB_GIT_REMOTE_REF } from '@gobletqa/workflows/constants'
+import { GBGitRemoteRef } from '@gobletqa/workflows/constants'
 import {
   defCmdOpts,
   hasGitError,
@@ -101,6 +101,7 @@ const tagList = async (
   return await gitTagCmd(gitOpts, gitArgs, cmdOpts)
 }
 
+// git cat-file blob goblet-do-not-delete
 const tagCat = async (
   tagOpts:TTagCatOpts,
   cmdOpts?:TRunCmdOpts
@@ -112,7 +113,6 @@ const tagCat = async (
   } = buildTagArgs(tagOpts)
   
   gitArgs.push(`blob`, tag)
-  
   return await gitTagCmd(gitOpts, gitArgs, cmdOpts, `cat-file`)
 }
 
@@ -220,7 +220,7 @@ git.tag.fetch = async (
       await git([
         `remote`,
         `set-url`,
-        origin || GB_GIT_REMOTE_REF,
+        origin || GBGitRemoteRef,
         gitUrl
       ], joinedOpts, options.local)
 
@@ -241,7 +241,7 @@ git.tag.fetch = async (
       await git([
         `remote`,
         `set-url`,
-        origin || GB_GIT_REMOTE_REF,
+        origin || GBGitRemoteRef,
         options.remote
       ], joinedOpts, options.local)
     

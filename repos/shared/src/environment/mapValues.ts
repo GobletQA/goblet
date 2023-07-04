@@ -1,4 +1,6 @@
-import { camelCase, noOpObj, exists } from '@keg-hub/jsutils'
+import { loadEnvFile } from './loadEnvFile'
+import { EFileType } from '@gobletqa/latent'
+import { noOpObj, exists, deepFreeze } from '@keg-hub/jsutils'
 
 type TMapOpts = {
   addNew?: boolean
@@ -62,4 +64,28 @@ export const mapValues = ({
       return overwrite ? setValue(acc, key, value) : acc
 
     }, existing as TValuesObj)
+}
+
+
+export const loadFiles = (
+  files:string[],
+  type:EFileType,
+  existing:Record<any, any>={}
+) => {
+  try {
+    const loaded = files.reduce((acc, file) => {
+      return mapValues({
+        existing: acc,
+        values: loadEnvFile({ file, type }),
+      })
+    }, existing as Record<any, any>)
+    
+    return deepFreeze(loaded)
+  }
+  catch(err){
+    console.log(`[Environment Error] Error loading ${type}s file`)
+    console.log(err)
+
+    return deepFreeze(existing)
+  }
 }

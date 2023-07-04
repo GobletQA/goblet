@@ -17,8 +17,8 @@ import { useEditor, useSettings } from '@GBR/contexts'
 import { SimpleMode } from '@GBR/components/SimpleMode'
 import { BoltIcon, EmptyEditor } from '@gobletqa/components'
 import { FeatureStack, FeatureContent } from './Feature.styled'
-import { useOnSimpleAdd } from '@GBR/hooks/features/useOnSimpleAdd'
 import { useFeatureItems } from '@GBR/hooks/features/useFeatureItems'
+import { useSimpleActions } from '@GBR/hooks/features/useSimpleActions'
 import { useFeatureActions } from '@GBR/hooks/actions/useFeatureActions'
 import { useEnsureScenario } from '@GBR/hooks/features/useEnsureScenario'
 import { useFeatureIsEmpty } from '@GBR/hooks/features/useFeatureIsEmpty'
@@ -68,8 +68,11 @@ export const Feature = (props:TFeature) => {
   const containerRef = useRef<HTMLElement>()
   const featureIsEmpty = useFeatureIsEmpty({ feature })
   const scenario = useEnsureScenario({ parent: feature })
-  const onSimpleAdd = useOnSimpleAdd({ scenario, parent: feature })
-  const featureItems = useFeatureItems({ scenario, onSimpleAdd })
+  const {
+    onSimpleAdd,
+    onSimplePaste
+  } = useSimpleActions({ scenario, parent: feature })
+  const featureItems = useFeatureItems({ scenario, onSimpleAdd, onSimplePaste })
   const onEditFeatureTitle = useEditFeatureTitle({ parent: feature })
 
   return !feature || !feature?.uuid

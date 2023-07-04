@@ -4,7 +4,7 @@ import { AskForFeatureEvt } from '@GBR/constants'
 import { EE } from '@gobletqa/shared/libs/eventEmitter'
 
 export type TGetFeature = {
-  feature:TRaceFeature
+  feature?:TRaceFeature
 }
 
 /**

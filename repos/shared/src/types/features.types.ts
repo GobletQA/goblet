@@ -16,28 +16,6 @@ export type TStepToken = {
   [key:string]: any
 }
 
-export enum EExpParmKind {
-  url = `url`,
-  text = `text`,
-  alias = `alias`,
-  pairs = `pairs`,
-  group = `group`,
-  number = `number`,
-  element = `element`,
-  selector = `selector`,
-}
-
-export enum EExpParmType {
-  any = `any`,
-  int = `int`,
-  word = `word`,
-  array = `array`,
-  float = `float`,
-  string = `string`,
-  number = `number`,
-  object = `object`,
-}
-
 export type TStepParent = {
   uuid: string
   location: string

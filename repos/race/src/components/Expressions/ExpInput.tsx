@@ -38,6 +38,7 @@ export const ExpInput = (props:TExpInput) => {
     parent,
     value,
     onBlur,
+    onChange,
     expression,
     defaultValue,
     items=emptyArr,

@@ -312,7 +312,7 @@ const convertDefaultDefToCustomDef = (
       404
     )
 
-  return path.join(definitionType.location, `override`, path.basename(location))
+  return path.join(definitionType.location, overrideFolder, path.basename(location))
 }
 
 

@@ -1,5 +1,4 @@
 export const SetFeatureContextEvt = `set-feature-context`
-
 export const UpdateWorldEvt = `update-world-event`
 export const RaceEmitDecoEvt = `race-emit-deco-event`
 export const RaceOnFeatureEvt = `race-on-feature-event`
@@ -12,7 +11,9 @@ export const AskForEditorEvt = `ask-for-editor-context-event`
 export const AnswerFeatureEvt = `answer-feature-context-event`
 export const AskForFeatureEvt = `ask-for-feature-context-event`
 export const UpdateFeatureContextEvt = `update-feature-context`
+export const OnUpdateOperationEvent = `on-update-operation-event`
 export const DispatchEditingActionEvt = `dispatch-editing-action`
 export const AskForSettingsEvt = `ask-for-settings-context-event`
 export const OnWorldEditorModalClose = `on-world-editor-modal-close`
 export const UpdateSettingContextEvt = `update-setting-context-event`
+

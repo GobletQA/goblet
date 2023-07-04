@@ -1,8 +1,10 @@
-import type { TRaceScenarioParent, TRaceScenario, TRaceStep } from '@GBR/types'
+import type { TAnyCB, TRaceScenarioParent, TRaceScenario, TRaceStep } from '@GBR/types'
 
 import { useMemo } from 'react'
 import { EDndPos } from '@gobletqa/components'
+import { useOperations } from '@gobletqa/race/contexts'
 import { copyScenario } from '@GBR/actions/scenario/copyScenario'
+import { pasteOperation } from '@gobletqa/race/actions/operations/pasteOperation'
 import { updateScenarioStepPos } from '@GBR/actions/scenario/updateScenarioStepPos'
 
 export type THScenarioActions = {
@@ -19,8 +21,8 @@ export type THScenarioActions = {
 export const useScenarioActions = (props:THScenarioActions) => {
   const {
     parent,
-    scenario,
     onAdd,
+    scenario,
     onRemove,
     onAddStep,
     onChange,
@@ -28,10 +30,22 @@ export const useScenarioActions = (props:THScenarioActions) => {
     onRemoveStep
   } = props
 
+  const { operations } = useOperations()
+
   return useMemo(() => {
 
     const onChangeScenarioStep = onChangeStep
     const onRemoveScenarioStep = onRemoveStep
+
+    const onPasteStep = (
+      (operations?.paste?.item as TRaceStep)?.step
+        && (() => pasteOperation({
+            gran: parent,
+            parent: scenario,
+            from: operations?.paste?.from,
+            child: operations?.paste?.item,
+          }))
+    ) as TAnyCB
 
     const onCopyScenario = () => copyScenario(scenario)
     const onRemoveScenario = () => onRemove(scenario.uuid, parent.uuid)
@@ -52,6 +66,7 @@ export const useScenarioActions = (props:THScenarioActions) => {
     
     return {
       onMoveStep,
+      onPasteStep,
       onCopyScenario,
       onRemoveScenario,
       onAddScenarioStep,
@@ -67,6 +82,7 @@ export const useScenarioActions = (props:THScenarioActions) => {
     onAddStep,
     onRemoveStep,
     onChangeStep,
+    operations.paste
   ])
   
 }

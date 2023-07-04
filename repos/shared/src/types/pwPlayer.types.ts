@@ -2,6 +2,7 @@ import type { TRepo } from './repo.types'
 import { EAstObject, TRunResult } from '@ltipton/parkin'
 import type { TSocketMessageObj } from './socket.types'
 import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
+import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
 
 // Exported from screencast/src/types
 import type { Player } from '@gobletqa/screencast'
@@ -24,6 +25,7 @@ export type TPlayerConfig = {
   onEvent?:TPlayerEventCB
   context?:TBrowserContext
   onCleanup?:TPlayerCleanupCB
+  steps?:TParkinRunStepOptsMap
   options?:TBrowserActionOptions
 }
 
@@ -100,6 +102,7 @@ export type TPlayerEventData = TPlayerTestEvent
   | TPlayerTestResult
   | TPlayerTestSuiteDone
   | TPlayerTestSuiteFinished
+  | TRunResult
 
 
 export type TPlayerTestSuiteDone<T=TPlayerTestEvent> = TPlayerTestEvent & {

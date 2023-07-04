@@ -58,11 +58,17 @@ export const onConnect = (
   })
 }
 
+export type TSocketInit = {
+  io:Server
+  config:TSocketConfig
+  Manager:SocketManager
+}
+
 export const socketInit = async (
   server:http.Server | https.Server,
   socketConfig:TSocketConfig,
   cmdGroup:string
-) => {
+):Promise<TSocketInit> => {
 
   const config = await setupConfig(socketConfig, cmdGroup)
 

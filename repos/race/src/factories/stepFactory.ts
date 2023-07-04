@@ -2,7 +2,7 @@ import type { TRaceFeature, TRaceStep, TRaceStepParent } from '@GBR/types'
 
 import { findIndex } from '@GBR/utils/find/findIndex'
 import { EStepType, EAstObject } from '@ltipton/parkin'
-import { deepMerge, emptyArr, uuid } from '@keg-hub/jsutils'
+import { deepMerge, emptyArr } from '@keg-hub/jsutils'
 
 export type TStepsFactory = {
   empty?:boolean
@@ -20,7 +20,6 @@ export type TStepFactory = {
 
 const emptyStep = (step:Partial<TRaceStep>):Partial<TRaceStep> => ({
   step: `  `,
-  uuid: uuid(),
   type: EStepType.step,
   ...step
 })
@@ -34,10 +33,19 @@ export const stepFactory = ({
 
   const index = findIndex({ parent, feature, type:EAstObject.steps })
   const whitespace = parent?.whitespace?.length ? `${parent.whitespace}  ` : `    `
+  const uuid = `${parent.uuid}.${step?.type || EAstObject.step}.${parent?.steps?.length || 0}`
 
   return empty || step
-    ? deepMerge<TRaceStep>(emptyStep({ index, whitespace }), step)
-    : emptyStep({ index }) as TRaceStep
+    ? deepMerge<TRaceStep>(emptyStep({
+        uuid,
+        index,
+        whitespace,
+      }), step)
+    : emptyStep({
+        uuid,
+        index,
+        whitespace,
+      }) as TRaceStep
 }
 
 export const stepsFactory = ({

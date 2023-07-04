@@ -4,7 +4,7 @@ import { EAstObject } from '@ltipton/parkin'
 import { scenariosFactory } from './scenarioFactory'
 import { findIndex } from '@GBR/utils/find/findIndex'
 import { backgroundFactory } from './backgroundFactory'
-import { deepMerge, uuid, emptyArr } from '@keg-hub/jsutils'
+import { deepMerge, emptyArr } from '@keg-hub/jsutils'
 
 export type TRuleFactory = {
   rule?:Partial<TRaceRule>
@@ -20,7 +20,6 @@ export type TRulesFactory = {
 
 const emptyRule = (rule:Partial<TRaceRule>) => ({
   rule: ` `,
-  uuid: uuid(),
   scenarios: [],
   type: EAstObject.rule,
   ...rule
@@ -39,14 +38,15 @@ export const ruleFactory = ({
   })
 
   const whitespace = feature?.whitespace?.length ? `${feature.whitespace}  ` : `  `
+  const uuid = `${feature.uuid}.${EAstObject.rule}.${index}`
 
   const built = rule
     ? deepMerge<TRaceRule>(
-        emptyRule({ index, whitespace }),
+        emptyRule({ uuid, index, whitespace }),
         rule,
       )
     : empty
-      ? emptyRule({ index, whitespace }) as TRaceRule
+      ? emptyRule({ uuid, index, whitespace }) as TRaceRule
       : undefined
 
   if(!built) return console.warn(`Error building rule in factory`)
