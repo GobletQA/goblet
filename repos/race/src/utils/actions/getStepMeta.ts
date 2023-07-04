@@ -41,6 +41,8 @@ export const getStepMeta = (
       // Add a random uuid to the start of the uuid to avoid duplicates
       // In all path finding, any text before the first `.` is skipped
       // Because it assumes it's the features uuid, So this should not cause issues
+      
+      // TODO: this should be the insert index, not the feature file index
       uuid: `${uuid()}-${parent.uuid}.${step.type}.${idx}`,
     }
   }

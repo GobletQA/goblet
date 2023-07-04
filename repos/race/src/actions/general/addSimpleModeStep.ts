@@ -25,8 +25,7 @@ const addScenarioStep = ({ feature, scenario, ...props }:TAddSimpleModeStep) => 
   const added = buildStep<TRaceScenario>(
     feature,
     scenario,
-    props.step,
-    scenario.index
+    props.step
   )
 
   if(!added) return
@@ -35,7 +34,7 @@ const addScenarioStep = ({ feature, scenario, ...props }:TAddSimpleModeStep) => 
   return {scenario, step: added.step}
 }
 
-export const addSimpleModeStep = async (props:TAddSimpleModeStep) => {  
+export const addSimpleModeStep = async (props:TAddSimpleModeStep) => {
   const { feature } = await getFeature(props.feature)
   if(!feature) return logNotFound(`feature`, prefix)
 

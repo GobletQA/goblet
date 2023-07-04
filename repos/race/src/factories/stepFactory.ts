@@ -33,7 +33,7 @@ export const stepFactory = ({
 
   const index = findIndex({ parent, feature, type:EAstObject.steps })
   const whitespace = parent?.whitespace?.length ? `${parent.whitespace}  ` : `    `
-  const uuid = `${parent.uuid}.${step?.type || EAstObject.step}.${index}`
+  const uuid = `${parent.uuid}.${step?.type || EAstObject.step}.${parent?.steps?.length || 0}`
 
   return empty || step
     ? deepMerge<TRaceStep>(emptyStep({
