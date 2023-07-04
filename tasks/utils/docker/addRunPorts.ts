@@ -1,22 +1,27 @@
 import type { TTaskParams, TEnvObject } from '../../types'
 import { getContextValue } from '../../utils/helpers/contexts'
-import { ensureArr, toBool, isStr, isNum, toStr, noPropArr } from '@keg-hub/jsutils'
+import { ensureArr, toBool, isStr, isNum, toStr, noPropArr, exists } from '@keg-hub/jsutils'
 
 /**
  * Finds the ports to bind from the localhost to a docker container
  */
 const resolveAllPorts = (params:TTaskParams, envs:TEnvObject, docFileCtx:string) => {
-  const paramPorts = ensureArr(params.ports || [])
+  const { ports, fallback } = params
+  const paramPorts = ensureArr(ports || [])
+
+  const valuesFB = exists(fallback) && !fallback
+    ? []
+    : [
+        envs.GB_BE_PORT,
+        envs.GB_FE_PORT,
+        envs.GB_SC_PORT,
+        envs.GB_DB_PORT,
+        envs.GB_PX_PORT,
+      ]
 
   // Get the ports for the docker image being run
   // TODO: @lance-tipton make this so it's not hard coded to ENVs
-  const envPorts = getContextValue(docFileCtx, envs, `PORT`, [
-    envs.GB_BE_PORT,
-    envs.GB_FE_PORT,
-    envs.GB_SC_PORT,
-    envs.GB_DB_PORT,
-    envs.GB_PX_PORT
-  ])
+  const envPorts = getContextValue(docFileCtx, envs, `PORT`, valuesFB)
 
   return paramPorts.concat(envPorts)
 }

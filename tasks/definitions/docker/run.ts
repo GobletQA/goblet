@@ -149,5 +149,11 @@ export const run = {
       type: `boolean`,
       description: `Log command before they are build`,
     },
+    fallback: {
+      alias: [`fb`],
+      default: true,
+      type: `boolean`,
+      description: `Use Values file ENVs as fallback when loading envs`,
+    }
   },
 }

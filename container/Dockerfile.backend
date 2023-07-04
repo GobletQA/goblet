@@ -13,7 +13,6 @@ RUN apt-get purge --yes \
     tigervnc-standalone-server && \
     apt-get clean && \
     apt-get autoremove --yes && \
-    npm uninstall -g yarn && \
     rm -rf /ms-playwright && \
     rm -rf ms-playwright-agent
 # ---- End Stage ---- #

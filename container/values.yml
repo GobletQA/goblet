@@ -51,6 +51,13 @@ env:
 
 # ---- Goblet Action Shared ENVs ---- #
 # These ENVs should be overwritten by the github action
+  GB_ACT_IMAGE_TAG: latest
+  
+  GB_ACT_PORT: ''
+  GB_ACT_DEPLOYMENT: goblet-action
+  GB_ACT_IMAGE: 'ghcr.io/gobletqa/goblet-action'
+  GB_ACT_IMAGE_FROM: 'mcr.microsoft.com/playwright:v1.35.0-focal'
+
   GOBLET_MOUNT_ROOT: /goblet/repos
 
   # Production url for gobletqa
@@ -317,6 +324,6 @@ env:
   GB_APPWRITE_URL: https://cloud.appwrite.io/v1
 
 
-# --- WORKFLOW ENVs --- #
+  # --- WORKFLOW ENVs --- #
   GB_GIT_REMOTE_REF: goblet-ref
   GB_SECRETS_TAG_REF: goblet-do-not-delete

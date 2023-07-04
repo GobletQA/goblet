@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - race-side-fixes
   workflow_dispatch:
     inputs:
       image:
@@ -95,7 +94,7 @@ jobs:
 
       - name: Pull Base Image
         id: pull-base
-        run: docker pull ghcr.io/gobletqa/goblet-backend:latest
+        run: docker pull ghcr.io/gobletqa/goblet-base:latest
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -121,7 +120,7 @@ jobs:
             BUILDKIT_INLINE_CACHE=1
             NPM_TOKEN=${{ secrets.GIT_TOKEN }}
             ${{ steps.args.outputs.list }}
-          cache-from: gobletqa/goblet-backend:latest
+          cache-from: gobletqa/goblet-base:latest
           cache-to: type=inline,mode=all
           file: container/Dockerfile.base
           push: true
@@ -151,10 +150,6 @@ jobs:
           - service: backend
             dockerfile: container/Dockerfile.backend
             platforms: linux/amd64
-          # Disable action docker image for now
-          # - service: action
-          #   dockerfile: container/Dockerfile.action
-          #   platforms: linux/amd64,linux/arm64
 
     steps:
 
