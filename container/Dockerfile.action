@@ -38,6 +38,7 @@ RUN apt-get update && \
 WORKDIR /github/app
 COPY --from=goblet-code /goblet/app /github/app
 
-RUN ln -s /github /goblet && \
+RUN mkdir -p $(dirname "${DEBUG_FILE}") && \
+    ln -s /github /goblet && \
     ln -s /github/app/node_modules $HOME/.node_modules && \
     ln -s /github/app/node_modules /github/node_modules
