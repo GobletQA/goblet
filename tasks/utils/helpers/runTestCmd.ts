@@ -1,15 +1,45 @@
-const path = require('path')
-const { dockerCmd, Logger } = require('@keg-hub/cli-utils')
-const { noPropArr, toBool } = require('@keg-hub/jsutils')
-const { ARTIFACT_SAVE_OPTS } = require('@gobletqa/shared/constants')
-const { runCommands } = require('@GTasks/utils/helpers/runCommands')
-const { handleTestExit } = require('@GTasks/utils/helpers/handleTestExit')
-const { buildReportPath } = require('@gobletqa/test-utils/reports/buildReportPath')
-const { shouldSaveArtifact } = require('@gobletqa/shared/utils/artifactSaveOption')
-const { clearTestMetaDirs } = require('@gobletqa/test-utils/utils/clearTestMetaDirs')
-const { getBrowsers } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowsers')
-const { appendToLatest, commitTestMeta } = require('@gobletqa/test-utils/testMeta/testMeta')
-const { copyArtifactToRepo } = require('@gobletqa/test-utils/playwright/generatedArtifacts')
+import type {
+  ETestType,
+  TEnvObject,
+  TTaskParams,
+  EBrowserType,
+  TGobletConfig,
+} from '../../types'
+
+
+import path from 'path'
+import { runCmd } from '@keg-hub/cli-utils'
+import { noPropArr, toBool } from '@keg-hub/jsutils'
+import { ARTIFACT_SAVE_OPTS } from '@gobletqa/shared/constants'
+import { runCommands } from '@GTasks/utils/helpers/runCommands'
+import { handleTestExit } from '@GTasks/utils/helpers/handleTestExit'
+import { buildReportPath } from '@gobletqa/test-utils/reports/buildReportPath'
+import { shouldSaveArtifact } from '@gobletqa/shared/utils/artifactSaveOption'
+import { clearTestMetaDirs } from '@gobletqa/test-utils/utils/clearTestMetaDirs'
+import { getBrowsers } from '@gobletqa/screencast/libs/playwright/helpers/getBrowsers'
+import { appendToLatest, commitTestMeta } from '@gobletqa/test-utils/testMeta/testMeta'
+import { copyArtifactToRepo } from '@gobletqa/test-utils/playwright/generatedArtifacts'
+
+export type TRunTestCmd = {
+  type: ETestType
+  cmdArgs: string[]
+  params:TTaskParams
+  goblet: TGobletConfig
+  envsHelper: (browser:EBrowserType, reportPath:string) => { env: TEnvObject }
+}
+
+export type TBrowserCmd = {
+  type:ETestType
+  cmdArgs:string[]
+  reportPath:string
+  params:TTaskParams
+  browser:EBrowserType
+  goblet: TGobletConfig
+  cmdOpts: { env: TEnvObject }
+}
+
+export type TResp = Record<`exitCode`, any>
+
 
 /**
  * Builds a browser exec method inside docker via Jest
@@ -23,7 +53,7 @@ const { copyArtifactToRepo } = require('@gobletqa/test-utils/playwright/generate
  *
  * @returns {Number} - Sum of all exit codes from the executed test commands
  */
-const buildBrowserCmd = (args) => {
+const buildBrowserCmd = (args:TBrowserCmd) => {
   const {
     type,
     params,
@@ -35,8 +65,10 @@ const buildBrowserCmd = (args) => {
   } = args
   
   return async () => {
-    const resp = await new Promise(async (res, rej) => {
-      const exitCode = await dockerCmd(params.container, [...cmdArgs], cmdOpts)
+    const resp = await new Promise<TResp>(async (res) => {
+      const cmd = cmdArgs.shift()
+
+      const exitCode = await runCmd(cmd, cmdArgs, cmdOpts)
       res({ exitCode })
     })
 
@@ -81,7 +113,7 @@ const buildBrowserCmd = (args) => {
  *
  * @returns {Number} - Sum of all exit codes from the executed test commands
  */
-const runTestCmd = async (args) => {
+export const runTestCmd = async (args:TRunTestCmd) => {
   const {
     type,
     goblet,
@@ -96,9 +128,14 @@ const runTestCmd = async (args) => {
   toBool(process.env.LOCAL_DEV) && clearTestMetaDirs()
 
   let reportPaths = []
-  const commands = getBrowsers(params).map(
-    browser => {
-      const reportPath = buildReportPath(type, params, goblet, browser)
+  const browsers = getBrowsers(params)
+  const commands = browsers.map((browser) => {
+      const reportPath = buildReportPath(
+        type,
+        params as Record<any, any>,
+        goblet,
+        browser
+      )
       reportPaths.push(reportPath)
 
       return buildBrowserCmd({
@@ -120,9 +157,4 @@ const runTestCmd = async (args) => {
 
   // Calculate the exit codes so we know if all runs were successful
   return handleTestExit(codes, params.testReport ? reportPaths : noPropArr)
-}
-
-
-module.exports = {
-  runTestCmd
 }

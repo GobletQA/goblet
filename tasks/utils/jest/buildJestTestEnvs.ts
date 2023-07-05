@@ -1,5 +1,8 @@
-const { addEnv } = require('../envs/addEnv')
-const { buildReportTitle } = require('@gobletqa/test-utils/reports/buildReportTitle')
+import type { TEnvObject, TBrowserType } from '../../types'
+
+import { ETestType } from '../../types'
+import { addEnv } from '../envs/addEnv'
+import { buildReportTitle } from '@gobletqa/test-utils/reports/buildReportTitle'
 
 /**
  * Builds the envs set in the command that runs a test
@@ -10,7 +13,13 @@ const { buildReportTitle } = require('@gobletqa/test-utils/reports/buildReportTi
  *
  * @return {Object} dockerCmd options object, with envs
  */
-const buildJestTestEnvs = (browser, env={}, context, reportPath, type) => {
+export const buildJestTestEnvs = (
+  browser:TBrowserType,
+  env:TEnvObject={},
+  context:string,
+  reportPath:string,
+  type:ETestType
+) => {
   if(!type || !reportPath || !context) return env
 
   // Build the output path, and page title based on the passed in context
@@ -26,6 +35,3 @@ const buildJestTestEnvs = (browser, env={}, context, reportPath, type) => {
   return env
 }
 
-module.exports = {
-  buildJestTestEnvs,
-}

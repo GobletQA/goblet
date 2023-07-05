@@ -1,14 +1,21 @@
-const path = require('path')
-const { appRoot } = require('../../paths')
-const { addFlag } = require('@keg-hub/cli-utils')
-const { uniqArr, noPropArr } = require('@keg-hub/jsutils')
+import type { TTaskParams } from '../../types'
+
+import path from 'path'
+import { appRoot } from '../../paths'
+import { addFlag } from '@keg-hub/cli-utils'
+import { uniqArr, noPropArr } from '@keg-hub/jsutils'
+
 /**
  * Builds the arguments that are passed to jest when the test is run
  * @param {Object} params - Parsed task definition options
  *                          See options section of the task definition below
  * @param {string} jestConfig - Path the a jest config file to load
  */
-const buildJestArgs = (params, jestConfig, extraArgs=noPropArr) => {
+export const buildJestArgs = (
+  params:TTaskParams,
+  jestConfig:string,
+  extraArgs:string[]=noPropArr
+) => {
   const {
     context,
     noTests,
@@ -55,9 +62,5 @@ const buildJestArgs = (params, jestConfig, extraArgs=noPropArr) => {
   // See https://jestjs.io/docs/cli#jest-regexfortestfiles for more info
   context && cmdArgs.push(context)
 
-  return uniqArr(cmdArgs.filter(arg => arg))
-}
-
-module.exports = {
-  buildJestArgs,
+  return uniqArr<string>(cmdArgs.filter(arg => arg))
 }

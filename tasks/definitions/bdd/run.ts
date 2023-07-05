@@ -1,6 +1,6 @@
 import { TTask, TTaskActionArgs } from '../../types'
 
-import constants from '../../constants'
+import { ETestType } from '../../types'
 import { sharedOptions, Logger } from '@keg-hub/cli-utils'
 import { runTestCmd } from '@GTasks/utils/helpers/runTestCmd'
 import { buildBddEnvs } from '@GTasks/utils/envs/buildBddEnvs'
@@ -8,7 +8,6 @@ import { buildJestArgs } from '@GTasks/utils/jest/buildJestArgs'
 import { getJestConfig } from '@GTasks/utils/jest/getJestConfig'
 import { filterTaskEnvs } from '@GTasks/utils/envs/filterTaskEnvs'
 
-const { testTypes } = constants
 
 /**
  * Run parkin tests in container
@@ -20,15 +19,15 @@ const runBdd = async (args:TTaskActionArgs) => {
     Logger.stdout(`runBdd Task Params:\n${JSON.stringify(params, null, 2)}\n`)
 
   filterTaskEnvs(params, task)
-  const jestConfig = await getJestConfig(params, testTypes.feature)
+  const jestConfig = await getJestConfig(params, ETestType.feature)
 
   // Run the test command for defined browsers
   const exitCode = await runTestCmd({
     params,
     goblet,
-    type: testTypes.bdd,
+    type: ETestType.bdd,
     cmdArgs: buildJestArgs(params, jestConfig),
-    envsHelper: (browser, reportPath) => buildBddEnvs(browser, params, reportPath, testTypes.feature)
+    envsHelper: (browser, reportPath) => buildBddEnvs(browser, params, reportPath, ETestType.feature)
   })
 
   process.exit(exitCode)

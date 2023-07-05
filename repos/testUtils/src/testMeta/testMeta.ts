@@ -105,7 +105,7 @@ export const readTestMeta = async () => {
 export const appendToLatest = async (
   loc:string,
   data:Record<string, any>,
-  commit:boolean
+  commit?:boolean
 ) => {
   if(!isCIEnv) return noOpObj
 

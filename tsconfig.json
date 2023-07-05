@@ -29,6 +29,8 @@
       "@gobletqa/screencast/*": [ "./repos/screencast/src/*" ],
       "@gobletqa/shared": [ "./repos/shared/src" ],
       "@gobletqa/shared/*": [ "./repos/shared/src/*" ],
+      "@gobletqa/test-utils": [ "./repos/testUtils/src" ],
+      "@gobletqa/test-utils/*": [ "./repos/testUtils/src/*" ]
     }
   },
   "exclude": [

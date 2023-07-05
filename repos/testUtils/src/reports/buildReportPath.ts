@@ -1,12 +1,13 @@
 import type { TGobletConfig } from '@GTU/Types'
 
+
 import path from 'path'
 import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
 import { getGeneratedName } from '@GTU/Playwright/generatedArtifacts'
 
 type TBuildReportPathOpts = {
-  context:string
-  testReportName:string
+  context?:string
+  testReportName?:string
 }
 
 
@@ -20,9 +21,9 @@ type TBuildReportPathOpts = {
  * @return {string} - Name to use for the report
  */
 const getReportName = (
-  reportName:string,
-  context:string,
-  type:string
+  type:string,
+  reportName?:string,
+  context?:string,
 ) => {
   return `/${path.basename(reportName || context || (type + 's'))}`
 }
@@ -47,7 +48,7 @@ export const buildReportPath = (
 
   type = type === `bdd` ? `feature` : type
   const { full } = getGeneratedName(
-    getReportName(testReportName, context, type),
+    getReportName(type, testReportName, context),
     type,
     browser
   )
