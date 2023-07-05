@@ -1,14 +1,14 @@
 // Must load this first because it loads the alias
-const { jestConfig } = require('./jest.default.config')
+import { jestConfig } from './jest.default.config'
 
-const path = require('path')
-const glob = require('glob')
-const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
-const { uniqArr, noOpObj } = require('@keg-hub/jsutils')
-const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
-const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')
-const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
-const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
+import path from 'path'
+import glob from 'glob'
+import { uniqArr, noOpObj } from '@keg-hub/jsutils'
+import { buildJestGobletOpts } from '@GTU/Utils/buildJestGobletOpts'
+import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
+import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
+import { taskEnvToBrowserOpts } from '@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts'
+import { getContextOpts } from '@gobletqa/screencast/libs/playwright/helpers/getContextOpts'
 
 const exts = [
   `js`,
@@ -77,7 +77,7 @@ const getParkinSupport = config => {
   return matches
 }
 
-module.exports = async () => {
+export const parkinJestConfig =  async () => {
   const config = getGobletConfig()
   const baseDir = getRepoGobletDir(config)
   const { devices, ...browserOpts } = taskEnvToBrowserOpts(config)

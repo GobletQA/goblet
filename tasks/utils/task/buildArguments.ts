@@ -1,4 +1,5 @@
-const { mapObj, exists } = require('@keg-hub/jsutils')
+import type { TTaskParams } from '../../types'
+import { mapObj, exists } from '@keg-hub/jsutils'
 
 /**
  * Builds cli arguments. Appends `--` if key doesn't already have it
@@ -6,7 +7,7 @@ const { mapObj, exists } = require('@keg-hub/jsutils')
  *
  * @returns {Array<string>} - array of cli args
  */
-const buildArguments = params => {
+export const buildArguments = (params:TTaskParams) => {
   const array =
     mapObj(params, (key, value) => {
       // if value is null/undefined, don't create a string for it
@@ -20,6 +21,3 @@ const buildArguments = params => {
   return array.filter(Boolean)
 }
 
-module.exports = {
-  buildArguments,
-}

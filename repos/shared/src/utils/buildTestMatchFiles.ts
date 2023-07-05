@@ -1,5 +1,10 @@
 import { noPropArr, isStr } from '@keg-hub/jsutils'
 
+export type TTestMatch = {
+  ext?:string
+  type?:string
+  shortcut?:string
+}
 
 /**
  * Helper to build the path to a test match file type
@@ -11,7 +16,7 @@ import { noPropArr, isStr } from '@keg-hub/jsutils'
  *
  * @returns {Array<string>} - Built test match file paths
  */
-const buildFilePaths = (prefix, tag) => {
+const buildFilePaths = (prefix:string, tag?:string) => {
   return tag && isStr(tag)
     ? [
         `${prefix}/*.${tag}.js`,
@@ -31,12 +36,6 @@ const buildFilePaths = (prefix, tag) => {
 */
 const buildCustomExt = (prefix, ext) => {
   return ext ? [`${prefix}/*.${ext}`] : noPropArr
-}
-
-type TTestMatch = {
-  ext?:string
-  type:string
-  shortcut:string
 }
 
 /**

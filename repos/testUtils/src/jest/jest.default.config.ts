@@ -1,17 +1,20 @@
-const os = require("os")
-const path = require('path')
+import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
 
-/**
- * TODO: This relative path sucks, but don't have a better solution currently
- * Need to investigate at some point
- */
-const { jestAliases, registerAliases } = require('../../../../configs/aliases.config')
-registerAliases()
+import os from "os"
+import path from 'path'
+import { jestAliases } from './setupTestAliases'
 
-const { Logger } = require('@keg-hub/cli-utils')
-const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
-const { noOpObj, noPropArr, capitalize } = require('@keg-hub/jsutils')
-const { buildTestMatchFiles } = require('@gobletqa/shared/utils/buildTestMatchFiles')
+import { Logger } from '@keg-hub/cli-utils'
+import { noOpObj, noPropArr, capitalize } from '@keg-hub/jsutils'
+import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
+import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
+
+export type TJestConfOpts = TTestMatch & {
+  title?:string
+  rootDir?:string
+  testDir?:string
+  reportOutputPath?:string
+}
 
 /**
  * Builds the test reports, currently only jest-html-reporter
@@ -21,7 +24,10 @@ const { buildTestMatchFiles } = require('@gobletqa/shared/utils/buildTestMatchFi
  *
  * @returns {Array} - Built reporters array
  */
-const buildReporters = (opts=noOpObj, gobletRoot, config) => {
+const buildReporters = (
+  opts:TJestConfOpts=noOpObj,
+  gobletRoot:string,
+) => {
   const {
     GOBLET_HTML_REPORTER_PAGE_TITLE,
     GOBLET_HTML_REPORTER_OUTPUT_PATH,
@@ -30,7 +36,8 @@ const buildReporters = (opts=noOpObj, gobletRoot, config) => {
 
   // TODO: check the goblet config for a custom jest reporter
   // Then add it to the reporters array
-  const reporters = ['default']
+  const reporters = [`default`] as any[]
+
   GOBLET_HTML_REPORTER_OUTPUT_PATH &&
     reporters.push([
       // Since the root is not keg-config, we have to define the full path to the reporter
@@ -59,8 +66,13 @@ const buildReporters = (opts=noOpObj, gobletRoot, config) => {
  * 
  * @returns {Object} - Jest config object
  */
-const jestConfig = (config, opts=noOpObj) => {
-  const { GOBLET_CONFIG_BASE, GOBLET_MOUNT_ROOT, GOBLET_TEST_DEBUG } = process.env
+export const jestConfig = (config, opts:TJestConfOpts=noOpObj) => {
+  const {
+    GOBLET_CONFIG_BASE,
+    GOBLET_MOUNT_ROOT,
+    GOBLET_TEST_DEBUG
+  } = process.env
+
   GOBLET_TEST_DEBUG &&
     Logger.stdout(`[Goblet] Loaded Config:\n${JSON.stringify(config, null, 2)}\n`)
 
@@ -74,16 +86,16 @@ const jestConfig = (config, opts=noOpObj) => {
   return {
     testMatch,
     // TODO: investigate using jest-circus at some point
-    testRunner: 'jest-jasmine2',
-    reporters: buildReporters(opts, gobletRoot, config),
+    testRunner: `jest-jasmine2`,
+    reporters: buildReporters(opts, gobletRoot),
     moduleFileExtensions: [
-      'js',
-      'jsx',
-      'cjs',
-      'mjs',
-      'json',
-      'ts',
-      'tsx'
+      `js`,
+      `jsx`,
+      `cjs`,
+      `mjs`,
+      `json`,
+      `ts`,
+      `tsx`
     ],
     // This seems to be needed based on how the github action is setup
     // But it may be a better option then sym-linking the keg-config node_modules to ~/.node_modules
@@ -107,8 +119,3 @@ const jestConfig = (config, opts=noOpObj) => {
     },
   }
 }
-
-module.exports = {
-  jestConfig
-}
-

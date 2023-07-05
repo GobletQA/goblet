@@ -1,6 +1,6 @@
-const { gobletMountDir } = require('@GTasks/paths')
-const { setSharedOptions } = require('@keg-hub/cli-utils')
-const { ARTIFACT_SAVE_OPTS } = require('@gobletqa/shared/constants')
+import { setSharedOptions } from '@keg-hub/cli-utils'
+import { ARTIFACT_SAVE_OPTS } from '@gobletqa/shared/constants'
+
 const artifactSaveOpts = Object(ARTIFACT_SAVE_OPTS).values
 
 const dynamicOpts = {
@@ -195,8 +195,7 @@ const taskOptions = {
     repo: {
       alias: [ 'cwd', 'workdir', 'repoDir'],
       description: 'Root directory to run the command from',
-      example: '--repo /path/to/repo/root',
-      default: gobletMountDir,
+      example: '--repo /path/to/repo/root'
     },
   },
   playwright: {
@@ -367,7 +366,7 @@ const taskOptions = {
   }
 }
 
-const sharedOptions = {
+export const sharedOptions = {
   ...dynamicOpts,
   ...taskOptions,
 }
@@ -388,8 +387,3 @@ setSharedOptions({
   ...taskOptions.pwContext,
   ...taskOptions.test,
 })
-
-
-module.exports = {
-  sharedOptions
-}
