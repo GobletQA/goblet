@@ -12,6 +12,7 @@ import playwright from 'playwright'
 import { Logger } from '@GSC/utils/logger'
 import { deepMerge } from '@keg-hub/jsutils'
 import { EmptyBrowser } from './emptyBrowser'
+import { notCI } from '@gobletqa/shared/utils/isCI'
 import { CreateBrowserRetry } from '@GSC/constants'
 import { buildStatus } from '../helpers/buildStatus'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
@@ -24,6 +25,7 @@ import { buildBrowserConf } from '../helpers/buildBrowserConf'
 import { getServerEndpoint } from '../server/getServerEndpoint'
 import { checkInternalPWContext } from './checkInternalPWContext'
 import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
+
 
 type TGetBrowserOpts = {
   browserServer?:boolean,
@@ -115,7 +117,7 @@ export class PWBrowsers {
         : endpoint
 
     const browser = await playwright[type].connect(browserEndpoint)
-    Logger.info(`createWSBrowser - Browser ${type} was started from server websocket ${browserEndpoint}`)
+    notCI && Logger.info(`createWSBrowser - Browser ${type} was started from server websocket ${browserEndpoint}`)
 
     this.#setBrowser(browser, { type })
 
@@ -135,7 +137,7 @@ export class PWBrowsers {
       getBrowserOpts(browserConf),
       getContextOpts(browserConf.context)
     )
-    Logger.verbose(`Browser-PersistentContext options`, opts)
+    notCI && Logger.verbose(`Browser-PersistentContext options`, opts)
     
     const { internalPaths } = getDefaultGobletConfig()
     const context = await playwright[type].launchPersistentContext(
@@ -144,7 +146,7 @@ export class PWBrowsers {
     )
 
     const browser = new EmptyBrowser(context, type)
-    Logger.info(`createPersistentBrowser - Browser ${type} was started`)
+    notCI && Logger.info(`createPersistentBrowser - Browser ${type} was started`)
     this.#setBrowser(browser, browserConf)
 
     return { browser, context } as TPWBrowser
@@ -159,7 +161,7 @@ export class PWBrowsers {
   ) => {
 
     if(!browser){
-      Logger.warn(`Attempted to set non-existing browser in private #setBrowsers method.`)
+      notCI && Logger.warn(`Attempted to set non-existing browser in private #setBrowsers method.`)
       return this.#browsers
     }
 
@@ -195,7 +197,7 @@ export class PWBrowsers {
     const opts = getBrowserOpts(browserConf)
     const browser = await playwright[type].launch(opts)
 
-    Logger.info(`createBrowser - Browser ${type} was started`)
+    notCI && Logger.info(`createBrowser - Browser ${type} was started`)
     this.#setBrowser(browser, { ...browserConf, ...opts })
 
     return { browser } as TPWBrowser
@@ -212,7 +214,7 @@ export class PWBrowsers {
       browser && await browser?.close()
     }
     catch (err) {
-      Logger.warn(err.stack)
+      notCI && Logger.warn(err.stack)
     }
     finally {
       this.#browsers[browserType] = undefined
@@ -239,7 +241,7 @@ export class PWBrowsers {
       const pwBrowser = this.fromCache(type)
 
       if (pwBrowser) {
-        Logger.verbose(`getBrowser - Using existing browser ${type}`)
+        notCI && Logger.verbose(`getBrowser - Using existing browser ${type}`)
         return { browser: pwBrowser } as TPWBrowser
       }
 
@@ -249,7 +251,7 @@ export class PWBrowsers {
         // So this re-calls the same method when this.#creatingBrowser is set
       if(this.#creatingBrowser)
         return new Promise((res, rej) => {
-          Logger.verbose(`getBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`)
+          notCI && Logger.verbose(`getBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`)
           setTimeout(() => res(this.getBrowser(browserConf, opts)), CreateBrowserRetry)
         })
 
@@ -268,15 +270,15 @@ export class PWBrowsers {
           ? await createWSBrowser(type)
           : await createBrowser(browserConf, type)
         fromWs
-          ? Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
-          : Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
+          ? notCI && Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
+          : notCI && Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
 
       
         await createWSBrowser(type)
-        Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
+        notCI && Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
 
         const browserResp = await createPersistentBrowser(browserConf, type)
-        Logger.verbose(`getBrowser - New Persistent Context Browser ${type} created`)
+        notCI && Logger.verbose(`getBrowser - New Persistent Context Browser ${type} created`)
 
       ------------------------------------ */
 
@@ -284,7 +286,7 @@ export class PWBrowsers {
       // Default to creating a standalone browser
       // Should be faster then going over a websocket
       const browserResp = await this.#createBrowser(browserConf, type)
-      Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
+      notCI && Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
 
       this.#creatingBrowser = false
       return browserResp
@@ -327,7 +329,7 @@ export class PWBrowsers {
         )
 
       if(!pwComponents?.page){
-        Logger.info(`startBrowser - Getting browser type ${type}`)
+        notCI && Logger.info(`startBrowser - Getting browser type ${type}`)
 
         const pwBrowser = pwBrowsers.fromCache(type)
 
@@ -338,7 +340,7 @@ export class PWBrowsers {
         if(!pwBrowser && this.#startingBrowser)
           return new Promise((res, rej) => {
 
-            Logger.info(
+            notCI && Logger.info(
               `startBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`
             )
 
@@ -362,7 +364,7 @@ export class PWBrowsers {
         })
         this.#startingBrowser = false
 
-        Logger.info(`startBrowser - Browser ${type} and child components found`)
+        notCI && Logger.info(`startBrowser - Browser ${type} and child components found`)
       }
 
       const hasComponents = Boolean(

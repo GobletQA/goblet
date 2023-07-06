@@ -425,10 +425,9 @@ export const typeInput = async (props:TFillInput, ctx?:TStepCtx) => {
  * Gets the configured timeout for a step based on the possible timeout locations
  */
 export const getStepTimeout = (ctx?:TStepCtx) => {
-  const { options } = ctx
   const globalTimeout = global?.getParkinOptions?.()?.timeout
 
-  const timeout = options?.timeout
+  const timeout = ctx?.options?.timeout
     || process.env.GOBLET_TEST_TIMEOUT
     || global.__goblet?.browser?.timeout
     || globalTimeout

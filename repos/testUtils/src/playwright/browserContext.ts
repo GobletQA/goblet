@@ -35,7 +35,7 @@ export const defaultStateFile = 'browser-context-state'
  */
 export const setupBrowser = async () => {
   /** GOBLET_BROWSER is set by the task `keg goblet bdd run` */
-  const { GOBLET_BROWSER='chromium' } = process.env
+  const { GOBLET_BROWSER=`chromium` } = process.env
   const {
     type,
     browserConf,
@@ -43,7 +43,7 @@ export const setupBrowser = async () => {
 
   const parkin = global.getParkinInstance()
   const gCtx = get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
-  const { browser, context } = await getPWComponents({ browserConf: {
+  const { browser, context } = await getPWComponents({
     type,
     ...browserConf,
     ...get(global, `__goblet.browser`, emptyObj),
@@ -55,7 +55,8 @@ export const setupBrowser = async () => {
         ...parkin?.world?.$headers
       }
     }
-  }})
+  })
+
 
   if (!browser)
     throw new Error(`Failed to create ${GOBLET_BROWSER} browser`)

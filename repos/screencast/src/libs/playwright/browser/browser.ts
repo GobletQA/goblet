@@ -12,6 +12,7 @@ import { pwBrowsers } from './PWBrowsers'
 import { ghostMouse } from './ghostMouse'
 import { Logger } from '@GSC/utils/logger'
 import { emptyObj } from '@keg-hub/jsutils'
+import { notCI } from '@gobletqa/shared/utils/isCI'
 import { getBrowserType } from '../helpers/getBrowserType'
 import { getContextOpts } from '../helpers/getContextOpts'
 import { buildBrowserConf } from '../helpers/buildBrowserConf'
@@ -54,15 +55,16 @@ const getPage = (async ({
   overrides=emptyObj as TBrowserConf,
 }:TGetPage):Promise<TPWComponents> => {
   try {
+
     const { context, browser } = await getContext(browserConf, overrides)
     const pages = context.pages()
     
-    Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
+    notCI && Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
     const hasPages = Boolean(pages.length)
     const hasMultiplePages = pages.length > 1
 
     if(hasMultiplePages){
-      Logger.verbose(`getPage - Closing extra pages on the context`)
+      notCI && Logger.verbose(`getPage - Closing extra pages on the context`)
       await Promise.all(pages.map(async (page, idx) => idx && await page.close()))
     }
 
@@ -73,7 +75,7 @@ const getPage = (async ({
     // To allow consecutive calls on start up
     if(!hasPages && getPage.creatingPage)
       return new Promise((res, rej) => {
-        Logger.info(`getPage - Browser Page is creating, try agin in ${CreateBrowserRetry}ms`)
+        notCI && Logger.info(`getPage - Browser Page is creating, try agin in ${CreateBrowserRetry}ms`)
         setTimeout(() => res(getPage({
           initialUrl,
           browserConf 
@@ -101,8 +103,8 @@ const getPage = (async ({
     const browserType = browser.browserType?.().name?.()
 
     hasPages
-      ? Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
-      : Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
+      ? notCI && Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
+      : notCI && Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
 
     return { context, browser, page } as TPWComponents
   }
@@ -135,28 +137,28 @@ const getContext = async (
     const hasMultipleContexts = contexts.length > 1
 
     if(hasMultipleContexts){
-      Logger.verbose(`getContext - Closing extra contexts on the browser`)
+      notCI && Logger.verbose(`getContext - Closing extra contexts on the browser`)
       await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
     }
 
     const options = getContextOpts(browserConf.context, undefined, overrides.context)
-    Logger.verbose(`Context Options`, options)
+    notCI && Logger.verbose(`Context Options`, options)
 
     if(hasContexts){
       context = contexts[0]
-      Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
+      notCI && Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
     }
     else {
       context = await browser.newContext(options) as TBrowserContext
       context.__goblet = { options }
 
-      Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
+      notCI && Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
 
       Automate.bind({ parent: context })
     }
 
   }
-  else Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
+  else notCI && Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
 
   return { context, browser }
 }

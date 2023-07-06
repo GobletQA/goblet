@@ -1,8 +1,8 @@
 import type { TStepCtx, TLocator } from '@GTU/Types'
 
-import { getPage } from '@GTU/Playwright/browserContext'
 import {getStepTimeout} from '@GTU/Support'
-import {isBool} from '@keg-hub/jsutils'
+import {isBool, isObj } from '@keg-hub/jsutils'
+import { getPage } from '@GTU/Playwright/browserContext'
 
 
 type TWaitFor = {
@@ -36,9 +36,9 @@ const getWaitArgs = (arg1:TWaitArg, arg2:TWaitArg) => {
 
   if(isBool(arg2)) return [arg1, arg2] as [TStepCtx, boolean]
 
-  if(`world` in arg1) return [arg1, arg2] as [TStepCtx, TWaitFor|boolean]
+  if(isObj(arg1) && `world` in arg1) return [arg1, arg2] as [TStepCtx, TWaitFor|boolean]
 
-  if(`world` in arg2) return [arg2, arg1] as [TStepCtx, TWaitFor|boolean]
+  if(isObj(arg2) && `world` in arg2) return [arg2, arg1] as [TStepCtx, TWaitFor|boolean]
 
   return [undefined, arg1] as [undefined, TWaitFor|boolean]
 }
@@ -64,7 +64,7 @@ export const getLocator = async (
   if (!locator) throw new Error(`The element with selector "${selector}" could not be found.`)
 
   const opts = getLocationWaitOpts(ctx, waitFor)
-  opts ? await locator.waitFor(opts) : await locator.waitFor()
+  opts && await locator.waitFor(opts)
 
   return locator as TLocator
 }

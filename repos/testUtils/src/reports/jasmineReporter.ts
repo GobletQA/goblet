@@ -50,18 +50,28 @@ const resolveJasmine = ():TJasmine => {
  * Helper to log test execution status as it happends
  */
 const logResult = (context:TContext) => {
-  if(!context.action) return
 
-  switch(context.action){
-    case 'start': {
-        Logger.stdout(`${spaceMap[context.type] || ``}${context.description}\n`)
-      break
-    }
-    case 'end': {
-      Logger.stdout(`${spaceMap[context.type] || ``}${context.description} - ${context.status}\n`)
-      break
-    }
-  }
+  const isParent = context.type !== `step`
+  const isStart = context.action === `start`
+
+  if(isParent)
+    return isStart
+      && Logger.stdout(
+        `${spaceMap[context.type] || ``} ${Logger.colors.white(context.description)}\n`
+        )
+
+  if(!context.action || context.action === `start`) return
+
+  const prefix = context.status === `passed`
+    ? `${spaceMap[context.type] || ``}${Logger.colors.green(`✓`)}`
+    : `${spaceMap[context.type] || ``}❌`
+
+  const message = context.status === `passed`
+    ? `${prefix} ${Logger.colors.gray(context.description)}\n`
+    : `${prefix} ${Logger.colors.red(context.description)}\n`
+
+  Logger.stdout(message)
+
 }
 
 /**
@@ -96,6 +106,7 @@ export const dispatchEvent = async (
   event:string,
   data:Record<string, any>
 ) => {
+  logResult(data)
   const callbacks = eventMap[event] || noPropArr
   return await Promise.all(callbacks.map(cb => cb(data)))
 }
