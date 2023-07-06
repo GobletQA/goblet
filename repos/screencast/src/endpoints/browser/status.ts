@@ -46,7 +46,7 @@ export const browserStatus:RequestHandler = asyncWrap(async (
   res:Response
 ) => {
   const query = req.query as TStatusQuery
-  const { status } = await startBrowser(joinBrowserConf(query))
+  const { status } = await startBrowser({ browserConf: joinBrowserConf(query)})
 
   return apiRes(res, status, 200)
 })

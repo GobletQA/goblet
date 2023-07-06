@@ -3,11 +3,11 @@ import type { Express } from 'express'
 // Exported from screencast/src/types
 import type { TRepo } from './repo.types'
 import type { TFileModel } from './models.types'
-import type { EBrowserType } from './browser.types'
-import type { TParkinRunStepOptsMap, TWorldConfig } from '@ltipton/parkin'
 import type { Automate } from '@gobletqa/screencast'
 import type { TSocketEvtCBProps } from './socket.types'
 import type { TAutomateEvent } from './pwAutomate.types'
+import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
+import type { EBrowserName, EBrowserType } from './browser.types'
 import type {
   Page,
   Locator,
@@ -21,11 +21,12 @@ import type {
 } from 'playwright'
 
 /**
- * This is an internal playwright property
+ * _guid is an internal playwright property
  * So every time playwright is updated, we need to ensure it still exists on the components
  */
 export type TWithGuid = {
   _guid?:string
+  __goblet?:TBrowserConf
 }
 
 export type TLocatorOpts = {
@@ -47,7 +48,8 @@ export type TBrowser = Omit<Browser, `newContext`> & TWithGuid & {
   newContext:(options?: TBrowserContextOpts) => Promise<TBrowserContext>
 }
 
-export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & TWithGuid & {
+export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & {
+  _guid?:string
   pages: () => Array<TBrowserPage>
   newPage: () => Promise<TBrowserPage>
   __GobletAutomateInstance?: Automate
@@ -55,8 +57,7 @@ export type TBrowserContext = Omit<BrowserContext, `newPage`|`pages`> & TWithGui
     cookie?:string
     tracing?:Boolean
     extraHTTPHeaders?:Record<string, string>
-    options?:Partial<BrowserContextOptions>
-    [key:string]: any
+    options?:Partial<TBrowserContextOpts>
   }
 }
 
@@ -102,13 +103,13 @@ export type TPageOpts = {
 }
 
 export type TBrowserConf = TBrowserLaunchOpts & {
-  type: EBrowserType
   ws?: boolean
   url?:string
-  page:TPageOpts
+  page?:TPageOpts
   restart?:boolean
   colorScheme?: TColorSchema
   context?:TBrowserContextOpts
+  type: EBrowserType|EBrowserName
 }
 
 export type TBrowserStatus = {
@@ -227,7 +228,7 @@ export type TBrowserEventCB = (...args:any[]) => void
 export type TBrowserEventArgs = Pick<
   TSocketEvtCBProps, `socket`|`Manager`
 > & { 
-  browser?:TBrowserConf
+  browserConf?:TBrowserConf
   pwComponents?: TPWComponents
 }
 

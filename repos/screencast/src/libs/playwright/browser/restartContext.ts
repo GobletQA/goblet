@@ -18,8 +18,6 @@ import {
 } from '@GSC/libs/playwright/browser/browser'
 import {deepMerge, emptyObj, get} from '@keg-hub/jsutils'
 
-
-
 type TRestartWId = {
   socket?:never
   socketId:string
@@ -89,28 +87,26 @@ const getSocket = (props:TRestartContext) => {
 
 export const restartContext = async (props:TRestartContext) => {
 
-  const browser = joinBrowserConf(props.browser)
-  const { context, page } = await getPWComponents(browser)
+  const browserConf = joinBrowserConf(props.browser)
+  const { context, page } = await getPWComponents(browserConf)
 
   const url = getPageUrl(props, page)
-  const extraCtxOpts = await getCtxOptions(props, browser, context)
+  const extraCtxOpts = await getCtxOptions(props, browserConf, context)
 
   context && await context.close()
 
-  await startBrowser(
-    browser,
-    false,
-    false,
-    { context: extraCtxOpts },
-    url
-  )
+  await startBrowser({
+    browserConf,
+    initialUrl: url,
+    overrides: { context: extraCtxOpts },
+  })
 
-  const pwComponents = await getPWComponents(browser)
+  const pwComponents = await getPWComponents(browserConf)
   global.context = pwComponents.context
 
   browserEvents({
     ...props,
-    browser,
+    browserConf,
     pwComponents,
     ...getSocket(props),
   })

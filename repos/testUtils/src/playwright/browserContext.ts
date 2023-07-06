@@ -14,7 +14,7 @@ import { get, emptyObj } from '@keg-hub/jsutils'
 import {
   metadata,
   ghostMouse,
-  startBrowser,
+  getPWComponents,
   setBrowserDefaults,
 } from '@gobletqa/screencast/libs/playwright'
 
@@ -36,29 +36,30 @@ export const defaultStateFile = 'browser-context-state'
 export const setupBrowser = async () => {
   /** GOBLET_BROWSER is set by the task `keg goblet bdd run` */
   const { GOBLET_BROWSER='chromium' } = process.env
-  const { type, browserConf } = await metadata.read(GOBLET_BROWSER)
-
-  // TODO: Should update to check if in docker container
-  // Then pass false based on that
-  // Pass false to bypass checking the browser status
-  const browserOpts = {
-    ...browserConf,
+  const {
     type,
-    ...get(global, `__goblet.browser`, emptyObj),
-  }
+    browserConf,
+  } = await metadata.read(GOBLET_BROWSER)
 
-  const { browser } = await startBrowser(browserOpts, true)
+  const { browser, context } = await getPWComponents({ browserConf: {
+    type,
+    ...browserConf,
+    ...get(global, `__goblet.browser`, emptyObj),
+    context: {
+      ...get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
+    }
+  }})
 
   if (!browser)
-    throw new Error(`Could not create browser. Please ensure the browser server is running.`)
+    throw new Error(`Failed to create ${GOBLET_BROWSER} browser`)
 
-  global.browser = browser
-  global.browser.__goblet = {
-    ...global.browser.__goblet,
-    ...browserOpts
-  }
 
-  return global.browser as TBrowser
+  if(!context)
+    throw new Error(`Failed to create ${GOBLET_BROWSER} browser context`)
+
+  global.browser = browser as TBrowser
+  global.context = context as TBrowserContext
+
 }
 
 /**
@@ -67,10 +68,23 @@ export const setupBrowser = async () => {
  * @returns {Object} - Playwright Context object
  */
 export const setupContext = async () => {
-  global.context = await getContext(
-    get<TBrowserContextOpts>(global, `__goblet.context.options`)
-  )
+  const context = await getContext()
+  const page = await getPage()
+  const parkin = global.getParkinInstance()
+
   await startTracing(global.context)
+
+  console.log(parkin.world.secrets)
+
+  setBrowserDefaults({
+    world: parkin.world,
+    browserConf: global.browser.__goblet,
+    pwComponents: {
+      page,
+      context,
+      browser: global.browser
+    }
+  })
 
   return global.context as TBrowserContext
 }
@@ -97,34 +111,11 @@ export const saveContextState = async (
 
 /**
  * Gets the browser context instance, or else creates a new one
- * @param {Object} [contextOpts] - Options for creating a new context
- * @param {string} [location] - path the browser will use for storage
  *
  */
-export const getContext = async (
-  contextOpts?:TBrowserContextOpts,
-  location?:string
-) => {
-  // TODO: migrate this to use the getContext from screencast/libs/playwright
-  contextOpts = contextOpts || get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
-
-  if(!global.browser) throw new Error('Browser type not initialized')
-  if(!global.context){
-    try {
-      // TODO: figure out how to pull the saved context state 
-      global.context = await global.browser.newContext(contextOpts) as TBrowserContext
-    }
-    catch(err){
-      if(err.code === `ENOENT` && err.message.includes(`Error reading storage state`))
-        console.warn(`[Goblet] Saved Context State ${location} does not exist.`)
-      else global.context = await global.browser.newContext(contextOpts) as TBrowserContext
-    }
-  }
-
-  // Goblet options that are context specific
-  // Not great, and there's better way to store this,
-  // because we don't own the context object, but this works now
-  global.context.__goblet = global.context.__goblet || {}
+export const getContext = async () => {
+  if(!global.context)
+    throw new Error(`Failed to find browser context. Did it one get created?`)
 
   return global.context as TBrowserContext
 }
@@ -136,10 +127,10 @@ export const getContext = async (
  * @return {Object} - Playwright browser page object
  */
 export const getPage = async (num = 0) => {
-  if (!global.context) throw new Error('No browser context initialized')
+  const context = await getContext()
 
-  const pages = global.context.pages() || []
-  const page = pages.length ? pages[num] : await global.context.newPage()
+  const pages = context.pages() || []
+  const page = pages.length ? pages[num] : await context.newPage()
   LAST_ACTIVE_PAGE = ghostMouse(page)
 
   return LAST_ACTIVE_PAGE as TBrowserPage
@@ -161,10 +152,9 @@ export const closePage = async (page:TBrowserPage) => {
 }
 
 export const closeContext = async () => {
-  if (!global.context)
-    return console.warn(`Could not close browser context, because it does not exist.`)
+  const context = await getContext()
 
-  await global.context.close()
+  await context.close()
   global.context = undefined
 }
 

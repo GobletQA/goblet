@@ -7,5 +7,5 @@ import { startBrowser } from '@GSC/libs/playwright/browser/browser'
  */
 export const setupBrowser = async (app:Express) => {
   const browserConf = joinBrowserConf({}, app)
-  await startBrowser(browserConf)
+  await startBrowser({ browserConf })
 }

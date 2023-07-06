@@ -26,7 +26,7 @@ const getStatusUpdate = async (
   Mgr:SocketManager
 ) => {
   
-  const status = await startBrowser(browserConf)
+  const status = await startBrowser({ browserConf })
   // If no status chance, don't update the backend
   if (prevStatus === status?.status) return
 

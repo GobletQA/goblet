@@ -20,10 +20,8 @@ const forceExit = (err?:Error) => {
 }
 
 /**
- * Initializes tests by connecting to the browser loaded at the websocket
- * Then creates a new context from the connected browser
+ * Creates a new browser and context
  * Adds both browser and context to the global scope
- * @param {Function} done - jest function called when all asynchronous ops are complete
  *
  * @return <boolean> - true if init was successful
  */
@@ -38,7 +36,7 @@ export const initialize = async () => {
   }
   catch (err) {
     startError = true
-    await cleanup(true)
+    await cleanup()
     forceExit(err)
   }
   finally {
@@ -50,10 +48,9 @@ export const initialize = async () => {
 /**
  * Cleans up for testing tear down by releasing all resources, including
  * the browser window and any globals set in `initialize`.
- * @param {Function} [fromError] - Boolean if cleanup was called from an error
  *
  */
-export const cleanup = async (fromError?:boolean) => {
+export const cleanup = async () => {
   if (!global.browser){
     await commitTestMeta()
     return false

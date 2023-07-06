@@ -1,17 +1,17 @@
-import type { TGobletConfig, TBrowserLaunchOpts } from '@GSC/types'
 import type playwright from 'playwright'
+import type { TGobletConfig, TBrowserLaunchOpts } from '@GSC/types'
 
-import { toBool, isStr, noOpObj } from '@keg-hub/jsutils'
+import { toBool, isStr, emptyObj } from '@keg-hub/jsutils'
 import { parseJsonEnvArr } from '@gobletqa/shared/utils/parseJsonEnvArr'
 
 /**
  * Builds a list of devices to used based on the GOBLET_BROWSER_DEVICES env
  */
 const buildDeviceList = (envVal) => {
-  if(!envVal) return noOpObj
+  if(!envVal) return emptyObj
   
   const { devices } = parseJsonEnvArr('devices', envVal)
-  if(!devices) return noOpObj
+  if(!devices) return emptyObj
 
   return devices.reduce((acc, device) => {
     device &&
