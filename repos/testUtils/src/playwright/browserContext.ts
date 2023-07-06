@@ -41,12 +41,19 @@ export const setupBrowser = async () => {
     browserConf,
   } = await metadata.read(GOBLET_BROWSER)
 
+  const parkin = global.getParkinInstance()
+  const gCtx = get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
   const { browser, context } = await getPWComponents({ browserConf: {
     type,
     ...browserConf,
     ...get(global, `__goblet.browser`, emptyObj),
     context: {
-      ...get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
+      ...gCtx,
+      extraHTTPHeaders: {
+        ...gCtx?.extraHTTPHeaders,
+        ...parkin?.world?.$context?.extraHTTPHeaders,
+        ...parkin?.world?.$headers
+      }
     }
   }})
 
@@ -68,23 +75,21 @@ export const setupBrowser = async () => {
  * @returns {Object} - Playwright Context object
  */
 export const setupContext = async () => {
-  const context = await getContext()
-  const page = await getPage()
-  const parkin = global.getParkinInstance()
+  // const context = await getContext()
+  // const page = await getPage()
+  // const parkin = global.getParkinInstance()
 
   await startTracing(global.context)
 
-  console.log(parkin.world.secrets)
-
-  setBrowserDefaults({
-    world: parkin.world,
-    browserConf: global.browser.__goblet,
-    pwComponents: {
-      page,
-      context,
-      browser: global.browser
-    }
-  })
+  // setBrowserDefaults({
+  //   repo: { world: parkin.world },
+  //   browserConf: global.browser.__goblet,
+  //   pwComponents: {
+  //     page,
+  //     context,
+  //     browser: global.browser
+  //   }
+  // })
 
   return global.context as TBrowserContext
 }

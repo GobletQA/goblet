@@ -1,11 +1,8 @@
-import type { TGobletConfig } from '@GTU/Types'
-
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/shared/libs/logger'
 import { noOp, get, noPropArr, isFunc, isStr } from '@keg-hub/jsutils'
 
 type TEvtCB = { name?:string } & ((...args:any[]) => void)
 type TContext = Record<any, any>
-type TSuite = Record<any, any>
 
 type TJasmine = {
   getEnv: (...args:any[]) => Record<any, any>

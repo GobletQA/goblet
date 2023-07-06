@@ -14,7 +14,6 @@ const {
 
 let __LOGGER:winston.Logger
 
-
 export type TLogOpts = winston.LoggerOptions & {
   label:string
 }

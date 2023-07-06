@@ -4,12 +4,14 @@ const unsafeValues = [
   /token/i,
   /auth/i,
   /password/i,
+  /secret/i
 ]
 
 const unsafeKeyValuePair = [
   { key: 'authorization', value: /^bearer /i },
   { key: 'token', value: /.*/i },
   { key: 'password', value: /.*/i },
+  { key: 'secret', value: /.*/i },
 ]
 
 const possibleArrayKeys = ['stack', 'message']

@@ -2,7 +2,7 @@ import type { TGobletConfig } from '../types'
 
 import fs from 'fs'
 import path from 'path'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSH/libs/logger'
 import { configFromFolder } from './configFromFolder'
 
 /**

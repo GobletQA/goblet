@@ -2,7 +2,6 @@ import type { Repo } from '@GSH/repo/repo'
 
 import fs from 'fs'
 import { noOpObj } from '@keg-hub/jsutils'
-import { Logger } from '@keg-hub/cli-utils'
 import { getParkinInstance } from '@GSH/libs/parkin'
 
 export type TFeatureMeta = {

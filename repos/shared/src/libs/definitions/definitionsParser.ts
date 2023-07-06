@@ -3,7 +3,7 @@ import type { TStepDef } from '@ltipton/parkin'
 import type { TDefinitionFileModel } from '../../types'
 
 import fs from 'fs'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSH/libs/logger'
 import { checkCall } from '@keg-hub/jsutils'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { parkinCheck } from '@GSH/libs/overrides/parkinOverride'

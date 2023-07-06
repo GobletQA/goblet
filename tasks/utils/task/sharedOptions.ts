@@ -254,7 +254,7 @@ const taskOptions = {
       description: `Speed actions within the browser will be performed in milliseconds`,
     },
     browserTimeout: {
-      type: 'number',
+      type: `number`,
       default: 30000, // 30 seconds
       env: `GOBLET_BROWSER_TIMEOUT`,
       example: `--browserTimeout 30000`, // 30 seconds

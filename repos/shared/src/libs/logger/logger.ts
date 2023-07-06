@@ -1,5 +1,6 @@
 import type { TLogOpts } from '@GSH/utils/buildLogger'
 
+// import './stdio'
 import { buildLogger } from '@GSH/utils/buildLogger'
 import { Logger as CliLogger } from '@keg-hub/cli-utils'
 import { setLogs, capitalize, isStr, isColl, exists } from '@keg-hub/jsutils'
@@ -40,7 +41,6 @@ const autoInit = () => {
 const loggerWrap = (method:string=`info`) => {
   return (...args:any[]) => {
     autoInit()
-    
     const toLog = args.length <= 1 && isStr(args[0])
       ? {
           message: args[0],

@@ -1,5 +1,5 @@
 import { getApp } from '@GSH/express/app'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSH/libs/logger'
 import { get, isNum } from '@keg-hub/jsutils'
 
 /**

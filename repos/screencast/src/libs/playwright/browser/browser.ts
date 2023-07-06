@@ -98,10 +98,11 @@ const getPage = (async ({
     }
 
     getPage.creatingPage = false
+    const browserType = browser.browserType?.().name?.()
 
     hasPages
-      ? Logger.verbose(`getPage - Found page on context for browser ${browserConf.type}`)
-      : Logger.verbose(`getPage - New page created on context for browser ${browserConf.type}`)
+      ? Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
+      : Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
 
     return { context, browser, page } as TPWComponents
   }

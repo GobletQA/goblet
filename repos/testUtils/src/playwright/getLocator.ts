@@ -50,8 +50,8 @@ const getWaitArgs = (arg1:TWaitArg, arg2:TWaitArg) => {
  */
 export const getLocator = async (
   selector:string,
-  arg1?:TWaitArg,
-  arg2?:TWaitArg,
+  arg1?:TWaitArg, // <--- Should be step ctx object
+  arg2?:TWaitArg, // <--- Should be custom waitFor opts
 ) => {
 
   const [ctx, waitFor] = getWaitArgs(arg1, arg2)

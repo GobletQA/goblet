@@ -8,7 +8,8 @@ import {
 } from '@GTU/Types'
 
 import fs from 'fs'
-import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { fileSys } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/shared/libs/logger'
 import { noOpObj, get, wait } from '@keg-hub/jsutils'
 import { appendToLatest } from '@GTU/TestMeta/testMeta'
 import { getTestResult } from '@GTU/Reports/jasmineReporter'

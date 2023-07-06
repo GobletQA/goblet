@@ -1,4 +1,5 @@
-import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { fileSys } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/shared/libs/logger'
 import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'

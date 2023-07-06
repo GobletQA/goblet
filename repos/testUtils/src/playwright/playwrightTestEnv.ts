@@ -1,4 +1,4 @@
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/shared/libs/logger'
 import { copyTestReports } from '@GTU/Playwright/testReport'
 import { saveRecordingPath } from '@GTU/Playwright/videoRecording'
 import { initTestMeta, commitTestMeta } from '@GTU/TestMeta/testMeta'

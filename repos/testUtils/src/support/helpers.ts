@@ -1,9 +1,10 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 import type { TStepCtx, TLocator, TBrowserPage } from '@GTU/Types'
 
-import { Logger } from '@keg-hub/cli-utils'
-import { get, set, unset, emptyObj, isNum } from '@keg-hub/jsutils'
+
+import { Logger } from '@gobletqa/shared/libs/logger'
 import { getPage, getLocator } from '@GTU/Playwright'
+import { get, set, unset, emptyObj, isNum } from '@keg-hub/jsutils'
 import {
   SavedDataWorldPath,
   SavedLocatorWorldPath,
@@ -29,6 +30,11 @@ type TSaveWorldLocator = {
   worldPath?:string
   element?:TLocator
   world:TWorldConfig
+}
+
+type TWaitFor = boolean | {
+  timeout:number
+  state:`visible` | `attached` | `detached` | `hidden`
 }
 
 const checkTypes = {
@@ -352,11 +358,11 @@ export const clickElement = async ({
   // This way we can reuse the locator we already have
   worldPath=AutoSavedLocatorWorldPath,
   save=true,
-}:TClickEl, ctx?:TStepCtx) => {
+}:TClickEl, ctx?:TStepCtx, waitFor?:TWaitFor) => {
   page = page || await getPage()
   // Actionability checks (Auto-Waiting) seem to fail in headless mode
   // So we use locator.waitFor to ensure the element exist on the dom
-  locator = locator || await getLocator(selector, ctx)
+  locator = locator || await getLocator(selector, ctx, waitFor)
 
   // Then pass {force: true} options to locator.click because we know it exists
   await page.click(selector, {
