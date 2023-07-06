@@ -1,3 +1,5 @@
+import type { TGobletConfig } from '../types'
+
 // Must load this first because it loads the alias
 import { jestConfig } from './jest.default.config'
 
@@ -26,7 +28,7 @@ const exts = [
  *
  * @return {Array<string>} file paths
  */
-const getStepDefinitions = config => {
+const getStepDefinitions = (config:TGobletConfig) => {
   const { testUtilsDir } = config.internalPaths
   const { repoRoot, workDir, stepsDir } = config.paths
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
@@ -45,14 +47,14 @@ const getStepDefinitions = config => {
  *
  * @return {Array<string>} file paths
  */
-const getParkinSupport = config => {
+const getParkinSupport = (config:TGobletConfig) => {
   const { testUtilsDir } = config.internalPaths
   const { repoRoot, workDir, supportDir } = config.paths
 
   const parkinEnvironment = `${testUtilsDir}/src/parkin/parkinTestInit.ts`
 
   // **IMPORTANT** - Must be loaded after the parkinEnvironment 
-  const configHooks = `${testUtilsDir}/src/support/hooks`
+  const configHooks = `${testUtilsDir}/src/support/hooks.ts`
 
   const ignore = [`hook`, `hooks`, `setup`].reduce((acc, type) => {
     const built = exts.map(ext => `${type}.${ext}`)
@@ -77,7 +79,7 @@ const getParkinSupport = config => {
   return matches
 }
 
-export const parkinJestConfig =  async () => {
+export const parkinConfig =  async () => {
   const config = getGobletConfig()
   const baseDir = getRepoGobletDir(config)
   const { devices, ...browserOpts } = taskEnvToBrowserOpts(config)
@@ -88,9 +90,10 @@ export const parkinJestConfig =  async () => {
   const reportOutputPath = path.join(reportsTempDir, `${browserOpts.type}-html-report.html`)
   const defConf = jestConfig(config, {
     type: `bdd`,
-    ext: 'feature',
-    title: 'Feature',
+    ext: `feature`,
+    title: `Feature`,
     reportOutputPath,
+    rootDir: config.paths.repoRoot,
     testDir: path.join(baseDir, config.paths.featuresDir),
   })
 
@@ -110,7 +113,7 @@ export const parkinJestConfig =  async () => {
           reportTempPath: reportOutputPath
         },
         options: gobletOpts,
-        browser: { options: browserOpts },
+        browser: browserOpts,
         context: { options: contextOpts },
       },
     },

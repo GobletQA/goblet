@@ -129,7 +129,7 @@ export const saveRecordingPath = async (page:TBrowserPage) => {
  
   const { type:browser=`browser` } = get<TGobletGlobalBrowserOpts>(
     global,
-    `__goblet.browser.options`,
+    `__goblet.browser`,
     noOpObj as TGobletGlobalBrowserOpts
   )
 

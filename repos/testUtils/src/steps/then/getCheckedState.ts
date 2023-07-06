@@ -27,7 +27,7 @@ export const getCheckedState = async (
   // Validate checked || unchecked was passed
   expect(checkedStates).toEqual(expect.arrayContaining([state]));
 
-  const input = await getLocator(selector)
+  const input = await getLocator(selector, ctx)
   const checkedState = await input.isChecked() // boolean
   const stateConversion = state === `checked` ? true : false
 

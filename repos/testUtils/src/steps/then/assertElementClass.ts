@@ -15,7 +15,7 @@ export const assertElementClass = async (
   ctx:TStepCtx
 ) => {
 
-  const locator = await getLocator(selector)
+  const locator = await getLocator(selector, ctx)
   const classList = await locator.evaluate((node) => ([...node.classList]), {})
 
   const classes = className.split(` `)

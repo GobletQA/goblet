@@ -8,7 +8,7 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  * Sets the input text of selector to data
  */
 export const hoverElement = async (selector:string, ctx:TStepCtx) => {
-  const element = await getLocator(selector)
+  const element = await getLocator(selector, ctx)
   await element.hover()
 
   return true

@@ -10,7 +10,7 @@ import type {
 import os from 'os'
 import path from 'path'
 import { startTracing } from './tracing'
-import { get, noOpObj } from '@keg-hub/jsutils'
+import { get, emptyObj } from '@keg-hub/jsutils'
 import {
   metadata,
   ghostMouse,
@@ -44,7 +44,7 @@ export const setupBrowser = async () => {
   const browserOpts = {
     ...browserConf,
     type,
-    ...get(global, `__goblet.browser.options`, noOpObj),
+    ...get(global, `__goblet.browser`, emptyObj),
   }
 
   const { browser } = await startBrowser(browserOpts, true)
@@ -106,17 +106,13 @@ export const getContext = async (
   location?:string
 ) => {
   // TODO: migrate this to use the getContext from screencast/libs/playwright
-  contextOpts = contextOpts || get<TBrowserContextOpts>(global, `__goblet.context.options`, noOpObj)
+  contextOpts = contextOpts || get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
 
   if(!global.browser) throw new Error('Browser type not initialized')
   if(!global.context){
     try {
       // TODO: figure out how to pull the saved context state 
-      global.context = await global.browser.newContext({
-        ...contextOpts,
-        // TODO: Need to add this dynamically based on some env or tag?
-        // storageState: contextStateLoc(location)
-      }) as TBrowserContext
+      global.context = await global.browser.newContext(contextOpts) as TBrowserContext
     }
     catch(err){
       if(err.code === `ENOENT` && err.message.includes(`Error reading storage state`))

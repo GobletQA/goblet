@@ -66,7 +66,8 @@ export const cleanup = async (fromError?:boolean) => {
     await stopTracingChunk(global.context)
 
     // Await the close of the context due to video recording
-    await global.context.close()
+    global?.context && await global?.context?.close()
+
     await saveRecordingPath(getLastActivePage())
     setLastActivePage(undefined)
   

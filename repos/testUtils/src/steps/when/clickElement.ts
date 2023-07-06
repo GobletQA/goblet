@@ -13,7 +13,7 @@ export const clickElementHandler = async (
   ctx:TStepCtx
 ) => {
   const { world } = ctx
-  return await clickElement({ world, selector })
+  return await clickElement({ world, selector }, ctx)
 }
 
 

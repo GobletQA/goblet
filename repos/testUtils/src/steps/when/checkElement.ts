@@ -14,7 +14,7 @@ export const checkElement = async (
   selector:string,
   ctx:TStepCtx
 ) => {
-  const box = await getLocator(selector)
+  const box = await getLocator(selector, ctx)
   const boxAction = action === 'check' ? await box.check() : await box.uncheck()
 }
 

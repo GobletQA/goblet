@@ -1,6 +1,9 @@
-import type { TLocator } from '@GTU/Types'
+import type { TStepCtx, TLocator } from '@GTU/Types'
 
 import { getPage } from '@GTU/Playwright/browserContext'
+import {getStepTimeout} from '@GTU/Support'
+import {isBool} from '@keg-hub/jsutils'
+
 
 type TWaitFor = {
   timeout:number
@@ -11,11 +14,11 @@ type TWaitFor = {
  * TODO: figure out how to set global timeout from the browser or cli
  * The pull it in here and use it to set the config of the waitFor
  */
-const getLocationWaitOpts = (waitFor:TWaitFor|boolean):TWaitFor|undefined => {
+const getLocationWaitOpts = (ctx?:TStepCtx, waitFor?:TWaitFor|boolean):TWaitFor|undefined => {
   // process.env.JEST_WORKER_ID
   const defWaitOpts = {
-    timeout: 15000,
     state: `visible`,
+    timeout: getStepTimeout(ctx),
   }
 
   // waitFor must be explicitly set to false to skip waitFor options
@@ -26,6 +29,20 @@ const getLocationWaitOpts = (waitFor:TWaitFor|boolean):TWaitFor|undefined => {
       : defWaitOpts as TWaitFor
 }
 
+type TWaitArg = TStepCtx|TWaitFor|boolean
+
+const getWaitArgs = (arg1:TWaitArg, arg2:TWaitArg) => {
+  if(isBool(arg1)) return [arg2, arg1] as [TStepCtx, boolean]
+
+  if(isBool(arg2)) return [arg1, arg2] as [TStepCtx, boolean]
+
+  if(`world` in arg1) return [arg1, arg2] as [TStepCtx, TWaitFor|boolean]
+
+  if(`world` in arg2) return [arg2, arg1] as [TStepCtx, TWaitFor|boolean]
+
+  return [undefined, arg1] as [undefined, TWaitFor|boolean]
+}
+
 /**
  * Finds an element on the current page as a locator
  * @param {string} selector
@@ -33,8 +50,12 @@ const getLocationWaitOpts = (waitFor:TWaitFor|boolean):TWaitFor|undefined => {
  */
 export const getLocator = async (
   selector:string,
-  waitFor:TWaitFor|boolean=true
+  arg1?:TWaitArg,
+  arg2?:TWaitArg,
 ) => {
+
+  const [ctx, waitFor] = getWaitArgs(arg1, arg2)
+  
   const page = await getPage()
   // TODO: allow first to be configurable
   // Should be set in the same way the timeout options are set
@@ -42,7 +63,7 @@ export const getLocator = async (
   const locator = page.locator(selector).first()
   if (!locator) throw new Error(`The element with selector "${selector}" could not be found.`)
 
-  const opts = getLocationWaitOpts(waitFor)
+  const opts = getLocationWaitOpts(ctx, waitFor)
   opts ? await locator.waitFor(opts) : await locator.waitFor()
 
   return locator as TLocator

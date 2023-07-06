@@ -16,7 +16,8 @@ export const clickDescendent = async (
   const { world } = ctx
   checkForAncestor(world)
   const descendent = await getLocator(
-    `${world.meta.ancestorSelector} ${selector}`
+    `${world.meta.ancestorSelector} ${selector}`,
+    ctx
   )
 
   return descendent.click({

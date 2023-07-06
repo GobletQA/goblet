@@ -1,4 +1,4 @@
-const { noPropArr } = require('@keg-hub/jsutils')
+import { noPropArr } from '@keg-hub/jsutils'
 
 /**
  * Exits the process, once the tests are complete
@@ -6,7 +6,7 @@ const { noPropArr } = require('@keg-hub/jsutils')
  * 
  * @returns the exit code sum of the executed test commands
  */
-const handleTestExit = (exitCodes = noPropArr, reportPaths=noPropArr) => {
+export const handleTestExit = (exitCodes = noPropArr, reportPaths=noPropArr) => {
   const { GOBLET_RUN_FROM_UI, GOBLET_RUN_FROM_CI } = process.env
   const codeSum = exitCodes.reduce((sum, code) => sum + parseInt(code, 10), 0)
 
@@ -32,8 +32,4 @@ const handleTestExit = (exitCodes = noPropArr, reportPaths=noPropArr) => {
     })
 
   return codeSum
-}
-
-module.exports = {
-  handleTestExit,
 }

@@ -32,7 +32,7 @@ export const Browsers = {
 export const BrowserNames = [`chromium`, `firefox`, `webkit`]
 export const JestConfigMap = {
   [ETestType.unit]: path.join(testUtilsDir, `src/jest/jest.unit.config.js`),
-  [ETestType.feature]: path.join(testUtilsDir, `src/jest/jest.parkin.config.ts`),
+  [ETestType.feature]: path.join(testUtilsDir, `src/jest/jest.parkin.config.js`),
   [ETestType.waypoint]: path.join(testUtilsDir, `src/jest/jest.waypoint.config.js`),
 }
 export const TestTypes = {

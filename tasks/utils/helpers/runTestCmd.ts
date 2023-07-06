@@ -68,7 +68,12 @@ const buildBrowserCmd = (args:TBrowserCmd) => {
     const resp = await new Promise<TResp>(async (res) => {
       const cmd = cmdArgs.shift()
 
-      const exitCode = await runCmd(cmd, cmdArgs, cmdOpts)
+      const exitCode = await runCmd(
+        cmd,
+        cmdArgs,
+        cmdOpts
+      )
+
       res({ exitCode })
     })
 

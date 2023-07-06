@@ -13,9 +13,9 @@ import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
  */
 export const focusElement = async (selector:string, ctx:TStepCtx) => {
   const { world } = ctx
-  const element = await getLocator(selector)
+  const element = await getLocator(selector, ctx)
   const resp = await element.focus()
-  saveWorldLocator({ selector, world, element })
+  saveWorldLocator({ selector, world, element }, ctx)
 
   return resp
 }

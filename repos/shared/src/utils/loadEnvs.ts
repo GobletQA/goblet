@@ -34,10 +34,11 @@ const testRemovePrefix = [
   `GITLAB_`
 ]
 
+// TODO: fix this??
 const testRemoveIncludes = [
-  `SECRET`,
-  `TOKEN`,
-  `PASSWORD`
+  // `SECRET`,
+  // `TOKEN`,
+  // `PASSWORD`
 ]
 
 /**

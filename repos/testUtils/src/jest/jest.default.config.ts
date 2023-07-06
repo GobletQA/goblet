@@ -2,9 +2,8 @@ import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
 
 import os from "os"
 import path from 'path'
-import { jestAliases } from './setupTestAliases'
-
 import { Logger } from '@keg-hub/cli-utils'
+import { jestAliases } from './setupTestAliases'
 import { noOpObj, noPropArr, capitalize } from '@keg-hub/jsutils'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
@@ -112,10 +111,10 @@ export const jestConfig = (config, opts:TJestConfOpts=noOpObj) => {
     // Jest no loading tests outside of the rootDir
     // So set the root to be the parent of keg-config and the repos dir
     // If no rootDir override is set
-    rootDir: opts.rootDir || GOBLET_MOUNT_ROOT || '/goblet',
+    rootDir: opts.rootDir || GOBLET_MOUNT_ROOT || `/goblet`,
     transform: {
       '\\.[jt]sx?$': ['esbuild-jest', { sourcemap: true }],
-      '\\.(js|jsx|mjs|cjs|ts|tsx)?$': ['esbuild-jest', { sourcemap: true }],
+      '\\.(js|jsx|mjs|cjs|ts|tsx)?$': [`esbuild-jest`, { sourcemap: true }],
     },
   }
 }

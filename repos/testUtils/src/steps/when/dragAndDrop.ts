@@ -12,8 +12,8 @@ export const dragAndDrop = async (
   parentSelector:string,
   ctx:TStepCtx
 ) => {
-  const dragEl = await getLocator(dragSelector)
-  const parentEl = await getLocator(parentSelector)
+  const dragEl = await getLocator(dragSelector, ctx)
+  const parentEl = await getLocator(parentSelector, ctx)
 
   return await dragEl.dragTo(parentEl)
 }
