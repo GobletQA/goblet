@@ -350,6 +350,7 @@ export const getLocatorContent = async (
  */
 export const clickElement = async ({
   page,
+  save,
   world,
   locator,
   selector,
@@ -357,7 +358,6 @@ export const clickElement = async ({
   // We call saveWorldData, but we save to the auto-save location path
   // This way we can reuse the locator we already have
   worldPath=AutoSavedLocatorWorldPath,
-  save=true,
 }:TClickEl, ctx?:TStepCtx, waitFor?:TWaitFor) => {
   page = page || await getPage()
   // Actionability checks (Auto-Waiting) seem to fail in headless mode
