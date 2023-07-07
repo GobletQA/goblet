@@ -1,6 +1,7 @@
 import type { TOpenedTabs  } from '../../types'
 
 import { Tab as GBTab } from './Tab'
+import {useScrollHor} from '@GBC/hooks/dom/useScrollHor'
 import {
   OpenTabsMain,
   OpenTabsContainer,
@@ -8,11 +9,13 @@ import {
 } from './OpenedTabs.styled'
 
 
+
 export const OpenedTabs = ({ openedTabs, Tab, activeTab, ...rest }:TOpenedTabs) => {
   const TabComp = (Tab || GBTab) as typeof GBTab
+  const { scrollRef } = useScrollHor()
 
   return (
-    <OpenTabsContainer className='goblet-editor-opened-tab-wrapper'>
+    <OpenTabsContainer ref={scrollRef} className='goblet-editor-opened-tab-wrapper'>
       <OpenTabsMain className='goblet-editor-opened-tab'>
         <OpenTabsBottomBorder />
 
