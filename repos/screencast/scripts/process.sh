@@ -11,4 +11,3 @@ node dist/sock.js >> /proc/1/fd/1 &
 node dist/bs.js >> /proc/1/fd/1 &
 
 # node -r esbuild-register dist/sc.js
- 

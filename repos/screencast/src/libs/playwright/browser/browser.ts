@@ -200,3 +200,6 @@ export const getPWComponents = async (
         browserConf,
       })
 }
+
+
+export const closeBrowser = pwBrowsers.closeBrowser

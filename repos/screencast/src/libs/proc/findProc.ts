@@ -31,8 +31,15 @@ const parseOutput = (procName:string, output:string) => {
  * @function
  * @private
  */
-const getPlatformCmd = (procName:string, platform:string) => {
+const getPlatformCmd = ({
+  cmd,
+  procName,
+  platform,
+}:{ procName:string, platform:string, cmd?:string }) => {
   const proc = `"[${procName[0]}]${procName.substring(1)}"`
+
+  if(cmd) return `${cmd} | grep ${proc}`
+
   switch (platform) {
     case 'linux':
     case 'darwin':
@@ -49,11 +56,15 @@ const getPlatformCmd = (procName:string, platform:string) => {
  * @function
  * @public
  */
-export const findProc = (procName:string) => {
+export const findProc = (
+  procName:string,
+  customCmd?:string,
+  customParse?:(procName:string, stdout:string) => TProc|undefined|void
+) => {
   return new Promise((res, rej) => {
     const platform = process.platform
     // Use the platform to know the correct search command
-    const cmd = getPlatformCmd(procName, platform)
+    const cmd = getPlatformCmd({ procName, platform, cmd: customCmd })
     if (!cmd) return rej(`Error: ${platform} platform not supported.`)
 
     // Run the search command, and compare the output
@@ -69,7 +80,9 @@ export const findProc = (procName:string) => {
               running: stdout.toLowerCase().includes(procName.toLowerCase()),
               name: procName,
             } as TProc
-          : parseOutput(procName, stdout)
+          : customParse
+            ? customParse(procName, stdout)
+            : parseOutput(procName, stdout)
 
       res(status)
     })
