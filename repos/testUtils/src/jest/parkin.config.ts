@@ -101,7 +101,7 @@ export const parkinConfig =  async () => {
     ...defConf,
     /** Add feature as an extension that can be loaded */
     moduleFileExtensions: [
-      'feature',
+      `feature`,
       ...defConf.moduleFileExtensions,
     ],
     /** Pass on the browser options defined from the task that started the process */

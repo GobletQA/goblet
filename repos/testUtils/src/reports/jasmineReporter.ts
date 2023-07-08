@@ -9,13 +9,17 @@ type TJasmine = {
   testPath: string
 }
 
-
+const ResultStatus = {
+  failed: `failed`,
+  passed: `passed`
+}
 
 const spaceMap = {
   feature: `  `,
   scenario: `    `,
   background: `    `,
   step: `      `,
+  error: `         `,
 }
 
 const eventMap = {
@@ -46,6 +50,21 @@ const resolveJasmine = ():TJasmine => {
     : { getEnv: noOp } as TJasmine
 }
 
+const logParent = (context:TContext, isStart:boolean) => {
+
+  const isFeature = context.type === `feature`
+  
+  if(isStart){
+    isFeature && Logger.stdout(`\n`)
+  
+    return Logger.stdout(
+      `${spaceMap[context.type] || ``} ${Logger.colors.white(context.description)}\n`
+      )
+  }
+
+  return isFeature && Logger.stdout(`\n`)
+}
+
 /**
  * Helper to log test execution status as it happends
  */
@@ -54,21 +73,20 @@ const logResult = (context:TContext) => {
   const isParent = context.type !== `step`
   const isStart = context.action === `start`
 
-  if(isParent)
-    return isStart
-      && Logger.stdout(
-        `${spaceMap[context.type] || ``} ${Logger.colors.white(context.description)}\n`
-        )
+  if(isParent) return logParent(context, isStart)
 
-  if(!context.action || context.action === `start`) return
+  if(!context.action || isStart) return
 
-  const prefix = context.status === `passed`
+  const prefix = context.status === ResultStatus.passed
     ? `${spaceMap[context.type] || ``}${Logger.colors.green(`✓`)}`
-    : `${spaceMap[context.type] || ``}❌`
+    : `${spaceMap[context.type] || ``}${Logger.colors.red(`✕`)}`
 
-  const message = context.status === `passed`
+  let message = context.status === ResultStatus.passed
     ? `${prefix} ${Logger.colors.gray(context.description)}\n`
     : `${prefix} ${Logger.colors.red(context.description)}\n`
+
+  context?.failedMessage && 
+    (message += `\n${context?.failedMessage}\n\n`)
 
   Logger.stdout(message)
 
@@ -100,6 +118,44 @@ const getSuiteData = suite => {
     type: type.toLowerCase(),
     description: description.replace(`${type} >`, `${type}:`),
   }
+}
+
+
+const getFailedMessage = (result) => {
+  if(result.status !== ResultStatus.failed) return {}
+  
+  if(!result?.failedExpectations?.length) return {}
+
+  const failed = result?.failedExpectations?.[0]
+  if(!failed || !failed?.message) return {}
+
+  // TODO: add better handling of error message
+  // Include the error.matcherResult data colorized
+  // failed?.error?.matcherResult.actual vs failed?.error?.matcherResult.expected
+
+  // Clean up log output errors from playwright
+  const duplicates = []
+  const startsWith = [
+    `===========================`
+  ]
+
+  return {
+    failedMessage: `${failed.message}`.split(`\n`)
+      .map(line => {
+        const trimmed = line.trim()
+
+        if(!trimmed) return false
+        if(duplicates.includes(line)) return false
+        if(startsWith.find(filter => trimmed.startsWith(filter))) return false
+
+        duplicates.push(line)
+        return `${spaceMap.error}${line}`
+      })
+      .concat([ result?.testPath ? `\n${spaceMap.error}Test Path: ${result.testPath}` : false])
+      .filter(Boolean)
+      .join(`\n`)
+  }
+
 }
 
 export const dispatchEvent = async (
@@ -172,12 +228,14 @@ const buildReporter = () => {
       })
     },
     specDone: result => {
-      if(result.status === 'failed') failedSpecMap[result.testPath] = result
+      if(result.status === ResultStatus.failed)
+        failedSpecMap[result.testPath] = result
 
       return dispatchEvent(`stepEnd`, {
         ...result,
-        type: 'step',
-        action: 'end',
+        type: `step`,
+        action: `end`,
+        ...getFailedMessage(result),
         // @ts-ignore
         testPath: global?.jasmine?.testPath,
       })

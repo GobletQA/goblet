@@ -35,7 +35,8 @@ const buildReporters = (
 
   // TODO: check the goblet config for a custom jest reporter
   // Then add it to the reporters array
-  const reporters = [`default`] as any[]
+  // const reporters = [`default`] as any[]
+  const reporters = [] as any[]
 
   GOBLET_HTML_REPORTER_OUTPUT_PATH &&
     reporters.push([

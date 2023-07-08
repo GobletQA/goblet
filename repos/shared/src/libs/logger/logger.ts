@@ -3,7 +3,7 @@ import type { TLogOpts } from '@GSH/utils/buildLogger'
 // import './stdio'
 import { buildLogger } from '@GSH/utils/buildLogger'
 import { Logger as CliLogger } from '@keg-hub/cli-utils'
-import { setLogs, capitalize, isStr, isColl, exists } from '@keg-hub/jsutils'
+import { identity, setLogs, capitalize, isStr, isColl, exists, toBool } from '@keg-hub/jsutils'
 
 const { GB_SUB_REPO } = process.env
 
@@ -19,6 +19,20 @@ export type TSetupLogger = Omit<TLogOpts, `label`> & {
 let __logger:TWLogger
 let __logLabel:string= GB_SUB_REPO ? `Goblet ${capitalize(GB_SUB_REPO)}` : `Goblet Logger`
 
+
+const getLoggerColors = () => {
+  const { GOBLET_TEST_COLORS=`1` } = process.env
+  const noColors = GOBLET_TEST_COLORS === `0`
+    || (GOBLET_TEST_COLORS || ``).toLowerCase().startsWith(`f`)
+
+  return noColors
+    ? Object.keys(CliLogger.colors).reduce((acc, key) => {
+        acc[key] = identity
+        return acc
+      }, {} as Record<string, (data:any) => any>)
+    : CliLogger.colors
+}
+
 export const setupLogger = ({
   tag,
   label=tag,
@@ -28,7 +42,7 @@ export const setupLogger = ({
 
   __logger = buildLogger({ label: __logLabel, ...opts }) as TWLogger
 
-  if(!__logger.colors) __logger.colors = CliLogger.colors
+  if(!__logger.colors) __logger.colors = getLoggerColors()
 }
 
 const autoInit = () => {
@@ -63,6 +77,7 @@ const loggerWrap = (method:string=`info`) => {
 
 export const Logger = {
   ...CliLogger,
+  colors: getLoggerColors(),
   pair: loggerWrap(`info`),
   highlight: loggerWrap(`info`),
   error: loggerWrap(`error`),
