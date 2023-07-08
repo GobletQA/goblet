@@ -1,5 +1,5 @@
 
-import type { TSymAST, TSymParseOpts, TBrowserEventArgs, TBrowserPage } from '@GSC/types'
+import type { TSymAST, TSymParseOpts } from '@GSC/types'
 import { emptyObj, isStr, emptyArr } from '@keg-hub/jsutils'
 
 //** TODO: fix the symplasm export */

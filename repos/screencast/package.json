@@ -36,6 +36,7 @@
     "sc": "node --enable-source-maps -r esbuild-register dist/sc.js",
     "sc:build": "node --enable-source-maps -r esbuild-register configs/sc.build.config.ts",
     "sc:start": "node --enable-source-maps -r esbuild-register configs/sc.build.config.ts",
+    "sc:kill": "node --enable-source-maps -r esbuild-register scripts/ts/killServer.ts",
     "sock": "node --enable-source-maps -r esbuild-register dist/sock.js",
     "sock:build": "node --enable-source-maps -r esbuild-register configs/sock.build.config.ts",
     "sock:start": "node --enable-source-maps -r esbuild-register configs/sock.build.config.ts",

@@ -71,7 +71,7 @@ export const loopPathArr = ({
   children,
   rootPrefix,
 }:TLoopPathArr) => {
-  let temp: Record<string, TFileItem> = children
+  let temp:Record<string, TFileItem> = children || {}
   paths.forEach((part, index) => {
     temp = handlePart({
       key,
@@ -95,14 +95,15 @@ export const loopBuildTree = ({
 }:TLoopBuildTree) => {
   const RootTree = tree || buildRootDir()
   keys = keys || Object.keys(files)
+  RootTree.children = RootTree?.children || {}
 
   keys.forEach(key => {
     loopPathArr({
       key,
       files,
       rootPrefix,
-      children: RootTree.children,
       paths: key.slice(1).split('/'),
+      children: RootTree?.children,
     })
   })
 

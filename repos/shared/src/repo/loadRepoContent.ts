@@ -9,7 +9,7 @@ import type {
   TDefinitionFileModelList,
 } from '@GSH/types'
 
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSH/libs/logger'
 import { pickKeys, omitKeys } from '@keg-hub/jsutils'
 import { loadFeatures } from '@GSH/libs/features/features'
 import { buildFileTree } from '@GSH/libs/fileSys/fileTree'

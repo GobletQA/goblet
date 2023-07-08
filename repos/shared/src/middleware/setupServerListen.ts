@@ -4,7 +4,7 @@ import fs from 'fs'
 import http from 'http'
 import https from 'https'
 import { getApp } from '@GSH/express/app'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@GSH/libs/logger'
 
 type TCredentials = {
   ca?: string

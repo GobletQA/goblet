@@ -1,3 +1,4 @@
+import type playwright from 'playwright'
 import type {
   TScreenDims,
   TGobletConfig,
@@ -10,23 +11,23 @@ import { getScreenDims } from '@gobletqa/shared/utils/getScreenDims'
 import { parseJsonEnvArr } from '@gobletqa/shared/utils/parseJsonEnvArr'
 import { artifactSaveActive } from '@gobletqa/shared/utils/artifactSaveOption'
 import {
-  toBool,
   isArr,
-  noOpObj,
   isNum,
+  isObj,
+  toBool,
   exists,
-  isObj
+  emptyObj,
 } from '@keg-hub/jsutils'
 
 /**
  * Parses the GOBLET_CONTEXT_GEO env into an object 
  */
 const parseGeo = (value:string) => {
-  if(!exists(value)) return noOpObj
+  if(!exists(value)) return emptyObj
   const {geo} = parseJsonEnvArr('geo', value)
 
   // Only add geo if it's the correct type, and it has a value
-  if(!geo || !isArr(geo) || !geo.length) return noOpObj
+  if(!geo || !isArr(geo) || !geo.length) return emptyObj
 
   // Same order as how it should be entered from the cmd line lat,long,acc
   return [`latitude`, `longitude`, `accuracy`].reduce((acc, key, idx) => {
@@ -61,12 +62,12 @@ const parseRecord = (
 ) => {
   if(!shouldRecordVideo) return opts
 
-  opts.recordVideo = (opts.recordVideo || noOpObj) as TBrowserContextVideo
+  opts.recordVideo = (opts.recordVideo || {}) as TBrowserContextVideo
   opts.recordVideo.size = isObj(screenDims)
     ? !fullScreen
       ? {height: screenDims.height / 2, width: screenDims.width / 2}
       : screenDims
-    : noOpObj as TScreenDims
+    : {} as TScreenDims
 
   // Save videos to the temp dir, and copy them to the repo dir as needed
   // I.E. a test fails
@@ -103,6 +104,7 @@ export const taskEnvToContextOpts = (config:TGobletConfig) => {
   addEnvToOpts(opts, 'acceptDownloads', toBool(GOBLET_CONTEXT_DOWNLOADS))
 
   const screenDims = getScreenDims()
+
   parseRecord(
     config,
     opts,

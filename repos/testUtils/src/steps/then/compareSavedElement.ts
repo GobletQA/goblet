@@ -31,7 +31,7 @@ export const compareElements = async (
   if(!saved[worldProp]) throw new Error(`Saved Element property "${worldProp}" does not exist.`)
 
   const savedVal = await saved[worldProp]()
-  const elementVal = await getLocatorAttribute(selector, prop)
+  const elementVal = await getLocatorAttribute(selector, prop, undefined, ctx)
 
   const [type, order] = typeJoin.split('-')
   order === `world`
@@ -56,7 +56,7 @@ export const compareToWorldValue = async (
 ) => {
   const { world } = ctx
   const savedVal = getWorldData(world, worldPath)
-  const elementVal = await getLocatorAttribute(selector, prop)
+  const elementVal = await getLocatorAttribute(selector, prop, undefined, ctx)
 
   const [type, order] = typeJoin.split('-')
 

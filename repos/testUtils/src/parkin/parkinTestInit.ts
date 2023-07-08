@@ -23,6 +23,8 @@ global.getParkinOptions = () => {
   // Load the both goblet and parkin version
   // Goblet version overrides parkin version
   const {
+    GOBLET_TEST_RETRY,
+    GOBLET_TEST_TIMEOUT,
     PARKIN_FEATURE_NAME,
     PARKIN_FEATURE_TAGS,
     GOBLET_FEATURE_NAME = PARKIN_FEATURE_NAME,
@@ -31,7 +33,9 @@ global.getParkinOptions = () => {
 
   return {
     ...(GOBLET_FEATURE_NAME && { name: GOBLET_FEATURE_NAME }),
-    ...(GOBLET_FEATURE_TAGS && { tags: GOBLET_FEATURE_TAGS }),
+    ...(GOBLET_TEST_TIMEOUT && { timeout: parseInt(GOBLET_TEST_TIMEOUT, 10) || 30000 }),
+    ...(exists(GOBLET_TEST_RETRY) && { retry: parseInt(GOBLET_TEST_RETRY, 10) || 1 }),
+    tags: GOBLET_FEATURE_TAGS ? { filter: GOBLET_FEATURE_TAGS } : {}
   }
 }
 

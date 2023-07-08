@@ -61,7 +61,7 @@ const addIterators = (locators) => {
  */
 export const getLocators = async (selector) => {
   const page = await getPage()
-  const locators = await page.locator(selector)
+  const locators = page.locator(selector)
   if (!locators) throw new Error(`The element with selector "${selector}" could not be found.`)
 
   return locators

@@ -1,4 +1,5 @@
-import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { fileSys } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/shared/libs/logger'
 import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
@@ -105,7 +106,7 @@ export const readTestMeta = async () => {
 export const appendToLatest = async (
   loc:string,
   data:Record<string, any>,
-  commit:boolean
+  commit?:boolean
 ) => {
   if(!isCIEnv) return noOpObj
 

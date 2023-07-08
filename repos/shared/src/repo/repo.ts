@@ -269,8 +269,8 @@ export class Repo {
    *
    */
   setEnvironment = (environment?:string, refreshWld:boolean=true) => {
-    this.environment = environment || process.env.GOBLET_ENV || `develop`
-    if(!process.env.GOBLET_ENV) process.env.GOBLET_ENV = this.environment
+    this.environment = environment || process.env.GOBLET_ENV
+    if(!process.env.GOBLET_ENV && this.environment) process.env.GOBLET_ENV = this.environment
     
     // Pass false to ensure we don't get into an infinite loop
     refreshWld && this.refreshWorld({

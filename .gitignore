@@ -179,3 +179,7 @@ noAuthData.json
 
 .cicada
 .temp
+
+
+tasks/index.js
+.pnpm-*

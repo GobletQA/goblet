@@ -16,7 +16,8 @@
  */
 import type { TGobletConfig } from '../types'
 
-import { Logger } from '@keg-hub/cli-utils'
+
+import { Logger } from '@GSH/libs/logger'
 import { addConfigFileTypes } from './addConfigFileTypes'
 import { loadConfigFromBase } from './loadConfigFromBase'
 import { isStr, noOpObj, deepMerge } from '@keg-hub/jsutils'

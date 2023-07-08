@@ -13,7 +13,7 @@ const saveElToWorld = async (
     throw new Error(`A path on the $world object is required`)
 
   const { world } = ctx
-  return await saveWorldLocator({ selector, world, worldPath })
+  return await saveWorldLocator({ selector, world, worldPath }, ctx)
 }
 
 const autoSaveElToWorld = async (selector:string, ctx:TStepCtx) => {

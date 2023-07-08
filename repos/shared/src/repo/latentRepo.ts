@@ -3,6 +3,7 @@ import type { TEnvObj, TLTLoad, TLTRekey, TFileSaveResp } from '@gobletqa/latent
 
 import { exists } from '@keg-hub/jsutils'
 import { env } from '@keg-hub/parse-config'
+import { injectUnsafe } from '@GSH/utils/safeReplacer'
 import { ELoadFormat, EFileType, Latent } from '@gobletqa/latent'
 
 type TLTLSaveFile = {
@@ -51,6 +52,11 @@ export class LatentRepo {
       ...rest,
       token
     })
+
+    // Inject both the secrets keys and values into the safe replaces
+    // This is to ensure they are not leaked to the logs
+    injectUnsafe(Object.keys(secrets))
+    injectUnsafe(Object.values(secrets))
 
     return secrets
   }

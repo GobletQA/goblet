@@ -19,7 +19,7 @@ export const recordBrowser = async (data:TStartRecording) => {
   const { props, action:method } = action
 
   const [recordOpts, url] = props
-  const browserItems = pwComponents || await startBrowser(browserConf)
+  const browserItems = pwComponents || await startBrowser({ browserConf })
 
   const recorder = Recorder.getInstance(id, {
     onCleanup,

@@ -14,6 +14,9 @@
 * Paths can only allow locations inside the mounted repo
 * Any paths outside of it, are not allowed
 
+* Secrets not reloading after change
+  * When the secrets file is changed, it should reload them when tests are run
+  * This currently does not happen
 
 * Save currently opened file
   * Auto reopen it on reload
@@ -93,3 +96,7 @@ On every page load
 * Add step to reset the browser context
 * Add step to upload video
 * Be able to reuse blocks
+
+* When grabbing a selector from the browser
+  * Validate the selector before setting it in the step to ensure it's not a duplicate that will cause the test to fail
+  * If it is a duplicate, try to regenerate the selector so that it properly passes

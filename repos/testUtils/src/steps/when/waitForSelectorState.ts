@@ -29,7 +29,7 @@ export const waitForSelectorState = async (
   if (!states.includes(state))
     throw new Error('Invalid Selector State: ' + state)
 
-  const element = await getLocator(selector)
+  const element = await getLocator(selector, ctx)
   return await element.waitFor({
     timeout,
     state: `${state}`.trim() as EState,

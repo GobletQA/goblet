@@ -1,8 +1,8 @@
 import type { TError } from '../types'
 import type { Response } from 'express'
 
-import { Logger } from '@keg-hub/cli-utils'
 import { isObj, toNum } from '@keg-hub/jsutils'
+import { Logger } from '@GSH/libs/logger'
 
 
 export const apiErr = (res:Response, err:TError, status:number) => {

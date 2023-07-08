@@ -19,7 +19,7 @@ const onBrowserAutomate = async (
 ) => {
 
   const browserConf = joinBrowserConf(data.browser, app)
-  const pwComponents = await startBrowser(browserConf)
+  const pwComponents = await startBrowser({ browserConf })
 
   switch(data?.selectorType){
     case ExpressionKinds.url: {

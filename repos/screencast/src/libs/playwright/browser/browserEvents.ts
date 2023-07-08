@@ -126,7 +126,7 @@ export class BrowserEvents {
 
 export const browserEvents = async (args:TBrowserEventArgs) => {
   const pwComponents = args.pwComponents
-    || await startBrowser(joinBrowserConf(args.browser))
+    || await startBrowser({ browserConf: joinBrowserConf(args.browserConf) })
 
   const { Automate, ...browserEvts } = Events(args)
 

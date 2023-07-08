@@ -36,7 +36,7 @@ export const getGeneratedName = (
 ) => {
   const testPath = testLoc || (global?.jasmine as unknown as TJasmine)?.testPath
   const testType = type || get(global, `__goblet.options.testType`)
-  const browser = browserName || get(global, `__goblet.browser.options.type`, 'browser')
+  const browser = browserName || get(global, `__goblet.browser.type`, 'browser')
 
   const timestamp = new Date().getTime()
   const name = formatName(testPath)

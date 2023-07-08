@@ -36,9 +36,10 @@ import { DevUserHash, PodAnnotations, ConductorUserHashLabel } from '@GCD/consta
  * Matches the Controller class interface
  */
 export class Kube extends Controller {
-
   kubectl: Kubectl
+  // @ts-ignore
   config: TKubeController
+  // @ts-ignore
   devRouterActive: boolean
   pods: Record<string, TPod>
   containerMaps: Record<string, TContainerMap>={}

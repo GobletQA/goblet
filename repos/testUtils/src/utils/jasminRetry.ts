@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 function retryFailedTests(retries, millisecondsBetweenRetries, setTimeout) {
   const originalSpecConstructor = jasmine.Spec;
 

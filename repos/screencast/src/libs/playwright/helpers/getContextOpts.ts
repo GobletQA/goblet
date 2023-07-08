@@ -1,4 +1,5 @@
 import type { TBrowserContextOpts, TGobletConfig } from '@GSC/types'
+import type playwright from 'playwright'
 
 import { noOpObj, deepMerge } from '@keg-hub/jsutils'
 import { checkVncEnv } from '../../utils/vncActiveEnv'

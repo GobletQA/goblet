@@ -1,4 +1,5 @@
 import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GSC/types'
+import type playwright from 'playwright'
 
 import path from 'path'
 import { checkVncEnv } from '../../utils/vncActiveEnv'
@@ -46,12 +47,16 @@ const options = {
       // `--keep-alive-for-test`
     ],
   } as Partial<TBrowserConf>,
+  ci: {
+    args: [],
+    headless: true,
+  } as Partial<TBrowserConf>,
 }
 
 const getGobletConfigOpts = (config:TGobletConfig) => {
   const {
-    tracesDir = 'artifacts/traces',
-    downloadsDir = 'artifacts/downloads',
+    tracesDir = `artifacts/traces`,
+    downloadsDir = `artifacts/downloads`,
   } = config.paths
 
   const baseDir = getRepoGobletDir(config)
@@ -91,6 +96,11 @@ export const getBrowserOpts = (
     ? options.vnc
     : options.host
 
+  const {
+    args:ciArgs,
+    ...ciConfigModeOpts
+  } = (process.env.GOBLET_RUN_FROM_CI ? options.ci : {}) as Partial<TBrowserConf>
+
   return deepMerge<TBrowserLaunchOpts>(
     /**
      * Gets the default config options from the global goblet.config.js
@@ -100,12 +110,13 @@ export const getBrowserOpts = (
      * Default options set based on the config mode i.e. local || vnc
      */
     configModeOpts,
+    ciConfigModeOpts,
     /**
      * Generated options passed on passed in arguments
      * Allows only setting properties if they actually exist
      */
     {
-      args: flatUnion(configModeArgs, args),
+      args: flatUnion(configModeArgs, ciArgs, args),
       ...(exists(headless) && { headless }),
       ...(exists(channel) && { channel }),
       colorScheme: colorScheme || `no-preference`,

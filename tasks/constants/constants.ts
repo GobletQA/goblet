@@ -1,4 +1,6 @@
+
 import path from 'path'
+import { ETestType } from '../types'
 import { testUtilsDir } from '../paths'
 import { deepFreeze, keyMap } from '@keg-hub/jsutils'
 
@@ -27,17 +29,17 @@ export const Browsers = {
   webkit: `--webkit`,
 }
 
-export const BrowserNames = ['chromium', 'firefox', 'webkit']
+export const BrowserNames = [`chromium`, `firefox`, `webkit`]
 export const JestConfigMap = {
-  unit: path.join(testUtilsDir, `src/jest/jest.unit.config.js`),
-  feature: path.join(testUtilsDir, `src/jest/jest.parkin.config.js`),
-  waypoint: path.join(testUtilsDir, `src/jest/jest.waypoint.config.js`),
+  [ETestType.unit]: path.join(testUtilsDir, `src/jest/jest.unit.config.js`),
+  [ETestType.feature]: path.join(testUtilsDir, `src/jest/jest.parkin.config.js`),
+  [ETestType.waypoint]: path.join(testUtilsDir, `src/jest/jest.waypoint.config.js`),
 }
 export const TestTypes = {
-  unit: `unit`,
-  bdd: `bdd`,
-  feature: `feature`,
-  waypoint: `waypoint`,
+  bdd: ETestType.bdd,
+  unit: ETestType.unit,
+  feature: ETestType.feature,
+  waypoint: ETestType.waypoint,
 }
 
 export const EnvFilter:TEnvFilter = {

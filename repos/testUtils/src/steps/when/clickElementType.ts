@@ -24,7 +24,7 @@ export const clickElementTypeHandler = async (
     ? formatted
     : `${type}${formatted}`
 
-  return await clickElement({ selector: joined, world })
+  return await clickElement({ selector: joined, world }, ctx)
 }
 
 const meta = {

@@ -10,13 +10,13 @@ export const clearTextWithSaved = async (
 ) => {
   const { world } = ctx
   const { selector, element } = getWorldLocator(world)
-  const locator = element || await getLocator(`:focus`)
+  const locator = element || await getLocator(`:focus`, ctx)
  
   return await clearInput({
     world,
     locator,
     selector,
-  })
+  }, ctx)
 }
 
 /**
@@ -30,7 +30,7 @@ export const setTextWithSelector = async (
   return await clearInput({
     world,
     selector,
-  })
+  }, ctx)
 }
 
 const meta = {

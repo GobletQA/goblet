@@ -8,7 +8,7 @@ import { getLocator, getPage } from '@GTU/Playwright'
  */
 export const generalAction = async (action:string, selector:string, ctx:TStepCtx) => {
   const page = await getPage()
-  await getLocator(selector)
+  await getLocator(selector, ctx)
   return page[action](selector, { force: true })
 }
 

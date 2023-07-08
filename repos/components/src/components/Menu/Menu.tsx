@@ -97,6 +97,9 @@ export const Menu = (props:TMenu) => {
       <MuiMenu
         {...rest}
         {...pos}
+        // TODO: test these, they may be causing the issues with focus fighting
+        // autoFocus={false}
+        // disableAutoFocusItem={true}
         onClose={onMuiClose}
         anchorEl={anchorRef.current}
         open={

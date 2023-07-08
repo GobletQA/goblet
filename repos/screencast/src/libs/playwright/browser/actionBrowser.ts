@@ -9,7 +9,7 @@ import type {
 } from '@GSC/types'
 
 import { Repo } from '@gobletqa/shared/repo'
-import { startBrowser } from './browser'
+import { startBrowser }  from './browser'
 import { recordBrowser } from './recordBrowser'
 import { isArr, isStr, isFunc, noPropArr } from '@keg-hub/jsutils'
 import {setBrowserDefaults} from './setBrowserDefaults'
@@ -94,7 +94,7 @@ export const actionBrowser = async (
   repo?:Repo
 ) => {
   const { ref = 'browser', actions = noPropArr, id, onRecordEvent } = args
-  const pwComponents = await startBrowser(browserConf)
+  const pwComponents = await startBrowser({ browserConf })
   repo
     && await setBrowserDefaults({
         repo,

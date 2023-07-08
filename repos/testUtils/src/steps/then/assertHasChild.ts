@@ -3,6 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { Then } from '@GTU/Parkin'
 import { getLocator, getPage } from '@GTU/Playwright'
 import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import {getStepTimeout} from '@GTU/Support'
 
 /**
  * Checks that the parent element contains the child element
@@ -12,9 +13,9 @@ export const assertElementChild = async (
   childSelector:string,
   ctx:TStepCtx
 ) => {
-  const timeout = ctx?.options?.timeout || 15000
 
-  const child = await getLocator(childSelector)
+  const timeout = getStepTimeout(ctx)
+  const child = await getLocator(childSelector, ctx)
 
   const page = await getPage()
   const parent = page.locator(parentSelector).filter({ has: child });

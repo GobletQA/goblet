@@ -14,7 +14,7 @@ import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
  */
 export const browserStart:RequestHandler = asyncWrap(async (req:Request, res:Response) => {
   const { query } = req
-  const { status } = await startBrowser(joinBrowserConf(query))
+  const { status } = await startBrowser({ browserConf: joinBrowserConf(query) })
 
   return apiRes(res, status, 200)
 })

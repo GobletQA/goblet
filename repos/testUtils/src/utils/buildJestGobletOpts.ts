@@ -43,7 +43,7 @@ const buildArtifactsPaths = (
 export const buildJestGobletOpts = (
   config:TGobletConfig,
   browserOpts:TBrowserConf,
-  contextOpts:TBrowserContextOpts
+  contextOpts?:TBrowserContextOpts
 ) => {
   const {
     GOBLET_TEST_TYPE,

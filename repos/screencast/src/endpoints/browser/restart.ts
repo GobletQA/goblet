@@ -17,7 +17,10 @@ const browserRestart:RequestHandler = asyncWrap(async (req:Request, res:Response
 
   const { context } = await getPWComponents(browserConf)
   context && await context.close()
-  const { status } = await startBrowser(browserConf, false, false, body)
+  const { status } = await startBrowser({
+    browserConf,
+    overrides: body
+  })
   
   // Add command to reload supervisorctl for vnc
   // But first update the following envs:

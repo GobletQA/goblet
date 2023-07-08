@@ -83,7 +83,7 @@ export const loadFiles = (
     return deepFreeze(loaded)
   }
   catch(err){
-    console.log(`[Environment Error] Error loading ${type}s file`)
+    console.log(`[Environment Error] Error loading ${type} file`)
     console.log(err)
 
     return deepFreeze(existing)

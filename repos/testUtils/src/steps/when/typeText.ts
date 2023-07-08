@@ -12,14 +12,14 @@ export const typeWithSaved = async (
 ) => {
   const { world } = ctx
   const { selector, element } = getWorldLocator(world)
-  const locator = element || await getLocator(`:focus`)
+  const locator = element || await getLocator(`:focus`, ctx)
  
   return await typeInput({
     text,
     world,
     locator,
     selector,
-  })
+  }, ctx)
 }
 
 /**
@@ -35,7 +35,7 @@ export const typeWithSelector = async (
     text,
     world,
     selector,
-  })
+  }, ctx)
 }
 
 const meta = {

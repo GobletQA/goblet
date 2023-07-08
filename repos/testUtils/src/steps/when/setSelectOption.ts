@@ -19,7 +19,7 @@ export const setSelectOption = async (
 
   // Defaults to use label if no 'by' key exists
   const options = data.split(',').map(value => ({ [key]: value }))
-  const element = await saveWorldLocator({ selector, world })
+  const element = await saveWorldLocator({ selector, world }, ctx)
   const resp = await element.selectOption(options)
 
   await saveWorldData({ options }, world)

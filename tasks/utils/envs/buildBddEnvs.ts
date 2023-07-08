@@ -1,6 +1,9 @@
-const { addEnv } = require('./addEnv')
-const { buildPWEnvs } = require('./buildPWEnvs')
-const { buildJestTestEnvs } = require('../jest/buildJestTestEnvs')
+import type { TTaskParams, EBrowserType } from '../../types'
+
+import { addEnv } from './addEnv'
+import { ETestType } from '../../types'
+import { buildPWEnvs } from './buildPWEnvs'
+import { buildJestTestEnvs } from '../jest/buildJestTestEnvs'
 
 /**
  * Builds the envs set in the command that runs a test
@@ -11,7 +14,12 @@ const { buildJestTestEnvs } = require('../jest/buildJestTestEnvs')
  *
  * @return {Object} dockerCmd options object, with envs
  */
-const buildBddEnvs = (browser, params, reportPath, type='feature') => {
+export const buildBddEnvs = (
+  browser:EBrowserType,
+  params:TTaskParams,
+  reportPath:string,
+  type:ETestType=ETestType.feature
+) => {
   // Add the default playwright envs
   const env = buildPWEnvs({}, browser, params)
 
@@ -25,9 +33,5 @@ const buildBddEnvs = (browser, params, reportPath, type='feature') => {
   // Set up html test reporting ENV for jest
   buildJestTestEnvs(browser, env, params.context, reportPath, type)
 
-  return {env}
-}
-
-module.exports = {
-  buildBddEnvs,
+  return { env }
 }

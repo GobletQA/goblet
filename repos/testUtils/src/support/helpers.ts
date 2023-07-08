@@ -1,9 +1,10 @@
 import type { TWorldConfig } from '@ltipton/parkin'
-import type { TLocator, TBrowserPage } from '@GTU/Types'
+import type { TStepCtx, TLocator, TBrowserPage } from '@GTU/Types'
 
-import { Logger } from '@keg-hub/cli-utils'
-import { get, set, unset, emptyObj } from '@keg-hub/jsutils'
+
+import { Logger } from '@gobletqa/shared/libs/logger'
 import { getPage, getLocator } from '@GTU/Playwright'
+import { get, set, unset, emptyObj, isNum } from '@keg-hub/jsutils'
 import {
   SavedDataWorldPath,
   SavedLocatorWorldPath,
@@ -29,6 +30,11 @@ type TSaveWorldLocator = {
   worldPath?:string
   element?:TLocator
   world:TWorldConfig
+}
+
+type TWaitFor = boolean | {
+  timeout:number
+  state:`visible` | `attached` | `detached` | `hidden`
 }
 
 const checkTypes = {
@@ -153,14 +159,14 @@ export const saveWorldData = (
  * And registers it as the current ancestor
  *
  */
-export const saveWorldLocator = async (props:TSaveWorldLocator) => {
+export const saveWorldLocator = async (props:TSaveWorldLocator, ctx?:TStepCtx) => {
   const {
     world,
     selector,
     worldPath
   } = props
 
-  const element = props.element || await getLocator(selector)
+  const element = props.element || await getLocator(selector, ctx)
   const cleaned = worldPath
     ? cleanWorldPath(worldPath)
     : AutoSavedLocatorWorldPath
@@ -243,9 +249,10 @@ export const compareValues = (
 export const callLocatorMethod = async (
   selector:string,
   prop:string,
-  locator?:TLocator
+  locator?:TLocator,
+  ctx?:TStepCtx
 ) => {
-  const element = locator || await getLocator(selector)
+  const element = locator || await getLocator(selector, ctx)
   if(!element[prop])
     throw new Error(`Selected Element ${selector} missing prop method "${prop}".`)
 
@@ -255,17 +262,19 @@ export const callLocatorMethod = async (
 export const getLocatorAttribute = async (
   selector:string,
   attr:string,
-  locator?:Record<string, any>
+  locator?:Record<string, any>,
+  ctx?:TStepCtx
 ) => {
-  const element = locator || await getLocator(selector)
+  const element = locator || await getLocator(selector, ctx)
   return await element.getAttribute(attr)
 }
 
 export const getLocatorProps = async (
   selector:string,
-  locator?:TLocator
+  locator?:TLocator,
+  ctx?:TStepCtx
 ) => {
-  const element = locator || await getLocator(selector)
+  const element = locator || await getLocator(selector, ctx)
 
   // TODO: Add more properties to the returned object
   return await element.evaluate(elm => {
@@ -314,18 +323,20 @@ export const getLocatorProps = async (
 
 export const getLocatorTagName = async (
   selector:string,
-  locator?:TLocator
+  locator?:TLocator,
+  ctx?:TStepCtx
 ) => {
-  const element = locator || await getLocator(selector)
+  const element = locator || await getLocator(selector, ctx)
   return await element.evaluate((el:HTMLElement) => el.tagName)
 }
 
 export const getLocatorContent = async (
   selector:string,
-  locator?:TLocator
+  locator?:TLocator,
+  ctx?:TStepCtx
 ) => {
-  const element = locator || await getLocator(selector)
-  const tagName = await getLocatorTagName(selector, element)
+  const element = locator || await getLocator(selector, ctx)
+  const tagName = await getLocatorTagName(selector, element, ctx)
 
   return tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT'
     ? await element.inputValue()
@@ -339,6 +350,7 @@ export const getLocatorContent = async (
  */
 export const clickElement = async ({
   page,
+  save,
   world,
   locator,
   selector,
@@ -346,12 +358,11 @@ export const clickElement = async ({
   // We call saveWorldData, but we save to the auto-save location path
   // This way we can reuse the locator we already have
   worldPath=AutoSavedLocatorWorldPath,
-  save=true,
-}:TClickEl) => {
+}:TClickEl, ctx?:TStepCtx, waitFor?:TWaitFor) => {
   page = page || await getPage()
   // Actionability checks (Auto-Waiting) seem to fail in headless mode
   // So we use locator.waitFor to ensure the element exist on the dom
-  locator = locator || await getLocator(selector)
+  locator = locator || await getLocator(selector, ctx, waitFor)
 
   // Then pass {force: true} options to locator.click because we know it exists
   await page.click(selector, {
@@ -369,9 +380,9 @@ export const clickElement = async ({
  * Finds an input from selector or locator, then fills it with the text
  *
  */
-export const fillInput = async (props:TFillInput) => {
+export const fillInput = async (props:TFillInput, ctx?:TStepCtx) => {
   const { text } = props
-  const { page, locator } = await clickElement(props)
+  const { page, locator } = await clickElement(props, ctx)
 
   //clear value before setting otherwise data is appended to end of existing value
   await locator.fill('')
@@ -384,8 +395,8 @@ export const fillInput = async (props:TFillInput) => {
  * Finds an input from selector or locator, then fills it with the text
  *
  */
-export const clearInput = async (props:TClickEl) => {
-  const { page, locator } = await clickElement(props)
+export const clearInput = async (props:TClickEl, ctx?:TStepCtx) => {
+  const { page, locator } = await clickElement(props, ctx)
 
   // clear value of the input
   await locator.fill('')
@@ -398,13 +409,29 @@ export const clearInput = async (props:TClickEl) => {
  * Finds an input from selector or locator, then types in the text
  *
  */
-export const typeInput = async (props:TFillInput) => {
+export const typeInput = async (props:TFillInput, ctx?:TStepCtx) => {
   const { text } = props
-  const { page, locator } = await clickElement(props)
+  const { page, locator } = await clickElement(props, ctx)
 
   //clear value before setting otherwise data is appended to end of existing value
   await locator.type('')
   await locator.type(text)
 
   return { page, locator }
+}
+
+
+/**
+ * Gets the configured timeout for a step based on the possible timeout locations
+ */
+export const getStepTimeout = (ctx?:TStepCtx) => {
+  const globalTimeout = global?.getParkinOptions?.()?.timeout
+
+  const timeout = ctx?.options?.timeout
+    || process.env.GOBLET_TEST_TIMEOUT
+    || global.__goblet?.browser?.timeout
+    || globalTimeout
+    || 30000
+
+  return isNum(timeout) ? timeout : parseInt(timeout)
 }
