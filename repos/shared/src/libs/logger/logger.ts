@@ -1,6 +1,6 @@
 import type { TLogOpts } from '@GSH/utils/buildLogger'
 
-// import './stdio'
+import './stdio'
 import { buildLogger } from '@GSH/utils/buildLogger'
 import { Logger as CliLogger } from '@keg-hub/cli-utils'
 import { identity, setLogs, capitalize, isStr, isColl, exists, toBool } from '@keg-hub/jsutils'
