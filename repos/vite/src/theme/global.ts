@@ -58,5 +58,10 @@ export const globalStyles = ({ theme }:TGlobalStyles) => {
     ${decorators}
     ${layout()}
 
+
+  // .Mui-focusVisible: {
+  //   outline: 2px solid #000
+  // }
+
   `
 }

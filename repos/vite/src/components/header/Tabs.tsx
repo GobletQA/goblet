@@ -79,6 +79,9 @@ const MobileTabs = (props:TTabsProps) => {
       <Menu
         id="menu-appbar"
         anchorEl={anchorEl}
+        // TODO: test these, they may be causing the issues with focus fighting
+        // autoFocus={false}
+        // disableAutoFocusItem={true}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',

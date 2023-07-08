@@ -5,10 +5,8 @@ import { useState, useRef } from 'react'
 import { ESectionType, ESectionExt }  from '@GBR/types'
 import {
   Menu,
-  MenuIcon,
-  MenuToggle,
   useInline,
-  IconButton,
+  MenuToggle,
 } from '@gobletqa/components'
 
 
