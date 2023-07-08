@@ -39,7 +39,6 @@ RUN apt-get update && \
 
 WORKDIR /github/app
 COPY --from=goblet-code /goblet/app /github/app
-COPY  ./tasks /github/app/tasks
 
 RUN mkdir -p $(dirname "${DEBUG_FILE}") && \
     ln -s /github /goblet && \
