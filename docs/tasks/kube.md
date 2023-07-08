@@ -11,6 +11,19 @@
 * Description: Run tasks related to kubernetes and helm
 * Example `pnpm kube ingress`
 
+
+### Context / Namespace
+* Ensure the correct context and namespace are set
+* Local
+  * Context:  `docker-desktop`
+  * Namespace: `gb-local`
+  * Cmd: `kubectl config set-context docker-desktop --namespace gb-local`
+* Prod
+  * Context:  `<*>`
+  * Namespace: `gb-production`
+  * Cmd: `kubectl config set-context --current --namespace gb-production`
+
+
 ### Auth
 
 * Cmd: `pnpm kube secret auth  <options>`

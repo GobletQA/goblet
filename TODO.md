@@ -14,6 +14,9 @@
 * Paths can only allow locations inside the mounted repo
 * Any paths outside of it, are not allowed
 
+* Secrets not reloading after change
+  * When the secrets file is changed, it should reload them when tests are run
+  * This currently does not happen
 
 * Save currently opened file
   * Auto reopen it on reload
