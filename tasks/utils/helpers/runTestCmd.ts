@@ -134,6 +134,7 @@ export const runTestCmd = async (args:TRunTestCmd) => {
 
   let reportPaths = []
   const browsers = getBrowsers(params)
+
   const commands = browsers.map((browser) => {
       const reportPath = buildReportPath(
         type,
@@ -147,9 +148,9 @@ export const runTestCmd = async (args:TRunTestCmd) => {
         type,
         goblet,
         params,
-        cmdArgs,
         browser,
         reportPath,
+        cmdArgs: [...cmdArgs],
         cmdOpts: envsHelper(browser, reportPath),
       })
     }
