@@ -1,11 +1,12 @@
+import type { TGobletConfig } from '../types'
 import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
 
 import os from "os"
 import path from 'path'
 import { Logger } from '@keg-hub/cli-utils'
 import { jestAliases } from './setupTestAliases'
-import { noOpObj, noPropArr, capitalize } from '@keg-hub/jsutils'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
+import { noPropArr, capitalize, emptyObj, flatUnion, ensureArr } from '@keg-hub/jsutils'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
 
 export type TJestConfOpts = TTestMatch & {
@@ -24,8 +25,8 @@ export type TJestConfOpts = TTestMatch & {
  * @returns {Array} - Built reporters array
  */
 const buildReporters = (
-  opts:TJestConfOpts=noOpObj,
-  gobletRoot:string,
+  opts:TJestConfOpts=emptyObj,
+  gobletRoot:string
 ) => {
   const {
     GOBLET_HTML_REPORTER_PAGE_TITLE,
@@ -66,7 +67,7 @@ const buildReporters = (
  * 
  * @returns {Object} - Jest config object
  */
-export const jestConfig = (config, opts:TJestConfOpts=noOpObj) => {
+export const jestConfig = (config:TGobletConfig, opts:TJestConfOpts=emptyObj) => {
   const {
     GOBLET_CONFIG_BASE,
     GOBLET_MOUNT_ROOT,
@@ -78,44 +79,56 @@ export const jestConfig = (config, opts:TJestConfOpts=noOpObj) => {
 
   config = config || getGobletConfig()
   const { gobletRoot } = config.internalPaths
+  const jestConfig = config?.jestConfig || emptyObj
 
   const testMatch = opts.testDir && (opts.type || opts.shortcut || opts.ext)
     ? buildTestMatchFiles(opts.testDir, opts)
     : noPropArr
 
   return {
+    // TODO: investigate a better way of closing the browsers when tests finish
+    // Right now, browsers are left open, and depend on forceExit and detectOpenHandles to close them
+    forceExit: true,
+    detectOpenHandles: true,
+    ...jestConfig,
     testMatch,
     // TODO: investigate using jest-circus at some point
     testRunner: `jest-jasmine2`,
+    // Jest no loading tests outside of the rootDir
+    // Set the root to be the parent of goblet/app and the goblet/repos dir if no rootDir override
+    rootDir: jestConfig?.rootDir || opts.rootDir || GOBLET_MOUNT_ROOT || `/goblet`,
     reporters: buildReporters(opts, gobletRoot),
-    moduleFileExtensions: [
+    moduleFileExtensions: flatUnion([
+      ...ensureArr(jestConfig?.moduleFileExtensions),
       `js`,
       `jsx`,
       `cjs`,
       `mjs`,
       `json`,
       `ts`,
-      `tsx`
-    ],
+      `tsx`,
+    ]),
     // This seems to be needed based on how the github action is setup
     // But it may be a better option then sym-linking the keg-config node_modules to ~/.node_modules
     // Need to investigate it
-    modulePaths: [
+    modulePaths: flatUnion([
       path.join(GOBLET_CONFIG_BASE, `node_modules`),
       path.join(gobletRoot, `node_modules`),
-      path.join(os.homedir(), `.node_modules`)
-    ],
-    moduleNameMapper: jestAliases,
+      path.join(os.homedir(), `.node_modules`),
+      ...ensureArr(jestConfig.modulePaths),
+    ]),
+    moduleNameMapper: {
+      ...jestAliases,
+      ...jestConfig?.moduleNameMapper,
+    },
     globals: {
       __DEV__: true,
+      ...jestConfig?.globals,
     },
-    // Jest no loading tests outside of the rootDir
-    // So set the root to be the parent of keg-config and the repos dir
-    // If no rootDir override is set
-    rootDir: opts.rootDir || GOBLET_MOUNT_ROOT || `/goblet`,
     transform: {
       '\\.[jt]sx?$': ['esbuild-jest', { sourcemap: true }],
       '\\.(js|jsx|mjs|cjs|ts|tsx)?$': [`esbuild-jest`, { sourcemap: true }],
+      ...jestConfig?.transform,
     },
   }
 }

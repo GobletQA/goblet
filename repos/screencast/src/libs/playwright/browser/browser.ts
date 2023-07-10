@@ -117,7 +117,6 @@ getPage.creatingPage = false
 
 /**
  * Returns the cached Playwright context
- * Only used by testUtils
  *
  * @function
  */

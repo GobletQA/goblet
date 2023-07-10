@@ -351,6 +351,18 @@ const taskOptions = {
     timezone: {
       example: `--timezone America/Los_Angeles`,
       description: `Emulate running the browser in a specific timezone`
+    },
+    reuseContext: {
+      type: `bool`,
+      example: `--reuseContext`,
+      env: `GOBLET_CONTEXT_REUSE`,
+      description: `Reuse the same context for each test`
+    },
+    reusePage: {
+      type: `bool`,
+      example: `--reusePage`,
+      env: `GOBLET_PAGE_REUSE`,
+      description: `Reuse the same page for each test`
     }
   },
   waypoint: {

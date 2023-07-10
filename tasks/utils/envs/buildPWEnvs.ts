@@ -32,8 +32,10 @@ export const buildPWEnvs = (
 
   // Playwright browser ENVs
   addEnv(env, 'GOBLET_BROWSER', browser)
-  addEnv(env, 'GOBLET_BROWSER_SLOW_MO', params.slowMo)
   addEnv(env, 'GOBLET_HEADLESS', params.headless)
+  addEnv(env, 'GOBLET_PAGE_REUSE', params.reusePage)
+  addEnv(env, 'GOBLET_BROWSER_SLOW_MO', params.slowMo)
+  addEnv(env, 'GOBLET_CONTEXT_REUSE', params.reuseContext)
   addEnv(env, 'GOBLET_BROWSER_TIMEOUT', params.browserTimeout)
   addEnv(env, 'GOBLET_BROWSER_DEVICES', params.devices, JSON.stringify(params.devices))
 
