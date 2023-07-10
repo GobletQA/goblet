@@ -5,7 +5,7 @@ import { jestConfig } from './jest.default.config'
 
 import path from 'path'
 import glob from 'glob'
-import { uniqArr, noOpObj } from '@keg-hub/jsutils'
+import { uniqArr, noOpObj, flatUnion, ensureArr } from '@keg-hub/jsutils'
 import { buildJestGobletOpts } from '@GTU/Utils/buildJestGobletOpts'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
@@ -43,7 +43,7 @@ const getStepDefinitions = (config:TGobletConfig) => {
 
 /**
  * Gets all file paths for bdd support files
- * @param {Object} config - Global Goblet config
+ * @param {TGobletConfig} config - Global Goblet config
  *
  * @return {Array<string>} file paths
  */
@@ -118,10 +118,11 @@ export const parkinConfig =  async () => {
       },
     },
     /** Add all support and step files and ensure they are loaded before running the tests */
-    setupFilesAfterEnv: [
+    setupFilesAfterEnv: flatUnion([
+      ...ensureArr(defConf.setupFilesAfterEnv),
       ...getParkinSupport(config),
       ...getStepDefinitions(config),
-    ],
+    ]),
     /** Add the custom Parkin transformer for all found .feature files */
     transform: {
       ...defConf.transform,

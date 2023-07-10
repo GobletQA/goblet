@@ -6,7 +6,7 @@ import type {
 } from '@GTU/Types'
 
 import path from 'path'
-import { toBool } from '@keg-hub/jsutils'
+import { exists, toBool } from '@keg-hub/jsutils'
 import { ARTIFACT_TYPES } from '@gobletqa/shared/constants'
 import { canRecordVideo } from '@gobletqa/screencast/constants'
 import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
@@ -47,22 +47,30 @@ export const buildJestGobletOpts = (
 ) => {
   const {
     GOBLET_TEST_TYPE,
+    GOBLET_TEST_RETRY,
     GOBLET_TEST_REPORT,
     GOBLET_TEST_TRACING,
+    GOBLET_TEST_TIMEOUT,
     GOBLET_TEST_VIDEO_RECORD,
     // TODO: add cli options for these,
     // Currently can be set by ENV only
+    GOBLET_PAGE_REUSE, // PW_TEST_REUSE_PAGE
+    GOBLET_CONTEXT_REUSE, // PW_TEST_REUSE_CONTEXT
     GOBLET_TEST_TRACING_SNAPSHOTS=true,
     GOBLET_TEST_TRACING_SCREENSHOTS=true
   } = process.env
 
   const options:TGobletTestOpts = {
+    reusePage: toBool(GOBLET_PAGE_REUSE),
+    reuseContext: toBool(GOBLET_CONTEXT_REUSE),
     saveTrace: artifactSaveOption(GOBLET_TEST_TRACING),
     saveReport: artifactSaveOption(GOBLET_TEST_REPORT),
     // Only chromium can record video so only turn it on for that browser
     // Should be able to record on others, but not currently working
     saveVideo: canRecordVideo.includes(browserOpts.type) &&
       artifactSaveOption(GOBLET_TEST_VIDEO_RECORD),
+    ...(GOBLET_TEST_TIMEOUT && { timeout: parseInt(GOBLET_TEST_TIMEOUT, 10) || 30000 }),
+    ...(exists(GOBLET_TEST_RETRY) && { retry: parseInt(GOBLET_TEST_RETRY, 10) || 1 }),
   }
 
   if(GOBLET_TEST_TYPE) options.testType = GOBLET_TEST_TYPE

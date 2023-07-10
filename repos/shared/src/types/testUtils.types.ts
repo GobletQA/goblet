@@ -8,6 +8,8 @@ export type TGobletTestTracingOpts = {
 }
 
 export type TGobletTestOpts = {
+  retry?:number
+  timeout?:number
   tracesDir?:string
   videosDir?:string
   downloads?:string
@@ -17,4 +19,6 @@ export type TGobletTestOpts = {
   saveVideo?:TGobletTestArtifactOption
   saveTrace?:TGobletTestArtifactOption
   saveReport?:TGobletTestArtifactOption
+  reusePage?:boolean
+  reuseContext?:boolean
 }

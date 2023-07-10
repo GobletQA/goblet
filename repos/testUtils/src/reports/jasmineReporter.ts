@@ -1,5 +1,5 @@
 import { Logger } from '@gobletqa/shared/libs/logger'
-import { noOp, get, noPropArr, isFunc, isStr } from '@keg-hub/jsutils'
+import { noOp, get, noPropArr, isFunc, isStr, capitalize } from '@keg-hub/jsutils'
 
 type TEvtCB = { name?:string } & ((...args:any[]) => void)
 type TContext = Record<any, any>
@@ -15,6 +15,7 @@ const ResultStatus = {
 }
 
 const spaceMap = {
+  browser: ` `,
   feature: `  `,
   scenario: `    `,
   background: `    `,
@@ -55,11 +56,14 @@ const logParent = (context:TContext, isStart:boolean) => {
   const isFeature = context.type === `feature`
   
   if(isStart){
-    isFeature && Logger.stdout(`\n`)
-  
-    return Logger.stdout(
-      `${spaceMap[context.type] || ``} ${Logger.colors.white(context.description)}\n`
-      )
+    if(isFeature){
+      const browserType = (global?.__goblet?.browser?.type || process.env.GOBLET_BROWSER)
+        browserType
+          ? Logger.stdout(`\n${spaceMap.browser}Browser: ${Logger.colors.brightCyan(capitalize(browserType))}\n`)
+          : Logger.empty()
+    }
+
+    return Logger.stdout(`${spaceMap[context.type] || ``} ${Logger.colors.white(context.description)}\n`)
   }
 
   return isFeature && Logger.stdout(`\n`)
@@ -68,7 +72,7 @@ const logParent = (context:TContext, isStart:boolean) => {
 /**
  * Helper to log test execution status as it happends
  */
-const logResult = (context:TContext) => {
+const logResult = (context:TContext, hasStepErr?:boolean) => {
 
   const isParent = context.type !== `step`
   const isStart = context.action === `start`
@@ -77,13 +81,17 @@ const logResult = (context:TContext) => {
 
   if(!context.action || isStart) return
 
-  const prefix = context.status === ResultStatus.passed
-    ? `${spaceMap[context.type] || ``}${Logger.colors.green(`✓`)}`
-    : `${spaceMap[context.type] || ``}${Logger.colors.red(`✕`)}`
+  const prefix = hasStepErr
+    ? `${spaceMap[context.type] || ``}${Logger.colors.yellow(`○`)}`
+    : context.status === ResultStatus.passed
+      ? `${spaceMap[context.type] || ``}${Logger.colors.green(`✓`)}`
+      : `${spaceMap[context.type] || ``}${Logger.colors.red(`✕`)}`
 
-  let message = context.status === ResultStatus.passed
-    ? `${prefix} ${Logger.colors.gray(context.description)}\n`
-    : `${prefix} ${Logger.colors.red(context.description)}\n`
+  let message = hasStepErr
+    ? `${prefix} ${Logger.colors.yellow(context.description)}\n`
+    : context.status === ResultStatus.passed
+      ? `${prefix} ${Logger.colors.gray(context.description)}\n`
+      : `${prefix} ${Logger.colors.red(context.description)}\n`
 
   context?.failedMessage && 
     (message += `\n${context?.failedMessage}\n\n`)
@@ -160,9 +168,10 @@ const getFailedMessage = (result) => {
 
 export const dispatchEvent = async (
   event:string,
-  data:Record<string, any>
+  data:Record<string, any>,
+  hasStepErr?:boolean
 ) => {
-  logResult(data)
+  logResult(data, hasStepErr)
   const callbacks = eventMap[event] || noPropArr
   return await Promise.all(callbacks.map(cb => cb(data)))
 }
@@ -207,6 +216,8 @@ export const getTestResult = (testPath) => {
  */
 const buildReporter = () => {
 
+  let hasStepErr:boolean
+
   return {
     suiteStarted: suite => {
       const data = getSuiteData(suite)
@@ -228,17 +239,22 @@ const buildReporter = () => {
       })
     },
     specDone: result => {
-      if(result.status === ResultStatus.failed)
-        failedSpecMap[result.testPath] = result
+      const specFailed = result.status === ResultStatus.failed
+      if(specFailed) failedSpecMap[result.testPath] = result
 
-      return dispatchEvent(`stepEnd`, {
+      const resp = dispatchEvent(`stepEnd`, {
         ...result,
         type: `step`,
         action: `end`,
         ...getFailedMessage(result),
         // @ts-ignore
         testPath: global?.jasmine?.testPath,
-      })
+      }, hasStepErr)
+      
+      // Set hasStepErr after reporting the step that failed
+      if(specFailed) hasStepErr = true
+      
+      return resp
     },
     suiteDone: suite => {
       const data = getSuiteData(suite)
@@ -249,8 +265,21 @@ const buildReporter = () => {
         // @ts-ignore
         testPath: global?.jasmine?.testPath,
       })
-    }
+    },
+    /**
+     * Unfortunately this runs after every test file
+     * Need a hook that runs at the end of all tests files
+     */
+    // jasmineDone: async (result) => {
+    //   if(!global.browser)
+    //     return process.stdout.write(`Skipping close browser; browser could not be found!\n`)
+
+    //   const browserType = capitalize(global?.__goblet?.browser?.type || process.env.GOBLET_BROWSER || ``)
+    //   process.stdout.write(`Closing ${browserType || `browser`}...\n`)
+    //   return await global.browser.close()
+    // }
   }
+
 }
 
 /**
