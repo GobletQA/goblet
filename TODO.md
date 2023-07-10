@@ -49,16 +49,12 @@
 * Fix bug with race decorators
   * Rules seem to fail when running
     * Looks to be related to the decorators issues
-  * Needs an update to Parkin to keep a consistent uuid for feature items
-  * Needs to pass on feature test meta data
-    * This is mostly done, but needs to be published
+  * Steps not getting the correct decorator
+  * Steps with same step text cause decorator to only use the first step
 
-
-* Fix formatting when saving world.json file
 * Add cover over browser
   * Must intentionally click the browser to interact with it
   * Add message hover over the 
-* Add ability to bypass world passing when passing a feature file
 
 
 ## To Investigate
@@ -66,9 +62,6 @@
   * Need to be able to record camera and audio
   * Most likely need sometime of emulator that runs on ubuntu
     * The browser would then talk to those instead
-
-* Run Test from specific Step 
-  * Expect browser to already be in correct state for step to pass
 
 * Figure out why recording events is not propagating
 * Figure out how to add an empty 
@@ -92,7 +85,6 @@ On every page load
 * Add better descriptions to step meta-data
 * Add step to set the sizes of the browser
   * Works in tandem with the move mouse to x-y position
-* Add step to track the state of a video on the page
 * Add step to reset the browser context
 * Add step to upload video
 * Be able to reuse blocks
