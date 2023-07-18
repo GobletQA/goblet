@@ -1,6 +1,7 @@
 import { AuthActive } from '@constants'
 import { GitUser } from '@services/gitUser'
 // import { account } from '@services/appwrite'
+import { authApi } from '@services/authApi'
 import { emptyObj } from '@keg-hub/jsutils'
 import { signInModal } from '@actions/modals/modals'
 import { localStorage } from '@services/localStorage'
@@ -29,8 +30,11 @@ export type TSignOutOpts = {
 export const signOutAuthUser = async (opts:TSignOutOpts=emptyObj) => {
   if(!AuthActive) return
 
-  // Log-out the github user
+  // cache the current user, so we can access them later
   const currentUser = GitUser.getUser()
+
+  // Ensure the auto token refresh timer is removed
+  authApi.clearRefreshTimer()
 
   if(opts.repo !== false){
     try { await disconnectRepo(currentUser?.username, false) }

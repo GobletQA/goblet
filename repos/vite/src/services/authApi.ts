@@ -1,12 +1,15 @@
 import type { TFormattedUser, TRouteMeta, TUserState, TValidateResp } from '@types'
 
 import { HttpMethods } from '@constants'
-import { getUserToken } from './providers'
+import {
+  getUserToken,
+  autoRefreshUserToken
+} from './providers'
 import { GitUser } from '@services/gitUser'
 import { apiRequest } from '@utils/api/apiRequest'
-import {validateResp} from '@utils/api/validateResp'
-import { emptyObj, omitKeys } from '@keg-hub/jsutils'
 import { localStorage } from '@services/localStorage'
+import { emptyObj, omitKeys } from '@keg-hub/jsutils'
+import { validateResp } from '@utils/api/validateResp'
 import { Exception } from '@gobletqa/shared/exceptions/Exception'
 
 export type TAddClaimsRep = {
@@ -14,12 +17,26 @@ export type TAddClaimsRep = {
   refresh?:string
 }
 
+export type TValidateUserReq = TFormattedUser & {
+  pat?:string,
+  refresh?:boolean
+}
+
 export class AuthApi {
 
   authPath = `/auth`
+  refreshTimer?:NodeJS.Timer
 
-  validate = async (params:TFormattedUser & { pat?:string }) => {
-    const idToken = await getUserToken()
+  clearRefreshTimer = () => {
+    if(!this.refreshTimer) return
+
+    clearTimeout(this.refreshTimer)
+
+    this.refreshTimer = undefined
+  }
+
+  validate = async (params:TValidateUserReq, __intervalRefresh?:boolean) => {
+    const idToken = await getUserToken(__intervalRefresh)
     // TODO: Look into encrypting the user data to ensure it's not passed on via plain-text
     // While this is a common pattern, would be better to avoid it
     const resp = await apiRequest<TValidateResp>({
@@ -40,12 +57,14 @@ export class AuthApi {
     await localStorage.setJwt(jwt)
 
     // Remove user token when saving to local storage
-    await localStorage.setUser(omitKeys(params, [`token`]))
+    await localStorage.setUser(omitKeys(params, [`token`, `pat`]))
     new GitUser(user as TUserState)
+
+    if(!this.refreshTimer)
+      this.refreshTimer = autoRefreshUserToken(this.validate, params)
 
     return status
   }
-
 
   addClaims = async (params:Record<any, any>=emptyObj) => {
 

@@ -5,11 +5,9 @@ import { Container, Dropdown } from './Connect.styled'
 import { PatForm } from '@components/Forms/PatForm'
 import {
   dims,
+  Text,
   colors,
   gutter,
-  H3,
-  Text,
-  Loading
 } from '@gobletqa/components'
 
 const styles = {

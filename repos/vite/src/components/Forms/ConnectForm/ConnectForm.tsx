@@ -174,13 +174,13 @@ export const ConnectForm = (props:TConnectForm) => {
                 onChangeNewRepo={onChangeNewRepo}
               />
 
-              {/* <Grid
+              <Grid
                 xs={12}
                 sx={styles.branch}
                 className='gb-grid-add-pat'
               >
                 <AddPat />
-              </Grid> */}
+              </Grid>
 
               <Grid
                 xs={12}
