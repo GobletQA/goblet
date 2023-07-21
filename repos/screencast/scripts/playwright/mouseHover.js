@@ -100,8 +100,10 @@ const elementSelectEvent = (options, e) => {
     event.selectedText = e.target[event.selectedIndex].text
   }
 
-  if(exists(e.target.outerHTML)) event.elementHtml = e.target.outerHTML
-  if(exists(e.target.innerText)) event.elementText = e.target.innerText
+  // if(exists(e.target.outerHTML)) event.elementHtml = e.target.outerHTML
+
+  if(exists(e.target.innerText))
+    event.elementText = (e.target.textContent || ``).substring(0, 300)
 
   window.onGobletSelectAction(event)
 }
@@ -146,12 +148,13 @@ const initElementHover = async () => {
   EventTarget.prototype.addEventListener = function(eventName, eventHandler){
     oldAddEventListener.call(this, eventName, function(event) {
       // Ensure the select method exists, and the event is a click event
-      onSelectElement
-        && eventName === `click`
-        && onSelectElement(event)
-
+      
       // Call the original passed in eventHandler
-      eventHandler(event)
+      removeListener && onSelectElement && eventName === `click`
+        ? onSelectElement(event)
+        : eventHandler(event)
+      
+      
     })
   }
 
