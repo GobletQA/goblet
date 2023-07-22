@@ -1,4 +1,4 @@
-import type { GitApi, TGitOpts } from '../types'
+import type { GitApi, TGitOpts } from '@GWF/types'
 
 import { Logger } from '@keg-hub/cli-utils'
 

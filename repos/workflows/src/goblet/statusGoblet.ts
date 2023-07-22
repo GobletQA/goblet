@@ -1,5 +1,4 @@
-import type { TRepoOpts } from '@gobletqa/workflows/types/shared.types'
-import type { TWFGobletConfig, TWFResp, TGitOpts, } from '@gobletqa/workflows/types'
+import type { TWFGobletConfig, TWFResp, TGitOpts, TRepoOpts } from '@GWF/types'
 
 import path from 'path'
 import { git, RepoWatcher } from '../git'

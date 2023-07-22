@@ -1,7 +1,7 @@
 import type { TRepo, TDefinitionFileModel, TDefGobletConfig } from '@GSH/types'
 
 import path from 'path'
-import glob from 'glob'
+import { glob } from 'glob'
 import { noOpObj } from '@keg-hub/jsutils'
 import { DefinitionsParser } from './definitionsParser'
 import { getPathFromBase } from '@GSH/utils/getPathFromBase'
@@ -17,18 +17,12 @@ let __CachedGobletDefs:TDefinitionFileModel[]
  * Searches the step definition directory for step definitions
  */
 export const loadDefinitionsFiles = (stepsDir:string, opts:Record<string, any>=noOpObj):Promise<string[]> => {
-  return new Promise((res, rej) => {
-    // TODO: Investigate if it's better to include the ignore
-    // Would make loading the definitions faster, but
-    // Would mean users can't use index files
-    // Would look like this { ignore: [ '**/index.js' ] }
-    // For the section argument passed to the glob pattern
-    glob(path.join(stepsDir, '**/*.{js,ts}'), opts, async (err, files = []) => {
-      err || !files
-        ? rej('No step definition files found in ' + stepsDir)
-        : res(files)
-    })
-  })
+  // TODO: Investigate if it's better to include the ignore
+  // Would make loading the definitions faster, but
+  // Would mean users can't use index files
+  // Would look like this { ignore: [ '**/index.js' ] }
+  // For the section argument passed to the glob pattern
+  return glob(path.join(stepsDir, '**/*.{js,ts}'), opts)
 }
 
 /**

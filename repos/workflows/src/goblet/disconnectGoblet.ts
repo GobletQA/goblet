@@ -1,7 +1,7 @@
 import { git }from '../git'
 import { Logger }from '@keg-hub/cli-utils'
 import { getRepoPath }from '../utils/getRepoPath'
-import { TGitMeta } from '@gobletqa/workflows/types'
+import { TGitMeta } from '@GWF/types'
 
 /**
  * Workflow to unmount a repo based on a users name

@@ -1,34 +1,35 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 import type { TProviderData } from './getProviderData'
-import type { TWFGobletConfig, TGitOpts } from '@gobletqa/workflows/types'
 import type {
+  TGitOpts,
   TGitData,
   TRepoOpts,
   TFileTypes,
   TRepoPaths,
+  TGobletConfig,
   TRecorderOpts,
   TInternalPaths,
+  TWFGobletConfig,
   TRepoGraphRepos,
   TRepoFromCreate,
   TRepoMountStatus,
   TGScreencastConfig,
   TRepoFromWorkflow,
-} from '../types'
+} from '@GWF/types'
 
+import { getWorld } from './world'
 import { Parkin } from '@ltipton/parkin'
-import { getWorld } from '@GSH/repo/world'
 import { emptyObj, } from '@keg-hub/jsutils'
 import { getProviderData } from './getProviderData'
-import { getFileTypes } from '@GSH/utils/getFileTypes'
-import { resetGobletConfig } from '@GSH/goblet/getGobletConfig'
+import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
+import { getFileTypes } from '@gobletqa/shared/utils/getFileTypes'
+import { resetGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import {
   createGoblet,
   statusGoblet,
-  GitlabGraphApi,
-  GithubGraphApi,
   initializeGoblet,
   disconnectGoblet,
-} from '@gobletqa/workflows'
+} from '@GWF/goblet'
 
 
 type TRepoWorldRefresh = {
@@ -253,12 +254,12 @@ export class Repo {
 
   get world(){
     // this.#world = this.#world || getWorld(this)
-    this.#world = getWorld(this)
+    this.#world = getWorld(this as TGobletConfig)
     return this.#world
   }
 
   set world(update:TWorldConfig){
-    this.#world = getWorld(this)
+    this.#world = getWorld(this as TGobletConfig)
   }
 
 

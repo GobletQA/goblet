@@ -6,10 +6,11 @@ import type { TPlayerEventData, TPlayerTestEvent } from '@gobletqa/shared/types'
  * Which allows it to be referenced directly in step definitions
  */
 import expect from 'expect'
-import { Parkin, TParkinTestConfig } from '@ltipton/parkin'
-import { unset, omitKeys } from '@keg-hub/jsutils'
 import { ParkinTest } from '@ltipton/parkin/test'
-import { getDefinitions } from '@gobletqa/shared/repo/getDefinitions'
+import { unset, omitKeys } from '@keg-hub/jsutils'
+import { getDefinitions } from '@gobletqa/workflows'
+import { Parkin, TParkinTestConfig } from '@ltipton/parkin'
+
 import {
   SavedDataWorldPath,
   AutoSavedDataWorldPath,

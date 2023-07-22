@@ -21,33 +21,6 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": [
-      "repos/backend/src/types",
-      "repos/backend/node_modules/@types",
-      "repos/components/src/types",
-      "repos/components/node_modules/@types",
-      "repos/conductor/src/types",
-      "repos/conductor/node_modules/@types",
-      "repos/exam/src/types",
-      "repos/exam/node_modules/@types",
-      "repos/latent/src/types",
-      "repos/latent/node_modules/@types",
-      "repos/monaco/src/types",
-      "repos/monaco/node_modules/@types",
-      "repos/race/src/types",
-      "repos/race/node_modules/@types",
-      "repos/screencast/src/types",
-      "repos/screencast/node_modules/@types",
-      "repos/shared/src/types",
-      "repos/shared/node_modules/@types",
-      "repos/testUtils/src/types",
-      "repos/testUtils/node_modules/@types",
-      "repos/vite/src/types",
-      "repos/vite/node_modules/@types",
-      "repos/workflows/src/types",
-      "repos/workflows/node_modules/@types",
-      "node_modules/@types"
-    ],
     "paths": {
 
       "@GBE/Configs": ["repos/backend/configs"],
@@ -138,10 +111,12 @@
       "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
 
       "@GWF/git": [ "repos/workflows/src/git" ],
+      "@GWF/goblet": ["repos/workflows/src/goblet"],
+      "@GWF/goblet/*": ["repos/workflows/src/goblet/*"],
+      "@GWF/types": ["repos/workflows/src/types"],
+      "@GWF/types/*": ["repos/workflows/src/types/*"],
       "@GWF": ["repos/workflows/src"],
-
-      "@gobletqa/workflows/types": ["src/types"],
-      "@gobletqa/workflows/types/*": ["src/types/*"],
+      "@GWF/*": ["repos/workflows/src/*"],
 
       "@gobletqa/backend": ["repos/backend/src"],
       "@gobletqa/backend/*": ["repos/backend/src/*"],
@@ -164,19 +139,19 @@
       "@gobletqa/race": ["repos/race/src"],
       "@gobletqa/race/*": ["repos/race/src/*"],
 
-      "@gobletqa/screencast": [ "./repos/screencast/src" ],
-      "@gobletqa/screencast/*": [ "./repos/screencast/src/*" ],
+      "@gobletqa/screencast": [ "repos/screencast/src" ],
+      "@gobletqa/screencast/*": [ "repos/screencast/src/*" ],
 
       "@gobletqa/shared/utils/loadEnvs": ["repos/shared/src/utils/loadEnvs"],
       "@gobletqa/shared/utils/getOrigin": ["repos/shared/src/utils/getOrigin"],
-      "@gobletqa/shared": [ "./repos/shared/src" ],
-      "@gobletqa/shared/*": [ "./repos/shared/src/*" ],
+      "@gobletqa/shared": [ "repos/shared/src" ],
+      "@gobletqa/shared/*": [ "repos/shared/src/*" ],
 
-      "@gobletqa/test-utils": [ "./repos/testUtils/src" ],
-      "@gobletqa/test-utils/*": [ "./repos/testUtils/src/*" ],
+      "@gobletqa/test-utils": [ "repos/testUtils/src" ],
+      "@gobletqa/test-utils/*": [ "repos/testUtils/src/*" ],
 
-      "@gobletqa/workflows": ["../workflows/src"],
-      "@gobletqa/workflows/*": ["../workflows/src/*"]
+      "@gobletqa/workflows": ["repos/workflows/src"],
+      "@gobletqa/workflows/*": ["repos/workflows/src/*"],
     }
   },
   "exclude": [

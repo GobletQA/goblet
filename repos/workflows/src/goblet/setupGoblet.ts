@@ -1,4 +1,4 @@
-import type { TGitData, TRepoOpts, TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
+import type { TGitData, TRepoOpts, TWFArgs, TGitOpts } from '@GWF/types'
 
 
 import { git, RepoWatcher } from '../git'

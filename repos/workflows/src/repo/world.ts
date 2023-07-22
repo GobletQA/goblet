@@ -1,4 +1,4 @@
-import type { TGobletConfig } from '../types'
+import type { TGobletConfig } from '@GWF/types'
 
 import { deepMerge } from '@keg-hub/jsutils'
 import { getClientWorld } from './getClientWorld'

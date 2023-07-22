@@ -1,6 +1,7 @@
 import type { Express } from 'express'
 import type { TSocketEvtCBProps } from '@GSC/types'
-import { Repo } from '@gobletqa/shared/repo/repo'
+
+import { Repo } from '@gobletqa/workflows'
 
 export const disconnect = (app:Express) => {
   return async ({ socket, Manager }:TSocketEvtCBProps) => {

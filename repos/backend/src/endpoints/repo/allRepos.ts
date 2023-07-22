@@ -2,7 +2,7 @@ import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoGraphRepos } from '@GBE/types'
 
-import { Repo } from '@gobletqa/shared/repo/repo'
+import { Repo } from '@gobletqa/workflows'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 

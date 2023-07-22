@@ -1,13 +1,12 @@
-import type { Repo } from './repo'
-import type { TDefGobletConfig } from '../types'
+import type { TRepo, TDefGobletConfig } from '@GWF/types'
 
-import { loadDefinitions } from '@GSH/libs/definitions/definitions'
+import { loadDefinitions } from '@gobletqa/shared/libs/definitions/definitions'
 
 /**
  * Loads the definitions, then splits them based on their type
  */
 export const getDefinitions = async (
-  repo:Repo,
+  repo:TRepo,
   config?:TDefGobletConfig,
   cache:boolean=true
 ) => {

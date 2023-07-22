@@ -7,7 +7,7 @@ import { parseJsonEnvArr } from '@gobletqa/shared/utils/parseJsonEnvArr'
 /**
  * Builds a list of devices to used based on the GOBLET_BROWSER_DEVICES env
  */
-const buildDeviceList = (envVal) => {
+const buildDeviceList = (envVal:string) => {
   if(!envVal) return emptyObj
   
   const { devices } = parseJsonEnvArr('devices', envVal)
@@ -48,5 +48,5 @@ export const taskEnvToBrowserOpts = (config:TGobletConfig) => {
     slowMo: parseInt(GOBLET_BROWSER_SLOW_MO, 10),
     timeout: parseInt(GOBLET_BROWSER_TIMEOUT, 10),
     ...buildDeviceList(GOBLET_BROWSER_DEVICES),
-  } as Partial<TBrowserLaunchOpts>
+  } as Partial<TBrowserLaunchOpts & { devices: string[] }>
 }

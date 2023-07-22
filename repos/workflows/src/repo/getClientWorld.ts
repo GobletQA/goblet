@@ -1,12 +1,11 @@
-import type { Repo } from '@GSH/repo'
 import type { TWorldConfig } from '@ltipton/parkin'
-import type { TGitData, TRepoPaths, TGobletConfig } from '@GSH/types'
+import type { TGitData, TRepoPaths, TGobletConfig, TRepo } from '@GWF/types'
 
-import { loaderSearch } from '@GSH/libs/loader'
-import { DefWorld, GBMountedRemoteKey } from '@GSH/constants'
-import { getGobletConfig } from '@GSH/goblet/getGobletConfig'
-import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
+import { loaderSearch } from '@gobletqa/shared/libs/loader'
 import { noOpObj, deepMerge } from '@keg-hub/jsutils/src/node'
+import { DefWorld, GBMountedRemoteKey } from '@gobletqa/shared/constants'
+import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
+import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 
 /**
  * Gets a ref to current values of GOBLET envs
@@ -20,15 +19,15 @@ const setGobletEnv = (
   const orgGobletBase = process.env.GOBLET_CONFIG_BASE
   const orgGobletRemoteKey = process.env[GBMountedRemoteKey]
 
-  const environment = (config as Repo)?.environment
+  const environment = (config as TRepo)?.environment
   if(environment && process.env.GOBLET_ENV !== environment)
     process.env.GOBLET_ENV = environment
 
-  const { repoRoot } = (config as Repo)?.paths || noOpObj as TRepoPaths
+  const { repoRoot } = (config as TRepo)?.paths || noOpObj as TRepoPaths
   if(repoRoot)
     process.env.GOBLET_CONFIG_BASE = repoRoot
 
-  const { remote } = (config as Repo)?.git || noOpObj as TGitData
+  const { remote } = (config as TRepo)?.git || noOpObj as TGitData
   if(remote) process.env[GBMountedRemoteKey] = remote
 
   return () => {

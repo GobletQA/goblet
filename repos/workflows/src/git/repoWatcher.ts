@@ -1,11 +1,12 @@
+import type {
+  TGitOpts,
+  TRepoWatchCb
+} from '@gobletqa/workflows/types'
+
 import { checkCall } from '@keg-hub/jsutils'
 import chokidar, { FSWatcher } from 'chokidar'
 import { Logger, error } from '@keg-hub/cli-utils'
 
-import {
-  TGitOpts,
-  TRepoWatchCb
-} from '@gobletqa/workflows/types'
 
 /**
  * Helper to handel a repoWatcher that already exists

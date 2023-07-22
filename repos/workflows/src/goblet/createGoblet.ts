@@ -1,12 +1,12 @@
-import type { TWFCreateArgs } from '@gobletqa/workflows/types'
+import type { TWFCreateArgs } from '@GWF/types'
 
+import { git } from '@GWF/git'
 import { Logger } from '@keg-hub/cli-utils'
-import { git } from '@gobletqa/workflows/git'
-import { GithubApi } from '@gobletqa/workflows/providers/githubApi'
-import { ensureMounted } from '@gobletqa/workflows/repo/ensureMounted'
-import { configureGitOpts } from '@gobletqa/workflows/utils/configureGitOpts'
-import { ensureBranchExists } from '@gobletqa/workflows/repo/ensureBranchExists'
-import { validateCreateArgs } from '@gobletqa/workflows/utils/validateCreateArgs'
+import { GithubApi } from '@GWF/providers/githubApi'
+import { ensureMounted } from '@GWF/repo/ensureMounted'
+import { configureGitOpts } from '@GWF/utils/configureGitOpts'
+import { ensureBranchExists } from '@GWF/repo/ensureBranchExists'
+import { validateCreateArgs } from '@GWF/utils/validateCreateArgs'
 
 const buildCreateUrl = (args:TWFCreateArgs) => {
   const { create } = args

@@ -1,9 +1,9 @@
-import type { TGitOpts, TGobletConfig } from '@gobletqa/workflows/types'
+import type { TGitOpts, TGobletConfig } from '../types'
 
 import { Logger } from '@keg-hub/cli-utils'
-import { git } from '@gobletqa/workflows/git'
-import { REPO_TAG_REF } from '@gobletqa/workflows/constants'
-import { latentRepo } from '@gobletqa/shared/repo/latentRepo'
+import { git } from '../git'
+import { latentRepo } from './latentRepo'
+import { REPO_TAG_REF } from '../constants'
 
 const addTag = async (gitOpts:TGitOpts, force?:boolean) => {
   const ref = await git.hash.content({

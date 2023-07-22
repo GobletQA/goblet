@@ -2,11 +2,11 @@ import type { Response, RequestHandler } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TRepoContent } from '@gobletqa/shared/types'
 
-import { Repo } from '@gobletqa/shared/repo/repo'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { Repo, loadRepoContent } from '@gobletqa/workflows'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { loadRepoContent } from '@gobletqa/shared/repo/loadRepoContent'
+
 
 export type TConnectBody = {
   repoId:string

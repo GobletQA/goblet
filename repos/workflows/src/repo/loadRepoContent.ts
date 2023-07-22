@@ -1,20 +1,18 @@
-import type { Repo } from '@GSH/repo/repo'
 import type {
   TRepo,
-  TRootPaths,
   TRepoContent,
   TDefGobletConfig,
   TRepoMountStatus,
   TFeatureFileModelList,
   TDefinitionFileModelList,
-} from '@GSH/types'
+} from '@GWF/types'
 
-import { Logger } from '@GSH/libs/logger'
+import { Logger } from '@gobletqa/shared/libs/logger'
 import { pickKeys, omitKeys } from '@keg-hub/jsutils'
-import { loadFeatures } from '@GSH/libs/features/features'
-import { buildFileTree } from '@GSH/libs/fileSys/fileTree'
-import { loadDefinitions } from '@GSH/libs/definitions/definitions'
-import { fileModelArrayToObj } from '@GSH/utils/fileModelArrayToObj'
+import { loadFeatures } from '@gobletqa/shared/libs/features/features'
+import { buildFileTree } from '@gobletqa/shared/libs/fileSys/fileTree'
+import { loadDefinitions } from '@gobletqa/shared/libs/definitions/definitions'
+import { fileModelArrayToObj } from '@gobletqa/shared/utils/fileModelArrayToObj'
 
 /**
  * Loads all the needed content for a repo
@@ -22,7 +20,7 @@ import { fileModelArrayToObj } from '@GSH/utils/fileModelArrayToObj'
  *
  */
 export const loadRepoContent = async (
-  repo:Repo,
+  repo:TRepo,
   config:TDefGobletConfig,
   status:TRepoMountStatus
 ) => {

@@ -8,7 +8,7 @@ import type {
   TBrowserActionResp
 } from '@GSC/types'
 
-import { Repo } from '@gobletqa/shared/repo'
+import { Repo } from '@gobletqa/workflows'
 import { startBrowser }  from './browser'
 import { recordBrowser } from './recordBrowser'
 import { isArr, isStr, isFunc, noPropArr } from '@keg-hub/jsutils'

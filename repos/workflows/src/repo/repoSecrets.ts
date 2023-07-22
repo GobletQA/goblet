@@ -1,4 +1,4 @@
-import type { TGitOpts, TRepoOpts } from '@gobletqa/workflows/types'
+import type { TGitOpts, TRepoOpts } from '@GWF/types'
 
 import {decryptRepo} from './decryptRepo'
 import { Logger } from '@keg-hub/cli-utils'

@@ -1,5 +1,5 @@
 import path from 'path'
-import glob from 'glob'
+import { globSync } from 'glob'
 import { createRequire } from 'module'
 import {TGobletConfig} from '@GSH/types'
 import { GobletConfigFileNames } from '@GSH/constants'
@@ -181,8 +181,7 @@ export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
   if(location) data = requireFunc(location)
   // If no data has loaded, the try to search for it
   if(!data){
-    data = glob
-      .sync(path.join(basePath, `**/${file}`))
+    data = globSync(path.join(basePath, `**/${file}`))
       .reduce(
         (found:T, file:string) => found || requireFunc(file, true),
         undefined

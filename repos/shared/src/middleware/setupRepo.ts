@@ -5,7 +5,7 @@ import { Repo } from '@GSH/repo/repo'
 import { asyncWrap } from '@GSH/express'
 import { AppRouter } from '@GSH/express/appRouter'
 import { pickKeys, deepMerge } from '@keg-hub/jsutils'
-import {TWFGobletConfig} from '@gobletqa/workflows/types'
+import { TWFGobletConfig } from '@gobletqa/workflows/types'
 
 
 /**

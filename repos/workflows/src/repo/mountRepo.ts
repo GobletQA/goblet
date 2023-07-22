@@ -1,7 +1,8 @@
+import type { TGitOpts, TRepoWatchCb } from '@GWF/types'
+
 import { saveRepo } from './saveRepo'
 import { git, RepoWatcher } from '../git'
 import { Logger } from '@keg-hub/cli-utils'
-import { TGitOpts, TRepoWatchCb } from '@gobletqa/workflows/types'
 
 /**
  *

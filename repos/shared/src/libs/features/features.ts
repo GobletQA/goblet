@@ -1,8 +1,7 @@
-import type { Repo } from '@GSH/repo/repo'
-import type { TFeatureFileModel } from '@GSH/types'
+import type { Repo, TFeatureFileModel } from '@GSH/types'
 
 import path from 'path'
-import glob from 'glob'
+import { glob } from 'glob'
 import { Logger } from '@GSH/libs/logger'
 import { fileSys } from '@keg-hub/cli-utils'
 import { featuresParser } from './featuresParser'
@@ -84,17 +83,7 @@ export const loadFeature = async (repo:Repo, location:string) => {
  * @returns {Promise<Array<string>>} - Found feature file paths
  */
 const loadFeatureFiles = (featuresDir:string) => {
-  return new Promise((res, rej) => {
-    glob(
-      path.join(featuresDir, '**/*.feature'),
-      {},
-      async (err, files = []) => {
-        err || !files
-          ? rej('No feature files found in ' + featuresDir)
-          : res(files)
-      }
-    )
-  })
+  return glob(path.join(featuresDir, '**/*.feature'), {})
 }
 
 /**

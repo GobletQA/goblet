@@ -1,19 +1,28 @@
-import type { Repo } from '@GSH/repo/repo'
-import type { TEnvObj, TLTLoad, TLTRekey, TFileSaveResp } from '@gobletqa/latent'
+import type { TRepo } from '@GWF/types'
+
+import type {
+  TLTGet,
+  TLTSave,
+  TEnvObj,
+  TLTLoad,
+  TLTRekey,
+  TLTGetSecrets,
+  TFileSaveResp,
+} from '@gobletqa/latent'
 
 import { exists } from '@keg-hub/jsutils'
 import { env } from '@keg-hub/parse-config'
-import { injectUnsafe } from '@GSH/utils/safeReplacer'
+import { injectUnsafe } from '@gobletqa/shared/utils/safeReplacer'
 import { ELoadFormat, EFileType, Latent } from '@gobletqa/latent'
 
 type TLTLSaveFile = {
-  repo:Repo
+  repo:TRepo
   content:string
   location:string
 }
 
 type TLTLGetFile = {
-  repo:Repo
+  repo:TRepo
   location:string
 }
 
@@ -60,7 +69,7 @@ export class LatentRepo {
 
     return secrets
   }
-  
+
   getFile = async (props:TLTLGetFile) => {
     const {
       repo,
@@ -79,8 +88,8 @@ export class LatentRepo {
     }
 
     const content = type === EFileType.secrets
-      ? this.latent.secrets.get(args)
-      : this.latent.values.get(args)
+      ? this.latent.secrets.get(args as TLTGetSecrets)
+      : this.latent.values.get(args as TLTGet)
 
     return exists(content)
       ? [undefined, content]
@@ -113,11 +122,11 @@ export class LatentRepo {
       let saved:TFileSaveResp
       if(type === EFileType.secrets){
         console.log(`Repo secrets are being updated...`)
-        saved = this.latent.secrets.save(args)
+        saved = this.latent.secrets.save(args as TLTSave)
       }
       else {
         console.log(`Repo values are being updated...`)
-        saved = this.latent.values.save(args)
+        saved = this.latent.values.save(args as TLTSave)
       }
 
       const { failed } = saved

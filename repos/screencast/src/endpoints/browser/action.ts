@@ -1,6 +1,6 @@
+import type { Repo } from '@gobletqa/workflows'
 import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
-import type { Repo } from '@gobletqa/shared/src/repo'
 
 import { limbo, noOpObj } from '@keg-hub/jsutils'
 import { actionBrowser } from '@GSC/libs/playwright'

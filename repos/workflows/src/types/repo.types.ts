@@ -1,6 +1,11 @@
 
+import type { Repo } from '@GWF/repo'
 import type { Graph } from '../constants'
-import type { TRepoGraphRepos }  from './shared.types'
+
+export type {
+  Repo,
+  Repo as TRepo
+}
 
 // ----- Graph API ----- //
 
@@ -76,6 +81,37 @@ export type TGraphApiOpts = {
   variables?: Record<any, any>
 }
 
-export {
-  TRepoGraphRepos
+export type TRepoGraphRepos = {
+  all?:boolean
+  token: string
+  query?:string
+  first?: number
+  after?: string
+  offset?:number
+  username?:string
+  fullPath?:string
+  provider?:string
+  searchPattern?:string
+  sortDirection?: string
+  affiliations?: string[]
+  ownerAffiliations?: string[]
+  headers?: Record<string, string>
+}
+
+export type TRepoFromWorkflow = {
+  token:string
+  branch:string
+  repoId:string
+  repoUrl:string
+  username:string
+  newBranch?:string
+  branchFrom?:boolean
+}
+
+export type TRepoMountStatus = {
+  mode?: string
+  setup: boolean
+  status?: string
+  message?:string
+  mounted?: boolean
 }
