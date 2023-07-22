@@ -28,19 +28,17 @@
     "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
   },
-  "peerDependencies": {
-    "express": "4.18.2",
-    "http-proxy-middleware": "2.0.6"
-  },
   "dependencies": {
+    "@gobletqa/workflows": "workspace:../workflows",
+    "@gobletqa/latent": "workspace:../latent",
     "@keg-hub/cli-utils": ">=0.8.0-alpha1",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "5.0.0",
-    "@gobletqa/workflows": "*",
-    "@gobletqa/latent": "*",
     "cookie-session": "2.0.0",
     "cors": "2.8.5",
+    "express": "4.18.2",
+    "http-proxy-middleware": "2.0.6",
     "express-blacklist": "1.0.3",
     "express-defend": "1.0.9",
     "express-jwt": "8.3.0",

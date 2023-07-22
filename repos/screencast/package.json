@@ -45,8 +45,9 @@
     "vnc:start": "node --enable-source-maps -r esbuild-register configs/vnc.build.config.ts"
   },
   "dependencies": {
-    "@gobletqa/shared": "*",
-    "@gobletqa/latent": "*",
+    "@gobletqa/exam": "workspace:../exam",
+    "@gobletqa/latent": "workspace:../latent",
+    "@gobletqa/shared": "workspace:../shared",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/spawn-cmd": ">=0.3.2",
