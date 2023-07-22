@@ -1,1 +1,7 @@
+export * from './dom.types'
+export * from './exam.types'
+export * from './runner.types'
 export * from './helpers.types'
+export * from './execute.types'
+export * from './environment.types'
+export * from './transformer.types'

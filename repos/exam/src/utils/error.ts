@@ -1,6 +1,5 @@
 
 export class ExamError extends Error {
-
   method?:string
 
   constructor(message:string, method?:string, error?:Error){
@@ -8,6 +7,17 @@ export class ExamError extends Error {
     super(msg)
 
     method && (this.method = method)
+    Error.captureStackTrace(this, this.constructor)
+
     error && console.error(error)
+  }
+}
+
+
+export class RunnerErr extends Error {
+  constructor(message:string) {
+    super(message)
+    this.name = this.constructor.name
+    Error.captureStackTrace(this, this.constructor)
   }
 }
