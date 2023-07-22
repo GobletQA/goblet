@@ -1,29 +1,17 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist",
-    "typeRoots": [
-      "./src/types",
-      "../shared/src/types",
-      "./node_modules/@types",
-      "../../node_modules/@types"
-    ],
-    "paths": {
-      "@GWF/git": [ "src/git" ],
-      "@GWF": ["src"],
-      "@GWFRoot": ["./."],
-      "@GConfigs/*": ["../../configs/*"],
-      "@gobletqa/latent": ["../latent/src"],
-      "@gobletqa/latent/*": ["../latent/src/*"],
-      "@gobletqa/shared/*": ["../shared/src/*"],
-      "@gobletqa/shared": ["../shared/src"],
-      "@gobletqa/workflows/types": ["src/types"],
-      "@gobletqa/workflows/types/*": ["src/types/*"],
-      "@gobletqa/workflows": ["src"],
-      "@gobletqa/workflows/*": ["src/*"]
-    }
+    "outDir": "./dist"
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src",
+    "configs",
+    "../../",
+    "../../configs"
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ]
 }

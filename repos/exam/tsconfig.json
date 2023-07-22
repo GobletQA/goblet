@@ -12,5 +12,10 @@
     "../../",
     "../../configs",
     "../shared/src"
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
   ]
 }

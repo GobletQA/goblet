@@ -1,54 +1,20 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist",
     "declaration": false,
-    "declarationMap": false,
-    "typeRoots": [
-      "../shared/src/types",
-      "./node_modules/@types",
-      "../../node_modules/@types"
-    ],
-    "paths": {
-      "@GTU/Constants": ["src/constants"],
-      "@GTU/Constants/*": ["src/constants/*"],
-      "@GTU/Jest": ["src/jest"],
-      "@GTU/Jest/*": ["src/jest/*"],
-      "@GTU/Utils": ["src/utils"],
-      "@GTU/Utils/*": ["src/utils/*"],
-      "@GTU/Steps": ["src/steps"],
-      "@GTU/Steps/*": ["src/steps/*"],
-      "@GTU/Parkin": ["src/parkin"],
-      "@GTU/Parkin/*": ["src/parkin/*"],
-      "@GTU/Support": ["src/support"],
-      "@GTU/Support/*": ["src/support/*"],
-      "@GTU/Reports": ["src/reports"],
-      "@GTU/Reports/*": ["src/reports/*"],
-      "@GTU/PlaywrightEnv": ["src/playwright/playwrightTestEnv"],
-      "@GTU/Playwright": ["src/playwright"],
-      "@GTU/Playwright/*": ["src/playwright/*"],
-      "@GTU/TestMeta": ["src/testMeta"],
-      "@GTU/TestMeta/*": ["src/testMeta/testMeta"],
-      "@GTU/Types": ["src/types"],
-      "@GTU/Types/*": ["src/types/*"],
-      "@GTU": ["src"],
-      "@GTURoot": ["./"],
-      "@gobletqa/shared": ["../shared/src"],
-      "@gobletqa/shared/*": ["../shared/src/*"],
-      "@gobletqa/screencast": ["../screencast/src"],
-      "@gobletqa/screencast/*": ["../screencast/src/*"],
-      "@gobletqa/test-utils": ["src"],
-      "@gobletqa/test-utils/*": ["src/*"],
-      "@GEnv": ["../shared/src/environment/environment"],
-      "@GEnv/secrets": ["../shared/src/environment/secrets"],
-      "@GEnv/values": ["../shared/src/environment/values"],
-      "@GEnvironment": ["../shared/src/environment/environment"],
-      "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
-      "@GEnvironment/values": ["../shared/src/environment/values"]
-    }
+    "declarationMap": false
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src",
+    "configs",
+    "../../",
+    "../../configs"
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ]
 }
 

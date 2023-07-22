@@ -10,7 +10,6 @@ module.exports = {
   collectCoverageFrom: ['**/*.ts', '!**/*.types.ts', '!**/*.d.ts'],
   transformIgnorePatterns: ['node_modules/(?!@gobletqa|!@keg-hub)/'],
   moduleNameMapper: {
-    "^@GLTRoot$": path.join(__dirname, ".."),
     "^@GLT/services$": path.join(__dirname, "../src/services"),
     "^@GLT/services/(.*)$": path.join(__dirname, "../src/services/$1"),
     "^@GLT/types$": path.join(__dirname, "../src/types"),

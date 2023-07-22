@@ -21,7 +21,47 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      "repos/backend/src/types",
+      "repos/backend/node_modules/@types",
+      "repos/components/src/types",
+      "repos/components/node_modules/@types",
+      "repos/conductor/src/types",
+      "repos/conductor/node_modules/@types",
+      "repos/exam/src/types",
+      "repos/exam/node_modules/@types",
+      "repos/latent/src/types",
+      "repos/latent/node_modules/@types",
+      "repos/monaco/src/types",
+      "repos/monaco/node_modules/@types",
+      "repos/race/src/types",
+      "repos/race/node_modules/@types",
+      "repos/screencast/src/types",
+      "repos/screencast/node_modules/@types",
+      "repos/shared/src/types",
+      "repos/shared/node_modules/@types",
+      "repos/testUtils/src/types",
+      "repos/testUtils/node_modules/@types",
+      "repos/vite/src/types",
+      "repos/vite/node_modules/@types",
+      "repos/workflows/src/types",
+      "repos/workflows/node_modules/@types",
+      "node_modules/@types"
+    ],
     "paths": {
+
+      "@GBE/Configs": ["repos/backend/configs"],
+      "@GBE/Configs/*": ["repos/backend/configs/*"],
+      "@GBE/Templates": ["repos/backend/templates"],
+      "@GBE/Templates/*": ["repos/backend/templates/*"],
+      "@GBE": ["repos/backend/src"],
+      "@GBE/*": ["repos/backend/src/*"],
+      "@GBE/Root": ["repos/backend/"],
+
+      "@GCD/configs": ["repos/conductor/configs"],
+      "@GCD/configs/*": ["repos/conductor/configs/*"],
+      "@GCD": ["repos/conductor/src"],
+      "@GCD/*": ["repos/conductor/src/*"],
 
       "@GEX/constants": ["repos/exam/src/constants"],
       "@GEX/constants/*": ["repos/exam/src/constants/*"],
@@ -33,8 +73,56 @@
       "@GEX/utils/*": ["repos/exam/src/utils/*"],
       "@GEX": ["repos/exam/src"],
       "@GEX/*": ["repos/exam/src/*"],
-      "@GEXRoot": ["repos/exam"],
 
+      "@GLT/templates": ["repos/latent/src/templates"],
+      "@GLT/libs": ["repos/latent/src/libs"],
+      "@GLT/libs/*": ["repos/latent/src/libs/*"],
+      "@GLT/types": ["repos/latent/src/types"],
+      "@GLT/types/*": ["repos/latent/src/types/*"],
+      "@GLT": ["repos/latent/src"],
+      "@GLT/*": ["repos/latent/src/*"],
+
+      "@GSH/libs": ["repos/shared/src/libs"],
+      "@GSH/libs/*": ["repos/shared/src/libs/*"],
+      "@GSH/templates": ["repos/shared/src/templates"],
+      "@GSH": ["repos/shared/src"],
+      "@GSH/*": ["repos/shared/src/*"],
+
+      "@GSC/Configs": ["repos/screencast/configs"],
+      "@GSC/Configs/*": ["repos/screencast/configs/*"],
+      "@GSC/Scripts": ["repos/screencast/scripts"],
+      "@GSC/Scripts/*": ["repos/screencast/scripts/*"],
+      "@GSC/Templates": ["repos/screencast/templates"],
+      "@GSC/Templates/*": ["repos/screencast/templates/*"],
+      "@GSC/libs": ["repos/screencast/src/libs"],
+      "@GSC/libs/*": ["repos/screencast/src/libs/*"],
+      "@GSC": ["repos/screencast/src"],
+      "@GSC/*": ["repos/screencast/src/*"],
+      "@GSCRoot": ["repos/screencast/"],
+      "@GSCRoot/*": ["repos/screencast/*"],
+
+      "@GTU/Constants": ["repos/testUtils/src/constants"],
+      "@GTU/Constants/*": ["repos/testUtils/src/constants/*"],
+      "@GTU/Jest": ["repos/testUtils/src/jest"],
+      "@GTU/Jest/*": ["repos/testUtils/src/jest/*"],
+      "@GTU/Utils": ["repos/testUtils/src/utils"],
+      "@GTU/Utils/*": ["repos/testUtils/src/utils/*"],
+      "@GTU/Steps": ["repos/testUtils/src/steps"],
+      "@GTU/Steps/*": ["repos/testUtils/src/steps/*"],
+      "@GTU/Parkin": ["repos/testUtils/src/parkin"],
+      "@GTU/Parkin/*": ["repos/testUtils/src/parkin/*"],
+      "@GTU/Support": ["repos/testUtils/src/support"],
+      "@GTU/Support/*": ["repos/testUtils/src/support/*"],
+      "@GTU/Reports": ["repos/testUtils/src/reports"],
+      "@GTU/Reports/*": ["repos/testUtils/src/reports/*"],
+      "@GTU/PlaywrightEnv": ["repos/testUtils/src/playwright/playwrightTestEnv"],
+      "@GTU/Playwright": ["repos/testUtils/src/playwright"],
+      "@GTU/Playwright/*": ["repos/testUtils/src/playwright/*"],
+      "@GTU/TestMeta": ["repos/testUtils/src/testMeta"],
+      "@GTU/TestMeta/*": ["repos/testUtils/src/testMeta/testMeta"],
+      "@GTU/Types": ["repos/testUtils/src/types"],
+      "@GTU/Types/*": ["repos/testUtils/src/types/*"],
+      "@GTU": ["repos/testUtils/src"],
 
       "@GTasks": ["./tasks"],
       "@GTasks/*": ["./tasks/*"],
@@ -44,15 +132,51 @@
       "@GEnv": ["../shared/src/environment/environment"],
       "@GEnv/values": ["../shared/src/environment/values"],
       "@GEnv/secrets": ["../shared/src/environment/secrets"],
+      "@GException": ["repos/shared/src/exceptions/Exception"],
       "@GEnvironment": ["../shared/src/environment/environment"],
       "@GEnvironment/values": ["../shared/src/environment/values"],
       "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
+
+      "@GWF/git": [ "repos/workflows/src/git" ],
+      "@GWF": ["repos/workflows/src"],
+
+      "@gobletqa/workflows/types": ["src/types"],
+      "@gobletqa/workflows/types/*": ["src/types/*"],
+
+      "@gobletqa/backend": ["repos/backend/src"],
+      "@gobletqa/backend/*": ["repos/backend/src/*"],
+
+      "@gobletqa/components": ["repos/components/src"],
+      "@gobletqa/components/*": ["repos/components/src/*"],
+
+      "@gobletqa/conductor": ["repos/conductor/src"],
+      "@gobletqa/conductor/*": ["repos/conductor/src/*"],
+
+      "@gobletqa/exam": ["repos/exam/src"],
+      "@gobletqa/exam/*": ["repos/exam/src/*"],
+
+      "@gobletqa/latent": ["repos/latent/src"],
+      "@gobletqa/latent/*": ["repos/latent/src/*"],
+
+      "@gobletqa/monaco": ["repos/monaco/src"],
+      "@gobletqa/monaco/*": ["repos/monaco/src/*"],
+
+      "@gobletqa/race": ["repos/race/src"],
+      "@gobletqa/race/*": ["repos/race/src/*"],
+
       "@gobletqa/screencast": [ "./repos/screencast/src" ],
       "@gobletqa/screencast/*": [ "./repos/screencast/src/*" ],
+
+      "@gobletqa/shared/utils/loadEnvs": ["repos/shared/src/utils/loadEnvs"],
+      "@gobletqa/shared/utils/getOrigin": ["repos/shared/src/utils/getOrigin"],
       "@gobletqa/shared": [ "./repos/shared/src" ],
       "@gobletqa/shared/*": [ "./repos/shared/src/*" ],
+
       "@gobletqa/test-utils": [ "./repos/testUtils/src" ],
-      "@gobletqa/test-utils/*": [ "./repos/testUtils/src/*" ]
+      "@gobletqa/test-utils/*": [ "./repos/testUtils/src/*" ],
+
+      "@gobletqa/workflows": ["../workflows/src"],
+      "@gobletqa/workflows/*": ["../workflows/src/*"]
     }
   },
   "exclude": [

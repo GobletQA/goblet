@@ -1,38 +1,22 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist",
     "typeRoots": [
       "./src/types",
       "./node_modules/@types",
       "../../node_modules/@types"
     ],
-    "paths": {
-      "@GSH/templates": ["src/templates"],
-      "@GSH/libs": ["src/libs"],
-      "@GSH/libs/*": ["src/libs/*"],
-      "@GSH": ["src"],
-      "@GSH/*": ["src/*"],
-      "@GSHRoot": ["."],
-      "@gobletqa/workflows": ["../workflows/src"],
-      "@gobletqa/workflows/*": ["../workflows/src/*"],
-      "@GLogs/*": ["../../logs/*"],
-      "@GRepos/*": ["../../repos/*"],
-      "@GConfigs/*": ["../../configs/*"],
-      "@GEnv": ["../shared/src/environment/environment"],
-      "@GException": ["../shared/src/exceptions/Exception"],
-      "@GEnv/secrets": ["../shared/src/environment/secrets"],
-      "@GEnv/values": ["../shared/src/environment/values"],
-      "@GEnvironment": ["../shared/src/environment/environment"],
-      "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
-      "@GEnvironment/values": ["../shared/src/environment/values"],
-      "@gobletqa/latent": ["../latent/src"],
-      "@gobletqa/latent/*": ["../latent/src/*"],
-      "@gobletqa/screencast": ["../screencast/src/types"],
-      "@gobletqa/screencast/*": ["../screencast/src/types/*"]
-    }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src",
+    "configs",
+    "../../",
+    "../../configs"
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules"
+  ]
 }
