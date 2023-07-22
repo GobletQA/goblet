@@ -23,7 +23,6 @@ export const validateRefreshToken = (
     const generated = decoded.userId === user.userId
       && decoded.username === user.username
       && decoded.provider === user.provider
-      && decoded.subdomain === user.subdomain
       && generateTokens(config, user)
 
     return {
