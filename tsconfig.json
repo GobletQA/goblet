@@ -148,7 +148,7 @@
       "@gobletqa/test-utils/*": [ "repos/testUtils/src/*" ],
 
       "@gobletqa/workflows": ["repos/workflows/src"],
-      "@gobletqa/workflows/*": ["repos/workflows/src/*"],
+      "@gobletqa/workflows/*": ["repos/workflows/src/*"]
     }
   },
   "exclude": [
@@ -165,6 +165,6 @@
     "docs",
     "logs",
     "scripts",
-    "temp",
+    "temp"
   ]
 }
