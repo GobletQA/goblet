@@ -1,5 +1,5 @@
-import { toNum, noOpObj } from '@keg-hub/jsutils'
 import type { Response } from 'express'
+import { toNum, emptyObj } from '@keg-hub/jsutils'
 
 /**
  * Api response helper called by all json api endpoints
@@ -7,8 +7,12 @@ import type { Response } from 'express'
  * Ensures consistent response object is returned
  *
  */
-export const apiRes = (res:Response, data?:Record<any, any>, status?:number) => {
+export const apiRes = <Data extends Record<any, any>>(
+  res:Response<Data>,
+  data?:Data,
+  status?:number
+) => {
   res.statusCode = toNum(status || 200)
 
-  return res.json(data || noOpObj)
+  return res.json(data || emptyObj as Data)
 }

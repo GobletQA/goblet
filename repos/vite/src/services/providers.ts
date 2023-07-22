@@ -1,9 +1,10 @@
-// @ts-nocheck
+import type { FirebaseOptions } from 'firebase/app'
+
 // TODO: BitBucket providers via OAuth Provider
 import { initializeApp } from 'firebase/app'
 // import { getAnalytics } from "firebase/analytics"
 import { getFirestore } from 'firebase/firestore'
-import { set, isArr, isObj } from '@keg-hub/jsutils'
+import { set, isArr, isObj, isStr } from '@keg-hub/jsutils'
 import {
   getAuth,
   setPersistence,
@@ -16,14 +17,26 @@ const FBProviders = {
   GithubAuthProvider
 }
 
+type TAuthProvider = {
+  name:keyof typeof FBProviders
+  scopes:string|string[]
+}
+
+type TRawConfig<P=any> = {
+  serviceAccount:never
+  credentials: FirebaseOptions
+  ui: {
+    version: string,
+    signInOptions: P[]
+  }
+}
+
+
 /**
  * Configures the auth providers defined in the config object
  * Ensures the providers is setup for allow logging in
- * @param {Object} config - Firebase config
- *
- * @returns {Object} - config with the auth providers setup for UI sign in
  */
-const setupAuthProviders = (config:any) => {
+const setupAuthProviders = (config:TRawConfig<TAuthProvider>) => {
   if (!config) return config
 
   const { version, signInOptions, ...uiConfig } = config.ui
@@ -49,19 +62,21 @@ const setupAuthProviders = (config:any) => {
     signInOptions: authWithId,
   })
 
-  return config
+  return config as unknown as TRawConfig<GithubAuthProvider>
 }
 
-let rawConfig
+let rawConfig:TRawConfig
 try {
-  rawConfig = JSON.parse(process.env.FIRE_BASE_CONFIG)
+  rawConfig = JSON.parse(process.env.FIRE_BASE_CONFIG || ``)
   if (rawConfig && rawConfig.serviceAccount)
     throw new Error(
       `[FIREBASE ERROR] The firebase service account should not be used on the frontend.`
     )
-} catch (err) {
-  console.log(`------- FIREBASE PARSE ERROR -------`)
-  console.log(err.message)
+}
+catch (err:any) {
+  err?.message
+    ? console.log(`[FIREBASE PARSE ERROR]`, err?.message)
+    : console.log(`[FIREBASE PARSE ERROR]`, err)
 }
 
 const getConfig = () => rawConfig && setupAuthProviders(rawConfig)
@@ -94,9 +109,37 @@ firebaseApp &&
  */
 export const getUserToken = async (forceRefresh = true) => {
   return (
-    (await firebaseApp) && firebaseAuth.currentUser.getIdToken(forceRefresh)
+    (await firebaseApp)
+      && firebaseAuth?.currentUser?.getIdToken?.(forceRefresh)
   )
 }
+
+/**
+ * Sets up a timer to auto-refresh the users auth token
+ * This ensures they are not auto logged out every hour
+ */
+export const autoRefreshUserToken =<T extends Record<string, any>>(
+  cb:(params:T, refresh?:boolean) => Promise<any>,
+  params:T
+) => {
+
+  /**
+  * If this works, then can remove interval below
+  * Should be called after the user have validated
+  */
+  // @ts-ignore
+  //firebaseAuth?.currentUser?._startProactiveRefresh()
+
+  // Force refresh the user's auth token every 30min
+  return setInterval(async () => {
+    await cb?.(params, true)
+    // TODO: also need to callback end and re-validate then token
+    // So we can get a new JWT
+  }, 60000 * 30)
+
+}
+
+
 
 /**
  * Gets provider metadata for firebase modules

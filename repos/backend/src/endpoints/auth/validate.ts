@@ -1,4 +1,7 @@
-import type { Response, Request } from 'express'
+import type { Request } from 'express'
+import type { TRouteMeta, TBEBodyReq, TBEResp } from '@GBE/types'
+import type { TValidateUser } from '@GBE/services/firebase'
+
 
 import { hashString } from '@keg-hub/jsutils'
 import {authService} from '@GBE/services/firebase'
@@ -6,10 +9,21 @@ import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { generateTokens } from '@GBE/utils/generateTokens'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 
+
+export type TValidateReq = TBEBodyReq<TValidateUser>
+export type TValidateResp = {
+  id: string;
+  jwt: string;
+  refresh: string;
+  username: string;
+  provider: string;
+  status:TRouteMeta
+}
+
 /**
  * Validates the required authentication information exists
  */
-export const validate = async (req:Request, res:Response) => {
+export const validate = async (req:TValidateReq, res:TBEResp<TValidateResp>) => {
   const { conductor } = req.app.locals
 
   const {
@@ -26,10 +40,9 @@ export const validate = async (req:Request, res:Response) => {
   if (!id || !username || !token || !provider)
     throw new Error(`Provider metadata is unknown. Please sign in again`)
 
-  const config = req.app.locals.config.server
-  
+  const config = req.app.locals.config
   res.locals.subdomain = hashString(`${username}-${config?.conductor?.hashKey}`)
-  
+
   // Containers are based on the subdomain generated from username
   // It's important that the subdomain exists here
   // Before calling the conductor.status method
@@ -44,7 +57,7 @@ export const validate = async (req:Request, res:Response) => {
   } as Partial<Request>, res.locals.subdomain)
 
   // First generate tokens for accessing conductor form the frontend
-  const jwtTokens = generateTokens(config.jwt, {
+  const jwtTokens = generateTokens(config.server.jwt, {
     token,
     status,
     userId: id,
@@ -54,7 +67,11 @@ export const validate = async (req:Request, res:Response) => {
   })
 
 
-  return apiRes(res, {...jwtTokens, id, username, provider, status }, 200)
+  return apiRes<TValidateResp>(
+    res,
+    {...jwtTokens, id, username, provider, status },
+    200
+  )
 }
 
 
