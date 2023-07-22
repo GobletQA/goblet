@@ -31,8 +31,8 @@
       "@GBE/*": ["repos/backend/src/*"],
       "@GBE/Root": ["repos/backend/"],
 
-      "@GCD/configs": ["repos/conductor/configs"],
-      "@GCD/configs/*": ["repos/conductor/configs/*"],
+      "@GCD/Configs": ["repos/conductor/configs"],
+      "@GCD/Configs/*": ["repos/conductor/configs/*"],
       "@GCD": ["repos/conductor/src"],
       "@GCD/*": ["repos/conductor/src/*"],
 
@@ -97,19 +97,6 @@
       "@GTU/Types/*": ["repos/testUtils/src/types/*"],
       "@GTU": ["repos/testUtils/src"],
 
-      "@GTasks": ["./tasks"],
-      "@GTasks/*": ["./tasks/*"],
-      "@GLogs/*": ["../../logs/*"],
-      "@GRepos/*": ["../../repos/*"],
-      "@GConfigs/*": ["../../configs/*"],
-      "@GEnv": ["../shared/src/environment/environment"],
-      "@GEnv/values": ["../shared/src/environment/values"],
-      "@GEnv/secrets": ["../shared/src/environment/secrets"],
-      "@GException": ["repos/shared/src/exceptions/Exception"],
-      "@GEnvironment": ["../shared/src/environment/environment"],
-      "@GEnvironment/values": ["../shared/src/environment/values"],
-      "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
-
       "@GWF/git": [ "repos/workflows/src/git" ],
       "@GWF/goblet": ["repos/workflows/src/goblet"],
       "@GWF/goblet/*": ["repos/workflows/src/goblet/*"],
@@ -117,6 +104,16 @@
       "@GWF/types/*": ["repos/workflows/src/types/*"],
       "@GWF": ["repos/workflows/src"],
       "@GWF/*": ["repos/workflows/src/*"],
+
+      "@GTasks": ["tasks"],
+      "@GTasks/*": ["tasks/*"],
+      "@GLogs/*": ["logs/*"],
+      "@GRepos/*": ["repos/*"],
+      "@GConfigs/*": ["configs/*"],
+      "@GException": ["repos/shared/src/exceptions/Exception"],
+      "@GEnvironment": ["repos/shared/src/environment/environment"],
+      "@GEnvironment/values": ["repos/shared/src/environment/values"],
+      "@GEnvironment/secrets": ["repos/shared/src/environment/secrets"],
 
       "@gobletqa/backend": ["repos/backend/src"],
       "@gobletqa/backend/*": ["repos/backend/src/*"],
