@@ -1,6 +1,6 @@
 
-import type { ITransform } from "@GEX/types"
-import type { TExecCtx } from "@GEX/types"
+import type { TExTransformOpts, TExecCtx } from "@gobletqa/exam"
+import { ExamTransformer } from "@gobletqa/exam"
 
 import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 
@@ -9,8 +9,10 @@ type TFeatureData = {
   steps?:TParkinRunStepOptsMap
 }
 
+export class FeatureTransformer implements ExamTransformer {
 
-export class FeatureTransformer implements ITransform {
+  options:TExTransformOpts={}
+
   transform = async (content:string, ctx: TExecCtx<TFeatureData>) => {
 
   }

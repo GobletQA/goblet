@@ -1,13 +1,12 @@
 import type {
-  IEnvironment,
+  IExEnvironment,
   TEnvironmentCfg,
   TEnvironmentOpts,
 } from '@GEX/types'
 
-import { Errors } from '@GEX/constants/errors'
 import { deepMerge, emptyObj } from '@keg-hub/jsutils'
 
-export class BaseEnvironment implements IEnvironment {
+export class ExamEnvironment implements IExEnvironment {
 
   options:TEnvironmentOpts = {
     envs: {}

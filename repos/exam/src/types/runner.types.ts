@@ -1,10 +1,13 @@
-import type { TExecCtx } from "@GEX/types"
+import type { TExCtx, TExData } from "@GEX/types"
 import type { IConstructable } from './helpers.types'
 import type { TTransformResp } from './transformer.types'
 import type { TPlayerEventData } from '@gobletqa/shared/types'
 
-export interface IBaseRunner {
-  run(content:TTransformResp, ctx:TExecCtx): Promise<TPlayerEventData>
+export interface IExamRunner {
+  run<T extends TExData=TExData, R=unknown>(
+    content:TTransformResp<R>,
+    ctx:TExCtx<T>
+  ): Promise<TPlayerEventData>
   cancel: () => void|Promise<void>
   cleanup: () => void|Promise<void>
 
@@ -16,6 +19,6 @@ export interface IBaseRunner {
 }
 
 
-export type IRunner<I extends IBaseRunner=IBaseRunner> = I & IBaseRunner
+export type IExRunner<I extends IExamRunner=IExamRunner> = I & IExamRunner
 
-export type TRunnerCls = IConstructable<IRunner>
+export type TRunnerCls = IConstructable<IExRunner>

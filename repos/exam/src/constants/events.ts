@@ -13,6 +13,7 @@ export const ExamEvtNames = {
   results: `PLAY-RESULTS`,
   started: `PLAY-STARTED`,
   canceled: `PLAY-CANCELED`,
+  stopped: `PLAY-STOPPED`,
 }
 
 const onEvent = (mainEvt:Partial<TExamEvt>) => {
@@ -38,25 +39,25 @@ export const ExamEvents:TExamEvts = {
     name: ExamEvtNames.suiteDone,
     message: `Exam - Suite Done`,
   }),
-  ended: {
-    message: `Exam stopped`,
-    name: ExamEvtNames.ended,
+  started: {
+    message: `Exam started`,
+    name: ExamEvtNames.started,
   },
-  alreadyPlaying: {
-    name: ExamEvtNames.error,
-    message: `Exam already inprogress`
+  stopped: onEvent({
+    name: ExamEvtNames.stopped,
+    message: `Exam stopped`,
+  }),
+  ended: {
+    message: `Exam finished`,
+    name: ExamEvtNames.ended,
   },
   canceled: {
     name: ExamEvtNames.canceled,
     message: `Exam canceled`,
   },
-  noPageInstance: {
+  alreadyPlaying: {
     name: ExamEvtNames.error,
-    message: `A Browser page instance is required, but does not exist`
-  },
-  started: {
-    message: `Exam started`,
-    name: ExamEvtNames.started,
+    message: `Exam already inprogress`
   },
   missingTransformer: {
     message: `Missing transform for file type`,
@@ -70,16 +71,13 @@ export const ExamEvents:TExamEvts = {
     message: `Missing environment for file type`,
     name: ExamEvtNames.error,
   },
-  missingType: {
-    message: `Missing {type} for file type`,
-    name: ExamEvtNames.error,
-  },
-  missingContext: {
-    name: ExamEvtNames.error,
-    message: `Playing context does not exist`
-  },
   dynamic: onEvent({
     message: `Exam event`,
     name: ExamEvtNames.general,
-  })
+  }),
+  missingType: (evt:Partial<TExamEvt>) => onEvent({
+    name: ExamEvtNames.error,
+    ...evt,
+    message: `Missing ${evt?.type || ``} for file type ${evt?.fileType || ``}`
+  })({}),
 }

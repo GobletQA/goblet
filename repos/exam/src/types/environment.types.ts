@@ -1,6 +1,6 @@
-import { IRunner } from './runner.types'
+import { IExRunner } from './runner.types'
 import { IConstructable } from './helpers.types'
-import {BaseRunner} from '@GEX/runners/BaseRunner'
+import { ExamRunner } from '@GEX/runner/ExamRunner'
 
 export type TEnvironmentEnvVal = string|number|boolean|undefined|null
 
@@ -19,7 +19,6 @@ export type TEnvironmentOpts = {
   envs?:Record<string, string|number|boolean|undefined|null>
 }
 
-
 export type TEnvironmentCfg = {
   testGlobals?:string[]
   worldSavePaths?:string[]
@@ -27,14 +26,13 @@ export type TEnvironmentCfg = {
   options?:TEnvironmentOpts
 }
 
-
-export interface IBaseEnvironment {
+interface IExamEnvironment {
   options:TEnvironmentOpts
   setupGlobals(...args:any[]):void|Promise<void>
   resetGlobals(...args:any[]):void|Promise<void>
-  cleanup(runner:IRunner<BaseRunner>, ...args:any[]):void|Promise<void>
+  cleanup(runner:IExRunner<ExamRunner>, ...args:any[]):void|Promise<void>
 }
 
-export type IEnvironment<I extends IBaseEnvironment=IBaseEnvironment> = I & IBaseEnvironment
+export type IExEnvironment<I extends IExamEnvironment=IExamEnvironment> = I & IExamEnvironment
 
-export type TEnvironmentCls = IConstructable<IEnvironment>
+export type TEnvironmentCls = IConstructable<IExEnvironment>

@@ -1,12 +1,12 @@
 import type {
   TDomScripts,
   TDomScriptOptions
-} from '@GEX/types'
+} from '@gobletqa/exam'
 
-import { RunnerErr } from '@GEX/utils/error'
-import mouseTracking from './scripts/mouseTracking'
-import { MethodContentSplit } from '@GEX/constants/values'
 import {emptyObj} from '@keg-hub/jsutils'
+import { RunnerErr } from '@gobletqa/exam'
+import { MethodContentSplit } from '@GSC/constants'
+import mouseTracking from './scripts/mouseTracking'
 
 
 export type TDomScriptName = `mouseTracking`|string

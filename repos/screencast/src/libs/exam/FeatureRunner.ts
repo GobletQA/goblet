@@ -1,16 +1,17 @@
-import type { Exam } from '@GEX/exam'
-import type { IRunner, TExecCtx } from '@GEX/types'
+import type { Exam, TExecCtx } from "@gobletqa/exam"
+import {
+  RunnerErr,
+  ExamRunner,
+  ExamEvents,
+} from "@gobletqa/exam"
 
 import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type { TPlayerEventData, TPlayerTestEvent } from '@gobletqa/shared/types'
 
 import { Parkin } from '@ltipton/parkin'
-import { BaseRunner } from './BaseRunner'
-import { ExamEvents } from '@GEX/constants'
-import { RunnerErr } from '@GEX/utils/error'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { emptyObj, omitKeys } from '@keg-hub/jsutils'
-import { FeatureEnvironment } from '@GEX/environments/FeatureEnvironment'
+import { FeatureEnvironment } from './FeatureEnvironment'
 
 type RunContent = string | string[] | TFeatureAst | TFeatureAst[]
 
@@ -30,13 +31,14 @@ export type TRunnerOpts = {
  * Sets up the test environment to allow running tests in a secure context
  * Ensures the test methods exist on the global scope
  */
-export class FeatureRunner extends BaseRunner {
+export class FeatureRunner extends ExamRunner {
 
   /**
    * Player Class instance
    */
   PK:Parkin
   PTE:ParkinTest
+  isRunning?:boolean
 
   environment:FeatureEnvironment
 
@@ -50,8 +52,19 @@ export class FeatureRunner extends BaseRunner {
   constructor(exam:Exam, opts?:TRunnerOpts) {
     super(exam, opts)
 
+    this.isRunning = false
     this.environment = new FeatureEnvironment()
   }
+
+
+  /**
+   * Called when a page loads to check if mouse tracker should run
+   * Is called from within the browser context
+   */
+  onIsRunning = () => {
+    return this.isRunning
+  }
+
 
   /**
    * Runs the code passed to it via the exam

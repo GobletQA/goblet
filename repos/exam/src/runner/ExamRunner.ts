@@ -1,5 +1,5 @@
 import type { Exam } from '@GEX/exam'
-import type { IRunner } from '@GEX/types'
+import type { IExRunner } from '@GEX/types'
 
 import { Errors } from '@GEX/constants/errors'
 
@@ -16,7 +16,7 @@ export type TRunnerOpts = {
  * Sets up the test environment to allow running tests in a secure context
  * Ensures the test methods exist on the global scope
  */
-export class BaseRunner implements IRunner {
+export class ExamRunner implements IExRunner {
 
   exam:Exam
   exec = undefined
@@ -36,12 +36,12 @@ export class BaseRunner implements IRunner {
   }
   
   run = (...args:any[]) => {
-    Errors.Override(`BaseRunner.run`)
+    Errors.Override(`ExamRunner.run`)
     return undefined
   }
 
   cancel = (...args:any[]) => {
-    Errors.Override(`BaseRunner.cancel`)
+    Errors.Override(`ExamRunner.cancel`)
     return undefined
   }
 

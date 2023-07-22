@@ -12,3 +12,4 @@ export const AUTH_BYPASS_ROUTES = [
   `/repo/disconnect`,
 ]
 
+export const MethodContentSplit = `// ----- CONTENT-SPLIT ----- //`

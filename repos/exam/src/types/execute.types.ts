@@ -1,10 +1,11 @@
 import type { Exam } from "@GEX/exam"
 import type { TFileModel } from "@gobletqa/shared"
 import type { IConstructable } from './helpers.types'
-import type { TRunnerCls, IRunner } from './runner.types'
-import type { TTransformCls, ITransform } from './transformer.types'
-import type { TEnvironmentCls, IEnvironment } from './environment.types'
+import type { TRunnerCls, IExRunner } from './runner.types'
+import type { TTransformCls, IExTransform } from './transformer.types'
+import type { TEnvironmentCls, IExEnvironment } from './environment.types'
 
+export type TExData = Record<string, any>
 
 export type TExecuteOptions = {
   slowMo?:number
@@ -15,41 +16,51 @@ export type TExecuteOptions = {
   [key:string]: any
 }
 
-export type TExecTransformers = {
+export type TExecuteTransformers = {
   [key:string]: TTransformCls
 }
 
-export type TExecRunners = {
+export type TExecuteRunners = {
   [key:string]: TRunnerCls
 }
 
-export type TExecEnvironments = {
+export type TExecuteEnvironments = {
   [key:string]: TEnvironmentCls
 }
 
-export type TExecBuiltRunners = Record<string, IRunner>
-export type TExecBuiltTransforms = Record<string, ITransform>
-export type TExecBuiltEnvironments = Record<string, IEnvironment>
+export type TExecuteBuiltRunners = Record<string, IExRunner>
+export type TExecuteBuiltTransforms = Record<string, IExTransform>
+export type TExecuteBuiltEnvironments = Record<string, IExEnvironment>
 
 export type TExecuteCfg = {
   exam:Exam
-  runners?:TExecRunners
   options:TExecuteOptions
-  transformers?:TExecTransformers
-  environments?:TExecEnvironments
+  runners?:TExecuteRunners
+  transformers?:TExecuteTransformers
+  environments?:TExecuteEnvironments
 }
 
-export type TExecRun<T extends Record<string, any>=Record<string, any>> = {
+export type TExRun<T extends TExData=TExData> = {
   loc?:string
   type?:string
   content?:string
   file?:TFileModel
-  runner?:IConstructable<IRunner>
-  transform?:IConstructable<ITransform>
-  environment?:IConstructable<IEnvironment>
+  runner?:IConstructable<IExRunner>
+  transform?:IConstructable<IExTransform>
+  environment?:IConstructable<IExEnvironment>
   data?: T
 }
 
-export type TExecCtx<T extends Record<string, any>=Record<string, any>> = TExecRun<T> & TExecuteOptions & {
-  exam:Exam
-}
+export type TExResolveOpts<T extends TExData=TExData> = TExecuteOptions
+  & TExRun<T>
+  & {
+    exam:Exam
+  }
+
+export type TExCtx<T extends TExData=TExData> = TExecuteOptions
+  & Omit<TExResolveOpts<T>, `runner`|`transform`|`environment`>
+  & {
+    exam:Exam
+    transform?:IExTransform
+    environment:IExEnvironment
+  }
