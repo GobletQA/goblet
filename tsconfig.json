@@ -1,8 +1,11 @@
 {
+  "parserOptions": {
+    "extraFileExtensions": ["json"]
+  },
   "compilerOptions": {
     "target": "esnext",
-    "module": "commonjs",
-    "baseUrl": "./",
+    "module": "esnext",
+    "baseUrl": ".",
     "outDir": "./dist",
     "noEmit": false,
     "allowJs": true,
@@ -18,13 +21,32 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": [
-      "./repos/shared/src/types",
-      "./node_modules/@types"
-    ],
     "paths": {
+
+      "@GEX/constants": ["repos/exam/src/constants"],
+      "@GEX/constants/*": ["repos/exam/src/constants/*"],
+      "@GEX/services": ["repos/exam/src/services"],
+      "@GEX/services/*": ["repos/exam/src/services/*"],
+      "@GEX/types": ["repos/exam/src/types"],
+      "@GEX/types/*": ["repos/exam/src/types/*"],
+      "@GEX/utils": ["repos/exam/src/utils"],
+      "@GEX/utils/*": ["repos/exam/src/utils/*"],
+      "@GEX": ["repos/exam/src"],
+      "@GEX/*": ["repos/exam/src/*"],
+      "@GEXRoot": ["repos/exam"],
+
+
       "@GTasks": ["./tasks"],
       "@GTasks/*": ["./tasks/*"],
+      "@GLogs/*": ["../../logs/*"],
+      "@GRepos/*": ["../../repos/*"],
+      "@GConfigs/*": ["../../configs/*"],
+      "@GEnv": ["../shared/src/environment/environment"],
+      "@GEnv/values": ["../shared/src/environment/values"],
+      "@GEnv/secrets": ["../shared/src/environment/secrets"],
+      "@GEnvironment": ["../shared/src/environment/environment"],
+      "@GEnvironment/values": ["../shared/src/environment/values"],
+      "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
       "@gobletqa/screencast": [ "./repos/screencast/src" ],
       "@gobletqa/screencast/*": [ "./repos/screencast/src/*" ],
       "@gobletqa/shared": [ "./repos/shared/src" ],
@@ -42,6 +64,8 @@
     ".firebase",
     "certs",
     "repos/**/dist",
+    "repos/**/build",
+    "repos/**/node_modules",
     "docs",
     "logs",
     "scripts",

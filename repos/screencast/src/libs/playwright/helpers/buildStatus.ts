@@ -1,7 +1,7 @@
 import type { EBrowserName, EBrowserType, TBrowserStatus } from '@GSC/types'
 import { capitalize } from '@keg-hub/jsutils'
-import { browserStatus } from '@GSC/constants'
 import { getBrowserType } from './getBrowserType'
+import { browserStatus } from '@gobletqa/shared/constants/playwright'
 
 /**
  * Builds the status message for the browser type

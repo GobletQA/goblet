@@ -1,8 +1,8 @@
 import type { EBrowserType, EBrowserName } from '@GSC/types'
 
-import { browserMap, defaultBrowser } from '@GSC/constants'
 import { Logger } from '@GSC/utils/logger'
 import { exists, isEmpty } from '@keg-hub/jsutils'
+import { defaultBrowser, browserMap } from '@gobletqa/shared/constants'
 
 /**
  * Checks the passed in browserType to ensure it the correct name

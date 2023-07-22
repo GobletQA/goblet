@@ -1,8 +1,8 @@
 import type { TBrowserProcs } from '@GSC/types'
 
-import { browserNames } from '@GSC/constants'
 import { findProc } from '../../proc/findProc'
 import { limbo, exists } from '@keg-hub/jsutils'
+import { browserNames } from '@gobletqa/shared/constants'
 
 /**
  * Gets the current running status of browser server the process

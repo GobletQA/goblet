@@ -3,13 +3,14 @@ import path from 'path'
 import { ETestType } from '../types'
 import { testUtilsDir } from '../paths'
 import { deepFreeze, keyMap } from '@keg-hub/jsutils'
+import { FullBrowserNames } from '@gobletqa/shared/constants'
 
 export type TTaskConstants = {
   PWDebug: typeof PWDebug
   browsers: typeof Browsers
   testTypes: typeof TestTypes
   envFilter: typeof EnvFilter
-  browserNames: typeof BrowserNames
+  browserNames: typeof FullBrowserNames
   jestConfigMap: typeof JestConfigMap
 }
 
@@ -29,7 +30,6 @@ export const Browsers = {
   webkit: `--webkit`,
 }
 
-export const BrowserNames = [`chromium`, `firefox`, `webkit`]
 export const JestConfigMap = {
   [ETestType.unit]: path.join(testUtilsDir, `src/jest/jest.unit.config.js`),
   [ETestType.feature]: path.join(testUtilsDir, `src/jest/jest.parkin.config.js`),
@@ -102,8 +102,8 @@ export const constants = deepFreeze<TTaskConstants>({
   browsers: Browsers,
   testTypes: TestTypes,
   envFilter: EnvFilter,
-  browserNames: BrowserNames,
   jestConfigMap: JestConfigMap,
+  browserNames: FullBrowserNames,
 })
 
 export {

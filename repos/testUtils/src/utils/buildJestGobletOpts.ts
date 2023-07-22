@@ -8,7 +8,7 @@ import type {
 import path from 'path'
 import { exists, toBool } from '@keg-hub/jsutils'
 import { ARTIFACT_TYPES } from '@gobletqa/shared/constants'
-import { canRecordVideo } from '@gobletqa/screencast/constants'
+import { canRecordVideo } from '@gobletqa/shared/constants/playwright'
 import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
 import {
   artifactSaveActive,

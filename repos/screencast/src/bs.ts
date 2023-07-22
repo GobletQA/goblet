@@ -1,9 +1,10 @@
 import '../resolveRoot'
 import type { EBrowserName, TBrowserConf } from '@GSC/types'
 
-import { defaultBrowser } from './constants'
 import { parseJSON, noOpObj } from '@keg-hub/jsutils'
+import { defaultBrowser } from '@gobletqa/shared/constants'
 import { newServer } from './libs/playwright/server/newServer'
+
 /**
  * Runs the browser server that browsers connect to via websocket
  */

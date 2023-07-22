@@ -1,8 +1,9 @@
 import type { Express } from 'express'
 import type { TSocketEvtCBProps } from '@GSC/types'
 
-import { PWLogFilter } from '@GSC/constants'
 import { WS_PW_LOG } from '@gobletqa/shared/constants/websocket'
+import { PWLogFilter } from '@gobletqa/shared/constants/playwright'
+
 
 export const tailBrowserLogs = (app:Express, { socket, Manager }:TSocketEvtCBProps) => {
 

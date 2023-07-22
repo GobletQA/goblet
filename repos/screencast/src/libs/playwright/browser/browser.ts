@@ -17,7 +17,7 @@ import { getBrowserType } from '../helpers/getBrowserType'
 import { getContextOpts } from '../helpers/getContextOpts'
 import { buildBrowserConf } from '../helpers/buildBrowserConf'
 import { checkInternalPWContext } from './checkInternalPWContext'
-import { GobletQAUrl, CreateBrowserRetry } from '@GSC/constants'
+import { GobletQAUrl, CreateBrowserRetry } from '@gobletqa/shared/constants/playwright'
 
 export type TStartBrowser = {
   initialUrl?:string

@@ -3,9 +3,9 @@ import { EBrowserType, EBrowserName } from '@GSC/types'
 import metadata from '../helpers/metadata'
 import { Logger } from '@GSC/utils/logger'
 import { limbo, wait } from '@keg-hub/jsutils'
-import { defaultBrowser } from '@GSC/constants'
-import { clearAllServers, clearServer, getServer } from './server'
 import { findProc, killProcAsync } from '../../proc'
+import { defaultBrowser } from '@gobletqa/shared/constants'
+import { clearAllServers, clearServer, getServer } from './server'
 
 /**
  * Looks for a process by name and try's to kill it

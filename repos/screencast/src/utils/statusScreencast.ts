@@ -38,8 +38,8 @@ export const statusScreencast = async (
   status.server = await statusServer()
 
   if (params.browser){
-    const { status:browserStatus } = await startBrowser({ browserConf: params.browser })
-    status.browser = browserStatus
+    const { status:bStatus } = await startBrowser({ browserConf: params.browser })
+    status.browser = bStatus
   }
 
   return status

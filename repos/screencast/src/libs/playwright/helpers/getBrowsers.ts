@@ -1,7 +1,7 @@
 import type { EBrowserName, TGetBrowsers } from '@GSC/types'
 import { EBrowserType } from '@GSC/types'
-import { browserNames, browserMap } from '@GSC/constants'
 import {eitherArr, noPropArr, isStr} from '@keg-hub/jsutils'
+import { browserNames, browserMap } from '@gobletqa/shared/constants'
 
 /**
  * Creates an array of browsers relative the passed params object properties

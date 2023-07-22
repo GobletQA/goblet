@@ -10,10 +10,10 @@ import type {
 import { Logger } from '@GSC/utils/logger'
 import { EAstObject } from '@ltipton/parkin'
 import { Repo } from '@gobletqa/shared/repo/repo'
-import { PWEventErrorLogFilter } from '@GSC/constants'
-import { capitalize, emptyArr, isArr } from '@keg-hub/jsutils'
+import { capitalize, emptyArr } from '@keg-hub/jsutils'
 import { playBrowser } from '@GSC/libs/playwright/browser/playBrowser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { PWEventErrorLogFilter } from '@gobletqa/shared/constants/playwright'
 
 const getEventParent = (evtData:TPlayerTestEvent) => {
   if(!evtData?.id) return
