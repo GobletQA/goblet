@@ -86,8 +86,8 @@ export class AuthApi {
     await localStorage.setUser(omitKeys({...params, ...user}, [`token`, `pat`]))
     new GitUser(user as TUserState)
 
-    if(!this.refreshTimer)
-      this.refreshTimer = autoRefreshUserToken(this.validate.bind(this), params)
+    // if(!this.refreshTimer)
+    //   this.refreshTimer = autoRefreshUserToken(this.validate.bind(this), params)
 
     return status
   }

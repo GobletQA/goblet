@@ -136,7 +136,6 @@ export const autoRefreshUserToken =<T extends Record<string, any>>(
     // TODO: also need to callback end and re-validate then token
     // So we can get a new JWT
   }, 60000 * 30)
-  // }, 30000)
 
 }
 
