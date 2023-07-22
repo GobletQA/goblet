@@ -4,19 +4,36 @@ import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { resError } from '@gobletqa/shared/express/resError'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
 import { validateRefreshToken } from '@GBE/utils/validateRefreshToken'
+import {authService} from '@GBE/services/firebase'
 
 /**
  * Validates the required authentication information exists
  */
 export const refresh = async (req:JWTRequest, res:Response) => {
-  const { refreshToken } = req.body
+  const { refresh } = req.body
+
+  const {
+    id,
+    token,
+    provider,
+    username,
+  } = await authService.validate(req.body)
+
+
   const config = req.app.locals.config.server
 
-  const jwtTokens = validateRefreshToken(config.jwt, req.auth, refreshToken)
+  const updated = validateRefreshToken(config.jwt, {
+    ...req.auth,
+    id,
+    token,
+    username,
+    provider,
+  }, refresh)
+
   // TODO: Need to also refresh the firebase token via the firebase service
 
-  return jwtTokens
-    ? apiRes(res, jwtTokens, 200)
+  return updated
+    ? apiRes(res, updated, 200)
     : resError(`User session is expired, please sign in`, 401)
 }
 

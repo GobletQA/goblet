@@ -132,12 +132,11 @@ export const autoRefreshUserToken =<T extends Record<string, any>>(
 
   // Force refresh the user's auth token every 30min
   return setInterval(async () => {
-    console.log(`------- Refreshing User Token... -------`)
     await cb?.(params, true)
-    console.log(`------- Finished User Token Refresh -------`)
     // TODO: also need to callback end and re-validate then token
     // So we can get a new JWT
   }, 60000 * 30)
+  // }, 30000)
 
 }
 

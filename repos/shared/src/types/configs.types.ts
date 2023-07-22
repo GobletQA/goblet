@@ -1,6 +1,8 @@
 import type { Repo } from '@GSH/repo/repo'
 import type { TRepoPaths } from './repo.types'
+import type { TLogLevel } from './helpers.types'
 import type { TGFileTypes } from './files.types'
+
 import type { TRecorderOpts, TGScreencastConfig } from './screencast.types'
 
 export type TInternalPaths = {
@@ -17,6 +19,25 @@ export type TInternalPaths = {
   snapshotsTempDir: string
   reportsTempDir: string
   reportsTempFile: string
+}
+
+export type TJWTConfig = {
+  exp: string
+  secret: string
+  refreshExp: string
+  refreshSecret: string
+  algorithms: string[],
+  credentialsRequired: boolean
+}
+
+export type TServerConfig = {
+  port: number,
+  key?: string,
+  host?: string,
+  jwt: TJWTConfig
+  rateLimit: number
+  securePort: number
+  logLevel: TLogLevel
 }
 
 export type TDefGobletConfig = {

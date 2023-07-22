@@ -13,7 +13,7 @@ let _APP:Express
  *
  * @returns {Object} - Express App Object
  */
-const setupApp = (serverConf) => {
+const setupApp = <T extends Record<string, any>>(serverConf:T) => {
   !_APP.locals.config && (_APP.locals.config = deepMerge(getDefaultGobletConfig(), serverConf))
 
   return _APP
@@ -26,8 +26,8 @@ const setupApp = (serverConf) => {
  *
  * @returns {Object} - Express App Object
  */
-export const getApp = (serverConf=noOpObj) => {
+export const getApp = <T extends Record<string, any>>(serverConf:T=noOpObj as T) => {
   !_APP && (_APP = express())
 
-  return setupApp(serverConf)
+  return setupApp<T>(serverConf)
 }

@@ -22,11 +22,25 @@ export const generateTokens = (config:Record<any, any>, data:Record<any, any>) =
 
   // Don't include the token in the refresh data
   // Tokens are longer lived and more likely to get hacked
-  const { token, ...refreshData } = data
+  const {
+    iat,
+    token,
+    exp:_exp,
+    ...tokenData
+  } = data
+
 
   return {
     // Add the user data to the jwt token and refresh token
-    jwt: jwt.sign(data, secret, { algorithm: algorithms[0], expiresIn: exp }),
-    refresh: jwt.sign(refreshData, refreshSecret, { algorithm: algorithms[0], expiresIn: refreshExp }),
+    jwt: jwt.sign(
+      {...tokenData, token },
+      secret,
+      { algorithm: algorithms[0], expiresIn: exp
+    }),
+    refresh: jwt.sign(
+      tokenData,
+      refreshSecret,
+      { algorithm: algorithms[0], expiresIn: refreshExp
+    }),
   }
 }

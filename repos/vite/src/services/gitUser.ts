@@ -66,6 +66,8 @@ export class GitUser {
 
     Object.assign(this, data)
     __CURRENT_USER = this
+
+    // Auto set the user in the redux store for easy access
     upsertUser(__CURRENT_USER)
 
     return __CURRENT_USER

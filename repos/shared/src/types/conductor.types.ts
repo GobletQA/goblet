@@ -3,7 +3,7 @@ import type { TRouteMeta } from './routes.types'
 import type { TProxyConfig } from './proxy.types'
 import type { TPort, TPorts } from './ports.types'
 import type { Options } from 'http-proxy-middleware'
-import type { TLogLevel, TRestartPolicy } from './helpers.types'
+import type { TRestartPolicy } from './helpers.types'
 import type { ContainerCreateOptions, Container } from 'dockerode'
 import type { TControllerType, TControllerConfig } from './controller.types'
 
@@ -89,26 +89,6 @@ export type TDockerConfig = TControllerConfig & {
 export type TValidationConfig = {
   key: string
   keyHeader: string
-}
-
-export type TJWTConfig = {
-  exp: string
-  secret: string
-  refreshExp: string
-  refreshSecret: string
-  algorithms: string[],
-  credentialsRequired: boolean
-}
-
-export type TServerConfig = {
-  port: number,
-  key?: string,
-  host?: string,
-  jwt: TJWTConfig
-  rateLimit: number
-  securePort: number
-  logLevel: TLogLevel
-  validation?: TValidationConfig
 }
 
 export type TScreencastConf = {

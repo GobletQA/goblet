@@ -20,13 +20,22 @@ export const validateRefreshToken = (
   try {
     const decoded = jwt.verify(refreshToken, refreshSecret) as any
 
-    return decoded.userId === user.userId &&
-      decoded.username === user.username &&
-      decoded.provider === user.provider &&
-      generateTokens(config, user)
+    const generated = decoded.userId === user.userId
+      && decoded.username === user.username
+      && decoded.provider === user.provider
+      && decoded.subdomain === user.subdomain
+      && generateTokens(config, user)
+
+    return {
+      ...generated,
+      ...decoded
+    }
 
   }
   catch(err){
+    console.log(`Error in refresh...`)
+    console.log(err)
+    
     return false
   }
 }

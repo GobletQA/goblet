@@ -30,10 +30,36 @@ export class AuthApi {
   clearRefreshTimer = () => {
     if(!this.refreshTimer) return
 
+    console.log(`Clear refresh timer...`)
     clearTimeout(this.refreshTimer)
 
     this.refreshTimer = undefined
   }
+
+  // refresh = async (params:Partial<GitUser>) => {
+  //   const idToken = await getUserToken(true)
+  //   if(!idToken) return await signOutAuthUser()
+
+  //   const resp = await apiRequest<TValidateResp>({
+  //     url: `${this.authPath}/refresh`,
+  //     method: HttpMethods.POST,
+  //     params: {...params, idToken },
+  //   })
+
+  //   const {
+  //     jwt,
+  //     user,
+  //   } = await validateResp(resp)
+
+  //   await localStorage.setJwt(jwt)
+  //   await localStorage.setUser(omitKeys({...params, ...user}, [`token`, `pat`]))
+
+  //   if(!this.refreshTimer)
+  //     this.refreshTimer = autoRefreshUserToken(this.refresh.bind(this), params)
+
+
+  //   return params
+  // }
 
   validate = async (params:TValidateUserReq, __intervalRefresh?:boolean) => {
     const idToken = await getUserToken(__intervalRefresh)
@@ -57,11 +83,11 @@ export class AuthApi {
     await localStorage.setJwt(jwt)
 
     // Remove user token when saving to local storage
-    await localStorage.setUser(omitKeys(params, [`token`, `pat`]))
+    await localStorage.setUser(omitKeys({...params, ...user}, [`token`, `pat`]))
     new GitUser(user as TUserState)
 
     if(!this.refreshTimer)
-      this.refreshTimer = autoRefreshUserToken(this.validate, params)
+      this.refreshTimer = autoRefreshUserToken(this.validate.bind(this), params)
 
     return status
   }
