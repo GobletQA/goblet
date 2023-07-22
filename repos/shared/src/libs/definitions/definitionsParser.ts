@@ -1,6 +1,5 @@
-import type { Repo } from '../../repo/repo'
 import type { TStepDef } from '@ltipton/parkin'
-import type { TDefinitionFileModel } from '../../types'
+import type { Repo, TDefinitionFileModel } from '@GSH/types'
 
 import fs from 'fs'
 import { Logger } from '@GSH/libs/logger'

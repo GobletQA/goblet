@@ -1,5 +1,4 @@
-import type { Repo } from '../repo/repo'
-import type  { TFileModel } from '../types'
+import type { Repo, TFileModel } from '@GSH/types'
 
 import fs from 'fs'
 import path from 'path'

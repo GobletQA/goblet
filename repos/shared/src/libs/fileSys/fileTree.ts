@@ -1,5 +1,4 @@
-import type { Repo } from '../../repo/repo'
-import type { TRootPaths } from '../../types'
+import type { TRootPaths, Repo } from '@GSH/types'
 
 import fs from 'fs'
 import path from 'path'

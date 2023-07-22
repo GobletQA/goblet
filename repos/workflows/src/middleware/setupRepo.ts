@@ -1,12 +1,12 @@
+import type { TGitOpts } from '@GWF/types'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { Express, Response, NextFunction } from 'express'
 
-import { Repo } from '@GSH/repo/repo'
-import { asyncWrap } from '@GSH/express'
-import { AppRouter } from '@GSH/express/appRouter'
+import { Repo } from '@GWF/repo/repo'
+import { asyncWrap } from '@gobletqa/shared/express'
 import { pickKeys, deepMerge } from '@keg-hub/jsutils'
 import { TWFGobletConfig } from '@gobletqa/workflows/types'
-
+import { AppRouter } from '@gobletqa/shared/express/appRouter'
 
 /**
  * Gets the git keys off the request for all request types
@@ -31,7 +31,7 @@ export const loadRepoFromReq = async (
     throw new Error(`Endpoint requires a locally mounted path, I.E. /repos/:repo-name/*`)
 
   const { iat, exp, ...user } = req.auth
-  const { repo } = await Repo.status(config, { ...repoGit, ...user })
+  const { repo } = await Repo.status(config, { ...repoGit, ...user } as TGitOpts)
 
   if (!repo) throw new Error(`Requested repo does not exist`)
 

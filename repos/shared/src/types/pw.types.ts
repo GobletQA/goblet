@@ -1,7 +1,7 @@
 import type { Express } from 'express'
 
 // Exported from screencast/src/types
-import type { TRepo } from './repo.types'
+import type { TRepo } from './workflows.types'
 import type { TFileModel } from './models.types'
 import type { Automate } from '@gobletqa/screencast'
 import type { TSocketEvtCBProps } from './socket.types'
@@ -127,7 +127,7 @@ export type TPWBrowser = {
   context?: TBrowserContext
 }
 
-export type TPWComponents = TPWBrowser & {
+export type TPWComponents = Omit<TPWBrowser, `context`> & {
   page: TBrowserPage
   context: TBrowserContext
   status?: TBrowserStatus
@@ -160,10 +160,10 @@ export type TBrowserAction = {
 }
 
 export type TSetBrowserDefaults = {
-  repo:TRepo,
-  url?:boolean
   headers?:boolean
+  url?:boolean|string
   browserConf:TBrowserConf
+  repo:Pick<TRepo, `world`>
   pwComponents?:TPWComponents
 }
 

@@ -5,8 +5,8 @@
  */
 
 import { isNum } from '@keg-hub/jsutils'
+import { getParkinInstance } from './instance'
 import { jasmineReporter } from '@GTU/Reports/jasmineReporter'
-import { getParkinInstance } from '@gobletqa/shared/libs/parkin'
 
 /**
  * Global helper to allow re-using the same parking instance for each test

@@ -1,4 +1,4 @@
-import type { Repo } from '@GSH/repo/repo'
+import type { Repo } from './workflows.types'
 import type { TRepoPaths } from './repo.types'
 import type { TLogLevel } from './helpers.types'
 import type { TGFileTypes } from './files.types'

@@ -1,10 +1,12 @@
 import type {
   TStepCtx,
   TBrowser,
+  EBrowserName,
   TBrowserPage,
+  TPWComponents,
   TBrowserContext,
   TBrowserContextOpts,
-  TContextStorageState
+  TContextStorageState,
 } from '@GTU/Types'
 
 import os from 'os'
@@ -39,7 +41,7 @@ export const setupBrowser = async () => {
   const {
     type,
     browserConf,
-  } = await metadata.read(GOBLET_BROWSER)
+  } = await metadata.read(GOBLET_BROWSER as EBrowserName)
 
   const parkin = global.getParkinInstance()
   const gCtx = get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
@@ -192,9 +194,9 @@ export const restartContext = async (ctx:TStepCtx) => {
   const page = await getPage()
   setBrowserDefaults({
     url,
-    world,
+    repo: { world },
     browserConf: global.browser.__goblet,
-    pwComponents: { context, page }
+    pwComponents: { context, page } as TPWComponents
   })
 
 }

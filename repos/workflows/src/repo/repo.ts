@@ -1,3 +1,4 @@
+import type { LatentRepo } from './latentRepo'
 import type { TWorldConfig } from '@ltipton/parkin'
 import type { TProviderData } from './getProviderData'
 import type {
@@ -19,6 +20,7 @@ import type {
 
 import { getWorld } from './world'
 import { Parkin } from '@ltipton/parkin'
+import { latentRepo } from './latentRepo'
 import { emptyObj, } from '@keg-hub/jsutils'
 import { getProviderData } from './getProviderData'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
@@ -220,6 +222,7 @@ export class Repo {
 
 
   name:string
+  latent:LatentRepo
   environment:string
   fileTypes:TFileTypes
   recorder: TRecorderOpts
@@ -249,6 +252,7 @@ export class Repo {
      */
     this.parkin = new Parkin(this.world)
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)
+    this.latent = latentRepo
 
   }
 

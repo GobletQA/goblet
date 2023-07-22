@@ -1,11 +1,10 @@
-import type { Repo } from '@GSH/repo/repo'
+import type { Repo } from '@GSH/types'
 import type { TDefGobletConfig, TFileModel } from '../../types'
 
 import os from 'os'
 import path from 'path'
 import fs from 'fs-extra'
 import { Exception } from '@GException'
-import { latentRepo } from '@GSH/repo/latentRepo'
 import { loadReport } from '@GSH/utils/loadReport'
 import { loadFeature } from '@GSH/libs/features/features'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
@@ -278,7 +277,7 @@ export const getGobletFile = async (
     return await loadReport(repo, fullPath, baseDir)
 
   const [_, content] = envFile
-    ? await latentRepo.getFile({ repo, location })
+    ? await repo?.latent?.getFile({ repo, location })
     : await readFile(fullPath)
 
   if(envFile || shouldReloadWorld(repo, fullPath))
@@ -386,7 +385,7 @@ export const saveGobletFile = async (
   // TODO: Need to check if this is the wold file
   // Then ensure extra properties are not added to it
   const [err, success] = envFile
-    ? await latentRepo.saveFile({ repo, content, location })
+    ? await repo?.latent?.saveFile({ repo, content, location })
     : await writeFile(saveLocation, content)
 
   if (err)

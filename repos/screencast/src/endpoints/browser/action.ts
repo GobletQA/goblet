@@ -7,8 +7,8 @@ import { actionBrowser } from '@GSC/libs/playwright'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { loadRepoFromReq } from '@gobletqa/shared/middleware/setupRepo'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { loadRepoFromReq } from '@gobletqa/workflows/middleware/setupRepo'
 
 /**
  * Execute an action on a playwright component ( browser, context, page )

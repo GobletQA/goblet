@@ -8,7 +8,7 @@ import type {
 } from '@GSC/types'
 
 
-import {emptyObj} from '@keg-hub/jsutils'
+import {emptyObj, isStr} from '@keg-hub/jsutils'
 import { getPWComponents } from '@GSC/libs/playwright/browser/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 import {
@@ -18,16 +18,18 @@ import {
   saveContextStorageState,
 } from '@gobletqa/test-utils/playwright/browserCookie'
 
+type TRepoWorld = Pick<TRepo, `world`>
+
 export type TSetContextSettings = {
-  repo?:TRepo
+  repo?:TRepoWorld
   headers?:boolean
   context?:TBrowserContext
 }
 
 export type TSetPageSettings = {
-  repo?:TRepo
-  url?:boolean
+  repo?:TRepoWorld
   page?:TBrowserPage
+  url?:boolean|string
 }
 
 // TODO: need to investigate, needs cleaned up a bit
@@ -94,7 +96,9 @@ const setPageSettings = async ({
      // Add page settings here
   }
 
-  const appUrl = repo?.world?.url || repo?.world?.app?.url
+  const appUrl = isStr(url) && url
+    || repo?.world?.url
+    || repo?.world?.app?.url
 
   url !== false
     && appUrl

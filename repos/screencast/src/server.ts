@@ -14,7 +14,7 @@ import {
   setupServerListen,
   validateUser,
 } from '@gobletqa/shared/middleware'
-import { setupRepo } from '@gobletqa/shared/middleware/setupRepo'
+import { setupRepo } from '@gobletqa/workflows/middleware/setupRepo'
 
 
 /**

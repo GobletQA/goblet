@@ -1,4 +1,4 @@
-import type { Repo } from '../repo'
+import type { Repo } from './workflows.types'
 import type { Express, Request } from 'express'
 import type { TTokenUser } from './user.types'
 import type { TDefGobletConfig } from './configs.types'
