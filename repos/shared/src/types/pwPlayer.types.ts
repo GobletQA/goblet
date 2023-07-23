@@ -1,8 +1,8 @@
-import type { TRepo } from './repo.types'
+import type { TRepo } from './workflows.types'
 import { EAstObject, TRunResult } from '@ltipton/parkin'
 import type { TSocketMessageObj } from './socket.types'
-import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
+import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 
 // Exported from screencast/src/types
 import type { Player } from '@gobletqa/screencast'

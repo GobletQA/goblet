@@ -1,9 +1,9 @@
 import type { Exam } from '@GEX/Exam'
 import type {
-  TExData,
   TExCtx,
+  TExFileModelDef,
   IExTransform,
-  TExTransformOpts
+  TExTransformOpts,
 } from '@GEX/types'
 
 import { Errors } from '@GEX/constants/errors'
@@ -12,7 +12,7 @@ import { Errors } from '@GEX/constants/errors'
  * ExamTransformer - Base transformer, used for all files by default
  * Can be overridden by defining custom transforms in a config
  */
-export class ExamTransformer<R=unknown, T extends TExData=TExData> implements IExTransform<R, T> {
+export class BaseTransformer implements IExTransform<string> {
 
   options:TExTransformOpts={}
 
@@ -20,13 +20,18 @@ export class ExamTransformer<R=unknown, T extends TExData=TExData> implements IE
     this.options = {...this.options, ...opts}
   }
 
-  import = async <M>(ctx:TExCtx<T>):Promise<M> => {
-    Errors.Override(`ExamTransformer.import`)
-    return undefined
+  import = async (ctx:TExCtx) => {
+    return {
+      ast: {},
+      ext: ``,
+      name: ``,
+      content: ``,
+      location: ``,
+      fileType: ``,
+    } as TExFileModelDef
   }
 
-  transform = async (content:string, ctx:TExCtx<T>):Promise<R> => {
-    Errors.Override(`ExamTransformer.transform`)
+  transform = async (content:string, ctx:TExCtx):Promise<string> => {
     return undefined
   }
 }

@@ -36,8 +36,8 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
   }
   
   cache:TEnvironmentCache = {
-    processEnvs:{},
-    testGlobals:{}
+    globals: {},
+    processEnvs: {},
   }
 
   /**
@@ -92,7 +92,7 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
     const PTE = new ParkinTest(opts)
 
     this.testGlobals.forEach((item) => {
-      this.cache.testGlobals[item] = global[item]
+      this.cache.globals[item] = global[item]
       global[item] = PTE[item]
     })
     
@@ -112,10 +112,10 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
   * This ensures it doesn't clobber what ever already exists
   */
   setupGlobals = (runner:FeatureRunner, timeout?:number) => {
-    this.cache.testGlobals.page = (global as any).page
-    this.cache.testGlobals.expect = (global as any).expect
-    this.cache.testGlobals.context = (global as any).context
-    this.cache.testGlobals.browser = (global as any).browser
+    this.cache.globals.page = (global as any).page
+    this.cache.globals.expect = (global as any).expect
+    this.cache.globals.context = (global as any).context
+    this.cache.globals.browser = (global as any).browser
 
     ;(global as any).expect = expect
     // TODO: FIX ME
@@ -130,12 +130,12 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
   * This ensures it doesn't clobber what ever already exists
   */
   resetGlobals = () => {
-    ;(global as any).page = this.cache.testGlobals.page
-    ;(global as any).expect = this.cache.testGlobals.expect
-    ;(global as any).context = this.cache.testGlobals.context
-    ;(global as any).browser = this.cache.testGlobals.browser
+    ;(global as any).page = this.cache.globals.page
+    ;(global as any).expect = this.cache.globals.expect
+    ;(global as any).context = this.cache.globals.context
+    ;(global as any).browser = this.cache.globals.browser
 
-    this.testGlobals.forEach((item) => global[item] = this.cache.testGlobals[item])
+    this.testGlobals.forEach((item) => global[item] = this.cache.globals[item])
     
     // TODO: investigate overwriting all envs
     Object.entries(this.options.envs)
@@ -143,7 +143,7 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
         process.env[key] = this.cache.processEnvs[key]
       })
 
-    this.cache.testGlobals = {}
+    this.cache.globals = {}
     this.cache.processEnvs = {}
   }
 

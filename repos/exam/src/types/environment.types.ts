@@ -11,7 +11,7 @@ export type TEnvironmentEnvs = {
 }
 
 export type TEnvironmentCache = {
-  testGlobals: Record<string, any>
+  globals: Record<string, any>
   processEnvs: Record<string, string>
 }
 

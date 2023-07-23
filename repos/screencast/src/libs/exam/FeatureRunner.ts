@@ -37,7 +37,6 @@ export class FeatureRunner extends ExamRunner<TFeatureData, TRunContent> {
    */
   PK:Parkin
   PTE:ParkinTest
-  isRunning?:boolean
 
   environment:FeatureEnvironment
 
@@ -56,14 +55,6 @@ export class FeatureRunner extends ExamRunner<TFeatureData, TRunContent> {
     this.environment = ctx.environment as FeatureEnvironment
   }
 
-
-  /**
-   * Called when a page loads to check if mouse tracker should run
-   * Is called from within the browser context
-   */
-  onIsRunning = () => {
-    return this.isRunning
-  }
 
 
   /**

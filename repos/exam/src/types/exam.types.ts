@@ -1,18 +1,17 @@
 import type { Exam } from "@GEX/Exam"
 import type { TExData, TExecuteCfg, TExRun } from "./execute.types"
+import type { TExEventData } from './results.types'
 
 
-export type TExamEvt = {
-  type?:string
-  fileType?:string
+export type TExamEvt<T=TExEventData> = {
+  data?:T
   name:string
   message?:string
   isRunning?:boolean
-  // TODO: fix this
-  data?:any
 }
 
 type TInternalDynEvent =(evt:Partial<TExamEvt>) => TExamEvt
+type TInternalMissingEvent =(evt:Partial<TExamEvt>& { type?:string, fileType?:string }) => TExamEvt
 
 export type TExamEvts = {
   dynamic:TInternalDynEvent
@@ -21,7 +20,7 @@ export type TExamEvts = {
   specStart:TInternalDynEvent
   suiteDone:TInternalDynEvent
   suiteStart:TInternalDynEvent
-  missingType:TInternalDynEvent
+  missingType:TInternalMissingEvent
   [key:string]:TExamEvt
 }
 

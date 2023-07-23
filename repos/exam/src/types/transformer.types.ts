@@ -1,6 +1,6 @@
 import type { TExCtx, TExData } from "@GEX/types"
 import type { IConstructable } from './helpers.types'
-
+import type { TExFileAst, TExFileLoaded } from './file.types'
 
 export type TExTransformOpts = {
   [key:string]: any
@@ -9,6 +9,7 @@ export type TExTransformOpts = {
 export type TTransformResp<R=unknown> = R
 
 interface IExamTransform<R=unknown, T extends TExData=TExData> {
+  import<M extends TExFileAst=TExFileAst>(ctx:TExCtx<T>): Promise<TExFileLoaded<M>>
   transform(
     content:string,
     ctx:TExCtx<T>

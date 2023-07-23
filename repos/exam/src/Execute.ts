@@ -21,6 +21,9 @@ import type {
 import { Exam } from "@GEX/Exam"
 import { ExamEvents } from '@GEX/Events'
 import {emptyObj, omitKeys} from '@keg-hub/jsutils'
+import { BaseRunner } from '@GEX/runner/BaseRunner'
+import { BaseTransformer } from '@GEX/transformer/BaseTransformer'
+import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 
 type TExecuteTypes<T> = Record<string, T>
 type TExecuteExisting<T> = Record<string, T>
@@ -30,6 +33,7 @@ type TExecuteTypeInstance = IExRunner|IExTransform|IExEnvironment
 type TResolveOpts<T> = {
   type:string
   skip?:boolean
+  fallback?:IConstructable<T>
   override?:IConstructable<T>
   existing:TExecuteExisting<T>
   types:TExecuteTypes<IConstructable<T>>
@@ -98,7 +102,7 @@ export class Execute {
       if(!TypeClass){
         const built = ExamEvents.missingType({
           type,
-          fileType: file?.fileType
+          fileType: file?.fileType as string
         })
 
         this.exam.event(built)
@@ -130,6 +134,7 @@ export class Execute {
         type,
         override: environment,
         skip: opts.environment,
+        fallback: BaseEnvironment,
         existing: this.#environments,
         types: this.environmentTypes,
       })
@@ -143,6 +148,7 @@ export class Execute {
         type,
         override: transform,
         skip: opts.transform,
+        fallback: BaseTransformer,
         existing: this.#transforms,
         types: this.transformerTypes,
       })
@@ -155,6 +161,7 @@ export class Execute {
         type,
         override: runner,
         skip: opts.runner,
+        fallback: BaseRunner,
         existing: this.#runners,
         types: this.runnersTypes,
       })

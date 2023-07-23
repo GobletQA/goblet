@@ -65,7 +65,7 @@ export const __ExamEvents:TExamEvts = {
     message: `Exam event`,
     name: ExamEvtNames.general,
   }),
-  missingType: (evt:Partial<TExamEvt>) => onExDynEvent({
+  missingType: (evt:Partial<TExamEvt> & { type?:string, fileType?:string }) => onExDynEvent({
     name: ExamEvtNames.error,
     ...evt,
     message: `Missing ${evt?.type || ``} for file type ${evt?.fileType || ``}`

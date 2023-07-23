@@ -24,19 +24,30 @@ export class ExamRunner<
   debug?: boolean
   slowMo?: number
   timeout?: number
+  isRunning?:boolean
   globalTimeout?: number
 
   constructor(ctx:TExCtx<T>) {
     const { exam } = ctx
 
     this.exam = exam
+    this.isRunning = false
 
     if(ctx?.debug) this.debug = ctx.debug
     if(ctx?.slowMo) this.slowMo = ctx.slowMo
     if(ctx?.timeout) this.timeout = ctx.timeout
     if(ctx?.globalTimeout) this.globalTimeout = ctx.globalTimeout
   }
-  
+
+  /**
+   * Called when a page loads to check if mouse tracker should run
+   * Is called from within the browser context
+   */
+  onIsRunning = () => {
+    return this.isRunning
+  }
+
+
   run = (content:TTransformResp<R>, ctx:TExCtx<T>) => {
     Errors.Override(`ExamRunner.run`)
     return undefined

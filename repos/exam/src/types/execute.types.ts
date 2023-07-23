@@ -42,14 +42,16 @@ export type TExecuteCfg = {
 
 export type TExRun<T extends TExData=TExData> = {
   data?: T
-  loc?:string
-  type?:string
-  content?:string
-  file?:TFileModel
   runner?:IConstructable<IExRunner>
   transform?:IConstructable<IExTransform>
   environment?:IConstructable<IExEnvironment>
 }
+
+export type TExImportCtx<T extends TExData=TExData> = TExecuteOptions & {
+  data: T
+  exam:Exam
+}
+
 
 export type TExResolveOpts<T extends TExData=TExData> = TExecuteOptions
   & TExRun<T>
