@@ -39,7 +39,6 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/shared": "workspace:../shared",
     "@keg-hub/cli-utils": ">=0.8.0-alpha1",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",

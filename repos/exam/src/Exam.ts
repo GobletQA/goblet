@@ -9,9 +9,11 @@ import type {
 } from '@GEX/types'
 
 
+import { Loader } from '@GEX/Loader'
 import { Execute } from '@GEX/Execute'
 import { checkCall } from '@keg-hub/jsutils'
 import { ExamEvtNames } from '@GEX/constants'
+import { buildExecCfg } from '@GEX/utils/buildExecCfg'
 import { ExamEvents, addCustomEvents } from '@GEX/Events'
 
 /**
@@ -19,6 +21,10 @@ import { ExamEvents, addCustomEvents } from '@GEX/Events'
  */
 export class Exam {
 
+  // Cache the config, so we can init executor lazily
+  #config:TExamConfig
+
+  loader:Loader
   execute:Execute
   id:string = null
   canceled:boolean=false
@@ -30,7 +36,25 @@ export class Exam {
 
   constructor(config:TExamConfig, id:string) {
     this.id = id
-    this.setup(config)
+    this.loader = new Loader(this, config)
+    this.#config = config
+    this.#setEvents(config)
+  }
+
+
+  #setEvents = (config:Pick<TExamConfig, `onEvent`|`onCancel`|`onCleanup`|`events`>) => {
+    const {
+      events,
+      onEvent,
+      onCancel,
+      onCleanup,
+    } = config
+
+    if(onEvent) this.onEvents.push(onEvent)
+    if(onCancel) this.onCancel = onCancel
+    if(onCleanup) this.onCleanup = onCleanup
+
+    events && addCustomEvents(events)
   }
 
   /**
@@ -49,38 +73,22 @@ export class Exam {
     return this
   }
 
-  #setEvents = (config:Pick<TExamConfig, `onEvent`|`onCancel`|`onCleanup`|`events`>) => {
-    const {
-      events,
-      onEvent,
-      onCancel,
-      onCleanup,
-    } = config
-
-    if(onEvent) this.onEvents.push(onEvent)
-    if(onCancel) this.onCancel = onCancel
-    if(onCleanup) this.onCleanup = onCleanup
-
-    events && addCustomEvents(events)
-  }
-
   /**
-   * Initializes the recorder
-   * Ensures only the properties that are passed in are added to the Recorder 
+   * Initializes the Executor
+   * This is done lazily due to it being async
    * @member {Exam}
    */
-  setup = (config:TExamConfig) => {
-    const {
-      onEvent,
-      onCancel,
-      onCleanup,
-      ...rest
-    } = config
+  initExec = async (force?:boolean) => {
+    if(this.execute){
+      if(!force) return this.execute
+      await this.execute.cleanup()
+    }
 
-    this.#setEvents(config)
-    this.execute = this.execute || new Execute({...rest, exam: this })
-
-    return this
+    const execCfg = await buildExecCfg({
+      exam: this,
+      config: this.#config,
+    })
+    this.execute = new Execute(execCfg)
   }
 
   /**
@@ -89,6 +97,8 @@ export class Exam {
    */
   start = async <T extends TExData=TExData>(opts:TExamStartOpts<T>) => {
     try {
+  
+      await this.initExec()
   
       if(Exam.isRunning){
         this.event(ExamEvents.alreadyPlaying)

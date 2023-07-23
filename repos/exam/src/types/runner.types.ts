@@ -1,11 +1,10 @@
-import type { TExCtx, TExData } from "@GEX/types"
+import type { TExEventData } from './results.types'
 import type { IConstructable } from './helpers.types'
+import type { TExCtx, TExData } from "./execute.types"
 import type { TTransformResp } from './transformer.types'
-import type { TPlayerEventData } from '@gobletqa/shared/types'
 
-export type TExRunnerOpts = {
+export type TExRunnerCfg = {
   debug?: boolean
-  slowMo?: number
   timeout?: number
   globalTimeout?:number
   [key:string]: any
@@ -15,15 +14,15 @@ export interface IExamRunner<T extends TExData=TExData, R=unknown> {
   run(
     content:TTransformResp<R>,
     ctx:TExCtx<T>
-  ): Promise<TPlayerEventData>
+  ): Promise<TExEventData[]>
   cancel: () => void|Promise<void>
   cleanup: () => void|Promise<void>
 
-  onSpecStarted(result:TPlayerEventData):void
-  onSpecDone(result:TPlayerEventData):void
+  onSpecStarted(result:TExEventData):void
+  onSpecDone(result:TExEventData):void
 
-  onSuiteStarted(result:TPlayerEventData):void
-  onSuiteDone(result:TPlayerEventData):void
+  onSuiteStarted(result:TExEventData):void
+  onSuiteDone(result:TExEventData):void
 }
 
 

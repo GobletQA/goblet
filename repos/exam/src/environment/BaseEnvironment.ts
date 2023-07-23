@@ -80,10 +80,7 @@ export class BaseEnvironment implements IExEnvironment<BaseRunner> {
   }
 
   resetGlobals = () => {
-    ;(global as any).page = this.cache.globals.page
     ;(global as any).expect = this.cache.globals.expect
-    ;(global as any).context = this.cache.globals.context
-    ;(global as any).browser = this.cache.globals.browser
 
     this.testGlobals.forEach((item) => global[item] = this.cache.globals[item])
     

@@ -2,7 +2,30 @@ import { IExRunner } from './runner.types'
 import { IConstructable } from './helpers.types'
 import { ExamRunner } from '@GEX/runner/ExamRunner'
 
-export type TEnvironmentEnvVal = string|number|boolean|undefined|null
+export type TEnvironmentEnvVal = string
+  |number
+  |boolean
+  |undefined
+  |null
+  |string[]
+  |number[]
+  |boolean[]
+  |undefined[]
+  |null[]
+
+type TRecordRef<T=TEnvironmentEnvVal> = TEnvironmentEnvVal
+  | TEnvironmentEnvVal[]
+  | Record<string, TEnvironmentEnvVal>
+  | Record<string, TEnvironmentEnvVal>[]
+  | Record<string, T>
+  | Record<string, T>[]
+  | T
+  | T[]
+
+export type TEnvironmentEnvObj = TRecordRef<TRecordRef<TRecordRef>>
+export type TEnvironmentEnvArr = Array<TRecordRef<TRecordRef<TRecordRef>>>
+
+export type TSerializeObj = TEnvironmentEnvObj|TEnvironmentEnvArr
 
 export type TEnvironmentEnvs = {
   GOBLET_RUN_FROM_UI:TEnvironmentEnvVal
@@ -16,17 +39,16 @@ export type TEnvironmentCache = {
 }
 
 export type TEnvironmentOpts = {
-  envs?:Record<string, string|number|boolean|undefined|null>
+  envs?:Record<string, TEnvironmentEnvVal>
+  [key:string]:any
 }
 
 export type TEnvironmentCfg = {
-  testGlobals?:string[]
-  worldSavePaths?:string[]
-  omitTestResults?:string[]
   options?:TEnvironmentOpts
+  [key:string]:any
 }
 
-interface IExamEnvironment<R=ExamRunner> {
+export interface IExamEnvironment<R=ExamRunner> {
   options:TEnvironmentOpts
   setupGlobals(...args:any[]):void|Promise<void>
   resetGlobals(...args:any[]):void|Promise<void>

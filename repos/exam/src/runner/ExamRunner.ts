@@ -3,7 +3,6 @@ import type {
   TExCtx,
   TExData,
   IExRunner,
-  TExRunnerOpts,
   TTransformResp
 } from '@GEX/types'
 
@@ -20,9 +19,8 @@ export class ExamRunner<
 > implements IExRunner {
 
   exam:Exam
-  canceled:boolean
   debug?: boolean
-  slowMo?: number
+  canceled:boolean
   timeout?: number
   isRunning?:boolean
   globalTimeout?: number
@@ -34,7 +32,6 @@ export class ExamRunner<
     this.isRunning = false
 
     if(ctx?.debug) this.debug = ctx.debug
-    if(ctx?.slowMo) this.slowMo = ctx.slowMo
     if(ctx?.timeout) this.timeout = ctx.timeout
     if(ctx?.globalTimeout) this.globalTimeout = ctx.globalTimeout
   }

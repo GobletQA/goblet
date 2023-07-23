@@ -10,33 +10,35 @@ import type {
   IConstructable,
   TExecuteOptions,
   TExecuteRunners,
+  TExArrClsOptMap,
   TExecuteBuiltRunners,
   TExecuteEnvironments,
   TExecuteTransformers,
   TExecuteBuiltTransforms,
   TExecuteBuiltEnvironments,
+  TExEventData,
 } from '@GEX/types'
 
-
 import { Exam } from "@GEX/Exam"
+import { RunnerErr } from '@GEX/utils'
 import { ExamEvents } from '@GEX/Events'
+import { ExecuteOpts } from '@GEX/constants'
 import {emptyObj, omitKeys} from '@keg-hub/jsutils'
 import { BaseRunner } from '@GEX/runner/BaseRunner'
+import { isConstructor } from '@GEX/utils/isConstructor'
+import { resolveTypeClass } from "@GEX/utils/resolveTypeClass"
 import { BaseTransformer } from '@GEX/transformer/BaseTransformer'
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 
-type TExecuteTypes<T> = Record<string, T>
 type TExecuteExisting<T> = Record<string, T>
-type TExecuteTypeInstance = IExRunner|IExTransform|IExEnvironment
 
-
-type TResolveOpts<T> = {
+type TResolveOpts<T, TM> = {
+  types:TM
   type:string
   skip?:boolean
   fallback?:IConstructable<T>
-  override?:IConstructable<T>
+  override?:TExArrClsOptMap<T>
   existing:TExecuteExisting<T>
-  types:TExecuteTypes<IConstructable<T>>
 }
 
 type TExtensionOpts = {
@@ -48,7 +50,6 @@ type TExtensionOpts = {
 type TExtensionResp<T extends TExData=TExData> = TExCtx<T> & {
   runner:IExRunner
 }
-
 
 export class Execute {
   
@@ -74,31 +75,30 @@ export class Execute {
     } = cfg
 
     this.exam = exam
-    this.options = {...options}
+    this.options = {...ExecuteOpts, ...options}
     this.runnersTypes = {...this.runnersTypes, ...runners}
     this.transformerTypes = {...this.transformerTypes, ...transformers}
     this.environmentTypes = {...this.environmentTypes, ...environments}
   }
 
-  #resolve = <
-    T extends TExData,
-    I extends TExecuteTypeInstance
-  >(
-    ctx:TExCtx<T>,
-    opts:TResolveOpts<I>
-    
-  ):I => {
+  #resolve = <T, I, M>(ctx:TExCtx<T>, opts:TResolveOpts<I, M>):I => {
     const { file } = ctx
     const {
       skip,
       type,
       types,
+      fallback,
       existing,
       override,
     } = opts
 
     if(skip !== false && !existing[type]){
-      const TypeClass = override || types[type]
+      const [TypeClass, opts] = resolveTypeClass<I>({
+        fallback,
+        override,
+        type: types[type]
+      })
+
       if(!TypeClass){
         const built = ExamEvents.missingType({
           type,
@@ -109,7 +109,9 @@ export class Execute {
         throw new Error(built.message)
       }
 
-      return new TypeClass(ctx)
+      return isConstructor<I>(TypeClass)
+        ? new TypeClass(ctx, opts)
+        : TypeClass
     }
 
     return existing[type]
@@ -130,7 +132,7 @@ export class Execute {
     const resp = omitKeys<TExtensionResp<T>>(ctx, [`runner`, `transform`, `environment`])
 
     if(opts.environment !== false){
-      this.#environments[type] = this.#resolve<T, IExEnvironment>(resp, {
+      this.#environments[type] = this.#resolve<T,IExEnvironment,TExecuteEnvironments>(resp, {
         type,
         override: environment,
         skip: opts.environment,
@@ -142,9 +144,8 @@ export class Execute {
       resp.environment = this.#environments[type]
     }
 
-    
     if(opts.transform !== false){
-      this.#transforms[type] = this.#resolve<T, IExTransform>(resp, {
+      this.#transforms[type] = this.#resolve<T,IExTransform,TExecuteTransformers>(resp, {
         type,
         override: transform,
         skip: opts.transform,
@@ -157,7 +158,7 @@ export class Execute {
     }
 
     if(opts.runner !== false){
-      this.#runners[type] = this.#resolve<T, IExRunner>(resp, {
+      this.#runners[type] = this.#resolve<T,IExRunner,TExecuteRunners>(resp, {
         type,
         override: runner,
         skip: opts.runner,
@@ -185,15 +186,39 @@ export class Execute {
       runner,
       ...ctx
     } = this.extensions(resolveOpts)
+    this.runner = runner
 
-    const resp = ctx.transform.transform(ctx.content || ctx?.file?.content, ctx)
+    const transformed = ctx.transform.transform(ctx.content || ctx?.file?.content, ctx)
 
-    return await runner.run(resp, ctx)
+    let error:Error
+    let resp:TExEventData[]
 
+    try {
+      resp = await runner.run(transformed, ctx)
+    }
+    catch(err){
+      error = err
+    }
+    finally {
+      this.runner = undefined
+    }
+
+    if(error) throw new RunnerErr(error)
+
+    return resp
   }
   
   cancel = async () => {
-    // TODO: Add call to active runner to cancel execution
+    await this.runner.cancel()
+    await this.cleanup()
+  }
+  
+  cleanup = async () => {
+    this.runner = undefined
+    this.options = undefined
+    this.runnersTypes = undefined
+    this.transformerTypes = undefined
+    this.environmentTypes = undefined
   }
 
 }

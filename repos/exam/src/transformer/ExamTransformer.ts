@@ -1,9 +1,9 @@
 import type { Exam } from '@GEX/Exam'
 import type {
-  TExData,
   TExCtx,
+  TExData,
   IExTransform,
-  TExTransformOpts
+  TExTransformCfg
 } from '@GEX/types'
 
 import { Errors } from '@GEX/constants/errors'
@@ -14,9 +14,9 @@ import { Errors } from '@GEX/constants/errors'
  */
 export class ExamTransformer<R=unknown, T extends TExData=TExData> implements IExTransform<R, T> {
 
-  options:TExTransformOpts={}
+  options:TExTransformCfg={}
 
-  constructor(exam:Exam, opts?:TExTransformOpts) {
+  constructor(exam:Exam, opts?:TExTransformCfg) {
     this.options = {...this.options, ...opts}
   }
 

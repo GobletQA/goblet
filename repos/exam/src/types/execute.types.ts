@@ -1,14 +1,27 @@
 import type { Exam } from "@GEX/Exam"
-import type { TFileModel } from "@gobletqa/shared"
-import type { IConstructable } from './helpers.types'
-import type { TRunnerCls, IExRunner } from './runner.types'
-import type { TTransformCls, IExTransform } from './transformer.types'
-import type { TEnvironmentCls, IExEnvironment } from './environment.types'
+import type { TExArrClsOptMap } from './helpers.types'
+import type {
+  IExEnvironment,
+  TEnvironmentCfg,
+} from './environment.types'
+import type {
+  IExRunner,
+  TExRunnerCfg,
+} from './runner.types'
+import type {
+  IExTransform,
+  TExTransformCfg,
+} from './transformer.types'
+
+import {
+  TExecuteRunners,
+  TExecuteEnvironments,
+  TExecuteTransformers,
+}  from './typeMaps.types'
 
 export type TExData = Record<string, any>
 
 export type TExecuteOptions = {
-  slowMo?:number
   debug?:boolean
   verbose?:boolean
   timeout?:number
@@ -16,23 +29,15 @@ export type TExecuteOptions = {
   [key:string]: any
 }
 
-export type TExecuteTransformers = {
-  [key:string]: TTransformCls
-}
-
-export type TExecuteRunners = {
-  [key:string]: TRunnerCls
-}
-
-export type TExecuteEnvironments = {
-  [key:string]: TEnvironmentCls
-}
-
 export type TExecuteBuiltRunners = Record<string, IExRunner>
 export type TExecuteBuiltTransforms = Record<string, IExTransform>
 export type TExecuteBuiltEnvironments = Record<string, IExEnvironment>
 
 export type TExecuteCfg = {
+  // TODO: Ensure these are loaded
+  preEnvironment?:string[]
+  postEnvironment?:string[]
+
   exam:Exam
   options:TExecuteOptions
   runners?:TExecuteRunners
@@ -42,16 +47,15 @@ export type TExecuteCfg = {
 
 export type TExRun<T extends TExData=TExData> = {
   data?: T
-  runner?:IConstructable<IExRunner>
-  transform?:IConstructable<IExTransform>
-  environment?:IConstructable<IExEnvironment>
+  runner?:TExArrClsOptMap<IExRunner, TExRunnerCfg>
+  transform?:TExArrClsOptMap<IExTransform, TExTransformCfg>
+  environment?:TExArrClsOptMap<IExEnvironment, TEnvironmentCfg>
 }
 
 export type TExImportCtx<T extends TExData=TExData> = TExecuteOptions & {
   data: T
   exam:Exam
 }
-
 
 export type TExResolveOpts<T extends TExData=TExData> = TExecuteOptions
   & TExRun<T>

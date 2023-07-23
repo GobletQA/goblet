@@ -8,7 +8,7 @@ import { ExamEvents } from '@GEX/Events'
 import { ExamRunner } from './ExamRunner'
 import {RunnerErr} from '@GEX/utils/error'
 import { ParkinTest } from '@ltipton/parkin/test'
-import {emptyObj, omitKeys} from '@keg-hub/jsutils'
+import {emptyArr, omitKeys} from '@keg-hub/jsutils'
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 
 export type TRunContent = Record<string, any>
@@ -55,11 +55,10 @@ export class BaseRunner extends ExamRunner {
 
     const results = await this.PTE.run() as TExEventData[]
 
-    // We only support 1 feature per file, so we only care about the first test result 
-    const final = this.clearTestResults(results[0])
+    const final = results.map(result => this.clearTestResults(result))
     await this.cleanup()
 
-    return this.canceled ? emptyObj as TExEventData : final
+    return this.canceled ? emptyArr as TExEventData[] : final
   }
 
   onSpecDone = (result:TExEventData) => {

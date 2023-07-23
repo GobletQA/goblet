@@ -9,5 +9,5 @@ const resolveRoot = () => {
 }
 
 module.exports = {
-  GLTRoot: resolveRoot()
+  GEXRoot: resolveRoot()
 }
