@@ -19,7 +19,7 @@ import type {
 
 
 import { Exam } from "@GEX/Exam"
-import { ExamEvents } from '@GEX/constants'
+import { ExamEvents } from '@GEX/Events'
 import {emptyObj, omitKeys} from '@keg-hub/jsutils'
 
 type TExecuteTypes<T> = Record<string, T>
@@ -165,22 +165,28 @@ export class Execute {
     return resp
   }
 
-
   exec = async <
     T extends TExData=TExData,
-    R=unknown
   >(options:TExRun<T>) => {
-    const resolveOpts:TExResolveOpts<T> = {...this.options, ...options, exam: this.exam}
+    const resolveOpts:TExResolveOpts<T> = {
+      ...this.options,
+      ...options,
+      exam: this.exam
+    }
 
     const {
       runner,
       ...ctx
     } = this.extensions(resolveOpts)
 
-    const resp = ctx.transform.transform<R, T>(ctx.content || ctx?.file?.content, ctx)
+    const resp = ctx.transform.transform(ctx.content || ctx?.file?.content, ctx)
 
-    return await runner.run<T>(resp, ctx)
+    return await runner.run(resp, ctx)
 
+  }
+  
+  cancel = async () => {
+    // TODO: Add call to active runner to cancel execution
   }
 
 }

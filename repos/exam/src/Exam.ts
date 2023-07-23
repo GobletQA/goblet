@@ -1,29 +1,30 @@
 import type {
+  TExData,
   TExamEvt,
   TExamConfig,
   TExamEventCB,
-  TExamOptions,
   TExamCancelCB,
   TExamCleanupCB,
+  TExamStartOpts,
 } from '@GEX/types'
-import type {
-  TPlayerStartConfig,
-} from '@gobletqa/shared/types'
 
-import { checkCall, deepMerge } from '@keg-hub/jsutils'
-import { ExamEvtNames, ExamEvents } from '@GEX/constants'
+
+import { Execute } from '@GEX/Execute'
+import { checkCall } from '@keg-hub/jsutils'
+import { ExamEvtNames } from '@GEX/constants'
+import { ExamEvents, addCustomEvents } from '@GEX/Events'
 
 /**
  * @type Exam
  */
 export class Exam {
 
+  execute:Execute
   id:string = null
   canceled:boolean=false
   onEvents:TExamEventCB[] = []
   onCancel?:TExamCancelCB
   onCleanup?:TExamCleanupCB
-  options:TExamOptions = {} as TExamOptions
 
   static isRunning:boolean = false
 
@@ -48,6 +49,21 @@ export class Exam {
     return this
   }
 
+  #setEvents = (config:Pick<TExamConfig, `onEvent`|`onCancel`|`onCleanup`|`events`>) => {
+    const {
+      events,
+      onEvent,
+      onCancel,
+      onCleanup,
+    } = config
+
+    if(onEvent) this.onEvents.push(onEvent)
+    if(onCancel) this.onCancel = onCancel
+    if(onCleanup) this.onCleanup = onCleanup
+
+    events && addCustomEvents(events)
+  }
+
   /**
    * Initializes the recorder
    * Ensures only the properties that are passed in are added to the Recorder 
@@ -55,16 +71,14 @@ export class Exam {
    */
   setup = (config:TExamConfig) => {
     const {
-      options,
       onEvent,
       onCancel,
       onCleanup,
+      ...rest
     } = config
 
-    if(options) this.options = deepMerge(this.options, options)
-    if(onEvent) this.onEvents.push(onEvent)
-    if(onCancel) this.onCancel = onCancel
-    if(onCleanup) this.onCleanup = onCleanup
+    this.#setEvents(config)
+    this.execute = this.execute || new Execute({...rest, exam: this })
 
     return this
   }
@@ -73,9 +87,7 @@ export class Exam {
    * Starts recording dom events by injecting scripts browser context
    * @member {Exam}
    */
-  start = async (startCof:TPlayerStartConfig) => {
-    const { url, ...config } = startCof
-
+  start = async <T extends TExData=TExData>(opts:TExamStartOpts<T>) => {
     try {
   
       if(Exam.isRunning){
@@ -84,9 +96,11 @@ export class Exam {
       }
 
       Exam.isRunning = true
-      this.setup(config)
-      
-      // CALL EXEC here to kick off test run
+      this.#setEvents(opts)
+      const results = await this.execute.exec<T>(opts)
+
+      !this.canceled
+        && this.event(ExamEvents.results({ data: results }))
 
     }
     catch(err){
@@ -142,7 +156,7 @@ export class Exam {
     this.event(ExamEvents.canceled)
 
     // TODO: Fix this once runners are setup
-    // await this.runner?.cancel?.()
+    await this.execute?.cancel?.()
 
     this.canceled = true
     await this.stop()
@@ -166,7 +180,6 @@ export class Exam {
       }))
     }
 
-    this.options = {}
     this.onEvents = []
     Exam.isRunning = false
   }

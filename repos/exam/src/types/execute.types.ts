@@ -41,6 +41,7 @@ export type TExecuteCfg = {
 }
 
 export type TExRun<T extends TExData=TExData> = {
+  data?: T
   loc?:string
   type?:string
   content?:string
@@ -48,7 +49,6 @@ export type TExRun<T extends TExData=TExData> = {
   runner?:IConstructable<IExRunner>
   transform?:IConstructable<IExTransform>
   environment?:IConstructable<IExEnvironment>
-  data?: T
 }
 
 export type TExResolveOpts<T extends TExData=TExData> = TExecuteOptions
@@ -57,9 +57,9 @@ export type TExResolveOpts<T extends TExData=TExData> = TExecuteOptions
     exam:Exam
   }
 
-export type TExCtx<T extends TExData=TExData> = TExecuteOptions
-  & Omit<TExResolveOpts<T>, `runner`|`transform`|`environment`>
-  & {
+export type TExCtx<T extends TExData=TExData> = Omit<
+  TExResolveOpts<T>, `runner`|`transform`|`environment`
+> & {
     exam:Exam
     transform?:IExTransform
     environment:IExEnvironment

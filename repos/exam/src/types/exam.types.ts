@@ -1,4 +1,6 @@
-import {Exam} from "@GEX/Exam"
+import type { Exam } from "@GEX/Exam"
+import type { TExData, TExecuteCfg, TExRun } from "./execute.types"
+
 
 export type TExamEvt = {
   type?:string
@@ -14,6 +16,7 @@ type TInternalDynEvent =(evt:Partial<TExamEvt>) => TExamEvt
 
 export type TExamEvts = {
   dynamic:TInternalDynEvent
+  results:TInternalDynEvent
   specDone:TInternalDynEvent
   specStart:TInternalDynEvent
   suiteDone:TInternalDynEvent
@@ -27,15 +30,14 @@ export type TExamCleanupCB = TExamCB
 export type TExamCancelCB = TExamCB
 export type TExamEventCB = (event:TExamEvt) => void
 
-
-export type TExamConfig = {
-  options?:TExamOptions
+export type TExamEvents = {
+  events?:TExamEvts
   onEvent?:TExamEventCB
   onCancel?:TExamCancelCB
   onCleanup?:TExamCleanupCB
 }
 
-// TODO: add exam options
-export type TExamOptions = {
-  
-}
+export type TExamConfig = Omit<TExecuteCfg, `exam`> & TExamEvents
+
+export type TExamStartOpts<T extends TExData=TExData> = TExRun<T>
+  & Omit<TExamConfig, `runner`|`transform`|`environment`>

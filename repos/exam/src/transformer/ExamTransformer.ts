@@ -12,7 +12,7 @@ import { Errors } from '@GEX/constants/errors'
  * ExamTransformer - Base transformer, used for all files by default
  * Can be overridden by defining custom transforms in a config
  */
-export class ExamTransformer implements IExTransform {
+export class ExamTransformer<R=unknown, T extends TExData=TExData> implements IExTransform<R, T> {
 
   options:TExTransformOpts={}
 
@@ -20,10 +20,7 @@ export class ExamTransformer implements IExTransform {
     this.options = {...this.options, ...opts}
   }
 
-  transform = async <
-    R=unknown,
-    T extends TExData=TExData
-  >(content:string, ctx:TExCtx<T>):Promise<R> => {
+  transform = async (content:string, ctx:TExCtx<T>):Promise<R> => {
     Errors.Override(`ExamTransformer.transform`)
     return undefined
   }

@@ -1,19 +1,18 @@
+import type {
+  TRunContent,
+  TFeatureData,
+} from './FeatureRunner'
+import type { TExCtx, TExTransformOpts } from "@gobletqa/exam"
 
-import type { TExTransformOpts, TExecCtx } from "@gobletqa/exam"
 import { ExamTransformer } from "@gobletqa/exam"
 
-import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
-
-
-type TFeatureData = {
-  steps?:TParkinRunStepOptsMap
-}
-
-export class FeatureTransformer implements ExamTransformer {
+export class FeatureTransformer implements ExamTransformer<TRunContent, TFeatureData> {
 
   options:TExTransformOpts={}
 
-  transform = async (content:string, ctx: TExecCtx<TFeatureData>) => {
+  transform = async(content:string, ctx: TExCtx<TFeatureData>) => {
 
+    // TODO: use parkin to convert to Feature AST
+    return {} as TRunContent
   }
 }

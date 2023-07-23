@@ -1,4 +1,4 @@
-import type { Exam, TExecCtx } from "@gobletqa/exam"
+import type { Exam, TExCtx } from "@gobletqa/exam"
 import {
   RunnerErr,
   ExamRunner,
@@ -13,9 +13,8 @@ import { ParkinTest } from '@ltipton/parkin/test'
 import { emptyObj, omitKeys } from '@keg-hub/jsutils'
 import { FeatureEnvironment } from './FeatureEnvironment'
 
-type RunContent = string | string[] | TFeatureAst | TFeatureAst[]
-
-type TFeatureData = {
+export type TRunContent = string | string[] | TFeatureAst | TFeatureAst[]
+export type TFeatureData = {
   steps?:TParkinRunStepOptsMap
 }
 
@@ -31,7 +30,7 @@ export type TRunnerOpts = {
  * Sets up the test environment to allow running tests in a secure context
  * Ensures the test methods exist on the global scope
  */
-export class FeatureRunner extends ExamRunner {
+export class FeatureRunner extends ExamRunner<TFeatureData, TRunContent> {
 
   /**
    * Player Class instance
@@ -49,11 +48,12 @@ export class FeatureRunner extends ExamRunner {
     `failedExpectations`,
   ]
 
-  constructor(exam:Exam, opts?:TRunnerOpts) {
-    super(exam, opts)
+  constructor(ctx:TExCtx<TFeatureData>) {
+    // exam:Exam, opts?:TRunnerOpts
+    super(ctx)
 
     this.isRunning = false
-    this.environment = new FeatureEnvironment()
+    this.environment = ctx.environment as FeatureEnvironment
   }
 
 
@@ -69,7 +69,7 @@ export class FeatureRunner extends ExamRunner {
   /**
    * Runs the code passed to it via the exam
    */
-  run = async (content:RunContent, ctx:TExecCtx<TFeatureData>) => {
+  run = async (content:TRunContent, ctx:TExCtx<TFeatureData>) => {
     
     const steps = ctx?.data?.steps
     
@@ -96,7 +96,7 @@ export class FeatureRunner extends ExamRunner {
 
     if(this.canceled) return
 
-    this.exam.fireEvent(ExamEvents.specDone({
+    this.exam.event(ExamEvents.specDone({
       data: {
         ...this.clearTestResults(result),
         failedExpectations: result?.failedExpectations
@@ -114,7 +114,7 @@ export class FeatureRunner extends ExamRunner {
     this.environment.cleanup(this)
     if(this.canceled) return
 
-    this.exam.fireEvent(ExamEvents.suiteDone({
+    this.exam.event(ExamEvents.suiteDone({
       data: this.clearTestResults(result)
     }))
   }
@@ -122,7 +122,7 @@ export class FeatureRunner extends ExamRunner {
   onSpecStarted = (result:TPlayerEventData) => {
     if(this.canceled) return
 
-    this.exam.fireEvent(ExamEvents.specStart({
+    this.exam.event(ExamEvents.specStart({
       data: this.clearTestResults(result),
     }))
   }
@@ -130,7 +130,7 @@ export class FeatureRunner extends ExamRunner {
   onSuiteStarted = (result:TPlayerEventData) => {
     if(this.canceled) return
 
-    this.exam.fireEvent(ExamEvents.specStart({
+    this.exam.event(ExamEvents.specStart({
       data: this.clearTestResults(result),
     }))
   }

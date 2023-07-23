@@ -8,13 +8,21 @@ export type TExTransformOpts = {
 
 export type TTransformResp<R=unknown> = R
 
-interface IExamTransform {
-  transform<R=unknown, T extends TExData=TExData>(
+interface IExamTransform<R=unknown, T extends TExData=TExData> {
+  transform(
     content:string,
     ctx:TExCtx<T>
   ): Promise<TTransformResp<R>>|TTransformResp<R>
 }
 
-export type IExTransform<I extends IExamTransform=IExamTransform> = I & IExamTransform
+export type IExTransform<
+  R=unknown,
+  T extends TExData=TExData,
+  I extends IExamTransform<R, T>=IExamTransform<R, T>
+> = I & IExamTransform<R, T>
 
-export type TTransformCls<I extends IExamTransform=IExamTransform> = IConstructable<IExTransform<I>>
+export type TTransformCls<
+  R=unknown,
+  T extends TExData=TExData,
+  I extends IExamTransform<R, T>=IExamTransform<R, T>
+> = IConstructable<IExTransform<R, T, I>>

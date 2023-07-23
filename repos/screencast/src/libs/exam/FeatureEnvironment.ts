@@ -1,13 +1,14 @@
 import type * as Parkin from '@ltipton/parkin'
-import type { FeatureRunner } from './FeatureRunner'
 import type {
-  IExRunner,
+  IExEnvironment,
   TEnvironmentCfg,
   TEnvironmentOpts,
   TEnvironmentCache,
 } from "@gobletqa/exam"
+import type {
+  FeatureRunner,
+} from './FeatureRunner'
 
-import { ExamEnvironment } from "@gobletqa/exam"
 
 /**
  * This is needed so that expect is added to the global context
@@ -25,7 +26,7 @@ import {
   AutoSavedLocatorWorldPath,
 } from '@gobletqa/shared/constants'
 
-export class FeatureEnvironment implements ExamEnvironment {
+export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
 
   options:TEnvironmentOpts = {
     envs: {
@@ -77,7 +78,7 @@ export class FeatureEnvironment implements ExamEnvironment {
   * Jest does not allow calling from the Node directly
   * So we use Parkin's test runner instead
   */
-  setTestGlobals = (runner:IExRunner<FeatureRunner>, timeout?:number) => {
+  setTestGlobals = (runner:FeatureRunner, timeout?:number) => {
     const opts:TParkinTestConfig = {
       specDone: runner.onSpecDone,
       suiteDone: runner.onSuiteDone,
@@ -110,16 +111,17 @@ export class FeatureEnvironment implements ExamEnvironment {
   * Caches any existing globals so they can be reset after the test run
   * This ensures it doesn't clobber what ever already exists
   */
-  setupGlobals = (runner:IExRunner<FeatureRunner>, timeout?:number) => {
+  setupGlobals = (runner:FeatureRunner, timeout?:number) => {
     this.cache.testGlobals.page = (global as any).page
     this.cache.testGlobals.expect = (global as any).expect
     this.cache.testGlobals.context = (global as any).context
     this.cache.testGlobals.browser = (global as any).browser
 
     ;(global as any).expect = expect
-    global.page = runner.exam.page
-    global.browser = runner.exam.browser
-    global.context = runner.exam.context
+    // TODO: FIX ME
+    // global.page = runner.exam.page
+    // global.browser = runner.exam.browser
+    // global.context = runner.exam.context
     return this.setTestGlobals(runner, timeout)
   }
 
@@ -149,10 +151,12 @@ export class FeatureEnvironment implements ExamEnvironment {
   * Sets up Parkin globally, so it can be accessed by step definitions
   * Tries to use the existing Parkin instance on the Runner class
   */
-  setupParkin = async (runner:IExRunner<FeatureRunner>) => {
+  setupParkin = async (runner:FeatureRunner) => {
+    // TODO: FIX ME
     const PK = runner?.exam?.repo?.parkin
     if(!PK) throw new Error(`Repo is missing a parkin instance`)
 
+    // TODO: FIX ME
     await getDefinitions(runner?.exam?.repo, undefined, false)
     return PK
   }
@@ -160,7 +164,7 @@ export class FeatureEnvironment implements ExamEnvironment {
   /**
    * It should auto-clean up the world object after each spec
    */
-  cleanup = (runner:IExRunner<FeatureRunner>) => {
+  cleanup = (runner:FeatureRunner) => {
     this.worldSavePaths.forEach(loc => unset(runner.PK?.world, loc))
   }
 

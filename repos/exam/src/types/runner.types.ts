@@ -3,8 +3,16 @@ import type { IConstructable } from './helpers.types'
 import type { TTransformResp } from './transformer.types'
 import type { TPlayerEventData } from '@gobletqa/shared/types'
 
-export interface IExamRunner {
-  run<T extends TExData=TExData, R=unknown>(
+export type TExRunnerOpts = {
+  debug?: boolean
+  slowMo?: number
+  timeout?: number
+  globalTimeout?:number
+  [key:string]: any
+}
+
+export interface IExamRunner<T extends TExData=TExData, R=unknown> {
+  run(
     content:TTransformResp<R>,
     ctx:TExCtx<T>
   ): Promise<TPlayerEventData>
@@ -19,6 +27,10 @@ export interface IExamRunner {
 }
 
 
-export type IExRunner<I extends IExamRunner=IExamRunner> = I & IExamRunner
+export type IExRunner<
+  T extends TExData=TExData,
+  R=unknown,
+  I extends IExamRunner<T, R>=IExamRunner<T, R>
+> = I & IExamRunner
 
-export type TRunnerCls = IConstructable<IExRunner>
+export type TRunnerCls<T extends TExData=TExData, R=unknown> = IConstructable<IExRunner<T, R>>

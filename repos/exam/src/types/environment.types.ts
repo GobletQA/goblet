@@ -26,13 +26,19 @@ export type TEnvironmentCfg = {
   options?:TEnvironmentOpts
 }
 
-interface IExamEnvironment {
+interface IExamEnvironment<R=ExamRunner> {
   options:TEnvironmentOpts
   setupGlobals(...args:any[]):void|Promise<void>
   resetGlobals(...args:any[]):void|Promise<void>
-  cleanup(runner:IExRunner<ExamRunner>, ...args:any[]):void|Promise<void>
+  cleanup(runner:IExRunner<R>, ...args:any[]):void|Promise<void>
 }
 
-export type IExEnvironment<I extends IExamEnvironment=IExamEnvironment> = I & IExamEnvironment
+export type IExEnvironment<
+  R extends ExamRunner=ExamRunner,
+  I extends IExamEnvironment<R>=IExamEnvironment<R>
+> = I & IExamEnvironment<R>
 
-export type TEnvironmentCls = IConstructable<IExEnvironment>
+export type TEnvironmentCls<
+  R extends ExamRunner=ExamRunner,
+  I extends IExamEnvironment<R>=IExamEnvironment<R>
+> = IConstructable<IExEnvironment<R, I>>

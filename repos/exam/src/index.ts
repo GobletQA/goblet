@@ -1,6 +1,7 @@
 export * from './constants'
 export * from './environment'
 export * from './Exam'
+export * from './Events'
 export * from './runner'
 export * from './transformer'
 export * from './types'
