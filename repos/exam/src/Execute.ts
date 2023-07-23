@@ -18,7 +18,7 @@ import type {
 } from '@GEX/types'
 
 
-import { Exam } from "@GEX/exam"
+import { Exam } from "@GEX/Exam"
 import { ExamEvents } from '@GEX/constants'
 import {emptyObj, omitKeys} from '@keg-hub/jsutils'
 

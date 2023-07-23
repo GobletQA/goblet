@@ -1,4 +1,4 @@
-import type { Exam } from "@GEX/exam"
+import type { Exam } from "@GEX/Exam"
 import type { TFileModel } from "@gobletqa/shared"
 import type { IConstructable } from './helpers.types'
 import type { TRunnerCls, IExRunner } from './runner.types'

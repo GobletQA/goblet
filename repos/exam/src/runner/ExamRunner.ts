@@ -1,4 +1,4 @@
-import type { Exam } from '@GEX/exam'
+import type { Exam } from '@GEX/Exam'
 import type { IExRunner } from '@GEX/types'
 
 import { Errors } from '@GEX/constants/errors'

@@ -1,4 +1,4 @@
-import {Exam} from "@GEX/exam"
+import {Exam} from "@GEX/Exam"
 
 export type TExamEvt = {
   type?:string

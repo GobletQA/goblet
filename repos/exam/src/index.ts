@@ -1,6 +1,6 @@
 export * from './constants'
 export * from './environment'
-export * from './exam'
+export * from './Exam'
 export * from './runner'
 export * from './transformer'
 export * from './types'

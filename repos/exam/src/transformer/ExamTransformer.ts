@@ -1,4 +1,4 @@
-import type { Exam } from '@GEX/exam'
+import type { Exam } from '@GEX/Exam'
 import type {
   TExData,
   TExCtx,
