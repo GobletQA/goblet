@@ -1,9 +1,10 @@
 import type {
   TExCtx,
   IExEnvironment,
-  TEnvironmentCfg,
+  TExEnvironmentCfg,
   TEnvironmentOpts,
   TEnvironmentCache,
+  TEnvironmentEnvs,
 } from '@GEX/types'
 
 /**
@@ -18,15 +19,11 @@ import { deepMerge, emptyObj } from '@keg-hub/jsutils'
 
 export class BaseEnvironment implements IExEnvironment<BaseRunner> {
 
-  options:TEnvironmentOpts = {
-    envs: {
-      EXAM_ENV: true
-    }
-  }
-
+  envs:TEnvironmentEnvs={}
+  options:TEnvironmentOpts = {}
   cache:TEnvironmentCache = {
+    envs:{},
     globals: {},
-    processEnvs:{},
   }
 
   testGlobals:string[] = [
@@ -42,13 +39,13 @@ export class BaseEnvironment implements IExEnvironment<BaseRunner> {
     `beforeEach`,
   ]
 
-  constructor(cfg:TEnvironmentCfg=emptyObj){
+  constructor(cfg:TExEnvironmentCfg=emptyObj){
     this.options = deepMerge(this.options, cfg.options)
   }
 
   setupGlobals = (runner:BaseRunner, ctx:TExCtx) => {
     const { data } = ctx
-    
+
     this.cache.globals.expect = (global as any).expect
     ;(global as any).expect = expect
 
@@ -68,33 +65,20 @@ export class BaseEnvironment implements IExEnvironment<BaseRunner> {
       this.cache.globals[item] = global[item]
       global[item] = PTE[item]
     })
-    
-    // TODO: investigate overwriting all envs
-    Object.entries(this.options.envs)
-      .forEach(([key, val]) => {
-        this.cache.processEnvs[key] = process.env[key]
-        process.env[key] = `${val}`
-      })
 
     return PTE
   }
 
-  resetGlobals = () => {
+  resetGlobals = (runner:BaseRunner) => {
     ;(global as any).expect = this.cache.globals.expect
 
     this.testGlobals.forEach((item) => global[item] = this.cache.globals[item])
-    
-    // TODO: investigate overwriting all envs
-    Object.entries(this.options.envs)
-      .forEach(([key, val]) => {
-        process.env[key] = this.cache.processEnvs[key]
-      })
-
-    this.cache.globals = {}
-    this.cache.processEnvs = {}
   }
 
-  cleanup = (...args:any[]) => {
+  cleanup = (runner:BaseRunner) => {
+    this.cache.globals = {}
+    this.cache.envs = {}
+
     return undefined
   }
 

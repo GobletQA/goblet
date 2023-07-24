@@ -3,7 +3,8 @@ import type {
   TExCtx,
   TExData,
   IExRunner,
-  TTransformResp
+  TExRunnerCfg,
+  TTransformResp,
 } from '@GEX/types'
 
 import { Errors } from '@GEX/constants/errors'
@@ -19,21 +20,24 @@ export class ExamRunner<
 > implements IExRunner {
 
   exam:Exam
-  debug?: boolean
-  canceled:boolean
-  timeout?: number
+  debug?:boolean
+  timeout?:number
+  verbose?:boolean
+  canceled?:boolean
   isRunning?:boolean
-  globalTimeout?: number
+  globalTimeout?:number
 
-  constructor(ctx:TExCtx<T>) {
+  constructor(cfg:TExRunnerCfg, ctx:TExCtx<T>) {
     const { exam } = ctx
 
     this.exam = exam
     this.isRunning = false
 
-    if(ctx?.debug) this.debug = ctx.debug
-    if(ctx?.timeout) this.timeout = ctx.timeout
-    if(ctx?.globalTimeout) this.globalTimeout = ctx.globalTimeout
+    if(cfg?.debug) this.debug = cfg.debug
+    if(cfg?.timeout) this.timeout = cfg.timeout
+    if(cfg?.verbose) this.verbose = cfg.verbose
+    if(cfg?.globalTimeout) this.globalTimeout = cfg.globalTimeout
+
   }
 
   /**
@@ -43,7 +47,6 @@ export class ExamRunner<
   onIsRunning = () => {
     return this.isRunning
   }
-
 
   run = (content:TTransformResp<R>, ctx:TExCtx<T>) => {
     Errors.Override(`ExamRunner.run`)
@@ -55,7 +58,7 @@ export class ExamRunner<
     return undefined
   }
 
-  cleanup = (...args:any[]) => {
+  cleanup = () => {
     return undefined
   }
 

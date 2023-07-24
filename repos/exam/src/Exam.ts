@@ -95,7 +95,9 @@ export class Exam {
    * Starts recording dom events by injecting scripts browser context
    * @member {Exam}
    */
-  start = async <T extends TExData=TExData>(opts:TExamStartOpts<T>) => {
+  start = async <
+  T extends TExData=TExData
+  >(opts:TExamStartOpts<T>) => {
     try {
   
       await this.initExec()
@@ -107,6 +109,12 @@ export class Exam {
 
       Exam.isRunning = true
       this.#setEvents(opts)
+
+      // TODO: ensure these are set on opts passed to execute.exec
+      // content?:string|Ast
+      // file?:TExFileModel<Ast>
+      // type?:TExFileModel[`fileType`]|string
+      
       const results = await this.execute.exec<T>(opts)
 
       !this.canceled

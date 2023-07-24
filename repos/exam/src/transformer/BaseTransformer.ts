@@ -16,8 +16,8 @@ export class BaseTransformer implements IExTransform<string> {
 
   options:TExTransformCfg={}
 
-  constructor(exam:Exam, opts?:TExTransformCfg) {
-    this.options = {...this.options, ...opts}
+  constructor(cfg?:TExTransformCfg) {
+    this.options = {...this.options, ...cfg}
   }
 
   import = async (ctx:TExCtx) => {

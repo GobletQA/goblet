@@ -1,24 +1,30 @@
 import type { Exam } from '@GEX/Exam'
 import type {
+  IExRunner,
+  TLoadOpts,
   TExTypeCls,
   TExTypeCfg,
   TExTypeMap,
-  IExRunner,
-  TExRunnerCfg,
-  IExTransform,
-  TExTransformCfg,
-  IExEnvironment,
-  TEnvironmentCfg,
-  TLoadOpts,
   TExecuteCfg,
   TExamConfig,
   TExamRunners,
+  TExRunnerCfg,
+  IExTransform,
+  IExEnvironment,
+  TExTransformCfg,
   TExecuteOptsMap,
+  TExEnvironmentCfg,
   TExamTransformers,
   TExamEnvironments,
+  TExecPassThroughOpts,
 } from '@GEX/types'
 
+import { isNum } from '@keg-hub/jsutils'
 import { convertTypeStrToCls } from './convertTypeStrToCls'
+import {
+  RunnerCfg,
+  EnvironmentCfg
+} from '@GEX/constants/defaults'
 
 const loopLoadTypes = async <
   T=TExTypeMap,
@@ -52,19 +58,36 @@ export type TBuiltExecCfg = {
   options?:TLoadOpts
 }
 
+const buildPassThrough = (config:TExamConfig) => {
+  return {
+    transform: {},
+    runner: {
+      debug: config.debug ?? RunnerCfg.debug,
+      verbose: config.verbose ?? RunnerCfg.verbose,
+      timeout: isNum(config.timeout) ? config.timeout : RunnerCfg.timeout,
+      globalTimeout: isNum(config.globalTimeout) ? config.globalTimeout : RunnerCfg.globalTimeout,
+    },
+    environment: {
+      envs: {...EnvironmentCfg.envs, ...config.envs},
+      globals: {...EnvironmentCfg.globals, ...config.globals},
+    }
+  } as TExecPassThroughOpts
+}
+
 export const buildExecCfg = async ({
   exam,
   config,
   options
 }:TBuiltExecCfg) => {
   const {
-    execute,
     runners,
     transformers,
     environments,
+    preEnvironment,
+    postEnvironment,
   } = config
 
-  const loadedE = await loopLoadTypes<TExamEnvironments,IExEnvironment,TEnvironmentCfg>(
+  const loadedE = await loopLoadTypes<TExamEnvironments,IExEnvironment,TExEnvironmentCfg>(
     exam,
     environments,
     options
@@ -83,10 +106,12 @@ export const buildExecCfg = async ({
 
   return {
     exam,
-    options: execute,
+    preEnvironment,
+    postEnvironment,
     runners: loadedR,
     transformers: loadedT,
     environments: loadedE,
+    passthrough: buildPassThrough(config),
   } as TExecuteCfg
 
 }

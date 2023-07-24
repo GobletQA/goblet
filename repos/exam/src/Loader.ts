@@ -13,19 +13,24 @@ import { createRequire } from 'module'
 import { LoaderCfg } from '@GEX/constants'
 import { LoaderErr } from '@GEX/utils/error'
 import { register } from 'esbuild-register/dist/node'
-import { noOp, flatUnion, emptyObj, emptyArr } from "@keg-hub/jsutils"
+import { createGlobMatcher } from "@GEX/utils/globMatch"
+import { noOp, flatUnion, emptyObj, limbo } from "@keg-hub/jsutils"
 
 export class Loader {
   exam:Exam
   testDir:string
   testMatch:string[]
-  testIgnore:string[]
   require:NodeRequire
-  loaderIgnore:string[]=emptyArr
-  loadType?:ELoadType=LoaderCfg.loadType
   unregister:TAnyCB=noOp
   rootDir:string=LoaderCfg.rootDir
+  testIgnore:(match:string) => boolean
+  loaderIgnore:(match:string) => boolean
+  loadType?:ELoadType=LoaderCfg.loadType
   extensions:string[]=LoaderCfg.extensions
+
+  #loadedCache:Record<string,any>={}
+  #testFile:Record<string,boolean>={}
+  #fileIgnored:Record<string,boolean>={}
 
   constructor(exam:Exam, config:TLoaderCfg){
     this.exam = exam
@@ -41,6 +46,7 @@ export class Loader {
       loadType,
       testMatch,
       extensions,
+      testIgnore,
       loaderIgnore,
     } = config
 
@@ -48,16 +54,53 @@ export class Loader {
     if(testMatch) this.testMatch = testMatch
     if(extensions) this.extensions = flatUnion(this.extensions, extensions)
 
-    loaderIgnore
+    this.testIgnore = createGlobMatcher(testIgnore)
+    this.loaderIgnore = createGlobMatcher(loaderIgnore)
 
     this.rootDir = path.resolve(rootDir || this.rootDir)
     if(testDir) this.testDir = path.resolve(rootDir, testDir)
 
     if(esbuild !== false)
-      this.unregister =  register(esbuild || emptyObj).unregister
+      this.unregister =  register({
+        ...esbuild,
+        hookMatcher: this.#hookMatcher.bind(this)
+      }).unregister
 
-      this.require = createRequire(this.rootDir)
+    this.require = createRequire(this.rootDir)
 
+  }
+
+  #clearLocCache = (loc:string) => {
+    require.cache[loc] = undefined
+    delete require.cache[loc]
+
+    this.#loadedCache[loc] = undefined
+    delete this.#loadedCache[loc]
+  }
+
+  #hookMatcher = (filename:string) => {
+    if(this.loaderIgnore(filename)){
+      this.#fileIgnored[filename] = true
+      return false
+    }
+    if(this.#testFile[filename] && this.testIgnore(filename)){
+      this.#fileIgnored[filename] = true
+      return false
+    }
+
+    return true
+  }
+
+  #onLoaded = (location:string, loaded:any, err:Error) => {
+    const wasIgnored = this.#fileIgnored[location]
+    this.#testFile[location] = undefined
+    this.#fileIgnored[location] = undefined
+
+    if(!wasIgnored && err) throw new LoaderErr(err)
+
+    this.#loadedCache[location] = loaded || emptyObj
+
+    return this.#loadedCache[location]
   }
 
   #getLoc = (loc:string, opts:TLoadOpts=emptyObj) => {
@@ -67,21 +110,31 @@ export class Loader {
     return path.resolve(fromDir, loc)
   }
 
-  loadSync = (loc:string, opts:TLoadOpts<ELoadType.require>=emptyObj) => {
+  loadSync = (location:string, opts:TLoadOpts<ELoadType.require>=emptyObj) => {
+    let loaded:any
+    let error:Error
+
     try {
-      const location = this.#getLoc(loc, {...opts, type: ELoadType.require})
+      opts.cache === false
+        && this.#clearLocCache(location)
 
-      if(opts.force) delete require.cache[location]
+      this.#testFile[location] = Boolean(opts.testFile)
 
-      return this.require(location)
+      loaded = this.require(location)
     }
     catch(err){
-      throw new LoaderErr(err)
+      error = err
+    }
+    finally {
+      return this.#onLoaded(
+        location,
+        loaded,
+        opts.error !== false && error
+      )
     }
   }
 
-  loadAsync = async (loc:string, opts:TLoadOpts<ELoadType.import>=emptyObj) => {
-
+  loadAsync = async (location:string, opts:TLoadOpts<ELoadType.import>=emptyObj) => {
     /**
      * Playwright is doing this to import the file
      * Would like to investigate why at some point
@@ -90,36 +143,59 @@ export class Loader {
      * return await esmImport()
      */
 
-    try {
+    // Add the date to the locUrl url as a query param
+    const locUrl = url.pathToFileURL(location)
 
-      const location = url.pathToFileURL(this.#getLoc(loc, {
-        ...opts,
-        type: ELoadType.import
-      }))
 
-      // Add the date to the location url as a query param
-      // This 
-      if(opts.force) location.searchParams.append('t', `${Date.now()}`)
-
-      return await import(JSON.stringify(location.href))
+    if(opts.cache === false){
+      this.#clearLocCache(location)
+      locUrl.searchParams.append('t', `${Date.now()}`)
     }
-    catch(err){
-      throw new LoaderErr(err)
-    }
+
+    this.#testFile[location] = Boolean(opts.testFile)
+    const [loaded, error] = await limbo(import(JSON.stringify(locUrl.href)))
+
+    return this.#onLoaded(
+      location,
+      loaded,
+      opts.error !== false && error
+    )
   }
-  
+
   load = (loc:string, opts:TLoadOpts=emptyObj) => {
     const loadType = opts?.type || this.loadType
 
-    return loadType === ELoadType.import 
-      ? this.loadAsync(loc, {...opts, type: ELoadType.import})
-      : this.loadSync(loc, {...opts, type: ELoadType.require})
+    const location = this.#getLoc(loc, {...opts, type: loadType })
+
+    if(!opts.force && opts.cache !== false && this.#loadedCache[location])
+      return this.#loadedCache[location]
+
+    return loadType === ELoadType.import
+      ? this.loadAsync(location, {...opts, type: ELoadType.import})
+      : this.loadSync(location, {...opts, type: ELoadType.require})
   }
-  
+
+  /**
+   * Call this when removing the Loader is being removed
+   * After this call, it's no longer usable
+   */
   cleanup = () => {
     this?.unregister?.()
-    this.unregister = undefined
+
+    this.#testFile = {}
+    this.extensions = []
+    this.#fileIgnored = {}
+    this.#loadedCache = {}
+    this.exam = undefined
+    this.testDir = undefined
+    this.rootDir = undefined
     this.require = undefined
+    this.loadType = undefined
+    this.testMatch = undefined
+    this.unregister = undefined
+    this.testIgnore = undefined
+    this.loaderIgnore = undefined
+
   }
 
 }

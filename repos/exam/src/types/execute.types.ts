@@ -2,7 +2,7 @@ import type { Exam } from "@GEX/Exam"
 import type { TExArrClsOptMap } from './helpers.types'
 import type {
   IExEnvironment,
-  TEnvironmentCfg,
+  TExEnvironmentCfg,
 } from './environment.types'
 import type {
   IExRunner,
@@ -14,59 +14,67 @@ import type {
 } from './transformer.types'
 
 import {
-  TExecuteRunners,
-  TExecuteEnvironments,
-  TExecuteTransformers,
+  TExecRunners,
+  TExecEnvironments,
+  TExecTransformers,
 }  from './typeMaps.types'
+import {TExAst, TExFileModel} from "./file.types"
 
 export type TExData = Record<string, any>
-
-export type TExecuteOptions = {
-  debug?:boolean
-  verbose?:boolean
-  timeout?:number
-  globalTimeout?:number
-  [key:string]: any
-}
 
 export type TExecuteBuiltRunners = Record<string, IExRunner>
 export type TExecuteBuiltTransforms = Record<string, IExTransform>
 export type TExecuteBuiltEnvironments = Record<string, IExEnvironment>
 
+// Global options for runner / transform / environment passed from Exam config
+export type TExecPassThroughOpts = {
+  runner?:TExRunnerCfg
+  transform?:TExTransformCfg
+  environment?:TExEnvironmentCfg
+}
+
 export type TExecuteCfg = {
-  // TODO: Ensure these are loaded
+  exam:Exam
   preEnvironment?:string[]
   postEnvironment?:string[]
-
-  exam:Exam
-  options:TExecuteOptions
-  runners?:TExecuteRunners
-  transformers?:TExecuteTransformers
-  environments?:TExecuteEnvironments
+  runners?:TExecRunners
+  transformers?:TExecTransformers
+  environments?:TExecEnvironments
+  passthrough:TExecPassThroughOpts
 }
 
-export type TExRun<T extends TExData=TExData> = {
-  data?: T
+type TExRunMaps = {
   runner?:TExArrClsOptMap<IExRunner, TExRunnerCfg>
   transform?:TExArrClsOptMap<IExTransform, TExTransformCfg>
-  environment?:TExArrClsOptMap<IExEnvironment, TEnvironmentCfg>
+  environment?:TExArrClsOptMap<IExEnvironment, TExEnvironmentCfg>
 }
 
-export type TExImportCtx<T extends TExData=TExData> = TExecuteOptions & {
+type TExRunMeta<D extends TExData=TExData, Ast extends TExAst=TExAst> = {
+  data?: D
+  content?:string|Ast
+  file?:TExFileModel<Ast>
+  type?:TExFileModel[`fileType`]|string
+}
+
+export type TExRun<D extends TExData=TExData, Ast extends TExAst=TExAst> = TExRunMaps
+  & TExRunMeta<D, Ast>
+
+export type TExImportCtx<T extends TExData=TExData> = {
   data: T
   exam:Exam
 }
 
-export type TExResolveOpts<T extends TExData=TExData> = TExecuteOptions
-  & TExRun<T>
-  & {
-    exam:Exam
-  }
+export type TExExtensionsCtx<
+  D extends TExData=TExData,
+  Ast extends TExAst=TExAst
+> = TExRun<D, Ast> & { exam:Exam }
 
-export type TExCtx<T extends TExData=TExData> = Omit<
-  TExResolveOpts<T>, `runner`|`transform`|`environment`
-> & {
-    exam:Exam
-    transform?:IExTransform
-    environment:IExEnvironment
-  }
+export type TExCtx<
+  D extends TExData=TExData,
+  Ast extends TExAst=TExAst
+> = TExRunMeta<D, Ast> & {
+  exam:Exam
+  
+  transform?:IExTransform
+  environment:IExEnvironment
+}

@@ -16,8 +16,8 @@ export class ExamTransformer<R=unknown, T extends TExData=TExData> implements IE
 
   options:TExTransformCfg={}
 
-  constructor(exam:Exam, opts?:TExTransformCfg) {
-    this.options = {...this.options, ...opts}
+  constructor(cfg?:TExTransformCfg) {
+    this.options = {...this.options, ...cfg}
   }
 
   import = async <M>(ctx:TExCtx<T>):Promise<M> => {

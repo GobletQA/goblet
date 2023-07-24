@@ -1,6 +1,7 @@
 import { IExRunner } from './runner.types'
 import { IConstructable } from './helpers.types'
 import { ExamRunner } from '@GEX/runner/ExamRunner'
+import {TExCtx} from './execute.types'
 
 export type TEnvironmentEnvVal = string
   |number
@@ -22,37 +23,40 @@ type TRecordRef<T=TEnvironmentEnvVal> = TEnvironmentEnvVal
   | T
   | T[]
 
-export type TEnvironmentEnvObj = TRecordRef<TRecordRef<TRecordRef>>
 export type TEnvironmentEnvArr = Array<TRecordRef<TRecordRef<TRecordRef>>>
+export type TEnvironmentEnvObj = TRecordRef<TRecordRef<TRecordRef>>
 
-export type TSerializeObj = TEnvironmentEnvObj|TEnvironmentEnvArr
+export type TSerializeObj = Record<string, TEnvironmentEnvObj|TEnvironmentEnvArr>
 
 export type TEnvironmentEnvs = {
-  GOBLET_RUN_FROM_UI:TEnvironmentEnvVal
-  GOBLET_RUN_FROM_CI:TEnvironmentEnvVal
   [key:string]:TEnvironmentEnvVal
 }
 
 export type TEnvironmentCache = {
   globals: Record<string, any>
-  processEnvs: Record<string, string>
+  envs: Record<string, string>
 }
 
 export type TEnvironmentOpts = {
-  envs?:Record<string, TEnvironmentEnvVal>
   [key:string]:any
 }
 
-export type TEnvironmentCfg = {
+export type TExEnvironmentCfg = {
+  globals?:TSerializeObj
   options?:TEnvironmentOpts
-  [key:string]:any
+  envs?:Record<string, TEnvironmentEnvVal>
+  // [key:string]:any
 }
+
 
 export interface IExamEnvironment<R=ExamRunner> {
-  options:TEnvironmentOpts
-  setupGlobals(...args:any[]):void|Promise<void>
-  resetGlobals(...args:any[]):void|Promise<void>
-  cleanup(runner:IExRunner<R>, ...args:any[]):void|Promise<void>
+  globals?:TSerializeObj
+  options?:TEnvironmentOpts
+  envs?:Record<string, TEnvironmentEnvVal>
+
+  setupGlobals(runner:IExRunner<R>, ctx:TExCtx):void|Promise<void>
+  resetGlobals(runner:IExRunner<R>):void|Promise<void>
+  cleanup(runner:IExRunner<R>):void|Promise<void>
 }
 
 export type IExEnvironment<

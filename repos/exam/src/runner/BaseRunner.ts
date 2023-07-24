@@ -1,6 +1,7 @@
 import type {
   TExCtx,
   TExEventData,
+  TExRunnerCfg,
   TExTestEvent,
 } from '@GEX/types'
 
@@ -11,7 +12,6 @@ import { ParkinTest } from '@ltipton/parkin/test'
 import {emptyArr, omitKeys} from '@keg-hub/jsutils'
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 
-export type TRunContent = Record<string, any>
 
 export class BaseRunner extends ExamRunner {
 
@@ -24,13 +24,12 @@ export class BaseRunner extends ExamRunner {
     `failedExpectations`,
   ]
 
-  constructor(ctx:TExCtx) {
-    super(ctx)
+  constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
+    super(cfg, ctx)
 
     this.isRunning = false
     this.environment = ctx.environment as BaseEnvironment
   }
-
 
   /**
    * Called when a page loads to check if mouse tracker should run
@@ -44,9 +43,9 @@ export class BaseRunner extends ExamRunner {
   /**
    * Runs the code passed to it via the exam
    */
-  run = async (content:TRunContent, ctx:TExCtx) => {
+  run = async (content:string|Record<string, any>, ctx:TExCtx) => {
     this.PTE = this.environment.setupGlobals(this, ctx)
-    
+
     // TODO: execute the file here - VM?
     //  - This is call all the describes / test methods within the file
     //  - The file content only exists as a string / AST
@@ -54,7 +53,6 @@ export class BaseRunner extends ExamRunner {
     // Then call PTE.run to actually run the tests
 
     const results = await this.PTE.run() as TExEventData[]
-
     const final = results.map(result => this.clearTestResults(result))
     await this.cleanup()
 
@@ -111,12 +109,12 @@ export class BaseRunner extends ExamRunner {
   }
 
   cleanup = async () => {
+    this.environment.resetGlobals(this)
     this.environment.cleanup(this)
-    this.environment.resetGlobals()
     this?.PTE?.clean()
 
-    this.exam = undefined
     this.PTE = undefined
+    this.exam = undefined
   }
 
   /**

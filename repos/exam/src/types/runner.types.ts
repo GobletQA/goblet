@@ -6,17 +6,21 @@ import type { TTransformResp } from './transformer.types'
 export type TExRunnerCfg = {
   debug?: boolean
   timeout?: number
+  verbose?:boolean
   globalTimeout?:number
-  [key:string]: any
+  // [key:string]: any
 }
 
 export interface IExamRunner<T extends TExData=TExData, R=unknown> {
-  run(
-    content:TTransformResp<R>,
-    ctx:TExCtx<T>
-  ): Promise<TExEventData[]>
-  cancel: () => void|Promise<void>
-  cleanup: () => void|Promise<void>
+  debug?: boolean
+  timeout?: number
+  verbose?:boolean
+  globalTimeout?:number
+
+  run(content:TTransformResp<R>, ctx:TExCtx<T>): Promise<TExEventData[]>
+
+  cancel:() => void|Promise<void>
+  cleanup:() => void|Promise<void>
 
   onSpecStarted(result:TExEventData):void
   onSpecDone(result:TExEventData):void

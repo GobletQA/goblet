@@ -1,11 +1,17 @@
 import type {
-  TExecuteOptions,
+  TExecuteCfg,
+  TExamConfig,
+  TExRunnerCfg,
+  TExTransformCfg,
+  TExEnvironmentCfg,
 } from '@GEX/types'
 
+
 import { ELoadType } from "@GEX/types"
+import { EExTestMode } from '@GEX/types'
 import {emptyArr} from '@keg-hub/jsutils'
 
-export const ExecuteOpts:TExecuteOptions = {
+export const RunnerCfg:TExRunnerCfg = {
   /**
    * Debug logging output
    */
@@ -55,20 +61,41 @@ export const LoaderCfg = {
     `.tsx`,
   ],
 
-
   testIgnore: emptyArr,
-
-  loaderIgnore: emptyArr
+  loaderIgnore: emptyArr,
 }
 
-export const ExamCfg = {
-  ...LoaderCfg,
+export const EnvironmentCfg:TExEnvironmentCfg = {
+  envs: {},
   globals: {},
-  aliases: {},
+}
+
+export const TransformCfg:TExTransformCfg = {}
+
+export const ExecuteCfg:Omit<TExecuteCfg, `exam`> = {
+  runners:{},
+  passthrough:{},
+  transformers:{},
+  environments:{},
+  preEnvironment:[],
+  postEnvironment:[],
+}
+
+export const ExCfg:Partial<TExamConfig> = {
+  mode: EExTestMode.parallel,
   transformIgnore: [
     `/node_modules/`,
     `\\.pnp\\.[^\\\/]+$`
   ]
 }
+
+export const ExamCfg = {
+  ...LoaderCfg,
+  ...RunnerCfg,
+  ...TransformCfg,
+  ...EnvironmentCfg,
+  ...ExecuteCfg,
+  ...ExCfg
+} as TExamConfig
 
 

@@ -36,8 +36,8 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
   }
   
   cache:TEnvironmentCache = {
+    envs: {},
     globals: {},
-    processEnvs: {},
   }
 
   /**
@@ -99,7 +99,7 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
     // TODO: investigate overwriting all envs
     Object.entries(this.options.envs)
       .forEach(([key, val]) => {
-        this.cache.processEnvs[key] = process.env[key]
+        this.cache.envs[key] = process.env[key]
         process.env[key] = `${val}`
       })
 
@@ -140,11 +140,11 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
     // TODO: investigate overwriting all envs
     Object.entries(this.options.envs)
       .forEach(([key, val]) => {
-        process.env[key] = this.cache.processEnvs[key]
+        process.env[key] = this.cache.envs[key]
       })
 
     this.cache.globals = {}
-    this.cache.processEnvs = {}
+    this.cache.envs = {}
   }
 
   /**

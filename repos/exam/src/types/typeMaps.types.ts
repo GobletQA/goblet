@@ -6,7 +6,7 @@ import type {
 } from './helpers.types'
 import type {
   IExEnvironment,
-  TEnvironmentCfg,
+  TExEnvironmentCfg,
 } from './environment.types'
 import type {
   IExRunner,
@@ -29,7 +29,7 @@ export type TExamRunners<
 
 export type TExamEnvironments<
   Cls extends IExEnvironment=IExEnvironment,
-  Opts extends TEnvironmentCfg=TEnvironmentCfg
+  Opts extends TExEnvironmentCfg=TExEnvironmentCfg
 > = TExTypeOpts<Cls, Opts>
 
 export type TExamReporters<
@@ -41,28 +41,28 @@ export type TExecuteOptsMap<Cls=unknown, Opts=unknown> = {
   [key:string]: TExArrClsOptMap<Cls, Opts>
 }
 
-export type TExecuteTransformers<
+export type TExecTransformers<
   Cls extends IExTransform=IExTransform,
   Opts extends TExTransformCfg=TExTransformCfg
 > = {
   [key:string]: TExecutorArrClsOptMap<Cls, Opts>
 }
 
-export type TExecuteRunners<
+export type TExecRunners<
   Cls extends IExRunner=IExRunner,
   Opts extends TExRunnerCfg=TExRunnerCfg
 > = {
   [key:string]: TExecutorArrClsOptMap<Cls, Opts>
 }
 
-export type TExecuteEnvironments<
+export type TExecEnvironments<
   Cls extends IExEnvironment=IExEnvironment,
-  Opts extends TEnvironmentCfg=TEnvironmentCfg
+  Opts extends TExEnvironmentCfg=TExEnvironmentCfg
 > = {
   [key:string]: TExecutorArrClsOptMap<Cls, Opts>
 }
 
 
 export type TExTypeCls = IExRunner|IExTransform|IExEnvironment
-export type TExTypeCfg = TExRunnerCfg|TExTransformCfg|TEnvironmentCfg
+export type TExTypeCfg = TExRunnerCfg|TExTransformCfg|TExEnvironmentCfg
 export type TExTypeMap = TExamRunners|TExamTransformers|TExamEnvironments

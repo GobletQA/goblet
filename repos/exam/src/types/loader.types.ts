@@ -37,6 +37,10 @@ export type TLoaderCfg = {
    */
   loaderIgnore?:string[]
 
+  /**
+   * Esbuild configuration passed to esbuild
+   * See here for more info https://github.com/egoist/esbuild-register
+   */
   esbuild?:Parameters<typeof register>[0]|false
 }
 
@@ -47,6 +51,8 @@ export enum ELoadType {
 
 export type TLoadOpts<T=ELoadType> = {
   type?:T
+  cache?:boolean
   force?:boolean
+  error?:boolean
   testFile?:boolean
 }

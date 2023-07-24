@@ -3,7 +3,7 @@ import type { IConstructable } from './helpers.types'
 import type { TExFileAst, TExFileLoaded } from './file.types'
 
 export type TExTransformCfg = {
-  [key:string]: any
+  // [key:string]: any
 }
 
 export type TTransformResp<R=unknown> = R
