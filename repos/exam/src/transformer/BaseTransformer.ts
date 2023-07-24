@@ -1,12 +1,13 @@
-import type { Exam } from '@GEX/Exam'
 import type {
   TExCtx,
+  TExFileAst,
   IExTransform,
-  TExFileModelDef,
   TExTransformCfg,
 } from '@GEX/types'
 
+import * as esbuild from 'esbuild'
 import { Errors } from '@GEX/constants/errors'
+import {createGlobMatcher} from '@GEX/utils/globMatch'
 
 /**
  * ExamTransformer - Base transformer, used for all files by default
@@ -15,23 +16,31 @@ import { Errors } from '@GEX/constants/errors'
 export class BaseTransformer implements IExTransform<string> {
 
   options:TExTransformCfg={}
+  transformIgnore:(match:string) => boolean
 
   constructor(cfg?:TExTransformCfg) {
-    this.options = {...this.options, ...cfg}
-  }
-
-  import = async (ctx:TExCtx) => {
-    return {
-      ast: {},
-      ext: ``,
-      name: ``,
-      content: ``,
-      location: ``,
-      fileType: ``,
-    } as TExFileModelDef
+    const { transformIgnore, ...rest } = cfg
+    this.transformIgnore = createGlobMatcher(transformIgnore)
+    
+    this.options = {...this.options, ...rest}
   }
 
   transform = async (content:string, ctx:TExCtx):Promise<string> => {
-    return undefined
+    const { exam, file } = ctx
+    if(this.transformIgnore(file.location)) return content
+
+    try {
+      const opts = exam.loader.esbuild || {}
+      const transformed = await esbuild.transform(content, opts)
+      transformed.warnings?.length
+        && transformed.warnings.map(warn => console.log(warn))
+
+      return transformed.code
+    }
+    catch(err){
+      Errors.Transform(file.location, `BaseTransformer.transform`, err)
+
+      return content
+    }
   }
 }

@@ -1,3 +1,4 @@
+import {TExAst } from "./file.types"
 import type { Exam } from "@GEX/Exam"
 import type { TLoaderCfg } from "./loader.types"
 import type { TExEventData } from './results.types'
@@ -13,7 +14,6 @@ import {
   TExamEnvironments,
   TExamTransformers,
 }  from './typeMaps.types'
-import {TExAst, TExFileModel} from "./file.types"
 
 
 export type TExamEvt<T=TExEventData|TExEventData[]> = {
@@ -65,13 +65,9 @@ export type TExamCfg = TLoaderCfg
     transforms: TExamTransformers
     environments: TExamEnvironments
 
-    // TODO: add logic for inline check
-    testInline:string|TExFileModel
-
-    // TODO: ensure transform ignores these files
-    transformIgnore?:string[]
-
     // TODO: Use module-alias to setup aliases
+    // Most likely need to be moved to TLoaderCfg
+    // Then figure out how to inject them when loading files
     aliases?:Record<string, string>
 
     // TODO: implement reporters
@@ -85,9 +81,9 @@ export type TExamConfig = TExamCfg
   & TExamEvents
   & Omit<TExecuteCfg, `exam`|`runners`|`transforms`|`environments`>
 
-export type TExamStartOpts<
+export type TExamRunOpts<
   D extends TExData=TExData,
   Ast extends TExAst=TExAst
 > = TExamEvents
   & TExRun<D, Ast>
-  & Omit<TExamConfig, `runners`|`transforms`|`environments`>
+  & Pick<TExamConfig, `testMatch`|`testIgnore`|`extensions`|`testDir`|`rootDir`>

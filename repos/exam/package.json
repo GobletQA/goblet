@@ -24,7 +24,7 @@
   "scripts": {
     "build": "pnpm build:docker",
     "build:docker": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
-    "lt:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
+    "ex:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
@@ -43,7 +43,6 @@
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "5.0.0",
-    "cross-spawn": "7.0.3",
     "esbuild": "0.17.18",
     "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.4.2",
@@ -51,7 +50,7 @@
     "glob": "10.3.3",
     "micromatch": "4.0.5",
     "module-alias": "2.2.2",
-    "playwright": "1.36.1",
+    "module-from-string": "3.3.0",
     "source-map-support": "0.5.21"
   },
   "devDependencies": {

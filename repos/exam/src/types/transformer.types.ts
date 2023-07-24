@@ -1,15 +1,14 @@
 import type { TExCtx, TExData } from "@GEX/types"
 import type { IConstructable } from './helpers.types'
-import type { TExFileAst, TExFileLoaded } from './file.types'
 
 export type TExTransformCfg = {
-  // [key:string]: any
+  transformIgnore?:string[]
 }
 
 export type TTransformResp<R=unknown> = R
 
 export interface IExamTransform<R=unknown, T extends TExData=TExData> {
-  import<M extends TExFileAst=TExFileAst>(ctx:TExCtx<T>): Promise<TExFileLoaded<M>>
+  transformIgnore:string[]|((location:string) => boolean)
   transform(
     content:string,
     ctx:TExCtx<T>

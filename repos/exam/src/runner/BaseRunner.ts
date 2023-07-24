@@ -5,13 +5,14 @@ import type {
   TExTestEvent,
 } from '@GEX/types'
 
+import path from 'path'
 import { ExamEvents } from '@GEX/Events'
 import { ExamRunner } from './ExamRunner'
 import {RunnerErr} from '@GEX/utils/error'
 import { ParkinTest } from '@ltipton/parkin/test'
 import {emptyArr, omitKeys} from '@keg-hub/jsutils'
+import { requireFromString } from 'module-from-string'
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
-
 
 export class BaseRunner extends ExamRunner {
 
@@ -39,19 +40,29 @@ export class BaseRunner extends ExamRunner {
     return this.isRunning
   }
 
-
   /**
    * Runs the code passed to it via the exam
    */
-  run = async (content:string|Record<string, any>, ctx:TExCtx) => {
+  run = async (content:string, ctx:TExCtx) => {
+    const { file } = ctx
     this.PTE = this.environment.setupGlobals(this, ctx)
 
-    // TODO: execute the file here - VM?
-    //  - This is call all the describes / test methods within the file
-    //  - The file content only exists as a string / AST
-    //  - So we need to eval it in some way that's safe?
-    // Then call PTE.run to actually run the tests
+    /**
+     * Imports the module from a string using Nodes built-in vm module
+     * Currently sets `useCurrentGlobal: true`, to use the currently globals
+     * Eventually this will be updated to not do that
+     */
+    requireFromString(content, {
+      filename: file.name,
+      dirname: path.dirname(file.location),
+      useCurrentGlobal: true
+    })
 
+    /**
+     * The required module above should use the current globals
+     * Which means PTE should now be loaded with tests to run
+     */
+    this.isRunning = true
     const results = await this.PTE.run() as TExEventData[]
     const final = results.map(result => this.clearTestResults(result))
     await this.cleanup()
@@ -127,7 +138,5 @@ export class BaseRunner extends ExamRunner {
       this.omitTestResults
     )
   }
-
-
 
 }

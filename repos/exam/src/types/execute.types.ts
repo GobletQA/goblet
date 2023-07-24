@@ -51,9 +51,7 @@ type TExRunMaps = {
 
 type TExRunMeta<D extends TExData=TExData, Ast extends TExAst=TExAst> = {
   data?: D
-  content?:string|Ast
   file?:TExFileModel<Ast>
-  type?:TExFileModel[`fileType`]|string
 }
 
 export type TExRun<D extends TExData=TExData, Ast extends TExAst=TExAst> = TExRunMaps

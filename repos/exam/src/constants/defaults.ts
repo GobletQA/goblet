@@ -6,10 +6,13 @@ import type {
   TExEnvironmentCfg,
 } from '@GEX/types'
 
-
-import { ELoadType } from "@GEX/types"
 import { EExTestMode } from '@GEX/types'
 import {emptyArr} from '@keg-hub/jsutils'
+
+export const globFileIgnore = [
+  `/node_modules/`,
+  `\\.pnp\\.[^\\\/]+$`
+]
 
 export const RunnerCfg:TExRunnerCfg = {
   /**
@@ -34,12 +37,6 @@ export const RunnerCfg:TExRunnerCfg = {
 }
 
 export const LoaderCfg = {
-  /**
-   * We default to require because we use esbuild-register by default as well
-   * Which allows us to import modules (i.e. `.mjs`|`.mts`) using the require method
-   */
-  loadType: ELoadType.require,
-
   /**
    * Default to the current working directory
    * It's expected that this will be overwritten
@@ -70,7 +67,12 @@ export const EnvironmentCfg:TExEnvironmentCfg = {
   globals: {},
 }
 
-export const TransformCfg:TExTransformCfg = {}
+export const TransformCfg:TExTransformCfg = {
+  transformIgnore: [
+    `/node_modules/`,
+    `\\.pnp\\.[^\\\/]+$`
+  ]
+}
 
 export const ExecuteCfg:Omit<TExecuteCfg, `exam`> = {
   runners:{},
@@ -83,10 +85,6 @@ export const ExecuteCfg:Omit<TExecuteCfg, `exam`> = {
 
 export const ExCfg:Partial<TExamConfig> = {
   mode: EExTestMode.parallel,
-  transformIgnore: [
-    `/node_modules/`,
-    `\\.pnp\\.[^\\\/]+$`
-  ]
 }
 
 export const ExamCfg = {

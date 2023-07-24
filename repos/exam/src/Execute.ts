@@ -20,6 +20,7 @@ import type {
   TExecuteBuiltTransforms,
   TExecuteBuiltEnvironments,
   TExecPassThroughOpts,
+  TLoadOpts,
 } from '@GEX/types'
 
 import { Exam } from "@GEX/Exam"
@@ -125,9 +126,8 @@ export class Execute {
     return existing[type]
   }
 
-  #loadFiles = async (files:string[]) => {
-    // await this.exam.loader()
-    
+  #loadFiles = async (files:string[], opts:TLoadOpts=emptyObj) => {
+    return this.exam.loader.loadMany(files, opts)
   }
 
   extensions = <T extends TExData=TExData>(
@@ -139,9 +139,9 @@ export class Execute {
       runner,
       transform,
       environment,
-      type=file?.fileType,
     } = ctx
-    
+
+    const type = file.fileType
     const resp = omitKeys<TExCtx<T>>(ctx, [`runner`, `transform`, `environment`])
 
     if(opts.environment !== false){
@@ -195,9 +195,9 @@ export class Execute {
     let resp:TExEventData[]
 
     try {
-      // Load pre-files
+      await this.#loadFiles(this.preEnvironment)
       resp = await this.#runner.run(transformed, ctx)
-      // Load post-files
+      await this.#loadFiles(this.postEnvironment)
     }
     catch(err){ error = err }
     finally {
@@ -218,7 +218,7 @@ export class Execute {
     const extCtx:TExExtensionsCtx<T> = {...options, exam: this.exam}
     const ctx = this.extensions(extCtx)
 
-    const transformed = ctx.transform.transform(ctx.content || ctx?.file?.content, ctx)
+    const transformed = ctx.transform.transform(ctx.file.content, ctx)
 
     return await this.#run(transformed, ctx)
   }

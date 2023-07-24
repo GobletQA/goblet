@@ -7,6 +7,7 @@ import type {
 } from '@GEX/types'
 
 import { Errors } from '@GEX/constants/errors'
+import {createGlobMatcher} from '@GEX/utils/globMatch'
 
 /**
  * ExamTransformer - Base transformer, used for all files by default
@@ -15,14 +16,12 @@ import { Errors } from '@GEX/constants/errors'
 export class ExamTransformer<R=unknown, T extends TExData=TExData> implements IExTransform<R, T> {
 
   options:TExTransformCfg={}
+  transformIgnore:(match:string) => boolean
 
   constructor(cfg?:TExTransformCfg) {
-    this.options = {...this.options, ...cfg}
-  }
-
-  import = async <M>(ctx:TExCtx<T>):Promise<M> => {
-    Errors.Override(`ExamTransformer.import`)
-    return undefined
+    const { transformIgnore, ...rest } = cfg
+    this.transformIgnore = createGlobMatcher(transformIgnore)
+    this.options = {...this.options, ...rest}
   }
 
   transform = async (content:string, ctx:TExCtx<T>):Promise<R> => {

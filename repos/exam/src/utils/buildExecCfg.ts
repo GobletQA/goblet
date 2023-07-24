@@ -23,6 +23,7 @@ import { isNum } from '@keg-hub/jsutils'
 import { convertTypeStrToCls } from './convertTypeStrToCls'
 import {
   RunnerCfg,
+  TransformCfg,
   EnvironmentCfg
 } from '@GEX/constants/defaults'
 
@@ -60,7 +61,10 @@ export type TBuiltExecCfg = {
 
 const buildPassThrough = (config:TExamConfig) => {
   return {
-    transform: {},
+    transform: {
+      ...TransformCfg,
+      transformIgnore: config.transformIgnore || TransformCfg.transformIgnore
+    },
     runner: {
       debug: config.debug ?? RunnerCfg.debug,
       verbose: config.verbose ?? RunnerCfg.verbose,
