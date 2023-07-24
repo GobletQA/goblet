@@ -2,17 +2,20 @@ import type {
   TExRun,
   TExData,
   TExamEvt,
+  TExamRun,
   TExamConfig,
   TExamRunOpts,
   TExamEventCB,
   TExamCancelCB,
   TExamCleanupCB,
+  TExFileModel,
+  TExEventData,
 } from '@GEX/types'
 
 import { Loader } from '@GEX/Loader'
 import { Execute } from '@GEX/Execute'
 import { EExTestMode } from '@GEX/types'
-import { checkCall } from '@keg-hub/jsutils'
+import { checkCall, flatArr, isObj } from '@keg-hub/jsutils'
 import { ExamEvtNames } from '@GEX/constants'
 import { buildExamCfg } from '@GEX/utils/buildExamCfg'
 import { buildExecCfg } from '@GEX/utils/buildExecCfg'
@@ -62,11 +65,18 @@ export class Exam {
     events && addCustomEvents(events)
   }
 
-  #runTest = async <T extends TExData=TExData>(options:TExRun<T>) => {
-    const results = await this.execute.exec<T>(options)
+  #runTest = async <T extends TExData=TExData>(options:TExamRun<T>) => {
+    const { file } = options
+    const model = isObj<TExFileModel>(file)
+      ? file
+      : this.loader.loadContent<TExFileModel<T>>(file, { testFile: true, asModel: true })
+
+    const results = await this.execute.exec<T>({...options, file: model })
 
     !this.canceled
       && this.event(ExamEvents.results({ data: results }))
+
+    return results
   }
 
   #runTests = async <T extends TExData=TExData>(opts:TExamRunOpts<T>) => {
@@ -90,18 +100,24 @@ export class Exam {
      * Otherwise will try to run all tests at the same time
      * Need to add different loop types for `serial` and `parallel`
      */
-    if(this.mode === EExTestMode.parallel)
-      await Promise.all(
+    if(this.mode === EExTestMode.parallel){
+      const resp = await Promise.all(
         Object.entries(tests)
-          .map(([loc, file]) => this.#runTest<T>({ file, ...rest }))
+          .map(([loc, file]) => this.#runTest<T>({ file, ...rest } as TExamRun<T>))
       )
 
+      return flatArr<TExEventData>(resp)
+    }
+
     else
-      await Object.entries(tests)
+      return await Object.entries(tests)
         .reduce(async (acc, [key, file]) => {
-          await acc
-          await this.#runTest<T>({ file, ...rest })
-        }, Promise.resolve())
+          const arr = await acc
+          const resp = await this.#runTest<T>({ file, ...rest } as TExamRun<T>)
+          arr.push(...resp)
+          
+          return arr
+        }, Promise.resolve([] as TExEventData[]))
   }
 
   /**
@@ -143,6 +159,9 @@ export class Exam {
    * @member {Exam}
    */
   run = async <T extends TExData=TExData>(opts:TExamRunOpts<T>) => {
+
+    let resp:TExEventData[]
+
     try {
   
       await this.initExec()
@@ -166,8 +185,8 @@ export class Exam {
 
       // TODO: handle reporters here
 
-      file
-        ? await this.#runTest<T>({file, ...rest})
+      resp = file
+        ? await this.#runTest<T>({file, ...rest} as TExamRun<T>)
         : await this.#runTests<T>(opts)
 
     }
@@ -183,11 +202,10 @@ export class Exam {
       }
     }
     finally {
-      
-      
+
       !this.canceled && await this.stop()
 
-      return this
+      return resp
     }
 
   }

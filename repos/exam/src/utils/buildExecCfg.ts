@@ -66,14 +66,17 @@ const buildPassThrough = (config:TExamConfig) => {
       transformIgnore: config.transformIgnore || TransformCfg.transformIgnore
     },
     runner: {
+      ...RunnerCfg,
       debug: config.debug ?? RunnerCfg.debug,
       verbose: config.verbose ?? RunnerCfg.verbose,
       timeout: isNum(config.timeout) ? config.timeout : RunnerCfg.timeout,
       globalTimeout: isNum(config.globalTimeout) ? config.globalTimeout : RunnerCfg.globalTimeout,
     },
     environment: {
+      ...EnvironmentCfg,
       envs: {...EnvironmentCfg.envs, ...config.envs},
       globals: {...EnvironmentCfg.globals, ...config.globals},
+      options: {...EnvironmentCfg.options, ...config.environment},
     }
   } as TExecPassThroughOpts
 }
@@ -85,6 +88,8 @@ export const buildExecCfg = async ({
 }:TBuiltExecCfg) => {
   const {
     runners,
+    preRunner,
+    postRunner,
     transforms,
     environments,
     preEnvironment,
@@ -110,6 +115,8 @@ export const buildExecCfg = async ({
 
   return {
     exam,
+    preRunner,
+    postRunner,
     preEnvironment,
     postEnvironment,
     runners: loadedR,

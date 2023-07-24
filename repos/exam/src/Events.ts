@@ -8,7 +8,7 @@ export const onExDynEvent = (mainEvt:Partial<TExamEvt>) => {
   }
 }
 
-export const __ExamEvents:TExamEvts = {
+const __ExamEvents:TExamEvts = {
   specStart: onExDynEvent({
     name: ExamEvtNames.specStart,
     message: `Exam - Spec Started`,

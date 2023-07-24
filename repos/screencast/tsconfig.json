@@ -16,10 +16,5 @@
     "../shared",
     "../testUtils",
     "../workflows"
-  ],
-  "exclude": [
-    "dist",
-    "build",
-    "node_modules"
   ]
 }

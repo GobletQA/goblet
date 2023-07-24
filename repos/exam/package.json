@@ -25,6 +25,7 @@
     "build": "pnpm build:docker",
     "build:docker": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
     "ex:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
+    "ex:dev": "node --no-warnings --loader esbuild-register/loader -r esbuild-register src/bin/exam.ts --config __mocks__/exam.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",

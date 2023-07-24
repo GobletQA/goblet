@@ -1,6 +1,7 @@
+import { TExamConfig } from '@GEX/types'
+import { ExamEvents } from '@GEX/Events'
 
-
-export const ExamConfig = {
+export const ExamConfig:TExamConfig = {
 
   /**
    * Root directory for the test execution
@@ -21,19 +22,55 @@ export const ExamConfig = {
    * Can be a directory path or file path
    * Any matching test files with paths that match will be executed
    */
-  testMatch: undefined,
+  testMatch: [],
 
   /**
    * Glob pattern of test files to ignore even in found from the testMatch options
    * Can be a directory path or file path
    * Any matching test files with paths that match will be ignored
    */
-  testIgnore: undefined,
-  
+  testIgnore: [],
+
+  /**
+   * Glob paths of files the transforms will ignore
+   */
+  transformIgnore: [],
+
+  /**
+   * Glob paths of files the loader will ignore
+   */
+  loaderIgnore:[],
+
+  /**
+   * Esbuild configuration passed to esbuild
+   * See here for more info https://github.com/egoist/esbuild-register
+   */
+  esbuild: {},
+
+  /**
+   * Debug logging output
+   */
+  debug: false,
+
+  /**
+   * Verbose logging output
+   */
+  verbose: false,
+
+  /**
+   * Timeout per test - 30 seconds (default)
+   */
+  timeout: 0,
+
+  /**
+   * Global timeout for test run per file - 20min (default)
+   */
+  globalTimeout: 0,
+
   /**
    * Custom events that a custom `Runner`, `Transform`, or `Environment` will fire
    */
-  events: {},
+  events: ExamEvents,
 
   /**
    * Callback to listen for events fired during test execution
@@ -49,33 +86,6 @@ export const ExamConfig = {
    * Callback to called when exam has finished cleaning up after a test run
    */
   onCleanup: () => {},
-  
-  execute: {
-    /**
-     * Debug logging output
-     */
-    debug: false,
-
-    /**
-     * Verbose logging output
-     */
-    verbose: false,
-
-    /**
-     * Timeout per test - 30 seconds (default)
-     */
-    timeout: 30000,
-
-    /**
-     * Global timeout for test run per file - 20min (default)
-     */
-    globalTimeout: 60000 * 20,
-    
-    /**
-     * Any other custom key value passed on to a custom Runner, Transform, or Environment
-     */
-    key: `value`
-  },
 
   /**
    * Default extensions loaded by the Exam Loader class
@@ -113,6 +123,54 @@ export const ExamConfig = {
   /**
    * Custom Reporters for reporting test execution results
    */
-  reporters: []
+  reporters: {},
+
+  /**
+   * List of files to run before the Runner has executed
+   */
+  preRunner:[
+    `__mocks__/preRunner.ts`,
+  ],
+
+  /**
+   * List of files to run after the Runner has executed
+   */
+  postRunner:[
+    `__mocks__/postRunner.ts`,
+  ],
+
+  /**
+   * List of files to run before the environment as been setup
+   */
+  preEnvironment:[
+    `__mocks__/preEnvironment.ts`,
+  ],
+
+
+  /**
+   * List of files to run after the environment as been setup
+   */
+  postEnvironment:[
+    `__mocks__/postEnvironment.ts`,
+  ],
+
+
+  /**
+   * Items to add as environment variables within the environment
+   * Gets set to `process.env` object
+   */
+  envs: {},
+
+  /**
+   * Items to add to the global scope of the environment
+   */
+  globals: {},
   
+  /**
+   * Custom options to pass to the environment. Gets set to environment.options
+   */
+  environment: {},
+
 }
+
+export default ExamConfig

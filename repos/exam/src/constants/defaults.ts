@@ -74,10 +74,7 @@ export const EnvironmentCfg:TExEnvironmentCfg = {
 }
 
 export const TransformCfg:TExTransformCfg = {
-  transformIgnore: [
-    `/node_modules/`,
-    `\\.pnp\\.[^\\\/]+$`
-  ]
+  transformIgnore: globFileIgnore
 }
 
 export const ExecuteCfg:Omit<TExecuteCfg, `exam`> = {

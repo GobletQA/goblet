@@ -91,6 +91,9 @@ export class Loader {
     if(testMatch) this.testMatch = testMatch
     if(extensions) this.extensions = flatUnion(this.extensions, extensions)
 
+    if(this.extensions?.length)
+      this.extensions = this.extensions.map(ext => ext.replace(/^./, ``))
+
     if(testIgnore) this.testIgnore = createGlobMatcher(testIgnore)
     if(loaderIgnore) this.loaderIgnore = createGlobMatcher(loaderIgnore)
 
@@ -160,6 +163,28 @@ export class Loader {
     ] as [string, TLoadOpts]
   }
 
+  #loopExts = (file:string, cb:(file:string) => any) => {
+    const lastExt = this.extensions[this.extensions.length - 1]
+
+    let error:Error
+    for(let ext of this.extensions){
+      try {
+        const data = cb(`${file}.${ext}`)
+        return { data, ext }
+      }
+      catch(err){
+        error = err
+        if(ext !== lastExt && err.code === `ENOENT`) continue
+
+        throw err
+      }
+    }
+
+    if(error) throw error
+
+    return { data: `` }
+  }
+
   load = (loc:string, opts:TLoadOpts=emptyObj, meta:boolean=true) => {
     const [location, options] = meta ? this.#getLoadMeta(loc, opts) : [loc, opts]
 
@@ -168,11 +193,21 @@ export class Loader {
 
     let loaded:any
     let error:Error
+    // TODO: figure out how to add the found extension
+    let extension:string
 
     try {
       options.cache === false && this.#clearLocCache(location)
       this.#testFile[location] = Boolean(options.testFile)
-      loaded = this.require(location)
+      
+      if(path.extname(location).length)
+        loaded = readFileSync(location, 'utf8')
+      else {
+        const { data, ext } = this.#loopExts(location, (lc) => this.require(lc))
+        loaded = data
+        extension = ext
+      }
+
     }
     catch(err){ error = err }
 
@@ -193,12 +228,29 @@ export class Loader {
 
   }
 
-  loadContent = (loc:string, opts:TLoadOpts=emptyObj, meta:boolean=true) => {
+  loadContent = <T=string|TExFileModel>(
+    loc:string,
+    opts:TLoadOpts=emptyObj,
+    meta:boolean=true
+  ):T => {
     const [location, options] = meta ? this.#getLoadMeta(loc, opts) : [loc, opts]
 
     try {
-      const content = readFileSync(location, 'utf8')
-      return content.toString()
+      let content:string
+      if(path.extname(location).length)
+        content = readFileSync(location, 'utf8')
+
+      else {
+        const { data, ext } = this.#loopExts(location, (lc) => readFileSync(lc, 'utf8'))
+        content = data
+        // TODO: figure out how to set the ext
+      }
+
+      const contentStr = content.toString()
+      return !options.asModel
+        ? content
+        : toFileModel({ content: contentStr, location }) as TExFileModel<any>
+
     }
     catch(err) {
       throw new LoaderErr(err)
@@ -216,8 +268,11 @@ export class Loader {
     return locations.reduce((acc, loc:string) => {
       if(!this.#hookMatcher(loc)) return acc
 
-      const content = this.loadContent(loc, opts, false)
-      acc[loc] = toFileModel({ content, location: loc })
+      acc[loc] = this.loadContent<TExFileModel>(
+        loc,
+        {...opts, asModel: true},
+        false
+      )
 
       return acc
     }, {} as Record<string, TExFileModel>)

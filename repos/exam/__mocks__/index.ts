@@ -1,1 +1,1 @@
-export * from './mockValues'
+export {}

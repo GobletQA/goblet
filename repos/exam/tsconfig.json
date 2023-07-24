@@ -12,20 +12,5 @@
     "../../",
     "../../configs",
     "../shared/src"
-  ],
-  "exclude": [
-    ".git",
-    ".npm",
-    ".app-cache",
-    ".npm-tmp",
-    "build",
-    "build*",
-    "node_modules",
-    "dist",
-    "dist*",
-    "node_modules",
-    "**/dist/*",
-    "**/build/*",
-    "**/node_modules/*",
   ]
 }

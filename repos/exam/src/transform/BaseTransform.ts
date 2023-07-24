@@ -18,6 +18,7 @@ export class BaseTransform implements IExTransform<string> {
   transformIgnore:(match:string) => boolean
 
   constructor(cfg?:TExTransformCfg) {
+
     const { transformIgnore, ...rest } = cfg
     this.transformIgnore = createGlobMatcher(transformIgnore)
     
@@ -29,7 +30,7 @@ export class BaseTransform implements IExTransform<string> {
     if(this.transformIgnore(file.location)) return content
 
     try {
-      const opts = exam.loader.esbuild || {}
+      const { hookMatcher, ...opts} = (exam.loader.esbuild || {})
       const transformed = await esbuild.transform(content, opts)
       transformed.warnings?.length
         && transformed.warnings.map(warn => console.log(warn))

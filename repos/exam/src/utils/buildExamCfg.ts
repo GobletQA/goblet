@@ -12,10 +12,6 @@ const resolveRootDir = (config:TExamConfig) => {
 }
 
 const replaceRootObj = <T=Record<string, string>>(obj:T, rootDir:string) => {
-  
-  console.log(`------- obj -------`)
-  console.log(obj)
-  
   return Object.entries(obj).reduce((acc, [key, val]) => {
     const replaced = isStr(val)
       ? val.replaceAll(RootDirKey, rootDir)
@@ -23,7 +19,7 @@ const replaceRootObj = <T=Record<string, string>>(obj:T, rootDir:string) => {
         ? val.map(item => isStr(item) ? item.replaceAll(RootDirKey, rootDir) : item)
         : val
 
-    acc[key.replaceAll(RootDirKey, rootDir) as keyof T] = replaced
+    acc[(key.replaceAll(RootDirKey, rootDir)) as keyof T] = replaced as any
     return acc
   }, {} as T)
 }
@@ -47,15 +43,12 @@ const replaceRootDir = (config:TExamConfig) => {
     transformIgnore,
   } = config
 
-    console.log(`------- transforms -------`)
-    console.log(transforms)
-
   return {
     aliases: replaceRootObj(aliases, rootDir),
     runners: replaceRootObj(runners, rootDir),
-    // testIgnore: replaceRootArr(testIgnore, rootDir),
-    // transforms: replaceRootObj(transforms, rootDir),
-    // environments: replaceRootObj(environments, rootDir),
+    testIgnore: replaceRootArr(testIgnore, rootDir),
+    transforms: replaceRootObj(transforms, rootDir),
+    environments: replaceRootObj(environments, rootDir),
     loaderIgnore: replaceRootArr(loaderIgnore, rootDir),
     preEnvironment: replaceRootArr(preEnvironment, rootDir),
     postEnvironment: replaceRootArr(postEnvironment, rootDir),

@@ -1,7 +1,9 @@
-import {TExAst } from "./file.types"
+import {TExAst, TExFileModel } from "./file.types"
 import type { Exam } from "@GEX/Exam"
+
 import type { TLoaderCfg } from "./loader.types"
 import type { TExEventData } from './results.types'
+import type { TExEnvironmentCfg } from "./environment.types"
 import type {
   TExRun,
   TExData,
@@ -54,16 +56,18 @@ export type TExamEvents = {
   onCleanup?:TExamCleanupCB
 }
 
-
 export type TExamCfg = TLoaderCfg
   & TExecPassThroughOpts[`runner`]
   & TExecPassThroughOpts[`transform`]
-  & TExecPassThroughOpts[`environment`]
+  & Omit<TExecPassThroughOpts[`environment`], `options`>
   & {
     // These get convert form strings to classes in the Exam Loader
     runners: TExamRunners
     transforms: TExamTransforms
     environments: TExamEnvironments
+
+    // Gets converted to environment options in the buildExamConfig
+    environment?:TExEnvironmentCfg[`options`]
 
     // TODO: Use module-alias to setup aliases
     // Most likely need to be moved to TLoaderCfg
@@ -79,11 +83,17 @@ export type TExamCfg = TLoaderCfg
 
 export type TExamConfig = TExamCfg
   & TExamEvents
-  & Omit<TExecuteCfg, `exam`|`runners`|`transforms`|`environments`>
+  & Omit<TExecuteCfg, `exam`|`runners`|`transforms`|`environments`|`passthrough`>
+
+
+export type TExamRun<
+  D extends TExData=TExData,
+  Ast extends TExAst=TExAst
+> = Omit<TExRun<D, Ast>, `file`> & { file?:TExFileModel<Ast>|string }
 
 export type TExamRunOpts<
   D extends TExData=TExData,
   Ast extends TExAst=TExAst
-> = TExamEvents
-  & TExRun<D, Ast>
+> = TExamRun
+  & TExamEvents
   & Pick<TExamConfig, `testMatch`|`testIgnore`|`extensions`|`testDir`|`rootDir`>

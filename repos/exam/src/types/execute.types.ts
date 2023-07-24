@@ -35,6 +35,8 @@ export type TExecPassThroughOpts = {
 
 export type TExecuteCfg = {
   exam:Exam
+  preRunner?:string[]
+  postRunner?:string[]
   preEnvironment?:string[]
   postEnvironment?:string[]
   runners?:TExecRunners

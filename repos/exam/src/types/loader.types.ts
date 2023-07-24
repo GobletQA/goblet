@@ -44,4 +44,5 @@ export type TLoadOpts = {
   force?:boolean
   error?:boolean
   testFile?:boolean
+  asModel?:boolean
 }

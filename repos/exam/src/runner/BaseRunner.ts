@@ -19,10 +19,10 @@ export class BaseRunner extends ExamRunner {
   PTE:ParkinTest
   environment:BaseEnvironment
   omitTestResults:string[] = [
-    `tests`,
-    `describes`,
-    `passedExpectations`,
-    `failedExpectations`,
+    // `tests`,
+    // `describes`,
+    // `passedExpectations`,
+    // `failedExpectations`,
   ]
 
   constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
@@ -44,6 +44,8 @@ export class BaseRunner extends ExamRunner {
    * Runs the code passed to it via the exam
    */
   run = async (content:string, ctx:TExCtx) => {
+    this.isRunning = true
+
     const { file } = ctx
     this.PTE = this.environment.setupGlobals(this, ctx)
 
@@ -54,15 +56,14 @@ export class BaseRunner extends ExamRunner {
      */
     requireFromString(content, {
       filename: file.name,
+      useCurrentGlobal: true,
       dirname: path.dirname(file.location),
-      useCurrentGlobal: true
     })
 
     /**
      * The required module above should use the current globals
      * Which means PTE should now be loaded with tests to run
      */
-    this.isRunning = true
     const results = await this.PTE.run() as TExEventData[]
     const final = results.map(result => this.clearTestResults(result))
     await this.cleanup()
