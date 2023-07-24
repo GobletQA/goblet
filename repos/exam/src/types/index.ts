@@ -8,5 +8,5 @@ export * from './helpers.types'
 export * from './execute.types'
 export * from './typeMaps.types'
 export * from "./reporters.types"
+export * from './transform.types'
 export * from './environment.types'
-export * from './transformer.types'

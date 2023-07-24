@@ -12,6 +12,7 @@ import type {
 import path from 'path'
 import { readFileSync } from 'fs'
 import { createRequire } from 'module'
+import moduleAlias from 'module-alias'
 import { LoaderCfg } from '@GEX/constants'
 import { LoaderErr } from '@GEX/utils/error'
 import { toFileModel } from "@GEX/utils/toFileModel"
@@ -19,7 +20,7 @@ import { register } from 'esbuild-register/dist/node'
 import { globFileIgnore } from '@GEX/constants/defaults'
 import { globFiles, createGlobMatcher } from "@GEX/utils/globMatch"
 
-import { noOp, flatUnion, emptyObj } from "@keg-hub/jsutils"
+import { flatUnion, emptyObj } from "@keg-hub/jsutils"
 
 
 type TLoadTests = TLoadOpts & {
@@ -31,14 +32,15 @@ type TLoadTests = TLoadOpts & {
 type TBuildRequire = {
   testDir?:string
   rootDir?:string
+  aliases?:Record<string, string>
 }
 
 export class Loader {
 
   exam:Exam
   testDir:string
+  unregister:TAnyCB
   require:NodeRequire
-  unregister:TAnyCB=noOp
   testMatch:string|string[]
   rootDir:string=LoaderCfg.rootDir
   extensions:string[]=LoaderCfg.extensions
@@ -59,9 +61,12 @@ export class Loader {
 
   #buildRequire = (opts:TBuildRequire) => {
     const {
+      aliases,
       rootDir,
       testDir,
     } = opts
+    
+    if(aliases) moduleAlias.addAliases(aliases)
     
     if(!this.require || rootDir && (this.rootDir !== rootDir)){
       this.require = undefined
@@ -73,7 +78,6 @@ export class Loader {
   }
 
   #setup = (config:TLoaderCfg) => {
-
     const {
       esbuild,
       rootDir,
@@ -95,7 +99,6 @@ export class Loader {
       this.unregister =  register().unregister
     }
 
-    // TODO: Investigate injecting aliases here
     this.#buildRequire({ rootDir, testDir })
 
     this.#globFileOpts = {

@@ -15,7 +15,7 @@ import type {
   TExEnvironmentCfg,
   TExExtensionsCtx,
   TExecEnvironments,
-  TExecTransformers,
+  TExecTransforms,
   TExecuteBuiltRunners,
   TExecuteBuiltTransforms,
   TExecuteBuiltEnvironments,
@@ -29,9 +29,8 @@ import { ExamEvents } from '@GEX/Events'
 import {emptyObj, omitKeys} from '@keg-hub/jsutils'
 import { BaseRunner } from '@GEX/runner/BaseRunner'
 import { isConstructor } from '@GEX/utils/isConstructor'
+import { BaseTransform } from '@GEX/transform/BaseTransform'
 import { resolveTypeClass } from "@GEX/utils/resolveTypeClass"
-import { BaseTransformer } from '@GEX/transformer/BaseTransformer'
-import { ExamTransformer } from '@GEX/transformer/ExamTransformer'
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 import { ExamEnvironment } from '@GEX/environment/ExamEnvironment'
 
@@ -68,14 +67,14 @@ export class Execute {
 
   runnersTypes:TExecRunners={}
   environmentTypes:TExecEnvironments={}
-  transformerTypes:TExecTransformers={}
+  transformTypes:TExecTransforms={}
 
   constructor(cfg:TExecuteCfg){
     const {
       exam,
       runners,
       passthrough,
-      transformers,
+      transforms,
       environments,
       preEnvironment,
       postEnvironment,
@@ -85,7 +84,7 @@ export class Execute {
     this.preEnvironment = [...preEnvironment]
     this.postEnvironment = [...postEnvironment]
     this.runnersTypes = {...this.runnersTypes, ...runners}
-    this.transformerTypes = {...this.transformerTypes, ...transformers}
+    this.transformTypes = {...this.transformTypes, ...transforms}
     this.environmentTypes = {...this.environmentTypes, ...environments}
     this.#Environment = new ExamEnvironment(passthrough.environment)
   }
@@ -159,13 +158,13 @@ export class Execute {
     }
 
     if(opts.transform !== false){
-      const trans = this.#resolve<T,IExTransform,TExecTransformers,TExTransformCfg>(resp, {
+      const trans = this.#resolve<T,IExTransform,TExecTransforms,TExTransformCfg>(resp, {
         type,
         override: transform,
         skip: opts.transform,
-        fallback: BaseTransformer,
+        fallback: BaseTransform,
         existing: this.#transforms,
-        types: this.transformerTypes,
+        types: this.transformTypes,
       })
       this.#transforms[type] = trans
       resp.transform = trans
@@ -234,7 +233,7 @@ export class Execute {
     this.runnersTypes = undefined
     this.preEnvironment = undefined
     this.postEnvironment = undefined
-    this.transformerTypes = undefined
+    this.transformTypes = undefined
     this.environmentTypes = undefined
 
     if(!ctx) return

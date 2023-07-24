@@ -79,6 +79,7 @@ export const jestConfig = (config:TGobletConfig, opts:TJestConfOpts=emptyObj) =>
 
   config = config || getGobletConfig()
   const { gobletRoot } = config.internalPaths
+  // @ts-ignore
   const jestConfig = config?.jestConfig || emptyObj
 
   const testMatch = opts.testDir && (opts.type || opts.shortcut || opts.ext)

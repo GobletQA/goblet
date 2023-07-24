@@ -15,8 +15,20 @@
     "../../configs"
   ],
   "exclude": [
-    "dist",
+    ".git",
+    ".npm",
+    ".app-cache",
+    ".npm-tmp",
     "build",
-    "node_modules"
+    "build*",
+    "node_modules",
+    "dist",
+    "dist*",
+    "node_modules",
+    "**/dist/*",
+    "**/build/*",
+    "../../tasks",
+    "../../container",
+    "**/node_modules/*"
   ]
 }

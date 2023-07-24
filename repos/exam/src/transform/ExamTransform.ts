@@ -10,10 +10,10 @@ import { Errors } from '@GEX/constants/errors'
 import {createGlobMatcher} from '@GEX/utils/globMatch'
 
 /**
- * ExamTransformer - Base transformer, used for all files by default
+ * ExamTransform - Base transform, used for all files by default
  * Can be overridden by defining custom transforms in a config
  */
-export class ExamTransformer<R=unknown, T extends TExData=TExData> implements IExTransform<R, T> {
+export class ExamTransform<R=unknown, T extends TExData=TExData> implements IExTransform<R, T> {
 
   options:TExTransformCfg={}
   transformIgnore:(match:string) => boolean
@@ -25,7 +25,7 @@ export class ExamTransformer<R=unknown, T extends TExData=TExData> implements IE
   }
 
   transform = async (content:string, ctx:TExCtx<T>):Promise<R> => {
-    Errors.Override(`ExamTransformer.transform`)
+    Errors.Override(`ExamTransform.transform`)
     return undefined
   }
 }

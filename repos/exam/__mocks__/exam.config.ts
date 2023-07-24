@@ -98,13 +98,13 @@ export const ExamConfig = {
     
   },
   /**
-   * Custom File transformer loaded before Runner, based on file extension
+   * Custom File transform loaded before Runner, based on file extension
    */
-  transformers: {
+  transforms: {
     
   },
   /**
-   * Custom Environment loaded before Transformer and Runner, based on file extension
+   * Custom Environment loaded before Transform and Runner, based on file extension
    */
   environments: {
     

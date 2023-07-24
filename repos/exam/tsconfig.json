@@ -14,8 +14,18 @@
     "../shared/src"
   ],
   "exclude": [
-    "dist",
+    ".git",
+    ".npm",
+    ".app-cache",
+    ".npm-tmp",
     "build",
-    "node_modules"
+    "build*",
+    "node_modules",
+    "dist",
+    "dist*",
+    "node_modules",
+    "**/dist/*",
+    "**/build/*",
+    "**/node_modules/*",
   ]
 }

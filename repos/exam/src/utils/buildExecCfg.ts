@@ -13,8 +13,8 @@ import type {
   IExEnvironment,
   TExTransformCfg,
   TExecuteOptsMap,
+  TExamTransforms,
   TExEnvironmentCfg,
-  TExamTransformers,
   TExamEnvironments,
   TExecPassThroughOpts,
 } from '@GEX/types'
@@ -85,7 +85,7 @@ export const buildExecCfg = async ({
 }:TBuiltExecCfg) => {
   const {
     runners,
-    transformers,
+    transforms,
     environments,
     preEnvironment,
     postEnvironment,
@@ -97,9 +97,9 @@ export const buildExecCfg = async ({
     options
   )
 
-  const loadedT = await loopLoadTypes<TExamTransformers,IExTransform,TExTransformCfg>(
+  const loadedT = await loopLoadTypes<TExamTransforms,IExTransform,TExTransformCfg>(
     exam,
-    transformers,
+    transforms,
     options
   )
   const loadedR = await loopLoadTypes<TExamRunners,IExRunner,TExRunnerCfg>(
@@ -113,7 +113,7 @@ export const buildExecCfg = async ({
     preEnvironment,
     postEnvironment,
     runners: loadedR,
-    transformers: loadedT,
+    transforms: loadedT,
     environments: loadedE,
     passthrough: buildPassThrough(config),
   } as TExecuteCfg

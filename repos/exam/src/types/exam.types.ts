@@ -12,7 +12,7 @@ import {
   TExamRunners,
   TExamReporters,
   TExamEnvironments,
-  TExamTransformers,
+  TExamTransforms,
 }  from './typeMaps.types'
 
 
@@ -62,7 +62,7 @@ export type TExamCfg = TLoaderCfg
   & {
     // These get convert form strings to classes in the Exam Loader
     runners: TExamRunners
-    transforms: TExamTransformers
+    transforms: TExamTransforms
     environments: TExamEnvironments
 
     // TODO: Use module-alias to setup aliases

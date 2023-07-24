@@ -58,8 +58,14 @@ export const LoaderCfg = {
     `.tsx`,
   ],
 
+  aliases: {},
   testIgnore: emptyArr,
   loaderIgnore: emptyArr,
+
+  esbuild: {
+    target: `esnext`,
+    platform: `node`,
+  }
 }
 
 export const EnvironmentCfg:TExEnvironmentCfg = {
@@ -76,15 +82,15 @@ export const TransformCfg:TExTransformCfg = {
 
 export const ExecuteCfg:Omit<TExecuteCfg, `exam`> = {
   runners:{},
+  transforms:{},
   passthrough:{},
-  transformers:{},
   environments:{},
   preEnvironment:[],
   postEnvironment:[],
 }
 
 export const ExCfg:Partial<TExamConfig> = {
-  mode: EExTestMode.parallel,
+  mode: EExTestMode.serial,
 }
 
 export const ExamCfg = {

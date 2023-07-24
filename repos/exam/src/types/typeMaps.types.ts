@@ -15,9 +15,9 @@ import type {
 import type {
   IExTransform,
   TExTransformCfg,
-} from './transformer.types'
+} from './transform.types'
 
-export type TExamTransformers<
+export type TExamTransforms<
   Cls extends IExTransform=IExTransform,
   Opts extends TExTransformCfg=TExTransformCfg
 > = TExTypeOpts<Cls, Opts>
@@ -41,7 +41,7 @@ export type TExecuteOptsMap<Cls=unknown, Opts=unknown> = {
   [key:string]: TExArrClsOptMap<Cls, Opts>
 }
 
-export type TExecTransformers<
+export type TExecTransforms<
   Cls extends IExTransform=IExTransform,
   Opts extends TExTransformCfg=TExTransformCfg
 > = {
@@ -65,4 +65,4 @@ export type TExecEnvironments<
 
 export type TExTypeCls = IExRunner|IExTransform|IExEnvironment
 export type TExTypeCfg = TExRunnerCfg|TExTransformCfg|TExEnvironmentCfg
-export type TExTypeMap = TExamRunners|TExamTransformers|TExamEnvironments
+export type TExTypeMap = TExamRunners|TExamTransforms|TExamEnvironments

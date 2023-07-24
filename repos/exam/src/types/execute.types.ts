@@ -11,12 +11,12 @@ import type {
 import type {
   IExTransform,
   TExTransformCfg,
-} from './transformer.types'
+} from './transform.types'
 
 import {
   TExecRunners,
   TExecEnvironments,
-  TExecTransformers,
+  TExecTransforms,
 }  from './typeMaps.types'
 import {TExAst, TExFileModel} from "./file.types"
 
@@ -38,7 +38,7 @@ export type TExecuteCfg = {
   preEnvironment?:string[]
   postEnvironment?:string[]
   runners?:TExecRunners
-  transformers?:TExecTransformers
+  transforms?:TExecTransforms
   environments?:TExecEnvironments
   passthrough:TExecPassThroughOpts
 }

@@ -86,8 +86,18 @@ const registerAliases = () => moduleAlias.addAliases(aliases)
  */
 const jestAliases = deepFreeze(
   Object.keys(aliases).reduce((aliasMap, key) => {
-    const formattedKey = key + '(.*)'
-    aliasMap[formattedKey] = aliases[key] + '$1'
+    const location = aliases[key]
+
+    const ext = path.extname(location)
+    if(ext){
+      const formattedKey = `^${key}$`
+      aliasMap[formattedKey] = location
+    }
+    else {
+      aliasMap[`^${key}$`] = location
+      aliasMap[`^${key}/(.*)$`] = `${location}/$1`
+    }
+
     return aliasMap
   }, {})
 )

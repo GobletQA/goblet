@@ -1,2 +1,2 @@
-# GobletQA Latent
-* Encrypt and decrypt variables during test execution
+# GobletQA Exam
+* Test Execution / Runner

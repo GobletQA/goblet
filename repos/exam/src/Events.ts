@@ -49,7 +49,7 @@ export const __ExamEvents:TExamEvts = {
     name: ExamEvtNames.error,
     message: `Exam already inprogress`
   },
-  missingTransformer: {
+  missingTransform: {
     message: `Missing transform for file type`,
     name: ExamEvtNames.error,
   },

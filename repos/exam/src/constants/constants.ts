@@ -13,3 +13,5 @@ export const FileTypeMap = {
   cts: `typescript`,
   feature: `feature`,
 }
+
+export const RootDirKey = `<rootDir>`

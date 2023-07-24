@@ -1,7 +1,7 @@
 import type { TExEventData } from './results.types'
 import type { IConstructable } from './helpers.types'
 import type { TExCtx, TExData } from "./execute.types"
-import type { TTransformResp } from './transformer.types'
+import type { TTransformResp } from './transform.types'
 
 export type TExRunnerCfg = {
   debug?: boolean

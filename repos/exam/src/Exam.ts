@@ -14,6 +14,7 @@ import { Execute } from '@GEX/Execute'
 import { EExTestMode } from '@GEX/types'
 import { checkCall } from '@keg-hub/jsutils'
 import { ExamEvtNames } from '@GEX/constants'
+import { buildExamCfg } from '@GEX/utils/buildExamCfg'
 import { buildExecCfg } from '@GEX/utils/buildExecCfg'
 import { ExamEvents, addCustomEvents } from '@GEX/Events'
 
@@ -36,8 +37,10 @@ export class Exam {
 
   static isRunning:boolean = false
 
-  constructor(config:TExamConfig, id:string) {
+  constructor(cfg:TExamConfig, id:string) {
     this.id = id
+    const config = buildExamCfg(cfg)
+
     this.loader = new Loader(this, config)
     this.#config = config
     this.#setEvents(config)
