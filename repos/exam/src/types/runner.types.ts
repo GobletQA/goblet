@@ -8,7 +8,7 @@ export type TExRunnerCfg = {
   timeout?: number
   verbose?:boolean
   globalTimeout?:number
-  // [key:string]: any
+  omitTestResults?:string[]
 }
 
 export interface IExamRunner<T extends TExData=TExData, R=unknown> {

@@ -8,7 +8,7 @@ import type {
 import path from 'path'
 import { ExamEvents } from '@GEX/Events'
 import { ExamRunner } from './ExamRunner'
-import {RunnerErr} from '@GEX/utils/error'
+import { Errors } from '@GEX/constants/errors'
 import { ParkinTest } from '@ltipton/parkin/test'
 import {emptyArr, omitKeys} from '@keg-hub/jsutils'
 import { requireFromString } from 'module-from-string'
@@ -18,18 +18,16 @@ export class BaseRunner extends ExamRunner {
 
   PTE:ParkinTest
   environment:BaseEnvironment
-  omitTestResults:string[] = [
-    // `tests`,
-    // `describes`,
-    // `passedExpectations`,
-    // `failedExpectations`,
-  ]
+  omitTestResults:string[] = []
 
   constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
     super(cfg, ctx)
 
     this.isRunning = false
     this.environment = ctx.environment as BaseEnvironment
+
+    if(cfg.omitTestResults)
+      this.omitTestResults = cfg.omitTestResults
   }
 
   /**
@@ -66,9 +64,12 @@ export class BaseRunner extends ExamRunner {
      */
     const results = await this.PTE.run() as TExEventData[]
     const final = results.map(result => this.clearTestResults(result))
-    await this.cleanup()
 
-    return this.canceled ? emptyArr as TExEventData[] : final
+    if(!this.canceled) return final
+
+    await this.cleanup()
+    return emptyArr as TExEventData[]
+
   }
 
   onSpecDone = (result:TExEventData) => {
@@ -79,17 +80,15 @@ export class BaseRunner extends ExamRunner {
         ...this.clearTestResults(result),
         failedExpectations: result?.failedExpectations
       }
-    })
-    )
+    }))
 
     if(result.failed){
       this.cancel()
-      throw new RunnerErr(result?.failedExpectations?.[0]?.description || `Spec Failed`)
+      Errors.TestFailed(result, new Error())
     }
   }
 
   onSuiteDone = (result:TExEventData) => {
-    this.environment.cleanup(this)
     if(this.canceled) return
 
     this.exam.event(ExamEvents.suiteDone({
@@ -121,9 +120,12 @@ export class BaseRunner extends ExamRunner {
   }
 
   cleanup = async () => {
-    this.environment.resetGlobals(this)
-    this.environment.cleanup(this)
-    this?.PTE?.clean()
+    try {
+      this.environment.resetGlobals(this)
+      this.environment.cleanup(this)
+      this?.PTE?.clean()
+    }
+    catch(err){}
 
     this.PTE = undefined
     this.exam = undefined
@@ -134,6 +136,7 @@ export class BaseRunner extends ExamRunner {
   * This clears out some of it, because the frontend does not need it
   */
   clearTestResults = (result:TExTestEvent|TExEventData) => {
+    // TODO: update to use dot notation
     return omitKeys<TExTestEvent>(
       result,
       this.omitTestResults

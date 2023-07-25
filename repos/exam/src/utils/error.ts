@@ -1,8 +1,8 @@
+import {TExEventData} from "@GEX/types"
 import {emptyObj, isStr} from "@keg-hub/jsutils"
 
 // TODO: investigate the right way to handle this
 Error.stackTraceLimit = Infinity
-
 
 const resolveErrMsg = (error?:string|Error, maybe?:Error):[string, Error] => {
   return isStr(error)
@@ -34,9 +34,27 @@ export class RunnerErr extends Error {
   
   constructor(error?:string|Error, maybe?:Error) {
     const [message, err] = resolveErrMsg(error, maybe)
-    const msg = `[Exam Runner Error] ${message||err?.message||`Test-Run Failed - unknown error`}`
+    const msg = `${message||err?.message||`Test-Run Failed - unknown error`}`
     super(msg)
 
+    this.name = this.constructor.name
+    if(err?.stack) this.stack = err.stack
+  }
+}
+
+export class TestErr extends Error {
+  type=`TestErr`
+  result:TExEventData
+  
+  constructor(result:TExEventData, error?:string|Error, maybe?:Error) {
+    const [message, err] = resolveErrMsg(error, maybe)
+    const resMessage = result?.failedExpectations?.[0]?.description
+
+    const msg = `${resMessage || message||err?.message||`Test-Run Failed - unknown error`}`
+
+    super(msg)
+
+    this.result = result
     this.name = this.constructor.name
     if(err?.stack) this.stack = err.stack
   }
@@ -48,7 +66,7 @@ export class LoaderErr extends Error {
   constructor(error?:string|Error, maybe?:Error) {
     const [message, err] = resolveErrMsg(error, maybe)
 
-    const msg = `[Exam Load Error] ${message || err?.message || `could not load file`}`
+    const msg = `${message || err?.message || `could not load file`}`
 
     super(msg)
     Object.assign(this, err || emptyObj, { message: msg, name: this.constructor.name })

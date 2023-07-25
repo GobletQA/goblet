@@ -254,7 +254,6 @@ export class Execute {
   }
   
   cleanup = async (ctx?:TExCtx) => {
-
     if(this.#Environment){
       this.#Environment.resetGlobals()
       this.#Environment.cleanup()
@@ -266,10 +265,14 @@ export class Execute {
       this.#runner = undefined
     }
 
-    this.passthrough = undefined
-    this.runnersTypes = undefined
+    this.exam = undefined
+    this.preRunner = undefined
+    this.postRunner = undefined
     this.preEnvironment = undefined
     this.postEnvironment = undefined
+
+    this.passthrough = undefined
+    this.runnersTypes = undefined
     this.transformTypes = undefined
     this.environmentTypes = undefined
 

@@ -61,6 +61,19 @@ export type TExamCfg = TLoaderCfg
   & TExecPassThroughOpts[`transform`]
   & Omit<TExecPassThroughOpts[`environment`], `options`>
   & {
+
+    /**
+     * Do not throw an error when no tests are found
+     */
+    passWithNoTests?:boolean
+
+    /**
+     * Stop executing tests once the number of failed tests matches this amount
+     * If set to 0, it is disabled
+     */
+    bail?:number
+
+
     // These get convert form strings to classes in the Exam Loader
     runners: TExamRunners
     transforms: TExamTransforms
@@ -69,16 +82,21 @@ export type TExamCfg = TLoaderCfg
     // Gets converted to environment options in the buildExamConfig
     environment?:TExEnvironmentCfg[`options`]
 
-    // TODO: Use module-alias to setup aliases
-    // Most likely need to be moved to TLoaderCfg
-    // Then figure out how to inject them when loading files
-    aliases?:Record<string, string>
-
     // TODO: implement reporters
     reporters?:TExamReporters
 
     // TODO: implement different modes
     mode?:EExTestMode
+
+    // TODO: implement the follow config options
+    colors?:boolean
+    workers?:number
+    silent?:boolean
+    testRetry?:number
+    suiteRetry?:number
+    runInBand?:boolean
+    concurrency?:number
+
   }
 
 export type TExamConfig = TExamCfg

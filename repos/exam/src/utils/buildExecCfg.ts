@@ -70,6 +70,7 @@ const buildPassThrough = (config:TExamConfig) => {
       debug: config.debug ?? RunnerCfg.debug,
       verbose: config.verbose ?? RunnerCfg.verbose,
       timeout: isNum(config.timeout) ? config.timeout : RunnerCfg.timeout,
+      omitTestResults: config.omitTestResults || RunnerCfg.omitTestResults,
       globalTimeout: isNum(config.globalTimeout) ? config.globalTimeout : RunnerCfg.globalTimeout,
     },
     environment: {

@@ -5,6 +5,12 @@ import { getConfig } from './getConfig'
 import { argsParse } from '@keg-hub/args-parse'
 import { Exam } from '../Exam'
 
+
+const onEvent = (event:any) => {
+  console.log(`------- event -------`)
+  console.log(event)
+}
+
 ;(async () => {
 
   const args = process.argv.slice(2) as string[] 
@@ -13,9 +19,11 @@ import { Exam } from '../Exam'
   const exam = new Exam(config, `test-id`)
 
   const resp = await exam.run({
+    onEvent,
+    // file: `__mocks__/test-file.ts`,
+    testMatch: `__mocks__/__tests__/*`,
     // TODO: fix loading files without an extension
     // file: `__mocks__/test-file`
-    file: `__mocks__/test-file.ts`
   })
   
   console.log(`------- resp -------`)

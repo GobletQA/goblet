@@ -1,8 +1,8 @@
 import type { TExamCliOpts } from "../types/bin.types"
-import type { TExamConfig } from '../types/exam.types'
+import type { EExTestMode, TExamConfig } from '../types/exam.types'
 
 import { fullLoc } from './helpers'
-import { ensureArr, flatUnion, isFunc, isObj, toNum } from '@keg-hub/jsutils'
+import { ensureArr, flatUnion, isFunc, isObj, toBool, toNum } from '@keg-hub/jsutils'
 
 const modeTypes = [
   `serial`,
@@ -32,7 +32,7 @@ const getRunMode = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>) 
     || base.serial && `serial`
     || base.parallel && `parallel`
 
-  return modeTypes.includes(final) ? final : `serial`
+  return (modeTypes.includes(final) ? final : `serial`) as EExTestMode
 }
 
 const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>):TExamConfig => {
@@ -52,6 +52,16 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     // --- Don't detructure to they are set in the final object --- //
     
     mode:bMode,
+
+    bail: bBail,
+    colors: bColors,
+    silent: bSilent,
+    workers: bWorkers,
+    testRetry: bTestRetry,
+    runInBand: bRunInBand,
+    suiteRetry: bSuiteRetry,
+    concurrency: bConcurrency,
+
     serial:bSerial,
     parallel:bParallel,
 
@@ -93,6 +103,16 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     // --- These do not work from the CLI --- //
 
     mode,
+
+    bail,
+    colors,
+    silent,
+    workers,
+    testRetry,
+    runInBand,
+    suiteRetry,
+    concurrency,
+
     serial,
     parallel,
 
@@ -122,9 +142,18 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     ...baseRest,
     mode: getRunMode(base, override),
 
-    debug: debug ?? bDebug,
-    verbose: verbose ?? bVerbose,
+    bail: toNum(bail ?? bBail),
+    colors: toBool(colors ?? bColors),
+    silent: toBool(silent ?? bSilent),
+    workers: toNum(workers ?? bWorkers),
+    testRetry: toNum(testRetry ?? bTestRetry),
+    runInBand: toBool(runInBand ?? bRunInBand),
+    suiteRetry: toNum(suiteRetry ?? bSuiteRetry),
+    concurrency: toNum(concurrency ?? bConcurrency),
+
+    debug: toBool(debug ?? bDebug),
     timeout: toNum(timeout ?? bTimeout),
+    verbose: toBool(verbose ?? bVerbose),
     globalTimeout: toNum(globalTimeout ?? bGlobalTimeout),
     extensions: flatUnion(ensureArr(bExtensions), ensureArr(extensions)),
 
@@ -142,7 +171,7 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     preEnvironment: flatUnion(ensureArr(bPreEnvironment), ensureArr(preEnvironment)),
     postEnvironment: flatUnion(ensureArr(bPostEnvironment), ensureArr(postEnvironment)),
 
-  }
+  } as TExamConfig
 }
 
 const buildNoConfig = (opts:TExamCliOpts):TExamConfig => {

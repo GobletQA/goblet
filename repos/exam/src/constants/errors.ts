@@ -1,4 +1,5 @@
-import {ExamError} from "@GEX/utils/error"
+import type { TExEventData } from "@GEX/types"
+import { ExamError, LoaderErr, TestErr} from "@GEX/utils/error"
 
 
 export const Errors = {
@@ -10,5 +11,18 @@ export const Errors = {
   },
   Stop: (method:string, error?:Error) => {
     throw new ExamError(`Error while attempting to stop`, method, error)
-  }
+  },
+  NoTests: (testMatch:string|string[], error?:Error) => {
+    throw new LoaderErr(`Tests could not be found using glob match "${testMatch}"`, error)
+  },
+  TestFailed: (result:TExEventData, error?:string|Error, err?:Error) => {
+    throw new TestErr(result, error, err)
+  },
+  BailedTests: (bail:number, method:string, error?:Error) => {
+    throw new ExamError(
+      `Stopping test execution. Max allowed failed tests "${bail}" has been reached`,
+      method,
+      error,
+    )
+  },
 }

@@ -183,15 +183,138 @@ export const options = {
   },
 
   /**
+   * List of files to run after the environment as been setup
+   */
+  passWithNoTests:{
+    type: `boolean`,
+    alias: [`pass`],
+    default: false,
+    description: `Allows the tests to pass when no files are found or tests are executed.`,
+  },
+
+  /**
+   * Enable or disable file caching in the Loader. Defaults to true. Disable the cache using --no-cache
+   */
+  cache: {
+    default: true,
+    type: `boolean`,
+    description: `Use file caching when loading files. To disable caching use "--no-cache"`
+  },
+
+  /**
+   * Exit the test suite immediately upon n number of failing test suite. Defaults to 1
+   */
+  bail:{
+    default: 0,
+    type: `number`,
+    description: `Exit the test suite immediately upon n number of failing test suite`,
+  },
+
+  /**
+   * The node environment the tests should be run in
+   * Same as setting the NODE_ENV=<environment>
+   */
+  env: {
+    default: `test`,
+    env: `NODE_ENV`,
+    alias: [`environment`],
+    description: `The test environment used for all tests`
+  },
+
+  /**
    * Path to an Exam config file relative to the rootDir
    * Or current working directory if rootDir is undefined
    */
   config: {
-    alias: [`c`],
+    alias: [ `cfg`, `c`],
     example:`--config ./exam.ts`,
-    description: `Path to an exam config file. Default export must be a valid exam config or a function that returns one`,
+    description: `Path to a config file. Default export must be a valid config or function that returns one`,
   },
 
+  /**
+   *
+   * ----- **IMPORTANT** The below options have not yet been implemented -----
+   *
+   */
+
+
+  /**
+   * Hides all output to the terminal
+   * Helpful if only the reporters should collect test results, and nothing else
+   */
+  silent: {
+    default: false,
+    type: `boolean`,
+    description: `Prevent logging output to command line`
+  },
+
+  /**
+   * Makes the tests run very slow. Basically runs one test at a time in a single worker
+   * Added here to match other test framework CLI's
+   */
+  runInBand: {
+    default: false,
+    type: `boolean`,
+    alias: [`single`, `shared`],
+    description: `Run all tests serially, using just a single shared worker`
+  },
+
+  /**
+   * Number of times to retry a test when it fails
+   */
+  testRetry: {
+    default: 0,
+    alias: [`tr`],
+    type: `number`,
+    description: `Number of times to retry a test when it fails`,
+  },
+
+  /**
+   * Number of times to retry a test suite when a test in the suite fails
+   */
+  suiteRetry: {
+    default: 0,
+    alias: [`sr`],
+    type: `number`,
+    description: `Number of times to retry a test suite when a test in the suite fails`,
+  },
+
+  /**
+   * Should the test output include color in the terminal
+   */
+  colors: {
+    default: true,
+    type: `boolean`,
+    description: `Forces test results output highlighting even if stdout is not a TTY`
+  },
+
+  /**
+   * The amount of test that can be executed at the same time
+   * Should be based on the available resources of the host machine
+   */
+  concurrency: {
+    default: 1,
+    type: `number`,
+    alias: [`concur`, `cc`],
+    description: `The amount of test that can be executed at the same time`
+  },
+
+  /**
+   * The amount of workers that will be created to run tests
+   * Should be based on the available resources of the host machine
+   */
+  workers: {
+    default: 1,
+    alias: [`w`],
+    type: `number`,
+    description: `The number of workers to be created to run tests`
+  },
+
+  /**
+   *
+   * ----- **IMPORTANT** The above test options have not yet been implemented -----
+   *
+   */
 
 
   /**

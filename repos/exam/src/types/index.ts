@@ -1,6 +1,8 @@
 export * from './dom.types'
+export * from './bin.types'
 export * from './exam.types'
 export * from './file.types'
+export * from './error.types'
 export * from './loader.types'
 export * from './runner.types'
 export * from './results.types'
@@ -10,4 +12,3 @@ export * from './typeMaps.types'
 export * from "./reporters.types"
 export * from './transform.types'
 export * from './environment.types'
-export * from './bin.types'

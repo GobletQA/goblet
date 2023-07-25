@@ -1,3 +1,10 @@
+import type { TExEventData } from "@GEX/types"
+import {
+  EPlayerTestType,
+  EPlayerTestAction,
+  EPlayerTestStatus,
+} from "@GEX/types"
+
 export const FileTypeMap = {
   env: `env`,
   yml: `yaml`,
@@ -15,3 +22,30 @@ export const FileTypeMap = {
 }
 
 export const RootDirKey = `<rootDir>`
+
+export const NoTestsFoundPass:TExEventData = {
+  passed: true,
+  timestamp: 0,
+  describes: [],
+  failed: false,
+  skipped: false,
+  testPath: `none`,
+  id: `no-tests-found`,
+  fullName: `No Tests Found`,
+  action: EPlayerTestAction.end,
+  type: EPlayerTestType.describe,
+  status: EPlayerTestStatus.passed,
+  description: `No tests were found and "passWithNoTests" is active`,
+}
+
+export const BuiltTestResultFailed:Partial<TExEventData> = {
+  failed: true,
+  passed: false,
+  skipped: false,
+  failedExpectations: [],
+  passedExpectations: [],
+  description: `Test failed`,
+  action: EPlayerTestAction.end,
+  type: EPlayerTestType.describe,
+  status: EPlayerTestStatus.failed,
+}

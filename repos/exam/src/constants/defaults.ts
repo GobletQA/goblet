@@ -34,6 +34,15 @@ export const RunnerCfg:TExRunnerCfg = {
    * Global timeout for test run per file - 20min (default)
    */
   globalTimeout: 60000 * 20,
+
+  /**
+   * Removes specific fields from the test result response
+   * Use dot notation for sub-paths
+   * For example with the path `describe.tests.failedExpectations`
+   * The result object will not include `failedExpectations` for any `tests`
+   * I.E. `results` === `{ describes: { tests: [{ failedExpectations: undefined }] } }`
+   */
+  omitTestResults: []
 }
 
 export const LoaderCfg = {
@@ -59,6 +68,7 @@ export const LoaderCfg = {
   ],
 
   aliases: {},
+  cache: true,
   testIgnore: emptyArr,
   loaderIgnore: emptyArr,
 
@@ -87,6 +97,22 @@ export const ExecuteCfg:Omit<TExecuteCfg, `exam`> = {
 }
 
 export const ExCfg:Partial<TExamConfig> = {
+  /**
+   * ----- TODO: Need to implement these ----- *
+   */
+  testRetry: 0,
+  suiteRetry: 0,
+  workers: 1,
+  colors: true,
+  concurrency: 1,
+  silent: false,
+  runInBand: false,
+
+  /**
+   * ----- Implemented ----- *
+   */
+  bail: 0,
+  passWithNoTests: false,
   mode: EExTestMode.serial,
 }
 

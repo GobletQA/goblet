@@ -4,7 +4,7 @@ jest.clearAllMocks()
 
 import { Exam } from './Exam'
 import { Loader } from './Loader'
-import { ExamCfg } from '@GEX/constants'
+import { ExamCfg, NoTestsFoundPass } from '@GEX/constants'
 import { getConfig } from './bin/getConfig'
 import { cliOpts } from '../__mocks__'
 
@@ -34,7 +34,7 @@ describe(`Exam`, () => {
 
   })
 
-  describe.only(`Exam.run`, () => {
+  describe(`Exam.run`, () => {
 
     it(`file - should load pre and post files fore environment and runner files`, async () => {
       expect(global.__examTests).toBe(undefined)
@@ -62,12 +62,45 @@ describe(`Exam`, () => {
       })
     })
 
-    it.only(`testMatch - should run all matching files`, async () => {
+    it(`testMatch - should throw an error when no tests are found`, async () => {
+      const exam = new Exam(examCfg, `test-id`)
+
+      await expect(async () => {
+        await exam.run({ testMatch: `__mocks__/__tests__/` })
+      }).rejects.toThrow()
+
+    })
+
+    it(`should NOT throw when no tests are found and passWithNoTests is true`, async () => {
+      const exam = new Exam({...examCfg, passWithNoTests: true}, `test-id`)
+
+      await expect(exam.run({ testMatch: `__mocks__/__tests__/` }))
+        .resolves.toEqual(expect.arrayContaining([NoTestsFoundPass]))
+
+    })
+
+    it(`testMatch - should run all matching files`, async () => {
       const exam = new Exam(examCfg, `test-id`)
 
       const resp = await exam.run({
         testMatch: `__mocks__/__tests__/*`
       })
+      expect(resp?.length).toBe(3)
+
+    })
+
+    it(`should the clean up method after it finished execution`, async () => {
+      const exam = new Exam(examCfg, `test-id`)
+      const orgCleanup = exam.cleanup
+      exam.cleanup = jest.fn(() => orgCleanup())
+
+      const resp = await exam.run({
+        testMatch: `__mocks__/__tests__/*`
+      })
+
+      expect(exam.cleanup).toHaveBeenCalled()
+      expect(exam.loader).toBe(undefined)
+      expect(exam.execute).toBe(undefined)
 
     })
 

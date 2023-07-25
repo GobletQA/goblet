@@ -11,7 +11,6 @@ export type TToFileModel = Omit<Partial<TExFileModel>, `content`|`location`> & {
 
 export const toFileModel = (data:TToFileModel, typeMap:Record<string, string>=FileTypeMap) => {
   const {
-    ext,
     name,
     content,
     location,
@@ -19,14 +18,15 @@ export const toFileModel = (data:TToFileModel, typeMap:Record<string, string>=Fi
     ast=emptyObj,
   } = data
 
-  const pExt = path.extname(location)
+  const parsed = path.parse(location)
+  const ext = (data.ext || parsed.ext).replace(/^\./, ``)
 
   return {
+    ext,
     ast,
     content,
     location,
-    ext: ext || pExt.replace('.', ''),
+    name: name || parsed.name,
     fileType: fileType || typeMap[ext] || ext,
-    name: name || path.basename(location, pExt),
   } as TExFileModel
 }

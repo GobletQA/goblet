@@ -171,6 +171,42 @@ export const ExamConfig:TExamConfig = {
    */
   environment: {},
 
+  /**
+   * Use module caching in the Loader, This is a runtime cache only
+   */
+  cache: true,
+
+  /**
+   * If no test files are found, an error is thrown, setting this true will disable that
+   */
+  passWithNoTests: false,
+
+
+  /**
+   * ----- TODO: Need to implement these ----- *
+   */
+
+  /**
+   * Retry a test when it fails
+   */
+  testRetry:0,
+
+  /**
+   * Retry an entire test suite when any test in the suite fails
+   */
+  suiteRetry:0,
+
+  /**
+   * Exit the test suite immediately upon n number of failing test suite. Defaults to 0
+   */
+  bail: 0,
+
+  workers: 1,
+  colors: true,
+  silent: false,
+  concurrency: 1,
+  runInBand: false,
+
 }
 
 export default ExamConfig

@@ -5,21 +5,22 @@ import type {
   TExamRun,
   TExamConfig,
   TExamRunOpts,
+  TExFileModel,
+  TExEventData,
   TExamEventCB,
   TExamCancelCB,
   TExamCleanupCB,
-  TExFileModel,
-  TExEventData,
 } from '@GEX/types'
 
 import { Loader } from '@GEX/Loader'
 import { Execute } from '@GEX/Execute'
-import { EExTestMode } from '@GEX/types'
-import { checkCall, flatArr, isObj } from '@keg-hub/jsutils'
-import { Errors, ExamEvtNames } from '@GEX/constants'
+import { EExTestMode, EExErrorType } from '@GEX/types'
 import { buildExamCfg } from '@GEX/utils/buildExamCfg'
 import { buildExecCfg } from '@GEX/utils/buildExecCfg'
+import { buildResultFailed } from '@GEX/utils/buildResult'
 import { ExamEvents, addCustomEvents } from '@GEX/Events'
+import { exists, checkCall, flatArr, isObj } from '@keg-hub/jsutils'
+import { Errors, ExamEvtNames, NoTestsFoundPass } from '@GEX/constants'
 
 /**
  * @type Exam
@@ -30,6 +31,7 @@ export class Exam {
   #config:TExamConfig
 
   loader:Loader
+  bail?:number=0
   execute:Execute
   id:string = null
   mode:EExTestMode
@@ -37,6 +39,7 @@ export class Exam {
   onEvents:TExamEventCB[] = []
   onCancel?:TExamCancelCB
   onCleanup?:TExamCleanupCB
+  passWithNoTests:boolean=false
 
   static isRunning:boolean = false
 
@@ -47,7 +50,13 @@ export class Exam {
     this.loader = new Loader(this, config)
     this.#config = config
     this.#setEvents(config)
+
     this.mode = config.mode || EExTestMode.serial
+
+    if(config.bail) this.bail = config.bail
+
+    if(exists(config.passWithNoTests))
+      this.passWithNoTests = config.passWithNoTests
   }
 
   #setEvents = (config:Pick<TExamConfig, `onEvent`|`onCancel`|`onCleanup`|`events`>) => {
@@ -94,6 +103,18 @@ export class Exam {
       testIgnore,
     })
 
+    if(!tests){
+      if(this.passWithNoTests) return [NoTestsFoundPass]
+      Errors.NoTests(testMatch)
+      return undefined
+    }
+
+    /**
+     * A placeholder to keep tracked of filed tests
+     * Compare against `this.bail`, and stop tests if `this.bail` is active
+     */
+    let bail = 0
+
     /**
      * Check `mode` here, and run the tests based on it
      * Will probably need to add a queue, or add chunking to the tests
@@ -103,21 +124,66 @@ export class Exam {
     if(this.mode === EExTestMode.parallel){
       const resp = await Promise.all(
         Object.entries(tests)
-          .map(([loc, file]) => this.#runTest<T>({ file, ...rest } as TExamRun<T>))
+          .map(([loc, file]) => {
+            try {
+              return this.#runTest<T>({ file, ...rest } as TExamRun<T>)
+            }
+            catch(err){
+              bail += 1
+              if(this.bail && (bail >= this.bail)){
+                Errors.BailedTests(this.bail, `Exam.run`, err)
+                return
+              }
+
+              const fromRoot = loc.replace(this.loader.rootDir, ``)
+
+              return err.type === EExErrorType.TestErr
+                ? err.result
+                : buildResultFailed({
+                    id: fromRoot,
+                    testPath: fromRoot,
+                    fullName: file.name,
+                    description: err.message,
+                  })
+
+            }
+          })
       )
 
       return flatArr<TExEventData>(resp)
     }
 
-    else
-      return await Object.entries(tests)
-        .reduce(async (acc, [key, file]) => {
-          const arr = await acc
-          const resp = await this.#runTest<T>({ file, ...rest } as TExamRun<T>)
+    return await Object.entries(tests)
+      .reduce(async (acc, [loc, file]) => {
+        const arr = await acc
+        try {
+
+          const resp = await this.#runTest<T>({file, ...rest} as TExamRun<T>)
           arr.push(...resp)
-          
+
           return arr
-        }, Promise.resolve([] as TExEventData[]))
+        }
+        catch(err){
+          bail += 1
+          if(this.bail && (bail >= this.bail)){
+            Errors.BailedTests(this.bail, `Exam.run`, err)
+            return
+          }
+
+          const fromRoot = loc.replace(this.loader.rootDir, ``)
+
+          err.type === EExErrorType.TestErr
+            ? arr.push(err.result)
+            : arr.push(buildResultFailed({
+                id: fromRoot,
+                testPath: fromRoot,
+                fullName: file.name,
+                description: err.message,
+              }))
+
+          return arr
+        }
+      }, Promise.resolve([] as TExEventData[]))
   }
 
   /**
@@ -145,6 +211,7 @@ export class Exam {
     if(this.execute){
       if(!force) return this.execute
       await this.execute.cleanup()
+      this.execute = undefined
     }
 
     const execCfg = await buildExecCfg({
@@ -168,7 +235,7 @@ export class Exam {
   
       if(Exam.isRunning){
         this.event(ExamEvents.alreadyPlaying)
-        return this
+        return undefined
       }
 
       Exam.isRunning = true
@@ -191,7 +258,6 @@ export class Exam {
 
     }
     catch(err){
-
       if(!this.canceled){
         error = err
         this.event(
@@ -205,7 +271,10 @@ export class Exam {
     }
     finally {
 
-      !this.canceled && await this.stop()
+      if(!this.canceled){
+        await this.stop()
+        if(error) throw error
+      }
 
       return resp
     }
@@ -236,7 +305,7 @@ export class Exam {
       )
     }
     finally {
-      await this.cleanUp()
+      await this.cleanup()
       error && Errors.Stop(`Exam.stop`, error)
     }
 
@@ -246,10 +315,20 @@ export class Exam {
   cancel = async () => {
     this.event(ExamEvents.canceled)
 
-    // TODO: Fix this once runners are setup
     await this.execute?.cancel?.()
-
     this.canceled = true
+
+    try {
+      await this?.onCancel?.(this)
+    }
+    catch(err){
+      console.error(err)
+      this.event(ExamEvents.dynamic({
+        message: err.message,
+        name: ExamEvtNames.error,
+      }))
+    }
+    
     await this.stop()
 
     return this
@@ -259,7 +338,7 @@ export class Exam {
    * Helper method to clean up when recording is stopped
    * Attempts to avoid memory leaks by un setting Recorder instance properties
    */
-  cleanUp = async () => {
+  cleanup = async () => {
     try {
       await this.onCleanup?.(this)
     }
@@ -270,8 +349,17 @@ export class Exam {
         name: ExamEvtNames.error,
       }))
     }
+    finally {
+      this?.loader?.cleanup?.()
+      await this?.execute?.cleanup?.()
+    }
 
     this.onEvents = []
+    this.loader = undefined
+    this.execute = undefined
+    this.onCancel = undefined
+    this.onCleanup = undefined
+    
     Exam.isRunning = false
   }
 }

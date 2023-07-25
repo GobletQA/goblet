@@ -7,6 +7,11 @@ export type TLoaderCfg = {
   rootDir?:string
 
   /**
+   * Use module caching based on file path
+   */
+  cache?:boolean
+
+  /**
    * Relative to the rootDir
    */
   testDir?:string
@@ -30,6 +35,12 @@ export type TLoaderCfg = {
    * Glob paths of files the loader will ignore
    */
   loaderIgnore?:string[]
+
+  /**
+   * Uses module-alias to inject aliases
+   * See here for more info https://github.com/ilearnio/module-alias
+   */
+  aliases?:Record<string, string>
 
   /**
    * Esbuild configuration passed to esbuild

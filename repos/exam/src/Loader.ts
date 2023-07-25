@@ -18,10 +18,8 @@ import { LoaderErr } from '@GEX/utils/error'
 import { toFileModel } from "@GEX/utils/toFileModel"
 import { register } from 'esbuild-register/dist/node'
 import { globFileIgnore } from '@GEX/constants/defaults'
+import { exists, flatUnion, emptyObj } from "@keg-hub/jsutils"
 import { globFiles, createGlobMatcher } from "@GEX/utils/globMatch"
-
-import { flatUnion, emptyObj } from "@keg-hub/jsutils"
-
 
 type TLoadTests = TLoadOpts & {
   testDir?:string
@@ -40,6 +38,7 @@ export class Loader {
   exam:Exam
   testDir:string
   unregister:TAnyCB
+  cache:boolean=true
   require:NodeRequire
   testMatch:string|string[]
   rootDir:string=LoaderCfg.rootDir
@@ -84,9 +83,12 @@ export class Loader {
       testDir,
       testMatch,
       extensions,
+      cache=true,
       testIgnore,
       loaderIgnore,
     } = config
+
+    if(exists(cache)) this.cache = cache
 
     if(testMatch) this.testMatch = testMatch
     if(extensions) this.extensions = flatUnion(this.extensions, extensions)
@@ -114,8 +116,11 @@ export class Loader {
   }
 
   #clearLocCache = (loc:string) => {
+
     require.cache[loc] = undefined
     delete require.cache[loc]
+
+    if(this.cache === false) return
 
     this.#loadedCache[loc] = undefined
     delete this.#loadedCache[loc]
@@ -141,7 +146,11 @@ export class Loader {
 
     if(!wasIgnored && err) throw new LoaderErr(err)
 
-    this.#loadedCache[location] = loaded || emptyObj
+    const resp = loaded || emptyObj
+
+    if(this.cache === false) return resp
+
+    this.#loadedCache[location] = resp
 
     return this.#loadedCache[location]
   }
@@ -188,8 +197,12 @@ export class Loader {
   load = (loc:string, opts:TLoadOpts=emptyObj, meta:boolean=true) => {
     const [location, options] = meta ? this.#getLoadMeta(loc, opts) : [loc, opts]
 
-    if(!options.force && options.cache !== false && this.#loadedCache[location])
-      return this.#loadedCache[location]
+    const fromCache = !options.force
+      && this.cache !== false
+      && options.cache !== false
+      && this.#loadedCache[location]
+    
+    if(fromCache) return this.#loadedCache[location]
 
     let loaded:any
     let error:Error
@@ -265,6 +278,8 @@ export class Loader {
       absolute: true,
     })
 
+    if(!locations?.length) return undefined
+
     return locations.reduce((acc, loc:string) => {
       if(!this.#hookMatcher(loc)) return acc
 
@@ -307,6 +322,7 @@ export class Loader {
     this.#fileIgnored = {}
     this.#loadedCache = {}
     this.exam = undefined
+    this.esbuild = undefined
     this.testDir = undefined
     this.rootDir = undefined
     this.require = undefined
