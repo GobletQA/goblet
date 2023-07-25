@@ -1,1 +1,2 @@
-console.log(`------- PRE-ENVIRONMENT -------`)
+global.__examTests = global.__examTests || {}
+global.__examTests.preEnvironment = true

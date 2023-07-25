@@ -15,14 +15,16 @@ export class ExamError extends Error {
   type=`ExamError`
   method?:string
 
-  constructor(message:string, method?:string, error?:Error){
+  constructor(mess:string, method?:string, error?:Error){
+    const [message, err] = resolveErrMsg(mess, error)
     const msg = method ? `[ExamError:${method}] ${message}` : `[ExamError] ${message}`
     super(msg)
 
+    // TODO: figure out what this is doing
+    // Error.captureStackTrace(this, this.constructor)
+    this.name = this.constructor.name
     method && (this.method = method)
-    Error.captureStackTrace(this, this.constructor)
-
-    error && console.error(error)
+    if(err?.stack) this.stack = err.stack
   }
 }
 
@@ -33,10 +35,10 @@ export class RunnerErr extends Error {
   constructor(error?:string|Error, maybe?:Error) {
     const [message, err] = resolveErrMsg(error, maybe)
     const msg = `[Exam Runner Error] ${message||err?.message||`Test-Run Failed - unknown error`}`
-
     super(msg)
+
     this.name = this.constructor.name
-    Error.captureStackTrace(this, this.constructor)
+    if(err?.stack) this.stack = err.stack
   }
 }
 
@@ -51,6 +53,6 @@ export class LoaderErr extends Error {
     super(msg)
     Object.assign(this, err || emptyObj, { message: msg, name: this.constructor.name })
 
-    Error.captureStackTrace(this, this.constructor)
+    if(err?.stack) this.stack = err.stack
   }
 }

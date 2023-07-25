@@ -76,8 +76,10 @@ export class Execute {
     const {
       exam,
       runners,
-      passthrough,
+      preRunner,
+      postRunner,
       transforms,
+      passthrough,
       environments,
       preEnvironment,
       postEnvironment,
@@ -85,6 +87,8 @@ export class Execute {
 
     this.exam = exam
     this.passthrough = passthrough
+    this.preRunner = [...preRunner]
+    this.postRunner = [...postRunner]
     this.preEnvironment = [...preEnvironment]
     this.postEnvironment = [...postEnvironment]
     this.runnersTypes = {...this.runnersTypes, ...runners}
@@ -202,6 +206,7 @@ export class Execute {
     let resp:TExEventData[]
 
     try {
+
       this.preRunner?.length
         && await this.#loadFiles(this.preRunner)
 
@@ -213,15 +218,14 @@ export class Execute {
     }
     catch(err){ error = err }
     finally {
-      this.#Environment.resetGlobals()
-      this.#Environment.cleanup()
-      await this.#runner.cleanup()
-      await this.cleanup(ctx)
+      if(error){
+        await this.cleanup(ctx)
+        throw new RunnerErr(error)
+      }
+
+      return resp
     }
 
-    if(error) throw new RunnerErr(error)
-
-    return resp
   }
 
   exec = async <T extends TExData=TExData>(options:TExRun<T>) => {
@@ -249,8 +253,19 @@ export class Execute {
     this.cleanup()
   }
   
-  cleanup = (ctx?:TExCtx) => {
-    this.#runner = undefined
+  cleanup = async (ctx?:TExCtx) => {
+
+    if(this.#Environment){
+      this.#Environment.resetGlobals()
+      this.#Environment.cleanup()
+      this.#Environment = undefined
+    }
+
+    if(this.#runner){
+      await this.#runner?.cleanup?.()
+      this.#runner = undefined
+    }
+
     this.passthrough = undefined
     this.runnersTypes = undefined
     this.preEnvironment = undefined

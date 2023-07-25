@@ -1,1 +1,2 @@
-console.log(`------- POST-ENVIRONMENT -------`)
+global.__examTests = global.__examTests || {}
+global.__examTests.postEnvironment = true

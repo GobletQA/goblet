@@ -1,2 +1,2 @@
-
-console.log(`------- POST-RUNNER -------`)
+global.__examTests = global.__examTests || {}
+global.__examTests.postRunner = true

@@ -16,7 +16,7 @@ import { Loader } from '@GEX/Loader'
 import { Execute } from '@GEX/Execute'
 import { EExTestMode } from '@GEX/types'
 import { checkCall, flatArr, isObj } from '@keg-hub/jsutils'
-import { ExamEvtNames } from '@GEX/constants'
+import { Errors, ExamEvtNames } from '@GEX/constants'
 import { buildExamCfg } from '@GEX/utils/buildExamCfg'
 import { buildExecCfg } from '@GEX/utils/buildExecCfg'
 import { ExamEvents, addCustomEvents } from '@GEX/Events'
@@ -161,7 +161,7 @@ export class Exam {
   run = async <T extends TExData=TExData>(opts:TExamRunOpts<T>) => {
 
     let resp:TExEventData[]
-
+    let error:Error
     try {
   
       await this.initExec()
@@ -191,8 +191,9 @@ export class Exam {
 
     }
     catch(err){
+
       if(!this.canceled){
-        console.error(err.stack)
+        error = err
         this.event(
           ExamEvents.dynamic({
             message: err.message,
@@ -200,6 +201,7 @@ export class Exam {
           })
         )
       }
+
     }
     finally {
 
@@ -215,16 +217,16 @@ export class Exam {
    * @member {Exam}
    */
   stop = async () => {
+    let error:Error
     try {
       if(!Exam.isRunning)
-        this.event(ExamEvents.stopped)
+        return this.event(ExamEvents.stopped)
 
       Exam.isRunning = false
-
       this.event(ExamEvents.ended)
     }
     catch(err){
-      console.error(err.stack)
+      error = err
 
       this.event(
         ExamEvents.dynamic({
@@ -235,6 +237,7 @@ export class Exam {
     }
     finally {
       await this.cleanUp()
+      error && Errors.Stop(`Exam.stop`, error)
     }
 
     return this

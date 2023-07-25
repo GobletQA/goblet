@@ -1,2 +1,2 @@
-
-console.log(`------- PRE-RUNNER -------`)
+global.__examTests = global.__examTests || {}
+global.__examTests.preRunner = true

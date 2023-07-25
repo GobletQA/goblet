@@ -7,5 +7,8 @@ export const Errors = {
   },
   Transform: (method:string, file:string, error?:Error) => {
     throw new ExamError(`Failed to transform file ${file}`, method, error)
+  },
+  Stop: (method:string, error?:Error) => {
+    throw new ExamError(`Error while attempting to stop`, method, error)
   }
 }

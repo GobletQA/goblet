@@ -201,7 +201,7 @@ export class Loader {
       this.#testFile[location] = Boolean(options.testFile)
       
       if(path.extname(location).length)
-        loaded = readFileSync(location, 'utf8')
+        loaded = this.require(location)
       else {
         const { data, ext } = this.#loopExts(location, (lc) => this.require(lc))
         loaded = data
@@ -288,11 +288,11 @@ export class Loader {
       testIgnore,
       ...rest
     } = opts
-    
+
     if(testIgnore) this.testIgnore = createGlobMatcher(testIgnore)
 
     this.#buildRequire({ rootDir, testDir })
-    
+
     return this.loadContentMany(testMatch || this.testMatch, {...rest, testFile: true})
   }
 
