@@ -1,6 +1,4 @@
-import type { TParkinTestConfig } from '@ltipton/parkin'
 import type {
-  IExEnvironment,
   TExCtx,
   TExEventData,
   TExRunnerCfg,
@@ -14,6 +12,7 @@ import { Errors } from '@GEX/constants/errors'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { emptyArr, omitKeys } from '@keg-hub/jsutils'
 import { requireFromString } from 'module-from-string'
+import {RootSuiteId} from '@GEX/constants/events'
 
 export class BaseRunner extends ExamRunner {
 
@@ -62,7 +61,7 @@ export class BaseRunner extends ExamRunner {
   run = async (content:string, ctx:TExCtx) => {
     this.isRunning = true
 
-    const { file, data } = ctx
+    const { exam, file, data } = ctx
     /**
      * Imports the module from a string using Nodes built-in vm module
      * Currently sets `useCurrentGlobal: true`, to use the currently globals
@@ -78,10 +77,12 @@ export class BaseRunner extends ExamRunner {
     const tOut = data?.timeout ?? this.globalTimeout
     tOut && (opts.timeout = tOut)
 
+
     /**
      * The required module above should use the current globals
      * Which means PTE should now be loaded with tests to run
      */
+    this.exam.event(ExamEvents.started)
     const results = await this.executor.run() as TExEventData[]
     const final = results.map(result => this.clearTestResults(result))
 
@@ -128,9 +129,10 @@ export class BaseRunner extends ExamRunner {
   onSuiteDone = (result:TExEventData) => {
     if(this.canceled) return
 
-    this.exam.event(ExamEvents.suiteDone({
-      data: this.clearTestResults(result)
-    }))
+    const data = this.clearTestResults(result)
+    result.id === RootSuiteId
+      ? this.exam.event(ExamEvents.rootSuiteDone({ data }))
+      : this.exam.event(ExamEvents.suiteDone({ data }))
   }
 
   onSpecStarted = (result:TExEventData) => {
@@ -144,9 +146,10 @@ export class BaseRunner extends ExamRunner {
   onSuiteStarted = (result:TExEventData) => {
     if(this.canceled) return
 
-    this.exam.event(ExamEvents.specStart({
-      data: this.clearTestResults(result),
-    }))
+    const data = this.clearTestResults(result)
+    result.id === RootSuiteId
+      ? this.exam.event(ExamEvents.rootSuiteStart({ data }))
+      : this.exam.event(ExamEvents.suiteStart({ data }))
   }
 
   cancel = async () => {

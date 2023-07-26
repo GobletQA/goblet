@@ -20,6 +20,7 @@ export interface IExamReporter {
   
   // Event `PLAY-SUITE-DONE`
   onTestResult?: (
+    ...args:any[]
     // test: Test,
     // testResult: TestResult,
     // aggregatedResult: AggregatedResult,
@@ -27,6 +28,7 @@ export interface IExamReporter {
 
   // Event `PLAY-SUITE-DONE` - Top level suite-0 only
   onTestFileResult?: (
+    ...args:any[]
     // test: Test,
     // testResult: TestResult,
     // aggregatedResult: AggregatedResult,
@@ -38,42 +40,58 @@ export interface IExamReporter {
    */
   //  Event `PLAY-SPEC-START`
   onTestCaseStart?: (
+    ...args:any[]
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
   ) => void|Promise<void>
 
   // Event `PLAY-SPEC-DONE`
   onTestCaseResult?: (
+    ...args:any[]
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
   ) => void|Promise<void>
 
   // Event `PLAY-STARTED`,
   onRunStart?: (
+    ...args:any[]
     // results: AggregatedResult,
     // options: ReporterOnStartOptions,
   ) => void|Promise<void>
 
   // Event `PLAY-SUITE-START`
   onTestStart?: (
+    ...args:any[]
     // test: Test
   ) => void|Promise<void>
 
 
   // Event `PLAY-STARTED`
   onTestFileStart?: (
+    ...args:any[]
     // test: Test
   ) => void|Promise<void>
 
   // Event `PLAY-RESULTS`
-  onRunComplete: (
+  onRunComplete?: (
+    ...args:any[]
     // testContexts: Set<TestContext>,
     // results: AggregatedResult,
   ) => void|Promise<void>
 
+  // Event `PLAY-ERROR`
+  onError?: (
+    ...args:any[]
+  ) => void|Promise<void>
+
+  // Event `PLAY-CANCELED`
+  onCancel?: (
+    ...args:any[]
+  ) => void|Promise<void>
+
   // Optionally, reporters can force Jest to exit with non zero code by returning
   // an `Error` from `getLastError()` method.
-  getLastError?: () => Error | void;
+  getLastError?: (...args:any[]) => Error | void;
 }
 
 export type IExReporter<I extends IExamReporter=IExamReporter> = I & IExamReporter

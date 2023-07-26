@@ -29,6 +29,14 @@ const __ExamEvents:TExamEvts = {
     name: ExamEvtNames.suiteDone,
     message: `Exam - Suite Done`,
   }),
+  rootSuiteStart: onExDynEvent({
+    name: ExamEvtNames.rootSuiteStart,
+    message: `Exam - Root Suite Started`,
+  }),
+  rootSuiteDone: onExDynEvent({
+    name: ExamEvtNames.rootSuiteDone,
+    message: `Exam - Root Spec Done`,
+  }),
   results: onExDynEvent({
     name: ExamEvtNames.results,
     message: `Exam - Suite Results`,

@@ -1,10 +1,14 @@
 
+export const RootSuiteId = `suite-0`
+
 export const ExamEvtNames = {
   specDone: `PLAY-SPEC-DONE`,
   specWarn: `PLAY-SPEC-WARN`,
   specStart: `PLAY-SPEC-START`,
   suiteDone: `PLAY-SUITE-DONE`,
   suiteStart: `PLAY-SUITE-START`,
+  rootSuiteDone: `PLAY-SUITE-DONE-ROOT`,
+  rootSuiteStart: `PLAY-SUITE-START-ROOT`,
   ended: `PLAY-ENDED`,
   error: `PLAY-ERROR`,
   action: `PLAY-ACTION`,

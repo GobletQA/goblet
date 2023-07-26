@@ -36,7 +36,10 @@ export type TExamEvts = {
   specStart:TInternalDynEvent
   suiteDone:TInternalDynEvent
   suiteStart:TInternalDynEvent
+  rootSuiteDone:TInternalDynEvent
+  rootSuiteStart:TInternalDynEvent
   missingType:TInternalMissingEvent
+  canceled:TExamEvt
   [key:string]:TExamEvt
 }
 

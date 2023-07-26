@@ -107,6 +107,9 @@ export class Exam {
     !this.execute
       && await this.initExec()
 
+    !this.eventReporter
+      && await this.initReporters()
+
     const results = await this.execute.exec<T>({...options, file: model })
 
     !this.canceled

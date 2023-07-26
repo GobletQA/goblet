@@ -135,21 +135,25 @@ export class BaseReporter implements IExamReporter {
   }
 
   // Event `PLAY-SUITE-DONE`
-  onTestResult = (
+  onTestResult = (evt:any
     // test: Test,
     // testResult: TestResult,
     // aggregatedResult: AggregatedResult,
   ) => {
+
+    // console.log(`------- BaseReporter - onTestResult -------`)
+    // console.log(evt.name)
 
   }
 
   // Event `PLAY-SUITE-DONE` - Top level suite-0 only
-  onTestFileResult = (
+  onTestFileResult = (evt:any
     // test: Test,
     // testResult: TestResult,
     // aggregatedResult: AggregatedResult,
   ) => {
-    
+    // console.log(`------- BaseReporter - onTestFileResult -------`)
+    // console.log(evt.name)
   }
 
   /**
@@ -157,50 +161,64 @@ export class BaseReporter implements IExamReporter {
    * Not called for `skipped` and `todo` specs
    */
   //  Event `PLAY-SPEC-START`
-  onTestCaseStart = (
+  onTestCaseStart = (evt:any
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
   ) => {
-    
+    // console.log(`------- BaseReporter - onTestCaseStart -------`)
+    // console.log(evt.name)
   }
 
   // Event `PLAY-SPEC-DONE`
-  onTestCaseResult = (
+  onTestCaseResult = (evt:any
     // test: Test,
     // testCaseStartInfo: TestCaseStartInfo,
   ) => {
-    
+    // console.log(`------- BaseReporter - onTestCaseResult -------`)
+    // console.log(evt.name)
   }
 
   // Event `PLAY-STARTED`,
-  onRunStart = (
+  onRunStart = (evt:any
     // results: AggregatedResult,
     // options: ReporterOnStartOptions,
   ) => {
-    
+    // console.log(`------- BaseReporter - onRunStart -------`)
+    // console.log(evt.name)
   }
 
   // Event `PLAY-SUITE-START`
-  onTestStart = (
+  onTestStart = (evt:any
     // test: Test
   ) => {
-    
+    // console.log(`------- BaseReporter - onTestStart -------`)
+    // console.log(evt.name)
   }
 
 
   // Event `PLAY-STARTED`
-  onTestFileStart = (
+  onTestFileStart = (evt:any
     // test: Test
   ) => {
-    
+    // console.log(`------- BaseReporter - onTestFileStart -------`)
+    // console.log(evt.name)
   }
 
   // Event `PLAY-RESULTS`
-  onRunComplete = (
+  onRunComplete = (evt:any
     // testContexts: Set<TestContext>,
     // results: AggregatedResult,
   ) => {
+    // console.log(`------- BaseReporter - onRunComplete -------`)
+    // console.log(evt.name)
+  }
+
+  // Event `PLAY-ERROR`
+  onError = (evt:any
     
+  ) => {
+    // console.log(`------- BaseReporter - onError -------`)
+    // console.log(evt.name)
   }
 
   // Optionally, reporters can force Jest to exit with non zero code by returning
@@ -209,8 +227,10 @@ export class BaseReporter implements IExamReporter {
     // Error | void;
   }
 
-  cancel = () => {
-    
+  // Event `PLAY-CANCELED`
+  onCancel = (evt:any) => {
+    // console.log(`------- BaseReporter - onCancel -------`)
+    // console.log(evt.name)
   }
 
   cleanup = () => {
