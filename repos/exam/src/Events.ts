@@ -17,6 +17,10 @@ const __ExamEvents:TExamEvts = {
     name: ExamEvtNames.specDone,
     message: `Exam - Spec Done`,
   }),
+  specWarn: onExDynEvent({
+    name: ExamEvtNames.specWarn,
+    message: `Exam - Warning, Spec failed`,
+  }),
   suiteStart: onExDynEvent({
     name: ExamEvtNames.suiteStart,
     message: `Exam - Suite Started`,

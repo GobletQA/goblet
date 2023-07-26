@@ -14,6 +14,11 @@ export const globFileIgnore = [
   `\\.pnp\\.[^\\\/]+$`
 ]
 
+export const DefaultReporters = {
+  silent: `silent`,
+  default: `default`,
+}
+
 export const RunnerCfg:TExRunnerCfg = {
   /**
    * Debug logging output
@@ -91,9 +96,9 @@ export const ExecuteCfg:Omit<TExecuteCfg, `exam`> = {
   runners:{},
   transforms:{},
   passthrough:{},
-  environments:{},
   preEnvironment:[],
   postEnvironment:[],
+  // environment: undefined,
 }
 
 export const ExCfg:Partial<TExamConfig> = {
@@ -112,6 +117,8 @@ export const ExCfg:Partial<TExamConfig> = {
    * ----- Implemented ----- *
    */
   bail: 0,
+  reporter: {},
+  reporters: [`default`],
   passWithNoTests: false,
   mode: EExTestMode.serial,
 }

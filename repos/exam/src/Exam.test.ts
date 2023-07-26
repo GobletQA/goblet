@@ -73,9 +73,17 @@ describe(`Exam`, () => {
 
     it(`should NOT throw when no tests are found and passWithNoTests is true`, async () => {
       const exam = new Exam({...examCfg, passWithNoTests: true}, `test-id`)
+      const { timestamp, ...rest } = NoTestsFoundPass
 
-      await expect(exam.run({ testMatch: `__mocks__/__tests__/` }))
-        .resolves.toEqual(expect.arrayContaining([NoTestsFoundPass]))
+      await expect(
+        Promise.resolve()
+        .then(async () => {
+          const resp = await exam.run({ testMatch: `__mocks__/__tests__/` })
+          const {timestamp, ...final} = resp[0]
+          return [final]
+        })
+      )
+        .resolves.toEqual(expect.arrayContaining([rest]))
 
     })
 
@@ -89,7 +97,7 @@ describe(`Exam`, () => {
 
     })
 
-    it(`should the clean up method after it finished execution`, async () => {
+    it(`should call the clean up method after it finished execution`, async () => {
       const exam = new Exam(examCfg, `test-id`)
       const orgCleanup = exam.cleanup
       exam.cleanup = jest.fn(() => orgCleanup())

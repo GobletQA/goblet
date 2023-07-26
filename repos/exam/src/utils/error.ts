@@ -1,8 +1,11 @@
 import {TExEventData} from "@GEX/types"
+import { Logger } from "@GEX/utils/logger"
 import {emptyObj, isStr} from "@keg-hub/jsutils"
 
 // TODO: investigate the right way to handle this
 Error.stackTraceLimit = Infinity
+const ErrorTag = Logger.colors.red(`[Exam Failed]`)
+
 
 const resolveErrMsg = (error?:string|Error, maybe?:Error):[string, Error] => {
   return isStr(error)
@@ -10,15 +13,52 @@ const resolveErrMsg = (error?:string|Error, maybe?:Error):[string, Error] => {
     : [(error || maybe)?.message, error || maybe]
 }
 
+
+const replaceStackMsg = (err:Error, msg:string) => {
+  const split = err.stack.split(`\n`)
+  split[0] = msg
+
+  return split.join(`\n`)
+}
+
+
+class BaseError extends Error {
+  constructor(msg:string, err?:Error, replaceStack:boolean=true){
+
+    const { stackTraceLimit } = Error
+    if(err && replaceStack){
+      // Create a new error without a stacktrace
+      Error.stackTraceLimit = 0
+    }
+
+    // Set the error cause if it's different form the message
+    const opts = err && msg !== err?.message
+      ? { cause: err?.message }
+      : undefined
+
+    super(msg, opts)
+    // Reset the original stacktrace limit
+    Error.stackTraceLimit = stackTraceLimit
+    
+    if(replaceStack){
+      if(err?.stack) this.stack = replaceStackMsg(err, msg)
+      err && Error.captureStackTrace(err, this.constructor)
+    }
+  }
+}
+
 export class ExamError extends Error {
-  
-  type=`ExamError`
+
+  name=`ExamError`
   method?:string
 
   constructor(mess:string, method?:string, error?:Error){
     const [message, err] = resolveErrMsg(mess, error)
-    const msg = method ? `[ExamError:${method}] ${message}` : `[ExamError] ${message}`
-    super(msg)
+    const msg = method
+      ? `${Logger.colors.yellow(method)} - ${message}`
+      : `${Logger.colors.yellow(`Exam`)} - ${message}`
+
+    super(`${ErrorTag} ${msg}`)
 
     // TODO: figure out what this is doing
     // Error.captureStackTrace(this, this.constructor)
@@ -30,47 +70,48 @@ export class ExamError extends Error {
 
 
 export class RunnerErr extends Error {
-  type=`RunnerErr`
+  name=`RunnerErr`
   
   constructor(error?:string|Error, maybe?:Error) {
     const [message, err] = resolveErrMsg(error, maybe)
     const msg = `${message||err?.message||`Test-Run Failed - unknown error`}`
-    super(msg)
+    super(`${ErrorTag} ${msg}`)
 
     this.name = this.constructor.name
     if(err?.stack) this.stack = err.stack
   }
 }
 
-export class TestErr extends Error {
-  type=`TestErr`
+export class TestErr extends BaseError {
+  name=`TestErr`
   result:TExEventData
   
-  constructor(result:TExEventData, error?:string|Error, maybe?:Error) {
-    const [message, err] = resolveErrMsg(error, maybe)
+  constructor(
+    result:TExEventData,
+    error?:string|Error,
+    replaceStack?:boolean
+  ) {
+    const [message, err] = resolveErrMsg(error)
     const resMessage = result?.failedExpectations?.[0]?.description
+    const fallback = message || `Test-Run Failed - unknown error`
 
-    const msg = `${resMessage || message||err?.message||`Test-Run Failed - unknown error`}`
-
-    super(msg)
+    super(`${ErrorTag} ${resMessage || fallback}`, err, replaceStack)
 
     this.result = result
-    this.name = this.constructor.name
-    if(err?.stack) this.stack = err.stack
   }
 }
 
-export class LoaderErr extends Error {
-  type=`LoaderErr`
+export class LoaderErr extends BaseError {
+  name = `LoaderErr`
   
-  constructor(error?:string|Error, maybe?:Error) {
+  constructor(
+    error?:string|Error,
+    maybe?:Error,
+    replaceStack?:boolean
+  ) {
     const [message, err] = resolveErrMsg(error, maybe)
+    const msg = `${ErrorTag} ${message || err?.message || `could not load file`}`
 
-    const msg = `${message || err?.message || `could not load file`}`
-
-    super(msg)
-    Object.assign(this, err || emptyObj, { message: msg, name: this.constructor.name })
-
-    if(err?.stack) this.stack = err.stack
+    super(msg, err, replaceStack)
   }
 }

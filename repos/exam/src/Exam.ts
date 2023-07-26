@@ -10,17 +10,24 @@ import type {
   TExamEventCB,
   TExamCancelCB,
   TExamCleanupCB,
+  TExBuiltReporters,
 } from '@GEX/types'
 
 import { Loader } from '@GEX/Loader'
 import { Execute } from '@GEX/Execute'
+import { Errors, ExamEvtNames } from '@GEX/constants'
 import { EExTestMode, EExErrorType } from '@GEX/types'
 import { buildExamCfg } from '@GEX/utils/buildExamCfg'
 import { buildExecCfg } from '@GEX/utils/buildExecCfg'
-import { buildResultFailed } from '@GEX/utils/buildResult'
+import { buildReporters } from './utils/buildReporters'
 import { ExamEvents, addCustomEvents } from '@GEX/Events'
+import { ReportEventMapper } from '@GEX/reporter/ReportEventMapper'
 import { exists, checkCall, flatArr, isObj } from '@keg-hub/jsutils'
-import { Errors, ExamEvtNames, NoTestsFoundPass } from '@GEX/constants'
+import {
+  buildNoTestsResult,
+  buildFailedTestResult,
+} from '@GEX/utils/buildResult'
+
 
 /**
  * @type Exam
@@ -36,14 +43,16 @@ export class Exam {
   id:string = null
   mode:EExTestMode
   canceled:boolean=false
-  onEvents:TExamEventCB[] = []
   onCancel?:TExamCancelCB
   onCleanup?:TExamCleanupCB
+  onEvents:TExamEventCB[] = []
   passWithNoTests:boolean=false
+  eventReporter:ReportEventMapper
 
   static isRunning:boolean = false
 
   constructor(cfg:TExamConfig, id:string) {
+
     this.id = id
     const config = buildExamCfg(cfg)
 
@@ -57,6 +66,13 @@ export class Exam {
 
     if(exists(config.passWithNoTests))
       this.passWithNoTests = config.passWithNoTests
+
+  }
+
+  #onNoTests = (testMatch:string|string[]) => {
+    if(this.passWithNoTests) return [buildNoTestsResult()]
+    Errors.NoTests(testMatch)
+    return undefined
   }
 
   #setEvents = (config:Pick<TExamConfig, `onEvent`|`onCancel`|`onCleanup`|`events`>) => {
@@ -74,11 +90,22 @@ export class Exam {
     events && addCustomEvents(events)
   }
 
+  /**
+   * Runs a single test file base on a passed in file model or string path
+   */
   #runTest = async <T extends TExData=TExData>(options:TExamRun<T>) => {
-    const { file } = options
+    const { file, single } = options
     const model = isObj<TExFileModel>(file)
       ? file
-      : this.loader.loadContent<TExFileModel<T>>(file, { testFile: true, asModel: true })
+      : this.loader.loadContent<TExFileModel<T>>(file, { single, testFile: true, asModel: true })
+
+    if(!model){
+      if(single)
+        return this.#onNoTests(isObj(file) ? file.location : file)
+    }
+
+    !this.execute
+      && await this.initExec()
 
     const results = await this.execute.exec<T>({...options, file: model })
 
@@ -88,6 +115,9 @@ export class Exam {
     return results
   }
 
+  /**
+   * Runs multiple test files base on passed in options
+   */
   #runTests = async <T extends TExData=TExData>(opts:TExamRunOpts<T>) => {
     const {
       testDir,
@@ -103,11 +133,7 @@ export class Exam {
       testIgnore,
     })
 
-    if(!tests){
-      if(this.passWithNoTests) return [NoTestsFoundPass]
-      Errors.NoTests(testMatch)
-      return undefined
-    }
+    if(!tests) return this.#onNoTests(testMatch)
 
     /**
      * A placeholder to keep tracked of filed tests
@@ -137,9 +163,9 @@ export class Exam {
 
               const fromRoot = loc.replace(this.loader.rootDir, ``)
 
-              return err.type === EExErrorType.TestErr
+              return err.name === EExErrorType.TestErr
                 ? err.result
-                : buildResultFailed({
+                : buildFailedTestResult({
                     id: fromRoot,
                     testPath: fromRoot,
                     fullName: file.name,
@@ -172,9 +198,9 @@ export class Exam {
 
           const fromRoot = loc.replace(this.loader.rootDir, ``)
 
-          err.type === EExErrorType.TestErr
+          err.name === EExErrorType.TestErr
             ? arr.push(err.result)
-            : arr.push(buildResultFailed({
+            : arr.push(buildFailedTestResult({
                 id: fromRoot,
                 testPath: fromRoot,
                 fullName: file.name,
@@ -194,12 +220,28 @@ export class Exam {
   event = (evt:TExamEvt) => {
     if(this.canceled) return this
 
-    this.onEvents.map(func => checkCall(func, {
-      ...evt,
-      isRunning: Exam.isRunning,
-    }))
+    const event = {...evt, isRunning: Exam.isRunning}
+
+    this?.eventReporter?.event?.(event)
+    this.onEvents.map(func => checkCall(func, event))
 
     return this
+  }
+
+  initReporters = async (force?:boolean) => {
+    this.eventReporter = this.eventReporter || new ReportEventMapper()
+
+    if(this.eventReporter.reporters){
+      if(!force) return this.eventReporter.reporters
+      await Promise.all(this.eventReporter.reporters.map(async (rpt) => await rpt?.cleanup?.()))
+      this.eventReporter.reporters = undefined
+    }
+    
+    this.eventReporter.reporters = await buildReporters({
+      exam: this,
+      config: this.#config,
+      reporters: this.#config.reporters
+    })
   }
 
   /**
@@ -230,9 +272,7 @@ export class Exam {
     let resp:TExEventData[]
     let error:Error
     try {
-  
-      await this.initExec()
-  
+
       if(Exam.isRunning){
         this.event(ExamEvents.alreadyPlaying)
         return undefined
@@ -240,7 +280,7 @@ export class Exam {
 
       Exam.isRunning = true
       this.#setEvents(opts)
-      
+
       const {
         file,
         testDir,
@@ -250,10 +290,8 @@ export class Exam {
         ...rest
       } = opts
 
-      // TODO: handle reporters here
-
       resp = file
-        ? await this.#runTest<T>({file, ...rest} as TExamRun<T>)
+        ? await this.#runTest<T>({file, ...rest, single: true } as TExamRun<T>)
         : await this.#runTests<T>(opts)
 
     }
@@ -270,7 +308,6 @@ export class Exam {
 
     }
     finally {
-
       if(!this.canceled){
         await this.stop()
         if(error) throw error
@@ -359,6 +396,7 @@ export class Exam {
     this.execute = undefined
     this.onCancel = undefined
     this.onCleanup = undefined
+    this.eventReporter = undefined
     
     Exam.isRunning = false
   }

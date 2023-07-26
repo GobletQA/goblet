@@ -37,25 +37,18 @@ export type TEnvironmentCache = {
   envs: Record<string, string>
 }
 
-export type TEnvironmentOpts = {
-  [key:string]:any
-}
 
 export type TExEnvironmentCfg = {
   globals?:TSerializeObj
-  options?:TEnvironmentOpts
   envs?:Record<string, TEnvironmentEnvVal>
-  // [key:string]:any
 }
-
 
 export interface IExamEnvironment<R=ExamRunner> {
   globals?:TSerializeObj
-  options?:TEnvironmentOpts
   envs?:Record<string, TEnvironmentEnvVal>
 
-  setupGlobals(runner:IExRunner<R>, ctx:TExCtx):void|Promise<void>
-  resetGlobals(runner:IExRunner<R>):void|Promise<void>
+  setup(runner:IExRunner<R>, ctx:TExCtx):void|Promise<void>
+  reset(runner:IExRunner<R>):void|Promise<void>
   cleanup(runner:IExRunner<R>):void|Promise<void>
 }
 

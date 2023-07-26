@@ -7,6 +7,7 @@ module.exports = {
   ...baseConfig,
   /* ---- Service specific options here ---- */
   rootDir,
+  verbose: true,
   setupFilesAfterEnv: [`${rootDir}/scripts/jest.setup.ts`],
   collectCoverageFrom: ['**/*.ts', '!**/*.types.ts', '!**/*.d.ts'],
   transformIgnorePatterns: ['node_modules/(?!@gobletqa|!@keg-hub)/'],

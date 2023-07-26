@@ -1,20 +1,17 @@
 import type {
   TSerializeObj,
   IExEnvironment,
-  TEnvironmentOpts,
   TEnvironmentEnvs,
   TExEnvironmentCfg,
   TEnvironmentCache,
 } from '@GEX/types'
 
-import { deepMerge, isStr } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils'
 
 export class ExamEnvironment implements IExEnvironment {
 
   globals:TSerializeObj={}
   envs:TEnvironmentEnvs={}
-  
-  options:TEnvironmentOpts = {}
 
   cache:TEnvironmentCache = {
     envs:{},
@@ -24,10 +21,9 @@ export class ExamEnvironment implements IExEnvironment {
   constructor(cfg:TExEnvironmentCfg){
     this.envs = {...cfg.envs, EXAM_ENV: true }
     this.globals = {...cfg.globals}
-    this.options = deepMerge(this.options, cfg.options)
   }
 
-  setupGlobals = async () => {
+  setup = async () => {
 
     Object.entries(this.globals).forEach(([key, val]) => {
       this.cache.globals[key] = global[key]
@@ -41,7 +37,7 @@ export class ExamEnvironment implements IExEnvironment {
 
   }
 
-  resetGlobals = async () => {
+  reset = async () => {
     Object.entries(this.cache.globals)
       .forEach(([key, val]) => global[key] = val)
 
@@ -58,9 +54,6 @@ export class ExamEnvironment implements IExEnvironment {
 
     this.cache = undefined
     this.cache = {envs: {}, globals: {}}
-    
-    this.options = undefined
-    this.options = {}
   }
 
 }

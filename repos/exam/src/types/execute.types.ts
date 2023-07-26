@@ -15,16 +15,16 @@ import type {
 
 import {
   TExecRunners,
-  TExecEnvironments,
   TExecTransforms,
+  TExecEnvironment,
 }  from './typeMaps.types'
 import {TExAst, TExFileModel} from "./file.types"
 
 export type TExData = Record<string, any>
 
+export type TExecuteBuiltEnvironment = IExEnvironment
 export type TExecuteBuiltRunners = Record<string, IExRunner>
 export type TExecuteBuiltTransforms = Record<string, IExTransform>
-export type TExecuteBuiltEnvironments = Record<string, IExEnvironment>
 
 // Global options for runner / transform / environment passed from Exam config
 export type TExecPassThroughOpts = {
@@ -39,9 +39,10 @@ export type TExecuteCfg = {
   postRunner?:string[]
   preEnvironment?:string[]
   postEnvironment?:string[]
+  environment?:TExecEnvironment
+
   runners?:TExecRunners
   transforms?:TExecTransforms
-  environments?:TExecEnvironments
   passthrough:TExecPassThroughOpts
 }
 
@@ -74,7 +75,6 @@ export type TExCtx<
   Ast extends TExAst=TExAst
 > = TExRunMeta<D, Ast> & {
   exam:Exam
-  
   transform?:IExTransform
   environment:IExEnvironment
 }

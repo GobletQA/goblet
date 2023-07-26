@@ -1,18 +1,83 @@
+import type { Exam } from '@GEX/Exam'
 import type { TExEventData } from './results.types'
 import type { IConstructable } from './helpers.types'
 
-export interface IExamReporter {
-  cancel: () => void|Promise<void>
-  cleanup: () => void|Promise<void>
-
-  onSpecStarted(result:TExEventData):void
-  onSpecDone(result:TExEventData):void
-
-  onSuiteStarted(result:TExEventData):void
-  onSuiteDone(result:TExEventData):void
+export type TExReporterCfg = {
+  exam?:Exam
+  type?:string
+  jest?:boolean
 }
 
+export interface IExamReporter {
+  cancel?: () => void|Promise<void>
+  cleanup?: () => void|Promise<void>
+
+  // onSpecStarted(result:TExEventData):void|Promise<void>
+  // onSpecDone(result:TExEventData):void|Promise<void>
+
+  // onSuiteStarted(result:TExEventData):void|Promise<void>
+  // onSuiteDone(result:TExEventData):void|Promise<void>
+  
+  // Event `PLAY-SUITE-DONE`
+  onTestResult?: (
+    // test: Test,
+    // testResult: TestResult,
+    // aggregatedResult: AggregatedResult,
+  ) => void|Promise<void>
+
+  // Event `PLAY-SUITE-DONE` - Top level suite-0 only
+  onTestFileResult?: (
+    // test: Test,
+    // testResult: TestResult,
+    // aggregatedResult: AggregatedResult,
+  ) => void|Promise<void>
+
+  /**
+   * Called before running a spec (prior to `before` hooks)
+   * Not called for `skipped` and `todo` specs
+   */
+  //  Event `PLAY-SPEC-START`
+  onTestCaseStart?: (
+    // test: Test,
+    // testCaseStartInfo: TestCaseStartInfo,
+  ) => void|Promise<void>
+
+  // Event `PLAY-SPEC-DONE`
+  onTestCaseResult?: (
+    // test: Test,
+    // testCaseStartInfo: TestCaseStartInfo,
+  ) => void|Promise<void>
+
+  // Event `PLAY-STARTED`,
+  onRunStart?: (
+    // results: AggregatedResult,
+    // options: ReporterOnStartOptions,
+  ) => void|Promise<void>
+
+  // Event `PLAY-SUITE-START`
+  onTestStart?: (
+    // test: Test
+  ) => void|Promise<void>
+
+
+  // Event `PLAY-STARTED`
+  onTestFileStart?: (
+    // test: Test
+  ) => void|Promise<void>
+
+  // Event `PLAY-RESULTS`
+  onRunComplete: (
+    // testContexts: Set<TestContext>,
+    // results: AggregatedResult,
+  ) => void|Promise<void>
+
+  // Optionally, reporters can force Jest to exit with non zero code by returning
+  // an `Error` from `getLastError()` method.
+  getLastError?: () => Error | void;
+}
 
 export type IExReporter<I extends IExamReporter=IExamReporter> = I & IExamReporter
 
 export type TReporterCls = IConstructable<IExReporter>
+
+export type TExBuiltReporters = IExReporter[]

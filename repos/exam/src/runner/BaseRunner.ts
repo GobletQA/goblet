@@ -1,4 +1,6 @@
+import type { TParkinTestConfig } from '@ltipton/parkin'
 import type {
+  IExEnvironment,
   TExCtx,
   TExEventData,
   TExRunnerCfg,
@@ -10,21 +12,37 @@ import { ExamEvents } from '@GEX/Events'
 import { ExamRunner } from './ExamRunner'
 import { Errors } from '@GEX/constants/errors'
 import { ParkinTest } from '@ltipton/parkin/test'
-import {emptyArr, omitKeys} from '@keg-hub/jsutils'
+import { emptyArr, omitKeys } from '@keg-hub/jsutils'
 import { requireFromString } from 'module-from-string'
-import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 
 export class BaseRunner extends ExamRunner {
 
-  PTE:ParkinTest
-  environment:BaseEnvironment
+  executor:ParkinTest
   omitTestResults:string[] = []
+
+  globals:string[] = [
+    `it`,
+    `xit`,
+    `test`,
+    `xtest`,
+    `describe`,
+    `xdescribe`,
+    `afterAll`,
+    `afterEach`,
+    `beforeAll`,
+    `beforeEach`,
+  ]
 
   constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
     super(cfg, ctx)
 
     this.isRunning = false
-    this.environment = ctx.environment as BaseEnvironment
+    this.executor = new ParkinTest({
+      specDone: this.onSpecDone,
+      suiteDone: this.onSuiteDone,
+      specStarted: this.onSpecStarted,
+      suiteStarted: this.onSuiteStarted,
+    })
 
     if(cfg.omitTestResults)
       this.omitTestResults = cfg.omitTestResults
@@ -44,9 +62,7 @@ export class BaseRunner extends ExamRunner {
   run = async (content:string, ctx:TExCtx) => {
     this.isRunning = true
 
-    const { file } = ctx
-    this.PTE = this.environment.setupGlobals(this, ctx)
-
+    const { file, data } = ctx
     /**
      * Imports the module from a string using Nodes built-in vm module
      * Currently sets `useCurrentGlobal: true`, to use the currently globals
@@ -58,11 +74,15 @@ export class BaseRunner extends ExamRunner {
       dirname: path.dirname(file.location),
     })
 
+    const opts = { ...data }
+    const tOut = data?.timeout ?? this.globalTimeout
+    tOut && (opts.timeout = tOut)
+
     /**
      * The required module above should use the current globals
      * Which means PTE should now be loaded with tests to run
      */
-    const results = await this.PTE.run() as TExEventData[]
+    const results = await this.executor.run() as TExEventData[]
     const final = results.map(result => this.clearTestResults(result))
 
     if(!this.canceled) return final
@@ -83,8 +103,25 @@ export class BaseRunner extends ExamRunner {
     }))
 
     if(result.failed){
+      /**
+       * TODO check here for failed state in result metadata
+       * Could allow for test warning, but not failing
+       * Need to add `warnOnFailed` to `result.metaData` in Parkin
+       */
+      // @ts-ignore
+      if(result?.metaData?.warnOnFailed)
+        this.exam.event(ExamEvents.specDone({
+          data: {
+            ...this.clearTestResults(result),
+            failedExpectations: result?.failedExpectations
+          }
+        }))
+      
       this.cancel()
-      Errors.TestFailed(result, new Error())
+      let errorMsg = `Spec Failed`
+      if(result.testPath) errorMsg+= ` - ${result.testPath}`
+
+      Errors.TestFailed(result, new Error(errorMsg))
     }
   }
 
@@ -114,20 +151,18 @@ export class BaseRunner extends ExamRunner {
 
   cancel = async () => {
     this.canceled = true
-    this.PTE?.abort?.()
+    this.executor?.abort?.()
 
     await this.cleanup?.()
   }
 
   cleanup = async () => {
     try {
-      this.environment.resetGlobals(this)
-      this.environment.cleanup(this)
-      this?.PTE?.clean()
+      this?.executor?.clean()
     }
     catch(err){}
 
-    this.PTE = undefined
+    this.executor = undefined
     this.exam = undefined
   }
 

@@ -15,7 +15,6 @@ import type {
   TExecuteOptsMap,
   TExamTransforms,
   TExEnvironmentCfg,
-  TExamEnvironments,
   TExecPassThroughOpts,
 } from '@GEX/types'
 
@@ -26,6 +25,8 @@ import {
   TransformCfg,
   EnvironmentCfg
 } from '@GEX/constants/defaults'
+
+
 
 const loopLoadTypes = async <
   T=TExTypeMap,
@@ -55,8 +56,8 @@ const loopLoadTypes = async <
 
 export type TBuiltExecCfg = {
   exam:Exam
-  config:TExamConfig
   options?:TLoadOpts
+  config:TExamConfig
 }
 
 const buildPassThrough = (config:TExamConfig) => {
@@ -77,7 +78,6 @@ const buildPassThrough = (config:TExamConfig) => {
       ...EnvironmentCfg,
       envs: {...EnvironmentCfg.envs, ...config.envs},
       globals: {...EnvironmentCfg.globals, ...config.globals},
-      options: {...EnvironmentCfg.options, ...config.environment},
     }
   } as TExecPassThroughOpts
 }
@@ -92,14 +92,15 @@ export const buildExecCfg = async ({
     preRunner,
     postRunner,
     transforms,
-    environments,
+    environment,
     preEnvironment,
     postEnvironment,
   } = config
 
-  const loadedE = await loopLoadTypes<TExamEnvironments,IExEnvironment,TExEnvironmentCfg>(
+  const loadedE = await convertTypeStrToCls<IExEnvironment, TExEnvironmentCfg>(
     exam,
-    environments,
+    environment,
+    // environment || [BaseEnvironment, EnvironmentCfg],
     options
   )
 
@@ -122,7 +123,7 @@ export const buildExecCfg = async ({
     postEnvironment,
     runners: loadedR,
     transforms: loadedT,
-    environments: loadedE,
+    environment: loadedE,
     passthrough: buildPassThrough(config),
   } as TExecuteCfg
 

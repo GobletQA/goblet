@@ -1,6 +1,11 @@
-import type { TExamConfig } from '@GEX/types'
+import type {
+  TExamConfig,
+  TExArrOptsMap,
+  TExamBuilTCfg,
+} from '@GEX/types'
 
-import {isArr, isStr} from '@keg-hub/jsutils'
+import {emptyArr, isArr, isStr} from '@keg-hub/jsutils'
+import { buildReporters } from './buildReporters'
 import { ExamCfg, RootDirKey } from '@GEX/constants'
 
 const resolveRootDir = (config:TExamConfig) => {
@@ -24,8 +29,20 @@ const replaceRootObj = <T=Record<string, string>>(obj:T, rootDir:string) => {
   }, {} as T)
 }
 
-const replaceRootArr = <T extends string[]=string[]>(items:T, rootDir:string) => {
-  return items.map(item => item.replaceAll(RootDirKey, rootDir))
+const replaceRootArr = <T extends any[]=string[]>(items:T, rootDir:string) => {
+  return items?.length
+    ? items.map(item => item.replaceAll(RootDirKey, rootDir))
+    : emptyArr as T
+}
+
+const replaceRootOptsMap = <T extends TExArrOptsMap>(map:T, rootDir:string):T => {
+  if(isStr(map))
+    return map.replaceAll(RootDirKey, rootDir) as T
+
+  if(isArr(map))
+    return map.map((item:any) => isStr(item) ? item.replaceAll(RootDirKey, rootDir) : item) as T
+
+  return map
 }
 
 const replaceRootDir = (config:TExamConfig) => {
@@ -34,9 +51,10 @@ const replaceRootDir = (config:TExamConfig) => {
     rootDir,
     aliases,
     runners,
+    reporters,
     transforms,
     testIgnore,
-    environments,
+    environment,
     loaderIgnore,
     preEnvironment,
     postEnvironment,
@@ -48,16 +66,17 @@ const replaceRootDir = (config:TExamConfig) => {
     runners: replaceRootObj(runners, rootDir),
     testIgnore: replaceRootArr(testIgnore, rootDir),
     transforms: replaceRootObj(transforms, rootDir),
-    environments: replaceRootObj(environments, rootDir),
+    reporters: replaceRootOptsMap(reporters, rootDir),
     loaderIgnore: replaceRootArr(loaderIgnore, rootDir),
+    environment: replaceRootOptsMap(environment, rootDir),
     preEnvironment: replaceRootArr(preEnvironment, rootDir),
     postEnvironment: replaceRootArr(postEnvironment, rootDir),
     transformIgnore: replaceRootArr(transformIgnore, rootDir),
-  }
+  } as TExamConfig
   
 }
 
-export const buildExamCfg = (config:TExamConfig) => {
+export const buildExamCfg = (config:TExamConfig):TExamConfig => {
   const built = {
     ...ExamCfg,
     ...config,

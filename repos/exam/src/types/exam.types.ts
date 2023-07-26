@@ -3,7 +3,6 @@ import type { Exam } from "@GEX/Exam"
 
 import type { TLoaderCfg } from "./loader.types"
 import type { TExEventData } from './results.types'
-import type { TExEnvironmentCfg } from "./environment.types"
 import type {
   TExRun,
   TExData,
@@ -13,9 +12,10 @@ import type {
 import {
   TExamRunners,
   TExamReporters,
-  TExamEnvironments,
   TExamTransforms,
+  TExamEnvironment,
 }  from './typeMaps.types'
+import {TExBuiltReporters, TExReporterCfg} from "./reporters.types"
 
 
 export type TExamEvt<T=TExEventData|TExEventData[]> = {
@@ -32,6 +32,7 @@ export type TExamEvts = {
   dynamic:TInternalDynEvent
   results:TInternalDynEvent
   specDone:TInternalDynEvent
+  specWarn:TInternalDynEvent
   specStart:TInternalDynEvent
   suiteDone:TInternalDynEvent
   suiteStart:TInternalDynEvent
@@ -59,7 +60,7 @@ export type TExamEvents = {
 export type TExamCfg = TLoaderCfg
   & TExecPassThroughOpts[`runner`]
   & TExecPassThroughOpts[`transform`]
-  & Omit<TExecPassThroughOpts[`environment`], `options`>
+  & TExecPassThroughOpts[`environment`]
   & {
 
     /**
@@ -73,17 +74,14 @@ export type TExamCfg = TLoaderCfg
      */
     bail?:number
 
+    // Custom reporter options
+    reporter?:TExReporterCfg
 
     // These get convert form strings to classes in the Exam Loader
     runners: TExamRunners
-    transforms: TExamTransforms
-    environments: TExamEnvironments
-
-    // Gets converted to environment options in the buildExamConfig
-    environment?:TExEnvironmentCfg[`options`]
-
-    // TODO: implement reporters
     reporters?:TExamReporters
+    transforms: TExamTransforms
+    environment?: TExamEnvironment
 
     // TODO: implement different modes
     mode?:EExTestMode
@@ -101,13 +99,16 @@ export type TExamCfg = TLoaderCfg
 
 export type TExamConfig = TExamCfg
   & TExamEvents
-  & Omit<TExecuteCfg, `exam`|`runners`|`transforms`|`environments`|`passthrough`>
+  & Omit<TExecuteCfg, `exam`|`runners`|`transforms`|`environment`|`passthrough`>
 
 
 export type TExamRun<
   D extends TExData=TExData,
   Ast extends TExAst=TExAst
-> = Omit<TExRun<D, Ast>, `file`> & { file?:TExFileModel<Ast>|string }
+> = Omit<TExRun<D, Ast>, `file`> & {
+  file?:TExFileModel<Ast>|string
+  single?:boolean
+}
 
 export type TExamRunOpts<
   D extends TExData=TExData,
@@ -115,3 +116,5 @@ export type TExamRunOpts<
 > = TExamRun
   & TExamEvents
   & Pick<TExamConfig, `testMatch`|`testIgnore`|`extensions`|`testDir`|`rootDir`>
+
+export type TExamBuilTCfg = Omit<TExamConfig, `reporters`> & { reporters: TExBuiltReporters }

@@ -1,6 +1,11 @@
+import type { TExamCliOpts } from '../types/bin.types'
 
 import path from 'path'
+import { options } from './options'
 import { getRoot, homeDir, cwd } from './paths'
+import { argsParse } from '@keg-hub/args-parse'
+import { exists, isArr } from '@keg-hub/jsutils'
+
 
 /**
  * Resolve the full path to a location similar to path.resolve
@@ -16,6 +21,7 @@ export const fullLoc = (loc:string, rootDir?:string) => {
       : path.join(root, loc)
 }
 
+
 /**
  * Removes the extension from the passed in path location
  */
@@ -28,3 +34,34 @@ export const removeExt = (loc:string) => {
 
   return split.join(ext)
 }
+
+
+/**
+ * Removes the empty items from the passed Object
+ */
+export const removeEmpty = <T extends Record<any, any>>(opts:T) => {
+  return Object.entries(opts).reduce((acc, [key, value]) => {
+    if(!exists(value) || (isArr(value) && !value.length)) return acc
+
+    acc[key as keyof T] = value
+
+    return acc
+  }, {} as T)
+}
+
+
+/**
+ * Parse the cmd line args and clean out empty properties
+ */
+export const parseArgs = async () => {
+  const args = process.argv.slice(2) as string[] 
+  const opts = await argsParse({ args, task: { options }})
+
+  /**
+   * Args parse will typically remove empty items but,
+   * It also sets empty defaults for Arrays
+   * So we loop over and remove those as well
+   */
+  return removeEmpty<TExamCliOpts>(opts)
+}
+

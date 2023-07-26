@@ -3,6 +3,7 @@ import type {
   TExRun,
   TExData,
   IExRunner,
+  TLoadOpts,
   TExecuteCfg,
   TExRunnerCfg,
   TExecRunners,
@@ -12,30 +13,30 @@ import type {
   IConstructable,
   TExArrClsOptMap,
   TExTransformCfg,
-  TExEnvironmentCfg,
-  TExExtensionsCtx,
-  TExecEnvironments,
   TExecTransforms,
+  TExecEnvironment,
+  TExExtensionsCtx,
+  TExecPassThroughOpts,
   TExecuteBuiltRunners,
   TExecuteBuiltTransforms,
-  TExecuteBuiltEnvironments,
-  TExecPassThroughOpts,
-  TLoadOpts,
+  TExecuteBuiltEnvironment,
 } from '@GEX/types'
 
 import { Exam } from "@GEX/Exam"
 import { RunnerErr } from '@GEX/utils'
 import { ExamEvents } from '@GEX/Events'
-import {emptyObj, omitKeys} from '@keg-hub/jsutils'
+import { EnvironmentCfg } from '@GEX/constants'
 import { BaseRunner } from '@GEX/runner/BaseRunner'
 import { isConstructor } from '@GEX/utils/isConstructor'
 import { BaseTransform } from '@GEX/transform/BaseTransform'
 import { resolveTypeClass } from "@GEX/utils/resolveTypeClass"
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 import { ExamEnvironment } from '@GEX/environment/ExamEnvironment'
+import {emptyObj, ensureArr, isObj, omitKeys} from '@keg-hub/jsutils'
 
 type TExecuteExisting<T> = Record<string, T>
-type TResolveCfg = TExRunnerCfg|TExTransformCfg|TExEnvironmentCfg
+type TResolveCfg = TExRunnerCfg|TExTransformCfg
+
 
 type TResolveOpts<T, TM, C=TResolveCfg> = {
   cfg?:C
@@ -45,13 +46,23 @@ type TResolveOpts<T, TM, C=TResolveCfg> = {
   fallback?:IConstructable<T>
   override?:TExArrClsOptMap<T>
   existing:TExecuteExisting<T>
-  options: TExRunnerCfg|TExTransformCfg|TExEnvironmentCfg
+  options: TExRunnerCfg|TExTransformCfg
 }
 
 type TExtensionOpts = {
   runner?:boolean
   transform?:boolean,
   environment?:boolean
+}
+
+type TExecStates = {
+  envPre?:boolean
+  envPost?:boolean
+  envSetup?:boolean
+  runnerPre?:boolean
+  runnerPost?:boolean
+  environment?:boolean
+  runnerLoaded?:boolean
 }
 
 export class Execute {
@@ -66,11 +77,19 @@ export class Execute {
   #runners:TExecuteBuiltRunners={}
   passthrough:TExecPassThroughOpts
   #transforms:TExecuteBuiltTransforms={}
-  #environments:TExecuteBuiltEnvironments={}
-
   runnersTypes:TExecRunners={}
-  environmentTypes:TExecEnvironments={}
   transformTypes:TExecTransforms={}
+
+  #environment:TExecuteBuiltEnvironment
+  environmentType:TExecEnvironment
+  
+  #states:TExecStates={
+    envPre: false,
+    envPost: false,
+    envSetup: false,
+    environment: false,
+    runnerLoaded: false,
+  }
 
   constructor(cfg:TExecuteCfg){
     const {
@@ -80,7 +99,7 @@ export class Execute {
       postRunner,
       transforms,
       passthrough,
-      environments,
+      environment,
       preEnvironment,
       postEnvironment,
     } = cfg
@@ -93,7 +112,11 @@ export class Execute {
     this.postEnvironment = [...postEnvironment]
     this.runnersTypes = {...this.runnersTypes, ...runners}
     this.transformTypes = {...this.transformTypes, ...transforms}
-    this.environmentTypes = {...this.environmentTypes, ...environments}
+
+    this.environmentType = environment?.length
+      ? environment
+      : [BaseEnvironment, EnvironmentCfg]
+
     this.#Environment = new ExamEnvironment(passthrough.environment)
   }
 
@@ -134,6 +157,43 @@ export class Execute {
     return existing[type]
   }
 
+  #setupEnvironment = async <T extends TExData=TExData>(ctx:TExExtensionsCtx<T>) => {
+
+    if(!this.#states.envPre){
+      // Run all pre-environment scripts first
+      this.preEnvironment?.length
+        && await this.#loadFiles(this.preEnvironment)
+
+      this.#states.envPre = true
+    }
+
+    if(!this.#states.environment){
+      this.#Environment.setup()
+
+      const inline = ensureArr(ctx.environment)
+      const [EnvironType, typeCfg] = this.environmentType
+      const cfg = inline[1] || typeCfg
+      const Environ = inline[0] || EnvironType
+
+      this.#environment = isConstructor<IExEnvironment>(Environ)
+        ? new Environ({...this.passthrough.environment, ...cfg}, ctx)
+        : isObj<IExEnvironment>(Environ)
+          ? Environ
+          : undefined
+
+      this.#states.environment = true
+    }
+
+    if(!this.#states.envPost){
+      // Run post-environment scripts after environment is setup
+      this.postEnvironment?.length
+      && await this.#loadFiles(this.postEnvironment)
+
+      this.#states.envPost = true
+    }
+  
+  }
+
   #loadFiles = async (files:string[], opts:TLoadOpts=emptyObj) => {
     return this.exam.loader.loadMany(files, opts)
   }
@@ -146,42 +206,28 @@ export class Execute {
       file,
       runner,
       transform,
-      environment,
     } = ctx
 
     const type = file.fileType
-    const resp = omitKeys<TExCtx<T>>(ctx, [`runner`, `transform`, `environment`])
-
-    if(opts.environment !== false){
-      const env = this.#resolve<T,IExEnvironment,TExecEnvironments,TExEnvironmentCfg>(resp, {
-        type,
-        override: environment,
-        skip: opts.environment,
-        fallback: BaseEnvironment,
-        existing: this.#environments,
-        types: this.environmentTypes,
-        options: this.passthrough.environment
-      })
-
-      this.#environments[type] = env
-      resp.environment = env
+    const resp = {
+      ...omitKeys<TExCtx<T>>(ctx, [`runner`, `transform`, `environment`]),
+      environment: this.#environment
     }
 
-    if(opts.transform !== false){
-      const trans = this.#resolve<T,IExTransform,TExecTransforms,TExTransformCfg>(resp, {
-        type,
-        override: transform,
-        skip: opts.transform,
-        fallback: BaseTransform,
-        existing: this.#transforms,
-        types: this.transformTypes,
-        options: this.passthrough.transform
-      })
-      this.#transforms[type] = trans
-      resp.transform = trans
-    }
+    const trans = this.#resolve<T,IExTransform,TExecTransforms,TExTransformCfg>(resp, {
+      type,
+      override: transform,
+      skip: opts.transform,
+      fallback: BaseTransform,
+      existing: this.#transforms,
+      types: this.transformTypes,
+      options: this.passthrough.transform
+    })
+    this.#transforms[type] = trans
+    resp.transform = trans
 
-    if(opts.runner !== false){
+    if(!this.#states.runnerLoaded){
+
       const run = this.#resolve<T,IExRunner,TExecRunners,TExRunnerCfg>(resp, {
         type,
         override: runner,
@@ -193,6 +239,8 @@ export class Execute {
       })
       this.#runners[type] = run
       this.#runner = run
+
+      this.#states.runnerLoaded = true
     }
 
     return resp
@@ -207,17 +255,23 @@ export class Execute {
 
     try {
 
+      await this.#environment.setup(this.#runner, ctx)
+
       this.preRunner?.length
-        && await this.#loadFiles(this.preRunner)
+        && await this.#loadFiles(this.preRunner, {cache: false, force: true})
 
       resp = await this.#runner.run(transformed, ctx)
 
       this.postRunner?.length
-        && await this.#loadFiles(this.postRunner)
-      
+        && await this.#loadFiles(this.postRunner, {cache: false, force: true})
+
     }
     catch(err){ error = err }
     finally {
+
+      this.#Environment.reset()
+      await this.#environment?.reset?.(this.#runner)
+      
       if(error){
         await this.cleanup(ctx)
         throw new RunnerErr(error)
@@ -229,20 +283,11 @@ export class Execute {
   }
 
   exec = async <T extends TExData=TExData>(options:TExRun<T>) => {
-    // Run all pre-environment scripts first
-    this.preEnvironment?.length
-      && await this.#loadFiles(this.preEnvironment)
-
-    this.#Environment.setupGlobals()
-
     const extCtx:TExExtensionsCtx<T> = {...options, exam: this.exam}
 
+    await this.#setupEnvironment(extCtx)
+
     const ctx = this.extensions(extCtx)
-
-    // Run post-environment scripts after environment is setup
-    this.postEnvironment?.length
-     && await this.#loadFiles(this.postEnvironment)
-
     const transformed = await ctx.transform.transform(ctx.file.content, ctx)
 
     return await this.#run(transformed, ctx)
@@ -254,10 +299,15 @@ export class Execute {
   }
   
   cleanup = async (ctx?:TExCtx) => {
+
     if(this.#Environment){
-      this.#Environment.resetGlobals()
       this.#Environment.cleanup()
       this.#Environment = undefined
+    }
+
+    if(this.#environment){
+      await this.#environment?.cleanup?.(this.#runner)
+      this.#environment = undefined
     }
 
     if(this.#runner){
@@ -274,7 +324,7 @@ export class Execute {
     this.passthrough = undefined
     this.runnersTypes = undefined
     this.transformTypes = undefined
-    this.environmentTypes = undefined
+    this.environmentType = undefined
 
     if(!ctx) return
 

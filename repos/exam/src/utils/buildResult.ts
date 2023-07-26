@@ -1,5 +1,7 @@
 import type { TExEventData } from "@GEX/types"
-import { BuiltTestResultFailed } from "@GEX/constants"
+
+import { emptyObj } from "@keg-hub/jsutils"
+import { BuiltTestResultFailed, NoTestsFoundPass } from "@GEX/constants"
 
 type TBuildResult = Partial<TExEventData> & {
   id:string
@@ -8,7 +10,19 @@ type TBuildResult = Partial<TExEventData> & {
   description:string
 }
 
-export const buildResultFailed = (result:TBuildResult) => {
+const emptyBuildResult = emptyObj as TBuildResult
+
+export const buildNoTestsResult = (result:TBuildResult=emptyBuildResult) => {
+  return {
+    ...NoTestsFoundPass,
+    describes: [],
+    timestamp: new Date().getTime(),
+    ...result,
+  } as TExEventData
+}
+
+
+export const buildFailedTestResult = (result:TBuildResult) => {
   return {
     ...BuiltTestResultFailed,
     describes: [],

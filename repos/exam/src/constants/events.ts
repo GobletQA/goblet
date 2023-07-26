@@ -1,6 +1,7 @@
 
 export const ExamEvtNames = {
   specDone: `PLAY-SPEC-DONE`,
+  specWarn: `PLAY-SPEC-WARN`,
   specStart: `PLAY-SPEC-START`,
   suiteDone: `PLAY-SUITE-DONE`,
   suiteStart: `PLAY-SUITE-START`,

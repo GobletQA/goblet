@@ -165,6 +165,13 @@ export const options = {
   },
 
   /**
+   * Custom options to pass to the environment. Gets set to environment.options
+   */
+  environment: {
+    description: `Path to an custom environment file. Must export a Environment class as default`
+  },
+
+  /**
    * List of files to run before the environment as been setup
    */
   preEnvironment:{
@@ -180,6 +187,14 @@ export const options = {
     type: `array`,
     alias: [`pte`],
     description: `List of paths to script to be executed after the test environment is setup`,
+  },
+
+  /**
+   * Custom Reporters for reporting test execution results
+   */
+  reporters: {
+    type:`array`,
+    description: `Comma separated list of paths to custom Reporter class files. File must export a Reporter class as default. Can also specify one of "default" | "silent"`
   },
 
   /**
@@ -349,13 +364,6 @@ export const options = {
   },
 
   /**
-   * Custom options to pass to the environment. Gets set to environment.options
-   */
-  environment: {
-    type: `object`,
-  },
-
-  /**
    * Custom events that a custom `Runner`, `Transform`, or `Environment` will fire
    */
   events: {
@@ -373,20 +381,6 @@ export const options = {
    * Custom File transform loaded before Runner, based on file extension
    */
   transforms: {
-    type: `object`,
-  },
-
-  /**
-   * Custom Environment loaded before Transform and Runner, based on file extension
-   */
-  environments: {
-    type: `object`,
-  },
-
-  /**
-   * Custom Reporters for reporting test execution results
-   */
-  reporters: {
     type: `object`,
   },
 

@@ -1,4 +1,5 @@
 export * from './events'
 export * from './errors'
-export * from './constants'
 export * from './defaults'
+export * from './constants'
+export * from './interlope'

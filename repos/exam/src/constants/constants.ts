@@ -22,15 +22,16 @@ export const FileTypeMap = {
 }
 
 export const RootDirKey = `<rootDir>`
+export const NoTestsPassId = `NO-TESTS-FOUND`
 
-export const NoTestsFoundPass:TExEventData = {
+export const NoTestsFoundPass = {
   passed: true,
   timestamp: 0,
   describes: [],
   failed: false,
   skipped: false,
   testPath: `none`,
-  id: `no-tests-found`,
+  id: NoTestsPassId,
   fullName: `No Tests Found`,
   action: EPlayerTestAction.end,
   type: EPlayerTestType.describe,

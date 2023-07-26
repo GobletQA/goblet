@@ -5,6 +5,7 @@ import type {
   IExRunner,
   TExRunnerCfg,
   TTransformResp,
+  IExEnvironment,
 } from '@GEX/types'
 
 import { Errors } from '@GEX/constants/errors'
@@ -26,11 +27,14 @@ export class ExamRunner<
   canceled?:boolean
   isRunning?:boolean
   globalTimeout?:number
+  environment:IExEnvironment
 
   constructor(cfg:TExRunnerCfg, ctx:TExCtx<T>) {
-    const { exam } = ctx
+    const { exam, environment } = ctx
 
     this.exam = exam
+    this.environment = environment
+
     this.isRunning = false
 
     if(cfg?.debug) this.debug = cfg.debug
@@ -59,6 +63,7 @@ export class ExamRunner<
   }
 
   cleanup = () => {
+    Errors.Override(`ExamRunner.cleanup`)
     return undefined
   }
 

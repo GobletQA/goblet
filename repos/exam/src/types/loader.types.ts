@@ -54,6 +54,7 @@ export type TLoadOpts = {
   cache?:boolean
   force?:boolean
   error?:boolean
-  testFile?:boolean
+  single?:boolean
   asModel?:boolean
+  testFile?:boolean
 }

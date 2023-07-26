@@ -116,14 +116,12 @@ export const ExamConfig:TExamConfig = {
   /**
    * Custom Environment loaded before Transform and Runner, based on file extension
    */
-  environments: {
-    
-  },
+  environment: undefined,
 
   /**
    * Custom Reporters for reporting test execution results
    */
-  reporters: {},
+  reporters: [`default`],
 
   /**
    * List of files to run before the Runner has executed
@@ -165,11 +163,6 @@ export const ExamConfig:TExamConfig = {
    * Items to add to the global scope of the environment
    */
   globals: {},
-  
-  /**
-   * Custom options to pass to the environment. Gets set to environment.options
-   */
-  environment: {},
 
   /**
    * Use module caching in the Loader, This is a runtime cache only
@@ -180,6 +173,11 @@ export const ExamConfig:TExamConfig = {
    * If no test files are found, an error is thrown, setting this true will disable that
    */
   passWithNoTests: false,
+
+  /**
+   * Custom reporter config options
+   */
+  reporter: {},
 
 
   /**

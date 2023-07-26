@@ -13,11 +13,10 @@ import path from 'path'
 import { readFileSync } from 'fs'
 import { createRequire } from 'module'
 import moduleAlias from 'module-alias'
-import { LoaderCfg } from '@GEX/constants'
-import { LoaderErr } from '@GEX/utils/error'
 import { toFileModel } from "@GEX/utils/toFileModel"
 import { register } from 'esbuild-register/dist/node'
 import { globFileIgnore } from '@GEX/constants/defaults'
+import { LoaderCfg, Errors, ErrorCodes } from '@GEX/constants'
 import { exists, flatUnion, emptyObj } from "@keg-hub/jsutils"
 import { globFiles, createGlobMatcher } from "@GEX/utils/globMatch"
 
@@ -139,12 +138,20 @@ export class Loader {
     return true
   }
 
-  #onLoaded = (location:string, loaded:any, err:Error) => {
+  #onError = (location:string, err:any) => {
+    err.code === ErrorCodes.NotFound
+      ? Errors.NotFound(path.relative(this.rootDir, location), err)
+      : Errors.LoadErr(err)
+    
+    return undefined
+  }
+
+  #onLoaded = <T extends any=any>(location:string, loaded:any, err:Error):T => {
     const wasIgnored = this.#fileIgnored[location]
     this.#testFile[location] = undefined
     this.#fileIgnored[location] = undefined
 
-    if(!wasIgnored && err) throw new LoaderErr(err)
+    if(!wasIgnored && err) return this.#onError(location, err)
 
     const resp = loaded || emptyObj
 
@@ -173,17 +180,22 @@ export class Loader {
   }
 
   #loopExts = (file:string, cb:(file:string) => any) => {
-    const lastExt = this.extensions[this.extensions.length - 1]
+    /**
+     * Add empty as the last item, to the last Error will match the original location
+     */
+    const extensions = [...this.extensions, ``]
 
     let error:Error
-    for(let ext of this.extensions){
+    for(let ext of extensions){
       try {
-        const data = cb(`${file}.${ext}`)
+        const loc = ext ? `${file}.${ext}` : file
+        const data = cb(loc)
         return { data, ext }
       }
       catch(err){
         error = err
-        if(ext !== lastExt && err.code === `ENOENT`) continue
+        /** Validate if the loop is at the last extension */
+        if(ext !== `` && err.code === ErrorCodes.NotFound) continue
 
         throw err
       }
@@ -194,7 +206,7 @@ export class Loader {
     return { data: `` }
   }
 
-  load = (loc:string, opts:TLoadOpts=emptyObj, meta:boolean=true) => {
+  load = <T extends any=any>(loc:string, opts:TLoadOpts=emptyObj, meta:boolean=true):T => {
     const [location, options] = meta ? this.#getLoadMeta(loc, opts) : [loc, opts]
 
     const fromCache = !options.force
@@ -224,7 +236,7 @@ export class Loader {
     }
     catch(err){ error = err }
 
-    return this.#onLoaded(
+    return this.#onLoaded<T>(
       location,
       loaded,
       options.error !== false && error
@@ -266,7 +278,7 @@ export class Loader {
 
     }
     catch(err) {
-      throw new LoaderErr(err)
+      return this.#onError(location, err)
     }
   }
 

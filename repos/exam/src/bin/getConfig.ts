@@ -2,7 +2,16 @@ import type { TExamCliOpts } from "../types/bin.types"
 import type { EExTestMode, TExamConfig } from '../types/exam.types'
 
 import { fullLoc } from './helpers'
-import { ensureArr, flatUnion, isFunc, isObj, toBool, toNum } from '@keg-hub/jsutils'
+import {
+  isArr,
+  toNum,
+  isObj,
+  isFunc,
+  toBool,
+  exists,
+  ensureArr,
+  flatUnion,
+} from '@keg-hub/jsutils'
 
 const modeTypes = [
   `serial`,
@@ -35,6 +44,41 @@ const getRunMode = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>) 
   return (modeTypes.includes(final) ? final : `serial`) as EExTestMode
 }
 
+const validateArr =  <T=any>(arr:T|T[]) => {
+  return exists(arr)
+    ? !isArr(arr)
+      ? [arr]
+      : arr?.length ? arr : undefined
+    : undefined
+}
+
+/**
+ * Hard override, similar to how Jest does it
+ * If the override array exists, it replaces the base
+ * It does not merge with it
+ */
+const getReporters = (
+  base:any,
+  over:any
+) => {
+  const overArr = validateArr(over)
+  if(overArr) return overArr
+
+  const baseArr = validateArr(base)
+  return baseArr ? baseArr : undefined
+}
+
+const mergeConfigArr = <T=any>(base:T|T[], over:T|T[]) => {
+  const overArr = validateArr(over)
+  const baseArr = validateArr(base)
+
+  return overArr
+    ? baseArr
+      ? flatUnion(ensureArr(base), ensureArr(over))
+      : overArr
+    : baseArr
+}
+
 const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>):TExamConfig => {
   const {
     config:bConfig,
@@ -48,8 +92,7 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     // reporters: bReporters,
     // transforms: bTransforms,
     // environment: bEnvironment,
-    // environments: bEnvironments,
-    // --- Don't detructure to they are set in the final object --- //
+    // --- Don't destructure to they are set in the final object --- //
     
     mode:bMode,
 
@@ -64,6 +107,7 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
 
     serial:bSerial,
     parallel:bParallel,
+    reporters:bReporters,
 
     debug:bDebug,
     verbose: bVerbose,
@@ -96,10 +140,8 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     events,
     globals,
     runners,
-    reporters,
     transforms,
     environment,
-    environments,
     // --- These do not work from the CLI --- //
 
     mode,
@@ -115,6 +157,7 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
 
     serial,
     parallel,
+    reporters,
 
     debug,
     verbose,
@@ -155,21 +198,24 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     timeout: toNum(timeout ?? bTimeout),
     verbose: toBool(verbose ?? bVerbose),
     globalTimeout: toNum(globalTimeout ?? bGlobalTimeout),
-    extensions: flatUnion(ensureArr(bExtensions), ensureArr(extensions)),
+    extensions: mergeConfigArr(bExtensions, extensions),
 
     rootDir: rootDir ?? bRootDir,
     testDir: testDir ?? bTestDir,
-    testMatch: flatUnion(ensureArr(bTestMatch), ensureArr(testMatch)),
+    testMatch: mergeConfigArr(bTestMatch, testMatch),
 
-    preRunner: flatUnion(ensureArr(bPreRunner), ensureArr(preRunner)),
-    postRunner: flatUnion(ensureArr(bPostRunner), ensureArr(postRunner)),
+    /** Hard override, similar to how Jest does it */
+    reporters: getReporters(bReporters, reporters),
 
-    testIgnore: flatUnion(ensureArr(bTestIgnore), ensureArr(testIgnore)),
-    loaderIgnore: flatUnion(ensureArr(bLoaderIgnore), ensureArr(loaderIgnore)),
-    transformIgnore: flatUnion(ensureArr(bTransformIgnore), ensureArr(transformIgnore)),
+    preRunner: mergeConfigArr(bPreRunner, preRunner),
+    postRunner: mergeConfigArr(bPostRunner, postRunner),
 
-    preEnvironment: flatUnion(ensureArr(bPreEnvironment), ensureArr(preEnvironment)),
-    postEnvironment: flatUnion(ensureArr(bPostEnvironment), ensureArr(postEnvironment)),
+    testIgnore: mergeConfigArr(bTestIgnore, testIgnore),
+    loaderIgnore: mergeConfigArr(bLoaderIgnore, loaderIgnore),
+    transformIgnore: mergeConfigArr(bTransformIgnore, transformIgnore),
+
+    preEnvironment: mergeConfigArr(bPreEnvironment, preEnvironment),
+    postEnvironment: mergeConfigArr(bPostEnvironment, postEnvironment),
 
   } as TExamConfig
 }
