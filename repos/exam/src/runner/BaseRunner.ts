@@ -5,32 +5,20 @@ import type {
   TExTestEvent,
 } from '@GEX/types'
 
-import path from 'path'
+
 import { ExamEvents } from '@GEX/Events'
 import { ExamRunner } from './ExamRunner'
 import { Errors } from '@GEX/constants/errors'
 import { ParkinTest } from '@ltipton/parkin/test'
+import { RootSuiteId } from '@GEX/constants/events'
 import { emptyArr, omitKeys } from '@keg-hub/jsutils'
-import { requireFromString } from 'module-from-string'
-import {RootSuiteId} from '@GEX/constants/events'
+
 
 export class BaseRunner extends ExamRunner {
 
   executor:ParkinTest
   omitTestResults:string[] = []
 
-  globals:string[] = [
-    `it`,
-    `xit`,
-    `test`,
-    `xtest`,
-    `describe`,
-    `xdescribe`,
-    `afterAll`,
-    `afterEach`,
-    `beforeAll`,
-    `beforeEach`,
-  ]
 
   constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
     super(cfg, ctx)
@@ -48,31 +36,24 @@ export class BaseRunner extends ExamRunner {
   }
 
   /**
-   * Called when a page loads to check if mouse tracker should run
-   * Is called from within the browser context
-   */
-  onIsRunning = () => {
-    return this.isRunning
-  }
-
-  /**
    * Runs the code passed to it via the exam
    */
   run = async (content:string, ctx:TExCtx) => {
     this.isRunning = true
+    this.load(content, ctx)
 
-    const { exam, file, data } = ctx
     /**
      * Imports the module from a string using Nodes built-in vm module
      * Currently sets `useCurrentGlobal: true`, to use the currently globals
      * Eventually this will be updated to not do that
      */
-    requireFromString(content, {
-      filename: file.name,
-      useCurrentGlobal: true,
-      dirname: path.dirname(file.location),
-    })
+    // requireFromStringVM(ctx.file, content, {
+    //   filename: file.name,
+    //   useCurrentGlobal: true,
+    //   dirname: path.dirname(file.location),
+    // })
 
+    const { data } = ctx
     const opts = { ...data }
     const tOut = data?.timeout ?? this.globalTimeout
     tOut && (opts.timeout = tOut)
@@ -85,6 +66,8 @@ export class BaseRunner extends ExamRunner {
     this.exam.event(ExamEvents.started)
     const results = await this.executor.run() as TExEventData[]
     const final = results.map(result => this.clearTestResults(result))
+
+    this.isRunning = false
 
     if(!this.canceled) return final
 

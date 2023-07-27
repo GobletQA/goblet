@@ -11,4 +11,8 @@ module.exports = {
   setupFilesAfterEnv: [`${rootDir}/scripts/jest.setup.ts`],
   collectCoverageFrom: ['**/*.ts', '!**/*.types.ts', '!**/*.d.ts'],
   transformIgnorePatterns: ['node_modules/(?!@gobletqa|!@keg-hub)/'],
+  testPathIgnorePatterns: [
+    `/node_modules/`,
+    `/__mocks__`,
+  ]
 }

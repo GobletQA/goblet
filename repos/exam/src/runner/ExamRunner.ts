@@ -45,6 +45,14 @@ export class ExamRunner<
   }
 
   /**
+   * Method used to load tests into the environment
+   */
+  protected load = (content:string, ctx:TExCtx) => {
+    const { file } = ctx
+    return this.exam.loader.runTest(file, content)
+  }
+
+  /**
    * Called when a page loads to check if mouse tracker should run
    * Is called from within the browser context
    */

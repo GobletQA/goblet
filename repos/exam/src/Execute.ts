@@ -117,7 +117,7 @@ export class Execute {
       ? environment
       : [BaseEnvironment, EnvironmentCfg]
 
-    this.#Environment = new ExamEnvironment(passthrough.environment)
+    this.#Environment = new ExamEnvironment(passthrough.environment, exam)
   }
 
   #resolve = <T, I, M, C>(ctx:TExCtx<T>, opts:TResolveOpts<I, M, C>):I => {

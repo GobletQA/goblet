@@ -11,6 +11,8 @@
     "configs",
     "../../",
     "../../configs",
-    "../shared/src"
+    "../shared/src",
+    ".temp",
+    ".temp/utils.ts"
   ]
 }

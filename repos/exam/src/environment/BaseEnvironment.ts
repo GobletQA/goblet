@@ -22,23 +22,35 @@ export class BaseEnvironment implements IExEnvironment<BaseRunner> {
     globals: {},
   }
 
+  executorGlobals:string[] = [
+    `it`,
+    `xit`,
+    `test`,
+    `xtest`,
+    `describe`,
+    `xdescribe`,
+    `afterAll`,
+    `afterEach`,
+    `beforeAll`,
+    `beforeEach`,
+  ]
+
   constructor(cfg:TExEnvironmentCfg=emptyObj){}
 
   setup = (runner:BaseRunner, ctx:TExCtx) => {
     this.cache.globals.expect = (global as any).expect
     ;(global as any).expect = expect
 
-    runner?.globals?.forEach((item) => {
+    this.executorGlobals?.forEach((item) => {
       this.cache.globals[item] = global[item]
       global[item] = runner.executor[item]
     })
-
   }
 
   reset = (runner:BaseRunner) => {
     ;(global as any).expect = this.cache.globals.expect
 
-    runner?.globals?.forEach((item) => global[item] = this.cache.globals[item])
+    this.executorGlobals?.forEach((item) => global[item] = this.cache.globals[item])
   }
 
   cleanup = (runner:BaseRunner) => {

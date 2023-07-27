@@ -13,6 +13,8 @@ import path from 'path'
 import { readFileSync } from 'fs'
 import { createRequire } from 'module'
 import moduleAlias from 'module-alias'
+import { RunningCodeOptions } from "vm"
+import { VMContext } from "@GEX/context/Context"
 import { toFileModel } from "@GEX/utils/toFileModel"
 import { register } from 'esbuild-register/dist/node'
 import { globFileIgnore } from '@GEX/constants/defaults'
@@ -35,6 +37,7 @@ type TBuildRequire = {
 export class Loader {
 
   exam:Exam
+  ctx:VMContext
   testDir:string
   unregister:TAnyCB
   cache:boolean=true
@@ -55,6 +58,10 @@ export class Loader {
   constructor(exam:Exam, config:TLoaderCfg){
     this.exam = exam
     this.#setup(config)
+    this.ctx = new VMContext({
+      exam,
+      require:this.require
+    })
   }
 
   #buildRequire = (opts:TBuildRequire) => {
@@ -206,6 +213,11 @@ export class Loader {
     return { data: `` }
   }
 
+  #require = <T extends any=any>(loc:string, opts:TLoadOpts=emptyObj):T => {
+    const model = this.loadContent<T>(loc, {...opts, asModel: true}, false)
+    return this.ctx.require(model)
+  }
+
   load = <T extends any=any>(loc:string, opts:TLoadOpts=emptyObj, meta:boolean=true):T => {
     const [location, options] = meta ? this.#getLoadMeta(loc, opts) : [loc, opts]
 
@@ -226,9 +238,9 @@ export class Loader {
       this.#testFile[location] = Boolean(options.testFile)
       
       if(path.extname(location).length)
-        loaded = this.require(location)
+        loaded = this.#require(location, opts)
       else {
-        const { data, ext } = this.#loopExts(location, (lc) => this.require(lc))
+        const { data, ext } = this.#loopExts(location, (lc) => this.#require(location, opts))
         loaded = data
         extension = ext
       }
@@ -321,6 +333,14 @@ export class Loader {
     this.#buildRequire({ rootDir, testDir })
 
     return this.loadContentMany(testMatch || this.testMatch, {...rest, testFile: true})
+  }
+  
+  runTest = async (
+    model:TExFileModel,
+    content:string,
+    opts:RunningCodeOptions=emptyObj
+  ) => {
+    return this.ctx.require(model, content, opts)
   }
 
   /**

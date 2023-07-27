@@ -1,3 +1,4 @@
+import {Exam} from '@GEX/Exam'
 import type {
   TSerializeObj,
   IExEnvironment,
@@ -10,6 +11,7 @@ import { isStr } from '@keg-hub/jsutils'
 
 export class ExamEnvironment implements IExEnvironment {
 
+  exam:Exam
   globals:TSerializeObj={}
   envs:TEnvironmentEnvs={}
 
@@ -18,9 +20,10 @@ export class ExamEnvironment implements IExEnvironment {
     globals: {},
   }
 
-  constructor(cfg:TExEnvironmentCfg){
+  constructor(cfg:TExEnvironmentCfg, exam){
     this.envs = {...cfg.envs, EXAM_ENV: true }
     this.globals = {...cfg.globals}
+    this.exam = exam
   }
 
   setup = async () => {
@@ -37,6 +40,10 @@ export class ExamEnvironment implements IExEnvironment {
 
   }
 
+  protected setGlobals = () => {
+    
+  }
+
   reset = async () => {
     Object.entries(this.cache.globals)
       .forEach(([key, val]) => global[key] = val)
@@ -46,6 +53,9 @@ export class ExamEnvironment implements IExEnvironment {
   }
 
   cleanup = async () => {
+
+    this.exam = undefined
+
     this.envs = undefined
     this.envs = {}
 

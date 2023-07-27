@@ -1,3 +1,4 @@
+export * from './vm.types'
 export * from './dom.types'
 export * from './bin.types'
 export * from './exam.types'
