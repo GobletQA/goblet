@@ -1,5 +1,5 @@
 import type {
-  TExCtx,
+  TTransform,
   TESBuildCfg,
   IExTransform,
   TExTransformCfg,
@@ -7,9 +7,9 @@ import type {
 
 
 import * as esbuild from 'esbuild'
+import { emptyObj } from '@keg-hub/jsutils'
 import { Errors } from '@GEX/constants/errors'
-import {createGlobMatcher} from '@GEX/utils/globMatch'
-import {emptyObj} from '@keg-hub/jsutils'
+import { createGlobMatcher } from '@GEX/utils/globMatch'
 
 /**
  * ExamTransform - Base transform, used for all files by default
@@ -39,22 +39,30 @@ export class BaseTransform implements IExTransform<string> {
     return transformed.code
   }
 
+  #esOpts = (cfg:TESBuildCfg=emptyObj) => {
+    const { hookMatcher:_, ...rest } = cfg
+    const { hookMatcher:__, ...local } = this.esbuild
+
+    return {...local, ...rest}
+  }
+
   transformAsync = async (content:string, cfg:TESBuildCfg):Promise<string> => {
-    const transformed = await esbuild.transform(content, {...this.esbuild, ...cfg})
+    const transformed = await esbuild.transform(content, this.#esOpts(cfg))
     return this.#onTransform(transformed)
   }
   
   transformSync = (content:string, cfg:TESBuildCfg):string => {
-    const transformed = esbuild.transformSync(content, {...this.esbuild, ...cfg})
+    const transformed = esbuild.transformSync(content, this.#esOpts(cfg))
     return this.#onTransform(transformed)
   }
   
-  transform = (content:string, ctx:TExCtx, sync?:boolean):Promise<string>|string => {
-    const { exam, file } = ctx
+  transform = (content:string, ctx:TTransform, sync?:boolean):Promise<string>|string => {
+    const { file, esbuild } = ctx
     if(this.transformIgnore(file.location)) return content
 
     try {
-      const { hookMatcher, ...opts} = (exam.loader.esbuild || {})
+      const { hookMatcher, ...opts} = (esbuild || {})
+      
       return sync
         ? this.transformSync(content, opts)
         : this.transformAsync(content, opts)

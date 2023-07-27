@@ -1,4 +1,5 @@
-import type { TESBuildCfg, TExCtx, TExData } from "@GEX/types"
+import {Exam} from "@GEX/Exam"
+import type { TESBuildCfg, TExCtx, TExData, TExFileModel } from "@GEX/types"
 import type { IConstructable } from './helpers.types'
 
 export type TExTransformCfg = {
@@ -12,7 +13,7 @@ export interface IExamTransform<R=unknown, T extends TExData=TExData> {
   transformIgnore:string[]|((location:string) => boolean)
   transform(
     content:string,
-    ctx:TExCtx<T>
+    ctx:TTransform
   ): Promise<TTransformResp<R>>|TTransformResp<R>
 }
 
@@ -27,3 +28,10 @@ export type TTransformCls<
   T extends TExData=TExData,
   I extends IExamTransform<R, T>=IExamTransform<R, T>
 > = IConstructable<IExTransform<R, T, I>>
+
+
+export type TTransform = {
+  exam:Exam,
+  file?:TExFileModel
+  esbuild?:TESBuildCfg|false
+}

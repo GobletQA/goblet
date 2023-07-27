@@ -97,7 +97,7 @@ export class Exam {
     const { file, single } = options
     const model = isObj<TExFileModel>(file)
       ? file
-      : this.loader.loadContent<TExFileModel<T>>(file, { single, testFile: true, asModel: true })
+      : await this.loader.loadContent<TExFileModel<T>>(file, { single, testFile: true, asModel: true })
 
     if(!model){
       if(single)

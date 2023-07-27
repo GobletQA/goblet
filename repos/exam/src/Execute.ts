@@ -166,6 +166,7 @@ export class Execute {
     if(!this.#states.runnerLoaded){
 
       const run = this.loadRunner({
+        ctx,
         type,
         override: runner,
         fallback: BaseRunner,
@@ -249,6 +250,7 @@ export class Execute {
 
   loadRunner = <T extends IExRunner=IExRunner>(opts:TLoadRunner<T>) => {
     const {
+      ctx,
       type,
       options,
       override,
@@ -271,14 +273,13 @@ export class Execute {
           ...this.passthrough.runner,
           ...cfg,
           ...options,
-        })
+        }, ctx)
       : TypeClass
 
     this.#runners[type] = runner
 
     return this.#runners[type]
   }
-
 
   exec = async <T extends TExData=TExData>(options:TExRun<T>) => {
     const ctx = await this.#execSetup(options)

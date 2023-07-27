@@ -19,6 +19,7 @@ import {
   TExecEnvironment,
 }  from './typeMaps.types'
 import {TExAst, TExFileModel} from "./file.types"
+import {TESBuildCfg} from "./loader.types"
 
 export type TExData = Record<string, any>
 
@@ -31,6 +32,7 @@ export type TLoadTransform<T extends IExTransform=IExTransform> = {
 
 export type TLoadRunner<T extends IExRunner=IExRunner> = {
   type:string
+  ctx:TExExtensionsCtx
   options?:TExRunnerCfg
   fallback?:IConstructable<T>
   override?:TExArrClsOptMap<T>
@@ -69,6 +71,7 @@ type TExRunMaps = {
 type TExRunMeta<D extends TExData=TExData, Ast extends TExAst=TExAst> = {
   data?: D
   file?:TExFileModel<Ast>
+  esbuild?:TESBuildCfg|false
 }
 
 export type TExRun<D extends TExData=TExData, Ast extends TExAst=TExAst> = TExRunMaps

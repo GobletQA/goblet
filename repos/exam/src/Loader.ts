@@ -122,10 +122,6 @@ export class Loader {
     if(testIgnore) this.testIgnore = createGlobMatcher(testIgnore)
     if(loaderIgnore) this.loaderIgnore = createGlobMatcher(loaderIgnore)
 
-    this.#transformer = new BaseTransform({
-      esbuild,
-      transformIgnore,
-    })
 
     if(esbuild !== false && !this.unregister){
       this.esbuild = {
@@ -135,6 +131,11 @@ export class Loader {
       }
       this.unregister =  register().unregister
     }
+
+    this.#transformer = new BaseTransform({
+      transformIgnore,
+      esbuild: this.esbuild,
+    })
 
     this.#buildCtx({ rootDir, testDir })
 
@@ -243,7 +244,7 @@ export class Loader {
     loc:string,
     opts:TLoadOpts=emptyObj
   ):Promise<T> => {
-    const model = this.loadContent<T>(loc, {...opts, asModel: true}, false)
+    const model = await this.loadContent<TExFileModel>(loc, {...opts, asModel: true}, false)
     return this.ctx.require(model)
   }
 
@@ -309,16 +310,20 @@ export class Loader {
 
     try {
 
-      let readData:Buffer|string
+      let loaded:string
       if(path.extname(location).length)
-        readData = await readFile(location, `utf8`)
+        loaded = await readFile(location, `utf8`)
       else {
         const resp = await this.#loopExts(location, (lc) => readFile(lc, `utf8`))
-        readData = resp?.data
+        loaded = resp?.data
         ext = resp?.ext
       }
 
-      const content = await this.#transformer.transformAsync(readData.toString(), opts?.esbuild)
+      const content = await this.#transformer.transform(loaded, {
+        exam: this.exam,
+        esbuild: opts?.esbuild,
+        file: { content: loaded, location }
+      })
 
       return !options.asModel
         ? content as T
