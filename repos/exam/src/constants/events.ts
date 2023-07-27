@@ -17,4 +17,5 @@ export const ExamEvtNames = {
   started: `PLAY-STARTED`,
   canceled: `PLAY-CANCELED`,
   stopped: `PLAY-STOPPED`,
+  warning: `PLAY-WARNING`,
 }

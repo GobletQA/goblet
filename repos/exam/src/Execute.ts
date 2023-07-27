@@ -5,14 +5,12 @@ import type {
   IExRunner,
   TLoadOpts,
   TExecuteCfg,
-  TExRunnerCfg,
+  TLoadRunner,
   TExecRunners,
   TExEventData,
   IExTransform,
   IExEnvironment,
-  IConstructable,
-  TExArrClsOptMap,
-  TExTransformCfg,
+  TLoadTransform,
   TExecTransforms,
   TExecEnvironment,
   TExExtensionsCtx,
@@ -24,36 +22,15 @@ import type {
 
 import { Exam } from "@GEX/Exam"
 import { RunnerErr } from '@GEX/utils'
-import { ExamEvents } from '@GEX/Events'
 import { EnvironmentCfg } from '@GEX/constants'
 import { BaseRunner } from '@GEX/runner/BaseRunner'
+import { globTypeMatch } from "@GEX/utils/globMatch"
 import { isConstructor } from '@GEX/utils/isConstructor'
 import { BaseTransform } from '@GEX/transform/BaseTransform'
 import { resolveTypeClass } from "@GEX/utils/resolveTypeClass"
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 import { ExamEnvironment } from '@GEX/environment/ExamEnvironment'
 import {emptyObj, ensureArr, isObj, omitKeys} from '@keg-hub/jsutils'
-
-type TExecuteExisting<T> = Record<string, T>
-type TResolveCfg = TExRunnerCfg|TExTransformCfg
-
-
-type TResolveOpts<T, TM, C=TResolveCfg> = {
-  cfg?:C
-  types:TM
-  type:string
-  skip?:boolean
-  fallback?:IConstructable<T>
-  override?:TExArrClsOptMap<T>
-  existing:TExecuteExisting<T>
-  options: TExRunnerCfg|TExTransformCfg
-}
-
-type TExtensionOpts = {
-  runner?:boolean
-  transform?:boolean,
-  environment?:boolean
-}
 
 type TExecStates = {
   envPre?:boolean
@@ -77,7 +54,7 @@ export class Execute {
   #runners:TExecuteBuiltRunners={}
   passthrough:TExecPassThroughOpts
   #transforms:TExecuteBuiltTransforms={}
-  runnersTypes:TExecRunners={}
+  runnerTypes:TExecRunners={}
   transformTypes:TExecTransforms={}
 
   #environment:TExecuteBuiltEnvironment
@@ -110,7 +87,7 @@ export class Execute {
     this.postRunner = [...postRunner]
     this.preEnvironment = [...preEnvironment]
     this.postEnvironment = [...postEnvironment]
-    this.runnersTypes = {...this.runnersTypes, ...runners}
+    this.runnerTypes = {...this.runnerTypes, ...runners}
     this.transformTypes = {...this.transformTypes, ...transforms}
 
     this.environmentType = environment?.length
@@ -118,43 +95,6 @@ export class Execute {
       : [BaseEnvironment, EnvironmentCfg]
 
     this.#Environment = new ExamEnvironment(passthrough.environment, exam)
-  }
-
-  #resolve = <T, I, M, C>(ctx:TExCtx<T>, opts:TResolveOpts<I, M, C>):I => {
-    const { file } = ctx
-    const {
-      skip,
-      type,
-      types,
-      options,
-      fallback,
-      existing,
-      override,
-    } = opts
-
-    if(skip !== false && !existing[type]){
-      const [TypeClass, cfg] = resolveTypeClass<I>({
-        fallback,
-        override,
-        type: types[type]
-      })
-
-      if(!TypeClass){
-        const built = ExamEvents.missingType({
-          type,
-          fileType: file?.fileType as string
-        })
-
-        this.exam.event(built)
-        throw new Error(built.message)
-      }
-
-      return isConstructor<I>(TypeClass)
-        ? new TypeClass({...options, ...cfg}, ctx)
-        : TypeClass
-    }
-
-    return existing[type]
   }
 
   #setupEnvironment = async <T extends TExData=TExData>(ctx:TExExtensionsCtx<T>) => {
@@ -198,15 +138,16 @@ export class Execute {
     return this.exam.loader.loadMany(files, opts)
   }
 
-  extensions = <T extends TExData=TExData>(
-    ctx:TExExtensionsCtx<T>,
-    opts:TExtensionOpts=emptyObj
-  ) => {
+  #execSetup = async <T extends TExData=TExData>(options:TExRun<T>) => {
     const {
       file,
       runner,
       transform,
-    } = ctx
+    } = options
+
+    const ctx:TExExtensionsCtx<T> = {...options, exam: this.exam}
+
+    await this.#setupEnvironment(ctx)
 
     const type = file.fileType
     const resp = {
@@ -214,32 +155,23 @@ export class Execute {
       environment: this.#environment
     }
 
-    const trans = this.#resolve<T,IExTransform,TExecTransforms,TExTransformCfg>(resp, {
+    const trans = this.loadTransform({
       type,
       override: transform,
-      skip: opts.transform,
       fallback: BaseTransform,
-      existing: this.#transforms,
-      types: this.transformTypes,
-      options: this.passthrough.transform
     })
-    this.#transforms[type] = trans
-    resp.transform = trans
+
+    if(trans) resp.transform = trans
 
     if(!this.#states.runnerLoaded){
 
-      const run = this.#resolve<T,IExRunner,TExecRunners,TExRunnerCfg>(resp, {
+      const run = this.loadRunner({
         type,
         override: runner,
-        skip: opts.runner,
         fallback: BaseRunner,
-        existing: this.#runners,
-        types: this.runnersTypes,
-        options: this.passthrough.runner
       })
-      this.#runners[type] = run
-      this.#runner = run
 
+      if(run) this.#runner = run
       this.#states.runnerLoaded = true
     }
 
@@ -282,12 +214,74 @@ export class Execute {
 
   }
 
+  loadTransform = <T extends IExTransform=IExTransform>(opts:TLoadTransform<T>) => {
+    const {
+      type,
+      options,
+      override,
+      fallback,
+    } = opts
+
+    if(this.#transforms[type])
+      return this.#transforms[type]
+
+    const [TypeClass, cfg] = resolveTypeClass<IExTransform>({
+      fallback,
+      override,
+      type: globTypeMatch(this.transformTypes, type)
+    })
+
+    if(!TypeClass) return undefined
+
+    const transform = isConstructor<T>(TypeClass)
+      ? new TypeClass({
+          ...this.passthrough.transform,
+          ...cfg,
+          ...options,
+        })
+      : TypeClass
+
+    this.#transforms[type] = transform
+
+    return this.#transforms[type]
+  }
+
+
+  loadRunner = <T extends IExRunner=IExRunner>(opts:TLoadRunner<T>) => {
+    const {
+      type,
+      options,
+      override,
+      fallback,
+    } = opts
+
+    if(this.#runners[type])
+      return this.#runners[type]
+
+    const [TypeClass, cfg] = resolveTypeClass<IExRunner>({
+      fallback,
+      override,
+      type: globTypeMatch(this.runnerTypes, type)
+    })
+
+    if(!TypeClass) return undefined
+
+    const runner = isConstructor<T>(TypeClass)
+      ? new TypeClass({
+          ...this.passthrough.runner,
+          ...cfg,
+          ...options,
+        })
+      : TypeClass
+
+    this.#runners[type] = runner
+
+    return this.#runners[type]
+  }
+
+
   exec = async <T extends TExData=TExData>(options:TExRun<T>) => {
-    const extCtx:TExExtensionsCtx<T> = {...options, exam: this.exam}
-
-    await this.#setupEnvironment(extCtx)
-
-    const ctx = this.extensions(extCtx)
+    const ctx = await this.#execSetup(options)
     const transformed = await ctx.transform.transform(ctx.file.content, ctx)
 
     return await this.#run(transformed, ctx)
@@ -322,7 +316,7 @@ export class Execute {
     this.postEnvironment = undefined
 
     this.passthrough = undefined
-    this.runnersTypes = undefined
+    this.runnerTypes = undefined
     this.transformTypes = undefined
     this.environmentType = undefined
 

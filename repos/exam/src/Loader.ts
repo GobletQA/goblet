@@ -6,11 +6,12 @@ import type {
   TAnyCB,
   TLoadOpts,
   TLoaderCfg,
+  TESBuildCfg,
   TExFileModel,
 } from "@GEX/types"
 
 import path from 'path'
-import { readFileSync } from 'fs'
+import { promises, readFileSync } from 'fs'
 import { createRequire } from 'module'
 import moduleAlias from 'module-alias'
 import { RunningCodeOptions } from "vm"
@@ -18,9 +19,17 @@ import { VMContext } from "@GEX/context/Context"
 import { toFileModel } from "@GEX/utils/toFileModel"
 import { register } from 'esbuild-register/dist/node'
 import { globFileIgnore } from '@GEX/constants/defaults'
+import { BaseTransform } from '@GEX/transform/BaseTransform'
 import { LoaderCfg, Errors, ErrorCodes } from '@GEX/constants'
-import { exists, flatUnion, emptyObj } from "@keg-hub/jsutils"
+import { exists, flatUnion, emptyObj, emptyArr, isStr } from "@keg-hub/jsutils"
 import { globFiles, createGlobMatcher } from "@GEX/utils/globMatch"
+const { readFile } = promises
+
+
+type TLoopExtResp = {
+  ext?:string
+  data:string
+}
 
 type TLoadTests = TLoadOpts & {
   testDir?:string
@@ -42,13 +51,14 @@ export class Loader {
   unregister:TAnyCB
   cache:boolean=true
   require:NodeRequire
+  esbuild:TESBuildCfg
   testMatch:string|string[]
   rootDir:string=LoaderCfg.rootDir
   extensions:string[]=LoaderCfg.extensions
-  esbuild:Parameters<typeof register>[0]|false
   testIgnore:((match:string) => boolean)=() => false
   loaderIgnore:((match:string) => boolean)=() => false
 
+  #transformer:BaseTransform
   #loadedCache:Record<string,any>={}
   #testFile:Record<string,boolean>={}
   #fileIgnored:Record<string,boolean>={}
@@ -58,13 +68,9 @@ export class Loader {
   constructor(exam:Exam, config:TLoaderCfg){
     this.exam = exam
     this.#setup(config)
-    this.ctx = new VMContext({
-      exam,
-      require:this.require
-    })
   }
 
-  #buildRequire = (opts:TBuildRequire) => {
+  #buildCtx = (opts:TBuildRequire) => {
     const {
       aliases,
       rootDir,
@@ -72,13 +78,23 @@ export class Loader {
     } = opts
     
     if(aliases) moduleAlias.addAliases(aliases)
-    
-    if(!this.require || rootDir && (this.rootDir !== rootDir)){
-      this.require = undefined
-      this.require = createRequire(rootDir || this.rootDir)
+
+    const rootDirChange = (isStr(rootDir) && rootDir !== this.rootDir)
+
+    this.rootDir = rootDirChange
+      ? path.resolve(rootDir)
+      : path.resolve(this.rootDir)
+
+    if(!this.ctx || rootDirChange){
+      this?.ctx?.cleanup?.()
+      this.ctx = undefined
+
+      this.ctx = new VMContext({
+        exam: this.exam,
+        require:createRequire(this.rootDir)
+      })
     }
 
-    this.rootDir = path.resolve(rootDir || this.rootDir)
     if(testDir) this.testDir = path.resolve(rootDir, testDir)
   }
 
@@ -90,8 +106,9 @@ export class Loader {
       testMatch,
       extensions,
       cache=true,
-      testIgnore,
-      loaderIgnore,
+      testIgnore=emptyArr,
+      loaderIgnore=emptyArr,
+      transformIgnore=emptyArr
     } = config
 
     if(exists(cache)) this.cache = cache
@@ -105,12 +122,21 @@ export class Loader {
     if(testIgnore) this.testIgnore = createGlobMatcher(testIgnore)
     if(loaderIgnore) this.loaderIgnore = createGlobMatcher(loaderIgnore)
 
+    this.#transformer = new BaseTransform({
+      esbuild,
+      transformIgnore,
+    })
+
     if(esbuild !== false && !this.unregister){
-      this.esbuild = {...esbuild, hookMatcher: this.#hookMatcher.bind(this)}
+      this.esbuild = {
+        ...(LoaderCfg.esbuild as TESBuildCfg),
+        ...esbuild,
+        hookMatcher: this.#hookMatcher.bind(this)
+      }
       this.unregister =  register().unregister
     }
 
-    this.#buildRequire({ rootDir, testDir })
+    this.#buildCtx({ rootDir, testDir })
 
     this.#globFileOpts = {
       ...this.#globFileOpts,
@@ -186,39 +212,46 @@ export class Loader {
     ] as [string, TLoadOpts]
   }
 
-  #loopExts = (file:string, cb:(file:string) => any) => {
+  #loopExts = async (file:string, cb:(file:string) => Promise<any>) => {
+    let error:Error
     /**
      * Add empty as the last item, to the last Error will match the original location
      */
     const extensions = [...this.extensions, ``]
+  
+    return await extensions.reduce( async (acc, ext) => {
+      const res = await acc
+      if(res.ext) return res
 
-    let error:Error
-    for(let ext of extensions){
       try {
         const loc = ext ? `${file}.${ext}` : file
-        const data = cb(loc)
+        const data = await cb(loc)
         return { data, ext }
       }
       catch(err){
         error = err
         /** Validate if the loop is at the last extension */
-        if(ext !== `` && err.code === ErrorCodes.NotFound) continue
+        if(ext !== `` && err.code === ErrorCodes.NotFound) return res
 
         throw err
       }
-    }
 
-    if(error) throw error
-
-    return { data: `` }
+    }, Promise.resolve({ data: `` } as TLoopExtResp))
   }
 
-  #require = <T extends any=any>(loc:string, opts:TLoadOpts=emptyObj):T => {
+  #require = async <T extends any=any>(
+    loc:string,
+    opts:TLoadOpts=emptyObj
+  ):Promise<T> => {
     const model = this.loadContent<T>(loc, {...opts, asModel: true}, false)
     return this.ctx.require(model)
   }
 
-  load = <T extends any=any>(loc:string, opts:TLoadOpts=emptyObj, meta:boolean=true):T => {
+  load = async <T extends any=any>(
+    loc:string,
+    opts:TLoadOpts=emptyObj,
+    meta:boolean=true
+  ):Promise<T> => {
     const [location, options] = meta ? this.#getLoadMeta(loc, opts) : [loc, opts]
 
     const fromCache = !options.force
@@ -238,9 +271,9 @@ export class Loader {
       this.#testFile[location] = Boolean(options.testFile)
       
       if(path.extname(location).length)
-        loaded = this.#require(location, opts)
+        loaded = await this.#require(location, opts)
       else {
-        const { data, ext } = this.#loopExts(location, (lc) => this.#require(location, opts))
+        const { data, ext } = await this.#loopExts(location, (lc) => this.#require(location, opts))
         loaded = data
         extension = ext
       }
@@ -255,43 +288,46 @@ export class Loader {
     )
   }
 
-  loadMany = (locs:string[], opts:TLoadOpts=emptyObj) => {
+  loadMany = async (locs:string[], opts:TLoadOpts=emptyObj) => {
     const [__, options] = this.#getLoadMeta(locs[0], opts)
 
-    return locs.reduce((acc, loc:string) => {
-      acc[loc] = this.load(this.#getLoc(loc, options), options, false)
-      return acc
-    }, {} as Record<string, any>)
+    return await locs.reduce(async (acc, loc:string) => {
+      const res = await acc
+      res[loc] = await this.load(this.#getLoc(loc, options), options, false)
+      return res
+    }, Promise.resolve({} as Record<string, any>))
 
   }
 
-  loadContent = <T=string|TExFileModel>(
+  loadContent = async <T=string|TExFileModel>(
     loc:string,
     opts:TLoadOpts=emptyObj,
     meta:boolean=true
-  ):T => {
+  ):Promise<T> => {
     const [location, options] = meta ? this.#getLoadMeta(loc, opts) : [loc, opts]
+    let ext:string|undefined
 
     try {
-      let content:string
-      if(path.extname(location).length)
-        content = readFileSync(location, 'utf8')
 
+      let readData:Buffer|string
+      if(path.extname(location).length)
+        readData = await readFile(location, `utf8`)
       else {
-        const { data, ext } = this.#loopExts(location, (lc) => readFileSync(lc, 'utf8'))
-        content = data
-        // TODO: figure out how to set the ext
+        const resp = await this.#loopExts(location, (lc) => readFile(lc, `utf8`))
+        readData = resp?.data
+        ext = resp?.ext
       }
 
-      const contentStr = content.toString()
-      return !options.asModel
-        ? content
-        : toFileModel({ content: contentStr, location }) as TExFileModel<any>
+      const content = await this.#transformer.transformAsync(readData.toString(), opts?.esbuild)
 
+      return !options.asModel
+        ? content as T
+        : toFileModel({ location, content, ext }) as TExFileModel<any>
     }
     catch(err) {
       return this.#onError(location, err)
     }
+
   }
 
   loadContentMany = async (locs?:string|string[], opts:TLoadOpts=emptyObj) => {
@@ -304,17 +340,18 @@ export class Loader {
 
     if(!locations?.length) return undefined
 
-    return locations.reduce((acc, loc:string) => {
-      if(!this.#hookMatcher(loc)) return acc
+    return await locations.reduce(async (acc, loc:string) => {
+      const res = await acc
+      if(!this.#hookMatcher(loc)) return res
 
-      acc[loc] = this.loadContent<TExFileModel>(
+      res[loc] = this.loadContent<TExFileModel>(
         loc,
         {...opts, asModel: true},
         false
       )
 
-      return acc
-    }, {} as Record<string, TExFileModel>)
+      return res
+    }, Promise.resolve({} as Record<string, TExFileModel>))
   }
 
   loadTests = async (
@@ -330,17 +367,16 @@ export class Loader {
 
     if(testIgnore) this.testIgnore = createGlobMatcher(testIgnore)
 
-    this.#buildRequire({ rootDir, testDir })
+    this.#buildCtx({ rootDir, testDir })
 
-    return this.loadContentMany(testMatch || this.testMatch, {...rest, testFile: true})
+    return await this.loadContentMany(testMatch || this.testMatch, {...rest, testFile: true})
   }
   
   runTest = async (
     model:TExFileModel,
-    content:string,
     opts:RunningCodeOptions=emptyObj
   ) => {
-    return this.ctx.require(model, content, opts)
+    return this.ctx.require(model, opts)
   }
 
   /**

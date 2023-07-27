@@ -104,12 +104,6 @@ export class Exam {
         return this.#onNoTests(isObj(file) ? file.location : file)
     }
 
-    !this.execute
-      && await this.initExec()
-
-    !this.eventReporter
-      && await this.initReporters()
-
     const results = await this.execute.exec<T>({...options, file: model })
 
     !this.canceled
@@ -283,6 +277,12 @@ export class Exam {
 
       Exam.isRunning = true
       this.#setEvents(opts)
+
+      !this.execute
+        && await this.initExec()
+
+      !this.eventReporter
+        && await this.initReporters()
 
       const {
         file,

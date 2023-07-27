@@ -21,11 +21,11 @@ const modeTypes = [
 const getCfgObj = (opts:TExamCliOpts) => {
   const mod = require(fullLoc(opts.config, opts.rootDir))
   const found = isFunc(mod)
-    ? mod()
+    ? mod(opts)
     : isObj(mod.default)
       ? mod.default
       : isFunc(mod.default)
-        ? mod.default()
+        ? mod.default(opts)
         : mod
 
   return found || {}

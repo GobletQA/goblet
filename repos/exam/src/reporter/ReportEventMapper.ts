@@ -39,8 +39,10 @@ const eventReporterMap = {
   // cancel
   [ExamEvtNames.canceled]: `onCancel`,
 
+  [ExamEvtNames.warning]: `onWarning`,
+
   // Event `PLAY-ERROR`
-  // cancel
+  // onError
   [ExamEvtNames.error]: `PLAY-ERROR`,
 
 

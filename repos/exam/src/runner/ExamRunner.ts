@@ -49,7 +49,10 @@ export class ExamRunner<
    */
   protected load = (content:string, ctx:TExCtx) => {
     const { file } = ctx
-    return this.exam.loader.runTest(file, content)
+    
+    // TODO: pass on load options if they exist
+    // Need to add them to the ctx object
+    return this.exam.loader.runTest(file)
   }
 
   /**

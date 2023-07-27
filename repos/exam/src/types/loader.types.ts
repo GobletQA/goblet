@@ -1,5 +1,8 @@
 import type { register } from 'esbuild-register/dist/node'
 
+
+export type TESBuildCfg = Parameters<typeof register>[0]
+
 export type TLoaderCfg = {
   /**
    * Must be a absolute URL
@@ -27,6 +30,11 @@ export type TLoaderCfg = {
   testIgnore?:string[]
 
   /**
+   * Glob path of files to be ignored by the transformer
+   */
+  transformIgnore?:string[]
+
+  /**
    * Array of file extensions that can be loaded
    */
   extensions?:string[]
@@ -46,7 +54,7 @@ export type TLoaderCfg = {
    * Esbuild configuration passed to esbuild
    * See here for more info https://github.com/egoist/esbuild-register
    */
-  esbuild?:Parameters<typeof register>[0]|false
+  esbuild?:TESBuildCfg|false
 }
 
 
@@ -57,4 +65,5 @@ export type TLoadOpts = {
   single?:boolean
   asModel?:boolean
   testFile?:boolean
+  esbuild?:TESBuildCfg
 }

@@ -26,8 +26,6 @@ import {
   EnvironmentCfg
 } from '@GEX/constants/defaults'
 
-
-
 const loopLoadTypes = async <
   T=TExTypeMap,
   I=TExTypeCls,

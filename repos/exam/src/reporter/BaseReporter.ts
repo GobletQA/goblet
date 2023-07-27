@@ -108,18 +108,6 @@ const logResult = (context:TContext, hasStepErr?:boolean) => {
 
 }
 
-  // specDone: `PLAY-SPEC-DONE`,
-  // specStart: `PLAY-SPEC-START`,
-  // suiteDone: `PLAY-SUITE-DONE`,
-  // suiteStart: `PLAY-SUITE-START`,
-  // ended: `PLAY-ENDED`,
-  // error: `PLAY-ERROR`,
-  // action: `PLAY-ACTION`,
-  // general: `PLAY-GENERAL`,
-  // results: `PLAY-RESULTS`,
-  // started: `PLAY-STARTED`,
-  // canceled: `PLAY-CANCELED`,
-  // stopped: `PLAY-STOPPED`,
 
 export class BaseReporter implements IExamReporter {
   exam:Exam
@@ -211,6 +199,10 @@ export class BaseReporter implements IExamReporter {
   ) => {
     // console.log(`------- BaseReporter - onRunComplete -------`)
     // console.log(evt.name)
+  }
+
+  onWarning = (evt:any) => {
+    
   }
 
   // Event `PLAY-ERROR`

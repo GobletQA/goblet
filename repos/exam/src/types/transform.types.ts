@@ -1,8 +1,9 @@
-import type { TExCtx, TExData } from "@GEX/types"
+import type { TESBuildCfg, TExCtx, TExData } from "@GEX/types"
 import type { IConstructable } from './helpers.types'
 
 export type TExTransformCfg = {
   transformIgnore?:string[]
+  esbuild?:TESBuildCfg|false
 }
 
 export type TTransformResp<R=unknown> = R

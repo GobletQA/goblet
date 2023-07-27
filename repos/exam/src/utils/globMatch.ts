@@ -40,3 +40,17 @@ export const globFiles = async <T=GlobOptions>(
 ) => {
   return await glob(ensureArr<string>(fileMatch), opts)
 }
+
+
+export const globKeysMatch = <T extends Record<string, any>=Record<string, any>>(
+  obj:T,
+  glob:string
+):Partial<T> => micromatch.matchKeys(obj, glob)
+
+export const globTypeMatch = <T extends Record<any, any>=Record<any, any>>(
+  obj:Record<string, T>,
+  glob:string
+):T => {
+  const matched = globKeysMatch<Record<string, T>>(obj, glob)
+  return Object.values(matched).shift()
+}

@@ -49,13 +49,12 @@ export class VMContext {
 
   require = <T=any>(
     model:TExFileModel,
-    content?:string,
     opts:TVMRequireOpts=emptyObj
   ):T => {
     const modCtx = createMCtx(model, this.#context, this.#main, opts.global)
 
     runInContext(
-      content || model.content,
+      model.content,
       modCtx,
       opts
     ) as T

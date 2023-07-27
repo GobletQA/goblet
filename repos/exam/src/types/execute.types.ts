@@ -1,5 +1,5 @@
 import type { Exam } from "@GEX/Exam"
-import type { TExArrClsOptMap } from './helpers.types'
+import type { IConstructable, TExArrClsOptMap } from './helpers.types'
 import type {
   IExEnvironment,
   TExEnvironmentCfg,
@@ -21,6 +21,20 @@ import {
 import {TExAst, TExFileModel} from "./file.types"
 
 export type TExData = Record<string, any>
+
+export type TLoadTransform<T extends IExTransform=IExTransform> = {
+  type:string
+  options?:TExTransformCfg
+  fallback?:IConstructable<T>
+  override?:TExArrClsOptMap<T>
+}
+
+export type TLoadRunner<T extends IExRunner=IExRunner> = {
+  type:string
+  options?:TExRunnerCfg
+  fallback?:IConstructable<T>
+  override?:TExArrClsOptMap<T>
+}
 
 export type TExecuteBuiltEnvironment = IExEnvironment
 export type TExecuteBuiltRunners = Record<string, IExRunner>

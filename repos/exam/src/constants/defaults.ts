@@ -78,6 +78,7 @@ export const LoaderCfg = {
   loaderIgnore: emptyArr,
 
   esbuild: {
+    format: `cjs`,
     target: `esnext`,
     platform: `node`,
   }

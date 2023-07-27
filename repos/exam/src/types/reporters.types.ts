@@ -9,7 +9,6 @@ export type TExReporterCfg = {
 }
 
 export interface IExamReporter {
-  cancel?: () => void|Promise<void>
   cleanup?: () => void|Promise<void>
 
   // onSpecStarted(result:TExEventData):void|Promise<void>
@@ -86,6 +85,11 @@ export interface IExamReporter {
 
   // Event `PLAY-CANCELED`
   onCancel?: (
+    ...args:any[]
+  ) => void|Promise<void>
+
+  // Event `PLAY-WARNING`
+  onWarning?: (
     ...args:any[]
   ) => void|Promise<void>
 
