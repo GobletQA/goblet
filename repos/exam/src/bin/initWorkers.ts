@@ -1,12 +1,16 @@
-import type { TExamConfig } from '@GEX/types'
+import type { TExamCliOpts, TExamConfig } from '@GEX/types'
+
+import PQueue from 'p-queue'
 
 import os from 'os'
 import path from 'path'
-import PQueue from 'p-queue'
+import { ife } from '@keg-hub/jsutils'
 import { loadFiles } from './loadFiles'
+import { updateCLIEnvs } from './helpers'
 import { WorkerPool } from '@GEX/workerPool'
+import { logWorkBreakdown } from '@GEX/debug'
 import { chunkify } from '@GEX/utils/chunkify'
-
+import {ExamCfgModeType} from '@GEX/constants/constants'
 
 const cpuCount = os.cpus().length
 
@@ -22,7 +26,7 @@ const getConcurrency = (concurrency?:number, evenSplit?:number) => {
   return concurrency > 0 ? concurrency : evenSplit > 0 ? evenSplit : 1
 }
 
-const resolveWorkerConcurrency = (exam:TExamConfig, locationsAmt:number) => {
+const getWAndC = (exam:TExamConfig, locationsAmt:number) => {
   if(exam.runInBand) return { workers: 1, concurrency: 1 }
 
   const workers = getWorkerNum(exam.workers, locationsAmt)
@@ -33,19 +37,10 @@ const resolveWorkerConcurrency = (exam:TExamConfig, locationsAmt:number) => {
   }
 }
 
-const logWorkBreakdown = (workers:number, concurrency:number, locationsAmt:number) => {
-  console.log(`------- Worker Breakdown -------`)
-  console.log(
-    ` workers: ${workers}\n`,
-    `  - out of ${cpuCount} total cores\n`,
-    `concurrency: ${concurrency}\n`,
-    `  - ${concurrency} file(s) per worker\n`,
-    `files: ${locationsAmt}\n`,
-    `  - total of ${locationsAmt} test file(s) will be executed`
-  )
-}
-
-export const initWorkers = async (exam:TExamConfig & { file?:string }) => {
+export const initWorkers = async (
+  exam:TExamConfig & { file?:string },
+  opts:TExamCliOpts
+) => {
 
   const locations = await loadFiles(exam)
   const locationsAmt = locations.length
@@ -53,16 +48,15 @@ export const initWorkers = async (exam:TExamConfig & { file?:string }) => {
   const {
     workers,
     concurrency,
-  } = resolveWorkerConcurrency(exam, locations.length)
-
+  } = getWAndC(exam, locations.length)
 
   const chunks = exam.runInBand
-    ? locations
-    : chunkify(locations, concurrency || 1)
+    ? {[0]: locations}
+    : chunkify<string>(locations, concurrency || 1)
 
-  exam.debug
-    && logWorkBreakdown(workers, concurrency, locationsAmt)
-
+  updateCLIEnvs(exam, opts)
+  
+  logWorkBreakdown(workers, concurrency, locationsAmt)
 
   const WP = new WorkerPool({
     size: workers,
@@ -75,13 +69,31 @@ export const initWorkers = async (exam:TExamConfig & { file?:string }) => {
     }
   })
 
-  const output = await Promise.all(chunks.map((tests) => WP.run({
-    run: {
-      cli: true,
-      testMatch: tests
-    }
-  })))
+  return await Promise.all(Object.values(chunks).map(async (tests) => {
+    return exam.mode === ExamCfgModeType.serial
+      ? Promise.all(tests.map(async (test) => {
+          return await WP.run({
+            run: {
+              cli: true,
+              testMatch: [test]
+            }
+          })
+        }))
+      : Promise.all([ife(async () => {
+          return await WP.run({
+            run: {
+              cli: true,
+              testMatch: tests
+            }
+          })
+        })])
+  }))
   
-  console.log(`------- output -------`)
-  console.log(output)
+  // TODO: Investigate why WP.close is throwing an error
+  // It seems the last worker in always exiting with code 1
+    // .then(async (resp) => {
+    //   await WP.close()
+    //   return resp
+    // })
+
 }

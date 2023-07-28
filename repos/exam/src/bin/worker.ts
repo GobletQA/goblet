@@ -4,6 +4,7 @@ import type { TExamConfig, TExamRunOpts } from '@GEX/types'
 import { Exam } from '../Exam'
 import {nanoid} from '@GEX/utils/nanoid'
 import { limbo } from '@keg-hub/jsutils'
+import {updateCLIEnvs} from '@GEX/bin/helpers'
 import { parentPort, workerData } from 'worker_threads'
 
 type TInitWorkerData = {
@@ -19,6 +20,8 @@ type TParentMsg = {
 const onInit = (initData:TInitWorkerData) => {
   const config = initData.exam
   const workerId = initData.workerId || nanoid()
+  
+  updateCLIEnvs(config)
   process.env.EXAM_WORKER_ID = workerId
 
   return new Exam(config, workerId)

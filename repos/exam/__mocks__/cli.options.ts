@@ -6,9 +6,8 @@ export const cliOpts = {
   // --- Not Implemented
   testRetry:0,
   suiteRetry:0,
-  colors: true,
   silent: false,
-  runInBand: false,
+  colors: true,
   // --- Not Implemented
 
 
@@ -18,6 +17,7 @@ export const cliOpts = {
   concurrency: 1,
   testMatch: [],
   testIgnore: [],
+  runInBand: false,
   transformIgnore: [],
   loaderIgnore: [],
   timeout: 30000,

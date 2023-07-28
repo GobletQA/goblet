@@ -1,10 +1,10 @@
-import type { TExamCliOpts } from '../types/bin.types'
+import type { TExamConfig, TExamCliOpts } from '@GEX/types'
 
 import path from 'path'
 import { options } from './options'
 import { getRoot, homeDir, cwd } from './paths'
 import { argsParse } from '@keg-hub/args-parse'
-import { exists, isArr, toNum } from '@keg-hub/jsutils'
+import { emptyObj, exists, isArr, isStr, toNum } from '@keg-hub/jsutils'
 
 const isDevCLI = toNum(process.env.EXAM_DEV_CLI)
 
@@ -72,3 +72,27 @@ export const parseArgs = async () => {
   return cleaned
 }
 
+
+const updateEnv = (key:string, value:any, force?:boolean) => {
+  if(process.env[key] && !force) return
+
+  process.env[key] = isStr(value) ? value : `${JSON.stringify(value)}`
+}
+
+/**
+ * Updates the ENVs used by the cli once the cli options have been parsed
+ */
+export const updateCLIEnvs = (
+  exam:TExamConfig,
+  opts:Partial<TExamCliOpts>=emptyObj
+) => {
+
+  opts?.env && updateEnv(`NODE_ENV`, opts.env)
+  opts?.env && updateEnv(`EXAM_CLI_ENV`, opts.env)
+
+  exam?.debug && updateEnv(`EXAM_CLI_DEBUG`, 1)
+  exam?.verbose && updateEnv(`EXAM_CLI_VERBOSE`, 1)
+  exam?.mode && updateEnv(`EXAM_CLI_MODE`, exam.mode)
+  exam?.workers && updateEnv(`EXAM_CLI_WORKERS`, exam.workers)
+  exam?.concurrency && updateEnv(`EXAM_CLI_CONCURRENCY`, exam.workers)
+}

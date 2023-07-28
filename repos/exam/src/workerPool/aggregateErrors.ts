@@ -43,7 +43,7 @@ const buildMsg = (errors:Error[]) => {
   return '\n' + indentString(message, 2)
 }
 
-export default class AggregateError extends Error {
+export class AggregateError extends Error {
   #errors:Error[]
 
   name = 'AggregateError'

@@ -26,6 +26,11 @@ export const ExamCfgModeTypes = [
   `parallel`
 ]
 
+export const ExamCfgModeType = ExamCfgModeTypes.reduce(
+  (acc, type) => ({...acc, type}),
+  {} as Record<string, string>
+)
+
 export const ExamCfgArrayItems = [
   `testMatch`,
   `reporters`,

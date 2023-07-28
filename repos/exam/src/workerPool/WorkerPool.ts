@@ -9,15 +9,13 @@ import type {
   TWorkerResult,
 } from '@GEX/types'
 
-
 import EventEmitter from 'events'
 import { nanoid } from '@GEX/utils/nanoid'
-import AggregateError from 'aggregate-error'
 import { exists, limbo } from '@keg-hub/jsutils'
 import { PoolCfg } from '@GEX/constants/defaults'
 import { WorkerEvents } from '@GEX/constants/worker'
 import { Worker, MessageChannel } from 'worker_threads'
-
+import { AggregateError } from '@GEX/workerPool/aggregateErrors'
 
 export class WorkerPool extends EventEmitter {
   #location:string
@@ -61,7 +59,10 @@ export class WorkerPool extends EventEmitter {
     }
 
     const [error, maybeErrs] = await limbo(Promise.all(promises))
-    error ? this.emit(WorkerEvents.Error, error) : this.#closeErrors(maybeErrs)
+
+    error
+      ? this.emit(WorkerEvents.Error, error)
+      : this.#closeErrors(maybeErrs)
 
     this.emit(WorkerEvents.Close)
   }
@@ -122,6 +123,11 @@ export class WorkerPool extends EventEmitter {
   #addNewWorkerToPool = () => {
     const worker = new Worker(this.#location, {
       ...this.#wrkOpts,
+      env: {
+        NODE_ENV: process.env.NODE_ENV,
+        EXAM_CLI_ENV: process.env.EXAM_CLI_ENV,
+        ...this.#wrkOpts.env as NodeJS.Dict<string>,
+      },
       workerData: {
         workerId: nanoid(),
         ...this.#wrkOpts.workerData,

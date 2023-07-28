@@ -1,15 +1,18 @@
 import "@GEX/utils/logger"
-import { ife } from '@keg-hub/jsutils'
 import { getConfig } from './getConfig'
 import { initWorkers } from './initWorkers'
+import { printDebugResults } from '@GEX/debug'
+import { ife, timedRun } from '@keg-hub/jsutils'
 import { removeEmpty, parseArgs } from './helpers'
+
 
 ife(async () => {
 
-  const config = await parseArgs()
-    .then(getConfig)
-    .then(removeEmpty)
+  const opts = await parseArgs()
+  const exam = removeEmpty(getConfig(opts))
 
-  await initWorkers(config)
+  const [result, time] = await timedRun(initWorkers, exam, opts)
+
+  printDebugResults(result, time)
 
 })
