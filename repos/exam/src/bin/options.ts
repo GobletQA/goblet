@@ -7,7 +7,7 @@ export const options = {
    */
   testMatch: {
     type: `array`,
-    alias: [`tests`, `test`, `tm`],
+    alias: [`tests`, `test`, `tm`, `t`],
     description: `List of files that will be run by the exam test executor`
   },
 
@@ -226,6 +226,27 @@ export const options = {
   },
 
   /**
+   * The amount of test that can be executed at the same time
+   * Should be based on the available resources of the host machine
+   */
+  concurrency: {
+    type: `number`,
+    alias: [`concur`, `cc`],
+    description: `The amount of test that can be executed per worker. Ignored when runInBand option is true`
+  },
+
+  /**
+   * The amount of workers that will be created to run tests
+   * Should be based on the available resources of the host machine
+   */
+  workers: {
+    alias: [`w`],
+    type: `number`,
+    description: `The number of workers to be created to run tests. Ignored when runInBand option is true`
+  },
+
+
+  /**
    * The node environment the tests should be run in
    * Same as setting the NODE_ENV=<environment>
    */
@@ -301,28 +322,6 @@ export const options = {
     default: true,
     type: `boolean`,
     description: `Forces test results output highlighting even if stdout is not a TTY`
-  },
-
-  /**
-   * The amount of test that can be executed at the same time
-   * Should be based on the available resources of the host machine
-   */
-  concurrency: {
-    default: 1,
-    type: `number`,
-    alias: [`concur`, `cc`],
-    description: `The amount of test that can be executed at the same time`
-  },
-
-  /**
-   * The amount of workers that will be created to run tests
-   * Should be based on the available resources of the host machine
-   */
-  workers: {
-    default: 1,
-    alias: [`w`],
-    type: `number`,
-    description: `The number of workers to be created to run tests`
   },
 
   /**

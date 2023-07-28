@@ -1,4 +1,37 @@
-import isSecret from 'is-secret'
+// Taken from here
+// https://github.com/watson/is-secret/blob/master/index.js
+
+const KEYS = [
+  // generic
+  /passw(or)?d/i,
+  /^pw$/,
+  /^pass$/i,
+  /secret/i,
+  /token/i,
+  /api[-._]?key/i,
+  /session[-._]?id/i,
+
+  // specific
+  /^connect\.sid$/ // https://github.com/expressjs/session
+]
+
+const VALUES = [
+  /^\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4}$/ // credit card number
+]
+
+const isSecret = {
+  key: (str:string) => {
+    return KEYS.some((regex) => {
+      return regex.test(str)
+    })
+  },
+  value: (str:string) => {
+    return VALUES.some((regex) => {
+      return regex.test(str)
+    })
+  }
+}
+
 
 const unsafeValues = [
   /token/i,

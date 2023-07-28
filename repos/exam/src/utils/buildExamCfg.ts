@@ -1,20 +1,9 @@
-import type {
-  TExamConfig,
-  TExArrOptsMap,
-  TExamBuilTCfg,
-} from '@GEX/types'
+import type { TExamConfig, TExArrOptsMap } from '@GEX/types'
 
-import {emptyArr, isArr, isStr} from '@keg-hub/jsutils'
-import { buildReporters } from './buildReporters'
+import { resolveRootDir } from './resolveRootDir'
 import { ExamCfg, RootDirKey } from '@GEX/constants'
-
-const resolveRootDir = (config:TExamConfig) => {
-  return config.rootDir
-    || process?.env?.EXAM_ROOT_DIR
-    || process?.env?.GOBLET_MOUNT_ROOT
-    || process?.env?.GOBLET_CONFIG_BASE
-    || ExamCfg.rootDir
-}
+import {emptyArr, isArr, isStr} from '@keg-hub/jsutils'
+import {mergeCfgArrays} from './mergeCfgArrays'
 
 const replaceRootObj = <T=Record<string, string>>(obj:T, rootDir:string) => {
   return Object.entries(obj).reduce((acc, [key, val]) => {
@@ -80,6 +69,7 @@ export const buildExamCfg = (config:TExamConfig):TExamConfig => {
   const built = {
     ...ExamCfg,
     ...config,
+    ...mergeCfgArrays(ExamCfg, config),
     rootDir: resolveRootDir(config)
   } as TExamConfig
 

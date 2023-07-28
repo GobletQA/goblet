@@ -11,7 +11,7 @@ import type {
 } from "@GEX/types"
 
 import path from 'path'
-import { promises, readFileSync } from 'fs'
+import { promises } from 'fs'
 import { createRequire } from 'module'
 import moduleAlias from 'module-alias'
 import { RunningCodeOptions } from "vm"
@@ -21,10 +21,9 @@ import { register } from 'esbuild-register/dist/node'
 import { globFileIgnore } from '@GEX/constants/defaults'
 import { BaseTransform } from '@GEX/transform/BaseTransform'
 import { LoaderCfg, Errors, ErrorCodes } from '@GEX/constants'
+import { globMatchFiles, createGlobMatcher } from "@GEX/utils/globMatch"
 import { exists, flatUnion, emptyObj, emptyArr, isStr } from "@keg-hub/jsutils"
-import { globFiles, createGlobMatcher } from "@GEX/utils/globMatch"
 const { readFile } = promises
-
 
 type TLoopExtResp = {
   ext?:string
@@ -336,9 +335,11 @@ export class Loader {
   }
 
   loadContentMany = async (locs?:string|string[], opts:TLoadOpts=emptyObj) => {
-    const locations = await globFiles(locs, {
+    const {glob=emptyObj, ...options} = opts
+
+    const locations = await globMatchFiles(locs, {
       ...this.#globFileOpts,
-      ...opts,
+      ...glob,
       nodir: true,
       absolute: true,
     })
@@ -349,9 +350,9 @@ export class Loader {
       const res = await acc
       if(!this.#hookMatcher(loc)) return res
 
-      res[loc] = this.loadContent<TExFileModel>(
+      res[loc] = await this.loadContent<TExFileModel>(
         loc,
-        {...opts, asModel: true},
+        {...options, asModel: true},
         false
       )
 

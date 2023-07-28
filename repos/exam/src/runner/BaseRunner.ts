@@ -5,14 +5,12 @@ import type {
   TExTestEvent,
 } from '@GEX/types'
 
-
 import { ExamEvents } from '@GEX/Events'
 import { ExamRunner } from './ExamRunner'
 import { Errors } from '@GEX/constants/errors'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { RootSuiteId } from '@GEX/constants/events'
 import { emptyArr, omitKeys } from '@keg-hub/jsutils'
-
 
 export class BaseRunner extends ExamRunner {
 

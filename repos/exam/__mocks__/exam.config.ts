@@ -199,10 +199,18 @@ export const ExamConfig:TExamConfig = {
    */
   bail: 0,
 
+  /**
+   * The number of workers to be created to run tests. Ignored when runInBand option is true
+   */
   workers: 1,
+
+  /**
+   * The amount of test that can be executed per worker. Ignored when runInBand option is true
+   */
+  concurrency: 1,
+
   colors: true,
   silent: false,
-  concurrency: 1,
   runInBand: false,
 
 }

@@ -109,8 +109,9 @@ export type TExamRun<
   D extends TExData=TExData,
   Ast extends TExAst=TExAst
 > = Omit<TExRun<D, Ast>, `file`> & {
-  file?:TExFileModel<Ast>|string
+  cli?:boolean
   single?:boolean
+  file?:TExFileModel<Ast>|string
 }
 
 export type TExamRunOpts<

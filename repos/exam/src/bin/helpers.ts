@@ -4,8 +4,9 @@ import path from 'path'
 import { options } from './options'
 import { getRoot, homeDir, cwd } from './paths'
 import { argsParse } from '@keg-hub/args-parse'
-import { exists, isArr } from '@keg-hub/jsutils'
+import { exists, isArr, toNum } from '@keg-hub/jsutils'
 
+const isDevCLI = toNum(process.env.EXAM_DEV_CLI)
 
 /**
  * Resolve the full path to a location similar to path.resolve
@@ -55,13 +56,19 @@ export const removeEmpty = <T extends Record<any, any>>(opts:T) => {
  */
 export const parseArgs = async () => {
   const args = process.argv.slice(2) as string[] 
+  const last = args[args.length - 1]
+
   const opts = await argsParse({ args, task: { options }})
+  const cleaned = removeEmpty<TExamCliOpts>(opts)
+
+  if(isDevCLI && last.startsWith(`test-file`))
+    cleaned.testMatch = [last]
 
   /**
    * Args parse will typically remove empty items but,
    * It also sets empty defaults for Arrays
    * So we loop over and remove those as well
    */
-  return removeEmpty<TExamCliOpts>(opts)
+  return cleaned
 }
 

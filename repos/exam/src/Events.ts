@@ -1,3 +1,4 @@
+import type { Exam } from '@GEX/Exam'
 import type { TExamEvts, TExamEvt } from '@GEX/types'
 
 import { ExamEvtNames } from '@GEX/constants'
@@ -88,4 +89,49 @@ export let ExamEvents:TExamEvts={...__ExamEvents}
 
 export const addCustomEvents = (evts:TExamEvts) => {
   ExamEvents = {...__ExamEvents, ...evts}
+}
+
+// TODO: normalize error event data for the 3 different types
+export const formatErrorEvt = (exam:Exam) => {
+
+  // message: err.message,
+  // name: ExamEvtNames.error,
+  // data: {
+  //   id: this.id,
+  //   testPath: errorData,
+  //   fullName: err.name,
+  //   description: err.message,
+  //   type: EPlayerTestType.error,
+  //   action: EPlayerTestAction.error,
+  //   timestamp: new Date().getTime(),
+  //   failedExpectations: [{
+  //     fullName: errorData,
+  //     description: err.stack,
+  //   }]
+  // }
+
+    // id: fromRoot,
+    // testPath: fromRoot,
+    // fullName: file.name,
+    // description: err.message,
+    // type: EPlayerTestType.error,
+    // action: EPlayerTestAction.error,
+    // timestamp: new Date().getTime(),
+    // failedExpectations: [{
+    //   description: err.stack,
+    //   fullName: `${err.name}${exists(err.code) ? `- ${err.code}` : ``}`,
+    // }]
+
+        // id: fromRoot,
+        // testPath: fromRoot,
+        // fullName: file.name,
+        // description: err.message,
+        // type: EPlayerTestType.error,
+        // action: EPlayerTestAction.error,
+        // timestamp: new Date().getTime(),
+        // failedExpectations: [{
+        //   description: err.stack,
+        //   fullName: `${err.name}${exists(err.code) ? `- ${err.code}` : ``}`,
+        // }]
+
 }

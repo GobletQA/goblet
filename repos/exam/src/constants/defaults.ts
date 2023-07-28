@@ -1,3 +1,4 @@
+import type { GlobOptions } from 'glob'
 import type {
   TExecuteCfg,
   TExamConfig,
@@ -18,6 +19,7 @@ export const DefaultReporters = {
   silent: `silent`,
   default: `default`,
 }
+
 
 export const RunnerCfg:TExRunnerCfg = {
   /**
@@ -74,14 +76,26 @@ export const LoaderCfg = {
 
   aliases: {},
   cache: true,
-  testIgnore: emptyArr,
   loaderIgnore: emptyArr,
+  testIgnore: globFileIgnore,
 
   esbuild: {
     format: `cjs`,
     target: `esnext`,
     platform: `node`,
   }
+}
+
+export const GlobFilesCfg:GlobOptions = {
+  nodir: true,
+  // follow:true,
+  absolute: true,
+  cwd: LoaderCfg.rootDir,
+  ignore:[
+    ...globFileIgnore,
+    ...LoaderCfg.testIgnore,
+    ...LoaderCfg.loaderIgnore,
+  ],
 }
 
 export const EnvironmentCfg:TExEnvironmentCfg = {
@@ -106,12 +120,12 @@ export const ExCfg:Partial<TExamConfig> = {
   /**
    * ----- TODO: Need to implement these ----- *
    */
-  testRetry: 0,
-  suiteRetry: 0,
   workers: 1,
+  testRetry: 0,
   colors: true,
-  concurrency: 1,
+  suiteRetry: 0,
   silent: false,
+  concurrency: 1,
   runInBand: false,
 
   /**
@@ -122,6 +136,13 @@ export const ExCfg:Partial<TExamConfig> = {
   reporters: [`default`],
   passWithNoTests: false,
   mode: EExTestMode.serial,
+  testMatch: [
+    `**/__tests__/**/*.[jt]s?(x)`,
+    `**/?(*.)+(spec|test).[jt]s?(x)`
+  ],
+
+  // Special handling for events
+  events: {} as any,
 }
 
 export const ExamCfg = {
@@ -134,3 +155,7 @@ export const ExamCfg = {
 } as TExamConfig
 
 
+export const PoolCfg = {
+  size: 1,
+  worker: {}
+}

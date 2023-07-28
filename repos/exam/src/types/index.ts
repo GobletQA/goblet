@@ -14,3 +14,4 @@ export * from "./reporters.types"
 export * from './transform.types'
 export * from './environment.types'
 export * from './interlope.types'
+export * from './worker.types'

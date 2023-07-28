@@ -1,16 +1,21 @@
 
 import type { TExamEvt } from './exam.types'
-import type { EAstObject, TRunResult } from '@ltipton/parkin'
+import type { EAstObject, TRunResult as TParkinRunResult } from '@ltipton/parkin'
 
+export type TRunResult = Omit<TParkinRunResult, `type`> & {
+  type:EPlayerTestType.error
+}
 
 export enum EPlayerTestAction {
   end=`end`,
   test=`test`,
   start=`start`,
+  error=`error`,
 }
 
 export enum EPlayerTestType {
   test=`test`,
+  error=`error`,
   describe=`describe`,
 }
 

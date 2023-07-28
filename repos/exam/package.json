@@ -25,7 +25,7 @@
     "build": "pnpm build:docker",
     "build:docker": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
     "ex:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir dist",
-    "ex:dev": "node --no-warnings --loader esbuild-register/loader -r esbuild-register src/bin/exam.ts --config __mocks__/exam.config.ts",
+    "ex:dev": "FORCE_COLOR=0 EXAM_DEV_CLI=1 node --no-warnings --loader esbuild-register/loader -r esbuild-register src/bin/exam.ts --config __mocks__/exam.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
@@ -52,6 +52,7 @@
     "micromatch": "4.0.5",
     "module-alias": "2.2.2",
     "module-from-string": "3.3.0",
+    "p-queue": "7.3.4",
     "source-map-support": "0.5.21"
   },
   "devDependencies": {

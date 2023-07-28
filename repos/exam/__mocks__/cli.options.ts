@@ -4,11 +4,9 @@ import { TExamReporters } from '@GEX/types'
 
 export const cliOpts = {
   // --- Not Implemented
-  workers: 1,
   testRetry:0,
   suiteRetry:0,
   colors: true,
-  concurrency: 1,
   silent: false,
   runInBand: false,
   // --- Not Implemented
@@ -16,6 +14,8 @@ export const cliOpts = {
 
   bail:0,
   cache: true,
+  workers: 1,
+  concurrency: 1,
   testMatch: [],
   testIgnore: [],
   transformIgnore: [],

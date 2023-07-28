@@ -1,22 +1,17 @@
-import type { TExamCliOpts } from "../types/bin.types"
-import type { EExTestMode, TExamConfig } from '../types/exam.types'
+import type { TExamCliOpts } from "@GEX/types/bin.types"
+import type { EExTestMode, TExamConfig } from '@GEX/types/exam.types'
 
 import { fullLoc } from './helpers'
+import { ExamCfgModeTypes } from "@GEX/constants"
+import { buildExamCfg } from "@GEX/utils/buildExamCfg"
+import {mergeCfgArrays} from "@GEX/utils/mergeCfgArrays"
 import {
-  isArr,
   toNum,
   isObj,
   isFunc,
   toBool,
-  exists,
-  ensureArr,
-  flatUnion,
 } from '@keg-hub/jsutils'
 
-const modeTypes = [
-  `serial`,
-  `parallel`
-]
 
 const getCfgObj = (opts:TExamCliOpts) => {
   const mod = require(fullLoc(opts.config, opts.rootDir))
@@ -32,62 +27,42 @@ const getCfgObj = (opts:TExamCliOpts) => {
 }
 
 const getRunMode = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>) => {
-  const ov = (modeTypes.includes(override.mode) && override.mode)
+  const ov = (ExamCfgModeTypes.includes(override.mode) && override.mode)
     || (override.serial && `serial`)
     || (override.parallel && `parallel`)
 
   const final = ov
-    || (modeTypes.includes(base.mode) && base.mode)
+    || (ExamCfgModeTypes.includes(base.mode) && base.mode)
     || base.serial && `serial`
     || base.parallel && `parallel`
 
-  return (modeTypes.includes(final) ? final : `serial`) as EExTestMode
+  return (ExamCfgModeTypes.includes(final) ? final : `serial`) as EExTestMode
 }
 
-const validateArr =  <T=any>(arr:T|T[]) => {
-  return exists(arr)
-    ? !isArr(arr)
-      ? [arr]
-      : arr?.length ? arr : undefined
-    : undefined
+const atLeastOne = (base:number, override:number, runInBand?:boolean) => {
+  if(runInBand) return 1
+
+  const num = toNum(override ?? base)
+  return num || 1
 }
 
-/**
- * Hard override, similar to how Jest does it
- * If the override array exists, it replaces the base
- * It does not merge with it
- */
-const getReporters = (
-  base:any,
-  over:any
-) => {
-  const overArr = validateArr(over)
-  if(overArr) return overArr
-
-  const baseArr = validateArr(base)
-  return baseArr ? baseArr : undefined
-}
-
-const mergeConfigArr = <T=any>(base:T|T[], over:T|T[]) => {
-  const overArr = validateArr(over)
-  const baseArr = validateArr(base)
-
-  return overArr
-    ? baseArr
-      ? flatUnion(ensureArr(base), ensureArr(over))
-      : overArr
-    : baseArr
-}
 
 const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>):TExamConfig => {
   const {
-    config:bConfig,
+
+    // --- Don't include in the cli config --- //
+    events: bEvents,
+    onEvent:bOnEvent,
+    onCancel:bOnCancel,
+    onCleanup:bOnCleanup,
+    // --- Don't include in the cli config --- //
+
     // --- Don't destructure to they are set in the final object --- //
+    // config:bConfig,
     // esbuild: bEsbuild,
     // envs:bEnvs,
     // aliases: bAliases,
     // globals: bGlobals,
-    // events: bEvents,
     // runners: bRunners,
     // reporters: bReporters,
     // transforms: bTransforms,
@@ -95,6 +70,9 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     // --- Don't destructure to they are set in the final object --- //
     
     mode:bMode,
+    serial:bSerial,
+    parallel:bParallel,
+
 
     bail: bBail,
     colors: bColors,
@@ -105,8 +83,6 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     suiteRetry: bSuiteRetry,
     concurrency: bConcurrency,
 
-    serial:bSerial,
-    parallel:bParallel,
     reporters:bReporters,
 
     debug:bDebug,
@@ -132,12 +108,19 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
   } = base
 
   const {
+
+    // --- Don't include in the cli config --- //
+    events,
+    onEvent,
+    onCancel,
+    onCleanup,
+    // --- Don't include in the cli config --- //
+
     // --- These do not work from the CLI --- //
     envs,
     config,
     aliases,
     esbuild,
-    events,
     globals,
     runners,
     transforms,
@@ -145,6 +128,8 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     // --- These do not work from the CLI --- //
 
     mode,
+    serial,
+    parallel,
 
     bail,
     colors,
@@ -155,8 +140,6 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     suiteRetry,
     concurrency,
 
-    serial,
-    parallel,
     reporters,
 
     debug,
@@ -181,59 +164,60 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
 
   } = override
 
-  return {
+  const rIB = toBool(runInBand ?? bRunInBand)
+
+  const examCfg = {
     ...baseRest,
+
+    runInBand:rIB,
+
+    rootDir: rootDir ?? bRootDir,
+    testDir: testDir ?? bTestDir,
     mode: getRunMode(base, override),
 
     bail: toNum(bail ?? bBail),
     colors: toBool(colors ?? bColors),
     silent: toBool(silent ?? bSilent),
-    workers: toNum(workers ?? bWorkers),
     testRetry: toNum(testRetry ?? bTestRetry),
-    runInBand: toBool(runInBand ?? bRunInBand),
     suiteRetry: toNum(suiteRetry ?? bSuiteRetry),
-    concurrency: toNum(concurrency ?? bConcurrency),
 
     debug: toBool(debug ?? bDebug),
     timeout: toNum(timeout ?? bTimeout),
     verbose: toBool(verbose ?? bVerbose),
     globalTimeout: toNum(globalTimeout ?? bGlobalTimeout),
-    extensions: mergeConfigArr(bExtensions, extensions),
 
-    rootDir: rootDir ?? bRootDir,
-    testDir: testDir ?? bTestDir,
-    testMatch: mergeConfigArr(bTestMatch, testMatch),
+    // atLeastOne(bWorkers, workers, rIB),
+    workers: toNum(workers ?? bWorkers),
 
-    /** Hard override, similar to how Jest does it */
-    reporters: getReporters(bReporters, reporters),
+    // atLeastOne(bConcurrency, concurrency, rIB),
+    concurrency: toNum(concurrency ?? bConcurrency),
 
-    preRunner: mergeConfigArr(bPreRunner, preRunner),
-    postRunner: mergeConfigArr(bPostRunner, postRunner),
-
-    testIgnore: mergeConfigArr(bTestIgnore, testIgnore),
-    loaderIgnore: mergeConfigArr(bLoaderIgnore, loaderIgnore),
-    transformIgnore: mergeConfigArr(bTransformIgnore, transformIgnore),
-
-    preEnvironment: mergeConfigArr(bPreEnvironment, preEnvironment),
-    postEnvironment: mergeConfigArr(bPostEnvironment, postEnvironment),
-
+    ...mergeCfgArrays(base, override),
   } as TExamConfig
+
+  return examCfg
 }
 
 const buildNoConfig = (opts:TExamCliOpts):TExamConfig => {
   const {
-    config,
     mode,
+    events,
+    config,
     serial,
+    onEvent,
     parallel,
+    onCancel,
+    onCleanup,
     ...rest
   } = opts
-  
+
   return {...rest, mode: getRunMode(opts, opts)}
 }
 
 export const getConfig = (opts:TExamCliOpts) => {
-  return !opts.config
+  const built = !opts.config
     ? buildNoConfig(opts)
     : mergeConfig(getCfgObj(opts), opts)
+
+  return buildExamCfg(built)
 }

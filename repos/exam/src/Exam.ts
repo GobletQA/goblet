@@ -1,4 +1,4 @@
-import type {
+import {
   TExRun,
   TExData,
   TExamEvt,
@@ -10,7 +10,8 @@ import type {
   TExamEventCB,
   TExamCancelCB,
   TExamCleanupCB,
-  TExBuiltReporters,
+  EPlayerTestType,
+  EPlayerTestAction,
 } from '@GEX/types'
 
 import { Loader } from '@GEX/Loader'
@@ -22,7 +23,7 @@ import { buildExecCfg } from '@GEX/utils/buildExecCfg'
 import { buildReporters } from './utils/buildReporters'
 import { ExamEvents, addCustomEvents } from '@GEX/Events'
 import { ReportEventMapper } from '@GEX/reporter/ReportEventMapper'
-import { exists, checkCall, flatArr, isObj } from '@keg-hub/jsutils'
+import { exists, checkCall, flatArr, isObj, emptyObj } from '@keg-hub/jsutils'
 import {
   buildNoTestsResult,
   buildFailedTestResult,
@@ -55,7 +56,6 @@ export class Exam {
 
     this.id = id
     const config = buildExamCfg(cfg)
-
     this.loader = new Loader(this, config)
     this.#config = config
     this.#setEvents(config)
@@ -115,8 +115,9 @@ export class Exam {
   /**
    * Runs multiple test files base on passed in options
    */
-  #runTests = async <T extends TExData=TExData>(opts:TExamRunOpts<T>) => {
+  #runTests = async <T extends TExData=TExData>(opts:TExamRunOpts<T>=emptyObj) => {
     const {
+      cli,
       testDir,
       rootDir,
       testMatch,
@@ -124,11 +125,14 @@ export class Exam {
       ...rest
     } = opts
 
-    const tests = await this.loader.loadTests(testMatch, {
-      testDir,
-      rootDir,
-      testIgnore,
-    })
+    // If called from the CLI, the tests should have already been found
+    const tests = cli
+      ? testMatch
+      : await this.loader.loadTests(testMatch, {
+          testDir,
+          rootDir,
+          testIgnore,
+        })
 
     if(!tests) return this.#onNoTests(testMatch)
 
@@ -167,6 +171,13 @@ export class Exam {
                     testPath: fromRoot,
                     fullName: file.name,
                     description: err.message,
+                    type: EPlayerTestType.error,
+                    action: EPlayerTestAction.error,
+                    timestamp: new Date().getTime(),
+                    failedExpectations: [{
+                      description: err.stack,
+                      fullName: `${err.name}${exists(err.code) ? `- ${err.code}` : ``}`,
+                    }]
                   })
 
             }
@@ -187,6 +198,7 @@ export class Exam {
           return arr
         }
         catch(err){
+
           bail += 1
           if(this.bail && (bail >= this.bail)){
             Errors.BailedTests(this.bail, `Exam.run`, err)
@@ -202,6 +214,13 @@ export class Exam {
                 testPath: fromRoot,
                 fullName: file.name,
                 description: err.message,
+                type: EPlayerTestType.error,
+                action: EPlayerTestAction.error,
+                timestamp: new Date().getTime(),
+                failedExpectations: [{
+                  description: err.stack,
+                  fullName: `${err.name}${exists(err.code) ? `- ${err.code}` : ``}`,
+                }]
               }))
 
           return arr
@@ -264,7 +283,7 @@ export class Exam {
    * Starts recording dom events by injecting scripts browser context
    * @member {Exam}
    */
-  run = async <T extends TExData=TExData>(opts:TExamRunOpts<T>) => {
+  run = async <T extends TExData=TExData>(opts:TExamRunOpts<T>=emptyObj) => {
 
     let resp:TExEventData[]
     let error:Error
@@ -301,10 +320,24 @@ export class Exam {
     catch(err){
       if(!this.canceled){
         error = err
+        const errorData = `${err.name}${exists(err.code) ? `- ${err.code}` : ``}`
         this.event(
           ExamEvents.dynamic({
             message: err.message,
             name: ExamEvtNames.error,
+            data: {
+              id: this.id,
+              testPath: errorData,
+              fullName: err.name,
+              description: err.message,
+              type: EPlayerTestType.error,
+              action: EPlayerTestAction.error,
+              timestamp: new Date().getTime(),
+              failedExpectations: [{
+                fullName: errorData,
+                description: err.stack,
+              }]
+            }
           })
         )
       }

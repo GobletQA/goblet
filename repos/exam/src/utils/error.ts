@@ -6,6 +6,9 @@ import {emptyObj, isStr} from "@keg-hub/jsutils"
 Error.stackTraceLimit = Infinity
 const ErrorTag = Logger.colors.red(`[Exam Failed]`)
 
+const addErrTag = (msg:string) => {
+  return msg.trim().startsWith(ErrorTag) ? msg : `${ErrorTag} ${msg}`
+}
 
 const resolveErrMsg = (error?:string|Error, maybe?:Error):[string, Error] => {
   return isStr(error)
@@ -58,7 +61,7 @@ export class ExamError extends Error {
       ? `${Logger.colors.yellow(method)} - ${message}`
       : `${Logger.colors.yellow(`Exam`)} - ${message}`
 
-    super(`${ErrorTag} ${msg}`)
+    super(addErrTag(msg))
 
     // TODO: figure out what this is doing
     // Error.captureStackTrace(this, this.constructor)
@@ -75,7 +78,7 @@ export class RunnerErr extends Error {
   constructor(error?:string|Error, maybe?:Error) {
     const [message, err] = resolveErrMsg(error, maybe)
     const msg = `${message||err?.message||`Test-Run Failed - unknown error`}`
-    super(`${ErrorTag} ${msg}`)
+    super(addErrTag(msg))
 
     this.name = this.constructor.name
     if(err?.stack) this.stack = err.stack
@@ -95,7 +98,7 @@ export class TestErr extends BaseError {
     const resMessage = result?.failedExpectations?.[0]?.description
     const fallback = message || `Test-Run Failed - unknown error`
 
-    super(`${ErrorTag} ${resMessage || fallback}`, err, replaceStack)
+    super(addErrTag(`${resMessage || fallback}`), err, replaceStack)
 
     this.result = result
   }
@@ -110,8 +113,8 @@ export class LoaderErr extends BaseError {
     replaceStack?:boolean
   ) {
     const [message, err] = resolveErrMsg(error, maybe)
-    const msg = `${ErrorTag} ${message || err?.message || `could not load file`}`
+    const msg = `${message || err?.message || `could not load file`}`
 
-    super(msg, err, replaceStack)
+    super(addErrTag(msg), err, replaceStack)
   }
 }

@@ -1,30 +1,15 @@
-import { Exam } from '../Exam'
+import "@GEX/utils/logger"
+import { ife } from '@keg-hub/jsutils'
 import { getConfig } from './getConfig'
+import { initWorkers } from './initWorkers'
 import { removeEmpty, parseArgs } from './helpers'
 
-const onEvent = (event:any) => {
-  console.log(`------- event -------`)
-  console.log(event)
-}
-
-;(async () => {
+ife(async () => {
 
   const config = await parseArgs()
     .then(getConfig)
     .then(removeEmpty)
-  
-  new Exam(config, `test-id`).run({
 
-    // onEvent,
-    // file: `__mocks__/test-file.ts`,
-    // testMatch: `__mocks__/__tests__/*`,
-    // TODO: fix loading files without an extension
-    file: `__mocks__/test-file`
-    // file: `__mocks__/duper`
+  await initWorkers(config)
 
-  })
-  // .then(console.log)
-  .then((results) => console.log(`Tests Passed`))
-  .catch(console.error)
-
-})()
+})

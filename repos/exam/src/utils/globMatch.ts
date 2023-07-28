@@ -2,7 +2,38 @@ import type { GlobOptions } from 'glob'
 
 import { glob } from 'glob'
 import micromatch from 'micromatch'
+import { naturalSort } from './naturalSort'
 import { emptyObj, ensureArr } from '@keg-hub/jsutils'
+import { GlobFilesCfg } from "@GEX/constants/defaults"
+import { GlobMatchKeys } from "@GEX/constants/constants"
+
+export const globMatchFiles = async (
+  match:string|string[],
+  opts?:GlobOptions
+) => {
+  const config = {...GlobFilesCfg, ...opts} 
+  /**
+   * Helper to check if a match contains any glob keys
+   * If it does not, assume the they want to do a repo wide search
+   * TODO: will want to add a config option to enable / disable this behavior
+   */
+  const matches = ensureArr<string>(match).map(item => {
+    return !GlobMatchKeys.find(key => item.includes(key))
+      ? item.includes(`.`)
+        ? item.startsWith(`/`)
+          // May not want to keep this one, we'll see
+          ? `**/+(${item.replace(/^\//, ``)})`
+          : `**/+(${item})`
+        : `**/+(${item})*`
+      : item
+  })
+
+  const found = await globFiles(matches, config)
+
+  return naturalSort<string[]>(found)
+  
+}
+
 
 export const globMatch = (
   patterns:string|string[],
@@ -38,9 +69,9 @@ export const globFiles = async <T=GlobOptions>(
   fileMatch:string|string[],
   opts:T=emptyObj as T
 ) => {
-  return await glob(ensureArr<string>(fileMatch), opts)
+  const match = ensureArr<string>(fileMatch)
+  return await glob(match, opts)
 }
-
 
 export const globKeysMatch = <T extends Record<string, any>=Record<string, any>>(
   obj:T,

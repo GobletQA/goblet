@@ -21,6 +21,24 @@ export const FileTypeMap = {
   feature: `feature`,
 }
 
+export const ExamCfgModeTypes = [
+  `serial`,
+  `parallel`
+]
+
+export const ExamCfgArrayItems = [
+  `testMatch`,
+  `reporters`,
+  `preRunner`,
+  `postRunner`,
+  `testIgnore`,
+  `extensions`,
+  `loaderIgnore`,
+  `preEnvironment`,
+  `postEnvironment`,
+  `transformIgnore`,
+]
+
 export const RootDirKey = `<rootDir>`
 export const NoTestsPassId = `NO-TESTS-FOUND`
 
@@ -50,3 +68,5 @@ export const BuiltTestResultFailed:Partial<TExEventData> = {
   type: EPlayerTestType.describe,
   status: EPlayerTestStatus.failed,
 }
+
+export const GlobMatchKeys = [`**`,`*`,`[`,`]`,`|`,`...`,`{`,`}`,`?`,`@`,`+`,`!`,`:`]

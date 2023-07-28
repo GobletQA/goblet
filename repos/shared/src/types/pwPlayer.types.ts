@@ -45,6 +45,7 @@ export enum EPlayerTestAction {
   end=`end`,
   test=`test`,
   start=`start`,
+  error=`error`,
 }
 
 export enum EPlayerTestType {
