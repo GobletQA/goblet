@@ -1,41 +1,13 @@
 import type { TExamCliOpts, TExamConfig } from '@GEX/types'
 
-import PQueue from 'p-queue'
-
-import os from 'os'
 import path from 'path'
 import { ife } from '@keg-hub/jsutils'
 import { loadFiles } from './loadFiles'
-import { updateCLIEnvs } from './helpers'
+import { splitWork } from './splitWork'
 import { WorkerPool } from '@GEX/workerPool'
 import { logWorkBreakdown } from '@GEX/debug'
-import { chunkify } from '@GEX/utils/chunkify'
 import {ExamCfgModeType} from '@GEX/constants/constants'
 
-const cpuCount = os.cpus().length
-
-const getWorkerNum = (workers?:number, locationsAmt:number=1) => {
-  const oneLessCpus = cpuCount - 1
-  const amount = workers > 0 ? workers : oneLessCpus > 0 ? oneLessCpus : 1
-
-  // One create as many workers as we have files to be tested
-  return amount > locationsAmt ? locationsAmt : amount
-}
-
-const getConcurrency = (concurrency?:number, evenSplit?:number) => {
-  return concurrency > 0 ? concurrency : evenSplit > 0 ? evenSplit : 1
-}
-
-const getWAndC = (exam:TExamConfig, locationsAmt:number) => {
-  if(exam.runInBand) return { workers: 1, concurrency: 1 }
-
-  const workers = getWorkerNum(exam.workers, locationsAmt)
-
-  return {
-    workers,
-    concurrency: getConcurrency(exam.concurrency, Math.floor(locationsAmt / workers))
-  }
-}
 
 export const initWorkers = async (
   exam:TExamConfig & { file?:string },
@@ -43,20 +15,15 @@ export const initWorkers = async (
 ) => {
 
   const locations = await loadFiles(exam)
-  const locationsAmt = locations.length
 
   const {
+    total,
+    chunks,
     workers,
     concurrency,
-  } = getWAndC(exam, locations.length)
+  } = splitWork(exam, locations)
 
-  const chunks = exam.runInBand
-    ? {[0]: locations}
-    : chunkify<string>(locations, concurrency || 1)
-
-  updateCLIEnvs(exam, opts)
-  
-  logWorkBreakdown(workers, concurrency, locationsAmt)
+  logWorkBreakdown(workers, concurrency, total)
 
   const WP = new WorkerPool({
     size: workers,

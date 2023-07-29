@@ -104,6 +104,8 @@ export class WorkerPool extends EventEmitter {
     })
 
     worker.once('error', (err) => {
+      console.log(`------- on error -------`)
+      
       rej(err)
       this.#addNewWorkerToPool()
     })

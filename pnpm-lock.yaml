@@ -724,9 +724,6 @@ importers:
       http-proxy-middleware:
         specifier: 2.0.6
         version: 2.0.6(@types/express@4.17.17)
-      is-secret:
-        specifier: 1.2.1
-        version: 1.2.1
       mime:
         specifier: 3.0.0
         version: 3.0.0
@@ -9011,10 +9008,6 @@ packages:
     resolution: {integrity: sha512-9UoipoxYmSk6Xy7QFgRv2HDyaysmgSG75TFQs6S+3pDM7ZhKTF/bskZV+0UlABHzKjNVhPjYCLfeZUEg1wXxig==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: true
-
-  /is-secret@1.2.1:
-    resolution: {integrity: sha512-VtBantcgKL2a64fDeCmD1JlkHToh3v0bVOhyJZ5aGTjxtCgrdNcjaC9GaaRFXi19gA4/pYFpnuyoscIgQCFSMQ==}
-    dev: false
 
   /is-stream-ended@0.1.4:
     resolution: {integrity: sha512-xj0XPvmr7bQFTvirqnFr50o0hQIh6ZItDqloxt5aJrR4NQsYeSsyFQERYGCAzfindAcnKjINnwEEgLx4IqVzQw==}
