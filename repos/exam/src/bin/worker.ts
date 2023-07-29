@@ -3,12 +3,12 @@ import type { TExamConfig, TExamRunOpts } from '@GEX/types'
 
 import { Exam } from '../Exam'
 import {nanoid} from '@GEX/utils/nanoid'
-import { limbo } from '@keg-hub/jsutils'
+import { limbo, ife } from '@keg-hub/jsutils'
 import {updateCLIEnvs} from '@GEX/bin/helpers'
 import { parentPort, workerData } from 'worker_threads'
 
-type TInitWorkerData = {
-  workerId:string
+type TWorkerCfg = {
+  id:string
   exam:TExamConfig
 }
 
@@ -17,27 +17,33 @@ type TParentMsg = {
   run:TExamRunOpts
 }
 
-const onInit = (initData:TInitWorkerData) => {
-  const config = initData.exam
-  const workerId = initData.workerId || nanoid()
-  
-  updateCLIEnvs(config)
-  process.env.EXAM_WORKER_ID = workerId
+ife(async () => {
 
-  return new Exam(config, workerId)
-}
-
-const EX = onInit(workerData)
-
-const onMessage = async (message:TParentMsg) => {
-  const [error, results] = await limbo(EX.run(message.run))
-
-  if(error){
-    // TODO: figure out how to handle an error
-    console.log(error)
+  const workerCfg:TWorkerCfg = {
+    exam: workerData.exam,
+    id: workerData.workerId || nanoid()
   }
 
-  message.port.postMessage(results)
-}
+  updateCLIEnvs(workerCfg.exam, { workerId: workerCfg.id })
 
-parentPort.once('message', onMessage)
+  parentPort.once('message', async (message:TParentMsg) => {
+    console.log(`------- got parent message -------`)
+    
+    /**
+    * Create a new exam instance each time the worker is rerun
+    * This ensures a clean environment each time
+    */
+    const EX = new Exam(workerCfg.exam, workerCfg.id)
+    const [error, results] = await limbo(EX.run(message.run))
+
+    if(error){
+      // TODO: figure out how to handle an error
+      console.log(error)
+    }
+
+    message.port.postMessage(results)
+  })
+
+})
+
+

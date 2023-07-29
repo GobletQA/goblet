@@ -84,15 +84,17 @@ const updateEnv = (key:string, value:any, force?:boolean) => {
  */
 export const updateCLIEnvs = (
   exam:TExamConfig,
-  opts:Partial<TExamCliOpts>=emptyObj
+  opts:Partial<TExamCliOpts>=emptyObj,
+  force?:boolean
 ) => {
 
-  opts?.env && updateEnv(`NODE_ENV`, opts.env)
-  opts?.env && updateEnv(`EXAM_CLI_ENV`, opts.env)
+  opts?.env && updateEnv(`NODE_ENV`, opts.env, force)
+  opts?.env && updateEnv(`EXAM_CLI_ENV`, opts.env, force)
+  opts?.workerId && updateEnv(`EXAM_WORKER_ID`, opts.workerId, force)
 
-  exam?.debug && updateEnv(`EXAM_CLI_DEBUG`, 1)
-  exam?.verbose && updateEnv(`EXAM_CLI_VERBOSE`, 1)
-  exam?.mode && updateEnv(`EXAM_CLI_MODE`, exam.mode)
-  exam?.workers && updateEnv(`EXAM_CLI_WORKERS`, exam.workers)
-  exam?.concurrency && updateEnv(`EXAM_CLI_CONCURRENCY`, exam.workers)
+  exam?.debug && updateEnv(`EXAM_CLI_DEBUG`, 1, force)
+  exam?.verbose && updateEnv(`EXAM_CLI_VERBOSE`, 1, force)
+  exam?.mode && updateEnv(`EXAM_CLI_MODE`, exam.mode, force)
+  exam?.workers && updateEnv(`EXAM_CLI_WORKERS`, exam.workers, force)
+  exam?.concurrency && updateEnv(`EXAM_CLI_CONCURRENCY`, exam.workers, force)
 }
