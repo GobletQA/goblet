@@ -13,9 +13,10 @@ import EventEmitter from 'events'
 import { Logger } from '@GEX/utils/logger'
 import { nanoid } from '@GEX/utils/nanoid'
 import { exists, limbo } from '@keg-hub/jsutils'
-import { PoolCfg, WorkerEnvs } from '@GEX/constants/defaults'
+import { WkrPoolTag } from '@GEX/constants/tags'
 import { WorkerEvents } from '@GEX/constants/worker'
 import { Worker, MessageChannel } from 'worker_threads'
+import { PoolCfg, WorkerEnvs } from '@GEX/constants/defaults'
 import { AggregateError } from '@GEX/workerPool/aggregateErrors'
 
 type TWorkerCfg = {
@@ -29,13 +30,13 @@ type TWorker = Worker & {
 
 
 export class WorkerPool extends EventEmitter {
+  tag=WkrPoolTag
   #closing=false
   #size:number=4
   #location:string
   #pool:TWorker[]=[]
   #wrkOpts:WorkerOptions
   #queue:TWorkerQueue[]=[]
-  tag=Logger.colors.yellow(`[WKR-POOL]`)
 
   constructor (cfg:TPoolCfg) {
     super()
@@ -112,7 +113,7 @@ export class WorkerPool extends EventEmitter {
     this.#pLog(`Found ${this.#queue.length} queued Jobs`)
 
     if (this.#queue.length <= 0){
-      this.#pLog(`Adding ${worker.__exam.workerId} back to Worker-Pool`)
+      this.#pLog(`Adding ${worker.__exam.tag} back to ${this.tag}`)
       return this.#pool.push(worker)
     }
 
@@ -171,6 +172,8 @@ export class WorkerPool extends EventEmitter {
       workerData: {
         workerId,
         ...this.#wrkOpts.workerData,
+        logLevel: Logger.level,
+        isTTY: process.stdout.isTTY,
       }
     }) as TWorker
 

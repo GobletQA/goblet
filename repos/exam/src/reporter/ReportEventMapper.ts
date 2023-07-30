@@ -1,7 +1,10 @@
-import {ExamEvtNames} from "@GEX/constants/events"
 import type { TExamEvt, TExBuiltReporters } from "@GEX/types"
 
-const eventReporterMap = {
+import { Logger } from '@GEX/utils/logger'
+import { ExamEvtNames } from "@GEX/constants/events"
+import { EvtTag, ExamTag } from '@GEX/constants/tags'
+
+const EvtReporterMap = {
 
   // Event `PLAY-SUITE-DONE`
   // onTestResult
@@ -55,6 +58,11 @@ const eventReporterMap = {
   
 }
 
+const EvtTags = Object.entries(ExamEvtNames)
+  .reduce((acc, [key, val]) => {
+    acc[val] = EvtTag(val)
+    return acc
+  }, {})
 
 export class ReportEventMapper {
   
@@ -64,14 +72,11 @@ export class ReportEventMapper {
 
   event = (evt:TExamEvt) => {
 
-    const { name } = evt
-    const method = eventReporterMap[name]
+    const method = EvtReporterMap[evt.name]
 
-    if(!method){
-      process.env.EXAM_CLI_VERBOSE
-        && console.warn(`[Exam Event] Missing reporter method for event ${evt.name}`)
-      return
-    }
+    if(!method)
+      return Logger.verbose(`${ExamTag} Missing reporter method for event ${EvtTags[evt.name]}`)
+
 
     this.reporters.map(reporter => reporter?.[method]?.(evt))
 

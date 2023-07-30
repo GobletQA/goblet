@@ -1,4 +1,4 @@
-import type { TLogMethod, TLogMethods, TLogLevels } from './logger.types'
+import type { TLogMethod, TLogMethods, TLogLevels, TCLILogger } from './logger.types'
 
 import {isNum, isStr, exists} from "@keg-hub/jsutils"
 
@@ -46,10 +46,10 @@ export const levels:TLogLevels = Object.entries(levelMap)
   } as TLogLevels)
 
 
-export const getLevelMethods = (logMethod:TLogMethod, current:string|number) => {
+export const getLevelMethods = (Logger:TCLILogger, logMethod:(...args:any[])=>void) => {
   return Object.entries(levelMap)
     .reduce((acc, [level, num]) => {
-      acc[level] = (...args:any[]) => levels.check[level](current) && logMethod?.(...args)
+      acc[level] = (...args:any[]) => levels.check[level](Logger.level) && logMethod?.(...args)
 
       return acc
     }, {} as TLogMethods)

@@ -4,7 +4,7 @@ import path from 'path'
 import { options } from './options'
 import { getRoot, homeDir, cwd } from './paths'
 import { argsParse } from '@keg-hub/args-parse'
-import { getLogger } from "@GEX/utils/logger"
+import { updateLogLevel, Logger } from "@GEX/utils/logger"
 import { emptyObj, exists, isArr, isStr, toNum } from '@keg-hub/jsutils'
 
 const isDevCLI = toNum(process.env.EXAM_DEV_CLI)
@@ -62,6 +62,8 @@ export const parseArgs = async () => {
   const opts = await argsParse({ args, task: { options }})
   const cleaned = removeEmpty<TExamCliOpts>(opts)
 
+  updateLoggerLevel(opts, opts.logLevel)
+
   if(isDevCLI && last.startsWith(`test-file`))
     cleaned.testMatch = [last]
 
@@ -73,11 +75,25 @@ export const parseArgs = async () => {
   return cleaned
 }
 
-
+/**
+ * Sets updates an env values on the process.env object
+ */
 const updateEnv = (key:string, value:any, force?:boolean) => {
   if(process.env[key] && !force) return
 
   process.env[key] = isStr(value) ? value : `${JSON.stringify(value)}`
+}
+
+/**
+ * Updates the log level based on the configured option values
+ */
+const updateLoggerLevel = (
+  opts:Partial<TExamCliOpts|TExamConfig>=emptyObj,
+  logLevel=(opts as TExamCliOpts)?.logLevel
+) => {
+  (opts?.debug && updateLogLevel(Logger.levels.levels.debug))
+    || (opts?.verbose && updateLogLevel(Logger.levels.levels.verbose))
+    || (exists(logLevel) && updateLogLevel(logLevel))
 }
 
 /**
@@ -101,5 +117,5 @@ export const updateCLIEnvs = (
   exam?.workers && updateEnv(`EXAM_CLI_WORKERS`, exam.workers, force)
   exam?.concurrency && updateEnv(`EXAM_CLI_CONCURRENCY`, exam.workers, force)
 
-  getLogger(undefined, true)
+  updateLoggerLevel(exam, opts?.logLevel)
 }

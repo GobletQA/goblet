@@ -38,11 +38,9 @@ const CliLogger:TCLILogger = {
 
 export const getLevelLogger = (logLevel:string|number):TCLILogger => {
   const level = logLevel || CliLogger.level
-  return {
-    ...CliLogger,
-    level,
-    ...getLevelMethods(CliLogger.log, level),
-  } as unknown as TCLILogger
+  CliLogger.level = logLevel || CliLogger.level
+
+  return Object.assign(CliLogger, getLevelMethods(CliLogger, CliLogger.log)) as TCLILogger
 }
 
 export {

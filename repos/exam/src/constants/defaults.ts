@@ -170,3 +170,5 @@ export const WorkerEnvs = [
   `GOBLET_TEST_DEBUG`,
   `GOBLET_TEST_VERBOSE`,
 ]
+
+export const ExamLogLevel = `info`
