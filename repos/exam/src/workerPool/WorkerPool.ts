@@ -3,7 +3,6 @@ import type {
   TPromRej,
   TPromRes,
   TPoolCfg,
-  TMaybeErr,
   TWorkerData,
   TWorkerQueue,
   TWorkerResult,
@@ -12,12 +11,13 @@ import type {
 import EventEmitter from 'events'
 import { Logger } from '@GEX/utils/logger'
 import { nanoid } from '@GEX/utils/nanoid'
-import { exists, limbo } from '@keg-hub/jsutils'
+import { Errors } from '@GEX/constants/errors'
 import { WkrPoolTag } from '@GEX/constants/tags'
+import { AggregateError } from '@GEX/utils/error'
 import { WorkerEvents } from '@GEX/constants/worker'
 import { Worker, MessageChannel } from 'worker_threads'
 import { PoolCfg, WorkerEnvs } from '@GEX/constants/defaults'
-import { AggregateError } from '@GEX/workerPool/aggregateErrors'
+import { emptyArr, exists, flatUnion, limbo } from '@keg-hub/jsutils'
 
 type TWorkerCfg = {
   tag:string
@@ -37,6 +37,7 @@ export class WorkerPool extends EventEmitter {
   #pool:TWorker[]=[]
   #wrkOpts:WorkerOptions
   #queue:TWorkerQueue[]=[]
+  closeTimeout:number=10
 
   constructor (cfg:TPoolCfg) {
     super()
@@ -72,17 +73,57 @@ export class WorkerPool extends EventEmitter {
     const promises = []
     this.#closing = true
     const size = this.poolLength()
+    const timeouts = {}
 
     for (let index = 0; index < size; index++) {
       const worker = this.#pool.shift()
-      promises.push(new Promise(async (res) => res(await worker.terminate())))
+
+      promises.push(new Promise(async (res) => {
+        worker.postMessage({
+          terminate: true,
+          event: WorkerEvents.Terminate,
+        })
+
+        /**
+         * Sets a timeout waiting for the worker to shutdown gracefully
+         * If it does not in the allowed time limit (this.closeTimeout),
+         * Then we force shutdown the worker and return an error
+         */
+        timeouts[worker.__exam.workerId] = setTimeout(
+          async () => {
+            const resp = await worker.terminate()
+            timeouts[worker.__exam.workerId] = undefined
+
+            return !resp
+              ? res(0)
+              : res(Errors.WorkerTerminate(worker.__exam.tag, resp))
+          }, this.closeTimeout)
+
+        /**
+         * Listen for the stopped event from the worker and clear the timeout
+         * The Stopped event is called when 
+         * The worker shuts down properly before the close timeout fires
+         * And forces the worker to shutdown
+         */
+        this.on(WorkerEvents.Stopped, ({ workerId }) => {
+          if(!timeouts[workerId]) return
+
+          clearTimeout(timeouts[workerId])
+          timeouts[workerId] = undefined
+          delete timeouts[workerId]
+
+          res(0)
+        })
+
+      }))
     }
 
     const [error, maybeErrs] = await limbo(Promise.all(promises))
+    const errs = maybeErrs.filter(Boolean)
 
     error
       ? this.emit(WorkerEvents.Error, error)
-      : this.#closeErrors(maybeErrs)
+      : errs?.length && this.#closeErrors(errs)
 
     this.emit(WorkerEvents.Close)
   }
@@ -103,9 +144,8 @@ export class WorkerPool extends EventEmitter {
     Logger.debug(`${this.tag} ${msg}`)
   }
 
-  #closeErrors = (maybeErrs:TMaybeErr[]) => {
-    const errs = maybeErrs.filter(exists)
-    if (errs.length > 0) throw new AggregateError(errs)
+  #closeErrors = (errs:Error[]) => {
+    if (errs.length) throw new AggregateError(errs)
   }
 
   #onRelease = (worker:TWorker) => {
@@ -134,12 +174,12 @@ export class WorkerPool extends EventEmitter {
     this.emit(WorkerEvents.Run)
     const messageChannel = new MessageChannel()
 
-    messageChannel.port2.once(WorkerEvents.Message, (result) => {
+    messageChannel.port2.on(WorkerEvents.Message, (result) => {
       worker.removeAllListeners(WorkerEvents.Error)
       this.#onMessage(res, worker, result)
     })
 
-    worker.once('error', (err) => {
+    worker.on(WorkerEvents.Error, (err) => {
       rej(err)
       this.#addNewWorkerToPool()
     })
@@ -161,6 +201,15 @@ export class WorkerPool extends EventEmitter {
 
     const worker = new Worker(this.#location, {
       ...this.#wrkOpts,
+      argv: flatUnion([
+        ...process?.argv,
+        ...(this.#wrkOpts?.argv || emptyArr),
+      ]),
+      execArgv: flatUnion([
+        ...process?.execArgv,
+        ...(this.#wrkOpts?.execArgv || emptyArr),
+        '--unhandled-rejections=strict'
+      ]),
       env: {
         ...WorkerEnvs.reduce((acc, key) => {
           exists(process.env[key])
@@ -173,7 +222,6 @@ export class WorkerPool extends EventEmitter {
         workerId,
         ...this.#wrkOpts.workerData,
         logLevel: Logger.level,
-        isTTY: process.stdout.isTTY,
       }
     }) as TWorker
 
@@ -183,9 +231,9 @@ export class WorkerPool extends EventEmitter {
     }
 
     worker.once(WorkerEvents.Exit, (exitCode) => {
-      exitCode !== 0
-        && !this.#closing
-        && this.#addNewWorkerToPool(workerId)
+      this.#closing
+        ? exitCode === 0 && this.emit(WorkerEvents.Stopped, { workerId: worker.__exam.workerId })
+        : exitCode !== 0 && this.#addNewWorkerToPool(workerId)
     })
 
     this.#pool.push(worker)

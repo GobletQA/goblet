@@ -16,6 +16,7 @@ import {
 
 import { Loader } from '@GEX/Loader'
 import { Execute } from '@GEX/Execute'
+import {Logger} from '@GEX/utils/logger'
 import { Errors, ExamEvtNames } from '@GEX/constants'
 import { EExTestMode, EExErrorType } from '@GEX/types'
 import { buildExamCfg } from '@GEX/utils/buildExamCfg'
@@ -23,7 +24,7 @@ import { buildExecCfg } from '@GEX/utils/buildExecCfg'
 import { buildReporters } from './utils/buildReporters'
 import { ExamEvents, addCustomEvents } from '@GEX/Events'
 import { ReportEventMapper } from '@GEX/reporter/ReportEventMapper'
-import { exists, checkCall, flatArr, isObj, emptyObj } from '@keg-hub/jsutils'
+import { exists, checkCall, flatArr, isObj, emptyObj, isBool, isNum } from '@keg-hub/jsutils'
 import {
   buildNoTestsResult,
   buildFailedTestResult,
@@ -39,10 +40,10 @@ export class Exam {
   #config:TExamConfig
 
   loader:Loader
-  bail?:number=0
   execute:Execute
   id:string = null
   mode:EExTestMode
+  bail?:number=0
   canceled:boolean=false
   onCancel?:TExamCancelCB
   onCleanup?:TExamCleanupCB
@@ -62,7 +63,9 @@ export class Exam {
 
     this.mode = config.mode || EExTestMode.serial
 
-    if(config.bail) this.bail = config.bail
+    isBool(config.bail)
+      ? config.bail && (this.bail = 1)
+      : isNum(config.bail) && (this.bail = config.bail)
 
     if(exists(config.passWithNoTests))
       this.passWithNoTests = config.passWithNoTests
@@ -139,11 +142,6 @@ export class Exam {
 
     if(!tests) return this.#onNoTests(testMatch)
 
-    /**
-     * A placeholder to keep tracked of filed tests
-     * Compare against `this.bail`, and stop tests if `this.bail` is active
-     */
-    let bail = 0
 
     /**
      * Check `mode` here, and run the tests based on it
@@ -159,29 +157,23 @@ export class Exam {
               return this.#runTest<T>({ file, ...rest } as TExamRun<T>)
             }
             catch(err){
-              bail += 1
-              if(this.bail && (bail >= this.bail)){
-                Errors.BailedTests(this.bail, `Exam.run`, err)
-                return
-              }
-
               const fromRoot = loc.replace(this.loader.rootDir, ``)
 
-              return err.name === EExErrorType.TestErr
+              return [EExErrorType.TestErr, EExErrorType.BailError].includes(err.name)
                 ? err.result
                 : buildFailedTestResult({
-                    id: fromRoot,
-                    testPath: fromRoot,
-                    fullName: file.name,
-                    description: err.message,
-                    type: EPlayerTestType.error,
-                    action: EPlayerTestAction.error,
-                    timestamp: new Date().getTime(),
-                    failedExpectations: [{
-                      description: err.stack,
-                      fullName: `${err.name}${exists(err.code) ? `- ${err.code}` : ``}`,
-                    }]
-                  })
+                  id: fromRoot,
+                  testPath: fromRoot,
+                  fullName: file.name,
+                  description: err.message,
+                  type: EPlayerTestType.error,
+                  action: EPlayerTestAction.error,
+                  timestamp: new Date().getTime(),
+                  failedExpectations: [{
+                    description: err.stack,
+                    fullName: `${err.name}${exists(err.code) ? `- ${err.code}` : ``}`,
+                  }]
+                })
 
             }
           })
@@ -201,16 +193,9 @@ export class Exam {
           return arr
         }
         catch(err){
-
-          bail += 1
-          if(this.bail && (bail >= this.bail)){
-            Errors.BailedTests(this.bail, `Exam.run`, err)
-            return
-          }
-
           const fromRoot = loc.replace(this.loader.rootDir, ``)
-
-          err.name === EExErrorType.TestErr
+          
+          ;[EExErrorType.TestErr, EExErrorType.BailError].includes(err.name)
             ? arr.push(err.result)
             : arr.push(buildFailedTestResult({
                 id: fromRoot,
@@ -289,7 +274,7 @@ export class Exam {
   run = async <T extends TExData=TExData>(opts:TExamRunOpts<T>=emptyObj) => {
 
     let resp:TExEventData[]
-    let error:Error
+    let error:Error & { result?:TExEventData }
     try {
 
       if(Exam.isRunning){
@@ -349,7 +334,12 @@ export class Exam {
     finally {
       if(!this.canceled){
         await this.stop()
-        if(error) throw error
+
+        if(error){
+          if(error.result) return [error.result]
+
+          throw error
+        }
       }
 
       return resp

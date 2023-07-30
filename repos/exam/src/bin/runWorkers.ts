@@ -2,8 +2,10 @@ import type { TExamConfig } from '@GEX/types'
 
 import PQueue from 'p-queue'
 import { WorkerPool } from '@GEX/workerPool'
-import { ife, limbo } from '@keg-hub/jsutils'
+import { ensureArr, flatArr, ife, limbo } from '@keg-hub/jsutils'
 import {ExamCfgModeType} from '@GEX/constants/constants'
+import {printExamTestMode} from '@GEX/debug/verbose'
+import {ExamError} from '@GEX/utils/error'
 
 /**
  * If there are
@@ -36,20 +38,22 @@ const runInSerial = async (
       * Ensures we are running the jobs in serial
     */
     for(let job in jobs){
+
       /**
-       * All jobs errors are captured and returned
-       * We don't kill job execution if on of the jobs fails
-       */
-      const [err, result] = await limbo(WP.run({
+      * All jobs errors are captured and returned
+      * We don't kill job execution if on of the jobs fails
+      */
+      const [__, result] = await limbo(WP.run({
         run: {
           cli: true,
-          testMatch: [location]
+          testMatch: [jobs[job]]
         }
       }))
-      responses.push([err, result])
+
+      result && responses.push(...result)
     }
 
-    res(res)
+    res(responses)
   })
 }
 
@@ -57,12 +61,21 @@ const runInParallel = async (
   WP:WorkerPool,
   jobs:string[]
 ) => {
-  return WP.run({
-    run: {
-      cli: true,
-      testMatch: jobs
-    }
-  })
+  const responses = []
+  const outcomes = await Promise.all(
+    jobs.map((job) => {
+      return WP.run({
+        run: {
+          cli: true,
+          testMatch: [job]
+        }
+      })
+    })
+  )
+
+  responses.push(...outcomes)
+
+  return flatArr(responses)
 }
 
 export const runWorkers = async (
@@ -76,23 +89,25 @@ export const runWorkers = async (
   const [err, results] = await limbo(Promise.all(
     Object.values(chunks)
       .map(jobs => {
+        printExamTestMode(exam.mode)
+
         return exam.mode === ExamCfgModeType.serial
           ? runInSerial(WP, jobs)
           : runInParallel(WP, jobs)
       })
   ))
-  
+
   /**
    * Figure out how to handle errors from the Workers running Jobs
    */
-   if(err) console.warn(`[WP:RUN-ERROR] ${err}`)
+  if(err) throw new ExamError(err, `cli.runWorkers`)
 
   /**
    * Shutdown the workers after the all jobs finish
    * TODO: Figure out how to handle shutdown errors?
   */
   const [shutDownErr] = await limbo(WP.close())
-  if(shutDownErr) console.warn(`[WP:Shutdown-ERROR] ${err}`)
+  shutDownErr && console.error(shutDownErr.message)
 
   return results
 }

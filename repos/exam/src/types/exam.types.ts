@@ -76,7 +76,7 @@ export type TExamCfg = TLoaderCfg
      * Stop executing tests once the number of failed tests matches this amount
      * If set to 0, it is disabled
      */
-    bail?:number
+    bail?:number|boolean
 
     // Custom reporter options
     reporter?:TExReporterCfg

@@ -1,13 +1,12 @@
 import {TExEventData} from "@GEX/types"
 import { Logger } from "@GEX/utils/logger"
-import {emptyObj, isStr} from "@keg-hub/jsutils"
+import { isArr, isStr } from "@keg-hub/jsutils"
+import { ExamErrTag, WkrPoolErrTag } from "@GEX/constants/tags"
 
-// TODO: investigate the right way to handle this
 Error.stackTraceLimit = Infinity
-const ErrorTag = Logger.colors.red(`[Exam Failed]`)
 
 const addErrTag = (msg:string) => {
-  return msg.trim().startsWith(ErrorTag) ? msg : `${ErrorTag} ${msg}`
+  return msg.trim().startsWith(ExamErrTag) ? msg : `${ExamErrTag} ${msg}`
 }
 
 const resolveErrMsg = (error?:string|Error, maybe?:Error):[string, Error] => {
@@ -16,12 +15,18 @@ const resolveErrMsg = (error?:string|Error, maybe?:Error):[string, Error] => {
     : [(error || maybe)?.message, error || maybe]
 }
 
-
 const replaceStackMsg = (err:Error, msg:string) => {
   const split = err.stack.split(`\n`)
   split[0] = msg
 
   return split.join(`\n`)
+}
+
+const buildMsg = (errors:Error[]) => {
+  return errors.map((error:Error) => {
+    if(!isStr(error.stack)) return String(error) 
+      return `${error.name}: ${error.message}`
+  }).join('\n')
 }
 
 
@@ -54,8 +59,9 @@ export class ExamError extends Error {
 
   name=`ExamError`
   method?:string
+  result?:TExEventData
 
-  constructor(mess:string, method?:string, error?:Error){
+  constructor(mess:string|Error, method?:string, error?:Error|TestErr){
     const [message, err] = resolveErrMsg(mess, error)
     const msg = method
       ? `${Logger.colors.yellow(method)} - ${message}`
@@ -63,14 +69,12 @@ export class ExamError extends Error {
 
     super(addErrTag(msg))
 
-    // TODO: figure out what this is doing
-    // Error.captureStackTrace(this, this.constructor)
-    this.name = this.constructor.name
     method && (this.method = method)
     if(err?.stack) this.stack = err.stack
+
+    ;(error as TestErr)?.result && (this.result = (error as TestErr).result)
   }
 }
-
 
 export class RunnerErr extends Error {
   name=`RunnerErr`
@@ -84,6 +88,30 @@ export class RunnerErr extends Error {
     if(err?.stack) this.stack = err.stack
   }
 }
+
+
+export class BailError extends BaseError {
+
+  name=`BailError`
+  method?:string
+  result?:TExEventData
+
+  constructor(mess:string|Error, error?:Error|TestErr){
+    const [message, err] = resolveErrMsg(mess, error)
+    super(addErrTag(message), err)
+
+    if((error as TestErr)?.result){
+      this.result = (error as TestErr).result
+
+      let msg = `\n${this.message}\n`
+      this.cause && (msg += `${this.cause}\n\n`)
+      process.stdout.write(msg)
+
+    }
+  }
+}
+
+
 
 export class TestErr extends BaseError {
   name=`TestErr`
@@ -116,5 +144,30 @@ export class LoaderErr extends BaseError {
     const msg = `${message || err?.message || `could not load file`}`
 
     super(addErrTag(msg), err, replaceStack)
+  }
+}
+
+
+export class WkrPoolErr extends BaseError {
+  name=WkrPoolErrTag
+
+  constructor(message:string) {
+    super(message)
+  }
+}
+
+export class AggregateError extends Error {
+  #errors:Error[]
+
+  constructor(errs:Error[]) {
+    if (!isArr(errs)) throw new TypeError(`Expected input to be an Array, got ${typeof errs}`)
+
+    const errors = errs
+    super(buildMsg(errors))
+    this.#errors = errors
+  }
+
+  get errors() {
+    return this.#errors.slice()
   }
 }

@@ -27,7 +27,7 @@ export const ExamCfgModeTypes = [
 ]
 
 export const ExamCfgModeType = ExamCfgModeTypes.reduce(
-  (acc, type) => ({...acc, type}),
+  (acc, type) => ({...acc, [type]: type}),
   {} as Record<string, string>
 )
 

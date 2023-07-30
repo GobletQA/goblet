@@ -10,6 +10,8 @@ import {
   isObj,
   isFunc,
   toBool,
+  isNum,
+  isBool,
 } from '@keg-hub/jsutils'
 
 
@@ -175,7 +177,6 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     testDir: testDir ?? bTestDir,
     mode: getRunMode(base, override),
 
-    bail: toNum(bail ?? bBail),
     colors: toBool(colors ?? bColors),
     silent: toBool(silent ?? bSilent),
     testRetry: toNum(testRetry ?? bTestRetry),
@@ -185,6 +186,7 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     timeout: toNum(timeout ?? bTimeout),
     verbose: toBool(verbose ?? bVerbose),
     globalTimeout: toNum(globalTimeout ?? bGlobalTimeout),
+    bail: isBool(bail) ? bail : isNum(bail) ? bail : bBail,
 
     // atLeastOne(bWorkers, workers, rIB),
     workers: toNum(workers ?? bWorkers),

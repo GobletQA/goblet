@@ -1,6 +1,7 @@
 
 import util from 'util'
 import { Logger } from '@GEX/utils/logger'
+import { emptyArr } from '@keg-hub/jsutils'
 import { getCPUCount } from '@GEX/utils/getCPUCount'
 
 const clr = Logger.colors
@@ -27,14 +28,14 @@ export const logWorkBreakdown = (
 }
 
 export const printDebugResults = (
-  result:any[],
+  result:any[]=emptyArr,
   time:number
 ) => {
   
   const seconds = (time/1000).toFixed(2)
   header(`Execution Timing`)
   item(`Time:`, `total of ${seconds} seconds spent executing test file(s)`)
-  item(`Files:`, `total of ${result.length} test file(s) were executed`)
+  item(`Files:`, `total of ${result?.length || 0} test file(s) were executed`)
 }
 
 export const printTooManyWorkers = (amount:number, oneLessCpus:number) => {
@@ -46,10 +47,5 @@ export const printTooManyWorkers = (amount:number, oneLessCpus:number) => {
 }
 
 export const debugDeepObj = (obj:any) => {
-  const json = util.inspect(JSON.parse(JSON.stringify(obj)))
-  console.log(json, {
-    depth: null,
-    colors: true,
-    showHidden: false,
-  })
+  console.log(util.inspect(obj, {showHidden: false, depth: null, colors: true}))
 }

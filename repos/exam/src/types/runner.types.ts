@@ -30,8 +30,9 @@ export type TTestExecutor<T extends TBaseExecutor=TBaseExecutor> = T
 
 export interface IExamRunner<E extends IExamEnvironment> {
   environment:E
+  failed:number
   debug?: boolean
-  timeout?: number
+  timeout?:number
   verbose?:boolean
   globalTimeout?:number
 

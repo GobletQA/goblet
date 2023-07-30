@@ -7,4 +7,6 @@ export const WorkerEvents = {
   Close: `close`,
   Release: `release`,
   Message: `message`,
+  Stopped: `stopped`,
+  Terminate: `terminate`,
 }

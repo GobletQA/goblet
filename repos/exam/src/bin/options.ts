@@ -76,7 +76,7 @@ export const options = {
    */
   serial: {
     type: `boolean`,
-    alias: [`series`, `ordered`, `sync`],
+    alias: [`series`, `ordered`, `sync`, `srl`],
     description: `Each worker will execute one test at a time. Same as setting "mode" to "serial"`
   },
 
@@ -85,7 +85,7 @@ export const options = {
    */
   parallel: {
     type: `boolean`,
-    alias: [`async`],
+    alias: [`async`, `prl`],
     description: ` Each job can execute multiple tests at a time based on worker concurrency. Same as setting "mode" to "parallel"`
   },
 
@@ -221,7 +221,6 @@ export const options = {
    */
   bail:{
     default: 0,
-    type: `number`,
     description: `Exit the test suite immediately upon n number of failing test suite`,
   },
 

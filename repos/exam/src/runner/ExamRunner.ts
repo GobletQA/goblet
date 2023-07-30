@@ -22,6 +22,7 @@ import {ExamEnvironment} from '@GEX/environment'
 export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
 
   exam:Exam
+  failed:number=0
   debug?:boolean
   timeout?:number
   verbose?:boolean
@@ -29,6 +30,7 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
   isRunning?:boolean
   globalTimeout?:number
   environment:E
+
 
   constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
     const { exam, environment } = ctx

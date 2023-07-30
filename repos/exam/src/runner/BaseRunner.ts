@@ -106,12 +106,18 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
             failedExpectations: result?.failedExpectations
           }
         }))
-      
-      this.cancel()
+
       let errorMsg = `Spec Failed`
       if(result.testPath) errorMsg+= ` - ${result.testPath}`
+      const failedErr = Errors.TestFailed(result, new Error(errorMsg))
 
-      Errors.TestFailed(result, new Error(errorMsg))
+      this.failed += 1
+      const bailAmt = this.exam.bail
+
+      if(bailAmt && (this.failed >= bailAmt)){
+        this.cancel()
+        Errors.BailedTests(bailAmt, failedErr)
+      }
     }
   }
 

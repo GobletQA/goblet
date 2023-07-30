@@ -5,7 +5,7 @@ import { options } from './options'
 import { getRoot, homeDir, cwd } from './paths'
 import { argsParse } from '@keg-hub/args-parse'
 import { updateLogLevel, Logger } from "@GEX/utils/logger"
-import { emptyObj, exists, isArr, isStr, toNum } from '@keg-hub/jsutils'
+import { emptyObj, exists, isArr, isBool, isNum, isStr, toNum } from '@keg-hub/jsutils'
 
 const isDevCLI = toNum(process.env.EXAM_DEV_CLI)
 
@@ -63,6 +63,12 @@ export const parseArgs = async () => {
   const cleaned = removeEmpty<TExamCliOpts>(opts)
 
   updateLoggerLevel(opts, opts.logLevel)
+
+  /**
+   * Special handling for bail as it can be a boolean or number
+   */
+  if(exists(opts.bail) && !isBool(opts.bail) && !isNum(opts.bail))
+    opts.bail = toNum(opts.bail)
 
   if(isDevCLI && last.startsWith(`test-file`))
     cleaned.testMatch = [last]

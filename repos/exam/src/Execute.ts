@@ -45,11 +45,11 @@ type TExecStates = {
 export class Execute {
   
   exam:Exam
-  #runner:IExRunner
   preRunner?:string[]
   postRunner?:string[]
   preEnvironment?:string[]
   postEnvironment?:string[]
+  #runner:IExRunner<any, any>
   #Environment:ExamEnvironment
   #runners:TExecuteBuiltRunners={}
   passthrough:TExecPassThroughOpts
@@ -115,9 +115,9 @@ export class Execute {
       const cfg = inline[1] || typeCfg
       const Environ = inline[0] || EnvironType
 
-      this.#environment = isConstructor<IExEnvironment>(Environ)
+      this.#environment = isConstructor<IExEnvironment<any, any>>(Environ)
         ? new Environ({...this.passthrough.environment, ...cfg}, ctx)
-        : isObj<IExEnvironment>(Environ)
+        : isObj<IExEnvironment<any, any>>(Environ)
           ? Environ
           : undefined
 
@@ -183,8 +183,8 @@ export class Execute {
     transformed:unknown,
     ctx:TExCtx,
   ) => {
-    let error:Error
     let resp:TExEventData[]
+    let error:Error & { result?: TExEventData }
 
     try {
 
@@ -202,9 +202,16 @@ export class Execute {
     catch(err){ error = err }
     finally {
 
+      /**
+       * If it has a result, then it should be a failed test
+       * So throw the error again, so it can be picked up by exam and captured
+       * Otherwise assume it's an error with the Runner, and run clean up before throwing
+       */
+      if(error?.result) throw error
+
       this.#Environment.reset()
       await this.#environment?.reset?.(this.#runner)
-      
+
       if(error){
         await this.cleanup(ctx)
         throw new RunnerErr(error)
@@ -248,7 +255,7 @@ export class Execute {
   }
 
 
-  loadRunner = <T extends IExRunner=IExRunner>(opts:TLoadRunner<T>) => {
+  loadRunner = <T extends IExRunner<any, any>>(opts:TLoadRunner<T>) => {
     const {
       ctx,
       type,
@@ -260,7 +267,7 @@ export class Execute {
     if(this.#runners[type])
       return this.#runners[type]
 
-    const [TypeClass, cfg] = resolveTypeClass<IExRunner>({
+    const [TypeClass, cfg] = resolveTypeClass<IExRunner<any, any>>({
       fallback,
       override,
       type: globTypeMatch(this.runnerTypes, type)
