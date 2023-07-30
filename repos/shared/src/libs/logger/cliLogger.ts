@@ -1,5 +1,8 @@
+import  type { TCLILogger, TLogColors } from './logger.types'
+
 import { Logger } from '@keg-hub/cli-utils'
 import { identity } from '@keg-hub/jsutils'
+import { levels, getLevelMethods } from './levels'
 
 export const loggerColorDisabled = () => {
   const { FORCE_COLOR=`1`, GOBLET_TEST_COLORS=FORCE_COLOR } = process.env
@@ -15,7 +18,7 @@ export const stripColors = (str:string) => {
     : str
 }
 
-const getLoggerColors = () => {
+const getLoggerColors = ():TLogColors => {
   const noColors = loggerColorDisabled()
 
   return noColors
@@ -26,9 +29,20 @@ const getLoggerColors = () => {
     : Logger.colors
 }
 
-const CliLogger = {
+const CliLogger:TCLILogger = {
   ...Logger,
+  levels,
   colors: getLoggerColors(),
+  level: process.env.GB_LOG_LEVEL || `info`,
+}
+
+export const getLevelLogger = (logLevel:string|number):TCLILogger => {
+  const level = logLevel || CliLogger.level
+  return {
+    ...CliLogger,
+    level,
+    ...getLevelMethods(CliLogger.log, level),
+  } as unknown as TCLILogger
 }
 
 export {

@@ -8,16 +8,17 @@ import { ExamCfg } from '@GEX/constants'
 
 type TRuns = [any, any][]
 
-const files = (amt:number, skip=0) => doIt(amt, {}, (idx) => (
+const files = (amt:number, skip=0) => doIt(amt, {}, (idx:number) => (
   `/test-file${idx + skip + 1}`
 ))
 
-process.env.EXAM_WORKER_AMOUNT = `10`
+/** This is only used in when testing to ensure the CPU CORE are consistent */
+process.env.EXAM_CPU_AMOUNT = `10`
 
 const runs:TRuns = [
   [
     {
-      title: `Even split - 1 file per worker`,
+      title: `No workers, even split  - Set workers from available CPUs, 1 job per worker`,
       chunks: 5,
       workers: 0,
       concurrency: 0
@@ -37,7 +38,7 @@ const runs:TRuns = [
   ],
   [
     {
-      title: `One off split - More workers with concurrency then files`,
+      title: `One off split - More workers with concurrency, then job`,
       chunks: 5,
       workers: 10,
       concurrency: 2,
@@ -55,7 +56,7 @@ const runs:TRuns = [
   ],
   [
     {
-      title: `High single worker concurrency - 1 worker gets all files`,
+      title: `High single worker concurrency - 1 worker gets all job`,
       chunks: 10,
       workers: 3,
       concurrency: 20,

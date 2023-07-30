@@ -68,7 +68,7 @@ export const options = {
     type: `string`,
     alias: [`md`],
     allowed: [`serial`, `parallel`],
-    description: `Set the mode that tests are executed. Either serial or parallel`
+    description: `Sets how tests will be executed within a worker. Either serial or parallel`
   },
 
   /**
@@ -77,7 +77,7 @@ export const options = {
   serial: {
     type: `boolean`,
     alias: [`series`, `ordered`, `sync`],
-    description: `Enables test execution in serial mode`
+    description: `Each worker will execute one test at a time. Same as setting "mode" to "serial"`
   },
 
   /**
@@ -86,7 +86,7 @@ export const options = {
   parallel: {
     type: `boolean`,
     alias: [`async`],
-    description: `Enables test execution in serial mode`
+    description: ` Each job can execute multiple tests at a time based on worker concurrency. Same as setting "mode" to "parallel"`
   },
 
   /**
@@ -232,7 +232,7 @@ export const options = {
   concurrency: {
     type: `number`,
     alias: [`concur`, `cc`],
-    description: `The amount of test that can be executed per worker. Ignored when runInBand option is true`
+    description: `The amount of test that can be executed at the same time per worker. Ignored when runInBand is true`
   },
 
   /**
@@ -242,9 +242,39 @@ export const options = {
   workers: {
     alias: [`w`],
     type: `number`,
-    description: `The number of workers to be created to run tests. Ignored when runInBand option is true`
+    description: `The number of workers to be created to run tests. Ignored when runInBand is true`
   },
 
+  /**
+   * Makes the tests run very slow. Basically runs one test at a time in a single worker
+   * Added here to match other test framework CLI's
+   */
+  runInBand: {
+    default: false,
+    type: `boolean`,
+    alias: [`single`, `shared`],
+    description: `Run all tests serially, using just a single shared worker`
+  },
+
+  /**
+   * Should the test output include color in the terminal
+   */
+  colors: {
+    default: true,
+    type: `boolean`,
+    description: `Forces test results output highlighting even if stdout is not a TTY`
+  },
+
+  /**
+   * The Log Level to use durning text execution
+   * Must be one of `error` | `warn` | `info` | `http` | `verbose` | `debug` | `silly`
+   */
+  logLevel: {
+    default: `info`,
+    alias: [`log`, `level`, `ll`],
+    description: `The log level to use durning test execution`,
+    allowed: [`error`,`warn`,`info`,`http`,`verbose`,`debug`,`silly`],
+  },
 
   /**
    * The node environment the tests should be run in
@@ -267,77 +297,14 @@ export const options = {
     description: `Path to a config file. Default export must be a valid config or function that returns one`,
   },
 
-  /**
-   *
-   * ----- **IMPORTANT** The below options have not yet been implemented -----
-   *
-   */
 
 
   /**
-   * Hides all output to the terminal
-   * Helpful if only the reporters should collect test results, and nothing else
-   */
-  silent: {
-    default: false,
-    type: `boolean`,
-    description: `Prevent logging output to command line`
-  },
-
-  /**
-   * Makes the tests run very slow. Basically runs one test at a time in a single worker
-   * Added here to match other test framework CLI's
-   */
-  runInBand: {
-    default: false,
-    type: `boolean`,
-    alias: [`single`, `shared`],
-    description: `Run all tests serially, using just a single shared worker`
-  },
-
-  /**
-   * Number of times to retry a test when it fails
-   */
-  testRetry: {
-    default: 0,
-    alias: [`tr`],
-    type: `number`,
-    description: `Number of times to retry a test when it fails`,
-  },
-
-  /**
-   * Number of times to retry a test suite when a test in the suite fails
-   */
-  suiteRetry: {
-    default: 0,
-    alias: [`sr`],
-    type: `number`,
-    description: `Number of times to retry a test suite when a test in the suite fails`,
-  },
-
-  /**
-   * Should the test output include color in the terminal
-   */
-  colors: {
-    default: true,
-    type: `boolean`,
-    description: `Forces test results output highlighting even if stdout is not a TTY`
-  },
-
-  /**
-   *
-   * ----- **IMPORTANT** The above test options have not yet been implemented -----
-   *
-   */
-
-
-  /**
-   * **NOTES**
+   * **IMPORTANT**
    * These are added just the options response will be a valid Exam Config object
    * But they can not currently be set from the command line
    * To use them, an exam config file **MUST** be used
    */
-
 
   /**
    * Items to add as environment variables within the environment
@@ -397,5 +364,44 @@ export const options = {
    * Callback to called when exam has finished cleaning up after a test run
    * onCleanup: () => {},
    */
+
+
+
+  /**
+   *
+   * ----- **IMPORTANT** The below options have not yet been implemented -----
+   *
+   */
+
+
+  /**
+   * Hides all output to the terminal
+   * Helpful if only the reporters should collect test results, and nothing else
+   */
+  silent: {
+    default: false,
+    type: `boolean`,
+    description: `Prevent logging output to command line`
+  },
+
+  /**
+   * Number of times to retry a test when it fails
+   */
+  testRetry: {
+    default: 0,
+    alias: [`tr`],
+    type: `number`,
+    description: `Number of times to retry a test when it fails`,
+  },
+
+  /**
+   * Number of times to retry a test suite when a test in the suite fails
+   */
+  suiteRetry: {
+    default: 0,
+    alias: [`sr`],
+    type: `number`,
+    description: `Number of times to retry a test suite when a test in the suite fails`,
+  },
 
 }

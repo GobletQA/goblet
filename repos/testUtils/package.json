@@ -33,7 +33,7 @@
     "@gobletqa/screencast": "workspace:../screencast",
     "@gobletqa/shared": "workspace:../shared",
     "@jest/create-cache-key-function": "29.2.0",
-    "@keg-hub/cli-utils": ">=0.8.0-alpha1",
+    "@keg-hub/cli-utils": "0.8.0",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "5.0.0",

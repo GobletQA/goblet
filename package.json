@@ -60,7 +60,9 @@
   },
   "pnpm": {
     "overrides": {
-      "@emotion/react": "11.11.0"
+      "@emotion/react": "11.11.0",
+      "@keg-hub/args-parse": "10.0.1",
+      "@keg-hub/cli-utils": "0.8.0"
     },
     "peerDependencyRules": {
       "ignoreMissing": ["dockerode", "react"],
@@ -68,8 +70,8 @@
     }
   },
   "dependencies": {
-    "@keg-hub/args-parse": ">=10.0.0",
-    "@keg-hub/cli-utils": "0.8.0-alpha1",
+    "@keg-hub/args-parse": ">=10.0.1",
+    "@keg-hub/cli-utils": "0.8.0",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "5.0.0",

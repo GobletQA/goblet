@@ -120,19 +120,19 @@ export const ExCfg:Partial<TExamConfig> = {
   /**
    * ----- TODO: Need to implement these ----- *
    */
-  workers: 1,
   testRetry: 0,
-  colors: true,
   suiteRetry: 0,
   silent: false,
-  concurrency: 1,
-  runInBand: false,
 
   /**
    * ----- Implemented ----- *
    */
   bail: 0,
+  workers: 1,
   reporter: {},
+  colors: true,
+  concurrency: 1,
+  runInBand: false,
   reporters: [`default`],
   passWithNoTests: false,
   mode: EExTestMode.serial,
@@ -141,7 +141,7 @@ export const ExCfg:Partial<TExamConfig> = {
     `**/?(*.)+(spec|test).[jt]s?(x)`
   ],
 
-  // Special handling for events
+  // Special handling for custom events
   events: {} as any,
 }
 
@@ -157,5 +157,16 @@ export const ExamCfg = {
 
 export const PoolCfg = {
   size: 1,
-  worker: {}
+  worker: {},
 }
+
+export const WorkerEnvs = [
+  `NODE_ENV`,
+  `EXAM_CLI_ENV`,
+  `GB_LOG_LEVEL`,
+  `EXAM_LOG_LEVEL`,
+  `EXAM_CLI_DEBUG`,
+  `EXAM_CLI_VERBOSE`,
+  `GOBLET_TEST_DEBUG`,
+  `GOBLET_TEST_VERBOSE`,
+]

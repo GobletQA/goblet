@@ -2,17 +2,19 @@ lockfileVersion: '6.0'
 
 overrides:
   '@emotion/react': 11.11.0
+  '@keg-hub/args-parse': 10.0.1
+  '@keg-hub/cli-utils': 0.8.0
 
 importers:
 
   .:
     dependencies:
       '@keg-hub/args-parse':
-        specifier: '>=10.0.0'
-        version: 10.0.0
+        specifier: 10.0.1
+        version: 10.0.1
       '@keg-hub/cli-utils':
-        specifier: 0.8.0-alpha1
-        version: 0.8.0-alpha1
+        specifier: 0.8.0
+        version: 0.8.0
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
@@ -105,8 +107,8 @@ importers:
         specifier: workspace:../workflows
         version: link:../workflows
       '@keg-hub/cli-utils':
-        specifier: '>=0.8.0-alpha1'
-        version: 0.8.0-alpha1
+        specifier: 0.8.0
+        version: 0.8.0
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
@@ -203,8 +205,8 @@ importers:
         specifier: workspace:../shared
         version: link:../shared
       '@keg-hub/cli-utils':
-        specifier: 0.8.0-alpha1
-        version: 0.8.0-alpha1
+        specifier: 0.8.0
+        version: 0.8.0
       '@types/react':
         specifier: 18.0.17
         version: 18.0.17
@@ -248,8 +250,8 @@ importers:
         specifier: workspace:../shared
         version: link:../shared
       '@keg-hub/cli-utils':
-        specifier: '>=0.8.0-alpha1'
-        version: 0.8.0-alpha1
+        specifier: 0.8.0
+        version: 0.8.0
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
@@ -323,9 +325,12 @@ importers:
 
   repos/exam:
     dependencies:
+      '@keg-hub/args-parse':
+        specifier: 10.0.1
+        version: 10.0.1
       '@keg-hub/cli-utils':
-        specifier: '>=0.8.0-alpha1'
-        version: 0.8.0-alpha1
+        specifier: 0.8.0
+        version: 0.8.0
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
@@ -391,8 +396,8 @@ importers:
   repos/latent:
     dependencies:
       '@keg-hub/cli-utils':
-        specifier: '>=0.8.0-alpha1'
-        version: 0.8.0-alpha1
+        specifier: 0.8.0
+        version: 0.8.0
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
@@ -683,8 +688,8 @@ importers:
         specifier: workspace:../latent
         version: link:../latent
       '@keg-hub/cli-utils':
-        specifier: '>=0.8.0-alpha1'
-        version: 0.8.0-alpha1
+        specifier: 0.8.0
+        version: 0.8.0
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
@@ -777,8 +782,8 @@ importers:
         specifier: 29.2.0
         version: 29.2.0
       '@keg-hub/cli-utils':
-        specifier: '>=0.8.0-alpha1'
-        version: 0.8.0-alpha1
+        specifier: 0.8.0
+        version: 0.8.0
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
@@ -853,8 +858,8 @@ importers:
         specifier: workspace:../shared
         version: link:../shared
       '@keg-hub/cli-utils':
-        specifier: 0.8.0-alpha1
-        version: 0.8.0-alpha1
+        specifier: 0.8.0
+        version: 0.8.0
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
@@ -977,8 +982,8 @@ importers:
         specifier: workspace:../shared
         version: link:../shared
       '@keg-hub/cli-utils':
-        specifier: '>=0.8.0-alpha1'
-        version: 0.8.0-alpha1
+        specifier: 0.8.0
+        version: 0.8.0
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
@@ -4060,17 +4065,17 @@ packages:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
     dev: false
 
-  /@keg-hub/args-parse@10.0.0:
-    resolution: {integrity: sha512-/ijarHkbV39TuSTxzFHvPF1SgbZiEx3gm3jyyT0F7gCilEdO2ja0Rv/VzGruFxBhJmn5O8DH1+gN/JwzQNUOEA==}
+  /@keg-hub/args-parse@10.0.1:
+    resolution: {integrity: sha512-FDmJSvU9WNdq0hJ58Tw6dtTeRly5WlCbYuEsKPJgtQGnSdOlhwUSz0xZGf/B8O+eDbBio9W9zlVgfM0s63VLkA==}
     dependencies:
       '@keg-hub/jsutils': 9.6.1
       app-root-path: 3.0.0
 
-  /@keg-hub/cli-utils@0.8.0-alpha1:
-    resolution: {integrity: sha512-FAct2E6/Br46nAoe3n04eXyAVNjermG5+NIGWY+wxG53nISzodwl2I6pwdqWQfKtACKzaj7Wwi+kCvkNXBRn1Q==}
+  /@keg-hub/cli-utils@0.8.0:
+    resolution: {integrity: sha512-UcoOAGkEBNtnc0XcjBUf5W1xy7OzjuvFlozGvwEKC4P7RpWHsndpCOL6DpEMEIynl77vTqVI8nAv3idbCE8a8g==}
     engines: {node: '>= 16.0.0'}
     dependencies:
-      '@keg-hub/args-parse': 10.0.0
+      '@keg-hub/args-parse': 10.0.1
       '@keg-hub/jsutils': 9.6.1
       '@keg-hub/spawn-cmd': 0.3.2
       app-root-path: 3.0.0
@@ -4087,7 +4092,7 @@ packages:
   /@keg-hub/parse-config@2.1.0:
     resolution: {integrity: sha512-6AZyINWm8S6oWSbUxwzSTZ1BBcXpne7BiDDreRdN2GJ3kU8dDfwd1cJvQtggo4p0KRMw8fTDgtMv7PjH0bFgVQ==}
     dependencies:
-      '@keg-hub/cli-utils': 0.8.0-alpha1
+      '@keg-hub/cli-utils': 0.8.0
       '@keg-hub/jsutils': 9.6.1
       '@keg-hub/spawn-cmd': 0.3.2
       js-yaml: 3.14.1

@@ -67,11 +67,9 @@ export class ReportEventMapper {
     const { name } = evt
     const method = eventReporterMap[name]
 
-    console.log(evt)
-
     if(!method){
-      // console.log(`------- Found event without a match reporter method -------`)
-      // console.log(evt)
+      process.env.EXAM_CLI_VERBOSE
+        && console.warn(`[Exam Event] Missing reporter method for event ${evt.name}`)
       return
     }
 

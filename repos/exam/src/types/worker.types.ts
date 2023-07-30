@@ -12,8 +12,8 @@ export type TWorkerQueue = (worker:Worker) => void
 
 export type TPoolCfg = {
   size?:number
-  worker?: WorkerOptions
   location:string
+  worker?: WorkerOptions
 }
 
 export type TCleanStack = {

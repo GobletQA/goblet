@@ -1,4 +1,4 @@
-import type { TLogOpts } from '@GSH/utils/buildLogger'
+import type { TLogOpts, TWinLogger } from '@GSH/utils/buildLogger'
 
 import './stdio'
 import { buildLogger } from '@GSH/utils/buildLogger'
@@ -7,7 +7,7 @@ import { setLogs, capitalize, isStr, isColl, exists, toBool } from '@keg-hub/jsu
 
 const { GB_SUB_REPO } = process.env
 
-export type TWLogger = typeof Logger & {
+export type TWLogger = typeof Logger & TWinLogger & {
   colors: typeof CliLogger.colors
 }
 

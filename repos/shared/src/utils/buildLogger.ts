@@ -13,6 +13,7 @@ const {
 } = format
 
 let __LOGGER:winston.Logger
+export type TWinLogger = winston.Logger
 
 export type TLogOpts = winston.LoggerOptions & {
   label:string

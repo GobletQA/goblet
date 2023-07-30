@@ -4,6 +4,7 @@ import path from 'path'
 import { options } from './options'
 import { getRoot, homeDir, cwd } from './paths'
 import { argsParse } from '@keg-hub/args-parse'
+import { getLogger } from "@GEX/utils/logger"
 import { emptyObj, exists, isArr, isStr, toNum } from '@keg-hub/jsutils'
 
 const isDevCLI = toNum(process.env.EXAM_DEV_CLI)
@@ -91,10 +92,14 @@ export const updateCLIEnvs = (
   opts?.env && updateEnv(`NODE_ENV`, opts.env, force)
   opts?.env && updateEnv(`EXAM_CLI_ENV`, opts.env, force)
   opts?.workerId && updateEnv(`EXAM_WORKER_ID`, opts.workerId, force)
+  exists(opts?.logLevel) && updateEnv(`EXAM_LOG_LEVEL`, opts?.logLevel, force)
 
   exam?.debug && updateEnv(`EXAM_CLI_DEBUG`, 1, force)
   exam?.verbose && updateEnv(`EXAM_CLI_VERBOSE`, 1, force)
+  
   exam?.mode && updateEnv(`EXAM_CLI_MODE`, exam.mode, force)
   exam?.workers && updateEnv(`EXAM_CLI_WORKERS`, exam.workers, force)
   exam?.concurrency && updateEnv(`EXAM_CLI_CONCURRENCY`, exam.workers, force)
+
+  getLogger(undefined, true)
 }

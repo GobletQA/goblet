@@ -21,27 +21,34 @@ ife(async () => {
 
   const workerCfg:TWorkerCfg = {
     exam: workerData.exam,
-    id: workerData.workerId || nanoid()
+    id: workerData.workerId
   }
 
   updateCLIEnvs(workerCfg.exam, { workerId: workerCfg.id })
 
-  parentPort.once('message', async (message:TParentMsg) => {
-    console.log(`------- got parent message -------`)
+  parentPort.on('message', async (message:TParentMsg) => {
+    
+    console.log(`------- got new message  -------`)
+    console.log(workerCfg.id)
+    console.log(message.run)
+    
+    setTimeout(() => {
+      message.port.postMessage([`done`])
+    }, 2000)
     
     /**
     * Create a new exam instance each time the worker is rerun
     * This ensures a clean environment each time
     */
-    const EX = new Exam(workerCfg.exam, workerCfg.id)
-    const [error, results] = await limbo(EX.run(message.run))
+    // const EX = new Exam(workerCfg.exam, workerCfg.id)
+    // const [error, results] = await limbo(EX.run(message.run))
 
-    if(error){
-      // TODO: figure out how to handle an error
-      console.log(error)
-    }
+    // if(error){
+    //   // TODO: figure out how to handle an error
+    //   console.log(error)
+    // }
 
-    message.port.postMessage(results)
+    // message.port.postMessage(results)
   })
 
 })

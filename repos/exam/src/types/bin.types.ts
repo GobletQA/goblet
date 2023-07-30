@@ -6,5 +6,6 @@ export type TExamCliOpts = TExamConfig & {
   serial?:boolean
   parallel?:boolean
   workerId?:string
+  logLevel?:number|string
 }
 

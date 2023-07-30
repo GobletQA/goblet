@@ -1,7 +1,7 @@
 import type { TExEventData } from "@GEX/types"
-import { ExamError, LoaderErr, TestErr} from "@GEX/utils/error"
-import { Logger } from "@GEX/utils/logger"
 
+import { Logger } from "@GEX/utils/logger"
+import { ExamError, LoaderErr, TestErr} from "@GEX/utils/error"
 
 export const ErrorCodes = {
   NotFound: `ENOENT`
@@ -15,6 +15,7 @@ export const Errors = {
     throw new ExamError(`The method is required to be overwritten by the child class`, method, error)
   },
   Transform: (method:string, file:string, error?:Error) => {
+    
     throw new ExamError(
       `Failed to transform file ${Logger.colors.yellow(`"${file}"`)}`,
       method,

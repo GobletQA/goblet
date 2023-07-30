@@ -1,32 +1,33 @@
 import type { TExamConfig } from '@GEX/types'
 
-import os from 'os'
-import { toNum, exists } from '@keg-hub/jsutils'
+import { exists } from '@keg-hub/jsutils'
+import { getCPUCount } from '@GEX/utils/getCPUCount'
 import { printTooManyWorkers } from '@GEX/debug/verbose'
 
-const cpuCount = os.cpus().length
-
-export const getWorkerNum = (workers?:number, locationsAmt:number=1) => {
-  const oneLessCpus = process.env.EXAM_WORKER_AMOUNT
-    ? toNum(process.env.EXAM_WORKER_AMOUNT)
-    : cpuCount - 1
+/** */
+const getWorkerNum = (workers?:number, locationsAmt:number=1) => {
+  const oneLessCpus = getCPUCount()
 
   let amount = workers > 0 ? workers : oneLessCpus > 0 ? oneLessCpus : 1
   
-  if(amount > cpuCount){
+  if(amount > oneLessCpus){
     printTooManyWorkers(amount, oneLessCpus)
-    amount = amount > cpuCount ? oneLessCpus : amount
+    amount = amount > oneLessCpus ? oneLessCpus : amount
   }
 
-  // One create as many workers as we have files to be tested
+  /*** Only need to create as many workers as we have files to be tested */
   return amount > locationsAmt ? locationsAmt : amount
 }
 
-export const getConcurrency = (concurrency?:number, evenSplit?:number) => {
+/**
+ * Gets the number of jobs each worker can handle
+ * Internally the worker also queues these jobs when running in serial
+ */
+const getConcurrency = (concurrency?:number, evenSplit?:number) => {
   return concurrency > 0 ? concurrency : evenSplit > 0 ? evenSplit : 1
 }
 
-export const getWAndC = (exam:TExamConfig, locationsAmt:number) => {
+const getWAndC = (exam:TExamConfig, locationsAmt:number) => {
   if(exam.runInBand) return { workers: 1, concurrency: 1 }
 
   const workers = getWorkerNum(exam.workers, locationsAmt)
@@ -37,16 +38,10 @@ export const getWAndC = (exam:TExamConfig, locationsAmt:number) => {
   }
 }
 
-
 /**
  * Split an array of items up into separate chunks
  */
-export const chunkify = <T=any>(arr:T[], size=1, workers?:number) => {
-
-  // If only 1 worker, ensure all files goes to that worker
-  if(exists(workers) && workers <= 1)
-    size = arr.length
-  
+const chunkify = <T=any>(arr:T[], size=1) => {
   const chunks:Record<string|number, T[]> = {}
   let ref = 0
   if(size < 1) size = 1
@@ -59,8 +54,12 @@ export const chunkify = <T=any>(arr:T[], size=1, workers?:number) => {
   return chunks
 }
 
-
-
+/**
+ * Splits the jobs up into chucks to be passed to each worker
+ * Any jobs that don't fit into the workers are pushed into their own stack
+ * When a workers finishes all their original jobs
+ * They will pull extra jobs off the stack
+ */
 export const splitWork = (exam:TExamConfig & { file?:string }, locations:string[]) => {
   const total = locations.length
 
@@ -71,7 +70,7 @@ export const splitWork = (exam:TExamConfig & { file?:string }, locations:string[
 
   const chunks = exam.runInBand
     ? {[0]: locations}
-    : chunkify<string>([...locations], concurrency, workers)
+    : chunkify<string>([...locations], concurrency)
     
   return {
     total,

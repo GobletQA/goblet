@@ -6,7 +6,7 @@ import type {
   TEXInterReporterContext,
 } from "@GEX/types"
 
-import { Logger } from '@gobletqa/shared/libs/logger'
+import { Logger } from "@GEX/utils/logger"
 import { noOp, get, noPropArr, isFunc, isStr, capitalize } from '@keg-hub/jsutils'
 
 type TEvtCB = { name?:string } & ((...args:any[]) => void)
