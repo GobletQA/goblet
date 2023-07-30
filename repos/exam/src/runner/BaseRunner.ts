@@ -11,8 +11,9 @@ import { Errors } from '@GEX/constants/errors'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { RootSuiteId } from '@GEX/constants/events'
 import { emptyArr, omitKeys, set, get, } from '@keg-hub/jsutils'
+import {BaseEnvironment} from '@GEX/environment/BaseEnvironment'
 
-export class BaseRunner extends ExamRunner {
+export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
   test:ParkinTest
   omitTestResults:string[] = []

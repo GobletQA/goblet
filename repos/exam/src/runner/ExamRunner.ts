@@ -6,9 +6,12 @@ import type {
   TExRunnerCfg,
   TTransformResp,
   IExEnvironment,
+  IExamRunner,
+  IExamEnvironment,
 } from '@GEX/types'
 
 import { Errors } from '@GEX/constants/errors'
+import {ExamEnvironment} from '@GEX/environment'
 
 
 /**
@@ -16,10 +19,7 @@ import { Errors } from '@GEX/constants/errors'
  * Sets up the test environment to allow running tests in a secure context
  * Ensures the test methods exist on the global scope
  */
-export class ExamRunner<
-  T extends TExData=TExData,
-  R=unknown
-> implements IExRunner {
+export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
 
   exam:Exam
   debug?:boolean
@@ -28,9 +28,9 @@ export class ExamRunner<
   canceled?:boolean
   isRunning?:boolean
   globalTimeout?:number
-  environment:IExEnvironment
+  environment:E
 
-  constructor(cfg:TExRunnerCfg, ctx:TExCtx<T>) {
+  constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
     const { exam, environment } = ctx
 
     this.exam = exam
@@ -61,7 +61,7 @@ export class ExamRunner<
     return this.isRunning
   }
 
-  run = (content:TTransformResp<R>, ctx:TExCtx<T>) => {
+  run = (content:TTransformResp, ctx:TExCtx) => {
     Errors.Override(`ExamRunner.run`)
     return undefined
   }

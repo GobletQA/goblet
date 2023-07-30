@@ -13,10 +13,12 @@ import type {
   TPlayerStartConfig,
 } from '@GSC/types'
 
-import { Exam } from '@gobletqa/exam'
+import { Exam, TExamRunners } from '@gobletqa/exam'
 import { PWPlay } from '@GSC/constants'
 import { DomScripts } from './DomScripts'
 import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
+import {FeatureEnvironment} from './FeatureEnvironment'
+import {FeatureRunner} from './FeatureRunner'
 
 
 /**
@@ -160,12 +162,48 @@ export class RepoExam {
       extraHTTPHeaders &&
         await this.page.setExtraHTTPHeaders({...extraHTTPHeaders})
 
-      this.exam = new Exam(this, {
-        // timeout,
-        // globalTimeout,
-        // debug: this.options?.playOptions?.debug as boolean,
-        // slowMo: this.options?.playOptions?.slowMo as number,
-      })
+      this.exam = new Exam({
+        timeout,
+        globalTimeout,
+          // /**
+          // * Do not throw an error when no tests are found
+          // */
+          // passWithNoTests?:boolean
+
+          // /**
+          // * Stop executing tests once the number of failed tests matches this amount
+          // * If set to 0, it is disabled
+          // */
+          // bail?:number
+
+          // // Custom reporter options
+          // reporter?:TExReporterCfg
+
+          // // These get convert form strings to classes in the Exam Loader
+          runners: {
+            [`.feature`]: [FeatureRunner, {
+              debug: this.options?.playOptions?.debug as boolean,
+              slowMo: this.options?.playOptions?.slowMo as number,
+            }]
+          } as TExamRunners,
+          // reporters?:TExamReporters
+          // transforms: TExamTransforms
+          // environment?: TExamEnvironment
+
+          // // TODO: implement different modes
+          // mode?:EExTestMode
+
+          // // TODO: implement the follow config options
+          // workers?:number
+          // silent?:boolean
+          // testRetry?:number
+          // suiteRetry?:number
+          // concurrency?:number
+
+          colors:false,
+          runInBand:true,
+          environment: FeatureEnvironment
+      }, this.options.file.location)
 
       // TODO: fix `feature` to come from a constant
       const content = this.options?.file?.fileType === `feature`

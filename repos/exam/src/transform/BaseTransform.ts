@@ -15,7 +15,7 @@ import { createGlobMatcher } from '@GEX/utils/globMatch'
  * ExamTransform - Base transform, used for all files by default
  * Can be overridden by defining custom transforms in a config
  */
-export class BaseTransform implements IExTransform<string> {
+export class BaseTransform<T=string> implements IExTransform<T> {
 
   esbuild?:TESBuildCfg=emptyObj
   options:TExTransformCfg=emptyObj
@@ -56,21 +56,21 @@ export class BaseTransform implements IExTransform<string> {
     return this.#onTransform(transformed)
   }
   
-  transform = (content:string, ctx:TTransform, sync?:boolean):Promise<string>|string => {
+  transform = (content:string, ctx:TTransform, sync?:boolean):Promise<T>|T => {
     const { file, esbuild } = ctx
-    if(this.transformIgnore(file.location)) return content
+    if(this.transformIgnore(file.location)) return content as T
 
     try {
       const { hookMatcher, ...opts} = (esbuild || {})
       
       return sync
-        ? this.transformSync(content, opts)
-        : this.transformAsync(content, opts)
+        ? this.transformSync(content, opts) as T
+        : this.transformAsync(content, opts) as T
     }
     catch(err){
       Errors.Transform(file.location, `BaseTransform.transform`, err)
 
-      return content
+      return content as T
     }
   }
   

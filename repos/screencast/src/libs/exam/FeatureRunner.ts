@@ -1,4 +1,4 @@
-import type { Exam, TExCtx } from "@gobletqa/exam"
+import type { Exam, TExCtx, TExRunnerCfg } from "@gobletqa/exam"
 import {
   RunnerErr,
   ExamRunner,
@@ -6,12 +6,12 @@ import {
 } from "@gobletqa/exam"
 
 import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
-import type { TPlayerEventData, TPlayerTestEvent } from '@gobletqa/shared/types'
+import type { Repo, TPlayerEventData, TPlayerTestEvent } from '@gobletqa/shared/types'
 
 import { Parkin } from '@ltipton/parkin'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { emptyObj, omitKeys } from '@keg-hub/jsutils'
-import { FeatureEnvironment } from './FeatureEnvironment'
+
 
 export type TRunContent = string | string[] | TFeatureAst | TFeatureAst[]
 export type TFeatureData = {
@@ -30,15 +30,17 @@ export type TRunnerOpts = {
  * Sets up the test environment to allow running tests in a secure context
  * Ensures the test methods exist on the global scope
  */
-export class FeatureRunner extends ExamRunner<TFeatureData, TRunContent> {
+export class FeatureRunner extends ExamRunner<any> {
+  // export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
+// IExamEnvironment<ExamRunner>
 
   /**
    * Player Class instance
    */
   PK:Parkin
-  PTE:ParkinTest
+  repo:Repo
+  test:ParkinTest
 
-  environment:FeatureEnvironment
 
   omitTestResults:string[] = [
     `tests`,
@@ -47,12 +49,19 @@ export class FeatureRunner extends ExamRunner<TFeatureData, TRunContent> {
     `failedExpectations`,
   ]
 
-  constructor(ctx:TExCtx<TFeatureData>) {
-    // exam:Exam, opts?:TRunnerOpts
-    super(ctx)
+  constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
+    super(cfg, ctx)
 
     this.isRunning = false
-    this.environment = ctx.environment as FeatureEnvironment
+    this.test = new ParkinTest({
+      specDone: this.onSpecDone,
+      suiteDone: this.onSuiteDone,
+      specStarted: this.onSpecStarted,
+      suiteStarted: this.onSuiteStarted,
+    })
+
+    if(cfg.omitTestResults)
+      this.omitTestResults = cfg.omitTestResults
   }
 
 
@@ -64,7 +73,7 @@ export class FeatureRunner extends ExamRunner<TFeatureData, TRunContent> {
     
     const steps = ctx?.data?.steps
     
-    this.PTE = this.environment.setupGlobals(this)
+    this.test = this.environment.setupGlobals(this)
     this.PK = await this.environment.setupParkin(this)
 
     // Timeout gets passed as last argument to test() method of global test method 
@@ -74,7 +83,7 @@ export class FeatureRunner extends ExamRunner<TFeatureData, TRunContent> {
       timeout: this.timeout,
     })
 
-    const results = await this.PTE.run() as TPlayerEventData[]
+    const results = await this.test.run() as TPlayerEventData[]
 
     // We only support 1 feature per file, so we only care about the first test result 
     const final = this.clearTestResults(results[0])
@@ -128,7 +137,7 @@ export class FeatureRunner extends ExamRunner<TFeatureData, TRunContent> {
 
   cancel = async () => {
     this.canceled = true
-    this.PTE?.abort?.()
+    this.test?.abort?.()
     this?.PK?.runner?.steps?.clear()
     this?.PK?.steps?.clear()
 
@@ -137,12 +146,12 @@ export class FeatureRunner extends ExamRunner<TFeatureData, TRunContent> {
 
   cleanup = async () => {
     this.environment.cleanup(this)
-    this.environment.resetGlobals()
-    this?.PTE?.clean()
+    this.environment.reset()
+    this?.test?.clean()
 
     this.exam = undefined
     this.PK = undefined
-    this.PTE = undefined
+    this.test = undefined
   }
 
   /**

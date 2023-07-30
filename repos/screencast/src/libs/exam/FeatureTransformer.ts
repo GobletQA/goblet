@@ -1,16 +1,37 @@
 import type {
   TRunContent,
-  TFeatureData,
 } from './FeatureRunner'
-import type { TExCtx, TExTransformOpts } from "@gobletqa/exam"
+import {
+  TTransform,
+  TESBuildCfg,
+  IExTransform,
+  createGlobMatcher,
+  TExTransformCfg,
+} from "@gobletqa/exam"
 
-import { ExamTransformer } from "@gobletqa/exam"
+import {emptyObj} from '@keg-hub/jsutils'
 
-export class FeatureTransformer implements ExamTransformer<TRunContent, TFeatureData> {
+export class FeatureTransformer implements IExTransform<TRunContent> {
 
-  options:TExTransformOpts={}
+  esbuild?:TESBuildCfg=emptyObj
+  options:TExTransformCfg=emptyObj
+  transformIgnore:(match:string) => boolean
 
-  transform = async(content:string, ctx: TExCtx<TFeatureData>) => {
+  constructor(cfg?:TExTransformCfg) {
+
+    const { transformIgnore, esbuild, ...rest } = cfg
+
+    if(esbuild) this.esbuild = esbuild
+    this.transformIgnore = createGlobMatcher(transformIgnore)
+    
+    this.options = {...this.options, ...rest}
+  }
+
+  transform = (content:string, ctx:TTransform, sync?:boolean):Promise<TRunContent>|TRunContent => {
+
+    const { file } = ctx
+    if(this.transformIgnore(file.location)) return content as TRunContent
+
 
     // TODO: use parkin to convert to Feature AST
     return {} as TRunContent

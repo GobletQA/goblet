@@ -1,15 +1,16 @@
-import {Exam} from '@GEX/Exam'
+import type { Exam } from '@GEX/Exam'
 import type {
   TSerializeObj,
   IExEnvironment,
   TEnvironmentEnvs,
   TExEnvironmentCfg,
   TEnvironmentCache,
+  IExamEnvironment,
 } from '@GEX/types'
 
 import { isStr } from '@keg-hub/jsutils'
 
-export class ExamEnvironment implements IExEnvironment {
+export class ExamEnvironment implements IExamEnvironment {
 
   exam:Exam
   globals:TSerializeObj={}
@@ -20,7 +21,7 @@ export class ExamEnvironment implements IExEnvironment {
     globals: {},
   }
 
-  constructor(cfg:TExEnvironmentCfg, exam){
+  constructor(cfg:TExEnvironmentCfg, exam:Exam){
     this.envs = {...cfg.envs, EXAM_ENV: true }
     this.globals = {...cfg.globals}
     this.exam = exam

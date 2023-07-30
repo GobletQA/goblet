@@ -2,6 +2,7 @@ import type { TExEventData } from './results.types'
 import type { IConstructable } from './helpers.types'
 import type { TExCtx, TExData } from "./execute.types"
 import type { TTransformResp } from './transform.types'
+import {IExamEnvironment} from './environment.types'
 
 export type TExRunnerCfg = {
   debug?: boolean
@@ -27,13 +28,14 @@ type TBaseExecutor = {
 export type TTestExecutor<T extends TBaseExecutor=TBaseExecutor> = T
 
 
-export interface IExamRunner<T extends TExData=TExData, R=unknown> {
+export interface IExamRunner<E extends IExamEnvironment> {
+  environment:E
   debug?: boolean
   timeout?: number
   verbose?:boolean
   globalTimeout?:number
 
-  run(content:TTransformResp<R>, ctx:TExCtx<T>): Promise<TExEventData[]>
+  run<R=any, T=any>(content:TTransformResp, ctx:TExCtx<T>): Promise<TExEventData[]>
 
   cancel:() => void|Promise<void>
   cleanup:() => void|Promise<void>
@@ -47,9 +49,10 @@ export interface IExamRunner<T extends TExData=TExData, R=unknown> {
 
 
 export type IExRunner<
-  T extends TExData=TExData,
-  R=unknown,
-  I extends IExamRunner<T, R>=IExamRunner<T, R>
-> = I & IExamRunner
-
-export type TRunnerCls<T extends TExData=TExData, R=unknown> = IConstructable<IExRunner<T, R>>
+  E extends IExamEnvironment,
+  R extends IExamRunner<E>
+> = R & IExamRunner<E>
+export type TRunnerCls<
+  E extends IExamEnvironment,
+  R extends IExamRunner<E>
+> = IConstructable<IExRunner<E, R>>

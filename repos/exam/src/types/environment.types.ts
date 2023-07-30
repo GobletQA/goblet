@@ -1,4 +1,4 @@
-import { IExRunner } from './runner.types'
+import { IExamRunner, IExRunner } from './runner.types'
 import { IConstructable } from './helpers.types'
 import { ExamRunner } from '@GEX/runner/ExamRunner'
 import {TExCtx} from './execute.types'
@@ -44,21 +44,19 @@ export type TExEnvironmentCfg = {
   envs?:Record<string, TEnvironmentEnvVal>
 }
 
-export interface IExamEnvironment<R=ExamRunner> {
+export interface IExamEnvironment<R extends ExamRunner=ExamRunner> {
   globals?:TSerializeObj
   envs?:Record<string, TEnvironmentEnvVal>
-
-  setup(runner:IExRunner<R>, ctx:TExCtx):void|Promise<void>
-  reset(runner:IExRunner<R>):void|Promise<void>
-  cleanup(runner:IExRunner<R>):void|Promise<void>
+  setup(runner:R, ctx:TExCtx):void|Promise<void>
+  reset(runner:R):void|Promise<void>
+  cleanup(runner:R):void|Promise<void>
 }
 
 export type IExEnvironment<
-  R extends ExamRunner=ExamRunner,
-  I extends IExamEnvironment<R>=IExamEnvironment<R>
-> = I & IExamEnvironment<R>
-
+  E extends IExamEnvironment,
+  R extends ExamRunner
+> = E & IExamEnvironment<R>
 export type TEnvironmentCls<
-  R extends ExamRunner=ExamRunner,
-  I extends IExamEnvironment<R>=IExamEnvironment<R>
-> = IConstructable<IExEnvironment<R, I>>
+  E extends IExamEnvironment,
+  R extends ExamRunner
+> = IConstructable<IExEnvironment<E, R>>

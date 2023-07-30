@@ -1,9 +1,10 @@
 import type * as Parkin from '@ltipton/parkin'
 import type {
-  IExEnvironment,
-  TEnvironmentCfg,
-  TEnvironmentOpts,
+  TEnvironmentEnvs,
   TEnvironmentCache,
+  IExamEnvironment,
+  TExEnvironmentCfg,
+  TExCtx,
 } from "@gobletqa/exam"
 import type {
   FeatureRunner,
@@ -26,32 +27,15 @@ import {
   AutoSavedLocatorWorldPath,
 } from '@gobletqa/shared/constants'
 
-export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
+export class FeatureEnvironment implements IExamEnvironment<FeatureRunner> {
 
-  options:TEnvironmentOpts = {
-    envs: {
-      GOBLET_RUN_FROM_UI: `1`,
-      GOBLET_RUN_FROM_CI: undefined
-    }
-  }
-  
+  envs:TEnvironmentEnvs={}
   cache:TEnvironmentCache = {
-    envs: {},
+    envs:{},
     globals: {},
   }
 
-  /**
-  * ------ TODO: Move this to parkin ------ *
-  * It should auto-clean up the world object after each spec
-  */
-  worldSavePaths:string[] = [
-    SavedDataWorldPath,
-    AutoSavedDataWorldPath,
-    SavedLocatorWorldPath,
-    AutoSavedLocatorWorldPath,
-  ]
-
-  testGlobals:string[] = [
+  globals:string[] = [
     `it`,
     `xit`,
     `test`,
@@ -64,14 +48,27 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
     `beforeEach`,
   ]
 
-  constructor(cfg:TEnvironmentCfg=emptyObj){
-    if(cfg.testGlobals)
-      this.testGlobals = [...this.testGlobals, ...cfg.testGlobals]
 
-    if(cfg.worldSavePaths)
-      this.worldSavePaths = [...this.worldSavePaths, ...cfg.worldSavePaths]
-
+  options = {
+    envs: {
+      GOBLET_RUN_FROM_UI: `1`,
+      GOBLET_RUN_FROM_CI: undefined
+    }
   }
+  
+
+  /**
+  * ------ TODO: Move this to parkin ------ *
+  * It should auto-clean up the world object after each spec
+  */
+  worldSavePaths:string[] = [
+    SavedDataWorldPath,
+    AutoSavedDataWorldPath,
+    SavedLocatorWorldPath,
+    AutoSavedLocatorWorldPath,
+  ]
+
+  constructor(cfg:TExEnvironmentCfg=emptyObj){}
 
   /**
   * Use custom test runner from parkin
@@ -91,7 +88,7 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
 
     const PTE = new ParkinTest(opts)
 
-    this.testGlobals.forEach((item) => {
+    this.globals.forEach((item) => {
       this.cache.globals[item] = global[item]
       global[item] = PTE[item]
     })
@@ -111,7 +108,7 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
   * Caches any existing globals so they can be reset after the test run
   * This ensures it doesn't clobber what ever already exists
   */
-  setupGlobals = (runner:FeatureRunner, timeout?:number) => {
+  setup = (runner:FeatureRunner, ctx: TExCtx) => {
     this.cache.globals.page = (global as any).page
     this.cache.globals.expect = (global as any).expect
     this.cache.globals.context = (global as any).context
@@ -122,20 +119,20 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
     // global.page = runner.exam.page
     // global.browser = runner.exam.browser
     // global.context = runner.exam.context
-    return this.setTestGlobals(runner, timeout)
+    return this.setTestGlobals(runner, runner.timeout)
   }
 
   /**
   * Uses the global test cache that was created in setupGlobals to reset their value
   * This ensures it doesn't clobber what ever already exists
   */
-  resetGlobals = () => {
+  reset = () => {
     ;(global as any).page = this.cache.globals.page
     ;(global as any).expect = this.cache.globals.expect
     ;(global as any).context = this.cache.globals.context
     ;(global as any).browser = this.cache.globals.browser
 
-    this.testGlobals.forEach((item) => global[item] = this.cache.globals[item])
+    this.globals.forEach((item) => global[item] = this.cache.globals[item])
     
     // TODO: investigate overwriting all envs
     Object.entries(this.options.envs)
@@ -153,19 +150,19 @@ export class FeatureEnvironment implements IExEnvironment<FeatureRunner> {
   */
   setupParkin = async (runner:FeatureRunner) => {
     // TODO: FIX ME
-    const PK = runner?.exam?.repo?.parkin
+    const PK = runner?.repo?.parkin
     if(!PK) throw new Error(`Repo is missing a parkin instance`)
 
     // TODO: FIX ME
-    await getDefinitions(runner?.exam?.repo, undefined, false)
+    await getDefinitions(runner?.repo, undefined, false)
     return PK
   }
 
   /**
    * It should auto-clean up the world object after each spec
    */
-  cleanup = (runner:FeatureRunner) => {
-    this.worldSavePaths.forEach(loc => unset(runner.PK?.world, loc))
+  cleanup = (runner: FeatureRunner) => {
+    this.worldSavePaths.forEach(loc => unset(runner.test?.world, loc))
   }
 
 }

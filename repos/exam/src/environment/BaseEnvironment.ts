@@ -4,6 +4,8 @@ import type {
   TEnvironmentEnvs,
   TExEnvironmentCfg,
   TEnvironmentCache,
+  IExamEnvironment,
+  IExRunner,
 } from '@GEX/types'
 
 /**
@@ -14,7 +16,8 @@ import expect from 'expect'
 import { emptyObj } from '@keg-hub/jsutils'
 import { BaseRunner } from '@GEX/runner/BaseRunner'
 
-export class BaseEnvironment implements IExEnvironment<BaseRunner> {
+
+export class BaseEnvironment implements IExamEnvironment<BaseRunner> {
 
   envs:TEnvironmentEnvs={}
   cache:TEnvironmentCache = {
