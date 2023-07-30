@@ -1,9 +1,15 @@
 
 import type { TExamEvt } from './exam.types'
+import type { TExFileModelDef } from './file.types'
 import type { EAstObject, TRunResult as TParkinRunResult } from '@ltipton/parkin'
 
-export type TRunResult = Omit<TParkinRunResult, `type`> & {
-  type:EPlayerTestType.error
+export type TRunResultMeta = {
+  file?:Partial<TExFileModelDef>
+}
+
+export type TRunResult = Omit<TParkinRunResult, `type`|`metadata`> & {
+  type:EPlayerTestType
+  metaData?:TRunResultMeta
 }
 
 export enum EPlayerTestAction {

@@ -11,7 +11,7 @@ import type {
 import { Logger } from "@GEX/utils/logger"
 
 import { ExamEvtNames } from "@GEX/constants/events"
-import { RootSuiteTag, SuiteTag, SpecTag } from "@GEX/constants/tags"
+import { RootSuiteTag, SuiteTag, FileTag } from "@GEX/constants/tags"
 import { noOp, get, noPropArr, isFunc, isStr, capitalize } from '@keg-hub/jsutils'
 
 const ResultStatus = {
@@ -20,13 +20,22 @@ const ResultStatus = {
 }
 
 const spaceMap = {
-  root: `  `,
-  hook: `    `,
-  describe: `  `,
-  test: `  `,
+  file: `  `,
+  root: `    `,
+  hook: `      `,
+  describe: `    `,
   error: `         `,
+  add: `  `
 }
 
+const logFile = (location:string, rootDir?:string) => {
+  const fromRoot = location?.replace(rootDir, ``).replace(/^\//, `<root>/`)
+  fromRoot && Logger.stdout(`${spaceMap.file}${FileTag} > ${Logger.colors.gray(fromRoot)}`)
+}
+
+/**
+ * Helper to log the parent meta data - (i.e. describes)
+ */
 const logParent = (
   evt:TExamEvt<TExEventData>,
   spacer:string,
@@ -43,20 +52,21 @@ const logParent = (
     isRoot
       ? Logger.stdout([
           `\n`,
-          `${space}${RootSuiteTag(`Test-Root`)}`,
+          `${space}${RootSuiteTag(`Test`)}`,
           ` > `,
-          `${Logger.colors.white(context.description)}\n`
+          `${Logger.colors.gray(context.description)}\n`
         ].join(``))
       : Logger.stdout([
           `${space}${SuiteTag(`Describe`)}`,
           ` > `,
-          `${Logger.colors.white(context.description)}\n`
+          `${Logger.colors.gray(context.description)}\n`
         ].join(``))
 
 }
 
 /**
  * Helper to log test execution status in real time
+ * Logs the outcome of each describe and test
  */
 const logResult = (
   evt:TExamEvt<TExEventData>,
@@ -114,28 +124,36 @@ export class BaseReporter implements IExamReporter {
     this.exam = cfg.exam
   }
 
-  // Event `PLAY-STARTED`,
-  onRunStart = (evt:TExamEvt) => {
-    // TODO: print test header here
-    console.log(`------- Run started -------`)
+  #addSpace = () => {
+    this.spacer+=spaceMap.add
   }
+  
+  #subSpace = () => {
+    this.spacer.slice(0, this.spacer.length - spaceMap.add.length)
+  }
+  
+  // Event `PLAY-STARTED`,
+  onRunStart = (evt:TExamEvt) => {}
 
   // Event `PLAY-SUITE-START-ROOT`
   onTestFileStart = (evt:TExamEvt<TExEventData>) => {
-    // console.log(`PLAY-STARTED`)
-    // console.log(evt)
-    this.spacer+=`  `
+
+    const file = evt?.data?.metaData?.file
+    const rootDir = this.exam?.loader?.rootDir
+    if(file?.location){
+      this.#addSpace()
+      logFile(file?.location, rootDir)
+    }
+
+    this.#addSpace()
     logResult(evt, this.spacer)
   }
 
   // Event `PLAY-SUITE-START`
   onTestStart = (evt:TExamEvt<TExEventData>) => {
-    // console.log(`PLAY-SUITE-START`)
-    // console.log(evt)
-    this.spacer+=`  `
+    this.#addSpace()
     logResult(evt, this.spacer)
   }
-
 
   /**
    * Called before running a spec (prior to `before` hooks)
@@ -151,33 +169,27 @@ export class BaseReporter implements IExamReporter {
 
   // Event `PLAY-SUITE-DONE`
   onTestResult = (evt:TExamEvt<TExEventData>) => {
-    this.spacer.slice(0, this.spacer.length - 2)
+    this.#subSpace()
     logResult(evt, this.spacer)
   }
 
   // Event `PLAY-SUITE-DONE-ROOT` - Top level suite-0 only
   onTestFileResult = (evt:TExamEvt<TExEventData>) => {
-    this.spacer.slice(0, this.spacer.length - 2)
+    this.#subSpace()
     logResult(evt, this.spacer)
   }
 
 
   // Event `PLAY-RESULTS`
-  onRunComplete = (evt:any
-    // testContexts: Set<TestContext>,
-    // results: AggregatedResult,
-  ) => {
+  onRunComplete = () => {
+    this.#subSpace()
     Logger.empty()
   }
 
-  onWarning = (evt:any) => {
-    
-  }
+  onWarning = (evt:any) => {}
 
   // Event `PLAY-ERROR`
-  onError = (evt:any
-    
-  ) => {
+  onError = (evt:any) => {
     // console.log(`------- BaseReporter - onError -------`)
     // console.log(evt.name)
   }

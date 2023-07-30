@@ -10,11 +10,11 @@ import { ExamRunner } from './ExamRunner'
 import { Errors } from '@GEX/constants/errors'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { RootSuiteId } from '@GEX/constants/events'
-import { emptyArr, omitKeys } from '@keg-hub/jsutils'
+import { emptyArr, omitKeys, set, get, } from '@keg-hub/jsutils'
 
 export class BaseRunner extends ExamRunner {
 
-  executor:ParkinTest
+  test:ParkinTest
   omitTestResults:string[] = []
 
 
@@ -22,7 +22,7 @@ export class BaseRunner extends ExamRunner {
     super(cfg, ctx)
 
     this.isRunning = false
-    this.executor = new ParkinTest({
+    this.test = new ParkinTest({
       specDone: this.onSpecDone,
       suiteDone: this.onSuiteDone,
       specStarted: this.onSpecStarted,
@@ -38,31 +38,38 @@ export class BaseRunner extends ExamRunner {
    */
   run = async (content:string, ctx:TExCtx) => {
     this.isRunning = true
-    this.load(content, ctx)
+    this.load(ctx)
 
-    /**
-     * Imports the module from a string using Nodes built-in vm module
-     * Currently sets `useCurrentGlobal: true`, to use the currently globals
-     * Eventually this will be updated to not do that
-     */
-    // requireFromStringVM(ctx.file, content, {
-    //   filename: file.name,
-    //   useCurrentGlobal: true,
-    //   dirname: path.dirname(file.location),
-    // })
-
-    const { data } = ctx
+    const { data, file } = ctx
     const opts = { ...data }
     const tOut = data?.timeout ?? this.globalTimeout
     tOut && (opts.timeout = tOut)
-
 
     /**
      * The required module above should use the current globals
      * Which means PTE should now be loaded with tests to run
      */
     this.exam.event(ExamEvents.started)
-    const results = await this.executor.run() as TExEventData[]
+    const parent = this.test.getActiveParent()
+
+    /**
+     * Add the file metaData for use in events later
+     * Switch `ParkinMetaData` for `metaData` once the new version of ParkinTest is published
+     */
+    get(parent, `describes.0.action`)
+      && set(parent, `describes.0.action`, {
+          ParkinMetaData: {
+            file: {
+              ext: file?.ext,
+              name: file?.name,
+              fileType: file?.fileType,
+              location: file?.location,
+            }
+          }
+        })
+
+    const results = await this.test.run() as TExEventData[]
+
     const final = results.map(result => this.clearTestResults(result))
 
     this.isRunning = false
@@ -135,18 +142,18 @@ export class BaseRunner extends ExamRunner {
 
   cancel = async () => {
     this.canceled = true
-    this.executor?.abort?.()
+    this.test?.abort?.()
 
     await this.cleanup?.()
   }
 
   cleanup = async () => {
     try {
-      this?.executor?.clean()
+      this?.test?.clean()
     }
     catch(err){}
 
-    this.executor = undefined
+    this.test = undefined
     this.exam = undefined
   }
 

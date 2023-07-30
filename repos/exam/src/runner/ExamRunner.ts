@@ -10,6 +10,7 @@ import type {
 
 import { Errors } from '@GEX/constants/errors'
 
+
 /**
  * Runner
  * Sets up the test environment to allow running tests in a secure context
@@ -47,11 +48,8 @@ export class ExamRunner<
   /**
    * Method used to load tests into the environment
    */
-  protected load = (content:string, ctx:TExCtx) => {
+  protected load = (ctx:TExCtx) => {
     const { file } = ctx
-    
-    // TODO: pass on load options if they exist
-    // Need to add them to the ctx object
     return this.exam.loader.runTest(file)
   }
 

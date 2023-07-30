@@ -22,7 +22,7 @@ export class BaseEnvironment implements IExEnvironment<BaseRunner> {
     globals: {},
   }
 
-  executorGlobals:string[] = [
+  globals:string[] = [
     `it`,
     `xit`,
     `test`,
@@ -41,16 +41,16 @@ export class BaseEnvironment implements IExEnvironment<BaseRunner> {
     this.cache.globals.expect = (global as any).expect
     ;(global as any).expect = expect
 
-    this.executorGlobals?.forEach((item) => {
+    this.globals?.forEach((item) => {
       this.cache.globals[item] = global[item]
-      global[item] = runner.executor[item]
+      global[item] = runner.test[item]
     })
   }
 
   reset = (runner:BaseRunner) => {
     ;(global as any).expect = this.cache.globals.expect
 
-    this.executorGlobals?.forEach((item) => global[item] = this.cache.globals[item])
+    this.globals?.forEach((item) => global[item] = this.cache.globals[item])
   }
 
   cleanup = (runner:BaseRunner) => {

@@ -107,7 +107,10 @@ export class Exam {
     const results = await this.execute.exec<T>({...options, file: model })
 
     !this.canceled
-      && this.event(ExamEvents.results({ data: results }))
+      && this.event(ExamEvents.results({
+          data: results,
+          location: model.location.replace(this.loader.rootDir, ``)
+        }))
 
     return results
   }

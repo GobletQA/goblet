@@ -1,9 +1,9 @@
 import type { IVMContext, TExFileModel, TVMRequireOpts } from '@GEX/types'
 
+import { emptyObj } from '@keg-hub/jsutils'
+import { Context, runInContext } from 'vm'
 import { createGCtx, resetGCtx } from './createGCtx'
 import {createMCtx, resolveMainMod} from './createMCtx'
-import { Context, runInContext, createContext } from 'vm'
-import {emptyObj} from '@keg-hub/jsutils'
 
 
 export class VMContext {

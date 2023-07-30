@@ -22,6 +22,7 @@ export type TExamEvt<T=TExEventData|TExEventData[]> = {
   data?:T
   name:string
   message?:string
+  location?:string
   isRunning?:boolean
 }
 

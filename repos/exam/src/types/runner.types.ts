@@ -11,6 +11,22 @@ export type TExRunnerCfg = {
   omitTestResults?:string[]
 }
 
+type TBaseExecutor = {
+  test: (desc:string, ...args:any[]) => any
+  describe: (desc:string, ...args:any[]) => any
+  it?: (desc:string, ...args:any[]) => any
+  xit?: (desc:string, ...args:any[]) => any
+  xtest?: (desc:string, ...args:any[]) => any
+  xdescribe?: (desc:string, ...args:any[]) => any
+  afterAll?: (desc:string, ...args:any[]) => any
+  afterEach?: (desc:string, ...args:any[]) => any
+  beforeAll?: (desc:string, ...args:any[]) => any
+  beforeEach?: (desc:string, ...args:any[]) => any
+}
+
+export type TTestExecutor<T extends TBaseExecutor=TBaseExecutor> = T
+
+
 export interface IExamRunner<T extends TExData=TExData, R=unknown> {
   debug?: boolean
   timeout?: number

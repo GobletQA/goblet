@@ -26,7 +26,8 @@ type TRecordRef<T=TEnvironmentEnvVal> = TEnvironmentEnvVal
 export type TEnvironmentEnvArr = Array<TRecordRef<TRecordRef<TRecordRef>>>
 export type TEnvironmentEnvObj = TRecordRef<TRecordRef<TRecordRef>>
 
-export type TSerializeObj = Record<string, TEnvironmentEnvObj|TEnvironmentEnvArr>
+// TODO: fix this to use a real serializable values
+export type TSerializeObj = Record<any, any>
 
 export type TEnvironmentEnvs = {
   [key:string]:TEnvironmentEnvVal
