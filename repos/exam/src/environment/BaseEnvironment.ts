@@ -64,3 +64,5 @@ export class BaseEnvironment implements IExamEnvironment<BaseRunner> {
   }
 
 }
+
+export default BaseEnvironment

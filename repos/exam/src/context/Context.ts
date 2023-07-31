@@ -58,9 +58,10 @@ export class VMContext {
       modCtx,
       opts
     ) as T
+
     modCtx.loaded = true
 
-    return this.#onModule<T>(modCtx, modCtx.exports)
+    return this.#onModule<T>(modCtx, modCtx.module.exports)
   }
 
   getCtx = ():Context|null => {

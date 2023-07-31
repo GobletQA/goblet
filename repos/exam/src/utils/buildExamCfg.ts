@@ -20,7 +20,16 @@ const replaceRootObj = <T=Record<string, string>>(obj:T, rootDir:string) => {
 
 const replaceRootArr = <T extends any[]=string[]>(items:T, rootDir:string) => {
   return items?.length
-    ? items.map(item => item.replaceAll(RootDirKey, rootDir))
+    ? items.map(item => {
+        if(isStr(item))
+          return item.replaceAll(RootDirKey, rootDir)
+        if(isArr(item) && isStr(item[0])){
+          const replaced = item[0].replaceAll(RootDirKey, rootDir)
+          return [replaced, item[1]]
+        }
+
+        return item
+    })
     : emptyArr as T
 }
 

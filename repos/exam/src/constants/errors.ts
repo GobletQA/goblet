@@ -10,8 +10,11 @@ export const ErrorCodes = {
 }
 
 export const Errors = {
-  LoadErr: (err:Error) => {
-    throw new LoaderErr(err)
+  ExecErr: (message:string, err?:Error) => {
+    throw new ExamError(err, message)
+  },
+  LoadErr: (err:Error, location:string) => {
+    throw new LoaderErr(`Failed to load file "${Logger.colors.yellow(location)}"`, err)
   },
   Override: (method:string, error?:Error) => {
     throw new ExamError(`The method is required to be overwritten by the child class`, method, error)

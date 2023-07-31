@@ -100,8 +100,7 @@ export const ExamConfig:TExamConfig = {
     `.mts`,
     `.tsx`,
   ],
-  exts: [],
-  
+
   /**
    * Custom Runners to execute tests, based on file extension
    */
@@ -117,7 +116,9 @@ export const ExamConfig:TExamConfig = {
   /**
    * Custom Environment loaded before Transform and Runner, based on file extension
    */
-  environment: undefined,
+  environment: [
+    `src/environment/BaseEnvironment.ts`
+  ],
 
   /**
    * Custom Reporters for reporting test execution results

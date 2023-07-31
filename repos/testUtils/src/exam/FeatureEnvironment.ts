@@ -5,6 +5,7 @@ import type {
   TEnvironmentCache,
   IExamEnvironment,
 } from '@gobletqa/exam/types'
+import type { FeatureRunner } from './FeatureRunner'
 
 /**
  * This is needed so that expect is added to the global context
@@ -12,8 +13,6 @@ import type {
  */
 import expect from 'expect'
 import { emptyObj } from '@keg-hub/jsutils'
-import {FeatureRunner} from './FeatureRunner'
-
 
 export class FeatureEnvironment implements IExamEnvironment<FeatureRunner> {
 
@@ -62,3 +61,5 @@ export class FeatureEnvironment implements IExamEnvironment<FeatureRunner> {
   }
 
 }
+
+export default FeatureEnvironment

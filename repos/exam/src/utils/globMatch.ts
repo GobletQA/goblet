@@ -85,3 +85,11 @@ export const globTypeMatch = <T extends Record<any, any>=Record<any, any>>(
   const matched = globKeysMatch<Record<string, T>>(obj, glob)
   return Object.values(matched).shift()
 }
+
+export const findGlobMatch = (
+  item:string,
+  globs:string[],
+  opts:GlobOptions=emptyObj as GlobOptions
+) => {
+  return globs.find(glob => micromatch.isMatch(item, glob, opts))
+}

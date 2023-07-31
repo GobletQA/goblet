@@ -24,14 +24,14 @@ import {TESBuildCfg} from "./loader.types"
 export type TExData = Record<string, any>
 
 export type TLoadTransform<T extends IExTransform=IExTransform> = {
-  type:string
+  file:TExFileModel
   options?:TExTransformCfg
   fallback?:IConstructable<T>
   override?:TExArrClsOptMap<T>
 }
 
 export type TLoadRunner<T extends IExRunner<any, any>=IExRunner<any, any>> = {
-  type:string
+  file:TExFileModel
   ctx:TExExtensionsCtx
   options?:TExRunnerCfg
   fallback?:IConstructable<T>
@@ -51,11 +51,11 @@ export type TExecPassThroughOpts = {
 
 export type TExecuteCfg = {
   exam:Exam
-  preRunner?:string[]
-  postRunner?:string[]
-  preEnvironment?:string[]
-  postEnvironment?:string[]
+  preRunner?:TLoadFilesArr
+  postRunner?:TLoadFilesArr
   environment?:TExecEnvironment
+  preEnvironment?:TLoadFilesArr
+  postEnvironment?:TLoadFilesArr
 
   runners?:TExecRunners
   transforms?:TExecTransforms
@@ -70,6 +70,7 @@ type TExRunMaps = {
 
 type TExRunMeta<D extends TExData=TExData, Ast extends TExAst=TExAst> = {
   data?: D
+  transformed?:unknown
   file?:TExFileModel<Ast>
   esbuild?:TESBuildCfg|false
 }
@@ -85,7 +86,7 @@ export type TExImportCtx<T extends TExData=TExData> = {
 export type TExExtensionsCtx<
   D extends TExData=TExData,
   Ast extends TExAst=TExAst
-> = TExRun<D, Ast> & { exam:Exam }
+> = Omit<TExRun<D, Ast>, `file`> & { exam:Exam, file?:any }
 
 export type TExCtx<
   D extends TExData=TExData,
@@ -96,3 +97,7 @@ export type TExCtx<
   runner:IExRunner<any, any>
   environment:IExEnvironment<any, any>
 }
+
+export type TLoadFileWOpts = string | [string, Record<any, any>]
+
+export type TLoadFilesArr = Array<TLoadFileWOpts>

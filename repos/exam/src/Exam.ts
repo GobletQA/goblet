@@ -16,7 +16,6 @@ import {
 
 import { Loader } from '@GEX/Loader'
 import { Execute } from '@GEX/Execute'
-import {Logger} from '@GEX/utils/logger'
 import { Errors, ExamEvtNames } from '@GEX/constants'
 import { EExTestMode, EExErrorType } from '@GEX/types'
 import { buildExamCfg } from '@GEX/utils/buildExamCfg'
@@ -39,11 +38,11 @@ export class Exam {
   // Cache the config, so we can init executor lazily
   #config:TExamConfig
 
+  bail?:number=0
   loader:Loader
   execute:Execute
   id:string = null
   mode:EExTestMode
-  bail?:number=0
   canceled:boolean=false
   onCancel?:TExamCancelCB
   onCleanup?:TExamCleanupCB
@@ -98,16 +97,17 @@ export class Exam {
    */
   #runTest = async <T extends TExData=TExData>(options:TExamRun<T>) => {
     const { file, single } = options
-    const model = isObj<TExFileModel>(file)
-      ? file
-      : await this.loader.loadContent<TExFileModel<T>>(file, { single, testFile: true, asModel: true })
+
+    const { model, transform } = isObj<TExFileModel>(file)
+      ? { model: file, transform: undefined }
+      : await this.loader.content<TExFileModel<T>>(file, { single, testFile: true, asModel: true })
 
     if(!model){
       if(single)
         return this.#onNoTests(isObj(file) ? file.location : file)
     }
 
-    const results = await this.execute.exec<T>({...options, file: model })
+    const results = await this.execute.exec<T>({...options, transform, file: model })
 
     !this.canceled
       && this.event(ExamEvents.results({
@@ -193,6 +193,9 @@ export class Exam {
           return arr
         }
         catch(err){
+          
+          if(err.name === EExErrorType.RunnerErr) throw err
+
           const fromRoot = loc.replace(this.loader.rootDir, ``)
           
           ;[EExErrorType.TestErr, EExErrorType.BailError].includes(err.name)
@@ -253,7 +256,7 @@ export class Exam {
    * This is done lazily due to it being async
    * @member {Exam}
    */
-  initExec = async (force?:boolean) => {
+  initExec = async <T>(opts:TExamRunOpts<T>=emptyObj, force?:boolean) => {
     if(this.execute){
       if(!force) return this.execute
       await this.execute.cleanup()
@@ -264,7 +267,10 @@ export class Exam {
       exam: this,
       config: this.#config,
     })
+
     this.execute = new Execute(execCfg)
+
+    await this.execute.setupEnvironment({ ...opts, exam: this })
   }
 
   /**
@@ -286,7 +292,7 @@ export class Exam {
       this.#setEvents(opts)
 
       !this.execute
-        && await this.initExec()
+        && await this.initExec(opts)
 
       !this.eventReporter
         && await this.initReporters()
@@ -338,6 +344,7 @@ export class Exam {
         if(error){
           if(error.result) return [error.result]
 
+          console.error(error)
           throw error
         }
       }

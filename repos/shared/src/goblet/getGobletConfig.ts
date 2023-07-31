@@ -38,9 +38,9 @@ export const getGobletConfig = (
   argsConfig:TGetGobletConfigArgs = noOpObj as TGetGobletConfigArgs
 ) => {
 
-  // TODO: Jest sets the JEST_WORKER_ID env
+  // TODO: Exam sets the EXAM_ENV env
   // If other test runners are added, need to ensure this is updated as well
-  if (!Boolean(process.env.JEST_WORKER_ID) && __GOBLET_CONFIG) return __GOBLET_CONFIG
+  if (!Boolean(process.env.EXAM_ENV) && __GOBLET_CONFIG) return __GOBLET_CONFIG
 
   const baseConfig = loadConfigFromBase(isStr(argsConfig.base) && argsConfig.base)
 

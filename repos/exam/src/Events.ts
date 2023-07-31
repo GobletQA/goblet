@@ -2,6 +2,7 @@ import type { Exam } from '@GEX/Exam'
 import type { TExamEvts, TExamEvt } from '@GEX/types'
 
 import { ExamEvtNames } from '@GEX/constants'
+import {emptyObj} from '@keg-hub/jsutils'
 
 export const onExDynEvent = (mainEvt:Partial<TExamEvt>) => {
   return (evt:Partial<TExamEvt>) => {
@@ -87,7 +88,7 @@ const __ExamEvents:TExamEvts = {
 
 export let ExamEvents:TExamEvts={...__ExamEvents}
 
-export const addCustomEvents = (evts:TExamEvts) => {
+export const addCustomEvents = (evts:Partial<TExamEvts>=emptyObj as Partial<TExamEvts>) => {
   ExamEvents = {...__ExamEvents, ...evts}
 }
 

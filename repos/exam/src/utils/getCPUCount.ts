@@ -7,12 +7,12 @@ export const getCPUCount = () => {
   if(__CpuCount) return __CpuCount
 
   const {
+    EXAM_ENV,
     EXAM_DEV_CLI,
-    JEST_WORKER_ID,
     EXAM_CPU_AMOUNT,
   } = process.env
-  
-  if(exists(JEST_WORKER_ID) && exists(EXAM_DEV_CLI) && exists(EXAM_CPU_AMOUNT))
+
+  if(exists(EXAM_ENV) && exists(EXAM_DEV_CLI) && exists(EXAM_CPU_AMOUNT))
     return toNum(process.env.EXAM_CPU_AMOUNT)
   
   __CpuCount = os.cpus().length - 1

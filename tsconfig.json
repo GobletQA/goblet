@@ -111,9 +111,10 @@
       "@GWF": ["repos/workflows/src"],
       "@GWF/*": ["repos/workflows/src/*"],
 
+      "@GLogs": ["logs"],
+      "@GLogs/*": ["logs/*"],
       "@GTasks": ["tasks"],
       "@GTasks/*": ["tasks/*"],
-      "@GLogs/*": ["logs/*"],
       "@GRepos/*": ["repos/*"],
       "@GConfigs/*": ["configs/*"],
       "@GException": ["repos/shared/src/exceptions/Exception"],

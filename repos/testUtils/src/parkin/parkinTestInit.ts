@@ -4,9 +4,7 @@
  * Allows setting up parkin after Jest has been configured
  */
 
-import { isNum } from '@keg-hub/jsutils'
 import { getParkinInstance } from './instance'
-import { jasmineReporter } from '@GTU/Reports/jasmineReporter'
 
 /**
  * Global helper to allow re-using the same parking instance for each test
@@ -41,19 +39,3 @@ const getParkinOptions = () => {
  * Have access to the global object, so could use that for loading Parkin config options
  */
 global.getParkinOptions = getParkinOptions
-
-const parkinTestInit = () => {
-  const opts = getParkinOptions()
-
-  // This is set for all tests that are run
-  // TODO: it on a per-step basis it would need to be added to Parkin in some capacity
-  isNum(opts.retry) && jest.retryTimes(opts.retry)
-
-  // Add a custom jasmine reporter to track test status
-  jasmineReporter()
-
-  // Figure out where / how to best set this
-  isNum(opts.retry) && jest.setTimeout(opts.timeout)
-}
-
-parkinTestInit()

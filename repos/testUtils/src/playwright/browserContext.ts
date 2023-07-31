@@ -13,12 +13,15 @@ import os from 'os'
 import path from 'path'
 import { startTracing } from './tracing'
 import { get, emptyObj } from '@keg-hub/jsutils'
-import {
-  metadata,
-  ghostMouse,
-  getPWComponents,
-  setBrowserDefaults,
-} from '@gobletqa/screencast/libs/playwright'
+import metadata from '@gobletqa/screencast/libs/playwright/helpers/metadata'
+import { getPWComponents } from '@gobletqa/screencast/libs/playwright/browser/browser'
+import { setBrowserDefaults } from '@gobletqa/screencast/libs/playwright/browser/setBrowserDefaults'
+
+// import {
+//   ghostMouse,
+//   getPWComponents,
+//   setBrowserDefaults,
+// } from '@gobletqa/screencast/libs/playwright'
 
 import {
   browserCookieLoc,
@@ -139,7 +142,8 @@ export const getPage = async (num = 0) => {
 
   const pages = context.pages() || []
   const page = pages.length ? pages[num] : await context.newPage()
-  LAST_ACTIVE_PAGE = ghostMouse(page)
+  LAST_ACTIVE_PAGE = page
+  // LAST_ACTIVE_PAGE = ghostMouse(page)
 
   return LAST_ACTIVE_PAGE as TBrowserPage
 }

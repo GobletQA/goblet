@@ -3,7 +3,9 @@ import { noPropArr, isStr } from '@keg-hub/jsutils'
 export type TTestMatch = {
   ext?:string
   type?:string
+  testDir?:string
   shortcut?:string
+  extOnly?:boolean
 }
 
 /**
@@ -44,19 +46,23 @@ const buildCustomExt = (prefix, ext) => {
  * @function
  * @public
  */
-export const buildTestMatchFiles = (
-  testDir:string,
-  {type, shortcut, ext}:TTestMatch
-) => {
-  if(!isStr(testDir) || (!isStr(type) && !isStr(ext)) ) return noPropArr
+export const buildTestMatchFiles = ({
+  testDir,
+  type,
+  shortcut,
+  ext,
+  extOnly
+}:TTestMatch) => {
+  if(!isStr(type) || !isStr(ext)) return noPropArr
 
   const prefix = testDir ? `${testDir}/**` : `**`
+  if(extOnly) return [...buildCustomExt(prefix, ext)] 
 
   return [
-    ...buildCustomExt(prefix, ext),
-    ...buildFilePaths(prefix, type),
+    ...(ext && buildCustomExt(prefix, ext) || []),
+    ...(type && buildFilePaths(prefix, type) || []),
     ...buildFilePaths(prefix, shortcut),
     ...buildFilePaths(prefix, `test`),
     ...buildFilePaths(prefix, `spec`),
-  ]
+  ].filter(Boolean)
 }

@@ -33,9 +33,12 @@ const loopLoadTypes = async <
 >(
   exam:Exam,
   typeMap:T,
-  options:TLoadOpts
+  options:TLoadOpts,
+  typeName?:string
 ) => {
-  return Object.entries(typeMap)
+  const builtItems = {} as TExecuteOptsMap<I, C>
+
+  await Object.entries(typeMap)
     .reduce(async (acc, [name, type]) => {
       await acc
 
@@ -43,13 +46,16 @@ const loopLoadTypes = async <
         && await convertTypeStrToCls<I, C>(
             exam,
             type,
-            options
+            options,
+            typeName
           )
 
-      built && built.length && (acc[name] = built)
+      built && built.length && (builtItems[name] = built)
 
       return acc
     }, Promise.resolve({} as TExecuteOptsMap<I, C>))
+
+  return builtItems
 }
 
 export type TBuiltExecCfg = {
@@ -95,22 +101,25 @@ export const buildExecCfg = async ({
     postEnvironment,
   } = config
 
-  const loadedE = await convertTypeStrToCls<IExEnvironment, TExEnvironmentCfg>(
+  const loadedE = await convertTypeStrToCls<IExEnvironment<any, any>, TExEnvironmentCfg>(
     exam,
     environment,
-    // environment || [BaseEnvironment, EnvironmentCfg],
-    options
+    options,
+    `Environments`
   )
 
   const loadedT = await loopLoadTypes<TExamTransforms,IExTransform,TExTransformCfg>(
     exam,
     transforms,
-    options
+    options,
+    `Transforms`
   )
-  const loadedR = await loopLoadTypes<TExamRunners,IExRunner,TExRunnerCfg>(
+
+  const loadedR = await loopLoadTypes<TExamRunners,IExRunner<any, any>,TExRunnerCfg>(
     exam,
     runners,
-    options
+    options,
+    `Runners`
   )
 
   return {

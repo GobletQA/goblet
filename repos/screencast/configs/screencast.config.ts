@@ -57,17 +57,25 @@ const {
   // This will ensure requests are coming from the backend API only
   GB_CD_VALIDATION_KEY,
   GB_CD_VALIDATION_HEADER,
-  
+
+  EXAM_ENV,
 
 } = process.env
 
-// If DEBUG_FILE env is not set to the correct location
-// Overwrite it with the playwright log file location 
-const tailFile = PW_DEBUG_FILE || path.join(aliases[`@GLogs`], `pwlogs.log`)
-if(DEBUG_FILE !== tailFile) process.env.DEBUG_FILE = tailFile
 
-try { fs.ensureFileSync(tailFile) }
-catch(err){}
+let tailFile = undefined
+if(!EXAM_ENV){
+  // If DEBUG_FILE env is not set to the correct location
+  // Overwrite it with the playwright log file location 
+  const tailFile = PW_DEBUG_FILE || path.join(aliases[`@GLogs`], `pwlogs.log`)
+  if(tailFile && DEBUG_FILE !== tailFile) process.env.DEBUG_FILE = tailFile
+
+  if(tailFile){
+    try { fs.ensureFileSync(tailFile) }
+    catch(err){}
+  }
+}
+
 
 const screenDims:TScreenDims = {
   width: parseInt(GB_VNC_VIEW_WIDTH as string, 10),

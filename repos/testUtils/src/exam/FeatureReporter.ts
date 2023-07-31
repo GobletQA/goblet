@@ -73,7 +73,7 @@ const logResult = (context:TContext, hasStepErr?:boolean) => {
 
 }
 
-export class BaseReporter implements IExamReporter {
+export class FeatureReporter implements IExamReporter {
   exam:Exam
   config:TExamConfig
 
@@ -118,3 +118,6 @@ export class BaseReporter implements IExamReporter {
   cleanup = () => {}
 
 }
+
+
+export default FeatureReporter

@@ -21,6 +21,14 @@ export const FileTypeMap = {
   feature: `feature`,
 }
 
+export const TypeExtMap = {
+  yml: `yaml`,
+  feature: `feature`,
+  javascript: [`js`, `jsx`, `cjs`, `mjs`],
+  typescript: [`ts`, `tsx`, `mts`, `cts`],
+}
+
+
 export const ExamCfgModeTypes = [
   `serial`,
   `parallel`

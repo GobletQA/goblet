@@ -99,7 +99,9 @@ export const GlobFilesCfg:GlobOptions = {
 }
 
 export const EnvironmentCfg:TExEnvironmentCfg = {
-  envs: {},
+  envs: {
+    EXAM_ENV: 1,
+  },
   globals: {},
 }
 

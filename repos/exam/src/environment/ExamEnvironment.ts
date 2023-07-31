@@ -22,7 +22,7 @@ export class ExamEnvironment implements IExamEnvironment {
   }
 
   constructor(cfg:TExEnvironmentCfg, exam:Exam){
-    this.envs = {...cfg.envs, EXAM_ENV: true }
+    this.envs = {...cfg.envs, EXAM_ENV: 1 }
     this.globals = {...cfg.globals}
     this.exam = exam
   }

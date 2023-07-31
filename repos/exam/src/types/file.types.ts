@@ -8,6 +8,7 @@ export type TExFileModelDef = {
   content: string
   location: string
   fileType: string
+  transformed?:any
 }
 
 export type TExFileModelAst<A extends TExAst=TExAst> = {
@@ -17,6 +18,7 @@ export type TExFileModelAst<A extends TExAst=TExAst> = {
   content: string
   location: string
   fileType: string
+  transformed?:any
 }
 
 export type TExFileModelOverride<T extends Partial<TExFileModelDef>=TExFileModelDef> = T

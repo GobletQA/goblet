@@ -67,7 +67,7 @@ export const loadEnvs = ({
 
   // When running in test environment
   // Ensure specific envs don't get loaded
-  if(process.env.JEST_WORKER_ID !== undefined){
+  if(process.env.EXAM_ENV !== undefined){
     Object.entries(process.env)
       .map(([key, val ]) => {
         const shouldRemove = testRemovePrefix.find(prefix => key.startsWith(prefix)) ||

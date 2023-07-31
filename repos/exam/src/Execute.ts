@@ -18,19 +18,21 @@ import type {
   TExecuteBuiltRunners,
   TExecuteBuiltTransforms,
   TExecuteBuiltEnvironment,
+  TLoadFilesArr,
 } from '@GEX/types'
 
 import { Exam } from "@GEX/Exam"
 import { RunnerErr } from '@GEX/utils'
-import { EnvironmentCfg } from '@GEX/constants'
+import { EnvironmentCfg, Errors, LoaderCfg } from '@GEX/constants'
 import { BaseRunner } from '@GEX/runner/BaseRunner'
 import { globTypeMatch } from "@GEX/utils/globMatch"
 import { isConstructor } from '@GEX/utils/isConstructor'
+import {typeClassFromLoc} from '@GEX/utils/typeClassFromLoc'
 import { BaseTransform } from '@GEX/transform/BaseTransform'
 import { resolveTypeClass } from "@GEX/utils/resolveTypeClass"
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 import { ExamEnvironment } from '@GEX/environment/ExamEnvironment'
-import {emptyObj, ensureArr, isObj, omitKeys} from '@keg-hub/jsutils'
+import {emptyObj, ensureArr, isArr, isObj, isStr, omitKeys} from '@keg-hub/jsutils'
 
 type TExecStates = {
   envPre?:boolean
@@ -45,12 +47,12 @@ type TExecStates = {
 export class Execute {
   
   exam:Exam
-  preRunner?:string[]
-  postRunner?:string[]
-  preEnvironment?:string[]
-  postEnvironment?:string[]
   #runner:IExRunner<any, any>
   #Environment:ExamEnvironment
+  preRunner?:TLoadFilesArr
+  postRunner?:TLoadFilesArr
+  preEnvironment?:TLoadFilesArr
+  postEnvironment?:TLoadFilesArr
   #runners:TExecuteBuiltRunners={}
   passthrough:TExecPassThroughOpts
   #transforms:TExecuteBuiltTransforms={}
@@ -59,6 +61,8 @@ export class Execute {
 
   #environment:TExecuteBuiltEnvironment
   environmentType:TExecEnvironment
+  baseTransformExt = LoaderCfg.extensions
+  
   
   #states:TExecStates={
     envPre: false,
@@ -83,58 +87,95 @@ export class Execute {
 
     this.exam = exam
     this.passthrough = passthrough
-    this.preRunner = [...preRunner]
-    this.postRunner = [...postRunner]
-    this.preEnvironment = [...preEnvironment]
-    this.postEnvironment = [...postEnvironment]
     this.runnerTypes = {...this.runnerTypes, ...runners}
     this.transformTypes = {...this.transformTypes, ...transforms}
+    this.preRunner = [...ensureArr(preRunner)].filter(Boolean)
+    this.postRunner = [...ensureArr(postRunner)].filter(Boolean)
+    this.preEnvironment = [...ensureArr(preEnvironment)].filter(Boolean)
+    this.postEnvironment = [...ensureArr(postEnvironment)].filter(Boolean)
 
     this.environmentType = environment?.length
       ? environment
       : [BaseEnvironment, EnvironmentCfg]
 
     this.#Environment = new ExamEnvironment(passthrough.environment, exam)
+
   }
 
-  #setupEnvironment = async <T extends TExData=TExData>(ctx:TExExtensionsCtx<T>) => {
+  setupEnvironment = async <T extends TExData=TExData>(ctx:TExExtensionsCtx<T>) => {
+    try {
+      if(!this.#states.envPre){
+        // Run all pre-environment scripts first
+        this.preEnvironment?.length
+          && await this.#loadFiles(this.preEnvironment)
 
-    if(!this.#states.envPre){
-      // Run all pre-environment scripts first
-      this.preEnvironment?.length
-        && await this.#loadFiles(this.preEnvironment)
-
-      this.#states.envPre = true
+        this.#states.envPre = true
+      }
+    }
+    catch(err){
+      if(err.message.includes(`Cannot find module`)){
+        const loc = err.message.split(`Error: Cannot find module `).pop().replaceAll(`'`)
+        Errors.LoadErr(err, loc)
+      }
+      Errors.ExecErr(err.message, err)
     }
 
-    if(!this.#states.environment){
-      this.#Environment.setup()
 
-      const inline = ensureArr(ctx.environment)
-      const [EnvironType, typeCfg] = this.environmentType
-      const cfg = inline[1] || typeCfg
-      const Environ = inline[0] || EnvironType
+    try {
+      if(!this.#states.environment){
+        this.#Environment.setup()
 
-      this.#environment = isConstructor<IExEnvironment<any, any>>(Environ)
-        ? new Environ({...this.passthrough.environment, ...cfg}, ctx)
-        : isObj<IExEnvironment<any, any>>(Environ)
-          ? Environ
-          : undefined
+        const inline = ensureArr(ctx.environment)
+        const [EnvironType, typeCfg] = this.environmentType
+        const cfg = inline[1] || typeCfg
+        const Environ = inline[0] || EnvironType
 
-      this.#states.environment = true
+        this.#environment = isConstructor<IExEnvironment<any, any>>(Environ)
+          ? new Environ({...this.passthrough.environment, ...cfg}, ctx)
+          : isObj<IExEnvironment<any, any>>(Environ)
+            ? Environ
+            : undefined
+
+        this.#states.environment = true
+      }
+    }
+    catch(err){
+      if(err.message.includes(`Cannot find module`)){
+        const loc = err.message.split(`Error: Cannot find module `).pop().replaceAll(`'`)
+        Errors.LoadErr(err, loc)
+      }
+      Errors.ExecErr(err.message, err)
     }
 
-    if(!this.#states.envPost){
-      // Run post-environment scripts after environment is setup
-      this.postEnvironment?.length
-      && await this.#loadFiles(this.postEnvironment)
-
-      this.#states.envPost = true
+    try {
+      if(!this.#states.envPost){
+        // Run post-environment scripts after environment is setup
+        this.postEnvironment?.length
+        && await this.#loadFiles(this.postEnvironment)
+        this.#states.envPost = true
+      }
+    }
+    catch(err){
+      if(err.message.includes(`Cannot find module`)){
+        const loc = err.message.split(`Error: Cannot find module `).pop().replaceAll(`'`)
+        Errors.LoadErr(err, loc)
+      }
+      
+      Errors.ExecErr(err.message, err)
     }
   
   }
 
-  #loadFiles = async (files:string[], opts:TLoadOpts=emptyObj) => {
+  #loadFiles = async (files:TLoadFilesArr, opts:TLoadOpts=emptyObj) => {
+    // const tranOpts = {
+    //   type:``,
+    //   options: {},
+    //   override: undefined,
+    //   fallback: BaseTransform,
+    // }
+
+    // TODO: add loading a transform here for files
+    // Loop through files and load their transforms if they exist
     return this.exam.loader.loadMany(files, opts)
   }
 
@@ -147,16 +188,13 @@ export class Execute {
 
     const ctx:TExExtensionsCtx<T> = {...options, exam: this.exam}
 
-    await this.#setupEnvironment(ctx)
-
-    const type = file.fileType
     const resp = {
       ...omitKeys<TExCtx<T>>(ctx, [`runner`, `transform`, `environment`]),
       environment: this.#environment
     }
 
     const trans = this.loadTransform({
-      type,
+      file,
       override: transform,
       fallback: BaseTransform,
     })
@@ -167,7 +205,7 @@ export class Execute {
 
       const run = this.loadRunner({
         ctx,
-        type,
+        file,
         override: runner,
         fallback: BaseRunner,
       })
@@ -176,7 +214,7 @@ export class Execute {
         resp.runner = run
         this.#runner = run
       }
-      
+
       this.#states.runnerLoaded = true
     }
 
@@ -191,7 +229,6 @@ export class Execute {
     let error:Error & { result?: TExEventData }
 
     try {
-
       await this.#environment.setup(this.#runner, ctx)
 
       this.preRunner?.length
@@ -228,18 +265,21 @@ export class Execute {
 
   loadTransform = <T extends IExTransform=IExTransform>(opts:TLoadTransform<T>) => {
     const {
-      type,
+      file,
       options,
       override,
       fallback,
     } = opts
 
+    const type = file.fileType
+
+    // When cache is being set the original type is used, So a glob match is not needed
     if(this.#transforms[type])
       return this.#transforms[type]
 
     const [TypeClass, cfg] = resolveTypeClass<IExTransform>({
       fallback,
-      override,
+      override: override || typeClassFromLoc<IExTransform>(file, this.transformTypes),
       type: globTypeMatch(this.transformTypes, type)
     })
 
@@ -262,18 +302,20 @@ export class Execute {
   loadRunner = <T extends IExRunner<any, any>>(opts:TLoadRunner<T>) => {
     const {
       ctx,
-      type,
+      file,
       options,
       override,
       fallback,
     } = opts
+    
+    const type = file.fileType
 
     if(this.#runners[type])
       return this.#runners[type]
 
     const [TypeClass, cfg] = resolveTypeClass<IExRunner<any, any>>({
       fallback,
-      override,
+      override: override || typeClassFromLoc<IExTransform>(file, this.runnerTypes),
       type: globTypeMatch(this.runnerTypes, type)
     })
 
@@ -293,9 +335,11 @@ export class Execute {
   }
 
   exec = async <T extends TExData=TExData>(options:TExRun<T>) => {
-    const ctx = await this.#execSetup(options)
 
-    const transformed = await ctx.transform.transform(ctx.file.content, ctx)
+    const ctx = await this.#execSetup(options)
+    const transformed = options?.file?.transformed
+      ? options?.file?.transformed
+      : await ctx.transform.transform(ctx.file.content, ctx)
 
     return await this.#run(transformed, ctx)
   }

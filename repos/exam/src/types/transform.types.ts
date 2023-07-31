@@ -13,7 +13,7 @@ export interface IExamTransform<R extends any=any> {
   transformIgnore:string[]|((location:string) => boolean)
   transform(
     content:string,
-    ctx:TTransform
+    ctx:Partial<TTransform> & Record<string, any>
   ): Promise<R>|R
 }
 

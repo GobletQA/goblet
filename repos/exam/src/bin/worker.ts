@@ -21,7 +21,6 @@ type TParentMsg = {
   terminate?:boolean
 }
 
-
 ife(async () => {
 
   let EX:Exam

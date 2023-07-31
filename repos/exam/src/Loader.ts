@@ -8,6 +8,8 @@ import type {
   TLoaderCfg,
   TESBuildCfg,
   TExFileModel,
+  TLoadFilesArr,
+  TLoadFileWOpts,
 } from "@GEX/types"
 
 import path from 'path'
@@ -16,13 +18,14 @@ import { createRequire } from 'module'
 import moduleAlias from 'module-alias'
 import { RunningCodeOptions } from "vm"
 import { VMContext } from "@GEX/context/Context"
+import {FileTypeMap} from '@GEX/constants/constants'
 import { toFileModel } from "@GEX/utils/toFileModel"
 import { register } from 'esbuild-register/dist/node'
 import { globFileIgnore } from '@GEX/constants/defaults'
 import { BaseTransform } from '@GEX/transform/BaseTransform'
 import { LoaderCfg, Errors, ErrorCodes } from '@GEX/constants'
 import { globMatchFiles, createGlobMatcher } from "@GEX/utils/globMatch"
-import { exists, flatUnion, emptyObj, emptyArr, isStr } from "@keg-hub/jsutils"
+import { exists, flatUnion, emptyObj, emptyArr, isStr, isArr } from "@keg-hub/jsutils"
 const { readFile } = promises
 
 type TLoopExtResp = {
@@ -62,6 +65,7 @@ export class Loader {
   #testFile:Record<string,boolean>={}
   #fileIgnored:Record<string,boolean>={}
   
+  #requireFile:NodeRequire
   #globFileOpts:GlobOptions = {}
 
   constructor(exam:Exam, config:TLoaderCfg){
@@ -92,6 +96,8 @@ export class Loader {
         exam: this.exam,
         require:createRequire(this.rootDir)
       })
+      
+      this.#requireFile = createRequire(this.rootDir)
     }
 
     if(testDir) this.testDir = path.resolve(rootDir, testDir)
@@ -174,7 +180,7 @@ export class Loader {
   #onError = (location:string, err:any) => {
     err.code === ErrorCodes.NotFound
       ? Errors.NotFound(path.relative(this.rootDir, location), err)
-      : Errors.LoadErr(err)
+      : Errors.LoadErr(err, location)
     
     return undefined
   }
@@ -243,8 +249,11 @@ export class Loader {
     loc:string,
     opts:TLoadOpts=emptyObj
   ):Promise<T> => {
-    const model = await this.loadContent<TExFileModel>(loc, {...opts, asModel: true}, false)
-    return this.ctx.require(model)
+
+    return this.#requireFile(loc)
+
+    // const model = await this.content<TExFileModel>(loc, {...opts, asModel: true}, false)
+    // return this.ctx.require(model)
   }
 
   load = async <T extends any=any>(
@@ -263,8 +272,6 @@ export class Loader {
 
     let loaded:any
     let error:Error
-    // TODO: figure out how to add the found extension
-    let extension:string
 
     try {
       options.cache === false && this.#clearLocCache(location)
@@ -273,11 +280,9 @@ export class Loader {
       if(path.extname(location).length)
         loaded = await this.#require(location, opts)
       else {
-        const { data, ext } = await this.#loopExts(location, (lc) => this.#require(location, opts))
+        const { data } = await this.#loopExts(location, (lc) => this.#require(location, opts))
         loaded = data
-        extension = ext
       }
-
     }
     catch(err){ error = err }
 
@@ -288,45 +293,72 @@ export class Loader {
     )
   }
 
-  loadMany = async (locs:string[], opts:TLoadOpts=emptyObj) => {
-    const [__, options] = this.#getLoadMeta(locs[0], opts)
+  loadMany = async (locs:TLoadFilesArr, opts:TLoadOpts=emptyObj) => {
+    const first = isStr<string>(locs[0]) ? locs[0] : locs[0][0]
+    const [__, options] = this.#getLoadMeta(first, opts)
 
-    return await locs.reduce(async (acc, loc:string) => {
+    return await locs.reduce(async (acc, loadF:TLoadFileWOpts) => {
       const res = await acc
-      res[loc] = await this.load(this.#getLoc(loc, options), options, false)
+
+      const [loc, fOpts] = isArr(loadF) ? loadF : [loadF, opts]
+      const jOpts = {...options, ...fOpts}
+
+      res[loc] = await this.load(this.#getLoc(loc, jOpts), jOpts, false)
       return res
     }, Promise.resolve({} as Record<string, any>))
 
   }
 
-  loadContent = async <T=string|TExFileModel>(
+  content = async <T=string|TExFileModel>(
     loc:string,
     opts:TLoadOpts=emptyObj,
     meta:boolean=true
-  ):Promise<T> => {
+  ):Promise<{ model?:T, transform:any, content?:T }> => {
     const [location, options] = meta ? this.#getLoadMeta(loc, opts) : [loc, opts]
-    let ext:string|undefined
+    let ext:string = path.extname(location)
 
     try {
-
       let loaded:string
-      if(path.extname(location).length)
+      if(ext.length){
         loaded = await readFile(location, `utf8`)
+      }
       else {
         const resp = await this.#loopExts(location, (lc) => readFile(lc, `utf8`))
         loaded = resp?.data
         ext = resp?.ext
       }
 
-      const content = await this.#transformer.transform(loaded, {
-        exam: this.exam,
-        esbuild: opts?.esbuild,
-        file: { content: loaded, location }
+      const transform = opts.transform || this.exam.execute.loadTransform({
+        file: {
+          ext,
+          location,
+          content: loaded,
+          fileType: FileTypeMap[ext] || ext,
+          name: path.basename(location, ext)
+        },
+        options: opts,
+        fallback: BaseTransform
       })
 
-      return !options.asModel
-        ? content as T
-        : toFileModel({ location, content, ext }) as TExFileModel<any>
+      const content = transform
+        ? await transform.transform(loaded, {
+            ...opts,
+            loader: this,
+            exam: this.exam,
+            execute: this.exam.execute,
+            file: { content: loaded, location }
+          })
+        : await this.#transformer.transform(loaded, {
+            esbuild: opts?.esbuild,
+            file: { content: loaded, location }
+          })
+
+      if(!options.asModel) return { content } as any
+        
+      const model = toFileModel({ location, content, ext, transformed: true }) as TExFileModel<any>
+      
+      return { model, transform }
+
     }
     catch(err) {
       return this.#onError(location, err)
@@ -334,7 +366,7 @@ export class Loader {
 
   }
 
-  loadContentMany = async (locs?:string|string[], opts:TLoadOpts=emptyObj) => {
+  contentMany = async (locs?:string|string[], opts:TLoadOpts=emptyObj) => {
     const {glob=emptyObj, ...options} = opts
 
     const locations = await globMatchFiles(locs, {
@@ -350,11 +382,13 @@ export class Loader {
       const res = await acc
       if(!this.#hookMatcher(loc)) return res
 
-      res[loc] = await this.loadContent<TExFileModel>(
+      const { model } = await this.content<TExFileModel>(
         loc,
         {...options, asModel: true},
         false
       )
+
+      res[loc] = model
 
       return res
     }, Promise.resolve({} as Record<string, TExFileModel>))
@@ -375,14 +409,15 @@ export class Loader {
 
     this.#buildCtx({ rootDir, testDir })
 
-    return await this.loadContentMany(testMatch || this.testMatch, {...rest, testFile: true})
+    return await this.contentMany(testMatch || this.testMatch, {...rest, testFile: true})
   }
   
   runTest = async (
     model:TExFileModel,
     opts:RunningCodeOptions=emptyObj
   ) => {
-    return this.ctx.require(model, opts)
+    return this.#requireFile(model.location)
+    // return this.ctx.require(model, opts)
   }
 
   /**

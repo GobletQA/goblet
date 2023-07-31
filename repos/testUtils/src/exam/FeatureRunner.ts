@@ -38,6 +38,9 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
 
   constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
+    
+    console.log(`------- feature runner -------`)
+    
     super(cfg, ctx)
 
     this.isRunning = false
@@ -59,6 +62,9 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
    * Runs the code passed to it via the exam
    */
   run = async (content:string, ctx:TExCtx) => {
+    
+    console.log(`------- running runner -------`)
+    
     this.isRunning = true
     this.load(ctx)
 
@@ -198,3 +204,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
   }
 
 }
+
+
+export default FeatureRunner

@@ -1,5 +1,6 @@
 import type { GlobOptions } from 'glob'
 import type { register } from 'esbuild-register/dist/node'
+import {IExTransform} from './transform.types'
 
 export type TESBuildCfg = Parameters<typeof register>[0]
 
@@ -68,4 +69,5 @@ export type TLoadOpts = {
   testFile?:boolean
   glob?:GlobOptions
   esbuild?:TESBuildCfg
+  transform?:IExTransform
 }

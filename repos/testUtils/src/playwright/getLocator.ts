@@ -15,7 +15,7 @@ type TWaitFor = {
  * The pull it in here and use it to set the config of the waitFor
  */
 const getLocationWaitOpts = (ctx?:TStepCtx, waitFor?:TWaitFor|boolean):TWaitFor|undefined => {
-  // process.env.JEST_WORKER_ID
+  // process.env.EXAM_ENV
   const defWaitOpts = {
     state: `visible`,
     timeout: getStepTimeout(ctx),

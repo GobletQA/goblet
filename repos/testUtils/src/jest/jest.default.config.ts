@@ -83,7 +83,7 @@ export const jestConfig = (config:TGobletConfig, opts:TJestConfOpts=emptyObj) =>
   const jestConfig = config?.jestConfig || emptyObj
 
   const testMatch = opts.testDir && (opts.type || opts.shortcut || opts.ext)
-    ? buildTestMatchFiles(opts.testDir, opts)
+    ? buildTestMatchFiles(opts)
     : noPropArr
 
   return {
