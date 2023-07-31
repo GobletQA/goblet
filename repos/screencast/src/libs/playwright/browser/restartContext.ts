@@ -7,8 +7,7 @@ import type {
   TBrowserPage
 } from '@GSC/types'
 
-import { GobletQAUrl } from '@GSC/constants'
-
+import { GobletQAUrl } from '@gobletqa/shared/constants/playwright'
 import { SocketManager } from '@GSC/libs/websocket/manager/manager'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 import { browserEvents } from '@GSC/libs/playwright/browser/browserEvents'

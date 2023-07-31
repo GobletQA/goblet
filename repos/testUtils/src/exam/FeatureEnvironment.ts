@@ -35,7 +35,19 @@ export class FeatureEnvironment implements IExamEnvironment<FeatureRunner> {
     `beforeEach`,
   ]
 
-  constructor(cfg:TExEnvironmentCfg=emptyObj){}
+  constructor(cfg:TExEnvironmentCfg=emptyObj){
+
+    Object.entries(cfg.globals)?.forEach(([key, item]) => {
+      this.cache.globals[key] = global[key]
+      global[key] = item
+    })
+
+    Object.entries(cfg.envs)?.forEach(([key, val]) => {
+      this.cache.envs[key] = process.env[key]
+      process.env[key] = val as string
+    })
+
+  }
 
   setup = (runner:FeatureRunner, ctx:TExCtx) => {
     this.cache.globals.expect = (global as any).expect
@@ -51,6 +63,11 @@ export class FeatureEnvironment implements IExamEnvironment<FeatureRunner> {
     ;(global as any).expect = this.cache.globals.expect
 
     this.globals?.forEach((item) => global[item] = this.cache.globals[item])
+    
+    Object.entries(this.cache.envs)?.forEach(([key, val]) => {
+      process.env[key] = this.cache.envs[key]
+    })
+    
   }
 
   cleanup = (runner:FeatureRunner) => {

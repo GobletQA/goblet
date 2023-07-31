@@ -1,7 +1,7 @@
 import {TPipelineArgs} from "../types";
 import { loadFilesTask }  from './loadFilesTask'
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
-import {isStr} from "@keg-hub/jsutils";
+import {exists, isStr} from "@keg-hub/jsutils"
 
 
 export const loadEnvironmentTask = async (args:TPipelineArgs) => {
@@ -13,13 +13,15 @@ export const loadEnvironmentTask = async (args:TPipelineArgs) => {
       ? [config.environment, {}] as [string, any]
       : config.environment as [string, any]
 
-    const loaded = await loadFilesTask(args, { Environment: location })
+    const loaded = await loadFilesTask(args, { Environment: location }) as any
 
-    // envLoad[1] = { globals, envs, ...envLoad[1] }
-
+    if(loaded.Environment)
+      return new loaded.Environment({
+        ...options,
+        globals: {...globals, ...options?.globals },
+        envs: {...envs, ...options?.envs}
+      })
   }
 
-  const Environment = new BaseEnvironment({ globals, envs })
-
-  return Environment
+  return new BaseEnvironment({ globals, envs })
 }

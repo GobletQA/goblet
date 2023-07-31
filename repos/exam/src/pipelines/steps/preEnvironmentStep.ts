@@ -11,6 +11,5 @@ export const preEnvironmentStep = async (args:TPipelineArgs) => {
 
   loadFilesTask(args, config.preEnvironment)
 
-
   return args
 }
