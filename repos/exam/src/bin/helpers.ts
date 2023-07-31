@@ -111,6 +111,7 @@ export const updateCLIEnvs = (
   force?:boolean
 ) => {
 
+  opts?.env && updateEnv(`EXAM_ENV`, 1, force)
   opts?.env && updateEnv(`NODE_ENV`, opts.env, force)
   opts?.env && updateEnv(`EXAM_CLI_ENV`, opts.env, force)
   opts?.workerId && updateEnv(`EXAM_WORKER_ID`, opts.workerId, force)

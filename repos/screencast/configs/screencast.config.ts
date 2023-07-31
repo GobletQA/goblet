@@ -58,23 +58,7 @@ const {
   GB_CD_VALIDATION_KEY,
   GB_CD_VALIDATION_HEADER,
 
-  EXAM_ENV,
-
 } = process.env
-
-
-let tailFile = undefined
-if(!EXAM_ENV){
-  // If DEBUG_FILE env is not set to the correct location
-  // Overwrite it with the playwright log file location 
-  const tailFile = PW_DEBUG_FILE || path.join(aliases[`@GLogs`], `pwlogs.log`)
-  if(tailFile && DEBUG_FILE !== tailFile) process.env.DEBUG_FILE = tailFile
-
-  if(tailFile){
-    try { fs.ensureFileSync(tailFile) }
-    catch(err){}
-  }
-}
 
 
 const screenDims:TScreenDims = {
@@ -142,10 +126,5 @@ export const screencastConfig:TGScreencastConfig = {
       script: path.join(aliases[`@GSC/Scripts`], 'socket.cmd.sh'),
     },
   },
-  tail: {
-    create: true,
-    truncate: true,
-    file: tailFile,
-  }
 }
 

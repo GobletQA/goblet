@@ -2,7 +2,7 @@ import '@GSC/utils/logger'
 import { initSocket } from '@GSC/libs/websocket'
 import { AUTH_BYPASS_ROUTES } from '@GSC/constants'
 import { getApp } from '@gobletqa/shared/express/app'
-import { setupBrowser, setupEndpoints, setupTail } from '@GSC/middleware'
+import { setupBrowser, setupEndpoints } from '@GSC/middleware'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import {
   setupJWT,
@@ -28,7 +28,6 @@ const initApi = async () => {
   const app = getApp(screencastConfig)
 
   await setupBrowser(app)
-  setupTail(app)
   setupLoggerReq(app)
   setupBlacklist(app)
   setupCors(app)

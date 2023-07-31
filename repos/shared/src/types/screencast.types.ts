@@ -1,5 +1,5 @@
 import { TJwtConfig } from './helpers.types'
-import { TTailLogger } from './tailLogger.types'
+// import { TTailLogger } from './tailLogger.types'
 import { TSocketConfigOpts } from './socket.types'
 import { TBrowserContextOpts, TBrowserConf, TBrowserPage } from './pw.types'
 
@@ -66,7 +66,6 @@ export type TSCContainerConfig = {
 }
 
 export type TGScreencastConfig = {
-  tail: TTailLogger
   server: TScreencastServer
   socket: TSocketConfigOpts
   screencast: TScreencastConfig
