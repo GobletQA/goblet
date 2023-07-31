@@ -118,6 +118,7 @@ module.exports = {
           '**',
           '!/repos/backend',
           '!/repos/conductor',
+          '/repos/exam',
           '!/repos/latent',
           '!/repos/screencast',
           '!/repos/shared',
@@ -125,6 +126,7 @@ module.exports = {
           // Ignore the dist folders so local bundles are not synced
           '/repos/backend/dist',
           '/repos/conductor/dist',
+          '/repos/exam/dist',
           '/repos/latent/dist',
           '/repos/screencast/dist',
           '/repos/shared/dist',
@@ -144,6 +146,7 @@ module.exports = {
           `GB_CD_*`,
           `GB_NO_*`,
           `GB_VNC_*`,
+          `EXAM_*`,
           `DISPLAY`,
           `PLAYWRIGHT_*`,
           `GOBLET_KIND_*`,
@@ -210,6 +213,7 @@ module.exports = {
           `GB_BE_PORT`,
           `GB_SC_PORT`,
           `GB_BE_HOST`,
+          `EXAM_*`,
           `FIRE_BASE_*`,
           `GB_VNC_ACTIVE`,
           `GB_NO_VNC_PATH`,
@@ -227,6 +231,7 @@ module.exports = {
       sync: {
         excludePaths: [
           '**',
+          '!/repos/exam',
           '!/repos/latent',
           '!/repos/screencast',
           '!/repos/shared',
@@ -235,6 +240,7 @@ module.exports = {
           '!/tasks',
           // Ignore the dist folders so local bundles are not synced
           '/repos/screencast/dist',
+          '/repos/exam/dist',
           '/repos/shared/dist',
           '/repos/testUtils/dist',
           '/repos/workflows/dist',

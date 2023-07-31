@@ -53,6 +53,9 @@
     "micromatch": "4.0.5",
     "module-alias": "2.2.2",
     "module-from-string": "3.3.0",
+    "p-map": "6.0.0",
+    "p-map-series": "3.0.0",
+    "p-pipe": "4.0.0",
     "p-queue": "7.3.4",
     "source-map-support": "0.5.21"
   },

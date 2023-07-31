@@ -2,6 +2,7 @@ import type { MessagePort } from 'worker_threads'
 import type { TExamConfig, TExamRunOpts, TExEventData } from '@GEX/types'
 
 import { Exam } from '../Exam'
+import { SetupPipeline, RunPipeline } from '../pipelines'
 import { EExErrorType, } from '@GEX/types'
 import { limbo, ife } from '@keg-hub/jsutils'
 import {updateCLIEnvs} from '@GEX/bin/helpers'
@@ -49,25 +50,35 @@ ife(async () => {
     * Create a new exam instance each time the worker is rerun
     * This ensures a clean environment each time
     */
-    EX = new Exam(workerCfg.exam, workerCfg.id)
+    // EX = new Exam(workerCfg.exam, workerCfg.id)
+    const setup = await SetupPipeline({
+      reverse: [],
+      config: workerCfg.exam,
+      id: workerData.workerId,
+    })
+    const results = await RunPipeline(workerCfg)
+
+    message.port.postMessage(results)
+    
     /**
      * Errors should be captured int the test results, so we don't want to throw here
      * This also ensures all test can continue running, even if one failed
     */
-    const [__, results] = await limbo<TExEventData[]>(EX.run(message.run))
+    
+    // const [__, results] = await limbo<TExEventData[]>(EX.run(message.run))
 
-    EX = undefined
+    // EX = undefined
 
-    message.port.postMessage(results)
-    results?.forEach(result => {
-      result?.failedExpectations?.forEach(exp => {
-        if(exp.fullName !== EExErrorType.BailError) return
+    // message.port.postMessage(results)
+    // results?.forEach(result => {
+    //   result?.failedExpectations?.forEach(exp => {
+    //     if(exp.fullName !== EExErrorType.BailError) return
         
-        console.log(`------- exp -------`)
-        console.log(exp)
+    //     console.log(`------- exp -------`)
+    //     console.log(exp)
 
-      })
-    })
+    //   })
+    // })
   })
 
 })

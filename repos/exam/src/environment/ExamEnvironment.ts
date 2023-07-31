@@ -12,7 +12,6 @@ import { isStr } from '@keg-hub/jsutils'
 
 export class ExamEnvironment implements IExamEnvironment {
 
-  exam:Exam
   globals:TSerializeObj={}
   envs:TEnvironmentEnvs={}
 
@@ -21,10 +20,9 @@ export class ExamEnvironment implements IExamEnvironment {
     globals: {},
   }
 
-  constructor(cfg:TExEnvironmentCfg, exam:Exam){
+  constructor(cfg:TExEnvironmentCfg){
     this.envs = {...cfg.envs, EXAM_ENV: 1 }
     this.globals = {...cfg.globals}
-    this.exam = exam
   }
 
   setup = async () => {
@@ -54,8 +52,6 @@ export class ExamEnvironment implements IExamEnvironment {
   }
 
   cleanup = async () => {
-
-    this.exam = undefined
 
     this.envs = undefined
     this.envs = {}

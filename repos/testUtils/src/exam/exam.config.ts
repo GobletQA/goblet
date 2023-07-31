@@ -95,6 +95,7 @@ const ExamConfig = ():TExamConfig => {
       __DEV__: true,
       ...examConfig?.globals,
       __goblet: {
+        config,
         options: gobletOpts,
         browser: browserOpts,
         paths: {...config.paths},
