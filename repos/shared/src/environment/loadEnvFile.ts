@@ -5,7 +5,12 @@ import { execSync } from 'child_process'
 import { EFileType, Latent } from '@gobletqa/latent'
 import { getGobletConfig } from '../goblet/getGobletConfig'
 import { getPathFromConfig } from '../utils/getPathFromConfig'
-import { GBGitRemoteRef, GBMountedRemoteKey } from '../constants/git'
+import {
+  GB_GIT_REMOTE_REF,
+  GB_REPO_NO_SECRETS,
+  GB_GIT_MOUNTED_REMOTE,
+} from '../constants/git'
+import {toBool} from '@keg-hub/jsutils'
 
 type TLoadEnvFile = {
   file?:string
@@ -15,17 +20,17 @@ type TLoadEnvFile = {
 }
 
 const gitCmd = (repoRoot:string, ref:string) => execSync(
-  `git config --get remote.${GBGitRemoteRef}.url`,
+  `git config --get remote.${GB_GIT_REMOTE_REF}.url`,
   { cwd: repoRoot }
 )?.toString()?.trim()
 
 const getGitRemote = (repoRoot:string) => {
-  let url = (process.env[GBMountedRemoteKey] || ``).trim()
+  let url = (process.env[GB_GIT_MOUNTED_REMOTE] || ``).trim()
 
   try {
     if(!url){
       try {
-        url = gitCmd(repoRoot, GBGitRemoteRef)
+        url = gitCmd(repoRoot, GB_GIT_REMOTE_REF)
       }
       catch(err){
         url = gitCmd(repoRoot, `origin`)
@@ -75,8 +80,13 @@ export const loadEnvFile = ({
   if(type !== EFileType.secrets)
     return latent.values.get({ location: loc })
 
+  const noSecrets = toBool(process.env[GB_REPO_NO_SECRETS])
+  if(noSecrets) return {}
+
+  const envUrl = process.env[GB_GIT_MOUNTED_REMOTE]
+
   // Error is logged in the getGitRemote method
-  const repoUrl = getGitRemote(repoRoot)
+  const repoUrl = envUrl || getGitRemote(repoRoot)
 
   if(!repoUrl) return {}
 

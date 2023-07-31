@@ -4,7 +4,7 @@ import { Logger, fileSys } from '@keg-hub/cli-utils'
 import { emptyObj, omitKeys } from '@keg-hub/jsutils'
 import { git, RepoWatcher } from '@gobletqa/workflows/git'
 import { getGitApi } from '@gobletqa/workflows/providers/getGitApi'
-import { GBGitRemoteRef, GIT_RESET_BRANCH } from '@gobletqa/workflows/constants'
+import { GB_GIT_REMOTE_REF, GIT_RESET_BRANCH } from '@gobletqa/workflows/constants'
 
 
 const emptyOpts = emptyObj as TGitOpts
@@ -59,7 +59,7 @@ export const syncGoblet = async (
 
   const [mergeErr, mergeResp] = await git.merge(opts, {}, {
     arg,
-    from: `${GBGitRemoteRef}/${branchFrom}`,
+    from: `${GB_GIT_REMOTE_REF}/${branchFrom}`,
     message: `[Goblet Sync] <${branchFrom}>-<${arg}>-<${branch}>`
   })
 

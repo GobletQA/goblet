@@ -1,4 +1,4 @@
-import {TPipelineArgs} from "../types";
+import {TPipelineArgs} from "@GEX/types";
 import { loadFilesTask }  from './loadFilesTask'
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 import {exists, isStr} from "@keg-hub/jsutils"

@@ -21,7 +21,6 @@ import {ExamEnvironment} from '@GEX/environment'
  */
 export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
 
-  exam:Exam
   failed:number=0
   debug?:boolean
   timeout?:number
@@ -33,9 +32,8 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
 
 
   constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
-    const { exam, environment } = ctx
+    const { environment } = ctx
 
-    this.exam = exam
     this.environment = environment
 
     this.isRunning = false
@@ -45,14 +43,6 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
     if(cfg?.verbose) this.verbose = cfg.verbose
     if(cfg?.globalTimeout) this.globalTimeout = cfg.globalTimeout
 
-  }
-
-  /**
-   * Method used to load tests into the environment
-   */
-  protected load = (ctx:TExCtx) => {
-    const { file } = ctx
-    return this.exam.loader.runTest(file)
   }
 
   /**

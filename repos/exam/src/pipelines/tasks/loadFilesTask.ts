@@ -1,4 +1,4 @@
-import { TPipelineArgs } from '../types'
+import { TPipelineArgs } from '@GEX/types'
 
 import path from 'path'
 import pMapSeries from 'p-map-series'

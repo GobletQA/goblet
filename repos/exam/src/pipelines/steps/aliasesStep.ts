@@ -1,4 +1,4 @@
-import { TPipelineArgs, TStateManager } from '../types'
+import { TPipelineArgs, TStateManager } from '@GEX/types'
 
 import moduleAlias from 'module-alias'
 import { exists } from '@keg-hub/jsutils'

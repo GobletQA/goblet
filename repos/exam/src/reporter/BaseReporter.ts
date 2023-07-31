@@ -131,7 +131,7 @@ export class BaseReporter implements IExamReporter {
   constructor(
     examCfg:TExamConfig,
     cfg:TExReporterCfg,
-    reporterContext:TEXInterReporterContext
+    reporterContext?:TEXInterReporterContext
   ) {
     this.config = examCfg
     this.exam = cfg.exam

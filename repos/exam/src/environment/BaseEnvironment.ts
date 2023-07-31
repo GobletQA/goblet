@@ -50,13 +50,13 @@ export class BaseEnvironment implements IExamEnvironment<BaseRunner> {
     })
   }
 
-  reset = (runner:BaseRunner) => {
+  reset = () => {
     ;(global as any).expect = this.cache.globals.expect
 
     this.globals?.forEach((item) => global[item] = this.cache.globals[item])
   }
 
-  cleanup = (runner:BaseRunner) => {
+  cleanup = () => {
     this.cache.globals = {}
     this.cache.envs = {}
 

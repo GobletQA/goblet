@@ -4,7 +4,7 @@ import {
   TPipelineInit,
   TPipelineArgs,
   TPipeStepFunc
-} from './types'
+} from '@GEX/types'
 
 import { createState } from './state'
 import { Logger } from '@GEX/utils/logger'

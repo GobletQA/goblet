@@ -1,4 +1,4 @@
-import { TPipelineArgs } from '../types'
+import { TPipelineArgs } from '@GEX/types'
 import { register } from 'esbuild-register/dist/node'
 import { Logger } from '@GEX/utils/logger'
 

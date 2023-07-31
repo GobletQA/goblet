@@ -1,10 +1,12 @@
+import type { TStateObj } from './pipeline.types'
 import type { TExEventData } from './results.types'
 import type { IConstructable } from './helpers.types'
-import type { TExCtx, TExData } from "./execute.types"
 import type { TTransformResp } from './transform.types'
-import {IExamEnvironment} from './environment.types'
+import type {IExamEnvironment} from './environment.types'
+
 
 export type TExRunnerCfg = {
+  bail?:number
   debug?: boolean
   timeout?: number
   verbose?:boolean
@@ -36,7 +38,7 @@ export interface IExamRunner<E extends IExamEnvironment> {
   verbose?:boolean
   globalTimeout?:number
 
-  run<R=any, T=any>(content:TTransformResp, ctx:TExCtx<T>): Promise<TExEventData[]>
+  run<R=any, T=any>(content:TTransformResp, state:TStateObj): Promise<TExEventData[]>
 
   cancel:() => void|Promise<void>
   cleanup:() => void|Promise<void>

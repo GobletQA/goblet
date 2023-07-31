@@ -92,9 +92,8 @@ export type TExCtx<
   D extends TExData=TExData,
   Ast extends TExAst=TExAst
 > = TExRunMeta<D, Ast> & {
-  exam:Exam
   transform?:IExTransform
-  runner:IExRunner<any, any>
+  runner?:IExRunner<any, any>
   environment:IExEnvironment<any, any>
 }
 

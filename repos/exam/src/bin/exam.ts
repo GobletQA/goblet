@@ -1,6 +1,7 @@
 import "@GEX/utils/logger"
 
 import { getConfig } from './getConfig'
+import { initLocal } from './initLocal'
 import { runWorkers } from './runWorkers'
 import { updateCLIEnvs } from './helpers'
 import { initWorkers } from './initWorkers'
@@ -15,15 +16,17 @@ ife(async () => {
 
   updateCLIEnvs(exam, opts)
 
-  const { WP, chunks }  = await initWorkers(exam, opts)
+  await initLocal(exam, opts)
 
-  const [result, time] = await timedRun(
-    runWorkers,
-    WP,
-    exam,
-    chunks
-  )
+  // const { WP, chunks }  = await initWorkers(exam, opts)
 
-  printDebugResults(result, time)
+  // const [result, time] = await timedRun(
+  //   runWorkers,
+  //   WP,
+  //   exam,
+  //   chunks
+  // )
+
+  // printDebugResults(result, time)
 
 })

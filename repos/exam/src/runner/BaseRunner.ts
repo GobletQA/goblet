@@ -16,6 +16,7 @@ import {BaseEnvironment} from '@GEX/environment/BaseEnvironment'
 export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
   test:ParkinTest
+  bail:number=0
   omitTestResults:string[] = []
 
 
@@ -34,12 +35,15 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
       this.omitTestResults = cfg.omitTestResults
   }
 
+  event = (args:any) => {
+    
+  }
+
   /**
    * Runs the code passed to it via the exam
    */
   run = async (content:string, ctx:TExCtx) => {
     this.isRunning = true
-    this.load(ctx)
 
     const { data, file } = ctx
     const opts = { ...data }
@@ -50,7 +54,7 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
      * The required module above should use the current globals
      * Which means PTE should now be loaded with tests to run
      */
-    this.exam.event(ExamEvents.started)
+    this.event(ExamEvents.started)
     const parent = this.test.getActiveParent()
 
     /**
@@ -85,7 +89,7 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
   onSpecDone = (result:TExEventData) => {
     if(this.canceled) return
 
-    this.exam.event(ExamEvents.specDone({
+    this.event(ExamEvents.specDone({
       data: {
         ...this.clearTestResults(result),
         failedExpectations: result?.failedExpectations
@@ -100,7 +104,7 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
        */
       // @ts-ignore
       if(result?.metaData?.warnOnFailed)
-        this.exam.event(ExamEvents.specDone({
+        this.event(ExamEvents.specDone({
           data: {
             ...this.clearTestResults(result),
             failedExpectations: result?.failedExpectations
@@ -112,7 +116,7 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
       const failedErr = Errors.TestFailed(result, new Error(errorMsg))
 
       this.failed += 1
-      const bailAmt = this.exam.bail
+      const bailAmt = this.bail
 
       if(bailAmt && (this.failed >= bailAmt)){
         this.cancel()
@@ -126,14 +130,14 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
     const data = this.clearTestResults(result)
     result.id === RootSuiteId
-      ? this.exam.event(ExamEvents.rootSuiteDone({ data }))
-      : this.exam.event(ExamEvents.suiteDone({ data }))
+      ? this.event(ExamEvents.rootSuiteDone({ data }))
+      : this.event(ExamEvents.suiteDone({ data }))
   }
 
   onSpecStarted = (result:TExEventData) => {
     if(this.canceled) return
 
-    this.exam.event(ExamEvents.specStart({
+    this.event(ExamEvents.specStart({
       data: this.clearTestResults(result),
     }))
   }
@@ -143,8 +147,8 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
     const data = this.clearTestResults(result)
     result.id === RootSuiteId
-      ? this.exam.event(ExamEvents.rootSuiteStart({ data }))
-      : this.exam.event(ExamEvents.suiteStart({ data }))
+      ? this.event(ExamEvents.rootSuiteStart({ data }))
+      : this.event(ExamEvents.suiteStart({ data }))
   }
 
   cancel = async () => {
@@ -161,7 +165,6 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
     catch(err){}
 
     this.test = undefined
-    this.exam = undefined
   }
 
   /**

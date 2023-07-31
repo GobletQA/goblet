@@ -1,5 +1,5 @@
 import { TExecPassThroughOpts } from '@GEX/types'
-import { TPipelineArgs, TStateManager } from '../types'
+import { TPipelineArgs, TStateManager } from '@GEX/types'
 
 import { Logger } from '@GEX/utils/logger'
 import { loadEnvironmentTask } from '../tasks/loadEnvironmentTask'
@@ -16,6 +16,11 @@ export const environmentStep = async (args:TPipelineArgs, manager?:TStateManager
   manager.setValue(`ExamEnvironment`, examEnv)
   const baseEnv = await loadEnvironmentTask(args)
   manager.setValue(`BaseEnvironment`, baseEnv)
+
+  args.reverse.push(() => {
+    examEnv?.reset?.()
+    baseEnv?.reset?.()
+  })
 
   return args
 }

@@ -1,4 +1,4 @@
-import {TPipelineArgs, TStateManager} from '../types'
+import {TPipelineArgs, TStateManager} from '@GEX/types'
 import { buildPassThrough } from '@GEX/utils/buildPassThrough'
 
 export const setupTask = (args:TPipelineArgs, manager?:TStateManager) => {

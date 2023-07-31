@@ -8,3 +8,4 @@
 * `GB_GIT_MOUNTED_REMOTE` - The remote url of the currently mounted repo
   * Speeds up loading the token when loading secrets
   * This gets set, then removed in `shared/repo/getClientWorld.ts`
+* `GB_REPO_NO_SECRETS` - Disables loading secrets for repos that don't have them

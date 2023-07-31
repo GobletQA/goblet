@@ -4,6 +4,8 @@ export type TPipeStepFunc = (args:TPipelineArgs, manager:TStateManager, input:an
 
 export type TPipelineInit = {
   id:string
+  cli?:boolean
+  tests: string[]
   config:TExamConfig,
   reverse: TPipeStepFunc[],
 }

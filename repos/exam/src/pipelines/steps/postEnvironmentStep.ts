@@ -1,4 +1,4 @@
-import { TPipelineArgs } from '../types'
+import { TPipelineArgs } from '@GEX/types'
 import { Logger } from '@GEX/utils/logger'
 import { isArr } from '@keg-hub/jsutils'
 import { loadFilesTask } from '../tasks/loadFilesTask'

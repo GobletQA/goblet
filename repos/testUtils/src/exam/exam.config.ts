@@ -68,6 +68,7 @@ const ExamConfig = ():TExamConfig => {
   return {
     envs: {
       EXAM_ENV: 1,
+      GB_REPO_NO_SECRETS: 1,
       GOBLET_CONFIG_BASE: baseDir
     },
     // timeout: 0,
@@ -81,7 +82,7 @@ const ExamConfig = ():TExamConfig => {
     testMatch,
     debug: true,
     // verbose: true,
-    bail: true,
+    bail: 1,
     workers: 1,
     colors: false,
     concurrency: 1,
@@ -102,10 +103,10 @@ const ExamConfig = ():TExamConfig => {
         context: { options: contextOpts },
       },
     },
-    reporters: flatUnion([
+    reporters: [
       ...ensureArr(examConfig.reporters),
       [ReporterLoc, {}]
-    ]) as any,
+    ].filter(Boolean) as any,
     transforms: {
       ...examConfig.transforms,
       [`.feature`]: [TransformLoc, {}]

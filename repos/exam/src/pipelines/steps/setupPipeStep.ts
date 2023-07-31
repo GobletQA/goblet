@@ -1,4 +1,4 @@
-import { TPipelineArgs, TStateManager } from '../types'
+import { TPipelineArgs, TStateManager } from '@GEX/types'
 import { setupTask } from '../tasks/setupTask'
 import { createRequireTask } from '../tasks/createRequireTask'
 import { Logger } from '@GEX/utils/logger'

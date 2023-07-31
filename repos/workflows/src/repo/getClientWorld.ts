@@ -3,7 +3,7 @@ import type { TGitData, TRepoPaths, TGobletConfig, TRepo } from '@GWF/types'
 
 import { loaderSearch } from '@gobletqa/shared/libs/loader'
 import { noOpObj, deepMerge } from '@keg-hub/jsutils/src/node'
-import { DefWorld, GBMountedRemoteKey } from '@gobletqa/shared/constants'
+import { DefWorld, GB_GIT_MOUNTED_REMOTE } from '@gobletqa/shared/constants'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 
@@ -17,7 +17,7 @@ const setGobletEnv = (
 ) => {
   const orgGobletEnv = process.env.GOBLET_ENV
   const orgGobletBase = process.env.GOBLET_CONFIG_BASE
-  const orgGobletRemoteKey = process.env[GBMountedRemoteKey]
+  const orgGobletRemoteKey = process.env[GB_GIT_MOUNTED_REMOTE]
 
   const environment = (config as TRepo)?.environment
   if(environment && process.env.GOBLET_ENV !== environment)
@@ -28,12 +28,12 @@ const setGobletEnv = (
     process.env.GOBLET_CONFIG_BASE = repoRoot
 
   const { remote } = (config as TRepo)?.git || noOpObj as TGitData
-  if(remote) process.env[GBMountedRemoteKey] = remote
+  if(remote) process.env[GB_GIT_MOUNTED_REMOTE] = remote
 
   return () => {
     if(orgGobletEnv) process.env.GOBLET_ENV = orgGobletEnv
     if(orgGobletBase) process.env.GOBLET_CONFIG_BASE = orgGobletBase
-    if(orgGobletRemoteKey) process.env[GBMountedRemoteKey] = orgGobletRemoteKey
+    if(orgGobletRemoteKey) process.env[GB_GIT_MOUNTED_REMOTE] = orgGobletRemoteKey
   }
 
 }

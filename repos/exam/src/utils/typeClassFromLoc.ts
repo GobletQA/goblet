@@ -4,8 +4,8 @@ import {
 } from "@GEX/types"
 
 import path from 'path'
-import { FileTypeMap } from "@GEX/constants/constants"
 import { findGlobMatch } from "./globMatch"
+
 
 export type TTypeFromFileMap<T=any> = {
   [Key:string]: TExArrClsOptMap<T>
@@ -35,11 +35,13 @@ export const typeClassFromLoc = <T>(
   const { ext, location, fileType } = file
   const typeKeys = Object.keys(typeMap)
 
-  const fileExt = ext || location && path.extname(location).replace(/^\./, ``)
-  
+  const fileExt = (ext || (location && path.extname(location))).replace(/^\./, ``)
 
   const extFound = typeChecks(fileExt, typeKeys, typeMap)
   if(extFound) return extFound
+
+  const extDotFound = typeChecks(`.${fileExt}`, typeKeys, typeMap)
+  if(extDotFound) return extDotFound
 
   const typeFound = typeChecks(fileType, typeKeys, typeMap)
   if(typeFound) return typeFound

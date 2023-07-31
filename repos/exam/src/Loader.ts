@@ -14,6 +14,7 @@ import type {
 
 import path from 'path'
 import { promises } from 'fs'
+const { readFile } = promises
 import { createRequire } from 'module'
 import moduleAlias from 'module-alias'
 import { RunningCodeOptions } from "vm"
@@ -26,7 +27,6 @@ import { BaseTransform } from '@GEX/transform/BaseTransform'
 import { LoaderCfg, Errors, ErrorCodes } from '@GEX/constants'
 import { globMatchFiles, createGlobMatcher } from "@GEX/utils/globMatch"
 import { exists, flatUnion, emptyObj, emptyArr, isStr, isArr } from "@keg-hub/jsutils"
-const { readFile } = promises
 
 type TLoopExtResp = {
   ext?:string
