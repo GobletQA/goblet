@@ -172,7 +172,11 @@ export class Execute {
         fallback: BaseRunner,
       })
 
-      if(run) this.#runner = run
+      if(run){
+        resp.runner = run
+        this.#runner = run
+      }
+      
       this.#states.runnerLoaded = true
     }
 
@@ -290,6 +294,7 @@ export class Execute {
 
   exec = async <T extends TExData=TExData>(options:TExRun<T>) => {
     const ctx = await this.#execSetup(options)
+
     const transformed = await ctx.transform.transform(ctx.file.content, ctx)
 
     return await this.#run(transformed, ctx)

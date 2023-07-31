@@ -30,7 +30,7 @@ export type TLoadTransform<T extends IExTransform=IExTransform> = {
   override?:TExArrClsOptMap<T>
 }
 
-export type TLoadRunner<T extends IExRunner=IExRunner> = {
+export type TLoadRunner<T extends IExRunner<any, any>=IExRunner<any, any>> = {
   type:string
   ctx:TExExtensionsCtx
   options?:TExRunnerCfg
@@ -38,9 +38,9 @@ export type TLoadRunner<T extends IExRunner=IExRunner> = {
   override?:TExArrClsOptMap<T>
 }
 
-export type TExecuteBuiltEnvironment = IExEnvironment
-export type TExecuteBuiltRunners = Record<string, IExRunner>
+export type TExecuteBuiltEnvironment = IExEnvironment<any, any>
 export type TExecuteBuiltTransforms = Record<string, IExTransform>
+export type TExecuteBuiltRunners = Record<string, IExRunner<any, any>>
 
 // Global options for runner / transform / environment passed from Exam config
 export type TExecPassThroughOpts = {
@@ -63,9 +63,9 @@ export type TExecuteCfg = {
 }
 
 type TExRunMaps = {
-  runner?:TExArrClsOptMap<IExRunner, TExRunnerCfg>
+  runner?:TExArrClsOptMap<IExRunner<any, any>, TExRunnerCfg>
   transform?:TExArrClsOptMap<IExTransform, TExTransformCfg>
-  environment?:TExArrClsOptMap<IExEnvironment, TExEnvironmentCfg>
+  environment?:TExArrClsOptMap<IExEnvironment<any, any>, TExEnvironmentCfg>
 }
 
 type TExRunMeta<D extends TExData=TExData, Ast extends TExAst=TExAst> = {
@@ -93,5 +93,6 @@ export type TExCtx<
 > = TExRunMeta<D, Ast> & {
   exam:Exam
   transform?:IExTransform
-  environment:IExEnvironment
+  runner:IExRunner<any, any>
+  environment:IExEnvironment<any, any>
 }

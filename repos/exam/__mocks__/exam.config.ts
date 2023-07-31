@@ -100,6 +100,7 @@ export const ExamConfig:TExamConfig = {
     `.mts`,
     `.tsx`,
   ],
+  exts: [],
   
   /**
    * Custom Runners to execute tests, based on file extension

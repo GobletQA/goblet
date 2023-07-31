@@ -24,12 +24,12 @@ export type TExamTransforms<
 > = TExTypeOpts<Cls, Opts>
 
 export type TExamRunners<
-  Cls extends IExRunner=IExRunner,
+  Cls extends IExRunner<any, any>=IExRunner<any, any>,
   Opts extends TExRunnerCfg=TExRunnerCfg
 > = TExTypeOpts<Cls, Opts>
 
 export type TExamEnvironment<
-  Cls extends IExEnvironment=IExEnvironment,
+  Cls extends IExEnvironment<any, any>=IExEnvironment<any, any>,
   Opts extends TExEnvironmentCfg=TExEnvironmentCfg
 > = TExArrOptsMap<Cls, Opts>
 
@@ -51,18 +51,18 @@ export type TExecTransforms<
 }
 
 export type TExecRunners<
-  Cls extends IExRunner=IExRunner,
+  Cls extends IExRunner<any, any>=IExRunner<any, any>,
   Opts extends TExRunnerCfg=TExRunnerCfg
 > = {
   [key:string]: TExecutorArrClsOptMap<Cls, Opts>
 }
 
 export type TExecEnvironment<
-  Cls extends IExEnvironment=IExEnvironment,
+  Cls extends IExEnvironment<any, any>=IExEnvironment<any, any>,
   Opts extends TExEnvironmentCfg=TExEnvironmentCfg
 > = TExecutorArrClsOptMap<Cls, Opts>
 
 
-export type TExTypeCls = IExRunner|IExTransform
+export type TExTypeCls = IExRunner<any, any>|IExTransform
 export type TExTypeCfg = TExRunnerCfg|TExTransformCfg
 export type TExTypeMap = TExamRunners|TExamTransforms

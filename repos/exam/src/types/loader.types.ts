@@ -36,6 +36,7 @@ export type TLoaderCfg = {
 
   /**
    * Array of file extensions that can be loaded
+   * Overrides the defaults
    */
   extensions?:string[]
 

@@ -12,17 +12,18 @@ import {
   toBool,
   isNum,
   isBool,
+  flatUnion,
 } from '@keg-hub/jsutils'
 
 
-const getCfgObj = (opts:TExamCliOpts) => {
+const getCfgObj = async (opts:TExamCliOpts) => {
   const mod = require(fullLoc(opts.config, opts.rootDir))
   const found = isFunc(mod)
-    ? mod(opts)
+    ? await mod(opts)
     : isObj(mod.default)
       ? mod.default
       : isFunc(mod.default)
-        ? mod.default(opts)
+        ? await mod.default(opts)
         : mod
 
   return found || {}
@@ -59,6 +60,7 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     onCleanup:bOnCleanup,
     // --- Don't include in the cli config --- //
 
+
     // --- Don't destructure to they are set in the final object --- //
     // config:bConfig,
     // esbuild: bEsbuild,
@@ -70,10 +72,22 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     // transforms: bTransforms,
     // environment: bEnvironment,
     // --- Don't destructure to they are set in the final object --- //
-    
+
+
+    // --- Pull these out , so they are not included via destructuring --- //
     mode:bMode,
     serial:bSerial,
     parallel:bParallel,
+    reporters:bReporters,
+    testMatch: bTestMatch,
+    preRunner: bPreRunner,
+    postRunner: bPostRunner,
+    testIgnore: bTestIgnore,
+    loaderIgnore: bLoaderIgnore,
+    transformIgnore: bTransformIgnore,
+    preEnvironment: bPreEnvironment,
+    postEnvironment: bPostEnvironment,
+    // --- Pull these out , so they are not included via destructuring --- //
 
 
     bail: bBail,
@@ -85,27 +99,16 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     suiteRetry: bSuiteRetry,
     concurrency: bConcurrency,
 
-    reporters:bReporters,
+    rootDir: bRootDir,
+    testDir: bTestDir,
 
     debug:bDebug,
     verbose: bVerbose,
     timeout: bTimeout,
-    globalTimeout: bGlobalTimeout,
     extensions: bExtensions,
+    globalTimeout: bGlobalTimeout,
     
-    rootDir: bRootDir,
-    testDir: bTestDir,
-    testMatch: bTestMatch,
     
-    preRunner: bPreRunner,
-    postRunner: bPostRunner,
-   
-    testIgnore: bTestIgnore,
-    loaderIgnore: bLoaderIgnore,
-    transformIgnore: bTransformIgnore,
-
-    preEnvironment: bPreEnvironment,
-    postEnvironment: bPostEnvironment,
     ...baseRest
   } = base
 
@@ -128,30 +131,13 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     transforms,
     environment,
     // --- These do not work from the CLI --- //
-
+    
+    
+    // --- Pull these out , so they are not included via destructuring --- //
     mode,
     serial,
     parallel,
-
-    bail,
-    colors,
-    silent,
-    workers,
-    testRetry,
-    runInBand,
-    suiteRetry,
-    concurrency,
-
     reporters,
-
-    debug,
-    verbose,
-    timeout,
-    globalTimeout,
-    extensions,
-
-    rootDir,
-    testDir,
     testMatch,
 
     preRunner,
@@ -163,6 +149,26 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
 
     preEnvironment,
     postEnvironment,
+    // --- Pull these out , so they are not included via destructuring --- //
+
+
+    bail,
+    colors,
+    silent,
+    workers,
+    testRetry,
+    runInBand,
+    suiteRetry,
+    concurrency,
+
+    rootDir,
+    testDir,
+
+    debug,
+    verbose,
+    timeout,
+    extensions,
+    globalTimeout,
 
   } = override
 
@@ -170,30 +176,22 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
 
   const examCfg = {
     ...baseRest,
-
     runInBand:rIB,
-
     rootDir: rootDir ?? bRootDir,
     testDir: testDir ?? bTestDir,
+    debug: toBool(debug ?? bDebug),
     mode: getRunMode(base, override),
-
     colors: toBool(colors ?? bColors),
     silent: toBool(silent ?? bSilent),
+    timeout: toNum(timeout ?? bTimeout),
+    workers: toNum(workers ?? bWorkers),
+    verbose: toBool(verbose ?? bVerbose),
     testRetry: toNum(testRetry ?? bTestRetry),
     suiteRetry: toNum(suiteRetry ?? bSuiteRetry),
-
-    debug: toBool(debug ?? bDebug),
-    timeout: toNum(timeout ?? bTimeout),
-    verbose: toBool(verbose ?? bVerbose),
+    concurrency: toNum(concurrency ?? bConcurrency),
     globalTimeout: toNum(globalTimeout ?? bGlobalTimeout),
     bail: isBool(bail) ? bail : isNum(bail) ? bail : bBail,
-
-    // atLeastOne(bWorkers, workers, rIB),
-    workers: toNum(workers ?? bWorkers),
-
-    // atLeastOne(bConcurrency, concurrency, rIB),
-    concurrency: toNum(concurrency ?? bConcurrency),
-
+    extensions: flatUnion([...bExtensions, ...extensions]),
     ...mergeCfgArrays(base, override),
   } as TExamConfig
 
@@ -216,10 +214,10 @@ const buildNoConfig = (opts:TExamCliOpts):TExamConfig => {
   return {...rest, mode: getRunMode(opts, opts)}
 }
 
-export const getConfig = (opts:TExamCliOpts) => {
+export const getConfig = async (opts:TExamCliOpts) => {
   const built = !opts.config
     ? buildNoConfig(opts)
-    : mergeConfig(getCfgObj(opts), opts)
+    : mergeConfig(await getCfgObj(opts), opts)
 
   return buildExamCfg(built)
 }

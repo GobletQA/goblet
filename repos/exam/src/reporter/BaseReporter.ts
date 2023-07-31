@@ -12,7 +12,6 @@ import { Logger } from "@GEX/utils/logger"
 
 import { ExamEvtNames } from "@GEX/constants/events"
 import { RootSuiteTag, SuiteTag, FileTag } from "@GEX/constants/tags"
-import { noOp, get, noPropArr, isFunc, isStr, capitalize } from '@keg-hub/jsutils'
 
 const ResultStatus = {
   failed: `failed`,
@@ -21,16 +20,16 @@ const ResultStatus = {
 
 const spaceMap = {
   file: `  `,
+  hook: `  `,
+  spec: `  `,
+  suite: `  `,
   root: `    `,
-  hook: `      `,
-  describe: `    `,
-  error: `         `,
-  add: `  `
+  error: `    `,
 }
 
 const logFile = (location:string, rootDir?:string) => {
   const fromRoot = location?.replace(rootDir, ``).replace(/^\//, `<root>/`)
-  fromRoot && Logger.stdout(`${spaceMap.file}${FileTag} > ${Logger.colors.gray(fromRoot)}`)
+  fromRoot && Logger.stdout(`${spaceMap.file}${FileTag} ${Logger.colors.white(fromRoot)}\n`)
 }
 
 /**
@@ -38,15 +37,15 @@ const logFile = (location:string, rootDir?:string) => {
  */
 const logParent = (
   evt:TExamEvt<TExEventData>,
-  spacer:string,
   isStart:boolean
 ) => {
   const context = evt.data
+  const space = spaceFromId(evt)
   
   const isRoot = evt.name === ExamEvtNames.rootSuiteDone
     || evt.name === ExamEvtNames.rootSuiteStart
+    || space.length === 4
 
-  const space = isRoot ? spaceMap.root : spacer
 
   if(isStart)
     isRoot
@@ -64,22 +63,37 @@ const logParent = (
 
 }
 
+const spaceFromId = (evt:TExamEvt<TExEventData>) => {
+  const { id, testPath } = evt.data
+  if(id.startsWith(`suite`)){
+    let spacer = spaceMap.suite
+    const [name, ...rest] = id.split(`-`)
+    rest.map(num => spacer+=`  `)
+    return spacer
+  }
+
+  let spacer = spaceMap.spec
+  testPath.split(`/`).map(num => spacer+=`  `)
+  return spacer
+
+}
+
 /**
  * Helper to log test execution status in real time
  * Logs the outcome of each describe and test
  */
 const logResult = (
   evt:TExamEvt<TExEventData>,
-  spacer:string,
   hasStepErr?:boolean
 ) => {
+
   const context = evt.data
 
   const isParent = context.type !== `test`
   const isStart = context.action === `start`
 
   if(isParent){
-    logParent(evt, spacer, isStart)
+    logParent(evt, isStart)
     return
   }
 
@@ -87,7 +101,7 @@ const logResult = (
 
   const space = context.type === `error`
     ? spaceMap.error
-    : spacer
+    : spaceFromId(evt)
 
   const prefix = hasStepErr
     ? `${space || ``}${Logger.colors.yellow(`○`)}`
@@ -113,7 +127,6 @@ const logResult = (
 export class BaseReporter implements IExamReporter {
   exam:Exam
   config:TExamConfig
-  spacer:string=``
 
   constructor(
     examCfg:TExamConfig,
@@ -124,14 +137,6 @@ export class BaseReporter implements IExamReporter {
     this.exam = cfg.exam
   }
 
-  #addSpace = () => {
-    this.spacer+=spaceMap.add
-  }
-  
-  #subSpace = () => {
-    this.spacer.slice(0, this.spacer.length - spaceMap.add.length)
-  }
-  
   // Event `PLAY-STARTED`,
   onRunStart = (evt:TExamEvt) => {}
 
@@ -140,19 +145,14 @@ export class BaseReporter implements IExamReporter {
 
     const file = evt?.data?.metaData?.file
     const rootDir = this.exam?.loader?.rootDir
-    if(file?.location){
-      this.#addSpace()
-      logFile(file?.location, rootDir)
-    }
+    file?.location && logFile(file?.location, rootDir)
 
-    this.#addSpace()
-    logResult(evt, this.spacer)
+    logResult(evt)
   }
 
   // Event `PLAY-SUITE-START`
   onTestStart = (evt:TExamEvt<TExEventData>) => {
-    this.#addSpace()
-    logResult(evt, this.spacer)
+    logResult(evt)
   }
 
   /**
@@ -160,29 +160,26 @@ export class BaseReporter implements IExamReporter {
    * Not called for `skipped` and `todo` specs
    */
   //  Event `PLAY-SPEC-START`
-  onTestCaseStart = (evt:TExamEvt<TExEventData>) => logResult(evt, this.spacer + `  `)
+  onTestCaseStart = (evt:TExamEvt<TExEventData>) => logResult(evt)
 
 
   // Event `PLAY-SPEC-DONE`
-  onTestCaseResult = (evt:TExamEvt<TExEventData>) => logResult(evt, this.spacer + `  `)
+  onTestCaseResult = (evt:TExamEvt<TExEventData>) => logResult(evt)
 
 
   // Event `PLAY-SUITE-DONE`
   onTestResult = (evt:TExamEvt<TExEventData>) => {
-    this.#subSpace()
-    logResult(evt, this.spacer)
+    logResult(evt)
   }
 
   // Event `PLAY-SUITE-DONE-ROOT` - Top level suite-0 only
   onTestFileResult = (evt:TExamEvt<TExEventData>) => {
-    this.#subSpace()
-    logResult(evt, this.spacer)
+    logResult(evt)
   }
 
 
   // Event `PLAY-RESULTS`
   onRunComplete = () => {
-    this.#subSpace()
     Logger.empty()
   }
 

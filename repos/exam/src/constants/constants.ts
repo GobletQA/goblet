@@ -37,7 +37,6 @@ export const ExamCfgArrayItems = [
   `preRunner`,
   `postRunner`,
   `testIgnore`,
-  `extensions`,
   `loaderIgnore`,
   `preEnvironment`,
   `postEnvironment`,

@@ -1,9 +1,7 @@
-import { noOp } from '@keg-hub/jsutils'
-import { Given } from '@GTU/Parkin'
 
-describe(`this is a test file`, () => {
+describe(`First describe`, () => {
 
-  describe(`this is a sub-describe`, () => {
+  describe(`sub-describe`, () => {
 
     test(`this should be true`, () => {
       expect(1 + 1).toBe(2)
@@ -13,6 +11,17 @@ describe(`this is a test file`, () => {
       expect(() => {
         expect(1 + 1).toBe(4)
       }).toThrow()
+    })
+
+  })
+})
+
+describe(`Second describe`, () => {
+
+  describe(`sub-describe`, () => {
+
+    test(`this should be true`, () => {
+      expect(1 + 1).toBe(2)
     })
 
   })

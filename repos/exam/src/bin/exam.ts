@@ -11,7 +11,7 @@ import { removeEmpty, parseArgs } from './helpers'
 ife(async () => {
 
   const opts = await parseArgs()
-  const exam = removeEmpty(getConfig(opts))
+  const exam = removeEmpty(await getConfig(opts))
 
   updateCLIEnvs(exam, opts)
 

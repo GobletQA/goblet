@@ -84,7 +84,7 @@ export type TExamCfg = TLoaderCfg
     // These get convert form strings to classes in the Exam Loader
     runners: TExamRunners
     reporters?:TExamReporters
-    transforms: TExamTransforms
+    transforms?: TExamTransforms
     environment?: TExamEnvironment
 
     // TODO: implement different modes
@@ -102,7 +102,7 @@ export type TExamCfg = TLoaderCfg
   }
 
 export type TExamConfig = TExamCfg
-  & TExamEvents
+  & Omit<TExamEvents, `events`> & { events?: Partial<TExamEvts> } 
   & Omit<TExecuteCfg, `exam`|`runners`|`transforms`|`environment`|`passthrough`>
 
 
@@ -119,7 +119,7 @@ export type TExamRunOpts<
   D extends TExData=TExData,
   Ast extends TExAst=TExAst
 > = TExamRun
-  & TExamEvents
+  & Omit<TExamEvents, `events`> & { events?: Partial<TExamEvts> } 
   & Pick<TExamConfig, `testMatch`|`testIgnore`|`extensions`|`testDir`|`rootDir`>
 
 export type TExamBuilTCfg = Omit<TExamConfig, `reporters`> & { reporters: TExBuiltReporters }
