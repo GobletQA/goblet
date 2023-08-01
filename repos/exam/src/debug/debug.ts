@@ -21,6 +21,7 @@ export const logWorkBreakdown = (
   locationsAmt:number
 ) => {
 
+  Logger.empty()
   header(`Worker Breakdown`)
   item(`Workers:`, `${workers} of ${getCPUCount()} total`)
   item(`Concurrency:`, `${concurrency} file(s) per worker`)
@@ -31,11 +32,11 @@ export const printDebugResults = (
   result:any[]=emptyArr,
   time:number
 ) => {
-  
   const seconds = (time/1000).toFixed(2)
+  Logger.empty()
   header(`Execution Timing`)
-  item(`Time:`, `total of ${seconds} seconds spent executing test file(s)`)
-  item(`Files:`, `total of ${result?.length || 0} test file(s) were executed`)
+  item(`Time:`, `${seconds} seconds`)
+  item(`Files:`, `${result?.length || 0} test file(s) were executed`)
 }
 
 export const printTooManyWorkers = (amount:number, oneLessCpus:number) => {

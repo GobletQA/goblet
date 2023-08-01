@@ -80,7 +80,7 @@ const ExamConfig = ():TExamConfig => {
     // esbuild: {},
     rootDir,
     testMatch,
-    debug: true,
+    debug: false,
     // verbose: true,
     bail: 1,
     workers: 1,

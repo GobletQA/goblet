@@ -11,12 +11,8 @@ import type {
 import { Logger } from "@GEX/utils/logger"
 
 import { ExamEvtNames } from "@GEX/constants/events"
+import { TestsResultStatus } from "@GEX/constants/constants"
 import { RootSuiteTag, SuiteTag, FileTag } from "@GEX/constants/tags"
-
-const ResultStatus = {
-  failed: `failed`,
-  passed: `passed`
-}
 
 const spaceMap = {
   file: `  `,
@@ -29,7 +25,7 @@ const spaceMap = {
 
 const logFile = (location:string, rootDir?:string) => {
   const fromRoot = location?.replace(rootDir, ``).replace(/^\//, `<root>/`)
-  fromRoot && Logger.stdout(`${spaceMap.file}${FileTag} ${Logger.colors.white(fromRoot)}\n`)
+  fromRoot && Logger.stdout(`${spaceMap.file}${FileTag} ${Logger.colors.white(fromRoot)}`)
 }
 
 /**
@@ -105,36 +101,74 @@ const logResult = (
 
   const prefix = hasStepErr
     ? `${space || ``}${Logger.colors.yellow(`○`)}`
-    : context.status === ResultStatus.passed
+    : context.status === TestsResultStatus.passed
       ? `${space || ``}${Logger.colors.green(`✓`)}`
       : `${space || ``}${Logger.colors.red(`✕`)}`
 
   let message = hasStepErr
     ? `${prefix} ${Logger.colors.yellow(context.description)}\n`
-    : context.status === ResultStatus.passed
+    : context.status === TestsResultStatus.passed
       ? `${prefix} ${Logger.colors.gray(context.description)}\n`
       : `${prefix} ${Logger.colors.red(context.description)}\n`
 
 
-  // context?.failedMessage && 
-  //   (message += `\n${context?.failedMessage}\n\n`)
+  const failed = getFailedMessage(evt)
+
+  failed?.message && 
+    (message += `\n${failed?.message}\n\n`)
 
   Logger.stdout(message)
 
 }
 
+const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
+  const context = evt.data
+
+  if(context.status !== TestsResultStatus.failed) return {}
+  
+  if(!context?.failedExpectations?.length) return {}
+
+  const failed = context?.failedExpectations?.[0]
+  if(!failed || !failed?.description) return {}
+
+  // TODO: add better handling of error description
+  // Include the error.matcherResult data colorized
+  // failed?.error?.matcherResult.actual vs failed?.error?.matcherResult.expected
+
+  const duplicates = []
+  const startsWith = [`===========================`]
+  const extSpace = spaceFromId(evt)
+
+  return {
+    message: `${failed.description}`.split(`\n`)
+      .map(line => {
+        const trimmed = line.trim()
+
+        if(!trimmed) return false
+        if(duplicates.includes(line)) return false
+        if(startsWith.find(filter => trimmed.startsWith(filter))) return false
+
+        duplicates.push(line)
+        return `${extSpace}${spaceMap.error}${line}`
+      })
+      .concat([
+        context?.testPath && `\n${extSpace}${spaceMap.error}Test Path: ${context.testPath}`
+      ])
+      .filter(Boolean)
+      .join(`\n`)
+  }
+
+}
+
 
 export class BaseReporter implements IExamReporter {
-  exam:Exam
   config:TExamConfig
 
   constructor(
     examCfg:TExamConfig,
     cfg:TExReporterCfg,
-    reporterContext?:TEXInterReporterContext
   ) {
     this.config = examCfg
-    this.exam = cfg.exam
   }
 
   // Event `PLAY-STARTED`,
@@ -144,7 +178,7 @@ export class BaseReporter implements IExamReporter {
   onTestFileStart = (evt:TExamEvt<TExEventData>) => {
 
     const file = evt?.data?.metaData?.file
-    const rootDir = this.exam?.loader?.rootDir
+    const rootDir = this.config?.rootDir
     file?.location && logFile(file?.location, rootDir)
 
     logResult(evt)
@@ -175,6 +209,7 @@ export class BaseReporter implements IExamReporter {
   // Event `PLAY-SUITE-DONE-ROOT` - Top level suite-0 only
   onTestFileResult = (evt:TExamEvt<TExEventData>) => {
     logResult(evt)
+    Logger.empty()
   }
 
 

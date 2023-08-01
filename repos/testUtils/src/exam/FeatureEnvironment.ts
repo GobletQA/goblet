@@ -71,10 +71,11 @@ export class FeatureEnvironment implements IExamEnvironment {
       suiteDone: runner.onSuiteDone.bind(runner),
       specStarted: runner.onSpecStarted.bind(runner),
       suiteStarted: runner.onSuiteStarted.bind(runner),
+      timeout: runner?.timeout || runner?.globalTimeout,
     })
   }
 
-  reset = (runner:FeatureRunner) => {
+  reset = () => {
     ;(global as any).expect = this.cache.globals.expect
 
     this.globals?.forEach((item) => global[item] = this.cache.globals[item])
@@ -82,10 +83,9 @@ export class FeatureEnvironment implements IExamEnvironment {
     Object.entries(this.cache.envs)?.forEach(([key, val]) => {
       process.env[key] = this.cache.envs[key]
     })
-
   }
 
-  cleanup = (runner:FeatureRunner) => {
+  cleanup = () => {
     this.cache.globals = {}
     this.cache.envs = {}
     this?.test?.clean?.()

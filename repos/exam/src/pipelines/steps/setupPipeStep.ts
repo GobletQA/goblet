@@ -1,7 +1,7 @@
-import { TPipelineArgs, TStateManager } from '@GEX/types'
+import type { TPipelineArgs, TStateManager } from '@GEX/types'
+
 import { setupTask } from '../tasks/setupTask'
 import { createRequireTask } from '../tasks/createRequireTask'
-import { Logger } from '@GEX/utils/logger'
 import {
   argsState,
   stateManager,
@@ -9,7 +9,6 @@ import {
 } from '../states/pipelineStates'
 
 export const setupPipeStep = async (args:TPipelineArgs, manager?:TStateManager) => {
-  Logger.debug(`------- setupPipeStep -------`)
 
   const {
     passthrough

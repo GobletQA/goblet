@@ -9,7 +9,7 @@ import type {
 
 
 import { FeatureEnvironment } from './FeatureEnvironment'
-import { emptyArr, omitKeys, set, get, flatUnion, } from '@keg-hub/jsutils'
+import { emptyArr, omitKeys, flatUnion, } from '@keg-hub/jsutils'
 import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 import {
   Errors,
@@ -35,6 +35,7 @@ export type TRunnerOpts = {
 export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
   bail:number=0
+  fromAst:string[]=[`feature`]
   omitTestResults:string[] = [
     `tests`,
     `describes`,
@@ -44,12 +45,10 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
 
   constructor(cfg:TExRunnerCfg, state:TStateObj) {
-
     super(cfg, state)
 
     this.bail = cfg.bail
     this.isRunning = false
-    const steps = state?.data?.steps
     this.environment.setup(this)
 
     cfg.omitTestResults
@@ -61,23 +60,30 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
    * Runs the code passed to it via the exam
    */
   run = async (model:TExFileModel, state:TStateObj) => {
-
     // @ts-ignore
     global.jasmine.testPath = model.location
-    
-    const { data } = state
-    const opts = { ...data }
-    const tOut = data?.timeout || this?.timeout || this.globalTimeout
-
-    tOut && (opts.timeout = tOut)
 
     this.isRunning = true
+
+    const { data } = state
     this.event(ExamEvents.started)
 
-    const ast = this.environment.parkin.parse.feature(model.content)
-    await this.environment.parkin.run(ast, { tags: {}, steps: { shared: {} } })
+    const content = this.fromAst.includes(model?.fileType)
+      ? this.environment.parkin.parse.feature(model.content)
+      : model?.content
 
-    const results = await this.environment.test.run() as TExEventData[]
+    await this.environment.parkin.run(content, {
+      ...data,
+      tags: {...data?.tags},
+      timeout: data?.timeout || this.timeout,
+      steps: {...data?.steps, shared: {...data?.steps?.shared}}
+    })
+
+    const results = await this.environment.test.run({
+      description: data?.description,
+      timeout: data?.globalTimeout || this.globalTimeout
+    }) as TExEventData[]
+
     const final = results.map(result => this.clearTestResults(result))
 
     this.isRunning = false
@@ -166,7 +172,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
   cleanup = async () => {
     try {
-      this.environment?.cleanup?.(this)
+      this.environment?.cleanup?.()
     }
     catch(err){}
 

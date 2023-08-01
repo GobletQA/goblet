@@ -1,11 +1,9 @@
 import type {
   TExCtx,
-  IExEnvironment,
   TEnvironmentEnvs,
   TExEnvironmentCfg,
   TEnvironmentCache,
   IExamEnvironment,
-  IExRunner,
 } from '@GEX/types'
 
 /**
@@ -13,12 +11,13 @@ import type {
  * Which allows it to be referenced directly in step definitions
  */
 import expect from 'expect'
-import { emptyObj } from '@keg-hub/jsutils'
+import { ParkinTest } from '@ltipton/parkin/test'
+import { emptyObj, isStr } from '@keg-hub/jsutils'
 import { BaseRunner } from '@GEX/runner/BaseRunner'
-
 
 export class BaseEnvironment implements IExamEnvironment<BaseRunner> {
 
+  test:ParkinTest
   envs:TEnvironmentEnvs={}
   cache:TEnvironmentCache = {
     envs:{},
@@ -38,27 +37,55 @@ export class BaseEnvironment implements IExamEnvironment<BaseRunner> {
     `beforeEach`,
   ]
 
-  constructor(cfg:TExEnvironmentCfg=emptyObj){}
+  constructor(cfg:TExEnvironmentCfg=emptyObj){
+    
+    Object.entries(cfg.globals)?.forEach(([key, item]) => {
+      this.cache.globals[key] = global[key]
+      global[key] = item
+    })
 
-  setup = (runner:BaseRunner, ctx:TExCtx) => {
+    Object.entries(cfg.envs)?.forEach(([key, val]) => {
+      this.cache.envs[key] = process.env[key]
+      process.env[key] = isStr(val) ? val : JSON.stringify(val)
+    })
+    
+    this.test = new ParkinTest()
+  }
+
+  setup = (runner:BaseRunner) => {
     this.cache.globals.expect = (global as any).expect
     ;(global as any).expect = expect
 
     this.globals?.forEach((item) => {
       this.cache.globals[item] = global[item]
-      global[item] = runner.test[item]
+      global[item] = this.test[item]
     })
+
+    this.test.setConfig({
+      specDone: runner.onSpecDone.bind(runner),
+      suiteDone: runner.onSuiteDone.bind(runner),
+      specStarted: runner.onSpecStarted.bind(runner),
+      suiteStarted: runner.onSuiteStarted.bind(runner),
+      timeout: runner?.timeout || runner?.globalTimeout,
+    })
+
   }
 
   reset = () => {
     ;(global as any).expect = this.cache.globals.expect
 
     this.globals?.forEach((item) => global[item] = this.cache.globals[item])
+    
+    Object.entries(this.cache.envs)?.forEach(([key, val]) => {
+      process.env[key] = this.cache.envs[key]
+    })
+    
   }
 
   cleanup = () => {
     this.cache.globals = {}
     this.cache.envs = {}
+    this?.test?.clean?.()
 
     return undefined
   }

@@ -10,54 +10,41 @@ import type {
 import { ExamEvents } from '@GEX/Events'
 import { ExamRunner } from './ExamRunner'
 import { Errors } from '@GEX/constants/errors'
-import { ParkinTest } from '@ltipton/parkin/test'
 import { RootSuiteId } from '@GEX/constants/events'
 import { emptyArr, omitKeys, set, get, } from '@keg-hub/jsutils'
 import {BaseEnvironment} from '@GEX/environment/BaseEnvironment'
 
 export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
-  test:ParkinTest
   bail:number=0
   omitTestResults:string[] = []
-
 
   constructor(cfg:TExRunnerCfg, state:TStateObj) {
     super(cfg, state)
 
     this.isRunning = false
-    this.test = new ParkinTest({
-      specDone: this.onSpecDone,
-      suiteDone: this.onSuiteDone,
-      specStarted: this.onSpecStarted,
-      suiteStarted: this.onSuiteStarted,
-    })
+    this.environment.setup(this)
 
     if(cfg.omitTestResults)
       this.omitTestResults = cfg.omitTestResults
   }
 
-  event = (args:any) => {
-    
-  }
 
   /**
    * Runs the code passed to it via the exam
    */
   run = async (model:TExFileModel, state:TStateObj) => {
     this.isRunning = true
-
     const { data } = state
-    const opts = { ...data }
-    const tOut = data?.timeout ?? this.globalTimeout
-    tOut && (opts.timeout = tOut)
+
+    state.require(model.location)
 
     /**
      * The required module above should use the current globals
      * Which means PTE should now be loaded with tests to run
      */
     this.event(ExamEvents.started)
-    const parent = this.test.getActiveParent()
+    const parent = this.environment.test.getActiveParent()
 
     /**
      * Add the file metaData for use in events later
@@ -75,7 +62,10 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
           }
         })
 
-    const results = await this.test.run() as TExEventData[]
+    const results = await this.environment.test.run({
+      description: data?.description,
+      timeout: data?.globalTimeout || this.globalTimeout
+    }) as TExEventData[]
 
     const final = results.map(result => this.clearTestResults(result))
 
@@ -155,18 +145,16 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
 
   cancel = async () => {
     this.canceled = true
-    this.test?.abort?.()
+    this.environment.test?.abort?.()
 
     await this.cleanup?.()
   }
 
   cleanup = async () => {
     try {
-      this?.test?.clean()
+      this.environment?.cleanup?.()
     }
     catch(err){}
-
-    this.test = undefined
   }
 
   /**

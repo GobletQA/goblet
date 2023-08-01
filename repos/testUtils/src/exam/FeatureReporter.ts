@@ -139,11 +139,9 @@ const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
   // Include the error.matcherResult data colorized
   // failed?.error?.matcherResult.actual vs failed?.error?.matcherResult.expected
 
-  // Clean up log output errors from playwright
   const duplicates = []
-  const startsWith = [
-    `===========================`
-  ]
+  const startsWith = [`===========================`]
+  const extSpace = spaceFromId(evt)
 
   return {
     message: `${failed.description}`.split(`\n`)
@@ -155,9 +153,11 @@ const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
         if(startsWith.find(filter => trimmed.startsWith(filter))) return false
 
         duplicates.push(line)
-        return `${spaceMap.error}${line}`
+        return `${extSpace}${spaceMap.error}${line}`
       })
-      .concat([ context?.testPath ? `\n${spaceMap.error}Test Path: ${context.testPath}` : false])
+      .concat([
+        context?.testPath && `\n${extSpace}${spaceMap.error}Test Path: ${context.testPath}`
+      ])
       .filter(Boolean)
       .join(`\n`)
   }

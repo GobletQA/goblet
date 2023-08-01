@@ -1,15 +1,13 @@
-import type { TPipelineInit } from '@GEX/types'
+import { TPipelineInit } from '@GEX/types'
+
 
 import pPipe from 'p-pipe'
 import {
   aliasStep,
-  runnerStep,
   esbuildStep,
   rewindStep,
   reportersStep,
   setupPipeStep,
-  preRunnerStep,
-  postRunnerStep,
   environmentStep,
   preEnvironmentStep,
   postEnvironmentStep
@@ -19,7 +17,8 @@ import {pipelineHoc} from './pipelineHoc'
 import {Errors} from '@GEX/constants/errors'
 import {formatArgsTask} from './tasks/formatArgsTask'
 
-export const RunPipeline = async (args:TPipelineInit) => {
+
+export const SetupPipeline = async (args:TPipelineInit) => {
   const pipArgs = formatArgsTask(args)
 
   try {
@@ -31,10 +30,14 @@ export const RunPipeline = async (args:TPipelineInit) => {
       pipelineHoc(preEnvironmentStep),
       pipelineHoc(environmentStep),
       pipelineHoc(postEnvironmentStep),
-      pipelineHoc(preRunnerStep),
-      pipelineHoc(runnerStep),
-      pipelineHoc(postRunnerStep),
-      pipelineHoc(rewindStep()),
+      /**
+       * TODO: pass in args to keep the rewind methods and the existing state
+       * - Then pass that on to the RunPipeline
+       * - This allows reuse of the same environment over and over again
+       * - So we don't have to recreate it for each test
+       * - It's basically caching the environment for each worker
+       */
+      pipelineHoc(rewindStep( /** args to save the environment */)),
     )
 
     return await pipeline()

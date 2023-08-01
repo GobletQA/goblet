@@ -1,3 +1,4 @@
+import {PipelineTag} from '@GEX/constants/tags'
 import {
   TPipelineInit,
   TPipelineArgs,
@@ -7,6 +8,7 @@ import {exists, ensureArr, isBool, isNum} from '@keg-hub/jsutils'
 
 export const formatArgsTask = (args:TPipelineInit|TPipelineArgs) => {
   const {
+    tag,
     file,
     config,
     testMatch,
@@ -30,6 +32,7 @@ export const formatArgsTask = (args:TPipelineInit|TPipelineArgs) => {
   return {
     ...rest,
     testMatch: tests,
+    tag: tag || PipelineTag,
     config: {
       ...config,
       bail,

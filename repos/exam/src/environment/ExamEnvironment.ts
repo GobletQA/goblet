@@ -39,10 +39,6 @@ export class ExamEnvironment implements IExamEnvironment {
 
   }
 
-  protected setGlobals = () => {
-    
-  }
-
   reset = async () => {
     Object.entries(this.cache.globals)
       .forEach(([key, val]) => global[key] = val)
