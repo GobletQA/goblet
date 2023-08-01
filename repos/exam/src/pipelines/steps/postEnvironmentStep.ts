@@ -12,5 +12,4 @@ export const postEnvironmentStep = async (args:TPipelineArgs) => {
 
   loadFilesTask(args, config.postEnvironment)
 
-  return args
 }

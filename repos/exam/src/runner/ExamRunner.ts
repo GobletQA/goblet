@@ -8,10 +8,14 @@ import type {
   IExEnvironment,
   IExamRunner,
   IExamEnvironment,
+  TExFileModel,
+  TStateObj,
+  TExamEvt,
 } from '@GEX/types'
 
 import { Errors } from '@GEX/constants/errors'
 import {ExamEnvironment} from '@GEX/environment'
+import {ReportEventMapper} from '@GEX/reporter/ReportEventMapper'
 
 
 /**
@@ -29,14 +33,18 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
   isRunning?:boolean
   globalTimeout?:number
   environment:E
+  eventReporter:ReportEventMapper
 
 
-  constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
-    const { environment } = ctx
-
-    this.environment = environment
+  constructor(cfg:TExRunnerCfg, state:TStateObj) {
+    const {
+      EventReporter,
+      BaseEnvironment
+    } = state
 
     this.isRunning = false
+    this.eventReporter = EventReporter
+    this.environment = BaseEnvironment as E
 
     if(cfg?.debug) this.debug = cfg.debug
     if(cfg?.timeout) this.timeout = cfg.timeout
@@ -44,6 +52,8 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
     if(cfg?.globalTimeout) this.globalTimeout = cfg.globalTimeout
 
   }
+
+  event = (evt:TExamEvt) => this.eventReporter.event(evt)
 
   /**
    * Called when a page loads to check if mouse tracker should run
@@ -53,7 +63,7 @@ export class ExamRunner<E extends IExamEnvironment> implements IExamRunner<E> {
     return this.isRunning
   }
 
-  run = (content:TTransformResp, ctx:TExCtx) => {
+  run = (model:TExFileModel, state:TStateObj) => {
     Errors.Override(`ExamRunner.run`)
     return undefined
   }

@@ -2,9 +2,15 @@ import { TPipelineArgs, TStateManager } from '@GEX/types'
 import { setupTask } from '../tasks/setupTask'
 import { createRequireTask } from '../tasks/createRequireTask'
 import { Logger } from '@GEX/utils/logger'
+import {
+  argsState,
+  stateManager,
+  responseState,
+} from '../states/pipelineStates'
 
 export const setupPipeStep = async (args:TPipelineArgs, manager?:TStateManager) => {
   Logger.debug(`------- setupPipeStep -------`)
+
   const {
     passthrough
   } = setupTask(args, manager)
@@ -13,7 +19,11 @@ export const setupPipeStep = async (args:TPipelineArgs, manager?:TStateManager) 
 
   manager.setValue(`require`, pRequire)
   manager.setValue(`passthrough`, passthrough)
-  
 
+  args.rewind.push(() => {
+    argsState.cleanup()
+    stateManager.cleanup()
+    responseState.cleanup()
+  })
 
 }

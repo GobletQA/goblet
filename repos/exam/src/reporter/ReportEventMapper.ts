@@ -77,7 +77,6 @@ export class ReportEventMapper {
     if(!method)
       return Logger.verbose(`${ExamTag} Missing reporter method for event ${EvtTags[evt.name]}`)
 
-
     this.reporters.map(reporter => reporter?.[method]?.(evt))
 
     // console.log(`------- reporters -------`)
@@ -88,6 +87,10 @@ export class ReportEventMapper {
     
     // Also need to add `default` and `silent` lookups to the buildReports helper method
     // Should load in the default and silent report classes, which I need to create
+  }
+  
+  cleanup = async () => {
+    return Promise.all(this.reporters.map(reporter => reporter?.cleanup?.()))
   }
 
 }

@@ -43,20 +43,21 @@ const loadFileArr = (args:TPipelineArgs) => {
 }
 
 
-export const loadFilesTask = async (
+export const loadFilesTask = async <T extends Record<string|number, any>>(
   args:TPipelineArgs,
   files:Record<string, any>|string[]|[string, Record<any, any>][]
-) => {
+):Promise<T> => {
 
   if(isArr(files)){
     const looper = loadFileArr(args)
-    return await pMapSeries(files, looper)
+    return await pMapSeries(files, looper) as unknown as T
   }
   else {
-    const responses = {}
+    const responses:T = {} as T
     const looper = loadFilesObj(args, responses)
     const resp = await pMapSeries(Object.entries(files), looper)
-    return responses
+
+    return responses as T
   }
 
 }

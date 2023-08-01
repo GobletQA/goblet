@@ -1,15 +1,11 @@
 import {
   TExFileModel,
   TExArrClsOptMap,
+  TTypeFromFileMap,
 } from "@GEX/types"
 
 import path from 'path'
 import { findGlobMatch } from "./globMatch"
-
-
-export type TTypeFromFileMap<T=any> = {
-  [Key:string]: TExArrClsOptMap<T>
-}
 
 const typeChecks = <T>(
   val:string,

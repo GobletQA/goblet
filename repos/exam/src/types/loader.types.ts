@@ -1,8 +1,9 @@
 import type { GlobOptions } from 'glob'
-import type { register } from 'esbuild-register/dist/node'
-import {IExTransform} from './transform.types'
+import type { IExTransform } from './transform.types'
+import type { RegisterOptions } from 'esbuild-register'
 
-export type TESBuildCfg = Parameters<typeof register>[0]
+
+export type TESBuildCfg = RegisterOptions
 
 export type TLoaderCfg = {
   /**

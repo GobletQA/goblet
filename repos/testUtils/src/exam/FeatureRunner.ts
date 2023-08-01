@@ -9,7 +9,7 @@ import type {
 
 
 import { FeatureEnvironment } from './FeatureEnvironment'
-import { emptyArr, omitKeys, set, get, } from '@keg-hub/jsutils'
+import { emptyArr, omitKeys, set, get, flatUnion, } from '@keg-hub/jsutils'
 import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 import {
   Errors,
@@ -35,50 +35,55 @@ export type TRunnerOpts = {
 export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
   bail:number=0
-  omitTestResults:string[] = []
+  omitTestResults:string[] = [
+    `tests`,
+    `describes`,
+    `passedExpectations`,
+    `failedExpectations`,
+  ]
 
 
-  constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
+  constructor(cfg:TExRunnerCfg, state:TStateObj) {
 
-    super(cfg, ctx)
+    super(cfg, state)
 
     this.bail = cfg.bail
     this.isRunning = false
-    const steps = ctx?.data?.steps
-    this.environment = ctx.environment
-    
+    const steps = state?.data?.steps
     this.environment.setup(this)
 
-    if(cfg.omitTestResults)
-      this.omitTestResults = cfg.omitTestResults
+    cfg.omitTestResults
+      && (this.omitTestResults = flatUnion(this.omitTestResults, cfg.omitTestResults))
   }
 
-  event = (args:any) => {
-    
-  }
 
   /**
    * Runs the code passed to it via the exam
    */
   run = async (model:TExFileModel, state:TStateObj) => {
 
+    // @ts-ignore
+    global.jasmine.testPath = model.location
+    
+    const { data } = state
+    const opts = { ...data }
+    const tOut = data?.timeout || this?.timeout || this.globalTimeout
+
+    tOut && (opts.timeout = tOut)
+
     this.isRunning = true
-
-    // const { data, file } = ctx
-    // const opts = { ...data }
-    // const tOut = data?.timeout ?? this.globalTimeout
-    // tOut && (opts.timeout = tOut)
-
     this.event(ExamEvents.started)
 
-    // const ast = this.environment.parkin.parse.feature(model.content)
-    await this.environment.parkin.run(model.content, {})
+    const ast = this.environment.parkin.parse.feature(model.content)
+    await this.environment.parkin.run(ast, { tags: {}, steps: { shared: {} } })
 
     const results = await this.environment.test.run() as TExEventData[]
-
     const final = results.map(result => this.clearTestResults(result))
 
     this.isRunning = false
+
+    // @ts-ignore
+    global.jasmine.testPath = undefined
 
     if(!this.canceled) return final
 
@@ -172,7 +177,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
   * This clears out some of it, because the frontend does not need it
   */
   clearTestResults = (result:TExTestEvent|TExEventData) => {
-    // TODO: update to use dot notation
     return omitKeys<TExTestEvent>(
       result,
       this.omitTestResults

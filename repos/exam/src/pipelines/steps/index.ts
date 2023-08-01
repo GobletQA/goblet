@@ -7,7 +7,8 @@ export * from './postEnvironmentStep'
 export * from './preRunnerStep'
 export * from './postRunnerStep'
 export * from './runnerStep'
-export * from './reverseStep'
+export * from './rewindStep'
 export * from './reportersStep'
+
 
 

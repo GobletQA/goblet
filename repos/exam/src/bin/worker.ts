@@ -1,13 +1,13 @@
 import type { MessagePort } from 'worker_threads'
-import type { TExamConfig, TExamRunOpts, TExEventData } from '@GEX/types'
+import type { TExamConfig, TExamRunOpts } from '@GEX/types'
 
 import { Exam } from '../Exam'
-import { SetupPipeline, RunPipeline } from '../pipelines'
-import { EExErrorType, } from '@GEX/types'
-import { limbo, ife } from '@keg-hub/jsutils'
+import { ife } from '@keg-hub/jsutils'
+import { RunPipeline } from '../pipelines'
 import {updateCLIEnvs} from '@GEX/bin/helpers'
 import { WorkerEvents } from '@GEX/constants/worker'
 import { parentPort, workerData } from 'worker_threads'
+
 
 
 type TWorkerCfg = {
@@ -51,12 +51,12 @@ ife(async () => {
     * This ensures a clean environment each time
     */
     // EX = new Exam(workerCfg.exam, workerCfg.id)
-    const setup = await SetupPipeline({
-      reverse: [],
+    const results = await RunPipeline({
+      cli:true,
+      ...message.run,
       config: workerCfg.exam,
       id: workerData.workerId,
     })
-    const results = await RunPipeline(workerCfg)
 
     message.port.postMessage(results)
     

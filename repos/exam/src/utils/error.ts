@@ -9,10 +9,10 @@ const addErrTag = (msg:string) => {
   return msg.trim().startsWith(ExamErrTag) ? msg : `${ExamErrTag} ${msg}`
 }
 
-const resolveErrMsg = (error?:string|Error, maybe?:Error):[string, Error] => {
+const resolveErrMsg = (error?:string|Error, maybe?:Error|string):[string, Error] => {
   return isStr(error)
-    ? [error, maybe]
-    : [(error || maybe)?.message, error || maybe]
+    ? [error as string, maybe as Error]
+    : [((error || maybe) as Error)?.message, (error || maybe) as Error]
 }
 
 const replaceStackMsg = (err:Error, msg:string) => {
@@ -89,7 +89,6 @@ export class RunnerErr extends Error {
   }
 }
 
-
 export class BailError extends BaseError {
 
   name=`BailError`
@@ -110,8 +109,6 @@ export class BailError extends BaseError {
     }
   }
 }
-
-
 
 export class TestErr extends BaseError {
   name=`TestErr`
@@ -169,5 +166,25 @@ export class AggregateError extends Error {
 
   get errors() {
     return this.#errors.slice()
+  }
+}
+
+export class PipelineErr extends BaseError {
+
+  name=`PipelineErr`
+  method?:string
+  result?:TExEventData
+
+  constructor(mess:string|Error, error?:string|Error, result?:TExEventData, replaceStack?:boolean){
+    const [message, err] = resolveErrMsg(mess, error)
+    super(addErrTag(message), err)
+
+    if((error as PipelineErr)?.result){
+      this.result = (error as TestErr).result
+
+      let msg = `\n${this.message}\n`
+      this.cause && (msg += `${this.cause}\n\n`)
+      process.stdout.write(msg)
+    }
   }
 }

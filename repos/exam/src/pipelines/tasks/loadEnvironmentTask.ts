@@ -1,7 +1,8 @@
-import {TPipelineArgs} from "@GEX/types";
+import type { IConstructable, IExamEnvironment, TPipelineArgs } from "@GEX/types"
+
+import {exists, isStr} from "@keg-hub/jsutils"
 import { loadFilesTask }  from './loadFilesTask'
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
-import {exists, isStr} from "@keg-hub/jsutils"
 
 
 export const loadEnvironmentTask = async (args:TPipelineArgs) => {
@@ -13,7 +14,10 @@ export const loadEnvironmentTask = async (args:TPipelineArgs) => {
       ? [config.environment, {}] as [string, any]
       : config.environment as [string, any]
 
-    const loaded = await loadFilesTask(args, { Environment: location }) as any
+    const loaded = await loadFilesTask<{Environment: IConstructable<IExamEnvironment<any>>}>(
+      args,
+      { Environment: location }
+    )
 
     if(loaded.Environment)
       return new loaded.Environment({

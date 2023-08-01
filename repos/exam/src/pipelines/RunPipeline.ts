@@ -6,7 +6,7 @@ import {
   aliasStep,
   runnerStep,
   esbuildStep,
-  reverseStep,
+  rewindStep,
   reportersStep,
   setupPipeStep,
   preRunnerStep,
@@ -17,12 +17,16 @@ import {
 } from './steps'
 
 import {pipelineHoc} from './pipelineHoc'
+import {Errors} from '@GEX/constants/errors'
+import {formatArgsTask} from './tasks/formatArgsTask'
 
 
 export const RunPipeline = async (args:TPipelineInit) => {
+  const pipArgs = formatArgsTask(args)
+
   try {
     const pipeline = pPipe(
-      pipelineHoc(setupPipeStep, args, {}),
+      pipelineHoc(setupPipeStep, pipArgs),
       pipelineHoc(aliasStep),
       pipelineHoc(esbuildStep),
       pipelineHoc(reportersStep),
@@ -32,16 +36,13 @@ export const RunPipeline = async (args:TPipelineInit) => {
       pipelineHoc(preRunnerStep),
       pipelineHoc(runnerStep),
       pipelineHoc(postRunnerStep),
-      pipelineHoc(reverseStep),
+      pipelineHoc(rewindStep),
     )
 
-    const responses = await pipeline()
-    console.log(`------- responses -------`)
-    return []
+    return await pipeline()
   }
   catch(err){
-    console.log(`------- err -------`)
-    console.log(err)
+    Errors.PipelineFailed(err)
     return []
   }
 

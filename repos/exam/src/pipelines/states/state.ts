@@ -1,9 +1,8 @@
-import {deepMerge, unset, deepFreeze} from "@keg-hub/jsutils"
-import {TStateManager} from "./types"
+import { TStateManager } from "@GEX/types"
+import {deepMerge, unset} from "@keg-hub/jsutils"
 
 
 export const createState = (initState?:Record<string, any>) => {
-  
   const state = {
     internal: deepMerge({}, initState),
   }
@@ -24,6 +23,10 @@ export const createState = (initState?:Record<string, any>) => {
       state.internal = Object.freeze({...removed})
 
       state.internal
+    },
+    cleanup: () => {
+      state.internal = undefined
+      delete state.internal
     }
   } as TStateManager
 

@@ -1,17 +1,15 @@
 import {
   TStateObj,
-  TStateManager,
   TPipelineInit,
   TPipelineArgs,
   TPipeStepFunc
 } from '@GEX/types'
 
-import { createState } from './state'
 import { Logger } from '@GEX/utils/logger'
-
-const responseState = createState({ responses: [] })
-const argsState = createState({ args: {} })
-const stateManager = createState({})
+import {
+  argsState,
+  stateManager,
+} from './states/pipelineStates'
 
 export const pipelineHoc = (
   cb:TPipeStepFunc,
@@ -19,16 +17,15 @@ export const pipelineHoc = (
   state?:TStateObj,
 ) => {
 
-  args && argsState.addState(args)
+  args && argsState.addState({ ...args, rewind: [] })
   state && stateManager.addState(state)
+
   try {
     return async (input:any) => {
       try {
-        const pArgs = argsState.getState() as TPipelineArgs
-        const pState = stateManager.getState() as TStateObj
+        const pArgs = argsState.getState<TPipelineArgs>()
+        const pState = stateManager.getState<TStateObj>()
         const response = await cb({...pArgs, state:pState}, stateManager, input)
-        const resState = responseState.getState()
-        responseState.setValue(`responses`, [...resState.responses, response])
 
         return response
       }

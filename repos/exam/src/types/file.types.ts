@@ -1,3 +1,5 @@
+import {TExArrClsOptMap} from "./helpers.types"
+
 export type TExAst=Record<any, any>
 export type TExFileAst=TExAst|TExFileModelDef
 
@@ -33,4 +35,9 @@ export type TExFileLoaded<T extends TExFileAst=TExFileAst> = {
   type?:string
   content?:string
   file?:TExFileModel<T>
+}
+
+
+export type TTypeFromFileMap<T=any> = {
+  [Key:string]: TExArrClsOptMap<T>
 }

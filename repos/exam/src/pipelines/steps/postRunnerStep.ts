@@ -11,5 +11,4 @@ export const postRunnerStep = async (args:TPipelineArgs) => {
 
   loadFilesTask(args, config.postRunner)
 
-  return args
 }

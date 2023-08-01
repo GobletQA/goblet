@@ -1,77 +1,169 @@
  import type {
   Exam,
+  TExamEvt,
   TExamConfig,
+  TExEventData,
   IExamReporter,
   TExReporterCfg,
   TEXInterReporterContext,
 } from "@gobletqa/exam"
 
-import { Logger } from "@GEX/utils/logger"
-import { capitalize } from '@keg-hub/jsutils'
-type TContext = Record<any, any>
+import {
+  Logger,
+  FileTag,
+  SuiteTag,
+  RootSuiteTag,
+  ExamEvtNames,
+  TestsResultStatus,
+} from "@gobletqa/exam"
 
-const ResultStatus = {
-  failed: `failed`,
-  passed: `passed`
-}
 
 const spaceMap = {
-  browser: ` `,
-  feature: `  `,
-  scenario: `    `,
-  background: `    `,
-  step: `      `,
-  error: `         `,
+  file: `  `,
+  hook: `  `,
+  spec: `  `,
+  suite: `  `,
+  root: `    `,
+  error: `    `,
 }
 
-const logParent = (context:TContext, isStart:boolean) => {
-
-  const isFeature = context.type === `feature`
-  
-  if(isStart){
-    if(isFeature){
-      const browserType = (global?.__goblet?.browser?.type || process.env.GOBLET_BROWSER)
-        browserType
-          ? Logger.stdout(`\n${spaceMap.browser}Browser: ${Logger.colors.brightCyan(capitalize(browserType))}\n`)
-          : Logger.empty()
-    }
-
-    return Logger.stdout(`${spaceMap[context.type] || ``} ${Logger.colors.white(context.description)}\n`)
-  }
-
-  return isFeature && Logger.stdout(`\n`)
+const logFile = (location:string, rootDir?:string) => {
+  const fromRoot = location?.replace(rootDir, ``).replace(/^\//, `<root>/`)
+  fromRoot && Logger.stdout(`${spaceMap.file}${FileTag} ${Logger.colors.white(fromRoot)}\n`)
 }
 
 /**
- * Helper to log test execution status as it happends
+ * Helper to log the parent meta data - (i.e. describes)
  */
-const logResult = (context:TContext, hasStepErr?:boolean) => {
+const logParent = (
+  evt:TExamEvt<TExEventData>,
+  isStart:boolean
+) => {
+  const context = evt.data
+  const space = spaceFromId(evt)
+  
+  const isRoot = evt.name === ExamEvtNames.rootSuiteDone
+    || evt.name === ExamEvtNames.rootSuiteStart
+    || space.length === 4
 
-  const isParent = context.type !== `step`
+
+  if(isStart)
+    isRoot
+      ? Logger.stdout([
+          `\n`,
+          `${space}${RootSuiteTag(`Feature`)}`,
+          ` > `,
+          `${Logger.colors.gray(context.description)}\n`
+        ].join(``))
+      : Logger.stdout([
+          `${space}${SuiteTag(`Describe`)}`,
+          ` > `,
+          `${Logger.colors.gray(context.description)}\n`
+        ].join(``))
+
+}
+
+const spaceFromId = (evt:TExamEvt<TExEventData>) => {
+  const { id, testPath } = evt.data
+  if(id.startsWith(`suite`)){
+    let spacer = spaceMap.suite
+    const [name, ...rest] = id.split(`-`)
+    rest.map(num => spacer+=`  `)
+    return spacer
+  }
+
+  let spacer = spaceMap.spec
+  testPath.split(`/`).map(num => spacer+=`  `)
+  return spacer
+
+}
+
+/**
+ * Helper to log test execution status in real time
+ * Logs the outcome of each describe and test
+ */
+const logResult = (
+  evt:TExamEvt<TExEventData>,
+  hasStepErr?:boolean
+) => {
+
+  const context = evt.data
+
+  const isParent = context.type !== `test`
   const isStart = context.action === `start`
 
-  if(isParent) return logParent(context, isStart)
+  if(isParent){
+    logParent(evt, isStart)
+    return
+  }
 
   if(!context.action || isStart) return
 
+  const space = context.type === `error`
+    ? spaceMap.error
+    : spaceFromId(evt)
+
   const prefix = hasStepErr
-    ? `${spaceMap[context.type] || ``}${Logger.colors.yellow(`○`)}`
-    : context.status === ResultStatus.passed
-      ? `${spaceMap[context.type] || ``}${Logger.colors.green(`✓`)}`
-      : `${spaceMap[context.type] || ``}${Logger.colors.red(`✕`)}`
+    ? `${space || ``}${Logger.colors.yellow(`○`)}`
+    : context.status === TestsResultStatus.passed
+      ? `${space || ``}${Logger.colors.green(`✓`)}`
+      : `${space || ``}${Logger.colors.red(`✕`)}`
 
   let message = hasStepErr
     ? `${prefix} ${Logger.colors.yellow(context.description)}\n`
-    : context.status === ResultStatus.passed
+    : context.status === TestsResultStatus.passed
       ? `${prefix} ${Logger.colors.gray(context.description)}\n`
       : `${prefix} ${Logger.colors.red(context.description)}\n`
 
-  context?.failedMessage && 
-    (message += `\n${context?.failedMessage}\n\n`)
+
+  const failed = getFailedMessage(evt)
+
+  failed?.message && 
+    (message += `\n${failed?.message}\n\n`)
 
   Logger.stdout(message)
 
 }
+
+const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
+  const context = evt.data
+
+  if(context.status !== TestsResultStatus.failed) return {}
+  
+  if(!context?.failedExpectations?.length) return {}
+
+  const failed = context?.failedExpectations?.[0]
+  if(!failed || !failed?.description) return {}
+
+  // TODO: add better handling of error description
+  // Include the error.matcherResult data colorized
+  // failed?.error?.matcherResult.actual vs failed?.error?.matcherResult.expected
+
+  // Clean up log output errors from playwright
+  const duplicates = []
+  const startsWith = [
+    `===========================`
+  ]
+
+  return {
+    message: `${failed.description}`.split(`\n`)
+      .map(line => {
+        const trimmed = line.trim()
+
+        if(!trimmed) return false
+        if(duplicates.includes(line)) return false
+        if(startsWith.find(filter => trimmed.startsWith(filter))) return false
+
+        duplicates.push(line)
+        return `${spaceMap.error}${line}`
+      })
+      .concat([ context?.testPath ? `\n${spaceMap.error}Test Path: ${context.testPath}` : false])
+      .filter(Boolean)
+      .join(`\n`)
+  }
+
+}
+
 
 export class FeatureReporter implements IExamReporter {
   exam:Exam
@@ -80,44 +172,83 @@ export class FeatureReporter implements IExamReporter {
   constructor(
     examCfg:TExamConfig,
     cfg:TExReporterCfg,
-    reporterContext:TEXInterReporterContext
+    reporterContext?:TEXInterReporterContext
   ) {
     this.config = examCfg
     this.exam = cfg.exam
   }
 
-  // Event `PLAY-SUITE-DONE`
-  onTestResult = logResult
-
-  onTestFileResult = logResult
-  //  Event `PLAY-SPEC-START`
-  onTestCaseStart = logResult
-  // Event `PLAY-SPEC-DONE`
-  onTestCaseResult = logResult
   // Event `PLAY-STARTED`,
-  onRunStart = logResult
+  onRunStart = (evt:TExamEvt) => {}
+
+  // Event `PLAY-SUITE-START-ROOT`
+  onTestFileStart = (evt:TExamEvt<TExEventData>) => {
+
+    const file = evt?.data?.metaData?.file
+    const rootDir = this.exam?.loader?.rootDir
+    file?.location && logFile(file?.location, rootDir)
+
+    logResult(evt)
+  }
+
   // Event `PLAY-SUITE-START`
-  onTestStart = logResult
-  // Event `PLAY-STARTED`
-  onTestFileStart = logResult
+  onTestStart = (evt:TExamEvt<TExEventData>) => {
+    logResult(evt)
+  }
+
+  /**
+   * Called before running a spec (prior to `before` hooks)
+   * Not called for `skipped` and `todo` specs
+   */
+  //  Event `PLAY-SPEC-START`
+  onTestCaseStart = (evt:TExamEvt<TExEventData>) => logResult(evt)
+
+
+  // Event `PLAY-SPEC-DONE`
+  onTestCaseResult = (evt:TExamEvt<TExEventData>) => logResult(evt)
+
+
+  // Event `PLAY-SUITE-DONE`
+  onTestResult = (evt:TExamEvt<TExEventData>) => {
+    logResult(evt)
+  }
+
+  // Event `PLAY-SUITE-DONE-ROOT` - Top level suite-0 only
+  onTestFileResult = (evt:TExamEvt<TExEventData>) => {
+    logResult(evt)
+  }
+
+
   // Event `PLAY-RESULTS`
-  onRunComplete = logResult
+  onRunComplete = () => {
+    Logger.empty()
+  }
 
   onWarning = (evt:any) => {}
 
   // Event `PLAY-ERROR`
-  onError = (evt:any) => {}
+  onError = (evt:any) => {
+    // console.log(`------- BaseReporter - onError -------`)
+    // console.log(evt.name)
+  }
 
   // Optionally, reporters can force Jest to exit with non zero code by returning
   // an `Error` from `getLastError()` method.
-  getLastError = ():Error | void => {}
+  getLastError = () => {
+    // Error | void;
+  }
 
   // Event `PLAY-CANCELED`
-  onCancel = (evt:any) => {}
+  onCancel = (evt:any) => {
+    // console.log(`------- BaseReporter - onCancel -------`)
+    // console.log(evt.name)
+  }
 
-  cleanup = () => {}
+  cleanup = () => {
+    
+  }
 
 }
 
-
 export default FeatureReporter
+

@@ -1,8 +1,10 @@
 import type {
   TExCtx,
   TExEventData,
+  TExFileModel,
   TExRunnerCfg,
   TExTestEvent,
+  TStateObj,
 } from '@GEX/types'
 
 import { ExamEvents } from '@GEX/Events'
@@ -20,8 +22,8 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
   omitTestResults:string[] = []
 
 
-  constructor(cfg:TExRunnerCfg, ctx:TExCtx) {
-    super(cfg, ctx)
+  constructor(cfg:TExRunnerCfg, state:TStateObj) {
+    super(cfg, state)
 
     this.isRunning = false
     this.test = new ParkinTest({
@@ -42,10 +44,10 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
   /**
    * Runs the code passed to it via the exam
    */
-  run = async (content:string, ctx:TExCtx) => {
+  run = async (model:TExFileModel, state:TStateObj) => {
     this.isRunning = true
 
-    const { data, file } = ctx
+    const { data } = state
     const opts = { ...data }
     const tOut = data?.timeout ?? this.globalTimeout
     tOut && (opts.timeout = tOut)
@@ -65,10 +67,10 @@ export class BaseRunner extends ExamRunner<BaseEnvironment> {
       && set(parent, `describes.0.action`, {
           ParkinMetaData: {
             file: {
-              ext: file?.ext,
-              name: file?.name,
-              fileType: file?.fileType,
-              location: file?.location,
+              ext: model?.ext,
+              name: model?.name,
+              fileType: model?.fileType,
+              location: model?.location,
             }
           }
         })

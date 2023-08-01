@@ -1,7 +1,14 @@
 import type { TExEventData } from "@GEX/types"
 
 import { Logger } from "@GEX/utils/logger"
-import { BailError, ExamError, LoaderErr, TestErr, WkrPoolErr} from "@GEX/utils/error"
+import {
+  TestErr,
+  BailError,
+  ExamError,
+  LoaderErr,
+  WkrPoolErr,
+  PipelineErr
+} from "@GEX/utils/error"
 
 export const BailErrorName = new BailError(``).name
 
@@ -50,7 +57,9 @@ export const Errors = {
       error,
     )
   },
-
+  PipelineFailed: (msg:string|Error, err?:string|Error, result?:TExEventData, replaceStack?:boolean) => {
+    throw new PipelineErr(msg, err, result, replaceStack)
+  },
   /**
    * **IMPORTANT** These methods return an instance of an Error, **They Do Not Throw**
    */
@@ -65,5 +74,5 @@ export const Errors = {
       Logger.colors.yellow(`   - This is a strong indicator of issues in the worker code.\n`),
       Logger.colors.yellow(`   - This is typically a signal that the worker to not shutdown properly\n`),
     ].join(` `))
-  }
+  },
 }

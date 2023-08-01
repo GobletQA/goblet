@@ -3,6 +3,7 @@ import type { TExEventData } from './results.types'
 import type { IConstructable } from './helpers.types'
 import type { TTransformResp } from './transform.types'
 import type {IExamEnvironment} from './environment.types'
+import {TExFileModel} from './file.types'
 
 
 export type TExRunnerCfg = {
@@ -38,7 +39,7 @@ export interface IExamRunner<E extends IExamEnvironment> {
   verbose?:boolean
   globalTimeout?:number
 
-  run<R=any, T=any>(content:TTransformResp, state:TStateObj): Promise<TExEventData[]>
+  run(model:TExFileModel, state:TStateObj): Promise<TExEventData[]>
 
   cancel:() => void|Promise<void>
   cleanup:() => void|Promise<void>

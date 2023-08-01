@@ -68,7 +68,6 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     // aliases: bAliases,
     // globals: bGlobals,
     // runners: bRunners,
-    // reporters: bReporters,
     // transforms: bTransforms,
     // environment: bEnvironment,
     // --- Don't destructure to they are set in the final object --- //

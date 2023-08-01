@@ -1,11 +1,11 @@
 import type { TExamConfig } from '@GEX/types'
 
-import PQueue from 'p-queue'
+
+import {ExamError} from '@GEX/utils/error'
 import { WorkerPool } from '@GEX/workerPool'
-import { ensureArr, flatArr, ife, limbo } from '@keg-hub/jsutils'
+import { flatArr, limbo } from '@keg-hub/jsutils'
 import {ExamCfgModeType} from '@GEX/constants/constants'
 import {printExamTestMode} from '@GEX/debug/verbose'
-import {ExamError} from '@GEX/utils/error'
 
 /**
  * If there are

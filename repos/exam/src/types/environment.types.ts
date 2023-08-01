@@ -44,19 +44,19 @@ export type TExEnvironmentCfg = {
   envs?:Record<string, TEnvironmentEnvVal>
 }
 
-export interface IExamEnvironment<R extends ExamRunner=ExamRunner> {
+export interface IExamEnvironment<R extends ExamRunner<IExamEnvironment>=ExamRunner<any>> {
   globals?:TSerializeObj
   envs?:Record<string, TEnvironmentEnvVal>
   setup(runner:R, ctx:TExCtx):void|Promise<void>
   reset(runner:R):void|Promise<void>
-  cleanup(runner:R):void|Promise<void>
+  cleanup(args:any):void|Promise<void>
 }
 
 export type IExEnvironment<
   E extends IExamEnvironment,
-  R extends ExamRunner
+  R extends ExamRunner<any>
 > = E & IExamEnvironment<R>
 export type TEnvironmentCls<
   E extends IExamEnvironment,
-  R extends ExamRunner
+  R extends ExamRunner<any>
 > = IConstructable<IExEnvironment<E, R>>

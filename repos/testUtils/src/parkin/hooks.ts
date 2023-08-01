@@ -7,8 +7,9 @@
 
 const getHook = (hookName) => {
   return (...args:any[]) => {
-    const parkin = global.getParkinInstance()
-    return parkin.hooks[hookName].apply(parkin.hooks, args)
+    // TODO: need to investigate
+    // const parkin = global.getParkinInstance()
+    // return parkin.hooks[hookName].apply(parkin.hooks, args)
   }
 }
 

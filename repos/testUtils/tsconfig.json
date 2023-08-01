@@ -5,6 +5,7 @@
     "declaration": false,
     "declarationMap": false
   },
+  "typeRoots": ["src/globals.d.ts" ],
   "include": [
     "src",
     "configs",

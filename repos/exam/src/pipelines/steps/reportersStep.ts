@@ -14,5 +14,6 @@ export const reportersStep = async (args:TPipelineArgs, manager?:TStateManager) 
 
   manager.setValue(`EventReporter`, EventReporter)
 
-  return args
+  args.rewind.push(async () => EventReporter.cleanup())
+
 }

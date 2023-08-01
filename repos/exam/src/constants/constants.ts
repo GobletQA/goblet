@@ -82,3 +82,9 @@ export const BuiltTestResultFailed:Partial<TExEventData> = {
 }
 
 export const GlobMatchKeys = [`**`,`*`,`[`,`]`,`|`,`...`,`{`,`}`,`?`,`@`,`+`,`!`,`:`]
+
+
+export const TestsResultStatus = {
+  failed: `failed`,
+  passed: `passed`
+}

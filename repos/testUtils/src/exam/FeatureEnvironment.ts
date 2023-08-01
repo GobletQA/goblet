@@ -15,8 +15,9 @@ import type { FeatureRunner } from './FeatureRunner'
  */
 import expect from 'expect'
 import { emptyObj } from '@keg-hub/jsutils'
+import { getParkinInstance } from '../parkin/instance'
 
-export class FeatureEnvironment implements IExamEnvironment<FeatureRunner> {
+export class FeatureEnvironment implements IExamEnvironment {
 
   parkin:Parkin
   test:ParkinTest
@@ -51,8 +52,7 @@ export class FeatureEnvironment implements IExamEnvironment<FeatureRunner> {
       process.env[key] = val as string
     })
 
-    this.parkin = new Parkin({ $alias: {} })
-    
+    this.parkin = getParkinInstance(cfg.globals?.__goblet?.config)
     this.test = new ParkinTest()
 
   }

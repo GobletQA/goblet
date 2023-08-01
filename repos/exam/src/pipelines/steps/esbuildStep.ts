@@ -14,8 +14,7 @@ export const esbuildStep = async (args:TPipelineArgs) => {
     return args
   }
 
-  args.reverse.push(unregister)
+  args.rewind.push(unregister)
 
-  return args
 }
 

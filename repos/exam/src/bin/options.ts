@@ -203,7 +203,6 @@ export const options = {
   passWithNoTests:{
     type: `boolean`,
     alias: [`pass`],
-    default: false,
     description: `Allows the tests to pass when no files are found or tests are executed.`,
   },
 
@@ -249,7 +248,6 @@ export const options = {
    * Added here to match other test framework CLI's
    */
   runInBand: {
-    default: false,
     type: `boolean`,
     alias: [`single`, `shared`],
     description: `Run all tests serially, using just a single shared worker`
@@ -378,7 +376,6 @@ export const options = {
    * Helpful if only the reporters should collect test results, and nothing else
    */
   silent: {
-    default: false,
     type: `boolean`,
     description: `Prevent logging output to command line`
   },

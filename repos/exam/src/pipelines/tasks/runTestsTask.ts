@@ -1,12 +1,12 @@
-import { TPipelineArgs, IExamRunner, TExFileModel } from "@GEX/types"
+import { TPipelineArgs, TPipeTestPrep } from "@GEX/types"
 
 import pMapSeries from 'p-map-series'
 
-export const runTestsTask = async (args:TPipelineArgs, tests:Record<any, any>) => {
+export const runTestsTask = async (args:TPipelineArgs, tests:TPipeTestPrep[]) => {
   const { state, } = args
 
   return await pMapSeries(
-    tests as { model: TExFileModel, Runner: IExamRunner<any>}[],
+    tests,
     async ({ model, Runner }) => await Runner.run(model, state)
   )
 

@@ -1,22 +1,52 @@
-import type { TExamConfig } from '@GEX/types'
+import type { UnaryFunction } from 'p-pipe'
+import type{ ExamEnvironment } from '@GEX/environment'
+import type { ReportEventMapper } from '@GEX/reporter/ReportEventMapper'
+import type {
+  IExamRunner,
+  TExamConfig,
+  TExEventData,
+  TExFileModel,
+  TTypeFromFileMap,
+  IExamEnvironment,
+  TExecPassThroughOpts,
+} from '@GEX/types'
 
 export type TPipeStepFunc = (args:TPipelineArgs, manager:TStateManager, input:any) => any|Promise<any>
 
 export type TPipelineInit = {
   id:string
   cli?:boolean
-  tests: string[]
+  single?:boolean
   config:TExamConfig,
-  reverse: TPipeStepFunc[],
+  file?:TExFileModel|string
+  testMatch?: string|string[]
 }
 
-
-export type TStateObj = Record<string, any>
-export type TPipelineArgs = TPipelineInit & { state: TStateObj }
-
-export type TStateManager = {
-  getState: () => TStateObj,
-  delState: (key:string) => TStateObj
-  addState: (add:TStateObj) => TStateObj
-  setValue: (key:string, value:any) => TStateObj
+export type TStateObj = {
+  responses:any[]
+  require:NodeRequire
+  data?:Record<any, any>
+  TestResults: TExEventData[]
+  EventReporter:ReportEventMapper
+  ExamEnvironment:ExamEnvironment
+  passthrough:TExecPassThroughOpts
+  BaseEnvironment:IExamEnvironment<any>
+  RunnerClasses: TTypeFromFileMap<IExamRunner<any>>
 }
+
+export type TPipelineArgs = TPipelineInit & {
+  state: TStateObj
+  rewind: UnaryFunction<any, any>[]
+}
+
+export type TStateManager<S=TStateObj> = {
+  cleanup:() => void
+  getState: <T=S>() => T,
+  delState: <T=S>(key:string) => T
+  addState: <T=S>(add:T) => T
+  setValue: <T=S>(key:string, value:any) => T
+}
+
+export type TPipelineResponse = TExEventData[]
+
+export type TPipeTestPrep = { model: TExFileModel, Runner: IExamRunner<any>}

@@ -112,13 +112,13 @@ const ExamConfig = ():TExamConfig => {
       [`.feature`]: [TransformLoc, {}]
     },
     preEnvironment:flatUnion([...ensureArr(examConfig.preEnvironment)]),
+    environment: [EnvironmentLoc, {}],
     /** Add all support and step files and ensure they are loaded before running the tests */
     postEnvironment: flatUnion([
       ...ensureArr(examConfig.postEnvironment),
       ...getParkinSupport(config),
       ...getStepDefinitions(config),
     ]),
-    environment: [EnvironmentLoc, {}],
     preRunner:flatUnion([...ensureArr(examConfig.preRunner)]),
     postRunner:flatUnion([...ensureArr(examConfig.postRunner)]),
     runners: {

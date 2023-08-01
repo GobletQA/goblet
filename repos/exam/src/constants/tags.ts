@@ -9,3 +9,5 @@ export const WkrPoolErrTag = Logger.colors.red(`[WKR-POOL ERR]`)
 export const FileTag = Logger.colors.cyan(`File`)
 export const SuiteTag = (msg:string) => Logger.colors.magenta(msg)
 export const RootSuiteTag = (msg:string) => Logger.colors.yellow(msg)
+
+export const Pipeline = Logger.colors.green(`[Exam Pipeline]`)
