@@ -47,7 +47,6 @@ RUN <<EOF
   rm -rf configs/commit-types.json
   rm -rf configs/commitlint.config.js
   rm -rf configs/eslintrc.config.js
-  rm -rf configs/firebase.config.js
   rm -rf configs/lint-staged.config.js
   rm -rf configs/pm2.config.js
   rm -rf configs/prettier.config.js
@@ -102,10 +101,6 @@ RUN <<EOF
   rm -rf out/full/tasks/definitions/docker
   rm -rf out/full/tasks/definitions/devspace
   mv out/full/tasks/definitions/sc-entry.ts out/full/tasks/definitions/index.ts
-  
-  # Something is requireing this file, but we don't need to it
-  # So just make it an empty stub
-  touch out/full/configs/firebase.config.js
 
 EOF
 # ---- End Stage ---- #

@@ -16,7 +16,6 @@ WORKDIR /goblet/app
 COPY tasks ./tasks
 COPY container ./container
 COPY configs/app.pm2.config.js configs/
-COPY configs/firebase.config.js configs/
 COPY configs/tasks.config.js configs/
 # ---- End Stage ---- #
 

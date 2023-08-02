@@ -12,6 +12,7 @@
   },
   "include": [
     "configs/vite.config.ts",
-    "configs/frontend.config.ts"
+    "configs/frontend.config.ts",
+    "configs/firebase.config.ts",
   ]
 }

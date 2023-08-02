@@ -7,8 +7,6 @@
 
 require('./aliases.config').registerAliases()
 
-const { firebase } = require('./firebase.config')
-
 const {
   GOBLET_ROOT,
   GOBLET_UNIT_DIR,
@@ -26,8 +24,6 @@ const {
 } = require('./paths.config')
 
 module.exports = {
-  firebase,
-
   /**
    * Options for browser recorder
    * @type {Object}
