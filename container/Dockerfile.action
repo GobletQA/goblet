@@ -1,24 +1,17 @@
-ARG GB_SC_IMAGE=ghcr.io/gobletqa/goblet-screencast
-ARG GB_SC_IMAGE_TAG=latest
-ARG GB_SC_IMAGE_CODE=$GB_SC_IMAGE:$GB_SC_IMAGE_TAG
+ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
+ARG GB_BASE_IMAGE_FROM=$GB_IMAGE_FROM
 
 ARG GB_ACT_IMAGE_FROM=mcr.microsoft.com/playwright:v1.36.1-focal
 ARG IMAGE_FROM=$GB_ACT_IMAGE_FROM
 
-FROM $GB_SC_IMAGE_CODE as goblet-code
-WORKDIR /goblet/app
-RUN rm -rf .*ignore && \
-  rm -rf configs/app.pm2.config.js && \
-  rm -rf configs/commit-types.json && \
-  rm -rf configs/commitlint.config.js && \
-  rm -rf configs/eslintrc.config.js && \
-  rm -rf configs/firebase.config.js && \
-  rm -rf configs/lint-staged.config.js && \
-  rm -rf configs/pm2.config.js && \
-  rm -rf configs/prettier.config.js && \
-  mkdir -p temp
+# ---- Turbo Stage ---- #
+FROM $GB_BASE_IMAGE_FROM as goblet-turbo
+RUN pnpm add --global turbo dot-json
+# ---- End Stage ---- #
 
-FROM $IMAGE_FROM as goblet-setup
+
+# ---- Image Stage ---- #
+FROM $IMAGE_FROM as goblet-image
 ARG DEBUG_FILE=/github/logs/pwlogs.log
 ENV PWDEBUG=0 \
     DEBUG=pw:* \
@@ -35,12 +28,100 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/lib/apt/lists.d/* && \
     npm install --global pnpm@8.3.1 && \
-    npm uninstall -g yarn
+    npm uninstall -g yarn && \
+    mkdir -p $(dirname "${DEBUG_FILE}") && \
+    mkdir -p /github/app/temp && \
+    mkdir -p /github/app/.tmp
+# ---- End Stage ---- #
 
+
+# ---- Prune Stage ---- #
+FROM goblet-turbo as goblet-pruner
+WORKDIR /goblet/app
+COPY . .
+RUN <<EOF
+  set -eux;
+
+  rm -rf .*ignore
+  rm -rf configs/app.pm2.config.js
+  rm -rf configs/commit-types.json
+  rm -rf configs/commitlint.config.js
+  rm -rf configs/eslintrc.config.js
+  rm -rf configs/firebase.config.js
+  rm -rf configs/lint-staged.config.js
+  rm -rf configs/pm2.config.js
+  rm -rf configs/prettier.config.js
+  rm -rf /goblet/app/repos/backend
+  rm -rf /goblet/app/repos/conductor
+
+  cd /goblet/app/repos/screencast
+  pnpm json:rm
+
+  cd /goblet/app/repos/exam
+  pnpm json:rm
+
+  cd /goblet/app/repos/testUtils
+  pnpm json:rm
+
+  cd /goblet/app/repos/workflows
+  pnpm json:rm
+
+  cd /goblet/app/repos/shared
+  pnpm json:rm
+
+  cd /goblet/app
+  pnpm json:rm
+
+EOF
+# The test-utils repo has a dependecy on the screencast repo
+# So by pruning the test-utils repo, we get the screencast repo
+# Plus all other code needed to execute tests
+RUN turbo prune --docker --scope=@gobletqa/test-utils
+RUN <<EOF
+  set -eux;
+  cp .nvmrc out/json/.nvmrc
+  cp pnpm-lock.yaml out/json/pnpm-lock.yaml
+
+  cp -r tasks out/full/tasks
+  cp -r configs out/full/configs
+  cp gobletRoot.js out/full/gobletRoot.js
+  cp tsconfig.json out/full/tsconfig.json
+  mkdir -p out/full/logs
+  mkdir -p out/full/.tmp
+  mkdir -p out/full/temp
+
+  rm -rf out/full/.turbo
+  rm -rf out/full/pnpm-lock.yaml
+  rm -rf out/full/.turbo.json
+
+  # Remove unused tasks in the container
+  # Then replace the default tasks with the sc-entry tasks
+  rm -rf out/full/tasks/definitions/index.ts
+  rm -rf out/full/tasks/definitions/kube
+  rm -rf out/full/tasks/definitions/deploy
+  rm -rf out/full/tasks/definitions/docker
+  rm -rf out/full/tasks/definitions/devspace
+  mv out/full/tasks/definitions/sc-entry.ts out/full/tasks/definitions/index.ts
+
+EOF
+# ---- End Stage ---- #
+
+
+# ---- Install Stage ---- #
+FROM goblet-turbo as goblet-installer
+WORKDIR /goblet/app
+COPY --from=goblet-pruner /goblet/app/out/json/ .
+RUN pnpm install --fix-lockfile --shamefully-hoist
+# ---- End Stage ---- #
+
+
+# ---- Run Stage ---- #
+FROM goblet-image as goblet-setup
 WORKDIR /github/app
-COPY --from=goblet-code /goblet/app /github/app
+COPY --from=goblet-installer /goblet/app/ .
+COPY --from=goblet-pruner /goblet/app/out/full/ .
 
-RUN mkdir -p $(dirname "${DEBUG_FILE}") && \
-    ln -s /github /goblet && \
+RUN ln -s /github /goblet && \
     ln -s /github/app/node_modules $HOME/.node_modules && \
     ln -s /github/app/node_modules /github/node_modules
+# ---- End Stage ---- #

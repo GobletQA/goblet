@@ -33,6 +33,7 @@
     "@gobletqa/exam": "workspace:../exam",
     "@gobletqa/screencast": "workspace:../screencast",
     "@gobletqa/shared": "workspace:../shared",
+    "@gobletqa/workflows": "workspace:../workflows",
     "@jest/create-cache-key-function": "29.2.0",
     "@keg-hub/cli-utils": "0.8.0",
     "@keg-hub/jsutils": ">=9.6.1",

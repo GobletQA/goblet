@@ -787,6 +787,9 @@ importers:
       '@gobletqa/shared':
         specifier: workspace:../shared
         version: link:../shared
+      '@gobletqa/workflows':
+        specifier: workspace:../workflows
+        version: link:../workflows
       '@jest/create-cache-key-function':
         specifier: 29.2.0
         version: 29.2.0
