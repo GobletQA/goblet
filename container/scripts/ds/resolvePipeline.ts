@@ -9,6 +9,7 @@ const ePreFix = getEnvPrefix()
 const pipelineMethods = {
   [`goblet-backend`]: ` start-be `,
   [`goblet-screencast`]: ` start-sc `,
+  [`goblet-action`]: ` start-act `,
 }
 
 const pipelines = () => {
@@ -19,7 +20,7 @@ const pipelines = () => {
   const isDevMode = resolveValue(`${ePreFix}LOCAL_DEV_MODE`)
 
   const services = slice.reduce((acc:string, prefix:string) => {
-    if(!isDevMode && prefix === `SC`) return acc
+    if(!isDevMode && prefix !== `BE`) return acc
 
     const envPrefix = `${ePreFix}${prefix}`
     const deployment = process.env[`${envPrefix}_ACTIVE`]

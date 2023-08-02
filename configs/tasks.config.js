@@ -99,6 +99,29 @@ module.exports = {
     },
     action: {
       contexts: [`action`, `act`],
+      sync: {
+        excludePaths: [
+          '**',
+          '!/repos/exam',
+          '!/repos/latent',
+          '!/repos/screencast',
+          '!/repos/shared',
+          '!/repos/workflows',
+          // Ignore the dist folders so local bundles are not synced
+          '/repos/exam/dist',
+          '/repos/latent/dist',
+          '/repos/screencast/dist',
+          '/repos/shared/dist',
+          '/repos/workflows/dist',
+        ]
+      },
+      envs: {
+        omit: [
+          `GB_CR_*`,
+          `GB_FE_*`,
+          `FIRE_BASE_*`
+        ]
+      }
     },
     base: {
       contexts: [`base`, `bs`],
@@ -118,7 +141,7 @@ module.exports = {
           '**',
           '!/repos/backend',
           '!/repos/conductor',
-          '/repos/exam',
+          '!/repos/exam',
           '!/repos/latent',
           '!/repos/screencast',
           '!/repos/shared',

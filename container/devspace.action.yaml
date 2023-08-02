@@ -1,0 +1,114 @@
+version: v2beta1
+name: goblet-action
+
+require: 
+  devspace: '>= 6.0'
+
+pipelines:
+  # Overwrite the default pipelines with custom actions
+  dev: |-
+    services=$(node -r esbuild-register scripts/ds/resolvePipeline.ts ACT)
+    ensure_pull_secrets --all
+    if ! is_empty $services; then
+      run_pipelines $services
+    fi
+
+  deploy: null
+  deployments: null
+  build: null
+
+  start-act: |-
+    create_deployments goblet-action
+    start_dev goblet-action
+
+
+# Currently we have to define some variables in the yaml that we want to use outside the valuesFiles key in the deployment section
+# https://github.com/loft-sh/devspace/issues/1716
+
+# All vars are loaded from the getYamlValue.js script
+# This allows them to be loaded from the current ENV, the values.yml files, or a fallback
+# See the scripts/ds/getYamlValue.js script for more information
+vars:
+
+# ----- General Values ----- #
+  GB_TOKEN:
+    command: "node scripts/ds/getYamlValue.js GB_TOKEN"
+  NPM_TOKEN:
+    command: "node scripts/ds/getYamlValue.js NPM_TOKEN"
+  NODE_ENV:
+    command: "node scripts/ds/getYamlValue.js NODE_ENV"
+
+# ----- Docker Image Values ----- #
+  IMAGE:
+    command: "node scripts/ds/getYamlValue.js IMAGE"
+  IMAGE_TAG:
+    command: "node scripts/ds/getYamlValue.js IMAGE_TAG"
+
+# ----- Action API Values ----- #
+  GB_ACT_DEPLOYMENT:
+    command: "node scripts/ds/getYamlValue.js GB_ACT_DEPLOYMENT"
+  GB_ACT_IMG_URI:
+    command: "node scripts/ds/resolveImgUri.js ACT"
+  GB_ACT_PORT:
+    command: "node scripts/ds/getYamlValue.js GB_ACT_PORT"
+  GB_ACT_INGRESS_HOST:
+    command: "node scripts/ds/resolveHost.js ACT"
+  GB_ACT_INGRESS_HOST_WILD_CARD:
+    command: "node scripts/ds/resolveHost.js ACT \"*\""
+
+# Load any pull secrets from the environment by calling the resolvePullSecrets.js script
+# The script returns a formatted response as a string
+# See the scripts/ds/resolvePullSecrets.js script for more information
+pullSecrets: 
+  devspace-auth-ghcr-io: $(node scripts/ds/resolvePullSecrets.js)
+
+# Defines if and how the docker image will be built before running it as a container
+images:
+  goblet-app:
+    image: ${IMAGE}
+    createPullSecret: true
+    injectRestartHelper: false
+    tags:
+    - ${IMAGE_TAG}
+    - '####-${NODE_ENV}-${devspace.git.commit}'
+    dockerfile: ./Dockerfile
+    context: ../
+
+# The `deployments` section tells devspace how to deploy this project into the cluster
+deployments:
+  # ----- Screencast API Deployment ----- #
+  goblet-act:
+    helm:
+      upgradeArgs:
+        - "--force"
+      chart:
+        name: ./
+      valuesFiles:
+      - ./values.yml
+      - ./values.${NODE_ENV}.yml
+      values:
+        containers:
+        - image: ${GB_ACT_IMG_URI}
+          imagePullPolicy: $(node scripts/ds/resolvePullPolicy.js ACT)
+          env: $(node scripts/ds/resolveDSEnvs.js action)
+        ingress:
+          name: ${GB_ACT_DEPLOYMENT}-ingress
+          rules:
+          - host: ${GB_ACT_INGRESS_HOST}
+            serviceName: ${GB_ACT_DEPLOYMENT}
+            servicePort: ${GB_ACT_PORT}
+          - host: ${GB_ACT_INGRESS_HOST_WILD_CARD}
+            serviceName: ${GB_ACT_DEPLOYMENT}
+            servicePort: ${GB_ACT_PORT}
+
+# Gets the apps that should sync with the host machine
+dev: $(node scripts/ds/resolveDev.js ACT)
+
+# Use profile to dynamically switch out the app specific docker image for the development image
+profiles:
+- name: local
+  patches:
+  - op: replace
+    path: deployments.goblet-action.helm.values.containers[0].image
+    value: ${IMAGE}:${IMAGE_TAG}
+- name: production
