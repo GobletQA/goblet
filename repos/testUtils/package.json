@@ -40,7 +40,7 @@
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "5.1.0",
     "esbuild-jest": "0.5.0",
-    "esbuild": "0.17.18",
+    "esbuild": "0.18.17",
     "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.4.2",
     "expect": "29.6.1",
