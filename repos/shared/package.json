@@ -33,7 +33,7 @@
     "@keg-hub/cli-utils": "0.8.0",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/parkin": "5.0.0",
+    "@ltipton/parkin": "5.1.0",
     "cookie-session": "2.0.0",
     "cors": "2.8.5",
     "express": "4.18.2",
