@@ -52,7 +52,7 @@
     "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/spawn-cmd": ">=0.3.2",
     "@ltipton/esdev": "0.2.1",
-    "@ltipton/parkin": "5.1.0",
+    "@ltipton/parkin": "5.1.1",
     "@ltipton/symplasm": "0.0.1",
     "cross-spawn": "7.0.3",
     "esbuild": "0.18.17",

@@ -25,8 +25,8 @@ importers:
         specifier: 0.2.1
         version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.4.2)(esbuild@0.18.17)
       '@ltipton/parkin':
-        specifier: 5.1.0
-        version: 5.1.0
+        specifier: 5.1.1
+        version: 5.1.1
       esbuild:
         specifier: 0.18.17
         version: 0.18.17
@@ -338,8 +338,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 5.1.0
-        version: 5.1.0
+        specifier: 5.1.1
+        version: 5.1.1
       esbuild:
         specifier: 0.18.17
         version: 0.18.17
@@ -554,8 +554,8 @@ importers:
         specifier: '>=9.6.1'
         version: 9.6.1
       '@ltipton/parkin':
-        specifier: 5.1.0
-        version: 5.1.0
+        specifier: 5.1.1
+        version: 5.1.1
       '@mui/icons-material':
         specifier: 5.11.16
         version: 5.11.16(@mui/material@5.12.1)(@types/react@18.0.17)(react@18.2.0)
@@ -633,8 +633,8 @@ importers:
         specifier: 0.2.1
         version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.4.2)(esbuild@0.18.17)
       '@ltipton/parkin':
-        specifier: 5.1.0
-        version: 5.1.0
+        specifier: 5.1.1
+        version: 5.1.1
       '@ltipton/symplasm':
         specifier: 0.0.1
         version: 0.0.1
@@ -706,8 +706,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 5.1.0
-        version: 5.1.0
+        specifier: 5.1.1
+        version: 5.1.1
       cookie-session:
         specifier: 2.0.0
         version: 2.0.0
@@ -803,8 +803,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 5.1.0
-        version: 5.1.0
+        specifier: 5.1.1
+        version: 5.1.1
       esbuild:
         specifier: 0.18.17
         version: 0.18.17
@@ -4363,8 +4363,8 @@ packages:
     optionalDependencies:
       nodemon: 3.0.1
 
-  /@ltipton/parkin@5.1.0:
-    resolution: {integrity: sha512-tTzIOjt8nlMsPvtdHc/TBhbXQyKI8LNS3kA1RAw/fdT4BNUGbamzAheC3Lh0/so68TDJ1l+/cbK2FgiLYkRm7g==}
+  /@ltipton/parkin@5.1.1:
+    resolution: {integrity: sha512-sxRvgoiM1W8XPKGrwZkMpGd962s43o46HWuN5KHvwKHANN5OXop9RFeCcP6/he7UqJSz7TqJCx2+ztet+J6oQw==}
     engines: {node: '>= 16.0.0'}
     dev: false
 
