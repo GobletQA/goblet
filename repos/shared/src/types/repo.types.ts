@@ -25,6 +25,8 @@ export type TRepoPaths = {
   featuresDir:string
   artifactsDir:string
   environmentsDir:string
+  tracesDir?:string
+  downloadsDir?:string
 }
 
 export type TGitData = {

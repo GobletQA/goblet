@@ -13,7 +13,7 @@ import {createGlobMatcher} from '@GEX/utils/globMatch'
  * ExamTransform - Base transform, used for all files by default
  * Can be overridden by defining custom transforms in a config
  */
-export class ExamTransform<R=unknown, T extends TExData=TExData> implements IExTransform<R, T> {
+export class ExamTransform<R=unknown> implements IExTransform<R> {
 
   options:TExTransformCfg={}
   transformIgnore:(match:string) => boolean
@@ -24,7 +24,7 @@ export class ExamTransform<R=unknown, T extends TExData=TExData> implements IExT
     this.options = {...this.options, ...rest}
   }
 
-  transform = async (content:string, ctx:TExCtx<T>):Promise<R> => {
+  transform = async (content:string, ctx:TExCtx):Promise<R> => {
     Errors.Override(`ExamTransform.transform`)
     return undefined
   }

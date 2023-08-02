@@ -115,7 +115,6 @@
       "@GLogs/*": ["logs/*"],
       "@GTasks": ["tasks"],
       "@GTasks/*": ["tasks/*"],
-      "@GRepos/*": ["repos/*"],
       "@GConfigs/*": ["configs/*"],
       "@GException": ["repos/shared/src/exceptions/Exception"],
       "@GEnvironment": ["repos/shared/src/environment/environment"],
@@ -172,6 +171,8 @@
     "docs",
     "logs",
     "scripts",
-    "temp"
+    "temp",
+    "**.test.ts",
+    "test.**.ts",
   ]
 }

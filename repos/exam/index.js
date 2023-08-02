@@ -1,2 +1,2 @@
-require('../../configs/aliases.config').registerAliases()
+require('../../configs/aliases')
 module.exports = require('./src')

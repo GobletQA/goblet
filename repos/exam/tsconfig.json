@@ -9,7 +9,6 @@
   "include": [
     "src",
     "configs",
-    "../../",
     "../../configs",
     "../shared/src",
     ".temp",

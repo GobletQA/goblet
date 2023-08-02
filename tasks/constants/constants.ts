@@ -35,6 +35,13 @@ export const JestConfigMap = {
   [ETestType.feature]: path.join(testUtilsDir, `src/jest/jest.parkin.config.js`),
   [ETestType.waypoint]: path.join(testUtilsDir, `src/jest/jest.waypoint.config.js`),
 }
+
+export const ExamConfigMap = {
+  [ETestType.unit]: path.join(testUtilsDir, `src/exam/exam.unit.config.js`),
+  [ETestType.feature]: path.join(testUtilsDir, `src/exam/exam.parkin.config.js`),
+  [ETestType.waypoint]: path.join(testUtilsDir, `src/exam/exam.waypoint.config.js`),
+}
+
 export const TestTypes = {
   bdd: ETestType.bdd,
   unit: ETestType.unit,

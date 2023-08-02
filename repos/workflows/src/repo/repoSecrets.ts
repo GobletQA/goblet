@@ -1,4 +1,5 @@
-import type { TGitOpts, TRepoOpts } from '@GWF/types'
+import type { TGitOpts } from '@GWF/types'
+import type { TGobletConfig } from '@gobletqa/shared'
 
 import {decryptRepo} from './decryptRepo'
 import { Logger } from '@keg-hub/cli-utils'
@@ -8,18 +9,18 @@ import {ensureRemoteTag} from './ensureRemoteTag'
 
 export const repoSecrets = async (
   opts:TGitOpts,
-  repo:TRepoOpts,
+  config?:TGobletConfig,
   statusCheck?:boolean
 ) => {
 
   if(!statusCheck){
     Logger.log(`Checking goblet remote tag...`)
-    const tagErr = await ensureRemoteTag(opts, repo)
+    const tagErr = await ensureRemoteTag(opts)
     if(tagErr) return failResp({ setup: false }, tagErr.message)
   }
 
   Logger.log(`Decrypting repo secrets...`)
-  const cryptoErr = await decryptRepo(opts, repo)
+  const cryptoErr = await decryptRepo(opts, config)
 
   if(cryptoErr) return failResp({ setup: false }, cryptoErr.message)
 

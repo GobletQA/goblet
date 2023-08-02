@@ -39,14 +39,6 @@ export const printDebugResults = (
   item(`Files:`, `${result?.length || 0} test file(s) were executed`)
 }
 
-export const printTooManyWorkers = (amount:number, oneLessCpus:number) => {
-  Logger.debug([
-    Logger.colors.yellow(`Attempting to use more workers (${amount}) then available ${getCPUCount()}`),
-    `  - Defaulting to using default (${oneLessCpus}) instead`,
-    `  - Please update your configuration`,
-  ].join(`\n`))
-}
-
 export const debugDeepObj = (obj:any) => {
   console.log(util.inspect(obj, {showHidden: false, depth: null, colors: true}))
 }

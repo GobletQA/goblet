@@ -1,5 +1,5 @@
-import type { TGitData, TRepoOpts, TWFArgs, TGitOpts } from '@GWF/types'
-
+import type { TGobletConfig } from '@gobletqa/shared'
+import type { TGitData, TWFArgs, TGitOpts } from '@GWF/types'
 
 import { git, RepoWatcher } from '../git'
 import { Logger } from '@keg-hub/cli-utils'
@@ -79,15 +79,15 @@ export const setupGoblet = async (
   if(!gobletConfig)
     return failResp({ setup: false }, `Could not load goblet.config for mounted repo`)
 
-  const repo = {
+  const namedGobletCfg = {
     ...gobletConfig,
     git:gitData,
     name: getRepoName(gitOpts.remote),
-  } as TRepoOpts
+  } as TGobletConfig
 
-  const secretsResp = await repoSecrets(gitOpts, repo)
+  const secretsResp = await repoSecrets(gitOpts, namedGobletCfg)
 
   return secretsResp
-    || successResp({ setup: true }, { repo }, `Finished running Setup Goblet Workflow`)
+    || successResp({ setup: true }, { repo: namedGobletCfg }, `Finished running Setup Goblet Workflow`)
 }
 

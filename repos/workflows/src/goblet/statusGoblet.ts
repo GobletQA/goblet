@@ -1,3 +1,4 @@
+import type { TGobletConfig } from '@gobletqa/shared'
 import type { TWFGobletConfig, TWFResp, TGitOpts, TRepoOpts } from '@GWF/types'
 
 import path from 'path'
@@ -78,7 +79,7 @@ const statusForLocal = async (config:TWFGobletConfig, opts:TGitOpts) => {
           git: { local: gobletConfig.paths.repoRoot },
           name: path.basename(gobletConfig.paths.repoRoot),
           ...gobletConfig,
-        },
+        } as  TGobletConfig,
       } as TWFResp
 }
 
@@ -124,7 +125,7 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
     git: omitKeys(opts, [`token`]),
     ...gobletConfig,
     name: getRepoName(remote),
-  }
+  } as TGobletConfig
 
   // const secretsFail = await repoSecrets(opts, repo, true)
   // if(secretsFail) return secretsFail

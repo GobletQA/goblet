@@ -14,6 +14,5 @@ export {
   And,
   But,
 } from './stepFunctions'
-export { default as featureTransformer } from './transformer'
 
 export * from './loadSupportFiles'

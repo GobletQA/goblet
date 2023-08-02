@@ -7,10 +7,17 @@ import { Loader } from './Loader'
 import { ExamCfg, NoTestsFoundPass } from '@GEX/constants'
 import { getConfig } from './bin/getConfig'
 import { cliOpts } from '../__mocks__'
+import {TExamConfig} from './types'
 
 const examCfg = getConfig(cliOpts)
 
 describe(`Exam`, () => {
+
+  let examCfg:TExamConfig
+
+  beforeAll(async () => {
+    examCfg = await getConfig(cliOpts)
+  })
 
   describe(`new`, () => {
 

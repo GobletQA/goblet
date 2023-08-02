@@ -1,8 +1,7 @@
 import type { TExamConfig } from '@GEX/types'
 
-import { exists } from '@keg-hub/jsutils'
 import { getCPUCount } from '@GEX/utils/getCPUCount'
-import { printTooManyWorkers } from '@GEX/debug/verbose'
+import { printTooManyWorkers } from '@GEX/debug/messages'
 
 /** */
 const getWorkerNum = (workers?:number, locationsAmt:number=1) => {

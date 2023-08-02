@@ -35,7 +35,7 @@ const addTag = async (gitOpts:TGitOpts, force?:boolean) => {
 
 }
 
-export const ensureRemoteTag = async (gitOpts:TGitOpts, config:TGobletConfig) => {
+export const ensureRemoteTag = async (gitOpts:TGitOpts) => {
 
   const existing = await git.tag.cat({
     ...gitOpts,

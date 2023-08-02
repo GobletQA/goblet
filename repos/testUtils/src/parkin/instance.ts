@@ -10,7 +10,7 @@ import { getWorld } from '../../../workflows/src/repo/world'
 let __ParkinInstance
 
 
-export const getParkinInstance = (repo:TRepo) => {
+export const getParkinInstance = (repo?:TRepo) => {
   __ParkinInstance = __ParkinInstance || new Parkin(getWorld(repo))
 
   return __ParkinInstance
