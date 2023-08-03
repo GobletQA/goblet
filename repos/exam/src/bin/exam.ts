@@ -13,8 +13,8 @@ ife(async () => {
 
   const opts = await parseArgs()
   const config = await getConfig(opts)
-
   const exam = removeEmpty(config)
+
   updateCLIEnvs(exam, opts)
 
   const [result, time] = exam?.runInBand

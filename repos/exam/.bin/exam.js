@@ -30244,6 +30244,8 @@ var parseArgs = async () => {
     opts.bail = (0, import_jsutils6.toNum)(opts.bail);
   if (isDevCLI && last.startsWith(`test-file`))
     cleaned.testMatch = [last];
+  if ((0, import_jsutils6.exists)(opts.rootDir) && !(0, import_jsutils6.exists)(process.env.GOBLET_CONFIG_BASE))
+    process.env.GOBLET_CONFIG_BASE = opts.rootDir;
   return cleaned;
 };
 var updateEnv = (key, value, force) => {

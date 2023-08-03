@@ -36,9 +36,11 @@ export type TExamConfOpts = TTestMatch & {
 
 const ExamConfig = ():TExamConfig => {
   const {
+    GOBLET_CONFIG_BASE,
     GOBLET_MOUNT_ROOT,
     GOBLET_TEST_DEBUG
   } = process.env
+
 
   const config = getGobletConfig()
 
@@ -58,6 +60,7 @@ const ExamConfig = ():TExamConfig => {
 
   const rootDir = examConfig?.rootDir
     || config.paths.repoRoot
+    || GOBLET_CONFIG_BASE
     || GOBLET_MOUNT_ROOT
     || `/goblet`
 

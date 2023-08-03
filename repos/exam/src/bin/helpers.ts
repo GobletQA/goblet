@@ -73,6 +73,11 @@ export const parseArgs = async () => {
   if(isDevCLI && last.startsWith(`test-file`))
     cleaned.testMatch = [last]
 
+  // If the GOBLET_CONFIG_BASE env is not already set,
+  // And the rootDir is set, use it as the config-base
+  if(exists(opts.rootDir) && !exists(process.env.GOBLET_CONFIG_BASE))
+    process.env.GOBLET_CONFIG_BASE = opts.rootDir
+
   /**
    * Args parse will typically remove empty items but,
    * It also sets empty defaults for Arrays
