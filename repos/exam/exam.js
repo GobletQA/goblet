@@ -1,1 +1,1 @@
-export * from './build/esm/index.js'
+module.exports = require('./build')

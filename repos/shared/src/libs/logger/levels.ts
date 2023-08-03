@@ -1,4 +1,4 @@
-import type { TLogMethod, TLogMethods, TLogLevels, TCLILogger } from './logger.types'
+import type { TLogMethods, TLogLevels, TCLILogger } from './logger.types'
 
 import {isNum, isStr, exists} from "@keg-hub/jsutils"
 

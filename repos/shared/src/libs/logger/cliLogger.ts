@@ -1,6 +1,6 @@
 import  type { TCLILogger, TLogColors } from './logger.types'
 
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@keg-hub/cli-utils/logger'
 import { identity } from '@keg-hub/jsutils'
 import { levels, getLevelMethods } from './levels'
 

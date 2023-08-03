@@ -173,6 +173,6 @@
     "scripts",
     "temp",
     "**.test.ts",
-    "test.**.ts",
+    "test.**.ts"
   ]
 }

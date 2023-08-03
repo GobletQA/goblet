@@ -1,4 +1,4 @@
-require('../../configs/aliases.config').registerAliases()
+require('../../configs/aliases')
 
 // import path from 'path'
 // import { fileURLToPath } from 'url'

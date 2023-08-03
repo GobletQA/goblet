@@ -5,10 +5,10 @@ import type { Request as JWTRequest } from 'express-jwt'
 import { limbo, noOpObj } from '@keg-hub/jsutils'
 import { actionBrowser } from '@GSC/libs/playwright'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { loadRepoFromReq } from '@gobletqa/workflows/middleware/setupRepo'
 
 /**
  * Execute an action on a playwright component ( browser, context, page )

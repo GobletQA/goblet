@@ -39,7 +39,7 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@keg-hub/cli-utils": "0.8.0",
+    "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
     "esbuild": "0.18.17",

@@ -1,17 +1,17 @@
 import type { TGitOpts } from '@GWF/types'
+import type { Response, NextFunction } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
-import type { Express, Response, NextFunction } from 'express'
+import type { TWFGobletConfig } from '@gobletqa/workflows'
 
-import { Repo } from '@GWF/repo/repo'
+import { Repo } from '@gobletqa/workflows'
 import { asyncWrap } from '@gobletqa/shared/express'
 import { pickKeys, deepMerge } from '@keg-hub/jsutils'
-import { TWFGobletConfig } from '@gobletqa/workflows/types'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 
 /**
  * Gets the git keys off the request for all request types
  */
-export const getRepoGit = ({ query, params, body }:JWTRequest) => {
+const getRepoGit = ({ query, params, body }:JWTRequest) => {
   return pickKeys(deepMerge(params, query, body), [
     `path`,
     `local`,
@@ -59,6 +59,6 @@ const findRepo = asyncWrap(async (req:JWTRequest, res:Response, next:NextFunctio
  * Middleware to set the repo for each request
  * Ensures the repo instance can be loaded before processes the request
  */
-export const setupRepo = (app:Express) => {
+export const setupRepo = () => {
   AppRouter.use('/repo/:repo/*', findRepo)
 }

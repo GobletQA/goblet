@@ -1,6 +1,7 @@
 import '@GSC/utils/logger'
 import { initSocket } from '@GSC/libs/websocket'
 import { AUTH_BYPASS_ROUTES } from '@GSC/constants'
+import { setupRepo } from '@GSC/middleware/setupRepo'
 import { getApp } from '@gobletqa/shared/express/app'
 import { setupBrowser, setupEndpoints } from '@GSC/middleware'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
@@ -14,7 +15,6 @@ import {
   setupServerListen,
   validateUser,
 } from '@gobletqa/shared/middleware'
-import { setupRepo } from '@gobletqa/workflows/middleware/setupRepo'
 
 
 /**
@@ -37,7 +37,7 @@ const initApi = async () => {
     route: `/screencast\/*`,
     bypassRoutes: AUTH_BYPASS_ROUTES
   })
-  setupRepo(app)
+  setupRepo()
   await setupEndpoints()
   setupLoggerErr(app)
 

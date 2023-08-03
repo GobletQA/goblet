@@ -1,14 +1,13 @@
 import type { TTaskActionArgs } from '../../types'
 
 import { fileSys, Logger } from '@keg-hub/cli-utils'
-import metadata from '@gobletqa/screencast/libs/playwright/helpers/metadata'
-
 const { pathExistsSync, readFile } = fileSys
 
 /**
  * Print the browser metadata if it exists
  */
 const printMeta = async (args:TTaskActionArgs) => {
+  const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
   Logger.empty()
 
   const metaLoc = metadata.location()

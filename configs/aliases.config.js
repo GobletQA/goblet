@@ -38,7 +38,7 @@ const addRepoAliases = (roots) => {
 
     // If no data is returned, then try to load paths from tsconfig.json
     // Add true as last argument to see any errors when loading the file
-    const tsConfResp = requireFile(location, `tsconfig.json`)
+    const tsConfResp = requireFile(location, `tsconfig.json`, true)
 
     if(!tsConfResp){
       console.log(`[Alias Warning] Could not find tsconfig.json at path ${location}`)

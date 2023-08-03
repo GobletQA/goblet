@@ -4,6 +4,7 @@ import type {
   TTaskParams,
   EBrowserType,
   TGobletConfig,
+  TGetBrowsers,
 } from '../../types'
 
 
@@ -16,7 +17,6 @@ import { handleTestExit } from '@GTasks/utils/helpers/handleTestExit'
 import { buildReportPath } from '@gobletqa/test-utils/reports/buildReportPath'
 import { shouldSaveArtifact } from '@gobletqa/shared/utils/artifactSaveOption'
 import { clearTestMetaDirs } from '@gobletqa/test-utils/utils/clearTestMetaDirs'
-import { getBrowsers } from '@gobletqa/screencast/libs/playwright/helpers/getBrowsers'
 import { appendToLatest, commitTestMeta } from '@gobletqa/test-utils/testMeta/testMeta'
 import { copyArtifactToRepo } from '@gobletqa/test-utils/playwright/generatedArtifacts'
 
@@ -133,7 +133,9 @@ export const runTestCmd = async (args:TRunTestCmd) => {
   toBool(process.env.LOCAL_DEV) && clearTestMetaDirs()
 
   let reportPaths = []
-  const browsers = getBrowsers(params)
+  const { getBrowsers } = await import('@gobletqa/screencast/libs/playwright/helpers/getBrowsers')
+  
+  const browsers = getBrowsers(params as unknown as TGetBrowsers)
 
   const commands = browsers.map((browser) => {
       const reportPath = buildReportPath(

@@ -15,7 +15,6 @@ import type {
 
 
 import { Logger } from '@GSC/utils/logger'
-import { EBrowserEvent } from '@GSC/types'
 import { notCI } from '@gobletqa/shared/utils/isCI'
 import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
 import { addPWInitScripts } from '../helpers/addPWInitScripts'
@@ -53,7 +52,7 @@ export class Automate {
 
     // Add on parent close listener to cleanup the automate instance
     // @ts-ignore
-    parent.on(EBrowserEvent.close, async (parent:TAutomateParent) => {
+    parent.on(`close`, async (parent:TAutomateParent) => {
       const automate = parent.__GobletAutomateInstance
       await automate?.cleanUp?.()
     })

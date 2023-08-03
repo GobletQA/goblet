@@ -35,7 +35,7 @@
   "dependencies": {
     "@gobletqa/latent": "workspace:../latent",
     "@gobletqa/shared": "workspace:../shared",
-    "@keg-hub/cli-utils": "0.8.0",
+    "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",
     "axios": "1.4.0",
