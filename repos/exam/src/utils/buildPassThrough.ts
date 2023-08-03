@@ -1,4 +1,3 @@
-import type { Exam } from '@GEX/Exam'
 import type {
   TExamConfig,
   TExecPassThroughOpts,

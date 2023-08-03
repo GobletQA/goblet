@@ -143,9 +143,6 @@ export const ExCfg:Partial<TExamConfig> = {
     `**/__tests__/**/*.[jt]s?(x)`,
     `**/?(*.)+(spec|test).[jt]s?(x)`
   ],
-
-  // Special handling for custom events
-  events: {} as any,
 }
 
 export const ExamCfg = {

@@ -1,7 +1,5 @@
-import type { Exam } from '@GEX/Exam'
 import type {
   TSerializeObj,
-  IExEnvironment,
   TEnvironmentEnvs,
   TExEnvironmentCfg,
   TEnvironmentCache,

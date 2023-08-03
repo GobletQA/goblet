@@ -54,7 +54,6 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
   const {
 
     // --- Don't include in the cli config --- //
-    events: bEvents,
     onEvent:bOnEvent,
     onCancel:bOnCancel,
     onCleanup:bOnCleanup,
@@ -114,7 +113,6 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
   const {
 
     // --- Don't include in the cli config --- //
-    events,
     onEvent,
     onCancel,
     onCleanup,
@@ -200,7 +198,6 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
 const buildNoConfig = (opts:TExamCliOpts):TExamConfig => {
   const {
     mode,
-    events,
     config,
     serial,
     onEvent,

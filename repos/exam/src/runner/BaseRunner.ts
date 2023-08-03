@@ -1,15 +1,14 @@
 import type {
-  TExCtx,
+  TStateObj,
   TExEventData,
   TExFileModel,
   TExRunnerCfg,
   TExTestEvent,
-  TStateObj,
 } from '@GEX/types'
 
-import { ExamEvents } from '@GEX/Events'
 import { ExamRunner } from './ExamRunner'
 import { Errors } from '@GEX/constants/errors'
+import { ExamEvents } from '@GEX/events/Events'
 import { RootSuiteId } from '@GEX/constants/events'
 import { emptyArr, omitKeys, set, get, } from '@keg-hub/jsutils'
 import {BaseEnvironment} from '@GEX/environment/BaseEnvironment'

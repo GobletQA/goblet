@@ -1,9 +1,7 @@
-import type { Exam } from '@GEX/Exam'
-import type { TExEventData } from './results.types'
+
 import type { IConstructable } from './helpers.types'
 
 export type TExReporterCfg = {
-  exam?:Exam
   type?:string
   jest?:boolean
 }

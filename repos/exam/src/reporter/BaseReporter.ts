@@ -1,11 +1,9 @@
- import type { Exam } from "@GEX/Exam"
 import type {
   TExamEvt,
   TExamConfig,
   TExEventData,
   IExamReporter,
   TExReporterCfg,
-  TEXInterReporterContext,
 } from "@GEX/types"
 
 import { Logger } from "@GEX/utils/logger"

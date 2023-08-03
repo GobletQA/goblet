@@ -1,5 +1,4 @@
 import { TExamConfig } from '@GEX/types'
-import { ExamEvents } from '@GEX/Events'
 
 export const ExamConfig:TExamConfig = {
 
@@ -66,11 +65,6 @@ export const ExamConfig:TExamConfig = {
    * Global timeout for test run per file - 20min (default)
    */
   globalTimeout: 0,
-
-  /**
-   * Custom events that a custom `Runner`, `Transform`, or `Environment` will fire
-   */
-  events: ExamEvents,
 
   /**
    * Callback to listen for events fired during test execution

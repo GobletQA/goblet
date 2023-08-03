@@ -1,7 +1,5 @@
-import type { Exam } from '@GEX/Exam'
 import type {
   TExCtx,
-  TExData,
   IExTransform,
   TExTransformCfg
 } from '@GEX/types'

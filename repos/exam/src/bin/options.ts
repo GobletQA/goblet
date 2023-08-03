@@ -327,13 +327,6 @@ export const options = {
   },
 
   /**
-   * Custom events that a custom `Runner`, `Transform`, or `Environment` will fire
-   */
-  events: {
-    type: `object`,
-  },
-
-  /**
    * Custom Runners to execute tests, based on file extension
    */
   runners: {

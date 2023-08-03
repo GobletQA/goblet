@@ -1,4 +1,3 @@
-import {Exam} from "@GEX/Exam"
 import type { IExEnvironment, IExRunner, TESBuildCfg, TExFileModel } from "@GEX/types"
 import type { IConstructable } from './helpers.types'
 
@@ -29,7 +28,6 @@ export type TTransformCls<
 
 
 export type TTransform = {
-  exam:Exam,
   file?:TExFileModel
   esbuild?:TESBuildCfg|false
   runner:IExRunner<any, any>

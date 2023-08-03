@@ -29782,9 +29782,7 @@ var ExCfg = {
   testMatch: [
     `**/__tests__/**/*.[jt]s?(x)`,
     `**/?(*.)+(spec|test).[jt]s?(x)`
-  ],
-  // Special handling for custom events
-  events: {}
+  ]
 };
 var ExamCfg = {
   ...LoaderCfg,
@@ -30143,12 +30141,6 @@ var options = {
    * See here for more info https://github.com/egoist/esbuild-register
    */
   esbuild: {
-    type: `object`
-  },
-  /**
-   * Custom events that a custom `Runner`, `Transform`, or `Environment` will fire
-   */
-  events: {
     type: `object`
   },
   /**
@@ -30683,7 +30675,6 @@ var getRunMode = (base, override) => {
 var mergeConfig = (base, override) => {
   const {
     // --- Don't include in the cli config --- //
-    events: bEvents,
     onEvent: bOnEvent,
     onCancel: bOnCancel,
     onCleanup: bOnCleanup,
@@ -30731,7 +30722,6 @@ var mergeConfig = (base, override) => {
   } = base;
   const {
     // --- Don't include in the cli config --- //
-    events,
     onEvent,
     onCancel,
     onCleanup,
@@ -30802,7 +30792,6 @@ var mergeConfig = (base, override) => {
 var buildNoConfig = (opts) => {
   const {
     mode,
-    events,
     config,
     serial,
     onEvent,
@@ -37507,7 +37496,69 @@ var runTestsTask = async (args, tests) => {
 var import_fs2 = require("fs");
 var import_jsutils29 = __toESM(require_cjs());
 
-// src/Events.ts
+// src/runner/ExamRunner.ts
+var ExamRunner = class {
+  failed = 0;
+  debug;
+  timeout;
+  verbose;
+  canceled;
+  isRunning;
+  globalTimeout;
+  environment;
+  eventReporter;
+  constructor(cfg, state) {
+    const {
+      EventReporter,
+      BaseEnvironment: BaseEnvironment2
+    } = state;
+    this.isRunning = false;
+    this.eventReporter = EventReporter;
+    this.environment = BaseEnvironment2;
+    if (cfg == null ? void 0 : cfg.debug)
+      this.debug = cfg.debug;
+    if (cfg == null ? void 0 : cfg.timeout)
+      this.timeout = cfg.timeout;
+    if (cfg == null ? void 0 : cfg.verbose)
+      this.verbose = cfg.verbose;
+    if (cfg == null ? void 0 : cfg.globalTimeout)
+      this.globalTimeout = cfg.globalTimeout;
+  }
+  event = (evt) => this.eventReporter.event(evt);
+  /**
+   * Called when a page loads to check if mouse tracker should run
+   * Is called from within the browser context
+   */
+  onIsRunning = () => {
+    return this.isRunning;
+  };
+  run = (model, state) => {
+    Errors.Override(`ExamRunner.run`);
+    return void 0;
+  };
+  cancel = (...args) => {
+    Errors.Override(`ExamRunner.cancel`);
+    return void 0;
+  };
+  cleanup = () => {
+    Errors.Override(`ExamRunner.cleanup`);
+    return void 0;
+  };
+  onSpecStarted = (...args) => {
+    return void 0;
+  };
+  onSpecDone = (...args) => {
+    return void 0;
+  };
+  onSuiteStarted = (...args) => {
+    return void 0;
+  };
+  onSuiteDone = (...args) => {
+    return void 0;
+  };
+};
+
+// src/events/Events.ts
 var import_jsutils26 = __toESM(require_cjs());
 var onExDynEvent = (mainEvt) => {
   return (evt) => {
@@ -37590,68 +37641,6 @@ var __ExamEvents = {
   })({})
 };
 var ExamEvents = { ...__ExamEvents };
-
-// src/runner/ExamRunner.ts
-var ExamRunner = class {
-  failed = 0;
-  debug;
-  timeout;
-  verbose;
-  canceled;
-  isRunning;
-  globalTimeout;
-  environment;
-  eventReporter;
-  constructor(cfg, state) {
-    const {
-      EventReporter,
-      BaseEnvironment: BaseEnvironment2
-    } = state;
-    this.isRunning = false;
-    this.eventReporter = EventReporter;
-    this.environment = BaseEnvironment2;
-    if (cfg == null ? void 0 : cfg.debug)
-      this.debug = cfg.debug;
-    if (cfg == null ? void 0 : cfg.timeout)
-      this.timeout = cfg.timeout;
-    if (cfg == null ? void 0 : cfg.verbose)
-      this.verbose = cfg.verbose;
-    if (cfg == null ? void 0 : cfg.globalTimeout)
-      this.globalTimeout = cfg.globalTimeout;
-  }
-  event = (evt) => this.eventReporter.event(evt);
-  /**
-   * Called when a page loads to check if mouse tracker should run
-   * Is called from within the browser context
-   */
-  onIsRunning = () => {
-    return this.isRunning;
-  };
-  run = (model, state) => {
-    Errors.Override(`ExamRunner.run`);
-    return void 0;
-  };
-  cancel = (...args) => {
-    Errors.Override(`ExamRunner.cancel`);
-    return void 0;
-  };
-  cleanup = () => {
-    Errors.Override(`ExamRunner.cleanup`);
-    return void 0;
-  };
-  onSpecStarted = (...args) => {
-    return void 0;
-  };
-  onSpecDone = (...args) => {
-    return void 0;
-  };
-  onSuiteStarted = (...args) => {
-    return void 0;
-  };
-  onSuiteDone = (...args) => {
-    return void 0;
-  };
-};
 
 // src/runner/BaseRunner.ts
 var import_jsutils27 = __toESM(require_cjs());
@@ -38156,13 +38145,13 @@ var import_jsutils32 = __toESM(require_cjs());
 var onShutdownStep = async (args) => {
   var _a3;
   const { config } = args;
-  if (!(0, import_jsutils32.isArr)(config.onStartup) || !((_a3 = config.onStartup) == null ? void 0 : _a3.length))
+  if (!(0, import_jsutils32.isArr)(config.onShutdown) || !((_a3 = config.onShutdown) == null ? void 0 : _a3.length))
     return;
   const pRequire = createRequireTask(args);
   await loadFilesTask({
     ...args,
     state: { require: pRequire }
-  }, config.onStartup);
+  }, config.onShutdown);
 };
 
 // src/pipelines/steps/onStartupStep.ts

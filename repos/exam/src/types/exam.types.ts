@@ -1,5 +1,4 @@
 import {TExAst, TExFileModel } from "./file.types"
-import type { Exam } from "@GEX/Exam"
 
 import type { TLoaderCfg } from "./loader.types"
 import type { TExEventData } from './results.types'
@@ -44,7 +43,7 @@ export type TExamEvts = {
   [key:string]:TExamEvt
 }
 
-export type TExamCB = (exam:Exam) => void
+export type TExamCB = () => void
 export type TExamCleanupCB = TExamCB
 export type TExamCancelCB = TExamCB
 export type TExamEventCB = (event:TExamEvt) => void
@@ -55,7 +54,6 @@ export enum EExTestMode {
 }
 
 export type TExamEvents = {
-  events?:TExamEvts
   onEvent?:TExamEventCB
   onCancel?:TExamCancelCB
   onCleanup?:TExamCleanupCB
@@ -102,7 +100,7 @@ export type TExamCfg = TLoaderCfg
   }
 
 export type TExamConfig = TExamCfg
-  & Omit<TExamEvents, `events`> & { events?: Partial<TExamEvts> } 
+  & TExamEvents
   & Omit<TExecuteCfg, `exam`|`runners`|`transforms`|`environment`|`passthrough`>
 
 
@@ -119,7 +117,7 @@ export type TExamRunOpts<
   D extends TExData=TExData,
   Ast extends TExAst=TExAst
 > = TExamRun
-  & Omit<TExamEvents, `events`> & { events?: Partial<TExamEvts> } 
+  & TExamEvents
   & Pick<TExamConfig, `testMatch`|`testIgnore`|`extensions`|`testDir`|`rootDir`>
 
 export type TExamBuilTCfg = Omit<TExamConfig, `reporters`> & { reporters: TExBuiltReporters }

@@ -1,4 +1,3 @@
-import type { Exam } from "@GEX/Exam"
 import type {
   TExamConfig,
   IExamReporter,
@@ -7,21 +6,7 @@ import type {
 } from "@GEX/types"
 
 
-  // specDone: `PLAY-SPEC-DONE`,
-  // specStart: `PLAY-SPEC-START`,
-  // suiteDone: `PLAY-SUITE-DONE`,
-  // suiteStart: `PLAY-SUITE-START`,
-  // ended: `PLAY-ENDED`,
-  // error: `PLAY-ERROR`,
-  // action: `PLAY-ACTION`,
-  // general: `PLAY-GENERAL`,
-  // results: `PLAY-RESULTS`,
-  // started: `PLAY-STARTED`,
-  // canceled: `PLAY-CANCELED`,
-  // stopped: `PLAY-STOPPED`,
-
 export class SilentReporter implements IExamReporter {
-  exam:Exam
   config:TExamConfig
 
   constructor(
@@ -30,7 +15,6 @@ export class SilentReporter implements IExamReporter {
     reporterContext:TEXInterReporterContext
   ) {
     this.config = examCfg
-    this.exam = cfg.exam
   }
 
   // Event `PLAY-SUITE-DONE`

@@ -1,4 +1,3 @@
-import type { Exam } from "@GEX/Exam"
 import type { IConstructable, TExArrClsOptMap } from './helpers.types'
 import type {
   IExEnvironment,
@@ -50,7 +49,6 @@ export type TExecPassThroughOpts = {
 }
 
 export type TExecuteCfg = {
-  exam:Exam
   preRunner?:TLoadFilesArr
   postRunner?:TLoadFilesArr
   environment?:TExecEnvironment
@@ -82,13 +80,12 @@ export type TExRun<D extends TExData=TExData, Ast extends TExAst=TExAst> = TExRu
 
 export type TExImportCtx<T extends TExData=TExData> = {
   data: T
-  exam:Exam
 }
 
 export type TExExtensionsCtx<
   D extends TExData=TExData,
   Ast extends TExAst=TExAst
-> = Omit<TExRun<D, Ast>, `file`> & { exam:Exam, file?:any }
+> = Omit<TExRun<D, Ast>, `file`> & { file?:any }
 
 export type TExCtx<
   D extends TExData=TExData,

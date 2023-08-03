@@ -1,11 +1,6 @@
-import type { Exam } from '@GEX/Exam'
+
 import type {
-  TExCtx,
-  TExData,
-  IExRunner,
   TExRunnerCfg,
-  TTransformResp,
-  IExEnvironment,
   IExamRunner,
   IExamEnvironment,
   TExFileModel,
@@ -14,7 +9,6 @@ import type {
 } from '@GEX/types'
 
 import { Errors } from '@GEX/constants/errors'
-import {ExamEnvironment} from '@GEX/environment'
 import {ReportEventMapper} from '@GEX/reporter/ReportEventMapper'
 
 

@@ -1,6 +1,3 @@
-import { ExamEvents } from '@GEX/Events'
-import { TExamReporters } from '@GEX/types'
-
 
 export const cliOpts = {
   // --- Not Implemented
@@ -37,7 +34,6 @@ export const cliOpts = {
   envs: {},
   globals: {},
   esbuild: {},
-  events: ExamEvents,
   runners: {},
   transforms: {},
   environment: ``,

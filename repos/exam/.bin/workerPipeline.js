@@ -29773,12 +29773,6 @@ var options = {
     type: `object`
   },
   /**
-   * Custom events that a custom `Runner`, `Transform`, or `Environment` will fire
-   */
-  events: {
-    type: `object`
-  },
-  /**
    * Custom Runners to execute tests, based on file extension
    */
   runners: {
@@ -30146,9 +30140,7 @@ var ExCfg = {
   testMatch: [
     `**/__tests__/**/*.[jt]s?(x)`,
     `**/?(*.)+(spec|test).[jt]s?(x)`
-  ],
-  // Special handling for custom events
-  events: {}
+  ]
 };
 var ExamCfg = {
   ...LoaderCfg,
@@ -30606,6 +30598,9 @@ var runTestsTask = async (args, tests) => {
 var import_fs2 = require("fs");
 var import_jsutils24 = __toESM(require_cjs());
 
+// src/utils/error.ts
+var import_jsutils18 = __toESM(require_cjs());
+
 // src/constants/tags.ts
 var PipelineTag = `[PIPELINE]`;
 var FileTag = Logger2.colors.cyan(`File`);
@@ -30617,29 +30612,7 @@ var SuiteTag = (msg) => Logger2.colors.magenta(msg);
 var RootSuiteTag = (msg) => Logger2.colors.yellow(msg);
 var EvtTag = (name) => Logger2.colors.cyan(`[${name}]`);
 
-// src/constants/events.ts
-var RootSuiteId = `suite-0`;
-var ExamEvtNames = {
-  specDone: `PLAY-SPEC-DONE`,
-  specWarn: `PLAY-SPEC-WARN`,
-  specStart: `PLAY-SPEC-START`,
-  suiteDone: `PLAY-SUITE-DONE`,
-  suiteStart: `PLAY-SUITE-START`,
-  rootSuiteDone: `PLAY-SUITE-DONE-ROOT`,
-  rootSuiteStart: `PLAY-SUITE-START-ROOT`,
-  ended: `PLAY-ENDED`,
-  error: `PLAY-ERROR`,
-  action: `PLAY-ACTION`,
-  general: `PLAY-GENERAL`,
-  results: `PLAY-RESULTS`,
-  started: `PLAY-STARTED`,
-  canceled: `PLAY-CANCELED`,
-  stopped: `PLAY-STOPPED`,
-  warning: `PLAY-WARNING`
-};
-
 // src/utils/error.ts
-var import_jsutils18 = __toESM(require_cjs());
 Error.stackTraceLimit = Infinity;
 var addErrTag = (msg) => {
   return msg.trim().startsWith(ExamErrTag) ? msg : `${ExamErrTag} ${msg}`;
@@ -30816,6 +30789,89 @@ var Errors = {
   }
 };
 
+// src/runner/ExamRunner.ts
+var ExamRunner = class {
+  failed = 0;
+  debug;
+  timeout;
+  verbose;
+  canceled;
+  isRunning;
+  globalTimeout;
+  environment;
+  eventReporter;
+  constructor(cfg, state) {
+    const {
+      EventReporter,
+      BaseEnvironment: BaseEnvironment2
+    } = state;
+    this.isRunning = false;
+    this.eventReporter = EventReporter;
+    this.environment = BaseEnvironment2;
+    if (cfg == null ? void 0 : cfg.debug)
+      this.debug = cfg.debug;
+    if (cfg == null ? void 0 : cfg.timeout)
+      this.timeout = cfg.timeout;
+    if (cfg == null ? void 0 : cfg.verbose)
+      this.verbose = cfg.verbose;
+    if (cfg == null ? void 0 : cfg.globalTimeout)
+      this.globalTimeout = cfg.globalTimeout;
+  }
+  event = (evt) => this.eventReporter.event(evt);
+  /**
+   * Called when a page loads to check if mouse tracker should run
+   * Is called from within the browser context
+   */
+  onIsRunning = () => {
+    return this.isRunning;
+  };
+  run = (model, state) => {
+    Errors.Override(`ExamRunner.run`);
+    return void 0;
+  };
+  cancel = (...args) => {
+    Errors.Override(`ExamRunner.cancel`);
+    return void 0;
+  };
+  cleanup = () => {
+    Errors.Override(`ExamRunner.cleanup`);
+    return void 0;
+  };
+  onSpecStarted = (...args) => {
+    return void 0;
+  };
+  onSpecDone = (...args) => {
+    return void 0;
+  };
+  onSuiteStarted = (...args) => {
+    return void 0;
+  };
+  onSuiteDone = (...args) => {
+    return void 0;
+  };
+};
+
+// src/constants/events.ts
+var RootSuiteId = `suite-0`;
+var ExamEvtNames = {
+  specDone: `PLAY-SPEC-DONE`,
+  specWarn: `PLAY-SPEC-WARN`,
+  specStart: `PLAY-SPEC-START`,
+  suiteDone: `PLAY-SUITE-DONE`,
+  suiteStart: `PLAY-SUITE-START`,
+  rootSuiteDone: `PLAY-SUITE-DONE-ROOT`,
+  rootSuiteStart: `PLAY-SUITE-START-ROOT`,
+  ended: `PLAY-ENDED`,
+  error: `PLAY-ERROR`,
+  action: `PLAY-ACTION`,
+  general: `PLAY-GENERAL`,
+  results: `PLAY-RESULTS`,
+  started: `PLAY-STARTED`,
+  canceled: `PLAY-CANCELED`,
+  stopped: `PLAY-STOPPED`,
+  warning: `PLAY-WARNING`
+};
+
 // src/constants/constants.ts
 var FileTypeMap = {
   env: `env`,
@@ -30874,7 +30930,7 @@ var TestsResultStatus = {
 // src/constants/interlope.ts
 var import_jsutils19 = __toESM(require_cjs());
 
-// src/Events.ts
+// src/events/Events.ts
 var import_jsutils20 = __toESM(require_cjs());
 var onExDynEvent = (mainEvt) => {
   return (evt) => {
@@ -30957,68 +31013,6 @@ var __ExamEvents = {
   })({})
 };
 var ExamEvents = { ...__ExamEvents };
-
-// src/runner/ExamRunner.ts
-var ExamRunner = class {
-  failed = 0;
-  debug;
-  timeout;
-  verbose;
-  canceled;
-  isRunning;
-  globalTimeout;
-  environment;
-  eventReporter;
-  constructor(cfg, state) {
-    const {
-      EventReporter,
-      BaseEnvironment: BaseEnvironment2
-    } = state;
-    this.isRunning = false;
-    this.eventReporter = EventReporter;
-    this.environment = BaseEnvironment2;
-    if (cfg == null ? void 0 : cfg.debug)
-      this.debug = cfg.debug;
-    if (cfg == null ? void 0 : cfg.timeout)
-      this.timeout = cfg.timeout;
-    if (cfg == null ? void 0 : cfg.verbose)
-      this.verbose = cfg.verbose;
-    if (cfg == null ? void 0 : cfg.globalTimeout)
-      this.globalTimeout = cfg.globalTimeout;
-  }
-  event = (evt) => this.eventReporter.event(evt);
-  /**
-   * Called when a page loads to check if mouse tracker should run
-   * Is called from within the browser context
-   */
-  onIsRunning = () => {
-    return this.isRunning;
-  };
-  run = (model, state) => {
-    Errors.Override(`ExamRunner.run`);
-    return void 0;
-  };
-  cancel = (...args) => {
-    Errors.Override(`ExamRunner.cancel`);
-    return void 0;
-  };
-  cleanup = () => {
-    Errors.Override(`ExamRunner.cleanup`);
-    return void 0;
-  };
-  onSpecStarted = (...args) => {
-    return void 0;
-  };
-  onSpecDone = (...args) => {
-    return void 0;
-  };
-  onSuiteStarted = (...args) => {
-    return void 0;
-  };
-  onSuiteDone = (...args) => {
-    return void 0;
-  };
-};
 
 // src/runner/BaseRunner.ts
 var import_jsutils21 = __toESM(require_cjs());
@@ -37724,13 +37718,13 @@ var import_jsutils27 = __toESM(require_cjs());
 var onShutdownStep = async (args) => {
   var _a3;
   const { config } = args;
-  if (!(0, import_jsutils27.isArr)(config.onStartup) || !((_a3 = config.onStartup) == null ? void 0 : _a3.length))
+  if (!(0, import_jsutils27.isArr)(config.onShutdown) || !((_a3 = config.onShutdown) == null ? void 0 : _a3.length))
     return;
   const pRequire = createRequireTask(args);
   await loadFilesTask({
     ...args,
     state: { require: pRequire }
-  }, config.onStartup);
+  }, config.onShutdown);
 };
 
 // src/pipelines/steps/onStartupStep.ts
