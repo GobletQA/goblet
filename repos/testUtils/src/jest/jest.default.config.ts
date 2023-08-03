@@ -3,8 +3,8 @@ import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
 
 import os from "os"
 import path from 'path'
-import { Logger } from '@keg-hub/cli-utils'
 import { jestAliases } from './setupTestAliases'
+import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { noPropArr, capitalize, emptyObj, flatUnion, ensureArr } from '@keg-hub/jsutils'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'

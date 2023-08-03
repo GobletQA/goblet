@@ -2,10 +2,10 @@ import type { TJasmine } from '@ltipton/parkin'
 
 import fs from 'fs'
 import path from 'path'
-import { fileSys } from '@keg-hub/cli-utils'
+import { mkDir, removeFile } from '@GTU/Utils/fileSys'
+
 import { get } from '@keg-hub/jsutils'
 
-const { mkDir, removeFile } = fileSys
 const nameCache = {}
 
 /**

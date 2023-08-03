@@ -2,7 +2,7 @@ import type { Loader } from 'esbuild'
 
 import path from 'path'
 import {transformSync} from 'esbuild'
-import { getWorld } from '@gobletqa/shared/repo/world'
+import { getWorld } from '@gobletqa/workflows/repo/world'
 import { default as createCacheKey} from '@jest/create-cache-key-function'
 
 /**

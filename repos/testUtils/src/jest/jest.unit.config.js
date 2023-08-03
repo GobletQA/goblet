@@ -6,14 +6,18 @@ const { jestConfig } = require('./jest.default.config')
 
 const path = require('path')
 const { noOpObj } = require('@keg-hub/jsutils')
-const { inDocker } = require('@keg-hub/cli-utils')
 const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
 const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
-const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')
+const { buildTestGobletOpts } = require('@GTU/Utils/buildTestGobletOpts')
 const { checkVncEnv } = require('@gobletqa/screencast/libs/utils/vncActiveEnv')
 const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
 const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowserOpts')
 const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
+
+
+
+// TODO: Fix this - @cli-utils inDocker method no longer works
+const inDocker = () => true
 
 /**
  * Builds the launch / browser options for the jest-playwright-config
@@ -77,7 +81,7 @@ module.exports = async () => {
   const optsKey = vncActive ? 'launchOptions' : 'connectOptions'
   const launchOpts = await buildLaunchOpts(config, taskOpts, optsKey)
   const browserOpts = launchOpts[optsKey]
-  const gobletOpts = buildJestGobletOpts(config, browserOpts)
+  const gobletOpts = buildTestGobletOpts(config, browserOpts)
   const contextOpts = getContextOpts(noOpObj, config)
 
   const { testUtilsDir, reportsTempDir } = config.internalPaths

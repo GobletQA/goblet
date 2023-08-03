@@ -20,7 +20,7 @@ import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
 import { getParkinSupport, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
 
-import { buildJestGobletOpts } from '@GTU/Utils/buildJestGobletOpts'
+import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 import { taskEnvToBrowserOpts } from '@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts'
 import { getContextOpts } from '@gobletqa/screencast/libs/playwright/helpers/getContextOpts'
@@ -58,7 +58,7 @@ const ExamConfig = ():TExamConfig => {
   const browserConf = browserOpts as TBrowserConf
 
   const contextOpts = getContextOpts(emptyObj, config)
-  const gobletOpts = buildJestGobletOpts(config, browserConf)
+  const gobletOpts = buildTestGobletOpts(config, browserConf)
   const testDir = path.join(baseDir, config.paths.featuresDir)
 
   // @ts-ignore

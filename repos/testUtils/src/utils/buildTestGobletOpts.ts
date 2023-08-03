@@ -1,8 +1,9 @@
 import type {
+  EBrowserName,
   TBrowserConf,
   TGobletConfig,
   TGobletTestOpts,
-  TBrowserContextOpts
+  TBrowserContextOpts,
 } from '@GTU/Types'
 
 import path from 'path'
@@ -40,7 +41,7 @@ const buildArtifactsPaths = (
  *
  * @returns {Object} - goblet options for executing tests
  */
-export const buildJestGobletOpts = (
+export const buildTestGobletOpts = (
   config:TGobletConfig,
   browserOpts:TBrowserConf,
   contextOpts?:TBrowserContextOpts
@@ -67,7 +68,7 @@ export const buildJestGobletOpts = (
     saveReport: artifactSaveOption(GOBLET_TEST_REPORT),
     // Only chromium can record video so only turn it on for that browser
     // Should be able to record on others, but not currently working
-    saveVideo: canRecordVideo.includes(browserOpts.type) &&
+    saveVideo: canRecordVideo.includes(browserOpts.type as EBrowserName) &&
       artifactSaveOption(GOBLET_TEST_VIDEO_RECORD),
     ...(GOBLET_TEST_TIMEOUT && { timeout: parseInt(GOBLET_TEST_TIMEOUT, 10) || 30000 }),
     ...(exists(GOBLET_TEST_RETRY) && { retry: parseInt(GOBLET_TEST_RETRY, 10) || 1 }),

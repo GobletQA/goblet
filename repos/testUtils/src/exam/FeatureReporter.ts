@@ -1,5 +1,4 @@
  import type {
-  Exam,
   TExamEvt,
   TExamConfig,
   TExEventData,
@@ -166,7 +165,6 @@ const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
 
 
 export class FeatureReporter implements IExamReporter {
-  exam:Exam
   config:TExamConfig
 
   constructor(
@@ -175,7 +173,6 @@ export class FeatureReporter implements IExamReporter {
     reporterContext?:TEXInterReporterContext
   ) {
     this.config = examCfg
-    this.exam = cfg.exam
   }
 
   // Event `PLAY-STARTED`,
@@ -185,7 +182,7 @@ export class FeatureReporter implements IExamReporter {
   onTestFileStart = (evt:TExamEvt<TExEventData>) => {
 
     const file = evt?.data?.metaData?.file
-    const rootDir = this.exam?.loader?.rootDir
+    const rootDir = this.config?.rootDir
     file?.location && logFile(file?.location, rootDir)
 
     logResult(evt)

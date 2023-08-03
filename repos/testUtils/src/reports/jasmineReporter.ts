@@ -1,4 +1,4 @@
-import { Logger } from '@gobletqa/shared/libs/logger'
+import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import { noOp, get, noPropArr, isFunc, isStr, capitalize } from '@keg-hub/jsutils'
 
 type TEvtCB = { name?:string } & ((...args:any[]) => void)

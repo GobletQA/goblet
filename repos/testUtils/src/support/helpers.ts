@@ -2,8 +2,8 @@ import type { TWorldConfig } from '@ltipton/parkin'
 import type { TStepCtx, TLocator, TBrowserPage } from '@GTU/Types'
 
 
-import { Logger } from '@gobletqa/shared/libs/logger'
 import { getPage, getLocator } from '@GTU/Playwright'
+import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import { get, set, unset, emptyObj, isNum } from '@keg-hub/jsutils'
 import {
   SavedDataWorldPath,
