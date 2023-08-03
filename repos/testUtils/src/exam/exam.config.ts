@@ -1,3 +1,10 @@
+/**
+ * General Config that executes tests for Goblet Apps
+ * Command looks something like this, run from the testUtils root directory
+ * @example
+ * node ../exam/.bin/exam.js --config ./exam/exam.config.ts --root /goblet/repos/lancetipton -t Test-World.feature
+ */
+
 // Must load this first because it loads the alias
 import { aliases } from './setupTestAliases'
 
@@ -18,14 +25,12 @@ import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 import { taskEnvToBrowserOpts } from '@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts'
 import { getContextOpts } from '@gobletqa/screencast/libs/playwright/helpers/getContextOpts'
 
-
 const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
 const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')
 const RunnerLoc = path.resolve(__dirname, './FeatureRunner.ts')
 const ReporterLoc = path.resolve(__dirname, './FeatureReporter.ts')
 const TransformLoc = path.resolve(__dirname, './FeatureTransform.ts')
 const EnvironmentLoc = path.resolve(__dirname, './FeatureEnvironment.ts')
-
 
 export type TExamConfOpts = TTestMatch & {
   title?:string
@@ -42,7 +47,6 @@ const ExamConfig = ():TExamConfig => {
     GOBLET_MOUNT_ROOT,
     GOBLET_TEST_DEBUG
   } = process.env
-
 
   const config = getGobletConfig()
 
@@ -73,10 +77,10 @@ const ExamConfig = ():TExamConfig => {
   return {
     envs: {
       EXAM_ENV: 1,
-      GB_REPO_NO_SECRETS: 1,
+      // GB_REPO_NO_SECRETS: 1,
       GOBLET_CONFIG_BASE: baseDir
     },
-    // timeout: 0,
+    timeout: 10000,
     // testIgnore: [],
     // reporter: {},
     // loaderIgnore:[],
@@ -85,10 +89,10 @@ const ExamConfig = ():TExamConfig => {
     // esbuild: {},
     rootDir,
     testMatch,
-    debug: true,
-    verbose: true,
     bail: 1,
     workers: 1,
+    debug: true,
+    verbose: true,
     colors: false,
     concurrency: 1,
     runInBand: true,
