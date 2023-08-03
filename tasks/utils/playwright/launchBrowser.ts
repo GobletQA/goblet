@@ -9,7 +9,6 @@ import type { TBrowserType, TBrowserConf, TBrowserMetaDataContext } from '../../
  */
 import { Logger, inDocker } from '@keg-hub/cli-utils'
 import { noOpObj, exists, isEmpty, limbo } from '@keg-hub/jsutils'
-import metadata from '@gobletqa/screencast/libs/playwright/helpers/metadata'
 import { getBrowserOnly } from '@gobletqa/screencast/libs/playwright/browser/browser'
 import { startServer } from '@gobletqa/screencast/libs/playwright/server/startServer'
 import { getBrowserType } from '@gobletqa/screencast/libs/playwright/helpers/getBrowserType'
@@ -106,7 +105,8 @@ const launchBrowserServer = async (
   browserConf:TBrowserConf,
   log:boolean
 ) => {
-  const browserMeta = await metadata.read(browserType)
+  const metadata = await import('@gobletqa/screencast/libs/playwright/helpers/metadata')
+  const browserMeta = await metadata.read(browserType as any)
   const paramsMatch = checkLaunchParams(browserType, browserConf, browserMeta)
   const canConnect = await testBrowserConnection(
     browserType,
@@ -124,7 +124,7 @@ const launchBrowserServer = async (
   // Otherwise, try to launch the browser.
   logHighlight(`Starting`, name, `on host machine..`, log)
 
-  return startServer(browserConf, browserType)
+  return startServer(browserConf, browserType as any)
 }
 
 /**

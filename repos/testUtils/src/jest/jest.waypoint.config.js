@@ -7,7 +7,6 @@ const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')
 const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
 const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
 const { checkVncEnv } = require('@gobletqa/screencast/libs/utils/vncActiveEnv')
-const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
 const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
 const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
 const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowserOpts')
@@ -24,6 +23,7 @@ const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers
  */
 const buildLaunchOpts = async (config, taskOpts, optsKey) => {
   const { vncActive, socketActive } = checkVncEnv()
+  const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
   const { endpoint, browserConf } = await metadata.read(taskOpts.type)
 
   /**

@@ -11,7 +11,7 @@ let __ParkinInstance
 
 
 export const getParkinInstance = (repo?:TRepo) => {
-  __ParkinInstance = __ParkinInstance || new Parkin(getWorld(repo))
+  __ParkinInstance = __ParkinInstance || new Parkin(getWorld(repo || global?.__goblet?.config))
 
   return __ParkinInstance
 }

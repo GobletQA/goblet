@@ -8,8 +8,8 @@
 const getHook = (hookName) => {
   return (...args:any[]) => {
     // TODO: need to investigate
-    // const parkin = global.getParkinInstance()
-    // return parkin.hooks[hookName].apply(parkin.hooks, args)
+    const parkin = global.getParkinInstance()
+    return parkin.hooks[hookName].apply(parkin.hooks, args)
   }
 }
 
