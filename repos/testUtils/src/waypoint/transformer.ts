@@ -26,9 +26,9 @@ const loaders = [
   `default`,
 ]
 
-const nodeVersion = process.env.NODE_ENV === `test` ? `18` : process.versions.node
+const nodeVersion = process.env.NODE_ENV === `test` ? `20` : process.versions.node
 
-const transformer = {
+export const waypointTransformer = {
   getCacheKey: createCacheKey([], []),
   process: (src:string, file:string, options:Record<string, any>) => {
 
@@ -74,4 +74,4 @@ const transformer = {
   }
 }
 
-export default transformer 
+export default waypointTransformer

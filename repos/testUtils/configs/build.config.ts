@@ -11,23 +11,13 @@ import aliasPlugin from 'esbuild-plugin-path-alias'
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootdir = path.join(dirname, `../`)
 const outdir = path.join(rootdir, `build`)
+const esmOutdir = path.join(outdir, `esm`)
+const cjsOutdir = path.join(outdir, `cjs`)
 
 const exts = `js,ts`
 const external = [`esbuild`, `playwright`]
 
-const entryPoints = globSync(
-  path.join(rootdir, `**/*.{${exts}}`),
-  {
-    ignore: [
-      `**/*.d.ts`,
-      `**/jest/**/*.{${exts}}`,
-      `**/build/**/*.{${exts}}`,
-      `**/configs/**/*.{${exts}}`,
-      `**/waypoint/**/*.{${exts}}`,
-      `**/node_modules/**/*.{${exts}}`,
-    ]
-  }
-)
+
 
 const excludeDeps = {
   name: `external-node-modules`,
@@ -54,6 +44,7 @@ const options = {
   minify: false,
   bundle: true,
   sourcemap: true,
+  treeShaking: true,
   allowOverwrite: true,
 
   // Node execution environment
@@ -61,9 +52,6 @@ const options = {
   assetNames: `[name]`,
   platform: `node` as const,
 
-  // Inputs and Outputs
-  entryPoints,
-  outdir: outdir,
 
   // Dependency handling
   external,
@@ -74,15 +62,56 @@ const options = {
 }
 
 
-const cjsBuild = async () => {
+const esmBuild = async () => {
+  const entryPoints = globSync(
+    path.join(rootdir, `**/*.{${exts}}`),
+    {
+      ignore: [
+        /** Ignore Typescript type defs */
+        `**/*.d.ts`,
+        /** Ignore transformers used for Jest */
+        `**/**/transformer.ts`,
+        /** Ignore old Jest configs */
+        `**/jest/**/*.{${exts}}`,
+        /** Ignore past build folder */
+        `**/build/**/*.{${exts}}`,
+        /** Don't include configs */
+        `**/configs/**/*.{${exts}}`,
+        /** For now ignore waypoint, this may be added down the road */
+        `**/waypoint/**/*.{${exts}}`,
+        /** Don't include dependencies */
+        `**/node_modules/**/*.{${exts}}`,
+      ]
+    }
+  )
+  
   // Build the files with esbuild
-  await build(options)
+  await build({
+    ...options,
+    entryPoints,
+    splitting: true,
+    outdir: esmOutdir,
+    format: `esm` as const,
+  })
   .catch(() => process.exit(1))
 }
+
+const cjsBuild = async () => {
+  // Build the files with esbuild
+  await build({
+    ...options,
+    format: `cjs` as const,
+    outfile: path.join(cjsOutdir, `index.js`),
+    entryPoints: [path.join(esmOutdir, `index.js`)]
+  })
+  .catch(() => process.exit(1))
+}
+
 
 
 ;(async () => {
   // Remove the existing output dir
   await fs.rm(outdir, { recursive: true, force: true })
+  await esmBuild()
   await cjsBuild()
 })()

@@ -18,7 +18,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "wip:build": "node -r esbuild-register configs/build.config.ts",
+    "build": "node -r esbuild-register configs/build.config.ts",
     "clean": "pnpm clean:dist; pnpm clean:nm",
     "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
