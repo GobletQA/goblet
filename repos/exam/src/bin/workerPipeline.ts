@@ -6,6 +6,8 @@ import {updateCLIEnvs} from '@GEX/bin/helpers'
 import { WorkerEvents } from '@GEX/constants/worker'
 import { RunPipeline } from '../pipelines/RunPipeline'
 import { parentPort, workerData } from 'worker_threads'
+import { onStartupStep } from '../pipelines/steps/onStartupStep'
+import { onShutdownStep } from '../pipelines/steps/onShutdownStep'
 
 
 type TWorkerCfg = {
@@ -33,12 +35,26 @@ ife(async () => {
     logLevel: workerData.logLevel || `info`
   })
 
+  workerCfg.exam?.onStartup?.length
+    && await onStartupStep({
+        cli:true,
+        config: workerCfg.exam,
+        id: workerData.workerId,
+      })
+
   parentPort.on('message', async (message:TParentMsg) => {
 
     /**
      * Listen for terminate events, and gracefully shutdown the worker
      */
     if(message.terminate || message.event === WorkerEvents.Terminate){
+      workerCfg.exam?.onShutdown?.length
+        && await onShutdownStep({
+            cli:true,
+            config: workerCfg.exam,
+            id: workerData.workerId,
+          })
+
       return process.exit(0)
     }
 

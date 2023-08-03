@@ -19,6 +19,8 @@ import { taskEnvToBrowserOpts } from '@gobletqa/screencast/libs/utils/taskEnvToB
 import { getContextOpts } from '@gobletqa/screencast/libs/playwright/helpers/getContextOpts'
 
 
+const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
+const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')
 const RunnerLoc = path.resolve(__dirname, './FeatureRunner.ts')
 const ReporterLoc = path.resolve(__dirname, './FeatureReporter.ts')
 const TransformLoc = path.resolve(__dirname, './FeatureTransform.ts')
@@ -135,6 +137,14 @@ const ExamConfig = ():TExamConfig => {
         omitTestResults: [],
       }]
     },
+    onStartup: [
+      OnStartupLoc,
+      ...ensureArr(examConfig.onStartup),
+    ],
+    onShutdown: [
+      OnShutdownLoc,
+      ...ensureArr(examConfig.onShutdown),
+    ]
   }
 
 }

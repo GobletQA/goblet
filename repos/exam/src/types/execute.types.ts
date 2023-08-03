@@ -60,6 +60,8 @@ export type TExecuteCfg = {
   runners?:TExecRunners
   transforms?:TExecTransforms
   passthrough:TExecPassThroughOpts
+  onStartup?:TLoadFilesArr
+  onShutdown?:TLoadFilesArr
 }
 
 type TExRunMaps = {

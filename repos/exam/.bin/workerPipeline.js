@@ -126,8 +126,8 @@ var require_validate_23297ec2 = __commonJS({
 var require_isArr_39234014 = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/isArr-39234014.js"(exports) {
     "use strict";
-    var isArr10 = (value) => Array.isArray(value);
-    exports.isArr = isArr10;
+    var isArr12 = (value) => Array.isArray(value);
+    exports.isArr = isArr12;
   }
 });
 
@@ -174,11 +174,11 @@ var require_isValidDate_813b9419 = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/isValidDate-813b9419.js"(exports) {
     "use strict";
     var isObj = require_isObj_6b3aa807();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var isStr9 = require_isStr_8a57710e();
     var isNum5 = require_isNum_c7164b50();
     var typeOf = (val) => Object.prototype.toString.call(val).slice(8, -1);
-    var isEmpty = (val) => isObj.isObj(val) ? Object.keys(val).length === 0 : isArr10.isArr(val) ? val.length === 0 : isStr9.isStr(val) ? val.trim().length === 0 : isNum5.isNum(val) ? val < 1 : false;
+    var isEmpty = (val) => isObj.isObj(val) ? Object.keys(val).length === 0 : isArr12.isArr(val) ? val.length === 0 : isStr9.isStr(val) ? val.trim().length === 0 : isNum5.isNum(val) ? val < 1 : false;
     var isSame = (val1, val2) => val1 === val2 ? val1 !== 0 || 1 / val1 === 1 / val2 : val1 !== val1 && val2 !== val2;
     var isValidDate = (date) => !isNaN((date instanceof Date && date || new Date(date)).getTime());
     exports.isEmpty = isEmpty;
@@ -236,8 +236,8 @@ var require_deepEqual_adba847a = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/deepEqual-adba847a.js"(exports) {
     "use strict";
     var isColl = require_isColl_5757310a();
-    var isArr10 = require_isArr_39234014();
-    var isEmptyColl = (obj) => isArr10.isArr(obj) ? obj.length === 0 : isColl.isColl(obj) && Object.getOwnPropertyNames(obj).length === 0;
+    var isArr12 = require_isArr_39234014();
+    var isEmptyColl = (obj) => isArr12.isArr(obj) ? obj.length === 0 : isColl.isColl(obj) && Object.getOwnPropertyNames(obj).length === 0;
     var isArray = Array.isArray;
     var keyList = Object.keys;
     var hasProp = Object.prototype.hasOwnProperty;
@@ -324,16 +324,16 @@ var require_jsonEqual_7e69ef6a = __commonJS({
     "use strict";
     var isStr9 = require_isStr_8a57710e();
     var isNum5 = require_isNum_c7164b50();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var isObj = require_isObj_6b3aa807();
     var toBool2 = require_toBool_deb350e4();
     var hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
-    var isEntry = (maybeEntry) => isArr10.isArr(maybeEntry) && maybeEntry.length === 2 && (isNum5.isNum(maybeEntry[0]) || isStr9.isStr(maybeEntry[0]));
+    var isEntry = (maybeEntry) => isArr12.isArr(maybeEntry) && maybeEntry.length === 2 && (isNum5.isNum(maybeEntry[0]) || isStr9.isStr(maybeEntry[0]));
     var isArrMap = (obj) => {
       if (!isObj.isObj(obj))
         return false;
       const values = Object.values(obj);
-      return toBool2.toBool(values.length && values.every(isArr10.isArr));
+      return toBool2.toBool(values.length && values.every(isArr12.isArr));
     };
     var jsonEqual = (one, two) => {
       try {
@@ -431,7 +431,7 @@ var require_isValidUrl_a77135f0 = __commonJS({
 var require_not_16fa9c85 = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/not-16fa9c85.js"(exports) {
     "use strict";
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var isValidDate = require_isValidDate_813b9419();
     var isFunc = require_isFunc_f93803cb();
     var isBool3 = require_isBool_aa6af74e();
@@ -452,7 +452,7 @@ var require_not_16fa9c85 = __commonJS({
       if (!args.length)
         return null;
       for (let entry of args) {
-        if (!isArr10.isArr(entry)) {
+        if (!isArr12.isArr(entry)) {
           console.error(`Matching case must be an entry (a 2-element array). Found: ${isValidDate.typeOf(entry)}`, entry);
           break;
         }
@@ -587,7 +587,7 @@ var require_intersect_6fe7b944 = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/intersect-6fe7b944.js"(exports) {
     "use strict";
     var validate = require_validate_23297ec2();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var isObj = require_isObj_6b3aa807();
     var isFunc = require_isFunc_f93803cb();
     var compareTo = require_compareTo_d69e4abf();
@@ -620,7 +620,7 @@ var require_intersect_6fe7b944 = __commonJS({
         arr,
         otherArr
       }, {
-        $default: isArr10.isArr
+        $default: isArr12.isArr
       });
       if (!valid)
         return null;
@@ -637,7 +637,7 @@ var require_intersect_6fe7b944 = __commonJS({
         arr,
         otherArr
       }, {
-        $default: isArr10.isArr
+        $default: isArr12.isArr
       });
       if (!valid)
         return null;
@@ -653,13 +653,13 @@ var require_intersect_6fe7b944 = __commonJS({
       return true;
     };
     var cloneArr = (arr) => Array.from([
-      ...isArr10.isArr(arr) && arr || isObj.isObj(arr) && Object.entries(arr) || []
+      ...isArr12.isArr(arr) && arr || isObj.isObj(arr) && Object.entries(arr) || []
     ]);
-    var eitherArr = (a, b) => isArr10.isArr(a) ? a : b;
+    var eitherArr = (a, b) => isArr12.isArr(a) ? a : b;
     var flatten = (arr, result, opts) => {
       for (let i = 0; i < arr.length; i++) {
         const value = arr[i];
-        isArr10.isArr(value) ? flatten(value, result, opts) : opts.exists && !exists8.exists(value) || opts.truthy && !value ? result : result.push(value);
+        isArr12.isArr(value) ? flatten(value, result, opts) : opts.exists && !exists8.exists(value) || opts.truthy && !value ? result : result.push(value);
       }
       if (!opts.mutate)
         return result;
@@ -672,14 +672,14 @@ var require_intersect_6fe7b944 = __commonJS({
         arr,
         mapFn
       }, {
-        arr: isArr10.isArr,
+        arr: isArr12.isArr,
         mapFn: isFunc.isFunc
       });
       if (!inputIsValid)
         return arr;
       return arr.reduce((finalArr, current) => {
         const result = mapFn(current);
-        isArr10.isArr(result) ? result.map((el) => finalArr.push(el)) : finalArr.push(result);
+        isArr12.isArr(result) ? result.map((el) => finalArr.push(el)) : finalArr.push(result);
         return finalArr;
       }, []);
     };
@@ -688,7 +688,7 @@ var require_intersect_6fe7b944 = __commonJS({
         arr,
         comparator
       }, {
-        arr: isArr10.isArr,
+        arr: isArr12.isArr,
         $default: isFunc.isFunc
       });
       if (!valid)
@@ -703,7 +703,7 @@ var require_intersect_6fe7b944 = __commonJS({
         startIndex,
         count
       }, {
-        arr: isArr10.isArr,
+        arr: isArr12.isArr,
         $default: isNonNegative.isNonNegative
       });
       if (!inputIsValid)
@@ -713,7 +713,7 @@ var require_intersect_6fe7b944 = __commonJS({
       return nextArr;
     };
     var randomArr = (arr, amount) => {
-      if (!isArr10.isArr(arr))
+      if (!isArr12.isArr(arr))
         return arr;
       const useAmount = amount || 1;
       const randoms = [];
@@ -722,9 +722,9 @@ var require_intersect_6fe7b944 = __commonJS({
       }
       return !amount ? randoms[0] : randoms;
     };
-    var randomizeArr = (arr) => !isArr10.isArr(arr) && arr || arr.sort(() => 0.5 - Math.random());
+    var randomizeArr = (arr) => !isArr12.isArr(arr) && arr || arr.sort(() => 0.5 - Math.random());
     var uniqArrByReference = (arr) => {
-      return !isArr10.isArr(arr) ? arr : arr.filter((e, i, arr2) => arr2.indexOf(e) == i);
+      return !isArr12.isArr(arr) ? arr : arr.filter((e, i, arr2) => arr2.indexOf(e) == i);
     };
     var uniqArr = (arr, selector) => {
       if (!selector)
@@ -749,13 +749,13 @@ var require_intersect_6fe7b944 = __commonJS({
       };
       const compare2 = isFunc.isFunc(last) ? last : args.push(last) && void 0;
       return args.reduce((merged, arr) => {
-        if (!isArr10.isArr(arr))
+        if (!isArr12.isArr(arr))
           return merged;
         return uniqArr(flatArr([...merged, ...arr], opts), compare2);
       }, []);
     };
     var intersect = (arrA, arrB) => {
-      if (!isArr10.isArr(arrA) || !isArr10.isArr(arrB))
+      if (!isArr12.isArr(arrA) || !isArr12.isArr(arrB))
         return [];
       const setB = new Set(arrB);
       return [...new Set(arrA)].filter((x) => setB.has(x));
@@ -785,8 +785,8 @@ var require_intersect_6fe7b944 = __commonJS({
 var require_ensureArr_ae68c041 = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/ensureArr-ae68c041.js"(exports) {
     "use strict";
-    var isArr10 = require_isArr_39234014();
-    var ensureArr4 = (val) => isArr10.isArr(val) ? val : [val];
+    var isArr12 = require_isArr_39234014();
+    var ensureArr4 = (val) => isArr12.isArr(val) ? val : [val];
     exports.ensureArr = ensureArr4;
   }
 });
@@ -805,13 +805,13 @@ var require_set_c0a98b21 = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/set-c0a98b21.js"(exports) {
     "use strict";
     var isFunc = require_isFunc_f93803cb();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var isColl = require_isColl_5757310a();
     var updateColl = (obj, path5, type, val) => {
       const org = obj;
       if (!isColl.isColl(obj) || !obj || !path5)
         return type !== "set" && val || void 0;
-      const parts = isArr10.isArr(path5) ? Array.from(path5) : path5.split(".");
+      const parts = isArr12.isArr(path5) ? Array.from(path5) : path5.split(".");
       const key = parts.pop();
       let prop;
       let breakPath;
@@ -843,10 +843,10 @@ var require_get_00626335 = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/get-00626335.js"(exports) {
     "use strict";
     var exists8 = require_exists_c79204b1();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var isStr9 = require_isStr_8a57710e();
     var get2 = (obj, path5, fallback) => {
-      const isPathArr = isArr10.isArr(path5);
+      const isPathArr = isArr12.isArr(path5);
       if (!isStr9.isStr(path5) && !isPathArr)
         return exists8.exists(fallback) ? fallback : void 0;
       const parts = isPathArr ? path5 : path5.split(".");
@@ -869,7 +869,7 @@ var require_deepClone_ae664a21 = __commonJS({
     "use strict";
     var isFunc = require_isFunc_f93803cb();
     var get2 = require_get_00626335();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var cloneFunc = (func) => {
       const funcClone = function(...args) {
         return func instanceof funcClone ? (() => {
@@ -892,7 +892,7 @@ var require_deepClone_ae664a21 = __commonJS({
         return new Set(obj);
       if (hash.has(obj))
         return hash.get(obj);
-      if (isArr10.isArr(obj))
+      if (isArr12.isArr(obj))
         return obj.map((x) => deepClone(x));
       if (isFunc.isFunc(obj))
         return cloneFunc(obj);
@@ -934,7 +934,7 @@ var require_shallowEqual_eaf2262d = __commonJS({
     var isObj = require_isObj_6b3aa807();
     var isColl = require_isColl_5757310a();
     var isFunc = require_isFunc_f93803cb();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var exists8 = require_exists_c79204b1();
     var validate = require_validate_23297ec2();
     var set2 = require_set_c0a98b21();
@@ -951,7 +951,7 @@ var require_shallowEqual_eaf2262d = __commonJS({
         return cleaned;
       }, isObj.isObj(coll) && {} || []) : console.error(`cleanColl requires a collection as the first argument`) || coll;
     };
-    var mapColl = (coll, cb) => isFunc.isFunc(cb) && isColl.isColl(coll) ? Object.keys(coll).map((key) => cb(key, coll[key], coll)) : isArr10.isArr(coll) ? [] : {};
+    var mapColl = (coll, cb) => isFunc.isFunc(cb) && isColl.isColl(coll) ? Object.keys(coll).map((key) => cb(key, coll[key], coll)) : isArr12.isArr(coll) ? [] : {};
     var mapFindArr = (arr, mapper, testFunc) => {
       for (let i = 0; i < arr.length; i++) {
         const mappedValue = mapper(arr[i], i, i);
@@ -986,7 +986,7 @@ var require_shallowEqual_eaf2262d = __commonJS({
         return void 0;
       return isObj.isObj(coll) ? mapFindObj(coll, mapper, testFunc) : mapFindArr(coll, mapper, testFunc);
     };
-    var reduceColl = (coll, cb, reduce) => isFunc.isFunc(cb) && isColl.isColl(coll) ? Object.keys(coll).reduce((data, key) => cb(key, coll[key], coll, data), reduce) : isArr10.isArr(coll) ? [] : {};
+    var reduceColl = (coll, cb, reduce) => isFunc.isFunc(cb) && isColl.isColl(coll) ? Object.keys(coll).reduce((data, key) => cb(key, coll[key], coll, data), reduce) : isArr12.isArr(coll) ? [] : {};
     var unset2 = (obj, path5) => {
       set2.updateColl(obj, path5, "unset");
       return obj;
@@ -1006,7 +1006,7 @@ var require_shallowEqual_eaf2262d = __commonJS({
       return arr;
     };
     var shallowEqual = (col1, col2, path5) => {
-      if (path5 && (isArr10.isArr(path5) || isStr9.isStr(path5))) {
+      if (path5 && (isArr12.isArr(path5) || isStr9.isStr(path5))) {
         col1 = get2.get(col1, path5);
         col2 = get2.get(col2, path5);
       }
@@ -1118,10 +1118,10 @@ var require_log_37bbfac6 = __commonJS({
 var require_pipeline_e65bdaae = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/pipeline-e65bdaae.js"(exports) {
     "use strict";
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var isFunc = require_isFunc_f93803cb();
     var applyToFunc = (item, expression) => {
-      if (isArr10.isArr(expression)) {
+      if (isArr12.isArr(expression)) {
         const [func, ...args] = expression;
         return func(item, ...args);
       } else if (isFunc.isFunc(expression)) {
@@ -1147,7 +1147,7 @@ var require_stackTracePaths_a7780a09 = __commonJS({
     var validate = require_validate_23297ec2();
     var isNum5 = require_isNum_c7164b50();
     var jsonEqual = require_jsonEqual_7e69ef6a();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var deepClone = require_deepClone_ae664a21();
     var noOps = require_noOps_b5f3c7e4();
     var isStr9 = require_isStr_8a57710e();
@@ -1227,7 +1227,7 @@ var require_stackTracePaths_a7780a09 = __commonJS({
       const [valid] = validate.validate({
         asyncFns
       }, {
-        asyncFns: isArr10.isArr
+        asyncFns: isArr12.isArr
       });
       if (!valid)
         return [];
@@ -1398,7 +1398,7 @@ var require_transformKeys_574f796c = __commonJS({
     var isObj = require_isObj_6b3aa807();
     var isFunc = require_isFunc_f93803cb();
     var deepClone = require_deepClone_ae664a21();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var isColl = require_isColl_5757310a();
     var set2 = require_set_c0a98b21();
     var jsonEqual = require_jsonEqual_7e69ef6a();
@@ -1433,11 +1433,11 @@ var require_transformKeys_574f796c = __commonJS({
     var deepMerge2 = (...sources) => {
       return sources.reduce((merged, source) => {
         const srcCopy = deepClone.deepClone(source);
-        return isArr10.isArr(srcCopy) ? [...isArr10.isArr(merged) && merged || [], ...srcCopy] : isObj.isObj(srcCopy) ? Object.entries(srcCopy).reduce((joined, [key, value]) => ({
+        return isArr12.isArr(srcCopy) ? [...isArr12.isArr(merged) && merged || [], ...srcCopy] : isObj.isObj(srcCopy) ? Object.entries(srcCopy).reduce((joined, [key, value]) => ({
           ...joined,
           [key]: isFunc.isFunc(value) ? deepClone.cloneFunc(value) : isColl.isColl(value) && key in joined ? deepMerge2(joined[key], value) : deepClone.deepClone(value)
         }), merged) : merged;
-      }, isArr10.isArr(sources[0]) && [] || {});
+      }, isArr12.isArr(sources[0]) && [] || {});
     };
     var applyToCloneOf = (obj, mutatorCb) => {
       let error;
@@ -1458,7 +1458,7 @@ var require_transformKeys_574f796c = __commonJS({
       return clone;
     };
     var mapEntries = (obj, cb) => {
-      if (!isArr10.isArr(obj) && !isObj.isObj(obj)) {
+      if (!isArr12.isArr(obj) && !isObj.isObj(obj)) {
         console.error(obj, `Expected array or object for obj. Found ${typeof obj}`);
         return obj;
       }
@@ -1467,7 +1467,7 @@ var require_transformKeys_574f796c = __commonJS({
         return obj;
       }
       const entries = Object.entries(obj);
-      const initialValue = isArr10.isArr(obj) ? [] : {};
+      const initialValue = isArr12.isArr(obj) ? [] : {};
       return entries.reduce((obj2, [key, value]) => {
         const result = cb(key, value);
         if (!jsonEqual.isEntry(result)) {
@@ -1502,7 +1502,7 @@ var require_transformKeys_574f796c = __commonJS({
       return cleaned;
     }, object);
     var toObj = (val, divider, split) => {
-      if (isArr10.isArr(val))
+      if (isArr12.isArr(val))
         return Object.keys(val).reduce((obj, key) => {
           obj[key] = val[key];
           return obj;
@@ -1517,7 +1517,7 @@ var require_transformKeys_574f796c = __commonJS({
         return obj;
       }, {});
     };
-    var keyMap = (arr, toUpperCase) => isArr10.isArr(arr) && arr.reduce((obj, key) => {
+    var keyMap = (arr, toUpperCase) => isArr12.isArr(arr) && arr.reduce((obj, key) => {
       if (!isStr9.isStr(key))
         return obj;
       const use = toUpperCase && key.toUpperCase() || key;
@@ -1714,13 +1714,13 @@ var require_joinRegex_5320d139 = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/joinRegex-5320d139.js"(exports) {
     "use strict";
     var isStr9 = require_isStr_8a57710e();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     require_validate_23297ec2();
     require_noOps_b5f3c7e4();
     var not = require_not_16fa9c85();
     var getRegexSource = (maybeRx) => not.isRegex(maybeRx) ? maybeRx.source : isStr9.isStr(maybeRx) ? maybeRx : null;
     var parseArgs = (args) => {
-      if (isArr10.isArr(args[0]))
+      if (isArr12.isArr(args[0]))
         return [args[0], args[1]];
       const last = args[args.length - 1];
       const options2 = isStr9.isStr(last) ? last : void 0;
@@ -1749,7 +1749,7 @@ var require_getWordEndingAt_63d038a5 = __commonJS({
     var isQuoted = require_isQuoted_eb6994da();
     var toStr$1 = require_toStr_8e499966();
     var isNonNegative = require_isNonNegative_9959647c();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var isColl = require_isColl_5757310a();
     var get2 = require_get_00626335();
     var buildPath = (...args) => {
@@ -1878,7 +1878,7 @@ var require_getWordEndingAt_63d038a5 = __commonJS({
       return cleaned.split(" ").map((word) => word && capitalize(word) || "").join(" ");
     };
     var spaceJoin = (original, toAdd) => {
-      toAdd = isArr10.isArr(toAdd) ? toAdd : [toAdd];
+      toAdd = isArr12.isArr(toAdd) ? toAdd : [toAdd];
       return toAdd.reduce((joined, item) => {
         return isStr9.isStr(item) ? `${joined ? joined + " " : ""}${item}`.trim() : joined;
       }, isStr9.isStr(original) ? original : "");
@@ -1968,7 +1968,7 @@ var require_getURLParam_201ef5fe = __commonJS({
     var isNum5 = require_isNum_c7164b50();
     var isBool3 = require_isBool_aa6af74e();
     var isColl = require_isColl_5757310a();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var validate = require_validate_23297ec2();
     var queryToObj = (string) => {
       const currentQueryItems = {};
@@ -1988,7 +1988,7 @@ var require_getURLParam_201ef5fe = __commonJS({
             currentQueryItems[itemSplit[0]] = array;
           else if (itemSplit[0] in currentQueryItems) {
             const val = currentQueryItems[itemSplit[0]];
-            currentQueryItems[itemSplit[0]] = isArr10.isArr(val) ? val.push(decodeURIComponent(itemSplit[1])) : [val, decodeURIComponent(itemSplit[1])];
+            currentQueryItems[itemSplit[0]] = isArr12.isArr(val) ? val.push(decodeURIComponent(itemSplit[1])) : [val, decodeURIComponent(itemSplit[1])];
           } else
             currentQueryItems[itemSplit[0]] = decodeURIComponent(itemSplit[1]);
         }
@@ -2000,7 +2000,7 @@ var require_getURLParam_201ef5fe = __commonJS({
       return reduceObj.reduceObj(obj, (key, value, urlStr) => {
         if (!value)
           return urlStr;
-        const useVal = isStr9.isStr(value) || isNum5.isNum(value) || isBool3.isBool(value) ? value : isColl.isColl(value) ? isArr10.isArr(value) ? value.join(",") : JSON.stringify(value) : null;
+        const useVal = isStr9.isStr(value) || isNum5.isNum(value) || isBool3.isBool(value) ? value : isColl.isColl(value) ? isArr12.isArr(value) ? value.join(",") : JSON.stringify(value) : null;
         if (!useVal)
           return urlStr;
         urlStr = !firstSet ? `?${encodeURIComponent(key)}=${encodeURIComponent(useVal)}` : `${urlStr}&${encodeURIComponent(key)}=${encodeURIComponent(useVal)}`;
@@ -2034,7 +2034,7 @@ var require_cjs = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     var intersect = require_intersect_6fe7b944();
     var ensureArr4 = require_ensureArr_ae68c041();
-    var isArr10 = require_isArr_39234014();
+    var isArr12 = require_isArr_39234014();
     var isBool3 = require_isBool_aa6af74e();
     var toBool2 = require_toBool_deb350e4();
     var softFalsy = require_softFalsy_3d7ead1c();
@@ -2101,7 +2101,7 @@ var require_cjs = __commonJS({
     exports.uniqArr = intersect.uniqArr;
     exports.uniqArrByReference = intersect.uniqArrByReference;
     exports.ensureArr = ensureArr4.ensureArr;
-    exports.isArr = isArr10.isArr;
+    exports.isArr = isArr12.isArr;
     exports.isBool = isBool3.isBool;
     exports.convertToStrBool = toBool2.convertToStrBool;
     exports.isStrBool = toBool2.isStrBool;
@@ -2306,7 +2306,7 @@ var require_getArgValue = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+args-parse@10.0.1/node_modules/@keg-hub/args-parse/src/args/getArgValue.js"(exports, module2) {
     var {
       exists: exists8,
-      isArr: isArr10,
+      isArr: isArr12,
       isStr: isStr9
     } = require_cjs();
     var { splitEqualsMatch } = require_splitEqualsMatch();
@@ -2321,7 +2321,7 @@ var require_getArgValue = __commonJS({
     };
     var getArgValue = ({ options: options2, long, short, alias, optionSchemas }) => {
       const matchTypes = buildMatchTypes(long, short, alias);
-      return (isStr9(long) || isStr9(short)) && isArr10(options2) && options2.reduce((argument, option, index) => {
+      return (isStr9(long) || isStr9(short)) && isArr12(options2) && options2.reduce((argument, option, index) => {
         if (exists8(argument))
           return argument;
         const nextOpt = options2[index + 1];
@@ -2363,7 +2363,7 @@ var require_findArg = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+args-parse@10.0.1/node_modules/@keg-hub/args-parse/src/args/findArg.js"(exports, module2) {
     var {
       exists: exists8,
-      isArr: isArr10
+      isArr: isArr12
     } = require_cjs();
     var { getArgValue } = require_getArgValue();
     var { removeOption } = require_removeOption();
@@ -2375,7 +2375,7 @@ var require_findArg = __commonJS({
         alias: meta.alias,
         optionSchemas: task.options
       });
-      if (exists8(value) || !isArr10(meta.allowed))
+      if (exists8(value) || !isArr12(meta.allowed))
         return value;
       const allowedMatch = meta.allowed.reduce((foundVal, allowed) => {
         return exists8(foundVal) ? foundVal : args.options.indexOf(allowed) === index ? allowed : foundVal;
@@ -2678,8 +2678,8 @@ var require_parseQuotes = __commonJS({
       if (!toCheck)
         return match2;
       const isObject = toCheck.indexOf("{") === 0 && toCheck.indexOf("}") === toCheck.length - 1 && toCheck.includes(":");
-      const isArr10 = toCheck.indexOf("[") === 0 && toCheck.indexOf("]") === toCheck.length - 1;
-      return isObject || isArr10;
+      const isArr12 = toCheck.indexOf("[") === 0 && toCheck.indexOf("]") === toCheck.length - 1;
+      return isObject || isArr12;
     };
     var parseQuotes = (args) => {
       args = Array.isArray(args) ? args.join(" ") : args;
@@ -2842,7 +2842,7 @@ var require_checkBoolValue = __commonJS({
 var require_checkValueType = __commonJS({
   "../../node_modules/.pnpm/@keg-hub+args-parse@10.0.1/node_modules/@keg-hub/args-parse/src/options/checkValueType.js"(exports, module2) {
     var { checkBoolValue } = require_checkBoolValue();
-    var { toBool: toBool2, toNum: toNum2, isArr: isArr10, isStr: isStr9, exists: exists8 } = require_cjs();
+    var { toBool: toBool2, toNum: toNum2, isArr: isArr12, isStr: isStr9, exists: exists8 } = require_cjs();
     var parseJSON = (str, logError = true) => {
       try {
         return JSON.parse(str);
@@ -2853,7 +2853,7 @@ var require_checkValueType = __commonJS({
     };
     var valueToArray = (value) => {
       const parsedArray = parseJSON(value, false);
-      return isArr10(parsedArray) ? parsedArray : isArr10(value) ? value : isStr9(value) ? value.split(",") : value ? [value] : [];
+      return isArr12(parsedArray) ? parsedArray : isArr12(value) ? value : isStr9(value) ? value.split(",") : value ? [value] : [];
     };
     var colonStringToObject = (str) => {
       const pairs = str.trim().split(",");
@@ -26497,8 +26497,8 @@ var require_test = __commonJS({
     var require_isArr_392340142 = __commonJS2({
       "node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/isArr-39234014.js"(exports2) {
         "use strict";
-        var isArr10 = (value) => Array.isArray(value);
-        exports2.isArr = isArr10;
+        var isArr12 = (value) => Array.isArray(value);
+        exports2.isArr = isArr12;
       }
     });
     var require_isObj_6b3aa8072 = __commonJS2({
@@ -26535,11 +26535,11 @@ var require_test = __commonJS({
       "node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/isValidDate-813b9419.js"(exports2) {
         "use strict";
         var isObj3 = require_isObj_6b3aa8072();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var isStr42 = require_isStr_8a57710e2();
         var isNum22 = require_isNum_c7164b502();
         var typeOf = (val) => Object.prototype.toString.call(val).slice(8, -1);
-        var isEmpty = (val) => isObj3.isObj(val) ? Object.keys(val).length === 0 : isArr10.isArr(val) ? val.length === 0 : isStr42.isStr(val) ? val.trim().length === 0 : isNum22.isNum(val) ? val < 1 : false;
+        var isEmpty = (val) => isObj3.isObj(val) ? Object.keys(val).length === 0 : isArr12.isArr(val) ? val.length === 0 : isStr42.isStr(val) ? val.trim().length === 0 : isNum22.isNum(val) ? val < 1 : false;
         var isSame = (val1, val2) => val1 === val2 ? val1 !== 0 || 1 / val1 === 1 / val2 : val1 !== val1 && val2 !== val2;
         var isValidDate = (date) => !isNaN((date instanceof Date && date || new Date(date)).getTime());
         exports2.isEmpty = isEmpty;
@@ -26587,8 +26587,8 @@ var require_test = __commonJS({
       "node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/deepEqual-adba847a.js"(exports2) {
         "use strict";
         var isColl = require_isColl_5757310a2();
-        var isArr10 = require_isArr_392340142();
-        var isEmptyColl = (obj) => isArr10.isArr(obj) ? obj.length === 0 : isColl.isColl(obj) && Object.getOwnPropertyNames(obj).length === 0;
+        var isArr12 = require_isArr_392340142();
+        var isEmptyColl = (obj) => isArr12.isArr(obj) ? obj.length === 0 : isColl.isColl(obj) && Object.getOwnPropertyNames(obj).length === 0;
         var isArray = Array.isArray;
         var keyList = Object.keys;
         var hasProp = Object.prototype.hasOwnProperty;
@@ -26669,16 +26669,16 @@ var require_test = __commonJS({
         "use strict";
         var isStr42 = require_isStr_8a57710e2();
         var isNum22 = require_isNum_c7164b502();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var isObj3 = require_isObj_6b3aa8072();
         var toBool2 = require_toBool_deb350e42();
         var hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
-        var isEntry = (maybeEntry) => isArr10.isArr(maybeEntry) && maybeEntry.length === 2 && (isNum22.isNum(maybeEntry[0]) || isStr42.isStr(maybeEntry[0]));
+        var isEntry = (maybeEntry) => isArr12.isArr(maybeEntry) && maybeEntry.length === 2 && (isNum22.isNum(maybeEntry[0]) || isStr42.isStr(maybeEntry[0]));
         var isArrMap = (obj) => {
           if (!isObj3.isObj(obj))
             return false;
           const values = Object.values(obj);
-          return toBool2.toBool(values.length && values.every(isArr10.isArr));
+          return toBool2.toBool(values.length && values.every(isArr12.isArr));
         };
         var jsonEqual = (one, two) => {
           try {
@@ -26770,7 +26770,7 @@ var require_test = __commonJS({
     var require_not_16fa9c852 = __commonJS2({
       "node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/not-16fa9c85.js"(exports2) {
         "use strict";
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var isValidDate = require_isValidDate_813b94192();
         var isFunc2 = require_isFunc_f93803cb2();
         var isBool3 = require_isBool_aa6af74e2();
@@ -26791,7 +26791,7 @@ var require_test = __commonJS({
           if (!args.length)
             return null;
           for (let entry of args) {
-            if (!isArr10.isArr(entry)) {
+            if (!isArr12.isArr(entry)) {
               console.error(`Matching case must be an entry (a 2-element array). Found: ${isValidDate.typeOf(entry)}`, entry);
               break;
             }
@@ -26918,7 +26918,7 @@ var require_test = __commonJS({
       "node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/intersect-6fe7b944.js"(exports2) {
         "use strict";
         var validate = require_validate_23297ec22();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var isObj3 = require_isObj_6b3aa8072();
         var isFunc2 = require_isFunc_f93803cb2();
         var compareTo = require_compareTo_d69e4abf2();
@@ -26951,7 +26951,7 @@ var require_test = __commonJS({
             arr,
             otherArr
           }, {
-            $default: isArr10.isArr
+            $default: isArr12.isArr
           });
           if (!valid)
             return null;
@@ -26968,7 +26968,7 @@ var require_test = __commonJS({
             arr,
             otherArr
           }, {
-            $default: isArr10.isArr
+            $default: isArr12.isArr
           });
           if (!valid)
             return null;
@@ -26984,13 +26984,13 @@ var require_test = __commonJS({
           return true;
         };
         var cloneArr = (arr) => Array.from([
-          ...isArr10.isArr(arr) && arr || isObj3.isObj(arr) && Object.entries(arr) || []
+          ...isArr12.isArr(arr) && arr || isObj3.isObj(arr) && Object.entries(arr) || []
         ]);
-        var eitherArr = (a, b) => isArr10.isArr(a) ? a : b;
+        var eitherArr = (a, b) => isArr12.isArr(a) ? a : b;
         var flatten = (arr, result, opts) => {
           for (let i = 0; i < arr.length; i++) {
             const value = arr[i];
-            isArr10.isArr(value) ? flatten(value, result, opts) : opts.exists && !exists22.exists(value) || opts.truthy && !value ? result : result.push(value);
+            isArr12.isArr(value) ? flatten(value, result, opts) : opts.exists && !exists22.exists(value) || opts.truthy && !value ? result : result.push(value);
           }
           if (!opts.mutate)
             return result;
@@ -27003,14 +27003,14 @@ var require_test = __commonJS({
             arr,
             mapFn
           }, {
-            arr: isArr10.isArr,
+            arr: isArr12.isArr,
             mapFn: isFunc2.isFunc
           });
           if (!inputIsValid)
             return arr;
           return arr.reduce((finalArr, current) => {
             const result = mapFn(current);
-            isArr10.isArr(result) ? result.map((el) => finalArr.push(el)) : finalArr.push(result);
+            isArr12.isArr(result) ? result.map((el) => finalArr.push(el)) : finalArr.push(result);
             return finalArr;
           }, []);
         };
@@ -27019,7 +27019,7 @@ var require_test = __commonJS({
             arr,
             comparator
           }, {
-            arr: isArr10.isArr,
+            arr: isArr12.isArr,
             $default: isFunc2.isFunc
           });
           if (!valid)
@@ -27034,7 +27034,7 @@ var require_test = __commonJS({
             startIndex,
             count
           }, {
-            arr: isArr10.isArr,
+            arr: isArr12.isArr,
             $default: isNonNegative.isNonNegative
           });
           if (!inputIsValid)
@@ -27044,7 +27044,7 @@ var require_test = __commonJS({
           return nextArr;
         };
         var randomArr = (arr, amount) => {
-          if (!isArr10.isArr(arr))
+          if (!isArr12.isArr(arr))
             return arr;
           const useAmount = amount || 1;
           const randoms = [];
@@ -27053,9 +27053,9 @@ var require_test = __commonJS({
           }
           return !amount ? randoms[0] : randoms;
         };
-        var randomizeArr = (arr) => !isArr10.isArr(arr) && arr || arr.sort(() => 0.5 - Math.random());
+        var randomizeArr = (arr) => !isArr12.isArr(arr) && arr || arr.sort(() => 0.5 - Math.random());
         var uniqArrByReference = (arr) => {
-          return !isArr10.isArr(arr) ? arr : arr.filter((e, i, arr2) => arr2.indexOf(e) == i);
+          return !isArr12.isArr(arr) ? arr : arr.filter((e, i, arr2) => arr2.indexOf(e) == i);
         };
         var uniqArr = (arr, selector) => {
           if (!selector)
@@ -27080,13 +27080,13 @@ var require_test = __commonJS({
           };
           const compare2 = isFunc2.isFunc(last) ? last : args.push(last) && void 0;
           return args.reduce((merged, arr) => {
-            if (!isArr10.isArr(arr))
+            if (!isArr12.isArr(arr))
               return merged;
             return uniqArr(flatArr([...merged, ...arr], opts), compare2);
           }, []);
         };
         var intersect = (arrA, arrB) => {
-          if (!isArr10.isArr(arrA) || !isArr10.isArr(arrB))
+          if (!isArr12.isArr(arrA) || !isArr12.isArr(arrB))
             return [];
           const setB = new Set(arrB);
           return [...new Set(arrA)].filter((x) => setB.has(x));
@@ -27114,8 +27114,8 @@ var require_test = __commonJS({
     var require_ensureArr_ae68c0412 = __commonJS2({
       "node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/ensureArr-ae68c041.js"(exports2) {
         "use strict";
-        var isArr10 = require_isArr_392340142();
-        var ensureArr4 = (val) => isArr10.isArr(val) ? val : [val];
+        var isArr12 = require_isArr_392340142();
+        var ensureArr4 = (val) => isArr12.isArr(val) ? val : [val];
         exports2.ensureArr = ensureArr4;
       }
     });
@@ -27130,13 +27130,13 @@ var require_test = __commonJS({
       "node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/set-c0a98b21.js"(exports2) {
         "use strict";
         var isFunc2 = require_isFunc_f93803cb2();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var isColl = require_isColl_5757310a2();
         var updateColl = (obj, path5, type, val) => {
           const org = obj;
           if (!isColl.isColl(obj) || !obj || !path5)
             return type !== "set" && val || void 0;
-          const parts = isArr10.isArr(path5) ? Array.from(path5) : path5.split(".");
+          const parts = isArr12.isArr(path5) ? Array.from(path5) : path5.split(".");
           const key = parts.pop();
           let prop;
           let breakPath;
@@ -27166,10 +27166,10 @@ var require_test = __commonJS({
       "node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/get-00626335.js"(exports2) {
         "use strict";
         var exists22 = require_exists_c79204b12();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var isStr42 = require_isStr_8a57710e2();
         var get2 = (obj, path5, fallback) => {
-          const isPathArr = isArr10.isArr(path5);
+          const isPathArr = isArr12.isArr(path5);
           if (!isStr42.isStr(path5) && !isPathArr)
             return exists22.exists(fallback) ? fallback : void 0;
           const parts = isPathArr ? path5 : path5.split(".");
@@ -27190,7 +27190,7 @@ var require_test = __commonJS({
         "use strict";
         var isFunc2 = require_isFunc_f93803cb2();
         var get2 = require_get_006263352();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var cloneFunc = (func) => {
           const funcClone = function(...args) {
             return func instanceof funcClone ? (() => {
@@ -27213,7 +27213,7 @@ var require_test = __commonJS({
             return new Set(obj);
           if (hash.has(obj))
             return hash.get(obj);
-          if (isArr10.isArr(obj))
+          if (isArr12.isArr(obj))
             return obj.map((x) => deepClone(x));
           if (isFunc2.isFunc(obj))
             return cloneFunc(obj);
@@ -27253,7 +27253,7 @@ var require_test = __commonJS({
         var isObj3 = require_isObj_6b3aa8072();
         var isColl = require_isColl_5757310a2();
         var isFunc2 = require_isFunc_f93803cb2();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var exists22 = require_exists_c79204b12();
         var validate = require_validate_23297ec22();
         var set2 = require_set_c0a98b212();
@@ -27270,7 +27270,7 @@ var require_test = __commonJS({
             return cleaned;
           }, isObj3.isObj(coll) && {} || []) : console.error(`cleanColl requires a collection as the first argument`) || coll;
         };
-        var mapColl = (coll, cb) => isFunc2.isFunc(cb) && isColl.isColl(coll) ? Object.keys(coll).map((key) => cb(key, coll[key], coll)) : isArr10.isArr(coll) ? [] : {};
+        var mapColl = (coll, cb) => isFunc2.isFunc(cb) && isColl.isColl(coll) ? Object.keys(coll).map((key) => cb(key, coll[key], coll)) : isArr12.isArr(coll) ? [] : {};
         var mapFindArr = (arr, mapper, testFunc) => {
           for (let i = 0; i < arr.length; i++) {
             const mappedValue = mapper(arr[i], i, i);
@@ -27305,7 +27305,7 @@ var require_test = __commonJS({
             return void 0;
           return isObj3.isObj(coll) ? mapFindObj(coll, mapper, testFunc) : mapFindArr(coll, mapper, testFunc);
         };
-        var reduceColl = (coll, cb, reduce) => isFunc2.isFunc(cb) && isColl.isColl(coll) ? Object.keys(coll).reduce((data, key) => cb(key, coll[key], coll, data), reduce) : isArr10.isArr(coll) ? [] : {};
+        var reduceColl = (coll, cb, reduce) => isFunc2.isFunc(cb) && isColl.isColl(coll) ? Object.keys(coll).reduce((data, key) => cb(key, coll[key], coll, data), reduce) : isArr12.isArr(coll) ? [] : {};
         var unset2 = (obj, path5) => {
           set2.updateColl(obj, path5, "unset");
           return obj;
@@ -27325,7 +27325,7 @@ var require_test = __commonJS({
           return arr;
         };
         var shallowEqual = (col1, col2, path5) => {
-          if (path5 && (isArr10.isArr(path5) || isStr42.isStr(path5))) {
+          if (path5 && (isArr12.isArr(path5) || isStr42.isStr(path5))) {
             col1 = get2.get(col1, path5);
             col2 = get2.get(col2, path5);
           }
@@ -27427,10 +27427,10 @@ var require_test = __commonJS({
     var require_pipeline_e65bdaae2 = __commonJS2({
       "node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/pipeline-e65bdaae.js"(exports2) {
         "use strict";
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var isFunc2 = require_isFunc_f93803cb2();
         var applyToFunc = (item, expression) => {
-          if (isArr10.isArr(expression)) {
+          if (isArr12.isArr(expression)) {
             const [func, ...args] = expression;
             return func(item, ...args);
           } else if (isFunc2.isFunc(expression)) {
@@ -27454,7 +27454,7 @@ var require_test = __commonJS({
         var validate = require_validate_23297ec22();
         var isNum22 = require_isNum_c7164b502();
         var jsonEqual = require_jsonEqual_7e69ef6a2();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var deepClone = require_deepClone_ae664a212();
         var noOps = require_noOps_b5f3c7e42();
         var isStr42 = require_isStr_8a57710e2();
@@ -27534,7 +27534,7 @@ var require_test = __commonJS({
           const [valid] = validate.validate({
             asyncFns
           }, {
-            asyncFns: isArr10.isArr
+            asyncFns: isArr12.isArr
           });
           if (!valid)
             return [];
@@ -27697,7 +27697,7 @@ var require_test = __commonJS({
         var isObj3 = require_isObj_6b3aa8072();
         var isFunc2 = require_isFunc_f93803cb2();
         var deepClone = require_deepClone_ae664a212();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var isColl = require_isColl_5757310a2();
         var set2 = require_set_c0a98b212();
         var jsonEqual = require_jsonEqual_7e69ef6a2();
@@ -27732,11 +27732,11 @@ var require_test = __commonJS({
         var deepMerge2 = (...sources) => {
           return sources.reduce((merged, source) => {
             const srcCopy = deepClone.deepClone(source);
-            return isArr10.isArr(srcCopy) ? [...isArr10.isArr(merged) && merged || [], ...srcCopy] : isObj3.isObj(srcCopy) ? Object.entries(srcCopy).reduce((joined, [key, value]) => ({
+            return isArr12.isArr(srcCopy) ? [...isArr12.isArr(merged) && merged || [], ...srcCopy] : isObj3.isObj(srcCopy) ? Object.entries(srcCopy).reduce((joined, [key, value]) => ({
               ...joined,
               [key]: isFunc2.isFunc(value) ? deepClone.cloneFunc(value) : isColl.isColl(value) && key in joined ? deepMerge2(joined[key], value) : deepClone.deepClone(value)
             }), merged) : merged;
-          }, isArr10.isArr(sources[0]) && [] || {});
+          }, isArr12.isArr(sources[0]) && [] || {});
         };
         var applyToCloneOf = (obj, mutatorCb) => {
           let error;
@@ -27757,7 +27757,7 @@ var require_test = __commonJS({
           return clone;
         };
         var mapEntries = (obj, cb) => {
-          if (!isArr10.isArr(obj) && !isObj3.isObj(obj)) {
+          if (!isArr12.isArr(obj) && !isObj3.isObj(obj)) {
             console.error(obj, `Expected array or object for obj. Found ${typeof obj}`);
             return obj;
           }
@@ -27766,7 +27766,7 @@ var require_test = __commonJS({
             return obj;
           }
           const entries = Object.entries(obj);
-          const initialValue = isArr10.isArr(obj) ? [] : {};
+          const initialValue = isArr12.isArr(obj) ? [] : {};
           return entries.reduce((obj2, [key, value]) => {
             const result = cb(key, value);
             if (!jsonEqual.isEntry(result)) {
@@ -27801,7 +27801,7 @@ var require_test = __commonJS({
           return cleaned;
         }, object);
         var toObj = (val, divider, split) => {
-          if (isArr10.isArr(val))
+          if (isArr12.isArr(val))
             return Object.keys(val).reduce((obj, key) => {
               obj[key] = val[key];
               return obj;
@@ -27816,7 +27816,7 @@ var require_test = __commonJS({
             return obj;
           }, {});
         };
-        var keyMap2 = (arr, toUpperCase) => isArr10.isArr(arr) && arr.reduce((obj, key) => {
+        var keyMap2 = (arr, toUpperCase) => isArr12.isArr(arr) && arr.reduce((obj, key) => {
           if (!isStr42.isStr(key))
             return obj;
           const use = toUpperCase && key.toUpperCase() || key;
@@ -28009,13 +28009,13 @@ var require_test = __commonJS({
       "node_modules/.pnpm/@keg-hub+jsutils@9.6.1/node_modules/@keg-hub/jsutils/build/cjs/joinRegex-5320d139.js"(exports2) {
         "use strict";
         var isStr42 = require_isStr_8a57710e2();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         require_validate_23297ec22();
         require_noOps_b5f3c7e42();
         var not = require_not_16fa9c852();
         var getRegexSource = (maybeRx) => not.isRegex(maybeRx) ? maybeRx.source : isStr42.isStr(maybeRx) ? maybeRx : null;
         var parseArgs = (args) => {
-          if (isArr10.isArr(args[0]))
+          if (isArr12.isArr(args[0]))
             return [args[0], args[1]];
           const last = args[args.length - 1];
           const options2 = isStr42.isStr(last) ? last : void 0;
@@ -28042,7 +28042,7 @@ var require_test = __commonJS({
         var isQuoted = require_isQuoted_eb6994da2();
         var toStr$1 = require_toStr_8e4999662();
         var isNonNegative = require_isNonNegative_9959647c2();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var isColl = require_isColl_5757310a2();
         var get2 = require_get_006263352();
         var buildPath = (...args) => {
@@ -28171,7 +28171,7 @@ var require_test = __commonJS({
           return cleaned.split(" ").map((word) => word && capitalize(word) || "").join(" ");
         };
         var spaceJoin = (original, toAdd) => {
-          toAdd = isArr10.isArr(toAdd) ? toAdd : [toAdd];
+          toAdd = isArr12.isArr(toAdd) ? toAdd : [toAdd];
           return toAdd.reduce((joined, item) => {
             return isStr42.isStr(item) ? `${joined ? joined + " " : ""}${item}`.trim() : joined;
           }, isStr42.isStr(original) ? original : "");
@@ -28259,7 +28259,7 @@ var require_test = __commonJS({
         var isNum22 = require_isNum_c7164b502();
         var isBool3 = require_isBool_aa6af74e2();
         var isColl = require_isColl_5757310a2();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var validate = require_validate_23297ec22();
         var queryToObj = (string) => {
           const currentQueryItems = {};
@@ -28279,7 +28279,7 @@ var require_test = __commonJS({
                 currentQueryItems[itemSplit[0]] = array;
               else if (itemSplit[0] in currentQueryItems) {
                 const val = currentQueryItems[itemSplit[0]];
-                currentQueryItems[itemSplit[0]] = isArr10.isArr(val) ? val.push(decodeURIComponent(itemSplit[1])) : [val, decodeURIComponent(itemSplit[1])];
+                currentQueryItems[itemSplit[0]] = isArr12.isArr(val) ? val.push(decodeURIComponent(itemSplit[1])) : [val, decodeURIComponent(itemSplit[1])];
               } else
                 currentQueryItems[itemSplit[0]] = decodeURIComponent(itemSplit[1]);
             }
@@ -28291,7 +28291,7 @@ var require_test = __commonJS({
           return reduceObj.reduceObj(obj, (key, value, urlStr) => {
             if (!value)
               return urlStr;
-            const useVal = isStr42.isStr(value) || isNum22.isNum(value) || isBool3.isBool(value) ? value : isColl.isColl(value) ? isArr10.isArr(value) ? value.join(",") : JSON.stringify(value) : null;
+            const useVal = isStr42.isStr(value) || isNum22.isNum(value) || isBool3.isBool(value) ? value : isColl.isColl(value) ? isArr12.isArr(value) ? value.join(",") : JSON.stringify(value) : null;
             if (!useVal)
               return urlStr;
             urlStr = !firstSet ? `?${encodeURIComponent(key)}=${encodeURIComponent(useVal)}` : `${urlStr}&${encodeURIComponent(key)}=${encodeURIComponent(useVal)}`;
@@ -28323,7 +28323,7 @@ var require_test = __commonJS({
         Object.defineProperty(exports2, "__esModule", { value: true });
         var intersect = require_intersect_6fe7b9442();
         var ensureArr4 = require_ensureArr_ae68c0412();
-        var isArr10 = require_isArr_392340142();
+        var isArr12 = require_isArr_392340142();
         var isBool3 = require_isBool_aa6af74e2();
         var toBool2 = require_toBool_deb350e42();
         var softFalsy = require_softFalsy_3d7ead1c2();
@@ -28390,7 +28390,7 @@ var require_test = __commonJS({
         exports2.uniqArr = intersect.uniqArr;
         exports2.uniqArrByReference = intersect.uniqArrByReference;
         exports2.ensureArr = ensureArr4.ensureArr;
-        exports2.isArr = isArr10.isArr;
+        exports2.isArr = isArr12.isArr;
         exports2.isBool = isBool3.isBool;
         exports2.convertToStrBool = toBool2.convertToStrBool;
         exports2.isStrBool = toBool2.isStrBool;
@@ -28554,7 +28554,7 @@ var require_test = __commonJS({
       ParkinTest: () => ParkinTest2
     });
     module2.exports = __toCommonJS2(test_exports);
-    var import_jsutils29 = __toESM2(require_cjs2());
+    var import_jsutils31 = __toESM2(require_cjs2());
     var runResult = (item, {
       id,
       action,
@@ -28577,9 +28577,9 @@ var require_test = __commonJS({
         description: item.description,
         timestamp: (/* @__PURE__ */ new Date()).getTime()
       };
-      (0, import_jsutils29.isObj)(failed) && result.failedExpectations.push(failed);
-      (0, import_jsutils29.isObj)(passed) && result.passedExpectations.push(passed);
-      (0, import_jsutils29.isObj)(item.action.ParkinMetaData) ? result.metaData = item.action.ParkinMetaData : (0, import_jsutils29.isObj)(item.action.metaData) && (result.metaData = item.action.metaData);
+      (0, import_jsutils31.isObj)(failed) && result.failedExpectations.push(failed);
+      (0, import_jsutils31.isObj)(passed) && result.passedExpectations.push(passed);
+      (0, import_jsutils31.isObj)(item.action.ParkinMetaData) ? result.metaData = item.action.ParkinMetaData : (0, import_jsutils31.isObj)(item.action.metaData) && (result.metaData = item.action.metaData);
       if (passed || failed)
         result.status = passed ? "passed" : ((_a3 = result == null ? void 0 : result.metaData) == null ? void 0 : _a3.warnOnFailed) ? "warning" : "failed";
       return result;
@@ -29477,7 +29477,7 @@ var require_brace_expansion = __commonJS({
 });
 
 // src/bin/workerPipeline.ts
-var import_jsutils28 = __toESM(require_cjs());
+var import_jsutils30 = __toESM(require_cjs());
 
 // src/bin/options.ts
 var options = {
@@ -30400,7 +30400,7 @@ var loadFileArr = (args) => {
 var loadFilesTask = async (args, files) => {
   if ((0, import_jsutils10.isArr)(files)) {
     const looper = loadFileArr(args);
-    return await pMapSeries(files, looper);
+    return await pMapSeries(files.filter(Boolean), looper);
   } else {
     const responses = {};
     const looper = loadFilesObj(args, responses);
@@ -30557,7 +30557,7 @@ var preEnvironmentStep = async (args) => {
   const { config } = args;
   if (!(0, import_jsutils14.isArr)(config.preEnvironment) || !((_a3 = config.preEnvironment) == null ? void 0 : _a3.length))
     return;
-  loadFilesTask(args, config.preEnvironment);
+  await loadFilesTask(args, config.preEnvironment);
 };
 
 // src/pipelines/steps/postEnvironmentStep.ts
@@ -30567,7 +30567,7 @@ var postEnvironmentStep = async (args) => {
   const { config } = args;
   if (!(0, import_jsutils15.isArr)(config.postEnvironment) || !((_a3 = config.postEnvironment) == null ? void 0 : _a3.length))
     return;
-  loadFilesTask(args, config.postEnvironment);
+  await loadFilesTask(args, config.postEnvironment);
 };
 
 // src/pipelines/steps/preRunnerStep.ts
@@ -30590,7 +30590,7 @@ var postRunnerStep = async (args) => {
   const { config } = args;
   if (!(0, import_jsutils17.isArr)(config.postRunner) || !((_a3 = config.postRunner) == null ? void 0 : _a3.length))
     return;
-  loadFilesTask(args, config.postRunner);
+  await loadFilesTask(args, config.postRunner);
 };
 
 // src/pipelines/tasks/runTestsTask.ts
@@ -37719,6 +37719,34 @@ var reportersStep = async (args, manager) => {
   args.rewind.push(async () => EventReporter.cleanup());
 };
 
+// src/pipelines/steps/onShutdownStep.ts
+var import_jsutils27 = __toESM(require_cjs());
+var onShutdownStep = async (args) => {
+  var _a3;
+  const { config } = args;
+  if (!(0, import_jsutils27.isArr)(config.onStartup) || !((_a3 = config.onStartup) == null ? void 0 : _a3.length))
+    return;
+  const pRequire = createRequireTask(args);
+  await loadFilesTask({
+    ...args,
+    state: { require: pRequire }
+  }, config.onStartup);
+};
+
+// src/pipelines/steps/onStartupStep.ts
+var import_jsutils28 = __toESM(require_cjs());
+var onStartupStep = async (args) => {
+  var _a3;
+  const { config } = args;
+  if (!(0, import_jsutils28.isArr)(config.onStartup) || !((_a3 = config.onStartup) == null ? void 0 : _a3.length))
+    return;
+  const pRequire = createRequireTask(args);
+  await loadFilesTask({
+    ...args,
+    state: { require: pRequire }
+  }, config.onStartup);
+};
+
 // src/pipelines/pipelineHoc.ts
 var pipelineHoc = (cb, args, state) => {
   args && argsState.addState({ ...args, rewind: [] });
@@ -37766,7 +37794,7 @@ var JasmineCompat = {
 };
 
 // src/pipelines/tasks/formatArgsTask.ts
-var import_jsutils27 = __toESM(require_cjs());
+var import_jsutils29 = __toESM(require_cjs());
 var formatArgsTask = (args) => {
   const {
     tag,
@@ -37775,9 +37803,9 @@ var formatArgsTask = (args) => {
     testMatch,
     ...rest
   } = args;
-  const tests = (0, import_jsutils27.exists)(testMatch) ? (0, import_jsutils27.ensureArr)(testMatch) : file ? (0, import_jsutils27.ensureArr)(file) : void 0;
-  const bail = (0, import_jsutils27.isBool)(config.bail) ? config.bail ? 1 : 0 : (0, import_jsutils27.isNum)(config.bail) ? config.bail : 0;
-  const passWithNoTests = (0, import_jsutils27.exists)(config.passWithNoTests) ? config.passWithNoTests : false;
+  const tests = (0, import_jsutils29.exists)(testMatch) ? (0, import_jsutils29.ensureArr)(testMatch) : file ? (0, import_jsutils29.ensureArr)(file) : void 0;
+  const bail = (0, import_jsutils29.isBool)(config.bail) ? config.bail ? 1 : 0 : (0, import_jsutils29.isNum)(config.bail) ? config.bail : 0;
+  const passWithNoTests = (0, import_jsutils29.exists)(config.passWithNoTests) ? config.passWithNoTests : false;
   return {
     ...rest,
     testMatch: tests,
@@ -37821,7 +37849,8 @@ var RunPipeline = async (args) => {
 
 // src/bin/workerPipeline.ts
 var import_worker_threads = require("worker_threads");
-(0, import_jsutils28.ife)(async () => {
+(0, import_jsutils30.ife)(async () => {
+  var _a3, _b;
   const workerCfg = {
     exam: import_worker_threads.workerData.exam,
     id: import_worker_threads.workerData.workerId
@@ -37830,8 +37859,19 @@ var import_worker_threads = require("worker_threads");
     workerId: workerCfg.id,
     logLevel: import_worker_threads.workerData.logLevel || `info`
   });
+  ((_b = (_a3 = workerCfg.exam) == null ? void 0 : _a3.onStartup) == null ? void 0 : _b.length) && await onStartupStep({
+    cli: true,
+    config: workerCfg.exam,
+    id: import_worker_threads.workerData.workerId
+  });
   import_worker_threads.parentPort.on("message", async (message) => {
+    var _a4, _b2;
     if (message.terminate || message.event === WorkerEvents.Terminate) {
+      ((_b2 = (_a4 = workerCfg.exam) == null ? void 0 : _a4.onShutdown) == null ? void 0 : _b2.length) && await onShutdownStep({
+        cli: true,
+        config: workerCfg.exam,
+        id: import_worker_threads.workerData.workerId
+      });
       return process.exit(0);
     }
     const results = await RunPipeline({

@@ -37,7 +37,7 @@ export class WorkerPool extends EventEmitter {
   #pool:TWorker[]=[]
   #wrkOpts:WorkerOptions
   #queue:TWorkerQueue[]=[]
-  closeTimeout:number=10
+  closeTimeout:number=5000
 
   constructor (cfg:TPoolCfg) {
     super()

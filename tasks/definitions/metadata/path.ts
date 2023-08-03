@@ -5,7 +5,7 @@ import { Logger } from '@keg-hub/cli-utils'
  * Print the browser metadata path on the HDD
  */
 const metaLocation = async (args:TTaskActionArgs) => {
-  const metadata = await import('@gobletqa/screencast/libs/playwright/helpers/metadata')
+  const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
 
   const metaLoc = metadata.location()
   Logger.log(metaLoc)

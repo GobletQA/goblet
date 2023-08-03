@@ -7,6 +7,6 @@ export const preEnvironmentStep = async (args:TPipelineArgs) => {
   const { config } = args
   if(!isArr(config.preEnvironment) || !config.preEnvironment?.length) return
 
-  loadFilesTask(args, config.preEnvironment)
+  await loadFilesTask(args, config.preEnvironment)
 
 }

@@ -7,6 +7,6 @@ export const postRunnerStep = async (args:TPipelineArgs) => {
   const { config } = args
   if(!isArr(config.postRunner) || !config.postRunner?.length) return
 
-  loadFilesTask(args, config.postRunner)
+  await loadFilesTask(args, config.postRunner)
 
 }

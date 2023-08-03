@@ -9,6 +9,8 @@ export * from './postRunnerStep'
 export * from './runnerStep'
 export * from './rewindStep'
 export * from './reportersStep'
+export * from './onShutdownStep'
+export * from './onStartupStep'
 
 
 

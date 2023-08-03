@@ -4,7 +4,15 @@ import path from 'path'
 import pMapSeries from 'p-map-series'
 import {isArr} from '@keg-hub/jsutils'
 
-const getLoc = (args:TPipelineArgs, loc:string) => {
+type TPartialState = {
+  require:NodeRequire
+}
+
+type TLoadFileArgs = Omit<TPipelineArgs, `state`|`rewind`> & {
+  state:TPartialState
+}
+
+const getLoc = (args:TLoadFileArgs, loc:string) => {
   const { config } = args
   const { rootDir } = config
 
@@ -12,7 +20,7 @@ const getLoc = (args:TPipelineArgs, loc:string) => {
 }
 
 const loadFilesObj = (
-  args:TPipelineArgs,
+  args:TLoadFileArgs,
   responses:Record<string, any>,
 ) => {
   const { state } = args
@@ -29,7 +37,7 @@ const loadFilesObj = (
 
 }
 
-const loadFileArr = (args:TPipelineArgs) => {
+const loadFileArr = (args:TLoadFileArgs) => {
   const { state } = args
 
   return async (file:string|[string, Record<any, any>]) => {
@@ -44,13 +52,13 @@ const loadFileArr = (args:TPipelineArgs) => {
 
 
 export const loadFilesTask = async <T extends Record<string|number, any>>(
-  args:TPipelineArgs,
+  args:TLoadFileArgs,
   files:Record<string, any>|string[]|[string, Record<any, any>][]
 ):Promise<T> => {
 
   if(isArr(files)){
     const looper = loadFileArr(args)
-    return await pMapSeries(files, looper) as unknown as T
+    return await pMapSeries(files.filter(Boolean), looper) as unknown as T
   }
   else {
     const responses:T = {} as T

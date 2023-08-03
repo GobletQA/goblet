@@ -14,7 +14,7 @@ const getHook = (hookName) => {
 }
 
 /**
- * Cucumber-like hooks
+ * Test hooks to execute before and after test runs 
  * @example
  * import { BeforeAll, AfterAll } from '@GTU/Parkin'
  * BeforeAll(() => setupMyTestEnv())

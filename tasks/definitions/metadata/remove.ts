@@ -8,7 +8,7 @@ import { promises as fs, existsSync } from 'fs'
  * Print the browser metadata if it exists
  */
 const removeMeta = async (args:TTaskActionArgs) => {
-  const metadata = await import('@gobletqa/screencast/libs/playwright/helpers/metadata')
+  const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
   
   Logger.empty()
   const metaLoc = metadata.location()

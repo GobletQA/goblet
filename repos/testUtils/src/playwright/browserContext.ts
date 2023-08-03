@@ -37,19 +37,15 @@ export const defaultStateFile = 'browser-context-state'
  * @returns {Object} - Playwright Browser object
  */
 export const setupBrowser = async () => {
-  const metadata = await import('@gobletqa/screencast/libs/playwright/helpers/metadata')
+  
   /** GOBLET_BROWSER is set by the task `keg goblet bdd run` */
   const { GOBLET_BROWSER=`chromium` } = process.env
-  const {
-    type,
-    browserConf,
-  } = await metadata.read(GOBLET_BROWSER as EBrowserName)
-
+  const type = GOBLET_BROWSER || global?.__goblet?.browser?.type
+  
   const parkin = global.getParkinInstance()
   const gCtx = get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
   const { browser, context } = await getPWComponents({
     type,
-    ...browserConf,
     ...get(global, `__goblet.browser`, emptyObj),
     context: {
       ...gCtx,

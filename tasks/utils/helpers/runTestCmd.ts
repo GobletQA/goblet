@@ -133,7 +133,7 @@ export const runTestCmd = async (args:TRunTestCmd) => {
   toBool(process.env.LOCAL_DEV) && clearTestMetaDirs()
 
   let reportPaths = []
-  const { getBrowsers } = await import('@gobletqa/screencast/libs/playwright/helpers/getBrowsers')
+  const { getBrowsers } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowsers')
   
   const browsers = getBrowsers(params as unknown as TGetBrowsers)
 

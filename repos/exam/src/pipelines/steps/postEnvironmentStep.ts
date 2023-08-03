@@ -9,6 +9,6 @@ export const postEnvironmentStep = async (args:TPipelineArgs) => {
   
   if(!isArr(config.postEnvironment) || !config.postEnvironment?.length) return
 
-  loadFilesTask(args, config.postEnvironment)
+  await loadFilesTask(args, config.postEnvironment)
 
 }

@@ -116,6 +116,7 @@ export const initialize = async () => {
  *
  */
 export const cleanup = async (initErr?:boolean) => {
+
   if (!global.browser){
     await commitTestMeta()
     return false

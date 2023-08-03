@@ -105,7 +105,7 @@ const launchBrowserServer = async (
   browserConf:TBrowserConf,
   log:boolean
 ) => {
-  const metadata = await import('@gobletqa/screencast/libs/playwright/helpers/metadata')
+  const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
   const browserMeta = await metadata.read(browserType as any)
   const paramsMatch = checkLaunchParams(browserType, browserConf, browserMeta)
   const canConnect = await testBrowserConnection(

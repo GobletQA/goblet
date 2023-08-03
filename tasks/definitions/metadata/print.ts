@@ -7,7 +7,7 @@ const { pathExistsSync, readFile } = fileSys
  * Print the browser metadata if it exists
  */
 const printMeta = async (args:TTaskActionArgs) => {
-  const metadata = await import('@gobletqa/screencast/libs/playwright/helpers/metadata')
+  const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
 
   Logger.empty()
 
