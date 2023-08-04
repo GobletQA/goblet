@@ -10,7 +10,7 @@ const cfgDir = path.join(rootDir, `src/exam`)
 const outdir = path.join(rootDir, `build/exam`)
 
 const exts = `js,ts`
-const external = [`esbuild`, `playwright`]
+const external = [`esbuild`, `playwright`, `@ltipton/parkin`]
 
 const entryPoints = globSync(
   path.join(cfgDir, `**/*.{${exts}}`),

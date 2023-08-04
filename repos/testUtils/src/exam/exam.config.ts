@@ -3,6 +3,10 @@
  * Command looks something like this, run from the testUtils root directory
  * @example
  * node ../exam/.bin/exam.js --config ./exam/exam.config.ts --root /goblet/repos/lancetipton -t Test-World.feature
+ * Command from the goblet root directory
+ * @example
+ * node ./repos/exam/.bin/exam.js --config ../../app/repos/testUtils/src/exam/exam.config.ts --root /goblet/repos/lancetipton -t Log-In-and-Out.feature
+ 
  */
 
 // Must load this first because it loads the alias
@@ -18,7 +22,7 @@ import { EExTestMode } from '@gobletqa/exam'
 import { emptyArr, emptyObj, ensureArr, flatUnion} from '@keg-hub/jsutils'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
-import { getParkinSupport, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
+import { getParkinTestInit, getParkinSupport, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
 
 import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
@@ -120,7 +124,10 @@ const ExamConfig = ():TExamConfig => {
       ...examConfig.transforms,
       [`.feature`]: [TransformLoc, {}]
     },
-    preEnvironment:flatUnion([...ensureArr(examConfig.preEnvironment)]),
+    preEnvironment:flatUnion([
+      ...ensureArr(examConfig.preEnvironment),
+      ...getParkinTestInit(config),
+    ]),
     environment: [EnvironmentLoc, {}],
     /** Add all support and step files and ensure they are loaded before running the tests */
     postEnvironment: flatUnion([

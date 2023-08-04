@@ -27,11 +27,21 @@ export const getStepDefinitions = (config:TGobletConfig) => {
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
   const clientPattern = path.join(baseDir, stepsDir, `**/*.{${exts.join(',')}}`)
   const clientMatches = globSync(clientPattern)
-
   const configPattern = path.join(testUtilsDir, `src/steps/**/*.{${exts.join(',')}}`)
-  const configMatches = globSync(configPattern)
+  const configMatches = globSync(configPattern, { ignore: [`**/index.{${exts.join(',')}}`] })
 
   return uniqArr([...clientMatches, ...configMatches], undefined)
+}
+
+/**
+ * Loaded in the preEnvironment step, to ensure Parkin exists in the global scope
+ */
+export const getParkinTestInit = (config:TGobletConfig) => {
+  const { testUtilsDir } = config.internalPaths
+  // MUST BE LOADED FIRST - Add the parkin environment setup before all other setup files
+  // This ensures we can get access to the Parkin instance on the global object
+  const parkinEnvironment = `${testUtilsDir}/src/parkin/parkinTestInit.ts`
+  return [parkinEnvironment]
 }
 
 /**
@@ -44,7 +54,7 @@ export const getParkinSupport = (config:TGobletConfig) => {
   const { testUtilsDir } = config.internalPaths
   const { repoRoot, workDir, supportDir } = config.paths
 
-  const parkinEnvironment = `${testUtilsDir}/src/parkin/parkinTestInit.ts`
+  // const parkinEnvironment = `${testUtilsDir}/src/parkin/parkinTestInit.ts`
 
   // **IMPORTANT** - Must be loaded after the parkinEnvironment 
   const configHooks = `${testUtilsDir}/src/support/hooks.ts`
@@ -64,10 +74,6 @@ export const getParkinSupport = (config:TGobletConfig) => {
   // Were the `initialize` method from `playwrightTestEnv.js` is registered with the BeforeAll hook
   // This is where the browser for the test execution is created / connected to
   matches.unshift(configHooks)
-
-  // MUST BE LOADED FIRST - Add the parkin environment setup before all other setup files
-  // This ensures we can get access to the Parkin instance on the global object
-  matches.unshift(parkinEnvironment)
 
   return matches
 }

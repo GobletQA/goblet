@@ -15,7 +15,7 @@ const esmOutdir = path.join(outdir, `esm`)
 const cjsOutdir = path.join(outdir, `cjs`)
 
 const exts = `js,ts`
-const external = [`esbuild`, `playwright`]
+const external = [`esbuild`, `playwright`, `@ltipton/parkin`]
 
 
 

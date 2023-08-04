@@ -75,8 +75,11 @@ export const parseArgs = async () => {
 
   // If the GOBLET_CONFIG_BASE env is not already set,
   // And the rootDir is set, use it as the config-base
-  if(exists(opts.rootDir) && !exists(process.env.GOBLET_CONFIG_BASE))
-    process.env.GOBLET_CONFIG_BASE = opts.rootDir
+  if(exists(opts.rootDir) && !exists(process.env.GOBLET_CONFIG_BASE)){
+    const resolved = path.resolve(opts.rootDir)
+    opts.rootDir = resolved
+    process.env.GOBLET_CONFIG_BASE = resolved
+  }
 
   /**
    * Args parse will typically remove empty items but,
