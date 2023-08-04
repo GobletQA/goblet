@@ -73,6 +73,8 @@ const esmBuild = async () => {
         `**/**/transformer.ts`,
         /** Ignore old Jest configs */
         `**/jest/**/*.{${exts}}`,
+        `**/__tests__/**/*.{${exts}}`,
+        `**/__mocks__/**/*.{${exts}}`,
         /** Ignore past build folder */
         `**/build/**/*.{${exts}}`,
         /** Don't include configs */
@@ -85,6 +87,8 @@ const esmBuild = async () => {
     }
   )
   
+  const hasExam = entryPoints.filter(loc => loc.includes(`/exam`))
+
   // Build the files with esbuild
   await build({
     ...options,

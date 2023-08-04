@@ -166,6 +166,8 @@ repos/devspace
 /temp/**/*
 !.keep
 !/**/.keep
+!.gitkeep
+!/**/.gitkeep
 
 /certs
 /certs/**/*
@@ -183,3 +185,4 @@ noAuthData.json
 
 tasks/index.js
 .pnpm-*
+repos/testUtils/exam/*
