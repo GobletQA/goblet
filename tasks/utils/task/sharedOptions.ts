@@ -43,7 +43,7 @@ const dynamicOpts = {
 }
 
 const taskOptions = {
-  jest: {
+  test: {
     noTests: {
       description: `The test runner will not fail when no tests exit`,
       example: `--noTests`,
@@ -64,8 +64,8 @@ const taskOptions = {
     },
     testConfig: {
       enforced: true,
-      example: `--jestConfig relative/path/to/config`,
-      description: `Absolute path to a jest config relative to the root directory`,
+      example: `--testConfig relative/path/to/config`,
+      description: `Absolute path to a test config relative to the root directory`,
     },
     testTimeout: {
       type: `number`,
@@ -79,7 +79,7 @@ const taskOptions = {
       type: `boolean`,
       example: `--testDebug`,
       env: `GOBLET_TEST_DEBUG`,
-      description: `Pass the --debug flag to the jest command`,
+      description: `Pass the --debug flag to the test command`,
     },
     testRetry: {
       type: `number`,
@@ -363,11 +363,7 @@ const taskOptions = {
       example: `--reusePage`,
       env: `GOBLET_PAGE_REUSE`,
       description: `Reuse the same page for each test`
-    }
-  },
-  waypoint: {
-  },
-  test: {
+    },
     artifactsDebug: {
       default: false,
       type: `boolean`,
@@ -376,7 +372,9 @@ const taskOptions = {
       description: `Enable debug logs for artifacts generated durring test execution`,
       example: `keg goblet bdd test --artifactsDebug`,
     },
-  }
+  },
+  waypoint: {
+  },
 }
 
 export const sharedOptions = {
@@ -388,12 +386,12 @@ export const sharedOptions = {
 // sharedOptions.unit = {
 //   ...sharedOptions.goblet,
 //   ...sharedOptions.docker,
-//   ...sharedOptions.jest,
+//   ...sharedOptions.test,
 // }
 // setSharedOptions(sharedOptions)
 // Have to a single level object so all options are available to tasks
 setSharedOptions({
-  ...taskOptions.jest,
+  ...taskOptions.test,
   ...taskOptions.docker,
   ...taskOptions.goblet,
   ...taskOptions.playwright,

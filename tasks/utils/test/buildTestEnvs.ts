@@ -1,7 +1,8 @@
 import type { TEnvObject, TBrowserType } from '../../types'
 
 import { ETestType } from '../../types'
-
+import { addEnv } from '../envs/addEnv'
+import { buildReportTitle } from '@gobletqa/test-utils/reports/buildReportTitle'
 
 /**
  * Builds the envs set in the command that runs a test
@@ -12,7 +13,7 @@ import { ETestType } from '../../types'
  *
  * @return {Object} dockerCmd options object, with envs
  */
-export const buildExamTestEnvs = (
+export const buildTestEnvs = (
   browser:TBrowserType,
   env:TEnvObject={},
   context:string,
@@ -21,6 +22,15 @@ export const buildExamTestEnvs = (
 ) => {
   if(!type || !reportPath || !context) return env
 
+  // Build the output path, and page title based on the passed in context
+  // JEST_HTML_REPORTER_OUTPUT_PATH
+  addEnv(env, 'GOBLET_HTML_REPORTER_OUTPUT_PATH', reportPath)
+  addEnv(
+    env,
+    'GOBLET_HTML_REPORTER_PAGE_TITLE',
+    Boolean(type && context),
+    buildReportTitle(type, context, browser)
+  )
 
   return env
 }

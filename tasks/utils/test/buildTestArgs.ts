@@ -2,18 +2,18 @@ import type { TTaskParams } from '../../types'
 
 import path from 'path'
 import { appRoot } from '../../paths'
-import { addFlag } from '@keg-hub/cli-utils'
+import { addFlag, addParam } from '@keg-hub/cli-utils'
 import { uniqArr, noPropArr } from '@keg-hub/jsutils'
 
 /**
- * Builds the arguments that are passed to jest when the test is run
+ * Builds the arguments that are passed to test when the test is run
  * @param {Object} params - Parsed task definition options
  *                          See options section of the task definition below
- * @param {string} jestConfig - Path the a jest config file to load
+ * @param {string} testConfig - Path the a test config file to load
  */
-export const buildJestArgs = (
+export const buildTestArgs = (
   params:TTaskParams,
-  jestConfig:string,
+  testConfig:string,
   extraArgs:string[]=noPropArr
 ) => {
   const {
@@ -28,39 +28,35 @@ export const buildJestArgs = (
     testVerbose,
     testWorkers,
     testTimeout,
-    testOpenHandles,
   } = params
 
+  // node ./repos/exam/.bin/exam.js --config ../../app/repos/testUtils/src/exam/exam.config.ts --root /goblet/repos/lancetipton -t Log-In-and-Out.feature
   const cmdArgs = [
-    path.join(appRoot, `node_modules/.bin/jest`),
+    `./repos/exam/.bin/exam.js`,
     ...extraArgs,
-    `--env=node`,
     // Convert to milliseconds
-    `--testTimeout=${(parseInt(testTimeout, 10) || 30000)}`,
+    `--timeout=${(parseInt(testTimeout, 10) || 30000)}`,
   ]
 
   cmdArgs.push(addFlag(`ci`, testCI))
   cmdArgs.push(addFlag(`colors`, testColors))
   cmdArgs.push(addFlag(`verbose`, testVerbose))
-  cmdArgs.push(addFlag(`maxWorkers=${testWorkers}`, testWorkers))
+  cmdArgs.push(addParam(`workers`, testWorkers))
   // Use the inverse of because testCache default to true
   cmdArgs.push(addFlag(`no-cache`, !testCache))
-  cmdArgs.push(addFlag(`detectOpenHandles`, testOpenHandles))
-
-  cmdArgs.push(addFlag('bail', testBail))
-  cmdArgs.push(addFlag('debug', testDebug))
-  cmdArgs.push(addFlag('passWithNoTests', noTests))
-  cmdArgs.push(addFlag(`config=${jestConfig}`, jestConfig))
+  cmdArgs.push(addParam(`bail`, testBail))
+  cmdArgs.push(addFlag(`debug`, testDebug))
+  cmdArgs.push(addFlag(`passWithNoTests`, noTests))
+  cmdArgs.push(addParam(`config`, testConfig))
 
   // Only set runInBand if testWorkers not set.
   // They can not both be passed, and runInBand has a default
   // So if workers is set, then it will override runInBand and its default
-  !testWorkers && cmdArgs.push(addFlag('runInBand', testSync))
+  !testWorkers && cmdArgs.push(addFlag(`runInBand`, testSync))
 
   // If context is set use that as the only file to run
-  // Uses Jest pattern matching functionality to find the correct test to run
-  // See https://jestjs.io/docs/cli#jest-regexfortestfiles for more info
+  // Uses glob pattern matching functionality to find the correct test to run
   context && cmdArgs.push(context)
 
-  return uniqArr<string>(cmdArgs.filter(arg => arg))
+  return uniqArr<string>(cmdArgs.filter(arg => arg), undefined)
 }

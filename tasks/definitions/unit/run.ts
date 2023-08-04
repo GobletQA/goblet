@@ -3,8 +3,8 @@ import { TTask, TTaskActionArgs } from '../../types'
 import constants from '../../constants'
 import { sharedOptions } from '@keg-hub/cli-utils'
 import { runTestCmd } from '@GTasks/utils/helpers/runTestCmd'
-import { buildJestArgs } from '@GTasks/utils/jest/buildJestArgs'
-import { getJestConfig } from '@GTasks/utils/jest/getJestConfig'
+import { buildTestArgs } from '@GTasks/utils/test/buildTestArgs'
+import { getTestConfig } from '@GTasks/utils/test/getTestConfig'
 import { filterTaskEnvs } from '@GTasks/utils/envs/filterTaskEnvs'
 import { buildUnitEnvs } from '@GTasks/utils/envs/buildUnitEnvs'
 
@@ -19,14 +19,14 @@ const runUnit = async (args:TTaskActionArgs) => {
   const { params, goblet, task } = args
 
   filterTaskEnvs(params, task)
-  const jestConfig = await getJestConfig(params, testTypes.unit)
+  const testConfig = await getTestConfig(params, testTypes.unit)
 
   // Run the test command for defined browsers
   const exitCode = await runTestCmd({
     params,
     goblet,
     type: testTypes.unit,
-    cmdArgs: buildJestArgs(params, jestConfig),
+    cmdArgs: buildTestArgs(params, testConfig),
     envsHelper: (browser, reportPath) => buildUnitEnvs(
       browser,
       goblet,

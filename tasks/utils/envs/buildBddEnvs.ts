@@ -3,7 +3,7 @@ import type { TTaskParams, EBrowserType } from '../../types'
 import { addEnv } from './addEnv'
 import { ETestType } from '../../types'
 import { buildPWEnvs } from './buildPWEnvs'
-import { buildJestTestEnvs } from '../jest/buildJestTestEnvs'
+import { buildTestEnvs } from '../test/buildTestEnvs'
 
 /**
  * Builds the envs set in the command that runs a test
@@ -30,8 +30,8 @@ export const buildBddEnvs = (
   addEnv(env, 'GOBLET_TEST_RETRY', params.testRetry)
   addEnv(env, 'GOBLET_TEST_TYPE', type === 'feature' ? `bdd` : type)
 
-  // Set up html test reporting ENV for jest
-  buildJestTestEnvs(browser, env, params.context, reportPath, type)
+  // Set up html test reporting ENV for test
+  buildTestEnvs(browser, env, params.context, reportPath, type)
 
   return { env }
 }

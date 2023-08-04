@@ -4,8 +4,8 @@ import { ETestType } from '../../types'
 import { sharedOptions, Logger } from '@keg-hub/cli-utils'
 import { runTestCmd } from '@GTasks/utils/helpers/runTestCmd'
 import { buildBddEnvs } from '@GTasks/utils/envs/buildBddEnvs'
-import { buildJestArgs } from '@GTasks/utils/jest/buildJestArgs'
-import { getJestConfig } from '@GTasks/utils/jest/getJestConfig'
+import { buildTestArgs } from '@GTasks/utils/test/buildTestArgs'
+import { getTestConfig } from '@GTasks/utils/test/getTestConfig'
 import { filterTaskEnvs } from '@GTasks/utils/envs/filterTaskEnvs'
 
 
@@ -19,14 +19,14 @@ const runBdd = async (args:TTaskActionArgs) => {
     Logger.stdout(`runBdd Task Params:\n${JSON.stringify(params, null, 2)}\n`)
 
   filterTaskEnvs(params, task)
-  const jestConfig = await getJestConfig(params, ETestType.feature)
+  const testConfig = await getTestConfig(params, ETestType.feature)
 
   // Run the test command for defined browsers
   const exitCode = await runTestCmd({
     params,
     goblet,
     type: ETestType.bdd,
-    cmdArgs: buildJestArgs(params, jestConfig),
+    cmdArgs: buildTestArgs(params, testConfig),
     envsHelper: (browser, reportPath) => buildBddEnvs(browser, params, reportPath, ETestType.feature)
   })
 

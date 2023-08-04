@@ -42,7 +42,7 @@ export type TResp = Record<`exitCode`, any>
 
 
 /**
- * Builds a browser exec method inside docker via Jest
+ * Builds a browser exec method inside docker via Test
  * Runs in a child process and adds listeners for it's output
  * Allows capturing the output and formatting it as needed
  * @param {Array|string} cmdArgs - Arguments to pass to the test runner

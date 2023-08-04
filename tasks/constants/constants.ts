@@ -11,7 +11,7 @@ export type TTaskConstants = {
   testTypes: typeof TestTypes
   envFilter: typeof EnvFilter
   browserNames: typeof FullBrowserNames
-  jestConfigMap: typeof JestConfigMap
+  testConfigMap: typeof TestConfigMap
 }
 
 export type TEnvFilter = {
@@ -30,15 +30,9 @@ export const Browsers = {
   webkit: `--webkit`,
 }
 
-export const JestConfigMap = {
-  [ETestType.unit]: path.join(testUtilsDir, `src/jest/jest.unit.config.js`),
-  [ETestType.feature]: path.join(testUtilsDir, `src/jest/jest.parkin.config.js`),
-  [ETestType.waypoint]: path.join(testUtilsDir, `src/jest/jest.waypoint.config.js`),
-}
-
-export const ExamConfigMap = {
+export const TestConfigMap = {
+  [ETestType.feature]: path.join(testUtilsDir, `src/exam/exam.feature.config.ts`),
   [ETestType.unit]: path.join(testUtilsDir, `src/exam/exam.unit.config.js`),
-  [ETestType.feature]: path.join(testUtilsDir, `src/exam/exam.parkin.config.js`),
   [ETestType.waypoint]: path.join(testUtilsDir, `src/exam/exam.waypoint.config.js`),
 }
 
@@ -109,7 +103,7 @@ export const constants = deepFreeze<TTaskConstants>({
   browsers: Browsers,
   testTypes: TestTypes,
   envFilter: EnvFilter,
-  jestConfigMap: JestConfigMap,
+  testConfigMap: TestConfigMap,
   browserNames: FullBrowserNames,
 })
 
