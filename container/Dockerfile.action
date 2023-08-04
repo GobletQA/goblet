@@ -123,4 +123,8 @@ COPY --from=goblet-pruner /goblet/app/out/full/ .
 RUN ln -s /github /goblet && \
     ln -s /github/app/node_modules $HOME/.node_modules && \
     ln -s /github/app/node_modules /github/node_modules
+
+WORKDIR /github/app/repos/exam
+RUN pnpm build:cli
+
 # ---- End Stage ---- #
