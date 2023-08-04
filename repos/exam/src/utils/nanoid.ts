@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { uuid, doIt, emptyObj, isObj, isStr } from '@keg-hub/jsutils'
 
 export type TNanoidOpts = {

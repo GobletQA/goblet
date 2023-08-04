@@ -8,9 +8,8 @@ import { ExamCfg } from '@GEX/constants'
 
 type TRuns = [any, any][]
 
-const files = (amt:number, skip=0) => doIt(amt, {}, (idx:number) => (
-  `/test-file${idx + skip + 1}`
-))
+// @ts-ignore
+const files = (amt:number, skip=0) => doIt(amt, {}, (idx:number) => (`/test-file${idx + skip + 1}`))
 
 /** This is only used in when testing to ensure the CPU CORE are consistent */
 process.env.EXAM_CPU_AMOUNT = `10`
@@ -179,6 +178,7 @@ describe(`splitWork`, () => {
     const [{ chunks, title, ...cfg}, outcome] = item
     
     test(title || `Test item ${idx} - generates the correct chunks per worker`, () => {
+      // @ts-ignore
       const resp = splitWork(buildCfg(cfg), files(chunks))
 
       item[0].print || item[0].debug
