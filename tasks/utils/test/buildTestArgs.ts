@@ -3,7 +3,7 @@ import type { TTaskParams } from '../../types'
 import path from 'path'
 import { appRoot } from '../../paths'
 import { addFlag, addParam } from '@keg-hub/cli-utils'
-import { uniqArr, noPropArr } from '@keg-hub/jsutils'
+import { exists, uniqArr, noPropArr, toBool } from '@keg-hub/jsutils'
 
 /**
  * Builds the arguments that are passed to test when the test is run
@@ -17,6 +17,7 @@ export const buildTestArgs = (
   extraArgs:string[]=noPropArr
 ) => {
   const {
+    base,
     context,
     noTests,
     testCI,
@@ -31,11 +32,15 @@ export const buildTestArgs = (
   } = params
 
   // node ./repos/exam/.bin/exam.js --config ../../app/repos/testUtils/src/exam/exam.config.ts --root /goblet/repos/lancetipton -t Log-In-and-Out.feature
+
   const cmdArgs = [
-    `./repos/exam/.bin/exam.js`,
+    `node`,
+     `-r`,
+     `esbuild-register`,
+    `./repos/exam/src/bin/exam.ts`,
     ...extraArgs,
     // Convert to milliseconds
-    `--timeout=${(parseInt(testTimeout, 10) || 30000)}`,
+    `--timeout=${(parseInt(testTimeout, 10) || 20000)}`,
   ]
 
   cmdArgs.push(addFlag(`ci`, testCI))
@@ -44,10 +49,13 @@ export const buildTestArgs = (
   cmdArgs.push(addParam(`workers`, testWorkers))
   // Use the inverse of because testCache default to true
   cmdArgs.push(addFlag(`no-cache`, !testCache))
-  cmdArgs.push(addParam(`bail`, testBail))
   cmdArgs.push(addFlag(`debug`, testDebug))
   cmdArgs.push(addFlag(`passWithNoTests`, noTests))
   cmdArgs.push(addParam(`config`, testConfig))
+  cmdArgs.push(addParam(`root`, base))
+
+  exists(testBail)
+    && cmdArgs.push(addParam(`bail`, toBool(testBail)))
 
   // Only set runInBand if testWorkers not set.
   // They can not both be passed, and runInBand has a default
@@ -56,7 +64,8 @@ export const buildTestArgs = (
 
   // If context is set use that as the only file to run
   // Uses glob pattern matching functionality to find the correct test to run
-  context && cmdArgs.push(context)
+  context && cmdArgs.push(addParam(`testMatch`, context))
+  const cleaned = uniqArr<string>(cmdArgs.filter(arg => arg), undefined)
 
-  return uniqArr<string>(cmdArgs.filter(arg => arg), undefined)
+  return cleaned
 }

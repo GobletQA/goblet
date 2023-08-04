@@ -13,6 +13,7 @@ import {
   isNum,
   isBool,
   flatUnion,
+  emptyArr,
 } from '@keg-hub/jsutils'
 
 
@@ -188,7 +189,7 @@ const mergeConfig = (base:Partial<TExamCliOpts>, override:Partial<TExamCliOpts>)
     concurrency: toNum(concurrency ?? bConcurrency),
     globalTimeout: toNum(globalTimeout ?? bGlobalTimeout),
     bail: isBool(bail) ? bail : isNum(bail) ? bail : bBail,
-    extensions: flatUnion([...bExtensions, ...extensions]),
+    extensions: flatUnion([...(bExtensions||emptyArr), ...(extensions||emptyArr)]),
     ...mergeCfgArrays(base, override),
   } as TExamConfig
 

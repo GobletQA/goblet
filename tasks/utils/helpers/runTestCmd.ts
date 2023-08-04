@@ -1,3 +1,4 @@
+import type { SpawnOptionsWithoutStdio } from 'child_process'
 import type {
   ETestType,
   TEnvObject,
@@ -67,11 +68,10 @@ const buildBrowserCmd = (args:TBrowserCmd) => {
   return async () => {
     const resp = await new Promise<TResp>(async (res) => {
       const cmd = cmdArgs.shift()
-
       const exitCode = await runCmd(
         cmd,
         cmdArgs,
-        cmdOpts
+        cmdOpts as SpawnOptionsWithoutStdio
       )
 
       res({ exitCode })

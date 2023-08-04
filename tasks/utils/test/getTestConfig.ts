@@ -1,7 +1,7 @@
 import type { TTaskParams, ETestType } from '../../types'
 
 import path from 'path'
-import { fileSys } from '@keg-hub/cli-utils'
+import { exists } from '@keg-hub/jsutils'
 import { TestConfigMap } from '../../constants'
 
 /**
@@ -19,10 +19,9 @@ import { TestConfigMap } from '../../constants'
 export const getTestConfig = async ({ testConfig, base }:TTaskParams, type:ETestType) => {
   const configLoc = testConfig ? path.join(base, testConfig) : TestConfigMap[type]
 
-  // Check if the config path exists, if not throw
-  const [existsErr, fileExists] = await fileSys.pathExists(configLoc)
-  if(existsErr || !fileExists)
-    throw new Error(existsErr || `The test config path ${configLoc} does not exist`)
+  if(!exists(configLoc))
+    throw new Error(`The test config path ${configLoc} does not exist`)
+
 
   return configLoc
 }

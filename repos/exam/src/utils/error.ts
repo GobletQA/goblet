@@ -3,7 +3,7 @@ import { Logger } from "@GEX/utils/logger"
 import { isArr, isStr } from "@keg-hub/jsutils"
 import { ExamErrTag, WkrPoolErrTag } from "@GEX/constants/tags"
 
-Error.stackTraceLimit = Infinity
+Error.stackTraceLimit = 20
 
 const addErrTag = (msg:string) => {
   return msg.trim().startsWith(ExamErrTag) ? msg : `${ExamErrTag} ${msg}`
@@ -28,7 +28,6 @@ const buildMsg = (errors:Error[]) => {
       return `${error.name}: ${error.message}`
   }).join('\n')
 }
-
 
 class BaseError extends Error {
   constructor(msg:string, err?:Error, replaceStack:boolean=true){
@@ -184,7 +183,7 @@ export class PipelineErr extends BaseError {
 
       let msg = `\n${this.message}\n`
       this.cause && (msg += `${this.cause}\n\n`)
-      process.stdout.write(msg)
+      // process.stdout.write(msg)
     }
   }
 }

@@ -148,7 +148,6 @@ const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
     }
     catch(err){
       console.log(`Error loading data ${type || 'in loopLoadArray'}...`)
-      console.log(err.message)
       console.log(err.stack)
     }
   }

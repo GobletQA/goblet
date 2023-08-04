@@ -18,6 +18,7 @@ export const buildPassThrough = (config:TExamConfig) => {
     },
     runner: {
       ...RunnerCfg,
+      bail: config.bail ?? RunnerCfg.bail,
       debug: config.debug ?? RunnerCfg.debug,
       verbose: config.verbose ?? RunnerCfg.verbose,
       timeout: isNum(config.timeout) ? config.timeout : RunnerCfg.timeout,

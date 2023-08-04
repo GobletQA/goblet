@@ -57,9 +57,10 @@ const taskOptions = {
       description: `Run all tests sequentially`,
     },
     testBail: {
-      default: false,
       type: `boolean`,
+      alias: [`bail`],
       example: `--testBail`,
+      env: `GOBLET_TEST_BAIL`,
       description: `Stops all tests once a single step fails`,
     },
     testConfig: {
@@ -69,10 +70,10 @@ const taskOptions = {
     },
     testTimeout: {
       type: `number`,
-      default: 30000, // 30 seconds
+      default: 10000, // 10 seconds
       env: `GOBLET_TEST_TIMEOUT`,
-      example: `--timeout 30000`,
-      description: `Test timeout in seconds. Defaults to 30000 milliseconds (30 seconds).`,
+      example: `--timeout 10000`,
+      description: `Test timeout in seconds. Defaults to 10000 milliseconds (10 seconds).`,
     },
     testDebug: {
       default: false,
@@ -239,8 +240,8 @@ const taskOptions = {
       example: `--webkit`,
     },
     headless: {
-      type: 'bool',
-      alias: ['hl'],
+      type: `bool`,
+      alias: [`hl`],
       default: true,
       env: `GOBLET_HEADLESS`,
       example: `--no-headless`,
@@ -255,9 +256,9 @@ const taskOptions = {
     },
     browserTimeout: {
       type: `number`,
-      default: 30000, // 30 seconds
+      default: 10000, // 10 seconds
       env: `GOBLET_BROWSER_TIMEOUT`,
-      example: `--browserTimeout 30000`, // 30 seconds
+      example: `--browserTimeout 10000`, // 10 seconds
       description: `Amount of time until a browser request will timeout should be less the timeout option`,
     },
     devices: {

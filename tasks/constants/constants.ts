@@ -32,6 +32,7 @@ export const Browsers = {
 
 export const TestConfigMap = {
   [ETestType.feature]: path.join(testUtilsDir, `src/exam/exam.feature.config.ts`),
+
   [ETestType.unit]: path.join(testUtilsDir, `src/exam/exam.unit.config.js`),
   [ETestType.waypoint]: path.join(testUtilsDir, `src/exam/exam.waypoint.config.js`),
 }

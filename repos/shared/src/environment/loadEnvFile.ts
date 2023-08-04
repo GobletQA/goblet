@@ -97,7 +97,13 @@ export const loadEnvFile = ({
     console.log(config)
     return {}
   }
+  try {
+    return latent.secrets.get({ token, location: loc })
+  }
+  catch(err){
+    console.log(err.message)
 
-  return latent.secrets.get({ token, location: loc })
+    return {}
+  }
 
 }

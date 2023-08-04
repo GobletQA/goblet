@@ -1,32 +1,24 @@
 import "./init"
 import "@GEX/utils/logger"
-import { ife, isArr } from '@keg-hub/jsutils'
+import type { TExamCliOpts } from "@GEX/types"
+
+import { removeEmpty } from './helpers'
 import { getConfig } from './getConfig'
 import { initLocal } from './initLocal'
 import { updateCLIEnvs } from './helpers'
 import { initWorkers } from './initWorkers'
 import { printDebugResults } from '@GEX/debug'
-import { removeEmpty, parseArgs } from './helpers'
 
-
-ife(async () => {
-
-  const opts = await parseArgs()
+export const exam = async (opts:TExamCliOpts) => {
   const config = await getConfig(opts)
   const exam = removeEmpty(config)
 
   updateCLIEnvs(exam, opts)
 
-  const [results, time] = exam?.runInBand
+  const [result, time] = exam?.runInBand
     ? await initLocal(exam, opts)
     : await initWorkers(exam, opts)
 
-  printDebugResults(results, time)
+  printDebugResults(result, time)
 
-  if(!isArr(results)) process.exit(1)
-
-  results?.length
-    ? results.forEach(result => result.failed && process.exit(1))
-    : !exam.passWithNoTests && process.exit(1)
-
-})
+}

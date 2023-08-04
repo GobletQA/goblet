@@ -219,7 +219,6 @@ export const options = {
    * Exit the test suite immediately upon n number of failing test suite. Defaults to 1
    */
   bail:{
-    default: 0,
     description: `Exit the test suite immediately upon n number of failing test suite`,
   },
 

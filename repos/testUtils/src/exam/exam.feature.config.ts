@@ -1,7 +1,7 @@
-import ExamConfig from './exam.config'
+import { default as ExamConfig } from './exam.config'
 
 const FeatureExamConfig = () => {
-  return { ...ExamConfig }
+  return ExamConfig()
 }
 
 
