@@ -4,15 +4,11 @@ import type {
   TBrowserEvents,
   TBrowserEventCB,
   TOnAutomateEvent,
-  TBrowserEventArgs,
 } from '@GSC/types'
 
-import { Events } from './events'
+import { Automate } from '../automate'
 import { EBrowserEvent } from '@GSC/types'
 import { ensureArr } from '@keg-hub/jsutils'
-import { Automate } from '@GSC/libs/playwright/automate/automate'
-import { startBrowser } from '@GSC/libs/playwright/browser/browser'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 type ListenerList = Record<EBrowserEvent, BrowserEvents>
 
@@ -121,16 +117,5 @@ export class BrowserEvents {
     BrowserEvents.onPageClose(page)
     BrowserEvents.listeners[name] = this
   }
-
-}
-
-export const browserEvents = async (args:TBrowserEventArgs) => {
-  const pwComponents = args.pwComponents
-    || await startBrowser({ browserConf: joinBrowserConf(args.browserConf) })
-
-  const { Automate, ...browserEvts } = Events(args)
-
-  BrowserEvents.automateEvent(pwComponents, Automate)
-  BrowserEvents.registerEvents(browserEvts, pwComponents.page)
 
 }

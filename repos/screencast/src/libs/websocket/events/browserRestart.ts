@@ -1,7 +1,7 @@
 import type { Express } from 'express'
 import type { TSocketEvtCBProps } from '@GSC/types'
 
-import { restartContext } from '@GSC/libs/playwright/browser/restartContext'
+import { restartContext } from '@GSC/utils/restartContext'
 
 export const browserRestart = (app:Express) => {
   return async (props:TSocketEvtCBProps) => {

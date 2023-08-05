@@ -3,7 +3,7 @@ import type { Express } from 'express'
 // Exported from screencast/src/types
 import type { TRepo } from './workflows.types'
 import type { TFileModel } from './models.types'
-import type { Automate } from '@gobletqa/screencast'
+import type { Automate } from '@gobletqa/browser'
 import type { TSocketEvtCBProps } from './socket.types'
 import type { TAutomateEvent } from './pwAutomate.types'
 import type { TParkinRunStepOptsMap } from '@ltipton/parkin'

@@ -1,7 +1,7 @@
 import type { Express } from 'express'
 import type { TSocketEvtCBProps } from '@GSC/types'
 
-import { browserEvents } from '@GSC/libs/playwright/browser/browserEvents'
+import { browserEvents } from '@GSC/utils/browserEvents'
 
 export const connection = (app:Express) => {
   return (props:TSocketEvtCBProps) => {

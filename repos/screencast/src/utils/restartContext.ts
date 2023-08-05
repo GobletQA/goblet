@@ -7,15 +7,16 @@ import type {
   TBrowserPage
 } from '@GSC/types'
 
-import { GobletQAUrl } from '@gobletqa/shared/constants/playwright'
+import {deepMerge, emptyObj, get} from '@keg-hub/jsutils'
+import { browserEvents } from '@GSC/utils/browserEvents'
 import { SocketManager } from '@GSC/libs/websocket/manager/manager'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { browserEvents } from '@GSC/libs/playwright/browser/browserEvents'
+
 import {
+  GobletQAUrl,
   startBrowser,
   getPWComponents,
-} from '@GSC/libs/playwright/browser/browser'
-import {deepMerge, emptyObj, get} from '@keg-hub/jsutils'
+} from '@gobletqa/browser'
 
 type TRestartWId = {
   socket?:never
@@ -85,9 +86,9 @@ const getSocket = (props:TRestartContext) => {
 }
 
 export const restartContext = async (props:TRestartContext) => {
-
+  // TODO: need to get the gobletConfig and pass it in here
   const browserConf = joinBrowserConf(props.browser)
-  const { context, page } = await getPWComponents(browserConf)
+  const { context, page } = await getPWComponents({ browserConf })
 
   const url = getPageUrl(props, page)
   const extraCtxOpts = await getCtxOptions(props, browserConf, context)
@@ -100,7 +101,7 @@ export const restartContext = async (props:TRestartContext) => {
     overrides: { context: extraCtxOpts },
   })
 
-  const pwComponents = await getPWComponents(browserConf)
+  const pwComponents = await getPWComponents({ browserConf })
   global.context = pwComponents.context
 
   browserEvents({

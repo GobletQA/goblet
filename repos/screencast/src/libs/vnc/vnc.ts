@@ -3,7 +3,7 @@ import type { TProc, TChildProcArgs } from '@GSC/types'
 
 import { exec } from 'child_process'
 import { Logger } from '@GSC/utils/logger'
-import { findProc, killProc }from '@GSC/libs/proc'
+import { findProc, killProc } from '@gobletqa/shared/libs/proc'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
 import {
