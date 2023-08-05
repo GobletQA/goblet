@@ -37,7 +37,6 @@
     "@gobletqa/exam": "workspace:../exam",
     "@gobletqa/environment": "workspace:../environment",
     "@goblet/browser": "workspace:../browser",
-    "@gobletqa/screencast": "workspace:../screencast",
     "@gobletqa/shared": "workspace:../shared",
     "@gobletqa/workflows": "workspace:../workflows",
     "@keg-hub/jsutils": ">=9.6.1",

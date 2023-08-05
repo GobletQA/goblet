@@ -25,9 +25,9 @@ import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
 import { getParkinTestInit, getParkinSupport, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
 
+import { taskEnvToBrowserOpts } from '@gobletqa/browser'
 import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
-import { taskEnvToBrowserOpts } from '@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts'
 
 const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
 const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')

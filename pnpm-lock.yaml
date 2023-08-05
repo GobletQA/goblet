@@ -688,6 +688,9 @@ importers:
       '@gobletqa/shared':
         specifier: workspace:../shared
         version: link:../shared
+      '@gobletqa/test-utils':
+        specifier: workspace:../testUtils
+        version: link:../testUtils
       '@keg-hub/jsutils':
         specifier: '>=9.6.1'
         version: 9.6.1
@@ -858,9 +861,6 @@ importers:
       '@gobletqa/exam':
         specifier: workspace:../exam
         version: link:../exam
-      '@gobletqa/screencast':
-        specifier: workspace:../screencast
-        version: link:../screencast
       '@gobletqa/shared':
         specifier: workspace:../shared
         version: link:../shared
