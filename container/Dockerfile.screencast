@@ -37,10 +37,8 @@ RUN <<EOF
   pnpm json:rm
 
 EOF
-# The test-utils repo has a dependecy on the screencast repo
-# So by pruning the test-utils repo, we get the screencast repo
-# Plus all other code needed to execute tests
-RUN turbo prune --docker --scope=@gobletqa/test-utils
+
+RUN turbo prune --docker --scope=@gobletqa/screencast
 RUN <<EOF
   set -eux;
   cp .nvmrc out/json/.nvmrc
