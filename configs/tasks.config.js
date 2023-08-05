@@ -107,7 +107,9 @@ module.exports = {
           '!/repos/screencast',
           '!/repos/shared',
           '!/repos/workflows',
+          '!/repos/browser',
           // Ignore the dist folders so local bundles are not synced
+          '/repos/browser/dist',
           '/repos/exam/dist',
           '/repos/latent/dist',
           '/repos/screencast/dist',
@@ -140,6 +142,7 @@ module.exports = {
         excludePaths: [
           '**',
           '!/repos/backend',
+          '!/repos/browser',
           '!/repos/conductor',
           '!/repos/exam',
           '!/repos/latent',
@@ -148,6 +151,7 @@ module.exports = {
           '!/repos/workflows',
           // Ignore the dist folders so local bundles are not synced
           '/repos/backend/dist',
+          '/repos/browser/dist',
           '/repos/conductor/dist',
           '/repos/exam/dist',
           '/repos/latent/dist',
@@ -215,7 +219,10 @@ module.exports = {
           'goblet',
           'repos/scripts',
           'repos/backend',
+          'repos/browser',
           'repos/conductor',
+          'repos/exam',
+          'repos/latent',
           'repos/screencast',
         ]
       },
@@ -254,6 +261,7 @@ module.exports = {
       sync: {
         excludePaths: [
           '**',
+          '!/repos/browser',
           '!/repos/exam',
           '!/repos/latent',
           '!/repos/screencast',
@@ -262,6 +270,7 @@ module.exports = {
           '!/repos/workflows',
           '!/tasks',
           // Ignore the dist folders so local bundles are not synced
+          '/repos/browser/dist',
           '/repos/screencast/dist',
           '/repos/exam/dist',
           '/repos/shared/dist',

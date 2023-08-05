@@ -2,6 +2,7 @@ import type { Repo } from './workflows.types'
 import type { TRepoPaths } from './repo.types'
 import type { TLogLevel } from './helpers.types'
 import type { TGFileTypes } from './files.types'
+import type { TBrowserConf, TBrowserContextOpts } from './pw.types'
 
 import type { TRecorderOpts, TGScreencastConfig } from './screencast.types'
 
@@ -40,6 +41,11 @@ export type TServerConfig = {
   logLevel: TLogLevel
 }
 
+export type TGobletPWConfig = {
+  browser?: TBrowserConf
+  context?: TBrowserContextOpts
+}
+
 export type TDefGobletConfig = {
   $merge?: string[],
   paths: TRepoPaths
@@ -47,6 +53,7 @@ export type TDefGobletConfig = {
   recorder: TRecorderOpts
   internalPaths: TInternalPaths
   screencast: TGScreencastConfig
+  playwright?:TGobletPWConfig
 }
 
 export type TGobletConfig = Repo | TDefGobletConfig

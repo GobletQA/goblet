@@ -2,6 +2,7 @@ const path = require('path')
 
 const subRepos = [
   `repos/backend`,
+  `repos/browser`,
   `repos/components`,
   `repos/conductor`,
   `repos/screencast`,

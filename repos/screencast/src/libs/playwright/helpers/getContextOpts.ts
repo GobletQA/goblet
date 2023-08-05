@@ -2,7 +2,7 @@ import type { TBrowserContextOpts, TGobletConfig } from '@GSC/types'
 import type playwright from 'playwright'
 
 import { noOpObj, deepMerge } from '@keg-hub/jsutils'
-import { checkVncEnv } from '../../utils/vncActiveEnv'
+import { checkVncEnv } from '@gobletqa/shared/utils/vncActiveEnv'
 import { taskEnvToContextOpts } from '../../utils/taskEnvToContextOpts'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 

@@ -40,6 +40,8 @@ goblet_screencast(){
     exec supervisord -c configs/supervisord.local.conf >> /proc/1/fd/1 &
   fi
 
+  pnpm sc:start >> /proc/1/fd/1 &
+
 }
 
 goblet_backend(){
@@ -56,10 +58,15 @@ if [ "$GB_SUB_REPO" ]; then
 
   # Handle repo specific tasks as needed
   [ "$GB_SUB_REPO" == "backend" ] && goblet_backend
-  [ "$GB_SUB_REPO" == "screencast" ] && goblet_screencast
 
-  cd /goblet/app/repos/$GB_SUB_REPO
-  pnpm start >> /proc/1/fd/1 &
+  if [ "$GB_SUB_REPO" == "screencast" ]; then
+    goblet_screencast
+
+  else
+    cd /goblet/app/repos/$GB_SUB_REPO
+    pnpm start >> /proc/1/fd/1 &
+  fi
+
   # Tail /dev/null to keep the container running
   tail -f /dev/null && exit 0;
 else

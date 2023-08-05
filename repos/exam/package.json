@@ -11,7 +11,7 @@
     "exam": ".bin/exam.js"
   },
   "files": [
-    "build",
+    "dist",
     "test.js",
     "index.js",
     "index.cjs",

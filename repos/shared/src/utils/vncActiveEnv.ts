@@ -1,7 +1,8 @@
-import { Logger } from '@GSC/utils/logger'
 import { exists, toBool } from '@keg-hub/jsutils/node'
 import { inDocker } from '@keg-hub/jsutils/src/node/inDocker'
 
+// TODO: fix this - inDocker is no longer working due to recent updates
+// Can no longer depend on it
 const isDocker = inDocker()
 const isKube = isDocker && exists(process.env.KUBERNETES_SERVICE_HOST)
 
@@ -32,10 +33,6 @@ export const setVncENV = (vncActive:boolean) => {
   vncActive
     ? envUpdates(`GB_VNC_ACTIVE`, `GB_PW_SOCKET_ACTIVE`)
     : envUpdates(`GB_PW_SOCKET_ACTIVE`, `GB_VNC_ACTIVE`)
-
-  vncActive
-    ? Logger.highlight(`Using`, `VNC in Docker`, `for browser automation`)
-    : Logger.info(`Using`, `Host Machine`, `for browser automation`)
 
   return vncActive
 }

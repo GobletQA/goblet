@@ -3,7 +3,7 @@ import type {
   TBrowserConf,
 } from '@GSC/types'
 
-import { checkVncEnv } from '../../utils/vncActiveEnv'
+import { checkVncEnv } from '@gobletqa/shared'
 import { getBrowserType } from '../helpers/getBrowserType'
 import { getContextOpts } from '../helpers/getContextOpts'
 import { toBool, noOpObj, deepMerge } from '@keg-hub/jsutils'

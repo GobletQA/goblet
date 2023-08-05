@@ -76,7 +76,7 @@ const esmBuild = async () => {
         `**/__tests__/**/*.{${exts}}`,
         `**/__mocks__/**/*.{${exts}}`,
         /** Ignore past build folder */
-        `**/build/**/*.{${exts}}`,
+        `**/dist/**/*.{${exts}}`,
         /** Don't include configs */
         `**/configs/**/*.{${exts}}`,
         /** For now ignore waypoint, this may be added down the road */

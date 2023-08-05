@@ -1,4 +1,5 @@
 export * from './isCI'
 export * from './promiseAbort'
+export * from './vncActiveEnv'
 export * from './definitionsByType'
 export * from './fileModelArrayToObj'

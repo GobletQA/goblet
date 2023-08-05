@@ -53,6 +53,17 @@
       "@GEX": ["repos/exam/src"],
       "@GEX/*": ["repos/exam/src/*"],
 
+      "@GBR/constants": ["repos/browser/src/constants"],
+      "@GBR/constants/*": ["repos/browser/src/constants/*"],
+      "@GBR/scripts": ["repos/browser/scripts"],
+      "@GBR/scripts/*": ["repos/browser/scripts/*"],
+      "@GBR/types": ["repos/browser/src/types"],
+      "@GBR/types/*": ["repos/browser/src/types/*"],
+      "@GBR/utils": ["repos/browser/src/utils"],
+      "@GBR/utils/*": ["repos/browser/src/utils/*"],
+      "@GBR": ["repos/browser/src"],
+      "@GBR/*": ["repos/browser/src/*"],
+
       "@GLT/templates": ["repos/latent/src/templates"],
       "@GLT/libs": ["repos/latent/src/libs"],
       "@GLT/libs/*": ["repos/latent/src/libs/*"],

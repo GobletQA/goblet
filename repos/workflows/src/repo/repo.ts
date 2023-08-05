@@ -16,6 +16,7 @@ import type {
   TRepoMountStatus,
   TGScreencastConfig,
   TRepoFromWorkflow,
+  TGobletPWConfig,
 } from '@GWF/types'
 
 import { getWorld } from './world'
@@ -227,6 +228,7 @@ export class Repo {
   fileTypes:TFileTypes
   recorder: TRecorderOpts
   screencast?:TGScreencastConfig
+  playwright?:TGobletPWConfig={}
 
   // Temporary - this should be remove
   internalPaths:TInternalPaths

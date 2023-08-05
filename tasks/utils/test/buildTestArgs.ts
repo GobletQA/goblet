@@ -37,6 +37,7 @@ export const buildTestArgs = (
     `node`,
      `-r`,
      `esbuild-register`,
+    //  `./repos/exam/.bin/exam.js`,
     `./repos/exam/src/bin/exam.ts`,
     ...extraArgs,
     // Convert to milliseconds
