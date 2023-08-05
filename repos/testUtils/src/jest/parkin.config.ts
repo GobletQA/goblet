@@ -5,12 +5,14 @@ import { jestConfig } from './jest.default.config'
 
 import path from 'path'
 import { globSync } from 'glob'
-import { uniqArr, noOpObj, flatUnion, ensureArr } from '@keg-hub/jsutils'
+import { uniqArr, flatUnion, ensureArr } from '@keg-hub/jsutils'
 import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
-import { taskEnvToBrowserOpts } from '@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts'
-import { getContextOpts } from '@gobletqa/screencast/libs/playwright/helpers/getContextOpts'
+import {
+  getContextOpts,
+  taskEnvToBrowserOpts
+} from '@gobletqa/browser'
 
 const exts = [
   `js`,
@@ -85,7 +87,7 @@ export const parkinConfig =  async () => {
   const { devices, ...browserOpts } = taskEnvToBrowserOpts(config)
   const browserConf = browserOpts as TBrowserConf
   const gobletOpts = buildTestGobletOpts(config, browserConf)
-  const contextOpts = getContextOpts(noOpObj, config)
+  const contextOpts = getContextOpts({ config })
 
   const { testUtilsDir, reportsTempDir } = config.internalPaths
   const reportOutputPath = path.join(reportsTempDir, `${browserConf.type}-html-report.html`)

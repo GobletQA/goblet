@@ -12,11 +12,10 @@ import type {
 import path from 'path'
 import { runCmd } from '@keg-hub/cli-utils'
 import { noPropArr, toBool } from '@keg-hub/jsutils'
-import { ARTIFACT_SAVE_OPTS } from '@gobletqa/shared/constants'
 import { runCommands } from '@GTasks/utils/helpers/runCommands'
 import { handleTestExit } from '@GTasks/utils/helpers/handleTestExit'
+import { shouldSaveArtifact, ArtifactSaveOpts } from '@gobletqa/browser'
 import { buildReportPath } from '@gobletqa/test-utils/reports/buildReportPath'
-import { shouldSaveArtifact } from '@gobletqa/shared/utils/artifactSaveOption'
 import { clearTestMetaDirs } from '@gobletqa/test-utils/utils/clearTestMetaDirs'
 import { appendToLatest, commitTestMeta } from '@gobletqa/test-utils/testMeta/testMeta'
 import { copyArtifactToRepo } from '@gobletqa/test-utils/playwright/generatedArtifacts'
@@ -78,8 +77,8 @@ const buildBrowserCmd = (args:TBrowserCmd) => {
     })
 
     const testStatus = resp.exitCode
-      ? ARTIFACT_SAVE_OPTS.failed
-      : ARTIFACT_SAVE_OPTS.passed
+      ? ArtifactSaveOpts.failed
+      : ArtifactSaveOpts.passed
 
     await appendToLatest(`${type}.browsers.${browser}`, {
       name: browser,
@@ -133,7 +132,7 @@ export const runTestCmd = async (args:TRunTestCmd) => {
   toBool(process.env.LOCAL_DEV) && clearTestMetaDirs()
 
   let reportPaths = []
-  const { getBrowsers } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowsers')
+  const { getBrowsers } = require('@gobletqa/browser')
   
   const browsers = getBrowsers(params as unknown as TGetBrowsers)
 

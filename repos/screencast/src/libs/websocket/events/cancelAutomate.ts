@@ -1,8 +1,9 @@
 import type { Express } from 'express'
-import { Logger } from '@GSC/utils/logger'
 import type { TSocketEvtCBProps } from '@GSC/types'
-import { Automate } from '@GSC/libs/playwright/automate/automate'
-import { getPWComponents } from '@GSC/libs/playwright/browser/browser'
+
+import { Logger } from '@GSC/utils/logger'
+import { getPWComponents, Automate } from '@gobletqa/browser'
+import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 
 export const cancelAutomate = (app:Express) => {
@@ -16,7 +17,8 @@ export const cancelAutomate = (app:Express) => {
       await player.cancel()
     }
     else {
-      const pwComponents = await getPWComponents(data.browser)
+      const browserConf = joinBrowserConf(data.browser)
+      const pwComponents = await getPWComponents({ browserConf })
       await Automate.cancel(pwComponents, data)
     }
   }

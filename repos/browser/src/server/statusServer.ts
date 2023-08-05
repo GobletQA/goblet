@@ -1,15 +1,8 @@
 import type { EBrowserName, TBrowserProcs } from '@GBR/types'
 
-// TODO FIX THIS
-// import { findProc } from '../../proc/findProc'
-
-import { limbo, exists } from '@keg-hub/jsutils'
 import { browserNames } from '@GBR/constants'
-
-// TODO FIX THIS
-const findProc = async (name:string) => {
-  return `Unknown`
-}
+import { limbo, exists } from '@keg-hub/jsutils'
+import { findProc } from '@gobletqa/shared/libs/proc'
 
 /**
  * Gets the current running status of browser server the process

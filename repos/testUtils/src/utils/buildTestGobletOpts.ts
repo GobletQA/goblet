@@ -8,13 +8,13 @@ import type {
 
 import path from 'path'
 import { exists, toBool } from '@keg-hub/jsutils'
-import { ARTIFACT_TYPES } from '@gobletqa/shared/constants'
-import { canRecordVideo } from '@gobletqa/shared/constants/playwright'
 import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
 import {
+  CanRecordVideo,
   artifactSaveActive,
   artifactSaveOption,
-} from '@gobletqa/shared/utils/artifactSaveOption'
+  BrowserArtifactTypes,
+} from '@gobletqa/browser'
 
 /**
  * Builds the repo paths to artifacts generated at test run
@@ -24,7 +24,7 @@ const buildArtifactsPaths = (
   options
 ) => {
   const { artifactsDir } = config.paths
-  ARTIFACT_TYPES.map(type => {
+  BrowserArtifactTypes.map(type => {
     // Check for a custom location set as an ENV
     // If set, use that env, otherwise use the relative path from the config artifactsDir
     const baseDir = process.env[`GOBLET_${type.toUpperCase()}_DIR`] || artifactsDir
@@ -68,7 +68,7 @@ export const buildTestGobletOpts = (
     saveReport: artifactSaveOption(GOBLET_TEST_REPORT),
     // Only chromium can record video so only turn it on for that browser
     // Should be able to record on others, but not currently working
-    saveVideo: canRecordVideo.includes(browserOpts.type as EBrowserName) &&
+    saveVideo: CanRecordVideo.includes(browserOpts.type as EBrowserName) &&
       artifactSaveOption(GOBLET_TEST_VIDEO_RECORD),
     ...(GOBLET_TEST_TIMEOUT && { timeout: parseInt(GOBLET_TEST_TIMEOUT, 10) || 30000 }),
     ...(exists(GOBLET_TEST_RETRY) && { retry: parseInt(GOBLET_TEST_RETRY, 10) || 1 }),

@@ -4,7 +4,7 @@
  * This is not currently being used, so commenting out for now
  * It may be possible to come up with a solution to do this down the road, so keeping it around for now
  */
-// import { setBrowserDefaults } from '@gobletqa/screencast/libs/playwright/browser/setBrowserDefaults'
+
 // import { getContext, closeContext, getPage } from './browserContext'
 // export const restartContext = async (ctx:TStepCtx) => {
 //   const { world } = ctx
@@ -24,9 +24,12 @@
 
 //   const context = await getContext()
 //   const page = await getPage()
+
+
+// import { setBrowserDefaults } from '@gobletqa/repo'
 //   setBrowserDefaults({
 //     url,
-//     repo: { world },
+//     config: { world },
 //     browserConf: global.browser.__goblet,
 //     pwComponents: { context, page } as TPWComponents
 //   })

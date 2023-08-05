@@ -1,6 +1,6 @@
 import type { Express } from 'express'
+import { startBrowser } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { startBrowser } from '@GSC/libs/playwright/browser/browser'
 
 /**
  * Helper to pre-warm the browser on server start

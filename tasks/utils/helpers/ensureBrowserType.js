@@ -1,5 +1,5 @@
 const { exists } = require('@keg-hub/jsutils')
-const { FullBrowserNames } = require('@gobletqa/shared/constants')
+const { FullBrowserNames } = require('@gobletqa/browser')
 
 /**
  * Ensures the browser type is supported
@@ -8,7 +8,7 @@ const { FullBrowserNames } = require('@gobletqa/shared/constants')
  * @param {string} browser - Name of the browser to be started
  * @param {Array} allowed - List of allowed browsers
  *
- * @returns {void}
+ * @returns {any}
  */
 const ensureBrowserType = (browser, allowed = FullBrowserNames) => {
   if (exists(browser) && !allowed.includes(browser))

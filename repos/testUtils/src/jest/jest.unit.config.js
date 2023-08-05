@@ -5,14 +5,16 @@
 const { jestConfig } = require('./jest.default.config')
 
 const path = require('path')
-const { noOpObj } = require('@keg-hub/jsutils')
 const { checkVncEnv } = require('@gobletqa/shared/utils/vncActiveEnv')
 const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
 const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
 const { buildTestGobletOpts } = require('@GTU/Utils/buildTestGobletOpts')
-const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
-const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowserOpts')
-const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
+const {
+  metadata,
+  getBrowserOpts,
+  getContextOpts,
+  taskEnvToBrowserOpts
+} = require('@gobletqa/browser')
 
 
 
@@ -27,8 +29,9 @@ const inDocker = () => true
  * @returns {Object} - Built browser options
  */
 const buildLaunchOpts = async (config, taskOpts, optsKey) => {
+  metadata.config = config
   const { vncActive, socketActive } = checkVncEnv()
-  const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
+
   const { endpoint, browserConf } = await metadata.read(taskOpts.type)
 
   /**
@@ -82,7 +85,7 @@ module.exports = async () => {
   const launchOpts = await buildLaunchOpts(config, taskOpts, optsKey)
   const browserOpts = launchOpts[optsKey]
   const gobletOpts = buildTestGobletOpts(config, browserOpts)
-  const contextOpts = getContextOpts(noOpObj, config)
+  const contextOpts = getContextOpts({ config })
 
   const { testUtilsDir, reportsTempDir } = config.internalPaths
   const reportOutputPath = path.join(reportsTempDir, `${browserOpts.type}-html-report.html`)

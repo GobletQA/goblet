@@ -1,7 +1,7 @@
 import type { EBrowserType } from '@GSC/types'
 import type { Response, Request, RequestHandler } from 'express'
 
-import { closeBrowser } from '@GSC/libs/playwright/browser/browser'
+import { closeBrowser } from '@gobletqa/browser'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'

@@ -3,7 +3,8 @@ import type { TBrowserConf, SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
 import { get, noOpObj } from '@keg-hub/jsutils'
-import { startBrowser } from '@GSC/libs/playwright/browser/browser'
+import { startBrowser } from '@gobletqa/browser'
+import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 let prevStatus
 let watchInterval:ReturnType<typeof setTimeout>
@@ -26,7 +27,8 @@ const getStatusUpdate = async (
   Mgr:SocketManager
 ) => {
   
-  const status = await startBrowser({ browserConf })
+  // TODO: Need to load the gobletConfig and pass it in here
+  const status = await startBrowser({ browserConf: joinBrowserConf(browserConf) })
   // If no status chance, don't update the backend
   if (prevStatus === status?.status) return
 

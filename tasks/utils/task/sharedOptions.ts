@@ -1,7 +1,7 @@
 import { setSharedOptions } from '@keg-hub/cli-utils'
-import { ARTIFACT_SAVE_OPTS } from '@gobletqa/shared/constants'
+import { ArtifactSaveOpts } from '@gobletqa/browser'
 
-const artifactSaveOpts = Object(ARTIFACT_SAVE_OPTS).values
+const artifactSaveOpts = Object(ArtifactSaveOpts).values
 
 const dynamicOpts = {
   version: (type=`<cmd>`, action=`<action>`) => ({

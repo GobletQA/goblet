@@ -6,21 +6,6 @@ import { deepFreeze } from '@keg-hub/jsutils/src/node'
 // All overrides should be saved in this folder
 export const DefinitionOverrideFolder = `overrides`
 
-export const ARTIFACT_TYPES = deepFreeze([
-  `traces`,
-  `videos`,
-  `snapshots`,
-  `downloads`
-])
-
-export const ARTIFACT_SAVE_OPTS = deepFreeze({
-  true: true,
-  false: false,
-  always: `always`,
-  failed: `failed`,
-  never: `never`,
-})
-
 export const DefWorld:TWorldConfig = deepFreeze({
   app: {},
   data: {},

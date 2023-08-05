@@ -84,6 +84,7 @@ module.exports = {
         containerPath: `/goblet/app`,
         excludePaths: [
           '.*',
+          '!/tsconfig.json',
           '!/configs',
           '!/container',
           'node_modules',
@@ -102,6 +103,7 @@ module.exports = {
       sync: {
         excludePaths: [
           '**',
+          '!/tsconfig.json',
           '!/repos/exam',
           '!/repos/latent',
           '!/repos/screencast',
@@ -141,6 +143,7 @@ module.exports = {
       sync: {
         excludePaths: [
           '**',
+          '!/tsconfig.json',
           '!/repos/backend',
           '!/repos/browser',
           '!/repos/conductor',
@@ -261,6 +264,7 @@ module.exports = {
       sync: {
         excludePaths: [
           '**',
+          '!/tsconfig.json',
           '!/repos/browser',
           '!/repos/exam',
           '!/repos/latent',

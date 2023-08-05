@@ -1,7 +1,6 @@
 import { EBrowserName } from '@GBR/types'
 import {deepFreeze, keyMap} from '@keg-hub/jsutils'
 
-export const canRecordVideo = [EBrowserName.chromium]
 export const ChildBrowserServerKey = `child-playwright-server`
 export const GobletQAUrl = process.env.GB_GOBLET_URL || `https://www.gobletqa.com`
 export const browserStatus = keyMap([`stopped`, `running`, `starting`, `unknown`])
@@ -25,18 +24,18 @@ export const PWEventErrorLogFilter = [
   `================`
 ]
 
-export const defaultBrowser = EBrowserName.chromium
+export const DefaultBrowser = EBrowserName.chromium
+export const CanRecordVideo = [EBrowserName.chromium]
 
-
-export const browserNames = deepFreeze<EBrowserName[]>([
+export const BrowserNames = deepFreeze<EBrowserName[]>([
   EBrowserName.chromium,
   EBrowserName.firefox,
   EBrowserName.webkit,
 ])
-export const FullBrowserNames:EBrowserName[] = Object.values(browserNames)
+export const FullBrowserNames:EBrowserName[] = Object.values(BrowserNames)
 
 // Browser names and shortcuts to the the real browser names
-export const browserMap = {
+export const BrowserMap = {
   ff: EBrowserName.firefox,
   fox: EBrowserName.firefox,
   firefox: EBrowserName.firefox,

@@ -6,10 +6,9 @@ import type {
   TSocketEvtCBProps,
 } from '@GSC/types'
 
-import { Automate } from '@GSC/libs/playwright/automate/automate'
-import { startBrowser } from '@GSC/libs/playwright/browser/browser'
-import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import { startBrowser, Automate } from '@gobletqa/browser'
 import { ExpressionKinds } from '@gobletqa/shared/constants'
+import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 const onBrowserAutomate = async (
   data:TUserAutomateOpts,

@@ -1,12 +1,9 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
-import {
-  getContext,
-  defaultCookieFile,
-  saveContextCookie
-} from '@GTU/Playwright'
 import {isStr} from '@keg-hub/jsutils'
+import { getContext } from '@GTU/Playwright'
+import { DefaultCookieFile, saveContextCookie } from '@gobletqa/browser'
 
 /**
  * Checks that the page title is `title`
@@ -36,7 +33,7 @@ Then(`I save the page cookie as {string}`, savePageCookie, {
     {
       type: `string`,
       description: `Name of the context cookie file that is being saved`,
-      example: defaultCookieFile,
+      example: DefaultCookieFile,
     }
   ]
 })

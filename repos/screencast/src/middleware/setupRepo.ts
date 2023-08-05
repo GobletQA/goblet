@@ -1,5 +1,5 @@
 import type { TGitOpts } from '@GWF/types'
-import type { Response, NextFunction } from 'express'
+import type { Request as EXRequest, Response, NextFunction } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 import type { TWFGobletConfig } from '@gobletqa/workflows'
 
@@ -22,7 +22,7 @@ const getRepoGit = ({ query, params, body }:JWTRequest) => {
 
 
 export const loadRepoFromReq = async (
-  req:JWTRequest,
+  req:JWTRequest|EXRequest<any, any, any, any>,
 ) => {
   const config:TWFGobletConfig = req.app.locals.config
   const repoGit = getRepoGit(req)
@@ -30,7 +30,7 @@ export const loadRepoFromReq = async (
   if (!repoGit || !repoGit.local)
     throw new Error(`Endpoint requires a locally mounted path, I.E. /repos/:repo-name/*`)
 
-  const { iat, exp, ...user } = req.auth
+  const { iat, exp, ...user } = (req as JWTRequest).auth
   const { repo } = await Repo.status(config, { ...repoGit, ...user } as TGitOpts)
 
   if (!repo) throw new Error(`Requested repo does not exist`)

@@ -11,9 +11,8 @@ import { Repo } from '@gobletqa/workflows'
 import { Logger } from '@GSC/utils/logger'
 import { EAstObject } from '@ltipton/parkin'
 import { capitalize, emptyArr } from '@keg-hub/jsutils'
-import { playBrowser } from '@GSC/libs/playwright/browser/playBrowser'
+import { PWEventErrorLogFilter, playBrowser } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { PWEventErrorLogFilter } from '@gobletqa/shared/constants/playwright'
 
 const getEventParent = (evtData:TPlayerTestEvent) => {
   if(!evtData?.id) return

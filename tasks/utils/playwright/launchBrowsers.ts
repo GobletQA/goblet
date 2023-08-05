@@ -2,7 +2,7 @@ import type { TBrowserLaunchParams } from '../../types'
 import { EGobletMode } from '../../types'
 import { launchBrowser } from './launchBrowser'
 import { runSeq, noOpObj } from '@keg-hub/jsutils'
-import { getBrowsers } from '@gobletqa/screencast/libs/playwright/helpers/getBrowsers'
+import { getBrowsers } from '@gobletqa/browser/utils/getBrowsers'
 
 
 

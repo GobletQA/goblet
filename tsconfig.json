@@ -135,6 +135,9 @@
       "@gobletqa/backend": ["repos/backend/src"],
       "@gobletqa/backend/*": ["repos/backend/src/*"],
 
+      "@gobletqa/browser": ["repos/browser/src"],
+      "@gobletqa/browser/*": ["repos/browser/src/*"],
+
       "@gobletqa/components": ["repos/components/src"],
       "@gobletqa/components/*": ["repos/components/src/*"],
 

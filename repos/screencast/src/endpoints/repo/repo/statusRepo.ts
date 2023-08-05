@@ -2,13 +2,13 @@ import type { TGitOpts } from '@gobletqa/workflows'
 import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 
+import { setBrowserDefaults } from '@gobletqa/browser'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { Repo, loadRepoContent } from '@gobletqa/workflows'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { Exception } from '@gobletqa/shared/exceptions/Exception'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { setBrowserDefaults } from '@GSC/libs/playwright/browser/setBrowserDefaults'
 
 /**
  * Gets the status of a connected repo
@@ -41,7 +41,7 @@ export const statusRepo:RequestHandler = asyncWrap(async (req:JWTRequest, res:Re
   const repoContent = await loadRepoContent(foundRepo, config, status)
   try {
     await setBrowserDefaults({
-      repo: foundRepo,
+      config: foundRepo,
       browserConf: joinBrowserConf(foundRepo?.screencast?.browser)
     })
   }

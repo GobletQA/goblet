@@ -8,11 +8,11 @@ import {
 } from '@GTU/Types'
 
 import { pathExists } from '@GTU/Utils/fileSys'
+import { ArtifactSaveOpts } from '@gobletqa/browser'
 import { noOpObj, get, wait } from '@keg-hub/jsutils'
 import { appendToLatest } from '@GTU/TestMeta/testMeta'
 import { getTestResult } from '@GTU/Reports/jasmineReporter'
 import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
-import { ARTIFACT_SAVE_OPTS } from '@gobletqa/shared/constants'
 import {
   getGeneratedName,
   copyArtifactToRepo,
@@ -90,10 +90,10 @@ const shouldSaveVideo = (
   saveVideo:TGobletTestArtifactOption,
   recordDir:string
 ) => {
-  if(!saveVideo || saveVideo === ARTIFACT_SAVE_OPTS.never || !recordDir) return false
+  if(!saveVideo || saveVideo === ArtifactSaveOpts.never || !recordDir) return false
 
-  return (saveVideo === ARTIFACT_SAVE_OPTS.always) ||
-      (testStatus === ARTIFACT_SAVE_OPTS.failed && saveVideo === ARTIFACT_SAVE_OPTS.failed)
+  return (saveVideo === ArtifactSaveOpts.always) ||
+      (testStatus === ArtifactSaveOpts.failed && saveVideo === ArtifactSaveOpts.failed)
 }
 
 /**

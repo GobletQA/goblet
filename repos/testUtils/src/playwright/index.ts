@@ -1,5 +1,4 @@
 export * from './browserContext'
-export * from './browserCookie'
 export * from './playwrightTestEnv'
 export * from './getElement'
 export * from './getElements'

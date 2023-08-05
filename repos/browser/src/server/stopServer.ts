@@ -1,11 +1,11 @@
 import { EBrowserType, EBrowserName } from '@GBR/types'
 
-import metadata from '@GBR/utils/metadata'
 import { Logger } from '@GBR/utils/logger'
 import { limbo, wait } from '@keg-hub/jsutils'
-import { findProc, killProcAsync } from '../../proc'
-import { defaultBrowser } from '@gobletqa/shared/constants'
+import { metadata } from '@GBR/utils/metadata'
+import { DefaultBrowser } from '@GBR/constants'
 import { clearAllServers, clearServer, getServer } from './server'
+import { findProc, killProcAsync } from '@gobletqa/shared/libs/proc'
 
 /**
  * Looks for a process by name and try's to kill it
@@ -35,7 +35,7 @@ export const stopServer = async () => {
 
     Logger.info({ message: `Stopping All Browser Server...` })
 
-    const pwServer = getServer(defaultBrowser)
+    const pwServer = getServer(DefaultBrowser)
     pwServer?.close && (await pwServer?.close())
 
     // Kill all browsers

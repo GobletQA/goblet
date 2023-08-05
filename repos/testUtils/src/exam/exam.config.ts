@@ -19,6 +19,7 @@ import type { TExamConfig, TExamRunners, TExRunnerCfg } from '@gobletqa/exam'
 
 import path from 'path'
 import { EExTestMode } from '@gobletqa/exam'
+import { getContextOpts } from '@gobletqa/browser'
 import { emptyArr, emptyObj, ensureArr, flatUnion} from '@keg-hub/jsutils'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
@@ -27,7 +28,6 @@ import { getParkinTestInit, getParkinSupport, getStepDefinitions } from '@GTU/Pa
 import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 import { taskEnvToBrowserOpts } from '@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts'
-import { getContextOpts } from '@gobletqa/screencast/libs/playwright/helpers/getContextOpts'
 
 const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
 const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')
@@ -61,7 +61,7 @@ const ExamConfig = ():TExamConfig => {
   const { devices, ...browserOpts } = taskEnvToBrowserOpts(config)
   const browserConf = browserOpts as TBrowserConf
 
-  const contextOpts = getContextOpts(emptyObj, config)
+  const contextOpts = getContextOpts({ config })
   const gobletOpts = buildTestGobletOpts(config, browserConf)
   const testDir = path.join(baseDir, config.paths.featuresDir)
 

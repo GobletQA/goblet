@@ -3,8 +3,8 @@ import type { Socket } from 'socket.io'
 import type { SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
 import { noOpObj } from '@keg-hub/jsutils'
+import { recordBrowser } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { recordBrowser } from '@GSC/libs/playwright/browser/recordBrowser'
 
 /**
  * Stats a the browser recorder from a socket.io event

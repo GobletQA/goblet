@@ -1,4 +1,5 @@
 import type { EBrowserName, EBrowserType, TBrowserConf } from '@GBR/types'
+import type playwright from 'playwright'
 
 import { getServer } from './server'
 import { newServer } from './newServer'

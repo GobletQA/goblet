@@ -160,10 +160,10 @@ export type TBrowserAction = {
 }
 
 export type TSetBrowserDefaults = {
+  repo:TRepo
   headers?:boolean
   url?:boolean|string
   browserConf:TBrowserConf
-  repo:Pick<TRepo, `world`>
   pwComponents?:TPWComponents
 }
 

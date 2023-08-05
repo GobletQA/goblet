@@ -3,7 +3,7 @@ import path from 'path'
 import { ETestType } from '../types'
 import { testUtilsDir } from '../paths'
 import { deepFreeze, keyMap } from '@keg-hub/jsutils'
-import { FullBrowserNames } from '@gobletqa/shared/constants'
+import { FullBrowserNames } from '@gobletqa/browser'
 
 export type TTaskConstants = {
   PWDebug: typeof PWDebug

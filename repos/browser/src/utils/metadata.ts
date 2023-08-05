@@ -8,7 +8,6 @@ import type {
 
 import os from 'os'
 import path from 'path'
-import { Logger } from '@GBR/utils/logger'
 import { existsSync, promises as fs } from 'fs'
 import { checkVncEnv } from '@gobletqa/shared/utils/vncActiveEnv'
 import { limbo, isStr, isObj, exists, noOpObj, validate } from '@keg-hub/jsutils'
@@ -27,15 +26,24 @@ const pathExists = async (checkPath:string) => {
   return !Boolean(err)
 }
 
+type TMetaLogger = {
+  log: (...args:any[]) => void
+  error: (...args:any[]) => void
+  warn: (...args:any[]) => void
+}
+
 export type TBrowserMeta = {
   config?:TGobletConfig
+  logger:TMetaLogger
 }
 
 export class BrowserMeta {
   config?:TGobletConfig
+  logger:TMetaLogger
 
   constructor(opts?:TBrowserMeta){
     if(opts?.config) this.config = opts.config
+    this.logger = (opts?.logger || console) as TMetaLogger
   }
 
   #getConfig = (config?:TGobletConfig) => {
@@ -97,7 +105,7 @@ export class BrowserMeta {
       JSON.stringify(content, null, 2)
     ))
 
-    err && Logger.error(err)
+    err && this.logger.error(err)
 
     return content
   }
@@ -116,7 +124,7 @@ export class BrowserMeta {
       return (isObj(parsed) && parsed?.[type] ? parsed[type] : {}) as TBrowserMetaDataContext
     }
     catch (err) {
-      Logger.error(`[PW-META ERROR]: ${err.stack}`)
+      this.logger.error(`[PW-META ERROR]: ${err.stack}`)
       return {} as TBrowserMetaDataContext
     }
   }
@@ -130,7 +138,7 @@ export class BrowserMeta {
       return data ? JSON.parse(data) : {}
     }
     catch (err) {
-      Logger.error(`[PW-META ERROR]: ${err.stack}`)
+      this.logger.error(`[PW-META ERROR]: ${err.stack}`)
       return {}
     }
   }
@@ -168,7 +176,7 @@ export class BrowserMeta {
     }
 
     const nextMetaStr = JSON.stringify(nextMetadata, null, 2)
-    Logger.verbose(`Saving browser metadata`, nextMetadata)
+    this.logger.log(`Saving browser metadata`, nextMetadata)
 
     const [err, _] = await limbo(writeFile(
       metadataPath,
@@ -177,7 +185,7 @@ export class BrowserMeta {
 
     err && (err as any).code === 'ENOENT'
       ? await this.create(nextMetadata, config)
-      : err && Logger.error(`[PW-META ERROR]: ${err.stack}`)
+      : err && this.logger.error(`[PW-META ERROR]: ${err.stack}`)
 
     return nextMetadata
   }

@@ -2,10 +2,8 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
 import {isStr} from '@keg-hub/jsutils'
-import {
-  contextStateLoc,
-  defaultStateFile,
-} from '@GTU/Playwright/browserContext'
+import { DefaultStateFile } from '@gobletqa/browser'
+import { contextStateLoc } from '@GTU/Playwright/browserContext'
 
 /**
  * Saves the page state by name, or default name if not name is passed
@@ -33,7 +31,7 @@ Given('I use the saved {string} page state', usePageState, {
     {
       type: `string`,
       description: `Name of the context state file that is being saved`,
-      example: defaultStateFile,
+      example: DefaultStateFile,
     }
   ]
 })

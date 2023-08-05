@@ -6,7 +6,7 @@ import { noOpObj } from '@keg-hub/jsutils'
 import {
   startBrowser,
   statusServer,
-} from '@GSC/libs/playwright'
+} from '@gobletqa/browser'
 import {
   statusVNC,
   statusSockify,
