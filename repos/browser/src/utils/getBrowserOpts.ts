@@ -2,7 +2,8 @@ import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBR/types
 import type playwright from 'playwright'
 
 import path from 'path'
-import { checkVncEnv } from '@gobletqa/shared/utils/vncActiveEnv'
+import { ENVS } from '@gobletqa/environment'
+import { vncActive } from '@GBR/utils/checkVncEnv'
 import { taskEnvToBrowserOpts } from '@GBR/browser/taskEnvToBrowserOpts'
 import {
   exists,
@@ -114,7 +115,7 @@ export const getBrowserOpts = (
     ...argumentOpts
   } = browserConf
 
-  const { args: configModeArgs, ...configModeOpts } = checkVncEnv().vncActive
+  const { args: configModeArgs, ...configModeOpts } = vncActive()
     ? options.vnc
     : options.host
 
@@ -165,7 +166,7 @@ export const getBrowserOpts = (
        *
        */
       env: {
-        DISPLAY: process.env.DISPLAY
+        DISPLAY: ENVS.DISPLAY
       },
       /**
        * Need to investigate, most likely do NOT want this enabled

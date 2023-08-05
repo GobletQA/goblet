@@ -1,8 +1,8 @@
 import type { TBrowserContextOpts, TGobletConfig } from '@GBR/types'
 import type playwright from 'playwright'
 
+import { vncActive } from '@GBR/utils/checkVncEnv'
 import { emptyObj, deepMerge } from '@keg-hub/jsutils'
-import { checkVncEnv } from '@gobletqa/shared/utils/vncActiveEnv'
 import { taskEnvToContextOpts } from '@GBR/browser/taskEnvToContextOpts'
 
 
@@ -33,7 +33,7 @@ export const getContextOpts = (args:TGetBrowserCtxOpts) => {
     contextOpts=emptyObj,
   } = args
 
-  const defContextOpts = checkVncEnv().vncActive
+  const defContextOpts = vncActive()
     ? options.vnc
     : options.host
 

@@ -1,6 +1,7 @@
-import { getApp } from '@GSH/express/app'
+import { isNum } from '@keg-hub/jsutils'
 import { Logger } from '@GSH/libs/logger'
-import { get, isNum } from '@keg-hub/jsutils'
+import { ENVS } from '@gobletqa/environment'
+
 
 /**
  * Log Levels by name and priority
@@ -23,8 +24,7 @@ export const logLevelMap = Object.entries({
  * Gets the log level defined in the express app config
  */
 export const getLogLevel = () => {
-  const app = getApp()
-  const logType = get(app.locals, 'config.server.logLevel')
+  const logType = ENVS.GB_LOG_LEVEL || `info`
   return isNum(logType) ? logType : logLevelMap[logType]
 }
 

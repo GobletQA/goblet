@@ -2,7 +2,7 @@ import type playwright from 'playwright'
 import type { TGobletConfig, TBrowserLaunchOpts } from '@GBR/types'
 
 import { toBool, isStr, emptyObj } from '@keg-hub/jsutils'
-import { parseJsonEnvArr } from '@gobletqa/shared/utils/parseJsonEnvArr'
+import { parseJsonEnvArr } from '@GBR/utils/parseJsonEnvArr'
 
 /**
  * Builds a list of devices to used based on the GOBLET_BROWSER_DEVICES env

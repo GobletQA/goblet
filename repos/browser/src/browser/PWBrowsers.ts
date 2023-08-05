@@ -13,8 +13,8 @@ import playwright from 'playwright'
 import { Logger } from '@GBR/utils/logger'
 import { deepMerge } from '@keg-hub/jsutils'
 import { EmptyBrowser } from './emptyBrowser'
-import { notCI } from '@gobletqa/shared/utils/isCI'
 import { buildStatus } from '@GBR/utils/buildStatus'
+import { socketActive } from '@GBR/utils/checkVncEnv'
 import { getBrowserOpts } from '@GBR/utils/getBrowserOpts'
 import { getBrowserType } from '@GBR/utils/getBrowserType'
 import { getContextOpts } from '@GBR/utils/getContextOpts'
@@ -24,7 +24,6 @@ import { CreateBrowserRetry } from '@GBR/constants/playwright'
 import { buildBrowserConf } from '@GBR/utils/buildBrowserConf'
 import { getServerEndpoint } from '@GBR/server/getServerEndpoint'
 import { checkInternalPWContext } from './checkInternalPWContext'
-import { checkVncEnv } from '@gobletqa/shared/utils/vncActiveEnv'
 
 type TGetBrowserOpts = {
   browserServer?:boolean,
@@ -61,6 +60,7 @@ export type TGetBrowser = {
   config?:TGobletConfig
   browserConf:TBrowserConf
 }
+
 
 const buildStartOpts = (props:TStartBrowser) => {
   const {
@@ -102,14 +102,11 @@ export class PWBrowsers {
     browserConf:TBrowserConf = emptyObj as TBrowserConf,
     browserServer?:boolean
   ):boolean => {
-    const { isKube, socketActive } = checkVncEnv()
-
     return !toBool(process.env.GOBLET_RUN_FROM_CI)
       && (
         browserServer
           || browserConf?.ws
-          || socketActive
-          || isKube
+          || socketActive()
       )
   }
 
@@ -123,12 +120,12 @@ export class PWBrowsers {
     // Check if the websocket is active
     // If so, then update the endpoint url to target the host machine
     const browserEndpoint =
-      inDocker() && checkVncEnv().socketActive
+      inDocker() && socketActive()
         ? endpoint.replace('127.0.0.1', 'host.docker.internal')
         : endpoint
 
     const browser = await playwright[type].connect(browserEndpoint)
-    notCI && Logger.info(`createWSBrowser - Browser ${type} was started from server websocket ${browserEndpoint}`)
+    Logger.verbose(`createWSBrowser - Browser ${type} was started from server websocket ${browserEndpoint}`)
 
     this.#setBrowser(browser, { type })
 
@@ -153,12 +150,12 @@ export class PWBrowsers {
       getBrowserOpts(browserConf, config),
       getContextOpts({config, contextOpts: browserConf.context })
     )
-    notCI && Logger.verbose(`Browser-PersistentContext options`, opts)
+    Logger.verbose(`Browser-PersistentContext options`, opts)
     
     const context = await playwright[type].launchPersistentContext(opts)
 
     const browser = new EmptyBrowser(context, type)
-    notCI && Logger.info(`createPersistentBrowser - Browser ${type} was started`)
+    Logger.verbose(`createPersistentBrowser - Browser ${type} was started`)
     this.#setBrowser(browser, browserConf)
 
     return { browser, context } as TPWBrowser
@@ -173,7 +170,7 @@ export class PWBrowsers {
   ) => {
 
     if(!browser){
-      notCI && Logger.warn(`Attempted to set non-existing browser in private #setBrowsers method.`)
+      Logger.warn(`Attempted to set non-existing browser in private #setBrowsers method.`)
       return this.#browsers
     }
 
@@ -211,7 +208,7 @@ export class PWBrowsers {
     const opts = getBrowserOpts(browserConf, config)
     const browser = await playwright[type].launch(opts)
 
-    notCI && Logger.info(`createBrowser - Browser ${type} was started`)
+    Logger.verbose(`createBrowser - Browser ${type} was started`)
     this.#setBrowser(browser, { ...browserConf, ...opts })
 
     return { browser } as TPWBrowser
@@ -228,7 +225,7 @@ export class PWBrowsers {
       browser && await browser?.close()
     }
     catch (err) {
-      notCI && Logger.warn(err.stack)
+      Logger.warn(err.stack)
     }
     finally {
       this.#browsers[browserType] = undefined
@@ -258,7 +255,7 @@ export class PWBrowsers {
       const pwBrowser = this.fromCache(type)
 
       if (pwBrowser) {
-        notCI && Logger.verbose(`getBrowser - Using existing browser ${type}`)
+        Logger.verbose(`getBrowser - Using existing browser ${type}`)
         return { browser: pwBrowser } as TPWBrowser
       }
 
@@ -268,7 +265,7 @@ export class PWBrowsers {
         // So this re-calls the same method when this.#creatingBrowser is set
       if(this.#creatingBrowser)
         return new Promise((res, rej) => {
-          notCI && Logger.verbose(`getBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`)
+          Logger.verbose(`getBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`)
           setTimeout(() => res(this.getBrowser(args)), CreateBrowserRetry)
         })
 
@@ -287,18 +284,18 @@ export class PWBrowsers {
           ? await createWSBrowser(type)
           : await createBrowser(browserConf, type)
         fromWs
-          ? notCI && Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
-          : notCI && Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
+          ? Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
+          : Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
 
       
         await createWSBrowser(type)
-        notCI && Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
+        Logger.verbose(`getBrowser - New Websocket Browser ${type} created`)
 
         const browserResp = await this.#createPersistentBrowser({
           type,
           browserConf,
         })
-        notCI && Logger.verbose(`getBrowser - New Persistent Context Browser ${type} created`)
+        Logger.verbose(`getBrowser - New Persistent Context Browser ${type} created`)
 
       ------------------------------------ */
 
@@ -310,7 +307,7 @@ export class PWBrowsers {
         config,
         browserConf,
       })
-      notCI && Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
+      Logger.verbose(`getBrowser - New Standalone Browser ${type} created`)
 
       this.#creatingBrowser = false
       return browserResp
@@ -354,7 +351,7 @@ export class PWBrowsers {
         )
 
       if(!pwComponents?.page){
-        notCI && Logger.info(`startBrowser - Getting browser type ${type}`)
+        Logger.verbose(`startBrowser - Getting browser type ${type}`)
 
         const pwBrowser = pwBrowsers.fromCache(type)
 
@@ -365,7 +362,7 @@ export class PWBrowsers {
         if(!pwBrowser && this.#startingBrowser)
           return new Promise((res, rej) => {
 
-            notCI && Logger.info(
+            Logger.verbose(
               `startBrowser - Browser ${type} is creating, try agin in ${CreateBrowserRetry}ms`
             )
 
@@ -391,7 +388,7 @@ export class PWBrowsers {
         })
         this.#startingBrowser = false
 
-        notCI && Logger.info(`startBrowser - Browser ${type} and child components found`)
+        Logger.verbose(`startBrowser - Browser ${type} and child components found`)
       }
 
       const hasComponents = Boolean(

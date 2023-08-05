@@ -4,10 +4,11 @@ import type {
   TGobletConfig,
 } from '@GBR/types'
 
+import { socketActive } from '@GBR/utils/checkVncEnv'
 import { getBrowserType } from '@GBR/utils/getBrowserType'
 import { getContextOpts } from '@GBR/utils/getContextOpts'
 import { toBool, emptyObj, deepMerge } from '@keg-hub/jsutils'
-import { checkVncEnv } from '@gobletqa/shared/utils/vncActiveEnv'
+
 
 export type TBuildBrowserCfg = {
   config?:TGobletConfig
@@ -21,11 +22,10 @@ export const buildBrowserConf = (args:TBuildBrowserCfg):TBrowserConf => {
     browserServer,
     browserConf=emptyObj as TBrowserConf,
   } = args
-  const { isKube, socketActive } = checkVncEnv()
 
   return deepMerge(browserConf, {
     type: getBrowserType(browserConf.type as EBrowserType),
-    ws: toBool(browserConf?.ws || browserServer || isKube || socketActive),
+    ws: toBool(browserConf?.ws || browserServer || socketActive()),
     context: getContextOpts({ config, contextOpts: browserConf?.context }),
   })
 }

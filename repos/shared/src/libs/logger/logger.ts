@@ -1,11 +1,12 @@
 import type { TLogOpts, TWinLogger } from '@GSH/utils/buildLogger'
 
 import './stdio'
+import { ENVS } from '@gobletqa/environment'
 import { buildLogger } from '@GSH/utils/buildLogger'
 import { CliLogger, getLoggerColors } from './cliLogger'
-import { setLogs, capitalize, isStr, isColl, exists, toBool } from '@keg-hub/jsutils'
+import { setLogs, capitalize, isStr, isColl, exists } from '@keg-hub/jsutils'
 
-const { GB_SUB_REPO } = process.env
+const { GB_SUB_REPO } = ENVS
 
 export type TWLogger = typeof Logger & TWinLogger & {
   colors: typeof CliLogger.colors

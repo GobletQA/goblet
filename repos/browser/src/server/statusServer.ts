@@ -1,22 +1,22 @@
 import type { EBrowserName, TBrowserProcs } from '@GBR/types'
 
-import { browserNames } from '@GBR/constants'
+import { findProc } from './proc'
+import { BrowserNames } from '@GBR/constants'
 import { limbo, exists } from '@keg-hub/jsutils'
-import { findProc } from '@gobletqa/shared/libs/proc'
 
 /**
  * Gets the current running status of browser server the process
  */
 export const statusServer = async (browser?:string):Promise<TBrowserProcs> => {
   const hasBrowser = exists(browser)
-  if (hasBrowser && !browserNames.includes(browser as EBrowserName))
+  if (hasBrowser && !BrowserNames.includes(browser as EBrowserName))
     throw new Error(
-      `Can not get browser status, invalid browser type. Must be one of:\n\t${browserNames.join(
+      `Can not get browser status, invalid browser type. Must be one of:\n\t${BrowserNames.join(
         ', '
       )}`
     )
 
-  return await browserNames.reduce(async (resp:Record<any, any>, type:string) => {
+  return await BrowserNames.reduce(async (resp:Record<any, any>, type:string) => {
     const acc = await resp
 
     if (exists(browser) && browser !== type) return acc

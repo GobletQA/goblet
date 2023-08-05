@@ -4,8 +4,8 @@ import { Logger } from '@GBR/utils/logger'
 import { limbo, wait } from '@keg-hub/jsutils'
 import { metadata } from '@GBR/utils/metadata'
 import { DefaultBrowser } from '@GBR/constants'
+import { findProc, killProcAsync } from './proc'
 import { clearAllServers, clearServer, getServer } from './server'
-import { findProc, killProcAsync } from '@gobletqa/shared/libs/proc'
 
 /**
  * Looks for a process by name and try's to kill it

@@ -1,6 +1,7 @@
+import type { TProc } from '@GSH/types'
+
 import util from 'util'
 import { exec } from 'child_process'
-import type { TProc } from '@GSH/types'
 import { isObj, exists } from '@keg-hub/jsutils'
 
 const execAsync = util.promisify(exec)

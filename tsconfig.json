@@ -31,10 +31,24 @@
       "@GBE/*": ["repos/backend/src/*"],
       "@GBE/Root": ["repos/backend/"],
 
+      "@GBR/constants": ["repos/browser/src/constants"],
+      "@GBR/constants/*": ["repos/browser/src/constants/*"],
+      "@GBR/scripts": ["repos/browser/scripts"],
+      "@GBR/scripts/*": ["repos/browser/scripts/*"],
+      "@GBR/types": ["repos/browser/src/types"],
+      "@GBR/types/*": ["repos/browser/src/types/*"],
+      "@GBR/utils": ["repos/browser/src/utils"],
+      "@GBR/utils/*": ["repos/browser/src/utils/*"],
+      "@GBR": ["repos/browser/src"],
+      "@GBR/*": ["repos/browser/src/*"],
+
       "@GCD/Configs": ["repos/conductor/configs"],
       "@GCD/Configs/*": ["repos/conductor/configs/*"],
       "@GCD": ["repos/conductor/src"],
       "@GCD/*": ["repos/conductor/src/*"],
+
+      "@GENV": ["repos/environment/src"],
+      "@GENV/*": ["repos/environment/src/*"],
 
       "@GEX/constants": ["repos/exam/src/constants"],
       "@GEX/constants/*": ["repos/exam/src/constants/*"],
@@ -52,17 +66,6 @@
       "@GEX/utils/*": ["repos/exam/src/utils/*"],
       "@GEX": ["repos/exam/src"],
       "@GEX/*": ["repos/exam/src/*"],
-
-      "@GBR/constants": ["repos/browser/src/constants"],
-      "@GBR/constants/*": ["repos/browser/src/constants/*"],
-      "@GBR/scripts": ["repos/browser/scripts"],
-      "@GBR/scripts/*": ["repos/browser/scripts/*"],
-      "@GBR/types": ["repos/browser/src/types"],
-      "@GBR/types/*": ["repos/browser/src/types/*"],
-      "@GBR/utils": ["repos/browser/src/utils"],
-      "@GBR/utils/*": ["repos/browser/src/utils/*"],
-      "@GBR": ["repos/browser/src"],
-      "@GBR/*": ["repos/browser/src/*"],
 
       "@GLT/templates": ["repos/latent/src/templates"],
       "@GLT/libs": ["repos/latent/src/libs"],
@@ -143,6 +146,9 @@
 
       "@gobletqa/conductor": ["repos/conductor/src"],
       "@gobletqa/conductor/*": ["repos/conductor/src/*"],
+      
+      "@gobletqa/environment": ["repos/environment/src"],
+      "@gobletqa/environment/*": ["repos/environment/src/*"],
 
       "@gobletqa/exam": ["repos/exam/src"],
       "@gobletqa/exam/*": ["repos/exam/src/*"],

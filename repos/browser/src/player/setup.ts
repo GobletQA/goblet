@@ -16,7 +16,7 @@ import {
   AutoSavedDataWorldPath,
   SavedLocatorWorldPath,
   AutoSavedLocatorWorldPath,
-} from '@gobletqa/shared/constants'
+} from '@GBR/constants/world'
 
 
 const testGlobals = [

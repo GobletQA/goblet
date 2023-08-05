@@ -9,7 +9,7 @@ import type {
 import os from 'os'
 import path from 'path'
 import { existsSync, promises as fs } from 'fs'
-import { checkVncEnv } from '@gobletqa/shared/utils/vncActiveEnv'
+import { vncActive } from '@GBR/utils/checkVncEnv'
 import { limbo, isStr, isObj, exists, noOpObj, validate } from '@keg-hub/jsutils'
 
 const {
@@ -68,7 +68,7 @@ export class BrowserMeta {
     const metadataDir =
       exists(pwMetaDataDir) && existsSync(pwMetaDataDir)
         ? pwMetaDataDir
-        : checkVncEnv().vncActive
+        : vncActive()
           ? path.resolve(os.tmpdir(), 'goblet')
           : gobletRoot
 

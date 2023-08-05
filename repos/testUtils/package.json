@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@gobletqa/exam": "workspace:../exam",
+    "@gobletqa/environment": "workspace:../environment",
     "@goblet/browser": "workspace:../browser",
     "@gobletqa/screencast": "workspace:../screencast",
     "@gobletqa/shared": "workspace:../shared",

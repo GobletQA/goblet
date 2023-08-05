@@ -7,9 +7,10 @@ import type {
   TBrowserContextVideo,
 } from '@GBR/types'
 
+
+import { getScreenDims } from '@GBR/utils/getScreenDims'
+import { parseJsonEnvArr } from '@GBR/utils/parseJsonEnvArr'
 import { artifactSaveActive } from '@GBR/utils/artifactSaveOption'
-import { getScreenDims } from '@gobletqa/shared/utils/getScreenDims'
-import { parseJsonEnvArr } from '@gobletqa/shared/utils/parseJsonEnvArr'
 import {
   isArr,
   isNum,

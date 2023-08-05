@@ -1,11 +1,4 @@
-import { Logger, setupLogger } from '@gobletqa/shared/libs/logger'
-
-const { GB_LOG_LEVEL=`info`, GB_SC_LOG_LEVEL=GB_LOG_LEVEL } = process.env
-
-setupLogger({
-  tag: `Goblet BR`,
-  level: GB_SC_LOG_LEVEL
-})
+import { Logger } from '../../../shared/src/libs/logger/cliLogger'
 
 export {
   Logger

@@ -1,6 +1,6 @@
 import type { Player } from './player'
+import type { TPlayerEvent, TPlayerEventData } from '@GBR/types'
 import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
-import type { TPlayerEvent, TPlayerEventData } from '@gobletqa/shared/types'
 
 import { PWPlay } from '@GBR/constants'
 import { Parkin } from '@ltipton/parkin'

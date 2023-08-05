@@ -34,6 +34,7 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
+    "@gobletqa/environment": "workspace:../environment",
     "@gobletqa/conductor": "workspace:../conductor",
     "@gobletqa/shared": "workspace:../shared",
     "@gobletqa/workflows": "workspace:../workflows",
