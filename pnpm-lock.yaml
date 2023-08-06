@@ -304,6 +304,9 @@ importers:
 
   repos/conductor:
     dependencies:
+      '@gobletqa/environment':
+        specifier: workspace:../environment
+        version: link:../environment
       '@gobletqa/shared':
         specifier: workspace:../shared
         version: link:../shared
@@ -1046,6 +1049,9 @@ importers:
 
   repos/workflows:
     dependencies:
+      '@gobletqa/environment':
+        specifier: workspace:../environment
+        version: link:../environment
       '@gobletqa/latent':
         specifier: workspace:../latent
         version: link:../latent
