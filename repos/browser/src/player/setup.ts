@@ -16,7 +16,7 @@ import {
   AutoSavedDataWorldPath,
   SavedLocatorWorldPath,
   AutoSavedLocatorWorldPath,
-} from '@GBR/constants/world'
+} from '@GBR/constants'
 
 
 const testGlobals = [

@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Expects the number of dom elements matching `selector` to equal `count`

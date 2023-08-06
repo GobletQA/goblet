@@ -1,2 +1,1 @@
-require('../../configs/aliases')
-module.exports = require('./dist')
+export * from './dist/esm/index.js'

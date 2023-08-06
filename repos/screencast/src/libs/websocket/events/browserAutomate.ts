@@ -6,8 +6,8 @@ import type {
   TSocketEvtCBProps,
 } from '@GSC/types'
 
+import { ExpressionKinds } from '@GSC/constants'
 import { startBrowser, Automate } from '@gobletqa/browser'
-import { ExpressionKinds } from '@gobletqa/shared/constants'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 const onBrowserAutomate = async (

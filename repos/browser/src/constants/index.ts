@@ -1,2 +1,1 @@
-export * from './browser'
-export * from './playwright'
+export * from '@gobletqa/environment/constants'

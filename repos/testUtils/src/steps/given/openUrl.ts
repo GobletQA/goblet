@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { Given } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
 import { get, isStr } from '@keg-hub/jsutils'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Parses the url, replacing any dynamic variables

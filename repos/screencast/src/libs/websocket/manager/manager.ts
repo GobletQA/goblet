@@ -5,14 +5,14 @@ import type {
 } from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
-import * as WSConstants from '@gobletqa/shared/constants/websocket'
+import * as WSConstants from '@GSC/constants/websocket'
 import {
   TagPrefix,
   WS_INIT,
   WS_ADD_PEER,
   WS_NOT_AUTHORIZED,
   WS_PEER_DISCONNECT,
-} from '@gobletqa/shared/constants/websocket'
+} from '@GSC/constants'
 
 import {
   get,

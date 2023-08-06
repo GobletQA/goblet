@@ -1,1 +1,2 @@
-export * from './envs'
+import '../resolveRoot'
+export * from './envs/GobletEnvs'

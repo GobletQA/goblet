@@ -21,7 +21,7 @@ import {
   WS_CMD_END,
   WS_CMD_FAIL,
   WS_CMD_RUNNING,
-} from '@gobletqa/shared/constants/websocket'
+} from '@GSC/constants/websocket'
 
 /**
  * Class for managing child process run from a socket connection

@@ -1,0 +1,18 @@
+import { deepFreeze } from '@keg-hub/jsutils'
+
+export const GobletConfigFileLocations = deepFreeze([
+  ``,
+  `./config`,
+  `./configs`,
+  `./goblet`,
+  `./test`,
+  `./tests`
+])
+
+export const GobletConfigFileNames = deepFreeze<string[]>([
+  `.gobletrc`,
+  `goblet.js`,
+  `goblet.config.js`,
+  `goblet.ts`,
+  `goblet.config.ts`,
+])

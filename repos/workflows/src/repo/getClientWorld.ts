@@ -3,7 +3,7 @@ import type { TGitData, TRepoPaths, TGobletConfig, TRepo } from '@GWF/types'
 
 import { loaderSearch } from '@gobletqa/shared/libs/loader'
 import { noOpObj, deepMerge } from '@keg-hub/jsutils/src/node'
-import { DefWorld, GB_GIT_MOUNTED_REMOTE } from '@gobletqa/shared/constants'
+import { DefWorld, GB_GIT_MOUNTED_REMOTE } from '../constants'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 

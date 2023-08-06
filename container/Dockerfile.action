@@ -52,8 +52,12 @@ RUN <<EOF
   rm -rf configs/prettier.config.js
   rm -rf /goblet/app/repos/backend
   rm -rf /goblet/app/repos/conductor
+  rm -rf /goblet/app/repos/screencast
 
-  cd /goblet/app/repos/screencast
+  cd /goblet/app/repos/browser
+  pnpm json:rm
+
+  cd /goblet/app/repos/environment
   pnpm json:rm
 
   cd /goblet/app/repos/exam

@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
 import { getContext } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 const BrowserPermissions = {
   midi: `midi`,

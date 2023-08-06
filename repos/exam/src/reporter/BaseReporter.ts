@@ -8,8 +8,7 @@ import type {
 
 import { Logger } from "@GEX/utils/logger"
 
-import { ExamEvtNames } from "@GEX/constants/events"
-import { TestsResultStatus } from "@GEX/constants/constants"
+import { TestsResultStatus, ExamEvtNames } from "@GEX/constants"
 import { RootSuiteTag, SuiteTag, FileTag } from "@GEX/constants/tags"
 
 const spaceMap = {

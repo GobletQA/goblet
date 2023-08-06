@@ -9,7 +9,7 @@ import {
   GB_GIT_REMOTE_REF,
   GB_REPO_NO_SECRETS,
   GB_GIT_MOUNTED_REMOTE,
-} from '../constants/git'
+} from '../constants'
 import {toBool} from '@keg-hub/jsutils'
 
 type TLoadEnvFile = {

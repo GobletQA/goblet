@@ -2,7 +2,7 @@
   "name": "@gobletqa/conductor",
   "version": "0.0.0",
   "description": "Goblet Conductor API",
-  "main": "dist/index.ts",
+  "main": "dist",
   "author": "Lance Tipton",
   "license": "MIT",
   "private": true,
@@ -33,6 +33,7 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
+    "@gobletqa/environment": "workspace:../environment",
     "@gobletqa/shared": "workspace:../shared",
     "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": ">=9.6.1",

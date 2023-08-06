@@ -16,8 +16,8 @@ import { emptyObj } from '@keg-hub/jsutils'
 import { getBrowserType } from '@GBR/utils/getBrowserType'
 import { getContextOpts } from '@GBR/utils/getContextOpts'
 import { buildBrowserConf } from '@GBR/utils/buildBrowserConf'
+import { GobletQAUrl, CreateBrowserRetry } from '@GBR/constants'
 import { checkInternalPWContext } from './checkInternalPWContext'
-import { GobletQAUrl, CreateBrowserRetry } from '@GBR/constants/playwright'
 
 export type TGetPWComponents = {
   initialUrl?:string

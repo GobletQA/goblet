@@ -1,10 +1,6 @@
+import { deepFreeze } from '@keg-hub/jsutils'
+import { GITLAB_API_URL, GITHUB_API_URL } from '@gobletqa/environment/constants'
 
-const { deepFreeze } = require('@keg-hub/jsutils')
-
-const {
-  GITLAB_API_URL=`gitlab.com`,
-  GITHUB_API_URL=`api.github.com`
-} = process.env
 
 export const Rest = deepFreeze({
   Github: {

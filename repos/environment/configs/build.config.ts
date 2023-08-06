@@ -1,36 +1,66 @@
 
-import { GLTRoot } from '../resolveRoot'
+import path from 'node:path'
+import * as esbuild from 'esbuild'
+import { fileURLToPath } from 'node:url'
+import { promises as fs } from 'node:fs'
 
-import path from 'path'
-import { esbuild } from '@ltipton/esdev'
-import { aliases } from '@GConfigs/aliases.config'
-import { loadConfigs } from '@keg-hub/parse-config'
+const dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const dev = process.env.DEV_BUILD === `1`
-const nodeEnv = process.env.NODE_ENV || `local`
-const entryFile = path.join(GLTRoot, `index.js`)
-const outFile = path.join(GLTRoot, `dist/index.js`)
+const rootDir = path.join(dirname, `..`)
+const srcDir = path.join(rootDir, `./src`)
+const outdir = path.join(rootDir, `./dist`)
+const cjsOutdir = path.join(rootDir, `./dist/cjs`)
+const esmOutdir = path.join(rootDir, `./dist/esm`)
 
-/**
- * Load the ENVs from <node-env>.env ( local.env || prod.env )
- */
-const envs = loadConfigs({
-  noYml: true,
-  env: nodeEnv,
-  name: 'goblet',
-  locations: [aliases.GobletRoot],
-})
+const mainEntry = path.join(srcDir, `index.ts`)
+const envsEntry = path.join(srcDir, `envs/index.ts`)
+const constantsEntry = path.join(srcDir, `constants/index.ts`)
 
-esbuild({
-  dev,
-  aliases,
-  outFile,
-  entryFile,
-  cwd: GLTRoot,
-  mergeEnvs:true,
-  sourcemap: 'inline',
-  envs: {
-    ...envs,
-    GOBLET_ROOT_DIR: aliases.GobletRoot
-  }
-})
+const opts = {
+  minify: false,
+  bundle: true,
+  sourcemap: true,
+  treeShaking: true,
+  allowOverwrite: true,
+  entryPoints: [
+    mainEntry,
+    envsEntry,
+    constantsEntry
+  ],
+}
+
+const esmBuild = async () => {
+  // Build the files with esbuild
+  await esbuild.build({
+    ...opts,
+    platform: `node`,
+    outdir: esmOutdir,
+    format: `esm` as const,
+  })
+  .catch((cause:any) => {
+    console.log(cause)
+    process.exit(1)
+  })
+}
+
+const cjsBuild = async () => {
+  // Build the files with esbuild
+  await esbuild.build({
+    ...opts,
+    platform: `node`,
+    outdir: cjsOutdir,
+    target: [`node18`],
+  })
+  .catch((cause:any) => {
+    console.log(cause)
+    process.exit(1)
+  })
+}
+
+
+;(async () => {
+  // Remove the existing output dir
+  await fs.rm(outdir, { recursive: true, force: true })
+  await Promise.all([esmBuild(), cjsBuild()])
+})()
+

@@ -1,10 +1,5 @@
-
-const { deepFreeze } = require('@keg-hub/jsutils')
-
-const {
-  GITLAB_GRAPH_URL=`https://gitlab.com/api/graphql`,
-  GITHUB_GRAPH_URL=`https://api.github.com/graphql`
-} = process.env
+import { deepFreeze } from '@keg-hub/jsutils'
+import { GITLAB_GRAPH_URL, GITHUB_GRAPH_URL } from '@gobletqa/environment/constants'
 
 /**
  * Constants for running the workflows with consistent values

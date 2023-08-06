@@ -1,7 +1,8 @@
-import { deepFreeze } from '@keg-hub/jsutils/src/node'
+import { deepFreeze } from '@keg-hub/jsutils'
 
 export const PlayAction = `PLAY-ACTION`
 
+// TODO: fix this alongside exam events - need to update key names to be consistent
 export const PWPlay = {
   playSpecDone: `PLAY-SPEC-DONE`,
   playSpecStart: `PLAY-SPEC-START`,
@@ -21,11 +22,6 @@ export const PWAutomateEvent = `PW-AUTOMATE-EVENT`
 export const DefaultCookieFile = `browser-cookie-state`
 export const DefaultStateFile = `browser-context-state`
 export const DefaultStorageFile = `browser-storage-state`
-
-// Default Folder name of the folder where step-definition overrides are placed
-// Used when a mounted repo overrides a default step-definition
-// All overrides should be saved in this folder
-export const DefinitionOverrideFolder = `overrides`
 
 export const BrowserArtifactTypes = deepFreeze([
   `traces`,

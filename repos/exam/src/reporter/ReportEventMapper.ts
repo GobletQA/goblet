@@ -1,7 +1,7 @@
 import type { TExamEvt, TExBuiltReporters } from "@GEX/types"
 
 import { Logger } from '@GEX/utils/logger'
-import { ExamEvtNames } from "@GEX/constants/events"
+import { ExamEvtNames } from "@GEX/constants"
 import { EvtTag, ExamTag } from '@GEX/constants/tags'
 
 const EvtReporterMap = {

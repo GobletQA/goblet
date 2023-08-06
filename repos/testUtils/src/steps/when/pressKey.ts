@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
 import keyboardMap from './keyboardMap.json'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Simulates a key press

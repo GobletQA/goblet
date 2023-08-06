@@ -1,5 +1,4 @@
 
-
 export const WorkerEvents = {
   Run: `run`,
   Exit: `exit`,

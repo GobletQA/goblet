@@ -21,19 +21,18 @@ import DockerEvents from 'docker-events'
 import { Controller } from '../controller'
 import { docker } from '@keg-hub/cli-utils'
 import { Logger } from '../../utils/logger'
-import { DevUserHash } from '@GCD/constants'
 import { dockerEvents } from './dockerEvents'
 import { buildImgUri } from './image/buildImgUri'
 import { buildPorts } from './container/buildPorts'
 import { resolveHost } from './container/resolveHost'
-import { isObj, isEmptyColl, isStr } from '@keg-hub/jsutils'
-import { ConductorUserHashLabel } from '../../constants'
 import { hydrateRoutes } from '../../utils/hydrateRoutes'
 import { EContainerState } from '@gobletqa/conductor/types'
 import { waitRetry } from '@gobletqa/shared/utils/waitRetry'
+import { isObj, isEmptyColl, isStr } from '@keg-hub/jsutils'
 import { containerConfig } from './container/containerConfig'
 import { removeContainer } from './container/removeContainer'
 import { buildContainerMap } from './container/buildContainerMap'
+import { DevUserHash, ConductorUserHashLabel } from '@GCD/constants'
 import { createContainer, startContainer } from './container/runContainerHelpers'
 import { generateRoute, generateRoutes, generateExternalUrls } from '../../utils/generators'
 
@@ -75,15 +74,11 @@ const containerStart = async (
 export class Docker extends Controller {
 
   docker: Dockerode
-  images: TImgsConfig
-  conductor: Conductor
-  config: TDockerConfig
   events: DockerEvents
-  devRouterActive: boolean
-  containerMaps: Record<string, TContainerMap>
   userHashMap:TUserHashMap = {}
 
   constructor(conductor:Conductor, config:TDockerConfig){
+
     super(conductor, config)
     this.config = config
     this.devRouterActive = !isEmptyColl(this.config.devRouter)

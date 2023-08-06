@@ -1,7 +1,8 @@
+import type { TGobletConfig } from '@GSH/types'
+
 import path from 'path'
 import { globSync } from 'glob'
 import { createRequire } from 'module'
-import {TGobletConfig} from '@GSH/types'
 import { GobletConfigFileNames } from '@GSH/constants'
 import { isStr, deepMerge } from '@keg-hub/jsutils/src/node'
 

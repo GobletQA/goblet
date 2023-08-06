@@ -1,6 +1,6 @@
 import type { EBrowserType, EBrowserName } from '@GBR/types'
 
-import metadata from '@GBR/utils/metadata'
+import { metadata } from '@GBR/utils/metadata'
 import { getServer } from './server'
 import { getBrowserType } from '@GBR/utils/getBrowserType'
 

@@ -33,6 +33,7 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
+    "@gobletqa/environment": "workspace:../environment",
     "@gobletqa/latent": "workspace:../latent",
     "@gobletqa/shared": "workspace:../shared",
     "@keg-hub/cli-utils": "0.9.0",

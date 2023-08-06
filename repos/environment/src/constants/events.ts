@@ -1,6 +1,3 @@
-
-export const RootSuiteId = `suite-0`
-
 export const ExamEvtNames = {
   specDone: `PLAY-SPEC-DONE`,
   specWarn: `PLAY-SPEC-WARN`,

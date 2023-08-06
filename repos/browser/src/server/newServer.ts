@@ -3,8 +3,8 @@ import type { EBrowserType, TBrowserConf, EBrowserName } from '@GBR/types'
 import playwright from 'playwright'
 import { setServer } from './server'
 import { noOpObj } from '@keg-hub/jsutils'
-import metadata from '@GBR/utils/metadata'
 import { Logger } from '@GBR/utils/logger'
+import { metadata } from '@GBR/utils/metadata'
 import { getBrowserOpts } from '@GBR/utils/getBrowserOpts'
 
 /**
