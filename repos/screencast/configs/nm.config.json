@@ -1,6 +1,7 @@
 {
   "ext": "none",
   "verbose": true,
+  "delay": 2000,
   "watch": [""],
   "watchOptions": {
     "interval": 0,

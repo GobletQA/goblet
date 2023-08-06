@@ -3,7 +3,7 @@ import type { TGobletConfig } from '../types'
 import path from 'path'
 import { globSync } from 'glob'
 import { uniqArr } from '@keg-hub/jsutils'
-
+import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 
 const exts = [
   `js`,
@@ -23,15 +23,39 @@ const exts = [
  */
 export const getStepDefinitions = (config:TGobletConfig) => {
   const { testUtilsDir } = config.internalPaths
-  const { repoRoot, workDir, stepsDir } = config.paths
+  const { repoRoot, workDir, stepsDir, supportDir } = config.paths
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
-  const clientPattern = path.join(baseDir, stepsDir, `**/*.{${exts.join(',')}}`)
-  const clientMatches = globSync(clientPattern)
-  const configPattern = path.join(testUtilsDir, `src/steps/**/*.{${exts.join(',')}}`)
-  const configMatches = globSync(configPattern, { ignore: [`**/index.{${exts.join(',')}}`] })
 
-  return uniqArr([...clientMatches, ...configMatches], undefined)
+  // Load all client supporting files, i.e. custom hooks
+  const clientSupportMatches = globSync(GlobJSFiles, {
+    ...GlobOnlyFiles,
+    cwd: path.join(baseDir, supportDir)
+  })
+
+  // Load all client custom step definitions
+  const clientStepMatches = globSync(GlobJSFiles, {
+    ...GlobOnlyFiles,
+    cwd: path.join(baseDir, stepsDir)
+  })
+
+  // Load all default goblet step definitions
+  const configMatches = globSync(GlobJSFiles, {
+    ...GlobOnlyFiles,
+    cwd: path.join(testUtilsDir, `src/steps`)
+  })
+
+  // **IMPORTANT** - Must be loaded after the getParkinTestInit method
+  // Load these postEnvironment setup
+  // Load getParkinTestInit preEnvironment or during environment setup 
+  return uniqArr([
+    ...configMatches,
+    `${testUtilsDir}/src/support/hooks.ts`,
+    ...clientSupportMatches,
+    ...clientStepMatches,
+  ], undefined)
+
 }
+
 
 /**
  * Loaded in the preEnvironment step, to ensure Parkin exists in the global scope
@@ -53,8 +77,6 @@ export const getParkinTestInit = (config:TGobletConfig) => {
 export const getParkinSupport = (config:TGobletConfig) => {
   const { testUtilsDir } = config.internalPaths
   const { repoRoot, workDir, supportDir } = config.paths
-
-  // const parkinEnvironment = `${testUtilsDir}/src/parkin/parkinTestInit.ts`
 
   // **IMPORTANT** - Must be loaded after the parkinEnvironment 
   const configHooks = `${testUtilsDir}/src/support/hooks.ts`

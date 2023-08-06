@@ -3,6 +3,8 @@ import type { TMonaco, TEditorConfig } from '../types'
 import './services'
 import { setTheme } from './setTheme'
 import { initLangs } from './initLangs'
+import { addGobletTypes } from './addGobletTypes'
+
 
 // import { initPrettier } from './initPrettier'
 // import { initGrammars } from './initGrammars'
@@ -36,8 +38,13 @@ const initGherkin = async (config:TEditorConfig, monaco:TMonaco) => {
   setGherkin(config, monaco)
 }
 
+const initTypes = async (config:TEditorConfig, monaco:TMonaco) => {
+  await addGobletTypes(config, monaco)
+}
+
 const setupMonaco = async (config:TEditorConfig, monaco:TMonaco) => {
   await initGherkin(config, monaco)
+  initTypes(config, monaco)
   initLangs(config, monaco)
   initTheme(config, monaco)
   // TODO: add grammar workers - used by linter

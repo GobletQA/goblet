@@ -21,7 +21,6 @@ ESBuild({
       `--enable-source-maps`,
       `-r`,
       `esbuild-register`,
-      `scripts/blocking.js`,
       outfile
     ],
   }

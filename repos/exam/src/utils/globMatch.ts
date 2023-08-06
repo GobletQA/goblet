@@ -3,9 +3,9 @@ import type { GlobOptions } from 'glob'
 import { glob } from 'glob'
 import micromatch from 'micromatch'
 import { naturalSort } from './naturalSort'
+import { GlobMatchKeys } from "@GEX/constants"
 import { emptyObj, ensureArr } from '@keg-hub/jsutils'
 import { GlobFilesCfg } from "@GEX/constants/defaults"
-import { GlobMatchKeys } from "@GEX/constants/constants"
 
 export const globMatchFiles = async (
   match:string|string[],

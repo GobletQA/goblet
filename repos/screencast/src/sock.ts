@@ -21,11 +21,11 @@ import { startSockify, stopSockify } from '@GSC/libs/vnc/sockify'
     'TERM',
     'SIGTERM'
   ])
-    .map(event => process.on(event, async exitCode => {
+    .map(event => process.on(event, (exitCode) => {
       if(exitCalled) return
       exitCalled = true
       
-      await stopSockify()
+      stopSockify()
     }))
 
 })()

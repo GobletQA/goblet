@@ -24,7 +24,7 @@ import { getContextOpts } from '@gobletqa/browser'
 import { emptyArr, emptyObj, ensureArr, flatUnion} from '@keg-hub/jsutils'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
-import { getParkinTestInit, getParkinSupport, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
+import { getParkinTestInit, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
 
 import { taskEnvToBrowserOpts } from '@gobletqa/browser'
 import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
@@ -128,7 +128,6 @@ const ExamConfig = ():TExamConfig => {
     /** Add all support and step files and ensure they are loaded before running the tests */
     postEnvironment: flatUnion([
       ...ensureArr(examConfig.postEnvironment),
-      ...getParkinSupport(config),
       ...getStepDefinitions(config),
     ]),
     preRunner:flatUnion([...ensureArr(examConfig.preRunner)]),

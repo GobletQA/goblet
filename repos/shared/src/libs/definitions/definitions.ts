@@ -2,28 +2,17 @@ import type { TRepo, TDefinitionFileModel, TDefGobletConfig } from '@GSH/types'
 
 import path from 'path'
 import { glob } from 'glob'
-import { noOpObj } from '@keg-hub/jsutils'
+import { getSupportFiles } from './supportFiles'
 import { DefinitionsParser } from './definitionsParser'
 import { getPathFromBase } from '@GSH/utils/getPathFromBase'
 import { parkinOverride } from '@GSH/libs/overrides/parkinOverride'
 import { getDefaultGobletConfig } from '@GSH/goblet/getDefaultGobletConfig'
+import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 
 /**
  * Cache holder for internal goblet definitions, so they don't have to be reloaded each time
  */
 let __CachedGobletDefs:TDefinitionFileModel[]
-
-/**
- * Searches the step definition directory for step definitions
- */
-export const loadDefinitionsFiles = (stepsDir:string, opts:Record<string, any>=noOpObj):Promise<string[]> => {
-  // TODO: Investigate if it's better to include the ignore
-  // Would make loading the definitions faster, but
-  // Would mean users can't use index files
-  // Would look like this { ignore: [ '**/index.js' ] }
-  // For the section argument passed to the glob pattern
-  return glob(path.join(stepsDir, '**/*.{js,ts}'), opts)
-}
 
 /**
  * Builds the definitions models from the loaded definitions
@@ -63,10 +52,10 @@ const getGobletDefs = async (
 ) => {
   if(cache && __CachedGobletDefs?.length) return __CachedGobletDefs 
 
-  const definitionFiles = await loadDefinitionsFiles(
-    `${gobletConfig.internalPaths.testUtilsDir}/src/steps`,
-    { ignore: [ '**/index.js', '**/index.ts', ] }
-  )
+  const definitionFiles = await glob(GlobJSFiles, {
+    ...GlobOnlyFiles,
+    cwd: path.join(gobletConfig.internalPaths.testUtilsDir, `src/steps`)
+  })
 
   const loadedDefs = await parseDefinitions(repo, definitionFiles, overrideParkin)
   __CachedGobletDefs = loadedDefs
@@ -74,11 +63,12 @@ const getGobletDefs = async (
   return __CachedGobletDefs
 }
 
+
 /**
  * Loads repo specific step definitions
  * **IMPORTANT** - These should be loaded from the `repo.paths.stepsDir`
  * The `gobletConfig.paths.stepsDir` should **NOT** be used
- * Because tt is not the path mounted repos step definitions
+ * Because it is not the path mounted repos step definitions
  *
  */
 const getRepoDefinitions = async (
@@ -87,8 +77,12 @@ const getRepoDefinitions = async (
 ) => {
 
   const { stepsDir } = repo.paths
-  const pathToSteps = getPathFromBase(stepsDir, repo)
-  const definitionFiles = stepsDir && (await loadDefinitionsFiles(pathToSteps))
+  if(!stepsDir) return []
+
+  const definitionFiles = await glob(GlobJSFiles, {
+    ...GlobOnlyFiles,
+    cwd: getPathFromBase(stepsDir, repo)
+  })
 
   return await parseDefinitions(repo, definitionFiles, overrideParkin) || []
 }
@@ -129,8 +123,15 @@ export const loadDefinitions = async (
   const clientDefinitions = await getRepoDefinitions(repo, overrideParkin)
   const gobletDefinitions = await getGobletDefs(repo, overrideParkin, gobletConfig, cache)
 
-  // all the definition file models
-  const defs = clientDefinitions.concat(gobletDefinitions)
+  // TODO: look into returned the support fileModels to the frontend
+  // For now we just load them
+  const supportFiles = await getSupportFiles(repo, overrideParkin)
+
+
+  // all the definition file models,
+  // Concat client defs into goblet defs
+  // This allows client defs of the same name to override goblet defs
+  const defs = gobletDefinitions.concat(clientDefinitions)
 
   return defs
 }

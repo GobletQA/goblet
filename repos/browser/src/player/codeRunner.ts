@@ -6,7 +6,6 @@ import { PWPlay } from '@GBB/constants'
 import { Parkin } from '@ltipton/parkin'
 import { emptyObj } from '@keg-hub/jsutils'
 import { ParkinTest } from '@ltipton/parkin/test'
-
 import {
   setupParkin,
   setupGlobals,
@@ -23,6 +22,10 @@ export type TCodeRunnerOpts = {
   timeout?: number
   globalTimeout?:number
 }
+
+// const util = require('util')
+// console.log(util.inspect(this.PTE.getActiveParent(), {showHidden: false, depth: null, colors: true}))
+// console.log(util.inspect(content, {showHidden: false, depth: null, colors: true}))
 
 class CodeRunError extends Error {
   constructor(message:string) {
@@ -74,6 +77,14 @@ export class CodeRunner {
   run = async (content:RunContent, steps?:TParkinRunStepOptsMap) => {
     this.PTE = setupGlobals(this)
     this.PK = await setupParkin(this)
+
+    // This is a hack for a bug in Parkin
+    // The root element doesn't have an action,
+    // So it throws an error when accssing the metadata property
+    const root = this.PTE.getActiveParent()
+    const rootAction = () => {}
+    rootAction.metaData = { description: `Root describe meta-data` }
+    root.action = rootAction
 
     // Timeout gets passed as last argument to test() method of global test method 
     await this.PK.run(content, {

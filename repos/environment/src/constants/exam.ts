@@ -47,8 +47,6 @@ export const BuiltTestResultFailed:Partial<TExEventData> = {
   status: EPlayerTestStatus.failed,
 }
 
-export const GlobMatchKeys = [`**`,`*`,`[`,`]`,`|`,`...`,`{`,`}`,`?`,`@`,`+`,`!`,`:`]
-
 
 export const TestsResultStatus = {
   failed: `failed`,

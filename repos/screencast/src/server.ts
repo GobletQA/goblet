@@ -59,9 +59,12 @@ const initApi = async () => {
   return { app, server, socket }
 }
 
-process.on('SIGINT', () => {
-  console.log(`[Screencast] Force Killing screencast server...`)
-  process.exit()
+process.once('SIGINT', () => {
+  console.log(`[Screencast] Waiting screencast to clean up...`)
+  setTimeout(() => {
+    console.log(`[Screencast] Force Killing screencast server`)
+    process.exit()
+  }, 1000)
 })
 
 initApi()

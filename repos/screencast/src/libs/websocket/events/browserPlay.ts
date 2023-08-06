@@ -88,6 +88,7 @@ const handleStartPlaying = async (
       if(evtData.describes) evtData.describes = emptyArr
 
       Logger.verbose(`Emit ${event.name} event`, event)
+      // Logger.verbose(`Emit ${event.name} event`)
       Manager.emit(socket, event.name, {
         ...event,
         data: evtData,
