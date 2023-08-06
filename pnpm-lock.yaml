@@ -821,6 +821,9 @@ importers:
       module-alias:
         specifier: 2.2.2
         version: 2.2.2
+      source-map-support:
+        specifier: 0.5.21
+        version: 0.5.21
       winston:
         specifier: 3.6.0
         version: 3.6.0

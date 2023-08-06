@@ -111,7 +111,7 @@ export const options = {
    * Timeout per test - 30 seconds (default)
    */
   timeout: {
-    default: 30000,
+    default: 15000,
     type: `number`,
     alias: [`time`, `to`],
     description: `Timeout for each individual test - 30 seconds (default)`

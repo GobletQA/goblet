@@ -17,7 +17,7 @@ export const cliOpts = {
   runInBand: false,
   transformIgnore: [],
   loaderIgnore: [],
-  timeout: 30000,
+  timeout: 15000,
   passWithNoTests: false,
   globalTimeout: 1200000,
   extensions: [

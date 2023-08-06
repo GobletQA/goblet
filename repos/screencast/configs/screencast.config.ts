@@ -1,9 +1,9 @@
 import type { TCmdGroups, TBrowserConf } from '@GSC/types'
 import type { TScreenDims, TGScreencastConfig } from '@gobletqa/screencast/types'
+import { ENVS } from '@gobletqa/environment'
 
 import '../resolveRoot'
 import path from 'path'
-import fs from 'fs-extra'
 import { toBool, toNum } from '@keg-hub/jsutils'
 import { socketCmds } from './socketCmds.config'
 import { aliases } from '@GConfigs/aliases.config'

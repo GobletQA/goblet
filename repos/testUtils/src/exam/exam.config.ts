@@ -138,7 +138,7 @@ const ExamConfig = ():TExamConfig => {
       [`.feature`]: [RunnerLoc, {
         slowMo: 100,
         debug: false,
-        timeout:30000,
+        timeout:15000,
         verbose: true,
         globalTimeout:60000,
         omitTestResults: [],

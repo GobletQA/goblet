@@ -34,9 +34,9 @@ export const RunnerCfg:TExRunnerCfg = {
   verbose: false,
 
   /**
-   * Timeout per test - 30 seconds (default)
+   * Timeout per test - 15 seconds (default)
    */
-  timeout: 30000,
+  timeout: 15000,
 
   /**
    * Global timeout for test run per file - 20min (default)

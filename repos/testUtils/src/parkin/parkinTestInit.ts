@@ -26,7 +26,7 @@ const getParkinOptions = () => {
 
   return {
     retry: options?.retry ?? 1,
-    timeout: options?.timeout ?? 30000,
+    timeout: options?.timeout ?? 15000,
     ...(GOBLET_FEATURE_NAME && { name: GOBLET_FEATURE_NAME }),
     tags: GOBLET_FEATURE_TAGS ? { filter: GOBLET_FEATURE_TAGS } : {}
   }

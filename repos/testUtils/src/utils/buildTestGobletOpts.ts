@@ -7,6 +7,7 @@ import type {
 } from '@GTU/Types'
 
 import path from 'path'
+import { ENVS } from '@gobletqa/environment'
 import { exists, toBool } from '@keg-hub/jsutils'
 import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
 import {
@@ -46,40 +47,33 @@ export const buildTestGobletOpts = (
   browserOpts:TBrowserConf,
   contextOpts?:TBrowserContextOpts
 ) => {
-  const {
-    GOBLET_TEST_TYPE,
-    GOBLET_TEST_RETRY,
-    GOBLET_TEST_REPORT,
-    GOBLET_TEST_TRACING,
-    GOBLET_TEST_TIMEOUT,
-    GOBLET_TEST_VIDEO_RECORD,
-    // TODO: add cli options for these,
+
+    // TODO: add cli options for these
     // Currently can be set by ENV only
-    GOBLET_PAGE_REUSE, // PW_TEST_REUSE_PAGE
-    GOBLET_CONTEXT_REUSE, // PW_TEST_REUSE_CONTEXT
-    GOBLET_TEST_TRACING_SNAPSHOTS=true,
-    GOBLET_TEST_TRACING_SCREENSHOTS=true
-  } = process.env
+    // GOBLET_PAGE_REUSE, // PW_TEST_REUSE_PAGE
+    // GOBLET_CONTEXT_REUSE, // PW_TEST_REUSE_CONTEXT
+    // GOBLET_TEST_TRACING_SNAPSHOTS=true,
+    // GOBLET_TEST_TRACING_SCREENSHOTS=true
 
   const options:TGobletTestOpts = {
-    reusePage: toBool(GOBLET_PAGE_REUSE),
-    reuseContext: toBool(GOBLET_CONTEXT_REUSE),
-    saveTrace: artifactSaveOption(GOBLET_TEST_TRACING),
-    saveReport: artifactSaveOption(GOBLET_TEST_REPORT),
+    reusePage: ENVS.GOBLET_PAGE_REUSE,
+    reuseContext: ENVS.GOBLET_CONTEXT_REUSE,
+    saveTrace: artifactSaveOption(ENVS.GOBLET_TEST_TRACING),
+    saveReport: artifactSaveOption(ENVS.GOBLET_TEST_REPORT),
     // Only chromium can record video so only turn it on for that browser
     // Should be able to record on others, but not currently working
     saveVideo: CanRecordVideo.includes(browserOpts.type as EBrowserName) &&
-      artifactSaveOption(GOBLET_TEST_VIDEO_RECORD),
-    ...(GOBLET_TEST_TIMEOUT && { timeout: parseInt(GOBLET_TEST_TIMEOUT, 10) || 30000 }),
-    ...(exists(GOBLET_TEST_RETRY) && { retry: parseInt(GOBLET_TEST_RETRY, 10) || 1 }),
+      artifactSaveOption(ENVS.GOBLET_TEST_VIDEO_RECORD),
+    ...(ENVS.GOBLET_TEST_TIMEOUT && { timeout: ENVS.GOBLET_TEST_TIMEOUT }),
+    ...(exists(ENVS.GOBLET_TEST_RETRY) && { retry: ENVS.GOBLET_TEST_RETRY }),
   }
 
-  if(GOBLET_TEST_TYPE) options.testType = GOBLET_TEST_TYPE
+  if(ENVS.GOBLET_TEST_TYPE) options.testType = ENVS.GOBLET_TEST_TYPE
 
-  if(artifactSaveActive(GOBLET_TEST_TRACING))
+  if(artifactSaveActive(ENVS.GOBLET_TEST_TRACING))
     options.tracing = {
-      snapshots: toBool(GOBLET_TEST_TRACING_SNAPSHOTS),
-      screenshots: toBool(GOBLET_TEST_TRACING_SCREENSHOTS),
+      snapshots: toBool(ENVS.GOBLET_TEST_TRACING_SNAPSHOTS),
+      screenshots: toBool(ENVS.GOBLET_TEST_TRACING_SCREENSHOTS),
     }
 
   buildArtifactsPaths(config, options)

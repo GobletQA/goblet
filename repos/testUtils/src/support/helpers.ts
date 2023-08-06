@@ -1,7 +1,14 @@
 import type { TWorldConfig } from '@ltipton/parkin'
-import type { TStepCtx, TLocator, TBrowserPage } from '@GTU/Types'
+import type {
+  TClickEl,
+  TStepCtx,
+  TLocator,
+  TWaitFor,
+  TFillInput,
+  TSaveWorldLocator,
+} from '@GTU/Types'
 
-
+import { ENVS } from '@gobletqa/environment'
 import { getPage, getLocator } from '@GTU/Playwright'
 import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import { get, set, unset, emptyObj, isNum } from '@keg-hub/jsutils'
@@ -11,31 +18,6 @@ import {
   AutoSavedDataWorldPath,
   AutoSavedLocatorWorldPath
 } from '@GTU/Constants'
-
-type TClickEl = {
-  save?:boolean
-  selector?:string
-  locator?:TLocator
-  page?:TBrowserPage
-  world: TWorldConfig
-  worldPath?:string
-}
-
-type TFillInput = TClickEl & {
-  text:string
-}
-
-type TSaveWorldLocator = {
-  selector:string,
-  worldPath?:string
-  element?:TLocator
-  world:TWorldConfig
-}
-
-type TWaitFor = boolean | {
-  timeout:number
-  state:`visible` | `attached` | `detached` | `hidden`
-}
 
 const checkTypes = {
   less: {
@@ -428,10 +410,10 @@ export const getStepTimeout = (ctx?:TStepCtx) => {
   const globalTimeout = global?.getParkinOptions?.()?.timeout
 
   const timeout = ctx?.options?.timeout
-    || process.env.GOBLET_TEST_TIMEOUT
+    || ENVS.GOBLET_TEST_TIMEOUT
     || global.__goblet?.browser?.timeout
     || globalTimeout
-    || 30000
+    || 15000
 
   return isNum(timeout) ? timeout : parseInt(timeout)
 }
