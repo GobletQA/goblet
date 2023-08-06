@@ -1,8 +1,8 @@
-import type { EBrowserType, EBrowserName } from '@GBR/types'
+import type { EBrowserType, EBrowserName } from '@GBB/types'
 
-import { Logger } from '@GBR/utils/logger'
+import { Logger } from '@GBB/utils/logger'
 import { exists, isEmpty } from '@keg-hub/jsutils'
-import { DefaultBrowser, BrowserMap } from '@GBR/constants'
+import { DefaultBrowser, BrowserMap } from '@GBB/constants'
 
 /**
  * Checks the passed in browserType to ensure it the correct name

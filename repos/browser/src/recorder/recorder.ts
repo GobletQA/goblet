@@ -7,12 +7,12 @@ import type {
   TPWRecordOptions,
   TPWOnRecordEvent,
   TPWOnRecordCleanup
-} from '@GBR/types'
+} from '@GBB/types'
 
 import { constants } from './constants'
 import { EventsRecorder } from './eventsRecorder'
 import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
-import { getInjectScript } from '@GBR/utils/getInjectScript'
+import { getInjectScript } from '@GBB/utils/getInjectScript'
 
 
 const highlightStyles = {

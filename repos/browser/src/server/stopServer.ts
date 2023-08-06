@@ -1,9 +1,9 @@
-import { EBrowserType, EBrowserName } from '@GBR/types'
+import { EBrowserType, EBrowserName } from '@GBB/types'
 
-import { Logger } from '@GBR/utils/logger'
+import { Logger } from '@GBB/utils/logger'
 import { limbo, wait } from '@keg-hub/jsutils'
-import { metadata } from '@GBR/utils/metadata'
-import { DefaultBrowser } from '@GBR/constants'
+import { metadata } from '@GBB/utils/metadata'
+import { DefaultBrowser } from '@GBB/constants'
 import { findProc, killProcAsync } from './proc'
 import { clearAllServers, clearServer, getServer } from './server'
 

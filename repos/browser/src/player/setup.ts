@@ -1,5 +1,5 @@
 import type { CodeRunner } from './codeRunner'
-import type { TPlayerEventData, TPlayerTestEvent } from '@GBR/types'
+import type { TPlayerEventData, TPlayerTestEvent } from '@GBB/types'
 
 /**
  * This is needed so that expect is added to the global context
@@ -16,7 +16,7 @@ import {
   AutoSavedDataWorldPath,
   SavedLocatorWorldPath,
   AutoSavedLocatorWorldPath,
-} from '@GBR/constants'
+} from '@GBB/constants'
 
 
 const testGlobals = [

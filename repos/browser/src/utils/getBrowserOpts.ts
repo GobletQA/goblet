@@ -1,10 +1,10 @@
-import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBR/types'
+import type { TBrowserConf, TGobletConfig, TBrowserLaunchOpts } from '@GBB/types'
 import type playwright from 'playwright'
 
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
-import { vncActive } from '@GBR/utils/checkVncEnv'
-import { taskEnvToBrowserOpts } from '@GBR/browser/taskEnvToBrowserOpts'
+import { vncActive } from '@GBB/utils/checkVncEnv'
+import { taskEnvToBrowserOpts } from '@GBB/browser/taskEnvToBrowserOpts'
 import {
   exists,
   emptyObj,

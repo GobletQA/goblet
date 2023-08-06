@@ -1,1 +1,1 @@
-export * from '@GBR/constants'
+export * from '@GBB/constants'

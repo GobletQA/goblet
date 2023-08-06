@@ -1,8 +1,8 @@
 import os from 'os'
 import path from 'path'
 import { promises } from 'fs'
-import { TBrowserContext } from '@GBR/types'
-import { DefaultCookieFile, DefaultStorageFile } from '@GBR/constants'
+import { TBrowserContext } from '@GBB/types'
+import { DefaultCookieFile, DefaultStorageFile } from '@GBB/constants'
 
 const tempDir = os.tmpdir()
 

@@ -2,11 +2,11 @@ import type {
   EBrowserType,
   TBrowserConf,
   TGobletConfig,
-} from '@GBR/types'
+} from '@GBB/types'
 
-import { socketActive } from '@GBR/utils/checkVncEnv'
-import { getBrowserType } from '@GBR/utils/getBrowserType'
-import { getContextOpts } from '@GBR/utils/getContextOpts'
+import { socketActive } from '@GBB/utils/checkVncEnv'
+import { getBrowserType } from '@GBB/utils/getBrowserType'
+import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { toBool, emptyObj, deepMerge } from '@keg-hub/jsutils'
 
 

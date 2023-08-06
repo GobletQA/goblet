@@ -1,7 +1,7 @@
-import type { EBrowserName, EBrowserType, TBrowserStatus } from '@GBR/types'
+import type { EBrowserName, EBrowserType, TBrowserStatus } from '@GBB/types'
 
 import { capitalize } from '@keg-hub/jsutils'
-import { browserStatus } from '@GBR/constants'
+import { browserStatus } from '@GBB/constants'
 import { getBrowserType } from './getBrowserType'
 
 /**

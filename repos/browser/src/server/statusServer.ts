@@ -1,7 +1,7 @@
-import type { EBrowserName, TBrowserProcs } from '@GBR/types'
+import type { EBrowserName, TBrowserProcs } from '@GBB/types'
 
 import { findProc } from './proc'
-import { BrowserNames } from '@GBR/constants'
+import { BrowserNames } from '@GBB/constants'
 import { limbo, exists } from '@keg-hub/jsutils'
 
 /**

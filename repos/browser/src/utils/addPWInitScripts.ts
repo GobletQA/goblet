@@ -1,7 +1,7 @@
 import type {
   TBrowserPage,
   TBrowserContext,
-} from '@GBR/types'
+} from '@GBB/types'
 import type { TScriptsKey } from './getInjectScript'
 
 import { getInjectScript } from './getInjectScript'

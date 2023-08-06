@@ -6,17 +6,17 @@ import type {
   TGobletConfig,
   TPWComponents,
   TBrowserContext,
-} from '@GBR/types'
+} from '@GBB/types'
 
 import { Automate } from '../automate'
 import { pwBrowsers } from './PWBrowsers'
 import { ghostMouse } from './ghostMouse'
-import { Logger } from '@GBR/utils/logger'
+import { Logger } from '@GBB/utils/logger'
 import { emptyObj } from '@keg-hub/jsutils'
-import { getBrowserType } from '@GBR/utils/getBrowserType'
-import { getContextOpts } from '@GBR/utils/getContextOpts'
-import { buildBrowserConf } from '@GBR/utils/buildBrowserConf'
-import { GobletQAUrl, CreateBrowserRetry } from '@GBR/constants'
+import { getBrowserType } from '@GBB/utils/getBrowserType'
+import { getContextOpts } from '@GBB/utils/getContextOpts'
+import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
+import { GobletQAUrl, CreateBrowserRetry } from '@GBB/constants'
 import { checkInternalPWContext } from './checkInternalPWContext'
 
 export type TGetPWComponents = {

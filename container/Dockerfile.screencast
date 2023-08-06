@@ -16,18 +16,31 @@ RUN <<EOF
   set -eux;
 
   rm -rf /goblet/app/repos/backend
+  rm -rf /goblet/app/repos/components
   rm -rf /goblet/app/repos/conductor
+  rm -rf /goblet/app/repos/monaco
+  rm -rf /goblet/app/repos/race
+  rm -rf /goblet/app/repos/vite
+
+  cd /goblet/app/repos/browser
+  pnpm json:rm
+
+  cd /goblet/app/repos/environment
+  pnpm json:rm
+
+  cd /goblet/app/repos/exam
+  pnpm json:rm
+
+  cd /goblet/app/repos/latent
+  pnpm json:rm
 
   cd /goblet/app/repos/screencast
   pnpm json:rm
 
-  cd /goblet/app/repos/testUtils
-  pnpm json:rm
-
-  cd /goblet/app/repos/workflows
-  pnpm json:rm
-
   cd /goblet/app/repos/shared
+  pnpm json:rm
+
+  cd /goblet/app/repos/testUtils
   pnpm json:rm
 
   cd /goblet/app/repos/workflows

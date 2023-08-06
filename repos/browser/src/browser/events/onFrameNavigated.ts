@@ -1,9 +1,9 @@
 import type { Frame } from 'playwright'
-import type { TBrowserEventArgs, TBrowserPage } from '@GBR/types'
+import type { TBrowserEventArgs, TBrowserPage } from '@GBB/types'
 
-import { EBrowserEvent } from '@GBR/types'
-// import { symParse } from '@GBR/libs/symplasm'
-import { WSPwUrlChange } from '@GBR/constants'
+import { EBrowserEvent } from '@GBB/types'
+// import { symParse } from '@GBB/libs/symplasm'
+import { WSPwUrlChange } from '@GBB/constants'
 
 export const onFrameNavigated = ({ socket, Manager }:TBrowserEventArgs) => {
   return async (page:TBrowserPage, frame:Frame) => {

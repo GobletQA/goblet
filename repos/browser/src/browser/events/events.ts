@@ -2,9 +2,9 @@ import type { Frame } from 'playwright'
 import type {
   TAutomateEvent,
   TBrowserEventArgs,
-} from '@GBR/types'
+} from '@GBB/types'
 
-import { Logger } from '@GBR/utils/logger'
+import { Logger } from '@GBB/utils/logger'
 import { onFrameNavigated } from './onFrameNavigated'
 
 export const Events = (args:TBrowserEventArgs) => {

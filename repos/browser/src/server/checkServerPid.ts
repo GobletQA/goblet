@@ -1,7 +1,7 @@
-import type { TBrowserProcs } from '@GBR/types'
+import type { TBrowserProcs } from '@GBB/types'
 
 import { get } from '@keg-hub/jsutils'
-import { Logger } from '@GBR/utils/logger'
+import { Logger } from '@GBB/utils/logger'
 import { statusServer } from './statusServer'
 
 export const checkServerPid = async (browser:string) => {

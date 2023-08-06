@@ -1,7 +1,7 @@
-import type { EBrowserName, TGetBrowsers } from '@GBR/types'
+import type { EBrowserName, TGetBrowsers } from '@GBB/types'
 
-import { EBrowserType } from '@GBR/types'
-import { BrowserNames, BrowserMap } from '@GBR/constants'
+import { EBrowserType } from '@GBB/types'
+import { BrowserNames, BrowserMap } from '@GBB/constants'
 import {eitherArr, noPropArr, isStr} from '@keg-hub/jsutils'
 
 /**

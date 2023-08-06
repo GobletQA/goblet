@@ -1,8 +1,8 @@
-import type { EBrowserType, EBrowserName } from '@GBR/types'
+import type { EBrowserType, EBrowserName } from '@GBB/types'
 
-import { metadata } from '@GBR/utils/metadata'
+import { metadata } from '@GBB/utils/metadata'
 import { getServer } from './server'
-import { getBrowserType } from '@GBR/utils/getBrowserType'
+import { getBrowserType } from '@GBB/utils/getBrowserType'
 
 /**
  * Gets the browser servers websocket endpoint

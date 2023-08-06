@@ -3,7 +3,7 @@ import type {
   TBrowserPage,
   EBrowserName,
   TPWComponents,
-} from '@GBR/types'
+} from '@GBB/types'
 
 import playwright from 'playwright'
 import { EmptyBrowser } from './emptyBrowser'

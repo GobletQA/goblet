@@ -1,11 +1,11 @@
-import type { EBrowserName, EBrowserType, TBrowserConf } from '@GBR/types'
+import type { EBrowserName, EBrowserType, TBrowserConf } from '@GBB/types'
 import type playwright from 'playwright'
 
 import { getServer } from './server'
 import { newServer } from './newServer'
 import { noOpObj } from '@keg-hub/jsutils'
 import { checkServerPid } from './checkServerPid'
-import { getBrowserType } from '@GBR/utils/getBrowserType'
+import { getBrowserType } from '@GBB/utils/getBrowserType'
 
 /**
  * Starts browser-server using playwright

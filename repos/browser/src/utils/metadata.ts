@@ -4,12 +4,12 @@ import type {
   TGobletConfig,
   TBrowserMetaData,
   TBrowserMetaDataContext,
-} from '@GBR/types'
+} from '@GBB/types'
 
 import os from 'os'
 import path from 'path'
 import { existsSync, promises as fs } from 'fs'
-import { vncActive } from '@GBR/utils/checkVncEnv'
+import { vncActive } from '@GBB/utils/checkVncEnv'
 import { limbo, isStr, isObj, exists, noOpObj, validate } from '@keg-hub/jsutils'
 
 const {

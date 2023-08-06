@@ -1,11 +1,11 @@
-import type { EBrowserType, TBrowserConf, EBrowserName } from '@GBR/types'
+import type { EBrowserType, TBrowserConf, EBrowserName } from '@GBB/types'
 
 import playwright from 'playwright'
 import { setServer } from './server'
 import { noOpObj } from '@keg-hub/jsutils'
-import { Logger } from '@GBR/utils/logger'
-import { metadata } from '@GBR/utils/metadata'
-import { getBrowserOpts } from '@GBR/utils/getBrowserOpts'
+import { Logger } from '@GBB/utils/logger'
+import { metadata } from '@GBB/utils/metadata'
+import { getBrowserOpts } from '@GBB/utils/getBrowserOpts'
 
 /**
  * Starts new browser server using the Playwright API

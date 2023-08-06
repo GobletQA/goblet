@@ -11,23 +11,23 @@ const loadBrowserScripts = () => {
 
   _LOADED_SCRIPTS = {
     mouseHelper: fs.readFileSync(
-      path.join(aliases[`@GBR/scripts`], `playwright/mouseHelper.js`)
+      path.join(aliases[`@GBB/scripts`], `playwright/mouseHelper.js`)
     ).toString(),
 
     record: fs.readFileSync(
-      path.join(aliases[`@GBR/scripts`], `playwright/record.js`)
+      path.join(aliases[`@GBB/scripts`], `playwright/record.js`)
     ).toString(),
 
     selector: fs.readFileSync(
-      path.join(aliases[`@GBR/scripts`], `playwright/selector.js`)
+      path.join(aliases[`@GBB/scripts`], `playwright/selector.js`)
     ).toString(),
 
     mouseHover: fs.readFileSync(
-      path.join(aliases[`@GBR/scripts`], `playwright/mouseHover.js`)
+      path.join(aliases[`@GBB/scripts`], `playwright/mouseHover.js`)
     ).toString(),
     
     polyfils: fs.readFileSync(
-      path.join(aliases[`@GBR/scripts`], `playwright/polyfils.js`)
+      path.join(aliases[`@GBB/scripts`], `playwright/polyfils.js`)
     ).toString(),
   }
 

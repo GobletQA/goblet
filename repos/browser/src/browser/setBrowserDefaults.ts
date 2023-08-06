@@ -7,7 +7,7 @@ import type {
   TGobletConfig,
   TBrowserConf,
   TPWComponents
-} from '@GBR/types'
+} from '@GBB/types'
 
 import {emptyObj, isStr} from '@keg-hub/jsutils'
 

@@ -23,16 +23,16 @@ COPY configs/tasks.config.js configs/
 # ---- Workflows Stage  ---- #
 FROM $IMAGE_FROM AS goblet-repos
 WORKDIR /goblet/app
-COPY repos/environment/package.json repos/environment/
-COPY repos/workflows/package.json repos/workflows/
 COPY repos/conductor/package.json repos/conductor/
+COPY repos/latent/package.json repos/latent/
+COPY repos/workflows/package.json repos/workflows/
 COPY repos/backend/package.json repos/backend/
 COPY repos/browser/package.json repos/browser/
 COPY repos/screencast/package.json repos/screencast/
 COPY repos/testUtils/package.json repos/testUtils/
-COPY repos/shared/package.json repos/shared/
-COPY repos/latent/package.json repos/latent/
 COPY repos/exam/package.json repos/exam/
+COPY repos/shared/package.json repos/shared/
+COPY repos/environment/package.json repos/environment/
 RUN pnpm install --no-optional --offline --frozen-lockfile --ignore-scripts
 # ---- End Stage ---- #
 
@@ -40,16 +40,16 @@ RUN pnpm install --no-optional --offline --frozen-lockfile --ignore-scripts
 # ---- Shared Stage  ---- #
 FROM goblet-repos AS goblet-built
 WORKDIR /goblet/app
-COPY repos/environment repos/environment/
-COPY repos/workflows repos/workflows/
 COPY repos/conductor repos/conductor/
-COPY repos/backend repos/backend/
+COPY repos/latent repos/latent/
+COPY repos/workflows repos/workflows/
 COPY repos/browser repos/browser/
+COPY repos/backend repos/backend/
 COPY repos/screencast repos/screencast/
 COPY repos/testUtils repos/testUtils/
-COPY repos/shared repos/shared/
-COPY repos/latent repos/latent/
 COPY repos/exam repos/exam/
+COPY repos/shared repos/shared/
+COPY repos/environment repos/environment/
 COPY --from=goblet-build-files /goblet/app .
 WORKDIR /goblet/app/repos/backend
 RUN pnpm build:docker

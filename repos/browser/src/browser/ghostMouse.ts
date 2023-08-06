@@ -1,5 +1,5 @@
 import type { GhostCursor, ClickOptions } from "ghost-cursor-pw"
-import type { TLocatorOpts, TLocator, TBrowserPage, TLocatorClickOpts } from '@GBR/types'
+import type { TLocatorOpts, TLocator, TBrowserPage, TLocatorClickOpts } from '@GBB/types'
 
 import { isFunc } from '@keg-hub/jsutils'
 import { createCursor } from "ghost-cursor-pw"

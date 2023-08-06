@@ -1,9 +1,9 @@
-import type { TBrowserContextOpts, TGobletConfig } from '@GBR/types'
+import type { TBrowserContextOpts, TGobletConfig } from '@GBB/types'
 import type playwright from 'playwright'
 
-import { vncActive } from '@GBR/utils/checkVncEnv'
+import { vncActive } from '@GBB/utils/checkVncEnv'
 import { emptyObj, deepMerge } from '@keg-hub/jsutils'
-import { taskEnvToContextOpts } from '@GBR/browser/taskEnvToContextOpts'
+import { taskEnvToContextOpts } from '@GBB/browser/taskEnvToContextOpts'
 
 
 /**

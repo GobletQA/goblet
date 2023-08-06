@@ -1,7 +1,7 @@
 import type {
   TBrowserPage,
   TBrowserContext,
-} from '@GBR/types'
+} from '@GBB/types'
 
 export const exposePWFunction = async (
   parent:TBrowserPage|TBrowserContext,

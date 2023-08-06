@@ -6,7 +6,7 @@ import type {
   TActionCallback,
   TBrowserActionArgs,
   TBrowserActionResp
-} from '@GBR/types'
+} from '@GBB/types'
 
 import { recordBrowser } from './recordBrowser'
 import { isArr, isStr, isFunc, noPropArr } from '@keg-hub/jsutils'

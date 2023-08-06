@@ -1,8 +1,8 @@
 import type { Player } from './player'
-import type { TPlayerEvent, TPlayerEventData } from '@GBR/types'
+import type { TPlayerEvent, TPlayerEventData } from '@GBB/types'
 import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 
-import { PWPlay } from '@GBR/constants'
+import { PWPlay } from '@GBB/constants'
 import { Parkin } from '@ltipton/parkin'
 import { emptyObj } from '@keg-hub/jsutils'
 import { ParkinTest } from '@ltipton/parkin/test'

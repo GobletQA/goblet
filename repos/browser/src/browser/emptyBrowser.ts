@@ -5,7 +5,7 @@ import type {
   TStopTraceOpts,
   TStartTraceOpts,
   TBrowserContext,
-} from '@GBR/types'
+} from '@GBB/types'
 
 import { ghostMouse } from './ghostMouse'
 import { EventEmitter } from 'node:events'

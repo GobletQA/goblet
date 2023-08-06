@@ -1,4 +1,4 @@
-import type { EBrowserName, TBrowserServer } from '@GBR/types'
+import type { EBrowserName, TBrowserServer } from '@GBB/types'
 import type playwright from 'playwright'
 
 /**

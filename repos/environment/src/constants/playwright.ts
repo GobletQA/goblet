@@ -1,4 +1,4 @@
-import { EBrowserName } from '@GBR/types'
+import { EBrowserName } from '@GBB/types'
 import {deepFreeze, keyMap} from '@keg-hub/jsutils'
 
 export const ChildBrowserServerKey = `child-playwright-server`

@@ -5,12 +5,12 @@ import type {
   TBrowserContextGeo,
   TBrowserContextOpts,
   TBrowserContextVideo,
-} from '@GBR/types'
+} from '@GBB/types'
 
 
-import { getScreenDims } from '@GBR/utils/getScreenDims'
-import { parseJsonEnvArr } from '@GBR/utils/parseJsonEnvArr'
-import { artifactSaveActive } from '@GBR/utils/artifactSaveOption'
+import { getScreenDims } from '@GBB/utils/getScreenDims'
+import { parseJsonEnvArr } from '@GBB/utils/parseJsonEnvArr'
+import { artifactSaveActive } from '@GBB/utils/artifactSaveOption'
 import {
   isArr,
   isNum,

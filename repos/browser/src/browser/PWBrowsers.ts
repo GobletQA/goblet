@@ -6,23 +6,23 @@ import type {
   EBrowserName,
   TGobletConfig,
   TPWComponents,
-} from '@GBR/types'
+} from '@GBB/types'
 import type { TGetPageCB } from './browser'
 
 import playwright from 'playwright'
-import { Logger } from '@GBR/utils/logger'
+import { Logger } from '@GBB/utils/logger'
 import { deepMerge } from '@keg-hub/jsutils'
 import { EmptyBrowser } from './emptyBrowser'
-import { CreateBrowserRetry } from '@GBR/constants'
-import { buildStatus } from '@GBR/utils/buildStatus'
-import { socketActive } from '@GBR/utils/checkVncEnv'
-import { getBrowserOpts } from '@GBR/utils/getBrowserOpts'
-import { getBrowserType } from '@GBR/utils/getBrowserType'
-import { getContextOpts } from '@GBR/utils/getContextOpts'
+import { CreateBrowserRetry } from '@GBB/constants'
+import { buildStatus } from '@GBB/utils/buildStatus'
+import { socketActive } from '@GBB/utils/checkVncEnv'
+import { getBrowserOpts } from '@GBB/utils/getBrowserOpts'
+import { getBrowserType } from '@GBB/utils/getBrowserType'
+import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { toBool, emptyObj, isFunc } from '@keg-hub/jsutils'
 import { inDocker } from '@keg-hub/jsutils/src/node/inDocker'
-import { buildBrowserConf } from '@GBR/utils/buildBrowserConf'
-import { getServerEndpoint } from '@GBR/server/getServerEndpoint'
+import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
+import { getServerEndpoint } from '@GBB/server/getServerEndpoint'
 import { checkInternalPWContext } from './checkInternalPWContext'
 
 type TGetBrowserOpts = {

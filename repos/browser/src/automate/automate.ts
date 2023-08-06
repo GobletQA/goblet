@@ -11,14 +11,14 @@ import type {
   TAutomateCleanupCB,
   TAutomatePageEvent,
   TAutomateElementEvent,
-} from '@GBR/types'
+} from '@GBB/types'
 
-import { Logger } from '@GBR/utils/logger'
+import { Logger } from '@GBB/utils/logger'
 import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
-import { addPWInitScripts } from '@GBR/utils/addPWInitScripts'
-import { exposePWFunction } from '@GBR/utils/exposePWFunction'
+import { addPWInitScripts } from '@GBB/utils/addPWInitScripts'
+import { exposePWFunction } from '@GBB/utils/exposePWFunction'
 
-import { PWAutomateEvent } from '@GBR/constants'
+import { PWAutomateEvent } from '@GBB/constants'
 
 export class Automate {
 

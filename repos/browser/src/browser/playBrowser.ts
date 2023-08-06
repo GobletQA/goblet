@@ -1,7 +1,7 @@
-import type { TStartPlaying } from '@GBR/types'
+import type { TStartPlaying } from '@GBB/types'
 
-import { Player }  from '@GBR/player/player'
-import { startBrowser } from '@GBR/browser/browser'
+import { Player }  from '@GBB/player/player'
+import { startBrowser } from '@GBB/browser/browser'
 
 export const playBrowser = async (data:TStartPlaying) => {
   const {

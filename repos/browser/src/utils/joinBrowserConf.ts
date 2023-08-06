@@ -1,4 +1,4 @@
-import type { TBrowserConf } from '@GBR/types'
+import type { TBrowserConf } from '@GBB/types'
 
 /**
  * Builds a browser config merging the passed in params and global config.browser settings
