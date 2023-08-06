@@ -1,8 +1,7 @@
-import type { TGobletConfig } from '../types'
-
 import fs from 'fs'
 import path from 'path'
 import { Logger } from '@GSH/libs/logger'
+import { ENVS } from '@gobletqa/environment'
 import { configFromFolder } from './configFromFolder'
 
 /**
@@ -25,13 +24,9 @@ export const findConfig = (startDir?:string) => {
  * Loads a goblet.config from a folder path recursively
  */
 export const loadConfigFromBase = (base:string) => {
-  const {
-    GOBLET_CONFIG_BASE,
-    GOBLET_RUN_FROM_CI,
-  } = process.env
 
   // Check if running from a CI environment and the GOBLET_CONFIG_BASE is set
-  base = base || GOBLET_CONFIG_BASE
+  base = base || ENVS.GOBLET_CONFIG_BASE
 
   if (!base) return null
 
@@ -66,7 +61,7 @@ export const loadConfigFromBase = (base:string) => {
   }
   
   const stat = fs.lstatSync(cleanedDir)
-  const startDir = stat.isDirectory() || (GOBLET_RUN_FROM_CI && stat.isSymbolicLink())
+  const startDir = stat.isDirectory() || (ENVS.GOBLET_RUN_FROM_CI && stat.isSymbolicLink())
     ? cleanedDir
     : path.dirname(cleanedDir)
 

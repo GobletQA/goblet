@@ -1,18 +1,17 @@
 import type { TGenEnv } from "@GENV/types"
 
 import { toBool } from "@keg-hub/jsutils"
+const {
+  GB_VNC_ACTIVE,
+  GB_PW_SOCKET_ACTIVE,
+} = process.env
 
-export const screencast = (general:TGenEnv) => {
-  const {
 
-    GB_VNC_ACTIVE,
-    GB_PW_SOCKET_ACTIVE,
-    GB_SC_LOG_LEVEL=general.GB_LOG_LEVEL,
-  } = process.env
-  
+const screencast = (general:TGenEnv) => {
   return {
-    GB_SC_LOG_LEVEL,
     GB_VNC_ACTIVE: toBool(GB_VNC_ACTIVE),
     GB_PW_SOCKET_ACTIVE: toBool(GB_PW_SOCKET_ACTIVE),
   }
 }
+
+export default screencast

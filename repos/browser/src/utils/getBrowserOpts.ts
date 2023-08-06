@@ -55,7 +55,7 @@ const options = {
 
 const fromBaseDir = (config:TGobletConfig) => {
   const {
-    repoRoot=process.env.GOBLET_CONFIG_BASE,
+    repoRoot=ENVS.GOBLET_CONFIG_BASE,
     workDir=`goblet`
   } = config.paths
 

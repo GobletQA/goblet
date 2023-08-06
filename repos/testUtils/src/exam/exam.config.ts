@@ -14,10 +14,11 @@ import { aliases } from './setupTestAliases'
 
 import type { TBrowserConf } from '../types'
 import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
-import type { TExamConfig, TExamRunners, TExRunnerCfg } from '@gobletqa/exam'
+import type { TExamConfig } from '@gobletqa/exam'
 
 
 import path from 'path'
+import { ENVS } from '@gobletqa/environment'
 import { EExTestMode } from '@gobletqa/exam'
 import { getContextOpts } from '@gobletqa/browser'
 import { emptyArr, emptyObj, ensureArr, flatUnion} from '@keg-hub/jsutils'
@@ -46,15 +47,10 @@ export type TExamConfOpts = TTestMatch & {
 }
 
 const ExamConfig = ():TExamConfig => {
-  const {
-    GOBLET_CONFIG_BASE,
-    GOBLET_MOUNT_ROOT,
-    GOBLET_TEST_DEBUG
-  } = process.env
 
   const config = getGobletConfig()
 
-  GOBLET_TEST_DEBUG &&
+  ENVS.GOBLET_TEST_DEBUG &&
     process.stdout.write(`\n[Goblet] Loaded Config:\n${JSON.stringify(config, null, 2)}\n`)
 
   const baseDir = getRepoGobletDir(config)
@@ -70,8 +66,8 @@ const ExamConfig = ():TExamConfig => {
 
   const rootDir = examConfig?.rootDir
     || config.paths.repoRoot
-    || GOBLET_CONFIG_BASE
-    || GOBLET_MOUNT_ROOT
+    || ENVS.GOBLET_CONFIG_BASE
+    || ENVS.GOBLET_MOUNT_ROOT
     || `/goblet`
 
   const testMatch = examConfig.testMatch

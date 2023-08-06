@@ -1,4 +1,4 @@
-export const SC_AUTH_BYPASS_ROUTES = [
+export const SCAuthBypassRoutes = [
   `/`,
   `/auth/validate`,
   `/health-check`,

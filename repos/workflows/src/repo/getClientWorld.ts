@@ -1,9 +1,10 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 import type { TGitData, TRepoPaths, TGobletConfig, TRepo } from '@GWF/types'
 
+import { DefWorld } from '../constants'
+import { ENVS } from '@gobletqa/environment'
 import { loaderSearch } from '@gobletqa/shared/libs/loader'
 import { noOpObj, deepMerge } from '@keg-hub/jsutils/src/node'
-import { DefWorld, GB_GIT_MOUNTED_REMOTE } from '../constants'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 
@@ -15,25 +16,25 @@ import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 const setGobletEnv = (
   config:TGobletConfig,
 ) => {
-  const orgGobletEnv = process.env.GOBLET_ENV
-  const orgGobletBase = process.env.GOBLET_CONFIG_BASE
-  const orgGobletRemoteKey = process.env[GB_GIT_MOUNTED_REMOTE]
+  const orgGobletEnv = ENVS.GOBLET_ENV
+  const orgGobletBase = ENVS.GOBLET_CONFIG_BASE
+  const orgGobletRemoteKey = ENVS.GB_GIT_MOUNTED_REMOTE
 
   const environment = (config as TRepo)?.environment
-  if(environment && process.env.GOBLET_ENV !== environment)
-    process.env.GOBLET_ENV = environment
+  if(environment && ENVS.GOBLET_ENV !== environment)
+    ENVS.GOBLET_ENV = environment
 
   const { repoRoot } = (config as TRepo)?.paths || noOpObj as TRepoPaths
   if(repoRoot)
-    process.env.GOBLET_CONFIG_BASE = repoRoot
+    ENVS.GOBLET_CONFIG_BASE = repoRoot
 
   const { remote } = (config as TRepo)?.git || noOpObj as TGitData
-  if(remote) process.env[GB_GIT_MOUNTED_REMOTE] = remote
+  if(remote) ENVS.GB_GIT_MOUNTED_REMOTE = remote
 
   return () => {
-    if(orgGobletEnv) process.env.GOBLET_ENV = orgGobletEnv
-    if(orgGobletBase) process.env.GOBLET_CONFIG_BASE = orgGobletBase
-    if(orgGobletRemoteKey) process.env[GB_GIT_MOUNTED_REMOTE] = orgGobletRemoteKey
+    if(orgGobletEnv) ENVS.GOBLET_ENV = orgGobletEnv
+    if(orgGobletBase) ENVS.GOBLET_CONFIG_BASE = orgGobletBase
+    if(orgGobletRemoteKey) ENVS.GB_GIT_MOUNTED_REMOTE = orgGobletRemoteKey
   }
 
 }

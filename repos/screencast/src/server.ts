@@ -1,6 +1,6 @@
 import '@GSC/utils/logger'
 import { initSocket } from '@GSC/libs/websocket'
-import { SC_AUTH_BYPASS_ROUTES } from '@GSC/constants'
+import { SCAuthBypassRoutes } from '@GSC/constants'
 import { setupRepo } from '@GSC/middleware/setupRepo'
 import { getApp } from '@gobletqa/shared/express/app'
 import { setupBrowser, setupEndpoints } from '@GSC/middleware'
@@ -31,11 +31,11 @@ const initApi = async () => {
   setupLoggerReq(app)
   setupBlacklist(app)
   setupCors(app)
-  setupJWT(app, SC_AUTH_BYPASS_ROUTES)
+  setupJWT(app, SCAuthBypassRoutes)
   setupServer(app)
   validateUser({
     route: `/screencast\/*`,
-    bypassRoutes: SC_AUTH_BYPASS_ROUTES
+    bypassRoutes: SCAuthBypassRoutes
   })
   setupRepo()
   await setupEndpoints()

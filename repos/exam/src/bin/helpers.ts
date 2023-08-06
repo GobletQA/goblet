@@ -2,6 +2,7 @@ import type { TExamConfig, TExamCliOpts } from '@GEX/types'
 
 import path from 'path'
 import { options } from './options'
+import { ENVS } from '@gobletqa/environment'
 import { getRoot, homeDir, cwd } from './paths'
 import { argsParse } from '@keg-hub/args-parse'
 import { updateLogLevel, Logger } from "@GEX/utils/logger"
@@ -75,10 +76,10 @@ export const parseArgs = async () => {
 
   // If the GOBLET_CONFIG_BASE env is not already set,
   // And the rootDir is set, use it as the config-base
-  if(exists(opts.rootDir) && !exists(process.env.GOBLET_CONFIG_BASE)){
+  if(exists(opts.rootDir) && !exists(ENVS.GOBLET_CONFIG_BASE)){
     const resolved = path.resolve(opts.rootDir)
     opts.rootDir = resolved
-    process.env.GOBLET_CONFIG_BASE = resolved
+    ENVS.GOBLET_CONFIG_BASE = resolved
   }
 
   /**

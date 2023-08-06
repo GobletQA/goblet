@@ -9,3 +9,5 @@
   * Speeds up loading the token when loading secrets
   * This gets set, then removed in `shared/repo/getClientWorld.ts`
 * `GB_REPO_NO_SECRETS` - Disables loading secrets for repos that don't have them
+* `GOBLET_ENV` - The current environment goblet is running in for a specific repo
+  * Sets which `values` and `secrets` files will be loaded during test execution

@@ -23,6 +23,7 @@ import { getWorld } from './world'
 import { Parkin } from '@ltipton/parkin'
 import { latentRepo } from './latentRepo'
 import { emptyObj, } from '@keg-hub/jsutils'
+import { ENVS } from '@gobletqa/environment'
 import { getProviderData } from './getProviderData'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
 import { getFileTypes } from '@gobletqa/shared/utils/getFileTypes'
@@ -276,8 +277,8 @@ export class Repo {
    *
    */
   setEnvironment = (environment?:string, refreshWld:boolean=true) => {
-    this.environment = environment || process.env.GOBLET_ENV
-    if(!process.env.GOBLET_ENV && this.environment) process.env.GOBLET_ENV = this.environment
+    this.environment = environment || ENVS.GOBLET_ENV
+    if(!ENVS.GOBLET_ENV && this.environment) ENVS.GOBLET_ENV = this.environment
     
     // Pass false to ensure we don't get into an infinite loop
     refreshWld && this.refreshWorld({

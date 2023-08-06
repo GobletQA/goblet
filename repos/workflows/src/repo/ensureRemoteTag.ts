@@ -1,9 +1,9 @@
-import type { TGitOpts, TGobletConfig } from '../types'
+import type { TGitOpts } from '../types'
 
-import { Logger } from '@keg-hub/cli-utils'
 import { git } from '../git'
 import { latentRepo } from './latentRepo'
-import { REPO_TAG_REF } from '../constants'
+import { Logger } from '@keg-hub/cli-utils'
+import { ENVS } from '@gobletqa/environment'
 
 const addTag = async (gitOpts:TGitOpts, force?:boolean) => {
   const ref = await git.hash.content({
@@ -17,7 +17,7 @@ const addTag = async (gitOpts:TGitOpts, force?:boolean) => {
     ...gitOpts,
     force,
     ref,
-    tag: REPO_TAG_REF,
+    tag: ENVS.GB_SECRETS_TAG_REF,
   })
 
   if(tagErr || tagResp?.exitCode)
@@ -27,7 +27,7 @@ const addTag = async (gitOpts:TGitOpts, force?:boolean) => {
   const pushed = await git.tag.push({
     ...gitOpts,
     force,
-    tag: REPO_TAG_REF,
+    tag: ENVS.GB_SECRETS_TAG_REF,
     
   })
 
@@ -40,7 +40,7 @@ export const ensureRemoteTag = async (gitOpts:TGitOpts) => {
   const existing = await git.tag.cat({
     ...gitOpts,
     log: false,
-    tag: REPO_TAG_REF,
+    tag: ENVS.GB_SECRETS_TAG_REF,
   })
 
   // If tag does not exist, then create one

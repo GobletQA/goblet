@@ -5,6 +5,7 @@ import type {
   TControllerType,
   TControllerConnectOpts,
 } from '@GBE/types'
+import { ENVS } from '@gobletqa/environment'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
@@ -12,7 +13,6 @@ import { toNum, exists, deepMerge, toBool } from '@keg-hub/jsutils'
 
 const {
   NODE_ENV=`local`,
-  GB_SECRETS_TAG_REF,
   GB_LT_TOKEN_SECRET,
   GB_GIT_PROVIDER_DATA,
 } = process.env
@@ -205,10 +205,10 @@ export const conductorConfig:TConductorOpts = deepMerge({
           GB_VNC_ACTIVE: true,
           
           // Location of the global git ignore file
-          GB_GIT_GLOBAL_IGNORE,
+          GB_GIT_GLOBAL_IGNORE: ENVS.GB_GIT_GLOBAL_IGNORE,
 
           // Used to generate the secret from a repository tag. Is NOT secret and can be public
-          GB_SECRETS_TAG_REF,
+          GB_SECRETS_TAG_REF: ENVS.GB_SECRETS_TAG_REF,
 
           // Repo Tokens secret - This should never be shared outside goblet... ever!!!
           GB_LT_TOKEN_SECRET,

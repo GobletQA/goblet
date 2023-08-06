@@ -7,11 +7,11 @@ import type {
 import { Logger } from '@GSC/utils/logger'
 import * as WSConstants from '@GSC/constants/websocket'
 import {
+  WSInit,
+  WSAddPeer,
   TagPrefix,
-  WS_INIT,
-  WS_ADD_PEER,
-  WS_NOT_AUTHORIZED,
-  WS_PEER_DISCONNECT,
+  WSNotAuthorized,
+  WSPeerDisconnect,
 } from '@GSC/constants'
 
 import {
@@ -278,13 +278,13 @@ export class SocketManager {
       const id = this.add(socket)
       if (!id) return console.error(`setupSocket - Could not add socket. No id returned.`, socket, id)
 
-      this.emit(socket, WS_INIT, {
+      this.emit(socket, WSInit, {
         id,
         message: `Server socket initialized!`,
         data: { peers: Object.keys(this.peers) },
       })
 
-      this.broadCastAll(socket, WS_ADD_PEER, {
+      this.broadCastAll(socket, WSAddPeer, {
         id: socket.id,
         data: { peers: Object.keys(this.peers) },
       })
@@ -304,7 +304,7 @@ export class SocketManager {
   disconnect = (
     _socket:Socket|string,
     message:TSocketMessageObj,
-    tag:string=WS_NOT_AUTHORIZED
+    tag:string=WSNotAuthorized
   ) => {
 
     // Ensure we have the socket object and not the id
@@ -344,7 +344,7 @@ export class SocketManager {
 
       if (this.peers[socket.id]) delete this.peers[socket.id]
 
-      this.emitAll(WS_PEER_DISCONNECT, {
+      this.emitAll(WSPeerDisconnect, {
         socketId: socket.id,
         data: { peers: Object.keys(this.peers) },
       })

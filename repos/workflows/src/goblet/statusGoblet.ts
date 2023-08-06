@@ -3,7 +3,7 @@ import type { TWFGobletConfig, TWFResp, TGitOpts, TRepoOpts } from '@GWF/types'
 
 import path from 'path'
 import { git, RepoWatcher } from '../git'
-import { LOCAL_MOUNT } from '../constants'
+import { RepoLocalMount } from '../constants'
 import { repoSecrets } from '../repo/repoSecrets'
 import { getRepoName } from '../utils/getRepoName'
 import { noOpObj, omitKeys } from '@keg-hub/jsutils'
@@ -45,11 +45,11 @@ const validatePath = async location => {
 const statusForLocal = async (config:TWFGobletConfig, opts:TGitOpts) => {
   Logger.info(`Checking repo status in local mode...`)
 
-  const isValidPath = await validatePath(LOCAL_MOUNT)
+  const isValidPath = await validatePath(RepoLocalMount)
 
   // Check if the local mount folder exists
   // If not then it's empty
-  const gobletConfig = isValidPath && gobletLoader({ basePath: LOCAL_MOUNT})
+  const gobletConfig = isValidPath && gobletLoader({ basePath: RepoLocalMount})
 
   const secretsFail = await repoSecrets(opts, gobletConfig)
   if(secretsFail) return secretsFail

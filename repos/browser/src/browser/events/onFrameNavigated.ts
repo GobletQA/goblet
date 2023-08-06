@@ -3,7 +3,7 @@ import type { TBrowserEventArgs, TBrowserPage } from '@GBR/types'
 
 import { EBrowserEvent } from '@GBR/types'
 // import { symParse } from '@GBR/libs/symplasm'
-import { WS_PW_URL_CHANGE } from '@GBR/constants'
+import { WSPwUrlChange } from '@GBR/constants'
 
 export const onFrameNavigated = ({ socket, Manager }:TBrowserEventArgs) => {
   return async (page:TBrowserPage, frame:Frame) => {
@@ -21,7 +21,7 @@ export const onFrameNavigated = ({ socket, Manager }:TBrowserEventArgs) => {
 
     Manager.emit(
       socket,
-      WS_PW_URL_CHANGE,
+      WSPwUrlChange,
       {data: { url, ast: [] },
       group: socket.id
     })
