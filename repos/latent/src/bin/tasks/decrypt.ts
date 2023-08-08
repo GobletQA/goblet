@@ -1,39 +1,36 @@
 import type {
   TTask,
-  TTaskParams,
   TTaskActionArgs
 } from '@GLT/cli/types'
 
 import {Latent} from "@GLT/latent"
-  // token?:string
-  // location?:string
-  // encoded?:string
-  // file?:TLatentFile
-  
-  
-  // crypto?:TLatentCryptoOpts
 
+/**
+ *
+ * Decrypts a repos secrets file
+ * Requires a repo token, or the repo url and the correct latent token for the repo
+ * @example
+ * pnpm lt:dev dec token="<repo-token>" location="/path/to/secrets/directory"
+ * @example
+ * pnpm lt:dev dec remote="<repo-ref>" location="/path/to/secrets/directory"
+ *
+ */
 const decryptAct = (args:TTaskActionArgs) => {
-    const { remote, token, repo, ...rest } = args.params
-    console.log(args)
+  const { remote, token, repo, ...rest } = args.params
 
-  
+  const latent = new Latent()
+  const tok = token || latent.getToken(remote)
 
-    // const latent = new Latent()
+  const secrets = latent.secrets.load({
+    ...rest,
+    token: tok
+  })
 
-    // const token = latent.getToken(remote)
+  if(!secrets) throw new Error(`No secrets found`)
 
-    // const secrets = latent.secrets.load({
-    //   ...rest,
-    //   token
-    // })
-
-    // console.log(`------- secrets -------`)
-    // console.log(secrets)
-
-    // return secrets
-  }
-
+  console.log(`Repo Secrets`)
+  console.table(secrets)
+}
 
 export const decrypt:TTask = {
   name: `decrypt`,
@@ -45,11 +42,9 @@ export const decrypt:TTask = {
     remote: {},
     repo: {},
     location: {
+      required: true,
       alias: [`file`, `secrets`],
       description: `Path location of the secrets file. Overrides the repo option`
-    },
-    file: {
-      
     },
     encoded: {
       type: `bool`,
