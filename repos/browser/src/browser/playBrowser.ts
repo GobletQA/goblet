@@ -1,7 +1,7 @@
 import type { TStartPlaying } from '@GBB/types'
 
 import { Player }  from '@GBB/player/player'
-import { startBrowser } from '@GBB/browser/browser'
+import { GBrowser, startBrowser } from '@GBB/browser'
 
 export const playBrowser = async (data:TStartPlaying) => {
   const {
@@ -16,7 +16,7 @@ export const playBrowser = async (data:TStartPlaying) => {
 
   const { props, action:method } = action
   const [playerOpts, url] = props
-  const browserItems = pwComponents || await startBrowser({ browserConf })
+  const browserItems = pwComponents || await GBrowser.start({ browserConf })
 
   const player = new Player({
     onEvent,

@@ -1,5 +1,5 @@
 import type { Express } from 'express'
-import { startBrowser } from '@gobletqa/browser'
+import { GBrowser } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 /**
@@ -7,5 +7,5 @@ import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
  */
 export const setupBrowser = async (app:Express) => {
   const browserConf = joinBrowserConf({}, app)
-  await startBrowser({ browserConf })
+  await GBrowser.start({ browserConf })
 }

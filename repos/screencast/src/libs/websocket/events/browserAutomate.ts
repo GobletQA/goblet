@@ -7,7 +7,7 @@ import type {
 } from '@GSC/types'
 
 import { ExpressionKinds } from '@GSC/constants'
-import { startBrowser, Automate } from '@gobletqa/browser'
+import { GBrowser, Automate } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 const onBrowserAutomate = async (
@@ -18,7 +18,7 @@ const onBrowserAutomate = async (
 ) => {
 
   const browserConf = joinBrowserConf(data.browser, app)
-  const pwComponents = await startBrowser({ browserConf })
+  const pwComponents = await GBrowser.start({ browserConf })
 
   switch(data?.selectorType){
     case ExpressionKinds.url: {

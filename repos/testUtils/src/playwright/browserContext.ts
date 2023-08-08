@@ -12,9 +12,7 @@ import path from 'path'
 import { startTracing } from './tracing'
 import { get, emptyObj } from '@keg-hub/jsutils'
 import {
-//   ghostMouse,
-//   getPWComponents,
-  getPWComponents,
+  GBrowser,
   DefaultStateFile,
 } from '@gobletqa/browser'
 
@@ -34,7 +32,7 @@ export const setupBrowser = async (repo?:TGobletConfig) => {
   
   const parkin = global.getParkinInstance()
   const gCtx = get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
-  const { browser, context } = await getPWComponents({
+  const { browser, context } = await GBrowser.get({
     config: repo || global?.__goblet?.config,
     browserConf: {
       type,

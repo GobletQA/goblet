@@ -1,6 +1,6 @@
 import type { TStartRecording } from '@GBB/types'
 
-import { startBrowser } from './browser'
+import { GBrowser } from './browser'
 import { Recorder }  from '../recorder/recorder'
 
 /**
@@ -19,7 +19,7 @@ export const recordBrowser = async (data:TStartRecording) => {
   const { props, action:method } = action
 
   const [recordOpts, url] = props
-  const browserItems = pwComponents || await startBrowser({ browserConf })
+  const browserItems = pwComponents || await GBrowser.start({ browserConf })
 
   const recorder = Recorder.getInstance(id, {
     onCleanup,

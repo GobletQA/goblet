@@ -6,6 +6,7 @@ import type {
   EBrowserName,
   TGobletConfig,
   TPWComponents,
+  TBrowserContext,
 } from '@GBB/types'
 import type { TGetPageCB } from './browser'
 
@@ -408,6 +409,21 @@ export class PWBrowsers {
       throw err
     }
 
+  }
+
+  /**
+  * Captures new pages being opened, so they can be handled accordingly
+  * @function
+  * @public
+  */
+  captureNewPages = async (context:TBrowserContext) => {
+    // Get all new pages (including popups) in the context
+    context.on('page', async page => {
+      await page.waitForLoadState()
+      const url = page.url()
+      // Handle new pages trying to redirect to new urls
+      
+    })
   }
 
 

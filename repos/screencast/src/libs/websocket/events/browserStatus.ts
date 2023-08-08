@@ -2,8 +2,8 @@ import type { Express } from 'express'
 import type { TBrowserConf, SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
+import { GBrowser } from '@gobletqa/browser'
 import { get, noOpObj } from '@keg-hub/jsutils'
-import { startBrowser } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 let prevStatus
@@ -28,7 +28,7 @@ const getStatusUpdate = async (
 ) => {
   
   // TODO: Need to load the gobletConfig and pass it in here
-  const status = await startBrowser({ browserConf: joinBrowserConf(browserConf) })
+  const status = await GBrowser.start({ browserConf: joinBrowserConf(browserConf) })
   // If no status chance, don't update the backend
   if (prevStatus === status?.status) return
 

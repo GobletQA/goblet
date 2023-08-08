@@ -12,7 +12,7 @@ import type {
 import {emptyObj, isStr} from '@keg-hub/jsutils'
 
 import {
-  getPWComponents,
+  GBrowser,
   setContextCookie,
   contextStorageLoc,
   saveContextCookie,
@@ -123,7 +123,7 @@ export const setBrowserDefaults = async (props:TSetBrowserDefaults) => {
     pwComponents,
   } = props
 
-  const { context, page } = pwComponents || await getPWComponents({ config, browserConf })
+  const { context, page } = pwComponents || await GBrowser.get({ config, browserConf })
 
   await setContextSettings({
     config,

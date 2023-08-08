@@ -3,11 +3,11 @@ import type { Response, Request, RequestHandler } from 'express'
 
 
 import { limbo } from '@keg-hub/jsutils'
+import { GBrowser } from '@gobletqa/browser'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { startBrowser, getPWComponents } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 /**
@@ -21,10 +21,10 @@ const browserRestart:RequestHandler = asyncWrap(async (req:Request, res:Response
 
   const browserConf = joinBrowserConf(body)
 
-  const { context } = await getPWComponents({ config, browserConf })
+  const { context } = await GBrowser.get({ config, browserConf })
 
   context && await context.close()
-  const { status } = await startBrowser({
+  const { status } = await GBrowser.start({
     config,
     browserConf,
     overrides: body

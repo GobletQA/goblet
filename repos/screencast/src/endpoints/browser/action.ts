@@ -8,7 +8,11 @@ import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { setBrowserDefaults, getPWComponents, actionBrowser } from '@gobletqa/browser'
+import {
+  GBrowser,
+  actionBrowser,
+  setBrowserDefaults,
+} from '@gobletqa/browser'
 
 /**
  * Execute an action on a playwright component ( browser, context, page )
@@ -27,7 +31,7 @@ const browserAction:RequestHandler = asyncWrap(async (req:JWTRequest, res:Respon
   const [__, repo] = await limbo<Repo>(loadRepoFromReq(req))
   const browserConf = joinBrowserConf(browser)
 
-  const pwComponents = await getPWComponents({
+  const pwComponents = await GBrowser.get({
     browserConf,
     config:repo,
   })

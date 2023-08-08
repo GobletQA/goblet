@@ -12,9 +12,9 @@ import type {
  * Starts the playwright chromium server on the HOST machine,
  * The `endpoint` is then passed to the docker container as an ENV - BROWSER_WS_ENDPOINT
  */
+import { GBrowser } from '@gobletqa/browser'
 import { Logger, inDocker } from '@keg-hub/cli-utils'
 import { noOpObj, exists, isEmpty, limbo } from '@keg-hub/jsutils'
-import { getBrowserOnly } from '@gobletqa/browser/browser/browser'
 import { startServer } from '@gobletqa/browser/server/startServer'
 import { getBrowserType } from '@gobletqa/browser/utils/getBrowserType'
 import { getServerEndpoint } from '@gobletqa/browser/server/getServerEndpoint'
@@ -88,7 +88,7 @@ const testBrowserConnection = async (
   if (!paramsMatch) return
 
   const [err, resp] = await limbo(
-    getBrowserOnly({
+    GBrowser.server({
       config: gobletCfg,
       browserServer: true,
       browserConf: { type: browserType, ...browserConf },

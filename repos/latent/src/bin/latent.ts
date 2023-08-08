@@ -22,6 +22,7 @@ runTask(tasks, { env: process.env.NODE_ENV || `local` }, {
   // Default args passed to all tasks
   defaultArgs: {
     token: {
+      type: `string`,
       env: `GOBLET_TOKEN`,
       alias: [`tok`, `tk`],
       example: `<command> --token my-awesome-token`,

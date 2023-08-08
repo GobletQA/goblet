@@ -2,7 +2,7 @@ import type { Express } from 'express'
 import type { TSocketEvtCBProps } from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
-import { getPWComponents, Automate } from '@gobletqa/browser'
+import { GBrowser, Automate } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 
@@ -18,7 +18,7 @@ export const cancelAutomate = (app:Express) => {
     }
     else {
       const browserConf = joinBrowserConf(data.browser)
-      const pwComponents = await getPWComponents({ browserConf })
+      const pwComponents = await GBrowser.get({ browserConf })
       await Automate.cancel(pwComponents, data)
     }
   }

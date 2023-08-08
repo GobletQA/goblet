@@ -2,7 +2,7 @@ import type { Response, Request, RequestHandler } from 'express'
 import type { Repo } from '@gobletqa/workflows'
 
 import { limbo } from '@keg-hub/jsutils'
-import { startBrowser } from '@gobletqa/browser'
+import { GBrowser } from '@gobletqa/browser'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
@@ -19,7 +19,7 @@ export const browserStart:RequestHandler = asyncWrap(async (req:Request, res:Res
   const { query } = req
 
   const [__, config] = await limbo<Repo>(loadRepoFromReq(req))
-  const { status } = await startBrowser({ config, browserConf: joinBrowserConf(query) })
+  const { status } = await GBrowser.start({ config, browserConf: joinBrowserConf(query) })
 
   return apiRes(res, status, 200)
 })

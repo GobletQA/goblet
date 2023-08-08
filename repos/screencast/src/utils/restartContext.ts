@@ -13,9 +13,8 @@ import { SocketManager } from '@GSC/libs/websocket/manager/manager'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 import {
+  GBrowser,
   GobletQAUrl,
-  startBrowser,
-  getPWComponents,
 } from '@gobletqa/browser'
 
 type TRestartWId = {
@@ -88,20 +87,20 @@ const getSocket = (props:TRestartContext) => {
 export const restartContext = async (props:TRestartContext) => {
   // TODO: need to get the gobletConfig and pass it in here
   const browserConf = joinBrowserConf(props.browser)
-  const { context, page } = await getPWComponents({ browserConf })
+  const { context, page } = await GBrowser.get({ browserConf })
 
   const url = getPageUrl(props, page)
   const extraCtxOpts = await getCtxOptions(props, browserConf, context)
 
   context && await context.close()
 
-  await startBrowser({
+  await GBrowser.start({
     browserConf,
     initialUrl: url,
     overrides: { context: extraCtxOpts },
   })
 
-  const pwComponents = await getPWComponents({ browserConf })
+  const pwComponents = await GBrowser.get({ browserConf })
   global.context = pwComponents.context
 
   browserEvents({

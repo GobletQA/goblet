@@ -2,14 +2,14 @@ import type { TBrowserEventArgs } from '@GSC/types'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 import {
   Events,
-  startBrowser,
+  GBrowser,
   BrowserEvents,
 } from '@gobletqa/browser'
 
 
 export const browserEvents = async (args:TBrowserEventArgs) => {
   const pwComponents = args.pwComponents
-    || await startBrowser({ browserConf: joinBrowserConf(args.browserConf) })
+    || await GBrowser.start({ browserConf: joinBrowserConf(args.browserConf) })
 
   const { Automate, ...browserEvts } = Events(args)
 

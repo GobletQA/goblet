@@ -36,7 +36,7 @@ const handleStart = async (
       console.log(`Emit ${event.name} event`, event)
       Manager.emit(socket, event.name, { ...event, group: socket.id })
     },
-    onCleanup: async closeBrowser => {
+    onCleanup: async (browserClose:boolean) => {
       // TODO: Figure out what to do here
       // Now using the same browser instance, so we don't need to close it
     }

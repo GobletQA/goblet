@@ -96,7 +96,7 @@ const handleStartPlaying = async (
       })
 
     },
-    onCleanup: async (closeBrowser:boolean) => {
+    onCleanup: async (browserClose:boolean) => {
       socket?.id
         && Manager?.cache[socket.id]?.player
         && (Manager.cache[socket.id].player = undefined)

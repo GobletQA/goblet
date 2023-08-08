@@ -1,5 +1,6 @@
 import type { TStartBrowser } from './PWBrowsers'
 import type {
+  TBrowser,
   TBrowserPage,
   TBrowserConf,
   EBrowserType,
@@ -44,181 +45,180 @@ export type TGetCtx = {
   overrides?:Partial<TBrowserConf>
 }
 
-/**
- * Returns the cached playwright page
- * Only used by testUtils
- *
- *
- * @function
- */
-const getPage = (async ({
-  config,
-  browserConf,
-  initialUrl=GobletQAUrl,
-  overrides=emptyObj as TBrowserConf,
-}:TGetPage):Promise<TPWComponents> => {
-  try {
+export class Browser {
 
-    const { context, browser } = await getContext({
-      config,
-      overrides,
-      browserConf,
-    })
-    const pages = context.pages()
+  browser:TBrowser
+  page:TBrowserPage
+  context:TBrowserContext
+  creatingPage:boolean=false
+  close=pwBrowsers.closeBrowser
+
+  constructor(){
     
-    Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
-    const hasPages = Boolean(pages.length)
-    const hasMultiplePages = pages.length > 1
-
-    if(hasMultiplePages){
-      Logger.verbose(`getPage - Closing extra pages on the context`)
-      await Promise.all(pages.map(async (page, idx) => idx && await page.close()))
-    }
-
-    // Hack due to multiple calls on frontend startup
-    // If more then one calls, and the browser is not create
-    // then it will create two browsers
-    // So this re-calls the same method when creatingBrowser is set
-    // To allow consecutive calls on start up
-    if(!hasPages && getPage.creatingPage)
-      return new Promise((res, rej) => {
-        Logger.info(`getPage - Browser Page is creating, try agin in ${CreateBrowserRetry}ms`)
-        setTimeout(() => res(getPage({
-          initialUrl,
-          browserConf 
-        })), CreateBrowserRetry)
-      })
-
-    let page:TBrowserPage
-    getPage.creatingPage = true
-    if(hasPages) page = pages[0]
-    else {
-
-      const pg = await context.newPage()
-      
-      const page = ghostMouse(pg)
-
-      try {
-        await page.goto(initialUrl)
-      }
-      catch(err){
-        console.error(err)
-      }
-    }
-
-    getPage.creatingPage = false
-    const browserType = browser.browserType?.().name?.()
-
-    hasPages
-      ? Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
-      : Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
-
-    return { context, browser, page } as TPWComponents
   }
-  catch(err){
-    getPage.creatingPage = false
-    throw err
-  }
-}) as TGetPageCB
-getPage.creatingPage = false
 
-/**
- * Returns the cached Playwright context
- *
- * @function
- */
-const getContext = async (args:TGetCtx) => {
-  const {
+  #getPage = async ({
     config,
     browserConf,
+    initialUrl=GobletQAUrl,
     overrides=emptyObj as TBrowserConf,
-  } = args
+  }:TGetPage):Promise<TPWComponents> => {
 
+    try {
 
-  const resp = await pwBrowsers.getBrowser({ config, browserConf })
+      const { context, browser } = await this.#getContext({
+        config,
+        overrides,
+        browserConf,
+      })
+      const pages = context.pages()
+      
+      Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
+      const hasPages = Boolean(pages.length)
+      const hasMultiplePages = pages.length > 1
 
-  let context = resp.context
-  const browser = resp.browser
-  
-  if(!context){
-    const contexts = browser.contexts()
-    const hasContexts = Boolean(contexts.length)
-    const hasMultipleContexts = contexts.length > 1
+      if(hasMultiplePages){
+        Logger.verbose(`getPage - Closing extra pages on the context`)
+        await Promise.all(pages.map(async (page, idx) => idx && await page.close()))
+      }
 
-    if(hasMultipleContexts){
-      Logger.verbose(`getContext - Closing extra contexts on the browser`)
-      await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
+      // Hack due to multiple calls on frontend startup
+      // If more then one calls, and the browser is not create
+      // then it will create two browsers
+      // So this re-calls the same method when creatingBrowser is set
+      // To allow consecutive calls on start up
+      if(!hasPages && this.creatingPage)
+        return new Promise((res, rej) => {
+          Logger.info(`getPage - Browser Page is creating, try agin in ${CreateBrowserRetry}ms`)
+          setTimeout(() => res(this.#getPage({
+            initialUrl,
+            browserConf
+          })), CreateBrowserRetry)
+        })
+
+      let page:TBrowserPage
+      this.creatingPage = true
+      if(hasPages) page = pages[0]
+      else {
+
+        const pg = await context.newPage()
+        
+        const page = ghostMouse(pg)
+
+        try {
+          await page.goto(initialUrl)
+        }
+        catch(err){
+          console.error(err)
+        }
+      }
+
+      this.creatingPage = false
+      const browserType = browser.browserType?.().name?.()
+
+      hasPages
+        ? Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
+        : Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
+
+      return { context, browser, page } as TPWComponents
     }
-
-    const options = getContextOpts({
-      config,
-      overrides: overrides.context,
-      contextOpts: browserConf.context,
-    })
-
-    Logger.verbose(`Context Options`, options)
-
-    if(hasContexts){
-      context = contexts[0]
-      Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
-    }
-    else {
-      context = await browser.newContext(options) as TBrowserContext
-      context.__goblet = { options }
-
-      Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
-
-      Automate.bind({ parent: context })
+    catch(err){
+      this.creatingPage = false
+      throw err
     }
 
   }
-  else Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
 
-  return { context, browser }
-}
-
-/**
- * Starts browser using playwright
- * See https://playwright.dev/docs/api/class-browsertype#browser-type-launch|Playwright Docs for more info
- * @function
- * @public
- */
-export const startBrowser = async (props:TStartBrowser):Promise<TPWComponents> => {
-  return await pwBrowsers.startBrowser(props, getPage)
-}
+  #getContext = async (args:TGetCtx) => {
+    const {
+      config,
+      browserConf,
+      overrides=emptyObj as TBrowserConf,
+    } = args
 
 
-export const getBrowserOnly = async (args:TBrowserOnly) => {
-  const { config, browserServer } = args
+    const resp = await pwBrowsers.getBrowser({ config, browserConf })
 
-  const resp = await pwBrowsers.getBrowser({
-    config,
-    opts: { browserServer },
-    browserConf: buildBrowserConf(args),
-  })
+    let context = resp.context
+    const browser = resp.browser
+    
+    if(!context){
+      const contexts = browser.contexts()
+      const hasContexts = Boolean(contexts.length)
+      const hasMultipleContexts = contexts.length > 1
 
-  return resp as TPWComponents
-}
+      if(hasMultipleContexts){
+        Logger.verbose(`getContext - Closing extra contexts on the browser`)
+        await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
+      }
 
-
-
-export const getPWComponents = async (args:TGetPWComponents) => {
-  const {
-    config,
-    initialUrl=GobletQAUrl,
-    browserConf=emptyObj as TBrowserConf,
-  } = args
-
-  const pwComponents = checkInternalPWContext(getBrowserType(browserConf.type as EBrowserType))
-
-  return pwComponents?.page
-    ? pwComponents
-    : await getPage({
+      const options = getContextOpts({
         config,
-        initialUrl,
-        browserConf,
+        overrides: overrides.context,
+        contextOpts: browserConf.context,
       })
+
+      Logger.verbose(`Context Options`, options)
+
+      if(hasContexts){
+        context = contexts[0]
+        Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
+      }
+      else {
+        context = await browser.newContext(options) as TBrowserContext
+        context.__goblet = { options }
+
+        Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
+
+        Automate.bind({ parent: context })
+      }
+
+    }
+    else Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
+
+    return { context, browser }
+  }
+
+  #getBrowser = async (args:TBrowserOnly) => {
+    const { config, browserServer } = args
+
+    const resp = await pwBrowsers.getBrowser({
+      config,
+      opts: { browserServer },
+      browserConf: buildBrowserConf(args),
+    })
+
+    return resp as TPWComponents
+  }
+
+  server = async (args:TBrowserOnly) => this.#getBrowser(args)
+
+  start = async (props:TStartBrowser):Promise<TPWComponents> => {
+    return await pwBrowsers.startBrowser(props, this.#getPage as TGetPageCB)
+  }
+
+  get = async (args:TGetPWComponents) => {
+    const {
+      config,
+      initialUrl=GobletQAUrl,
+      browserConf=emptyObj as TBrowserConf,
+    } = args
+
+    const pwComponents = checkInternalPWContext(getBrowserType(browserConf.type as EBrowserType))
+
+    return pwComponents?.page
+      ? pwComponents
+      : await this.#getPage({
+          config,
+          initialUrl,
+          browserConf,
+        })
+  }
+
+  screenshot = async (args:Record<string, any>) => {
+    // await page.screenshot({ path: 'screenshot.png', fullPage: true });
+  }
+
 }
 
-
-export const closeBrowser = pwBrowsers.closeBrowser
+export const GBrowser = new Browser()

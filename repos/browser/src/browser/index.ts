@@ -1,5 +1,7 @@
-export * from './events'
+// Reworking the browser class
 export * from './browser'
+
+export * from './events'
 export * from './ghostMouse'
 export * from './playBrowser'
 export * from './recordBrowser'
