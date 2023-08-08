@@ -7,6 +7,30 @@ import type {
 import {Latent} from "@GLT/latent"
 
 const getRemoteFromPath = (repoLoc:string) => {
+    // const config = getGobletConfig()
+    // if(!config){
+    //   console.log(`[ENV LOADER] Failed to get Goblet Config`)
+    //   return {}
+    // }
+    
+    // const { repoRoot } = config.paths
+    // if(!repoRoot){
+    //   console.log(`[ENV LOADER] Failed to get repoRoot`)
+    //   console.log(config)
+    //   return {}
+    // }
+
+    // const environmentsDir = getPathFromConfig(`environmentsDir`, config)
+
+    // if(!environmentsDir){
+    //   console.log(`[ENV LOADER] Failed to get environmentsDir`)
+    //   console.log(config)
+    //   return {}
+    // }
+
+    // const loc = location || path.join(environmentsDir, file)
+  
+  
   return ``
 }
 

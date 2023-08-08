@@ -469,6 +469,25 @@ importers:
         specifier: 2.0.22
         version: 2.0.22
 
+  repos/goblet:
+    dependencies:
+      '@gobletqa/environment':
+        specifier: workspace:../environment
+        version: link:../environment
+      '@gobletqa/logger':
+        specifier: workspace:../logger
+        version: link:../logger
+    devDependencies:
+      '@types/debug':
+        specifier: 4.1.5
+        version: 4.1.5
+      '@types/node':
+        specifier: 18.15.13
+        version: 18.15.13
+      esbuild:
+        specifier: 0.18.17
+        version: 0.18.17
+
   repos/latent:
     dependencies:
       '@keg-hub/cli-utils':
