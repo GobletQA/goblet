@@ -21,19 +21,30 @@ runTask(tasks, { env: process.env.NODE_ENV || `local` }, {
 
   // Default args passed to all tasks
   defaultArgs: {
+    token: {
+      env: `GOBLET_TOKEN`,
+      alias: [`tok`, `tk`],
+      example: `<command> --token my-awesome-token`,
+      description: ` for encrypting and decrypting secret files. Overrides the remote option`
+    },
+    remote: {
+      alias: [`rm`, `repo`, `url`],
+      env: `GB_GIT_REPO_REMOTE`,
+      example: `<command> --remote https://git-provider.com/user-name/repo-name`,
+      description: `The remote url of the repo used to encrypt the secrets`
+    },
+    repo: {
+      alias: [`base`],
+      env: `GOBLET_CONFIG_BASE`,
+      description: `Repository root directory that contains a Goblet configuration file`
+    },
     environment: {
       env: `GOBLET_ENV`,
       default: `develop`,
-      alias: [ `env` ],
-      description: `Environment to run the task in`,
       example: `<command> --environment staging`,
+      description: `The environment to use when decrypting secrets`,
+      allowed: [`test`, `local`, `develop`, `staging`, `qa`, `production`],
     },
-    token: {
-      env: `GOBLET_TOKEN`,
-      alias: [`tok`],
-      description: `Token for encrypting and decrypting secret files`,
-      example: `<command> --token my-awesome-token`,
-    }
   },
 })
 

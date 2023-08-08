@@ -7,9 +7,9 @@ import type {
 } from '@GEX/types'
 
 import { ExamRunner } from './ExamRunner'
+import { RootSuiteId } from '@GEX/constants'
 import { Errors } from '@GEX/constants/errors'
 import { ExamEvents } from '@GEX/events/Events'
-import { RootSuiteId } from '@GEX/constants/events'
 import { emptyArr, omitKeys, set, get, } from '@keg-hub/jsutils'
 import {BaseEnvironment} from '@GEX/environment/BaseEnvironment'
 
