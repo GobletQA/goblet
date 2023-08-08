@@ -1,4 +1,4 @@
-import type { TEnvConvertOpts } from '@GENV/types'
+import type { TEnvConvertOpts } from '../types'
 
 export const responseVal = <T=any>(
   val:T,

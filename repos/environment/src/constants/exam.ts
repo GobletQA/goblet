@@ -1,9 +1,5 @@
-import type { TExEventData } from "@GEX/types"
-import {
-  EPlayerTestType,
-  EPlayerTestAction,
-  EPlayerTestStatus,
-} from "@GENV/types"
+import type { EPlayerTestAction, EPlayerTestType, EPlayerTestStatus } from '@GENV/types'
+
 
 export const ExamCfgArrayItems = [
   `testMatch`,
@@ -29,24 +25,11 @@ export const NoTestsFoundPass = {
   testPath: `none`,
   id: NoTestsPassId,
   fullName: `No Tests Found`,
-  action: EPlayerTestAction.end,
-  type: EPlayerTestType.describe,
-  status: EPlayerTestStatus.passed,
+  action: `end` as EPlayerTestAction,
+  type: `describe` as EPlayerTestType,
+  status: `passed` as EPlayerTestStatus,
   description: `No tests were found and "passWithNoTests" is active`,
 }
-
-export const BuiltTestResultFailed:Partial<TExEventData> = {
-  failed: true,
-  passed: false,
-  skipped: false,
-  failedExpectations: [],
-  passedExpectations: [],
-  description: `Test failed`,
-  action: EPlayerTestAction.end,
-  type: EPlayerTestType.describe,
-  status: EPlayerTestStatus.failed,
-}
-
 
 export const TestsResultStatus = {
   failed: `failed`,
@@ -65,3 +48,15 @@ export const ExamCfgModeType = ExamCfgModeTypes.reduce(
   (acc, type) => ({...acc, [type]: type}),
   {} as Record<string, string>
 )
+
+export const BuiltTestResultFailed = {
+  failed: true,
+  passed: false,
+  skipped: false,
+  failedExpectations: [],
+  passedExpectations: [],
+  description: `Test failed`,
+  action: `end` as EPlayerTestAction,
+  type: `describe` as EPlayerTestType,
+  status: `failed` as EPlayerTestStatus,
+}

@@ -1,4 +1,4 @@
-import type { TEnvConvertOpts } from '@GENV/types'
+import type { TEnvConvertOpts } from '../types'
 
 import { ensureVal } from './ensureVal'
 import { responseVal } from './responseVal'

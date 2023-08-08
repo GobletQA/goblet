@@ -29,6 +29,7 @@ esbuild({
   cwd: GEXRoot,
   mergeEnvs:true,
   sourcemap: 'inline',
+  tsconfig: path.join(GEXRoot, `tsconfig.build.json`),
   envs: {
     ...envs,
     GOBLET_ROOT_DIR: aliases.GobletRoot

@@ -19,10 +19,10 @@
     "url": "https://github.com/GobletQA/goblet/issues"
   },
   "scripts": {
-    "build": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
-    "env:build": "node configs/build.config.js && tsc --emitDeclarationOnly --outDir build",
+    "build": "pnpm env:build && tsc --emitDeclarationOnly --outDir dist",
+    "env:build": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
     "clean": "pnpm clean:build; pnpm clean:nm",
-    "clean:build": "rm -rf build && mkdir build && echo \"\" >> build/.keep",
+    "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
     "clean:full": "pnpm clean; pnpm install",
     "clean:nm": "rm -rf node_modules",
     "format": "pnpm lint && pnpm pretty",
@@ -31,7 +31,7 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
-    "types": "tsc --emitDeclarationOnly --outDir build",
+    "types": "tsc --emitDeclarationOnly --outDir dist",
     "validate": "tsc --noEmit"
   },
   "devDependencies": {

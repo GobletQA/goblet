@@ -155,9 +155,9 @@ repos/devspace
 # testing
 /repos/**/coverage
 
-
 .bin/*
 .bin/**/*
+/repos/**/.bin
 
 # dotenv environment variables file
 .env

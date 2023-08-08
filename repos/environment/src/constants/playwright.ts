@@ -1,4 +1,4 @@
-import { EBrowserName } from '@GBB/types'
+import type { EBrowserName } from '../types'
 import {deepFreeze} from '../utils/helpers'
 
 export const ChildBrowserServerKey = `child-playwright-server`
@@ -29,26 +29,28 @@ export const PWEventErrorLogFilter = [
   `================`
 ]
 
-export const DefaultBrowser = EBrowserName.chromium
-export const CanRecordVideo = [EBrowserName.chromium]
+export const DefaultBrowser = `chromium` as EBrowserName
+export const CanRecordVideo = [DefaultBrowser]
+const FFBrowser = `firefox` as EBrowserName
+const WKBrowser = `webkit` as EBrowserName
 
 export const BrowserNames = deepFreeze<EBrowserName[]>([
-  EBrowserName.chromium,
-  EBrowserName.firefox,
-  EBrowserName.webkit,
+  DefaultBrowser,
+  FFBrowser,
+  WKBrowser,
 ])
 export const FullBrowserNames:EBrowserName[] = Object.values(BrowserNames)
 
 // Browser names and shortcuts to the the real browser names
 export const BrowserMap = {
-  ff: EBrowserName.firefox,
-  fox: EBrowserName.firefox,
-  firefox: EBrowserName.firefox,
-  wk: EBrowserName.webkit,
-  webkit: EBrowserName.webkit,
-  sa: EBrowserName.webkit,
-  safari: EBrowserName.webkit,
-  ch: EBrowserName.chromium,
-  chrome: EBrowserName.chromium,
-  chromium: EBrowserName.chromium,
+  ff: FFBrowser,
+  fox: FFBrowser,
+  firefox: FFBrowser,
+  wk: WKBrowser,
+  webkit: WKBrowser,
+  sa: WKBrowser,
+  safari: WKBrowser,
+  ch: DefaultBrowser,
+  chrome: DefaultBrowser,
+  chromium: DefaultBrowser,
 } as Record<string, EBrowserName>

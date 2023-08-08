@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
+    "baseUrl": ".",
     "typeRoots": [
       "./src/types",
       "../shared/src/types",
@@ -11,6 +12,6 @@
   },
   "include": [
     "src",
-    "configs"
+    "index.ts"
   ]
 }

@@ -20,4 +20,3 @@ export const TypeExtMap = {
   javascript: [`js`, `jsx`, `cjs`, `mjs`],
   typescript: [`ts`, `tsx`, `mts`, `cts`],
 }
-

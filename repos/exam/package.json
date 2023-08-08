@@ -47,10 +47,13 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
     "test": "jest --colors --config ./configs/jest.config.js",
     "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
+    "tsc": "tsc",
     "types": "tsc --emitDeclarationOnly --outDir dist",
     "validate": "tsc --noEmit"
   },
   "dependencies": {
+    "@gobletqa/logger": "workspace:../logger",
+    "@gobletqa/environment": "workspace:../environment",
     "@keg-hub/args-parse": "10.0.1",
     "@keg-hub/jsutils": ">=9.6.1",
     "@keg-hub/parse-config": ">=2.1.0",

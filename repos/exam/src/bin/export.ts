@@ -1,6 +1,6 @@
+import type { TExamCliOpts } from "@GEX/types"
 import "./init"
 import "@GEX/utils/logger"
-import type { TExamCliOpts } from "@GEX/types"
 
 import { removeEmpty } from './helpers'
 import { getConfig } from './getConfig'

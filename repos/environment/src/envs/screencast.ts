@@ -1,6 +1,6 @@
-import type { TGenEnv } from "@GENV/types"
+import type { TGenEnv } from "../types"
 
-import { asBool } from "@GENV/utils/asBool"
+import { asBool } from "../utils/asBool"
 
 const screencast = (general:TGenEnv) => {
   const {

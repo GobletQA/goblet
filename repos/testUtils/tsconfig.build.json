@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "declaration": false,
+    "declarationMap": false
+  },
+  "typeRoots": ["src/globals.d.ts" ],
+  "include": [
+    "src",
+    "scripts",
+    "configs",
+    "../../configs"
+  ],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules",
+    "../../node_modules"
+  ]
+}
+

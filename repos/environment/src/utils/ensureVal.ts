@@ -1,4 +1,4 @@
-import type { TEnvConvertOpts } from '@GENV/types'
+import type { TEnvConvertOpts } from '../types'
 import { exists } from '../utils/helpers'
 
 export const ensureVal = <T=any>(

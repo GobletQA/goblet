@@ -1,7 +1,7 @@
-import type { TGenEnv } from "@GENV/types"
+import type { TGenEnv } from "../types"
 
-import { asNum } from "@GENV/utils/asNum"
-import { asBool } from "@GENV/utils/asBool"
+import { asNum } from "../utils/asNum"
+import { asBool } from "../utils/asBool"
 
 const test = (general:TGenEnv) => {
 

@@ -1,4 +1,4 @@
-import type { TGenEnv } from '@GENV/types'
+import type { TGenEnv } from '../types'
 import {toBool} from '../utils/helpers'
 
 

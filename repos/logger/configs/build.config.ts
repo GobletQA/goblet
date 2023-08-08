@@ -1,7 +1,10 @@
+import '../../../configs/aliases'
 import path from 'node:path'
 import * as esbuild from 'esbuild'
 import { fileURLToPath } from 'node:url'
 import { promises as fs } from 'node:fs'
+import aliasPlugin from 'esbuild-plugin-path-alias'
+import { aliases } from '../../../configs/aliases.config'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(dirname, `..`)
@@ -19,6 +22,8 @@ const build = async () => {
     platform: `node`,
     target: [`node16`],
     entryPoints: [entryFile],
+    plugins: [aliasPlugin(aliases)],
+    tsconfig: path.join(rootDir, `tsconfig.build.json`),
   })
   .catch(() => process.exit(1))
 }

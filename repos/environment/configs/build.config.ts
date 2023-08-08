@@ -36,6 +36,7 @@ const esmBuild = async () => {
     platform: `node`,
     outdir: esmOutdir,
     format: `esm` as const,
+    tsconfig: path.join(rootDir, `tsconfig.build.json`),
   })
   .catch((cause:any) => {
     console.log(cause)
@@ -50,6 +51,7 @@ const cjsBuild = async () => {
     platform: `node`,
     outdir: cjsOutdir,
     target: [`node18`],
+    tsconfig: path.join(rootDir, `tsconfig.build.json`),
   })
   .catch((cause:any) => {
     console.log(cause)
