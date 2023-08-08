@@ -7,10 +7,10 @@ import { promises as fs } from 'node:fs'
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(dirname, `..`)
 const cfgDir = path.join(rootDir, `src/exam`)
-const outdir = path.join(rootDir, `build/exam`)
+const outdir = path.join(rootDir, `dist/exam`)
 
 const exts = `js,ts`
-const external = [`esbuild`, `playwright`, `@ltipton/parkin`]
+const external = [`esbuild`, `playwright`, `@ltipton/parkin`, `fsevents`]
 
 const entryPoints = globSync(
   path.join(cfgDir, `**/*.{${exts}}`),

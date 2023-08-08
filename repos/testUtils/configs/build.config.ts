@@ -10,12 +10,12 @@ import aliasPlugin from 'esbuild-plugin-path-alias'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootdir = path.join(dirname, `../`)
-const outdir = path.join(rootdir, `build`)
+const outdir = path.join(rootdir, `dist`)
 const esmOutdir = path.join(outdir, `esm`)
 const cjsOutdir = path.join(outdir, `cjs`)
 
 const exts = `js,ts`
-const external = [`esbuild`, `playwright`, `@ltipton/parkin`]
+const external = [`esbuild`, `playwright`, `@ltipton/parkin`, `fsevents`]
 
 
 
@@ -51,6 +51,7 @@ const options = {
   target: [`node20`],
   assetNames: `[name]`,
   platform: `node` as const,
+  tsconfig: path.join(rootdir, `tsconfig.build.json`),
 
 
   // Dependency handling
