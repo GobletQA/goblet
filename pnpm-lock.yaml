@@ -398,6 +398,12 @@ importers:
 
   repos/exam:
     dependencies:
+      '@gobletqa/environment':
+        specifier: workspace:../environment
+        version: link:../environment
+      '@gobletqa/logger':
+        specifier: workspace:../logger
+        version: link:../logger
       '@keg-hub/args-parse':
         specifier: 10.0.1
         version: 10.0.1

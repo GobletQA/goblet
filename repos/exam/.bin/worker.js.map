@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../src/bin/worker.ts"],
-  "sourcesContent": ["/**\n * This file is a copy of the workere.js but used in th actual bundle\n * Because we can't require .ts files, so we are stuck with a duplicate file\n * One for running in dev, and the other for running in the exam bundled code\n */\n\nconst path = require('path')\nconst { isMainThread } = require('worker_threads')\n\n;(async () => {\n  if (isMainThread) return\n\n  require('esbuild-register/dist/node').register({})\n  require(path.resolve(__dirname, `./workerPipeline.js`))\n\n})()\n"],
-  "mappings": ";AAMA,IAAM,OAAO,QAAQ,MAAM;AAC3B,IAAM,EAAE,aAAa,IAAI,QAAQ,gBAAgB;AAAA,CAE/C,YAAY;AACZ,MAAI;AAAc;AAElB,UAAQ,4BAA4B,EAAE,SAAS,CAAC,CAAC;AACjD,UAAQ,KAAK,QAAQ,WAAW,qBAAqB,CAAC;AAExD,GAAG;",
-  "names": []
-}
