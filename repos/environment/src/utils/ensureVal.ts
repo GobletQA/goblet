@@ -1,10 +1,10 @@
-import {TEnvConvertOpts} from "@GENV/types"
-import {emptyObj, exists} from "@keg-hub/jsutils"
+import type { TEnvConvertOpts } from '@GENV/types'
+import { exists } from '../utils/helpers'
 
 export const ensureVal = <T=any>(
   item:T,
   cb:(val:any) => T,
-  opts:TEnvConvertOpts<T>=emptyObj
+  opts:TEnvConvertOpts<T>={}
 ) => {
   return opts.exists && !exists(item)
     ? opts?.default

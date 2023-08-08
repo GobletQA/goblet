@@ -1,5 +1,5 @@
 import type { TWorldConfig } from '@ltipton/parkin'
-import {deepFreeze} from "@keg-hub/jsutils"
+import {deepFreeze} from '../utils/helpers'
 
 
 export const DefWorld:TWorldConfig = deepFreeze({

@@ -385,10 +385,6 @@ importers:
         version: 29.5.0(@types/node@18.15.13)(ts-node@10.9.1)
 
   repos/environment:
-    dependencies:
-      '@keg-hub/jsutils':
-        specifier: '>=9.6.1'
-        version: 9.6.1
     devDependencies:
       esbuild:
         specifier: 0.18.17
@@ -521,6 +517,25 @@ importers:
       nodemon:
         specifier: 2.0.22
         version: 2.0.22
+
+  repos/logger:
+    dependencies:
+      '@gobletqa/environment':
+        specifier: workspace:../environment
+        version: link:../environment
+      '@keg-hub/jsutils':
+        specifier: '>=9.6.1'
+        version: 9.6.1
+    devDependencies:
+      '@types/debug':
+        specifier: 4.1.5
+        version: 4.1.5
+      '@types/node':
+        specifier: 18.15.13
+        version: 18.15.13
+      esbuild:
+        specifier: 0.18.17
+        version: 0.18.17
 
   repos/monaco:
     dependencies:

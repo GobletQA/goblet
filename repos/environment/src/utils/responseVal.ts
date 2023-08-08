@@ -1,10 +1,9 @@
-import {TEnvConvertOpts} from "@GENV/types"
-import { emptyObj } from "@keg-hub/jsutils"
+import type { TEnvConvertOpts } from '@GENV/types'
 
 export const responseVal = <T=any>(
   val:T,
   validator:(val:any) => boolean,
-  opts:TEnvConvertOpts<T>=emptyObj,
+  opts:TEnvConvertOpts<T>={},
 ) => {
   return opts.force && !validator(val)
     ? opts?.default

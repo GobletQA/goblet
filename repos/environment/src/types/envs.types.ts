@@ -1,4 +1,4 @@
-import type { general } from '../envs/general'
+import type general from '../envs/general'
 
 export type TAnyFun = (...args:any[]) => any
 

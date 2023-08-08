@@ -1,4 +1,4 @@
-import { deepFreeze } from '@keg-hub/jsutils'
+import { deepFreeze } from '../utils/helpers'
 
 export const PlayAction = `PLAY-ACTION`
 

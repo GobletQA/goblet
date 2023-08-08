@@ -2,6 +2,7 @@ import path from 'node:path'
 import * as esbuild from 'esbuild'
 import { fileURLToPath } from 'node:url'
 import { promises as fs } from 'node:fs'
+import Package from '../package.json'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(dirname, `..`)
@@ -22,7 +23,11 @@ const cjsBuild = async () => {
     sourcemap: true,
     platform: `node`,
     target: [`node16`],
-    external: [`esbuild`],
+    external: [
+      `fsevents`,
+      ...Object.keys(Package.dependencies),
+      ...Object.keys(Package.devDependencies)
+    ],
     entryPoints: [
       binEntry,
       workerEntry,

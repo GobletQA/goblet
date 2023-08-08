@@ -4,8 +4,8 @@ import type { TSocketMessageObj } from './socket.types'
 import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
 import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 
-// Exported from screencast/src/types
-import type { Player } from '@gobletqa/screencast'
+// Exported from browser/src/types
+import type { Player } from '@gobletqa/browser'
 
 export type TPlayerEvent = {
   name:string

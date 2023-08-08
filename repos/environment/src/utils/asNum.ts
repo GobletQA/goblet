@@ -1,10 +1,10 @@
-import type { TEnvConvertOpts } from "@GENV/types"
+import type { TEnvConvertOpts } from '@GENV/types'
 
 import { ensureVal } from './ensureVal'
-import { responseVal } from "./responseVal"
-import {emptyObj,  isNum, toNum} from "@keg-hub/jsutils"
+import { responseVal } from './responseVal'
+import {isNum, toNum} from '../utils/helpers'
 
-export const asNum = (item:any, opts:TEnvConvertOpts<number>=emptyObj) => {
+export const asNum = (item:any, opts:TEnvConvertOpts<number>={}) => {
   return isNum(item)
     ? item
     : responseVal<number>(

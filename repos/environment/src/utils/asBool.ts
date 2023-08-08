@@ -1,12 +1,13 @@
 
-import {TEnvConvertOpts} from "@GENV/types"
-import {emptyObj, isBool, toBool} from "@keg-hub/jsutils"
+import type { TEnvConvertOpts } from '@GENV/types'
+
 import { ensureVal } from './ensureVal'
-import { responseVal } from "./responseVal"
+import { responseVal } from './responseVal'
+import {isBool, toBool} from '../utils/helpers'
 
 const valToBool = (item:any) => (item === `f` ? false : toBool(item))
 
-export const asBool = (item:any, opts:TEnvConvertOpts<boolean>=emptyObj) => {
+export const asBool = (item:any, opts:TEnvConvertOpts<boolean>={}) => {
   return isBool(item)
     ? item
     : responseVal(

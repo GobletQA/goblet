@@ -8,7 +8,7 @@
   "keywords": [],
   "private": true,
   "bin": {
-    "latent": ".bin/latent.js"
+    "latent": ".bin/index.js"
   },
   "publishConfig": {
     "access": "public",

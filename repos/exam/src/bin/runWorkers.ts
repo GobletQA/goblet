@@ -3,8 +3,8 @@ import type { TExamConfig } from '@GEX/types'
 
 import {ExamError} from '@GEX/utils/error'
 import { WorkerPool } from '@GEX/workerPool'
+import {ExamCfgModeType} from '@GEX/constants'
 import { flatArr, limbo } from '@keg-hub/jsutils'
-import {ExamCfgModeType} from '@GEX/constants/constants'
 import {printExamTestMode} from '@GEX/debug/verbose'
 
 /**

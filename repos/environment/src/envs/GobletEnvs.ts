@@ -4,7 +4,7 @@ import repo from './repo'
 import general from './general'
 import backend from './backend'
 import screencast from './screencast'
-import { exists } from '@keg-hub/jsutils'
+import { exists } from '../utils/helpers'
 
 const buildEnvs = () => {
   const generalEnvs = general()

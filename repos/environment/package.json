@@ -34,9 +34,6 @@
     "types": "tsc --emitDeclarationOnly --outDir build",
     "validate": "tsc --noEmit"
   },
-  "dependencies": {
-    "@keg-hub/jsutils": ">=9.6.1"
-  },
   "devDependencies": {
     "esbuild": "0.18.17",
     "esbuild-plugin-path-alias": "1.0.7",

@@ -1,9 +1,14 @@
 import { EBrowserName } from '@GBB/types'
-import {deepFreeze, keyMap} from '@keg-hub/jsutils'
+import {deepFreeze} from '../utils/helpers'
 
 export const ChildBrowserServerKey = `child-playwright-server`
 export const GobletQAUrl = process.env.GB_GOBLET_URL || `https://www.gobletqa.com`
-export const browserStatus = keyMap([`stopped`, `running`, `starting`, `unknown`])
+export const browserStatus = {
+  stopped: `stopped`,
+  running: `running`,
+  unknown: `unknown`,
+  starting: `starting`,
+}
 
 export const PWLogFilter = [
   // Disabled these for now, until figure out whats needed
