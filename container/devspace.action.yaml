@@ -31,8 +31,6 @@ pipelines:
 vars:
 
 # ----- General Values ----- #
-  GB_TOKEN:
-    command: "node scripts/ds/getYamlValue.js GB_TOKEN"
   NPM_TOKEN:
     command: "node scripts/ds/getYamlValue.js NPM_TOKEN"
   NODE_ENV:

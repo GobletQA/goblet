@@ -2,8 +2,8 @@
 // Then it can be added to both the mounted repo, and within monaco
 
 declare module '@GEnvironment' {
-  export var values = Record<string, any>
-  export var secrets = Record<string, any>
+  export var values = Record<string, string>
+  export var secrets = Record<string, string>
 }
 
 declare module '@GTU' {}
@@ -52,10 +52,10 @@ declare module '@GTU/Support/helpers' {
 declare module '@GTU/Parkin' {
   type TPMeta = Record<string, any>
 
-  export function BeforeAll(desc:string, cb:(...args:any[]) => any, meta?:TPMeta):any
-  export function BeforeEach(desc:string, cb:(...args:any[]) => any, meta?:TPMeta):any
-  export function AfterAll(desc:string, cb:(...args:any[]) => any, meta?:TPMeta):any
-  export function AfterEach(desc:string, cb:(...args:any[]) => any, meta?:TPMeta):any
+  export function BeforeAll(cb:(...args:any[]) => any, meta?:TPMeta):any
+  export function BeforeEach(cb:(...args:any[]) => any, meta?:TPMeta):any
+  export function AfterAll(cb:(...args:any[]) => any, meta?:TPMeta):any
+  export function AfterEach(cb:(...args:any[]) => any, meta?:TPMeta):any
 
   export function And(desc:string, cb:(...args:any[]) => any, meta?:TPMeta):any
   export function But(desc:string, cb:(...args:any[]) => any, meta?:TPMeta):any

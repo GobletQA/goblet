@@ -22,7 +22,7 @@ const gitCmd = (repoRoot:string, ref:string) => execSync(
 )?.toString()?.trim()
 
 const getGitRemote = (repoRoot:string) => {
-  let url = (process.env.GB_GIT_MOUNTED_REMOTE || ``).trim()
+  let url = (process.env.GB_GIT_REPO_REMOTE || ``).trim()
 
   try {
     if(!url){
@@ -79,7 +79,7 @@ export const loadEnvFile = ({
 
   if(ENVS.GB_REPO_NO_SECRETS) return {}
 
-  const envUrl = ENVS.GB_GIT_MOUNTED_REMOTE
+  const envUrl = ENVS.GB_GIT_REPO_REMOTE
 
   // Error is logged in the getGitRemote method
   const repoUrl = envUrl || getGitRemote(repoRoot)

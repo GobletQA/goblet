@@ -18,7 +18,7 @@ const setGobletEnv = (
 ) => {
   const orgGobletEnv = ENVS.GOBLET_ENV
   const orgGobletBase = ENVS.GOBLET_CONFIG_BASE
-  const orgGobletRemoteKey = ENVS.GB_GIT_MOUNTED_REMOTE
+  const orgGobletRemote = ENVS.GB_GIT_REPO_REMOTE
 
   const environment = (config as TRepo)?.environment
   if(environment && ENVS.GOBLET_ENV !== environment)
@@ -29,12 +29,12 @@ const setGobletEnv = (
     ENVS.GOBLET_CONFIG_BASE = repoRoot
 
   const { remote } = (config as TRepo)?.git || noOpObj as TGitData
-  if(remote) ENVS.GB_GIT_MOUNTED_REMOTE = remote
+  if(remote) ENVS.GB_GIT_REPO_REMOTE = remote
 
   return () => {
     if(orgGobletEnv) ENVS.GOBLET_ENV = orgGobletEnv
     if(orgGobletBase) ENVS.GOBLET_CONFIG_BASE = orgGobletBase
-    if(orgGobletRemoteKey) ENVS.GB_GIT_MOUNTED_REMOTE = orgGobletRemoteKey
+    if(orgGobletRemote) ENVS.GB_GIT_REPO_REMOTE = orgGobletRemote
   }
 
 }

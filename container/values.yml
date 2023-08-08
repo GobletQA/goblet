@@ -64,7 +64,6 @@ env:
   GB_GOBLET_URL: https://www.gobletqa.com
 
 # ---- Goblet Shared ENVs ---- #
-  GB_TOKEN: a-10K3n-g0bLe1
   GB_SH_LOCAL_MOUNT: goblet-local
   GB_SERVER_ORIGINS: 'http://localhost:19006,localhost,gobletqa.app,dev.gobletqa.app,gobletqa-develop.local.keghub.io,backend.dev.gobletqa.app'
 

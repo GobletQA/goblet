@@ -67,6 +67,7 @@
       "@GEX": ["repos/exam/src"],
       "@GEX/*": ["repos/exam/src/*"],
 
+      "@GLT/cli/types": ["repos/latent/src/bin/cli.types.ts"],
       "@GLT/templates": ["repos/latent/src/templates"],
       "@GLT/libs": ["repos/latent/src/libs"],
       "@GLT/libs/*": ["repos/latent/src/libs/*"],
