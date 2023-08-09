@@ -1,6 +1,6 @@
 
 import path from 'path'
-import { configFromFolder } from '../loaders/configFromFolder'
+import { configFromFolder } from './configFromFolder'
 
 /**
  * @description - Searches the file system, from the current working directory

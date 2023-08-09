@@ -1,7 +1,7 @@
 import type { TGobletConfig } from '../types'
 
+import { exists } from './helpers'
 import { getFileTypes } from './getFileTypes'
-import { exists } from '@keg-hub/jsutils'
 
 
 /**

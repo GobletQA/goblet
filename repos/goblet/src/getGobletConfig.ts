@@ -18,8 +18,8 @@ import type { TGobletConfig } from './types'
 
 
 import { Logger } from '@GSH/libs/logger'
+import { isStr, deepMerge } from './utils/helpers'
 import { addConfigFileTypes } from './utils/addConfigFileTypes'
-import { isStr, noOpObj, deepMerge } from '@keg-hub/jsutils'
 import { loadConfigFromBase } from './loaders/loadConfigFromBase'
 import { getDefaultGobletConfig } from './getDefaultGobletConfig'
 
@@ -35,7 +35,7 @@ let __GOBLET_CONFIG:TGobletConfig
  * Gets the Goblet application config from a number of sources
  */
 export const getGobletConfig = (
-  argsConfig:TGetGobletConfigArgs = noOpObj as TGetGobletConfigArgs
+  argsConfig:TGetGobletConfigArgs = {} as TGetGobletConfigArgs
 ) => {
 
   // TODO: Exam sets the EXAM_ENV env

@@ -18,7 +18,7 @@ import type { TDefGobletConfig } from './types'
 
 import path from 'path'
 import { GBCRoot } from '../resolveRoot'
-import { deepMerge } from '@keg-hub/jsutils'
+import { deepMerge } from './utils/helpers'
 
 /**
  * **IMPORTANT**
