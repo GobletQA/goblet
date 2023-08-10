@@ -59,7 +59,7 @@ export const ensureRemoteTag = async (gitOpts:TGitOpts) => {
 
   const reKeyErr = latentRepo.rekey({
     old: existing,
-    updated: gitOpts.remote,
+    update: gitOpts.remote,
     location: gitOpts.local,
   })
 

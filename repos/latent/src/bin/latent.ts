@@ -26,18 +26,26 @@ runTask(tasks, { env: process.env.NODE_ENV || `local` }, {
       env: `GOBLET_TOKEN`,
       alias: [`tok`, `tk`],
       example: `<command> --token my-awesome-token`,
-      description: ` for encrypting and decrypting secret files. Overrides the remote option`
+      description: ` for encrypting and decrypting secret files. Overrides the ref option`
     },
-    remote: {
-      alias: [`rm`, `repo`, `url`],
+    ref: {
+      alias: [`reference`, `repo`, `url`, `remote`],
       env: `GB_GIT_REPO_REMOTE`,
-      example: `<command> --remote https://git-provider.com/user-name/repo-name`,
-      description: `The remote url of the repo used to encrypt the secrets`
+      example: `<command> --ref https://git-provider.com/user-name/repo-name`,
+      description: `The ref url or ref of the repo used to encrypt the secrets`
     },
     repo: {
       alias: [`base`],
       env: `GOBLET_CONFIG_BASE`,
       description: `Repository root directory that contains a Goblet configuration file`
+    },
+    location: {
+      alias: [`file`, `secrets`],
+      description: `Path location of the secrets file. Overrides the repo option`
+    },
+    root: {
+      alias: [`rootDir`, `rootdir`, `rd`, `workDir`, `workdir`, `wd`],
+      description: `Root directory the other paths should be resolved from`
     },
     environment: {
       env: `GOBLET_ENV`,

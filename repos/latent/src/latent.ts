@@ -87,8 +87,8 @@ export class Latent {
     })
   }
 
-  getToken = (ref:string) => {
-    return this.token.generate(ref)
+  getToken = (ref:string, ltToken?:string) => {
+    return this.token.generate(ref, ltToken)
   }
 
 }

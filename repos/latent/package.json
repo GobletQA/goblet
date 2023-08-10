@@ -45,6 +45,7 @@
     "@keg-hub/parse-config": ">=2.1.0"
   },
   "devDependencies": {
+    "@gobletqa/goblet": "workspace:../goblet",
     "@types/debug": "4.1.5",
     "@types/jest": "29.1.2",
     "@types/node": "18.15.13",

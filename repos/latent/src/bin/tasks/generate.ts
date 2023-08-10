@@ -1,66 +1,39 @@
 import type {
   TTask,
-  TTaskParams,
   TTaskActionArgs
 } from '@GLT/cli/types'
 
 import {Latent} from "@GLT/latent"
+import { getRefFromPath } from '../helpers'
 
-const getRemoteFromPath = (repoLoc:string) => {
-    // const config = getGobletConfig()
-    // if(!config){
-    //   console.log(`[ENV LOADER] Failed to get Goblet Config`)
-    //   return {}
-    // }
-    
-    // const { repoRoot } = config.paths
-    // if(!repoRoot){
-    //   console.log(`[ENV LOADER] Failed to get repoRoot`)
-    //   console.log(config)
-    //   return {}
-    // }
-
-    // const environmentsDir = getPathFromConfig(`environmentsDir`, config)
-
-    // if(!environmentsDir){
-    //   console.log(`[ENV LOADER] Failed to get environmentsDir`)
-    //   console.log(config)
-    //   return {}
-    // }
-
-    // const loc = location || path.join(environmentsDir, file)
-  
-  
-  return ``
-}
 
 /**
  *
  * Generates a repo token
- * Requires a remote repo url, or a path to a git repo and the correct latent token
+ * Requires a ref repo url, or a path to a git repo and the correct latent token
  * Latent token should be set as the `GB_LT_TOKEN_SECRET` ENV
  * @example
  * pnpm lt:dev gen repo="/path/to/git/repo"
  * @example
- * pnpm lt:dev gen remote="<repo-ref>"
+ * pnpm lt:dev gen ref="<repo-ref>"
  *
  */
 const generateAct = (args:TTaskActionArgs) => {
-  const { remote, token, repo, ...rest } = args.params
+  const { ref:reference, token, repo, ...rest } = args.params
 
-  if(!remote && !repo)
-    throw new Error(`Task requires a remote url or a path to a local git repository`)
+  if(!reference && !repo)
+    throw new Error(`Task requires a ref url or a path to a local git repository`)
 
   const latent = new Latent()
 
-  const ref = remote || getRemoteFromPath(repo)
-  const tok = latent.getToken(remote)
+  const ref = reference || getRefFromPath(args.params)
+  if(!ref) throw new Error(`Failed to find repo "ref" is required to generate a token, but one could not be found.`)
+  
+  const tok = latent.getToken(ref)
 
   console.log(`Repo Token Generated`)
   console.table({ [ref]:tok })
 }
-
-
 
 export const generate:TTask = {
   name: `generate`,
@@ -69,7 +42,9 @@ export const generate:TTask = {
   action: generateAct,
   options: {
     token: {},
-    remote: {},
+    location: {},
+    ref: {},
     repo: {},
+    root: {},
   }
 }

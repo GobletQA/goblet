@@ -1,11 +1,12 @@
+import { rekey } from './rekey'
 import { decrypt } from './decrypt'
 import { encrypt } from './encrypt'
 import { generate } from './generate'
-import { validate } from './validate'
+
 
 export const tasks = {
+  rekey,
   decrypt,
   encrypt,
   generate,
-  validate,
 }

@@ -6,8 +6,10 @@ import {TLatentCryptoOpts} from "./crypto.types"
 
 export type TLTRekey = {
   old:string
-  updated:string
+  update:string
   location:string
+  oldKey?:string
+  updateKey?:string
   environment?:ELatentEnv
 }
 

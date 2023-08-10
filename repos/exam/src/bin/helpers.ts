@@ -3,7 +3,7 @@ import type { TExamConfig, TExamCliOpts } from '@GEX/types'
 import path from 'path'
 import { options } from './options'
 import { ENVS } from '@gobletqa/environment'
-import { getRoot, homeDir, cwd } from './paths'
+import { getRoot, homeDir, cwd, setRoot } from './paths'
 import { argsParse } from '@keg-hub/args-parse'
 import { isArr } from '@keg-hub/jsutils/isArr'
 import { isNum } from '@keg-hub/jsutils/isNum'
@@ -87,6 +87,8 @@ export const parseArgs = async () => {
     const resolved = path.resolve(opts.rootDir)
     opts.rootDir = resolved
     ENVS.GOBLET_CONFIG_BASE = resolved
+
+    setRoot(resolved)
   }
 
   /**
@@ -101,9 +103,9 @@ export const parseArgs = async () => {
  * Sets updates an env values on the process.env object
  */
 const updateEnv = (key:string, value:any, force?:boolean) => {
-  if(process.env[key] && !force) return
+  if(exists(ENVS[key]) && !force) return
 
-  process.env[key] = isStr(value) ? value : `${JSON.stringify(value)}`
+  ENVS[key] = isStr(value) ? value : `${JSON.stringify(value)}`
 }
 
 /**

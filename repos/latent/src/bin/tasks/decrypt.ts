@@ -4,6 +4,8 @@ import type {
 } from '@GLT/cli/types'
 
 import {Latent} from "@GLT/latent"
+import {getRefFromPath, findSecretsLoc} from '../helpers'
+
 
 /**
  *
@@ -12,18 +14,19 @@ import {Latent} from "@GLT/latent"
  * @example
  * pnpm lt:dev dec token="<repo-token>" location="/path/to/secrets/directory"
  * @example
- * pnpm lt:dev dec remote="<repo-ref>" location="/path/to/secrets/directory"
+ * pnpm lt:dev dec ref="<repo-ref>" location="/path/to/secrets/directory"
  *
  */
 const decryptAct = (args:TTaskActionArgs) => {
-  const { remote, token, repo, ...rest } = args.params
+  const { ref, token, repo, encoded } = args.params
 
   const latent = new Latent()
-  const tok = token || latent.getToken(remote)
+  const tok = token || latent.getToken(ref || getRefFromPath(args.params))
 
   const secrets = latent.secrets.load({
-    ...rest,
-    token: tok
+    encoded,
+    token: tok,
+    location: findSecretsLoc(args.params),
   })
 
   if(!secrets) throw new Error(`No secrets found`)
@@ -39,18 +42,15 @@ export const decrypt:TTask = {
   action: decryptAct,
   options: {
     token: {},
-    remote: {},
+    location: {},
+    ref: {},
     repo: {},
-    location: {
-      required: true,
-      alias: [`file`, `secrets`],
-      description: `Path location of the secrets file. Overrides the repo option`
-    },
+    root: {},
     encoded: {
       type: `bool`,
       default: true,
       alias: [`base64`, `b64`],
       description: `Is the token Base64 encoded. Ignored if token option is undefined`
-    }
+    },
   }
 }

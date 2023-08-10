@@ -20,8 +20,8 @@ export class LatentToken {
    * Creates a token from the passed in ref
    * @private
    */
-  #createToken = (ref:string) => {
-    const hmac = createHmac(this.sha, getLTToken())
+  #createToken = (ref:string, ltToken?:string) => {
+    const hmac = createHmac(this.sha, ltToken || getLTToken())
     return hmac.update(ref).digest(`hex`)
   }
 
@@ -45,9 +45,9 @@ export class LatentToken {
    * Generates a secret token from the passed in ref
    * Then base64 encodes it
    */
-  generate = (ref:string) => {
+  generate = (ref:string, ltToken?:string) => {
     try {
-      return toB64(this.#createToken(ref))
+      return toB64(this.#createToken(ref, ltToken))
     }
     catch(err){
       throw new LatentError(`[Latent Error] Failed to generate token`, `generate`, err)

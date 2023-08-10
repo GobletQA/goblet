@@ -75,7 +75,7 @@ export class Secrets {
    * 1. Generate a latent.token from the old url and the new url
    * 2. Decrypt the secrets with the old url token
    * 3. Encrypt the secrets with the new url token
-   * 4. Commit and push the updates secrets to the git remote
+   * 4. Commit and push the updates secrets to the git ref
    * 5. Overwrite the existing git-tag with the new repo url
    *  - TODO: In the future we could have multiple tags that are searched and used
    *  - If multiple tags are found, they try each one until we find a match
@@ -83,13 +83,15 @@ export class Secrets {
   rekey = (props:TLTRekey):string[] => {
     const {
       old,
-      updated,
-      location
+      oldKey,
+      update,
+      updateKey,
+      location,
     } = props
 
     // Create tokens to allow opening and saving the encrypted file
-    const oldToken = this.latent.getToken(old)
-    const updatedToken = this.latent.getToken(updated)
+    const oldToken = this.latent.getToken(old, oldKey)
+    const updatedToken = this.latent.getToken(update, updateKey)
     const environment = props.environment
       || this.latent.environment
       || ELatentEnv.develop
