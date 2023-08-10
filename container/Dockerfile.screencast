@@ -31,7 +31,13 @@ RUN <<EOF
   cd /goblet/app/repos/exam
   pnpm json:rm
 
+  cd /goblet/app/repos/goblet
+  pnpm json:rm
+
   cd /goblet/app/repos/latent
+  pnpm json:rm
+
+  cd /goblet/app/repos/logger
   pnpm json:rm
 
   cd /goblet/app/repos/screencast

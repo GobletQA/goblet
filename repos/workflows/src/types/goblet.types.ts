@@ -1,6 +1,6 @@
-import { TGitMeta } from './git.types'
-import { TRepoOpts } from './shared.types'
-import { TRepoMountStatus, TCreateRepo } from './repo.types'
+import type { TGitMeta } from './git.types'
+import type { TRepoOpts } from './shared.types'
+import type { TRepoMountStatus, TCreateRepo } from './repo.types'
 
 export type TWFArgs = TGitMeta & {
   token: string|boolean

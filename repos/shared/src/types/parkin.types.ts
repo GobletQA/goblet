@@ -3,8 +3,7 @@
  * They were added before parkin had types, but now that it does they should be updated
  */
 
-
-import {
+import type {
   Parkin,
   TStepDef,
   EHookType,

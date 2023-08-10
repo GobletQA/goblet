@@ -1,4 +1,4 @@
-import { TControllerConfig } from './controller.types'
+import type { TControllerConfig } from './controller.types'
 
 export type TKubeController = TControllerConfig & {
   namespace: string

@@ -24,7 +24,9 @@ COPY configs/tasks.config.js configs/
 FROM $IMAGE_FROM AS goblet-repos
 WORKDIR /goblet/app
 COPY repos/conductor/package.json repos/conductor/
+COPY repos/logger/package.json repos/logger/
 COPY repos/latent/package.json repos/latent/
+COPY repos/goblet/package.json repos/goblet/
 COPY repos/workflows/package.json repos/workflows/
 COPY repos/backend/package.json repos/backend/
 COPY repos/browser/package.json repos/browser/
@@ -41,7 +43,9 @@ RUN pnpm install --no-optional --offline --frozen-lockfile --ignore-scripts
 FROM goblet-repos AS goblet-built
 WORKDIR /goblet/app
 COPY repos/conductor repos/conductor/
+COPY repos/logger repos/logger/
 COPY repos/latent repos/latent/
+COPY repos/goblet repos/goblet/
 COPY repos/workflows repos/workflows/
 COPY repos/browser repos/browser/
 COPY repos/backend repos/backend/

@@ -1,5 +1,5 @@
-import { TFileModel } from './models.types'
-import { TFeatureFileModel } from './features.types'
+import type { TFileModel } from './models.types'
+import type { TFeatureFileModel } from './features.types'
 
 export type TGFileType = {
   ext: string

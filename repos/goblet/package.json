@@ -36,7 +36,8 @@
   },
   "dependencies": {
     "@gobletqa/environment": "workspace:../environment",
-    "@gobletqa/logger": "workspace:../logger"
+    "@gobletqa/logger": "workspace:../logger",
+    "glob": "10.3.3"
   },
   "devDependencies": {
     "@types/debug": "4.1.5",

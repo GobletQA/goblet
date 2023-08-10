@@ -1,1 +1,1 @@
-export * from '@gobletqa/shared/types'
+export * from '../../../shared/src/types'

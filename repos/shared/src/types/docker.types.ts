@@ -1,7 +1,7 @@
-import { TContainerMap } from './helpers.types'
-import { TContainerConfig } from './conductor.types'
+import type { TContainerMap } from './helpers.types'
+import type { TContainerConfig } from './conductor.types'
 
-import {
+import type {
   Image,
   ContainerInfo,
   ContainerInspectInfo,

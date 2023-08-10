@@ -211,4 +211,4 @@ export class EnvironmentLoader {
 
 }
 
-export const EnvLoader = new EnvironmentLoader() 
+export const EnvLoader = new EnvironmentLoader()
