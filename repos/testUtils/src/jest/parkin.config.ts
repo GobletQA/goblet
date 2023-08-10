@@ -9,8 +9,7 @@ import { uniqArr } from '@keg-hub/jsutils/uniqArr'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
-import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
-import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
+import { getRepoGobletDir, getGobletConfig } from '@gobletqa/goblet'
 import {
   getContextOpts,
   taskEnvToBrowserOpts

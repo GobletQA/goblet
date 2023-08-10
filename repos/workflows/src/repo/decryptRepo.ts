@@ -2,7 +2,7 @@ import type { TGitOpts, TGobletConfig } from '../types'
 
 
 import { latentRepo } from './latentRepo'
-import { getPathFromConfig } from '@gobletqa/shared/utils/getPathFromConfig'
+import { getPathFromConfig } from '@gobletqa/goblet'
 
 export const decryptRepo = (gitOpts:TGitOpts, config?:TGobletConfig) => {
   const location = getPathFromConfig(`environmentsDir`, config)

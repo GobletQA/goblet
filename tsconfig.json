@@ -154,6 +154,9 @@
       "@gobletqa/exam": ["repos/exam/src"],
       "@gobletqa/exam/*": ["repos/exam/src/*"],
 
+      "@gobletqa/goblet": ["repos/goblet/src"],
+      "@gobletqa/goblet/*": ["repos/goblet/src/*"],
+
       "@gobletqa/latent": ["repos/latent/src"],
       "@gobletqa/latent/*": ["repos/latent/src/*"],
 

@@ -1,6 +1,6 @@
 import path from 'path'
-import {EProvider} from '../../types'
-import { GWFRoot } from '../../../resolveRoot'
+import {EProvider} from '../../../types'
+import { GWFRoot } from '../../../../resolveRoot'
 
 
 export const gitOpts = {

@@ -3,8 +3,7 @@ const { jestConfig } = require('./jest.default.config')
 const path = require('path')
 const { checkVncEnv } = require('@gobletqa/shared/utils/vncActiveEnv')
 const { buildTestGobletOpts } = require('@GTU/Utils/buildTestGobletOpts')
-const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
-const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
+const { getRepoGobletDir, getGobletConfig } = require('@gobletqa/goblet')
 const {
   metadata,
   getBrowserOpts,

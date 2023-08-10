@@ -1,8 +1,8 @@
 
-type TWorldCfgMerge = { $merge?: string[] | false | null | undefined }
-type TLoadedFunc<T extends TWorldCfgMerge> = (...args:any[]) => T
+export type TCfgMerge = { $merge?: string[] | false | null | undefined }
+export type TLoadedFunc<T extends TCfgMerge> = (...args:any[]) => T
 
-export type TLoopLoad<T extends TWorldCfgMerge> = TLoadShared & {
+export type TLoopLoad<T extends TCfgMerge> = TLoadShared & {
   loadArr:string[]
   requireFunc?:TLoadedFunc<T>,
 }

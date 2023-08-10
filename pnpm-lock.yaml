@@ -480,6 +480,9 @@ importers:
       '@gobletqa/logger':
         specifier: workspace:../logger
         version: link:../logger
+      glob:
+        specifier: 10.3.3
+        version: 10.3.3
     devDependencies:
       '@types/debug':
         specifier: 4.1.5
@@ -704,6 +707,9 @@ importers:
       '@gobletqa/exam':
         specifier: workspace:../exam
         version: link:../exam
+      '@gobletqa/goblet':
+        specifier: workspace:../goblet
+        version: link:../goblet
       '@gobletqa/latent':
         specifier: workspace:../latent
         version: link:../latent
@@ -789,6 +795,9 @@ importers:
       '@gobletqa/environment':
         specifier: workspace:../environment
         version: link:../environment
+      '@gobletqa/goblet':
+        specifier: workspace:../goblet
+        version: link:../goblet
       '@gobletqa/latent':
         specifier: workspace:../latent
         version: link:../latent
@@ -886,6 +895,12 @@ importers:
       '@gobletqa/exam':
         specifier: workspace:../exam
         version: link:../exam
+      '@gobletqa/goblet':
+        specifier: workspace:../goblet
+        version: link:../goblet
+      '@gobletqa/logger':
+        specifier: workspace:../logger
+        version: link:../logger
       '@gobletqa/shared':
         specifier: workspace:../shared
         version: link:../shared
@@ -1074,6 +1089,9 @@ importers:
       '@gobletqa/environment':
         specifier: workspace:../environment
         version: link:../environment
+      '@gobletqa/goblet':
+        specifier: workspace:../goblet
+        version: link:../goblet
       '@gobletqa/latent':
         specifier: workspace:../latent
         version: link:../latent

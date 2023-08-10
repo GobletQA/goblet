@@ -25,13 +25,12 @@ import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { flatUnion} from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
-import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
+import { getRepoGobletDir, getGobletConfig } from '@gobletqa/goblet'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
 import { getParkinTestInit, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
 
 import { taskEnvToBrowserOpts } from '@gobletqa/browser'
 import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
-import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 
 const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
 const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')

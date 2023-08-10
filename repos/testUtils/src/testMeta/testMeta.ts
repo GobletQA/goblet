@@ -1,13 +1,16 @@
-import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
-import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
-import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
-import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
+import { Logger } from '@gobletqa/logger'
+
 import {
   readFile,
   writeFile,
   removeFile,
   pathExists
 } from '@GTU/Utils/fileSys'
+import {
+  getPathFromBase,
+  getGobletConfig,
+  getDefaultGobletConfig
+} from '@gobletqa/goblet'
 
 import { set } from '@keg-hub/jsutils/set'
 import { isArr } from '@keg-hub/jsutils/isArr'

@@ -2,8 +2,8 @@ import type { TRepo, TDefinitionFileModel } from '@GSH/types'
 
 import { glob } from 'glob'
 import { Logger } from '@GSH/libs/logger'
+import { getPathFromBase } from '@gobletqa/goblet'
 import { DefinitionsParser } from './definitionsParser'
-import { getPathFromBase } from '@GSH/utils/getPathFromBase'
 import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 
 /**

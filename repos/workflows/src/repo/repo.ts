@@ -24,10 +24,10 @@ import { Parkin } from '@ltipton/parkin'
 import { latentRepo } from './latentRepo'
 import { emptyObj, } from '@keg-hub/jsutils'
 import { ENVS } from '@gobletqa/environment'
+import { getFileTypes } from '@gobletqa/goblet'
 import { getProviderData } from './getProviderData'
+import { resetGobletConfig } from '@gobletqa/goblet'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
-import { getFileTypes } from '@gobletqa/shared/utils/getFileTypes'
-import { resetGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import {
   createGoblet,
   statusGoblet,

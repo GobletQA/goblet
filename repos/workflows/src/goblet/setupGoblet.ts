@@ -3,13 +3,13 @@ import type { TGitData, TWFArgs, TGitOpts } from '@GWF/types'
 
 import { git, RepoWatcher } from '../git'
 import { Logger } from '@keg-hub/cli-utils'
+import { gobletLoader } from '@gobletqa/goblet'
 import { omitKeys, wait } from '@keg-hub/jsutils'
 import { repoSecrets } from '../repo/repoSecrets'
 import { getRepoName } from '../utils/getRepoName'
 import { failResp, successResp } from './response'
 import { copyTemplate } from '../utils/copyTemplate'
 import { createRepoWatcher } from '../repo/mountRepo'
-import { gobletLoader } from '@gobletqa/shared/libs/loader'
 import { configureGitOpts } from '../utils/configureGitOpts'
 
 const setupWatcher = async (gitOpts:TGitOpts,) => {

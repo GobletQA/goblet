@@ -1,12 +1,13 @@
 import path from 'path'
 import { execSync } from 'child_process'
 import { GitRemoteRef } from '../constants'
+import { exists } from '@keg-hub/jsutils/exists'
 import { ENVS } from '@gobletqa/environment/envs'
 import { EFileType, Latent } from '@gobletqa/latent'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { injectUnsafe } from '@GSH/utils/safeReplacer'
-import { getGobletConfig } from '../goblet/getGobletConfig'
-import { noOpObj, exists, deepFreeze } from '@keg-hub/jsutils'
-import { getPathFromConfig } from '../utils/getPathFromConfig'
+import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
+import { getPathFromConfig, getGobletConfig } from '@gobletqa/goblet'
 
 type TLoadEnvFile = {
   file?:string

@@ -11,8 +11,7 @@ import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { limbo, limboify, omitKeys } from '@keg-hub/jsutils'
 import { resolveFileType } from '@GSH/utils/resolveFileType'
 import { exists, get, isBool, isStr } from '@keg-hub/jsutils'
-import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
-import { getPathFromConfig } from '@GSH/utils/getPathFromConfig'
+import { getPathFromConfig, getRepoGobletDir } from '@gobletqa/goblet'
 import {
   AllowedWorldExtensions,
   DefinitionOverrideFolder

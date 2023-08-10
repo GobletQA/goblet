@@ -4,9 +4,8 @@ import path from 'path'
 import { glob } from 'glob'
 import { getSupportFiles } from './supportFiles'
 import { DefinitionsParser } from './definitionsParser'
-import { getPathFromBase } from '@GSH/utils/getPathFromBase'
 import { parkinOverride } from '@GSH/libs/overrides/parkinOverride'
-import { getDefaultGobletConfig } from '@GSH/goblet/getDefaultGobletConfig'
+import { getPathFromBase, getDefaultGobletConfig } from '@gobletqa/goblet'
 import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 
 /**

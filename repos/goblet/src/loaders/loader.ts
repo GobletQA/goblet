@@ -1,4 +1,11 @@
-import type { TGobletConfig } from '../types'
+import type {
+  TLoader,
+  TCfgMerge,
+  TLoopLoad,
+  TLoadedFunc,
+  TSearchFile,
+  TGobletConfig
+} from '../types'
 
 import path from 'path'
 import { globSync } from 'glob'
@@ -6,33 +13,6 @@ import { createRequire } from 'module'
 import { isStr } from '@keg-hub/jsutils/isStr'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { GobletConfigFileNames } from '../constants'
-
-type TMerge = { $merge?: string[] | false | null | undefined }
-type TLoadedFunc<T extends TMerge> = (...args:any[]) => T
-
-type TLoopLoad<T extends TMerge> = TLoadShared & {
-  loadArr:string[]
-  requireFunc?:TLoadedFunc<T>,
-}
-
-type TLoadShared = {
-  type?:string
-  safe?: boolean
-  first?: boolean
-  basePath:string
-  merge?: string[] | false | null | undefined
-}
-
-type TSearchFile = TLoadShared & {
-  file:string
-  location?:string
-  clearCache?:boolean
-}
-
-export type TLoader = TLoadShared & {
-  loadArr?:string[]
-}
-
 
 /**
  * Characters that define if a path
@@ -42,7 +22,7 @@ const noBasePath = [`.`, `/`, `@`, `~`]
 /**
  * Checks if the passed in config is a function and calls it if it is
  */
-const loadFromType = <T extends TMerge>(data:T) => {
+const loadFromType = <T extends TCfgMerge>(data:T) => {
   const loaded = typeof data === 'function'
     ?  (data as TLoadedFunc<T>)() as T
     : data
@@ -53,7 +33,7 @@ const loadFromType = <T extends TMerge>(data:T) => {
 /**
  * Builds a require function for loading goblet configs dynamically
  */
-const buildRequire = <T extends TMerge>(
+const buildRequire = <T extends TCfgMerge>(
   basePath:string,
   safe:boolean=false,
   clearCache:boolean=false
@@ -89,7 +69,7 @@ const buildRequire = <T extends TMerge>(
  * Once loaded, then merges each loaded world into a single world object
  * @recursive
  */
-const loadWithMerge = <T extends TMerge>(data:T, {
+const loadWithMerge = <T extends TCfgMerge>(data:T, {
   merge,
   basePath,
   requireFunc
@@ -115,7 +95,7 @@ const loadWithMerge = <T extends TMerge>(data:T, {
  * It will recursively call it's self to load those files as well
  * @recursive
  */
-const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
+const loopLoadArray = <T extends TCfgMerge>(params:TLoopLoad<T>):T[] => {
   const {
     type,
     safe,
@@ -163,7 +143,7 @@ const loopLoadArray = <T extends TMerge>(params:TLoopLoad<T>):T[] => {
  * Then search's for a matching file by name
  * Is loaded file has a $merge array property, will try to load all paths from it
  */
-export const loaderSearch = <T extends TMerge>(params:TSearchFile) => {
+export const loaderSearch = <T extends TCfgMerge>(params:TSearchFile) => {
 
   const {
     file,

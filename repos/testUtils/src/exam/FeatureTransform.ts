@@ -6,10 +6,10 @@ import type {
 } from '@gobletqa/exam'
 
 import { Parkin } from '@ltipton/parkin'
+import { getGobletConfig } from '@gobletqa/goblet'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getParkinInstance } from '../parkin/instance'
 import { createGlobMatcher, Errors } from '@gobletqa/exam'
-import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 
 /**
  * ExamTransform - Base transform, used for all files by default

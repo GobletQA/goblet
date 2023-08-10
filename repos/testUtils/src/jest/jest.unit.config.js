@@ -6,8 +6,7 @@ const { jestConfig } = require('./jest.default.config')
 
 const path = require('path')
 const { checkVncEnv } = require('@gobletqa/shared/utils/vncActiveEnv')
-const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
-const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
+const { getRepoGobletDir, getGobletConfig } = require('@gobletqa/goblet')
 const { buildTestGobletOpts } = require('@GTU/Utils/buildTestGobletOpts')
 const {
   metadata,
@@ -15,7 +14,6 @@ const {
   getContextOpts,
   taskEnvToBrowserOpts
 } = require('@gobletqa/browser')
-
 
 
 // TODO: Fix this - @cli-utils inDocker method no longer works

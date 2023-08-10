@@ -1,7 +1,7 @@
 import type { TGobletConfig } from '../types'
 
 import path from 'path'
-import { configLoader } from './configLoader'
+import { gobletLoader } from './loader'
 import { GobletConfigFileLocations } from '../constants'
 
 /**
@@ -11,7 +11,7 @@ import { GobletConfigFileLocations } from '../constants'
 export const configFromFolder = (baseDir:string) => {
   return GobletConfigFileLocations.reduce((found:false|TGobletConfig, loc:string) => {
     return found
-      || configLoader({ basePath: path.join(baseDir, loc) })
+      || gobletLoader({ basePath: path.join(baseDir, loc) })
       || found
   }, false)
 }

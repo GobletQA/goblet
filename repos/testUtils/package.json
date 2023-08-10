@@ -34,9 +34,11 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
   },
   "dependencies": {
+    "@goblet/browser": "workspace:../browser",
     "@gobletqa/exam": "workspace:../exam",
     "@gobletqa/environment": "workspace:../environment",
-    "@goblet/browser": "workspace:../browser",
+    "@gobletqa/goblet": "workspace:../goblet",
+    "@gobletqa/logger": "workspace:../logger",
     "@gobletqa/shared": "workspace:../shared",
     "@gobletqa/workflows": "workspace:../workflows",
     "@keg-hub/jsutils": ">=9.7.7",

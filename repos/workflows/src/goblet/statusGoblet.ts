@@ -4,12 +4,12 @@ import type { TWFGobletConfig, TWFResp, TGitOpts, TRepoOpts } from '@GWF/types'
 import path from 'path'
 import { git, RepoWatcher } from '../git'
 import { RepoLocalMount } from '../constants'
+import { gobletLoader } from '@gobletqa/goblet'
 import { repoSecrets } from '../repo/repoSecrets'
 import { getRepoName } from '../utils/getRepoName'
 import { noOpObj, omitKeys } from '@keg-hub/jsutils'
 import { fileSys, Logger } from '@keg-hub/cli-utils'
 import { createRepoWatcher } from '../repo/mountRepo'
-import { gobletLoader } from '@gobletqa/shared/libs/loader'
 
 const { pathExists } = fileSys
 const emptyOpts = noOpObj as TGitOpts

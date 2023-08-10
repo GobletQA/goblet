@@ -5,13 +5,13 @@ import os from "os"
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
 import { jestAliases } from './setupTestAliases'
+import { getGobletConfig } from '@gobletqa/goblet'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
 import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
-import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
 
 

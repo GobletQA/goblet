@@ -5,8 +5,8 @@ import { glob } from 'glob'
 import { Logger } from '@GSH/libs/logger'
 import { fileSys } from '@keg-hub/cli-utils'
 import { featuresParser } from './featuresParser'
+import { getPathFromBase } from '@gobletqa/goblet'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
-import { getPathFromBase } from '@GSH/utils/getPathFromBase'
 import { limbo, noPropArr, noOpObj } from '@keg-hub/jsutils'
 
 /**

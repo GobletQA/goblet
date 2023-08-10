@@ -1,7 +1,7 @@
 /**
  * --- **IMPORTANT** ---
  * This file should never be imported directly
- * Use the goblet config method to load the goblet.config file in shared/src/goblet directory
+ * Use the goblet config method to load the goblet.config file in @gobletqa/goblet repo
  * --- **IMPORTANT** ---
  */
 

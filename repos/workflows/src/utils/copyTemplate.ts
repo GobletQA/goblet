@@ -1,8 +1,8 @@
 import path from 'path'
 import { Logger } from '@keg-hub/cli-utils'
 import { copyContent } from './copyContent'
+import { configFromFolder } from '@gobletqa/goblet'
 import { aliases } from '@GConfigs/aliases.config'
-import { configFromFolder } from '@gobletqa/shared/goblet'
 
 /**
  * Copies the goblet template files into the mounted repo

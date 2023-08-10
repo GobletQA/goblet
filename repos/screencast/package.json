@@ -48,6 +48,7 @@
     "@gobletqa/browser": "workspace:../browser",
     "@gobletqa/environment": "workspace:../environment",
     "@gobletqa/exam": "workspace:../exam",
+    "@gobletqa/goblet": "workspace:../goblet",
     "@gobletqa/latent": "workspace:../latent",
     "@gobletqa/shared": "workspace:../shared",
     "@gobletqa/test-utils": "workspace:../testUtils",
