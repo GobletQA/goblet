@@ -72,7 +72,7 @@
   "dependencies": {
     "@keg-hub/args-parse": ">=10.0.1",
     "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": ">=9.7.2",
+    "@keg-hub/jsutils": ">=9.7.4",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "5.1.1",
     "@ltipton/esdev": "0.2.1",
