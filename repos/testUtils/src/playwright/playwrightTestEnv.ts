@@ -1,9 +1,9 @@
 import type { TGobletTestOpts } from '@gobletqa/shared/types'
 
+import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { copyTestReports } from '@GTU/Playwright/testReport'
-import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import { saveRecordingPath } from '@GTU/Playwright/videoRecording'
 import { initTestMeta, commitTestMeta } from '@GTU/TestMeta/testMeta'
 import { stopTracingChunk, startTracingChunk } from '@GTU/Playwright/tracing'

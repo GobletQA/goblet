@@ -8,6 +8,7 @@ import type {
   TSaveWorldLocator,
 } from '@GTU/Types'
 
+import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { set } from '@keg-hub/jsutils/set'
 import { ENVS } from '@gobletqa/environment'
@@ -15,7 +16,6 @@ import { unset } from '@keg-hub/jsutils/unset'
 import { isNum } from '@keg-hub/jsutils/isNum'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getPage, getLocator } from '@GTU/Playwright'
-import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import {
   SavedDataWorldPath,
   SavedLocatorWorldPath,

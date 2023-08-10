@@ -34,7 +34,7 @@
     "@gobletqa/logger": "workspace:../logger",
     "@gobletqa/goblet": "workspace:../goblet",
     "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": ">=9.7.7",
+    "@keg-hub/jsutils": ">=9.7.8",
     "@keg-hub/parse-config": ">=2.1.0",
     "@ltipton/parkin": "5.1.1",
     "cookie-session": "2.0.0",

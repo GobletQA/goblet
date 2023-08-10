@@ -1,4 +1,4 @@
-import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
+import { Logger } from '@gobletqa/logger'
 import { get, } from '@keg-hub/jsutils/get'
 import { noOp, } from '@keg-hub/jsutils/noOp'
 import { isStr, } from '@keg-hub/jsutils/isStr'

@@ -3,6 +3,7 @@ import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
 
 import os from "os"
 import path from 'path'
+import { Logger } from '@gobletqa/logger'
 import { ENVS } from '@gobletqa/environment'
 import { jestAliases } from './setupTestAliases'
 import { getGobletConfig } from '@gobletqa/goblet'
@@ -11,7 +12,6 @@ import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
-import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
 
 

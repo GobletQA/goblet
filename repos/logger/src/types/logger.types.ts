@@ -125,7 +125,7 @@ export type TLogOpts = winston.LoggerOptions & {
 }
 
 
-export type TWLogger = typeof Logger & TWinLogger & {
+export type TWLogger = typeof CliLogger & TWinLogger & {
   colors: typeof CliLogger.colors
 }
 

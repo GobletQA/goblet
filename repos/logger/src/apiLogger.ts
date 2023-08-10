@@ -1,10 +1,10 @@
-import type { TSetupLogger, TWLogger, TLogOpts, TWinLogger } from './types'
+import type { TSetupLogger, TWLogger } from './types'
 
 import './stdio'
 import { ENVS } from '@gobletqa/environment'
 import { buildLogger } from './utils/buildLogger'
 import { CliLogger, getLoggerColors } from '@gobletqa/logger'
-import { setLogs, capitalize, isStr, isColl, exists } from './utils/helpers'
+import { capitalize, isStr, isColl, exists } from './utils/helpers'
 
 const { GB_SUB_REPO } = ENVS
 
@@ -27,7 +27,6 @@ const autoInit = () => {
   if(__logger && __logLabel) return
 
   setupLogger({ tag: __logLabel, label: __logLabel })
-  setLogs(true, `log`, __logLabel)
 }
 
 const loggerWrap = (method:string=`info`) => {

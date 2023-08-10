@@ -7,6 +7,7 @@ import {
   TGobletTestArtifactOption,
 } from '@GTU/Types'
 
+import { Logger } from '@gobletqa/logger'
 import { get } from '@keg-hub/jsutils/get'
 import { wait } from '@keg-hub/jsutils/wait'
 import { pathExists } from '@GTU/Utils/fileSys'
@@ -14,7 +15,6 @@ import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { ArtifactSaveOpts } from '@gobletqa/browser'
 import { appendToLatest } from '@GTU/TestMeta/testMeta'
 import { getTestResult } from '@GTU/Reports/jasmineReporter'
-import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import {
   getGeneratedName,
   copyArtifactToRepo,
