@@ -198,14 +198,6 @@ export class EnvironmentLoader {
       console.log(err.message)
     }
     finally {
-
-      // Inject both the secrets keys and values into the safe replaces
-      // This is to ensure they are not leaked to the logs
-      if(type === EFileType.secrets){
-        injectUnsafe(Object.keys(loaded))
-        injectUnsafe(Object.values(loaded))
-      }
-
       return deepFreeze(loaded)
     }
   }
