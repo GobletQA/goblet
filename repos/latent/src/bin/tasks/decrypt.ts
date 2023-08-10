@@ -18,7 +18,7 @@ import {getRefFromPath, findSecretsLoc} from '../helpers'
  *
  */
 const decryptAct = (args:TTaskActionArgs) => {
-  const { ref, token, repo, encoded } = args.params
+  const { ref, token, encoded } = args.params
 
   const latent = new Latent()
   const tok = token || latent.getToken(ref || getRefFromPath(args.params))
@@ -38,7 +38,8 @@ const decryptAct = (args:TTaskActionArgs) => {
 export const decrypt:TTask = {
   name: `decrypt`,
   alias: [`dec`],
-  description: `Decrypt a file from path`,
+  description: `Decrypt a file from a path`,
+  example: `pnpm lt:dev dec ref="<repo-ref>" location="/path/to/secrets/directory"`,
   action: decryptAct,
   options: {
     token: {},

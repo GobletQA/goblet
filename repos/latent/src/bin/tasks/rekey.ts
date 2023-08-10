@@ -51,6 +51,7 @@ const rekeyAct = (args:TTaskActionArgs) => {
 export const rekey:TTask = {
   name: `rekey`,
   alias: [`rek`],
+  example: `pnpm lt:dev rekey old="<old-repo-ref>" repo="/path/to/repo"`,
   description: `Re-encrypts an encrypted file with a new key. Requires both an "old" and "update" ref`,
   action: rekeyAct,
   options: {

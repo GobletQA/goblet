@@ -505,6 +505,9 @@ importers:
 
   repos/latent:
     dependencies:
+      '@gobletqa/logger':
+        specifier: workspace:../logger
+        version: link:../logger
       '@keg-hub/cli-utils':
         specifier: 0.9.0
         version: 0.9.0

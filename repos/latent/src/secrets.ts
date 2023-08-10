@@ -122,7 +122,7 @@ export class Secrets {
           type: EFileType.secrets,
         })
 
-        resp.failed.length
+        resp?.failed?.length
           && acc.push(...resp.failed)
 
         return acc

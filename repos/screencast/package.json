@@ -33,7 +33,7 @@
     "bs": "node --enable-source-maps -r esbuild-register dist/bs.js",
     "bs:build": "node --enable-source-maps -r esbuild-register configs/bs.build.config.ts",
     "bs:start": "node --enable-source-maps -r esbuild-register configs/bs.build.config.ts",
-    "sc": "node scripts/blocking.js --enable-source-maps -r esbuild-register dist/index.js",
+    "sc": "NODE_OPTIONS=\"--enable-source-maps -r esbuild-register\" node scripts/blocking.js dist/index.js",
     "sc:build": "node --enable-source-maps -r esbuild-register configs/sc.build.config.ts",
     "sc:start": "node --enable-source-maps -r esbuild-register configs/sc.build.config.ts",
     "sc:kill": "node --enable-source-maps -r esbuild-register scripts/ts/killServer.ts",
