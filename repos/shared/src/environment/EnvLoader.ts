@@ -1,7 +1,8 @@
+import type { TGobletConfig } from '@GSH/types'
+
 import path from 'path'
 import { execSync } from 'child_process'
 import { GitRemoteRef } from '../constants'
-import { injectUnsafe } from '@gobletqa/logger'
 import { exists } from '@keg-hub/jsutils/exists'
 import { ENVS } from '@gobletqa/environment/envs'
 import { EFileType, Latent } from '@gobletqa/latent'
@@ -9,11 +10,18 @@ import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
 import { getPathFromConfig, getGobletConfig } from '@gobletqa/goblet'
 
+type TTokenProps = {
+  ref?:string
+  root:string
+  remote?:string
+}
+
 type TLoadEnvFile = {
   file?:string
   error?:boolean
   type:EFileType
   location?:string
+  config:TGobletConfig
 }
 
 type TMapOpts = {
@@ -37,16 +45,11 @@ const gitCmd = (repoRoot:string, ref:string) => execSync(
 
 const getGitRemote = (repoRoot:string) => {
   let url = (process.env.GB_GIT_REPO_REMOTE || ``).trim()
+  if(url) return url
 
   try {
-    if(!url){
-      try {
-        url = gitCmd(repoRoot, GitRemoteRef)
-      }
-      catch(err){
-        url = gitCmd(repoRoot, `origin`)
-      }
-    }
+    try {url = gitCmd(repoRoot, GitRemoteRef)}
+    catch(err){ url = gitCmd(repoRoot, `origin`)}
   }
   catch(err){
     console.log(`[ENV LOADER] Failed to get goblet repo remote url`)
@@ -57,9 +60,29 @@ const getGitRemote = (repoRoot:string) => {
   return url.replace(/\.git$/, ``)
 }
 
-export class EnvironmentLoader {
+const getRepoRef = ({ref, remote, root}:TTokenProps) => {
+  const found = ref
+    || ENVS.GB_REPO_CONFIG_REF
+    || remote
+    || ENVS.GB_GIT_REPO_REMOTE
+  
+  if(found) return found
 
-  constructor(){}
+  return getGitRemote(root)
+}
+
+
+export class EnvironmentLoader {
+  latent:Latent
+
+  constructor(){
+    this.latent = new Latent()
+  }
+
+  #repoToken = (props:TTokenProps) => {
+    return ENVS.GOBLET_TOKEN
+      || this.latent.getToken(getRepoRef(props), ENVS.GB_LT_TOKEN_SECRET)
+  }
 
   /**
    * Loads an env file
@@ -67,16 +90,11 @@ export class EnvironmentLoader {
   #envFile = ({
     file,
     type,
+    config,
     location,
     error=false,
   }: TLoadEnvFile):Record<string, any> => {
 
-    const config = getGobletConfig()
-    if(!config){
-      console.log(`[ENV LOADER] Failed to get Goblet Config`)
-      return {}
-    }
-    
     const { repoRoot } = config.paths
     if(!repoRoot){
       console.log(`[ENV LOADER] Failed to get repoRoot`)
@@ -93,29 +111,25 @@ export class EnvironmentLoader {
     }
 
     const loc = location || path.join(environmentsDir, file)
-    const latent = new Latent()
+    this.latent = new Latent()
 
     if(type !== EFileType.secrets)
-      return latent.values.get({ location: loc })
+      return this.latent.values.get({ location: loc })
 
     if(ENVS.GB_REPO_NO_SECRETS) return {}
 
-    const envUrl = ENVS.GB_GIT_REPO_REMOTE
+    const token = this.#repoToken({
+      root: repoRoot,
+      ref: config.$ref,
+    })
 
-    // Error is logged in the getGitRemote method
-    const repoUrl = envUrl || getGitRemote(repoRoot)
-
-    if(!repoUrl) return {}
-
-    const token = latent.getToken(repoUrl)
     if(!token){
-      console.log(`[ENV LOADER] Failed to get token from repoUrl`)
-      console.log(repoUrl)
+      console.log(`[ENV LOADER] Failed to get token from repo ref`)
       console.log(config)
       return {}
     }
     try {
-      return latent.secrets.get({ token, location: loc })
+      return this.latent.secrets.get({ token, location: loc })
     }
     catch(err){
       console.log(err.message)
@@ -184,12 +198,18 @@ export class EnvironmentLoader {
     existing:Record<any, any>={}
   ) => {
     let loaded=existing
-    
+
+    const config = getGobletConfig()
+    if(!config){
+      console.log(`[ENV LOADER] Failed to get Goblet Config`)
+      return {}
+    }
+
     try {
       loaded = files.reduce((acc, file) => {
         return this.#mapValues({
           existing: acc,
-          values: this.#envFile({ file, type }),
+          values: this.#envFile({ file, type, config }),
         })
       }, existing as Record<any, any>)
     }

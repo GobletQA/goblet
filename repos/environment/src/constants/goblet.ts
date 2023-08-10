@@ -16,3 +16,5 @@ export const GobletConfigFileNames = deepFreeze<string[]>([
   `goblet.ts`,
   `goblet.config.ts`,
 ])
+
+export const GobletConfigRef = `<<-goblet-config-$ref->>`

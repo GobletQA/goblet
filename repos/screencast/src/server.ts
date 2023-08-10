@@ -1,8 +1,10 @@
 import '@GSC/utils/logger'
+import { GBrowser } from '@gobletqa/browser'
 import { initSocket } from '@GSC/libs/websocket'
 import { SCAuthBypassRoutes } from '@GSC/constants'
 import { setupRepo } from '@GSC/middleware/setupRepo'
 import { getApp } from '@gobletqa/shared/express/app'
+
 import { setupBrowser, setupEndpoints } from '@GSC/middleware'
 import { screencastConfig } from '@GSC/Configs/screencast.config'
 import {
@@ -16,6 +18,7 @@ import {
   validateUser,
 } from '@gobletqa/shared/middleware'
 
+let _SocketMgr = undefined
 
 /**
  * Starts a express API server for screencast
@@ -55,16 +58,18 @@ const initApi = async () => {
   const socketConf = app?.locals?.config?.socket
   const server = secureServer || insecureServer
   const socket = await initSocket(app, server, socketConf, 'tests')
-
+  _SocketMgr = socket.Manager
   return { app, server, socket }
 }
 
-process.once('SIGINT', () => {
+const onExit = () => {
   console.log(`[Screencast] Waiting screencast to clean up...`)
-  setTimeout(() => {
-    console.log(`[Screencast] Force Killing screencast server`)
-    process.exit()
-  }, 1000)
-})
+  GBrowser.close()
+  _SocketMgr?.close?.()
+  _SocketMgr = undefined
+}
+
+process.once('SIGINT', onExit)
+process.once('SIGTERM', onExit)
 
 initApi()

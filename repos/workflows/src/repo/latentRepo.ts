@@ -12,8 +12,10 @@ import type {
 
 import { exists } from '@keg-hub/jsutils'
 import { env } from '@keg-hub/parse-config'
-import { injectUnsafe } from '@gobletqa/logger'
+import { ENVS } from '@gobletqa/environment'
 import { ELoadFormat, EFileType, Latent } from '@gobletqa/latent'
+
+type TTokenProps = { remote:string, ref?:string }
 
 type TLTLSaveFile = {
   repo:TRepo
@@ -32,11 +34,23 @@ const getLatentType = (location:string) => {
     : EFileType.values
 }
 
+const getRepoRef = ({ref, remote}:TTokenProps) => {
+  return ref
+    || ENVS.GB_REPO_CONFIG_REF
+    || remote
+    || ENVS.GB_GIT_REPO_REMOTE
+}
+
 export class LatentRepo {
   latent:Latent
 
   constructor(){
     this.latent = new Latent()
+  }
+
+  repoToken = (props:TTokenProps) => {
+    return ENVS.GOBLET_TOKEN
+      || this.latent.getToken(getRepoRef(props), ENVS.GB_LT_TOKEN_SECRET)
   }
 
   rekey = (props:TLTRekey):Error|undefined => {
@@ -52,20 +66,14 @@ export class LatentRepo {
     }
   }
 
-  decrypt = (props:TLTLoad & { remote:string }) => {
-    const { remote, ...rest } = props
-
-    const token = this.latent.getToken(props.remote)
+  decrypt = (props:TLTLoad & { remote:string, ref?:string }) => {
+    const { ref, remote, ...rest } = props
+    const token = this.repoToken(props)
 
     const secrets = this.latent.secrets.load({
       ...rest,
       token
     })
-
-    // Inject both the secrets keys and values into the safe replaces
-    // This is to ensure they are not leaked to the logs
-    injectUnsafe(Object.keys(secrets))
-    injectUnsafe(Object.values(secrets))
 
     return secrets
   }
@@ -76,7 +84,11 @@ export class LatentRepo {
       location
     } = props
 
-    const token = this.latent.getToken(repo.git.remote)
+    const token = this.repoToken({
+      ref: repo.$ref,
+      remote: repo.git.remote
+    })
+
     const type = getLatentType(location)
 
     const args = {

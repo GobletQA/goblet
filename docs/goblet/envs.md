@@ -62,3 +62,7 @@
   * **Description** - Base Token for encrypting and decrypting repo tokens
     * Should never be shared
   * **Repos** - `latent`
+* `GB_REPO_CONFIG_REF`
+  * **Description** - Repo ref defined in a goblet config to use as a token alongside the `GB_LT_TOKEN_SECRET`
+    * Can be public. Think of it as a public key
+  * **Repos** - `latent`

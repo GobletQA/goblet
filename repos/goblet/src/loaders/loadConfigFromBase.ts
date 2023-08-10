@@ -1,3 +1,4 @@
+import { TCfgFolder } from '../types'
 import fs from 'fs'
 import path from 'path'
 import { findConfig } from './findConfig'
@@ -8,10 +9,14 @@ import { ENVS } from '@gobletqa/environment'
 /**
  * Loads a goblet.config from a folder path recursively
  */
-export const loadConfigFromBase = (base:string) => {
+export const loadConfigFromBase = (base:string, ref?:string, remote?:string) => {
 
   // Check if running from a CI environment and the GOBLET_CONFIG_BASE is set
   base = base || ENVS.GOBLET_CONFIG_BASE
+
+  // Ensure the ref and remote are set if available
+  ref = ref || ENVS.GB_REPO_CONFIG_REF || ``
+  remote = remote || ENVS.GB_GIT_REPO_REMOTE
 
   if (!base) return null
 
@@ -50,5 +55,7 @@ export const loadConfigFromBase = (base:string) => {
     ? cleanedDir
     : path.dirname(cleanedDir)
 
-  return findConfig(startDir)
+  const opts:TCfgFolder = ref ? { ref } : { remote }
+
+  return findConfig(startDir, opts)
 }

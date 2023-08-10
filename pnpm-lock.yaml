@@ -904,7 +904,7 @@ importers:
 
   repos/testUtils:
     dependencies:
-      '@goblet/browser':
+      '@gobletqa/browser':
         specifier: workspace:../browser
         version: link:../browser
       '@gobletqa/environment':

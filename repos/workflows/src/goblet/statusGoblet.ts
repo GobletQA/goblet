@@ -51,7 +51,10 @@ const statusForLocal = async (config:TWFGobletConfig, opts:TGitOpts) => {
 
   // Check if the local mount folder exists
   // If not then it's empty
-  const gobletConfig = isValidPath && gobletLoader({ basePath: RepoLocalMount})
+  const gobletConfig = isValidPath && gobletLoader({
+    remote: opts.remote,
+    basePath: RepoLocalMount,
+  })
 
   const secretsFail = await repoSecrets(opts, gobletConfig)
   if(secretsFail) return secretsFail
@@ -121,7 +124,10 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
   if (!isMounted) return unknownStatus
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = gobletLoader({ basePath: local })
+  const gobletConfig = gobletLoader({
+    remote,
+    basePath: local,
+  })
 
   const repo = {
     git: omitKeys(opts, [`token`]),
@@ -142,11 +148,11 @@ const statusForVnc = async (opts:TGitOpts=emptyOpts) => {
     ? unknownStatus
     : {
         repo,
-        mode: 'vnc',
+        mode: `vnc`,
         setup: true,
         mounted: true,
-        status: 'mounted',
-        message: 'Repo mounted',
+        status: `mounted`,
+        message: `Repo mounted`,
       } as TWFResp
 
 }

@@ -48,6 +48,7 @@ export type TGobletPWConfig = {
 }
 
 export type TDefGobletConfig = {
+  $ref?:string
   $merge?: string[],
   paths: TRepoPaths
   world?:TWorldConfig

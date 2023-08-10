@@ -44,6 +44,7 @@ export type TGitData = {
 
 export type TRepoOpts = {
   name:string
+  $ref?:string
   git: TGitData
   paths?: TRepoPaths
   world: TWorldConfig

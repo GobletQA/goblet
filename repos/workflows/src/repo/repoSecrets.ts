@@ -9,11 +9,14 @@ import {ensureRemoteTag} from './ensureRemoteTag'
 
 export const repoSecrets = async (
   opts:TGitOpts,
-  config?:TGobletConfig,
+  config:TGobletConfig,
   statusCheck?:boolean
 ) => {
 
-  if(!statusCheck){
+  // @ts-ignore
+  if(config?.$ref) Logger.success(`Goblet config has $ref, skipping remote tag`)
+
+  else if(!statusCheck){
     Logger.log(`Checking goblet remote tag...`)
     const tagErr = await ensureRemoteTag(opts)
     if(tagErr) return failResp({ setup: false }, tagErr.message)

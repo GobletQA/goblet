@@ -1,4 +1,5 @@
 const config = {
+  $ref: `<<-goblet-config-$ref->>`,
   recorder: {
     locator: `-- 🍷 GOBLET`
   },

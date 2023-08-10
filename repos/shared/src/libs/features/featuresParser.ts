@@ -26,9 +26,6 @@ export const featuresParser = (
         if (err) return rej(err)
         const content = data.toString()
 
-        // TODO: Add a proper logger for shared / screencast
-        Logger.pair(`Parsing feature at`, location)
-
         try {
           // Pass in an empty world object so the values are not replaced
           // We only want to replace values during execution

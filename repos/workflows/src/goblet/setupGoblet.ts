@@ -65,7 +65,7 @@ export const setupGoblet = async (
 
   Logger.log(`Checking goblet configuration...`)
   const hasGoblet = await copyTemplate(
-    gitData.local,
+    gitData,
     args.repoTemplate
   )
 
@@ -76,7 +76,11 @@ export const setupGoblet = async (
     )
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = gobletLoader({ basePath: gitOpts.local })
+  const gobletConfig = gobletLoader({
+    remote: gitOpts.remote,
+    basePath: gitOpts.local,
+  })
+
   if(!gobletConfig)
     return failResp({ setup: false }, `Could not load goblet.config for mounted repo`)
 
@@ -86,9 +90,9 @@ export const setupGoblet = async (
     name: getRepoName(gitOpts.remote),
   } as TGobletConfig
 
-  const secretsResp = await repoSecrets(gitOpts, namedGobletCfg)
+  const secretsFail = await repoSecrets(gitOpts, namedGobletCfg)
 
-  return secretsResp
+  return secretsFail
     || successResp({ setup: true }, { repo: namedGobletCfg }, `Finished running Setup Goblet Workflow`)
 }
 

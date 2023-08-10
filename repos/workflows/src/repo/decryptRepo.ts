@@ -1,6 +1,5 @@
 import type { TGitOpts, TGobletConfig } from '../types'
 
-
 import { latentRepo } from './latentRepo'
 import { getPathFromConfig } from '@gobletqa/goblet'
 
@@ -9,7 +8,10 @@ export const decryptRepo = (gitOpts:TGitOpts, config?:TGobletConfig) => {
 
   const loaded = latentRepo.decrypt({
     location,
-    remote: gitOpts.remote,
+    // @ts-ignore
+    ref: config?.$ref,
+    // @ts-ignore
+    remote: gitOpts.remote || config?.$remote,
     // file?:TLatentFile
     // token?:TLatentTokenOpts
     // environment?:ELatentEnv

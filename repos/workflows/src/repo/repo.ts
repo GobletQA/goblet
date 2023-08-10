@@ -213,6 +213,10 @@ export class Repo {
    */
   git:TGitData
 
+  /**
+   * Repo key reference
+   */
+  $ref?:string=undefined
 
   /**
    * Instance of the parkin class
@@ -238,6 +242,7 @@ export class Repo {
     const {
       git,
       name,
+      $ref,
       environment,
       paths=emptyObj as TRepoPaths,
     } = config
@@ -257,6 +262,7 @@ export class Repo {
     this.fileTypes = getFileTypes(this.paths.repoRoot, this.paths)
     this.latent = latentRepo
 
+    this.$ref = $ref || git?.remote.replace(/\.git$/, ``)
   }
 
   get world(){

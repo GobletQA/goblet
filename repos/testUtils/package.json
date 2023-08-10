@@ -34,7 +34,7 @@
     "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w"
   },
   "dependencies": {
-    "@goblet/browser": "workspace:../browser",
+    "@gobletqa/browser": "workspace:../browser",
     "@gobletqa/exam": "workspace:../exam",
     "@gobletqa/environment": "workspace:../environment",
     "@gobletqa/goblet": "workspace:../goblet",
