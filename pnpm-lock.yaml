@@ -1132,6 +1132,9 @@ importers:
         specifier: 2.2.2
         version: 2.2.2
     devDependencies:
+      '@ltipton/esdev':
+        specifier: 0.2.1
+        version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.4.2)(esbuild@0.18.17)
       '@types/debug':
         specifier: 4.1.5
         version: 4.1.5
