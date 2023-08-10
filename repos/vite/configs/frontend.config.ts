@@ -1,6 +1,5 @@
 import path from 'path'
 import { createRequire } from 'module'
-import { exists } from '@keg-hub/jsutils'
 import { addToProcess } from '@keg-hub/cli-utils'
 import { loadConfigs } from '@keg-hub/parse-config'
 import { getFirebaseCfg } from './firebase.config'
@@ -37,7 +36,7 @@ export const loadConfig = () => {
       env: process.env.GOBLET_ENV || process.env.NODE_ENV || `local`,
       
     }),
-    { force: exists(process.env.GOBLET_ENV) }
+    { force: process.env.GOBLET_ENV !== undefined }
   )
 
   const {
