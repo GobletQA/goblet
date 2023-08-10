@@ -11,7 +11,7 @@ import { isStr } from '@keg-hub/jsutils/isStr'
 import { toNum } from '@keg-hub/jsutils/toNum'
 import { exists } from '@keg-hub/jsutils/exists'
 import { isBool } from '@keg-hub/jsutils/isBool'
-import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import {emptyObj} from '@keg-hub/jsutils/emptyObj'
 import { updateLogLevel, Logger } from "@GEX/utils/logger"
 
 

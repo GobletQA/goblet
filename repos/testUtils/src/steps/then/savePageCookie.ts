@@ -1,7 +1,7 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
-import {isStr} from '@keg-hub/jsutils'
+import {isStr} from '@keg-hub/jsutils/isStr'
 import { getContext } from '@GTU/Playwright'
 import { DefaultCookieFile, saveContextCookie } from '@gobletqa/browser'
 

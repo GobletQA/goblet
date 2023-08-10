@@ -5,9 +5,8 @@ import type {
   TExTransformCfg,
 } from '@gobletqa/exam'
 
-import * as esbuild from 'esbuild'
-import { emptyObj } from '@keg-hub/jsutils'
 import { Parkin } from '@ltipton/parkin'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getParkinInstance } from '../parkin/instance'
 import { createGlobMatcher, Errors } from '@gobletqa/exam'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'

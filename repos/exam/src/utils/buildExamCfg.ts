@@ -3,7 +3,8 @@ import type { TExamConfig, TExArrOptsMap } from '@GEX/types'
 import {isArr} from '@keg-hub/jsutils/isArr'
 import {isStr} from '@keg-hub/jsutils/isStr'
 import {mergeCfgArrays} from './mergeCfgArrays'
-import {emptyArr} from '@keg-hub/jsutils/emptyArr'
+// @ts-ignore
+import {emptyArr} from '@keg-hub/jsutils/noOps'
 import { resolveRootDir } from './resolveRootDir'
 import { ExamCfg, RootDirKey } from '@GEX/constants'
 

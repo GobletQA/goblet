@@ -2,7 +2,7 @@ import type { TGobletConfig } from '../types'
 
 import path from 'path'
 import { globSync } from 'glob'
-import { uniqArr } from '@keg-hub/jsutils'
+import { uniqArr } from '@keg-hub/jsutils/uniqArr'
 import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 
 const exts = [

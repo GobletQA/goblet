@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { noOp } from '@keg-hub/jsutils'
+import { noOp } from '@keg-hub/jsutils/noOp'
 import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
 

@@ -8,7 +8,7 @@ import { parentPort, workerData } from 'worker_threads'
 import { onStartupStep } from '../pipelines/steps/onStartupStep'
 import { onShutdownStep } from '../pipelines/steps/onShutdownStep'
 // @ts-ignore
-import { ife } from '@keg-hub/jsutils/ife'
+import { ife } from '@keg-hub/jsutils/checkCall'
 
 
 type TWorkerCfg = {

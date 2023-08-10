@@ -1,6 +1,7 @@
 import type { TGobletTestOpts } from '@gobletqa/shared/types'
 
-import { emptyObj, get } from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils/get'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { copyTestReports } from '@GTU/Playwright/testReport'
 import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import { saveRecordingPath } from '@GTU/Playwright/videoRecording'

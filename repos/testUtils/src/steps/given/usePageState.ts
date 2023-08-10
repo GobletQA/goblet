@@ -1,7 +1,7 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
-import {isStr} from '@keg-hub/jsutils'
+import {isStr} from '@keg-hub/jsutils/isStr'
 import { DefaultStateFile } from '@gobletqa/browser'
 import { contextStateLoc } from '@GTU/Playwright/browserContext'
 

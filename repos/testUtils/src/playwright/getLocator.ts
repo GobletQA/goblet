@@ -1,7 +1,8 @@
 import type { TStepCtx, TLocator } from '@GTU/Types'
 
 import {getStepTimeout} from '@GTU/Support'
-import {isBool, isObj } from '@keg-hub/jsutils'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import {isBool } from '@keg-hub/jsutils/isBool'
 import { getPage } from '@GTU/Playwright/browserContext'
 
 

@@ -5,7 +5,7 @@ import type {
   TLocatorMapMethod,
 } from '@GTU/Types'
 
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getPage } from '@GTU/Playwright/browserContext'
 
 export const locatorTypeMap:TLocatorTypeMap = {

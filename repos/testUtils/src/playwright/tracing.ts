@@ -5,7 +5,8 @@ import {
 } from '@GTU/Types'
 
 import path from 'path'
-import { noOpObj, get } from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils/get'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { ArtifactSaveOpts } from '@gobletqa/browser'
 import { appendToLatest } from '@GTU/TestMeta/testMeta'
 import { getTestResult } from '@GTU/Reports/jasmineReporter'

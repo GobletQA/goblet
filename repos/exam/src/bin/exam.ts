@@ -1,8 +1,8 @@
 import "./init"
 import "@GEX/utils/logger"
-import { isArr } from '@keg-hub/jsutils/isArr'
-// @ts-ignore
 import { ife } from '@keg-hub/jsutils/ife'
+import { isArr } from '@keg-hub/jsutils/isArr'
+
 
 import { getConfig } from './getConfig'
 import { initLocal } from './initLocal'

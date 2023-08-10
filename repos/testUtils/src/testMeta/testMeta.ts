@@ -2,13 +2,20 @@ import { Logger } from '@gobletqa/shared/libs/logger/cliLogger'
 import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
-import { deepMerge, deepClone, set, isArr, noOpObj, toBool, isObj } from '@keg-hub/jsutils'
 import {
   readFile,
   writeFile,
   removeFile,
   pathExists
 } from '@GTU/Utils/fileSys'
+
+import { set } from '@keg-hub/jsutils/set'
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { toBool } from '@keg-hub/jsutils/toBool'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { deepClone } from '@keg-hub/jsutils/deepClone'
 
 const isCIEnv = toBool(process.env.GOBLET_RUN_FROM_CI)
 const debugActive = toBool(process.env.GOBLET_ARTIFACTS_DEBUG)

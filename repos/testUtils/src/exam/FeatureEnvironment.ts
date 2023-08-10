@@ -14,7 +14,7 @@ import type { FeatureRunner } from './FeatureRunner'
  * Which allows it to be referenced directly in step definitions
  */
 import expect from 'expect'
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 // import { getParkinInstance } from '../parkin/instance'
 
 export class FeatureEnvironment implements IExamEnvironment {

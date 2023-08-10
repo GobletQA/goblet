@@ -16,11 +16,11 @@ import { limbo } from '@keg-hub/jsutils/limbo'
 import { exists } from '@keg-hub/jsutils/exists'
 import { WkrPoolTag } from '@GEX/constants/tags'
 import { AggregateError } from '@GEX/utils/error'
+import {emptyArr} from '@keg-hub/jsutils/emptyArr'
 import { WorkerEvents } from '@GEX/constants/worker'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { Worker, MessageChannel } from 'worker_threads'
 import { PoolCfg, WorkerEnvs } from '@GEX/constants/defaults'
-import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 
 type TWorkerCfg = {
   tag:string

@@ -10,7 +10,8 @@ import type {
 import os from 'os'
 import path from 'path'
 import { startTracing } from './tracing'
-import { get, emptyObj } from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils/get'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import {
   GBrowser,
   DefaultStateFile,

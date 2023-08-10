@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import { mkDir, removeFile } from '@GTU/Utils/fileSys'
 
-import { get } from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils/get'
 
 const nameCache = {}
 

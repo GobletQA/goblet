@@ -8,7 +8,8 @@ import type {
 
 import path from 'path'
 import { ENVS } from '@gobletqa/environment'
-import { exists, toBool } from '@keg-hub/jsutils'
+import { toBool } from '@keg-hub/jsutils/toBool'
+import { exists } from '@keg-hub/jsutils/exists'
 import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
 import {
   CanRecordVideo,

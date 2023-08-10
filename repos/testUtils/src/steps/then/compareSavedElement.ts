@@ -1,7 +1,7 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
-import { deepMerge } from '@keg-hub/jsutils'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import {
   getWorldData,
   compareValues,
