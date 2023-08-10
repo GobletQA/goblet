@@ -4,7 +4,8 @@ import type { TExamConfig } from '@GEX/types'
 import {ExamError} from '@GEX/utils/error'
 import { WorkerPool } from '@GEX/workerPool'
 import {ExamCfgModeType} from '@GEX/constants'
-import { flatArr, limbo } from '@keg-hub/jsutils'
+import { limbo } from '@keg-hub/jsutils/limbo'
+import { flatArr } from '@keg-hub/jsutils/flatArr'
 import {printExamTestMode} from '@GEX/debug/verbose'
 
 /**

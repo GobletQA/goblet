@@ -2,7 +2,7 @@ import type { TExamCliOpts, TExamConfig, TPipelineInit } from '@GEX/types'
 
 import { loadFiles } from './loadFiles'
 import { nanoid } from '@GEX/utils/nanoid'
-import { timedRun } from '@keg-hub/jsutils'
+import { timedRun } from '@keg-hub/jsutils/timedRun'
 import { RunPipeline } from '../pipelines/RunPipeline'
 import { onStartupStep } from '../pipelines/steps/onStartupStep'
 import { onShutdownStep } from '../pipelines/steps/onShutdownStep'

@@ -1,13 +1,15 @@
 import "./init"
 import "@GEX/utils/logger"
-import { ife, isArr } from '@keg-hub/jsutils'
+import { isArr } from '@keg-hub/jsutils/isArr'
+// @ts-ignore
+import { ife } from '@keg-hub/jsutils/ife'
+
 import { getConfig } from './getConfig'
 import { initLocal } from './initLocal'
 import { updateCLIEnvs } from './helpers'
 import { initWorkers } from './initWorkers'
 import { printDebugResults } from '@GEX/debug'
 import { removeEmpty, parseArgs } from './helpers'
-
 
 ife(async () => {
 

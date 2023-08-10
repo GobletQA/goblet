@@ -20,7 +20,7 @@
     "@gitbeaker/browser": "35.8.1",
     "@gobletqa/shared": "workspace:../shared",
     "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": ">=9.7.0",
+    "@keg-hub/jsutils": ">=9.7.1",
     "@ltipton/symplasm": "0.0.1",
     "@monaco-editor/react": "4.5.1",
     "@mui/icons-material": "5.11.16",

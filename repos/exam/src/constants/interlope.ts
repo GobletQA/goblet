@@ -1,5 +1,5 @@
 import type { TEXInterReporterContext } from '@GEX/types'
-import {noOp} from '@keg-hub/jsutils'
+import {noOp} from '@keg-hub/jsutils/noOp'
 
 export const DefReportCtx:TEXInterReporterContext = {
   firstRun: true,

@@ -1,5 +1,6 @@
-import { exists, toBool } from '@keg-hub/jsutils/node'
-import { inDocker } from '@keg-hub/jsutils/src/node/inDocker'
+import { inDocker } from '@keg-hub/cli-utils'
+import { exists } from '@keg-hub/jsutils/exists'
+import { toBool } from '@keg-hub/jsutils/toBool'
 
 // TODO: fix this - inDocker is no longer working due to recent updates
 // Can no longer depend on it

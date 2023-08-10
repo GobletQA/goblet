@@ -4,9 +4,9 @@ import path from 'path'
 import { loadFiles } from './loadFiles'
 import { splitWork } from './splitWork'
 import { runWorkers } from './runWorkers'
-import { timedRun } from '@keg-hub/jsutils'
 import { WorkerPool } from '@GEX/workerPool'
 import { logWorkBreakdown } from '@GEX/debug'
+import { timedRun } from '@keg-hub/jsutils/timedRun'
 
 export const initWorkers = async (exam:TExamConfig & { file?:string }, opts:TExamCliOpts) => {
   const locations = await loadFiles(exam)

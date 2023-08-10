@@ -5,12 +5,12 @@
 
 const path = require('path')
 const { loadConfigs } = require('@keg-hub/parse-config')
+const {tryRequireSync } = require('@keg-hub/jsutils/src/node')
 const {
   isStr,
   noOpObj,
   deepMerge,
-  tryRequireSync,
-} = require('@keg-hub/jsutils/src/node')
+} = require('@keg-hub/jsutils')
 
 const appRoot = path.join(__dirname, `../../../`)
 const containerDir = path.join(appRoot, `container`)

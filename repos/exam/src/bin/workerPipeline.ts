@@ -1,13 +1,14 @@
 import type { MessagePort } from 'worker_threads'
 import type { TExamConfig, TExamRunOpts } from '@GEX/types'
 
-import { ife } from '@keg-hub/jsutils'
 import {updateCLIEnvs} from '@GEX/bin/helpers'
 import { WorkerEvents } from '@GEX/constants/worker'
 import { RunPipeline } from '../pipelines/RunPipeline'
 import { parentPort, workerData } from 'worker_threads'
 import { onStartupStep } from '../pipelines/steps/onStartupStep'
 import { onShutdownStep } from '../pipelines/steps/onShutdownStep'
+// @ts-ignore
+import { ife } from '@keg-hub/jsutils/ife'
 
 
 type TWorkerCfg = {

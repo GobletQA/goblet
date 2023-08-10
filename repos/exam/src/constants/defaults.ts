@@ -8,7 +8,7 @@ import type {
 } from '@GEX/types'
 
 import { EExTestMode } from '@GEX/types'
-import {emptyArr} from '@keg-hub/jsutils'
+import {emptyArr} from '@keg-hub/jsutils/emptyArr'
 
 export const globFileIgnore = [
   `/node_modules/`,

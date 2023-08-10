@@ -2,9 +2,9 @@ jest.resetModules()
 jest.resetAllMocks()
 jest.clearAllMocks()
 
-import { doIt } from '@keg-hub/jsutils'
 import { splitWork } from './splitWork'
 import { ExamCfg } from '@GEX/constants'
+import { doIt } from '@keg-hub/jsutils/doIt'
 
 type TRuns = [any, any][]
 

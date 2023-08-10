@@ -3,8 +3,9 @@ import type { TGobletConfig } from '@GSH/types'
 import path from 'path'
 import { globSync } from 'glob'
 import { createRequire } from 'module'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { GobletConfigFileNames } from '@GSH/constants'
-import { isStr, deepMerge } from '@keg-hub/jsutils/src/node'
 
 type TMerge = { $merge?: string[] | false | null | undefined }
 type TLoadedFunc<T extends TMerge> = (...args:any[]) => T

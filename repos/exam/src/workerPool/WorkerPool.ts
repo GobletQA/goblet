@@ -12,12 +12,15 @@ import EventEmitter from 'events'
 import { Logger } from '@GEX/utils/logger'
 import { nanoid } from '@GEX/utils/nanoid'
 import { Errors } from '@GEX/constants/errors'
+import { limbo } from '@keg-hub/jsutils/limbo'
+import { exists } from '@keg-hub/jsutils/exists'
 import { WkrPoolTag } from '@GEX/constants/tags'
 import { AggregateError } from '@GEX/utils/error'
 import { WorkerEvents } from '@GEX/constants/worker'
+import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { Worker, MessageChannel } from 'worker_threads'
 import { PoolCfg, WorkerEnvs } from '@GEX/constants/defaults'
-import { emptyArr, exists, flatUnion, limbo } from '@keg-hub/jsutils'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 
 type TWorkerCfg = {
   tag:string

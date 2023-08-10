@@ -34,6 +34,7 @@ const esmBuild = async () => {
   await esbuild.build({
     ...opts,
     platform: `node`,
+    treeShaking: true,
     outdir: esmOutdir,
     format: `esm` as const,
     tsconfig: path.join(rootDir, `tsconfig.build.json`),
@@ -49,6 +50,7 @@ const cjsBuild = async () => {
   await esbuild.build({
     ...opts,
     platform: `node`,
+    treeShaking: true,
     outdir: cjsOutdir,
     target: [`node18`],
     tsconfig: path.join(rootDir, `tsconfig.build.json`),

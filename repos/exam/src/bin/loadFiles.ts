@@ -1,8 +1,11 @@
 import type { TExamConfig } from '@GEX/types'
 
 import { Errors } from '@GEX/constants'
+import {isStr} from '@keg-hub/jsutils/isStr'
+import {emptyArr} from '@keg-hub/jsutils/emptyArr'
+import {ensureArr} from '@keg-hub/jsutils/ensureArr'
 import { globMatchFiles } from '@GEX/utils/globMatch'
-import {emptyArr, ensureArr, isStr} from '@keg-hub/jsutils'
+
 
 export const loadFiles = async (exam:TExamConfig & { file?:string }) => {
   const {

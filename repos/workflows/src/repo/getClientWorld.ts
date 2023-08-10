@@ -3,8 +3,9 @@ import type { TGitData, TRepoPaths, TGobletConfig, TRepo } from '@GWF/types'
 
 import { DefWorld } from '../constants'
 import { ENVS } from '@gobletqa/environment'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { loaderSearch } from '@gobletqa/shared/libs/loader'
-import { noOpObj, deepMerge } from '@keg-hub/jsutils/src/node'
 import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
 import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
 
@@ -61,7 +62,7 @@ const loadClientWorld = (
       clearCache: true,
       file: `world.json`,
       location: worldPath
-    })
+    }) as TWorldConfig
 
   }
   catch(err){
