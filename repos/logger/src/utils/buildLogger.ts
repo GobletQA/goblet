@@ -1,3 +1,5 @@
+import type { TLogOpts } from '../types'
+
 import winston from 'winston'
 import { noOpObj } from '@keg-hub/jsutils'
 import { safeReplacer } from './safeReplacer'
@@ -13,11 +15,6 @@ const {
 } = format
 
 let __LOGGER:winston.Logger
-export type TWinLogger = winston.Logger
-
-export type TLogOpts = winston.LoggerOptions & {
-  label:string
-}
 
 /**
  * Winston transform helper to filter out OPTIONS requests from the browser 

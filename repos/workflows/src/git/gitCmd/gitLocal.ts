@@ -9,9 +9,11 @@ import type {
 
 import fs from 'fs'
 import { git } from './gitCmd'
+import { Logger } from '@gobletqa/logger'
 import { RepoWatcher } from '../repoWatcher'
-import { fileSys, Logger } from '@keg-hub/cli-utils'
-import { limbo, deepMerge } from '@keg-hub/jsutils'
+import { fileSys } from '@keg-hub/cli-utils'
+import { limbo } from '@keg-hub/jsutils/limbo'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { throwErr } from '@gobletqa/workflows/utils/throwErr'
 import { getRepoPath } from '@gobletqa/workflows/utils/getRepoPath'
 

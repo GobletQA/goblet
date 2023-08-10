@@ -1,6 +1,6 @@
-import type { TLogMethods, TLogLevels, TCLILogger } from './logger.types'
+import type { TLogMethods, TLogLevels, TCLILogger } from '../types'
 
-import {isNum, isStr, exists} from "./utils"
+import {isNum, isStr, exists} from "./helpers"
 
 
 export const levelMap = {

@@ -1,5 +1,5 @@
+import { ApiLogger, setupLogger } from '@gobletqa/logger'
 import { backendConfig } from '@GBE/Configs/backend.config'
-import { Logger, setupLogger } from '@gobletqa/shared/libs/logger'
 
 setupLogger({
   tag: `Goblet BE`,
@@ -7,5 +7,5 @@ setupLogger({
 })
 
 export {
-  Logger
+  ApiLogger as Logger
 }

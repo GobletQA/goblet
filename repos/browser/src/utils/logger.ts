@@ -1,5 +1,6 @@
-import { Logger } from '../../../shared/src/libs/logger/logger'
+import { ApiLogger, setupLogger } from '@gobletqa/logger'
+setupLogger({ tag: `Goblet Browser` })
 
 export {
-  Logger
+  ApiLogger as Logger
 }

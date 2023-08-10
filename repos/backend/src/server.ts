@@ -14,11 +14,11 @@ import {
   setupCors,
   setupServer,
   setupStatic,
+  validateUser,
   setupBlacklist,
   setupLoggerReq,
   setupLoggerErr,
   setupServerListen,
-  validateUser,
 } from '@gobletqa/shared/middleware'
 
 

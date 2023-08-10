@@ -1,23 +1,11 @@
-import  type { TCLILogger, TLogColors } from './logger.types'
+import  type { TCLILogger, TLogColors } from './types'
 
 import './stdio'
 import { Logger } from './logger'
-import { identity } from './utils'
+import { identity } from './utils/helpers'
 import { ENVS } from '@gobletqa/environment'
-import { levels, getLevelMethods } from './levels'
-
-export const loggerColorDisabled = () => {
-  const noColors = ENVS.GOBLET_TEST_COLORS === `0`
-    || (ENVS.GOBLET_TEST_COLORS || ``).toLowerCase().startsWith(`f`)
-
-  return noColors
-}
- 
-export const stripColors = (str:string) => {
-  return loggerColorDisabled()
-    ? str.replace(/\u001b\[.*?m/g, ``).replace(/\x1B\[.*?m/g, ``)
-    : str
-}
+import { levels, getLevelMethods } from './utils/levels'
+import {loggerColorDisabled} from './utils/stripColors'
 
 const getLoggerColors = ():TLogColors => {
   const noColors = loggerColorDisabled()

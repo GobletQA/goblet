@@ -4,7 +4,7 @@ import fs from 'fs'
 import http from 'http'
 import https from 'https'
 import { getApp } from '@GSH/express/app'
-import { Logger } from '@GSH/libs/logger'
+import { ApiLogger as Logger } from '@gobletqa/logger'
 
 type TCredentials = {
   ca?: string

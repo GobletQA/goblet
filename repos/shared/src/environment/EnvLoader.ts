@@ -1,11 +1,11 @@
 import path from 'path'
 import { execSync } from 'child_process'
 import { GitRemoteRef } from '../constants'
+import { injectUnsafe } from '@gobletqa/logger'
 import { exists } from '@keg-hub/jsutils/exists'
 import { ENVS } from '@gobletqa/environment/envs'
 import { EFileType, Latent } from '@gobletqa/latent'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
-import { injectUnsafe } from '@GSH/utils/safeReplacer'
 import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
 import { getPathFromConfig, getGobletConfig } from '@gobletqa/goblet'
 

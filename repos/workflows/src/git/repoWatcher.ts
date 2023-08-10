@@ -3,9 +3,10 @@ import type {
   TRepoWatchCb
 } from '@gobletqa/workflows/types'
 
-import { checkCall } from '@keg-hub/jsutils'
+import { Logger } from '@gobletqa/logger'
+import { error } from '@keg-hub/cli-utils'
 import chokidar, { FSWatcher } from 'chokidar'
-import { Logger, error } from '@keg-hub/cli-utils'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
 
 
 /**

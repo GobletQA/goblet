@@ -1,6 +1,6 @@
 import type { TWFArgs, TWFResp } from '@gobletqa/workflows/types'
 
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
 import { git } from '@gobletqa/workflows/git'
 import { getGitApi } from '@gobletqa/workflows/providers/getGitApi'
 import { ensureMounted } from '@gobletqa/workflows/repo/ensureMounted'

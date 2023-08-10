@@ -8,8 +8,10 @@ import type {
 import path from 'path'
 import { URL } from 'url'
 import { git } from './gitCmd'
-import { Logger } from '@keg-hub/cli-utils'
-import { isObj, exists, wait } from '@keg-hub/jsutils'
+import { Logger } from '@gobletqa/logger'
+import { wait } from '@keg-hub/jsutils/wait'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { exists } from '@keg-hub/jsutils/exists'
 import { EProvider } from '@gobletqa/workflows/types'
 import { throwErr } from '@gobletqa/workflows/utils/throwErr'
 

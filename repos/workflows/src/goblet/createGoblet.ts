@@ -1,7 +1,7 @@
 import type { TWFCreateArgs } from '@GWF/types'
 
 import { git } from '@GWF/git'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
 import { GithubApi } from '@GWF/providers/githubApi'
 import { ensureMounted } from '@GWF/repo/ensureMounted'
 import { configureGitOpts } from '@GWF/utils/configureGitOpts'

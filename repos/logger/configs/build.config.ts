@@ -8,20 +8,23 @@ import { aliases } from '../../../configs/aliases.config'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.join(dirname, `..`)
-const entryFile = path.join(rootDir, `index.ts`)
 const outdir = path.join(rootDir, `dist`)
-const outfile = path.join(outdir, `index.js`)
+const entryFile = path.join(rootDir, `index.ts`)
+const stdioEntry = path.join(rootDir, `stdio.ts`)
 
 const build = async () => {
   // Build the files with esbuild
   await esbuild.build({
-    outfile,
+    outdir,
     bundle: true,
     minify: false,
     sourcemap: true,
     platform: `node`,
-    target: [`node16`],
-    entryPoints: [entryFile],
+    target: [`node20`],
+    entryPoints: [
+      entryFile,
+      stdioEntry
+    ],
     plugins: [aliasPlugin(aliases)],
     tsconfig: path.join(rootDir, `tsconfig.build.json`),
   })

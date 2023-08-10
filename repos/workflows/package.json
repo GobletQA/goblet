@@ -36,6 +36,7 @@
     "@gobletqa/environment": "workspace:../environment",
     "@gobletqa/goblet": "workspace:../goblet",
     "@gobletqa/latent": "workspace:../latent",
+    "@gobletqa/logger": "workspace:../logger",
     "@gobletqa/shared": "workspace:../shared",
     "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": ">=9.7.7",

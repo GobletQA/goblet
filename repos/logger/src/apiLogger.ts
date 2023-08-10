@@ -1,21 +1,12 @@
-import type { TLogOpts, TWinLogger } from '@GSH/utils/buildLogger'
+import type { TSetupLogger, TWLogger, TLogOpts, TWinLogger } from './types'
 
 import './stdio'
 import { ENVS } from '@gobletqa/environment'
-import { buildLogger } from '@GSH/utils/buildLogger'
-import { CliLogger, getLoggerColors } from './cliLogger'
-import { setLogs, capitalize, isStr, isColl, exists } from '@keg-hub/jsutils'
+import { buildLogger } from './utils/buildLogger'
+import { CliLogger, getLoggerColors } from '@gobletqa/logger'
+import { setLogs, capitalize, isStr, isColl, exists } from './utils/helpers'
 
 const { GB_SUB_REPO } = ENVS
-
-export type TWLogger = typeof Logger & TWinLogger & {
-  colors: typeof CliLogger.colors
-}
-
-export type TSetupLogger = Omit<TLogOpts, `label`> & {
-  tag?:string
-  label?:string
-}
 
 let __logger:TWLogger
 let __logLabel:string= GB_SUB_REPO ? `Goblet ${capitalize(GB_SUB_REPO)}` : `Goblet Logger`
@@ -61,8 +52,7 @@ const loggerWrap = (method:string=`info`) => {
   }
 }
 
-
-export const Logger = {
+export const ApiLogger = {
   ...CliLogger,
   pair: loggerWrap(`info`),
   highlight: loggerWrap(`info`),
@@ -76,4 +66,3 @@ export const Logger = {
   silly: loggerWrap(`info`),
   success: loggerWrap(`info`),
 }
-

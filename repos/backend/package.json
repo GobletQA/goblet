@@ -36,6 +36,7 @@
   "dependencies": {
     "@gobletqa/environment": "workspace:../environment",
     "@gobletqa/conductor": "workspace:../conductor",
+    "@gobletqa/logger": "workspace:../logger",
     "@gobletqa/shared": "workspace:../shared",
     "@gobletqa/workflows": "workspace:../workflows",
     "@keg-hub/cli-utils": "0.9.0",

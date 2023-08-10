@@ -11,8 +11,9 @@ import type {
 } from '@gobletqa/workflows/types'
 
 import { git, gitCmd } from './gitCmd'
-import { Logger } from '@keg-hub/cli-utils'
-import { emptyObj, deepMerge } from '@keg-hub/jsutils'
+import { Logger } from '@gobletqa/logger'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { throwErr } from '@gobletqa/workflows/utils/throwErr'
 import { GitRemoteRef } from '@gobletqa/workflows/constants'
 import { ensurePath } from '@gobletqa/workflows/utils/ensurePath'

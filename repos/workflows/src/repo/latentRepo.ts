@@ -12,7 +12,7 @@ import type {
 
 import { exists } from '@keg-hub/jsutils'
 import { env } from '@keg-hub/parse-config'
-import { injectUnsafe } from '@gobletqa/shared/utils/safeReplacer'
+import { injectUnsafe } from '@gobletqa/logger'
 import { ELoadFormat, EFileType, Latent } from '@gobletqa/latent'
 
 type TLTLSaveFile = {

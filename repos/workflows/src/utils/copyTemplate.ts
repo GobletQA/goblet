@@ -1,5 +1,5 @@
 import path from 'path'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
 import { copyContent } from './copyContent'
 import { configFromFolder } from '@gobletqa/goblet'
 import { aliases } from '@GConfigs/aliases.config'

@@ -2,6 +2,7 @@ import type { Repo } from '@GSH/types'
 
 import fs from 'fs'
 import { noOpObj } from '@keg-hub/jsutils'
+import { ApiLogger as Logger } from '@gobletqa/logger'
 
 export type TFeatureMeta = {
   location:string
@@ -26,7 +27,7 @@ export const featuresParser = (
         const content = data.toString()
 
         // TODO: Add a proper logger for shared / screencast
-        // Logger.pair(`Parsing feature at`, location)
+        Logger.pair(`Parsing feature at`, location)
 
         try {
           // Pass in an empty world object so the values are not replaced

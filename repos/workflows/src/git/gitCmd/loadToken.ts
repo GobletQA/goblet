@@ -1,5 +1,6 @@
 import path from 'path'
-import { fileSys, Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
+import { fileSys } from '@keg-hub/cli-utils'
 const { readFileSync, pathExistsSync } = fileSys
 
 let gitToken

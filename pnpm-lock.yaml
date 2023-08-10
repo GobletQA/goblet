@@ -103,6 +103,9 @@ importers:
       '@gobletqa/environment':
         specifier: workspace:../environment
         version: link:../environment
+      '@gobletqa/logger':
+        specifier: workspace:../logger
+        version: link:../logger
       '@gobletqa/shared':
         specifier: workspace:../shared
         version: link:../shared
@@ -185,6 +188,9 @@ importers:
       '@gobletqa/environment':
         specifier: workspace:../environment
         version: link:../environment
+      '@gobletqa/logger':
+        specifier: workspace:../logger
+        version: link:../logger
       '@keg-hub/jsutils':
         specifier: '>=9.7.7'
         version: 9.7.7
@@ -307,6 +313,9 @@ importers:
       '@gobletqa/environment':
         specifier: workspace:../environment
         version: link:../environment
+      '@gobletqa/logger':
+        specifier: workspace:../logger
+        version: link:../logger
       '@gobletqa/shared':
         specifier: workspace:../shared
         version: link:../shared
@@ -533,6 +542,9 @@ importers:
       '@gobletqa/environment':
         specifier: workspace:../environment
         version: link:../environment
+      winston:
+        specifier: 3.6.0
+        version: 3.6.0
     devDependencies:
       '@types/debug':
         specifier: 4.1.5
@@ -801,6 +813,9 @@ importers:
       '@gobletqa/latent':
         specifier: workspace:../latent
         version: link:../latent
+      '@gobletqa/logger':
+        specifier: workspace:../logger
+        version: link:../logger
       '@keg-hub/cli-utils':
         specifier: 0.9.0
         version: 0.9.0
@@ -852,9 +867,6 @@ importers:
       source-map-support:
         specifier: 0.5.21
         version: 0.5.21
-      winston:
-        specifier: 3.6.0
-        version: 3.6.0
     devDependencies:
       '@types/debug':
         specifier: 4.1.5
@@ -1095,6 +1107,9 @@ importers:
       '@gobletqa/latent':
         specifier: workspace:../latent
         version: link:../latent
+      '@gobletqa/logger':
+        specifier: workspace:../logger
+        version: link:../logger
       '@gobletqa/shared':
         specifier: workspace:../shared
         version: link:../shared

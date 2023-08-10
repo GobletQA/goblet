@@ -1,7 +1,7 @@
 import { ENVS } from '@gobletqa/environment'
 import { exists, toBool } from '@keg-hub/jsutils'
-import { CliLogger, getLevelLogger } from '@gobletqa/logger'
 import { ExamLogLevel } from '@GEX/constants/defaults'
+import { CliLogger, getLevelLogger } from '@gobletqa/logger'
 
 const convertEnvToBoolean = (key:string) => {
   const val = ENVS[key]

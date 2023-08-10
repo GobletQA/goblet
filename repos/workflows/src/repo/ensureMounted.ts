@@ -1,7 +1,7 @@
 import type { TGitOpts, TWFArgs } from '@GWF/types'
 
 import { git } from '@GWF/git'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
 import { mountRepo } from '@GWF/repo/mountRepo'
 import { setupGoblet } from '@GWF/goblet/setupGoblet'
 

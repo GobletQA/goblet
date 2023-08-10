@@ -2,7 +2,7 @@ import type { TGitOpts } from '@GWF/types'
 import type { TGobletConfig } from '@gobletqa/shared'
 
 import {decryptRepo} from './decryptRepo'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
 import { failResp } from '../goblet/response'
 import {ensureRemoteTag} from './ensureRemoteTag'
 

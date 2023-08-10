@@ -2,7 +2,7 @@ import type { TGitOpts } from '../types'
 
 import { git } from '../git'
 import { latentRepo } from './latentRepo'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
 import { ENVS } from '@gobletqa/environment'
 
 const addTag = async (gitOpts:TGitOpts, force?:boolean) => {

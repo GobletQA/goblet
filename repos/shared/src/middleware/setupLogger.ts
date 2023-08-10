@@ -1,8 +1,12 @@
+import type { Handler } from 'express'
+
 import { config } from 'winston'
 import { Express } from 'express'
+import { TLogOpts } from '../types'
 import { noOpObj } from '@keg-hub/jsutils'
 import expressWinston from 'express-winston'
-import { buildLogger } from '../utils/buildLogger'
+import { buildLogger } from '@gobletqa/logger'
+
 
 /**
  * Adds middleware logging for requests
@@ -11,8 +15,8 @@ import { buildLogger } from '../utils/buildLogger'
  * @return {void}
  */
 export const setupLoggerReq = (app:Express, middlewareOpts?:Record<any, any>) => {
-  const loggerOpts = app.locals.config.logger || noOpObj
-  const logger = buildLogger(loggerOpts)
+  const loggerOpts = (app.locals.config.logger || noOpObj as TLogOpts)
+  const logger = buildLogger(loggerOpts as TLogOpts)
   const logLevel = config.npm.levels[loggerOpts.level || 'info']
 
   const requestLogger = expressWinston.logger({
@@ -37,7 +41,7 @@ export const setupLoggerReq = (app:Express, middlewareOpts?:Record<any, any>) =>
  * @return {void}
  */
 export const setupLoggerErr = (app:Express, middlewareOpts?:Record<any, any>) => {
-  const loggerOpts = app.locals.config.logger || noOpObj
+  const loggerOpts = (app.locals.config.logger || noOpObj as TLogOpts)
   const logger = buildLogger(loggerOpts)
   const logLevel = config.npm.levels[loggerOpts.level || 'info']
 

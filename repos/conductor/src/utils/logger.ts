@@ -1,6 +1,7 @@
-import { Logger, setupLogger } from '@gobletqa/shared/libs/logger'
-setupLogger({ tag: `Goblet CD` })
+import { ApiLogger, setupLogger } from '@gobletqa/logger'
+
+setupLogger({ tag: `Goblet Conductor` })
 
 export {
-  Logger
+  ApiLogger as Logger
 }

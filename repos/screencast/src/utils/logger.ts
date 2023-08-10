@@ -1,12 +1,11 @@
-import { Logger, setupLogger } from '@gobletqa/shared/libs/logger'
-
-const { GB_LOG_LEVEL=`info`, GB_SC_LOG_LEVEL=GB_LOG_LEVEL } = process.env
+import { ENVS } from '@gobletqa/environment'
+import { ApiLogger, setupLogger } from '@gobletqa/logger'
 
 setupLogger({
   tag: `Goblet SC`,
-  level: GB_SC_LOG_LEVEL
+  level: ENVS.GB_SC_LOG_LEVEL || ENVS.GB_LOG_LEVEL ||`info`
 })
 
 export {
-  Logger
+  ApiLogger as Logger
 }

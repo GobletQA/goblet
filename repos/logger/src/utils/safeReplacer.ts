@@ -72,7 +72,7 @@ export const injectUnsafe = (items:string[]) => {
 }
 
 const possibleArrayKeys = ['stack', 'message']
-const HIDDEN = `[HIDDEN]`
+const HIDDEN = `[ ****** ]`
 
 export const replaceUnsafe = (str:string) => {
   try {

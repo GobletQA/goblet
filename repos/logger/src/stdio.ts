@@ -1,7 +1,5 @@
-// TODO: This still needs some tweaks to only hide secrets and not the whole line
-
-import { stripColors } from './cliLogger'
-import { replaceUnsafe } from './safeReplacer'
+import { replaceUnsafe } from './utils/safeReplacer'
+import { stripColors } from './utils/stripColors'
 
 const orgStdOut = process.stdout.write.bind(process.stdout)
 const orgStdErr = process.stderr.write.bind(process.stderr)

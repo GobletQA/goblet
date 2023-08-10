@@ -160,6 +160,9 @@
       "@gobletqa/latent": ["repos/latent/src"],
       "@gobletqa/latent/*": ["repos/latent/src/*"],
 
+      "@gobletqa/logger": ["repos/logger/src"],
+      "@gobletqa/logger/*": ["repos/logger/src/*"],
+
       "@gobletqa/monaco": ["repos/monaco/src"],
       "@gobletqa/monaco/*": ["repos/monaco/src/*"],
 

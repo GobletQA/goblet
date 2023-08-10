@@ -1,8 +1,8 @@
 import type { TRepo, TDefinitionFileModel } from '@GSH/types'
 
 import { glob } from 'glob'
-import { Logger } from '@GSH/libs/logger'
 import { getPathFromBase } from '@gobletqa/goblet'
+import { ApiLogger as Logger } from '@gobletqa/logger'
 import { DefinitionsParser } from './definitionsParser'
 import { GlobOnlyFiles, GlobJSFiles } from '@gobletqa/environment/constants'
 

@@ -1,5 +1,5 @@
 import { git } from '../git'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
 import { TGitOpts, TSaveMetaData } from '@GWF/types'
 
 // TODO: add code to commit changes from javascript instead of shelling out to the git executable

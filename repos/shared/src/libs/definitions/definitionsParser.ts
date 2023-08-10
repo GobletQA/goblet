@@ -1,9 +1,9 @@
 import type { TStepDef } from '@ltipton/parkin'
-import type { Repo, TDefError, TDefinitionFileModel } from '@GSH/types'
+import type { Repo, TDefinitionFileModel } from '@GSH/types'
 
 import fs from 'fs'
-import { Logger } from '@GSH/libs/logger'
-import { checkCall } from '@keg-hub/jsutils'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
+import { ApiLogger as Logger } from '@gobletqa/logger'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { parkinCheck } from '@GSH/libs/overrides/parkinOverride'
 import { requireOverride } from '@GSH/libs/overrides/requireOverride'

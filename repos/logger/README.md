@@ -1,2 +1,2 @@
 # GobletQA Logger
-* CLI Logger for GobletQA repos
+* CLI and API Loggers for GobletQA repos

@@ -7,7 +7,7 @@ import type {
   TDefinitionFileModelList,
 } from '@GWF/types'
 
-import { Logger } from '@gobletqa/shared/libs/logger'
+import { Logger } from '@gobletqa/logger'
 import { pickKeys, omitKeys } from '@keg-hub/jsutils'
 import { loadFeatures } from '@gobletqa/shared/libs/features/features'
 import { buildFileTree } from '@gobletqa/shared/libs/fileSys/fileTree'

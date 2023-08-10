@@ -1,4 +1,6 @@
-import type { levels, levelMap } from "./levels"
+import type winston from 'winston'
+import type { CliLogger } from '../cliLogger'
+import type { levels, levelMap } from "../utils/levels"
 
 export type TColorMap = {
   black:string
@@ -114,4 +116,20 @@ export type TCLILogger = TLevelLogger
   colors: TLogColors
   color: (msg:string) => string
   colorMap:Record<string, string>
+}
+
+export type TWinLogger = winston.Logger
+
+export type TLogOpts = winston.LoggerOptions & {
+  label:string
+}
+
+
+export type TWLogger = typeof Logger & TWinLogger & {
+  colors: typeof CliLogger.colors
+}
+
+export type TSetupLogger = Omit<TLogOpts, `label`> & {
+  tag?:string
+  label?:string
 }
