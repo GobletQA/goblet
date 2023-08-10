@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@gobletqa/environment": "workspace:../environment",
-    "@keg-hub/jsutils": ">=9.7.1",
+    "@keg-hub/jsutils": ">=9.7.2",
     "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/spawn-cmd": ">=0.3.2",
     "playwright": "1.36.1"

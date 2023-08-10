@@ -39,7 +39,7 @@
     "@goblet/browser": "workspace:../browser",
     "@gobletqa/shared": "workspace:../shared",
     "@gobletqa/workflows": "workspace:../workflows",
-    "@keg-hub/jsutils": ">=9.7.1",
+    "@keg-hub/jsutils": ">=9.7.2",
     "@ltipton/parkin": "5.1.1",
     "esbuild": "0.18.17",
     "esbuild-plugin-path-alias": "1.0.7",

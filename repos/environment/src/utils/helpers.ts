@@ -11,4 +11,3 @@ export {equalsNaN} from '@keg-hub/jsutils/equalsNaN'
 export {isStrBool} from '@keg-hub/jsutils/isStrBool'
 export {deepFreeze} from '@keg-hub/jsutils/deepFreeze'
 export {convertToStrBool} from '@keg-hub/jsutils/convertToStrBool'
-
