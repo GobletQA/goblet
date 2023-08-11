@@ -4,10 +4,10 @@ import type {
   TBrowserEvents,
   TBrowserEventCB,
   TOnAutomateEvent,
-} from '@GSC/types'
+} from '@GBB/types'
 
 import { Automate } from '../automate'
-import { EBrowserEvent } from '@GSC/types'
+import { EBrowserEvent } from '@GBB/types'
 import { ensureArr } from '@keg-hub/jsutils'
 
 type ListenerList = Record<EBrowserEvent, BrowserEvents>

@@ -3,13 +3,13 @@ import type {
   ETestType,
   TEnvObject,
   TTaskParams,
-  EBrowserType,
   TGobletConfig,
   TGetBrowsers,
 } from '../../types'
 
 
 import path from 'path'
+import { EBrowserType } from '../../types'
 import { runCmd } from '@keg-hub/cli-utils'
 import { noPropArr, toBool } from '@keg-hub/jsutils'
 import { runCommands } from '@GTasks/utils/helpers/runCommands'
@@ -132,9 +132,12 @@ export const runTestCmd = async (args:TRunTestCmd) => {
   toBool(process.env.LOCAL_DEV) && clearTestMetaDirs()
 
   let reportPaths = []
-  const { getBrowsers } = require('@gobletqa/browser')
   
-  const browsers = getBrowsers(params as unknown as TGetBrowsers)
+  // - TODO: --- FIX THIS -- For now just default to using chromium
+  // const { getBrowsers } = require('@gobletqa/browser')
+  // const browsers = getBrowsers(params as unknown as TGetBrowsers)
+
+  const browsers = [EBrowserType.chromium]
 
   const commands = browsers.map((browser) => {
       const reportPath = buildReportPath(

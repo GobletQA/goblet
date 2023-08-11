@@ -7,6 +7,7 @@ import { buildBddEnvs } from '@GTasks/utils/envs/buildBddEnvs'
 import { buildTestArgs } from '@GTasks/utils/test/buildTestArgs'
 import { getTestConfig } from '@GTasks/utils/test/getTestConfig'
 import { filterTaskEnvs } from '@GTasks/utils/envs/filterTaskEnvs'
+// import {runExam} from '@GTasks/utils/exam/runExam'
 
 
 /**
@@ -20,6 +21,14 @@ const runBdd = async (args:TTaskActionArgs) => {
 
   filterTaskEnvs(params, task)
   const testConfig = await getTestConfig(params, ETestType.feature)
+
+  // TODO: this will replace `runTestCmd` in the future
+  // const exitCode = await runExam({
+  //   params,
+  //   goblet,
+  //   config: testConfig,
+  //   type: ETestType.bdd,
+  // })
 
   // Run the test command for defined browsers
   const exitCode = await runTestCmd({
