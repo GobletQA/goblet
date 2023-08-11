@@ -118,7 +118,7 @@ const logResult = (
   const failed = getFailedMessage(evt)
 
   failed?.message && 
-    (message += `\n${failed?.message}${Logger.colors.gray(`\n -\n\n`)}\n`)
+    (message += `\n${failed?.message}${Logger.colors.gray(`\n -\n`)}`)
 
   Logger.stdout(message)
 
@@ -212,7 +212,7 @@ export class FeatureReporter implements IExamReporter {
   // Event `PLAY-SUITE-DONE-ROOT` - Top level suite-0 only
   onTestFileResult = (evt:TExamEvt<TExEventData>) => {
     logResult(evt)
-    Logger.gray(`\n -\n\n`)
+    Logger.gray(`\n -\n`)
     Logger.empty()
   }
 
