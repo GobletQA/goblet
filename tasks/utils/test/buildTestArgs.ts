@@ -2,8 +2,27 @@ import type { TTaskParams } from '../../types'
 
 import path from 'path'
 import { appRoot } from '../../paths'
+import { ETestType } from '../../types'
 import { addFlag, addParam } from '@keg-hub/cli-utils'
 import { exists, uniqArr, noPropArr, toBool } from '@keg-hub/jsutils'
+
+
+const buildTestMatch = (
+  type:ETestType,
+  context?:string,
+  base?:string,
+) => {
+
+  if(type === ETestType.bdd || type === ETestType.feature)
+    return (context && context !== base) ? context : undefined
+
+  // TODO: will add at some point :)
+  if(type === ETestType.unit) return undefined
+
+  // TODO: will add at some point :)
+  if(type === ETestType.waypoint) return undefined
+}
+
 
 /**
  * Builds the arguments that are passed to test when the test is run
@@ -14,7 +33,7 @@ import { exists, uniqArr, noPropArr, toBool } from '@keg-hub/jsutils'
 export const buildTestArgs = (
   params:TTaskParams,
   testConfig:string,
-  extraArgs:string[]=noPropArr
+  type:ETestType
 ) => {
   const {
     base,
@@ -39,7 +58,6 @@ export const buildTestArgs = (
      `esbuild-register`,
     //  `./repos/exam/.bin/exam.js`,
     `./repos/exam/src/bin/exam.ts`,
-    ...extraArgs,
     // Convert to milliseconds
     `--timeout=${(parseInt(testTimeout, 10) || 20000)}`,
   ]
@@ -65,7 +83,11 @@ export const buildTestArgs = (
 
   // If context is set use that as the only file to run
   // Uses glob pattern matching functionality to find the correct test to run
-  context && cmdArgs.push(addParam(`testMatch`, context))
+  if(context){
+    const match = buildTestMatch(type, context, base)
+    match && cmdArgs.push(addParam(`testMatch`, match))
+  }
+
   const cleaned = uniqArr<string>(cmdArgs.filter(arg => arg), undefined)
 
   return cleaned

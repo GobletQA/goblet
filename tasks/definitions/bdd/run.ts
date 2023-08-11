@@ -35,7 +35,7 @@ const runBdd = async (args:TTaskActionArgs) => {
     params,
     goblet,
     type: ETestType.bdd,
-    cmdArgs: buildTestArgs(params, testConfig),
+    cmdArgs: buildTestArgs(params, testConfig, ETestType.bdd),
     envsHelper: (browser, reportPath) => buildBddEnvs(browser, params, reportPath, ETestType.feature)
   })
 

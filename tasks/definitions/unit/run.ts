@@ -1,5 +1,6 @@
 import { TTask, TTaskActionArgs } from '../../types'
 
+import { ETestType } from '../../types'
 import constants from '../../constants'
 import { sharedOptions } from '@keg-hub/cli-utils'
 import { runTestCmd } from '@GTasks/utils/helpers/runTestCmd'
@@ -26,7 +27,7 @@ const runUnit = async (args:TTaskActionArgs) => {
     params,
     goblet,
     type: testTypes.unit,
-    cmdArgs: buildTestArgs(params, testConfig),
+    cmdArgs: buildTestArgs(params, testConfig, ETestType.unit),
     envsHelper: (browser, reportPath) => buildUnitEnvs(
       browser,
       goblet,

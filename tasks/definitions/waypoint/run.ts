@@ -1,5 +1,6 @@
 import type { TTask, TTaskActionArgs } from '../../types'
 
+import { ETestType } from '../../types'
 import constants from '../../constants'
 import { sharedOptions } from '@keg-hub/cli-utils'
 import { runTestCmd } from '@GTasks/utils/helpers/runTestCmd'
@@ -25,7 +26,7 @@ const runWp = async (args:TTaskActionArgs) => {
     params,
     goblet,
     type: testTypes.waypoint,
-    cmdArgs: buildTestArgs(params, testConfig),
+    cmdArgs: buildTestArgs(params, testConfig, ETestType.waypoint),
     envsHelper: (browser, reportPath) => buildWaypointEnvs(
       browser,
       goblet,

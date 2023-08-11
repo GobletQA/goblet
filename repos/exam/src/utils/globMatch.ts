@@ -11,24 +11,31 @@ export const globMatchFiles = async (
   match:string|string[],
   opts?:GlobOptions
 ) => {
-  const config = {...GlobFilesCfg, ...opts} 
-  /**
-   * Helper to check if a match contains any glob keys
-   * If it does not, assume the they want to do a repo wide search
-   * TODO: will want to add a config option to enable / disable this behavior
-   */
-  const matches = ensureArr<string>(match).map(item => {
-    return !GlobMatchKeys.find(key => item.includes(key))
-      ? item.includes(`.`)
-        ? item.startsWith(`/`)
-          // May not want to keep this one, we'll see
-          ? `**/+(${item.replace(/^\//, ``)})`
-          : `**/+(${item})`
-        : `**/+(${item})*`
-      : item
+  const config = {...GlobFilesCfg, ...opts}
+
+  const globs = []
+
+  ensureArr<string>(match).forEach(item => {
+    /**
+     * Helper to check if a match contains any glob keys
+     * If it does not, assume the they want to do a repo wide search
+     * TODO: will want to add a config option to enable / disable this behavior
+     */
+    if(GlobMatchKeys.find(key => item.includes(key)))
+      return globs.push(item)
+
+    item = item.startsWith(`/`) ? item.replace(/^\//, ``) : item
+
+    globs.push(
+      `**/+(${item})**`,
+      `**/+(${item})*`,
+      `**/${item}/**`,
+      `**/?(${item}|*${item}*|**${item}**)`,
+      item.includes(`.`) ? `**/+(${item})` : `**/+(${item})*`
+    )
   })
 
-  const found = await globFiles(matches, config)
+  const found = await globFiles(globs, config)
 
   return naturalSort<string[]>(found)
   

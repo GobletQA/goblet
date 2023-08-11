@@ -76,6 +76,7 @@ const ExamConfig = ():TExamConfig => {
     || buildTestMatchFiles({ type: `feature`, ext: `feature`, extOnly: true })
     || emptyArr
 
+
   return {
     envs: {
       EXAM_ENV: 1,
@@ -91,7 +92,7 @@ const ExamConfig = ():TExamConfig => {
     // esbuild: {},
     rootDir,
     testMatch,
-    bail: 1,
+    bail: 5,
     workers: 1,
     debug: true,
     verbose: true,
