@@ -13,12 +13,13 @@ import type {
   TAutomateElementEvent,
 } from '@GBB/types'
 
+
 import { Logger } from '@GBB/utils/logger'
+import { ENVS } from '@gobletqa/environment'
+import { PWAutomateEvent } from '@GBB/constants'
 import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
 import { addPWInitScripts } from '@GBB/utils/addPWInitScripts'
 import { exposePWFunction } from '@GBB/utils/exposePWFunction'
-
-import { PWAutomateEvent } from '@GBB/constants'
 
 export class Automate {
 
@@ -26,7 +27,8 @@ export class Automate {
    * Creates a new instance of automate and binds it to a playwright context or page
    */
   static bind = async (config?:TAutomateConfig, id?:string) => {
-    Logger.debug(`Automate - Bind playwright parent to automate instance`)
+    !ENVS.GOBLET_RUN_FROM_CI
+      && Logger.debug(`Automate - Bind playwright parent to automate instance`)
 
     const automate = new Automate(config, id || config?.parent?._guid)
     Automate.addPlaywright(automate.parent, automate)
@@ -39,7 +41,8 @@ export class Automate {
    * Sets a single automate instance per parent
    */
   static addPlaywright = (parent:TAutomateParent, instance:Automate) => {
-    Logger.debug(`Automate - Adding automate instance to playwright`)
+    !ENVS.GOBLET_RUN_FROM_CI
+      && Logger.debug(`Automate - Adding automate instance to playwright`)
 
     if(parent.__GobletAutomateInstance){
       Logger.warn(`Automate - An automate instance already exist on playwright parent`)
@@ -61,7 +64,8 @@ export class Automate {
    * Adds the init scripts to the browser context
    */
   static addInitScripts = async (parent:TAutomateParent, automate?:Automate) => {
-    Logger.debug(`Automate - Adding automate init scripts to playwright parent`)
+    !ENVS.GOBLET_RUN_FROM_CI
+      && Logger.debug(`Automate - Adding automate init scripts to playwright parent`)
     
     automate = automate || parent.__GobletAutomateInstance
     if(!automate)
@@ -87,7 +91,8 @@ export class Automate {
     pwComponents:Partial<TPWComponents>,
     options?:TUserAutomateOpts
   ) => {
-    Logger.debug(`Automate - Turning on browser element select`)
+    !ENVS.GOBLET_RUN_FROM_CI
+      && Logger.debug(`Automate - Turning on browser element select`)
 
     const parent = Automate.getParent(pwComponents)
     const automate = parent.__GobletAutomateInstance
@@ -102,7 +107,8 @@ export class Automate {
   }
 
   static turnOffElementSelect = async (pwComponents:Partial<TPWComponents>) => {
-    Logger.debug(`Automate - Turning off browser element select`)
+    !ENVS.GOBLET_RUN_FROM_CI
+      && Logger.debug(`Automate - Turning off browser element select`)
 
     const parent = Automate.getParent(pwComponents)
     const automate = parent.__GobletAutomateInstance
@@ -120,7 +126,8 @@ export class Automate {
     pwComponents:Partial<TPWComponents>,
     options?:TUserAutomateOpts
   ) => {
-    Logger.debug(`Automate - Getting active page URL`)
+    !ENVS.GOBLET_RUN_FROM_CI && Logger.debug(`Automate - Getting active page URL`)
+
     const parent = Automate.getParent(pwComponents)
     const automate = parent.__GobletAutomateInstance
     if(!automate)
@@ -144,7 +151,7 @@ export class Automate {
    * Will most likely do other things to once recording it worked on
    */
   static cancel = async (pwComponents:Partial<TPWComponents>, data:any) => {
-    Logger.debug(`Automate - Canceling automation`)
+    !ENVS.GOBLET_RUN_FROM_CI && Logger.debug(`Automate - Canceling automation`)
     await Automate.turnOffElementSelect(pwComponents)
 
   }
@@ -154,7 +161,7 @@ export class Automate {
    * Checks for evaluate method to know if parent is a page or context
    */
   static getPage = (automate:Automate):TBrowserPage => {
-    Logger.debug(`Automate - Getting playwright page for automate instance`)
+    !ENVS.GOBLET_RUN_FROM_CI && Logger.debug(`Automate - Getting playwright page for automate instance`)
  
     const page = automate.parent as TBrowserPage
     const context = automate.parent as TBrowserContext
@@ -197,14 +204,14 @@ export class Automate {
    * Ensures the current recording state is added and upto date
    */
   fireEvent = <T=TAutomateElementEvent>(event:TAutomateEvent<T>) => {
-    Logger.debug(`Automate - Fire automate event`, event)
+    !ENVS.GOBLET_RUN_FROM_CI && Logger.debug(`Automate - Fire automate event`, event)
     
     this.onEvents.map(func => checkCall(func, event))
     return this
   }
 
   init = async (config:TAutomateConfig) => {
-    Logger.debug(`Automate - Initializing automate instance`)
+    !ENVS.GOBLET_RUN_FROM_CI && Logger.debug(`Automate - Initializing automate instance`)
 
     const {
       parent,
@@ -230,14 +237,14 @@ export class Automate {
   }
 
   getHoverOption = (option:string) => {
-    Logger.debug(`Automate - Getting automate option ${option}`)
+    !ENVS.GOBLET_RUN_FROM_CI && Logger.debug(`Automate - Getting automate option ${option}`)
     
     const found = option ? this.options[option] : undefined
     return found
   }
 
   gobletSelectAction = async (data:TAutomateElementEvent) => {
-    Logger.debug(`Automate - Firing automate select-element event`)
+    !ENVS.GOBLET_RUN_FROM_CI && Logger.debug(`Automate - Firing automate select-element event`)
 
     await this.selectPageElementOff()
     this.fireEvent({
@@ -283,7 +290,7 @@ export class Automate {
    * Attempts to avoid memory leaks by un setting Recorder instance properties
    */
   cleanUp = async () => {
-    Logger.debug(`Automate - Cleaning up automate instance`)
+    !ENVS.GOBLET_RUN_FROM_CI && Logger.debug(`Automate - Cleaning up automate instance`)
     
     await this.onCleanup(this)
 

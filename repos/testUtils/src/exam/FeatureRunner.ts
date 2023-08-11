@@ -7,7 +7,8 @@ import type {
   TExTestEvent,
 } from '@gobletqa/exam'
 
-
+import { EResultAction } from '@ltipton/parkin'
+import { BailError, TestErr, EPlayerTestType } from '@gobletqa/exam'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
@@ -18,6 +19,7 @@ import {
   ExamEvents,
   RootSuiteId,
 } from '@gobletqa/exam'
+
 
 
 export type TRunContent = string | string[] | TFeatureAst | TFeatureAst[]
@@ -61,41 +63,61 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
    * Runs the code passed to it via the exam
    */
   run = async (model:TExFileModel, state:TStateObj) => {
-    // @ts-ignore
-    global.jasmine.testPath = model.location
+    try {
 
-    this.isRunning = true
+      // @ts-ignore
+      global.jasmine.testPath = model.location
 
-    const { data } = state
-    this.event(ExamEvents.started)
+      this.isRunning = true
 
-    const content = this.fromAst.includes(model?.fileType)
-      ? this.environment.parkin.parse.feature(model.content)
-      : model?.content
+      const { data } = state
+      this.event({
+        ...ExamEvents.started,
+        data: {
+          id: model.name,
+          timestamp:  Date.now(),
+          testPath: model.location,
+          action: EResultAction.start,
+          fullName: model.location,
+          type: EPlayerTestType.feature,
+          description: `Starting test execution`,
+          
+        }
+      })
 
-    await this.environment.parkin.run(content, {
-      ...data,
-      tags: {...data?.tags},
-      timeout: data?.timeout || this.timeout,
-      steps: {...data?.steps, shared: {...data?.steps?.shared}}
-    })
+      const content = this.fromAst.includes(model?.fileType)
+        ? this.environment.parkin.parse.feature(model.content)
+        : model?.content
 
-    const results = await this.environment.test.run({
-      description: data?.description,
-      timeout: data?.globalTimeout || this.globalTimeout
-    }) as TExEventData[]
+      await this.environment.parkin.run(content, {
+        ...data,
+        tags: {...data?.tags},
+        timeout: data?.timeout || this.timeout,
+        steps: {...data?.steps, shared: {...data?.steps?.shared}}
+      })
 
-    const final = results.map(result => this.clearTestResults(result))
+      const results = await this.environment.test.run({
+        description: data?.description,
+        timeout: data?.globalTimeout || this.globalTimeout
+      }) as TExEventData[]
 
-    this.isRunning = false
+      const final = results.map(result => this.clearTestResults(result))
 
-    // @ts-ignore
-    global.jasmine.testPath = undefined
+      this.isRunning = false
 
-    if(!this.canceled) return final
+      // @ts-ignore
+      global.jasmine.testPath = undefined
 
-    await this.cleanup()
-    return emptyArr as TExEventData[]
+      if(!this.canceled) return final
+
+      await this.cleanup()
+      return emptyArr as TExEventData[]
+
+    }
+    catch(err){
+      if(typeof TestErr || err.name === `TestErr`) return [err.result]
+      throw err
+    }
 
   }
 
@@ -135,6 +157,8 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
         this.cancel()
         Errors.BailedTests(bailAmt, failedErr)
       }
+      
+      throw failedErr
     }
   }
 

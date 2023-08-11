@@ -22,6 +22,7 @@ export enum EPlayerTestAction {
 export enum EPlayerTestType {
   test=`test`,
   error=`error`,
+  feature=`feature`,
   describe=`describe`,
 }
 

@@ -51,6 +51,7 @@ export enum EPlayerTestAction {
 export enum EPlayerTestType {
   test=`test`,
   describe=`describe`,
+  feature=`feature`
 }
 
 export enum EPlayerTestStatus {

@@ -27,8 +27,8 @@ const spaceMap = {
 }
 
 const logFile = (location:string, rootDir?:string) => {
-  const fromRoot = location?.replace(rootDir, ``).replace(/^\//, `<root>/`)
-  fromRoot && Logger.stdout(`${spaceMap.file}${FileTag} ${Logger.colors.white(fromRoot)}\n`)
+  const fromRoot = location?.replace(rootDir, ``).replace(/^\//, `./`)
+  fromRoot && Logger.stdout(`\n${spaceMap.file}${FileTag} ${Logger.colors.white(fromRoot)}\n`)
 }
 
 /**
@@ -118,7 +118,7 @@ const logResult = (
   const failed = getFailedMessage(evt)
 
   failed?.message && 
-    (message += `\n${failed?.message}\n\n`)
+    (message += `\n${failed?.message}${Logger.colors.gray(`\n -\n\n`)}\n`)
 
   Logger.stdout(message)
 
@@ -176,15 +176,14 @@ export class FeatureReporter implements IExamReporter {
   }
 
   // Event `PLAY-STARTED`,
-  onRunStart = (evt:TExamEvt) => {}
+  onRunStart = (evt:TExamEvt<TExEventData>) => {
+    const file = evt?.data?.testPath
+    const rootDir = this.config?.rootDir
+    file && logFile(file, rootDir)
+  }
 
   // Event `PLAY-SUITE-START-ROOT`
   onTestFileStart = (evt:TExamEvt<TExEventData>) => {
-
-    const file = evt?.data?.metaData?.file
-    const rootDir = this.config?.rootDir
-    file?.location && logFile(file?.location, rootDir)
-
     logResult(evt)
   }
 
@@ -213,12 +212,13 @@ export class FeatureReporter implements IExamReporter {
   // Event `PLAY-SUITE-DONE-ROOT` - Top level suite-0 only
   onTestFileResult = (evt:TExamEvt<TExEventData>) => {
     logResult(evt)
+    Logger.gray(`\n -\n\n`)
+    Logger.empty()
   }
 
 
   // Event `PLAY-RESULTS`
   onRunComplete = () => {
-    Logger.empty()
   }
 
   onWarning = (evt:any) => {}

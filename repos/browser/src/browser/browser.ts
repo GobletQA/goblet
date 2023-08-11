@@ -14,6 +14,7 @@ import { pwBrowsers } from './PWBrowsers'
 import { ghostMouse } from './ghostMouse'
 import { Logger } from '@GBB/utils/logger'
 import { emptyObj } from '@keg-hub/jsutils'
+import { ENVS } from '@gobletqa/environment'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
@@ -73,7 +74,8 @@ export class Browser {
       })
       const pages = context.pages()
       
-      Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
+      !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
+      
       const hasPages = Boolean(pages.length)
       const hasMultiplePages = pages.length > 1
 
@@ -116,9 +118,12 @@ export class Browser {
       this.creatingPage = false
       const browserType = browser.browserType?.().name?.()
 
-      hasPages
-        ? Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
-        : Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
+      if(!ENVS.GOBLET_RUN_FROM_CI){
+        hasPages
+          ? Logger.verbose(`getPage - Found page on context for browser ${browserType}`)
+          : Logger.verbose(`getPage - New page created on context for browser ${browserType}`)
+      }
+
 
       return { context, browser, page } as TPWComponents
     }
@@ -148,7 +153,7 @@ export class Browser {
       const hasMultipleContexts = contexts.length > 1
 
       if(hasMultipleContexts){
-        Logger.verbose(`getContext - Closing extra contexts on the browser`)
+        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - Closing extra contexts on the browser`)
         await Promise.all(contexts.map(async (context, idx) => idx && await context.close()))
       }
 
@@ -157,24 +162,26 @@ export class Browser {
         overrides: overrides.context,
         contextOpts: browserConf.context,
       })
-
-      Logger.verbose(`Context Options`, options)
+      
+      !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`Context Options`, options)
 
       if(hasContexts){
         context = contexts[0]
-        Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
+        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
       }
       else {
         context = await browser.newContext(options) as TBrowserContext
         context.__goblet = { options }
 
-        Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
+        !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - New context created for browser ${browserConf.type}`)
 
         Automate.bind({ parent: context })
       }
 
     }
-    else Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
+    else {
+      !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
+    }
 
     return { context, browser }
   }
