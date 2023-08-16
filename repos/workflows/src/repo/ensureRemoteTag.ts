@@ -35,6 +35,11 @@ const addTag = async (gitOpts:TGitOpts, force?:boolean) => {
 
 }
 
+/**
+ * Basically runs the following commands
+ * `HASH_OBJ=(echo <repo-remote> | git hash-object -t blob -w --stdin)`
+ * `git tag -f -a goblet-do-not-delete $HASH_OBJ -m ""`
+ */
 export const ensureRemoteTag = async (gitOpts:TGitOpts) => {
 
   const existing = await git.tag.cat({

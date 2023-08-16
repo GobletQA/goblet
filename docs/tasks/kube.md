@@ -36,6 +36,7 @@
 * Description: Create kubernetes firebase service account secret used by the Backend API, calls the `secret` task internally
 * Example `pnpm kube fbsa`
 * Sets the name of the secret to the value of the `GB_KUBE_SCRT_FB_SA` env (default: `firebase-sa`).
+* Dev example: `pnpm kube secret firebase --file ~/.kegConfig/goblet/firebase.json --log`
 
 
 ### Secret
