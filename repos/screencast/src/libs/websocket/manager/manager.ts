@@ -358,6 +358,7 @@ export class SocketManager {
 
   close = () => {
     console.log(`Force closing Socket Manager...`)
+    this.socketIo.close?.()
     this.cache = {}
     Object.entries(this.peers).forEach(([id, socket]) => socket.disconnect())
     this.peers = {}
