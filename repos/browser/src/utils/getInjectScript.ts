@@ -2,12 +2,12 @@ import fs from 'fs'
 import path from 'path'
 import { aliases } from '@GConfigs/aliases.config'
 
-let _LOADED_SCRIPTS:Record<string, string>={}
+let _LOADED_SCRIPTS:Record<string, string>
 
 // Scripts that are injected into the playwright browser
 
 const loadBrowserScripts = () => {
-  if(_LOADED_SCRIPTS) return _LOADED_SCRIPTS
+  if(_LOADED_SCRIPTS?.mouseHelper) return _LOADED_SCRIPTS
 
   _LOADED_SCRIPTS = {
     mouseHelper: fs.readFileSync(
@@ -48,3 +48,8 @@ export const getInjectScript = (files:TScriptsKey[]) => {
     return acc
   }, []).join(`\n`)
 }
+
+/**
+ * Load the script at startup so it's faster when loading them for the user
+ */
+loadBrowserScripts()
