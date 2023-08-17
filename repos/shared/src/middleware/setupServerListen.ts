@@ -18,13 +18,6 @@ type TServerListen = {
   config:Record<any, any>
 }
 
-// TODO investigate this
-// Enable keepalive globally for https servers
-// http.globalAgent = new http.Agent({ keepAlive:true })
-// https.globalAgent = new https.Agent({ keepAlive:true })
-// server.keepAliveTimeout = 30000; 
-
-
 /**
  * Sets up a secure server, typically used for local development
  * @param {Object} app - Express app object
@@ -37,7 +30,7 @@ const serverListen = (
   app:Express,
   serverConf:Record<any, any>,
 ) => {
-  try {
+
     const { securePort, port, host, name } = serverConf
     const creds = {
       key: process.env.GB_SSL_KEY,
@@ -71,18 +64,7 @@ const serverListen = (
       })
 
     return { insecureServer, secureServer, app }
-  }
-  catch(err){
-    // if(err.message.includes(`EADDRINUSE`)){
-    //   findProc(`screencast`)
-    // }
-    
-    console.log(`err.name`, err.name)
-    console.log(`err.code`, err.code)
-    console.log(`err.message`, err.message)
-    throw err
-    // Error: listen EADDRINUSE
-  }
+
 }
 
 
