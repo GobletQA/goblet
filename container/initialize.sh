@@ -37,7 +37,7 @@ goblet_screencast(){
     /bin/bash ./scripts/initialize.sh >> /proc/1/fd/1 &
   else
     # Start supervisord in local environment
-    exec supervisord -c configs/supervisord.local.conf >> /proc/1/fd/1 &
+    exec supervisord -n -c configs/supervisord.local.conf >> /proc/1/fd/1 &
   fi
 
   pnpm sc:start >> /proc/1/fd/1 &

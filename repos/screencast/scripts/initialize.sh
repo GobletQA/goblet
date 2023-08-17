@@ -14,14 +14,15 @@ GB_SC_IDLE_CONNECTION_THRESHOLD=${GB_SC_IDLE_CONNECTION_THRESHOLD:-1}
 # Prints an error message to the terminal in the color white
 gb_log(){
   if [ "$GB_SC_IDLE_DEBUG" == "true" ] || [ "$GB_SC_IDLE_DEBUG" == "1" ]; then
-    echo "$@"
+    echo "$@" >> /proc/1/fd/1
   fi
 }
 
 # Starts supervisor using the config based on the current $NODE_ENV
 startSup(){
-  gb_log "Starting supervisor..."
-  exec supervisord -n -c configs/$SupCfgLoc
+  gb_log "Starting supervisor with config \"configs/$SupCfgLoc\""
+  exec supervisord -n -c configs/$SupCfgLoc >> /proc/1/fd/1 &
+  gb_log "Supervisor started successfully!"
 }
 
 # Stops any running supervisor services
