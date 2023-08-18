@@ -1,4 +1,4 @@
-import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
+import type { TFeatureAst, TParkinRunStepOptsMap, TRootTestObj, Parkin } from '@ltipton/parkin'
 import type {
   TStateObj,
   TExFileModel,
@@ -8,18 +8,20 @@ import type {
 } from '@gobletqa/exam'
 
 import { EResultAction } from '@ltipton/parkin'
-import { BailError, TestErr, EPlayerTestType } from '@gobletqa/exam'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { FeatureEnvironment } from './FeatureEnvironment'
 import {
   Errors,
+  Logger,
   ExamRunner,
   ExamEvents,
   RootSuiteId,
+  EExErrorType,
+  EPlayerTestType,
 } from '@gobletqa/exam'
-
 
 
 export type TRunContent = string | string[] | TFeatureAst | TFeatureAst[]
@@ -35,6 +37,18 @@ export type TRunnerOpts = {
   globalTimeout?:number
 }
 
+const callAfterAllOnError = async (testRoot:TRootTestObj, parkin:Parkin) => {
+  try {
+    return await testRoot?.afterAll?.length
+      // @ts-ignore
+      && await Promise.all(testRoot.afterAll.map(fn => fn?.(parkin)))
+  }
+  catch(err){
+    Logger.error(`AfterAll Hooks failed`)
+    Logger.log(err.stack)
+  }
+}
+
 export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
   bail:number=0
@@ -45,7 +59,6 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
     `passedExpectations`,
     `failedExpectations`,
   ]
-
 
   constructor(cfg:TExRunnerCfg, state:TStateObj) {
     super(cfg, state)
@@ -63,6 +76,8 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
    * Runs the code passed to it via the exam
    */
   run = async (model:TExFileModel, state:TStateObj) => {
+    let testRoot:TRootTestObj = undefined
+    
     try {
 
       // @ts-ignore
@@ -89,12 +104,18 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
         ? this.environment.parkin.parse.feature(model.content)
         : model?.content
 
-      await this.environment.parkin.run(content, {
+      const runOptions = this.environment.runOptions
+
+      const runOpts = deepMerge(runOptions, {
         ...data,
         tags: {...data?.tags},
         timeout: data?.timeout || this.timeout,
-        steps: {...data?.steps, shared: {...data?.steps?.shared}}
+        steps: {...data?.steps, shared: {...data?.steps?.shared}},
       })
+
+      await this.environment.parkin.run(content, runOpts)
+
+      testRoot = this.environment.test.getActiveParent()
 
       const results = await this.environment.test.run({
         description: data?.description,
@@ -108,14 +129,25 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       // @ts-ignore
       global.jasmine.testPath = undefined
 
-      if(!this.canceled) return final
+      if(!this.canceled){
+        testRoot = undefined
+        return final
+      }
 
       await this.cleanup()
       return emptyArr as TExEventData[]
 
     }
     catch(err){
-      if(typeof TestErr || err.name === `TestErr`) return [err.result]
+      // Ensure the after all callbacks are called
+      await callAfterAllOnError(testRoot, this.environment.parkin)
+
+      if(err.name === EExErrorType.TestErr){
+        const cleaned = this.clearTestResults(err.result)
+        return [cleaned]
+      }
+
+      await this.cleanup()
       throw err
     }
 

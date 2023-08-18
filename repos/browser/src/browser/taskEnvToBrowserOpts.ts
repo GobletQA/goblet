@@ -33,7 +33,7 @@ export const taskEnvToBrowserOpts = (config:TGobletConfig) => {
     GOBLET_BROWSER_DEVICES,
     GOBLET_BROWSER = `chromium`,
     GOBLET_BROWSER_SLOW_MO = `50`,
-    GOBLET_BROWSER_TIMEOUT = `10000`, // 10 seconds
+    GOBLET_BROWSER_TIMEOUT = `15000`, // 15 seconds
   } = process.env
 
   // Save videos to the temp dir, and copy them to the repo dir as needed, I.E. if a test fails

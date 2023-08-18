@@ -133,6 +133,7 @@ RUN pnpm install --fix-lockfile --shamefully-hoist
 # ---- Run Stage ---- #
 FROM goblet-image as goblet-setup
 WORKDIR /github/app
+
 COPY --from=goblet-installer /goblet/app/ .
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 
@@ -143,4 +144,5 @@ RUN ln -s /github /goblet && \
 WORKDIR /github/app/repos/exam
 RUN pnpm build:cli
 
+ENV GOBLET_RUN_FROM_CI=1
 # ---- End Stage ---- #

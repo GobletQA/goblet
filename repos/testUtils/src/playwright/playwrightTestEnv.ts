@@ -17,8 +17,11 @@ import {
 /**
  * Helper to force exit the process after 1/2 second
  */
-const forceExit = (err?:Error) => {
-  Logger.stderr(`\n${Logger.colors.red(`[Goblet Init Error]`)} Playwright could not be initialized\n`)
+const forceExit = (err?:Error, isCleanup?:boolean) => {
+  !isCleanup
+    ? Logger.stderr(`\n${Logger.colors.red(`[Goblet Init Error]`)} Playwright could not be initialized\n`)
+    : Logger.stderr(`\n${Logger.colors.red(`[Goblet Cleanup Error]`)} Playwright could not be shutdown, attempting force close.\n`)
+
   err && Logger.stderr(`\n${err.stack}\n`)
   setTimeout(() => process.exit(1), 500)
 }
@@ -153,7 +156,7 @@ export const cleanup = async (initErr?:boolean) => {
     return true
   }
   catch(err){
-    forceExit(err)
+    forceExit(err, !initErr)
   }
 
 }

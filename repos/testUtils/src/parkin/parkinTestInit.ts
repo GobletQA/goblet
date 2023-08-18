@@ -12,7 +12,7 @@ import { getParkinInstance } from './instance'
 global.getParkinInstance = getParkinInstance
 
 
-const getParkinOptions = () => {
+export const getParkinOptions = () => {
   // Load the both goblet and parkin version
   // Goblet version overrides parkin version
   const {
