@@ -2,6 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
+import { getStepTimeout } from '@GTU/Support'
 import { checkForAncestor } from '@GTU/Support/validate'
 
 /**
@@ -15,14 +16,9 @@ export const clickDescendent = async (
 ) => {
   const { world } = ctx
   checkForAncestor(world)
-  const descendent = await getLocator(
-    `${world.meta.ancestorSelector} ${selector}`,
-    ctx
-  )
-
-  return descendent.click({
-    force: true
-  })
+  const timeout = getStepTimeout(ctx)
+  const descendent = getLocator(`${world.meta.ancestorSelector} ${selector}`)
+  return await descendent.click({ timeout })
 }
 
 When(`I click the descendent element {string}`, clickDescendent, {

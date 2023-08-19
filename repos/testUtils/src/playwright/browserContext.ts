@@ -31,6 +31,8 @@ export const setupBrowser = async (repo?:TGobletConfig) => {
   const { GOBLET_BROWSER=`chromium` } = process.env
   const type = GOBLET_BROWSER || global?.__goblet?.browser?.type
   
+  // Parkin holds an instance of the world object
+  // So we use that to get access to the world
   const parkin = global.getParkinInstance()
   const gCtx = get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
   const { browser, context } = await GBrowser.get({

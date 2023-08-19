@@ -11,11 +11,10 @@ export const setTextWithSaved = async (
 ) => {
   const { world } = ctx
   const { selector, element } = getWorldLocator(world)
-  const locator = element || await getLocator(`:focus`, ctx)
+  const locator = element || getLocator(`:focus`)
  
   return await fillInput({
     text,
-    world,
     locator,
     selector,
   }, ctx)
@@ -29,10 +28,8 @@ export const setTextWithSelector = async (
   selector:string,
   ctx:TStepCtx
 ) => {
-  const { world } = ctx
   return await fillInput({
     text,
-    world,
     selector,
   }, ctx)
 }

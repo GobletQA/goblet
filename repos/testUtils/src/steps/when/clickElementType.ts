@@ -18,13 +18,12 @@ export const clickElementTypeHandler = async (
   selector:string,
   ctx:TStepCtx
 ) => {
-  const { world } = ctx
   const formatted = checkSelectorType(selector, ctx)
   const joined = formatted.startsWith(`internal`)
     ? formatted
     : `${type}${formatted}`
 
-  return await clickElement({ selector: joined, world }, ctx)
+  return await clickElement({ selector: joined }, ctx)
 }
 
 const meta = {

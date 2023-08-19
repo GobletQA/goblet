@@ -1,10 +1,11 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
+import { isNum } from '@keg-hub/jsutils'
 import { getLocator } from '@GTU/Playwright'
+import { getStepTimeout } from '@GTU/Support'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
-const defaultTimeout = 5000
 const states = [`attached`, `detached`, `visible`, `hidden`]
 
 enum EState {
@@ -14,7 +15,6 @@ enum EState {
   hidden=`hidden`
 }
 
-
 /**
  * Waits for the element at `selector` to be in state `state`
  * @param {string} selector - valid playwright selector
@@ -23,16 +23,16 @@ enum EState {
 export const waitForSelectorState = async (
   selector:string,
   state:EState,
-  timeout:number=defaultTimeout,
+  timeout:number,
   ctx:TStepCtx
 ) => {
   if (!states.includes(state))
     throw new Error('Invalid Selector State: ' + state)
 
-  const element = await getLocator(selector, ctx)
+  const element = getLocator(selector)
   return await element.waitFor({
-    timeout,
     state: `${state}`.trim() as EState,
+    timeout: isNum(timeout) ? timeout : getStepTimeout(ctx),
   })
 }
 
@@ -81,35 +81,35 @@ const multiMeta = {
 When(`I wait for {string}`, (selector:string,ctx:TStepCtx) => waitForSelectorState(
   selector,
   EState.attached,
-  defaultTimeout,
+  undefined,
   ctx
 ), meta)
 
 When(`I wait for {string} to hide`, (selector:string,ctx:TStepCtx) => waitForSelectorState(
   selector,
   EState.hidden,
-  defaultTimeout,
+  undefined,
   ctx
 ), meta)
 
 When(`I wait for {string} to show`, (selector:string,ctx:TStepCtx) => waitForSelectorState(
   selector,
   EState.visible,
-  defaultTimeout,
+  undefined,
   ctx
 ), meta)
 
 When(`I wait for {string} to detach`, (selector:string,ctx:TStepCtx) => waitForSelectorState(
   selector,
   EState.detached,
-  defaultTimeout,
+  undefined,
   ctx
 ), meta)
 
 When(`I wait for {string} to attach`, (selector:string,ctx:TStepCtx) => waitForSelectorState(
   selector,
   EState.attached,
-  defaultTimeout,
+  undefined,
   ctx
 ), meta)
 
@@ -121,7 +121,7 @@ When(`I wait for element {string} to be {string}`, (
 ) => waitForSelectorState(
   selector,
   state,
-  defaultTimeout,
+  undefined,
   ctx
 ), { race: true, ...multiMeta })
 

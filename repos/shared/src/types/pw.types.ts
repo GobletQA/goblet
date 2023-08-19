@@ -40,8 +40,9 @@ export type TLocatorClickOpts = Parameters<Locator[`click`]>[`0`] & {
   moveSpeed?:number
 }
 
-export type TLocator = Omit<Locator, `click`> & {
-  click: (options:TLocatorClickOpts) => Promise<void>
+export type TLocator = Locator & {
+  // Click handler for ghost cursor, which is currently disabled
+  ghClick: (options:TLocatorClickOpts) => Promise<void>
 }
 
 export type TBrowser = Omit<Browser, `newContext`> & TWithGuid & {

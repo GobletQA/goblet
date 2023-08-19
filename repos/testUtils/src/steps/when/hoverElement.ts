@@ -2,14 +2,15 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
+import { getStepTimeout } from '@GTU/Support'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Sets the input text of selector to data
  */
 export const hoverElement = async (selector:string, ctx:TStepCtx) => {
-  const element = await getLocator(selector, ctx)
-  await element.hover()
+  const element = getLocator(selector)
+  await element.hover({ timeout: getStepTimeout(ctx) })
 
   return true
 }

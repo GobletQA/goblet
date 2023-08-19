@@ -1,14 +1,25 @@
+import type { TLocator } from './shared.types'
 import type { TWorldConfig } from '@ltipton/parkin'
-import type { TLocator, TBrowserPage } from './shared.types'
 
-export type TClickEl = {
+export type TClickOpts = {
+  delay?:number
+  force?:boolean
+  trial?:boolean
+  timeout?:number
+  clickCount?:number
+  noWaitAfter?:boolean
+  button?:`left`|`right`|`middle`
+  position?:{ x:number, y:number }
+  modifiers?:Array<`Alt`|`Control`|`Meta`|`Shift`>
+}
+
+export type TClickEl = TClickOpts & {
   save?:boolean
   selector?:string
   locator?:TLocator
-  page?:TBrowserPage
-  world: TWorldConfig
   worldPath?:string
 }
+
 
 export type TFillInput = TClickEl & {
   text:string
@@ -21,7 +32,23 @@ export type TSaveWorldLocator = {
   world:TWorldConfig
 }
 
-export type TWaitFor = boolean | {
+export type TLocOpts = {
+  has?:TLocator
+  hasNot?:TLocator
+  hasText?:string
+  hasNotText?:string
+}
+
+export type TWaitFor = {
   timeout:number
   state:`visible` | `attached` | `detached` | `hidden`
+}
+
+export type TDragToOpts = {
+  force?:boolean
+  trial?:boolean
+  timeout?:number
+  noWaitAfter?:boolean
+  sourcePosition?:Object
+  targetPosition?:Object
 }

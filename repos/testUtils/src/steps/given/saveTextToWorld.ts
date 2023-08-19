@@ -2,6 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
+import { getStepTimeout } from '@GTU/Support'
 import { saveWorldData } from '@GTU/Support/helpers'
 import { SavedTextWorldPath } from '@GTU/Constants'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
@@ -15,8 +16,8 @@ const saveTextToWorld = async (
   if(!worldPath)
     throw new Error(`A $world path is required`)
 
-  const locator = await getLocator(selector, ctx)
-  const textContent = locator.innerText
+  const locator = getLocator(selector)
+  const textContent = await locator.innerText({ timeout: getStepTimeout(ctx) })
 
   const { world } = ctx
   return await saveWorldData({ value: textContent }, world, worldPath)
@@ -28,8 +29,8 @@ const autoSaveTextToWorld = async (
 ) => {
   const { world } = ctx
 
-  const locator = await getLocator(selector, ctx)
-  const textContent = locator.innerText
+  const locator = getLocator(selector)
+  const textContent = await locator.innerText({ timeout: getStepTimeout(ctx) })
   return await saveWorldData({ value: textContent }, world, SavedTextWorldPath)
 }
 

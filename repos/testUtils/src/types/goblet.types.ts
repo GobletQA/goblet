@@ -1,4 +1,4 @@
-import type {TWorldConfig} from '@ltipton/parkin'
+import type {TStepAst, TStepTable, TWorldConfig} from '@ltipton/parkin'
 import type { BrowserContextOptions } from 'playwright'
 import type { TGobletConfig, TLocator, TBrowserPage, TGobletTestOpts } from './shared.types'
 
@@ -34,13 +34,28 @@ export type TGetLocationOpts = {
   page?: TBrowserPage
 }
 
-export type TLocatorMapMethod = (
+export type TLocByText = {
+  exact?:boolean
+}
+
+export type TLocByRole = TLocByText & {
+  level?:number
+  pressed?:boolean
+  selected?:boolean
+  expanded?:boolean
+  name?:string|RegExp
+  includeHidden?:boolean
+}
+
+export type TLocatorMapMethod<Opts extends Record<string, any>=TLocByText> = (
   page:TBrowserPage,
-  selector:string
+  selector:string,
+  options?:Opts
 ) => Promise<TLocator>
 
+
 export type TLocatorTypeMap = {
-  role: TLocatorMapMethod
+  role: TLocatorMapMethod<TLocByRole>
   text: TLocatorMapMethod
   title: TLocatorMapMethod
   label: TLocatorMapMethod
@@ -48,6 +63,10 @@ export type TLocatorTypeMap = {
 }
 
 export type TStepCtx = {
+  doc?: any
+  step:TStepAst
+  table?:TStepTable
   world:TWorldConfig
+  options?:Record<string, any>
   [key:string]: any
 }
