@@ -1,7 +1,7 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
-import { getStepTimeout } from '@GTU/Support'
+import { getLocatorTimeout } from '@GTU/Support'
 import { getLocator, getPage } from '@GTU/Playwright'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
@@ -14,7 +14,7 @@ export const assertElementChild = async (
   ctx:TStepCtx
 ) => {
 
-  const timeout = getStepTimeout(ctx)
+  const timeout = getLocatorTimeout(ctx)
   const child = getLocator(childSelector)
 
   const page = await getPage()

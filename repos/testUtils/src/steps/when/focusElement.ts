@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
-import { getStepTimeout } from '@GTU/Support'
+import { getLocatorTimeout } from '@GTU/Support'
 import { saveWorldLocator } from '@GTU/Support/helpers'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
@@ -11,7 +11,7 @@ import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
  */
 export const focusElement = async (selector:string, ctx:TStepCtx) => {
   const { world } = ctx
-  const timeout = getStepTimeout(ctx)
+  const timeout = getLocatorTimeout(ctx)
   const element = await getLocator(selector)
   const resp = await element.focus({ timeout })
   saveWorldLocator({ selector, world, element }, ctx)

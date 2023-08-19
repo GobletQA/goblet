@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { When } from '@GTU/Parkin'
 import { isNum } from '@keg-hub/jsutils'
 import { getLocator } from '@GTU/Playwright'
-import { getStepTimeout } from '@GTU/Support'
+import { getLocatorTimeout } from '@GTU/Support'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 const states = [`attached`, `detached`, `visible`, `hidden`]
@@ -32,7 +32,7 @@ export const waitForSelectorState = async (
   const element = getLocator(selector)
   return await element.waitFor({
     state: `${state}`.trim() as EState,
-    timeout: isNum(timeout) ? timeout : getStepTimeout(ctx),
+    timeout: isNum(timeout) ? timeout : getLocatorTimeout(ctx),
   })
 }
 

@@ -16,15 +16,12 @@ import {
   TestsResultStatus,
 } from "@gobletqa/exam"
 
+import {
+  spaceMap,
+  spaceFromId,
+  filterErrMessage
+} from "../utils/examUtils"
 
-const spaceMap = {
-  file: `  `,
-  hook: `  `,
-  spec: `  `,
-  suite: `  `,
-  root: `    `,
-  error: `    `,
-}
 
 const logFile = (location:string, rootDir?:string) => {
   const fromRoot = location?.replace(rootDir, ``).replace(/^\//, `./`)
@@ -39,7 +36,7 @@ const logParent = (
   isStart:boolean
 ) => {
   const context = evt.data
-  const space = spaceFromId(evt)
+  const space = spaceFromId(context)
   
   const isRoot = evt.name === ExamEvtNames.rootSuiteDone
     || evt.name === ExamEvtNames.rootSuiteStart
@@ -61,21 +58,6 @@ const logParent = (
           ` > `,
           `${Logger.colors.gray(description.trim())}\n`
         ].join(``))
-
-}
-
-const spaceFromId = (evt:TExamEvt<TExEventData>) => {
-  const { id, testPath } = evt.data
-  if(id.startsWith(`suite`)){
-    let spacer = spaceMap.suite
-    const [name, ...rest] = id.split(`-`)
-    rest.map(num => spacer+=`  `)
-    return spacer
-  }
-
-  let spacer = spaceMap.spec
-  testPath.split(`/`).map(num => spacer+=`  `)
-  return spacer
 
 }
 
@@ -102,7 +84,7 @@ const logResult = (
 
   const space = context.type === `error`
     ? spaceMap.error
-    : spaceFromId(evt)
+    : spaceFromId(context)
 
   const prefix = hasStepErr
     ? `${space || ``}${Logger.colors.yellow(`○`)}`
@@ -136,31 +118,8 @@ const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
   const failed = context?.failedExpectations?.[0]
   if(!failed || !failed?.description) return {}
 
-  // TODO: add better handling of error description
-  // Include the error.matcherResult data colorized
-  // failed?.error?.matcherResult.actual vs failed?.error?.matcherResult.expected
-
-  const duplicates = []
-  const startsWith = [`===========================`]
-  const extSpace = spaceFromId(evt)
-
   return {
-    message: `${failed.description}`.split(`\n`)
-      .map(line => {
-        const trimmed = line.trim()
-
-        if(!trimmed) return false
-        if(duplicates.includes(line)) return false
-        if(startsWith.find(filter => trimmed.startsWith(filter))) return false
-
-        duplicates.push(line)
-        return `${extSpace}${spaceMap.error}${line}`
-      })
-      .concat([
-        context?.testPath && `\n${extSpace}${spaceMap.error}Test Path: ${context.testPath}`
-      ])
-      .filter(Boolean)
-      .join(`\n`)
+    message: filterErrMessage(context)
   }
 
 }

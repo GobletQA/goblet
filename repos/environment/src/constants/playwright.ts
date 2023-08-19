@@ -24,10 +24,14 @@ export const PWLogFilter = [
 
 export const CreateBrowserRetry = 300
 
-export const PWEventErrorLogFilter = [
-  `===== logs =====`,
-  `================`
-]
+export const PWEventErrorLogFilter = {
+  contains: [
+    `waiting.*\\dms`,
+    `===== logs =====`,
+    `================`,
+    `retrying click action, attempt #`
+  ]
+}
 
 export const DefaultBrowser = `chromium` as EBrowserName
 export const CanRecordVideo = [DefaultBrowser]

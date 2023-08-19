@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
-import { getStepTimeout } from '@GTU/Support'
+import { getLocatorTimeout } from '@GTU/Support'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
@@ -15,7 +15,7 @@ export const checkElement = async (
   selector:string,
   ctx:TStepCtx
 ) => {
-  const timeout = getStepTimeout(ctx)
+  const timeout = getLocatorTimeout(ctx)
   const box = getLocator(selector)
   const boxAction = action === `check` ? await box.check({ timeout }) : await box.uncheck({ timeout })
 }

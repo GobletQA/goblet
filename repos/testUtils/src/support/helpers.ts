@@ -251,7 +251,7 @@ export const getLocatorAttribute = async (
   ctx?:TStepCtx
 ) => {
   const element = locator || getLocator(selector)
-  const timeout = getStepTimeout(ctx)
+  const timeout = getLocatorTimeout(ctx)
   return await element.getAttribute(attr, { timeout })
 }
 
@@ -321,7 +321,7 @@ export const getLocatorContent = async (
   locator?:TLocator,
   ctx?:TStepCtx
 ) => {
-  const timeout = getStepTimeout(ctx)
+  const timeout = getLocatorTimeout(ctx)
   const element = locator || getLocator(selector)
   const tagName = await getLocatorTagName(selector, element, ctx)
 
@@ -346,7 +346,7 @@ export const clickElement = async ({
 
   locator = locator || getLocator(selector)
 
-  timeout = timeout || getStepTimeout(ctx)
+  timeout = timeout || getLocatorTimeout(ctx)
 
   // TODO: figure out if trial should be used to ensure the element exists
   // await locator.click({ ...opts, trial: true, timeout })
@@ -402,6 +402,19 @@ export const typeInput = async (props:TFillInput, ctx?:TStepCtx) => {
   await locator.type(text)
 
   return { locator }
+}
+
+/**
+ * TODO: This works, but the error log now shows this time instead of the Step Timeout time
+ * So need to come up with a better solution
+ */
+export const getLocatorTimeout = (ctx?:TStepCtx, percent:number=99) => {
+  if(isNum(ctx?.options?.locatorTimeout)) return ctx?.options?.locatorTimeout
+
+  // Ensure the actions timeout is less then steps defined timeout
+  // This allows the error to come from the action and not the step
+  // To do this, we take 99% of the step timeout value
+  return (getStepTimeout(ctx) / 100) * percent
 }
 
 /**

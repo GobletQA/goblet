@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
-import { getStepTimeout } from '@GTU/Support'
+import { getLocatorTimeout } from '@GTU/Support'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
@@ -16,7 +16,7 @@ export const dragAndDrop = async (
   const dragEl = getLocator(dragSelector)
   const parentEl = getLocator(parentSelector)
 
-  return await dragEl.dragTo(parentEl, { timeout: getStepTimeout(ctx) })
+  return await dragEl.dragTo(parentEl, { timeout: getLocatorTimeout(ctx) })
 }
 
 const meta = {
