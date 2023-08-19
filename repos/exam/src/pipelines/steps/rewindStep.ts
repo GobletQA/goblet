@@ -9,7 +9,7 @@ export const rewindStep = () => {
 
     const { rewind } = args
     const state = manager.getState()
-    const results = [...state.TestResults]
+    const results = state.TestResults ? [...state.TestResults] : []
 
     if(!isArr(rewind) || !rewind?.length) return results
 
