@@ -16,3 +16,7 @@ typeof HTMLMediaElement.prototype.playing === 'undefined'
       }
     })
   )
+
+
+// console.log(`---- SETTING BROWSER FULL SCREEN... ----`)
+// document.documentElement.requestFullscreen()

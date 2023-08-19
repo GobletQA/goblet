@@ -74,7 +74,7 @@ const setContextSettings = async ({
   const contextSettings = repo?.world?.$context
   if(contextSettings){
     contextSettings?.timeout &&
-      context.setDefaultTimeout(contextSettings?.timeout)
+      context.setDefaultTimeout(contextSettings?.timeout || 5000)
   }
 
 }
@@ -89,7 +89,7 @@ const setPageSettings = async ({
   const browserSettings = repo?.world?.$browser
   if(browserSettings){
     browserSettings?.timeout &&
-      page.setDefaultTimeout(browserSettings?.timeout)
+      page.setDefaultTimeout(browserSettings?.timeout || 5000)
 
      // Add page settings here
   }

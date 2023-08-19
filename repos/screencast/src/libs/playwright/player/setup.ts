@@ -1,12 +1,12 @@
 import type { CodeRunner } from './codeRunner'
+import type { TParkinTestConfig } from '@ltipton/parkin'
 import type { TPlayerEventData, TPlayerTestEvent } from '@gobletqa/shared/types'
-
 /**
  * This is needed so that expect is added to the global context
  * Which allows it to be referenced directly in step definitions
  */
 import expect from 'expect'
-import { Parkin, TParkinTestConfig } from '@ltipton/parkin'
+import { Parkin } from '@ltipton/parkin'
 import { unset, omitKeys } from '@keg-hub/jsutils'
 import { ParkinTest } from '@ltipton/parkin/test'
 import { getDefinitions } from '@gobletqa/shared/repo/getDefinitions'

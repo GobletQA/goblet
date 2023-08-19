@@ -1,0 +1,17 @@
+<!-- /root/.config/openbox/rc.xml -->
+
+<desktops>
+  <number>1</number>
+  <firstdesk>1</firstdesk>
+  <popupTime>0</popupTime>
+  <names>
+    <name>goblet</name>
+  </names>
+</desktops>
+<applications>
+  ...
+  <application name="NAME" class="CLASS" role="ROLE" title="TITLE" type="TYPE">
+    ...PROPERTIES...
+  </application>
+  ...
+</applications>

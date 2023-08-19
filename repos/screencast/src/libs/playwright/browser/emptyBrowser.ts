@@ -15,6 +15,8 @@ export class EmptyBrowser extends EventEmitter implements Browser {
   #context:TBrowserContext
   #disconnectedCB:(browser:Browser) => void
 
+  emptyBrowser = true
+
   constructor(context:TBrowserContext, browserType:EBrowserName){
     super()
     this.#context = context
