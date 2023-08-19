@@ -100,12 +100,17 @@ export class Browser {
 
       let page:TBrowserPage
       this.creatingPage = true
-      if(hasPages) page = pages[0]
+      if(hasPages){
+        page = pages[0]
+        const currentUrl = page.url()
+        currentUrl === `about:blank`
+          && await page.goto(initialUrl)
+
+      }
       else {
 
         const pg = await context.newPage()
-        
-        const page = ghostMouse(pg)
+        page = ghostMouse(pg)
 
         try {
           await page.goto(initialUrl)

@@ -59,12 +59,27 @@ export const useScreencastHooks = () => {
     state !== isLoaded && setIsLoaded(state)
   })
 
-  const onKeyDown = useCallback((event:Event) => {
-    // TODO: add check here for it on mac
-    // Re-Map the keys command / ctrl keys if possible
-    // Have to use ctl when on vnc screen
+  const onKeyDown = useCallback((event:KeyboardEvent) => {
+    const isTab = event.code === `Tab` || event.key === `Tab` || event.keyCode === 9
+    
+    if(isTab || event.ctrlKey || event.metaKey){
+      const isT = event.code === `KeyT` || event.keyCode === 84 || event.key === `t`
+      if(isT || isTab){
+        
+        event.stopPropagation()
+        event.preventDefault()
+        console.warn(`Command not allowed`)
+
+        // TODO: add check here for it on mac
+        // Re-Map the keys command / ctrl keys if possible
+        // Have to use ctl when on vnc screen
+      }
+      
+    }
+
     // event.stopPropagation()
     // event.preventDefault()
+
   }, [])
 
   return {
