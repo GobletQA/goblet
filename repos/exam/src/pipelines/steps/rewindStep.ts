@@ -5,11 +5,11 @@ import pPipe from 'p-pipe'
 import { isArr } from '@keg-hub/jsutils'
 
 export const rewindStep = () => {
-  const setFunc = async (args:TPipelineArgs, manager?:TStateManager) => {
+  const rewindCB = async (args:TPipelineArgs, manager?:TStateManager) => {
 
     const { rewind } = args
     const state = manager.getState()
-    const results = [...state.TestResults]
+    const results = state.TestResults ? [...state.TestResults] : []
 
     if(!isArr(rewind) || !rewind?.length) return results
 
@@ -20,6 +20,6 @@ export const rewindStep = () => {
 
   }
 
-  setFunc.name = `rewindStep`
-  return setFunc
+  rewindCB.name = `rewindStep`
+  return rewindCB
 }

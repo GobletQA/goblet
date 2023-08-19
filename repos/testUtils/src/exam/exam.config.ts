@@ -25,6 +25,7 @@ import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { flatUnion} from '@keg-hub/jsutils/flatUnion'
 import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+import { getParkinOptions } from '@GTU/Parkin/parkinTestInit'
 import { getRepoGobletDir, getGobletConfig } from '@gobletqa/goblet'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
 import { getParkinTestInit, getStepDefinitions } from '@GTU/Parkin/loadSupportFiles'
@@ -36,7 +37,6 @@ const OnStartupLoc = path.resolve(__dirname, './onStartup.ts')
 const OnShutdownLoc = path.resolve(__dirname, './onShutdown.ts')
 const RunnerLoc = path.resolve(__dirname, './FeatureRunner.ts')
 const ReporterLoc = path.resolve(__dirname, './FeatureReporter.ts')
-const TransformLoc = path.resolve(__dirname, './FeatureTransform.ts')
 const EnvironmentLoc = path.resolve(__dirname, './FeatureEnvironment.ts')
 
 export type TExamConfOpts = TTestMatch & {
@@ -60,8 +60,8 @@ const ExamConfig = ():TExamConfig => {
   const browserConf = browserOpts as TBrowserConf
 
   const contextOpts = getContextOpts({ config })
+  const parkinRunOpts = getParkinOptions()
   const gobletOpts = buildTestGobletOpts(config, browserConf)
-  const testDir = path.join(baseDir, config.paths.featuresDir)
 
   // @ts-ignore
   const examConfig = config?.testConfig || emptyObj
@@ -76,14 +76,13 @@ const ExamConfig = ():TExamConfig => {
     || buildTestMatchFiles({ type: `feature`, ext: `feature`, extOnly: true })
     || emptyArr
 
-
   return {
     envs: {
       EXAM_ENV: 1,
       // GB_REPO_NO_SECRETS: 1,
       GOBLET_CONFIG_BASE: baseDir
     },
-    timeout: 10000,
+    timeout: 15000,
     // testIgnore: [],
     // reporter: {},
     // loaderIgnore:[],
@@ -112,6 +111,7 @@ const ExamConfig = ():TExamConfig => {
         options: gobletOpts,
         browser: browserOpts,
         paths: {...config.paths},
+        parkin: { run: parkinRunOpts },
         context: { options: contextOpts },
       },
     },
@@ -121,7 +121,6 @@ const ExamConfig = ():TExamConfig => {
     ].filter(Boolean) as any,
     transforms: {
       ...examConfig.transforms,
-      [`.feature`]: [TransformLoc, {}]
     },
     preEnvironment:flatUnion([
       ...ensureArr(examConfig.preEnvironment),

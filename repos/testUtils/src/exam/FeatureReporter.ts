@@ -44,20 +44,22 @@ const logParent = (
   const isRoot = evt.name === ExamEvtNames.rootSuiteDone
     || evt.name === ExamEvtNames.rootSuiteStart
     || space.length === 4
-
+    
+  const [first, description] = context.description.split(`>`)
+  const type = first.trim()
 
   if(isStart)
     isRoot
       ? Logger.stdout([
           `\n`,
-          `${space}${RootSuiteTag(`Feature`)}`,
+          `${space}${RootSuiteTag(type)}`,
           ` > `,
-          `${Logger.colors.gray(context.description)}\n`
+          `${Logger.colors.gray(description.trim())}\n`
         ].join(``))
       : Logger.stdout([
-          `${space}${SuiteTag(`Describe`)}`,
+          `${space}${SuiteTag(type)}`,
           ` > `,
-          `${Logger.colors.gray(context.description)}\n`
+          `${Logger.colors.gray(description.trim())}\n`
         ].join(``))
 
 }
@@ -166,6 +168,7 @@ const getFailedMessage = (evt:TExamEvt<TExEventData>,) => {
 
 export class FeatureReporter implements IExamReporter {
   config:TExamConfig
+  testPath?:string
 
   constructor(
     examCfg:TExamConfig,
@@ -177,13 +180,17 @@ export class FeatureReporter implements IExamReporter {
 
   // Event `PLAY-STARTED`,
   onRunStart = (evt:TExamEvt<TExEventData>) => {
-    const file = evt?.data?.testPath
-    const rootDir = this.config?.rootDir
-    file && logFile(file, rootDir)
+    this.testPath = evt?.data?.testPath
   }
 
   // Event `PLAY-SUITE-START-ROOT`
   onTestFileStart = (evt:TExamEvt<TExEventData>) => {
+    if(this.testPath){
+      const rootDir = this.config?.rootDir
+      this.testPath && logFile(this.testPath, rootDir)
+      this.testPath = undefined
+    }
+
     logResult(evt)
   }
 

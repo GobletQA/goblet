@@ -1,12 +1,12 @@
-import type {
+import {
   TStateObj,
   TPipelineInit,
   TPipelineArgs,
-  TPipeStepFunc
+  TPipeStepFunc,
+  EExErrorType
 } from '@GEX/types'
 
 import { Logger } from '@GEX/utils/logger'
-import {PipelineTag} from '@GEX/constants/tags'
 import {
   argsState,
   stateManager,
@@ -35,13 +35,17 @@ export const pipelineHoc = (
       return response
     }
     catch(err){
-
       /**
-        * Add flag if pipeline should exit on failed step or continue on
-        * If exit on failed step, we should throw here instead of log
-        */
+       * Add flag if pipeline should exit on failed step or continue on
+       * If exit on failed step, we should throw here instead of log
+       */
       Logger.empty()
-      Logger.error(Logger.colors.red(`${pArgs.tag} - ${count}. ${stepName} - failed`))
+
+      if(err.name !== EExErrorType.BailError){
+        Logger.error(Logger.colors.red(`${pArgs.tag} - ${count}. ${stepName} - failed`))
+        Logger.log(err.stack)
+      }
+      else Logger.log(err.message)
 
       return undefined
     }

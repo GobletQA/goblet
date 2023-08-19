@@ -13,7 +13,6 @@ import {
   setupJWT,
   setupCors,
   setupServer,
-  setupStatic,
   validateUser,
   setupBlacklist,
   setupLoggerReq,
@@ -37,7 +36,6 @@ export const initApi = async () => {
   setupJWT(app, BEAuthBypassRoutes)
   setupServer(app, false, false, false)
   setupRouters(app)
-  setupStatic(app)
   validateUser({
     expressRouter: `async`,
     bypassRoutes: BEAuthBypassRoutes,

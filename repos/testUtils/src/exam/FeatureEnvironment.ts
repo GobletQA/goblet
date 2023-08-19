@@ -5,7 +5,7 @@ import type {
   TEnvironmentCache,
   IExamEnvironment,
 } from '@gobletqa/exam/types'
-import { Parkin } from '@ltipton/parkin'
+import { Parkin, TParkinRunOpts } from '@ltipton/parkin'
 import { ParkinTest } from '@ltipton/parkin/test'
 import type { FeatureRunner } from './FeatureRunner'
 
@@ -21,6 +21,7 @@ export class FeatureEnvironment implements IExamEnvironment {
 
   parkin:Parkin
   test:ParkinTest
+  runOptions:TParkinRunOpts={}
   envs:TEnvironmentEnvs={}
   cache:TEnvironmentCache = {
     envs:{},
@@ -54,6 +55,7 @@ export class FeatureEnvironment implements IExamEnvironment {
 
     this.parkin = global.getParkinInstance(cfg.globals?.__goblet?.config)
     this.test = new ParkinTest()
+    this.runOptions = cfg.globals?.__goblet?.parkin?.run
 
   }
 

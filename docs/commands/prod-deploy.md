@@ -42,8 +42,8 @@
   * You can also use the `--clean` option in the deploy command
 * Deploy the Backend Apps
   * `pnpm dep be --env prod`
-  * With clean - `pnpm dep be --env prod --clean`
-  * Alternative - `pnpm dev deploy --env prod`
+    * With clean - `pnpm dep be --env prod --clean` - **TYPICAL**
+    * Alternative - `pnpm dev deploy --env prod` - does the same as `pnpm dep be` cmd
 
 ### Clean Prod
 

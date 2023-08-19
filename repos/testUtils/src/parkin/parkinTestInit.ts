@@ -12,7 +12,7 @@ import { getParkinInstance } from './instance'
 global.getParkinInstance = getParkinInstance
 
 
-const getParkinOptions = () => {
+export const getParkinOptions = () => {
   // Load the both goblet and parkin version
   // Goblet version overrides parkin version
   const {
@@ -28,7 +28,7 @@ const getParkinOptions = () => {
     retry: options?.retry ?? 1,
     timeout: options?.timeout ?? 15000,
     ...(GOBLET_FEATURE_NAME && { name: GOBLET_FEATURE_NAME }),
-    tags: GOBLET_FEATURE_TAGS ? { filter: GOBLET_FEATURE_TAGS } : {}
+    tags: GOBLET_FEATURE_TAGS ? { filter: GOBLET_FEATURE_TAGS.split(/\s|,/) } : {}
   }
 }
 

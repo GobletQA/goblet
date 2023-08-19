@@ -20,16 +20,20 @@ export const FeatureStack = styled(Stack, {
     background-size: 25px 25px;
 
     ::-webkit-scrollbar-track {
-      background-color: transparent;
+        background: var(--goblet-editor-background);
+        box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
+        -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
     }
 
     ::-webkit-scrollbar {
-      width: 0px !important;
-      background-color: transparent;
+      width: 6px;
     }
 
     ::-webkit-scrollbar-thumb {
-      background-color: transparent;
+      border-radius: 3px;
+      background: var(--goblet-scrollbarSlider-background);
+      box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
+      -webkit-box-shadow: inset 0 0 5px var(--goblet-scrollbar-shadow);
     }
     
     & > .gb-section-stack-content {

@@ -103,7 +103,6 @@ export class BailError extends BaseError {
 
       let msg = `\n${this.message}\n`
       this.cause && (msg += `${this.cause}\n\n`)
-      process.stdout.write(msg)
 
     }
   }

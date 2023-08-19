@@ -26,7 +26,6 @@ COPY . .
 RUN pnpm add --global turbo dot-json && \
     rm -rf /goblet/app/repos/components && \
     rm -rf /goblet/app/repos/exam && \
-    rm -rf /goblet/app/repos/latent && \
     rm -rf /goblet/app/repos/monaco && \
     rm -rf /goblet/app/repos/race && \
     rm -rf /goblet/app/repos/screencast && \
@@ -41,6 +40,8 @@ RUN pnpm add --global turbo dot-json && \
     cd /goblet/app/repos/goblet && \
     pnpm json:rm && \
     cd /goblet/app/repos/logger && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/latent && \
     pnpm json:rm && \
     cd /goblet/app/repos/shared && \
     pnpm json:rm && \
@@ -62,7 +63,7 @@ FROM goblet-setup as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 COPY --from=goblet-pruner /goblet/app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install --fix-lockfile --shamefully-hoist
+RUN pnpm install --fix-lockfile
 # ---- End Stage ---- #
 
 
@@ -73,22 +74,24 @@ COPY --from=goblet-pruner /goblet/app/out/full/ /goblet/app/
 COPY --from=goblet-installer /goblet/app/ /goblet/app/
 WORKDIR /goblet/app/repos/backend
 RUN pnpm build:goblet && \
-    pnpm build:docker && \
-    pnpm install --fix-lockfile --shamefully-hoist
+    pnpm build:docker
 
 WORKDIR /goblet/app
-RUN <<EOF
-  mkdir -p /goblet-runner/configs
-  mkdir -p /goblet-runner/repos/backend
-  cp -R /goblet/app/node_modules /goblet-runner/node_modules
-  cp -R /goblet/app/repos/backend/dist /goblet-runner/repos/backend/dist
-  cp -R /goblet/app/repos/backend/scripts /goblet-runner/repos/backend/scripts
-  cp -R /goblet/app/repos/shared/src/templates /goblet-runner/repos/backend/templates
-  cp -R /goblet/app/repos/backend/node_modules /goblet-runner/repos/backend/node_modules
-  cp -R /goblet/app/repos/backend/package.json /goblet-runner/repos/backend/package.json
-  cp -R /goblet/app/repos/backend/tsconfig.json /goblet-runner/repos/backend/tsconfig.json
-  cp -R /goblet/app/repos/backend/dist/goblet.default.config.js /goblet-runner/configs/goblet.default.config.js
-EOF
+RUN mkdir -p /goblet-runner/configs
+RUN mkdir -p /goblet-runner/repos/backend
+RUN cp -R /goblet/app/repos/backend/dist/goblet.default.config.js /goblet-runner/configs/goblet.default.config.js
+RUN cp -R /goblet/app/gobletRoot.js /goblet-runner/gobletRoot.js
+RUN cp -R /goblet/app/tsconfig.json /goblet-runner/tsconfig.json
+RUN cp -R /goblet/app/configs/aliases.js /goblet-runner/configs/aliases.js
+RUN cp -R /goblet/app/configs/paths.config.js /goblet-runner/configs/paths.config.js
+RUN cp -R /goblet/app/configs/aliases.config.js /goblet-runner/configs/aliases.config.js
+RUN cp -R /goblet/app/repos/shared/src/templates /goblet-runner/repos/backend/templates
+RUN cp -R /goblet/app/repos/backend/tsconfig.json /goblet-runner/repos/backend/tsconfig.json
+RUN cp -R /goblet/app/repos/backend/scripts /goblet-runner/repos/backend/scripts
+RUN cp -R /goblet/app/repos/backend/dist /goblet-runner/repos/backend/dist
+RUN cp -R /goblet/app/repos/backend/package.json /goblet-runner/repos/backend/package.json
+RUN cp -R /goblet/app/repos/backend/node_modules /goblet-runner/repos/backend/node_modules
+RUN cp -R /goblet/app/node_modules /goblet-runner/node_modules
 # ---- End Stage ---- #
 
 

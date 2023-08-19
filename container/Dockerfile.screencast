@@ -102,8 +102,7 @@ WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/full/ .
 COPY --from=goblet-installer /goblet/app/ .
 WORKDIR /goblet/app/repos/screencast
-RUN pnpm build:docker && \
-    pnpm install --fix-lockfile --shamefully-hoist
+RUN pnpm build:docker
 # ---- End Stage ---- #
 
 
