@@ -1,3 +1,5 @@
+const { jestAliases } = require('./aliases.config')
+
 module.exports = {
   verbose: false,
   clearMocks: true,
@@ -36,4 +38,5 @@ module.exports = {
     '!**/*.test.{js,jsx,ts,tsx}',
   ],
   coveragePathIgnorePatterns: ['/node_modules/'],
+  moduleNameMapper: jestAliases
 }

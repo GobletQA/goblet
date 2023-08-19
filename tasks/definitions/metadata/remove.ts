@@ -3,13 +3,15 @@ import type { TTaskActionArgs } from '../../types'
 import { limbo } from '@keg-hub/jsutils'
 import { Logger } from '@keg-hub/cli-utils'
 import { promises as fs, existsSync } from 'fs'
-import metadata from '@gobletqa/screencast/libs/playwright/helpers/metadata'
 
 /**
  * Print the browser metadata if it exists
  */
 const removeMeta = async (args:TTaskActionArgs) => {
-
+  const { metadata } = require('@gobletqa/browser')
+  metadata.config = args.config
+  metadata.logger = Logger
+  
   Logger.empty()
   const metaLoc = metadata.location()
 

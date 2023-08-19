@@ -13,17 +13,17 @@ import type {
 
 import { Rest } from '../constants'
 import axios, { AxiosError, } from 'axios'
-import { Logger } from '@keg-hub/cli-utils'
-import { buildHeaders } from '../utils/buildHeaders'
-import {
-  isArr,
-  isStr,
-  limbo,
-  emptyObj,
-  deepMerge,
-  ensureArr,
-} from '@keg-hub/jsutils'
+import { Logger } from '@gobletqa/logger'
 import { BaseRestApi } from './baseRestApi'
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { limbo } from '@keg-hub/jsutils/limbo'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { buildHeaders } from '../utils/buildHeaders'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+
+
 
 const createOpts = {
   override: {

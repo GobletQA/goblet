@@ -11,8 +11,8 @@ import type {
 import path from 'path'
 import { promises } from 'fs'
 import { git } from './gitCmd'
+import { ENVS } from '@gobletqa/environment'
 import { deepMerge, limbo } from '@keg-hub/jsutils'
-import { GIT_GLOBAL_IGNORE } from '@gobletqa/workflows/constants'
 import {
   defCmdOpts,
   hasGitError
@@ -47,11 +47,11 @@ const gitUnchanged = async (
 }
 
 const checkGlobalIgnore = async () => {
-  const [err, resp] = await limbo(access(GIT_GLOBAL_IGNORE))
+  const [err, resp] = await limbo(access(ENVS.GB_GIT_GLOBAL_IGNORE))
   const pathExists =  err ? false : Boolean(resp)
 
   if(!pathExists)
-    await limbo(writeFile(GIT_GLOBAL_IGNORE, globalIgnore))
+    await limbo(writeFile(ENVS.GB_GIT_GLOBAL_IGNORE, globalIgnore))
 
   return true
 }

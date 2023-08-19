@@ -4,7 +4,8 @@ import fs from 'fs'
 import http from 'http'
 import https from 'https'
 import { getApp } from '@GSH/express/app'
-import { Logger } from '@GSH/libs/logger'
+import { ApiLogger as Logger } from '@gobletqa/logger'
+import {findProc} from '@GSH/libs/proc'
 
 type TCredentials = {
   ca?: string
@@ -36,39 +37,52 @@ const serverListen = (
   app:Express,
   serverConf:Record<any, any>,
 ) => {
-  const { securePort, port, host, name } = serverConf
-  const creds = {
-    key: process.env.GB_SSL_KEY,
-    cert: process.env.GB_SSL_CERT,
-    ca: process.env.GB_SSL_CA,
-  }
+  try {
+    const { securePort, port, host, name } = serverConf
+    const creds = {
+      key: process.env.GB_SSL_KEY,
+      cert: process.env.GB_SSL_CERT,
+      ca: process.env.GB_SSL_CA,
+    }
 
-  const credentials = Object.entries(creds).reduce((conf, [key, loc]) => {
-    fs.existsSync(loc) && (conf[key] = fs.readFileSync(loc, 'utf8'))
+    const credentials = Object.entries(creds).reduce((conf, [key, loc]) => {
+      fs.existsSync(loc) && (conf[key] = fs.readFileSync(loc, 'utf8'))
 
-    return conf
-  }, {} as TCredentials)
+      return conf
+    }, {} as TCredentials)
 
-  const httpServer = http.createServer(app)
-  const httpsServer = credentials.cert &&
-    credentials.key &&
-    https.createServer(credentials, app)
+    const httpServer = http.createServer(app)
+    const httpsServer = credentials.cert &&
+      credentials.key &&
+      https.createServer(credentials, app)
 
-  const serverTag = `[Goblet ${name || 'Server'}]`
-  const insecureServer = httpServer.listen(port, () => {
-    Logger.empty()
-    Logger.pair(`${serverTag} Insecure Server running on: `, `http://${host}:${port}`)
-    Logger.empty()
-  })
-
-  const secureServer = httpsServer &&
-    httpsServer.listen(securePort, () => {
+    const serverTag = `[Goblet ${name || 'Server'}]`
+    const insecureServer = httpServer.listen(port, () => {
       Logger.empty()
-      Logger.pair(`${serverTag} Secure Server running on: `, `https://${host}:443`)
+      Logger.pair(`${serverTag} Insecure Server running on: `, `http://${host}:${port}`)
       Logger.empty()
     })
 
-  return { insecureServer, secureServer, app }
+    const secureServer = httpsServer &&
+      httpsServer.listen(securePort, () => {
+        Logger.empty()
+        Logger.pair(`${serverTag} Secure Server running on: `, `https://${host}:443`)
+        Logger.empty()
+      })
+
+    return { insecureServer, secureServer, app }
+  }
+  catch(err){
+    // if(err.message.includes(`EADDRINUSE`)){
+    //   findProc(`screencast`)
+    // }
+    
+    console.log(`err.name`, err.name)
+    console.log(`err.code`, err.code)
+    console.log(`err.message`, err.message)
+    throw err
+    // Error: listen EADDRINUSE
+  }
 }
 
 

@@ -1,21 +1,25 @@
 import path from 'path'
 import { createRequire } from 'module'
-import { exists } from '@keg-hub/jsutils'
 import { addToProcess } from '@keg-hub/cli-utils'
 import { loadConfigs } from '@keg-hub/parse-config'
+import { getFirebaseCfg } from './firebase.config'
 
 const { GOBLET_ENV, NODE_ENV } = process.env
 if(GOBLET_ENV && NODE_ENV !== GOBLET_ENV) process.env.NODE_ENV = GOBLET_ENV
 else if(!process.env.GOBLET_ENV && NODE_ENV) process.env.GOBLET_ENV = NODE_ENV
 
-// Loading the gobletConfig requires the alias exists,
-// so registering the aliases must come first
-const requireAliases = createRequire(path.join(__dirname, '../../../configs'))
-const { aliases, registerAliases } = requireAliases('./configs/aliases.config')
-registerAliases()
+const loadFirebaseCfg = () => {
+  const requireAliases = createRequire(path.join(__dirname, '../../../configs'))
+  // Loading the firebase config requires the alias exists,
+  // so registering the aliases must come first
+  const { aliases, registerAliases } = requireAliases('./configs/aliases.config')
+  registerAliases()
 
-const requireGoblet = createRequire(path.join(__dirname, '../../shared/src/utils'))
-const { getDefaultGobletConfig } = requireGoblet('./goblet/getDefaultGobletConfig.ts')
+  return {
+    aliases,
+    firebase: getFirebaseCfg()
+  }
+}
 
 
 /**
@@ -24,6 +28,7 @@ const { getDefaultGobletConfig } = requireGoblet('./goblet/getDefaultGobletConfi
  */
 export const loadConfig = () => {
 
+
   addToProcess(
     loadConfigs({
       name: 'goblet',
@@ -31,11 +36,13 @@ export const loadConfig = () => {
       env: process.env.GOBLET_ENV || process.env.NODE_ENV || `local`,
       
     }),
-    { force: exists(process.env.GOBLET_ENV) }
+    { force: process.env.GOBLET_ENV !== undefined }
   )
 
-  const config = getDefaultGobletConfig()
-  const firebaseConfig = config.firebase
+  const {
+    aliases,
+    firebase
+  } = loadFirebaseCfg()
 
   const {
     NODE_ENV,
@@ -109,8 +116,8 @@ export const loadConfig = () => {
     GB_VNC_VIEW_HEIGHT: `${GB_VNC_VIEW_HEIGHT}`,
     FIRE_BASE_PERSISTENCE: FIRE_BASE_PERSISTENCE,
     WS_SERVER_CONFIG: JSON.stringify(wsServerConfig),
-    ...(firebaseConfig.ui && {
-      FIRE_BASE_CONFIG: JSON.stringify(firebaseConfig),
+    ...(firebase.ui && {
+      FIRE_BASE_CONFIG: JSON.stringify(firebase),
     }),
   }).reduce((acc, [key, value]) => {
     acc[`process.env.${key}`] = JSON.stringify(value)

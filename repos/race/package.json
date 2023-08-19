@@ -16,9 +16,9 @@
   "dependencies": {
     "@emotion/react": "11.10.6",
     "@emotion/styled": "11.10.6",
-    "@gobletqa/components": "*",
-    "@keg-hub/jsutils": ">=9.6.1",
-    "@ltipton/parkin": "5.0.0",
+    "@gobletqa/components": "workspace:../components",
+    "@keg-hub/jsutils": ">=9.7.8",
+    "@ltipton/parkin": "5.1.1",
     "@mui/icons-material": "5.11.16",
     "@mui/lab": "5.0.0-alpha.129",
     "@mui/material": "5.12.1",
@@ -26,7 +26,7 @@
     "react-selecto": "1.22.2"
   },
   "devDependencies": {
-    "@gobletqa/shared": "*",
+    "@gobletqa/shared": "workspace:../shared",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@vitejs/plugin-react-swc": "3.3.2",

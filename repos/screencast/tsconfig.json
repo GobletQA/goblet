@@ -1,46 +1,7 @@
 {
   "extends": "../../tsconfig.json",
-  "target": "es2020",
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist",
-    "typeRoots": [
-      "./src/types",
-      "../shared/src/types",
-      "./node_modules/@types",
-      "../../node_modules/@types"
-    ],
-    "paths": {
-      "@GSC/Configs": ["configs"],
-      "@GSC/Configs/*": ["configs/*"],
-      "@GSC/Scripts": ["scripts"],
-      "@GSC/Scripts/*": ["scripts/*"],
-      "@GSC/Templates": ["templates"],
-      "@GSC/Templates/*": ["templates/*"],
-      "@GSC/libs": ["src/libs"],
-      "@GSC/libs/*": ["src/libs/*"],
-      "@GSC": ["src"],
-      "@GSC/*": ["src/*"],
-      "@GSCRoot": ["./"],
-      "@GSCRoot/*": ["./*"],
-      "@gobletqa/latent": ["../latent/src"],
-      "@gobletqa/latent/*": ["../latent/src/*"],
-      "@gobletqa/shared": ["../shared/src"],
-      "@gobletqa/shared/*": ["../shared/src/*"],
-      "@gobletqa/screencast": ["src"],
-      "@gobletqa/screencast/*": ["src/*"],
-      "@gobletqa/test-utils": ["../testUtils/src"],
-      "@gobletqa/test-utils/*": ["../testUtils/src/*"],
-      "@GLogs/*": ["../../logs/*"],
-      "@GRepos/*": ["../../repos/*"],
-      "@GConfigs/*": ["../../configs/*"],
-      "@GEnv": ["../shared/src/environment/environment"],
-      "@GEnv/secrets": ["../shared/src/environment/secrets"],
-      "@GEnv/values": ["../shared/src/environment/values"],
-      "@GEnvironment": ["../shared/src/environment/environment"],
-      "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
-      "@GEnvironment/values": ["../shared/src/environment/values"]
-    }
+    "outDir": "./dist"
   },
   "include": [
     "src",
@@ -55,6 +16,5 @@
     "../shared",
     "../testUtils",
     "../workflows"
-  ],
-  "exclude": ["node_modules", "dist"]
+  ]
 }

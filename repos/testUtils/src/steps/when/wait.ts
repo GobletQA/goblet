@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Simply waits `num` seconds before continuing to next step

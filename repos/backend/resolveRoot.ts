@@ -1,8 +1,6 @@
 import path from 'path'
 import { fileURLToPath } from 'url'
-import { registerAliases } from '../../configs/aliases.config'
-
-registerAliases()
+import '../../configs/aliases'
 
 let fileLoc:string
 // @ts-ignore

@@ -1,6 +1,6 @@
-import type { GitApi, TGitOpts } from '../types'
+import type { GitApi, TGitOpts } from '@GWF/types'
 
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
 
 const getActiveBranch = (opts:TGitOpts) => {
   return opts.branchFrom && opts.newBranch ? opts.newBranch : opts.branch

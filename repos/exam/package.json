@@ -1,0 +1,81 @@
+{
+  "name": "@gobletqa/exam",
+  "version": "0.0.0",
+  "description": "Goblet test runner using Playwright, Parkin and Expect",
+  "main": "exam.js",
+  "author": "Lance Tipton",
+  "license": "ISC",
+  "keywords": [],
+  "private": true,
+  "bin": {
+    "exam": ".bin/exam.js"
+  },
+  "files": [
+    "dist",
+    "test.js",
+    "index.js",
+    "index.cjs",
+    "global.js",
+    "reporters.js",
+    "index.js",
+    "resolveRoot.js",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "url": "git+https://github.com/GobletQA/goblet.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/GobletQA/goblet/issues"
+  },
+  "scripts": {
+    "build": "pnpm build:ex && pnpm build:cli && pnpm types",
+    "build:ex": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
+    "build:cli": "node --enable-source-maps -r esbuild-register configs/cli.build.config.ts",
+    "ex:dev": "EXAM_DEV_CLI=1 node --no-warnings --loader esbuild-register/loader -r esbuild-register src/bin/exam.ts --config __mocks__/exam.config.ts",
+    "clean": "pnpm clean:dist; pnpm clean:nm",
+    "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
+    "clean:full": "pnpm clean; pnpm install",
+    "clean:nm": "rm -rf node_modules",
+    "format": "pnpm lint && pnpm pretty",
+    "json:rm": "dot-json package.json devDependencies -d",
+    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
+    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
+    "test": "jest --colors --config ./configs/jest.config.js",
+    "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
+    "tsc": "tsc",
+    "types": "tsc --emitDeclarationOnly --outDir dist",
+    "validate": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gobletqa/logger": "workspace:../logger",
+    "@gobletqa/environment": "workspace:../environment",
+    "@keg-hub/args-parse": "10.0.1",
+    "@keg-hub/jsutils": ">=9.7.8",
+    "@keg-hub/parse-config": ">=2.1.0",
+    "@ltipton/parkin": "5.1.1",
+    "esbuild": "0.18.17",
+    "esbuild-plugin-path-alias": "1.0.7",
+    "esbuild-register": "3.4.2",
+    "expect": "29.6.1",
+    "glob": "10.3.3",
+    "micromatch": "4.0.5",
+    "module-alias": "2.2.2",
+    "p-map": "6.0.0",
+    "p-map-series": "3.0.0",
+    "p-pipe": "4.0.0",
+    "p-queue": "7.3.4"
+  },
+  "devDependencies": {
+    "@ltipton/esdev": "0.2.1",
+    "@types/debug": "4.1.5",
+    "@types/jest": "29.1.2",
+    "@types/node": "18.15.13",
+    "jest": "29.5.0",
+    "nodemon": "2.0.22"
+  }
+}

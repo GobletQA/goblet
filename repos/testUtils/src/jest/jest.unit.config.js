@@ -5,16 +5,19 @@
 const { jestConfig } = require('./jest.default.config')
 
 const path = require('path')
-const { noOpObj } = require('@keg-hub/jsutils')
-const { inDocker } = require('@keg-hub/cli-utils')
-const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
-const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
-const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')
-const { checkVncEnv } = require('@gobletqa/screencast/libs/utils/vncActiveEnv')
-const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
-const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
-const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowserOpts')
-const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
+const { checkVncEnv } = require('@gobletqa/shared/utils/vncActiveEnv')
+const { getRepoGobletDir, getGobletConfig } = require('@gobletqa/goblet')
+const { buildTestGobletOpts } = require('@GTU/Utils/buildTestGobletOpts')
+const {
+  metadata,
+  getBrowserOpts,
+  getContextOpts,
+  taskEnvToBrowserOpts
+} = require('@gobletqa/browser')
+
+
+// TODO: Fix this - @cli-utils inDocker method no longer works
+const inDocker = () => true
 
 /**
  * Builds the launch / browser options for the jest-playwright-config
@@ -24,7 +27,9 @@ const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEn
  * @returns {Object} - Built browser options
  */
 const buildLaunchOpts = async (config, taskOpts, optsKey) => {
+  metadata.config = config
   const { vncActive, socketActive } = checkVncEnv()
+
   const { endpoint, browserConf } = await metadata.read(taskOpts.type)
 
   /**
@@ -77,8 +82,8 @@ module.exports = async () => {
   const optsKey = vncActive ? 'launchOptions' : 'connectOptions'
   const launchOpts = await buildLaunchOpts(config, taskOpts, optsKey)
   const browserOpts = launchOpts[optsKey]
-  const gobletOpts = buildJestGobletOpts(config, browserOpts)
-  const contextOpts = getContextOpts(noOpObj, config)
+  const gobletOpts = buildTestGobletOpts(config, browserOpts)
+  const contextOpts = getContextOpts({ config })
 
   const { testUtilsDir, reportsTempDir } = config.internalPaths
   const reportOutputPath = path.join(reportsTempDir, `${browserOpts.type}-html-report.html`)

@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { When } from '@GTU/Parkin'
 import { clickElement } from '@GTU/Support/helpers'
 import { getPage, getLocator, getLocatorByText } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Click the element matching `selector`

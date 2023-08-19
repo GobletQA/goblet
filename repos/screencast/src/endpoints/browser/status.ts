@@ -1,11 +1,13 @@
-import type { Response, Request, RequestHandler } from 'express'
-import type { TBrowserConf } from '@gobletqa/shared'
+import type { Repo } from '@gobletqa/workflows'
 import type * as core from "express-serve-static-core"
+import type { Response, Request, RequestHandler } from 'express'
 
+import { limbo } from '@keg-hub/jsutils'
+import { GBrowser } from '@gobletqa/browser'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { startBrowser } from '@GSC/libs/playwright/browser/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 type TStatusQuery = {
@@ -45,8 +47,11 @@ export const browserStatus:RequestHandler = asyncWrap(async (
   req:Request<core.ParamsDictionary, any, any, TStatusQuery>,
   res:Response
 ) => {
+
+  const [__, config] = await limbo<Repo>(loadRepoFromReq(req))
+
   const query = req.query as TStatusQuery
-  const { status } = await startBrowser({ browserConf: joinBrowserConf(query)})
+  const { status } = await GBrowser.start({ config, browserConf: joinBrowserConf(query)})
 
   return apiRes(res, status, 200)
 })

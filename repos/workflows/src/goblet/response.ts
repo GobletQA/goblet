@@ -1,8 +1,8 @@
-import { Logger } from '@keg-hub/cli-utils'
-import {
+import type {
   TWFResp,
   TResArgs,
 } from '@gobletqa/workflows/types'
+import { Logger } from '@gobletqa/logger'
 
 /**
  * Successful goblet workflow response

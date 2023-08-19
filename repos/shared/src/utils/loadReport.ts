@@ -1,9 +1,9 @@
 import type { TRepo } from '@GSH/types'
 import path from 'path'
-import { noOpObj } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { getRepoGobletDir } from '@gobletqa/goblet'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { getMountRootDir } from '@GSH/utils/getMountRootDir'
-import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
 
 /**
  * Checks if a path is in the reports folder

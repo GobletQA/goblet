@@ -1,9 +1,9 @@
 import type { Express } from 'express'
 
 // Exported from screencast/src/types
-import type { TRepo } from './repo.types'
+import type { TRepo } from './workflows.types'
 import type { TFileModel } from './models.types'
-import type { Automate } from '@gobletqa/screencast'
+import type { Automate } from '@gobletqa/browser'
 import type { TSocketEvtCBProps } from './socket.types'
 import type { TAutomateEvent } from './pwAutomate.types'
 import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
@@ -127,7 +127,7 @@ export type TPWBrowser = {
   context?: TBrowserContext
 }
 
-export type TPWComponents = TPWBrowser & {
+export type TPWComponents = Omit<TPWBrowser, `context`> & {
   page: TBrowserPage
   context: TBrowserContext
   status?: TBrowserStatus
@@ -160,9 +160,9 @@ export type TBrowserAction = {
 }
 
 export type TSetBrowserDefaults = {
-  repo:TRepo,
-  url?:boolean
+  repo:TRepo
   headers?:boolean
+  url?:boolean|string
   browserConf:TBrowserConf
   pwComponents?:TPWComponents
 }
@@ -203,25 +203,25 @@ export type TBrowserMetaData = {
 }
 
 export enum EBrowserEvent {
-  close='close',
-  console='console',
-  crash='crash',
-  dialog='dialog',
-  domcontentloaded='domcontentloaded',
-  download='download',
-  filechooser='filechooser',
-  frameattached='frameattached',
-  framedetached='framedetached',
-  framenavigated='framenavigated',
-  load='load',
-  pageerror='pageerror',
-  popup='popup',
-  request='request',
-  requestfailed='requestfailed',
-  requestfinished='requestfinished',
-  response='response',
-  websocket='websocket',
-  worker='worker',
+  close=`close`,
+  console=`console`,
+  crash=`crash`,
+  dialog=`dialog`,
+  domcontentloaded=`domcontentloaded`,
+  download=`download`,
+  filechooser=`filechooser`,
+  frameattached=`frameattached`,
+  framedetached=`framedetached`,
+  framenavigated=`framenavigated`,
+  load=`load`,
+  pageerror=`pageerror`,
+  popup=`popup`,
+  request=`request`,
+  requestfailed=`requestfailed`,
+  requestfinished=`requestfinished`,
+  response=`response`,
+  websocket=`websocket`,
+  worker=`worker`,
 }
 
 export type TBrowserEventCB = (...args:any[]) => void

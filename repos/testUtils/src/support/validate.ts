@@ -1,6 +1,6 @@
 import type { TWorldConfig } from '@ltipton/parkin'
 
-import { isObj } from '@keg-hub/jsutils'
+import { isObj } from '@keg-hub/jsutils/isObj'
 
 /**
  * Validates that the world input is a valid world object

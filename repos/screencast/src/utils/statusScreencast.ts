@@ -4,9 +4,9 @@ import type { TBrowserProcs, TProc, TBrowserStatus, TBrowserConf } from '@GSC/ty
 import '../../resolveRoot'
 import { noOpObj } from '@keg-hub/jsutils'
 import {
-  startBrowser,
+  GBrowser,
   statusServer,
-} from '@GSC/libs/playwright'
+} from '@gobletqa/browser'
 import {
   statusVNC,
   statusSockify,
@@ -38,8 +38,8 @@ export const statusScreencast = async (
   status.server = await statusServer()
 
   if (params.browser){
-    const { status:browserStatus } = await startBrowser({ browserConf: params.browser })
-    status.browser = browserStatus
+    const { status:bStatus } = await GBrowser.start({ browserConf: params.browser })
+    status.browser = bStatus
   }
 
   return status

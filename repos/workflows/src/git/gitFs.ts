@@ -4,7 +4,7 @@ import type {
   TCmdResp,
   TRepoGitState,
   TSaveMetaData,
-} from '@gobletqa/workflows/types'
+} from '@GWF/types'
 
 import { git, validateGitOpts } from './gitCmd/git'
 import { deepMerge, emptyObj } from '@keg-hub/jsutils'

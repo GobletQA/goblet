@@ -31,8 +31,18 @@ export type TDefinitionParent = {
   location: string
 }
 
+
+export type TDefError = {
+  name:string
+  message:string
+  location:string
+}
+
 export type TDefinitionFileModel = Omit<TFileModel, 'ast'> & {
-  ast: Record<`definitions`, TStepDef[]>
+  ast: {
+    errors?: TDefError[]
+    definitions: TStepDef[]
+  }
 }
 
 export type TDefinitionFileModelList = Record<string, TDefinitionFileModel>

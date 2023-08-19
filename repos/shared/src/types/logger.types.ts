@@ -1,0 +1,1 @@
+export * from '@gobletqa/logger/types/logger.types'

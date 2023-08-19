@@ -1,14 +1,18 @@
+import type { Repo } from '@gobletqa/workflows'
 import type { RequestHandler, Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
-import type { Repo } from '@gobletqa/shared/src/repo'
 
 import { limbo, noOpObj } from '@keg-hub/jsutils'
-import { actionBrowser } from '@GSC/libs/playwright'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
+import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { loadRepoFromReq } from '@gobletqa/shared/middleware/setupRepo'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+import {
+  GBrowser,
+  actionBrowser,
+  setBrowserDefaults,
+} from '@gobletqa/browser'
 
 /**
  * Execute an action on a playwright component ( browser, context, page )
@@ -25,15 +29,28 @@ const browserAction:RequestHandler = asyncWrap(async (req:JWTRequest, res:Respon
 
   req.body = repoBody
   const [__, repo] = await limbo<Repo>(loadRepoFromReq(req))
-
   const browserConf = joinBrowserConf(browser)
+
+  const pwComponents = await GBrowser.get({
+    browserConf,
+    config:repo,
+  })
+
   const resp:Record<any, any> = {}
   try {
-    await actionBrowser(
-      { ref, actions, id: req.auth.userId },
-      browserConf,
-      repo
-    )
+
+    repo
+      && await setBrowserDefaults({
+          config: repo,
+          browserConf,
+          pwComponents,
+        })
+    
+    await actionBrowser(pwComponents, {
+      ref,
+      actions,
+      id: req.auth.userId
+    }, browserConf)
   }
   catch(err){
     resp.warning = { message: err.message, type: `BROWSER_ACTION` }

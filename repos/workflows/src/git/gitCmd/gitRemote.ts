@@ -11,11 +11,12 @@ import type {
 } from '@gobletqa/workflows/types'
 
 import { git, gitCmd } from './gitCmd'
-import { Logger } from '@keg-hub/cli-utils'
-import { emptyObj, deepMerge } from '@keg-hub/jsutils'
+import { Logger } from '@gobletqa/logger'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { throwErr } from '@gobletqa/workflows/utils/throwErr'
+import { GitRemoteRef } from '@gobletqa/workflows/constants'
 import { ensurePath } from '@gobletqa/workflows/utils/ensurePath'
-import { GBGitRemoteRef } from '@gobletqa/workflows/constants'
 import {
   defCmdOpts,
   buildFetchOpts,
@@ -50,7 +51,7 @@ git.remote.add = async (
 ) => {
   const options = validateGitOpts(gitOpts)
   const url = opts?.url || options.remote
-  const origin = opts?.origin || GBGitRemoteRef
+  const origin = opts?.origin || GitRemoteRef
   const cmdArgs = [`remote`, `add`, origin, url]
 
   const [err, resp] = await git(cmdArgs, {}, options.local)
@@ -70,7 +71,7 @@ git.remote.print = async (
   cmdOpts:TRunCmdOpts=emptyObj
 ) => {
 
-  const origin = opts?.origin || GBGitRemoteRef
+  const origin = opts?.origin || GitRemoteRef
   const [err, resp] = await gitCmd(
     [`config`, `--get`, `remote.${origin}.url`],
     gitOpts,

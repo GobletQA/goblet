@@ -1,5 +1,5 @@
 import { git } from '../git'
-import {REPO_TAG_REF} from '../../../constants'
+import { ENVS } from '@gobletqa/environment'
 import { hashIO, gitOpts } from '../__mocks__'
 import { Logger } from '@keg-hub/cli-utils'
 
@@ -18,7 +18,7 @@ describe(`gitTag`, () => {
   afterAll(async () => {
     await git.tag.remove({
       ...gitOpts,
-      tag: REPO_TAG_REF,
+      tag: ENVS.GB_SECRETS_TAG_REF,
     })
 
     Logger.error = orgErr
@@ -31,14 +31,14 @@ describe(`gitTag`, () => {
     afterEach(async () => {
       await git.tag.remove({
         ...gitOpts,
-        tag: REPO_TAG_REF,
+        tag: ENVS.GB_SECRETS_TAG_REF,
       })
     })
 
     it(`should tag a repo with the passed in tag`, async () => {
       const [err, resp] = await git.tag({
         ...gitOpts,
-        tag: REPO_TAG_REF,
+        tag: ENVS.GB_SECRETS_TAG_REF,
         ref: hashIO.goblet.out
       })
       
@@ -59,7 +59,7 @@ describe(`gitTag`, () => {
     beforeEach(async () => {
       await git.tag({
         ...gitOpts,
-        tag: REPO_TAG_REF,
+        tag: ENVS.GB_SECRETS_TAG_REF,
         ref: hashIO.goblet.out
       })
     })
@@ -67,14 +67,14 @@ describe(`gitTag`, () => {
     afterAll(async () => {
       await git.tag.remove({
         ...gitOpts,
-        tag: REPO_TAG_REF,
+        tag: ENVS.GB_SECRETS_TAG_REF,
       })
     })
 
     it(`should return a original hashed tag in plain text`, async () => {
       const repo = await git.tag.cat({
         ...gitOpts,
-        tag: REPO_TAG_REF,
+        tag: ENVS.GB_SECRETS_TAG_REF,
       })
 
       expect(repo).toBe(hashIO.goblet.in)
@@ -86,7 +86,7 @@ describe(`gitTag`, () => {
     beforeEach(async () => {
       await git.tag({
         ...gitOpts,
-        tag: REPO_TAG_REF,
+        tag: ENVS.GB_SECRETS_TAG_REF,
         ref: hashIO.goblet.out
       })
     })
@@ -94,12 +94,12 @@ describe(`gitTag`, () => {
     it(`should return a list of existing tags`, async () => {
       const [rmErr, rmResp] = await git.tag.remove({
         ...gitOpts,
-        tag: REPO_TAG_REF,
+        tag: ENVS.GB_SECRETS_TAG_REF,
       })
 
       expect(rmErr).toBe(null)
       expect(rmResp.data.includes(`Deleted tag`)).toBe(true)
-      expect(rmResp.data.includes(REPO_TAG_REF)).toBe(true)
+      expect(rmResp.data.includes(ENVS.GB_SECRETS_TAG_REF)).toBe(true)
     })
 
   })
@@ -111,7 +111,7 @@ describe(`gitTag`, () => {
 // ;(async () => {
 //   const resp = await git.tag({
 //     ...gitOpts,
-//     tag: REPO_TAG_REF,
+//     tag: ENVS.GB_SECRETS_TAG_REF,
 //     ref: hashIO.goblet.out
 //   })
 
@@ -120,7 +120,7 @@ describe(`gitTag`, () => {
 
 //   const existing = await git.tag.cat({
 //     ...gitOpts,
-//     tag: REPO_TAG_REF,
+//     tag: ENVS.GB_SECRETS_TAG_REF,
 //   })
   
 //   console.log(`------- existing -------`)
@@ -128,7 +128,7 @@ describe(`gitTag`, () => {
 
 //   const rmResp = await git.tag.remove({
 //     ...gitOpts,
-//     tag: REPO_TAG_REF,
+//     tag: ENVS.GB_SECRETS_TAG_REF,
 //   })
   
 //   console.log(`------- rmResp -------`)

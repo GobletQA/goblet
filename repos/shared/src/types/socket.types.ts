@@ -1,7 +1,11 @@
 import type {Socket, Server} from 'socket.io'
 import type { TTokenUser } from './user.types'
-import type { TWebSocketEvents, TWebSocketEvent, SocketManager } from '@gobletqa/screencast'
-import {TBrowserConf} from './pw.types'
+import type { TBrowserConf } from './pw.types'
+import type {
+  SocketManager,
+  TWebSocketEvent,
+  TWebSocketEvents,
+} from '@gobletqa/screencast/types/socket.types'
 
 export type TSocketEvent = TWebSocketEvent
 

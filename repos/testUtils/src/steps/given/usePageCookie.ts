@@ -1,12 +1,9 @@
 import type { TStepCtx } from '@GTU/Types'
 
 import { Given } from '@GTU/Parkin'
-import {
-  getContext,
-  setContextCookie,
-  defaultCookieFile,
-} from '@GTU/Playwright/browserContext'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { getContext } from '@GTU/Playwright/browserContext'
+import { setContextCookie, DefaultCookieFile } from '@gobletqa/browser'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Checks that the page title is `title`
@@ -41,7 +38,7 @@ Given(`I use the saved {string} page cookie`, usePageCookie, {
       kind: ExpressionKinds.text,
       type: ExpressionTypes.string,
       description: `Name of the context cookie file that is being used`,
-      example: defaultCookieFile,
+      example: DefaultCookieFile,
     }
   ]
 })

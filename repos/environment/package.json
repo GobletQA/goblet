@@ -1,0 +1,44 @@
+{
+  "name": "@gobletqa/environment",
+  "version": "0.0.0",
+  "description": "Sets up the environment for GobletQA repos",
+  "main": "index.js",
+  "author": "Lance Tipton",
+  "license": "ISC",
+  "keywords": [],
+  "private": true,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "url": "git+https://github.com/GobletQA/goblet.git",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/GobletQA/goblet/issues"
+  },
+  "scripts": {
+    "build": "pnpm env:build && tsc --emitDeclarationOnly --outDir dist",
+    "env:build": "node --enable-source-maps -r esbuild-register configs/build.config.ts",
+    "clean": "pnpm clean:build; pnpm clean:nm",
+    "clean:dist": "rm -rf dist && mkdir dist && echo \"\" >> dist/.keep",
+    "clean:full": "pnpm clean; pnpm install",
+    "clean:nm": "rm -rf node_modules",
+    "format": "pnpm lint && pnpm pretty",
+    "json:rm": "dot-json package.json devDependencies -d",
+    "lint": "eslint --color --cache --fix --quiet --ignore-path ../../.eslintignore --config ./configs/eslintrc.config.js",
+    "pretty": "prettier --ignore-path ../../.prettierignore --config ./configs/prettier.config.js -w",
+    "test": "jest --colors --config ./configs/jest.config.js",
+    "test:clean": "jest --colors --config ./configs/jest.config.js --clearCache",
+    "types": "tsc --emitDeclarationOnly --outDir dist",
+    "validate": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@keg-hub/jsutils": ">=9.7.8",
+    "esbuild": "0.18.17",
+    "esbuild-plugin-path-alias": "1.0.7",
+    "esbuild-register": "3.4.2"
+  }
+}
+

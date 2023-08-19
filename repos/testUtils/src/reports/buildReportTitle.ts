@@ -1,5 +1,6 @@
 import path from 'path'
-import { wordCaps, capitalize } from '@keg-hub/jsutils'
+import { wordCaps } from '@keg-hub/jsutils/wordCaps'
+import { capitalize } from '@keg-hub/jsutils/capitalize'
 
 /**
  * Builds a title of a test report based on the type and context

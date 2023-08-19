@@ -1,19 +1,20 @@
 const config = {
+  $ref: `<<-goblet-config-$ref->>`,
   recorder: {
-    locator: "-- 🍷 GOBLET"
+    locator: `-- 🍷 GOBLET`
   },
   paths: {
-    repoRoot: "",
-    workDir: "goblet",
-    artifactsDir: "artifacts",
-    environmentsDir: "environments",
-    reportsDir: "artifacts/reports",
-    featuresDir: "bdd/features",
-    supportDir: "bdd/support",
-    stepsDir: "bdd/steps",
-    unitDir: "unit",
-    waypointDir: "waypoint",
-    world: "world.json"
+    repoRoot: ``,
+    workDir: `goblet`,
+    artifactsDir: `artifacts`,
+    environmentsDir: `environments`,
+    reportsDir: `artifacts/reports`,
+    featuresDir: `bdd/features`,
+    supportDir: `bdd/support`,
+    stepsDir: `bdd/steps`,
+    unitDir: `unit`,
+    waypointDir: `waypoint`,
+    world: `world.json`
   }
 }
 

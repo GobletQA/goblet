@@ -1,7 +1,7 @@
 const { addEnv } = require('./addEnv')
 const { buildPWEnvs } = require('./buildPWEnvs')
 const { setNodePath } = require('./setNodePath')
-const { buildJestTestEnvs } = require('../jest/buildJestTestEnvs')
+const { buildTestEnvs } = require('../test/buildTestEnvs')
 
 /**
  * Waypoint specific ENVs to add to the current process
@@ -25,8 +25,8 @@ const buildWaypointEnvs = (browser, goblet, params, reportPath, type) => {
   addEnv(env, 'GOBLET_BROWSER_LAUNCH_TYPE', params.launchType)
   addEnv(env, 'APP_ROOT_PATH', params.base || goblet.paths.repoRoot)
 
-  // Set up html test reporting ENV for jest
-  buildJestTestEnvs(browser, env, params.context, reportPath, type)
+  // Set up html test reporting ENV for test
+  buildTestEnvs(browser, env, params.context, reportPath, type)
 
   // Set the NODE_PATH env, defaults setting it to /goblet/app/node_modules
   setNodePath(env, true)

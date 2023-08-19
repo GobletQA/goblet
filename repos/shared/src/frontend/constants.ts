@@ -1,3 +1,1 @@
-export * from '../constants/browser'
-export * from '../constants/websocket'
-export * from '../constants/definitions'
+export * from '@gobletqa/environment/constants/frontend'

@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
-import { noOp } from '@keg-hub/jsutils'
-import { Logger } from '@gobletqa/shared/libs/logger'
-import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
+import { Logger } from '@gobletqa/logger'
+import { noOp } from '@keg-hub/jsutils/noOp'
+import { getDefaultGobletConfig } from '@gobletqa/goblet'
 
 /**
  * Clears out the temp folder that contains test artifacts

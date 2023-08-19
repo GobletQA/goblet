@@ -1,8 +1,9 @@
 import type { Response, Request, RequestHandler } from 'express'
+
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
-import { getFeatures } from '@gobletqa/shared/repo/getFeatures'
+import { getFeatures } from '@gobletqa/workflows/repo/getFeatures'
 import { fileModelArrayToObj } from '@gobletqa/shared/utils/fileModelArrayToObj'
 
 export const loadBddFiles:RequestHandler = asyncWrap(async (req:Request, res:Response) => {

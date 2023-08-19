@@ -15,6 +15,7 @@ import path from 'path'
 import {emptyObj} from '@keg-hub/jsutils'
 import { env } from '@keg-hub/parse-config'
 import { writeFileSync, existsSync } from 'fs'
+import { injectUnsafe } from '@gobletqa/logger'
 import { EFileType, ELoadFormat } from '@GLT/types'
 import {dataToString} from '@GLT/utils/dataToString'
 import {generateFileNames} from '@GLT/utils/generateFileNames'
@@ -83,6 +84,14 @@ export class LatentFile {
         : content
   }
 
+  #injectLogs = (resp:Record<string, any>) => {
+
+    injectUnsafe(Object.keys(resp))
+    injectUnsafe(Object.values(resp))
+
+    return resp
+  }
+
   /**
    * @description - Gets all file that exist based on the type and environment
    * @member {LatentFile}
@@ -148,7 +157,12 @@ export class LatentFile {
 
     const content = this.#readFile({...options, token})
 
-    return loadTemplate(templateOpts, content, env.parse)
+    const resp = loadTemplate(templateOpts, content, env.parse)
+    
+    return options.type === EFileType.secrets
+      ? this.#injectLogs(resp)
+      : resp
+    
   }
 
   /**

@@ -1,11 +1,11 @@
-import { screencastConfig } from '@GSC/Configs/screencast.config'
-import { Logger, setupLogger } from '@gobletqa/shared/libs/logger'
+import { ENVS } from '@gobletqa/environment'
+import { ApiLogger, setupLogger } from '@gobletqa/logger'
 
 setupLogger({
   tag: `Goblet SC`,
-  level: screencastConfig?.server?.logLevel
+  level: ENVS.GB_SC_LOG_LEVEL || ENVS.GB_LOG_LEVEL ||`info`
 })
 
 export {
-  Logger
+  ApiLogger as Logger
 }

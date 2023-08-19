@@ -1,7 +1,6 @@
-import { TJwtConfig } from './helpers.types'
-import { TTailLogger } from './tailLogger.types'
-import { TSocketConfigOpts } from './socket.types'
-import { TBrowserContextOpts, TBrowserConf, TBrowserPage } from './pw.types'
+import type { TJwtConfig } from './helpers.types'
+import type { TSocketConfigOpts } from './socket.types'
+import type { TBrowserContextOpts, TBrowserConf, TBrowserPage } from './pw.types'
 
 export type TChildProcArgs = {
   cwd: string
@@ -66,7 +65,6 @@ export type TSCContainerConfig = {
 }
 
 export type TGScreencastConfig = {
-  tail: TTailLogger
   server: TScreencastServer
   socket: TSocketConfigOpts
   screencast: TScreencastConfig

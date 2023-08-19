@@ -1,16 +1,19 @@
-import type { TGobletConfig } from '../types'
+import type { TBrowserConf, TGobletConfig } from '../types'
 
 // Must load this first because it loads the alias
 import { jestConfig } from './jest.default.config'
 
 import path from 'path'
-import glob from 'glob'
-import { uniqArr, noOpObj, flatUnion, ensureArr } from '@keg-hub/jsutils'
-import { buildJestGobletOpts } from '@GTU/Utils/buildJestGobletOpts'
-import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
-import { getRepoGobletDir } from '@gobletqa/shared/utils/getRepoGobletDir'
-import { taskEnvToBrowserOpts } from '@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts'
-import { getContextOpts } from '@gobletqa/screencast/libs/playwright/helpers/getContextOpts'
+import { globSync } from 'glob'
+import { uniqArr } from '@keg-hub/jsutils/uniqArr'
+import { flatUnion } from '@keg-hub/jsutils/flatUnion'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+import { buildTestGobletOpts } from '@GTU/Utils/buildTestGobletOpts'
+import { getRepoGobletDir, getGobletConfig } from '@gobletqa/goblet'
+import {
+  getContextOpts,
+  taskEnvToBrowserOpts
+} from '@gobletqa/browser'
 
 const exts = [
   `js`,
@@ -33,12 +36,12 @@ const getStepDefinitions = (config:TGobletConfig) => {
   const { repoRoot, workDir, stepsDir } = config.paths
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
   const clientPattern = path.join(baseDir, stepsDir, `**/*.{${exts.join(',')}}`)
-  const clientMatches = glob.sync(clientPattern)
+  const clientMatches = globSync(clientPattern)
 
   const configPattern = path.join(testUtilsDir, `src/steps/**/*.{${exts.join(',')}}`)
-  const configMatches = glob.sync(configPattern)
+  const configMatches = globSync(configPattern)
 
-  return uniqArr([...clientMatches, ...configMatches])
+  return uniqArr([...clientMatches, ...configMatches], undefined)
 }
 
 /**
@@ -64,7 +67,7 @@ const getParkinSupport = (config:TGobletConfig) => {
   // Don't include the world here because it gets loaded in config/support/world.json
   const baseDir = workDir ? path.join(repoRoot, workDir) : repoRoot
   const pattern = path.join(baseDir, supportDir, `**/+(${ignore})`)
-  const matches = glob.sync(pattern)
+  const matches = globSync(pattern)
 
   // Add the default config hooks for setting up the tests
   // This adds a BeforeAll and AfterAll hook to the test execution
@@ -83,11 +86,12 @@ export const parkinConfig =  async () => {
   const config = getGobletConfig()
   const baseDir = getRepoGobletDir(config)
   const { devices, ...browserOpts } = taskEnvToBrowserOpts(config)
-  const gobletOpts = buildJestGobletOpts(config, browserOpts)
-  const contextOpts = getContextOpts(noOpObj, config)
+  const browserConf = browserOpts as TBrowserConf
+  const gobletOpts = buildTestGobletOpts(config, browserConf)
+  const contextOpts = getContextOpts({ config })
 
   const { testUtilsDir, reportsTempDir } = config.internalPaths
-  const reportOutputPath = path.join(reportsTempDir, `${browserOpts.type}-html-report.html`)
+  const reportOutputPath = path.join(reportsTempDir, `${browserConf.type}-html-report.html`)
   const defConf = jestConfig(config, {
     type: `bdd`,
     ext: `feature`,

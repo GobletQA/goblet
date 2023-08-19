@@ -6,10 +6,9 @@ import type {
   TSocketEvtCBProps,
 } from '@GSC/types'
 
-import { Automate } from '@GSC/libs/playwright/automate/automate'
-import { startBrowser } from '@GSC/libs/playwright/browser/browser'
+import { ExpressionKinds } from '@GSC/constants'
+import { GBrowser, Automate } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { ExpressionKinds } from '@gobletqa/shared/constants'
 
 const onBrowserAutomate = async (
   data:TUserAutomateOpts,
@@ -19,7 +18,7 @@ const onBrowserAutomate = async (
 ) => {
 
   const browserConf = joinBrowserConf(data.browser, app)
-  const pwComponents = await startBrowser({ browserConf })
+  const pwComponents = await GBrowser.start({ browserConf })
 
   switch(data?.selectorType){
     case ExpressionKinds.url: {

@@ -1,9 +1,9 @@
 import type { TCmdGroups, TBrowserConf } from '@GSC/types'
 import type { TScreenDims, TGScreencastConfig } from '@gobletqa/screencast/types'
+import { ENVS } from '@gobletqa/environment'
 
 import '../resolveRoot'
 import path from 'path'
-import fs from 'fs-extra'
 import { toBool, toNum } from '@keg-hub/jsutils'
 import { socketCmds } from './socketCmds.config'
 import { aliases } from '@GConfigs/aliases.config'
@@ -57,17 +57,9 @@ const {
   // This will ensure requests are coming from the backend API only
   GB_CD_VALIDATION_KEY,
   GB_CD_VALIDATION_HEADER,
-  
 
 } = process.env
 
-// If DEBUG_FILE env is not set to the correct location
-// Overwrite it with the playwright log file location 
-const tailFile = PW_DEBUG_FILE || path.join(aliases[`@GLogs`], `pwlogs.log`)
-if(DEBUG_FILE !== tailFile) process.env.DEBUG_FILE = tailFile
-
-try { fs.ensureFileSync(tailFile) }
-catch(err){}
 
 const screenDims:TScreenDims = {
   width: parseInt(GB_VNC_VIEW_WIDTH as string, 10),
@@ -134,10 +126,5 @@ export const screencastConfig:TGScreencastConfig = {
       script: path.join(aliases[`@GSC/Scripts`], 'socket.cmd.sh'),
     },
   },
-  tail: {
-    create: true,
-    truncate: true,
-    file: tailFile,
-  }
 }
 

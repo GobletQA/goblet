@@ -14,7 +14,7 @@ const nodeEnv = process.env.NODE_ENV || `local`
 const envs = loadConfigs({
   noYml: true,
   env: nodeEnv,
-  name: 'goblet',
+  name: `goblet`,
   locations: [aliases.GobletRoot],
 })
 

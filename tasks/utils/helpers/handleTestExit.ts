@@ -1,4 +1,4 @@
-import { noPropArr } from '@keg-hub/jsutils'
+import { exists, noPropArr, toInt } from '@keg-hub/jsutils'
 
 /**
  * Exits the process, once the tests are complete
@@ -7,5 +7,9 @@ import { noPropArr } from '@keg-hub/jsutils'
  * @returns the exit code sum of the executed test commands
  */
 export const handleTestExit = (exitCodes = noPropArr, reportPaths=noPropArr) => {
-  return exitCodes.reduce((sum, code) => sum + parseInt(code, 10), 0)
+  const result = exitCodes.reduce((sum, code) => {
+    return !exists(code) ? sum : sum + toInt(code)
+  }, 0)
+
+  return result > 0 ? 1 : 0
 }

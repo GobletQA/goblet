@@ -25,19 +25,19 @@
   "dependencies": {
     "@emotion/react": "11.10.6",
     "@emotion/styled": "11.10.6",
-    "@keg-hub/jsutils": ">=9.6.1",
+    "@keg-hub/jsutils": ">=9.7.8",
     "@mui/icons-material": "5.11.16",
     "@mui/lab": "5.0.0-alpha.129",
     "@mui/material": "5.12.1",
     "react-selecto": "1.22.2"
   },
   "devDependencies": {
-    "@gobletqa/shared": "*",
-    "@keg-hub/cli-utils": "0.8.0-alpha1",
+    "@gobletqa/shared": "workspace:../shared",
+    "@keg-hub/cli-utils": "0.9.0",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@vitejs/plugin-react-swc": "3.3.2",
-    "esbuild": "0.17.18",
+    "esbuild": "0.18.17",
     "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.4.2",
     "react": "18.2.0",

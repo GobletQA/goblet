@@ -9,7 +9,7 @@ import type {
   TSocketMessageObj,
 } from '@GSC/types'
 
-import { WS_CMD_FAIL } from '@gobletqa/shared/constants/websocket'
+import { WS_CMD_FAIL } from '@GSC/constants/websocket'
 import {
   get,
   exists,

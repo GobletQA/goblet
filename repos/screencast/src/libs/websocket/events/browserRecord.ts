@@ -3,8 +3,8 @@ import type { Socket } from 'socket.io'
 import type { SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
 import { noOpObj } from '@keg-hub/jsutils'
+import { recordBrowser } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { recordBrowser } from '@GSC/libs/playwright/browser/recordBrowser'
 
 /**
  * Stats a the browser recorder from a socket.io event
@@ -36,7 +36,7 @@ const handleStart = async (
       console.log(`Emit ${event.name} event`, event)
       Manager.emit(socket, event.name, { ...event, group: socket.id })
     },
-    onCleanup: async closeBrowser => {
+    onCleanup: async (browserClose:boolean) => {
       // TODO: Figure out what to do here
       // Now using the same browser instance, so we don't need to close it
     }

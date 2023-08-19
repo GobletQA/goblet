@@ -1,10 +1,9 @@
-import type { Repo } from '../../repo/repo'
 import type { TStepDef } from '@ltipton/parkin'
-import type { TDefinitionFileModel } from '../../types'
+import type { Repo, TDefinitionFileModel } from '@GSH/types'
 
 import fs from 'fs'
-import { Logger } from '@GSH/libs/logger'
-import { checkCall } from '@keg-hub/jsutils'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
+import { ApiLogger as Logger } from '@gobletqa/logger'
 import { buildFileModel } from '@GSH/utils/buildFileModel'
 import { parkinCheck } from '@GSH/libs/overrides/parkinOverride'
 import { requireOverride } from '@GSH/libs/overrides/requireOverride'
@@ -35,16 +34,20 @@ class DefinitionsParser {
   ) => {
     try {
 
-      const { fileModel } = await this.parseDefinition(filePath, repo, overrideParkin)
+      const { fileModel } = await this.parseFile(filePath, repo, overrideParkin)
 
       // The definitions get auto-loaded into the parkin instance
-      // from the require call in the parseDefinition method below
+      // from the require call in the parseFile method below
       const definitions = repo.parkin.steps.list() as TDefinitionAstLoaded[]
 
       definitions.forEach(def => {
         // Check if the __isLoaded is set
         // If so, skip loading the definitions 
         if(def.__isLoaded) return
+
+        // Tell the definitions it's already loaded
+        // This is a hack to ensure it's not loaded more then once
+        def.__isLoaded = true
 
         // Validate if the step match string exists in the file
         // This is required because the parkin instance is reused
@@ -57,15 +60,11 @@ class DefinitionsParser {
         // And it's a valid match string
         // Then add the def to the fileModels ast.definitions array
           this.validateMatch(def.match, def.type)
-          && fileModel.ast.definitions.push({
-              ...def,
-              // Add a reference back to the parent
-              location: filePath,
-            })
-
-        // Tell the definitions it's already loaded
-        // This is a hack to ensure it's not loaded more then once
-        def.__isLoaded = true
+            && fileModel.ast.definitions.push({
+                ...def,
+                // Add a reference back to the parent
+                location: filePath,
+              })
 
       })
 
@@ -81,13 +80,13 @@ class DefinitionsParser {
     }
   }
 
-  parseDefinition = (
+  parseFile = (
     filePath:string,
     repo:Repo,
     overrideMethod:(...args:any[]) => any
   ):Promise<Record<'fileModel', TDefinitionFileModel>> => {
     return new Promise((res, rej) => {
-      let requireError
+      let requireError:Error
       const requireReset = overrideMethod &&
         requireOverride(
           repo,
@@ -109,7 +108,7 @@ class DefinitionsParser {
         Logger.warn(`[Error Definition] Require File Path => ${filePath}`)
         Logger.error(err.stack)
         Logger.empty()
-        requireError = err.message
+        requireError = err
       }
       // Use finally to ensure the requireReset is always called even on error
       finally {
@@ -118,16 +117,25 @@ class DefinitionsParser {
 
       // Read the file to get it's content and build the fileModel
       fs.readFile(filePath, async (err, content) => {
-        if (err) return rej(err)
+        const errors = err
+          ? [{ message: err.message, name: err.name, location: filePath }]
+          : []
+
+        requireError
+          && errors.push({
+              location: filePath,
+              name: requireError.name,
+              message: requireError.message,
+            })
 
         const fileModel = await buildFileModel(
           {
             location: filePath,
             // @ts-ignore
-            error: requireError,
+            ...(requireError && {error: requireError.message}),
             content: content.toString(),
             fileType: 'definition',
-            ast: { definitions: [] },
+            ast: { errors, definitions: [] },
           },
           repo
         ) as TDefinitionFileModel

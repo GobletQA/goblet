@@ -3,11 +3,17 @@ import type { TTestMatch } from '@gobletqa/shared/utils/buildTestMatchFiles'
 
 import os from "os"
 import path from 'path'
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
+import { ENVS } from '@gobletqa/environment'
 import { jestAliases } from './setupTestAliases'
-import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
-import { noPropArr, capitalize, emptyObj, flatUnion, ensureArr } from '@keg-hub/jsutils'
+import { getGobletConfig } from '@gobletqa/goblet'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { noPropArr } from '@keg-hub/jsutils/noPropArr'
+import { flatUnion } from '@keg-hub/jsutils/flatUnion'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+import { capitalize } from '@keg-hub/jsutils/capitalize'
 import { buildTestMatchFiles } from '@gobletqa/shared/utils/buildTestMatchFiles'
+
 
 export type TJestConfOpts = TTestMatch & {
   title?:string
@@ -68,21 +74,17 @@ const buildReporters = (
  * @returns {Object} - Jest config object
  */
 export const jestConfig = (config:TGobletConfig, opts:TJestConfOpts=emptyObj) => {
-  const {
-    GOBLET_CONFIG_BASE,
-    GOBLET_MOUNT_ROOT,
-    GOBLET_TEST_DEBUG
-  } = process.env
 
-  GOBLET_TEST_DEBUG &&
+  ENVS.GOBLET_TEST_DEBUG &&
     Logger.stdout(`[Goblet] Loaded Config:\n${JSON.stringify(config, null, 2)}\n`)
 
   config = config || getGobletConfig()
   const { gobletRoot } = config.internalPaths
+  // @ts-ignore
   const jestConfig = config?.jestConfig || emptyObj
 
   const testMatch = opts.testDir && (opts.type || opts.shortcut || opts.ext)
-    ? buildTestMatchFiles(opts.testDir, opts)
+    ? buildTestMatchFiles(opts)
     : noPropArr
 
   return {
@@ -96,7 +98,7 @@ export const jestConfig = (config:TGobletConfig, opts:TJestConfOpts=emptyObj) =>
     testRunner: `jest-jasmine2`,
     // Jest no loading tests outside of the rootDir
     // Set the root to be the parent of goblet/app and the goblet/repos dir if no rootDir override
-    rootDir: jestConfig?.rootDir || opts.rootDir || GOBLET_MOUNT_ROOT || `/goblet`,
+    rootDir: jestConfig?.rootDir || opts.rootDir || ENVS.GOBLET_MOUNT_ROOT || `/goblet`,
     reporters: buildReporters(opts, gobletRoot),
     moduleFileExtensions: flatUnion([
       ...ensureArr(jestConfig?.moduleFileExtensions),
@@ -112,7 +114,7 @@ export const jestConfig = (config:TGobletConfig, opts:TJestConfOpts=emptyObj) =>
     // But it may be a better option then sym-linking the keg-config node_modules to ~/.node_modules
     // Need to investigate it
     modulePaths: flatUnion([
-      path.join(GOBLET_CONFIG_BASE, `node_modules`),
+      path.join(ENVS.GOBLET_CONFIG_BASE, `node_modules`),
       path.join(gobletRoot, `node_modules`),
       path.join(os.homedir(), `.node_modules`),
       ...ensureArr(jestConfig.modulePaths),

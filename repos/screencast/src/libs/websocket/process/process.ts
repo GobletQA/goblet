@@ -15,13 +15,13 @@ import { exec } from './exec'
 import { deepMerge, noOpObj, isStr } from '@keg-hub/jsutils'
 import { shouldFilterMessage, validateCmd, addConfig } from './helpers'
 import {
-  WS_RUN_CMD,
-  WS_CMD_OUT,
-  WS_CMD_ERR,
-  WS_CMD_END,
-  WS_CMD_FAIL,
-  WS_CMD_RUNNING,
-} from '@gobletqa/shared/constants/websocket'
+  WSRunCmd,
+  WSCmdOut,
+  WSCmdErr,
+  WSCmdEnd,
+  WSCmdFail,
+  WSCmdRunning,
+} from '@GSC/constants/websocket'
 
 /**
  * Class for managing child process run from a socket connection
@@ -125,8 +125,8 @@ export class Process {
       message: data,
     }
 
-    this.debugEvent(WS_CMD_OUT, emitMessage as any)
-    this.manager.emitAll(WS_CMD_OUT, emitMessage)
+    this.debugEvent(WSCmdOut, emitMessage as any)
+    this.manager.emitAll(WSCmdOut, emitMessage)
   }
 
   /**
@@ -151,10 +151,10 @@ export class Process {
       message: data,
     }
 
-    this.debugEvent(WS_CMD_ERR, emitMessage as any)
+    this.debugEvent(WSCmdErr, emitMessage as any)
 
     !this.filterMessage(data, cmd, group, name) &&
-      this.manager.emitAll(WS_CMD_ERR, emitMessage)
+      this.manager.emitAll(WSCmdErr, emitMessage)
   }
 
   /**
@@ -181,8 +181,8 @@ export class Process {
       data: { exitCode: code },
     }
 
-    this.debugEvent(WS_CMD_END, emitMessage as any)
-    this.manager.emitAll(WS_CMD_END, emitMessage)
+    this.debugEvent(WSCmdEnd, emitMessage as any)
+    this.manager.emitAll(WSCmdEnd, emitMessage)
   }
 
   /**
@@ -219,8 +219,8 @@ export class Process {
     if (this.filterMessage( err.message, cmd, group, name)) return
 
     this.manager.isRunning = false
-    this.debugEvent(WS_CMD_FAIL, emitMessage as any)
-    this.manager.emitAll(WS_CMD_FAIL, emitMessage)
+    this.debugEvent(WSCmdFail, emitMessage as any)
+    this.manager.emitAll(WSCmdFail, emitMessage)
   }
 
   /**
@@ -266,8 +266,8 @@ export class Process {
       message: 'Running command',
     }
 
-    this.debugEvent(WS_CMD_RUNNING, emitMessage as any)
-    this.manager.emitAll(WS_CMD_RUNNING, emitMessage)
+    this.debugEvent(WSCmdRunning, emitMessage as any)
+    this.manager.emitAll(WSCmdRunning, emitMessage)
 
     const cmdArr = addConfig(
       cmd,
@@ -288,10 +288,10 @@ export class Process {
    * @public
    */
   bindSocket = (socket:Socket) => {
-    socket.on(WS_RUN_CMD, (message:TSocketMessageObj) => {
+    socket.on(WSRunCmd, (message:TSocketMessageObj) => {
       const socketId = socket.id
 
-      this.debugEvent(WS_RUN_CMD, message)
+      this.debugEvent(WSRunCmd, message)
 
       const { name, group } = message
 
@@ -321,9 +321,9 @@ export class Process {
           message: `Error running command:\n${err.message}`,
         }
 
-        this.debugEvent(WS_RUN_CMD, emitMessage as any)
+        this.debugEvent(WSRunCmd, emitMessage as any)
 
-        this.manager.emitAll(WS_CMD_RUNNING, emitMessage)
+        this.manager.emitAll(WSCmdRunning, emitMessage)
       }
     })
   }

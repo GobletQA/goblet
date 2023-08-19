@@ -1,13 +1,27 @@
-import { fileSys } from '@keg-hub/cli-utils'
-import { Logger } from '@gobletqa/shared/libs/logger'
-import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
-import { getGobletConfig } from '@gobletqa/shared/goblet/getGobletConfig'
-import { getDefaultGobletConfig } from '@gobletqa/shared/goblet/getDefaultGobletConfig'
-import { deepMerge, deepClone, set, isArr, noOpObj, toBool, isObj } from '@keg-hub/jsutils'
+import { Logger } from '@gobletqa/logger'
+
+import {
+  readFile,
+  writeFile,
+  removeFile,
+  pathExists
+} from '@GTU/Utils/fileSys'
+import {
+  getPathFromBase,
+  getGobletConfig,
+  getDefaultGobletConfig
+} from '@gobletqa/goblet'
+
+import { set } from '@keg-hub/jsutils/set'
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { toBool } from '@keg-hub/jsutils/toBool'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { deepClone } from '@keg-hub/jsutils/deepClone'
 
 const isCIEnv = toBool(process.env.GOBLET_RUN_FROM_CI)
 const debugActive = toBool(process.env.GOBLET_ARTIFACTS_DEBUG)
-const { readFile, writeFile, pathExists, removeFile } = fileSys
 
 let __TEST_META
 
@@ -82,7 +96,7 @@ export const readTestMeta = async () => {
 
     if((errExists && errExists.code === 'ENOENT') || !exists) return {}
 
-    const [err, data] = await readFile(testMetaLoc, 'utf8')
+    const [err, data] = await readFile(testMetaLoc)
     content = data
 
     if(err) throw err

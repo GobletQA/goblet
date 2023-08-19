@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "parserOptions": {
+    "extraFileExtensions": ["json"]
+  },
+  "compilerOptions": {
+    "outDir": "./dist"
+  },
+  "include": [
+    "src",
+    "configs"
+  ]
+}

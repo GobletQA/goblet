@@ -1,7 +1,7 @@
 import type { TBrowserConf, TBrowserContext, TBrowserPage } from './pw.types'
 
 // Exported from screencast/src/types
-import type { Automate } from '@gobletqa/screencast'
+import type { Automate } from '@gobletqa/browser'
 
 export type TAutomateEventData<T=Record<string, any>> = T
 

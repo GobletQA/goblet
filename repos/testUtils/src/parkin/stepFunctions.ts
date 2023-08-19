@@ -1,4 +1,4 @@
-const { getParkinInstance } = require('@gobletqa/shared/libs/parkin')
+import { getParkinInstance } from './instance'
 
 const getStepHandler = (name:string) => {
   return (...args:any[]) => {

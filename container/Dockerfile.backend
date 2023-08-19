@@ -24,11 +24,23 @@ WORKDIR /goblet/app
 COPY . .
 # Clean up repo for backend
 RUN pnpm add --global turbo dot-json && \
+    rm -rf /goblet/app/repos/components && \
+    rm -rf /goblet/app/repos/exam && \
+    rm -rf /goblet/app/repos/latent && \
+    rm -rf /goblet/app/repos/monaco && \
+    rm -rf /goblet/app/repos/race && \
     rm -rf /goblet/app/repos/screencast && \
     rm -rf /goblet/app/repos/testUtils && \
+    rm -rf /goblet/app/repos/vite && \
     cd /goblet/app/repos/backend && \
     pnpm json:rm && \
     cd /goblet/app/repos/conductor && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/environment && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/goblet && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/logger && \
     pnpm json:rm && \
     cd /goblet/app/repos/shared && \
     pnpm json:rm && \

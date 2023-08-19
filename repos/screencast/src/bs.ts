@@ -1,16 +1,16 @@
 import '../resolveRoot'
 import type { EBrowserName, TBrowserConf } from '@GSC/types'
 
-import { defaultBrowser } from './constants'
 import { parseJSON, noOpObj } from '@keg-hub/jsutils'
-import { newServer } from './libs/playwright/server/newServer'
+import { DefaultBrowser, newServer } from '@gobletqa/browser'
+
 /**
  * Runs the browser server that browsers connect to via websocket
  */
 ;(async () => {
   const [
     browserConfStr,
-    browser=defaultBrowser,
+    browser=DefaultBrowser,
   ] = process.argv.slice(2)
 
   const browserConf = parseJSON(browserConfStr, false) || noOpObj

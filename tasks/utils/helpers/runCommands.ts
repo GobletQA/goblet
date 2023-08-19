@@ -1,5 +1,4 @@
 import type { TTaskParams } from '../../types'
-import { runSeq } from '@keg-hub/jsutils'
 
 type TCmdFunc = (...args:any[]) => any
 
@@ -13,8 +12,14 @@ export const runCommands = async (
   commands:TCmdFunc[],
   params:TTaskParams
 ) => {
-  const { concurrent } = params
-  return concurrent
-    ? await Promise.all(commands.map(async cmd => cmd())) 
-    : await runSeq(commands)
+  return commands.reduce(async(acc, cmd) => {
+    const codes = await acc
+    const hasError = codes.find(code => code > 0)
+    if(hasError) return codes
+
+    const resp = await cmd() as number
+    codes.push(resp)
+
+    return codes
+  }, Promise.resolve([] as number[]))
 }

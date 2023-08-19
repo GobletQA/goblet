@@ -1,8 +1,8 @@
-import type { Repo } from '@GSH/repo/repo'
+import type { Repo } from '@GSH/types'
 
 import fs from 'fs'
 import { noOpObj } from '@keg-hub/jsutils'
-import { getParkinInstance } from '@GSH/libs/parkin'
+import { ApiLogger as Logger } from '@gobletqa/logger'
 
 export type TFeatureMeta = {
   location:string
@@ -14,10 +14,11 @@ export type TFeatureMeta = {
  * @function
  *
  */
-export const featuresParser = (featureMeta:TFeatureMeta = noOpObj as TFeatureMeta, repo:Repo) => {
+export const featuresParser = (
+  featureMeta:TFeatureMeta = noOpObj as TFeatureMeta,
+  repo:Repo
+) => {
   const { location } = featureMeta
-
-  const parkin = repo?.parkin || getParkinInstance(repo)
 
   return new Promise((res, rej) => {
     try {
@@ -25,13 +26,14 @@ export const featuresParser = (featureMeta:TFeatureMeta = noOpObj as TFeatureMet
         if (err) return rej(err)
         const content = data.toString()
 
-        // TODO: Add a proper logger for shared / screencast
-        // Logger.pair(`Parsing feature at`, location)
-
         try {
           // Pass in an empty world object so the values are not replaced
           // We only want to replace values during execution
-          const ast = parkin.parse.feature(content, parkin.world, { worldReplace: false })
+          const ast = repo.parkin.parse.feature(
+            content,
+            repo.parkin.world,
+            { worldReplace: false }
+          )
           return res({
             ...featureMeta,
             content,

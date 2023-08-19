@@ -1,5 +1,3 @@
-
-
 export type TGLBranchMeta = {
   name:string
   web_url:string

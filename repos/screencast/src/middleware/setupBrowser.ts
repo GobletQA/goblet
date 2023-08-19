@@ -1,11 +1,11 @@
 import type { Express } from 'express'
+import { GBrowser } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
-import { startBrowser } from '@GSC/libs/playwright/browser/browser'
 
 /**
  * Helper to pre-warm the browser on server start
  */
 export const setupBrowser = async (app:Express) => {
   const browserConf = joinBrowserConf({}, app)
-  await startBrowser({ browserConf })
+  await GBrowser.start({ browserConf })
 }

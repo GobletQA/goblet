@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Returns when the required load state has been reached.

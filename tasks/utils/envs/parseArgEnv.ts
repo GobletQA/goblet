@@ -30,12 +30,12 @@ export const parseArgEnv = () => {
 
       const match = refs.find(ref => cleaned === ref)
       return match ? [arg, idx] : matching
-    }, [])
+    }, [] as []|[string, number])
 
     if(!envArg) return found
 
     const [equalsEnv, equalsVal] = envArg.split(`=`)
-    const alias = equalsEnv === opt ? equalsVal.trim() : args[idx + 1]
+    const alias = equalsEnv === opt ? equalsVal.trim() : args[(idx as number) + 1]
     
     return Object.entries(environment.map).reduce((final, [key, aliases]) => {
       return !final && (key === alias || aliases.includes(alias)) ? key : final

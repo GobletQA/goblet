@@ -1,19 +1,23 @@
 #!/usr/bin/env node
 
-import type { TBrowserType, TBrowserConf, TBrowserMetaDataContext } from '../../types'
+import type {
+  TGobletConfig,
+  TBrowserType,
+  TBrowserConf,
+  TBrowserMetaDataContext
+} from '../../types'
 
 /**
  * Script should be run on the HOST machine, NOT with in the docker container
  * Starts the playwright chromium server on the HOST machine,
  * The `endpoint` is then passed to the docker container as an ENV - BROWSER_WS_ENDPOINT
  */
+import { GBrowser } from '@gobletqa/browser'
 import { Logger, inDocker } from '@keg-hub/cli-utils'
 import { noOpObj, exists, isEmpty, limbo } from '@keg-hub/jsutils'
-import metadata from '@gobletqa/screencast/libs/playwright/helpers/metadata'
-import { getBrowserOnly } from '@gobletqa/screencast/libs/playwright/browser/browser'
-import { startServer } from '@gobletqa/screencast/libs/playwright/server/startServer'
-import { getBrowserType } from '@gobletqa/screencast/libs/playwright/helpers/getBrowserType'
-import { getServerEndpoint } from '@gobletqa/screencast/libs/playwright/server/getServerEndpoint'
+import { startServer } from '@gobletqa/browser/server/startServer'
+import { getBrowserType } from '@gobletqa/browser/utils/getBrowserType'
+import { getServerEndpoint } from '@gobletqa/browser/server/getServerEndpoint'
 
 type TLaunchBrowserConf = TBrowserConf & {
   log?:boolean
@@ -78,12 +82,14 @@ const checkLaunchParams = (
 const testBrowserConnection = async (
   browserType:TBrowserType,
   browserConf:TBrowserConf,
-  paramsMatch:boolean
+  paramsMatch:boolean,
+  gobletCfg:TGobletConfig,
 ) => {
   if (!paramsMatch) return
 
   const [err, resp] = await limbo(
-    getBrowserOnly({
+    GBrowser.server({
+      config: gobletCfg,
       browserServer: true,
       browserConf: { type: browserType, ...browserConf },
     })
@@ -102,16 +108,22 @@ const testBrowserConnection = async (
  * @returns {Object} - Browser server instance
  */
 const launchBrowserServer = async (
+  gobletCfg:TGobletConfig,
   browserType:string,
   browserConf:TBrowserConf,
   log:boolean
 ) => {
-  const browserMeta = await metadata.read(browserType)
+  const { metadata } = require('@gobletqa/browser/utils/metadata')
+  metadata.config = gobletCfg
+  metadata.logger = Logger
+
+  const browserMeta = await metadata.read(browserType as any)
   const paramsMatch = checkLaunchParams(browserType, browserConf, browserMeta)
   const canConnect = await testBrowserConnection(
     browserType,
     browserConf,
     paramsMatch,
+    gobletCfg
   )
   const name = getBrowserName(browserConf.headless, browserType)
 
@@ -124,7 +136,7 @@ const launchBrowserServer = async (
   // Otherwise, try to launch the browser.
   logHighlight(`Starting`, name, `on host machine..`, log)
 
-  return startServer(browserConf, browserType)
+  return startServer(browserConf, browserType as any)
 }
 
 /**
@@ -135,6 +147,7 @@ const launchBrowserServer = async (
  * @export
  */
 export const launchBrowser = async (
+  gobletCfg:TGobletConfig,
   config:TLaunchBrowserConf = noOpObj as TLaunchBrowserConf
 ) => {
   const {
@@ -150,6 +163,7 @@ export const launchBrowser = async (
 
   const browserType = getBrowserType(params.type)
   const browserServer = await launchBrowserServer(
+    gobletCfg,
     browserType,
     browserConf,
     log

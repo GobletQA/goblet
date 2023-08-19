@@ -1,7 +1,7 @@
 import { setSharedOptions } from '@keg-hub/cli-utils'
-import { ARTIFACT_SAVE_OPTS } from '@gobletqa/shared/constants'
+import { ArtifactSaveOpts } from '@gobletqa/browser'
 
-const artifactSaveOpts = Object(ARTIFACT_SAVE_OPTS).values
+const artifactSaveOpts = Object(ArtifactSaveOpts).values
 
 const dynamicOpts = {
   version: (type=`<cmd>`, action=`<action>`) => ({
@@ -43,7 +43,7 @@ const dynamicOpts = {
 }
 
 const taskOptions = {
-  jest: {
+  test: {
     noTests: {
       description: `The test runner will not fail when no tests exit`,
       example: `--noTests`,
@@ -57,29 +57,30 @@ const taskOptions = {
       description: `Run all tests sequentially`,
     },
     testBail: {
-      default: false,
       type: `boolean`,
+      alias: [`bail`],
       example: `--testBail`,
+      env: `GOBLET_TEST_BAIL`,
       description: `Stops all tests once a single step fails`,
     },
     testConfig: {
       enforced: true,
-      example: `--jestConfig relative/path/to/config`,
-      description: `Absolute path to a jest config relative to the root directory`,
+      example: `--testConfig relative/path/to/config`,
+      description: `Absolute path to a test config relative to the root directory`,
     },
     testTimeout: {
       type: `number`,
-      default: 30000, // 30 seconds
+      default: 10000, // 10 seconds
       env: `GOBLET_TEST_TIMEOUT`,
-      example: `--timeout 30000`,
-      description: `Test timeout in seconds. Defaults to 30000 milliseconds (30 seconds).`,
+      example: `--timeout 10000`,
+      description: `Test timeout in seconds. Defaults to 10000 milliseconds (10 seconds).`,
     },
     testDebug: {
       default: false,
       type: `boolean`,
       example: `--testDebug`,
       env: `GOBLET_TEST_DEBUG`,
-      description: `Pass the --debug flag to the jest command`,
+      description: `Pass the --debug flag to the test command`,
     },
     testRetry: {
       type: `number`,
@@ -239,8 +240,8 @@ const taskOptions = {
       example: `--webkit`,
     },
     headless: {
-      type: 'bool',
-      alias: ['hl'],
+      type: `bool`,
+      alias: [`hl`],
       default: true,
       env: `GOBLET_HEADLESS`,
       example: `--no-headless`,
@@ -255,9 +256,9 @@ const taskOptions = {
     },
     browserTimeout: {
       type: `number`,
-      default: 30000, // 30 seconds
+      default: 10000, // 10 seconds
       env: `GOBLET_BROWSER_TIMEOUT`,
-      example: `--browserTimeout 30000`, // 30 seconds
+      example: `--browserTimeout 10000`, // 10 seconds
       description: `Amount of time until a browser request will timeout should be less the timeout option`,
     },
     devices: {
@@ -363,11 +364,7 @@ const taskOptions = {
       example: `--reusePage`,
       env: `GOBLET_PAGE_REUSE`,
       description: `Reuse the same page for each test`
-    }
-  },
-  waypoint: {
-  },
-  test: {
+    },
     artifactsDebug: {
       default: false,
       type: `boolean`,
@@ -376,7 +373,9 @@ const taskOptions = {
       description: `Enable debug logs for artifacts generated durring test execution`,
       example: `keg goblet bdd test --artifactsDebug`,
     },
-  }
+  },
+  waypoint: {
+  },
 }
 
 export const sharedOptions = {
@@ -388,12 +387,12 @@ export const sharedOptions = {
 // sharedOptions.unit = {
 //   ...sharedOptions.goblet,
 //   ...sharedOptions.docker,
-//   ...sharedOptions.jest,
+//   ...sharedOptions.test,
 // }
 // setSharedOptions(sharedOptions)
 // Have to a single level object so all options are available to tasks
 setSharedOptions({
-  ...taskOptions.jest,
+  ...taskOptions.test,
   ...taskOptions.docker,
   ...taskOptions.goblet,
   ...taskOptions.playwright,

@@ -1,9 +1,9 @@
-import type { TGitOpts, TWFArgs, TRepoGitState } from '@gobletqa/workflows/types'
+import type { TGitOpts, TWFArgs } from '@GWF/types'
 
-import { Logger } from '@keg-hub/cli-utils'
-import { git } from '@gobletqa/workflows/git'
-import { mountRepo } from '@gobletqa/workflows/repo/mountRepo'
-import { setupGoblet } from '@gobletqa/workflows/goblet/setupGoblet'
+import { git } from '@GWF/git'
+import { Logger } from '@gobletqa/logger'
+import { mountRepo } from '@GWF/repo/mountRepo'
+import { setupGoblet } from '@GWF/goblet/setupGoblet'
 
 export const ensureMounted = async (
   args:TWFArgs,

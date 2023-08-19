@@ -5,10 +5,11 @@ import {
 } from '@GTU/Types'
 
 import path from 'path'
-import { noOpObj, get } from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils/get'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { ArtifactSaveOpts } from '@gobletqa/browser'
 import { appendToLatest } from '@GTU/TestMeta/testMeta'
 import { getTestResult } from '@GTU/Reports/jasmineReporter'
-import { ARTIFACT_SAVE_OPTS } from '@gobletqa/shared/constants'
 import {
   getGeneratedName,
   copyArtifactToRepo,
@@ -66,10 +67,10 @@ export const startTracingChunk = async (context?:TBrowserContext) => {
  * @returns {boolean} - True if the trace should be saved
  */
 const shouldSaveTrace = (testStatus, saveTrace) => {
-  if(!saveTrace || saveTrace === ARTIFACT_SAVE_OPTS.never) return false
+  if(!saveTrace || saveTrace === ArtifactSaveOpts.never) return false
 
-  return (saveTrace === ARTIFACT_SAVE_OPTS.always) ||
-      (testStatus === ARTIFACT_SAVE_OPTS.failed && saveTrace === ARTIFACT_SAVE_OPTS.failed)
+  return (saveTrace === ArtifactSaveOpts.always) ||
+      (testStatus === ArtifactSaveOpts.failed && saveTrace === ArtifactSaveOpts.failed)
 }
 
 /**

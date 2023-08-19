@@ -155,6 +155,10 @@ repos/devspace
 # testing
 /repos/**/coverage
 
+.bin/*
+.bin/**/*
+/repos/**/.bin
+
 # dotenv environment variables file
 .env
 .env.test
@@ -166,6 +170,8 @@ repos/devspace
 /temp/**/*
 !.keep
 !/**/.keep
+!.gitkeep
+!/**/.gitkeep
 
 /certs
 /certs/**/*
@@ -183,3 +189,4 @@ noAuthData.json
 
 tasks/index.js
 .pnpm-*
+repos/testUtils/exam/*

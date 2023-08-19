@@ -7,17 +7,19 @@ import blacklist from 'express-blacklist'
 import expressDefend from 'express-defend'
 import { aliases } from '@GConfigs/aliases.config'
 
-/**
- * Overwrite the default to allow passing a callback to fs.appendFile
- * Which fixes an error in the express-defend repo
- */
-expressDefend.fileAppender = (logFile:string, message:string) => fs.appendFile(logFile, message, noOp)
-
 /** Path to the logs directory */
 const logDir = aliases[`@GLogs`]
 
+/**
+* Overwrite the default to allow passing a callback to fs.appendFile
+* Which fixes an error in the express-defend repo
+*/
+expressDefend.fileAppender = (logFile:string, message:string) => fs.appendFile(logFile, message, noOp)
+
 /** Ensure the logs directory exists */
-!fs.existsSync(logDir) && fs.mkdirSync(logDir)
+if(!process.env.EXAM_ENV)
+  !fs.existsSync(logDir) && fs.mkdirSync(logDir)
+
 
 /**
  * Sets up IP blocking via a blacklist

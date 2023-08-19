@@ -1,5 +1,4 @@
 export * from './libs'
-export * from './repo'
 export * from './utils'
 export * from './models'
 export * from './express'

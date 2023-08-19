@@ -4,7 +4,7 @@ import { Given } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
 import { saveWorldData } from '@GTU/Support/helpers'
 import { SavedTextWorldPath } from '@GTU/Constants'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 const saveTextToWorld = async (
   selector:string,

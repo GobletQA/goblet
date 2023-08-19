@@ -1,5 +1,5 @@
 
-import { Logger } from '@keg-hub/cli-utils'
+import { Logger } from '@gobletqa/logger'
 import { throwErr } from '../utils/throwErr'
 
 /**

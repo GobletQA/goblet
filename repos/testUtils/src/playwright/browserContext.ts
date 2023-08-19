@@ -1,72 +1,64 @@
 import type {
-  TStepCtx,
   TBrowser,
   TBrowserPage,
+  TGobletConfig,
   TBrowserContext,
   TBrowserContextOpts,
-  TContextStorageState
+  TContextStorageState,
 } from '@GTU/Types'
 
 import os from 'os'
 import path from 'path'
 import { startTracing } from './tracing'
-import { get, emptyObj } from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils/get'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import {
-  metadata,
-  ghostMouse,
-  getPWComponents,
-  setBrowserDefaults,
-} from '@gobletqa/screencast/libs/playwright'
-
-import {
-  browserCookieLoc,
-  setContextCookie,
-  defaultCookieFile,
-  saveContextCookie
-} from '@GTU/Playwright/browserCookie'
+  GBrowser,
+  DefaultStateFile,
+} from '@gobletqa/browser'
 
 let LAST_ACTIVE_PAGE:TBrowserPage
-export const defaultStateFile = 'browser-context-state'
+
 
 /**
  * Sets up the global browser for the test environment
  *
  * @returns {Object} - Playwright Browser object
  */
-export const setupBrowser = async () => {
+export const setupBrowser = async (repo?:TGobletConfig) => {
+  
   /** GOBLET_BROWSER is set by the task `keg goblet bdd run` */
   const { GOBLET_BROWSER=`chromium` } = process.env
-  const {
-    type,
-    browserConf,
-  } = await metadata.read(GOBLET_BROWSER)
-
+  const type = GOBLET_BROWSER || global?.__goblet?.browser?.type
+  
   const parkin = global.getParkinInstance()
   const gCtx = get<TBrowserContextOpts>(global, `__goblet.context.options`, emptyObj)
-  const { browser, context } = await getPWComponents({
-    type,
-    ...browserConf,
-    ...get(global, `__goblet.browser`, emptyObj),
-    context: {
-      ...gCtx,
-      extraHTTPHeaders: {
-        ...gCtx?.extraHTTPHeaders,
-        ...parkin?.world?.$context?.extraHTTPHeaders,
-        ...parkin?.world?.$headers
+  const { browser, context } = await GBrowser.get({
+    config: repo || global?.__goblet?.config,
+    browserConf: {
+      type,
+      ...get(global, `__goblet.browser`, emptyObj),
+      context: {
+        ...gCtx,
+        extraHTTPHeaders: {
+          ...gCtx?.extraHTTPHeaders,
+          ...parkin?.world?.$context?.extraHTTPHeaders,
+          ...parkin?.world?.$headers
+        }
       }
     }
   })
 
-
   if (!browser)
     throw new Error(`Failed to create ${GOBLET_BROWSER} browser`)
-
 
   if(!context)
     throw new Error(`Failed to create ${GOBLET_BROWSER} browser context`)
 
   global.browser = browser as TBrowser
   global.context = context as TBrowserContext
+
+  return { browser, context }
 
 }
 
@@ -82,8 +74,11 @@ export const setupContext = async () => {
 
   await startTracing(global.context)
 
+  
+  
+  // import { setBrowserDefaults } from '@gobletqa/repo'
   // setBrowserDefaults({
-  //   repo: { world: parkin.world },
+  //   config: { world: parkin.world },
   //   browserConf: global.browser.__goblet,
   //   pwComponents: {
   //     page,
@@ -100,7 +95,7 @@ export const setupContext = async () => {
  */
 export const contextStateLoc = (saveLocation:string) => {
   const tempDir = os.tmpdir()
-  const location = `${(saveLocation || defaultStateFile).split(`.json`).shift()}.json`
+  const location = `${(saveLocation || DefaultStateFile).split(`.json`).shift()}.json`
 
   return path.join(tempDir, location)
 }
@@ -137,7 +132,8 @@ export const getPage = async (num = 0) => {
 
   const pages = context.pages() || []
   const page = pages.length ? pages[num] : await context.newPage()
-  LAST_ACTIVE_PAGE = ghostMouse(page)
+  LAST_ACTIVE_PAGE = page
+  // LAST_ACTIVE_PAGE = ghostMouse(page)
 
   return LAST_ACTIVE_PAGE as TBrowserPage
 }
@@ -170,38 +166,4 @@ export const closeBrowser = async () => {
 
   await global.browser.close()
   global.browser = undefined
-}
-
-export const restartContext = async (ctx:TStepCtx) => {
-  const { world } = ctx
-  
-  // global.__goblet.context.options // Browser Context Options
-  // global.__goblet.context.options.recordVideo // string path to video save directory
-  // global.context.__goblet.cookie // string path to saved cookie
-  // global.context.__goblet.extraHTTPHeaders // Record<string, string>
-  // global.context.__goblet.tracing // boolean
-  // const gobletCtxOpts = global?.context?.__goblet || {}
-
-  // Cache the url so we can reset it
-  const _page = await getPage()
-  const url = _page.url()
-
-  await closeContext()
-
-  const context = await getContext()
-  const page = await getPage()
-  setBrowserDefaults({
-    url,
-    world,
-    browserConf: global.browser.__goblet,
-    pwComponents: { context, page }
-  })
-
-}
-
-export {
-  browserCookieLoc,
-  setContextCookie,
-  defaultCookieFile,
-  saveContextCookie,
 }

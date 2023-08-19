@@ -21,11 +21,11 @@ import { noOpObj, parseJSON } from '@keg-hub/jsutils'
     'TERM',
     'SIGTERM'
   ])
-    .map(event => process.on(event, async (exitCode) => {
+    .map(event => process.once(event, (exitCode) => {
       if(exitCalled) return
       exitCalled = true
 
-      await stopVNC()
+      stopVNC()
     }))
 
 })()

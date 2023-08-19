@@ -1,10 +1,6 @@
+import { ENVS } from '@gobletqa/environment'
+import { deepFreeze } from '@keg-hub/jsutils'
 
-const { deepFreeze } = require('@keg-hub/jsutils')
-
-const {
-  GITLAB_GRAPH_URL=`https://gitlab.com/api/graphql`,
-  GITHUB_GRAPH_URL=`https://api.github.com/graphql`
-} = process.env
 
 /**
  * Constants for running the workflows with consistent values
@@ -14,7 +10,7 @@ const {
  */
 export const Graph = deepFreeze({
   Github: {
-    Url: GITHUB_GRAPH_URL,
+    Url: ENVS.GITHUB_GRAPH_URL,
     AuthHeader: { Ref: `token`, Key: `Authorization` },
     Opts: {
       Affiliations: [
@@ -58,7 +54,7 @@ export const Graph = deepFreeze({
     },
   },
   Gitlab: {
-    Url: GITLAB_GRAPH_URL,
+    Url: ENVS.GITLAB_GRAPH_URL,
     AuthHeader: { Ref: `Bearer`, Key: `Authorization` },
     Endpoints: {
       Repo: {

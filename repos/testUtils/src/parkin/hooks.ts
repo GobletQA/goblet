@@ -7,13 +7,14 @@
 
 const getHook = (hookName) => {
   return (...args:any[]) => {
+    // TODO: need to investigate
     const parkin = global.getParkinInstance()
     return parkin.hooks[hookName].apply(parkin.hooks, args)
   }
 }
 
 /**
- * Cucumber-like hooks
+ * Test hooks to execute before and after test runs 
  * @example
  * import { BeforeAll, AfterAll } from '@GTU/Parkin'
  * BeforeAll(() => setupMyTestEnv())

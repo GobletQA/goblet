@@ -1,7 +1,8 @@
 import type { TTaskParams } from '../../types'
 
-const { exists } = require('@keg-hub/jsutils')
-const { setVncENV } = require('@gobletqa/screencast/libs/utils/vncActiveEnv')
+import { exists } from '@keg-hub/jsutils'
+import { Logger } from '@keg-hub/cli-utils'
+import { setVncENV } from '@gobletqa/shared/utils/vncActiveEnv'
 
 // TODO: Setup custom ENVs to pull from the values files
 const vncEnvs = {
@@ -29,6 +30,10 @@ export const setGobletMode = (params:TTaskParams) => {
   const vncActive = gobletMode === 'vnc' ? true : false
 
   setVncENV(vncActive)
+
+  vncActive
+    ? Logger.highlight(`Using`, `VNC in Docker`, `for browser automation`)
+    : Logger.info(`Using`, `Host Machine`, `for browser automation`)
 
   return gobletMode
 }

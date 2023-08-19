@@ -1,2 +1,3 @@
+export * from './fileSys'
 export * from './clearTestMetaDirs'
-export * from './buildJestGobletOpts'
+export * from './buildTestGobletOpts'

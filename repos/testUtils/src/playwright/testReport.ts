@@ -1,6 +1,6 @@
-import { get } from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils/get'
+import { shouldSaveArtifact } from '@gobletqa/browser'
 import { getTestResult } from '@GTU/Reports/jasmineReporter'
-import { shouldSaveArtifact } from '@gobletqa/shared/utils/artifactSaveOption'
 import { getGeneratedName, ensureRepoArtifactDir } from '@GTU/Playwright/generatedArtifacts'
 
 

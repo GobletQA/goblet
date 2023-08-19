@@ -17,7 +17,7 @@ import type {
 
 import { git } from './gitCmd'
 import { deepMerge, isStr } from '@keg-hub/jsutils'
-import { GBGitRemoteRef } from '@gobletqa/workflows/constants'
+import { GitRemoteRef } from '@gobletqa/workflows/constants'
 import {
   defCmdOpts,
   hasGitError,
@@ -220,7 +220,7 @@ git.tag.fetch = async (
       await git([
         `remote`,
         `set-url`,
-        origin || GBGitRemoteRef,
+        origin || GitRemoteRef,
         gitUrl
       ], joinedOpts, options.local)
 
@@ -241,7 +241,7 @@ git.tag.fetch = async (
       await git([
         `remote`,
         `set-url`,
-        origin || GBGitRemoteRef,
+        origin || GitRemoteRef,
         options.remote
       ], joinedOpts, options.local)
     

@@ -1,6 +1,5 @@
-import type { TProc, TChildProcArgs } from '@GSC/types'
-
-import { findProc, killProc }from '@GSC/libs/proc'
+import type { TProc } from '@GSC/types'
+import { findProc } from '@gobletqa/shared/libs/proc'
 import {
   iife,
   limbo,

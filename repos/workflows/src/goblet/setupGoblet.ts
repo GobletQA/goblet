@@ -1,15 +1,16 @@
-import type { TGitData, TRepoOpts, TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
-
+import type { TGobletConfig } from '@gobletqa/shared'
+import type { TGitData, TWFArgs, TGitOpts } from '@GWF/types'
 
 import { git, RepoWatcher } from '../git'
-import { Logger } from '@keg-hub/cli-utils'
-import { omitKeys, wait } from '@keg-hub/jsutils'
+import { Logger } from '@gobletqa/logger'
+import { wait } from '@keg-hub/jsutils/wait'
+import { gobletLoader } from '@gobletqa/goblet'
 import { repoSecrets } from '../repo/repoSecrets'
 import { getRepoName } from '../utils/getRepoName'
 import { failResp, successResp } from './response'
+import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { copyTemplate } from '../utils/copyTemplate'
 import { createRepoWatcher } from '../repo/mountRepo'
-import { gobletLoader } from '@gobletqa/shared/libs/loader'
 import { configureGitOpts } from '../utils/configureGitOpts'
 
 const setupWatcher = async (gitOpts:TGitOpts,) => {
@@ -64,7 +65,7 @@ export const setupGoblet = async (
 
   Logger.log(`Checking goblet configuration...`)
   const hasGoblet = await copyTemplate(
-    gitData.local,
+    gitData,
     args.repoTemplate
   )
 
@@ -75,19 +76,23 @@ export const setupGoblet = async (
     )
 
   Logger.log(`Loading goblet.config...`)
-  const gobletConfig = gobletLoader({ basePath: gitOpts.local })
+  const gobletConfig = gobletLoader({
+    remote: gitOpts.remote,
+    basePath: gitOpts.local,
+  })
+
   if(!gobletConfig)
     return failResp({ setup: false }, `Could not load goblet.config for mounted repo`)
 
-  const repo = {
+  const namedGobletCfg = {
     ...gobletConfig,
     git:gitData,
     name: getRepoName(gitOpts.remote),
-  } as TRepoOpts
+  } as TGobletConfig
 
-  const secretsResp = await repoSecrets(gitOpts, repo)
+  const secretsFail = await repoSecrets(gitOpts, namedGobletCfg)
 
-  return secretsResp
-    || successResp({ setup: true }, { repo }, `Finished running Setup Goblet Workflow`)
+  return secretsFail
+    || successResp({ setup: true }, { repo: namedGobletCfg }, `Finished running Setup Goblet Workflow`)
 }
 

@@ -1,11 +1,11 @@
-import type { TRepo } from './repo.types'
-import { EAstObject, TRunResult } from '@ltipton/parkin'
+import type { TRepo } from './workflows.types'
+import type { EAstObject, TRunResult } from '@ltipton/parkin'
 import type { TSocketMessageObj } from './socket.types'
-import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 import type { TParkinRunStepOptsMap } from '@ltipton/parkin'
+import type { TBrowserActionOptions, TBrowserContext, TBrowserPage, TBrowser } from './pw.types'
 
-// Exported from screencast/src/types
-import type { Player } from '@gobletqa/screencast'
+// Exported from browser/src/types
+import type { Player } from '@gobletqa/browser'
 
 export type TPlayerEvent = {
   name:string
@@ -45,11 +45,13 @@ export enum EPlayerTestAction {
   end=`end`,
   test=`test`,
   start=`start`,
+  error=`error`,
 }
 
 export enum EPlayerTestType {
   test=`test`,
   describe=`describe`,
+  feature=`feature`
 }
 
 export enum EPlayerTestStatus {

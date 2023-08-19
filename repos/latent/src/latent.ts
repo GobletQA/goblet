@@ -9,14 +9,12 @@ import {
 import { Values } from '@GLT/values'
 import { Secrets } from '@GLT/secrets'
 import {emptyObj} from "@keg-hub/jsutils"
+import { ENVS } from '@gobletqa/environment'
 import { LatentFile } from '@GLT/services/file'
 import { LatentToken } from '@GLT/services/token'
 import { LatentCrypto } from '@GLT/services/crypto'
 
 
-const {
-  GOBLET_ENV
-} = process.env
 
 export class Latent {
 
@@ -45,8 +43,8 @@ export class Latent {
     } = props
 
     this.#environment = environment || (
-      GOBLET_ENV && (GOBLET_ENV in ELatentEnv)
-        ? GOBLET_ENV as ELatentEnv
+      ENVS.GOBLET_ENV && (ENVS.GOBLET_ENV in ELatentEnv)
+        ? ENVS.GOBLET_ENV as ELatentEnv
         : ELatentEnv.develop
     )
 
@@ -89,8 +87,8 @@ export class Latent {
     })
   }
 
-  getToken = (ref:string) => {
-    return this.token.generate(ref)
+  getToken = (ref:string, ltToken?:string) => {
+    return this.token.generate(ref, ltToken)
   }
 
 }

@@ -2,7 +2,7 @@ import type { TGobletConfig } from '@GTU/Types'
 
 
 import path from 'path'
-import { getPathFromBase } from '@gobletqa/shared/utils/getPathFromBase'
+import { getPathFromBase } from '@gobletqa/goblet'
 import { getGeneratedName } from '@GTU/Playwright/generatedArtifacts'
 
 type TBuildReportPathOpts = {

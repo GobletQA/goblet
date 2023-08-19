@@ -50,6 +50,11 @@ export class LatentCrypto {
     base64:boolean=true
   ): string => {
 
+    const { stackTraceLimit } = Error
+    Error.stackTraceLimit = 0
+    let error:Error
+    let final:any
+
     try {
       const encryption = base64 ? fromB64(encoded) : encoded
 
@@ -65,12 +70,17 @@ export class LatentCrypto {
       })
       decipher.setAuthTag(authTag)
 
-      return decipher.update(cypherText, `hex`, `utf-8`) + decipher.final(`utf8`)
+      final = decipher.update(cypherText, `hex`, `utf-8`) + decipher.final(`utf8`)
     }
     catch(err){
       if(err.code === `ERR_CRYPTO_INVALID_IV`) return ``
+      error = err
+    }
+    finally {
+      Error.stackTraceLimit = stackTraceLimit
+      if(error) throw error
 
-      throw err
+      return final
     }
   }
 }

@@ -1,13 +1,9 @@
 import type { TStepCtx } from '@GTU/Types'
 
-import { isStr } from '@keg-hub/jsutils'
 import { Then } from '@GTU/Parkin'
-import {
-  getContext,
-  defaultStateFile,
-  saveContextState,
-} from '@GTU/Playwright'
-
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { DefaultStateFile } from '@gobletqa/browser'
+import { getContext, saveContextState } from '@GTU/Playwright'
 /**
  * Checks that the page title is `title`
  * @param {string} title - text to compare to page title
@@ -37,7 +33,7 @@ Then(`I save the page state as {string}`, savePageState, {
     {
       type: `string`,
       description: `Name of the context state file that is being saved`,
-      example: defaultStateFile,
+      example: DefaultStateFile,
     }
   ]
 })

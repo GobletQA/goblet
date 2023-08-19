@@ -1,9 +1,14 @@
-import { EExpParmType } from './features.types'
-import {
+/**
+ * The types in this file should be exported from parkin instead
+ * They were added before parkin had types, but now that it does they should be updated
+ */
+
+import type {
   Parkin,
   TStepDef,
   EHookType,
   TFeatureAst,
+  EExpParmType,
 } from '@ltipton/parkin'
 
 export type TParse = Parkin["parse"]

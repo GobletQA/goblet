@@ -1,8 +1,9 @@
 import type { TError } from '../types'
 import type { Response } from 'express'
 
-import { isObj, toNum } from '@keg-hub/jsutils'
-import { Logger } from '@GSH/libs/logger'
+import { ApiLogger } from '@gobletqa/logger'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { toNum } from '@keg-hub/jsutils/toNum'
 
 
 export const apiErr = (res:Response, err:TError, status:number) => {
@@ -10,7 +11,7 @@ export const apiErr = (res:Response, err:TError, status:number) => {
     message: isObj(err) ? err.message : err || `An api error occurred!`,
   }
 
-  Logger.error(err?.stack || err?.message)
+  ApiLogger.error(err?.stack || err?.message)
 
   if(res.headersSent) return
 

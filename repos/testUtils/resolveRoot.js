@@ -1,4 +1,4 @@
-require('../../configs/aliases.config').registerAliases()
+require('../../configs/aliases')
 
 /**
  * Will be needed when the package is bundled

@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import expect from 'expect'
 import { Then } from '@GTU/Parkin'
 import { getPage } from '@GTU/Playwright'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Checks that the page title is not `title`

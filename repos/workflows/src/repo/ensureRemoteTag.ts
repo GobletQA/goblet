@@ -1,9 +1,9 @@
-import type { TGitOpts, TGobletConfig } from '@gobletqa/workflows/types'
+import type { TGitOpts } from '../types'
 
-import { Logger } from '@keg-hub/cli-utils'
-import { git } from '@gobletqa/workflows/git'
-import { REPO_TAG_REF } from '@gobletqa/workflows/constants'
-import { latentRepo } from '@gobletqa/shared/repo/latentRepo'
+import { git } from '../git'
+import { latentRepo } from './latentRepo'
+import { Logger } from '@gobletqa/logger'
+import { ENVS } from '@gobletqa/environment'
 
 const addTag = async (gitOpts:TGitOpts, force?:boolean) => {
   const ref = await git.hash.content({
@@ -17,7 +17,7 @@ const addTag = async (gitOpts:TGitOpts, force?:boolean) => {
     ...gitOpts,
     force,
     ref,
-    tag: REPO_TAG_REF,
+    tag: ENVS.GB_SECRETS_TAG_REF,
   })
 
   if(tagErr || tagResp?.exitCode)
@@ -27,7 +27,7 @@ const addTag = async (gitOpts:TGitOpts, force?:boolean) => {
   const pushed = await git.tag.push({
     ...gitOpts,
     force,
-    tag: REPO_TAG_REF,
+    tag: ENVS.GB_SECRETS_TAG_REF,
     
   })
 
@@ -35,12 +35,17 @@ const addTag = async (gitOpts:TGitOpts, force?:boolean) => {
 
 }
 
-export const ensureRemoteTag = async (gitOpts:TGitOpts, config:TGobletConfig) => {
+/**
+ * Basically runs the following commands
+ * `HASH_OBJ=(echo <repo-remote> | git hash-object -t blob -w --stdin)`
+ * `git tag -f -a goblet-do-not-delete $HASH_OBJ -m ""`
+ */
+export const ensureRemoteTag = async (gitOpts:TGitOpts) => {
 
   const existing = await git.tag.cat({
     ...gitOpts,
     log: false,
-    tag: REPO_TAG_REF,
+    tag: ENVS.GB_SECRETS_TAG_REF,
   })
 
   // If tag does not exist, then create one
@@ -59,7 +64,7 @@ export const ensureRemoteTag = async (gitOpts:TGitOpts, config:TGobletConfig) =>
 
   const reKeyErr = latentRepo.rekey({
     old: existing,
-    updated: gitOpts.remote,
+    update: gitOpts.remote,
     location: gitOpts.local,
   })
 

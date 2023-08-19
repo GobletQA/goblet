@@ -1,36 +1,39 @@
+import '../../../configs/aliases'
+import path from 'node:path'
+import * as esbuild from 'esbuild'
+import { fileURLToPath } from 'node:url'
+import { promises as fs } from 'node:fs'
+import aliasPlugin from 'esbuild-plugin-path-alias'
+import { aliases } from '../../../configs/aliases.config'
 
-import { GLTRoot } from '../resolveRoot'
+const dirname = path.dirname(fileURLToPath(import.meta.url))
+const rootDir = path.join(dirname, `..`)
+const entryFile = path.join(rootDir, `index.ts`)
+const outdir = path.join(rootDir, `dist`)
+const outfile = path.join(outdir, `index.js`)
 
-import path from 'path'
-import { esbuild } from '@ltipton/esdev'
-import { aliases } from '@GConfigs/aliases.config'
-import { loadConfigs } from '@keg-hub/parse-config'
 
-const dev = process.env.DEV_BUILD === `1`
-const nodeEnv = process.env.NODE_ENV || `local`
-const entryFile = path.join(GLTRoot, `index.js`)
-const outFile = path.join(GLTRoot, `dist/index.js`)
+const build = async () => {
+  // Build the files with esbuild
+  await esbuild.build({
+    outfile,
+    bundle: true,
+    minify: false,
+    sourcemap: true,
+    platform: `node`,
+    target: [`node16`],
+    entryPoints: [entryFile],
+    plugins: [aliasPlugin(aliases)],
+    tsconfig: path.join(rootDir, `tsconfig.build.json`),
+  })
+  .catch(() => process.exit(1))
+}
 
-/**
- * Load the ENVs from <node-env>.env ( local.env || prod.env )
- */
-const envs = loadConfigs({
-  noYml: true,
-  env: nodeEnv,
-  name: 'goblet',
-  locations: [aliases.GobletRoot],
-})
 
-esbuild({
-  dev,
-  aliases,
-  outFile,
-  entryFile,
-  cwd: GLTRoot,
-  mergeEnvs:true,
-  sourcemap: 'inline',
-  envs: {
-    ...envs,
-    GOBLET_ROOT_DIR: aliases.GobletRoot
-  }
-})
+;(async () => {
+  // Remove the existing output dir
+  await fs.rm(outdir, { recursive: true, force: true })
+  await build()
+})()
+
+

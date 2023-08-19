@@ -1,6 +1,7 @@
 import path from 'path'
-import { MOUNT_ROOT } from '../constants'
+
 import { noOpObj } from '@keg-hub/jsutils'
+import { ENVS } from '@gobletqa/environment'
 import { TGitMeta } from '@gobletqa/workflows/types'
 import { generateFolderName } from './generateFolderName'
 
@@ -18,7 +19,7 @@ export const getRepoPath = (args:TGitMeta=noOpObj) => {
   const { user, repo } = args
 
   const folderName = generateFolderName(user, repo)
-  if (folderName) return path.join(MOUNT_ROOT, folderName)
+  if (folderName) return path.join(ENVS.GOBLET_MOUNT_ROOT, folderName)
 
   throw new Error(`A user name is required generate a repo path`)
 }

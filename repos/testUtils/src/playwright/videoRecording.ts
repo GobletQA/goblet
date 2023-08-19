@@ -7,22 +7,22 @@ import {
   TGobletTestArtifactOption,
 } from '@GTU/Types'
 
-import fs from 'fs'
-import { fileSys } from '@keg-hub/cli-utils'
-import { Logger } from '@gobletqa/shared/libs/logger'
-import { noOpObj, get, wait } from '@keg-hub/jsutils'
+import { Logger } from '@gobletqa/logger'
+import { get } from '@keg-hub/jsutils/get'
+import { wait } from '@keg-hub/jsutils/wait'
+import { pathExists } from '@GTU/Utils/fileSys'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { ArtifactSaveOpts } from '@gobletqa/browser'
 import { appendToLatest } from '@GTU/TestMeta/testMeta'
 import { getTestResult } from '@GTU/Reports/jasmineReporter'
-import { ARTIFACT_SAVE_OPTS } from '@gobletqa/shared/constants'
 import {
   getGeneratedName,
   copyArtifactToRepo,
   ensureRepoArtifactDir,
 } from '@GTU/Playwright/generatedArtifacts'
 
-type TTestStatus = `passed` | `failed`
 
-const { getFolderContent, pathExists } = fileSys
+type TTestStatus = `passed` | `failed`
 
 /**
  * Uses the passed in Playwright page to get the video path
@@ -48,7 +48,7 @@ const pathFromPageVideo = async (
   // Ensure the path exists
   // It takes a bit for the video to be created even when we have the path
   // So we have to validate it exist
-  const videoExists = await pathExists(videoPath)
+  const [existsErr, videoExists] = await pathExists(videoPath)
   // If the video exists, we can now return the path
   if(videoPath && videoExists) return videoPath
 
@@ -69,27 +69,11 @@ const pathFromPageVideo = async (
  *
  * @returns {string} - Location of the most recently saved video recording
  */
-const getRecordingPath = async (
-  page:TBrowserPage,
-  recordDir:string
-) => {
+const getRecordingPath = async (page:TBrowserPage) => {
   if(page){
     const videoPath = await pathFromPageVideo(page)
     if(videoPath) return videoPath
   }
-
-  // If no video path, try to find the most recent file
-  // Looks at the create time for all file in the record folder
-  const files = await getFolderContent(recordDir, {
-    full: true,
-    exclude: [],
-    recursive: false,
-  })
-
-  return files.map(file => ({ file, ctimeMs: fs.statSync(file).ctimeMs }))
-    .sort((a, b) => a.ctimeMs - b.ctimeMs)
-    .pop()
-    .file
 }
 
 
@@ -108,10 +92,10 @@ const shouldSaveVideo = (
   saveVideo:TGobletTestArtifactOption,
   recordDir:string
 ) => {
-  if(!saveVideo || saveVideo === ARTIFACT_SAVE_OPTS.never || !recordDir) return false
+  if(!saveVideo || saveVideo === ArtifactSaveOpts.never || !recordDir) return false
 
-  return (saveVideo === ARTIFACT_SAVE_OPTS.always) ||
-      (testStatus === ARTIFACT_SAVE_OPTS.failed && saveVideo === ARTIFACT_SAVE_OPTS.failed)
+  return (saveVideo === ArtifactSaveOpts.always) ||
+      (testStatus === ArtifactSaveOpts.failed && saveVideo === ArtifactSaveOpts.failed)
 }
 
 /**
@@ -163,8 +147,9 @@ export const saveRecordingPath = async (page:TBrowserPage) => {
 
   if(!saveTestVideo) return
 
-  // TODO: update to use video.saveAs(path)
-  const recordPath = await getRecordingPath(page, recordVideo.dir)
+  
+  // TODO: update to use await video.saveAs(path);
+  const recordPath = await getRecordingPath(page)
   if(!recordPath)
     return Logger.warn(
       `The video record path for test ${name} does not exist in directory ${recordVideo.dir}`

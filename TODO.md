@@ -92,3 +92,7 @@ On every page load
 * When grabbing a selector from the browser
   * Validate the selector before setting it in the step to ensure it's not a duplicate that will cause the test to fail
   * If it is a duplicate, try to regenerate the selector so that it properly passes
+
+
+
+For adding mocks to exam, look into https://www.npmjs.com/package/testdouble

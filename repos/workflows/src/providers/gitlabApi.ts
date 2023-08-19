@@ -13,18 +13,15 @@ import type {
 } from '@gobletqa/workflows/types'
 
 import { Rest } from '../constants'
+import { Logger } from '@gobletqa/logger'
 import axios, { AxiosError, } from 'axios'
-import { Logger } from '@keg-hub/cli-utils'
 import { BaseRestApi } from './baseRestApi'
-import {
-  isArr,
-  isStr,
-  limbo,
-  emptyObj,
-  deepMerge,
-  ensureArr,
-} from '@keg-hub/jsutils'
-
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { limbo } from '@keg-hub/jsutils/limbo'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 
 type TApiError = {
   error:string

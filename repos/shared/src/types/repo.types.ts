@@ -1,12 +1,8 @@
-import type { Repo as TRepo } from '../repo/repo'
 import type  { EProvider } from './provider.types'
 import type { TWorldConfig } from '@ltipton/parkin'
 import type { TRootPaths, TFileTypes } from './files.types'
+import type { TRepoMountStatus, TRepo } from './workflows.types'
 import type { TDefinitionFileModelList } from './definitions.types'
-
-export type {
-  TRepo
-}
 
 export type TRepoContent = {
   repo:TRepo
@@ -29,6 +25,8 @@ export type TRepoPaths = {
   featuresDir:string
   artifactsDir:string
   environmentsDir:string
+  tracesDir?:string
+  downloadsDir?:string
 }
 
 export type TGitData = {
@@ -46,6 +44,7 @@ export type TGitData = {
 
 export type TRepoOpts = {
   name:string
+  $ref?:string
   git: TGitData
   paths?: TRepoPaths
   world: TWorldConfig
@@ -63,39 +62,4 @@ export type TRepoFromCreate = {
   branchFrom?:boolean
   description?:string
   organization?:string
-}
-
-export type TRepoFromWorkflow = {
-  token:string
-  branch:string
-  repoId:string
-  repoUrl:string
-  username:string
-  newBranch?:string
-  branchFrom?:boolean
-}
-
-export type TRepoGraphRepos = {
-  all?:boolean
-  token: string
-  query?:string
-  first?: number
-  after?: string
-  offset?:number
-  username?:string
-  fullPath?:string
-  provider?:string
-  searchPattern?:string
-  sortDirection?: string
-  affiliations?: string[]
-  ownerAffiliations?: string[]
-  headers?: Record<string, string>
-}
-
-export type TRepoMountStatus = {
-  mode?: string
-  setup: boolean
-  status?: string
-  message?:string
-  mounted?: boolean
 }

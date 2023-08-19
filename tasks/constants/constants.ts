@@ -3,14 +3,15 @@ import path from 'path'
 import { ETestType } from '../types'
 import { testUtilsDir } from '../paths'
 import { deepFreeze, keyMap } from '@keg-hub/jsutils'
+import { FullBrowserNames } from '@gobletqa/browser'
 
 export type TTaskConstants = {
   PWDebug: typeof PWDebug
   browsers: typeof Browsers
   testTypes: typeof TestTypes
   envFilter: typeof EnvFilter
-  browserNames: typeof BrowserNames
-  jestConfigMap: typeof JestConfigMap
+  browserNames: typeof FullBrowserNames
+  testConfigMap: typeof TestConfigMap
 }
 
 export type TEnvFilter = {
@@ -29,12 +30,13 @@ export const Browsers = {
   webkit: `--webkit`,
 }
 
-export const BrowserNames = [`chromium`, `firefox`, `webkit`]
-export const JestConfigMap = {
-  [ETestType.unit]: path.join(testUtilsDir, `src/jest/jest.unit.config.js`),
-  [ETestType.feature]: path.join(testUtilsDir, `src/jest/jest.parkin.config.js`),
-  [ETestType.waypoint]: path.join(testUtilsDir, `src/jest/jest.waypoint.config.js`),
+export const TestConfigMap = {
+  [ETestType.feature]: path.join(testUtilsDir, `src/exam/exam.feature.config.ts`),
+
+  [ETestType.unit]: path.join(testUtilsDir, `src/exam/exam.unit.config.js`),
+  [ETestType.waypoint]: path.join(testUtilsDir, `src/exam/exam.waypoint.config.js`),
 }
+
 export const TestTypes = {
   bdd: ETestType.bdd,
   unit: ETestType.unit,
@@ -102,8 +104,8 @@ export const constants = deepFreeze<TTaskConstants>({
   browsers: Browsers,
   testTypes: TestTypes,
   envFilter: EnvFilter,
-  browserNames: BrowserNames,
-  jestConfigMap: JestConfigMap,
+  testConfigMap: TestConfigMap,
+  browserNames: FullBrowserNames,
 })
 
 export {

@@ -1,9 +1,10 @@
 import type { TTaskParams, EBrowserType } from '../../types'
 
 import { addEnv } from './addEnv'
+import { appRoot } from '../../paths'
 import { ETestType } from '../../types'
 import { buildPWEnvs } from './buildPWEnvs'
-import { buildJestTestEnvs } from '../jest/buildJestTestEnvs'
+import { buildTestEnvs } from '../test/buildTestEnvs'
 
 /**
  * Builds the envs set in the command that runs a test
@@ -24,14 +25,14 @@ export const buildBddEnvs = (
   const env = buildPWEnvs({}, browser, params)
 
   // Add feature file specific envs
-  addEnv(env, 'GOBLET_CONFIG_BASE', params.base)
-  addEnv(env, 'GOBLET_FEATURE_TAGS', params.tags)
-  addEnv(env, 'GOBLET_FEATURE_NAME', params.filter)
-  addEnv(env, 'GOBLET_TEST_RETRY', params.testRetry)
-  addEnv(env, 'GOBLET_TEST_TYPE', type === 'feature' ? `bdd` : type)
+  addEnv(env, `GOBLET_CONFIG_BASE`, params.base)
+  addEnv(env, `GOBLET_FEATURE_TAGS`, params.tags)
+  addEnv(env, `GOBLET_FEATURE_NAME`, params.filter)
+  addEnv(env, `GOBLET_TEST_RETRY`, params.testRetry)
+  addEnv(env, `GOBLET_TEST_TYPE`, type === `feature` ? `bdd` : type)
 
-  // Set up html test reporting ENV for jest
-  buildJestTestEnvs(browser, env, params.context, reportPath, type)
+  // Set up html test reporting ENV for test
+  buildTestEnvs(browser, env, params.context, reportPath, type)
 
-  return { env }
+  return { env, cwd: appRoot }
 }

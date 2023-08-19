@@ -1,41 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "es2020",
-    "baseUrl": "./",
-    "outDir": "./dist",
-    "typeRoots": [
-      "./src/types",
-      "../shared/src/types",
-      "./node_modules/@types",
-      "../../node_modules/@types"
-    ],
-    "paths": {
-      "@GBE/Configs": ["configs"],
-      "@GBE/Configs/*": ["configs/*"],
-      "@GBE/Templates": ["templates"],
-      "@GBE/Templates/*": ["templates/*"],
-      "@GBE": ["src"],
-      "@GBE/*": ["src/*"],
-      "@GBE/Root": ["./"],
-      "@gobletqa/backend": ["src"],
-      "@gobletqa/backend/*": ["src/*"],
-      "@gobletqa/conductor": ["../conductor/src"],
-      "@gobletqa/conductor/*": ["../conductor/src/*"],
-      "@gobletqa/shared/*": ["../shared/src/*"],
-      "@gobletqa/shared": ["../shared/src"],
-      "@gobletqa/latent": ["../latent/src"],
-      "@gobletqa/latent/*": ["../latent/src/*"],
-      "@GLogs/*": ["../../logs/*"],
-      "@GRepos/*": ["../../repos/*"],
-      "@GConfigs/*": ["../../configs/*"],
-      "@GEnv": ["../shared/src/environment/environment"],
-      "@GEnv/secrets": ["../shared/src/environment/secrets"],
-      "@GEnv/values": ["../shared/src/environment/values"],
-      "@GEnvironment": ["../shared/src/environment/environment"],
-      "@GEnvironment/secrets": ["../shared/src/environment/secrets"],
-      "@GEnvironment/values": ["../shared/src/environment/values"]
-    }
+    "outDir": "./dist"
   },
   "include": [
     "src",
@@ -44,6 +10,5 @@
     "../shared",
     "../testUtils",
     "../workflows"
-  ],
-  "exclude": ["node_modules", "dist"]
+  ]
 }

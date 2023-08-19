@@ -1,6 +1,6 @@
 import type {TWorldConfig} from '@ltipton/parkin'
 import type { BrowserContextOptions } from 'playwright'
-import type { TLocator, TBrowserPage, TGobletTestOpts } from './shared.types'
+import type { TGobletConfig, TLocator, TBrowserPage, TGobletTestOpts } from './shared.types'
 
 
 export type TGobletGlobalRecordVideo = {
@@ -24,6 +24,7 @@ export type TGobletGlobalBrowser = {
 
 export type TGobletTestGlobal = {
   options:TGobletTestOpts
+  config: TGobletConfig
   context: TGobletGlobalContext
   browser: TGobletGlobalBrowser
 }

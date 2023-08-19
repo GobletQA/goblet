@@ -2,7 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { saveWorldData, saveWorldLocator } from '@GTU/Support/helpers'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Expects the element matching `selector` and selects the option(s) with the label === `data`

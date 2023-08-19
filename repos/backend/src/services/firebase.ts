@@ -1,7 +1,7 @@
 import type { App } from 'firebase-admin/app'
 import type { Auth, UserRecord, DecodedIdToken } from 'firebase-admin/auth'
 
-import {limbo, omitKeys} from '@keg-hub/jsutils'
+import { limbo } from '@keg-hub/jsutils'
 import { getAuth } from "firebase-admin/auth"
 import { initializeApp } from "firebase-admin/app"
 import { resError } from '@gobletqa/shared/express/resError'

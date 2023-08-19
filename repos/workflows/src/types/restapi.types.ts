@@ -1,5 +1,5 @@
-import { TGLBranchMeta, TGLRepoApiMeta } from './gitlab.types'
-import { TGHBranchMeta, TGHRepoApiMeta } from './github.types'
+import type { TGLBranchMeta, TGLRepoApiMeta } from './gitlab.types'
+import type { TGHBranchMeta, TGHRepoApiMeta } from './github.types'
 
 export type TBranchMeta = TGHBranchMeta | TGLBranchMeta
 export type TBranchResp = Record<`data`, TBranchMeta>

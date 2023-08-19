@@ -1,3 +1,5 @@
+import type { TNMOpts } from '@ltipton/esdev'
+
 import { GSCRoot } from '../resolveRoot'
 import { esbuild } from '@ltipton/esdev'
 import { aliases } from '@GConfigs/aliases.config'
@@ -16,7 +18,9 @@ const envs = loadConfigs({
 export type TSCesbuild = {
   dev:boolean
   outFile:string
+  args?: string[]
   entryFile:string
+  nodemonOpts?:TNMOpts
 }
 
 export const ESBuild = (args:TSCesbuild) => {

@@ -1,7 +1,8 @@
 import type { TStepCtx, TLocator } from '@GTU/Types'
 
 import {getStepTimeout} from '@GTU/Support'
-import {isBool, isObj } from '@keg-hub/jsutils'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import {isBool } from '@keg-hub/jsutils/isBool'
 import { getPage } from '@GTU/Playwright/browserContext'
 
 
@@ -15,7 +16,7 @@ type TWaitFor = {
  * The pull it in here and use it to set the config of the waitFor
  */
 const getLocationWaitOpts = (ctx?:TStepCtx, waitFor?:TWaitFor|boolean):TWaitFor|undefined => {
-  // process.env.JEST_WORKER_ID
+  // process.env.EXAM_ENV
   const defWaitOpts = {
     state: `visible`,
     timeout: getStepTimeout(ctx),

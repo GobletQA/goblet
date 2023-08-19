@@ -3,7 +3,7 @@ import type { TStepCtx } from '@GTU/Types'
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
 import { fillInput, getWorldLocator } from '@GTU/Support/helpers'
-import { ExpressionKinds, ExpressionTypes } from '@gobletqa/shared/constants'
+import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 export const setTextWithSaved = async (
   text:string,

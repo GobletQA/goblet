@@ -1,5 +1,5 @@
 
-import { conductorConfig } from '@GCD/configs/conductor.config'
+import { conductorConfig } from '@GCD/Configs/conductor.config'
 import { deepMerge, exists, isEmptyColl } from '@keg-hub/jsutils'
 import { TConductorOpts, TConductorConfig } from '@gobletqa/conductor/types'
 

@@ -1,19 +1,21 @@
 const { jestConfig } = require('./jest.default.config')
 
 const path = require('path')
-const { noOpObj } = require('@keg-hub/jsutils')
-const { inDocker } = require('@keg-hub/cli-utils')
-const { buildJestGobletOpts } = require('@GTU/Utils/buildJestGobletOpts')
-const { getGobletConfig } = require('@gobletqa/shared/goblet/getGobletConfig')
-const { getRepoGobletDir } = require('@gobletqa/shared/utils/getRepoGobletDir')
-const { checkVncEnv } = require('@gobletqa/screencast/libs/utils/vncActiveEnv')
-const metadata = require('@gobletqa/screencast/libs/playwright/helpers/metadata')
-const { taskEnvToBrowserOpts } = require('@gobletqa/screencast/libs/utils/taskEnvToBrowserOpts')
-const { getContextOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getContextOpts')
-const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers/getBrowserOpts')
+const { checkVncEnv } = require('@gobletqa/shared/utils/vncActiveEnv')
+const { buildTestGobletOpts } = require('@GTU/Utils/buildTestGobletOpts')
+const { getRepoGobletDir, getGobletConfig } = require('@gobletqa/goblet')
+const {
+  metadata,
+  getBrowserOpts,
+  getContextOpts,
+  taskEnvToBrowserOpts
+} = require('@gobletqa/browser')
 
 // TODO: investigate this to allow reusing it
 // const { buildTestMatchFiles } = require('@gobletqa/shared/utils/buildTestMatchFiles')
+
+// TODO: Fix this - @cli-utils inDocker method no longer works
+const inDocker = () => true
 
 /**
  * Builds the launch / browser options for the jest-playwright-config
@@ -23,6 +25,8 @@ const { getBrowserOpts } = require('@gobletqa/screencast/libs/playwright/helpers
  * @returns {Object} - Built browser options
  */
 const buildLaunchOpts = async (config, taskOpts, optsKey) => {
+  metadata.config = config
+
   const { vncActive, socketActive } = checkVncEnv()
   const { endpoint, browserConf } = await metadata.read(taskOpts.type)
 
@@ -68,8 +72,8 @@ module.exports = async () => {
   const optsKey = vncActive ? 'launchOptions' : 'connectOptions'
   const launchOpts = await buildLaunchOpts(config, taskOpts, optsKey)
   const browserOpts = launchOpts[optsKey]
-  const gobletOpts = buildJestGobletOpts(config, browserOpts)
-  const contextOpts = getContextOpts(noOpObj, config)
+  const gobletOpts = buildTestGobletOpts(config, browserOpts)
+  const contextOpts = getContextOpts({ config })
 
   const { testUtilsDir, reportsTempDir } = config.internalPaths
   const reportOutputPath = path.join(reportsTempDir, `${browserOpts.type}-html-report.html`)
@@ -107,7 +111,7 @@ module.exports = async () => {
       // Add the custom waypoint transformer for waypoint files
       '^.*\\.(waypoint.js|wp.js|test.js|spec.js)$': `${testUtilsDir}/src/waypoint/transformer.ts`,
       '^.*\\.(waypoint.ts|wp.ts|test.ts|spec.ts)$': `${testUtilsDir}/src/waypoint/transformer.ts`,
-      '^(waypoint|wp|test|spec)\\..*\\.(ts)$': `${testUtilsDir}/src/waypoint/transformer.ts`,
+      '^(waypoint|wp|test|spec)\\..*\\.(js)$': `${testUtilsDir}/src/waypoint/transformer.ts`,
       '^(waypoint|wp|test|spec)\\..*\\.(ts)$': `${testUtilsDir}/src/waypoint/transformer.ts`,
       ...defConf.transform,
     },

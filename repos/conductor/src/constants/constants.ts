@@ -1,4 +1,4 @@
-import { conductorHeaders } from '@GCD/configs/conductor.headers.config'
+import { conductorHeaders } from '@GCD/Configs/conductor.headers.config'
 
 export const ConductorLabel = `com.gobletqa`
 export const ConductorUserHashLabel = `${ConductorLabel}.conductor`

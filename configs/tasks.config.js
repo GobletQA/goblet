@@ -84,6 +84,7 @@ module.exports = {
         containerPath: `/goblet/app`,
         excludePaths: [
           '.*',
+          '!/tsconfig.json',
           '!/configs',
           '!/container',
           'node_modules',
@@ -99,6 +100,38 @@ module.exports = {
     },
     action: {
       contexts: [`action`, `act`],
+      sync: {
+        excludePaths: [
+          '**',
+          '!/tsconfig.json',
+          '!/repos/exam',
+          '!/repos/goblet',
+          '!/repos/latent',
+          '!/repos/shared',
+          '!/repos/logger',
+          '!/repos/browser',
+          '!/repos/workflows',
+          '!/repos/testUtils',
+          '!/repos/environment',
+          // Ignore the dist folders so local bundles are not synced
+          '!/repos/logger/dist',
+          '/repos/browser/dist',
+          '/repos/exam/dist',
+          '!/repos/goblet/dist',
+          '/repos/latent/dist',
+          '/repos/shared/dist',
+          '/repos/workflows/dist',
+          '/repos/testUtils/dist',
+          '/repos/environment/dist',
+        ]
+      },
+      envs: {
+        omit: [
+          `GB_CR_*`,
+          `GB_FE_*`,
+          `FIRE_BASE_*`
+        ]
+      }
     },
     base: {
       contexts: [`base`, `bs`],
@@ -116,19 +149,22 @@ module.exports = {
       sync: {
         excludePaths: [
           '**',
+          '!/tsconfig.json',
           '!/repos/backend',
           '!/repos/conductor',
-          '!/repos/latent',
-          '!/repos/screencast',
+          '!/repos/environment',
+          '!/repos/goblet',
+          '!/repos/logger',
           '!/repos/shared',
           '!/repos/workflows',
           // Ignore the dist folders so local bundles are not synced
-          '/repos/backend/dist',
-          '/repos/conductor/dist',
-          '/repos/latent/dist',
-          '/repos/screencast/dist',
+          '/repos/goblet/dist',
+          '/repos/logger/dist',
           '/repos/shared/dist',
+          '/repos/backend/dist',
           '/repos/workflows/dist',
+          '/repos/conductor/dist',
+          '/repos/environment/dist',
         ]
       },
       envs: {
@@ -144,6 +180,7 @@ module.exports = {
           `GB_CD_*`,
           `GB_NO_*`,
           `GB_VNC_*`,
+          `EXAM_*`,
           `DISPLAY`,
           `PLAYWRIGHT_*`,
           `GOBLET_KIND_*`,
@@ -187,9 +224,13 @@ module.exports = {
           'tasks',
           'certs',
           'goblet',
-          'repos/scripts',
           'repos/backend',
+          'repos/browser',
           'repos/conductor',
+          'repos/exam',
+          'repos/latent',
+          'repos/logger',
+          'repos/scripts',
           'repos/screencast',
         ]
       },
@@ -210,6 +251,7 @@ module.exports = {
           `GB_BE_PORT`,
           `GB_SC_PORT`,
           `GB_BE_HOST`,
+          `EXAM_*`,
           `FIRE_BASE_*`,
           `GB_VNC_ACTIVE`,
           `GB_NO_VNC_PATH`,
@@ -227,17 +269,28 @@ module.exports = {
       sync: {
         excludePaths: [
           '**',
+          '!/tsconfig.json',
+          '!/repos/exam',
           '!/repos/latent',
-          '!/repos/screencast',
+          '!/repos/logger',
+          '!/repos/goblet',
           '!/repos/shared',
+          '!/repos/browser',
           '!/repos/testUtils',
           '!/repos/workflows',
+          '!/repos/screencast',
+          '!/repos/environment',
           '!/tasks',
           // Ignore the dist folders so local bundles are not synced
-          '/repos/screencast/dist',
+          '/repos/exam/dist',
+          '/repos/logger/dist',
+          '/repos/goblet/dist',
           '/repos/shared/dist',
+          '/repos/browser/dist',
           '/repos/testUtils/dist',
           '/repos/workflows/dist',
+          '/repos/screencast/dist',
+          '/repos/environment/dist',
         ]
       },
       envs: {

@@ -7,12 +7,11 @@ import type {
   TPlayerTestEventMeta
 } from '@GSC/types'
 
+import { Repo } from '@gobletqa/workflows'
 import { Logger } from '@GSC/utils/logger'
 import { EAstObject } from '@ltipton/parkin'
-import { Repo } from '@gobletqa/shared/repo/repo'
-import { PWEventErrorLogFilter } from '@GSC/constants'
-import { capitalize, emptyArr, isArr } from '@keg-hub/jsutils'
-import { playBrowser } from '@GSC/libs/playwright/browser/playBrowser'
+import { capitalize, emptyArr } from '@keg-hub/jsutils'
+import { PWEventErrorLogFilter, playBrowser } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 const getEventParent = (evtData:TPlayerTestEvent) => {
@@ -89,6 +88,7 @@ const handleStartPlaying = async (
       if(evtData.describes) evtData.describes = emptyArr
 
       Logger.verbose(`Emit ${event.name} event`, event)
+      // Logger.verbose(`Emit ${event.name} event`)
       Manager.emit(socket, event.name, {
         ...event,
         data: evtData,
@@ -96,7 +96,7 @@ const handleStartPlaying = async (
       })
 
     },
-    onCleanup: async (closeBrowser:boolean) => {
+    onCleanup: async (browserClose:boolean) => {
       socket?.id
         && Manager?.cache[socket.id]?.player
         && (Manager.cache[socket.id].player = undefined)

@@ -20,8 +20,10 @@ export const parkinOverride = (repo:TRepo) => {
     Then: repo.parkin.Then.bind(repo.parkin),
     Given: repo.parkin.Given.bind(repo.parkin),
     After: repo.parkin.hooks.afterEach.bind(repo.parkin.hooks),
+    AfterEach: repo.parkin.hooks.afterEach.bind(repo.parkin.hooks),
     AfterAll: repo.parkin.hooks.afterAll.bind(repo.parkin.hooks),
     Before: repo.parkin.hooks.beforeEach.bind(repo.parkin.hooks),
     BeforeAll: repo.parkin.hooks.beforeAll.bind(repo.parkin.hooks),
+    BeforeEach: repo.parkin.hooks.beforeEach.bind(repo.parkin.hooks),
   })
 }
