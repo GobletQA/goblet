@@ -1,6 +1,6 @@
 import { TFileModel } from '../types'
 
-import { isObj } from '@keg-hub/jsutils'
+import { isObj } from '@keg-hub/jsutils/isObj'
 import { fileModel } from '../models/fileModel'
 
 export const fileFactory = (

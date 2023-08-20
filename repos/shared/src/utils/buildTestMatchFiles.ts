@@ -1,4 +1,5 @@
-import { noPropArr, isStr } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 
 export type TTestMatch = {
   ext?:string

@@ -3,9 +3,9 @@ import type { Handler } from 'express'
 import { config } from 'winston'
 import { Express } from 'express'
 import { TLogOpts } from '../types'
-import { noOpObj } from '@keg-hub/jsutils'
 import expressWinston from 'express-winston'
 import { buildLogger } from '@gobletqa/logger'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 
 
 /**

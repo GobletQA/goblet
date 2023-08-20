@@ -2,9 +2,9 @@ import type { TRootPaths, Repo } from '@GSH/types'
 
 import fs from 'fs'
 import path from 'path'
-import { limboify } from '@keg-hub/jsutils'
 import { fileSys } from '@keg-hub/cli-utils'
 import { getRepoGobletDir } from '@gobletqa/goblet'
+import { limboify } from '@keg-hub/jsutils/limboify'
 
 const { getFolderContent } = fileSys
 

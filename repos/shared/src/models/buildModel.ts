@@ -1,4 +1,5 @@
-import { deepMerge, pickKeys } from '@keg-hub/jsutils'
+import { pickKeys } from '@keg-hub/jsutils/pickKeys'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
 /**
  * Builds a model with real values from the passed in overrides and Model objects

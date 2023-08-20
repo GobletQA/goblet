@@ -1,10 +1,10 @@
 import type { Request as JWTRequest } from 'express-jwt'
 import type { Response, NextFunction, Router } from 'express'
 
-import { emptyArr } from '@keg-hub/jsutils'
 import { resError } from '../express/resError'
 import { getRouter } from '../express/appRouter'
 import { asyncWrap } from '../express/asyncWrap'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 
 export type TMValidateUser = {
   route:string|RegExp,
