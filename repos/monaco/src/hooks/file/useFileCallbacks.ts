@@ -8,7 +8,7 @@ import type {
 import type { SyntheticEvent, Dispatch, RefObject, SetStateAction, MutableRefObject } from 'react'
 
 import { useCallback, useState } from 'react'
-import { isStr } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
 
 export type THFileCallbacks = {
   editing:boolean

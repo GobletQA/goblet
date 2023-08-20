@@ -16,8 +16,10 @@ import type {
 
 import { Logger } from '@GBB/utils/logger'
 import { ENVS } from '@gobletqa/environment'
+import { noOp } from '@keg-hub/jsutils/noOp'
 import { PWAutomateEvent } from '@GBB/constants'
-import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { addPWInitScripts } from '@GBB/utils/addPWInitScripts'
 import { exposePWFunction } from '@GBB/utils/exposePWFunction'
 

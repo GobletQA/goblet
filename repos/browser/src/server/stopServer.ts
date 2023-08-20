@@ -1,7 +1,8 @@
 import { EBrowserType, EBrowserName } from '@GBB/types'
 
 import { Logger } from '@GBB/utils/logger'
-import { limbo, wait } from '@keg-hub/jsutils'
+import { wait } from '@keg-hub/jsutils/wait'
+import { limbo } from '@keg-hub/jsutils/limbo'
 import { metadata } from '@GBB/utils/metadata'
 import { DefaultBrowser } from '@GBB/constants'
 import { findProc, killProcAsync } from './proc'

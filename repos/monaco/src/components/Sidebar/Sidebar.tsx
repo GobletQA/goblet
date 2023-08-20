@@ -13,7 +13,7 @@ import type {
 
 import { useMemo } from 'react'
 import { FileTree } from '../FileTree'
-import { isStr } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
 import {
   Sidebar as GBSidebar,
   SidebarPortal as GBSidebarPortal

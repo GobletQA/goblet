@@ -1,8 +1,8 @@
 import type { TFolder, TFileCallback } from '../../types'
 import type { RefObject, Dispatch, SetStateAction } from 'react'
 
-import { emptyObj } from '@keg-hub/jsutils'
 import { DirectoryItem } from './DirectoryItem'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { styles } from '@GBM/utils/file/fileHelpers'
 import { stopPropagation } from '@GBM/utils/dom/stopPropagation'
 import { DirectoryEdit, TreeItemContainer } from './FileTree.styled'

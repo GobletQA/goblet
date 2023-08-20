@@ -2,9 +2,9 @@ import type { TPipelineArgs, TStateObj } from "@GEX/types"
 
 import { promises } from 'fs'
 import pMapSeries from 'p-map-series'
-import {ensureArr} from "@keg-hub/jsutils"
 import { BaseRunner } from '@GEX/runner/BaseRunner'
 import {toFileModel} from "@GEX/utils/toFileModel"
+import {ensureArr} from "@keg-hub/jsutils/ensureArr"
 import {typeClassFromLoc} from "@GEX/utils/typeClassFromLoc"
 
 const { readFile } = promises

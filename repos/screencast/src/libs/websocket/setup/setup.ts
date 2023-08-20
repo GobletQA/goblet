@@ -4,11 +4,12 @@ import type { TSocketEvtCBProps, TSocketConfig } from '@GSC/types'
 
 import { Server } from 'socket.io'
 import { Logger } from '@GSC/utils/logger'
+import { get } from '@keg-hub/jsutils/get'
 import { setupConfig } from './setupConfig'
 import { setupEvents } from './setupEvents'
 import { validateToken } from './validateToken'
-import { checkCall, get } from '@keg-hub/jsutils'
 import { SocketManager } from '../manager/manager'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
 
 const setupManager = (
   io:Server

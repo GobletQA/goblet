@@ -10,7 +10,8 @@ import type {
 import { Repo } from '@gobletqa/workflows'
 import { Logger } from '@GSC/utils/logger'
 import { EAstObject } from '@ltipton/parkin'
-import { capitalize, emptyArr } from '@keg-hub/jsutils'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
+import { capitalize } from '@keg-hub/jsutils/capitalize'
 import { PWEventErrorLogFilter, playBrowser } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 

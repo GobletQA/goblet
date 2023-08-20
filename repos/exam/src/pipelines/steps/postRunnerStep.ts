@@ -1,5 +1,6 @@
 import type { TPipelineArgs } from '@GEX/types'
-import { isArr } from '@keg-hub/jsutils'
+
+import { isArr } from '@keg-hub/jsutils/isArr'
 import { loadFilesTask } from '../tasks/loadFilesTask'
 
 export const postRunnerStep = async (args:TPipelineArgs) => {

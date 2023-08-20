@@ -1,6 +1,6 @@
 
 import os from 'os'
-import { deepMerge } from '@keg-hub/jsutils'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { create as childProc }from '@keg-hub/spawn-cmd/src/childProcess'
 
 export type TShell = `powershell.exe`|`bash` | `sh`

@@ -1,16 +1,16 @@
 import {
   TLTAdd,
-  TLTGetSecrets,
   TLTSave,
   TLTLoad,
   TLTRekey,
   TLTCreate,
   EFileType,
   ELatentEnv,
+  TLTGetSecrets,
 } from "@GLT/types"
-import {exists} from "@keg-hub/jsutils"
 
 import {Latent} from "./latent"
+import {exists} from "@keg-hub/jsutils/exists"
 
 export class Secrets {
 

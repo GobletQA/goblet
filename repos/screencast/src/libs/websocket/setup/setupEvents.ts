@@ -9,7 +9,9 @@ import type {
 
 import { Server } from 'socket.io'
 import { SocketManager } from '../manager/manager'
-import { checkCall, noOpObj, isFunc } from '@keg-hub/jsutils'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
 
 export type TCustomEvt = {
   io:Server

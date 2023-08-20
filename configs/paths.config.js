@@ -7,7 +7,8 @@
 const path = require('path')
 const { readdirSync } = require('fs')
 const { GobletRoot } = require('../gobletRoot')
-const { deepFreeze, snakeCase } = require('@keg-hub/jsutils')
+const { snakeCase } = require('@keg-hub/jsutils/snakeCase')
+const { deepFreeze } = require('@keg-hub/jsutils/deepFreeze')
 const reposDir = path.join(GobletRoot, 'repos')
 
 /**

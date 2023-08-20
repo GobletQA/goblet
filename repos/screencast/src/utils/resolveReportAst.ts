@@ -1,5 +1,5 @@
 import path from 'path'
-import { noOpObj } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { getMountRootDir } from '@gobletqa/shared/utils/getMountRootDir'
 /**
  * Checks if a path is in the reports folder

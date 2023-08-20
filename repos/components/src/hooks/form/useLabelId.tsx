@@ -1,4 +1,4 @@
-import {uuid} from "@keg-hub/jsutils"
+import {uuid} from "@keg-hub/jsutils/uuid"
 import {useMemo} from "react"
 
 export type THLabelId = {

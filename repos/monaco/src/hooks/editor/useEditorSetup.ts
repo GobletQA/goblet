@@ -17,7 +17,7 @@ import type {
 } from '@GBM/types'
 
 import { THEMES } from '@GBM/constants'
-import { isStr } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
 import { useCallback, useEffect, useImperativeHandle } from 'react'
 import { GetActiveFileEvent, useOnEvent } from '@gobletqa/components'
 import { getContentFromPath } from '@GBM/utils/editor/getContentFromPath'

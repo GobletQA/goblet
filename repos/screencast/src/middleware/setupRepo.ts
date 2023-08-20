@@ -5,7 +5,8 @@ import type { TWFGobletConfig } from '@gobletqa/workflows'
 
 import { Repo } from '@gobletqa/workflows'
 import { asyncWrap } from '@gobletqa/shared/express'
-import { pickKeys, deepMerge } from '@keg-hub/jsutils'
+import { pickKeys } from '@keg-hub/jsutils/pickKeys'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { AppRouter } from '@gobletqa/shared/express/appRouter'
 
 /**

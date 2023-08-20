@@ -12,20 +12,23 @@ import type { TGetPageCB } from './browser'
 
 import playwright from 'playwright'
 import { Logger } from '@GBB/utils/logger'
-import { deepMerge } from '@keg-hub/jsutils'
 import { ENVS } from '@gobletqa/environment'
 import { EmptyBrowser } from './emptyBrowser'
 import { inDocker } from '@keg-hub/cli-utils'
+import { toBool } from '@keg-hub/jsutils/toBool'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
 import { CreateBrowserRetry } from '@GBB/constants'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { buildStatus } from '@GBB/utils/buildStatus'
 import { socketActive } from '@GBB/utils/checkVncEnv'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { getBrowserOpts } from '@GBB/utils/getBrowserOpts'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
-import { toBool, emptyObj, isFunc } from '@keg-hub/jsutils'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
 import { getServerEndpoint } from '@GBB/server/getServerEndpoint'
 import { checkInternalPWContext } from './checkInternalPWContext'
+
 
 type TGetBrowserOpts = {
   browserServer?:boolean,

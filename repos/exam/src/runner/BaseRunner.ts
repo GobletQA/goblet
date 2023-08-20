@@ -7,11 +7,15 @@ import type {
 } from '@GEX/types'
 
 import { ExamRunner } from './ExamRunner'
+import { set } from '@keg-hub/jsutils/set'
+import { get } from '@keg-hub/jsutils/get'
 import { RootSuiteId } from '@GEX/constants'
 import { Errors } from '@GEX/constants/errors'
 import { ExamEvents } from '@GEX/events/Events'
-import { emptyArr, omitKeys, set, get, } from '@keg-hub/jsutils'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
+import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import {BaseEnvironment} from '@GEX/environment/BaseEnvironment'
+
 
 export class BaseRunner extends ExamRunner<BaseEnvironment> {
 

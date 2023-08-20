@@ -2,7 +2,7 @@
 import type { TBrowserProcs, TProc, TBrowserStatus, TBrowserConf } from '@GSC/types'
 
 import '../../resolveRoot'
-import { noOpObj } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import {
   GBrowser,
   statusServer,

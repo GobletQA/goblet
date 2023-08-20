@@ -8,11 +8,9 @@ import type { TRepoGraphRepos } from '@gobletqa/workflows/types/shared.types'
 import { Rest } from '../constants/rest'
 import { Graph } from '../constants/graph'
 import { BaseGraphApi } from './baseGraphApi'
-import {
-  isObj,
-  emptyObj,
-  noPropArr,
-} from '@keg-hub/jsutils'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 
 
 type TReposResp = {

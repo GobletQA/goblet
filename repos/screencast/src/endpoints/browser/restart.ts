@@ -2,8 +2,8 @@ import type { Repo } from '@gobletqa/workflows'
 import type { Response, Request, RequestHandler } from 'express'
 
 
-import { limbo } from '@keg-hub/jsutils'
 import { GBrowser } from '@gobletqa/browser'
+import { limbo } from '@keg-hub/jsutils/limbo'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { loadRepoFromReq } from '@GSC/middleware/setupRepo'
 import { asyncWrap } from '@gobletqa/shared/express/asyncWrap'

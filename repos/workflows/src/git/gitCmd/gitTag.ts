@@ -16,7 +16,8 @@ import type {
 } from './gitcmd.types'
 
 import { git } from './gitCmd'
-import { deepMerge, isStr } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { GitRemoteRef } from '@gobletqa/workflows/constants'
 import {
   defCmdOpts,

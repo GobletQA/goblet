@@ -9,14 +9,13 @@ import type {
   TSocketMessageObj,
 } from '@GSC/types'
 
+import { get } from '@keg-hub/jsutils/get'
+import { exists } from '@keg-hub/jsutils/exists'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { WS_CMD_FAIL } from '@GSC/constants/websocket'
-import {
-  get,
-  exists,
-  noOpObj,
-  noPropArr,
-  isEmptyColl,
-} from '@keg-hub/jsutils'
+import { noPropArr } from '@keg-hub/jsutils/noPropArr'
+import { isEmptyColl } from '@keg-hub/jsutils/isEmptyColl'
+
 
 const CWD_REGEX = /^(\-\-)?(location|loc|workdir|cwd)\s/
 

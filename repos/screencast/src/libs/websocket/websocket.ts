@@ -4,7 +4,7 @@ import * as SocketEvents from './events'
 import type { TSocketConfig } from '@gobletqa/shared/types'
 
 import { socketInit } from './setup'
-import { noOpObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 const {
   authToken,
@@ -17,7 +17,7 @@ const {
   browserAutomate,
 } = SocketEvents
 
-const defConfig = noOpObj as TSocketConfig
+const defConfig = emptyObj as TSocketConfig
 
 export type TInitSocket = (
   app:Express,

@@ -6,7 +6,7 @@ import type {
   IExamEnvironment,
 } from '@GEX/types'
 
-import { isStr } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
 
 export class ExamEnvironment implements IExamEnvironment {
 

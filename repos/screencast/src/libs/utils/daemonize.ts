@@ -1,7 +1,7 @@
 import type { StdioOptions } from 'child_process'
 
 import { spawn } from 'child_process'
-import { noOpObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 /**
  * Helper to get the passed in args of the current script
@@ -36,12 +36,12 @@ type TSpawnDaemon = {
 export const spawnDaemon = (
   script:string,
   args:string[],
-  opt:TSpawnDaemon = noOpObj as TSpawnDaemon
+  opt:TSpawnDaemon = emptyObj as TSpawnDaemon
 ) => {
   const defstd = 'inherit'
 
   const {
-    env = noOpObj,
+    env = emptyObj,
     stdout = defstd,
     stderr = defstd,
     cwd = process.cwd(),
@@ -70,7 +70,7 @@ export const spawnDaemon = (
  * @function
  * @public
  */
-export const daemonize = (opt:TSpawnDaemon = noOpObj as TSpawnDaemon) => {
+export const daemonize = (opt:TSpawnDaemon = emptyObj as TSpawnDaemon) => {
   // we are a daemon, don't daemonize again
   if (process.env.__ALREADY_DAEMONIZED) return process.pid
 

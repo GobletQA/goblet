@@ -1,5 +1,5 @@
 const { constants } = require('./constants')
-const { noOpObj } = require('@keg-hub/jsutils')
+const { noOpObj } = require('@keg-hub/jsutils/noOpObj')
 
 class CodeGenerator {
   recorder = undefined

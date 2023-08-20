@@ -2,8 +2,8 @@ import type { Express } from 'express'
 import type { Socket } from 'socket.io'
 import type { SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
-import { noOpObj } from '@keg-hub/jsutils'
 import { recordBrowser } from '@gobletqa/browser'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 /**
@@ -63,7 +63,7 @@ const handleStop = async (
   Manager:SocketManager,
   app:Express
 ) => {
-  const { action=noOpObj } = data
+  const { action=emptyObj } = data
   const cache = Manager.cache[socket.id]
 
   // TODO: handle socket.io error - missing cache to stop recorder

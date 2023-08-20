@@ -2,7 +2,7 @@ import { buildFile } from './buildFile'
 import type { TFolderItem } from '@GBM/types'
 
 import { buildFolder } from './buildFolder'
-import { deepMerge } from '@keg-hub/jsutils'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
 export type TAddSrcFile = {
   path: string,

@@ -4,7 +4,7 @@ jest.resetModules()
 jest.resetAllMocks()
 jest.clearAllMocks()
 
-import { doIt } from '@keg-hub/jsutils'
+import { doIt } from '@keg-hub/jsutils/doIt'
 import { nanoid } from './nanoid'
 
 describe(`nanoid`, () => {

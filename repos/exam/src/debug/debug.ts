@@ -1,7 +1,7 @@
 
 import util from 'util'
 import { Logger } from '@GEX/utils/logger'
-import { emptyArr } from '@keg-hub/jsutils'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { getCPUCount } from '@GEX/utils/getCPUCount'
 
 const clr = Logger.colors

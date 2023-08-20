@@ -10,9 +10,9 @@ import type {
   TFileSaveResp,
 } from '@gobletqa/latent'
 
-import { exists } from '@keg-hub/jsutils'
 import { env } from '@keg-hub/parse-config'
 import { ENVS } from '@gobletqa/environment'
+import { exists } from '@keg-hub/jsutils/exists'
 import { ELoadFormat, EFileType, Latent } from '@gobletqa/latent'
 
 type TTokenProps = { remote:string, ref?:string }

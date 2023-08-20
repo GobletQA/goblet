@@ -7,7 +7,8 @@ import type {
 } from '@GWF/types'
 
 import { git, validateGitOpts } from './gitCmd/git'
-import { deepMerge, emptyObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
 
 const checkGitOpts = (instance:Record<`options`, TGitOpts>) => {

@@ -2,8 +2,9 @@ import type { Express } from 'express'
 import type { TBrowserConf, SocketManager, TSocketEvtCBProps } from '@GSC/types'
 
 import { Logger } from '@GSC/utils/logger'
+import { get } from '@keg-hub/jsutils/get'
 import { GBrowser } from '@gobletqa/browser'
-import { get, noOpObj } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
 
 let prevStatus

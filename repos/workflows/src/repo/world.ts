@@ -1,7 +1,7 @@
 import type { TGobletConfig } from '@GWF/types'
 
-import { deepMerge } from '@keg-hub/jsutils'
 import { getClientWorld } from './getClientWorld'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
 /**
  * Merge of world defaults with client world

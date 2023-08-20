@@ -1,7 +1,8 @@
 import '../resolveRoot'
 import type { EBrowserName, TBrowserConf } from '@GSC/types'
 
-import { parseJSON, noOpObj } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { parseJSON } from '@keg-hub/jsutils/parseJSON'
 import { DefaultBrowser, newServer } from '@gobletqa/browser'
 
 /**

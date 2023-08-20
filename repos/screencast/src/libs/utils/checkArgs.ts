@@ -1,4 +1,4 @@
-import { checkCall } from '@keg-hub/jsutils'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
 
 /**
  * Check if an arg exists, and calls the passed in method if it does

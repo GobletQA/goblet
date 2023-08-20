@@ -8,7 +8,7 @@
  const { resolveValues, resolveValue, getEnvPrefix } = require('./resolveValues')
  const ePreFix = getEnvPrefix()
  
-const { exists } = require('@keg-hub/jsutils')
+const { exists } = require('@keg-hub/jsutils/exists')
 
 const buildServiceName = (deployment) => (`
 name: ${deployment}

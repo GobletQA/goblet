@@ -1,5 +1,5 @@
 const path = require('path')
-const { noOpObj } = require('@keg-hub/jsutils')
+const { noOpObj } = require('@keg-hub/jsutils/noOpObj')
 const { Logger, execCmd, error } = require('@keg-hub/cli-utils')
 const { resolveValues, resolveNPMToken } = require('./resolveValues')
 

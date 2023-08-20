@@ -1,5 +1,5 @@
 import { ENVS } from '@gobletqa/environment'
-import { deepFreeze } from '@keg-hub/jsutils'
+import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
 
 
 /**

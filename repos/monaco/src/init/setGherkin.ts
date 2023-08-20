@@ -1,6 +1,5 @@
 import type { TMonaco, TEditorConfig } from '@GBM/types'
 
-import { noPropArr } from '@keg-hub/jsutils'
 
 export const setGherkin = async (config:TEditorConfig, monaco:TMonaco) => {
   if(!config.gherkin) return

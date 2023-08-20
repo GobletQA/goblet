@@ -10,8 +10,10 @@ import type {
 } from '@GBB/types'
 
 import { constants } from './constants'
+import { noOp } from '@keg-hub/jsutils/noOp'
 import { EventsRecorder } from './eventsRecorder'
-import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { getInjectScript } from '@GBB/utils/getInjectScript'
 
 

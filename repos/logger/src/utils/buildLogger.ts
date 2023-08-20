@@ -1,8 +1,8 @@
 import type { TLogOpts } from '../types'
 
 import winston from 'winston'
-import { noOpObj } from '@keg-hub/jsutils'
 import { safeReplacer } from './safeReplacer'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 const { createLogger, transports, format } = winston
 const {
   json,

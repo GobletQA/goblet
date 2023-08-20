@@ -9,8 +9,8 @@ import type {
 
 import path from 'path'
 import * as esbuild from 'esbuild'
-import { emptyObj } from '@keg-hub/jsutils'
 import { Errors } from '@GEX/constants/errors'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { createGlobMatcher } from '@GEX/utils/globMatch'
 
 const IMPORT_META_URL_VARIABLE_NAME = '__esbuild_register_import_meta_url__'

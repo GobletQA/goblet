@@ -9,7 +9,11 @@ import type {
 } from '@GBB/types'
 
 import { recordBrowser } from './recordBrowser'
-import { isArr, isStr, isFunc, noPropArr } from '@keg-hub/jsutils'
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
+import { noPropArr } from '@keg-hub/jsutils/noPropArr'
+
 
 /**
  * Helper to thrown an error

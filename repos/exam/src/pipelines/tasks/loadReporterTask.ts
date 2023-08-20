@@ -1,9 +1,10 @@
 import type { TPipelineArgs, IConstructable, IExamReporter } from "@GEX/types"
 
-import {isArr, isStr} from "@keg-hub/jsutils"
+import {isArr} from "@keg-hub/jsutils/isArr"
+import {isStr} from "@keg-hub/jsutils/isStr"
+import {DefaultReporters} from "@GEX/constants"
 import { loadFilesTask }  from './loadFilesTask'
 import { BaseReporter } from '@GEX/reporter/BaseReporter'
-import {DefaultReporters} from "@GEX/constants"
 
 
 type TReports = string|[string, IConstructable<IExamReporter>]

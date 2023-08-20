@@ -2,7 +2,8 @@ import type { EBrowserName, TBrowserProcs } from '@GBB/types'
 
 import { findProc } from './proc'
 import { BrowserNames } from '@GBB/constants'
-import { limbo, exists } from '@keg-hub/jsutils'
+import { limbo } from '@keg-hub/jsutils/limbo'
+import { exists } from '@keg-hub/jsutils/exists'
 
 /**
  * Gets the current running status of browser server the process

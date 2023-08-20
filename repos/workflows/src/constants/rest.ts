@@ -1,5 +1,5 @@
-import { deepFreeze } from '@keg-hub/jsutils'
 import { ENVS } from '@gobletqa/environment'
+import { deepFreeze } from '@keg-hub/jsutils/deepFreeze'
 
 export const Rest = deepFreeze({
   Github: {

@@ -3,7 +3,8 @@ import type { TFileMeta } from '@GBM/types'
 import type { TTabItem, TTab } from '@gobletqa/components'
 
 import { FileIcon } from '@gobletqa/components'
-import { noOpObj, omitKeys } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { TabStyles, TabRefs } from '@GBM/constants/tabs'
 
 
@@ -12,7 +13,7 @@ import { TabStyles, TabRefs } from '@GBM/constants/tabs'
  */
 export const fileToTab = (
   file:TFileMeta,
-  { Icon=FileIcon, ...tab }:Partial<TTab> & { Icon?:ComponentType<any> }=noOpObj
+  { Icon=FileIcon, ...tab }:Partial<TTab> & { Icon?:ComponentType<any> }=emptyObj
 ):TTabItem => ({
   Icon,
   styles: TabStyles,

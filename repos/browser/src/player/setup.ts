@@ -6,8 +6,9 @@ import type { TPlayerEventData, TPlayerTestEvent } from '@GBB/types'
  * Which allows it to be referenced directly in step definitions
  */
 import expect from 'expect'
+import { unset } from '@keg-hub/jsutils/unset'
 import { ParkinTest } from '@ltipton/parkin/test'
-import { unset, omitKeys } from '@keg-hub/jsutils'
+import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { getDefinitions } from '@gobletqa/workflows'
 import { Parkin, TParkinTestConfig } from '@ltipton/parkin'
 

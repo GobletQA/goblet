@@ -8,7 +8,7 @@ import type {
 
 import { Automate } from '../automate'
 import { EBrowserEvent } from '@GBB/types'
-import { ensureArr } from '@keg-hub/jsutils'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 
 type ListenerList = Record<EBrowserEvent, BrowserEvents>
 

@@ -1,6 +1,7 @@
 import type { IConstructable, IExamEnvironment, TPipelineArgs } from "@GEX/types"
 
-import {exists, isStr} from "@keg-hub/jsutils"
+import {isStr} from "@keg-hub/jsutils/isStr"
+import {exists} from "@keg-hub/jsutils/exists"
 import { loadFilesTask }  from './loadFilesTask'
 import { BaseEnvironment } from '@GEX/environment/BaseEnvironment'
 

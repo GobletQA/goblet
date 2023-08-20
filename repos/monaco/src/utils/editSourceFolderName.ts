@@ -1,4 +1,4 @@
-import { deepMerge } from '@keg-hub/jsutils'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { buildFolder } from './buildFolder'
 
 const editSubFolder = (tree: any, oldPath: string, newPath: string) => {

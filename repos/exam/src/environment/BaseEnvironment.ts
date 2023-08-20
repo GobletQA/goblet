@@ -11,9 +11,10 @@ import type {
  * Which allows it to be referenced directly in step definitions
  */
 import expect from 'expect'
+import { isStr } from '@keg-hub/jsutils/isStr'
 import { ParkinTest } from '@ltipton/parkin/test'
-import { emptyObj, isStr } from '@keg-hub/jsutils'
 import { BaseRunner } from '@GEX/runner/BaseRunner'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 export class BaseEnvironment implements IExamEnvironment<BaseRunner> {
 

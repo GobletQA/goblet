@@ -1,4 +1,4 @@
-import { wait } from '@keg-hub/jsutils'
+import { wait } from '@keg-hub/jsutils/wait'
 
 describe(`these tests wait 2 seconds between each test`, () => {
 

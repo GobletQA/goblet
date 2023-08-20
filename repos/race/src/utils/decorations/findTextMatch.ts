@@ -9,9 +9,10 @@ import type {
   TBackgroundParentAst,
 } from '@ltipton/parkin'
 
+import { get } from "@keg-hub/jsutils/get"
 import { findInFeature } from './findInFeature'
-import { emptyArr, get } from "@keg-hub/jsutils"
 import { EAstObject } from '@ltipton/parkin'
+import { emptyArr } from "@keg-hub/jsutils/emptyArr"
 import {
   findChild,
   findParentStep,

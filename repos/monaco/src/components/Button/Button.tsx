@@ -1,4 +1,5 @@
-import { cls, noOp } from '@keg-hub/jsutils'
+import { cls } from '@keg-hub/jsutils/cls'
+import { noOp } from '@keg-hub/jsutils/noOp'
 import { EditorButton } from './Button.styled'
 
 export type Button = {

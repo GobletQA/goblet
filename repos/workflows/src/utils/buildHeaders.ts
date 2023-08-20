@@ -1,7 +1,7 @@
 import type { TGitReqHeaders } from '../types'
 
 import { Rest } from '../constants'
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 export type TBuildHeaders = {
   token:string

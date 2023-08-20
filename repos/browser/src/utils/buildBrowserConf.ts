@@ -4,11 +4,12 @@ import type {
   TGobletConfig,
 } from '@GBB/types'
 
+import { toBool } from '@keg-hub/jsutils/toBool'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { socketActive } from '@GBB/utils/checkVncEnv'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
-import { toBool, emptyObj, deepMerge } from '@keg-hub/jsutils'
-
 
 export type TBuildBrowserCfg = {
   config?:TGobletConfig

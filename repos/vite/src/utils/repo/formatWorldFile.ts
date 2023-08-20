@@ -1,4 +1,5 @@
-import {exists, toNum} from "@keg-hub/jsutils"
+import {toNum} from "@keg-hub/jsutils/toNum"
+import {exists} from "@keg-hub/jsutils/exists"
 
 export type TFormatWorldFile = {
   world:Record<string, any>,

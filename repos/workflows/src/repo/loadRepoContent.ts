@@ -8,7 +8,8 @@ import type {
 } from '@GWF/types'
 
 import { Logger } from '@gobletqa/logger'
-import { pickKeys, omitKeys } from '@keg-hub/jsutils'
+import { omitKeys } from '@keg-hub/jsutils/omitKeys'
+import { pickKeys } from '@keg-hub/jsutils/pickKeys'
 import { loadFeatures } from '@gobletqa/shared/libs/features/features'
 import { buildFileTree } from '@gobletqa/shared/libs/fileSys/fileTree'
 import { loadDefinitions } from '@gobletqa/shared/libs/definitions/definitions'

@@ -10,7 +10,7 @@ import type {
 } from '../../types'
 
 import { useCallback } from 'react'
-import { isStr } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
 import { getModelFromPath } from '../../utils/editor/getModelFromPath'
 
 export type TUseRestoreModel = {

@@ -4,13 +4,12 @@
  */
 
 const path = require('path')
+const { isStr } = require('@keg-hub/jsutils/isStr')
+const { noOpObj } = require('@keg-hub/jsutils/noOpObj')
 const { loadConfigs } = require('@keg-hub/parse-config')
-const {tryRequireSync } = require('@keg-hub/jsutils/src/node')
-const {
-  isStr,
-  noOpObj,
-  deepMerge,
-} = require('@keg-hub/jsutils')
+const { deepMerge } = require('@keg-hub/jsutils/deepMerge')
+const { tryRequireSync } = require('@keg-hub/jsutils/src/node')
+
 
 const appRoot = path.join(__dirname, `../../../`)
 const containerDir = path.join(appRoot, `container`)
