@@ -39,7 +39,7 @@
     "@gobletqa/logger": "workspace:../logger",
     "@gobletqa/shared": "workspace:../shared",
     "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": ">=9.7.8",
+    "@keg-hub/jsutils": ">=9.8.0",
     "@keg-hub/parse-config": ">=2.1.0",
     "axios": "1.4.0",
     "chokidar": "3.5.3",

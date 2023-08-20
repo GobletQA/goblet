@@ -63,7 +63,7 @@ FROM goblet-setup as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
 COPY --from=goblet-pruner /goblet/app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install --fix-lockfile
+RUN pnpm install --fix-lockfile --shamefully-hoist
 # ---- End Stage ---- #
 
 

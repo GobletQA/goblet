@@ -4,7 +4,9 @@ import { glob } from 'glob'
 import micromatch from 'micromatch'
 import { naturalSort } from './naturalSort'
 import { GlobMatchKeys } from "@GEX/constants"
-import { emptyObj, ensureArr } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+
 import { GlobFilesCfg } from "@GEX/constants/defaults"
 
 export const globMatchFiles = async (
