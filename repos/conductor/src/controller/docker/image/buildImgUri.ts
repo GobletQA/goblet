@@ -1,5 +1,5 @@
 import path from 'path'
-import { pickKeys } from '@keg-hub/jsutils'
+import { pickKeys } from '@keg-hub/jsutils/pickKeys'
 import { TImgConfig } from '@gobletqa/conductor/types'
 
 export const buildImgUri = (image:TImgConfig, withKeys?:string[]) => {

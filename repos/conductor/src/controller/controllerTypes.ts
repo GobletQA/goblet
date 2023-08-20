@@ -3,7 +3,7 @@ import { TControllerConfig } from '@gobletqa/conductor/types'
 
 import { Kube } from './kube/kube'
 // import { Docker } from './docker/docker'
-import { capitalize } from '@keg-hub/jsutils'
+import { capitalize } from '@keg-hub/jsutils/capitalize'
 
 export const controllerTypes = {
   Kube,

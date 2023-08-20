@@ -11,7 +11,7 @@ import type {
 } from '../../../types'
 
 import { KubeError } from '../kubeError'
-import { limbo } from '@keg-hub/jsutils'
+import { limbo } from '@keg-hub/jsutils/limbo'
 import { Logger } from '../../../utils/logger'
 import * as k8s from '@kubernetes/client-node'
 

@@ -1,7 +1,7 @@
 import type { TPod } from '@GCD/types'
 
-import { noOpObj } from '@keg-hub/jsutils'
 import { Logger } from '../../../utils/logger'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { PodAnnotations, ConductorUserHashLabel } from '@GCD/constants'
 
 export const getPodAnnotations = (pod:TPod) => {

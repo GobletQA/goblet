@@ -1,14 +1,17 @@
 import { GBERoot } from '../resolveRoot'
 
-import path from 'path'
-import { esbuild } from '@ltipton/esdev'
-import { aliases } from '@GConfigs/aliases.config'
+import path from 'node:path'
+import * as esbuild from 'esbuild'
+import { fileURLToPath } from 'node:url'
+import { promises as fs } from 'node:fs'
+import aliasPlugin from 'esbuild-plugin-path-alias'
 import { loadConfigs } from '@keg-hub/parse-config'
+import { aliases } from '@GConfigs/aliases.config'
 
-const dev = process.env.DEV_BUILD === `1`
 const nodeEnv = process.env.NODE_ENV || `local`
 const entryFile = path.join(GBERoot, `index.ts`)
-const outFile = path.join(GBERoot, `dist/index.js`)
+const outdir = path.join(GBERoot, `dist`)
+const outfile = path.join(outdir, `index.js`)
 
 /**
  * Load the ENVs from <node-env>.env ( local.env || prod.env )
@@ -20,16 +23,32 @@ const envs = loadConfigs({
   locations: [aliases.GobletRoot],
 })
 
-esbuild({
-  dev,
-  aliases,
-  outFile,
-  entryFile,
-  cwd: GBERoot,
-  mergeEnvs:true,
-  sourcemap: 'inline',
-  envs: {
-    ...envs,
-    GOBLET_ROOT_DIR: aliases.GobletRoot
-  }
-})
+
+const cjsBuild = async () => {
+  // Build the files with esbuild
+  await esbuild.build({
+    outfile,
+    bundle: true,
+    minify: false,
+    sourcemap: true,
+    platform: `node`,
+    target: [`node16`],
+    external: [`esbuild`, `fsevents`],
+    tsconfig: path.join(GBERoot, `tsconfig.json`),
+    plugins: [aliasPlugin(aliases)],
+    entryPoints: [entryFile],
+  })
+  .catch((cause:any) => {
+    console.error(cause)
+    process.exit(1)
+  })
+}
+
+
+;(async () => {
+  // Remove the existing output dir
+  await fs.rm(outdir, { recursive: true, force: true })
+  await cjsBuild()
+})()
+
+

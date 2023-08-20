@@ -5,7 +5,10 @@ import type {
 } from '../../../types'
 import type { V1ContainerPort } from '@kubernetes/client-node'
 
-import { toNum, isObj, isBool, isArr } from '@keg-hub/jsutils'
+import { toNum } from '@keg-hub/jsutils/toNum'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { isBool } from '@keg-hub/jsutils/isBool'
+import { isArr } from '@keg-hub/jsutils/isArr'
 
 const getPortObj = (key:string, portItem:TPortObj|string|number|boolean) => {
   return isObj<TPortObj>(portItem)

@@ -1,5 +1,8 @@
-import { TImgConfig } from '@gobletqa/conductor/types'
-import { exists, get, flatUnion } from '@keg-hub/jsutils'
+import type { TImgConfig } from '@gobletqa/conductor/types'
+
+import { get } from '@keg-hub/jsutils/get'
+import { exists } from '@keg-hub/jsutils/exists'
+import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 
 /**
  * Builds runtime envs, setting envs values from the passed in data

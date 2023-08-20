@@ -3,8 +3,8 @@ import type { TRouteMeta, TBEBodyReq, TBEResp } from '@GBE/types'
 import type { TValidateUser } from '@GBE/services/firebase'
 
 
-import { hashString } from '@keg-hub/jsutils'
 import {authService} from '@GBE/services/firebase'
+import { hashString } from '@keg-hub/jsutils/hashString'
 import { apiRes } from '@gobletqa/shared/express/apiRes'
 import { generateTokens } from '@GBE/utils/generateTokens'
 import { AsyncRouter } from '@gobletqa/shared/express/appRouter'
