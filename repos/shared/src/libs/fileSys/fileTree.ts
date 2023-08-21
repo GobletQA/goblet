@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 import { fileSys } from '@keg-hub/cli-utils'
 import { getRepoGobletDir } from '@gobletqa/goblet'
-import { limboify } from '@keg-hub/jsutils/limboify'
+import { limboify } from '@keg-hub/jsutils/limbo'
 
 const { getFolderContent } = fileSys
 

@@ -20,7 +20,7 @@ import { isStr } from '@keg-hub/jsutils/isStr'
 import { limbo } from '@keg-hub/jsutils/limbo'
 import { exists } from '@keg-hub/jsutils/exists'
 import { isBool } from '@keg-hub/jsutils/isBool'
-import { limboify } from '@keg-hub/jsutils/limboify'
+import { limboify } from '@keg-hub/jsutils/limbo'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 
 

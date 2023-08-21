@@ -24,7 +24,7 @@ const envs = loadConfigs({
 })
 
 
-const cjsBuild = async () => {
+const esmBuild = async () => {
   // Build the files with esbuild
   await esbuild.build({
     outfile,
@@ -32,11 +32,11 @@ const cjsBuild = async () => {
     minify: false,
     sourcemap: true,
     platform: `node`,
-    target: [`node16`],
+    target: [`node20`],
+    entryPoints: [entryFile],
+    plugins: [aliasPlugin(aliases)],
     external: [`esbuild`, `fsevents`],
     tsconfig: path.join(GBERoot, `tsconfig.json`),
-    plugins: [aliasPlugin(aliases)],
-    entryPoints: [entryFile],
   })
   .catch((cause:any) => {
     console.error(cause)
@@ -48,7 +48,7 @@ const cjsBuild = async () => {
 ;(async () => {
   // Remove the existing output dir
   await fs.rm(outdir, { recursive: true, force: true })
-  await cjsBuild()
+  await esmBuild()
 })()
 
 

@@ -61,7 +61,7 @@
     "@ltipton/parkin": "5.1.1",
     "@ltipton/symplasm": "0.0.1",
     "cross-spawn": "7.0.3",
-    "esbuild": "0.18.17",
+    "esbuild": "0.19.2",
     "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.4.2",
     "expect": "29.6.1",

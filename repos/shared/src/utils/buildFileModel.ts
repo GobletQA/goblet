@@ -4,8 +4,8 @@ import fs from 'fs'
 import path from 'path'
 import mime from 'mime'
 import { fileModel } from '@GSH/models'
+import { limboify } from '@keg-hub/jsutils/limbo'
 import { resolveFileType } from './resolveFileType'
-import { limboify } from '@keg-hub/jsutils/limboify'
 
 /**
  * getType seemed to stop working, the owner of the package is doing odd things
