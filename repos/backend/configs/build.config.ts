@@ -1,7 +1,6 @@
 import { GBERoot } from '../resolveRoot'
 
 import path from 'node:path'
-import cfg  from '../package.json'
 import * as esbuild from 'esbuild'
 import { promises as fs } from 'node:fs'
 import aliasPlugin from 'esbuild-plugin-path-alias'
@@ -32,9 +31,9 @@ const backendBuild = async () => {
     ...shared,
     entryPoints: [entryFile],
     external: [
+      `esbuild`,
       `fsevents`,
-      ...Object.keys(cfg.dependencies),
-      ...Object.keys(cfg.optionalDependencies),
+      `@kubernetes/client-node`,
     ],
   })
   .catch((cause:any) => {

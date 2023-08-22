@@ -37,9 +37,7 @@ RUN rm -rf /goblet/app/repos/browser && \
     rm -rf /goblet/app/repos/screencast && \
     rm -rf /goblet/app/repos/testUtils
 
-RUN cd /goblet/app/repos/backend && \
-    pnpm json:rm && \
-    cd /goblet/app/repos/conductor && \
+RUN cd /goblet/app/repos/conductor && \
     pnpm json:rm && \
     cd /goblet/app/repos/environment && \
     pnpm json:rm && \
@@ -62,11 +60,15 @@ RUN cp -R tsconfig.json package.json gobletRoot.js /goblet/runner/. && \
     cp -R configs/paths.config.js /goblet/runner/configs/paths.config.js && \
     cp -R configs/aliases.config.js /goblet/runner/configs/aliases.config.js
 
-RUN pnpm --filter @gobletqa/backend install --fix-lockfile --prefer-offline --prod 
+ENV CI=true
+RUN pnpm --filter @gobletqa/backend install --fix-lockfile --prefer-offline
 
 WORKDIR /goblet/app/repos/backend
 RUN pnpm build
 RUN cp -R dist/goblet.default.config.js /goblet/runner/configs/goblet.default.config.js
+RUN cd /goblet/app/repos/backend && \
+    pnpm json:rm
+
 RUN pnpm --filter=@gobletqa/backend --prod --no-optional deploy pruned
 
 WORKDIR /goblet/app/repos
