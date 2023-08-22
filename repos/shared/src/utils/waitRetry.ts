@@ -1,4 +1,4 @@
-import { wait } from '@keg-hub/jsutils'
+import { wait } from '@keg-hub/jsutils/wait'
 
 /**
  * Attempts calling the passed in callback relative to the passed in number of attempts

@@ -12,10 +12,10 @@ import type {
 } from '@GLT/types'
 
 import path from 'path'
-import {emptyObj} from '@keg-hub/jsutils'
 import { env } from '@keg-hub/parse-config'
 import { writeFileSync, existsSync } from 'fs'
 import { injectUnsafe } from '@gobletqa/logger'
+import {emptyObj} from '@keg-hub/jsutils/emptyObj'
 import { EFileType, ELoadFormat } from '@GLT/types'
 import {dataToString} from '@GLT/utils/dataToString'
 import {generateFileNames} from '@GLT/utils/generateFileNames'

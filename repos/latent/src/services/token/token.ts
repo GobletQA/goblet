@@ -2,9 +2,9 @@ import type { TLatentTokenOpts } from '@GLT/types'
 
 
 import { createHmac } from 'crypto'
-import {emptyObj} from '@keg-hub/jsutils'
 import { LatentError } from '@GLT/utils/error'
 import { toB64, fromB64 } from '@GLT/utils/base64'
+import {emptyObj} from '@keg-hub/jsutils/emptyObj'
 import { getLTToken } from '@GLT/utils/getLTToken'
 
 

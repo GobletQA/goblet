@@ -3,12 +3,12 @@ import type {
   TExecPassThroughOpts,
 } from '@GEX/types'
 
-import { isNum } from '@keg-hub/jsutils'
 import {
   RunnerCfg,
   TransformCfg,
   EnvironmentCfg
 } from '@GEX/constants/defaults'
+import { isNum } from '@keg-hub/jsutils/isNum'
 
 export const buildPassThrough = (config:TExamConfig) => {
   return {

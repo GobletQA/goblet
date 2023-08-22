@@ -5,7 +5,9 @@ import type {
 } from '@GSC/types'
 
 import { spawn } from 'child_process'
-import { noOpObj, noPropArr, deepMerge } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { noPropArr } from '@keg-hub/jsutils/noPropArr'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
 /**
  * Default options when executing a command

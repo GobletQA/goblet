@@ -1,6 +1,7 @@
 import type { TExecRunners, TPipelineArgs, TStateManager } from '@GEX/types'
 
-import { exists, isArr } from '@keg-hub/jsutils'
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { exists } from '@keg-hub/jsutils/exists'
 import { loadFilesTask } from '../tasks/loadFilesTask'
 
 export const preRunnerStep = async (args:TPipelineArgs, manager?:TStateManager) => {

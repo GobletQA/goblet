@@ -22,10 +22,10 @@ import type {
 import { getWorld } from './world'
 import { Parkin } from '@ltipton/parkin'
 import { latentRepo } from './latentRepo'
-import { emptyObj, } from '@keg-hub/jsutils'
 import { ENVS } from '@gobletqa/environment'
 import { getFileTypes } from '@gobletqa/goblet'
 import { getProviderData } from './getProviderData'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { resetGobletConfig } from '@gobletqa/goblet'
 import { GitlabGraphApi, GithubGraphApi } from '@GWF/providers'
 import {

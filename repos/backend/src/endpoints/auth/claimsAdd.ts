@@ -1,7 +1,7 @@
 import type { Response } from 'express'
 import type { Request as JWTRequest } from 'express-jwt'
 
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { updateToken } from '@GBE/utils/updateToken'
 import { authService } from '@GBE/services/firebase'
 import { apiRes } from '@gobletqa/shared/express/apiRes'

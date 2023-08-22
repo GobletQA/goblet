@@ -12,11 +12,10 @@ export const typeWithSaved = async (
 ) => {
   const { world } = ctx
   const { selector, element } = getWorldLocator(world)
-  const locator = element || await getLocator(`:focus`, ctx)
+  const locator = element || getLocator(`:focus`)
  
   return await typeInput({
     text,
-    world,
     locator,
     selector,
   }, ctx)
@@ -30,10 +29,8 @@ export const typeWithSelector = async (
   selector:string=`:focus`,
   ctx:TStepCtx
 ) => {
-  const { world } = ctx
   return await typeInput({
     text,
-    world,
     selector,
   }, ctx)
 }

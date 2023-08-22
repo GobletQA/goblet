@@ -1,5 +1,6 @@
 import os from 'os'
-import { toNum, exists } from '@keg-hub/jsutils'
+import { toNum } from '@keg-hub/jsutils/toNum'
+import { exists } from '@keg-hub/jsutils/exists'
 
 let __CpuCount:number
 
@@ -19,3 +20,6 @@ export const getCPUCount = () => {
 
   return __CpuCount
 }
+
+
+

@@ -1,6 +1,6 @@
 import type { TExEventData } from "@GEX/types"
 
-import { emptyObj } from "@keg-hub/jsutils"
+import { emptyObj } from "@keg-hub/jsutils/emptyObj"
 import { BuiltTestResultFailed, NoTestsFoundPass } from "@GEX/constants"
 
 type TBuildResult = Partial<TExEventData> & {

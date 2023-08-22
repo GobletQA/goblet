@@ -1,5 +1,6 @@
-import { exists } from '@keg-hub/jsutils'
-import { TImgConfig , TContainerLabels} from '@gobletqa/conductor/types'
+import type { TImgConfig , TContainerLabels} from '@gobletqa/conductor/types'
+
+import { exists } from '@keg-hub/jsutils/exists'
 import {
   ConductorLabel,
   ContainerLabels,

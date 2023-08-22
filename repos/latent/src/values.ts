@@ -1,14 +1,14 @@
 import {
+  TLTGet,
   TLTAdd,
   TLTLoad,
   TLTSave,
   TLTCreate,
   EFileType,
-  TLTGet,
 } from "@GLT/types"
-import {exists} from "@keg-hub/jsutils"
 
 import {Latent} from "./latent"
+import {exists} from "@keg-hub/jsutils/exists"
 
 
 export class Values {

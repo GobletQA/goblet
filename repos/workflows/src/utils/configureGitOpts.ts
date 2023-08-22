@@ -1,7 +1,8 @@
 import path from 'path'
 import { throwErr } from './throwErr'
 import { getRepoPath } from './getRepoPath'
-import { isObj, isStr } from '@keg-hub/jsutils'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { isStr } from '@keg-hub/jsutils/isStr'
 import { TWFArgs, TGitOpts } from '@gobletqa/workflows/types'
 
 const formatBranch = (branch:string) => {

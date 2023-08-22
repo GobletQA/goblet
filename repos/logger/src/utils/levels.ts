@@ -1,7 +1,9 @@
 import type { TLogMethods, TLogLevels, TCLILogger } from '../types'
 
+import { config } from 'winston'
 import {isNum, isStr, exists} from "./helpers"
 
+export const npmLevels = config.npm.levels
 
 export const levelMap = {
   error: 0,

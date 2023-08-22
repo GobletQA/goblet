@@ -1,6 +1,6 @@
 import type { DockerOptions } from 'dockerode'
 import { inDocker } from '@keg-hub/cli-utils'
-import { toNum } from '@keg-hub/jsutils'
+import { toNum } from '@keg-hub/jsutils/toNum'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { TDockerConfig, TConductorConfig, TRouteMeta } from '@gobletqa/conductor/types'
 import { getDindHost } from '@gobletqa/shared/utils/getDindHost'

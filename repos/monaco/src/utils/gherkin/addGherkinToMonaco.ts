@@ -5,7 +5,7 @@ import type {
   NLanguages,
 } from '@GBM/types'
 
-import { noOp } from '@keg-hub/jsutils'
+import { noOp } from '@keg-hub/jsutils/noOp'
 import { GherkinLangID } from '@GBM/constants'
 import { getCompletionItems } from './getCompletionItems'
 import { convertRange } from '@GBM/utils/editor/convertRange'

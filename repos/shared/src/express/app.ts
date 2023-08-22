@@ -1,6 +1,7 @@
 import type { Express } from 'express'
 import express from 'express'
-import { noOpObj, deepMerge } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { getDefaultGobletConfig } from '@gobletqa/goblet'
 
 let _APP:Express

@@ -8,7 +8,7 @@
  */
  
  
-const { isStrBool } = require('@keg-hub/jsutils') 
+const { isStrBool } = require('@keg-hub/jsutils/isStrBool') 
 
 /**
  * Builds formatted yaml string for converting a secret to an ENV

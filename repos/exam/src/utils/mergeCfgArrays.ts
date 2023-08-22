@@ -1,12 +1,10 @@
 import type { TExamCliOpts } from "@GEX/types/bin.types"
 import type { TExamConfig } from '@GEX/types/exam.types'
 
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { exists } from '@keg-hub/jsutils/exists'
 import { ExamCfgArrayItems } from "@GEX/constants"
-import {
-  isStr,
-  isArr,
-  exists,
-} from '@keg-hub/jsutils'
 
 
 const validateArr = (arr:any|any[], allowStr:boolean=true) => {

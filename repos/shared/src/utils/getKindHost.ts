@@ -1,5 +1,5 @@
-import { exists } from '@keg-hub/jsutils'
 import { inDocker } from '@keg-hub/cli-utils'
+import { exists } from '@keg-hub/jsutils/exists'
 
 /**
  * Helper to resolve the host for docker and the proxy

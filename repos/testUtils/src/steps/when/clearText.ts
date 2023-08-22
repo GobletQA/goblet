@@ -10,10 +10,9 @@ export const clearTextWithSaved = async (
 ) => {
   const { world } = ctx
   const { selector, element } = getWorldLocator(world)
-  const locator = element || await getLocator(`:focus`, ctx)
+  const locator = element || getLocator(`:focus`)
  
   return await clearInput({
-    world,
     locator,
     selector,
   }, ctx)
@@ -26,9 +25,7 @@ export const setTextWithSelector = async (
   selector:string,
   ctx:TStepCtx
 ) => {
-  const { world } = ctx
   return await clearInput({
-    world,
     selector,
   }, ctx)
 }

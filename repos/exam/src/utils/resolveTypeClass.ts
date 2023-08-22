@@ -1,5 +1,5 @@
-import { IConstructable, TExArrClsOptMap } from "@GEX/types"
-import {isArr} from "@keg-hub/jsutils"
+import type { IConstructable, TExArrClsOptMap } from "@GEX/types"
+import {isArr} from "@keg-hub/jsutils/isArr"
 
 export type TResolveTypeClass<T> = {
   opts?:any

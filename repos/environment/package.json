@@ -35,9 +35,8 @@
     "validate": "tsc --noEmit"
   },
   "devDependencies": {
-    "@keg-hub/jsutils": ">=9.7.8",
-    "esbuild": "0.18.17",
-    "esbuild-plugin-path-alias": "1.0.7",
+    "@keg-hub/jsutils": ">=9.8.0",
+    "esbuild": "0.19.2",
     "esbuild-register": "3.4.2"
   }
 }

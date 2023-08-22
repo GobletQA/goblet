@@ -1,6 +1,7 @@
 import {TExEventData} from "@GEX/types"
 import { Logger } from "@GEX/utils/logger"
-import { isArr, isStr } from "@keg-hub/jsutils"
+import { isArr } from "@keg-hub/jsutils/isArr"
+import { isStr } from "@keg-hub/jsutils/isStr"
 import { ExamErrTag, WkrPoolErrTag } from "@GEX/constants/tags"
 
 Error.stackTraceLimit = 20

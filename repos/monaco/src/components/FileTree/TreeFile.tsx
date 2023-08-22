@@ -2,8 +2,8 @@ import type { TFolder, TFile, TFileCallback } from '../../types'
 import type { RefObject, Dispatch, SetStateAction } from 'react'
 
 
-import { noOpObj } from '@keg-hub/jsutils'
 import { useCallback, useMemo } from 'react'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { stopPropagation } from '@GBM/utils/dom/stopPropagation'
 import { toolTipProps, styles } from '@GBM/utils/file/fileHelpers'
 import {
@@ -116,7 +116,7 @@ export const TreeFile = ({
           onKeyDown={fileKeyDown}
           onClick={stopPropagation}
           className='goblet-editor-file-item-new'
-          style={nameConflict ? styles.conflictFile : noOpObj}
+          style={nameConflict ? styles.conflictFile : emptyObj}
         />
       )}
     </TreeItemContainer>

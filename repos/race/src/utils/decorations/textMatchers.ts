@@ -5,7 +5,7 @@ import type {
   TStepParentAst,
 } from '@ltipton/parkin'
 
-import { emptyArr } from "@keg-hub/jsutils"
+import { emptyArr } from "@keg-hub/jsutils/emptyArr"
 
 type TFindChild = Record<`uuid`, string>
 

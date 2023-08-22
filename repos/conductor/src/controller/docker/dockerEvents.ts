@@ -1,7 +1,8 @@
 import Dockerode from 'dockerode'
 import DockerEvents from 'docker-events'
 import { Logger } from '../../utils/logger'
-import { checkCall, noOpObj } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
 
 import { TControllerEvts, TDockerEvent } from '@gobletqa/shared/types'
 

@@ -124,7 +124,8 @@ export const loadDefinitions = async (
 
   // TODO: look into returned the support fileModels to the frontend
   // For now we just load them
-  const supportFiles = await getSupportFiles(repo, overrideParkin)
+  // const supportFiles = await getSupportFiles(repo, overrideParkin)
+  await getSupportFiles(repo, overrideParkin)
 
 
   // all the definition file models,

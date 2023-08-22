@@ -12,7 +12,7 @@ import type {
 
 import { git, gitCmd } from './gitCmd'
 import { hasGitError } from './gitHelpers'
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 
 

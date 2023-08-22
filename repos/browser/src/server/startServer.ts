@@ -3,8 +3,8 @@ import type playwright from 'playwright'
 
 import { getServer } from './server'
 import { newServer } from './newServer'
-import { noOpObj } from '@keg-hub/jsutils'
 import { checkServerPid } from './checkServerPid'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 
 /**

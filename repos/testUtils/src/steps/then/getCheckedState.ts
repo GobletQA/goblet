@@ -2,6 +2,7 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { Then } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
+import { getLocatorTimeout } from '@GTU/Support'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 type TCheckStates = [`checked`, `unchecked`] & {
@@ -26,9 +27,9 @@ export const getCheckedState = async (
 
   // Validate checked || unchecked was passed
   expect(checkedStates).toEqual(expect.arrayContaining([state]));
-
-  const input = await getLocator(selector, ctx)
-  const checkedState = await input.isChecked() // boolean
+  
+  const input = getLocator(selector)
+  const checkedState = await input.isChecked({ timeout: getLocatorTimeout(ctx) }) // boolean
   const stateConversion = state === `checked` ? true : false
 
   expect(stateConversion).toEqual(checkedState)

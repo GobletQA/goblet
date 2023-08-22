@@ -2,19 +2,18 @@ import type { TStepCtx } from '@GTU/Types'
 
 import { When } from '@GTU/Parkin'
 import { getLocator } from '@GTU/Playwright'
+import { getLocatorTimeout } from '@GTU/Support'
 import { saveWorldLocator } from '@GTU/Support/helpers'
 import { ExpressionKinds, ExpressionTypes } from '@GTU/Constants'
 
 /**
  * Sets the input text of selector to data
- * @param {string} selector - valid playwright selector
- * @param {string} data - set selector text to `data`
- * @param {Object} world
  */
 export const focusElement = async (selector:string, ctx:TStepCtx) => {
   const { world } = ctx
-  const element = await getLocator(selector, ctx)
-  const resp = await element.focus()
+  const timeout = getLocatorTimeout(ctx)
+  const element = await getLocator(selector)
+  const resp = await element.focus({ timeout })
   saveWorldLocator({ selector, world, element }, ctx)
 
   return resp

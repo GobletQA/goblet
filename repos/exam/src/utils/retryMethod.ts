@@ -1,4 +1,6 @@
-import {isFunc, isNum, isStr} from "@keg-hub/jsutils"
+import {isNum} from "@keg-hub/jsutils/isNum"
+import {isStr} from "@keg-hub/jsutils/isStr"
+import {isFunc} from "@keg-hub/jsutils/isFunc"
 
 type THandler = (...args:any[]) => any
 

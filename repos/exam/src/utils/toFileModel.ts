@@ -1,7 +1,7 @@
 import type { TExFileModel } from '@GEX/types'
 
 import path from 'path'
-import {emptyObj} from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import {FileTypeMap} from '@GEX/constants/constants'
 
 export type TToFileModel = Omit<Partial<TExFileModel>, `content`|`location`> & {

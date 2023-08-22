@@ -3,8 +3,8 @@ import type { Express, Request } from 'express'
 import type { TProxyOpts } from '@gobletqa/shared/types'
 
 import { createProxy } from './createProxy'
-import { queryToObj } from '@keg-hub/jsutils'
 import { getApp } from '@gobletqa/shared/express/app'
+import { queryToObj } from '@keg-hub/jsutils/queryToObj'
 
 /**
  * Setup the novnc proxy to forward all requests to that server

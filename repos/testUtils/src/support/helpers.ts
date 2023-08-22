@@ -3,7 +3,6 @@ import type {
   TClickEl,
   TStepCtx,
   TLocator,
-  TWaitFor,
   TFillInput,
   TSaveWorldLocator,
 } from '@GTU/Types'
@@ -152,7 +151,7 @@ export const saveWorldLocator = async (props:TSaveWorldLocator, ctx?:TStepCtx) =
     worldPath
   } = props
 
-  const element = props.element || await getLocator(selector, ctx)
+  const element = props.element || getLocator(selector)
   const cleaned = worldPath
     ? cleanWorldPath(worldPath)
     : AutoSavedLocatorWorldPath
@@ -238,7 +237,7 @@ export const callLocatorMethod = async (
   locator?:TLocator,
   ctx?:TStepCtx
 ) => {
-  const element = locator || await getLocator(selector, ctx)
+  const element = locator || getLocator(selector)
   if(!element[prop])
     throw new Error(`Selected Element ${selector} missing prop method "${prop}".`)
 
@@ -251,8 +250,9 @@ export const getLocatorAttribute = async (
   locator?:Record<string, any>,
   ctx?:TStepCtx
 ) => {
-  const element = locator || await getLocator(selector, ctx)
-  return await element.getAttribute(attr)
+  const element = locator || getLocator(selector)
+  const timeout = getLocatorTimeout(ctx)
+  return await element.getAttribute(attr, { timeout })
 }
 
 export const getLocatorProps = async (
@@ -260,7 +260,7 @@ export const getLocatorProps = async (
   locator?:TLocator,
   ctx?:TStepCtx
 ) => {
-  const element = locator || await getLocator(selector, ctx)
+  const element = locator || getLocator(selector)
 
   // TODO: Add more properties to the returned object
   return await element.evaluate(elm => {
@@ -312,7 +312,7 @@ export const getLocatorTagName = async (
   locator?:TLocator,
   ctx?:TStepCtx
 ) => {
-  const element = locator || await getLocator(selector, ctx)
+  const element = locator || getLocator(selector)
   return await element.evaluate((el:HTMLElement) => el.tagName)
 }
 
@@ -321,12 +321,13 @@ export const getLocatorContent = async (
   locator?:TLocator,
   ctx?:TStepCtx
 ) => {
-  const element = locator || await getLocator(selector, ctx)
+  const timeout = getLocatorTimeout(ctx)
+  const element = locator || getLocator(selector)
   const tagName = await getLocatorTagName(selector, element, ctx)
 
   return tagName === 'INPUT' || tagName === 'TEXTAREA' || tagName === 'SELECT'
-    ? await element.inputValue()
-    : await element.textContent()
+    ? await element.inputValue({ timeout })
+    : await element.textContent({ timeout })
 }
 
 /**
@@ -335,30 +336,27 @@ export const getLocatorContent = async (
  *
  */
 export const clickElement = async ({
-  page,
   save,
-  world,
+  timeout,
   locator,
   selector,
-  // Default to the auto-save locator path
-  // We call saveWorldData, but we save to the auto-save location path
-  // This way we can reuse the locator we already have
   worldPath=AutoSavedLocatorWorldPath,
-}:TClickEl, ctx?:TStepCtx, waitFor?:TWaitFor) => {
-  page = page || await getPage()
-  // Actionability checks (Auto-Waiting) seem to fail in headless mode
-  // So we use locator.waitFor to ensure the element exist on the dom
-  locator = locator || await getLocator(selector, ctx, waitFor)
+  ...opts
+}:TClickEl, ctx?:TStepCtx) => {
 
-  // Then pass {force: true} options to locator.click because we know it exists
-  await page.click(selector, {
-    force: true
-  }) 
+  locator = locator || getLocator(selector)
+
+  timeout = timeout || getLocatorTimeout(ctx)
+
+  // TODO: figure out if trial should be used to ensure the element exists
+  // await locator.click({ ...opts, trial: true, timeout })
+
+  await locator.click({ ...opts, timeout })
 
   // Save the most recent world data
-  save && saveWorldData({ selector, element:locator }, world, worldPath)
+  save && saveWorldData({ selector, element:locator }, ctx?.world, worldPath)
 
-  return { locator, page }
+  return { locator }
 }
 
 
@@ -368,13 +366,13 @@ export const clickElement = async ({
  */
 export const fillInput = async (props:TFillInput, ctx?:TStepCtx) => {
   const { text } = props
-  const { page, locator } = await clickElement(props, ctx)
+  const { locator } = await clickElement(props, ctx)
 
   //clear value before setting otherwise data is appended to end of existing value
   await locator.fill('')
   await locator.fill(text)
 
-  return { page, locator }
+  return { locator }
 }
 
 /**
@@ -382,12 +380,12 @@ export const fillInput = async (props:TFillInput, ctx?:TStepCtx) => {
  *
  */
 export const clearInput = async (props:TClickEl, ctx?:TStepCtx) => {
-  const { page, locator } = await clickElement(props, ctx)
+  const { locator } = await clickElement(props, ctx)
 
   // clear value of the input
   await locator.fill('')
 
-  return { page, locator }
+  return { locator }
 }
 
 
@@ -397,15 +395,27 @@ export const clearInput = async (props:TClickEl, ctx?:TStepCtx) => {
  */
 export const typeInput = async (props:TFillInput, ctx?:TStepCtx) => {
   const { text } = props
-  const { page, locator } = await clickElement(props, ctx)
+  const { locator } = await clickElement(props, ctx)
 
   //clear value before setting otherwise data is appended to end of existing value
   await locator.type('')
   await locator.type(text)
 
-  return { page, locator }
+  return { locator }
 }
 
+/**
+ * TODO: This works, but the error log now shows this time instead of the Step Timeout time
+ * So need to come up with a better solution
+ */
+export const getLocatorTimeout = (ctx?:TStepCtx, percent:number=99) => {
+  if(isNum(ctx?.options?.locatorTimeout)) return ctx?.options?.locatorTimeout
+
+  // Ensure the actions timeout is less then steps defined timeout
+  // This allows the error to come from the action and not the step
+  // To do this, we take 99% of the step timeout value
+  return (getStepTimeout(ctx) / 100) * percent
+}
 
 /**
  * Gets the configured timeout for a step based on the possible timeout locations
@@ -419,5 +429,5 @@ export const getStepTimeout = (ctx?:TStepCtx) => {
     || globalTimeout
     || 15000
 
-  return isNum(timeout) ? timeout : parseInt(timeout)
+  return isNum(timeout) ? timeout : parseInt(timeout, 10)
 }

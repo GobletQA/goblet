@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { noOp } from '@keg-hub/jsutils'
+import { noOp } from '@keg-hub/jsutils/noOp'
 import { deleteSourceFolder } from '../../utils/deleteSourceFolder'
 
 

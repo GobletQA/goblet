@@ -1,7 +1,8 @@
 import type { TStepDef } from '@ltipton/parkin'
 import type { TDefinitionFileModel, TDefTypeGroup } from '@GSH/types'
 
-import { get, isArr } from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils/get'
+import { isArr } from '@keg-hub/jsutils/isArr'
 
 
 /**

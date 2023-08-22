@@ -12,7 +12,8 @@ import path from 'path'
 import { promises } from 'fs'
 import { git } from './gitCmd'
 import { ENVS } from '@gobletqa/environment'
-import { deepMerge, limbo } from '@keg-hub/jsutils'
+import { limbo } from '@keg-hub/jsutils/limbo'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import {
   defCmdOpts,
   hasGitError

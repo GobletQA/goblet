@@ -4,7 +4,7 @@ import type { TFeatureAst, TParkinRunStepOptsMap } from '@ltipton/parkin'
 
 import { PWPlay } from '@GBB/constants'
 import { Parkin } from '@ltipton/parkin'
-import { emptyObj } from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { ParkinTest } from '@ltipton/parkin/test'
 import {
   setupParkin,

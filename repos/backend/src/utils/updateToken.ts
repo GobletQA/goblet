@@ -1,7 +1,8 @@
 import type { JwtPayload } from 'jsonwebtoken'
 import type { Request as JWTRequest } from 'express-jwt'
-import {generateTokens} from './generateTokens'
-import {omitKeys} from '@keg-hub/jsutils'
+
+import { generateTokens } from './generateTokens'
+import {omitKeys} from '@keg-hub/jsutils/omitKeys'
 
 export const updateToken = (
   req:JWTRequest,

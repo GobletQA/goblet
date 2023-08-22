@@ -3,14 +3,12 @@ import type {
   TGraphApiVars,
 } from '@gobletqa/workflows/types'
 
-import {
-  isArr,
-  isStr,
-  isNum,
-  emptyObj,
-  deepClone,
-  deepMerge,
-} from '@keg-hub/jsutils'
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { isNum } from '@keg-hub/jsutils/isNum'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { deepClone } from '@keg-hub/jsutils/deepClone'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
 /**
  *  --- Only use when in dev or testing ---  *

@@ -1,9 +1,11 @@
 const path = require('path')
 const moduleAlias = require('module-alias')
+const { get } = require('@keg-hub/jsutils/get')
 const { SUB_REPOS } = require('./paths.config')
 const { GobletRoot } = require('../gobletRoot')
 const { fileSys } = require('@keg-hub/cli-utils')
-const { deepFreeze, get } = require('@keg-hub/jsutils')
+const { deepFreeze } = require('@keg-hub/jsutils/deepFreeze')
+
 const { requireFile } = fileSys
 
 const ignoreRepos = [

@@ -1,35 +1,70 @@
 import { GBERoot } from '../resolveRoot'
 
-import path from 'path'
-import { esbuild } from '@ltipton/esdev'
+import path from 'node:path'
+import * as esbuild from 'esbuild'
+import { promises as fs } from 'node:fs'
+import aliasPlugin from 'esbuild-plugin-path-alias'
 import { aliases } from '@GConfigs/aliases.config'
-import { loadConfigs } from '@keg-hub/parse-config'
 
-const dev = process.env.DEV_BUILD === `1`
-const nodeEnv = process.env.NODE_ENV || `local`
+const outdir = path.join(GBERoot, `dist`)
 const entryFile = path.join(GBERoot, `index.ts`)
-const outFile = path.join(GBERoot, `dist/index.js`)
+const gentryFile = path.join(aliases.GobletRoot, `configs/goblet.default.config.js`)
 
-/**
- * Load the ENVs from <node-env>.env ( local.env || prod.env )
- */
-const envs = loadConfigs({
-  noYml: true,
-  env: nodeEnv,
-  name: 'goblet',
-  locations: [aliases.GobletRoot],
-})
+const shared = {
+  outdir,
+  bundle: true,
+  minify: false,
+  sourcemap: false,
+  treeShaking: true,
+  target: [`node20`],
+  entryNames: `[name]`,
+  platform: `node` as const,
+  mainFields: [`module`, `main`],
+  conditions: [`import`, `module`],
+  plugins: [aliasPlugin(aliases)],
+  tsconfig: path.join(GBERoot, `tsconfig.json`),
+}
 
-esbuild({
-  dev,
-  aliases,
-  outFile,
-  entryFile,
-  cwd: GBERoot,
-  mergeEnvs:true,
-  sourcemap: 'inline',
-  envs: {
-    ...envs,
-    GOBLET_ROOT_DIR: aliases.GobletRoot
-  }
-})
+const backendBuild = async () => {
+  // Build the files with esbuild
+  await esbuild.build({
+    ...shared,
+    entryPoints: [entryFile],
+    external: [
+      `esbuild`,
+      `fsevents`,
+      `@kubernetes/client-node`,
+    ],
+  })
+  .catch((cause:any) => {
+    console.error(cause)
+    process.exit(1)
+  })
+}
+
+
+const gobletBuild = async () => {
+  // Build the files with esbuild
+  await esbuild.build({
+    ...shared,
+    entryPoints: [gentryFile],
+    external: [
+      `esbuild`,
+      `fsevents`,
+      `@kubernetes/client-node`,
+    ],
+  })
+  .catch((cause:any) => {
+    console.error(cause)
+    process.exit(1)
+  })
+}
+
+
+;(async () => {
+  // Remove the existing output dir
+  await fs.rm(outdir, { recursive: true, force: true })
+  await backendBuild()
+  await gobletBuild()
+})()
+

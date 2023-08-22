@@ -1,5 +1,6 @@
 import { ENVS } from '@gobletqa/environment'
-import { exists, toBool } from '@keg-hub/jsutils'
+import { toBool } from '@keg-hub/jsutils/toBool'
+import { exists } from '@keg-hub/jsutils/exists'
 import { ExamLogLevel } from '@GEX/constants/defaults'
 import { CliLogger, getLevelLogger } from '@gobletqa/logger'
 

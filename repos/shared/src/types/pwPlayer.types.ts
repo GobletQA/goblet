@@ -36,9 +36,9 @@ export type TPlayerStartConfig = TPlayerConfig & {
 export type TPlayerOpts = TBrowserActionOptions
 
 export type TPlayerResEvent<T=TPlayerEventData> = Omit<TSocketMessageObj, `data`> & {
-  location: string,
-  fileType: string,
   data:T
+  location: string
+  fileType: string
 }
 
 export enum EPlayerTestAction {
@@ -92,10 +92,12 @@ export type TPlayerTestResult = Omit<TRunResult, `type`|`action`|`status`> & {
 }
 
 export type TPlayerTestEvent = Omit<TRunResult, `type`|`action`|`status`> & {
+  message?:string
   type:EPlayerTestType
   action:EPlayerTestAction
   status?:EPlayerTestStatus
   eventParent?: TEventParent
+  failedExpectations?:any[]
 }
 
 export type TPlayerEventData = TPlayerTestEvent

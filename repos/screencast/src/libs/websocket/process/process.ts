@@ -12,7 +12,9 @@ import type {
 
 import path from 'path'
 import { exec } from './exec'
-import { deepMerge, noOpObj, isStr } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { shouldFilterMessage, validateCmd, addConfig } from './helpers'
 import {
   WSRunCmd,

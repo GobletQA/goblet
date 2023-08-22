@@ -6,7 +6,8 @@ import type {
 } from 'react'
 
 import { Fragment } from 'react'
-import { isArr, noOpObj } from '@keg-hub/jsutils'
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 
 type TColorOpt = 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning' | string
@@ -143,7 +144,7 @@ const buildModalParams = (modal:Modal, params:TModalMethod, noWrap:boolean) => {
 
   return {
     ...rest,
-    ...(floatContent ? { overrideContent: true } : noOpObj),
+    ...(floatContent ? { overrideContent: true } : emptyObj),
     children: wrapContent(content, children),
     actions: wrapActions(
       modal,

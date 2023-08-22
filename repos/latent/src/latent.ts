@@ -8,10 +8,10 @@ import {
 
 import { Values } from '@GLT/values'
 import { Secrets } from '@GLT/secrets'
-import {emptyObj} from "@keg-hub/jsutils"
 import { ENVS } from '@gobletqa/environment'
 import { LatentFile } from '@GLT/services/file'
 import { LatentToken } from '@GLT/services/token'
+import {emptyObj} from "@keg-hub/jsutils/emptyObj"
 import { LatentCrypto } from '@GLT/services/crypto'
 
 

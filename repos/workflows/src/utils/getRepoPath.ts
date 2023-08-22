@@ -1,7 +1,7 @@
 import path from 'path'
 
-import { noOpObj } from '@keg-hub/jsutils'
 import { ENVS } from '@gobletqa/environment'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { TGitMeta } from '@gobletqa/workflows/types'
 import { generateFolderName } from './generateFolderName'
 
@@ -15,7 +15,7 @@ import { generateFolderName } from './generateFolderName'
  *
  * @returns {string} - Path to the mounted repo
  */
-export const getRepoPath = (args:TGitMeta=noOpObj) => {
+export const getRepoPath = (args:TGitMeta=emptyObj) => {
   const { user, repo } = args
 
   const folderName = generateFolderName(user, repo)

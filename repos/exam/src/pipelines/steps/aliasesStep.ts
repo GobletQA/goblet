@@ -1,7 +1,7 @@
 import { TPipelineArgs } from '@GEX/types'
 
 import moduleAlias from 'module-alias'
-import { exists } from '@keg-hub/jsutils'
+import { exists } from '@keg-hub/jsutils/exists'
 
 export const aliasStep = async (args:TPipelineArgs) => {
   const { config } = args

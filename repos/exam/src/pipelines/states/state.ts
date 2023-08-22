@@ -1,5 +1,7 @@
-import { TStateManager } from "@GEX/types"
-import {deepMerge, unset} from "@keg-hub/jsutils"
+import type { TStateManager } from "@GEX/types"
+
+import {unset} from "@keg-hub/jsutils/unset"
+import {deepMerge} from "@keg-hub/jsutils/deepMerge"
 
 
 export const createState = (initState?:Record<string, any>) => {

@@ -3,7 +3,9 @@ import type { Request, Response, Router } from 'express'
 import type { TProxyConfig } from '@gobletqa/conductor/types'
 
 import { createProxy } from './createProxy'
-import { checkCall, exists, isFunc } from '@keg-hub/jsutils'
+import { exists } from '@keg-hub/jsutils/exists'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
 import { getOrigin } from '@gobletqa/shared/utils/getOrigin'
 
 import {

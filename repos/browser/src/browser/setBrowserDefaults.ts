@@ -9,7 +9,8 @@ import type {
   TPWComponents
 } from '@GBB/types'
 
-import {emptyObj, isStr} from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 import {
   GBrowser,

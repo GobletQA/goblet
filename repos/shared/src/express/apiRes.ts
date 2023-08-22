@@ -1,5 +1,6 @@
 import type { Response } from 'express'
-import { toNum, emptyObj } from '@keg-hub/jsutils'
+import { toNum } from '@keg-hub/jsutils/toNum'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 
 /**
  * Api response helper called by all json api endpoints

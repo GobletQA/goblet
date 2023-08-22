@@ -1,4 +1,4 @@
-import { toNum } from '@keg-hub/jsutils'
+import { toNum } from '@keg-hub/jsutils/toNum'
 
 /**
  * Gets the screen dimensions from the current ENV

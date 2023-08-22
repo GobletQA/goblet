@@ -14,9 +14,10 @@ import type {
 
 import { PWPlay } from '@GBB/constants'
 import { CodeRunner } from './codeRunner'
-import {noOp, checkCall, deepMerge} from '@keg-hub/jsutils'
+import { noOp } from '@keg-hub/jsutils/noOp'
+import { checkCall } from '@keg-hub/jsutils/checkCall'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { getInjectScript } from '@GBB/utils/getInjectScript'
-
 
 /**
  * @type Player

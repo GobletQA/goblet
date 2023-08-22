@@ -2,7 +2,7 @@ import { TPipelineArgs } from '@GEX/types'
 
 import path from 'path'
 import pMapSeries from 'p-map-series'
-import {isArr} from '@keg-hub/jsutils'
+import {isArr} from '@keg-hub/jsutils/isArr'
 
 type TPartialState = {
   require:NodeRequire

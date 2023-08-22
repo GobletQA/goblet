@@ -1,6 +1,6 @@
 import type { Express } from 'express'
 import cookieSession from 'cookie-session'
-import { exists } from '@keg-hub/jsutils'
+import { exists } from '@keg-hub/jsutils/exists'
 
 /**
  * Sets up a cookie that will be stored client side

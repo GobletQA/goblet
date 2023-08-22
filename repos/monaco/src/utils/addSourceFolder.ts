@@ -1,4 +1,4 @@
-import { deepMerge } from '@keg-hub/jsutils'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
 export type TAddSrcFolder = {
   path: string

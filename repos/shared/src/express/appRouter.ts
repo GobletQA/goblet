@@ -1,7 +1,7 @@
 import type { Router, RequestHandler } from 'express'
 import express from 'express'
 import { asyncWrap } from './asyncWrap'
-import { isFunc } from '@keg-hub/jsutils'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
 
 const ExpRouter = express.Router()
 const boundAll = ExpRouter.all.bind(ExpRouter)

@@ -13,8 +13,8 @@ import { Automate } from '../automate'
 import { pwBrowsers } from './PWBrowsers'
 import { ghostMouse } from './ghostMouse'
 import { Logger } from '@GBB/utils/logger'
-import { emptyObj } from '@keg-hub/jsutils'
 import { ENVS } from '@gobletqa/environment'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
 import { getBrowserType } from '@GBB/utils/getBrowserType'
 import { getContextOpts } from '@GBB/utils/getContextOpts'
 import { buildBrowserConf } from '@GBB/utils/buildBrowserConf'
@@ -100,12 +100,17 @@ export class Browser {
 
       let page:TBrowserPage
       this.creatingPage = true
-      if(hasPages) page = pages[0]
+      if(hasPages){
+        page = pages[0]
+        const currentUrl = page.url()
+        currentUrl === `about:blank`
+          && await page.goto(initialUrl)
+
+      }
       else {
 
         const pg = await context.newPage()
-        
-        const page = ghostMouse(pg)
+        page = ghostMouse(pg)
 
         try {
           await page.goto(initialUrl)

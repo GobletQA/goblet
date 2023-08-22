@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express'
 import { apiErr } from './apiErr'
-import { isFunc } from '@keg-hub/jsutils'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
 
 /**
  * Wraps a request handler in a try/catch

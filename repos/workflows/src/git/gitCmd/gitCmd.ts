@@ -6,7 +6,8 @@ import type {
 } from '@gobletqa/workflows/types'
 
 import { runCmd } from '@keg-hub/cli-utils'
-import { limbo, deepMerge } from '@keg-hub/jsutils'
+import { limbo } from '@keg-hub/jsutils/limbo'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { defCmdOpts, validateGitOpts } from './gitHelpers'
 
 /**

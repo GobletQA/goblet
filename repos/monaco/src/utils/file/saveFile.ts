@@ -1,7 +1,7 @@
 import type { MutableRefObject } from 'react'
 import type { TFilelist, TFileMeta } from '@GBM/types'
 
-import { exists } from '@keg-hub/jsutils'
+import { exists } from '@keg-hub/jsutils/exists'
 import { getModelFromPath } from '@GBM/utils/editor/getModelFromPath'
 
 export const saveFile = (

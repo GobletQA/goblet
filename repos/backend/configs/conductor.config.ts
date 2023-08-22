@@ -5,11 +5,15 @@ import type {
   TControllerType,
   TControllerConnectOpts,
 } from '@GBE/types'
+
 import { ENVS } from '@gobletqa/environment'
+import { toNum } from '@keg-hub/jsutils/toNum'
+import { toBool } from '@keg-hub/jsutils/toBool'
+import { exists } from '@keg-hub/jsutils/exists'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { loadEnvs } from '@gobletqa/shared/utils/loadEnvs'
 import { getDindHost } from '@gobletqa/shared/utils/getDindHost'
 import { getKindHost } from '@gobletqa/shared/utils/getKindHost'
-import { toNum, exists, deepMerge, toBool } from '@keg-hub/jsutils'
 
 const {
   NODE_ENV=`local`,

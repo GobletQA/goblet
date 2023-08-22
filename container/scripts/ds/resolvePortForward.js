@@ -4,7 +4,8 @@
  * Ensures only deployed apps actually get their ports forwarded to the host
  * GB_FE_ACTIVE=goblet-frontend GB_BE_ACTIVE=goblet-backend node container/scripts/ds/resolvePortForward.js FE BE
  */
-const { exists, noPropArr } = require('@keg-hub/jsutils')
+const { exists } = require('@keg-hub/jsutils/exists')
+const { noPropArr } = require('@keg-hub/jsutils/noPropArr')
 const {
   getAppConfig,
   resolveValue,

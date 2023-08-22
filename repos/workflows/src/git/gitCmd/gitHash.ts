@@ -9,7 +9,8 @@ import type {
 
 import { git } from './gitCmd'
 import { runCmd } from '@keg-hub/cli-utils'
-import { limbo, deepMerge } from '@keg-hub/jsutils'
+import { limbo } from '@keg-hub/jsutils/limbo'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import {
   defCmdOpts,
   hasGitError,

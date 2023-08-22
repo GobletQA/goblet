@@ -1,6 +1,6 @@
 import type { TEnvObj } from "@GLT/types"
 
-import {exists} from "@keg-hub/jsutils"
+import {exists} from "@keg-hub/jsutils/exists"
 import { env } from '@keg-hub/parse-config'
 
 export type TContentToStr = {

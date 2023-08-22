@@ -1,4 +1,5 @@
-import { isObj, isStr } from '@keg-hub/jsutils'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { isStr } from '@keg-hub/jsutils/isStr'
 
 type TExpObj = {
   msg?: string

@@ -2,19 +2,18 @@ import type { TExamCliOpts } from "@GEX/types/bin.types"
 import type { EExTestMode, TExamConfig } from '@GEX/types/exam.types'
 
 import { fullLoc } from './helpers'
+import { toNum } from '@keg-hub/jsutils/toNum'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { isNum } from '@keg-hub/jsutils/isNum'
+import { isBool } from '@keg-hub/jsutils/isBool'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
+import { toBool } from '@keg-hub/jsutils/toBool'
 import { ExamCfgModeTypes } from "@GEX/constants"
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
+import { flatUnion } from '@keg-hub/jsutils/flatUnion'
 import { buildExamCfg } from "@GEX/utils/buildExamCfg"
 import {mergeCfgArrays} from "@GEX/utils/mergeCfgArrays"
-import {
-  toNum,
-  isObj,
-  isFunc,
-  toBool,
-  isNum,
-  isBool,
-  flatUnion,
-  emptyArr,
-} from '@keg-hub/jsutils'
+
 
 
 const getCfgObj = async (opts:TExamCliOpts) => {

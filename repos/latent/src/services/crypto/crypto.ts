@@ -2,8 +2,8 @@ import type { CipherGCMTypes } from 'crypto'
 import type { TLatentCryptoOpts } from '@GLT/types'
 
 import crypto from 'crypto'
-import {emptyObj} from '@keg-hub/jsutils'
 import { fromB64 } from '@GLT/utils/base64'
+import {emptyObj} from '@keg-hub/jsutils/emptyObj'
 
 
 export class LatentCrypto {

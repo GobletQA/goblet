@@ -2,7 +2,11 @@ import type { V1EnvVar, V1EnvFromSource } from '@kubernetes/client-node'
 import type { TPodContainer, TEnvRefConfig, TEnvFrom } from '../../../types'
 
 import { addIfExists } from './helpers'
-import { isStr, isObj, isNum, exists, noOpObj } from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { isNum } from '@keg-hub/jsutils/isNum'
+import { exists } from '@keg-hub/jsutils/exists'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 
 const buildEnvRefObj = (
   item:string|TEnvRefConfig,

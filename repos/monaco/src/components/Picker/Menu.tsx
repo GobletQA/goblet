@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect, useMemo } from 'react'
-import { noOp } from '@keg-hub/jsutils'
+import { noOp } from '@keg-hub/jsutils/noOp'
 
 export type Menu = {
   value: any

@@ -1,8 +1,9 @@
 import type { TChildProcArgs } from '@GSC/types'
 
 import '../resolveRoot'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 import { startVNC, stopVNC } from '@GSC/libs/vnc/vnc'
-import { noOpObj, parseJSON } from '@keg-hub/jsutils'
+import { parseJSON } from '@keg-hub/jsutils/parseJSON'
 
 /**
  * Runs tiger-vnc server

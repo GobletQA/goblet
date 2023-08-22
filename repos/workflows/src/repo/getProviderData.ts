@@ -1,4 +1,5 @@
-import {get, isStr} from "@keg-hub/jsutils"
+import {get} from "@keg-hub/jsutils/get"
+import {isStr} from "@keg-hub/jsutils/isStr"
 
 const {
   GB_GIT_PROVIDER_DATA=``

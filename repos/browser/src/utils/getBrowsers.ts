@@ -1,8 +1,11 @@
 import type { EBrowserName, TGetBrowsers } from '@GBB/types'
 
 import { EBrowserType } from '@GBB/types'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { noPropArr } from '@keg-hub/jsutils/noPropArr'
+import { eitherArr } from '@keg-hub/jsutils/eitherArr'
 import { BrowserNames, BrowserMap } from '@GBB/constants'
-import {eitherArr, noPropArr, isStr} from '@keg-hub/jsutils'
+
 
 /**
  * Creates an array of browsers relative the passed params object properties

@@ -4,13 +4,12 @@ import type {
   ESocketEnvironment,
 } from '@GSC/types'
 
-import {
-  get,
-  set,
-  deepMerge,
-  reduceObj,
-  uuid,
-} from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils/get'
+import { set } from '@keg-hub/jsutils/set'
+import { uuid } from '@keg-hub/jsutils/uuid'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
+import { reduceObj } from '@keg-hub/jsutils/reduceObj'
+
 
 const NODE_ENV = (process.env.NODE_ENV || 'local') as ESocketEnvironment
 const defServerConfig:Partial<TSocketConfigOpts> = {

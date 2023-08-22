@@ -14,16 +14,14 @@ import {
   WSPeerDisconnect,
 } from '@GSC/constants'
 
-import {
-  get,
-  isFunc,
-  isObj,
-  isStr,
-  uuid,
-  noOpObj,
-  snakeCase,
-  deepMerge,
-} from '@keg-hub/jsutils'
+import { get } from '@keg-hub/jsutils/get'
+import { uuid } from '@keg-hub/jsutils/uuid'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { snakeCase } from '@keg-hub/jsutils/snakeCase'
+import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 
 const EventTypeValues = Object.values(WSConstants)
 

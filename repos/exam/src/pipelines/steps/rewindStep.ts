@@ -2,7 +2,7 @@ import type { UnaryFunction } from 'p-pipe'
 import type { TPipelineArgs, TStateManager } from '@GEX/types'
 
 import pPipe from 'p-pipe'
-import { isArr } from '@keg-hub/jsutils'
+import { isArr } from '@keg-hub/jsutils/isArr'
 
 export const rewindStep = () => {
   const rewindCB = async (args:TPipelineArgs, manager?:TStateManager) => {

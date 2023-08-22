@@ -1,9 +1,8 @@
-import {
-  isStr,
-  isArr,
-  exists,
-  noOpObj,
-} from '@keg-hub/jsutils'
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { exists } from '@keg-hub/jsutils/exists'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+
 
 type TParsedEnvArr = { [k: string]: string[] }
 const emptyObj = noOpObj as TParsedEnvArr

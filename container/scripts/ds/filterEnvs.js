@@ -4,7 +4,7 @@
  * Run command below to test
  * `node container/scripts/ds/resolveDSEnvs.js certs provider-auth:api-key:LINODE_V4_API_KEY`
  */
-const { exists } = require('@keg-hub/jsutils') 
+const { exists } = require('@keg-hub/jsutils/exists') 
 const { resolveValues, resolveConfig } = require('./resolveValues')
 
 const { apps } = resolveConfig()

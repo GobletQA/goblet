@@ -19,10 +19,9 @@ import { AxiosError, } from 'axios'
 import { gitBaseUrl } from '../utils/gitBaseUrl'
 import { buildHeaders } from '../utils/buildHeaders'
 import { throwGitError } from '../utils/throwGitError'
-import {
-  emptyArr,
-  emptyObj,
-} from '@keg-hub/jsutils'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+
 
 type Provider = typeof Rest[`Github`] | typeof Rest[`Gitlab`]
 

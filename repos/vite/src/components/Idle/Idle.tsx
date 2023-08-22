@@ -2,8 +2,8 @@ import type { ReactNode } from "react"
 import {useIdleTimeout} from '@hooks/useIdleTimeout'
 
 import { useMemo } from "react"
-import { isEmptyColl } from "@keg-hub/jsutils"
 import { useContainer, useRepo } from "@store"
+import { isEmptyColl } from "@keg-hub/jsutils/isEmptyColl"
 
 
 export type TIdle = {

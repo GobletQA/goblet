@@ -1,6 +1,9 @@
 
 import type { TSymAST, TSymParseOpts } from '@GSC/types'
-import { emptyObj, isStr, emptyArr } from '@keg-hub/jsutils'
+
+import { isStr } from '@keg-hub/jsutils/isStr'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 
 //** TODO: fix the symplasm export */
 const symplasm = require('@ltipton/symplasm')

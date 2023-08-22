@@ -4,7 +4,7 @@ import type { TFilelist, TAutoSave, TEditorOpenFiles } from '../../types'
 
 
 import { useCallback } from 'react'
-import { exists } from '@keg-hub/jsutils'
+import { exists } from '@keg-hub/jsutils/exists'
 import { saveFile } from '../../utils/file/saveFile'
 
 export type TUseCloseFile = {

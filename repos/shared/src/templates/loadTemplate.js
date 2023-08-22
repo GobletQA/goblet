@@ -1,6 +1,6 @@
 const path = require('path')
-const { template } = require('@keg-hub/jsutils')
 const { aliases } = require('@GConfigs/aliases.config')
+const { template } = require('@keg-hub/jsutils/template')
 const { getFileContent } = require('@GSH/utils/getFileContent')
 
 // If default template location not found, fallback to other repos

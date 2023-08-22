@@ -4,7 +4,12 @@ import {
   TPipelineArgs,
 } from '@GEX/types'
 import { JasmineCompat } from '@GEX/utils/jasmineCompat'
-import {exists, ensureArr, isBool, isNum} from '@keg-hub/jsutils'
+
+import { isNum } from '@keg-hub/jsutils/isNum'
+import { exists } from '@keg-hub/jsutils/exists'
+import { isBool } from '@keg-hub/jsutils/isBool'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
+
 
 export const formatArgsTask = (args:TPipelineInit|TPipelineArgs) => {
   const {

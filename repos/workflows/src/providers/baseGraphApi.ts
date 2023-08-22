@@ -9,16 +9,14 @@ import type {
 
 import axios, { AxiosRequestConfig } from 'axios'
 import { ApiCache } from './apiCache'
+import { get } from '@keg-hub/jsutils/get'
+import { limbo } from '@keg-hub/jsutils/limbo'
+import { isArr } from '@keg-hub/jsutils/isArr'
+import { isFunc } from '@keg-hub/jsutils/isFunc'
+import { hashObj } from '@keg-hub/jsutils/hashObj'
 import { buildHeaders } from '../utils/buildHeaders'
-import {
-  get,
-  limbo,
-  isArr,
-  isFunc,
-  hashObj,
-  emptyObj,
-  emptyArr,
-} from '@keg-hub/jsutils'
+import { emptyObj } from '@keg-hub/jsutils/emptyObj'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 
 const defPageInfo:TGraphPageInfo = emptyObj as TGraphPageInfo
 

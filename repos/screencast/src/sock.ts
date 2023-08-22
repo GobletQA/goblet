@@ -1,7 +1,8 @@
 import type { TChildProcArgs } from '@GSC/types'
 
 import '../resolveRoot'
-import { parseJSON, noOpObj } from '@keg-hub/jsutils'
+import { noOpObj } from '@keg-hub/jsutils/noOpObj'
+import { parseJSON } from '@keg-hub/jsutils/parseJSON'
 import { startSockify, stopSockify } from '@GSC/libs/vnc/sockify'
 
 /**

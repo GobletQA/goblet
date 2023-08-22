@@ -1,7 +1,5 @@
 export * from './browserContext'
 export * from './playwrightTestEnv'
-export * from './getElement'
-export * from './getElements'
 export * from './evalElement'
 export * from './evalAll'
 export * from './domHelpers'

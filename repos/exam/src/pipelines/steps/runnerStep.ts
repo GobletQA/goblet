@@ -3,7 +3,7 @@ import type { TestErr } from '@GEX/utils/error'
 
 import { runTestsTask } from '../tasks/runTestsTask'
 import { loadRunnerTask } from '../tasks/loadRunnerTask'
-import {limbo} from '@keg-hub/jsutils'
+import {limbo} from '@keg-hub/jsutils/limbo'
 
 export const runnerStep = async (args:TPipelineArgs, manager?:TStateManager) => {
   const runners = await loadRunnerTask(args)

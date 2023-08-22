@@ -4,9 +4,11 @@ import type {
   TGraphApiOpts,
 } from '@gobletqa/workflows/types'
 
-import { get, isObj, emptyArr } from '@keg-hub/jsutils'
 import { Graph } from '../constants/graph'
+import { get } from '@keg-hub/jsutils/get'
 import { BaseGraphApi } from './baseGraphApi'
+import { isObj } from '@keg-hub/jsutils/isObj'
+import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 
 
 type TUserRepoResp = {
