@@ -1,10 +1,9 @@
 import type { Handler } from 'express'
 
-import { config } from 'winston'
 import { Express } from 'express'
 import { TLogOpts } from '../types'
 import expressWinston from 'express-winston'
-import { buildLogger } from '@gobletqa/logger'
+import { buildLogger, npmLevels } from '@gobletqa/logger'
 import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 
 
@@ -17,14 +16,14 @@ import { noOpObj } from '@keg-hub/jsutils/noOpObj'
 export const setupLoggerReq = (app:Express, middlewareOpts?:Record<any, any>) => {
   const loggerOpts = (app.locals.config.logger || noOpObj as TLogOpts)
   const logger = buildLogger(loggerOpts as TLogOpts)
-  const logLevel = config.npm.levels[loggerOpts.level || 'info']
+  const logLevel = npmLevels[loggerOpts.level || 'info']
 
   const requestLogger = expressWinston.logger({
     colorize: false,
     expressFormat: true,
     winstonInstance: logger,
     /** Only log the metadata, if the log level is set to at least verbose */
-    meta: Boolean(logLevel >= config.npm.levels.verbose),
+    meta: Boolean(logLevel >= npmLevels.verbose),
     /** override options above with passed in options */
     ...(middlewareOpts || noOpObj),
   })
@@ -43,12 +42,12 @@ export const setupLoggerReq = (app:Express, middlewareOpts?:Record<any, any>) =>
 export const setupLoggerErr = (app:Express, middlewareOpts?:Record<any, any>) => {
   const loggerOpts = (app.locals.config.logger || noOpObj as TLogOpts)
   const logger = buildLogger(loggerOpts)
-  const logLevel = config.npm.levels[loggerOpts.level || 'info']
+  const logLevel = npmLevels[loggerOpts.level || 'info']
 
   const errorLogger = expressWinston.errorLogger({
     winstonInstance: logger,
     /** Only log the metadata, if the log level is set to at least verbose */
-    meta: Boolean(logLevel >= config.npm.levels.verbose),
+    meta: Boolean(logLevel >= npmLevels.verbose),
     /** override options above with passed in options */
     ...(middlewareOpts || noOpObj),
   })

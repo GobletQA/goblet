@@ -35,7 +35,7 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/environment": "workspace:../environment",
+    "@gobletqa/environment": "workspace:*",
     "winston": "3.6.0"
   },
   "devDependencies": {

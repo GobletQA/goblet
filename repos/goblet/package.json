@@ -35,8 +35,8 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/environment": "workspace:../environment",
-    "@gobletqa/logger": "workspace:../logger",
+    "@gobletqa/environment": "workspace:*",
+    "@gobletqa/logger": "workspace:*",
     "glob": "10.3.3"
   },
   "devDependencies": {

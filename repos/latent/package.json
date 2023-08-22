@@ -40,13 +40,13 @@
     "validate": "tsc --noEmit"
   },
   "dependencies": {
-    "@gobletqa/logger": "workspace:../logger",
+    "@gobletqa/logger": "workspace:*",
     "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": ">=9.8.0",
     "@keg-hub/parse-config": ">=2.1.0"
   },
   "devDependencies": {
-    "@gobletqa/goblet": "workspace:../goblet",
+    "@gobletqa/goblet": "workspace:*",
     "@types/debug": "4.1.5",
     "@types/jest": "29.1.2",
     "@types/node": "18.15.13",
