@@ -1,3 +1,5 @@
+import type { TGobletExtEnvs } from '@GENV/types'
+
 import git from './git'
 import test from './test'
 import repo from './repo'
@@ -48,4 +50,4 @@ class GobletEnvs {
 }
 
 export const GEnvs = new GobletEnvs() as unknown as NodeJS.ProcessEnv
-export const ENVS = GEnvs as unknown as ReturnType<typeof buildEnvs>
+export const ENVS = GEnvs as unknown as ReturnType<typeof buildEnvs> & TGobletExtEnvs

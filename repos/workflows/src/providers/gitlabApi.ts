@@ -59,8 +59,8 @@ export class GitlabApi extends BaseRestApi {
   ) => {
 
     const args = isStr(params) || isArr(params)
-      ? { url: params }
-      : params
+      ? { url: params } as Partial<AxiosRequestConfig>
+      : params as Partial<AxiosRequestConfig>
 
     const url = GitlabApi.buildAPIUrl({
       remote: this.baseUrl,

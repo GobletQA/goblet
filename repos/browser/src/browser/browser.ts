@@ -171,7 +171,7 @@ export class Browser {
       !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`Context Options`, options)
 
       if(hasContexts){
-        context = contexts[0]
+        context = contexts[0] as TBrowserContext
         !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - Found existing context on browser ${browserConf.type}`)
       }
       else {

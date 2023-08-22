@@ -92,8 +92,8 @@ export class GithubApi extends BaseRestApi {
   ) => {
 
     const args = isStr(params) || isArr(params)
-      ? { url: params }
-      : params
+      ? { url: params } as Partial<AxiosRequestConfig>
+      : params as Partial<AxiosRequestConfig>
 
 
     const url = GithubApi.buildAPIUrl({
