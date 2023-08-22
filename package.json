@@ -54,7 +54,7 @@
     "cp:tracer": "node scripts/js/cpTracer.js",
     "pm2": "pm2 start configs/app.pm2.config.js",
     "setup": "pnpm install && pnpm cp:tracer",
-    "sync": "syncpack",
+    "sync": "syncpack fix-mismatches",
     "test": "pnpm -r test",
     "test:ci": "pnpm -r test:ci",
     "validate": "pnpm -r validate"

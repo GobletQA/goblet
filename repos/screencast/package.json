@@ -54,7 +54,7 @@
     "@gobletqa/latent": "workspace:*",
     "@gobletqa/shared": "workspace:*",
     "@gobletqa/test-utils": "workspace:*",
-    "@keg-hub/jsutils": ">=9.8.0",
+    "@keg-hub/jsutils": "9.8.2",
     "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/spawn-cmd": ">=0.3.2",
     "@ltipton/esdev": "0.2.1",
