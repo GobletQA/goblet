@@ -8,11 +8,12 @@ import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { loaderSearch, getGobletConfig, getRepoGobletDir } from '@gobletqa/goblet'
 
 /**
+ * @ **IMPORTANT** - Export for tests only
  * Gets a ref to current values of GOBLET envs
  * Then overwrites them with the passed in config || repos version
  * Returns a method to allow resetting the envs to their original value
  */
-const setGobletEnv = (
+export const setGobletEnv = (
   config:TGobletConfig,
 ) => {
   const orgGobletEnv = ENVS.GOBLET_ENV
@@ -42,10 +43,11 @@ const setGobletEnv = (
 }
 
 /**
+ * @ **IMPORTANT** - Export for tests only
  * Loads the mounted repos world file based on the passed in config
  * If config.paths.world is not defined, search's for the world file in the config.paths.workDir
  */
-const loadClientWorld = (
+export const loadClientWorld = (
   config:TGobletConfig,
 ) => {
   const worldPath = config?.paths?.world

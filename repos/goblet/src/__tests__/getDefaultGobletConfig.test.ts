@@ -1,7 +1,6 @@
 import path from 'path'
-import { GSHRoot } from '../../../resolveRoot'
+import { GSHRoot } from '../../../shared/resolveRoot'
 import { deepMerge } from '@keg-hub/jsutils'
-import { getDefaultGobletConfig } from '../getDefaultGobletConfig'
 
 jest.mock('../../../resolveRoot')
 jest.mock('@keg-hub/jsutils')

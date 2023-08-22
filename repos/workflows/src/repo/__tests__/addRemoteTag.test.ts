@@ -1,9 +1,9 @@
 
-import {EProvider} from '../../types'
+import {EProvider} from '../../types/index'
 import {
   hashIO,
   gitOpts
-} from '../../git/__mocks__'
+} from '../../git/gitCmd/__mocks__'
 
 describe(`gitTag`, () => {
 

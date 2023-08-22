@@ -1,4 +1,4 @@
-import { Repo } from '@GSH/repo/repo'
+import { Repo } from '../repo'
 import { Logger } from '@keg-hub/cli-utils'
 
 import { loadFeatures } from '@GSH/libs/features/features'

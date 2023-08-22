@@ -2,7 +2,7 @@
 
 import fs from 'fs'
 import path from 'path'
-import { findConfig } from '../helpers'
+import { findConfig } from '../findConfig'
 import { Logger } from '@keg-hub/cli-utils'
 import { loadConfigFromBase } from '../loadConfigFromBase'
 

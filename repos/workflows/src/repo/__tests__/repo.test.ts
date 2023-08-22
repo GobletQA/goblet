@@ -1,7 +1,6 @@
+import { getWorld } from '../world'
 import { Parkin } from '@ltipton/parkin'
-import { getWorld } from '@GSH/repo/world'
-import { emptyObj } from '@keg-hub/jsutils'
-import { getFileTypes } from '@GSH/utils/getFileTypes'
+import { getFileTypes } from '@gobletqa/goblet'
 import {
   createGoblet,
   statusGoblet,
@@ -13,8 +12,8 @@ import {
 import { Repo } from '../repo'
 
 jest.mock('@ltipton/parkin')
-jest.mock('@GSH/repo/world')
-jest.mock('@GSH/utils/getFileTypes')
+jest.mock('../world')
+jest.mock('@gobletqa/goblet')
 jest.mock('@gobletqa/workflows')
 
 describe('Repo', () => {

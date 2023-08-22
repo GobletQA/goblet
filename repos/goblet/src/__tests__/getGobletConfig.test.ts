@@ -1,13 +1,11 @@
 
 import { Logger } from '@keg-hub/cli-utils';
-import { loadCustomConfig } from '../loadCustomConfig';
-import { addConfigFileTypes } from '../addConfigFileTypes';
-import { loadConfigFromBase } from '../loadConfigFromBase';
+import { addConfigFileTypes } from '../utils/addConfigFileTypes';
+import { loadConfigFromBase } from '../loaders/loadConfigFromBase';
 import { getDefaultGobletConfig } from '../getDefaultGobletConfig';
 import { getGobletConfig, resetGobletConfig } from '../getGobletConfig'
 
 jest.mock('@keg-hub/cli-utils');
-jest.mock('./loadCustomConfig');
 jest.mock('./addConfigFileTypes');
 jest.mock('./loadConfigFromBase');
 jest.mock('./getDefaultGobletConfig');
@@ -27,7 +25,7 @@ describe('getGobletConfig', () => {
 
     expect(result).toEqual(config);
     expect(loadConfigFromBase).not.toHaveBeenCalled();
-    expect(loadCustomConfig).not.toHaveBeenCalled();
+
     expect(addConfigFileTypes).not.toHaveBeenCalled();
     expect(getDefaultGobletConfig).not.toHaveBeenCalled();
 
@@ -54,7 +52,6 @@ describe('getGobletConfig', () => {
 
     expect(result).toEqual(finalConfig);
     expect(loadConfigFromBase).toHaveBeenCalledWith(undefined);
-    expect(loadCustomConfig).toHaveBeenCalledWith(undefined);
     expect(addConfigFileTypes).toHaveBeenCalledWith(mergedConfig);
     expect(getDefaultGobletConfig).toHaveBeenCalled();
     expect(Logger.warn).not.toHaveBeenCalled();
@@ -81,7 +78,6 @@ describe('getGobletConfig', () => {
 
     expect(result).toEqual(finalConfig);
     expect(loadConfigFromBase).toHaveBeenCalledWith(undefined);
-    expect(loadCustomConfig).toHaveBeenCalledWith(undefined);
     expect(addConfigFileTypes).toHaveBeenCalledWith(mergedConfig);
     expect(getDefaultGobletConfig).toHaveBeenCalled();
     expect(Logger.warn).toHaveBeenCalledTimes(1);

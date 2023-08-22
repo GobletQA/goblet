@@ -1,7 +1,7 @@
 import { Repo } from '../repo'
-import { loadFeatures } from '@GSH/libs/features/features'
-import { getDefinitions } from '@GSH/repo/getDefinitions'
 import { getFeatures } from '../getFeatures'
+import { getDefinitions } from '../getDefinitions'
+import { loadFeatures } from '@GSH/libs/features/features'
 
 jest.mock('@GSH/libs/features/features')
 jest.mock('@GSH/repo/getDefinitions')

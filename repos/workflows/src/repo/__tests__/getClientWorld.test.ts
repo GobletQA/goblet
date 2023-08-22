@@ -1,15 +1,12 @@
 
 
 import { deepMerge } from '@keg-hub/jsutils/src/node'
-import { getGobletConfig } from '@GSH/goblet/getGobletConfig'
-import { getRepoGobletDir } from '@GSH/utils/getRepoGobletDir'
-import { loaderSearch } from '@GSH/libs/loader'
-import { DefWorld } from '@GSH/constants'
+import { getGobletConfig, loaderSearch, getRepoGobletDir } from '@gobletqa/goblet'
+
+import { DefWorld } from '@gobletqa/environment/constants'
 import { getClientWorld, loadClientWorld, setGobletEnv } from '../getClientWorld'
 
-jest.mock('@GSH/goblet/getGobletConfig')
-jest.mock('@GSH/utils/getRepoGobletDir')
-jest.mock('@GSH/libs/loader')
+jest.mock('@gobletqa/goblet')
 jest.mock('@keg-hub/jsutils/src/node')
 
 describe('setGobletEnv', () => {

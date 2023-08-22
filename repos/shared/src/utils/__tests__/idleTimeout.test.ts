@@ -1,201 +1,207 @@
-import { exec } from 'child_process'
-import { startSup, stopSup, loopConnectionsCheck } from '../idleTimeout'
-
-jest.mock('child_process')
-
-import {toBool, toNum} from '@keg-hub/jsutils'
-
-const GB_SC_IDLE_INTERVAL = 20
-const GB_SC_IDLE_WAIT_TO_START = 180
-const GB_SC_IDLE_CONNECTION_THRESHOLD = 1
+/**
+ * idleTimeout is handled via a shell script, so these test are no longer valid
+ */
 
 
-describe('startSup', () => {
-  it('should start supervisor with the correct command', () => {
-    startSup()
-    expect(exec).toHaveBeenCalledWith(
-      'supervisord -n -c configs/supervisord.conf',
-      expect.any(Function)
-    )
-  })
-})
 
-describe('stopSup', () => {
-  it('should stop supervisor with the correct command', () => {
-    stopSup()
-    expect(exec).toHaveBeenCalledWith(
-      'supervisorctl -c configs/supervisord.conf shutdown all',
-      expect.any(Function)
-    )
-  })
+// import { exec } from 'child_process'
+// import { startSup, stopSup, loopConnectionsCheck } from '../idleTimeout'
 
-  it('should kill the tail process in local environment', () => {
-    process.env.NODE_ENV = 'local'
-    // @ts-ignore
-    exec.mockImplementation((command, callback) => {
-      if (command.includes('/dev/null')) {
-        callback(null, '1234', null)
-      } else {
-        callback(null, null, null)
-      }
-    })
+// jest.mock('child_process')
 
-    stopSup()
-    expect(exec).toHaveBeenCalledWith('ps -ef | grep /dev/null | grep -v grep | awk \'{print $2}\'', expect.any(Function))
-    expect(exec).toHaveBeenCalledWith('kill -9 1234', expect.any(Function))
-  })
-})
+// import {toBool, toNum} from '@keg-hub/jsutils'
 
-describe('loopConnectionsCheck', () => {
-  let originalLog: typeof console.log
-  let logOutput: any[]
+// const GB_SC_IDLE_INTERVAL = 20
+// const GB_SC_IDLE_WAIT_TO_START = 180
+// const GB_SC_IDLE_CONNECTION_THRESHOLD = 1
 
-  beforeEach(() => {
-    originalLog = console.log
-    logOutput = []
-    console.log = jest.fn((...args) => {
-      logOutput.push(args)
-    })
-  })
 
-  afterEach(() => {
-    console.log = originalLog
-  })
+// describe('startSup', () => {
+//   it('should start supervisor with the correct command', () => {
+//     startSup()
+//     expect(exec).toHaveBeenCalledWith(
+//       'supervisord -n -c configs/supervisord.conf',
+//       expect.any(Function)
+//     )
+//   })
+// })
 
-  it('should wait and start the idle timeout check', () => {
-    jest.useFakeTimers()
+// describe('stopSup', () => {
+//   it('should stop supervisor with the correct command', () => {
+//     stopSup()
+//     expect(exec).toHaveBeenCalledWith(
+//       'supervisorctl -c configs/supervisord.conf shutdown all',
+//       expect.any(Function)
+//     )
+//   })
 
-    loopConnectionsCheck()
+//   it('should kill the tail process in local environment', () => {
+//     process.env.NODE_ENV = 'local'
+//     // @ts-ignore
+//     exec.mockImplementation((command, callback) => {
+//       if (command.includes('/dev/null')) {
+//         callback(null, '1234', null)
+//       } else {
+//         callback(null, null, null)
+//       }
+//     })
 
-    expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), GB_SC_IDLE_WAIT_TO_START * 1000)
-    expect(logOutput).toEqual([['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...']])
+//     stopSup()
+//     expect(exec).toHaveBeenCalledWith('ps -ef | grep /dev/null | grep -v grep | awk \'{print $2}\'', expect.any(Function))
+//     expect(exec).toHaveBeenCalledWith('kill -9 1234', expect.any(Function))
+//   })
+// })
 
-    jest.advanceTimersByTime(GB_SC_IDLE_WAIT_TO_START * 1000)
+// describe('loopConnectionsCheck', () => {
+//   let originalLog: typeof console.log
+//   let logOutput: any[]
 
-    expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), GB_SC_IDLE_INTERVAL * 1000)
-    expect(logOutput).toEqual([
-      ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
-      ['Starting idle timeout check...'],
-    ])
+//   beforeEach(() => {
+//     originalLog = console.log
+//     logOutput = []
+//     console.log = jest.fn((...args) => {
+//       logOutput.push(args)
+//     })
+//   })
 
-    jest.clearAllTimers()
-  })
+//   afterEach(() => {
+//     console.log = originalLog
+//   })
 
-  it('should check active network connections and handle idle container', () => {
-    jest.useFakeTimers()
+//   it('should wait and start the idle timeout check', () => {
+//     jest.useFakeTimers()
 
-    // @ts-ignore
-    exec.mockImplementation((command, callback) => {
-      if (command.includes('netstat')) {
-        callback(null, '2', null) // Simulate 2 active connections
-      }
-      else {
-        callback(null, null, null)
-      }
-    })
+//     loopConnectionsCheck()
 
-    loopConnectionsCheck()
+//     expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), GB_SC_IDLE_WAIT_TO_START * 1000)
+//     expect(logOutput).toEqual([['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...']])
 
-    jest.advanceTimersByTime(GB_SC_IDLE_WAIT_TO_START * 1000)
-    jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
+//     jest.advanceTimersByTime(GB_SC_IDLE_WAIT_TO_START * 1000)
 
-    expect(exec).toHaveBeenCalledWith('netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l', expect.any(Function))
-    expect(logOutput).toEqual([
-      ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
-      ['Starting idle timeout check...'],
-      ['Checking active network connections...'],
-      ['Found', 2, 'active connections'],
-      ['Container passed idle connections check. Reset container idle count to', 0],
-    ])
+//     expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), GB_SC_IDLE_INTERVAL * 1000)
+//     expect(logOutput).toEqual([
+//       ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
+//       ['Starting idle timeout check...'],
+//     ])
 
-    jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
+//     jest.clearAllTimers()
+//   })
 
-    expect(exec).toHaveBeenCalledWith('netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l', expect.any(Function))
-    expect(logOutput).toEqual([
-      ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
-      ['Starting idle timeout check...'],
-      ['Checking active network connections...'],
-      ['Found', 2, 'active connections'],
-      ['Container passed idle connections check. Reset container idle count to', 0],
-      ['Checking active network connections...'],
-      ['Found', 2, 'active connections'],
-      ['Container passed idle connections check. Reset container idle count to', 0],
-    ])
+//   it('should check active network connections and handle idle container', () => {
+//     jest.useFakeTimers()
 
-    jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
+//     // @ts-ignore
+//     exec.mockImplementation((command, callback) => {
+//       if (command.includes('netstat')) {
+//         callback(null, '2', null) // Simulate 2 active connections
+//       }
+//       else {
+//         callback(null, null, null)
+//       }
+//     })
 
-    expect(exec).toHaveBeenCalledWith('netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l', expect.any(Function))
-    expect(logOutput).toEqual([
-      ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
-      ['Starting idle timeout check...'],
-      ['Checking active network connections...'],
-      ['Found', 2, 'active connections'],
-      ['Container passed idle connections check. Reset container idle count to', 0],
-      ['Checking active network connections...'],
-      ['Found', 2, 'active connections'],
-      ['Container passed idle connections check. Reset container idle count to', 0],
-      ['Checking active network connections...'],
-      ['Found', 2, 'active connections'],
-      ['Container passed idle connections check. Reset container idle count to', 0],
-    ])
+//     loopConnectionsCheck()
 
-    jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
+//     jest.advanceTimersByTime(GB_SC_IDLE_WAIT_TO_START * 1000)
+//     jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
 
-    expect(exec).toHaveBeenCalledWith('netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l', expect.any(Function))
-    expect(logOutput).toEqual([
-      ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
-      ['Starting idle timeout check...'],
-      ['Checking active network connections...'],
-      ['Found', 2, 'active connections'],
-      ['Container passed idle connections check. Reset container idle count to', 0],
-      ['Checking active network connections...'],
-      ['Found', 2, 'active connections'],
-      ['Container passed idle connections check. Reset container idle count to', 0],
-      ['Checking active network connections...'],
-      ['Found', 2, 'active connections'],
-      ['Container passed idle connections check. Reset container idle count to', 0],
-      ['Checking active network connections...'],
-      ['Found', 2, 'active connections'],
-      ['Container passed idle connections check. Reset container idle count to', 0],
-    ])
+//     expect(exec).toHaveBeenCalledWith('netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l', expect.any(Function))
+//     expect(logOutput).toEqual([
+//       ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
+//       ['Starting idle timeout check...'],
+//       ['Checking active network connections...'],
+//       ['Found', 2, 'active connections'],
+//       ['Container passed idle connections check. Reset container idle count to', 0],
+//     ])
 
-    jest.clearAllTimers()
-  })
+//     jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
 
-  it('should handle idle container and stop supervisor', () => {
-    jest.useFakeTimers()
+//     expect(exec).toHaveBeenCalledWith('netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l', expect.any(Function))
+//     expect(logOutput).toEqual([
+//       ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
+//       ['Starting idle timeout check...'],
+//       ['Checking active network connections...'],
+//       ['Found', 2, 'active connections'],
+//       ['Container passed idle connections check. Reset container idle count to', 0],
+//       ['Checking active network connections...'],
+//       ['Found', 2, 'active connections'],
+//       ['Container passed idle connections check. Reset container idle count to', 0],
+//     ])
 
-    // @ts-ignore
-    exec.mockImplementation((command, callback) => {
-      if (command.includes('netstat')) {
-        callback(null, '0', null) // Simulate 0 active connections
-      } else {
-        callback(null, null, null)
-      }
-    })
+//     jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
 
-    loopConnectionsCheck()
+//     expect(exec).toHaveBeenCalledWith('netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l', expect.any(Function))
+//     expect(logOutput).toEqual([
+//       ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
+//       ['Starting idle timeout check...'],
+//       ['Checking active network connections...'],
+//       ['Found', 2, 'active connections'],
+//       ['Container passed idle connections check. Reset container idle count to', 0],
+//       ['Checking active network connections...'],
+//       ['Found', 2, 'active connections'],
+//       ['Container passed idle connections check. Reset container idle count to', 0],
+//       ['Checking active network connections...'],
+//       ['Found', 2, 'active connections'],
+//       ['Container passed idle connections check. Reset container idle count to', 0],
+//     ])
 
-    jest.advanceTimersByTime(GB_SC_IDLE_WAIT_TO_START * 1000)
-    jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
+//     jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
 
-    jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
+//     expect(exec).toHaveBeenCalledWith('netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l', expect.any(Function))
+//     expect(logOutput).toEqual([
+//       ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
+//       ['Starting idle timeout check...'],
+//       ['Checking active network connections...'],
+//       ['Found', 2, 'active connections'],
+//       ['Container passed idle connections check. Reset container idle count to', 0],
+//       ['Checking active network connections...'],
+//       ['Found', 2, 'active connections'],
+//       ['Container passed idle connections check. Reset container idle count to', 0],
+//       ['Checking active network connections...'],
+//       ['Found', 2, 'active connections'],
+//       ['Container passed idle connections check. Reset container idle count to', 0],
+//       ['Checking active network connections...'],
+//       ['Found', 2, 'active connections'],
+//       ['Container passed idle connections check. Reset container idle count to', 0],
+//     ])
 
-    expect(exec).toHaveBeenCalledWith('netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l', expect.any(Function))
-    expect(logOutput).toEqual([
-      ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
-      ['Starting idle timeout check...'],
-      ['Checking active network connections...'],
-      ['Found', 0, 'active connections'],
-      ['The active connections count of', 0, 'is less or equal to the', GB_SC_IDLE_CONNECTION_THRESHOLD, 'connections threshold'],
-      ['Container is considered idle due to consecutive connection checks, shutting down...'],
-    ])
+//     jest.clearAllTimers()
+//   })
 
-    expect(exec).toHaveBeenCalledWith(
-      'supervisorctl -c configs/supervisord.conf shutdown all',
-      expect.any(Function)
-    )
+//   it('should handle idle container and stop supervisor', () => {
+//     jest.useFakeTimers()
 
-    jest.clearAllTimers()
-  })
-})
+//     // @ts-ignore
+//     exec.mockImplementation((command, callback) => {
+//       if (command.includes('netstat')) {
+//         callback(null, '0', null) // Simulate 0 active connections
+//       } else {
+//         callback(null, null, null)
+//       }
+//     })
+
+//     loopConnectionsCheck()
+
+//     jest.advanceTimersByTime(GB_SC_IDLE_WAIT_TO_START * 1000)
+//     jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
+
+//     jest.advanceTimersByTime(GB_SC_IDLE_INTERVAL * 1000)
+
+//     expect(exec).toHaveBeenCalledWith('netstat -an | grep ESTABLISHED | grep -v 26370 | wc -l', expect.any(Function))
+//     expect(logOutput).toEqual([
+//       ['Waiting', GB_SC_IDLE_WAIT_TO_START, 'seconds to start Container idle check...'],
+//       ['Starting idle timeout check...'],
+//       ['Checking active network connections...'],
+//       ['Found', 0, 'active connections'],
+//       ['The active connections count of', 0, 'is less or equal to the', GB_SC_IDLE_CONNECTION_THRESHOLD, 'connections threshold'],
+//       ['Container is considered idle due to consecutive connection checks, shutting down...'],
+//     ])
+
+//     expect(exec).toHaveBeenCalledWith(
+//       'supervisorctl -c configs/supervisord.conf shutdown all',
+//       expect.any(Function)
+//     )
+
+//     jest.clearAllTimers()
+//   })
+// })

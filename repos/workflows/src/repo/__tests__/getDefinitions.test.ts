@@ -1,6 +1,6 @@
 import { Repo } from '../repo'
-import { loadDefinitions } from '@GSH/libs/definitions/definitions'
 import { getDefinitions } from '../getDefinitions'
+import { loadDefinitions } from '@GSH/libs/definitions/definitions'
 
 jest.mock('@GSH/libs/definitions/definitions')
 
