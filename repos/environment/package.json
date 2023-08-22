@@ -37,7 +37,6 @@
   "devDependencies": {
     "@keg-hub/jsutils": ">=9.8.0",
     "esbuild": "0.19.2",
-    "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.4.2"
   }
 }

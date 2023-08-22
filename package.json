@@ -65,37 +65,55 @@
       "@keg-hub/cli-utils": "0.9.0"
     },
     "peerDependencyRules": {
+      "onlyBuiltDependencies": ["esbuild"],
       "ignoreMissing": ["dockerode", "react"],
-      "neverBuiltDependencies": ["ssh2"]
+      "allowAny": [
+        "@ltipton/esdev",
+        "dockerode",
+        "docker-events",
+        "esbuild",
+        "react",
+        "react-dom"
+        
+      ],
+      "allowedDeprecatedVersions": {
+        "har-validator": "*",
+        "request": "*",
+        "resolve-url": "*",
+        "sane": "*",
+        "source-map-resolve": "*",
+        "source-map-url": "*",
+        "urix": "*",
+        "uuid": "*"
+      }
     }
   },
   "dependencies": {
-    "@keg-hub/args-parse": ">=10.0.1",
-    "@keg-hub/cli-utils": "0.9.0",
-    "@keg-hub/jsutils": ">=9.8.0",
-    "@keg-hub/parse-config": ">=2.1.0",
-    "@ltipton/parkin": "5.1.1",
-    "@ltipton/esdev": "0.2.1",
     "esbuild": "0.19.2",
-    "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.4.2",
-    "esbuild-jest": "0.5.0",
     "module-alias": "2.2.2",
-    "nodemon": "2.0.22"
+    "@keg-hub/cli-utils": "0.9.0",
+    "@keg-hub/jsutils": ">=9.8.0"
   },
   "devDependencies": {
+    "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/spawn-cmd": ">=0.3.2",
     "@commitlint/cli": "16.1.0",
     "@commitlint/config-conventional": "16.0.0",
+    "@ltipton/esdev": "0.2.1",
+    "@ltipton/parkin": "5.1.1",
     "@types/node": "18.15.13",
     "@typescript-eslint/eslint-plugin": "5.28.0",
     "@typescript-eslint/parser": "5.28.0",
     "commitizen": "4.2.4",
     "cz-conventional-changelog": "3.3.0",
     "dot-json": "1.2.2",
+    "esbuild-jest": "0.5.0",
     "eslint": "8.7.0",
     "husky": "7.0.4",
     "lint-staged": "12.3.4",
+    "module-alias": "2.2.2",
+    "nodemon": "2.0.22",
     "playwright": "1.36.1",
     "prettier": "2.5.1",
     "semver": "7.3.7",
