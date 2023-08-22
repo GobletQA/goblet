@@ -41,6 +41,7 @@
     "@keg-hub/cli-utils": "0.9.0",
     "@keg-hub/jsutils": ">=9.8.0",
     "@keg-hub/parse-config": ">=2.1.0",
+    "@ltipton/parkin": "5.1.1",
     "axios": "1.4.0",
     "chokidar": "3.5.3",
     "module-alias": "2.2.2"

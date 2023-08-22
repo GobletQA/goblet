@@ -1,6 +1,7 @@
 import { GBERoot } from '../resolveRoot'
 
 import path from 'node:path'
+import cfg  from '../package.json'
 import * as esbuild from 'esbuild'
 import { promises as fs } from 'node:fs'
 import aliasPlugin from 'esbuild-plugin-path-alias'
@@ -10,32 +11,49 @@ const outdir = path.join(GBERoot, `dist`)
 const entryFile = path.join(GBERoot, `index.ts`)
 const gentryFile = path.join(aliases.GobletRoot, `configs/goblet.default.config.js`)
 
-const esmBuild = async () => {
+const shared = {
+  outdir,
+  bundle: true,
+  minify: false,
+  sourcemap: false,
+  treeShaking: true,
+  target: [`node20`],
+  entryNames: `[name]`,
+  platform: `node` as const,
+  mainFields: [`module`, `main`],
+  conditions: [`import`, `module`],
+  plugins: [aliasPlugin(aliases)],
+  tsconfig: path.join(GBERoot, `tsconfig.json`),
+}
+
+const backendBuild = async () => {
   // Build the files with esbuild
   await esbuild.build({
-    outdir,
-    bundle: true,
-    minify: false,
-    sourcemap: true,
-    platform: `node`,
-    treeShaking: true,
-    target: [`node20`],
-    entryNames: `[name]`,
-    mainFields: [`module`, `main`],
-    conditions: [
-      `import`, `module`
+    ...shared,
+    entryPoints: [entryFile],
+    external: [
+      `fsevents`,
+      ...Object.keys(cfg.dependencies),
+      ...Object.keys(cfg.optionalDependencies),
     ],
-    entryPoints: [
-      entryFile,
-      gentryFile
-    ],
-    plugins: [aliasPlugin(aliases)],
+  })
+  .catch((cause:any) => {
+    console.error(cause)
+    process.exit(1)
+  })
+}
+
+
+const gobletBuild = async () => {
+  // Build the files with esbuild
+  await esbuild.build({
+    ...shared,
+    entryPoints: [gentryFile],
     external: [
       `esbuild`,
       `fsevents`,
       `@kubernetes/client-node`,
     ],
-    tsconfig: path.join(GBERoot, `tsconfig.json`)
   })
   .catch((cause:any) => {
     console.error(cause)
@@ -47,7 +65,7 @@ const esmBuild = async () => {
 ;(async () => {
   // Remove the existing output dir
   await fs.rm(outdir, { recursive: true, force: true })
-  await esmBuild()
+  await backendBuild()
+  await gobletBuild()
 })()
-
 

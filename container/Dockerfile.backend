@@ -4,7 +4,7 @@ ARG IMAGE_FROM=$GB_IMAGE_FROM
 
 # ---- Setup Stage ---- #
 FROM $IMAGE_FROM as goblet-setup
-WORKDIR /goblet/app
+WORKDIR /goblet
 ENV GB_SUB_REPO=backend
 RUN apt-get purge --yes \
     novnc \
@@ -14,24 +14,30 @@ RUN apt-get purge --yes \
     apt-get clean && \
     apt-get autoremove --yes && \
     rm -rf /ms-playwright && \
-    rm -rf ms-playwright-agent
+    rm -rf ms-playwright-agent && \
+    rm -rf /goblet/app && \
+    rm -rf /root/.cache && \
+    rm -rf /root/.local && \
+    rm -rf /root/.npm
 # ---- End Stage ---- #
 
 
 # ---- Prune Stage ---- #
 FROM $IMAGE_FROM as goblet-pruner
 WORKDIR /goblet/app
+
+RUN pnpm add --global dot-json && \
+    mkdir -p /goblet/runner/repos && \
+    mkdir -p /goblet/runner/configs
+
 COPY . .
-# Clean up repo for backend
-RUN pnpm add --global turbo dot-json && \
-    rm -rf /goblet/app/repos/components && \
+
+RUN rm -rf /goblet/app/repos/browser && \
     rm -rf /goblet/app/repos/exam && \
-    rm -rf /goblet/app/repos/monaco && \
-    rm -rf /goblet/app/repos/race && \
     rm -rf /goblet/app/repos/screencast && \
-    rm -rf /goblet/app/repos/testUtils && \
-    rm -rf /goblet/app/repos/vite && \
-    cd /goblet/app/repos/backend && \
+    rm -rf /goblet/app/repos/testUtils
+
+RUN cd /goblet/app/repos/backend && \
     pnpm json:rm && \
     cd /goblet/app/repos/conductor && \
     pnpm json:rm && \
@@ -51,52 +57,29 @@ RUN pnpm add --global turbo dot-json && \
     pnpm json:rm && \
     dot-json package.json devDependencies -d
 
-RUN turbo prune --docker --scope=@gobletqa/backend
-COPY ./configs ./out/full/configs
-COPY ./gobletRoot.js ./out/full/gobletRoot.js
-COPY ./tsconfig.json ./out/full/tsconfig.json
-# ---- End Stage ---- #
+RUN cp -R tsconfig.json package.json gobletRoot.js /goblet/runner/. && \
+    cp -R configs/aliases.js /goblet/runner/configs/aliases.js && \
+    cp -R configs/paths.config.js /goblet/runner/configs/paths.config.js && \
+    cp -R configs/aliases.config.js /goblet/runner/configs/aliases.config.js
 
+RUN pnpm --filter @gobletqa/backend install --fix-lockfile --prefer-offline --prod 
 
-# ---- Install Stage ---- #
-FROM goblet-setup as goblet-installer
-WORKDIR /goblet/app
-COPY --from=goblet-pruner /goblet/app/out/json/ .
-COPY --from=goblet-pruner /goblet/app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-RUN pnpm install --fix-lockfile --shamefully-hoist
-# ---- End Stage ---- #
-
-
-# ---- Build Stage ---- #
-FROM goblet-setup as goblet-builder
-WORKDIR /goblet/app
-COPY --from=goblet-pruner /goblet/app/out/full/ /goblet/app/
-COPY --from=goblet-installer /goblet/app/ /goblet/app/
 WORKDIR /goblet/app/repos/backend
-RUN pnpm build:goblet && \
-    pnpm build:docker
+RUN pnpm build
+RUN cp -R dist/goblet.default.config.js /goblet/runner/configs/goblet.default.config.js
+RUN pnpm --filter=@gobletqa/backend --prod --no-optional deploy pruned
 
-WORKDIR /goblet/app
-RUN mkdir -p /goblet-runner/configs
-RUN mkdir -p /goblet-runner/repos/backend
-RUN cp -R /goblet/app/repos/backend/dist/goblet.default.config.js /goblet-runner/configs/goblet.default.config.js
-RUN cp -R /goblet/app/gobletRoot.js /goblet-runner/gobletRoot.js
-RUN cp -R /goblet/app/tsconfig.json /goblet-runner/tsconfig.json
-RUN cp -R /goblet/app/configs/aliases.js /goblet-runner/configs/aliases.js
-RUN cp -R /goblet/app/configs/paths.config.js /goblet-runner/configs/paths.config.js
-RUN cp -R /goblet/app/configs/aliases.config.js /goblet-runner/configs/aliases.config.js
-RUN cp -R /goblet/app/repos/shared/src/templates /goblet-runner/repos/backend/templates
-RUN cp -R /goblet/app/repos/backend/tsconfig.json /goblet-runner/repos/backend/tsconfig.json
-RUN cp -R /goblet/app/repos/backend/scripts /goblet-runner/repos/backend/scripts
-RUN cp -R /goblet/app/repos/backend/dist /goblet-runner/repos/backend/dist
-RUN cp -R /goblet/app/repos/backend/package.json /goblet-runner/repos/backend/package.json
-RUN cp -R /goblet/app/repos/backend/node_modules /goblet-runner/repos/backend/node_modules
-RUN cp -R /goblet/app/node_modules /goblet-runner/node_modules
+WORKDIR /goblet/app/repos
+RUN cp -R backend/pruned /goblet/runner/repos/backend
+RUN cp -R shared/src/templates /goblet/runner/repos/backend/templates
+
+WORKDIR /goblet/runner
+RUN find . -name "*.js.map" -type f -delete
 # ---- End Stage ---- #
 
 
 # ---- Run Stage ---- #
-FROM goblet-setup as goblet-runner
+FROM goblet-setup as goblet-builder
 WORKDIR /goblet/app
 
 ARG GB_BE_PORT=7005
@@ -112,11 +95,10 @@ ENV GB_BE_PORT=$GB_BE_PORT \
     GB_DD_API_PROXY_PORT=$GB_DD_API_PROXY_PORT \
     GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT
 
-COPY --from=goblet-builder /goblet-runner /goblet/app
+COPY --from=goblet-pruner /goblet/runner /goblet/app
 
 WORKDIR /goblet/app/repos/backend
 EXPOSE $GB_BE_PORT
 EXPOSE $GB_NO_VNC_PORT
 
 CMD [ "/bin/bash", "scripts/initialize.sh" ]
-
