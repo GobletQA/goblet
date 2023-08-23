@@ -5,7 +5,7 @@
   },
   "compilerOptions": {
     "outDir": "./dist",
-    "moduleResolution": "nodenext"
+    "moduleResolution": "node"
   },
   "include": [
     "src",

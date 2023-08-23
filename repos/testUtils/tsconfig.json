@@ -4,7 +4,7 @@
     "outDir": "./dist",
     "declaration": false,
     "declarationMap": false,
-    "moduleResolution": "nodenext"
+    "moduleResolution": "node"
   },
   "typeRoots": ["src/globals.d.ts" ],
   "include": [
