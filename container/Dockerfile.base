@@ -1,16 +1,9 @@
 ARG GB_IMAGE_FROM=mcr.microsoft.com/playwright:v1.36.1-focal
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
-
-# ---- Kubectrl Stage ( backend only ) ---- #
-FROM bitnami/kubectl:latest as kubectl
-# ---- End Stage ---- #
-
-
 # ---- Setup Stage  ---- #
 FROM $IMAGE_FROM as goblet-setup
 WORKDIR /goblet/app
-COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
 
 ARG GB_PNPM_VERSION=8.6.12
 ARG GB_GIT_GLOBAL_IGNORE=/goblet/.gitignore
@@ -83,6 +76,6 @@ EXPOSE $GB_VNC_SERVER_PORT
 FROM goblet-setup as goblet-base
 WORKDIR /goblet/app
 COPY .npmrc pnpm-*.yaml ./
-RUN pnpm fetch --no-optional --ignore-scripts --prod
+RUN CI=1 pnpm fetch --no-optional --ignore-scripts
 COPY package.json ./
 # ---- End Stage ---- #

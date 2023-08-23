@@ -7,7 +7,7 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@gobletqa/shared": [ "../shared/src" ],
-      "@gobletqa/shared/*": [ "../shared/src" ],
+      "@gobletqa/shared/*": [ "../shared/src" ]
     }
   },
   "include": [

@@ -92,7 +92,7 @@ EOF
 FROM goblet-turbo as goblet-installer
 WORKDIR /goblet/app
 COPY --from=goblet-pruner /goblet/app/out/json/ .
-RUN pnpm install --fix-lockfile --shamefully-hoist
+RUN CI=1 pnpm install --fix-lockfile --shamefully-hoist --prod
 # ---- End Stage ---- #
 
 

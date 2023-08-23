@@ -1,24 +1,35 @@
 ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
+# ---- Kubectrl Stage ( backend only ) ---- #
+FROM bitnami/kubectl:latest as kubectl
+# ---- End Stage ---- #
 
 # ---- Setup Stage ---- #
-FROM $IMAGE_FROM as goblet-setup
-WORKDIR /goblet
-ENV GB_SUB_REPO=backend
-RUN apt-get purge --yes \
-    novnc \
-    net-tools \
-    supervisor \
-    tigervnc-standalone-server && \
-    apt-get clean && \
-    apt-get autoremove --yes && \
-    rm -rf /ms-playwright && \
-    rm -rf ms-playwright-agent && \
-    rm -rf /goblet/app && \
-    rm -rf /root/.cache && \
-    rm -rf /root/.local && \
-    rm -rf /root/.npm
+FROM ubuntu:focal as goblet-setup
+WORKDIR /goblet/app
+COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/
+ARG GB_PNPM_VERSION=8.6.12
+ARG TZ=America/Los_Angeles
+ARG GB_BE_PORT=7005
+ARG GB_NO_VNC_PORT=26369
+ARG GB_DD_API_PROXY_PORT=2121
+ARG GB_DD_WS_PROXY_PORT=2122
+ARG GB_DD_VNC_PROXY_PORT=2123
+ENV GB_BE_PORT=$GB_BE_PORT \
+    GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
+    DEBIAN_FRONTEND=noninteractive \
+    GB_DD_WS_PROXY_PORT=$GB_DD_WS_PROXY_PORT \
+    GB_DD_API_PROXY_PORT=$GB_DD_API_PROXY_PORT \
+    GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT
+
+RUN apt-get update && \
+    apt-get install -y curl wget gpg && \
+    curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get install -y --no-install-recommends git openssh-client && \
+    rm -rf /var/lib/apt/lists/* && \
+    npm install --global pnpm@$GB_PNPM_VERSION
 # ---- End Stage ---- #
 
 
@@ -60,8 +71,7 @@ RUN cp -R tsconfig.json package.json gobletRoot.js /goblet/runner/. && \
     cp -R configs/paths.config.js /goblet/runner/configs/paths.config.js && \
     cp -R configs/aliases.config.js /goblet/runner/configs/aliases.config.js
 
-ENV CI=true
-RUN pnpm --filter @gobletqa/backend install --fix-lockfile --prefer-offline
+RUN CI=1 pnpm --filter @gobletqa/backend install --fix-lockfile --prefer-offline
 
 WORKDIR /goblet/app/repos/backend
 RUN pnpm build
@@ -84,21 +94,8 @@ WORKDIR /goblet/runner
 
 
 # ---- Run Stage ---- #
-FROM goblet-setup as goblet-builder
+FROM goblet-setup as goblet-runner
 WORKDIR /goblet/app
-
-ARG GB_BE_PORT=7005
-ARG GB_NO_VNC_PORT=26369
-ARG GB_DD_API_PROXY_PORT=2121
-ARG GB_DD_WS_PROXY_PORT=2122
-ARG GB_DD_VNC_PROXY_PORT=2123
-
-ENV GB_BE_PORT=$GB_BE_PORT \
-    GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
-    DEBIAN_FRONTEND=noninteractive \
-    GB_DD_WS_PROXY_PORT=$GB_DD_WS_PROXY_PORT \
-    GB_DD_API_PROXY_PORT=$GB_DD_API_PROXY_PORT \
-    GB_DD_VNC_PROXY_PORT=$GB_DD_VNC_PROXY_PORT
 
 COPY --from=goblet-pruner /goblet/runner /goblet/app
 

@@ -4,10 +4,16 @@ import type { ListProps, ListItemButtonProps } from '@mui/material'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import { styled } from '@mui/material/styles'
-import { dims, gutter, colors, Span } from '@gobletqa/components'
-
 import ListItemText from '@mui/material/ListItemText'
 import ListItemButton from '@mui/material/ListItemButton'
+import {
+  cmx,
+  dims,
+  Span,
+  gutter,
+  colors,
+  getColor,
+} from '@gobletqa/components'
 
 type TListFeatures = ListProps & { component?: ElementType }
 type TFeatureItem = ListItemButtonProps & { component?: ElementType }
@@ -21,7 +27,7 @@ export const Features = styled(List)<TListFeatures>`
 
   -ms-overflow-style: none;
   scrollbar-width: none;
-  &::-webkit-scrollbar { 
+  &::-webkit-scrollbar {
     display: none;
   }
 
@@ -64,6 +70,11 @@ export const FeaturesGroup = styled(Box)<TListFeatures>`
   & > .gb-dropdown > .gb-dropdown-header:hover {
     ${shared}
 
+    & .feature-group-header-actions {
+      opacity: 1;
+      background-color: var(--goblet-list-hoverBackground);
+    }
+
     & .gb-dropdown-expand-icon {
       color: var(--goblet-list-hoverForeground);
     }
@@ -75,6 +86,7 @@ export const FeaturesGroupContainer = styled(Box)<TListFeatures>`
   padding-left: 10px;
 `
 
+// Files Actions only
 export const FeatureItem = styled(ListItemButton)<TFeatureItem>`
   height: 30px;
   padding: 0px;
@@ -90,11 +102,12 @@ export const FeatureItem = styled(ListItemButton)<TFeatureItem>`
 
   & .gb-feature-item-action-container {
     opacity: 0;
-    transition: opacity ${dims.trans.avgEase};
+    transition: opacity ${dims.trans.avgEase}, background-color ${dims.trans.halfAvg};
   }
 
   &:hover .gb-feature-item-action-container {
     opacity: 1;
+    background-color: var(--goblet-list-hoverBackground);
   }
 
 `
@@ -111,26 +124,33 @@ export const FeatureItemName = styled(ListItemText)`
   }
 `
 
-export const FeatureItemActionsContainer = styled(Span)`
-  right: 0px;
-  height: 100%;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+export const FeatureItemActionsContainer = styled(Span)(({ theme }) => {
+  const bgClr = getColor(colors.white, colors.purple23)
+  const textClr = getColor(colors.purple23, colors.white)
 
-  & .gb-race-feature-item-icon {
-    pointer-events: initial;
-    margin-right:${gutter.margin.qpx};
-    transition: color ${dims.trans.avgEase};
-    color: var(--goblet-sideBarSectionHeader-foreground);
-    
-    &:hover {
-      color: ${colors.royalPurple} !important;
+  return `
+    right: 0px;
+    height: 100%;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    padding-left: ${gutter.padding.qpx};
+    background-color: ${cmx(bgClr, 95)};
+    transition: background-color ${dims.trans.halfAvg};
+
+    & .gb-race-feature-item-icon {
+      pointer-events: initial;
+      margin-right:${gutter.margin.qpx};
+      transition: color ${dims.trans.avgEase};
+      color: var(--goblet-sideBarSectionHeader-foreground);
+      
+      &:hover {
+        color: ${textClr} !important;
+      }
     }
-  }
-  
-`
+  `
+})
 
 export const FeatureGroupHeaderEdit = styled(Box)`
   width: 99%;
@@ -144,10 +164,30 @@ export const FeatureGroupHeaderEdit = styled(Box)`
   }
 `
 
-export const FeatureGroupHeaderActions = styled(Span)`
-  right: 0px;
-  height: 25px;
-  padding-top: 3px;
-  padding-left: 5px;
-  position: absolute;
-`
+export const FeatureGroupHeaderActions = styled(Span)(({ theme }) => {
+  const bgClr = getColor(colors.white, colors.purple23)
+  const textClr = getColor(colors.purple23, colors.white)
+
+  // Folder Actions only
+  return `
+    right: 0px;
+    opacity: 0;
+    height: 25px;
+    padding-top: 3px;
+    padding-left: 5px;
+    position: absolute;
+    background-color: ${cmx(bgClr, 95)};
+    transition: color ${dims.trans.avgEase}, background-color ${dims.trans.halfAvg};
+
+    & .gb-race-group-header-action {
+      margin-right: 5px;
+      transition: color ${dims.trans.avgEase};
+      color: var(--goblet-sideBarSectionHeader-foreground);
+
+      &:hover {
+        color: ${textClr} !important;
+      }
+    }
+
+  `
+})

@@ -10,6 +10,7 @@ import monacoEditorPlugin from 'vite-plugin-monaco-editor'
 // @ts-ignore
 const monacoEditor = monacoEditorPlugin.default
 const rootDir = path.join(__dirname, '..')
+const gobletRoot = path.join(rootDir, `../..`)
 
 export default defineConfig(async () => {
 
@@ -41,7 +42,10 @@ export default defineConfig(async () => {
       }
     },
     resolve:{
-      alias: aliases,
+      alias: {
+        ...aliases,
+        [`@keg-hub/jsutils`]: path.join(gobletRoot, `node_modules/@keg-hub/jsutils/build/esm`),
+      },
     },
     plugins: [
       react(),

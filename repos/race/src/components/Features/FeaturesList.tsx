@@ -1,4 +1,3 @@
-import type { TTabAction } from '@gobletqa/components'
 import type {
   TRaceFeature,
   TRaceFeatures,
@@ -6,7 +5,6 @@ import type {
 } from '@GBR/types'
 
 import { Features } from './FeaturesList.styled'
-import { useEditor } from '@GBR/contexts/EditorContext'
 import { FeatureItemRender } from './FeatureItemRender'
 
 export type TFeaturesList = TEditorFeatureActions & {
