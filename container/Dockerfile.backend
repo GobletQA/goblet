@@ -76,7 +76,10 @@ RUN cp -R backend/pruned /goblet/runner/repos/backend
 RUN cp -R shared/src/templates /goblet/runner/repos/backend/templates
 
 WORKDIR /goblet/runner
-RUN find . -name "*.js.map" -type f -delete
+
+# This makes the image a little smaller, but may not be worth it
+# Because then we lose source-mapping for compiled files
+# RUN find . -name "*.js.map" -type f -delete
 # ---- End Stage ---- #
 
 
