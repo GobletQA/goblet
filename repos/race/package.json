@@ -17,7 +17,7 @@
     "@emotion/react": "11.11.0",
     "@emotion/styled": "11.11.0",
     "@gobletqa/components": "workspace:*",
-    "@keg-hub/jsutils": "9.8.2",
+    "@keg-hub/jsutils": "9.8.3",
     "@ltipton/parkin": "5.1.1",
     "@mui/icons-material": "5.11.16",
     "@mui/lab": "5.0.0-alpha.129",
