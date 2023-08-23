@@ -182,7 +182,9 @@
       "@gobletqa/test-utils/*": [ "repos/testUtils/src/*" ],
 
       "@gobletqa/workflows": ["repos/workflows/src"],
-      "@gobletqa/workflows/*": ["repos/workflows/src/*"]
+      "@gobletqa/workflows/*": ["repos/workflows/src/*"],
+      "@keg-hub/jsutils": ["node_modules/@keg-hub/jsutils/build/cjs"],
+      "@keg-hub/jsutils/*": ["node_modules/@keg-hub/jsutils/build/cjs/*"]
     }
   },
   "exclude": [

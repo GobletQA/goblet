@@ -113,7 +113,7 @@ export class GithubGraphApi extends BaseGraphApi {
       .map(repo => {
         const { refs, url, name } = repo
         return !refs || !refs.nodes || !refs.nodes.length
-          ? {url, name, id:url, branches: noPropArr}
+          ? {url, name, id:url, branches: noPropArr} as TRepoMeta
           : {
               url,
               name,
