@@ -7,6 +7,24 @@ import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { taskEnvToContextOpts } from '@GBB/browser/taskEnvToContextOpts'
 
 
+const browserPermissions = [
+  // `camera`,
+  // `microphone`,
+  // `geolocation`,
+  // `midi`,
+  // `midi-sysex`,
+  // `notifications`,
+  // `background-sync`,
+  // `ambient-light-sensor`,
+  // `accelerometer`,
+  // `gyroscope`,
+  // `magnetometer`,
+  // `accessibility-events`,
+  // `clipboard-read`,
+  // `clipboard-write`,
+  // `payment-handler`,
+]
+
 /**
  * Default browser options
  * @type {Object}
@@ -14,7 +32,8 @@ import { taskEnvToContextOpts } from '@GBB/browser/taskEnvToContextOpts'
 const options = {
   host: {} as Partial<TBrowserContextOpts>,
   vnc: {
-    colorScheme: `no-preference`
+    colorScheme: `no-preference`,
+    permissions: browserPermissions,
   } as Partial<TBrowserContextOpts>,
 }
 

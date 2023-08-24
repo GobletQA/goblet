@@ -7,5 +7,5 @@ import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
  */
 export const setupBrowser = async (app:Express) => {
   const browserConf = joinBrowserConf({}, app)
-  await GBrowser.start({ browserConf })
+  await GBrowser.start({ browserConf, config: app.locals.config })
 }

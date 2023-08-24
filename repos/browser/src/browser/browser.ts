@@ -71,6 +71,7 @@ export class Browser {
         overrides,
         browserConf,
       })
+
       const pages = context.pages()
       
       !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getPage - Found ${pages.length} pages open on the context`)
@@ -183,7 +184,8 @@ export class Browser {
 
     }
     else {
-      !ENVS.GOBLET_RUN_FROM_CI && Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
+      !ENVS.GOBLET_RUN_FROM_CI
+        && Logger.verbose(`getContext - Found Persistent context for browser ${browserConf.type}`)
     }
 
     return { context, browser }

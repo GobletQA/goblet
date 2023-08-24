@@ -12,47 +12,60 @@ import { noPropArr } from '@keg-hub/jsutils/noPropArr'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { taskEnvToBrowserOpts } from '@GBB/browser/taskEnvToBrowserOpts'
 
-
 /**
  * Default browser options
  * @type {Object}
  */
-const options = {
-  host: {} as Partial<TBrowserConf>,
-  vnc: {
-    slowMo: 100,
-    headless: false,
-    ignoreDefaultArgs: [
-      `--enable-automation`
-    ],
-    args: [
-        // `--disable-extensions-except=${pathToExtension}`,
-        // `--load-extension=${pathToExtension}`,
+const getDefOpts = (config?:TGobletConfig) => {
+  const opts =  {
+    host: {} as Partial<TBrowserConf>,
+    vnc: {
+      slowMo: 100,
+      headless: false,
+      ignoreDefaultArgs: [
+        `--enable-automation`
+      ],
+      args: [
+          // `--disable-extensions-except=${pathToExtension}`,
+          // `--load-extension=${pathToExtension}`,
 
-      `--disable-gpu`,
-      `--start-maximized`,
-      `--start-fullscreen`,
-      // Hides the top-bar header. Should validate this this is what we want
-      `--window-position=0,-75`,
-      `--allow-insecure-localhost`,
-      `--unsafely-treat-insecure-origin-as-secure`,
-      `--use-fake-ui-for-media-stream`,
-      `--use-fake-device-for-media-stream`,
-      `--remote-debugging-port=${ENVS.GB_REMOTE_DEBUG_PORT}`,
-      // `--user-data-dir=remote-profile`, // -- Playwright expects to be passed a dataDir instead of using this
-      // `--kiosk`, // -- Use to disable right click
+        `--disable-gpu`,
+        `--start-maximized`,
+        `--start-fullscreen`,
+        // Hides the top-bar header. Should validate this this is what we want
+        `--window-position=0,-75`,
+        `--allow-insecure-localhost`,
+        `--unsafely-treat-insecure-origin-as-secure`,
+        `--use-fake-ui-for-media-stream`,
+        `--use-fake-device-for-media-stream`,
+        `--remote-debugging-port=${ENVS.GB_REMOTE_DEBUG_PORT}`,
 
-      // TODO - Investigate this - may be needed in some context
-      // `--deny-permission-prompts`
-      // Investigate this - May allow keeping the browser alive in goblet UI app
-      // Don't want this when running in CI or other environments
-      // `--keep-alive-for-test`
-    ],
-  } as Partial<TBrowserConf>,
-  ci: {
-    args: [],
-    headless: true,
-  } as Partial<TBrowserConf>,
+        // `--user-data-dir=remote-profile`, // -- Playwright expects to be passed a dataDir instead of using this
+        // `--kiosk`, // -- Use to disable right click
+
+        // TODO - Investigate this - may be needed in some context
+        // `--deny-permission-prompts`
+        // Investigate this - May allow keeping the browser alive in goblet UI app
+        // Don't want this when running in CI or other environments
+        // `--keep-alive-for-test`
+      ],
+    } as Partial<TBrowserConf>,
+    ci: {
+      args: [],
+      headless: true,
+    } as Partial<TBrowserConf>,
+  }
+
+  // TODO: eventually this will be overwritten by the mounted repo 
+  // If we have a path to the testUtils dir
+  // Then add the fake webcam data
+  if(config?.internalPaths?.testUtilsDir){
+    const webcamLoc = path.join(config.internalPaths.testUtilsDir, `media/webcam.y4m`)
+    opts.vnc.args.push(`--use-file-for-fake-video-capture=${webcamLoc}`)
+  }
+
+
+  return opts
 }
 
 
@@ -118,6 +131,8 @@ export const getBrowserOpts = (
     ...argumentOpts
   } = browserConf
 
+  const options = getDefOpts(config)
+
   const { args: configModeArgs, ...configModeOpts } = vncActive()
     ? options.vnc
     : options.host
@@ -126,7 +141,6 @@ export const getBrowserOpts = (
     args:ciArgs,
     ...ciConfigModeOpts
   } = (process.env.GOBLET_RUN_FROM_CI ? options.ci : {}) as Partial<TBrowserConf>
-
 
   return deepMerge<TBrowserLaunchOpts>(
     /**
