@@ -76,16 +76,13 @@ RUN CI=1 pnpm --filter @gobletqa/backend install --fix-lockfile --prefer-offline
 WORKDIR /goblet/app/repos/backend
 RUN pnpm build
 RUN cp -R dist/goblet.default.config.js /goblet/runner/configs/goblet.default.config.js
-RUN cd /goblet/app/repos/backend && \
-    pnpm json:rm
+RUN pnpm json:rm
 
 RUN pnpm --filter=@gobletqa/backend --prod --no-optional deploy pruned
 
 WORKDIR /goblet/app/repos
 RUN cp -R backend/pruned /goblet/runner/repos/backend
 RUN cp -R shared/src/templates /goblet/runner/repos/backend/templates
-
-WORKDIR /goblet/runner
 
 # This makes the image a little smaller, but may not be worth it
 # Because then we lose source-mapping for compiled files

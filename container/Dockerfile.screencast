@@ -1,113 +1,9 @@
 ARG GB_IMAGE_FROM=ghcr.io/gobletqa/goblet-base:latest
 ARG IMAGE_FROM=$GB_IMAGE_FROM
 
-
-# ---- Turbo Stage ---- #
-FROM $IMAGE_FROM as goblet-turbo
-RUN pnpm add --global turbo dot-json
-# ---- End Stage ---- #
-
-
-# ---- Prune Stage ---- #
-FROM goblet-turbo as goblet-pruner
+# ---- Setup Stage ---- #
+FROM $IMAGE_FROM as goblet-setup
 WORKDIR /goblet/app
-COPY . .
-RUN <<EOF
-  set -eux;
-
-  rm -rf /goblet/app/repos/backend
-  rm -rf /goblet/app/repos/components
-  rm -rf /goblet/app/repos/conductor
-  rm -rf /goblet/app/repos/monaco
-  rm -rf /goblet/app/repos/race
-  rm -rf /goblet/app/repos/vite
-
-  cd /goblet/app/repos/browser
-  pnpm json:rm
-
-  cd /goblet/app/repos/environment
-  pnpm json:rm
-
-  cd /goblet/app/repos/exam
-  pnpm json:rm
-
-  cd /goblet/app/repos/goblet
-  pnpm json:rm
-
-  cd /goblet/app/repos/latent
-  pnpm json:rm
-
-  cd /goblet/app/repos/logger
-  pnpm json:rm
-
-  cd /goblet/app/repos/screencast
-  pnpm json:rm
-
-  cd /goblet/app/repos/shared
-  pnpm json:rm
-
-  cd /goblet/app/repos/testUtils
-  pnpm json:rm
-
-  cd /goblet/app/repos/workflows
-  pnpm json:rm
-
-  cd /goblet/app
-  pnpm json:rm
-
-EOF
-
-RUN turbo prune --docker --scope=@gobletqa/screencast
-RUN <<EOF
-  set -eux;
-  cp .nvmrc out/json/.nvmrc
-  cp pnpm-lock.yaml out/json/pnpm-lock.yaml
-
-  cp -r tasks out/full/tasks
-  cp -r configs out/full/configs
-  cp gobletRoot.js out/full/gobletRoot.js
-  cp tsconfig.json out/full/tsconfig.json
-  mkdir -p out/full/logs
-  mkdir -p out/full/.tmp
-  mkdir -p out/full/temp
-
-  rm -rf out/full/.turbo
-  rm -rf out/full/pnpm-lock.yaml
-  rm -rf out/full/.turbo.json
-
-  # Remove unused tasks in the container
-  # Then replace the default tasks with the sc-entry tasks
-  rm -rf out/full/tasks/definitions/index.ts
-  rm -rf out/full/tasks/definitions/kube
-  rm -rf out/full/tasks/definitions/deploy
-  rm -rf out/full/tasks/definitions/docker
-  rm -rf out/full/tasks/definitions/devspace
-  mv out/full/tasks/definitions/sc-entry.ts out/full/tasks/definitions/index.ts
-
-EOF
-# ---- End Stage ---- #
-
-
-# ---- Install Stage ---- #
-FROM goblet-turbo as goblet-installer
-WORKDIR /goblet/app
-COPY --from=goblet-pruner /goblet/app/out/json/ .
-RUN CI=1 pnpm install --fix-lockfile --shamefully-hoist --prod
-# ---- End Stage ---- #
-
-
-# ---- Build Stage ---- #
-FROM goblet-turbo as goblet-builder
-WORKDIR /goblet/app
-COPY --from=goblet-pruner /goblet/app/out/full/ .
-COPY --from=goblet-installer /goblet/app/ .
-WORKDIR /goblet/app/repos/screencast
-RUN pnpm build:docker
-# ---- End Stage ---- #
-
-
-# ---- Run Stage ---- #
-FROM $IMAGE_FROM as goblet-runner
 WORKDIR /goblet/app
 ARG GB_SC_PORT=7006
 ARG GB_NO_VNC_PORT=26369
@@ -116,12 +12,80 @@ ENV GB_SUB_REPO=screencast \
     GB_SC_PORT=$GB_SC_PORT \
     GB_NO_VNC_PORT=$GB_NO_VNC_PORT \
     GB_VNC_SERVER_PORT=$GB_VNC_SERVER_PORT
-RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
-    ln -s /goblet/app/node_modules /goblet/node_modules && \
-    mkdir -p /etc/supervisor && \
-    rm -rf /ms-playwright/firefox-* /ms-playwright/webkit-*
 
-COPY --from=goblet-builder /goblet/app/. .
+RUN mkdir -p /etc/supervisor && \
+    rm -rf /ms-playwright/firefox-* /ms-playwright/webkit-*
+# ---- End Stage ---- #
+
+
+# ---- Tasks Stage ---- #
+FROM ubuntu:focal as goblet-tasks
+WORKDIR /goblet/app
+COPY tasks tasks
+COPY .nvmrc .nvmrc
+RUN rm -rf tasks/definitions/index.ts && \
+    rm -rf tasks/definitions/kube && \
+    rm -rf tasks/definitions/deploy && \
+    rm -rf tasks/definitions/docker && \
+    rm -rf tasks/definitions/devspace && \
+    mv tasks/definitions/sc-entry.ts tasks/definitions/index.ts
+# ---- End Stage ---- #
+
+
+# ---- Prune Stage ---- #
+FROM $IMAGE_FROM as goblet-pruner
+WORKDIR /goblet/app
+
+RUN pnpm add --global dot-json && \
+    mkdir -p /goblet/runner
+
+COPY . .
+
+RUN rm -rf /goblet/app/repos/backend && \
+    rm -rf /goblet/app/repos/components && \
+    rm -rf /goblet/app/repos/conductor && \
+    rm -rf /goblet/app/repos/monaco && \
+    rm -rf /goblet/app/repos/race && \
+    rm -rf /goblet/app/repos/vite && \
+    cd /goblet/app/repos/browser && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/environment && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/exam && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/goblet && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/latent && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/logger && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/shared && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/screencast && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/testUtils && \
+    pnpm json:rm && \
+    cd /goblet/app/repos/workflows && \
+    pnpm json:rm && \
+    cd /goblet/app && \
+    pnpm json:rm
+
+RUN CI=1 pnpm install --fix-lockfile --prefer-offline --prod && \
+    rm -rf /root/.local/share/pnpm
+
+WORKDIR /goblet/app/repos/screencast
+RUN pnpm build
+# ---- End Stage ---- #
+
+
+# ---- Runner Stage ---- #
+FROM goblet-setup as goblet-runner
+WORKDIR /goblet/app
+
+COPY --from=goblet-pruner /goblet/app/. .
+COPY --from=goblet-tasks /goblet/app/. .
+RUN ln -s /goblet/app/node_modules $HOME/.node_modules && \
+    ln -s /goblet/app/node_modules /goblet/node_modules
 
 WORKDIR /goblet/app/repos/screencast
 
@@ -129,4 +93,6 @@ EXPOSE $GB_SC_PORT
 EXPOSE $GB_NO_VNC_PORT
 EXPOSE $GB_VNC_SERVER_PORT
 
+ENV NODE_ENV=production
 CMD [ "/bin/bash", "scripts/initialize.sh" ]
+# ---- End Stage ---- #

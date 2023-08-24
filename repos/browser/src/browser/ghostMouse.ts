@@ -1,8 +1,8 @@
 import type { GhostCursor, ClickOptions } from "ghost-cursor-pw"
+import { createCursor } from "ghost-cursor-pw"
 import type { TLocatorOpts, TLocator, TBrowserPage, TLocatorClickOpts } from '@GBB/types'
 
 import { isFunc } from '@keg-hub/jsutils/isFunc'
-import { createCursor } from "ghost-cursor-pw"
 
 const pageProxyMethod = [
   `click`,

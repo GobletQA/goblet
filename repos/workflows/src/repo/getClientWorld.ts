@@ -69,6 +69,7 @@ export const loadClientWorld = (
 
   }
   catch(err){
+    console.warn(`[Load Client World] - Error loading world file`)
     console.log(err)
   }
   finally {
@@ -87,7 +88,6 @@ export const getClientWorld = (
   repo?:TGobletConfig,
 ) => {
   const cfg = repo || getGobletConfig()
-
   return loadClientWorld(cfg)
 }
 

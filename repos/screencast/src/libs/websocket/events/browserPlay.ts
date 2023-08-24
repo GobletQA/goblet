@@ -10,20 +10,21 @@ import type {
 import { PWPlay } from '@GSC/constants'
 import { Repo } from '@gobletqa/workflows'
 import { Logger } from '@GSC/utils/logger'
-import { EAstObject } from '@ltipton/parkin'
 import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { capitalize } from '@keg-hub/jsutils/capitalize'
-import { filterErrMessage } from '@gobletqa/test-utils'
 import { PWEventErrorLogFilter, playBrowser } from '@gobletqa/browser'
 import { joinBrowserConf } from '@gobletqa/shared/utils/joinBrowserConf'
+
+// Temporary until updates to use only exam for test execution
+import { filterErrMessage } from '../../../../../exam/src/utils/filterErrMessage'
 
 const getEventParent = (evtData:TPlayerTestEvent) => {
   if(!evtData?.id) return
 
   const [name, ...rest] = evtData?.id?.split(`-`)
   return name.startsWith(`spec`)
-    ? EAstObject.step
-    : rest.length > 1 ? EAstObject.scenario : EAstObject.feature
+    ? `step`
+    : rest.length > 1 ? `scenario` : `feature`
 }
 
 const getEventMessage = (evtData:TPlayerTestEvent) => {
@@ -32,7 +33,7 @@ const getEventMessage = (evtData:TPlayerTestEvent) => {
     : evtData.passed ? `passed` : `failed`
 
   const lines = []
-  const message = !evtData.failed || evtData.eventParent !== EAstObject.step
+  const message = !evtData.failed || evtData.eventParent !== `step`
     ? ``
     : filterErrMessage(evtData, PWEventErrorLogFilter)
 
@@ -65,7 +66,7 @@ const handleStartPlaying = async (
       const parent = getEventParent(evtData)
 
       // Get the event parent, and message if they exist
-      if(parent) evtData.eventParent = parent
+      if(parent) evtData.eventParent = parent as any
 
       if(evtData.eventParent) evtData.description = getEventMessage(evtData)
 

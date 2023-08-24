@@ -40,6 +40,8 @@
     "@keg-hub/jsutils": "9.8.3",
     "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/spawn-cmd": ">=0.3.2",
+    "@ltipton/parkin": "5.1.1",
+    "expect": "29.6.1",
     "playwright": "1.36.1"
   },
   "devDependencies": {
@@ -50,8 +52,6 @@
     "@types/node": "18.15.13",
     "jest": "29.5.0",
     "esbuild": "0.19.2",
-    "esbuild-register": "3.4.2",
-    "ghost-cursor-pw": "1.1.18",
-    "tail-file": "1.4.15"
+    "esbuild-register": "3.4.2"
   }
 }

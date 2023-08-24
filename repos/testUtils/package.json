@@ -47,7 +47,6 @@
     "esbuild-plugin-path-alias": "1.0.7",
     "esbuild-register": "3.4.2",
     "expect": "29.6.1",
-    "ghost-cursor-pw": "1.1.18",
     "glob": "10.3.3",
     "module-alias": "2.2.2",
     "playwright": "1.36.1"

@@ -11,7 +11,6 @@ import type {
 
 import { Automate } from '../automate'
 import { pwBrowsers } from './PWBrowsers'
-import { ghostMouse } from './ghostMouse'
 import { Logger } from '@GBB/utils/logger'
 import { ENVS } from '@gobletqa/environment'
 import { emptyObj } from '@keg-hub/jsutils/emptyObj'
@@ -109,8 +108,7 @@ export class Browser {
       }
       else {
 
-        const pg = await context.newPage()
-        page = ghostMouse(pg)
+        page = await context.newPage()
 
         try {
           await page.goto(initialUrl)

@@ -7,7 +7,6 @@ import type {
   TBrowserContext,
 } from '@GBB/types'
 
-import { ghostMouse } from './ghostMouse'
 import { EventEmitter } from 'node:events'
 
 export class EmptyBrowser extends EventEmitter implements Browser {
@@ -35,10 +34,7 @@ export class EmptyBrowser extends EventEmitter implements Browser {
   newContext = async () => this.#context
   isConnected = () => Boolean(this.#context)
   newPage = async () => {
-    const pg = await this.#context?.newPage()
-    const page = ghostMouse(pg)
-
-    return page
+    return await this.#context?.newPage()
   }
   stopTracing = async (opts?:TStopTraceOpts) => {
     await this.#context.tracing.stop(opts)

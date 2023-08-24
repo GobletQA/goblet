@@ -127,7 +127,7 @@ function setupAsyncHooks() {
     var sms = null;
     // we don't want to load any modules until we've hooked everything
     // this function defers loading `source-map-support`, and also tests
-    // that it functions as expected. since we don't directly depend on
+    // that it functions. Since we don't directly depend on
     // that module, it could have any version and the api could break in
     // the future. if that happens, we just behave as though it wasn't
     // present, and the user's code will continue to be mapped -- only

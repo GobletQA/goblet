@@ -11,16 +11,13 @@ import {
   Logger,
   FileTag,
   SuiteTag,
-  RootSuiteTag,
-  ExamEvtNames,
-  TestsResultStatus,
-} from "@gobletqa/exam"
-
-import {
   spaceMap,
   spaceFromId,
-  filterErrMessage
-} from "../utils/examUtils"
+  RootSuiteTag,
+  ExamEvtNames,
+  filterErrMessage,
+  TestsResultStatus,
+} from "@gobletqa/exam"
 
 
 const logFile = (location:string, rootDir?:string) => {

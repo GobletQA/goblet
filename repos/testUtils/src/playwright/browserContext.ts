@@ -135,7 +135,6 @@ export const getPage = async (num = 0) => {
   const pages = context.pages() || []
   const page = pages.length ? pages[num] : await context.newPage()
   LAST_ACTIVE_PAGE = page
-  // LAST_ACTIVE_PAGE = ghostMouse(page)
 
   return LAST_ACTIVE_PAGE as TBrowserPage
 }

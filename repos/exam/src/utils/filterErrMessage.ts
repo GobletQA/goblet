@@ -1,5 +1,5 @@
- import type { TExEventData } from "@gobletqa/exam"
-import {emptyObj, isStr} from "@keg-hub/jsutils"
+ import type { TExEventData } from "../types"
+import { emptyObj } from "@keg-hub/jsutils/emptyObj"
 
 
 export const spaceMap = {
