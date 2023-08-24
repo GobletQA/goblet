@@ -25,7 +25,11 @@ const loadBrowserScripts = () => {
     mouseHover: fs.readFileSync(
       path.join(aliases[`@GBB/scripts`], `playwright/mouseHover.js`)
     ).toString(),
-    
+
+    media: fs.readFileSync(
+      path.join(aliases[`@GBB/scripts`], `playwright/mediaMock.js`)
+    ).toString(),
+
     polyfils: fs.readFileSync(
       path.join(aliases[`@GBB/scripts`], `playwright/polyfils.js`)
     ).toString(),

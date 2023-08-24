@@ -73,6 +73,9 @@ export class Automate {
     if(!automate)
       throw new Error(`Could not find goblet automate instance on parent object`)
 
+    // Don't add the UI scripts in CI environment
+    if(ENVS.GOBLET_RUN_FROM_CI) return 
+
     await exposePWFunction(
       parent,
       `getGobletHoverOption`,

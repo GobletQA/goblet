@@ -33,10 +33,12 @@ const options = {
       `--start-maximized`,
       `--start-fullscreen`,
       // Hides the top-bar header. Should validate this this is what we want
-      `--window-position=0,-74`,
-      // `--window-position=0,0`,
+      `--window-position=0,-75`,
       `--allow-insecure-localhost`,
       `--unsafely-treat-insecure-origin-as-secure`,
+      `--use-fake-ui-for-media-stream`,
+      `--use-fake-device-for-media-stream`,
+      // `--kiosk`, // -- Use to disable right click
 
       // TODO - Investigate this - may be needed in some context
       // `--deny-permission-prompts`
