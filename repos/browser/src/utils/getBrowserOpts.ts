@@ -38,6 +38,8 @@ const options = {
       `--unsafely-treat-insecure-origin-as-secure`,
       `--use-fake-ui-for-media-stream`,
       `--use-fake-device-for-media-stream`,
+      `--remote-debugging-port=${ENVS.GB_REMOTE_DEBUG_PORT}`,
+      // `--user-data-dir=remote-profile`, // -- Playwright expects to be passed a dataDir instead of using this
       // `--kiosk`, // -- Use to disable right click
 
       // TODO - Investigate this - may be needed in some context
