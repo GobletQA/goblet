@@ -1,9 +1,15 @@
 import { getParkinInstance } from './instance'
+import { wait } from '@keg-hub/jsutils/wait'
 
 const getStepHandler = (name:string) => {
-  return (...args:any[]) => {
+  return async (...args:any[]) => {
     const parkin = getParkinInstance()
-    return parkin[name].apply(parkin, args)
+
+    await wait(1000)
+    const resp = parkin[name].apply(parkin, args)
+    await wait(1000)
+
+    return resp
   }
 }
 
