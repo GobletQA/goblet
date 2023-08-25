@@ -123,6 +123,7 @@ const taskOptions = {
     testVerbose: {
       default: false,
       type: `boolean`,
+      alias: [`verbose`],
       example: `--testVerbose`,
       env: `GOBLET_TEST_VERBOSE`,
       description: `Output verbose test results as the tests run`,
