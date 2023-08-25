@@ -378,19 +378,6 @@ const taskOptions = {
   },
 }
 
-export const sharedOptions = {
-  ...dynamicOpts,
-  ...taskOptions,
-}
-
-// TODO: Update to this when cli-utils convert-from-sv branch is merged
-// sharedOptions.unit = {
-//   ...sharedOptions.goblet,
-//   ...sharedOptions.docker,
-//   ...sharedOptions.test,
-// }
-// setSharedOptions(sharedOptions)
-// Have to a single level object so all options are available to tasks
 setSharedOptions({
   ...taskOptions.test,
   ...taskOptions.docker,
@@ -398,4 +385,5 @@ setSharedOptions({
   ...taskOptions.playwright,
   ...taskOptions.pwContext,
   ...taskOptions.test,
+  ...taskOptions.bdd,
 })

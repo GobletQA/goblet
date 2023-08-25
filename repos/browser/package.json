@@ -40,7 +40,7 @@
     "@keg-hub/jsutils": "9.8.3",
     "@keg-hub/parse-config": ">=2.1.0",
     "@keg-hub/spawn-cmd": ">=0.3.2",
-    "@ltipton/parkin": "5.1.1",
+    "@ltipton/parkin": "5.1.2",
     "expect": "29.6.1",
     "playwright": "1.36.1"
   },

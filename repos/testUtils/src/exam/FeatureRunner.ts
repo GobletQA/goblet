@@ -1,4 +1,4 @@
-import type { TFeatureAst, TParkinRunStepOptsMap, TRootTestObj, Parkin } from '@ltipton/parkin'
+import type { TFeatureAst, TParkinRunStepOptsMap, TRootTestObj, Parkin, TParkinRunOpts } from '@ltipton/parkin'
 import type {
   TStateObj,
   TExFileModel,
@@ -12,6 +12,7 @@ import { emptyArr } from '@keg-hub/jsutils/emptyArr'
 import { omitKeys } from '@keg-hub/jsutils/omitKeys'
 import { deepMerge } from '@keg-hub/jsutils/deepMerge'
 import { flatUnion } from '@keg-hub/jsutils/flatUnion'
+import { ensureArr } from '@keg-hub/jsutils/ensureArr'
 import { FeatureEnvironment } from './FeatureEnvironment'
 import {
   Errors,
@@ -23,6 +24,9 @@ import {
   EPlayerTestType,
 } from '@gobletqa/exam'
 
+
+
+const ParkinFilterTagsError = `No tests have been registered`
 
 export type TRunContent = string | string[] | TFeatureAst | TFeatureAst[]
 export type TFeatureData = {
@@ -49,6 +53,15 @@ const callAfterAllOnError = async (testRoot:TRootTestObj, parkin:Parkin) => {
   }
 }
 
+
+const hasValidTags = (
+  filter:string[],
+  tags?:string[]
+) => {
+  return !filter?.length
+    || (tags?.length && filter?.every((clientTag:string) => tags?.includes(clientTag)))
+}
+
 export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
 
   bail:number=0
@@ -71,21 +84,47 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       && (this.omitTestResults = flatUnion(this.omitTestResults, cfg.omitTestResults))
   }
 
+  #buildRunOpts = (state:TStateObj) => {
+    const { data } = state
+    const runOptions = this.environment.runOptions
+
+    return deepMerge(runOptions, {
+      ...data,
+      tags: {...data?.tags},
+      timeout: data?.timeout || this.timeout,
+      steps: {...data?.steps, shared: {...data?.steps?.shared}},
+    })
+
+  }
+
+  #validateRun = (
+    content:TFeatureAst[],
+    runOpts:TParkinRunOpts
+  ) => {
+    const filter = runOpts?.tags?.filter
+
+    return Boolean(filter?.length)
+      && content.find(feat => hasValidTags(ensureArr(filter), feat?.tags?.tokens))
+  }
 
   /**
    * Runs the code passed to it via the exam
    */
   run = async (model:TExFileModel, state:TStateObj) => {
+    // Tempt fix to make things backwards compatible
+    // @ts-ignore
+    global.jasmine.testPath = model.location
+
     let testRoot:TRootTestObj = undefined
-    
+
     try {
 
-      // @ts-ignore
-      global.jasmine.testPath = model.location
-
       this.isRunning = true
+      const runOpts = this.#buildRunOpts(state)
+      const content = this.environment.parkin.parse.feature(model.content)
+      
+      if(!this.#validateRun(content, runOpts)) return emptyArr as TExEventData[]
 
-      const { data } = state
       this.event({
         ...ExamEvents.started,
         data: {
@@ -96,21 +135,7 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
           fullName: model.location,
           type: EPlayerTestType.feature,
           description: `Starting test execution`,
-          
         }
-      })
-
-      const content = this.fromAst.includes(model?.fileType)
-        ? this.environment.parkin.parse.feature(model.content)
-        : model?.content
-
-      const runOptions = this.environment.runOptions
-
-      const runOpts = deepMerge(runOptions, {
-        ...data,
-        tags: {...data?.tags},
-        timeout: data?.timeout || this.timeout,
-        steps: {...data?.steps, shared: {...data?.steps?.shared}},
       })
 
       await this.environment.parkin.run(content, runOpts)
@@ -118,8 +143,8 @@ export class FeatureRunner extends ExamRunner<FeatureEnvironment> {
       testRoot = this.environment.test.getActiveParent()
 
       const results = await this.environment.test.run({
-        description: data?.description,
-        timeout: data?.globalTimeout || this.globalTimeout
+        description: runOpts?.description,
+        timeout: runOpts?.globalTimeout || this.globalTimeout
       }) as TExEventData[]
 
       const final = results.map(result => this.clearTestResults(result))

@@ -41,8 +41,8 @@ importers:
         specifier: 0.2.1
         version: 0.2.1(esbuild-plugin-path-alias@1.0.7)(esbuild-register@3.4.2)(esbuild@0.19.2)
       '@ltipton/parkin':
-        specifier: 5.1.1
-        version: 5.1.1
+        specifier: 5.1.2
+        version: 5.1.2
       '@types/node':
         specifier: 18.15.13
         version: 18.15.13
@@ -199,8 +199,8 @@ importers:
         specifier: '>=0.3.2'
         version: 0.3.2
       '@ltipton/parkin':
-        specifier: 5.1.1
-        version: 5.1.1
+        specifier: 5.1.2
+        version: 5.1.2
       expect:
         specifier: 29.6.1
         version: 29.6.1
@@ -401,8 +401,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 5.1.1
-        version: 5.1.1
+        specifier: 5.1.2
+        version: 5.1.2
       esbuild:
         specifier: 0.19.2
         version: 0.19.2
@@ -643,8 +643,8 @@ importers:
         specifier: 9.8.3
         version: 9.8.3
       '@ltipton/parkin':
-        specifier: 5.1.1
-        version: 5.1.1
+        specifier: 5.1.2
+        version: 5.1.2
       '@mui/icons-material':
         specifier: 5.11.16
         version: 5.11.16(@mui/material@5.12.3)(@types/react@18.0.21)(react@18.2.0)
@@ -700,22 +700,6 @@ importers:
 
   repos/screencast:
     dependencies:
-      '@gobletqa/test-utils':
-        specifier: workspace:*
-        version: link:../testUtils
-      esbuild:
-        specifier: 0.19.2
-        version: 0.19.2
-      esbuild-register:
-        specifier: 3.4.2
-        version: 3.4.2(esbuild@0.19.2)
-      playwright:
-        specifier: 1.36.1
-        version: 1.36.1
-      socket.io:
-        specifier: 4.6.1
-        version: 4.6.1
-    devDependencies:
       '@gobletqa/browser':
         specifier: workspace:*
         version: link:../browser
@@ -740,21 +724,15 @@ importers:
       '@ltipton/symplasm':
         specifier: 0.0.1
         version: 0.0.1
-      '@types/debug':
-        specifier: 4.1.5
-        version: 4.1.5
-      '@types/express':
-        specifier: 4.17.17
-        version: 4.17.17
-      '@types/jest':
-        specifier: 29.1.2
-        version: 29.1.2
-      '@types/node':
-        specifier: 18.15.13
-        version: 18.15.13
+      esbuild:
+        specifier: 0.19.2
+        version: 0.19.2
       esbuild-plugin-path-alias:
         specifier: 1.0.7
         version: 1.0.7(esbuild@0.19.2)
+      esbuild-register:
+        specifier: 3.4.2
+        version: 3.4.2(esbuild@0.19.2)
       express:
         specifier: 4.18.2
         version: 4.18.2
@@ -767,6 +745,25 @@ importers:
       module-alias:
         specifier: 2.2.2
         version: 2.2.2
+      playwright:
+        specifier: 1.36.1
+        version: 1.36.1
+      socket.io:
+        specifier: 4.6.1
+        version: 4.6.1
+    devDependencies:
+      '@types/debug':
+        specifier: 4.1.5
+        version: 4.1.5
+      '@types/express':
+        specifier: 4.17.17
+        version: 4.17.17
+      '@types/jest':
+        specifier: 29.1.2
+        version: 29.1.2
+      '@types/node':
+        specifier: 18.15.13
+        version: 18.15.13
       nodemon:
         specifier: 2.0.22
         version: 2.0.22
@@ -795,8 +792,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 5.1.1
-        version: 5.1.1
+        specifier: 5.1.2
+        version: 5.1.2
       cookie-session:
         specifier: 2.0.0
         version: 2.0.0
@@ -889,8 +886,8 @@ importers:
         specifier: 9.8.3
         version: 9.8.3
       '@ltipton/parkin':
-        specifier: 5.1.1
-        version: 5.1.1
+        specifier: 5.1.2
+        version: 5.1.2
       esbuild:
         specifier: 0.19.2
         version: 0.19.2
@@ -1086,8 +1083,8 @@ importers:
         specifier: '>=2.1.0'
         version: 2.1.0
       '@ltipton/parkin':
-        specifier: 5.1.1
-        version: 5.1.1
+        specifier: 5.1.2
+        version: 5.1.2
       axios:
         specifier: 1.4.0
         version: 1.4.0
@@ -3574,15 +3571,15 @@ packages:
       esbuild-register: 3.4.2(esbuild@0.19.2)
     optionalDependencies:
       nodemon: 3.0.1
-    dev: true
 
-  /@ltipton/parkin@5.1.1:
-    resolution: {integrity: sha512-sxRvgoiM1W8XPKGrwZkMpGd962s43o46HWuN5KHvwKHANN5OXop9RFeCcP6/he7UqJSz7TqJCx2+ztet+J6oQw==}
+  /@ltipton/parkin@5.1.2:
+    resolution: {integrity: sha512-J4lwOlkw6lxZYBdvZH0d7hYicx0CpImhypXZ7PBFI4Z2RJhNVkRCOwiI95kKa3lxOGQAPdnCQE0qlsLUaddfYA==}
     engines: {node: '>= 16.0.0'}
 
   /@ltipton/symplasm@0.0.1:
     resolution: {integrity: sha512-yds12U6+3gRvOGsH2YFK5fJ4Y0+xk330rg4ym4OO3G+WIGfPXVag2NdrU0FgxHnn0QKWE2P6Zwc4SOMmr7FxnA==}
     engines: {node: '>= 16.0.0'}
+    dev: false
 
   /@monaco-editor/loader@1.3.3(monaco-editor@0.39.0):
     resolution: {integrity: sha512-6KKF4CTzcJiS8BJwtxtfyYt9shBiEv32ateQ9T4UVogwn4HM/uPo9iJd2Dmbkpz8CM6Y0PDUpjnZzCwC+eYo2Q==}
@@ -4670,7 +4667,6 @@ packages:
 
   /abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
-    dev: true
 
   /abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -7647,7 +7643,6 @@ packages:
 
   /ignore-by-default@1.0.1:
     resolution: {integrity: sha512-Ius2VYcGNk7T90CppJqcIkS5ooHUZyIQK+ClZfMfMNFEF9VSE73Fq+906u/CWu92x4gzZMWOwfFYckPObzdEbA==}
-    dev: true
 
   /ignore@5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
@@ -9431,7 +9426,6 @@ packages:
       supports-color: 5.5.0
       touch: 3.1.0
       undefsafe: 2.0.5
-    dev: true
     optional: true
 
   /nopt@1.0.10:
@@ -9439,7 +9433,6 @@ packages:
     hasBin: true
     dependencies:
       abbrev: 1.1.1
-    dev: true
 
   /normalize-package-data@2.5.0:
     resolution: {integrity: sha512-/5CMN3T0R4XTj4DcGaexo+roZSdSFW/0AOOTROrjxzCG1wrWXEsGbRKevjlIL+ZDE4sZlJr5ED4YW0yqmkK+eA==}
@@ -10009,7 +10002,6 @@ packages:
 
   /pstree.remy@1.1.8:
     resolution: {integrity: sha512-77DZwxQmxKnu3aR542U+X8FypNzbfJ+C5XQDk3uWjWxn6151aIMGthWYRXTqT1E5oJvg+ljaa2OJi+VfvCOQ8w==}
-    dev: true
 
   /pump@3.0.0:
     resolution: {integrity: sha512-LwZy+p3SFs1Pytd/jYct4wpv49HiYCqd9Rlc5ZVdk0V+8Yzv6jR5Blk3TRmPL1ft69TxP0IMZGJ+WPFU2BFhww==}
@@ -10774,7 +10766,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       semver: 7.5.4
-    dev: true
     optional: true
 
   /sisteransi@1.0.5:
@@ -11407,7 +11398,6 @@ packages:
     hasBin: true
     dependencies:
       nopt: 1.0.10
-    dev: true
 
   /tough-cookie@2.5.0:
     resolution: {integrity: sha512-nlLsUzgm1kfLXSXfRZMc1KLAugd4hqJHDTvc2hDIwS3mZAfMEuMbc03SujMF+GEcpaX/qboeycw6iO8JwVv2+g==}
@@ -11631,7 +11621,6 @@ packages:
 
   /undefsafe@2.0.5:
     resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
-    dev: true
 
   /underscore-keypath@0.0.22:
     resolution: {integrity: sha512-fU7aYj1J2LQd+jqdQ67AlCOZKK3Pl+VErS8fGYcgZG75XB9/bY+RLM+F2xEcKHhHNtLvqqFyXAoZQlLYfec3Xg==}
