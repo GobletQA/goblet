@@ -42,7 +42,7 @@
     "@keg-hub/spawn-cmd": ">=0.3.2",
     "@ltipton/parkin": "5.2.0",
     "expect": "29.6.1",
-    "playwright": "1.36.1"
+    "playwright": "1.37.1"
   },
   "devDependencies": {
     "@ltipton/esdev": "0.2.1",
